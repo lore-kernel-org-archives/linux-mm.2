@@ -4,97 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65C2FC5AD7B
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 17:44:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 709D2C5B567
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 17:56:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5247C6B008C; Mon, 10 Aug 2026 13:44:58 -0400 (EDT)
+	id 6E9416B008C; Mon, 10 Aug 2026 13:56:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FC656B0098; Mon, 10 Aug 2026 13:44:58 -0400 (EDT)
+	id 64B486B0092; Mon, 10 Aug 2026 13:56:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43BB36B0099; Mon, 10 Aug 2026 13:44:58 -0400 (EDT)
+	id 4EC176B0093; Mon, 10 Aug 2026 13:56:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E6AD6B008C
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 13:44:58 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9B8E3160182
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:44:57 +0000 (UTC)
-X-FDA: 85086085434.15.75CA152
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 256AE6B008C
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 13:56:49 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BDC2BA1D56
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:56:48 +0000 (UTC)
+X-FDA: 85086115296.25.C448287
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D67EE14000F
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:44:55 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TDhG6LdU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 395BA10000E
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:56:47 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GfNCPqjI;
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786383895;
+	s=arc-20220608; t=1786384607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MP2+23zFvL9Yev7WTv4ThtH3GwLxgP0jNN2O9q9lsco=;
-	b=M2WlAhs4d0oURrTBgZb14ubfgXa1OLGJQjHYgBJDpMAgPfgppszjH1xregAImJVzaFjN39
-	WYkZ6aV9YMQPMGzDLe5EHOCl0/MKkQi6NwJWHXHFnw790kFALOFRiVC4JJfrPAwgc7r8tG
-	c04hBm6MfA8gCAbHSnFFu4/OHJ5kUR4=
+	bh=4yvXfUeulRUEmTF42XYsxj9IZ6IxSMv/Y/T9OemFD68=;
+	b=r/iVMZQrjkWk5sPoRCqFL0REcQQmZiA6F8fn959pgGSD44Ou/3C2oBRqFCij+ZTw3MlIjX
+	mJygRe55gC8h3SE0Ev2JfIkkvjYmfAY6MM/36J54hSk1/0vgswHGoVhdwhnVFUavh86O+E
+	1A8qzhO8WqtZjsyRXoev+o5fJPUhh0Y=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TDhG6LdU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GfNCPqjI;
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786383895;
-	b=hDxUXXetCcmW/Ln6ubGLTmt2Zux1RTFawS4ZezLhGz3eL3kJinjUCmb2KBOMFI05afsO0X
-	QD3XWn6iIxz9eiuw3ITiqrKEl0niHt9INbYBx2pTpkYTxMwtl9CI//LThw/5H2jLR3joXG
-	vtGGHMmuGhwEU5gJJOcUBM6jc4+ETBc=
+	t=1786384607;
+	b=AJrkxgsooTf958H6y5X4/vPhDutBe87O7KqDiDx1VMD95YoE+iMAH46Z4SrbaBED0wbFrV
+	UmBHfqet8QwnFxn9zFm0nTOXBpzYWHsX88i2xZ6gKYmmy69BfSbJxP6Y0GkVuKcHwXjWnf
+	0ISybXZylNKC0M/kvXq8quUn3y69YIs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 850D2600C8;
-	Mon, 10 Aug 2026 17:44:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D551F000E9;
-	Mon, 10 Aug 2026 17:44:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A5428600C8;
+	Mon, 10 Aug 2026 17:56:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C35041F000E9;
+	Mon, 10 Aug 2026 17:56:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786383894;
-	bh=MP2+23zFvL9Yev7WTv4ThtH3GwLxgP0jNN2O9q9lsco=;
+	s=k20260515; t=1786384606;
+	bh=4yvXfUeulRUEmTF42XYsxj9IZ6IxSMv/Y/T9OemFD68=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=TDhG6LdU+xmaROsqFck3hBtm6iNfonUwi9trFk34RupcKybOSt6P84/qzbjudd9Wu
-	 evlBRW4nJ4HD0cll3MkA8vYdh0GN1X0UBLa8kl7uNslZW5quVAfTSogtkkhWJqAYuj
-	 j7BA3bAWZpBSUxiQmPhfKrlPUpF8ouMqV6yQJoBzflBNPbfXGT9B47IkJtk2usAEJb
-	 5JCsFPUcg5MjoJAiS2uk3tAlrNLp3Vdpc70GQjFvauDt/Wta74NeZghnfO0ZnasdzM
-	 QKHvsZnV5iWN4njlQb4AEJEqQEycrrAzS7XJi2Nk1PiIGxYlteW+dasD4OpI51JJA1
-	 lga2SFv2CjFQA==
+	b=GfNCPqjIISgcgG/+twUpZHtMXxXS7jfzB7cxJs3nCp4ahhZswUZSnbJYaWecCiRWf
+	 ff93HKBcIFo+iTMiUzBEUUAYwdTtuqlFYyKE8t1ifUbythVHJYTrVDD1G0/Hoo35U9
+	 yXC3QwRUW7L4YIiIPKdqm+/GuUdjLwR/dSus1oEGbZj6O8pnezJpDdLwwoh7J36Bkf
+	 1tajT0z240gUe9ZS5EjmxjOOLFyroqlsI4kJLpfnjAQX0K9JRKrTHmXwTXypL7ZoZ7
+	 nmAy9+KMxo6xBaG+0zqEGOdzcfaS7AzyW2Sl1LEqEpV5cvEN8CaF1wCUVIVqL6qzQx
+	 qB6YbUzxFHSLg==
 From: Pratyush Yadav <pratyush@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Huacai Chen <chenhuacai@kernel.org>,  George Guo
- <dongtai.guo@linux.dev>,  rppt@kernel.org,  pasha.tatashin@soleen.com,
-  shuah@kernel.org,  ardb@kernel.org,  guodongtai@kylinos.cn,
-  kernel@xen0n.name,  graf@amazon.com,  loongarch@lists.linux.dev,
-  linux-kernel@vger.kernel.org,  kexec@lists.infradead.org,
-  linux-mm@kvack.org,  linux-kselftest@vger.kernel.org,
-  linux-efi@vger.kernel.org,  Kexin Liu <liukexin@kylinos.cn>
-Subject: Re: [PATCH v4 3/4] liveupdate: luo_session: include linux/mm.h for
- virt/phys translation
-In-Reply-To: <2vxzjypx6fka.fsf@kernel.org> (Pratyush Yadav's message of "Mon,
-	10 Aug 2026 19:39:01 +0200")
-References: <20260807103714.33074-1-dongtai.guo@linux.dev>
-	<20260807103714.33074-4-dongtai.guo@linux.dev>
-	<CAAhV-H4pK10ONo=viJyUJBiiFb_7pbB9LaNkQWH=83r+7E0iTA@mail.gmail.com>
-	<2vxzjypx6fka.fsf@kernel.org>
-Date: Mon, 10 Aug 2026 19:44:49 +0200
-Message-ID: <2vxzfr0l6fam.fsf@kernel.org>
+To: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Mike Rapoport
+ <rppt@kernel.org>,  Pratyush Yadav <pratyush@kernel.org>,  Andrew Morton
+ <akpm@linux-foundation.org>,  kexec@lists.infradead.org (open list:LIVE
+ UPDATE),  linux-kernel@vger.kernel.org (open list:LIVE UPDATE),
+  linux-mm@kvack.org (open list:MEMORY MANAGEMENT),  Giorgi Tchankvetadze
+ <giorgi@tchankvetadze.com>
+Subject: Re: [PATCH] mm/memfd_luo: use real folio index in retrieve error logs
+In-Reply-To: <20260806100543.138902-3-giorgitchankvetadze1997@gmail.com>
+	(Giorgi Tchankvetadze's message of "Thu, 6 Aug 2026 14:05:39 +0400")
+References: <20260806100543.138902-3-giorgitchankvetadze1997@gmail.com>
+Date: Mon, 10 Aug 2026 19:56:43 +0200
+Message-ID: <2vxz5x1h6eqs.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: ggxkkeyqwxhp8qec39uaiewq84n3abff
-X-Rspamd-Queue-Id: D67EE14000F
-X-HE-Tag: 1786383895-893219
-X-HE-Meta: U2FsdGVkX18Oz+35X3vkQfR1Z348T9zvSetR6+EsypyArhgDGr/1dMD0oKYR85W23QUW34uZrBJtv7Xr2nhnUfXrx2SIsQQawe2tCLyuQbA45RJq2W1nOmiWbQwBIo5Sr99/POp50kIT7/oAO4bLVJ67M3KbmivoKKpkNjruPMjiEeL021RVNqQjIlwopp/ozo21Lmb11abJETzBa1YIHOjHZ/Qx/kjbpA4R8FM6S+WiPsDMGOPJ/RFObd/V+Dwicm0SHsbFC0gdJtBZ8OPHyephQ/HfPYsCN4eW60JE5bh3qrpV/0VLNfJBjZ30jtRF/QhmQY4l/Qi4EwxOvBrE+JJ2G9gx8Vl8yFXVohoRurNbUtGv/J7HlG/5WpiGlkqcBNI7daL1WafhY4pyWkQVSfbMkx3PWW/7us8idjCsjt8I/EZAdaX9d1DCcB8LbLAAycUsccZw7ZjDT3yb8JJVv/dd7PJaDs7GiY+emJVXD7GazDv8Wmo54nIjIvbF7UQRNKvbl51L8cgKdufjap1mg8CCU574aRQN9PydC8CkNLxLIHodDnGYkaIm8yS3BoP/0awev57KMC2ZaG1HFvBP+iTIZOUmWy/PSfexLLUuIXLGyyq6qlaAdqQ32cWDtLDPD4rqVYt04PZs4U0YyNTkHh2dJ7wrqMDDrVyyQgrB3ZtkBdISeynxfAO36uqn8UAEWwGcMFQcDbVniE+tU7Xy9iNNe7SKak7LqhYJRFSbSJx7eRc7E3qS3if8tiAcAmcFoYtN2ztGD6WceiiIOZXfsY3Ad5RO+D0IKiIBJq1WP1NvzM0v71BF461okO5WW3aPZeESPAdueyOad3schhs7lM3RndX0Jyr00HFEwWr8I8Jvv/QP8/nGxGyG+8tC/jOf/vJRYjgdOIptlbPPBt1KUdDivPApgXZRH4HP744cyOCqJ4g2PfmYp0KStKxMb65tM2qxRNDI43Yuv7aWHPm
- 9/C3VeWW
- lV1sqOHzo0oXgcz2mm0QFwwELiDgnuStbp8NmaVZKmZTmAt9vdsTJr3J5PPcw4HUwdp5rM1+gBB+Vf48zAWGEm1O4j8dcgqZUd+WUTJQjNMdG0FTM4Mtdlk3RIGdpo3buYbBXrAHJzveuFFs/NpvppZNr8FuUMyN+68y5OoPYNtHNGgL+II1bow2GFPOw9iqtSYkfpA1gzQb/jU7HdQZfS9pKbUiJEwPkxVJFQ6HO4ct7u5emTE+19UqIziVKBOA9KsRUB8tc1FaY3tS/RTde6FlBRAoZMQjof4qHvPCWC7zTmautUH/pH0Wat09rM8KlDfoLK0ADOvVxfe1pjFKHYvhwTf1wScAKYYYj
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 395BA10000E
+X-Stat-Signature: fmaqwhmm48618fc4f7r4doq1ddubpn48
+X-HE-Tag: 1786384607-276296
+X-HE-Meta: U2FsdGVkX1852kXh1yjjv6Ok2QVgPyBJpK+YDpUZQiOVzfJ++A8s9g137b6nYWEnuydgO/BwfUtP7Awf5Vwamd98LKTqpBy0LbLSHehTTLbH9RRlTNaXc+Ylb1ji7U3af7YEkRDhMK9fkd9Omkpeo0ObeyKpbXyxktEdpf4LbfRSehYHeXEs/Mqy/pdjvBbt6gpHzROmgWPrCsNJ8yZJpha1FnI9SAtE/KZOxaiEuHjqi/TSyDFTFOSGPRE4ZdDhPKhcmXV5wfROMKVml/cSqBfVKWvv7CFO8RhvEl7e1rrJuwQ+xFppPemnKjC/c6YOi4YrJRaG3gqssTTsthAQyf+DMK19rLg7356nHQH7usJyneLBXLrD43zFtof2EqhuClpg9PJ6OPNmepr2FV8tIV/mdiy829a/HYAYCByzaUmI4ibqc6jN/Og7yN0F2el1zeV36sF7RrHzz84Ej3GmYzv5BOJC64JXp5mxmVzjLXAcq4cSbcnzq11W8dqvizcMK3Jz/n/KDj0689CGpCPM55nDT9zNjyA+Npgrl9jAw9oWuQ+ujQZF34o5mkoeiaPFVFt54ym7XWVacQiNqP18FMWD4uEkzALME3AdjBYqb1eRrD8V1+WZKqi54MputHcQLYe2MSlcUO/qksFqHN3K1CjnV9xqi/hb8B+EWolILDE4RLMv8JXHmut5PfMOF7/lYnMoDt0TBphyShapT3RStPcizLPFt+0CLYJ1afh9QvWWzNUVh44bRQ7qtdN1Sk4wX/swMqFEBhY1NyCLNAi1B0SUWtmaVTMqE3bDeuFCY8jeCfTxXBetGMo192TThkBOF2IcrHYEOAUEggYU6udWJGZdasgqA/QvJ0Hf4QSHJ13E3wUVMgceXPgfHMcn+XwjCe9Tmbo01UClP5McNLYU6Y5pGI5YfgDZdWTnxh5ffIIl+1k+3kwlMouuV5WhmfYQSwTQ3tbXDj3K9r/x3cl
+ hGZT9Ui6
+ OrMv4vsD1sYc8swo/2wMltja1e9HekQiXkwQNsraHS1jZD9Ott/WlTVRYB1yDluhOy6YYWNe0fu5GL9oDcNxOijqN17NDqCMg/0fGa7LSf0yxkum0hN4g3J3yiwnhSiptZzlnIJp5BMBHyfNZpRAMzpJw4Ku+uxWRntmaJG05dtsJCFfqJWeRQWYJzLmLUYSe6AB+6oYSB+XskrA7vZWE7JxbEoe5PGQ5saF43lA//aG0N54UXml72xGgpf+tsKMvx+2Nt2Oe9wsiXEAASCMl1JImRuy1MpwbAs7qaUOTO3ELLbhfQ8Q2Uci+j4uUfd4nmMpp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,97 +95,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 10 2026, Pratyush Yadav wrote:
+On Thu, Aug 06 2026, Giorgi Tchankvetadze wrote:
 
-> On Mon, Aug 10 2026, Huacai Chen wrote:
+> From: Giorgi Tchankvetadze <giorgi@tchankvetadze.com>
 >
->> Hi, George,
->>
->> This should be the 2nd patch.
+> memfd_luo_retrieve_folios() logs "folio index %ld" on its error paths
+> but passes the loop counter 'i' instead of the folio's actual index
+> held in the local 'index' variable (pfolio->index).
 >
-> Agreed.
+> Pass 'index' to the three pr_err() calls so the logged index matches
+> the folio that actually failed. Since the saved index is a u64, use %llu with an
+> unsigned long long cast when printing it.
 >
-> With that done,
+> Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
+> Signed-off-by: Giorgi Tchankvetadze <giorgi@tchankvetadze.com>
+> ---
+>  mm/memfd_luo.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
 >
-> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+> index 59de210bee5f..652dd21e6ef0 100644
+> --- a/mm/memfd_luo.c
+> +++ b/mm/memfd_luo.c
+> @@ -451,16 +451,16 @@ static int memfd_luo_retrieve_folios(struct file *file,
+>  
+>  		err = mem_cgroup_charge(folio, NULL, mapping_gfp_mask(mapping));
+>  		if (err) {
+> -			pr_err("shmem: failed to charge folio index %ld: %d\n",
+> -			       i, err);
+> +			pr_err("shmem: failed to charge folio index %llu: %d\n",
+> +			       (unsigned long long)index, err);
 
-Actually, I take this back. Sashiko has found some problems. See below.
+Why the cast here? u64 is always printed by %llu. See
+Documentation/core-api/printk-formats.rst.
 
->
->>
->> Huacai
->>
->> On Fri, Aug 7, 2026 at 6:39=E2=80=AFPM George Guo <dongtai.guo@linux.dev=
-> wrote:
->>>
->>> From: George Guo <guodongtai@kylinos.cn>
->>>
->>> luo_session.c calls virt_to_phys() and phys_to_virt(). On LoongArch with
->>> CONFIG_KFENCE=3Dy, these macros (in arch/loongarch/include/asm/io.h) ex=
-pand
->>> to offset_in_page() and page_address(), both declared in <linux/mm.h>.
+>  			goto unlock_folio;
+>  		}
+>  
+>  		err = shmem_add_to_page_cache(folio, mapping, index, NULL,
+>  					      mapping_gfp_mask(mapping));
+>  		if (err) {
+> -			pr_err("shmem: failed to add to page cache folio index %ld: %d\n",
+> -			       i, err);
+> +			pr_err("shmem: failed to add to page cache folio index %llu: %d\n",
+> +			       (unsigned long long)index, err);
+>  			goto unlock_folio;
+>  		}
+>  
+> @@ -472,8 +472,8 @@ static int memfd_luo_retrieve_folios(struct file *file,
+>  		npages = folio_nr_pages(folio);
+>  		err = shmem_inode_acct_blocks(inode, npages);
+>  		if (err) {
+> -			pr_err("shmem: failed to account folio index %ld(%ld pages): %d\n",
+> -			       i, npages, err);
+> +			pr_err("shmem: failed to account folio index %llu(%ld pages): %d\n",
+> +			       (unsigned long long)index, npages, err);
+>  			goto remove_from_cache;
+>  		}
 
-https://sashiko.dev/#/patchset/20260807103714.33074-5-dongtai.guo@linux.dev
-
-    Is this description accurate? Looking at luo_session.c, it does not act=
-ually
-    call virt_to_phys().
-    The implicit declaration error appears to originate from arch_kfence_in=
-it_pool()
-    in arch/loongarch/include/asm/kfence.h, which is implicitly included via
-    <linux/slab.h>.
-    arch/loongarch/include/asm/kfence.h:arch_kfence_init_pool() {
-        ...
-                    virt_to_phys((void *)kfence_pool), PAGE_KERNEL);
-        ...
-    }
-    Could the fix be applied to the architecture header instead, to prevent=
- any
-    other kernel C file on LoongArch with CONFIG_KFENCE=3Dy from suffering =
-the same
-    build failure if it includes <linux/slab.h> before <linux/mm.h>?
-
-I at least don't see any virt_to_phys() or phys_to_virt() in
-luo_session.c. So you need to go and take another look at what the real
-problem is and what the fix should be.
-
->>>
->>> Since luo_session.c only includes <linux/io.h>, the translation unit fa=
-ils
->>> to build with CONFIG_KFENCE=3Dy:
->>>
->>>   asm/io.h: error: implicit declaration of function 'offset_in_page'
->>>   asm/io.h: error: implicit declaration of function 'page_address'
->>>
->>> Add the missing include to fix these build errors.
->>>
->>> Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
->>> Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
->>> Signed-off-by: George Guo <guodongtai@kylinos.cn>
->>> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->>> ---
->>>  kernel/liveupdate/luo_session.c | 1 +
->>>  1 file changed, 1 insertion(+)
->>>
->>> diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_se=
-ssion.c
->>> index f38b5b18f3f8..31490ac7b63d 100644
->>> --- a/kernel/liveupdate/luo_session.c
->>> +++ b/kernel/liveupdate/luo_session.c
->>> @@ -94,6 +94,7 @@
->>>  #include <linux/kho/abi/luo.h>
->>>  #include <linux/list.h>
->>>  #include <linux/liveupdate.h>
->>> +#include <linux/mm.h>
->>>  #include <linux/mutex.h>
->>>  #include <linux/rwsem.h>
->>>  #include <linux/slab.h>
->>> --
->>> 2.53.0
->>>
->>>
-
---=20
+-- 
 Regards,
 Pratyush Yadav
 
