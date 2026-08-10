@@ -4,124 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 639A7C5AC82
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 09:40:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C5A7C5AC82
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 09:43:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BA186B00A1; Mon, 10 Aug 2026 05:40:39 -0400 (EDT)
+	id 0C8436B008A; Mon, 10 Aug 2026 05:43:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 491826B00A2; Mon, 10 Aug 2026 05:40:39 -0400 (EDT)
+	id 09FD86B0095; Mon, 10 Aug 2026 05:43:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A7236B00A3; Mon, 10 Aug 2026 05:40:39 -0400 (EDT)
+	id F1F036B0096; Mon, 10 Aug 2026 05:43:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 142A26B00A1
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 05:40:39 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A5A18806D5
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:40:38 +0000 (UTC)
-X-FDA: 85084864956.25.104A2D1
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E6C68140011
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:40:36 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XlN7bvMx;
-	spf=pass (imf23.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786354836;
-	b=7AO4xRhJaEItSsmVKraRoifdmN9Go5MQZrGJ2wMK8w0Y4brLvPWHs6KNgKA2cG0692t89+
-	V5IWDb4RkXagkRqzkkmKXXcakPUwAkdAthmAUF4rWFagLcWB3coQF7NzLnriKrRq8Wizz1
-	z9SlK+G98sSLaYcC4LnLJIhnrh/K/9I=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XlN7bvMx;
-	spf=pass (imf23.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D27176B008A
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 05:43:41 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 329D51A0464
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:43:12 +0000 (UTC)
+X-FDA: 85084871424.20.79A71A5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 976C6C000B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:43:10 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X5ogNfyd;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786354836;
+	s=arc-20220608; t=1786354990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=h8TjGG7W8xBATTSwzzjsDpLSfAeA/sVM6NcS21BdVcE=;
-	b=aNDauHDYcO6Pes29XnE3qpisel8T9/1ELPmziR3cZnCRd0tMN7fUuzaCvfwOyrsbG9rnjE
-	CWT0JobTwq1WDY9HY+lN4F9+6hyFXGWai47z+U8NmrVi/QwoxvrpuVYPmh7+weLKwaX2t0
-	lC4lE1EzkxoLx4qqkohCi/XKI/0CD+8=
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38fdeaed181so1996363a91.1
-        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 02:40:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786354836; x=1786959636; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=h8TjGG7W8xBATTSwzzjsDpLSfAeA/sVM6NcS21BdVcE=;
-        b=XlN7bvMxaNtNbgLOlRJUnY4W1XLEs8iR8cHFUhQLQ/ET/Qt3XKYObJnpFbIMxFQ3n/
-         nc6ITaK8zpUYIAJegtipq948xTkSczUKPVwxj4AAKPcH7XFJNP1+r++CVM71IqxajlL1
-         i7GDVt5+U4SpIUNah0lzBTwBH/8EyFgQG/KeGcg7KexG0JC39mVJn4tyRho1u8y57MTT
-         6dFQ3LmjLVUxjAL9aViT9kddVa1UY6CkgVgawEVvTaQ0bV+nzPljw9f5ZWD2YirqlqE0
-         1oZ7ec60kY2yUTi5JotvjTrvFJB827jol/RqrY5YHgils3xlZLuI7gpLFz3LVfJRCk3u
-         uJfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786354836; x=1786959636;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=h8TjGG7W8xBATTSwzzjsDpLSfAeA/sVM6NcS21BdVcE=;
-        b=MTNcSx9ZI+ozXthr5tdgdb9+R9TXo/C8xyvQ0Fe9ZNouCYJURCxW8Xym6i1qDOhkwi
-         StianiTWzjXyd4o8PegAdYz7NLEHsffGmX3zn6/j5WHGYUcHZ3ZtmYKyWq+cA1Cg7jBj
-         Zsy7M5ao5zzywuHLahbe8R60iJdSSVfvyABUdNorvVd0Up1Q376GtAzU0dAI8W8YKev5
-         LiMlo8UqOwSu4ZWV3DlBMspzLbGXNN+gOPkMqZXEPJFVeThBGcvXdXOs+xldualr+egT
-         goYJQ6whbQFua8wuKSaCwygKIPv/aWUtzqCoDQzaldocFzBmtj3oHGuZHsehjD6MFxnO
-         HMJA==
-X-Forwarded-Encrypted: i=1; AHgh+RqbcZf9TJ5tKZz9F1Bl90dHcpjxJ27M16RhxBGgdCkPSx9cN+K75/NDgv8Fk9DpVQiQYdZRPuTebg==@kvack.org
-X-Gm-Message-State: AOJu0YyIg/Fpg09m29j40M/actiMzqZEQYDfHbc/sAVDukoRoJi9gq4Y
-	unqKCiNL0ad5DxHkibwiqqVn+fhaDYNGyh/2ylTuo+IFq7WX67pjboRc
-X-Gm-Gg: AR+sD11NwxEKnXbY1a8nHw1DmyVGywXvkZvS2jmrHIGb8GtjXzvVrhUKgWoDqIgfX0Q
-	3W+f1Q0n71Knm63XUoGmzT+rNlpZxoGYgKHixA5HFoelFa/chrTEfcZnSI5eFvrtmTZYfK+pdwl
-	I0aCarkwdYPzxR79cBdxbUtQSIcl+9XoHmC4E+xWF+qbAi3yFtj/RlWXzCJHJlffcDjNDIgu7Vq
-	6gT86MNm1dyV1U4cWXnUtypecyOZhIx5cRLau9BohHG43b0QFtFmc87/t6fRvZ5jovZy0Nf/GUy
-	BgXl/UyWWXWU3DHEvIqfBKGl0KghpImH3oKnaTxTQqUDvB21Bq2xmsgkFlKQVEik6cKMuEOlSdi
-	xki9gWb1NR6JyQ2QvtJqPh1UiB1gy6AnLyM3fjun4nzHXfuF8JesNkaatSpb948rnmZo8OkEjox
-	NCEwFbOY5xdQhRSiEvoSPJuS5V7ZMojQ7xHRjfkUR1rWRRjq2s21xoorfTjfQf0gTcQUmKmaCTY
-	k5ZzfccCEdB0qQrGIKtR7JiuZXAs9hK6Wd+Rhk=
-X-Received: by 2002:a17:90b:578e:b0:383:5a16:bd70 with SMTP id 98e67ed59e1d1-3903c5ebc8cmr43653966a91.16.1786354835714;
-        Mon, 10 Aug 2026 02:40:35 -0700 (PDT)
-Received: from bj-kjy-standalone-gaoxiang17.mioffice.cn ([43.224.245.230])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39085de9f6asm14070527a91.7.2026.08.10.02.40.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 02:40:35 -0700 (PDT)
-From: Xiang Gao <gxxa03070307@gmail.com>
-X-Google-Original-From: Xiang Gao <gaoxiang17@xiaomi.com>
-To: Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	liam@infradead.org,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-trace-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Xiang Gao <gaoxiang17@xiaomi.com>
-Subject: [PATCH] tracing: report buffer memory in /proc/meminfo
-Date: Mon, 10 Aug 2026 17:40:25 +0800
-Message-Id: <20260810094025.136705-1-gaoxiang17@xiaomi.com>
-X-Mailer: git-send-email 2.34.1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=e8BIKK72EEk4vSL3MS2OzVc4EJiHSyxg4H3wiEsIixo=;
+	b=P9V8woXNK5ijIMBKVvxgwSHi5n74iwtPiXAeE3jdEnUWciwjI7NinVb0DOxEq8Mjyz+l6M
+	DTeFVFiRttzcaG9XrobEZ+TI6UN5+BEaKR4MoeQrVkm0uF4cxQHacAE/LVmTLuGZVCmcPs
+	My09ziGxeGtEqmoS3QmT+qDqYc+l7QU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786354990;
+	b=JZn7AwJtrJ3ShrekBFVVpklLb6F+RvCbHpMMIPgJz0QsbimkR8SVYmt0g7w6jGo0mStzKJ
+	oG7IRDr9eqceDnKrIIH/2oG5ymGymFb1sm4lhV9N2GYCGTOOPoMpf2ltY/eZSAUd1p2hHf
+	qLVD4F36mNJcy68girZBvAnVW4JSm5k=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X5ogNfyd;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2BFAF60052;
+	Mon, 10 Aug 2026 09:43:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD961F000E9;
+	Mon, 10 Aug 2026 09:43:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786354989;
+	bh=e8BIKK72EEk4vSL3MS2OzVc4EJiHSyxg4H3wiEsIixo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=X5ogNfydnasoQr309886Ja2GO43RLBsS4PLRGVyttiCWNVDzlnuKnK9IQX1ibfqW2
+	 r7f5decVshZ+9sjleIIazcUeWZjhxp2Na2uolb3dbUCPXH4ZEonsn90iy6mV7sqFjS
+	 /pRjIpoHU9mumz5A4CQo9h423jYS4g26xtEUzEkP1OEcehl4whuMKSWdC5GFWOZ+ED
+	 oP4oWpZhjEeiuxhLE0KWPNVVpw1EBhnB8a1/q74iZ+EwrGCWEf6czVYOm2yBskl/Iz
+	 YQ4Jvxie7g8QgbtF04zkLqzlHYLf8icFlUGkxbHRKgUQa1xC0cee0UzX70Np/e9JUH
+	 qcdR5LkZQpvnA==
+Date: Mon, 10 Aug 2026 10:42:50 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org, 
+	dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, david@kernel.org, 
+	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com, aliceryhl@google.com, 
+	arve@android.com, cmllamas@google.com, christian@brauner.io, tkjos@android.com, 
+	dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v4 1/5] mm: Make per-VMA locks available universally
+Message-ID: <anmcwYilggkd_-B5@lucifer>
+References: <20260806200548.3124802-1-surenb@google.com>
+ <20260806200548.3124802-2-surenb@google.com>
+ <anaCkrk55EQoE2aS@casper.infradead.org>
+ <anmQIeQIGkZdCKVU@lucifer>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E6C68140011
-X-Stat-Signature: h4e5uz6poo5bnq44nurbsraz3cya6rxd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <anmQIeQIGkZdCKVU@lucifer>
 X-Rspam-User: 
-X-HE-Tag: 1786354836-254287
-X-HE-Meta: U2FsdGVkX1+Wy+rH2/yzVgzMeiwXMO7imVsL4VOhojeX6rOT2aPq04MeU3b00TJfmSL5AQyEQWzp6dOl5bpvOGx6WLkVV1R6MrqepwbvFEOv4S21sV6EPmaPyEmNT9/aA3HIOBoDvD0QzF9M/qTcLgWtTT0kQWm4TRWjPdBY2vFCXvGy7YTJtcXKxkDeO2jhYxSrugpCWR79rJYy+Pqd++J96S6Vsl7UATT6gMz1qWXOUuucfBBDiQZB0A9NTeM+ulF1zFUwGCbM8GxlDL1/K+ifTgFrlJDeFRSXLoW9DIbfUKjenkPyLrCmdW4RJbgigwN4AoK6iMolELueOdBf4DqgNBG8TSwH70mY7W1aahvWNS+twu7/vk+7tYvMWMZNvxasskFGThEF+furHmRDwr7HB3QIp1KOMssXe3Osiiou/+xNivp/i+/ZW06FXWTnowONPRCoukh/SxMVGc8htVhaAA/cI1oxM86fVztkfwH37UruxAaa3e94fTY5qRH1LycHuKFjtQIZgtqFvkXwkhj8XXhFCoXGpK4aMyFtv9LHAmdP23ZpH49/pktoMEWFaO2UhzjavtFEXzmiUrOetc2OHUD/Fhey+/IKpBE82YwBIa9OvW/ryDzBHRkTpUoQvpJ1hH7y8HsAPJLYTZ6o5efGfeDrWJ7hD3u1y9a+Hu0pZzOMmePl5aagrx81VdlL6xrsu2T3KFvc+bD+bBw3ka/GN6TWbAOfx1A6oxsBhSZK6mCYBXIMeIg7by7klrUd3WpbddvYKCzD7JRQmGfHpbdBCQudYNZ0vrm2OCEubh1uSvCFyuV33eTHFs5C426bEYu0eeUXT7AxcvEJO6azfKtNyP2iCXuWpZpA5uZIc2XHHsNK7q+LKW4rYYMBInvIHSGmUakFs2EsYjQtlKCDUJ3hXpsp8/n4TXF3J05P+faJmfRhYVXYTloH92TjIgOIr5njS4/S3Z07ZNU21/4
- IDPnTyrW
- nWXtb/m9s0ub3T/KsEMzzTQi3sxi6E8mx9OPbjkJgTUIwVyDA549sC/hYYlYrqSitaTAsjfQBYvy6hvrW37fPsbkzCPStj/FO0JGO6cxtFF5aFeVHa2UmqubTYIQBgQZ9/sM+QPnMwr/XeGfa53smPUwKsRj4HVcAsQWoZsYd2S8Q+Btl8ZvwLTFbx/6z2aP7zbP0wzcqtStXeq1/EA/wuYdESbrnTK4/vDjBEV4XbBI0okC6Vb8Buq/oQbaxAnL+ezedpm20JzzMCK37dJKju8RGLBwWsvTEvLvgcXgBjQonV4f3m0khARI7FQHlVzgTCSX3StIbaiEPB2cHMOeqNW9PEcYaQnDYyQQ6WLO6NVhSYvY1ZW4ckT8MJAA1XwOD0ia2NQjra/DcW173YmXtmLJ14Rv2xaKiEHkw
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 976C6C000B
+X-Stat-Signature: 4cw7yfjbuy3wbpdcgwfdyspbhkythqwp
+X-HE-Tag: 1786354990-722341
+X-HE-Meta: U2FsdGVkX1/M7X2dxZM2Wi5UdBHYB6r4t3JxoZ2lpgUS7H8c7zcJRxarW6Tcb63aF6imzAmeSU3dBJ93DUE9A+53HrZVRFiGdFbnogqJXCnG7swZj2rwYByhMEJmXz2IKVIpIMErSSwGo7QIMzfoe/0hux3QDuQAQNXvkcgiwJKjlWzC8O6WqyCdg06XLOMNvgpS+SayARd9dTtQAsVrcNPvq/06GfSxOvGoaBbEsMayvHVSl676Ld2OUW65X5N/v3gpy05zs/z8bv4CiVgZVn0EXIpQodYEhG9QrG9lIrNfFw48mGqbHRLtfbmzi98qzVfXp+xaVo23alVGAict1OMCxNCBQ3hu8yWJDT41n5g/DMn40igDfWUIp62OBNX+DqnHSxy+mejcZjjS4FFKYtEEasyJmDVWh4Ps3ADSIRVx5H8SCianbWAB9XdTLZiFEl1Ib6ghKhUY9vAGOaR2eCxtI9mmiGeMmG6jNQZmxy0JUg4TRIlEbipIGbPxPCz3kMyr5GVroT0rdLV6LDjXIZaWegwRv61DoR28wUs6cJA003nAB3FIZ+mR9umSBOcxtoq947m/9xob+Ti3wY3HTiE8U9Kio9PDPTkn8+GVoPFY2B8lT+9L5GB/EBseT/4CDZ1Tzj81IT1Jsuc3M5+OOdZ6Luw0fG7XW4sxlV+jzyP3LeBYEbmpOC/PK5LoR4RDokvCggICvrjPTMKf+Caf7oImhOpITpMkJ5m+v9uTYQSvpixzfTnD8ezZ8DIeTMZfh+VvOWPCN1PHhRjvERFyyMrI7TjNhPPSiDplB1nt8PVJl/RvEjxr8ZFDnILKHl/T/LpZr+f3enTGHI83ZMQBHY53kk1pjxb3LIx7sJJRfIuYgTrhg0deoLAvoSE+mBgXWHHhNRjPxgusI/zuffukvCXamw7QxWWsi01HddfafBRYSHYt/EZCZNjMkY4x1FPcpFItRiSGaHjnjCVn4Qp
+ MtXQDq8K
+ g9+j4VI9wcB/8BdPt6AuqityFfjuVCpB1vSYDYHYwA5uLeJucHIUgedNZ4omNJKC9m8FRB7dod8y1gcbnDTNceo6PWb16k5hY0Zv10ZaQWioSccDeQx7mY6BdIP8kUmQMBZwtaK+6eG/P2owROp5cj7AbG9YiHdJl9sGnGYPagQ46aXh1unW298ZWlzsiiSUtq1HER3KLeBGD9KVbiHQD9YwiC1i4U0lpGAhVRRlU73Bce4757qljb7IZrm9yCMnJeABFEYoOSlLoerke8dAkL+2f1XQhStV2WTlfFDfHE4VVEwwZNCiTkf+11M6SmDyMhIWDLUlUxG+eWlU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,113 +97,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Report the data capacity of all ftrace ring buffers through a new Ftrace
-field in /proc/meminfo. Include the main and snapshot buffers of the
-global trace array and all tracing instances, while leaving ring-buffer
-metadata accounted for by Slab.
+On Mon, Aug 10, 2026 at 09:52:11AM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Sat, Aug 08, 2026 at 02:12:50AM +0100, Matthew Wilcox wrote:
+> > On Thu, Aug 06, 2026 at 01:05:44PM -0700, Suren Baghdasaryan wrote:
+> > > +++ b/kernel/bpf/stackmap.c
+> > > @@ -272,13 +272,8 @@ struct stack_map_vma_lock {
+> > >  /*
+> > >   * Acquire a stable read-side reference on the VMA covering @ip.
+> > >   *
+> > > - * With CONFIG_PER_VMA_LOCK=y this returns a VMA with its per-VMA read
+> > > - * lock held and mmap_lock dropped, so the caller may sleep.
+> > > - *
+> > > - * With CONFIG_PER_VMA_LOCK=n it returns a VMA with mmap_lock still
+> > > - * held; the caller must snapshot any fields it needs and pin vm_file
+> > > - * with get_file() before stack_map_unlock_vma() drops mmap_lock, as
+> > > - * the VMA may be split, merged, or freed after that.
+> > > + * This returns a VMA with its per-VMA read lock held and mmap_lock
+> > > + * dropped, so the caller may sleep.
+> >
+> > I don't know if BPF is compatible with !MMU or not, but the comment
+> > is inconsistent with the code.  How about:
+>
+> <requisite nommu rant>
+>
+> I do think there are components that simply don't think to depend on CONFIG_MMU
+> even though they do.
+>
+> In fact more than think - have run into exactly that before.
+>
+> It's another thing that speaks to nommu being a legacy barnacle that bashes us
+> on the head fairly regularly for little to no gain (and nobody is testing it for
+> tip kernel AFAICT).
+>
+> </requisite nommu rant>
+>
+> >
+> >  * On NOMMU configurations, returns with the mmap_lock held.  If the MMU
+> >  * is enabled, the per-VMA lock will be held instead.  The lock
+> >  * should be released with stack_map_unlock_vma() which will release the
+> >  * appropriate lock.  Once the lock is released, the VMA may be freed.
+>
+> I mean I suppose it's accurate but I don't love the idea of essentially implying
+> nommu+bpf is a thing and also treating it as so important that it must be called
+> out here.
+>
+> I'd rather it be inaccurate for nommu as are most comments in mm and mm-adjacent
+> components, it's kinda implied in general. Those who care can look at the code.
 
-Keep the interface as a no-op when tracing is disabled so /proc/meminfo
-does not gain a configuration dependency on tracing.
+Actually scratch that I'm wrong, firstly Suren's series explicitly does some
+nommu-specific logic in the bpf code and secondly BPF already has nommu-specific
+stuff in it.
 
-Tested on arm64 QEMU:
+It seems nommu bpf is (kinda) a supported path.
 
-  CONFIG_TRACING=n:                   0 kB
-  Global resize/restore:          7 -> 4099 -> 7 kB
-  Instance and snapshot lifecycle: 15 -> 1434 -> 2836 -> 1434 -> 15 kB
+>
+> >
+> > >   * Returns NULL on failure, in which case no lock is held.
+> > >   */
 
-Signed-off-by: Xiang Gao <gaoxiang17@xiaomi.com>
----
- fs/proc/meminfo.c     |  3 +++
- include/linux/trace.h |  5 +++++
- kernel/trace/trace.c  | 30 ++++++++++++++++++++++++++++++
- 3 files changed, 38 insertions(+)
-
-diff --git a/fs/proc/meminfo.c b/fs/proc/meminfo.c
-index b2813ff13cb2..96a38ffc4e35 100644
---- a/fs/proc/meminfo.c
-+++ b/fs/proc/meminfo.c
-@@ -18,6 +18,7 @@
- #include <linux/cma.h>
- #endif
- #include <linux/zswap.h>
-+#include <linux/trace.h>
- #include <asm/page.h>
- #include "internal.h"
- 
-@@ -108,6 +109,8 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
- 	show_val_kb(m, "Slab:           ", sreclaimable + sunreclaim);
- 	show_val_kb(m, "SReclaimable:   ", sreclaimable);
- 	show_val_kb(m, "SUnreclaim:     ", sunreclaim);
-+	seq_printf(m, "Ftrace:         %8lu kB\n",
-+		   ftrace_buffer_total_size() >> 10);
- 	seq_printf(m, "KernelStack:    %8lu kB\n",
- 		   global_node_page_state(NR_KERNEL_STACK_KB));
- #ifdef CONFIG_SHADOW_CALL_STACK
-diff --git a/include/linux/trace.h b/include/linux/trace.h
-index 7eaad857dee0..f9935231560c 100644
---- a/include/linux/trace.h
-+++ b/include/linux/trace.h
-@@ -53,6 +53,7 @@ int trace_array_init_printk(struct trace_array *tr);
- void trace_array_put(struct trace_array *tr);
- struct trace_array *trace_array_get_by_name(const char *name, const char *systems);
- int trace_array_destroy(struct trace_array *tr);
-+unsigned long ftrace_buffer_total_size(void);
- 
- /* For osnoise tracer */
- int osnoise_arch_register(void);
-@@ -92,6 +93,10 @@ static inline int trace_array_destroy(struct trace_array *tr)
- {
- 	return 0;
- }
-+static inline unsigned long ftrace_buffer_total_size(void)
-+{
-+	return 0;
-+}
- #endif	/* CONFIG_TRACING */
- 
- #endif	/* _LINUX_TRACE_H */
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 01a5e87af299..f0bb553e3688 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -5769,6 +5769,36 @@ tracing_total_entries_read(struct file *filp, char __user *ubuf,
- 	return simple_read_from_buffer(ubuf, cnt, ppos, buf, r);
- }
- 
-+static unsigned long trace_array_buffer_size(struct array_buffer *buf)
-+{
-+	unsigned long size = 0;
-+	int cpu;
-+
-+	if (!buf->buffer)
-+		return 0;
-+
-+	for_each_tracing_cpu(cpu)
-+		size += ring_buffer_size(buf->buffer, cpu);
-+
-+	return size;
-+}
-+
-+unsigned long ftrace_buffer_total_size(void)
-+{
-+	struct trace_array *tr;
-+	unsigned long size = 0;
-+
-+	guard(mutex)(&trace_types_lock);
-+	list_for_each_entry(tr, &ftrace_trace_arrays, list) {
-+		size += trace_array_buffer_size(&tr->array_buffer);
-+#ifdef CONFIG_TRACER_SNAPSHOT
-+		size += trace_array_buffer_size(&tr->snapshot_buffer);
-+#endif
-+	}
-+
-+	return size;
-+}
-+
- #define LAST_BOOT_HEADER ((void *)1)
- 
- static void *l_next(struct seq_file *m, void *v, loff_t *pos)
--- 
-2.34.1
-
+--
+Cheers, Lorenzo
 
