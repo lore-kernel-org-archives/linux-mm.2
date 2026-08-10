@@ -4,93 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12C4FC5AC82
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 03:39:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 934DFC5AC82
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 04:05:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0346F6B008A; Sun,  9 Aug 2026 23:38:59 -0400 (EDT)
+	id 211AB6B007B; Mon, 10 Aug 2026 00:05:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F000A6B008C; Sun,  9 Aug 2026 23:38:58 -0400 (EDT)
+	id 1C2BF6B008A; Mon, 10 Aug 2026 00:05:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEF026B0092; Sun,  9 Aug 2026 23:38:58 -0400 (EDT)
+	id 0D8736B008C; Mon, 10 Aug 2026 00:05:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B2A686B008A
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 23:38:58 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 45C5B16065E
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 03:38:58 +0000 (UTC)
-X-FDA: 85083953556.26.A54B9B9
-Received: from va-2-115.ptr.blmpb.com (va-2-115.ptr.blmpb.com [209.127.231.115])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 101181A0002
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 03:38:55 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=f+qCUT7F;
-	spf=pass (imf19.hostedemail.com: domain of linyongting@bytedance.com designates 209.127.231.115 as permitted sender) smtp.mailfrom=linyongting@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D743F6B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 00:05:51 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 56CCA120674
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 04:05:51 +0000 (UTC)
+X-FDA: 85084021302.24.596F4C0
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 219F3140006
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 04:05:47 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FaAWcN9M;
+	spf=pass (imf26.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786333136;
+	s=arc-20220608; t=1786334749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=korNoNZfAXzZjyOdMvauYaWtvPC4odCOcA6M74LpPBw=;
-	b=Fu1oTUkqUEQhP7Zw4InkHsV9FGuA8sEoqksp1AMafgqMMFquBMfTgWRnJ8UlEVZUVesZkT
-	7Yfp2VEyZElFGmhDMkVmi0u8zqKAFQ1GnTip4d73RzmuJ5rQWA4pdAkcabeYLIt03iFknU
-	o3UhtYb4M0Mc3bi0273QwLPxWTk7qjA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=f+qCUT7F;
-	spf=pass (imf19.hostedemail.com: domain of linyongting@bytedance.com designates 209.127.231.115 as permitted sender) smtp.mailfrom=linyongting@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	bh=w3mkdXzNugogzg/Uybf5Bwmxm4mLQcy7cnOBTawf1SE=;
+	b=yO08nGdp1icvlTN2wAbECXIp6GU/LNPQyu+//WNpXtiaAqv0X3huK644/p2Jw9LoW0Up+6
+	9qpOo5rbXkgL9zc1fWKMuDbAoPKCLP5uvEJ+pP2xI18wmnL38CovmUpMufnDLhBVQD8ODS
+	E67FCClNs9gVsjvk6Lw/ZwPzAb5WeOM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786333136;
-	b=WK6/utnOEPwSgvjB/F5aWjy/Cp1VPknNebsj+iYJ03VWePlNsHqeq84m0lxw9aXCbK1GAH
-	UhEpy4otnXJkVnRGUZf4XQtkVkY7DHXATTvpRG91gSsRBq52GBacAlZIcyz9++Lr2JOyAn
-	auRPv05gXQCIPZ8kFY1Q5yAv1+o2LMs=
+	t=1786334749;
+	b=1ph2WywLvs25mBXxSB4ShjHfkwukI9qSvIEtIUbSFRHzVflePIAtJLB181OgM0y017nAkO
+	4Y2R1voEPErDyDQjX37ewep1UjdjanM3ZQk+xww56klkKuguT822qk45rsCTa4CK6Ox2EK
+	mJX6s6q60x8opDU808FOTM95NedcAjI=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FaAWcN9M;
+	spf=pass (imf26.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1786333130; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=korNoNZfAXzZjyOdMvauYaWtvPC4odCOcA6M74LpPBw=;
- b=f+qCUT7FHFxHtG8joA+8HtCL3q+o2LmvekGvQd6dtZTHm9XV5UMSCLjQDnRQ00FiedN8dw
- g2l3dxgudkZFwfqVMH8Z70eLd4GK/BTA3zYnWT8z0LhdZdaCx+PTxIb0ha52r5+mlIEZbN
- oiokQNv88Lla2jc+f6Tu9GVEj4ihKefJkoB7NRtPf/ot8Dmi4jetKVpZI/rCFOno4KTk7d
- 01FfhSfyFN6pO5w2/56c1Ge0945XlXUOERtje0YgLb+4wTEA2Qeb/gKzQgA0vVZgE/hhtq
- n1d38a7Q9CT8wukSz0uN5FgH0MYoBWocb/sW+3fTLgeBGx9UUMP5YvXmG81BBg==
-Cc: <Jonathan.Cameron@huawei.com>, <akpm@linux-foundation.org>, 
-	<alok.rathore@samsung.com>, <balbirs@nvidia.com>, <bharata@amd.com>, 
-	<byungchul@sk.com>, <dave.hansen@intel.com>, <dave@stgolabs.net>, 
-	<david@kernel.org>, <donettom@linux.ibm.com>, <gourry@gourry.net>, 
-	<joshua.hahnjy@gmail.com>, <kinseyho@google.com>, 
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
-	<mgorman@techsingularity.net>, <mingo@redhat.com>, <nifan.cxl@gmail.com>, 
-	<peterz@infradead.org>, <raghavendra.kt@amd.com>, <riel@surriel.com>, 
-	<rientjes@google.com>, <shivankg@amd.com>, <sj@kernel.org>, 
-	<weixugc@google.com>, <xuezhengchu@huawei.com>, <yiannis@zptcorp.com>, 
-	<ying.huang@linux.alibaba.com>, <yuanchu@google.com>, <ziy@nvidia.com>
-From: "Yongting Lin" <linyongting@bytedance.com>
-Date: Mon, 10 Aug 2026 11:38:14 +0800
-X-Lms-Return-Path: <lba+26a7947c8+8188ca+kvack.org+linyongting@bytedance.com>
-In-Reply-To: <amjz7kIDuZH6gBx9@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Subject: Re: [PATCH v8 0/8] mm: Hot page tracking and promotion infrastructure
-Message-Id: <20260810033814.83951-1-linyongting@bytedance.com>
-Mime-Version: 1.0
-X-Original-From: Yongting Lin <linyongting@bytedance.com>
-X-Mailer: git-send-email 2.50.1
-References: <amjz7kIDuZH6gBx9@casper.infradead.org>
-To: <willy@infradead.org>
-Content-Transfer-Encoding: 7bit
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=w3mkdXzNugogzg/Uybf5Bwmxm4mLQcy7cnOBTawf1SE=; b=FaAWcN9Mdmiwj1QIxlrzffFtQb
+	dxdYnXJR468/2SRKtk66MkzRgIuZiN8DlX0d7MF5X9XQ9W1RFTLfM9CDmmZZ2v5Xbi3fRVcdzqQvY
+	yqWlkfDvlpi6KAIFJleElHHAZeucAqerL1cWx+5zDn6NbBx8PynqZm5raW7++SP0b8iax8M92eEqq
+	Afom2j4BBpsEGs2ORReT3iVHh3w9HujLDz0zjlba4HjJKDKdkUv1xo33AVkEN+ZQ66UJMwL0v4N2O
+	oIhrfJ+QzuvBdE0r4ugnmcxAGuECJ29KJIdp/y7yoD2JAAvtXvCaMgygnsKUUtp/lIQUIDbhm3IuC
+	sO+0NKzA==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wtHGi-0000000AFF1-3vil;
+	Mon, 10 Aug 2026 04:05:44 +0000
+Date: Mon, 10 Aug 2026 05:05:44 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: vova tokarev <vladimirelitokarev@gmail.com>, akpm@linux-foundation.org,
+	security@kernel.org, linux-mm@kvack.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Kees Cook <kees@kernel.org>, linux-fsdevel@vger.kernel.org
+Subject: Re: Fwd: BadBunny: UFFDIO_COPY shmem killpriv bypass leading to
+ local privilege escalation
+Message-ID: <anlOGOmO1HWVCMdF@casper.infradead.org>
+References: <CAGBKPgOm8q-8_rwyRPEmSj8JXdh_GaK1Q8vpJ=j-+yA0SgcNQw@mail.gmail.com>
+ <CAGBKPgPPALX_5CQJAKUNjwi2fD28pBeS5pRuwQgePU93pOy8EA@mail.gmail.com>
+ <anXnHMInq_JLYbWc@pedro-suse.lan>
+ <CAGBKPgOfbMJruqcegJca6BBpEtpd91s5ASF_VU+gucWsjwp8WA@mail.gmail.com>
+ <ancYCBUT8aB0qHwz@pedro-suse.lan>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ancYCBUT8aB0qHwz@pedro-suse.lan>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 219F3140006
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 101181A0002
-X-Stat-Signature: ienn5et58qdjxauakimksiw94qzi9kkf
-X-HE-Tag: 1786333135-337443
-X-HE-Meta: U2FsdGVkX1/TDLlME5Sax2sTz6AdZF5kmlW8EiPlbUONF0dTGdAvQ7QRo3UIhPewFMs6xEpKCegqkq0hc2olR6TXDbiInMq00u2c+HVW5uuP9ShROw7qJJzGADuvaNGXXTaaXNIYHIIYb7L68B2NxTXjoTND1dkHO+5eeVyBvkngpqR/oW67kMN+Jwv4h6myzxAtCnlBVG85gu7PpzflzZkGZvR2rehfwq/oN4NjVugoOxsZHvxqhuH1bKLA7/3w38SPF7RULSZU+d1aD8VyVQ8C9ZGRm5PRcwppyDBwQbsWrS81bQB98ZNy2qmWS941xxrr5EKYdeGyOj8fPTteq/ZxWZZ3eGLYHuDVGrqOMiABiJ5OYTxaQEPxUMVVoWB/aXmS+1fiU0NGylHvsijlaSInNsHv4toGge+u7QNI0g8X6e8x/hMJCGzZkhgL4hLYk/jDFLReIwI58MGB84GaMs7/3aPYB+cn/8bxq5KZAs9hxMY06xoxKzb1KpYUcbuXCI/z/PV8pvwBXEykPNdlxWPtixwzOj6BUs0QfxDv2yIK50wRzG1wffyx6Xyi9yzJXer/dG0MkD83JG5X0/JaAnbydgr4FAlnCu2W91DRJG1v6dTwVGBn7zVy6LOXHsP9MNou6AcUFQYeJZgjZlXj/R3RLzsoVSnzN9yabwGHGKxVXD+wdKvhHGODF8VWwxw7usjLx/M+PwaLLJfg1FopwuTX5lQK/zLoftJVzFMm81md7Gsw4tHrfQoCeoQBpX5s//ulgyFH5rMnDmvbtb55qQtadNFbKxZ9KLx2m5mQZ5DslOmSliMMkNAkeQyW5iY52z2uZ3DXjyPEva7eEXnMVvcKs6DHVJnb9xqvv12+9UF397mUIXJ5I6w/QtsgMdrSHwgSaiTyQQqCwvAQQGMvhEJKARw6mTpzKRpgZ06Q0YgWsOXThdBhQlmnt6QPLIrmlpCC++1h+YCnh+3nww7
- /1HdhHjQ
- dEdx5Ab28rXQUFiYDXFJlB+gBhRD0M6oYdxdXTSeDYEalkQYGLAihnV20C2a5mJV+uibkG/GXU2VbSLK9yPCtbNQ+Ne0+SHGy1t35b9YsXysauN8wO2DeN9tF20f9MLMjtGVybJJowm8+fDOwB6PUhBv5m65fTScDnK35NppBK1Nl4ZxRl46wgn93kK+y+YbpDJWjX+TpwnYByRiBBCLr8LVlO2N77OtIjbIXBAZ1TARRKNGk5CeyF0ceLo/kWLAfyCPD1zpwyAVwL4wtiyrKbosFXbLUP+7nSvwgathMOAJjdKMN8HjqTBr3/Pv8QQCJLoC/5m0iobRzooTPVUfpBxxQ6yozn7MQBs1sO3RqzGsdh5hlUUeXUBG3hw==
+X-Stat-Signature: tz67bhn83fpawtk9scfm4g55me77k87q
+X-HE-Tag: 1786334747-963530
+X-HE-Meta: U2FsdGVkX1+dMhuJgG31g4A2XfWlNPKJbreciV1lGrpnYw0sUiSOooWayl7waZzQw0GeBg8vBtikEWjhJzNdLV/UB1OLzFFB/O+WDc2BwnRHoRFfNl4JIoP5hPwYi35l/wiq/P+UDkVGQeD+rC17o++pBQNWKwKO8D27IkAT55Y1CsdnpBJjyH7M7wmXmAt62oHw1haEwZ5PXdoY8inYYJv/n1EBnUwdIE8w9AfCN8sjkFmE8XtFWMN6GMhYzxBEMEf5F0j30Aw5Y19tQqIymRYd25u7omZ5LoJBOIwe5EFbT7wBxyGfKwwxbC0u7JIYdIGuCYMtMDYBgJ8h/fcfbD50riTnrTvNw8V8niZMeuoXdkh3Zj4S02na0uo5rMdXustrW3wCv1WmrK04hbK9aJAY75Kg0xy/eFBO01ooxJy/P5fQlPwAYPZJ/gH2SXQeI54q9EQv5YQBJYu2UWPdRWtP/W/OwMl4ptGpyvl7e9mwFpgGojWrlsQNkIsrXTkSP/0AnUXPi4/izXmzNyVh1pYi1HtDPzAaJhOhrbyzk42UG32nlzWj5X9AMp7cNsr+1tEKwbrdLD4s9yO4ifKZ8kP/XbGjyquUVd391LEXNZS0lvfdgYlOd/GGHveOFJvN4ivCwPCGLXSTdV4WsSAV+SyMnvHgN0Up/uwEI0uEOOBp6I/DQsrVnevOPFl7P9GFPH8EYbMdPwYCKQcoo+cPf/pbppDEyGzW4mYwlJ64ub1hXZ4WrBejXXqLX/YlZ/8EcugmmvgK5aoixWk5klUtxO5cpGPBZ5ylvLifpsa5/0uZIA8E4CBhj0zA3D0RfaRXLavdpDDPI7eivr2IcpsnWQ2gd5kjfctKaXJTdAmzs75OS3VIQ4eg54/MFV+9utX+x/3QNhCHvOHDi1iI0kI6m/RGbX7W0PuVD8yMfLqO+1K+nvfxo5CdhfC1PJ/eJYFu8CiNCzSec5U7v0K0iH4
+ OlMf0NFl
+ iA8FpPrH3aUQcXTIG+o0Iti/Wu+i0N3Z1t/NxJYLXgel/9yvfUXJCBxAN79/XRByn+IpPom7eLDx3InrYuo9Hgppahf4F+BodCgp0c8PwXmFQqsw8tIREWbN6bgoK3acznHgZwOxTjjJus7ookRSEO26AWRl/ogiOAMpYOKnssNKONPqOQke3H43nOqoDLG3f+Qap3o7ea4e49FPsND7huEBsQheWVVVixxLP2TpMfpgs0SoouezBlMPU1htM5DnnZm+wuaoAu5OsH1VEin1kTG+gOjW+kj1bVeAM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,50 +96,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 07:24:46PM +0100, Matthew Wilcox wrote:
-> On Tue, Jul 28, 2026 at 11:14:01AM -0700, Andrew Morton wrote:
-> > On Tue, 28 Jul 2026 11:13:48 +0530 Bharata B Rao <bharata@amd.com> wrote:
-> > 
-> > > This patchset introduces pghot, a subsystem for hot page tracking and
-> > > promotion.
-> > 
-> > Can DAMON be used to do this sort of thing adequately?
-> > 
-> > Thanks, I'll await review input on this.
+On Sat, Aug 08, 2026 at 01:17:09PM +0100, Pedro Falcato wrote:
+> I'm adding a bunch of fs people that might have opinions about this. Please
+> see the rest of the thread below.
 > 
-> I don't think we should do this.  I don't think it's a use-case that
-> customers actually want; I think it's something CPU vendors think their
-> customers want.  I've said this repeatedly over the months this patchset
-> has been in development.  I say no.
->
+> On Sat, Aug 08, 2026 at 12:13:06PM +0300, vova tokarev wrote:
+> > Pedro,
+> > 
+> > Thanks for the review. Let me address both points.
+> > 
+> > On the page fault comparison:
+> > 
+> > UFFDIO_COPY is not comparable to a page fault. Page faults serve
+> > existing page cache content (read-like). UFFDIO_COPY adds new,
+> 
+> A page fault can also write to the page cache. On MAP_SHARED mappings.
+> 
+> > 
+> > user-controlled content to the shmem page cache (write-like).
+> > 
+> > The correct comparison is to write(), which calls file_modified()
+> > 
+> > -> __remove_privs() to strip SUID/SGID.
+> > 
+> > 
+> > This is exactly the reasoning used when fallocate() was fixed
+> > 
+> > across XFS (commit fbe7e5200365), ext4, and f2fs to call
+> > 
+> > file_modified(). The XFS commit message says:
+> > 
+> > "as various fallocate modes can change the file contents [...]
+> > 
+> > we should drop file privileges like suid just like we do for a
+> > 
+> > regular write()"
+> 
+> I can't speak for fallocate, or other system calls. As far as I'm aware,
+> this is a best-effort kind of thing. As I said, writing to a MAP_SHARED
+> mapping does not clear the setuid bit. It's a super trivial thing to do,
+> too. But it's not a problem because setuid executables are not world-writable.
 
-From our perspective, this is not merely a hypothetical use case. We
-are actively developing and evaluating CXL tiered-memory systems, and
-expect promoting CXL-resident pages that become hot back to DRAM to be
-a practical requirement.
+I mean, you're right.  But maybe we should make a bit more of an effort?
+I wouldn't like to see this used as part of a chain of exploits, and I
+can just about see a path where a confused actor manages to create an
+04777 executable.
 
-NUMA balancing mode 2 already provides such a promotion path. What we
-are looking for is a better hot-page detection mechanism than NUMA hint
-faults. AMD IBS is an interesting option, but the v8 results do not yet
-show a clear performance advantage over hint faults.
+All the tmpfs on my system are mounted nosuid, and many of them noexec too:
 
-IBS is not the only possible hardware source. CXL 3.2 defines CHMU for
-device-side hotness monitoring, and CHMU has also been discussed in the
-DAMON and CXL hotness-monitoring discussions.
+willy@deadly:~$ mount |grep tmp |wc -l
+8
+willy@deadly:~$ mount |grep tmp |grep nosuid |wc -l
+8
+willy@deadly:~$ mount |grep tmp |grep noexec |wc -l
+4
 
-CHMU does not normally provide the CPU NUMA node that generated an
-access, which complicates target-node selection on multi-socket systems.
-However, single-socket systems are also common across data-center CPU
-generations. On such systems, the missing requester NUMA node is much
-less of a limitation.
+This certainly isn't a hair-on-fire situation, it's just a place we
+could do slightly better.  Not so much BadBunny as MildlyMisbehavingMicrobe
 
-This suggests that a configurable framework capable of consuming
-different hotness sources, depending on the platform topology and
-available hardware, would be useful.
-
-We would also be interested in helping test and compare the different
-approaches as implementations become available.
-
-Thanks,
-Yongting Lin
 
