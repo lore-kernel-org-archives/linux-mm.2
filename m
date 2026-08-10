@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CAD9C5AD4E
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 09:33:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0168C5AC82
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 09:36:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0D686B0096; Mon, 10 Aug 2026 05:33:28 -0400 (EDT)
+	id A31446B0098; Mon, 10 Aug 2026 05:36:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE4AB6B0098; Mon, 10 Aug 2026 05:33:28 -0400 (EDT)
+	id A08EB6B0099; Mon, 10 Aug 2026 05:36:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DACA46B0099; Mon, 10 Aug 2026 05:33:28 -0400 (EDT)
+	id 8F8506B009B; Mon, 10 Aug 2026 05:36:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ABD756B0096
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 05:33:28 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D9014A0410
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:33:08 +0000 (UTC)
-X-FDA: 85084846056.08.8DFF7A8
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 600E96B0098
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 05:36:48 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DC564406DC
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:36:47 +0000 (UTC)
+X-FDA: 85084855254.02.86BCC55
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0B5691C000C
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:33:06 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CFiZ73qw;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786354387;
-	b=oVa0apAL99WeT13kXpAcbqCASCzeJhIt8IfprJukzx1MGfF9jpLhQYHW843AWmeo5FA8F7
-	YEf9GX3+qu4ontH6egX3EjlybEmUF7SGgb3Zg9KxFcbwIPr0wp/A4lJ93uGfCa64vCZfQF
-	Ksj6yCSj6hBHWC6WdVFilFkjON8fgwc=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CFiZ73qw;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0AB4140009
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:36:45 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=naiOe+eg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786354387;
+	s=arc-20220608; t=1786354606;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=puBatuzKpdITG9/LirLMSAY4o6mBGHBdHb4a5q1RtgY=;
-	b=1Z0JAB9EX8k7uYwDBUs+jrRPNReZlDqW1ZfW2QzOSHJs87hk97VxG7B7L0vE/uWKVt9/jb
-	C4VR0WRKVWFAx73uCPm7SqUGDiua0kZgpdpB8Hq/TiozWss/7/dJo1p29HhRsYCsPa9JWx
-	VV3lvSBRk+BJV2vYaLThA1+Hoty//B8=
+	bh=+k/eeTx9qjkejJzGngTPDoZRvZJW0OrywFXyx2wWmks=;
+	b=P/q5RvxfQ5RBBnq15EbCIkHa0k7mnGuZH8dITvnA8Vm6+yUNqmdoQ6ATGPTY4lHcwMKbqy
+	mtBCtb0KFElrguViYVr8NUbA0O5OGcDMZdZxDTguIisYm6Vr3H7FuApe889lEDpBvJiiBw
+	rtNrojxnRD3fMIaoBGf+lRWTngKnTT4=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=naiOe+eg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786354606;
+	b=QtOHifT0FZcQkeeEhRfpcGKPxeTMB7WZXADIo807RJryQI3hZZhMrHzYf/j/JIXb7FiWIg
+	1/EfL1BhzphM7tkTSq+2dmyr6BkkNY1uCPUgOoS1+X5am9Olw8nAbrJskMO+oNTaxQnAXY
+	JWKTwa1/dIuu426AYKpRqM5GCwxdadA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1358C431D0;
-	Mon, 10 Aug 2026 09:33:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 237D61F000E9;
-	Mon, 10 Aug 2026 09:32:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 441804145D;
+	Mon, 10 Aug 2026 09:36:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6194F1F000E9;
+	Mon, 10 Aug 2026 09:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786354385;
-	bh=puBatuzKpdITG9/LirLMSAY4o6mBGHBdHb4a5q1RtgY=;
+	s=k20260515; t=1786354605;
+	bh=+k/eeTx9qjkejJzGngTPDoZRvZJW0OrywFXyx2wWmks=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CFiZ73qwlmdLBwOq0EF9s3+3mq69NpHgrowj1UkIuK9sjUNhZkM2D9QmAG0wujV/1
-	 k7jgB948Mw1Gd1Aty/UekqvJswDyZX4WVeT7cWQA4x83t6GWQqFuKAuJXIc3nT+bXb
-	 q9CDlfm5UXlj+3yW/ivOAKboC9UIr07TdDGVhTtfh5jGzFaLNHHpK+ee0xzyCCUyCP
-	 la6FjR1ssQobEPVnL2PoMPWL1uadslzCNU5fMFI6MY9Dp6D3dcWl5Du2vc5Vb2zgu4
-	 oHWmiK4HAQt0ZxRSfWd8DWlG8ptVNG5wMTjojS2BF4K1EU/ofhOgRKLJ+Dp8WQ+PEU
-	 4VCGIRMhkbJLQ==
-Message-ID: <ed997598-8ae8-4aec-aa85-3a9204132513@kernel.org>
-Date: Mon, 10 Aug 2026 11:32:44 +0200
+	b=naiOe+egLnCkmhBy384Tr900GjqhrGJqk1C7AcedbDBvoX9KRByDtjUx4JHpXljWs
+	 T+x+GF/wBLrmCAdWQr5DNEFy8+c3mJwhqlG+8nSbFbqfGOH8EO1jeBO7LT2O74f+s/
+	 /FWBeqhvacxTsfe83QPHQPwTK/DabFSLKr8ro7BpI9SsZWpv3iWG9OxuqF55Ew7sx0
+	 XkeYiQ7cylnP+WJsrurG/uDPOzsxQ53VD+MsluKnYFeKoZkz1OThcXBSSd4EvG2vtB
+	 EuxGhzLPq5OvqTSJ+X4toQAWbBJ9FiiZi23Sj1G+LGb5zjQpnzhLpKBKIp0GiS/M52
+	 eKdltieFInJGQ==
+Message-ID: <82ded1ea-e0f6-48d9-8bcb-38a6bc5e9176@kernel.org>
+Date: Mon, 10 Aug 2026 11:36:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 19/41] KVM: Move KVM_VM_MEMORY_ATTRIBUTES config
- definition to x86
+Subject: Re: [PATCH v10 20/41] KVM: Let userspace disable per-VM mem
+ attributes, enable per-gmem attributes
 To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
  binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
  jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
@@ -102,7 +102,7 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
  linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
 References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-19-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-20-2fc18ee6d3ba@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -149,17 +149,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-19-2fc18ee6d3ba@google.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-20-2fc18ee6d3ba@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0B5691C000C
-X-Stat-Signature: ktwudrhbh8uxj5gn3z5gc7tuegyaxatq
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1786354386-471408
-X-HE-Meta: U2FsdGVkX19osYbG50ueRhq+/XYtMjM/Vth83NsUIsZ7v69WtMD3NbPGO27qX+2kGHSAR2uzcoLi22RT0M4z3rqQugebhzxtX4sfFwbZcA2z8AXtldVrWa3Vn0f8Q9mLYEYSj3Svm/cadUPTJENj79iqM5BO9EZsGlcNnD0zzr4/9aM6xulDR66pJd/8dE1hxlHJxuCWncv5CwQ9gbi2UjyhOmhWHEgdF96+8PxtIvcXeYlYaz6iAc0K/WTuCLQkFUClB+ZG1vQfd85Jx6ka62EXCkkmbp01sXqIw/0Ko0YKkWoTgghmXR/J1l1Tqo7aJ9eITg7wWJqoUqEpH8W/YNodLbID2IumcMgexce8PLkncne0gFuKhh8nMAT0w1rBnbTDw01gR41iIWR9EVwFsBNMrXPJj85/i8fgdetSxnL+x0ksrOeVR4aMqCIUUwrzMzaJpuEWeKUH5bgiXm6iaW5JIzD/J1JkeH1NWMv0ts/KSYOjHF3D+F84gMecRRe+LKt0CZmMgHX1yCaVAilyNWMOEANRCg9yN/xj/lVPUDiCDKXbc5FBCu5oEVz5BkqDkJsn5eQFdqGWvsYD6OaNoNv3vziBxjQ0Rsh9sshXrfLblHCixFu0LkmwzyNbHF5zkbDE+hUFllLsQuC7LBrnE3vCKgIPvdUnUapI8OMqNa1Bm/fJGKg99O7jTMmfwjK5vN6WNGE2MnsBfg05rQOJHYVmDD3/e6V8qlNqBGRO7bWJGjcVk7SiWVIZEiIOuI0wY3ChO2ldUNZi8+mT8GOp6Q9QqBX8rvV3Bc2d3hs1ezEN9DmFDwoyh1mIso2sVfBDI41Z4P2EQ+eker2YHjlfrpadfyfIN22SClrAgosna9A6JPr7rLGHFhSziclihSfy7dPyGyG8DjPHcMxccEGjReEh0RfDuAyWrx02rSDUD4X7b5NR0SiOzaMDvfgMAqViSpAvetxjgIH6ye4if2N
- tYwUFSWW
- dPT3dU/mcdaS5bMahsQKExJn3RbcYcvnqWaAGYYCcQc+7H/vKJ6WsBj5guqeGzIMpktjAsxhBYZe0EyslP3eyGlDvzQRbtbbwkGwjFGvikc1SFiYeCb4UF1iV1AcJs+dnbaHUy7rbcoivV2XJftpjIjqKnA+WCl1iZ4bI2BA0DSNO9n0mF2TCVpkfYHWYavqcBwBMfsOOQJR28KUgaWXzYSt55amf2vquOUlTaIFYNcGF9GFiyc+3B7qiF6RctjRih4Aq3QWVHJqv4dKMMJZVX5tV5YcRcKr0CZIso4cgB99n8cWk9xX8rMvbPxJlBieoXNfYEM4ARIIglzhD6ngO1LjoOiiXG8ruYU42TeFfuyI3Ulthx4+N67VuewoeoXzf61G1d0CQjNw6k3iviODOYlMy7A==
+X-Rspamd-Server: rspam03
+X-Stat-Signature: xcwxs3axt1xasgtjag3nt6n6dyet3syk
+X-Rspamd-Queue-Id: 0AB4140009
+X-HE-Tag: 1786354605-475008
+X-HE-Meta: U2FsdGVkX1+/+PHPsvViTqbfG/Cginbowu702iHa9tXTw52K96dj82pDROvoFsC8gKhlDXu8YW83YHT9npZCKZpilw/Bo5Lqy9WMApkIzMNe/xOir0KQpdiT6fDkTYLgB6zWUBV7AzbYfq+I+dppISo+Sxe0HB+CcDvsKRSNGz4Wf6z+JUsml9EFjRiF4vyPu2c+iDPF3l15f8zP7mJGPZo/+X/ioc0oVtgO29NDD+encJXyDvYntRYyuSqQo+3L48HVsZfQWwlrAWFBJqKdtfO7FAPTa+OUXI7QYH60LIzLEcFQ9ym3BgT7qeI0qjgk6Af7SC592bMGvUvk9yvWK291ur2WTo+kLd2F3K7tEqhNY4xUFL8qqIejKxHg/ZoWuk7KUYcka10ITaZzotavFT4D/xSeomo1LkOt7OTxruSevXL5PbEGIqZZ0Ei+YNid9onmIGWpXeKdOMZyUv+ZczgFR+EEyh/d9usU6n3wrO/rUhzwp9pLSEIW8rJ/tvNcm5Eb+Sx+QFGx+U81eXc7BXX9N09ugrn0dINlIieLS+B9zUPbBog9i2bT3mLO2qtKcztHaW7x803N9LY1B9umADRGNdLJfXb4kQpzgoz3g/BVmpLJuM7lVaCw0pQuVGrgSb+fkpS1Gm/A3WV4nlYRAIxfwsvAAxAcwyOxxw9eOb0ACsO7WuW6eRynp1ZS1g66vxmGute4u2iEmPQ771iwoTBa/CUBF9NRNldV9Vwfr7F+PfMef2ltp7ahubAWYYqf2jAc4N7ogvGJBbicCUqR5Odrkup4OK4C+mc5P82lgyJA8jsf4amC8kKYysCZ82F4CjlWEZjtGdC9wJ1TbuchnRUU+COkKYYQCpt1Y0oqYhQe1ntDz+pGwyk3q3trN4qcc6dTvaCAUK1Xr7YCvPcdu/mkjzpM1wD45w3PmFSu6W6encUvKaEfw3Xwyjhxkc3pQHLsrGvTiWsQ697MBwj
+ phG8DwWf
+ O2NQ3GXvXuFT5m/tLqJsXtMjE9HWwaeOiCli05JjCaD4kKVfMOAakDPjXUjDSAbBx850IMTkg3ZJPMfKGq48uNRbplSg/ho+fZ2ihKmzVYksB5HtlmLpD0XAwCaelm4mlNsQnynDcF/9SaCjm83v+oTJK/LtVmXonWu+Xi+kcs5RPcPPHsgSwReyGQwR1U2XRySP9DHO+FGuhJfG8A47sEinXTidrxvtHporz5zEcoKHi6TH4j0CRvof4ED2ldyu1lvOjnvAhDgyAEXK6Z5zVudpeVzrZoJ51GcDY2bKcXG714M3DAVm4NgfN9fQou6kh5n00xTdfeYoeauQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,31 +168,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/7/26 23:52, Ackerley Tng via B4 Relay wrote:
-> From: Sean Christopherson <seanjc@google.com>
+> From: Ackerley Tng <ackerleytng@google.com>
 > 
-> Bury KVM_VM_MEMORY_ATTRIBUTES in x86 to discourage other architectures
-> from adding support for per-VM memory attributes, because tracking private
-> vs. shared memory on a per-VM basis is now deprecated in favor of tracking
-> on a per-guest_memfd basis, and while RWX memory attributes are on the
-> horizon, they too are expected to be x86-only.
+> Make gmem_in_place_conversion a module parameter so that userspace can
+> configure enable or disable the use of VM-level memory attributes. The
+> module parameter is only available if CONFIG_KVM_VM_MEMORY_ATTRIBUTES is
+> enabled.
 > 
-> This will also allow modifying KVM_VM_MEMORY_ATTRIBUTES to be
-> user-selectable (in x86) without creating weirdness in KVM's Kconfigs.
-> Now that guest_memfd supports in-place conversions, it's entirely possible
-> to run x86 CoCo VMs without support for KVM_VM_MEMORY_ATTRIBUTES.
+> To avoid inconsistencies in the way memory attributes are tracked in KVM
+> and guest_memfd, the vm_memory_attributes module_param is made
+> read-only (0444).
 > 
-> Leave the code itself in common KVM so that it's trivial to undo this
-> change if new per-VM attributes do come along.
+> Since selecting CONFIG_KVM_VM_MEMORY_ATTRIBUTES disables in-place
+> conversion, actually make CONFIG_KVM_VM_MEMORY_ATTRIBUTES selectable. Make
+> the config only selectable for (CoCo) VM types that might use
+> vm_memory_attributes.
+> 
+> Since memory attributes are trackable in guest_memfd, the concept of having
+> private memory is no longer dependent on
+> CONFIG_KVM_VM_MEMORY_ATTRIBUTES. Define kvm_arch_has_private_mem() based on
+> platform config, so that having private memory is dependent on (CoCo) VM
+> type.
 > 
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 > Reviewed-by: Fuad Tabba <tabba@google.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 > Tested-by: Shivank Garg <shivankg@amd.com>
+> [Define module_param only if CONFIG_KVM_VM_MEMORY_ATTRIBUTES is enabled]
+> Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 > ---
+>  arch/x86/include/asm/kvm_host.h |  4 +++-
+>  arch/x86/kvm/Kconfig            | 14 ++++++++++----
+>  virt/kvm/kvm_main.c             |  5 ++++-
+>  3 files changed, 17 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 497da6aaf2942..bb2c1ade62cf9 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1851,7 +1851,9 @@ enum kvm_intr_type {
+>  	((vcpu) && (vcpu)->arch.handling_intr_from_guest && \
+>  	 (!!in_nmi() == ((vcpu)->arch.handling_intr_from_guest == KVM_HANDLING_NMI)))
+>  
+> -#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> +#if defined(CONFIG_KVM_SW_PROTECTED_VM) ||	\
+> +    defined(CONFIG_KVM_INTEL_TDX) ||		\
+> +    defined(CONFIG_KVM_AMD_SEV)
+>  #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
+>  #endif
+>  
+> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+> index abb108886733a..2c3c22aeafa54 100644
+> --- a/arch/x86/kvm/Kconfig
+> +++ b/arch/x86/kvm/Kconfig
+> @@ -81,13 +81,21 @@ config KVM_WERROR
+>  	  If in doubt, say "N".
+>  
+>  config KVM_VM_MEMORY_ATTRIBUTES
+> -	bool
+> +	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
+> +	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
+> +	help
+> +	  Enable support for tracking PRIVATE vs. SHARED memory using per-VM
+> +	  memory attributes.  Using per-VM attributes is deprecated in favor of
+> +	  tracking PRIVATE state in guest_memfd.  Select this if you need to run
+> +	  CoCo VMs using a VMM that doesn't support guest_memfd memory
+> +	  attributes.
+> +
+> +	  If unsure, say N.
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Hm, does that imply that a distribution that must support both, cannot ship a
+single kernel?
 
 -- 
 Cheers,
