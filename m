@@ -4,85 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC2ECC5AC82
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 03:13:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1923BC5AC82
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 03:16:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3ADE96B007B; Sun,  9 Aug 2026 23:13:19 -0400 (EDT)
+	id DC5E86B008C; Sun,  9 Aug 2026 23:16:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35DD36B008A; Sun,  9 Aug 2026 23:13:19 -0400 (EDT)
+	id D763C6B0092; Sun,  9 Aug 2026 23:16:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2761F6B008C; Sun,  9 Aug 2026 23:13:19 -0400 (EDT)
+	id C8D896B0093; Sun,  9 Aug 2026 23:16:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F265A6B007B
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 23:13:18 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 44D8A140663
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 03:13:18 +0000 (UTC)
-X-FDA: 85083888876.25.B14C942
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BF22A40005
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 03:13:14 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=skIQAoNe;
-	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 98BDB6B008C
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 23:16:43 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 89F8B1404CD
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 03:16:41 +0000 (UTC)
+X-FDA: 85083897402.01.59D8C31
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf07.hostedemail.com (Postfix) with ESMTP id DB6DB40004
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 03:16:39 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=aoI+iny3;
+	spf=pass (imf07.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786331596;
+	s=arc-20220608; t=1786331800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2a1dvpSkcRACkkHB2Cu1hgAbZL4dDEVOnuwm526Fne0=;
-	b=PBW+ramOhTTgnPn7M7K+fdg5fYa4l+pKg3qSoRadiGaA3NiTOrKaig6rH/n5FJ6FmpEqw6
-	i0bPiOBhFZY35Ha1qikfZzOCuBBB+fs5y2uvU3HvQ4Reec54QPJ8yI1oEUkJNV19VPYBxK
-	P0taGpW24gidlZRn8z4Azv9HxjSBxcM=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=skIQAoNe;
-	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	bh=DPDbH0uDy9khnXmwsHeDwlaELQ6SwGd2GWPEwSHHQbI=;
+	b=jf1Hf9O/mH/CJIsLp/CKGflSvjTrwrDoE56azvbas9xxr/I3PivurQXfG9e8InSYvgj/fP
+	ovk56LY83XSauHUTUQPD+miMK90xvmwjR+kDT9L6OukoFiezSdRF6bj/BptVOP7IbS3sex
+	P0pQUb+WJ/bRQxUSs5jqn64SN6tJLWM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786331596;
-	b=h34e0gLrR/QAH2gaVK14HONjUrdcvFttnox8suS/Ded6QsiFoQCmt+Q2ywHpdgqss2DJH4
-	7ZNeZhxBNAf/sEXlSlcIttLZvWmkJDavQm5K6U+Hr5drjiH7sWHiWf7cvpJn0UciEjqE+r
-	3iCN8hpn7N2H9zI2XXzhirFQzpKuue8=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=2a1dvpSkcRACkkHB2Cu1hgAbZL4dDEVOnuwm526Fne0=; b=skIQAoNe8lRYuzKoEm3eay3Z5V
-	iSpC+Oa23X2H4Y8f7fhcOC61bk/biFrMd6Mn3SRkgekSN6U4puQUF8b+5HouSwG09LE+QbF/fKwAe
-	Glm+zSCGreKBsYnoKoRK0yCc7kAtcjG+xQViZCFZDjQDLBtYf39YyPPEUXiLXwrwoVsLnm1AMZwv/
-	prOHAaHMNswVsmgD7iaWZBlsHXt93DZ1Vtx6as78ol9Cblkn/P4+EclqWQrczH0H0hcRg003dmYWM
-	BlLVaaHKn/drAuWYFvdvi++jgZXLmWeeKUtBBQ0fXuykt8+je4+i6IlC4Ie7zXVcZqQmjcCkf3tUj
-	dDyznD5w==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wtGRs-0000000ABKb-1O40;
-	Mon, 10 Aug 2026 03:13:12 +0000
-Date: Mon, 10 Aug 2026 04:13:12 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Ayhan Aydin <nsd.project.dev@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/3] Neural Storage Driver - learning page cache
- prefetcher
-Message-ID: <anlByPDZmvEhWeXI@casper.infradead.org>
-References: <20260725182628.221603-1-nsd.project.dev@gmail.com>
- <CAFLp9PEQQVuDpJPwrNvLN1-u3w3TMwZPUUrf0+rOBrvDjBBf1A@mail.gmail.com>
+	t=1786331800;
+	b=oPLnsCxZ0CENhHnbjzGmwdStuqUC9i/tD1BJZPet9QmRm8OGsdhytWKS5xL6HRFTc+ugau
+	xbtuJ03ET4+Z7KhQ/UFy81VrU0t5GPJuX80EUPaQgkcyq+PqmNglLVzuULJiHhWpXVq/Q6
+	kOVifSuIx8+mZBBUptgoSCaOrMU84Tw=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=aoI+iny3;
+	spf=pass (imf07.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=DPDbH0uDy9khnXmwsHeDwlaELQ6SwGd2GWPEwSHHQbI=; b=aoI+iny3FaGb3bAaDsa0/UBRlL
+	O+VeMxmEN3Y7AStBqsGmtlZufMKqDGHw1GDrO+5YH78pdQTtig+r+YyoejMiAWy7hvOVH1GDOOHTZ
+	r8dI/ON94AHdZ4wXn8r7ThiGGajXB1aFKLG9C1kIcLQmIHW46tSx09L198TGJ4vvUfTwbOUXH5C7H
+	9DZqZTat5WE+QjFhSRd811f47Y1n8lYUtwkVQxd7qGKH5gRJ1Iobfnvty7XbjPAMKycTUikFngCTl
+	qNRfVaGaPlFjESwxpsUgqftbLTMrHYLdRTMI+WnwuHRAOiHtoMEVScLG7N4setaYuGr+Hl1n8PvSR
+	Hu46WO2g==;
+Received: from [96.67.55.146]
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1wtGUx-000000002vh-25s0;
+	Sun, 09 Aug 2026 23:16:23 -0400
+Message-ID: <705e54c4cd6f49c930208e450cdf488e8e75cc21.camel@surriel.com>
+Subject: Re: [RFC PATCH] mm/cma: don't release CMA pages still in use
+From: Rik van Riel <riel@surriel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett"
+	 <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+	 <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+	 <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com
+Date: Sun, 09 Aug 2026 23:16:23 -0400
+In-Reply-To: <20260809210608.06b5ccb9@fangorn>
+References: <20260809210608.06b5ccb9@fangorn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFLp9PEQQVuDpJPwrNvLN1-u3w3TMwZPUUrf0+rOBrvDjBBf1A@mail.gmail.com>
-X-Stat-Signature: 744k9jjddqt87dx1da6xmka1w67yby63
-X-Rspamd-Queue-Id: BF22A40005
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DB6DB40004
+X-Stat-Signature: 77s7wo5mb46cm1pnns1xfg97ztrd4yi8
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786331594-444978
-X-HE-Meta: U2FsdGVkX1/KyJnatLkVVQoFHKXYjb/vZV2s681lyv6CgXon1MXnPvSDBXzYILpXo9RgURpuZnXWzxmuZr4IyEVDGnKeZlmP4NUN8pNaGsLaaaQVr0kRbj17VSHEm8cNg8NpO7wIGgyRSlDlzSxj8q3bdO0aO73LLWHlsYw8Ha6Ea83s1m7iIttQG7yId7tAakHu2OkmSVBWH5Gi2xpKnH3wFvJPzWvVrauLl5brl6UVCTWUsP/fRLhYpS8qKWTmLlZ8EYVREGt/Mnf547CHdOvfFlYK0REJKEu+XEGuQpbVhOQYWJObSKy7N3YMt36feu028cSTaoXvzZwVvf/zTwIzyiF3vCaskgE0hYfbHONmnnzSezQyh5CXuch0xZVB3XCbFDhICISEy2VRceeRFyTEkw0C8VZyIg57kJclh9tIZMaojxc3xAt1bznxixAHh2ku1S1vpENy1pLk9IYBa+wGcOkFvjh0+0HlRx0I2IXI8/5lX5U9V7I4lYasr2+mhR6FntaMfyeT3X0WXgN/RYM6TzGHp1auK5uEJAn7UCvxTg5EavRvNf8KVtACNq04tWvdG8NRZa++5XkxaJPKSlwV4sLvefBOqQqd4KzaLmzbU5JeLgpBdU+VCW9/ls2wT5pOmcfZhPzjlgxjsxvPKEYY4JD0a0zv43o4U+6GlLH+nPOY1jo7rqx1jLQbjmmqhmFDeAMRKblcAteDKTfcG4BCNl38LzPK8XI6ujP4LMet2WcZvwJyv59ae8cbuU/EJDzk264gJdD3FiPHqw5n0LAonOBcwPx0qpSBEXDP337wbs8SFzXeh+0RbrIc8XyQe4mLDZMD1sOvRKdvu1fknYieUU9J7HGiSugMRaT7F2SygfmNdoEm/Y9dbDqR2Qfi78YlD9rjONKS4hIA56IgDpfV/XQlh65t6qYSxm6jrSRyvFu6/f7r1zR64YuZP9JMfciqJ01eqmbZogTw2px
- 2dSZiCcM
- y1udx3LL0EVCDbz/pIj90p9mC+QgyokaKi1w/8yyTddsFV+/JdQUka74AjXIkQ/VdeqwksPm1Vn5cEsYNqzsLrvhBnkJz6d0g84f1ERB2Unrb42hADiU0Q9gTGLAXrDyvAJwmH4hG+Ts22aOXXEbMJBsNa35vk3sLpebvbf2AHnQTbsMQcHdgxh1v93eleT4K+1uS+C6Glps1+viqJ+AyLNiYryg+qYzbSC78MwIh507kSZSkXAuajin0+3Rt0zVRhimO9s5ylqGbSKWapfGNeSm8o4aAMOJ2eeJrezOxJ8yOKTQnLVQLDDXiPoEsJHEMq6uw848i26zDG5MfkotDcI3kxotJrsBAAjo4IpzYJRllOBPK3PH+Vy4iWg==
+X-HE-Tag: 1786331799-940278
+X-HE-Meta: U2FsdGVkX19xuMCCo5M9horBjRfeqks5M7oceJZIzCczZ5lgy1vaiGHwaDqB3PoPif1iypldI1o49qHP4vg//gJyVOpLgEljhvL4R24TU0N7PL0AWm/fbA7wDuAThS2ZRFOtDR3utJ22KNXxjBBjBMXJPAl4/hzsLu2JGi72QvGrPWT5bpMoah4Q5mNEstJwqWPygx0j1ePZve3cLonRBDeHjP0a2QPnfVC0tPzUrVAN8st3rQH0fKLkaj5tt6i/KBEMMCgsyiPBHPG7kRrF4p4+kyU+R7vxz3nhlZQbUjdfaEYF/S4UTgwAQz/jfuYai1Nm8bej9MUDgyNcN/su5PDlfm65wprIjqbeiGa2iiD+bAEq/SOjTQOL0A+U1cxUeBBwdbPFqV7AmfbugUpHo3xc5FiI+YOq+WEoS08E77jVv1HWYbjmmFImrFjeIk6DMtBIkIfZBqjfL//r4OSJ7SMRbbviYaAiJfKVYtDwAOcjGKqEqb/hguFqck+tVjtzZXfTSHvKpNKx4dZD5dCU5KRUEb+PtJ4EO/+J1JdUUJeIZrAGrqvwQK3PAlcL+m7e+qafMbYZEPqXoSqSQqubyluuAPOs/OuB6nkYKRyEoRdlY1y93iUnbiSTwcPk20lIgSJVoLZFrhd4qmrUIHqY8Xuq0W7wTiEKrlh/D+c4lP/U4/GdAgMfnQZoa1N7kWF+rRtG10+v9r9/KF8AgHXlbuOf0rb9QAkqiuuFDhmaqEsui84+tIjta/hqPHgu0AU4ixXylRItXoVwgV/C8IvDTbDel5G7o8Yc9TPxelXwoMacGXwr/xfS1AAk+YBiPGFXGxdZ0exY0Upemq6mzZQhrJ9Nb2cticSNq1A5VkApJckIVXIW67UTdXjyoigeUUZsSAeNoHkL4Bjh1zDaB8Q2XWNKuD5jG/AafiYs776hHpYLK6UAsTezKTIOJ3EB4eApsxV677XW525dptJTdle
+ h11RkZln
+ tOPLjkOj2tOJ8LarsHi133MSK5AGrHxHHgTswtNBLf65Qk2EEISlNFS1+IrfcezYPEwD+OUX3qNwv6hFBujpsR7TNCf+2tBDaB6cXEuEHGdA/0dG7aLlW+5JfAUpxixi2KT9WfcnR/8D+OzoHqwAPAOpXsU/q/U+S6XobQYH0wIWu5j7+B6hw/7Z/+NJvF6pq8PBkH4fsuIvB3hC/gj6/d7nr/zLVK1c2iE8e1MiyAb/HeoucDI6GAVLJjp1IXn/gRzoJjZxmkGkAss8L/eE/Y/zu6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,42 +99,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 08, 2026 at 05:10:42PM -0400, Ayhan Aydin wrote:
-> Following up on this RFC submitted on 20260725. I understand
-> maintainer bandwidth is limited, so no urgency implied - just
-> making sure this didn't fall through the cracks.
+On Sun, 2026-08-09 at 21:06 -0400, Rik van Riel wrote:
+>=20
+> This change should be safe because nothing can get reallocated while
+> it
+> is still in use.
 
-It absolutely did.  It would probably help to cc the page cache
-maintainers (Jan added) and the fsdevel people.  You can find
-this information in the MAINTAINERS file.
+And of course Sashiko found something I overlooked.
 
-> For reference, the series adds an optional observation hook
-> (CONFIG_NSD, default off, see PATCH 1/3) that does not bypass
-> the existing ra_state / file_ra_struct machinery. All actual
-> page insertion is still delegated to page_cache_sync_readahead().
-> Benchmarks (interleaved ON/OFF methodology, i.e. same-machine A/B
-> with repeated runs, SQLite full-table scans and buffered
-> sequential I/O) showed an 18-19% wall-time reduction and
-> +22.6% throughput improvement respectively.
-> 
-> Happy to rework the approach, shrink the footprint, or
-> re-parameterize the predictor if that would make review easier -
-> just let me know what would help.
-> 
-> Full series and docs:
-> https://github.com/nsdprojectdev/NSD/tree/upstream-prep-v1
+I'll spin a v2 tomorrow.
 
-Let's call this a good proof of concept rather than a merge request ;-)
+https://sashiko.dev/#/patchset/20260809210608.06b5ccb9@fangorn
 
-Architecturally, we're only hooking into the read path and ignoring the
-page fault path.  Was that a deliberate choice?
+The hugetlb CMA code uses order 9 as the smallest
+size that may be returned to the CMA allocator,
+which I suppose works because when mTHPs, THPs,
+and other movable large folios end up in the hugetlb
+CMA area, those do not go through the CMA allocator,
+and never touch the bitmap?
 
-I haven't spent the time to do any detailed analysis of your code,
-but it feels to me like we should be doing something more invasive
-and integrated.  It would be nice to replace the existing mechanism of
-marking folios with PG_readahead, if that's possible.  It'd be nice to be
-able to detect backward access patterns as well as forward access patterns.
-
-Let's have a conversation about what you're trying to do, and see where
-we go next.
+That additional bitmap alongside of the pages and
+page blocks looks like trouble.
 
