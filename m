@@ -4,114 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A734C5AE49
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 14:37:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05679C5AD55
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 14:37:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A8066B00A5; Mon, 10 Aug 2026 10:37:20 -0400 (EDT)
+	id 15E096B00A6; Mon, 10 Aug 2026 10:37:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37F036B00A6; Mon, 10 Aug 2026 10:37:20 -0400 (EDT)
+	id 10F306B00AA; Mon, 10 Aug 2026 10:37:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BCBB6B00A9; Mon, 10 Aug 2026 10:37:20 -0400 (EDT)
+	id 04E5F6B00AB; Mon, 10 Aug 2026 10:37:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A5AD6B00A5
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:37:20 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 95B3AA181B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:37:19 +0000 (UTC)
-X-FDA: 85085612598.20.49A1BAA
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D80806B00A6
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:37:40 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 735981A014E
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:37:40 +0000 (UTC)
+X-FDA: 85085613480.09.C079BE7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E62EF8000C
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:37:17 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="d/fgzTl9";
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786372638;
-	b=15Edhcgez9YdsN0dlTBLcOy5AvvqYbuA5Er0PvNHBCwQM9UAOaJSFplF97+9pDyA2cQED3
-	YFt8qrYRP2x+ZZB+Bo8ZDgA2gL/L9votsMEp6GXQZeo/C8uBJLT5nJ2y9zPdNRfws5Erqp
-	Fj6xUd0YQxvgja++NLK5X4aXlXmOw/A=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="d/fgzTl9";
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf25.hostedemail.com (Postfix) with ESMTP id 80AE1A0013
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:37:38 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SArZK5TH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786372638;
+	s=arc-20220608; t=1786372658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G2Iw3IxT8IO58jdGL/Pq6sBuEnBqkH6E0zGFpouWcLI=;
-	b=OjSxzpYuSi+lH7qpe4rlCVvnh7JKeq+afgv4GcnzaQckJhk7OF3mPjLoGDqLLvbaJdKfh1
-	vZZ4DUZ/reCq56OL9ZLk8ezC/DF8urmKRFlHMcctS9QB64Uvn2B8KEh010lSzQ79tcUZS8
-	wKtixFmBs7vcX86DP/50nV0E+ihStBo=
+	bh=vAZICJ1VL+Q4P+HgVltfFci9gRl+OP2pT5x+XsJhMII=;
+	b=tN8ZeIyENAFWzP8i8VpTlzbstJOGNLNPuzYe1POPMkOqXtirWn9vj5IJLL+m8n/nkGo4Hu
+	0+Eehn+IUzWqz5vi185mUfzVzZ8u0oKfmm9/ruFAlJf8El96ICRzifWKmUT/QnDMbsM61a
+	a8JPRrad/NwbiOmoGNgYaEH/f4fTabI=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SArZK5TH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786372658;
+	b=2LMy4c+wn3OHsi1YztZiu4O49RHO0HonQkq6gqdmneuh7vzxpskZJS4x07BfAfHCoFaEXv
+	2EGD3LSkUwwc4RMEHPGJxXBByS+lmLU1AmzHn7LZhJj3As45Ix4kileRsSqlShhmgTwn2a
+	L0DJ4qLVbJLiSvzp0WF9Ugi1SuoRa7Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2719F433D5;
-	Mon, 10 Aug 2026 14:37:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9DBE1F000E9;
-	Mon, 10 Aug 2026 14:37:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CE50D43D19
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:37:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B60CB1F00A3A
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786372637;
-	bh=G2Iw3IxT8IO58jdGL/Pq6sBuEnBqkH6E0zGFpouWcLI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=d/fgzTl9jyROkQdOaDMRtcE8vjeYcllTQcSn1X8rT3nx5X/ZKeWNHtKf2/H/XTCNJ
-	 TkSQthb547PasR8wsBcGbliRXyFui5i//xQThKkM0bnMH1xuxYlAqoNyVsHOY1dHbh
-	 khfXi+uHbsUtQ1gEUQIBR2Cv96nM2DfD6sWwXCwh7ryJWvXM3tVIp78VIvTF7MsETu
-	 vBaEhrDHcNS3cOZrHiNr9U8uPlAnnso6TnZI3v0QGOuknN+K0aACyyAPJ2wlvQ+GB0
-	 o6eBDyjL6nbGF8fytvoJKKhgxYnt/UKxWJV4klX6N3fQvbBGomG98I4qXXgtYL19aY
-	 LjdjAN4h0tHDQ==
-From: SJ Park <sj@kernel.org>
-To: "Yongting Lin" <linyongting@bytedance.com>
-Cc: SJ Park <sj@kernel.org>,
-	willy@infradead.org,
-	Jonathan.Cameron@huawei.com,
-	akpm@linux-foundation.org,
-	alok.rathore@samsung.com,
-	balbirs@nvidia.com,
-	bharata@amd.com,
-	byungchul@sk.com,
-	dave.hansen@intel.com,
-	dave@stgolabs.net,
-	david@kernel.org,
-	donettom@linux.ibm.com,
-	gourry@gourry.net,
-	joshua.hahnjy@gmail.com,
-	kinseyho@google.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	mgorman@techsingularity.net,
-	mingo@redhat.com,
-	nifan.cxl@gmail.com,
-	peterz@infradead.org,
-	raghavendra.kt@amd.com,
-	riel@surriel.com,
-	rientjes@google.com,
-	shivankg@amd.com,
-	weixugc@google.com,
-	xuezhengchu@huawei.com,
-	yiannis@zptcorp.com,
-	ying.huang@linux.alibaba.com,
-	yuanchu@google.com,
-	ziy@nvidia.com
-Subject: Re: [PATCH v8 0/8] mm: Hot page tracking and promotion infrastructure
-Date: Mon, 10 Aug 2026 07:37:05 -0700
-Message-ID: <20260810143706.93163-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260810033814.83951-1-linyongting@bytedance.com>
-References: 
+	s=k20260515; t=1786372657;
+	bh=vAZICJ1VL+Q4P+HgVltfFci9gRl+OP2pT5x+XsJhMII=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=SArZK5THaqvLXQCuVVrc4Xw1j9zygKBZI9iYjKiiwBan6sDfP+al+k2f3fu/kYx4L
+	 a/Ccl5sHHDhzybny8B1waIRawyLjQrXfsKP5gX4l+3eJTqaPLs12CclPQr7DklcoWZ
+	 WPJ+4ZLPPhstBUJfYMaBlNcWT8cP9GWF4gVIYvQhXL3kqcsSxcNWNuyMo09atlZdrg
+	 ccX8dM8oBl5XugXNdUSVXwYJ9NcP93BpFoTcxUcp9jImtkyRSNJrtrkqCbRPZEh7uq
+	 zCfbNYkxR/JHphaH2+GBlHe+vMVPtXSEM5LcFNkNlYHWboqquri3GpcaohpeKDe4su
+	 82BK15pOrkmTw==
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6a0a4a28cbdso3080887a12.3
+        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 07:37:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rpb3d4XNO5b3yUZGOgR7iv/AjCJJciWiOnuFOsCY+SWnyln8HD5v4KQKBW5qFGQZnPMARedoeQFig==@kvack.org
+X-Gm-Message-State: AOJu0YyGcbVjVWDT9eBsJa0VTYD9xkjeSQzckVfSnyc3fhTVOdSkoTq0
+	Lc0Z82w/WJsCQGhSkZ2ITn1FuCjrhWA+5nBO+vPqviP7g79iChcMBVlo/8WMqXcY83jmKOHkPmJ
+	S17hgP0wGXVEdMRvkpnyStMqjI3aGJ4Q=
+X-Received: by 2002:a05:6402:52d4:b0:6a1:df2c:cfa3 with SMTP id
+ 4fb4d7f45d1cf-6a1f23c2558mr10654266a12.4.1786372656379; Mon, 10 Aug 2026
+ 07:37:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E62EF8000C
-X-Stat-Signature: 9aohesuz8n45na3q3reof1wbbjkett79
+References: <20260807103714.33074-1-dongtai.guo@linux.dev> <20260807103714.33074-4-dongtai.guo@linux.dev>
+In-Reply-To: <20260807103714.33074-4-dongtai.guo@linux.dev>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Mon, 10 Aug 2026 22:37:25 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4pK10ONo=viJyUJBiiFb_7pbB9LaNkQWH=83r+7E0iTA@mail.gmail.com>
+X-Gm-Features: AUfX_mxGX4Nbr4LsOBcUqni8J7T0qO-yPY8u3j28Wab2hCSGdEOhPb7Wq76lg-Q
+Message-ID: <CAAhV-H4pK10ONo=viJyUJBiiFb_7pbB9LaNkQWH=83r+7E0iTA@mail.gmail.com>
+Subject: Re: [PATCH v4 3/4] liveupdate: luo_session: include linux/mm.h for
+ virt/phys translation
+To: George Guo <dongtai.guo@linux.dev>
+Cc: rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, 
+	shuah@kernel.org, ardb@kernel.org, guodongtai@kylinos.cn, kernel@xen0n.name, 
+	graf@amazon.com, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-efi@vger.kernel.org, 
+	Kexin Liu <liukexin@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 80AE1A0013
+X-Stat-Signature: rzy7ha67451fw4t9u9xy3qmu63xuwza7
 X-Rspam-User: 
-X-HE-Tag: 1786372637-160825
-X-HE-Meta: U2FsdGVkX19A4foG1udZruIygNx+W8SErLw3cTDev9D4/PxIfw0M5VglSTlt1JNGCphMs/fiEewj47BP1K0aDbv1cHhYBCF0ge6JDOS7q8fYU2NTioSO1gxkRKINB9a+MSK2iiXY0RnQVPz9hdH5RkQ+D0lQ4gRUcjcD/JV/ty6OBYRbOd2yNZPO0dv22Xc3D4yzjPTFVHQgT0ZT/DUNdF1tPKPoJsUcNj9nNKHZfV6xslPvrlZEVftgeEbLT0Z3j2ivZlDewIwVdV9qBxwWisrEJLDqlM3Oouo78TiRgDLh5GODqRe3+AGJoMLL+1RbKobgRt6zTwnzyHonMU5p7DHEmctknN0Lnhtdefk+8DwIzql6aEb5+AZQMRDYLhGa32pwQqljkrmOpH9X6pxX1paSoQhnzkAerPm7I2O7bOjJyyTZt7BP4Rokg8CLYR/Q81P5U3pFxKXgjjs1GwkIMiLyWPbEETLpIQI/e3i2JNjXEP2pFG+AjrJOPo4AP+ecRy0VoFBgdRaG0ZfVVtjxg7xMHI/pcghSMfIaodgF0dG794pS9qqQcD7cVQ6I3NxDURJwEyOQgQZXkZf5F04Dct5SwBr4p6ahEB2Ok6I8EwLs1tMByinIS3fWDLMvSBFtv50yPZmdMffOY0Hv/Mxz2JlYescFjmVP3uFmFsUL7hvMwkj2DwCl/MWZyQuq1+4tAA3KMS3AaklUBJqTxKP/HCgKDIWvmP2F2iw9iTnnfovXv2bbizlocSBzhHVwI5lm7rOVW0VOdch0miG2ZnMOkM6BgckDkRemZ+P2xJ4TNMmvneeCujTu53o4DcbZbaOAezDh75XSqKvSAkF6tin2kv06+Xq2qppak0KM9JxqHAVdxF6IoMyLDgnlJNitqAHNidaEhpRVCF8+hMHO+op7LJbsMYLiN1tzNiAiIT0D4RZBmhiJEJJu+sRzBZTIiAcf0blgPpN3pbkRdzlHTe3
- cY2a/nNF
- H1Y2opk0T+vmNA04zGwVr1BcK1ACFJEixyVjyh1sK7ab/qkqjxtnRzDDlLEnsnlgvQotSanoeHjBe3+MxJZyqHTe7xigY/ZD+B9Re58U09VPruWebql+dsmVCQB7kUNUOwBEnHj2Ev48pgZbxGSnX5gCtFGhiAY/nvHX41NccqbmxqmyOL3LxixnoRHDIUqDwgzrZdy3vUz4PnHU5kvhc4byam0QxK4PsOuoaTKtLXMAd/ryAimXM4r59LYKCpbocuNq7jpO3yluQXuHC2Hn67qnOjnvALsYtlvxpO7/SXYax5j8LSraGNobkd9+LoO9EzK1pwkjFp9Ky3FDSyC4/dIxcUqaleBMzVMIe0FoAlKaeEaI=
+X-HE-Tag: 1786372658-885520
+X-HE-Meta: U2FsdGVkX1+At8Ne5xMxorlYvSGfRXtYi71LWBpM+iui0K3jTJIiPFu/oj9CSHdraEcERoJgmSHO87FyNw0hf/wrYJRYbIW51o28oZaWlaM7F7dT8cYUaSYDDWx+i/CZ7zUbyLFt6dWerupv1XhOLSIYVZc6F9Chj3UlC5Ylzor2ys71XibCOWfx0hSALpq2QKuQ41g26bR4DzB3CWBOQI27STiHJpezbeTcYzwfJnmNb7bLp1B79ddQGali7Xh5HwYD7eGhzNi3nd6kckTZi9RWtK6RcB0jXxfaEpFKJiK+epAvWvpQEEBMAVdvyjBOXDeceuzp7RphC4bqNZzGtJmFbrbYDXXjhygHhCgKppRGZszVSoIcjRKcrCiEzpVoLc5CqpnTNcxxfwr7T3ktHApAkACOdn/EzDa3Q+caE/w1J9BsgTzV9do5aYviYIhAkWRkVdLW+xN7iD+4Bb6oIrugysG2AO1DOZxH4kOOtgJK2mgg+B8pL9lJgLilUmFzHqnsWFVvjp7FXVRwzHI5qeJ3wJjjRm/DCIZGJQV8X2wnukq6HQPLxWuWNmHNY6PbdceAnoo9xqSman/VvMrmdSvzP19hCFmZ9R1qzgBP+LsuHNk51iVtNs3DK3ikKckwzl3lafGuQhlC07SY26kjqoXdrGlUG5MqeamzJh7t03xjkwRV86bKuN6mBgsUr7eRq5ZcoVhclqE4/DpgKe1rkIu/QmUrDov9hyv9gsYWofz6qz+9Eo1NPc7HtcATa/S1eE575/vZcy9iL6GY2Y4px1yd5fZwbwCRTu3vW6x3VvpJmtcQSFsE3vm8DH0VWGLoWC/vZiyS4zuo/Xxo+ZN5er6vfpcbihX20abmuKfjCH91wrudozB5nt4iqz9Vu/gF/zDT7g+iRL8zbuwnaBQVfqVPGCdLgrNx9whOoNomyu0mxL9G1n2IwtMHylmNgvymPr93oapfn+ReuZ9Nt7C
+ JhTDZBk/
+ fMe3+qz4WYB4H1jvd3/e4xqqSNWstDXi/EPrGXzLSevx1WKAp0R+mO2NVnBk8W/jHgdan+0NrEYVP56GMBk7qcwhMGKeSg90Dk5cO8OwK6c64rSbS1EwGP0FRCiat/dtWDVOETeVquiO+4IJdNwLabvC/OeznvJRNOJggrXGF+vlpFYR/yypbkqpG+9+E2iwz3IKPTpx16z80MPBjf/vDHAt4UIm8ZV/6qOGEZWzmLRZNzRZ1xgila2xNlSJ/FHkzsCdOAJciaVH4oqvG2oPpg1+iWjZaj5e/Z2reOApBcZqjeeyt9RA1E0br7EnLOJHKs2VnegWbdgvFVywfE+dAahPek/3Bj9Sr6oC0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,29 +107,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 10 Aug 2026 11:38:14 +0800 "Yongting Lin" <linyongting@bytedance.com> wrote:
+Hi, George,
 
-[...]
-> IBS is not the only possible hardware source. CXL 3.2 defines CHMU for
-> device-side hotness monitoring, and CHMU has also been discussed in the
-> DAMON and CXL hotness-monitoring discussions.
+This should be the 2nd patch.
 
-Yes, we discussed DAMON could be extended for access check primitives other
-than page table accessed bit, and CHMU could be one of such primitives.  The
-extension is in progress [1].
+Huacai
 
-[...]
-> We would also be interested in helping test and compare the different
-> approaches as implementations become available.
-
-Please feel free to let me know if you want to test DAMON-based approaches.  I
-will be happy to help :)
-
-[1] https://lore.kernel.org/all/20260525225208.1179-1-sj@kernel.org/
-
-
-Thanks,
-SJ
-
-[...]
+On Fri, Aug 7, 2026 at 6:39=E2=80=AFPM George Guo <dongtai.guo@linux.dev> w=
+rote:
+>
+> From: George Guo <guodongtai@kylinos.cn>
+>
+> luo_session.c calls virt_to_phys() and phys_to_virt(). On LoongArch with
+> CONFIG_KFENCE=3Dy, these macros (in arch/loongarch/include/asm/io.h) expa=
+nd
+> to offset_in_page() and page_address(), both declared in <linux/mm.h>.
+>
+> Since luo_session.c only includes <linux/io.h>, the translation unit fail=
+s
+> to build with CONFIG_KFENCE=3Dy:
+>
+>   asm/io.h: error: implicit declaration of function 'offset_in_page'
+>   asm/io.h: error: implicit declaration of function 'page_address'
+>
+> Add the missing include to fix these build errors.
+>
+> Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
+> Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
+> Signed-off-by: George Guo <guodongtai@kylinos.cn>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  kernel/liveupdate/luo_session.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_sess=
+ion.c
+> index f38b5b18f3f8..31490ac7b63d 100644
+> --- a/kernel/liveupdate/luo_session.c
+> +++ b/kernel/liveupdate/luo_session.c
+> @@ -94,6 +94,7 @@
+>  #include <linux/kho/abi/luo.h>
+>  #include <linux/list.h>
+>  #include <linux/liveupdate.h>
+> +#include <linux/mm.h>
+>  #include <linux/mutex.h>
+>  #include <linux/rwsem.h>
+>  #include <linux/slab.h>
+> --
+> 2.53.0
+>
+>
 
