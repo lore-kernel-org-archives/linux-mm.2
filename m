@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56A78C5AD7B
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 17:35:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1953FC5AD7B
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 17:36:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3F426B007B; Mon, 10 Aug 2026 13:35:05 -0400 (EDT)
+	id 6EA6B6B008C; Mon, 10 Aug 2026 13:36:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C16326B008A; Mon, 10 Aug 2026 13:35:05 -0400 (EDT)
+	id 69B336B0092; Mon, 10 Aug 2026 13:36:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2E1F6B008C; Mon, 10 Aug 2026 13:35:05 -0400 (EDT)
+	id 5B1716B0093; Mon, 10 Aug 2026 13:36:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F20C6B007B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 13:35:05 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 207601A023C
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:35:05 +0000 (UTC)
-X-FDA: 85086060570.07.3CA42E8
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 48F9D1A0003
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:35:03 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 384A26B008C
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 13:36:58 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B19B3A1D3B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:36:57 +0000 (UTC)
+X-FDA: 85086065274.04.CCF6C5D
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9E0D7A000E
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:36:55 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=HTMKTmrB;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf15.hostedemail.com: domain of BATV+e92feb25c851dffaa619+8387+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e92feb25c851dffaa619+8387+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786383303;
+	s=arc-20220608; t=1786383415;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rt5AlsMo+AYk5P8dzMLhves1W3fBFsJWMUnpulAKF44=;
-	b=I4D3+a/FZixLeGSuepiThIv6bt0TXKpLDkySR1RSPrG8Uo9SfaUXAzDT58G6v24YahDvLM
-	hMli/1ioXG/LN6tfVdliTztqaRIf50MkVXtGra+MhQ1p3cwq5B4jW8H4DD7SE9AgNYpX6o
-	H++6NMGXfuOwHm1gq+o68aosGN2Qzlw=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=td/Ywf2pair9AI/oS1fM5P5312l8ol5DkJBkL1WbGdA=;
+	b=IUJAJprhLGQemq21MlEbwrwfmCa30qUsOpNwO1oyZrEAHD0iXLBCQVuOYanGWJAVg/PhHE
+	pgmmlqocSG6KiRMuhtBJls4i0BK05qCk0PRafarEK/AzbfvSPRg1XRjPhiCr4l+bXuEAs+
+	IdKRotvwcC5Gyl8VOgrCUC8jIwvXjx4=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
+	imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=HTMKTmrB;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf15.hostedemail.com: domain of BATV+e92feb25c851dffaa619+8387+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e92feb25c851dffaa619+8387+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786383303;
-	b=J34fqsSMiZMDlpgz6Km7qmAgdvMSM8bpzTzQxdla89ql8QALNj/9UQgr5y4UaGxyD7ZmfS
-	qRshM844gbK4cfYwFggp7YR9dOLnuNGoZax30ZCP4m1kle52ouVjZzIqf9fyTEX1s73cV1
-	Oiu11SXdrOdDvbRhv14JLhsrZGU05tU=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 098DC68BEB; Mon, 10 Aug 2026 19:34:55 +0200 (CEST)
-Date: Mon, 10 Aug 2026 19:34:54 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Tal Zussman <tz2294@columbia.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Christoph Hellwig <hch@lst.de>, Yosry Ahmed <yosry@kernel.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org,
+	t=1786383415;
+	b=ZpXmykV5mVbKzhX8/xMeA+1ogk5pqtNawNOJq6KXgLgX+mcj3b62jMlYGqjHhvLl75EuVq
+	mepTwxxy+riUhtd3BFcFqJnTpYBmZPqIDex4QKpdn2ulyyh9VBmI12vmWou+Sdj1Rehf6I
+	H/Q0v1qskwaW+If6JcRnnzVzLo2R2Fk=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=td/Ywf2pair9AI/oS1fM5P5312l8ol5DkJBkL1WbGdA=; b=HTMKTmrByhqE4dP2zF++KyGzmR
+	dlftD2bzy/cjr1MXcgNkUHD9jhpsGZxGfjVA465yrF67SJ1Q7NCqaL46LGfZFxGg5XX/Ad+vb9S2Q
+	Jsp2Erz+pigdYa8djEcQGKNBpYrw7ks955wIgI+jtlqEBIcFY9Gl2Ecl9s1Cm43LzcYwjmqDIQeUO
+	yCptljuWi0qLcZ7eDBlSR8/YMHihH5tTCfTC3rV7V+brZFpmW1o5svPQYzZBHukJt+gSuSQ0pUIFL
+	bHQcy3TtB0DP9G3BepFuN9Ivl2bFG0UnAD6tI9nhel7zplVKrKJknIvlCxEFYbp7zswNMmjTqL8nF
+	lF+ZmZGQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wtTvh-0000000CXW1-0n5U;
+	Mon, 10 Aug 2026 17:36:53 +0000
+Date: Mon, 10 Aug 2026 10:36:53 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Jann Horn <jannh@google.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/6] mm/swap: rename __swap_writepage() to
- __swap_writeout()
-Message-ID: <20260810173454.GA28736@lst.de>
-References: <20260806-b4-page_io-folios-v1-0-0899bac3b826@columbia.edu> <20260806-b4-page_io-folios-v1-6-0899bac3b826@columbia.edu> <anYPVB3dwJCVoXVv@cmpxchg.org>
+Subject: Re: [PATCH] mm/page-writeback: document folio_mark_dirty() locking
+ more explicitly
+Message-ID: <anoMNezqJ10YgcoN@infradead.org>
+References: <20260810-set-page-dirty-warnings-v1-1-53cad4890808@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <anYPVB3dwJCVoXVv@cmpxchg.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20260810-set-page-dirty-warnings-v1-1-53cad4890808@google.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9E0D7A000E
+X-Stat-Signature: rm5h3trj185mkhi1b3ebhiqi6gwgu4ky
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 48F9D1A0003
-X-Stat-Signature: aia4ojjghbwshnw4xi9mtwjuh6r6nyjo
-X-HE-Tag: 1786383303-204508
-X-HE-Meta: U2FsdGVkX1+j8NlmPrC4ipkkHe9XqLo+CAijvf0/gG49HXMx2m+qEhpCWMJ+P9WY8dEQMh44UI3fQ0giUvYHfw8NhIbobITlS8acncjabIXA5ll+k4mk3CFZJ3Vn6cugC9/XgH638wScrRAI/541LU5H3+bKBpOlH0kMmH/WPY+LzvfRWxp8CqXUgNcoR1xVggvHvi0MtMM1YQV9afR1lXtWoDYcoN//Vht87ME9Jonal69UwY48FxqILSzJLk7uBMUi9l4YlQP54XiLTahFOwkYuiGLedEyLf57iBs3cc6N+/DCtYzFM4D4JQTKHbwGILId5dxpTv4x0sLOLJadbkQFzkG3Qz7gcjk0lF6UzGUKNi3wNXcunKayQurTBspTP0wsqZPkJ0zrQyralzLNAkeG5od/VRAMm63w51wtythhDFDiBhtBIc4Z8PhRIBZfBu78CuZIP0Sf9eh6bANs+jJm3AfyoMJ7E9lZiK8mGIfzMje91zhkQ0oejC8PAHRaz5CNycgdA/Gy8be8kxZmXyD2KwDRf3zu2VWPM+Dl9mc1EL+aJLQmasyuGRvHxStclcz1+tBWImy5mYpJ26D63ljnqWstWxyYnkr92B3FV9HIis5j8wZsKakXozLn5UbFxnCSnej5fL6YKjeQ+AaMrFCW3lD136Kaii1KHcC1N7pNHo0OmUbipFsWSVrE51KvX1q4sckT8Xd0tfd4dsAbNba8qKM4clWllT2vH3WcuA4TrzCZWqJV28yIfgpkP7RcyhRe9D5qHAvwiOIvCuNNPNn3UKlo3C4eJDmZHu8L7O/1ItMTbSNVyfTFqeBFm1Mg0vho5/VtCpEI+FxALoRsN8KmEaTZhH/mI8csYQdLpABJvAeLlZb6pi/kCUVJY6GQ32l84RwAHglXh46BbdBlKEWTy1NdvMky6/2ataOnjAKJgDa8AipEDDLV94AIFKjCkUbWepxxuQCGGhveias
- sAe+d+o9
- Fmo+WDoShRuPXqBR3RVVjjDVF3SzZGWX6nw5QjdEtGyFacN3MtxuBqx/04xsXIxNf0F4VsTxdx1Q2u0R9HTm/D8Cv+3iQcg+ViMPg40D8yJ9DYrpGkyLRcsxAu053TANKyWfD4vLCxFpLusY=
+X-HE-Tag: 1786383415-986746
+X-HE-Meta: U2FsdGVkX191PhYhQ5y/eEcYM3/U6K1mW65pxW8OiEWLYS24VxsGmmSOdVkLwnUjw0YDSj6eY23Qt98gESY3tMeRow3Aj2p9JX6roYP0zBo1LeTI0oOQWZd2tzA1Nr3xG73BO41lIgYbuBhztN1/v1ZHoMDjXzhC8v1yd6/wM1HHBX/4zZXMIngbFrjghievhdVphzqwaqEslB6YOIZP5oym4LA03XJ7Mew30i+IEn3ukFuy2vM/HtBm9VA/NF1dFx8Rasu3rf32a5HCJ4lH3ER1wFO3rIhSCTZ/vCskbORFysmKkjobmzqfMO604/A+nZ7zj9mQHBT/NIq3Xd4TO6n2jijCgiPDrKcKCIvB96DEYIk/fUiQQiPVB89Ka8HBwoQ3saRiH7kasUeZrrPKNrcYjqLvZ3ig8SQ0NwTAbFXVGbgRTQIGvZ0qfd5/LPQe12NVGs59QGIalekX3YK8mB9ErrD+CXuhtZ6ErMYY6mHqX3PJ+bv1Ujj1Mu5W61cs92hb0r9r/s8vkVOnkrGz08oZBSPchzagrqOftz3hpwwfrfoFoVDfEwG0671GvtkYZXVPZqYhczxt4YDHW5SmUTYsNE4r1hTNxojQA3eOQnNzGXyAyInRx5bTRh8YIJGKiV+Mhg9teFUuKNVW7OnIFbnelL/dvYwC1+ZkQhAw/RUN5wYAIRCzX17HPg3A575AdDo4KIrDeH5OYhml+JG3P+X7iBXVSZNyjlzTJhshWOXjiAf6G+HiXM+D/WLFx2Atn+AQlKYrzugzBpg/os5Oh1muh3624Ldy/eaOB0Wjjt7a3vZ4Q+/vqJG7SiQdAMH2Uf8FBrvRb+wx39Ynjm1Da0GcdoNZR+HVkrEVYFbtL9bRjA/NYu5WAKTlsb2kl4sTcKAZTL5j4GO/xbvpZl6fJdPxoB5athQ48NkVTR0PYFgLLCiEmNdHPrq/Ct71XNd1wpYaPDrnqRL1rlfqm+i
+ FR3jh06b
+ 3oYEHUbp4XBWcCaigPpplqQyrxTWa5ZAQMuwfwx+k6+dAtNSHOA7kwG+FwtUo7s20XYLZ/QYNTX17zaxMBmsbTwLU5wjgtwP4j3UjAyK5+fkfLhZH3Kp2QGnPXt3+2GHu9Aq4GVRi06rfe/3GsAnzDOaMAys9JF0B8uidEZVo0P+81KgeJY65LthXnQokiidiVbMtHIVkWP17i9eC65K+iHl0rI7WNZkLP4GREG0RMyTgs45ZG3+cXT3/0DPCR7iqnAGsmVRsZB/U8asK4Cq7nbAYNfXWstqzZCHW3nOizDyCEjJS/YDYMoB3UmWeo0bu5Y0EP8dPiGY8dFKbofB93w1OomPQ1vxUNLsbz6ZkJ9MjeKWa1+daGnkwaM4qxdXs0RXevmKrzVEVJ5nWgzE8BAUJkDor6XYSFrg3rMbEa3RCyVs/vdXqCu2mSCUQ+3EWsmZPTviyNqOLpp1hm8cBBGfGC7cm7zXCziDc0jL6sRRs+CZpXi/w+xxHBIicTGplhLNaxkgOb3F2iJFuWChSEZf/DGabTj+wXpG7PnHb/jZsJaWI0Jr5mmdTup0NglD7t3SXYi4YAL5hing=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,10 +92,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 07, 2026 at 01:01:08PM -0400, Johannes Weiner wrote:
-> [ At the risk of starting something, should the file itself be
->   renamed? swap_rw.c or swap_io.c or something. ]
+On Mon, Aug 10, 2026 at 06:02:36PM +0200, Jann Horn wrote:
+> I have found two out-of-tree driver bugs in the past where set_page_dirty()
+> was used on a page from GUP without appropriate locking, leading to UAF:
 
-It needs to be split first.  I have an outstanding series for that,
-and will need more.  Please don't rename it while that is in flight.
+More documentation is always good, but out of tree drivers are totally
+irrelevant for upstream, so please reword your commit message to be
+relevant for the kernel itself and drop these references.
+
 
