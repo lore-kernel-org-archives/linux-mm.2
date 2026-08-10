@@ -4,113 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC3C6C5AD7B
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 23:45:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4509C5B56D
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 23:55:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 494CC6B0092; Mon, 10 Aug 2026 19:45:03 -0400 (EDT)
+	id A24036B007B; Mon, 10 Aug 2026 19:55:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4456F6B0093; Mon, 10 Aug 2026 19:45:03 -0400 (EDT)
+	id 9D4726B008A; Mon, 10 Aug 2026 19:55:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 334BF6B0095; Mon, 10 Aug 2026 19:45:03 -0400 (EDT)
+	id 89CB26B008C; Mon, 10 Aug 2026 19:55:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A4FE6B0092
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 19:45:02 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5A7E1802B7
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 23:45:02 +0000 (UTC)
-X-FDA: 85086992844.14.B937330
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by imf28.hostedemail.com (Postfix) with ESMTP id ABFF4C0007
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 23:45:00 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=lZL94BOh;
-	spf=pass (imf28.hostedemail.com: domain of 3e2J6agYKCIQ0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3e2J6agYKCIQ0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 5BDE96B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 19:55:08 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D07A8802A0
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 23:55:07 +0000 (UTC)
+X-FDA: 85087018254.25.A22FF77
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E3D5DC0007
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 23:55:05 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=BmOHmVLo;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf22.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=tjmercier@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786405500;
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786406105;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lgf1v7ZyMRecW6GzYu5RKpdf3OAqJ1cTW2eoW0KSWKY=;
-	b=e9K7hUsakWWEch7npR04dvErdUONMZZEkwELk8Yw0Gp+8X5fNkKPB3hrL+7DZbR9TEZwJS
-	KeTqOl/ShRfm5nnOsbyIVd5cMvmrkjg336nsM3ONm1opL75NAEVYcblCVXIvSWGo4wsDpV
-	NGVBLkL9iH0VInvVkAqD9rGESfVc8fE=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=lZL94BOh;
-	spf=pass (imf28.hostedemail.com: domain of 3e2J6agYKCIQ0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3e2J6agYKCIQ0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com;
+	bh=JHfanZgIA8mK03STIk1FeUn57Mhb7JG9av6AGKnMHws=;
+	b=icDp7/UrwTEPGXshqYwT+xnKbt8pDop33EL2M6J2CtsP6il+fI7kYaBernDnvZYfnrzoa1
+	WWsDJdMzmEkeA9Hs8gn3bUD1rnhEIG3N/VE3vpm2F5wGpvnisDbsmIVgKr6Ei7Sm86AZqY
+	mIOwIaIuTRGDS8bq8kzNaiEuOgUGm8w=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=BmOHmVLo;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf22.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=tjmercier@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786405500;
-	b=a0qutnUgAkrWYeXHtAymdXARcz2zePHwM3JHMZf2Rn2ZkJjQmVfqg1EGJyiehHICanF33E
-	g0rKf6/c0CygIR5h0CNypCbupbyMvsSQpO0p2kxYDzL7hu97hYDqsqPza13UhAn2DYytnq
-	5g12FhejOmV4wVICS3k0xRBGIqzppvE=
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-ca8aee88725so441235a12.3
-        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:45:00 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786406105;
+	b=h12fDJuNJJeVVcMzS/MLQarkWVM1SXrxD1oFyMQKiC2myYR5q+UX4UtkOJuj53nPgxym60
+	SKmMUsvRwqcWIVHFaJpVKRtlAU0fKmzdqSG7tRLvNTV7zJCELdsXXmy6wNo6vY+oBXfgB1
+	Q6QlElxHxFR76MxQ6nhhccp1Tl0T4qg=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4994d67d260so14475e9.1
+        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:55:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786406104; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JpAK01jEx+rLRyvEJVZmSOcc6eWFOqOhJf3by1UbR/YZru8DRcX0NuF8yxGig9DWKv
+         PhNVHetOyeQ2TajN4W0gDwZLLdJlxa/Z2jTLk2ElpDC0AaG+v/XJb08UiMr0CfYk9A4b
+         PpFRL3CBWSMCEDuU7k/ZHg47bFmPK1o92bEfawtdpiYv/jqgw8uqcXnx9d0+19V60J/i
+         E71ftraXdOVwC3WzH25v3CdBmJ/jDT3sjQNJLeSiZisHsOOWciB4pYhryT4BFbRcz1+C
+         IWcaOzIGiP2jqtTNOXjNpfUMVvgGu3+oEeKeMTdAfktrD8I0WsK7K91T4WTQwTj0sdvS
+         4row==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=JHfanZgIA8mK03STIk1FeUn57Mhb7JG9av6AGKnMHws=;
+        fh=0dy4Fw4WgQzHz/7RbdRLowgLkiLPzcBxmufDNRLedPo=;
+        b=nNSllgkHplmVcpuDD+WX1sFU73bHK9Zc5oyUoq0JJHWxhZzCbfCxlGXu4n2NyROy7l
+         /4FRNaFNOc8xGfBKoB2inuJOXrkBbsQUuYI6Lj0Ak9Hb2l6fGyUBaziZWGBZQpiFk6Gd
+         sjzpVrWmowNzR5GPeGbH5yd5HJGiOO1kts9MncuMzUb4aKyOPzkz4OtKRrWe5gSKbstP
+         c5Ur35Or958aZmB2NeZdsNO3rLj/GeyCsHPVUPMguq/pjZTDd0Gt4V0Kv5gQvEXeKGtc
+         ng5J9PZWtBUyt+SlFoCXdHvJkinWjaVqZAiW7dHPzqoKTkIY4G+WCG6ht4L/xDvdD9R9
+         Ze5w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786405499; x=1787010299; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Lgf1v7ZyMRecW6GzYu5RKpdf3OAqJ1cTW2eoW0KSWKY=;
-        b=lZL94BOhUjlakwutonWw2FtCo703n+d6ecHi0W3X81tsgctnwFGCyc4+8r8/ZmagA2
-         bxs1iOqsgM8HRjVZeKaEWZrg9MeMvLX6ZSJpayy4vBP1PdnZPBRBtGptXPrPbOXiytAn
-         5QZnUerlNKObJx7wii9SW6IorLZeqzr4o2/EPgpVEqXPnrf6PhCpJsHkQUHSohx9Mdem
-         pqNtt3VHEXBSa9h6d92EnFGWZQoaOnsLOpmicsgW16RKtcdvHYtYBPa4j/0hJlClZZit
-         b99qjCR9evJWY7nlYCcdFb5E4C7uRPCpoVEiqFhv6h7lO5GIuF4xnqWwQyq4luedK67K
-         SjGQ==
+        d=google.com; s=20251104; t=1786406104; x=1787010904; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JHfanZgIA8mK03STIk1FeUn57Mhb7JG9av6AGKnMHws=;
+        b=BmOHmVLoVp7OMVXHyDxTKdQxVNOmkWd7fouw/yAGpEJxpHv5y95hukBcTxDZ732Y26
+         3UW4n/o9YQSiudo7VaFdwrJRhzjUbt/A17ebpS8iX2CZcCuP7Mlc9tXFs1s0mQVgop3F
+         He/JeAKDQbuoCdZ5R37BQ87ygP6Kmrppydv6NtwFGvrvLv+uLzT06ewhyqJY4i0Idu1q
+         C3C5+/ES9+JafV/r8JjlUcZMgiAiso6FDoyr6CKTG4qs1JNA22YjzWZS5AOBgWBylMUS
+         O/6+9zE8nIysq/JQtVqJC/D4ln5nNtXwkUfzDesIkLYAEGktMHLRJ4+On5Gm35VBZZuG
+         /Beg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786405499; x=1787010299;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Lgf1v7ZyMRecW6GzYu5RKpdf3OAqJ1cTW2eoW0KSWKY=;
-        b=pZ7CnHxWsgPFLMub5lCE8VZK7kMKplNthftkfKwCo2/lx8ZXUXBxzI6lk/h3SBB+um
-         bLYs9ZzjdOyBZvwj08ogkqFi21tGela5KdsqcoFGcG/uwSFP1u2q7dsPonRQzl2Ku9dr
-         EpQkOk7k6kteIBKNJyrS8BkP+aErk40dYoEOVx4TB8MZUtjpD2V0sXN1oCpO14HG+A0J
-         0PSeBfsWVAbiVVMxr7Y3CsiJynNffJJeWnC49m4fuhPKcPRntGrpTUpvr9vEsCFlvMgS
-         cOzPk8dyntyD6horig3CPipdxC9VhWi0JFUz7Y7HT8ZRoRLetRxn3csnLwisLLNY/0Fd
-         UDuQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrnBhyXY0Uc/liTJWDyBSNwhPVtHK0pq/yPEEUCPVQ2YECRL8VGG4L0U+SXvfKL1WRLjzV+e0qBdw==@kvack.org
-X-Gm-Message-State: AOJu0YzP4CkWMz+TCrIkQRybbKPU/pl2CRL4aAPo2T1ckGmDy8bVXhCI
-	O5RyPBjeIF2YaVXKg+DjHvnLLaIqH6Xrcsr+vFGuInB/t4webJUgTvoo3q7DP4Ix1DYogkLvC1C
-	r7xXWiQ==
-X-Received: from pggg21.prod.google.com ([2002:a63:2015:0:b0:c9b:bdf2:2507])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:178a:b0:845:e97d:447e
- with SMTP id d2e1a72fcca58-84f2e040170mr49815116b3a.26.1786405499340; Mon, 10
- Aug 2026 16:44:59 -0700 (PDT)
-Date: Mon, 10 Aug 2026 16:44:58 -0700
-In-Reply-To: <20260728121138.1103610-8-tarunsahu@google.com>
-Mime-Version: 1.0
-References: <20260728121138.1103610-1-tarunsahu@google.com> <20260728121138.1103610-8-tarunsahu@google.com>
-Message-ID: <anpieno-RyRl54fp@google.com>
-Subject: Re: [PATCH v4 07/11] KVM: guest_memfd: Add support for freezing mappings
-From: Sean Christopherson <seanjc@google.com>
-To: Tarun Sahu <tarunsahu@google.com>
-Cc: ackerleytng@google.com, fuad.tabba@linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
-	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
-	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
-	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
-	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
-	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
-	suzuki.poulose@arm.com
-Content-Type: text/plain; charset="us-ascii"
+        d=1e100.net; s=20251104; t=1786406104; x=1787010904;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JHfanZgIA8mK03STIk1FeUn57Mhb7JG9av6AGKnMHws=;
+        b=R6qYB3V6JxIBiWsilPLuRON3JHHUqKVoiyqLDEb3sFoIZhvIL2qrrviVo7Frg2iwPf
+         +A3ks/CybaDF3Z9gOgB4rgjSFYNp3UdnKfz5mdFCy6puElOrBv5ff2eIGUwvwLbTWeXD
+         B9kNGUN5QT7fDAm1B2Vsnhf+vK5ca6uwJ8+uZPzT21G92/WStOFGEorIYHXS2RCQaeVZ
+         lQ+N9Qjmt+Q+4M61XTN24g4yjEBxx6jlpMWjA9kO66Wm8xYy8NNBBzq5Ef8JUzNfAMod
+         bcOLtYoLwZkqG9yK6JmkMXZDC/gAc1h+C+89s0g1LAehV4Rs2QkIEvNYyoRrEsxyXTUG
+         btkg==
+X-Forwarded-Encrypted: i=1; AHgh+RpvVbzEsEZBgTSEFkU1//W+qh10hNXx8nxwuOi8a1op3gx1lHJt5sRqU/yar/2+uI9qHD1VT6LHqw==@kvack.org
+X-Gm-Message-State: AOJu0YxR2suhuDtVdWZ5E+EiJhRsPmOFPgpqEPUXf9639miAeP9B93tk
+	qjmU+EULu5J4KBsOPJ4wOM6OHM/z0UbxBuNJTtYRRQ8EHpPvWO1bCzWAtW+XuQ2d78MR8IZDLHg
+	AXHVD+LR94DyNqbH7b6G6iEsOfN25stMtk9c2Bcw5
+X-Gm-Gg: AR+sD12hWWTvD4hQ5QjBX9HstDQiN58BYlQotC4iFBLEbX1IN9+Tv/llAi0qxGuZlBn
+	VSrq1R3TwQw0487zOmiNg0RuOOcrNAkSmDbXsny5CMO0CQPOvll1czOYuj/mTi4ir62MWss6W+P
+	+wwDGYzgzM9lPfHcOIfVHG63jnpToZqoyQgqb6Pfzkr84Af92hnNKl+a4ZnEeRzHN9WYfN9frv5
+	uoBvUYu2s01knGABtmDCNoiar85r7R6BvgcT8M6TMgwHDtA4EZFRrhXhgntAXrtZZ89/reZGztd
+	NLHdrOuwRaPr1IlfgfzFwbBIhENJW/j2UvAi8NuBNMP7tmSBd330jWwkn0+GfZ/JnO2lwNa0NOI
+	=
+X-Received: by 2002:a05:600d:108:20b0:495:4593:616c with SMTP id
+ 5b1f17b1804b1-49975c21896mr314355e9.1.1786406103959; Mon, 10 Aug 2026
+ 16:55:03 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260701-tegra-vpr-v3-0-d80f7b871bb4@nvidia.com>
+ <20260701-tegra-vpr-v3-6-d80f7b871bb4@nvidia.com> <CABdmKX2i_vxs3EgJgydEbXoTxqWe9g9pj=hqPKuwf0ge0SjZuQ@mail.gmail.com>
+ <anSyU_-zArFch-an@orome>
+In-Reply-To: <anSyU_-zArFch-an@orome>
+From: "T.J. Mercier" <tjmercier@google.com>
+Date: Mon, 10 Aug 2026 16:54:51 -0700
+X-Gm-Features: AUfX_mwf0uw3dVpzklPu-Nif3rg3tPQMirUP9IgK_6gn-zY2Jt3_SUQapkz0Yvg
+Message-ID: <CABdmKX2Hn0cDw_aFW7Xr9v5mr=WvfhhTXgX7tpRaMMGstYp4=g@mail.gmail.com>
+Subject: Re: [PATCH v3 06/11] mm/cma: Allow dynamically creating CMA areas
+To: Thierry Reding <thierry.reding@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Sowjanya Komatineni <skomatineni@nvidia.com>, 
+	Luca Ceresoli <luca.ceresoli@bootlin.com>, Mikko Perttunen <mperttunen@nvidia.com>, 
+	Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Russell King <linux@armlinux.org.uk>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
+	John Stultz <jstultz@google.com>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org, 
+	linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-mm@kvack.org, iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
+	linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: ABFF4C0007
-X-Stat-Signature: 9ht4wboz8ddsgz4o674n41cx19crcu5k
-X-HE-Tag: 1786405500-918954
-X-HE-Meta: U2FsdGVkX1/2TIpurqLnz7EhbjafyskI7r2FOZq0q1Jp/2EQK8pmYF52eMJgEqvsn3I/fExSW5umkoHIbGkVqJpSwZV5Q/TZi2p4JUAyegC4tzTezDq7OEW8t92VXTNT5QSbM5t0EaqlgnifbE8jKHoTMDiabtu0fu14/EcsBcMA27PIwy9p/wNNMIkAO1GhPmDxLylGr0iTtdSpJsxXBAtwDL11fKdUXpoZ6cQPTKSwuqyQZHhAP7q3eqU2La7zhmgqeV1CwVLTW29rLS5Wc5ZPeo7Q2I6tgBiBIFHh436CyrOy46CrJFaqKsKvPWvZYuFH+AdNQKPScum4NSMfmxPArCM4xwGOkIJQFnJc7hEttJB1CNsOdleZbLG3TqhMaFociVCylv3tegTJtf6g/HuC4IZ8hBH6S0yApY/00JoC/7msCNMzsFm+mzRVlwnla5WN35tyTzASgTOnd/iO5VSjCWDFAl659WwAXdTuaCTE/n1pr+hcaN0HBFy48Mdlten48sfHtCK4DkH9H0mVyhpom4hWLl2qNL/p3O4jsBFfva88t0r0ZWXzeBsM/X+oVhamCmoR4zOprdg3tXwHAgK/kYPV/D6c7npcYxn0koRBMsTHOZllRAmAQHyITEU9luvmzyJMh6KGUSIBTFOYGRdq2deygIg9T4mXjfnEk6wgDS7SBzwKIJg1vCYW1DJZr81eawtTVyMmj4pNI2y1FT2GVZ22nQcNLFz1jvFXK5uvpnODyM8G5qZ3EXJDtGwFlIlU9IgnNGmviKso6xdlL7cOELKQZZ1d6BLO3DH0LCzxVlMrGAymXHggzP/PyIndFCuMIMlFx2jTyQMK6EhW460kj+JKce+W9WkorwzMdSCQMRDNwGtIjsrcSVr8X5v2vZC/DpKIEmYaTCsNJt9OXqfx7Akt+zWvrxwrTfsiWwsXxyI65+GrkfFfxtDiX93ubCPYJ6bkXqkiqXWVLYk
- v+84xsx9
- oH30CWDQRLMTNeXnQtXugwQVQTDRRA6kng+Xm/qyhKXnS0TtDl5VvRLDsooBiV3aS4MdQCPBS7rN3u18HbwItM2mGOE2hRRShVHlLd2qCBsDo9+zLU0OAKPZT6N1r4OWG5xj3ZxfSdacyAq0tdtYmPj9uLSKkj+xQUeW+7BoP7JEoBQso09/daM6b57TptEOtayFN4yL29qa1J3MDC0ZmZfEkqgJ931ajW81eRCxg8fJMQ0wYT/vY9SxvklLVwpmAmvQLQwPW1e94egPQgW0ZU68qfg24+TDa9xzdDXXCWbjr3R8h59iaugbhWbfhmBTwH+zRyYdkvPhCZ+weuOLpp3IM35leOrxxDr2HA0YIUAyDKCv+HTx79aufLgX5PmWeMA2//uNfuQh6FWVYc/fzxQNHiZPo8hAx5d9slRUQF+mvT7gLihAqhbAALrzyg0/WgQgOHlE2FpsBRTK1jpbAsSq6u6Xuua9fY2XlFTP4IWDeVzbL2GcJN5r6/IWfJXO3/NTtLcUrhKZvwS8hJT8jDdeb+koo81c9yFO09myvEniFawczqgMeJBp8aC6Ljupuuj/UCFAvU805OERiMYlk0Ggl9R8jqwE5YfGKoBfMUSnZ+zZHGRVVUG71Avql2guFxxNf3a/SHVoxjZvW/CpL5va5va+mqb3HDIFzPGCnda3aOOk=
+X-Rspamd-Queue-Id: E3D5DC0007
+X-Stat-Signature: 796tsn5iw5xnmp3qr1t6zdea8kgw6red
+X-HE-Tag: 1786406105-906048
+X-HE-Meta: U2FsdGVkX1+DL/iK3xS1daKmpgckQox+zeUcI5LAW840lkx+qjB7sohxkYeCj6tAr0HFsI91aQfiqVpvHtSUFwxMChGLjtRS8HgpixRBYY35V3tQ/A1l6+L9BOZPA/xqRGG9pMaQgqxO46SQq4fRsWameUSQv5cUc/gDwT/Ltu6q303ZHRQVuaNDpHNShc7M4f8uw4Bf6E3nkNRPTyP2UDZzew8oKPf7MUPcUs3IRBXNKYB+8deeiOybP2ahNhAhr5RiJfZaHDcQ0u5Ku/saM2+PYMkp1A3QahuJPeqOUPAfLtsIkh4h/2jDwz0TqnlADGwyaLb/O+A9TjQwlk0oxUNlERNjIub1HamYdUtyf+hP7flkxaIiCXharB8HQO4msBMZONlJqMWrBSCffKMXYO2+GmH7GjSAMFBBm1V8Vkvw12sUy1kuElc+ay4ZiuLbbnqzjxKTDDTQuEaK8DMFonMX2l9yhzwkiXLeEmyCutpCxCvMguNf86J7UJ6Z20nYg9NgrA/J6/1jLNfgL+DWjJ01WGCOZdnbxYgQ6YCabxfW77dRIonUQ5DIfgQV0nAA3h57hWtg1D42+hHAVbZTfZGD9yNOBENjIxZxwRY5mztIVbLWnjoenuHLKywEBJDSOSu13RA2zqj92us6gpFNCeZTrnRGJb/AaR+ABwVKWhCs8QVD0gmmTvoIXmFCvMVXMGGyePz0we8fhUElTPQChQP2oCqf025gUHkWJCeFCqmkdaNoHJtbX/UrCtcrQc6+n2Llweuc7reGgHPi0pDD0EJk7kfrsZGPrUkYirELNBRfNH0zyl5Vv3qr10p3lB/c8zNZ64QbpYbEAa2TEfxX8KLZ0kT/SDgjk/zUecPLl95qwe0k7jI5YZp0jQENylbilDIA3+dOQsD/7Lp5O7+7b55bnvG2apwAxhpex8NtkJbr75+sObvyZfo2FgH6Sp7Dm6quJtPkaksQSq2QDbI
+ srNsg8h7
+ 3WoS9STTudX85keZsJEdEIARST5Qd9c1VpwtvG7ysFqgEFBGOVaihDMqHvDTdq5oLx+pLdZKatbL1JCDCpHfQjPQxs84alEfVBuKp+9UMMZDLhn59iEJ1Nt9Mv4SgMljwJQoMmv0iKqekm4xXpfEHWDZEt4o0ogIPfozZipEX3qAlBXBVDPmgoL04J7Y4ZIaRntPLmZqWOnnT0Af0FmVC89pUlukDj7QNkVtxekIy+dUrDBnvlm8VJf1LL++PNX4DVD3VQheH2YifMhTaMjJktGba8wGGASyfxSgRU3UUCF0dOHn2SowXtSG98ZoAYrA+5lAXcXM7+ByaN6aQhujbXZJE/v2bJPCCUCxFJEOzkIcx0gu2N3zaeksUcR4u9tGxAWAZ5xVCxnhk9eo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,28 +166,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026, Tarun Sahu wrote:
-> +/**
-> + * kvm_gmem_freeze - Freeze or unfreeze a guest_memfd inode mapping.
-> + * @inode: The guest_memfd inode.
-> + * @freeze: True to freeze, false to unfreeze.
-> + *
-> + * This API is used strictly during the live update / preservation transition
-> + * window to prevent host userspace and guest-side faults from making any
-> + * mapping modifications (such as fallocate or page fault allocation)
-> + * to the guest_memfd page cache.
-> + *
-> + * Synchronization Strategy (Sleepable RCU):
-> + * To avoid high-contention VFS locks (like inode_lock or
-> + * filemap_invalidate_lock) on the vCPU page fault hot paths, this subsystem
-> + * implements a lightweight, system-wide Sleepable RCU (SRCU) mechanism
-> + * (`kvm_gmem_freeze_srcu`):
-> + *
-> + * Global vs. Per-Inode SRCU
-> + * ======================
-> + * A single system-wide global static `srcu_struct` is used instead of a
-> + * per-inode SRCU structure to completely prevent unprivileged users from
-> + * exhausting the host's per-CPU memory allocator. 
+On Thu, Aug 6, 2026 at 9:21=E2=80=AFAM Thierry Reding <thierry.reding@kerne=
+l.org> wrote:
+>
+> On Wed, Jul 08, 2026 at 04:49:31PM -0700, T.J. Mercier wrote:
+> > On Wed, Jul 1, 2026 at 9:09=E2=80=AFAM Thierry Reding <thierry.reding@k=
+ernel.org> wrote:
+> > >
+> > > From: Thierry Reding <treding@nvidia.com>
+> > >
+> > > There is no technical reason why there should be a limited number of =
+CMA
+> > > regions, so extract some code into helpers and use them to create ext=
+ra
+> > > functions (cma_create() and cma_free()) that allow creating and freei=
+ng,
+> > > respectively, CMA regions dynamically at runtime.
+> > >
+> > > The static array of CMA areas cannot be replaced by dynamically creat=
+ed
+> > > areas because for many of them, allocation must not fail and some cas=
+es
+> > > may need to initialize them before the slab allocator is even availab=
+le.
+> > > To account for this, keep these "early" areas in a separate list and
+> > > track the dynamic areas in a separate list.
+>
+> Huh... going over this thread again I could've sworn that I had replied
+> to this before, but I can't find any evidence of any reply.
+>
+> > Hi, It looks like you'll also need to update the CMA dma-buf heap's
+> > add_cma_heaps init function so that it adds all the CMA areas, not
+> > just the early ones.
+>
+> I would actually rather not do that. The case that we need this for is
+> creating a special purpose dma-buf heap that's composed of multiple CMA
+> areas. These areas must not be used by anyone else. Exposing these to
+> the CMA dma-buf heap would allow anyone to allocate from individual
+> chunks and throw off the accounting that we need to do in order to keep
+> the protected memory from working correctly.
+>
+> Besides, given the dynamic nature of this means that the CMA dma-buf
+> heap might already have probed when these dynamic CMA areas are added.
+> So we would either need to have some way of notifying the CMA dma-buf
+> heap of newly created areas or we might end up with an incomplete set
+> of registered heaps.
+>
+> If you really insist, I could look into this, but I think it's actually
+> a nice feature that the CMA dma-buf heap only registers these "early"
+> areas and exposes them.
+>
+> Thierry
 
-This argument doesn't hold up given that each kvm structure has two SRCU structs.
+No problem, thanks for responding. I see there is now discussion about
+subdividing a single CMA area for this, and that seems like it could
+end up simpler in terms of the CMA code for this series. So I'm
+supportive of that idea.
 
