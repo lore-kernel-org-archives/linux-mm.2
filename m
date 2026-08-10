@@ -4,103 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EAAAC5AE49
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 14:46:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 646D1C5AD55
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 14:48:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 936206B00A5; Mon, 10 Aug 2026 10:46:05 -0400 (EDT)
+	id 6543F6B00A0; Mon, 10 Aug 2026 10:48:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E6CF6B00A9; Mon, 10 Aug 2026 10:46:05 -0400 (EDT)
+	id 62B8C6B00A2; Mon, 10 Aug 2026 10:48:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D5CF6B00AD; Mon, 10 Aug 2026 10:46:05 -0400 (EDT)
+	id 5433D6B00AC; Mon, 10 Aug 2026 10:48:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 56E4C6B00A5
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:46:05 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D0AA1140140
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:46:04 +0000 (UTC)
-X-FDA: 85085634648.16.A21FABD
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5C200100009
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:45:58 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 1B9336B00A0
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:48:34 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 980F180190
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:48:33 +0000 (UTC)
+X-FDA: 85085640906.05.3E52C5D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 848E8100006
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:48:31 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ZjlpOaxc;
-	spf=none (imf14.hostedemail.com: domain of BATV+e92feb25c851dffaa619+8387+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e92feb25c851dffaa619+8387+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LaRHbxiG;
+	spf=pass (imf14.hostedemail.com: domain of dhowells@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786373160;
+	s=arc-20220608; t=1786373311;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1Lmb88p+cpryq5HXWLXRKXYmtZimwxaBhgeOhNY3PzE=;
-	b=mnZQEZpeU57CPmEp7SELvSHbcvrMAPRq/2OnZ62/rLE769mO/T04ou3LFgunw05xqHiYRm
-	PHGSdiouk7tjz8E2EIJHTxwlp2EB/DgPnOZ0FTzwMxbtXWQZJk03QoxNL24hvfoNqtjDRa
-	JOlgQnjcI3R/k5dvF8JynO5flUmWWQg=
+	bh=oAh3PBs47lZUHcwbeGXM5gS5ZzePV60tR0gQfqSs8Ac=;
+	b=YI6B4mV3DiQhwKh1a9qqLFnJYHwdd7ck+D2vMz941I3rnPbWj9G8xM7b/Ak7rCX/Wj95Hr
+	MGOZDyT2jCflOs6BEe5/sFLcljWwCEf4V4dg/KI1W+9Oc915AHi4M7RFvfWqp4COtP8p6v
+	rsSYStKyGP6KViJyGbf5jxajc91ErB0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786373311;
+	b=gVx7YlUsc66xDfYaJZLm41ixK+FWqNa0oZnO9jLGWsusVj/0Ksv9NiwNikluc89f6YNr5C
+	QjHDWXmVaAB+HiKJSbRhuF2yO5QDsgtvM9BrCw7Jt66KU+meXSBBS8g2nSm1l++PuTHjv3
+	zfXhCwWl4hqNISdibqcZ6gtkT73CCTU=
 ARC-Authentication-Results: i=1;
 	imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ZjlpOaxc;
-	spf=none (imf14.hostedemail.com: domain of BATV+e92feb25c851dffaa619+8387+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e92feb25c851dffaa619+8387+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786373160;
-	b=6+Kkyz49GqYTus1XwGGZmRqE1qF5uEPgJ+aJKIANKlprwz6PuFlKKIjm6nPBUIFbvT2jFt
-	xoBgX76PLIL4PJjC4LIM1Z6yJyjwz3CvdAd8BPD//NZHPbf3c9JmS/pZdLmosSUEQkRoxJ
-	cX0PwHhhg5Ec1ow4CgZyJRnqtzDbklE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
-	:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=1Lmb88p+cpryq5HXWLXRKXYmtZimwxaBhgeOhNY3PzE=; b=ZjlpOaxcjkG2f9OfkwELBNEzTf
-	ggKbF5B/67GpDWQrfUEvvWOm6N35oevLeRO+6030iJHPj2PMWXpaVJNv2DIyP+hoYeHLmSGhctapb
-	XIWAc93R4BkxMMeHs/qT7cJ04hcrL1srn8hMzvbpo27fVKLTPh9o17t71xQv1LzenM628CCqDIVCM
-	0PPEM3Fzl2tBQIgkvF7VFgp+VT6O6s/c5dYBFz1uP5ISwD07DTcy8DmnF5TwTbrxwV4pvYGuhKH0v
-	XX+DTw51mufx9Ucgtu6kXV8a8QyxeZIQAMXvdBM9tD4QHFcET45iUo8jbR02cL5G8JYBbwoWtRyNV
-	sLfeSgLw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wtRFt-0000000C3l2-13Nj;
-	Mon, 10 Aug 2026 14:45:35 +0000
-Date: Mon, 10 Aug 2026 07:45:33 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Jens Axboe <axboe@kernel.dk>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	Christoph Hellwig <hch@infradead.org>, Gao Xiang <xiang@kernel.org>,
-	Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
-	Jeffle Xu <jefflexu@linux.alibaba.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Chunhai Guo <guochunhai@vivo.com>, Dave Chinner <dgc@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Hillf Danton <hdanton@sina.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-erofs@lists.ozlabs.org,
-	Christoph Hellwig <hch@lst.de>
-Subject: RWF_DONTCACHE regression fix for xfs
-Message-ID: <annkDbhXBEeMoNVT@infradead.org>
-References: <20260730-blk-dontcache-v7-0-3e8e6850068d@columbia.edu>
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LaRHbxiG;
+	spf=pass (imf14.hostedemail.com: domain of dhowells@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786373310;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oAh3PBs47lZUHcwbeGXM5gS5ZzePV60tR0gQfqSs8Ac=;
+	b=LaRHbxiGRXSC8wsYGtxw3Nl3pvMu09Adv8xEFayfmVTxVLCHQg1kTietTocsNHH4Cu+uQd
+	uVTiCDN7FFS8xfuB0pVBiajFqlZ5ETwJUeDHwKK2Pjfn8P+FHflJSo2U6R9GL1mEZGc+DK
+	bOxGFiGnn/H7vKudmzhLxG8/GmDS/lU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-193-Px03ACNdNIe1uLQAit8Dwg-1; Mon,
+ 10 Aug 2026 10:48:24 -0400
+X-MC-Unique: Px03ACNdNIe1uLQAit8Dwg-1
+X-Mimecast-MFC-AGG-ID: Px03ACNdNIe1uLQAit8Dwg_1786373301
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F1B8619560AA;
+	Mon, 10 Aug 2026 14:48:19 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.44.32.44])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4C39D1800346;
+	Mon, 10 Aug 2026 14:48:12 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>,
+	Matthew Wilcox <willy@infradead.org>,
+	Christoph Hellwig <hch@infradead.org>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Leon Romanovsky <leon@kernel.org>,
+	Steve French <sfrench@samba.org>,
+	ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v9 02/26] mm: Make readahead store folio count in readahead_control
+Date: Mon, 10 Aug 2026 15:47:19 +0100
+Message-ID: <20260810144746.574036-3-dhowells@redhat.com>
+In-Reply-To: <20260810144746.574036-1-dhowells@redhat.com>
+References: <20260810144746.574036-1-dhowells@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: RGbe3FU5pqVnnAmFaUycjF-wMhoxRfD7pYrXFZHSIuc_1786373301
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260730-blk-dontcache-v7-0-3e8e6850068d@columbia.edu>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Stat-Signature: 3nq1dgux3hf6hc48ehxduk7keghispzn
-X-Rspamd-Queue-Id: 5C200100009
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786373158-543831
-X-HE-Meta: U2FsdGVkX18P+z9zrsDET72+xxrYnsvJ6vWQmHbg/VW0GBY2cGj0rwIW1BsHPFK7UqdR8KVf2kcd002FmpTVh2jhXq9eHnj/Is/8d5+W8jIC4/Pne7dg8BTalmuiB2cncRLRwvzx/lNjwfv35WVjx4kmiVxV5C4GXJzbVnu8pgi5d4qgRW4EwEF4VUWyWzHFr1si7HfMixmjl74mKz/agQ2q3pCf8HA8mAeHD2Qe63B5FYKgpMx9gnaDbGOJGqgB3PklR72cVaWFQGpxSBKupl/JiSQI21k/YKxSRmcvQrCPnL5hZwLv1Nj6CmtoZmg1FroR7Gd9gkysfKvIVj5xMF0d09gxfJhiwyqcxCl83TO7bVOZadQQ8qxofr06tUDIUZyE/nIJe/DexXYd5WepnDC6SYKpUfqv6mIFW+pt2MZ2Qf7Ae1T5ZsSLeAa7QjzrjZi5L8R45ty9lQRMVsozr6q4zEH77F968BWLA7HaceTjdPEUBCCYa4HfGXZo9e6v0C3ZLB3m6+8EL6sAjy5gjSX1YDKHoNSF9XCXFQbwpONHo0wgB+OTKEoagwdsfbIoyTv2Jng1N9l3eQTnmQFCR4OXH+a8KSSfHCAHHIR+QoCQO2l1D3ZVZKckjNZKYunrf4GFIjDqDnjLIdpf5BKmN147ewF1Wl0dlYzSKs7fu5tTtxNpDfm6I9Dsg9pn/1iONWaAw/+qglBPiuRE9q7c6GwTRjTcyZSPRUn9MmuCcDlPGFeats+SMwGLZwJKFYErBkMa/a96xFh9jt2/e6GUy9T8Yw0WhfvFhCDC8+h/Q1ci6eJU6Csuxwr0tBBUc0g1axS7EYynSs0XX+E4ibf0xELS+AmeRDyn4KLIZQVqkbRHGDsmvH+xYn+4FHhtSlnFsC/TfrFA1XaB1iNVexSOD75XO3kz8T3eS99Zbm/kfq0cKWcnvg7Znql+PSJ/rNoYrAbYF3qdfc6a0VyVCRV
- 3oXJ5H3P
- EsdEJwG+2y8GJk1VyQ1kWWCnpiOPMsoyhUlEm9iyO+4nw9kBfOKjwPnmBbCS5I/lt7b4tj9Dx5qj92qSeXhK4Ed+mnycBUW9wUmSSLVswT5brFcWHwAXZbsFkeUZwLAARFa/vBmkBwTvSV64AK+PYO4u8gaxCU+3L+cmx/t/LF9XYd/YHiKZ+rjL67q6NhWFR8ULFxF9zZCbOT798QNmzYyeaq/SAyy5fLQa4re8Cz/xw5+3deQRE2rr97lQE5a67CTkXyQutKuKIV/0pIN9QJYPYUin3qbmc/uvMfFkAmptvvJCqjtLKOLILe7kSzWauHF/B+iPlMRSRARdInGTyVOk3FCfiNXuOQZRPLGP8L8JwtXu030uRd0QoZb1ITInGHvExx+fLVZeC8zd+Qi9sV4YZOmjb+E36LJb4csDr9MLzX81FlXCuZgK8G7U8GNyAJKMHql05TVsPa0dV3hQK3uMMNh4iJyO54VdFVf03CnllD/cwU9aeElnxhzrB1F47yBxIbGoH+8wDDPs03MFOZDEqXblnNLoHxQt5wMG43UZu28T6PuGOqDbebMuDWCGR/4m0g1Eqh4qxWbzAuc2tINOyJoPxxGXbGeDyZJE4QLNBOI8=
+X-Stat-Signature: qmzaqg36xikjpixwr7w7gjo9fxu63nzc
+X-Rspamd-Queue-Id: 848E8100006
+X-HE-Tag: 1786373311-384494
+X-HE-Meta: U2FsdGVkX1+kodQ2EaY8bI3Fi8Szi0tHXtT/66ymYQUeRQaGU8JYQtX1X0D/ubNuDk+cAVuuodR3AdAA9AlgB9vMBGZjuhd62Jk4g7EyczkjxrmPRGa09JotfIT5Pm2yZFg5PdUnd1Ko9Zhkoe/u7oj8Wbp7p/xP0OEthwLVzqvnZDX+yFvjufIZ45Fh5MSjbIKQWZLS805xdNmsPNoiWjyJnSXT0LMO+RJ425DI2K7aXkokjNfdvdAzSD7Yht+4BMqqO3DbIALeSmeDD47pj/bWvCkJjAamCPCoynwiT0hotftExwnEckMMgGZC5vkc5LuVTMYlqM6O298jL++eBvVAxuaFgZ/I10mworAaE8biObpmXweFMJOdbLQeWBPYfx+zJRxkFm8sfAH+pzvflGHk922E44uL7Hbtg+MxZnEvL6jiaTUydjlPLPozkD05jbTqePiFSvqiB/8k1gsgVGj0mAK3w9RBAW90UlUQQrPlmZrKuyFqjThbtsYzikD5Njw7Rw5uqR/OUqZroKCavpJfMu22rx77bu7hK4zUGCgHqZxALg5zEXJY9dDkQIGOLRL9244tMRli0YenbbLlJw54fySrvztF48C7gJ5DuWgxkAy+Lgv6CyMpWBiSjXRoZlGBeF8CWIEnfI5NJXPV8i1OzfoGk2bCykW/OfE1+7vZZ/Bdkt6QZ9gXiGggykHMJMg/aw7oiKF3XdMlDBIf3g4QrANfrxnZJvJHHTe+ysXL2BC2WN64PD4pAP4rsaMwLdR21rDsTkJ6ZcK5+1kfJjYsKJfKOtpwIpDQsfJmLHtY8KpTD17C+pNcSD2Qh2vofJBz/9sjg9zMHnRf6WZM0G28qi44VgjQGg/AnY/scKGVnjyAbuiNfU/xtN+CUXQBVBNOKtvnf/4118yq8nHg5uGj9NJQbzNuu9QYhPxCsOjwuou+Q2qqKXt97iMZQj6mMvLI2S6iY+OzblV4W3+
+ ZB5PFEB+
+ qO+WD0NOUtrcuz2TKOaDno8HSKVsFTucWFiM51jlLVnQdkRlPWWTNr8MoeTz9WXz6uL6ABTs8SgdlTXPZZ8YF/Mrw8JXQfMKAjE9wyj9FEhfX/v8Cdb9ozufXoM612uTIffpe4xoytEGcdgGd93fXuPx/4AqVZFWVu8UAGZfXdLwyAVriTMB2dfC1Ck/ex3CBHJq3nlQtyVPQj5hNdt83cApNAmv8sj2ckIrvwyCL3rXs+2UDg7Cf3kwBIBw81Q7fS9szD4/Pd/1sYIXmkne6N2xTHnbbautPKlbLqFpC4SmbC9ZYbSAH4yX81I8FY2l2TUhm2WJduuKSC/oJCMpzExPdBk3gSGfkTHYSvdQxo3cGwYAL5k3Y2XAamO5QsqkWEW9anQWbJ2dEG13p+ofMC3I/IuZd1wiQHc71hmet/HFh9ilqCdxzEv8EQWf/oBaDSKLsBwdF+GpBUeqORDbeMK4P3bLacieOuz3rlWAdZiYHi2J/KXHNjqYLe26kEGRi1X9VPITMGUJO3Yddz/ZzNIvStMnBA3p8kjXdXpfiLsMwRElm814KQcaCoAXweJlnEQY1VGyiqJxjCfLqxC1fqAxCaorx9qe+3gxo+IRbUD18TqiKgnWX6pA24w2ptAgPChRHxtlbqnz3j+NPgO2WFC1smSixYw/c3GtHxJZFmfqq9m2dEdevZJnr/rKyU1/wZNjrX78zJWFdYMo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,60 +126,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Below is Tal's suggested fixup for xfs with the whitespace damage fixeѕ.
-It should probably be attributed to Tal instead.  Can you handled it
-from here and send it to Jens with your signoff/authorship to avoid
-the performance regression in XFS?
+Make readahead store folio count in readahead_control so that the
+filesystem can know in advance how many folios it needs to keep track of.
 
-From: Christoph Hellwig <hch@lst.de>
-Subject: xfs: avoid double deferrals for RWF_DONTCACHE writes
+This is cleared by read_pages() in case it is called from a loop.
 
-XFS already defers some writes to a workqueue when transactions are
-needed to process the I/O completion.  Disable the block layer bio
-task completion in this case to avoid a major performance drop.
+The count is accessed by the filesystem with readahead_folio_count().
 
-Fixes: efbde6f9f449 ("iomap: use BIO_COMPLETE_IN_TASK for dropbehind writeback")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-mm@kvack.org
+cc: linux-fsdevel@vger.kernel.org
 ---
- fs/xfs/xfs_aops.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ include/linux/pagemap.h | 10 ++++++++++
+ mm/readahead.c          |  5 +++++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/fs/xfs/xfs_aops.c b/fs/xfs/xfs_aops.c
-index f73e26d9c9f9..059846a8d65c 100644
---- a/fs/xfs/xfs_aops.c
-+++ b/fs/xfs/xfs_aops.c
-@@ -372,10 +372,14 @@ xfs_writeback_submit(
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 2c3718d592d6..e1e51bace388 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -1348,6 +1348,7 @@ struct readahead_control {
+ 	struct file_ra_state *ra;
+ /* private: use the readahead_* accessors instead */
+ 	pgoff_t _index;
++	unsigned int _nr_folios;
+ 	unsigned int _nr_pages;
+ 	unsigned int _batch_count;
+ 	bool dropbehind;
+@@ -1527,6 +1528,15 @@ static inline size_t readahead_batch_length(const struct readahead_control *rac)
+ 	return rac->_batch_count * PAGE_SIZE;
+ }
+ 
++/**
++ * readahead_folio_count - Get the number of folios in this readahead request.
++ * @rac: The readahead request.
++ */
++static inline unsigned int readahead_folio_count(const struct readahead_control *rac)
++{
++	return rac->_nr_folios;
++}
++
+ static inline unsigned long dir_pages(const struct inode *inode)
+ {
+ 	return (unsigned long)(inode->i_size + PAGE_SIZE - 1) >>
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 558c92957518..069ded56fd80 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -188,6 +188,7 @@ static void read_pages(struct readahead_control *rac)
+ 	if (unlikely(rac->_workingset))
+ 		psi_memstall_leave(&rac->_pflags);
+ 	rac->_workingset = false;
++	rac->_nr_folios = 0;
+ 
+ 	BUG_ON(readahead_count(rac));
+ }
+@@ -303,6 +304,7 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
+ 		if (i == mark)
+ 			folio_set_readahead(folio);
+ 		ractl->_workingset |= folio_test_workingset(folio);
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		i += min_nrpages;
+ 	}
+@@ -473,6 +475,7 @@ static inline int ra_alloc_folio(struct readahead_control *ractl, pgoff_t index,
+ 		return err;
  	}
  
- 	/*
--	 * Send ioends that might require a transaction to the completion wq.
-+	 * Send ioends that might require a transaction to the completion wq,
-+	 * and disable the block layer task completion for them as there is no
-+	 * need to defer twice.
- 	 */
--	if (xfs_ioend_needs_wq_completion(ioend))
-+	if (xfs_ioend_needs_wq_completion(ioend)) {
- 		ioend->io_bio.bi_end_io = xfs_end_bio;
-+		bio_clear_flag(&ioend->io_bio, BIO_COMPLETE_IN_TASK);
-+	}
- 
- 	return iomap_ioend_writeback_submit(wpc, error);
- }
-@@ -481,7 +485,14 @@ xfs_zoned_writeback_submit(
- {
- 	struct iomap_ioend		*ioend = wpc->wb_ctx;
- 
-+	/*
-+	 * Defer all completions to our workqueue as all zoned writes require a
-+	 * transaction to be persisted.  This also means we never need the block
-+	 * layer in-task completion for a task context.
-+	 */
- 	ioend->io_bio.bi_end_io = xfs_end_bio;
-+	bio_clear_flag(&ioend->io_bio, BIO_COMPLETE_IN_TASK);
-+
- 	if (error) {
- 		ioend->io_bio.bi_status = errno_to_blk_status(error);
- 		bio_endio(&ioend->io_bio);
--- 
-2.53.0
++	ractl->_nr_folios++;
+ 	ractl->_nr_pages += 1UL << order;
+ 	ractl->_workingset |= folio_test_workingset(folio);
+ 	return 0;
+@@ -822,6 +825,7 @@ void readahead_expand(struct readahead_control *ractl,
+ 			ractl->_workingset = true;
+ 			psi_memstall_enter(&ractl->_pflags);
+ 		}
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		ractl->_index = folio->index;
+ 	}
+@@ -851,6 +855,7 @@ void readahead_expand(struct readahead_control *ractl,
+ 			ractl->_workingset = true;
+ 			psi_memstall_enter(&ractl->_pflags);
+ 		}
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		if (ra) {
+ 			ra->size += min_nrpages;
 
 
