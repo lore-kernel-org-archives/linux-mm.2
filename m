@@ -4,116 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 491C2C5AD7B
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 21:46:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FF89C5B569
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 22:10:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F39C06B0093; Mon, 10 Aug 2026 17:46:44 -0400 (EDT)
+	id 5EC046B007B; Mon, 10 Aug 2026 18:10:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC3716B0095; Mon, 10 Aug 2026 17:46:44 -0400 (EDT)
+	id 59C866B008A; Mon, 10 Aug 2026 18:10:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8A566B0096; Mon, 10 Aug 2026 17:46:44 -0400 (EDT)
+	id 4B24C6B008C; Mon, 10 Aug 2026 18:10:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A20FD6B0093
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:46:44 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 21483C0292
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 21:46:44 +0000 (UTC)
-X-FDA: 85086694728.26.AA455A3
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 692F34000B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 21:46:42 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=P0UmuO5N;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf01.hostedemail.com: domain of 3wEZ6agYKCJEDzv84x19916z.x97638FI-775Gvx5.9C1@flex--seanjc.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3wEZ6agYKCJEDzv84x19916z.x97638FI-775Gvx5.9C1@flex--seanjc.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 16D916B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 18:10:15 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9240614024F
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 22:10:14 +0000 (UTC)
+X-FDA: 85086753948.18.5269206
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1D3D71C0003
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 22:10:11 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="UwX/Ilov";
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786398402;
+	s=arc-20220608; t=1786399812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q9ZVdigTFkkXZy3uWdjVBQv2uG8gYzkftpP7XCg0SS8=;
-	b=aOpayI5x+mXRgmSosIpoaFtZ+SdxZpmdO4+0Uo/p1g+EHkNNNn27XMx02oetVn1g0rgerv
-	5IHJePKencRTrWADSMPt1k2ZJMlxI21WIRMuH4Af6h1040Sml4xDeqtpdaOlOh22YMtdgJ
-	lTr6dUtLg5i8YeUTWPyG6DPUXwtvKog=
+	bh=/hUK9nmdYQUfhG6ut1/QpR/T7D3LLI4jSc7+bBZ5Ofc=;
+	b=IiJnIbj5uHsHpNGqSB1LXgR6q8pU9lyqyjEz3F8X5RAOEW6rzu4e7ScUhvs/agi7VwTvl6
+	wewjKoRksUDArD6w4iIRzAVVBWMBkLVda468zLtLczOnHN6GkOLJGVGQBy0kC7SZlZMBK9
+	TiztFdkV7xcb/DIBidLxwjnM4iDuz38=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=P0UmuO5N;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf01.hostedemail.com: domain of 3wEZ6agYKCJEDzv84x19916z.x97638FI-775Gvx5.9C1@flex--seanjc.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3wEZ6agYKCJEDzv84x19916z.x97638FI-775Gvx5.9C1@flex--seanjc.bounces.google.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="UwX/Ilov";
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786398402;
-	b=hW6UvfWxDwnuCXWGHjp3ThLbjfsf6YIyxRrWRaiMOz9TgLmhWMMx5GcZesBTNnU/Zw0E6n
-	aauhgOgxKwDk8UGMhHPxtRNdD/5y1ekLWAx+Q7f9TH15oe45vkbtoejQ9c3B//ML1oI6Gt
-	0VyfIjaE+byL2ZH5zbQk2S203Emt/jI=
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3811279d51aso4692295a91.1
-        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:46:42 -0700 (PDT)
+	t=1786399812;
+	b=X6mpCEx1fGPEOJNwc5J+pbDceL6dMhjXzCGUN/+HCE6oz6yfkSUI8U1ikW90HOgU7WcUX+
+	N/Lm1tVETRM+ywIN6PbZAx3oMsBjsD0764Spgqt7i4lEPa4v9R98WQ/J5kfs9SFlsm/igz
+	F3kA44T6coHuydM0o7D9tZ8plMXffU4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9648A6001D;
+	Mon, 10 Aug 2026 22:10:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB66F1F000E9;
+	Mon, 10 Aug 2026 22:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786398401; x=1787003201; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=q9ZVdigTFkkXZy3uWdjVBQv2uG8gYzkftpP7XCg0SS8=;
-        b=P0UmuO5NI6nwIOfJjGDDaCRUtfkqVnMRX7YHtDMb0jabX1z0D1dKsCBQNT0sMFbycs
-         vA7NSAKsPv5jqq/ajlbeLnRL3AOygkOctV083omNI1p7VkBJxP4Q6ARX84WcB9BaPwN3
-         Z0WXZGP0KjXadSgLeu7/RlSoOKkc6hZY6mPP2jt5B4haFhfGWV7lWgLmzU1lCE3Ulh2/
-         X1QR0TErlb9OGfWu/k7bCCZ7dWSgqFE4LV50Zpeh9LBnZP0H1zftEUmaHBgS7uzV/jt/
-         wrFODsSJ/bNuBdLfJc4mZ0WAXXGy5ICk+BHRzz1wvYTsW8dZ3WSQ6oK86UridxyQpiHT
-         h7Ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786398401; x=1787003201;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=q9ZVdigTFkkXZy3uWdjVBQv2uG8gYzkftpP7XCg0SS8=;
-        b=Rb+UgyIUJyRNIvi9Kfiz41LdRqxAJKdMXKZQIP7+WV75pNxkYziDz79ggs1soaYLla
-         khXmbH0Pt3lxwJrVOqNy8rhRDRMwUHQFcBrejPRZfD/7Gmj4sHI3cL23mWEvr1UUfxaO
-         uwwD4SHEydFMLiGpKuOZ4tKpjYYiC+pOjtIJut0q3J2+TroXdmV5+gy3473Y11FaJq6V
-         AgDd3/1tQMmd2AaLfbP01/sOGLQfneGLOmbjstvVOL2XGhdJdXXn0u8O7QdR1gi9AdVo
-         JGcFmGuTnqcpnrd7PA9gDd5aOleErt4lMUE1taFZ7kXkCbzP+wbasu8VeAOhUlDqf9rF
-         Lpwg==
-X-Forwarded-Encrypted: i=1; AHgh+Rp/3EkKDXpOvf9JRT/IxascgcAwg2InVnkSziDLh/EA6sgE4R82av1IW5j+sYOnSbOTiBf3uXSPWA==@kvack.org
-X-Gm-Message-State: AOJu0YxWr9fJ3aw64u80IsbVSOfoIt7UFc7FlxxUcRWD8z+w3qycIQqV
-	UawwT57ytXKK5b45XDoFN6RbNzgrSTpPwDAumfsgutZcGnw0OwZHaHk+0VziZPmqDTblxTTxUX7
-	y7rU0ZA==
-X-Received: from pjbmm5.prod.google.com ([2002:a17:90b:3585:b0:38e:2f99:ee94])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1f8e:b0:38d:f096:a1dc
- with SMTP id 98e67ed59e1d1-392620e71c6mr31494631a91.11.1786398400920; Mon, 10
- Aug 2026 14:46:40 -0700 (PDT)
-Date: Mon, 10 Aug 2026 14:46:40 -0700
-In-Reply-To: <CAO9r8zMMqSV5Bf1+qKXCG4x0X9ZK_RMq=X=2ccjpo4D2mEU-qA@mail.gmail.com>
+	d=linux-foundation.org; s=korg; t=1786399810;
+	bh=/hUK9nmdYQUfhG6ut1/QpR/T7D3LLI4jSc7+bBZ5Ofc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=UwX/Ilov0bIFii9m3iwtL8q7dWNlzT+Wx3UroPo9PylX7if0NcfH9JAavRDAn86dw
+	 JNwDAbfcVY3VRo/UBsUbAdQe6WqOiVdxquE1mb7LVSCrY0NRcx31i22SVoR5H3wZ9K
+	 Nroa/JyRqqFqLrw3hFrR5C55A7jEiwD4QPiMGP18=
+Date: Mon, 10 Aug 2026 15:10:07 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato
+ <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan
+ Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo
+ <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>, Kees Cook
+ <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, Ryan
+ Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>, Matthew Brost
+ <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
+ <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
+ <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
+ Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin
+ <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Arnd
+ Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank
+ <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer
+ <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily
+ Gorbik <gor@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Alex
+ Deucher <alexander.deucher@amd.com>, Christian =?ISO-8859-1?Q?K=F6nig?=
+ <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann
+ <tzimmermann@suse.de>, Boris Brezillon <boris.brezillon@collabora.com>,
+ Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
+ Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
+ Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra
+ <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de
+ Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Mark Rutland
+ <mark.rutland@arm.com>, Alexander Shishkin
+ <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian
+ Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, James
+ Clark <james.clark@linaro.org>, Jason Gunthorpe <jgg@ziepe.ca>, John
+ Hubbard <jhubbard@nvidia.com>, Muchun Song <muchun.song@linux.dev>, Oscar
+ Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>, Kairui Song
+ <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
+ <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Youngjun Park
+ <youngjun.park@lge.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 02/20] mm: provide vma_[flags_]is_cow_mapping() and
+ remove is_cow_mapping()
+Message-Id: <20260810151007.c1cfbcf46d498d2f8ce566f9@linux-foundation.org>
+In-Reply-To: <ann-vS6MYT9kuXqu@lucifer>
+References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
+	<20260806-b4-scalable-cow-virt-pgoff-v4-2-ab318a350404@kernel.org>
+	<ann-vS6MYT9kuXqu@lucifer>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-3-6f5729aa9832@google.com>
- <amu5v-e39GKpgFG4@google.com> <DKCQZ9JTKRIO.1K61106YF38GW@linux.dev>
- <amz0jzVPZo_eBeRV@google.com> <DKJM4XXSPQLA.13XE36MX0650H@linux.dev> <CAO9r8zMMqSV5Bf1+qKXCG4x0X9ZK_RMq=X=2ccjpo4D2mEU-qA@mail.gmail.com>
-Message-ID: <anpGwPjdzUZ1J3Be@google.com>
-Subject: Re: [PATCH v3 03/26] mm: introduce AS_NO_DIRECT_MAP
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Brendan Jackman <brendan.jackman@linux.dev>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, rientjes@google.com, 
-	patrick.roy@linux.dev, Takahiro Itazuri <itazur@amazon.co.uk>, 
-	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, 
-	Reiji Watanabe <reijiw@google.com>, Nikita Kalyazin <nikita.kalyazin@linux.dev>, 
-	Ackerley Tng <ackerleytng@google.com>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 692F34000B
-X-Stat-Signature: guzoe8ofq3x3qeiornc9d3tpceti6iia
+X-Rspamd-Queue-Id: 1D3D71C0003
+X-Stat-Signature: 6wapmibastqtqeegnbh1jh1pitdp75we
 X-Rspam-User: 
-X-HE-Tag: 1786398402-243376
-X-HE-Meta: U2FsdGVkX1+5wsbao8U2fnaC5CQYjAsKQ2HDrpDgdUUfBO9LdMR0ya7f6DxbmHSaTV2dLiIHET1KNEs5KFYk1Yxr+sxPAqntZt4dqj2ZTkCugt4YGYqaiRjEMcoEEn5PNuAqvkbl5VUv3o5JFFyYYaRHH6J9NVt8oQlqe/yibsYvX6HyvDa2XKXoFjtkgwFoywFuOHZQ/7c/rWtryIhutxyhyh7+66TROfNDdOrgmH1GUBvOjxhzY0mzOm5IIl9ivmcH5GBKXU5SryHyWzjBELfzHKneRSLZc4HCm0DCZAjpjWSL4VIhXZObE0fkNLoi9T6Y4kslxL2hblZ6kvZrkdt0PwAbmD9PdzxACKvSqzx2Il2VvGq9rgtkIhgMRZQcdCYkM5zBnd94pKsWfNb70+0K1xTo5tMWfdL3yg2RZUfB1IWL/VOV38EsfYH4zpf0OuNCwthSBFlUplUhUBwx/qdwZJoXxUMDOIlYt6U+0QbNw06fe1nIjPqamx+VRmv2E2L7B4bLqSsYuuhIYQcKuLLpd5+tTkaDzgU5g2L7EaStndWanOJPIPOop0d+zXTIlXxkuaaLQqoS1hNheJ0hvyAJIZyycvXiLl/8Y4aVvhe4IiiJ6LbOiaZRLXYqoSlVeXEdb7h8VLOa4VMDeRkJe7d46+5wLKbJsDzeuhmMqZjpMLsxSvhYT8exqm+diqoiLzNTGuI+LZrGf6z89j2qvXY1mHF0eOekwq3ww3EF07IUjxnJN+wM2pH8JN203hM3figgP4eLLcqym9KvWEvC+HRKb0hep0jUvN6Q+34TxmSu/YAasUWxrn9l2AMx/GVXh5d+VWHN5z3lMtgUf65ydyxtWPAi9x09Syby+P7io4LChVHbN8wPn7kO03BXDsqj2u61ffwiFuANZpqvc6asGgMqRWERnTdhP6NcclLSVh9xx/KfHg4N5OliL8+xV4HAFGMEIIgr8kXGrVvcoIv
- aQ5KGQDh
- IARVckPtqqN9BsIcrFFSM4Yj6/69wR48ksdSy+ovnvMBQIzzN0nHuQBJ/nQ3ZOmZ49HR185nbilH0KP31cUsTBL7Wi4IWVNxSvIlrDFpERs2FDjb7nSDPfUH/lZjEaCDDjdYLZcQTAVuaV8U1mNhUvZZdiNKTELua5r4K+5H8Y5c1laAQIQDsp7dc7WmxKIwMJX1n5EXWq50/L2g/YaHpRdY+Cz9T3ZULXKY+CRrpFuwWsrh4GBxVGv8+zUdGLAnSoDrodvzyAL1UMSYjDe6ZVR3bfyswAwxX5CxAJsSH6nc2gbQYuAg2NiIPCWQNc/DBGiw+xfJmYhsA0XROYtlDLHOErR4gPvoU4y9vb8/F9lwjzvlEjlFpzClyUxi6/wkeVsS6gn0+vzK3yeXUQa0AszdMLyawXmHNWLPqdYSDYTlHI15ylQDD7LzAzAurmk2fZzqm4Mnsue5ZHo9eMGq6eOOzi5ZQr4nA/9TiMyqJGP9pu4zX7k6oj1SzoAaeN7FjqQmFwlc2ZdKZQhYFOASFBcYn4eNBqN6vcYvnURrnmu2Wbymcva54krYzmWJdtPnMg5PYgqelRdXsUdyBp0lVIz8EWumpvlFjgd/1romt7kCl+k38Sy5aHwznorfnzVmhopCa1eDov9AOmxd19nXW+A6Dv1AkaykTqP1iWBUzO+ZDjwbToBhUme1QCIddagYn+2FUcGRmZ1n9b/90gXh0q5U2s+V0BtZ+qu3EKPqkfFuS6BNiMOoHFxPyJg==
+X-HE-Tag: 1786399811-822051
+X-HE-Meta: U2FsdGVkX18yB2wDyq1rW8XJRsCYgCac1N4GtfnO0r2fFCQ/BgnAEWDjvBfWr3H0VIow6zBlYSwx4GBOcjk8F7BPQ5jKksHHqxwOKrdwXI6ANaqfu7Z++LcVYLL3gxFGIral+7ggEoFlKdm9v9Uhmy29gEAAqdShkLuFf9EG4zWZogrVrb7sY8ERwKlSh1V2wd1x4yyBIvIZs2Ro/qwFgukYmZmiuCaFGQdkvfXa3l5DfC+jD1/9zt815/XgjuyZ+3+4b7TIaCL7wxp6nLs56m5CVipfhHVe3D4n9vK2RSQwuvfho5Qv71LZNS2/S4vKOya2/piucU+l6FWBfz9MHw+XmW0WXhdImfJkgYIfnzM6WI5xDmCDPthngdKlPbNFQ1QUN4w95imcuzvho3BV6NFRl5/D6fgH/2i8FYCUbCtKafrO1G48DeaKL/NzsheJIuYYsTrTGPcwbMx7Sxc4F3E3h1MRBJ0g0kKnaj+6W0tPYP7o7Dp0tfEaki/b5NkEHfY61hZROKCCivc99fO8vsQUsCPwoYWUap5N5yXoUgMTTzOJCFJbkHLlkDDD6L4hDlNu5GWGBhNsoxAJrNolO0w6mwavq2Cxu7oV6K4Shnd66sh1XsTOLYySlkugZWIEPjejZ5kXJWut/NKlYqz4NPQ7lWfG02FY9LuZShMlgCglZZIVmJ+T16mmk4GQ21qBVnC2AgV2KoPLuUQO8aKeHbkJrPopR6FtXg1b7HZ7VU+ZRjyXvz0CFPMXv0E7NqvHWm1nYgQMocnXXx3N3wB0uDPTXFvX9tvVxuwuqplLZSveSwrBbT1BJxAoH11uPd/LrWVR3CBbxqCQ3Dxcr3Tnzf9WKsKkx8YuebY3qDgTzODDe3e4StvQcI3Ebjh33zU16SelRufGDP0u+3Kr7xKcS4UmGZf3p4KqKtw9xB7CaeguXecn8pHw7YFVO2JeHK/N2WK/3eabSvja0VMa+In
+ FAJZbP78
+ 67Ca4LOkmym32BDWq7nXHG0/Qc2kXB4Rmu2OWqBwKvBvvKNVi9/0u2We12kgR6ME9lPZ5IWnZmcVzlRDG5JubSUwF4RAPjhqDfc2GMl5IDtIinUvFh0nH3k82MKDL/DXozX8OEBbRA/4smxAor3OUqADOh9ylaBr/gIBrilXXiigotaceStLkMzyfLw8imAg5IBibwWH44K4zU4CpVvgKkRScwLEAkHJa0RMHvxyGgzwxHbrFaQuoClCSXnb0wbk/OjrHQQXqP00m6YZYGx/QdCQV2gyMG6cdzavXnfREzyCXzDVT0l1bkua14O0cBwiqKdHmcM0ZO2rlxA0RqyVI93wh0UILgV77oG9WzEd75YMdMFqX3JOW9wJkmY+TCJsmZIgvBTaDAf1vXbfY7unrBiRU+akxbzqMtdzYoi+IAy+zPepxkXSIc4Z4RGqtZvZ2pKv6LPTXOGy/oBg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,9 +139,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 10, 2026, Yosry Ahmed wrote:
-> I don't actually see any inline responses in your email or on lore:
-> https://lore.kernel.org/all/DKJM4XXSPQLA.13XE36MX0650H@linux.dev/.
+On Mon, 10 Aug 2026 18:59:34 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 
-Likewise, I just assumed it was the upstream version of a butt-dial. :-D
+> Hi Andrew - would it be possible to insert the comments added below? Trying
+> to avoid a respin if possible :)
+
+np, like this?
+
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: mm-provide-vma_is_cow_mapping-and-remove-is_cow_mapping-fix
+Date: Mon Aug 10 03:07:02 PM PDT 2026
+
+add comments, per Lorenzo
+
+Link: https://lore.kernel.org/ann-vS6MYT9kuXqu@lucifer
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/mm.h |   57 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 57 insertions(+)
+
+--- a/include/linux/mm.h~mm-provide-vma_is_cow_mapping-and-remove-is_cow_mapping-fix
++++ a/include/linux/mm.h
+@@ -2271,17 +2271,74 @@ void unpin_user_pages(struct page **page
+ void unpin_user_folio(struct folio *folio, unsigned long npages);
+ void unpin_folios(struct folio **folios, unsigned long nfolios);
+ 
++/**
++ * vma_flags_is_cow_mapping() - Do these VMA flags imply a CoW mapping?
++ * @flags: The VMA flags to check.
++ *
++ * Mappings which could be CoW'd (subject to Copy-On-Write faults) are
++ * described as CoW mappings.
++ *
++ * All mappings backed by anonymous folios (all anonymous mappings and most
++ * MAP_PRIVATE-file backed ranges) are CoW mappings.
++ *
++ * All other mappings (including all writable MAP_SHARED mappings) are
++ * non-CoW.
++ *
++ * The criteria are !VMA_SHARED_BIT, VMA_MAYWRITE_BIT.
++ *
++ * VMA_MAYWRITE_BIT is checked instead of VMA_WRITE_BIT to account for both
++ * future mprotect() calls which can render a read-only mapping writable, and
++ * GUP with FOLL_FORCE (e.g. ptrace) which can CoW a read-only mapping.
++ *
++ * - No anonymous mapping can ever clear VMA_MAYWRITE_BIT.
++ *
++ * - Writes to anonymous mappings do not immediately result in CoW faults but
++ *   may do so after the process is forked or if a read is followed by a
++ *   write.
++ *
++ * - Writes to MAP_PRIVATE file-backed mappings result in CoW faults and may
++ *   do so again after fork.
++ *
++ * - MAP_SHARED mappings of a file opened read-only are transformed into
++ *   VMA_MAYSHARE_BIT, !VMA_SHARED_BIT, !VMA_MAYWRITE_BIT mappings, so remain
++ *   non-CoW.
++ *
++ * - Drivers may clear VMA_MAYWRITE_BIT but do so at mmap() time and cannot
++ *   mark themselves anonymous. Having cleared this flag it is not valid for
++ *   them to leave the VMA_WRITE_BIT flag set.
++ *
++ * As a consequence, the anonymous reverse mapping only tracks CoW mappings.
++ *
++ * Returns: true if the flags indicate a CoW mapping, otherwise false.
++ */
+ static inline bool vma_flags_is_cow_mapping(const vma_flags_t *flags)
+ {
+ 	return vma_flags_test(flags, VMA_MAYWRITE_BIT) &&
+ 		!vma_flags_test(flags, VMA_SHARED_BIT);
+ }
+ 
++/**
++ * vma_is_cow_mapping() - Is this VMA a CoW mapping?
++ * @desc: The VMA to check.
++ *
++ * See vma_flags_is_cow_mapping() for details.
++ *
++ * Returns: true if the VMA is a CoW mapping, otherwise false.
++ */
+ static inline bool vma_is_cow_mapping(const struct vm_area_struct *vma)
+ {
+ 	return vma_flags_is_cow_mapping(&vma->flags);
+ }
+ 
++/**
++ * vma_desc_is_cow_mapping() - Is this VMA descriptor a CoW mapping?
++ * @desc: The VMA descriptor to check.
++ *
++ * See vma_flags_is_cow_mapping() for details.
++ *
++ * Returns: true if the VMA descriptor describes a CoW mapping, otherwise
++ * false.
++ */
+ static inline bool vma_desc_is_cow_mapping(struct vm_area_desc *desc)
+ {
+ 	return vma_flags_is_cow_mapping(&desc->vma_flags);
+_
+
 
