@@ -4,141 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E95D5C5AD4E
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 06:39:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A107CC5AC82
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 06:45:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3D656B007B; Mon, 10 Aug 2026 02:39:38 -0400 (EDT)
+	id 8D6A86B007B; Mon, 10 Aug 2026 02:45:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEE926B008A; Mon, 10 Aug 2026 02:39:38 -0400 (EDT)
+	id 887106B008A; Mon, 10 Aug 2026 02:45:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DD0E6B008C; Mon, 10 Aug 2026 02:39:38 -0400 (EDT)
+	id 74E766B008C; Mon, 10 Aug 2026 02:45:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 74C116B007B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 02:39:38 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7EFD680610
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 06:39:37 +0000 (UTC)
-X-FDA: 85084408794.28.89F58E4
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 98CAE100009
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 06:39:35 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=dmkIujJr;
-	spf=pass (imf05.hostedemail.com: domain of souravpanda@google.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=souravpanda@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786343975;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 400C16B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 02:45:07 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C32BCA06BC
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 06:45:06 +0000 (UTC)
+X-FDA: 85084422612.27.1188B5B
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 78634C0002
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 06:45:04 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=cP2dX1rq;
+	spf=pass (imf22.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786344304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=beTjDQjSO+WsmxqeYJG6yL+QaVmFzIIDf21MXqCQ/Uc=;
-	b=sN5Y8JL/z9+pvvtsr8ydZNDBlQK/kBuYZZl12jEIeU97Meia1M9y5uqKC5YkhEXWOmjmYU
-	molilNXp4v/mmwsTh7w9EbQX2fXhpPSkwXuG4atWqhjDaoUxttHvh4p91k1dJvO0Lsceo/
-	8ZOqahN9hXN8K1NL50Z37mx6iU12BoQ=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786343975;
-	b=QAqZFKqYlziLOeAUbJ3EPoB95PuuB153ji2Gk7HRyqJNx2Y0gPZkJyR3JBKy8hWLHyQL3o
-	2mKFWpjtcjTe7AouKTgpakhUDFwCh5G+qnS9AwtN7Mo1AovQpdynpaNnja8f0PO6huH3DQ
-	lNX9CyZJ5gnDYMEuiFgxWK751DLomEE=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=dmkIujJr;
-	spf=pass (imf05.hostedemail.com: domain of souravpanda@google.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=souravpanda@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5b2a8173142so5838e87.1
-        for <linux-mm@kvack.org>; Sun, 09 Aug 2026 23:39:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786343974; cv=none;
-        d=google.com; s=arc-20260327;
-        b=XvIFAzzV48n63sSFqyM7bWEonm04Dxa3C259P7iP8Ocx8eEsUScWC+RqquLPlxB/Km
-         6fYZlL2Q/ja2fTbhUkzNriYb/xuoVfXKi2F5xEZ7ga+5/QK5gN3r+33SL8dLqq0PlHEZ
-         lg2r6TY28EDeRUMczVtikTtjjU9CRmsuT5UhdcCZvoBJOv3TSgyFonlTiyckd2kQTR+x
-         Wr3+Os9bDsMv1GYtMnpk3ucu1iZ7rwxC4n73WNc0BWJAee4OQo5oU0VPit1KUOHB4T0K
-         lDi/3LKJ6gsFU8h0RevnkfHZ00PEb4AK7J3+7HZ52HLqYwZ1gCRG3Qhbf6SD/5FRS4Ud
-         9ztg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=beTjDQjSO+WsmxqeYJG6yL+QaVmFzIIDf21MXqCQ/Uc=;
-        fh=c+AWe0rlKw+BP8+BDFs+Xqq3yVDMGhAUb+rkKy2jRm8=;
-        b=HbckVRARcAiZ5nn5HxuAgTvQYfs2OUZxENFblS2v2rnK4f2L44GTZX3mToVeHG4mhu
-         wzkO91yoM0wOfWggs/Wmsm3UyC4XbbNwg1oWOVHFK9p91zR0LOEYoBhwK/MWKzQn0JSf
-         UVHxqNskdEJ6yJCBnphMBRsTGHqe21fSUQ+hfh00PQHAcMWP+/6c3P9O+BxtI9aW0Cbk
-         YPrUzggWcKI3Al5fDLP0zkxRCoLLAyREDC68cXSrhkeOSGZsoEbibnTyTZFFPjZqpQpA
-         6cg7bUgiRLaH4cNCJ5OF/XcvCb+64I911yntqTie65AMuohqcY8L2SiNzwb1x6MfhfHe
-         CtaQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786343974; x=1786948774; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=beTjDQjSO+WsmxqeYJG6yL+QaVmFzIIDf21MXqCQ/Uc=;
-        b=dmkIujJrAQHt80Hh4mPpGR16BFEhb8gYd0YZAjkzE9LiHMjNuSot+76lQ2cY1i5TzY
-         RauLcvEXF1/afRS7a6iKsUf+Wsfy8ieU5gqf7Ja167D8n7T5KNwOuLN3uBHuWTmMvuDW
-         Gti1urO6IxNVCniicZQeiX08s3JSmSJPS0nNpN4t4Iuhdfl8dnOHp5bFZVlPccAWfwfS
-         dVKphqJ2aeEk06bmCqo5jF94myzhV7FTVMFZMpAlmIxO3ZfZh+Lx7v3K7rmZ/0i/vCch
-         awFiclRiQFaw4BNjX6krP1WLN+WEiA97PdOqTFGfzKgdEYUGnslh0+gpfA415buOxH38
-         0HJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786343974; x=1786948774;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=beTjDQjSO+WsmxqeYJG6yL+QaVmFzIIDf21MXqCQ/Uc=;
-        b=TS5T8XPG38kYpj9bxnbtnkTkgIbRRXEXt4GBoS6bqNPsELTypLgKuoz33RbpNJhp2G
-         P9QTR8/Hpb/ApS8GNV5EsVYUr8RS37fEc0sEdQ12DNgqKnBAiwCVItxUb252lEJJ9mRX
-         N3bVlZEJLNmGZwCgeLDQQqlmrMG7HiNn0b5SMhw9LoMzgfPRJJa7XFl37qVNqtKG08dr
-         SeHnAo34heay/IiKHW+5ke0sR6QmsBqiVlgGTs44gVyCR7OVxLntx7uLKS2ULEcGazdX
-         gyA+2e9Wjxr5fqw5AvXRLmvGmNfeAL3UD32Zrwy6L/jX1Ps6ShZTck0yN4Mx4r92TRyH
-         7FFg==
-X-Forwarded-Encrypted: i=1; AHgh+RrmUDRGAxW1clzGVedpjerwQLzx56WszO6HAinVArP2oU1l89KD5s1OKmtm9XJuPWpUgnR9pirUwA==@kvack.org
-X-Gm-Message-State: AOJu0YwhVxsR3F3RWu8X/HurRmzl+EBaxbjpZGFpJ/wgtPhUf2wFp+qM
-	kQfNHmq9oN7FcwxMBkuJPxL+Y5c18A7aD/pBZYAWiSM5rHJo11uarpxkpNvqSHN8IO5IzDswsQZ
-	+bt0Kq9AGHpvahG/pOglmx8fDxtRsIf+ObncOJg+b
-X-Gm-Gg: AR+sD13NhVoAfBdZ213k4gv1G12wHOirNQ+CfBYfUJoiY6/llobfBV7kKR0d5wyWwdf
-	RT6e5bQOUOEEdPMbuO7YECGWel4XR90325p+yqokk9l+F0qftmi487NR+Xjvg/LXzv88TLIET+N
-	mpNdwzU2svsg3oSaSrjVHVijoX1qCe4oxe9jaykiYmoGTc77mp/28L/hbXD4/K2ZRngxjsfTt7l
-	zXPo/8LVRzs47eZKleZZhwLB+oskrn8hC/8yBlEHqFOWCmMw6U4zBxzLwOQE8MYaSOUAibu9Xd0
-	A/rMELXREbaoLlueUFSMjhNMFX7B0qlHnADdjKBdWSz4Mf0U0j6vEPpUlaejii0FCqBkUt5YbSF
-	GCePwcjB9YJLg1EABP8KoqINrMtueWzvg
-X-Received: by 2002:a05:6512:1295:b0:5b2:a5e9:3aba with SMTP id
- 2adb3069b0e04-5b30c3e8046mr177757e87.6.1786343973513; Sun, 09 Aug 2026
- 23:39:33 -0700 (PDT)
+	bh=vVPGPVZ23NsreeExE7+jGCM0ud2bcAJA4ypv1DILR34=;
+	b=LvzT+iqkHZqlOwmXvP7pJvQjIohTlOSappxIIZ/MObo6wOvtlrzCQEQ0g2OxzOScyATOWp
+	0uM2xjzmTFFKWWrJjEWpe+CIYPNfJtB2mBppATqWAVWyhVOyB2WrgtJRlePLXza5uM2s7+
+	WOvcH7IqfusPHw2vIkfXBmYsETCAYsE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786344304;
+	b=Xu+xQwE96skZdR6IuAVW0K39MNb4omeGNSok2PgSHGfqNh7ZpPJY1YLGzdLXiuHBKlzqkC
+	ybf7o6I5uB+napKHxXmjEyupxUtm8wtWoGyWLY+u2J7g5tyFZyo+p9Le06y5vNO14zv+Ar
+	hUMXZT109oCY+WuayyPJFPPaKB39wLc=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=cP2dX1rq;
+	spf=pass (imf22.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67A5VYZX3085069;
+	Mon, 10 Aug 2026 06:44:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=vVPGPVZ23NsreeExE7+jGCM0ud2bcA
+	JA4ypv1DILR34=; b=cP2dX1rqRgJGyJQPsc4KFbE1PC99K1ErC8LoPBcJX/kDVk
+	D9Jo4Iz1SXdFchU8Ko5W4WB9COXrRcti5DpxhwdI5dfEePzz5UmgRzT8EYYyBi07
+	KU36zRJaFsP0Akw7apyJ4SCl4IAb1VRGvP8L0mKhwBZnn0XUkDZ2PW7t9oviZUQq
+	bN2tmVBhSWNgiSiSi7ymdtf6iKh4gNTCCXIweHK0Tg6HF6KYslOZj/J1AEcJVHnf
+	kWNlsq5fwLgQr2DlUZF0whZYM5XqlyiEV4xJgAR6wPkWOH+OEMcVL/bVHH8IYS6D
+	MxDe73qz6EXJrcPmB5P+oxGbZoA1keo68zERDcAg==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvjypkqg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Aug 2026 06:44:37 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67A6ffw0026503;
+	Mon, 10 Aug 2026 06:44:36 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxhfxueyp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Aug 2026 06:44:36 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67A6iYQG34930976
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 10 Aug 2026 06:44:34 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 17B532004B;
+	Mon, 10 Aug 2026 06:44:34 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2335D20043;
+	Mon, 10 Aug 2026 06:44:31 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.87.135.220])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 10 Aug 2026 06:44:31 +0000 (GMT)
+Date: Mon, 10 Aug 2026 08:44:29 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tursulin@ursulin.net>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Muchun Song <muchun.song@linux.dev>,
+        Oscar Salvador <osalvador@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Lorenzo Stoakes <ljs@kernel.org>, Will Deacon <will@kernel.org>,
+        "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+        Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        David Hildenbrand <david@kernel.org>,
+        Pasha Tatashin <pasha.tatashin@soleen.com>,
+        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Eduard Zingerman <eddyz87@gmail.com>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+        Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+        Christoph Lameter <cl@gentwo.org>, Mike Rapoport <rppt@kernel.org>,
+        Johannes Weiner <hannes@cmpxchg.org>, ziy@nvidia.com, pfalcato@suse.de,
+        ryan.roberts@arm.com, linux-kernel@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-parisc@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+        linux-arch@vger.kernel.org, kasan-dev@googlegroups.com,
+        linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, damon@lists.linux.dev
+Subject: Re: [PATCH 6/9] mm: convert PTE table entry to pte
+Message-ID: <2599c5b3-e8ac-4865-993b-d41e6f060d52-agordeev@linux.ibm.com>
+References: <20260806083926.1807279-1-usama.anjum@arm.com>
+ <20260806083926.1807279-7-usama.anjum@arm.com>
+ <fab9fc78-1e1d-4d5b-a9ca-92f3ebd04108-agordeev@linux.ibm.com>
+ <5c329236-7761-4e42-a549-b822e43b4358@arm.com>
 MIME-Version: 1.0
-References: <20260809043250.2917406-1-souravpanda@google.com>
- <E2FFA328-21B3-4E3D-8CB9-5638B4CB545B@linux.dev> <CANruzcSySUn_gLEh9kxwvatSCn4hizcy6v2BkcMe0Jb=HoUOSw@mail.gmail.com>
- <60440F8D-5EE8-4254-9057-5FAD09B5D1FF@linux.dev>
-In-Reply-To: <60440F8D-5EE8-4254-9057-5FAD09B5D1FF@linux.dev>
-From: Sourav Panda <souravpanda@google.com>
-Date: Sun, 9 Aug 2026 23:39:22 -0700
-X-Gm-Features: AUfX_mzV0G9J2-6RqZjaZy-QsI12nKUBfR0xw1cGVt7-LTZShBonbQZL_4PZrbw
-Message-ID: <CANruzcQ_1533umf4ym-t5EVm_WX5rrYtCbCqaTdvNr6EgOYR=w@mail.gmail.com>
-Subject: Re: [PATCH v5] mm/hugetlb_cma: Fix null nodemask dereference in hugetlb_cma_alloc_frozen_folio
-To: Muchun Song <muchun.song@linux.dev>
-Cc: osalvador@suse.de, akpm@linux-foundation.org, usama.arif@linux.dev, 
-	shakeel.butt@linux.dev, wangkefeng.wang@huawei.com, anshuman.khandual@arm.com, 
-	david@kernel.org, surenb@google.com, fvdl@google.com, gthelen@google.com, 
-	hannes@cmpxchg.org, riel@surriel.com, sj@kernel.org, vbabka@suse.cz, 
-	mhocko@suse.com, bjackman@google.com, zi.yan@sent.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 98CAE100009
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5c329236-7761-4e42-a549-b822e43b4358@arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEwMDA1NCBTYWx0ZWRfXxI/cthX2D0Wc
+ iHPLS8hc2Kj/zk+XaKiAAFgipdFaX6yt5ULiZYFw9cMykKZhsGzYdz8Ozez/WjJFTxNxMxdlY+Z
+ xRKD8hb46fc3eq4T3zk/Ay2gFewaqBQyLERBaqjOrmguPqyfrY4V/sj3PMJQSwHxbC9gQ3JPdGp
+ nwoFQng/LWfi/b2CNXX0ejbyTRbXCpU6ISkPy5ReFIqwletsdYxZQh3JZdOlQrUjBCsND1GblNt
+ G/4DaSrhSqHIA4lB3PliH1JLOCq/gqtakESjF4VI9bapYhuQXt1SuBKOBQMvOtnuq4THGnpYdaA
+ 9DlU8ZKdg0fttjy6cWWMXxwJNMzsJQnfWACC9mQPG3O4x/cS3d0NgAmCjmdVYfXi8XGUV9/5PxJ
+ HdlkuRfRyvN/kE+SQ4EeTy+wa+g6t6URPTCSrkC11WsiBzyO9FuJFEs1QK/7K/rvQyfHrqCYbs4
+ iMEVrVdUzEx5zR0r21A==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEwMDA1NCBTYWx0ZWRfX9Ko1NY31ilHb
+ y/krrlO5A2ANnAiXusNks5NMrWI4UvS7c1Y7yzgoGS6CxTGjDGRyAu8EHxJ1ITitPdxPjbMc8pe
+ lyb7xPyJDB1SIBriSbnTKYVPxMcf33w=
+X-Authority-Analysis: v=2.4 cv=RqD16imK c=1 sm=1 tr=0 ts=6a797355 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=7CQSdrXTAAAA:8 a=VnNF1IyMAAAA:8 a=2hzp2EkNZNX3k9pX5ccA:9 a=CjuIK1q_8ugA:10
+ a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-GUID: YbHEwP5JTLZr3QYF8zr2RkJeozrhuIz7
+X-Proofpoint-ORIG-GUID: YbHEwP5JTLZr3QYF8zr2RkJeozrhuIz7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-10_01,2026-08-07_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 priorityscore=1501 suspectscore=0 lowpriorityscore=0
+ clxscore=1015 adultscore=0 bulkscore=0 malwarescore=0 impostorscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608100054
 X-Rspam-User: 
-X-Stat-Signature: b5b8d69wourcnec7bzhw95uuj68qcsi7
-X-HE-Tag: 1786343975-698345
-X-HE-Meta: U2FsdGVkX1/UXQDWK+wTeovm8gUCB2bbhBZrH3MfCB+E2FeHWWkXpu/lGlCHYBam26abx35Loxf7sFYwjHHFHA3qSHBpGEEjlI/Sg4q4v0JbpVJ/UB1C5JP02gs1CLYoRHRvKxAY6tUdDpvAKMDaxE6ca+4ob7HRrcc55j/+f4AMMh63VjtHIxe78fn0HMrugOBy08LD5X3+VBjsOF4gOaNBWC3A3iG5gQmu72OdNmmoiaeAaMyxZFl0t0VLHUebBethWp9NOFwsD5n4xCMviFX2kBwivK3trXk/+C3VPFs+mmIocLBgdSnc7zRU4vRK5KqA1QbkZcOYahjo+J5JCAILJmXK4iyaBMC8zWK7YUMdLEUwW40qz0eLyg+Y0WnyxSEoGMQHSlos5GZE34R84K1odj9ajOIKnOYAzz5vhQb2J/JbnDP7PHxP4psxfQGPoN+1gmWlIDPCkidVH7PLopoSSwPUynTStSU2syKNWC9qLvYXnHxODA1Wwl09j4c7jVEC5OMqAUWTWJ2k8yiKwlvsXDNgNNMciLw97MmV+at3a59nwjfO9AKDJAlwOdic4YkLMKI/QzSCOjm4vkMCz++pYvQH4Y2gpPt3Q2nzF0QyEtBV2zLeMX/HLqeIBq/kxLBiEymj5oCAW+2O4PvbUWHOKIKOb6sc5lEGaVk/oXnLJo3nO0DN9ZZFRrKJxBWQx/6IjH339XP+F25btoSAlNJBbrFM9j9hsMwvzRLA3Q8ge2QWzMbMiActMiIZkYJ1qobocyz01VinL1Wllo3mVPnyd59tUme0Feb4Gt1UP4gS/0pxICuhUUxBrFSJ5VJg22nclgNYvx1kCVNFQTLiCxyl+8G3+ZqRlK3ik/SoWAAxtQTzb2UKZ2xq+Tee8QA6ZLHFujFuCa0xvMu/lusngOXHhPoOMUXu6s6S8Pj0LYGqyJH/km0Qoamj0qRCjMPgXqDWo708gsiV4ZE0mCX
- kRP0bpJU
- j4KiXVOm4YCE4aqum4QCsgnB1Y7qIYaIstgiFyUvu7zvRpORAVVAD7xlMVpbNni12ZvpFyc3M33Wc9Fsye1NOF8oDhBRWfvRKqRSVu1yV6mDVodOLk+LTfKLm/AXHb0cDsusebWziMLiEU7oWOH0rKV/FLOWl5FpciQm8xHkWwxlN3mJjLrAybbBfs18qQPBNoikokKZ/dPWMvT43chdFaJ+W9wpeRmTVCrLp1Q1HrlCvHYm0NMmxiTEKitmR/czTydxbjvzXz2b/jG0+ILPZhP3ySStogFfAAwvH4r3lCDF3qqWYqg13J1P1GFRctZaoQk40Sy90uERCu8Q=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 78634C0002
+X-Stat-Signature: kczjm9jdpgbp8i4z6uorgxqojewk58b8
+X-HE-Tag: 1786344304-461560
+X-HE-Meta: U2FsdGVkX1+NmkMX/MF7Ht5ojW7/0dMUkkVfsGmrcBvKHheovySAn0b1RzzgPyqiOoqd0PMoD0h1fnNSFHqftCijsMUNZLH/8g2GwOdQz+VQMMhxQx1QGdB8Fr4uSluxPXtA8E9iralff0NA8NRGfgrNACvxEefxKwoXEQv4/auNuJEKgOejWjACv1yqhsoQ7ffw6ux5L/z6/Ym/ChPSVzpqBd5Z8UG1zEumfvCJtQ42EwRKIcL1tNuq0DJBX1YQo1Nj1+oWu0ZKJ66WSeI1PgDkY6j59Xkhg/AHBzZyyxzjfLk7AvfGx0dzVPT/kqEI/p5HNkIEi8/+F5OWI73hSCaj0ABmjQ/s53DnvwVs/X7biK9c5iP3hZFwKPkXHJQW2B6Hws5grT/pfAKPt2aQnmJ8I0vhBhoaxdTLUfWyH5/JOi4bZxpnNC8RDnvkO2m1xVdI9+f1ww4+1NIvXv6ymU7CG8rEj/E6Mc0TQASLoRuPQTo3Wpoq0EwvfOKv652qfyn1B3MNcDGlUi6DLxfoSXrm6qELbeHLDctKtd7Wtr122ME0Lp/mgCr/qs0IRpAc8K5NGJh+JxH0sP7ec3ZZlgbMSJfMwnN1kLGoOfeceQyeEEyyrIKK6AYBkPxEPL3rTapq5GnZf/vGUg8QLPtuaUBbidErTQIsJm+AJBoPWqQq6hD3JFzw3w2mVf92w26RUkRRFbpgxaPdkkjrnVJX1z/qTEuEIDJ5Nz3AWzsvorzWviiocyiA2Tt59KkKL0rBGjrvJdro+7Y4hzUffWtA4YOWyAbjoXscIKjgv+ymWZ330yJ8diwp9lR45WN4scGl87lZDCmk+qtRK4MA+/Rr5w50XF5nTGMvPk4VmjsWouHnx8a/vHeevjXIZBfwojOPo+E1hcytFbZLzUXM0wFo059pnK4JDaz1/dCgL4OL3FrkIRcgwAlvQ+t5SxfDZLG7FQDZvPQimdLULxNnraI
+ s7uM1uoN
+ LlJ0wwyyaOedgpmBJwC9MxyAbKZs271s8Xg07fO8svRkJl7d37TpzVQr+gEN6pKEwOtffE1cdYiEcu0NAgv5AJFBXO18EwHLF/IBa9VVqSNgCzkHz2R67Ur1ZLEvuCEPRoYOQLWZfFqjlFCOahr3xOOvX6Mje1Z9i5OUE/+YAhfaYR3xmlZVRkZnbJSHHc1Q4CgdUsin864SAxuLThIWkNoccU9uu0yiOVTNrrrzRsk6vou5L/0NWCzwNCmARij03tv5dmZDuJ6Eg030MJEM8WJLLAPeI48cTq7ASLYhqXnvos+dgJBKjw5fphobIo7gAAceLNDjGLR7zN70zw+WGtxQEek6b9kxWMYTaWAafPay4dK6/DK+rJ6Dxz9eFpUK2DOlr5Ks2MHqNZNwNIru9Mb0hMu2XOvPhV/Qvt0u8zsWTUoSNShMT3Z32vrV01ZtkDwRr15tbUddIEHdDGEp+6BVD82H9O7EHzKCsYksL6MwGyCo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,277 +187,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 9, 2026 at 7:24=E2=80=AFPM Muchun Song <muchun.song@linux.dev> =
-wrote:
->
->
->
-> > On Aug 10, 2026, at 04:11, Sourav Panda <souravpanda@google.com> wrote:
-> >
-> > On Sat, Aug 8, 2026 at 11:58=E2=80=AFPM Muchun Song <muchun.song@linux.=
-dev> wrote:
+On Fri, Aug 07, 2026 at 05:26:04PM +0100, Muhammad Usama Anjum wrote:
+> On 07/08/2026 7:58 am, Alexander Gordeev wrote:
+> > On Thu, Aug 06, 2026 at 09:38:44AM +0100, Muhammad Usama Anjum wrote:
+> >> The non-MMU stub receives hw_pte_t but returns a logical pte_t
+> >> value. Convert the stored entry through __pte_from_hw() before
+> >> returning.
 > >>
+> >> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> >> ---
+> >>  include/linux/hugetlb.h | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
 > >>
-> >>
-> >>> On Aug 9, 2026, at 12:32, Sourav Panda <souravpanda@google.com> wrote=
-:
-> >>>
-> >>> alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
-> >>> alloc_fresh_hugetlb_folio() as a fallback to allocate from all
-> >>> nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propagates
-> >>> the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() via
-> >>> alloc_gigantic_frozen_folio().
-> >>>
-> >>> Additionally, hugetlb_cma_alloc_frozen_folio() previously attempted
-> >>> allocation on hugetlb_cma[nid] without verifying if nid is included i=
-n
-> >>> the caller's nodemask. Adding a node_isset(nid, *nodemask) check ensu=
-res
-> >>> the initial preferred node allocation honors the memory policy / node=
-mask.
-> >>>
-> >>> However, hugetlb_cma_alloc_frozen_folio() dereferences the nodemask i=
-n
-> >>> node_isset(nid, *nodemask) and for_each_node_mask(node, *nodemask),
-> >>> leading to a null pointer dereference kernel panic when nodemask is N=
-ULL.
-> >>>
-> >>> Fix this by checking if nodemask is NULL in
-> >>> hugetlb_cma_alloc_frozen_folio() and defaulting it to
-> >>> cpuset_current_mems_allowed (safely read using a seqcount retry loop)=
-.
-> >>> This ensures that the initial node check and fallback loop safely hon=
-or
-> >>> the task's cpuset without violating cpuset constraints or causing NUL=
-L
-> >>> pointer dereferences.
-> >>>
-> >>> From a userspace perspective, this bug allows an unprivileged user to
-> >>> crash the kernel (trigger a panic) by requesting a gigantic hugepage
-> >>> allocation with MPOL_PREFERRED_MANY on a system where CMA is only
-> >>> configured on a subset of NUMA nodes.
-> >>>
-> >>> This can be reproduced by booting a VM with two NUMA nodes, restricti=
-ng
-> >>> CMA to Node 1 (e.g., hugetlb_cma=3D1:1G default_hugepagesz=3D1G
-> >>> hugepagesz=3D1G hugepages=3D0), and running a program that allocates =
-a
-> >>> 1GB hugepage area without reserving, restricts allocation to Node 0
-> >>> using mbind() with MPOL_PREFERRED_MANY, and triggers a page fault:
-> >>>
-> >>> void *ptr =3D mmap(NULL, 1UL << 30, PROT_READ | PROT_WRITE,
-> >>>                  MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB |
-> >>>                  MAP_HUGE_1GB | MAP_NORESERVE, -1, 0);
-> >>> unsigned long nodemask =3D 1; /* Node 0 */
-> >>> mbind(ptr, 1UL << 30, MPOL_PREFERRED_MANY, &nodemask,
-> >>>       sizeof(nodemask) * 8, 0);
-> >>> memset(ptr, 0, 1UL << 30); /* Trigger fault */
-> >>>
-> >>> This results in a NULL pointer dereference:
-> >>>
-> >>> BUG: kernel NULL pointer dereference, address: 0000000000000000
-> >>> #PF: supervisor read access in kernel mode
-> >>> #PF: error_code(0x0000) - not-present page
-> >>> Oops: Oops: 0000 [#1] SMP NOPTI
-> >>> RIP: 0010:hugetlb_cma_alloc_frozen_folio+0x75/0x120
-> >>> Call Trace:
-> >>>  <TASK>
-> >>>  only_alloc_fresh_hugetlb_folio.isra.0+0x2c/0x160
-> >>>  alloc_surplus_hugetlb_folio+0x6d/0x100
-> >>>  alloc_hugetlb_folio+0x3c5/0x660
-> >>>  hugetlb_no_page+0x3d9/0x650
-> >>>
-> >>> Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic hugep=
-ages")
-> >>> Cc: stable@vger.kernel.org
-> >>> Signed-off-by: Sourav Panda <souravpanda@google.com>
-> >>> ---
-> >>> Changes in v5:
-> >>> - Replaced defaulting nodemask to &node_states[N_MEMORY] with safely =
-reading
-> >>> cpuset_current_mems_allowed using a seqcount retry loop, ensuring fal=
-lback
-> >>> allocations comply with task hardwall cpusets as suggested by Usama A=
-rif.
-> >>> - v4: https://lore.kernel.org/linux-mm/20260726072935.3513996-1-soura=
-vpanda@google.com/
-> >>> - v3: https://lore.kernel.org/linux-mm/20260705175119.440599-1-sourav=
-panda@google.com/
-> >>> - v2: https://lore.kernel.org/linux-mm/20260704174930.2885785-1-soura=
-vpanda@google.com/
-> >>> - v1: https://lore.kernel.org/linux-mm/20260702215713.627941-1-sourav=
-panda@google.com/
-> >>>
-> >>> mm/hugetlb_cma.c | 15 ++++++++++++++-
-> >>> 1 file changed, 14 insertions(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-> >>> index 39344d6c78d8..3ae9347078e9 100644
-> >>> --- a/mm/hugetlb_cma.c
-> >>> +++ b/mm/hugetlb_cma.c
-> >>> @@ -3,6 +3,7 @@
-> >>> #include <linux/mm.h>
-> >>> #include <linux/cma.h>
-> >>> #include <linux/compiler.h>
-> >>> +#include <linux/cpuset.h>
-> >>> #include <linux/mm_inline.h>
-> >>>
-> >>> #include <asm/page.h>
-> >>> @@ -30,11 +31,23 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int =
-order, gfp_t gfp_mask,
-> >>>      int node;
-> >>>      struct folio *folio;
-> >>>      struct page *page =3D NULL;
-> >>> +     nodemask_t local_node_mask;
-> >>>
-> >>>      if (!hugetlb_cma_size)
-> >>>              return NULL;
-> >>>
-> >>> -     if (hugetlb_cma[nid])
-> >>> +     if (!nodemask) {
-> >>> +             unsigned int cpuset_mems_cookie;
-> >>> +
-> >>> +             do {
-> >>> +                     cpuset_mems_cookie =3D read_mems_allowed_begin(=
-);
-> >>> +                     local_node_mask =3D cpuset_current_mems_allowed=
-;
-> >>
-> >> I think it only makes sense to move cma_alloc_frozen_compound() inside=
- the
-> >> loop. Otherwise, during subsequent memory allocations, we could still =
-face
-> >> unexpected allocation failures.
-> >>
-> >> Muchun,
-> >> Thanks.
-> >
-> > Hi Muchun!
->
-> Hi,
->
-> >
-> > What do you think of the following diff? This way
-> > cma_alloc_frozen_compound is also protected from stale nodemasks.
-> >
-> >         if (!hugetlb_cma_size)
-> >             return NULL;
-> >
-> >    -    if (hugetlb_cma[nid])
-> >    +retry_cpuset:
-> >    +    if (!nodemask) {
-> >    +        cpuset_mems_cookie =3D read_mems_allowed_begin();
-> >    +        local_node_mask =3D cpuset_current_mems_allowed;
-> >    +        nmask =3D &local_node_mask;
-> >    +    } else {
-> >    +        nmask =3D nodemask;
-> >    +    }
-> >    +
-> >    +    if (hugetlb_cma[nid] && node_isset(nid, *nmask))
-> >             page =3D cma_alloc_frozen_compound(hugetlb_cma[nid], order)=
-;
-> >
-> >         if (!page && !(gfp_mask & __GFP_THISNODE)) {
-> >    -        for_each_node_mask(node, *nodemask) {
-> >    +        for_each_node_mask(node, *nmask) {
-> >                 if (node =3D=3D nid || !hugetlb_cma[node])
-> >                     continue;
-> >
-> >    @@ -48,6 +61,9 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int
-> > order, gfp_t gfp_mask,
-> >             }
-> >         }
-> >
-> >    +    if (!page && !nodemask &&
-> > unlikely(read_mems_allowed_retry(cpuset_mems_cookie)))
-> >    +        goto retry_cpuset;
-> >    +
-> >         if (!page)
-> >             return NULL;
->
-> The overall looks good to me. But can we change it to this here?
->
->         if (!page) {
->                 if (!nodemask &&
->                     unlikely(read_mems_allowed_retry(cpuset_mems_cookie))=
-)
->                         goto retry_cpuset;
->                 return NULL;
->         }
->
-> That way, we can remove the 'if (!page)' check here.
+> >> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> >> index bc0b9c65aa1d0..9e8b391aa4bc9 100644
+> >> --- a/include/linux/hugetlb.h
+> >> +++ b/include/linux/hugetlb.h
+> >> @@ -1283,7 +1283,7 @@ static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+> >>  #ifdef CONFIG_MMU
+> >>  	return ptep_get(ptep);
+> >>  #else
+> >> -	return *ptep;
+> >> +	return __pte_from_hw(*ptep);
+> > 
+> > But this is a direct dereferencing, which breaks the whole point, isn't it?
+> Yes, this is particular line is for non MMU. In this case, CONIFG_ARCH_HAS_HW_PTE
+> would never be defined. Hence hw_pte_t is just pte_t and direct dereference is
+> allowed. I'd thought a lot about it; is better to leave direct dereference here
+> or use some helper. Then used __pte_from_hw() was already being used in generic
+> ptep_get().
 
-Sure thing! Thanks! I shall send this tomorrow noon (PST) since I am
-OOO starting Thursday.
+But in case CONIFG_ARCH_HAS_HW_PTE=n __pte_from_hw() is still gets called.
+That looks inconsistent to me. Why not just call ptep_deref() (see below)?
 
-  @@ -30,15 +31,27 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int
-order, gfp_t gfp_mask,
-    int node;
-    struct folio *folio;
-    struct page *page =3D NULL;
-  + const nodemask_t *nmask;
-  + nodemask_t local_node_mask;
-  + unsigned int cpuset_mems_cookie;
+> There are only two users of __pte_from_hw() at this time. 
+> 
+> > 
+> > What about introducing something like pte_t ptep_get_sw(hw_pte_t *ptep)
+> > to be used in exactly situations like this? With that the semantics of
+> > hw_pte_t pointers becomes straightforward and closes the still ongoing
+> > "storage vs lifetime" discussion:
+> > 
+> > hw_pte_t*     points to HW-formatted page table entries
+> > 
+> > ptep_get()    is used to obtain HW-linked/attached entries, and may wire
+> >               extra code like [1] or [2]
+> > 
+> > ptep_get_sw() is used to obtain HW-unlinked/unattached entries and in
+> >               most cases is just a direct dereference
+> ptep_get_sw() or ptep_get_deref() is better name here?
 
-    if (!hugetlb_cma_size)
-      return NULL;
+ptep_deref() would be it.
 
-  - if (hugetlb_cma[nid])
-  +retry_cpuset:
-  + if (!nodemask) {
-  +   cpuset_mems_cookie =3D read_mems_allowed_begin();
-  +   local_node_mask =3D cpuset_current_mems_allowed;
-  +   nmask =3D &local_node_mask;
-  + } else {
-  +   nmask =3D nodemask;
-  + }
-  +
-  + if (hugetlb_cma[nid] && node_isset(nid, *nmask))
-      page =3D cma_alloc_frozen_compound(hugetlb_cma[nid], order);
+Do you agree to the suggested API requirements?
 
-    if (!page && !(gfp_mask & __GFP_THISNODE)) {
-  -   for_each_node_mask(node, *nodemask) {
-  +   for_each_node_mask(node, *nmask) {
-        if (node =3D=3D nid || !hugetlb_cma[node])
-          continue;
+> I thought __pte_from_hw() is ugly enough that if someone tries to use it
+> wrongly, it'll be noticed pretty easily. I'm fine with any other name.
 
-  @@ -48,8 +61,12 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int
-order, gfp_t gfp_mask,
-      }
-    }
+The name may be not perfect, but it is the way it is used above looks
+wrong to me.
 
-  - if (!page)
-  + if (!page) {
-  +   if (!nodemask &&
-  +       unlikely(read_mems_allowed_retry(cpuset_mems_cookie)))
-  +     goto retry_cpuset;
-      return NULL;
-  + }
+> > The caller should always know whether the entry is attached or not, so
+> > confusions like [3] are avoided.
+> > 
+> > 1. https://lore.kernel.org/linux-mm/20260526-kpkeys-v8-21-eaaacdacc67c@arm.com/
+> > 2. https://lore.kernel.org/linux-s390/650903a4-0dd9-4e6b-9d4b-3c32c5657236-agordeev@linux.ibm.com/
+> > 3. https://lore.kernel.org/linux-s390/b44e071d-7c9d-4e7e-a84d-4af3499a5a05@arm.com/
+> > 
+> >>  #endif
+> >>  }
 
+Thanks!
 
->
-> Muchun,
-> Thanks.
->
-> >
-> > If this looks good to you, I'll send out v6 with this change.
-> >
-> > With regards,
-> > Sourav Panda
-> >
-> >>
-> >>> +             } while (read_mems_allowed_retry(cpuset_mems_cookie));
-> >>> +
-> >>> +             nodemask =3D &local_node_mask;
-> >>> +     }
-> >>> +
-> >>> +     if (hugetlb_cma[nid] && node_isset(nid, *nodemask))
-> >>>              page =3D cma_alloc_frozen_compound(hugetlb_cma[nid], ord=
-er);
-> >>>
-> >>>      if (!page && !(gfp_mask & __GFP_THISNODE)) {
-> >>> --
-> >>> 2.55.0
->
->
+> -- 
+> Thanks,
+> Usama
+> 
 
