@@ -4,89 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04D98C5B567
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 18:16:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2C4DC5AD7B
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 18:22:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B76E6B008C; Mon, 10 Aug 2026 14:16:43 -0400 (EDT)
+	id C98F66B007B; Mon, 10 Aug 2026 14:22:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 167606B0092; Mon, 10 Aug 2026 14:16:43 -0400 (EDT)
+	id C47536B008A; Mon, 10 Aug 2026 14:22:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 07D236B0093; Mon, 10 Aug 2026 14:16:42 -0400 (EDT)
+	id B5F3D6B0093; Mon, 10 Aug 2026 14:22:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CDF506B008C
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:16:42 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 63702160241
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 18:16:42 +0000 (UTC)
-X-FDA: 85086165444.22.2C0DC5A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D2DC6B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:22:21 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 05967140259
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 18:22:21 +0000 (UTC)
+X-FDA: 85086179682.27.3B44968
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id AB3C7A001A
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 18:16:40 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aWJd7o70;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf10.hostedemail.com (Postfix) with ESMTP id 608A5C000F
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 18:22:19 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="a/81SzEu";
+	spf=pass (imf10.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786385800;
+	s=arc-20220608; t=1786386139;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l9v3XCGMAYCML1J+iBIiEolvMLJwBNI7ascubHjizwg=;
-	b=KPnsrw2QHRtkdItj+THxnuQFh3IIpUL6ypiVklIyv2tRexTdTiMawX1ESojY+WphB7Jdmk
-	a9rEbbVhQzv9fpf5DKzKghtaIwhzZUX3f5WxDRiccREBvNVgSpf6xGchinQaaobQc5cV0b
-	5ZLatVkeMiUtIMWXq0gzTEdPaTZm7Tk=
+	bh=idH41Udq/zUejz1xnxNcUng7Sk0U5FMVLyHKXUD83Wg=;
+	b=EZcLUjhMD8uun4SWtpXvfTrUZefxRbVWE+zJdVNlukOvXLryc0uHhp/+en9zuCCCqNIljr
+	6FUtEvetb2A60SV8elV9JfwqqFyrhQQjiRl0Uv7lBq1n/6QY10BbfOKpG+czBINE7frhyR
+	kKH1jry/d2qky90BD9fP+7GhRFv2P5o=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786385800;
-	b=YtPEWF+4/bE4C4JXxlndILsEXrKHfF6qtXS41HHe3FdioSrTFAJPrpyjTl8NkyVtZNIW6g
-	AaDriKx0fsSyeIP7HROt4gx4RDUqKkpn7PlDes2KTjfVHb7M8ZhtflzxNd1c0gq+/WsG1i
-	kXHyweGkvNeEfg933rouiV0xNXQ1jTM=
+	t=1786386139;
+	b=M5fWTpZASV5hOrr33OKl/yCp/2QEJzxN7ot3zoz6MwEMyBIqlTyMWgnhGc137jnLIu9Vir
+	rAQN2z8UUjVkda1ynDAuWZciKjm9VasVKIkhLtLeeZER9m5uq7mwPkMk1yTVyQLblKulCE
+	j6SIwIc4ladAorLQgq9+Y89kdErMI+U=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aWJd7o70;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="a/81SzEu";
+	spf=pass (imf10.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 196B2600AD;
-	Mon, 10 Aug 2026 18:16:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BFAB1F000E9;
-	Mon, 10 Aug 2026 18:16:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1786385799;
-	bh=l9v3XCGMAYCML1J+iBIiEolvMLJwBNI7ascubHjizwg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=aWJd7o7043rJu1KiN6o4YCzJmTqPhi9QwvUI4mXf1iewvADqQILiNN7cnAqQaytIP
-	 qz0UK+mbd55Y82TfU3W7VqJ4qtB6+y7RqNnCGjTG53vN2sOJtjBCUEIKebqhI+X9Uo
-	 dWeIievZoi+OyI2ocPZ0btGhlzeWVipXPGcavxkc=
-Date: Mon, 10 Aug 2026 11:16:38 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Hyunwoo Kim <imv4bel@gmail.com>, david@kernel.org, liam@infradead.org,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/pagewalk: fix stale walk->action escaping
- walk_pmd_range()
-Message-Id: <20260810111638.a74d094a8a198e84bb6fa5cb@linux-foundation.org>
-In-Reply-To: <annzcER_eGeBq_pY@lucifer>
-References: <anmdrYGVqM-U4vlo@v4bel>
-	<anmrTaWp2etxX7Fd@lucifer>
-	<annzORC0NgSIsX39@v4bel>
-	<annzcER_eGeBq_pY@lucifer>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by tor.source.kernel.org (Postfix) with ESMTP id 0973C600AD;
+	Mon, 10 Aug 2026 18:22:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ABF91F000E9;
+	Mon, 10 Aug 2026 18:22:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786386137;
+	bh=idH41Udq/zUejz1xnxNcUng7Sk0U5FMVLyHKXUD83Wg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=a/81SzEubaTt/dIFO2hAwaZS5EZOaqle/2CQj/skmyX8V6jGvrKP834iCaiDLMUXK
+	 GlkecvwKjqnyPY+XdZw7a05hhUJ1o2DmZ10/gXhnwS9e9LYWjvV6l52qeIUHEvPIJN
+	 BFZtTFTqSEjuni/b1afAbm+Aep2GMrMPQSoRmZtpuZ/YP8kDj2DiOKXgNjx7ikxlbU
+	 rZX/agd/GK8Wl7VKMkmx+zC05A8NQZuKuQ5EciWcqpk3nyucOXVdeQ2gOLoXhlCoxy
+	 TgtAWhHIYkPWmE5oS3wLamysaekGTDQXxepiD8SjCm4skpbcC3ceZti0k9keVX0yjr
+	 1RD3i4HIH2lPg==
+Date: Mon, 10 Aug 2026 18:22:15 +0000
+From: Eric Biggers <ebiggers@kernel.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: linux-block@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: [PATCH 2/3] mm: support fallible mempool_alloc_bulk()
+Message-ID: <20260810182215.GA270444@google.com>
+References: <20260806221031.79050-1-ebiggers@kernel.org>
+ <20260806221031.79050-3-ebiggers@kernel.org>
+ <ann1i5VjTmgChjs7@infradead.org>
+ <20260810161404.GA1930@sol>
+ <anoIiy0V-m-05yZc@infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <anoIiy0V-m-05yZc@infradead.org>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: AB3C7A001A
-X-Stat-Signature: 55n7uohjh4si7kzyo7kko4mj1xdzqf8z
-X-HE-Tag: 1786385800-899164
-X-HE-Meta: U2FsdGVkX18/UzX6ofQNhFMgXbam9jAiyNSqbWQV4bdg9po4Qu3no4em2KvOhgu4GHkcc2Ag5Z/z5rjUXvSZSyZc9/0LVA4Ge3rtCSuB3j1IB4Y4TBz74x/h21Nydq+OZwJKDTrMl1874p4N/rhvnFotqNDuJq3VS74HzvzJRYa5kJoIoUfjMnAZR9wm8yW5Qyt2OQ3P1rVZO8aUaujvOhhD4MGmnSWTu0pIz2SIRhcyuVA1flT/4Ya5g+OcF9Kc3o7DZ5c+u07Wd3DHUgrQ2M8xJWKTOmiu3KL8owi5in3YD2hOPPtc+W+xh4SKNot4iIiLtAbhraYrSrv9g8pbz6NM3pCXEVoyI9t4nTtiBo+dNUKnnmCnHd1G9G6ERqSP85uIxZwV+pyqLmJp2m7BDBVCKLB17A8JRL69ulW7XNeMM3FumjcZmIbFUM5nxRqIsLw+zTZK7Cf749xWefCGU35jajyLv5NfQqbpdDyWcPBblDeVkQOAo+zfYnyLGgIvhw4ak+ZOco8FawBblUKomQPAR0MKzeYuzcLBt2Ni5hF+3lw5iotsLJa9PlVaXNfjUbvA2s62fD4Ry0Zkjk3xZ+Gm03SGEOA9kaOGoH7r9p267/LfJPzHkyXuAP1pWh38dVixnLj/btaaEoz2OosQeJe4Dm4ISxSrw6VEBuvUBotusnpZ7LMzmx+BIybdrDPOmkK9DlMFA+R9fMuDH0fmoeEC6sOzx7SVt7d9HWUEkzBT/VE2h+HZWaJwIuQr8zbNmxXjnshNM3QyNWNnYaFHBuVC40EK6OVvcFs+/vw2YWCAHhY6m2r2n/ZEk5Bc1tJxuDq8l5lTyaKAhvCkzN4TGiLj48OhyjQpm/Pd24mL9B9B1Pw2F02GnEXxgdtCN9jdZq+6Z8AUyFTpBOxJ5EuVsyIc7A+qzkkJvJl0JNLIq20bDlH23+cHd0ezeKSYt0WOAZmOJV6R7Tkvspp1dkk
- exD8tcwE
- YotbhN8Ejnc861tTCpY8E2UlnQ/AfF+8dIch029otgbYL30DM8RYQCXqb6MLmQlUHyx6fnATgDmoJk3e5CaWzHf2/wW1/blr/BLRsWTxeG4SXFCSP4IAAZvHysuHrbatH9K/7E9m1MBm0UddY48yQSMr9fzCUgiNQpL4qoqLnNhhmbj4BU0QliPn5AEgPneSNV3mJjNjAwh44cL8szxIoI7HuITHH4KApp4JkufgFaBb0Wy/z+02bTohiByHVEELbSIqqaicDF37pI5yTO2VzzTinYWDvsn1+kH2TGqa+3Ok2TRyLmgWsGvWx5cjf33AAYuvY
+X-Stat-Signature: cnp6c3a3o5q7w7bq1ep59i1ot9i5fatn
+X-Rspamd-Queue-Id: 608A5C000F
+X-HE-Tag: 1786386139-410410
+X-HE-Meta: U2FsdGVkX19/EwiHJ18SW7wX7QWNxgg3bYRTe4gMdBUlMsQSneydJFbPfiU2eoarfrIaqzOF+J/8AdVaJcS1a0/rzbY+6oFSIEyhmfOWdS/L2pEx1C3OXqUxqgUyJR/SF7TfAwwXdgN6zUKF3gNmszOFu9jX0s61xFqSdUntPzjVRfNnVeMrzY2djPivoi22amnHLaD98VIzIAoSGfo+d2veABLAcGOyjbGwNDhVTyPGc+bA7FkjX3V8gDGN5Aj+A3/CH5oohL4ZajLlwTmf6sKZIaXc18AKypbd6PyWdJPN59uo9yfnfs0BByNpVkaTbwhxRUtxebCsyz/kPMp+xWShe6x1oDFmkvO9Qft/i4GDdKAZ7MgQALQFz+0WFXdTXpsufHEAA7Twa7jvjC/GApsZmM1YXhCTvl/hK58i/fn/tByhTls4k/eqMehbw1cn2bFmVUM6JIJra/nn6yRJN5Jlx+CXdrcDniy+kMaXmEbD2ibY1ZrvZhkGu3CkDe+hZrnuFBcqm/hTW1Vo0pdGhGr0JQTtifABLlvhNsSqvfH4qY2snU6wRgiRlqaozw2GIC+ZwBPKCohz3BqhkNr3EvmWegtN6adUCy9WK3mGvPVhCTQrpqoM9K9JdLgXeJTOnx+zcxi1DsDq6xety2duZ2BE9wdNL52medfLz8spnno8O3iGB6j12AKu/twqhCRUUmAfcB3k/LMsa+jU5UcNsRl+I39tvIjkDqgVp9ncYfEaDHKLs+866tAsE7YBn4Lyx0Bfd5bwzkgfy6lIPIZCw+Mm6q4smwVkk9q0vr3cb2dmClylP9x5qrhUgeGHlCC2n7JqHpYrsobF05/7z9KyGG8meb3mue2lG6q1pb6UI+hYqMyoTYWJSi6hkLrOkYSNdYj3lP5aFrFU+9CLFMlemmrm9OOW2ymll5KmWgyL/iugKcW9OPRfU7JF47NTIKAwHHShNjAYPDou69qhmmj
+ usgjR5Gi
+ z90MilUemaXcyW5Wj3SgNxBBasLT90N41oDWaqMTE44qifmrQ7UKuqcW7Inpuv+krNAMv7M7qu053k10zOTs099kYQbeYZsES3koCmNpCD3C0g+Hnbr/c0IYgAUlniqD33ErDrFRU3zFfmTGN7hIg7ci1bT+3HqsZyz7WGJo3llZNJO+2s5gCfo1hrT+CTw55nnNGP2JpLvRtnXaUZVRlDh63ClztEiKqeiOdFkB+HC+yHAQaCgPMcWbYmKX857BO1nexUBf7PWHmKbU/4daV0lZYFM/YcqBSjmPZ95BJTM8KolUZb89FvMcM6haGTO0Lo9a9InJR6yimJj8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,59 +99,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 10 Aug 2026 16:55:25 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
-
-> > The commit message was written with help from the lovely Claude. Not the
-> > most readable, admittedly :)
+On Mon, Aug 10, 2026 at 10:21:15AM -0700, Christoph Hellwig wrote:
+> On Mon, Aug 10, 2026 at 09:14:04AM -0700, Eric Biggers wrote:
+> > On Mon, Aug 10, 2026 at 09:00:11AM -0700, Christoph Hellwig wrote:
+> > > On Thu, Aug 06, 2026 at 03:10:30PM -0700, Eric Biggers wrote:
+> > > > To fix a deadlock, blk-crypto-fallback needs to be able to make fallible
+> > > > mempool_alloc_bulk() allocations.
+> > > 
+> > > It doesn't.  fallible mempool allocations are a concept that doesn't
+> > > make much sense.  Please just go straight to the backing page allocator
+> > > instead for callers that do not need the mempool guarantees.
+> > 
+> > It does make sense.  When alloc_pages_bulk() doesn't completely succeed,
+> > there still might be pages available in the mempool.
 > 
-> Yeah I did wonder :)
+> But they should not go to a caller that does not need the mempool.
+
+The caller does need the mempool.
+
+> > blk_crypto_alloc_enc_bio() should try to take them before falling back
+> > to scheduling the rescuer kworker.  The rescuer encounters scheduling
+> > overhead and is single-threaded, so it's slow and should be used only
+> > when absolutely necessary.
 > 
-> I'm totally fine with using an LLM to help with language, especially if English
-> is not your primary language, but obviously it can go... wrong :)
+> No, it should just try a regular non-bulk alloc_pages (and eventually
+> alloc_pages_bulk should do that fallback for the callers, but that's
+> a separate discussion).
 
-yup.  Changelogs from Asian developers have become a lot easier to read
-in recent times.  But please always carefully review the resulting
-output.
+It already does that.  blk_crypto_alloc_enc_bio() first calls
+alloc_pages_bulk().  If it doesn't completely succeed, it calls
+mempool_alloc_bulk() to get the rest.  That itself tries regular
+allocations again before actually using the mempool.  It needs a
+guaranteed allocation, so it needs the mempool.
 
-> So will always feedback if the commit message is unclear.
-> 
-> LLMs seem to have a habit of constructing word salads that end up effectively
-> like 'the code in English' which ends up confusing more than helping.
+Now, as I explained in this patchset, whether this code can wait forever
+for the mempool actually depends on whether it's a recursive bio
+submission or not.  If it is, then it cannot wait, but ultimately it
+does still need to use the mempool to get a guaranteed allocation.
 
-I wonder if it would help to put the initial changelog text through the
-LLM, but don't show it any code.
+Falling back to the rescuer kthread (which can wait on the mempool)
+solves that.  But before taking that slow fallback, it's much more
+efficient to check the mempool directly first, since pages may be
+available there (and in fact it's fairly likely that they will be, since
+regular allocations are always used first).  The whole point of the
+mempool is that it can be used when the regular allocation fails.
 
-> Key thing is keeping things as short and clear as possible.
+This is also the only caller of mempool_alloc_bulk().  So I'm kind of
+confused why it would not be allowed to implement the behavior that is
+desired here, especially when the non-bulk API offers it already.
 
-I pasted the original changelog into Gemini asking "make this shorter"
-and got
-
-Issue
-
-  walk_pmd_range() only resets walk->action after the pmd_none()
-  check.  For a walker without ->install_pte, a pmd_none() branch jumps
-  to the next entry before resetting walk->action.  If ACTION_AGAIN is
-  set and the entry becomes none, the loop can return 0 while leaving
-  ACTION_AGAIN active.
-
-  Since commit 3b89863c3fa4, walk_pud_range() reads this leaked
-  ACTION_AGAIN status and rewalks the PMD range.  Because callbacks
-  like ->pmd_entry() and ->pte_hole() have already processed the range
-  once, re-executing them advances walk->private beyond the allocated
-  buffer, causing an unprivileged out-of-bounds write (e.g., via
-  mincore(2)).
-
-Fix
-
-  Move the walk->action = ACTION_SUBTREE reset to the top of the loop
-  body in walk_pmd_range().  Apply the same update to walk_pud_range()
-  and walk_p4d_range() to maintain code consistency.
-
-Which is at least shorter ;)
-
-
-We have a description of the userspace-visible runtime effects of the
-bug, which is good, especially with cc:stable fixes.  If there's a bug
-report or a backtrace to Link: to then please do that.
-
+- Eric
 
