@@ -4,141 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A024C5AD55
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 21:00:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84F48C5AD55
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 21:06:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE89E6B007B; Mon, 10 Aug 2026 17:00:32 -0400 (EDT)
+	id 79F9D6B007B; Mon, 10 Aug 2026 17:06:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E99776B008A; Mon, 10 Aug 2026 17:00:32 -0400 (EDT)
+	id 750706B008A; Mon, 10 Aug 2026 17:06:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D88E86B008C; Mon, 10 Aug 2026 17:00:32 -0400 (EDT)
+	id 63EDB6B008C; Mon, 10 Aug 2026 17:06:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B05DC6B007B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:00:32 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 364D61202D1
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 21:00:32 +0000 (UTC)
-X-FDA: 85086578304.08.B3EF361
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 401B4C0002
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 21:00:30 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A89A6B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:06:13 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 201381A02B5
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 21:06:12 +0000 (UTC)
+X-FDA: 85086592584.18.64B9686
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 153A8C0006
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 21:06:09 +0000 (UTC)
 Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=pVXxXdBU;
-	spf=pass (imf10.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=qdxiCM3Z;
 	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of ackerleytng@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786395630;
+	s=arc-20220608; t=1786395970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aeKlJo/C9IF2FWChtlIU4TSN9rzPXmzQ3Z7bbkbSSDc=;
-	b=TB6YHP1uggvKW22JmJavN9RoTB1ET967/UFYveNTP+Pcdqf5IVlKidwb7hqSdnDmGSGQHI
-	BdHp3td6bjP50VcKVdmWjev0iOTmeDvGQfz+gPiYMtq38JkVH3W96FntptM8agd9E62nQx
-	2SoJ63kOsGYaUqd9lPeZ8p9o05XDPm8=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786395630;
-	b=cXOBQNrke3kHbzXnARkhGVYTJYjuT1DHeSqg7LhlbQoHYGTcyM1/ku0C8mom/xjxFzmHOd
-	j7k7yDMBmY8lLU4ZOwrD61Ga96RH2gc9il7xfyZQcu0TLnPzgBUz3V3aETyiebxJ/r9GIf
-	0nQ1SQKErBcu3pePxyj0vnyzjHnQsJM=
+	bh=jBbGpsBOXqFYnTikH0FoZ8DdjoKWQr2k7+SRpWv9uL4=;
+	b=wbcxe+yGEm4Tkmm9dnToL8QISxem1nbS7xnl6ZHJIsK1DOdurQY9e9GC0JlTuzfhKDVAIK
+	z94Y1M8aRzl3MWEDsBISEAAfLrUZxnUk5m4izTgMzmjX2MvYdIeHqOqvvXetixW8EPCqMJ
+	QmJzBgp6bibfW9syIgi3aBuhkJokivs=
 ARC-Authentication-Results: i=2;
 	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=pVXxXdBU;
-	spf=pass (imf10.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=qdxiCM3Z;
 	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of ackerleytng@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51c01c79467so26621cf.0
-        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:00:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786395629; cv=none;
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786395970;
+	b=Sg08Ndzzp5Rx5TXQclNvhVtwp7m+EcPZ8Wsl0BO39TQWuU0LbvrYLAz9KeOG2OJ7tobVo1
+	NT69luJ4LWWWdyNsTHvcM3ZwdBLoABnKt8MEtD23N/GwpiNvtbyta1TJAO9OiTxxjeNwWS
+	6I1aD0Z6iEA75ktgV+xzppgAxD22oeE=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cc7e86e7aeso26404505ad.2
+        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:06:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786395969; cv=none;
         d=google.com; s=arc-20260327;
-        b=WIrOzEYgebjh1UIksWfoO11q5M/Fj600i6Mr1hdquJm/SttQgxqvoIrSrlvQwvfvim
-         3k/PPnJQF0xaTQHyiebSN1x/I3ebxYQE8r2TbQ3JG8LCjuxODOq+Pe5NJ2gk80ScVlXZ
-         Pxi5+d7741LzPbZ1fAh0kLC5hmBdP8tUj5jFsyX550/FquBALrW0YKd6Wz1TO9c7or29
-         aSJO4pGjdGM+Wg+x+J+6nKUfgtR32eWJRfTOWpE5Tb2GhsXeUXpLgDcFdeSqwk0XD6Ze
-         RSpEURzuPrIi6wAZC8+XqhQDUKOnKygFOAtdgo8PT/rU7hq04s0yGeBlU/JIGaSdNM4T
-         ObKA==
+        b=bL6DHLX3S/M2Lgl0VIKACCHLVNj6MWoxb2e/06o19IJP84udYK7ftJPONPKbladoyX
+         TqBLkRB/KY3+WhFmJ6mQeiAiP/iOJwWnMi1WWPXXlEaDHWcSIhfIY1WSk3GVSLhAaBPI
+         4f45ZME5WY7ZSVl5JG8STnD9BbbsgPzAj6ytpRmi11aWXanjMjfF8PbF7ioMfOtSA3kX
+         KmjFadiQpKFywtvsZM6jCt56AopBjwlFXsr5kMQO7MYolZjIfByRA5voT6GgRueoxxDr
+         sJqrPDXyWpJ7yQElrDp57DJrmY+R6M+0BVY6u7dGw61Qxf1l8/1amc3mQvtNyVp9ddkr
+         7C3A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=aeKlJo/C9IF2FWChtlIU4TSN9rzPXmzQ3Z7bbkbSSDc=;
-        fh=kEY+YC5qlFRRjEAuPrFlokJamdTXcMznDhzhc61nXuo=;
-        b=TjzaBeJUAnJwnr7mesuI0rP/W79W59GGISdXkHYx7epyspw6jIX61qRR9ySJHjJjHY
-         t98pT1vFQxZ9X6jbabe8fqKHYkByDpkPgB/zmPi8RwInoh13aUHxrppOJ5bxrXDSabpB
-         cklJTmwa4pjgYr2+S2e3lXw6xmdvyZZThbujFkL5hLlBka5QhWzE0glv2aSc/9gzheq/
-         jbwQdsl7DZfMVb+F1j6Nq50gR35dQvhUFntSPJaH6wm/r/CAGXnZHlGq8J0Ubp/Zl8z2
-         lJYg32A6/YzI2ftqJH821Gf4OphcRPEzPMFXWAUBhVa9F94gQYTkG7IG+qeJQQ+fWrhb
-         tRog==;
+        h=to:subject:message-id:date:mime-version:references:in-reply-to:from
+         :dkim-signature;
+        bh=jBbGpsBOXqFYnTikH0FoZ8DdjoKWQr2k7+SRpWv9uL4=;
+        fh=Qmc21Tyju+2bSnMxdxdz1N/SqHTk3Mc3IUhmNpVXCB4=;
+        b=Y35bCETZczblz1Cvp9Gqbau/xyQPfP+SAaOrkIfOaQms/ewVp/yOPqEW2Zb8QZjTcb
+         vLBdYYHfnRpzt9DCU4DC3VKKya3diRXvE9OJdvx5GdwNi0bXbkks/GfASZEu+TwBJ7Kl
+         LomDcM6V3SDkK+q9QMg4H6vP3N/gRM8Af08uXZYmivePLr8GUDjmiSkQ9CNIZxugM2ZH
+         CELlv6cPSpAxBtQokPfFluhmHEquzmVKdeAxyRY1eFieQzupELh0f3zp3FDfUmgW2F6N
+         fxHpZjejBhWin7E7XOwxZ95MnRmiOYtNbqYT80yiNB+GzgGMgJWR/Yzo96pv0w/GF80z
+         3A0g==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786395629; x=1787000429; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=aeKlJo/C9IF2FWChtlIU4TSN9rzPXmzQ3Z7bbkbSSDc=;
-        b=pVXxXdBUoWjhup1p/2h0UlzmpeH0RHxMYP3Si7vrUX23QGc3p/4+uc8BNWmbNgQZOq
-         jGQvYR+Y22gORL07JT4nsKzLNwARMc0MG3PBnal51XG0HNlKCCYY91UmUqijFLFMcNHQ
-         DT/jZ7BeF91AyJWF+TV1LiKH/eTwO5cSt7E55aH8kFtxPcx8NmxHRK6DT5YEf4hNbBWf
-         y/4RtUNsJg+hn9uRA1itN9CrBtNMk9H25Yw/qo6qjO2xS+d/QscNoU7d8tsrTuTL1ftC
-         KpqwE31WT7txCMV7Jh18AZSJrFaczyczKl6QOgG3WQidY60GzOmEvFbofaDSTcxdtHDy
-         wKpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786395629; x=1787000429;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1786395969; x=1787000769; darn=kvack.org;
+        h=content-type:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=aeKlJo/C9IF2FWChtlIU4TSN9rzPXmzQ3Z7bbkbSSDc=;
-        b=NUprPgDrOgaOEuAePX480a8WRv1tTwEQ6vJJ4JApbGjsIekAjCvpZq4ZS6Cy5bndT9
-         53btS7dRzfuFzmn3B6EqtebMqNHJj02JnHZl2sH8OUijxPUH0hWsIkTCSE6qNypAQ7BT
-         +sMOGBfQIaoNv6ooTg16m/W0C894oWAoi+XlyQg28bPt3nz6/fACfVwovdpV/dxmkhLg
-         vCrBOXyTYrSKcuU8WSNhimIuBjPkq6kfEx4R9l1ySjbVyRWEbat6GDnOogUPQb5/UhD0
-         bp1ZCNVxD1ebemUNADcfytoKsywQBi82oabB0zJ6v5yFwS9EGgSBkijO4HvNnPAO6yjL
-         qP4A==
-X-Forwarded-Encrypted: i=1; AHgh+Rod6YQHNeIo7MIz11LdoXN7QrQ6R7iGQFD8a1csFA2rvOxYLZUKo46eumHW+Bh1KpSACo6TpTJYBw==@kvack.org
-X-Gm-Message-State: AOJu0Yy1sZNSC/XqlEKrVg2odAHA/HXUjitx7DQqb97eJ+1TRyzPwUHS
-	lHg7bceqbKw9pEKvIXy0VPXzeV723y5+N9QKaTcpMut0TbzK8nEylF+tqtLAZptc7woeXR2S5cU
-	hwzQzo707AwTL8GKsn11tSwCSf2NHstYU6KnQ65Zd
-X-Gm-Gg: AR+sD12DCkeoI0gvLlNpFJV8GzZhCyaWxYMOsBFNJ6Ec6RiFm2HUtfkXdsQlyvE3qTs
-	dq+Vt4siTY06DexILC5P1RHXfWenUgntwK+hoHEH9XZNuoQ6CfxSKeRg6DNn/r4QYIPh6/ozRIA
-	tkP+aKiv5vU6LTTiMDGwJFolZdx1tYcJWZzYegj/R9u7AEviPfClFWoAwwIUAx7FtoYdFenyHPz
-	pNxqsR6TxvYhxPa1sugS/ZyBK1FuVvMcUg9ucVZbqV4/UF88tVUJBXwPOHo9bHUAI8fDttC9FAs
-	sbw9g+mFcg0/eEQAbOQ6vtyFKa9Nj2TCbE349lkuHbSjReGorchpfw==
-X-Received: by 2002:ac8:6104:0:b0:517:5e32:2d14 with SMTP id
- d75a77b69052e-52d511fb9ddmr2293481cf.10.1786395628636; Mon, 10 Aug 2026
- 14:00:28 -0700 (PDT)
+        bh=jBbGpsBOXqFYnTikH0FoZ8DdjoKWQr2k7+SRpWv9uL4=;
+        b=qdxiCM3ZO/vN6L5iUIk+63fhyKaogAbN1l4Ad0h8EXQM5Jy25XOz7kpwYzOg9tl4u8
+         ZnkDiTMZz7n0ojzi6+6OTpX/vivfH89dkExFfZqvR4gXBBtomB2J1ENdeDIMNpdwuUax
+         yOvVLEZTkW2d9peDGs9+FdOevzSJMuZLE21AQpAofER0VCJb/LzRHrQzF7COsm0/O7Ed
+         djLB24YZ5fUxwyBnrGu+yaBuhEdM3wHSJ/dDPQLGznsvc4KZ5yG613Tt7NhJB5I54/1S
+         URK/MZXWLBXTk6C71h5Fx3sI71frAOOrbWowGyETP3rW9uHkRbgzkzVqTla0QctwU//v
+         Khxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786395969; x=1787000769;
+        h=content-type:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jBbGpsBOXqFYnTikH0FoZ8DdjoKWQr2k7+SRpWv9uL4=;
+        b=OAQDV0amG84zNoBW94LnaAvOKVc9+wq5KbW4E6m5oG+XEvrbMc5dG1cSlZHJHd7R73
+         XVFZ09ZsGcyaiwGPZtkquXibzHBYF3ujBeU8f2Fc8ilak1KmKWpvRudxZyxOITKb56KA
+         DpLWy+vdGVEN/TsInYm/Pkctgm4DeQ0agdikuzZ3XKh8x8egTReCijS9YTG7g4GyWaMf
+         KbekIDNoaJd2WbOyIPGJLx1KA4WE0MuflAd1TVq/4ZgmrQG5L07ZJ2vnM8AWuLCOazCs
+         6rNxmM3sE/rgQukmqnDU1uuM/gIc4XwEdrwGRDiXIBVMMl5jNVZGnWx4gE2WXnqS3UTY
+         bHVQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpSxk3zryNZvnYEGvObLPg4KM4+BFcWUGmF175pSNOYPC3x7rUpm+C6hbXCr26ANgawjGwhrgQXkw==@kvack.org
+X-Gm-Message-State: AOJu0YwK9gVIHR3UXxTWuQqC2d2+NEfsY/jySBM8GH+TUHywszzp9PC+
+	IOoyPSq57F7l7bbF3ZzxoVnjIvXfQCJQ+BD6oynQKhilnB6KtlWcOd9sfeWq2Ck3k+rZ7zolE+g
+	76od6I9L5w3Sx3m91QXfyzDL2oAJRSyhbadGuXn1z
+X-Gm-Gg: AR+sD117s6cMyZayBXcZvvdlSbJ6hwgVCHG4b60RJbKEVrIDONyy9fbzlhECe2MIk2O
+	jtIg2HeU9nm0guEO9LlQcDG34QCHAKcv1RBeBm1fD53iM+WAC3ZsO/xv9DLWQDXSq0Z3AVdIt23
+	dPL0FZdftCRAmZM/tIkdnPrFKNVU2+x+hTL29RRnRfIbudonZL/qmJc8EG2rOnebS6L29tb2nm+
+	rUP5WnW7yZzpoF9FBJJWS0fQurhTCISg9jdRh+2I8zNphbYIV0GrkP49V6t16FJT9qv0lOXnO0H
+	ikyKaMwRMT+9L+JXAusLkuam/VuPSygHOUtmqS2bUPxmZz0twXMhF0LUZ9fbo4FRohSj7WSDWK5
+	7RMVSawMIkMoJ//C+XLOhH151ukQYsPbsrDc=
+X-Received: by 2002:a17:90b:3847:b0:383:f52b:d616 with SMTP id
+ 98e67ed59e1d1-3909d89bd69mr24868036a91.10.1786395967805; Mon, 10 Aug 2026
+ 14:06:07 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 10 Aug 2026 14:06:06 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 10 Aug 2026 14:06:06 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <anj2bPrGqzZgZWMF@yzhao56-desk.sh.intel.com>
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-11-2fc18ee6d3ba@google.com>
+ <anZ4W9o5pTWIEgMY@yzhao56-desk.sh.intel.com> <anj2bPrGqzZgZWMF@yzhao56-desk.sh.intel.com>
 MIME-Version: 1.0
-References: <20260806200548.3124802-1-surenb@google.com> <20260806200548.3124802-3-surenb@google.com>
- <anoZL76y3WGXMArB@google.com> <CAJuCfpFCK5ycO6s+dD35YtU6zgNdivfe6P3cVnd2VxPYfGXHDQ@mail.gmail.com>
- <anojoFPijbCloUXL@google.com>
-In-Reply-To: <anojoFPijbCloUXL@google.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 10 Aug 2026 14:00:14 -0700
-X-Gm-Features: AUfX_mwveKCjTyY76ZUcAzzSSNA4_OUdgAUMYP4JBZHh4wah9m0LDMZjkeG4kRk
-Message-ID: <CAJuCfpGXBTRUUtCCpLPT9v1LZA6UHo0yM3y68Kwhxs7S03z+5A@mail.gmail.com>
-Subject: Re: [PATCH v4 2/5] binder: Make shrinker rely solely on per-VMA lock
-To: Carlos Llamas <cmllamas@google.com>
-Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
-	Liam.Howlett@oracle.com, ljs@kernel.org, david@kernel.org, 
-	willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org, 
-	jannh@google.com, aliceryhl@google.com, arve@android.com, 
-	christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
-	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, netdev@vger.kernel.org
+Date: Mon, 10 Aug 2026 14:06:06 -0700
+X-Gm-Features: AUfX_myPYbMVlta00ya1-5ZhE7lDWW0LOnyJR-gHZaPeDATx5xIvNNK-iJcLcsY
+Message-ID: <CAEvNRgFzRj_=GVy8T4P8ehhQjYomYxkngzwtKBF0iEL0Cv6fuQ@mail.gmail.com>
+Subject: Re: [PATCH v10 11/41] KVM: guest_memfd: Ensure pages are not in use
+ before conversion
+To: Yan Zhao <yan.y.zhao@intel.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 401B4C0002
 X-Rspam-User: 
-X-Stat-Signature: 1gd5dwm6ig88incq3fdetijtuydf8eb6
-X-HE-Tag: 1786395630-258849
-X-HE-Meta: U2FsdGVkX184/mo38l2YepMbCn2B7DWoPpJlutKY9jA63kIH/ZyYwoU3V69EUgiW3bvpUXfDDVpgqxq3rizMtwtbVVj4FbsOe202kjiWeq46hV7Np57Ag4mQ+1rUMhsEwTYT9uxq5kk3/iJqrRGQ2rbbv+yfJgkHS8ry6kDE7ApYvZ+0D44G5OObY2DyrPc8LuWQoTZrcBYQRUhWtJfunx9SWImWS2knkNlgH0KY4orxNJ+eZmKSGUf2iwGKjVilQ4+9c594/nQMB2Y0aTqka4aGMmNXOIVm3Y+95oygXXg3qrgRuIw617WxsUaLiWRMADiV4iMeHRCUlWkNjbTmLhJHbAhRro2ME/7VPkasecf8y/oI3Ax2muHOhXdv/zpzSPPfqbQi18p7gsNpMslIHTydlMpPbBIY/9rRpEDtfxwF8C34Kagk6HTKSSG/qHpf9X7C/1oNXUb7gLG8vu56hmi8w22p8mRHbNueLjFO1pC8KbYNmKrlk/eP5vJWzvvQ34z6OL9bEuJNOLAffZN3O77iR3hzpHOT6hsaPg4pE7cpuJZK+doPuN9CP8W0ZbUZWFipZLe4kFDe/6FIwRiXC8EvDgcLA3ZXjIktrApo1kItJ9zyGS31sLfi++0LLBUzeo8fIQIUmpzfXCr6tBrsulErdE7opxFaYh+kU0OdFB4P53xabSbVaUO+HPMircwPayyMTPEOlRwajg3mUIi2OIDmSkMgbO+leMFhOYbusLQ5XGIqnCUF5FUMXtTVrzvQVRrydEw9wJD+o1PeUwR/H7PFEgQu5U7pkkKIPWLcIl6v58HU9jRgJ43XELletf1jA3lRt2csgmG0vhVbNjHoi8/dn11dGvcraA7d9hKU6U1ZSoBvRCd+mETZtXH4sOse19NfSHZEToQOu0+5de63tq1MBeqf6uN0fLRfU+0y1XqxHZGJ9IZ0Iyv3meIXN4ACiTww/tA1Ba2sm18Aqv2
- aPmOUDx6
- Iyd8Cg7yD1StQ0b8FcA/SsFvBGnOTVsCDcQvsZcAqh9yE4ipJkZ+3wTvBoWkBB/pCg27T2nAzHiB5fxVGngr9XchMUvrp7vFGWeLT2BGTk/ESu8ll+c2SWsnJ2Z9yXhXrIv3PjAPqVirfCamCioupFY8mDoMZe0dAT726kftyF8NyYvJOakxB8j4kkYbGtlBo9J9Jahx10OtKDxf6HWs0NMmn9hcVGi9cpDtkyRVG3D5ASMVmQn8Pe5oASOZIT2ujLr/Q2rQgfUAsu6ipZK72+iQpc/HZNKAz3j2cJF97CUYnTagGZpumCWuKnGJYfWclh/7yw516BIfFSvYiTj7a1eE8MC55lSmaAdiGZjp/dZTQBr7xOx+ccWGp5fdMXLo1iGtOv2in4gmZbyc3rq7+LljXb9kqXZhlcfeJXbKVX0Q+C3JaQIxQB6C3W/p6ypZslsH0GqAIyi7E/yqOYss6KjgNTTvKYwTrCjbzfaI6bI9/HHVGpqXVIgM/4WoHOANd4tRegr7V2P+ckcmOa8ZaVEn3R96NgAZgXbyAvPxrSxbHkyRiGqzXBhzMOGA/1R9e6rvX/W7eUinOGmy/YeR4ZrVFfo3Ybj8brP5aOPWby1BOHns/HWHi04jbgnhJ/7MxdYW6tXdQObRTDI79PprOEdKz1LHFH0x87MBj
+X-Rspamd-Server: rspam03
+X-Stat-Signature: hhn6b954s8qwpx3sge46a7qeeqssa8gd
+X-Rspamd-Queue-Id: 153A8C0006
+X-HE-Tag: 1786395969-822075
+X-HE-Meta: U2FsdGVkX18s8rYQbP6cfP9IlPqWLE7TTMuy6XcSsHYuWVhKyMLLOfPHBgD6jr+m2h/6AUpXYaChP77e83xYP7T6sqZTkuBUz3TSAN4hqEvhtqnIvDqjpMEMiE+gS0GXUjXz+z6vdaKZUOTu3OjhVhZtMrOYI+QbiWapH8KakcDqloHLMgYC8S/8g0qTFstU1NgwYRYbRlcYbXEdrltLGQYd5RoYlQxBFeTgGA3ta/uuoQ0UgoMG0ghxzfdCLLt1B/H0Kr+4rLwC+BDUVuUb+NtTMkp1uPkLQS0LlrzFL+pjs2u9nCZKvLtwrzQ7h1B8lbmU+/fdOZWe6NS74m26OAZIhV+zUiwkN4k0dv8RvWTTpnb3hCnvxLZceR//btAJyXemtjgUASs0iepVvV6E9TiQrhtgGcan4KRVuJ5KCKvMBUYGw28LRYiGZp3hFqLwFODuOSP19hLuMudUhSJ1UrP3NIU2rscgbMw+1itpj836IrhEWAuE8XI8P4LZoyt7csEmTRog/x8nHfCqZztUfDWluaE3d+Y0BIZN1BF9MsKxome+aiUsW5i24H34tLZiluwwxJDshVutCcFDTG5U6mW4Fvwa7dmCdYT7AQISLGFD205afgqp5UZS+3VIT0z1N+BA/Inyn/mHzFqb3F/EZzDr+zzm2zir3c45f7sDLC1fk6ipsqmkHr9FLiHK+mKvt0fpcnlGjJ7R+cYgGjsfgvaAB/1r33S7vMZ3W5hMzB/XhpO/D6sX9KOc8u48eDBTRCCalJ+J8yNs1iOkpBx/Q6htxW0TlzD3qldwThFKH82NmolgPz3WeNK+mBUmgus/mGxVRlsWbvgWW0VtbgulOwq/fqSANALPbrqxa7KW/BtSIXUBg2wCSPgDnSxW8SXcwQ6/kmwqg16WSvATVknelOznU90+MB3L4Mw2PkdgcFd/gm/txJ+LOYD65Ul0HqyXSI2OftCg+9FNMVuPBL0
+ kH/PJL+X
+ NKQbhgrVeF6OewvHDOVAmi22DWM+1TwniM+9SEltguoZjIJIYdft054tkP05+A/Vl1KaOSNQ6zMblfv6PM/GWGfXTErd0BkgOG4uHThALtZDXVbTuHvHwOyo2duz8/0XsASRdjXzfCT41wDt+t7LToWEGaM6BWb+GZAmI539TV/L5/UE2WokC9jyNyjNlzP1Ez9fEKQUwWOtyycqIp06uam71lt6tBRuLFlkeVSdxsTvTLm8xZ4JNy3RuRKJ16nnoexOIxbCqMUPrTvqrNIrbJz5w6UgxMASZegHLLnyVeX/BTUGyZPxPPBJj+2kLfs9KnNCwUXmIf+AMwH1XoLh3qDVHCKLepvyOl4zrwrxpZnZp/eV41aSonHYLm1GfUT/Dr+EsrmbTM/LE/2ZIq5pgQDBUJ571DTsShKtH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,189 +168,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 10, 2026 at 12:16=E2=80=AFPM Carlos Llamas <cmllamas@google.com=
-> wrote:
->
-> On Mon, Aug 10, 2026 at 11:54:04AM -0700, Suren Baghdasaryan wrote:
-> > On Mon, Aug 10, 2026 at 11:32=E2=80=AFAM Carlos Llamas <cmllamas@google=
-.com> wrote:
-> > >
-> > > On Thu, Aug 06, 2026 at 01:05:45PM -0700, Suren Baghdasaryan wrote:
-> > > > From: Dave Hansen <dave.hansen@linux.intel.com>
-> > > >
-> > > > tl;dr: lock_vma_under_rcu() is already a trylock. No need to do bot=
-h
-> > > > it and mmap_read_trylock().
-> > > >
-> > > > Long Version:
-> > > >
-> > > > =3D=3D Background =3D=3D
-> > > >
-> > > > Historically, binder used an mmap_read_trylock() in its shrinker co=
-de.
-> > > > This ensures that reclaim is not blocked on an mmap_lock. Commit
-> > > > 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
-> > > > support for the per-VMA lock, but left mmap_read_trylock() as a
-> > > > fallback.
-> > > >
-> > > > This was presumably because the per-VMA locking can fail for severa=
-l
-> > > > reasons and most (all?) lock_vma_under_rcu() callers have a fallbac=
-k
-> > > > to mmap_read_trylock().
-> > > >
-> > > > =3D=3D Problem =3D=3D
-> > > >
-> > > > The fallback is not worth the complexity here. lock_vma_under_rcu()=
- is
-> > > > essentially already a non-blocking trylock. The main reason it fail=
-s
-> > > > is also the reason mmap_read_trylock() fails: something is holding
-> > > > mmap_write_lock().
-> > > >
-> > > > The only remedy for a collision with mmap_write_lock() is to wait,
-> > > > which this code can not do. So the "fallback" after
-> > > > lock_vma_under_rcu() failure is not really a fallback: it is really
-> > > > likely to just be retrying in vain. That retry in an of itself isn'=
-t
-> > > > horrible. But it adds complexity.
-> > > >
-> > > > =3D=3D Solution =3D=3D
-> > > >
-> > > > Now that per-VMA locks are universally available, lock_vma_under_rc=
-u()
-> > > > will not persistently fail. Rely on it alone and simplify the code.
-> > > > The removal of the fallback does not affect NOMMU case because bind=
-er
-> > > > driver depends on CONFIG_MMU.
-> > > >
-> > > > Full disclosure: I originally tried to do this with
-> > > > lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lo=
-ck
-> > > > trylock semantics. Claude caught this in a review and suggested the
-> > > > approach in this path. It seemed sane to me. So, Suggesed-by: Claud=
-e,
-> > > > I guess.
-> > > >
-> > > > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > > > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > > > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> > > > Cc: Vlastimil Babka <vbabka@kernel.org>
-> > > > Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> > > > Cc: linux-mm@kvack.org
-> > > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > > Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
-> > > > Cc: Todd Kjos <tkjos@android.com>
-> > > > Cc: Christian Brauner <christian@brauner.io>
-> > > > Cc: Carlos Llamas <cmllamas@google.com>
-> > > > Cc: Alice Ryhl <aliceryhl@google.com>
-> > > > Cc: "David S. Miller" <davem@davemloft.net>
-> > > > Cc: David Ahern <dsahern@kernel.org>
-> > > > Cc: netdev@vger.kernel.org
-> > > > ---
-> > > >  drivers/android/binder_alloc.c | 45 ++++++++++++++++--------------=
-----
-> > > >  1 file changed, 21 insertions(+), 24 deletions(-)
-> > > >
-> > > > diff --git a/drivers/android/binder_alloc.c b/drivers/android/binde=
-r_alloc.c
-> > > > index e4488ad86a65..c13a588c37de 100644
-> > > > --- a/drivers/android/binder_alloc.c
-> > > > +++ b/drivers/android/binder_alloc.c
-> > > > @@ -1142,7 +1142,6 @@ enum lru_status binder_alloc_free_page(struct=
- list_head *item,
-> > > >       struct vm_area_struct *vma;
-> > > >       struct page *page_to_free;
-> > > >       unsigned long page_addr;
-> > > > -     int mm_locked =3D 0;
-> > > >       size_t index;
-> > > >
-> > > >       if (!mmget_not_zero(mm))
-> > > > @@ -1151,27 +1150,25 @@ enum lru_status binder_alloc_free_page(stru=
-ct list_head *item,
-> > > >       index =3D mdata->page_index;
-> > > >       page_addr =3D alloc->vm_start + index * PAGE_SIZE;
-> > > >
-> > > > -     /* attempt per-vma lock first */
-> > > > +     /*
-> > > > +      * Attempt per-vma lock. This is essentially a
-> > > > +      * "trylock". It can fail even if the VMA exists
-> > > > +      * for 'page_addr'.
-> > > > +      */
-> > >
-> > > Do we need to explain how lock_vma_under_rcu() works here?
-> > >
-> > > >       vma =3D lock_vma_under_rcu(mm, page_addr);
-> > > >       if (!vma) {
-> > > > -             /* fall back to mmap_lock */
-> > > > -             if (!mmap_read_trylock(mm))
-> > > > -                     goto err_mmap_read_lock_failed;
-> > > > -             mm_locked =3D 1;
-> > > > -             vma =3D vma_lookup(mm, page_addr);
-> > > > +             /*
-> > > > +              * If the vma exists, we can't continue because we ca=
-nnot
-> > > > +              * remove the page from the vma. However, if the vma =
-was
-> > > > +              * unmapped, it's okay to continue.
-> > > > +              */
-> > > > +             if (binder_alloc_is_mapped(alloc))
-> > > > +                     goto err_vma_lock_failed;
-> > >
-> > > The comments seem redundant, the label is enough. This works:
-> > >
-> > >         vma =3D lock_vma_under_rcu(mm, page_addr);
-> > >         if (!vma && binder_alloc_is_mapped(alloc))
-> > >                 goto err_vma_lock_failed;
-> >
-> > Yeah, for the binder maintainers what's happening here is probably
-> > obvious, but when Alice explained the logic to me, this comment really
-> > clarified what's going on, so I added it here. If you insist on
-> > removing it, I'll do that of course.
-> >
-> > >
-> > >
-> > > >       }
-> > > >
-> > > >       if (!mutex_trylock(&alloc->mutex))
-> > > >               goto err_get_alloc_mutex_failed;
-> > > >
-> > > > -     /*
-> > > > -      * Since a binder_alloc can only be mapped once, we ensure
-> > > > -      * the vma corresponds to this mapping by checking whether
-> > > > -      * the binder_alloc is still mapped.
-> > > > -      */
-> > > > -     if (vma && !binder_alloc_is_mapped(alloc))
-> > > > -             goto err_invalid_vma;
-> > > > -
-> > >
-> > > This introduces an "extra" change. We'll now release pages without a
-> > > valid vma (e.g. after munmap()). Before, these pages were expected to=
- be
-> > > released via close() in binder_alloc_deferred_release() later.
-> > >
-> > > I don't see anything wrong with it. However, it does seem out of the
-> > > scope of this patch which just drops the mmap_read_lock() calls. Or a=
-t
-> > > least I don't see how this part is necessary.
-> >
-> > This check came from this discussion:
-> > https://lore.kernel.org/all/anGrFIYiPhjxWSkD@google.com/
-> > It's added for consistency when handling cases where the original
-> > Binder VMA is gone.
->
-> Oh sorry I missed that thread. Yes, I agree we can reclaim these pages
-> earlier if really needed but my point is this is unrelated to the change
-> done here IMO. I couldn't figure out why that was needed.
->
-> If you are keeping that in the same commit it's probably worth adding an
-> explanation to the commit log?
-
-Ok, I'll amend the commit log with an explanation for this change.
-Are you ok with keeping the other comment, or do you want it removed?
+Yan Zhao <yan.y.zhao@intel.com> writes:
 
 >
+> [...snip...]
+>
+>> > @@ -542,8 +576,21 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+>> >
+>> >  	mas_init(&mas, mt, start);
+>> >  	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
+>> > -	if (r)
+>> > +	if (r) {
+>> > +		*err_index = start;
+>> >  		goto out;
+>> > +	}
+>> > +
+>> > +	if (to_private) {
+>> > +		unmap_mapping_pages(mapping, start, nr_pages, false);
+>> > +
+>> > +		if (!kvm_gmem_is_safe_for_conversion(inode, start, nr_pages,
+>> > +						     err_index)) {
+>> Note: conversion failures could occur if another vCPU is attempting to map a GFN
+>> within this range.
+>>
+>> CPU 0 (setting attributes)          CPU 1 (attempting to map)
+>> --------------------------          --------------------
+>>                                  A: mmu_invalidate_retry_gfn_unsafe
+>>                                     filemap_invalidate_lock_shared
+>>                                     __kvm_gmem_get_pfn ==> folio refcount++
+>>                                     filemap_invalidate_unlock_shared
+>>
+>> filemap_invalidate_lock
+>> filemap_get_folios
+>> check folio_ref_count(folio) ==> Not match !!
+>> filemap_invalidate_unlock
+>>
+>>                                  B: read_lock(&vcpu->kvm->mmu_lock);
+>>                                     is_page_fault_stale
+>>                                     kvm_mmu_finish_page_fault ==>folio recount--
+>> 				    read_unlock(&vcpu->kvm->mmu_lock);
+>>
+>>
+
+Thanks for reporting this!
+
+>> Retrying in kvm_gmem_is_safe_for_conversion() or moving the invocation of
+>> kvm_mmu_invalidate_start() + kvm_mmu_invalidate_range_add() to an earlier
+>> position does not help as long as CPU 1 stays at stage A.
+>>
+
+IIUC CPU 1 isn't blocked by a conversion so stages A and B should
+complete fine, and CPU 0 would already be retrying for other reasons
+anyway, like speculative refcounts from elsewhere in the kernel, so the
+conversion would take longer but it'd work out.
+
+Is that understanding right, that this doesn't completely break
+conversions?
+
+>> So, should we avoid this failure?
+>> e.g., by moving filemap_invalidate_unlock_shared() from stage A to after
+>> stage B?
+
+Not really sure about this, how will control go back to guest_memfd
+after the fault finishes for guest_memfd to unlock the filemap?
+
+>
+> Or what about having KVM always treat gmem page as non-refcounted, and have
+> kvm_gmem_get_pfn() put folio refcount before releasing the filemap invalidate
+> lock?
+> Below patch is applied and tested at the end of this series.
+>
+> From 8c2f29bc15bceb6a8fa103cf2585ec11354fd74e Mon Sep 17 00:00:00 2001
+> From: Yan Zhao <yan.y.zhao@intel.com>
+> Date: Mon, 10 Aug 2026 06:24:52 +0800
+> Subject: [PATCH] KVM: guest_memfd: Return gmem page as non-refcounted
+>
+> Have kvm_gmem_get_pfn() put gmem page refcount before releasing filemap
+> invalidate lock and return the gmem page as non-refcounted. This avoids
+> gmem memory attribute conversion failure caused by temporarily holding gmem
+> page after faulting and before completing mapping.
+>
+> guest_memfd always holds gmem page in filemap cache. TDX does not increment
+> gmem page refcount when having gmem pages mapped in S-EPT. Additionally,
+> as gmem pages are not swappable, setting dirty or accessed bit is not
+> necessary. Therefore, there's no need to treat gmem pages as refcounted
+> pages.
+>
+> Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+> ---
+>  virt/kvm/guest_memfd.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+>
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 2115e73e455a..e357b4ffa777 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -1332,11 +1332,10 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  #endif
+>
+>  	folio_unlock(folio);
+> +	folio_put(folio);
+>
+>  	if (!r)
+> -		*page = folio_file_page(folio, index);
+> -	else
+> -		folio_put(folio);
+> +		*page = NULL;
+>
+>  out:
+>  	filemap_invalidate_unlock_shared(file_inode(file)->i_mapping);
 > --
-> Carlos Llamas
+> 2.43.2
+
+Hmm going with the above CPU 0 and 1 illustration, if instead CPU 0
+truncates the folio and the folio ends up being freed, then KVM's MMU
+has a pointer to a page that is already
+freed. kvm_release_faultin_page() is passed the pointer to this page and
+will dereference the page.
 
