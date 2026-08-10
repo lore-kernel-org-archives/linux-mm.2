@@ -4,197 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00BDBC5B569
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 12:25:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98E27C5AD7B
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 12:51:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFFA16B00A4; Mon, 10 Aug 2026 08:25:56 -0400 (EDT)
+	id 6D75D6B007B; Mon, 10 Aug 2026 08:51:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BAF636B00A5; Mon, 10 Aug 2026 08:25:56 -0400 (EDT)
+	id 688D86B008A; Mon, 10 Aug 2026 08:51:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A500F6B00A6; Mon, 10 Aug 2026 08:25:56 -0400 (EDT)
+	id 59D926B008C; Mon, 10 Aug 2026 08:51:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7184F6B00A4
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 08:25:56 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E944316014E
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:25:55 +0000 (UTC)
-X-FDA: 85085281470.17.5C108CA
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011052.outbound.protection.outlook.com [52.101.57.52])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 077DE4000B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:25:52 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=ej0jUfMT;
-	spf=pass (imf07.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.57.52 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786364753;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 348D66B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 08:51:07 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9A3C114013F
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:51:06 +0000 (UTC)
+X-FDA: 85085344932.30.367EBDB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id F0F56100002
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:51:04 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z3tCqdG1;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786366265;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XgPKZhkjoZuhTLTuO+WqzRIbzYH5KCcDPOZXqaOTOMg=;
-	b=urrG2Oknqb9p1A5TMf7lo8bnFfua7XHrNmc4RxwXMf/Xm28pQTnonXZ5BDAPyADuSYdiyr
-	ZrMaVwF5aRx0TEaDmt0OS8qW4C/dWJCLXCZYUzYO/4L/dcSwQfITNAPAHO5PEuO5EWsXuL
-	FMhKyHGU90hNLp9hKtYlNP5TZajEPKs=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786364753;
-	b=BPMSOlzmP2ERl+XLcJJ10K3PH7CmhaT3tgirTqj9mf/USpNXxYYbhqIm8TrjvMNAaNwhDg
-	TEq4QqVWT/kaKJBdgGO8IkB3bJ4KnqYOAIL1DyD+5t+Z7ooJ1kFalQudrQfdDIF1Bsxv9J
-	Txbk4kNnP+aXkvy+eQtlSBTvuxCHj0Y=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=ej0jUfMT;
-	spf=pass (imf07.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.57.52 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hX6LJJZvuzmas9yuEFSzCNKOvrfQxgCI+v46kQmrBcAHdE4raUlfobAVC0Np/1qZKIko1zlS94W+9rmFEVuTgYM7OFNxSMJvomYtjw76w36LAgwQjHgGRHtiZhbEjjzgRA4Mj2sqQo7Q1VbVAIhumpKO0Onl4LYVcw2AJJotTlerk9Q1MPZdVpCGS5gA3u+zSnpndSX4lG7KkZnNugex+WdXr5h1woVkq228hmvaYsgqNWAeH7f9i7SGJ4FLnq4MZTSSvrctpQsbu4HDrTMWS6FACfVPLWSztLIFCRJMTl0P3WkzfiRZ/8RwXICorTRQMm5sPlpDh5gTurkAW9p9Lw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XgPKZhkjoZuhTLTuO+WqzRIbzYH5KCcDPOZXqaOTOMg=;
- b=krb4NyG3ratYdT+XimY4POFDGt7k9+EZyCpKEW7+sQKQ1Q3d6qD0A6qldE8xEfwlj9kF8s9+kk1A8y5m0qiM0Ipnl58gw5EPBrCgI7RSV2Eo5vSub+83xTi/JW/+MbBu3hkGTIybxL7FDiOOBFMyjV2FhuIRuURJV0IcogrzVGRgZbuTrvZoBxz4QaY92/MVRYkYfte6JTptYZoGHN7zGDy1m5lVZ6JuRdhgcUJY9a+pZ6yDBcfZj6PiAbyqrKugGHzZZX30jwLekt534vfWPI+AjZyVZHWNzfiuRgz7BaWatlGJfBrXBgzdTNFPMwqvhZyJ5MwkRlVmYFTTYdudvg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XgPKZhkjoZuhTLTuO+WqzRIbzYH5KCcDPOZXqaOTOMg=;
- b=ej0jUfMTyqG3IYgqFdxxfPjzQS2ytD5zmzBqji4pWWzhNMXwGRzvEoMZMp+lA5M22JSoxH3IXZfqYSa/DrZqHRZepnMQl8YoYY6kDSrcHvhi+EmKF71zZK3a9ua6g15qLg/MPhOzqfsJMwC3woyAOjyju2MNMKjKgPI3M9xBrL4=
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by PH7PR12MB6788.namprd12.prod.outlook.com (2603:10b6:510:1ae::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Mon, 10 Aug
- 2026 12:25:45 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.21.0292.024; Mon, 10 Aug 2026
- 12:25:45 +0000
-Message-ID: <94a06ddf-a969-4499-93cb-1c8808fc7609@amd.com>
-Date: Mon, 10 Aug 2026 14:25:21 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 06/10] dma-buf: heaps: Add debugfs support
-To: Thierry Reding <thierry.reding@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Sowjanya Komatineni <skomatineni@nvidia.com>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Mikko Perttunen <mperttunen@nvidia.com>, Yury Norov <yury.norov@gmail.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Russell King <linux@armlinux.org.uk>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>,
- Benjamin Gaignard <benjamin.gaignard@collabora.com>,
- Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>,
- "T.J. Mercier" <tjmercier@google.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Chun Ng <chunn@nvidia.com>
-Cc: Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org,
- linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-mm@kvack.org, iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org,
- linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>
-References: <20260807-tegra-vpr-v4-0-5510d16af89e@nvidia.com>
- <20260807-tegra-vpr-v4-6-5510d16af89e@nvidia.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20260807-tegra-vpr-v4-6-5510d16af89e@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MN2PR06CA0015.namprd06.prod.outlook.com
- (2603:10b6:208:23d::20) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	bh=pYvBLcmZ5TB8B2HwmMEA7avd8sv7PgL7yrFAtoQ9v5k=;
+	b=t4aStCjAA59gCJxKvwnAVCSxeiDbIhD9/aIYai80gqU7FhQOnKEm07D5hnt5nDn54zx7ny
+	vmix4UPhafOG3x8cUe8DZ+1eRgOftehoPJarQAuS8J0o7SXWdZcHP3wWaJu4X1vivtiOW/
+	ZdBD62J8KyyD5texCRilzGegSSSqlEU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786366265;
+	b=N0gybzHub4hpoqoAGiLZb79yoZfCx3RIFIISxFcVniZDEm2E69Abp2VB2iGlax+hK2JNZM
+	4rF6upm2q7TPBtbOy91L7a2CPzHfkLGvaoN1Rb0UpyuE7oRLB28MMxL3PPpmErvVMHiiRy
+	hJUndIQoGWeLcr+ew0CRvX72FDHg340=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z3tCqdG1;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CAF5740991;
+	Mon, 10 Aug 2026 12:51:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3711F000E9;
+	Mon, 10 Aug 2026 12:50:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786366263;
+	bh=pYvBLcmZ5TB8B2HwmMEA7avd8sv7PgL7yrFAtoQ9v5k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Z3tCqdG1gTmj5SeDm+uqtFa68CLPgzNb561oUaQ2/m1Zg6lwhm9xGuZBOqR+k0mlx
+	 QMw+PKqBPe9IoqTYmc7fORVOR6PfccnvLWskSK1yEQEIIFJjbet0wd5c1XgKKkPFy6
+	 XeGfKVM/47Hcfdy5+fhu5o1blgs/vPsp+pe2wbXY2aR+37OTXhKQTi0Ew6JiShC+dU
+	 10mDX1u19+katUD1OmPV9XavPpNGeD6MBb85mIO3z3SFM7acoWfCd463RjFjrbra8k
+	 n8JYtUMFdMOhS27y5QWg7vSKFw6pZIsOhjUR2b4OZzAUNndyd8vXsjPE83goKV6whK
+	 6xPblJ24d7wrA==
+Date: Mon, 10 Aug 2026 13:50:42 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@lst.de>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/6] mm/page_io: convert write completion handlers to
+ folios
+Message-ID: <annIJC0TtWS74rAw@lucifer>
+References: <20260806-b4-page_io-folios-v1-0-0899bac3b826@columbia.edu>
+ <20260806-b4-page_io-folios-v1-1-0899bac3b826@columbia.edu>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|PH7PR12MB6788:EE_
-X-MS-Office365-Filtering-Correlation-Id: d05167ea-cd58-4c2e-5268-08def6da803d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|366016|921020|4143699003|11063799006|56012099006|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	uJ0YlBUrLHAd5fjCJPvn9wMDKYHfbYNA1n5wTwS+x26DBHLsgXqHW6dUseMz8Gn8UeKR8TPFuP9ChwSnCgiz0LSp/9mHbbbXIxc0SCA+A1blWVYQPHGCYgr0NIh77FRWFw/e5Jn82+c0eabCbhJ3JUqDabEzm2YS6nYs7QpArMhd+LoWeoNeRUjLIDagxIGDh5dbc6D7Ua1wrqEV0WUx/pSpRHhyPtPR9cXBHGBbQlzF9xNn9Te0Eq5I2cQatLAjKLuvFGXQtUl1935Fz0W7aRDNmwQYAlgoF9vI0eGAON1l9ZFdaHw36nKv+ZWFGSx8OgjwyFeATRoxxVs8fkUx/pWr8GmvyyEGym8+kP/JPtyolp53FvK2RMjDbKJb8Sv7ir61Rz8ugsI2w9C76ynOTKoLoS+bztaaHav8E4Ne4+O2JWBe2Td60Y1HFqtcZT49/2+w596/h4/OtYLJtv8sfoG+Z0SIIpu7jiqhwOEXQIU4bechhj2ob/hLR2m+6aJN2kVhxXUTNi1bXA+HkciVV464ec21RXvmx5xDy7Vw/2xlDoP7wstUi2w0Ax4JFVIzQ3EeW8AMPu11xixZIt7eXAyHRhYND8FCDRAwhjMzStbx1ycuQpmH9iqtEBCoQ0h/mu1vT3iPt1tHmMySeWTxuKkdWb4nDfJyXb8n8ynXLbABQUb9sWkktNgv/1CcrpD4jGSbiGmShpfVp2K69R+pfw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(366016)(921020)(4143699003)(11063799006)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NzJmRUhLM3l2NElWQS9IVnA0VHFFUTV1MS9jN0ZSSTZNTzgzRTE0QTM4Sm56?=
- =?utf-8?B?TDRBQmFqaGtrWE5ScmdkN2tRbi9PMnNnL042TWM0THdzRXVNa0ZabkMzUUd1?=
- =?utf-8?B?ZzBUNU84UDl4QkJpcUVGVjh4QU5FY0VMVm9QUVV5V3VUR0VjM2RYOHpseE5Y?=
- =?utf-8?B?UWZMYkROTE9LeW1WZ09wZ3laSmVuck1NejZZRXZzbVJVUXV0T0kra2FTbGNI?=
- =?utf-8?B?UlArdjhXanFpM1FubVBQMXBVUkh1THRUYndxT1phYWRMQzZQcVNQaWNmUC8y?=
- =?utf-8?B?TUNXVlFCQ1VnSTQ5WWdyYS8weGZ4VWhIa0svNGZzdTRQS3hUbFlSZ3FpSEUx?=
- =?utf-8?B?MjdRNGc3TXFzNTdzd2YwSnRKcVJRd29FVnljZkJqNWpHOURyU0w1bmpNanFv?=
- =?utf-8?B?ZDJzVDV1elRjWDhuS3ZtZmtrYytDME1aS3RSc0F0RXRGdUdnSitQQXJCdjk3?=
- =?utf-8?B?REV5N1MxL1krTTNiYUNzcW5PbFg0cThvaXZacU9qWXFBV1JweWVhWWRieWlX?=
- =?utf-8?B?UkxjTEI2SEk5RG5rZmxVd1NPZXZrOXplOWVvOE5QendGTmhaeHkvcitLbnRo?=
- =?utf-8?B?UE1ucUpFRTRiZGR0UWRlR1Z6N2ZLQmpEWTVHbUpMSmxTQUViMmN6STdqZWlQ?=
- =?utf-8?B?c1U5endjZVBDREV5WWYwbHAxcmY0d3hXbE9xTXlWV0RHQlpJQ3lQVUJEU1pS?=
- =?utf-8?B?WHhSZzdVWG41b2ljeENyRVNYRzZma0REWFRNRVRoVTRhdFdMRVZmcnpYSWZJ?=
- =?utf-8?B?OTZHMkJ1dFV0N1paWHVqOFU1aDBUN2dhcitKcjU3YlpOZkRsVnVQcnFVTi9l?=
- =?utf-8?B?dXhyUzdsdDlXL2I0MnFQWGtDMVk3RmlsOVVqb3UyZ3JNbTNlcTFMTU95QkZG?=
- =?utf-8?B?aGd6czc4dnJBSkR2K3hVRC9hWnJXOFdJR01mUHh5VmRINWEzdHVoaHYzL1Yz?=
- =?utf-8?B?SHMySHlFYjV5czBIa0pkVmY5WmhyVUFSQkxmQjNLK3NHZjBsNWprdnBtUkVy?=
- =?utf-8?B?R0tyOHZHTVFKV2sxY001K3JOTDF3Nks1RDdQemoraGtlV0FxY2FBUDFQaFVH?=
- =?utf-8?B?eERJelhIRWlpN2IxckYzZXVoMndlSVpYc3k3WG1Rajd1bWwzSjdWZ2tVQTAr?=
- =?utf-8?B?Q09pdVRkU2U2dEFFS2U5ZEszL0pqNjhIZlRzOG11dXkzWjJrc3BuM0hFRTV2?=
- =?utf-8?B?QVVxN2pZNFdxMDZra0hDUWlnTHhJQ0xaNFBIanBDVzYrT2pSQ1crUitQallG?=
- =?utf-8?B?OTZmckdZcThMMGYrcHBFODZtYVAvMWNMV0pnd0lURWlUM0doTmJGMFNEdGIr?=
- =?utf-8?B?UnVFQS9rY3VwODE2WVBSY0NYSXBmemh3QzBQUUVPWE9OMDJERXU5ck1RSVNJ?=
- =?utf-8?B?akx3M1FJUnhCN2wyc3R6bXdkcUlnMjFxSVBmaDJNdXhkVzZJcm5kNGR6V0Vw?=
- =?utf-8?B?NkNnVGNuQktkb1BJRGZPa05KNlhhZFFLZFNaUncwU3JrOUhPblgxb0ZBQlJM?=
- =?utf-8?B?aEJONDBLb2FDT2VSbGNsSlNELysrYzJLQ2JldklBNldsMVNhd2NXV3ZERTk1?=
- =?utf-8?B?cnVFd2d2THdqSlJSMkpCaFdETDIyYVpBZ2Z0NlVKbkRPUmVRRDZYVTNoM0F0?=
- =?utf-8?B?YmVxRDl4bGdzOXU2TlE0WGVLMEk1V3NSQzFvSUFEMGdHd25jTEZVOVlwR29j?=
- =?utf-8?B?aHk1L1Q0bDVWc1F5ZnhlTnJPb051RUZUeko5RUI3TURzcE1BbjJGMzRidXRY?=
- =?utf-8?B?K3FZdXZqMVlJeE1xMlovelJhQ0dmZmM1NXRYNUZudjI1Ly9ubitSNkUrM1RQ?=
- =?utf-8?B?RmJGMDBzckU3ZTMxSkdaYWJBTGZkc1hEdU42ZUxoUkwxeDZHY2d2dkNxa2wx?=
- =?utf-8?B?TEozenhOREJmL0xzWWlheko1VG9VY0lhZmkrTnZIVy9PQnE3MDU3NU54b0JG?=
- =?utf-8?B?ZkhxVm1iM3doUUxRWUNpbEpCT29Mc0lXUTVUZERUcEpJQzM3NzRsNzB2YUdZ?=
- =?utf-8?B?YXVqaWYrdkR2TEtKdXJlcDJGbElxaUpiclY3ekpCVWNnQTBjdm1ENWFBNXJi?=
- =?utf-8?B?NXpLUHMwanFMblE0dTZsNGZxR24wWloyRUdEWHZsdEhhQy8rU2dOTGdxQ1gy?=
- =?utf-8?B?QmlGbFhZVkF1SVlIaTBSV1lTQlBSdmRzTWNyTGh6SW1BQzVzSVVLc1RRNHFa?=
- =?utf-8?B?ZFRSdWlOQUtmdmFkT0dzbUlKRE1Pa09LLzFYV1hSVHk4V3J3UitETFIxallz?=
- =?utf-8?B?SmQ4ajV0VzZhVmVPTGVQbFFDYVBqUVVnM2c1aFo3bklwR0czR05UK25zbFBi?=
- =?utf-8?Q?sV17zeAytFg+QLG5+M?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d05167ea-cd58-4c2e-5268-08def6da803d
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 12:25:45.1565
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ov0Erh0lz3QOIBKiWHRzi3ak8zMidztRl9illREB0K0RFBjsVhc6kcOlkCvYoWzf
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6788
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 077DE4000B
-X-Stat-Signature: 1jophcy5fprcgf9e67mmz867mbjxao3m
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260806-b4-page_io-folios-v1-1-0899bac3b826@columbia.edu>
 X-Rspam-User: 
-X-HE-Tag: 1786364752-439156
-X-HE-Meta: U2FsdGVkX19ih7XSbiioQ005C134R9td9PeyZbmdVGnz/c4DXxNCVPxuvO4zfVv86o6PU66MsObTzOtE+GyPgnYha7+dD/fQN5M3oaeezSUwq06q5YfmFnVCNeVXPt7MAUs6yiolemfcP5lAqWpcFdhcM7Ox/3WJkaA+f5oBGVETMhxsG8sZQyVuPaZ1mrFkfA12GxCKTd1AqApTCvRLnUsWQtFnOzZTrMokYBk71wnS3kkaDozJ8z8IrM/4hnUy1zEo3j7CcmpjwAE91BJluQZliGiP4w/15WpkYIVgdenXAEGyMzqPlEoTEa0xuJm84Xspz7z7NyI03ILz4nQSIQ5hnJYAah/AIfm3tEf4jRSIPOT9F7GpequM+GdbEDOguU/hPxJZ9bm3WHDUZ7nnABO6kZ3VDfyHpFNTZVL25W6p6AnM2ymJ1cthwjmeKq8icrlECRZbK/uAEGpelHgUE36oSTpvCNfx+HwpP4CyFKVJ6TDpe2PXkghckRiAjb4/XLHlZV+xpgFIJTZtCXkVl6YoMzk3KFKYJMvRN1JuDEyuN9elLn/fz/A2NpyGhL1DfFndR0rYSeQO8kHGhDjmQP/8h1eYhnyM0RSAPs6ZEohNZ/wncKGOvqsWSe9mYiS8/mje1LD7kuFPNDcWd/zOuuq7R13AtZUyaFMoSHS1H1kURdbuDpxQLqiGAQ70rS1c9IcOwwEEjGUNsHT5CMX0HpMqZbUKCaz0NP8FHmJtYUHLU2PHCw6zMiiKVoVhHyZjNq0mn7qxLGKZ5KKb2ca4UlTPdE4o3UPO0+xQ9gjwsrTZ6jkvCea/f9CBPK3xYyGSP7MdwwcY/b+vdPTO+dNawneVKUzsqPIUj4NPEd2N2UjR6XHXslCsFHtxW3q6dMMX4Ydw/C+/6oEN3D3veEk35hT1mh6aWhU6I8daPoR34L/qHOyFM3goSHWM9LCCjQJusFlDAeM28pqQW1ICc1n
- wiT41RrQ
- 8Hlhn+Yk+8M6fIZz26wI3KD4SNuCQwFn3l8K7y/ALoV8fDY+/YyWsqvXehMf5FONHG0hv+ZvgB8KnCqv5rENxm43YZJjkjhFurYPcDzyyRlFdspoSovTOCJ9Rmd+AkD3n9eCIt/WGyMFL56/8wfH5eMou4JPc+Pb76uikPQaakQIDi/mG3WAZP/nqy+Re7moXfmwvdrOxNemNG0tvLkufPW4R5KrUYh5faiQAbksz9AiWETniFnxtzektkbwJmeQn3/JD+OaqgL/ZDbs0ulmoV5AehxGE6IDR6wlf4j7No/4+HJfWLAcR/X4N0tcP2J4LUoAhDhW3WUdNefC0Ck/qzncOHTJIDGm3kHNRm/gT/9bzACANIMBXHk47ques+pOLoQMDWeZwY6/dsFTZRSGS+KGDH+zhfvlTMTDTLwKsftMEyfXwW8IYz6+w0PZlXKu+EfMRAnICHjtC7AVwnYRreuuw7eT2+EphVtaxw8QZnLaICWyRzwzEjGslNbJox3TthCTlVz5firYu7O+pfG0TKlvqfgihaKEa3qdaWftuyjF1UhFcsx0bxVoi85l5ziHWX1dDX+wE0qQszCyYZ0N3tNZpEodaB9R28uIrRjVXN7NtA67jGUJzZH8VvaLx7DvSoR3E
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: F0F56100002
+X-Stat-Signature: 8hb1bf9795e8od3753qaf9s4t5yggfmj
+X-HE-Tag: 1786366264-907553
+X-HE-Meta: U2FsdGVkX1/vv9RBdSap6Z+n90817vwiPM6xZROuCD4qf8buRilUAy9xizbomQFFTglK8FQt3AVQ0k2C2dthny9W0VmvYyRWmIuPiLN8WsLWbYx6pH+jHO2cFz2j4FTu7yqlFJw/SdxGNmMHwdh8Edf49PPBzJMnXGC7U45wmafj2X38rRXrp59ubELm5EPX34yoQPJT7KAsCKEdyt14YTGFrLVou5BWMxwU6TpJwhjzwPSIyOBvobBvEptt5Ost3phoud7CHDIjBa0ETuin1p7ZloRkEk31E5C7oXHQPu7+RJA3OHKF1CP3BizwkAPNNFD/NzEQ0ox3j29cB9aflbI6Htsh9v5hxXqSGLbvagz66uEd8BKba8mUjrEOu4X7p0HXXLw4UjBG3f1aHbhUtvb3Oj8dhujdMONGnJYowGprMrAnvyPKSI6kmUs6IC2qZiirDtaTJoZKRglDP0YhchGJYorPb+4fkLkFzRTqGAA3xe3DE2+kLLw6ifcJDusWem1TwqjyYCyn9H+wEUQn5Zs+Ntqw7TfNDNo14IfqN6nlU+hWWHJ/ty0iUekKMU/wjcIcovnTyFAx9Umok/CZOBG6eZqAPjUK1ya+xap7hxGSZZlQvTvKvzN1y5Ldv6tK3DoMTwCoBeFV/IIkASTZjwnSGGi3J1OKJkERF2Ejviumnrta/iLW3K3zLfqWSJXbr3vrQ/E6/0DJu1fwZaWvzvG6lVi2IQM4Lk6TJyvm1Jjj3LXomLAd/Oo2yYyOmhvBSTbkMHFe+dIxUflksuGAuwkpGtSmMgITaTe5oyDoIxUCT6tfQawknW3pXZB0UyXjzH0pKUepj12c2Pca8m6gXEMnfo3/DMG/cNt4y85zzXDZmXqJ36tCQnzIrUKrPuUvkRKJA/dCdxhZFW72q0FySDMH0H+xO6MZNlYA0dCEnlS6agMkj87Z+SOTEip+1hzKVNH9I3aQqYNnH4g3qGj
+ S1big9Dd
+ BfGLv8EFIhBB23HETjpB+vPe723TNcWJvvz9JO/BTlLPK0sSLIq0ggGBBrNJwPsxfT2GsL19seWglqh0Gp1nkWGRfY3AUgAipHz+WufJOndy+lIX4NBseM/eIaEQzLIMXRhM9JJz85asVDfz8pI4LCcgZ4WiCoFTJjJBcseU2tytYtW4K7BhHepBiMLQPZFGdTosOqSQOb2tDI139qW1swb3K9u4xRABuTgiWs0B1itlXGDnAxOSqo7AB8fPZ3qAwOnyWi9cZXwy7nJ8OlNgZmjQb6zzXoFBwCVEBlaL/76G3ruxIqqESKAAzzbnqlpHo6k/B
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -202,132 +100,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/7/26 17:54, Thierry Reding wrote:
-> From: Thierry Reding <treding@nvidia.com>
-> 
-> Add a callback to struct dma_heap_ops that heap providers can implement
-> to show information about the state of the heap in debugfs. A top-level
-> directory named "dma_heap" is created in debugfs and individual files
-> will be named after the heaps.
-> 
-> Reviewed-by: Maxime Ripard <mripard@kernel.org>
-> Signed-off-by: Thierry Reding <treding@nvidia.com>
+On Thu, Aug 06, 2026 at 06:55:33PM -0400, Tal Zussman wrote:
+> Convert swap_write_end() and swap_fs_write_complete() to operate on
+> folios directly instead of going through the folio-compat page APIs.
+> This removes calls to end_page_writeback() and set_page_dirty(), and the
+> last caller of ClearPageReclaim(), saving two calls to compound_head()
+> per folio on the write error path.
+>
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Very lovely, thanks! :)
+
+I see you remove PageReclaim in the subsequent commit which makes sense as a
+follow-up.
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 > ---
->  drivers/dma-buf/dma-heap.c | 56 ++++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/dma-heap.h   |  2 ++
->  2 files changed, 58 insertions(+)
-> 
-> diff --git a/drivers/dma-buf/dma-heap.c b/drivers/dma-buf/dma-heap.c
-> index 3937dd41bb0f..389cddd07c8d 100644
-> --- a/drivers/dma-buf/dma-heap.c
-> +++ b/drivers/dma-buf/dma-heap.c
-> @@ -7,6 +7,7 @@
->   */
->  
->  #include <linux/cdev.h>
-> +#include <linux/debugfs.h>
->  #include <linux/device.h>
->  #include <linux/dma-buf.h>
->  #include <linux/dma-heap.h>
-> @@ -225,6 +226,46 @@ const char *dma_heap_get_name(struct dma_heap *heap)
->  }
->  EXPORT_SYMBOL_NS_GPL(dma_heap_get_name, "DMA_BUF_HEAP");
->  
-> +#ifdef CONFIG_DEBUG_FS
-> +static int dma_heap_debug_show(struct seq_file *s, void *unused)
-> +{
-> +	struct dma_heap *heap = s->private;
-> +	int err = 0;
-> +
-> +	if (heap->ops && heap->ops->show)
-> +		err = heap->ops->show(s, heap);
-> +
-> +	return err;
-> +}
-> +DEFINE_SHOW_ATTRIBUTE(dma_heap_debug);
-> +
-> +static struct dentry *dma_heap_debugfs_dir;
-> +
-> +static void dma_heap_init_debugfs(void)
-> +{
-> +	struct dentry *dir;
-> +
-> +	dir = debugfs_create_dir("dma_heap", NULL);
-> +	if (IS_ERR(dir))
-> +		return;
-> +
-> +	dma_heap_debugfs_dir = dir;
-> +}
-> +
-> +static void dma_heap_exit_debugfs(void)
-> +{
-> +	debugfs_remove_recursive(dma_heap_debugfs_dir);
-> +}
-> +#else
-> +static void dma_heap_init_debugfs(void)
-> +{
-> +}
-> +
-> +static void dma_heap_exit_debugfs(void)
-> +{
-> +}
-> +#endif
-> +
->  /**
->   * dma_heap_add - adds a heap to dmabuf heaps
->   * @exp_info: information needed to register this heap
-> @@ -299,6 +340,13 @@ struct dma_heap *dma_heap_add(const struct dma_heap_export_info *exp_info)
->  
->  	/* Add heap to the list */
->  	list_add(&heap->list, &heap_list);
-> +
-> +#ifdef CONFIG_DEBUG_FS
-> +	if (heap->ops && heap->ops->show)
-> +		debugfs_create_file(heap->name, 0444, dma_heap_debugfs_dir,
-> +				    heap, &dma_heap_debug_fops);
-> +#endif
-> +
->  	mutex_unlock(&heap_list_lock);
->  
->  	return heap;
-> @@ -335,6 +383,14 @@ static int dma_heap_init(void)
+>  mm/page_io.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+>
+> diff --git a/mm/page_io.c b/mm/page_io.c
+> index e4fa7ffffe8b..43b4383a4729 100644
+> --- a/mm/page_io.c
+> +++ b/mm/page_io.c
+> @@ -496,13 +496,13 @@ static void swap_write_end(struct swap_iocb *sio, bool failed)
+>  	int p;
+>
+>  	for (p = 0; p < sio->nr_bvecs; p++) {
+> -		struct page *page = sio->bvecs[p].bv_page;
+> +		struct folio *folio = bvec_folio(&sio->bvecs[p]);
+>
+>  		if (failed) {
+> -			set_page_dirty(page);
+> -			ClearPageReclaim(page);
+> +			folio_mark_dirty(folio);
+> +			folio_clear_reclaim(folio);
+>  		}
+> -		end_page_writeback(page);
+> +		folio_end_writeback(folio);
 >  	}
->  	dma_heap_class->devnode = dma_heap_devnode;
->  
-> +	dma_heap_init_debugfs();
-> +
->  	return 0;
+>  	mempool_free(sio, sio_pool);
 >  }
->  subsys_initcall(dma_heap_init);
-> +
-> +static void __exit dma_heap_exit(void)
-> +{
-> +	dma_heap_exit_debugfs();
-> +}
-> +__exitcall(dma_heap_exit);
-> diff --git a/include/linux/dma-heap.h b/include/linux/dma-heap.h
-> index 648328a64b27..1c9bed1f4dde 100644
-> --- a/include/linux/dma-heap.h
-> +++ b/include/linux/dma-heap.h
-> @@ -12,6 +12,7 @@
->  #include <linux/types.h>
->  
->  struct dma_heap;
-> +struct seq_file;
->  
->  /**
->   * struct dma_heap_ops - ops to operate on a given heap
-> @@ -24,6 +25,7 @@ struct dma_heap_ops {
->  				    unsigned long len,
->  				    u32 fd_flags,
->  				    u64 heap_flags);
-> +	int (*show)(struct seq_file *s, struct dma_heap *heap);
->  };
->  
->  /**
-> 
+> @@ -513,16 +513,16 @@ static void swap_fs_write_complete(struct kiocb *iocb, long ret)
+>  	bool failed = ret != sio->len;
+>
+>  	if (failed) {
+> -		struct page *page = sio->bvecs[0].bv_page;
+> +		struct folio *folio = bvec_folio(&sio->bvecs[0]);
+>
+>  		/*
+>  		 * In the case of swap-over-nfs, this can be a temporary failure
+>  		 * if the system has limited memory for allocating transmit
+> -		 * buffers.  Mark the page dirty and avoid
+> +		 * buffers.  Mark the folio dirty and avoid
+>  		 * folio_rotate_reclaimable but rate-limit the messages.
+>  		 */
+>  		pr_err_ratelimited("Write error %ld on dio swapfile (%llu)\n",
+> -				   ret, swap_dev_pos(page_swap_entry(page)));
+> +				   ret, swap_dev_pos(folio->swap));
+>  	}
+>
+>  	swap_write_end(sio, failed);
+>
+> --
+> 2.39.5
+>
 
+--
+Cheers, Lorenzo
 
