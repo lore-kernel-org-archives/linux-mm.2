@@ -4,166 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01C1CC5AE49
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 14:21:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77F79C5AE49
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 14:25:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D0B86B00A7; Mon, 10 Aug 2026 10:21:42 -0400 (EDT)
+	id 825DF6B007B; Mon, 10 Aug 2026 10:25:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A8536B00A9; Mon, 10 Aug 2026 10:21:42 -0400 (EDT)
+	id 7FCEE6B008A; Mon, 10 Aug 2026 10:25:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BDF66B00AA; Mon, 10 Aug 2026 10:21:42 -0400 (EDT)
+	id 739996B008C; Mon, 10 Aug 2026 10:25:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E3596B00A7
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:21:42 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B45401601A2
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:21:41 +0000 (UTC)
-X-FDA: 85085573202.26.E784136
-Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2A389180019
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:21:39 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b="bojn0z/I";
-	spf=pass (imf06.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+	by kanga.kvack.org (Postfix) with ESMTP id 4BE9F6B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:25:30 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D4E551601AB
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:25:29 +0000 (UTC)
+X-FDA: 85085582778.27.8D1CD9B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1924C20002
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:25:27 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=czr6gQOo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786371699;
+	s=arc-20220608; t=1786371928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HS4++7SfsgCqjVhck++B6W9XvkcEaVeM763sEjq4goQ=;
-	b=nsHgw4+2B5IAouzmBjCpYWnbdSQLxRxAaLr4rNkVtfiM5NINVoLcuMxI1kLp9BhDjKMM0P
-	OQHLXh1bc7bsB/4/OVhVVBG7LnrO/pZD9l8iK9LmgQse8HBAjnl6H6d8ymHrrycwUMRSgB
-	585A0r66ha4fbBcOI1a2R9A+BsdBVXY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786371699;
-	b=mponvHRWmKBDxgm/5RC52OPvsFMkp7RWKmt0DMSBXu70TNALKJILWPQpC5aca4om8CY7MP
-	NKhGxMdAti6PNtqdNelvlUkr3KpxjZ3bJOUeBhurZ0786LoI8ym1gU99yp7Qef45OvMNxj
-	3854VgZf5jrJJH+skd5inSG6Urd7OPI=
+	bh=LtnIEsXkdLqMumJh+t7+SeTxxe5v1I7wD0inqEiePn4=;
+	b=AV7pq/9/KxpXfjAmu5x7yY0isIPjGUTjO+CB69mZpS2MqM4SZ5dUobiAb9ZK9Ko/7P9AKT
+	5fvslfcp9iGR1spoIu4lc81MaPup8v4/sfd9m6lG6PRZzj5+T0YD6NYbB8fOjh3B1hhuIM
+	JJuSocTiywV8M5+K5sa/pUgQDB/1vXM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b="bojn0z/I";
-	spf=pass (imf06.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-Received: from pps.filterd (m0499198.ppops.net [127.0.0.1])
-	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67AELIDG3538923
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:21:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=HS4+
-	+7SfsgCqjVhck++B6W9XvkcEaVeM763sEjq4goQ=; b=bojn0z/IAr5WNLmoq+w7
-	vS/X8WLw0/NTfqXqTGcamUIQWo4g/1L1wzi+AIV++Dhbx53xF/eodzujqjggv/dp
-	Wjl0FEdLtxLDhDIo31SXiluw+6npK4Acz30nLDsWhvE/jjhT7xs4fRSt1DLPX34s
-	a0p8FYeF/EvPTQo9DDd0DA1sr543nK5+qGslCJcvF4AH9g+k4Zqi5OnxofRnM0cf
-	dC/eTYsHibBWFmdQWofYkVJ1z30MDCp6hzDaDdibLrbeqEbrlElFkVTP9CieoFIX
-	yR9YAZg9zzfGmOkedQz15nZ1R/gVgQxhGlD8I0nopJIAskQHX9nrh1vLNO2JGaZv
-	yQ==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4fygb6g05q-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:21:38 -0400 (EDT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-51c0199faafso23198531cf.3
-        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 07:21:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786371698; x=1786976498;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HS4++7SfsgCqjVhck++B6W9XvkcEaVeM763sEjq4goQ=;
-        b=kxqBleaEAD8yiSTbOj3Wu1RxB5dnRmUZ5P1DSoNfwo6UlB/fL49BwjeBbsBjrTmcmV
-         wsD38X3Cun+wd724+8OigcyflSaX45LdAWN7e2RFJ2srYX4bNn4/UP1FL2mSlRM8K9DY
-         41Jp6dqHdGQxGOi6gJaAlQ04xup1QVyLt1b6FfUJgYeFSjkRqCFzhdgIAHpkPaRrdWXi
-         mjegl/eOC/t3sakCDNL6fJ3vi2QaWPPS25xz8TPgTOBE/WPkmw3ARMfldqIr/LWHmvxq
-         ijHXYQz3tRJtGHbXFcWPTVKUN5GiLENCQegGhtIGXmog57zYkT1uyBQuc2IR4VeZYTqc
-         5sTA==
-X-Forwarded-Encrypted: i=1; AHgh+Rpdwnl9rELWipBvo1mL1OPe/7CReuiym6RbpsoHtTIobLldmqOtd23ZOayenXpKPaQuxTKb+FDFZg==@kvack.org
-X-Gm-Message-State: AOJu0Yw92a8cd1/YXhDSmd4gWABBCntXCKZdv2ISFCNP336k8DvITUW7
-	sSlTrUtU3K8g3EwN8khAuUkNAMJS3bcp9JtfI3b4OWQFysMcp4wOqbQLlxRr8pWxb2zSuz8CTlx
-	4Jry0AZKIYuTLOB9b+WK8hOG0IvQWbxXwTkF7oEpHSi3y/ycF
-X-Gm-Gg: AR+sD12phYVs/mDbEdfKGPQqRCgpGodJBZrdhEq08EFc1WX85YKETddUSO88ob1hb6f
-	cdc/CPis0T5nKl6M8+NvGKvKS+qAdl99Zk14Yi7TPbFm9Kg/BQzFFBEosFUUftkUWEJ1fAicCU9
-	fB8r+TE+NnLKFfShYLYdm7bBUQoSYMDH19dPl36V5tdveQbbSvzmTFNaSVF0CxSjsDAfQ2jYuhD
-	PDtD5I5UMAJHllvo6JgXEzdtLyCp8z7kcxk93oNi53vIZAl4Z8DFvWQGdCSQzAPIQTAdygy3zxm
-	kxoCCbYJBcX/oLgN7MyFZXtiObUJwA7IpmYtlMAfvFftl4pEvdCmTB03+0aRqN9HciBlRtQvnHD
-	BEvdDu28z
-X-Received: by 2002:a05:622a:4811:b0:516:d60f:6438 with SMTP id d75a77b69052e-52ce5e01448mr479946461cf.0.1786371697310;
-        Mon, 10 Aug 2026 07:21:37 -0700 (PDT)
-X-Received: by 2002:a05:622a:4811:b0:516:d60f:6438 with SMTP id d75a77b69052e-52ce5e01448mr479945641cf.0.1786371696835;
-        Mon, 10 Aug 2026 07:21:36 -0700 (PDT)
-Received: from [127.0.1.1] ([77.137.77.155])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48002145589sm37383983f8f.1.2026.08.10.07.21.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 07:21:36 -0700 (PDT)
-From: Tal Zussman <tz2294@columbia.edu>
-Date: Mon, 10 Aug 2026 10:20:23 -0400
-Subject: [PATCH v3 12/12] ceph: rename ceph_check_page_before_write() to
- ceph_check_folio_before_write()
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=czr6gQOo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786371928;
+	b=AY5LiyhLh4MxRTpgy2sTwCViYboXNF4zq7QGkkxtU4Qh5La+6jjbuONZLXYqZzmjat2jHT
+	H8ffIw9joW5pgSbJQ+IN3+9a2Zi7CXh43S42wH+LVQ3NDob232k1XwwtnzS4LGUOk732R5
+	70XsT4/iLqCdzdoXwTxSEr1HN1u+WJ4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8656C60120;
+	Mon, 10 Aug 2026 14:25:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26BFA1F000E9;
+	Mon, 10 Aug 2026 14:25:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786371927;
+	bh=LtnIEsXkdLqMumJh+t7+SeTxxe5v1I7wD0inqEiePn4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=czr6gQOo2m1T62FYG6zZh7dFXaUugKlMXCFpjmRWQMChroD/a9q/W22SIJuQfLHwA
+	 edTywak2BJd0UooAeDOHu5wTblZnzZ/ToAdqBjibVIVqhSiKE0AAPOTvsX+C5+IqPd
+	 fR5YjCborg5RhdlN1uZaJ7ICsMtdPeup/CooyFIK/OKPYacBzPiHvggFhcnQdiMhbq
+	 rRk6h7npA+KVen2zWVn7Mgb39KD7lzp9NI3c8aRw6CzAMyDiyiBrvyPjHL57ptD+Ox
+	 rYqokn5x4pN7XmtbwPnFEYvqUZRiBIEY/LbSLzII6SwZrOnZXeSldNclV1H4UUJp3L
+	 Q+4smYNOoweXg==
+From: SJ Park <sj@kernel.org>
+To: Bharata B Rao <bharata@amd.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Jonathan.Cameron@huawei.com,
+	dave.hansen@intel.com,
+	gourry@gourry.net,
+	mgorman@techsingularity.net,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	raghavendra.kt@amd.com,
+	riel@surriel.com,
+	rientjes@google.com,
+	weixugc@google.com,
+	willy@infradead.org,
+	ying.huang@linux.alibaba.com,
+	ziy@nvidia.com,
+	dave@stgolabs.net,
+	nifan.cxl@gmail.com,
+	xuezhengchu@huawei.com,
+	yiannis@zptcorp.com,
+	david@kernel.org,
+	byungchul@sk.com,
+	kinseyho@google.com,
+	joshua.hahnjy@gmail.com,
+	yuanchu@google.com,
+	balbirs@nvidia.com,
+	alok.rathore@samsung.com,
+	shivankg@amd.com,
+	donettom@linux.ibm.com
+Subject: Re: [PATCH v8 0/8] mm: Hot page tracking and promotion infrastructure
+Date: Mon, 10 Aug 2026 07:25:16 -0700
+Message-ID: <20260810142518.92987-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <a2fd8c7d-d6d7-4c79-8b4d-3860c04a586f@amd.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260810-remove-wait-on-page-writeback-v3-12-dd7531704f26@columbia.edu>
-References: <20260810-remove-wait-on-page-writeback-v3-0-dd7531704f26@columbia.edu>
-In-Reply-To: <20260810-remove-wait-on-page-writeback-v3-0-dd7531704f26@columbia.edu>
-To: Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
-        Viacheslav Dubeyko <slava@dubeyko.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Zi Yan <ziy@nvidia.com>, Christian Brauner <brauner@kernel.org>,
-        David Howells <dhowells@redhat.com>, Jeff Layton <jlayton@kernel.org>
-Cc: ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        Tal Zussman <tz2294@columbia.edu>
-X-Mailer: b4 0.14.3-dev-d7477
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786371655; l=1302;
- i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
- bh=H+WPEAg6fNk21OMcWq4m8PpfVy6prUL5jC+rlshnioU=;
- b=Wb7zxOOE2mdK7NryczQ1B0RD/gwzEja+WEduJUoRi/Dwu2V70eerTkzJiLplKw68Da/YSBGCZ
- nq/6m0GxSXwBAU0HM+984/XsYO0YrPj3RTxev/kZTfV8Wr3VvludnS1
-X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
- pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEwMDEyMyBTYWx0ZWRfX/uFlMcnyMtcm
- tM8skkhsOZ0pi33xkYnTBrPOK6P49v2wHkh8co5LlrxqvrfVl2ObOlXO5qrAOkEIKMOgyigXVvh
- l4tPKmbd/M2LzmBdBR9DwJEaeunMFWJW6AhRaNenV7vGowukregs
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEwMDEyMyBTYWx0ZWRfXx6pZhpY7ZTjs
- OWU1uCvmDEHGItnVgFK0eXhsU+rRzc4CJ8IZdixIW5gb6ZWsQO7eQFkSg1bydcHd3+lihdDYqV1
- c3LOS6sRl1wXq5Hoj1/gOLCrmYlRoNkC8mZUYbm4okFmFlkH9anlEMYhZ/6zlSfaA1jztTtd0AU
- 5SmtxeTSMwoCJfCXWN6BwX9KZ2QMjftta3V+yDGuG4nmk3N2cYcrAUxpgpIZ22rEYb/wxEAacFN
- MPncFIj7QCFss8WdLVtiF2rG+i9yv83Ch3L+xxL9X4cSf6Pl0SgWpm/oeXZ77NYixVeGgK1yMx9
- 1R6QzhGOE7LHWfTlo7D7ahk+9r7wmHUtlv/2YElxPszUgEl4I2GgSKAVvJrx1lJG9e1yA59kOnu
- KVhV43rnbe3jBcDkiFmoxGLgxDP3NptSYfHDEyXn5PCWpTg8NSlN25jKGgMl99cDHOXFWvQzrsn
- Qxa+p+LLf4X/v6hEruw==
-X-Proofpoint-GUID: C_QwsbwupuC89eyv5y6Zuig-56yfjxAr
-X-Proofpoint-ORIG-GUID: C_QwsbwupuC89eyv5y6Zuig-56yfjxAr
-X-Authority-Analysis: v=2.4 cv=MuZiLWae c=1 sm=1 tr=0 ts=6a79de72 cx=c_pps
- a=WeENfcodrlLV9YRTxbY/uA==:117 a=zHmcO6jMd5r4EZ4U0P0LQg==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=x7bEGLp0ZPQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=BpGzv1V74M3SfeTrGa8v:22
- a=V3EFW1AtJEMGhprvICUA:9 a=QEXdDO2ut3YA:10 a=kacYvNCVWA4VmyqE58fU:22
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11870
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=10 phishscore=0 lowpriorityscore=10 clxscore=1015
- impostorscore=10 malwarescore=0 suspectscore=0 priorityscore=1501
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608100123
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1924C20002
+X-Stat-Signature: g55iff8xcnpm1ygicokc8g6sfawp4tpe
 X-Rspam-User: 
-X-Stat-Signature: cu3tqxrtdb88g5jctjn8pqmmk93kmuds
-X-Rspamd-Queue-Id: 2A389180019
-X-HE-Tag: 1786371698-369929
-X-HE-Meta: U2FsdGVkX1+N74WDV7J/L5fFSa9uVTsNM14JVVMdg4YwoZDxPlXBYzDRCAnbrP8Y3etzAh2BoENSCcx9sjZiRNdCPQtPDkesxVwwKWL29rUP3arXH5XVKuvlhhikhm9grilJZ+qdnFpWEtYaCwvipTPLA/bLzeo3ykptJNqr2XvOd4/+4AkCXv7I0ozDGBx3GLhfVPzeq7BXQ6aeVw6GlTA6JCRF2dDpPwWAsAhHtlEyXmNzEmsJ4Qj79hM23a+zRc8PHRJ7exWi6vWZgUDoD1ZXCIeywGsw2xpIoP0RXmi1/k5lUWkNqkfvKx3YktMNkbdMQEK/1/BRiljnz0QKWCADPPTSGUBTG69TM2YpFv6QOE35TbV3sU5iY6zIQvaYqlXL72gjAjl4fb0G2aS6BiZEi6w1lVm58LlZpMHcp4/lafe6oVzNrYkPmsRVvAsVGVTiTvTD4LS+iVXLyzgBMtZSbTtlKK/aciwhKpclF/6WhLYK6+w/hYR7zcw/796vXiVoUV4abICoY37zF6HtrzjXrGxFXildZOiPqnChj21USvZli82v9L4psj9BElahn7pFJk9SPjHROxJ7xxQyhhtK8AojoDv4xeynXzHLWu5teK1XEwFlygAdlgqoCPhH+a641MRXolWwbGgIXcHGjAwZZ7sB1YQJ6/stXxWeJERWouGC0YtdOZPiCjCr7Aq6ot/6OWbpgkRbhrhB/05puNuueuastJ8BUMcr5x5I1wmqnY4EFyQUnRO2hgKVDgfUL1HLEq4Kub63J1E80t8tYHik87QEr4Qk1E4Lyf5KeLMG/mwddVLzQEGkzWES3DeQzhr6rUKAXzl+nWDDCzx2X/hc+X6amaNbEJMrz+3GJNZCni7nTFZP4xs38Ov8PnVtvvK6ezZqelaqsclv9SyfwWc4DeTFvuisx725sjf/zH67HT4eoNrmAIxrsf1bQZZHCKLichZkizD+3l6t0wQ
- 13wYeroB
- C1BRyGK9Wcd1O4Kfy3Y8FW42pQH7S4R79cX3BITWcDgC9+yEAp4z6uWudr0akY7DryQOWzCOrbg6cuqeaihiLFHpuH1KtnuKBZHRKZ7wbwZHYba8/Yqy9bOUoAY7c7m9oTPIoSyskJTMkDMaHC94yXKGjBsTZOIiDeT2lSdpg6T08eeACNldHR8YgEeARfSRjj3h+Ka9hdhZARaGk+o8a2BHrmxKR8TN/seWetiPbn0hfhv1ZdQj0FmcKqfBs8S7bIZIUwAxIyUAllN+GMqjJbi8A880yVoWJOujJWo8wfJbaKkCBTxtf2UYvFF11PGgCt0WlgXXY0i2U9M1tczJ3xru2y1k+ivC+RRkcf61os+Rzpn5Fse72QHnajULDGz7cg9bYVBUvgsHk94Q=
+X-HE-Tag: 1786371927-313757
+X-HE-Meta: U2FsdGVkX19SdgpYBr75h2oRgeG5GHfwBxz3NxytUNdGBWdr6z9YEQxgPpp4mEvIoswGx555w6L3PeYk0Fxs+K3Kj49yC0nD/vbuWmlqveV7N8XjFzpPQ2BBmFDZWIWQ6Hk1yMTFfCLLUP68umBAwSiR73hBV9jglAO/Aded3d5dLBIzVAohRFn9n9BWhNfmxEWe9lNMzETaiLcVA/Bjq0NHf7I5rN07oFPma0HL2qjmztSV8huc2DOU1d89pRxJrxM9k/IupsRjmEqzQdzTXCjN1ljifzWGhdft7wkacRQ68AU5mKyFR3i5RXQT2qs/zdhPzHSO0ifBDesYGbfaiaBm4eE5NL1RUP2n1ppLDJMeFl8aDkiZRCU053eICX39K28gqnPSaZW77mcMV6xFvry49mnp6biwRkyFCVFuOmMlaB2uj13q9R5o/vb/+5WlIkbLav0AIkQej33EoOS7S25Y+RpwjWnybdtoillgjZPfs1xa5/p4aCOwsDCBubG/i6911IaQWHF2z2s7kSZWtVSb4rdm6OHnt2TmEQjBsnDNJgXzqcS9aaf+0OioL4tJhe2pM7IfRuyROTJ/JksXXg0NR4UM91ZAvAwYF7QLKS67XTWsnqy5Bro32257Hir2ZHqcSVGOTpx64bbALUK97GaAjbZQi3/GNhze2Jj++2ryrSgasBaqtwr6cnE7mzZa3EGw/spZW1J/xGR3f7b0N70jsbLvdPL3yXpfi/Y0WO/D3u21z4ByMRFW+pvJy8qffMnQ/bkSmzlFp4IImShg/yPsxDvMjjYSHfXKC6awjzBwsanjQ76f4rRoAzYA5tZYD5imKTqu2Tv6jamX8vHJ8UWaDc8VqZydzrfLpevG72RM9VdttmjAW+AFKxFYxkIhrEzXLx7eihnPgTySwxjWYcdveqDq/76CPUymY4X+1PucXSKx5h2OyeBRIDNMacgj6FHYLJQRUGxVtcEOPH7
+ 1Y2lWxsc
+ wel+r3Hza47VKZ9cTLi+kutuNmyyquqQi08UuoQDIVHbneCA9FdB0Dvexs4WaozzDzhInrxSjdrJ3USVyRxVVidvVTcIvScDcawXruFOPNZYsthhjriYVBlsBQW/4oo2gTeOHZmygq19p1mf5SDwObRlbvdvApipa3omewpWvHEpgDMMQv3e7aSYaj/Vm8hdT99mpKqP2fs83PJ72krjEkO/kxl3B1tZkLWIyXqABe1LSutc0J6C4s7MCacLXIFT46h9V6I0SnrexMhCgwhCtrd0PbfAo6Ne5IWDOnHSZPL1nO4kEUDRXpDkag3rhECF4Cm4iYhGRROykNgYGZmY+xwEM8Nysr+kMILLC9Y7jdmeiWYtM/a46g8mtSAYhE3PabD9X2MqzTZ0yYaQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,45 +120,277 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This function only operates on folios, so rename it accordingly.
+On Mon, 10 Aug 2026 10:16:37 +0530 Bharata B Rao <bharata@amd.com> wrote:
 
-Signed-off-by: Tal Zussman <tz2294@columbia.edu>
----
- fs/ceph/addr.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+> On 06-Aug-26 7:14 PM, SJ Park wrote:
+> > On Thu, 6 Aug 2026 11:19:22 +0530 Bharata B Rao <bharata@amd.com> wrote:
+> > 
+> >> On 28-Jul-26 11:44 PM, Andrew Morton wrote:
+> >>> On Tue, 28 Jul 2026 11:13:48 +0530 Bharata B Rao <bharata@amd.com> wrote:
+> >>>
+> >>>> This patchset introduces pghot, a subsystem for hot page tracking and
+> >>>> promotion.
+> >>>
+> >>> Can DAMON be used to do this sort of thing adequately?
+> >>
+> >> Hi SJ,
+> >>
+> >> I started comparing hot page detection and promotion aspects of DAMON
+> >> and pghot through benchmark runs. Here is the first set of results from
+> >> pointer chase workload.
+> >>
+> >> Since I wasn't very familiar with DAMON tunables and settings, I let the
+> >> AI to chose some default followed by other combinations. The test harness
+> >> is developed and run by AI. Request you to go through this and let me know
+> >> you feedback about the combinations and configurations tried here. Based on
+> >> that I can adapt the settings for the future runs.
+> > 
+> > This sounds like you asked AI to do the comparison because you don't know
+> > DAMON.  And you still don't know DAMON, so you cannot really explain the
+> > results.  So asking me to review what your AI did and guide your AI.  Sigh.
+> > 
+> > Correct me if I'm wrong.  If I'm not wrong, no, I'm not an AI slop reviewer.  I
+> > will not review that until this is clarified.  I call it AI slop regardless of
+> > the output when it is something that generated and shared without full
+> > understanding from the human user.
+> > 
+> > If you want me to review something, please send me what you really understand.
+> > To compare/discuss DAMON, please learn it first.  Spend time and ask question.
+> > I will be more than happy to help that.
+> 
+> I was seeking feedback about the combinations and configurations that
+> were tried so that I can adapt the setting for future runs. I spent time
+> looking at the rich set of configuration possibilities [1] that DAMON
+> provides and experimented with something very basic to start with, followed
+> by a few changes in each step. Now I can see more meaningful numbers
+> from DAMON without the need to enable migrate_cold.
+> 
+> Metric notes
+> ------------
+> - lat  : steady access latency, ns/access, mean of last 25% of samples
+>          (lower is better).  Baselines: base 337 ns, pghot 348 ns
+>          (within 3%, so absolute latency is broadly comparable here).
+> - node0: end-of-run per-process placement on node 0 (numastat -p).
+> - CPU  : cumulative cputime of the monitor/promoter thread over the
+>          240 s run, and its peak instantaneous %cpu (ps).  This is the
+>          concentrated cost only; see caveat 2 on pghot's distributed
+>          cost.
+> - promoted: bytes actually migrated (DAMON scheme sz_applied; pghot
+>          pgpromote_success).
+> 
+> 
+> DAMON configuration method (default vs manually set)
+> ----------------------------------------------------
+> The aim was to start from DAMON's own sysfs defaults and set only what
+> a promote scheme needs, then change one thing at a time.
+> 
+> Left at the DAMON default in every run below:
+>     sample=5ms, aggr=100ms, update=60s, apply_interval=0 (=aggr),
+>     intervals_goal off, watermarks none, quota goals none, filters
+>     none.  min_nr_regions=10 (except the page-size runs).
+> 
+> Set manually in every run (the minimum for migrate_hot to act):
+>     operations=paddr; one target region = node 2 physical range;
+>     action=migrate_hot; target_nid=0; access pattern nr_accesses>=1
+>     (sz>=1 page, any age), i.e. "promote anything accessed at least
+>     once in the aggregation window".
+> 
+> Per-run additions (the single variable that changes each row):
+>     D0 default    : nothing extra (pure default + migrate_hot).
+>     D1 page-size  : min=max nr_regions = 67,108,864 (one region per
+>                     4 KiB page over the 256 GiB target).
+>     D2 +quota     : quota bytes=128 MiB, reset=1000 ms (~128 MB/s),
+>                     weights sz/acc/age = 0/1000/0 (hottest first).
+>     D3 fine+quota : max_nr_regions=100,000 (min default 10) + D2 quota.
+>     D4 pagesz+q   : page-size regions (as D1) + a quota (1 GiB/1000 ms)
+>                     + the same weights.
+> 
+> Table 1.  DAMON, base kernel (each row changes one variable)
+> ------------------------------------------------------------
+> id  config             regions       quota   lat   node0  over   kdamond
+>                         (settled/pin) (MB/s)  (ns)  (GB)          CPU
+> --  -----------------  -------------  ------  ----  -----  -----  ---------
+> B0  baseline           - (no DAMON)   none    337   0.0    -      -
+> D0  default (coarse)   11             none    121   64.0  +300%  25s/10%
+> D1  page-size          64M pin        none    129   33.0  +106%  277s/100%
+> D2  default + quota    14             128     105   23.3   +46%  9s/3.7%
+> D3  fine + quota       14-38          128      88   23.6   +47%  14s/5.6%
+> D4  page-size + quota  64M pin        ~1000   296    1.0   -94%  270s/100%
+> 
+> B0 is the no-promotion control on the base kernel (numa_balancing=0,
+> no DAMON), and is the reference for the lat column.
+> 
+> The "over" column is measured against the 16 GiB HOT SET, not against
+> B0: over = (node0 - 16 GiB) / 16 GiB.  B0 promotes nothing, so its
+> node0 is 0.0 and its over is n/a.
+> 
+> Regions column:
+> - A plain number (D0/D2/D3) is the SETTLED count DAMON adapted to,
+>   measured via the damon_aggregated tracepoint.  These rows leave
+>   min_nr_regions at the default 10; D3 only raises the max_nr_regions
+>   ceiling to 100,000 (a cap, not a target), so DAMON splits/merges
+>   freely and settles at 14-38.
+> - "64M pin" (D1/D4) means min_nr_regions = max_nr_regions = 67,108,864
+>   (one 4 KiB region per page of the 256 GiB target).  Setting min=max
+>   PINS the count: DAMON cannot merge/split, so it is forced, not
+>   settled.  The actual count was unmeasurable (NA) because the pegged
+>   kdamond never completed an aggregation pass to emit the tracepoint.
+> 
+> Table 2.  pghot, pghot kernel
+> -----------------------------
+> id  config            thr  lat  node0  over  promoted  kmigrated
+>                            (ns) (GB)         (GiB)     CPU
+> --  ----------------  ---  ---  -----  ----  --------  ---------
+> P0  baseline          -    348   0.0    -      -       0s
+> P2  hint-fault (def)  2    124  16.0    0%   16.0      6s/0.7%
+> P1  hint-fault        1    112  16.0    0%   15.9      13s/1.1%
+> 
+> Notes on Table 2:
+> - numa_balancing=2, and pghot tunables with the default values
+>  (pghot_enabled_sources=1 (hint-fault source), pghot_target_nid=0
+>   and pghot_promote_rate_limit_MBps)
+> - Both thresholds place exactly the 16 GiB hot set (0% over):
+>     P2 pgpromote_success 4,194,304 = 16.0 GiB exactly;
+>     P1 pgpromote_success 4,157,158 (15.9 GiB);
+> - thr=1 converges faster (first interval already 136 ns; it promotes
+>   during the load phase) and is slightly quicker (112 vs 124 ns) at
+>   marginally higher kmigrated CPU.  thr=2 starts at 395 ns and
+>   converges over the run.
+> 
+> Caveats
+> -------
+> 1. Two kernels: DAMON on base, pghot on pghot.  The baselines are
+>    within 3% (337 vs 348 ns), so absolute latency is broadly
+>    comparable, but this is not a single-kernel A/B.
+> 2. The CPU columns are the concentrated monitor/promoter thread only.
+>    pghot's hint-fault source also imposes distributed overhead on the
+>    application threads (NUMA scanning + hint-fault handling:
+>    numa_pte_updates 10-15M, numa_hint_faults 3-8M), which is NOT in the
+>    kmigrated figure.  DAMON's cost is concentrated in kdamond and is
+>    captured.  A fair total-cost comparison must add pghot's NUMA-
+>    balancing tax.
+> 3. Latency does not track placement linearly for this workload and the
+>    mechanism was not isolated; placement/over-promotion is the primary
+>    accuracy metric.
+> 4. DAMON and pghot increment different counters (scheme sz_applied vs
+>    pgpromote_success); cross-mechanism promotion counts are not
+>    directly comparable, so placement (numastat) is used.
 
-diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index 708343a8bf35..68018fc097c4 100644
---- a/fs/ceph/addr.c
-+++ b/fs/ceph/addr.c
-@@ -1164,10 +1164,10 @@ bool can_next_page_be_processed(struct ceph_writeback_ctl *ceph_wbc,
- }
- 
- static
--int ceph_check_page_before_write(struct address_space *mapping,
--				 struct writeback_control *wbc,
--				 struct ceph_writeback_ctl *ceph_wbc,
--				 struct folio *folio)
-+int ceph_check_folio_before_write(struct address_space *mapping,
-+				  struct writeback_control *wbc,
-+				  struct ceph_writeback_ctl *ceph_wbc,
-+				  struct folio *folio)
- {
- 	struct inode *inode = mapping->host;
- 	struct ceph_fs_client *fsc = ceph_inode_to_fs_client(inode);
-@@ -1351,8 +1351,8 @@ void ceph_process_folio_batch(struct address_space *mapping,
- 		else if (!folio_trylock(folio))
- 			break;
- 
--		rc = ceph_check_page_before_write(mapping, wbc,
--						  ceph_wbc, folio);
-+		rc = ceph_check_folio_before_write(mapping, wbc,
-+						   ceph_wbc, folio);
- 		if (rc == -ENODATA) {
- 			folio_unlock(folio);
- 			folio_put(folio);
+Very nice data, thank you for sharing!
 
--- 
-2.39.5
+A few things would better to be clarified in my humble opinion.
 
+What are the intentions and expectations behind the different configurations?
+What is the conclusion you get from the test results?  Depending on this, the
+test workload and machine setup would also have rooms to better be clarified.
+
+Also it is not very clear if you still asking my feedback or not.  If you still
+want my feedback, could you pleae andd the clarifications to questions I added
+above?  That would be helpful for providing more meaningful feedback for you.
+
+> 
+> [1] DAMON config directory - tree view
+> --------------------------------------
+> root@host:/sys/kernel/mm/damon/admin# tree
+> .
+> └── kdamonds
+>     ├── 0
+>     │   ├── contexts
+>     │   │   ├── 0
+>     │   │   │   ├── addr_unit
+>     │   │   │   ├── avail_operations
+>     │   │   │   ├── monitoring_attrs
+>     │   │   │   │   ├── intervals
+>     │   │   │   │   │   ├── aggr_us
+>     │   │   │   │   │   ├── intervals_goal
+>     │   │   │   │   │   │   ├── access_bp
+>     │   │   │   │   │   │   ├── aggrs
+>     │   │   │   │   │   │   ├── max_sample_us
+>     │   │   │   │   │   │   └── min_sample_us
+>     │   │   │   │   │   ├── sample_us
+>     │   │   │   │   │   └── update_us
+>     │   │   │   │   └── nr_regions
+>     │   │   │   │       ├── max
+>     │   │   │   │       └── min
+>     │   │   │   ├── operations
+>     │   │   │   ├── schemes
+>     │   │   │   │   ├── 0
+>     │   │   │   │   │   ├── access_pattern
+>     │   │   │   │   │   │   ├── age
+>     │   │   │   │   │   │   │   ├── max
+>     │   │   │   │   │   │   │   └── min
+>     │   │   │   │   │   │   ├── nr_accesses
+>     │   │   │   │   │   │   │   ├── max
+>     │   │   │   │   │   │   │   └── min
+>     │   │   │   │   │   │   └── sz
+>     │   │   │   │   │   │       ├── max
+>     │   │   │   │   │   │       └── min
+>     │   │   │   │   │   ├── action
+>     │   │   │   │   │   ├── apply_interval_us
+>     │   │   │   │   │   ├── core_filters
+>     │   │   │   │   │   │   └── nr_filters
+>     │   │   │   │   │   ├── dests
+>     │   │   │   │   │   │   └── nr_dests
+>     │   │   │   │   │   ├── filters
+>     │   │   │   │   │   │   └── nr_filters
+>     │   │   │   │   │   ├── ops_filters
+>     │   │   │   │   │   │   └── nr_filters
+>     │   │   │   │   │   ├── quotas
+>     │   │   │   │   │   │   ├── bytes
+>     │   │   │   │   │   │   ├── effective_bytes
+>     │   │   │   │   │   │   ├── goals
+>     │   │   │   │   │   │   │   └── nr_goals
+>     │   │   │   │   │   │   ├── goal_tuner
+>     │   │   │   │   │   │   ├── ms
+>     │   │   │   │   │   │   ├── reset_interval_ms
+>     │   │   │   │   │   │   └── weights
+>     │   │   │   │   │   │       ├── age_permil
+>     │   │   │   │   │   │       ├── nr_accesses_permil
+>     │   │   │   │   │   │       └── sz_permil
+>     │   │   │   │   │   ├── stats
+>     │   │   │   │   │   │   ├── max_nr_snapshots
+>     │   │   │   │   │   │   ├── nr_applied
+>     │   │   │   │   │   │   ├── nr_snapshots
+>     │   │   │   │   │   │   ├── nr_tried
+>     │   │   │   │   │   │   ├── qt_exceeds
+>     │   │   │   │   │   │   ├── sz_applied
+>     │   │   │   │   │   │   ├── sz_ops_filter_passed
+>     │   │   │   │   │   │   └── sz_tried
+>     │   │   │   │   │   ├── target_nid
+>     │   │   │   │   │   ├── tried_regions
+>     │   │   │   │   │   │   └── total_bytes
+>     │   │   │   │   │   └── watermarks
+>     │   │   │   │   │       ├── high
+>     │   │   │   │   │       ├── interval_us
+>     │   │   │   │   │       ├── low
+>     │   │   │   │   │       ├── metric
+>     │   │   │   │   │       └── mid
+>     │   │   │   │   └── nr_schemes
+>     │   │   │   └── targets
+>     │   │   │       ├── 0
+>     │   │   │       │   ├── obsolete_target
+>     │   │   │       │   ├── pid_target
+>     │   │   │       │   └── regions
+>     │   │   │       │       ├── 0
+>     │   │   │       │       │   ├── end
+>     │   │   │       │       │   └── start
+>     │   │   │       │       └── nr_regions
+>     │   │   │       └── nr_targets
+>     │   │   └── nr_contexts
+>     │   ├── pid
+>     │   ├── refresh_ms
+>     │   └── state
+>     └── nr_kdamonds
+> 
+> 29 directories, 60 files
+
+I'd suggest referencing the document [1] instead.
+
+[1] https://origin.kernel.org/doc/html/latest/admin-guide/mm/damon/usage.html
+
+
+Thanks,
+SJ
+
+[...]
 
