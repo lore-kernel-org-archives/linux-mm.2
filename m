@@ -4,96 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D0B7C5AD55
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 15:22:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1666DC5AD55
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 15:25:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9C216B0098; Mon, 10 Aug 2026 11:22:48 -0400 (EDT)
+	id 1B5766B0099; Mon, 10 Aug 2026 11:25:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B72F96B0099; Mon, 10 Aug 2026 11:22:48 -0400 (EDT)
+	id 18C2E6B009D; Mon, 10 Aug 2026 11:25:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A64506B009B; Mon, 10 Aug 2026 11:22:48 -0400 (EDT)
+	id 0A1FE6B009F; Mon, 10 Aug 2026 11:25:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D0B26B0098
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 11:22:48 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3E2C61601D1
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 15:22:47 +0000 (UTC)
-X-FDA: 85085727174.18.FD8E386
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D170D6B0099
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 11:25:22 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 491C51A01EC
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 15:25:22 +0000 (UTC)
+X-FDA: 85085733684.23.C1AF32E
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 5779FC0007
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 15:22:44 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=cvLkXbCe;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf28.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+	by imf19.hostedemail.com (Postfix) with ESMTP id 70E781A0003
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 15:25:19 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="OW6n/RNe";
+	spf=pass (imf19.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786375365;
+	s=arc-20220608; t=1786375520;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nAwSONfXZgDRJb+nPm7/YzooPB4h26YPEVaaDW0J+pM=;
-	b=LEXFMM2BD2f8b2DcG8H6LoOI0fIGosWfHKC1BlLDSkdZ1HhO/2FEeMj9u8TsJcG1hm81SQ
-	od/0JP89BID+8sLH7eWwOdLb/c7UlZaPmAIfZ4J7Aopjd47rGNgLYAMZAiJSnZNJDmANL/
-	aqoJ0MI4XyDPHkBxfFAb0QS7n2EcMyU=
+	bh=aD0bxRIH0QvO9hW9MI8bXYuqWD7VWpFBbaXOQyoMgDc=;
+	b=x8LQd5txfvkZV15bX8RnUfbIiOSOZHM1wo4OgzYK7fqduG1sWiwQsehTDJBGBIynHNVNTG
+	8VvMOGuHbk8FPSN3kiVSt+j4VSSCu62TL+TZ3VDpDsDxf4yCf6rhdcAY7tM4WsUrZreyvh
+	ziu/QRED8nJJw5hG2c19+ULlZWMTCu4=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=cvLkXbCe;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf28.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="OW6n/RNe";
+	spf=pass (imf19.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786375365;
-	b=G2AggiUrOosoQd/zh8dGUTWRpFE+tytR+GI1peS5EzuoC9BtnOleqU8qmgKDgg7iAAxcll
-	fsdM33gHrdAbc2ZN66Eyxio0xKeFZ+kbQc/9lI5WUwcx4E76G3WQcR68TD4GYfET1LH5Y0
-	y5AubDAIaQpDlAVizSVbCTOY77GHdDE=
+	t=1786375520;
+	b=wztrjw2nOpm3hPXwTBfpxpb9Mqsgd4TIXJJjHcF7pLG5Rnfo2S1Qbfq67OWTsLf4nastoa
+	wp3niwXnmfh5zlX+IhKuKJTipKkFtYrm5GhNgFMwg+KE4EqoCK9y2ZEflByh20uO6Y5id+
+	Qjy264TLB5sJ6uBuETSZdJjZ3M4crwA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786375364; x=1817911364;
+  t=1786375519; x=1817911519;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=jdUTzf2xz65Ai0O7Sdg6zSY6KJCF4iv0rolefQAdO4k=;
-  b=cvLkXbCeZeCdyP+EB7kAe8kZWy3Qr9yHICU1xgvEKw9TLmaRBVLZ/bh0
-   m53Zdj/vaUeCufZlsqO0WBVDytwmshWGP02JwnBYUVy1t4xuL9b+CFUip
-   Iqh1uTcVs7rVgHuHH5OpftWImXZuMbzsKMDuRHfB7ApBlaNdzDW2ya8zL
-   83PQVG5yGHh0nYRRz/jPhpcMMS4BK6JZC4HRCwzbgf9izxY9EpGu/1UUT
-   u1L5WacDkl6uRRnqRI528A1prJmbcWVeqIVgoX97LaF+ExzS6tlyCN+bE
-   odzsqMnPhUSEhFH+GxoLm1Jc1AwQL4fTgP1tseaLzBLrsT4PHcngCUuty
+  bh=MQNxgk9NBJOdbXn6RtUZdseoRTbQhrXnkphWEH+MqIg=;
+  b=OW6n/RNe8IOZaVm4/WAEylq8i5iP5ixA5KnqKmOY6AmxG0XcfurSV01v
+   mHF8MGtHNpMEOfnByHOnskuxKd/UWVsW4zFjLa6IAUDn3AsURvZwjougE
+   CiY+sipm6li5+qwb6K3SmryqcJdWj9LSOkzqENhFYozb9a6Jvwxr5O+55
+   huJMtNqkhsWsCi35tt9Cup+NrVdn5lu+4wFFNHnZVYE+KIuCz6VD8ofEy
+   4NNebO1DTeJ0JunRVLCxpg/CDA98ITlKFcpxKkoiBE0ljQY8ctVzpizUb
+   nyVbw18n21PlobkKPJunJfRCyBxTXjI5Ij3Ux8g8PE39g0RiWKugr7+6h
    g==;
-X-CSE-ConnectionGUID: BmKvhH7YTe2XlcnUv+CHeA==
-X-CSE-MsgGUID: guQNs6XxSWCpGy0hhsjhhg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="86901863"
+X-CSE-ConnectionGUID: OroI7habT2+ljz3vmKyEkw==
+X-CSE-MsgGUID: PobEiheiSRC+XOt89ekGbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="86902136"
 X-IronPort-AV: E=Sophos;i="6.25,216,1779174000"; 
-   d="scan'208";a="86901863"
+   d="scan'208";a="86902136"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 08:22:42 -0700
-X-CSE-ConnectionGUID: Sy1zKHHHRwSgldHFqSg+cg==
-X-CSE-MsgGUID: 4nj1kb0QTcyFpOAqD2if1A==
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 08:25:18 -0700
+X-CSE-ConnectionGUID: VjWgQZaeSp21nrem+KsjHA==
+X-CSE-MsgGUID: jVvUXN5AQwCtCdJSxx46ng==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,216,1779174000"; 
-   d="scan'208";a="263673560"
+   d="scan'208";a="263674064"
 Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.110.41]) ([10.125.110.41])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 08:22:42 -0700
-Message-ID: <c8ae7c8d-8fbb-4aaf-8bed-53fdc7dcfcfc@intel.com>
-Date: Mon, 10 Aug 2026 08:22:41 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 08:25:18 -0700
+Message-ID: <b605f3c5-825f-4248-88fc-cea8ec292bd4@intel.com>
+Date: Mon, 10 Aug 2026 08:25:16 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/5] mm: Make per-VMA locks available universally
+Subject: Re: [PATCH v4 3/5] mm: Add RCU-based VMA lookup helper that waits for
+ writers
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com,
- Liam.Howlett@oracle.com, david@kernel.org, willy@infradead.org,
+Cc: Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org,
+ dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, david@kernel.org,
  shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com,
  aliceryhl@google.com, arve@android.com, cmllamas@google.com,
  christian@brauner.io, tkjos@android.com, dsahern@kernel.org,
  davem@davemloft.net, gregkh@linuxfoundation.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org
 References: <20260806200548.3124802-1-surenb@google.com>
- <20260806200548.3124802-2-surenb@google.com> <anmTYW8X6c9TgaO0@lucifer>
-From: Dave Hansen <dave.hansen@intel.com>
+ <20260806200548.3124802-4-surenb@google.com>
+ <anbZpzFbtYG7Ngit@casper.infradead.org>
+ <CAJuCfpGdyNq10F15G9Z=TrkcGL8my5RB1w+nZMKOTaH1o9mrGA@mail.gmail.com>
+ <anmmd0tIiqu2V6Lr@lucifer>
 Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
  oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
@@ -137,17 +141,17 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <anmTYW8X6c9TgaO0@lucifer>
+In-Reply-To: <anmmd0tIiqu2V6Lr@lucifer>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: pw9qzwhnyp93djsd91qppu81zhqb535k
-X-Rspamd-Queue-Id: 5779FC0007
-X-HE-Tag: 1786375364-293519
-X-HE-Meta: U2FsdGVkX1/miBvSnvZkdyguheim9dm+X1bMwMDZbm0ceZR77+gMVK5wqNh8tOfGY9RNGwNF+xk4aYaSUti4HGK+VWujE70b6gGcVEYPo0W6vGsrYfEYNih4ZjEBPtqfuOGFdUIAQofj8YzRueFYdVw6dcAOqhwqFQinlCpjy6czYaBE8m0ATpz9nLYS8A/5wE7fyBKY0Po0awcgdPV9AQ/pjLx+Vwg0669nn/6J+BQ7bVhGhvOaAkUkgPWNmZ1iC/ut8fsU7EUhEFWDWRGqUvz9mBmSt3l5W4e7SAVxFn5gGE1X0tmqW0Y8kBp/Qp15UaZQ7lHgyVRlgCjMJWo0UdIql2Py+LYvV1aW8+TCezdbNqwFcydI5M9WSHGpT7L1AHK8uXyyxfiK4vkCQ5DFOn1SmiKm9X5nEUStMWC/AUniEcMDivUmGxmZJMpx7v9z98c3MEGExr1vwSNl1BXVhJQO+jcrCi1ypciq8lX7IywzAm3tfv2SliaRoIJp7V1reCLve/lCYhirhIxxP9Z85Xt5kBURm9z7BPAvul888uEzPADzz4rB9tVryEkuqwHmFaWjSOyXzik1Hv72T/GdCJnuBFyfkRVrHB+0Dc5YyrO8IcajFWRb7H7mRRwEKjzFoVMczlnckN/pjwHwA0z/upYmOZ+D8VOFCm+C5RfSVGw8oXCFgYJ7pA677dzX9w0coFTkpLewbIgSBlJfwWWqgkimYDu+iv+UIynao3zGSDx85P1wVoxBDTayNjtuEFtLdnsHp3BSJIPse0WMW8LXqm3KT0LHgyb6aSyXy+NGkGb+HoszjCwOT3quaR+I8+rZsLY1FeD8vCTQRzVR/rzjm6A89SHnTObPcIxYTVpYbKo4SIA6PQ5/hUYz27M7WHi0HQ5/xkbm+FL/37VkBDZ0BTOsQQNfxvpRLjgyYxJEI70mhtCE0LYhpqmPUZfscW4mY1f3aperYL3MBPOVt7k
- cMnZzKY5
- zELjPtZ31Th+LcE92curo8CWA6FVQf0nAQiRXaRuOCU57szx5NxEnPLKFGIZ3a+5+AqMycDyFAH6rGVHkjNBOX5e2oyhsGOHEIQPtzwxbCkkQcOpWD6/K+7Gt32zvIjs7Y+FyqbKzKwklFg97Z4jkujo9supZq4pqmdGJ4LjUVvje6qq7u5M3rcOezbJWNaqJxF+cSUdpbYPIsHR3GAZ8M8G0tWhRApnDUkCOfGIKXPNo8AZQqiuHtufFxA6QncuarFiZFtBPYIT8sgYViocLV4ti7g==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 70E781A0003
+X-Stat-Signature: 8ciznyocujnswbuuew1nnf4au717xp67
+X-HE-Tag: 1786375519-480104
+X-HE-Meta: U2FsdGVkX1/4D/bjmd7pgOWHlsgGs/k+1AkWc0FKm8O7TJx0mXhptdKq3ZOW5Gi4b6Ov85uqhZ8B/PoXX/fPa2EUpywN3O1w4I3DcGkp6NjNH5DcxscSdEq8QDPKLUd+ZYlFMEBm06xYtrr20f/j/25NqUG9vmQ05VT05m/QYDabdmZOz+5kdFVJss3OETR0MrtQc6bcCl98cgKn0JGO3YDupJUyXjhO4WxtJuWZFzWICE8TS0kZuhuga+MorjZghUZuNxa3N6t5bCeo1sy4ksl/+r/xJMrek5gqi5itWv3fl8gWv2S4utVchIAVw8TL/KVhQTgMXrvSwpiGy8AUC8j3IrY9JMHAMZgqe9u6SYRfwFVR2lHybAjV5dta142sNG1dupSf2YK/F5obUmDv95Y2SaIi9qStGz6ARs4IIKs96MCIcUeAV2IwLzfKvMyl8IPJOYuwQe5xGWBrFhPyOIiBPcPRre06ISnCvbxIpjwgsXHqG+2Dkzcd7We6xQgxVUp8FFe+GATjBm7J5X8DUnQXhrEncaEPRmoDe7nAUqZeOD0d8956u2Jdc3vK3PG0tD92QSi16NG0ilXKEc08S/cp9kdg71lTZUDHUrEgPCfE0GRftCmNZCYl4t7KjZcZjbsNf4fOW+LjeSrV25BSyVpHWlBrbPKYaM15+pf9CQqpnRdQj4M7iBj0Nuh21gZEORxNrg/i7SrKTZqBZgxYEn2z2yuXFd8aw14XZcFqWbOf3w177j/El+v0VL5/5wOXm51/cUQ8TvIgCnHGCrY7O/oB2Gn/tIoXBu0RbH/bbqD9j3QU832U4yCqmkkCo3G+iq0DYZgPx2YjjE4hLts5AUCoplNMlaD4pwR9NgWkiDMmhdL2aaMvJwGRSdF7h8kKH+w0L3TuAgu/GVKEI+diBd/tMGu+LtvdnszahlSyUGDxryZ2MMokTe2bhzBtxeVYNmyrxpNA+5YY7+cRLPx
+ +BVkV+4Q
+ lGLe0U7We36i9w6tuI0jfeOlYnVgYv+xlB9/hMaU4thWHpRxKtQTn8iLH5+LgwIG2F1oM7yBLXsHkRaeo2P4oxDugSIfMCcFrCC64ZGo7l3ew4ZOVaz8ZdBK3dj5ufjZm6oldra4kIkj7nFOAkZJbb3cV797X58C+U85jijSE+h8gLKSkWuuIpYwGz6fg15xHIlOO9WxU/SeeerX19Y+JLIaUofg+LNCm8iYS+aXeQBA0MG00q1S4uGf+ZmGxr7RGdA9wkmY1UXjIE1cbl3PQoYSq9w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,29 +159,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/10/26 03:17, Lorenzo Stoakes (ARM) wrote:
-> On Thu, Aug 06, 2026 at 01:05:44PM -0700, Suren Baghdasaryan wrote:
-...
->> The downside of this is adding some fields to vm_area_struct and
->> mm_struct. There are likely ways to optimize this, especially for
->> things like SMP=n configs. For now, do the simplest thing: use the
->> same implementation everywhere.
+On 8/10/26 03:24, Lorenzo Stoakes (ARM) wrote:
+> Yeah I wonder about the value of this. Dave can write all this up when he makes
+> the change to use this in the relevant shadow stack (I think it was?) code.
 > 
-> I think for most cases SMP=n arches are not going to be scaling too crazily
-> on threads/processes anyway.
-> 
-> If real world usecases exist that the struct bloat causes problems for then
-> optimisations for those can be looked into.
+> Having it here when just adding the function is not really helpful I don't think.
 
-Yup, totally agree. It's not worth adding complexity and bugs when the
-gains would be small.
-
-> But I wonder if cache line alignment would in any case alter the impact of
-> this anyway?
-
-Yes, the CONFIG_PER_VMA_LOCK structures are spread across a couple of
-spots in vm_area_struct. At least one of them is 4 bytes and another is
-____cacheline_aligned_in_smp. I'd eat my hat if there aren't at least a
-couple of bytes that could be trimmed.
-
+Yeah, all the analysis and chit chat needs to get moved to the place
+where it is used (if it's even possible), not here.
 
