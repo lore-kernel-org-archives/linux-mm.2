@@ -4,92 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D01FFC5AD7B
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 16:16:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9393C5B56A
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 16:19:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C22EF6B008C; Mon, 10 Aug 2026 12:16:11 -0400 (EDT)
+	id 91D076B007B; Mon, 10 Aug 2026 12:19:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFAD96B0092; Mon, 10 Aug 2026 12:16:11 -0400 (EDT)
+	id 8CE0A6B008A; Mon, 10 Aug 2026 12:19:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B10356B0093; Mon, 10 Aug 2026 12:16:11 -0400 (EDT)
+	id 7E3726B0093; Mon, 10 Aug 2026 12:19:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 885A26B008C
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:16:11 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 080371601EC
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:16:11 +0000 (UTC)
-X-FDA: 85085861742.10.A9FB0B9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E989F100011
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:16:07 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S9NHwTND;
-	spf=pass (imf05.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786378567;
-	b=rQVZRoOi5plyWWrD3ZrjrKUpz/sxCaP5ckjawwchTVnzpdcpsFRnjDDxrPTXYiJq8Go3ri
-	J2kZFp7lbiP/o1hnCwOqgx/rKwMr+jJk8FIExjzVIvMd2ulCtGFlSAOGgduAsViPkVghDI
-	Lz1afRu0R4A3bmsFe/IG7qT/PFCxT8Q=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S9NHwTND;
-	spf=pass (imf05.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 523486B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:19:52 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C9EA3A0208
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:19:51 +0000 (UTC)
+X-FDA: 85085870982.19.4E4FF90
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 0A6C920009
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:19:49 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KP3fMCtV;
+	spf=pass (imf31.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786378567;
+	s=arc-20220608; t=1786378790;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BlVAueKovJSaHcWrWN4BTIc7QYuuIT53QjtjPZuWPck=;
-	b=F/5LPOnqM5rI4QW+gbn3yiOQLhP//raPMJSuPmP7Zf6yPkV6vNsnmp/b/3QROGESIo1C0T
-	ubMtUHR3qgn7Co4T+XMLIDIZjzA+1tbWlMcVCPthOhkb7OuWf+WGaFb1duLz6C7nlQIPOi
-	ZgWgh/fHqA01JbaT5ENOj/hHTINA2H8=
+	bh=vWFF5rbpHjkJVsF6rYCEgkXwe2H85cOSrnKD6SoYu/s=;
+	b=JDSD4hq0pZghv3Zp0idKSOOdrh7ulK4j8LaAhCTmmX9TBnad/gsKpHUoMdayEjosxIXatN
+	yZWvgt9FjoCyluIo5W0d9fWPdz/fe4p72lT/mE8D3SYLkutbMiS19MzBlHyHmm5jF0fOZ7
+	HUB5hrwStZpXE1qkNXEsHqrfjEg3Zjs=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KP3fMCtV;
+	spf=pass (imf31.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786378790;
+	b=UqTRqWjDcyBVdZJgKbT75iS70XJiOxpCu/kS6CPqrVpWhm8IUotyjm8+EJSeXQdA+7BoC7
+	1nk+tIlodorc+f1GF+0DQPYVI+Unhsh983R4Sk2fD5ESS/T+lUkHUt+JApkKEhZB9mSQw2
+	yTuo94zAYWC9Bd1WkNBUrC+kodIUahQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6A7BD60052;
-	Mon, 10 Aug 2026 16:16:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D851F000E9;
-	Mon, 10 Aug 2026 16:16:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 001C143B42;
+	Mon, 10 Aug 2026 16:19:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D4751F000E9;
+	Mon, 10 Aug 2026 16:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786378567;
-	bh=BlVAueKovJSaHcWrWN4BTIc7QYuuIT53QjtjPZuWPck=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=S9NHwTNDd9FQ7nrl98XA7oP4Xhhu9sW1p80y37Wvsam2MFSlFDytGjYX3OIkStyo7
-	 p/eIxc7hR5jr2cbZSwWmhxbgkjBzYLTO6LvWXTJbV7+snMR67wQ0U1HNS9oFJ32wjw
-	 7sU+MOjodVdh2R0vtbjB/aIIOtnk91e8foUNXT4fOlRLv4wg8Ys3wLl485NPfz+0wU
-	 Rd7Qb0/MG6//xCyA6jZeM8iCaSWF61OaxIfh64qEzZCouvk9Zx9765Icn/gjxsFDSv
-	 1MdwCH+mN0HGa1n0dOoAExjIEb2LBKn48i4fdPQc4BE80KpoCJxc/f8pqA6DlHlBrH
-	 etCJDghhLcyTw==
-Date: Mon, 10 Aug 2026 09:14:04 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: linux-block@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: Re: [PATCH 2/3] mm: support fallible mempool_alloc_bulk()
-Message-ID: <20260810161404.GA1930@sol>
-References: <20260806221031.79050-1-ebiggers@kernel.org>
- <20260806221031.79050-3-ebiggers@kernel.org>
- <ann1i5VjTmgChjs7@infradead.org>
+	s=k20260515; t=1786378788;
+	bh=vWFF5rbpHjkJVsF6rYCEgkXwe2H85cOSrnKD6SoYu/s=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=KP3fMCtVOHkjkiegq2GgwH9YPInvhvDmEUuuGn4JZMsYwY2MwFps4JRByvplPOHCP
+	 9RhXPvwpDboJLnctJuK21ybEl6SfcdfKJ0psbl62EImczU78jwlrH77d4FgHroailz
+	 ICKmE6pAea+OP/q4KpsnmC5lP7KJhbY2/SrgOXM9wy5IVDrPQXf8SQ9l08PMgohBzu
+	 35QXMP6ecEqvEcDHjr+Lc4GnKYNKCAIsGVCeKjCmjCzGDs8P01voF22M8uTk+uReLZ
+	 4oAGMFyzVA+aGyjOmmBJ5NEa6/pPg5xL41w1l7UJ4zF4Tx39PZ0uvl1yWJr4dfs8/m
+	 0cHEVsNm/N0gg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>,  George Guo <dongtai.guo@linux.dev>,
+  Mike Rapoport <rppt@kernel.org>,  pasha.tatashin@soleen.com,
+  pratyush@kernel.org,  shuah@kernel.org,  guodongtai@kylinos.cn,  WANG
+ Xuerui <kernel@xen0n.name>,  graf@amazon.com,  loongarch@lists.linux.dev,
+  linux-kernel@vger.kernel.org,  kexec@lists.infradead.org,
+  linux-mm@kvack.org,  linux-kselftest@vger.kernel.org,
+  linux-efi@vger.kernel.org
+Subject: Re: [PATCH v4 1/4] efi: add a KHO configuration table GUID
+In-Reply-To: <CAAhV-H6UufWevaCds851xSxEMLeLcq+8wpoWq8OyeXib25GEUQ@mail.gmail.com>
+	(Huacai Chen's message of "Mon, 10 Aug 2026 22:35:37 +0800")
+References: <20260807103714.33074-1-dongtai.guo@linux.dev>
+	<20260807103714.33074-2-dongtai.guo@linux.dev>
+	<CAAhV-H4xxPXVRNXP42CBtMdVXbBZ4E6A997jZmw7HpEUSFAj9g@mail.gmail.com>
+	<96bd0e57-b517-4008-905f-9860661afaf2@app.fastmail.com>
+	<CAAhV-H6UufWevaCds851xSxEMLeLcq+8wpoWq8OyeXib25GEUQ@mail.gmail.com>
+Date: Mon, 10 Aug 2026 18:19:44 +0200
+Message-ID: <2vxzse4m54nz.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ann1i5VjTmgChjs7@infradead.org>
-X-Rspamd-Queue-Id: E989F100011
-X-Stat-Signature: uni65ktcc8jiib1deg1jaqp9jdqrtbmf
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: mm7a65ty34nmwwisq4c1dia6qj1s1qag
+X-Rspamd-Queue-Id: 0A6C920009
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1786378567-280141
-X-HE-Meta: U2FsdGVkX1/WaiArJ4uvY3JN3OvPKzxa9cCoTfXG3dUqxztH65n6EVw/UkZGU6NNprD/0/5rzDect0opChnd2wJFdU5qPYchwcMs5kEv+3o7tBEb1hwBev4eXU5oBqBPPcp2KfcMKo+DxEJuaDZmwgS+05GcfR003pjeHAVf3LeRvbbThEAaVRCCxMcdKgR4AelM+3DTcYXQG5QNQkktah/A1/WAgM7A3Lb8XZYur6IYlInAQuNEND1Gw6nEZEl8SfnADxgGFVdsKf9PJCkbveckgjENY7ZNQmZTVKo6LIlw91ACV+6viuVdTSkKzgrORsFf9ydCYU8to2uuMCNGg6mEJxdXC1PAZCeAo+iGzv2ES1+U2Pxj7jwJHXIz21kpu4qMrMj5MjRjKKgTlJQiHUJfBOdp1BQHN7z+oALfl84Djpot4jRqMQvE900Qz4Prywdm5u76o9AzEveH5eI0WvfrXjh0PXftDtg7FIb/OhOlYWzFVICWYc7k6oopbJuoGd4xW+BwnLNIO3d2k/Eu/TiMhOY+D/QA5mJTy6RpPzlTPCSPeBQCm59r4jtW2wnV6cY33xtim09VbA8nnDR2Y8X6ayJMZZg/AHymOz+E6Q4i718TPv8xAgl+tS948Y255cuBOuoRDtgidOjakHhDCVcGjHcbZwCGNmdAKPw90mY/2GRQPPdP7CgbyHJz5BT1ZaO5afemVLokBUd5blmQZ7JzArL0D4iuS2OKELwmhZAk9D06snPpJUA3tqWYggyhC/Fw7d4dFgyvq/usHyA03LWgERhkFEs3/xBjq5vLA2li9UjWiuAjLwBC69bYFy7Vu1Ko7lhIurGDTReICMwtdkp/TXHvQf3PJkyGWUELiWMDoQAKKC+SfBucKMjC/sMgUcJiNmj5M9lK0R5Ua32CDmTNVZ8Vvi6FG48P5HShP1n7+wMcJFdsTVUqgfTGWU8ZHssfz2nyDYdZ3FfBt0+
- AnVM+Q9H
- 6s+zZKhnZAJUzyYawPCNmVEZoxfcDfp6fxYK04UbgF3/2EYdHhGKo64/4Wyw636JF/0gQQVblpTPE7RWUIjjuPVfYpsK3q4ADaW+17Vs0KIfjvrNBjvvw0ikcu7jQAUssGTdGqqm95stpylK0XAH/lF8Xu1Pu0DYnqEAqZ+cAqTTaRVUdrOrrO9lljv6LCvvhQyB2xnfUdf3Zv9h57SVaSuVbfwFnJA4cDmI2djDB9p2if4N9LmdBUP19uPL/sHZxCZomRrQm+l9oVCy3Ohl9Zcb6WufsBKrZxG99aD0HlqEkkiQ=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786378789-773335
+X-HE-Meta: U2FsdGVkX1/rghd/TW88VPB2tZHM9BWdGTu8OrD7HkgCJBtMtP4pflYDqPwqfSOj4GlPwzVNlz5I4Kx3iLw6nByMwOykrB2EVslNs+NX99VAOoO7fkvtVOaqbSFzeyGMSaAZa94DLLgE5C+PAmV7LvFCYnLlDdlJ5d4tHKS0X3O3YebzfWpiGuHLeV2ypLjZcz3IMyJxai7fYotZq6rICyje7BdUQF52+RUqVAoKnBVRFrUFTyA4ptZbPWuXOP0x8GnDrwBGePDka6kRaVuDx2Pjs/hiUIB6/JjYJZwIfWoMyvoDN3uS5rPt8mlz0uwFqT3ApiSccg1ZDKugJ+tqhrxqSD/egr4W8wo800mbgeOqPem2Ta1i/oHjfUnZVYtRDuuBLg3SHR1tZNw6tJ8yplCTsr98lesWtJLOHSDk0dUWvm++UTk8vQArxFDpUqjDrVc5B6a0l+mzhR6GWVnE9PmMc02OiwrR9whxrCFa/k5kdfseExgGK49/CPmPXF105aezzqeD7ijhpqnV9vHockqmynSMNQ9gnokmeILg0NdfaVOaW2uCZIWY4/LYnT1PwrOcyLNFf9Z6UXieBvz+o7fPjzH/mX6nhml344BhotBC5hsjbiiVo/mWDXE7HADjSkn1lG6agCxEU3rvz83SwAt7n8jjvIXEAMC09EtftCiS97Uh7HSh3s2BwzaT+6oVRxDUJpogsAsK5QOXiIPmv5bUW5IjV+iHaHlCaYcVqmIKKViIblC2ixRYphWz1m9hgbJ9mMrMreyEzuIXBpw5RC52Q4yyvmHYNh7ranEY4gwcQHAC0tZXeAD3RJlLVPD6cSuZgC2zlWC2hwIw1jpgo7iKld1tyDmL+VT4Z4bwRZnSVBHBoJg9FLUpq4Gxv3nlUg8gR3kqGYxuQVU2RR+GBQqwGPUGiX0aaoOoxgwuchBEHBrIksGUtgJ1YP9nFfKWk6GFcQDkGOsE/jSQNsT
+ KI8D7cJH
+ tjeVtnbv531xfAmfbgUI4gvgKJH4Bf9Tp1AfXzGQF9uNjiuPY8TFblttD+VDHUwC0ZsbMStTQceE6ahdJUMZAsbrxvDSgk6aPJh+58Tg1y0vtwqR1B/6wByx3GGJt882tuDnE8i4b7TT+aGMS5gtU/WsLMQHMPJHQIImubl7uwtdZ5crmEppJQwBLjz+lQg7AGMn5FcAIMXgH3dwL28xZfUUZT5gy8cR2eMoDCl5pz1wQQOotKPJuOenrV5K6zMmCv4UUrB/fo+9s2wE5Ukjtiw4XEA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,21 +102,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 10, 2026 at 09:00:11AM -0700, Christoph Hellwig wrote:
-> On Thu, Aug 06, 2026 at 03:10:30PM -0700, Eric Biggers wrote:
-> > To fix a deadlock, blk-crypto-fallback needs to be able to make fallible
-> > mempool_alloc_bulk() allocations.
-> 
-> It doesn't.  fallible mempool allocations are a concept that doesn't
-> make much sense.  Please just go straight to the backing page allocator
-> instead for callers that do not need the mempool guarantees.
+On Mon, Aug 10 2026, Huacai Chen wrote:
 
-It does make sense.  When alloc_pages_bulk() doesn't completely succeed,
-there still might be pages available in the mempool.
-blk_crypto_alloc_enc_bio() should try to take them before falling back
-to scheduling the rescuer kworker.  The rescuer encounters scheduling
-overhead and is single-threaded, so it's slow and should be used only
-when absolutely necessary.
+> On Mon, Aug 10, 2026 at 9:14=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org> =
+wrote:
+>>
+>>
+>>
+>> On Sun, 9 Aug 2026, at 06:18, Huacai Chen wrote:
+>> > Hi, George,
+>> >
+>> > On Fri, Aug 7, 2026 at 6:38=E2=80=AFPM George Guo <dongtai.guo@linux.d=
+ev> wrote:
+>> >>
+>> >> From: George Guo <guodongtai@kylinos.cn>
+>> >>
+>> >> Kexec Handover (KHO) passes the address of its state FDT and of its
+>> >> scratch area from the current kernel to the next one.  On architectur=
+es
+>> >> that boot with a device tree, the current kernel writes the
+>> >> linux,kho-fdt and linux,kho-scratch properties into /chosen, and the =
+next
+>> >> kernel reads them back in early_init_dt_check_kho().
+>> >>
+>> >> Architectures that boot through EFI without a device tree have no such
+>> >> channel.  LoongArch is one of them: its efistub passes the EFI system
+>> >> table and the command line to the core kernel directly and never crea=
+tes
+>> >> an FDT.  x86 has the same problem and carries the state out of band
+>> >> instead, in a struct kho_data in the setup_data chain of its boot
+>> >> protocol.
+>> >>
+>> >> Add an out-of-band channel for EFI: a LINUX_EFI_KHO_TABLE_GUID
+>> >> configuration table entry, under a randomly generated GUID, pointing =
+at a
+>> >> struct linux_efi_kho_data.  The
+>> >> current kernel loads the structure and an extended configuration tabl=
+e as
+>> >> kexec segments, then switches the EFI system table to the new table
+>> >> before jumping.  The next kernel finds the entry by GUID and calls
+>> >> kho_populate().
+>> >>
+>> >> The structure carries no version field.  An incompatible change to the
+>> >> layout must use a new GUID, which is the usual rule for EFI configura=
+tion
+>> >> tables.  The handover payload itself is versioned separately, by the
+>> >> compatible string of the KHO state FDT that kho_populate() checks.
+>> >>
+>> >> This patch adds the definitions only.  LoongArch is the first user; a=
+ny
+>> >> other EFI architecture without a boot FDT can use the same channel.
+>> >>
+>> >> Signed-off-by: George Guo <guodongtai@kylinos.cn>
+>> >> ---
+>> >>  include/linux/efi.h | 24 ++++++++++++++++++++++++
+>> >>  1 file changed, 24 insertions(+)
+>> >>
+>> >> diff --git a/include/linux/efi.h b/include/linux/efi.h
+>> >> index ccbc35479684..789ab9e4312a 100644
+>> >> --- a/include/linux/efi.h
+>> >> +++ b/include/linux/efi.h
+>> >> @@ -422,6 +422,7 @@ void efi_native_runtime_setup(void);
+>> >>  #define LINUX_EFI_COCO_SECRET_AREA_GUID                EFI_GUID(0xad=
+f956ad, 0xe98c, 0x484c,  0xae, 0x11, 0xb5, 0x1c, 0x7d, 0x33, 0x64, 0x47)
+>> >>  #define LINUX_EFI_BOOT_MEMMAP_GUID             EFI_GUID(0x800f683f, =
+0xd08b, 0x423a,  0xa2, 0x93, 0x96, 0x5c, 0x3c, 0x6f, 0xe2, 0xb4)
+>> >>  #define LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID    EFI_GUID(0xd5d1de3c, =
+0x105c, 0x44f9,  0x9e, 0xa9, 0xbc, 0xef, 0x98, 0x12, 0x00, 0x31)
+>> >> +#define LINUX_EFI_KHO_TABLE_GUID               EFI_GUID(0xc941b6c7, =
+0x7b3f, 0x4af6,  0x9e, 0x50, 0xfc, 0xb3, 0xa8, 0x86, 0x8a, 0x17)
+>> > I don't know whether it is allowed to define a new TABLE ID while
+>> > doesn't touch the UEFI SPEC.
+>> >
+>>
+>> That is fine in principle: the whole reason for using GUIDs as identifie=
+rs
+>> in UEFI is that everyone can invent their own, and the risk of conflicts=
+ is
+>> negligible.
+>>
+>> All LINUX_EFI_* GUIDs are Linux inventions, and are not mentioned in the
+>> UEFI spec at all.
+> OK, then I think the direction of this series is correct now, and I
+> hope there will be more archs share this GUID.
 
-- Eric
+Agreed.
+
+Perhaps we can move x86 over to use this as well? If I understand
+correctly, pretty much all modern x86 systems have UEFI, so it would
+make sense for KHO to directly use the generic UEFI bits for x86 as well
+instead of having it via setup data.
+
+>
+> BTW, I think LINUX_EFI_KEXEC_HANDOVER_GUID may be a little better than
+> LINUX_EFI_KHO_TABLE_GUID.
+
++1, that sounds better.
+
+--=20
+Regards,
+Pratyush Yadav
 
