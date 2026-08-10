@@ -4,93 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09043C5AD7B
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 17:21:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56A78C5AD7B
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 17:35:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6F066B008A; Mon, 10 Aug 2026 13:21:23 -0400 (EDT)
+	id C3F426B007B; Mon, 10 Aug 2026 13:35:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD1D76B008C; Mon, 10 Aug 2026 13:21:23 -0400 (EDT)
+	id C16326B008A; Mon, 10 Aug 2026 13:35:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC11D6B0092; Mon, 10 Aug 2026 13:21:23 -0400 (EDT)
+	id B2E1F6B008C; Mon, 10 Aug 2026 13:35:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AD5C46B008A
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 13:21:23 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3FBE7801BE
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:21:23 +0000 (UTC)
-X-FDA: 85086026046.30.639DC11
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6E39740006
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:21:18 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="w4/MCNU5";
-	spf=none (imf17.hostedemail.com: domain of BATV+e92feb25c851dffaa619+8387+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e92feb25c851dffaa619+8387+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F20C6B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 13:35:05 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 207601A023C
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:35:05 +0000 (UTC)
+X-FDA: 85086060570.07.3CA42E8
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 48F9D1A0003
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:35:03 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786382480;
+	s=arc-20220608; t=1786383303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cy7OYoW3PJUmnKukrwcZFQ3hLQc7isy+xcCx8NMp1l8=;
-	b=XS1fR0gOiOfJ+//eUTVCEd3F3O5SDMNg0pNeo8QFnFY+I0s3mnvIwGihODnLo1D2RzRmnO
-	frD9zxpGmPlN70vOWBYvQDgbw0YW+BEuAbCUzgn6GUOaRhKHbauXb1ebtkQYoRD4ntCrD7
-	AmQGLMUGYTtkeD8LNVfJKGtzKmjsL/k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786382480;
-	b=qR0/pM62OUURZdhPY6rY2tFQF+3fVsCsAorhvLppuat6iXQCd7UDcJIltggvl/eTNOUwgP
-	QexP9uJpr4ilOYwPleUhArMvX/ry5P8ITnOUIweNgVL7RZMAItnFTjB/+Cxv0JdUcvYl0W
-	yqyRHa5xNY3P3Lhg6tgsKMQizVlUvoU=
+	 in-reply-to:in-reply-to:references:references;
+	bh=rt5AlsMo+AYk5P8dzMLhves1W3fBFsJWMUnpulAKF44=;
+	b=I4D3+a/FZixLeGSuepiThIv6bt0TXKpLDkySR1RSPrG8Uo9SfaUXAzDT58G6v24YahDvLM
+	hMli/1ioXG/LN6tfVdliTztqaRIf50MkVXtGra+MhQ1p3cwq5B4jW8H4DD7SE9AgNYpX6o
+	H++6NMGXfuOwHm1gq+o68aosGN2Qzlw=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="w4/MCNU5";
-	spf=none (imf17.hostedemail.com: domain of BATV+e92feb25c851dffaa619+8387+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e92feb25c851dffaa619+8387+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=cy7OYoW3PJUmnKukrwcZFQ3hLQc7isy+xcCx8NMp1l8=; b=w4/MCNU5K681S4PdttIQArlltd
-	aplhwsp6XCU4p2gSmBzQF63vxrK4SGZ9xboYcrehjzg4Zr3lNxMHnAh0pJ0dg4kHYPhyd2NSBYLJD
-	lZ8DB176sohHR4/o2j152C12lB5eVjKKA8KsNzmqLL2eOpSYJ36jGbd2dNJB9CE5puTWOt1qH+lc9
-	YarURFLhH+UEkLQ/d1iU53sByUUn4us6p3VCMUzCh6/mtbn9U6LFvLJpg/+TJu9+BmsC04586zYRK
-	WOakoINSy5YfcXOZ/OZP6tDomANg7HvVvbMmQNq0UDAaig+srKF/YjsKaSG2KN9JJbYYYdGZXa4XG
-	JMbvD+IQ==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wtTgZ-0000000CVLf-1MO6;
-	Mon, 10 Aug 2026 17:21:15 +0000
-Date: Mon, 10 Aug 2026 10:21:15 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>, linux-block@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Jens Axboe <axboe@kernel.dk>, Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
+	imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786383303;
+	b=J34fqsSMiZMDlpgz6Km7qmAgdvMSM8bpzTzQxdla89ql8QALNj/9UQgr5y4UaGxyD7ZmfS
+	qRshM844gbK4cfYwFggp7YR9dOLnuNGoZax30ZCP4m1kle52ouVjZzIqf9fyTEX1s73cV1
+	Oiu11SXdrOdDvbRhv14JLhsrZGU05tU=
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 098DC68BEB; Mon, 10 Aug 2026 19:34:55 +0200 (CEST)
+Date: Mon, 10 Aug 2026 19:34:54 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Tal Zussman <tz2294@columbia.edu>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: Re: [PATCH 2/3] mm: support fallible mempool_alloc_bulk()
-Message-ID: <anoIiy0V-m-05yZc@infradead.org>
-References: <20260806221031.79050-1-ebiggers@kernel.org>
- <20260806221031.79050-3-ebiggers@kernel.org>
- <ann1i5VjTmgChjs7@infradead.org>
- <20260810161404.GA1930@sol>
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Christoph Hellwig <hch@lst.de>, Yosry Ahmed <yosry@kernel.org>,
+	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/6] mm/swap: rename __swap_writepage() to
+ __swap_writeout()
+Message-ID: <20260810173454.GA28736@lst.de>
+References: <20260806-b4-page_io-folios-v1-0-0899bac3b826@columbia.edu> <20260806-b4-page_io-folios-v1-6-0899bac3b826@columbia.edu> <anYPVB3dwJCVoXVv@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260810161404.GA1930@sol>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6E39740006
-X-Stat-Signature: sfpujemo4ietqdfe9iwoahuretp7uuwa
+In-Reply-To: <anYPVB3dwJCVoXVv@cmpxchg.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-Rspam-User: 
-X-HE-Tag: 1786382478-397021
-X-HE-Meta: U2FsdGVkX1/qiG/7XGZdsOMxPJyk0+1CbbbDDS6nuEC2mWA9NuafBdpeFNkvCe4K2sPLMsEbrveyIqCwHfU/qZqtsarw4qqz6mOTd5X7gBC/dHC4A0h0z1i7VPD8FLQc/RwHM+XNeSTQ2dYVvVuNlX7620AWA0hNuUlBoUXWfG1faYN438ZFBGlfiEaiWVDMyNpSFKhiMWPjfCfT1p6yybKDlSK/AhbYbitjNv35ZYzAEkCjGNFbg7aF9UeQVFPKPcJm5Sj8o+bN1EDlMwSivR1F9CBAsUAWKFHfbwrIYCqpkBOuaGwiY06LrXzJ5M3dvdjlSwRTNEwReK4VZwRq9vvXj/kS2/1dwrMdYDdO8P191cCfoZp/BKkdnuiTyhnTNYkujblo6aasvq/8jL94MuSTXzUhfWEmjjZPk7FHnLi55o897lUDCfShLwi34w5UMRlxKKCQZr90Nhn7mKyso0tbnjVflMClPMYiOo7hwqqpUk+MaNi6gH5Xc3x3Z28BnIJtghcC5ULgzBM+/Y5i+qbYRgI/cKwrCX3cTQqekLrGN/nIDN0NXqR4KV7jk70jOjNxTYzDjMqy2edHyvSu0wh8DlMHn5t4ukkDEIep+TgbDHEIu7bgNBTExnzY+LRSEmtdJWOLCNXbmK4BkjLRMrMRWVxxohDSDP6PFmXiFkkxA1zKK5cdOtwdRyuLFHuAYbP/MOqGZqtIQD5WzOrKd0iGmx5Zjd13nGKbEYUFnEhixDC6dyeW/AQkJhV8eF5Qa7bqPqL341gs9at5PlLHRaPek+psgrrirVUL5lBNBPstexZNdk/0BwFVn5YckzyvRFwDAwtvvL+31MmIba/E9ltmzob9eUmMGizmLzKlUvCEcr5Xr0As6tDg7lle17VumQUcfZ3d5rz0NuRxtwVJCK+r0F36oxat1lGFcxKxVxVmD9dcH+1GYBdQmq/f8Yj6xWhlZVTn7D9Dj+FUu8b
- WWIdhW0q
- EHrzSAlXXxw8mpeV0mll7IJfhvKGTmooTyKsrwTXuHb/ncX7+12grvh8SWBV/phrUazUmvUpRmkmQP47v6Ox1+W30AE4+LTgktcBC7Id/K/JH7mTzpDEFuMOFQCNAyyCNjijMqhYFxE3u9WrkT1kTYNu0QTUk+vyIvdwOJSkG3BUV34r56a9MzBeYomT5V7cVDbBBFvHbcjZc1gDSPyY7sz1MPQhaAfzNz026gtK4cnpcu0R+K8wQfcf2hvwpPb2/Kv1n1f3qjADaCdp5JcYcy6/Ye3iUrP6iu+nniMYQAGSd9gu6MeW2KJcBpMUav32YRXOTpG5ayPIxSSeBZlweMrtM2d1wgXkSKrp4cUo9M/xShKUfVN3VvROdAX0Fl9fjHw80MJ9vEnfxWEgYcoKnm0CVqj07vhHZ7vWyP2ucXkIJrYprlE5SlsHs+KOAK28rkT+8jrrtVMOK8IaohabpGuUpbzsJizQohflKrlGrcwySxd/n5YW8zpmzj+97FXd/806gI/9j/vGUjMAMow0XXieE7z1Cuun9gcDiyY9KZivroXzs/yFh2bVbX5dZZRSMUyXVH9JutFSxXWE=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 48F9D1A0003
+X-Stat-Signature: aia4ojjghbwshnw4xi9mtwjuh6r6nyjo
+X-HE-Tag: 1786383303-204508
+X-HE-Meta: U2FsdGVkX1+j8NlmPrC4ipkkHe9XqLo+CAijvf0/gG49HXMx2m+qEhpCWMJ+P9WY8dEQMh44UI3fQ0giUvYHfw8NhIbobITlS8acncjabIXA5ll+k4mk3CFZJ3Vn6cugC9/XgH638wScrRAI/541LU5H3+bKBpOlH0kMmH/WPY+LzvfRWxp8CqXUgNcoR1xVggvHvi0MtMM1YQV9afR1lXtWoDYcoN//Vht87ME9Jonal69UwY48FxqILSzJLk7uBMUi9l4YlQP54XiLTahFOwkYuiGLedEyLf57iBs3cc6N+/DCtYzFM4D4JQTKHbwGILId5dxpTv4x0sLOLJadbkQFzkG3Qz7gcjk0lF6UzGUKNi3wNXcunKayQurTBspTP0wsqZPkJ0zrQyralzLNAkeG5od/VRAMm63w51wtythhDFDiBhtBIc4Z8PhRIBZfBu78CuZIP0Sf9eh6bANs+jJm3AfyoMJ7E9lZiK8mGIfzMje91zhkQ0oejC8PAHRaz5CNycgdA/Gy8be8kxZmXyD2KwDRf3zu2VWPM+Dl9mc1EL+aJLQmasyuGRvHxStclcz1+tBWImy5mYpJ26D63ljnqWstWxyYnkr92B3FV9HIis5j8wZsKakXozLn5UbFxnCSnej5fL6YKjeQ+AaMrFCW3lD136Kaii1KHcC1N7pNHo0OmUbipFsWSVrE51KvX1q4sckT8Xd0tfd4dsAbNba8qKM4clWllT2vH3WcuA4TrzCZWqJV28yIfgpkP7RcyhRe9D5qHAvwiOIvCuNNPNn3UKlo3C4eJDmZHu8L7O/1ItMTbSNVyfTFqeBFm1Mg0vho5/VtCpEI+FxALoRsN8KmEaTZhH/mI8csYQdLpABJvAeLlZb6pi/kCUVJY6GQ32l84RwAHglXh46BbdBlKEWTy1NdvMky6/2ataOnjAKJgDa8AipEDDLV94AIFKjCkUbWepxxuQCGGhveias
+ sAe+d+o9
+ Fmo+WDoShRuPXqBR3RVVjjDVF3SzZGWX6nw5QjdEtGyFacN3MtxuBqx/04xsXIxNf0F4VsTxdx1Q2u0R9HTm/D8Cv+3iQcg+ViMPg40D8yJ9DYrpGkyLRcsxAu053TANKyWfD4vLCxFpLusY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,28 +95,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 10, 2026 at 09:14:04AM -0700, Eric Biggers wrote:
-> On Mon, Aug 10, 2026 at 09:00:11AM -0700, Christoph Hellwig wrote:
-> > On Thu, Aug 06, 2026 at 03:10:30PM -0700, Eric Biggers wrote:
-> > > To fix a deadlock, blk-crypto-fallback needs to be able to make fallible
-> > > mempool_alloc_bulk() allocations.
-> > 
-> > It doesn't.  fallible mempool allocations are a concept that doesn't
-> > make much sense.  Please just go straight to the backing page allocator
-> > instead for callers that do not need the mempool guarantees.
-> 
-> It does make sense.  When alloc_pages_bulk() doesn't completely succeed,
-> there still might be pages available in the mempool.
+On Fri, Aug 07, 2026 at 01:01:08PM -0400, Johannes Weiner wrote:
+> [ At the risk of starting something, should the file itself be
+>   renamed? swap_rw.c or swap_io.c or something. ]
 
-But they should not go to a caller that does not need the mempool.
-
-> blk_crypto_alloc_enc_bio() should try to take them before falling back
-> to scheduling the rescuer kworker.  The rescuer encounters scheduling
-> overhead and is single-threaded, so it's slow and should be used only
-> when absolutely necessary.
-
-No, it should just try a regular non-bulk alloc_pages (and eventually
-alloc_pages_bulk should do that fallback for the callers, but that's
-a separate discussion).
-
+It needs to be split first.  I have an outstanding series for that,
+and will need more.  Please don't rename it while that is in flight.
 
