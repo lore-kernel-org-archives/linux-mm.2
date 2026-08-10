@@ -4,121 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C206AC5AE49
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 14:07:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C8E0C5AD55
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 14:12:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56C976B0092; Mon, 10 Aug 2026 10:07:58 -0400 (EDT)
+	id 156266B007B; Mon, 10 Aug 2026 10:12:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51D746B0093; Mon, 10 Aug 2026 10:07:58 -0400 (EDT)
+	id 0E0BB6B008A; Mon, 10 Aug 2026 10:12:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 432A06B0095; Mon, 10 Aug 2026 10:07:58 -0400 (EDT)
+	id EE97B6B008C; Mon, 10 Aug 2026 10:12:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 22FE36B0092
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:07:58 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 905B5160182
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:07:57 +0000 (UTC)
-X-FDA: 85085538594.25.9FB6F95
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7F8E016000B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:07:55 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=VDMFqS+F;
-	spf=pass (imf08.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786370875;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C11336B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:12:10 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4A6BAC0108
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:12:10 +0000 (UTC)
+X-FDA: 85085549220.18.98A9CDE
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4EC5AC000B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:12:08 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=D9DaoVnj;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf10.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786371128;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l/l2H3T3xXRxtAlEmVxkMBjt3GQq1sSw4qqDUaZjjxc=;
-	b=1Spdu3nTaFJ6duQCr0mbWwHhODRUMCzcXM8CpVAts/bjKk/8SyDrc4hcsGXGIS+t/MWdm1
-	g4WyD2jtrC2uQf4E3UcahK+9QvIO4cH7OkPNkcUEmSyMy8WvOcS2T3oQzbV/70wdQOb5ua
-	6PFDUc5Nu+rsom3/6NKHDBPqPBbMy58=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786370875;
-	b=4ip+umvSGbO353O6vDj2PLFULxhSPbf6BM7096MA9mukAqqXJnND/Bb/ZWr98ijBJkzrp3
-	KMNxJO0GYb567Vxz7dX5/rQkLtB9A17URr/At3It0g0Q+bQ2/bD8+JmRpGL18Lbp5VIMQ5
-	9vtEofqW8Wo44og7DjeTLugZrZCDOY8=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=VDMFqS+F;
-	spf=pass (imf08.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 737BD14BF;
-	Mon, 10 Aug 2026 07:07:50 -0700 (PDT)
-Received: from [10.57.5.211] (unknown [10.57.5.211])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A0B0D3F86F;
-	Mon, 10 Aug 2026 07:07:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786370874; bh=l/l2H3T3xXRxtAlEmVxkMBjt3GQq1sSw4qqDUaZjjxc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VDMFqS+FI7dztumWUIj0YSzO03RhoFJUBQIQzYUdFvqVl9cEv8Iw/mDKNo7PN1C6X
-	 1VHMihPE5KmCMT17k5n8XBwRp9N9Pbg9cGBMMV/3LzWSgApFGs1tQxNrK6u2zmk9z2
-	 n2fKbvDMQjaTvkmApv2yhkGVWehw0StqDsKzTy6c=
-Message-ID: <efd52893-bf66-40cc-a53d-980b89cee448@arm.com>
-Date: Mon, 10 Aug 2026 16:07:41 +0200
+	bh=n4T+gwRZDRIShJR4gZnLC0NVnW6k5s6US28LrwcXeY4=;
+	b=KrVvw5GlQ45fjfOvkcFdag2niW124Y2WAE7qHJPeoCUi7ZMVONbfO9MGQuZfZ1M2ktfOWc
+	yVvJSn4tiSQ7MxPALZLUywVyc7S/Gs5/T6Jig1M9aEjZ4RoWJ7g/fMqXSLW8dZkX3O65Kx
+	S+4zvd4Dr3vk7DvO14LM0vehEDiDMqw=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=D9DaoVnj;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf10.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786371128;
+	b=i+bpuavPXgV6cOkb1/lJAUHq5/Kr49Na72EdDq5lBgUvy0pWfA5+13z86yeJiIOlqy+N7s
+	MZMYBO+rDaRa+ABWWrxQLiq2RZzWoKOKVejsXz/dJADX1B/vN2NphdXTh6o6VMJZvTd8st
+	SYOSwD0K5d/YKRzLRrIzIg9/rpujc0w=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49967f24eedso2658655e9.0
+        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 07:12:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786371127; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mFvRtnA2lNJvWe0fumhrMbPyeale1ZFM8djt2xkPBMIwjXTB1D8n5ntGBnse9GwQx1
+         B1akLAoyE4t45xJ7ESX4pa+PF29YZTf/ITShd12oePAuNz+vaVeM48ZmQJQPWG/FUCtb
+         cYfpYQexH9njQn5hVX07TgPwjlDJ9RFqRhDtHXzz4130UTdinyNIOqPMzeB+KNouwgJt
+         zCDEFfHRFKG4sKfhenLHNB48A5QnroQ/I0NuSJ3CEczxbK5lgb9+O4ZUAS0fZsz/c0Dm
+         /lxvY/05MRO5Rr0IxLadjpAFdoIdn6T1zGLJVSvUASasodl9JTxcSJsnLjlj0Ht6Zuku
+         dIAQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=n4T+gwRZDRIShJR4gZnLC0NVnW6k5s6US28LrwcXeY4=;
+        fh=vm2L+YkNaCVLAiPM4dh9nODtaSjlexPd4n8Q7K0TnYU=;
+        b=LG3lRumkJzj+9ndYxLwXYvCfSyBEuVLpAiOw+1UpE+RzTwuLUPDKZePS/pZzzaJ9Zv
+         7TTHore0Eo/gB/+pCZJHW007cJsItTvxQ38rlEAIo6TDphssSXrCEkDGrhxBpwop81tY
+         SDm1l9eqW8v7Ya/Kvdy1MTknPUr/rfhDOmFRrxrIEMB/ZzT/MHKnu3dC2cMRsMXUIDHd
+         NA895+rHeuCMyFyG/XfUfkx0iftDkVZfxlMK/2JjrpRqHKkyLa+f+cwTsw2AsXxEdb/A
+         nZtDEGx6VeoIz4w7/zWntnwNezooA6ewdAZysWYfOANtoBkZMqnJUH4GwxDFr5anSSKM
+         YBwg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786371127; x=1786975927; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=n4T+gwRZDRIShJR4gZnLC0NVnW6k5s6US28LrwcXeY4=;
+        b=D9DaoVnjrUOYznchWOVhiqI+GmSpSL06zft/e3pVBOUhUj3xNjwZIZAyXzyX+w4chF
+         Ls4q7zQuPTSPgeIjMJ+JqLQx/JpBqG55TwaGG04rmDXegGtkLnbCBPka3YsR0+NAu2lk
+         BD2Eu7wQPyrNL9eAKx5ws/QNcLrj0xC/pOdO2TQuMOBF+EPHSFF2V/al3X1rsnwjmAII
+         RIFzAZntloL137+VskdENPyQcRBiVnKjW+8A8YyvI3BdBUmDXqYWBj3mJD8JjIRiPsSC
+         Yrfwv2tI4uVcOCTPT8DZG1VeH0g15N9JjmGYH3OXJ3MROJtZ3JAJArkOoQ5+Ayqf0SvD
+         0x8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786371127; x=1786975927;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=n4T+gwRZDRIShJR4gZnLC0NVnW6k5s6US28LrwcXeY4=;
+        b=IMfOvXLsu3kEFwWLnURpaNInZzwsO37PoRYVXCa/fbEJbJ2V2XfCw5BQBIm2JIxf8u
+         sZOlHioOZakdBsL3gUc5U7u6pDZd4R16mlQQQLQN8XFJoRhe3FELV0w1hJe0V/47chys
+         AzLGK6Z9ogCTI3jGu+qhOHZEeg3kYzwrbLNZLXQkgRWWK/4gpr+gcYODHiUob4I8Sh/t
+         O2p8RuCGFJ4dTyPQASL5GF7cGkB5TQegssIXZjl+9bX9pzG0TbwUhOVidMCmwMc43Bp+
+         sGaOZPBOOo873rK0pAkIkx068rSFKiUYNvU8mmC8OvDn86Q3wP3JMDFTYiJ4h99n1d44
+         E38g==
+X-Forwarded-Encrypted: i=1; AHgh+Rog/1qd1DLUzC+40ngkccoWCVM59rFNt8mwjDxN0V7ZQM6K6DWvFL9TVlA1wIkxfEhouvUlVOpJIQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxm3pqhdNOJnqpdpmJ//3HeVEQMZf6NGcpX3Z2TR8B3ngIr+VVV
+	lgn2OtO8oie4vK6D1wPDriTmxShSODPxNjnZUGXROq65j7XCzfmlX9+x6ihh0r4dbgvPCr61csA
+	eNRvDGpwg8SoHvSqUA7ISKH87/GSUSEE=
+X-Gm-Gg: AR+sD13x3ckc9nDTFQVESTE5GaHrzxwBFHSbtDlm5lt5f6HvFL0yCJWQ3nijpX+aIID
+	OtJ0TeMXfjbkoQkwH8NXbEukhA4sagoOw9QE4PVmriNS5e1X0fzz18KZMWS3BKpyWsSjpkm5EZV
+	BcyreRvSc4VrYv0QfGtCmEiRRCIfgB2rp1bd44bZ1H8O+O8oe9EI3/QtCvYsSH6AG/3Hxx3peE8
+	jqwZbK7sT6Fi2hVboRt7pEf4sAqqRZSgRIGqKUMXSiS57jun6VT6LUOM/8Rph4SgnJj6m3svRdI
+	veMJ1kzQezP3Nd4DmsdSzHKYDKqhWotxoniuJQreICYEh30u81KeSL2gaM4A50TVt/v4UeQCoYd
+	pAMhrrPmHQwVgWPMi8xfVcGPdVcP0vw==
+X-Received: by 2002:a05:600c:1387:b0:495:3eb4:3c6d with SMTP id
+ 5b1f17b1804b1-4994e7b810bmr274599375e9.2.1786371126190; Mon, 10 Aug 2026
+ 07:12:06 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/22] mm: introduce MMF_KERNEL flag and set it for
- init_mm
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org,
- Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, linux-s390@vger.kernel.org,
- "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org,
- Richard Weinberger <richard@nod.at>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Johannes Berg <johannes@sipsolutions.net>, linux-um@lists.infradead.org,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Ning Sun <ning.sun@intel.com>,
- x86@kernel.org, tboot-devel@lists.sourceforge.net,
- Ard Biesheuvel <ardb@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-efi@vger.kernel.org,
- Vishal Moola <vishal.moola@gmail.com>, Alistair Popple <apopple@nvidia.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
-References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
- <20260714-remove_pgtable_cdtor-v1-3-44be8a7685d7@arm.com>
- <01f07ea2-8bdd-4450-8a49-548f8b646cfd@kernel.org>
- <33fc9d31-2866-4315-9510-0004deb93994@kernel.org>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <33fc9d31-2866-4315-9510-0004deb93994@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7F8E016000B
-X-Stat-Signature: wuh3op6ybzcnjsmb9j5761xc1jehdsjm
+References: <20260730122304.2496440-1-xueyuan.chen21@gmail.com>
+ <20260730122304.2496440-3-xueyuan.chen21@gmail.com> <CAGsJ_4zo_uya7-iFS85W78+mpvjhmfxp7HfxTPKDD=Aiw2c1vQ@mail.gmail.com>
+In-Reply-To: <CAGsJ_4zo_uya7-iFS85W78+mpvjhmfxp7HfxTPKDD=Aiw2c1vQ@mail.gmail.com>
+From: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Date: Mon, 10 Aug 2026 22:11:54 +0800
+X-Gm-Features: AUfX_myzk3L8tu8iuyY3KCv2aKO9j3yll3zHn2I8kTwXhIPWsgZ1D2l0l_IZSoo
+Message-ID: <CA+qSx6w_EY23GzgfaypXz5pd=h9JoBjiyX5+4Po487QYb4R=aQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v5 2/4] mm: distinguish large folio swap allocation failures
+To: Barry Song <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, zhaonanzhe@xiaomi.com, 
+	hannes@cmpxchg.org, youngjun.park@lge.com, baolin.wang@linux.alibaba.com, 
+	hughd@google.com, chrisl@kernel.org, kasong@tencent.com, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, 
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
+	muchun.song@linux.dev, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, qi.zheng@linux.dev, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1786370875-739851
-X-HE-Meta: U2FsdGVkX1+LGrIQlWeQNGwCCA4GWcCcwerXPTTU8UWacsE1b5fHk6KqtA7AdeQqknxxx5UvWygDVBs6gvwfj9IjTd7GZm+2PsyRz+Zrp36GnLy5BLBQnyjK//UqfMMcmSRosA2qPPN1hPal/s2xn8Zd3NtRNQZICuN01ZdERVU2xi/SGkqZnBDfgabroZyp62RDeAyy0OgtMUVl+AztRKPxX1MoMJtrM0sLseSvovWm8ioQQEcCfnXrfmdz8zWiKMwKHQuaRB///eHFljkD2WsRT1agNpK3wHVS8sG4dbUub1kV4GChAh8qNW34YSnOvIiB5yStUfXPfcLBxDZ/hPM9ISUyE2IkJKhS10DKFWTtdApnsXx111Rh/TzfCRW/v1MOhyENK/+Ohs3fMaagNKVEBAyJSpb28TfNu3UFTe+L2sEOMXZqtuCBMaTCpzMpfc1dL5s84dQCOMQd0G3rCuOLyFnG8V6aJob4OPRFCiGMIPfXq10SUIxOqh0o9DstOgDOwSvTgrxrYNgFd+UzpR/tMAeLDYze5FAdYpZqS3qtdyx6h7zpnFvT8pyiv+fvE0YSfuo/r+Qtf2SnwzzV7LvZkVJHNeYBlCG4EAPErZ0ccAxC8iJxq6iS+qOVfzPyYZ8jmkD8ECZT122qfCWOS0kg+0DmV3H2UfZz5jB1Y1Z7hJbIBV10GyMydSXlw8kAKxee4pQUlCgJVs3BTbokDSUXFGXYAin4R1HOgjqkQEU4p9RR+9XHmke/7Qwq5zHuNlB9ep3iJEhrm1P+IgQLQh18izKvrD8g57/93Hcin1WfuC/u6hgnzaZ9ZlDtNcBJWNxp2WUVKo5CRVM55FHLsSoR97vpAeoHootZLfthLH3DlHZUvbuytBf0ngXfm+LBJNkkzcXkptrOXMDoAab0wxg6UFbK2pMZOpBB3O9iWcx3IEVcCA0gPj9jLYF8KmU5+hF4xv+KMjw00gfqBCP
- xsDuLRf4
- NEdOZ7WNBudEmbae45d1EHTOgOJtEmu56NF//pU3KfoPQPsDQvtEg8kkZtjkV/g1yEMQNDcCb143vC7fXw32eSvk15lKZO1/s66OMTVQt5x2gsdYb5s60mZOiMFIjjR+w+2BSnUSIPhd4qVjMHFjQ86qkb01C2Lz/vkhjq6e1weBLbFae4OUmg0FiGYgABRsmv9Eo04M4P432CkBsKhN34dH2XPR3T3Qzmejpo1I7AJpCH0+RdUMSC/gv/ZSdYTYt/hy41qerSQUuD4wgPaj98JCvXTk+ZC8n24+BJH/X+0pN2NHHP6E57yVFHKuI0skhUAPlGLoMNie12r6frqcMyTteZrZE56+FhGet6PkMOS1x4iyCiy5LV5tD1tjVPdeqmHxr
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4EC5AC000B
+X-Stat-Signature: t1ptw5fkfjjbs1hjh7pebegdi8retjhf
+X-HE-Tag: 1786371128-953341
+X-HE-Meta: U2FsdGVkX1/F+G1naNUDV3cbn3nf6TBihgO1bE5BHcHf0IebZy0OKzpGaMJnO9xflQpem3eSi6EkYJ0CcHD6ZGoNey07/EvvFPidJkfCr2onCNsABJGtIuxmQocTLZHYLTeEfu2ndRRYew7pGI4jh3evqh5QMx+mf7fKQNLS1LdTR12OrQh8nKqjCSQtC0zMcNop+P8A94gUQ6dfAYUAmSGGqYvCSw0TlIGbuggkdKW8fXTYJhTUVWSP5wEhHypmubmcpq3TUWjG/stqq9oHEAZfwfdCk6Ww1ws58lpQ82Fx2qo3+jDZvPe5wH5BI6+dx/voEvbpHNSoQV9xTjYZJjHJzZIWBcV3un7l+gocr3YLkmEBDB5vc4kgHP5XEioOrGZ4VsCJHupP+PaemTBjg3D8K3lYlMXQQkn3loYXJvki2+U9Hgza7Xpkr6COhnKE7UTOmkDfftvaRvRDVCTVPHYWoC9lqfXy1uON+26vCDIQDnnJUe5sUBXKljfmWbCoTh9/xMYq+4PSssvgkk913AzFoF5FD8I5u5F7p4j6J7oX4FiN4yTj5D6TE0D2Y19nIiv5Digt3uTWLGOn1spO9mzinSVUqrCHlR05ABSffhb8uEGvlK051O++1qqCKSlofSJdjo0ucPM4Xs9udAuGPVJb/okARXXO9oqxwtLN6bIkgiUpgNNV1XqE8UwGGSIhvIYe/beNA/bcI4bo3k2SAg//Khf3YVm47H7bRpbuFc+I/fgwVBvDmnQAvL2qni64XD7tkNtGopRa7CG4tCTAeHaNW+cvccyfepgMJaxiZCsooEoSn455TBE+7cdPx6pvgh8gfJItmRJKQW/6Z9vNP6F352CxP8sEwfc1HeALp6LkWonOiJTuh0TlmlkG012inIkSwaoMLShZhsOc5N5rMhjA/tEB+A/sCaJGHgD+6cyGrhB/9P/VhU/y1GWI8+rPakm9DftYUQ11C3yp4bl
+ kViRCJEZ
+ U42Tpl0/HaTfZmLDERV7QB8AGnHzWPtFq/NFB0hgXGWMAyBu0MVOzufQUVXpoRIZ9MIXI/tCua5TXVbSH/l6JeJ4B/7RZKKwyg5rVItWumkBr/ghqYCJpHMvxj98jFAdB9pErRmJ6LR1kmyPYnOZE4s49x9A4OtZYDUaFhZEZ1u41K4cnoJUlD08SQIuT02LlbsysjK73VTphSX2udRGJoN6rRt0PvGryzZ7PFjvPZxPjL4Btl8JrgDnBFA45tu06mKZPFljGoLQEyzCC5WIX4GW1NvzeAgLi0lgvmFNMbiTrhkut6XVKmG4POEXJRJgxZohi4d0RIG9H9EVlUv3x/t7d3xYZ/mpbcVnXGg4wkSii3ohgCIuGgtPskp7R+DxXzUwPPqOn62tn30ep3FlTuZkkk3ZdooaJWEjMwikm6PCTI9BP0iZ2pmB95ls+3uc+pl1iIH//SqxbXHiTKFw+RoGZyHW1VZjgBHirIsl5nwT3g/8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,53 +148,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05/08/2026 14:07, David Hildenbrand (Arm) wrote:
-> On 8/3/26 15:59, Christophe Leroy (CS GROUP) wrote:
->> Le 14/07/2026 à 16:03, Kevin Brodsky a écrit :
->>> mm code often needs to know whether some mm represents a kernel or
->>> user address space. This is currently done by comparing the mm
->>> pointer with &init_mm; besides not being particularly elegant, this
->>> ignores the fact that other mm's (e.g. efi_mm) may also represent
->>> parts of the kernel address space.
->>>
->>> Introduce a new mm flag MMF_KERNEL and set it for init_mm.
->>> Subsequent patches will use this flag to replace comparisons with
->>> &init_mm. No functional change is introduced for now.
->> Did you consider performance impact ? This test is usually done in quite
->> critical memory handling functions.
->>
->> init_mm is known at link time. Before your patch 08/22 there is just a
->> comparison of mm (r3) with a constant (loaded in r10):
->>
->> c0014048 <assert_pte_locked>:
->> c0014048:    3d 40 c1 09     lis     r10,-16119
->> c001404c:    39 4a 03 98     addi    r10,r10,920
->> c0014050:    7c 03 50 00     cmpw    r3,r10
->> c0014054:    4d 82 00 20     beqlr
->> ...
->>
->> After patch 08/22 we have, it first checks that mm is not 0, then it loads the
->> word located at mm+528 then AND it with 0x1. This load might be costly.
->>
->> c0014048 <assert_pte_locked>:
->> c0014048:    2c 03 00 00     cmpwi   r3,0
->> c001404c:    7c 85 23 78     mr      r5,r4
->> c0014050:    41 82 00 10     beq     c0014060 <assert_pte_locked+0x18>
->> c0014054:    81 23 02 10     lwz     r9,528(r3)
->> c0014058:    71 29 00 01     andi.   r9,r9,1
->> c001405c:    4c 82 00 20     bnelr
-> Is that a real problem, though?
+On Sat, Aug 8, 2026 at 7:12=E2=80=AFAM Barry Song <baohua@kernel.org> wrote=
+:
+>
+> On Thu, Jul 30, 2026 at 8:23=E2=80=AFPM Xueyuan Chen <xueyuan.chen21@gmai=
+l.com> wrote:
+> >
+> > folio_alloc_swap() reports most allocation failures with a generic
+> > negative error code. Reclaim cannot tell whether splitting a large foli=
+o
+> > could make progress or whether there is no backing space at all.
+> >
+> > Keep the global free swap count and the remaining hierarchical memcg sw=
+ap
+> > margin as separate inputs. The memcg charge path reports only its own
+> > margin; folio_alloc_swap() combines the two layers when classifying an
+> > allocation failure.
+> >
+> > Return -E2BIG for large folios when a smaller allocation might still fi=
+t,
+> > -ENOSPC when no global swap space is available, and -ENOMEM when the
+> > failure is not helped by splitting.
+> >
+> > For early large-folio rejections, check global and memcg swap availabil=
+ity
+> > instead of returning -E2BIG unconditionally. On a memcg charge failure,
+> > swap slot allocation has already succeeded, so use the remaining memcg
+> > margin to decide whether a smaller charge might fit.
+> >
+> > This only refines folio_alloc_swap() return codes. The reclaim callers =
+are
+> > updated separately.
+> >
+> [...]
+> > +
+> > +failed:
+> > +       if (get_nr_swap_pages() <=3D 0)
+> > +               return -ENOSPC;
+>
+> I wonder if we can do this earlier when swap is full or disabled.
+> We could exit immediately and avoid trying many redundant paths.
+> Have you tried this?
+>
 
-I doubt it, this is a load from a fixed address and therefore highly
-cacheable/predictable. At worst we're keeping an extra cache line
-allocated, but I'd expect init_mm to be already in the cache most of the
-time.
+Hi Barry,
 
-> What we could do is to just keep the == &init_mm check internally on configs
-> where we know that there is only a single such MM context.
+Regarding moving the check earlier, I currently have two concerns:
+1. It would add an extra get_nr_swap_pages() atomic read to every
+    successful allocation path.
+2. If the failure-time check is removed, the earlier snapshot could
+    become stale while the allocation is attempted. The failure path
+    could then return -E2BIG even if global swap has since been exhausted.
 
-Sure, if this provides a clear performance benefit on powerpc or other
-architectures/configs that don't have an efi_mm we could do that.
+Thanks,
+Xueyuan
 
-- Kevin
+> > +       if (swap_margin <=3D 0)
+> > +               return -ENOMEM;
+> > +
+> > +       return order ? -E2BIG : -ENOMEM;
+>
+> Best Regards
+> Barry
 
