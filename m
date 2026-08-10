@@ -4,90 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AEA1C5B56A
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 16:28:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1F24C5B56A
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 16:28:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B0846B009D; Mon, 10 Aug 2026 12:28:05 -0400 (EDT)
+	id C38116B009F; Mon, 10 Aug 2026 12:28:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1612A6B009E; Mon, 10 Aug 2026 12:28:05 -0400 (EDT)
+	id BE8876B00A0; Mon, 10 Aug 2026 12:28:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09E5D6B009F; Mon, 10 Aug 2026 12:28:05 -0400 (EDT)
+	id B26836B00A1; Mon, 10 Aug 2026 12:28:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D1F856B009D
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:28:04 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5E4E81A0220
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:28:04 +0000 (UTC)
-X-FDA: 85085891688.09.693EF61
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2A97240008
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:28:01 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=BuqO6uAK;
-	spf=pass (imf04.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F4D76B009F
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:28:11 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2D31BC01EE
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:28:11 +0000 (UTC)
+X-FDA: 85085891982.07.4A70185
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 76B831C000B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:28:09 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=P8Bf3oH0;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf18.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786379282;
+	s=arc-20220608; t=1786379289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=EANdORJlqyqj5ePn4ATBwyvNejleE/hNFHl3jIiiuyo=;
-	b=5EwdUvy+Qk+UWyai7t1FYAmqsFJfXn9lMdsHwqpboIKu1KR91qfF/xkl6OcSOYczFpDxSA
-	RFcS8Cto0YPMspZvnmOJbo56vaIEKFOJn7o390NjDst/anUEjoGYuF1r+En4np+pA/lAKb
-	b5Y3h7cJiCu27yaVL5jmYSma7liFrj0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786379282;
-	b=2SJ0CCUjpvrkL9nTo44oyiWkQ3p2vjgFGfS+I53xo8bSkqF+UfNW+Z6kGV5U2TGOfKsi4V
-	xCK+lc2VKz/oyVXY6jQK8O1jAMJtJbPDoML8YBaqRbxuuE/TG5lMpwMYvTLhQ13Qelrd0R
-	/BDydonecpPA5jV3yRwqI1dAaC1BWFI=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=QfzutoXq/QhHceqFzC7g3Uo92nX5QF8uEfbvCV0Qpnk=;
+	b=FJr5sw2CHtHOnaVahYK8arYQChOAT2s616fdbXrs7VMZ7zyHosRALv9X944KnPuzMlRwjo
+	GLKq538pFRjNzl2oZjHQYTe9muvFyHGH6jCSLWxpCtAbkVIgH79yC4stkAigA3Gk9setap
+	PNXP/kZP3Cd3ybbR+aYRIXwi+kZtsPU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=BuqO6uAK;
-	spf=pass (imf04.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=EANdORJlqyqj5ePn4ATBwyvNejleE/hNFHl3jIiiuyo=; b=BuqO6uAK48+UcGiJ3utN+DEA8n
-	UsFiOfuSls7t4wj+LY291I5PwI7KM361FqAYM7LlSxvfna4Gh12i4UL8VkqpdBnzVpUPcSmeb8eME
-	zBAKhzamnYXVqxbNdKoeYNgsvFka24ApTFXDzZb2ocWWEJdrnxYefCHDDFO2EZ8K/jg3KxDMssac8
-	wOk2Unsunhg1h6R70QtRAMZcUkWwKA05AIDoTdTliz+182f16U1c33g/SBwSxFL+0Y53S6kmQXbQC
-	e3/lotKxcDf2tQB5YH6+rcJiDZSD/Bmihy6w9uNyQwf7oqpSJdiqE7HgOQm/A4xH1rnWhrNDa6Q78
-	K74bYrBw==;
-Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708] (helo=fangorn)
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1wtSqg-000000006jU-1WbH;
-	Mon, 10 Aug 2026 12:27:38 -0400
-Date: Mon, 10 Aug 2026 12:27:37 -0400
-From: Rik van Riel <riel@surriel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chris Mason
- <clm@meta.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: [RFC v2 PATCH] mm/cma: don't release CMA pages still in use
-Message-ID: <20260810122737.030f8452@fangorn>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	imf18.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=P8Bf3oH0;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf18.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786379289;
+	b=wrvvaJEwxB1wPJlN4sE9PO+Y0JSnjX3LijP8hzlONl+hrq6ANH46ai1rcqZHjVRBB0Ldr0
+	4L2XuIwEtCD6TRxzmKx6sSS1uGXRPuxRRa1cwIaPlQZIGu3TfaHHB3I6rxgwVv8zDw/y1y
+	a95P9k6MP09Cevr6v8rl29pUhcneWDc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description;
+	bh=QfzutoXq/QhHceqFzC7g3Uo92nX5QF8uEfbvCV0Qpnk=; b=P8Bf3oH0xACrqWSVqO4gaIQoH6
+	oWVLgg5NGpmJ+zmFnkycvZlswPi7MCSTJVwXsb76e9db+GwB3J5/UxQAR3evm5U+tHZyBrg18xAHU
+	q8OfPEG7pGXppy/7Bs5bDlSf5DX2h0QJULjB857W6mTg2ewYMkpy1L9a4Cy/obFHaMdDAJEjKbxbT
+	nD2OaKygZ6Uj8wWDrPdcuxpjevu1LdshG2CNWDn+R9MI1pKtVB+hobU0PsTfQ8Nx8IB4UwinjILHw
+	o3aWUM84DpCYRaaMPMbvKHkpAzJ7dSmmKDb/66YUsCAZZUr3jV/NqYcKf0xYjrAPKziTZoWy6JTNd
+	eUFRe++Q==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wtSr6-002ufm-2w;
+	Mon, 10 Aug 2026 16:28:05 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Mon, 10 Aug 2026 09:26:51 -0700
+Subject: [PATCH 3/3] mm: fail the fault on a malformed swap entry instead
+ of retrying it
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2A97240008
+Message-Id: <20260810-swap-v1-3-375ef0767206@debian.org>
+References: <20260810-swap-v1-0-375ef0767206@debian.org>
+In-Reply-To: <20260810-swap-v1-0-375ef0767206@debian.org>
+To: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+ Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Peter Xu <peterx@redhat.com>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
+ Chengming Zhou <chengming.zhou@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.16-dev-f8e9d
+X-Developer-Signature: v=1; a=openpgp-sha256; l=989; i=leitao@debian.org;
+ h=from:subject:message-id; bh=0eADPU9A+Bin6aphy+90if2YapwKINa2j/tvvdSh++4=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqefvpGtHBBh+N6jpzTsBrdYBNmMXi5BcUh3JQQ
+ lHLipIx1UqJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCann76QAKCRA1o5Of/Hh3
+ bXmiD/9LikOkeDPB49YFIg2IhmzZtXvnNr0DB8lO72WHE1E21H4aVITrHKKdxdxMglgwsd9T2GW
+ QeSKLxSfxsUo95+eCNcHn7StmJbcLjhV9i9zS/qrzpeSMRWlGOhjGJxE3K6LsVno69+3MqSKHXT
+ 8PzHFA/Xn2wUy94vxKXcYAaIsPCqUi+w84pOKYcMKIBfPcaHsm8FXRs2vJdaysU9nsR5Oxg39fN
+ IlEKlObmPKCUHo/ylEKtjyUI6s775g7PCE4oNGDMnczXryYgr77zMJpYzvAF1sWIUph2js4AbDk
+ /UzbhIJPoiDYipq0rlokHYMhhyFSzl2tZ0+cCn5+5vsmXILZvwtBbkvZMX9grBRlhG376hPZTXk
+ NMOBCeu7ZXOQXdxZuUTYHLuJ7Jbdw+KMDh2WzNp28kXzCd5dZwKxh6t78TPFIJF+f1OxjFxEYnw
+ iwNmbBMiA+D/yt6eUfDgxtLib2UuyA3HU9caVBHXEqAaFYRZHKtZK39IRg6FgClcfhDGa3EsM0f
+ N6Clgnwb5OhBxMHU+QUuU8dpW9q4f2FrAQg/hnZ7GHRoxSFj+i6VknaTFC/R1AvSiMLsnJ7VqBw
+ vvS7Eg2QesgK1EkKytzUygFS/K397+yPNVXMfXvOdH2ghcKN3kF7NbiYRvgamOfsOb1/37WGpj1
+ php6GfsLKC1SmpA==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 76B831C000B
+X-Stat-Signature: y8uyj11zj66ty5kj57h7o755eweq9jrd
 X-Rspam-User: 
-X-Stat-Signature: e61sjuwax4mkdb9y7icherpx8ao6c181
-X-HE-Tag: 1786379281-161399
-X-HE-Meta: U2FsdGVkX19/nxS02CdVYZ9MBMItNyw2v73hiPJJRQGf2HhiHWoD4AyfiI/5EtKUQikBmBnTZuFrUwbzrgu3eQxXYhv9D5ImH55gmd7yss1gmywPQHRRzRDbrMJ3Ty8ZXEx2V8SShGIDt0bgVh44tj1MbMcUjulfYhe1QD3J68mpXDJ2HkYlh0bBhJ4wOT6YLwOcfGHvJfJMcinbMp1Ydvb1FLjvnI40rPpQmycKD2zhgsily1OkdYQkwTXRbuf8+MXdPzIleOevVGXk5n3otovlDaLSn3cl8S8SlOliMzzvliIuyu6S0OPZ/0jq4FiTLdqcWH56rWZQKvLZVIvoW/QONcQgd08SGqCQ+iTbo5syU0C1rRcP2HVAHeksNoNfc0Rc04agkwuZsds/iRMizvjciWCoiE+iH06bhwyeAGVlbuWQRy1EqJk2Rln1WDQMOxzuOmdV6fIO5OyychZwQ+Bp9ztUTMLg7kmpr/ZlNbdd35UO4ATQslyt3f4/KwZo/tuGNO5x2VU54njX90ruPApZ4IkLWkvo2QGDD8/PMuH+/MFW272Zz4o0aP2HISQmISlcPM0jleROsZm3pUjUTun3QET7Ufxr4Tj+PwvIUiJcb5UYcY7R6MmRbkWpX6iJnCwNgcedDmrEkjBsekSCr4l7NnCOMICpOwtN17KS29xSzMKIH60T42EBbNvbXrCmzbHKiwEvyYOkGeetVmbh37mRRBIDn9G8I2UxwCL4qN5klCDReCzgCx4ST/DHPtzbfcC8G7q/Rmd9rX01upwJbbwrVij88ZdTLSidhYjGSvL3uxszdA2eSmv/nN8deVqmMH0RGZXzsDOIeOAzP+X7I4Vn2M7o8gBzOOpa2blVyJdS5JgXA+woj2/uULDio0TP0F9d3DPHRRq690WpFGzamNHep1oKxqVeaF3XvbLj16zlQtZs5XWQ2/9JCMtg757d0pCDkpnm0755g4CrM2o
- 3QtHzGxx
- GAyz5R01cZdefpeTkY2/7zzw0+RKq6RJueDZJRkculYX7TUkMZGHBMenG92Th5iwRfbaN8EYDc3P/UNcFb1JPG/pt7gBHqQGcx/gsFoZ9OWPmS5trUWAwzPKZfAHQLwMw32er6QEcMaIDjL5KB298fY4n95JJ39ag87wep44xR/cJ96MBoS5yhLzGCuMPcR80yXKGaG3m0sqgmbc1GNTCasxpsMtgYvIm78vvnbrY/IAj5eeV9krZIa26hm5dh8PmesF6vx6nsV6YulkcBsHxfAqSxaSK5i1KQpr1RrSrT121QladfRwfB+lKZNSfh0jUe+gRy6zpiyjjTbzFlpNXvGqvmlQFiTGgME9Ji2fhl7vLmT3ZnUjVmCxF8fyeheHO/Izr
+X-HE-Tag: 1786379289-253393
+X-HE-Meta: U2FsdGVkX1/5bEi5VuiAk3KgaSosjqIivfrIVAfbOq76ZOlTuMfXUnkAjh3p4zTwNkxrfT7hI4M9+TtoJami11vi+SO0Zsd7ixlfddfiMPrCD4wrI9EB198vI+2o99eHR9R3tCIGLzwWNb3s7YLAYX/FxbJYmQF5xAmWwAuti8Z3/8AKDOqaT/IRPuRs5uP/IudolCva2ih4n8C1aUs0TwahgKY/FqVw+MAIgi32ItUBW/WfDflzmZw47bqIRP+C/SOrGu/ielTV0N/CSz6Vmv3puhbYcfSCUOv0be3UQv7ydJwSO4tR5RMqIQpkL+WwvHjKhCtTufTc2rE9QU3Pw9OnpfDC37F94UMsel5V7Jp8vEFoG9eZFkLM7uplyt28nYI3k9xfQfgLZw+7pXYlmk0ZDb85K7Ns8Rp3c05JMOkgQP/lZLBD7jR4hAHCMUqkoTaTJsc0e4mr1B6md+JBrcS1Uo6tZXga5MBeElx17w8oQ4C4ccZ15F3EDS44yJ3iAO5PZDkjANIsi2QkLOWygo6phyqMuNAsN14fkrmWRyqUhHfbkdnu7ilRuuEqYq3ro3ek5FZGjfSzbcaG3drrGITBXnuZvFG2WA5rxuREv2de9W0fdK8YadKVKv5aIRFnxnoZqXhiOtUzSnSVFHL8U+igl2udLvyUiqxbsrllT5pwYvhzPCGyhKWidkZX55LsDBRLAjaXcrHWvM3JODoCZBOtQdZEeR4y0ZvEgF6/X0S7s6HbiyqzZdM4dZTSYVMdfmzt0pk6abW061n/El3dmvGTtoOVIelS0NTfHeacDyTcXmC3u8UsjcBKkjLS2j+PDEt+nZqGOBh0K2w7CX29r0wJNbtiGcgfUJu0DdNv2dMyKvodjWYwAdLbiS0xo1vlyRQpCL0R8cs2N/HbRtOdyPG5ZDIdVtsk/BZ0G3Xsxm4ppD7Y4tirJYzTLSmpkhwxeZaFEKeM0cdSBoUp1GQ
+ vX13XscQ
+ LtWv514/YxUVe/cYfo0h3nJWs8dnfisary7kxtkyq05UGl/dIK7Da+k7ppIMYQ2ZhmczUvolooxC9LATGvP5UXBsdfZb4OpqY6JmIPVV8z6PPHBamWOGIQr5R8WUpUCScqRac8n7CQbncv5XQXugVdRqOJyxAP4cL/qIfnpPZXRyRiCx59Ih4cZFzV1/OwGsSCeH0rQxyhTfSAasnNmZOYn+jbNlVunQuVfa7OXrDeSkUh3nhqY0arO50wAR50snKgWR5Y2Li5Dtfv7JfItdbpjuvLJQPKXd5srGE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,112 +122,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a driver calls dma_free_contiguous() before quiescing DMA, the
-page still has a reference from the device. put_page_testzero() there
-returns false, WARN fires, but the code proceeds to
-free_contig_frozen_range() putting a live page onto buddy and clearing
-the bitmap. Later cma_alloc() hands the same PFN to a new owner while
-the original holder still references it.
+do_swap_page() returns 0 when get_swap_device() fails, which the fault
+handler reads as "handled". For an entry that can never become valid
+the retry takes the same fault again, so the thread spins until it is
+killed.
 
-A concurrent put_page() that drops the last reference between the
-testzero loop and free_contig_frozen_range() can double-queue the page
-via page->lru, corrupting buddy lists.
+Return VM_FAULT_SIGBUS for a malformed entry, as the sibling arm
+already does for an unrecognised non-swap entry. A NULL return still
+means swapoff, which is still worth retrying.
 
-Fix by freeing already-frozen pages in contiguous runs, while keeping
-still-referenced pages. When any live page exists, a future cma_alloc()
-on this address range will fail until whoever holds the extra references
-frees those pages.
-
-This change should be safe because nothing can get reallocated while it
-is still in use.
-
-Fixes: 9bda131c6093 ("mm: cma: add cma_alloc_frozen{_compound}()")
-Cc: stable@vger.kernel.org
-Assisted-by: Hermes:muse-spark-1.2 syzkaller
-Reported-by: Chris Mason <clm@meta.com>
-Signed-off-by: Rik van Riel <riel@surriel.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
-v2:
- - don't play clever games with the CMA bitmap, the page allocator
-   alone will prevent re-use of not-free-yet pages
- - v1: https://lore.kernel.org/all/20260809210608.06b5ccb9@fangorn/
+ mm/memory.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
- mm/cma.c | 39 +++++++++++++++++++++++++++++++++------
- 1 file changed, 33 insertions(+), 6 deletions(-)
+diff --git a/mm/memory.c b/mm/memory.c
+index 4238778b66c42..2842cd976f1d3 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4957,6 +4957,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	/* Prevent swapoff from happening to us. */
+ 	si = get_swap_device(entry);
+ 	if (IS_ERR_OR_NULL(si)) {
++		/* A malformed entry never becomes valid, so don't retry it. */
++		if (IS_ERR(si))
++			ret = VM_FAULT_SIGBUS;
+ 		si = NULL;
+ 		goto out;
+ 	}
 
-diff --git a/mm/cma.c b/mm/cma.c
-index a13ce4999b39..cbf8dba8f077 100644
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -998,7 +998,6 @@ static void __cma_release_frozen(struct cma *cma, struct cma_memrange *cmr,
- 
- 	pr_debug("%s(page %p, count %lu)\n", __func__, (void *)pages, count);
- 
--	free_contig_frozen_range(pfn, count);
- 	cma_clear_bitmap(cma, cmr, pfn, count);
- 	cma_sysfs_account_release_pages(cma, count);
- 	trace_cma_release(cma->name, pfn, pages, count);
-@@ -1018,18 +1017,45 @@ bool cma_release(struct cma *cma, const struct page *pages,
- 		 unsigned long count)
- {
- 	struct cma_memrange *cmr;
--	unsigned long ret = 0;
-+	unsigned long skipped = 0;
- 	unsigned long i, pfn;
-+	unsigned long base_pfn;
-+	unsigned long run_start = 0;
-+	unsigned long run_len = 0;
- 
- 	cmr = find_cma_memrange(cma, pages, count);
- 	if (!cmr)
- 		return false;
- 
--	pfn = page_to_pfn(pages);
--	for (i = 0; i < count; i++, pfn++)
--		ret += !put_page_testzero(pfn_to_page(pfn));
-+	base_pfn = page_to_pfn(pages);
-+	pfn = base_pfn;
-+	for (i = 0; i < count; i++, pfn++) {
-+		if (put_page_testzero(pfn_to_page(pfn))) {
-+			/* Add it to the batch. */
-+			if (run_len == 0)
-+				run_start = pfn;
-+			run_len++;
-+		} else {
-+			/*
-+			 * This page is still in use! Free the freeable
-+			 * pages encountered so far, but skip this page.
-+			 */
-+			if (run_len) {
-+				free_contig_frozen_range(run_start, run_len);
-+				run_len = 0;
-+			}
-+			skipped++;
-+		}
-+	}
-+	if (run_len)
-+		free_contig_frozen_range(run_start, run_len);
- 
--	WARN(ret, "%lu pages are still in use!\n", ret);
-+	/*
-+	 * Some pages were still in use! This should not happen.
-+	 * Subsequent cma_alloc() calls to the same range will fail
-+	 * until whoever grabbed the extra refcounts frees the pages.
-+	 */
-+	WARN(skipped, "%lu pages are still in use!\n", skipped);
- 
- 	__cma_release_frozen(cma, cmr, pages, count);
- 
-@@ -1046,6 +1072,7 @@ bool cma_release_frozen(struct cma *cma, const struct page *pages,
- 	if (!cmr)
- 		return false;
- 
-+	free_contig_frozen_range(page_to_pfn(pages), count);
- 	__cma_release_frozen(cma, cmr, pages, count);
- 
- 	return true;
 -- 
-2.55.0
-
+2.53.0-Meta
 
 
