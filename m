@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53038C5AD4E
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 08:49:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70C3DC5AD4E
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 08:50:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DAEAA6B008A; Mon, 10 Aug 2026 04:49:52 -0400 (EDT)
+	id 350976B0092; Mon, 10 Aug 2026 04:50:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5FA96B008C; Mon, 10 Aug 2026 04:49:52 -0400 (EDT)
+	id 327DF6B0093; Mon, 10 Aug 2026 04:50:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4F596B0095; Mon, 10 Aug 2026 04:49:52 -0400 (EDT)
+	id 217386B0095; Mon, 10 Aug 2026 04:50:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 943FB6B008A
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 04:49:52 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 12FCA1606C8
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 08:49:52 +0000 (UTC)
-X-FDA: 85084737024.17.BC9A17C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 34D4714000F
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 08:49:50 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LM4dvE+I;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786351790;
-	b=RPw9+Gff1mYVAEuH6f12aHroKNtHwoDoAlNyDnOr/H1NAi5zkFATsb1Ys+G2tLKC7CCMDN
-	GUCFnoXRPkVVO4pjqWHy8jCA++PLQFVRLgJ2H6hDF6RmUxOHeWQJ8e7vJ1VVQXJNK4Qbk/
-	As8pp85J38oh7ZS1iA7vAT6IfMeiHlM=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LM4dvE+I;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EB9DE6B0092
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 04:50:38 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 81559A06E6
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 08:50:38 +0000 (UTC)
+X-FDA: 85084738956.07.208B855
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D2B45A0005
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 08:50:36 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SM/P1WV3";
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786351790;
+	s=arc-20220608; t=1786351836;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oyi1K6Vb11sIVm2DqmDTjgO2DUYGijf3ZjwPoeHhIpI=;
-	b=jb+p15wEYpmPqgPkOKvbRo4+7CALRQ3g1v/2npwHsP+aTemsT6aPcugdau1+uBUqQQJa2N
-	P4OUWLrREEk+UuobAHmguEcZUBpf49lj7TRPulQK41fTYJrAJ1oRi8XMO9S+F/mRg/HseY
-	MgqsAqbIo/znkMiaMa0RMx8Bg+OuILU=
+	bh=32eQ8RiOgQgeidQGipeTq06XdRmfmVmvwXXxzjSlN3U=;
+	b=pwJuiqJJpuCmIJuElVyAXAXuVCnSrI9u5pQYXi4mpnWfYXRbqMz4Kt4H82iidz/kpyvtlJ
+	Skz283N3M6573Uf0/+PTTWtWUvhI0dP49ZBJsTyS0lI3aQMOem6RRt+8oLREyodryWDrLB
+	7TiI7zQD2W9qLMVv7yxdCV2ZuGL4qZ4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786351836;
+	b=c/uI8Je8ZqHt4Pmw65vyIEBUYyb1oMimhw5aYAo88pu2izgbHliGrS21w0YBOiL/6o8Za2
+	YGrVIzNy6/6Z7G1MSXLlFtYFH+pLMNiDnVIx+7NqwMMvwe7TGzUobc41koeSEF9EQlcCT3
+	r2Vpgjo8aLxEgAkBbGidRXf5wpc8jZ4=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SM/P1WV3";
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3A4C6407C9;
-	Mon, 10 Aug 2026 08:49:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 368A41F000E9;
-	Mon, 10 Aug 2026 08:49:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 68D74600B1;
+	Mon, 10 Aug 2026 08:50:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0A61F000E9;
+	Mon, 10 Aug 2026 08:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786351789;
-	bh=oyi1K6Vb11sIVm2DqmDTjgO2DUYGijf3ZjwPoeHhIpI=;
+	s=k20260515; t=1786351836;
+	bh=32eQ8RiOgQgeidQGipeTq06XdRmfmVmvwXXxzjSlN3U=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LM4dvE+IKC/Ejo+9/rKz+PKvAdzmvpVvRevxAjCQ5s8v5M45CzxupdrZgWT2JRvuc
-	 5Tizm2ZXxGCYgm9t3tVLtMdV0AoWpSGA7Wm3b5DVASrvII4aYdkcwae8HLnI7Z9i3s
-	 iwnnDOx39L6omLCMv2h0Evag/b4MJtfvAfDUxwZ2NHUZclv3+ean7YnI76R2fN0vBZ
-	 dWL+WY/+gHBfXv6qPOj4/EeIcc4qXwY/S1hJV1NcE02I67uo7riHg9ePIyU6mqCgxx
-	 krur+cesfmybko1Hv3JxueBRP7HRivu3ABRQPWz7RfFxbF5+gWIWyBbqkHUBHDPgHR
-	 vl9843J0x9v1g==
-Message-ID: <ed483d25-d908-4248-b8c7-862dd35dc6d4@kernel.org>
-Date: Mon, 10 Aug 2026 10:49:28 +0200
+	b=SM/P1WV3C8zFESyVbhdVq5tad57H8sCNhjQuEBVfNmdL/9KekwKyq+sy2MoeTRTxi
+	 9gpyYY/u6fxNSmlnmF8Rya5V6q+sZLUqKRPSSFo+VlQsjpY7LPRgD0Z5uX8uZ+AXkn
+	 PM1I7vhmhQF1dIp38+N3NBbQYh5+e3YRGbQhpwBZDmO9ocZbaRM9pSR9VW11aawym0
+	 OJ4wRui0/fC3MBwTXbiS8O8O6upweVhhHwFpOz6/J65qL0+TSbE6L6+sm+A/19QBzU
+	 Oa3z4YInY9KHU97DeC3zmT2SxcsSNTZ7WQYDCIwyrQWzqPdl8VOydPzwsdy2LQJcYl
+	 rqpqifrHLwQ0w==
+Message-ID: <c42c8146-4616-46ba-b46f-85746149e99a@kernel.org>
+Date: Mon, 10 Aug 2026 10:50:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 07/41] KVM: guest_memfd: Stub in ability to enable
- in-place shared<=>private conversion
+Subject: Re: [PATCH v10 08/41] KVM: Consolidate private memory and guest_memfd
+ ifdeffery in kvm_host.h
 To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
  binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
  jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
@@ -102,7 +102,7 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
  linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
 References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-7-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-8-2fc18ee6d3ba@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -149,17 +149,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-7-2fc18ee6d3ba@google.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-8-2fc18ee6d3ba@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 34D4714000F
-X-Stat-Signature: yga554dauz5uoepa1r6ystidxfem51yt
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1786351790-530257
-X-HE-Meta: U2FsdGVkX19k0hJvSLKbE2GjK+eiVZOIbT7tjor8j3nrRiAq6I6L5QukeKSiF05o8+jEvTgdT6j4oYEGP0RvWgUu3tsLyO4bLcwsrlc5hkVPeE2Vs9isojw/48WH6Gfb82cWtg6PuYCPL09Ep5tTayAezsfVRes8T40yPUVp8IfjbcKrxrVxwCM7ZApmpdgCBnIxkP6b1DHTU+5EJtAmNuUVvEATKDiv7ZtLkZrPNPlqY1YWxEYfdAsH5VqfsIaK9jTSfTQJUUuybkgRlsZupKRW8xWH4Cd5/wld5ZcFqxHOOOALuB8kLyC3OPmBecS4JCCwOOSWtvTBI5VOK9g2vbqJ0SQa2OOTd9YWhUCHWf110z7WXyp2t1Xz6ioyR+1U1zJ7S1nGnkX/rd3NqJj9XBdfG76rw9kpeg5UJKctJA7hlreU53cbNmF10rmnuy4Ykj/p7GAzD4mTyB5T62rxlma+bv+9N1KrCmMVAxrDtNbUnEQoALI8tnUDwx/OrFawBVF08KIxriCQ9ChozwsAUKs43mxaUgclDgIMNU8zowDzlC+VmBI0yd6jJEL6qOWpiXKqtY5mAgrv1TMy0Kn1vkvB+3iLocQFo/Q0I11uJ0OFeGesPUZJEDN3+vkEYGs1ZhstsSMs6WY9mwu3Zw4jn5PS1qHVwkZvkd7GarsY9NWtP1Xz63VJqa42oyX6UjNf9noATtEELD7PJEb0+1UyoRP3XhvqiWAQHNz5T/Skx3eTSwWVWNGApZ9KYxc1fG8BpfjGyqPhQxaYMGn/qGP7mS3XafB2A/4RnQ44139m19j7aU/j90TiuH01PfKwlC6Q5Q4kzVlayXE5zZEjVluzJebxVXEDcvY8pKRgPFZRuwNOxUkyPjVPG7wWcargef3QmKOKHjSQ39ugEInuJ5djX5C0vnIpd0wP38az5ITvgFiNeg+dP78Vyb2qM8BlA/Du3qYj4KESRNlXDqmWNDJ
- bRIxBvue
- uv8UHIlT/MO0TpAN0bc6v/jeJcukH6DdSpIWex9tV6oetzBu+qs5Cgg0H6ag7womIlw67eKOmMZxaAZozHu7byUgzLv852Wa6Psx/E801Ie8eIvBct5Wgboljo8jnIbRmscHpw/kB5tUCWJj61b6L27DUP+6fJmJeLtbhgzLyr+hglyj84H7Ve1O/bsu/2O+rAEZDGE+xJKiLknLf/F9eSwF5TNMSE9A7P2JICqAVMjMENVdT/GynIiKn7vlGxEJiM0BVvRn6JNfF9FPHjBgsEpT6FQjVahqCmSyNXb4IRSsqHr2jS07v3MC/UhoC22SjUImP5JWqcbPZxfoj1FCZDmBPmtv+wy1v3vKd
+X-Stat-Signature: x5fnhxwehajqsg1t955pznqd7tipd4it
+X-Rspamd-Queue-Id: D2B45A0005
+X-HE-Tag: 1786351836-287748
+X-HE-Meta: U2FsdGVkX1/ZPXkHHehUBHims8SeJqhA/V+2SyAfUDgd+BNyADJsXddbC6XNlkzJnLwyqAKBZRWu0A/YL4/R6GRU8xgGo9JEkjNe96K47S2KzudO6HEczgpmK6BcxgtXdj0A3VVfMXj0oDZFtVKu3SHXJfoqC51ORwt2zu/byx5Zdgx+cpMs6G+XOmHkoxV7rXxIKRIw78yQgakXyEaoAgRG2bJjzXVa8zF8Ee0nJR8z8jXtSvej46sH+D3r11ABZESUSB+Gkw1vOJRZUIX2ikugPICeKRnyMZQJLItQKUqiWeM0YSE8OZ++Y6WzJXpXajDQg3AW1xfJgdD3jIf/X6pcyxm3BbfVAal7CNCrsrIkBgSIsAhNZ2NxE1zbcEcp8PJptvvTJFneaG/X7Y6UOjnMpq5mofrq+Ql2FUUoBb0Ys/1iB3v6fFKoontuFOD2znEhhFvLP81VowVN5sRtnlupvDKD7Ex2xjJxv3hR/kHt/E8/7VxDNwp0mFkOrjlFm4YJ1powkAY5Ze2M74T+i//aP/v0wgG9/AeEYuAxoOtE2tlp29tyvfppAdl/0HnPNgvu/t8mEiKo5Y/kba5OOO/cWTTmd9g6Udg/GnTW+o1/IavBn0W1iIpr6Hd8aTedJmDLj22lpKZUwoKbBLqOJVag8qedilFku+QS+2G7A1TkepNN5r+Jwi54xNMQIOvat478RKC1vIeh+y+oy6WyEEJIK63yZCzKv7qiLK4idKi1uYt3jSlvsTaUmAQKdRnH8NzkaqUs6dq56wdUGV88T+GhR0q1gZhml0ovtRoxvPPY7uQcHt1sHmx/C9n/ztkwK2fMTAlZC5H+gqCXFvQWrXpc635dODDzbfPg+usHpV/tb+1llYA0h1KEL+NcE6lqxWwLi1ylSOn64M7BVtpvRZape3UpPobpBozgyQuYiBpugima7rwPo5SoGYQlRScKXHLtRJSw90xv+9IpxdX
+ d/KCze0t
+ uiL3aIURiJnwDt4lcrpFh4xW/vwntrYJb6hzpgxkFBL58YTZyxSwNEs7re4D958Hs/6+7SIv2ptWEiwPrvGEZ5SOx4suQYjHto632o3q1mth7ulvcZtFjTJ/0lmA0SrdBxoT7XwtYC7u5qjyYBNHDHbrCnUD8mPisXkq99MZlj0ipnUQHXterY88UWh/4EPPV4NoWCeGX+XGm1lu+7GXMP5NYleH8ifo0jL9ay5YMF+cPF0y92OkQR5nytxFCdux42NEiSiSV8PSPtPfrkLkPyKGWv0BUJBCky9BFr/+YkeAah/ex+SutKRUbJqptCh1Jb95tPLWw1fCeGDv8oGByZxtLT9tzmy8+wPkybbhqHoIXnYwqNEH0rccerB0HkbGj2jMzHodgyaidNkfzr/fW4uRq1Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,62 +170,21 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 8/7/26 23:52, Ackerley Tng via B4 Relay wrote:
 > From: Sean Christopherson <seanjc@google.com>
 > 
-> Stub in global variable to enable in-place guest_memfd private<=>shared
-> memory conversion, which will eventually be exposed to userspace via a
-> module param, and wire up the __kvm_mem_is_private() static call to the
-> guest_memfd version when in-place conversion is enabled, i.e. when gmem is
-> the sole authority on private vs. shared memory.
+> Move the kvm_arch_has_private_mem() stub and a few guest_memfd function
+> definitions/declarations "down" in kvm_host.h to utilize existing #ifdefs,
+> and so that related code is clustered together.
 > 
-> Cc: Fuad Tabba <tabba@google.com>
-> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+> No functional change intended.
+> 
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Reviewed-by: Fuad Tabba <tabba@google.com>
+> Tested-by: Shivank Garg <shivankg@amd.com>
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 > ---
->  include/linux/kvm_host.h |  6 ++++++
->  virt/kvm/guest_memfd.c   | 26 ++++++++++++++++++++++++++
->  virt/kvm/kvm_main.c      | 12 +++++++++++-
->  3 files changed, 43 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 65fbce46b63f4..9477ecebbbced 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -2580,6 +2580,8 @@ static inline bool kvm_vm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->  #endif  /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
->  
->  #ifdef kvm_arch_has_private_mem
-> +extern bool gmem_in_place_conversion;
 
-Is there a "supports/has/enable" in there? And should we call it "kvm_gmem" for
-completeness?
-
-
-> +
->  typedef bool (kvm_mem_is_private_t)(struct kvm *kvm, gfn_t gfn);
->  DECLARE_STATIC_CALL(__kvm_mem_is_private, kvm_mem_is_private_t);
->  
-> @@ -2588,6 +2590,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->  	return static_call(__kvm_mem_is_private)(kvm, gfn);
->  }
->  #else
-> +#define gmem_in_place_conversion false
-> +
->  static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->  {
->  	return false;
-> @@ -2595,6 +2599,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->  #endif /* kvm_arch_has_private_mem */
->  
->  #ifdef CONFIG_KVM_GUEST_MEMFD
-> +bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn);
-
-As mentioned in v9, the name is confusing.
-
-	kvm_gmem_mem_is_private
-
-?
-
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
