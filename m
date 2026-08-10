@@ -4,125 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FAEEC5AD7B
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 18:57:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0D0CC5AD7B
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 19:04:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 201626B0095; Mon, 10 Aug 2026 14:57:48 -0400 (EDT)
+	id A22AF6B007B; Mon, 10 Aug 2026 15:04:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D8D26B0096; Mon, 10 Aug 2026 14:57:48 -0400 (EDT)
+	id 9D36A6B008A; Mon, 10 Aug 2026 15:04:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EEAC6B0098; Mon, 10 Aug 2026 14:57:48 -0400 (EDT)
+	id 8C1C96B008C; Mon, 10 Aug 2026 15:04:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C86826B0095
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:57:47 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 532D112028F
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 18:57:47 +0000 (UTC)
-X-FDA: 85086268974.23.CDEF42E
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 72E2AA0003
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 18:57:45 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=MkL8Cr0b;
-	spf=pass (imf15.hostedemail.com: domain of cmllamas@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=cmllamas@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 605B96B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 15:04:41 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F39A780234
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 19:04:40 +0000 (UTC)
+X-FDA: 85086286320.27.CB1B2D4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 09B72C0007
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 19:04:38 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ThqtMLTh;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786388265;
+	s=arc-20220608; t=1786388679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=srMva8ELPlGiijDY3h4l4HTa6KEy7A4N7csv16dIv1c=;
-	b=VkPB1s1oHP7j+x6L7U6izoxqz+ZxxeflzNFL7p1byYiwUaxxht1RsRJwrkAb5VxUfjbNj3
-	F3D6M46UZ9qAQ8onkU2d6kpE0nZ9fDOu8/5hhXRQyvvK55h+OdgSl1gNK5axXjEvlNlxKp
-	noYlQt4K747k0XW1UalkcCxxGzU98JI=
+	bh=wCWAj/IB9/Y4w78qXxms7OwhGGfziyuHvO5KgFUv6B8=;
+	b=Vks+ht4DvkX323OJ2nuH6K3pnT5tpT/sqUNjwSuRtTcgIOgTUelTa2aVKwhUm5gIM+aHN8
+	wC+rSJwKWIPAurZOIPz7L6g/OdI2S/PYWzZpwZNqmBrhQT38bB8mxNtAsGG4cQkPCkU2wR
+	JKHXFXJtu7BROrgCE1E6S71W9EAZDB8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786388265;
-	b=5QzHGMoFe9vq50CmK20VqpVmdGYkzoM2K0ACPME/vYHu8qZW6LrKZy2AIZUFJQxY6HkxkO
-	GHOER+DUSpFKoiJxJXdCfGwTyConwgMwTypAIpqAWI6AUFQl0NslEzDb1YJt1Yqd1f+8gu
-	Q4NPdBfK5kT9gNEJ6yL7BbYgfkwJ8Tk=
+	t=1786388679;
+	b=zjlf4noL5ahuOE7NBMhzCio3PPY0PT+njlBAf2iTR6cabJqYcHP9PsomWP/LgYLEmciBxl
+	76MV8bOl+mtYyBbcmylDXZZCN8S2TfwY73UVIeD7beN9+qVyd1TV15ShX3P3eeAXyQ8xwn
+	hsbvPqci0Ci0kLcLjUp6sHCuRjRxWBM=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=MkL8Cr0b;
-	spf=pass (imf15.hostedemail.com: domain of cmllamas@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=cmllamas@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2cacef7d299so19875ad.1
-        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 11:57:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786388264; x=1786993064; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=srMva8ELPlGiijDY3h4l4HTa6KEy7A4N7csv16dIv1c=;
-        b=MkL8Cr0b2v97SCAzYTwGU7fuDc+m4jCWvg4m5h+kZhYCQJj0zPKp7AlwaODZHpqHt0
-         Wso6LmQEFEGsbbjjTwnlLkT+s0+WSML8ah+cf60dJjpOYFyuIVBxNA6A5ERm5mQoRbAi
-         RgsDRgY/FUZJH5JunyQToCG03SgeMtVVyD/aFW86udHP0E3meSh3prmtSu76vC6pmVvf
-         EDMuLCyumNHxYYN9ZpLvX6g/HTv8pogGBd8haMFJiIpexbDhljf0aYGZE2lwPGZvXNcf
-         N5oVsdIYnOBfvMGKdrMMB261PZAXS9resq7jfZRyH9HJ9zvHwabGUcCB+FwrFTxoHf0r
-         Dj/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786388264; x=1786993064;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=srMva8ELPlGiijDY3h4l4HTa6KEy7A4N7csv16dIv1c=;
-        b=MoBGAbFr+xTke896tFTb78oU4iqo48EEcFwnfqr0LBmt+kDhsjJXB3RrC2bDnRqB+a
-         cMQyGwnqHdUZpUfCQ4pMxEKRKpSIlBusHsLQ8EaQV6sm91XsYELMqT8roHpaYkPNv//5
-         7rWInNZKm4HKnWwYXHshxrFT1qv5UYcB8Rxg3TMZlnPc7wF64MA4tY0J1hQI9Oik3mKb
-         vXz8GFkJsVeuCpAeZ2P3TUFDVDniCrvmTCbt1IoSggtU8FJleM0F0wh+NgyO6Ass8fJx
-         LAh5tmBO3QpxtQPor5vIVA6QzYwsP8YB/Vfe1Yy8DnTHDqqUmFSpnJIYM4oFG0Ou+3s1
-         hNCQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoPkjgYZSCEs9c8E3ggvDmAyIFp6tw18+4g49h/83ITg7FddZc5HKr43a9sCMwFZQr1Yqya8AgS0g==@kvack.org
-X-Gm-Message-State: AOJu0YzK4s+9bSOUPMVmaJcULnR8FnLBVgik3VEk9o5acySzbZSGrcbe
-	VDIOzsffd06dADLXBE9MGM2Ta86KJPAjzje6gBzOV9WvXa+2THZCDdIb8EC9jeYftA==
-X-Gm-Gg: AR+sD12S939rf+SnWxeAm08XZ7JypZsCGtagS+FBiQhNj6WNroRY8h/wYVqbtA53672
-	H1kNHXURCBPqzCSH191iwtNvfJ7wNwUc6TYLSc4igUP7Z4b1Od6DAfs8j71M4ipbZ/aYd0MW64d
-	s7X+hHF2kzL+WanLayeUoOJr2ZyaExMKnJwrWbBBczQiKlE2E/CHL8SXA05sJNEXp2FIRCV7O6F
-	A2+QpCiKr3Seap8B3HEbyN5tOnvgj68LpMrh6QLzNiGDPHWbKrEegYNDL07yyUUueKluh0pr/B3
-	vp2b0fNb3n9DJessI7VSMmYVqj/Rc3CmcUHvV/jT6/n+pXDK2JrtrPIl2z+46FuHgpqLfgv45tm
-	ilTi6YzgG9Kw5pLgc/HxnjfAMiim/k2IbFKCcGubX2Huaj7NISq5cSaNCwJhjdyaOeg68n+6vEQ
-	txrnqfF4pQjuQFEnq7NOoT5b/GODoSLlsTyGmpFnaeA6WvUtR0ShYcCqV9LdOzzTgpE3E4srRiU
-	htkQ6Tf98hp1wWYOccWnaRQNT0Q6+2UDUXKS1pTpEx3xLnL7GchkBIPPCbBSUgmoScm6Ewm6+kp
-	GhZ0tzH08Vl1lERiNA==
-X-Received: by 2002:a17:902:d081:b0:2d1:1d3d:97c3 with SMTP id d9443c01a7336-2d31088e36bmr1036735ad.13.1786388263842;
-        Mon, 10 Aug 2026 11:57:43 -0700 (PDT)
-Received: from google.com (193.67.125.34.bc.googleusercontent.com. [34.125.67.193])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-392d4050827sm647419a91.2.2026.08.10.11.57.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 11:57:43 -0700 (PDT)
-Date: Mon, 10 Aug 2026 18:57:38 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com,
-	Liam.Howlett@oracle.com, ljs@kernel.org, david@kernel.org,
-	willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org,
-	jannh@google.com, aliceryhl@google.com, arve@android.com,
-	christian@brauner.io, tkjos@android.com, dsahern@kernel.org,
-	davem@davemloft.net, gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v4 2/5] binder: Make shrinker rely solely on per-VMA lock
-Message-ID: <anofIoz-0V1imXKk@google.com>
-References: <20260806200548.3124802-1-surenb@google.com>
- <20260806200548.3124802-3-surenb@google.com>
- <anoZL76y3WGXMArB@google.com>
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ThqtMLTh;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id ECB884058C;
+	Mon, 10 Aug 2026 19:04:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D40D1F000E9;
+	Mon, 10 Aug 2026 19:04:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786388677;
+	bh=wCWAj/IB9/Y4w78qXxms7OwhGGfziyuHvO5KgFUv6B8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ThqtMLThm+JlEs0PWr88/r5aPvTGagXV2EKv/oViLQAObOt0udqTMeol0dQhLMROo
+	 GE83nTTxQt0GVcmHG5HC74dRHD4A5TiCYFZmZNv17w3adt7NyIawV0XM+5MGAcGTnb
+	 mnRE7CnuNoNAHvLnGU5Csrytb+LBKXVb05iAHSP3c/O+X9k7uTElfgKFTJJRD40X3n
+	 OvIL1WOKHEh3XArTCbuWhgK5ee4sKuBXqTQewUFv0XKtXk57ADjX1sVDcqE7AgX7Yo
+	 9uE2mXlgG6OMBp+Arc29zsNHLf1ie3dl9Zn+NFh2jXXLvUNq8HxKaNCMOLYgr4ET5/
+	 Jvt+utrbeR0iw==
+Message-ID: <4b90323b-27a6-42c9-a11f-b57a5c097b62@kernel.org>
+Date: Mon, 10 Aug 2026 21:04:29 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <anoZL76y3WGXMArB@google.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 72E2AA0003
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/6] mm: export vmf_insert_pfn_prot_mkwrite(), change
+ variants to inline
+To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org
+Cc: Alex Williamson <alex@shazbot.org>,
+ bcm-kernel-feedback-list@broadcom.com,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Christian Koenig <christian.koenig@amd.com>,
+ dri-devel@lists.freedesktop.org, Fei Li <fei1.li@intel.com>,
+ Huang Rui <ray.huang@amd.com>, linux-mm@kvack.org,
+ linux-s390@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
+ Peter Xu <peterx@redhat.com>, Sergio Lopez <slp@redhat.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
+References: <20260804120529.1730187-1-pbonzini@redhat.com>
+ <20260804120529.1730187-2-pbonzini@redhat.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20260804120529.1730187-2-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 09B72C0007
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: k1cgpfmh1fypeddr8n5mgs7oipuobk15
-X-HE-Tag: 1786388265-485262
-X-HE-Meta: U2FsdGVkX1//KesEP1S4xydlNoGT+ILzb8KMB8b+sL6Uy4io9v0mlHTvz+gLx02DhKQ0p53Y4GwuIE5S8e7tTbOMMi9MaqFuJ+8VzDhB8dFlwep5+PwyQvvgJCHMGGrIOJAYI1SpaDQMVALvqRUHzOXouCfKf655EC2zZB3QF2eS73YN2MLicR05GTrdkjQNXBlASNTRAiJQ9m8GRrvg9qvI1jf1VsLsFb8j0b2LXKjWXQiTNCeeOXnB7ohc6vZWUAFskU3d4ihposN3YlsW1c7rfY4TKqZ2dUhGaJ43AvmQ6l6YTDSNfm3N0p+/J646MqQ/4QkVxMp++W3Tz9qRGtSOiLdzem+5SXOo/WEFM4Q7uBvGDqPwEp4moz4jZsrqGG+yJvwc4n09MPK31nF31ZYDPEZTfiKPqVP/pE4UCFJZ7/eofBi0meNC3lv/LChjXOLYb/YRgpMhPiVKR07+GwpvC/RZqpTlOb1mgdinEnkNtmIGN6Jpuhazipy+hbZYRkxkTXW44nAWq/PMmC0mU2ugSGvMd/9NvoQMGOtUVkWAYBC2Gt+XLL1Ut47xhAae0httjmnUcCFM6taMmz+O9OtkfGLEafpGWgZFg/XXnhKD+c0eV3V7EeQ1eV92dmvWCaeCR58wyBl2vPptHwJl1/72T59pMdh/7m6FeZZoHELqKF8lB/OrAT+bOKRc9HogbkkQRMhBRDMZ8+nHmAQlpKojUrWWwp2h4d5wKcQ/VOQ0DDvlG89aquGQ5zsaLjN+04QROrs1TAV1nu+t0ZurGYK7FoTJKNIRb0HEpiQt+FKt7rIhpTEArlYk/JY6FKRjDVb0KWuvh2eCpUY1weddfAlfnXD+rFN8UKjc53a8vu//aO6alTKpR1YvqL5Ptv3cE9ie4epWtJwM9bLvpDhiFNuTjG9ZsDzQWlNUnxIr7P9Mj7JcJZIn0dakIw6LBnGQhu/g4WQ3i2EpmkB3YGm
- xpI95D8v
- EzrAsg0h68oHgLAzs4/jMcaYVoDhAk9EkgIk4pdDkQq4t/ouiM/KtbE4u9SJpb+6lZ9It2WS+S11eX9eeuOswWu1rHntnvml/gID9bnrsu7gMgk+r4CQ5sYwX2dJJdh1k6zIpG64K+OvUZm4NXl69cMINeyDYB0c2EYsLLIwJIWO4y2DLN3rYC5f67k43fB4aFSXzzvtMpq/7QFmeuv3qUnD63iRPU1ak+/dwjHhXg6UygvsVSs34tVyLQJgK/Rl9TTEN/WOyGGIcFlcIWjAd1CGiDFwUndT3ee4Y56KnJUgqy56bJTY0ojMFkEAELHaljidGT7U6JN8DQPLgyTvFLZUy0KtnjC9M53CQtcIgSokSOauMHD5FwXsfhIjqLKjiS8vm86AF2i26IDwjEQ5l2c8OIKrG0jZe9ea9FHIwDpefctrvKE3/BC7HzIUZKD94axshF7ottt+gKWtwKGGpG2KjWYoMNx/WvP3lqhl4iGOyGPyqvN5DF7D1zaN13W2sMvjQK5L85ubZkkzq/H3zQxSGZep/Iiwfj5bote09sZ3UTer4lSwxZGa97n1++3c+kXzfB6z0tZoO8F/XFFLYTz4DmE1kFerJlFkxrMFUQkanBLbmXXsV+rxwO24dTiccTW0TXuK14fw6SkI2H5n28iuL2KhOeB/93Zq2pZaj20FJlsMI9s6kxpU9GGWN4kWU+ZoXkyvZUrYXFe88tKNtANLwMi3OHUNXZRNYW2fEKgyG3/G/w5m1ucSiH2PzZ99Fpr0ar6hAKAcN3qrlEvZM9MWDNQ==
+X-Stat-Signature: rz887x6u6faom13tw3uap8ouf7q1geuj
+X-HE-Tag: 1786388678-975358
+X-HE-Meta: U2FsdGVkX1+8BN1Slw4PHeO9/YClKHKEth0MjyIqkKnnsJx6hvfTItKE3czTuE/EHVQfOhDYvRLB7w3KiksO515orGPjvGUPY/UrdTxJ8t4FKLHaLfLpEE9vBQ1S5pGhnudVUndlaIlbn2W3c+iazAiUCo984j+j76lMwdmcZurteKdkjMJd6Z/wMo0PSylPU2QmFhIk85JaKkeKYdPvPUPlKup4EpAFMeTIyhyD4I5VeMdanP3W9fdJoyjb/2UjLs1njvjGPb/Vgqojd/yILoJUP55EiN4b80j2j8cKaa6t1PGzaNhQe0EoRiNvO+tdX8pOBo9u9NywE7A/RnE8iot+W7ojjndI1qQDMs4b0GRh9tGOsVhuz94MT+eVK/sI5n9eYG9nlR7/jgWRKUBvTiAptCB8lfwZh4g6hKC2gC7zZf4Pj2d3f8+FKzxh+kQ47DTjX6GxZh6UVx8InKS8gIwfivI+KTT0S6H3afRy26HeMs1Anorj95ZFXiNozoP+XQv+53HTXgFoRJcWRCh3TrcRXgkyJ6VW2uz4dWB4jXRBVlTZM1tLYijcFOIq6tIpm5RqMD/z1obCFNljSuBQ5QyKAbntNsFhdArOufxd2xXA+EKiuH8UegzDZQ7D33gzs9vrF/ipXuIpWmI8C41QCUfn6blOuoUbDMmr5N1ejHjwcZh7bcIMn4smYwf8yqj69mLVEjinCFC/Y3xj8+RABTs+1pXnSzTN8XkUrUR42NEIXAwjuMRepM7igMiCVly02plcLwAkB7r9TsaGyenZDOHyWliY3AM7j9bPCZtWg8TcdxIxZpCPigzkwMAem8VGpC38xmzE4lKj7UewlCczkPZRqvm07OvdqJOrJXvk4VhUyt6TjWaab+2xyZXXmF9VbzeAAoewB6EbR1ml3AIbCVjfa9QXQyFTXDPCHoQFokL3S3fy19S21DnEBvAg1AXSpLxb36cABoQsldaP5iu
+ 1If3Pfu7
+ 2MiygnF3tNA3WLHLuE9RZeue/mZkxaiytn8pBqe3iGwaw4ogGB9BRmHf7fHPIP/H0LhjwCP8G03Bw+BhTRMBUjKbVhhATOshRsQEphrnC6KxmMxQ8E7ZggjOfG12VqfLaAiob30P8Tq6cdrr/naEZpPRQqV55S9Hh2pDLa4VtYOD8Bxs2D/4RTJ/BGj3TkD3k+3jHc6Z2qq9XT18oe6si7/jwpCfeiWXqtdjs0CjcK+MwdA6xoRYqum6BFd8z63V+zuPRoPwEwBw6KUlRFM0OnOPBUtMMbehoeL9Y3orI147DU8f/poT+oGsbSkZyx0bFQT1ZbJlxWjaQxbURm4wlGPPMm+3NCOI6zTUs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,126 +148,169 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 10, 2026 at 06:32:15PM +0000, Carlos Llamas wrote:
-> On Thu, Aug 06, 2026 at 01:05:45PM -0700, Suren Baghdasaryan wrote:
-> > From: Dave Hansen <dave.hansen@linux.intel.com>
-> > 
-> > tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
-> > it and mmap_read_trylock().
-> > 
-> > Long Version:
-> > 
-> > == Background ==
-> > 
-> > Historically, binder used an mmap_read_trylock() in its shrinker code.
-> > This ensures that reclaim is not blocked on an mmap_lock. Commit
-> > 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
-> > support for the per-VMA lock, but left mmap_read_trylock() as a
-> > fallback.
-> > 
-> > This was presumably because the per-VMA locking can fail for several
-> > reasons and most (all?) lock_vma_under_rcu() callers have a fallback
-> > to mmap_read_trylock().
-> > 
-> > == Problem ==
-> > 
-> > The fallback is not worth the complexity here. lock_vma_under_rcu() is
-> > essentially already a non-blocking trylock. The main reason it fails
-> > is also the reason mmap_read_trylock() fails: something is holding
-> > mmap_write_lock().
-> > 
-> > The only remedy for a collision with mmap_write_lock() is to wait,
-> > which this code can not do. So the "fallback" after
-> > lock_vma_under_rcu() failure is not really a fallback: it is really
-> > likely to just be retrying in vain. That retry in an of itself isn't
-> > horrible. But it adds complexity.
-> > 
-> > == Solution ==
-> > 
-> > Now that per-VMA locks are universally available, lock_vma_under_rcu()
-> > will not persistently fail. Rely on it alone and simplify the code.
-> > The removal of the fallback does not affect NOMMU case because binder
-> > driver depends on CONFIG_MMU.
-> > 
-> > Full disclosure: I originally tried to do this with
-> > lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
-> > trylock semantics. Claude caught this in a review and suggested the
-> > approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
-> > I guess.
-> > 
-> > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> > Cc: Vlastimil Babka <vbabka@kernel.org>
-> > Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> > Cc: linux-mm@kvack.org
-> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Cc: Arve Hjønnevåg <arve@android.com>
-> > Cc: Todd Kjos <tkjos@android.com>
-> > Cc: Christian Brauner <christian@brauner.io>
-> > Cc: Carlos Llamas <cmllamas@google.com>
-> > Cc: Alice Ryhl <aliceryhl@google.com>
-> > Cc: "David S. Miller" <davem@davemloft.net>
-> > Cc: David Ahern <dsahern@kernel.org>
-> > Cc: netdev@vger.kernel.org
-> > ---
+On 8/4/26 14:05, Paolo Bonzini wrote:
+> Right now, users of .pfn_mkwrite() have no way to create a PTE
+> that has gone through maybe_mkwrite().  Because vma_set_page_prot()
+> will have cleared the writable PTE bit, users of fixup_user_fault()
+> will see a read-only PTE and have no clue that the page needs
+> a *second* fault to reach its final status.
+> 
+> Handling this in fixup_user_fault() is problematic: the information
+> about the presence of *_mkwrite is only recorded in vma->vm_page_prot,
+> which is an opaque pgprot_t, therefore only follow_pfnmap_start()
+> knows how to retrieve it.
+> 
+> There are actually some preexisting functions that suggest how this
+> is supposed to be handled, namely vmf_insert_page_mkwrite() and
+> vmf_insert_pfn_pmd().  Fixing the drivers requires similar variants
+> of vm_insert_pfn(), namely vmf_insert_pfn_mkwrite() for the common
+> case where vma->vm_page_prot is okay, and vmf_insert_pfn_prot_mkwrite()
+> when really all parameters are needed.  This makes it possible
+> to fix drivers that use .pfn_mkwrite together with
+> vmf_insert_pfn() and vmf_insert_pfn_prot().
+> 
+> Since vmf_insert_pfn_prot_mkwrite() is the most general variant
+> and all the others are just special cases, turn them into inline
+> functions in the header.
+> 
+> Fixes: 28e3918179aa ("drm/gem-shmem: Track folio accessed/dirty status in mmap")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  include/linux/mm.h | 81 +++++++++++++++++++++++++++++++++++++++++---
+>  mm/huge_memory.c   |  2 +-
+>  mm/memory.c        | 84 ++++++++++++++++++++--------------------------
+>  3 files changed, 114 insertions(+), 53 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 485df9c2dbdd..01184a4bdd6f 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -4544,16 +4544,89 @@ int vm_map_pages_zero(struct vm_area_struct *vma, struct page **pages,
+>  				unsigned long num);
+>  vm_fault_t vmf_insert_page_mkwrite(struct vm_fault *vmf, struct page *page,
+>  			bool write);
+> -vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma, unsigned long addr,
+> -			unsigned long pfn);
+> -vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
+> -			unsigned long pfn, pgprot_t pgprot);
+> +vm_fault_t vmf_insert_pfn_prot_mkwrite(struct vm_area_struct *vma, unsigned long addr,
+> +			unsigned long pfn, pgprot_t pgprot, bool mkwrite);
+>  vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
+>  			unsigned long pfn);
+>  vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
+>  		unsigned long addr, unsigned long pfn);
+>  int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long len);
+>  
 
-FWIW, I think we should just simply do the following:
+To not inflate mm.h too much, can we just try removing all details that can also
+be had in vmf_insert_pfn_prot_mkwrite() doc, and refer to that?
 
----
-diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
-index e4488ad86a65..b0b618c1d1da 100644
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -1142,7 +1142,6 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
- 	struct vm_area_struct *vma;
- 	struct page *page_to_free;
- 	unsigned long page_addr;
--	int mm_locked = 0;
- 	size_t index;
- 
- 	if (!mmget_not_zero(mm))
-@@ -1153,13 +1152,8 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
- 
- 	/* attempt per-vma lock first */
- 	vma = lock_vma_under_rcu(mm, page_addr);
--	if (!vma) {
--		/* fall back to mmap_lock */
--		if (!mmap_read_trylock(mm))
--			goto err_mmap_read_lock_failed;
--		mm_locked = 1;
--		vma = vma_lookup(mm, page_addr);
--	}
-+	if (!vma)
-+		goto err_vma_lock_failed;
- 
- 	if (!mutex_trylock(&alloc->mutex))
- 		goto err_get_alloc_mutex_failed;
-@@ -1191,10 +1185,7 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
- 	}
- 
- 	mutex_unlock(&alloc->mutex);
--	if (mm_locked)
--		mmap_read_unlock(mm);
--	else
--		vma_end_read(vma);
-+	vma_end_read(vma);
- 	mmput_async(mm);
- 	binder_free_page(page_to_free);
- 
-@@ -1203,11 +1194,8 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
- err_invalid_vma:
- 	mutex_unlock(&alloc->mutex);
- err_get_alloc_mutex_failed:
--	if (mm_locked)
--		mmap_read_unlock(mm);
--	else
--		vma_end_read(vma);
--err_mmap_read_lock_failed:
-+	vma_end_read(vma);
-+err_vma_lock_failed:
- 	mmput_async(mm);
- err_mmget:
- 	return LRU_SKIP;
+> +
+> +/**
+> + * vmf_insert_pfn_prot - insert single pfn into user vma with specified pgprot
+> + * @vma: user vma to map to
+> + * @addr: target user address of this page
+> + * @pfn: source kernel pfn
+> + * @pgprot: pgprot flags for the inserted page
+> + *
+> + * This is exactly like vmf_insert_pfn(), except that it allows drivers
+> + * to override pgprot on a per-page basis.  For more information,
+> + * see vmf_insert_pfn_prot_mkwrite().
+
+For example, I would keep this statement here for all 3 variants.
+
+> + *
+> + * This only makes sense for IO mappings, and it makes no sense for
+> + * COW mappings.  In general, using multiple vmas is preferable;
+> + * vmf_insert_pfn_prot should only be used if using multiple VMAs is
+> + * impractical.
+
+Can we just move that for vmf_insert_pfn_prot_mkwrite() and document it when
+pgprot != vma->vm_page_prot ?
+
+> + *
+> + * Context: Process context.  May allocate using %GFP_KERNEL.
+> + * Return: vm_fault_t value.
+> + */
+> +static inline vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma,
+> +			unsigned long addr, unsigned long pfn, pgprot_t pgprot)
+> +{
+> +	return vmf_insert_pfn_prot_mkwrite(vma, addr, pfn, pgprot, false);
+> +}
+> +
+> +/**
+> + * vmf_insert_pfn_mkwrite - insert single pfn into user vma, possibly writable
+> + * @vma: user vma to map to
+> + * @addr: target user address of this page
+> + * @pfn: source kernel pfn
+> + * @write: whether the PTE should be installed writable
+> + *
+> + * Like vmf_insert_pfn(), except that @write allows installing a writable
+> + * PTE even when @vma is under write notification.  For more information,
+> + * see vmf_insert_pfn_prot_mkwrite().
+> + *
+> + * Note that neither .pfn_mkwrite() nor .page_mkwrite() is invoked, so the
+> + * caller must itself do whatever they would have done if @write is true.
+
+Similarly move that to vmf_insert_pfn_prot_mkwrite().
+
+> + *
+> + * Context: Process context.  May allocate using %GFP_KERNEL.
+> + * Return: vm_fault_t value.
+> + */
+> +static inline vm_fault_t vmf_insert_pfn_mkwrite(struct vm_area_struct *vma,
+> +			unsigned long addr, unsigned long pfn, bool write)
+> +{
+> +	return vmf_insert_pfn_prot_mkwrite(vma, addr, pfn, vma->vm_page_prot, write);
+> +}
+> +
+> +/**
+> + * vmf_insert_pfn - insert single pfn into user vma
+> + * @vma: user vma to map to
+> + * @addr: target user address of this page
+> + * @pfn: source kernel pfn
+> + *
+> + * Similar to vm_insert_page, this allows drivers to insert individual pages
+> + * they've allocated into a user vma. Same comments apply.
+
+I know that you are moving this doc, but some things stick out:
+
+Wouldn't it be better to also refer to vmf_insert_pfn() instead, like all the
+other variants?
+
+> + *
+> + * This function should only be called from a vm_ops->fault handler, and
+> + * in that case the handler should return the result of this function.
+
+Isn't this the same for the other ones as well?
+
+> + *
+> + * vma cannot be a COW mapping.
+
+Isn't this the same for all of them?
+
+> + *
+> + * As this is called only for pages that do not currently exist, we
+> + * do not need to flush old virtual caches or the TLB.
+
+Isn't this an implementation detail?
+
+> + *
+> + * Context: Process context.  May allocate using %GFP_KERNEL.
+> + * Return: vm_fault_t value.
+> + */
+> +static inline vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma,
+> +			unsigned long addr, unsigned long pfn)
+> +{
+> +	return vmf_insert_pfn_mkwrite(vma, addr, pfn, false);
+> +}
+> +
+
+Apart from that LGTM.
+
+-- 
+Cheers,
+
+David
 
