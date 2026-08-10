@@ -4,95 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E86B5C5B56A
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 17:20:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09043C5AD7B
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 17:21:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBB846B007B; Mon, 10 Aug 2026 13:20:40 -0400 (EDT)
+	id E6F066B008A; Mon, 10 Aug 2026 13:21:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6C9F6B008A; Mon, 10 Aug 2026 13:20:40 -0400 (EDT)
+	id DD1D76B008C; Mon, 10 Aug 2026 13:21:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D82486B008C; Mon, 10 Aug 2026 13:20:40 -0400 (EDT)
+	id CC11D6B0092; Mon, 10 Aug 2026 13:21:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B652B6B007B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 13:20:40 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 47F29A1B1C
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:20:40 +0000 (UTC)
-X-FDA: 85086024240.06.0C26BB6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1F6B514000C
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:20:37 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yHDWZ4xX;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id AD5C46B008A
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 13:21:23 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3FBE7801BE
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:21:23 +0000 (UTC)
+X-FDA: 85086026046.30.639DC11
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6E39740006
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:21:18 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="w4/MCNU5";
+	spf=none (imf17.hostedemail.com: domain of BATV+e92feb25c851dffaa619+8387+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e92feb25c851dffaa619+8387+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786382438;
+	s=arc-20220608; t=1786382480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fWx0toGzjy2ZbdJGqHeiMNuTjd9QpxmERukNiIPTFMA=;
-	b=heigAKeyVZAzWcyYdtZDtfjUQCtquNEHlFj+WGLCK/dzDqHjqirxDuTwedkYKG4y8/2mDV
-	q5veV8u3XfdJd1YTbSk/cm9t1Gx7E6Isfv2WVvuLlBUHwRT3wZIL2Re1qnqbYBxKDnPXBq
-	UJIUwokPeSZYvzzx6+HXJuxTgW55xEI=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yHDWZ4xX;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	bh=cy7OYoW3PJUmnKukrwcZFQ3hLQc7isy+xcCx8NMp1l8=;
+	b=XS1fR0gOiOfJ+//eUTVCEd3F3O5SDMNg0pNeo8QFnFY+I0s3mnvIwGihODnLo1D2RzRmnO
+	frD9zxpGmPlN70vOWBYvQDgbw0YW+BEuAbCUzgn6GUOaRhKHbauXb1ebtkQYoRD4ntCrD7
+	AmQGLMUGYTtkeD8LNVfJKGtzKmjsL/k=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786382438;
-	b=alr7BFT6Hv+GyJm18p+0eya6fie485kPEp33lmr4vhoap8QUy8XbNByYnQKjuUWp/n/9+U
-	dDQa48PbfOhSd/EaqS4hR5+3ev9fscKpx0s+Fk7Z8ra+R97agHKdaLBUW98NRkZnkv/+qR
-	mbA+5OzqHzvTVPxzx9oa471v5oUuPS0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 77B7743313;
-	Mon, 10 Aug 2026 17:20:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CCAC1F000E9;
-	Mon, 10 Aug 2026 17:20:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1786382436;
-	bh=fWx0toGzjy2ZbdJGqHeiMNuTjd9QpxmERukNiIPTFMA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=yHDWZ4xXBKoArGvbqzbMAA/tNo0o9COtH41cg8cn6woKudtLFzs/P+97G9pzHxCQ7
-	 B2WM790UiMC9K5I/iXFP83/r0QS3unyXVPY/+gV1pQv2mvRD+2Y1ReTawhoG/hMpOF
-	 +4a7T6zYWszbe4BK5D2PgAWcVEmP/PwXTwYN3Uho=
-Date: Mon, 10 Aug 2026 10:20:34 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng
- Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
- <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, Youngjun Park
- <youngjun.park@lge.com>, David Hildenbrand <david@kernel.org>, Lorenzo
- Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil
- Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn
- <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Hugh Dickins
- <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Peter Xu
- <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed
- <yosry@kernel.org>, Chengming Zhou <chengming.zhou@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 0/3] mm, swap: don't spin or flood the console on a bad
- swap entry
-Message-Id: <20260810102034.547699380bbe7aeb232344a9@linux-foundation.org>
-In-Reply-To: <20260810-swap-v1-0-375ef0767206@debian.org>
-References: <20260810-swap-v1-0-375ef0767206@debian.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	t=1786382480;
+	b=qR0/pM62OUURZdhPY6rY2tFQF+3fVsCsAorhvLppuat6iXQCd7UDcJIltggvl/eTNOUwgP
+	QexP9uJpr4ilOYwPleUhArMvX/ry5P8ITnOUIweNgVL7RZMAItnFTjB/+Cxv0JdUcvYl0W
+	yqyRHa5xNY3P3Lhg6tgsKMQizVlUvoU=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="w4/MCNU5";
+	spf=none (imf17.hostedemail.com: domain of BATV+e92feb25c851dffaa619+8387+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e92feb25c851dffaa619+8387+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=cy7OYoW3PJUmnKukrwcZFQ3hLQc7isy+xcCx8NMp1l8=; b=w4/MCNU5K681S4PdttIQArlltd
+	aplhwsp6XCU4p2gSmBzQF63vxrK4SGZ9xboYcrehjzg4Zr3lNxMHnAh0pJ0dg4kHYPhyd2NSBYLJD
+	lZ8DB176sohHR4/o2j152C12lB5eVjKKA8KsNzmqLL2eOpSYJ36jGbd2dNJB9CE5puTWOt1qH+lc9
+	YarURFLhH+UEkLQ/d1iU53sByUUn4us6p3VCMUzCh6/mtbn9U6LFvLJpg/+TJu9+BmsC04586zYRK
+	WOakoINSy5YfcXOZ/OZP6tDomANg7HvVvbMmQNq0UDAaig+srKF/YjsKaSG2KN9JJbYYYdGZXa4XG
+	JMbvD+IQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wtTgZ-0000000CVLf-1MO6;
+	Mon, 10 Aug 2026 17:21:15 +0000
+Date: Mon, 10 Aug 2026 10:21:15 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>, linux-block@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Jens Axboe <axboe@kernel.dk>, Vlastimil Babka <vbabka@kernel.org>,
+	Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: [PATCH 2/3] mm: support fallible mempool_alloc_bulk()
+Message-ID: <anoIiy0V-m-05yZc@infradead.org>
+References: <20260806221031.79050-1-ebiggers@kernel.org>
+ <20260806221031.79050-3-ebiggers@kernel.org>
+ <ann1i5VjTmgChjs7@infradead.org>
+ <20260810161404.GA1930@sol>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260810161404.GA1930@sol>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6E39740006
+X-Stat-Signature: sfpujemo4ietqdfe9iwoahuretp7uuwa
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: fa35jo1raozfoncr5pzx448cgxhj8quq
-X-Rspamd-Queue-Id: 1F6B514000C
-X-HE-Tag: 1786382437-912555
-X-HE-Meta: U2FsdGVkX19r5zCy4ZEezzO6KXWWN99dwB5iojc1t2R0OCI44vvt1nLfD1NJLrMi7Fm5bU2z4UDn1759hjYQmQ4v8vsGFHXaMMrxNoOeBdpvOMCDOkJNoF/Z+Uztj2JiFVgFLE0l73P9MVDbJCybwvwYXns84OLemeOJwKAtKsHaDnIgApcR6ENCGXjgLZsRsQmd/q6UZP31ZCXMU0pHg0f6ltBkg+Q8sHrs95VHdhQNDtbqrZkhHgUpaFJGlFj2eTOnbjL3StW3KS7B/4ieWnB+llagNv04vYMzxrLaTLH+WCxXGhchZofilCr5vdQldbGjNIev/LB0bnlYAryuDoeT9oZCwx0zP7amYoDO83/Vjp9JKTKWHZHLLh6mPpEwAhK1fJ7amX3m951gpi5qWap8UHGZx3kX68eFCJjQ/bzePsHAO+4rUb8V72im7to0lO70IidIKHJ+kpVOV+qKVKbwecZZbjheV1iNb37ArvcwKRmNF/YGthFV5PcVHXavBGQi64MxKiIajIKfGhFWFr0iJZCMRQdlmtKa8vJ9c6f0zEXrycvrdv0IhyEpMD1DZK8SuFT23BYgFIYMhRJEm6YKf0OjN3R5eRrARnn2KpUBnky8bp9ElLSGb6jZk2QSZKvNLuUCPIVX4VhVWbzqgGHVSJ/Jakv9MXGWSP9TNsWkSOF+SBBV59KZgC0NXlgfKlJeoNbdq5rU/qp3biL1zO30XMqbaZK+YzYtWtFJGBXVqbYZS21Pf+N4pb66ri/4VCH8gJ+61OKzZeoUPM3dS/Mp3XPKt64+sGJWCDZovOy8cyW4MRo1uB4S2l2SHgA1uUAmolcK9SHjDn+/nBPphz+oE1x195IIWUjbAmUJ2TSy+6iGkCHiDyYocbTYCHoWNQd6FZwbGzSRkanKKYRSeK2Omzp341VfzCk5an1RU+N4Ekbbu4vEs785/UWFys52HIUJQ3InxjzHkEJkjsC
- tO8C8wjJ
- z+36be1xnyqzaRoL5j6sxdTQW26VbhWZCFBFdZwl2gwITZDb9fnLJXWFVnqJ/yRA4nTnH11gxjnXK0nIzZBiogvrSFQiuGH5zUmd6tZ4oueEhC4ItQARLYGkM5N0MLeshinmxZeDFVeFLEiWKargS48nL0bhkuzqj3exABH2lmJuULbFjq535JHBt+k6RghrwNPC13KcX3Om+rvy0kCdkismEKZf7d4+5/4kAyBeQxZ7+3UJ5PWzydDglvEf48x3EKroFG9y7XI0pTrzxZA5KUOI7MP2+S9btUes2mEwiDT4GpAzkwAjkABkcg2aEOXtrvj2H2EZuRrVJCOP3vfOFjA67Fw==
+X-HE-Tag: 1786382478-397021
+X-HE-Meta: U2FsdGVkX1/qiG/7XGZdsOMxPJyk0+1CbbbDDS6nuEC2mWA9NuafBdpeFNkvCe4K2sPLMsEbrveyIqCwHfU/qZqtsarw4qqz6mOTd5X7gBC/dHC4A0h0z1i7VPD8FLQc/RwHM+XNeSTQ2dYVvVuNlX7620AWA0hNuUlBoUXWfG1faYN438ZFBGlfiEaiWVDMyNpSFKhiMWPjfCfT1p6yybKDlSK/AhbYbitjNv35ZYzAEkCjGNFbg7aF9UeQVFPKPcJm5Sj8o+bN1EDlMwSivR1F9CBAsUAWKFHfbwrIYCqpkBOuaGwiY06LrXzJ5M3dvdjlSwRTNEwReK4VZwRq9vvXj/kS2/1dwrMdYDdO8P191cCfoZp/BKkdnuiTyhnTNYkujblo6aasvq/8jL94MuSTXzUhfWEmjjZPk7FHnLi55o897lUDCfShLwi34w5UMRlxKKCQZr90Nhn7mKyso0tbnjVflMClPMYiOo7hwqqpUk+MaNi6gH5Xc3x3Z28BnIJtghcC5ULgzBM+/Y5i+qbYRgI/cKwrCX3cTQqekLrGN/nIDN0NXqR4KV7jk70jOjNxTYzDjMqy2edHyvSu0wh8DlMHn5t4ukkDEIep+TgbDHEIu7bgNBTExnzY+LRSEmtdJWOLCNXbmK4BkjLRMrMRWVxxohDSDP6PFmXiFkkxA1zKK5cdOtwdRyuLFHuAYbP/MOqGZqtIQD5WzOrKd0iGmx5Zjd13nGKbEYUFnEhixDC6dyeW/AQkJhV8eF5Qa7bqPqL341gs9at5PlLHRaPek+psgrrirVUL5lBNBPstexZNdk/0BwFVn5YckzyvRFwDAwtvvL+31MmIba/E9ltmzob9eUmMGizmLzKlUvCEcr5Xr0As6tDg7lle17VumQUcfZ3d5rz0NuRxtwVJCK+r0F36oxat1lGFcxKxVxVmD9dcH+1GYBdQmq/f8Yj6xWhlZVTn7D9Dj+FUu8b
+ WWIdhW0q
+ EHrzSAlXXxw8mpeV0mll7IJfhvKGTmooTyKsrwTXuHb/ncX7+12grvh8SWBV/phrUazUmvUpRmkmQP47v6Ox1+W30AE4+LTgktcBC7Id/K/JH7mTzpDEFuMOFQCNAyyCNjijMqhYFxE3u9WrkT1kTYNu0QTUk+vyIvdwOJSkG3BUV34r56a9MzBeYomT5V7cVDbBBFvHbcjZc1gDSPyY7sz1MPQhaAfzNz026gtK4cnpcu0R+K8wQfcf2hvwpPb2/Kv1n1f3qjADaCdp5JcYcy6/Ye3iUrP6iu+nniMYQAGSd9gu6MeW2KJcBpMUav32YRXOTpG5ayPIxSSeBZlweMrtM2d1wgXkSKrp4cUo9M/xShKUfVN3VvROdAX0Fl9fjHw80MJ9vEnfxWEgYcoKnm0CVqj07vhHZ7vWyP2ucXkIJrYprlE5SlsHs+KOAK28rkT+8jrrtVMOK8IaohabpGuUpbzsJizQohflKrlGrcwySxd/n5YW8zpmzj+97FXd/806gI/9j/vGUjMAMow0XXieE7z1Cuun9gcDiyY9KZivroXzs/yFh2bVbX5dZZRSMUyXVH9JutFSxXWE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,43 +98,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 10 Aug 2026 09:26:48 -0700 Breno Leitao <leitao@debian.org> wrote:
+On Mon, Aug 10, 2026 at 09:14:04AM -0700, Eric Biggers wrote:
+> On Mon, Aug 10, 2026 at 09:00:11AM -0700, Christoph Hellwig wrote:
+> > On Thu, Aug 06, 2026 at 03:10:30PM -0700, Eric Biggers wrote:
+> > > To fix a deadlock, blk-crypto-fallback needs to be able to make fallible
+> > > mempool_alloc_bulk() allocations.
+> > 
+> > It doesn't.  fallible mempool allocations are a concept that doesn't
+> > make much sense.  Please just go straight to the backing page allocator
+> > instead for callers that do not need the mempool guarantees.
+> 
+> It does make sense.  When alloc_pages_bulk() doesn't completely succeed,
+> there still might be pages available in the mempool.
 
-> I've seen some machines at Meta flete that show the following type of
-> problem:
-> 
-> 1) It gets some weird warning:
-> 
->   BUG: Bad page map in process khugepaged  pte:f000eef300000017 pmd:00000067
->   addr:00007f57c0a01000 vm_flags:20200073 anon_vma:ffff88829af7c340 mapping:0000000000000000 index:7f57c0a01
-> 
-> The corruption is most likely the collapse/PT_RECLAIM race fixed by
-> commit 366a4532d96f ("mm: fix the race between collapse and PT_RECLAIM
-> under per-vma lock"). But this series is not about tha.
-> 
-> 2) Then it floods all the monitoring of the fleet, sending the same
->    message in the loop, crashing the our fleet kernel monitoring
->    subsystem (which is the part that I am interested in protecting)
-> 
->   get_swap_device: Bad swap offset entry 3ffffffc043c5
-> 
-> For instance, in a host today it logged 6M in a few hours, and it is still
-> going forever. Two things go wrong.
-> 
-> 1) get_swap_device() prints unconditionally, unlike print_bad_pte() next
->    door which suppresses itself with is_bad_page_map_ratelimited().
-> 
-> 1) do_swap_page() returns 0 when get_swap_device() fails, so the
->    fault is retried, reads the same entry and faults again.
->    Nothing in the round trip changes the PTE.
-> 
-> Trying to fix it in a naive way:
+But they should not go to a caller that does not need the mempool.
 
-Thanks.  Sashiko said a bunch of things, all pre-existing.
-	https://sashiko.dev/#/patchset/20260810-swap-v1-0-375ef0767206@debian.org
+> blk_crypto_alloc_enc_bio() should try to take them before falling back
+> to scheduling the rescuer kworker.  The rescuer encounters scheduling
+> overhead and is single-threaded, so it's slow and should be used only
+> when absolutely necessary.
 
-You might wat to address the first one as it's on-topic for this
-patchset.  Ther are some swap things.  The remainder are for the poor
-uffd maintainers to scratch at, if inclined.
+No, it should just try a regular non-bulk alloc_pages (and eventually
+alloc_pages_bulk should do that fallback for the callers, but that's
+a separate discussion).
 
 
