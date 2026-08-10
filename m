@@ -4,170 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 553D4C5AD4E
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 05:46:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E95D5C5AD4E
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 06:39:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FFDB6B008A; Mon, 10 Aug 2026 01:46:44 -0400 (EDT)
+	id B3D656B007B; Mon, 10 Aug 2026 02:39:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B0B86B0095; Mon, 10 Aug 2026 01:46:44 -0400 (EDT)
+	id AEE926B008A; Mon, 10 Aug 2026 02:39:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A0176B0096; Mon, 10 Aug 2026 01:46:44 -0400 (EDT)
+	id 9DD0E6B008C; Mon, 10 Aug 2026 02:39:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E15496B008A
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 01:46:43 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5494B40673
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 05:46:43 +0000 (UTC)
-X-FDA: 85084275486.26.2DCC15C
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by imf03.hostedemail.com (Postfix) with ESMTP id AA2D820009
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 05:46:40 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=QTQgY9fA;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b="F1xg/awu";
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (imf03.hostedemail.com: domain of prakash.gupta@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=prakash.gupta@oss.qualcomm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786340801;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 74C116B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 02:39:38 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7EFD680610
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 06:39:37 +0000 (UTC)
+X-FDA: 85084408794.28.89F58E4
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 98CAE100009
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 06:39:35 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=dmkIujJr;
+	spf=pass (imf05.hostedemail.com: domain of souravpanda@google.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=souravpanda@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786343975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=1Dj7BlpoxGwRzdnJpfUKDqCArhBsuZ4in/P+GRdEWqs=;
-	b=LEFhpxJj9WDfuUJkqFQWgYQDv8iUF+5VtOCIVdeIE/d6VkomXdAQpycxp/fQ5YnewdLKj6
-	bTvKryZEo2l4GktP7AuB46w4Flz8Usw8yXfw9qhNiAne6PC0JQ3sNU0VAVH6n+MoPbjc2U
-	mcBa81qUZWoKGRnJJkmaXnCclKbcBAY=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=QTQgY9fA;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b="F1xg/awu";
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (imf03.hostedemail.com: domain of prakash.gupta@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=prakash.gupta@oss.qualcomm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786340801;
-	b=T4bUzzNpORhJmTBR5GWr+depM00D/aRVtMzZyZ7otZMdnQBYbOQexkBa94CM2JKjdVyjDs
-	XC3ABdf2VRoRXWKJq5DUmTEfg5AhV3aBP9w4pAo6tJ+8YxzjCrCa0x9WRb0GAnyH21xXdT
-	mGEThMr5w3nIN35Gt5EshBgGPDvn05I=
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67A5HckW923814
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 05:46:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=1Dj7BlpoxGwRzdnJpfUKDq
-	CArhBsuZ4in/P+GRdEWqs=; b=QTQgY9fAYtMRz6rM9nNNt8WssZlgBY27uWyUgR
-	rUVr2NOXrPUO16WgjZSlMemU94ve0SpjoiXclan4muYXdXfyaqnzPbdO/8VpxjD0
-	mxpDrb+A6sEoK0th5ON+3mAcBT0BZEoeshPvnfW54LxQQUoJ8WPCBxX2I87b3tWo
-	4TSdez3eeCLdxOpZ96Kc8kOXH+1fVZZygLfS6II4Aykjk7DXHYZaicxkvZih23GS
-	nnVnRadCZ9w522uzUMjKWUE/pBl6BPOaylzvdQm1q460ZK+F4FxygFWY9v74FvuQ
-	xZ2/6euTzZXZO72PbpvlSELyks/npMpvjesjTcp7pR6USQ5A==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fy18xs0qc-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 05:46:37 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38f5ac7354dso3189965a91.1
-        for <linux-mm@kvack.org>; Sun, 09 Aug 2026 22:46:37 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=beTjDQjSO+WsmxqeYJG6yL+QaVmFzIIDf21MXqCQ/Uc=;
+	b=sN5Y8JL/z9+pvvtsr8ydZNDBlQK/kBuYZZl12jEIeU97Meia1M9y5uqKC5YkhEXWOmjmYU
+	molilNXp4v/mmwsTh7w9EbQX2fXhpPSkwXuG4atWqhjDaoUxttHvh4p91k1dJvO0Lsceo/
+	8ZOqahN9hXN8K1NL50Z37mx6iU12BoQ=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786343975;
+	b=QAqZFKqYlziLOeAUbJ3EPoB95PuuB153ji2Gk7HRyqJNx2Y0gPZkJyR3JBKy8hWLHyQL3o
+	2mKFWpjtcjTe7AouKTgpakhUDFwCh5G+qnS9AwtN7Mo1AovQpdynpaNnja8f0PO6huH3DQ
+	lNX9CyZJ5gnDYMEuiFgxWK751DLomEE=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=dmkIujJr;
+	spf=pass (imf05.hostedemail.com: domain of souravpanda@google.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=souravpanda@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5b2a8173142so5838e87.1
+        for <linux-mm@kvack.org>; Sun, 09 Aug 2026 23:39:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786343974; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XvIFAzzV48n63sSFqyM7bWEonm04Dxa3C259P7iP8Ocx8eEsUScWC+RqquLPlxB/Km
+         6fYZlL2Q/ja2fTbhUkzNriYb/xuoVfXKi2F5xEZ7ga+5/QK5gN3r+33SL8dLqq0PlHEZ
+         lg2r6TY28EDeRUMczVtikTtjjU9CRmsuT5UhdcCZvoBJOv3TSgyFonlTiyckd2kQTR+x
+         Wr3+Os9bDsMv1GYtMnpk3ucu1iZ7rwxC4n73WNc0BWJAee4OQo5oU0VPit1KUOHB4T0K
+         lDi/3LKJ6gsFU8h0RevnkfHZ00PEb4AK7J3+7HZ52HLqYwZ1gCRG3Qhbf6SD/5FRS4Ud
+         9ztg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=beTjDQjSO+WsmxqeYJG6yL+QaVmFzIIDf21MXqCQ/Uc=;
+        fh=c+AWe0rlKw+BP8+BDFs+Xqq3yVDMGhAUb+rkKy2jRm8=;
+        b=HbckVRARcAiZ5nn5HxuAgTvQYfs2OUZxENFblS2v2rnK4f2L44GTZX3mToVeHG4mhu
+         wzkO91yoM0wOfWggs/Wmsm3UyC4XbbNwg1oWOVHFK9p91zR0LOEYoBhwK/MWKzQn0JSf
+         UVHxqNskdEJ6yJCBnphMBRsTGHqe21fSUQ+hfh00PQHAcMWP+/6c3P9O+BxtI9aW0Cbk
+         YPrUzggWcKI3Al5fDLP0zkxRCoLLAyREDC68cXSrhkeOSGZsoEbibnTyTZFFPjZqpQpA
+         6cg7bUgiRLaH4cNCJ5OF/XcvCb+64I911yntqTie65AMuohqcY8L2SiNzwb1x6MfhfHe
+         CtaQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1786340797; x=1786945597; darn=kvack.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=1Dj7BlpoxGwRzdnJpfUKDqCArhBsuZ4in/P+GRdEWqs=;
-        b=F1xg/awuODqIW/pZJFiGestuvQfPJkBtY65c4y1LcPmFs7u3Ng8B0Um0/o9lxkNdn1
-         hnGd3yC6FXUupaUKJlIQyPfcM5miJO6sv9RbM8xgnkH6g9YJcsgc8rK0u5klv1Ho+6Ip
-         NgN1iYy8vN04QDATKebMjYjgze+NeCERrJnoAOpNEKmpaZdVRCe1tH73BaweELlazQlD
-         EEWLt+x9xfhbOdFZ4SxElKXZcJ2uT9CZX0DSnonCEDMh4/LEVQUI286gFAw2e4rX5+mL
-         VgXe1Gx7V4VkM3XsIakIRsT7rCOiVIh8Pdk8+pvrooTE9lTvfZdEDEKbkxZqWFFVGp+D
-         h8cw==
+        d=google.com; s=20251104; t=1786343974; x=1786948774; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=beTjDQjSO+WsmxqeYJG6yL+QaVmFzIIDf21MXqCQ/Uc=;
+        b=dmkIujJrAQHt80Hh4mPpGR16BFEhb8gYd0YZAjkzE9LiHMjNuSot+76lQ2cY1i5TzY
+         RauLcvEXF1/afRS7a6iKsUf+Wsfy8ieU5gqf7Ja167D8n7T5KNwOuLN3uBHuWTmMvuDW
+         Gti1urO6IxNVCniicZQeiX08s3JSmSJPS0nNpN4t4Iuhdfl8dnOHp5bFZVlPccAWfwfS
+         dVKphqJ2aeEk06bmCqo5jF94myzhV7FTVMFZMpAlmIxO3ZfZh+Lx7v3K7rmZ/0i/vCch
+         awFiclRiQFaw4BNjX6krP1WLN+WEiA97PdOqTFGfzKgdEYUGnslh0+gpfA415buOxH38
+         0HJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786340797; x=1786945597;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=1Dj7BlpoxGwRzdnJpfUKDqCArhBsuZ4in/P+GRdEWqs=;
-        b=QxCcO2uwwI5vUwLOmh8EWj+Eu/ItChrjmLyvvb+QUDQTVgbw2vplXSZyyVo1v6DWjN
-         wXu9hYQ3D20xYVgYvUafkQVhbqv3voaIPisGimCcCHEYXYePenTkUYUNQ8+zVmN24IBI
-         FBYS0tafTcgF9o7tOdx4/IPjmgYv8P42CHqRztDON/0+NiLZim2F4XtYoG8UVTR6SWEB
-         ZOBPrGMnUZSuqtIChHo18dH+VzSXiyxmAJXre9CmG1vGabWjDMw0xFvZoYZhPJZgpMvC
-         /XGxJaluZyQ7zqDMuV0SWAVhCiqMFhzOIPnT0GkXDiPu+vlDsb+AWqIC/Vkdlk5Lnehh
-         t6CQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrofIV+2/YGx10D8Cg5J/GT91SRye4hnuPyxgQum9GWzqcjgtbZNqDO9wLOwNF4D+d/izNE8/2jyw==@kvack.org
-X-Gm-Message-State: AOJu0YwMXEdughAcM5kYCFPrzUh1pnsMc7sCtbzN0Y3g29MpQOlz3XDV
-	QpGFCJ3UtshrXkAdnPl//g1gYNqIPap5WbJzU9JgFH7DTS9sCV6DvikAV7Gl6sfAB+/j/191JjA
-	YUUn5iARrsULYsxYfKJVIzM0ZdZcgcw6qxTtnMaXNVP493/X02J48/g==
-X-Gm-Gg: AR+sD13h/hm0OaYqbsRh6o7sPcAzmNLB3ukVo9aOaIHxoPUG5eBiDFaicmFZ4s2zNOt
-	vXPFrbMtfODnLJUVjrgP8s8Crte+rwAuNvUPCXfjfEMGMJwkJLlnjdKT8N4l+I1BYmEbMyPljAU
-	nLf1wVIzHuyFEUfLVurC6uL4F3+WyujuXcgfAiEXAUpXPoEHk0QdR2I3X5JozD3CW/6uhQT+zm2
-	U8ntA7A9HoF95ukjguCX+od4UHhGvInCmUCLUAJ/53ZEPoUR56h5MQKuA3+jH6Of37C535XD5SI
-	X0mXj3u77o8w1ampBTDH1DOMOCS7m8fkjWZjK+YxV0UvKXUiL2p5tJ0YPz7RpTYMnKPgR7bH6GC
-	uhvFNjD0A9tOdDqrHdf/VGAccei+/ypw=
-X-Received: by 2002:a05:6300:670b:b0:3c3:a1ed:3c23 with SMTP id adf61e73a8af0-3cb85ea6f5cmr48532885637.23.1786340796747;
-        Sun, 09 Aug 2026 22:46:36 -0700 (PDT)
-X-Received: by 2002:a05:6300:670b:b0:3c3:a1ed:3c23 with SMTP id adf61e73a8af0-3cb85ea6f5cmr48532843637.23.1786340796277;
-        Sun, 09 Aug 2026 22:46:36 -0700 (PDT)
-Received: from hu-guptap-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315bebde308sm39107186eec.20.2026.08.09.22.46.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Aug 2026 22:46:35 -0700 (PDT)
-From: Prakash Gupta <prakash.gupta@oss.qualcomm.com>
-Date: Mon, 10 Aug 2026 11:16:30 +0530
-Subject: [PATCH] mm/memcg: fix NULL nodeinfo[] dereference on late-onlined
- nodes
+        d=1e100.net; s=20251104; t=1786343974; x=1786948774;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=beTjDQjSO+WsmxqeYJG6yL+QaVmFzIIDf21MXqCQ/Uc=;
+        b=TS5T8XPG38kYpj9bxnbtnkTkgIbRRXEXt4GBoS6bqNPsELTypLgKuoz33RbpNJhp2G
+         P9QTR8/Hpb/ApS8GNV5EsVYUr8RS37fEc0sEdQ12DNgqKnBAiwCVItxUb252lEJJ9mRX
+         N3bVlZEJLNmGZwCgeLDQQqlmrMG7HiNn0b5SMhw9LoMzgfPRJJa7XFl37qVNqtKG08dr
+         SeHnAo34heay/IiKHW+5ke0sR6QmsBqiVlgGTs44gVyCR7OVxLntx7uLKS2ULEcGazdX
+         gyA+2e9Wjxr5fqw5AvXRLmvGmNfeAL3UD32Zrwy6L/jX1Ps6ShZTck0yN4Mx4r92TRyH
+         7FFg==
+X-Forwarded-Encrypted: i=1; AHgh+RrmUDRGAxW1clzGVedpjerwQLzx56WszO6HAinVArP2oU1l89KD5s1OKmtm9XJuPWpUgnR9pirUwA==@kvack.org
+X-Gm-Message-State: AOJu0YwhVxsR3F3RWu8X/HurRmzl+EBaxbjpZGFpJ/wgtPhUf2wFp+qM
+	kQfNHmq9oN7FcwxMBkuJPxL+Y5c18A7aD/pBZYAWiSM5rHJo11uarpxkpNvqSHN8IO5IzDswsQZ
+	+bt0Kq9AGHpvahG/pOglmx8fDxtRsIf+ObncOJg+b
+X-Gm-Gg: AR+sD13NhVoAfBdZ213k4gv1G12wHOirNQ+CfBYfUJoiY6/llobfBV7kKR0d5wyWwdf
+	RT6e5bQOUOEEdPMbuO7YECGWel4XR90325p+yqokk9l+F0qftmi487NR+Xjvg/LXzv88TLIET+N
+	mpNdwzU2svsg3oSaSrjVHVijoX1qCe4oxe9jaykiYmoGTc77mp/28L/hbXD4/K2ZRngxjsfTt7l
+	zXPo/8LVRzs47eZKleZZhwLB+oskrn8hC/8yBlEHqFOWCmMw6U4zBxzLwOQE8MYaSOUAibu9Xd0
+	A/rMELXREbaoLlueUFSMjhNMFX7B0qlHnADdjKBdWSz4Mf0U0j6vEPpUlaejii0FCqBkUt5YbSF
+	GCePwcjB9YJLg1EABP8KoqINrMtueWzvg
+X-Received: by 2002:a05:6512:1295:b0:5b2:a5e9:3aba with SMTP id
+ 2adb3069b0e04-5b30c3e8046mr177757e87.6.1786343973513; Sun, 09 Aug 2026
+ 23:39:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260810-memcg-nodeinfo-null-guard-v1-1-77a73204d63a@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIALVleWoC/x3MTQrDIBBA4auEWXfAmB9Mr1K6EB3NQByLkhIIu
- Xsky2/x3gmVClOFd3dCoT9XztLQvzpwq5VIyL4ZtNKzMspgouQiSvbEEjLKvm0Yd1s8ekdTmAe
- rh3GB1v8KBT6e9+d7XTdGHwzxawAAAA==
-X-Change-ID: 20260808-memcg-nodeinfo-null-guard-dce5f63a2349
-To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Shakeel Butt <shakeel.butt@linux.dev>,
-        Muchun Song <muchun.song@linux.dev>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: linux-arm-msm@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Prakash Gupta <prakash.gupta@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEwMDA0NyBTYWx0ZWRfX3UGPnpwIztmM
- Sj+jKJzSpLBo/r54ljYneamN21viEYn0rb79K//q/zeHu+kkyLvLYP5lMchrkfVTRShVaH4uQv4
- WiFzLLUNZ0tBatDtdsw3AYOIgi3paHo=
-X-Proofpoint-ORIG-GUID: XRoFf0Zr5BJbPWkQXqCFOU_5-FB72cma
-X-Proofpoint-GUID: XRoFf0Zr5BJbPWkQXqCFOU_5-FB72cma
-X-Authority-Analysis: v=2.4 cv=bfZbluPB c=1 sm=1 tr=0 ts=6a7965bd cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=GS4ghhMgoEJMoUnwAloA:9 a=QEXdDO2ut3YA:10
- a=iS9zxrgQBfv6-_F4QbHw:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEwMDA0NyBTYWx0ZWRfX6VLacevN9Xgq
- H5uqxKPumf1IMB4vlbKnN7bcIXq5eprLGH/sC7BWq62xagAa0fdDpm76juDYTh3DL/HbXFBgA+a
- S30DPeMWj/LjnnGKDkrImx3YX4CJJJTUZeevjycuOsh3DqCUHHYqG4YMFsOZE5pZ+MmP3R0w6wp
- xp3eQ3OTXM/uoT1OKl+vi8yxP4NTB/5Yl8FNprG4tNW3rTPpbK0z4BpGQAxu1CuA4ZDRuQUjiWu
- 6DWACxov6BXZQbw6qk8ygGR+hnrNg6N0uU+XLOfrDtPSrJpEVsezonnGT+2tXEARkjTBxBa9ZnR
- x0nVz8DvT59pKVt3p3cp32EAVdKlj2OqhgLdlDE7SJS/EqhF0sXFvhy8uuXYAK7bKhVUbnDMFye
- vCsml0z5Fp+aT8LfICaO6s6YhO+drD25BInR3MwwivsC4nQVvN93RCgj5R3mdWBx1UX6z/GUf6a
- pCTX23w6TUsNnbo+fSw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-10_01,2026-08-07_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 spamscore=0 lowpriorityscore=0 malwarescore=0 clxscore=1011
- priorityscore=1501 phishscore=0 bulkscore=0 suspectscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608100047
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AA2D820009
-X-Stat-Signature: dqg3dodq8h5fkp3pcq1pzxzmrawo99kz
+References: <20260809043250.2917406-1-souravpanda@google.com>
+ <E2FFA328-21B3-4E3D-8CB9-5638B4CB545B@linux.dev> <CANruzcSySUn_gLEh9kxwvatSCn4hizcy6v2BkcMe0Jb=HoUOSw@mail.gmail.com>
+ <60440F8D-5EE8-4254-9057-5FAD09B5D1FF@linux.dev>
+In-Reply-To: <60440F8D-5EE8-4254-9057-5FAD09B5D1FF@linux.dev>
+From: Sourav Panda <souravpanda@google.com>
+Date: Sun, 9 Aug 2026 23:39:22 -0700
+X-Gm-Features: AUfX_mzV0G9J2-6RqZjaZy-QsI12nKUBfR0xw1cGVt7-LTZShBonbQZL_4PZrbw
+Message-ID: <CANruzcQ_1533umf4ym-t5EVm_WX5rrYtCbCqaTdvNr6EgOYR=w@mail.gmail.com>
+Subject: Re: [PATCH v5] mm/hugetlb_cma: Fix null nodemask dereference in hugetlb_cma_alloc_frozen_folio
+To: Muchun Song <muchun.song@linux.dev>
+Cc: osalvador@suse.de, akpm@linux-foundation.org, usama.arif@linux.dev, 
+	shakeel.butt@linux.dev, wangkefeng.wang@huawei.com, anshuman.khandual@arm.com, 
+	david@kernel.org, surenb@google.com, fvdl@google.com, gthelen@google.com, 
+	hannes@cmpxchg.org, riel@surriel.com, sj@kernel.org, vbabka@suse.cz, 
+	mhocko@suse.com, bjackman@google.com, zi.yan@sent.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 98CAE100009
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1786340800-822199
-X-HE-Meta: U2FsdGVkX18RgdD8cZqDl7cfFBxOHxxfYL7H9oS583PFf7qwez9Jc0ggtL8lc83UkPeWZ05rtaADv7UucNdCBUz0OHQtf9ePF4+mafeyZPbas0D8erEiJgc38LEWdyFNzi+bhdZe6eP2mJU9SNBi3uyhP3Ld0NOeXJ5CNHVUJQzzAsY2gFEdg/J3PfUVY4qMsx58wtgX9712sseFCMR/P1tLDqdrMhk50Wewt0jBkFNDgKtvIJBcV04quSaAvuk88jrqb4/9C8BXdSn1f4RoHB8PUvWcfUVrkFyA0qvabj5//F3UHefYpBCwquFVIFTU14GbtNlII5CKT6ENQ3vN5tSpbTCxOvD8wHAnjEU4jKeigpqQ9JgdQvS2r/zZ0r2+UKmDB7Pmhly6lccMvwfAmbQ/yFR2/omKXCanxMmPPiHG5+0IT7N7v2wFyHcJMGGqBad7J6Cw9YiPCpstpb0AWkhMfpJgoSklQDTAoEGMBQxDMuelQossuZHWqgPHQVBDOjlNhNHjv8hM2PUmZsmOOzwNWMn5VyIsDaMgPvVUC3s4mL5i/rHqnN7wAlO5VVWdMSR+CC0QpYBghP/8/Z4y0kM4uRdWSwBs2d97YxJms4YZBbJRmEZVUtw/DuvGbCioyXOIz52W+rwcV+GutHVTHKESNYbnI1ZyxS1jgBJCiCyY7r2scMyXaEYo82QjzlZ6Euu3wVPaL5vB5xq6MMelchWv9sSyxcHS1nlGDoTOEYQFoMcDiaSUBlORIMQg1WGOTEfJ9Ssy2Dha3A6C5Moqj8OONEI1K07K06+OoNAC8PxSpL0+Iu1lZ+nJFDpdBURE7VxhBBsDT+7pS7uXnvXebSAIfqvBVLtoVYK5l3asHmrLmruFuJdjC3vfaTy8BIPkbykbGEULxAcAW4IeKiM+9TfnJ/nn9rp6d32JedAeLMJIfJOQTjCJ2/U2uuqy08QrsWVk5TkZaHGVNrNfL9E
- 4vXiGLyn
- V9uzYtiR8oFZun2Gq6YkUsz2/Ui+F7E+Z+t7vN1ACp2iHuKsb9yVS1mMj1O5oZWWzpWSHdsgQ+9kFxBM7vhjdfBlYLEY18YktMbSZ4+9ZxH5qBYZZY/Mh33nLtdMUjF/F9Fx4ohgNE+GRw4osDk5VsOsuGdgXxkavnbvWx7PV73Il7cSQEoRSK6js0NQprlrCMsCeBldjaoNGLPwJSza7x0XQ3iGSx7ZC/aanxJ4HXszTj6fOpsRooNf4HuBE1eXtG8rpBa5NF3qHgVDs5X+qwrONkTlLTn5/rUxLT5eP9okfCTTnDTwy1K90n27D/6HltggLvBrcIszCMT/SveuLkZ/qJTpQHbbrn75bAwgjSqtkkRFbVb58GlBfVd40KA4sW8t3WL5hMNXn1W3kNNkEH5FwQlaXdejqO5LZ6F34OhgUGf5kkF4E181zZCMI62n+mSb8HXvNTw2VKryjRcOFHBAk1g==
+X-Stat-Signature: b5b8d69wourcnec7bzhw95uuj68qcsi7
+X-HE-Tag: 1786343975-698345
+X-HE-Meta: U2FsdGVkX1/UXQDWK+wTeovm8gUCB2bbhBZrH3MfCB+E2FeHWWkXpu/lGlCHYBam26abx35Loxf7sFYwjHHFHA3qSHBpGEEjlI/Sg4q4v0JbpVJ/UB1C5JP02gs1CLYoRHRvKxAY6tUdDpvAKMDaxE6ca+4ob7HRrcc55j/+f4AMMh63VjtHIxe78fn0HMrugOBy08LD5X3+VBjsOF4gOaNBWC3A3iG5gQmu72OdNmmoiaeAaMyxZFl0t0VLHUebBethWp9NOFwsD5n4xCMviFX2kBwivK3trXk/+C3VPFs+mmIocLBgdSnc7zRU4vRK5KqA1QbkZcOYahjo+J5JCAILJmXK4iyaBMC8zWK7YUMdLEUwW40qz0eLyg+Y0WnyxSEoGMQHSlos5GZE34R84K1odj9ajOIKnOYAzz5vhQb2J/JbnDP7PHxP4psxfQGPoN+1gmWlIDPCkidVH7PLopoSSwPUynTStSU2syKNWC9qLvYXnHxODA1Wwl09j4c7jVEC5OMqAUWTWJ2k8yiKwlvsXDNgNNMciLw97MmV+at3a59nwjfO9AKDJAlwOdic4YkLMKI/QzSCOjm4vkMCz++pYvQH4Y2gpPt3Q2nzF0QyEtBV2zLeMX/HLqeIBq/kxLBiEymj5oCAW+2O4PvbUWHOKIKOb6sc5lEGaVk/oXnLJo3nO0DN9ZZFRrKJxBWQx/6IjH339XP+F25btoSAlNJBbrFM9j9hsMwvzRLA3Q8ge2QWzMbMiActMiIZkYJ1qobocyz01VinL1Wllo3mVPnyd59tUme0Feb4Gt1UP4gS/0pxICuhUUxBrFSJ5VJg22nclgNYvx1kCVNFQTLiCxyl+8G3+ZqRlK3ik/SoWAAxtQTzb2UKZ2xq+Tee8QA6ZLHFujFuCa0xvMu/lusngOXHhPoOMUXu6s6S8Pj0LYGqyJH/km0Qoamj0qRCjMPgXqDWo708gsiV4ZE0mCX
+ kRP0bpJU
+ j4KiXVOm4YCE4aqum4QCsgnB1Y7qIYaIstgiFyUvu7zvRpORAVVAD7xlMVpbNni12ZvpFyc3M33Wc9Fsye1NOF8oDhBRWfvRKqRSVu1yV6mDVodOLk+LTfKLm/AXHb0cDsusebWziMLiEU7oWOH0rKV/FLOWl5FpciQm8xHkWwxlN3mJjLrAybbBfs18qQPBNoikokKZ/dPWMvT43chdFaJ+W9wpeRmTVCrLp1Q1HrlCvHYm0NMmxiTEKitmR/czTydxbjvzXz2b/jG0+ILPZhP3ySStogFfAAwvH4r3lCDF3qqWYqg13J1P1GFRctZaoQk40Sy90uERCu8Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,111 +146,277 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-memcg->nodeinfo[] entries are allocated only for nodes present at
-css_alloc time. When a node is onlined after a memcg is created its
-nodeinfo[] slot remains NULL. Two call sites dereference these slots
-unconditionally:
+On Sun, Aug 9, 2026 at 7:24=E2=80=AFPM Muchun Song <muchun.song@linux.dev> =
+wrote:
+>
+>
+>
+> > On Aug 10, 2026, at 04:11, Sourav Panda <souravpanda@google.com> wrote:
+> >
+> > On Sat, Aug 8, 2026 at 11:58=E2=80=AFPM Muchun Song <muchun.song@linux.=
+dev> wrote:
+> >>
+> >>
+> >>
+> >>> On Aug 9, 2026, at 12:32, Sourav Panda <souravpanda@google.com> wrote=
+:
+> >>>
+> >>> alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
+> >>> alloc_fresh_hugetlb_folio() as a fallback to allocate from all
+> >>> nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propagates
+> >>> the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() via
+> >>> alloc_gigantic_frozen_folio().
+> >>>
+> >>> Additionally, hugetlb_cma_alloc_frozen_folio() previously attempted
+> >>> allocation on hugetlb_cma[nid] without verifying if nid is included i=
+n
+> >>> the caller's nodemask. Adding a node_isset(nid, *nodemask) check ensu=
+res
+> >>> the initial preferred node allocation honors the memory policy / node=
+mask.
+> >>>
+> >>> However, hugetlb_cma_alloc_frozen_folio() dereferences the nodemask i=
+n
+> >>> node_isset(nid, *nodemask) and for_each_node_mask(node, *nodemask),
+> >>> leading to a null pointer dereference kernel panic when nodemask is N=
+ULL.
+> >>>
+> >>> Fix this by checking if nodemask is NULL in
+> >>> hugetlb_cma_alloc_frozen_folio() and defaulting it to
+> >>> cpuset_current_mems_allowed (safely read using a seqcount retry loop)=
+.
+> >>> This ensures that the initial node check and fallback loop safely hon=
+or
+> >>> the task's cpuset without violating cpuset constraints or causing NUL=
+L
+> >>> pointer dereferences.
+> >>>
+> >>> From a userspace perspective, this bug allows an unprivileged user to
+> >>> crash the kernel (trigger a panic) by requesting a gigantic hugepage
+> >>> allocation with MPOL_PREFERRED_MANY on a system where CMA is only
+> >>> configured on a subset of NUMA nodes.
+> >>>
+> >>> This can be reproduced by booting a VM with two NUMA nodes, restricti=
+ng
+> >>> CMA to Node 1 (e.g., hugetlb_cma=3D1:1G default_hugepagesz=3D1G
+> >>> hugepagesz=3D1G hugepages=3D0), and running a program that allocates =
+a
+> >>> 1GB hugepage area without reserving, restricts allocation to Node 0
+> >>> using mbind() with MPOL_PREFERRED_MANY, and triggers a page fault:
+> >>>
+> >>> void *ptr =3D mmap(NULL, 1UL << 30, PROT_READ | PROT_WRITE,
+> >>>                  MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB |
+> >>>                  MAP_HUGE_1GB | MAP_NORESERVE, -1, 0);
+> >>> unsigned long nodemask =3D 1; /* Node 0 */
+> >>> mbind(ptr, 1UL << 30, MPOL_PREFERRED_MANY, &nodemask,
+> >>>       sizeof(nodemask) * 8, 0);
+> >>> memset(ptr, 0, 1UL << 30); /* Trigger fault */
+> >>>
+> >>> This results in a NULL pointer dereference:
+> >>>
+> >>> BUG: kernel NULL pointer dereference, address: 0000000000000000
+> >>> #PF: supervisor read access in kernel mode
+> >>> #PF: error_code(0x0000) - not-present page
+> >>> Oops: Oops: 0000 [#1] SMP NOPTI
+> >>> RIP: 0010:hugetlb_cma_alloc_frozen_folio+0x75/0x120
+> >>> Call Trace:
+> >>>  <TASK>
+> >>>  only_alloc_fresh_hugetlb_folio.isra.0+0x2c/0x160
+> >>>  alloc_surplus_hugetlb_folio+0x6d/0x100
+> >>>  alloc_hugetlb_folio+0x3c5/0x660
+> >>>  hugetlb_no_page+0x3d9/0x650
+> >>>
+> >>> Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic hugep=
+ages")
+> >>> Cc: stable@vger.kernel.org
+> >>> Signed-off-by: Sourav Panda <souravpanda@google.com>
+> >>> ---
+> >>> Changes in v5:
+> >>> - Replaced defaulting nodemask to &node_states[N_MEMORY] with safely =
+reading
+> >>> cpuset_current_mems_allowed using a seqcount retry loop, ensuring fal=
+lback
+> >>> allocations comply with task hardwall cpusets as suggested by Usama A=
+rif.
+> >>> - v4: https://lore.kernel.org/linux-mm/20260726072935.3513996-1-soura=
+vpanda@google.com/
+> >>> - v3: https://lore.kernel.org/linux-mm/20260705175119.440599-1-sourav=
+panda@google.com/
+> >>> - v2: https://lore.kernel.org/linux-mm/20260704174930.2885785-1-soura=
+vpanda@google.com/
+> >>> - v1: https://lore.kernel.org/linux-mm/20260702215713.627941-1-sourav=
+panda@google.com/
+> >>>
+> >>> mm/hugetlb_cma.c | 15 ++++++++++++++-
+> >>> 1 file changed, 14 insertions(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+> >>> index 39344d6c78d8..3ae9347078e9 100644
+> >>> --- a/mm/hugetlb_cma.c
+> >>> +++ b/mm/hugetlb_cma.c
+> >>> @@ -3,6 +3,7 @@
+> >>> #include <linux/mm.h>
+> >>> #include <linux/cma.h>
+> >>> #include <linux/compiler.h>
+> >>> +#include <linux/cpuset.h>
+> >>> #include <linux/mm_inline.h>
+> >>>
+> >>> #include <asm/page.h>
+> >>> @@ -30,11 +31,23 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int =
+order, gfp_t gfp_mask,
+> >>>      int node;
+> >>>      struct folio *folio;
+> >>>      struct page *page =3D NULL;
+> >>> +     nodemask_t local_node_mask;
+> >>>
+> >>>      if (!hugetlb_cma_size)
+> >>>              return NULL;
+> >>>
+> >>> -     if (hugetlb_cma[nid])
+> >>> +     if (!nodemask) {
+> >>> +             unsigned int cpuset_mems_cookie;
+> >>> +
+> >>> +             do {
+> >>> +                     cpuset_mems_cookie =3D read_mems_allowed_begin(=
+);
+> >>> +                     local_node_mask =3D cpuset_current_mems_allowed=
+;
+> >>
+> >> I think it only makes sense to move cma_alloc_frozen_compound() inside=
+ the
+> >> loop. Otherwise, during subsequent memory allocations, we could still =
+face
+> >> unexpected allocation failures.
+> >>
+> >> Muchun,
+> >> Thanks.
+> >
+> > Hi Muchun!
+>
+> Hi,
+>
+> >
+> > What do you think of the following diff? This way
+> > cma_alloc_frozen_compound is also protected from stale nodemasks.
+> >
+> >         if (!hugetlb_cma_size)
+> >             return NULL;
+> >
+> >    -    if (hugetlb_cma[nid])
+> >    +retry_cpuset:
+> >    +    if (!nodemask) {
+> >    +        cpuset_mems_cookie =3D read_mems_allowed_begin();
+> >    +        local_node_mask =3D cpuset_current_mems_allowed;
+> >    +        nmask =3D &local_node_mask;
+> >    +    } else {
+> >    +        nmask =3D nodemask;
+> >    +    }
+> >    +
+> >    +    if (hugetlb_cma[nid] && node_isset(nid, *nmask))
+> >             page =3D cma_alloc_frozen_compound(hugetlb_cma[nid], order)=
+;
+> >
+> >         if (!page && !(gfp_mask & __GFP_THISNODE)) {
+> >    -        for_each_node_mask(node, *nodemask) {
+> >    +        for_each_node_mask(node, *nmask) {
+> >                 if (node =3D=3D nid || !hugetlb_cma[node])
+> >                     continue;
+> >
+> >    @@ -48,6 +61,9 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int
+> > order, gfp_t gfp_mask,
+> >             }
+> >         }
+> >
+> >    +    if (!page && !nodemask &&
+> > unlikely(read_mems_allowed_retry(cpuset_mems_cookie)))
+> >    +        goto retry_cpuset;
+> >    +
+> >         if (!page)
+> >             return NULL;
+>
+> The overall looks good to me. But can we change it to this here?
+>
+>         if (!page) {
+>                 if (!nodemask &&
+>                     unlikely(read_mems_allowed_retry(cpuset_mems_cookie))=
+)
+>                         goto retry_cpuset;
+>                 return NULL;
+>         }
+>
+> That way, we can remove the 'if (!page)' check here.
 
-lruvec_stat_mod_folio() calls mem_cgroup_lruvec() which reads
-memcg->nodeinfo[pgdat->node_id] without a NULL check. On a system
-where a node is onlined after the memcg is created, any folio stat
-update for that node crashes with a NULL pointer dereference:
+Sure thing! Thanks! I shall send this tomorrow noon (PST) since I am
+OOO starting Thursday.
 
-  Unable to handle kernel paging request at virtual address ffffffbebf7e1908
-  pc : lruvec_stat_mod_folio+0xf0/0x444   [6.18.21-android17-5]
-  lr : lruvec_stat_mod_folio+0x88/0x444
-  Call trace:
-   lruvec_stat_mod_folio+0xf0/0x444
-   folio_add_new_anon_rmap+0xac/0x2b8
-   do_wp_page+0x768/0xc80
-   handle_mm_fault+0x37c/0x8c4
-   do_page_fault+0x140/0xa1c
-   do_mem_abort+0x54/0x74
-   el0_da+0x48/0x8c
-   el0t_64_sync_handler+0x20/0x130
-   el0t_64_sync+0x1c4/0x1c8
+  @@ -30,15 +31,27 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int
+order, gfp_t gfp_mask,
+    int node;
+    struct folio *folio;
+    struct page *page =3D NULL;
+  + const nodemask_t *nmask;
+  + nodemask_t local_node_mask;
+  + unsigned int cpuset_mems_cookie;
 
-__invalidate_reclaim_iterators() iterates for_each_node() and reads
-from->nodeinfo[nid]->iter without checking for NULL. for_each_node()
-visits all possible nodes, so this is reachable whenever a node is
-onlined after the memcg was created.
+    if (!hugetlb_cma_size)
+      return NULL;
 
-Fix lruvec_stat_mod_folio() by checking nodeinfo[pgdat->node_id]
-directly and falling back to mod_node_page_state() when NULL, mirroring
-the existing !memcg early-return path. The fallback must not go through
-mod_lruvec_state() since that calls mod_memcg_lruvec_state() which uses
-container_of() to recover the mem_cgroup_per_node from the lruvec
-pointer; passing &pgdat->__lruvec there produces a garbage pointer.
-When nodeinfo[nid] is NULL the memcg has no per-node accounting
-structure for that node, so node-level accounting is correct.
+  - if (hugetlb_cma[nid])
+  +retry_cpuset:
+  + if (!nodemask) {
+  +   cpuset_mems_cookie =3D read_mems_allowed_begin();
+  +   local_node_mask =3D cpuset_current_mems_allowed;
+  +   nmask =3D &local_node_mask;
+  + } else {
+  +   nmask =3D nodemask;
+  + }
+  +
+  + if (hugetlb_cma[nid] && node_isset(nid, *nmask))
+      page =3D cma_alloc_frozen_compound(hugetlb_cma[nid], order);
 
-Fix __invalidate_reclaim_iterators() by skipping NULL nodeinfo[] slots.
+    if (!page && !(gfp_mask & __GFP_THISNODE)) {
+  -   for_each_node_mask(node, *nodemask) {
+  +   for_each_node_mask(node, *nmask) {
+        if (node =3D=3D nid || !hugetlb_cma[node])
+          continue;
 
-Also switch lruvec_stat_mod_folio() to folio_memcg_check() which uses
-READ_ONCE() to safely read folio->memcg_data in an unlocked context.
+  @@ -48,8 +61,12 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int
+order, gfp_t gfp_mask,
+      }
+    }
 
-Fixes: 6c77b607ee26 ("mm: kill lock|unlock_page_memcg()")
-Cc: stable@vger.kernel.org
-Assisted-by: pi:claude-sonnet-4-5
-Signed-off-by: Prakash Gupta <prakash.gupta@oss.qualcomm.com>
----
- mm/memcontrol.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+  - if (!page)
+  + if (!page) {
+  +   if (!nodemask &&
+  +       unlikely(read_mems_allowed_retry(cpuset_mems_cookie)))
+  +     goto retry_cpuset;
+      return NULL;
+  + }
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 6dc4888a90f3..2a6f02956b89 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -977,11 +977,12 @@ void lruvec_stat_mod_folio(struct folio *folio, enum node_stat_item idx,
- 			     int val)
- {
- 	struct mem_cgroup *memcg;
-+	struct mem_cgroup_per_node *mz;
- 	pg_data_t *pgdat = folio_pgdat(folio);
- 	struct lruvec *lruvec;
- 
- 	rcu_read_lock();
--	memcg = folio_memcg(folio);
-+	memcg = folio_memcg_check(folio);
- 	/* Untracked pages have no memcg, no lruvec. Update only the node */
- 	if (!memcg) {
- 		rcu_read_unlock();
-@@ -989,7 +990,18 @@ void lruvec_stat_mod_folio(struct folio *folio, enum node_stat_item idx,
- 		return;
- 	}
- 
--	lruvec = mem_cgroup_lruvec(memcg, pgdat);
-+	mz = memcg->nodeinfo[pgdat->node_id];
-+	if (unlikely(!mz)) {
-+		/*
-+		 * nodeinfo[nid] is NULL when a node is onlined after the
-+		 * memcg was created. Fall back to node-level accounting.
-+		 */
-+		rcu_read_unlock();
-+		mod_node_page_state(pgdat, idx, val);
-+		return;
-+	}
-+
-+	lruvec = &mz->lruvec;
- 	mod_lruvec_state(lruvec, idx, val);
- 	rcu_read_unlock();
- }
-@@ -1320,6 +1332,8 @@ static void __invalidate_reclaim_iterators(struct mem_cgroup *from,
- 
- 	for_each_node(nid) {
- 		mz = from->nodeinfo[nid];
-+		if (!mz)
-+			continue;
- 		iter = &mz->iter;
- 		cmpxchg(&iter->position, dead_memcg, NULL);
- 	}
 
----
-base-commit: 075b74841bd0065a3bda3440873c747938e69b68
-change-id: 20260808-memcg-nodeinfo-null-guard-dce5f63a2349
-
-Best regards,
--- 
-Prakash Gupta <prakash.gupta@oss.qualcomm.com>
-
+>
+> Muchun,
+> Thanks.
+>
+> >
+> > If this looks good to you, I'll send out v6 with this change.
+> >
+> > With regards,
+> > Sourav Panda
+> >
+> >>
+> >>> +             } while (read_mems_allowed_retry(cpuset_mems_cookie));
+> >>> +
+> >>> +             nodemask =3D &local_node_mask;
+> >>> +     }
+> >>> +
+> >>> +     if (hugetlb_cma[nid] && node_isset(nid, *nodemask))
+> >>>              page =3D cma_alloc_frozen_compound(hugetlb_cma[nid], ord=
+er);
+> >>>
+> >>>      if (!page && !(gfp_mask & __GFP_THISNODE)) {
+> >>> --
+> >>> 2.55.0
+>
+>
 
