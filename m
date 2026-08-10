@@ -4,141 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1097C5AD7B
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 12:59:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF046C5AD55
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 12:59:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 057D86B0099; Mon, 10 Aug 2026 08:59:00 -0400 (EDT)
+	id 11AE56B007B; Mon, 10 Aug 2026 08:59:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 007FC6B009B; Mon, 10 Aug 2026 08:58:59 -0400 (EDT)
+	id 0A51A6B008A; Mon, 10 Aug 2026 08:59:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E397C6B009D; Mon, 10 Aug 2026 08:58:59 -0400 (EDT)
+	id ED6C26B009B; Mon, 10 Aug 2026 08:59:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C068D6B0099
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 08:58:59 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 53574160161
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:58:59 +0000 (UTC)
-X-FDA: 85085364798.15.23AA58E
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf17.hostedemail.com (Postfix) with ESMTP id EF32340004
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:58:56 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Gzz3kVOr;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf17.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CB4766B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 08:59:40 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6770580157
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:59:40 +0000 (UTC)
+X-FDA: 85085366520.29.A372C9A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id D9A348000C
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:59:38 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="T8N/ScqI";
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786366778;
+	b=3mAODuwc1ccfShvragmNOTdNwRUmbujrIi7TprKh9pexQ9XuDUlB0Rp/6Y+ipIO4+16Yo0
+	EnxTcS0b39eH73q7LoQlGXlGF9b9rHJhL123jhmvBkz23kVoCUQh562n97KeswCcOXFte2
+	ay/NIw5AkQ1vSLItza2czodV3qBUz88=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="T8N/ScqI";
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786366737;
+	s=arc-20220608; t=1786366778;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dSiblIiYTIEmqanmh2YkYImArEcTnczokd31LNN7kYY=;
-	b=feWr8YtxBZQjOaGq+E4cGZAntOcvBXvYxKVTUbQ2Cw3ShPStEiubccyz/eJV+uvM0Q7Arj
-	lw8/fbXPz+kjmhwPySdCpI+6vYnH6uT1nX/EQAi0RgosVHLa8ChohHujYwG8YOJOyfLaPu
-	1GDSCN0ln3eEktpVPtZG/At3bgQR+eA=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Gzz3kVOr;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf17.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786366737;
-	b=p0WRvbUoWUFgxcPp9Jp/tTwxAMR+DDbo7zAcS5wT+rzvSROJC4VP8OpQbmldCMgus9sobI
-	iCPsbcoyZlFJEJn6AXQyfPJ9D2Up/GpY6XF5kw/fXn7qUkApDmjamDG3FNY9dRmtJ16EkX
-	Tb+Pod8SkYXgB59Tpzdqm+qS9EXXr70=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67A9VesW156779;
-	Mon, 10 Aug 2026 12:58:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=dSiblIiYTIEmqanmh2YkYImArEcTnc
-	zokd31LNN7kYY=; b=Gzz3kVOrvWCVRzZkdQEYdPzIdPMzqy4qsVDzew2xBktM85
-	GE8iepSqJ+ovQBywfgeyr04ta//fK7T7YrA/4X7WnIy+3TQxLZr4GGszy9akGjfW
-	eQSFSKcbNUKv5W9QRgx4L4V3tVG4B9QIcgh3zv7az/m3Xq2zdXKwxvoW9To9wcbZ
-	AP8JS86gyANYkvPQkdA+C3KLmn0XumA4XyMh3cFBsIv4UthRJa12UagfR/ALa2xr
-	4sglh+x/gFAGaZ3IUmXbDOXOf+PQiNhdqowh81WSym4VBwiUNNsGupcfCwpQBxy4
-	AKKjSVISEInI+ZhhaRPfC7PYfHFcl+IG3dbFN94w==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fyb23h04p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Aug 2026 12:58:47 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67ACuhGB009990;
-	Mon, 10 Aug 2026 12:58:46 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxhfxvkg1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Aug 2026 12:58:46 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67ACwjlG41419190
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 10 Aug 2026 12:58:45 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E034D20043;
-	Mon, 10 Aug 2026 12:58:44 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 980EC20040;
-	Mon, 10 Aug 2026 12:58:44 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.224.92.206])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 10 Aug 2026 12:58:44 +0000 (GMT)
-Date: Mon, 10 Aug 2026 14:58:43 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
-        nico.pache@linux.dev, baolin.wang@linux.alibaba.com, baohua@kernel.org,
-        dev.jain@arm.com, hughd@google.com, lance.yang@linux.dev,
-        liam@infradead.org, mhocko@suse.com, rppt@kernel.org,
-        ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com,
-        usama.arif@linux.dev, vbabka@kernel.org, ziy@nvidia.com,
-        usama.anjum@arm.com, linux-mm@kvack.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kas@kernel.org
-Subject: Re: [PATCH v2 00/17] selftests/mm: improve khugepaged coverage
-Message-ID: <f9e0fe38-47de-4577-b638-1142d4ffbe6c-agordeev@linux.ibm.com>
-References: <20260807113647.3744609-1-kirill@shutemov.name>
+	bh=MYlcj+u2W+VYiTXVxXMnRS7W+yO0vIm6ouPOUsdwmkc=;
+	b=OtPh/vig3n6tGNhCV6/bb24ttsxV4HyKHRZEz0/YVsqXAk4HbUnMNa6hpGzVMuzxGeNHDx
+	diGyH+W/dwB153+uFQyKEr1ZwWeCaBp58VkCBzl7nTrMbVJps9W8qDLHE6HXW79RSxrQQ0
+	OooN2iWkv7J04UD+Kj48nblljHQGHyA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5AFB3601E0;
+	Mon, 10 Aug 2026 12:59:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4AC1F000E9;
+	Mon, 10 Aug 2026 12:59:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786366778;
+	bh=MYlcj+u2W+VYiTXVxXMnRS7W+yO0vIm6ouPOUsdwmkc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=T8N/ScqIRjJAOgYs3+PaMhjfCYen/schAQ8rtWFcVjOk3u8u4UptVgFR6RGq3Dx5M
+	 VGxojNJ5+REH0WMRaMaJtyik/MA18pnCOt1Sw/rDp8h6KvlISnfEQ2soFKvT6QiQOb
+	 wb69fjmO/6z5KEtcNhwbYf5jr915axnLMLnECgKo4TGU/0p4sSL6to/iTe58v/lKET
+	 SS7A5yrPnG5XG/SjiWg10X9WT69T2A7Skc/4xpnG0Y2pQH4Bld+fcLnkoGJeA6MpMa
+	 B8NXAo/NJsKxM2bDsv8dcSZIAA/I59WOXNFIqvfMJevz9SsRxfieYAoWSE0YG7Ujgh
+	 5cqh1ljwPA//A==
+Date: Mon, 10 Aug 2026 13:59:18 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@lst.de>, Yosry Ahmed <yosry@kernel.org>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/6] mm/swap: rename __swap_writepage() to
+ __swap_writeout()
+Message-ID: <annK9htFubx6tNOF@lucifer>
+References: <20260806-b4-page_io-folios-v1-0-0899bac3b826@columbia.edu>
+ <20260806-b4-page_io-folios-v1-6-0899bac3b826@columbia.edu>
+ <anYPVB3dwJCVoXVv@cmpxchg.org>
+ <0208741b-ba5d-4044-9991-575d162f7513@columbia.edu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260807113647.3744609-1-kirill@shutemov.name>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=XqfK/1F9 c=1 sm=1 tr=0 ts=6a79cb08 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=Hq8G7kb28POlo2kKp_sA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEwMDEwNyBTYWx0ZWRfX3SMiRUWGUIYF
- RNyU+VCVbf1wMhedsG6ts0uBTyN1XnDiaAMXFz2VWe44OSsqpXaI+Bmri74bCkxf9i6g4KZxvxN
- /Co9yK844fmCV0bN7XfPlcnAal5YKqAIyo0BuVqHBElKQl2F1lq0tvPHVACmi5MQD1z6v4gswvr
- KJyzmHMQigwl1HNGYwLRBjY2qmkLZ4wYIVc0/HNhjFo5CePLHDNqmIw7jQN89Ejx7TJlVQFCYiW
- mO9p2mrLmRXcHHELV2wNYdvOxQew/qiX/26CDPMaWdhG4PtSMYf2QM6FmjWs7vogcT+dF7qMp+8
- qC9nTXyoAjpU9z4RRqVoCFf5FHAfjMFozcBsa2nBVr2jryzcazoqmW4otD78hY6vnJdS7MtKl/b
- AFyD+iDMFbP8mBUTZnrSrtjyDNPrX0rAr6Wao2a3DbZOGWgsifZLv/nFtazcuPYgUi6MHdDsG4H
- XX45j6Tb9iaFm2M+L/A==
-X-Proofpoint-ORIG-GUID: ANPpCN1PvFh-XlYVrdF7tqcS3P4jSn4Q
-X-Proofpoint-GUID: MSLDefExe5nYuA80fEPFcTJzJ6JhaPnE
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEwMDEwNyBTYWx0ZWRfXxRcTmIoc+1PV
- t/cLDMYLbX9lYLzgKBJM7tHD3tS4NKxxH1mJtsg8jTvBc3VjZYTwBrNQAsrt2ZWqOiFfLZlllQ0
- QMotxG/f3ULO8iSWDN6D2TkD6oGk+Ro=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-10_02,2026-08-07_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 spamscore=0 adultscore=0 malwarescore=0 clxscore=1011
- suspectscore=0 priorityscore=1501 impostorscore=0 phishscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608100107
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EF32340004
-X-Stat-Signature: onbiak7t36i7p5qx5yxm9erxdma8c4gx
+In-Reply-To: <0208741b-ba5d-4044-9991-575d162f7513@columbia.edu>
+X-Rspamd-Queue-Id: D9A348000C
+X-Stat-Signature: inuc38braeomwq8x96cq6u3dj43gxf3i
 X-Rspam-User: 
-X-HE-Tag: 1786366736-105053
-X-HE-Meta: U2FsdGVkX18SO8rsHfFlr8kv3H3wnL8fqRXH7+T383GfAJR2alrVmiJq/gZ+8huceWvYwr9SDMcHYoApvpsO55HIkehAj3Pkflab/9w+4VydQsEO4HeLnabxwwVvroiy9EDzfOIXu1pF92UUJDWE8B1DsexhsRTdg4FJ6BRseCYfWvqbjC7kRiWUe+GKcem9WhdpWAHwvrUneiAo8lbTzqzDEfHu+sDhRgvGUCYtVgSwv40jhaqw6hHNMpXQmrIauGOGcXzq1Hx8tFrGce2MzfahGcTFnO6YS/BBH02K2yldxALLf3WrX+rY9ljWn/hmlIaMQ1Uu0kRpiSD4ZBaka0KY8pFaUBsyfwpCR3sqg9bKQsF/aRgM0VM/7yxESP5criOpZER+xHlKVCOJQz2EG4iZRDwU/epllk8VW5lg+Er9sHHfm+VKkT95YUu+/Wl2IKeHFPzG4O3yzUXgFzzPnmSUPtrFjhRLH4RqCOdnrZKkm2hkDWNgpxobbXc1lhVSpA78CNe8XuT0rGil83XnKKkAVxBPU1PuIm8DRpCLWc0OtX8S4/hpFPh8IWlp6PvGAJUzPRVw6zWxP1qtOtOgQ2KB0qYOqQ1k6+qsyjNexoflmjHvVKnSC0EFqh1ufc2YVc9TnzUt4Mv6guiLKksCdnxrEvnjhavmS71LJVmwq9fjalm2zqIDrZNzyubdp9uHQjOaiqnpP3Ny6sxn3lJACHgtAMFsAwl49vYYbZ27hhm4TDx/ofspfcOko3kVoUMMBBzrdqSmK07Bx3Rugnj2roWcO5LeTILSrv1dPrMrDYY6WvM9gzjFhU3esHZYE8VlJSBeC5TUNzoTu+orL6sKKfu3vFYHY0DeTRcuWA4oJuuMhf/NuOfsLvP5gIQFmkUDCZNvJRqE0JHfUIBG5/EBxoDGvzw/N0bMhGh/PlIaj3mdqKlCZZl7CGP18UOVTzySFDPglnBWQuEkH7Df+8o
- OWH3Jq6k
- 9E0vIPT2SJp23p3+BuLLb9Kk5FpBNWxWhsUtm+euOqA8P+bjwNI24nhyOZb5zZhZOfA5zwqjWYfmRgW5TPpH42u7QRGYj1R9MrTw4zgYWEsTcEc7qAoPt8H+mt7OEfbTGHzMTJlutKY6z4WJhCJvhqr83aMTCBmwJw4ky+IsheVBDgarxT/DLJoksz2Y99Bw0Z2mczslQ+NFdajMmntXEmfGAbM67rb17yiBYrD80eVnCOL9RV9UvqvnhC51552IGOaRoWUQoY7JU/CdStlJ3/s6oNf4RBYsBLHWT3LZZZqM+gVib0FCDMo9UPU+O0KnLOYREQkbnGr9WVzuVDxm47iSZug==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1786366778-649947
+X-HE-Meta: U2FsdGVkX1/OvgJu9dGILgpaVZyIP9g3d2rcrLOU0RFqec46KeRTozqD+ObjBgvokoOZoTb9ujvlSselSfFqSl29fSfvHyFk43Z7foeM7d+DySmbmfvp4bDP2sxppLmE0mCFsHjM5ZxC4w6JUB3H0M2PzOKOysNztmvI55VH5YFPIVzVAzDloOqC5Udf9dBOaX20DAPfGdQPcL2FBchm6k+P2IJUgCQNj0Z++Rq7uJrs3iImbOdlj45s25O2WTNDNiCr0O8UVsuan0gJpXXkDaIQUgRoGKl1YsCxJIXNRwo0yZ8nrF23GQVnrsR30xfFQO2pVBF2YuM4BkBCKnjkt02Xc/KAMLh7W/GGCJGYZGvUQ9BNyIwSA3EiB+NEWNRHHvd3T+PqgSAWL9lvc4oNXVOWGNU3l2E6aSX6w2sqtr/USy6emekzdiVgaHCJ92q+Uo3f3Kakk/T+2Pefzh/eyxGvIKPEz78CdzKAN9cios0YoevuLg4OZgZdxKD6ELwLTcP38zh2drj7QJR5iUe749CHcyJ6nOZcCwdED07WD5B1G5TRErwaD4iB14lVtehQIGn3OSIQ6BgyLGzO3/7Q6K0PV879Fvj8ZPOWCrP32bXDT+RvGk2e+oGzpR+I9i3kWwEGRcbTyLr/wuq46fEHn44jfPaCPJttLm5XhYqSvsQSAYUAsVuhu2x82kyKikbuY0t8kBSCZoTPS+mo1e5Lf20Y5oRz3UvxvkiXzNp6iZa4q3oZV8MuMXP5ZILaUoeOFbZazCi+cgN/2d1v0HWglO1jTZC13PcMhLy2YbSA5G/TYVSanQOWs8be01cmFh26VCCrbaZXNBUxi0bE0KfXoaAA2m7Z5YLgIzDznFtcprmKoEREmPtkbhJOZ9FfSEPaylE54ZcfPsm7wzinwc2AvF4kB604myvtIPVCePtCPnEGL3Un69vwkzOtLDbjxNKsCBihzQxM4PcgzNtaixc
+ 6vdswmcl
+ qrrIhq3wcYapYy9sonuDSrYQ6+zncqY4g/MydtS459amVdh1siZ+NwDfyEw0pMPXd+dL+2GCyMnJuW+FXWeZtkTukhZAMeorL4jxunI0Htn7gr8GFz+WJvdE4R3oT3qAcfCpWkNdKx6/gN6TsP3C3ss0/9wLEUeEawTysawWSfvwj5wy2LGwCECLNqduhtGWB2t13E7mBSTDob3vkUrgoEXL9qyKeSe2OXX5gnRKo2JGErdh479Df+KPUbj7kA+zBO/BcXkVHDi0f6ALn4hrlisn5Mj8n/rWAU2xeiUTb74PFK7g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,18 +101,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 07, 2026 at 12:36:30PM +0100, Kiryl Shutsemau wrote:
+On Fri, Aug 07, 2026 at 10:44:31PM +0300, Tal Zussman wrote:
+> On 8/7/26 1:01 PM, Johannes Weiner wrote:
+> > On Thu, Aug 06, 2026 at 06:55:38PM -0400, Tal Zussman wrote:
+> >> Commit 84798514db50 ("mm: Remove swap_writepage() and
+> >> shmem_writepage()") renamed swap_writepage() to swap_writeout().  Rename
+> >> __swap_writepage(), which operates on a folio, to match its caller.
+> >> Update a stale reference to swap_writepage() in swapfile.c as well.
+> >>
+> >> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> >
+>
+> Thanks for the reviews!
+>
+> > Looking at that commit, I can only guess that pageout() had an
+> > influence on the swap_writeout() name.
+> >
+> > However, on the read side of the page_io.c API, we're following
+> > swap_read_folio* consistently.
+> >
+> > [__]swap_write_folio* would seem more symmetrical?
+> >
+>
+> That sounds reasonable, will change it.
+>
+> > [ At the risk of starting something, should the file itself be
+> >    renamed? swap_rw.c or swap_io.c or something. ]
+> >
+>
+> You said it, not me... :)
+> I like swap_io.c - happy to stick a patch at the beginning renaming it
+> if there are no objections.
 
-Hi Kiryl,
+folio_io.c! ;) Kidding, swap_io.c seems reasonable, feel free to rename it.
 
-...
->  - Dropped the swap-skip patch, an equivalent has landed
->    (Alexander Gordeev).
+You should also update the entry in MAINTAINERS too.
 
-And dropped [1] following David feedback [2]. Would you pursue the proper fix?
-
-1. https://lore.kernel.org/mm-commits/20260808063054.B75691F000E9@smtp.kernel.org/
-2. https://lore.kernel.org/linux-mm/9d0d98ea-05bd-43c0-bb36-68aea62cbde8@kernel.org/
-
-Thanks!
+--
+Cheers, Lorenzo
 
