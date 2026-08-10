@@ -4,94 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1923BC5AC82
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 03:16:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0BE5C5AD55
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 03:22:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC5E86B008C; Sun,  9 Aug 2026 23:16:43 -0400 (EDT)
+	id 89F886B007B; Sun,  9 Aug 2026 23:22:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D763C6B0092; Sun,  9 Aug 2026 23:16:43 -0400 (EDT)
+	id 850216B008A; Sun,  9 Aug 2026 23:22:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8D896B0093; Sun,  9 Aug 2026 23:16:43 -0400 (EDT)
+	id 766356B008C; Sun,  9 Aug 2026 23:22:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 98BDB6B008C
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 23:16:43 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 89F8B1404CD
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 03:16:41 +0000 (UTC)
-X-FDA: 85083897402.01.59D8C31
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DB6DB40004
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 03:16:39 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=aoI+iny3;
-	spf=pass (imf07.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CB096B007B
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 23:22:05 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CABDA1A065B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 03:22:04 +0000 (UTC)
+X-FDA: 85083910968.21.E2D1CCF
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 4DFD51C0007
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 03:22:00 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=XMg7xexI;
+	spf=pass (imf21.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786331800;
+	s=arc-20220608; t=1786332121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DPDbH0uDy9khnXmwsHeDwlaELQ6SwGd2GWPEwSHHQbI=;
-	b=jf1Hf9O/mH/CJIsLp/CKGflSvjTrwrDoE56azvbas9xxr/I3PivurQXfG9e8InSYvgj/fP
-	ovk56LY83XSauHUTUQPD+miMK90xvmwjR+kDT9L6OukoFiezSdRF6bj/BptVOP7IbS3sex
-	P0pQUb+WJ/bRQxUSs5jqn64SN6tJLWM=
+	bh=8TjGFoXlF/ytQT8rm9ADFZepaiWE5JQy8cHAE80+I10=;
+	b=d7I8KyCPQlHFT7TmAWba6We60gsNgo5wUUDk6ZrWw3RrSPcIvGxL4ckMxDoCL9xXU86ptU
+	F9gOGMwaRZm3wvOuyVDwMrKAfFS8gtHdeYyBOPyTpBrxUkHNoyqERACK7BVpx8Aor8cXnD
+	dcqjnqh4NQjFIWeA74xRyRjeLRqWB3k=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786331800;
-	b=oPLnsCxZ0CENhHnbjzGmwdStuqUC9i/tD1BJZPet9QmRm8OGsdhytWKS5xL6HRFTc+ugau
-	xbtuJ03ET4+Z7KhQ/UFy81VrU0t5GPJuX80EUPaQgkcyq+PqmNglLVzuULJiHhWpXVq/Q6
-	kOVifSuIx8+mZBBUptgoSCaOrMU84Tw=
+	t=1786332121;
+	b=8IMqohqOA4v2bVIWAzb02+UA9JnBLdcg6n+ZnvucrIT0bgy2Q8e1zQqxLnIVU3SE8YgYkp
+	NhsdlIgiJUK4cxg5uxwe5DKGA7k/oQdHeHuwiYpy//VDQF+h9xy7kBUDGASt6mFbZcmLcF
+	B5Fmc1inJtqzpa4yFtBvJFhF87U9zeQ=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=aoI+iny3;
-	spf=pass (imf07.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=DPDbH0uDy9khnXmwsHeDwlaELQ6SwGd2GWPEwSHHQbI=; b=aoI+iny3FaGb3bAaDsa0/UBRlL
-	O+VeMxmEN3Y7AStBqsGmtlZufMKqDGHw1GDrO+5YH78pdQTtig+r+YyoejMiAWy7hvOVH1GDOOHTZ
-	r8dI/ON94AHdZ4wXn8r7ThiGGajXB1aFKLG9C1kIcLQmIHW46tSx09L198TGJ4vvUfTwbOUXH5C7H
-	9DZqZTat5WE+QjFhSRd811f47Y1n8lYUtwkVQxd7qGKH5gRJ1Iobfnvty7XbjPAMKycTUikFngCTl
-	qNRfVaGaPlFjESwxpsUgqftbLTMrHYLdRTMI+WnwuHRAOiHtoMEVScLG7N4setaYuGr+Hl1n8PvSR
-	Hu46WO2g==;
-Received: from [96.67.55.146]
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1wtGUx-000000002vh-25s0;
-	Sun, 09 Aug 2026 23:16:23 -0400
-Message-ID: <705e54c4cd6f49c930208e450cdf488e8e75cc21.camel@surriel.com>
-Subject: Re: [RFC PATCH] mm/cma: don't release CMA pages still in use
-From: Rik van Riel <riel@surriel.com>
+	imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=XMg7xexI;
+	spf=pass (imf21.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=8TjGFoXlF/ytQT8rm9ADFZepaiWE5JQy8cHAE80+I10=; b=XMg7xexIOJkI5TFBsySMXeHs0f
+	uSLNSaM0LZLiWWkWqV6GKiEQL5m+UaP7o8gMkF5n+o7h31jMIisallq5RdyACr5B/njvuP57uLb9O
+	+TN0+aPkCwnF4SA3+OiNwRlAzE95i1b59KYuGdtDfvs198uc468Ss4YKCRVGwzfx/JClozTepM6zG
+	/14nwnkjB3IxUpRuOXg9dY0tPH3qyQlmAY0d1WZNSEg5eSMspoqIPH2HF7wayf+XQ0AUAQTefXRDu
+	zGPXqS+Ct99EuxOADe4+2LG5w0YUV0VSkDEE1ex49ZQmVLgBWP5RUSEjbUyyP2bslaGG8Y5DM41C1
+	pc/2YTow==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wtGaH-0000000ABz8-0sTb;
+	Mon, 10 Aug 2026 03:21:53 +0000
+Date: Mon, 10 Aug 2026 04:21:53 +0100
+From: Matthew Wilcox <willy@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett"
-	 <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
-	 <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
-	 <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com
-Date: Sun, 09 Aug 2026 23:16:23 -0400
-In-Reply-To: <20260809210608.06b5ccb9@fangorn>
-References: <20260809210608.06b5ccb9@fangorn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+Cc: Longlong Xia <xialonglong2025@163.com>, Mike Rapoport <rppt@kernel.org>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Longlong Xia <xialonglong@kylinos.cn>
+Subject: Re: [PATCH 1/1] mm/mm_init: compute hash mask with unsigned
+ arithmetic
+Message-ID: <anlD0ZX0BZb_MVNw@casper.infradead.org>
+References: <20260809123119.3811851-1-xialonglong2025@163.com>
+ <aniIuZa53OBqCMbB@kernel.org>
+ <d12a05ac-037b-470a-a91e-722d15ed712f@163.com>
+ <20260809181400.148e68eff30394f6b029f4d1@linux-foundation.org>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DB6DB40004
-X-Stat-Signature: 77s7wo5mb46cm1pnns1xfg97ztrd4yi8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260809181400.148e68eff30394f6b029f4d1@linux-foundation.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4DFD51C0007
 X-Rspam-User: 
-X-HE-Tag: 1786331799-940278
-X-HE-Meta: U2FsdGVkX19xuMCCo5M9horBjRfeqks5M7oceJZIzCczZ5lgy1vaiGHwaDqB3PoPif1iypldI1o49qHP4vg//gJyVOpLgEljhvL4R24TU0N7PL0AWm/fbA7wDuAThS2ZRFOtDR3utJ22KNXxjBBjBMXJPAl4/hzsLu2JGi72QvGrPWT5bpMoah4Q5mNEstJwqWPygx0j1ePZve3cLonRBDeHjP0a2QPnfVC0tPzUrVAN8st3rQH0fKLkaj5tt6i/KBEMMCgsyiPBHPG7kRrF4p4+kyU+R7vxz3nhlZQbUjdfaEYF/S4UTgwAQz/jfuYai1Nm8bej9MUDgyNcN/su5PDlfm65wprIjqbeiGa2iiD+bAEq/SOjTQOL0A+U1cxUeBBwdbPFqV7AmfbugUpHo3xc5FiI+YOq+WEoS08E77jVv1HWYbjmmFImrFjeIk6DMtBIkIfZBqjfL//r4OSJ7SMRbbviYaAiJfKVYtDwAOcjGKqEqb/hguFqck+tVjtzZXfTSHvKpNKx4dZD5dCU5KRUEb+PtJ4EO/+J1JdUUJeIZrAGrqvwQK3PAlcL+m7e+qafMbYZEPqXoSqSQqubyluuAPOs/OuB6nkYKRyEoRdlY1y93iUnbiSTwcPk20lIgSJVoLZFrhd4qmrUIHqY8Xuq0W7wTiEKrlh/D+c4lP/U4/GdAgMfnQZoa1N7kWF+rRtG10+v9r9/KF8AgHXlbuOf0rb9QAkqiuuFDhmaqEsui84+tIjta/hqPHgu0AU4ixXylRItXoVwgV/C8IvDTbDel5G7o8Yc9TPxelXwoMacGXwr/xfS1AAk+YBiPGFXGxdZ0exY0Upemq6mzZQhrJ9Nb2cticSNq1A5VkApJckIVXIW67UTdXjyoigeUUZsSAeNoHkL4Bjh1zDaB8Q2XWNKuD5jG/AafiYs776hHpYLK6UAsTezKTIOJ3EB4eApsxV677XW525dptJTdle
- h11RkZln
- tOPLjkOj2tOJ8LarsHi133MSK5AGrHxHHgTswtNBLf65Qk2EEISlNFS1+IrfcezYPEwD+OUX3qNwv6hFBujpsR7TNCf+2tBDaB6cXEuEHGdA/0dG7aLlW+5JfAUpxixi2KT9WfcnR/8D+OzoHqwAPAOpXsU/q/U+S6XobQYH0wIWu5j7+B6hw/7Z/+NJvF6pq8PBkH4fsuIvB3hC/gj6/d7nr/zLVK1c2iE8e1MiyAb/HeoucDI6GAVLJjp1IXn/gRzoJjZxmkGkAss8L/eE/Y/zu6g==
+X-Stat-Signature: eyhw8oufpsmos3kky9pyfb95hw9nnxck
+X-HE-Tag: 1786332120-291239
+X-HE-Meta: U2FsdGVkX1+LobbLMidELEWO4yXkaWQwbCWiUL2ptG7E3l6hsZbb9QwAYrvhfEvs0hb4p9wAm2THgqDFEeEwQM/mRNBApQ2KEO/doTn6dwFlUfxX2sk8dodud9TnhMKY+aOG5HvV59JzJbPoLpAonEOZanNi9Z7kT/zruC2GnQghIKSW1480GbbqNpVKKlRsBvon4vCRDEcR0I3WU4ARuVqj2Kp1gWJSu6dvKlo9Rk5qG95xudz2AW27u7ZDjPEXE2gMiRPdxoaOBCS6hAEoVuVp8QqoHek0eRwKz3mkujHLoQ69362xPHT93pK6g33P8x3G02O+Y0B69kxJGsXXCIN2KpvAThNiiyM4x2grsqoQk+8Gf7/SL4Qg0kQcAsg2mXlQ34QH0id5QH/zFoU/27hUUMuhrHgz27yRc7kNH8WEDYYl621NNJ7Udobxtkoo4lmMIpi6IFPRzSGh6aHjAkRtlZtl3uS4jDT8+vw3YjZLVXYY8l5ECl2FJQiZncCd7EzsXUNkAbE0/5THsTUIMq28F3JDecbwcAh0HH+oB1y9i34VyauHXQKUEbaeGfA2qQjmUkXfP+GTI9aTgrThopjPaD0zXLdq1Dz6A624gBmIZYugX4Utv0ALzzUIpm1jHSfVMu8vyzbywKCKE8WgXnTpdkGPknr67C1VkYaQdyCg2UCdIsAgi6wt7nfBT6+SkQgmaa1auqFt8PSVbqPlGP3r7qx7zmKj2Kqh63gEMvLUDc7PW0KKGDY29AAP8x9UjKSNH2oAIasnhjfAxB3cozSE8iiuTL2rTBDNF6Szbs7Og4GJn3vXMMjJPulV5LjJG9Q6CcrwwhE/RLwU6MWD6QOxfUA7O9/0BZ6U1vfr98ePVDfqkY3afn8xuIpD2/NlCzKN1ZhirwVqA8ZfRbK/otWBI0TOEnFqGi8YZSsgVcaVUs80+fFw4ZadMvVl6YVxJQFWzlFa7v+COzknqXH
+ 3QJkvWia
+ gba8jWGp0evGyCIqBG424YdSpnoorkGLNSiiM6ZSjgbf8U6ETvZdjaapfIDHc+vCNKwsRe4c7l0S1n6UUCWIlYgNUcTvw4RDQayIRqvdPAa2x7T9cL1G4dAdoZP04YuwXFNf/wvD6y/fnRe/+C1rhyI8XzSeUl3I7mECGVTh5OagmMJMg4jAaZvmA7FSYhjsoFfHS/bLQEaDfvY1q+Wjn5odVW69+l6JV/W2VQ0n/FcN7fFKHbsp9kXwqU8cZ8UBrxKSkcEVv5SLEjQUijtrpnDbh1MLuovk3E3zr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,25 +93,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 2026-08-09 at 21:06 -0400, Rik van Riel wrote:
->=20
-> This change should be safe because nothing can get reallocated while
-> it
-> is still in use.
+On Sun, Aug 09, 2026 at 06:14:00PM -0700, Andrew Morton wrote:
+> > >> Use an unsigned literal so the mask is computed with unsigned
+> > >> arithmetic. Supported compiler settings already produce the same
+> > >> result, so this is a source-level cleanup with no functional change.
+> > > If complier already takes care of this then why do we want this patch?
+> >   
+> > Fair point. Since supported compilers already produce the intended 
+> > result and this patch has no functional impact, the benefit is only 
+> > making the unsigned arithmetic explicit. So please disregard this patch.
+> 
+> It's a very small thing, but I believe the patch improves the code.
+> 
+> I mean, we erroneously compute a large negative number then subtract 1
+> from it then copy that larger negative number into a signed scalar.
 
-And of course Sashiko found something I overlooked.
+That is an erroneous description of this code.
 
-I'll spin a v2 tomorrow.
+1 << 31 is the largest-magnitude negative number, ie it's INT_MIN.
+We then subtract one from it, so it wraps back around to INT_MAX.
+So the number assigned to *_hash_mask is always positive.
 
-https://sashiko.dev/#/patchset/20260809210608.06b5ccb9@fangorn
+> The copied bit pattern happens to be what we'd have got if the code had
+> been correct, but the code isn't correct!
 
-The hugetlb CMA code uses order 9 as the smallest
-size that may be returned to the CMA allocator,
-which I suppose works because when mTHPs, THPs,
-and other movable large folios end up in the hugetlb
-CMA area, those do not go through the CMA allocator,
-and never touch the bitmap?
-
-That additional bitmap alongside of the pages and
-page blocks looks like trouble.
+The code is correct as long as we compile with -fwrapv or whatever that
+got renamed to.  And I don't see that changing.
 
