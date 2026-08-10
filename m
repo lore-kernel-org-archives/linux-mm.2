@@ -4,92 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4676CC5AE5D
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 10:22:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8D3DC5AC82
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 10:23:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1AB636B008C; Mon, 10 Aug 2026 06:22:27 -0400 (EDT)
+	id AFE2E6B0093; Mon, 10 Aug 2026 06:23:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 136606B0092; Mon, 10 Aug 2026 06:22:27 -0400 (EDT)
+	id AAE2F6B0095; Mon, 10 Aug 2026 06:23:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F400B6B009B; Mon, 10 Aug 2026 06:22:26 -0400 (EDT)
+	id 94EEB6B0096; Mon, 10 Aug 2026 06:23:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BA4616B008C
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 06:22:26 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4E651120711
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:22:26 +0000 (UTC)
-X-FDA: 85084970292.17.A92CCD1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 943474000B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:22:24 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F4DFGiUo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786357344;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 58F086B0093
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 06:23:45 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CD930160704
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:23:44 +0000 (UTC)
+X-FDA: 85084973568.19.930B397
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2AD6480006
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:23:42 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b="ir/ZsRJj";
+	spf=pass (imf02.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.160.53 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786357422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NwWyhFg/k6MrmsUSXMiKAMqnHT9uyrXn8kBQTew3w3E=;
-	b=RU0aaGYTLvhUxWXp9B8KRBNdBZmAS6Gf/xGRJUjUTbIyCB6BakdISRIV9RtukvwHIGKxIQ
-	INfG5YkKOqh1LWDsxwdOHVX8EglIqHkanvTv7KPrZZDW5W2S71HXp068D3WUO0ELD/QZiL
-	W8tTE9CdaD2O718Lf8MXV7NlzL63AVg=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F4DFGiUo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786357344;
-	b=0I59gaFqeIqf63tg9b8NXBnqqHjcEfDE9bf3ZRaYewfzfku1d8d7oSZKLNLFYk+q2Fr6Fs
-	R8h7WYTYvLN080uzmfSnR8SsJumqkdR0JebLJuWjJ+mJLvEi2gqNXT5g3vhOfoEIT+JFKd
-	gdoHioer/jQboJTxU4v7Do+4vQPPyVg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C2EC9402D0;
-	Mon, 10 Aug 2026 10:22:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B1941F00A3A;
-	Mon, 10 Aug 2026 10:22:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786357343;
-	bh=NwWyhFg/k6MrmsUSXMiKAMqnHT9uyrXn8kBQTew3w3E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=F4DFGiUogDGpvWOhBc03f9eNfgF1LMtt/2L2dIaYpep9XEijeB8ET1w/ArB1+ePzR
-	 sG3dh/9uOGKG3SZNiQ3cyq/FW5WkVTVRJ5dRhEne3kLdDM1KRzsfPDrLX983W5lUxr
-	 svMHHvpZas2a48IV4ul8miZCjHaPQvy3/bGy/tyqfLs5avvTAVjqPegCXm5n9JTnHl
-	 1TND+v4Q4Y6zpU4DXq+ViR6FT+E4nhq85aFVbUr6qNar1iAVeOThgwsHF2SyVVV4si
-	 mxqbvTpgY0N3ZgtCJeFqIrYIGw0KCFtlUH8+tbn3GDSfslxbw961odYqt4ajxzjXkE
-	 Puk1uLltxxjJg==
-Date: Mon, 10 Aug 2026 11:22:03 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
-	Liam.Howlett@oracle.com, david@kernel.org, willy@infradead.org, shakeel.butt@linux.dev, 
-	vbabka@kernel.org, jannh@google.com, aliceryhl@google.com, arve@android.com, 
-	cmllamas@google.com, christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
-	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v4 2/5] binder: Make shrinker rely solely on per-VMA lock
-Message-ID: <anmlTpwKW-c51wYB@lucifer>
-References: <20260806200548.3124802-1-surenb@google.com>
- <20260806200548.3124802-3-surenb@google.com>
+	bh=BdyANCjCkJ+TfDWbmGMzYzdTHWuRlzmp/fLdKDSudAw=;
+	b=t8vEx4DUOPzOm2TiFX9DopVyyss6Y8nX9CAPJDs41FEg1hDoqDshgTtLPlxat1TVUrgJrn
+	6wxx8VBN4O+8qKYl0ZH+BO8bxfkhns849ckKfYlxh17E/iByXQHNLH9SxRdTfSDX5FHa5x
+	FlDFYzBtHCur9dQ4v2pN0Jvo5MfA2lM=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786357422;
+	b=vu113BwI5y7VYOjINK2V3mVjN33xTYaof9z1InA4BghE+t/yQlT+yn2KUW4HOk5WTVTH7K
+	KlauHMtz2tzVqkAwy/9xfShs3xQ2z6hQ3R/i0ZbjXX274jzk4RHvTQrElLkVPjwAo8eFrJ
+	eFdi7tkHXYRWj7ZT9z2BCC62PngZ5Hg=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b="ir/ZsRJj";
+	spf=pass (imf02.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.160.53 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-4518ad44e83so1009586fac.0
+        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 03:23:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786357421; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HSWxml6V/0NHTPP01Xc371nrr2x00oEy3qt91wy1YA3kkVwrPCNwxmHVfHzmZcUIc7
+         PS+SsFFtAR2RP6h4aPBlvwq1zlgHAazyLBlVA0f6aCrM6csof5CaaiQiAxloltAQBMl6
+         31JFc3aXVy957G4cdcff2p43fvIk9vo09TcP44KYse8Elk5oo9n5A7hFPqsEeoDhgQRc
+         astI0dFDiAtQ8I7h77APisHDKtmsddgzGdswKDtIC3dEJcEXRN7DcvhNg2hgd1ejqW8G
+         OHIqg0/58kAwgZ203M8cSipHBM7RxxHS2NumVxM+oKY5GBUWZaOdeyH8ClfFLCNmxFgd
+         mTEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=BdyANCjCkJ+TfDWbmGMzYzdTHWuRlzmp/fLdKDSudAw=;
+        fh=hHTq4QzmxLpGXddTjsIkUDmPrPAeHfP/xL4kqKQXZBI=;
+        b=eocKC99Uaj8Qw1JlZK7FuIMdCk4n8N2ax3tOfl0dN2Wu32rG5ZY5imo52FmJURYzO2
+         mVrwyOc5gVtzvoNuTK7Srdh20O6njJyOrJ84guNrnyWWGKuLcZht/u6NcaXWSqUeccyG
+         e2qw7dxdUxzQa+qbRkfJ86Md18yrXaCxVaLEa8VDJeIagtPz6GbqhoqF3vpEDJZzSThf
+         PpeZRfXXYH2gZOlBgvvT2Yjuwb1ECfVcPJk7iE7v58l7mTeYdcw0oS3tX/A+9K4qb9Ph
+         QvaIM8WOIPEdOyJp5LKQa7VLWe3ztwScg4qdND3dySl3aVAP66iUaPXjmCDLHMNXmvnY
+         zgZA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1786357421; x=1786962221; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=BdyANCjCkJ+TfDWbmGMzYzdTHWuRlzmp/fLdKDSudAw=;
+        b=ir/ZsRJjM5JPgAr4i3N80TMu14HGDizXRNfBPvp2TQ9Nre86H/L0hY0lcjOt6B2jlN
+         fhjkhsRK3+9wP+AkN7fJ0Vg7LTQ+31YfOLWSvnjqZKI0/1l1grXkPK3B1pfUfwu2J4pR
+         GITdWjHgjFsiNLWcQVZ4VrDr09XBdxdDpqYTi5W1gX70i8un2McDlsaVUKpkuUJtnSZZ
+         T9hEFcl34wzM+/Musvs6Stu6KICvAWwAahhgyU5ng0JSUy8AXD8ePGAECrOUNegP3I3E
+         VlRJPtB9G5LJXsZqx6pus8U1qKi51UTVr+ECaiWTL29+nge+cDj+EZhz4KW9IRjsOKl+
+         XNlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786357421; x=1786962221;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BdyANCjCkJ+TfDWbmGMzYzdTHWuRlzmp/fLdKDSudAw=;
+        b=Ka7KxQKe53cQbB0RUd5PLkyPL0ZoStf2JsbxpKX74BMYrwLY3NVZbAVnwj1hQEBxDJ
+         VNb0gg6GFM4yuwbDiIVeNxhj82Fabtxjrwa9y1XEV/o/ItW+pqNhjvs0xKLD4fUEBaCa
+         2f10ZrPWcGHWwdsuGXyGBRP2PfTy+5Qle3THMN8CkuJex8uOLmb5s0IHdkkgHSWl526S
+         +QmUNlvMficLgovWyKqS12DJzLf183tPCYoh3GWstd8zgraQQAHsWIN+v94/7OsKk+qp
+         dZ0ROswiiDO0oeuekwHOsM51aQSkkFce6sXspn++9pYlHBJ2jdAYyDZFk5J2klxzFcy3
+         1Nrw==
+X-Forwarded-Encrypted: i=1; AHgh+RrYaT7rFDrNQg1R4SOGEz6oMpXyT7vDiPXZ//bwba3mONQz+9SqV7HAotua81r9VlqSPrYiz9QKuQ==@kvack.org
+X-Gm-Message-State: AOJu0YyPUMoKyaH2cFzkhZCpHP++f7YhyKxPt6fU3vZ4PB39PnZN7tOE
+	jZmPMeq4LZ+iBHaQlMGYC+cD5FTXlmt9JuQ3N3K2ZR8Nj9gejTknAvg5TyOP/kxLPgbfS/3aRBw
+	ujBuKBJ5yIJheQPYYrFWdDDI5XD+JuGF1q4LIOyoOXw==
+X-Gm-Gg: AR+sD101BkVW/R55bs90qWig0QlMbkkxBu/Ddx2lW7Egn8q13UZiJgxOrTWMe6EGJ89
+	HFedXgN6lM7EVKVTmMRxwvo9U1a6e9ayHPfUK7BFdY8imrreyBnC3RiHvwXzqAS4nkyBzaJyj2d
+	lCzod08mUY7Q3ij+mHH+mMY4tQX3a8A2FWd54UQqstVj3AJGblkIxX9xUsyZI7JsRN7xkhmAS94
+	bIuip7PSDKApd/irzVWqBZFFdyteNG8wzmdRpd7muZQJ+Ge03wCiDAdoWX04OoDISM7yyb7OmRk
+	p8Acsjj00JNqrykECf1f5ENIKrbiBb3fU2d6fyZsn1/2TfI=
+X-Received: by 2002:a05:6870:2d1:b0:456:b63e:658a with SMTP id
+ 586e51a60fabf-459e391213emr14978663fac.18.1786357420845; Mon, 10 Aug 2026
+ 03:23:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260806200548.3124802-3-surenb@google.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 943474000B
-X-Stat-Signature: 9dnm4gnj7hscixm3ahhd5aeodmhziexe
+References: <20260608025043.88087-1-cuiyunhui@bytedance.com> <09ee2ea0-c93f-406c-b5af-1fe3a50c8989@kernel.org>
+In-Reply-To: <09ee2ea0-c93f-406c-b5af-1fe3a50c8989@kernel.org>
+From: yunhui cui <cuiyunhui@bytedance.com>
+Date: Mon, 10 Aug 2026 18:23:29 +0800
+X-Gm-Features: AUfX_my63ARI2eXUc2-yPXbYwqXPFzXgw_p2nJJNLFoZTC92nBcJ_eHY1Chb4zg
+Message-ID: <CAEEQ3wm8kyDSScYsAMTf6jdEqnQzQSi1xykqH2Z7vvJzQNc8Jg@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH] mm/gup_test: fix race with
+ PIN_LONGTERM_TEST ioctls
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, jgg@ziepe.ca, jhubbard@nvidia.com, 
+	peterx@redhat.com, yang.lee@linux.alibaba.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 2AD6480006
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1786357344-736164
-X-HE-Meta: U2FsdGVkX18Bq3ea40VPF08KE+6TxMs+7Oz0NS4MlyYgvC0/O4TQcqfa8tQHczPxfPM1D2i5djPgsLoM8eOkv2QfwzMvoAKEocqrGdW2gwEyNnst4hnjGrT9hiTnzlJB8Q1MO2b51arOD57S9P9Z9U2e9DzNwxeLU2wx2aFPspDPIJdZC0k6nrMuufZH2qqB1vxObLVSeWo14z7BdysW90wO7J2y327ARtMud0fDkpZHSqBGz0E5TpQyz4Otzm2GaFIWFI+B2RFRf6HNM+37ltUrJcSjeY3Sls18lSZjsUkUdukF0PtdavRptDZXmN+PdTc1tPz/X9s2/WdtSezNf6aiA+9JNL7676wxpVpdFmCSi/ZDe7TfUnvnlCN6omsmm5VQB8wRr3dEVYapBd5MDvgBwzwfEHkDvnxlWolMp6N4x5h3r2TQBiaLo/aVlyP0sL8DGz2h/689GBA/atVStqH+v2xZLYHBTTcKpGrt1bTdNZXegS0anioBvfWM58c+b/4xcZ9+5IoEn9HpAiGbVQw0PGtiGef4XsK4CUJW28XkLe3HoB6+MK5koqjR0MuyhWpqw94dsJlD8c7eg1sGqosb/UE5OyWO82BwC4BgNdDF+DUWTzHOJPRGARaCdq57XTRQK94aJxC+fACHmQzicQ+ISWAQR6GOtpgpHq+weXgk8GgXAj/Y78yo6EMEjRl6uDP/iZi/bxOFzSh8diZR6wN55OK8e2JSSbUvWquBzH5Mjujr8wEMTtz72vnHCGDIF05sqmTnBFKiSkUwASB4jA6puLKxQHPoHrZml/lQEkZyW3lI1LGRndkUJQSHBWNjIxGYQaaKb7aeXNR4Y0HkqQLoEDHP3m9vlaPQTnPQYNQVKKErBtnhT9lR4gRvG+3/JAf3an1hKHQ6KGl05FpdqBjGF15zY+q0UN5hZzNmzP4tTmqyybuEypkABt53ZPT/39P40rmqPH0BDSnu3D8
- 3SZ0Oh5I
- SJ3h5JqKC79JLvbEBIXln1idUdn7fRtNP9ETiWI9QFubkfMvhurzMTpWJ4otsiuWfYrsKOM6dJ29MIVcoAS9iQeCG84FJFUVy4TOH2lB3ZqlKS2Ex7u1Yj0d7zN01AgIp4y1M9TZ1hJmc4eZXKoqR/yfvUW+/iNJiattr6wSFioeMuA38VRUOFlLpfuegabwxvKXD2buavv8TugLlnlcccr7YGYn61lbZ2gg1vGZbqMwJl8RaaLXBZIDWXGcHdowZnovUF4gZHZp8iCgGqVDA11yF4YeTSpNChF+zVS2wXp3ut4WCI8XQW5//5qiGm6AFmSrdRsSR1iTQ7VFcnfe2ukLDIabv+x92GtmqbbID9og/sfsIA7cYZoBI2+teNYyUpSllNqKTE1vqBrb75xTTTqVSYitGl5wZgpsYQFHF4/qCT6PLtJgWLMq/icGp+49dOjcmMwpXllCEEYnVjfqRFn7nbAxf2Y6QRmD4DDgX5JWYzIkDtrQlADLcnG0JC/FVoRdZ544yBUJALyr8yJh3gxT0Qh3FAd65wxwPUlvn2UNDc/zUoRC7uFQP0ed+nNJKW8eUK0510b5oAX7tiWc4JMyCZR6Uq0uxtxUbyTumJKxHY8fxD9i1Ik24sfjW4E/I0oC1YJy0lgnZde9Sut6XtaTXMs0QGWltJbKSoFimDpWWEVJOGOH3oljXjQiXULrgeP0F1PPnBF5hCMc=
+X-Stat-Signature: y1aemeadtthwtbji8n985e3f8bfkg43r
+X-HE-Tag: 1786357422-184480
+X-HE-Meta: U2FsdGVkX18OU4eHMxv3AVsDaN8OwRQgFWhmppbQnPnpL+Y5cpIopAXyEK5LSJf6DacSVmwUvILd0ag9+4Sh2ISAWo+qh8NxiuejbCkfJbPXI/u2wCrrvss8Zlv3hHmqhcgX1vzMXjEYhBgUBuVB+gvhlq1Z4VJEj5GhhaDCxlmKFu9pMXVx118YgE7A/QF28y86mwx48D/iMnTQ2eSmc0oJG9e5fM+AK3y/jxJjT03YJvhdpV1zCogk68IoWf/Cg3ittuJwU53KK5MdhoHbUDN8XdUlHHCZPpERpndPTSaa5sNwnV3ZqPcmR+JP2Ezx7TGIYmReejQihejaRbX2vW3VbRoqiprSYA/w52fNaH96zzoAxk472Kf2xRXzN/Z1pEEeQwPakzDgbrU3x35BTuiHyDlkOu3Sp5YahGR7VquHxZV+9zGMkCME8Am3CVfLmyLkZxVBH6grZoc/Zip0dfdMy6GGiiudvIf2QWsObqxWbonIOdpXePYNWQG0KysEcvaPNjexBu/M1NIFIQ/Pr2KriTPN01m2FAMvCD7lrX+AKwpa3eupbrktW6tJEMCM3WmPvEo4IlOmbUTWyIhZ8HAFqrQb2vDkW9Zi0G/IfdTRVqFYcMI0eAX6pWc3U6La35i9qBAi2FLH1K6K7sid713Qr3TW+ZcKutZv6wwIQPiO7ushYZPzHAVzd0NR6Yhg7+ErFD22D2FGBzZWBI7W/UZfHqWufBv1UoPA0nct9yWzV8X/cn38BtTK2B5F3bQrZYzSAI2l5k5845Bn2E64gkBxrOHSvkcF7ZD+VdLz2Hl/agOw4pohFv8YOBOTOvijMjsDZ3AP9J8G5O5PcMnw9VywqeigLtepqfMDNFtD7cTMLGdwh7JQIEL8Ttggywl6MIlvbbjHIpKu+Yx6GT327laRCm2InCNO8R5gMTCB3UWZRZOapWe1BzgvHngFMVoWn2dlnnF7LfvIiDFmggb
+ mytR5G+n
+ j+TOIphxegwI8u3KAbnRLdmBY4MMlsHgZgcY1Z+z1yQwojtBlYO1TMh+9Fg62/wRoSg8ScLWxWUroQWUx00rmCkIlNO+iQzonWEyKrD9SJRPUiZfAofZoyOYT2pq5opfa11jryKambzneKh4OcLK/pjDaBnndw5z6ROwjHZ309LJp7Pyjwm+9hk0cASnE8hkOinxc8L3m3EWO1VTmNtDNhT395EBMARjKAgZ7WY7ox+oHqckDnu7p/dUqD6oKsa7JybLW6qFYiS4HqDY76/RnO3G/tWRgbMkafvUhyjF8jHUm0X+YEIYeWHVnvgXYrOZbrOqoYPvC/4VseV0l9qcy8G5vVMK8ZyES2hRf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,174 +141,302 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 06, 2026 at 01:05:45PM -0700, Suren Baghdasaryan wrote:
-> From: Dave Hansen <dave.hansen@linux.intel.com>
->
-> tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
-> it and mmap_read_trylock().
->
-> Long Version:
->
-> == Background ==
->
-> Historically, binder used an mmap_read_trylock() in its shrinker code.
-> This ensures that reclaim is not blocked on an mmap_lock. Commit
-> 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
-> support for the per-VMA lock, but left mmap_read_trylock() as a
-> fallback.
->
-> This was presumably because the per-VMA locking can fail for several
-> reasons and most (all?) lock_vma_under_rcu() callers have a fallback
-> to mmap_read_trylock().
->
-> == Problem ==
->
-> The fallback is not worth the complexity here. lock_vma_under_rcu() is
-> essentially already a non-blocking trylock. The main reason it fails
-> is also the reason mmap_read_trylock() fails: something is holding
-> mmap_write_lock().
->
-> The only remedy for a collision with mmap_write_lock() is to wait,
-> which this code can not do. So the "fallback" after
-> lock_vma_under_rcu() failure is not really a fallback: it is really
-> likely to just be retrying in vain. That retry in an of itself isn't
-> horrible. But it adds complexity.
->
-> == Solution ==
->
-> Now that per-VMA locks are universally available, lock_vma_under_rcu()
-> will not persistently fail. Rely on it alone and simplify the code.
-> The removal of the fallback does not affect NOMMU case because binder
-> driver depends on CONFIG_MMU.
->
-> Full disclosure: I originally tried to do this with
-> lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
-> trylock semantics. Claude caught this in a review and suggested the
-> approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
-> I guess.
->
-> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Hi David,
 
-Thanks, LGTM so:
-
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Vlastimil Babka <vbabka@kernel.org>
-> Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> Cc: linux-mm@kvack.org
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Arve Hjønnevåg <arve@android.com>
-> Cc: Todd Kjos <tkjos@android.com>
-> Cc: Christian Brauner <christian@brauner.io>
-> Cc: Carlos Llamas <cmllamas@google.com>
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: David Ahern <dsahern@kernel.org>
-> Cc: netdev@vger.kernel.org
+On Fri, Jun 12, 2026 at 3:36=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 6/8/26 04:50, Yunhui Cui wrote:
+> > The PIN_LONGTERM_TEST helpers keep their state in global variables that
+> > are protected by pin_longterm_test_mutex when accessed from ioctl().
+> > However, gup_test_release() calls pin_longterm_test_stop() without
+> > holding that mutex.
+> >
+> > This can race with PIN_LONGTERM_TEST_STOP and let two callers operate o=
+n
+> > the same pages array concurrently, corrupting the test state and possib=
+ly
+> > freeing it twice:
+> >
+> >  CPU 0                              CPU 1
+> >  -----                              -----
+> >  ioctl(PIN_LONGTERM_TEST_STOP)
+> >    mutex_lock(&pin_longterm_test_mutex)
+> >    pin_longterm_test_stop()
+> >      if (pin_longterm_test_pages)
+> >        kvfree(pin_longterm_test_pages)
+> >
+> >                                     close()
+> >                                       gup_test_release()
+> >                                         pin_longterm_test_stop()
+> >                                           if (pin_longterm_test_pages)
+> >                                             kvfree(pin_longterm_test_pa=
+ges)
+> >
+> >      pin_longterm_test_pages =3D NULL
+> >    mutex_unlock(&pin_longterm_test_mutex)
+>
+> Okay, thinking about this some more ...
+>
+> I think what's really required here is that we have two separate "struct =
+file",
+> because otherwise release() cannot race with unlocked_ioctl().
+>
+> Which is something we didn't expect when we added this functionality.
+>
+> I think the proper way to handle this is by moving the state to the
+> "struct file", to actually cleanly allow concurrent usage.
+>
+> So instead, I think we should do the following (untested):
+>
+> From 29e3d6fe00c4bd843d11bb548efa89bca478436c Mon Sep 17 00:00:00 2001
+> From: "David Hildenbrand (Arm)" <david@kernel.org>
+> Date: Fri, 12 Jun 2026 09:22:25 +0200
+> Subject: [PATCH] mm/gup_test: keep longterm pin state per file
+>
+> The pin longterm test currently stores its data globally, shared among
+> multiple concurrent users of the interface (multiple open file
+> descriptors -> multiple "struct file"'s). That makes
+> the gup_test interface problematic to use concurrently: two users, such
+> as concurrent selftest runs, can interfere with the same longterm
+> pin state.
+>
+> While this has not been observed as a problem so far in practice, let's
+> just handle it cleanly. There could be a way to trigger selftest
+> failures by e.g., running the cow.c and gup_longerm.c selftests
+> concurrently, but we usually run them sequentially. Let's add a "Fixes"
+> tag to be safe.
+>
+> Fixes: c77369b437f9 ("mm/gup_test: start/stop/read functionality for PIN =
+LONGTERM test")
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
->  drivers/android/binder_alloc.c | 45 ++++++++++++++++------------------
->  1 file changed, 21 insertions(+), 24 deletions(-)
+>  mm/gup_test.c | 93 +++++++++++++++++++++++++++++++++------------------
+>  1 file changed, 61 insertions(+), 32 deletions(-)
 >
-> diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
-> index e4488ad86a65..c13a588c37de 100644
-> --- a/drivers/android/binder_alloc.c
-> +++ b/drivers/android/binder_alloc.c
-> @@ -1142,7 +1142,6 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
->  	struct vm_area_struct *vma;
->  	struct page *page_to_free;
->  	unsigned long page_addr;
-> -	int mm_locked = 0;
->  	size_t index;
+> diff --git a/mm/gup_test.c b/mm/gup_test.c
+> index 9dd48db897b9..16916056677e 100644
+> --- a/mm/gup_test.c
+> +++ b/mm/gup_test.c
+> @@ -8,6 +8,12 @@
+>  #include <linux/highmem.h>
+>  #include "gup_test.h"
 >
->  	if (!mmget_not_zero(mm))
-> @@ -1151,27 +1150,25 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
->  	index = mdata->page_index;
->  	page_addr = alloc->vm_start + index * PAGE_SIZE;
+> +struct gup_test_data {
+> +       struct mutex longterm_mutex;
+> +       struct page **longterm_pages;
+> +       unsigned long longterm_nr_pages;
+> +};
+> +
+>  static void put_back_pages(unsigned int cmd, struct page **pages,
+>                            unsigned long nr_pages, unsigned int gup_test_=
+flags)
+>  {
+> @@ -204,23 +210,20 @@ static int __gup_test_ioctl(unsigned int cmd,
+>         return ret;
+>  }
 >
-> -	/* attempt per-vma lock first */
-> +	/*
-> +	 * Attempt per-vma lock. This is essentially a
-> +	 * "trylock". It can fail even if the VMA exists
-> +	 * for 'page_addr'.
-> +	 */
->  	vma = lock_vma_under_rcu(mm, page_addr);
->  	if (!vma) {
-> -		/* fall back to mmap_lock */
-> -		if (!mmap_read_trylock(mm))
-> -			goto err_mmap_read_lock_failed;
-> -		mm_locked = 1;
-> -		vma = vma_lookup(mm, page_addr);
-> +		/*
-> +		 * If the vma exists, we can't continue because we cannot
-> +		 * remove the page from the vma. However, if the vma was
-> +		 * unmapped, it's okay to continue.
-> +		 */
-> +		if (binder_alloc_is_mapped(alloc))
-> +			goto err_vma_lock_failed;
->  	}
->
->  	if (!mutex_trylock(&alloc->mutex))
->  		goto err_get_alloc_mutex_failed;
->
-> -	/*
-> -	 * Since a binder_alloc can only be mapped once, we ensure
-> -	 * the vma corresponds to this mapping by checking whether
-> -	 * the binder_alloc is still mapped.
-> -	 */
-> -	if (vma && !binder_alloc_is_mapped(alloc))
-> -		goto err_invalid_vma;
+> -static DEFINE_MUTEX(pin_longterm_test_mutex);
+> -static struct page **pin_longterm_test_pages;
+> -static unsigned long pin_longterm_test_nr_pages;
 > -
->  	trace_binder_unmap_kernel_start(alloc, index);
+> -static inline void pin_longterm_test_stop(void)
+> +static inline void pin_longterm_test_stop(struct gup_test_data *data)
+>  {
+> -       if (pin_longterm_test_pages) {
+> -               if (pin_longterm_test_nr_pages)
+> -                       unpin_user_pages(pin_longterm_test_pages,
+> -                                        pin_longterm_test_nr_pages);
+> -               kvfree(pin_longterm_test_pages);
+> -               pin_longterm_test_pages =3D NULL;
+> -               pin_longterm_test_nr_pages =3D 0;
+> +       if (data->longterm_pages) {
+> +               if (data->longterm_nr_pages)
+> +                       unpin_user_pages(data->longterm_pages,
+> +                                        data->longterm_nr_pages);
+> +               kvfree(data->longterm_pages);
+> +               data->longterm_pages =3D NULL;
+> +               data->longterm_nr_pages =3D 0;
+>         }
+>  }
 >
->  	page_to_free = alloc->pages[index];
-> @@ -1182,7 +1179,12 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
->  	list_lru_isolate(lru, item);
->  	spin_unlock(&lru->lock);
+> -static inline int pin_longterm_test_start(unsigned long arg)
+> +static inline int pin_longterm_test_start(struct gup_test_data *data,
+> +               unsigned long arg)
+>  {
+>         long nr_pages, cur_pages, addr, remaining_pages;
+>         int gup_flags =3D FOLL_LONGTERM;
+> @@ -229,7 +232,7 @@ static inline int pin_longterm_test_start(unsigned lo=
+ng arg)
+>         int ret =3D 0;
+>         bool fast;
 >
-> -	if (vma) {
-> +	/*
-> +	 * Since a binder_alloc can only be mapped once, we ensure
-> +	 * the vma corresponds to this mapping by checking whether
-> +	 * the binder_alloc is still mapped.
-> +	 */
-> +	if (vma && binder_alloc_is_mapped(alloc)) {
->  		trace_binder_unmap_user_start(alloc, index);
+> -       if (pin_longterm_test_pages)
+> +       if (data->longterm_pages)
+>                 return -EINVAL;
 >
->  		zap_vma_range(vma, page_addr, PAGE_SIZE);
-> @@ -1191,23 +1193,18 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
->  	}
+>         if (copy_from_user(&args, (void __user *)arg, sizeof(args)))
+> @@ -259,12 +262,12 @@ static inline int pin_longterm_test_start(unsigned =
+long arg)
+>                 return -EINTR;
+>         }
 >
->  	mutex_unlock(&alloc->mutex);
-> -	if (mm_locked)
-> -		mmap_read_unlock(mm);
-> -	else
-> +	if (vma)
->  		vma_end_read(vma);
->  	mmput_async(mm);
->  	binder_free_page(page_to_free);
+> -       pin_longterm_test_pages =3D pages;
+> -       pin_longterm_test_nr_pages =3D 0;
+> +       data->longterm_pages =3D pages;
+> +       data->longterm_nr_pages =3D 0;
 >
->  	return LRU_REMOVED_RETRY;
+> -       while (nr_pages - pin_longterm_test_nr_pages) {
+> -               remaining_pages =3D nr_pages - pin_longterm_test_nr_pages=
+;
+> -               addr =3D args.addr + pin_longterm_test_nr_pages * PAGE_SI=
+ZE;
+> +       while (nr_pages - data->longterm_nr_pages) {
+> +               remaining_pages =3D nr_pages - data->longterm_nr_pages;
+> +               addr =3D args.addr + data->longterm_nr_pages * PAGE_SIZE;
 >
-> -err_invalid_vma:
->  	mutex_unlock(&alloc->mutex);
->  err_get_alloc_mutex_failed:
-> -	if (mm_locked)
-> -		mmap_read_unlock(mm);
-> -	else
-> +	if (vma)
->  		vma_end_read(vma);
-> -err_mmap_read_lock_failed:
-> +err_vma_lock_failed:
->  	mmput_async(mm);
->  err_mmget:
->  	return LRU_SKIP;
+>                 if (fast)
+>                         cur_pages =3D pin_user_pages_fast(addr, remaining=
+_pages,
+> @@ -273,11 +276,11 @@ static inline int pin_longterm_test_start(unsigned =
+long arg)
+>                         cur_pages =3D pin_user_pages(addr, remaining_page=
+s,
+>                                                    gup_flags, pages);
+>                 if (cur_pages < 0) {
+> -                       pin_longterm_test_stop();
+> +                       pin_longterm_test_stop(data);
+>                         ret =3D cur_pages;
+>                         break;
+>                 }
+> -               pin_longterm_test_nr_pages +=3D cur_pages;
+> +               data->longterm_nr_pages +=3D cur_pages;
+>                 pages +=3D cur_pages;
+>         }
+>
+> @@ -286,19 +289,20 @@ static inline int pin_longterm_test_start(unsigned =
+long arg)
+>         return ret;
+>  }
+>
+> -static inline int pin_longterm_test_read(unsigned long arg)
+> +static inline int pin_longterm_test_read(struct gup_test_data *data,
+> +               unsigned long arg)
+>  {
+>         __u64 user_addr;
+>         unsigned long i;
+>
+> -       if (!pin_longterm_test_pages)
+> +       if (!data->longterm_pages)
+>                 return -EINVAL;
+>
+>         if (copy_from_user(&user_addr, (void __user *)arg, sizeof(user_ad=
+dr)))
+>                 return -EFAULT;
+>
+> -       for (i =3D 0; i < pin_longterm_test_nr_pages; i++) {
+> -               void *addr =3D kmap_local_page(pin_longterm_test_pages[i]=
+);
+> +       for (i =3D 0; i < data->longterm_nr_pages; i++) {
+> +               void *addr =3D kmap_local_page(data->longterm_pages[i]);
+>                 unsigned long ret;
+>
+>                 ret =3D copy_to_user((void __user *)(unsigned long)user_a=
+ddr, addr,
+> @@ -314,25 +318,26 @@ static inline int pin_longterm_test_read(unsigned l=
+ong arg)
+>  static long pin_longterm_test_ioctl(struct file *filep, unsigned int cmd=
+,
+>                                     unsigned long arg)
+>  {
+> +       struct gup_test_data *data =3D filep->private_data;
+>         int ret =3D -EINVAL;
+>
+> -       if (mutex_lock_killable(&pin_longterm_test_mutex))
+> +       if (mutex_lock_killable(&data->longterm_mutex))
+>                 return -EINTR;
+>
+>         switch (cmd) {
+>         case PIN_LONGTERM_TEST_START:
+> -               ret =3D pin_longterm_test_start(arg);
+> +               ret =3D pin_longterm_test_start(data, arg);
+>                 break;
+>         case PIN_LONGTERM_TEST_STOP:
+> -               pin_longterm_test_stop();
+> +               pin_longterm_test_stop(data);
+>                 ret =3D 0;
+>                 break;
+>         case PIN_LONGTERM_TEST_READ:
+> -               ret =3D pin_longterm_test_read(arg);
+> +               ret =3D pin_longterm_test_read(data, arg);
+>                 break;
+>         }
+>
+> -       mutex_unlock(&pin_longterm_test_mutex);
+> +       mutex_unlock(&data->longterm_mutex);
+>         return ret;
+>  }
+>
+> @@ -371,15 +376,39 @@ static long gup_test_ioctl(struct file *filep, unsi=
+gned int cmd,
+>         return 0;
+>  }
+>
+> +static int gup_test_open(struct inode *inode, struct file *file)
+> +{
+> +       struct gup_test_data *data;
+> +       int ret;
+> +
+> +       data =3D kzalloc(sizeof(*data), GFP_KERNEL);
+> +       if (!data)
+> +               return -ENOMEM;
+> +
+> +       ret =3D nonseekable_open(inode, file);
+> +       if (ret) {
+> +               kfree(data);
+> +               return ret;
+> +       }
+> +
+> +       mutex_init(&data->longterm_mutex);
+> +       file->private_data =3D data;
+> +       return 0;
+> +}
+> +
+>  static int gup_test_release(struct inode *inode, struct file *file)
+>  {
+> -       pin_longterm_test_stop();
+> +       struct gup_test_data *data =3D file->private_data;
+> +
+> +       pin_longterm_test_stop(data);
+> +       kfree(data);
+> +       file->private_data =3D NULL;
+>
+>         return 0;
+>  }
+>
+>  static const struct file_operations gup_test_fops =3D {
+> -       .open =3D nonseekable_open,
+> +       .open =3D gup_test_open,
+>         .unlocked_ioctl =3D gup_test_ioctl,
+>         .compat_ioctl =3D compat_ptr_ioctl,
+>         .release =3D gup_test_release,
 > --
-> 2.55.0.654.g21b8a5bc05-goog
+> 2.43.0
 >
+>
+>
+> Can you review+test that change? Thanks!
 
---
-Cheers, Lorenzo
+Sorry for the late reply.
+I tested your patch and it works fine for me.
+Tested-by: Yunhui Cui <cuiyunhui@bytedance.com>
+
+>
+> --
+> Cheers,
+>
+> David
+
+ Thanks,
+ Yunhui
 
