@@ -4,143 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C8E0C5AD55
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 14:12:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3958BC5B56C
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 14:14:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 156266B007B; Mon, 10 Aug 2026 10:12:11 -0400 (EDT)
+	id 356606B008A; Mon, 10 Aug 2026 10:14:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E0BB6B008A; Mon, 10 Aug 2026 10:12:11 -0400 (EDT)
+	id 307916B008C; Mon, 10 Aug 2026 10:14:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE97B6B008C; Mon, 10 Aug 2026 10:12:10 -0400 (EDT)
+	id 1F6226B0095; Mon, 10 Aug 2026 10:14:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C11336B007B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:12:10 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4A6BAC0108
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:12:10 +0000 (UTC)
-X-FDA: 85085549220.18.98A9CDE
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4EC5AC000B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:12:08 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=D9DaoVnj;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf10.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786371128;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E24F76B008A
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:14:20 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6C0578019C
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:14:20 +0000 (UTC)
+X-FDA: 85085554680.29.6CC20DB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id D019816000F
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:14:18 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mX+kc7VL;
+	spf=pass (imf08.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786371258;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n4T+gwRZDRIShJR4gZnLC0NVnW6k5s6US28LrwcXeY4=;
-	b=KrVvw5GlQ45fjfOvkcFdag2niW124Y2WAE7qHJPeoCUi7ZMVONbfO9MGQuZfZ1M2ktfOWc
-	yVvJSn4tiSQ7MxPALZLUywVyc7S/Gs5/T6Jig1M9aEjZ4RoWJ7g/fMqXSLW8dZkX3O65Kx
-	S+4zvd4Dr3vk7DvO14LM0vehEDiDMqw=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=D9DaoVnj;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf10.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786371128;
-	b=i+bpuavPXgV6cOkb1/lJAUHq5/Kr49Na72EdDq5lBgUvy0pWfA5+13z86yeJiIOlqy+N7s
-	MZMYBO+rDaRa+ABWWrxQLiq2RZzWoKOKVejsXz/dJADX1B/vN2NphdXTh6o6VMJZvTd8st
-	SYOSwD0K5d/YKRzLRrIzIg9/rpujc0w=
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49967f24eedso2658655e9.0
-        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 07:12:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786371127; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mFvRtnA2lNJvWe0fumhrMbPyeale1ZFM8djt2xkPBMIwjXTB1D8n5ntGBnse9GwQx1
-         B1akLAoyE4t45xJ7ESX4pa+PF29YZTf/ITShd12oePAuNz+vaVeM48ZmQJQPWG/FUCtb
-         cYfpYQexH9njQn5hVX07TgPwjlDJ9RFqRhDtHXzz4130UTdinyNIOqPMzeB+KNouwgJt
-         zCDEFfHRFKG4sKfhenLHNB48A5QnroQ/I0NuSJ3CEczxbK5lgb9+O4ZUAS0fZsz/c0Dm
-         /lxvY/05MRO5Rr0IxLadjpAFdoIdn6T1zGLJVSvUASasodl9JTxcSJsnLjlj0Ht6Zuku
-         dIAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=n4T+gwRZDRIShJR4gZnLC0NVnW6k5s6US28LrwcXeY4=;
-        fh=vm2L+YkNaCVLAiPM4dh9nODtaSjlexPd4n8Q7K0TnYU=;
-        b=LG3lRumkJzj+9ndYxLwXYvCfSyBEuVLpAiOw+1UpE+RzTwuLUPDKZePS/pZzzaJ9Zv
-         7TTHore0Eo/gB/+pCZJHW007cJsItTvxQ38rlEAIo6TDphssSXrCEkDGrhxBpwop81tY
-         SDm1l9eqW8v7Ya/Kvdy1MTknPUr/rfhDOmFRrxrIEMB/ZzT/MHKnu3dC2cMRsMXUIDHd
-         NA895+rHeuCMyFyG/XfUfkx0iftDkVZfxlMK/2JjrpRqHKkyLa+f+cwTsw2AsXxEdb/A
-         nZtDEGx6VeoIz4w7/zWntnwNezooA6ewdAZysWYfOANtoBkZMqnJUH4GwxDFr5anSSKM
-         YBwg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786371127; x=1786975927; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=n4T+gwRZDRIShJR4gZnLC0NVnW6k5s6US28LrwcXeY4=;
-        b=D9DaoVnjrUOYznchWOVhiqI+GmSpSL06zft/e3pVBOUhUj3xNjwZIZAyXzyX+w4chF
-         Ls4q7zQuPTSPgeIjMJ+JqLQx/JpBqG55TwaGG04rmDXegGtkLnbCBPka3YsR0+NAu2lk
-         BD2Eu7wQPyrNL9eAKx5ws/QNcLrj0xC/pOdO2TQuMOBF+EPHSFF2V/al3X1rsnwjmAII
-         RIFzAZntloL137+VskdENPyQcRBiVnKjW+8A8YyvI3BdBUmDXqYWBj3mJD8JjIRiPsSC
-         Yrfwv2tI4uVcOCTPT8DZG1VeH0g15N9JjmGYH3OXJ3MROJtZ3JAJArkOoQ5+Ayqf0SvD
-         0x8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786371127; x=1786975927;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=n4T+gwRZDRIShJR4gZnLC0NVnW6k5s6US28LrwcXeY4=;
-        b=IMfOvXLsu3kEFwWLnURpaNInZzwsO37PoRYVXCa/fbEJbJ2V2XfCw5BQBIm2JIxf8u
-         sZOlHioOZakdBsL3gUc5U7u6pDZd4R16mlQQQLQN8XFJoRhe3FELV0w1hJe0V/47chys
-         AzLGK6Z9ogCTI3jGu+qhOHZEeg3kYzwrbLNZLXQkgRWWK/4gpr+gcYODHiUob4I8Sh/t
-         O2p8RuCGFJ4dTyPQASL5GF7cGkB5TQegssIXZjl+9bX9pzG0TbwUhOVidMCmwMc43Bp+
-         sGaOZPBOOo873rK0pAkIkx068rSFKiUYNvU8mmC8OvDn86Q3wP3JMDFTYiJ4h99n1d44
-         E38g==
-X-Forwarded-Encrypted: i=1; AHgh+Rog/1qd1DLUzC+40ngkccoWCVM59rFNt8mwjDxN0V7ZQM6K6DWvFL9TVlA1wIkxfEhouvUlVOpJIQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxm3pqhdNOJnqpdpmJ//3HeVEQMZf6NGcpX3Z2TR8B3ngIr+VVV
-	lgn2OtO8oie4vK6D1wPDriTmxShSODPxNjnZUGXROq65j7XCzfmlX9+x6ihh0r4dbgvPCr61csA
-	eNRvDGpwg8SoHvSqUA7ISKH87/GSUSEE=
-X-Gm-Gg: AR+sD13x3ckc9nDTFQVESTE5GaHrzxwBFHSbtDlm5lt5f6HvFL0yCJWQ3nijpX+aIID
-	OtJ0TeMXfjbkoQkwH8NXbEukhA4sagoOw9QE4PVmriNS5e1X0fzz18KZMWS3BKpyWsSjpkm5EZV
-	BcyreRvSc4VrYv0QfGtCmEiRRCIfgB2rp1bd44bZ1H8O+O8oe9EI3/QtCvYsSH6AG/3Hxx3peE8
-	jqwZbK7sT6Fi2hVboRt7pEf4sAqqRZSgRIGqKUMXSiS57jun6VT6LUOM/8Rph4SgnJj6m3svRdI
-	veMJ1kzQezP3Nd4DmsdSzHKYDKqhWotxoniuJQreICYEh30u81KeSL2gaM4A50TVt/v4UeQCoYd
-	pAMhrrPmHQwVgWPMi8xfVcGPdVcP0vw==
-X-Received: by 2002:a05:600c:1387:b0:495:3eb4:3c6d with SMTP id
- 5b1f17b1804b1-4994e7b810bmr274599375e9.2.1786371126190; Mon, 10 Aug 2026
- 07:12:06 -0700 (PDT)
+	bh=iehNUi3egKfQHvYDNGbbdbgLVRR5Q5cJOqpp5C8Holw=;
+	b=sG4W1sFhTD+OQ+GpMY0nIHSMhv3/Yy7nQtU39JPVTzwUc4i/ggiSxZ8IM5nHoktvzbeS26
+	eJKmq46RVvQZYVrV0vXSoFnDt1MltUs4GoaO+lOqEKH2E4kgv0p47FzE9QdzcoQn0E6Ggr
+	4St72X2VFZhMvFPnCr5XAlBkWtgBVsY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786371258;
+	b=CMmJz4AhWm5D3cVKSYr/RB0nu2yk1rpcGeXOCHF19viDoP9NkZofdaWyE8dD96lhY3WlZ+
+	r0p8US4C81JqMc1MPKm0KB4SutxJbp39W4Bbii3pHw6PLLb4D/pxkW0xytrmkr8D1+03uy
+	ba1d1Vx2cO3XW20P6SpQNgryGya2lkY=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mX+kc7VL;
+	spf=pass (imf08.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8A26060120;
+	Mon, 10 Aug 2026 14:14:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8787D1F000E9;
+	Mon, 10 Aug 2026 14:14:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786371257;
+	bh=iehNUi3egKfQHvYDNGbbdbgLVRR5Q5cJOqpp5C8Holw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mX+kc7VLJtEYOvp9eGzSbishYvLpCPkZLR4wXwvjM+wgYETFgrk9xkyfZ1a24vtri
+	 65ciAVNY1eJFvAX2bAMV2BZRvoU1yHEY3Y5nwK/h/z/S1K9fmc0HFeLTnzJNwxwnvh
+	 MXmQ+Y4/Bgx5CaRyf2mpgo3ANRET883pr2yUAom2B3bjyyNBj49w7EFFmeZL3mS8BP
+	 m4IThuwjn0FbSzKS4XQf+8c0tVREC4KvHbtmEs74Xg4d0IuRzNhYY1qCKMiEZe4k3A
+	 jB3YgCtck/dVYN0wDiM5ADDw6SKS0cdM8N9+keC869RIEF1LTOnz8KBopzUo7OUunB
+	 bdNexLqovZBcQ==
+Date: Mon, 10 Aug 2026 16:14:14 +0200
+From: Thierry Reding <thierry.reding@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Sowjanya Komatineni <skomatineni@nvidia.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Mikko Perttunen <mperttunen@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Russell King <linux@armlinux.org.uk>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
+	John Stultz <jstultz@google.com>, "T.J. Mercier" <tjmercier@google.com>, 
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Chun Ng <chunn@nvidia.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
+	linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>
+Subject: Re: [PATCH v4 05/10] mm/cma: Allow dynamically creating CMA areas
+Message-ID: <annbzvLojXK33Sav@orome>
+References: <20260807-tegra-vpr-v4-0-5510d16af89e@nvidia.com>
+ <20260807-tegra-vpr-v4-5-5510d16af89e@nvidia.com>
+ <3b458c02-e836-4b24-a712-57fa8dd59e45@kernel.org>
 MIME-Version: 1.0
-References: <20260730122304.2496440-1-xueyuan.chen21@gmail.com>
- <20260730122304.2496440-3-xueyuan.chen21@gmail.com> <CAGsJ_4zo_uya7-iFS85W78+mpvjhmfxp7HfxTPKDD=Aiw2c1vQ@mail.gmail.com>
-In-Reply-To: <CAGsJ_4zo_uya7-iFS85W78+mpvjhmfxp7HfxTPKDD=Aiw2c1vQ@mail.gmail.com>
-From: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Date: Mon, 10 Aug 2026 22:11:54 +0800
-X-Gm-Features: AUfX_myzk3L8tu8iuyY3KCv2aKO9j3yll3zHn2I8kTwXhIPWsgZ1D2l0l_IZSoo
-Message-ID: <CA+qSx6w_EY23GzgfaypXz5pd=h9JoBjiyX5+4Po487QYb4R=aQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v5 2/4] mm: distinguish large folio swap allocation failures
-To: Barry Song <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, zhaonanzhe@xiaomi.com, 
-	hannes@cmpxchg.org, youngjun.park@lge.com, baolin.wang@linux.alibaba.com, 
-	hughd@google.com, chrisl@kernel.org, kasong@tencent.com, 
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, 
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
-	muchun.song@linux.dev, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, qi.zheng@linux.dev, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="i7x3s4iklpcr3dcx"
+Content-Disposition: inline
+In-Reply-To: <3b458c02-e836-4b24-a712-57fa8dd59e45@kernel.org>
+X-Rspamd-Queue-Id: D019816000F
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4EC5AC000B
-X-Stat-Signature: t1ptw5fkfjjbs1hjh7pebegdi8retjhf
-X-HE-Tag: 1786371128-953341
-X-HE-Meta: U2FsdGVkX1/F+G1naNUDV3cbn3nf6TBihgO1bE5BHcHf0IebZy0OKzpGaMJnO9xflQpem3eSi6EkYJ0CcHD6ZGoNey07/EvvFPidJkfCr2onCNsABJGtIuxmQocTLZHYLTeEfu2ndRRYew7pGI4jh3evqh5QMx+mf7fKQNLS1LdTR12OrQh8nKqjCSQtC0zMcNop+P8A94gUQ6dfAYUAmSGGqYvCSw0TlIGbuggkdKW8fXTYJhTUVWSP5wEhHypmubmcpq3TUWjG/stqq9oHEAZfwfdCk6Ww1ws58lpQ82Fx2qo3+jDZvPe5wH5BI6+dx/voEvbpHNSoQV9xTjYZJjHJzZIWBcV3un7l+gocr3YLkmEBDB5vc4kgHP5XEioOrGZ4VsCJHupP+PaemTBjg3D8K3lYlMXQQkn3loYXJvki2+U9Hgza7Xpkr6COhnKE7UTOmkDfftvaRvRDVCTVPHYWoC9lqfXy1uON+26vCDIQDnnJUe5sUBXKljfmWbCoTh9/xMYq+4PSssvgkk913AzFoF5FD8I5u5F7p4j6J7oX4FiN4yTj5D6TE0D2Y19nIiv5Digt3uTWLGOn1spO9mzinSVUqrCHlR05ABSffhb8uEGvlK051O++1qqCKSlofSJdjo0ucPM4Xs9udAuGPVJb/okARXXO9oqxwtLN6bIkgiUpgNNV1XqE8UwGGSIhvIYe/beNA/bcI4bo3k2SAg//Khf3YVm47H7bRpbuFc+I/fgwVBvDmnQAvL2qni64XD7tkNtGopRa7CG4tCTAeHaNW+cvccyfepgMJaxiZCsooEoSn455TBE+7cdPx6pvgh8gfJItmRJKQW/6Z9vNP6F352CxP8sEwfc1HeALp6LkWonOiJTuh0TlmlkG012inIkSwaoMLShZhsOc5N5rMhjA/tEB+A/sCaJGHgD+6cyGrhB/9P/VhU/y1GWI8+rPakm9DftYUQ11C3yp4bl
- kViRCJEZ
- U42Tpl0/HaTfZmLDERV7QB8AGnHzWPtFq/NFB0hgXGWMAyBu0MVOzufQUVXpoRIZ9MIXI/tCua5TXVbSH/l6JeJ4B/7RZKKwyg5rVItWumkBr/ghqYCJpHMvxj98jFAdB9pErRmJ6LR1kmyPYnOZE4s49x9A4OtZYDUaFhZEZ1u41K4cnoJUlD08SQIuT02LlbsysjK73VTphSX2udRGJoN6rRt0PvGryzZ7PFjvPZxPjL4Btl8JrgDnBFA45tu06mKZPFljGoLQEyzCC5WIX4GW1NvzeAgLi0lgvmFNMbiTrhkut6XVKmG4POEXJRJgxZohi4d0RIG9H9EVlUv3x/t7d3xYZ/mpbcVnXGg4wkSii3ohgCIuGgtPskp7R+DxXzUwPPqOn62tn30ep3FlTuZkkk3ZdooaJWEjMwikm6PCTI9BP0iZ2pmB95ls+3uc+pl1iIH//SqxbXHiTKFw+RoGZyHW1VZjgBHirIsl5nwT3g/8=
+X-Stat-Signature: rxfti37kntnn9xxixpu6tquy6grrd3y6
+X-HE-Tag: 1786371258-615010
+X-HE-Meta: U2FsdGVkX1/ozneOwmr3ma4ojSxppe3eOztrh9Sg97yntChBPHCJcRHfVtZnbHf8ZoVbDiqKrottEjTLyJpiSJ7t/Gitp30KJ0KqNMUB1mwXiimXV57GjC6P1k6L5qpmVF04XzI/SL1y0TWLlOqzYSHmOnllW44rWCTdyd0z2rrtSoGkSUQ0C+SuINwCGjcxVeWdz3UePSEbg2GlIk2DkBjNyNeCq26QqwUB+vZL79y4cxknpRCJ892kivqORZ6Y2NEOBi6TwJBAturBYDUYaHtfj0weMhAmcEiwuoQLW0b852EGtOMiTReA6OCCVG+YmXDTT2shjp18/kR7cJPu9V0kayuQyBJDoO1VGeqjZVS1vLWuKrLgvZzxMljWnP9sIFslVPAcXVTz+4ZhJC8Xlcp4s4H52NBBTG9TLxtwdLiEuTCjbGtsXFDaf/MTUN9OPnGIeziZZwLhAWQ7ZZqmbVE5XKg5FLXLEEjVSMzF4oswpqlu/YSM8b4jc12BoKv6bJ3vOu7Aq2q3iT+Qs9AFJ3awDaXaSYhZRrhLn80Q1NYXCDOYRvRjj6Cjv5nriB0fZ4KW6bxQG/+cYX8H3DAMPjdohJ2Amyl33RyY0qWfBVgtWFBvk9+0HoGScET0X5jbw25fmk/JQi2lDaLQHWwCF4/gpiNzuRA4r5WeMYeCL+Bhhf3efDjuKgai0jJLubCisDBQQsjPildMYV8P1d35fpu6hLHC3X8m+ARVhhJz1UWJ0AJW9kOZoDizBZyvOoRUzcwb0mUvu5rPCEtas9MYBu1GrOt2tBc46FRFJvk7MQztXb50VO5vHFttnv90y5FuNyveb+xFNje8aJ+Z8Fx3Lg67NLdoWGIbVlBh2Lcs8B5SiTZS25MbEJrrfXBRuXgY5qsgxDiLoBSiEUz78paP4IRZHbmh5umg1JO8o53+XDV42EYBal2jg45fKilTVmXzE0DnHP3pt9q+Eqk1qwa
+ c36TFcS4
+ PvN2o5hIg9EhCUHHnQNO8pxQOiDXGvJCwZh8Yd5V55w2bfiz2DmYsNsmEC/qZH61X4ijwoaLRDXjY9Ommr/mVXPKSdF8K5KT+S+phrdScp7kVdOdQAY/Qmc8NtcGEI0VBxnjjGNznBIQPoXbElnboHan+KqKr5yg2nGXaJzki6d6sOye4P2IhxaPxRyvKrwBpxpWfuCXabSDwHtQpTK90QAZQNwfOHh/mBqSoXggrqFjKRLctK0k208cGhaZruZzXbSUbWoCjEUhJigcIKKsaZelE/8uz8blBWcqPx61IFMOkT9yvHDtxlvfQor1ImmluNApVEy4qOblA6EI+mVI8/DhWx4ZBj9lGaFn+H37l4m3GNsUQ5Pwr/JxcWwFYFZWl1KUCKrDy/jZzD0EqCrIn0brihaXXFPzy0QpaREJ8eDLBjKy6N6F5Uf7YUte1H4zFplD1vvafu5wVQUnc8Ff91RgyggMVxVSF6Etx8b1VdVJlrmU5Ipj0BV54PS1w69p9HAwo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,66 +117,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 8, 2026 at 7:12=E2=80=AFAM Barry Song <baohua@kernel.org> wrote=
-:
->
-> On Thu, Jul 30, 2026 at 8:23=E2=80=AFPM Xueyuan Chen <xueyuan.chen21@gmai=
-l.com> wrote:
-> >
-> > folio_alloc_swap() reports most allocation failures with a generic
-> > negative error code. Reclaim cannot tell whether splitting a large foli=
-o
-> > could make progress or whether there is no backing space at all.
-> >
-> > Keep the global free swap count and the remaining hierarchical memcg sw=
-ap
-> > margin as separate inputs. The memcg charge path reports only its own
-> > margin; folio_alloc_swap() combines the two layers when classifying an
-> > allocation failure.
-> >
-> > Return -E2BIG for large folios when a smaller allocation might still fi=
-t,
-> > -ENOSPC when no global swap space is available, and -ENOMEM when the
-> > failure is not helped by splitting.
-> >
-> > For early large-folio rejections, check global and memcg swap availabil=
-ity
-> > instead of returning -E2BIG unconditionally. On a memcg charge failure,
-> > swap slot allocation has already succeeded, so use the remaining memcg
-> > margin to decide whether a smaller charge might fit.
-> >
-> > This only refines folio_alloc_swap() return codes. The reclaim callers =
-are
-> > updated separately.
-> >
-> [...]
-> > +
-> > +failed:
-> > +       if (get_nr_swap_pages() <=3D 0)
-> > +               return -ENOSPC;
->
-> I wonder if we can do this earlier when swap is full or disabled.
-> We could exit immediately and avoid trying many redundant paths.
-> Have you tried this?
->
 
-Hi Barry,
+--i7x3s4iklpcr3dcx
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v4 05/10] mm/cma: Allow dynamically creating CMA areas
+MIME-Version: 1.0
 
-Regarding moving the check earlier, I currently have two concerns:
-1. It would add an extra get_nr_swap_pages() atomic read to every
-    successful allocation path.
-2. If the failure-time check is removed, the earlier snapshot could
-    become stale while the allocation is attempted. The failure path
-    could then return -E2BIG even if global swap has since been exhausted.
+On Fri, Aug 07, 2026 at 06:16:06PM +0200, David Hildenbrand (Arm) wrote:
+> On 8/7/26 17:54, Thierry Reding wrote:
+> > From: Thierry Reding <treding@nvidia.com>
+> >=20
+> > There is no technical reason why there should be a limited number of CMA
+> > regions, so extract some code into helpers and use them to create extra
+> > functions (cma_create() and cma_free()) that allow creating and freeing,
+> > respectively, CMA regions dynamically at runtime.
+> >=20
+> > The static array of CMA areas cannot be replaced by dynamically created
+> > areas because for many of them, allocation must not fail and some cases
+> > may need to initialize them before the slab allocator is even available.
+> > To account for this, keep these "early" areas in a separate list and
+> > track the dynamic areas in a separate list.
+> >=20
+> > Signed-off-by: Thierry Reding <treding@nvidia.com>
+> > ---
+>=20
+> Sorry that I didn't get to reply earlier to
+>=20
+> 	https://lore.kernel.org/all/anS0nxAwCXGWZRl9@orome/
+>=20
+> But I am still not convinced why we shouldn't just have a single array th=
+at
+> grows dynamically.
+>=20
+> "
+> After replying to T.J. I think this static array is actually a nice
+> feature in a way. It allows us to more easily make a distinction between
+> the regular CMA regions created from reserved-memory regions that
+> represent classic carveouts, and the more versatile CMA areas that could
+> be used for any purpose.
+>=20
+> Telling the two types apart could obviously also be solved using some
+> kind of flag stored with the CMA area, but at this point I don't really
+> see a reason why the two lists would need to be unified.
+> "
+>=20
+> Really, cma_for_each_early_area() + cma_for_each_area() is just nasty.
+>=20
+> I'd strongly vote to unify unless there is a very good reason to do it
+> separately.
 
-Thanks,
-Xueyuan
+Marek had an interesting suggestion to extend CMA with fixed address or
+range allocations, in which case we would only need a single CMA area.
+If that works and is acceptable, there's not much need any longer for
+cma_create()/cma_free().
 
-> > +       if (swap_margin <=3D 0)
-> > +               return -ENOMEM;
-> > +
-> > +       return order ? -E2BIG : -ENOMEM;
->
-> Best Regards
-> Barry
+Thierry
+
+--i7x3s4iklpcr3dcx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmp53LYACgkQ3SOs138+
+s6F2pA//agw5g+ad2JaahbYD22vSCRqW3CiqP6DioCJAxsagk9tg5EhZHpBTyXgx
+NeLeY+2kE3x6TL2VgqHJ4y8hoBb9s8kMQ/Y1mzKbX42KBaSncC7KOHxHC4oAYZ/Y
+GIzavTlTlWZlGrD9qC/3YmmWdG7aHRr/UXALcH8VhYqn65ABqGIkmVmAcFBkZCC6
+QAsB0WWbU1GVW7adArp/XjeywXwzYbuDjrhYMccXmfBexX5iA7dqyEBLybPiAhiw
+/dN0PzpxaKReMS62gTC8Vl7nRW9mMC5NJpnDfMXzQtz5LBxYQkgUM07SFF4Z1cpH
+ndEI0GkQyLkesWA8HJWysBbKHuO053/jjcE1+3JW61POx8TSmHPIW0Y52kE5O7h+
+639yzEAlbLtPXsq9zQz6xpstENU5reyLz+IBhH3XC+f0RawuNb2YOnP29ayByUkS
+o5Eg0kYjFGZP82xhBRlmveTPfBrTe/Un1wfJjnPMNttHrJaK7n3nlOrI6O7YAFau
+Ou3/c15vyAOs1JrqdxCnPk4GOQFfYCwiK9cogcw/k2q6tgoSTjxuZsxqmmzOTAZx
+Xj0mKBiV6RR5VCygyH+6tbdoPERl3Y8LHEP/cc642K9ldPi2Xjdqiylwt/4v7hkV
+VM2qHuSnW8bwLF8N3ee2tCKpCmsx+rjwPK2tyQgPc8ts1VvqSyI=
+=OEKA
+-----END PGP SIGNATURE-----
+
+--i7x3s4iklpcr3dcx--
 
