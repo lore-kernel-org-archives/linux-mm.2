@@ -4,85 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05238C5AE49
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 14:57:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66CB3C5AD55
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 14:59:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D69306B00A3; Mon, 10 Aug 2026 10:57:08 -0400 (EDT)
+	id 640F96B0096; Mon, 10 Aug 2026 10:59:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D19D36B00A7; Mon, 10 Aug 2026 10:57:08 -0400 (EDT)
+	id 619EA6B009B; Mon, 10 Aug 2026 10:59:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2F5B6B00A9; Mon, 10 Aug 2026 10:57:08 -0400 (EDT)
+	id 555CF6B00AA; Mon, 10 Aug 2026 10:59:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A21D26B00A3
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:57:08 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0A2421C043F
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:57:08 +0000 (UTC)
-X-FDA: 85085662536.20.F6E011B
-Received: from relay.hostedemail.com (unirelay05 [10.200.18.68])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 525792000F
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:57:06 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FDFA6B0096
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:59:22 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BEFE8C01C3
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:59:21 +0000 (UTC)
+X-FDA: 85085668122.28.32FE95B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 7E02640007
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:59:19 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ed1az6VB;
+	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786373826;
+	s=arc-20220608; t=1786373959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lwwQLAArigZJZaxTz9WM24Se1zZinRspMjIsL3+hq+A=;
-	b=wT9YMjPeye9dVJCdSNHUYJFReEE0MmK9Qu75TrWHEUOKV2sSqTxMZhzaUZKpqMpPIZQelj
-	yX4S0fM/9Q2MfGklxRkNuj0Ybv8afLjzHIO27+0AJylWAqx1MfRIHIcNwpzInjcyTMZKRa
-	B3KpKmwFRYOcfNrpjJAMVFI4c9pyZd8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786373826;
-	b=y4CDGhViK0e2i+qCLt5tbUXHfhnn3ZwKIiIcbrBSRN9MFCjGBdbIGjxQoymmuPnLEau1m6
-	X1eVEJHJUu8iCUnwPh/uMWWIpSB1eET3AY1kEAE/hAgDMvWRbiR3WYzTrbfS8Z2lsr+FOe
-	4ZmNjJ+uOepjV2M8ksmsbBtC4dAeCKw=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=G8qxlsQGfocAVe55+yk0uJ2BiMt4CEd3bRCiLyYXCik=;
+	b=DXSj9G21XoQqBPKaivfGuTumrQo0NTVumN9yYHM7cqhn8JSO5l/zRmkq5N3eMbXHZAQPah
+	JcYE1r0pp7+0Dunz2NMwaqvwfM5KPx/lw1YqhnQnJ1ph4N3BqTITEIoamae4Urbt8vzBb2
+	ERWi6E/YksWtFJxUPlKYxk8dqYWa3HE=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	none
-Received: from omf04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7B644401DB;
-	Mon, 10 Aug 2026 14:57:04 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf04.hostedemail.com (Postfix) with ESMTPA id 187EA2002D;
-	Mon, 10 Aug 2026 14:57:01 +0000 (UTC)
-Date: Mon, 10 Aug 2026 10:57:10 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Xiang Gao
- <gxxa03070307@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, Masami
- Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, liam@infradead.org, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, Xiang Gao
- <gaoxiang17@xiaomi.com>
-Subject: Re: [PATCH] tracing: report buffer memory in /proc/meminfo
-Message-ID: <20260810105710.6ee5e493@gandalf.local.home>
-In-Reply-To: <anm0SMuVpBz7wLac@lucifer>
-References: <20260810094025.136705-1-gaoxiang17@xiaomi.com>
-	<69df3080-a719-4131-a247-62bf47bda8a6@kernel.org>
-	<anm0SMuVpBz7wLac@lucifer>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ed1az6VB;
+	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786373959;
+	b=PS6pguRLz5cgZpH3DeJmP2LzE77U+FjZCvnGvESrNTHENsfW/C1BIqmeXzDuiZhT0mzlk9
+	KKAbmFz+rxXzPaV8jgPjhGMWO70i0J1TStlwM+LZt2Onyih+S/WFCnsS8CZcKQ9qvaBC3f
+	xvje5ISbVsNhDR65E8ItJUq06NbA7H8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0E3FC60A6E;
+	Mon, 10 Aug 2026 14:59:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8836D1F00A3F;
+	Mon, 10 Aug 2026 14:59:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786373958;
+	bh=G8qxlsQGfocAVe55+yk0uJ2BiMt4CEd3bRCiLyYXCik=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ed1az6VBryFOclUxePVQXHfbm8EkIKq0m531FGOOi35ufllzQL/hX7jG+ggcsnPNw
+	 odnCpPptXhxfAUXYiDM4bJFRdmPtWX11Mx8NacoRw8aXN8wdedn0ckdcGF2KtBmKTp
+	 rHNDR/ragt/P4AYm7YyNELZpN+Rp5s0uzsCPTTIAu66x52FeueOZr4vFSqIA6F4liV
+	 JM5B9JhtCf88sJ8xHqB6Bxy5Bydi4NvKwbXcl1RY3NkPXzHemZ/2VIWN9YkBntSF0K
+	 UvjXhV6zx9S5wL983zDyho3eMrwObwWVV2f96xXQ4GLfK5DXYcgAGVDqQg1uunv+Pr
+	 HMjsJxhIympJQ==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.ams.internal (Postfix) with ESMTP id EC9F9198003A;
+	Mon, 10 Aug 2026 10:59:12 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Mon, 10 Aug 2026 10:59:16 -0400
+X-ME-Sender: <xms:QOd5atYziGy39K7iVg7BCTVaua7d8AREYBaHEMok9aa5uxmrqWnNGQ>
+    <xme:QOd5ameZrEHNIyi6C31akh0OVg0TlBVRKJdXOtUYtKogdk2FPR7ivo1wiH23rWkgp
+    XmrT1wrss15EKFhAMnGxxxDTSk7H0RKYHd5aZcvLcbCjNluv8h7q1aD>
+X-ME-Received: <xmr:QOd5auHgGD5dXs669OKKu1Qgx6Q7b-GiPslvqPmRUw2g8EH4SwWfXQZ69nQ>
+X-ME-Proxy-Cause: dmFkZTGLf/eoBsdkF5Bcv4i7XrYQoeSrK3kmL+XPu4kKdoH/000048y7ntGF27Bp8G86zJ
+    61kFC93E0uHN1m8C0YxhAmgbvmZVRocMALRmYBeYMPOD1xgiHiinUgvyLh7d2AZ3Q5s93r
+    URRyzhEjgZoCXP1+mEzRrrpgm2DtGIp1ZL6f0s1WZK8X5TYxrP+S3AkjBJcT0aQ3IgR0Td
+    v/a4rW/kNt1q5C5wgy8OTpNWoHkcat9Qw++32800rNwaVCTlroIiVyydmZ+ZpUQ5KpFVZM
+    KYCDYortVruTL+CpAbfIFB8R5NjDJ6U0KzbTk0B8VAgarQtGQqfjLQ8kqllbd+yTpVdseo
+    KvpPzjwxGlsZW60IR2yM418qTAMpqFhNEg/tuy0Dn+XmEbRVMP6/+ZB3GuFfVvW++PbibM
+    JOUkAnt18GAyHFmdEHjN2lMD6Frxz+kRwWuXhvFxrl9CqKYyCR4ca7LWvx9FVxRKr7IHgW
+    vIPE90fcOUe6BQregpLdSkGMmHGRgUjR88QTSHZDZFw20ggV8Fmfh+K1iLvH6K5M06z5ZI
+    Z/fHFkQMgVLtogPE8JyJS6geTi+w3zxwFP5YePeB3O/9wKpEyWWs8uIUIICrvEBMy8q2vC
+    rMM/uDBA7WXR73QDimpl3mnzuLIexgWC5n96u/rOTsu0LryWZR++4rBxDdqw
+X-ME-Proxy: <xmx:QOd5agla4-MDqvktXTsAEWhrqY_VgPi_52oV5X1zd5ipPgLWqrh-WQ>
+    <xmx:QOd5alPJD7RWjEuZFR7z_kfin96XP3adnltkq_i3s4vklayBbMZj9g>
+    <xmx:QOd5arFMQT--skaKz3KhiejvoDye-RZ4a_8JReHVFimEOD58Y1kDFw>
+    <xmx:QOd5ahs_Ie_63ACJvelrLQRHe6L2f-seRoNTPaxxI40dSRZknG82JA>
+    <xmx:QOd5amSf4FW-maIeeMu6GEMZR4IKIGHhWcKc06xqfJdYxvrqknRkq0lg>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 10 Aug 2026 10:59:10 -0400 (EDT)
+Date: Mon, 10 Aug 2026 15:59:00 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, rmikey@meta.com, riel@surriel.com, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v5] kexec: keep the next kernel off hardware-poisoned
+ pages
+Message-ID: <annnExUim_y99PrO@thinkstation>
+References: <20260810-kexec_posioned-v5-1-95e1b5e2e656@debian.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX18eSPQyM+UAYA64F5aCSKfWzLW/KGo8Kqs=
-X-HE-Meta: U2FsdGVkX18h8BsaxnBZAiAxJA8VX0jouYReEtmoXZzeqYdC7OsE9ErsPr+uP7COKi2SKYjalSNBz6c5GD5lNsjnnZ7rOAFkQ3BESknYuLHfrLiQ5ob+FjhOeeRFKVsmae5DWFY+VgGWXlPqXTp6/KD101g8Dtn35p7rqVg+D0Ll6lrBgAmjYd42OjtfrPYAW/HY++mYOQhb9DrXrLLvsAwjEVO4/HggwQPlqoa+tUDg5Qm2aNldOy+/R3Th+msxwWtDEkDCjq6gibDnBsRw0VD7FBw4Pu3H+vJesyPbzeBfwrjaXneAgKUfu8YXsEPTteeQz+xDHBqsVR+O302VavjgRUO3nW8M
-X-HE-Tag-Orig: 1786373821-994234
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260810-kexec_posioned-v5-1-95e1b5e2e656@debian.org>
+X-Stat-Signature: 314uh49mpmrd4utsq8apbdiwrqi9t1ym
+X-Rspamd-Queue-Id: 7E02640007
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 525792000F
-X-Stat-Signature: 5jywzf45yw4bun8sqydd5xakunud61nb
-X-HE-Tag: 1786373826-51613
-X-HE-Meta: U2FsdGVkX1+2tZtfxSjt2nBdVsQ8Y+hQipfErROMtuYi6SQKnCIBMBye7Nl5UTilquRqeLDecI3U5+mbOQM3NsnhqZ6mzWRAqwklWfvHg8yIiob800bjlZW5fVV31Q1bxhCasELKcZvjJRmyPq2mwEGkITqIOaYbgUgE+ZkUtUT8BePTsVNIz1aTaC0ZvswX0zVtmgxQotV/FD95WfTMsIJ8FuEYYXopeBlj5wSted992Ll9uZv1PlJSirUouC4iHbS/8mW/GSJyMWIkGieVltEHADFDjIMO6vJw2CDBZI55AwabrD+PYTK1Ohaa9hZjjyq/72wH9qxS/zfcOXxpd1v/LDHI7sXzixaa8GPq/jg4Hd62ZSWJztlxY7ZN9+LqbcvCvxy2ERcOTD4akDXZRk74Fi7GSljUljUROs9zyZ+yKjLQivQdl6++xfLFdi9qPE4DzN9u1E+vr5nzTJEWzmJl9q5z/Dq0l/FvTDZP9Oi92tjX0XDYX8c/IHrwqy6XH5TjGphPAorSh/SH2JD1ZhHdNc2h+l3VqqkUrUEwkZidUgxVZZTFNB3OwPo878gjC0xEATN3d6lYzPMtlC7lwI/bpiXpHZ+4aPcXxbIwQ5koeJFPfYw0+5jBrnlmym6dIdipASXcv0VGHHKg1y2/g6UOXW3aXXKE+KUMhIXw4A/J81iG4AnGagbL689dIIlRO4KcVbMk4eaUJM3MLyW8Iyj2UmJ9ZFd69iQZqQNdDZM1g1yxk6dt5Uum8kGWjgW88rqYutsYTXsVVW9plJjiOxxvo+BjXyXN0etmK8Kd/oT6sm20xeRRAzUN0cLGZW/dsG8rTAod06wKqgyR/InHmX5f/5x6sxHcBrmbrDlc8Z9bUAD9o/anyI7tHyysczbWxoaYkC6mGlDr2Tt31AMAHVN89ugc+UYxdyNNEMeFJ8WHofPrfWHJOpp6fy3BTmbsPe7PAZeoR/dgfH3pf9K
- GCA==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786373959-343050
+X-HE-Meta: U2FsdGVkX1+CljlefcxmZDJmultGE3lKODSK17WlJJT0ohF/Imu5CU8N91uAtNcCDoaHcAl2ruCFxEQ62Nq0X9AV/JMYi/QhRiTTMsDy8sg9amwlyuAfEj+jn4izIuA9dqooPDkDcXSv3UBJF66TI7hchDrdgCcIN1Oxl7zb07C4Y373YzZVzN7rd2T4PS1fWy79cfmNUEPC7vri+9ajvvMVmSZ+6k7l+7YEs76G1GhllAbfUUSKglrFk7wjk6prpP36HSeCw+FiOSaAv1+S1MFr+n3o+kVbxX6Wy/dMi8hZvtn/B4Lap1CAL0RTw/txdqmLdKEArlkTGCpqCw77tHCDNWHM5Nx6U1SYlCOLmXh1lwXp3n06d8f3zPEEsKGgGUKsJZ2ATVFn/O4jdGEBIFrORaqUKVvNXZ6G7gviceC5ZreLO/Sg6ieyqgdiOd9JD2rI3cSk341Ww2waXRLoH27ycXgsvj88XRFbdGDEwth3b1pYqgBH/863xLRBPbjKnsJ3NGrau3wOmEI3p6E0kX7SUaO+UUus75a9otGKqquWBldSAWkPHteSQ9NSNbRsWuoMDRoxg7SjYyIG5hQZVk4wYQb+QDqMpFb81X7JsazrAZHrtkdRdQ+6XcrmpzYApmojlo0sl7hstTWxXAumHhXa2w1woEQ5UoYPmMfwIyGzNaXpuE2sGGUtRxeRLzo736SkhwZp6M5ylDP4GsZ6cuUqgpaQxlnadcMnN3K6wWc2xPKkm1U2ynmlX0sKhXoPsIZl06pPWcgx7YA0AzrD1IkGvfEQGa61A4Dlo8SGuvcYd2LuecKf+rHuq2EjqsEOMdbhmv8G4JCD6JS5Xla5Qd7YGrhvNK7PyIRsQCBHx2wTR7NSeLw5DpbCOuHg1HqNMyNl99MLK6xtCOLvlMaWOLXzLCCoq21XZLGZk5jC8zpJrHTu6kRH09zefKTbA04ZQ2yE+GUe1RbHmHQxHh7
+ HN/prThe
+ SO/bUuJRptfv/sAws5YpplCbF7A142VsJdHEWxUBqTCiqODtXdH2N2Z0dANOtcbMHiLWG9NsnzZOq8KJepLHdmcvtcrItAfzV2Uw90BWO+bPx/PUkWbkpVVf2G8TonMJIZKbAGY1QQm/lmNy/wh9qvpDFVxz8T28+uH2mLiup9qjjA3MKPwonaQ5Dw3wSVUm/UfsP/QDgvN6RK3Y9hzYysXVMGYYLqvNjcHUFT3g5m5RjL4UNWgaH12XWKiD+/085Qulf4Hs4cLe25eBGulOLuaz9WXK2LeZKUyvy3Ka9XKrCzKUvh7fZwYTjD+hhjzjMUUohm4tB+3IdrlHqhFZH8ssVH14diiNwkJlyE4CV1KxexCCIm1o49sAs8TcV6Y9zmC5//pnnJSPwc9B8vb5JhmYKJw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,37 +125,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 10 Aug 2026 12:22:43 +0100
-"Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
-
-> On Mon, Aug 10, 2026 at 12:52:38PM +0200, David Hildenbrand (Arm) wrote:
-> > On 8/10/26 11:40, Xiang Gao wrote:  
-> > > Report the data capacity of all ftrace ring buffers through a new Ftrace
-> > > field in /proc/meminfo. Include the main and snapshot buffers of the
-> > > global trace array and all tracing instances, while leaving ring-buffer
-> > > metadata accounted for by Slab.  
-> >
-> > why? :)
-> >
-> > To report a handful of KiB as in your example below? Doesn't sound super helpful
-> > TBH.  
+On Mon, Aug 10, 2026 at 06:32:04AM -0700, Breno Leitao wrote:
+> Memory failures (such as unrecoverable ECCs errors) are getting more and
+> more common. The kernel knows how to handle it while running, marking it
+> as poisoned (and SIGBUS user tasks).
 > 
-> Yeah I think we need to stop with all the proposed additions to /proc/meminfo :)
+> Poisoned memory is removed from the buddy allocator, but, not from
+> other places. A current problem is that kexec will load new kernel
+> on top of a bad/poisoned memory, which is undesirable.
 > 
-> Also something like this where you are making a change in output that it is just
-> your opinion that it is useful should be an RFC to see what the community thinks
-> first.
+> If the next kernel's image, initrd or purgatory lands on poisoned frame,
+> the relocation copy writes to the bad memory and the machine checks
+> during the kexec.
+> 
+> Skip hardware-poisoned frames when placing segments: check them in the
+> kexec_file hole finder so it lays the next kernel down on good memory,
+> and reject a poisoned destination in sanity_check_segment_list() for
+> the kexec_load path, which cannot relocate.
+> 
+> The two hole finders walk in opposite directions, so each asks for the
+> end of the poison it has to clear: the top-down walk for the first
+> poisoned page in the window, the bottom-up walk for the last. A poisoned
+> hugetlb folio counts in full, as hugetlb keeps the flag on the folio and
+> the poisoned subpages on its raw hwpoison list.
+> 
+> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-Agreed. This doesn't belong in the meminfo. If you want memory statistics
-for tracing, I may be OK if you add a "total_memory_kb" file in the
-/sys/kernel/tracing/trace_stats/ directory.
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-And break it up for memory used. Ring buffers, events, etc.
-
-Perhaps even add one per CPU as well.
-
-I'm always conscience about how much memory tracing is taking up in the
-system.
-
--- Steve
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
