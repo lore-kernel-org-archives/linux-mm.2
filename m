@@ -4,134 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E38DC5AD7B
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 18:53:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD6C2C5B567
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 18:54:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 750A56B007B; Mon, 10 Aug 2026 14:53:24 -0400 (EDT)
+	id 5A3A26B008C; Mon, 10 Aug 2026 14:54:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 728E06B008A; Mon, 10 Aug 2026 14:53:24 -0400 (EDT)
+	id 57BAA6B0092; Mon, 10 Aug 2026 14:54:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 619326B008C; Mon, 10 Aug 2026 14:53:24 -0400 (EDT)
+	id 4912D6B0093; Mon, 10 Aug 2026 14:54:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D29E6B007B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:53:24 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A593DA0278
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 18:53:23 +0000 (UTC)
-X-FDA: 85086257886.17.7E1FF95
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id EC179A000A
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 18:53:21 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WOG6eDQA;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786388002;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 07DFE6B008C
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 14:54:20 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7456F1C0AB7
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 18:54:20 +0000 (UTC)
+X-FDA: 85086260280.02.9537FF2
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 8B10C40004
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 18:54:18 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tSrLHodn;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786388058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g/eKo78QOe0SXZpHQEeh5FfA11qf/k2Y+f89Z+lzEo4=;
-	b=deIXWvimRQCFTlDZNygt82Gm9mFX+b9lNRM/eheDi1Yiqr9wtNuUukQHekXeLRpL4k4idN
-	YOThDSzx8wyMpLNiZ7bl3BXrb0C/N7KHoQcqeOYJ9VFdBPAquTDQc6TOOwdQodsqLKSiSE
-	9o7I4LwX88YLDsQVoYgtnVGVzp0I3as=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786388002;
-	b=FuZHbmwFt3GyBVGfkFeUowCfAkadn69Qg8v8Tz7usfTY4Eso4SQ+Q9ZMmICow/9t5/dzY4
-	wJBzXbiN3EEmQTNPSt2snWTiLfvQqo2XLVEAznlGIsiXkvNMa+qFqvLsg9cm5xNPHXm9bv
-	OLYPwXfoGLAzyrnNpBKintNMNj9wazA=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WOG6eDQA;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 61930600AE;
-	Mon, 10 Aug 2026 18:53:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19D41F000E9;
-	Mon, 10 Aug 2026 18:53:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786388001;
-	bh=g/eKo78QOe0SXZpHQEeh5FfA11qf/k2Y+f89Z+lzEo4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WOG6eDQAaHhbYQgktX3rdJKmd8CJkea3MKk2oTiU2wj925uVkM8nPffjXQTO3dV/h
-	 s9VG6v0qaUkP4/p3aGwYKzbJAJTZ3lxgWRtEQ5uImOjsNgDQgeDiC4qiGW4rLiKZr2
-	 nF1Mi2CM/eRYQXOx4HslEN6Dxj95iy9PdF92I9Ox3ByCRkoctWV96DCUE3rxz6Lgkz
-	 7ZmrV7DmEcaeFjj5HMsQ6fPRu5PHXse3D/03Q1KKfiXWS1RafuvuWtbFLzqA+IBPNh
-	 N5E2HUTv2rLS2fNy5GK0VWXFtRVWI+a+dGg+MsL0U+THRNlsealu3NygYuufoFqdR/
-	 Mr8kppBmiTJnA==
-Message-ID: <50b1dadb-37f1-48a0-adf6-c6ff8b704582@kernel.org>
-Date: Mon, 10 Aug 2026 20:53:15 +0200
+	bh=BFLIcMV+TsQl8fF5Kcteeza9u+Vqp87MX/t5s46zNlY=;
+	b=oLwYvmBAtf2oBHigB0paLJmej2Y7IZJK72DHPSv5jgM5DbtjWXoeiIGeLlCcdUv2aOCRRb
+	8dGIrTTicg+xujsDBD6LAC6YAk5NUGwAjPS0Mqcobx7tFtFmvwM5eNYYYdel1qfs3nRzCz
+	eMfdAVNFi1cHZN44MgBVlyw7ccwnJ1U=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tSrLHodn;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786388058;
+	b=J8UEePokgM3qE81SGe7QZrfbiZrFZlV2j71E2VQPmxsskdsJE7/GQRbbiRX+6q80Zj2220
+	T3NhV8QlCQ/ReZaTy64PDTO+W1t4g2diSiPY1X8y5XteNlFoPgXWgkEjf1jJNQ8Jy0VcTK
+	tazdIOgN0aTWuWb1djiCVUA+wnC495A=
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51c01c79467so49081cf.0
+        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 11:54:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786388058; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XeMXsUi3OiObHyA6XqwNqMxW8em1QLfv1TdU8sjS+/LSgWUVgQx4yeSCqgVgEOfNOk
+         IzECD9ISLZu0KFHUQTprhIK9oYtBhzdHaLrYiAkP21CnZxg9wsJd8i/Z5PpsTgeLZPb5
+         YnbZ9as05bwEPyaql+yTZ7Riv1MCPelwSkqoGrGAvWwFp0GQzOBpNqqa17sDS1vktxLY
+         /37JURMDu++NM8aP2jnpe32wDQMliXUtPW2hVwIj42ysw+++6ZlFTQYvb0Jjy4Xde68u
+         uK4cFAeza5UodEFtxb6jhhJ+iI+xfUbdHtUoDUfiNwpzkYO3BTFfSni33kYrIUzdGwy7
+         zSug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=BFLIcMV+TsQl8fF5Kcteeza9u+Vqp87MX/t5s46zNlY=;
+        fh=LYjxE1YFLm+3abBQjW2q7UmiY90tGB39x3i7o0fmr2M=;
+        b=k7JhboPbZA8ae7hONJVeqPYOomywu2sq8eKVeJxtHt6TRegQ4HEcmp3nYk1JyflQ2M
+         nxDtPDMQqykXOI7hpvc6luyKC6KyF1Djb18405AhdUV4ybbjklJwFyScHMZ5rm8HFoel
+         UR4Bb638gXIRiBdimYh0V+BL0ziWhBJDixCpgSkl6MT0YvfZOIO/rEQXjp6mWEuWK3mL
+         8Z6UCOA8W/zYYB/tawbQISGVmqwbyyzt1t/xLuBXYyxJ2yyKY/PnLfFw06r0JVow0+EW
+         HjIA300Ir0W2j1aQyVUScWqrdtBiSpIwmkpjKGsnM89g2XpEsUuzmm+bGNIsBUood0qd
+         SLVg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786388058; x=1786992858; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=BFLIcMV+TsQl8fF5Kcteeza9u+Vqp87MX/t5s46zNlY=;
+        b=tSrLHodnrxh3tLBDX2SOhou5GIzzFJx9Kwv5cnECE2DWQNkax1c8GPuk1/c8oqHUxp
+         swUPlFBS2AUMPjADXS5AKCg7tMQy/CpO/fmWY7tiEesDHWLPd+3FH6/wBjmaSxLyOKY/
+         YBzD1OKlPR81oLwxwGFmeqWvgar7r5IEjn+hsjijxpRHokUAEcRPlfYtrfWyXXGCkJoY
+         kLbMWv/AMCS7ZuVpxBqRKvPfEhadlRl1gbm+jhLou2QF1BIwX79i49BJ1nNbnqsk60lj
+         vCvZ/VNR6iEcoufcrxuNM8bgX4T0anpdNt0Czj/EhG2NBBZlKmaERiJSFVN+fIdWbVsz
+         VdnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786388058; x=1786992858;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BFLIcMV+TsQl8fF5Kcteeza9u+Vqp87MX/t5s46zNlY=;
+        b=jb6PsUuT7mv+YhFxn3MLXaEReDROWpulSvuKfXQh8pcAFg3d0ZRADyKmd8dlGuID/C
+         NifEMGkaObFgqEVk9E+JXvKQEUEgv0m2fHWfxJ8Te5kln1Upz3WAeAMuhqujC/14HhWO
+         cKsHC3kLrTwk433UGD4Ym9GRMq+NOoTYmPsmgE5IY7aDvpX83InJw75MpmjPNfGjVAqh
+         cNqPOd0hIGUmi6Qks/W1OjLnldSKPZkElCv/8SteR5Ocr95VaA1NeIUrF+/zOZIy3Q9h
+         YUtv9q4a0VmgwwcitL2w/sV/z4eEJYeJsZ3pJn1ePVoc+A7789jCNrR+173azEeViRAE
+         gEzg==
+X-Forwarded-Encrypted: i=1; AHgh+Rol8vSsls5uruiFRMdbC9kudHqGOz9csr38ws1Y2mlM7R8eQuvaiZJYiNNj7oLG4KuuGMLcBfqLHQ==@kvack.org
+X-Gm-Message-State: AOJu0YwHt252T917QZxyQUWISBe+/IzhIwc2/7n/tTNhNfMBwoNGld0W
+	JKyeIeQ5x2Kz+B6mUnY/s/dAewT58Dxc63nhUUfaV3EFHScm35zRgh5WT+67HAhMI/ueAhwv1Ed
+	fk7ozkaxBuPueCKy/B/g/jBgqJFj1aJs3HDGiw7oC9qCzSHDXeim3aKsJel8=
+X-Gm-Gg: AR+sD13nLobpWch2ts1rnQxPJdWHfuzcnaXoNbfZBbQkv8LXVoMypu4feogH/waA0s9
+	pwVoVK6w7QqjuEjufjI3fqAmU3CnyopWnlPGyfrgiA3il7OQ/OyWLeJ3r2sol+6T2F92wJcSxhN
+	Fn8rzAKrI0wj7XLWzq0Va4oZicr++c+CGWD5rx1JNZJUCeUz/Odq46ljIuf4uTo6mFgn0IzHG6U
+	X4w/AMlhHXieWulQuqC2yZQMOkiFSkgE+Xb48dm9GtW3ryvD9dCb1N1DqJWxztAilMh5AuIUyJZ
+	5zQWKmoc+aM0eYE55jw2BZvqC+YVNDeEgx4DD9g87jI=
+X-Received: by 2002:a05:622a:9d3:10b0:517:64f6:3365 with SMTP id
+ d75a77b69052e-52d51130743mr2428451cf.4.1786388056958; Mon, 10 Aug 2026
+ 11:54:16 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v2 PATCH] mm/cma: don't release CMA pages still in use
-To: Rik van Riel <riel@surriel.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Chris Mason <clm@meta.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260810122737.030f8452@fangorn>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260810122737.030f8452@fangorn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EC179A000A
-X-Stat-Signature: iiufbn1gr7jtqnbuqhk8nkaneck899z7
+References: <20260806200548.3124802-1-surenb@google.com> <20260806200548.3124802-3-surenb@google.com>
+ <anoZL76y3WGXMArB@google.com>
+In-Reply-To: <anoZL76y3WGXMArB@google.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 10 Aug 2026 11:54:04 -0700
+X-Gm-Features: AUfX_mzCGUT1LBwKi19AfwqzrR1sfNDLiDeo-oSbRDVrC4hKEjbi43WPU9iVR8M
+Message-ID: <CAJuCfpFCK5ycO6s+dD35YtU6zgNdivfe6P3cVnd2VxPYfGXHDQ@mail.gmail.com>
+Subject: Re: [PATCH v4 2/5] binder: Make shrinker rely solely on per-VMA lock
+To: Carlos Llamas <cmllamas@google.com>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
+	Liam.Howlett@oracle.com, ljs@kernel.org, david@kernel.org, 
+	willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org, 
+	jannh@google.com, aliceryhl@google.com, arve@android.com, 
+	christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
+	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1786388001-607681
-X-HE-Meta: U2FsdGVkX18oUYg3jK3djybX1pS+2iVbN5WS0dTnKRQfDmtCcdzdWlSxIJoWichlnhXUjsRvxEOayJVZcmOyDQ5qujzhrisGBHvVwiQvU6pcM5gO3RsfzGGDiT7+kFhyxvBcehpQg24gCcB5oERnCSgqvfTiUl/T1YQWIzLqAE/PAJ9cck5gsnc11V8sdGy61qBcQ/nv1//KYmiPTX0lXeuapeXWHDO0bbV+Z23qKVKB3zF3SIfrq6JcuZVEF0QFI3vNz240TPOfXyPgS7LowTzFe/VU0IBjz5sYdVxvKJwacW8xeESFoWH64aB5ROgyWNxNGSO2O/T1U3w8XzxZynuASKkBDghOF0A38V465mLLKQ2HeZUW3WmW8IJ/yEGuQudufzXyYEBeAUWDq0TWKYA9Zte3uu+aLrUcLPQpC1+AsW/e+pJZa20+euBPPQjNujxbUHaRYy5bJeyDcyu7qLt86t2aMV7tJtlK4pWPsfd6q+Ex4/735KZZbeOTKKJaKjv5Lb+ADTX6n3Knj4DtSOgDE/jaxSYHRvIcd7YADktJ7UtlPUkmN+BJEyRaRH3+foA5TB59jAQiR2Yac3ABkFJVSp+Wvf24MyQ/A4RZKMEsSqK0khEVmbc9x4uiWIZZOQne/jHawYhZce3XiwLMVezUsPHz7YAaGD9xaU6d6UlqRp1vU08+FblVJlXD64yOtrSNKauXpZ8/vWH8OToTvLxV3HfMVDaL10pkPZWJI6THqCChZjnRl72biLthrJOuhzdknFsk7xxA7NhbXhcl34oxRlTYu1EI0a1LahuxlrQwd3yunqkAOrF+pp5PxJs/sIIdBzkrbPINuD1s8AlJPFX7qf/VzOLvbGZM1w5qJjeFeqTS5FwDRMS28ev8Hynf8kjI8+Afb0TMVV2M61gDdlxPz/keF+YsJRR5jjIQ7Msj2IJmvPECZjm1dyRq5GJcTfaLD9qdAOPPqeXzIC9
- Uy2GVjrT
- tbpRJsZmNoAzw++iEq/7NMcqK0koI3UFirPD1ttuGJfp4qirmvSKHOEDpKWnP2ize+HPY7lZ2o6cHWaTjTb5jT7V/Cwd5EUp85q16X4W1q/WlDKx86cVlNxXeXzb9DVMXEntTB29JxYuLNn6M6Jlr1/LRBiNKzk/j/VA0SPB36V26UV/vztNGDdVLHaJgzo/u42JACnEyEtwrCQwEZxV7Fye+C6jA28GmGNOd9wz1lW8of1hnvR/aay3GJ/7udtDQqBKHh31T6fygKybrjIGjIwroFRXrjasC5fK05tiiQxBe/rg+I7a5dNW5Bbw91ZGkrTjPHG+jDvs/wH4gWRoTmOk+7BEIWXa723n/PAqvQ7BtNlKjDT4Nz2n5hhTgG89X1ti2g7eeOSHKWz8L6CBgXImSSA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8B10C40004
+X-Stat-Signature: aggpk3934dneram36119uwx8i8sxpxdp
+X-HE-Tag: 1786388058-591097
+X-HE-Meta: U2FsdGVkX18oqwY98v5pQoLktfkp+kfbUOgouLRVwvmbJt4F6xL+hV65djgjG+ZObKaZW3KubnyUE96U3atJ0J930ajNUUmLfNhXTYlxuRhj+lu6yo+JSnfRv9i+YXgX054fbO4cDGFQbLPSA4H3SpRKa+olBWZEws0La75ZwavUwDXpDZOP3k/lP+K7GFio7CH8NI+QnXnHeeSkv9knhgdEQ5rNtmAcl6ki+ZcTP3LfjfIrJ0KOtIoQJQU2QCvzc4uP8d9XQhxXLP9WT3CHO8+eYjMDWypjzFmADAkr0EqIfvf9PUT9inphBTtHrbH1wKn/Hp+0nWfmXMV4/QkSqKp4k5n7Q+xtZq2K23aqdTggL0S80o3aADoFa23UNis/Jnn6FCtdRvMSMflIzI7lCqUKA8yhp/EFtRZ4TB6XuwTjLJlVFaLPvJwVZBm5PLR/ViIoYq9uQUHjfIwmxj5W4Rza3FkVu5waRamCFAnDRz1WglvGZtlAUIH4kWSlz6zEQpLqiBrBgvuEGKuKiH7wI6xWbQVEu9U1u2yKHEg40QW0FBLgIy/grc22ExROJScmgUMIUdtrRwFFMHMEDmoW73IRJC13yu2weJg7kMbk0lxrNjGCWHlTtvE66ce+gv2tOfXDg1CvMOr/FTWLmoIdOR3rapO7C8EKZvnuq1xPuwkI5qKXl4hVA7ro+7RUNRk4+K1uGNWs1fhVcgSghaI09EPgP0hviT9eQmbWhh0THmHDXpFGjaMIdDuSOynF38Moc9ITFtr+17ZXs8EiBWMT0zsVVrOoT670yqeBEcD3ZQyC9F9f9C634AHhUmCpQ8ANMRPJ2d4xnkTpeLFj4sCNrwlcX/JCwv4uSY2Do6Dcg7h4eGddbeHGe/ZLOpSych2Mh0bGGQP+fs+nzBv5AfRMg1kbDr3RGxFARfsKKu2MUCzxwg3RBh4wdfyYNtckqIcBmn5yMTxa26DCAS02hSU
+ 5C2h+zvK
+ QvQ+DvDWBUTKw7aN6WEElZKdI45gY4yQOT0c+60+sZ91GxgMW2uSyYMduBvPbDlnjbnvXnvuFB2qLEU+8IOVPX5bqi+e6iJphfcWllFdmiuDKezs3HYqWztCxeW/FCX2VO9QKh0CNz9CZMpFkyIWqk74EdSu1CVjc6YWL0x9OlR94H1etvN0GSyxJRI0CVvQGxQHA1I+XTpWI4/qYaLioLt5PIEl6pTcELnehdyomwL0sgUgY9qvUveVQzvsPOdYJzWbROW9QLqy+1tmNE/DnQRBDHodIAU8PAN4Q8kZKBBRSAjvzOUvzPyBrZyE47V2I16P1KORPqQPljkv0Oi2smNsXWAyFeP4hPTDYJX41pcg5ZNvJEUlUdyvi6piiEqMGE9plaEzUkt04ugcuaJQj9KhhDldn6lCfOByg5KHJAUtSXr+IrIAFCIZpbegMoVZujf64bJ8DGTNXb9gPrwzuNQhAXjAaaJOdPMladwqYVy02093HeUGVpGLRzdcc7HQUj2NApXIA2qjcxhSCeSB0E4n0nn/TtdmZmRdUElbSh4OG309MlwGYjYVh5T4dlQ+xY03dp72MwaoI5f88+NS54zrTto3RqoWBmZ+Ruqnw5OhYnGAZiZwPrhMVAD/mxDF+kcAIpQ9CTqj5NKmuVLAYDdY47wh+AjOJOmY1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,120 +145,212 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/10/26 18:27, Rik van Riel wrote:
-> When a driver calls dma_free_contiguous() before quiescing DMA, the
-> page still has a reference from the device. put_page_testzero() there
-> returns false, WARN fires, but the code proceeds to
-> free_contig_frozen_range() putting a live page onto buddy and clearing
-> the bitmap. Later cma_alloc() hands the same PFN to a new owner while
-> the original holder still references it.
+On Mon, Aug 10, 2026 at 11:32=E2=80=AFAM Carlos Llamas <cmllamas@google.com=
+> wrote:
+>
+> On Thu, Aug 06, 2026 at 01:05:45PM -0700, Suren Baghdasaryan wrote:
+> > From: Dave Hansen <dave.hansen@linux.intel.com>
+> >
+> > tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
+> > it and mmap_read_trylock().
+> >
+> > Long Version:
+> >
+> > =3D=3D Background =3D=3D
+> >
+> > Historically, binder used an mmap_read_trylock() in its shrinker code.
+> > This ensures that reclaim is not blocked on an mmap_lock. Commit
+> > 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
+> > support for the per-VMA lock, but left mmap_read_trylock() as a
+> > fallback.
+> >
+> > This was presumably because the per-VMA locking can fail for several
+> > reasons and most (all?) lock_vma_under_rcu() callers have a fallback
+> > to mmap_read_trylock().
+> >
+> > =3D=3D Problem =3D=3D
+> >
+> > The fallback is not worth the complexity here. lock_vma_under_rcu() is
+> > essentially already a non-blocking trylock. The main reason it fails
+> > is also the reason mmap_read_trylock() fails: something is holding
+> > mmap_write_lock().
+> >
+> > The only remedy for a collision with mmap_write_lock() is to wait,
+> > which this code can not do. So the "fallback" after
+> > lock_vma_under_rcu() failure is not really a fallback: it is really
+> > likely to just be retrying in vain. That retry in an of itself isn't
+> > horrible. But it adds complexity.
+> >
+> > =3D=3D Solution =3D=3D
+> >
+> > Now that per-VMA locks are universally available, lock_vma_under_rcu()
+> > will not persistently fail. Rely on it alone and simplify the code.
+> > The removal of the fallback does not affect NOMMU case because binder
+> > driver depends on CONFIG_MMU.
+> >
+> > Full disclosure: I originally tried to do this with
+> > lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
+> > trylock semantics. Claude caught this in a review and suggested the
+> > approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
+> > I guess.
+> >
+> > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> > Cc: Vlastimil Babka <vbabka@kernel.org>
+> > Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> > Cc: linux-mm@kvack.org
+> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
+> > Cc: Todd Kjos <tkjos@android.com>
+> > Cc: Christian Brauner <christian@brauner.io>
+> > Cc: Carlos Llamas <cmllamas@google.com>
+> > Cc: Alice Ryhl <aliceryhl@google.com>
+> > Cc: "David S. Miller" <davem@davemloft.net>
+> > Cc: David Ahern <dsahern@kernel.org>
+> > Cc: netdev@vger.kernel.org
+> > ---
+> >  drivers/android/binder_alloc.c | 45 ++++++++++++++++------------------
+> >  1 file changed, 21 insertions(+), 24 deletions(-)
+> >
+> > diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_al=
+loc.c
+> > index e4488ad86a65..c13a588c37de 100644
+> > --- a/drivers/android/binder_alloc.c
+> > +++ b/drivers/android/binder_alloc.c
+> > @@ -1142,7 +1142,6 @@ enum lru_status binder_alloc_free_page(struct lis=
+t_head *item,
+> >       struct vm_area_struct *vma;
+> >       struct page *page_to_free;
+> >       unsigned long page_addr;
+> > -     int mm_locked =3D 0;
+> >       size_t index;
+> >
+> >       if (!mmget_not_zero(mm))
+> > @@ -1151,27 +1150,25 @@ enum lru_status binder_alloc_free_page(struct l=
+ist_head *item,
+> >       index =3D mdata->page_index;
+> >       page_addr =3D alloc->vm_start + index * PAGE_SIZE;
+> >
+> > -     /* attempt per-vma lock first */
+> > +     /*
+> > +      * Attempt per-vma lock. This is essentially a
+> > +      * "trylock". It can fail even if the VMA exists
+> > +      * for 'page_addr'.
+> > +      */
+>
+> Do we need to explain how lock_vma_under_rcu() works here?
+>
+> >       vma =3D lock_vma_under_rcu(mm, page_addr);
+> >       if (!vma) {
+> > -             /* fall back to mmap_lock */
+> > -             if (!mmap_read_trylock(mm))
+> > -                     goto err_mmap_read_lock_failed;
+> > -             mm_locked =3D 1;
+> > -             vma =3D vma_lookup(mm, page_addr);
+> > +             /*
+> > +              * If the vma exists, we can't continue because we cannot
+> > +              * remove the page from the vma. However, if the vma was
+> > +              * unmapped, it's okay to continue.
+> > +              */
+> > +             if (binder_alloc_is_mapped(alloc))
+> > +                     goto err_vma_lock_failed;
+>
+> The comments seem redundant, the label is enough. This works:
+>
+>         vma =3D lock_vma_under_rcu(mm, page_addr);
+>         if (!vma && binder_alloc_is_mapped(alloc))
+>                 goto err_vma_lock_failed;
 
-Hm, it rather sounds like it's really the drivers job to quiescing DMA. Are you
-aware of an in-tree driver that can trigger this, and if so, how?
+Yeah, for the binder maintainers what's happening here is probably
+obvious, but when Alice explained the logic to me, this comment really
+clarified what's going on, so I added it here. If you insist on
+removing it, I'll do that of course.
 
-Freeing memory through CMA, while the memory is still in use is problematic for
-CMA as you discovered :)
+>
+>
+> >       }
+> >
+> >       if (!mutex_trylock(&alloc->mutex))
+> >               goto err_get_alloc_mutex_failed;
+> >
+> > -     /*
+> > -      * Since a binder_alloc can only be mapped once, we ensure
+> > -      * the vma corresponds to this mapping by checking whether
+> > -      * the binder_alloc is still mapped.
+> > -      */
+> > -     if (vma && !binder_alloc_is_mapped(alloc))
+> > -             goto err_invalid_vma;
+> > -
+>
+> This introduces an "extra" change. We'll now release pages without a
+> valid vma (e.g. after munmap()). Before, these pages were expected to be
+> released via close() in binder_alloc_deferred_release() later.
+>
+> I don't see anything wrong with it. However, it does seem out of the
+> scope of this patch which just drops the mmap_read_lock() calls. Or at
+> least I don't see how this part is necessary.
 
-> 
-> A concurrent put_page() that drops the last reference between the
-> testzero loop and free_contig_frozen_range() can double-queue the page
-> via page->lru, corrupting buddy lists.
-> 
-> Fix by freeing already-frozen pages in contiguous runs, while keeping
-> still-referenced pages. When any live page exists, a future cma_alloc()
-> on this address range will fail until whoever holds the extra references
-> frees those pages.
-> 
-> This change should be safe because nothing can get reallocated while it
-> is still in use.
-> 
-> Fixes: 9bda131c6093 ("mm: cma: add cma_alloc_frozen{_compound}()")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Hermes:muse-spark-1.2 syzkaller
-> Reported-by: Chris Mason <clm@meta.com>
-> Signed-off-by: Rik van Riel <riel@surriel.com>
-> ---
-> v2:
->  - don't play clever games with the CMA bitmap, the page allocator
->    alone will prevent re-use of not-free-yet pages
->  - v1: https://lore.kernel.org/all/20260809210608.06b5ccb9@fangorn/
-> 
->  mm/cma.c | 39 +++++++++++++++++++++++++++++++++------
->  1 file changed, 33 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/cma.c b/mm/cma.c
-> index a13ce4999b39..cbf8dba8f077 100644
-> --- a/mm/cma.c
-> +++ b/mm/cma.c
-> @@ -998,7 +998,6 @@ static void __cma_release_frozen(struct cma *cma, struct cma_memrange *cmr,
->  
->  	pr_debug("%s(page %p, count %lu)\n", __func__, (void *)pages, count);
->  
-> -	free_contig_frozen_range(pfn, count);
->  	cma_clear_bitmap(cma, cmr, pfn, count);
->  	cma_sysfs_account_release_pages(cma, count);
->  	trace_cma_release(cma->name, pfn, pages, count);
-> @@ -1018,18 +1017,45 @@ bool cma_release(struct cma *cma, const struct page *pages,
->  		 unsigned long count)
->  {
->  	struct cma_memrange *cmr;
-> -	unsigned long ret = 0;
-> +	unsigned long skipped = 0;
->  	unsigned long i, pfn;
-> +	unsigned long base_pfn;
-> +	unsigned long run_start = 0;
-> +	unsigned long run_len = 0;
->  
->  	cmr = find_cma_memrange(cma, pages, count);
->  	if (!cmr)
->  		return false;
->  
-> -	pfn = page_to_pfn(pages);
-> -	for (i = 0; i < count; i++, pfn++)
-> -		ret += !put_page_testzero(pfn_to_page(pfn));
-> +	base_pfn = page_to_pfn(pages);
-> +	pfn = base_pfn;
-> +	for (i = 0; i < count; i++, pfn++) {
-> +		if (put_page_testzero(pfn_to_page(pfn))) {
-> +			/* Add it to the batch. */
-> +			if (run_len == 0)
-> +				run_start = pfn;
-> +			run_len++;
-> +		} else {
-> +			/*
-> +			 * This page is still in use! Free the freeable
-> +			 * pages encountered so far, but skip this page.
-> +			 */
-> +			if (run_len) {
-> +				free_contig_frozen_range(run_start, run_len);
-> +				run_len = 0;
-> +			}
-> +			skipped++;
-> +		}
-> +	}
-> +	if (run_len)
-> +		free_contig_frozen_range(run_start, run_len);
->  
-> -	WARN(ret, "%lu pages are still in use!\n", ret);
-> +	/*
-> +	 * Some pages were still in use! This should not happen.
-> +	 * Subsequent cma_alloc() calls to the same range will fail
-> +	 * until whoever grabbed the extra refcounts frees the pages.
-> +	 */
-> +	WARN(skipped, "%lu pages are still in use!\n", skipped);
+This check came from this discussion:
+https://lore.kernel.org/all/anGrFIYiPhjxWSkD@google.com/
+It's added for consistency when handling cases where the original
+Binder VMA is gone.
 
+>
+> >       trace_binder_unmap_kernel_start(alloc, index);
+> >
+> >       page_to_free =3D alloc->pages[index];
+> > @@ -1182,7 +1179,12 @@ enum lru_status binder_alloc_free_page(struct li=
+st_head *item,
+> >       list_lru_isolate(lru, item);
+> >       spin_unlock(&lru->lock);
+> >
+> > -     if (vma) {
+> > +     /*
+> > +      * Since a binder_alloc can only be mapped once, we ensure
+> > +      * the vma corresponds to this mapping by checking whether
+> > +      * the binder_alloc is still mapped.
+> > +      */
+> > +     if (vma && binder_alloc_is_mapped(alloc)) {
+> >               trace_binder_unmap_user_start(alloc, index);
+> >
+> >               zap_vma_range(vma, page_addr, PAGE_SIZE);
+> > @@ -1191,23 +1193,18 @@ enum lru_status binder_alloc_free_page(struct l=
+ist_head *item,
+> >       }
+> >
+> >       mutex_unlock(&alloc->mutex);
+> > -     if (mm_locked)
+> > -             mmap_read_unlock(mm);
+> > -     else
+> > +     if (vma)
+> >               vma_end_read(vma);
+> >       mmput_async(mm);
+> >       binder_free_page(page_to_free);
+> >
+> >       return LRU_REMOVED_RETRY;
+> >
+> > -err_invalid_vma:
+> >       mutex_unlock(&alloc->mutex);
+>
+> This mutex_unlock() is now dead-code.
 
-We still issue a WARN, which itself is problematic. See "Do not WARN lightly" in
-Documentation/process/coding-style.rst.
+Ack. Will remove.
 
-So it's either
-
-(a) This scenario is valid to be triggered. In that case, WARN is not appropriate.
-
-(b) This scenario is not valid to be triggered. In that case, this is not a fix.
-
--- 
-Cheers,
-
-David
+>
+> >  err_get_alloc_mutex_failed:
+> > -     if (mm_locked)
+> > -             mmap_read_unlock(mm);
+> > -     else
+> > +     if (vma)
+> >               vma_end_read(vma);
+> > -err_mmap_read_lock_failed:
+> > +err_vma_lock_failed:
+> >       mmput_async(mm);
+> >  err_mmget:
+> >       return LRU_SKIP;
+> > --
+> > 2.55.0.654.g21b8a5bc05-goog
+> >
 
