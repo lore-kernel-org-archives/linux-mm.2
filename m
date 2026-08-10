@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C3A0C5AC82
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 09:22:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC0D8C5AC82
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 09:25:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 053306B008C; Mon, 10 Aug 2026 05:22:29 -0400 (EDT)
+	id 895B96B0092; Mon, 10 Aug 2026 05:25:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 004696B0092; Mon, 10 Aug 2026 05:22:28 -0400 (EDT)
+	id 846F66B0093; Mon, 10 Aug 2026 05:25:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E353B6B0093; Mon, 10 Aug 2026 05:22:28 -0400 (EDT)
+	id 735B26B0095; Mon, 10 Aug 2026 05:25:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F7196B008C
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 05:22:28 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1FD98406B6
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:22:28 +0000 (UTC)
-X-FDA: 85084819176.10.09F57F2
+	by kanga.kvack.org (Postfix) with ESMTP id 4D95B6B0092
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 05:25:43 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E5B281A06EE
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:25:42 +0000 (UTC)
+X-FDA: 85084827324.03.19046C8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 49AA88000C
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:22:26 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gcoznZ5A;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2B2AA1C0003
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:25:41 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Te0td2+v;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786353746;
+	s=arc-20220608; t=1786353941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6wQr3PYTUoSXpaDl5k0IG1zQOBI7tNXiUqLf3cd1RKg=;
-	b=KCJ0itxi0XuN6aj06j9Hq1yiWkzg2gpFpLpSYLyZtwkkkU/bLumhbJW1T0C+sxwHQHNamd
-	/sxA6KA/yeTi2hY/aoqGa6F89b1aDd16QxMgLcSyjeaZK9KpdpMc4AXjyMCn5ZrB4jqlYQ
-	QS1T7Xwzc5Ib3KOpBqd1J6ehZP0Bdb4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786353746;
-	b=qRqC8WoxUL1RRuCE1HJXFwyqbLPb+Kl2TOKXftACxtdUF6OT6C88etx+Gb16Nw3MRZ8UvK
-	zLpTDflaRpBcoyHMkkO7gojCtlOLt+C3hkjI4NWb+ef2mZvfkLmYyeGreDSNX5G6tUyeK/
-	ZiEsQ+6tbKT52bqfe7tI6a2DPbzaNjE=
+	bh=FW+DCdZf91aXSiXpZadYY/zYCPM3/NZ456W0+Qt8738=;
+	b=BQ/hAHAUsvI+6v9bHlxdu3KLtvMOXuYzM2vZIozFfvvvapgpea9Yb8IfDxNUUQPaeqlI+u
+	2JUiquUjsyG2aJTjtPHaaxQK+dLTynM4Hcl3s+74ezUwxv8J+7w4jnP0a+KcpIPq2LGMdm
+	huNVr+kHlWos2Su9e2Dtpz0/YIHSR1s=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gcoznZ5A;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Te0td2+v;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786353941;
+	b=FBJHWXUQuWhjTqiAroQR7VF3r1KoM5K6gkzW7K6LE1gwOfLyBmHifNZT3NtF4cSO4fQnSh
+	b29z4ScXOkQq3EVMWcgcTLnq+xn+LfF0Dl+GVWknx2Wx7r0FuKQ/9ZFSfwg2m2vKPQ+9y8
+	iHb2zOt6NjUIbCVKhRbEp8LQsHk/Fww=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 67488434B6;
-	Mon, 10 Aug 2026 09:22:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459751F000E9;
-	Mon, 10 Aug 2026 09:22:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A556C43BD6;
+	Mon, 10 Aug 2026 09:25:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC611F000E9;
+	Mon, 10 Aug 2026 09:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786353745;
-	bh=6wQr3PYTUoSXpaDl5k0IG1zQOBI7tNXiUqLf3cd1RKg=;
+	s=k20260515; t=1786353939;
+	bh=FW+DCdZf91aXSiXpZadYY/zYCPM3/NZ456W0+Qt8738=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gcoznZ5AtoqypeuzFMUFCV0SMZb31NgwLMyAOZz/m430M40GrLBfXae1BEO+LjcA4
-	 XuKCG/K1eNaSIhwwyrXHHUUiAagMRg08hWANytGDAoToeNFKX4wR71XEYFGkFbUWjk
-	 xqs2uRpDOpUmvayAD1TsECcSybfbFE7IbwuCUQxc4kE3FZ6eF4eAJEg/qTFVk5suAe
-	 FstVMR84DcIukqC/PhHwIPZj3vMsyQyBIi/Yiy32UcvUROna5tfQH/+wkTGaeZLDOi
-	 d0eblAzJLiLUDuD98q1S66cpzfD+9zFh8IrH7rGPro3csMwEaReIYEyXaXQjHV5Z0Y
-	 tgGH+JPNFocaw==
-Message-ID: <a30391cf-cca5-4e6c-a3cd-a71c5b88d1f5@kernel.org>
-Date: Mon, 10 Aug 2026 11:22:04 +0200
+	b=Te0td2+vh2cJ4FxDisqxBKsHzQ0BeIztq2W3Tvbcb3gawhlzZCouFcbrDOMorkZIV
+	 j8Ll0w/+J7RwUovuLhLslVQNeVNJC3ejLAjEE0xsIL16gKE89mX5kMjlvitp9EuICp
+	 JOJ6gT70gWmQrKa+BQIfrGs8VAiHVYuN5Iy3JxuW+EsIzaWt4j/F6LA9v9XNay4tL1
+	 fSpeY2w36ghn3Z2V+p6I5j7wJgeC2OeBEcspY+RDTfhXquw92tHyyED8EG2IlSRB2D
+	 yselX3lmkFkZXy+nO/osfWCIPZPJmeQQ3I/RUIlbocwcj/+hE+5S0k8+TmGVdUq0kX
+	 1WVQu2WyrSLxg==
+Message-ID: <aa545680-2fee-468c-ba34-cc9beb16f4cf@kernel.org>
+Date: Mon, 10 Aug 2026 11:25:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 14/41] mm/gup: factor out LRU cache draining for folio
- into lru_cache_drain_for_folio()
+Subject: Re: [PATCH v10 15/41] KVM: guest_memfd: Handle lru_add fbatch
+ refcounts during conversion safety check
 To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
  binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
  jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
@@ -102,7 +102,7 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
  linux-coco@lists.linux.dev
 References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-14-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-15-2fc18ee6d3ba@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -149,17 +149,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-14-2fc18ee6d3ba@google.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-15-2fc18ee6d3ba@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2B2AA1C0003
+X-Stat-Signature: s6rm5nt4ii3tsp951gwjkxfha9pepb8y
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 49AA88000C
-X-Stat-Signature: e3tbwn7kuq5prr3doee1xteonpo8wf1i
-X-HE-Tag: 1786353746-732061
-X-HE-Meta: U2FsdGVkX19uMMgnDTVGw1Vg8VImk9tOVKDBsTfWXO9UHfOtgNZGiAxUFIwwgrS7qM4Fz/CZ5fmhpmniLF9Hu8SsIjHucvgiHIclQ9z0oYxhExb1deOYY/k4tzwBitaXC8yW9Vr7bI6h3xah9CtP/jGMGeoP6d2XKxVMDxfWGZ6Zjw3mJNBynQlkm5bU4W5i5bc5dY/+DoVxHFSzL0naVpzjYUNjOPtkb+KcDN8q89mPRrn8rzm26qFZ2fjd+pA2BCtGHNsUkKYvcB2zp/Q9c5ueTYKpvKTRlSzpvgJLaqswEyKD3Msi0FEBkBq8yqB25ru8mXEVcFjDC1iBewRbheB3wvGAeL7cxhpEUKXN7HCdJI6u9kXyQVG+88xxFiPW0wvGejIhkf8VYTmQvfQ3SvsdYgPOj+Cu7dhUJt3u5RDBJl7mIC+LLf12F5Cl2zztDj3clTaPfrlYLuUXNoojQkPKbUYPleMVwjJXpFnUs+d077wtQq/5thJJ/vXWkInxHIXQWRBF8ezjCKO5tx7C3Gf6jovDWtjFYv9LH51zoEN0aFS8sys/9N/uAt4rJ7K1RzIimJKkNf9pfEYJow7+9pyg0EE0BePZxhvTGvbahucX6i+CEIgHu/y2dcyEdVPsRQS1OBByXRCqvctIeJ1OVsTzkgDzZOHczVSUgF6TVgLOZQFT2PspLMcc2RQKvQwElmvWsVJqR1Qe4fRvZKVBbgMwnzrpmaDtVOQ6sd9ht2wunznvbMcR6KshhU6z0kmyImombdmIqvc8ApcFyhB5buLgxQQCsroepIbCnrAFMvJHfKjEH0pmq3J/3YV3eIaar6EPfxT6pLVyo0zqxmjBNyeeSe3NO+DHsUE/d1SleXjkQwLdi0criFXP/N8oObzYj9rB4tcKWGiRaWKbSltJ6VRAo3XOEK7VZgROITOhYqKvW5vP1vJAHva2My31xwWa2eAP+LeOtX/zd/7LLZ5
- SLR80U80
- YDkUpZXWsYfvRrRbEuTF2/0kb0gXQWCr84LifzgLnilZBzNgCdytBDNehJEA4ey3MrNeDlOTYEx2zGUJu9rsz+cFYhM4zyV+24VVEiBAodMeGTJIqgBgRZU2MpkmZMdyKYWlbJrgSNSyb+EmbvHACZAwBMRt/NZMPLs2INr+63svUW/Oijo6xMwZ4jW0+PCvW5jKi1Z7Wop2BGMUdhIo3W7m6J3wurxEUF+xceiJ+zf7ZFJGjd+Fz5I3u1eSM2SBX50HsrwwZrRLSl5+D00ww6/G3Uwfzp8Fg0C6rArkDXQx37dXcBX8DXFyXBbaBwidN4TqW5mtjLUqMNJOiFv1nfuACkmwfYOnRZhcr
+X-HE-Tag: 1786353941-464905
+X-HE-Meta: U2FsdGVkX18wu7SEA8YjTICmJhJMFVA9vfLZBTMFUCnxpZwd22d+HeimFdLic0SfMyeIxMejLz/vN7oJCdGaUhjAYs3KGvslidGywexeQwYcm1W9Hg3OvRNzRLqlLGKpP4YXcqWjW8l3qgCdyMpxG/VLUQ+Hw+Cvkjg/xIdsWmnjYK6I6md9Wk7+zEx3EteP3teAfVeLX2CbznTrpAe/7zq5bw1RQMC4Emz6ISCrSievLfO7t8tw2aCTNaYDfr5eUILwUkfFLaU14o44B50Ky17xXbu50WP8jbr7KqaHqcKmh79aq3Y2GutZGvDeofuBVRZgcNBPl/u78e0KXGdbvB6w3zCWHA110hiBF99bQ+Cz9mqVn3m2VmQ48DdwtLYNBCsMdcPSOFTfLG7ZulVhzOxvSSZ7WxayeJ6Kcq3D2Pi/NZE4+C6aK7/NoG5P++k86f4BXjRuutJ9q6X1B9O4LdzDMtWRraiyIjCyPTBno5reeKVjpMtPyV6/kOaU0Kl4iV1pkPfmeFq787fn5yKdXYPv6IQ3obKeNJkiMRURkazjecxXnbiywEWrP6LFlKBlBiLIMR6qcmVGFpZuo/sl3m90iuGOiA5iUkNxPmSwX69T1xwKjeIz2Itb9FYuA72Fy7pP1cuRZ828YBHwz97XT7KTXOAf92CpjOvqd31C6tX9I8yWzmm6a9RM9YrghxzLvoK/w0Lvu2wiSiUYZTyCPt/18A0qkRZh7iria2HpKahKrNpeLAw1df5dYzNmvkjZE/yEdZfqjKb7BX6O6JuTIlLRj6TFQ7z7YFT+qn4FJbSXwo95+aq3H+XGA5Ouk+XuA8KBNyfhlEq0dl31ALog2vL+PEW22S6Y5y0l5GBa9VD/sac9r92L/uDWqEgBDe4MNxUT0ro63ulseAf5aMaL4r9g4xdHiztJKKkzEnoTqVtRbgqZ/9KmTSgZ+NhvlyIid9iXgRBThsXc1c0XGIL
+ ucyXyPCR
+ CmuU7XIPzNkZnTSZcCmMDEBZ+y+5R0JBheN+I9mH+xZnwD8a7NAgOI+fQLjiS1/fOl+lkRIKan2DU8JoQzBOVVMHIGgY2ErQBFvuHpqzlNH+aCRako6Y1a8NSfoZx6P7s3XmjhL49+TiLN0gscKgkREBntwBCk+Qf64ufEquLcl8+XZ7TpgbcgPa4f7SznNxKqvRdeol29kq2TngxfjQbGv+/bfX/wuCcwhGJMwUIF0ZjOQIZEVATpNAy8g1KyxSWLaoZd059UcuqhJCG5gtYeEV9IzwkfvsPlgwfKe83GKkgVe8uU8ghzJX8HHqmMrLOZs0euTmgqIs14hQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,36 +168,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/7/26 23:52, Ackerley Tng via B4 Relay wrote:
-> From: "David Hildenbrand (Arm)" <david@kernel.org>
+> From: Ackerley Tng <ackerleytng@google.com>
 > 
-> KVM with guest_memfd wants to remove any folio references due to LRU
-> caches, as it really must only allow to convert folios from shared to
-> private when there are no unexpected folio references (e.g., from GUP
-> references).
+> A guest_memfd folio is safe for conversion if guest_memfd holds the last
+> references on it. Any other references on the folio may indicate another
+> user, and guest_memfd cannot convert it to private if there may be an
+> existing host user.
 > 
-> So, to drive the refcount down, it needs a way to flush the LRU caches.
-> Let's factor out what we have in lru_cache_drain_for_folio(). Document
-> it, and also mention that concurrent folio (un)mapping might, in theory,
-> miss detecting LRU cache references. Keep obtaining the expected refcount
-> twice to minimize the possibility. For the current and future user that
-> should work, and we don't really have a better alternative: we could
-> detect if the mapcount changed, but it would still be racy and add more
-> complexity with questionable benefit.
-> 
-> Maybe there is a chance to avoid the draining entirely in the future,
-> by avoiding extra references from the LRU cache: Hugh thinks there might
-> be a way. But for the time being, this handling is unfortunately
-> required.
-> 
-> Make folio_may_be_lru_cached() accept a const pointer so
-> lru_cache_drain_for_folio() can accept a const pointer as well.
-> 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
+> A folio will have extra refcounts if it is present in a per-CPU lru_add
+> fbatch. guest_memfd does not actually participate in LRU, but
+> freshly-allocated folios are still added to the lru_add fbatch for batch
+> LRU statistics processing.
 
-If all goes well, this patch should go into 7.3-rc1. So once you rebase, you'd
-get it for free :)
+As discussed, what would happen if we mlocked gmem folios? In that case, they
+could also have been added to the mlock cache (which we treat like an LRU cache).
+
+But that's just a comment regarding the text here.
+
+[...]
 
 -- 
 Cheers,
