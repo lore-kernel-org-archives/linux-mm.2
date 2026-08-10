@@ -4,113 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF249C5AD7B
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 23:23:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62018C5AD7B
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 23:41:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83F466B007B; Mon, 10 Aug 2026 19:23:16 -0400 (EDT)
+	id 1D35D6B007B; Mon, 10 Aug 2026 19:41:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F02A6B008A; Mon, 10 Aug 2026 19:23:16 -0400 (EDT)
+	id 180336B008A; Mon, 10 Aug 2026 19:41:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 705D16B008C; Mon, 10 Aug 2026 19:23:16 -0400 (EDT)
+	id 06FC86B008C; Mon, 10 Aug 2026 19:41:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F64C6B007B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 19:23:16 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B8AD3C02B6
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 23:23:15 +0000 (UTC)
-X-FDA: 85086937950.23.80AE1E8
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0AC3E8000E
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 23:23:13 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=gRGRoa9+;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of 3YF16agYKCF8PB7KG9DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--seanjc.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3YF16agYKCF8PB7KG9DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--seanjc.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786404194;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CFFBB6B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 19:41:36 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4639D1C0C32
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 23:41:36 +0000 (UTC)
+X-FDA: 85086984192.19.52C211C
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 40C24100010
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 23:41:34 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=cHi8YFfz;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf05.hostedemail.com: domain of ackerleytng@google.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786405294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FpMqKDZdeqkAxP+HMbo4Vf8RyrsMvHYCAM3HPa8Xz3s=;
-	b=w6OTHc+8vrxAHewrXkNKUCMm8X7xNyQA0ORJQzV3e6F7rMW4cfLFQ0uafO3G6vyGgo4dbp
-	BcYlVlv0vrHtP+fcqkKKw0GCguPDFJYTb8z6ZbbyC7IjQuymS88fPIVta8SOz2Ij1ICRaE
-	6ZVMD22QmD7aZVb2xPslqxgklbi0Dn8=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=gRGRoa9+;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of 3YF16agYKCF8PB7KG9DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--seanjc.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3YF16agYKCF8PB7KG9DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--seanjc.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786404194;
-	b=tkIbw/eG8wZE2hI+V9lv3sPYoVY6IKTg83EggdQAXepI1PYtUnrk0ATQeVGMs0XIAHCO7w
-	QUtdFjucp7kOcYG5Av4hFePKxfVKE0MPW81itY55jj+D4VLNjQ8qr5HGgTK+wEHj+qoA1X
-	ypQmHQkT4hzy0SZG9Iex17AYmCVN44A=
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2ce7dfd33ffso3261165ad.0
-        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:23:13 -0700 (PDT)
+	bh=Dp0b2gqcZ26DbJ9BVPOHI0R6Nl9LEyZ50URFATgNWEw=;
+	b=cowDYaxsGvsK8uPmMT6OwuEVDb3OO8FnPDzDHdCq+huvt6SN2CoNfaRVsWtzYUQAYEDY7y
+	ltkmWuL/staTQFRz72xIp42rEENbQoDIIoN23k1WyN3yG3PHK/6vMeppgWZMov1I0HNFDO
+	omAd9Jpe0roStEfaoNnOlZo4Qh8RSuw=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=cHi8YFfz;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf05.hostedemail.com: domain of ackerleytng@google.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786405294;
+	b=7XY9O5kFDnC6CrEkH91Ql6JzNrGVTIsy/T45DWx72a1C/bHO/N5WELy/NYCg/d4gl1O1ei
+	Eev3e6pe77bCUGgoG4vjm799B7vf6HSdFTJl8OxaPxkrXActU3R7z8EzrezzSJf4ln3CR/
+	2rcK+sk2iFOUDFS0w7HebaTAYWvAZyY=
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-38e69bdb0fcso2190800a91.1
+        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:41:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786405293; cv=none;
+        d=google.com; s=arc-20260327;
+        b=oKfNMHVr0SgkFu9Cwt9axB1Tvtw+ORc708Yp/UhfjlDifdvzRazFj6t25LE+8rkAEz
+         3CHFU+6kn7jq4DYDXsHxtzayIMpfvAvKheKXHP4e7JiaHB/v1hCatQUrFAbR0xqyHSKM
+         ubovyT/+ZlrMygNde06QFMa4Y0I+rTU3318Bb7Y/LI/Z100eblDYDVqUxb9SY1d/GKpF
+         9Tpzz+9xhK7itPym/lpRYnbUR4duUh0FOYvU9bgTRdY+YveUm4/KVNHBHFtW5wuCSzU3
+         pewKbeWKaWmsDDOvFpGvaiDjuEJCpmESXX+xMLCHAB1EXPH7gUavkHn4ceJbd+SpAls6
+         XBDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=Dp0b2gqcZ26DbJ9BVPOHI0R6Nl9LEyZ50URFATgNWEw=;
+        fh=WzURIH/JvUBvXDoxKdWPKD96KYDnYlaRailc637FI3I=;
+        b=DJzjLT1RSnJ3zccNGlewu+xaPSr6I9440y+KtY6ahTjTDtEZgbkalLLoRA2VMV7LLp
+         YBHxxvlNVmshYTPm4S7+erY1OFs1XkZz8qwrEM6cX9hWSKuEEcA0ntHhuV6TnK1f1IT/
+         c3Sob+IPpOW7WuySKeYh85g6vUDQJIyanuWP3oWEleab8EkbfR1z1hZNPltqALAspG2J
+         H0oejLGodR5bllQhOlQ8U5xs0jDDDU+Qx+G9EcZyo/5CxgEWvBGX9jdtGpICObmAB3oz
+         312cx7AMBZjn0lzbUirOFSJzN276o7z7BWlfKGZGOpxBYgqGAfol8n+dcWRAgSe7fGk6
+         v8Yw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786404193; x=1787008993; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1786405293; x=1787010093; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FpMqKDZdeqkAxP+HMbo4Vf8RyrsMvHYCAM3HPa8Xz3s=;
-        b=gRGRoa9++SgN3LhznLUW4kyrYh4Byg4HFlqWx40o/BYN7PG00Zxs/TuZBKsDrt5vNH
-         J4SSApqCizDMj9kJIovdNGtDbPvM3vxum2cVSOHYn/C48Ysaj6iz5a76ffczJ6aGn5mu
-         0OCvGNukPHIg85p0i35gTzcKoLQhAFulfs7DTlfRPKayi+XJXclsqIU6lflWsNrLMImZ
-         aFRcq0Nsm3rzOIjx+RaXJa76n1SPnZ8IRihk4ig8mdR6pv9dcBywvh/TofzxCu9N69U+
-         bIKZ45Kxl4DIKoOUL8sJtuMqfo99i1zJzsETX50F74U3tc9jvrlOUEs8GVH6UziH5Fil
-         pkwA==
+        bh=Dp0b2gqcZ26DbJ9BVPOHI0R6Nl9LEyZ50URFATgNWEw=;
+        b=cHi8YFfzfAFSTDmQ/X6TszpbOYe62/ISCJpsHMCgSwU4viCuWSBKJAZ7XZlLbBAvMa
+         LVbmNGOO3m1n8RVuidlxe5WSdhyxwPrZ0Fn8d5qBXdH2zC9AkVN+PlYciaNu+zd39jWS
+         KWzunxW+Mcv1E+y7qH0KNie9+YdovM5axRblcUZi2HzgX9jFrHvnFe4dklbBUrGmx6D+
+         wDj8m9lW/EC5iFibwGG3t9OcVU7pK82/4vDJER9nx+vSWGCS3Wl/cmmpuJwjqxMIKBI8
+         LQ2vLEGujaX3zOV+R48MqJwoyTbVyR4G+WpdyW/67oE49UyCfRvXCFeTvqraEfIdeG1Y
+         7owQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786404193; x=1787008993;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1786405293; x=1787010093;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=FpMqKDZdeqkAxP+HMbo4Vf8RyrsMvHYCAM3HPa8Xz3s=;
-        b=RaBBdIt54mKFfnwX6VMj862FnZ9RQxM14vuZXS2d5WgLjTpu1woy5UemGT5HPro4GM
-         U+sj46bKcSYHYsJEJMNKRpmNNvjs8gvd5zQ2dFNVtN9UKbXyHUhBXSq2P4Gr4tvc1vk5
-         Oa8dKgXj7jGNdosGN2ZWVZd8mgl6MdXzoAWrxDN15O7iu57sCnII7p3IV0BVUPtoBpXD
-         B2bVVNAqcng2XDh4fbVpmZG6VWpBRp5zSCFQOlGdS19BqaYOsy3oHVMayraqd9x97MVM
-         nejmpy47BWCmtGcO7py/oYj+vqPp2ycfaEBqNPgdQgWcfKAcs5Nzsf7iREk0PGvFJxbF
-         m4gw==
-X-Forwarded-Encrypted: i=1; AHgh+RoSk/NiXr1Nkk/7LkrFn7p5TEaBAPtvG+v0Va8vn1OghjCFONWL/AWeGBwe50uWjaLjPp3lk69ZyQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz7ETvPbspJiTW3C0EQiZvkTl6gNqfGw+fWCuCduckfG+NAwKp/
-	VCbIyaGQlBIog0v9uHJ2p/J4KTjtQVdSVFVkdt0CGOyB5PoGipSyriWwVO/u+lDS1R3KT79QN6A
-	xX6dtRg==
-X-Received: from plkb4.prod.google.com ([2002:a17:903:fa4:b0:2c0:a516:2c2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:fdad:b0:2bf:9760:b94d
- with SMTP id d9443c01a7336-2d0ca7fd072mr611571635ad.15.1786404192685; Mon, 10
- Aug 2026 16:23:12 -0700 (PDT)
-Date: Mon, 10 Aug 2026 16:23:12 -0700
-In-Reply-To: <20260728121138.1103610-5-tarunsahu@google.com>
-Mime-Version: 1.0
-References: <20260728121138.1103610-1-tarunsahu@google.com> <20260728121138.1103610-5-tarunsahu@google.com>
-Message-ID: <anpdYD1UaO0ffQgi@google.com>
-Subject: Re: [PATCH v4 04/11] KVM: Track weak reference to vm_file in struct kvm
-From: Sean Christopherson <seanjc@google.com>
-To: Tarun Sahu <tarunsahu@google.com>
-Cc: ackerleytng@google.com, fuad.tabba@linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
-	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
-	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
-	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
-	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
-	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
-	suzuki.poulose@arm.com
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0AC3E8000E
-X-Stat-Signature: bcitkbpu5bb8xx1yfurjrdq4pozcswp9
+        bh=Dp0b2gqcZ26DbJ9BVPOHI0R6Nl9LEyZ50URFATgNWEw=;
+        b=f99O9Lcx5EGEbRJyh5BEnH7VNh/XGFAcsn2622y6olAySgsFwwW7uhhMCZFRAcFDAB
+         aFRN/lo214nvUXIF8BQb2TnNbKMnpOZtrvxFcl261FjcfFMXXAhiln8oOqFiwS+6n87a
+         95kQprBnWFjzf3B5riiBzne0SDCUGnd7LavVIOWZJFM31wffWUKBTtiHm3qb8/UfeCMF
+         cK3Xiif/omTPQ5AaOUPk0PVLhU1YR4nJa7ODmuS4oW5HRiXIAKRxbi4L3+9OEC0Lg6BL
+         RVx7FvCTuvpYhKOQ129q0cfz9ZCAWnNtrhA0dKQUmP3Vtx6M9bop0cHR1Z4R8WokI3GW
+         xR7w==
+X-Forwarded-Encrypted: i=1; AHgh+RpsNVl30NMUgw2lB5BHTss8hFe6rxftAvUaCNIndw0hDPcYKahRhkxkIzyiHlvtukAkLspeTPdiCQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx4U3ypDEybpEkx+oHDsqMU73FKg4y3gjJj0yehSSZuF2bdj6E/
+	61WV95miHDIEsrYsbn2uoPI+cy+OZ4UO4NV9IQx3aDp5GJ60gApJjQoIrJOWixFaNeHEzZ7H+mF
+	K3TAheiSxQ45niqnf8IJJ66fLnO1dm109Rwjs+BH/
+X-Gm-Gg: AR+sD11QHGcu3NefVuoifFU5Rz439TMeKThpexeJd8+wZoP5kibgxwaJoBfnI5xXPuM
+	Fyp5IORmUvVRNnckALhktu0Fq+UnreCr4Rayg1WztWEPcqe4p32qB3duCNUXjEWFB84u5IMzgi/
+	mfII1RG9DCiICe1e/4I0i0M+/VCWDwt1IQF78NOSHPMA64CIncb62l+AXZlxQviK2BrPRdmMSCd
+	qINpFTYUNLqR9YzkBscAMrcM5SasVBI4jkF5fZkrDKLYTb0zRZp22s0ArQPE1V1/XeITkO+/3gX
+	xXV2OdS+3UzwsLPuHDSVlfZjc8l5J5liSi8ZH86ZYIPeWkiwfXR13cMg+LfJZz7R0OSMV7Ge3g1
+	Zf9mXY5lLFq5pvj5Ag+vAJU7QGuvETOiV2Mg=
+X-Received: by 2002:a17:90b:268f:b0:38d:c74d:29c5 with SMTP id
+ 98e67ed59e1d1-392cca64db7mr5320468a91.19.1786405292124; Mon, 10 Aug 2026
+ 16:41:32 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 10 Aug 2026 16:41:31 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 10 Aug 2026 16:41:31 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <dd9ebd52-7171-4353-8c83-9363019d55b8@kernel.org>
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-16-2fc18ee6d3ba@google.com> <dd9ebd52-7171-4353-8c83-9363019d55b8@kernel.org>
+MIME-Version: 1.0
+Date: Mon, 10 Aug 2026 16:41:31 -0700
+X-Gm-Features: AUfX_mw6OlaGLLkL3HyJwIpviYhrAvoZYVarJDuu-bVxocdCtMCbumdkufhLAM8
+Message-ID: <CAEvNRgGSK9tO_-TvQvXoMwVwGygh5WjjBUOY-zLOA5yP2DwS1g@mail.gmail.com>
+Subject: Re: [PATCH v10 16/41] KVM: guest_memfd: Zero page while getting pfn
+To: "David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1786404193-456605
-X-HE-Meta: U2FsdGVkX1/8Zvlbs4oh+FgwQuTbDH6za5YdSI2DvLXrjIaI7O/JXji4c9Wvx1nFnMlhMVmmJTo+Mnh9+XM5ApmlL7SM3c6l9XtzGDJKSPQ9CeMxd4g8JwqGWnb/U0DkgSw+ztyxpJOhyD61UB5Bb2VSbDrAef1Git6McqVwHy608zp0EXrylGD+PQYiEDq/ait9OUs/Cb1P/cQmbraIavHKuS6eHvWbYCmlXMfzPX2LKe9ycAwl/gDngjx7lvpv3vxXjISXsc4DDHrsuZ6Gt1S36Fn8YE1I3VdSYZYnqLtjJ+U43HZdsMaD3U2NzH0P2CA4ZQJ1Bsw0cvhY62Ish2j6j2mVNvg6qcBDmjD/jD/8ePs663Al6izTRyx76ZA/rRxSGkY7jGjkPHbyHQ7UgcerWYXgR+OM/TKArcGonFZ8q/wAitqxhef1QPjXq2Gnk/Cifr1skWz/0ophSA9ly4p0t//R/bLlJTHiqLUEXe6a6yx0kfO/k2TMjOmcReWFor0nj0nGdxVGLKhs7C9sWCAFNZX4pwnbm2F685jlt1tq+6I/myGPgRzLM3ImA7WFDAgYcwACykKzcmFwSOctKoKl+RtbG9Siaxf9PABDHyYFFMqz7bpNmeSfgl3cmE0ZqsWJlR/qcC84fkMzyJy3fwe/AeWKs/n0/uB2wk71bDe6sviscnqaExff0+vxG2WTnn/07/1urRlQdmsXyi+sMJrgVY/KUJGvL4XETvp9ujNSG74JIg7pF6gRZ3n/rR7SpJ1VSh37NbkVxxdhW/LUc+licINH0iV2XC09wfspC8DN9+OyrbUB19eIRVRfsSUpAtiShGu1+sV7H8mgrkKqqb+cz+7GzFRbas5ZyJmqYvnDh357hv4ZNf+WonKMZTm7sPRoHPbL0WBR8JpRV4EPOwxyhhFLulrAIIWl6WYubM8FwujGNxu0AvKAE0qPHRKoGQLG3m6CW2Adxxyh3Zy
- YqobnDKa
- mtrAL92fcQqmioz/gD0RD4p1r58Q7OOXvPL4FBK/im+6PVjtpNYfNtM0EGfCuZPDElGJKwGlidMUNJAtmsK4LNxmt8q5DrdNzQw6zGGS/pSttfFMaDL1naDb3mMe/YaIAKbNeAlIiRyFj0lDUS58l+tM1AkeMlymEM0KrWu9cpY2VrMt+2boIIQyMpBMCGgOQr4B/gB3/4Qsbgk2pj/qeiiSvipWxl8+0XLKk870wOiJT7p4Mc9XU9pxtscbLS75k9YaX+E7qZXlBmWKBm4WJ57Ios9A1t0Mbb3KA2XglJ9TRD6TSUFDlgQyUY8XXUdOD282CUsemqCJAj82MqBEzfAg2vtagvEHQUMWrXDw9pxyfyrIdvioNvy4ylyQfUT6UAoYdKFUgns7mqOpnxx1uS3PiyYEs9MgvnWJ5wqQhfhCuIJgjHJggsNmuiIC/8lPDqEIjRt33dXtzN0FxDIU3ukNhDeCVn2H3JZSVJXRBBVNvxxu0cMqne3/CC5d8aqdvMd+DQwsDZp+vlM9leRrcnKmw8NT7F7GfSHnQmjjCWDfq3FOI31R+GquB1RbRTfE3Lo+32/1BoiD5Zjv0v8XV/Fwe9PSZxz5HySDh74Z8bdE5hEP0fRbQPFefoBGR4eiuZKh3v8rgS89GIpIeCR/SIhRK+803nheQLEVuA6t9AC1LlRXwwOcM7zmGLFt3EtaMgHEDVvQvBq+AGxVKFHOi7n3DXw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 40C24100010
+X-Stat-Signature: nefqnxbsof4d1mpwxnsfwnc6swbkrww9
+X-HE-Tag: 1786405294-66068
+X-HE-Meta: U2FsdGVkX1+GMpxWsjAw+fX13kY0NFByRbTf3c9g47qvifisRF+HucQhdaqu5Z1v/k7tdbgHyshzPim7BnqaYDQ0NpQAxqNuASJ/kIHSY/wBhohLfL4FSFiIKl0cSndJNaWUz6v02BcQyGVeIIRhfMLjzQTmw2c5ij1nGkYSz3D38YPueu1Zuch+uQKmPfs2OY3CKrjOwazMR6rJNOdWfpnHVQJQW12rPqGynY+zdQPrIPPDHRKi6NThqykLN4rZ8KaXUcW36cNE3ecm+O2UQLWjFq18H8qYnDkbaCNtk0wi1G20cH34H9CW2Sog60wIHgV9nlh27eUujdasWN3fbnENzv8P8XjxX3aAWuDJrPgP4y7Hj22LuP5fVHjoH0NtlWLczMj1JCx1WQ68v2AktPiJYjTnxzszCfIMw5eI8LBtRVoEXLN6ICpV3OR42dLzpGvNYntCerAw0XjLDaY9hAjy9A11V5Roy4EGflcREAr47W/jJ/d2pLo/b/EaLALvLRgA7vnkfkexsWeoXFgOX4Qui3yy1zrpk002MYoASMisrEhTRVQ126RG/JsIolFt62Ukgl2GxHih8RoLtKWT3xlAVY9bvzkhGlPSkltdxymokEqdJHmMPoGLlWw7IOmLan/bC1RPSzpE2RcOUDbFP/14dp9A63y9+C+T1Cv5UHFpmsi+XsZmK9S6pPPO8C8ttUZ+xnpv/WpXsJpHGV8MbNZoC7h0/mfVhOcCkx0IA4kZs+1EIRO4UDLSHf+Fo/duJ1P5l3YoZ6/HQ/9WVnkac5BJZJUJKwECS1gtjo4LcvnOGkPRnX3uIiKx7vAFzHydU0OkYhmDesPv/jBA9PQ22P2ZEmQEfi0KJha3YFjBoe4lGSgmy/aYod+Ig7utdkbr3Yam+XeDjZ+B4YvqBm6YlMWOFjtSaRwy6+jkQ4Gq9GhiFmw+SnOs5AZJh4ukgYaGhcUMFJxW+MOINFys0dP
+ daK+QgrQ
+ WJhJU9Yy0UYOlj88dYQgHeozSt6mUbbbgVX6NB6hXGHOe9lGRB2VWaMLmhw9oxwMXwcfDEUEHdd2oQmjlX0rVD0iSC9zuQLAjQL9h3+17kPEej8A3Y0g0i+nOuuAKP6xX/QdLZTAd9qwSyTPZROsRuB9SrcE7+eipdz4Ot4W2t5q/dO7EyoeXTBe3GPoCElSoFLXNzEvQ8D5JOJU1LbceJMMIzhPYDlvnQA3g9QM/bipa7WdqiU8DXgihNE3DRmvLLYrfo2sCTogiqp47u47unFl2Dpgy5rqEMbkpQfKS+ElGg9dkOG2V2FlTk6vJxgq+Ihk6NwSH49x97reHGP0NkGDvVe7mu+86At1MT/xTvWtEdRZHoBLWyDfMdy3C+2Q80dC6sGCE1kqWd3f8RjmS/tXdPhvbfizmh8H2oFX/PbwhCKoaqR9yO2KT8LdCzV2MwQUn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,17 +167,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026, Tarun Sahu wrote:
-> - Add a weak reference 'vm_file' in struct kvm under
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
-"vm_file" is effectively already claimed by vm_area_struct.vm_file.  *If* we go
-this route, I would very strongly prefer to take a dependency on "vfio: Use
-file-based reference counting for KVM"[*].  I'll poke that thread, we really
-should land that one particular patch long before the s390-is-arm64 insanity.
+> On 8/7/26 23:52, Ackerley Tng via B4 Relay wrote:
+>> From: Ackerley Tng <ackerleytng@google.com>
+>>
+>> Move the folio initialization logic from kvm_gmem_get_pfn() into
+>> __kvm_gmem_get_pfn() to also zero pages if the page is to be used in
+>> kvm_gmem_populate().
+>>
+>> With in-place conversion, the existing data in a guest_memfd page can be
+>> populated into guest memory through platform-specific ioctls.
+>>
+>> Without first zeroing the page obtained using __kvm_gmem_get_pfn(), it
+>> might contain uninitialized host memory, which would leak to the guest if
+>> the populate completes.
+>>
+>> guest_memfd pages are zeroed at most once in the page's entire lifetime
+>> with guest_memfd, and that is tracked using the uptodate flag.
+>>
+>> Zeroing the page in __kvm_gmem_get_pfn() is chosen over zeroing in
+>> kvm_gmem_get_folio() since other flows, such as a future write() syscall,
+>> can get a page, write to the page and then set page uptodate without
+>> zeroing.
+>>
+>> This aligns with the concept of zeroing before first use - the other place
+>> where zeroing happens is in kvm_gmem_fault_user_mapping().
+>>
+>> Don't mark the page uptodate again after populating, since the page would
+>> already be marked uptodate before the post_populate() call.
+>
+> The downside is that __kvm_gmem_populate() will now zero+write. I assume we
+> don't care about possible performance impacts?
+>
 
-Empashish on "if" because this all feels backwards.  It's not at all clear to
-me why liveupdate goes directly to guest_memfd, but then requires a token associated
-with the VM.
+Would we rather zero in kvm_gmem_populate() only if !uptodate &&
+gmem_in_place_conversion && src_addr == 0? That could work too.
 
-https://lore.kernel.org/all/20260731130902.654679-2-seiden@linux.ibm.com
+Previously, without in-place conversion, populate never reads memory
+from guest_memfd so there was no danger of leaking uninitialized memory.
+
+> Worth spelling that out.
+>
+>>
+>> Reviewed-by: Fuad Tabba <tabba@google.com>
+>> Tested-by: Shivank Garg <shivankg@amd.com>
+>> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+>> ---
+>>  virt/kvm/guest_memfd.c | 12 +++++-------
+>>  1 file changed, 5 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+>> index 030af0855f8b0..41950c8105b5d 100644
+>> --- a/virt/kvm/guest_memfd.c
+>> +++ b/virt/kvm/guest_memfd.c
+>> @@ -1079,6 +1079,11 @@ static struct folio *__kvm_gmem_get_pfn(struct file *file,
+>>  		return ERR_PTR(-EHWPOISON);
+>>  	}
+>>
+>> +	if (!folio_test_uptodate(folio)) {
+>> +		clear_highpage(folio_page(folio, 0));
+>> +		folio_mark_uptodate(folio);
+>> +	}
+>> +
+>>  	*pfn = folio_file_pfn(folio, index);
+>>  	if (max_order)
+>>  		*max_order = 0;
+>> @@ -1108,11 +1113,6 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>>  		goto out;
+>>  	}
+>>
+>> -	if (!folio_test_uptodate(folio)) {
+>> -		clear_highpage(folio_page(folio, 0));
+>> -		folio_mark_uptodate(folio);
+>> -	}
+>> -
+>>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+>>  	if (kvm_gmem_is_private_mem(file_inode(file), index))
+>>  		r = kvm_arch_gmem_make_private(kvm, gfn, *pfn,
+>> @@ -1159,8 +1159,6 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+>>  	}
+>>
+>>  	ret = post_populate(kvm, gfn, pfn, src_page, opaque);
+>> -	if (!ret)
+>> -		folio_mark_uptodate(folio);
+>
+> In case post-populate failed, do we want to re-zero the pages?
+>
+
+I believe we can't re-zero the pages. When SNP fails to populate it
+could be because SNP didn't like the CPUIDs userspace set up, and after
+the error userspace is expected to check what SNP likes, then
+retry.
+
+IIUC zeroing will destroy the message SNP wanted to leave for userspace.
+
+Michael should be able to explain more here :)
+
+Btw Michael may I also get your reviews on this series?
+
+> --
+> Cheers,
+>
+> David
 
