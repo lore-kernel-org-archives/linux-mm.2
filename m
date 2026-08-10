@@ -4,113 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAAE0C5AD55
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 13:22:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46C9CC5B56A
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 13:33:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F94D6B008A; Mon, 10 Aug 2026 09:22:49 -0400 (EDT)
+	id 1D0266B007B; Mon, 10 Aug 2026 09:33:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A9C66B008C; Mon, 10 Aug 2026 09:22:49 -0400 (EDT)
+	id 133826B008A; Mon, 10 Aug 2026 09:33:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 898066B0092; Mon, 10 Aug 2026 09:22:49 -0400 (EDT)
+	id F3DCD6B008C; Mon, 10 Aug 2026 09:33:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 658C76B008A
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:22:49 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EB27F80180
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 13:22:48 +0000 (UTC)
-X-FDA: 85085424816.25.7DD897C
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 78F41160010
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 13:22:46 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=tItyoQ9s;
-	spf=pass (imf08.hostedemail.com: domain of 3pNB5agkKCIc4l25y3ls5rzzrwp.nzxwty58-xxv6lnv.z2r@flex--tarunsahu.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=3pNB5agkKCIc4l25y3ls5rzzrwp.nzxwty58-xxv6lnv.z2r@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id C28E86B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:33:43 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 568A714016B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 13:33:43 +0000 (UTC)
+X-FDA: 85085452326.21.DC4D58F
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 5EADD40010
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 13:33:41 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ZFZuEIqA;
+	spf=pass (imf11.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786368166;
+	s=arc-20220608; t=1786368821;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iM/Qa4ThtXGVoAOuESD7ZLMy4Hwa1Cb/UO9QtFpTQ7s=;
-	b=0tS1R7I250yyfHFcOpe6YcOQHshe897nIG19gmTGLZPmgKEm+iQWEA5xXOU86sxS41Z3kX
-	nM+ONTj+GIANxUaYs7TPcY3NqGAnR855N8PHWX1OUY3iW1eMpFLNXzB+rFuSyGeYYhb7qs
-	bdjis4CmCnqZiOnDNuADQs2gc4I+J0g=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=M4ZuA5M6RkD29gUcHfwnbTxPc3xPq/YfIHf5PjSwt4A=;
+	b=fBLM9cTA+ivQPXNQOhJHjGQaV4MmfPS6zSGuIi4chlM59n3RGXG9Kj6xKqR+SUjmmyKNIj
+	RlKI8AHZ7CqMl1vSMocm5l7JeZduy7F2Zc59Z7jyPQ9BxbS3bMEclCvIfzps8k+Qx/v9BN
+	51/PsQYUfAHlNolYeKVlGXWL3ScFDlI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786368166;
-	b=hUe6M1IPFCwWneU7l7DfqMxPJI12i62zejUxzDUyUWJueFVhlBZbzxmoduSPRaO8Dp9vSY
-	mdxBpxWXGw8vQfs8Eg1IKayPhE/XyH71iye916SDOJ17gWBimnqebhAaqnBjKuFfG/vgmf
-	vwLaUXoVeLDLHYYGF3R1zIUGY7xVokc=
+	t=1786368821;
+	b=PDMd+s/5Bhkv23s1iapAklDNtqAodXVTEovkidhkBQGVTURDUpWp/K/aHg5/gwMo4oFz0m
+	iq1dXREubkFo12Ka2Pf8CYYSK53pEfhmW/FZjMztuanBVTlTjy1R8lUcdMeHxiAM8HM5M7
+	8lTrhWg9zC3ZxoXNlGLjtFVunRISc78=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=tItyoQ9s;
-	spf=pass (imf08.hostedemail.com: domain of 3pNB5agkKCIc4l25y3ls5rzzrwp.nzxwty58-xxv6lnv.z2r@flex--tarunsahu.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=3pNB5agkKCIc4l25y3ls5rzzrwp.nzxwty58-xxv6lnv.z2r@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c158e733fd6so159959366b.2
-        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 06:22:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786368165; x=1786972965; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iM/Qa4ThtXGVoAOuESD7ZLMy4Hwa1Cb/UO9QtFpTQ7s=;
-        b=tItyoQ9s7xuDWfEcGxrIbjlJwsE7ZCDdSB3WcWJM5lnjMq2YsC0CE5Q9ZtcCpv8vix
-         1EzAVZdXtFHqIn43tfQ06nd3am3d/sI9xwEFK7qHQZvh483xwSOmoxMnkPt5+Qyxy74r
-         vRwmQtds1qPKGRfb4g49ZwnT/G/UPfIXbpe0X72vVFaNVnMdUETZrXWfz+EgEHuSnlOL
-         WoiWVo5ERcb3KFD+3VTwUptscSU7dqHBi1Uj7hhwo3jEgrIvqxusg8ItdJ3k1SMVMlZV
-         8Z83RROy9jzMbPL1KSdSeXdLgXX7knB1dbC5rVeOghouZ+vJ0kFEK9yiXYYILSs4Ckt/
-         EUrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786368165; x=1786972965;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=iM/Qa4ThtXGVoAOuESD7ZLMy4Hwa1Cb/UO9QtFpTQ7s=;
-        b=Fgxzio3luwFRjB+UbnHc39HM5CcTX0B8nPs1EcW/R8+EFzvCxuS8zobulMKHv9TZoX
-         biuAsAJSN76RB2zwhz3gX21EhB5W9k0+FqEPd/tg55UFFCEF9UsRPkGJQHxkq6zElGTW
-         U79P/5Ba0saAEqM2dAByO0XLmuJL29Gsv28qMYodrIp3nVQ4IQht0tOPNRuHPVeckPTl
-         zkfQaUpyhB7q3eHdwgAee5w+WQDfrttU+RCZgUUfzAQzChz11Ibx6JIG6OB8rjn55d/H
-         evbKGUbNcLvt5W31ybk2457+grWuTt0FeUIyrXZ1ys2KX/Yl5smKJJPh8S2fxarZsiNF
-         2rkg==
-X-Forwarded-Encrypted: i=1; AHgh+Rraxzb6YhPgWPvKBUZ5xpqpjfw7/n59MrP0ZkNsvEdLRh195t3C0FNOv4Q/ZS9DmexWlr6NWUPbvg==@kvack.org
-X-Gm-Message-State: AOJu0Ywk9fkamjRsSgax/R7vZjKBT4xSKAlH3v3DSwA0T5AdBjET8XR9
-	XyuAsYUngfOB3rdbew5aS7nQa6J2DL19+Fx/D7zM7puGKZ196G+7XrwFVfydPhEQ8yRx6HUi6Z9
-	L1wkRWbjU+/uzT3F5rQ==
-X-Received: from edap32.prod.google.com ([2002:a05:6402:5020:b0:6a0:ddb8:db7f])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:a5c1:20b0:6a1:f7f4:200b with SMTP id 4fb4d7f45d1cf-6a1f7f4278bmr5285938a12.12.1786368164940;
- Mon, 10 Aug 2026 06:22:44 -0700 (PDT)
-Date: Mon, 10 Aug 2026 13:22:44 +0000
-In-Reply-To: <CAEvNRgEbS06snhyHznPSqxnUrdudVEKUuOpPwnU+AJATWFBRBA@mail.gmail.com>
-Mime-Version: 1.0
-References: <20260728121138.1103610-1-tarunsahu@google.com>
- <20260728121138.1103610-12-tarunsahu@google.com> <CAEvNRgEbS06snhyHznPSqxnUrdudVEKUuOpPwnU+AJATWFBRBA@mail.gmail.com>
-Message-ID: <9huzv79i6rff.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v4 11/11] KVM: selftests: Add guest_memfd_preservation_test
-From: tarunsahu@google.com
-To: Ackerley Tng <ackerleytng@google.com>, fuad.tabba@linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, seanjc@google.com, dmatlack@google.com, 
-	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>
-Cc: linux-kselftest@vger.kernel.org, andre.przywara@arm.com, 
-	michael.roth@amd.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	will@kernel.org, vannapurve@google.com, maz@kernel.org, fvdl@google.com, 
-	kvm@vger.kernel.org, oliver.upton@linux.dev, kvmarm@lists.linux.dev, 
-	alexandru.elisei@arm.com, skhawaja@google.com, aneesh.kumar@kernel.org, 
-	linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, 
-	kexec@lists.infradead.org, suzuki.poulose@arm.com
-Content-Type: text/plain; charset="UTF-8"
+	imf11.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ZFZuEIqA;
+	spf=pass (imf11.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
+	bh=M4ZuA5M6RkD29gUcHfwnbTxPc3xPq/YfIHf5PjSwt4A=; b=ZFZuEIqATspEl36CdO+8X+D/Tp
+	FJ+RU9/NffoQV7DoNjQ1lz9LC3HX9NpIKx40tUM9okP5FfKZMWLhZY+6iVcBY+YninrcCs2v4Bl06
+	2piXIB6GZxtjIm/nyivOeuc3TatIyJhNKQ7WF2juk5I5QT45XIUp5kihA15BrFUl5cY9AsykjU2ci
+	RSkjHZ+zWCZ+1xewR/PUfUs/rXJotjmonleIxU2TrI+/qDlOxqNZyR24KRgcnTX1RJUqpUgSoMwu1
+	+8jqQmPQFWoQ7mvU9ekWP8zv39SbEhb2mWn/tRVMyEifYy3lIiIL4JlOvGx7CEfWIe93bsHBAgcH7
+	VUzUqIgA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wtQ7t-002mgl-2u;
+	Mon, 10 Aug 2026 13:33:15 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Mon, 10 Aug 2026 06:32:04 -0700
+Subject: [PATCH v5] kexec: keep the next kernel off hardware-poisoned pages
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260810-kexec_posioned-v5-1-95e1b5e2e656@debian.org>
+X-B4-Tracking: v=1; b=H4sIANPSeWoC/2XQTWrDMBCG4auIWXuKRv/1qvcopcjWKBEFO8hFp
+ ATfvThQmlbb4Xvexdxg41p4g1HcoHIrW1kXGIUdBMznuJwYS4JRgJLKSa88fvCV5/fLegw5oVf
+ TJKMho6OEQcClci7Xe/D1bRBwLtvnWr/u/UbH9ScV/qcaISE5OQdKFGTml8RTicvTWk9wtJp68
+ Fp2XiFhflaJgrWUnem8/vVB6s5rJAw6RseJpbbUefPou1c0g4ReJuszGads+uP3ff8GpFBJ8m0
+ BAAA=
+X-Change-ID: 20260727-kexec_posioned-72bb0a4143a0
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+ Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ kexec@lists.infradead.org, rmikey@meta.com, riel@surriel.com, 
+ kernel-team@meta.com, Kiryl Shutsemau <kas@kernel.org>, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.16-dev-f8e9d
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8448; i=leitao@debian.org;
+ h=from:subject:message-id; bh=fcxYIOs/vy8wB7NClKG7Nu5A9xU+96w3y9opFudFG1s=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqedMUVUszL1AO7A8JlMeC+ztg9Q1uQcgOu3BPB
+ fI8nGd54LaJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCannTFAAKCRA1o5Of/Hh3
+ bYxND/92sMdiCE0yNz/tVqsJ0/LCu1nI/zfJHy0MAR+DGopZRIIvPB4XSbwo2BOXRhndIXZoTQN
+ BBQscJdTaaAQ/yk1KvlunHo/IeX5YAFYPFJ0DDXb0Ylu/Lir0jIQcLbuLWskyWilaPZmXBQG2k3
+ BFuTmKiTCxBs5pXLXaYASXf84evafHYJ+RNxKR/MivLNtd/k5ygvmVZ9Ng2274zlTyECxPLYbzI
+ mS8YVciD2dLDcgor8kOcH5KDYVap5/sir9bAV/DqkZODD9y5pGDHqKInIprKB8NtZMzqPb6cfKA
+ o5imMImSb7hi7iPsPDxTx+VDvyIDV3JHpIRBrBfkRAgfcsRyDOaiRwh0APzc6G+g59G1rkZkdeK
+ Q/vIPHJhrAyVDsBr1ADlnq9mf8TCr9lrslUCZuB4kwIFGwyJxqnUdhkknqfQAQ4XQ/UT1YPpbE5
+ 01tD6jpA9uAmMwfeb3GkKBR8gNytPy9X0YGExjKmVwhagTbUsCsVMOm+6edONkl8v+Osp1HryxI
+ hOAHR+TUUDahoner8Aao/JEC8YT1hORR29uZsWjoyRzHt8009LK0GuK7KJyv4jioXkTIskPGt2S
+ I5qdIHbQOPPhnvtSMYrHmXIqf4s+vzhF3RasU72+cXwHZ0wX7CgwlXolCuPxSUOkOxbVNu73kdw
+ urlq18A+tv8GN6A==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 78F41160010
+X-Rspamd-Queue-Id: 5EADD40010
 X-Rspam-User: 
-X-Stat-Signature: tks83e4fbz5xsnrigeju11443i9mq9mh
-X-HE-Tag: 1786368166-737713
-X-HE-Meta: U2FsdGVkX18MSKy0zzyze0IpT1oZ+5u2zwo0zMtU998hcItqlR8yMAtH2sIJyfy1R1D8uzmJflS20wiR3xFKhn2NZQgSCycih+BOAyfQMuYARUKhvdrCmNuymScR47bl1E29/cRORgFZ9JQNEpZbAHM1dUYKKB/I+3jPkOYi1fsuLgJHSISjNRE9V71kHL8mT1hVSz5Lwsy5afQVL2Wy3R4IO3xlNzb2oLUhg86KyfdaB16scHimFCs9wylct7MxqZBWUEf1RAyWI+mBPiEFZaaYkOB60/yqAfLSSer8R7c4oXK0m0v+WfOJMjg/L8kDNER2T0OQA5efhhPPEgnd27/iL9c2EEFxMkGWnXQSUtLOhxiaFottjGENJjrzLsKiEAAsT/IE3JWZuwdGF5mRvIfD9WiSiQ1/JFrcrL5y6E5aC5t/QX9y9/Xcxf+tRg8JHJdIUubRjq+1H0eNT5qfVCFgdjMYpHhyQHuOBafQDdXDSVPg886hPFdGR9qhjxoXlzNcwKMqL7uoFX+MH6b0LZAlGdoNLuoAoi2/8+UozLyg7CYbagdunTdZ2ql09vAUpkZ0wX8GJKsVzdpf1/otQIgJn5ZaFNtP2pbSkD4ULjXK0ui2J1cfbRaCFSdOuKk2mNzHC5XFBdPnppKldHA2KRYNEtN16wnX4dL5AgKPv8XsIfrCiTOXzTuatQ4JflTLsfwZ+S93M32hYk0wSMQMo7insCstStofTAVlRZnkC5kct1V1RtMPfOIPW4gARXgbVreItp4B5BFZLqKrwdcdhkuVKXLN8Lh1jx4K56WkgGXNnzR2Qo7vmWA8lsHWbvXQKbSizElP8iZ39X9ohbNP0H5ZJi6NwVfbeSWc8pYXYPJ8oCB88aWmAqL41l4NnJjs4g2bn/zg+gnB5/Xjrh1rAjmwtJ9Pm3of+w5/SAOKIvJKDrJmqCzfPLlIkUWOXO/4NlH9KF9bb9KhPp1Aewc
- S8MYT1gX
- c3X49mHncq6N4TZT3oGgf+i/IER5miVcvhZnQYqVsHEXnNo2Kxn+WqIkmfuIPIWTRbkKUBnS9kJ0m9QayrHc5rdrFBrybkHXyJkxfZPCrZMy/EHkAVR4JB0GxBNTQqQ9ElzKg9ovrj+K6JRoDo2z66WJ+4dhSaAbPlv+8/geYNygxK32VkSKdC6HdzqWzeCf+xPXpyyEurtmWxmy/0piUkXsO2nLG9NLgutGr+61a8dVSa17baXvkhMTXsBcPlPB3/TvLDTSO/vgpTehNxDgO4tkJ2vtrpY3g8SoF1rMSvXg/k4n8wEPiXZqWdfphZ4xoDrrkfa3DiZuMJa7xQYRjitfSq8dLrd30Iqgo8b3LXHjrAIHLjwFt9sS06A3MSl3z4JIq3hoEB2sR32drngX7ZGJNT9g/V3lP8ogLUB8nNxxoNbVOzqsDc/+c7Xr8NppdFIA/u7yVY0wpCVJTBlENUFiLGCy3FnaQHiiL6fFFxALDz2lciK8wUUDNgA+xW/eGcL94uRnopyXNNmTsKDBJ6SjQUcQGHiyNh9sMm4C0KnHcPiq3J508eK9rRHk08e9q+S6KuZIlJ1KbFoaYcvIJOfJTMOJKY1sKrOqvFQGtr7vKvRbRNshYEELAeJy4ThuaTa75szTUa+5LqGTr3Z7+lV+OUQ==
+X-Stat-Signature: kjd8igfegea5accaxhe87tfmhbgh6unh
+X-HE-Tag: 1786368821-188358
+X-HE-Meta: U2FsdGVkX1/Rkfz6d/f4t+P+bFgVCxyJNBRmgwGxFczMZStZv9c7wUnAqtj/AAPsQCrb3f32D0RRlxEWuLqJ3pLIhdx8EsGZzR/AvYVNKghes7kQhLk98vJ0LvvoxvM3f1LEmLLLj+eGXfWmQ300cZ5fAmuU+KaLe/BD2aTFUBdSWMauCxzj5kCenlUhKNSV3/uOiDx5ZyKldd3Kqxyuvx1Ux059wfL3XsuD7UkAy2DlhNASv6xl5qAupuZQJZWgM4Q/1Pe5ZrCHlOZywOsLAoJkYEyWTpoqB2wLW1F3OXsezUtUIU4gxBwb8JR8RKF1qMC1V62K06MxjSVt4TWxLp6yxEovrD/F/Tenqyr5srnyL4pGyH5rRkmz5Wmx7lUIIiqGb3J8awfCHSkcSwWsfEwcdKEMbVc4UrjckBxWEyiSf32kfcA4S2Vho5D69yk++Avgbb9hQWfjyLre0vXnQTMt5M7lXmKznY9MHgSB1XSooOb4uE7K/fPeAyHkK1AKpBDOzB+NOMPDUEnv2rad/7GbSeM6M3K/ONayium1kv/9hOAKXBNzXG03+RQO0x9HJbalolC95oFqngWMPjGz3fRAFnHQIdeTExApb9wWXvD7M9+Rd5pYYGSP7a3kERqDoCmsluNCiOUk0ErwgIM1chPCTJLujAu94eJFFspgwj3h6tdyjhMx6OLq9O8NxbJf3HLxCSk58GdCpzEXAri8PS02FzawVofMbhlqdh3glcxsVamOKK1ZFf2OyihCN7GCQL0nr3RahWfOpbbf6FpVAGscF+VY/KD8Kdtd5fNKOxLQheQOOlsCz7+o8/HR5OoNp3mjl20pL5bK0XkMDC6v31diYHDkby9s97jBH8lvqcqFTWBrRp9f2IOvgyMQ7k6MAVz1ynFTVK9lMg4srk1oUm/HU09TC4hrtPQIPEzW2f/nXeosUfZKQT/toaPhQtCux+rZsB8oZrMl7O1JOtD
+ WttfIxT5
+ 2YILWVwih4pQNYKytUUlOMVt0cnX9qHVKkYXNjRC3bHdbo4JWcptZuR9lSUR6k00DaLoF2B0CxLJ5iGqQwAlPoereQ7nI/3nKkh4Gt93cRf1h9kecwYVo9H+brtbdt2X6UiPTQ+jVBRrlCfH0RY1KxfMl65M6giThcDOLP8fGftBPLAz9csl4xuq/bPkJAhLimzqQC2ZzkOz49WWgRyG7niJ57yYI8IVBk28xho8yRFwy8LU3nkQxfxQ8ohBKo0q+wlu6l3sVhZ7nmm7kywonfCzr/dDVwFCcoNPTcuejPTn/cu12c9SyJG6imTHa0JKwaxiRTz4y9pZIl8BKUzV2Z46gGhB+uZMIbwoM3pt8e+JaOYLv+dz8K65VMXf0y6QmlMb51RvI2FtPI9cL60wTFQU+RLS6Q+NMxkJC5Y0JCvb3eNIL7kV1HuZC42jQ65ioLndEFdEXzzNm20HtcAKM9q720GGIxhlmvgcWUL2V81tWVoxN8NbeT5/4jnGTUuE18Jurg8KWoXfPp1HcT8bQXz8+j8B0MsEY59s8wItZw95V/KN5/qu34OurZ0C4rwXYd9DGYrc7V1dYQoAqlMboGyViJYFA6q5eyx7f6/q59P5Lw/Xtabd9Bcy7MWgbe46xSFIXyct7TNtnn/VSNrG8bYoFLBos5KBFP76x5J9usf82l8cVMxL4uPBg8NDZJeKwV8A4dCBNUiwROIF1aEXm6iXnQ0vJDD+rvg1CdetitouL5PJGD3nu3TcZAl7ahAwbeUHLvDM16zkMbEDndlohiA90o7eUW6GI8mep6jIPf5aJu3W1fIR/wY5uVy+dUCQ8dfPWaZk2t9oIGGE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,56 +122,245 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Ackerley Tng <ackerleytng@google.com> writes:
+Memory failures (such as unrecoverable ECCs errors) are getting more and
+more common. The kernel knows how to handle it while running, marking it
+as poisoned (and SIGBUS user tasks).
 
-> Tarun Sahu <tarunsahu@google.com> writes:
->
->> Add guest_memfd_preservation_test to verify that KVM VM state and guest
->> memory backed by guest_memfd are preserved across a kexec reboot via Live
->> Update Orchestrator (LUO).
->>
->> This test includes multiple tests
->> - (A) Test to preserve non-guest_memfd, non-memfd which must fail (/dev/null)
->> - (B) Test to preserve guest_memfd with no INIT_SHARED flag which must fail
->> - (C) Test to allocate the guest_memfd memory after preservation because
->>   preservation makes the guest_memfd frozen. Which must fail as well.
->> - (D) Test to verify guest_memfd with INIT_SHARED flag preservation across
->>   kexec: Below is the details of stages in this test.
->>
->
-> I think we should split this into multiple patches, where each patch
-> introduces 1 test.
+Poisoned memory is removed from the buddy allocator, but, not from
+other places. A current problem is that kexec will load new kernel
+on top of a bad/poisoned memory, which is undesirable.
 
-Got it. I will split them. I thought that this test already spawn a VM
-and other test can just reuse the same VM.
+If the next kernel's image, initrd or purgatory lands on poisoned frame,
+the relocation copy writes to the bad memory and the machine checks
+during the kexec.
 
->
->>
->> [...snip...]
->>
->> +++ b/tools/testing/selftests/kvm/guest_memfd_preservation_test.c
->> @@ -0,0 +1,357 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Copyright (C) 2026, Google LLC.
->> + *
->> + * Author: Tarun Sahu <tarunsahu@google.com>
->> + *
->> + * Test for VM and guest_memfd preservation across kexec (Live Update) via LUO.
->> + *
->> + * NOTE: This is a MANUAL test and is excluded from automated CI/testing
->> + * frameworks because Stage 1 daemonizes into the background to pin resources
->> + * and requires a human operator to manually trigger kexec before Stage 2
->> + * is executed. Running Stage 1 automatically would leak the background daemon
->> + * and cause CI runners to falsely interpret it as a passed test.
->> + *
->
-> Usually there aren't many printfs in tests, but since this is a MANUAL
-> test, maybe that's ok?
->
-> Would like to know what Sean thinks of this, and printfs in general.
->
->>
->> [...snip...]
->>
+Skip hardware-poisoned frames when placing segments: check them in the
+kexec_file hole finder so it lays the next kernel down on good memory,
+and reject a poisoned destination in sanity_check_segment_list() for
+the kexec_load path, which cannot relocate.
+
+The two hole finders walk in opposite directions, so each asks for the
+end of the poison it has to clear: the top-down walk for the first
+poisoned page in the window, the bottom-up walk for the last. A poisoned
+hugetlb folio counts in full, as hugetlb keeps the flag on the folio and
+the poisoned subpages on its raw hwpoison list.
+
+Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+Changes in v5:
+- Return -EHWPOISON instead of -EADDRNOTAVAIL
+- Leverage is_page_hwpoison() instead of per-page check
+- Link to v4: https://patch.msgid.link/20260807-kexec_posioned-v4-1-70d57f14625d@debian.org
+
+Changes in v4:
+- Anchor the top-down hole finder on the first poisoned page in the
+  window and the bottom-up one on the last, so each jumps clear of the
+  poison in one step. New range_first_hwpoison(). (Kiryl Shutsemau)
+- Count a poisoned hugetlb folio in full: the flag lives on the folio,
+  not on the subpages, so the per-pfn scan missed poisoned tail pages.
+  (Kiryl Shutsemau)
+- Link to v3: https://patch.msgid.link/20260803-kexec_posioned-v3-1-83aa6ede0351@debian.org
+
+Changes in v3:
+- Return the address of the last poisoned page in the range, or
+  PHYS_ADDR_MAX when it is clean, instead of a bool plus an output
+  parameter. Renamed to range_last_hwpoison(). (Pratyush Yadav)
+- Add cond_resched() to the scan loop, as a segment can span half of
+  memory. (Sashiko)
+- Link to v2: https://patch.msgid.link/20260730-kexec_posioned-v2-1-f92d18551f64@debian.org
+
+Changes in v2:
+- Change from pfn_to_page() to pfn_to_online_page(). (Miaohe Lin)
+- Return the poisoned address once we find a hit, to avoid the O(n^2)
+  rescan. (Sashiko)
+- Link to v1: https://patch.msgid.link/20260728-kexec_posioned-v1-1-160c81d180fe@debian.org
+
+To: Andrew Morton <akpm@linux-foundation.org>
+To: David Hildenbrand <david@kernel.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+To: "Liam R. Howlett" <liam@infradead.org>
+To: Vlastimil Babka <vbabka@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+To: Michal Hocko <mhocko@suse.com>
+To: Baoquan He <baoquan.he@linux.dev>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+To: Miaohe Lin <linmiaohe@huawei.com>
+To: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Cc: kexec@lists.infradead.org
+---
+ include/linux/mm.h  | 14 ++++++++++++++
+ kernel/kexec_core.c | 10 ++++++++++
+ kernel/kexec_file.c | 18 ++++++++++++++++++
+ mm/memory-failure.c | 41 +++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 83 insertions(+)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 7fabe6c66b4b7..41b923901b193 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -5192,6 +5192,8 @@ extern const struct attribute_group memory_failure_attr_group;
+ extern void memory_failure_queue(unsigned long pfn, int flags);
+ void num_poisoned_pages_inc(unsigned long pfn);
+ void num_poisoned_pages_sub(unsigned long pfn, long i);
++phys_addr_t range_first_hwpoison(phys_addr_t start, unsigned long size);
++phys_addr_t range_last_hwpoison(phys_addr_t start, unsigned long size);
+ #else
+ static inline void memory_failure_queue(unsigned long pfn, int flags)
+ {
+@@ -5204,6 +5206,18 @@ static inline void num_poisoned_pages_inc(unsigned long pfn)
+ static inline void num_poisoned_pages_sub(unsigned long pfn, long i)
+ {
+ }
++
++static inline phys_addr_t range_first_hwpoison(phys_addr_t start,
++					       unsigned long size)
++{
++	return PHYS_ADDR_MAX;
++}
++
++static inline phys_addr_t range_last_hwpoison(phys_addr_t start,
++					      unsigned long size)
++{
++	return PHYS_ADDR_MAX;
++}
+ #endif
+ 
+ #if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_MEMORY_HOTPLUG)
+diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+index dc770b9a6d053..7ee8c9f078f6b 100644
+--- a/kernel/kexec_core.c
++++ b/kernel/kexec_core.c
+@@ -212,6 +212,16 @@ int sanity_check_segment_list(struct kimage *image)
+ 	}
+ #endif
+ 
++	/*
++	 * Reject destinations that land on hardware-poisoned memory: the
++	 * relocation copy would machine-check on the bad frame.
++	 */
++	for (i = 0; i < nr_segments; i++) {
++		if (range_first_hwpoison(image->segment[i].mem,
++					 image->segment[i].memsz) != PHYS_ADDR_MAX)
++			return -EHWPOISON;
++	}
++
+ 	/*
+ 	 * The destination addresses are searched from system RAM rather than
+ 	 * being allocated from the buddy allocator, so they are not guaranteed
+diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+index 59fb9d71e9d86..9ba6cc01af929 100644
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -475,6 +475,7 @@ static int locate_mem_hole_top_down(unsigned long start, unsigned long end,
+ {
+ 	struct kimage *image = kbuf->image;
+ 	unsigned long temp_start, temp_end;
++	phys_addr_t poison;
+ 
+ 	temp_end = min(end, kbuf->buf_max);
+ 	temp_start = temp_end - kbuf->memsz + 1;
+@@ -504,6 +505,15 @@ static int locate_mem_hole_top_down(unsigned long start, unsigned long end,
+ 			continue;
+ 		}
+ 
++		poison = range_first_hwpoison(temp_start, kbuf->memsz);
++		if (poison != PHYS_ADDR_MAX) {
++			/* we hit a poisoned page */
++			if (poison < kbuf->memsz)
++				return 0;
++			temp_start = poison - kbuf->memsz;
++			continue;
++		}
++
+ 		/* We found a suitable memory range */
+ 		break;
+ 	} while (1);
+@@ -520,6 +530,7 @@ static int locate_mem_hole_bottom_up(unsigned long start, unsigned long end,
+ {
+ 	struct kimage *image = kbuf->image;
+ 	unsigned long temp_start, temp_end;
++	phys_addr_t poison;
+ 
+ 	temp_start = max(start, kbuf->buf_min);
+ 
+@@ -546,6 +557,13 @@ static int locate_mem_hole_bottom_up(unsigned long start, unsigned long end,
+ 			continue;
+ 		}
+ 
++		poison = range_last_hwpoison(temp_start, kbuf->memsz);
++		if (poison != PHYS_ADDR_MAX) {
++			/* we hit a poisoned page */
++			temp_start = poison + PAGE_SIZE;
++			continue;
++		}
++
+ 		/* We found a suitable memory range */
+ 		break;
+ 	} while (1);
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index a8b03e2920ba8..f3875680e7955 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -96,6 +96,47 @@ void num_poisoned_pages_sub(unsigned long pfn, long i)
+ 		memblk_nr_poison_sub(pfn, i);
+ }
+ 
++/*
++ * Return the first or the last hardware-poisoned online page in [start,
++ * start + size), or PHYS_ADDR_MAX if the range is clean.
++ */
++static phys_addr_t range_hwpoison(phys_addr_t start, unsigned long size,
++				  bool first)
++{
++	phys_addr_t poison = PHYS_ADDR_MAX;
++	unsigned long pfn, end_pfn;
++
++	if (!size || !atomic_long_read(&num_poisoned_pages))
++		return poison;
++
++	end_pfn = PHYS_PFN(start + size - 1);
++	for (pfn = PHYS_PFN(start); pfn <= end_pfn; pfn++) {
++		struct page *page = pfn_to_online_page(pfn);
++
++		cond_resched();
++
++		if (!page || !is_page_hwpoison(page))
++			continue;
++
++		if (first)
++			return PFN_PHYS(pfn);
++
++		poison = PFN_PHYS(pfn);
++	}
++
++	return poison;
++}
++
++phys_addr_t range_first_hwpoison(phys_addr_t start, unsigned long size)
++{
++	return range_hwpoison(start, size, true);
++}
++
++phys_addr_t range_last_hwpoison(phys_addr_t start, unsigned long size)
++{
++	return range_hwpoison(start, size, false);
++}
++
+ /**
+  * MF_ATTR_RO - Create sysfs entry for each memory failure statistics.
+  * @_name: name of the file in the per NUMA sysfs directory.
+
+---
+base-commit: c5e32e86ca02b003f86e095d379b38148999293d
+change-id: 20260727-kexec_posioned-72bb0a4143a0
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+
 
