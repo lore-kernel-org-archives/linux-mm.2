@@ -4,93 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0ECCC5B56A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 20:33:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEB69C5AC67
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 20:43:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABB216B00A9; Tue, 11 Aug 2026 16:33:17 -0400 (EDT)
+	id CA07D6B0092; Tue, 11 Aug 2026 16:43:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A448C6B00AB; Tue, 11 Aug 2026 16:33:17 -0400 (EDT)
+	id C524B6B0093; Tue, 11 Aug 2026 16:43:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 934576B00AC; Tue, 11 Aug 2026 16:33:17 -0400 (EDT)
+	id B1B5D6B00AB; Tue, 11 Aug 2026 16:43:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 62F3E6B00A9
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:33:17 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E8A2A1A01B2
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 20:33:16 +0000 (UTC)
-X-FDA: 85090138392.14.826786E
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 4EAE120004
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 20:33:15 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UQ+63i7M;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 880FC6B0092
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:43:10 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 243091A0133
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 20:43:10 +0000 (UTC)
+X-FDA: 85090163340.28.D54DCF9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 7990640008
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 20:43:08 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YXLgdApM;
+	spf=pass (imf12.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786480395;
+	s=arc-20220608; t=1786480988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lhLQTHM31HiibodbQJGZPDVgE2DmcphLRRks8z+Fmcw=;
-	b=ALdSmEqEPOoZLWvHncTftA1InULWVW3TwbIsSMQH7qx9uh+kadWdrgbFsP3AuTkJ4rXy1a
-	S2eRznLOP1M8ykVrH+E5jlwCtcAWXwonTSILmLUbY+JhHP0siOcAR7s+IyeKYUM3QZFzBq
-	4XJWrDQjROGiECvbj4qMhfkHw56cTM0=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UQ+63i7M;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786480395;
-	b=EdVXhnwF4mvHfSwdNAehUiarB9UYcUFuvvi1wYpvMtgPixAzEc97OrDxhDjRIubfGWHXZ7
-	DPzw4O7SiumC9/tq/sXkD1fDPpx2UGAW0F4Eie3SA/6uznsqk2IRSkj7PBTdvYPJ7GX9hI
-	UkoFKNLztHzGHZ9hi/vSBmK6GSzdMhw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786480392;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lhLQTHM31HiibodbQJGZPDVgE2DmcphLRRks8z+Fmcw=;
-	b=UQ+63i7MGIYBEySTOISWQSlyGmVRykIdbn6QYgoo951mXXsO1jO4SD0VHvfVVsyZivVyLG
-	toSZNLG94NUFaJ6zxz2k1cYdeHR2HgeMPTytvvBQeOOK8GquY0fOgUf0MaHDuKkebOfMxr
-	heUlhJ7ebcAnlddFji+a+M5Kj+irWMw=
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Meta kernel team <kernel-team@meta.com>,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 9/9] memcg: simplify v1 event ratelimiting
-Date: Tue, 11 Aug 2026 13:32:03 -0700
-Message-ID: <20260811203203.3456029-10-shakeel.butt@linux.dev>
-In-Reply-To: <20260811203203.3456029-1-shakeel.butt@linux.dev>
-References: <20260811203203.3456029-1-shakeel.butt@linux.dev>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tmqgrBJxUvss5ev2qg4hR/y+Shhz4DNLrdh9R3vpGbM=;
+	b=4SVv5FRA/eJCmA2LJv/ZjoTGuCKPtsRHfpNbvm4f5XpcGiJKB7z2mvi5DlFMddnZMvW0zc
+	T+iXibOHSU9l7jVGB8uMVcSPVmHCcYtYlyGXpIJGBDcxthBBYDCIRl8uEOI4un3bFp2+da
+	5OKA8JgobIu7nzTEX19lAiyvqnUp04w=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786480988;
+	b=7zZWBrq/AM6/5Jh1fgjY3Z11ju9Qf+MfSWAXXooOlrB1oC2x8dxxiEwA4BGJ9e2djkwuTv
+	YZN9lXJc9CdctI9u1cmJozftpMKjzY1w1OL11/qUv54FMryif3XVcdE7yvPwAoEESpi9SD
+	DDPKNHB1KYA6MQ2X+gwBduPug+OvexY=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YXLgdApM;
+	spf=pass (imf12.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id F1D11600AE;
+	Tue, 11 Aug 2026 20:43:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 049C71F000E9;
+	Tue, 11 Aug 2026 20:43:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786480986;
+	bh=tmqgrBJxUvss5ev2qg4hR/y+Shhz4DNLrdh9R3vpGbM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YXLgdApMQVjB8O5UsuRCftLgsXmP3cSJYvwGgrqZ6b+hB2edLW/uSBh3oj2DAKDLB
+	 6IioToKp+fdIkMueq1I/JRHsiwugXBDmJ97vp4UxyiCAtTlbgjkSl4kj3fA2aKAij5
+	 Qgg6Hbg7EYU+2aNCB4H6ya401I1ujfkQIF2fhblv0bLnVJ432LahjN1sFPCZeRdz14
+	 Cw5oUW8a78hswG6XALU3IdgCkVcHjig6EUfeU9hkjUA2GGFHo2hnqTAj7OaCds1AU4
+	 UNwXanpKaMexoPY5I1l0K/a0V8GThMm0LE5dEKAkZ0GBpRhjDX5FR/2e1tnXNyczMQ
+	 ftS06T2V5gAHQ==
+Date: Tue, 11 Aug 2026 13:41:01 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Jan Sebastian =?iso-8859-1?Q?G=F6tte?= <contact@jaseg.de>
+Cc: Jan Sebastian =?iso-8859-1?Q?G=F6tte?= <linux@jaseg.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Dave Young <ruirui.yang@linux.dev>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, David Howells <dhowells@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Lukas Wunner <lukas@wunner.de>, Ignat Korchagin <ignat@linux.win>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, "Theodore Y. Ts'o" <tytso@mit.edu>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org, keyrings@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-security-module@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-nvme@lists.infradead.org,
+	linux-nfs@vger.kernel.org, linux-integrity@vger.kernel.org,
+	linux-afs@lists.infradead.org, netdev@vger.kernel.org,
+	linux-fscrypt@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	dm-devel@lists.linux.dev
+Subject: Re: [PATCH v2 00/13] CRASH_WIPE_SECRETS: Wipe secrets before kdump
+ (was: CRASH_ZEROIZE)
+Message-ID: <20260811204101.GA1905@sol>
+References: <20260811-crash-zeroize-rework-v2-0-9561d13c2340@jaseg.de>
+ <20260811182012.GB2895176@google.com>
+ <d242ab53-a39e-421d-ac39-4bee49be6ac0@jaseg.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 4EAE120004
-X-Stat-Signature: er7acdcm3zzrdddd33z8wxqticq8udhb
+In-Reply-To: <d242ab53-a39e-421d-ac39-4bee49be6ac0@jaseg.de>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786480395-895151
-X-HE-Meta: U2FsdGVkX18pLdKmWtKOV9fQ7r3n6hLQxHsaR7w7SjclsPTbvvbOKjfG7HwvLUyuhEDWSxHqkI1QE/R65VQueb7+QVHFYAmvpwv0GKWOiQHSNIBEJbsuyUJm7gx73jyP2UWtxkOq3H5//ELEsAtrTo6R+WCXYiQIfhkVfHGH95HjUlD2D8xKibGpyTYlAetqRQfWeKfTzOQwO8C0r1AXr/iWNULm8aHd+AYqwhBf0iNMnsjWBn4Z0ql34K7IY9BlC0BdstK/sdc7en/VZvftkkDQdD935HucNjiBknGuEHzg9BwrTdEnytMNkNBWLp2eBVqSCyrgvKhPPBibdaHy5PeVvu8lIN79AfAzl3DeT9vS3BMous5Uxfmy44WdUK2qu9pnfbSUwoplWpR/2dknYpqm5n6Mgjeo8VpMIpeoXy6jORasP3QUV+qSvuFJEGhM/AFcLBamoeO8gHY6DAdprpLGsNxxXW9fsvOWwru771PluLoEbJujewOdxyAh+8FSdBJfuMkPStBldMN1AAeYBK3dNJHjex0JK6XJeUKacvrqQU7hl1Vx0+OzHB8s9IAj5Cn/bObZum5UeQEHJ+Eb8Y845KDzfv/Ys6bzTQOPaKrc3gJS2ieayXXi00TgWEqzlgmDzCemoumtT6Z2M4hgsxeK1OaycC18yCDF0Eu6jxuUkWwuLXpsd7ueAkDoE4/X1vzSBGRKmuIy1O2otTYd0ayjofmPTyrj4PkQxPylQQMKYlG5CfX7FjuShafQHSCzyWgivUnFlEJKxE12MRrwwXe6AmxwcyDcWa3NG+9cfTDa278ni98KhzRQx3146I4v7aRjtbqX2DkdcC+MNW6fC3YET8uN6jljbI966xlx7AHRV8RUxVLMYF6RGbs/NEYHPRNH7CoMA/qC9EzmLWQSfw3ys+unmik3TK/fR5WYwGKI2v7EO0ATtB/GOu0OiNqDC4uqF9VAj1onfY9xw+l
- 9ZDw0onj
- jUJ5yQvfSe5gwqRo5aB4uETqX8OavM559cfJP/pYHNEh6l2vrDSTU1RJjnv7cGzxUt8rQShakmjifMTm9q11yMNjg+R/aDgbacLpSewQ6xPAin5bqNwqJ7CArPeCmYmke+dbuzOtbFJu7+Kvy4bFIpYkmHZAJ5OvtKh4Em1kUvylz3K8CKF3Z1QiBHVTJVprpYX1Db/zTEICWs6E=
+X-Stat-Signature: 6ixkbwdg785m3eejo4pphbj7116hjeei
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7990640008
+X-HE-Tag: 1786480988-42193
+X-HE-Meta: U2FsdGVkX18Y+WiUnGUNi100sHZTVk+3mqMmXIx+ieHxJ+IHSXBkUxcSwWQcWKnIsPxfY11DM4xBpQu6g7907AH9EUA4C0YVKGwyAnxWaQjJX7fJk9g/aPtGVIQ6LzQ0uWY1Vx2AhowLDWKPRiLq4u60Am323iM9Ftv8YlpbZKikf15vZQwWjg56FKfjeDlZyILlZ60N6oMjuQ2zt6Azr2FgbuEOiFCweOqgFcYGybplARXjDILfKDK0Vuh0pm8e7VAZo1glbS9xffwPWn2kkezh6t7CQrfNXVqKVmPUw9FKG3MXE+kWQpeKVqYaEf0taUtHeMjy0zYhutWCeaoF0dE1XJZ+K0MHm242jz8GyONxwK/zAlZdZsrdC5jxuiXin7S+Q+YN1N0zgShA8pRojbduceTpbO7+OETJ6lmYcdkPBM7XFXUqoyasylUtdTGV7P9oAv+5p7mHP5/xGOm4eODVlE+PosCHUqZZFv8PRi5RNzOKoCDcctBD4jV7U5zPOpsj3kEukW51nkTeOC76UgRBrueWbn4196l6Wo3gOrCHqIOtP2FpmHC8VIYKAO19hWYED9vfzBJCBVjPv9zLIlcVOtgHCKK8eDN+f1nb2NaybGOqbrwsbai5ZiqZs6RZCPZqlEiLrNtPHmLgyGDA9/z/snC7039qWrNEnZwh2Do1wrOp7mNXYMcGFGtY+6A1fN8k8o3Ibe91dyZRa6hUH5l0kYslmohWKwZgPfDvI6OBY/A7uPttZBNdmvXiweiV8lyqRUCKbfqB+++JodQO43M286IIZHs5I+46vt8Upuse9gBUv0dZoFEBB+Ki5X7dc8LgC5YWLqUj6ZaEIbSB0TZZAO5CbBpSxiwZrDX6SK1aeVlgV1ATLiWFgKH0RFCbcf7tuBZf5JhvDzoyF+IrNQruOESfCCR0GdylL6DuxvxnifG5lD57PKLhNaBz2fmf0xEFpju+7L6HFnqFcAI
+ HrXUGZvE
+ m6ewNrKlz0MzQAjqLIIRT8/juS/Pmd2aVpF1TgYfB0vQQWRBfnzGB4XbO0stXCauQIC34dmxET/PM80aM7PfJFa+ZoIFD1yIGb+W8PO1CUzMEl/oLafZVw8nuaUoqJMZRv0k5iXZhfN1kCDJQ+/T3svxb8ZIHBeVM4rzfc8/ZFU8BYMSq7lqRjvAFJHuWHLUgNEXNHQWltOSr0q6RkbLWApc7nXfmUkslJ7xe+Ewj3ty7mb85VybgNTdDR6/IXDvAq+xro+sqaaojDrFI13BvH5ISzrF0ju0lmvTVYk6BohdREYj5CTFKRfNFH0Z4OVf/mzVSQ+SEdja0pjUTKFxsrGZJkKWtGR8XkLsnGVmOSf+pv7txPdm8Qia8RcdESI6MyCZ3PZKXbnAUejs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,179 +132,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thresholds are the only periodic v1 event left, so the target enum, the
-per-cpu target array and the switch in memcg1_event_ratelimit() all
-collapse to a single counter.
+On Tue, Aug 11, 2026 at 09:38:20PM +0200, Jan Sebastian Götte wrote:
+> > Could you perhaps narrow the scope to one or two things that actually
+> > are useful and can reasonably be supported for the application?  For
+> > example, secretmem seems to be the only thing you mentioned that you're
+> > actually planning to use.
+> 
+> I'm open to whittling down the scope of this series. In my use case I need
+> at least secretmem as well as dm-crypt, which then pulls in the crypto tfm
+> stuff. Personally, I could live without the other bits, I just thought
+> they'd be easy enough to include.
 
-memcg1_check_events() no longer needs a node id either, which lets
-memcg1_uncharge_batch() drop its nid argument and struct
-uncharge_gather drop the field feeding it.
+Please do reduce the scope.
 
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
----
- mm/memcontrol-v1.c | 43 +++++++++++--------------------------------
- mm/memcontrol-v1.h |  4 ++--
- mm/memcontrol.c    |  4 +---
- 3 files changed, 14 insertions(+), 37 deletions(-)
+Note that even if dm-crypt is in scope, "crypto: api - wipe tfm contexts
+before kdump" is neither required nor sufficient.  For one, dm-crypt has
+its own copy of the key.  The wiping should be done by the kernel
+feature(s) that need it, as they know what actually needs to be wiped,
+and they can do so without the bottleneck of a new global list.
 
-diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-index 475f998b7643..bf2c7d53b01b 100644
---- a/mm/memcontrol-v1.c
-+++ b/mm/memcontrol-v1.c
-@@ -200,15 +200,9 @@ static void mem_cgroup_threshold(struct mem_cgroup *memcg)
-  * to trigger some periodic events. This is straightforward and better
-  * than using jiffies etc. to handle periodic memcg event.
-  */
--enum mem_cgroup_events_target {
--	MEM_CGROUP_TARGET_THRESH,
--	MEM_CGROUP_TARGET_SOFTLIMIT,
--	MEM_CGROUP_NTARGETS,
--};
--
- struct memcg1_events_percpu {
- 	unsigned long nr_page_events;
--	unsigned long targets[MEM_CGROUP_NTARGETS];
-+	unsigned long threshold_target;
- };
- 
- static void memcg1_charge_statistics(struct mem_cgroup *memcg, int nr_pages)
-@@ -225,43 +219,28 @@ static void memcg1_charge_statistics(struct mem_cgroup *memcg, int nr_pages)
- }
- 
- #define THRESHOLDS_EVENTS_TARGET 128
--#define SOFTLIMIT_EVENTS_TARGET 1024
- 
--static bool memcg1_event_ratelimit(struct mem_cgroup *memcg,
--				enum mem_cgroup_events_target target)
-+static bool memcg1_event_ratelimit(struct mem_cgroup *memcg)
- {
- 	unsigned long val, next;
- 
- 	val = __this_cpu_read(memcg->events_percpu->nr_page_events);
--	next = __this_cpu_read(memcg->events_percpu->targets[target]);
-+	next = __this_cpu_read(memcg->events_percpu->threshold_target);
- 	/* from time_after() in jiffies.h */
- 	if ((long)(next - val) < 0) {
--		switch (target) {
--		case MEM_CGROUP_TARGET_THRESH:
--			next = val + THRESHOLDS_EVENTS_TARGET;
--			break;
--		case MEM_CGROUP_TARGET_SOFTLIMIT:
--			next = val + SOFTLIMIT_EVENTS_TARGET;
--			break;
--		default:
--			break;
--		}
--		__this_cpu_write(memcg->events_percpu->targets[target], next);
-+		__this_cpu_write(memcg->events_percpu->threshold_target,
-+				 val + THRESHOLDS_EVENTS_TARGET);
- 		return true;
- 	}
- 	return false;
- }
- 
--/*
-- * Check events in order.
-- *
-- */
--static void memcg1_check_events(struct mem_cgroup *memcg, int nid)
-+static void memcg1_check_events(struct mem_cgroup *memcg)
- {
- 	if (IS_ENABLED(CONFIG_PREEMPT_RT))
- 		return;
- 
--	if (unlikely(memcg1_event_ratelimit(memcg, MEM_CGROUP_TARGET_THRESH)))
-+	if (unlikely(memcg1_event_ratelimit(memcg)))
- 		mem_cgroup_threshold(memcg);
- }
- 
-@@ -271,7 +250,7 @@ void memcg1_commit_charge(struct folio *folio, struct mem_cgroup *memcg)
- 
- 	local_irq_save(flags);
- 	memcg1_charge_statistics(memcg, folio_nr_pages(folio));
--	memcg1_check_events(memcg, folio_nid(folio));
-+	memcg1_check_events(memcg);
- 	local_irq_restore(flags);
- }
- 
-@@ -344,7 +323,7 @@ void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci)
- 	VM_WARN_ON_IRQS_ENABLED();
- 	memcg1_charge_statistics(memcg, -folio_nr_pages(folio));
- 	preempt_enable_nested();
--	memcg1_check_events(memcg, folio_nid(folio));
-+	memcg1_check_events(memcg);
- 
- 	rcu_read_unlock();
- 	obj_cgroup_put(objcg);
-@@ -398,14 +377,14 @@ void memcg1_swapin(struct folio *folio)
- #endif
- 
- void memcg1_uncharge_batch(struct mem_cgroup *memcg, unsigned long pgpgout,
--			   unsigned long nr_memory, int nid)
-+			   unsigned long nr_memory)
- {
- 	unsigned long flags;
- 
- 	local_irq_save(flags);
- 	count_memcg_events(memcg, PGPGOUT, pgpgout);
- 	__this_cpu_add(memcg->events_percpu->nr_page_events, nr_memory);
--	memcg1_check_events(memcg, nid);
-+	memcg1_check_events(memcg);
- 	local_irq_restore(flags);
- }
- 
-diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
-index f48d0e22e615..b9a21f0fd2c3 100644
---- a/mm/memcontrol-v1.h
-+++ b/mm/memcontrol-v1.h
-@@ -59,7 +59,7 @@ void memcg1_oom_recover(struct mem_cgroup *memcg);
- 
- void memcg1_commit_charge(struct folio *folio, struct mem_cgroup *memcg);
- void memcg1_uncharge_batch(struct mem_cgroup *memcg, unsigned long pgpgout,
--			   unsigned long nr_memory, int nid);
-+			   unsigned long nr_memory);
- 
- void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf *s);
- void reparent_memcg1_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent);
-@@ -107,7 +107,7 @@ static inline void memcg1_commit_charge(struct folio *folio,
- 
- static inline void memcg1_uncharge_batch(struct mem_cgroup *memcg,
- 					 unsigned long pgpgout,
--					 unsigned long nr_memory, int nid) {}
-+					 unsigned long nr_memory) {}
- 
- static inline void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf *s) {}
- 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index ba3ef821553d..44ef376d657b 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -5293,7 +5293,6 @@ struct uncharge_gather {
- 	unsigned long nr_memory;
- 	unsigned long pgpgout;
- 	unsigned long nr_kmem;
--	int nid;
- };
- 
- static inline void uncharge_gather_clear(struct uncharge_gather *ug)
-@@ -5316,7 +5315,7 @@ static void uncharge_batch(const struct uncharge_gather *ug)
- 		memcg1_oom_recover(memcg);
- 	}
- 
--	memcg1_uncharge_batch(memcg, ug->pgpgout, ug->nr_memory, ug->nid);
-+	memcg1_uncharge_batch(memcg, ug->pgpgout, ug->nr_memory);
- 	rcu_read_unlock();
- 
- 	/* drop reference from uncharge_folio */
-@@ -5345,7 +5344,6 @@ static void uncharge_folio(struct folio *folio, struct uncharge_gather *ug)
- 			uncharge_gather_clear(ug);
- 		}
- 		ug->objcg = objcg;
--		ug->nid = folio_nid(folio);
- 
- 		/* pairs with obj_cgroup_put in uncharge_batch */
- 		obj_cgroup_get(objcg);
--- 
-2.53.0-Meta
-
+- Eric
 
