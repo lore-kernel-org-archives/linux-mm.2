@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A5FAC5CFCF
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 15:28:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 103ADC5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 15:28:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 621FC6B0099; Tue, 11 Aug 2026 11:28:23 -0400 (EDT)
+	id 2EE6B6B0098; Tue, 11 Aug 2026 11:28:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FA316B00AF; Tue, 11 Aug 2026 11:28:23 -0400 (EDT)
+	id 2C5C76B00AF; Tue, 11 Aug 2026 11:28:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5386F6B00B0; Tue, 11 Aug 2026 11:28:23 -0400 (EDT)
+	id 1B4CB6B00B1; Tue, 11 Aug 2026 11:28:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2844F6B0099
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 11:28:23 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A4E4A40445
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:28:22 +0000 (UTC)
-X-FDA: 85089370044.11.8CCE71F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id DCF2640006
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:28:20 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Mb9S3/Uu";
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D50D36B0098
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 11:28:27 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 63E931C135F
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:28:27 +0000 (UTC)
+X-FDA: 85089370254.07.3F00F51
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 973CD14000B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:28:25 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=csZT+OQW;
+	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786462100;
+	s=arc-20220608; t=1786462105;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PxUCP2iDYTzzrW7IUVfims64s4a5dm9b+PmFryUZrZ8=;
-	b=5+DnlvG2hIkyxhK2PMogygz5D8sjaxEP5meGHvL6ep9jkziv6h8Ym8RmYELQz1d/Ox43cW
-	VxgeUj4BQBYReQp5S1Xf8sBT0uBjKgitqj5+quiSqza5UqnMczFxWXycaHok33aRHrBey6
-	7S04bxadh9kAo5gM600VliT7aTiDIAg=
+	bh=kMay+L1AYU36nG7IEiQytwVomvHtiRva+AboZzfmtms=;
+	b=Koa2sHCYh51aLLr8sy6ef0ObS868ZWm7uccp1RFPwbnpBl9Cm38o+2R054150Jj/LZYkM2
+	CKYqC5BDEZ7rnw9QhcGR1cCTRkKcHx/2hSZAHfc76Fb1qhCsDYkdTrY38EH+aud7UA67w4
+	f2f/GC5BQDMeKjuLIB0iCwVvpPGPRsQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786462100;
-	b=C3Z/z7xnmuNwu4qnAK4lv0t6WKu91ENiX4QvcEdyYujtzXVT5B0BQ9MpLH2bI+yP99gPzK
-	q3ogiAxa3demrcc7t8EGQOvagxXBeWoY/kGKMFa6gEj0akTf3hAemG01pZ/v3QCRXxB4bL
-	4E/jY7XEGiU1JUSKKezREGaWY3XGexo=
+	t=1786462105;
+	b=WaQIl4ksVWGos+jKkfUY5+hIYzZgRupS75ECsbt1xQ0l6m+p3BH2r7CWJ9SZ3eyo5jMJgs
+	d2rjaEh/QgOd2Ea9ZQtS0xY143Ileq6bSxREmSa1iCUIBsXdZCxqmPmFNQJ+/1lQUYb3dm
+	Gf+d4zFF6z/H32LOhjl8rLWRqbJrqHU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Mb9S3/Uu";
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=csZT+OQW;
+	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 754F0600E2;
+	by sea.source.kernel.org (Postfix) with ESMTP id DDFE642A6F;
+	Tue, 11 Aug 2026 15:28:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA58B1F00A3A;
 	Tue, 11 Aug 2026 15:28:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 111561F000E9;
-	Tue, 11 Aug 2026 15:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786462100;
-	bh=PxUCP2iDYTzzrW7IUVfims64s4a5dm9b+PmFryUZrZ8=;
+	s=k20260515; t=1786462104;
+	bh=kMay+L1AYU36nG7IEiQytwVomvHtiRva+AboZzfmtms=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Mb9S3/UuLLKJmdNADIKN4evkrOh/0EM77aCNrmNn633IfCAUbYFAxtYpdMaXve6am
-	 YxJ+hQYiJVAPpvYEDPlXZN/Pam5Fh62zyP5Pqj2uetgNrxWIFNqdtSZn06pJvluFem
-	 ukBxj9q5MRxR1PPdhIJ10WbiCM4eIJUvq3p3Cqm2VMgn078PEr8LRNVqGKEwAXMgGn
-	 gtssV3mDKmP80P5EBQtpjqj/zEvfpXVhrVNCuZC/suMFbE0NgJmYrLIEZYOkM8Nsq9
-	 gYKR0wu6cKCTCIPBQxvUQFlXWp6IZPlb6Pv2rUxP9SCm7WD5l31dNFtkqXNbPd1WcT
-	 Khn/HCmSQNcNw==
+	b=csZT+OQWAYEJS5WyvDG1We6a4cCdwoH64dANf9Lmk5/fDy08lbGxdLJm5bmxyELDL
+	 DRUCJBXmDCirZ6GpBzUOE4wo38tH2IAeIQC2NJojo4roqBwbZMsHW6lmQNzozvuKx3
+	 YQqOx/i+K6v3+f22p79LdD30SUiUjHPpb7TGaBNamopHfNLmRbnAb81B4pkcju9VwQ
+	 FkrC3Ui+Nr5mXX0xroSo/v7rYboxAKb6bUfc6y0k2Owwilsr08l9krTqsShrLMyE79
+	 K+Yg62EnfiuBTbyqVa+SpfbwUQvYKqqKy3p/y+2MfPV1PrQFep8l3aTw743QZJjWZO
+	 CksEYuWvHa9Ew==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 11 Aug 2026 17:27:31 +0200
-Subject: [PATCH 10/11] coredump: describe the holes when COREDUMP_SPARSE is
- negotiated
+Date: Tue, 11 Aug 2026 17:27:32 +0200
+Subject: [PATCH 11/11] selftests/coredump: test COREDUMP_HEADER and
+ COREDUMP_SPARSE
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260811-work-coredump-sparse-v1-10-cd3e8b1e356d@kernel.org>
+Message-Id: <20260811-work-coredump-sparse-v1-11-cd3e8b1e356d@kernel.org>
 References: <20260811-work-coredump-sparse-v1-0-cd3e8b1e356d@kernel.org>
 In-Reply-To: <20260811-work-coredump-sparse-v1-0-cd3e8b1e356d@kernel.org>
 To: Jacob Lalonde <jalalonde@meta.com>, Josef Bacik <josef@toxicpanda.com>
@@ -86,22 +86,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
  linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-362b8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3730; i=brauner@kernel.org;
- h=from:subject:message-id; bh=ZREoaOSeNd4qGwZma6jQbBcL6Gnn8lrPJS0/WXVe/dw=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRV2yfULnTvMQy5H/pvOYOhvdqC1Y7mYRd3aoYlG2/M/
- HT9QJVSRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwEQUzjIy9DF+ztB4382XpKfD
- tyKd353h6EQ/x3kM2gX6EpJaPlMXMjJ8OrvFTP3VHUExebEJF2tsphmdO/cobtXuKI105e6Z55n
- 4AQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=18037; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=CamofIBhXFoXZcBJPLKpcNj976NXj8B3BDgiDN4BT1k=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRV2yeetO6a95m95uCVgubPZe/DY/63OHyde0rmTP2uO
+ uPOU88qO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbSMJuR4deZwPVPjPPnPhdu
+ /ftdq+OZg83s+kdntsxcfdVfMW+XymqGf8p+qRO813Ikm0y7w/3x1d5ynpt7e43275f5/HTVo5v
+ zf3MDAA==
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DCF2640006
-X-Stat-Signature: uchkeon41w1kyqurxzeszs68rw85jbkz
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1786462100-683857
-X-HE-Meta: U2FsdGVkX1+qqNL2/yRmU4WC6zpSWlrbqQZDt5BjrAGNlU+icyD7SRSC7kGZEx5T888kNQKSoBH7LC4iMzUY/pZ9G+P0mtKgXBdMSS2pr/GrIG2tNApDPCnsk+7mp5QMF44W0JqYuWkyiPB8rbjaxt3w28+vcaoCDsLwBApSKjIwMIUGFQvm7JzMu2olfyQBUcwAvQ9vGac7VyygwvBLbTYdyt2eXYJlyJL1zHQMckZ/bOpFLrUpHfGfnYgc3kWlPVt29TW4sZ2Shef50JoMG4mnUE6cc4Pv7/VVfMDpEeaQOQ0XfKlWzUnRhwjW1IStwnLjqBM1XVPaI0SxguXyIz3k7/GnIhlMgDfOxC9Jd1eE3QMjKkIhrw/JY+Teje3ZkUway/Dv6crxt5XLaNPhOqcpmI2W8cuU8T71HG6K51aGiviuyXyjVVnHOIy4bFGKVSMcM5YEOe68A6oYI5ZTo0f2mKX9kMYi7NRWNeufctBWXJHNld8FYOoDF6Zyfg1bXpEQW3Te951dANjdzESUHt/6G04TDlgktMeaS5ZUhPTUpPBEkiEzw5h4KSyH4DIpPxOthEB4wtWPMLwkQtV+8rc9NlvKBDZQiM2xTcIWRK9W2Bw4j0B4tP5znl5hU0Ba0cBlJWoihnvQyeQ6u/cd/S6kAO845d3xqB+xgTWXGwj7/8Tb4rZXxKpHW0DDKps7iipzF/el7xfMvgTBBqD4leQV+QcivsVyNDJXxNesnVUSxfaVH+moXqvkJyNG/1WCsPDa8gnmpXO2erCWB8BZf0hAHZQCOIS47RRfFVzC8snwnubyI1YnA/sVQYI9ZJcHiVPEdWItmMkX6cSC+AwHOvVx9sHo4S9d9kRmElzI4SHQnVtYOSWP9EvPOuZa4cIcNbdsUkG8GowW2WhDk0l/vEHCs8cJmjuTHXk4mIupopW75tsPeWAZvQNi6Kr8ewEVIeeVI2RY5xqUuoATFtU
- G/0vKRiK
- y/5x9RyCJxG0x2J4LKMpqk8gSwoBei3V1EXvjojYXNNkIaEsfLkbvBNYdKOnh3lZEEYhm6IcLyucU0AUvAyq3E2cpjV4i7SGPXd5oKdN5XMg4ULNm+i2VuGgzqjSYwHFlqS0fO670lz8p+LlZJdOyG8xoZatTQo22v/oILwHzcw/+2H/yAMjBVFn3CV3Rg9OM0+UO/JcqA6iUr0XC0Ge0NzdmzxHeQA2EhUur/vebGkOT1ENtyqQwN3oDQFp+9wbuypj4x1OM+WCy8eSPQXM1egjErAI+q+sSSnRk
+X-Stat-Signature: ftoskawsknpbzeseesih4hs33ywgtrrr
+X-Rspamd-Queue-Id: 973CD14000B
+X-HE-Tag: 1786462105-180463
+X-HE-Meta: U2FsdGVkX1+3ioZ61pOgzT92NUf5x7Yc4aKiR8z2cO8URD+KmQ4H18y8/Ax2Sq8Jo76OVhFazieVzNF62uQnkbCbFfRFRQ8yqnTwjZwfC0oPpRfLDod4zBPphkaGkkY/Pj/y9lmBFhxOWeJy1/Uot3ICJfR0y+ezLJeqywx9LhNu045u0tmXGC33q8z7dG7cqaEO00O2b02Yv1yh32/AOmT/K09YEucIvTjJOSEIxzywq5sIc7DdVaBn6xLoFrGWlkCYYITOJ+ehjQwh/+TsXS90I4gKzcF0RNL1daQRiosAAClKGKy+9ydpXvVz+H1ghpwK4QEXIVQ/RogY2C2zbrMyD3EfO/tTFhL+9fXtCebCtSE5FGgevGXjPVj8yCnlLSnKRVHVRmtPmaVqlOP11bUAEKSIJT0mz9vvl5/QDcsCpYACFfFB1O2cgEJK99XUVD6r3+YbZxl3NdethFiyQzHI2omdAXiU4V65DJqZRXvPwzBGaJSix3xtgqytH3sv7bNu+QO3wmi5XQavBVyGWiifkj7UxJvfjJ/SchuH19WxTxZOZwbAi/7k5lUzRMKqt3z0vos+zpw6ub/Y1snrKye6aX28tPLOzrXRLUE+E/+ReMzOoXUY/jyusq+02qGJqm2fwM8zMclNKd6jEGVSXm31YkdSos4+YvSP5cyXnogdZBZ0g/pmNWM1utpndn1KeON43xeUgcGjiMEwMo4I21Suz3uYdGOAgAuK1O411e99rXytMnJre/KlByELV++mVP0q+o6tZce7lE8XHPew1UL4B+ohW87JW57CpfUp0yV/uIts6k6o/Y2dhS7wBgwBGEp4vPTOq0ZKtrnWeV/+xnqavELGHZ4qYj8/9/nLsMyTrB3yalARRMcIjMJeRYW/UbOyeKqzZgW9YQRos+rpkQGGb7Yc6gC50tOC/3vyLnEQ4udZzXEzv2fZwsjBUnHvTMPLt0gl4FdJrekKPGC
+ 7VQ/+ji6
+ J3vSkUOWkK+faxQAbEzioKHK+7yvjbvn5OpM/Xw0Dqj8H6rE0Sg1QBgaGQlezuVOPCQJ45IhzKVcMNw+9C4+KCGZKSW4y0G8qrQwGcabO8o9VoRx+eZPUjd8LdLoqND/YZkottXhOF68X2kiIG4Jpa7NfS44gAdXrikqursf8TZYVF2aS5p8+GWtpDBjvKNy5+ZB9SXjnk2vZwxAGdMeMgs5KKMIYZdXq5IGZd0jLkqkAslGwFu+KoFtB20HT9R7AG7uxLHtmi/BbcjZhTfocQZoLjNGgrzNs4tva49oJ4FoI9rI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,105 +109,622 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Offer COREDUMP_SPARSE in coredump_req->mask now that there is something
-behind it. Refuse it without COREDUMP_HEADER. A zero frame cannot exist
-outside a framed stream.
-
-A trailing hole is flushed by coredump_write() the way it always was. So
-its last byte goes out as a one-byte data frame and the frames cover the
-whole coredump.
+Test the new COREDUMP_HEADER and COREDUMP_SPARSE flags.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/coredump.c                                      | 34 +++++++++++++++++++++-
- .../selftests/coredump/coredump_test_helpers.c     |  3 +-
- 2 files changed, 35 insertions(+), 2 deletions(-)
+ .../coredump/coredump_socket_protocol_test.c       | 379 +++++++++++++++++++++
+ tools/testing/selftests/coredump/coredump_test.h   |   6 +
+ .../selftests/coredump/coredump_test_helpers.c     | 156 ++++++++-
+ 3 files changed, 540 insertions(+), 1 deletion(-)
 
-diff --git a/fs/coredump.c b/fs/coredump.c
-index 364c89c5f82a..bdf2eae948d0 100644
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -799,7 +799,7 @@ static bool coredump_sock_request(struct core_name *cn, struct coredump_params *
- 		.size		= sizeof(struct coredump_req),
- 		.mask		= COREDUMP_KERNEL | COREDUMP_USERSPACE |
- 				  COREDUMP_REJECT | COREDUMP_WAIT |
--				  COREDUMP_HEADER,
-+				  COREDUMP_HEADER | COREDUMP_SPARSE,
- 		.size_ack	= sizeof(struct coredump_ack),
- 	};
- 	struct coredump_ack ack = {};
-@@ -854,6 +854,12 @@ static bool coredump_sock_request(struct core_name *cn, struct coredump_params *
- 		return false;
- 	}
+diff --git a/tools/testing/selftests/coredump/coredump_socket_protocol_test.c b/tools/testing/selftests/coredump/coredump_socket_protocol_test.c
+index 60a357e628eb..ef36e787a529 100644
+--- a/tools/testing/selftests/coredump/coredump_socket_protocol_test.c
++++ b/tools/testing/selftests/coredump/coredump_socket_protocol_test.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
  
-+	/* Zero frames only exist inside a framed stream. */
-+	if ((ack.mask & COREDUMP_SPARSE) && !(ack.mask & COREDUMP_HEADER)) {
-+		coredump_sock_mark(cprm->file, COREDUMP_MARK_CONFLICTING);
-+		return false;
++#include <elf.h>
+ #include <sys/stat.h>
+ #include <sys/epoll.h>
+ #include <sys/socket.h>
+@@ -1573,4 +1574,382 @@ TEST_F_TIMEOUT(coredump, socket_multiple_crashing_coredumps_epoll_workers, 500)
+ 	wait_and_check_coredump_server(pid_coredump_server, _metadata, self);
+ }
+ 
++/*
++ * Reassemble a framed coredump and check that what comes out is an ELF
++ * core file. The frames themselves are validated by recv_coredump_frames().
++ */
++TEST_F(coredump, socket_request_sparse)
++{
++	unsigned char ehdr[EI_NIDENT + sizeof(Elf64_Half)];
++	int fd_core_file, pidfd, status;
++	pid_t pid, pid_coredump_server;
++	struct pidfd_info info = {};
++	int ipc_sockets[2];
++	Elf64_Half e_type;
++	struct stat st;
++	char c;
++
++	ASSERT_EQ(socketpair(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, ipc_sockets), 0);
++	ASSERT_TRUE(set_core_pattern("@@/tmp/coredump.socket"));
++
++	pid_coredump_server = fork();
++	ASSERT_GE(pid_coredump_server, 0);
++	if (pid_coredump_server == 0) {
++		int fd_server = -1, fd_coredump = -1, fd_peer_pidfd = -1;
++		int fd_file = -1;
++		int exit_code = EXIT_FAILURE;
++		struct coredump_req req = {};
++
++		close(ipc_sockets[0]);
++
++		fd_server = create_and_listen_unix_socket("/tmp/coredump.socket");
++		if (fd_server < 0)
++			goto out;
++
++		if (write_nointr(ipc_sockets[1], "1", 1) < 0)
++			goto out;
++
++		close(ipc_sockets[1]);
++
++		fd_coredump = accept4(fd_server, NULL, NULL, SOCK_CLOEXEC);
++		if (fd_coredump < 0)
++			goto out;
++
++		fd_peer_pidfd = get_peer_pidfd(fd_coredump);
++		if (fd_peer_pidfd < 0)
++			goto out;
++
++		fd_file = creat("/tmp/coredump.file", 0644);
++		if (fd_file < 0)
++			goto out;
++
++		if (!read_coredump_req(fd_coredump, &req))
++			goto out;
++
++		if (!check_coredump_req(&req))
++			goto out;
++
++		if (!send_coredump_ack(fd_coredump, &req,
++				       COREDUMP_KERNEL | COREDUMP_HEADER |
++				       COREDUMP_SPARSE | COREDUMP_WAIT, 0))
++			goto out;
++
++		if (!read_marker(fd_coredump, COREDUMP_MARK_REQACK))
++			goto out;
++
++		if (recv_coredump_frames(fd_coredump, fd_file, NULL) < 0)
++			goto out;
++
++		exit_code = EXIT_SUCCESS;
++out:
++		if (fd_file >= 0)
++			close(fd_file);
++		if (fd_peer_pidfd >= 0)
++			close(fd_peer_pidfd);
++		if (fd_coredump >= 0)
++			close(fd_coredump);
++		if (fd_server >= 0)
++			close(fd_server);
++		_exit(exit_code);
 +	}
++	self->pid_coredump_server = pid_coredump_server;
 +
- 	if (ack.spare) {
- 		coredump_sock_mark(cprm->file, COREDUMP_MARK_UNSUPPORTED);
- 		return false;
-@@ -1229,6 +1235,11 @@ static bool dump_framed(const struct coredump_params *cprm)
- 	return cprm->mask & COREDUMP_HEADER;
- }
- 
-+static bool dump_sparse(const struct coredump_params *cprm)
-+{
-+	return cprm->mask & COREDUMP_SPARSE;
++	EXPECT_EQ(close(ipc_sockets[1]), 0);
++	ASSERT_EQ(read_nointr(ipc_sockets[0], &c, 1), 1);
++	EXPECT_EQ(close(ipc_sockets[0]), 0);
++
++	pid = fork();
++	ASSERT_GE(pid, 0);
++	if (pid == 0)
++		crashing_child();
++
++	pidfd = sys_pidfd_open(pid, 0);
++	ASSERT_GE(pidfd, 0);
++
++	waitpid(pid, &status, 0);
++	ASSERT_TRUE(WIFSIGNALED(status));
++	ASSERT_TRUE(WCOREDUMP(status));
++
++	ASSERT_TRUE(get_pidfd_info(pidfd, &info));
++	ASSERT_GT((info.mask & PIDFD_INFO_COREDUMP), 0);
++	ASSERT_GT((info.coredump_mask & PIDFD_COREDUMPED), 0);
++
++	wait_and_check_coredump_server(pid_coredump_server, _metadata, self);
++
++	ASSERT_EQ(stat("/tmp/coredump.file", &st), 0);
++	ASSERT_GT(st.st_size, (off_t)sizeof(ehdr));
++
++	/* What the frames reassemble into has to be an ELF core file. */
++	fd_core_file = open("/tmp/coredump.file", O_RDONLY | O_CLOEXEC);
++	ASSERT_GE(fd_core_file, 0);
++	ASSERT_EQ(read_nointr(fd_core_file, ehdr, sizeof(ehdr)), sizeof(ehdr));
++	EXPECT_EQ(close(fd_core_file), 0);
++
++	/* e_type sits right behind e_ident in both ELF32 and ELF64. */
++	ASSERT_EQ(memcmp(ehdr, ELFMAG, SELFMAG), 0);
++	memcpy(&e_type, ehdr + EI_NIDENT, sizeof(e_type));
++	ASSERT_EQ(e_type, ET_CORE);
 +}
 +
- /* Describe the next @len bytes of the coredump. Returns the header size. */
- static size_t dump_frame_init(struct coredump_params *cprm,
- 			      enum coredump_frame_type type, u64 len)
-@@ -1292,11 +1303,32 @@ static int __dump_emit(struct coredump_params *cprm, const void *addr, int nr)
- 	return dump_write_iter(cprm, &iter, nr);
- }
- 
-+/* Hand the server the length of the hole instead of the hole itself. */
-+static int dump_skip_frame(struct coredump_params *cprm, size_t nr)
++/*
++ * Crash a child with a mostly-unpopulated mapping and reassemble its
++ * framed coredump, reporting what crossed the socket and the coredump
++ * size the frames describe.
++ */
++static void test_framed_hole(struct __test_metadata *const _metadata,
++			     FIXTURE_DATA(coredump) *self, __u64 ack_mask,
++			     ssize_t *received, off_t *coredump_size)
 +{
-+	struct kvec kvec;
-+	struct iov_iter iter;
-+	size_t hdr;
++	int pidfd, status;
++	pid_t pid, pid_coredump_server;
++	struct pidfd_info info = {};
++	int ipc_sockets[2];
++	int pipefds[2];
++	char c;
 +
-+	if (dump_interrupted())
-+		return 0;
++	ASSERT_EQ(socketpair(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, ipc_sockets), 0);
++	ASSERT_EQ(pipe(pipefds), 0);
++	ASSERT_TRUE(set_core_pattern("@@/tmp/coredump.socket"));
 +
-+	hdr = dump_frame_init(cprm, COREDUMP_FRAME_ZERO, nr);
-+	kvec.iov_base = cprm->frame;
-+	kvec.iov_len = hdr;
-+	iov_iter_kvec(&iter, ITER_SOURCE, &kvec, 1, hdr);
++	pid_coredump_server = fork();
++	ASSERT_GE(pid_coredump_server, 0);
++	if (pid_coredump_server == 0) {
++		int fd_server = -1, fd_coredump = -1, fd_peer_pidfd = -1;
++		int fd_file = -1;
++		int exit_code = EXIT_FAILURE;
++		struct coredump_req req = {};
++		off_t size = 0;
++		ssize_t ret;
 +
-+	return dump_write_iter(cprm, &iter, nr);
++		close(ipc_sockets[0]);
++		close(pipefds[0]);
++
++		fd_server = create_and_listen_unix_socket("/tmp/coredump.socket");
++		if (fd_server < 0)
++			goto out;
++
++		if (write_nointr(ipc_sockets[1], "1", 1) < 0)
++			goto out;
++
++		close(ipc_sockets[1]);
++
++		fd_coredump = accept4(fd_server, NULL, NULL, SOCK_CLOEXEC);
++		if (fd_coredump < 0)
++			goto out;
++
++		fd_peer_pidfd = get_peer_pidfd(fd_coredump);
++		if (fd_peer_pidfd < 0)
++			goto out;
++
++		/*
++		 * The reassembled coredump is bigger than the mapping the
++		 * child made, so keep it on the detached tmpfs and sparse.
++		 */
++		fd_file = open_coredump_tmpfile(self->fd_tmpfs_detached);
++		if (fd_file < 0)
++			goto out;
++
++		if (!read_coredump_req(fd_coredump, &req))
++			goto out;
++
++		if (!check_coredump_req(&req))
++			goto out;
++
++		if (!send_coredump_ack(fd_coredump, &req, ack_mask, 0))
++			goto out;
++
++		if (!read_marker(fd_coredump, COREDUMP_MARK_REQACK))
++			goto out;
++
++		ret = recv_coredump_frames(fd_coredump, fd_file, &size);
++		if (ret < 0)
++			goto out;
++
++		if (write_nointr(pipefds[1], &ret, sizeof(ret)) != sizeof(ret))
++			goto out;
++		if (write_nointr(pipefds[1], &size, sizeof(size)) != sizeof(size))
++			goto out;
++
++		exit_code = EXIT_SUCCESS;
++out:
++		close(pipefds[1]);
++		if (fd_file >= 0)
++			close(fd_file);
++		if (fd_peer_pidfd >= 0)
++			close(fd_peer_pidfd);
++		if (fd_coredump >= 0)
++			close(fd_coredump);
++		if (fd_server >= 0)
++			close(fd_server);
++		_exit(exit_code);
++	}
++	self->pid_coredump_server = pid_coredump_server;
++
++	EXPECT_EQ(close(ipc_sockets[1]), 0);
++	EXPECT_EQ(close(pipefds[1]), 0);
++	ASSERT_EQ(read_nointr(ipc_sockets[0], &c, 1), 1);
++	EXPECT_EQ(close(ipc_sockets[0]), 0);
++
++	pid = fork();
++	ASSERT_GE(pid, 0);
++	if (pid == 0)
++		crashing_child_sparse(SPARSE_MAPPING_SIZE);
++
++	pidfd = sys_pidfd_open(pid, 0);
++	ASSERT_GE(pidfd, 0);
++
++	waitpid(pid, &status, 0);
++	ASSERT_TRUE(WIFSIGNALED(status));
++	ASSERT_TRUE(WCOREDUMP(status));
++
++	ASSERT_TRUE(get_pidfd_info(pidfd, &info));
++	ASSERT_GT((info.mask & PIDFD_INFO_COREDUMP), 0);
++	ASSERT_GT((info.coredump_mask & PIDFD_COREDUMPED), 0);
++
++	ASSERT_EQ(read_nointr(pipefds[0], received, sizeof(*received)),
++		  sizeof(*received));
++	ASSERT_EQ(read_nointr(pipefds[0], coredump_size, sizeof(*coredump_size)),
++		  sizeof(*coredump_size));
++	EXPECT_EQ(close(pipefds[0]), 0);
++
++	wait_and_check_coredump_server(pid_coredump_server, _metadata, self);
++
++	/* The mapping is in the coredump, holes included. */
++	ASSERT_GT(*coredump_size, (off_t)SPARSE_MAPPING_SIZE);
 +}
 +
- static int __dump_skip(struct coredump_params *cprm, size_t nr)
++/*
++ * A mapping that has been written to is dumped whole, including the parts
++ * of it that were never faulted in. With COREDUMP_SPARSE the holes stay
++ * off the wire.
++ */
++TEST_F(coredump, socket_request_sparse_hole)
++{
++	off_t coredump_size = 0;
++	ssize_t received = 0;
++
++	test_framed_hole(_metadata, self,
++			 COREDUMP_KERNEL | COREDUMP_HEADER |
++			 COREDUMP_SPARSE | COREDUMP_WAIT,
++			 &received, &coredump_size);
++
++	/* The holes didn't have to go over the socket. */
++	ASSERT_LT(received, coredump_size / 8);
++}
++
++/*
++ * COREDUMP_HEADER alone frames the stream but elides nothing: the holes
++ * cross the socket as data frames.
++ */
++TEST_F(coredump, socket_request_header_hole)
++{
++	off_t coredump_size = 0;
++	ssize_t received = 0;
++
++	test_framed_hole(_metadata, self,
++			 COREDUMP_KERNEL | COREDUMP_HEADER | COREDUMP_WAIT,
++			 &received, &coredump_size);
++
++	/* Framing alone elides nothing, so everything crossed the socket. */
++	ASSERT_GT(received, coredump_size);
++}
++
++/* Ack @ack_mask, expect the kernel to refuse it as conflicting. */
++static void test_conflicting_ack(struct __test_metadata *const _metadata,
++				 FIXTURE_DATA(coredump) *self, __u64 ack_mask)
++{
++	int pidfd, status;
++	pid_t pid, pid_coredump_server;
++	struct pidfd_info info = {};
++	int ipc_sockets[2];
++	char c;
++
++	ASSERT_EQ(socketpair(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, ipc_sockets), 0);
++	ASSERT_TRUE(set_core_pattern("@@/tmp/coredump.socket"));
++
++	pid_coredump_server = fork();
++	ASSERT_GE(pid_coredump_server, 0);
++	if (pid_coredump_server == 0) {
++		int fd_server = -1, fd_coredump = -1, fd_peer_pidfd = -1;
++		int exit_code = EXIT_FAILURE;
++		struct coredump_req req = {};
++
++		close(ipc_sockets[0]);
++
++		fd_server = create_and_listen_unix_socket("/tmp/coredump.socket");
++		if (fd_server < 0)
++			goto out;
++
++		if (write_nointr(ipc_sockets[1], "1", 1) < 0)
++			goto out;
++
++		close(ipc_sockets[1]);
++
++		fd_coredump = accept4(fd_server, NULL, NULL, SOCK_CLOEXEC);
++		if (fd_coredump < 0)
++			goto out;
++
++		fd_peer_pidfd = get_peer_pidfd(fd_coredump);
++		if (fd_peer_pidfd < 0)
++			goto out;
++
++		if (!read_coredump_req(fd_coredump, &req))
++			goto out;
++
++		if (!check_coredump_req(&req))
++			goto out;
++
++		if (!send_coredump_ack(fd_coredump, &req, ack_mask, 0))
++			goto out;
++
++		if (!read_marker(fd_coredump, COREDUMP_MARK_CONFLICTING))
++			goto out;
++
++		exit_code = EXIT_SUCCESS;
++out:
++		if (fd_peer_pidfd >= 0)
++			close(fd_peer_pidfd);
++		if (fd_coredump >= 0)
++			close(fd_coredump);
++		if (fd_server >= 0)
++			close(fd_server);
++		_exit(exit_code);
++	}
++	self->pid_coredump_server = pid_coredump_server;
++
++	EXPECT_EQ(close(ipc_sockets[1]), 0);
++	ASSERT_EQ(read_nointr(ipc_sockets[0], &c, 1), 1);
++	EXPECT_EQ(close(ipc_sockets[0]), 0);
++
++	pid = fork();
++	ASSERT_GE(pid, 0);
++	if (pid == 0)
++		crashing_child();
++
++	pidfd = sys_pidfd_open(pid, 0);
++	ASSERT_GE(pidfd, 0);
++
++	waitpid(pid, &status, 0);
++	ASSERT_TRUE(WIFSIGNALED(status));
++	ASSERT_FALSE(WCOREDUMP(status));
++
++	ASSERT_TRUE(get_pidfd_info(pidfd, &info));
++	ASSERT_GT((info.mask & PIDFD_INFO_COREDUMP), 0);
++	ASSERT_GT((info.coredump_mask & PIDFD_COREDUMPED), 0);
++
++	wait_and_check_coredump_server(pid_coredump_server, _metadata, self);
++}
++
++/* COREDUMP_HEADER frames a coredump the kernel writes, nothing else. */
++TEST_F(coredump, socket_request_header_without_kernel)
++{
++	test_conflicting_ack(_metadata, self, COREDUMP_USERSPACE | COREDUMP_HEADER);
++}
++
++/* A zero frame can't exist outside a framed stream. */
++TEST_F(coredump, socket_request_sparse_without_header)
++{
++	test_conflicting_ack(_metadata, self, COREDUMP_KERNEL | COREDUMP_SPARSE);
++}
++
+ TEST_HARNESS_MAIN
+diff --git a/tools/testing/selftests/coredump/coredump_test.h b/tools/testing/selftests/coredump/coredump_test.h
+index a02809145e2d..ae1751298aaf 100644
+--- a/tools/testing/selftests/coredump/coredump_test.h
++++ b/tools/testing/selftests/coredump/coredump_test.h
+@@ -16,6 +16,9 @@
+ 
+ #define NUM_THREAD_SPAWN 128
+ 
++/* Size of the mostly unpopulated mapping the sparse coredump test maps. */
++#define SPARSE_MAPPING_SIZE (256 * 1024 * 1024)
++
+ /* Coredump fixture */
+ FIXTURE(coredump)
  {
- 	static char zeroes[PAGE_SIZE];
- 	struct file *file = cprm->file;
- 
-+	if (dump_sparse(cprm))
-+		return dump_skip_frame(cprm, nr);
-+
- 	if (file->f_mode & FMODE_LSEEK) {
- 		if (dump_interrupted() || vfs_llseek(file, nr, SEEK_CUR) < 0)
- 			return 0;
+@@ -27,6 +30,9 @@ FIXTURE(coredump)
+ /* Shared helper function declarations */
+ void *do_nothing(void *arg);
+ void crashing_child(void);
++void crashing_child_sparse(size_t size);
++ssize_t recv_coredump_frames(int fd_coredump, int fd_core_file,
++			     off_t *coredump_size);
+ int create_detached_tmpfs(void);
+ int create_and_listen_unix_socket(const char *path);
+ bool set_core_pattern(const char *pattern);
 diff --git a/tools/testing/selftests/coredump/coredump_test_helpers.c b/tools/testing/selftests/coredump/coredump_test_helpers.c
-index bfe10bc51618..ee669969605b 100644
+index ee669969605b..dececebe15cb 100644
 --- a/tools/testing/selftests/coredump/coredump_test_helpers.c
 +++ b/tools/testing/selftests/coredump/coredump_test_helpers.c
-@@ -290,7 +290,8 @@ bool send_coredump_ack(int fd, const struct coredump_req *req,
- /* Every option the kernel is expected to advertise in coredump_req->mask. */
- #define COREDUMP_REQ_MASK_ALL					\
- 	(COREDUMP_KERNEL | COREDUMP_USERSPACE |			\
--	 COREDUMP_REJECT | COREDUMP_WAIT | COREDUMP_HEADER)
-+	 COREDUMP_REJECT | COREDUMP_WAIT |			\
-+	 COREDUMP_HEADER | COREDUMP_SPARSE)
+@@ -13,6 +13,7 @@
+ #include <string.h>
+ #include <sys/epoll.h>
+ #include <sys/ioctl.h>
++#include <sys/mman.h>
+ #include <sys/socket.h>
+ #include <sys/types.h>
+ #include <sys/un.h>
+@@ -59,6 +60,156 @@ void crashing_child(void)
+ 	i = *(volatile int *)NULL;
+ }
  
- bool check_coredump_req(const struct coredump_req *req)
++void crashing_child_sparse(size_t size)
++{
++	char *p;
++
++	/*
++	 * Touch the first page only. The whole mapping is dumped because
++	 * it has been written to, but all of it save that one page is a
++	 * hole.
++	 */
++	p = mmap(NULL, size, PROT_READ | PROT_WRITE,
++		 MAP_PRIVATE | MAP_ANONYMOUS | MAP_NORESERVE, -1, 0);
++	if (p != MAP_FAILED)
++		p[0] = 'x';
++
++	/* crash on purpose */
++	*(volatile int *)NULL = 0;
++}
++
++/* Read @len bytes off the socket, writing them at @offset if @fd_out >= 0. */
++static ssize_t recv_frame_bytes(int fd_coredump, __u64 len, int fd_out,
++				off_t offset)
++{
++	ssize_t received = 0;
++
++	while (len) {
++		char buffer[PAGE_SIZE];
++		size_t chunk = len < sizeof(buffer) ? len : sizeof(buffer);
++		ssize_t ret;
++
++		ret = recv(fd_coredump, buffer, chunk, MSG_WAITALL);
++		if (ret <= 0) {
++			fprintf(stderr, "%s: short read %zd: %m\n",
++				__func__, ret);
++			return -1;
++		}
++
++		if (fd_out >= 0 &&
++		    pwrite(fd_out, buffer, ret, offset + received) != ret) {
++			fprintf(stderr, "%s: pwrite failed: %m\n", __func__);
++			return -1;
++		}
++
++		received += ret;
++		len -= ret;
++	}
++
++	return received;
++}
++
++ssize_t recv_coredump_frames(int fd_coredump, int fd_core_file,
++			     off_t *coredump_size)
++{
++	ssize_t received = 0;
++	off_t size = 0;
++
++	for (;;) {
++		struct coredump_frame_header frame = {};
++		size_t known;
++		ssize_t ret;
++
++		/* Peek the header size the way read_coredump_req() does. */
++		ret = recv(fd_coredump, &frame, sizeof(frame.size),
++			   MSG_PEEK | MSG_WAITALL);
++		if (ret == 0)
++			break;
++		if (ret != sizeof(frame.size)) {
++			fprintf(stderr, "%s: short frame peek %zd: %m\n",
++				__func__, ret);
++			return -1;
++		}
++
++		if (frame.size < COREDUMP_FRAME_HEADER_SIZE_VER0) {
++			fprintf(stderr, "%s: header size %u below minimum %u\n",
++				__func__, frame.size,
++				COREDUMP_FRAME_HEADER_SIZE_VER0);
++			return -1;
++		}
++
++		/* Consume as much of the header as we know about. */
++		known = frame.size < sizeof(frame) ? frame.size : sizeof(frame);
++		ret = recv(fd_coredump, &frame, known, MSG_WAITALL);
++		if (ret != (ssize_t)known) {
++			fprintf(stderr, "%s: short frame read %zd: %m\n",
++				__func__, ret);
++			return -1;
++		}
++		received += ret;
++
++		/*
++		 * A flag changes what the frame means, so refuse one we
++		 * don't know rather than guess.
++		 */
++		if (frame.flags) {
++			fprintf(stderr, "%s: unknown header flags 0x%llx\n",
++				__func__, (unsigned long long)frame.flags);
++			return -1;
++		}
++
++		/* Discard any part of the header we have no use for. */
++		ret = recv_frame_bytes(fd_coredump, frame.size - known, -1, 0);
++		if (ret < 0)
++			return -1;
++		received += ret;
++
++		/* Frames are sent in order and they don't leave gaps. */
++		if (frame.offset != (__u64)size) {
++			fprintf(stderr, "%s: frame at %llu, expected %llu\n",
++				__func__, (unsigned long long)frame.offset,
++				(unsigned long long)size);
++			return -1;
++		}
++
++		switch (frame.type) {
++		case COREDUMP_FRAME_ZERO:
++			/* A hole. It comes with no data and needs none. */
++			break;
++		case COREDUMP_FRAME_DATA:
++			ret = recv_frame_bytes(fd_coredump, frame.len,
++					       fd_core_file, size);
++			if (ret < 0)
++				return -1;
++			received += ret;
++			break;
++		default:
++			fprintf(stderr, "%s: unknown frame type %u\n",
++				__func__, frame.type);
++			return -1;
++		}
++
++		size += frame.len;
++	}
++
++	/*
++	 * Nothing is written for a hole, so grow the file to the size the
++	 * frames describe in case the coredump ended in one.
++	 */
++	if (ftruncate(fd_core_file, size) < 0) {
++		fprintf(stderr, "%s: ftruncate to %llu failed: %m\n",
++			__func__, (unsigned long long)size);
++		return -1;
++	}
++
++	if (coredump_size)
++		*coredump_size = size;
++
++	fprintf(stderr, "Received %zd bytes for a coredump of %llu bytes\n",
++		received, (unsigned long long)size);
++	return received;
++}
++
+ int create_detached_tmpfs(void)
  {
+ 	int fd_context, fd_tmpfs;
+@@ -101,6 +252,7 @@ int create_and_listen_unix_socket(const char *path)
+ 	return fd;
+ 
+ out:
++	fprintf(stderr, "%s: %s: %m\n", __func__, path);
+ 	if (fd >= 0)
+ 		close(fd);
+ 	return -1;
+@@ -279,8 +431,10 @@ bool send_coredump_ack(int fd, const struct coredump_req *req,
+ 	large_ack.ack.mask = mask;
+ 	large_ack.ack.size = size_ack;
+ 	ret = send(fd, &large_ack, size_ack, MSG_NOSIGNAL);
+-	if (ret != size_ack)
++	if (ret != size_ack) {
++		fprintf(stderr, "%s: short send %zd: %m\n", __func__, ret);
+ 		return false;
++	}
+ 
+ 	fprintf(stderr, "Sent coredump ack with size %zu and mask 0x%llx\n",
+ 		size_ack, (unsigned long long)mask);
 
 -- 
 2.53.0
