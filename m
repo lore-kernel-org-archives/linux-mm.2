@@ -4,88 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A2E5C5CFDB
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 18:24:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D9E5C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 18:25:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 454BD6B00A9; Tue, 11 Aug 2026 14:24:04 -0400 (EDT)
+	id 717286B007B; Tue, 11 Aug 2026 14:25:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 405706B00AD; Tue, 11 Aug 2026 14:24:04 -0400 (EDT)
+	id 6EFA56B0088; Tue, 11 Aug 2026 14:25:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3426F6B00AE; Tue, 11 Aug 2026 14:24:04 -0400 (EDT)
+	id 604D76B008A; Tue, 11 Aug 2026 14:25:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 142B86B00A9
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:24:04 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A8F181401A2
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:24:03 +0000 (UTC)
-X-FDA: 85089812766.04.42C67CB
+	by kanga.kvack.org (Postfix) with ESMTP id 453116B007B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:25:35 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D89C38017B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:25:34 +0000 (UTC)
+X-FDA: 85089816588.16.F2FF304
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 29E4A18000C
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:24:02 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hHJzkVFD;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786472642;
-	b=aV2uqVzjbXtkoIoDjz5FlY/2ZgEmPx+eIZE1WYKzRCsbwARCtJStLdfFv322fz1G+sj7Uy
-	FT6icBgVrv6AC1ADrtYBk/FBJzlUipUd0FN4ct1idZrl3OIwQjcRED2e6Yl+gRfEJlHfjp
-	BkE1SayQuzBJPJ5dIGw640DfCQmdX90=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hHJzkVFD;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id 292D914000C
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:25:33 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VIhcDAYe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786472642;
+	s=arc-20220608; t=1786472733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hUoGMLlqY3rbOTaypjUIdMJxKDPsbeVgkgJ1rrI5sHs=;
-	b=DJG8AVnSdI7vwBjCPCHJfXU6+ErOb5wIQ4HPkRmx9ocvpQHax/h5PzdPe9Of8GbUF8ff5C
-	7vAH0bZB5VIZHfOHZlFERE/qwilfGJdWy7pYWkNtAD1qEtdvjN5UimTv8jx6vbUMtstIYI
-	mflv4a49ZKGEdfO3cvdgjj9Negh8zps=
+	bh=ZzEHSNLlFFddqM0RmRWXac6OXQ9KylFr48Naiw2MWzw=;
+	b=Z3rKHgUvXZxAp6P7ckm3nCGy3bPcEXNA/kik0fXJc7a3/eqCZzwMYYAWOWkWWW5Ffe5x5B
+	hd66A4dmD/CGR13Hmp8w6gFuDM+Q2oLXLMATug+ZfVm98kArj6l/QMwTayuZbRj00Pql64
+	OMNURxHYeVlrqORTsE3Ujr3zh4WLjPY=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VIhcDAYe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786472733;
+	b=GCnobTsNd7Yp72qSm34QmAX+1mbcWi75AkOV8Ro28YAVZpDMCTUra0b3Im2ihPeC8sYdBl
+	AXrPjRPQEQbZ/F8qg4YQ3EzkuedvikPrG8k/aOT5/r4y8zmUxu91QYzYyMJ8nc1FGlDxGM
+	4lKlLCDwJPy0cK8MJcu72CvnUkzKGCs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 08CF7600AF;
-	Tue, 11 Aug 2026 18:24:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0208E1F000E9;
-	Tue, 11 Aug 2026 18:23:58 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9F6B1600AD;
+	Tue, 11 Aug 2026 18:25:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B83A21F000E9;
+	Tue, 11 Aug 2026 18:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786472640;
-	bh=hUoGMLlqY3rbOTaypjUIdMJxKDPsbeVgkgJ1rrI5sHs=;
+	s=k20260515; t=1786472732;
+	bh=ZzEHSNLlFFddqM0RmRWXac6OXQ9KylFr48Naiw2MWzw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hHJzkVFDWfCmuKYkR4XjxMzJFNmZB8HJ8Yi/bHngYG5rI8EnhdBozTj0pJjg+/NTK
-	 dEuO/r+i3iaO7H07Ox6c5UBt7g15P4cBk56SEZde712lGrZ2lcjzqCm37SDb6+pyQG
-	 NkYVwncPEihrqR5OAdUo26cCzwxNLepmoQKxj9NV6RGpa6QG9cRhbxrsbc8S5hVRDY
-	 dUkQfr3VBmx0BunzdnNEO9aknrDezSHysn5UWKmaNnu5C0/VKBZu9pMECBWu+W4B/3
-	 fR1N7uwElivk4KyINF9kYCpuE3SxJ6/u/dSGOT6Vb8BSue4DkQnAel2BxX3Q4gDlhB
-	 Lm42X/R/AEMJg==
-Date: Tue, 11 Aug 2026 19:23:56 +0100
+	b=VIhcDAYePqtFLgfzasw4wXTHFqX7QLjsgw+8Xahc7vZQBHUmG3k+ZmedgiZPx1d83
+	 C4D5pZkRTQOy58gEwv2VLx7/KLj20rGtLltcU43iY8kMQGjGy+ZS8k20wysBV8Xm0n
+	 ZY58FRYF/EcBEFmtl7t78x8rWVOXiAweFVyE7Fb7EhUiFKjVTTJQXqvXf4Ju5zU+BX
+	 jpZDq5GD/ZMgIqJePeqpY4Ddadqxgn1F/oWOFA0Eu54LGY/70Xlxes4ooegy6Sf40x
+	 9+iqIT3/dajsBUoK9G4/czSEa0AGlSrfbv5WAUVN1CK7+fqAT+mecs37pfDlBq0Z3S
+	 1JEzzoC0VOQxA==
+Date: Tue, 11 Aug 2026 19:25:27 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Hyunwoo Kim <imv4bel@gmail.com>, akpm@linux-foundation.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] selftests/mm: add stale walk->action race test
-Message-ID: <antoRbvwXVxoQ7Dw@gremlin>
-References: <20260811161949.3879321-1-imv4bel@gmail.com>
- <20260811161949.3879321-3-imv4bel@gmail.com>
- <b27f03ea-414a-4ae5-9649-2a05398fe082@kernel.org>
+To: Juan Yescas <jyescas@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>, android-mm@google.com, fvdl@google.com, tkjos@google.com, 
+	minchan@google.com, dskiba@google.com
+Subject: Re: [RFC PATCH v2 00/16] Page Alloc Hogger
+Message-ID: <anto32QfDfX9MRpC@gremlin>
+References: <20260806011048.517229-1-jyescas@google.com>
+ <anRRLwa3N5bVCHET@lucifer>
+ <CAJDx_rigKu_kwWCXy4dUNbqoA9b-T3U3Va4QX5-4=zn9yO4maA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <b27f03ea-414a-4ae5-9649-2a05398fe082@kernel.org>
-X-Rspamd-Queue-Id: 29E4A18000C
-X-Rspamd-Server: rspam10
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJDx_rigKu_kwWCXy4dUNbqoA9b-T3U3Va4QX5-4=zn9yO4maA@mail.gmail.com>
+X-Stat-Signature: mmj3hojyspax7n77mi8f15w7xb51y791
+X-Rspamd-Queue-Id: 292D914000C
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: ua9ajopu4unhnsycantxbs3f7cxsajmd
-X-HE-Tag: 1786472642-888658
-X-HE-Meta: U2FsdGVkX1+29rEn4szfeB3KEu2k+kqrsFibSm3UwbRI+076T2hhbtbrEamunTODLscveqR8CfNUvKjruaxn28jMtrf0CencCSnVlcX+9cF5Nb+NElRjgRV0JPRxAquVyLH6e06uEAzqCFg2KYpgV9YsmGu9SKhBDyhwRNEq3YvPohvskxnEWPHogXtOB4fdU8jyeuYAPiNZ9hym35RJjTqfB5N2b/Z3kKsYBxJqjy5+fCfXnNLI0pgY+QiG/JBEM4e0fQxw78dZ389r63ScNf/5R0B4n+2JsEpfK9PCKas7ZyJf1MeoEcAThSVOGk5NuL/OkFWNMRpvtbo7i8cVex06w7u/l1d5SSKZKFw0Z/RI6KxXcSI3GqQ1IuJMw062T+mc9Z+kUXlhdopcGxFmq6wVEeNP8mlcBvOMLiRYIowUNQQM8QfO3co8OpbW84mxF/2Fl0Lcv750R5uLycicmUP8Ri/xVsrrI18Fhn3F2P1mfrG4w3V4TVF8fYpIiUWOCMSOYY/mVbCZrJinkzCWden9jW5Us9Wialn6hkojMUVpDbSEbC/Qig4itdhQ+HMf3Lxk1gUqaSvrW5LZNHUJs11qyYJZgWb7ASInIahydDFRnnKLQVnIuyA8dsOV7djnkrdQYJZugOeTq2MttsmFKX8H2KzLpeymyP10RRvzf+ajE1OCp3lT98bOsYosk4hoHkFFZpZH/HCUgmRZIOSyJPa7kcO1Jzba2De5bSpf4DKF5UnNQh+S2zDLkny+ETVpXVPu1MOyTyRZgb8Migs4g9BSnOSfaiZah3W6mk4ouFH+5b3+lDrqtfwNxEgbVqr9wVb9bGYVEz8iIV5m4+807rpGm+R+FGj40jLYYqKYATLt7g1B/HYD1Wn0+ctTF1ATLv3jCKz1qjc2XRdB1nOLtatFY7RpULycxYcWdJfZn439RZYTyEqY7aQmAdl4OsScsqlfeRMaFYPq3CcTLoK
- vCm0AhWA
- O5KzEAr4pLWEVrpjAfMiu8OeSs9uwjUme2d3hoh4MJPgmGLs+QEgdKR58yCs0ePFqNnaXObDjM7jTFi3plaOVONrCImoj+MS81ECla2PyRHIlIvtYVgHkzoiQKD0LqyxhtXypGtGuV39G9X2CPpuzeaEEpUUxVbWNleN9MClGRHKGvLK2ZHEiuURzt7TMs0GBV6eVwNHnk0XCUrgx40xxpydpw6oSPPmJknWx65IFLGh4+yPCXnmZaoEF8g6KzC3yz46dqab6kzgViaBrnJYqgd6Npw==
+X-HE-Tag: 1786472733-484645
+X-HE-Meta: U2FsdGVkX1+PkvU21itrz80SZWmpmyzvsqVR5j4CmTG05Cz+or9f7Y9GYzyh5UAuGihSnHJA6iNVsX5lQlHdINVp6o7f/T24xtTgAwvarIPDOZk+lj2bsE7qcesdMampA/QukdcWmGN21hDahj5eQYyaLfePAJhMIgxjY7t67KXkXSOpuk/iFAnSNg1tezBr5+hUb2/FDQAQ3K9OHkNh+F8HS9z+kAC16OxmUBkGcQRHvpTthHnDBdB9sCcga6pmQ2Tvlxu/8xbqTEhPuNVZaFkFhqCHthJXBRLxCu4ZZUEapeXHOz9aWoD5rgI70lk59bns65L8MjsO727+MdeMxJT4v9jYZgyfs9FdXH/5co3cgVpr1rLQLYAsvKkyFHSXT82w0AjSgeMHx7bZu491ObzFMrlt1cig56hyo4mQFd73w9z3BHy9FLX/Id6+wqHvEr0BlwoD6G+RHyPIShKwYahJf/yi9+Q8yTiXYGx4zX1ogXxXBDf/g+DUHw26exUlHKPw5r339Z7tk1aXR+k3zBwtU/hLxxPf8WkIBM3ZelYfJNsYVQZwKN4NmQjixEXWmys1b6OQmuTk91nOlEJz5isVBoWTmts7AX4qIraRvy92Q4YW3shk6HE86A/LFEmR/G74lI5npIrnMcP3HAJ8gAM4yt2zsYsTpWzAlAQhO4pfUgnuS1fvL3MKmxvrOXOdT8lkNexLHwTO8XL/d+TFIOEvQqb7CCBGxbFiYEoFdYoC9O++fNtraqhQHv47A0qqsSjMf3ROzNDLKWxjPHPKsHxWe0NcSTBaTMqMKSE9ndgtM6lXs5zCguEBUZvTMGoJZl2+p5/j/q3zbmUm10jDvlF5Wldf2qzWQ0ra9XzQbq1HAsr673xPg6bGjebtTvGLi7CoSxqhOtHGu9u1gkaGDX42P9WPJnZdlKNdp3KnPLHuen+wjQKgUZphO7kNh22aHLRvuRQQC+6nX3hjZSY
+ iy8LVmuy
+ nbnrwGp81QmNVdPg80O9n/bTtvWc0sqOEy4btfKWa2xaN99Lzy0YFjOlnOHLaCcmsZL9Qqy5ovx5kyYtgQjdO2RqsikAApZf+eiSZ/fiugfN7Fxw30X91mrLxgKP3bTnr2nmVxlewtpv0ACPlCv32s2ttkz8JQwC6fQ6I/tDA7TsE68R6lPX1mRS5NBx0Hbue1K4WerxBL+LwfcxgVwclgDDKMQVSJWoyOsMgx6ujaFdMzpiyYrA5B5LqqxMPyuLGcKqHN7JxCHGEwg0nGnKkxSOWwlhb5cGD8A2+qZKcX3z08/hMYm85UyZMJ3Ma64DphUbxbT2yeEiEeDpeRdoSaR1MKR2VKXgOE/rb305uZIfCglkRb7/dJLf5gw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,50 +99,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 07:11:59PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/11/26 18:18, Hyunwoo Kim wrote:
-> > The added pagewalk_race_test maps two PMDs and faults in 2MB of the first
-> > one.  A second thread then faults in the second PMD and drops it again with
-> > MADV_DONTNEED in a loop, while the main thread reads Rss for the mapping
-> > from /proc/self/smaps.
+On Tue, Aug 11, 2026 at 11:20:54AM -0700, Juan Yescas wrote:
+> On Thu, Aug 6, 2026 at 2:48 AM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
 > >
-> > Clearing the second PMD while smaps_pte_range() runs leaves walk->action
-> > erroneously set to ACTION_AGAIN, which causes the PUD walk to be retried,
-> > so the first PMD is counted twice and Rss comes out twice as large as what
-> > was faulted in.
+> > Hi Juan,
 > >
-> > mincore() is the caller named in the fix, but the second walk writes past
-> > the length mincore() copies back, so it cannot be seen from userspace
-> > there.  smaps reports what the callbacks counted, so the duplicate shows up
-> > in Rss.
+> > While I think there's possibly value in people not re-implemented their own
+> > allocation injector, I don't think there's value in having this be part of
+> > core-mm.
 > >
-> > A failure can only come from the kernel counting the same page twice, so
-> > missing the race is harmless.  On an unfixed kernel the test fails after a
-> > few hundred reads at most and takes about half a second.
+>
+> Thanks Lorenzo for your comments. Apologies for the delay.
+>
+> > I really don't want this to form part of any contract or to be blessed in
+> > any way by core mm as it exposes internal implementation details and I
+> > really want to avoid adding extra maintainer workload here.
 > >
-> > Assisted-by: Claude:claude-opus-5
-> > Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> > ---
 >
-> I'm sorry, but I don't consider such a specialized reproducer for a problem we
-> hit once a good fit for a selftest.
+> I understand and completely respect your concern regarding maintainer
+> overhead and internal boundaries.
 >
-> Or am I missing something, that this here is more generic?
+> Do you see a way to provide similar functionality without exposing the
+> internal implementation?
+>
+>
+> > I'd suggest keeping it as an out-of-tree module as David proposed
+> > previously ([0]).
+> >
+> > Alternatively, keeping it as part of tooling (e.g. in tools/testing) could
+> > also work.
+>
+> That would also work.
 
-To be fair I did ask him for this. :)
+Yeah David and I are agreed this would be the best place for it - it gives you
+everything you need and upstream while keeping the separation we want _and_ it
+allows us to write better, more thorough tests (and I see in your reply to
+Andrew you are planning on adding a bunch of tests which I love to hear :)
 
-I thought it would be useful to have a regression test because there's certainly
-no harm in it? The code is very sensitive and catching a similar mistake in
-future could be useful.
-
-If you're sure this isn't valuable then he could just drop it, but it's my fault
-sorry Hyunwoo for giving you extra work in this case! My bad.
+So this would be great thanks!
 
 >
-> --
-> Cheers,
+> > (This is no comment on how useful it might be for debugging or testing
+> > scenarios :)
+> >
 >
-> David
+> Thanks again for your feedback
+> Juan
+>
+> > --
+> > Cheers, Lorenzo
+> >
+> > [0]:https://lore.kernel.org/all/97605949-82c5-49e0-84b6-b42e8078b55d@kernel.org/
 
 --
 Cheers, Lorenzo
