@@ -4,128 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B558CC5B56A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:58:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23AA8C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:59:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA8F66B008A; Tue, 11 Aug 2026 12:58:54 -0400 (EDT)
+	id 569C16B0093; Tue, 11 Aug 2026 12:59:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B81586B0092; Tue, 11 Aug 2026 12:58:54 -0400 (EDT)
+	id 540366B0096; Tue, 11 Aug 2026 12:59:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A97576B0093; Tue, 11 Aug 2026 12:58:54 -0400 (EDT)
+	id 457546B0098; Tue, 11 Aug 2026 12:59:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 815F06B008A
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:58:54 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id ECEAB12014E
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:58:53 +0000 (UTC)
-X-FDA: 85089598146.04.91B17CF
+	by kanga.kvack.org (Postfix) with ESMTP id 278746B0093
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:59:43 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AF924120129
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:59:42 +0000 (UTC)
+X-FDA: 85089600204.21.ACFC64F
 Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E44D740014
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:58:51 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="h SQFwMB";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=Gts6PYdY;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	by imf27.hostedemail.com (Postfix) with ESMTP id CC4AF40009
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:59:40 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="e 5CiQph";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=aTysU3L2;
+	spf=pass (imf27.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786467532;
+	s=arc-20220608; t=1786467580;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TjyAvX7Mugue+C5cYh+R1a7/5p4l8Irr+ax7oHoUcio=;
-	b=8YIvurIKuupOuJwWXFlEOsPCo70POgEk6ow3Yy2qFhP2b83RufJ3g+fNoH3zsybZgv5heR
-	dapxh7/oVsU9tHDEZe/SJd0KOClIMurTy42mwrUxWh6WqR9elKN7+/3N02Mm8DtmByKgcS
-	mcajluIXGHn7+6AxnDWjJqUqx2RfGYo=
+	bh=a/IPx4KtYlUFdbmjZIHL+vVayMdCY5hwV0MPIJboBbg=;
+	b=S0DqmhyZJrrZuR5WBUwL2vr3zmD3/PiqiWt1Yk+KsBwPGBI0D9OYtH5dgblHcsZ0MuvHFw
+	d+AbdHqEJvFqj8lMEjtAmhVBDVDEolcOsvwPvFbrmBsfFyi+pMCxP7/aheIObabLCQyC1Q
+	VWJ4iFGlVKUFjHzviLvDBEl7Xn0Fd5o=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="h SQFwMB";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=Gts6PYdY;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	imf27.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="e 5CiQph";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=aTysU3L2;
+	spf=pass (imf27.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786467532;
-	b=4CAJkStTOd9xSrX1Z0+3GuXriA2IeqhHNf9PTMwUB4X7Wri9VOGgbFnYm+K+M3I33XJAFi
-	OMPrAOTiSWJ4GvQkVuok6quKAf5do8woYeWh/la2TV1Usk50j1a8kipTW9L9q4cMMCK/t3
-	gVF4ATgx+zKdJ/fuaNHWzE0mu9qivXU=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.phl.internal (Postfix) with ESMTP id 25FB31380437;
-	Tue, 11 Aug 2026 12:58:51 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Tue, 11 Aug 2026 12:58:51 -0400
+	t=1786467580;
+	b=zeu4oxRu5pvVUsf/bNuibXK+7A5ArENT6xXYlHDE8FDVGl2DfIQDem8VwkMfxaasLr0rww
+	Vi6CM8g7X3TA+33Ug190cY87WjTPoxYxEryaqiibiINyKvsGMQIBwx98yfv8skaNoHjDCB
+	sX564gJdN/2umln7jmZ05wjt76f3bLg=
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailflow.phl.internal (Postfix) with ESMTP id 530C01380437;
+	Tue, 11 Aug 2026 12:59:40 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Tue, 11 Aug 2026 12:59:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-type:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1786467531; x=
-	1786474731; bh=TjyAvX7Mugue+C5cYh+R1a7/5p4l8Irr+ax7oHoUcio=; b=h
-	SQFwMB+XetV9+hyyHHxogEKB2YDwOPjRDNI52tI2w9feqalcTr+bd1BTZ1sKa4xr
-	gGF+EbMb614itLTZR7PNJMNVVog+FIL5bN65sU2N+VbAzEIgaJSJ/5HMvHhFaypi
-	RuM2kzzFKlB3YZjsYuARHTQUQHusi3SkT6AWc8Boji4E0IIWPWJ+90ZEHcj/UM21
-	KsYgsxk6iDjjTB8h19N459e+aYJJMt++4ljEoQxjkTf9MIhseLXYNO1saFwHHEFW
-	ahLuTOf2uFXS1NyJlLwC0T6EIn5iigzG8+Sr+b4Uy9Vcb2YkF4hb/0nuqe6eUJug
-	zstTBrBulAfPRws80dqww==
+	:reply-to:subject:subject:to:to; s=fm1; t=1786467580; x=
+	1786474780; bh=a/IPx4KtYlUFdbmjZIHL+vVayMdCY5hwV0MPIJboBbg=; b=e
+	5CiQphUz8BkmYjXYETqskSStaJPNv8tvT/ODXWdlx6QfdB1TP3xMcRLsnTVVoufD
+	gol6hCqLPTjLnmzbeQcLELABeQomiW6YdYeLHvuaRtircZs8ruwz3bcP8x6aPODi
+	lz+jAgoF1Z446UKM3lUwGgwWNRgc+T/Y5/pOVhEX5qI7oy28lIYEb3LpYMQ3/22F
+	yIjHoIlbhA5VNT6lPbT2PHY3O5vinSwP219jHPKzpZNrhQG+gyewYld80Kf6ibB/
+	T+xacI53DsWHraPzFu+e+fNyI/24Bm2I6CSocn/bjhudlLVh543ngN86zcAkVGU5
+	4WIDIhqYGc40OEsbyADzw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1786467531; x=1786474731; bh=TjyAvX7Mugue+C5cYh+R1a7/5p4l8Irr+ax
-	7oHoUcio=; b=Gts6PYdYpzbZm+JHlw4zdQRDReNiMeaypzlpXJ7DISg8QYcr41q
-	/7xkSl0T82xmcaWXOq79yORI5DJBL0YCbNu803OYoPQO3/WoykwcJiFgRVOO0zvX
-	xdJvKSxUSbVOG9aYeOKjEZKUDgdFpWP8HuGuNzIqjN8lt83P/O3Q+9bGkJbcxyAy
-	bOk31cyOpsCi2CVM7PXITBBuUG7FA8igyNEq2MHoleRD+mRtuSvfpyT+YHspYgMY
-	KBFnz2XBx+wYzP5BabvbwVt1HskfUTNCOLEyBJ7rHUbbXKajrzOAsT84CD+VJERn
-	s/iaEV0DBlM1PqS+6YKIi+SKOo7xVujNkHw==
-X-ME-Sender: <xms:ylR7agnVyLXt57mfNJTAqkJUVRgSEZtjj0VSTBC6_pF3zvYwmqqrVA>
-    <xme:ylR7atdV6iRwGP556xrHjmG8zmONPqURMAYY7h3qZpqnw21P_hHQpbBvKwDicVa83
-    CAjMhwarW5i7abFupQotQMcxv7vSq37h9bkTjZP4S47uPT6ksvmTF0>
-X-ME-Received: <xmr:ylR7akN8kCwbLJyXMylgfSEiHFj84_8l_yR5EmUP9E-Nf3g3H-MN7s3GuZc>
-X-ME-Proxy-Cause: dmFkZTGw/dvbcaEj2HngP33VDAg9eCbiq0lwbqHTn2QAHQczq+P2RKDp+L8ud0Spkr0mhk
-    3uDL/BCZgN9VBSnXxgqgZmjprKpgFZCp9D7x5ua2QdXa8Y3zq2jFdoTz+wMcpgHeI+dZMv
-    SH3nFGwlFziDUIaHYaLWqOBy0TSFxRiM+s9hg1mDYkmth4uP8oXNyv6Xr7cFS7ZMYoupr+
-    JjHmtkfeO0jrGgEmm5N1yLT5ZvMVq5j3TaMJMixbHC3ieE50Rn1Tzv6oyFX+2ZghkjdR60
-    h2pwdEs6Y2LSL3tQnMz/EVeo4YapSMlo4GYY0Y44Ov9KhB6d1btj8zbKNkgL/98kdsDhGK
-    D9atn1Her8TmYPe+HvKEbXY9gJdp+hFiEy997w9uyjKgg108vLs/nEPVEm7oeI+Cud0fVv
-    2uLCiuBNEGs9i+C+6gyKxbBxh0jpKynfpA0PZHJ7SLVbotgrX6StpXKMu6/j2GVfriPnmR
-    TilxE+3Ojf+x17pITfhU9f+KyC0dJHpk2oemh1NHBYYNUT1fMK5BzB3i4L4Ji13rD96OfW
-    NobxrnpwSmEkA/7i/yfqzT2KE4YqdAVn+BDGgZaJBPBYyMMjBoqCGKB9OOjKHn3oxI++1O
-    3AiTfaFLnGJzkzZi9A9GjXD6CNsgRQpR2HzCjSqvmKFys3rZxggvsj0uFXiw
-X-ME-Proxy: <xmx:ylR7agMuyidBzdKUldr4igDduleH70rXOyrDW3rWnWvhXvl9XawgNA>
-    <xmx:ylR7at6YfL_eTGP9rvVq5nQgu1IxIhGjY0I9NuGwqQ-WsFIUn5tBGg>
-    <xmx:ylR7asam06tmpINrcvxWcvE4IgplarF_0SIgGJng6doHA_gaRupRDg>
-    <xmx:ylR7atF0lHg9u-3aYD32lFFRjKhvAnSfStaB3KF6mSwgr3RO-fiXYg>
-    <xmx:y1R7akL3f04RQ37VXqAHBMwA5ZZZQG_hpcbyQggrqITDtd4YK2ykpBZV>
+	1786467580; x=1786474780; bh=a/IPx4KtYlUFdbmjZIHL+vVayMdCY5hwV0M
+	PIJboBbg=; b=aTysU3L2mtfRzQDtQsFHQjeGlLucbkOLenYjx1Mf3D5YD4OOmlQ
+	yECQIG2pd3rTY7L9zY2ve7KvzT3A73wIQhSD8nu94UIdCv+MWI14CnZdRsA8uy+B
+	YWSQkdUWd/bWA176oJ6n8F/ZKZW0LhQDroAKkZVjuIaWQqpu+IAIRp/0kK+lRFN/
+	ZVDbKZQfzalZP4nqtSr1z5EbaLdnQBjzqm+I79PiWBTeYPWiQm3CGOjOD43ep2GA
+	GSQ3fj5AH+/Q5sEOlWcSF/hZqSWYG8u+DFqU1h7qi2/ahBcnbgSWDUgx5dwfeT1c
+	KFMoIQ9w/1cLTk1cfqVODqLZdnjelg9y7/A==
+X-ME-Sender: <xms:_FR7an5SoV9M-_P6FikbkEqXCHkS-KEpco9_qu0ICTZollMUdSoYSg>
+    <xme:_FR7al4ZbE9UxO9Hs0x5YraRl9jCTK8NhxyQ_pKL0T-70cHGPgIZU6QAZzaJPch9R
+    uPFP-r0gleSE4LmdICTsdyBScE1CUjRmLVGZRMHnWI9uSvlMyBWPg>
+X-ME-Received: <xmr:_FR7aoJUVo0GRDy5wvyAfD8tXYOR7L9gXNPHK4BCDGXBOuledr2bVm5HR5o>
+X-ME-Proxy-Cause: dmFkZTFJB1O9zKJAg+fSg1tJ5bwBvVvABgj+vqmdhVx2D/MjfMXbwCFNKEbltsl8EEvEtG
+    4thUp46lahlnREv9JgiK4QfbzG2pgttOEFqRUWh5mvKTEqsyv2D+4VlCuUKMQ/M7pyzPnU
+    16IJYDjoXjq3+RPwxxLgh+AJBuNtME7bv4mQr5qaYllb7ykwd7fbeInQAqB4rIEC+3FeHY
+    DV0SyexRRlvueW+vvKp24X9E6FOo47n0o0yI1M6QPP5Eun05sKXRPhrzy7P/g2pa1ezVEg
+    VGlu267qK3l6duQTkkKjr8N+pskDWpTe+JopNqUrrJWllBpfrrg1hV/yz3CwqXXdMpEznF
+    sQLaRe5uKf794ipICvZMteBuhmrMmfuhKr3QmVS/S2pXj2/FLMynLeShDS4aMln1w9EP0A
+    pqvemdcoe4NzmD80VXDmYAtHDB0gfcRqKF6zsbDQVpM21JnEYSk1ydLXNVsMVav3GBIywi
+    hQPnqaWFPEVLFxE1ukh/MfwZ49XADNiBFgicP+T/lGnJIqigoOGUyXasVesxWJhDCVUUJX
+    LFoV4iyAeSWgJJ5H3bwDYapWuPihvRYAuoavv5svgiDBC8o4yT+GY+Vb+1vxHFbtrsCp8q
+    GAQdhmxTnIdreJewmmPQSq71P9t4/nBMtAGyJloOFgCGvscFN96znGh4XR+g
+X-ME-Proxy: <xmx:_FR7avEW04U0sNOB2QgnMzM1ospr1vsnsablPob81dailu1cW5IlhA>
+    <xmx:_FR7at1mcIf2N0MVGWQtVENK2mhtgNwatXTGeRdPC2-sTfcbcIt9IA>
+    <xmx:_FR7apzoGtZWKzvap_N_VJaFkYxbpMJQZmPqUU552ri0nUctduZbqA>
+    <xmx:_FR7avFEmlPXpgXINeHsfcTH1K3Gyq0CXwak_cX75t8NSSB5OHt1zQ>
+    <xmx:_FR7auXAGyTGy5DdbS3r_1xgiY9tAOZfnJ0zceQCJxF9wVk8hORK3Gf9>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 11 Aug 2026 12:58:49 -0400 (EDT)
-Date: Tue, 11 Aug 2026 17:58:48 +0100
+ 11 Aug 2026 12:59:39 -0400 (EDT)
+Date: Tue, 11 Aug 2026 17:59:38 +0100
 From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Muhammad Usama Anjum <usama.anjum@arm.com>
 Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
 	nico.pache@linux.dev, baolin.wang@linux.alibaba.com, baohua@kernel.org, 
 	dev.jain@arm.com, hughd@google.com, lance.yang@linux.dev, liam@infradead.org, 
 	mhocko@suse.com, rppt@kernel.org, ryan.roberts@arm.com, shuah@kernel.org, 
 	surenb@google.com, usama.arif@linux.dev, vbabka@kernel.org, ziy@nvidia.com, 
-	usama.anjum@arm.com, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	agordeev@linux.ibm.com, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2 00/17] selftests/mm: improve khugepaged coverage
-Message-ID: <antUso_Mfdh3EiHk@thinkstation>
+Message-ID: <antU5wZkq4eoLhXg@thinkstation>
 References: <20260807113647.3744609-1-kirill@shutemov.name>
- <f9e0fe38-47de-4577-b638-1142d4ffbe6c-agordeev@linux.ibm.com>
+ <e1364571-376a-40c1-937c-40f68b06b09d@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f9e0fe38-47de-4577-b638-1142d4ffbe6c-agordeev@linux.ibm.com>
-X-Stat-Signature: utbpteo98m8xypxckq6bhz3ydsxc994t
-X-Rspamd-Queue-Id: E44D740014
-X-Rspamd-Server: rspam03
+In-Reply-To: <e1364571-376a-40c1-937c-40f68b06b09d@arm.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CC4AF40009
+X-Stat-Signature: z8d1gktq7nmmwtgo6rgrjjcpx5qc7urs
 X-Rspam-User: 
-X-HE-Tag: 1786467531-564452
-X-HE-Meta: U2FsdGVkX1/0qBrf0DCwqC339SMgSVWtI/zgWbfiSnYOG6jtMA/m7yPz1wRKw23xzXyRsrPPbWD/MT8rFIuMJYTfm1IIKhhR1QDgF37MHsbZYjNCPZK+GTUawcvZRK3+6Tt4Qmsqs/uCWJQZ2GqZEiY+b3G7egb1RTgIgEKuz+WcK6vMoLXefL6B3khLc4uEve5nicsfFmfULd+XiaJh/8OHLVxKpHxZPcyYJgiN7CCm05zYFyrILR28kJ5kl/xTz/CnkDjyagb3ChZpVX3Udis09gXOkVB5MThaM7egvMgTTYnBxvPNEKL+Qu6XuShz9yk2lkptDciB7pa+ZEX/q+iOrPmNmGDK21AwL9GFGZSe810E1HYxtiXnKP+G3RuyS0das5nklLztVepAkjoLX/ldn9hltcRFRB2cCc2KIDO71H2wUlGuteOIxxu/WFiEdeoowhx8jwuE67RMRCAvU0I6gyb8ZvK+VQY7H8clNYsXSr8bTQVVZ3cxgiNvnvYC0yvKOx6+GV++aSbaF+OhI6P6/ZSN9RMEdnfHLzmMDl08/VmLTwtqtMGHTRh5vmMPHBycGIq0EXd4ppmJOkBCqtBvNB0bTQzcxHlb8xXzT5U5Z0LxnB0i9l4GS6yweZ4LR78n3ixcpVkszsjKOy52ME+NHTTjP1H7EmlQR9Q1rASI+KG3DtFRTLCcn9wGpHf6mt3Ya4VAZwPWrZ875jIGj8xb58AbsXGfSENzDhyHH+rHAT0YUPNnnyxEVK2uDd6T6SYdLScJdlaYiyrS0ZlFXQJDN78kqxUY8A2U7gvuZLI1mSafeo0PGa45TdvsNAs56zjneNwuzecm4KLisrTCno+XLJMgH1/JQJ6DgrU2z0L1ePs3IqGSI/zMRXnYEmxbadWLqy2eAU9UZo8ZajE1CxcpBB5ys8IQfBRk6e/tmRIu2X8HGS/ylZ4zE2e/WsNezerBpZOUa8Zuc6frO1o
- TNKGmL41
- aBRdDBgdTgKqXOvCk7y34z/bUqCcGVAz95w452EyUH9MFzdPHJah26w3lt4acS6ckFVSzr0Kc+K411QCiRkYcpqcmSuXyAlrHhXu4nRgWSmLDJAHHhs2MN6hwpbptIcotrbW5WcRoPCswolP90pn6H9uVZqTtoy4bAKvVZKPFXi+sgeiU4SFRBfktz6s1/17hfy3/VjdwmKitAydkDYUs4oQywSTffsvIOV3O0In2Na8dbNUb7Nb1kQwQzHpHPG2kz6sP8O9aOHIvIiw61uOdBsKpfBlLTUwcQTgB9nGeET4NssrzSgaN6Lkv2xntRC4MsVrh1U9YtoJX6pOQqbsiwgh6XVlCZolqF+n6XrkTmL1cPzFaC0IRdEgVef/EixNl0CCwFoDCtm46Fxgj2vszCazjqCT6ClnkpiSF3BqODiSJ50ndbglEF7qYL+wR+PKKbsxG
+X-HE-Tag: 1786467580-76483
+X-HE-Meta: U2FsdGVkX1/kXLX5ncBW36VLR1lryk4UnxaJ1UZQ+Ge4402mQ+A7Z+S/uctX/KEkP5nX9jwFrKBuh97guW6vnhCOt4JoJhHvpxk7g7YY7TQKuxe079fkqv+AP1MiVKwaxQnug76G4wk+YHHrzUVNkP8p+334olWHoxsfCdalnv8hd6f4Ro3wt016a/div/sMBYAAD7kEkkIRZPkMEBo1BSZb7KssVQcBzFAnzg/aTNuY5GDMuxl6Ms3rmNf/wBgGNk9ofmiv6BEPiOsxFKLHl3+0tz0U/EWYffk9vurhIbf0UdxKsBNn6uXGTeeehcG1P1DbOSqyb0apfKLGCjPTX1n/a7nQstcVcn2/PQ6gf6bGVNGhPWkDM4CiBBc93ywvQsPCWe3JZYczBEw6501SvbXiyuQ4zq4Nr75eysQx6AZExU6DHB06K/n/5sMoKP4bhCeEPNs/muSym53T3IG0gqxng5AlW0oBNoSbRu4sCFI4EHhweAzrihIouk2BUW8Mftp4P4YGCZCnPNO5DKmAxiW7LKvxmxbucUTJ1bQpwf7t4lspHJuEBNjYAbFEMc23WVbgNVloYEvsK1A2Jwca/G6Rsbr5O02iKqT5PaUl8t0lZ9njg1Vc5b1fmHQX36yTW5urf69T+QqpdvcizoEjmQG86eCQ3tOF85lrPXEUm6hbQeEGKm4Hy1YZLlcjFkhF7HsGIazuclpS0PgepnBBmkbV/mJ889C1PJ3bgTByJ0YAVqhFirJEZnDpqbUMzoeLVXSPECsxWmRiNcCMPfJi0KQSGGH8Phqh1Y/cofKDSxZ8AW7uonZI0ck+k0d+DaVkN2EOf5XBi4B6ji9/kQqD+j3kUFtYSzZUVKvkr6uf2GhXk3XoeJ90pwetNdmuch53ioFPq6wRlMzmyPayhBEjwZlsZdoJejo4gr3qB5wrYP//ekmJgkx/iAuvKA/FnFMyJEpYh0+rzYycqPGpgxT
+ qG93Zj8B
+ Te3rUro1AvTHFuHeYYD/E7TE9+DaSvKa2QL9dzPPKOHferj+e6MoPKY7C07Av+hLXdPR0yYPPtgmtBqMS+gaTmsEloZK9/aWGdotTvePu24mS64wxXX8IT+Fq2DXkRpIlq83jG7F3QyO57Al+nsmc9bMBNFg4gOZkx7Hw48ijr6G9HGzlFeoi6dqQlmTA4EvOR/z7ppom7PP7j/iAkHTkwLalow5ZytU+L+z06tWYQyuUB362nkaq3SZdgj4QCwCLg/rKIsfWO7dLQaNdbeoogBQUs/P3dtYeXNkCGLCSmJghj59qAu1/hunCLq1CeNbjeX1ImDeM5neioU1MtxDBWBNLgo+u94tSwwLMr5AknnnntYihw5vTeVb65k9kgLbUZeL/oKfxQhbIkMirDSPk/3OpedjcPxRv7oQuz4N6yoXlMHH9OAzchngODvbuY1R2Ci4K/GFiYfAUxtbQliYRHSHVLix6Q+xTKSAW8b+9IhGTLyzqd02hzXl8jUE1e3MI+O7+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,28 +133,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 10, 2026 at 02:58:43PM +0200, Alexander Gordeev wrote:
-> On Fri, Aug 07, 2026 at 12:36:30PM +0100, Kiryl Shutsemau wrote:
+On Tue, Aug 11, 2026 at 12:40:51PM +0100, Muhammad Usama Anjum wrote:
+> > Tested on mm-new (8086604be973), with KASAN, lockdep, DEBUG_VM and
+> > page_table_check, in 16G guests:
+> > 
+> >   x86-64 4K     190 pass, 1 skip, 0 fail
+> >   arm64 64K     228 pass, 5 skip, 0 fail
+> > 
+> > The skips are structural: mixed sources declines at the smallest order, and
+> > at 64K collapse_compound_extreme and the shmem components skip as above.
+> I've tested them on arm64 vm and more tests are passing instead of getting
+> skipped. Hence:
 > 
-> Hi Kiryl,
-> 
-> ...
-> >  - Dropped the swap-skip patch, an equivalent has landed
-> >    (Alexander Gordeev).
-> 
-> And dropped [1] following David feedback [2]. Would you pursue the proper fix?
+> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 
-Yes.  v3 will handle the failure rather than predict it.
-
-is_swap_enabled() already skips these cases when no swap is active, so what
-is left is swap that exists but cannot take what the case asks for.  The
-series already has swapout_range(), which reissues MADV_PAGEOUT for up to two
-seconds and reports whether the count arrived; I will make the two cases skip
-when it does not.  That covers swap too small, swap full, a memcg limit and a
-folio still under writeback, without reading /proc/meminfo for any of them.
-
-An error from madvise() itself stays a hard failure -- that is the kernel
-refusing, not the machine being short of swap.
+Thanks!
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
