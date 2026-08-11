@@ -4,118 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34312C5AD55
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 00:34:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EC4BC5AD7B
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 00:48:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B9FF6B008A; Mon, 10 Aug 2026 20:34:55 -0400 (EDT)
+	id 1CB6C6B007B; Mon, 10 Aug 2026 20:48:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8916F6B008C; Mon, 10 Aug 2026 20:34:55 -0400 (EDT)
+	id 17C1B6B008A; Mon, 10 Aug 2026 20:48:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A7B06B0092; Mon, 10 Aug 2026 20:34:55 -0400 (EDT)
+	id 092B16B008C; Mon, 10 Aug 2026 20:48:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 56F8D6B008A
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 20:34:55 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C62BF1602F3
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:34:54 +0000 (UTC)
-X-FDA: 85087118508.17.C0D8AF2
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 120E3100002
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:34:52 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IFsn6eiw;
-	spf=pass (imf14.hostedemail.com: domain of skunkolee@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=skunkolee@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786408493;
-	b=ACnEETAaTZk1OoWkjS97URa58A0XB6zWzEvVaMiBsPZbvusnw8xAlP7HXKWnSep6GHIE44
-	HJPeUBVb3cocq1tsqi51eCZF6f1cGpaDU8L+GJkCIUg4ifyuYo7DvuD18MdwpcfcodGpuI
-	lmtCjReNxj0e3ywjCgUbgE5luCN4GoI=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IFsn6eiw;
-	spf=pass (imf14.hostedemail.com: domain of skunkolee@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=skunkolee@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D24ED6B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 20:48:27 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5BFD41402D5
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:48:27 +0000 (UTC)
+X-FDA: 85087152654.13.97289EE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 996F540009
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:48:25 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KcUlgPzU;
+	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786408493;
+	s=arc-20220608; t=1786409305;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=URkZ355jHdCeqetheq29n9Ljo1mTGVBq1KKLvNaar8Q=;
-	b=2lCDhw+DPcFMqGIOsFq6gZ4OPNV0W7HyT4C7tRQz4zIE3jJaA29ka/rGhNM8VB5sFmfj2/
-	o9ZGbfWHPwEUWdP+hiSJor4KXqvIOTQZZhtnHct7C8UShAccXReVlADvJDqRRdU+PtgW8t
-	tdKAHV87b3nmaFpTTUTp4ICaur9Waz0=
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38fdeaed181so3210212a91.1
-        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:34:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786408492; x=1787013292; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=URkZ355jHdCeqetheq29n9Ljo1mTGVBq1KKLvNaar8Q=;
-        b=IFsn6eiweN7TLm0EXGBz37BbSB85q2Ml76hsX35qvA6Hyv621RxhPmQavUuRdqA7Ig
-         Xvk8Yu4kNblMYWCECDoIAO7dcTppnhF8ZXijf0rEJaw1g9yTGOUOKfDHj/8wchlpTInE
-         p4uFctlx7OMiRa6i/XZ/0d5v4XHxHskRyVc9j66TlQe93qBE95+iBOIQ+qCIOM4NRzcW
-         bxPmIcp7o/mUA/bJ9OlGzfBp82CUGo8Ogw4JXKYYH0qJorFQXvcW6RGxVXFmVWgh1Osa
-         AGzseN71YTn2TTGFguqBV5uTlHJBRp0POqEPizYCFxhCT4SfY4qt2EuMo+iJsYIulL/Z
-         04CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786408492; x=1787013292;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=URkZ355jHdCeqetheq29n9Ljo1mTGVBq1KKLvNaar8Q=;
-        b=kI3b2WdKv9uKIiHccWG4GXi+VDGWNMYUHgL30d/xWtEZizi6qjn3bbMInyGS2qKIRt
-         0kPO/tHh0V1mGyTiABXofriEPM0tUonT2lzraJy5sGsbPXoZRzFaWgItsseb+LRiwyU1
-         SkCwb+LinLZTLZECc5UTGLnNTw33ANWMXO+jFV49++VJmo13tTZZG0pAWSv4f6Gpy/Wr
-         KnRhfuRnVSA5n+LCJIdJIZZiDo7RAzCdvtYX5SMfVwDx9uWd9c3BfzutrNMrwc7lIBeR
-         +zh7DFgFtYYlfPfW/brpQn7lInqNxSymJe6EATfDFydXly3SpEioA88osQLEv7Z6jkxp
-         B53Q==
-X-Forwarded-Encrypted: i=1; AHgh+RpgNhyT5yG+QbZcL+ZYiBhS6r7i53ZCF6i48Uv7QY1UfScaZqhtXHgS/G6IVtIzCNTi2I9v3hmZxg==@kvack.org
-X-Gm-Message-State: AOJu0YzJksNjwmdWqNYWGbzrwLQ+IGAjpc7x2Jdrxu7fVvzHpUmcY6Dl
-	dtddKCx7QksWjEg/o5bAYtakLY/EAScop3P/q+ix+YEJX4lLrYsvRP7e
-X-Gm-Gg: AR+sD11ags+7T/TYdqeYn9U6saQKkto2NoPXT6pcoKcv3EZc7gYZZyVTcGWuhvwx1R5
-	UJIG/iQWT5kJiyPSo6PQANRO6CTG2t7wu3zcSbtq+VbMk8L/+fS1pSgSWEVLi6ZUKo40tBLV6c8
-	CuWKOcXhpAsEQCsVTJV8NKfVwNlminIQ240mPZFfU0jJcXde1uv9WX1K1OZwcMWGAQbuDEabgcc
-	Db6bt8I6LZzhhME9f2cDr1G3hU/TGKsupppRYO8p2F09gjop4BUGrCCAgxRlbbOv0u8xW/TYonQ
-	ezCiiTpQaHHZjVU3OxBELSjIe5r+E7skFqlCkfBxmjcmimbh77w/+o/Zt1hxQtXn7QXAZGeYXpa
-	WvF/U1icUD0R1UDURwHuXFJ+vY8CcfL4a7bx8kKvUj8uAPH2esR4qHQwZKpbHN6+6gRMeryfbl2
-	2RcC5XtR0VjTX6poReWf9QbLjna1a32Y0Sr+pJxBBgGkFOyptDrSYqAxT4wItwRTSd0LK7MgDPe
-	3jZL0NdfHU0GZvLIWI9+qsGsupXffuO4yAzVJYcZOtxjzWG224XdzhYLP/q
-X-Received: by 2002:a17:90b:17c3:b0:381:a766:efcb with SMTP id 98e67ed59e1d1-392cc9375a4mr5415826a91.4.1786408491724;
-        Mon, 10 Aug 2026 17:34:51 -0700 (PDT)
-Received: from bloom.localdomain ([2604:3d09:178e:e100::6868])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-392d526c9e1sm1284329a91.17.2026.08.10.17.34.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 17:34:50 -0700 (PDT)
-From: Ivy Lopez <skunkolee@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org
-Cc: ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Ivy Lopez <skunkolee@gmail.com>
-Subject: [PATCH] mm/cma: fix stray newline in auto-generated CMA area name
-Date: Mon, 10 Aug 2026 18:34:41 -0600
-Message-ID: <20260811003441.63725-1-skunkolee@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qKS1JcrH56Iarz4e1apBMWyGOHTnqlTit3H0mkZq1+U=;
+	b=7/+HeiEddkwGC1/pL+aJj9qJDZu7m/mAdgREnPNRem0ABVPJfb+mCOkd4gAFegQS3PV1Ds
+	EonVuEGcLINrffdxq3FtNesLWTWTgpAQfYZGqpn/JyH7Es22lSwOBndP5l8RwFIpgXHLO9
+	KLrjgWxbxFM6ncNmP4b6oud+YZyCw7Y=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786409305;
+	b=n71uTWYmH2o9vT0sncny9008BMPqmomPeyJq7N1qWzgIPvVdgrCQnM6LRV7lePfSmJmiV/
+	eQZZK/mGovOtXggY5eZvsmf+lwK00Ctn+GNTOGysbUrP43c7EeLLpnuMko6bD+zMJYdSJj
+	SxvlgoDhBzQWLZZTsA2nN0uzkGEjNHU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KcUlgPzU;
+	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8A07F4019B;
+	Tue, 11 Aug 2026 00:48:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35F71F000E9;
+	Tue, 11 Aug 2026 00:48:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786409304;
+	bh=qKS1JcrH56Iarz4e1apBMWyGOHTnqlTit3H0mkZq1+U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KcUlgPzUP/WSHmvVXiEzTL5xhOjnjhy7SP7rgYlFvuerL+rkI/JPIc+z7BGGVt1sU
+	 ZyFZN7JkpLvRGEI6sU/jVXwO5WmJP91a/h99jXywKX7eYkdeJI3VVnlczza/UfQU82
+	 +LNG1qA870ipZuZNLOKkx77RgZu8h51N+IBnUuynE25xmHem+jjw3tuIVPL2F5+7cn
+	 k0tieup1r3NUEn8y8sV61DAq9Kb2oD7p7ty72liD9iKhtaTB/e2jJs4dbAjLepqR8w
+	 PpHOwAI+e205XoAy1r9jq2Ahu/S+ZL6UC1DsRDMyYPzkmDNEtm9iCOdCSzBpjMAYPK
+	 AGyK+owE1mQCA==
+Date: Tue, 11 Aug 2026 00:48:22 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, 
+	Jan Kara <jack@suse.cz>, Miklos Szeredi <miklos@szeredi.hu>, 
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>, kernel-team@meta.com, fuse-devel <fuse-devel@lists.linux.dev>, 
+	Jingbo Xu <jefflexu@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm <linux-mm@kvack.org>, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Yunzhao Li <yunzhao@cloudflare.com>
+Subject: Re: memcg stats flushing (WAS "Re: [PATCH] fuse: disable default bdi
+ strictlimiting")
+Message-ID: <anpsLy_pCanocgS1@google.com>
+References: <CAJnrk1bk66ZhRAS7mojSnD5RBfFS+0ChAPymE3ObRWr0C_udWg@mail.gmail.com>
+ <CAO9r8zPpe6fWOSXtRUjFB8WNMroeBqvLT+2QtAU4E27AtLUXMQ@mail.gmail.com>
+ <CAJnrk1YifN22mA5PFRVrh3m_ygxax6x4_8nraG2hPqCzyzBj7A@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 120E3100002
-X-Stat-Signature: bkqsxi69e6xppsqdo4a79dzr73d56cyb
+In-Reply-To: <CAJnrk1YifN22mA5PFRVrh3m_ygxax6x4_8nraG2hPqCzyzBj7A@mail.gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 996F540009
 X-Rspam-User: 
-X-HE-Tag: 1786408492-534890
-X-HE-Meta: U2FsdGVkX18EnZY6COBC59SQI0tgnzgJc9xn3kDXzff8A/tBvDiysBi7kTUvNgRrB4w6+WhhSN/LasUxSE0aWHew1hawdX68pS7gpGeBSit31mzN6reeC0DkIZLG9w+S/DWYxkTpahst5zIR6WpM9Fnxb8mt1hELRE65y3AfwyF1fEFwepdP4Lvo3ltYYf2mmENitmWNJpHFuNcFlBINfiNudmQh1SZhCO9YI3cdBiPk5rMQ00YRyJkhdELGIPvGsQVgjq+EZLinQFSx7gxjp4j17KuWpSSWYOdHrEV7GI71mLu8Q6OypGIxFQg0a6Rerm6/7Q2jx+Vws+Zi9EyQtIpoc4e6n0v+QQTSWRK1B2GTFkiRQEiq2zHJgPwNTX7FV8b7SlIwk2ieY3u8pfLTr7hfUKVaUKSyE5yOkhyUp+46rcyj6PLHM1elEfIu6BrW5NvaVtNK+BRWiA9shU8cxOHFfSOBKRuHBvC1teqhGRpPfDA1kpP8kQrONwfHD2Y1CHfH3lB3yaeqYtLAQyBvgh9VqqX7+CGKu/wSN3JH+xsCprINQCzqvT4lCMKlRU6P7nAkLB+tRyUXnj1aj4x3keSIJw2ullkFuKg6f12K8v7Lyndlh52t+oiWJTnTSdwuCmM0DiZsPJ18Lb6eLDABZkTjWd9+e3MEunYwBzY1xttmvjSEx2WIg7Wtnjlr7aJbtcJJ3m+QkRNU4vI7vhSBP2roaWidvtMn5EGbbBWAbJc+nhBTHgW5eR/zATLsDHVzHW/vznTaCt01nSDtZAFhnRaEHxnodxMDbWEMxQtu+j9AVMDPoijVk9uhpi/V9nxLJSTaArsi1VpNzfNeRvJYpolGNnd60axBJ7QWYHi9N2Ej7WlgCOHDoN1uJS2H/T2crqAmGdWV5ylF/TcY7MY5/Glit8mLaHCtmcPSK/tnpI+n9Qa8/AJ3q6qc0Y39DAffz0P+5fv/LRGh4zpRaQz
- n2tHT4Gg
- 5HpFjiIYkvWrWaCZmsy06CyC9zz9zp2RWREtsRJ2uQCn1xDzRu4xLQnWCeb37RfD9Y4UVAavHFmgM6dhMevbN/q2TZ0XPVJyP/t/p8wY5BpdW/THBlYHzn/fk3K6l8JIaiTAY+cJG5KvG7LfO9WilEss0vr9p2xf8niYY92pvmXicmujdAkFB04Spbg6CF08wSynpOoLZIAPcVJdMJn3ffx+VW7f/c/otZZrlVe7zgbP5afJqn1Z9di/vyGnimqlxLUp3AN1HsybnTeC7fGfJIKZ8uMFo3EdngYM3VWS/OC9FRz5WtOi8Z3KuwQQ1wYMhzb7oggJ2KbRyEmeKlE4bTeo8NzRy3amgn9mmH1ObdZcuFaqW1GwsjscrUkGYuLkGagylsfuQ3+Rndbs8vI2E9Ki5MkzyAywxJw5N
+X-Stat-Signature: 9x1zruqhasnd34roj7z9615qhk8c7o6d
+X-HE-Tag: 1786409305-678655
+X-HE-Meta: U2FsdGVkX1/YobVT5RBQUAMZXnW7hTRxf3VKBvN9f4Tf1BeT7a3IKsOWM589b1pORkhcmkUTNWBQZE5uFTHBMeBSv8mbn9l/+AEh8QU9PZu6peKhM9VX5c7UwXB+CF8Fg1b/96aUB1PaiHcMgEOOu0kLRU6WgvfgRmtbMSxBtn/QV6xXPtRCdFO2HdGctXjTd1W8hAbd7mvrF7MsE05ni3nSr0neC4W0ztUMiqieuo0NB6JqkMLgn5JejzK4gDIdbk43UxVgjd2zZ6kXp7z3erwOjwlpQxT5ctQJJNLjLB24vPRq5LIQw8ZlkiJCx3vDaAOk/rWQh5/QZ+poS+BFzd1hCahz8PttRhSeBEgNKYf1S2C8N/2nY5VYaCBBUHIQXzcSiDJ8NICRUkSNJMuQfUS/wal8fcr4kgBGezEk1Yo8frYILDp/Oz3zW+7EpfvJUxh8ep/0LELbvz4L/iIuGweqcsTLHHtG/uzdfm3TZ5iurf+LoHeEVGHpZr4eS4wTkMX5edmD0Kf54Nd3vS/uZed4pTTj5zBPuLl8SwbQ9afJdGZ6md709y68uinLvjqIAXOxrp7/HzsNC8PJou6/ywqqpaJ7aCN9LuHaZMtSeWyHZ5Vf7e2s3/l6CFH6mX+WY3cakiU4LL4fRGLR/uzwD39koNBJM3vUk635CyRoENAIvx8FjhpaBlc+8+8p2qK63FcbDPUxRUyX4UHzO2r7/AnjwsEH6Dof6+lxNfKAmd1a5zb4Z/MmCwvGH7m1XH5qdWI6sXZsVBcSBOMJwGhA8PgRL+1Igpp68DZQ0+xHzu3S5+7zJKmTZUbVIEWwtF5CJUCzrvH/A0SHdOG0grmjua7xgf6ZJZW7a+JkTBbbVYzF6T61puzHE4SasTb1jmWKVE8F1U+Ewx8elb4fm3U1iBsufdQHgOYqX3FlVLPHZmmvX3YHwPkkreC76XjmrOxe1bArBRCvWVRxbD5+GA7
+ SSV+jCoM
+ HNYcCc5BGBhDCRDqG4inaoP/nzShhUzCp3oCfhmO8d70YEaVgGtzHHBxSgfEc5rpTFE/wLnMhUPizRgbp5S4nR6OxPP3ti5cT3B8BA+TQTQwANdEYVblD54j3rUI1l3Hyy+2zfohgoCJaqBxUBL2fFrRYeq2vPEji8QXzCeIHEe9FjlaDOn6V7jlRKuBw4XLj6SYvfpTQnfJg2cuff4J3+Q+/oSWVnp7BonOXT+R6MLl49PBdmRj5J6YaDIamJ5wSEegDhrcmKs/xHyD3BxyNig1cy7f8cOKtQb52215UToG3A334qFbF7hjZAGu0IKxdIDkh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,34 +100,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When no explicit name is provided, cma_new_area() falls back to
-generating one via snprintf(), but the format string contains an
-embedded newline: "cma%d\n". This name is used as-is for the area's
-sysfs entry (cma_sysfs.c) and debugfs directory (cma_debug.c), so
-every auto-named CMA area ends up with a newline embedded in its
-sysfs/debugfs name.
+On Mon, Aug 10, 2026 at 09:49:31AM -0700, Joanne Koong wrote:
+> On Thu, Aug 6, 2026 at 2:31 PM Yosry Ahmed <yosry@kernel.org> wrote:
+> >
+> > On Thu, Aug 6, 2026 at 2:04 PM Joanne Koong <joannelkoong@gmail.com> wrote:
+> > >
+> > > I'm not too familiar with memcg or vmstat so apologies if this is a
+> > > naive question, but does it make sense for memcg to just do a similar
+> > > approach to what vmstat does? As I understand it, mod_lruvec_state()
+> > > updates the node counter and the memcg counter (if memcg applies),
+> > > where for updating the node counter, mod_node_state() does some
+> > > batching where it updates the global counter for that stat only once
+> > > it crosses some threshold (pcp->stat_threshold). Could memcg keep its
+> > > per-CPU counter as the accumulator but once it reaches some threshold,
+> > > it then propagates it up the parent/ancestors into a per-memcg atomic
+> > > global counter? The atomic would then only have to be touched once per
+> > > batch than on every update, which might eliminate the overhead of the
+> > > per-memcg atomic you saw previously? It seems like this would get rid
+> > > of needing to do any flushing altogether, as we could just read that
+> > > global counter directly.
+> >
+> > The memcg stats perform similar per-CPU counting and thresholding. The
+> > main difference from vmstat AFAICT is the cgroup hierarchy. In vmstat
+> > we have per-CPU counters and a global atomic counter for each stat.
+> > For memcg, we have the same for each cgroup, then we also have a
+> > cgroup tree. When we read the stats of a cgroup, we usually want the
+> > hierarchical stats including all of its children, so we can't just
+> > read the global counter.
+> >
+> > We use rstat, a cgroup framework that keeps track of which cgroups
+> > have updates on which CPUs, and then memcg has thresholding logic on
+> > top to only flush if the number of pending updates exceeds a
+> > threshold. Essentially, if the magnitude updates on a CPU exceeds
+> > MEMCG_CHARGE_BATCH, we add it to a global per-memcg counter. We only
+> > flush if that global per-memcg counter has > NR_CPUS *
+> > MEMCG_CHARGE_BATCH updates. So in theory I think we tolerate up to 2 *
+> > NR_CPUS * MEMCG_CHARGE_BATCH of stale stats (combined for all the
+> > stats).
+> >
+> > See memcg_rstat_updated() and memcg_vmstats_needs_flush() for this logic.
+> >
+> > Looking at this code again, it made me realize that we already iterate
+> > the per-CPU stats_updates on every update to increment the number of
+> > pending stats on this CPU. I wonder if we can replace this with
+> > actually updating the stat on each parent, then the flush path only
+> > needs to accumulate CPU counters. Or maybe as you mention, we update
+> > the global per-memcg counter when updates on a CPU exceed a threshold,
+> > and forgo the rstat flushing logic completely.
+> >
+> 
+> I can run some experiments and see if updating the global per-memcg
+> counter per batch and forgoing flushing could be a viable solution.
+> I can use my setup to test it for writeback, but for the zswap use
+> case, what's the best way to test if the changes are too expensive? Is
+> there a benchmark program you're running?
 
-Drop the stray newline and the extra space after the size argument.
+I was running stress-ng and measuring the latency of zswap_load() and
+zswap_store() with bpftrace. But I suspect whatever works for writeback
+should work for zswap :)
 
-Signed-off-by: Ivy Lopez <skunkolee@gmail.com>
+> 
+> For updating the stat on each parent and having the flush path only
+> accumulate CPU counters, I think this means we would have to
+> unconditionally walk the ancestors + update its counters on every
+> update, as we wouldn't be able to early break if the flushable
+> threshold was already exceeded. I don't think we could replace the
+> stats_update update, as it seems like readers still need some way of
+> knowing when to flush. It seems like this could be a nontrivial
+> performance hit, but maybe it's a non-factor in reality. If you think
+> this would be useful to get benchmark numbers on, I can run some
+> experiments on this too.
+
+I think we need to experiment with how much work we can shift around
+between the update and reader sides.
+
+Right now, on the update side, we call __css_rstat_updated(), which
+iterates the parents and puts them on the per-CPU rstat tree, then we
+iterate the parents again in memcg_rstat_updated() and:
+- Check if flushing threshold is already met.
+- Update per-CPU counter for stats_updates.
+- If per-CPU update exceeds (another) threshold, we update an atomic for
+  stats_updates.
+
+The flush side checks the flushing threshold and does an rstat flush,
+which will walk the update trees on all CPUs and iterates all child
+cgroups on it. Pretty expensive when the threshold is met.
+
+I think we discussed two different options:
+
+(a) On stats updates, iterate the parents and update the per-CPU
+counters of the stat directly.
+
+In this case, we can't keep using rstat, as we would still need to add
+the cgroup and all its ancestors to the update tree anyway and the flush
+cost will remain similar. So on the flush path we'll need to iterate all
+CPUs and add the counters. We can explore if use a cpumask can help
+here, but perhaps not since we'll need to update it atomically on all
+stat updates.
+
+I imagine that if we do this we'll drop the stats_updates optimization
+to avoid adding more cost to the update side. We'll be replacing parent
+stats_updates modification with parent stat counter modification. But
+maybe it's feasible to keep both to limit the cost of flusing.
+
+This only works if the cost of iterate the CPUs on the flush side ends
+up being cheaper than the current flush. I imagine the average cost will
+be higher but the cost should be much more consistent vs the current
+flush, so the tail should be better.
+
+(b) On stats updates, iterate the parents and update the per-CPU
+counters of the stat directly AND update a global atomic if the per-CPU
+counter exceeds a threshold. I think updates may get too expensive as we
+may need to update multiple atomics, especially when updating the root
+counter as it will be contended by all cgroups.
+
+The flush side becomes an atomic read, so should be very cheap, and we
+can drop other heuristics and optimizations.
+
 ---
- mm/cma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/cma.c b/mm/cma.c
-index a13ce4999b39..092cbb8f27ec 100644
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -240,7 +240,7 @@ static int __init cma_new_area(const char *name, phys_addr_t size,
- 	if (name)
- 		strscpy(cma->name, name);
- 	else
--		snprintf(cma->name, CMA_MAX_NAME,  "cma%d\n", cma_area_count);
-+		snprintf(cma->name, CMA_MAX_NAME, "cma%d", cma_area_count);
- 
- 	cma->available_count = cma->count = size >> PAGE_SHIFT;
- 	cma->order_per_bit = order_per_bit;
--- 
-2.55.0
+I think ultimately we need to experiment with these approachs (and
+perhaps others) to check what actually works in practice. You'll
+probably want some benchmarks or synthetic tests with many cgroups to
+exercise the worst case scenarios.
 
+For the zswap stats, I used to run stress-ng with a bunch of workers
+(20, 50, 100, ..) in cgroups of different levels. Since all workers are
+in the same cgroups, all the parents are common and all threads end up
+competing on the same atomics, so worst case scenario. I was also
+testing in a VM that has more CPUs than stress-ng workers, to exercise
+the full extent of the concurrency and contention.
+
+This could be a lot of work, so I am not really asking you to do it, but
+just brainstorming and sharing ideas :)
 
