@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7ADCC5CFE7
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:44:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FA14C5CFE7
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:46:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B67C96B0096; Tue, 11 Aug 2026 12:44:27 -0400 (EDT)
+	id 0965B6B0088; Tue, 11 Aug 2026 12:46:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B19496B0099; Tue, 11 Aug 2026 12:44:27 -0400 (EDT)
+	id 0477E6B0093; Tue, 11 Aug 2026 12:46:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DFAD6B009B; Tue, 11 Aug 2026 12:44:27 -0400 (EDT)
+	id E504C6B0099; Tue, 11 Aug 2026 12:46:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 72C856B0096
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:44:27 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EB97C120134
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:44:26 +0000 (UTC)
-X-FDA: 85089561732.16.D42AFC8
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B072F6B0088
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:46:33 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3892DA00B8
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:46:33 +0000 (UTC)
+X-FDA: 85089567066.19.A05B722
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 40D08180003
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:44:25 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hHVkB6GY;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8946F100012
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:46:31 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PDOZm2SI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786466665;
+	s=arc-20220608; t=1786466791;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2nDP2yo4Z7/8hyrcK4LHPjnUI6OonoDg03U38JzRLms=;
-	b=6fHICHZxaVoadRdp9qnKtmSDMW5Lu+S2ItUybzM6LYymHqwbb6wK5YYPohPAll2kf8DulZ
-	r0DNeV8myhvQqV7PZZ1vZFE3edcbb1YxP9kRTRH3q2i+bIF/0en2gDPKUhc5K7f2OML5Ie
-	FpjjxtZI0PLLuZ7ICePJs81kjooBwe8=
+	bh=/XUCNlER7njUc40tBR0DWcTfriB1zvkQvss6GHD2ank=;
+	b=0704ywYjcyO7+w21tMwkgmtvXPiXUDKN5Qsa88crFvLV3XdlL9BPhtaOkyjD3uY3RYe+Dj
+	FxVoQYDFX6DjxvER1J3ON6RgYdpouAvFhma78merA4wiNPC6KLIydZiImrNRKfjDhIcuMn
+	V0AHZEwCJJ/dqoP+fHIq/7ZOMGs8uyU=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hHVkB6GY;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PDOZm2SI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786466665;
-	b=V9bfGaPvhxyANuot1kAQvgXexbSnHfcuTb6H8Stkl2bSVyltd82f56cGeERibAg92DCylw
-	/CrOV2tghGYwaXm+qM14tr2oakbbL2FUFICXWzEqFO71DH9Ciy4FPLtlVK0tiWmA/5C3o9
-	tDRRSPDG2aaBeRmaY8baX49ZMXjUNpU=
+	t=1786466791;
+	b=8dWlI7sfkkgy8i0LSQFTVd4qYn0SNSlkkXTlsA8JwC4AI16xaymYKPK+V4KsZaqIh80tNX
+	mCMmpB0yckChn0QLo2mdUod5XsSMdhVWa3CkH1c+1b5WOJNiWe1sHD91KtBcPYVYjIgQXU
+	err0b+tN9QQoV5UudvpuPoZRKRIrJjI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CCEF4600AD;
-	Tue, 11 Aug 2026 16:44:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955941F000E9;
-	Tue, 11 Aug 2026 16:44:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1D28D600AD;
+	Tue, 11 Aug 2026 16:46:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C271F000E9;
+	Tue, 11 Aug 2026 16:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786466664;
-	bh=2nDP2yo4Z7/8hyrcK4LHPjnUI6OonoDg03U38JzRLms=;
+	s=k20260515; t=1786466790;
+	bh=/XUCNlER7njUc40tBR0DWcTfriB1zvkQvss6GHD2ank=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hHVkB6GYhX+6ZWhhsgZFxKzOnkGl2RYOjzFptgt0LCOOUol9ozVzcavLD6CvDQydn
-	 dD7uSwc6jau6XFfSmk+IKexK6u8o6CeKGHkCuKXrrZ5ZTjQpBaNq7q2BAxRoNZpfbB
-	 DFn7OzDXW1vNtKFqNmrCGSpgV8QZYUsLSUd8vGpNzrrwVHH9yLjObobUtS5Znirks1
-	 g0F47R8DNocE+LgLop8peVMqvNZ90+CL5I6DyccMXHmwf3Ag+Y2iz6YFiIln1mRPt7
-	 UdIgWjZ1qv52eMMvDlYKcast9now6cuY+C80b4nyZpyoCm5Lw8Zk1YHCZaDr08uci1
-	 VSMkUMM/zhr7g==
-Message-ID: <3a0a9aaf-20f5-4f92-b848-00ab702e8fe2@kernel.org>
-Date: Tue, 11 Aug 2026 18:44:01 +0200
+	b=PDOZm2SIEHzJEYL6kAt2p9SwsPWFP53BfhFoDIV5PJx4Mar22fWokuwB1Gs40HMCW
+	 HusJkPRcas4gssRJHuMvSkcy0pQOGTfK9t7uteNp15QoUveerW2+sQ/5N5czl4URVe
+	 6huPu9zGCJOtwppJ8w1zMucIJf3bBhZUKXFmUyF7Cjlj/mkR0OgZUmQeUhQP92R7jv
+	 yVieUyIsqDE5eH662LglgH6MGJcAh0MiiR41c50TFp4hD+mDnj/smhw97Lg4dNjutr
+	 DKAURUrvfOmLvLTJNeKIvaIwsjRGawg9+A+NfDLh/l+iN5qQjYALyXHDiynJvEt825
+	 Ap0uIpkDLBUoA==
+Message-ID: <c76f1dab-97a0-47e3-92ef-042e403c64db@kernel.org>
+Date: Tue, 11 Aug 2026 18:46:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/20] mm/vma: fix self-merge check in copy_vma()
+Subject: Re: [PATCH v4 08/20] tools/testing/vma: add tests for copy_vma()
+ self-merge
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
@@ -128,7 +129,7 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org,
  linux-trace-kernel@vger.kernel.org
 References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
- <20260806-b4-scalable-cow-virt-pgoff-v4-7-ab318a350404@kernel.org>
+ <20260806-b4-scalable-cow-virt-pgoff-v4-8-ab318a350404@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -175,17 +176,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260806-b4-scalable-cow-virt-pgoff-v4-7-ab318a350404@kernel.org>
+In-Reply-To: <20260806-b4-scalable-cow-virt-pgoff-v4-8-ab318a350404@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: wwaff3gi6y437f5c4fdqjs1szaunkbd4
-X-Rspamd-Queue-Id: 40D08180003
+X-Rspamd-Queue-Id: 8946F100012
+X-Stat-Signature: dsn1in4fynra4yx6ky69x6g14b1kc9am
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786466665-253560
-X-HE-Meta: U2FsdGVkX1+zv7IfshMeK6zGpbq/8wlzLv0Y5YWfTgN96nSCGVN+klKS7WU/rMPNdaTqwp8qvNr2MBLQlIsfafCXYJmTzt1Z1MvZ89+uo2XGISQrURNeRkfV/jkr7+NnxX9TvP3YQd0IGbanuoLXPwFeu5nUnysaVaB83x+HRGu65xnbqL7DMQSBmZHVGS4JPStFt1xJ9unMzxi0sJgNGpSu2iVVU5ODb5wzKvWph/ho0oa932K9KQsmU/87qQXOCTIMosygHWYFRdxoebpn4HjV8tiVvozRh33wT8vH8d5QKk9o8u95PVjqm0OfC2CIkooEJ7jLE3aArdV0MUKGsj7QXChyoHimYEUU6DTiZsoIxl8QAO/2IAeuaqyzkcarYIcZftc0gzPcbV1wh8BpBdBW6Yyx6k7oU4KBcbEvJmjVsnt4Cq1W1fBw4daH7uu0YCsQw0N2dKjCjzhNwgB/NE4jDjK6HNTvXxjL47drSq7/jMDG2OlZ5fS4ydyhBNsNbZv1nPBOdrYEQMWJOFl4xSL4KYMmaQqBetYp/kRxQ/xZQ6k/wjc8Wwp8FXV1ZHmwVEapZucGAZNv9GwINYh/+CmQk5Oedy215a6mVa0Hp7+gnME2Mpu3Oq1H2MLfRqncIrWUn5q+RSLL7nj0kdq38bz5PnjAloC9qxaSZ2uhY8xfSrXQHTSzHxOuUCYqwGqXeTDyNWfY0eTZfmQ8SzKw95VCP2cfjcF0nDog1NItVPYTtYrvrvPlHPtc+1disNh5YxhKX7YNaJHkf+Eg4dgNy2RyYNUvm3QRBM2ugHJIdWRVWcs068APR41R2UbAmcNw+rDE9ubjS5HBbt2w/cSNzKjZ0lLKQtjbHXSvxTOm0sJP9N2kvtzXNS8a70MNyrm4ccAiho4JgpDaetxGpwpqYbg+dALQ5z7lfeG145jz2hTqe5ulyoc6N9CfbAQA1ks00J4m4T0bgQklA6UF1o2
- 1/ZvTbdJ
- KL+vqFDK8l1nPxNPZkh4czzGLbqE8nSHalrMKKyuNgom4mkb9ToYX8l6TxDDSVq1tSIg7uMH1elPBGifLa4FNfMbENY0g0WKt+1G5tlC8DKF5bV6s9beDgxVF7OgJ3Wbu1xaRs8FhgN7mzrMwnDEeRxFE+Nt3yXG5bPsOZndDEqXTEaU1LXxAWCwciNmIDqdQWqjZXxyWRJ6t86esCkv8EGDL6APBSdimzdbDHKQzH6cX9SRCIv+hEf2lNVvgVY0OLFbM6yCg6zlbu6a9c4pn1PL268/LlkScKYUGNBZTDCuZFqx1Q0onxnNBZrEP7eCYo+fqV7yUV0fnc6NnlSE6qzuND2PIStbNa2A22Qmc6SNelEsuSUbgHM+q+8vyh9OUexrt4qKTt90Vuq0lhVQrYiKYIA==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786466791-428941
+X-HE-Meta: U2FsdGVkX1+Nze7Cv8s+kT7PBfNtdZ2jUm2W6DQ0JL9nimD/EAwgRUsMI0kon/IWg5DOFXd74lUewDm2yiiNiKNHrqyKG6sz5dO7cnAaqDq+P1BolVgalWIX5Pt8j5vh+LS7l7uMgI29pQZ17LF2nVONGkyysO/UIkJNYFkSkbyPmaM3Ftdw4IgKYRLJVgg4jN8SryOTpbic+KOQPyuZz9xjccEUkm0bHLbOdlNhr0t03RPgDfong3Z7fYEld5s4DiAZpIFV+M0/vULtBM/xVoopw32USJ+z+jSSWtBCRUusY1YziisQQXo9HsBddPGv4DaXMrESHzhiD9M/Rb7vrC0k6XAkdFRXUejr8mjH6VTGLv4GnktLnRThMbt7+2oOHCUPSzNhYUeXowVc6fl5FwaHzyBOTNCUkTSCtcNxbyAiHanXKlBYzjoyabxedAAL6EsdhTJgKeYR78Chtj4BNoBhjO/tPPgVx7h3jJFk0Nbg7kWKGDsRTj+vlNnMzSv41jEcDddU/g39rbpL7O/XJHH/S0pY8GgcYrL65w1JU2GBHq65bZTReeMyTzeKqUI/sBiGYewWHMJaGv2DsIeYhTl9cXM83o3RRscBQ2aKHBZQ4yFzDyv/sj0/rmFr0+rUHXVifYfK6RQHtcZDhiqa3iiNZCsVXnAdLx/R39/jlAS/Gnf67/xdGNjhNfdic+Tvf3OpxY3lRCHYYo3wy/VofqNXlnV2D8T/xEK/t3bJ7dKyxL31kJ8vRUOwBdxvrH2SoSIAZruV7duxcK8Q1ripSX+FHXr20oNo5PviIewmweuumQysqo6oRYxKFk/LEmui8praDjCiZYMEK0Ig1t/kxKOJGcO/YbjkJW7eRAdxNp1bsPfk16nl9CM8tYF0zpvOHOhM4ver45xSCsNI2xuIBE+MRGOohsIGT73p/lamWLdsJX6TbR9ovgVwOEajjQopZCIUqeSaXln0y2IoK2v
+ x53visJL
+ 6qdDI+K4KpZq57IUJD777NxwsIKqb1uEN64P+7YyA40KEN0PyfdJ420wi159jvejVNnKDLF8zS1rAJU6Wdb63y5J1vv6l4P85keiaB4q7p0eFNcNryPCTakEctMadI7BAmynIOEPDsF1ZjT1R8xkrEA/xSlQAFpHwnLxzkgiB3MmVWkl3DDTx+Co6y9TNqLHuh2r568l8ePd0f4M1U4en9fQayXyFoTJLwcqs/WYbSrZgo0SF1fXEmh1iHh0uQX8+7ZFPj6oc5KvzDcp/5rUINZNcQ3g5HyT7HKznAtq9ypOyYeJsA0mJFKCvJIZTi+BBemr44+z7p4f9iftdeRuyU+LOEPtPi1AYqwCva0iTTattny5DRjnVN4aSF5VtpiIVHAwqsh9ex1hRnhzUzE4WnWVpzQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -193,36 +194,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 8/6/26 22:21, Lorenzo Stoakes (ARM) wrote:
+> Assert that a VMA can be moved backwards, forwards and between a preceding
+> VMA and its old self.
 > 
-> Since copy_vma_and_data() which calls copy_vma() intends to reference the
-> old VMA after the merge, it must have this pointer updated.
+> In the cases in which the VMA merges only with itself expect that to be
+> achieved by expanding its old self, so assert that these function
+> correctly.
 > 
-> This kind of self-merge is not possible with a succeeding merge, as the
-> merge always prefers to expand the preceding VMA if possible.
-> 
-> copy_vma() accounts for this by explicitly checking to see if a self-merge
-> occurred and updating the vmap pointer if so. However it incorrect did so
-> even for a subsequent merge (this is simply a noop so it had no impact).
-
-Took me longer than it should to find out that this is no real fix ;)
-
-> 
-> So change this to only check for the case which matters - a backwards
-> merge - and rearrange the parameters to make it clearer we're doing that -
-> i.e. check new_vma->vm_start < old_vma_start (having already renamed
-> vma_start to old_vma_start to make it clear this is the previous VMA).
-> 
-> Also update the existing wall-of-text comment to be a lot clearer.
-> 
-> While we're here, replace the VM_BUG_ON_VMA() with a VM_WARN_ON_ONCE_VMA()
-> and update the VMA userland tests accordingly.
-> 
-> No functional change intended.
+> However in the case of a merge between a preceding VMA and itself the
+> original VMA is removed, so assert that the preceding VMA replaces the one
+> passed in as vmap and the merge is as expected.
 > 
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > ---
-I skimmed over it, looks correct, but the merging stuff is way over my head to
-confidentially give a RB tag her :)
+>  tools/testing/vma/tests/vma.c | 46 ++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 45 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/vma/tests/vma.c b/tools/testing/vma/tests/vma.c
+> index 754a2da06321..0d40d7ba2181 100644
+> --- a/tools/testing/vma/tests/vma.c
+> +++ b/tools/testing/vma/tests/vma.c
+> @@ -33,7 +33,51 @@ static bool test_copy_vma(void)
+>  	struct mm_struct mm = {};
+>  	bool need_locks = false;
+>  	VMA_ITERATOR(vmi, &mm, 0);
+> -	struct vm_area_struct *vma, *vma_new, *vma_next;
+> +	struct vm_area_struct *vma, *vma_prev, *vma_new, *vma_next, *vma_orig;
+> +
+> +	/* Move forwards, adjacent to old self - self-merge. */
+> +
+> +	vma = alloc_and_link_vma(&mm, 0x1000, 0x2000, 1, vma_flags);
+> +	vma_set_anonymous(vma);
+> +	vma_orig = vma;
+> +	vma_new = copy_vma(&vma, 0x2000, 0x1000, 1, &need_locks);
+> +	ASSERT_EQ(vma_new, vma_orig);
+> +	ASSERT_EQ(vma, vma_orig);
+> +	ASSERT_EQ(vma_new->vm_start, 0x1000);
+> +	ASSERT_EQ(vma_new->vm_end, 0x3000);
+> +
+> +	cleanup_mm(&mm, &vmi);
+> +
+> +	/* Move backwards, adjacent to old self - self-merge. */
+> +
+> +	vma = alloc_and_link_vma(&mm, 0x2000, 0x3000, 2, vma_flags);
+> +	vma_set_anonymous(vma);
+> +	vma_orig = vma;
+> +	vma_new = copy_vma(&vma, 0x1000, 0x1000, 2, &need_locks);
+> +	ASSERT_EQ(vma_new, vma_orig);
+> +	ASSERT_EQ(vma, vma_orig);
+> +	ASSERT_EQ(vma_new->vm_start, 0x1000);
+> +	ASSERT_EQ(vma_new->vm_end, 0x3000);
+> +
+> +	cleanup_mm(&mm, &vmi);
+> +
+> +	/*
+> +	 * Move backwards between prior VMA and old self - self-merge and vma
+> +	 * updated to a new VMA.
+> +	 */
+> +
+> +	vma_prev = alloc_and_link_vma(&mm, 0x1000, 0x2000, 1, vma_flags);
+> +	vma_set_anonymous(vma_prev);
+> +	vma = alloc_and_link_vma(&mm, 0x3000, 0x4000, 3, vma_flags);
+> +	vma_set_anonymous(vma);
+> +	vma_orig = vma;
+> +	vma_new = copy_vma(&vma, 0x2000, 0x1000, 3, &need_locks);
+> +	ASSERT_NE(vma_new, vma_orig);
+> +	ASSERT_EQ(vma_new, vma);
+> +	ASSERT_EQ(vma_new->vm_start, 0x1000);
+> +	ASSERT_EQ(vma_new->vm_end, 0x4000);
+> +
+> +	cleanup_mm(&mm, &vmi);
+
+Okay, these examples were pretty useful to understand the original problem.
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
