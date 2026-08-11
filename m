@@ -4,92 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2634C5B572
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 18:23:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A2E5C5CFDB
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 18:24:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1700C6B00A5; Tue, 11 Aug 2026 14:23:53 -0400 (EDT)
+	id 454BD6B00A9; Tue, 11 Aug 2026 14:24:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 148036B00A9; Tue, 11 Aug 2026 14:23:53 -0400 (EDT)
+	id 405706B00AD; Tue, 11 Aug 2026 14:24:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05FD26B00AC; Tue, 11 Aug 2026 14:23:52 -0400 (EDT)
+	id 3426F6B00AE; Tue, 11 Aug 2026 14:24:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D5A556B00A5
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:23:52 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6694CC0194
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:23:52 +0000 (UTC)
-X-FDA: 85089812304.20.5786A98
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3EAAC18000D
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:23:50 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="iMMsJQ/s";
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 142B86B00A9
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:24:04 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A8F181401A2
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:24:03 +0000 (UTC)
+X-FDA: 85089812766.04.42C67CB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 29E4A18000C
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:24:02 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hHJzkVFD;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786472642;
+	b=aV2uqVzjbXtkoIoDjz5FlY/2ZgEmPx+eIZE1WYKzRCsbwARCtJStLdfFv322fz1G+sj7Uy
+	FT6icBgVrv6AC1ADrtYBk/FBJzlUipUd0FN4ct1idZrl3OIwQjcRED2e6Yl+gRfEJlHfjp
+	BkE1SayQuzBJPJ5dIGw640DfCQmdX90=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hHJzkVFD;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786472630;
+	s=arc-20220608; t=1786472642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3TBsqf62Gp/AR2GFXLRO9hdGWAqrm6Ge9JO0CHdaHQg=;
-	b=fP5rlKE5lyrywGKs+RslEWd3uNCju2Aui/X3/q96z82CnzEnnD0daYtlFf61yrdHhubUgO
-	YGAi0aaBT56yj3f691M/9BgwIdnz6kEXQpB2eVOnCPfLEe0sPL2mzEvK0xgNVL9D1cF7h8
-	GrbZqdL1mSTU0nLVJctgcpMZzXa99+Q=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="iMMsJQ/s";
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786472630;
-	b=ST7urM6oIL2fmAmxAL2/jXeMSLhlbaeUV+Rg/09NTO9OGBRCpFMjGiapmeg4UQcwKP4rvH
-	y67z9QPspVnGgg5ohJZhedwFLSQ1fEMtK5jsbeRoehzxbXhQddGOA4UaIAHYD0AX22rpH5
-	bWpA9FQHS+e3ZoQOf20XQt+hzd81moM=
+	bh=hUoGMLlqY3rbOTaypjUIdMJxKDPsbeVgkgJ1rrI5sHs=;
+	b=DJG8AVnSdI7vwBjCPCHJfXU6+ErOb5wIQ4HPkRmx9ocvpQHax/h5PzdPe9Of8GbUF8ff5C
+	7vAH0bZB5VIZHfOHZlFERE/qwilfGJdWy7pYWkNtAD1qEtdvjN5UimTv8jx6vbUMtstIYI
+	mflv4a49ZKGEdfO3cvdgjj9Negh8zps=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 031B743D28;
-	Tue, 11 Aug 2026 18:23:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 408C81F000E9;
-	Tue, 11 Aug 2026 18:23:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1786472628;
-	bh=3TBsqf62Gp/AR2GFXLRO9hdGWAqrm6Ge9JO0CHdaHQg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=iMMsJQ/sSMP+Es94jqC3ZdHBnJ4v79SkduumOhjoUWhjn4Ej/NxcJLK93f7wccaYL
-	 IArkxdEmZWKI+LKvUBEpdPcdnVcqChtXWJzG0BKLFtgyw1zK0YPhTxrBgzbXpwg3vw
-	 bpAUFDXsqOFYMVLiCbzPF+g8nTZFJbuo7Gag8HgE=
-Date: Tue, 11 Aug 2026 11:23:47 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>, Lorenzo
- Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry
- Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
- <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>
-Subject: Re: [PATCH v4 0/7] mm/khugepaged: several cleanups
-Message-Id: <20260811112347.aeb004e62daaeeaae98b6502@linux-foundation.org>
-In-Reply-To: <20260811-khugepaged_pte_refactor-v4-0-ddac39d61c4a@linux.dev>
-References: <20260811-khugepaged_pte_refactor-v4-0-ddac39d61c4a@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 3EAAC18000D
-X-Stat-Signature: 38fkcxtmgx8dmpmhsmen9zxd617c4yz5
+	by tor.source.kernel.org (Postfix) with ESMTP id 08CF7600AF;
+	Tue, 11 Aug 2026 18:24:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0208E1F000E9;
+	Tue, 11 Aug 2026 18:23:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786472640;
+	bh=hUoGMLlqY3rbOTaypjUIdMJxKDPsbeVgkgJ1rrI5sHs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hHJzkVFDWfCmuKYkR4XjxMzJFNmZB8HJ8Yi/bHngYG5rI8EnhdBozTj0pJjg+/NTK
+	 dEuO/r+i3iaO7H07Ox6c5UBt7g15P4cBk56SEZde712lGrZ2lcjzqCm37SDb6+pyQG
+	 NkYVwncPEihrqR5OAdUo26cCzwxNLepmoQKxj9NV6RGpa6QG9cRhbxrsbc8S5hVRDY
+	 dUkQfr3VBmx0BunzdnNEO9aknrDezSHysn5UWKmaNnu5C0/VKBZu9pMECBWu+W4B/3
+	 fR1N7uwElivk4KyINF9kYCpuE3SxJ6/u/dSGOT6Vb8BSue4DkQnAel2BxX3Q4gDlhB
+	 Lm42X/R/AEMJg==
+Date: Tue, 11 Aug 2026 19:23:56 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Hyunwoo Kim <imv4bel@gmail.com>, akpm@linux-foundation.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] selftests/mm: add stale walk->action race test
+Message-ID: <antoRbvwXVxoQ7Dw@gremlin>
+References: <20260811161949.3879321-1-imv4bel@gmail.com>
+ <20260811161949.3879321-3-imv4bel@gmail.com>
+ <b27f03ea-414a-4ae5-9649-2a05398fe082@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b27f03ea-414a-4ae5-9649-2a05398fe082@kernel.org>
+X-Rspamd-Queue-Id: 29E4A18000C
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786472630-848425
-X-HE-Meta: U2FsdGVkX19cGPvIEXJfLJ15nwNhbtWIjmdEm/z4K8OlCdYfctt+YztKfqTUl2ftbOI9TOwfv3EcyjEG0U6x15pX7t1OqFYMbaXT9cTAraCLxJj6g7865aWzLXChCk87nhyjJ5E21hm1qxwTDWi176aNJuRYn5jSHlbY6/8HY099YDSnOqYGS99qgCYLNPpwEDFXfY2nmQUPcRpE9h2kjsoBdPuXBpVUBhEUcQtv15RvSW9+u0sXP83jERZHitnYtvOA54mibPNAh8QoZMq+txpVHcUsihFRbNJ92TPokvQV+th+l1FuzLFzzdYkWatztw7zPdUJDqJdq0RPxW6/zsmvZ+lIqK/+htVkKTZxamuB/tY2a2aw/U5xpuwAu6JxiiF9ncO4+3L6X9c8Hk0RCLtylMQMymQmJObjVpEDJuLjuHrDiijbpqBjkukUKtd+9IOBEy6mQIn27LihnvmbroocmhZRo774OjPW1UsRwV4dPmXsch7zzTBgM6vVNeE1vNOXGYbVJd9cr3nhzm1e4D7zkqtyi0Yyh/iqqWdyU4llOkkAuNgcamchrXD9QCZluPF6hYclkKiU/UTGlUUn3OCkqkCSS/N5dzrpRBn8TZWa1prbi5vlKkqmVe4WYOnHW/jIZkR5u2YSPy4hz/Xdq2DkrltaXzjsJg0CZQo4P3Y8km+tvu0VT623NG2oiSwgkl5B7Y4Kslb3ESYyMiJ4PN2hYBDRMLaooCbwnoubtUGaVLmMcDJQVwlS0nYrI6AM7dyYWvVUut1B376HYG7RImSZIUk1eTqG4IVyhhqa7mEtiQeHMXa/VfaGbE+xUq4sprVliWplWgXVkA1J10RTVIfySkvog3KblGPzZ3+NMlKfDAPNKLI6cTk3/+nirfpNyZVYogmSo6lh+d6wbAtYohkOg3HYofCDeTxAZVtmMRQYQFE4F8f+SGrevusxO+JZPY4Oy9/ijQF4EyM1hu3
- WwkapXyj
- cH9/BekDrJIfSPpJomF6cI2cpmhcTaQHgwV+DLsu4ICvhgv4LNBqz8SJRhUFBmDRSG9u9vHlbKlNd+XMf/MsaWU05Om+VPl4tFWc55PBmMTUO0HxWhNhb+QTwFn9KB/MN9NzGAkKOuWu9kkV42w1UAgJnTTpa1/qkf/Ettun7t03lt4gq5lDrH6/hoWYpntUig9NvFCpCthJbMkW4Oo0zbXTy39jKo4a53Rakzk4YetzN0IpSfXjAlnlnVBKzWpVuvpCF
+X-Stat-Signature: ua9ajopu4unhnsycantxbs3f7cxsajmd
+X-HE-Tag: 1786472642-888658
+X-HE-Meta: U2FsdGVkX1+29rEn4szfeB3KEu2k+kqrsFibSm3UwbRI+076T2hhbtbrEamunTODLscveqR8CfNUvKjruaxn28jMtrf0CencCSnVlcX+9cF5Nb+NElRjgRV0JPRxAquVyLH6e06uEAzqCFg2KYpgV9YsmGu9SKhBDyhwRNEq3YvPohvskxnEWPHogXtOB4fdU8jyeuYAPiNZ9hym35RJjTqfB5N2b/Z3kKsYBxJqjy5+fCfXnNLI0pgY+QiG/JBEM4e0fQxw78dZ389r63ScNf/5R0B4n+2JsEpfK9PCKas7ZyJf1MeoEcAThSVOGk5NuL/OkFWNMRpvtbo7i8cVex06w7u/l1d5SSKZKFw0Z/RI6KxXcSI3GqQ1IuJMw062T+mc9Z+kUXlhdopcGxFmq6wVEeNP8mlcBvOMLiRYIowUNQQM8QfO3co8OpbW84mxF/2Fl0Lcv750R5uLycicmUP8Ri/xVsrrI18Fhn3F2P1mfrG4w3V4TVF8fYpIiUWOCMSOYY/mVbCZrJinkzCWden9jW5Us9Wialn6hkojMUVpDbSEbC/Qig4itdhQ+HMf3Lxk1gUqaSvrW5LZNHUJs11qyYJZgWb7ASInIahydDFRnnKLQVnIuyA8dsOV7djnkrdQYJZugOeTq2MttsmFKX8H2KzLpeymyP10RRvzf+ajE1OCp3lT98bOsYosk4hoHkFFZpZH/HCUgmRZIOSyJPa7kcO1Jzba2De5bSpf4DKF5UnNQh+S2zDLkny+ETVpXVPu1MOyTyRZgb8Migs4g9BSnOSfaiZah3W6mk4ouFH+5b3+lDrqtfwNxEgbVqr9wVb9bGYVEz8iIV5m4+807rpGm+R+FGj40jLYYqKYATLt7g1B/HYD1Wn0+ctTF1ATLv3jCKz1qjc2XRdB1nOLtatFY7RpULycxYcWdJfZn439RZYTyEqY7aQmAdl4OsScsqlfeRMaFYPq3CcTLoK
+ vCm0AhWA
+ O5KzEAr4pLWEVrpjAfMiu8OeSs9uwjUme2d3hoh4MJPgmGLs+QEgdKR58yCs0ePFqNnaXObDjM7jTFi3plaOVONrCImoj+MS81ECla2PyRHIlIvtYVgHkzoiQKD0LqyxhtXypGtGuV39G9X2CPpuzeaEEpUUxVbWNleN9MClGRHKGvLK2ZHEiuURzt7TMs0GBV6eVwNHnk0XCUrgx40xxpydpw6oSPPmJknWx65IFLGh4+yPCXnmZaoEF8g6KzC3yz46dqab6kzgViaBrnJYqgd6Npw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,81 +93,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 11 Aug 2026 06:48:32 -0600 "Nico Pache (Red Hat)" <nico.pache@linux.dev> wrote:
+On Tue, Aug 11, 2026 at 07:11:59PM +0200, David Hildenbrand (Arm) wrote:
+> On 8/11/26 18:18, Hyunwoo Kim wrote:
+> > The added pagewalk_race_test maps two PMDs and faults in 2MB of the first
+> > one.  A second thread then faults in the second PMD and drops it again with
+> > MADV_DONTNEED in a loop, while the main thread reads Rss for the mapping
+> > from /proc/self/smaps.
+> >
+> > Clearing the second PMD while smaps_pte_range() runs leaves walk->action
+> > erroneously set to ACTION_AGAIN, which causes the PUD walk to be retried,
+> > so the first PMD is counted twice and Rss comes out twice as large as what
+> > was faulted in.
+> >
+> > mincore() is the caller named in the fix, but the second walk writes past
+> > the length mincore() copies back, so it cannot be seen from userspace
+> > there.  smaps reports what the callbacks counted, so the duplicate shows up
+> > in Rss.
+> >
+> > A failure can only come from the kernel counting the same page twice, so
+> > missing the race is harmless.  On an unfixed kernel the test fails after a
+> > few hundred reads at most and takes about half a second.
+> >
+> > Assisted-by: Claude:claude-opus-5
+> > Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> > ---
+>
+> I'm sorry, but I don't consider such a specialized reproducer for a problem we
+> hit once a good fit for a selftest.
+>
+> Or am I missing something, that this here is more generic?
 
-> The following changes stem from a number of reviews during my khugepaged
-> mTHP support series [1]. Some of these are minor code cleanups, issues or
-> reviews that we decided to deferred to a followup series, or in the case
-> of the more major patch of the series, changes [2] Lance Yang attempted
-> while my series was in-flight and we decided to wait till later to try.
+To be fair I did ask him for this. :)
 
-Thanks, I've updated mm.git's mm-unstable branch to this version.
+I thought it would be useful to have a regression test because there's certainly
+no harm in it? The code is very sensitive and catching a similar mistake in
+future could be useful.
 
-> Changes in v4:
->  - Add Acks/RB tags
->  - [patch2] rename pte_is_referenced() to folio_pte_referenced()
->  - [patch2] keep cc->is_khugepaged out of the helper gate
->  - [patch2] simplify/clarify the helper comment
+If you're sure this isn't valuable then he could just drop it, but it's my fault
+sorry Hyunwoo for giving you extra work in this case! My bad.
 
-Here's how v4 altered mm.git:
+>
+> --
+> Cheers,
+>
+> David
 
-
- mm/khugepaged.c |   27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
-
---- a/mm/khugepaged.c~b
-+++ a/mm/khugepaged.c
-@@ -693,20 +693,19 @@ static void release_pte_pages(pte_t *pte
- }
- 
- /*
-- * pte_is_referenced() - Check for enough referenced PTEs to justify collapsing
-+ * folio_pte_referenced() - Check if a folio or its PTE mapping was recently used
-  *
-- * If collapse was initiated by khugepaged, check that the page has been
-- * recently accessed (young pte) to justify collapsing the page.
-- *
-- * Return: true if the page has been recently accessed.
-+ * Return: true if recent access was observed through either the folio state
-+ * or the current PTE mapping.
-  */
--static inline bool pte_is_referenced(struct collapse_control *cc, pte_t pteval,
--	struct folio *folio, struct vm_area_struct *vma, unsigned long addr)
-+static inline bool folio_pte_referenced(struct folio *folio,
-+		struct vm_area_struct *vma, unsigned long addr, pte_t pteval)
- {
--	return cc->is_khugepaged &&
--	       (pte_young(pteval) || folio_test_young(folio) ||
--		folio_test_referenced(folio) ||
--		mmu_notifier_test_young(vma->vm_mm, addr));
-+	/* The folio was referenced previously ... */
-+	if (folio_test_young(folio) || folio_test_referenced(folio))
-+		return true;
-+	/* ... or the PTE mapping was recently used */
-+	return pte_young(pteval) || mmu_notifier_test_young(vma->vm_mm, addr);
- }
- 
- static void count_collapse_event(unsigned int order, enum vm_event_item vm_event,
-@@ -910,7 +909,8 @@ static enum scan_result __collapse_huge_
- 		if (folio_test_large(folio))
- 			list_add_tail(&folio->lru, compound_pagelist);
- next:
--		if (pte_is_referenced(cc, pteval, folio, vma, addr))
-+		if (cc->is_khugepaged &&
-+		    folio_pte_referenced(folio, vma, addr, pteval))
- 			referenced++;
- 	}
- 
-@@ -1790,7 +1790,8 @@ static enum scan_result collapse_scan_pm
- 			goto out_unmap;
- 		}
- 
--		if (pte_is_referenced(cc, pteval, folio, vma, addr))
-+		if (cc->is_khugepaged &&
-+		    folio_pte_referenced(folio, vma, addr, pteval))
- 			referenced++;
- 	}
- 	if (cc->is_khugepaged &&
-_
-
+--
+Cheers, Lorenzo
 
