@@ -4,102 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6BA2C5B56A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:41:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9134DC5CFCF
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:42:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A2816B008A; Tue, 11 Aug 2026 12:41:39 -0400 (EDT)
+	id 7BAA26B007B; Tue, 11 Aug 2026 12:42:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8549F6B0092; Tue, 11 Aug 2026 12:41:39 -0400 (EDT)
+	id 76B6B6B0088; Tue, 11 Aug 2026 12:42:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 743536B0095; Tue, 11 Aug 2026 12:41:39 -0400 (EDT)
+	id 681A76B0093; Tue, 11 Aug 2026 12:42:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 531866B008A
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:41:39 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C44B714011B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:41:38 +0000 (UTC)
-X-FDA: 85089554676.06.3B8FCDB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E8807100002
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:41:36 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GTpKkC4R;
-	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786466497;
-	b=I4NHCJAN0HBARX6RoQMNBCrT9+0EGY5nDnt8arLi50CALgI09yQYFybIzlcbv0ByxxIfQ1
-	pImvO2X0kh4FbQVcvhBCw6sHDXcV0VY1VyX1/V8SjhmyLblqiLZvMuFUmgOWEjhNrmgmLM
-	/tcV0CPLt9HIvnmShShV5wCTb9yqZW8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GTpKkC4R;
-	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 417CF6B007B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:42:46 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BFDAAA0BC1
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:42:45 +0000 (UTC)
+X-FDA: 85089557490.23.CBC1C49
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E675F140003
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:42:43 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RCxvqgRw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786466497;
+	s=arc-20220608; t=1786466563;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x+Epx2wcjNexkVxBVXOqQ5cvsB3ppFKz/3DXfzrT9Jk=;
-	b=A6qkz8LRq2CgL1tKFSokLjVmCrf6ydbMnrz47fKcvTG8PgvfWdgHvYrClBSUjJq1FE/kig
-	cOXltixX2HsGVw9NzMrSrgPmQx4vcress+K2YPmU/7miZ6Y4WmY9uVLea9KGTkl9i5xOXM
-	NnDLbw4h/L+gu7UAxnWv6njq8fJH2Vc=
+	bh=ea87HC6oyLzMunIqS3kHNBEttwJX8sETvIYH3PZoPmc=;
+	b=2I7lXisfc8+OohQ/5R9/LNYEEPJCcXJRnLZ4JPXewbPPEzrpTTjqJS2i2Oq6TnLYqDTm9o
+	QXknKNMx7UHUaJi/th16BTpBCTF/mT5eq3mFCtVCIdNHa6mvkscHHagveb/VRJ7+mPmGn1
+	3WF8A9wYKeV5xWBj+htwpaOmiIfIdZk=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RCxvqgRw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786466563;
+	b=cxllGGHjs5MiBD0fW7HQLqJ6zwR6WfuVKWWsp5PYmvgAdSfOgqKRJj7x6RjYOjQgIeVpw3
+	LNFNvAfkqlr5QJoNED6s96QlNAnF7NyLlFYsKEAagat23W90afgrivOsc3EaxWLftcqm2v
+	yIbs2yJG3EUB3hirCzhalVUJUS0S2FA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1718440190
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:41:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9B01F00A3D
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:41:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 72757600BB
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:42:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 282631F00ADB
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786466496;
-	bh=x+Epx2wcjNexkVxBVXOqQ5cvsB3ppFKz/3DXfzrT9Jk=;
+	s=k20260515; t=1786466563;
+	bh=ea87HC6oyLzMunIqS3kHNBEttwJX8sETvIYH3PZoPmc=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=GTpKkC4Rq+5o1GLM67JrgD5Ts2W14rznWSwUh7c6Sg0ce76FoteLtiJimwgpdwR1R
-	 vhJ1dpIXdCmcNKrfF7tvG6J9trkTfyJyo5dm+fmQ/wRh3AAhzR/izfi9cGhUwmnVFf
-	 M6aVZBMrjMRqPXKq3m4UMB31d6enh/3+wqqPB9lXYjHMhdkBOoBnC6Pb50Pd0I1iET
-	 ynKQ04DjY3yxYtvn8MpBaECWT4hVVVilpiGxds/0z1HVJB8P6gDEdpxbnIHh3PdKEt
-	 eEoVxoVg3haiTGKfidC2aqkWomiWcNHs5O0yEV23q6X1o911qySiozztxRtsiP9EDw
-	 C6g7V9Otm5PTg==
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c15ba3a2b4bso3194166b.1
-        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:41:35 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rq7xfsWLnX+DzUFY11rNgrTUWM3BARbA3vdG7Xtmcc+NltOFMe6g974jlWqnOOv9JQOWARG6F0ICw==@kvack.org
-X-Gm-Message-State: AOJu0Yw3XoVgPmzn31WFBx9MNIV9ZApixaJddjL2vUT5UR5edk7X/X57
-	hOtO11sWsJp6b8CTuYk5A81Ias5rk1aJXwj+sBizRUuC2nz+hfUNj0tHB/rJSsalAeX9ZqiD5fI
-	Bt7+fy6SaygdqiNoWwoHmcI7qoJwMKEo=
-X-Received: by 2002:a17:907:d23:b0:c16:3074:657f with SMTP id
- a640c23a62f3a-c20eca2225emr84178166b.9.1786466494869; Tue, 11 Aug 2026
- 09:41:34 -0700 (PDT)
+	b=RCxvqgRwA5e0fE86guQE09SYANw1cQ69l6QAfgydtFtKJQJ/2QHw8JqmGt1FXPQc0
+	 vhehfTuoGIv2Ou9cINGY/ra8GCKgH4Y/Q6IuW9Wbth3nwF5AYbYwT9OtJEeUf3yoer
+	 GYoHABiXIlFPufT9eKmXkAMINRjU+g0AAEDURimVRtt5xCNy5C3BuYSoIQBJd3NjTg
+	 iIeoQ0NdKdCwsG8ZnOjQilaezzDH/QhpSAgBDAwdfOwo0sY7OGyDwFM/YvmwSGMEdF
+	 qx85fUnf086AC3MsFLBjTU1aF7gSji5KWRWjs8vUjMoWpd/Ox+HqegVmm5k1KalIT7
+	 qENHdDhHGkbDg==
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c2020421077so5796466b.3
+        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:42:43 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqgjQjEBdGL+0t2fdLcG71k5xVX8MzcT2fGJODxCZVPGXXda2ZZCD/OfuAjXAVP/nJ8j5R6uD1/Qg==@kvack.org
+X-Gm-Message-State: AOJu0Yy+0V2IVS5MpacevGR0ab5+nDRdE31WNxvV1wVtgqWiTF1Rdycp
+	lLlzvINWy12b4l0XZp351M3FhZRSuJgWwiMFCSy9Yazng70HnGSoGnrscdCJPJXI8PRfYdUPq1y
+	Ihb22+3goKJN9YcSvTpJbyiegK/gDXFo=
+X-Received: by 2002:a17:907:d15:b0:c1f:e9d3:a3f0 with SMTP id
+ a640c23a62f3a-c20e60df3a8mr259519366b.7.1786466562078; Tue, 11 Aug 2026
+ 09:42:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260811051434.3805648-1-wfelipe@google.com>
-In-Reply-To: <20260811051434.3805648-1-wfelipe@google.com>
+References: <CAO9r8zOiwgG80EjqdZFgWQvODUe1RzecLemxcB7xXNm_f3XfbA@mail.gmail.com>
+ <6ecf5579-0b3b-4e8c-a625-bbf0a4a48f94@kernel.org> <CAO9r8zP6JrZcBnzb8A3A9V8so4gJMWLvrJQ7VwPyyU417GikQg@mail.gmail.com>
+ <CAAnvDSyNbV5xSH0hrX9Tgw_wXU7Neo-XSJ1enebxJXvjOheHWQ@mail.gmail.com>
+ <CAO9r8zODSyYTipACxdEzoheMrNKzfFt_tjBzrB+2tSCHA82WWQ@mail.gmail.com>
+ <CAAnvDSziZM9TOExkFrF9vNi4VN=7T6yofS-=4rmFqc3jXncveQ@mail.gmail.com>
+ <CAO9r8zPuX0j_fZsgRsaNQFyJqY4rZxERLya69TcCF83HrpHy-A@mail.gmail.com>
+ <CAAnvDSyDYU4MvRo1rNwxQcnmwHe2_UW43-hZEU-Zf76B2euYQQ@mail.gmail.com>
+ <CAO9r8zOPMNDQWZ8z+RsApbA0cddE1au5hTHdRT0NYe-EjmP4aw@mail.gmail.com>
+ <20260810200915.8461c16060fe1b79c18bced2@linux-foundation.org> <anqmAJKQ61CDlBiR@linux.dev>
+In-Reply-To: <anqmAJKQ61CDlBiR@linux.dev>
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 11 Aug 2026 09:41:22 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zM0K_--=jMxuapkFxnbqBj6zqvz3GB9wmEjgDThQpzZkw@mail.gmail.com>
-X-Gm-Features: AUfX_mznkferW2-XpPGZ2Jv6GhtHO1zTusbpGxdHEOAp7Q0jgcIPVx3r3MKO9os
-Message-ID: <CAO9r8zM0K_--=jMxuapkFxnbqBj6zqvz3GB9wmEjgDThQpzZkw@mail.gmail.com>
-Subject: Re: [PATCH v2] selftests/cgroup: test_zswap: skip test_no_kmem_bypass
- if debugfs is unavailable
-To: Wilson Felipe Pereira <wfelipe@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, 
-	Anshuman Khandual <anshuman.khandual@arm.com>, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
+Date: Tue, 11 Aug 2026 09:42:30 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPu-puruvL7Mj99HEaGb+oht_Tx0w-5yHxWhTK9wsMNWw@mail.gmail.com>
+X-Gm-Features: AUfX_mynB-aAjI8LAARZvE6OEKj39irxVokcwmwe8AjBCOsvswPmwS3reAXZozM
+Message-ID: <CAO9r8zPu-puruvL7Mj99HEaGb+oht_Tx0w-5yHxWhTK9wsMNWw@mail.gmail.com>
+Subject: Re: [PATCH] mm/zswap: use ratelimited stats flush in zswap_shrinker_count()
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Yunzhao Li <yunzhao@cloudflare.com>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, 
+	nphamcs@gmail.com, yosryahmed@google.com, zhouchengming@bytedance.com, 
+	James Houghton <jthoughton@google.com>, kernel-team <kernel-team@cloudflare.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: E8807100002
-X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E675F140003
+X-Stat-Signature: kgqoxh1ebzsopb8geko9sz657ahtn4e9
 X-Rspam-User: 
-X-Stat-Signature: qq4i5a3bjwrjz1cn79b4o5tbkr49y3yb
-X-HE-Tag: 1786466496-373756
-X-HE-Meta: U2FsdGVkX19drbEXVE+xlg8MIILAxHp6NXBVTsTVFt6sTklZgsrU5e10p8u7JV1dJqAS4wniF/mOcFa/YolCSUdJNqqFpI2L/WM7+0ZdQybUJPRX9z9nPnpd5+lMh414kw/rhbMEbHagveF551c2cuwfNhypJajJ7joqK3UI3WvNYOGcN6bp+YXfHe/oR9vdNbYWsRfWv7JpmgnwcP4Bbtw43m9R6VhEAboQpITs5CzsK2sLuHNLUGVaObGcbhn4fZW1dbuacrvw3moFLGMOKLs3oMxLkIzzCs/nmYsVZ2aX0KbUL8/iNuAaZINOQMii+Rw+HAshfxyIw9tmNT9riqiUx9vIzP3leLVPz6s+Jwhw9DpLFlMcQvUusoMDlEugkfJkRd3T43LPjd5LoQsPK11gDm2GdIs/Kfa4QK+4P/zQTerI2zqCRrPewIXFatJKhPkUN/Z+Np9yjiwfLiz2BK4nICTMWRk5kDokLYIcWQvrcp0z9JlnxLFCMJ1moJD6oeIdWRXi+1T32sR8ewxLxY2ZhR5QJsauW1SRTnxmCTOZObtmDPHpgtXluFH41Bz1yR6zloiLZBoL6mc0CSRyrpQfHfvh5gfErQuysfatdyyWG7gVTsCrAgStbYRmDBHQyIe1RWt5vbo4lAYwbH12vImSnBw3+nuCh5pEg/t39FJQeSdGMS0WW8pZD/aN/gkxpLFW+Dj8cZcWuC/KgAHax3qLtJCFjUiTQVyCUsuAzUMGBnL34ZWoIyBNrhZNfmeCpIpikNp2YMIRD81qbn86i3k1XtqPy7hRvgcvGcIopxa9tjQFXu2iiRJlFZ5zrkTP5XLRqKqY3UYmr4MuHFy/rOYBSczXv5kkxt24dlxcw0uo8OFeq/PR4XV0kRzxfxkaJNnIidbUo85xLmzFnp62eH26pJ3FHO569EdP9O3sTAF6BSeQrFflrkLUMA4vAvlJo+KyF3grG+UE0K7j6nk
- /7j2mYaz
- hIS9HkVx4XuVomlzUzGSVlBf2y3UnMh5Ig6NcysMUXCysfrNTaCgnekayYEhlzA1laKhaU1xmSFbfDbGAWkQVHYDeUJgyaN0yFXMBbI3blyGTLCYOGxrGqvmI83AF5Zt/1dPvFdwIKez2aIpsDH2/HvaRIx6M0nj823QHE0PvuoJpSF09bmXmFyYTvotskqUGqI+kssn1peoD6zi1y1TDsSIIukr3fnYD/TdYgbURrygXKcP6UJJUE7Of3+w7LWVyzSmE88BGm18vOEzlOaMcWQoL/9+aHTR0Eu7FaprImZsUesCaGxcymZYUYI36JPKTdYa2PZ+UshTsMwTHHSLW1pIfW6BB+bMtWNcZc0hif5OPa4zRGs/voImmezuOAVp/cWgVbGFA0bSoCVNupKBNfANs3A==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786466563-739195
+X-HE-Meta: U2FsdGVkX19B9i0DOHpk8gnaLlAnTss1wAScKTR2XLA8hm/736N05Ehjz5Im2WTnAsAkNwyX2jyxiem2BNSTVcuCFP9iHX/HNZobNqt5xdrHJeTN2gsfs1ZIhdFCgHVeJJgZ+uJwqDAU0lAxuIHZA/wKU06UXBBbkPN8mLXGXKtrhIw09zTiRmEb/gRrsE8r16G3li/Cx0+w+inpujdjudKRm/cqsxFTukkmlYkcGkDaf2BzbW31g+UDt3meBzjcZLOHRuyYzviZ80u5W/SJ8S1M65FxRJird46E5uUNhhE8d3uMc/kBO1hG1/AyTWaQOtIV5N0kfS4MzKdeLTByYMMKKyo68c5QX0jrNbqdEwXMVNjddIhUtJUp3wDC2Hxb7qp/dwv6TJ/pq315th8gtsZut7xZ68qvpxUQYg4IIxWTIiD11Dhdd2s9SlbgIYE+NKHDHV6S/FqCRYLeqV4m4JOx4rjV80vQqW50deGV4/ZBo9on3+mW2yC+25XNXQf6s12+TMGu208H5pXQVKoKRXziJJVq99Qdvk8Maim9RHv6HQhSx2XDkhVwwfRVYg34IXYNnSTdRgiLYVwTwVuVtKfJhgScoW/tcsLD33LqY7bqeaLkXOk6qv3kgcMeLIzbxgskh+fWretJ39Tr0XhlhZU2kszYBjsUeOuxEqsAfw5wY5aZ+oixafMdO8iw9kQENOJnlO7KbOGEHvFPmzwUhK0hWJIG2mVThGtr6I293ekSRZHpZfZZ96H9wCeGYN8htIbcfclOBE+bcCuWjH9F17QzGE/m/KVF8l3e/FIWaYsdOTrG1SFou5rmuklnNNsS4U4Kj9lJBQ2Ue3904Q76Rr697KKGAWzRHTXUj+qYHo2gYiWudvLCi5Nfiu0+zYFfoJPkH839oRbaIkDVymWpNSGfQPM2WJeKyK/l92r3SMuWtyk58Y4AV4Y227DBLbsHg8miQjT7lN6DR3PG9UX
+ v1L10Tyi
+ HR656k98yDUkLks0m6bkBYfd2IzI7jl9OtoNhDXDCkjK9IGxKKlmfdWtZAIH1wJm+YHk1O+GxTdYYQSER2ipi4ksynFQdfgCuboCeiVYMhxLecbGtVX+xlFmMINTaEbSzSuaGLhzOEIj0yYTvBGW/j+7fpVnASeZnNprLaRQwq/yR/VjDYRUsXgrBs4y0MnFMf3nj1sEWQmAXnsVBRfwngtgV0Hoeq+BE+dgXzDXgl3g1Uj2qsKpGhPePcX5brAgEIkCYoo+/kJktAfeOqS04hfOrcsbURyo4gD7SBb3tiBpXd5gZCDmzzahSqNNQRyEVSulbzsufv9o5sua7unrCLuKBYTElZyRvqmMlwkIIkUC2KAXlEwys1Ho3Pg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,24 +112,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 10, 2026 at 10:14=E2=80=AFPM Wilson Felipe Pereira
-<wfelipe@google.com> wrote:
+On Mon, Aug 10, 2026 at 9:35=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.de=
+v> wrote:
 >
-> test_no_kmem_bypass() needs to read
-> /sys/kernel/debug/zswap/stored_pages via get_zswap_stored_pages() to
-> verify that compressed pages are charged to the memcg.
+> On Mon, Aug 10, 2026 at 08:09:15PM -0700, Andrew Morton wrote:
+> > On Fri, 10 Jul 2026 11:27:31 -0700 Yosry Ahmed <yosry@kernel.org> wrote=
+:
+> >
+> > > On Fri, Jul 10, 2026 at 9:36=E2=80=AFAM Yunzhao Li <yunzhao@cloudflar=
+e.com> wrote:
+> > > >
+> > > > > Yeah the per-fault latency is exactly what I was looking for. See=
+ms
+> > > > > like most of the faults are not faulting in the pages written bac=
+k to
+> > > > > disk, nice.
+> > > >
+> > > > Yeah, at least for our workloads the cold entries seem to
+> > > > stay cold.
+> > > >
+> > > >
+> > > > > Would you be able to take a stab at eliminating the flushes as I
+> > > > > suggested above as an alternative?
+> > > >
+> > > > memcg internals are a bit out of my depth to be honest. I can
+> > > > definitely test a patch on our fleet though and get it verified
+> > > > if someone picks it up.
+> > >
+> > > I can try to come up with a patch if you can help with testing, but i=
+t
+> > > won't be for a week or two. How long would it generally take to verif=
+y
+> > > such a patch?
+> > >
+> > > > The ratelimited fix in mm-new is working well for us in the
+> > > > meantime, so it'd be great to keep that moving forward.
+> > >
+> > > Hmm we can keep it in the pipeline for now and perhaps drop it if we
+> > > can get a proper fix before the next merge window. Does this sound
+> > > good to you?
+> >
+> > So it doesn't seem this will be happening.
+> >
+> > The original ratelimiting patch seems useful, is well-tested and
+> > well-reviewed.  I'll plan on upstreaming it in the second week of the
+> > merge window unless someone stops me!
+> >
 >
-> When running in an environment where debugfs is not mounted or
-> CONFIG_DEBUG_FS is disabled, get_zswap_stored_pages() fails, causing the
-> loop to terminate early and report a false negative (KSFT_FAIL).
->
-> Selftests should not fail if debugfs is unavailable, and it should print
-> a message when it is skipped.
->
-> While I'm here, also add a warning message if the test is being skipped
-> due to totalram size and make the check for totalram more readable.
->
-> Signed-off-by: Wilson Felipe Pereira <wfelipe@google.com>
+> I agree to proceed with the patch. Since this is not exposing any api, we=
+ can
+> always come back to reevaluate the decision.
 
-Acked-by: Yosry Ahmed <yosry@kernel.org>
+Yeah. I don't like it and I hope to get rid of it at some point, but
+it's a reasonable fix for now given that the flush is essentially
+prohibiting using the shrinker.
 
