@@ -4,114 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26523C5B56A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 14:48:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAA02C5B56A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 14:49:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 05BEF6B008A; Tue, 11 Aug 2026 10:48:39 -0400 (EDT)
+	id BA6406B0092; Tue, 11 Aug 2026 10:49:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 032AD6B008C; Tue, 11 Aug 2026 10:48:38 -0400 (EDT)
+	id B57496B0093; Tue, 11 Aug 2026 10:49:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8D4B6B0092; Tue, 11 Aug 2026 10:48:38 -0400 (EDT)
+	id A6D466B0095; Tue, 11 Aug 2026 10:49:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B9DCF6B008A
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 10:48:38 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3CCB940472
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:48:38 +0000 (UTC)
-X-FDA: 85089269916.18.1DD4FCD
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 93F2D18000C
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:48:36 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=aUhnFxXU;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of 3QzZ7agYKCPYqcYlhaemmejc.amkjglsv-kkitYai.mpe@flex--seanjc.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3QzZ7agYKCPYqcYlhaemmejc.amkjglsv-kkitYai.mpe@flex--seanjc.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 838E66B0092
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 10:49:38 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8C35214041A
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:49:36 +0000 (UTC)
+X-FDA: 85089272352.08.737B8DF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B24E540007
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:49:34 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K4lvmZmt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786459716;
+	s=arc-20220608; t=1786459774;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rVhz6t6uiOZc1DDgF6HOTd7wvK1RF7/iSTLQV7TuFds=;
-	b=EMdFOlmRAjmhiTkN+IkkxtewcA39Chphlh94knBRGHM6uMsQlBvxnUw4xKzKpVY7eSxpgj
-	hnJRBIYm6IYM09l9A36IUBvdoQWiNYQt7REeRIBQWbYHfqYka+LNS86fFTUIVpxGXC3U1/
-	sx7B7KAPIAvWEJNQx3ahvCfaKdEjNI8=
+	bh=jx6Ongc0OibhUt/11tLX9eIUBHVNywDq+e8KzvGNZmU=;
+	b=RvWxtEB2L2PXT4WWgtzCsoylbABkecc5zsa7IziA9833fWNBlpcD8qWizWrQrUlBB2gn9b
+	OSyurHZaLtHxef7A/6F6L3GnA8LwPwgAphR0o1HbmbwkNenjsRQidX9Bv4HJ7tHfYzw9t3
+	wRl8MyPw26BOo1PACMkEh0fmjC1ONrs=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=aUhnFxXU;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of 3QzZ7agYKCPYqcYlhaemmejc.amkjglsv-kkitYai.mpe@flex--seanjc.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3QzZ7agYKCPYqcYlhaemmejc.amkjglsv-kkitYai.mpe@flex--seanjc.bounces.google.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K4lvmZmt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786459716;
-	b=hW2DpoZxt5Nmm9aZQBvuKr2Sjbo92cN5tRLIOHpfxi0CfSm5huIwGsn4okRlUbSzq7Ya/g
-	6t8UqvyxhQt1AYv/jkJwHIdDA8mE6ziPgwjQk4oTe5Gu70Sy+22JDavaP2ibJygqW5z3P/
-	yuC1WQk3mpfusdnv272I12ON/sp3S74=
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cca5e0a0c9so68020375ad.1
-        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 07:48:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786459715; x=1787064515; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rVhz6t6uiOZc1DDgF6HOTd7wvK1RF7/iSTLQV7TuFds=;
-        b=aUhnFxXUdpdPu+gEUWmT4Y3Gky4k66QGa58nzbYofTglBwQPFO6WELPKoN8fReYsLG
-         8E3UgNq0vGUzVPMhn0psDagl5VtEd8rCt9yZGRqXaY1G7b1wNKP8QKduO2E8TLs0bmtP
-         hcCdnSWMgzSGtwRm+EcHfP8fFM1oItfGXugSSaH8hMeXOoQejhy5ODwXuhAVwnN+x1cM
-         5UvzzfY7esYDXlRQsQ4e8WOK1FV6nKTypXJSJl0H2hwzo+0CXBGi1pMrGBMxdbAdehDf
-         BaWMFZjqJm5HfXiWKDxBwNZHSEw+pQzTDQI1CJ8iPgSD1q/UhVhBFKBFS62lNZGX1JTr
-         RTFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786459715; x=1787064515;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rVhz6t6uiOZc1DDgF6HOTd7wvK1RF7/iSTLQV7TuFds=;
-        b=SIJ32kx6hB/dfXmQ8uJWAnyINL1xW1WydcdbZai8zq5LaGsbkWnkPIkZA208HscIza
-         677q0BKhryFlr3Q4Atyxj5nMBlGvyuIrwu64Az77+ZVXetwzaUQpj8fxwJCj/hJ20SuP
-         cyVXF0fWQVRa6Hdv/TOjX+YEACQZnnNj+ksNREsqkcEJvraBkrzsJ3gJMMz62WJdcl5W
-         bOQL26oDBTYMEKjtc3MnEYgv2jJ2HH1noS7dApZf2Ix344o27P7n6dOl6OLtNoJOoq/u
-         vdp2njE/HugwALn6aKR1/PHODBooF/XxBHusMW2RTG+4QsSPBxvgKkT8VwChn6RUBh/F
-         u17Q==
-X-Forwarded-Encrypted: i=1; AHgh+RpAD+2JgIFpUSNdpOWasltp3+QTFj1diSbQy3AtKU3MFiYSfQ1CgRjK774tzIJ5KVFb5E3cF13IeA==@kvack.org
-X-Gm-Message-State: AOJu0YzCRfWAGodSIU0pCUlErnXp357FMt3u4MEc2nXerjUjwh6mldpC
-	VSFmI605QwEYB5V2ooYJ2qZN/e20MnW3trGl8KXY0nvX5PTkzsQkDyTxmCtFs7H1erXnWtDw57v
-	wU14LhA==
-X-Received: from plbje14.prod.google.com ([2002:a17:903:264e:b0:2ca:eea9:9845])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d488:b0:2d1:1a18:4d0a
- with SMTP id d9443c01a7336-2d3177a2163mr42800725ad.9.1786459715153; Tue, 11
- Aug 2026 07:48:35 -0700 (PDT)
-Date: Tue, 11 Aug 2026 07:48:34 -0700
-In-Reply-To: <9huzqzk4zt3n.fsf@tarunix.c.googlers.com>
-Mime-Version: 1.0
-References: <20260728121138.1103610-1-tarunsahu@google.com>
- <20260728121138.1103610-2-tarunsahu@google.com> <anpXjM_lg_UTpl0q@google.com> <9huzqzk4zt3n.fsf@tarunix.c.googlers.com>
-Message-ID: <ans2Qvo0453cc_DD@google.com>
-Subject: Re: [PATCH v4 01/11] liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
-From: Sean Christopherson <seanjc@google.com>
-To: tarunsahu@google.com
-Cc: ackerleytng@google.com, fuad.tabba@linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
-	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
-	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
-	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
-	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
-	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
-	suzuki.poulose@arm.com
-Content-Type: text/plain; charset="us-ascii"
+	t=1786459774;
+	b=j9ZiXSzWJxytbxIgoobLo/QN9ji03GmDCdrE3KIyhMk9SZPl+Cidujgj1arLIBtRZQNkNv
+	2lO3MD4fYsVCDfKkbe47S5MbAaEE76FkbFBShI15GG+4/avrVdCO6M+o6HezFwJ61YBcmK
+	qJa+aqQxxryJcrYUS89P2wNbrGHJhUo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AA0CC4077D;
+	Tue, 11 Aug 2026 14:49:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DDBF1F000E9;
+	Tue, 11 Aug 2026 14:49:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786459773;
+	bh=jx6Ongc0OibhUt/11tLX9eIUBHVNywDq+e8KzvGNZmU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=K4lvmZmteat6V8pe2VwS8IQ4lE88hiEiWFuIMF+vda4q0bLT3dyUa19S/sEtmZC9Z
+	 IIh2AMcKyvA0ZPMBBSEIKuq3+RuMfYs1vpCjWN26854oqfpl/NLEVKp16MLU61Qq/P
+	 BCy5n6nIHNqM8+tGSMfSP7eAOOqf4tNHKIiFRZndjB23wcB9Kvna8K5MqWMP3mfrpY
+	 40u9aWIVxQqTL5j/H4zlVyivZwt2BThi09uy3ei9eRZ0Ap92oNxUpafdMQf7Ree6rV
+	 3o71PISlpx1QOYYDPuw9KHOertiWTdMt0ULn99P83XLuzwqMoU0wljHv4HFEsKDIPN
+	 aBn1b85n+VsJg==
+Message-ID: <3882e553-4be3-4b2d-b884-4443032e7853@kernel.org>
+Date: Tue, 11 Aug 2026 16:49:28 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [External] Re: [PATCH v2] mm/madvise: avoid skipping pages after
+ splitting large folios
+To: yunhui cui <cuiyunhui@bytedance.com>,
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org,
+ jannh@google.com, 00moses.alexander00@gmail.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260806055501.56761-1-cuiyunhui@bytedance.com>
+ <anQyoZgi5Urnvvjw@lucifer> <919b804b-6f1d-417e-9c0c-d06f50d765d8@kernel.org>
+ <anSar_i8UjniSbML@lucifer> <a6a9e0cc-e6cf-4f83-b6be-7d64058b8fa6@kernel.org>
+ <anSqbW1w2bDDHpAx@lucifer>
+ <CAEEQ3wmJoUF5TDQDfMU_dUHnY+gg7MYG=OmmdB3Ynpdu9gJ7-g@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAEEQ3wmJoUF5TDQDfMU_dUHnY+gg7MYG=OmmdB3Ynpdu9gJ7-g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B24E540007
+X-Stat-Signature: 5r64o1f6x1sufatbruq9bkw6bicxdx9j
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 8bsq6tkzyhz5f1ajc4usqkezukbdzgji
-X-Rspamd-Queue-Id: 93F2D18000C
-X-HE-Tag: 1786459716-583768
-X-HE-Meta: U2FsdGVkX18ffCqPwkVt6OBWnrhZEtJSgUh/CAHgP5SBgiZAutKxOS1BLx0DdHwH+2pCj3ghLBn+cvMQxqaXZVwQxqZ1FcnqYYUb+lECiARoPwy4qso9EiADzAWml+ZkALDjV53Z4scS36sMSvwg0WL6pmLPFH3x70pA+6k4HfX4AVyw9lwUaFad+RckHp2j0FfZBpfmehu+jH7q8x2En8FFTsASxIH6mwj8I11yUEc5WGYrYgK8NGj/JfkB7pHbRm/uvA+HvDABXNFfK0KC3E1QVFZFQ7OveTURAxHQRZZWRkMVb/AiMhgHQHfqAlS5dV7S2p1E6gq7R25R9SSGIu716JdmHxZBVCypXfm82Z3Arpq4LR92YLZ3hU3u3KvCxdvncskixHy/LCmSm47z7I5a5O+bJQ+tR4SEPLm0Cmg3idMKhrd7J62Q1KLdItadGaoAWqyzFroKG244VgOwy1FvgpOBK/oal7wTt2AIHWhJzMRJVFaT2Yv2vZshw+BU59bZGes6DZvFwhQTi11Pm9h16yjSpGL9Uybf4g/0gZ0O2M5PgP/6rUSEVfrnUnRmm3g0Q/YudTZUDWL5TO7m6TkqgvfRhJ5U/UuI9snotP5tY0FBolx6f6XooykmmuQrCpHNeVG8H+f9mVD3d5vYrI4CkMJHDSZsNasUhUuPTHY2cl1G8Z1Bu6mMPJkv/w0bNowaeOV6BkpG3h7DsOGyIOuy09EWRfmxqAMb4sG6YKF37sy8l1GRrMNz0p80ogV/b7vvLVrIY10Hbg9FBK9pSeILCWpv7LyEx0+5iTx2vrAENyRH2ea0DqowIxc7hhp9uh1y0Sh80vBT1WD6u0Xqu+1uFrtKCIsIa/VmD/L+ReDsoyRcAO5WYCaTcJCckccdBk+JztJRuaLaWJ8U8DczQvIG8P38oZHCA4wqQ0npwOlnJERaRXHJG0HhJScNJb/iuHAHJGLYOMTpRKvgtOy
- OiaQafna
- 9d4beszxHH83RlAKWA1zhUkE6zMMEgemb6F+7+YNq68Kn4PICWoJtSwb3DYDDROkQL0ZSZRPwfr+4YxV2H3oHkvogFUx4C7hrS/vPoxnE9OAz5MEzjt8+lTz2MlNfuMgPBW0PxGUpRr1p/KUUGJbIRhJM0BpwjnFajLfA3ve5xadXY8RwdfX8sM/PGi2MRgafnJBtGEXOmoxoyBjrd18e1iYyG6druMIcmNJj/NvI5zbXfthGNjxHQSS6iWOGp4UFUO33dj91gEr6fck9XFYjGFhX/xb2mbf41P+TG2VgIzrxA7J3Q4ffxNeu5qufyWQCpKgLUJWEiSW5ESkZRhkD6ITtFlaZu9UnC53nDhLjXMfy4OYhgzlPqDa3swiLFHfxA7ESPb8cGaXjgLl4WmkfBbDsgCHpT5mPr7Z+0L31DMkj1rKIh14rArJ2vrRPTKDR2BuN6LjzWOhEaDtYYmQiXzCNJ4belQYCoPT52Q/1Qq1vhGlvpcSKMZeGQpxaBK/D2YacQcxgzAOEJ14amZmAEQasqxTBTps2UuwqrxIrmS8XmlruckpFdO6AZVTV7WiKo/dVoaNTQNvQkPzTSdcM5IuOZ6waUMYEGtzjSmpsOOekQh1OjD5+t99lnFgZYBRIdjjX1fryC4nzuG5wF6FHnVmx/WXl+IplVWkf
+X-HE-Tag: 1786459774-917695
+X-HE-Meta: U2FsdGVkX1/Cq0YhhRSQZ2/YOlDBVQzdNrfOzh4eeJnglLBqOZF8S9Z1daRm1yrOyaly7wlHXy08gaR/eTEg2lNXOTdjNdO1s/uEetVmlHboKP1l7xcqO61ZvJycPxc11QlkCuyuyNBm7HovPLZp9wvrIaWAJyNSiRK/zG3ymVJ3tQzmF1VjjrFC2FPofG11b7wBpbKIFxsavGGlUcHf5dcREIccj+++7TKBCc6rCNjsgPwD/HxD8A2F6ODc2lx5cOarOpWGHc4OxrWlyfkX1xgJACnzqY2h9NDIGwyay6uysG5Dc3qf6B3WjwD4f29l5zCnwt+FT5moWOF3Q5PINJsrpcRZBMGKmyj4VOMDbtqwr6F3mKUkM8SpEuNlAq6OGkJkESapWgxIzH9MmNZKFo2YqsbK7O4dHcvp2m64jc4Dc3QYvPHK96SLEasCq1yDOVvSq8p7P8B2jIvQgq4I0GjMcL41sG7V0+E/iPfhfqRnFMyzNGbvUFHg4Hus83MAoTSHhDsy+2XuZHIPdMs4x5Y/hi/jGzwSeVAtnK6gfb8vExwrrEBbFES/1TraVXik+8l0H+eA74tzWz/aWqBzHZSHTpiM16w/osw5VV8Y8rRAyLNPkYJq9ASv20YgrIg6VTtzSccwWfeh7nonFkOLr2XSgvrPEkUXTeF56j4GebeNBNrZ9I9jKoZfzzIFnTlDUpmxFOD+CNy+Wjy3ugwn344IWn28MQTCPpssb8EQnN/VQ2NWU47NyMsORALfyiXdxMAFb6qo+t38tS3F4y71X2jcXJ3johYyf6fbUAV0C+CA1Cpbkki4G31JoQ9ntzWffBDcuY83yWpTvMkESoNzHoK/FAPETGGyp1ar2H4d3Spm9tHIK2+tK/zSkOOvI2okeLr5BpTUGGE+m2gUJYUfOpnlRWQuTuU6LADu04a2fIiFGkbZQF9kkSCBjq6sX+ByyvWW+2MHc64DuDY3r1l
+ CvPVz2bo
+ uM6/h2MnDuCaD1yPYcmvR6eN1v7kB5BNyzKsdq6ykX1NjFFzJErKV9KlmnzlGRIcT2aXpRk++gRSBoOXVwqu48Kre+CoMX0k7ZGK3r/kpYDbMXLx0kjonSDm8XPYRUjW8kPZT0OpGNVCvPFV2cC8OFL8VcAh+BdmeR6BqgzIFKMXwaBn9LnXbuiAIw6xJKhEVhHCJ11Oc+HnybEpbNN/h3rxcjVs4wCcqDdYWQIDonztHZrBqrmeNjuq2JVbk3CjFLLn9CeKRFQ7Dk8TC5iVaQ02CI63o//cmT48mS7jc2/yj4wWLvCB8OHL0CdZbeQIwj4OLkMjMsYYtdrzERRjkP0isElwBgpqEsvnAi+jhl4hsJ4d8fwQdLECL8iz8z1Jca6yr8ZDiiM/FYbP1lBYlkRkqwKys2U/DTj4hiXdyZ5O0EleUnH3pA+Wy6d6+5+b6EzOA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,47 +144,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026, tarunsahu@google.com wrote:
-> Sean Christopherson <seanjc@google.com> writes:
+On 8/11/26 04:31, yunhui cui wrote:
+> Hi Andrew, David, Lorenzo,
 > 
-> > On Tue, Jul 28, 2026, Tarun Sahu wrote:
-> >> Introduce the LIVEUPDATE_GUEST_MEMFD Kconfig option. This option
-> >> enables live update support for KVM guest_memfd files, enabling
-> >> guest_memfd-backed memory preservation across kernel upgrades.
-> >> 
-> >> Currently this support only guest_memfd files that are full-shared
-> >> (INIT_SHARED and no support for private_mem).
-> >
-> > Why?  Specifically, why do we need/want a separate Kconfig for guest_memfd
-> > liveupdate versus KVM liveupdate?  I can _maybe_ see a KVM-wide Kconfig, but
-> > even that seems like a stretch given that (AFAIK) hypervisors are the one and
-> > only use-case for liveupdate.
+> On Thu, Aug 6, 2026 at 11:40 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+>>
+>> On Thu, Aug 06, 2026 at 04:46:10PM +0200, David Hildenbrand (Arm) wrote:
+>>>
+>>> We GUP'ed a single page and now try to be smart about which other pages we'd GUP
+>>> next.
+>>>
+>>> That's just wrong, and hugetlb special-casing is just ugly.
+>>>
+>>> The problem here is that, if we GUP'ed a page and poisoned it, the GUP'ing the
+>>> next page might fail and we'd return an error.
+>>>
+>>> But maybe that error can simply be handled? We have FOLL_HWPOISON.
+>>>
+>>> So maybe we can just use FOLL_HWPOISON and skip over the entries that already
+>>> return -EHWPOISON?
+>>
+>> Yup this is ugly debug code so that works for me.
 > 
-> LIVEUPDATE is used in many subsystem. It is possible to enable
-> liveupdate and kvm without enabling KVM_GUEST_MEMFD. So GUEST_MEMFD
-> preservation must depend on CONFIG_LIVEUPDATE and KVM_GUEST_MEMFD both.
-> LIVEUPDATE_GUEST_MEMFD Kconfig is wrapper on both of them. It need not
-> to be visible in menu, So I can make it hidden. WDYT?
+> Thank you for the review. Based on your feedback, I went back through the
+> madvise, GUP, soft-offline, and memory-failure paths and outlined the
+> changes I plan to make for the next revision.
 > 
-> Also, KVM VM_FILE preservation and GUEST_MEMFD preservation both depends
-> on LIVEUPDATE_GUEST_MEMFD in this patch series. [PATCH 05/11]*
-> Which is wrong. So I will update KVM VM_FILE preservation to depend only
-> on CONFIG_LIVEUPDATE.
+> The issue is that using a page obtained for one address to infer how far
+> the range walker can advance is the wrong abstraction.
+> 
+> For an anonymous large folio, soft_offline_page() splits the folio to
+> order-0 and handles only the supplied base-page PFN. Advancing by the
+> pre-split folio size can therefore skip the remaining base pages while
+> madvise() still returns success.
+> 
+> Lorenzo also raised the semantics of a range that covers only part of a
+> hugetlb page. Looking at a range that crosses a hugetlb boundary exposes
+> another problem. For example, with two 2 MiB hugepages:
+> 
+> hugepage A: [0, 2 MiB)
+> hugepage B: [2 MiB, 4 MiB)
+> requested range: [2 MiB - 4 KiB, 2 MiB + 4 KiB)
+> 
+> The first GUP resolves the last base page in hugepage A. Adding the full
+> 2 MiB hugepage size to that unaligned address produces the next address
+> at 4 MiB - 4 KiB. That is already beyond the requested end at
+> 2 MiB + 4 KiB, so the loop terminates without ever visiting hugepage B.
+> 
+> For MADV_SOFT_OFFLINE:
+> 
+> - ordinary pages and large folios advance by PAGE_SIZE because
+>   soft_offline_page() handles the supplied base-page PFN after any split;
+> 
+> - hugetlb advances to the end of the current hugepage because successful
+>   soft-offline migrates the complete hugepage and leaves a healthy
+>   replacement mapped. If the walker advanced by PAGE_SIZE, its next GUP
+>   would resolve that healthy replacement and soft-offline the same virtual
+>   hugepage again;
+> 
+> - ZONE_DEVICE does not need a stride case because soft_offline_page()
+>   rejects it.
+> 
+> Advancing to the current hugepage boundary, rather than adding the hugepage
+> size to the original unaligned address, lets the next iteration start
+> exactly at hugepage B.
+> 
+> For MADV_HWPOISON, I plan to follow David's suggestion and walk at
+> PAGE_SIZE using:
+> 
+> get_user_pages_unlocked(start, 1, &page,
+> FOLL_GET | FOLL_HWPOISON)
+> 
+> get_user_pages_unlocked() is the appropriate interface here because the
+> current gup_fast_fallback() flag mask rejects FOLL_HWPOISON, while the
+> memory-failure madvise path enters madvise_inject_error() without
+> mmap_lock held. get_user_pages_unlocked() acquires and releases mmap_lock
+> internally, handles fault retries, and propagates -EHWPOISON from the
+> fault path. FOLL_GET makes the page-reference ownership consumed by
+> MF_COUNT_INCREASED explicit.
+> 
+> A successful GUP is followed by memory_failure(). If GUP returns
+> -EHWPOISON, the address was already covered by an earlier larger-granularity
+> injection, so the walker continues with the next base-page address. Other
+> errors are returned. This avoids hugetlb, DAX, and folio-size inference in
+> the MADV_HWPOISON caller.
+> 
+> Device DAX is relevant only to MADV_HWPOISON because
+> MADV_SOFT_OFFLINE rejects ZONE_DEVICE pages. Since the proposed
+> MADV_HWPOISON walker advances by PAGE_SIZE and uses each GUP result as
+> feedback rather than inferring the handled range from folio_size(), it
+> should also avoid the same granularity problem for Device DAX. A
+> successful GUP is passed to memory_failure(), while -EHWPOISON indicates
+> that the address was already covered by an earlier injection. Advancing
+> by PAGE_SIZE should therefore also work for Device DAX in principle. I do
+> not currently have a suitable Device DAX setup, so this remains untested
+> at runtime.
+> 
+> Because MADV_SOFT_OFFLINE must advance past a hugetlb replacement while
+> MADV_HWPOISON can use FOLL_HWPOISON feedback during a PAGE_SIZE walk, I
+> plan to use separate walking models for the two operations.
+> 
+> Before posting another revision, I plan to split the work into:
+> 
+> 1. the MADV_SOFT_OFFLINE range-walk fix;
+> 2. MADV_SOFT_OFFLINE large-folio and hugetlb selftests;
+> 3. the PAGE_SIZE + FOLL_HWPOISON MADV_HWPOISON walker;
+> 4. MADV_HWPOISON large-folio and hugetlb selftests.
+> 
+> Does this separation of the SOFT_OFFLINE and HWPOISON walking models look
+> reasonable?
+As Lorenzo says, this reads AI generated.
 
-Or just handle it all in the makefile?  E.g.
+I assume what you mean is:
 
-diff --git virt/kvm/Makefile.kvm virt/kvm/Makefile.kvm
-index d047d4cf58c9..e6f098498795 100644
---- virt/kvm/Makefile.kvm
-+++ virt/kvm/Makefile.kvm
-@@ -13,3 +13,8 @@ kvm-$(CONFIG_HAVE_KVM_IRQ_ROUTING) += $(KVM)/irqchip.o
- kvm-$(CONFIG_HAVE_KVM_DIRTY_RING) += $(KVM)/dirty_ring.o
- kvm-$(CONFIG_HAVE_KVM_PFNCACHE) += $(KVM)/pfncache.o
- kvm-$(CONFIG_KVM_GUEST_MEMFD) += $(KVM)/guest_memfd.o
-+
-+ifdef CONFIG_LIVEUPDATE
-+kvm-y += $(KVM)/kvm_luo.o
-+kvm-$(CONFIG_KVM_GUEST_MEMFD) += $(KVM)/guest_memfd_luo.o
-+endif
+MADV_HWPOISON will actually hwpoison the pages. We can just use FOLL_HWPOISON +
+-EHWPOISON and should be good. So far the theory.
 
+MADV_SOFT_OFFLINE will migrate pages instead. So if we don't skip multiple
+pages, we could end up migrating multiple times (and setting hwpoison multiple
+times).
+
+Well, for large folios (except hugetlb) that's not a problem, because we try
+splitting to order-0 either way, and if that fails, we bail out.
+
+So what remains is hugetlb, which is nasty.
+
+I don't really enjoy having any special-casing here, because the moment we e.g.,
+change how soft-offlining deals with splitting, we would be in trouble.
+
+Assume we start support splitting to min-order at some point, we'd also want o
+skip over min-order. Gah.
+
+
+Can we just make our life easier and disallow specifying ranges for
+MADV_HWPOISON/MADV_SOFT_OFFLINE?
+
+It's a pure testing interface IIRC. tools/testing/selftests/mm/memory-failure.c
+seems to always call it with PAGE_SIZE. Similarly
+tools/testing/selftests/mm/hugetlb-read-hwpoison.c
+
+There is one catch I think: an existing LTP test case issues MADV_SOFT_OFFLINE
+on a larger range. But it respects -EINVAL at least :)
+
+So we could return -EINVAL and fixup the test case to issue multiple madvise().
+
+[1]
+https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/syscalls/move_pages/move_pages12.c
+
+-- 
+Cheers,
+
+David
 
