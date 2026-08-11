@@ -4,128 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05ED1C5CFCF
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 08:41:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B1A9C5AC67
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 08:51:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB5AF6B007B; Tue, 11 Aug 2026 04:41:29 -0400 (EDT)
+	id 502646B007B; Tue, 11 Aug 2026 04:51:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E66716B008A; Tue, 11 Aug 2026 04:41:29 -0400 (EDT)
+	id 48C466B008A; Tue, 11 Aug 2026 04:51:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D54536B008C; Tue, 11 Aug 2026 04:41:29 -0400 (EDT)
+	id 32F566B008C; Tue, 11 Aug 2026 04:51:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AA74B6B007B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 04:41:29 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9381C1C0FFD
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 08:41:27 +0000 (UTC)
-X-FDA: 85088344614.13.ADE8E74
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 025864000B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 08:41:25 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HneO5wKc;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 057C56B007B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 04:51:22 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6EDEB1C0F64
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 08:51:22 +0000 (UTC)
+X-FDA: 85088369604.30.477F517
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C406F1C0007
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 08:51:20 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kcZcRvus;
+	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786437686;
+	s=arc-20220608; t=1786438280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B9oyw8VGrdnmKGUbtduBgbxCRdwpvdeLqgkhrCXDNKQ=;
-	b=zUh2ffPdujseIX15scjtukQhf6IacwdRFCbePdSRPlL35SSOMWUPPUxpA5i4Me2l82VQDd
-	5Nf3ql7r6AMaPmblfEBrkNNbhALgiqOUo/1Tejd02PzFdSihc9Fz7PeA12VceFLweNRiEb
-	J/LdlnFCuupmyoRZ9kyIzW34kSD389Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786437686;
-	b=FAcv8V2+ZChqrgdhjgUxvOIlckWCfDTlU/a5BztnMYXHYG5NKgJ/G6/jLiYYs/A0Adodle
-	DAkSKkhGVo01TvX/0XgxFsrvHIH3JjsQX/lPNuetR0zkLePzl9K5ElnmEk6LDf5WGuuzfS
-	c3BRl5C/Db19VWY2zKieSxs6xZ9vgmk=
+	bh=WGix9+ChbUADTuxGGhQgnktQZ1ZRs7VSctwhrFpgqIk=;
+	b=C674RnOV8Ep7A1B5vAO+oqhP12XsCc0uHXUNKrgxxX9NXTXhhxsnUuaAMNsqdsu8KfCwnj
+	jKmWFV678IbXCKFbZGk/64bLbPJG115JkK4wyo1bf3trTpJF7GOIujr/BZdGDEg17bBupi
+	4JjzJfeBkOK+1dLza5FrKRvrIn4hGqU=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HneO5wKc;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kcZcRvus;
+	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786438280;
+	b=CeTvuU+1m5UQrAbkEkJzEvREtM9jbpYvlQCsy2H63um2p6maVHnJxI3NDByJXPUggKMq++
+	PJa1e9tEegqY/j0o39wHDv23ZoiFrfp+dCZffD0Y/LYvqu/Mwjv4O86TauRNIWOJofY6lP
+	GGh62lR2Rkpn9MTaiG2I3mCjUQHK3ew=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 747C9600AF;
-	Tue, 11 Aug 2026 08:41:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B8E21F000E9;
-	Tue, 11 Aug 2026 08:41:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A56F0416B7;
+	Tue, 11 Aug 2026 08:51:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B661F000E9;
+	Tue, 11 Aug 2026 08:51:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786437685;
-	bh=B9oyw8VGrdnmKGUbtduBgbxCRdwpvdeLqgkhrCXDNKQ=;
+	s=k20260515; t=1786438279;
+	bh=WGix9+ChbUADTuxGGhQgnktQZ1ZRs7VSctwhrFpgqIk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HneO5wKcZdSzCZgiPL7O6y0hkp8NxpOysOwjQ1/0p5DZJDgbHmr8oIIto+qbUqUP8
-	 QSncbqQais7NDR31QFmgQ7SJeueG1RlsaCn/ugXce/uqztMKctFvKx1+vcfyXCvqNZ
-	 VJEHlmRInootV9fshr8tYk5LG1afiv/E+UOYl58uNgPRApc4UGU+ngmdh3PqQBdarD
-	 Za9aH05yjKoWK0cBkN69Xhhb9cMAk62gCUKpXkd+IC3tlRx4y1qZ5QJ3SYz3eWJwWJ
-	 /V1P5kbBwkgzwAFtJUA4uuFpLGZnK495BJYq41HQc15Y/yGaMH9StOXlfO1t3CLsMy
-	 Wo0bc8EiRjuEw==
-Date: Tue, 11 Aug 2026 09:40:50 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, 
+	b=kcZcRvusAGp8SBxsLE/wDLrFd85OxjKoeJNy86QvtKCyBGD1cgyhzx3Mo+zhq7u84
+	 yEZmU2BsoRT9wyCf19rypfWAmeEwPEbShEDqCyvC26uGPgHvv6/p3RvACw1zTXDx3L
+	 c+ps32DuOjovUkUEdLYgRaOvrkTWrPf8bqSxarzJBEwurpOSXymS9dQzEtEm1utNZg
+	 QSOee1kNV3l8wZ1yDB39yiHJCKQA/2K7P5nWoOct+7U7PMFg+Rn/PnIJeE+DrHvueG
+	 93eq7u40jvWGmJgujAMuyQTVFshixMJ3r2xalBwT3uRAjxP8uqnmmS2/PHdrnZ4gLl
+	 ixBVO13PGfhxw==
+Date: Tue, 11 Aug 2026 10:51:13 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Jacob Lalonde <jalalonde@meta.com>, 
+	David Hildenbrand <david@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
 	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
 	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Alex Deucher <alexander.deucher@amd.com>, 
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Steven Price <steven.price@arm.com>, 
-	Liviu Dudau <liviu.dudau@arm.com>, Huang Rui <ray.huang@amd.com>, 
-	Matthew Auld <matthew.auld@intel.com>, 
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 02/20] mm: provide vma_[flags_]is_cow_mapping() and
- remove is_cow_mapping()
-Message-ID: <anrfA56ZIL7QQqvk@lucifer>
-References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
- <20260806-b4-scalable-cow-virt-pgoff-v4-2-ab318a350404@kernel.org>
- <ann-vS6MYT9kuXqu@lucifer>
- <20260810151007.c1cfbcf46d498d2f8ce566f9@linux-foundation.org>
+	Michal Hocko <mhocko@suse.com>, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Omar Sandoval <osandov@osandov.com>, 
+	Jacob Lalonde <jalalonde@fb.com>
+Subject: Re: [PATCH] coredump: add filesz truncation and filter
+Message-ID: <20260811-achtfach-backpulver-mundart-70a7e5a20ac6@brauner>
+References: <20260731171336.2255844-1-jalalonde@meta.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260810151007.c1cfbcf46d498d2f8ce566f9@linux-foundation.org>
-X-Rspamd-Server: rspam07
+In-Reply-To: <20260731171336.2255844-1-jalalonde@meta.com>
 X-Rspam-User: 
-X-Stat-Signature: utkyax1eq1bue8z64pgxi5q7onffbzgj
-X-Rspamd-Queue-Id: 025864000B
-X-HE-Tag: 1786437685-197516
-X-HE-Meta: U2FsdGVkX19J6FMuEZKYtO6P/kC2/+ysKAZh50S120f5Z/QPxh6iKgccwnXAHZ3y2ixH8aaJK7+WmeMKqS4vrBsgJnhfH+1IdAeoXm5eIdXAeKKON4j5Rb67gHuzQhPqgg2pirRgGcyAXOR4orEf/ebduDMFefEY/ZeNVyrDEZupMFZiUsiTm4IHKnj/7txvLtgBRkn+vnqdUkc9p6lQ2FO0Rz9Z25zscUuQoQphGt0HsBkUaRQkms1QBUhK79hgMkFGOduWLwVd+pOIvUYE+k1LuA6VNXz9JLQPdJ3Y9XO9J16lFjhfqtCT27Xe2E0pEw0d4n0aJjORVSJiw48bPyqkUGEilotq9WA0NPj9tYQoEa6iijS97vsPfnzba3IIAunRva4065v2aFBtDlnEvT4zFM+txQY+qW1RtRJXWh2aQHl2WZxKCHfNlRAFUT5SrwFwyWea04xSbMIEd0hxSozXO+4KqzD7zpZujzmvIKWtO26a2BLkbLQpO4nhjqmiYhb+ZRwooOZZp1YAr9sy+8JfN5RbaoPMqmXf4I9NzM8Tmht28Og+x/uPg1TS9J1An/A00mhd6eI/1h8fTGpxBeLH0Ctwn82fzn7enc64Mrk9fLeyF7s+dT806rK1HZNp6FHpMCzVvRz8wil/HQeiBr+CESvoh3WI0CaLUOOS9Wp35UdD8YbLYYokrpAXfFWEAKwlbdujclbROHI1u7amWf9tBSWxiHQFkQTgJ42hKyIiCILy3pVS+3bCXSqPkdWAHH/oyTrqBHAZ/sz3eTszPHSzzfOSXgQAl94w+T5DZGo0MB/3eHq4B0E76NwWRbOCq4+xodwsrgJv3S1eHEY+BqTkaMQg36Q3SmtD7dEx8abGsPbUIJ5sYmG9IHGHhXPnGatUxaXfqzC5VIBv0i94nIWIAwcYw1WnsgFKbFMELUB1JDLkEp12sR2SdFWYgtQEnnghtHTR3G6Yts35uaP
- Sz0NtZMR
- nUFdhgX7BtERcJKzPYSMS4wKJw5jHPYSxTfOZKVjtElx3iD/ZY/p403TDK8WJ+tkNb58EXR/xsrU5e5ViEAQJlEQCOA0yBeBPY6Dfgc3jEsr2EZ3WMBYykBwTOWGVafiARazRIrlxlPbPmSlHB9jQ/EcYvlta/KOAsT8IX0JaMRfW9PHmNvEQuCzEPLAxJJUBET8uEx1uEdWVjF6u58iOdeBSYi3WKqECWSnodBXfAAz5UxMtWbTzzKxqb3DymWpVC6xoxKPiytV91l3F7QAdBq/HSH67wSLVaXj2+Dx3oLVcxRe4J+/0iHrtg7EP2UiPZFKvnezNGzfb09ynOEtHSFCVbo8K89usM97/Huoa4podyKBUOOy+gelowOMi81eZeYwGIw+kKu+CWqVyurc5YE2sP1oeqrM4EdVZRY4e0QZV19AoYPyuvYXjHKastb3ui2WxkP97+TowPoY=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C406F1C0007
+X-Stat-Signature: 6w76gz4k4pjhs9ey78gbmm65n5e3cj79
+X-HE-Tag: 1786438280-32695
+X-HE-Meta: U2FsdGVkX18F9G2+OQk9Lv1rlm4l+/G6U9OOL8LruQFlx3Zw8JBZpVE2Kt7HF+Q47wcUOjZA9yNMC/5cmQBYEXJlFHCabpWR5I1kxoFRNayJpMwCa4BYnb/LW7Zkm285X84J48yojXWHj87akiIv+hQXtirjgmOIT/HuTHJhG6aU0NYQpE/bn7bhzQagX3qW9EpokWqpRzIoQgJN5JWfdS2YD5e2ANj0Kt5uz6i5h9kpYYpfaHUEnx66mY0uBgCYL3TJQcEyHOhF+uqFZi2Mg/0EngA07CBOA0y++pdtNotQPgrvNzeHsHbDMdot+HOuOJIQQFnuPNiF9LAz5MFtOXYNb583TzuSgJUYYLkG5U2yVPsN9yBXURbDZ2Ba4au54vTm9mOQfN5t/J3aCjEcdEN9N40h9Kh26WgrthdouqYphNRSFJxSzKB5TYMuEpM8+gTQRO1KgCjqay7MrO3F1Bq0DL99vv8RO57Jw6rpmzpmZXeg/BCzPPYeLBglM6eV1WhYsEHPP7UtJ7hb5m87H4LYZLm5zwXasZdCYskei8oP0at7ANVL9XYezv8Zbdyo4A/DJQgsVbVX9xOpa1yKPqNatiVvXABMhPesM8rqHBUAwY403fIZGY1tlKt1JrXP8zZ5dXhnpxS5fkN1PCD29kvZeqQ0GOxdb7hSGcX5eOzoG+joyYjOtEMn915lN2LWm0wMZHQkbX5N/ezbePwZvMjPhGeWpmCVP17wXjafxIY1ixXw+t2dAhluXiQaIu6dLUjMxY79Lj5wnmgxJP4zAUyYrUNANaaXwUd8FSvkmbaPhWjKc9ajBRUB2tvtBxNpzmkykFCvCBVV6OfOCJ2YPtbRUS3fGdTnY+otG3DWFDkA/bTrkQHuO5d44UYKv0r8YsVvKIF5XcM8S7VY5IrL1Nw9263fXeMOeN9YQ0Vtvfyltq7BZsjX7b+qPSokpoPjtqK24T8/rbNHrEMoQoL
+ vwqjaYcD
+ RIpdF3NNvFYlzutm/og34/wgTLm8Hf+cVa5LDLuHFOjiqtLcg0OtLqVx/BxXLsIOBrbta/G3QjT0hFEnRzzhzYPjMLpyII7DdvYB2S93rLtIBgtHgIbIEuKeo+Kg7DWygFuicJlwGSB/q08EqwWVWxRfHROwGSZySyePJipT4QhuvuabJipw25JJpFxkWQJPLY6C+uyBvWnv2M2P9uI4X5VuUKkNOo7I7gMIzmV8JTUyvV3paKtcnROF62XACYthIhoiJYHjNZE1RZZP37Tg5Ng9zfXndVfWE4tBRgl+0/0amGwp0LqIA1Ir+xwSOUsk7f9vL7IvxV+O5Hhk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,125 +96,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 10, 2026 at 03:10:07PM -0700, Andrew Morton wrote:
-> On Mon, 10 Aug 2026 18:59:34 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
->
-> > Hi Andrew - would it be possible to insert the comments added below? Trying
-> > to avoid a respin if possible :)
->
-> np, like this?
+On Fri, Jul 31, 2026 at 10:13:36AM -0700, Jacob Lalonde wrote:
+> From: Jacob Lalonde <jalalonde@fb.com>
+> 
+> This adds opt-in truncation of Coredump segments to
+> `/proc/pid/coredump_filter`. The primary motivation here is to reduce the
+> number of zero pages written via pipe to a user space coredump process. In
+> my testing this reduces coredump size, and thus IO by ~40% at Meta. With
+> some outliers such as PyTorch's TBE weights being loaded in right before a
+> crash being closer to 99%.
+> 
+> We achieve this by having the Kernel not emit the trailing zeros of any
+> VMA, resulting in a PT_LOAD with filesz < memsz. I verified that both GDB
+> from v16 onward and trunk LLDB support loading cores with truncated
+> sections, however LLDB won't report zeros for the truncated region
 
-Great thanks!
+Hey!
 
-Just one minor edit below (being pedantic here but kinda what the comment
-needs I think :)
+So I remember having talked to Josef (Bacik) about this a few months
+ago. He had a similar goal. I don't think this is the right place to fix
+this, though.
 
->
-> From: Andrew Morton <akpm@linux-foundation.org>
-> Subject: mm-provide-vma_is_cow_mapping-and-remove-is_cow_mapping-fix
-> Date: Mon Aug 10 03:07:02 PM PDT 2026
->
-> add comments, per Lorenzo
->
-> Link: https://lore.kernel.org/ann-vS6MYT9kuXqu@lucifer
-> Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
->
->  include/linux/mm.h |   57 +++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 57 insertions(+)
->
-> --- a/include/linux/mm.h~mm-provide-vma_is_cow_mapping-and-remove-is_cow_mapping-fix
-> +++ a/include/linux/mm.h
-> @@ -2271,17 +2271,74 @@ void unpin_user_pages(struct page **page
->  void unpin_user_folio(struct folio *folio, unsigned long npages);
->  void unpin_folios(struct folio **folios, unsigned long nfolios);
->
-> +/**
-> + * vma_flags_is_cow_mapping() - Do these VMA flags imply a CoW mapping?
-> + * @flags: The VMA flags to check.
-> + *
-> + * Mappings which could be CoW'd (subject to Copy-On-Write faults) are
-> + * described as CoW mappings.
-> + *
-> + * All mappings backed by anonymous folios (all anonymous mappings and most
-> + * MAP_PRIVATE-file backed ranges) are CoW mappings.
-> + *
-> + * All other mappings (including all writable MAP_SHARED mappings) are
-> + * non-CoW.
+coredump_filter allows exclusion/inclusion per-memory-type. So it says
+which mappings will end up in the dump. And such filters are inherited
+across fork.
 
-I ummed and ahhed over how to put this but now I think this could cause
-confusion so could you replace the paragraph with:
+The new bit isn't a memory type at all though. All it does is to change
+the encoding of the data that's sent.
 
- * All other mappings (including all MAP_SHARED mappings) are non-CoW.
+So the receiver has to understand the new bit and not the crashing
+process. This scheme will only work with a subset of debuggers. That's
+kinda annoying. Basically the tail of a mapping can show up as
+unavailable memory rather than zeroes. And it's inherited across fork
+and exec so some unsuspecting crashing process does start generating
+such coredumps purely because its parent did opt in.
 
-It's _all_ MAP_SHARED mappings not just writable, I thought people would
-automatically assume read-only wasn't included plus drivers could in theory
-do crazy things (I have a pending series to fix that though) but it's
-clearer just to say all.
+Some time ago I added the coredump socket. There's a simple protocol
+built on top of it. See coredump_req and coredump_ack in
+include/uapi/linux/coredump.h. The kernel advertises the features it
+supports in coredump_req->mask. Userspace picks the ones it wants in
+coredump_ack->mask. It's explicitly extensible. And it's per-coredump.
 
-> + *
-> + * The criteria are !VMA_SHARED_BIT, VMA_MAYWRITE_BIT.
-> + *
-> + * VMA_MAYWRITE_BIT is checked instead of VMA_WRITE_BIT to account for both
-> + * future mprotect() calls which can render a read-only mapping writable, and
-> + * GUP with FOLL_FORCE (e.g. ptrace) which can CoW a read-only mapping.
-> + *
-> + * - No anonymous mapping can ever clear VMA_MAYWRITE_BIT.
-> + *
-> + * - Writes to anonymous mappings do not immediately result in CoW faults but
-> + *   may do so after the process is forked or if a read is followed by a
-> + *   write.
-> + *
-> + * - Writes to MAP_PRIVATE file-backed mappings result in CoW faults and may
-> + *   do so again after fork.
-> + *
-> + * - MAP_SHARED mappings of a file opened read-only are transformed into
-> + *   VMA_MAYSHARE_BIT, !VMA_SHARED_BIT, !VMA_MAYWRITE_BIT mappings, so remain
-> + *   non-CoW.
-> + *
-> + * - Drivers may clear VMA_MAYWRITE_BIT but do so at mmap() time and cannot
-> + *   mark themselves anonymous. Having cleared this flag it is not valid for
-> + *   them to leave the VMA_WRITE_BIT flag set.
-> + *
-> + * As a consequence, the anonymous reverse mapping only tracks CoW mappings.
-> + *
-> + * Returns: true if the flags indicate a CoW mapping, otherwise false.
-> + */
->  static inline bool vma_flags_is_cow_mapping(const vma_flags_t *flags)
->  {
->  	return vma_flags_test(flags, VMA_MAYWRITE_BIT) &&
->  		!vma_flags_test(flags, VMA_SHARED_BIT);
->  }
->
-> +/**
-> + * vma_is_cow_mapping() - Is this VMA a CoW mapping?
-> + * @desc: The VMA to check.
-> + *
-> + * See vma_flags_is_cow_mapping() for details.
-> + *
-> + * Returns: true if the VMA is a CoW mapping, otherwise false.
-> + */
->  static inline bool vma_is_cow_mapping(const struct vm_area_struct *vma)
->  {
->  	return vma_flags_is_cow_mapping(&vma->flags);
->  }
->
-> +/**
-> + * vma_desc_is_cow_mapping() - Is this VMA descriptor a CoW mapping?
-> + * @desc: The VMA descriptor to check.
-> + *
-> + * See vma_flags_is_cow_mapping() for details.
-> + *
-> + * Returns: true if the VMA descriptor describes a CoW mapping, otherwise
-> + * false.
-> + */
->  static inline bool vma_desc_is_cow_mapping(struct vm_area_desc *desc)
->  {
->  	return vma_flags_is_cow_mapping(&desc->vma_flags);
-> _
->
+What you want to do can actually be achieved by just using the coredump
+socket today:
 
---
-Cheers, Lorenzo
+Set coredump_filter to 0. The kernel now streams a complete skeleton:
+ELF header, the full PT_LOAD table and every note. The dumping process
+then blocks in coredump_sock_wait(). And now the coredump server in
+userspace can fill in the memory from /proc/<pid>/mem driven by
+PAGEMAP_SCAN and then writes the sparse file itself (also works with
+threads as they're also parked and you can always trace threads within
+your thread-group).
+
+That obviously means you have to assemble the ELF in userspace. But you
+get full control over what memory is collected and how.
+
+I find that quite appealing but if you wanted kernel-based zero
+filtering I have a proposal as well.
+
+Right now the mask only carries COREDUMP_{KERNEL,USERSPACE,REJECT,WAIT}.
+Adding memory options is simple enough. Extend the enum and raise the
+bit in coredump_sock_request(). Add a new bit COREDUMP_SPARSE to the
+protocol.
+
+The coredump socket stops streaming raw core data and becomes a sequence
+of records. The coredump server can reassemble the data as
+needed/wanted.
+
+So every__dump_emit() gets a data record and every __dump_skip() becomes
+a zero record with no payload. That can live entirely fs/coredump.c
+below binfmt. So it applies to every binfmt and needs no elf knowledge
+at all.
 
