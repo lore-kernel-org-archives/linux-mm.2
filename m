@@ -4,88 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BF97C5B56A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:24:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 361C3C5B56A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:24:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7985F6B0099; Tue, 11 Aug 2026 12:24:02 -0400 (EDT)
+	id 2DDE46B009D; Tue, 11 Aug 2026 12:24:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76F526B009E; Tue, 11 Aug 2026 12:24:02 -0400 (EDT)
+	id 2B5106B009E; Tue, 11 Aug 2026 12:24:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 685C96B00A2; Tue, 11 Aug 2026 12:24:02 -0400 (EDT)
+	id 1A57C6B00A2; Tue, 11 Aug 2026 12:24:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 494D96B0099
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:24:02 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DBD0112010A
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:24:01 +0000 (UTC)
-X-FDA: 85089510282.06.F00A7B7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3372F16000D
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:24:00 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=afTVKARn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EAB006B009D
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:24:27 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 76F51400FD
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:24:27 +0000 (UTC)
+X-FDA: 85089511374.13.28EE53A
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9491A80011
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:24:25 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=cFGxTS+t;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.41 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786465440;
+	s=arc-20220608; t=1786465465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8lnFNRxNEuxRRD6qwiMyyus8GQcj7my2tN3yiVz05cM=;
-	b=vWfdqezOexuR1FDm8aeNsM9RHisg/wy47LjHk5fTwv7PSFrqGAtFcc0Alrl1AqgF8acqhW
-	bHW+M1G32ffrwjjC6jRJsRw5gn7dwF9JIRcOj281zvXqiEUpGOF8QYaJMNNDC8CN+JHkwl
-	e2yhwiMfPhdQvA/9jOG/H5Hc/p4yPdA=
+	bh=Ge2DKXL/0cigzsh3KdWGGLhQNvufZEJOXUsvNTDWwxU=;
+	b=Mgdv+DXJB8FdjpUHd7fcboQTB/k+Rk4grajoTjRy/ui/klAUGPls0kQ/BtCODaYRDG7iiM
+	9NZ3nQRSjpd8aoHdKinfqkzLa7HwBalrEQtwOKaW1wbbszpCFbS1N5K+EhQtLCKYAhn/Vg
+	J8efgR8FwWgZJpAulU6s/bI50nOefEo=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=afTVKARn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=cFGxTS+t;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.41 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786465440;
-	b=kxiyI64zFi/mWjj/2JrcK2WiKiV6VoaMarZgcP7MFOob6m8QfMfagH8/M4twWfqJyJNbss
-	7Mxt1hteirWtIs5kSbjOgYkVzM8j11cXH1m84YXMbCwjAvbMwicGwRPHpq9PCxmeJ3iQii
-	HxWGgSP+MhqmICMoDOzARDdjXfUfHVQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 568FF434C6;
-	Tue, 11 Aug 2026 16:23:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584AD1F000E9;
-	Tue, 11 Aug 2026 16:23:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786465439;
-	bh=8lnFNRxNEuxRRD6qwiMyyus8GQcj7my2tN3yiVz05cM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=afTVKARnHiFWaEXzsU4/sBOjrpH93UFBUPgRj0BZGyWL1VOmEplr5QaL/Q2uYLtQu
-	 5jl8ulKd+ljnVQnFSAa9VmxepQiQwU21cZC8cdNTmMr1XiyNzyNoAR3c02bsHzkLfy
-	 Y8dwiNS2mYggmNWKyTjLD8OaXW6KiYbD4AzVePL2/5WNxE5+J0PfmxG8nqAZ8oCl8l
-	 hRk7QxwzU+T2URA8geCSKDd8/1BBrXih1qUkXhv/X6+mZMQTpszZl6pF7zfyBmXpIq
-	 tEVJ3n3PrGFJArBV/mUDt/jZK4dAc8w0a422wcNlCsexd+Ed5s2LvSlLphyVy1XkxI
-	 y2Oat7ktQokRw==
-Date: Tue, 11 Aug 2026 17:23:55 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] mm/pagewalk: fix stale walk->action escaping
- walk_pmd_range()
-Message-ID: <antMR-ypJfB3urzQ@gremlin>
-References: <20260811161949.3879321-1-imv4bel@gmail.com>
- <20260811161949.3879321-2-imv4bel@gmail.com>
+	t=1786465465;
+	b=cfE1aJ4XfnF5fG2UYrx2jGg+FWYMObfl1BNea6pM72TlgOLWoU8lj6niz+9g4r9nIIFPN9
+	I8mUktaLU6oZexolB5VuEaa5576qpDvCkPKp1j5LfLu70hmDf+6f+0lNpBV8uI+shwY79j
+	aL5v16aMFiqip0HJgiZZRh2y/ctDvh0=
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8fcc43c48f7so31742596d6.2
+        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:24:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1786465465; x=1787070265; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Ge2DKXL/0cigzsh3KdWGGLhQNvufZEJOXUsvNTDWwxU=;
+        b=cFGxTS+t1qTJIUUpU1SDNVEHtpmeLn55PbDS9qwdUFJS1FyvircLF1/COACCcwwcay
+         RBQmB09Jv12e1IshvEuA/43AM8LEOWdzNCwsRXI+23F3ubQxmHg/uCKr3VR/TVJfO17B
+         O66NE3JmfEyJq7eYyFi+yBJoIEeMOEZh+r5cIM7NyP4WBauMWy5sO87VV6Ex7eBGsr7s
+         9b2TFgK5rOMJS83tzpLc0ov/ZnzW/PBzlUnK7VNQ7l/8/rm+gCDLoydTyOKQ1PvqGLX3
+         UmQDYfMdjcNoSv99WGgksQ0Byv025Jf8nIYDzDViWRRjlRZ/NikkSP3Fjsr5GtMdkFpB
+         BNWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786465465; x=1787070265;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ge2DKXL/0cigzsh3KdWGGLhQNvufZEJOXUsvNTDWwxU=;
+        b=nsx0Lhi14yZvyt8W03PtL74s98WDBHiUqaK68uxWqhRkDJ1WlHhfP2xBiYhLfqdy/1
+         tnlh7GwoMtSrV5AbNjhn9r8nRRZpGCY9Vd1tfVJUBEJXiKJyk3hbG1fEknrU+5Y96MnM
+         MYggR+4wpslGNU3wtQ0AMK/WcHRzYzqj0s79r7MWjPk4YcR3ijZTB56Twn3uMLl6N3wW
+         Kz84/294NspRqxwP2NkIsOr1DlNqeP6u5t3/vkwaj8QRX6Q5fvP+7hVLcc8qYb9FrMtE
+         PMCl7v3xTfYp8VtqsWt53fmEVY4DYc+yEp/nxvUd5vnBWzxs6bBqu6Qrz0qi+wNCMewG
+         Qbug==
+X-Forwarded-Encrypted: i=1; AHgh+Roz6TK+l+nqn8IVF27gN4i62Y++6A8igiKAids5tAwhix2LeHmAxFD1og6vvs122S12UfKeENTydg==@kvack.org
+X-Gm-Message-State: AOJu0YwNxEV/Z2S2IjNBxIqhUNSSkYBB4pEp1eWZ14Iny2COYSCOfWK1
+	B5KwCrFifz3rsfnEot8irbFPV1km+zdCiFIPtptENRr3ao1wAfrkbhXfYA7cFRnASzo=
+X-Gm-Gg: AR+sD12woDkUPaXmHCSKJT9BOJ+vC9HcGAFYX3lIO01Kv1vaIxvLEWQ6DWr/1uXYzMn
+	PFSBxEB69wlQ7dWZZVUuzBvNZLZNMpUdw1ChXKENHDbWJ/7B+RcBSqIKiudwvEfTZp6QCDuD7ZQ
+	+++XSHd1ONWkPCXpckNtWBZdS8IUhvye1csm1TWpiLQ6oqDZScfW6QD5nZIqbHHMhBntaSOu+yP
+	zHzNi0tk6ix6XgtWPxba6QurZb7UaoU/FB+6vnyuWvRIoUOM3r2z8O1O9K4rjr6hZfgLXY9C00n
+	ODjtHY3pEJlinM98yn7YP5Q3U5WfW7LAIaD4Tqv0as3aVD8FAf3Ac/PzTxc5/fLQ7Eqv2yngld6
+	EJNOPFyS+CMnuimjAjmQ3dIOe//q5DZ0H2xwJZA/R8RYV6WV8g5hAgQFO0rb6gO1vtm5TAhouYr
+	jVpCR7ZDqNYAX+tyh1XFJPCiWZAl+VKaAZut1oAMp8fO3mQcVy
+X-Received: by 2002:a05:6214:5d81:b0:8ef:ea2a:2728 with SMTP id 6a1803df08f44-90a66df2c02mr43379816d6.19.1786465464725;
+        Tue, 11 Aug 2026 09:24:24 -0700 (PDT)
+Received: from ziepe.ca ([142.166.156.215])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90a6c3c38c4sm2442696d6.36.2026.08.11.09.24.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Aug 2026 09:24:23 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wtpH5-00000002YAS-0rLs;
+	Tue, 11 Aug 2026 13:24:23 -0300
+Date: Tue, 11 Aug 2026 13:24:23 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	=?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Sean Christopherson <seanjc@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
+	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+Message-ID: <20260811162423.GL544626@ziepe.ca>
+References: <a247c49dd61af1df7ddc4dcb1cccbcb36b04d9d5.camel@infradead.org>
+ <20260811135537.GC544626@ziepe.ca>
+ <1d669aca4ffee797b9c29215382444a5b23624b3.camel@infradead.org>
+ <20260811142730.GG544626@ziepe.ca>
+ <15a7bd252a9aaeefe393f5609ec383ce2c61694a.camel@infradead.org>
+ <20260811152435.GH544626@ziepe.ca>
+ <eac6f58590798a0bd96573d0ab15e0700937ec1d.camel@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260811161949.3879321-2-imv4bel@gmail.com>
+In-Reply-To: <eac6f58590798a0bd96573d0ab15e0700937ec1d.camel@infradead.org>
 X-Rspam-User: 
-X-Stat-Signature: 7nwnb11mo65i5g6oufozx3j9uya8ejcw
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3372F16000D
-X-HE-Tag: 1786465440-482614
-X-HE-Meta: U2FsdGVkX1+PoXxsQjM8S4dvENhxd0Hy2sdcj7KSx4s9DJfnj3Q81Y1P05n68IiuyZx+OHLm7c6oyGh8dog6p0cg2SXvRg56gRA07eY8RUu3V3rfoif/7WAbQY0pZFnDqHVs8T02D1wjgCamOQvIYHzHAAkGYAhhl4RifyjnEugUS1GuKn0vYZ2Ld9+hpPjY4Nx86HFFCwzN3KKGEXJZQn3xvRS1zhntPH0dufLpuyei2zkmCqA/VncrlXmfHdCVLVDwIp39H2aoTvW1d79lOmut60RogmawfhoPXajcuI2Eo/27YsquO2MlLfaeYMzyH1CYF8iSHRxQizugNymVzsw9epQrQY+tHojoD3PoMPHtESVqT/odi4Pmk1Ww1xgGToMTjQv3AxybSQmqfyXd8Qh8ls6kfDbZuOvpWlPpfHVX5peP0NPsDWeJKzkrzYv+ACfD4O3xHwX2W+ZBeQCQluywB5iWmnkMB7F4vOn30kMEpq2cBaFmEgLNw8gcISfoCqxWNGdDEPBWYxQFbQG1bxNwQU9Z66CJobQPfz0+Ba20kikEZ5LyTJnrLdXS/8OQpvyfB8bOZPIKn7ZjALlUBpzG50yXCT8lyWtFwP/9LKF1bgPlrQWzt7rxDr1FY6JO+uYz6m0Fg8iyye/GtaS36XU2FBJSzoxwaEUH96aU5C9xe9w1HCVNkp95Ar6JdQ9LR+Ge4Tu6t38toKVTJHdZuCZHVYzVtENzHgiqVWs6XZp3RKq1wVrVuupd+Ju4BE4/aZ5occd4YuYxRdekS0/1pgKlgz0LYLMwUywRYUTPKJpaFzBuraQocQMO0kkarNhxA0SII3FOKq7Wsjcc2g6j1lZnXUHu5O2R88MxIytMJAW1a2lOcKeefMptBdtj8x8qyWX+fn5KG+6IF/bBqOS+eJ4CTzXu/300WcKxDdweAmrWvTwsaFdU60BgMubG5wGxwOWh4+slAbJNiGCYL2y
- 6p6B8fZ1
- 8q/xd48p4UzgLeOcqSBYv18wLZr4aRt1PGjdmeoGOQUsofy8TJKyZPXRqc5gHzKVBwM84l924632AEiea7cuKkpcRt/c0BNBhnVEXH07RHceqWEXRzng37jQeWWkW0uRPoNm4lqbjKuy3CdROvB3sR0QX/NYCDFakCD9Hcyl+h2TMmbPbyh6vZTI57/lr0jDSGKeUr1XNHwtnx59d4SF9swy9/xaRNF8GtWrn0oL03y+1QG7KgH7ysb8e/DdTgKklm7jVRoU4yDilwW5x+stpRTtW3my5Fl48GdVwVXxDmLX0ImTXAsokmmh8NC5qdBTuag1w5DB5hAitnnGgSoglQK9kydsLCz0kjSyC
+X-Rspamd-Queue-Id: 9491A80011
+X-Rspamd-Server: rspam07
+X-Stat-Signature: nibi3pfnk7r3fg1q595g1713nhtrpsjb
+X-HE-Tag: 1786465465-472622
+X-HE-Meta: U2FsdGVkX18cqwAEYeew+WxTwx3cI/yvjiPC5VboLYZxv4ZnlUw6I4W0lghsxpOqbaajPC9JDwzUFTP6Ujc1Km/3wMgQaUF+0B9viTHD6jkq7m0OL10Nz+BnG/tW9Kr4huqmdgVFsxSx+6kB1/7yVvR9GOJJWCpZfH/oWMJNb+uBq3fZCYo6ZHdOXupy0yXeHceOPjl2eRHUi2IWGizvDjQpojlZthiU4ehDsgWiGUtnuXlvQlOQUBHHsbhuaGDsz//UQsjPDnq29b66fb+TLXPpZ4Zj60rLMxC2wgcZQl1WtytYPJJOqUmfsNYsA3GTV2I9r4+0cUwvN7isuGJsusNY9x+tt9xEnY9trECfMYqbwrIiLTT6ifK/x1WvwSCABMAUWk16AZ3z6LP81jmnbSq7Ven8nMLb0k8JvyIj++oD7qH/RFeBYilbft4C33BBKFlrCLoUWJFyVgI0eysFsBQ6ycMCI0wZegIPAWyPjvPbuW2/VM1Jb1XmuZy7Uxkj2nHkYTV50EAPtQmlj7DM9oEdfvL9X7lRJRbyiIC9pX93LMtjcAY3fO6T4obZwi13C4blh68gklVukt/rg2Lpbk/O5orjRETWbhEZGB5gVA7NSdMrXJWp6GH6IHCNevzV2u1h+UbwBwLQMKquZ75NIurdJGt+KRhrDFxk0DMxiLYS1gQ/t4kh2bHY4gHmtpCinBFEKdcwDYuf8WPNwXM5ZaFDXXJOGdSYaeH5Ps2eLPLbQu0yp1N5wamNsOXGzrePLLp/DyyOkH70jAYNFeleSb8GvQmXCQOrBq+Q3vmuIwc/OIDLxgS6PKFtuAiLESAG5blqDekv0DrmNr6+9Wpez21ncmRn+4mLhRrgzUSlHOKXCcMBhaY6q0D+ZeYUf8JXp+HbrlYbKKw+it9eRZfX7keduhj8725fz1Y6tECfGLRpdL0zhP+aF3pwjQQ3JpwyhE5nDf4dqMIqrp1CKAQ
+ HLErRwS1
+ nK99eqy2q3LIMV3+cjo66V5mUvSmUwuo27bBwGxcZfolmVZ99mZlUg/rEck0EUXIZwh/RiTnIFgw9AZTClSDB1uSExJV/m4TXf1TOMXfuGnHdG6KA4yPS5zX+tquGh7kki0INpHfU1+mbXczl0ev6by1fAejNPI0icnlq4MLuf5yB5jrw2z9JnIbHveiWLjEDgxdlB4XqETj0MZwoRgP30N55a5hhJSKDwms52FkfVeaj0sSiMCQM86hj4OvYXz3UqARFnxHEHtZH/+nizJeUKH6PJDvgtT45Mi29pixhQTSvjLsf188+D7odlC7RM34WWuTbZsuumjpI+kk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,95 +146,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 12, 2026 at 01:18:57AM +0900, Hyunwoo Kim wrote:
-> If ->pmd_entry() sets walk->action = ACTION_AGAIN, the pmd_none()
-> check is retried. The PMD entry may be cleared at the point of retry.
->
-> In this case, if walk->ops->install_pte is not specified, the code
-> continues to the next PMD entry in the range without resetting
-> walk->action to ACTION_SUBTREE.
->
-> This leaves walk->action erroneously set to ACTION_AGAIN, which is
-> incorrect.
->
-> This was incorrect but not problematic up until commit 3b89863c3fa4
-> ("mm/pagewalk: fix race between concurrent split and refault")
-> which updated walk_pud_range() to check for walk->action ==
-> ACTION_AGAIN upon walk_pmd_range()'s return, causing the PUD walk
-> to be retried.
->
-> In this case this results in duplicate walk callbacks being
-> invoked, which is erroneous and will break any caller that is not
-> idempotent with respect to this (and waste time for those which
-> are).
->
-> A specific example of this breaking things is mincore which walks
-> an internal cursor data structure a byte at a time on assumption
-> that page table entry callbacks are called only once for each
-> entry.
->
-> Fix the problem by resetting walk->action to ACTION_SUBTREE prior
-> to the none check.
->
-> The pattern also exists in walk_pud_range() so fix it there too.
->
-> This issue was found through AI-based fuzzing.
->
-> Fixes: 3b89863c3fa4 ("mm/pagewalk: fix race between concurrent split and refault")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-5
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+On Tue, Aug 11, 2026 at 04:29:55PM +0100, David Woodhouse wrote:
+> On Tue, 2026-08-11 at 12:24 -0300, Jason Gunthorpe wrote:
+> > It is documented to be like this, even if it is hard to test..
+> 
+> So don't change your documentation :)
+> 
+> > Even for normal blocking notifiers you should not be using
+> > synchronize_rcu().
+> 
+> This is SRCU not RCU, and the read-side sections are converted from
+> rwlocks and never had any allocations inside them anyway.
 
-Thanks, LGTM so:
+To be clear you should not be using any synchronize_[s]rcu() primitive
+inside the invalidation callbacks. These are well known to have
+multi-second delays on loaded systems which are a completely
+inappropriate performance characteristic for these mm callbacks.
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+This statement has nothing to do with deadlock.
 
-> ---
->  mm/pagewalk.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-> index 5d87c632a25507..d3bfece3193366 100644
-> --- a/mm/pagewalk.c
-> +++ b/mm/pagewalk.c
-> @@ -126,6 +126,7 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
->  	pmd = pmd_offset(pud, addr);
->  	do {
->  again:
-> +		walk->action = ACTION_SUBTREE;
->  		next = pmd_addr_end(addr, end);
->  		if (pmd_none(*pmd)) {
->  			if (has_install)
-> @@ -138,8 +139,6 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
->  				continue;
->  		}
->
-> -		walk->action = ACTION_SUBTREE;
-> -
->  		/*
->  		 * This implies that each ->pmd_entry() handler
->  		 * needs to know about pmd_trans_huge() pmds
-> @@ -196,6 +195,7 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
->  	pud = pud_offset(p4d, addr);
->  	do {
->   again:
-> +		walk->action = ACTION_SUBTREE;
->  		next = pud_addr_end(addr, end);
->  		if (pud_none(*pud)) {
->  			if (has_install)
-> @@ -208,8 +208,6 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
->  				continue;
->  		}
->
-> -		walk->action = ACTION_SUBTREE;
-> -
->  		if (ops->pud_entry)
->  			err = ops->pud_entry(pud, addr, next, walk);
->  		if (err)
-> --
-> 2.43.0
->
+RCU is always a trade off, you can make the read side run really fast
+and the write side is ghastly slow. If you can't handle the slow write
+you shouldn't use RCU techniques.
 
---
-Cheers, Lorenzo
+Jason
 
