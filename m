@@ -4,100 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2336AC5CFCF
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 13:34:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09AB4C5AC67
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 13:37:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10D406B0098; Tue, 11 Aug 2026 09:34:16 -0400 (EDT)
+	id 076B36B0093; Tue, 11 Aug 2026 09:37:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 096B26B009D; Tue, 11 Aug 2026 09:34:16 -0400 (EDT)
+	id 0269B6B0095; Tue, 11 Aug 2026 09:37:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA01C6B00A3; Tue, 11 Aug 2026 09:34:15 -0400 (EDT)
+	id E7E3C6B0096; Tue, 11 Aug 2026 09:37:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B64336B0098
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:34:15 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3D63C40432
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:34:15 +0000 (UTC)
-X-FDA: 85089082470.29.EAD9587
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 871A580014
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:34:13 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BxLWykSJ;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786455253;
-	b=7bqlMWgQgombD0oUCL4083cWPAfAyeedAy2ehBhjdM6qctXRnhF6423jW6K6A4CDQn1cSD
-	aunZ2jM2IWjyAc+p13SQsC28M2VUwPgAw93FPLDKxjkHABMAB0c3zjxlI4FomOmUvPVcd6
-	IgcAaXD4Q03tGLw11pa+6sR3mdEz8EU=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BxLWykSJ;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C2B096B0093
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:37:11 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CF4BC1C1121
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:37:10 +0000 (UTC)
+X-FDA: 85089089820.12.561DF05
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1E5DA12000E
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:37:08 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pYMPUd3s;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786455253;
+	s=arc-20220608; t=1786455429;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bqIXDqrw8oYOmDkaTwdVQwShIjjzl5wSUAlKKnpj5I4=;
-	b=XZ+c9MS2B+vRfZ7pXyv6ensPVl3KCrWtFMb3kkPeu7+bQqZggo6xvaZ1Ym8a8g/DgAK0Dx
-	aDny0wR2loT+61DY+M5EV4YbdtF+LzBmUuKMJJAlTiR+VacuUyaqS0+mEraO+8E+0fhcWw
-	ZyRTItFZwzBRjJ3jPcl8Dd82njBX12Q=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F00B840264;
-	Tue, 11 Aug 2026 13:34:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 203D91F000E9;
-	Tue, 11 Aug 2026 13:34:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786455251;
-	bh=bqIXDqrw8oYOmDkaTwdVQwShIjjzl5wSUAlKKnpj5I4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BxLWykSJ0ZeTjyaJFLJmd3CS4KqDBLMESXbjRfGoUkYaTwm/uJPT6QYVxHtxC2eG7
-	 sw8kmor8DZl1HJn+H2GYtgsd3prexT6eAAKYBjBVE1dbXPHZenSZlgdxQmKOKbW20I
-	 /e77S2PW8eey2UzfiFcONjEbiK9a1DFpsQtFNbpBFZBMdRzPstjuPA0bJ5F4PH+jPY
-	 7NeWxeern/MDmL0U+wOXEgly+js8cZh17BrMODv6OQZAagHfPVWck8bKCueuVef3yC
-	 psJU8yuyn2AXpojYzGIT7U3FPDQJcyturjUgIqlgzahJxNO6I5ckR2YTHF2+G8SBQi
-	 s2q/EjUJ3pi5A==
-Date: Tue, 11 Aug 2026 16:34:02 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	rmikey@meta.com, riel@surriel.com, kernel-team@meta.com,
-	Kiryl Shutsemau <kas@kernel.org>
-Subject: Re: [PATCH v5] kexec: keep the next kernel off hardware-poisoned
- pages
-Message-ID: <anskyrEVUlnTVEgF@kernel.org>
-References: <20260810-kexec_posioned-v5-1-95e1b5e2e656@debian.org>
- <ann9Kcesyb4T9Z8b@kernel.org>
- <anr59P1ZCAuHxv6x@gmail.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=kF2VF2U/hL6reW1X2jhuzR2siNy4Ft7Ohusar6d2kSg=;
+	b=ZLHpfB25PErfmf6CxR+nubnJmGafD/i057hcpkIaV1Y4B8d5RI+36yIXkOWSONy2XtTeqN
+	QOAqX5tQaaWev97y/J1/6FDoMCE3hTuKdX6YeEq7CA4gYc8fGrqq+iwFtIH2H3TBFq1TbP
+	d0cjDbGl6NxFLE1/xOrBt5CiEnAwnNQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pYMPUd3s;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786455429;
+	b=sn6pKpWqsYM47XmHMzXwSlSM1uQqfINROEIdmB1843P2zItPs8emkQT4PbukeDddSpoIwJ
+	R96Y9tBn2DNrFRxVDFLCUNcZHhE6tKhznB8Q9/0yzVI5UUo9G5c9a+l6f5QHwd/lXnp3MN
+	Mi9RJXCpX5FESgxlVJmbLBUFdxcXlzU=
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cacb8416a1so31976045ad.1
+        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 06:37:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786455428; x=1787060228; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kF2VF2U/hL6reW1X2jhuzR2siNy4Ft7Ohusar6d2kSg=;
+        b=pYMPUd3ssHhbDD+4ExN2ro9Fv81NnVCQMvo8T1G2fkdJbmt1rfa6Z2kmLYU4gZtEaO
+         oscvB8EVfCSAKwFY1jLs66lLqmj/OtTcVxB3e43phCxeHP6yq/viL2pIgu/ySbrV3Exy
+         jWq1wF1s3mJtYO+Zv9L8nYs0uYjMbsRnAUo+6Pu4qNl94uid+hNdhNzj1cTEObEpJO+K
+         nIR0Yvh+ZSFEfrK3ApLcXO+diBVo8NuzHSxkkw36mhUvxFsNtUxEzakDPU3DGe7GAchD
+         IJE5uEJYVwk0u5jV0ZPbU3HowvT2QgKanzNLLgDdTjxGUMJF67Abm1ndm6F1bsR42Iec
+         J72Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786455428; x=1787060228;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kF2VF2U/hL6reW1X2jhuzR2siNy4Ft7Ohusar6d2kSg=;
+        b=AdCAZPnLZ280+VaW142V9k8WWU4FchkyEu7hyEVEmana2BEQwWbyRL1Aum+JrkLHLU
+         20MHs4Cc7qVecRMTfkFjuecSi8QdeaiOL4Efe5++zsAUJ+05ZNI71kIEoAodbfZDmOg3
+         tsg5pVFJFQWhYrbn0Sh322XzRw0wqkC3tJHS/nXi6D9LhzVw546l2wpsZogB42AO44IW
+         Sbt6EktJ1lCUl6VZI72NF7MtwfTqJcxoIkaTBLdWIKsSk/lcP5eCR4gxCo3qCNy0UB1L
+         +zxLLQLkKQ87lnbglmQ7dbxUWFy92/n5c+TLwcIfn09vBwMEepWWsXZ1oXKEJRSMlkye
+         dqvQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqHJi6Dgo6yImainBsKmpmoZGGsuxGJB5mpk3l0KDJ3ZcAGGaNpjlcm8mZJrRTfWI3pFf2L/fsjIw==@kvack.org
+X-Gm-Message-State: AOJu0YzoGr+WzlbDgPpuIoqebt1bNSdtGIEd/f+VfX9SAFc7z/nwKCIv
+	PVYPyZM5m7z5milM++htw4hsAnOSUCUwueBZfiWJ/Vq7zSe9EXzGwvUQ
+X-Gm-Gg: AR+sD10qUsQ8PeSncPjrFU0ts4Xwp3Hllv8yHe1XyaGRYbfSvL6ixw/rYo6OKlO1iy4
+	nnrRk8qh8cDYcHVXOVlRvOu260wARI4r8lhYBgREqLNnaDP1dsTHqAkBpdRhzZ0FtXFHM84Xa1x
+	VUO52bVdaXXenZNQQvuMqoXFIP2cYBnmaw38aDZ7VSbzbqvuQfvD7kzbLnno+89Yxuw//pKcMhO
+	TG29jb2Scpw3PYOfPDCtCmzQMvZvIBG8Mqz11HXeOqU5/qHnBKwGufXZQPGqSRphZ0YfSwQoMro
+	UAEeT9iinVIsvZRWrCV8K54E5jB2U8EHlOKiE3ohiEj1fK6bAZhiwvJus8AFTYwhR5BtM7IiQh6
+	ZizWGIVrWkJjCVdT/CdBxMHAzpLJvts2wBuna2Yxtv5/t+re7nbIpNNuZiHF/aSXbjIs046HmRJ
+	iO7LQCJos14LhM15W1tyqcfOV4xuCUVTULeuKby178hOuQuTMGUDTVgvaNALNNHi1EAM6xmX2i
+X-Received: by 2002:a17:902:ea0d:b0:2cc:aa36:c04c with SMTP id d9443c01a7336-2d317785a86mr39329385ad.1.1786455427722;
+        Tue, 11 Aug 2026 06:37:07 -0700 (PDT)
+Received: from localhost.localdomain ([49.79.111.198])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d3160ce732sm8179385ad.38.2026.08.11.06.37.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Aug 2026 06:37:06 -0700 (PDT)
+From: Vernon Yang <vernon2gm@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org
+Cc: nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	zokeefe@google.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Vernon Yang <yanglincheng@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm: khugepaged: don't pass swap entry value to trace_mm_khugepaged_scan_file()
+Date: Tue, 11 Aug 2026 21:36:55 +0800
+Message-ID: <20260811133655.267739-1-vernon2gm@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anr59P1ZCAuHxv6x@gmail.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 871A580014
-X-Stat-Signature: 86poapgb4nut55erpfba7z1b7dgbddwg
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1E5DA12000E
+X-Stat-Signature: ywiapgijmymr9jegwz3akgqqomztaihx
 X-Rspam-User: 
-X-HE-Tag: 1786455253-957576
-X-HE-Meta: U2FsdGVkX19vAwR/aOPCUVjiRx0SWtVBv1W3LgKuP60HptMZb5rbDM6qs8sg+QqfOTlVw/CB/3c3rcH6/LirF30ndpBRGjWSTqxuVroCwhIAWHrFgmjeGTvm1tclvxfntuvPMCtKyTZHv1TOaMee/XrG1OSpvKfL8Ya7PlxGVE6QFXyihXepAHLXyAj92zCrnFKQ2iesNVyqUueN9hRR4yKWRYC6fVkxNjrzGYnjAeJpI8AnrjjwZDdeGS1CyUnvO/5FSr0agrUjdOy3OF+HWZ5lyFJ5S3zDyJmJJEZwZt33mcRf0IUm+wPRbI2a0RYG1S9/d83IbHD7mhdiiz0YTU9xEUE3zmYzTpgP0hJ54XkbCqFqGOQ48mbrUvniGSJdE7jnMDAFd+nazFU5Ta06GE4YC/v1vL8s2noY/AbcB4VE3ZW/tM1FMoq2yudgpI5jHt0GTyQaZWfLPzbMPn+I3L530/8UuX2okfrguadk/i2tnUPEwYFb+dce1Xf2ivep7//OC3Z+06hfS0sBLoj03ZeT2orAArIVlEVgnL0u+bhYru5ChyaGcwqus+E5+w7L3LTHj+1RPt5bHUg8+HrAdiIOUPLZJzELB6YAuA7mXZAhp2+A5JQ9rb0V+8lbkYDKoz4jrxpVOMKP6Iw1XxT1cmhKQk1b8MbgYQnQDXBjus0Hd78ff0RHt0lJRf61a/QRuNJIoD+co+7T0KDyj9Ypelf2x/TzEpp9COW7jTcsLUC1/ZDGe28MszDuHmx6/TI5vbof+q9Ll7MvRJDAvEfME8kCZI9/iuDk/rgQd4GFl6L8cWUejWPQvnLNwK77rV5iKLsu2cQvIInIyiKMMYeTjDwGWUGddy1uSgJsKRj9zMAd92IBRp8VoH3C4pcsGRAYDuhik2fLvmt2RB0QtQGd4VF+bbB8hUKu4Nz1bLqbgWJrLOdM2jlE+Pg3wrJmCio/3lfUVL+92X5pEyEor9H
- gkJa/0B6
- P1zPZRd56zJimNr9OWH2nIKEAfIy2Jk6WFC6r2i0C6jBRskWB9SwGunS125FuV2M3lkEK2rKGzf990avaqXdRH+4Yk5YoefExjIIUKmK7tpbShXjAlJYCPPlxRkhFQyoq8Khfhrl4HHICv+WCordC9SM5XkLLVBudMMj4fnqeRU9vV3Soc1lB5bWwsXSgkWHxe5R7TmhVt+xtTr0MHGMjnAv7oHejkkSVW5kLzBlGLS1tTr/Rh2IbuCqs5tjhypVp7r67TJNNSZhV+8OtyuIuIPOUFAqza0sZAeZjyiGvBi952IAqQNcBdNA7azXS2vfa2rFwzRSuxUzlRgApR2Hr8xBeJgx94fuv3efN
+X-HE-Tag: 1786455428-546664
+X-HE-Meta: U2FsdGVkX1+4y+nUJR63qUtP4e16lzRiZEHkxVsFR9PjfN2hZhR8giYSan4SDO3F/pyfvP+OAqOKq833BgAiBsbeD9WX2bdMknG54cSAhzkOI43bPzP0yc8RoMDBnitRBnnaNnbC1YmOjsZA12szYzNR7Frr1PjLkgy0/fKxtkEkX3XmnqIHwjtWwGd9nel7Xjh4wB+iih8jr5M8ss/A08nHGdEmmWlGpzbQpWMBz4nQLZlJYBEBoBeUW2FOZsF8XW0jzxf0whBarFwUjTdbh7CyYxYbIn/+CmDvakCd9g2pnxukq56LHHmuwHMKa7IG+TBhGUUMUS7GNT5JcQV0Ge4zddv3V1z5TbapvVZtHtZgsdH16BTX/gqemUCCu9fnlAGj3qToQER5lE1/LWBnGgLrcC0e7XyFoIZjJCgiQjNx4u4RYJmyrurJrQ2oFcxHlmlCl9ZQWFzwAX5QVU3VDewvBO+P9FLamWiRnDqgR8zqLYj0ZJJACXUAnTN+jqqiPZMuw1OpTDjf/faK6xDEBJYyDeuwgfQ1on9vRaxrZehiro5DhhHKFD3XwxtmOINZrqYnuwUAG7q4WW5QdAs2BMuD/jASBvIaCuPUJveKNmmqKnsPqW8lAXn+OkALP25+oqQ0hduKIOO9yzcUEbR2yJj8Ht4clqeL6X9+OQbKH5XbP+xkmxMrhPawumVYUH23fqmLk6+qkEboZaDnWZPuLgkf4CWTRPY7xHmhK625vIlZpgbVUDqSFyRt00XwKP05ZrrT1BKunefaMEByaawemUQRqDqS77ePxivNdHk/84UX93GgKhT9x/d1CHJ830xBQDSdkol0+LOfgYXV9rtl4ft3x8SU7QNmBGODkNn2PcfhfCGTOE8Ol8Dl4jY8FCD2rLs9Pe2j/MdCti/3EQFwZF0GYijZeg0BfWR3s5G7a51gqbKGb2eRoQijOGnCAl/QSAFW8X+AMSDNQjx4LUq
+ cy/+5ITb
+ PFU3DPezrvXijlu+RhnGQwdHs+bYUR1YNQVV73firgvPAYDvVVs5tkL+K3wGGaE0nuhLb/qQljlJv6Zykr64/uK85rS2+M9rvJbCaQ4rqTi6ozGX+xI1sr+mGVXkYzpPHS46W4QnbahJkjFVY/jdxLbzgseYeMKiNs4Jx4hICP8fswV9nKoDK+clF2OMeSxhB8v1XlS/pFdoRhzw2FXM5q0cswEAedC5sjE1qmRTSXm9G/nnWMzejaMmrjSJ7UJb6km4zpEkRcE2uOj1Gpy4tkw4U9SC4bUQkJi8lOSUQKZXU+X8NuoW0uWqzY0TLSYKVdDfCvaKZcXvPO51OH0vqh1MxMHheJVWV8VcsF4ih6OWMClUFx4iZyP8UI6kEx1Ky9n69+t7Lp3OJuPUksgAF1i7Ykl57LcOkNtEa3AZa+XZg4aFz2HgtiSEJdxQ3lK5zVNqcG+cdPY8n5BA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,161 +125,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 04:17:41AM -0700, Breno Leitao wrote:
-> On Mon, Aug 10, 2026 at 07:32:41PM +0300, Mike Rapoport wrote:
-> > Hi Breno,
-> > 
-> > On Mon, Aug 10, 2026 at 06:32:04AM -0700, Breno Leitao wrote:
-> > > Memory failures (such as unrecoverable ECCs errors) are getting more and
-> > > more common. The kernel knows how to handle it while running, marking it
-> > > as poisoned (and SIGBUS user tasks).
-> > > 
-> > > Poisoned memory is removed from the buddy allocator, but, not from
-> > > other places. A current problem is that kexec will load new kernel
-> > > on top of a bad/poisoned memory, which is undesirable.
-> > > 
-> > > If the next kernel's image, initrd or purgatory lands on poisoned frame,
-> > > the relocation copy writes to the bad memory and the machine checks
-> > 
-> > What does the machine check here? ;-)
-> 
-> Not sure I got your question right. Did you mean:
+From: Vernon Yang <yanglincheng@kylinos.cn>
 
-I meant that "and the machine checks during the kexec" reads as machine
-checks for something and that something is missing.
+When the swap entries found exceed max_ptes_swap, the loop is left via
+break with folio still holding the xarray value that encodes the swap
+entry, not valid folio pointer.
 
-"machine check exceptions" would have been clearer :)
- 
-> 1) that there is no machine check exception when *writing* to poisoned
->    memory, or
-> 
-> 2) just that "the machine checks" is a lousy way to write it?
-> 
-> For 1) I think you are right, and I had not thought it through. The MCE
-> (or a recurrent multi-bit ECC) would come from consuming the error, so
-> a load or an instruction fetch, and a store may well pass silently and
-> leave the poison sitting there.
-> 
-> The read back is what gets us, though. 
-> 
-> So the sentence should hang on the read, not on the copy. Would
-> something like makes more sense?
-> 
->         If the next kernel's image, initrd or purgatory lands on a
->         poisoned frame, the relocation copy puts them on memory that is
->         known bad.
-> 
->  	  The error is consumed on the first read back, whether
->         that is purgatory checksumming the segments or the new kernel
->         running from them, and that is what we want to avoid.
+That value is passed to trace_mm_khugepaged_scan_file(), which feeds it
+to folio_pfn(). On FLATMEM and SPARSEMEM_VMEMMAP, the page_to_pfn() is
+plain pointer arithmetic, so the trace event merely prints bogus
+scan_pfn. On classic SPARSEMEM, the page_to_pfn() reads page->flags,
+dereferencing the tiny encoded integer and oopsing khugepaged whenever
+the trace event is enabled.
 
-I wouldn't overload the sentence, just 
+So set folio to NULL before breaking out, the tracepoint maps NULL to
+scan_pfn of -1, just like exhausted scan naturally.
 
-	The error happens on the first from a bad page and that's what we
-	want to avoid.
+Fixes: d41fd2016ed0 ("mm/khugepaged: add tracepoint to hpage_collapse_scan_file()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+---
+ mm/khugepaged.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-looks enough to me.
- 
-> > > Skip hardware-poisoned frames when placing segments: check them in the
-> > > kexec_file hole finder so it lays the next kernel down on good memory,
-> > > and reject a poisoned destination in sanity_check_segment_list() for
-> > > the kexec_load path, which cannot relocate.
-> > > 
-> > > The two hole finders walk in opposite directions, so each asks for the
-> > > end of the poison it has to clear: the top-down walk for the first
-> > > poisoned page in the window, the bottom-up walk for the last. A poisoned
-> > > hugetlb folio counts in full, as hugetlb keeps the flag on the folio and
-> > > the poisoned subpages on its raw hwpoison list.
-> > 
-> > I had hard time parsing these two paragraphs. Can you please add more human
-> > touch to them?
-> 
-> Sure, but that would cost more. :-) 
-> 
-> What about something like:
-> 
-> 	Skip hardware-poisoned frames that were detected by machine
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 617bca76db49..bc0d04c9162d 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2696,6 +2696,7 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+ 		if (xa_is_value(folio)) {
+ 			swap += 1 << xas_get_order(&xas);
+ 			if (swap > max_ptes_swap) {
++				folio = NULL;
+ 				result = SCAN_EXCEED_SWAP_PTE;
+ 				count_vm_event(THP_SCAN_EXCEED_SWAP_PTE);
+ 				break;
 
-                                                          ^ memory
-
-> 	failure subssytem earlier when placing kexec segments.
-
-               ^ subsystem
-> 
-> 	To do so, add a helper that reports the first or the last poisoned page
-> 	in a range: memory is walked top-down by locate_mem_hole_top_down() and
-> 	bottom-up by locate_mem_hole_bottom_up(), so each direction needs a
-> 	different answer to jump clear of the poison.
-
-                          ^ stay
-
-> 	kexec_load() gets its destinations from userspace and cannot move them,
-> 	so there sanity_check_segment_list() just rejects
-> 	a a segument/memory block that happens to have a posioned page.
-
-        ^ single a 
-> 
-> 	is_page_hwpoison() also covers hugetlb, where the flag sits on the folio
-> 	and the bad subpages on its raw hwpoison list, so a poisoned hugetlb
-> 	folio is skipped as a whole.
-
-I don't think we care here about the list of bad subpages:
-
-	is_page_hwpoison() also covers hugetlb, so a poisoned hugetlb
- 	folio is skipped as a whole.
-
-> 
-> > > +		poison = range_first_hwpoison(temp_start, kbuf->memsz);
-> > > +		if (poison != PHYS_ADDR_MAX) {
-> > > +			/* we hit a poisoned page */
-> > > +			if (poison < kbuf->memsz)
-> > > +				return 0;
-> > 
-> > Won't we break out on the next iteration boundaries check? I.e.
-> > 
-> > 		if (temp_start < start || temp_start < kbuf->buf_min)
-> > 			return 0;
-> 
-> Kind-of.  Sashiko keeps raising this underflow in the function, on every
-> revision since v2.
-> 
-> It dismisses it on this hunk because of the check, but reports it as
-> a real one on the two "temp_start = temp_start - PAGE_SIZE" paths above,
-> which do the same subtraction with nothing guarding them. 
-> 
-> Happy to remove it from here and send that as a separate patch.
-
-Let's make it a separate patch please and drop the if (poison <
-kbuf->memsz) here.
- 
-> > > +	for (pfn = PHYS_PFN(start); pfn <= end_pfn; pfn++) {
-> > > +
-> > > +		cond_resched();
-> > 
-> > cond_resched() for every pfn is too much, isn't it?
-> 
-> It is what the other pfn walkers do: the kpageflags read loop in
-> fs/proc/page.c and read_page_owner() in mm/page_owner.c both call it
-> once per pfn. 
-
-I think it depends on the pfn walker, some of them cond_resched() once per
-"block"
- 
-> But I honestly don't have a strong opinion here, though, happy to batch
-> it if you prefer. Would this one look better?:
-> 
-> 	if (!(pfn % MAX_ORDER_NR_PAGES))
-> 		cond_resched();
-
-Can't say I know the magic number here, but I think it's better to batch.
-We had a related discussion with Muchun a short while ago:
-
-https://lore.kernel.org/all/ak97z4tryYAGJgb_@kernel.org/
- 
-> Thanks for the review,
-> --breno
-
+base-commit: 075b74841bd0065a3bda3440873c747938e69b68
 -- 
-Sincerely yours,
-Mike.
+2.53.0
+
 
