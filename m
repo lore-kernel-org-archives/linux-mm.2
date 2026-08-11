@@ -4,130 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 125BAC5AD55
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 00:19:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A96CC5AD7B
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 00:20:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E91D06B007B; Mon, 10 Aug 2026 20:19:01 -0400 (EDT)
+	id 5B9DF6B0096; Mon, 10 Aug 2026 20:20:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E42376B0096; Mon, 10 Aug 2026 20:19:01 -0400 (EDT)
+	id 5974A6B0098; Mon, 10 Aug 2026 20:20:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D312A6B0098; Mon, 10 Aug 2026 20:19:01 -0400 (EDT)
+	id 4A78A6B0099; Mon, 10 Aug 2026 20:20:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A0C8B6B007B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 20:19:01 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2B2551A02BB
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:19:01 +0000 (UTC)
-X-FDA: 85087078482.20.674DACC
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 870E240004
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:18:59 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=OAc6Djgw;
-	spf=pass (imf07.hostedemail.com: domain of 3cWp6agYKCIo6so1xqu22uzs.q20zw18B-00y9oqy.25u@flex--seanjc.bounces.google.com designates 209.85.210.199 as permitted sender) smtp.mailfrom=3cWp6agYKCIo6so1xqu22uzs.q20zw18B-00y9oqy.25u@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2D4AD6B0096
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 20:20:07 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CEDB41A02BB
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:20:06 +0000 (UTC)
+X-FDA: 85087081212.19.C5A7C76
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1BDC5140011
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:20:04 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MsvQaDP1;
+	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786407539;
-	b=6gcOYODHTvDpXlbHGimr5koyFy46nzWb71Y0z2W3smnFklgM2T18ZMrHs3x40ZOGLdUm1l
-	KhxIoruthaXwLGV2DSCZK0EU0GOxfwR6J3fbjvFqMZjrgJXICJeUbE6IFvSWu9BV8+FSN9
-	MvW6gOjcYBR5UPkwQ3qFQflhWf6wQuI=
+	t=1786407605;
+	b=BF9spZXFJCWZx/9+xTP4CTAV/7+x8GRBldAM8IGhdKH1bCAw8ceiNVKtxq3i/mFoiUtY4t
+	z8AxscmTemOd4mOGb5IyNySdlL6uiE3njpHi0X/LOJnb2Cf8CVabEH76UpkPRyMcu2Nvi8
+	kxgpL3CKp52sg3rDk0HUd49lqmcqDNQ=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=OAc6Djgw;
-	spf=pass (imf07.hostedemail.com: domain of 3cWp6agYKCIo6so1xqu22uzs.q20zw18B-00y9oqy.25u@flex--seanjc.bounces.google.com designates 209.85.210.199 as permitted sender) smtp.mailfrom=3cWp6agYKCIo6so1xqu22uzs.q20zw18B-00y9oqy.25u@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MsvQaDP1;
+	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786407539;
+	s=arc-20220608; t=1786407605;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eAiudkcAvitRicnlZsTp/8XRyAoMENjhlvyXGhGU0wA=;
-	b=hETO1NDKVjx9acsNb88z6/cJ+9EBXdEU2JLISCa8jdZc+VB2HDUAbrUYNt/7qhljs8KHTk
-	jlayhFx607obN2KvZ27cp9bvUcMP7znge80oa2mjL+5sxylYEYKUXB6dP+bjyrbtwHKmIk
-	ivJSBsClLTxbYpR1Vs5DysAqD2Rzmh4=
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8486c3411c8so3490662b3a.2
-        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:18:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786407538; x=1787012338; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eAiudkcAvitRicnlZsTp/8XRyAoMENjhlvyXGhGU0wA=;
-        b=OAc6DjgwQ1a38J4DarUn9SNFBQa7nLt5VuRdUDsXew1QCIbKtx8uXcSxtldHN7DcVa
-         RTAfhsR1v0TszMiHdDtka5TU0brwS4DOFWjMRHl/3wlArfgQpPo6/uTuziDm8+fm4cI4
-         ckxEekdN3e2eQSjVY2NwpMIEZVFcBA2uQ9D+Yxg90oWwTG97+jTAjgdf2nil0BeSOvpg
-         yJJaV9TWbst1Zl1gCziWHFC3rwzwGUQJb+a392H2mpfs78XgP1RHAzszv4xfMuUkskXj
-         zMnVsOSnzruMHrKDf6ecwTYanFqNagnN5yu/+J5yYqhq/gmgRhEANfPAdYtfNjbVZ0Nh
-         XMOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786407538; x=1787012338;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=eAiudkcAvitRicnlZsTp/8XRyAoMENjhlvyXGhGU0wA=;
-        b=dZsKF6IN/oIjAqgLJOqxTsX6JGfR03vJEOodLuW1Zz/N7PvzAj0lBTzbMIqTvW43UR
-         9Nj6m63SKFg36ryJGgHXiY0zWNWvZjae42BHe4pkSW0grWl8zj7SYPDYVe90gCRrnXYH
-         2pmGD8LLByaSbDArrBVVL+DVvVZ1/4XhN/p7B+eGuAf2ZcUgwm7ahsR4J2mN7BpmYKmO
-         VUtGfwoDTAOBmj4SQ3R1wWBCiHgksjk0K7NjzNSw81K3zXWLjL+wVi8RflIv95Ha9M4i
-         gmceCHsW9aSoaRiSxQVpfdoabsgBeayz/n1yyzbJ9Un3FVEzysWO2BmhMlotC6EWRMJ3
-         MYGg==
-X-Forwarded-Encrypted: i=1; AHgh+Ro8phri9iIU3BRnhNbmDKbf9lpgKHVh0uN9v65g5HsMhDd4fqqCRibzqssckoglNSrOAv75t7ZcAw==@kvack.org
-X-Gm-Message-State: AOJu0YwSmb8PjQXYB+BiRAEkiOfzgFbQD5RHBZPa1WdwHJAA8dR5peE6
-	e6QPdLI4FLhppMUn2peagl5yEtmqgS9GIvQzZ7k/r7L8CjIAtPgpkPzjmjigUxv4/6e1h5RLMNs
-	hkxSo/Q==
-X-Received: from pglg7.prod.google.com ([2002:a63:1107:0:b0:cbe:948f:d640])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4613:b0:842:2a81:4c63
- with SMTP id d2e1a72fcca58-84f9c95fbfemr5369150b3a.25.1786407537909; Mon, 10
- Aug 2026 17:18:57 -0700 (PDT)
-Date: Mon, 10 Aug 2026 17:18:57 -0700
-In-Reply-To: <CAEvNRgGSK9tO_-TvQvXoMwVwGygh5WjjBUOY-zLOA5yP2DwS1g@mail.gmail.com>
-Mime-Version: 1.0
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-16-2fc18ee6d3ba@google.com>
- <dd9ebd52-7171-4353-8c83-9363019d55b8@kernel.org> <CAEvNRgGSK9tO_-TvQvXoMwVwGygh5WjjBUOY-zLOA5yP2DwS1g@mail.gmail.com>
-Message-ID: <anpqcZlwvjWCWGId@google.com>
-Subject: Re: [PATCH v10 16/41] KVM: guest_memfd: Zero page while getting pfn
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Queue-Id: 870E240004
-X-Stat-Signature: wd9xyntj3e77yx57tqa49fnmno9sm5qb
+	bh=cryaumeVoeRHiTcn7Qll1wUbNn7JyWDDqdD+Hq0Hrec=;
+	b=6M3dyCo98B4yTZ1FUlfxaVKsPLjZnQad4XBfmNnvcuP3yhqxt3lfEEbnihPQ9BZL+hrKpA
+	aqJXQ3SAsOt64OnQuRjAbCjxPN7kjAKUKykAVadT/C+iqOODLoFILDsYhIGxh24ezUlKT/
+	uhyKwDBrVIqVGOszcBJr6NhHRgdsSrw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4D2AD429D8;
+	Tue, 11 Aug 2026 00:20:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E076F1F00A3D;
+	Tue, 11 Aug 2026 00:20:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786407604;
+	bh=cryaumeVoeRHiTcn7Qll1wUbNn7JyWDDqdD+Hq0Hrec=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MsvQaDP1RTtw8rHYgfjJUO/5UXJUveGiJDdFR7VhgB5+Y/GSwdqMxNqS3jnj4aD6y
+	 5lYfDWchuwApdcE1z8Yl3FSB2xoIK8tprYuEGXj14Po8zF9eHtdNPoomWftT7hKlEi
+	 ZWZP81lMM/CNkkyklotI3LlpqeqsqZgtT/PvPFYi+bF+mGGdQtg0J6I2qbLUG+PAre
+	 s3aVoiRxeETlyLs0mGL8i867UMSSBW+klgiCbseFJ1r1fOZn1Qc5rgpVdqrR71+Glu
+	 KaIJRjSYCOb5BFO8m9mRq9v9TLZJ2aOS4BQB7moZj0m9iGZQEt1rpbHPHAKr80zDmQ
+	 uqf2bcCMWICEg==
+Date: Tue, 11 Aug 2026 00:20:02 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Jianyue Wu <wujianyue000@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>
+Subject: Re: [PATCH RFC v2 2/2] mm/zswap: reference the pool by index to
+ shrink struct zswap_entry
+Message-ID: <anpqSQ3dSpTgNPl0@google.com>
+References: <20260731-shrink_zswap_entry_v2-0-0-v2-0-e72083aa8734@gmail.com>
+ <20260731-shrink_zswap_entry_v2-0-0-v2-2-e72083aa8734@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260731-shrink_zswap_entry_v2-0-0-v2-2-e72083aa8734@gmail.com>
+X-Rspamd-Queue-Id: 1BDC5140011
+X-Stat-Signature: 9me9axhzw88z367p9nm4ywgzhbnp6uho
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1786407539-701980
-X-HE-Meta: U2FsdGVkX18w/At6xWnHu3BCfYITwwBNliMuqSFR8N/y7bGAhipN/ImgPYl42CVt2sUOBIptBYhK3aDQ9jef66X7NpIhiIEc84ihOuacr6p08R2Vr9+czHTff30OF+nOfv+R/WB/tLrlxLAC0Ojx9icXfQ8Op9xntAgEXeDkP0g7hKSFEA1oSAvNSDh08HINJWTCcSNAXQb9qs7+/gGDyYj2DDB4Ch+trHrvAPw9KdJm6TnvfESSDH1ruwqGBDbFGMBjgvQ9qYjXnrJwYMDACT+VZT1yKg8a5bj2x9m27dUn1czoxgbzB6s9WTTCtyFaShrnkIeKwmbOWWVycZ4KfRi9hkZ2kmdmRCXPIXNCd0Dmtp8NqEwWCVSFVjZL+cRv1TY9T3XqNZJR/QXxUAYt/0apkyQSRvLHzqi+3O9YNHrDVuC8F1Z7no5YyK+zlQUJ+yHEcJJAwhLlHFy5K5EcBf16Qkusl22a3xljgAq6QS3okWo/1PezZC7wTUsuSn5o/WE5kEldxmOUqFVsOqL3oGgNdJGObNsL8mXmlA/NRYFQtYyJXuRvydh6RWyyuF2LPPJ49sSG7NsKDWTxGltvwN+1Q9bgriYeVjjquHrm6B4PD3d1SfSgp4yMaWkocxdJZqfCVwcEGBGvrxauqaSp8ozpLIxIe/3HJJbvZnNny0ajDmQ59qNjGeae8LXafd9JYp4cKN3aWd0mv49ojmndpRhnvqEPFqQFTSNtTKqDO6hJEkkC2XA432uNgViqCrefbCQ88xzpTdeXOU8rBG3DVuXiPyd2ovZL5PtTWUpJKuI+KzmNuuPMFIwAEh0TSrYSogh70/aG3dvxbLd1JOXJa0ZFpaGWC4pCor0KWaCYQRWRsKt4nCmhPO53vbLgFPDiUO77aisNX6QmLvDk7SX+Agh2LauhC1EJTd5zuLGgfeeu6gWLm3bMJD4fmuIpFMG94O4wBtLie+X8BqX3CbT
- /p88Sb58
- OR3nw2dkvejRHaic5Pj7gkn+8JydFLpU7piPNWCAWrwiomBdLj3smAVnfdb0FaXwNb1uZybAReP0NTvKbmmApRQSsnozBpvhJEcwMm4lsK31LXKEcO9/gFoFUEpSsjj1rbpixAKCv/fPloJbD+2xqgZGSaQtA3kEND5NNt9ZkqHFf6RDaFNXXEZNy0JOB+4LArIJG6icdxhDulblrdu7LP67oACxhEHQl+Fdk4U4bx84FfljmuMZ1PGxqlnP0jEDdN0jblmdSpjMAiF32qfu4yLXVvkIk3Vsdc0VamfKQbTP2n6QMdClul5lyKKlXzogDwConmnV4WeyWf4Ungh0jeZcyRvxmb2J+BXaZ3Y2l0iflXomRt8qp2OrxObPsACpYg0TTbvB0WOyp7rztq4Asbx0PDzvP3MJksrpyzJdtQrzqhsqYqaZNcJObn8sMUa09IJSCJzUvzZP1gbUATfZXaMnc75wkGZaXYFNNvigHxkPC0+/ULYXmrMP+opZSyASnn3CTXBELvblI45RU/str4HJHVflEeu5YF7MCCzMYBNB2A9sC3Ne7BvG3AdASXYj74IYjvI3NcYcPV4jIBBQVPaMRWiTOOBUuTLaHCteIHVnBKgU07vr21TNgkR51/p1L/UuhIR0Uvhh7BI2Lp7dlZIN/dQkQg3ouScSUdnvvhVgmjpT0lN+GYOXc6A==
+X-HE-Tag: 1786407604-695338
+X-HE-Meta: U2FsdGVkX18b9qIReehKTwiXaQJd2KlpNvgh3jSvwvhFscVkY7Yvyi+QSZKFD/U7C18Pla3LX8vJXCTyPdQfLP5S5s8zCV9BqSL3WTg6Z7wkxLg/FIhn7U+f9nfsNsxwyCwsUJm0G9itq1nXgxrwqJ3woCs6MDCczB27UQEe+P0BmSMnH93in3oH5Lz5Gd8xfDgUxQtwWnDik2pvwgdlRWQ5H7JhiIxb9M9b5Rzx96Eolz3zw3mbmucSzODcfh2Roscrfen1hCB/A5rTf1R+/6EHakwe/2MwPzzHo+EO4/akASlgdKxbYsT4/dFr50d1DQC2HYNR+DI6L0oHwrb4WZcm9FvxbV7oTauQ8oJ/p38Zs7fkxdt0RsDWndWshBgM/unl2XAASAOuU57E3mqhkvyVbx5Vx7MLwpEvmsT0FGGys+UcxaIZDVqgiATTyNcVFre3VI8yoXNfnjwBjp4iReITXC8Zu8Ryb6bvkU/DkV/xB8R2pWlR7XjSxSShWpObZyiCPWnnU9YrdM/2irz9kyDnbGhDLiUw0e0rLwppgctUnr23XRp1xNCJlxIIVRlw1Nd06fsK3lrzeYHpnQ4ykLBR2EpWbAeIPWgNVClkQ/9nD9xC87mG08qSsuvP8pGbCK9yBD/cKue3xx9DKTfvWwwfviCuz3ap2zgxKKZ1DM0M2bnvrCO6ktDlXZtIBmenHgIaA512Ke9ecr4/9MBZJdc6V/ZFXfyMmrK7RCJxQ4GpVecUywjBOLtqX1jM2MbgxF1wA9obhsGqS8dn3vEy7BIGYKppqCMI8JdZxb+xjV8UMk60QC566eUIlLfT968RCxp5MirCFXyndRzn5YjWW0W6Upg1yYcNNhOdLJaN0HBlbDwcIkc5Yof3q4PcWBNw6GlnYbg0iE7Qac8f8Ptj2fYcZppkAb8YkPs0RTx/Wp2qzHV0AXu8HB87LVGNSGmLM7B6HVPgz7gmU1aJHnH
+ 8It56jbC
+ 8Rye0qSYsSVeIS9uY8yWO67a7rmUchWGLHyYTtgp/P5QcM7t0QY7d+dg6dEFz7WqNWjaB/tezjP6c4/fp6w7C7T0QcY5iG1Tk8okRL1fFplsqCRmeEbbdDbtmNhlCCk9IIRUSU3+11OqSWyAEt6v30cigi4gmaUBRZB7372ynUA03qp8sLiZVf0IqDrE2X5Tm6eLoSebs2KMKdyxNPrGe0qt9ZwVYzAcBq9vMTafWpuwIZDYJhuW/XSr1YescqkRIzYUzky9GvvVHn8fH0bD/isa2luWUR1Xm/tgoCjrLlQLwqVUu7I5/fNMXMvwmALZxSNyFJfdEvN+zr6p6G2O2+Oh4Cg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,77 +94,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 10, 2026, Ackerley Tng wrote:
-> "David Hildenbrand (Arm)" <david@kernel.org> writes:
+On Fri, Jul 31, 2026 at 08:32:48AM +0800, Jianyue Wu wrote:
+> struct zswap_entry is one allocation per stored page, so its size is pure
+> overhead.  It currently embeds an 8-byte pool pointer, even though the
+> live pools now sit in a small fixed array indexed by a u8 slot number.
 > 
-> > On 8/7/26 23:52, Ackerley Tng via B4 Relay wrote:
-> >> From: Ackerley Tng <ackerleytng@google.com>
-> >>
-> >> Move the folio initialization logic from kvm_gmem_get_pfn() into
-> >> __kvm_gmem_get_pfn() to also zero pages if the page is to be used in
-> >> kvm_gmem_populate().
-> >>
-> >> With in-place conversion, the existing data in a guest_memfd page can be
-> >> populated into guest memory through platform-specific ioctls.
-> >>
-> >> Without first zeroing the page obtained using __kvm_gmem_get_pfn(), it
-> >> might contain uninitialized host memory, which would leak to the guest if
-> >> the populate completes.
-> >>
-> >> guest_memfd pages are zeroed at most once in the page's entire lifetime
-> >> with guest_memfd, and that is tracked using the uptodate flag.
-> >>
-> >> Zeroing the page in __kvm_gmem_get_pfn() is chosen over zeroing in
-> >> kvm_gmem_get_folio() since other flows, such as a future write() syscall,
-> >> can get a page, write to the page and then set page uptodate without
-> >> zeroing.
-> >>
-> >> This aligns with the concept of zeroing before first use - the other place
-> >> where zeroing happens is in kvm_gmem_fault_user_mapping().
-> >>
-> >> Don't mark the page uptodate again after populating, since the page would
-> >> already be marked uptodate before the post_populate() call.
-> >
-> > The downside is that __kvm_gmem_populate() will now zero+write. I assume we
-> > don't care about possible performance impacts?
-> >
+> Replace the per-entry pool pointer with that u8 slot index and resolve it
+> through a zswap_entry_pool() helper.  A live entry holds a reference to
+> its pool, so the slot cannot be reused under it; the lookup therefore
+> needs no RCU read-side section (rcu_dereference_protected(..., true)).
 > 
-> Would we rather zero in kvm_gmem_populate() only if !uptodate &&
-> gmem_in_place_conversion && src_addr == 0? That could work too.
-
-No.  I'm 99% certain we discussed this (multiple times?), and the consensus was
-that any performance penalties due to redundant zeroing would pale in comparison
-to the cost of actually assigning the page to the VM.
-
-> Previously, without in-place conversion, populate never reads memory
-> from guest_memfd so there was no danger of leaking uninitialized memory.
-> >> @@ -1159,8 +1159,6 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
-> >>  	}
-> >>
-> >>  	ret = post_populate(kvm, gfn, pfn, src_page, opaque);
-> >> -	if (!ret)
-> >> -		folio_mark_uptodate(folio);
-> >
-> > In case post-populate failed, do we want to re-zero the pages?
+> The u8 fits in the padding after the bool referenced field, shrinking the
+> entry from 56 to 48 bytes on x86_64.  This raises objs_per_slab from 73
+> to 85 and saves about 2MiB of metadata per 1GiB of data held in zswap.
 > 
-> I believe we can't re-zero the pages. When SNP fails to populate it
-> could be because SNP didn't like the CPUIDs userspace set up, and after
-> the error userspace is expected to check what SNP likes, then
-> retry.
+> Suggested-by: Chris Li <chrisl@kernel.org>
+> Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
+> ---
+>  mm/zswap.c | 33 +++++++++++++++++++++++++--------
+>  1 file changed, 25 insertions(+), 8 deletions(-)
 > 
-> IIUC zeroing will destroy the message SNP wanted to leave for userspace.
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index b203934d3be8..d4f4db2999f2 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -190,7 +190,7 @@ static struct shrinker *zswap_shrinker;
+>   *              writeback logic. The entry is only reclaimed by the writeback
+>   *              logic if referenced is unset. See comments in the shrinker
+>   *              section for context.
+> - * pool - the zswap_pool the entry's data is in
+> + * pool_idx - slot of the zswap_pool that the entry's data is in.
+>   * handle - zsmalloc allocation handle that stores the compressed page data
+>   * objcg - the obj_cgroup that the compressed memory is charged to
+>   * lru - handle to the pool's lru used to evict pages.
+> @@ -199,12 +199,22 @@ struct zswap_entry {
+>  	swp_entry_t swpentry;
+>  	unsigned int length;
+>  	bool referenced;
+> -	struct zswap_pool *pool;
+> +	u8 pool_idx;
+>  	unsigned long handle;
+>  	struct obj_cgroup *objcg;
+>  	struct list_head lru;
+>  };
+>  
+> +static struct zswap_pool *zswap_entry_pool(struct zswap_entry *entry)
+> +{
+> +	/*
+> +	 * A live entry holds a reference to its pool, so the slot cannot be
+> +	 * cleared or reused under it.  This is not an RCU read-side walk.
+> +	 */
+> +	return rcu_dereference_protected(zswap_pools[entry->pool_idx],
+> +					 true /* entry pins pool */);
+
+Probably doesn't matter in practice, but maybe entry->handle or
+something instead of 'true' to make it clear we are checking for an
+"active" entry?
+
+> +}
+> +
+>  static struct xarray *zswap_trees[MAX_SWAPFILES];
+>  static unsigned int nr_zswap_trees[MAX_SWAPFILES];
+>  
+> @@ -807,9 +817,13 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
+>   */
+>  static void zswap_entry_free(struct zswap_entry *entry)
+>  {
+> +	struct zswap_pool *pool = zswap_entry_pool(entry);
+> +
+>  	zswap_lru_del(&zswap_list_lru, entry);
+> -	zs_free(entry->pool->zs_pool, entry->handle);
+> -	zswap_pool_put(entry->pool);
+> +	if (!WARN_ON_ONCE(!pool)) {
+> +		zs_free(pool->zs_pool, entry->handle);
+> +		zswap_pool_put(pool);
+> +	}
+>  	if (entry->objcg) {
+>  		obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
+>  		obj_cgroup_put(entry->objcg);
+> @@ -966,12 +980,15 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+>  
+>  static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+>  {
+> -	struct zswap_pool *pool = entry->pool;
+> +	struct zswap_pool *pool = zswap_entry_pool(entry);
+>  	struct scatterlist input[2]; /* zsmalloc returns an SG list 1-2 entries */
+>  	struct scatterlist output;
+>  	struct crypto_acomp_ctx *acomp_ctx;
+>  	int ret = 0, dlen;
+>  
+> +	if (WARN_ON_ONCE(!pool))
+> +		return false;
+> +
+>  	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
+>  	mutex_lock(&acomp_ctx->mutex);
+>  	zs_obj_read_sg_begin(pool->zs_pool, entry->handle, input, entry->length);
+> @@ -1007,7 +1024,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+>  	pr_alert_ratelimited("Decompression error from zswap (%d:%lu %s %u->%d)\n",
+>  						swp_type(entry->swpentry),
+>  						swp_offset(entry->swpentry),
+> -						entry->pool->tfm_name,
+> +						pool->tfm_name,
+>  						entry->length, dlen);
+>  	return false;
+>  }
+> @@ -1500,7 +1517,7 @@ static bool zswap_store_page(struct page *page,
+>  	 *    The publishing order matters to prevent writeback from seeing
+>  	 *    an incoherent entry.
+>  	 */
+> -	entry->pool = pool;
+> +	entry->pool_idx = pool->idx;
+>  	entry->swpentry = page_swpentry;
+>  	entry->objcg = objcg;
+>  	entry->referenced = true;
+> @@ -1806,7 +1823,7 @@ static int zswap_setup(void)
+>  	struct zswap_pool *pool;
+>  	int ret;
+>  
+> -	/* Slot indices are stored in a u8 (pool->idx). */
+> +	/* Slot indices are stored in a u8 (pool->idx and entry->pool_idx). */
+>  	BUILD_BUG_ON(ZSWAP_MAX_POOLS - 1 > U8_MAX);
+>  
+>  	zswap_entry_cache = KMEM_CACHE(zswap_entry, 0);
 > 
-> Michael should be able to explain more here :)
-
-Not Michael, but the above is correct.  If firmware rejects a CPUID page, then
-KVM copies back the expected CPUID values provided by firmware.
-
-That said, now that we have have @may_writeback_src we _could_ re-zero the page,
-i.e. only zero pages for which @may_writeback_src is %false.
-
-And _that_ said, I vote "no".  KVM zeros the memory mostly to ensure userspace
-can't read stale data, e.g. someone else's data.  I don't think we need to
-guarantee that a failed populate() (or rather, whatever ioctl called into it)
-will leave memory in any particular state.  It would be easier to document that
-the page contents may be modified on failure.
+> -- 
+> 2.43.0
+> 
 
