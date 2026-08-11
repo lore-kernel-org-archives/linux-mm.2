@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1032EC5CFEB
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:53:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 904B9C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:54:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0550D6B0092; Tue, 11 Aug 2026 12:53:34 -0400 (EDT)
+	id 733A96B008A; Tue, 11 Aug 2026 12:54:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02C376B00AA; Tue, 11 Aug 2026 12:53:33 -0400 (EDT)
+	id 70C4D6B00AA; Tue, 11 Aug 2026 12:54:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5E146B00AB; Tue, 11 Aug 2026 12:53:33 -0400 (EDT)
+	id 5D5F16B00AB; Tue, 11 Aug 2026 12:54:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BA83C6B0092
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:53:33 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 552444014B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:53:33 +0000 (UTC)
-X-FDA: 85089584706.15.BD8121B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 83C2EC000C
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:53:31 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eUWm7wHR;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 254C46B008A
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:54:21 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8135A160139
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:54:20 +0000 (UTC)
+X-FDA: 85089586680.25.2E0E67E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A389B40003
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:54:18 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BVuTUgTS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786467211;
+	s=arc-20220608; t=1786467258;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=faCwjOaV4ggvOJTu3mQalUWdVzO14/xtKlYuKKC1bt0=;
-	b=uKujy1QtVsUc8YYMdbxt10UksauW9TjPSFt3UzGKoX3FAgOzUR/aQQefbEuzk+Xde/Vtfk
-	aUguaK38uPWklAmjkS/XF64YkVwFrWTNjw/TQDFyI9sa78qP/lU92W7+dkRk3su+QsGPJ8
-	nxMGNWx0pNP5B3zEEWH7M0Cs1sUSrCY=
+	bh=iX4NIPlAP4xo5UV8mClruOl7gqvsKTG+5TRTfDvmpvk=;
+	b=RtiSJ0ELIcvgRmgnK0mcead2RyCbHCVkDHjmZRr7I5telWN++YraqAilbDMgwQqBEic0El
+	nnN7mUwIO+BLw9RwSCWeI7sQ+pGHfhJ2ZLsIG4lUV2B6pkbhYr6MrMHQR7p/TsWqdOyOuF
+	11j+gSqU9IzIW/MxD1+TJTYioedUIJY=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eUWm7wHR;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BVuTUgTS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786467211;
-	b=x1oXYKr0c7tjB6bHRsr1U+7m7Io7qEgqNH1xCyehOkgJh9gox+g85ZQEiVedB8aDVV8Sh0
-	z6il89aXmr5VlcR1TkQYO1g2lB2+A4oXf5dZ2+gg5LkwB7dJfO8lXw5SzphMUH14wNeMMw
-	3Pr91njfAoLksnN0ZfF9qe6rQqUWWkQ=
+	t=1786467258;
+	b=zpROQWmQuFPMPOlaQvbKUJm3qjEhu+ZyBxGushZcWRj2fc2vfYgT6I5dzy/Z62mhnXGjnw
+	c0JWZVpbh/1aiugv0MVU29NsJ9ov9OIj2msYtHtXrroAERH1IT1ijbn3lp6jEHVivzUeRK
+	Puw7jMdDQ3/TEZPvZWBTFEDWzZZcy+g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8B5DE44011;
-	Tue, 11 Aug 2026 16:53:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A3771F000E9;
-	Tue, 11 Aug 2026 16:53:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 44379600C8;
+	Tue, 11 Aug 2026 16:54:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE4F91F000E9;
+	Tue, 11 Aug 2026 16:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786467210;
-	bh=faCwjOaV4ggvOJTu3mQalUWdVzO14/xtKlYuKKC1bt0=;
+	s=k20260515; t=1786467258;
+	bh=iX4NIPlAP4xo5UV8mClruOl7gqvsKTG+5TRTfDvmpvk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eUWm7wHRfSiRbjXlRdDMhSWBZ3b07JcjXwAH0jW27Db5STdElQ2HbMmcXJJIJWxB6
-	 rQonhNQ2vaCyRhBsnC+l+mo1zquiuqCxJzBN3VK3rIoY6TZ4G4rylcsNz8n9S1Jte8
-	 Vig6qQBuHGVgLXbfojokmRbRMYVsYw2S5LPifQ7sYo91PavOCJGTq0fmkLW0CW0ScO
-	 cqPzHYg7kk056vo4x+1KmrgBj/y1Tj9MU8cVHSGE8iDAFhx6UO8066UB18RlrbypI4
-	 8GPIxF5CQMQxS/IphlkkNk8q8a1T+zsT20zMqIyWI79OWJKawdOWc5YfgoCRYML/Z9
-	 H3xJOE5glmQrA==
-Message-ID: <20f5b9eb-c4ad-4241-9556-e9bfce9ac715@kernel.org>
-Date: Tue, 11 Aug 2026 18:53:05 +0200
+	b=BVuTUgTS8NxWWwARaVJz/KRZzymf5VYlMfEogAS68Xd1KTjRCHgyCB9tlLuO/b1O0
+	 VvQTxUJzG8YLkm8kmQyQEBrnso7ux0wK9zUC4dX+58Aqm+yW2LY9CF02PAKMRjN13f
+	 nrMX349UIgxtoTLCUvDLeQSKDLXhy1CG3NjkZcqY6Vbu2ZTVfIKyendySzeb/TsKNF
+	 KM5gDZSj71VZtZkaoh+Jnapeku29oufgwAnkJSqa/MZnMp0U+5k5lyqAd5OilOD5LP
+	 ZXQrBMt0AKkjIcLnZLdsezUjqpQkYNgT0bhQfGppMx0atyu1LNUqDnH7O0i1DtnHfc
+	 czlElRvINGfZA==
+Message-ID: <cb6cb8c4-a8b7-463a-8ef5-75c99ff5638c@kernel.org>
+Date: Tue, 11 Aug 2026 18:53:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/20] mm/vma: fix self-merge check in copy_vma()
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
+Subject: Re: [PATCH v4 15/20] tools/testing/vma: expand VMA merge tests to
+ assert anon pgoff
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
  Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
@@ -120,15 +121,15 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>,
  Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
  Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
- linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+ Youngjun Park <youngjun.park@lge.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
 References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
- <20260806-b4-scalable-cow-virt-pgoff-v4-7-ab318a350404@kernel.org>
- <3a0a9aaf-20f5-4f92-b848-00ab702e8fe2@kernel.org> <antTCpT9gXN7pSRn@gremlin>
+ <20260806-b4-scalable-cow-virt-pgoff-v4-15-ab318a350404@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -175,17 +176,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <antTCpT9gXN7pSRn@gremlin>
+In-Reply-To: <20260806-b4-scalable-cow-virt-pgoff-v4-15-ab318a350404@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 83C2EC000C
-X-Stat-Signature: hzwkqqafwktuwxuubhk8zihmd7j3w46s
 X-Rspam-User: 
-X-HE-Tag: 1786467211-374127
-X-HE-Meta: U2FsdGVkX18z4+yeSzs30tnQ25VlQBBx7dYSrUmXO6TTC0pia0Evexqcw9ffChboSUwzbtVcziOyBDNQXcijye5PxxYDm1wBMbx4X+0sXZwQLT0NqsTrLGk1JnQKKrwM+fD7WhwtXp+Vy1c/+1WtQ7cCp2FtICVfOqJEkHaGM5zdwAQmnTYHnUmpTLWh22OYuTBHKd/V+SI8CSSNNAY617rwUVPrZEpfaqyXzPXkkRxhVVPumddaadK+sLmXEhGQrIYkhOnL0yMf9Hqd+eqI7NuypC+QLSdyGZZPKSQ61v52HxiACjOW3fZlu4udzQvK5/+IoVcGN9Yvkw9MNj9tFNlek7fzgJWc3PS84RnzuceaHF8PYjbteCfPaUpltCahlNltasWIVPgTEahI5vUo4sMmFoGToKHNznW0vzMsbkWJQw//NZRwhmD22JvJaHqwtwGxzQdABVJQohKykdKhbhCW/OB92ICz9DCefG8dU/ADhU4lnHQL554QMQTNDMFtyAEuNgPcGy9cFYqoK7SvZzoXr7RCqUwo80tglyfWk0nBKFwNUiX0P+cJu9UPx9YpwX6VqJy+FL6M2+7deXMdWlKXbGYg7IUSiiMYh664Io1F38+7bVJS3G0z3ux1P1Cbe5upABgK4cDwSRk21aw5c2YL1rAJm/v9LROrG+1GKp2hGxCiT/H2J5n0zUR+LnO9Ze1jG7b5FCxqiudIes8cakwv6L84mEjRDicIkC6gMHRhQIlojVDKzBrTRi/htSI0+j6TcXKA1xQ+h9PquCknvtCBdvnZzAiN60hfqspT+LN+4DLRf1luo99mfZMehdrd5DEv9qGihYby87fL9xxHR/oEeHJ0YdwMD/Pzjy4K+ClI5Lywnh8DAnIc7wq03qOOMx3xiah5DtyP3zKoA+hNQLZnne729d8/3JLqIzRBceOOIuT8vJlh8V0Q4hwny1H7qWkgXzs5sYGKWHgN7QX
- +lxB96mU
- Nw12+3kYCkoQi9UBEiTob+Rib4m+2q8HfLZ9UcrzbU31UkJDQci8RFnPAB0xfvqTWnUsa0k01dot3S7xfLxGcnAO+wk213GKBJgCmYvPuHyhrWfIaHVEIYOtSVMIftmObBGCNrh5HOPxdzSUE9PMdMh7dMk9k+RzKdFm0zYqTiOtk1X7s8mMmHfewWE2zpEHzaP48LjnJFnsSSN+KTdrkNe8Pqa7wyf61x4QiVvs3w4rorxOkx1GXqNRt1qHaFJvop5Y5JqwKJSJNWL1WWGrIiKYyxh//5V47YyAnxyc3tc+ZNmSeZZYkYn+1sW2ZLZwwAF335hnXSK9ShoElu7WOFqC4DEf7nx+Pns1XTxK+o+Dx55bt4ir4OjpVH9FN6jjFJDsv0aRtsNEW7ritx90wOY1RwQ==
+X-Stat-Signature: ppjdziftddyn7gsyq7f5zbuffq3aj8ja
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A389B40003
+X-HE-Tag: 1786467258-3056
+X-HE-Meta: U2FsdGVkX19rBCC8ic3NC5uwFDM5WX2JH/7B6Er4RrzvvBGUqKB7vowt+9GMY21jibjrYqQYqZn7z++nkrZTof0fUFYW60mJKUg00fqs9nRM0Fvywo3VKk7UvjeXReICRb8CXUpjQukh92iNVaVTD82+6P2bZjN62R/7CjauvOtOxabj5OtQ1NHmz+FTDBoR1Vn46fwAIUJ1XJZZlJrG1eCaFjC6FaazfR7THn1NT1KGngjWTzDc1tAxLnVlWYjzohHDLc7638LOGoHGeOK9moyjrtEFxCrtWCcaWIpDACe/EKkXIRfEkCdPdr6qbQohREEILCqlyOq//xNen2W+68DmpXYGGXSWWv3VrP/ex9T0Tewl0ku3BZwkaE1wpIawq+mNNkXSmZqLeGOS3EuWwQFqevr2GSMVlmMrCVBFn8afgV3PfPN36qyDvTbxpymubdXDM4ALXo6GONtNnoQ2UFpQK32rD+HV6ObgP0lv8dYSanHot1D7BX3aKr8RHnUprb63z+so5YVO/ISxARLu0ht36W0wmN2S1kHj4U3pzojTy6VhhJ/0G5fEnuYPV8xWN4SZ4nHUdKU+mOSRIGtTI/ybO7eQ3gFjG1FJjdQmHrqyHGqSEWSautVNOXkkygsd2/QM2qy+W05WbmFoiZh2GDgVL/2Qy062nxgsDUFkVBFvtkbDSfN55uoqcr0sLpF1M5VL4HrBu8CepoaKSPRQbLq8fdTOODopbCsN6H3DGoR0VxbFzbLfwwC4ezIE9eO+UC85ywwGU8Gdymq1GGMUWs4fkviPWpp3Ve5+peTlu6e32IDbjn9narZ4abGsZfRv4RTgUAV8nYWc/9/40y0tP6tqqc9lWOBOjB0163gVFMMaPc4OVfj1o9C5bFz50WoAOnaz6bHfbtQdzLlQ2mLbR2XMcW+KbKIOpGWdnUX7l1xJlHjQPANlqa/zDHf1/OBfu/y0KU7H9E7Zc4jL+5K
+ 7oqPQOV/
+ YRbmij3Jv+DCzkMca48LDwIVeUGvG2K4uf9MsvrTwpeeASDYIA87rXvoxULhYd+QVtSzrIqQY/+AneTD0kSRhC8a/m1ktDcytMANYnk1AaX7zGAPR8lVH82QpGi+ACLJPIVEChPcEvVS9r0XVG79yZI0OLfNE2D2PkiTFOPNMITWGO8Ua2ih1R5oB4h37bQhiAYNNPjpojpXh0gI6/64ApUUsK3twKeEPwsLJpHErsx4iNkM/QcIXKQOqZhPWX+5FKR7ORZTuu8/C3uIQDXrSVKE/3MWhbtQL0aKvwKLTWzgXHkdE8xb6W9kzQMXPkDqUZvFz9hFXUV3O5wvSYIBlhz92z9TY5zIYQpvE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -193,44 +194,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/11/26 18:51, Lorenzo Stoakes (ARM) wrote:
-> On Tue, Aug 11, 2026 at 06:44:01PM +0200, David Hildenbrand (Arm) wrote:
->>>
->>> Since copy_vma_and_data() which calls copy_vma() intends to reference the
->>> old VMA after the merge, it must have this pointer updated.
->>>
->>> This kind of self-merge is not possible with a succeeding merge, as the
->>> merge always prefers to expand the preceding VMA if possible.
->>>
->>> copy_vma() accounts for this by explicitly checking to see if a self-merge
->>> occurred and updating the vmap pointer if so. However it incorrect did so
->>> even for a subsequent merge (this is simply a noop so it had no impact).
->>
->> Took me longer than it should to find out that this is no real fix ;)
->>
->>>
->>> So change this to only check for the case which matters - a backwards
->>> merge - and rearrange the parameters to make it clearer we're doing that -
->>> i.e. check new_vma->vm_start < old_vma_start (having already renamed
->>> vma_start to old_vma_start to make it clear this is the previous VMA).
->>>
->>> Also update the existing wall-of-text comment to be a lot clearer.
->>>
->>> While we're here, replace the VM_BUG_ON_VMA() with a VM_WARN_ON_ONCE_VMA()
->>> and update the VMA userland tests accordingly.
->>>
->>> No functional change intended.
->>>
->>> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->>> ---
->> I skimmed over it, looks correct, but the merging stuff is way over my head to
->> confidentially give a RB tag her :)
+On 8/6/26 22:21, Lorenzo Stoakes (ARM) wrote:
+> Now we have introduced the VMA anonymous page offset attribute and update
+> it when VMAs are manipulated, update VMA merge tests to assert that the
+> anonymous page offset is as expected.
 > 
-> Well that's what A-b is for ;)
-
-Assisted-by? Half-assed-by?
-
-;)
+> Also update instances where we could use vma_start_pgoff() to do so.
+> 
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
