@@ -4,102 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A86E1C5AD55
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 02:49:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97F63C5AD7B
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 02:50:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69B9A6B007B; Mon, 10 Aug 2026 22:49:02 -0400 (EDT)
+	id 4A2296B008C; Mon, 10 Aug 2026 22:50:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64C046B008A; Mon, 10 Aug 2026 22:49:02 -0400 (EDT)
+	id 452156B0092; Mon, 10 Aug 2026 22:50:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53B8D6B008C; Mon, 10 Aug 2026 22:49:02 -0400 (EDT)
+	id 368E26B0093; Mon, 10 Aug 2026 22:50:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 228456B007B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 22:49:02 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A67C01C0BF0
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 02:48:56 +0000 (UTC)
-X-FDA: 85087456272.07.B86772E
-Received: from out-181.mta1.migadu.com (mta1.migadu.com [37.59.57.117])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 4BCDCC0009
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 02:48:54 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZQSuEH8O;
-	spf=pass (imf22.hostedemail.com: domain of muchun.song@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0627A6B008C
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 22:50:25 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E5E5F1402FE
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 02:50:23 +0000 (UTC)
+X-FDA: 85087459926.18.6921167
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2275D40007
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 02:50:21 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=bwZjyn67;
+	spf=pass (imf12.hostedemail.com: domain of cmllamas@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=cmllamas@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786416535;
+	s=arc-20220608; t=1786416622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZhHjo3aIwixazs38WpONPdhAQWYBalHyX4mnm9h4mLg=;
-	b=dwOe/eWD4SZGL7ToKXljxdws82n1JCbb6KJw/x9yr7vx94k2J7i67hk7ZPC9OJIAEgoz7u
-	UKaDkjGbfq55LrbWgfTp6J5IUnOYTSZmGdZXdA42IM69yQqZM1W2GP+tqR0AM8IPQ4DGCV
-	dJT3UT1IiFNbb3Q8BCnqI4q9phk4CVc=
+	bh=acdbH9fKwYoyiG7hBwz6wBMxKJBmLIf01OPkTkxGfP4=;
+	b=nIg7Xop6hQpXNE19ML84ZNN4Cmnz/gWJz9fSdVg8YAIVRqEnrhJJqcu7crOf6A4xJAsnwT
+	0fktPuu79XItdrh0nMsfPsSmUyYyaY7Jr3mCdpQXSkN6hTM2kRYd8uzrd5aWXrjfGnTxgP
+	FfaUN+kipPe11DC6pdElY/UF5IDoKh8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786416535;
-	b=g7bdKpd5UXysgviNDHe6VhFVJ957UhVMs+sf+AUqefatwRqc0d5p2/QJZ3gA8NlbLu8ulU
-	B0Ig6UUwLhsOkkMG1DaqIQV9y05+orkrlab4huBZ5h4zpyOFdjXRnocyIGBIbqmHfWMOqL
-	N6R83H6wReBky5d3k36HsRvtzlTXRWg=
+	t=1786416622;
+	b=BaX+2JtGemQXa30eUk3+Mqp4g3a6Xe6uSo8irVqt05GEMRrCQLet8B+jHUkfWbxLXJpdhh
+	ECE0/OfjEUOiAOUuS2aQydja24sHG35TudWgq8VcMX4e6QvI1FeGKklotd+207/wnfL1rC
+	btgmSz1AYzJYhqD7PyhMcCuw7jQbINY=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZQSuEH8O;
-	spf=pass (imf22.hostedemail.com: domain of muchun.song@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786416532;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZhHjo3aIwixazs38WpONPdhAQWYBalHyX4mnm9h4mLg=;
-	b=ZQSuEH8OMzSl9+vo5G7FZYxMvdPLWoizh5Q/APLwfiqTR//gsSmDE/j2IwSnqSHtQxh5G7
-	g4/LuySrHj6GvQMxJaE4+ccI+7lVXUwdTNkXhGf5l5oV/vKbm9/QPLYo32tn2bTW/JNJm9
-	tXqq547o0NdEvY14OFAEZtWOkbBNnK8=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH v6] mm/hugetlb_cma: Fix null nodemask dereference in
- hugetlb_cma_alloc_frozen_folio
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260810230844.3778931-1-souravpanda@google.com>
-Date: Tue, 11 Aug 2026 10:48:31 +0800
-Cc: osalvador@suse.de,
- akpm@linux-foundation.org,
- usama.arif@linux.dev,
- shakeel.butt@linux.dev,
- wangkefeng.wang@huawei.com,
- anshuman.khandual@arm.com,
- david@kernel.org,
- surenb@google.com,
- fvdl@google.com,
- gthelen@google.com,
- hannes@cmpxchg.org,
- riel@surriel.com,
- sj@kernel.org,
- vbabka@suse.cz,
- mhocko@suse.com,
- bjackman@google.com,
- zi.yan@sent.com,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <15EAC670-AA9F-4361-985C-F8ED2C322CF9@linux.dev>
-References: <20260810230844.3778931-1-souravpanda@google.com>
-To: Sourav Panda <souravpanda@google.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 4BCDCC0009
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=bwZjyn67;
+	spf=pass (imf12.hostedemail.com: domain of cmllamas@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=cmllamas@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2ccdf36f63dso32925ad.0
+        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 19:50:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786416621; x=1787021421; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=acdbH9fKwYoyiG7hBwz6wBMxKJBmLIf01OPkTkxGfP4=;
+        b=bwZjyn67OntPi9RwyuhlyviRFzMqmY9aQTFGscJn7K2prZ6XzKMMKm6lgbpbmAqnUj
+         9yq70UhLwAffhqaAnuf8DfoiAWLLqm/sIy4xI8FL3EfODpZmFp+T8yHM+IsQ6kNpJgHQ
+         iox3oyZAJ5yyMMn6vBH7OlvwgFtJQnj4XsSHIkKKEKSf7lJawJB4opHCX4qO5CdT5sDx
+         wmFX+GoJMSajiO9P7KNUK4tPoA9KKE3BZtlbkATYbObZ0KMfrrxU0XiFzS9Kr7xfAiN/
+         TT98WHzl60gZZ9g9hrEd6Fw8h0J9DiZlt5Gz+tuTzBpBNqVKXeLxOSzWDXz//RBp/wW3
+         6vow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786416621; x=1787021421;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=acdbH9fKwYoyiG7hBwz6wBMxKJBmLIf01OPkTkxGfP4=;
+        b=NF8Yl3HKSUSDrusLguKFRTbdY6o3o4fudclyIR9Go8uAhcycjEWxpCbTQUXvNxDuSJ
+         m7H+m2zUSakdMQg7fw7S/0pNkDFsvmL2I3IDqy6ktneO3MYkS5T6tChdmf1gOJZIEoaL
+         PCocWK66tKqd5PGva9l0Vcbs4XO0FBfmG7TTbVcHzYQGmZkKuYzZ9lXHkYexvFyiv3rC
+         EUbYdUGr9IaP3GpI/UEX+VGP8qVytFL1N+/wAYYSoXrZL6E+maVIjGkJ7aeImMhyL2cx
+         ZnCak7cjS3bMbpdDeZ9v5s9f+nLz3hFXv6KDSiLfJyNVuu2j369qtw8Qqmi7S96uajqL
+         0dFQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrPX627aNntM8vlONXjI3rYiB6AF8k4JJxOwZZi5d6ozCWTRU+kK6TbhAQhSmZ07bfMdWZ0P7zW4g==@kvack.org
+X-Gm-Message-State: AOJu0YxY5MgHlKN5NclSlnXEdz+mVwzIZx1okZ1VsaLBI7mBrH9OLKEH
+	Bkq3mofmBJm2VaTX/sgPzPN2cjcQMPu233vnWJfEklGs35xwLtECRnNnUpstBFc5wA==
+X-Gm-Gg: AR+sD12XLsydrnTDpn9h1rxVWUDpZv9GCtyegEwEeAd/xx5ODIaFXJQOU4cnBDgQrBb
+	78qOZTQdOf2SIUIjtiKMAMW4cH0DfyFuLV5eFdvE/eriiONT94qGiDgX1HtcpWfvZiFLO1JWfU7
+	SzHrSxieTv9Y1fpWrUmLkqhlfHmVxd4Iheq4NmoZq4c8ocKahBBCQLlnOpRbe3py+5I0ZcxzJ3I
+	CJwb9Xblg54GsJl1NGIOPg1XQdJIlrGBGQ6u2xMU8Y8i/ngEDQwdt0o3YL7t6iWW4QwV8c/K6fu
+	TjjktKAGSxA+LoyqzFKeRJFSRbFX7E1w4DyzUBGi8jHf+2oCrtK+PdECXAghAEGkYtoeH82nKeo
+	+gxAfTVH02Re8+iyVKnL7SABDwy7TeMd6n4ou8QHzrLeYYkH+prYzUgfGRRVpBGP3y63m3JF1QQ
+	ApUq50GhOM79PkkrT3Qi/KmaXAVu9SOW/rcALn97Vsk6dUEY14s7d6s0sCR4h7Fqnh9RyAU0feN
+	aeBbnWEwjXpYNEfckhgTS3cO+x2uTF8QUIp3A58ZBBUQUHLauUUHm6VWlZbEJ4hZLZ+r1DrI84c
+	LTeKLCjF8lIk7DEcXqjgO7G6ztizFQ==
+X-Received: by 2002:a17:903:37cd:b0:2b9:e831:5e5c with SMTP id d9443c01a7336-2d317208d60mr481185ad.4.1786416620399;
+        Mon, 10 Aug 2026 19:50:20 -0700 (PDT)
+Received: from google.com (193.67.125.34.bc.googleusercontent.com. [34.125.67.193])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d315ef11fesm540535ad.5.2026.08.10.19.50.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Aug 2026 19:50:19 -0700 (PDT)
+Date: Tue, 11 Aug 2026 02:50:15 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com,
+	Liam.Howlett@oracle.com, ljs@kernel.org, david@kernel.org,
+	willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org,
+	jannh@google.com, aliceryhl@google.com, arve@android.com,
+	christian@brauner.io, tkjos@android.com, dsahern@kernel.org,
+	davem@davemloft.net, gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v4 2/5] binder: Make shrinker rely solely on per-VMA lock
+Message-ID: <anqN59pDZEEcz1vd@google.com>
+References: <20260806200548.3124802-1-surenb@google.com>
+ <20260806200548.3124802-3-surenb@google.com>
+ <anoZL76y3WGXMArB@google.com>
+ <CAJuCfpFCK5ycO6s+dD35YtU6zgNdivfe6P3cVnd2VxPYfGXHDQ@mail.gmail.com>
+ <anojoFPijbCloUXL@google.com>
+ <CAJuCfpGXBTRUUtCCpLPT9v1LZA6UHo0yM3y68Kwhxs7S03z+5A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJuCfpGXBTRUUtCCpLPT9v1LZA6UHo0yM3y68Kwhxs7S03z+5A@mail.gmail.com>
+X-Rspamd-Queue-Id: 2275D40007
 X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: p6bjjwis843qce5azjufqhpsmj4ac5oh
-X-HE-Tag: 1786416534-659389
-X-HE-Meta: U2FsdGVkX19Wvs7fShHln24ayfo9MCOAS73c/lH5VTGCzpcyHxFdlVBEKP6RiAW586r6+utkuhQ8eO5JEo6sm5M1jdaf5M1c5tilG3A5lAv3hflCpKiQUmvd0mbmqmfDooAmg+e3TApb66FEAoDlrNjAxzazujN7cxwwQwFH1YyKVxxkO9DjaG3aFRKUzKxE1JJUpa65XWpVvhHVlAX/NrDT1WPDJpz+T8liksF89SqUE/4lGbFslzEAQQW3UFln2t9XYEiizDJP/50eN+t6ZYUz2wKv57M10klADplcwJ60bAE+L4ocO0/3WA3tPesnm7bAJjRoqoOXaQB3F3S5d/w/7/MAi4K7AJ4NmLV/eMHHwWrPRMcAbiL7cvuTX7qu79pFlLuX+NmVz18W7TN8bnyO229RzluzR75LW2sNG7Hqj/z+9dz0Bn/wjqDSH70dQe9xdyCWZxOA0a7gR8cLt2s73c278T8RLnvb/KRkxAKlufAXeCLGAKD2Jp7CKRFwb5RE0vfN+m7gTbnkmKEj6jAkf2dwIqgcExc3GXyDheqXbJjlo1Tpc8K64S7CM5h51lDNBJKveArMvfrDdi/sJVBGjJvCF4TPlF/SKbsZ3gsBnld4xDmVbQiTGD4qfCAwsbF60e1zpQ2GWiqCxsijwcwy11g8uCuLM5ZMiAXYmE9yQ/Ye8FV+6mMNZepPcn6Is024aOTH4pvZagI016gZgyOKXH4USw9zxF017Mv+eGXvlBxqhm90O3PgDIDDwB4KNkdmzSxbUQBlkAZRDcmGtqVKYydCmUEhvfYCmostYkTjQZ4iDBJBXvp0tOdfB5Gagpu9anpjp5KBwowqmavQuxT585gEbIClPi0h9fL8l4HTbUr5nU7ThzZB43BoGjXDuoTl4Y09edcU9K2w2BQ58tSiT034/6ziqjyMcE6IiXihixEHPZeTpsB/rzgTxDewN4ekmzWRFhf3rekwd0v
- XAPoUkGn
- TJ2aqFF4gphbC0ZrGiXbvRk3Xjz1ZciL1GoyLsBM10es9o3MVAUfvEn6HKWf34p2jt+LBLaZc/sg/Q4BStb4F8tBq5k62A4N+8LiZTm6Qw+5LRXlV7/HaxNwqK5/N2qUlbvGInZfGnOYjhonx+REs69hFDc/LQIIugJppsgurg7aD8VtngZHkSTPXPGykdAgDDiYWrGyqgkO4RNqP2xgVDVlOLLMZ4WqlDOcz9H92uWiIennKt4J6s5fvAQCDNLFnglXV7ZXeTyv867574jY+ARsyhIxBmKO8DUpZ
+X-Stat-Signature: hdshhfk89btbniyee1xxn4f44k31uimd
+X-HE-Tag: 1786416621-933108
+X-HE-Meta: U2FsdGVkX1+TfGL9aF2Kkjl10fzA/YyDlvgRINF2GwSVl3oaU2OM7FDUqQxddteXPBreBulE+neijFOOjGEF8FGF1rtfqrxJj+qDTktqijP9HYZ9qTHNYxFIw+Eu8HmMOoRyYKcfyzW5VzSHMSl16lYrM631W8KCQvDdtiKs6ObsMLVH3tmidBCVNF3PdFvxBSnfbxa3qoA5yi3U91dOgrQzD9EGYjeMA9PKQfiDre3dpTyINHzK1QdR1KgAmSKb521aDoR1D4DRJ9j5lVR84QPX5d07vq7dupFZ3UFDIzchsXL091nLi8p/98iwp31frzm4U2Y8GkNJUZclU01EEdxADlkyfVRRLoiV4agvmNLp+IKBKaQLMg5Nt4qUZuz/vtgsmjzT7ScM6821sH+nvdMGn5u8fbBJy6XFrbMklHlmnRELBvoeWBn3uWHpZOnJCI7aqUOVPso4wy4/Xzhn3O+bkgzvadzWsVxtkiLYabrIUl0FZEF+Lt8xhDwtzaMMAyKVp1SdWK5yUe4Pof2LW7KkYfV8DZyw2Xe4QHR18A4aLNHNwV19zggk2weYOeLElSFN03ZWe+Dd5mD17SbotRD9J5DuR84YSWv2z6mjLib/m9BEO9WQakDAMMsSfqhFiU3EMA5PUxz33E78JQVeT7jUFw0Z32m4GsDwe245uRLYHbDIi5PDa58WQgRYl9sD1MKhBczXwS9OmdT9mfz4o1fZvlB5UzSuw8V4EpGYEcxbt/feFAh6+I9Na7Tp4OmuG7jb7T2kloiSmYVaXjoMPeQSjCbR4ZIr8Y8EjJSGxUODDeB6bwLOgoAD5P25ILVQBhSrlWuSwXTvVVkk59myc2kzIKuTcay3N1fzmyiLiZ8caaHE4LBYW5oQQFylFZkyYyM3Hxe4OUe9qFyO4G5QZ6gD8zsgaR/J0j2hGHfq1f1TLj60AISbuRNs11RndN5cQgpe6o7gviEdde4w9yl
+ CWSa7AaH
+ 6cmZsSbUvV/IDV+3TwgUkuKFskW45Jdz5Ru5Mk55KCamccsbdY7cO+LyuUxCeqbeWWQwQ8eE0kfNNBk2bCKXz9yl67+olZKDBexZs1smwoPlBhBUxkYJGYN8Q/cvDTWohTOxhTkO1wj7hRtVlwSqeBS6sX2m9DKsI68VzBfe9DPk6IfUXaf24elwKLeYXkLISDl66z1eKZxgi8JRhl6jNd+U6Fp6CF24twE/f8WFE0eW1ndEMNcOcho+GcZWfZQKu87bYZI5fW5oxkB9Cyvb0OVhepC7SaHyMX/i9fmx1mQBncuFAUzIBSgL/Ns4dLLI1gDBQxn1IIedSEXnNPw7u8oOBTTpUsN7WfKCGEgfLgglBv3WRROTsFUr6AVVyJUhBzt/xPvXyoLr5fZWgC9r4/63iRxPL14H+aIfBTgacLGj1p6Swxfu0Evyxo0xZEwA60PPqGKytXSSJTu2afckHL5XDvKqfmsQa2ju0HcEtyeoMKZwchxHB4bOsv8LKktzv8Xq3pK2i+w+Gt890Sr/YV1xtnOSnjIEXEBFVaxpl/7J0RdIJyEjXE2oD3g5GdG4W3GE2MGnzwVo34qX6RWp8YGp5ya40XmPFwGLY6js+NnL+mTdSCGaqup9JxNHEskqHmcQUEzVEhiNwjMrqvUcdKnYXkVYiOhokoKu0nMCclRM23M2ha0lPy3pE2pFcZwRyBfzfLTwrhwOY876ZfW3BZ7x3rZbiX692A5yWn0Lt0Ua3EopDvDOen0296IOqqR1IG4kX1Iv8sOdVAsupEFn87cPNwg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,179 +133,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Aug 10, 2026 at 02:00:14PM -0700, Suren Baghdasaryan wrote:
+> On Mon, Aug 10, 2026 at 12:16 PM Carlos Llamas <cmllamas@google.com> wrote:
+> >
+> > On Mon, Aug 10, 2026 at 11:54:04AM -0700, Suren Baghdasaryan wrote:
+> > > On Mon, Aug 10, 2026 at 11:32 AM Carlos Llamas <cmllamas@google.com> wrote:
+> > > >
+> > > > On Thu, Aug 06, 2026 at 01:05:45PM -0700, Suren Baghdasaryan wrote:
+> > > > > From: Dave Hansen <dave.hansen@linux.intel.com>
+> > > > >
+> > > > > tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
+> > > > > it and mmap_read_trylock().
+> > > > >
+> > > > > Long Version:
+> > > > >
+> > > > > == Background ==
+> > > > >
+> > > > > Historically, binder used an mmap_read_trylock() in its shrinker code.
+> > > > > This ensures that reclaim is not blocked on an mmap_lock. Commit
+> > > > > 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
+> > > > > support for the per-VMA lock, but left mmap_read_trylock() as a
+> > > > > fallback.
+> > > > >
+> > > > > This was presumably because the per-VMA locking can fail for several
+> > > > > reasons and most (all?) lock_vma_under_rcu() callers have a fallback
+> > > > > to mmap_read_trylock().
+> > > > >
+> > > > > == Problem ==
+> > > > >
+> > > > > The fallback is not worth the complexity here. lock_vma_under_rcu() is
+> > > > > essentially already a non-blocking trylock. The main reason it fails
+> > > > > is also the reason mmap_read_trylock() fails: something is holding
+> > > > > mmap_write_lock().
+> > > > >
+> > > > > The only remedy for a collision with mmap_write_lock() is to wait,
+> > > > > which this code can not do. So the "fallback" after
+> > > > > lock_vma_under_rcu() failure is not really a fallback: it is really
+> > > > > likely to just be retrying in vain. That retry in an of itself isn't
+> > > > > horrible. But it adds complexity.
+> > > > >
+> > > > > == Solution ==
+> > > > >
+> > > > > Now that per-VMA locks are universally available, lock_vma_under_rcu()
+> > > > > will not persistently fail. Rely on it alone and simplify the code.
+> > > > > The removal of the fallback does not affect NOMMU case because binder
+> > > > > driver depends on CONFIG_MMU.
+> > > > >
+> > > > > Full disclosure: I originally tried to do this with
+> > > > > lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
+> > > > > trylock semantics. Claude caught this in a review and suggested the
+> > > > > approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
+> > > > > I guess.
+> > > > >
+> > > > > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> > > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > > > > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > > > > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> > > > > Cc: Vlastimil Babka <vbabka@kernel.org>
+> > > > > Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> > > > > Cc: linux-mm@kvack.org
+> > > > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > > > Cc: Arve Hjønnevåg <arve@android.com>
+> > > > > Cc: Todd Kjos <tkjos@android.com>
+> > > > > Cc: Christian Brauner <christian@brauner.io>
+> > > > > Cc: Carlos Llamas <cmllamas@google.com>
+> > > > > Cc: Alice Ryhl <aliceryhl@google.com>
+> > > > > Cc: "David S. Miller" <davem@davemloft.net>
+> > > > > Cc: David Ahern <dsahern@kernel.org>
+> > > > > Cc: netdev@vger.kernel.org
+> > > > > ---
+> > > > >  drivers/android/binder_alloc.c | 45 ++++++++++++++++------------------
+> > > > >  1 file changed, 21 insertions(+), 24 deletions(-)
+> > > > >
+> > > > > diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
+> > > > > index e4488ad86a65..c13a588c37de 100644
+> > > > > --- a/drivers/android/binder_alloc.c
+> > > > > +++ b/drivers/android/binder_alloc.c
+> > > > > @@ -1142,7 +1142,6 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+> > > > >       struct vm_area_struct *vma;
+> > > > >       struct page *page_to_free;
+> > > > >       unsigned long page_addr;
+> > > > > -     int mm_locked = 0;
+> > > > >       size_t index;
+> > > > >
+> > > > >       if (!mmget_not_zero(mm))
+> > > > > @@ -1151,27 +1150,25 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+> > > > >       index = mdata->page_index;
+> > > > >       page_addr = alloc->vm_start + index * PAGE_SIZE;
+> > > > >
+> > > > > -     /* attempt per-vma lock first */
+> > > > > +     /*
+> > > > > +      * Attempt per-vma lock. This is essentially a
+> > > > > +      * "trylock". It can fail even if the VMA exists
+> > > > > +      * for 'page_addr'.
+> > > > > +      */
+> > > >
+> > > > Do we need to explain how lock_vma_under_rcu() works here?
+> > > >
+> > > > >       vma = lock_vma_under_rcu(mm, page_addr);
+> > > > >       if (!vma) {
+> > > > > -             /* fall back to mmap_lock */
+> > > > > -             if (!mmap_read_trylock(mm))
+> > > > > -                     goto err_mmap_read_lock_failed;
+> > > > > -             mm_locked = 1;
+> > > > > -             vma = vma_lookup(mm, page_addr);
+> > > > > +             /*
+> > > > > +              * If the vma exists, we can't continue because we cannot
+> > > > > +              * remove the page from the vma. However, if the vma was
+> > > > > +              * unmapped, it's okay to continue.
+> > > > > +              */
+> > > > > +             if (binder_alloc_is_mapped(alloc))
+> > > > > +                     goto err_vma_lock_failed;
+> > > >
+> > > > The comments seem redundant, the label is enough. This works:
+> > > >
+> > > >         vma = lock_vma_under_rcu(mm, page_addr);
+> > > >         if (!vma && binder_alloc_is_mapped(alloc))
+> > > >                 goto err_vma_lock_failed;
+> > >
+> > > Yeah, for the binder maintainers what's happening here is probably
+> > > obvious, but when Alice explained the logic to me, this comment really
+> > > clarified what's going on, so I added it here. If you insist on
+> > > removing it, I'll do that of course.
+> > >
+> > > >
+> > > >
+> > > > >       }
+> > > > >
+> > > > >       if (!mutex_trylock(&alloc->mutex))
+> > > > >               goto err_get_alloc_mutex_failed;
+> > > > >
+> > > > > -     /*
+> > > > > -      * Since a binder_alloc can only be mapped once, we ensure
+> > > > > -      * the vma corresponds to this mapping by checking whether
+> > > > > -      * the binder_alloc is still mapped.
+> > > > > -      */
+> > > > > -     if (vma && !binder_alloc_is_mapped(alloc))
+> > > > > -             goto err_invalid_vma;
+> > > > > -
+> > > >
+> > > > This introduces an "extra" change. We'll now release pages without a
+> > > > valid vma (e.g. after munmap()). Before, these pages were expected to be
+> > > > released via close() in binder_alloc_deferred_release() later.
+> > > >
+> > > > I don't see anything wrong with it. However, it does seem out of the
+> > > > scope of this patch which just drops the mmap_read_lock() calls. Or at
+> > > > least I don't see how this part is necessary.
+> > >
+> > > This check came from this discussion:
+> > > https://lore.kernel.org/all/anGrFIYiPhjxWSkD@google.com/
+> > > It's added for consistency when handling cases where the original
+> > > Binder VMA is gone.
+> >
+> > Oh sorry I missed that thread. Yes, I agree we can reclaim these pages
+> > earlier if really needed but my point is this is unrelated to the change
+> > done here IMO. I couldn't figure out why that was needed.
+> >
+> > If you are keeping that in the same commit it's probably worth adding an
+> > explanation to the commit log?
+> 
+> Ok, I'll amend the commit log with an explanation for this change.
+> Are you ok with keeping the other comment, or do you want it removed?
 
+Ok, let's keep the comment. You are right that it is not obvious what
+the intend of the binder_alloc_is_mapped() check is.
 
-> On Aug 11, 2026, at 07:08, Sourav Panda <souravpanda@google.com> =
-wrote:
->=20
-> alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
-> alloc_fresh_hugetlb_folio() as a fallback to allocate from all
-> nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propagates
-> the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() via
-> alloc_gigantic_frozen_folio().
->=20
-> Additionally, hugetlb_cma_alloc_frozen_folio() previously attempted
-> allocation on hugetlb_cma[nid] without verifying if nid is included in
-> the caller's nodemask. Adding a node_isset(nid, *nodemask) check =
-ensures
-> the initial preferred node allocation honors the memory policy / =
-nodemask.
->=20
-> However, hugetlb_cma_alloc_frozen_folio() dereferences the nodemask in
-> node_isset(nid, *nodemask) and for_each_node_mask(node, *nodemask),
-> leading to a null pointer dereference kernel panic when nodemask is =
-NULL.
->=20
-> Fix this by checking if nodemask is NULL in
-> hugetlb_cma_alloc_frozen_folio() and defaulting it to
-> cpuset_current_mems_allowed. Enclose the allocation attempts within
-> the cpuset seqcount retry loop so that if the cpuset changes =
-concurrently
-> during allocation, the attempts are retried using the updated =
-nodemask.
-> This ensures that the initial node check and fallback loop safely =
-honor
-> the task's cpuset without violating cpuset constraints or causing NULL
-> pointer dereferences or unexpected allocation failures.
->=20
-> =46rom a userspace perspective, this bug allows an unprivileged user =
-to
-> crash the kernel (trigger a panic) by requesting a gigantic hugepage
-> allocation with MPOL_PREFERRED_MANY on a system where CMA is only
-> configured on a subset of NUMA nodes.
->=20
-> This can be reproduced by booting a VM with two NUMA nodes, =
-restricting
-> CMA to Node 1 (e.g., hugetlb_cma=3D1:1G default_hugepagesz=3D1G
-> hugepagesz=3D1G hugepages=3D0), and running a program that allocates a
-> 1GB hugepage area without reserving, restricts allocation to Node 0
-> using mbind() with MPOL_PREFERRED_MANY, and triggers a page fault:
->=20
->  void *ptr =3D mmap(NULL, 1UL << 30, PROT_READ | PROT_WRITE,
->                   MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB |
->                   MAP_HUGE_1GB | MAP_NORESERVE, -1, 0);
->  unsigned long nodemask =3D 1; /* Node 0 */
->  mbind(ptr, 1UL << 30, MPOL_PREFERRED_MANY, &nodemask,
->        sizeof(nodemask) * 8, 0);
->  memset(ptr, 0, 1UL << 30); /* Trigger fault */
->=20
-> This results in a NULL pointer dereference:
->=20
->  BUG: kernel NULL pointer dereference, address: 0000000000000000
->  #PF: supervisor read access in kernel mode
->  #PF: error_code(0x0000) - not-present page
->  Oops: Oops: 0000 [#1] SMP NOPTI
->  RIP: 0010:hugetlb_cma_alloc_frozen_folio+0x75/0x120
->  Call Trace:
->   <TASK>
->   only_alloc_fresh_hugetlb_folio.isra.0+0x2c/0x160
->   alloc_surplus_hugetlb_folio+0x6d/0x100
->   alloc_hugetlb_folio+0x3c5/0x660
->   hugetlb_no_page+0x3d9/0x650
->=20
-> Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic =
-hugepages")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sourav Panda <souravpanda@google.com>
-> ---
-> Changes in v6:
-> - Enclosed the CMA allocation attempts within the cpuset seqcount =
-retry loop,
->  retrying allocation upon cpuset mems_allowed updates to prevent =
-unexpected
->  allocation failures as suggested by Muchun Song.
-> - v5: =
-https://lore.kernel.org/linux-mm/20260809043250.2917406-1-souravpanda@goog=
-le.com/
-> - v4: =
-https://lore.kernel.org/linux-mm/20260726072935.3513996-1-souravpanda@goog=
-le.com/
-> - v3: =
-https://lore.kernel.org/linux-mm/20260705175119.440599-1-souravpanda@googl=
-e.com/
-> - v2: =
-https://lore.kernel.org/linux-mm/20260704174930.2885785-1-souravpanda@goog=
-le.com/
-> - v1: =
-https://lore.kernel.org/linux-mm/20260702215713.627941-1-souravpanda@googl=
-e.com/
->=20
-> mm/hugetlb_cma.c | 23 ++++++++++++++++++-----
-> 1 file changed, 18 insertions(+), 5 deletions(-)
->=20
-> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-> index 39344d6c78d8..9debf033d4fd 100644
-> --- a/mm/hugetlb_cma.c
-> +++ b/mm/hugetlb_cma.c
-> @@ -3,6 +3,7 @@
-> #include <linux/mm.h>
-> #include <linux/cma.h>
-> #include <linux/compiler.h>
-> +#include <linux/cpuset.h>
-> #include <linux/mm_inline.h>
->=20
-> #include <asm/page.h>
-> @@ -30,15 +31,27 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int =
-order, gfp_t gfp_mask,
-> 	int node;
-> 	struct folio *folio;
-> 	struct page *page =3D NULL;
-> + 	const nodemask_t *nmask;
-> + 	nodemask_t local_node_mask;
-> + 	unsigned int cpuset_mems_cookie;
->=20
-> 	if (!hugetlb_cma_size)
-> 		return NULL;
->=20
-> - 	if (hugetlb_cma[nid])
-> +		retry_cpuset:
-> + 	if (!nodemask) {
-> + 		cpuset_mems_cookie =3D read_mems_allowed_begin();
-> + 		local_node_mask =3D cpuset_current_mems_allowed;
-> + 		nmask =3D &local_node_mask;
-
-I don't think we need a local_node_mask, nmask =3D =
-&cpuset_current_mems_allowed
-is enough. nodemask_t could be a huge array, so it might consume a lot =
-of memory
-on the stack. I don't think we need to do that unless we see a clear =
-necessity.
-
-Otherwise, LGTM.
-
-Thanks.
-
-> + 	} else {
-> + 		nmask =3D nodemask;
-> + 	}
-> +
-> + 	if (hugetlb_cma[nid] && node_isset(nid, *nmask))
-> 		page =3D cma_alloc_frozen_compound(hugetlb_cma[nid], =
-order);
->=20
-> 	if (!page && !(gfp_mask & __GFP_THISNODE)) {
-> - 	for_each_node_mask(node, *nodemask) {
-> + 	for_each_node_mask(node, *nmask) {
-> 		if (node =3D=3D nid || !hugetlb_cma[node])
-> 			continue;
->=20
-> @@ -48,8 +61,12 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int =
-order, gfp_t gfp_mask,
-> 		}
-> 	}
->=20
-> - 	if (!page)
-> + 	if (!page) {
-> + 		if (!nodemask &&
-> + 		    =
-unlikely(read_mems_allowed_retry(cpuset_mems_cookie)))
-> + 			goto retry_cpuset;
-> 		return NULL;
-> + 	}
->=20
-> 	folio =3D page_folio(page);
-> 	folio_set_hugetlb_cma(folio);
-> --=20
-> 2.55.0
-
+Thanks,
+Carlos Llamas
 
