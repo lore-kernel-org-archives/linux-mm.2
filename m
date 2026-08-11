@@ -4,127 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82F50C5CFC1
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 19:25:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F4DFC5B56A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 19:37:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5890C6B007B; Tue, 11 Aug 2026 15:25:47 -0400 (EDT)
+	id 54DA26B0092; Tue, 11 Aug 2026 15:37:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 539B26B0096; Tue, 11 Aug 2026 15:25:47 -0400 (EDT)
+	id 4FEB66B0093; Tue, 11 Aug 2026 15:37:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 427AF6B0098; Tue, 11 Aug 2026 15:25:47 -0400 (EDT)
+	id 415936B0095; Tue, 11 Aug 2026 15:37:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 01D8B6B007B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:25:46 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8151CA01F5
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:25:46 +0000 (UTC)
-X-FDA: 85089968292.04.8A66A57
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E81B4180008
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:25:44 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QjR46Q4l;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786476344;
-	b=bP8nGh+orSgOrrPlA2w/QYyPxfr3D/B5K8xMNZB0wDYElJ0AG1oWJfNkEniJnhvgfZQn7C
-	OdYZS9FMoRxeZnDwujYvp1BhTni6W438cS73McZh1cULQdjDUbR4iHuKR6w2WGQfwnU70S
-	WH0VuKjjNaiXNuvMln6PfW27jrwsQCw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QjR46Q4l;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1293A6B0092
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:37:07 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8D70DA1D3B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:37:06 +0000 (UTC)
+X-FDA: 85089996852.26.9D5156F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C0BCB40004
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:37:04 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZK5z1mIO;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786476344;
+	s=arc-20220608; t=1786477024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d/kFT/bPhzj3VGlufcHrxy72DzfiKj46fSUWmYSSRdY=;
-	b=S5FXJeM/teXZgNufjlcuObDDEKOxcElbtxxuUQUMWe7QnR+gX++p19R9mG7vXGEQbC+RD5
-	WvfWDykzyRUpsMhUQqCLO2KO+6yfWUUB/ke60oPo8QNVKLDbXzdS69bhElGzkv9hFxVcEL
-	CsEYwf1SzIJM2zkNq+NHi1q1530X22A=
+	bh=JEIV1+Ic2JJ2pbDnh2hSoJgw+LV+nGwdX8sOI5VTTbQ=;
+	b=2/ZAOUB4rHk7mWEp4NHCvLu+7bHNyDe+HSO2SsCPkhpZnYRPvihP2GgjEfiZp7nNyrYf3L
+	lg1ltmJsBPdiU9pu/MnBUrLYjxqJIuTIZFkW+3LRlPFdiNhGDIbvlbazIV/sKNi9neiDWp
+	o04cJynxlT5Y5s3kcWvTMPe24O4aYsQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786477024;
+	b=ocy8VC107L6DLj182URsE2EMNBREsj3yziO0JrtdElf1nTwzgawR461uK9ICgv1LULPvlM
+	6KzB9lZUACDc61i7IJyQ+nl8vGe6s4WSSYuWCvQyYIrOnDnV8ysrY9cYp7xwT7FuRtqpMi
+	Ngnfe5FbJUF18neZdDvRNTJUmXbzbUw=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZK5z1mIO;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0CBF5600AD;
-	Tue, 11 Aug 2026 19:25:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B2051F000E9;
-	Tue, 11 Aug 2026 19:25:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786476343;
-	bh=d/kFT/bPhzj3VGlufcHrxy72DzfiKj46fSUWmYSSRdY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QjR46Q4l38ohpBPR9a3NVpyj00X97b0QAtzWD4CJusxEIHEk06ZVprfqvGEwliaFz
-	 ApBeXPVAZFUoE+1iAOYtGAf1euN2IjulS05jD3suRf8nP+UXfJAjvY23m4sDGtj2gN
-	 0iZV+swR1WmPVz6C9JwEZAJHMXnIVG0wfTVbm3960TN4McRip96oHmA0zV1PTgK4PR
-	 sMEkhML8HuqBfgHxpw5B+Vxc7jB7S5Ing8jtzB1kK0TmQkbcsUP5Z6S8nxav9KhiA5
-	 LIHxirdJ5+/7iEag07J0iZPWWUreSRXob3X4jSbGiOtkALzPRhYglSoT5SwTdh0u/I
-	 C3aXsRk4aSs+g==
-Date: Tue, 11 Aug 2026 20:25:07 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Alex Deucher <alexander.deucher@amd.com>, 
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Steven Price <steven.price@arm.com>, 
-	Liviu Dudau <liviu.dudau@arm.com>, Huang Rui <ray.huang@amd.com>, 
-	Matthew Auld <matthew.auld@intel.com>, 
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 17/20] mm/vma: only permit MAP_PRIVATE /dev/zero to be
- mapped anonymous
-Message-ID: <ant1xwiG3djtoXoe@lucifer>
-References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
- <20260806-b4-scalable-cow-virt-pgoff-v4-17-ab318a350404@kernel.org>
- <c7930f14-5978-4709-bac2-54950c988883@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c7930f14-5978-4709-bac2-54950c988883@kernel.org>
+	by sea.source.kernel.org (Postfix) with ESMTP id 1A36341720;
+	Tue, 11 Aug 2026 19:37:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB761F000E9;
+	Tue, 11 Aug 2026 19:37:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1786477023;
+	bh=JEIV1+Ic2JJ2pbDnh2hSoJgw+LV+nGwdX8sOI5VTTbQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ZK5z1mIOs+2tz4ZAf0h1lEU9OS/9Ig0pXVprUHkNmIDefT/MQ8fVSjsIKeoQpOXBQ
+	 8P7ZjmBBQLL9XebRiAoxunQq4+2gL7Xz0z3z8D2sFaeuactLIMewkGJgN/Wfqh/AKl
+	 RkzVitgTCEZHIN1hh09OMj9vTsV2VglHFmzm1eQI=
+Date: Tue, 11 Aug 2026 12:37:02 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, Max Boone
+ <mboone@akamai.com>
+Subject: Re: [PATCH v2 1/2] mm/pagewalk: fix stale walk->action escaping
+ walk_pmd_range()
+Message-Id: <20260811123702.f3c60a3573e148c53ad35b97@linux-foundation.org>
+In-Reply-To: <20260811161949.3879321-2-imv4bel@gmail.com>
+References: <20260811161949.3879321-1-imv4bel@gmail.com>
+	<20260811161949.3879321-2-imv4bel@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E81B4180008
-X-Stat-Signature: m9ouq16877fry73ab4ruwfrezjtgx9mr
-X-HE-Tag: 1786476344-855726
-X-HE-Meta: U2FsdGVkX19VRCdz/8jt0miZMOtxBsFEjrLWmRBti2VvXEeD3WxCTL5CRonhrNciiwaqG7j29gyyOlvoiZVtJJ770jxxSJK2Dj3bBF2EWooIPKzWybqtw4tuJBmZIp8jSNCuUaNMpEFM00xiK/unPQVIHS+pRvqn2hIUhIJcGlygRSvUEacKbRk/Tke/VcqAR8kiNRZJukQ8epzlKgQ4tf8JykQ7KXs6ZO+MG3aqUNTvtYfRpf41yoDR+mhx+XxSQ9VSQzE5s+xWqyDbb77fz1lw7fZqHXeFDDamO/1zrgsj8t171MsDeyFNSyOT5g1lVSYFoAq5BkXmohBx61b8xjYmied+ISgTSFXt2bdcAuQ6uGLh00s+ZL/nfVXtG4HqpZMpxEI6dTN3HhIvqfDhrdmwlsyGnlQ7mbaFqowJ0REwHR1X8JzT0CgqojmJAAEjMLFNO25F7SAFx5SmepRgKWrDYCJKTEiPzJuEPA+iY1m9Fdv2+t8RBh+ZsSE9ukSqAO+sGVsbN8OlbnZC06Tfh2wPOd2hFjfY4haM1EBeHHpeKt3sgKfI2Zj1DkhZUBM8NHH5eaTyJBD3E843x+60nYOMSBrzUTAuHafnfYVVz+woc6w+GG3ESL7j0a+vKIwt7H8Pk5X0NP0ELaqh8Fui4BKrjPABE8oObShncvoNf3AO2BnWWn6FaGLZDkWbyt59sKpDHfqE79Sf71dToUmZx+43DZz1IJnv9+ifrFMbH2Nro73NaCh9N8D2MQGkIAprZ8Whg6axpRruXzjO35MfjWzK8Rhwpubf2W5J+9QwMpN4qtCWo7RvrlPKpsoZqnc8oS4+OQo5Ma2qSi0UsfaIaLKTQ9HHChzkCZHs63ZSL+Kslr3W851zfYl0J7XkKR873gC+RI7Fh1dF+9WXJ6g8xxXQcDtp5mM7UBz3XB6Uj169Fsr1Rp3YmZSwHr0zEm0lcZjEKY0sGXfYbd6mTm9
- YnX9sw8Q
- DpcTW2yYd+BHuGVi1BXMtwcbaTNNOIxlqjBrx9A9NB1MZbKXFBgOR4FADzciarO5tVBzHN9eJp7caN9U2wGq62xieGjpLY2x9GwSe2BjU9XNFu3X8/eatHEleC8WDwpXkAISezm8BQx0QvYdxYHsxLmJfFXYfRHCQMFti09C7Lj7qqmv1k0M3Cch1JORpCsaamEd0twuz9T56qkTO1siE/4/cx6NMCcVRs90veU9paxx3EKff8BC3SmhTFDwowzVy0UPG/v1WPgN2oBTHe4BrK5MwsjFw9tAMu6pBcQXWFtRmYCGT4oFl6l26QHdHEvDkl7wJGo/eFIspW+mYbyoYiTLIsXV3Orsu8b9OmQbmZ/HN1w6QZZ32yJvPFgH5Hdseq37xGTofBz3wgWQ=
+X-Stat-Signature: exy3jzpp1g58w8xo4mstdpgzjfin3mkx
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C0BCB40004
+X-HE-Tag: 1786477024-415702
+X-HE-Meta: U2FsdGVkX19DB8HiiFQbxp05OR2ko0Ld8axa4sj4sWY4HGnI1WJnuBCeUgtM8PJvICrneux5Ag+3QiXYqgwL7P2/2pdL90nalbFrfy+eKueyiAqvwCRf3IqH35/koMC1vZiVIzOqyQypzH1VFUyK1MjcsnNfs15B1FOnIIOLqHTZ66JPdM5mciGAOi0IFpr/jC5yHcgJ8z4obwogg7NhRAPzaHpjE1e/y2dPod1On2VLViv9uI0i/FPfiV2OCoR9yBB2LhcisUARTh+Sf9NnbdcDoULA694XWxyPtSRDRT6by/69zxoWkG2Vni/onxElcxSgOeKrZNOkIeYJIU+3o9XvvBYzA1pDRphe+SDnK1s6kcdtc8zDOWD1IzpApLjlUYEEDoKo5erd/F6SaZ5FJB45Duz0VSESQMdc+Nomv1O4J27OP/fDZizG7iWQqFu8+8WXMddWibO0nYVSJNw11jewL7X6rSysae8C88ayNhVSzymaDWYlSOqNipr6ZYd90pAkDVaaPW4hwyKsoBBIs8pNdy2wL+q4RbZIL6Ryk2Lla14+UDYvSYWB5mD//HJxeG6s90xY4HO4EuJCqRHYjJJCKyOYexonapF0LpxhOjVjljAuOM5yEwECW+Waqvw8aywNoJuDwAgpkQPpD8acbVDuTwbpbNh1pmycbOfsa5MC23+y7OkQQtgnCAFGI3wgcct1xDqUmkIUqypJeyJeMbuUwE7xPCyIBrJScuqxVws6tulLr96En/LO0FhmlUzb2YGJCIzzc9G8cmhqTpFYRn2ZVtaTykinXWVOPQv/FtTZklxxv5KKRvA9em3pO/9LfLxzo5I9L3Tf9ELBxESxKrkkTieIKEDEAcRsoMl5HIbrkdEWyT2oVLvihNmD9ND+OlXRUp394Px0kxR+9djfdCVy3k6cbz3IoTfq6k3esaxXejpbA3fspKESnyWjJGRjOG9fwp6paX70rPC+JnO
+ mpL2IUu2
+ kYhNCTFZLobJuWsUZAyMXcaIUTxyZ3mpKV6naZUwsnD4U6iQvwkdOGqjumLbnM3D5IhyiN8s+jbM4HKpmPWJ2Gu9nbDl0KpvO77m1f3ZPg3q2yQkDhzYtA+pcHsER9zqQZAHdqC353O8yV9JEX+voSAJwsADttBcyi3UZlUF2EPlGlSDMO7bONto01jT0RtwvlaqvbVRNCNL9np20C9es6ApxEoJmxQmKIQ3k0w8++9sq09PtB7zCx7zR9VIBlA0GV4xkPiDRXxiXtfz5Ts4pDICn7FekXyNn0HcfmG7sGP9DdSAWRvpOkoR3VG8aqJ0USB3NPGKcE/NmqJ5EJANygWJqSw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,120 +93,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 07:07:27PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/6/26 22:21, Lorenzo Stoakes (ARM) wrote:
-> > In order to use mmap_prepare() with MAP_PRIVATE mappings of /dev/zero
-> > without the success_hook hack we explicitly permitted mmap_prepare handlers
-> > to set NULL vm_ops.
->
-> The sentence is a bit hard to get as you are mixing "with" with another "without".
->
-> >
-> > However this is dangerous and we really only want to allow this for
-> > MAP_PRIVATE-mapped /dev/zero.
-> >
-> > Make it possible to explicitly identify /dev/zero by setting a global
-> > DEVZERO_MINOR device minor number then explicitly check for this in mmap
-> > code for a MAP_PRIVATE mapping and only set the VMA anonymous if we have
-> > positively identified it.
-> >
-> > Then remove all ability for mmap_prepare or mmap hooks to set a VMA
-> > anonymous and update mmap_zero_prepare() to leave it to the core mmap code
-> > to mark the VMA anonymous.
-> >
-> > Note that this disallows nested MAP_PRIVATE-mappings of /dev/zero
-> > regions. Doing this would be broken in any case.
->
-> What exactly do you mean by "nested MAP_PRIVATE mappings"? You mean, reusing
-> parts in other drives?
+On Wed, 12 Aug 2026 01:18:57 +0900 Hyunwoo Kim <imv4bel@gmail.com> wrote:
 
-I should have said stacked I think.
+> If ->pmd_entry() sets walk->action = ACTION_AGAIN, the pmd_none()
+> check is retried. The PMD entry may be cleared at the point of retry.
+> 
+> In this case, if walk->ops->install_pte is not specified, the code
+> continues to the next PMD entry in the range without resetting
+> walk->action to ACTION_SUBTREE.
+> 
+> This leaves walk->action erroneously set to ACTION_AGAIN, which is
+> incorrect.
+> 
+> This was incorrect but not problematic up until commit 3b89863c3fa4
+> ("mm/pagewalk: fix race between concurrent split and refault")
+> which updated walk_pud_range() to check for walk->action ==
+> ACTION_AGAIN upon walk_pmd_range()'s return, causing the PUD walk
+> to be retried.
+> 
+> In this case this results in duplicate walk callbacks being
+> invoked, which is erroneous and will break any caller that is not
+> idempotent with respect to this (and waste time for those which
+> are).
 
->
-> Do you mean things like ...
->
-> [...]
->
-> >
-> > An example of this is drm_gem_shmem_mmap() which deliberately clears
-> > vma->vm_ops before handing the VMA to dma-buf. Cases such as this will be
-> > updated when they are converted to mmap_prepare.
->
-> ... this?
+"break".  Please describe the breakage completely.  It's really the
+most important information in the whole effort.
 
-Yup.
+IOW, when fixing a bug please describe the userspace-visible runtime
+effects of that bug.
 
->
-> >
-> > Also, in order to avoid a single commit bisection hazard, add a temporary
-> > workaround to set the VMA anonymous only after vma->vm_file is assigned in
-> > __mmap_new_file_vma().
-> >
-> > This is because vma_set_range() calls vma_set_pgoff() and
-> > assert_sane_pgoff() in turn, prior to the vma->vm_file being assigned. If
-> > we set the VMA anonymous early then this assert will fail.
-> >
-> > This is removed in the subsequent commit.
-> >
-> > Also update the VMA userland tests to reflect the change.
-> >
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
->
-> [...]
->
-> >
-> > +static bool map_is_dev_zero(const struct mmap_state *map)
-> > +{
-> > +	const struct file *file = map->file;
-> > +	struct inode *inode;
-> > +
-> > +	if (!file)
-> > +		return false;
-> > +	inode = file_inode(file);
-> > +	if (!S_ISCHR(inode->i_mode))
-> > +		return false;
-> > +	return imajor(inode) == MEM_MAJOR && iminor(inode) == DEVZERO_MINOR;
-> > +}
->
-> My brain is a bit slow after digging through this series.
->
-> We identify shmem, for example, through shmem_vm_ops/shmem_anon_vm_ops.
->
-> So naturally I am wondering: couldn't we do something similar to identify that?
-> Like, checking for zero_fops?
+eg, what were the results of the fuzzer?  Is there a Link:?  A stack
+trace?
 
-We don't assign vm_ops for a MAP_PRIVATE-/dev/zero mapping. So that won't work.
+> A specific example of this breaking things is mincore which walks
+> an internal cursor data structure a byte at a time on assumption
+> that page table entry callbacks are called only once for each
+> entry.
+> 
+> Fix the problem by resetting walk->action to ACTION_SUBTREE prior
+> to the none check.
+> 
+> The pattern also exists in walk_pud_range() so fix it there too.
+> 
+> This issue was found through AI-based fuzzing.
+> 
+> Fixes: 3b89863c3fa4 ("mm/pagewalk: fix race between concurrent split and refault")
 
-We could expose zero->f_ops but then it's literally in drivers/char/ and that's
-just weird to expose in mm.h or whatever.
+It's good to cc the relevant Author(s).
 
-I'm giving a really minimal possible thing to export, which is the DEVZERO_MINOR
-number which avoids all kinds of weirdness like that. No driver stuff exported,
-just a number :) MEM_MAJOR is already available.
+> Cc: stable@vger.kernel.org
 
-So I think it's the least bad choice in this one, very very specific scenario.
+We really should tell -stable maintainers (and all other users of
+earlier kernels) all about the above things.
 
->
-> > +
-> > +static bool map_is_private(const struct mmap_state *map)
-> > +{
-> > +	return !vma_flags_test(&map->vma_flags, VMA_SHARED_BIT);
->
-> Can't we use the is_cow_mapping() helper instead somehow?
+>  mm/pagewalk.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
 
-Lol... yup. Let's see how the rest of the review goes and we'll see whether I
-can ask Andrew to change it or I'll change it on a respin.
+This depends on the above info, but I'd prefer to process the bugfix
+promptly and defer consideration of the selftest until the next -rc
+cycle.
 
->
->
->
->
-> --
-> Cheers,
->
-> David
 
---
-Cheers, Lorenzo
 
