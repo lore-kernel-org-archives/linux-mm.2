@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D378C5AC67
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 20:32:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC309C5B56A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 20:32:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 402C36B0099; Tue, 11 Aug 2026 16:32:33 -0400 (EDT)
+	id DEDCD6B009B; Tue, 11 Aug 2026 16:32:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DA626B009B; Tue, 11 Aug 2026 16:32:33 -0400 (EDT)
+	id DC5CE6B009F; Tue, 11 Aug 2026 16:32:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 317A66B009D; Tue, 11 Aug 2026 16:32:33 -0400 (EDT)
+	id C63EB6B009B; Tue, 11 Aug 2026 16:32:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 111786B0099
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:32:33 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 077011C0852
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 20:32:31 +0000 (UTC)
-X-FDA: 85090136502.17.B69124D
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 68A77140004
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 20:32:29 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jnixA1Lb;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 97B046B009B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:32:36 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1162540250
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 20:32:36 +0000 (UTC)
+X-FDA: 85090136712.11.115B459
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 6545C1A0013
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 20:32:34 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=q4KemcBI;
+	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786480349;
+	s=arc-20220608; t=1786480354;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Iz9pq9nN+pdRG2ifYD8weZHP3Mu9osKE7mH+dgefD54=;
-	b=3Z7OhF2IuLn1Qz2EJtQWjm+eg+ri/IbCRNJGcObxLuk0adW1waPI0ssPlxZmtOnFNEE7uv
-	QfFTHwDqvIHu4r0RCMHsB/SoAHToxSZtragfzHDDCIluLF1gPdS14JEq3WYz4xR5JZdkCa
-	ZnzeufzHZEsbfFgPFd0n5gAqv21mmnU=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jnixA1Lb;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	bh=kMaHE95s1N2ro/hCTjeuWjiZbKrQjnsN0zD3VNnyWTQ=;
+	b=OlgzXIQU8f8NK5QI/nf1cOFDWTd2WSmTau/jMBK+zsPJeaJcAIdA4vNT3KKDN7HSE8hgJR
+	2HwtFAOyupeUrgR2xwptApd+aqa4xlo+QJ5Laax51TonEUP8Yo074PqYuCXA6wlZZYIMnC
+	DQrnb5pBGaZcA24rj5kuHyM1OPy88hY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786480349;
-	b=GJCTycmF/0eWcNrdBZJWv/FN6tZEkwdVgpGCl+VbK++I3IZy23VXdAYzh1HbKwZVidMsGj
-	VlfXw3vyftBdsPfhYBxTX/7HgF9VM4gp6gbnl1Z9b0LwRo8JW2Ex/KGX67j/zuqevw+IiB
-	uGMWbLAUJhVkwjMEiyaVhrbbrt7K5Ac=
+	t=1786480354;
+	b=Wjroeg9yjDvykieeH7n9gA4E8IkuxnsbL6drJsGuFlwek9OSibVT6rWtqLQURakthN9KFN
+	eLFcgWXAL+T7RMBbZXZrqBQwilsf8ZmIbp+TTN4FEp81lEhKkxipHW/Is7ZEXzLvZOptbg
+	YCnKXwpbZ1I2feU9r5oT6toXS6s3m5M=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=q4KemcBI;
+	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786480348;
+	t=1786480353;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Iz9pq9nN+pdRG2ifYD8weZHP3Mu9osKE7mH+dgefD54=;
-	b=jnixA1LbmTaxkzgar3JKuaJ4k1vUWWyf7VEGK8rae8kCoq1f3oexACKpQ7r+bDe6+dKL3K
-	RqBk78yFC/7Y/qhBF1y28UcuSmr0hRfRkmOknSvcbVpGSio38zp8SRfhMHhp6BWZSAcSu7
-	1Am0QQuHpJuo03Fodg5Ph06odqaUi/c=
+	bh=kMaHE95s1N2ro/hCTjeuWjiZbKrQjnsN0zD3VNnyWTQ=;
+	b=q4KemcBI3JXk3fWT/q8wUMtoNfqZJlPmQG1Me6eNlskfW+iCFIzGJNVvpEBAagPzCazkqR
+	7ouS09BROAyYGe5iZK9V1kMaN3WFVRXDwVzGHJdmOnVN3t8huWXWZkz6iU6N6bskDEjHJb
+	rATBlfgk6qxpHPSnQq6bmoh3y+Lo5WQ=
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Michal Hocko <mhocko@suse.com>,
@@ -75,22 +75,22 @@ Cc: Michal Hocko <mhocko@suse.com>,
 	linux-mm@kvack.org,
 	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/9] memcg: remove mem_cgroup_shrink_node()
-Date: Tue, 11 Aug 2026 13:31:57 -0700
-Message-ID: <20260811203203.3456029-4-shakeel.butt@linux.dev>
+Subject: [PATCH 4/9] memcg: remove the soft limit reclaim tracepoints
+Date: Tue, 11 Aug 2026 13:31:58 -0700
+Message-ID: <20260811203203.3456029-5-shakeel.butt@linux.dev>
 In-Reply-To: <20260811203203.3456029-1-shakeel.butt@linux.dev>
 References: <20260811203203.3456029-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 68A77140004
-X-Stat-Signature: zurd3h7sa61uhh9bbuoe3jnt49eipt9a
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786480349-671283
-X-HE-Meta: U2FsdGVkX19CsHZLNv89zV3499W/zZdVXSgmR6UPGKK+wypIsFY0WHXCth/FEjYju4LYG19NMx6Hx3NnJQn4CKFAfhbr7YecUyKfebKPoY26bdlRRtj8SdmUzNIurdyfqby+ZFCu6YmmTm5A2aTe24ZaCAUfGVv4i/ufQQ8xf8EXgcnhx/V/9pZNPxhMqbKbkfKKk/b0CmxoOtA0ExfrHA7XTUSa8yQsHOMRmG32NNqB1Vk/rJGwOWXWlWx2y8BcuJbIZ8GmNwAZ/SW1VXuB/IVVFRp+ONlYK9+EuAE0dOV0uCacmQ1GE6i8NFEbh4rmHgAHzUVm/KREDsgW9Tir5H6n1yYFKxzPqn6gMitXY1XY6kyB3K+FDui00lYVKeQ/BhOXlCMb7fnXAf0infZ7xfJg7mG2uNx9mH61ud96Wai8BSuB+fTJC1lJyMmUyjI3fuclLSuBtZCeIEYwjZxpM9oIVyKqvx2SGnbUvJ+hR5Ukuyvcu3STCbJSdh+kKwYXXuvPwe1WJm+GuO251SVD3L3VjbWEC6r6700P4w81nvh9dDdOTtbbKehE/6hn2eSkUgzTDwlx+WGqM9R9MW7IBDxCQHqYEKuzV88PXpe+n1tPojLy/thatg5pUU0vFzUuMjquYxNJ/vhX8y6yT2NGSoVwSANsBjCuumYPnXAuMoiHWHcZ+qx/QRpjtdNjfrOQzKUYf183NOK/dD3JewWJk1V3pG3lrZQSM3qUanhvNSWidq69iYcdGthxiZWO+L9mQGOAaYUVK2nw/0eW1DYzBXvaFJEGo5WDTL+ZZLbi9wzFpVTNoLp5W4FckOE+ZEp9/bem4tu87l4r4h29LKJW5+C/A/+YDX9erRnBM3qF2qhcnqL917qO6aSHbzac8d6YczuhLrzKcHFRCsTbHJWAixIsoa/RTus++h8aS9Sh0w/2vKQ4HyRLcY5tHRzjkmIl+U2SMBjP1yJc5AMXJ2A
- reoXaJd1
- jnGcIHCyOp/8Gck8B9j+o+WUukxf+INm0prCAQEaUXya5TT1LhAM828G5gEPu9zLQsxe+S+EskZXyaS+4EnDjT9ncqf511g9FvcebyRUo2lEz/HKRPVsSYR71I0NjX/q8RRqqqMG8IKY+9TfCLkIW8GjwtrMvPO6sCjc0+qvD7hhK4bQ69sWkP+k2qMxmaCrenoaFtFbLTboiBLmLQ/kiKmDIstzDAUY5+FWf47vyVxtW9h05JV+oJi4HGg==
+X-Stat-Signature: s5mnm16k3jg9jf6e61p9iud1nwxk7417
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6545C1A0013
+X-HE-Tag: 1786480354-273816
+X-HE-Meta: U2FsdGVkX1/WbBcJ/DGO/3uyRl/T59omKXXFslvvank3X4K1pFFAs+TKjzK6Jy4/yR60qrWQObt3KbisGKp5Ge7qO27ZMwG9UiI1ZzSOCllOs32R2hOazZjSuthRXdgl8VHlGUVnqKWFk208F+byLDZtA+mwXSAEOuagn6pHFbl7UJgR2cNT0jj+jnsksTrOCc7x6BvW9DcwQls8ocoEf8iRg6ZR1q1TyTKrt9YsDvICr/lV0O05MzOmy0xqyVtN/FwcLhk+mKPmQD7CCU6ut9rZh52daWtDkFqZS04FpUPLtuV5q3W9wrIDV/opA4z1XuZlNF4Ls4/6pR5eFv+QEzORtOrY06/Xi6xUJZW+e9NmGyrcnYkpCzr/plvjq7CcIIEBA9tJKMQcsrVLqVAHG4p277fSLIOF4uoPXGsY00qrFKXCkdd8p+63KXb2fyNqVADvbxwU1rFCwpIZU8tLiVgl35a9oy7gB28EKqAMVJQuynY9kGkWcOxqQ9zg+n6hs1CjXgplkQaSjabs4L1tsLUEUUYtKT9d+KEL8H1T17URJRTVwnXIPBCHE/+Q/+QRMSsXPLDBu0OBwu85yjY5lwPiJhl8lFeXfF+d5fMAXsttDTJZN7zlGuz78kdsz9pw44x3u9Oe/2aHWL/19OQO32Zg0sKF97C7j6EyJtqPvA1z6183aAwzwXbZ5Ln5Pt/SZ/9WIF6CyMIWBBDMFgfz8It7k8LKcjgHNBTQkY+OynaescfIvWDmSrAe99GKjIrHz2dZSRUk/GiYT3i60OBiYcecgh2Xf3GPGov5d5McsezMmm8A2BpCwUuZmm7kQjlCwtxUTpsfX/PMthzWORHxpJX8viSUaoSsmHUkLLESeJsv5X03qkeAhBqh8AUJGn6ert75WqXbs3Q7snPel+D1buBNiYm6pfFLkUwPB6J5CSKOm320BUhTEz+FqKApoVjggdnbPcTlc+1HVSbWtxr
+ NCKZSLf8
+ 6iwlzvdVZ/TcSnJFsPEkEm6H5CuEZUxi1Bx9LW74TKSuG+d+z5vFPCMTnzYK8wnXDPJCKSx7z5UGkTgrhqErLd7j1N06korcjG9yrsAqbBy3JVQ1ARA+l7emB5WZBF5FbF2Fg+NF3L58+YjER3d3SoNl7VWQzP+XWO8XX8OB5FztA4yltaPMUPiPWeQmipo3kFQzyajUCv1cPpRA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,81 +98,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Its only caller was soft limit reclaim, which is gone.
+mm_vmscan_memcg_softlimit_reclaim_begin and
+mm_vmscan_memcg_softlimit_reclaim_end were only emitted by
+mem_cgroup_shrink_node(), which is gone, so they can never fire again.
 
 Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- mm/internal.h |  4 ----
- mm/vmscan.c   | 41 -----------------------------------------
- 2 files changed, 45 deletions(-)
+ include/trace/events/vmscan.h | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index 678ce8d03515..b2315bdb7350 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -85,10 +85,6 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
- 					   gfp_t gfp_mask,
- 					   unsigned int reclaim_options,
- 					   int *swappiness);
--unsigned long mem_cgroup_shrink_node(struct mem_cgroup *memcg,
--				     gfp_t gfp_mask, bool noswap,
--				     pg_data_t *pgdat,
--				     unsigned long *nr_scanned);
+diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.h
+index b4bf7b8def1f..8a872990b4be 100644
+--- a/include/trace/events/vmscan.h
++++ b/include/trace/events/vmscan.h
+@@ -214,13 +214,6 @@ DEFINE_EVENT(mm_vmscan_direct_reclaim_begin_template, mm_vmscan_memcg_reclaim_be
  
- #ifdef CONFIG_NUMA
- extern int sysctl_min_unmapped_ratio;
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 032b14793d91..790b50c78a2e 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -6795,47 +6795,6 @@ unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
+ 	TP_ARGS(gfp_flags, order, memcg)
+ );
+-
+-DEFINE_EVENT(mm_vmscan_direct_reclaim_begin_template, mm_vmscan_memcg_softlimit_reclaim_begin,
+-
+-	TP_PROTO(gfp_t gfp_flags, int order, struct mem_cgroup *memcg),
+-
+-	TP_ARGS(gfp_flags, order, memcg)
+-);
+ #endif /* CONFIG_MEMCG */
  
- #ifdef CONFIG_MEMCG
+ DECLARE_EVENT_CLASS(mm_vmscan_direct_reclaim_end_template,
+@@ -260,13 +253,6 @@ DEFINE_EVENT(mm_vmscan_direct_reclaim_end_template, mm_vmscan_memcg_reclaim_end,
  
--/* Only used by soft limit reclaim. Do not reuse for anything else. */
--unsigned long mem_cgroup_shrink_node(struct mem_cgroup *memcg,
--						gfp_t gfp_mask, bool noswap,
--						pg_data_t *pgdat,
--						unsigned long *nr_scanned)
--{
--	struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
--	struct scan_control sc = {
--		.nr_to_reclaim = SWAP_CLUSTER_MAX,
--		.target_mem_cgroup = memcg,
--		.may_writepage = 1,
--		.may_unmap = 1,
--		.reclaim_idx = MAX_NR_ZONES - 1,
--		.may_swap = !noswap,
--	};
+ 	TP_ARGS(nr_reclaimed, memcg)
+ );
 -
--	WARN_ON_ONCE(!current->reclaim_state);
+-DEFINE_EVENT(mm_vmscan_direct_reclaim_end_template, mm_vmscan_memcg_softlimit_reclaim_end,
 -
--	sc.gfp_mask = (gfp_mask & GFP_RECLAIM_MASK) |
--			(GFP_HIGHUSER_MOVABLE & ~GFP_RECLAIM_MASK);
+-	TP_PROTO(unsigned long nr_reclaimed, struct mem_cgroup *memcg),
 -
--	trace_mm_vmscan_memcg_softlimit_reclaim_begin(sc.gfp_mask,
--						      sc.order,
--						      memcg);
--
--	/*
--	 * NOTE: Although we can get the priority field, using it
--	 * here is not a good idea, since it limits the pages we can scan.
--	 * if we don't reclaim here, the shrink_node from balance_pgdat
--	 * will pick up pages from other mem cgroup's as well. We hack
--	 * the priority and make it zero.
--	 */
--	shrink_lruvec(lruvec, &sc);
--
--	trace_mm_vmscan_memcg_softlimit_reclaim_end(sc.nr_reclaimed, memcg);
--
--	*nr_scanned = sc.nr_scanned;
--
--	return sc.nr_reclaimed;
--}
--
- unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
- 					   unsigned long nr_pages,
- 					   gfp_t gfp_mask,
+-	TP_ARGS(nr_reclaimed, memcg)
+-);
+ #endif /* CONFIG_MEMCG */
+ 
+ TRACE_EVENT(mm_shrink_slab_start,
 -- 
 2.53.0-Meta
 
