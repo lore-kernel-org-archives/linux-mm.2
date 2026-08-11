@@ -4,88 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C73A3C5AC67
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 06:26:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44D2CC5AC67
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 06:27:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEF256B0093; Tue, 11 Aug 2026 02:26:26 -0400 (EDT)
+	id 1DF186B0096; Tue, 11 Aug 2026 02:27:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA0F36B0095; Tue, 11 Aug 2026 02:26:26 -0400 (EDT)
+	id 190436B0098; Tue, 11 Aug 2026 02:27:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB6AC6B0096; Tue, 11 Aug 2026 02:26:26 -0400 (EDT)
+	id 0A6896B0099; Tue, 11 Aug 2026 02:27:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 88E966B0093
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 02:26:26 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0EC64C0334
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 06:26:26 +0000 (UTC)
-X-FDA: 85088004372.23.717ED2B
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A02A6C0003
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 06:26:23 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZMSFg7rO;
-	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D2BAC6B0096
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 02:27:07 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6DD75A0396
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 06:27:07 +0000 (UTC)
+X-FDA: 85088006094.03.EB8ED0E
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6188940003
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 06:27:05 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VE5GBcds;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786429584;
+	s=arc-20220608; t=1786429625;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XrvIDI4l3ibJO+y9A4q6yHaI4leghzx/mVJIb4ZQWF0=;
-	b=8aTGwRrnZi1AMY/PA+yA+y2O0ImTSfNEmlaaR6W+yT9mzsrgsj3vscLu5aIjMpmA+zc1ii
-	dfIlEBX0AxiNX/gOc2ovUupjOiaLDKXj0axTZxZrTdgsHMQlbv3GvBds35ngjAMhGmVuoe
-	MczxAHz+TQCY5rLk2TEVLEvcOeOTD6o=
+	bh=oxJWDyxnGI+pS1Y8WxElKGtctTUBqjkdYEbNdD3fHnM=;
+	b=jVOhbdOpDHJBGMwXNlJVYCt988iHuxAtKYOopgUOxkSHM4iIIpS5MViqlIoRm3WueRYPar
+	xkuYB7DwNLIC1+6qytfe69i1m5s6kCq62P+KtSRM8VyY/KGcODhyEy1GObELocHy3WQ7a+
+	uOX2iHAgba4xafvrMXxLWSP7abjf8qo=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZMSFg7rO;
-	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VE5GBcds;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786429584;
-	b=YfyVDYpnLOoUmW2B2HJg20xJ4iPWoFjnQoZOyPirHxRKu1ehDizgcNOsE/NdBJV20G9AwW
-	poO1cr7/7YvYxt3CWRlbUtGABb2PlslL+tVfoDZfzN6aXwXA6MJ6SeTzaBYpqSydebuZaT
-	4eTDiGjDuZArNPwXHy5UCh8GuLiMHME=
-Message-ID: <c2e8b6d5-e444-4fdc-909a-a928e0e8f45a@linux.dev>
+	t=1786429625;
+	b=24h186MJdPUIrhHIww/zARj5um4vzr3BbwUcYmhcO+1Foana7ZE+kjRbPQPYZGKROV7YEB
+	YMVgoZ80yRBzV0/8ok02rwL+/bhFVx/cWn0CUcqQyT7HkpYJ4jPKcOH6VowHiToI6fr07b
+	wDh6ZhszBonQJ5uWbxKjIzlT3WqiuFo=
+Content-Type: text/plain;
+	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786429579;
+	t=1786429623;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XrvIDI4l3ibJO+y9A4q6yHaI4leghzx/mVJIb4ZQWF0=;
-	b=ZMSFg7rODBkJTKpJce/kKymt/vvKd4Si1DCFMJdlSBmYZBWa5h2iXhozUCctMzolwmOoHZ
-	Yy8BPbkRSTT04rnxaf/kAAoWWUk7aqPtScK21NWYnDADO6FijO9fVdDoyRjbu4OpauPfUj
-	i0zD/9SLnH+8r7/xeyzinBz4Mbf5PP0=
-Date: Tue, 11 Aug 2026 14:25:59 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH v3] memcg: keep folio's objcg same as its node
-To: Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Meta kernel team
- <kernel-team@meta.com>, linux-mm@kvack.org, cgroups@vger.kernel.org,
- linux-kernel@vger.kernel.org, Karl Erik Hofseth <karl.e.hofseth@opoint.com>,
- stable@vger.kernel.org
-References: <20260807142406.443516-1-shakeel.butt@linux.dev>
+	bh=oxJWDyxnGI+pS1Y8WxElKGtctTUBqjkdYEbNdD3fHnM=;
+	b=VE5GBcdseZ1oTlJ/CAIJgJTKnQZSN4ytRo5DrWjtP2w6ZVytJYAw3Bx8HnksPJxgs3uHJH
+	IsE2pNMNtnCkJDh8gzZjarDw43M29FzUUE2oBz+bluTTScOXC4ecLWedmPTYTQAJ5nfy9J
+	Ed8rSqYvtc1eR1l5bynm9hqrvRTPG6s=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH v6] mm/hugetlb_cma: Fix null nodemask dereference in
+ hugetlb_cma_alloc_frozen_folio
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260807142406.443516-1-shakeel.butt@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <7bdocyansemdfl2lugkmazjo6xytdunv4ujtabxjzeip3h4qbw@6nsaenwowryh>
+Date: Tue, 11 Aug 2026 14:26:44 +0800
+Cc: Sourav Panda <souravpanda@google.com>,
+ osalvador@suse.de,
+ akpm@linux-foundation.org,
+ usama.arif@linux.dev,
+ shakeel.butt@linux.dev,
+ wangkefeng.wang@huawei.com,
+ david@kernel.org,
+ surenb@google.com,
+ fvdl@google.com,
+ gthelen@google.com,
+ hannes@cmpxchg.org,
+ riel@surriel.com,
+ sj@kernel.org,
+ vbabka@suse.cz,
+ mhocko@suse.com,
+ bjackman@google.com,
+ zi.yan@sent.com,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <02941826-584C-4914-9700-1C75ACBE4D24@linux.dev>
+References: <20260810230844.3778931-1-souravpanda@google.com>
+ <15EAC670-AA9F-4361-985C-F8ED2C322CF9@linux.dev>
+ <7bdocyansemdfl2lugkmazjo6xytdunv4ujtabxjzeip3h4qbw@6nsaenwowryh>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 7dh5eaf9y7t7epf34d1w9b7ucuxfwz8e
-X-Rspamd-Queue-Id: A02A6C0003
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6188940003
+X-Stat-Signature: jqpoabfawgo3d9i88b3mdw1qr186pbei
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786429583-982276
-X-HE-Meta: U2FsdGVkX1/xK5zwIvr8k45E3TFz2o9/PeDb/XMcRFJOUUQdRi+WfWU8BqU3Gn/FiwWcVVRFGxe1jSnZmelNRB8+oMGqGMymkE7cqAOgMd8f+HNqGphF4VXQpi5x10XMqb3Jz+tZHlwq5ILd2U5rHRIrOKNyPnLNuZcIN3KPv66zIc4PfxObH8E3rs3wYjt7GpkYzfhHQNkseUSEuYyRkNECeVeNZO0msxc1VUBssraE5Jcr5tD6v0/UsltnTI9RdxwqOWngiOFr6KQBRvyNtzcYO+McvdktNI8LJtdDy7Mzp0dfCpA9AF33S9pZLzq0FsmHZsArE3JIpgqEvn4lPFbm99dIW8fq6CDAnrNkueaKdjCiGhy/eOjGGeRsoyjya+R15b3I73RcKwj7tXKky7oN5GjF2OECeR452EwPXZa/JshxZ7fxwTTjdTTNyw1CwyfXfxyMm25N1TZy5CXu1RukOmJB+AcwkgJl2c2CowRBtHXkj1YeOJzRuhB745JAjPJfjvaNqonB/HLELhODnz6tvRoufvAB9oxNH773QMyzGucSU+FTQiPj04jU/inNeD2o4jh0wdnoXOd+Lpt7FW9/Op6t2DLe+ZZnRhD1kukXJNVExWwD6rRGRWLPi7JY2aE0Ldwy6D/wUL/6hpejWbpfhRFmdST3bjCyhNGgdSCf9UdzzhlkeokjPzkfYEF2Z4iqhFkK+7sbAfAGAqZXu4OgeoeUhXkGoWZPc4Q8ibpegGAOvniD9aTKHzuC0bJc1iDlgBqay4OXy+ckt3/kItecTJZRwoH9JADYPLF05ajkdTiaMfehl82rg7r7YlxT7eKtoXNxVI+mk+WB+6T+z6Pr0CMcYV5VjmbmsdsCbPly2ze9lv7kMqiQPU/hMVJiHdZJtey1HoVDU0drcTmN03x1w9fCowqNrj8IP1SdjWbje0cYw9nvu4I1ftj8PEX6Q5yyDwpg6n4g6RIU+QX
- MIpDG5WQ
- rauk7rXCJshQhAb13MZt/6x7Q/t1CyhxwpvMtt95IFc7JjnDNff89v68mv5lGSAbIFthmL//LeJCAfd0vNrU41FNcQZUqgtXhlx1PzUMAlFx87UNhwzo36XABfw77eAMOJSWj4ldHEU/hxyUFHyiIoMKxc8g5vH99zIfIDdPIWJo+yN6TQDaUyn6BS/dmYvcMm4Hc7GizY3UNU179qXL4YalaV9wqmIhxxPQ2bETBs/wnmmwWN9bgOQT4QrcdeAyjEtvFCH6Kdg8k5saHcws75jWWoU9hLracEjZNsW89NLt0O+T2gyeB9G/sjJYr0ctZLlj2yF/gLw8IuNDm6cX0iqSMyxhVErLO+9t4
+X-HE-Tag: 1786429625-528201
+X-HE-Meta: U2FsdGVkX18JlypBmHVqd4+5cRZxIomwFW+FwJyGJsl9oT9stC/3KdAd4Q0+suCSd1ULQ4Aa1T8OZI+53MkJAvLfOfsrQb9jk+/lsugqZ5zhVmJRRvtoNQbiI2J5ADzVWSA18Qft9Rg+Fqwo+fdHBER8OXnExsgxJFO75qr3XmfH7W1xaSBHAncKFh0q1W1iVD12/E+mzE6imx+2sSvwEUT2cX2IMTRcHrKmbN4sIKwWn0N/dy8GI9wEjr7GrmAfxNAL+qpPlCf4hKugUrgxlDU4QHU1vBpB/V/LRym4F1DZIOKD/pxv0x7abnNO4dmipVk43bQwrcd8JGwpJ9TN8LQ1Mw0fhwgqJuBGIYIhNzS3l/2gP0cmg94Ze4G+XS+GNvp8Pq+F0ic9GGLR158f7K0hg/mwUGkEHTlmx1O6WVvZKIor+HGlGAl0I9Zps7M1+tiRp8D7Uxi5On3AU6cKTFNPWo7fb9GG51emrPpOulZyeThZuV1VcGSe+DUYHSngMqFUGyTMyNRH56kBV52qKkoxdUA1rEoi/wZv881mfyVrYjIZPFoYmz8r0qvD4pcSpvBuHixqQHUHtaz1fx/p/AEZiSPtz82ijezq6d44eOO/NhL/w5lqHDNOTTkVaxxeLrJnEuPx47lwuKbByNhfc85+Z5QLSy4PK91IyEhRO8FjQsiZqpObDd+n70ZIxpZiLlXJOFoIScOg/KJwd0rfd2a/bI+AAdpuUY7Y5Yd1IZQdXprczNII2A59ABFQPhWK8L4HzTKdpo6oNX9ureQGMFaZVhHkxUsO6CLDimQJcW6xB8LFHG3eVOhQfPUlDo4RB8N15GpjBYOTwh5PnaWZGcNgv1DnP6skRipDpXg2zebfBFd4vDuWapfLU5IdtEjHMJq3gj6Ka6UXwIbtbXjb9mZJiVqBa3eEZ/MR6M8VzwE4XkopE/6/oU5uOCKqiqKsQz2Q+8+Iyzqg/QgIWtl
+ TlWEP3Gq
+ ztYkC9J5QOy+EhygGa7rK3aygTj8m17mUwgwyWvBiJ9lIcYMkXbDeusDHQCTY7FXJYQon3yxxdSMIEIvaOfWDudyNqWoJvRb80wtznsudT7TK5BrGnu9/t212KPWDbhhMW2u9NQWmvDv582PcJz3fuOc3WkupmZSMFXt4tWDYoNCM/7fgQ4Uae2eFaUOImXFpQy0N4NuqMIZwXQfpqc1UZRxpR6pJzS8FQbQJDrll47MuoV0o/YlrQkk6mQWspNai1FZETrRIKnRnUGO4dAtMGLwwHZ9/s2Agl78SAbNySj5w5PzI1Vy9Qb78d6pnPEQE65bxMhIXqQT9qkJTt3jRFi+ivgVH5KS1EPTaXeIIgQC0o2a6/+jKtmEKxuC+J9Dkwj3LBkElzK/XKCI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,59 +111,200 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 8/7/26 10:24 PM, Shakeel Butt wrote:
-> memcg_reparent_objcgs() has an inherent assumption that a folio's objcg
-> is the objcg of the folio's node.  Folio migration across nodes breaks
-> that assumption: the new folio simply inherits the old folio's objcg
-> while living on a different node.
-> 
-> Once the assumption is broken, the reparenting of the folio's objcg and
-> the reparenting of the folio's LRU list are no longer atomic.
-> memcg_reparent_objcgs() handles one node per iteration and drops all the
-> locks in between, so the objcg gets reparented in the iteration for the
-> objcg's node while the LRU list gets spliced in the iteration for the
-> folio's node.  Any LRU operation on that folio in between resolves its
-> lruvec through the objcg, and thus takes the lru_lock of the wrong
-> memcg, not the lru_lock of the list the folio is actually on.
-> 
-> Fix this by selecting the objcg by folio_nid() at charge time, and by
-> re-deriving it for the destination node in mem_cgroup_migrate() and
-> mem_cgroup_replace_folio().
-> 
-> Reported-by: Karl Erik Hofseth <karl.e.hofseth@opoint.com>
-> Closes: https://lore.kernel.org/all/anMmd1ADrDVwMO6v@work/
-> Fixes: f1cf8d2f36dc ("mm: memcontrol: eliminate the problem of dying memory cgroup for LRU folios")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Johannes Weiner <hannes@cmpxchg.org>
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> ---
-> 
-> Changes since v2:
-> http://lore.kernel.org/20260806165813.2526415-1-shakeel.butt@linux.dev
-> 
-> - Refactor common code between mem_cgroup_replace_folio and mem_cgroup_migrate
->    (Johannes)
-> - Always commit the destination node's objcg. (Johannes)
-> - In mem_cgroup_replace_folio, force charge based on committed objcg (Johannes)
-> - In mem_cgroup_migrate, if destination node's objcg is root, uncharge the
->    source node's objcg. (Johannes)
-> 
-> 
-> Changes since v1:
-> http://lore.kernel.org/20260806061830.3294679-1-shakeel.butt@linux.dev
-> 
-> - In mem_cgroup_migrate, do obj_cgroup_put at the end (Sashiko)
-> - Handle scenario where destination node has been reparented to the root but the
->    source node's objcg has not yet (Sashiko)
-> - Add comment explaining the race between migration and reparenting (Johannes)
-> 
->   mm/memcontrol.c | 100 ++++++++++++++++++++++++++++++++++++++++--------
->   1 file changed, 83 insertions(+), 17 deletions(-)
-> 
+> On Aug 11, 2026, at 13:26, Anshuman Khandual =
+<anshuman.khandual@arm.com> wrote:
+>=20
+> On Tue, Aug 11, 2026 at 10:48:31AM +0800, Muchun Song wrote:
+>>=20
+>>=20
+>>> On Aug 11, 2026, at 07:08, Sourav Panda <souravpanda@google.com> =
+wrote:
+>>>=20
+>>> alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
+>>> alloc_fresh_hugetlb_folio() as a fallback to allocate from all
+>>> nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propagates
+>>> the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() via
+>>> alloc_gigantic_frozen_folio().
+>>>=20
+>>> Additionally, hugetlb_cma_alloc_frozen_folio() previously attempted
+>>> allocation on hugetlb_cma[nid] without verifying if nid is included =
+in
+>>> the caller's nodemask. Adding a node_isset(nid, *nodemask) check =
+ensures
+>>> the initial preferred node allocation honors the memory policy / =
+nodemask.
+>>>=20
+>>> However, hugetlb_cma_alloc_frozen_folio() dereferences the nodemask =
+in
+>>> node_isset(nid, *nodemask) and for_each_node_mask(node, *nodemask),
+>>> leading to a null pointer dereference kernel panic when nodemask is =
+NULL.
+>>>=20
+>>> Fix this by checking if nodemask is NULL in
+>>> hugetlb_cma_alloc_frozen_folio() and defaulting it to
+>>> cpuset_current_mems_allowed. Enclose the allocation attempts within
+>>> the cpuset seqcount retry loop so that if the cpuset changes =
+concurrently
+>>> during allocation, the attempts are retried using the updated =
+nodemask.
+>>> This ensures that the initial node check and fallback loop safely =
+honor
+>>> the task's cpuset without violating cpuset constraints or causing =
+NULL
+>>> pointer dereferences or unexpected allocation failures.
+>>>=20
+>>> =46rom a userspace perspective, this bug allows an unprivileged user =
+to
+>>> crash the kernel (trigger a panic) by requesting a gigantic hugepage
+>>> allocation with MPOL_PREFERRED_MANY on a system where CMA is only
+>>> configured on a subset of NUMA nodes.
+>>>=20
+>>> This can be reproduced by booting a VM with two NUMA nodes, =
+restricting
+>>> CMA to Node 1 (e.g., hugetlb_cma=3D1:1G default_hugepagesz=3D1G
+>>> hugepagesz=3D1G hugepages=3D0), and running a program that allocates =
+a
+>>> 1GB hugepage area without reserving, restricts allocation to Node 0
+>>> using mbind() with MPOL_PREFERRED_MANY, and triggers a page fault:
+>>>=20
+>>> void *ptr =3D mmap(NULL, 1UL << 30, PROT_READ | PROT_WRITE,
+>>>                  MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB |
+>>>                  MAP_HUGE_1GB | MAP_NORESERVE, -1, 0);
+>>> unsigned long nodemask =3D 1; /* Node 0 */
+>>> mbind(ptr, 1UL << 30, MPOL_PREFERRED_MANY, &nodemask,
+>>>       sizeof(nodemask) * 8, 0);
+>>> memset(ptr, 0, 1UL << 30); /* Trigger fault */
+>>>=20
+>>> This results in a NULL pointer dereference:
+>>>=20
+>>> BUG: kernel NULL pointer dereference, address: 0000000000000000
+>>> #PF: supervisor read access in kernel mode
+>>> #PF: error_code(0x0000) - not-present page
+>>> Oops: Oops: 0000 [#1] SMP NOPTI
+>>> RIP: 0010:hugetlb_cma_alloc_frozen_folio+0x75/0x120
+>>> Call Trace:
+>>>  <TASK>
+>>>  only_alloc_fresh_hugetlb_folio.isra.0+0x2c/0x160
+>>>  alloc_surplus_hugetlb_folio+0x6d/0x100
+>>>  alloc_hugetlb_folio+0x3c5/0x660
+>>>  hugetlb_no_page+0x3d9/0x650
+>>>=20
+>>> Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic =
+hugepages")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Sourav Panda <souravpanda@google.com>
+>>> ---
+>>> Changes in v6:
+>>> - Enclosed the CMA allocation attempts within the cpuset seqcount =
+retry loop,
+>>> retrying allocation upon cpuset mems_allowed updates to prevent =
+unexpected
+>>> allocation failures as suggested by Muchun Song.
+>>> - v5: =
+https://lore.kernel.org/linux-mm/20260809043250.2917406-1-souravpanda@goog=
+le.com/
+>>> - v4: =
+https://lore.kernel.org/linux-mm/20260726072935.3513996-1-souravpanda@goog=
+le.com/
+>>> - v3: =
+https://lore.kernel.org/linux-mm/20260705175119.440599-1-souravpanda@googl=
+e.com/
+>>> - v2: =
+https://lore.kernel.org/linux-mm/20260704174930.2885785-1-souravpanda@goog=
+le.com/
+>>> - v1: =
+https://lore.kernel.org/linux-mm/20260702215713.627941-1-souravpanda@googl=
+e.com/
+>>>=20
+>>> mm/hugetlb_cma.c | 23 ++++++++++++++++++-----
+>>> 1 file changed, 18 insertions(+), 5 deletions(-)
+>>>=20
+>>> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+>>> index 39344d6c78d8..9debf033d4fd 100644
+>>> --- a/mm/hugetlb_cma.c
+>>> +++ b/mm/hugetlb_cma.c
+>>> @@ -3,6 +3,7 @@
+>>> #include <linux/mm.h>
+>>> #include <linux/cma.h>
+>>> #include <linux/compiler.h>
+>>> +#include <linux/cpuset.h>
+>>> #include <linux/mm_inline.h>
+>>>=20
+>>> #include <asm/page.h>
+>>> @@ -30,15 +31,27 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int =
+order, gfp_t gfp_mask,
+>>> int node;
+>>> struct folio *folio;
+>>> struct page *page =3D NULL;
+>>> +  const nodemask_t *nmask;
+>>> +  nodemask_t local_node_mask;
+>>> +  unsigned int cpuset_mems_cookie;
+>>>=20
+>>> if (!hugetlb_cma_size)
+>>> return NULL;
+>>>=20
+>>> -  if (hugetlb_cma[nid])
+>>> + retry_cpuset:
+>>> +  if (!nodemask) {
+>>> +  cpuset_mems_cookie =3D read_mems_allowed_begin();
+>>> +  local_node_mask =3D cpuset_current_mems_allowed;
+>>> +  nmask =3D &local_node_mask;
+>>=20
+>> I don't think we need a local_node_mask, nmask =3D =
+&cpuset_current_mems_allowed
+>> is enough. nodemask_t could be a huge array, so it might consume a =
+lot of memory
+>> on the stack. I don't think we need to do that unless we see a clear =
+necessity.
+>=20
+> But does not local_node_mask capture current snapshot for =
+cpuset_current_mems_allowed
+> after first taking a reference via read_mems_allowed_begin() which =
+ensures that nmask
+> has a constant value there after. Otherwise nmask could just change =
+value by the time
+> it actually gets used.
 
-Thanks for the fix!
+However, this value can change while you are copying it, so a snapshot =
+itself is not
+a consistent value. Right?
 
-Acked-by: Qi Zheng <qi.zheng@linux.dev>
+>=20
+>>=20
+>> Otherwise, LGTM.
+>>=20
+>> Thanks.
+>>=20
+>>> +  } else {
+>>> +  nmask =3D nodemask;
+>>> +  }
+>>> +
+>>> +  if (hugetlb_cma[nid] && node_isset(nid, *nmask))
+>>> page =3D cma_alloc_frozen_compound(hugetlb_cma[nid], order);
+>>>=20
+>>> if (!page && !(gfp_mask & __GFP_THISNODE)) {
+>>> -  for_each_node_mask(node, *nodemask) {
+>>> +  for_each_node_mask(node, *nmask) {
+>>> if (node =3D=3D nid || !hugetlb_cma[node])
+>>> continue;
+>>>=20
+>>> @@ -48,8 +61,12 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int =
+order, gfp_t gfp_mask,
+>>> }
+>>> }
+>>>=20
+>>> -  if (!page)
+>>> +  if (!page) {
+>>> +  if (!nodemask &&
+>>> +      unlikely(read_mems_allowed_retry(cpuset_mems_cookie)))
+>>> +  goto retry_cpuset;
+>>> return NULL;
+>>> +  }
+>>>=20
+>>> folio =3D page_folio(page);
+>>> folio_set_hugetlb_cma(folio);
+>>> --=20
+>>> 2.55.0
+
 
 
