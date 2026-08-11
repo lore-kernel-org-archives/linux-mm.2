@@ -4,122 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19AF1C5AC67
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 09:00:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44D23C5CFCF
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 09:04:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27B486B008A; Tue, 11 Aug 2026 05:00:34 -0400 (EDT)
+	id 4A4146B0092; Tue, 11 Aug 2026 05:04:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 252E86B008C; Tue, 11 Aug 2026 05:00:34 -0400 (EDT)
+	id 454866B0093; Tue, 11 Aug 2026 05:04:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1445A6B0092; Tue, 11 Aug 2026 05:00:34 -0400 (EDT)
+	id 3436A6B0095; Tue, 11 Aug 2026 05:04:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ECD166B008A
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 05:00:33 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 795AC40361
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:00:33 +0000 (UTC)
-X-FDA: 85088392746.07.953E3B9
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8E6CC140008
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:00:31 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=p0EklLMH;
-	spf=pass (imf09.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786438831;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 09F5E6B0092
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 05:04:11 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 791758032E
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:04:10 +0000 (UTC)
+X-FDA: 85088401860.26.02469ED
+Received: from OS8PR02CU002.outbound.protection.outlook.com (mail-japanwestazon11012048.outbound.protection.outlook.com [40.107.75.48])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 32BC2C0004
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:04:07 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=vivo.com header.s=selector2 header.b=J4Q4jgzF;
+	dmarc=pass (policy=quarantine) header.from=vivo.com;
+	spf=pass (imf22.hostedemail.com: domain of xueyuan.chen@vivo.com designates 40.107.75.48 as permitted sender) smtp.mailfrom=xueyuan.chen@vivo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786439047;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QyeeOcqJB+URGAwRe+Og0D34yFM6sgFjPGvLOxK7FFo=;
-	b=V2F/yDA4HyeVMK1fe234CdjkCNcX4LwY2BzBOPuq45WNEv620R4yT1oZhxZbasvUo3EOFB
-	xq+AhuXXHa31u/scOVUIkwAtYz3ktTNWoIunyaTg+1KylIFhABjE3LA7CFcb0tvkPHr/Js
-	UggjoHUEN+QWlF5Yk664f/0ceJklj48=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786438831;
-	b=kwAYNOnADjjLKZY/zQgesNx8cSxI8r852v7QvynqKHUnhCGNgNKZ03x5ytJdku5aSGOrGY
-	KJgDOzYs/17NEA3L57nVzojBQNq+2+4g04Ixoq11qQyAOjWc77KsqTywTl6rXPStoJv5QR
-	v/wARlhGknNz8mFWaMtPuN566OLCS6k=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=p0EklLMH;
-	spf=pass (imf09.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7549F1516;
-	Tue, 11 Aug 2026 02:00:26 -0700 (PDT)
-Received: from [10.57.5.193] (unknown [10.57.5.193])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3B19F3F86F;
-	Tue, 11 Aug 2026 02:00:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786438830; bh=tUiTGK9kLGJYJG38Hawj4v69yMlo3kmE+u/Tuup4Yg4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=p0EklLMHJGrKLnVqOINCl1ZfxhRZ+BNvpIRznN2rLsga1Dwdloi6U4xuE1VCQAm02
-	 kBFiXP3tqlA3ARY2zoYWjzb5WjBU+6w3Cb3dcRQRjE/0+/SN3iB10dvAMI84fhbPXQ
-	 52YnfLEkfwAxucsSI1ar27PS56iSCcvkFqLRrZM8=
-Message-ID: <643a624d-0106-44ed-a7f5-aaf9316f94fd@arm.com>
-Date: Tue, 11 Aug 2026 11:00:09 +0200
-MIME-Version: 1.0
+	bh=c2Nw9JAWsi2H0r37DwkIjujiBdGzw2kghshx+QHnOsQ=;
+	b=XnYL9RElCTadjo7QusX/axshSCRCtbJ1YILfi/xE7y0O0LzIaa8VDE0PdhX8OeMfCXBfwi
+	rPJSbL2KmINdKXnVE2/EeodyxwvaSKkLLP7Vl6aC/XWp0TOQWs0j04bdsf2themz7Vgq+/
+	uNybZdRJp6HSwhtJUXrP5ll7TMYp5r0=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=vivo.com header.s=selector2 header.b=J4Q4jgzF;
+	dmarc=pass (policy=quarantine) header.from=vivo.com;
+	spf=pass (imf22.hostedemail.com: domain of xueyuan.chen@vivo.com designates 40.107.75.48 as permitted sender) smtp.mailfrom=xueyuan.chen@vivo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786439047;
+	b=XckkB12Qs/IkMwSz42G8xntbKSmOzhuRP1HcqruWw8PRhPTn/vIpI87yhXFoCHWfobuD4f
+	hoSDmiZDl1+cSCND8dlVCuE4y1H9/HU/T+MYZI0Pr3V4sfs4oISE24AxZscWEhK0Lm8OmT
+	9ixOTeE4x7WHE3XW5l344qXXV8VMK10=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EihLs56W++I41XPuIT+d9wXcxalIFuexZp3nzfPOmS7db9z4AZ3xz1eJ/OKFskNkeei2a8BbgpBI6JeluxYMjBBca/x50aHfdLkJu7RhcqjCGTWzHVJSBz9202emzQJAMf6CE3kw2jYWDCIAzs7imfXv4YJ9Biwhvr1SeA4tJtE4SQLZSmjFRth4+DJpvmcnHiMJy+6R5J825tEQ5V+aHqC2u3XPCl3ymipHutcNyTO1Wfvw38r+Oq+I1bOVh34mhhKkucYGXAnb9/U6433oPKhu43NCC6oknUHZUIAt8hNRKIini5BgZgwOI4cTbbSlAD9e+aM8avjQBigz25lFsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=c2Nw9JAWsi2H0r37DwkIjujiBdGzw2kghshx+QHnOsQ=;
+ b=YmSuFDTr5/5q9hdOBss4OIHsOsFcYsrnORNFxvGJK97wswJSLCK96nSQ8vfoweBl20RCgjPBD7Ktvnq1Xt++90yoki7SgxAeBoxPU6BaL0Lvbpuvg0okuauVMXoQjWZvi2KfFBU16K3H0kfO9bTRA0x/nry7QDT84zx/DJ7D/puzWkV3lUh52EVo0KWPRpWiqHMs80JXKOHJdL0EJ/iLJGOB7M4DZPhWZV9HJoQfEhTCcEzSuEYRTwhqo10V0IdVjrajS/Aq/DGTzrT+HOer50HZJghKibZ53YLttR9MhsFvjX/KSC01dGYG4MDNFw3ySR3OqI4g2gAEzwEWmSlXMw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=c2Nw9JAWsi2H0r37DwkIjujiBdGzw2kghshx+QHnOsQ=;
+ b=J4Q4jgzFPXotxaDRjMU0u+CSMF1Us45hzxkX5IzC0FTgQnssvjFuh5yg8WmEIg3o1Jg3GCaqnCwf0djRN+suChefXp9JGGPXcNsLNhCu7zxJs8hLan8WCqjeb/z0M4qImk+exgaGNs2KtJ/3pFNUpMUOFdBWiYf77mIT5vHrsMe2P5eVf4uX2ibuz85TvB09ezQSDeBZspTHkT0LIHK9WSSYAQsyrvr0JjkgF+oZPVd9D1QUsam60WezCofsMsj+kLixs2Sts0HU/uuLZoZStpXvEY97O2EnwMy3f3GWqs4kTrBIiM8H733Ylvgkuk6thdUoIUzfzV77jgiViwthCQ==
+Received: from TYPPR06MB8235.apcprd06.prod.outlook.com (2603:1096:405:383::20)
+ by TY0PR06MB5209.apcprd06.prod.outlook.com (2603:1096:400:21d::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Tue, 11 Aug
+ 2026 09:03:59 +0000
+Received: from TYPPR06MB8235.apcprd06.prod.outlook.com
+ ([fe80::6ef9:8fa6:5ebd:96]) by TYPPR06MB8235.apcprd06.prod.outlook.com
+ ([fe80::6ef9:8fa6:5ebd:96%5]) with mapi id 15.21.0292.024; Tue, 11 Aug 2026
+ 09:03:59 +0000
+Message-ID: <7b83c51a-1777-45e3-ba38-89e12dc87b5a@vivo.com>
+Date: Tue, 11 Aug 2026 17:03:55 +0800
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/22] mm: introduce MMF_KERNEL flag and set it for
- init_mm
-To: David Laight <david.laight.linux@gmail.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
- Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org,
- Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, linux-s390@vger.kernel.org,
- "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org,
- Richard Weinberger <richard@nod.at>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Johannes Berg <johannes@sipsolutions.net>, linux-um@lists.infradead.org,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Ning Sun <ning.sun@intel.com>,
- x86@kernel.org, tboot-devel@lists.sourceforge.net,
- Ard Biesheuvel <ardb@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-efi@vger.kernel.org,
- Vishal Moola <vishal.moola@gmail.com>, Alistair Popple <apopple@nvidia.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
-References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
- <20260714-remove_pgtable_cdtor-v1-3-44be8a7685d7@arm.com>
- <01f07ea2-8bdd-4450-8a49-548f8b646cfd@kernel.org>
- <33fc9d31-2866-4315-9510-0004deb93994@kernel.org>
- <20260811091016.5ca67143@pumpkin>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260811091016.5ca67143@pumpkin>
-Content-Type: text/plain; charset=UTF-8
+From: Xueyuan Chen <xueyuan.chen@vivo.com>
+Subject: Re: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction
+ budget-aware
+To: Nhat Pham <nphamcs@gmail.com>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>,
+ Minchan Kim <minchan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, xueyuan.chen21@gmail.com
+References: <cover.1786003779.git.xueyuan.chen@vivo.com>
+ <anVWZVOt-xeD0dMH@google.com> <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com>
+ <anXJ-5_vO7-toSe1@google.com>
+ <CAKEwX=Mm2tXcen-quRXHf1Y2qSHYvpEUe4xiw-mHYaJnRUR-EA@mail.gmail.com>
+In-Reply-To: <CAKEwX=Mm2tXcen-quRXHf1Y2qSHYvpEUe4xiw-mHYaJnRUR-EA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
+X-ClientProxiedBy: SI2PR01CA0045.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:193::19) To TYPPR06MB8235.apcprd06.prod.outlook.com
+ (2603:1096:405:383::20)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYPPR06MB8235:EE_|TY0PR06MB5209:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4711a78f-d519-4972-819b-08def7877b4f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|23010399003|10067099003|56012099006|11063799006|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	qQtyu9hYjJqi4JTDaPXSthlh/KhAyXzb6y/ZxpR4T0/oPax7Qodlae76PHTPAJvxGd3/L0KhfenUoFEd5SFDl5FEp3OhrwU6Ocm+xQn1ji/3OXQKztIiD6q7ctiwVW2hvPsmKtkdhcDjKh32EjkiYsQzd4alA/IK00KjRoHrGcRHFB7fIhUNs10fyqy1U/8B9zPWg1Vf+B/DVl7i9JfO7WFpIgreGm3wpaeFzis9GftgkGeIhFYVcpEaEQwH87A7HtfLrOzn0tAk/gqMp24/i+Q+uckwlho90sfWQEH7mqdwu7EzID3AiHGbBR/50rRZr2k+nFUG+4XUy2SfwpBgrkyE8SbMW8MfcSTxNDXoCJ+9TYJA+3+n9YcgRoOYM7DQ21aYUiwU82ScMHrEr2WstjR0eLaCW2E3cHfZsmdbk1acBk8fTnT0zUXWNsC8x6mY8gEGmDbbOy3IH9U+FNJnT5j4POO3N5ufgQITt+9M44bQhH60AIAnufkxRY18QZMn94C+VYoZiwwOEVa7cCAa/uDroACexawfKeZwgTfdSBrNNycl7d7EKkyth2KD5Q7U8ZAcWgtmQidaS4Ufh28Jy6Pb+itbmBCr0fTjIh8sE4YQb/LLSRkHTVlJ1U0nZ3WfSCzk8f9Ob1S+fMuF4aEXRspip7FPQffou/ie4wr/lTE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYPPR06MB8235.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(23010399003)(10067099003)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Z2t4QWx3S3ZZamVJd1d2d0RHaGJJNkhFZnk4ZnVTYVpZRGg5Vm9sbzl4ZFI2?=
+ =?utf-8?B?VW9IVU1ValhJRXhYWkQ2a2JtOGJPUlo4bWUzVC9OZzZ1Tmg0dHc3NjJQekJM?=
+ =?utf-8?B?R2h6cHd2RHlxdFE5QXFUZnRlZEVhWTNSdWZRakxrbVlya2VKaFljR291eHJs?=
+ =?utf-8?B?ak1zRVcxT2lxWEY2SmZyUmdsN2R5SFA5VDBzSko4dEk4Nkpsb3U3WWExcDBl?=
+ =?utf-8?B?OWd4cmNlTHowZFRRdjY2eXA0dWkyTTJSRFIrOWViUlVtNUNTTUtLQXc5T1NW?=
+ =?utf-8?B?NUdXRHo1aEtLdWR3LzdPei9kOU9waWJzU1NKMU1MVndkTHVKRFFmaGZpTzBB?=
+ =?utf-8?B?UW8xdVlNMUhmMG1UYzBNdVBLbDBOdnZXSWlnODlFMjJnM3lDd0dmK1YzYXhV?=
+ =?utf-8?B?SXAxbld6VlpDL2dsVEx2QXRWMHgrY2hWdmFBclNaL0lRR2U5UUxQdjhXeWMr?=
+ =?utf-8?B?OE5uLzNhQTB4UkZoWmpiTFJqbzhaTDViYkx1VTdUQUlRb2hVQVN2Z3Z3WFZk?=
+ =?utf-8?B?aWx3bXZkZnRYUnhIN2VtQVVPUXVsVzIyUmY4TWU3d0E5S05XWVRtR2VMaDY3?=
+ =?utf-8?B?aHhqd0dKb1VqTTVYN01vV2FaeC9DV0UxTVZ6TjNRU0ROcUNhb2RTMXJKOGk5?=
+ =?utf-8?B?enRXSXp5WEhhOTNQbDNkRzFTTFRGWkYwZjdLUHRicGtaYWtUbldtWVB3T1U3?=
+ =?utf-8?B?Q2xCY2xRaDVHMzQzaWRhM1FGamoxampQUTdXK0oyUkNtM2hiRVBqV0NKQlk4?=
+ =?utf-8?B?RzkzK1RDcDdXTWhtTldBRTJ3NDJHanhNT2V6T0lqL09nOEFmOWlpSkZWTlZX?=
+ =?utf-8?B?alVuSHgwZkR5SXhBWnV5MzdMWS9jT202Y2pDYkJiK3NkVFFPNjRwa1hDYzhU?=
+ =?utf-8?B?YzZudnJ4endSWUM5c0ZiMVJ6L3IrSUhMdDZPcUFNdlpyaHhpb3JubWM3ZGYr?=
+ =?utf-8?B?ZkhzRWNGVTZMenF3V3l4M3ZzZUtucmlteWNDZmt4K2VmMTc0M1R1a0g4ejZT?=
+ =?utf-8?B?OG91WUM0MzBGMFluNCtkd0ZEVnFOcUpKdjA1ZGVveVFnbFllT3ZKWHRTWkZs?=
+ =?utf-8?B?ZjBIZjBYcklhcjBMRlJJU1c5dGEzdkN1ZG9qeXBvL0tlQnB6YWtjdWhtUW56?=
+ =?utf-8?B?cVFicTF1MGNwcWVlSDE1V3FFT3hHOHBBSXVCZFQ3Mm1mYzMvR3BRMm0zdU93?=
+ =?utf-8?B?OU1NSDc1TlRFMEd5M0VmMWFMNGNFWGpNSXdXSUF3QXBqMGxZYldzbWZLZW5m?=
+ =?utf-8?B?a2pQWi9Oa0FhU0Y1VkYrYVFrSjd1RG44eXlQN1ZCSzBZUkgyd3ZMcmNSM1c2?=
+ =?utf-8?B?dGt0dUVuS2RaQVo2SnBCMUFRZ3NsZmdZR2grY2g2RUxZKzFabWhxbHRuU3Qw?=
+ =?utf-8?B?VWJzR2s5bVZsZWRWRHlNZW52Y2VDcHlWdkxjQW9nZGwrSjlwa1I5SjRLRlVq?=
+ =?utf-8?B?OU1Bd2VnUjJDZlM1blBOUU1oV2RjQ3k5R2EyQkZXYUticTRYZ1JWNEc2a2Ra?=
+ =?utf-8?B?NTZUcjhhNEVMVXVycmVtSjcxUWJFMGZ0Nlh0SlVGemVaTTdMNnBPYktZTmMx?=
+ =?utf-8?B?WmhPMGNHdFVLdHpKUzlBaHprMVNYOHRycEVaMFhmZGRwbDhVWWpJb1p2SnlX?=
+ =?utf-8?B?ODRiazY0U2RRY2RxK3ZPNDBqL25IT2FIWDJ2RDhiQWIxdUtLWDNuajlRQWdZ?=
+ =?utf-8?B?NlFTS2xpZ01tZnEvMjBWeVgyNExxU0JOa1BHVHpjdUpRUjJ1WE83TkJoVGl3?=
+ =?utf-8?B?OGptWGVjTmFLT3hyY2JGdWZTdFZpcDExN2NHU0FxSnJCVU5tdExTRFdMTlRX?=
+ =?utf-8?B?UnhtQ1FGU3JqNG1EYnF4blBSMFMxVU13dFVDR1lsOXJKUnZ2ZGVrd3oyWTFF?=
+ =?utf-8?B?bndneUJDb3JxRU5aRFZ6c1VpbDZMYlVLWmpHNmJpaHozbEYwRWRRalRsR3Nu?=
+ =?utf-8?B?WDNmcFo2NnFETzlzUGV0dUFIT29BV1hCT24xSnF1R0wvZ2hPZGhuVkJDVTV6?=
+ =?utf-8?B?MnAzRlRwS0Z1RGlJRzFFdlRtNWJUeFRZVmJJWkdOMmsvaXcrVGFnNDhKUFJu?=
+ =?utf-8?B?VkU5bWZiZVQzMlg1Y3Z4MkNUWDdFcllyTEc1RmFwTzlIT2VZZHJSNDZBb056?=
+ =?utf-8?B?R29Gai9tUzVaWWt4YlE1cWVTMmttem42UTBJZExIZmlvTUhYUndMWlo1Ylgx?=
+ =?utf-8?B?ZTFqTUNCY0lKWGxsU1VJZjlQWGRBZWd0QS9TK290WGRBazdydUVuanlmOHJN?=
+ =?utf-8?B?MlR2TFFjRUJSSDh2TjBjcHp6K1liK00zM2hLc3BGakpaNlBLWVlkREtsdkxs?=
+ =?utf-8?B?K0grZDZtMzNkeVNmeFM4TnA0Z0hwVHlHN3NwSi9GNVNGQndHYkMrQT09?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4711a78f-d519-4972-819b-08def7877b4f
+X-MS-Exchange-CrossTenant-AuthSource: TYPPR06MB8235.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2026 09:03:59.6863
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3zUsNdqp6PQr7En9FApOkYbKmkzvQgWVWGRVgIhum5KMfS2H99gXjGLZ8vitnPhbvKUPnpgVjy2z8p4tzr5pSw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY0PR06MB5209
 X-Rspam-User: 
-X-Stat-Signature: 53oz4ekdzh5c69zejgknmm1wy6speigr
-X-Rspamd-Queue-Id: 8E6CC140008
-X-HE-Tag: 1786438831-635333
-X-HE-Meta: U2FsdGVkX1+IZT/7i1NCwcAlVNZAuZqjR+aiHH4vaM9qPYLm0f2RbLP7LGFTf+aJ6jUuXEWLW/qNYxEFYxyBjP8MK4bXw5tOPYX3u3pLY9gQgMV2TV1ucL0xwvuF4pHve9I/TuW4DWc5bzX3Hhxdhv26/lf3ZN5EfvrcwUNSJ4LJa3Q7j+7tGpu5FIHpk49Y0tdz6tZ2yIOnl5/4xmeZX6cUUXhXCnPO0RELhz6ZqRIW42j0Svo1QsFBHcPREKAtbyMlD0cOQO0+nS7psqWy3VqvfXd0SFNkQAq53hJWbVIrZw8KfSiCFQMxb11k+gceRPbK1IJfjeCDlso2jhrWS1IDs/NXR30VA3SPixZQXMnz7TOORhiqtyCMsm94jYRJkWf1bED1f8+1N/F7nV1bbGvQ8qRoE9uYMC3+l/GYvqDNA5soqNhOj2VATEorfr3pCq1dTim56tLTdAw/Bm2ZmEQKZMVlPXNtHtpNX0bSjgOhsnLvez8n3dJlxpnNvN2ggErgu7dwMDajp0eYyfx4eDbWC7oeSyfZGq85kZ5iPTs3A/3QprmltNpfEN1Te4xuJmMtxghQmyUro9zYCU2dLGc1Oh3fxE6V3G8IKWJ38ucKTkNPDrrs7GifBfgc7TedLmTeg77CH8AkqQ5yNM41vf/GZFFSKaGNZmHBUjJTdkM8pCmkzNHZtiBr3qayLkVtRwRy/kAuG2L6lU2Q4Ic5lM2daH5dsVBSLeKN8dsI75eu4RtHC6L6GL+BJm5HaFH1RN+gvmrqRoyYUc3eLkNOOttot2owOK59vv9on7Jf2T6oJjk3Y3EFgxHIG0GcGM1QTuleNmlLYJvhFPIEnr3UHyon/ywF4xtwu/oEPjHXJ0qOCH8MaS9WE6++pvlWWdTM/TdPM61NGyK7o1Kpza4XrVdbLcY4n2NCz1GnnrWgTLYcPDrBGoaNefRIjN5m90a39Oyx062pItRBvExF5V1
- +KgmV07g
- WtJ8zfjGSAFbW+7qUWgiH7lE1bZPtC6KeBdcfedBTjfOWZX263zd1TIs8lE/TkW/6nO5msi6O1GazQHQFp1ZneoneWFrdbwn0553bd7cXaCPyRXhdVwLVPPXmvL8xJZfdu9G0aOO8oXle2bPvi47BUYQfSQcheawuWUMMzaMXiFsy+u0b0Pnx8xD99NnzEmmhOHauT0u4KfQPknXekkgik09nQjwR/s2nEmLXieTYCAlAFpTkXGaYhyBRpYHAzR5wa22+cg2JwcbE4oLx0Fe0Qbl7HxgScq+Wx2djah8Z2Ff+8KOt9tBrRhDnV1McoIMpPhNMWX8fQujwTUoMu5BThv7ItpGDn829rsHlF+X7loFR1JAVeMxNazC5Fm7CwPn7+bCus7pRvFQY/gD5lYZW2J5g4qNAUFntOXCw3f4DhGc50vktuxU5C2+ra4PplU33rRUz
+X-Rspamd-Server: rspam03
+X-Stat-Signature: yfr4hmedimnjcmd1zr5d7s3xn5we9x13
+X-Rspamd-Queue-Id: 32BC2C0004
+X-HE-Tag: 1786439047-844325
+X-HE-Meta: U2FsdGVkX19P4N+DGDYRPPwhvIJd2iZ1nRpfN7wDBzW4nD+Aujf1UzQDUgU8cVh99PQ1WxDPeg5QEusesecP1K6sYDykv0kll2dMj3nLLTVcoX3/GIprWjrclmIoblO9tB3im+DbapRh3QQ7EJAcX+DSA0ijoYs39kfMHpAHNEgzSywhGjH7tRxVoOpPjc/i+uoks6A7LoGM7I41+PeIhN39EQn0ESrU0RL4wVTfRIYn1gimq5R/moOi30bWLNzLsKo0/nyJe0kDROYlmSgXCX6Byw+mQdvDcRJEw3z8oseM5g2wqqedR754NSCcHtYrceSHeGWsEAniU23RDYPhivhBQ99dLdly8njrGbPx18YLa5/4fWg6UQXzHaSVNOvFzc+7IB8L1FPyYxa6VcFuPk3IDTGGV+2ZiqG57rnWq8UTK4xfALaAzdEp2INKNLsmQ156cgXbvqF5Kovq6pp8XrefJkLAOToyP6OqqaZXQFP+TCAjwu57y09ii9MZpDgrhcH2FHX1p3wZY7uJiv5SUcVsDaXye+Gz6g7DzKoSmIOyEl5PZpT+oYZtjPYgzVbLB17QdJorymUkw1ro5OnJZBoNhGhmK3amY4EGAOxPLvzgpkGqAQPt3fMsVKXldf7wIKGkBRxjZ5YHTBjctMX1booGhi3RE40fiH1B1OmTQQ27I4ePedEgv3iLfmdzll8SFJP4XEJNv33M/2ZHxLcQAVUwYpILNm4QghiI2frsAOgLAYjjuuMkuxenWwFTohCheHtzlBk0jQ7xQPh8rk2mqj/fT9czC1SEEfjS8PZ7zZQ52Hw++i6oodmCw8nNZpMyvVgE6qSqj1GTuYGey5gZWsBp1f5BpJ4Q2ASs8mWyed2lgyTYkn14atmkxEzVYsEK5FMQfX98/M3P4++K50WAS61VgTZTu+KjzKIkGvgmy73ui7wjiE8ybLEXmUhtCmrAh9ycDFyMRb9BADFmNWK
+ vQitECQp
+ +ak91oLpCRIWmTXblU5KwD3C8ClC26977eGJH6a+4HZl1p8Q3CfLwbWvEY2RjlkgaWOmkY5929EIZS6QnkkdHW08xNTqAh5xyN++KIf2EGHYcLBKIMTg+G/bEWx7dytuz0N+7CbKTOkOHgXxFsj4wIF3R0O4BVH4+1pbzgL80RPczUgv4nwCfbbxYSlm5NS8S2HMIh0fVcA6RtJOau9O/gsgnsQQRnqqPmhxd5Er73gCUR/+m7eeO7BwSx+7HCeGaG2Huvk5+8/CBmKZNospMqQb5yeaTc+Fi92SglArBsfuLORBiIOziC+o90JEmntVv+6gyr1MMLOg/ZR/6eTeDjFVHYlnAtvBZodervgEaH+qGpKWZ3OfUIWremXkwl/9FvTZjwI7lE4Guucw7VwQ9j5nzVtBN2YPP0hxTf2ycpRRWygmOWxZJZEPqH9suv2lCs8Igl5RzRUmLH07o5czKtJBymCWx1kitDGybz7nFgvFA062FmNfY8aVc9ErZgpjAULyaXJarsJeTt8R6n5QBX+mG/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,59 +175,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/08/2026 10:10, David Laight wrote:
-> On Wed, 5 Aug 2026 14:07:01 +0200
-> "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+
+On 8/8/2026 12:25 AM, Nhat Pham wrote:
+> On Fri, Aug 7, 2026 at 5:12 AM Sergey Senozhatsky
+> <senozhatsky@chromium.org> wrote:
+>> On (26/08/07 18:57), Xueyuan Chen wrote:
+>>> Hi Sergey,
+>>>
+>>> Here is some additional data:
+>>>
+>>> I used the following definitions:
+>>>    compactable ratio = freeable_pages / total_pages
+>>>    memory reclaimed  = pages_freed * PAGE_SIZE
+>>>
+>>> freeable_pages is the estimate before compaction, based on the same
+>>> calculation as zs_shrinker_count(), while pages_freed is the actual
+>>> number of backing pages released.
+>>>
+>>> There were 264 callbacks in the trace:
+>>>    callback elapsed time:
+>>>      median:    5.77 ms
+>>>      p95:      55.82 ms
+>>>      maximum: 271.36 ms
+>>>
+>>>    compactable ratio before compaction:
+>>>      median:   0.32%
+>>>      p95:      2.86%
+>>>      maximum:  8.33%
+>>>
+>>>    memory reclaimed per callback:
+>>>      median:    3.80 MiB
+>>>      p95:      30.45 MiB
+>>>      maximum:  92.73 MiB
+>>>
+>>> The longest callback took 271.36 ms. Its compactable ratio was 3.25%,
+>>> and it released 7,650 pages, or about 29.88 MiB.
+>>>
+>>> There was also a 241.91 ms callback (with 30 schedule-outs) with a
+>>> compactable ratio of 0.44%. It released 1,019 pages, or about
+>>> 3.98 MiB.
+>>>
+>>> Based on this data, it seems better to remove the shrinker.
+>>>
+>>> Would you prefer that I change v2 to remove the zsmalloc shrinker
+>>> callbacks directly?
+>> Let's bring in heavy artillery to this discussion, in addition to Andrew
+>> and Minchan, adding Nhat, Yosry, Barry, Johannes, Brian (random order).
+>>
+>> Folks, I'm bullish on removal of zsmalloc shrinker callbacks.
+>> I don't think those buy us much apart from memcpy-s and lock
+>> contention.  Systems that want to compact zsmalloc have a sysfs
+>> knob (and API) to do so (based on zram mm_stat numbers).
+> Hmm we'd need to collect more data in our workloads to determine, but
+> if we can compute compactable ratio (freeable_pages / total_pages) on
+> a per size class basis, can we just skip the size class whose ratio is
+> too bad? Would that at least cut down on the vast majority of
+> fruitless memcpys and lock acquisitions etc?
 >
->> On 8/3/26 15:59, Christophe Leroy (CS GROUP) wrote:
->>>
->>> Le 14/07/2026 à 16:03, Kevin Brodsky a écrit :  
->>>> mm code often needs to know whether some mm represents a kernel or
->>>> user address space. This is currently done by comparing the mm
->>>> pointer with &init_mm; besides not being particularly elegant, this
->>>> ignores the fact that other mm's (e.g. efi_mm) may also represent
->>>> parts of the kernel address space.
->>>>
->>>> Introduce a new mm flag MMF_KERNEL and set it for init_mm.
->>>> Subsequent patches will use this flag to replace comparisons with
->>>> &init_mm. No functional change is introduced for now.  
->>> Did you consider performance impact ? This test is usually done in quite
->>> critical memory handling functions.
->>>
->>> init_mm is known at link time. Before your patch 08/22 there is just a
->>> comparison of mm (r3) with a constant (loaded in r10):
->>>
->>> c0014048 <assert_pte_locked>:
->>> c0014048:    3d 40 c1 09     lis     r10,-16119
->>> c001404c:    39 4a 03 98     addi    r10,r10,920
->>> c0014050:    7c 03 50 00     cmpw    r3,r10
->>> c0014054:    4d 82 00 20     beqlr
->>> ...
->>>
->>> After patch 08/22 we have, it first checks that mm is not 0, then it loads the
->>> word located at mm+528 then AND it with 0x1. This load might be costly.
->>>
->>> c0014048 <assert_pte_locked>:
->>> c0014048:    2c 03 00 00     cmpwi   r3,0
->>> c001404c:    7c 85 23 78     mr      r5,r4
->>> c0014050:    41 82 00 10     beq     c0014060 <assert_pte_locked+0x18>
->>> c0014054:    81 23 02 10     lwz     r9,528(r3)
->>> c0014058:    71 29 00 01     andi.   r9,r9,1
->>> c001405c:    4c 82 00 20     bnelr  
->> Is that a real problem, though?
-> The cost of the read is likely to matter most if the branch gets mispredicted.
-> I'd also guess the mm isn't usually NULL - so that branch needs to statically
-> predicted correctly as well.
-> I'd also not assume that the mm is in the cache (unless the surrounding code
-> has already accessed it), the L1 data caches are small.
+> I'm always a bit hesitant to over-rely on userspace, especially when
+> kernel has information to do something smart about it. It might not
+> react in time, and many proactive reclaiming schemes back off under
+> heavy memory pressure.
 
-You're right, I didn't think about this the right way round - in general
-it may not be easy to predict that mm points to init_mm, and an
-arbitrary user mm isn't guaranteed to be cached. Repeated calls to
-mm_is_kernel(mm) in the same function shouldn't cost much though.
+Hi Nhat,
 
-Would some (micro)benchmark be particularly relevant to measure the
-overhead, if any?
+I collected per size-class data. 53.7% of size classes have freeable==0,
+so skipping them saves some time. However, 94.7% of zs_compact() time is
+spent on classes where freeable > 0 — meaning the cost is dominated by 
+the actual compaction work, not by scanning empty classes.
 
-- Kevin
+That said, skipping freeable == 0 classes is still a worthwhile
+optimization on its own — it avoids unnecessary write_lock,spin_lock.
+But it would not meaningfully reduce the worst-case latency.
+
+Thanks,
+Xueyuan
+
+>> Any thoughts?
 
