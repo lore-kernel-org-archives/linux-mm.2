@@ -4,116 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CA3FC5CFE7
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 12:11:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3640DC5AC67
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 12:13:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35F7F6B007B; Tue, 11 Aug 2026 08:11:53 -0400 (EDT)
+	id 3FEEA6B008A; Tue, 11 Aug 2026 08:13:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 310366B008A; Tue, 11 Aug 2026 08:11:53 -0400 (EDT)
+	id 3D6616B008C; Tue, 11 Aug 2026 08:13:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D7936B008C; Tue, 11 Aug 2026 08:11:53 -0400 (EDT)
+	id 2EC9A6B0092; Tue, 11 Aug 2026 08:13:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E84E16B007B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 08:11:52 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7AF59C03C3
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:11:52 +0000 (UTC)
-X-FDA: 85088874864.21.9FBBA6D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0328C6B008A
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 08:13:42 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 09755803D9
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:13:42 +0000 (UTC)
+X-FDA: 85088879484.01.04489B6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A756114000B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:11:50 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oMzFJcn9;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786450310;
-	b=RscVOK9sKRxKUD/3JvWPBlzJG9LqfyxV3uks71+hxrp+RPl6daw6VWQIwY1XYB+juhyaNl
-	aUBTcy+uevYcTlKh8JM/0pQykhznHVYkNvOrEGSTvUwoX9dPSHtqKRRuY+t5S0nnX8IRAG
-	jc2R6Hi232j364ULDnfC6Q5aDlOcr70=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oMzFJcn9;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2310F180013
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:13:39 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RkcpAC+5;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786450310;
+	s=arc-20220608; t=1786450420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/fTG1Cghw/RG7+KE3x88oxH8TI74VawrjBf3qjRRniY=;
-	b=R03Cah8mlTmCVZCMIS3I71lx38txWP2cvco/+D1e77R1/zb8BZTO4hTE5YssuqItlN14DC
-	sWUglGoCnKcOhz4bbW2ZiYAOP95qxh4IEFT6cLS/rZZ5WSZ7YqguvriwvvBqGq552Oi/2E
-	V6O3A7H3UTPU2VnvW2+1+Fl556dWsOw=
+	bh=CGgWpN1i+NlUCQibsDxSg1wYekJ19m1pWqZNmrOKPiI=;
+	b=6RllmGymDd9qjpV7AB7kXwAs+gKRcEL6JVEWeFhamx9gsXxgc4sg8toz4i0XMvhyxI+whq
+	1qlQCPnn370dIWSvMUQajvn2Y739vsHs/oJXj3/lv71XNMMb3eO9+JaverL9OADEMCdExh
+	0K2QDWViklXtHbW/2Ox3nzmF0tyaCsE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786450420;
+	b=Wafb1B34+Mxcd6OMiBpXMBhMrfOBYPTDICz2QUXNTLjxRxgEKERhnQk3fX7c+MKTXrCQo+
+	L7zGwRfIh6ivvqRaoG17dI/UX0K8QWwpmKED367D0jnYSp3lqMYu2AH6dbLB+NnpZxmZ/6
+	mo2RJmUTzqF4Xhg2PcpNPK7HwiI8HSU=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RkcpAC+5;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AD2A843649;
-	Tue, 11 Aug 2026 12:11:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E88261F000E9;
-	Tue, 11 Aug 2026 12:11:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 43BD243497;
+	Tue, 11 Aug 2026 12:13:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B71B1F000E9;
+	Tue, 11 Aug 2026 12:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786450309;
-	bh=/fTG1Cghw/RG7+KE3x88oxH8TI74VawrjBf3qjRRniY=;
+	s=k20260515; t=1786450419;
+	bh=CGgWpN1i+NlUCQibsDxSg1wYekJ19m1pWqZNmrOKPiI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=oMzFJcn9VOzkFaKMEx9vCYCdx1Pq7igNm3SDyOEjzrOpDudIApIUK8tbQWGyhMTA2
-	 t05Mkqhok9RLYIMUol0cpCiu3QthaSWyzaAoYQ2iTd1AckujJZDZf2+JmOHRJ0KvP7
-	 mcsYLS8a7sO8YaLXbyWEeOK99DFlaVD5L55J3MTekojG6h3FMWYgpjeoMH//X24lZs
-	 5lfWAxjxOdrK+/s8jDuKs0rLQeM8RFflAxNY1JPwZF3i/yhkf94kLkVqbTR4mmJWjo
-	 hK2SQwlx7kI/9C/spjKPKM5IkvDG9SLQ6RAQ5o7kkbgcPTchuBQb5gh+4ZPvUgW8mp
-	 IkyibBYe3lp/w==
-Message-ID: <e9de4158-b829-471b-980c-1999959bbc48@kernel.org>
-Date: Tue, 11 Aug 2026 14:11:31 +0200
+	b=RkcpAC+5i4iSwbVpCxb06SLXvRgB782ALB84/TQxbTDsFJxQ5DiaF6Bp9c8FvbA3M
+	 Hw6qFCNlrIk9kXEfnuVEQh1avOTlL5YZt9ow61jljcQsx/yrR5jqeslE5e045TlXgt
+	 L85v95miw9GM4em2SbtXJrE1VkcYIU4bcIS3RV8zKn3uTM4lWTlhOaj9NCX/p7MKOZ
+	 c4LPOrEL3PlyPY3jf82d4hs3KT1kwpDoGED4XKrRRwLgWsykwgAwdKPOCNr7iiF512
+	 QmNsLrUt6/McOxB2NV3VzFsNHVab6z1nwLZ42zMkRmvA+uLHQHuTnNUZ9lfMIgcJ7c
+	 NdAouu7sF6I0g==
+Message-ID: <16f37d27-657a-4dd3-8935-975fce5a82b2@kernel.org>
+Date: Tue, 11 Aug 2026 14:13:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/9] mm: convert PTE table entry to pte
-To: Muhammad Usama Anjum <usama.anjum@arm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Dimitri Sivanich
- <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Uladzislau Rezki <urezki@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Mike Rapoport <rppt@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- ziy@nvidia.com, pfalcato@suse.de, ryan.roberts@arm.com,
- linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-parisc@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-trace-kernel@vger.kernel.org,
- bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, damon@lists.linux.dev
-References: <20260806083926.1807279-1-usama.anjum@arm.com>
- <20260806083926.1807279-7-usama.anjum@arm.com>
- <fab9fc78-1e1d-4d5b-a9ca-92f3ebd04108-agordeev@linux.ibm.com>
- <5c329236-7761-4e42-a549-b822e43b4358@arm.com>
- <2599c5b3-e8ac-4865-993b-d41e6f060d52-agordeev@linux.ibm.com>
- <f0b0dacb-fb83-4402-b0ea-30072727dfd7@arm.com>
+Subject: Re: [PATCH v6] coredump: Add bit 9 of coredump_filter for pre-exit
+ files before dumping
+To: Xin Zhao <jackzxcui1989@163.com>
+Cc: akpm@linux-foundation.org, alex.aring@gmail.com, allen.lkml@gmail.com,
+ arnd@arndb.de, brauner@kernel.org, chuck.lever@oracle.com, corbet@lwn.net,
+ ebiederm@xmission.com, j.granados@samsung.com, jack@suse.cz,
+ jlayton@kernel.org, juri.lelli@redhat.com, keescook@chromium.org,
+ kuba@kernel.org, liam@infradead.org, linux-arch@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
+ mcgrof@kernel.org, mhocko@suse.com, mingo@redhat.com, mjguzik@gmail.com,
+ peterz@infradead.org, pfalcato@suse.de, rppt@kernel.org,
+ skhan@linuxfoundation.org, surenb@google.com, vbabka@kernel.org,
+ vincent.guittot@linaro.org, viro@zeniv.linux.org.uk
+References: <8c763f1b-85ad-44b9-b36c-becd7598fe77@kernel.org>
+ <20260806151232.1263773-1-jackzxcui1989@163.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -160,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <f0b0dacb-fb83-4402-b0ea-30072727dfd7@arm.com>
+In-Reply-To: <20260806151232.1263773-1-jackzxcui1989@163.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A756114000B
-X-Stat-Signature: 6ui54jeag6w5c3uz8541cxd53hqrwjs9
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1786450310-913891
-X-HE-Meta: U2FsdGVkX1/hdhE1LS50ejaOGypuFgNAdN58MpmIR9A82iwbQIw6f1Pz9DoTTLgLDNFCYDKYu6NxIup5FuLSbCbP3FCT+SzBFrvlQg7ks8aMZu2Z0gFUHLBrdZGsVwTqXv+ZN8QxwK5iFxVXsGf+zcqUoyPDHlfCvKJ2Mrs61UfiXOJmAX0S32aaqEH9HhfQGVA4nzipKprSaSiC7j0MEW0PtfVvo64lWrxTp3+JchcVF+mmamEN5J8AtnBRGm+oBv3qSektQ28vZC2/rnOQ7ck1bPKhHO7PB3nn56ipe24f7gzefAzvzit3XvoeJAkFqAv0NqAp4nihhesqVs4XqvshCC0CsCuVgjQs6jFxGUvxkld3qzu5h0+Clm6AHHh2/d13x3BaNMoRTOUWhMVLLwkcXIxU91mptWgzbBZYPaEHZ1NUKsYJTOzp+UvT/HMfrgZ7kyf/nISJqAcM/ylUIeaCWpGFtffP1YEL08PWuNI8rJJ2HEcinLxX1GpGBRZJQ8fBBCahdilVRN8Pe8qEXKVVJ+Cr/BTK4/zeO3UYdaB5oh2m/DYCjmWvXmcFPefIi3bQDgjeBA1Agwujm9vbOmf3Y/TfSZFleT3LI5tLSUOZeVmpL4z+OOouw/t3qsdUSDjZhEN9+y+HIyqhzpSUFcJd4gX2Np1hAr+UipRQ53xvVmTw5fszA7JG6RZzUGkNN0RLVJSsiCK7324ou0/XZZ+Xn7WwsoKB6s5AI+wsPI0MfzmGmIoDVWvYzhrW/MMW/NDKEBzu371/5pQAtJA3i4qirV1i3sVnIY7nR3t2o6V+ekeqV7B8+n2AsLFjIVKIq/KF19vLFOQM8X0ksX6ciu0ACMoEPbpuoMzojEY41kNc8FR+kU5hbFKi+e7M7yoauAfg8Os1U0Y8zujsngYuB+7el5m0kmEkanFJClj52IhAjg0MOonfybB64FUbT2QwvK1fm0mDwppDRFQO0C0
- xjFwHEBK
- Biuyz2L3oDN4QzR9MJXeHdY/fx+2DT+2MeaeCHZU1rvc/UBCKaFCkLicdOQFT+7xYRsFLhhPmURRpRh7DUYc+qWUoBPqUf+Vpt9mC76KouZ2sy3otbvZyGu2TWAMzUV3fFaFewpeGiDnRt4G3kULwhmPmzlhrQQRRxc38fSIl9XHb9IEFih+johFUD1f12/VnAa/wtFiro6AcG7wQnzdmUtxIT6w89X+zqA5rD+somsbYfXvn6a57Zg1B2+6k3U/Ot7Ps0l4vAlXgj/IHhhlCUwfB8DhmrdU0Gu9k52l6zsA5ZdWm1aacOPy2gysJftAEkIXr073WyKNA2MU=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2310F180013
+X-Stat-Signature: trymjaourcugtitrct8ig1ay7wzje8ni
+X-HE-Tag: 1786450419-541797
+X-HE-Meta: U2FsdGVkX1/LxZWhZzMwsLHsfXu++fmWMsZZAeAmJvN/CsXKYIIX1LghO0sfIKhlSIdmzY0oOL8BAdV7UbwxM4hcYVErfxTODaMBScLut5ehFVVfU8UB4MT6oeAp9+a8jcDptxUaeJfl+DzGiVIfSET8B04revo/2pv68Z97mfLb5X47tjNGyOPidEjZYfOzIk+IXRpNWiwC7vH140sJoBrRUEvuRZcJCFqnTkt2jMfX5nslos22nN0l3anbipPj3GE9duChyv/QSfnHWuVJorAQhcsWVohHBqbOyVDHMxemBY2GcUV2Eg6YLwMA+U0aiEp+VzUcIJGy50hSBOQF/98VK5bEt9EY1Y3wMEoESLxaez1TdlMBvFn/wtQHtB6XVGogwWtw8Qsq4seAk7V/7AsvZKLRqvM9DkAWyou2ygS8Rzl7JpfxxB/Bi0eunfvvey58eJonL0UU29ZcOU6xOxPYWwzHKNG1cd2Nb6T6fqKutupLEMaB/hxnJU+KRKdUq3oK1ldwW8ezQIUVjnYoDRf4tdp0Jq9o4MlFijsXhdyvVKOZjkcIoyteMHRObIKX3+ZCTGgXauJLMnBdTGl/vKkP1SNm12PQWQgJ89lFOXhkHkCjqKyu4JNSf5Yppo1pliPlr2KW35KNgz/V7QmWoWdjJmnV5flM0De1paCIImT4czTxO6D+zsqec22sC17pNZjrQv91eSal6XSL8HzQsrBVahNO1ZjW7R7cn4evXDur2nbm9wpbxAfPFdQcs97xjJvzNHyqPhNKFLLDUmEe7PwDA6utIXSbtdhSFglb2xsO5/eGWMj1PIsblbw4x6iUU8weA/MMaMzG04PypZCtBvDp2aIsazughbzszLwK9w9j8GAQL0a8KGvhiaMUy30U312uW0r7Ymf+Zd4lIjHP41W9nacow0i4FauPuEvd2U+0wQ8Xx6UBw7PUGi+8L8J6unPVX3lNVbVTNymk65G
+ MW79OqNX
+ U4+ua6HiI/blbLjbCJyJ4gWB/mCaVDyPqMxSqxLd+X1imy2PqfTVUlXgXdimN4htku/TO6M6pyhOQVRHVkgT0nyV3tZ6qg0NNMMOvzy9UKAwCq7q4/HcUJtol9+XwM+AQf73rhwcB1B0XDj6urV5tsJ7unFRtvIY6nkfHmifFy8qTUM8XOXJTO7LytUZb0316Fg8/q7aZq0STkMwLPYHNCITZbhi1nMBMWqClaaRrzHkNqVKehS9KKhzsW5X7en97AlePGsqRpGouaSjrb7/5Qjqrvfm6mNmIwL+3FPJwNS1mkv1po2kfcBRuWKKL0PjYHtxgbge/dIxBpgqXuAX0J8Lqic3RK1qhgztRAIYL67dWgcv080Gqt7XXa97iVBHKbrDuBHaRhl9YXsjtG7KWu5eA2g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,76 +148,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/10/26 13:06, Muhammad Usama Anjum wrote:
-> On 10/08/2026 7:44 am, Alexander Gordeev wrote:
->> On Fri, Aug 07, 2026 at 05:26:04PM +0100, Muhammad Usama Anjum wrote:
->>> Yes, this is particular line is for non MMU. In this case, CONIFG_ARCH_HAS_HW_PTE
->>> would never be defined. Hence hw_pte_t is just pte_t and direct dereference is
->>> allowed. I'd thought a lot about it; is better to leave direct dereference here
->>> or use some helper. Then used __pte_from_hw() was already being used in generic
->>> ptep_get().
+On 8/6/26 17:12, Xin Zhao wrote:
+> On Thu, 6 Aug 2026 16:01:55 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+> 
+>>> diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
+>>> index db6167bef..d590a1dda 100644
+>>> --- a/Documentation/filesystems/proc.rst
+>>> +++ b/Documentation/filesystems/proc.rst
+>>> @@ -1939,6 +1939,7 @@ The following 9 memory types are supported:
+>>>    - (bit 6) hugetlb shared memory
+>>>    - (bit 7) DAX private memory
+>>>    - (bit 8) DAX shared memory
+>>> +  - (bit 9) fd list
 >>
->> But in case CONIFG_ARCH_HAS_HW_PTE=n __pte_from_hw() is still gets called.
->> That looks inconsistent to me. Why not just call ptep_deref() (see below)?
-> 
-> Agreed. Calling __pte_from_hw() directly exposes the representation
-> conversion at the call site. I will introduce ptep_deref() and use it
-> here.
-> 
+>> "The following 9 memory types are supported: ... fd list"
 >>
->>> There are only two users of __pte_from_hw() at this time. 
->>>
->>> ptep_get_sw() or ptep_get_deref() is better name here?
->>
->> ptep_deref() would be it.
->>
->> Do you agree to the suggested API requirements?
+>> What?
 > 
-> Yes. hw_pte_t * identifies storage containing hardware-formatted PTEs,
-> regardless of whether it is attached. ptep_get() is used for attached
-> entries and may provide additional architecture-specific handling.
-> ptep_deref() is used for unattached entries and performs only the raw
-> storage-to-value conversion.
-> 
-> For review, this patch would become:
-> 
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index bc0b9c65aa1d0..ce900d2652d91 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -1283,7 +1283,7 @@ static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
->  #ifdef CONFIG_MMU
->  	return ptep_get(ptep);
->  #else
-> -	return *ptep;
-> +	return ptep_deref(ptep);
->  #endif
->  }
->  
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 1768421755a9c..08613593f3320 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -490,6 +490,13 @@ static inline int pudp_set_access_flags(struct vm_area_struct *vma,
->  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
->  #endif
->  
-> +#ifndef ptep_deref
-> +static inline pte_t ptep_deref(hw_pte_t *ptep)
-> +{
-> +	return __pte_from_hw(*ptep);
-> +}
-> +#endif
-> +
->  #ifndef ptep_get
->  static inline pte_t ptep_get(hw_pte_t *ptep)
->  {
-> 
+> Thank you. It is a silly mistake. I'll fix it.
 
-I mean, how many such users do we expect? 1? :)
+FWIW, that's not what I meant. We talk about "memory types" and then you throw
+in a fd list.
 
-Why have a helper for that then, that seems to encourage it's use, when really
-people should be using ptep_get() ?
+This all doesn't make sense, really. As Christian says, the whole approach is
+flawed. Sorry :)
 
 -- 
 Cheers,
