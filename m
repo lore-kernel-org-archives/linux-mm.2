@@ -4,124 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5172C5B56A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 18:20:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE1C7C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 18:21:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D00CF6B009E; Tue, 11 Aug 2026 14:20:19 -0400 (EDT)
+	id EFF666B00A2; Tue, 11 Aug 2026 14:21:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD8026B00A1; Tue, 11 Aug 2026 14:20:19 -0400 (EDT)
+	id ED6686B00A3; Tue, 11 Aug 2026 14:21:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEE286B00A2; Tue, 11 Aug 2026 14:20:19 -0400 (EDT)
+	id DEE9D6B00A4; Tue, 11 Aug 2026 14:21:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B0606B009E
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:20:19 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 30FE8A199E
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:20:19 +0000 (UTC)
-X-FDA: 85089803358.17.39D2515
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 73B0B20007
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:20:17 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LUR7edvf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of ebiggers@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ebiggers@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786472417;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B5F0F6B00A2
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:21:10 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 53877401D1
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:21:10 +0000 (UTC)
+X-FDA: 85089805500.14.25A50D7
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 5A23AA000F
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:21:08 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=qRr9CSih;
+	spf=pass (imf15.hostedemail.com: domain of jyescas@google.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=jyescas@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786472468;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=82HGZsPxUpcnk6FVJkVR/8JEXad9K6uAipsabFS3WKc=;
-	b=KCr6xPsgOJf05wGCYGUWG365PCIMO/aNMAwxfCtcKBIgkZ2CL8PlPoC2pTN2TOOBx2n9PD
-	KVp8gaAMlAtc4ysTli/s9VeXAmmrgzsMGn+3yWZPjn93p3Vd3cdbJCGqGmtKW3eV0QJJpu
-	CSFkGrTHrKbbpNoojqbqDUv9Rszws2E=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LUR7edvf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of ebiggers@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ebiggers@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786472417;
-	b=O/Mw2k30QX48WBUBkO3ARJxw9DyaTyBygjRg1nNCKEiGy5II5Dgk9i5OJcKe6KxvTXCEZE
-	g7DzF0oBTzHLmNU40fhjpUMOTZqDgVoVx99Usf6wuqmxj0JhWXdjGQrgeDFykYHzvaNGtH
-	JarpzIUp/JUR6ucdKm1dvCNH0Mh3xhQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8195943C21;
-	Tue, 11 Aug 2026 18:20:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFD51F000E9;
-	Tue, 11 Aug 2026 18:20:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786472416;
-	bh=82HGZsPxUpcnk6FVJkVR/8JEXad9K6uAipsabFS3WKc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LUR7edvfMpZPiPQqCKTxT7C3PKhPuFxcyN3AHk76XXbKOfB1CBf4sTCfdKV5Ptp4R
-	 B0Rr4m/ibr0q7uguVB5xMvUrzpA8/e+L2+D9mySRGX5Sq0cqu+VYzXeRVwQrmn8234
-	 LLnbTRtpZli/PRucZ123m1vW61I1Ec7S9rn6NHL66Uz8AgA+u1osyHEAldC8tMp/bB
-	 3BQBwPF2oCqK3n/Lk1m+IdZa16AC9fzGUZA/cJejpmaPF4+nICKJrHugBAWx1OXFHB
-	 1g92/VYVXhZEus1ZDlSComjJTk6nmL6YLxSHx6h3SPp+ggcFhbtYmnXS3XfL7840n/
-	 mAUvBvG/OpnMw==
-Date: Tue, 11 Aug 2026 18:20:12 +0000
-From: Eric Biggers <ebiggers@kernel.org>
-To: Jan Sebastian =?iso-8859-1?Q?G=F6tte?= <linux@jaseg.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Dave Young <ruirui.yang@linux.dev>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Lukas Wunner <lukas@wunner.de>, Ignat Korchagin <ignat@linux.win>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, "Theodore Y. Ts'o" <tytso@mit.edu>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Benjamin Marzinski <bmarzins@redhat.com>, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mm@kvack.org, keyrings@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-security-module@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-nvme@lists.infradead.org,
-	linux-nfs@vger.kernel.org, linux-integrity@vger.kernel.org,
-	linux-afs@lists.infradead.org, netdev@vger.kernel.org,
-	linux-fscrypt@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	dm-devel@lists.linux.dev
-Subject: Re: [PATCH v2 00/13] CRASH_WIPE_SECRETS: Wipe secrets before kdump
- (was: CRASH_ZEROIZE)
-Message-ID: <20260811182012.GB2895176@google.com>
-References: <20260811-crash-zeroize-rework-v2-0-9561d13c2340@jaseg.de>
+	bh=SidcrzD+3N4Z9gUfmMlCvG/9oP2syRc8UCagR7fv1Mg=;
+	b=T3X6B1jOKTxe+WeopubuaucQeVBIoGEHRgs4R038G2u3FfSKOnvfUBcpH64SBJw8+w3QOH
+	vYyohNgZuF/xHDUa3z6znPgKAzZZjHipfcv9+jidjYJvcaPXL9lMFpMjjW3pA+nd7v/RdQ
+	4ZpkToHVk3kevU2H1gt+nRySIM/83V4=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786472468;
+	b=bQ5GQNKrK1Rc8Mq5FCQa4iFQcBpyS5vrywg5E7/bMkyW4bDET4XRka297VUFv6ErZDUXm1
+	FSn3dAjhgDUmgDJQt2CpD7gusvcQsAq0GA52FeC0Jh/oLdEjJs7at0CRtfM8W+N6Njf0GS
+	XelX+0Z39n/W4HbpkQgc0n9U59iFHA0=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=qRr9CSih;
+	spf=pass (imf15.hostedemail.com: domain of jyescas@google.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=jyescas@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5b2a73da7e1so1068e87.0
+        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 11:21:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786472467; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hxfL9zNb2Ia0OwC6VoxDFmiOL9cKH/Rz0TlvdPMM5pfUYTxnOAA5w43T67XJxbIdx4
+         AncqMAwWnwzN5UvBpc5jljdvkc7T3ZVS0P0naL3GdZDaf2Tq6SaWkSKf8xqs2KbwjHij
+         o+H5kR0mU9j9WjTrwULBJUK90u0Uzz7DnAwInCVXcrtyD1hjQG9uRGzcHKz3HD8vM1dY
+         xF65ZJlA+RhSxgN3tmy3Uoy/nd6dtllkpOUCIXpjDPJuCOe2t+iyK5lURsUdsPzTaXST
+         mkA4RieMVr9rxPd81YMUq4qm1ef3bL3dak+nnZzLN3j/a2j276EzJ1B1DDcCz+juy0Pp
+         Epxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=SidcrzD+3N4Z9gUfmMlCvG/9oP2syRc8UCagR7fv1Mg=;
+        fh=vYmebGit0g2QW8i/gK55ySJqlYuPY92p05jnC5TBppc=;
+        b=Y35LPTjmPC2K7E2/q98UsAjoEyn3XqFw9MibFHtK8oGdELtn0djiXQOBhJGkSS5Qe3
+         qkm/JJnlS9F241SezhXNusqfbg82Yuc3pG7NEVnq7EZSFSJIC/Urq2vZ3HqdyXiRZhgv
+         2Hu0i5W1eXH4x/9N1s7cEXe0MNzXrfGRdBslkFM5t7M2f7jYmb8fS/UqkFTDBykuJFqT
+         yUBG3k46JTy9qrAoQ8cG7DM5nnT8TPxEan0Ikxef7llOy2IiNmjQUKZVAngi/sCtd7S7
+         CvKqmFyi7MdkRdCBx98r6IF2yjj+Ja//PNlC0TwIw9+fVg0EeZe592euPzmz06Mi0H0i
+         hfgw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786472467; x=1787077267; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=SidcrzD+3N4Z9gUfmMlCvG/9oP2syRc8UCagR7fv1Mg=;
+        b=qRr9CSihUHH42neyT3vXOlEw1QIKvialkrYFsHMGYqmKi/R1FfOvMH4C7ZEg+/+Ir1
+         J5QUfkLayM9yh7BUN/nHgY9Xy9QLeAxevNid1DPHjo8JLEViYneV3MRs29RjPul0JWjG
+         Mr2SBoIf1yPHl2RpRGBW9+/jt0TyjNZPxrK322P2a6FVOzfM/QAa5Eiw/LBq9eX3BdhV
+         RrWmbPZElmSJRPdvgZP25p/BphTrQo5+/F1Qubz4OLC1YAotiuWih6+p/Oby9xHY8jS/
+         sCyVD/Y1CTRBrs/JuUHAJsRZO/dimo+rdIIi4C5nbt0GV7zdOPbEBSa4vxfVS5XR0aIp
+         dURg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786472467; x=1787077267;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SidcrzD+3N4Z9gUfmMlCvG/9oP2syRc8UCagR7fv1Mg=;
+        b=c++r7Y4dK7HbVx1ejovHGaV/xRkOFY91J+jHATEKG083CzWELTb9rKF7xN+uHql1Kr
+         yzF7B/xiM8zr78FKcU3JmNjtdXcA4F3W6Qd2vp8qlbUU5klAMCK2LEv50T88VC9B+YYX
+         CbZFG5hN+26RMne1m04CUJvppzhcdJQmy7qMDVLhFnkMMWw1bF39h8C2wc+mtPAeeCit
+         u4TCB7C6RbMAN+D3thNyzB3Veei6aJhv7wwgOobNRrGYjltF2DEs0IsFLc1p7PRMtdqe
+         gFpu/nesMZcUoPg/Gs3fu03qprphWGjpwzNeAaGcWV3pvjgmG5ZhnWblgimB+MshHjNA
+         zOpw==
+X-Forwarded-Encrypted: i=1; AHgh+RrUYdrRFwmJ4FUQ4FWPAndhxU8YYmWkDYcj+o3Aj2AoPsYAfU49dJhdOPmHOnVL0hlWLwaB8aofWw==@kvack.org
+X-Gm-Message-State: AOJu0YyHhf2ycdNo0UMFkUIzVRHVryxgw4Rxi3cQ1zQ20ABZldYx9YGN
+	YamFctt0z4Yi9fcb1TIEVa3b/q+PUckbeW5E5WjQqeCAGjaWsJjszimXE61AG8TqH812IAn0hG6
+	Ed+EKZrcqB+JB/KvJEUJat8nEW7nl7DnD8i4idDnw
+X-Gm-Gg: AR+sD103owEexYd9KGGoFySuKUHXtuM3NzKwhOya+II0qXqKoLvivRaWOXwPfKNFmJ9
+	tjVyNUZuNjYnzovdz9WgDXiD9eZlN4z51RfJmIh+bL6huGKxE7zBUj/jjxNxyvtq1TmIvDdDJv8
+	fGM+6OpX4+BSlznwqfQBuXZkK+Ufmkn40KXoPgkCKCZ/q8rVeeNx/dzde14TY2kGBZmjaiilH1f
+	ZM7W0g1FNHArJuoKbJRnzL0/22KFk6dG4Nrk0eWi3SO00FXUlU19OaVfJ1CQ79nmTb9+2CBc1tW
+	kWVS37d/vmLdsj2a9ta2YhL0V51xVncJv0D+lWxE09YnYcXACLYn4o6TiHT7kmXu4vIxgjTcGGC
+	lA2g=
+X-Received: by 2002:a05:6512:1089:b0:5b1:5141:9156 with SMTP id
+ 2adb3069b0e04-5b44d13f5c3mr18608e87.9.1786472466176; Tue, 11 Aug 2026
+ 11:21:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260811-crash-zeroize-rework-v2-0-9561d13c2340@jaseg.de>
+References: <20260806011048.517229-1-jyescas@google.com> <anRRLwa3N5bVCHET@lucifer>
+In-Reply-To: <anRRLwa3N5bVCHET@lucifer>
+From: Juan Yescas <jyescas@google.com>
+Date: Tue, 11 Aug 2026 11:20:54 -0700
+X-Gm-Features: AUfX_mzTwRJlvsI3r3fWSCJukfVrB8EoJ3kv8vAfsnBGQPoCIaduX5MiWIoM87M
+Message-ID: <CAJDx_rigKu_kwWCXy4dUNbqoA9b-T3U3Va4QX5-4=zn9yO4maA@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 00/16] Page Alloc Hogger
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>, android-mm@google.com, fvdl@google.com, 
+	tkjos@google.com, minchan@google.com, dskiba@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 73B0B20007
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 4fqhz6t1mhfqwnmgpe4fnnyiegmqj7rh
-X-HE-Tag: 1786472417-420074
-X-HE-Meta: U2FsdGVkX1/EX7sLGgTVx+r7JiJ5r3dsaR8h5NHXpuT2MDtKDl430KKCLOVfb+oUKMmUfkcZCJAtrqojG2DK/4LjX9v7ezQPgPiWyy80FdMUHozieEM9dmum1pNJxBzR6EQcFB4/q99fC4eTDCw/rJx3ff20ZkqB5OhB6nMv9rJRFL2JA2evN9MfYHWik7tKxLgUUsu8zpYLEUsBXoY/+pFoOaK8kj2uw5uexeOOgUhU8AThXvMdcoaok7hQqY72tI+GyfuggxCFYrq/PD0IggnTb7L/JVc8tgEtnjlZftoaBeRVo9Q9RsdipvIp5kEVNDimtLCx1mosN1CnGXUhKE340nHcxbyPCVBdnvYe8pjpdgPb119o7kgrDLE62t8Db1eBsGGiH+JskTD2Ua0ziE6Pp8l2aEXwnNvVLYdD8lt033lUfOHMGH3CQ9uoIjGP/qa5n9XMa7fTLYFxBR58c66wCWtuNaWbQ4S3ZSE5TEAJeSHrw0ALns3lybF701nRyQ/SaJ0zuvKBVesFqMq+wWLEPipaKvIDpR+x+N0bUA4VG47Gr+N082HPbtPgWuDt5fHjb7gC6YdHwuo5N7NC4Ecb4vDuBITfdQYio3Ls3DHaFx/vuSVijb49rECnYb76xUX8bqtJMIyLOE5GrRibbua/c9kuaT04goGb3ztLipX9ntTWqErZDZKHEJj8XpUvSnu7iR5JMub99vk9aUp9OKkbTi3roipDkb2RTrhQgOKvuIMoIDqrYGx0OhWdiB8P9I4665wUyEfanliQqgLHy4pGbdbJlf+Clo3irdsnLkBF0rNhv/dU42bw2ffkKuJOw+2w7xMm5fyeKVevzAmr5PUpUgkipIM2ePdqsu7UF8nksyElYWxd523RJOSENNuUmdTjPhOXA2aCa99WDRZMVExiOMH6MBl9CjOc+7w0fznCBLOu70CTXizGUZ9wiE4fslQnLK3gB8glukSNhQp
- x9X66eXl
- JMbeJ2BiPjWm9mRVk0L3ybgRttS3KZD+lSTHjCmYHHTV1aYj3EdE5mbCUjiAJCEj5cmoepArPcT1YurdaMgI8+d9+wyx43zJo1HZdLpDkytDplHTdgac1zABeM0eNNB84aAVL231ZANbxX/jC3sdlbvZg2xNILNQKu2e3FCTK/Dsa5w8V4tPtPRctRatJ+5Y20VuLkbhKedzTktfaooXYfYBHM/PRWaYZTdaN+wAd67Xs9CI6wMzgLvp4tY79lX6tlybgb3qKfmqWJ4XnzKe+EoQXkNNNo0iobYpVe+daihRFtvEbzBqZkxnseIu9NZnZbFcin9RkUTCPz3WKMwYSwK6/Q6y2D73x9/Ah4ymae44E+3e7iwks5D6EQSbSoMmieOBIyUJkAfrgT//vhdefIGKEX8Z4mSkFoP+FqdnkOlA4E1eiBx8wtRoL/468rF+czUpuRRN/XxNuGow6HTbLEwo/aPXR6T/Ki4wrKcX8UuzCFym6jUGQk05EYw==
+X-Stat-Signature: etawx8zq54yeqwnbto7zy67wywraecky
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5A23AA000F
+X-HE-Tag: 1786472468-405855
+X-HE-Meta: U2FsdGVkX19XXQv9mCcTc3cTEN6844xFg/vem+TXj70+BZFoHDUxi6gk2ojN8WhcvscZQ8yGNK+hihKn2F17JaDoTl4ulyGM/iIbPBUvOEnzbF9rCZ2W21DYlrE7VrH0h2t0bIfNkOGW4XkqseGEEziZ7mjL6+JSfWArsPzGu0/8Nl90J89i1YT6ILd5tP0ZE0GnlR1+5IetipqYs75j/w6SM0zjjW98p29zdhcDlS8HGRdcemKu1CzBstpbD63wngYRPx8OGzvNowf/Td+s8YgbN3gX+5fkbamhGLFEJLkCljV6LbYO8cX9SE8JOWuEiYKJLPax/hBTps/y1r4WqMDiPiVYGZUS7E+/B4BWf2lnw8KNwNO2IG5ZgJz8ySgfbfgXwoner8YKFR+7pl/BlHDUlWw0agZ6XcEhgGl1X3ihy0LOVg7MWpC4g1BmTDz4Mvlomkp5sHutmEEzxsseFmfzWGCh0SVdt/t/bqPEzths4oaRSA1pK2aBGKB9hdEQ9FQz8+Zv0lqlnnbRGUSUVvL6zS43qQPQJ8BhXvL+ZYkm4Zybvviz1+KYWENutgMo0asfkaveTp+Y0Pu0FWI2CfDtGALm3NdwH5aY6pgFXKA03l2utcdKp5knRjSseBzBQOi39g/8nQ3auyYUM6+OZ5cBQZLA68G+2GN29YtUuw4S9gDZ0pTCl9bGAh4ZL9/UpcFT+NK7f0KR6Pa06ystytql0KCwLERJlqYLl2RzDH4GSkqNq7MLAsxxEIon0mWKU2d9aeWMR10KQnJZvtCGbpfOMdIUyLLYAV+s3GugbGja0GhUkNJf0QYGn3ei3FRL4HHdZqTp84oXK3pJy89nEpxrYM636pU/JXfJHCumgRGWdCFhRAnb7jDtU+38xZVH9YcYwWUbW6QolbEq0WT/stgWklZ58fOVJyZYncuXltWP70I5ENliGAfAHDyCDn7jqf7iMSslDJPKtiya+Ct
+ p45cymYa
+ HTiIfiaQrziZHCG1Bg97B/dh7m77b0uhepO/gjZ4DqGlppgVKPpzOez53WOQInb7CBJIuIV0nQ6TeEiWhWDbRfA8rDo3oTPRgHvOhHiMqi0AwUjAJvCuqPQdGM9i21uUutpdMFWRGdHMp6SehE/ABVt3CtE8zZ56aaDBcto5AX3fIsIHyB/azXtMrYWyi8kUwwqkYjgZJLtUYlSVNCOsboflia5BP6wztpgbsnP0syakBeBvbBau+q8KSZVqSHsahMP2/S6zXgvsPonTr2qOh5Jw1T+M2iG5SsxgBI1UkLWAvRjeJXnbPpcFyu5q+ojNeD5It6LqXExR00OIVefojKWcGbg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,69 +144,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 07:52:49PM +0200, Jan Sebastian Götte wrote:
-> I'm using linux on an embedded target in a Hardware Security Module-like
-> application. One requirement is that I want the system to be able to
-> quickly erase its memory when it detects physical tampering. I'm
-> approaching that by using kdump to load into a small payload that
-> instead of dumping RAM, erases RAM from start to end. However, writing
-> all of RAM, especially on an embedded target, is rather slow. For this
-> reason, I propose the mechanism in this patch series:
-> 
-> Add CONFIG_CRASH_ZEROIZE (default off), which when enabled makes various
-> subsystems handling secret data do a quick, targeted wipe of these
-> secrets before kdump. This behavior might also be interesting in cases
-> where you run a normal kdump kernel but you still want to keep things
-> like fde crypto keys out of these dumps.
-> 
-> CONFIG_CRASH_ZEROIZE is a best effort, defense in depth solution. There
-> are circumstances, such as when a panic is triggered after memory
-> corruption, or when a panic interrupts some operation that mutates data
-> structures under locks, when the kernel cannot safely wipe some memory
-> areas. The handlers proposed in this series will just print a warning
-> and skip the affected areas in this case.
-> 
-> This series introduces handlers for the major locations I found where
-> having this sort of thing makes sense. Notable omissions right now are
-> the Ceph and CIFS subsystems. I have WIP patches for these, but since I
-> can't easily test them right now, I omitted them from this patch set for
-> now. Currently included locations are:
-> 
-> * various key types in security/keys
-> * rxrpc
-> * fscrypt
-> * dm-crypt
-> * crypto tfm instances
-> * secretmem (which I'm going to start using in my application)
-> 
-> I've verified this patch series on an ARM64 target using the helper code
-> at https://codeberg.org/yasec/crash-wipe-test . This code stuffs the
-> affected kernel subsystems with keys and secret data, then crashes the
-> system, takes a RAM dump and verifies the dump is clean of secrets. Note
-> that the helper code is partially LLM-generated, so read with care. It
-> passes a positive control test with the config option disabled.
-> 
-> The patch series applies on top of linux-next but should work on 7.0.0,
-> too. I've tested the patches on a Arduino uno Q (Qualcomm QRB2210,
-> ARM64) embedded target.
+On Thu, Aug 6, 2026 at 2:48=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.or=
+g> wrote:
+>
+> Hi Juan,
+>
+> While I think there's possibly value in people not re-implemented their o=
+wn
+> allocation injector, I don't think there's value in having this be part o=
+f
+> core-mm.
+>
 
-Can we not?  It's already hard enough to zeroize keys and data at the
-normal end of their lifetime in the kernel: that's something that is
-always a struggle, with fix patches regularly going by for many years
-and many subsystems never fixed at all.  If we can barely even do that,
-we aren't going to be able to correctly and completely implement and
-maintain separate zeroization code for every kernel subsystem that runs
-only on kernel panics and has special constraints, like not being able
-to take locks.
+Thanks Lorenzo for your comments. Apologies for the delay.
 
-This is never going to be done either, with the scope always wanting to
-grow to include other keys and data.  You may think this series covers
-"almost everything" but it's actually not even close.
+> I really don't want this to form part of any contract or to be blessed in
+> any way by core mm as it exposes internal implementation details and I
+> really want to avoid adding extra maintainer workload here.
+>
 
-Could you perhaps narrow the scope to one or two things that actually
-are useful and can reasonably be supported for the application?  For
-example, secretmem seems to be the only thing you mentioned that you're
-actually planning to use.
+I understand and completely respect your concern regarding maintainer
+overhead and internal boundaries.
 
-- Eric
+Do you see a way to provide similar functionality without exposing the
+internal implementation?
+
+
+> I'd suggest keeping it as an out-of-tree module as David proposed
+> previously ([0]).
+>
+> Alternatively, keeping it as part of tooling (e.g. in tools/testing) coul=
+d
+> also work.
+
+That would also work.
+
+> (This is no comment on how useful it might be for debugging or testing
+> scenarios :)
+>
+
+Thanks again for your feedback
+Juan
+
+> --
+> Cheers, Lorenzo
+>
+> [0]:https://lore.kernel.org/all/97605949-82c5-49e0-84b6-b42e8078b55d@kern=
+el.org/
 
