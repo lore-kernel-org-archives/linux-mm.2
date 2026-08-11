@@ -4,142 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6431C5AC67
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 19:39:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC99CC5B56A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 19:47:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA1EF6B0099; Tue, 11 Aug 2026 15:39:52 -0400 (EDT)
+	id 9F41A6B007B; Tue, 11 Aug 2026 15:47:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E791B6B009B; Tue, 11 Aug 2026 15:39:52 -0400 (EDT)
+	id 9CB656B008A; Tue, 11 Aug 2026 15:47:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8EE76B009D; Tue, 11 Aug 2026 15:39:52 -0400 (EDT)
+	id 8E1126B0092; Tue, 11 Aug 2026 15:47:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B338E6B0099
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:39:52 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 43067801EB
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:39:52 +0000 (UTC)
-X-FDA: 85090003824.05.689B0FF
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 5122AC0008
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:39:50 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ECLCC+Ct;
-	spf=pass (imf28.hostedemail.com: domain of jannh@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=jannh@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786477190;
-	b=ar/PwWGVd69ETn/Ll2msbTcMqWEod6iBg70RqC1CFY0O0DOdj/q956W2haM1oiCgtaROQ/
-	RiNu5Q2nUKfVFpTTdZvHc4Wye+VGLg12kUxI88PEpPGZE0i+0J8OfBP0Ql+4RJkoYUa7wN
-	9tErw1INyV457OTdWLKpCCy57IZ7vZ0=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ECLCC+Ct;
-	spf=pass (imf28.hostedemail.com: domain of jannh@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=jannh@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786477190;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 64DDE6B007B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:47:14 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id ECC431A01FD
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:47:13 +0000 (UTC)
+X-FDA: 85090022346.09.B6DA5B1
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8611918000F
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:47:11 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=lEWLx2DJ;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf16.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786477632;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4UuIwl6rqjNT2GK6MHDUeAAQX29Svi83Q77R51FpwQc=;
-	b=OJxFLEHjzkKLW5QxXgDnDxq8dfOWV/YBDuuczMs/5c5yNLSV7miT5osXPxcXm0r78FOlHJ
-	k2MIu/kuzt13oTYrZqpTnu08jKhb6AQBYNgDHNm/5O+YQxAl+dXEa+iB48DNC3IAFzea4O
-	dPbs94/AzFz9b6O2gpvdnx/kKTlEEx4=
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cab97c86bdso485ad.1
-        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:39:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786477189; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UT5idjImWHe4Sq8Epa32xyovx1Z9iJM3fW4yUmLMZ7RHvADpXWKlTGp8Moba9933tK
-         q+YBY0ggHdzB4RVXYGQoc1LPG6YELS5XNWFVMvBqFa0hstPf8QMoKt7lvlG5UdHilwbP
-         X1aTCYV2nallmbPfvERe/oFODcOn38ZkcCNYqAht0X2owpmFvkRpbYjoB5P7gHg36/cI
-         bJJKH0eGE5uj1kgQV9lpBvLr3kolzJtvgA+iG813HXh7VaWWTmkhqnt+7XhB24Ef5KEd
-         FxUIhYvWmZa/2ouagKyXronc6TBKX26tHAkVDNt0IT62i7MwhR32DAoGeF7wOybDji48
-         5CpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4UuIwl6rqjNT2GK6MHDUeAAQX29Svi83Q77R51FpwQc=;
-        fh=ewc3lVRSpsF0uuSl5ZyL8GWlPpIBnfuyBShjMoK2pZo=;
-        b=AzdCcKPQrkrucE55uhwSFEXn7G3XtuwTSondzvhRwr8/TaoQLcaV1fJksodEdE0acC
-         XeOuwpgjbV+gDesMOxCQtrJrB/Zf//PgW0jRJWo9Un1++lNFLU7GKxAd1i+m6zQyUWMr
-         nlweML/UwTJ5ssl6PLzUMy8PSmZ0jFPy63kIAT7HNHVjq+5RLMZ8AUZOHwJVjsfW7r3Y
-         a38YR3smNT6MJJ9qDSmYVvl3HSLfvZIlTgtb+YuVUKdMbsWd6AK3/Q52PzvTT+dmCfES
-         8LZ/MLyzZLSU0vGoJza8o8syPsMdbaZr1j1/LR2B/hegbqMzN9+Vot7uF6F6Jl03LvT2
-         9xNg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786477189; x=1787081989; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4UuIwl6rqjNT2GK6MHDUeAAQX29Svi83Q77R51FpwQc=;
-        b=ECLCC+CtjwXCG6yrIs/H0BnXzNZDxVKIBfNFwAORSWlJkZolvgZLvQ7w0+46wlp0Q9
-         8NSrL5zUQMmzW94lmAxgLKMI0ggL7j4vxqr6+kEfE93WLq17ohGvCtToWASPK6Kf9rbG
-         o6iHDiTGyfBx/6nM+I1+xM6esE5Rjg5+a7mm2yoLhxR53tVLMyIAUpLH8QR3pmcP9aML
-         U6Lb9kwvdz8Tb8G4X/eAiIGDPQOlI49SmS2q88/gb0dGkYHuQcoiDooY9N7U23+Fz3nT
-         pjXKpFbiHKL+Kit8OHht+UAHFoNytZO9b9NxLS/0y3DaaIG1epos+2J4U7+FUerLoW9m
-         EKNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786477189; x=1787081989;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4UuIwl6rqjNT2GK6MHDUeAAQX29Svi83Q77R51FpwQc=;
-        b=ouufr18gV522F4uO80d47QxsbA764eOqNVfdbek+ISofeA7a0VX1vNWe5RkwRggtig
-         lOyCWe6+RSio0G+1KhEnbNixEouI84Waq1LVVA7asvT2nn6+RAMvKB4Z7GLckXyDU5/2
-         mqNNHzfLzFwxxXoq0i/X3rlSAVuDWNNymetchHNBOxss5u+o6kGxtW+o78okWt1lAX46
-         tzGz1xSWoDhyZjmXIANQ7b4ruNmsSfNRE7lIs+CRO0dBcJqCpuPXKhQwYr4UwPvke/9n
-         GHl86fhhMMPM1aZY63tJTXZ/dvqT708pXMQpBU5w4nUg81Hy/0w/y1MdQQs+vl1uZodU
-         2/uw==
-X-Forwarded-Encrypted: i=1; AHgh+RoAz/2NFddKWj7kz/a6wyivFd026fgJYW7Xq4jC+BU1HwLrctOCc81wtDGDq8Ag1yRFpRZOxuiwcQ==@kvack.org
-X-Gm-Message-State: AOJu0YwpB18hkM2doGbUNOzUSGmWWQmSd0eMBco+aVc2eeWMq3CFgNly
-	uVCBwSAL8xPnzpcCFzqEBOEz/FKGLPZvt+/VsS2wJT/KBLlJFqnLe1cesPJRMc+oZB8wx+EB5Yy
-	0vYPgir28Ep13Z9TpZQSwawEd8fYPmodZfklGZLDA
-X-Gm-Gg: AR+sD13hJSbxdtpi9rp+7+AJw81PE6Mhvor+oxt9enXScej1otKmAVYPcM3QGax/Q5i
-	RtpkWVK1eAWmBPTTsiviqcuJ5rcqKqiTwLhum7KbwtoI5Zu569ZNA4n6tZswKmZoWvv4R9KLDz1
-	y0J7tbZzQgqN4L10u2LS0cyPocUeFcuwhRSaY3p+8rfQk7d7yNuF43m5vDVIZPipakmoOGsWivK
-	qqdZ5L2NcKcF3nMBKUht639OehoZX5zHGSwkrE8TokW5wdpg+4im/+TlGA3adXIkuK5062N4eqC
-	WFrTyKJ7QNOKDRqeMDQiHCVCxoBxwoBDNR3GZvVqqXck5tQ3kBqgC01woso1NndMMaESeTCfXrx
-	I//v0K9sU7inMy56yRdWUn3qF+W9J1N4=
-X-Received: by 2002:a17:903:3e24:b0:2d0:1aaf:daec with SMTP id
- d9443c01a7336-2d33a9bb8b9mr1376625ad.9.1786477188642; Tue, 11 Aug 2026
- 12:39:48 -0700 (PDT)
+	bh=BlXSLUlIACbCo1CYAl6qQKtQGar/xLkA/Fwfj1CIbk0=;
+	b=CRArAhPfK3zDDGVGz+Ahxqb4E7alfbv9JjUFg/DbzqnIcakUJ9JnM1UCvCNCLRMgRE4P0E
+	7MjdaifUpk7KjMwgLrw2RbLd63Y6mj/d/HyN1GZedEy7VJLKxoHE+h14FhRerq0x1sU9r3
+	23IHpLEoHd7eLEnFdQm64NPJwEZAZWg=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=lEWLx2DJ;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf16.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786477632;
+	b=yqrW93tT2f0W/VvpUTj4P0FQK1LAKgJcam9i+zX/Jgb4yNmi2Yppp64d1pAnE3olCbl1xx
+	MIqAXw48kWgKgZ8rH/G57DDrpNivl4ueSExTpwic1TtPa9Hk4Wsa2GlGyMmvy+dq+JtSYG
+	Y7j1np3NfyeJYjl1cktYrBqpG1enGXU=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 06C9740E019C;
+	Tue, 11 Aug 2026 19:47:07 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id faVIp7MZ5ZKS; Tue, 11 Aug 2026 19:46:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1786477615; bh=BlXSLUlIACbCo1CYAl6qQKtQGar/xLkA/Fwfj1CIbk0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lEWLx2DJlfcAE+5czMjnyrf2q0Awz3QSjJak0ELLkESNmzfDXZeAL5PjYk+p9cWfH
+	 oCfFz9JjsFiDrzBKGbjUkPpqSUZubOPIjb9nsLxUm8uVB/h+z/QHKjuSnNwz4jb0MM
+	 tDmJNncyp8c1TZJgw569dgnGERXhq2gFFmX9fLMWhOQ9i4D2jxDmSWkiJIKMzu3OBc
+	 /cttvTz4+FIAW/4d8x3b54YWoNE5Bn9asJE0JKcsP4bkkGfLAvjiN3mlXPv82DMVQo
+	 aRQUMNM5sRjPbzvdICyXdYVqyUg9FhnRW4veaqXAxj+tiLrWZUQVVMxuiiKAVajPSQ
+	 /2DLkSiqAfHNcJRbmYIm55GTg4phm/9H+XMvyxOYoLbpabte9F+gGqqqwuj0GpV/3Y
+	 +8jW/BNyqci/op26P4gB6kiN48jXY0WkpLgvvX+E2lbFrbaIHkiMJ6/fCAu1yfpwaz
+	 21uL+B563QVnJ0la3I5WiEVbB7C+zKx4nYu7fYxkB4SWtIm6eIWAsgyKfwjrzY+u7d
+	 C8gkGKPDNI8btG3UVcWGNvlFPhDkY5ZjemmQFEWlXF/Py1lhDQfZVPvIvOi0WIFZdD
+	 vNzuJtdOBfQZhW8fym4rlPJu90+aZIFHJFwSi/0BytlPM17V9lGLUQKQ0wiKSWL0DL
+	 Dna5N1+0oKeXM8XRb0JhYfQc=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3CAB540E00E6;
+	Tue, 11 Aug 2026 19:46:38 +0000 (UTC)
+Date: Tue, 11 Aug 2026 12:46:34 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Li Zhe <lizhe.67@bytedance.com>
+Cc: akpm@linux-foundation.org, apopple@nvidia.com, arnd@arndb.de,
+	balbirs@nvidia.com, dave.hansen@linux.intel.com, david@kernel.org,
+	kees@kernel.org, mingo@redhat.com, muchun.song@linux.dev,
+	rppt@kernel.org, tglx@kernel.org, linux-arch@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, x86@kernel.org
+Subject: Re: [PATCH v10 8/8] x86/string: extend memcpy_flushcache()
+ fixed-size fastpaths
+Message-ID: <20260811194634.GBant8GqpdMeXP5GsO@fat_crate.local>
+References: <20260810122057.30447-1-lizhe.67@bytedance.com>
+ <20260810122057.30447-9-lizhe.67@bytedance.com>
 MIME-Version: 1.0
-References: <20260811-work-coredump-sparse-v1-0-cd3e8b1e356d@kernel.org> <CAG48ez3QwUopEyfB0tEc84A57g3GZdnptazJW+htiTi2e0Gc=A@mail.gmail.com>
-In-Reply-To: <CAG48ez3QwUopEyfB0tEc84A57g3GZdnptazJW+htiTi2e0Gc=A@mail.gmail.com>
-From: Jann Horn <jannh@google.com>
-Date: Tue, 11 Aug 2026 21:39:12 +0200
-X-Gm-Features: AUfX_myNWbh_52Kb4nyJ3nHpbMubkiK4TzA6UuwI2EkOKm05z8EIDPP_R-GhG1w
-Message-ID: <CAG48ez0Ty5GTR_vYazWsWOigWP2=8SYstw13zaiJB3auBi1bcw@mail.gmail.com>
-Subject: Re: [PATCH 00/11] coredump: allow to create sparse coredumps on the
- coredump socket
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jacob Lalonde <jalalonde@meta.com>, Josef Bacik <josef@toxicpanda.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Omar Sandoval <osandov@osandov.com>, Jacob Lalonde <jalalonde@fb.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 5122AC0008
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260810122057.30447-9-lizhe.67@bytedance.com>
+X-Stat-Signature: 76jm5mimbpff4oqxfffcw6g3jkn41wh9
+X-Rspamd-Queue-Id: 8611918000F
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: mswujgi8xai8txajecrinedqrjqj1p1x
-X-HE-Tag: 1786477190-292962
-X-HE-Meta: U2FsdGVkX1+KIPI9uCS+bPeT/rtlKgIPtgxM+rQOIKfjz44VXabH21rafL0D6ymzTmCAJUDiWR/JOMwIr7KksmWusZMbRHBweKSAixP0sV61msCej/7Uh9d+5mfkm6TieY+bSHoQheYw5rK6a5VF0dDN5ofX+WFnHsBKuuF91s/6aHBjmtBSKZLAmBzIa6xFsbolJ7775CPwC7/caKwIvnqSrFM+HGth3sILwc8IXNId4gOmpUCGCI9EH0T8r1NQWgwE5YkO+Lmewtb+LZcxDcM+Gk/0WFd9qvR1DoEiv5J2OFMxxtPGQNdxf6NBFDvMwjF/yKJkXMniMidNvI63xjBDPXI/fRP1H+qLw/+VtdQ+mCas55b5XxZ7SoTWlEnc1/wVVQ+vcHrqeQez2h7BtYj5acd3OoO9iNwKM6+6oE822WTYCbQguJFRzM+EUFC4VwL5mYRX7vhfcm+N3MlL/ubOkvlPJouucIxomQ+AYDsjMWCjS2qamqUr4Zh5DbUQZNZ2LIPP34kEwaPPMMehOvgE8GM+/NN57kXdDknhCnrKKk0SoFd/dMkVNGYZ6qcIJK4CLPeR++pua+rLjuUMox6/wAlOMIVo84bVtXzbo0Ji4B5ThRKETBTyno7TkKhcw6z0KjHdZTOD9LSy7RMr/rTj5dmuLs69YnG1lWNfGxpESiPFtFk7Ruwvue72rOVXWuovq/GA1DXE9sq+DDldF1bkzVzBGPGxrIi9cv8GcdTLyoftBrPVr070vswZ2yUgFhx785tBbbxdxUvOZSHeE+ZvGJG7GQb/6mzhZ//rnLra8AnlsYaamV4CBHzDOmz7W7XtcT825Cg5jwImDTKGCFllMxK9Vw9o/+QvAPMMudr24coc+uVgvJz4SKgdQ7Wy9Jm6e+YK+tZbdMMGPonn12E9yl1pSaCSdyAowN6o3iLi//PnreMdt3a8h+CxSzEUGg3ZEmNWxFKBIaQ08a0
- xHeFkpir
- Vq0oBGnS1ZZEtqAlp64Tj0E87LmcS/zty3xFxKdwoPxDvh7qS23T/PzewnE/qDV62DOD0TkvFPqfxjZ4MtdK8SiBBuKu1xlFCcx+h1HTtpr2ltfOBY5lZEejCbAOu1u8Lw7EjqH7sz/78VxLvTOsnjHSkxRXRnAC27Qd+pk2geOAzemHJrpbkuxtBe6bLQJlDDOhDz9X8JBFJURc9FDpRLH2OONQIIMt1rY85NwEix5G5t1eH9T8O3HCaNhoaWdCPPLZQVqMmLAKtqin1lz64U4PCWNlmPNzVzP47
+X-HE-Tag: 1786477631-965757
+X-HE-Meta: U2FsdGVkX1/OeUVqGDn1J1fR+bZDQH0jblj02fTrWlh4H+SkDwfjJsjkxr7dK62J1gQxm+CwiTGdGZZpSzmTYwijQDGyxyJtSxliCIYQ9ysk0DwEsgeRmSpLOYrB2Mq/KRBsC9wk+hBY2hg4L0gI0ZT84PO7Q3SHtbl6MfyFMXb3GB+6TLQPh68vQa+4/FnDEIUCLaufJ0pDD3UKGi4XZ0t2bSizFHY4C9HFoY2izrSFeUauQ36CCzkMv5BkAlZFYf41vKzDWRjKe9UsJDvNPj2cd7F0QCPh/mwenQuHNGp+Bmu9WlTnQRJW33MjqMXh08/vuvUEE38jM52hT/F7m9p8rqB0zjmVtQyMqVfDrGGCHIf/dH4QLbAe9hxYqLjT7qc6Jeimsy2BHSCtb8cYGjmjJ6HM/c4PfYBM2wSUL4coDFteE6kn68xH9DIqrdkkQaEct6cbt9VFEI/ugMKVi90sP9pU6PyFQ+KeK2HUJlLvHF4utb+Ex0relX1Tw/tRXs9G6ak4APZetXZ6cSVnbdpBzjwwrj7Obs4OdvBIocZhG6hg/JBJ3GoR8Fjmjc9eVh0hmM6/uNmu/d0hb9LKKAKpHij/H8wTJ7dTmitQLla/nJr4XERz89Jx7yM7hUSYcawzMTPBlGX/uvyXoYuEgh7JcZZ/UvUjjwDwBlVqqOdx4QWWpvZOWnKzsjS1ma10BRfuGY+E7/2qbr/ITMaDdIWcLJ+npeO0Z4bVQJsVG6oXgsCxPw8rUxCqQiXVuazrWZqThfEBK3E6o4bVdwWVtfEsjLHnyGjtn1IkyHdiDvihS6lGcWaV/92WAZAiNGLHKH1JwjjtB7w9GBQYGa/+wUiKIpZ0DcR95w7uauzT7XUbhNAQMmdV72yK/8rV9Q4m8k2XTSkjwgIKtP1wPUGR7IUCE/1qd4zRbbcz76Ql+bgi2tVZ/UQDRyYfDBy3t6aY2uQif3TjrnLCVF0nSv4
+ 7T91+1ID
+ M8Ft35nox8EvPdNa2zek9SPx36QDocZR+UZn6tZFOQ9WFLAxo84sO/M9LZ5EHNV49VDldrxMU9QAcXwVuGRo3lan2I8DdzZpohJLrZfK0kUIwsFJLKu4s96tVoYPHtXW0xAhsrd3ePJQ9CkKgay9vZddb9g0cLrLOj1ogQtru07f06ipL1tmO/WYZqo2UpP1kaKiFAV1S+IC4hkNCUGU+9h0+z+inSHdp4y56Ijo90/ONYzXl3UfpdAHq5vjF8m0EF4cx00VRcM4UFa7E2BtdpIAi0EYHgkLlY66VZhLgOMoau0SKNXn5qC3zoq7NFZyMIgzHZ7UCKN5hNkEYAPsEO3bN7h+/o3dQQLh/zGcQLzmsS2okXqxjgOi99w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,48 +108,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 9:07=E2=80=AFPM Jann Horn <jannh@google.com> wrote:
-> On Tue, Aug 11, 2026 at 5:27=E2=80=AFPM Christian Brauner <brauner@kernel=
-.org> wrote:
-> > A server that raises COREDUMP_HEADER in coredump_ack->mask doesn't get
-> > the coredump as a plain byte stream but as a sequence of frames. Each
-> > one a struct coredump_frame_header followed by what it describes. A dat=
-a
-> > frame carries its bytes. If a server also raises COREDUMP_SPARSE, zero
-> > frames are sent for unpopulated mappings. They only indicate how many
-> > zero bytes need to be written and to not include data. Reassembling the
-> > frames gives back the same coredump. A debugger and everything else
-> > still see an ordinary core file and nothing outside the coredump server
-> > has to learn anything.
->
-> Hmm...
->
-> I think what you're doing is probably the easiest way to do this in
-> practice. I guess some design alternatives would be:
->
-> 1. (overengineered, not generically useful enough): If the transport
-> was a pipe (which already has the concept of different types of pipe
-> buffers) instead of a unix domain socket, we could introduce a special
-> representation for zero-filled pipe buffers and some API for receiving
-> zeroed holes through lseek(pipefd, 0, SEEK_DATA), but that's probably
-> not sufficiently useful for stuff other than core dumping to be worth
-> the effort.
-> 2. (somewhat overengineered) With some refactoring, we could maybe do
-> something like /proc/kcore and create a seekable virtual coredump file
-> that we send over the socket via SCM_RIGHTS?
-> 3. We could leave the userspace memory dump out of the core dump data,
-> and let userspace take care of filling out the memory contents using
-> /proc/$pid/pagemap and /proc/$pid/mem? That would also avoid task
-> switches and SKB allocations, and probably reduce the number of data
-> copies involved in this by 1.
+On Mon, Aug 10, 2026 at 08:20:57PM +0800, Li Zhe wrote:
+> The x86 memcpy_nontemporal() helper maps to memcpy_flushcache(), and the
+> ZONE_DEVICE template-copy path uses it to copy one struct page at a
+> time.
+> 
+> The relevant copy size is sizeof(struct page). On x86_64, the base struct
+> page layout is 64 bytes. Adding either the KMSAN metadata pointers or an
+> out-of-flags last_cpupid field can make it 80 bytes after alignment, and
+> enabling both can make it 96 bytes.
+> 
+> memcpy_flushcache() currently only has inline fixed-size cases for 4, 8,
+> and 16 bytes. As a result, these constant-sized struct page copies fall
+> through to __memcpy_flushcache() even though the compiler knows the copy
+> size at the call site.
+> 
+> Add fixed-size MOVNTI cases up to 96 bytes so the ZONE_DEVICE
+> template-copy path can keep these struct page copies in the inline
+> memcpy_flushcache() path.
+> 
+> This matters for ZONE_DEVICE memmap initialization because the copy
+> happens once per initialized struct page. For a 100 GB fsdax namespace
+> with map=dev, this is about 25 million struct page copies during nd_pmem
+> binding or rebinding.
+> 
+> Tested in a VM with a 100 GB fsdax namespace device configured with
+> map=dev and a 100 GB devdax namespace (align=2097152) on Intel Ice Lake
+> server.
+> 
+> Test procedure:
+> Rebind the nd_pmem and dax_pmem drivers 30 times and collect the memmap
+> initialization time from the pr_debug() output of
+> memmap_init_zone_device().
+> 
+> With memcpy_nontemporal() used by the ZONE_DEVICE template-copy path:
+>   Average of rebinds for nd_pmem driver: 150.83 ms
+>   Average of rebinds for dax_pmem driver: 153.55 ms
+> 
+> With this x86 fixed-size fastpath patch applied:
+>   Average of rebinds for nd_pmem driver: 96.79 ms
+>   Average of rebinds for dax_pmem driver: 119.04 ms
+> 
+> This further reduces the average memmap initialization time measured
+> during rebind by about 35.8% for nd_pmem and 22.5% for dax_pmem.
+> 
+> Suggested-by: Borislav Petkov <bp@alien8.de>
+> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+> ---
+>  arch/x86/include/asm/string_64.h | 71 +++++++++++++++++++++++++-------
+>  1 file changed, 56 insertions(+), 15 deletions(-)
 
-I also wonder what userspace actually does with this data - does
-userspace just want to write it to disk, potentially after compressing
-it? Or does userspace actually do some fancy parsing of the data
-stream to extract stack memory or something like that? Or does
-userspace buffer the whole thing into RAM and then process it from
-there (it kinda looks like systemd tries to do that but I might be
-reading this wrong)?
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
 
-Anyway, I've looked through your code and it does look fine to me.
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
