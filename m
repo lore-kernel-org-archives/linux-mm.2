@@ -4,95 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EC4BC5AD7B
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 00:48:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2F56C5AD7B
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 00:48:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CB6C6B007B; Mon, 10 Aug 2026 20:48:28 -0400 (EDT)
+	id 6FC746B008C; Mon, 10 Aug 2026 20:48:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17C1B6B008A; Mon, 10 Aug 2026 20:48:28 -0400 (EDT)
+	id 6D41E6B0092; Mon, 10 Aug 2026 20:48:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 092B16B008C; Mon, 10 Aug 2026 20:48:28 -0400 (EDT)
+	id 5C39E6B0093; Mon, 10 Aug 2026 20:48:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D24ED6B007B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 20:48:27 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5BFD41402D5
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:48:27 +0000 (UTC)
-X-FDA: 85087152654.13.97289EE
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 314236B008C
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 20:48:57 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AAB4A1C0B98
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:48:56 +0000 (UTC)
+X-FDA: 85087153872.28.07E9319
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 996F540009
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:48:25 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KcUlgPzU;
-	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 67C4F100002
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:48:54 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="QsjsG/IQ";
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786409305;
+	s=arc-20220608; t=1786409334;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qKS1JcrH56Iarz4e1apBMWyGOHTnqlTit3H0mkZq1+U=;
-	b=7/+HeiEddkwGC1/pL+aJj9qJDZu7m/mAdgREnPNRem0ABVPJfb+mCOkd4gAFegQS3PV1Ds
-	EonVuEGcLINrffdxq3FtNesLWTWTgpAQfYZGqpn/JyH7Es22lSwOBndP5l8RwFIpgXHLO9
-	KLrjgWxbxFM6ncNmP4b6oud+YZyCw7Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786409305;
-	b=n71uTWYmH2o9vT0sncny9008BMPqmomPeyJq7N1qWzgIPvVdgrCQnM6LRV7lePfSmJmiV/
-	eQZZK/mGovOtXggY5eZvsmf+lwK00Ctn+GNTOGysbUrP43c7EeLLpnuMko6bD+zMJYdSJj
-	SxvlgoDhBzQWLZZTsA2nN0uzkGEjNHU=
+	bh=ULPNoA98k1MGbNwPUHP+7eh68YMauJgzPpcaDil/e2k=;
+	b=Ogne5zPy0WLhnWSEi0lxMMtvCcOsk7V30FB9GUtS0EZB+fDSAaBL1eqsUY4/ccOhps8RHN
+	hIbD0lKhui4cbSAj6bf6lzfoSjdEZ5x20jJbzAGoG80T2t2j4oQ5yKWcd7FfRvc85X+4LK
+	qCxmMdkRIQly5oOdhkkeDBbVgAnpXXM=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KcUlgPzU;
-	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="QsjsG/IQ";
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786409335;
+	b=w9XvoNK/Jo+dQRBYjl7Rvbchr3MP1oqluCQoznQ1pp3EAh7cXEJnP74lVdFz1/8VvFqvap
+	/gJGxdsFrK8SBV3UhlCWL/jD2YmVmuh8L8sqKdM+IjJ+14BJ4W7C+9AixEtLo3SuUvTFvI
+	hZTHW+/H0+lupGWgibstLrz4fHr4T7M=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8A07F4019B;
-	Tue, 11 Aug 2026 00:48:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35F71F000E9;
-	Tue, 11 Aug 2026 00:48:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786409304;
-	bh=qKS1JcrH56Iarz4e1apBMWyGOHTnqlTit3H0mkZq1+U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KcUlgPzUP/WSHmvVXiEzTL5xhOjnjhy7SP7rgYlFvuerL+rkI/JPIc+z7BGGVt1sU
-	 ZyFZN7JkpLvRGEI6sU/jVXwO5WmJP91a/h99jXywKX7eYkdeJI3VVnlczza/UfQU82
-	 +LNG1qA870ipZuZNLOKkx77RgZu8h51N+IBnUuynE25xmHem+jjw3tuIVPL2F5+7cn
-	 k0tieup1r3NUEn8y8sV61DAq9Kb2oD7p7ty72liD9iKhtaTB/e2jJs4dbAjLepqR8w
-	 PpHOwAI+e205XoAy1r9jq2Ahu/S+ZL6UC1DsRDMyYPzkmDNEtm9iCOdCSzBpjMAYPK
-	 AGyK+owE1mQCA==
-Date: Tue, 11 Aug 2026 00:48:22 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, 
-	Jan Kara <jack@suse.cz>, Miklos Szeredi <miklos@szeredi.hu>, 
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>, kernel-team@meta.com, fuse-devel <fuse-devel@lists.linux.dev>, 
-	Jingbo Xu <jefflexu@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm <linux-mm@kvack.org>, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Yunzhao Li <yunzhao@cloudflare.com>
-Subject: Re: memcg stats flushing (WAS "Re: [PATCH] fuse: disable default bdi
- strictlimiting")
-Message-ID: <anpsLy_pCanocgS1@google.com>
-References: <CAJnrk1bk66ZhRAS7mojSnD5RBfFS+0ChAPymE3ObRWr0C_udWg@mail.gmail.com>
- <CAO9r8zPpe6fWOSXtRUjFB8WNMroeBqvLT+2QtAU4E27AtLUXMQ@mail.gmail.com>
- <CAJnrk1YifN22mA5PFRVrh3m_ygxax6x4_8nraG2hPqCzyzBj7A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJnrk1YifN22mA5PFRVrh3m_ygxax6x4_8nraG2hPqCzyzBj7A@mail.gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 996F540009
+	by sea.source.kernel.org (Postfix) with ESMTP id 746D440BDA;
+	Tue, 11 Aug 2026 00:48:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF14C1F000E9;
+	Tue, 11 Aug 2026 00:48:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1786409333;
+	bh=ULPNoA98k1MGbNwPUHP+7eh68YMauJgzPpcaDil/e2k=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=QsjsG/IQ4QSsXLetYPhTu56p5S/IkYcP6MgBGAePoP38AQwk3upCTYKfqXaZhndxS
+	 FxhCbJRXJ5Eg0w0fIF8Yyet+OHPjffGrUDQrwDEsYy+CO52zsI95M+zlioimW4qz10
+	 7K89jETg9le3bGYk7OweqtTmGoM21SxB4YHKVrLI=
+Date: Mon, 10 Aug 2026 17:48:52 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: syzbot <syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com>
+Cc: axelrasmussen@google.com, baohua@kernel.org, david@kernel.org,
+ hannes@cmpxchg.org, kasong@tencent.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, ljs@kernel.org, mhocko@kernel.org, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, syzkaller-bugs@googlegroups.com,
+ weixugc@google.com, yuanchu@google.com. R:      Kairui Song
+ <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, Axel Rasmussen
+ <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+ <weixugc@google.com>
+Subject: Re: [syzbot] [mm?] WARNING in set_mm_walk
+Message-Id: <20260810174852.aca0f73ab7ad71c70dcdefda@linux-foundation.org>
+In-Reply-To: <6a7a6929.b50370da.49fe0.005e.GAE@google.com>
+References: <6a7a6929.b50370da.49fe0.005e.GAE@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 67C4F100002
+X-Stat-Signature: 5be57s788o97iwhggk6fag5ndcjct6ey
 X-Rspam-User: 
-X-Stat-Signature: 9x1zruqhasnd34roj7z9615qhk8c7o6d
-X-HE-Tag: 1786409305-678655
-X-HE-Meta: U2FsdGVkX1/YobVT5RBQUAMZXnW7hTRxf3VKBvN9f4Tf1BeT7a3IKsOWM589b1pORkhcmkUTNWBQZE5uFTHBMeBSv8mbn9l/+AEh8QU9PZu6peKhM9VX5c7UwXB+CF8Fg1b/96aUB1PaiHcMgEOOu0kLRU6WgvfgRmtbMSxBtn/QV6xXPtRCdFO2HdGctXjTd1W8hAbd7mvrF7MsE05ni3nSr0neC4W0ztUMiqieuo0NB6JqkMLgn5JejzK4gDIdbk43UxVgjd2zZ6kXp7z3erwOjwlpQxT5ctQJJNLjLB24vPRq5LIQw8ZlkiJCx3vDaAOk/rWQh5/QZ+poS+BFzd1hCahz8PttRhSeBEgNKYf1S2C8N/2nY5VYaCBBUHIQXzcSiDJ8NICRUkSNJMuQfUS/wal8fcr4kgBGezEk1Yo8frYILDp/Oz3zW+7EpfvJUxh8ep/0LELbvz4L/iIuGweqcsTLHHtG/uzdfm3TZ5iurf+LoHeEVGHpZr4eS4wTkMX5edmD0Kf54Nd3vS/uZed4pTTj5zBPuLl8SwbQ9afJdGZ6md709y68uinLvjqIAXOxrp7/HzsNC8PJou6/ywqqpaJ7aCN9LuHaZMtSeWyHZ5Vf7e2s3/l6CFH6mX+WY3cakiU4LL4fRGLR/uzwD39koNBJM3vUk635CyRoENAIvx8FjhpaBlc+8+8p2qK63FcbDPUxRUyX4UHzO2r7/AnjwsEH6Dof6+lxNfKAmd1a5zb4Z/MmCwvGH7m1XH5qdWI6sXZsVBcSBOMJwGhA8PgRL+1Igpp68DZQ0+xHzu3S5+7zJKmTZUbVIEWwtF5CJUCzrvH/A0SHdOG0grmjua7xgf6ZJZW7a+JkTBbbVYzF6T61puzHE4SasTb1jmWKVE8F1U+Ewx8elb4fm3U1iBsufdQHgOYqX3FlVLPHZmmvX3YHwPkkreC76XjmrOxe1bArBRCvWVRxbD5+GA7
- SSV+jCoM
- HNYcCc5BGBhDCRDqG4inaoP/nzShhUzCp3oCfhmO8d70YEaVgGtzHHBxSgfEc5rpTFE/wLnMhUPizRgbp5S4nR6OxPP3ti5cT3B8BA+TQTQwANdEYVblD54j3rUI1l3Hyy+2zfohgoCJaqBxUBL2fFrRYeq2vPEji8QXzCeIHEe9FjlaDOn6V7jlRKuBw4XLj6SYvfpTQnfJg2cuff4J3+Q+/oSWVnp7BonOXT+R6MLl49PBdmRj5J6YaDIamJ5wSEegDhrcmKs/xHyD3BxyNig1cy7f8cOKtQb52215UToG3A334qFbF7hjZAGu0IKxdIDkh
+X-HE-Tag: 1786409334-860114
+X-HE-Meta: U2FsdGVkX1/XVziELgTbOi58k2NPt+5cI49NKTxrrucKYBvs5dxpNAGCp0nluzVKVa1XPoSNKCTD8y41n+B4ZnY7Xhl7B77fy4OpKV/RHX7L+8EBrBqgtTil54SA6NzoXBTxO9Vsbw+rgUSRrhKwxpFY234SUCk8LSvgn65/u2SBE+HR+wD6NSdVFhHvlEIRhoz1bTjOX1hBjBtYji3IA2aT21nBegfbISrgTHi+Cd4i6gKFLtSUT+SNnuIptogVq4tzeoZQ/M01C4DJKf7Sys9CwD4BSzlXONPM8AOspqrgmP51E6e4EZs6Rb9n0zlolMWezyS2yO7HjEDEyQkyIUePNHjNv4ae9SY6ldtSGbj8sBKr+pobFiB6r5GNqcrlFM9tFYa/OwZ6a7Q28unxkNt5uFMPn1qaG2FSAVSELl56/Mtbnnbqo0H9OmP2NgnwK66sZPvdFx7nysf4M44yGkuHjoJc9CdjylWVv5AEf4HTytUfjY4FHeg9CIkQ1oyr+enk12CBZHlJg5CS+bQoxJzFzrY18qsZhZ7TP3wpd8Cqvaczj+fXjwNV5Eezb6kAbjJDJcqNvvJ8ls4IXy+825O87/QMdewT71U7/ROXOZQ0AKXyNIZyyRkvh92kjh8v2Ieyf2MIL27Sxjb61fjz5Z7JSwoqNt4jkn4R+xN9zyVXZVYAjpk1uoYXIaobEdgRSmhkkL3Yb8HFNGQWRvfvglrgpzxmDDf1r35jYkVEarfz7zjan6BcymHsPH6LWdsZggxW9y5nNsUkbjZ9SuNwosXWs2YeTW97umMn2+6Q1viAkcpgDLOFYDfAgCcjC85+dkXfkVA6ZQhqbMR3g8tI35FwH2GX551JPAIYFfFq4Astjq6a/m+woN8TPNxPnaPF+j3vTvATKua91P873YjWpApLIwdZnOfsdTV0Y6ztnbRyiTxpkJ94J0G+y+XNkpar+qASQeb2zBEvRnb69WT
+ RgQ3NeQf
+ gPny+5qgp5ta78VV2OaE4+CxIYEm/SoemVDGtPnLqjq6KpGHySY65SFJbyOfP1ogM/TV/kUmEUxC4DehmlBCK9TWBMG6fUSw9m5W3kDCWVSaAgfvvshCx7Rekb7W9/P/48qBc4Z59WRLWVZ2QcOUDXt3mdbIpuPJ0kQNYDq99KAC14Sr2++wZhjmnm7jFMfRGh8GwolcOdrK4Knaeh9Ny2JjQm182lMj0nNfevHWF8wZEJSW501sG/szOfvb1hkrXPOxQLIQASOJdB1h7b2Oi1knhOqt/BCZ2DEjGL9fbF1yWNsl5enTLwSTDzucKBkHe80tXiWPKQkt6m+aFV6AOK+6chTTZLd+PZC/5N5UKf0HV93DEOtOqudQhO4N1s6cz3lWBWTBVso9YYcvtElQMwj38nNvAvVLcnyNW8hdKzlgRZayvH8EUJwMArtHAcq+X2NJb5GH87uZztg/DlN/rwfJEAJCGqusDtV6fxDFknx+h+D0XZIoOEhZqqiUxTS0gxr5/696CQyA+G/0sc/R/itOxsxKdNsIaW/5lysHG2aOU9znHIH/iyqZnD+ny0QPP2tUvL0LKNeQoOgbzigKAs9iEwwVT/QFjEnCYNEfU8Shz3mMOqVb9DXdtNHx3j0HN/tcY/vaymlBCj9h1iMdl/yao8ZBqu7tUGOGwBPxNay/jrtJ2Hpl0n0yx4eG4I+qBjYbgrXE7TQfWnY8gQKjEdDmnLPQXLI1gstp7HoxGI797buhVUng1jBmFlom2ULMyZGLiVIu6CbOUbzxTMqT4Rc+neVYo1atW0+uV+9Vjxuju/FU9eAKtK5FkF5QoILjXj68i418dW7TITkDmYD/9F/++PoB57uz7ZSOzTFyZCBtjV+CxoIruUUrVdKKUohWixqgnQeEoCASjWe6s1tXaAUaG16GDSaOklfM4XaiDrJNq6x+lcxQPNu7Oz/8Vu/ArhjpHKu6zH1w/0iTx/AlecSNGPI0/
+ vlWCo6Ww
+ bz+zaTR7ANTY0T1iprjrr9gkkkGO02Uk498cxXfpJAFIiqpOy7G0X/UCPd+q/6jO6U7H2WniZWj7phgq9cggdvPcA8/n9ZFuXg3d1+F6gb5VeHjpnUimFS2aAekqkY7jIeOWP9kffHz6cDIJxpMjherrGIJ5HLM0I+uleaWSV33rPM1JDyA6RU7GfotPKUsyraafn1qa6kSSCFaXBbcTcNIwGbXYf+VY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,137 +98,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 10, 2026 at 09:49:31AM -0700, Joanne Koong wrote:
-> On Thu, Aug 6, 2026 at 2:31 PM Yosry Ahmed <yosry@kernel.org> wrote:
-> >
-> > On Thu, Aug 6, 2026 at 2:04 PM Joanne Koong <joannelkoong@gmail.com> wrote:
-> > >
-> > > I'm not too familiar with memcg or vmstat so apologies if this is a
-> > > naive question, but does it make sense for memcg to just do a similar
-> > > approach to what vmstat does? As I understand it, mod_lruvec_state()
-> > > updates the node counter and the memcg counter (if memcg applies),
-> > > where for updating the node counter, mod_node_state() does some
-> > > batching where it updates the global counter for that stat only once
-> > > it crosses some threshold (pcp->stat_threshold). Could memcg keep its
-> > > per-CPU counter as the accumulator but once it reaches some threshold,
-> > > it then propagates it up the parent/ancestors into a per-memcg atomic
-> > > global counter? The atomic would then only have to be touched once per
-> > > batch than on every update, which might eliminate the overhead of the
-> > > per-memcg atomic you saw previously? It seems like this would get rid
-> > > of needing to do any flushing altogether, as we could just read that
-> > > global counter directly.
-> >
-> > The memcg stats perform similar per-CPU counting and thresholding. The
-> > main difference from vmstat AFAICT is the cgroup hierarchy. In vmstat
-> > we have per-CPU counters and a global atomic counter for each stat.
-> > For memcg, we have the same for each cgroup, then we also have a
-> > cgroup tree. When we read the stats of a cgroup, we usually want the
-> > hierarchical stats including all of its children, so we can't just
-> > read the global counter.
-> >
-> > We use rstat, a cgroup framework that keeps track of which cgroups
-> > have updates on which CPUs, and then memcg has thresholding logic on
-> > top to only flush if the number of pending updates exceeds a
-> > threshold. Essentially, if the magnitude updates on a CPU exceeds
-> > MEMCG_CHARGE_BATCH, we add it to a global per-memcg counter. We only
-> > flush if that global per-memcg counter has > NR_CPUS *
-> > MEMCG_CHARGE_BATCH updates. So in theory I think we tolerate up to 2 *
-> > NR_CPUS * MEMCG_CHARGE_BATCH of stale stats (combined for all the
-> > stats).
-> >
-> > See memcg_rstat_updated() and memcg_vmstats_needs_flush() for this logic.
-> >
-> > Looking at this code again, it made me realize that we already iterate
-> > the per-CPU stats_updates on every update to increment the number of
-> > pending stats on this CPU. I wonder if we can replace this with
-> > actually updating the stat on each parent, then the flush path only
-> > needs to accumulate CPU counters. Or maybe as you mention, we update
-> > the global per-memcg counter when updates on a CPU exceed a threshold,
-> > and forgo the rstat flushing logic completely.
-> >
+On Mon, 10 Aug 2026 17:13:29 -0700 syzbot <syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com> wrote:
+
+> Hello,
 > 
-> I can run some experiments and see if updating the global per-memcg
-> counter per batch and forgoing flushing could be a viable solution.
-> I can use my setup to test it for writeback, but for the zswap use
-> case, what's the best way to test if the changes are too expensive? Is
-> there a benchmark program you're running?
-
-I was running stress-ng and measuring the latency of zswap_load() and
-zswap_store() with bpftrace. But I suspect whatever works for writeback
-should work for zswap :)
-
+> syzbot found the following issue on:
 > 
-> For updating the stat on each parent and having the flush path only
-> accumulate CPU counters, I think this means we would have to
-> unconditionally walk the ancestors + update its counters on every
-> update, as we wouldn't be able to early break if the flushable
-> threshold was already exceeded. I don't think we could replace the
-> stats_update update, as it seems like readers still need some way of
-> knowing when to flush. It seems like this could be a nontrivial
-> performance hit, but maybe it's a non-factor in reality. If you think
-> this would be useful to get benchmark numbers on, I can run some
-> experiments on this too.
+> HEAD commit:    562bfb501c54 Merge tag 'integrity-v7.2-rc7' of git://git.k..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=11a8cbb9580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=145fa60d73086782
+> dashboard link: https://syzkaller.appspot.com/bug?extid=12ee2725d5fde63a9c96
+> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
 
-I think we need to experiment with how much work we can shift around
-between the update and reader sides.
+Thanks.  One for the MGLRU develoeprs, it seems.
 
-Right now, on the update side, we call __css_rstat_updated(), which
-iterates the parents and puts them on the per-CPU rstat tree, then we
-iterate the parents again in memcg_rstat_updated() and:
-- Check if flushing threshold is already met.
-- Update per-CPU counter for stats_updates.
-- If per-CPU update exceeds (another) threshold, we update an atomic for
-  stats_updates.
+https://share.gemini.google/Wg4a5ns7E0LF might save a bit of time figuring this out.
 
-The flush side checks the flushing threshold and does an rstat flush,
-which will walk the update trees on all CPUs and iterates all child
-cgroups on it. Pretty expensive when the threshold is met.
-
-I think we discussed two different options:
-
-(a) On stats updates, iterate the parents and update the per-CPU
-counters of the stat directly.
-
-In this case, we can't keep using rstat, as we would still need to add
-the cgroup and all its ancestors to the update tree anyway and the flush
-cost will remain similar. So on the flush path we'll need to iterate all
-CPUs and add the counters. We can explore if use a cpumask can help
-here, but perhaps not since we'll need to update it atomically on all
-stat updates.
-
-I imagine that if we do this we'll drop the stats_updates optimization
-to avoid adding more cost to the update side. We'll be replacing parent
-stats_updates modification with parent stat counter modification. But
-maybe it's feasible to keep both to limit the cost of flusing.
-
-This only works if the cost of iterate the CPUs on the flush side ends
-up being cheaper than the current flush. I imagine the average cost will
-be higher but the cost should be much more consistent vs the current
-flush, so the tail should be better.
-
-(b) On stats updates, iterate the parents and update the per-CPU
-counters of the stat directly AND update a global atomic if the per-CPU
-counter exceeds a threshold. I think updates may get too expensive as we
-may need to update multiple atomics, especially when updating the root
-counter as it will be contended by all cgroups.
-
-The flush side becomes an atomic read, so should be very cheap, and we
-can drop other heuristics and optimizations.
-
----
-
-I think ultimately we need to experiment with these approachs (and
-perhaps others) to check what actually works in practice. You'll
-probably want some benchmarks or synthetic tests with many cgroups to
-exercise the worst case scenarios.
-
-For the zswap stats, I used to run stress-ng with a bunch of workers
-(20, 50, 100, ..) in cgroups of different levels. Since all workers are
-in the same cgroups, all the parents are common and all threads end up
-competing on the same atomics, so worst case scenario. I was also
-testing in a VM that has more CPUs than stress-ng workers, to exercise
-the full extent of the concurrency and contention.
-
-This could be a lot of work, so I am not really asking you to do it, but
-just brainstorming and sharing ideas :)
+> Unfortunately, I don't have any reproducer for this issue yet.
+> 
+> Downloadable assets:
+> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-562bfb50.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/9cbf6ef0490e/vmlinux-562bfb50.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/7ee52864c79a/bzImage-562bfb50.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com
+> 
+> ------------[ cut here ]------------
+> current_is_kswapd()
+> WARNING: mm/vmscan.c:3800 at set_mm_walk+0x210/0x270 mm/vmscan.c:3800, CPU#1: kswapd0/110
+>
+> Modules linked in:
+> CPU: 1 UID: 0 PID: 110 Comm: kswapd0 Tainted: G             L      syzkaller #0 PREEMPT(full) 
+> Tainted: [L]=SOFTLOCKUP
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> RIP: 0010:set_mm_walk+0x210/0x270 mm/vmscan.c:3800
+> Code: 13 00 00 4d 8d 7d 08 e9 f7 fe ff ff e8 79 f5 2a 00 e9 b7 fe ff ff e8 7f 6b ba ff 90 0f 0b 90 e9 d2 fe ff ff e8 71 6b ba ff 90 <0f> 0b 90 e9 74 ff ff ff 4c 89 ff e8 80 f5 2a 00 e9 4e fe ff ff 48
+> RSP: 0018:ffffc900027772b8 EFLAGS: 00010293
+> RAX: 0000000000000000 RBX: ffff888024934a80 RCX: ffffffff824ff8e8
+> RDX: ffff888024934a80 RSI: ffffffff824ff96f RDI: ffff888024934a80
+> RBP: 0000000000020000 R08: 0000000000000005 R09: 0000000000000000
+> R10: 0000000000020000 R11: 0000000000000000 R12: 0000000000000000
+> R13: ffffc90002777c38 R14: 0000000000000001 R15: ffffc90002777c40
+> FS:  0000000000000000(0000) GS:ffff8880d5ed8000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 0000001b31923ffc CR3: 0000000109695000 CR4: 0000000000352ef0
+> DR0: 0000000000000005 DR1: 0000000000000005 DR2: 0000000020040004
+> DR3: 0000000000000056 DR6: 00000000ffff0ff0 DR7: 0000000000000400
+> Call Trace:
+>  <TASK>
+>  try_to_inc_max_seq+0xf0/0x1090 mm/vmscan.c:4023
+>  try_to_shrink_lruvec+0x4bd/0x6b0 mm/vmscan.c:4977
+>  lru_gen_shrink_lruvec mm/vmscan.c:5128 [inline]
+>  shrink_lruvec+0x31e/0x25b0 mm/vmscan.c:5888
+>  mem_cgroup_shrink_node+0x227/0x6a0 mm/vmscan.c:6753
+>  mem_cgroup_soft_reclaim mm/memcontrol-v1.c:312 [inline]
+>  memcg1_soft_limit_reclaim+0x2d5/0x830 mm/memcontrol-v1.c:362
+>  balance_pgdat+0xa11/0x1f00 mm/vmscan.c:7177
+>  kswapd+0x556/0xb50 mm/vmscan.c:7462
+>  kthread+0x370/0x450 kernel/kthread.c:436
+>  ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+>  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+>  </TASK>
+> 
+> 
+> ---
+> This report is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+> 
+> syzbot will keep track of this issue. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+> 
+> If the report is already addressed, let syzbot know by replying with:
+> #syz fix: exact-commit-title
+> 
+> If you want to overwrite report's subsystems, reply with:
+> #syz set subsystems: new-subsystem
+> (See the list of subsystem names on the web dashboard)
+> 
+> If the report is a duplicate of another one, reply with:
+> #syz dup: exact-subject-of-another-report
+> 
+> If you want to undo deduplication, reply with:
+> #syz undup
 
