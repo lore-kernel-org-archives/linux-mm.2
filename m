@@ -4,139 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAA02C5B56A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 14:49:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08919C5CFCF
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 14:52:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA6406B0092; Tue, 11 Aug 2026 10:49:38 -0400 (EDT)
+	id CBCAF6B0093; Tue, 11 Aug 2026 10:52:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B57496B0093; Tue, 11 Aug 2026 10:49:38 -0400 (EDT)
+	id C6DC96B0095; Tue, 11 Aug 2026 10:52:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6D466B0095; Tue, 11 Aug 2026 10:49:38 -0400 (EDT)
+	id B5CE36B0098; Tue, 11 Aug 2026 10:52:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 838E66B0092
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 10:49:38 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8C35214041A
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:49:36 +0000 (UTC)
-X-FDA: 85089272352.08.737B8DF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B24E540007
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:49:34 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K4lvmZmt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 95B266B0093
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 10:52:06 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1C71BA04B2
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:52:06 +0000 (UTC)
+X-FDA: 85089278652.04.1538832
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2BC6618000F
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:52:03 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=V8GSuDwq;
+	spf=pass (imf06.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786459924;
+	b=enttoymaLSN7560Z1RA+S6GaRkya8YBqE7X9eAAbuMXdBNq58nG6o0QvIJvgHmMm4I4dwi
+	1oKB/Ff3nSGEUJ6P0JFxwQlCF079kdLKlyaENS87aB30AOY6zbB2rhAzSeaDP+W6Oo5vCD
+	J0moy0mE21GXIe1BbJlVUktO7VFrYIY=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=V8GSuDwq;
+	spf=pass (imf06.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786459774;
+	s=arc-20220608; t=1786459924;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jx6Ongc0OibhUt/11tLX9eIUBHVNywDq+e8KzvGNZmU=;
-	b=RvWxtEB2L2PXT4WWgtzCsoylbABkecc5zsa7IziA9833fWNBlpcD8qWizWrQrUlBB2gn9b
-	OSyurHZaLtHxef7A/6F6L3GnA8LwPwgAphR0o1HbmbwkNenjsRQidX9Bv4HJ7tHfYzw9t3
-	wRl8MyPw26BOo1PACMkEh0fmjC1ONrs=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K4lvmZmt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786459774;
-	b=j9ZiXSzWJxytbxIgoobLo/QN9ji03GmDCdrE3KIyhMk9SZPl+Cidujgj1arLIBtRZQNkNv
-	2lO3MD4fYsVCDfKkbe47S5MbAaEE76FkbFBShI15GG+4/avrVdCO6M+o6HezFwJ61YBcmK
-	qJa+aqQxxryJcrYUS89P2wNbrGHJhUo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AA0CC4077D;
-	Tue, 11 Aug 2026 14:49:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DDBF1F000E9;
-	Tue, 11 Aug 2026 14:49:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786459773;
-	bh=jx6Ongc0OibhUt/11tLX9eIUBHVNywDq+e8KzvGNZmU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=K4lvmZmteat6V8pe2VwS8IQ4lE88hiEiWFuIMF+vda4q0bLT3dyUa19S/sEtmZC9Z
-	 IIh2AMcKyvA0ZPMBBSEIKuq3+RuMfYs1vpCjWN26854oqfpl/NLEVKp16MLU61Qq/P
-	 BCy5n6nIHNqM8+tGSMfSP7eAOOqf4tNHKIiFRZndjB23wcB9Kvna8K5MqWMP3mfrpY
-	 40u9aWIVxQqTL5j/H4zlVyivZwt2BThi09uy3ei9eRZ0Ap92oNxUpafdMQf7Ree6rV
-	 3o71PISlpx1QOYYDPuw9KHOertiWTdMt0ULn99P83XLuzwqMoU0wljHv4HFEsKDIPN
-	 aBn1b85n+VsJg==
-Message-ID: <3882e553-4be3-4b2d-b884-4443032e7853@kernel.org>
-Date: Tue, 11 Aug 2026 16:49:28 +0200
+	bh=xDhehgrrAOSRIdcwgmYMsgv1I5rPT085cxMqoCOwSbU=;
+	b=IJE7OyZcY77ALzn2loopMjBAp0Ml1rnHEMdTdq3DT3eoBc+4ORn5B0PbSEO64gqioW9e0r
+	elMENPvrhwoJd5LaDIaXLshwitkjuwtXHnkXCvmJra295BKnqVA+X1E474tcrHXiro/ex0
+	RuGtc0092zkIdSqxBX0PlvcaFHZ3J+4=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=xDhehgrrAOSRIdcwgmYMsgv1I5rPT085cxMqoCOwSbU=; b=V8GSuDwqveAqI2bqQieqG7EtHg
+	eEEnasEdiZliXbP7agGL3h0BTexorRppTEp1vvgcYKNWcQPKxAE+aj6r2kqxu5qt/dCIkReEDkGfk
+	Mv39k2CrHgvirJviGuUmpI0rl5In8PV6s/MzvXA6w407ZEF8rImshyHYqTLstwADLO15oulaVOYpa
+	k/2Al6fKhV2KN5Y9uc3ST9gqZoUbA7TVvF12pppLqhZxWWIgV8niqXkX3KZ33dryOP8retFs8ljAi
+	lD12KJ6b9+T+lsWTYBB9iUdCmdJ1ZXHmnk8KqQEI7u/mrZLS3tcxSF9fzosVw2ITsHnrk/QfPc4Es
+	IfcuYK0Q==;
+Received: from [96.67.55.146]
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1wtnp0-000000001Gy-1SI4;
+	Tue, 11 Aug 2026 10:51:18 -0400
+Message-ID: <b04cad808d5dc2a799c363b43a18e9cab18005f5.camel@surriel.com>
+Subject: Re: [PATCH v5] kexec: keep the next kernel off hardware-poisoned
+ pages
+From: Rik van Riel <riel@surriel.com>
+To: Kiryl Shutsemau <kas@kernel.org>, Mike Rapoport <rppt@kernel.org>
+Cc: Breno Leitao <leitao@debian.org>, Andrew Morton
+ <akpm@linux-foundation.org>,  David Hildenbrand	 <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"	 <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan	
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Baoquan He	
+ <baoquan.he@linux.dev>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi	 <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, 	kexec@lists.infradead.org, rmikey@meta.com,
+ kernel-team@meta.com
+Date: Tue, 11 Aug 2026 10:51:18 -0400
+In-Reply-To: <ansuaOyItxGTBlTl@thinkstation>
+References: <20260810-kexec_posioned-v5-1-95e1b5e2e656@debian.org>
+	 <ann9Kcesyb4T9Z8b@kernel.org> <anr59P1ZCAuHxv6x@gmail.com>
+	 <anskyrEVUlnTVEgF@kernel.org> <ansuaOyItxGTBlTl@thinkstation>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [External] Re: [PATCH v2] mm/madvise: avoid skipping pages after
- splitting large folios
-To: yunhui cui <cuiyunhui@bytedance.com>,
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org,
- jannh@google.com, 00moses.alexander00@gmail.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260806055501.56761-1-cuiyunhui@bytedance.com>
- <anQyoZgi5Urnvvjw@lucifer> <919b804b-6f1d-417e-9c0c-d06f50d765d8@kernel.org>
- <anSar_i8UjniSbML@lucifer> <a6a9e0cc-e6cf-4f83-b6be-7d64058b8fa6@kernel.org>
- <anSqbW1w2bDDHpAx@lucifer>
- <CAEEQ3wmJoUF5TDQDfMU_dUHnY+gg7MYG=OmmdB3Ynpdu9gJ7-g@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAEEQ3wmJoUF5TDQDfMU_dUHnY+gg7MYG=OmmdB3Ynpdu9gJ7-g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B24E540007
-X-Stat-Signature: 5r64o1f6x1sufatbruq9bkw6bicxdx9j
+X-Rspamd-Queue-Id: 2BC6618000F
+X-Stat-Signature: xjup5aazfrf5haarzj6ci1kj91j6fnac
 X-Rspam-User: 
-X-HE-Tag: 1786459774-917695
-X-HE-Meta: U2FsdGVkX1/Cq0YhhRSQZ2/YOlDBVQzdNrfOzh4eeJnglLBqOZF8S9Z1daRm1yrOyaly7wlHXy08gaR/eTEg2lNXOTdjNdO1s/uEetVmlHboKP1l7xcqO61ZvJycPxc11QlkCuyuyNBm7HovPLZp9wvrIaWAJyNSiRK/zG3ymVJ3tQzmF1VjjrFC2FPofG11b7wBpbKIFxsavGGlUcHf5dcREIccj+++7TKBCc6rCNjsgPwD/HxD8A2F6ODc2lx5cOarOpWGHc4OxrWlyfkX1xgJACnzqY2h9NDIGwyay6uysG5Dc3qf6B3WjwD4f29l5zCnwt+FT5moWOF3Q5PINJsrpcRZBMGKmyj4VOMDbtqwr6F3mKUkM8SpEuNlAq6OGkJkESapWgxIzH9MmNZKFo2YqsbK7O4dHcvp2m64jc4Dc3QYvPHK96SLEasCq1yDOVvSq8p7P8B2jIvQgq4I0GjMcL41sG7V0+E/iPfhfqRnFMyzNGbvUFHg4Hus83MAoTSHhDsy+2XuZHIPdMs4x5Y/hi/jGzwSeVAtnK6gfb8vExwrrEBbFES/1TraVXik+8l0H+eA74tzWz/aWqBzHZSHTpiM16w/osw5VV8Y8rRAyLNPkYJq9ASv20YgrIg6VTtzSccwWfeh7nonFkOLr2XSgvrPEkUXTeF56j4GebeNBNrZ9I9jKoZfzzIFnTlDUpmxFOD+CNy+Wjy3ugwn344IWn28MQTCPpssb8EQnN/VQ2NWU47NyMsORALfyiXdxMAFb6qo+t38tS3F4y71X2jcXJ3johYyf6fbUAV0C+CA1Cpbkki4G31JoQ9ntzWffBDcuY83yWpTvMkESoNzHoK/FAPETGGyp1ar2H4d3Spm9tHIK2+tK/zSkOOvI2okeLr5BpTUGGE+m2gUJYUfOpnlRWQuTuU6LADu04a2fIiFGkbZQF9kkSCBjq6sX+ByyvWW+2MHc64DuDY3r1l
- CvPVz2bo
- uM6/h2MnDuCaD1yPYcmvR6eN1v7kB5BNyzKsdq6ykX1NjFFzJErKV9KlmnzlGRIcT2aXpRk++gRSBoOXVwqu48Kre+CoMX0k7ZGK3r/kpYDbMXLx0kjonSDm8XPYRUjW8kPZT0OpGNVCvPFV2cC8OFL8VcAh+BdmeR6BqgzIFKMXwaBn9LnXbuiAIw6xJKhEVhHCJ11Oc+HnybEpbNN/h3rxcjVs4wCcqDdYWQIDonztHZrBqrmeNjuq2JVbk3CjFLLn9CeKRFQ7Dk8TC5iVaQ02CI63o//cmT48mS7jc2/yj4wWLvCB8OHL0CdZbeQIwj4OLkMjMsYYtdrzERRjkP0isElwBgpqEsvnAi+jhl4hsJ4d8fwQdLECL8iz8z1Jca6yr8ZDiiM/FYbP1lBYlkRkqwKys2U/DTj4hiXdyZ5O0EleUnH3pA+Wy6d6+5+b6EzOA
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1786459923-985105
+X-HE-Meta: U2FsdGVkX19/b5rhtVcNiJ6mv9CTvWxNfL0CNTkfAq4EKlaCBf0bV0jOUyJqzwizsMLzxPOxrPhRW0pY43Q2HHZRG4OD7bOAhKs1q4ezYVl/TehiSzORzItCI/9LrqSaT+HtmshVVlyEiIQWMgBGFi2jNbfIupa9PA+9v2Na2z01JR5gl6uoLX//VV+qzB8T4B11NaN7uSBM1cUq+plYeoazIpJenwE+2TnOtL4MEAsG0WDwysU6U9CinVJ8CwVmggYuTyB4f0EVQL5OFxAXr3JQH5fiUOJcxAnkqSpKwmtb8IBp/Gs2v5Q5qP9pUAmd8zBcq35ue3NTkjwl6FfEJMJVXGEuwNpcIrc0zUa3E6CvN/m31MX1lJuaeC1zbQyQz+ZqOOoBzfWMD74s3Y43a4tCevxUTDuh5cYdoSKcL28z8RkVVn65PK7a45va8InhQMUUvBbMHi9qSqrHba6WTcpeH2/fkJIHYsrm59owa8svP+Sk87ZvNMwqmKiC7CQpCvrAXi+9MlS06sO6wznBH1TEAJRmp8BsMzv2LeXGRw2KI+SPVrK3mn3PzaH5tsVYsMVa4snmA3dUxO0os7KdHOGeU6GekWGSP5WpaPQmRUKJS8+YdKRfGSGRIWCoiV/PuNnpcDAp15S9iV3oWe5g0bkKwyCWA8vu/Gye/vOAacLs3U1RpIqTVbR2ybK6CPSjBVV8sbza2s3fcoHiVm3773iMPaqbyXKcYEf/E3jdKWN3uWJteWy0dKbrmhb55LrV0sPSRxzvpFJF9xZj3/BB7+g8lV+PWFs44VjY5tX8q/ChQPfukunV2U5D2ojwXqV7jxSi8/v5Uq624GRWnqg81ll5hgHbqGwQarkD9ZrO4+UCLQvh0t08x6Jq80qsXeNPsJHdq3pUDb3JelbnM96KLqbw1bM1eGTF/ry20QjNhUHfZ718FOGpFwHGVdKNgy/aWyitjElFyr95K0BiZKc
+ m5VN5gXf
+ tH6kPKVFNKt4DhzJ5m6ZApO4bB+cWfCUZjefWL+SsxFUmNoIofJiVxqjsXWCJwsfz1G02gYz0zA2pP2L3idiK+6e5CEgD6RGF8Zhn5elH6VgUYeC7QJZB9rjCOYa7B75xr0LxWxHrqgVy021Vyhih/NSBZyUtvseiK3amU43ttw7JfcMk59DPhqE0ZIG3zE/+gZ9vdpLhiGQXbY1nOhnLjGxTYTGPZH9onJf6HVqZHb0cza3ZLXVWNqXjDsfzCR+y4PNMn4bhwGH/OESPTLDK/kLSdd6sdTfwNBHsxi548A7GSR8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,155 +130,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/11/26 04:31, yunhui cui wrote:
-> Hi Andrew, David, Lorenzo,
-> 
-> On Thu, Aug 6, 2026 at 11:40 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
->>
->> On Thu, Aug 06, 2026 at 04:46:10PM +0200, David Hildenbrand (Arm) wrote:
->>>
->>> We GUP'ed a single page and now try to be smart about which other pages we'd GUP
->>> next.
->>>
->>> That's just wrong, and hugetlb special-casing is just ugly.
->>>
->>> The problem here is that, if we GUP'ed a page and poisoned it, the GUP'ing the
->>> next page might fail and we'd return an error.
->>>
->>> But maybe that error can simply be handled? We have FOLL_HWPOISON.
->>>
->>> So maybe we can just use FOLL_HWPOISON and skip over the entries that already
->>> return -EHWPOISON?
->>
->> Yup this is ugly debug code so that works for me.
-> 
-> Thank you for the review. Based on your feedback, I went back through the
-> madvise, GUP, soft-offline, and memory-failure paths and outlined the
-> changes I plan to make for the next revision.
-> 
-> The issue is that using a page obtained for one address to infer how far
-> the range walker can advance is the wrong abstraction.
-> 
-> For an anonymous large folio, soft_offline_page() splits the folio to
-> order-0 and handles only the supplied base-page PFN. Advancing by the
-> pre-split folio size can therefore skip the remaining base pages while
-> madvise() still returns success.
-> 
-> Lorenzo also raised the semantics of a range that covers only part of a
-> hugetlb page. Looking at a range that crosses a hugetlb boundary exposes
-> another problem. For example, with two 2 MiB hugepages:
-> 
-> hugepage A: [0, 2 MiB)
-> hugepage B: [2 MiB, 4 MiB)
-> requested range: [2 MiB - 4 KiB, 2 MiB + 4 KiB)
-> 
-> The first GUP resolves the last base page in hugepage A. Adding the full
-> 2 MiB hugepage size to that unaligned address produces the next address
-> at 4 MiB - 4 KiB. That is already beyond the requested end at
-> 2 MiB + 4 KiB, so the loop terminates without ever visiting hugepage B.
-> 
-> For MADV_SOFT_OFFLINE:
-> 
-> - ordinary pages and large folios advance by PAGE_SIZE because
->   soft_offline_page() handles the supplied base-page PFN after any split;
-> 
-> - hugetlb advances to the end of the current hugepage because successful
->   soft-offline migrates the complete hugepage and leaves a healthy
->   replacement mapped. If the walker advanced by PAGE_SIZE, its next GUP
->   would resolve that healthy replacement and soft-offline the same virtual
->   hugepage again;
-> 
-> - ZONE_DEVICE does not need a stride case because soft_offline_page()
->   rejects it.
-> 
-> Advancing to the current hugepage boundary, rather than adding the hugepage
-> size to the original unaligned address, lets the next iteration start
-> exactly at hugepage B.
-> 
-> For MADV_HWPOISON, I plan to follow David's suggestion and walk at
-> PAGE_SIZE using:
-> 
-> get_user_pages_unlocked(start, 1, &page,
-> FOLL_GET | FOLL_HWPOISON)
-> 
-> get_user_pages_unlocked() is the appropriate interface here because the
-> current gup_fast_fallback() flag mask rejects FOLL_HWPOISON, while the
-> memory-failure madvise path enters madvise_inject_error() without
-> mmap_lock held. get_user_pages_unlocked() acquires and releases mmap_lock
-> internally, handles fault retries, and propagates -EHWPOISON from the
-> fault path. FOLL_GET makes the page-reference ownership consumed by
-> MF_COUNT_INCREASED explicit.
-> 
-> A successful GUP is followed by memory_failure(). If GUP returns
-> -EHWPOISON, the address was already covered by an earlier larger-granularity
-> injection, so the walker continues with the next base-page address. Other
-> errors are returned. This avoids hugetlb, DAX, and folio-size inference in
-> the MADV_HWPOISON caller.
-> 
-> Device DAX is relevant only to MADV_HWPOISON because
-> MADV_SOFT_OFFLINE rejects ZONE_DEVICE pages. Since the proposed
-> MADV_HWPOISON walker advances by PAGE_SIZE and uses each GUP result as
-> feedback rather than inferring the handled range from folio_size(), it
-> should also avoid the same granularity problem for Device DAX. A
-> successful GUP is passed to memory_failure(), while -EHWPOISON indicates
-> that the address was already covered by an earlier injection. Advancing
-> by PAGE_SIZE should therefore also work for Device DAX in principle. I do
-> not currently have a suitable Device DAX setup, so this remains untested
-> at runtime.
-> 
-> Because MADV_SOFT_OFFLINE must advance past a hugetlb replacement while
-> MADV_HWPOISON can use FOLL_HWPOISON feedback during a PAGE_SIZE walk, I
-> plan to use separate walking models for the two operations.
-> 
-> Before posting another revision, I plan to split the work into:
-> 
-> 1. the MADV_SOFT_OFFLINE range-walk fix;
-> 2. MADV_SOFT_OFFLINE large-folio and hugetlb selftests;
-> 3. the PAGE_SIZE + FOLL_HWPOISON MADV_HWPOISON walker;
-> 4. MADV_HWPOISON large-folio and hugetlb selftests.
-> 
-> Does this separation of the SOFT_OFFLINE and HWPOISON walking models look
-> reasonable?
-As Lorenzo says, this reads AI generated.
+On Tue, 2026-08-11 at 15:21 +0100, Kiryl Shutsemau wrote:
+> On Tue, Aug 11, 2026 at 04:34:02PM +0300, Mike Rapoport wrote:
+> > On Tue, Aug 11, 2026 at 04:17:41AM -0700, Breno Leitao wrote:
+> > > > >=20
+> > > But I honestly don't have a strong opinion here, though, happy to
+> > > batch
+> > > it if you prefer. Would this one look better?:
+> > >=20
+> > > 	if (!(pfn % MAX_ORDER_NR_PAGES))
+> > > 		cond_resched();
+> >=20
+> > Can't say I know the magic number here, but I think it's better to
+> > batch.
+>=20
+> Hm. I thought cond_resched() deal with this internally, no?
+>=20
+> We call it in pretty tight loops, like clear_contig_highpages() or
+> copy_folio_from_user().
+>=20
+> I think adding external batching might be a bad move.
+>=20
+cond_resched() should be really cheap, indeed.
 
-I assume what you mean is:
+It gets compiled out completely with PREEMPT_LAZY
+or PREEMPT_FULL.
 
-MADV_HWPOISON will actually hwpoison the pages. We can just use FOLL_HWPOISON +
--EHWPOISON and should be good. So far the theory.
-
-MADV_SOFT_OFFLINE will migrate pages instead. So if we don't skip multiple
-pages, we could end up migrating multiple times (and setting hwpoison multiple
-times).
-
-Well, for large folios (except hugetlb) that's not a problem, because we try
-splitting to order-0 either way, and if that fails, we bail out.
-
-So what remains is hugetlb, which is nasty.
-
-I don't really enjoy having any special-casing here, because the moment we e.g.,
-change how soft-offlining deals with splitting, we would be in trouble.
-
-Assume we start support splitting to min-order at some point, we'd also want o
-skip over min-order. Gah.
-
-
-Can we just make our life easier and disallow specifying ranges for
-MADV_HWPOISON/MADV_SOFT_OFFLINE?
-
-It's a pure testing interface IIRC. tools/testing/selftests/mm/memory-failure.c
-seems to always call it with PAGE_SIZE. Similarly
-tools/testing/selftests/mm/hugetlb-read-hwpoison.c
-
-There is one catch I think: an existing LTP test case issues MADV_SOFT_OFFLINE
-on a larger range. But it respects -EINVAL at least :)
-
-So we could return -EINVAL and fixup the test case to issue multiple madvise().
-
-[1]
-https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/syscalls/move_pages/move_pages12.c
-
--- 
-Cheers,
-
-David
+--=20
+All Rights Reversed.
 
