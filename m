@@ -4,86 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE887C5AC67
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 04:14:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46065C5AC67
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 04:21:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5850B6B007B; Tue, 11 Aug 2026 00:14:15 -0400 (EDT)
+	id 014796B008C; Tue, 11 Aug 2026 00:21:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 535966B008A; Tue, 11 Aug 2026 00:14:15 -0400 (EDT)
+	id F06EA6B0092; Tue, 11 Aug 2026 00:21:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44C5B6B008C; Tue, 11 Aug 2026 00:14:15 -0400 (EDT)
+	id E1DAE6B0093; Tue, 11 Aug 2026 00:21:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F7276B007B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:14:15 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A036D40149
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 04:14:14 +0000 (UTC)
-X-FDA: 85087671228.10.D93904A
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C64D940004
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 04:14:12 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RisPRFYq;
-	spf=pass (imf04.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BE9AF6B008C
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:21:28 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4A6D416034E
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 04:21:28 +0000 (UTC)
+X-FDA: 85087689456.24.62E9A6D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3DE17120007
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 04:21:26 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=GopI0I0f;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf29.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786421653;
+	s=arc-20220608; t=1786422086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GgnpJ28vans1RntJYD4IuvfP0AmT4NAbCO4b8APJluQ=;
-	b=qqGLwiTAHLJ/CRYJSmEOPeo3UvXymn1M7KnKafAskC8mSGdU5nOjuS2uYxGGQS0fFa9aJv
-	DtWY16hM0WKYMTJXNBcgOSeAIR5u+DwAA0ibjtNLx3xbEV6jJg8erP+mo4Bb7HU8YLjiYU
-	XNClIupVPYInS1MPWozZDXPhB+yKxfQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=3fcryMXJ9mdlfh5fhkYvdWhUX0S8rMy1cCwqOeeyztA=;
+	b=bX8leOyH+xPeXmFrcG2QJk1r0VlGfMTyRn6sjK6PPxXtwxnlRRn2sP91FbzGDcRD1FT0Cc
+	Mpinj5kIozY1ClgXX7yJIgbFu/wBdwVVrF+COx8NXn3aEPSAJgPWG0LjZmTm+KhYXLDMHV
+	wsWJMwL4+KIEmEsI3/PMhtiV0UhuMS0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RisPRFYq;
-	spf=pass (imf04.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=GopI0I0f;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf29.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786421653;
-	b=v66+h9AUhC2IgZzcS6FkN/Z0h9m8F/phqK+W+Aq+M7rNGgehzVIrFiiyNGA9VG+LW5uwc+
-	LMx3+2rUkuZ+1KMn5OtezqwuIF07Cwj4Bdv7cvc5pZ0WIqgvEJAocDFc62L9sFci3OUvyw
-	malfHm30CTXPycasnVhgxrhbCp/LLqw=
-Message-ID: <7864bd62-7289-4741-a905-23593130cea9@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786421650;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GgnpJ28vans1RntJYD4IuvfP0AmT4NAbCO4b8APJluQ=;
-	b=RisPRFYqIgCnz1LNYTT0ra4MLK5/CZN+AT1pr362E9KitMbGDyIDueq/I2NNKXdddpBG2X
-	3wg30r2zPOtmIzV3VzBc/WVympEASKLpvXX2afZeR53fDSVgIsUf7Ki0N7Dpcq2uItR+e4
-	CaO1NWARimcCBTFCMHyyjeCz27w2EPY=
-Date: Tue, 11 Aug 2026 12:13:56 +0800
+	t=1786422086;
+	b=avCneszQr3+ehx0yjvoek8kPW29U94syV37VuPDGGeR34KJR9GjwvxiEYSa38WrLe3VxIk
+	VH9Xn6B3KoLESsfqGp6K9o7Poj681fpmPunFQIbL2fPpeBN4sqxVirL/oEWiLaTaaiyowf
+	Q0KihbTwQ7DlFjPQj1a5VNjEUvLQ9P8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 39B3114BF;
+	Mon, 10 Aug 2026 21:21:21 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6E55B3F673;
+	Mon, 10 Aug 2026 21:21:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786422085; bh=U4Z1uTiwNPlptM0+2YMoqojdlsHVf+3xXUYXjiCQ8pk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GopI0I0fYfwHaaeo2Y1tRcsF2e/amGL0odHVP/X1kESNXKYqhycXNoTsAuQ3kbLz6
+	 6aWj1XpWWD5XHhdxDVLSsmNEIV5BHzcUh5zug5WGO5oBPaTxRMDHz11rcK3BnPzn8e
+	 wSjaNCIByq50FgWv0gwZJCSc7yloLZqXMTvqJhr0=
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	david@kernel.org
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	linux-alpha@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [RFC V2 0/6] mm: Drop pxd_ERROR()
+Date: Tue, 11 Aug 2026 09:51:13 +0530
+Message-ID: <20260811042119.3652929-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Cc: cui.tao@linux.dev, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- muchun.song@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Guopeng Zhang <zhangguopeng@kylinos.cn>,
- Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH v2] mm: memcg-v1: fix memsw and TCP failcnt accounting
-To: Guopeng Zhang <guopeng.zhang@linux.dev>, hannes@cmpxchg.org,
- mhocko@kernel.org, akpm@linux-foundation.org
-References: <20260811030843.109104-1-guopeng.zhang@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Tao Cui <cui.tao@linux.dev>
-In-Reply-To: <20260811030843.109104-1-guopeng.zhang@linux.dev>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 3DE17120007
+X-Stat-Signature: 4noxd1a41zyumh1hn75rt6zioyqgn9nw
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C64D940004
-X-Stat-Signature: sybcsosthfgqinuqxgb55zd7h869gusj
-X-HE-Tag: 1786421652-735860
-X-HE-Meta: U2FsdGVkX19gJYKFeiuBhxwWzRxnSrmCupbqFeZBPBjRlkMjqlwj8slMyT/lYLmZFjg9wJDMSDdHwtumfhu/bpF6i1DlkrxxX+yYzY9IoIQxP9BndsRX4qGZsUqZ5KmKLp7/kVPVnOYZiRnsNOPdQpvejMnqyQ1Lr+Fm7bJWEwqdxAAHISU/qD1zYOIIL/6TfOImxWdlh3YrM64+eogMbrzR2e3lIuUB8BbiHOS71PhKUd62hFLzwE+6KtPcbI29NpZT8bmExeqFzL2ZfokBZI4tOX/ycGf5hT3tBEk0siMNlF5GO1VxtZvT+aPjIvEBd7lI+T/6g3mLS7e+R4vRUzUeSz08um+DIqerYUXcSWzru1o//vOy8GWOWk5+x48hWgR4ksFd/4a+av4B0XyAYsSH4Cd4kT9Fbcwli970n1vWk903G9g7oE+n51zDA/l4iVu2sblhlCv50fE6LYiW8gRkthiwSXRYdDjLWxSBgarQVDsHb6eBiVPh3RW5jYyMnncKUUMeJYwKw2GGcb29AEZotnakYte+onE6ZrY/KZ+0Px335MfaZlImF63HX87Txgn32QPzawQtcHUhhMOl1W9BYz4lBOX5beBcD/YnRAXnXhER/8p5W6Hh3QD41cAxaiXCYBvripwBCfewOmChjTYidotRpj1YYa6LTbWyhPHvG/zRTY8Hq9U2VSR4acuiMay5vsiT5wIuQbIEtYU6NPeHvYdkRjshl9Z3HLNYG6Lqsnk6Hg1nBDgbw0ghxSTUFhOILB9jQnVAd/283TbAfCEfMW6/T6kNvHdQw/tqWDQtU5XxjOoU6jQgbqJiVL4RCmSNKb3W58UQ1ujZr9bljONMiHb1sZvpSv68JQcBPkePJmScN+T3ANS3i3PL9SFhoCbmLD8Hh2aGTsTbM028SWkp/MHAbiI93YyQukTlbzinxTPTsGvslgOKcacBxrg2/+/M2CNVXJ/Qc56oERv
- Eh1ukNfq
- kcigsKRQK8OHKxy9mrRaW+X8ugsj4H/JPoQp4KgZILu712cR2jRvGR7QM+I8eOoPQfL7zMtZ9fBbJSM/FCMLdhAShNL7SMKW+Q2IIcUL9ydO7aJjz3fEIVyCFCNNwjNZUFUlXGgsB5QSR3NZZt6A4EXMeMYdmUXMKYXluCUl/+HCL540USrYIIY5NPAdTM7C1++l5YsXXTO+kxPwZPltH6YTBkW4meC/wiFbttn6SmckBW8w6TNQ1XYVkM4xFZI9ippOLlI98qnZ0bKoIkM3O2jIuprmHwQCFLeO5cKkk5Bi+XnsdvZESnycCZuYX+nhoertWR5dUE/02Lfhx1HPB8gEIk6jXJ6zo9xucXcjlg0ZXZK7XEbn8/qsQbhVV/A/9BBRKX5+LhzG4wMpDG+LY0S6gMG3imfCXvW02lxnm/QZgOQ9qmfka/EbpHA==
+X-HE-Tag: 1786422086-2976
+X-HE-Meta: U2FsdGVkX1+8ANFEcRUlLfKNzEHapniT8tvz6BKpyn2HxBBjGo9CpANLPGmEPNKaPFbNSsaW6EKe2SF5hLhFv1MsEZtMSI+TasJ5Y1tM+XY7BejTpm/LqeeZ3B8ZSiaXYIpx+Fcnc7xlbDgXgqKSFhV6O1FVcmU3e3E1OKz/QBJlXa6yYxc85vtdXnbNqiGsftpLa+O6lfKshRnl2CyR7sbXXugwb09aobFWPLyQUNkWR5lmOq8hnxjHPHidSaDKRWE9MAfH5bkG4nkFJlvxUCxu28H+LVnDVy4Iz41bzSBcPBEGr3Ct+CXQLpJg+D6Ba3FSJ4bdfUb2PdaKqUSVun+N6KTYukzvQjs1BVAZYP8btEc0SjxuH68EEj5UfoXfpPpa0fPrpr0La1WSoTWwCsfyZjumRtd40cy4YNsHTkIz0Rr+1WvYPQgunsbLcZEtChiPFodTkmRc2ogmkN2I8tBF42mRXaQLk4z2Rk+esSa4bJNcMCVexIlncPQ8JgXq1E6qKPHkklUqPPrLQV+fLPZ0bhpo6Mdo3ULCt7BCDQU1shF7oDfL2wAoN6ZHTkFgjldPvs1M5wog6Rc3mu8TlIaZhWHTa6IREcb5E/Z8U0ZgXbiaD0yBCX7Nz9e2eTj2X/UK3jeZ7y71dfU9WkiUHIaXUpKEBsafatf+ATpPlAEd67KwgF04bVcBrdSjJ5JUwJSbc+m3XFE0nNe6XW4aMxfFmEQ1VdECS7TAGuyUvwPie7m1MFlxh973iUBTLlz5Dhi94heCbxvfuOI/yP8ln9x7CrsSYvGdTO6f/OjC7BbEqlOpjHzrg7Pkbx+1bdjkQaPgee1cuy7I8azf5ubbnKhpE20XqaUS2UigGWzBbDU5nQCpncHs2EoCxnv5/zaOKJsHjQjZDBMogHF2xfu00ufR0kVgzCGVHAxcl4Y9+DtrfaK+xaFjKfO/xzFutfombR4WdFZc6Y5yzBwPItW
+ MP93gw6C
+ LcvIl7WuV72WveSGHPOJ0SxeRsvnCIWr2Q+ozGUTMqjHCUC8v4UJZejD7FhCYdAL17R5aEKmZmzlMI8jRyP0NjCEH/d+lIrzW8FPYAj8yZIdbfZvYMWD0F3XdMFOxGm3dnNuktHtZx8UbhanOEgq/XRUIzUdlyfnvVz97DNxiZ4zKJZ5QX7vmK4e3Qa9r++EhpIPcasZScHTcZ9pBm1AqBP5Rsys1YDSV5+eZaZZ7IuOZuCBfrfMu0aXrS7J/Ob65E4LcEmisgVXDbkF9a56gLRyF8vxPuu7+mOzatuLo7tOgU2OI7IE0v4rtZ+Bwfwk8XC3me81SELFk8/5VhqydqUerSyGIndJ0YgNnkuEUMqX2de5Fp47bGJnxAOQQaUKVX9b94mMqiSNSULOENnfsMU8lsTl0x6KY3q6qH9KDfSJNMQg8NVC5eMwLzR0BYbdRZjOqrG5DaSzqBC7+zlXHqw1ubVHcHcT+BmT0sSE2rMqsNxelIRgKDHt34SZZ+GXqPLP8XmjqAH0OO2Do+cuihjqtvzgVxo9xoTH7cfmJAKl3Bxl5B/++jFRzH30aDCrcjgh9uIPvzmEpzfIhU5xxr/ePqmRMI+r+BoHPHC9LSDJ7I9AuE8GDLSpD1Lhr0aUze4qMTu1j9kvx/0sMroMqxhVNZYt3Vt0rxs9hpxGeMbIRQFT7cU92c0RyniHrCvb3grDLocLg2ZyEN9rgtYwfSg9lUoguhJnRfgPYA/6892XUYCcfFMJ2NxrdPC7k2GN6a+jVlqh+6opWp9UgVJKnpK0FJQjvvU8EVT8g
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,89 +111,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+pxd_ERROR() macros have been provided by all platforms, which are very much
+identical and can be dropped off completely if these pgtable printing could
+be moved to callers in generic MM aka all pxd_clear_bad().
 
+But first cleanups and re-organizations are required in some platforms that
+are using these macros internally. Afterwards [pte|pmd|pud|p4d|pgd]_ERROR()
+macros have been completely dropped from the entire tree.
 
-在 2026/8/11 11:08, Guopeng Zhang 写道:
-> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
-> 
-> Commit 0e2759afcaf9 ("page_counter: track failcnt only for legacy
-> cgroups") made failcnt accounting conditional on track_failcnt. It
-> enabled the flag for memcg->memory, but not for memcg->memsw or
-> memcg->tcpmem.
-> 
-> Consequently, memory.memsw.failcnt remains zero when the memory+swap
-> limit is hit. memory.kmem.tcp.limit_in_bytes still sets
-> memcg->tcpmem.max, but TCP charge failures are not reflected in
-> memory.kmem.tcp.failcnt.
-> 
-> Enable failcnt accounting for both v1 counters.
-> 
-> To reproduce memory.memsw.failcnt:
-> 
->     CG=/sys/fs/cgroup/memory/memsw-test
->     LIMIT=33554432
->     mkdir "$CG"
->     echo "$LIMIT" > "$CG/memory.limit_in_bytes"
->     echo "$LIMIT" > "$CG/memory.memsw.limit_in_bytes"
-> 
-> Start a child process in the cgroup and make it allocate and touch 96 MiB
-> of memory, causing a memcg OOM.
-> 
->     cat "$CG/memory.memsw.failcnt"
-> 
-> Without the patch, memory.memsw.failcnt is 0. With the patch,
-> memory.memsw.failcnt is greater than 0.
-> 
-> To reproduce memory.kmem.tcp.failcnt:
-> 
->     CG=/sys/fs/cgroup/memory/tcpmem-test
->     LIMIT=65536
->     mkdir "$CG"
->     echo "$LIMIT" > "$CG/memory.kmem.tcp.limit_in_bytes"
-> 
-> Start a child process in the cgroup, create a TCP socket, and reserve
-> 1 MiB of socket memory with SO_RESERVE_MEM. The reservation fails with
-> ENOMEM.
-> 
->     cat "$CG/memory.kmem.tcp.failcnt"
-> 
-> Without the patch, memory.kmem.tcp.failcnt is 0. With the patch,
-> memory.kmem.tcp.failcnt is greater than 0.
-> 
-> Closes: https://sashiko.dev/#/patchset/20260810074247.52747-1-guopeng.zhang@linux.dev?part=1
-> Fixes: 0e2759afcaf9 ("page_counter: track failcnt only for legacy cgroups")
-> Cc: stable@vger.kernel.org
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-> Acked-by: Michal Hocko <mhocko@suse.com>
-> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
-> ---
-> Changes in v2:
-> - Enable failcnt tracking for tcpmem as suggested by Johannes Weiner.
-> - Add the memory.kmem.tcp.failcnt reproducer and test result.
-> - Update the subject and changelog to cover both counters.
-> - Add Cc: stable@vger.kernel.org and the received Acked-by tags.
-> 
-> Link to v1: https://lore.kernel.org/r/20260810074247.52747-1-guopeng.zhang@linux.dev
-> 
->  mm/memcontrol.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 70806373d5a9..17da1f43b7d3 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -4235,9 +4235,11 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
->  #ifdef CONFIG_MEMCG_V1
->  		WRITE_ONCE(memcg->swappiness, mem_cgroup_swappiness(parent));
->  		memcg->memory.track_failcnt = !memcg_on_dfl;
-> +		memcg->memsw.track_failcnt = !memcg_on_dfl;
->  		WRITE_ONCE(memcg->oom_kill_disable, READ_ONCE(parent->oom_kill_disable));
->  		page_counter_init(&memcg->kmem, &parent->kmem, false);
->  		page_counter_init(&memcg->tcpmem, &parent->tcpmem, false);
-> +		memcg->tcpmem.track_failcnt = !memcg_on_dfl;
->  #endif
->  	} else {
->  		init_memcg_stats();
-Reviewed-by: Tao Cui <cuitao@kylinos.cn>
+This series is based on v7.2-rc7 after the following patch. This has also
+been built tested on multiple platforms.
+
+https://lore.kernel.org/all/20260709044334.1741263-1-anshuman.khandual@arm.com/
+
+Changes in RFC V2:
+
+- Added clean up patches for platforms with existing pxd_ERROR() usage
+- Dropped __FILE__ and __LINE__ from all pgtable entry printing
+
+Changes in RFC V1:
+
+https://lore.kernel.org/all/20260806080639.1916749-1-anshuman.khandual@arm.com/
+
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-snps-arc@lists.infradead.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-csky@vger.kernel.org
+Cc: linux-hexagon@vger.kernel.org
+Cc: loongarch@lists.linux.dev
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-openrisc@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-sh@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: linux-um@lists.infradead.org
+Cc: linux-arch@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+
+Anshuman Khandual (6):
+  loongarch/mm: Stop using pte_ERROR()
+  parisc/mm: Directly use generic [pmd|pgd]_clear_bad()
+  sh/mm: Stop using pte_ERROR()
+  sh/mm: Stop using [p4d|pud|pmd]_ERROR()
+  sh/mm: Stop using pgd_ERROR()
+  mm: Drop pxd_ERROR()
+
+ arch/alpha/include/asm/pgtable.h              |  7 ----
+ arch/arc/include/asm/pgtable-levels.h         | 11 -----
+ arch/arm/include/asm/pgtable.h                |  7 ----
+ arch/arm/kernel/traps.c                       | 17 --------
+ arch/arm64/include/asm/pgtable.h              | 15 -------
+ arch/csky/include/asm/pgtable.h               |  4 --
+ arch/hexagon/include/asm/pgtable.h            |  3 --
+ arch/loongarch/include/asm/pgtable.h          | 13 ------
+ arch/loongarch/mm/init.c                      |  2 +-
+ arch/m68k/include/asm/mcf_pgtable.h           |  6 ---
+ arch/m68k/include/asm/motorola_pgtable.h      |  8 ----
+ arch/m68k/include/asm/sun3_pgtable.h          |  7 ----
+ arch/microblaze/include/asm/pgtable.h         |  7 ----
+ arch/mips/include/asm/pgtable-32.h            | 10 -----
+ arch/mips/include/asm/pgtable-64.h            | 13 ------
+ arch/nios2/include/asm/pgtable.h              |  7 ----
+ arch/openrisc/include/asm/pgtable.h           |  7 ----
+ arch/parisc/include/asm/pgtable.h             |  9 ----
+ arch/parisc/kernel/pci-dma.c                  |  6 +--
+ arch/powerpc/include/asm/book3s/32/pgtable.h  |  2 -
+ arch/powerpc/include/asm/book3s/64/pgtable.h  |  7 ----
+ arch/powerpc/include/asm/nohash/32/pgtable.h  |  2 -
+ .../include/asm/nohash/64/pgtable-4k.h        |  3 --
+ arch/powerpc/include/asm/nohash/64/pgtable.h  |  5 ---
+ arch/riscv/include/asm/pgtable-64.h           |  9 ----
+ arch/riscv/include/asm/pgtable.h              |  4 --
+ arch/s390/include/asm/pgtable.h               | 11 -----
+ arch/sh/include/asm/pgtable-3level.h          |  3 --
+ arch/sh/include/asm/pgtable_32.h              | 13 ------
+ arch/sh/mm/init.c                             | 27 ++++++------
+ arch/sparc/include/asm/pgtable_32.h           |  3 --
+ arch/sparc/include/asm/pgtable_64.h           | 10 -----
+ arch/um/include/asm/pgtable-2level.h          |  7 ----
+ arch/um/include/asm/pgtable-4level.h          | 13 ------
+ arch/x86/include/asm/pgtable-2level.h         |  5 ---
+ arch/x86/include/asm/pgtable-3level.h         | 11 -----
+ arch/x86/include/asm/pgtable_64.h             | 18 --------
+ arch/xtensa/include/asm/pgtable.h             |  4 --
+ include/asm-generic/pgtable-nop4d.h           |  1 -
+ include/asm-generic/pgtable-nopmd.h           |  1 -
+ include/asm-generic/pgtable-nopud.h           |  1 -
+ include/linux/mm_types.h                      | 41 +++++++++++++++++++
+ mm/memory.c                                   | 41 +------------------
+ mm/pgtable-generic.c                          | 21 ++++++++--
+ 44 files changed, 76 insertions(+), 346 deletions(-)
+
+-- 
+2.43.0
 
 
