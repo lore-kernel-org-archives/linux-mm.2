@@ -4,119 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D8A9C5AC67
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 03:49:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C197FC5AC67
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 03:52:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29A9A6B007B; Mon, 10 Aug 2026 23:49:47 -0400 (EDT)
+	id 2C7096B008C; Mon, 10 Aug 2026 23:52:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 272626B008A; Mon, 10 Aug 2026 23:49:47 -0400 (EDT)
+	id 250896B0098; Mon, 10 Aug 2026 23:52:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B07B6B008C; Mon, 10 Aug 2026 23:49:47 -0400 (EDT)
+	id 13F9F6B0099; Mon, 10 Aug 2026 23:52:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DFE736B007B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 23:49:46 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 608A01A0336
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 03:49:46 +0000 (UTC)
-X-FDA: 85087609572.04.0F39FC3
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf19.hostedemail.com (Postfix) with ESMTP id CEEB01A0007
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 03:49:44 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=OFwNOTRM;
-	spf=pass (imf19.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E69FD6B008C
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 23:52:54 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 734B8802F9
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 03:52:54 +0000 (UTC)
+X-FDA: 85087617468.19.80BBE12
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id CF12D1C0006
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 03:52:52 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DaEru8YP;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786420184;
+	s=arc-20220608; t=1786420372;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HW3ljMdDkgUv1pkjZ70wXHJIMtblhGmLTYZIquDiu0Q=;
-	b=GXqqXnq/DbwmOlwm38IhrXpaPj8SwZfX004/Ko7+wOyff36Rn8T6O4vFs7uorOdDa53FSE
-	LEIzstReFzMT3JEMubiWTAHzKDa4H5jeY+NQ5B78iFiuV3/FsCXJ00r+YJNpqXlKZu0eO0
-	uRX8MWL799cvO2dp+ea+XI5p7La7Qmg=
+	bh=tQ8MTXU7PXH/k046gdgNu+2KYPZDiwOczpAepdH9QcY=;
+	b=xEQ5jV4ByC8ffYxE8eyiklIYr7BOMarLbQyfhZUPD46BUvmmWk07Y2KRwikzSX5mmGiCUY
+	P5v5wpgY+ZjWbW8klpIls9goBsjG3achGnB+jmxYBWfBr6f1opREdLaiNvLXSgqprrSSHp
+	Q/V90YBbICIZspBdiVwGyRgF4cVjpAE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786420184;
-	b=74u6UoNiYXXYfUlYkCjbuWmq/pJr/Q3/P8GTBnp7wGNpD3TjEZWyaniuis1gCyCk5VVv4d
-	Yx0JqU6H3abW0FX6YFoLPOblIx1ZcW+9TahEt+kjpX6EvObN5LmT95pSdfY+4VCtTSrp0U
-	wPVjwH5R2g8mVSbPAvhMG69z0ro8mdo=
+	t=1786420372;
+	b=sQcqddBQ5LCIDHLs5yOTPPz0vHZ8FzwVkWsa+UbGLn360w5+lXFclwfZj5fQ0E/5FRcht6
+	u84nJE9P4j4hdjfxibsuxvlCNdx7E6UIouMkoRuAGxiTnAHFkkhic1IyrTb1o2jkFqnhVe
+	B9ByDShYm0gQjkMWjA7wF1prxIODBRw=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=OFwNOTRM;
-	spf=pass (imf19.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DaEru8YP;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=HW3ljMdDkgUv1pkjZ70wXHJIMtblhGmLTYZIquDiu0Q=; b=OFwNOTRMOyjs4QUS7/ZcavY3W6
-	QlN5oyjXBul0J155btHf5kU4SSlDLpi10hp3Lgfohi4mB+eQ3d5lBQBs4ro5eaEnfTCMjWA5iBNKq
-	n2PZCGhyUoefCSXHxlmXgN6SAWiFgvJus4q7l/Ef9xFfTijNhvrLVhknGiHpk2INt2hMmAlAX45lv
-	bdcY7mGhSjFeP6HECJQtZUe7sysGX985QgLut42PyQr5Yj6qD5YMNK4632QhuRxd3BZbSqoeaBDsK
-	iBvbn8KwGrQOHQX542GGq17HZ+NF2bhMnfx0eckEY5qPNn3kLZg8M7ORhK2p+vf5jUB64v3zBjgX/
-	zJqvuwRg==;
-Received: from [96.67.55.146]
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1wtdUB-000000000f6-2KzG;
-	Mon, 10 Aug 2026 23:49:07 -0400
-Message-ID: <007c8bf2717346bdba791e1a5079f4d0abad41f5.camel@surriel.com>
-Subject: Re: [RFC v2 PATCH] mm/cma: don't release CMA pages still in use
-From: Rik van Riel <riel@surriel.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton
-	 <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>,  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,  Michal Hocko
- <mhocko@suse.com>, Chris Mason <clm@meta.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Date: Mon, 10 Aug 2026 23:49:07 -0400
-In-Reply-To: <50b1dadb-37f1-48a0-adf6-c6ff8b704582@kernel.org>
-References: <20260810122737.030f8452@fangorn>
-	 <50b1dadb-37f1-48a0-adf6-c6ff8b704582@kernel.org>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
-MIME-Version: 1.0
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CEEB01A0007
-X-Stat-Signature: o1os3o81fekpxruq17x8au8bm1r8k4pb
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 362F36001D;
+	Tue, 11 Aug 2026 03:52:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 900151F000E9;
+	Tue, 11 Aug 2026 03:52:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1786420371;
+	bh=tQ8MTXU7PXH/k046gdgNu+2KYPZDiwOczpAepdH9QcY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=DaEru8YPOYGZZ6RTXqtSimMxPDe90BY2dH0YrIJI1Y6AP6qOdJn23xuERg9ByK+n0
+	 jj/KDEDzHxxC69nBa8lwtpHndN0ygmu1lIdEuA2mtnKgm1pRfGsnHE5UpLPdlEgILn
+	 bN+aN/0bFsp8KhGmm08kgcSaiq+B8P2IqQcE0eZQ=
+Date: Mon, 10 Aug 2026 20:52:51 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>, Luis Chamberlain
+ <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez
+ <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, Aaron
+ Tomlin <atomlin@atomlin.com>, linux-modules@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4 0/2] alloc_tag: fix undetected compressed tag
+ overflow when profiling is disabled
+Message-Id: <20260810205251.3fce0ec86ee20925fd577c26@linux-foundation.org>
+In-Reply-To: <20260810093955.153015-1-hao.ge@linux.dev>
+References: <20260810093955.153015-1-hao.ge@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1786420184-716735
-X-HE-Meta: U2FsdGVkX19Lw7Ltb7BPNHe2Y5U08O1Vi1WRbNZRa3yoKIh0iy/Ibb0X8QxFLOFPSdmhejuDyRXmTYW62IUiv8JhQDlWhOj2AFyxoIxztN26QsrJbUrOTX8v2zwn2VCvFMEZdpcv39SHMI7lmdLXM/2JMf6nm48Fbqx7KsyVKWp81tRsXRkYnjr4Q5OSAgodUh5b21qqzXarpj0qPaCka7iLledy9PA4mZgkmKat8s23n9Bd2uEWdOnCq9OX3P72OWthRVistJ0CNEB6CM4Q8cEKfTkbG9NrDROS4XlLM2xCb5kY0UHd+hOMn2IEjrPUq3oQkgGpAKTjGiMk6cNvPFiD8DF3J9/2iKdwCCoRafqjnjkfhPg+wqUo9fXtLTuBKD38Q3yx7014c8iBthgTKL63RnjZVTkldlztwBnc9Vs9C162cEdrky7zCH5bX8p/lw7XSWtCvLL3bLJGyRsHX1lLKRLvjpzVICvbDfqR+QzwUBa6QGu4A+fbU4IQ4jqWHMNvegwe+iL6/rllhO5ja8vatMgob60/3hUFoRMR1WBHKKmLi38e5gR5n5EBxaFadL6BhOl4pxCqVw6p1HhDu633eGWAro4kzO2WdFkYGLopgMTsgYgA9H1sbB1BMWugrn3gzOcNt6RcIHzvpstVFmBDA9X6fw/LqtIZNa6QidvPKQZUW2YK8XvjUuf0rK0v9BOL9foYBhmQSwoKDTyfWJYqDrR3e5Ng0TIadHemehHlvvXhKP/aAOUgbq4dUBMO8kIfKuQQF/rmAFL6SGhfEPN/9MmD4GNko7N9o2j0DKCplYWggkbbMD+UAgEHE6s6p9+y3vcC9BWhEGjJ1CsHjQSK806Zc9TmH6KnVqsKplOzYqN6rVmNm/7ETCtc3vULdidS/SRmEPF0Mb9raqk5GoHVLRg5Hb41kpgi4oDoTHlClurGf1RhkW0/9dZNiTNkw54lSG7qk6AqbF24MXd
- 76ZxL6WH
- uVIWHGYf1Lg98khmU74t6NWX7OQtuJnASq5w8oGb3vYEckoq2gEP8y7orsYbK40Lo8lCsQ1cSTmygVSLZAoqeYEkTw/GLudtjAq1r2GJ++9pYp7pv4YC5KBWhFBa/k/F3A9AffgCDPcZG8u90Qb4GxGK1nAeuqH9hH7cUqh5lPznS+MOjASzHFCvSzKl5vveCEomRSoOzblXpDfpNgHmeN276Qfu+I6zbMSDN
+X-Stat-Signature: rk57rnnynnkz34kga1n4cpa591u1dx7t
+X-Rspamd-Queue-Id: CF12D1C0006
+X-HE-Tag: 1786420372-397341
+X-HE-Meta: U2FsdGVkX18JavVapqbVpJpuLUTtebU+TWs/Roi8i7YnogDDsFx9qd+2wotQA/6H3ml8r1kV/2xJ7Me0JWJ2FyKIJrpnv0nni2Vi3DCS5kgqaLrOGiDDanEfYVIvDO8f+726eMkPAW8QWVZu0u6U1pTC/Hts2Lyz/wTTnYGKx4Vmx2UFeOkrqn2fcCfj9cYF20oXlCSjdP9ndWNYCIRS2ELrJkDccSXrIb9JTLkDH6iUrnkkPO5LUohY+JlrV0d65AjuTGdBiwPnhpZIjnK4ZScusFhYtlT6g07ZHR9tD/m6tn6EMRSaSW3nF9voKm6MlMZ6fGFApxzeGGc5Y9CelQG9xsGVkauBTxrkVhsx+lhjs+Lyy5InPe6M1qau5vwYhBUdjfrNUe7UhfFTDBQPXd620ttsDgGac2D2X/HDAJ95VsrLRehrllgkPae5wP+tlrH5KL/FgfzecedAUy2l1DZjGEW4zq17lSmaZ3bTFZo2blF54nYTlkLCQUVWDTa4jFzH11ohSragmSz2UJCCLlmSpyMgai6moyWWIs4etGuGcrWbYddpFGkHtUWSJ8GnbXYnp0/TyItKrvaeF+62GQwEqUg4XC/DTQDaLxtc6lHrshaL6tv4V4wXMPF07fHRY7TB2dyw3aj2jLh+FTM2yrE3LMca+s76gmpiN9ep4jZ8lp3ftsdabqOTPJfIbGFl+PAkF+e/PvLrmHMbvNEuVN8fCaxUjzGbChAOlfJGDp3F258696ceu098sPhtRXW8fgo177iB4gIr5Mv4gTf0vr/01Mp6HhB4iX8hOa1TKgA55evKJ013V/E/on7BZvCLOA/hhCMVo8Y01ogiZOrwpeBfIiG9C6WRDxVfgHcI7bZJpHS17WApKE2eZyDL+XQdr3xUzbPGmKCK0rt7NgcYQ6E2a7xM28X/v53ehLH7Mou08z4x7rurXU5ORS3yYXldJo0bha1FHHjmppWeq9G
+ VGHZVQGi
+ +lfEKmkYq4RamVkRJx4LScPutgUCp8MU3+vha881DT0zeibRk9mxwrjD4p42QeefAwEOzk8pyq9782jp4DVY0dTJZvGGbI+jU45cUO24SCaXFM2XwhtN4BN+r0jH8v2kGA3AkxeWjuHq6NuOT+V2vS4y8/iWfeZTAmgX3w5l6NtpIzfiGE6qcWt7YfRQd0g9ql37qcQImqn63l9ufAH6RGMjOggULG53Zc/CRXjXbx0O4dAxuAWmSZayx9PyNp5O9p6yRFhTcmMfjKLjcT+FOf78AmdgCXvadgR+mQOj4maOE6rYlYyPSFX1Bvj+c9er42GkLzJwlkUmY9h3jfG1TNurDxvzy4lIxUqvi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,62 +93,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2026-08-10 at 20:53 +0200, David Hildenbrand (Arm) wrote:
-> On 8/10/26 18:27, Rik van Riel wrote:
-> > When a driver calls dma_free_contiguous() before quiescing DMA, the
-> > page still has a reference from the device. put_page_testzero()
-> > there
-> > returns false, WARN fires, but the code proceeds to
-> > free_contig_frozen_range() putting a live page onto buddy and
-> > clearing
-> > the bitmap. Later cma_alloc() hands the same PFN to a new owner
-> > while
-> > the original holder still references it.
->=20
-> Hm, it rather sounds like it's really the drivers job to quiescing
-> DMA. Are you
-> aware of an in-tree driver that can trigger this, and if so, how?
->=20
-> Freeing memory through CMA, while the memory is still in use is
-> problematic for
-> CMA as you discovered :)
+On Mon, 10 Aug 2026 17:39:53 +0800 Hao Ge <hao.ge@linux.dev> wrote:
 
-I agree the driver should not be doing that.=C2=A0
+> v3 was a single patch. After discussion with Suren and Andrew we went
+> for a more graceful approach: rather than failing the module load on
+> overflow, let it load without profiling. Once profiling is disabled,
+> codetag_needs_module_section() returns false, so on retry the codetag
+> section is placed as regular module data.
+> 
+> A new patch (1/2) is added to move release_module_tags() above
+> reserve_module_tags(), since the overflow path now has to call it and
+> the helper sits below it.
 
-I do not know of any driver that currently does it, but
-it has led to CVE-2025-37837 in the past, and there
-appear to have been other cases of this issue happening.
+Thing is, [2/2] has cc:stable but it requires [1/2] to be able to be
+compiled.  [1/2] doesn't have cc:stable so we're asking -stable folks
+to backport a patch which doesn't compile.
 
-> > +	WARN(skipped, "%lu pages are still in use!\n", skipped);
->=20
->=20
-> We still issue a WARN, which itself is problematic. See "Do not WARN
-> lightly" in
-> Documentation/process/coding-style.rst.
->=20
-> So it's either
->=20
-> (a) This scenario is valid to be triggered. In that case, WARN is not
-> appropriate.
->=20
-> (b) This scenario is not valid to be triggered. In that case, this is
-> not a fix.
+Resolve this by using the same Fixes: and cc:stable in both patches.
 
-If a driver does it with the current code, it can=C2=A0
-cause free list corruption, with potential for
-temporary data exposure, until the system crashes.
+> release_module_tags() is what module unload calls to drop a module's
+> reservation from the maple tree. By the time reserve_module_tags()
+> detects the overflow it has already stored that reservation, and the
+> -EAGAIN return skips vm_module_tags_populate(), so the backing pages
+> never get mapped. If reserve_module_tags() returns without calling
+> release_module_tags(), the stale entry keeps pointing at that unmapped
+> range; when the module is later unloaded, release_module_tags() walks
+> it and panics.
 
-If we get rid of the free list corruption, it
-can continue to be a WARN, since it will no longer
-kill the system.
+AI review had a lot to say about this patchset.  Some pre-existing, some
+not:
+	https://sashiko.dev/#/patchset/20260810093955.153015-1-hao.ge@linux.dev
 
-If we continue to corrupt the free list when this
-happens, it should probably be a panic?
 
-A simpler fix may be to not free any of the memory,
-or the CMA address space, if there are still pages
-in use at cma_release() time.
 
---=20
-All Rights Reversed.
+offtopic: alloc_tag isn't getting allmodconfig build coverage at this
+time because:
+
+1: MEM_ALLOC_PROFILING depends on !DEBUG_FORCE_WEAK_PER_CPU (why?  I
+   can't figure that out)
+
+2: x86_64 allmodconfig enables DEBUG_FORCE_WEAK_PER_CPU, despite it
+   being for s390 and alpha.  In fact it might be alpha-only.
+
+Adding
+
+	depends on ALPHA || S390
+
+in there fixes this.
 
