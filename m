@@ -4,188 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 871BCC5B572
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:48:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2458CC5B56A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:48:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 888306B00A0; Tue, 11 Aug 2026 12:48:35 -0400 (EDT)
+	id 024F06B00A2; Tue, 11 Aug 2026 12:48:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 813196B00A2; Tue, 11 Aug 2026 12:48:35 -0400 (EDT)
+	id F3F236B00A4; Tue, 11 Aug 2026 12:48:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DAE16B00A3; Tue, 11 Aug 2026 12:48:35 -0400 (EDT)
+	id E54B26B00A5; Tue, 11 Aug 2026 12:48:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 422E66B00A0
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:48:35 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C67C2A0CA9
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:48:34 +0000 (UTC)
-X-FDA: 85089572148.02.993C449
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id EFB1220004
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:48:32 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AIZxIFAm;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AE33F6B00A2
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:48:49 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2DDF2C013D
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:48:49 +0000 (UTC)
+X-FDA: 85089572778.20.AF6F381
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 55A8D40002
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:48:47 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=r0tzDuzn;
+	spf=pass (imf12.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786466913;
+	s=arc-20220608; t=1786466927;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9N4Q1jk4C+Off88XGaOwtGooGJBpZMvX648V30zsvDQ=;
-	b=DmVR4vJ+nKWwQi/wLFzCkcAslRw7XzRnsFzd2ERr0Am0wvh0Q6/Wj/N7wROwuri9RBbPkm
-	gwHMEq7cnEph0dBTQENi/eKfKJ8MKDhUhwd4PqgYaVWq/Pu8MP7t/FJ++HIQvGE4rNf8HE
-	G6fXKomuqJFDeczv+5i++F4h2xGcgNA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786466913;
-	b=nXme0f0i2Pq1sbLbvmx4afpJW6xQjsveDCKyE+O8cToz+gcssQkNhiIxuFDeBV/V8mZCBb
-	eSnVba+Mud6Xb3AdzvwjP2eeqAYpY2ofIyfxITJzhmSwMlLm3ZFdrH3bPYf4qFj8ZWsRvd
-	o2IrGDQ0hZ3tkvQ9UUMwKHcZJoRAWF0=
+	bh=OLBaiJQvXFC//um24aVUsRphyaJvRKwYbCegxqDVEAo=;
+	b=1xLEyfPAeRNIaMMPqyONmYyGzpAYxDfDRSsclmUKYaCvbcgJyBQk/iSqFFopm1ardJK5q8
+	YWrrE1kaH35XeyTrMVyC1/cJsD/YU2N2xiZL3Z+JPTqcWsfr1tJpw38k6tgBEPg8P3lNd6
+	ffYkeL9reKKdhAPQSaYMxaDEfNwOW4Y=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AIZxIFAm;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 145034353A;
-	Tue, 11 Aug 2026 16:48:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89AC81F000E9;
-	Tue, 11 Aug 2026 16:48:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786466912;
-	bh=9N4Q1jk4C+Off88XGaOwtGooGJBpZMvX648V30zsvDQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=AIZxIFAmKurbVhT2yKjRNb4cRvhB+aLR4EE3v66FDsMcvJDyndNDawSimnPvQAVq5
-	 qzmttuzuV93lAlfyPshLQv9WnCp/gf/T/afoUa/9rA2W8cIbOzq5pgzRQv7ULKb6Xv
-	 RwXF08n3j5I564owX4uerUmLiYkuavi9CI99q5xp5NVAHLampqcAvfk+QbjXLhf9Ri
-	 J7mkamacG9CxXzFsa3mj+eOwCtMl0vCzaIwFewUqPwZgdbwNufyqjMkdEUtSqYHpmZ
-	 EE2XRNaOwl2BZeh/j8BC3xM7acgjaKgABCXDUhKs+Gas6yfxQsp1tPOtCFW0MyzZPT
-	 2tFeIuIhqH/uQ==
-Message-ID: <4382368c-d0ef-4361-957d-78bc1edf60e2@kernel.org>
-Date: Tue, 11 Aug 2026 18:48:06 +0200
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=r0tzDuzn;
+	spf=pass (imf12.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786466927;
+	b=471AcRkaWil3yeq5MnoMIcdYOIj0V3Ntc5SbUTw44EuSNe1apbQeqqp9YiYLtIbvNtX+ae
+	7ryisGSk6xh+fvmLaIOtGjigZ8IBNf/ybNKjfRTYrHEe1jUSNYcVIK98Q/Nqzhh4bmVB6L
+	YqD0uMQkHHKy5UXQhLoVxp+eDlFhexw=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-84830c774a0so110126b3a.1
+        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:48:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786466926; x=1787071726; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=OLBaiJQvXFC//um24aVUsRphyaJvRKwYbCegxqDVEAo=;
+        b=r0tzDuznw8aCR4FwnxhG54Ufqbv2flqxHCv0ufY19cTLvqlqjXJS6nMKYp9K+NLffk
+         t6AncF9nRBpCNf89rlf/3wNqHidxJIPEO75MAh4mZF0/sI0e6pFAlCTayzldA2CdnvvP
+         hvB+ZPeom8RddlMKnWoxpjG/vG9KfpkNv/eyTdNxZWBrqH4eB7lFzHS0ew6DaFjZYNPT
+         gAWB61+CHomXf2t6eGxph0N1HHIFDe9Rv2M1SOSqO+dP0F9+jq2QjrjNYXdB/VH2LXka
+         wX0COkMCl6sZWrB6n05Um6l0cdnKfZ3bdumCKpwzfoAPZS8B7ysKT5htQjJiyO51oy30
+         IdSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786466926; x=1787071726;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OLBaiJQvXFC//um24aVUsRphyaJvRKwYbCegxqDVEAo=;
+        b=WEq6Nv2f0WuPYnNcOZx5dHOHtBFadb/kXFI+eOPSEbUZPMtbXR2gHshF80mTJ2r0x/
+         8mdFaPmPt8bgL3aI3fi1TWN0sqO1PIl48xcbTYgdh0j9+GyCpC0ljsYZgGcx4oqCIosN
+         EVi+kl5j2rFVG8TDjtLO/HjyPo4MGhKfvBw7sapWXTTmtiX8CQxJ/JVu2wmCXUKLAh1i
+         U1NumUe/1G8Mgz8hUkGJJGYTQ0oaCJ3nrPpaXMGqbxBTwEO7nGxFxIkNGxyKgSrpClku
+         gRseKAyFOrlJsQsTTyL1a2IGe++dZxOHQ2SDDGUXbF5C1B4UGTwQtD4CI5Aw5aVwVGGc
+         6yuA==
+X-Forwarded-Encrypted: i=1; AHgh+RoJPb9aJD9gnzB30DOQ1w5oKa7HEPwO/C45iwGamF8ItZpZKHrs4/tDeCmHmj4dXpUCHSCKcRcPDA==@kvack.org
+X-Gm-Message-State: AOJu0YykKuvYS+CyKK1Z5szEcPt5nyamnQ0l/L7mW22h8RbQd5+n1GzJ
+	joIkPFVdKnvbUQWVfLYLjvQefowJg8yTx5p93Me/MEUvcveNjujX3DHj
+X-Gm-Gg: AR+sD101p0lpnry0Q7Y7ZoS7BI/0FWb/cod9/x7B74J95QWdH1BpiWN5VJGUD9XeNqW
+	hp+8l53XZqL6gMjHx8qwl6lza//3z5kK5/NqHeybkuEoLhyOQC2MhUGkEkX/E5A5rNanH1tOU3G
+	3eYVzGdLx3kkxmavrhNW1eM+XigQ3PRfPCUkU0xTDzQy2/hMnyNOliKjsSBVfswkRdiIkp+Xyry
+	iaBtyQF1K7SrobaREpC+U1uYIbOAM7wMfx7cpAIYC7BkJQnqUd8ZspDOoSgtqcypM660e8uatlQ
+	xv3KPqbqUBN0iIHMPjaTWjsuhopItbXQR94vi88Jb5JxM+RVoM5to/PwaAZgg++Dfi8XMmBlDnw
+	Is+f2U8f46eGw9jvnDx20/PVOKm1/k0ORWfpB7m4KdCykDfynm2v39HUW/ICqmXffa9PmZOiu5Z
+	bv90CyVR0NqUH+a6Lpb1EbWk7F8ytydpOZhwyxIW0MsgTos2PufdGr4Cs5B92zmEhr4Tm+r3nfy
+	8x2x/yyXoFHcXQrsYzEKh2SFg==
+X-Received: by 2002:a05:6a00:400c:b0:84f:7001:7a7f with SMTP id d2e1a72fcca58-84fa88a3b2fmr5152732b3a.36.1786466925897;
+        Tue, 11 Aug 2026 09:48:45 -0700 (PDT)
+Received: from KASONG-MC4 ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbed8ea1ecesm1283681a12.31.2026.08.11.09.48.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Aug 2026 09:48:45 -0700 (PDT)
+Date: Wed, 12 Aug 2026 00:48:34 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Jianyue Wu <wujianyue000@gmail.com>, her0gyugyu@gmail.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 3/4] mm, swap: give hibernation swap slots their own
+ swap table entry type
+Message-ID: <ans-nAQ7dSyfPczI@KASONG-MC4>
+References: <20260811132209.2862708-1-youngjun.park@lge.com>
+ <20260811132209.2862708-4-youngjun.park@lge.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 11/20] mm: clean up vma_address_end()
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Alex Deucher
- <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
- Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Masami Hiramatsu
- <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Youngjun Park <youngjun.park@lge.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kvm@vger.kernel.org, linux-s390@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
- <20260806-b4-scalable-cow-virt-pgoff-v4-11-ab318a350404@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260806-b4-scalable-cow-virt-pgoff-v4-11-ab318a350404@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260811132209.2862708-4-youngjun.park@lge.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 55A8D40002
+X-Stat-Signature: oi4fe7n5cbee56cmnb5i36aasfnyht7b
 X-Rspam-User: 
-X-Stat-Signature: no3hybpw48cc5irif8ys56fbo4qe8k5c
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EFB1220004
-X-HE-Tag: 1786466912-538758
-X-HE-Meta: U2FsdGVkX1++kkzOfEcRf2Q6U/RKTqEMApBIbUBM/3Wno3F6D0R/8ErAZ9hiTgdiMfWXv3hqtkOQOJBhHfJcpr0OAo8eDqzkYSHe8zqQBZk7ROF3bR1DrKJzIDrXUn28HY8eGioTJ1JNuFk32lP3AyeWrukRWtM9WYF347mf8/sTL+soHr1q3OR5j4Ntn+masnDJlZOvoBb2aFpezbB0mlPWE9PwMTEQnaC3+oEuxd1tROFolVDg6P6BSzlFgyPOaMH1O5ILin+xnKQpCBHrHfDTtJ+dRfQ8tJ1waRioe6N32qutGFnL/4g8bn80F2R1swspXC8H9HEnCgrnbLVFE6TWbSRajtwdnRMBl0oaBksQdZ925qFTReOPr4hHe0UR4I0e8khia75sYJ7amsQHYWwfUK1iG28Visfpt3M0adX/Vth5T6UDHagnk8qSTPkvJjFjbU40f99PmyHwd0jMm3wgwn7cFWAFk13vFbBl6a5fnxR/vvlaQCSZHmDsMQGm9g/pQP5onlGGm8F1+LoBUWzyy2EcZsZZd5Ux3ibQlj7GavLWtN0rccdDXI+LCxuxCWIGje63N+2yRYK09xSBlRK+rGlULZA4kO5SNdxI1OhLKxNVDjYxsxgxCeZFssmMmnhC2VIKG4UFaV0J59RcR4YF19uQNzVkceGzb1riG972EELmQ6mj2paT1d/5H24p3iA4pplGWS8cjy5zp5p9dAjuA7NAynHMAWgM4wIVxHKAU7g4EjLAjQESAI7BIqulEsmddZXhjaN2u1LuuEL/cs5bujrUQmG5R2gk+kMWsJb6Lh6PaNLwEGy9qNV3crjNdcwB8hkZ/yY7XjVo3NOL5DsR7xv0H/nHgvtJHHPgSlSTiWbffbjtMlanB96TK0xMiT204EUzdUkFGV9ejpy6VdrJCsHAoyIkzunX3AoqZxDpJBqs/A9q7/rHeNHUGGOKDcN0Wp/vad2XZQtSJSL
- x7EoTEBL
- kJWo/aqBYlru0RNHGHOXddlWKHzW6yVBx2p5czvw+crZC/TFqscl0v/NbJ1A3iRxj7WSOXcU6jfwz1A6+LyrsO8tvP84v8/qzyQIXXFSuTYhECaAqNe0NFL6coFHhpPOh7c3AzsN5eyxxNQ0jvFU1tZk4/qjI0CwWgZwUKpDAkIcxDmnEPBivpCJH5bITUeaAv8oT/loUzU1ak7L+XJJcyXeiB40e7TU40zCrEyflDlLtiB81y70fs4hV84aVOg6nH1JZ22sbIUt1TDQvRC/sIE2K8jkX7EjrlGr9L8HxU3qE3YA2Ax7my6MF1wMUegwVAsp2SyfcdMygQ3Vw2319RLJYkNCNBi2j12qZLbVewlkLk3wu+NzEZEQHo5U0P6+mdvwaUURc56YHv43QYCxv6EvcM7uxIrFXyFHkmuA8ilF8QtM=
+X-HE-Tag: 1786466927-662905
+X-HE-Meta: U2FsdGVkX18xHbsWwLkQFkF0rYZr3N+CU/L9TQJOovCtqxfqlm3SuGQfX4uvUOuRKjm37Ht+nRFtPNgPLkJZ2FogwlMROd5E2Ns+I0qELelj4egbpbpe8itIZSlmkPdUaM7ZiOYsIjt8+q9+dUOuGMyewXzAudVNQtj9pF7YeU2xIcC//1ZPMr8FJgnnwWCEMKaUo0b7/FaryaC2k0Upc0EFYWv0RHzqOx1YvH+kg55sBMzNJT76sDe4MfIMvK30UmYaxRf6967tI083Pm46lEa3NX0NzUz7KrZ13XteqoadqdTismCb/Zly50k5HxLclLrW04hwxFnZY2IEtAV7Gt1GA52ZUxqqXgd+O79ff2AU/KhTdLDuCTpEvtYJKXfgZxrTRYF6f0ltmVIEgFTYjV8sfKrwCBMOUCNT952YeC5w/t4dN1hQ53KmC3cVKNYltAlZt4eaGAfK3xNhK6qVpBI1KzfbibAsxAgFDA2bsyqB5ZxpXZK0PP2C8PHHxHOa4j5qpdCoQmjLVDD5tEBErSmlFQ3P2u8fOROli9AYWs6KrB9d0GN7oLHAOuhqAxe8m5Ap0kpdZBc8fBfovelo+Pgytn460zt6eAK3y8pB//8y3CRO95ynxcgG3Y+Yxdk3lPbqpaCOnbnJ8s45hYgAC8EXlE0itEspbXvAUycPm57b834YW+pVcOlvkmCG2gWv/dHzgX2ie9m5MfiOBlMi05hgXf3GOtWkan22VBPTZkR5d4z73qi/DYdVKJXjHpQ7UKkZ5xGeRdHS4Ims9S+kiKgh7m8fmkC0oPYdzgPHqd3kq0iBXkt9YWrWBsEmIp3MMEG5mu0ZrCloBfu3CyVuZVoveQMCrSUF8QZ1GuYE9oAKt/jtWHa/h8Yo01ermM8MRu8Hg4DSZFw4FRWSzquMQFrN3MRHSbWEQEnshy+ses9v87xaFBqUi3hIz5IBb580+3dAbLZRlkredeaBuhW
+ BHq0v/86
+ vs4k7KUOzJboZvGKV2USTqwpp7b3G/5Q4H6mn5FOkrC1JMnUZn9rLIzH8Gel8d6OPNrbz4aKEIgplm8BB+QNxBElP2SBs2bTcmokWs/W3H52ElRWG7jtFuxAoJglz1xsbFBc3fCsd4TqofFxyToQtKb+m7XvsqmPSQtnSKEsIWUIMFDgnbdESarVJ7VXRKJN8XTuYh9NEePDlW5lfDPy0/k6msD/Tb5wmqSx8lJwx8qbou+Cqfd9KkJNXJ6gqMDIg8kJigReS+LjrHdEbCSHjEVnh9WfsBNbLZGDOY36l28eVLLht/GDSvil4L76sv7IKQLMOfoqbonmq9us+S2bmmDnAAfShHJgoqF9bVznkIrpljQTME4caCY4DHK9vWB3AsnsfXw3hcZmt6Bvlw6mtuGF52uAXc0NIULW0++GeZnNoHtIwHOxpV2cOyb6j98xPG8kGZEaPgt+wIEpSbBrRtJMlf6YJdZ6xJGBaMkJ1RkF/7CsSUVVX8rv6/RrJq6e1xX4H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -193,27 +124,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/6/26 22:21, Lorenzo Stoakes (ARM) wrote:
-> vma_address_end() is a confusing function with a lot of moving parts so
-> clean it up prior to extending it for anon page indexed mappings.
+On Tue, Aug 11, 2026 at 10:22:08PM +0800, Youngjun Park wrote:
+> swap_alloc_hibernation_slot() stores a fake shadow in the slot it hands
+> out.  An anon slot swapped out with no workingset shadow looks exactly the
+> same, so nothing in mm can tell the two apart.
 > 
-> Const-ify some variables and establish pgoff_vma_start and pgoff_end
-> variables to clearly identify the page offset for the start of the VMA and
-> the end of the page offset range specified by the page walk.
+> Give hibernation slots their own type.  Bit 4 and every bit above it are
+> set, except the count field, which stays 0.  Bits 0 to 3 are taken by the
+> shadow, PFN, pointer and bad marks, so bit 4 is the first free one.  The
+> type holds no data, so the value alone says what it is.
 > 
-> This simplifies the function significantly and lays the groundwork for a
-> future change to update this function to account for anonymously page
-> indexed folios.
+> The entry has no swap count.  Hibernation only allocates and frees a slot,
+> so a count would never change.  swap_free_hibernation_slot() frees the slot
+> directly, there is no count to put first.
 > 
-> No functional change intended.
+> The slot is no longer a shadow, so the previous patch keeps it out of the
+> swap cache.  The count field stays 0 as well, so code that reads the count
+> without checking the type sees an unused slot instead of one at
+> SWP_TB_COUNT_MAX, and a wrong put is caught by the existing underflow
+> check.
 > 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Suggested-by: Kairui Song <kasong@tencent.com>
+> Link: https://lore.kernel.org/linux-mm/abp7aDgYLrxF3Me8@KASONG-MC4/
+> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
 > ---
+>  mm/swap_table.h | 13 +++++++++++++
+>  mm/swapfile.c   | 13 +++++++------
+>  2 files changed, 20 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/swap_table.h b/mm/swap_table.h
+> index e6613e62f8d0..b916a6493521 100644
+> --- a/mm/swap_table.h
+> +++ b/mm/swap_table.h
+> @@ -30,6 +30,7 @@ struct swap_memcg_table {
+>   * PFN:      |SWAP_COUNT|Z|------ PFN -------|10| - Cached slot
+>   * Pointer:  |----------- Pointer ----------|100| - (Unused)
+>   * Bad:      |------------- 1 -------------|1000| - Bad slot
+> + * Hibern:   |    0     |------- 1 -------|10000| - Hibernation slot
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Hibern is a odd name, but I don't have better idea for this... Maybe
+just HIB, match the macro name?
 
--- 
-Cheers,
+>   *
+>   * COUNT is `SWP_TB_COUNT_BITS` long, Z is the `SWP_TB_ZERO_FLAG` bit,
+>   * and together they form the `SWP_TB_FLAGS_BITS` wide flags field.
+> @@ -54,6 +55,10 @@ struct swap_memcg_table {
+>   *   aligned pointers.
+>   *
+>   * - Bad: Swap slot is reserved, protects swap header or holes on swap devices.
+> + *
+> + * - Hibern: Swap slot is reserved by hibernation for the suspend image, and
+> + *   must never enter the swap cache. The count field is kept 0 so it never
+> + *   reads as a slot in use.
 
-David
+Not sure if the comment is a bit misleading. The slot is treated as in use
+by allocator since it is not a NULL slot, kind of like a special pin, just
+like swap cache pin, which also has a count == 0, until folio_dup_swap
+is called. We can never dup a hibernate slot though, which is expected.
+And we never add it to swap cache.
+
+> @@ -2201,7 +2203,6 @@ void swap_free_hibernation_slot(swp_entry_t entry)
+>  	pgoff_t offset = swp_offset(entry);
+>  
+>  	ci = swap_cluster_lock(si, offset);
+> -	__swap_cluster_put_entry(ci, offset % SWAPFILE_CLUSTER);
+
+Nice! We can free it directly now.
+
+>  	/*
+>  	 * A slot with a folio in the swap cache is freed when the folio
+>  	 * leaves the cache, the same rule swap_put_entries_cluster() follows.
+> -- 
+> 2.48.1
+> 
+
+Just two trivial nit picks on doc, feel free to ignore, code looks
+good to me, Thanks!
+
+Acked-by: Kairui Song <kasong@tencent.com>
 
