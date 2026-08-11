@@ -4,89 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8AEDC5B572
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 17:25:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE7B0C5B56A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 17:26:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD4B56B009E; Tue, 11 Aug 2026 13:25:29 -0400 (EDT)
+	id DD73D6B009F; Tue, 11 Aug 2026 13:26:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D84E86B009F; Tue, 11 Aug 2026 13:25:29 -0400 (EDT)
+	id DAE1B6B00AB; Tue, 11 Aug 2026 13:26:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9C056B00AB; Tue, 11 Aug 2026 13:25:29 -0400 (EDT)
+	id C9D6E6B00AC; Tue, 11 Aug 2026 13:26:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A28776B009E
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:25:29 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 34EC940179
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:25:29 +0000 (UTC)
-X-FDA: 85089665178.21.0BD3764
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D57CD8000C
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:25:26 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=HZJn2qbX;
-	spf=pass (imf30.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FC696B009F
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:26:32 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 267E3120131
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:26:32 +0000 (UTC)
+X-FDA: 85089667824.27.D2148AC
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1D3ABA0017
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:26:29 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b="lE/OZ96Z";
+	spf=pass (imf15.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.47 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786469190;
+	b=eNqPRo1lVV1T8jtwVl/hmRFAIVYkV4fIimy9zvZ99ae2wWwwzeWRdy+YZZSaqN3F1GbTj7
+	icZfq+JQmlawrzAG5gAvBm8u9g+wfMHmizWr/O3M8rnXxhCsNrNpcXdDCxBXp0VoJmq6WU
+	C3tPG6eY3nIHQch4nPUpxKP2NUDWbqw=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b="lE/OZ96Z";
+	spf=pass (imf15.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.47 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786469127;
+	s=arc-20220608; t=1786469190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L+BWV05XO4xsqcbnbkoKMlIwrmfz8Tu32HRZx+hIv1c=;
-	b=mBKMBmYWoujW5u/gG+8S5ORoXVghEuN9Qg2FpE4AW6QIyMmg7jt5cmIBbIrMA5WZ2Xms0a
-	EiNd5VisvAamYvYPlgKD599FG1zXoBdfdW3FHWBEc8W4sKIOflnGaAuPGBATtcKYV5h1nS
-	zzxw5FUO4FMIsjkS0bZCvjAl7grJ+9s=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=HZJn2qbX;
-	spf=pass (imf30.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786469127;
-	b=oBmG/Ojx8sniK2LoywKRjmzk/JNKHcbFE34gbE4t+tVatgltTBUYLbAdR9WLANv48oVrrh
-	VEM5LcSobCWSwtQrqnUZ3IxmSsnMSsfoU8WEyPQSHoTaFneW7wDXhzXRr6GwR0sRHHbfzJ
-	yNY/C1m9QV7CcPCxHlLf6/AUHMO2vUA=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=L+BWV05XO4xsqcbnbkoKMlIwrmfz8Tu32HRZx+hIv1c=; b=HZJn2qbXUgzXXaZEP+9ipj9RAj
-	YLYbtlaS8m+3BUwE2mbVH0SojkklOwS4V3j1bOZMvGXSQh8U42EbS3jKyyR+puJmzICy3x85QrFey
-	+roexCs5I/qjib7vVLNsLeRI7+1TatSLh/1umZImbSusRSorqAOp3D53E45Xm9wRNfsqiXiuNGUyY
-	CTTuQZpgwVWeTCrSsXfB2I3uaM2cyOB+B0tEODRGz176uETl9X7eUAg2138AZyVEEqRDaG0wJlSLS
-	z3mFs0IneNZFyGffSHgOf9edw2SRJyoAKui/Ii97qbFvxY12IyC+fVPfzhUOe1F6I2l7u5uxx+cx4
-	9qxd9/Xg==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wtqE9-0000000Edny-0p20;
-	Tue, 11 Aug 2026 17:25:25 +0000
-Message-ID: <e7911812-9b99-4f94-be6b-597bf202ffeb@infradead.org>
-Date: Tue, 11 Aug 2026 10:25:24 -0700
+	bh=T9Qh79QFCvjYnoGtVduyp1NZZfqwn8kEM0DsabkDFtg=;
+	b=AqsEy6fKa9W/4RaQWg8QrgQHxYMw0xYQZrLEI9C24u69QNiTP2t98vB2ODEBz/RvbHmiKt
+	c+ls8uH2T8e0wRGbJ45fF1LgwZKsVW2ib9TbAAAuRHMa4+BaeZ5X+BnVU9Q3G3WCftv3bK
+	F/sgLa+M0Wqhck5lx/xUfyBTgMyRsPw=
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-8edda5d56a5so560706d6.3
+        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 10:26:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1786469189; x=1787073989; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=T9Qh79QFCvjYnoGtVduyp1NZZfqwn8kEM0DsabkDFtg=;
+        b=lE/OZ96Z1gFPkiWY4q5rlqrFxvy1xCw20aknFsnBFvApYQ2Ly55rMC/15q8ZOuEKY1
+         gDsPOCWBkReh2F3UeUp0gYfCJXH2ioKjUEtlsFaEg3jA/sOj4I7Xu/ywjM38LyvJxdkh
+         axitzMQmNyEvSUiq1V3rB9e6iC8a6RvtmMGZegCi/KZPrtdcuD73DFm9fDpUT05yqo/N
+         N96Qkt6esKz8R9c+4Diwser0v/VCVKkmJ4ekJq/Z3qK+QNbaUf4/ggzSD/5qCuJW9Qbl
+         JcNpq8R1VYDT/VX0w7OMvYPpb/BodODLT6JsYQhdzBSWtTbh7t5anRc/HwV+hD5yp8m7
+         A8Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786469189; x=1787073989;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=T9Qh79QFCvjYnoGtVduyp1NZZfqwn8kEM0DsabkDFtg=;
+        b=RfsIOs1WhJCjMggZj7Jk4sh1fXhJnAvu9t+2KGPGdDr6IjsXuN4wqPp/6tlx1ajuSI
+         xTpGIifww0zlw/lv1eva+PszrJViavAqQ2LEieVuCGcWsuKdahQSdCXFEzO8VHeP39eJ
+         FQYomI/9khbp07mrifbloZr7rexstk/Gah9+y6Y6qRxW+0V9RYg/7FONARjX1/3Q9Afq
+         6mOBSeZ3IyyoKTvtox/OgEMy4CFbwgezs01rURTi1tJjEEpF6VLNNroOl6r9hz2lAywg
+         IySZto18hBqHUUOgwb//LGBfhSJ1jGN/q33P574hfsSaGBYk8pQQWtlI/5xs+0ag8jHz
+         CQ5Q==
+X-Forwarded-Encrypted: i=1; AHgh+RogDrJj1YbsbL86YOYbh1kuMzmqIDxh6xlEAnooKDn1ifm2ag+odbvXhea5pTT9TKYgX561P8LiPQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy+XdMfSPGgS1Q/C5cF7e66FoqnMUvU4YAvhhcnm6J+kIIBeM38
+	7Oi/ZxjK7qKx82Sg/fUmTli329GitM06rEO9c736ozhOc71qCdhQ1KgYnNs/0JLkAd8=
+X-Gm-Gg: AR+sD13vWfvucaW+//h5pJWlqOT8FBfMnrYUg6mgC7OELNMwoWhwi85reoJQcHKHvty
+	OPUtZdn3PNfN1yo0LHplQFEqCXnFCr4OgfF+0/Aid8biExVvVFei1It567e0syPwGLlnH4Mbhbg
+	TBT1artvQoBs4SXxxpL4QcKnOaHr75/H7msBIIHV7qilHsSMZD1crIzVSOXSW/bHeQXzt2lcHwU
+	f4AX9N51A/ohygePDxSFmczfpmEZcn9S/sQb9dbf5BaymDIcypLMTHEhJ9p7XBUiK6jg0VGXl5a
+	jj1JCm1+9XVBJg7JyVo786ujeqgqP+VA6f/IXJOH5x5g/iiqyu9msbuGCszwPTEvFIMm559QRvi
+	pTUK1h7w6J4VjZjAzZm2A0r7UMdC+ELeRCLFH07Rb/EXgMssincL/yJw7E7FYFEzBMrj5klrSor
+	438qu8j6YKH9vDyqxOP/x78yvBJw0QCFCusmqqwA==
+X-Received: by 2002:ad4:576a:0:b0:907:d9bd:2f8f with SMTP id 6a1803df08f44-90a6694b0d3mr50111416d6.6.1786469189079;
+        Tue, 11 Aug 2026 10:26:29 -0700 (PDT)
+Received: from ziepe.ca ([142.166.156.215])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90a6c3c8af4sm3611196d6.39.2026.08.11.10.26.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Aug 2026 10:26:28 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wtqF9-00000002gAk-2Giq;
+	Tue, 11 Aug 2026 14:26:27 -0300
+Date: Tue, 11 Aug 2026 14:26:27 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, mhocko@suse.com,
+	rostedt@goodmis.org, bigeasy@linutronix.de, simona.vetter@ffwll.ch,
+	jglisse@redhat.com, christian.koenig@amd.com, paulmck@kernel.org,
+	seanjc@google.com, pbonzini@redhat.com, linux-mm@kvack.org,
+	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+Message-ID: <20260811172627.GN544626@ziepe.ca>
+References: <20260811162423.GL544626@ziepe.ca>
+ <f33571137d2e3973e440d09c7602edaebe08b714.camel@infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: linux-next: Tree for Aug 11 (include/linux/mm.h)
-To: Mark Brown <broonie@kernel.org>,
- Linux Next Mailing List <linux-next@vger.kernel.org>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-References: <antIrd2ds2OiEsl5@sirena.org.uk>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <antIrd2ds2OiEsl5@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: oscdnfs8yu9qb818nzdsdkxu9nzjt37b
-X-Rspamd-Queue-Id: D57CD8000C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f33571137d2e3973e440d09c7602edaebe08b714.camel@infradead.org>
+X-Rspamd-Queue-Id: 1D3ABA0017
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786469126-377782
-X-HE-Meta: U2FsdGVkX18hSt3t8C2T59SpiY7wckLURm+CaA8LZCDy9nRM9iqjn+MTYggePW/tPw5FffKZEuGKzhwoPVz3SxyRunb49I1axFFnFrszVTE0o7nomCiA9Kr8BgxHGyxkj3qjijkMcx5xUAj/JW5Pz5qDs8wuxzwyGGXf+Sh09aWjMCmYr1DmMUK7pXpC4m+UO1VmeRzqqYqXDRJS+bF+vz4oUyDat0iEakxP513naepIcwcKxrU2GRN6xIPL0bauCTceHWdXTEGr3+CBawdmukL8QfQpS8/i3kG7BVO1Fbgv7z/+9rbANcdm0UHV+ir2xYasQNg5k24sdSpCUXQJr4TnJJYDcAmJJjOxKro5IzChZDUwaHxqBLe647FkpoTPXGi95BrbycayMR4uWGyNGbH+WXXDumCJeEy+J/krosr55I2+Ts18WY3gbc4HTD4AcphGzYxjWWQB+kcB4yLtefRIMyyEQaKsJL5Il9y3TTPeta1eFJR5UEkGR2i9bfQJwi2CYPvShlIAQpcGl+F3mmMX4mVOrtrlfRazhuAUwS73+hV6hhFUT2kBUe6AQwjCaFeQ2qoO8oLelyUn9rxbqKhRbJ+ez1kW9pVK/LVm1nRcc3pVKKEdd/EFp+0PFmWYRffM4/rK9oq05KgFVqSIdsBxYFJ0oQ9dTsOcoq4L3mmO0BPiZMfdKzP39+e8Zistkz8WWEUU0rqQUN8BGtVI5Je0Hce1sxR3zKIuFKOwEt/Vx42TRGvdZMTBhGdWIuklbXZ41zD135zrfxlvx5n/zpqg+SRA4rGGzB9D+av7HqZSb9/Zb0P1yT0FskBqhhJ/13VMCZZxoDt9TDjZIlz0jNO+YAfzSaXwfR7XOpZNKAx5aZoCshW8dHHhFrnF1E98g0unZRY8lN8f3qH9+LLM8rJ0ZejiBaWnNVZNb+IV1TO6Q864rsqDDNsXHS0irLUNR7pGlUgwWKTmza/JDJI
- ZWFLbl6v
- h7jxPMXskidpskJX6vDuk0lHz9Br2wWYp5LucxuD0a96Oe+jKB7QNZZTHZ177Us1kYvmYwe7qOM+VXZgzDuoluY5e8w50mUf9/exWrxcfR1k9ev9zI/yNhVNw8kiZOC7AGSap7C7FxRLxrOcMO9FT+ytPJAkNbn5OkWLQ3HnMrLmbn3E4z6gHD0sVAqY9o5rT23ALzgTfPKww0B6HqxeV0zv56yir6WDE3HiZEHpLqQPWyIdSba4oHV9CXr2FyAqwzepP1yocwOZ2Xewq7wzUDNaj57T4E4dwIdBt
+X-Stat-Signature: yq5mc5y3a8zuni68q8czwfpfx1xqaw4p
+X-HE-Tag: 1786469189-290914
+X-HE-Meta: U2FsdGVkX1/OsUGx428xAwvjj9FSWJ9x36UglVn63Pgn2rNK3niznCKF0LvYQDRoarqmAMGO0CW7TvHD/1n8PjpsrIw6u7VhfmjNk7ABNcgxDUHXyhU7Owdt8lOMA8TygtWO8aL6VqbgmetnTfx3fJ0H4W2qhUvqdj2hJXOyWQrd4EvvRk61hzZ3leuMpuL44/BwXY2gUeba8mBVk816DEjv0Ya6CrQqcevBUmXwbQi5cY2O3hSkWcGYyf1Z8rScipkQNPVzNM+BEedCeIU5smNevXdRtw/VJ30318IsGBpt28t8RCLzbIGVSW+5P7nBa3sVMouuTTf4aRLWQT9IUdbvt50dkedGSpb5xCL01wlDcACOCvP51X9eXfUq7H4cQLvDHiH2uOmROJDn6CyLgQzFq+lyL67hByjxqxmiNmgY88wJftemBuF3eYudHD2b96UC+357v0djbcfGnd1JAECeYKA0pd1YqRZAkmiDdzAcY4w0UQD05ZC8jkxTzyXF6Cx8dLifXuHRJ8jWAXSzt5pNAFr1y+LsGGfuqeWJmW1N++hZHbPJho6RXdSpF7rBbzdKrR3JEOhiuZRTIcpXrVFzrVmdaSZzVs18erIxw/CPM96xSv6mhVc+U8jzPwy+Xwahex062S+Dd17OYH2WXCEYjhGDBCL/FId9LYKlj4p6SJbTyWn1i60AzDc5e2jP7GwpuDrjj8kETme3it0DP/bPML7txJSks9K26fHjHhhS71bAU4MdAte+sVHmTlfDsRXmBReCQViqm4KiBzO+4MjX3d6tHq3Wof4LIPPnrgTDEF3EYn3L98mYlykkFzLjLLbOFXNrqVnlKQBsttLW1cbkfFp3DWyn5mgghpneApeOPb/+S8dQC4D6Xcf/N4qASMqBhDHlWs443qK+Ew2bNNQhGOko6iO0GvccwTGVQjrkFMJqNuZYdAj8N38atlGoOjz7r9AxxBuMUNS7fRG
+ 8iR6NoJM
+ i0m+SZFm4ULvv2bAa5VmT/eHktS5CAwtTW1rIAjHIW59Tbo7gdXFusPKLkL4Jb6x3ndIDaurRIpLyg+XC1FCh45hwravW02T3tcOcgOqAb2r8RW/tMNzELPmGkZUKUviRSvCyTNghzd5HC22v5ynQAbU39WqJVQQq27kktguP62Xvmtp3a+Wvql+l0DfEsaOGCFxdFW+98dTBig/rTw91vJ+CI0gSe5rELMaWiRs0qw3TeaYDjWz9OiBBU0AqPLdvbLMi2R+m0RhQ0AX9W0jovTs64tIY5NRdhIssaia8/h7Et9o9f8ocr7C1lUCfGLVqt4B0UofG2ukuRIg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,21 +128,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 8/11/26 9:07 AM, Mark Brown wrote:
-> Hi all,
+On Tue, Aug 11, 2026 at 06:22:12PM +0100, David Woodhouse wrote:
+> On Tue, 2026-08-11 at 13:24 -0300, Jason Gunthorpe wrote:
+> > To be clear you should not be using any synchronize_[s]rcu() primitive
+> > inside the invalidation callbacks. These are well known to have
+> > multi-second delays on loaded systems which are a completely
+> > inappropriate performance characteristic for these mm callbacks.
+> > 
+> > This statement has nothing to do with deadlock.
+> > 
+> > RCU is always a trade off, you can make the read side run really fast
+> > and the write side is ghastly slow. If you can't handle the slow write
+> > you shouldn't use RCU techniques.
 > 
-> Changes since 20260810:
+> The multi-second horror stories are about the *global* RCU/SRCU
+> domains, where the grace period has to wait out arbitrary readers all
+> over the kernel.
 > 
+> This is not that. It is a dedicated srcu_struct, private to one VM,
+> and its entire reader population is a handful of KVM fast paths that
+> until now were under irqsave rwlocks.
 
-New 'make htmldocs' warnings:
+Are you sure? I've never heard that srcu has those kinds of properties.
 
-WARNING: include/linux/mm.h:2326 function parameter 'vma' not described in 'vma_is_cow_mapping'
-WARNING: include/linux/mm.h:2326 Excess function parameter 'desc' description in 'vma_is_cow_mapping'
+If its so fast you should just propose a non-sleeping version and
+leave the notifiers out of it
 
-
--- 
-~Randy
-
+Jason
 
