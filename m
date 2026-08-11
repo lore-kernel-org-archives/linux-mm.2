@@ -4,90 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28AA5C5B572
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 13:43:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 192AEC5CFCF
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 13:46:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2C096B007B; Tue, 11 Aug 2026 09:43:58 -0400 (EDT)
+	id 011116B008C; Tue, 11 Aug 2026 09:46:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDCDF6B008A; Tue, 11 Aug 2026 09:43:58 -0400 (EDT)
+	id F2C046B0092; Tue, 11 Aug 2026 09:46:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C199E6B008C; Tue, 11 Aug 2026 09:43:58 -0400 (EDT)
+	id E1C9E6B0093; Tue, 11 Aug 2026 09:46:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BAF06B007B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:43:58 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8BC80C03F3
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:43:56 +0000 (UTC)
-X-FDA: 85089106872.16.4B73EF2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 05DDA10000F
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:43:54 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y3RiJeIY;
-	spf=pass (imf05.hostedemail.com: domain of robh@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=robh@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BEB436B008C
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:46:44 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 427B94042A
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:46:44 +0000 (UTC)
+X-FDA: 85089113928.30.62261A9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 93F614000D
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:46:42 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XX9PVhp0;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786456002;
+	b=ElKAHZsz1/XE905HXHQoVZQqjg6D5IY8Dgo6ZeSGVNnalkuzxI/jgqQ7uAm6rUeb3ARBhz
+	R5nrJpWQsvbUfTsdAYQ2G2DIuKl42Nj9Mn4yMUx8LBvEjmqZUd8N6ovFbC+ierKNzkev93
+	4IPH2GDVEB3/8thY+zfpPhfdtvo3GJ8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XX9PVhp0;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786455835;
+	s=arc-20220608; t=1786456002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gz0q4Bj/jbKLsxjzDjzW6S4zyUlfaGH8U1N9wJqf3Pk=;
-	b=pC9ixHlXoYdFaSP8afBSL9fWdWdIabJUVWrmQ4CR/EYPI9iOwjjcq0jkx8uMq1MlpLQPJe
-	BnxTpYSpddwSLrGI3NSU7zwkm8iiBqQJr24w3/lAnTMzCQoJPBA7zDSJZtKuXzcTcCYE/5
-	raf/j0MYuXO3y0zYlBu0CZ3FUEShzWA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786455835;
-	b=RegNgJygjTUdrBQKOJI1Zz4g4MXkl/i2iwNIBox0SpnUv1F/RiMMAzuKIUsId/10btUX0I
-	qyr4E5RnDuxRUDg+FI+Hf9AQIWK/6tfVPBW3D43ZitpYi0uD+lYdS+XarOSRkWMUJnFVGh
-	/z5GMmGq/duSTUrgMXdWStbipHFWqGY=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y3RiJeIY;
-	spf=pass (imf05.hostedemail.com: domain of robh@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=robh@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=GtL11n8OdaWgBaMEgmB3HonaWO11FGXgueUh8Z6UWVs=;
+	b=halgkAX1EB6FX6EO5H8t5nGEPfsxGubT3y+3OEH7WmGy05zm9a0SAcHePGzuYWkLVxZfEC
+	ezSI2sXGEvs+68t3He7vhnxZBfo9roSumvE4VCTQhyS0g33Pi3rji/5L/wNUhI+X5AV2NM
+	BuUo/M/sOPvR1G/xWK5rOCXxXHx1CaE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 512E8600AD;
-	Tue, 11 Aug 2026 13:43:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21F21F000E9;
-	Tue, 11 Aug 2026 13:43:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CC4F442D9B;
+	Tue, 11 Aug 2026 13:46:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8411F01559;
+	Tue, 11 Aug 2026 13:46:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786455833;
-	bh=Gz0q4Bj/jbKLsxjzDjzW6S4zyUlfaGH8U1N9wJqf3Pk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Y3RiJeIYaWN4UnbzDTXg4ul0AsSy6cgnOcwgiqOsY9P1fZUaTPg4F3Wa3okQup8eb
-	 pWRp7XGcWRCz4oCSZ8Fy1UUTZ1tYsaUJ3tt4a7UsJrlqJcjJbzoj4EHnW12V3F+ljx
-	 M3Ogs68K4RA92eE897opZbff48XNAYuEAKJOY1D43SaGopLzR6R6yNV3+iZQX4uUQF
-	 kKNIc1Sq1FqDfzd7Y6eMzVsNS6yeT7hNsLP8rfcuXyQxUXbcSys1w2pKYrjZIDxQA6
-	 cJO9Schn6EhfR55koqs93qaKSc9h1hfto6sAdlorjc3T9WBVYOXZ9sc/GhLpQoAMsF
-	 QQDjkEJQn3+lA==
-Date: Tue, 11 Aug 2026 08:43:52 -0500
-From: Rob Herring <robh@kernel.org>
-To: Jan Sebastian =?iso-8859-1?Q?G=F6tte?= <linux@jaseg.de>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org, keyrings@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	linux-integrity@vger.kernel.org
-Subject: Re: [PATCH 1/4] of/kexec: fix typo in comment (usable-memory-range)
-Message-ID: <20260811134352.GA2054339-robh@kernel.org>
-References: <20260731162739.158320-1-linux@jaseg.de>
- <20260731162739.158320-2-linux@jaseg.de>
+	s=k20260515; t=1786456001;
+	bh=GtL11n8OdaWgBaMEgmB3HonaWO11FGXgueUh8Z6UWVs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=XX9PVhp0hYtWXxPGD+TlKqjokKHxQd1egfWfY1SRsjmI3Au38K5m3PeG0ORWS0uOJ
+	 S/6Vd03u2cn64RrNKAQu0t96T936JCkDfP3RAU2qpMhp7joNB7yuXoLFOODyn3YTyt
+	 M7nfkLrGGn/wnifof+GRy1cLyL5TUrzqR1MbrhOyo3vGcl0+pWMS7Ey8e7Qzo4qamk
+	 /X88RhP5Fm6GXyhKe+30DRKrYOdE442v+k3guoXMi591K4QSZdY5t/8TaazcrabBG5
+	 aXNBxFbBkqB8dDOZyKjCuFH/q9yMX6dW1l0NHWWuFT1epn9RxIVsupeplPlcyaFJSn
+	 kHAFSN9VshsfQ==
+From: SJ Park <sj@kernel.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 1/3] docs/mm/damon/design: accurate semantics of nr_snapshots
+Date: Tue, 11 Aug 2026 06:46:33 -0700
+Message-ID: <20260811134634.4407-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260811101841.804596-2-aethernet65535@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260731162739.158320-2-linux@jaseg.de>
-X-Rspamd-Server: rspam07
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 93F614000D
+X-Stat-Signature: 83bca5ia5jubbp6d9rizrwh7tumxesyq
 X-Rspam-User: 
-X-Stat-Signature: 1t9o17g3jquocf8gf6fmyh133ogfcte6
-X-Rspamd-Queue-Id: 05DDA10000F
-X-HE-Tag: 1786455834-14504
-X-HE-Meta: U2FsdGVkX18CGkKe2RALA0AL94XsgiYTlPiVkhRKBVBNPpdW4MV1tvuT9szlO4fX4eIpNH7vzYatpYiFODfH13UODQEx3KGa2+7w8yY9C/eo775Wf9ZqFG+qoJlXe+yQ9hJF2nIqZJPdeArQglMEYiZrU77sWdI8yj+adzuBEx5b6g/7YBOuVZX7Mc/4i7D074jaAg2wSyC7LO/SUSPC98Ds341mNDIxPs1ni7Rq0hE8vtBqsP15WTt3uIqZ7yZ5CUQDjBO83LogVcziQ7lF+iiCm1UYjw6TYMZ4DfTzCM5WsBOnld0ANkaIEqOEOLCd/ib6FUZ2nn8yCrmZjFekWUMcs0pXP/oc735X1xlSCnnQUZZhTfQ16kcCeUKJ6XLS1U9dvsyTToeuc6wAmP0Egh/69f+3BGUbP65mmzgPf4e9p3Ab3i9aTNmEjlW9d8gxJ0UNse/3ADvM4KXE6xoDIMW2sOI5yF7y4Qfhm3/4VGPWmjH019ch+Xp5ufltG0+4Zn56et8x4ggl1CVmTBV8xaUCEqABDOzf8WyI88zLeW6FhUNBV4RqUqjAFRAMAWEH1ZuR3WthHI0MWkRt2rrY4rm3N7kM0wGjEwSp+p62N6NjLVU2MnlWm4y6peQR3xGate5l8e8yV4bYEtTmxqvRpG94c9ZEAFDySVLe+pIqsnKBcD7FL0S/FM93YwBAGKbwYKCjq96mDw4GnsraChX/Y9fpl2Y277Hr9DuTX7/uRGUJFHSe4vcsxwEUIKQ4sn7WOqBnrSnvxg1J/kcNJXig8IHk51NIqGvXwR7x+8h/UuSDbPd7IPb6ufts0fJ2/Qp5HkhOH4JpghrE86Epfo9D2GgtlE5y9J4yOFSy08X10Rcizzf8beufWC5+7GyJvEGMXH0MyHBCRjfxO6bCCBRRKaUkOoYVSYFvC46MFJKmitwOHuhMnA8a93JB2EXVlV43snTP2VEkyMGRzwOXZf+
- AnTBhz7B
- JjnwHZpRCBqwpyWn8ampwjPVBgX8Q30eQJvVuI0Hvu6YvLb/G164ZWO3YoilF/tPP9ZB/SmnVWwF45DHPKQGqb1HH0+fD+mC5vH4xgwz7nIpxdnd7KZHoOgAIEGrwOXHQgnwp42a8BtSSevKJ/lKBDr/JIguawSc6/YMsgJSjUBGiPcf5w3m5cYXXxOivWvoUmzMxglyw3GLAYPGxziMseRtUiXSdf9jpUCr6Bmg9CEt21O9RDaPnZlWygGCQ8bAnHLkOJ8hZyJ2NgBMA4hAx4L61wg==
+X-HE-Tag: 1786456002-137813
+X-HE-Meta: U2FsdGVkX1/1ScXbJFWnNafnIxwrnJURJpIVTfS9B/6xgaRGIh6kU6Slq3e+U0srwaqme9kY7n+5PZ+AXuRV6w237RdcAT9kvSuKgtkmPgOp65/iWZJMzfiwevI56PBM685uBDTWkKOeK/TuUNgAFd63yDoSFOA/vzHJwWK1a+PrSFZhDy7txOe6Zwdu9eKGoGjqTZgRdb1sC1EsJBFpluKiqS+K74ZItWVCT+Y4moifiy7J+kFVnxWszoGtG60RTaiEh5g/3Fv5zBAQ6cQ5D7JHzsGN1caV+1YJaARE4PalSLBSJCsszzNbyvUmE9qSD1CDR4iaYnA7ZrBintSHRLSdAiF0oLz99cPYiQD1dIZmfpDxPJsi0AS+IZ3spQZ1Egi/4mdRyxtRXdo6yb+u5ozdNhyB3RuynSD48b4NFwtvXaKU7mNjdknhG7gevml80HOzJuhbonX3pqI9bsrzdJ501JLA6TfeYFj4yUXKREc5vVHZt10Y1I4jVbJICe8wuSthmtYcbnI1XPHg2/UE3cL4lvFXpU2eoydImhuLnFIfYOc/i3TolKRY1tU6uNB7aCwnR2nX5bp3wnIokcb3FwZSMlok7RKSvtmouBeFsiID4dNOoc06qooGKYAoyCiv3g1U4hNGrAF3HEydWo4ZqKrDzZ16N15sVEoz77JRV5a71N/Ix5bBloVBcek4JODn21+g8hcqzvDBebHgfhxkkxGufDcouD3Mb8m6pxxfKDE/I2wadclRykIIDR6B7O/UTa8axqTpKd8ZH5aDErwGI+Lsj0TaUMFW6CJ2QxXOPJE1GiTx/NeCunDUrAirhps43QDD35a87MF5vx6IWrCnfW6/dwnbj7SxDXq1TqVoR+MZWl5UhQKxV7y3ErJbN/ihBOq5OBlTFVbkVDi7gdIfsAS58HcwRi9L818I/sSNH4Zdt0JJZ/oJU7TTCkfg8Wpbhb5OmHZ7qCRL0k8RS3r
+ UkTZpOUC
+ lpDSbOZmmzx9f9ntYmd1O9SM7G5MPGhQKdGn6wDs6FWObsiFIk78qblasu7IA3ZKWVLXbJGrg3LNLyi7VB7zpCz/1GsIyZNls2+HnCXroOkY2NpXytPRV7Y9yjRZUePHkMaUV4dg842Nw3Khrms5njoEVZ4dJKasVSD5rtYPpUdyuovoPyaBI7aW3rTxGYdU7wxzk+9UlNHqdxe0dhEMAR8ZZf2zmAtbUmkB1InB2eTXKCWIqKkqHEacc7/KB7apjGxAym50Tg75oRJ+hQHBzTnY87Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,25 +91,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 31, 2026 at 06:27:36PM +0200, Jan Sebastian Götte wrote:
-> Signed-off-by: Jan Sebastian Götte <linux@jaseg.de>
-> ---
->  drivers/of/kexec.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On Tue, 11 Aug 2026 18:18:39 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+
+> Change "tried to be applied" -> "tried to be completely applied" to
+> maintain consistency between the documentation and the code.
+
+It feels bit confusing to me.  The completion in this context is for "trial",
+not "application".  For example, someone might wrongly think the number could
+be incremented even if a scheme was "tried" to be completely "applied" to the
+snapshot, but failed due to a quota.
+
+What about "completely tried to be applied"?
+
 > 
-> diff --git a/drivers/of/kexec.c b/drivers/of/kexec.c
-> index 029903b986cb..36635f6cb900 100644
-> --- a/drivers/of/kexec.c
-> +++ b/drivers/of/kexec.c
-> @@ -24,7 +24,7 @@
+> Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+> ---
+>  Documentation/mm/damon/design.rst | 2 +-
+>  include/linux/damon.h             | 3 ++-
+>  2 files changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+> index aed6cb1cf483..939298f2a9b9 100644
+> --- a/Documentation/mm/damon/design.rst
+> +++ b/Documentation/mm/damon/design.rst
+> @@ -847,7 +847,7 @@ scheme's execution.
+>  - ``sz_applied``: Total size of regions that the scheme is applied.
+>  - ``qt_exceeds``: Total number of times the quota of the scheme has exceeded.
+>  - ``nr_snapshots``: Total number of DAMON snapshots that the scheme is tried to
+> -  be applied.
+> +  be completely applied.
+>  - ``max_nr_snapshots``: Upper limit of ``nr_snapshots``.
 >  
->  /*
->   * Additional space needed for the FDT buffer so that we can add initrd,
-> - * bootargs, kaslr-seed, rng-seed, useable-memory-range and elfcorehdr.
-> + * bootargs, kaslr-seed, rng-seed, usable-memory-range and elfcorehdr.
+>  "A scheme is tried to be applied to a region" means DAMOS core logic determined
+> diff --git a/include/linux/damon.h b/include/linux/damon.h
+> index 0c8b7ddef9ab..d642ce4fc83c 100644
+> --- a/include/linux/damon.h
+> +++ b/include/linux/damon.h
+> @@ -357,7 +357,8 @@ struct damos_watermarks {
+>   *		Total bytes that passed ops layer-handled DAMOS filters.
+>   * @qt_exceeds: Total number of times the quota of the scheme has exceeded.
+>   * @nr_snapshots:
+> - *		Total number of DAMON snapshots that the scheme has tried.
+> + *		Total number of DAMON snapshots that the scheme is tried to be
+> + *		completely applied.
+>   *
+>   * "Tried an action to a region" in this context means the DAMOS core logic
+>   * determined the region as eligible to apply the action.  The access pattern
+> -- 
+> 2.55.0
 
-If we're going to fix it, really it is "linux,usable-memory-range" and 
-"linux,elfcorehdr".
 
-Rob
+Thanks,
+SJ
 
