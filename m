@@ -4,93 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55486C5AD55
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 00:13:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84423C5AD55
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 00:14:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B7E16B0092; Mon, 10 Aug 2026 20:13:33 -0400 (EDT)
+	id 53C206B0093; Mon, 10 Aug 2026 20:14:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 167B86B0093; Mon, 10 Aug 2026 20:13:33 -0400 (EDT)
+	id 515846B0095; Mon, 10 Aug 2026 20:14:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A53C6B0095; Mon, 10 Aug 2026 20:13:33 -0400 (EDT)
+	id 42B546B0096; Mon, 10 Aug 2026 20:14:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CB2256B0092
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 20:13:32 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 414481402BF
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:13:32 +0000 (UTC)
-X-FDA: 85087064664.12.CBE33A8
-Received: from mail-oa1-f77.google.com (mail-oa1-f77.google.com [209.85.160.77])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9073CC0005
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:13:30 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of 3KWl6agkbAEAu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.77 as permitted sender) smtp.mailfrom=3KWl6agkbAEAu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786407210;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=wKqHDM6kFIbgjm3bxpK4dktxANqlyo+NQnIku9ZyIwY=;
-	b=ruz9qoJIfAiRpP9fiSBhTthfA/H0cvqDfNNn7klmrKjsOA8KeapsMSOoRoqDWOdEeyQCSo
-	f5vM1KkovQC2vHGYrg7kc/FQ+LCgP88KDJ7dHt2FfdhTgXwvgN29jSFxkzzlrM6Y3EH8B1
-	UuLrRzR2nntApcUUkyc0xMj43tPhk/g=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 27FD76B0093
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 20:14:52 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 915B340300
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:14:51 +0000 (UTC)
+X-FDA: 85087067982.07.48A29CC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0031F40003
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:14:49 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aKM9VFXT;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786407210;
-	b=vUFALieeml+lPXA9dTjJ8I5fZzT2wmJaBkimHrftghYVRmVIxhes37vJWcyUbk19KAmvhw
-	aTFTlJAFbtTl62U7xhB4YXOduqI9CuOw8objW+PQBdpGZYE/pQGzshxc7WifvcKpZoZIt4
-	/m9nZM25nB72T269JGb5kAhG8B9V9Xw=
+	t=1786407290;
+	b=HCLS4MqbmKh1NbDfJAmqHORePY4d82wmdlkIXJJZKn1K2IIn/SgSgpM5HcCRo2dZD+eJt+
+	sYOCTKUxq9LzT4LTzeoZrGnwVKeUDDjWECwssxlp4kfwmU0STZYYWGS1Xw/eW2JbNxB4kf
+	+n7uZJsuxtnIduxgAoJZIUHbENdEv4s=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of 3KWl6agkbAEAu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.77 as permitted sender) smtp.mailfrom=3KWl6agkbAEAu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-Received: by mail-oa1-f77.google.com with SMTP id 586e51a60fabf-459b87acd2fso795953fac.0
-        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 17:13:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786407209; x=1787012009;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wKqHDM6kFIbgjm3bxpK4dktxANqlyo+NQnIku9ZyIwY=;
-        b=njZshIIteQtzdtQ1nRHvQdtv/fvMJ/ImCnFEjIlo3SAbetWqZr5wF2tqMXloPBslwV
-         3QcMT5zHlufcZanyf3yADEpWtieRHJujYh011GYVfMsw0f3rIeieeJJWNHAPQF5cG++T
-         eWUFCUlbv3/BYohcR1ATQuYhLtT/vKqDKDsdw8jolSsm0vKg5/fUaDDr2qH545I9hkfA
-         jp3oYs6GTg7Vx0W1IxD1JshSW25ZvetHyVOC5GRX7XKdqrsZVGspHcTXL0VlGybZWwJl
-         d3QmM5+eZxKmWXW16VklGs2vL/Nq2IslrlCZWDgNvN2RJtj0YXXCjQ/zpzkTlcWyD68u
-         JZ2A==
-X-Forwarded-Encrypted: i=1; AHgh+RqcekJ5Z3j8pXlWMwRV2m2bfeP14BLJEtm8u9jCDoOXq2REMyMcnGbTVtxr7LsT8213HaGn/XKBSw==@kvack.org
-X-Gm-Message-State: AOJu0YxeVfpZxj+XmB0snA4WRtYk8EGUBdotKUV9bHcMMtq2Qjty603e
-	lxzphSNQ0kJ+Z53Oei2RTVSSCXPDZo9HfQo8IOgSfDSiLKRi1mNRTH0WM2qE95mn/J8xLWXRe7z
-	+94Ih4u/DxZZ9uO5M2w1NxEzurfHXlRT2oBvIMb7VPWj0xIQAJAujggm50/E=
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aKM9VFXT;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786407290;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=S842M+3n5foIBaw7PfExfIo338XkNBz7Heie7VOdBHs=;
+	b=3OzSm8wtlgQgIIulTZZAmGxxsIF79vhPonV3ogZVSGY4QKTQS0aAt3ObYTNmvAgbiSffTk
+	h17VtBWG0KoNYoKlOKfLOM55NPV6pxg7+2x+nfBZSyGAmHfrWREV/Y1u7N++frbR8iO+QB
+	OPr8xj++HhPQaBhD/H/lnUlVYNB60RM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 37F2B418E2;
+	Tue, 11 Aug 2026 00:14:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC671F000E9;
+	Tue, 11 Aug 2026 00:14:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786407289;
+	bh=S842M+3n5foIBaw7PfExfIo338XkNBz7Heie7VOdBHs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=aKM9VFXT7C8RTuuoXq4xhMvUlWXrYg5/sDDHUAiI8E2ZVq3ShgIPAP+a3DNdtH3Ie
+	 3Ittxtkc9ePPf1SoQG4mPGRn6TLCkXIZ+ndPpCCbUAYK2beENX2+Zo/ywqvmIaTPWF
+	 vdHBnhrnwSYyPc5b2uqr5sVDqI1VV3CfU5ocfdm/CaBcxORcUMh+YMBiUMP5etREcO
+	 7Gto+zvpyw6/aGnmNPiqneoNTjNCPJfn+oiglCwInzHhQ16yjBKETjYPwAvKYaBVJ/
+	 c4VZXO12K10cpa8cp3k0R/JBtTp20Ni9GtT4sW8XUfRxepwm2TEcENt5o+IKIkrESD
+	 jX6/A7OOre+kQ==
+From: SJ Park <sj@kernel.org>
+To: Hongfu Li <hongfu.li@linux.dev>
+Cc: SJ Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Hongfu Li <lihongfu@kylinos.cn>
+Subject: Re: [PATCH] mm/cma: remove stray newline from auto-generated CMA area name
+Date: Mon, 10 Aug 2026 17:14:40 -0700
+Message-ID: <20260811001441.96169-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260810093215.91419-1-hongfu.li@linux.dev>
+References: 
 MIME-Version: 1.0
-X-Received: by 2002:a4a:e908:0:b0:6a3:d77e:725a with SMTP id
- 006d021491bc7-6b04213b952mr12333927eaf.20.1786407209671; Mon, 10 Aug 2026
- 17:13:29 -0700 (PDT)
-Date: Mon, 10 Aug 2026 17:13:29 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a7a6929.b50370da.49fe0.005e.GAE@google.com>
-Subject: [syzbot] [mm?] WARNING in set_mm_walk
-From: syzbot <syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, axelrasmussen@google.com, baohua@kernel.org, 
-	david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
-	mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
-	syzkaller-bugs@googlegroups.com, weixugc@google.com, yuanchu@google.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9073CC0005
-X-Stat-Signature: z9br49gpk8yn1dmg8dwocbgmdaif8kpk
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0031F40003
+X-Stat-Signature: d4prhohjiepu54i7qohiwc11jg8xx5na
 X-Rspam-User: 
-X-HE-Tag: 1786407210-147100
-X-HE-Meta: U2FsdGVkX18OzuP/H0C3HK8GhaybE1u96tlSXgPnPBG8b+fky3+fFVR5GANOHZJ30+Oircrgx9pmCG/isyX7x3s2f7Meto2IafwQWWYtDnvHEQcZHJZWfCJJTwzQJCbDKWoV0WOXgvuSrzgW3ZyrMGFjiUlPsD0rVoAiKjJK5bRev9Oc5XkRl89CKGCSQQ5BDbw0evNPTxMHRtpm5xUMk+bz9rIv26InzyUphACFh6t4elTjcDHk6hrrXnMF3TKFSV3yoKBhhABx7DWl7jq+SE7EhOMAG9nkRAXgYS4oqwCIaE0uMT4gobfz2CguWhkwqdHlkCnJOmMLZC6gwjqwSNajW+tjWzm9C+y3Kj9e8RO1BuzfUP5PMdoGROEtCz9iedZznwgerTxx/p7iSThRh8NfWuXKogZs7hRUcn5abuAm3WzAYWiMFehYclpJ0/ySBf9sf621B4RjYwcsCR1InZZy3vw3vqUENFL2uJK7VWJQ0wQ1yGC44iI09KO8nBvFLiOziH+/pWhb+ZJe1mE+FnaFpw7vDIdWBXT87Fp1e9HZrw6RCgecDup+oyH6z/jg1VnL0nE7cL7URnsX/KiodStbjH2KsQdb766JyDMw1ycyQA1gB2uRZN+05aHVOJxsVkjnA0u9XfcJHYReAgJXDbKqw/oq8jGCcK5MHF6x+8SZE2/uw2957jN/JxsnHJ9OpWzeJxFBYSi0QInpcaVSSOuL0H1z7JNdwS1Gb3ew4jXN+qxs4eyp4fnnSOM4Z1NLUYcoJCuFZHFPSoMYKjsdLgM1h4wcEtf9q107HKjSZ4CTFbr0XjZ4t9MGUyBYAQwZqeFY3H63KTFbit2I8l2z9OGLqJNJpyUCybIBpX0RqScGIElLqgrmm2iXge3stVUZwkhJQWssNpL58PGxEbO/bWafsXPh09uLvDq/k9IlBnqG9ptoPNdHJbIyq93ynHmGrDrmCNewlVXKykHBk5X
- HIAJgClo
- cp/NyEhWn1GbrGXqeQ9nvuWC11ZmuvV+v0ScLmje8/cOM/4GrmPrU/WGwk1uAksoyKTyD6xcdufr/k+nVnIPv6px8Iwc6aEsrUyu//cddjcvXOj5J9KdaLUrWt6jwULDCSIveSe4nYu2BqyVyB9cmO+HWoevv6vZTvNyaGP/KLCFPyC3CU7svxBr+9hC8/A8YLt5xdungUX3vi82/iXDPp2vVTj4z7Q53Vyu2pfLShaAJ+KEMYx1iTVgWWfZfRv59d1Ix0UX1g9Eh2+iLBad8wysXRAwVjY4rzPfaZld5aa5hsewwFQj7puFKb2H02VBMHOCFZ48h8NpSZpC96dwHwteDKm7c2ufUQ69ZTFK0XsxE/Tg76hQwRe+CDCePRp6t3cQHzshSY1Ofmbar387KRUeM6ZLcH+/SFl4zJ86L80pTxR16N+FpNj73T+t8Hb8MgaLiKffus1eZvzD+3/w7ovDby2q1tRz48Xm5xpl9pD4dI99fI2oJ4xzQSCTktHQfniIUb69DDUslOaLL9KjnEppogTR/dwwnMXMiF/MMmh08PUG96zPTnPc/AY7tq21iD3gVL6SD3QbrqBrglO6ce13nFvaOadosxgHos6zxCYxA7+rZH3mBtCnVBUSG8j0JA03nMqEGwuKFu+nV7AKWDJ8sh0m07Mb5xmtSKOJVlTDKpclVFhsUc4Vn9AShUj4/NnhuBk+0l/pJyAFKPfB1graK0JUzGPLcz+AM/0RdyTyqm7Kh8eh34Gl7fLC8mNe51BRpqf3b//haWVxaiZpsyZjgX3ipObmIPRCARfm4DaQ3AHcvNkHPlO/r01onRbmA+IvKg9iJ0LtL28RwF7oQB+bj9ImxQIBsyjpSG5nhsYwopGG26AFh6tSlRmA1BCObeUl2LcYGpeQZZwRuB6zn4yaHYLV5tPSjzdZ7hj1lET+BgmTKn7ZQ4jAYT+KbE/6amQf26s+l++UWVWPB7tzh6xkJmpro
- 6QZUwE4g
- 2JJIM2L+/Fgz37iQ6PNRJeTrT4WnsukELR9siYGzNNY1fh+Qp0M4GxEWedSahc/6GpA+SCE5jhNXoNvvI0P8jgjhVRy4xjBMy3m2adCAzovbYaZur+r48hVKnbuM3+UvhqTGDWfGihmW/Y5jxoqlIaATJ2+8/6c6XmlrfXjOEGtqoXFXWENyIYM2bzjH79k1cJc99K88O3llhIRaexzVj1BQaYajj8RQxDuM2uuT5g5pUHiSyINLp7nC41sIYRfAhZ24Na3EkBP8Xq2Qsufrbfksv8qstFT7kL6aoQN6MZ9xrNKU3egTLRq1xvVkYH3X76t2vmfLhPicl62zVj1XWlTZMueEHEk0iAiecmUxtYh3wXj3T6Zm/KwrgddKu3r523kfRpDk1B7t6FgKsSO7pU08MvTvN0kwiGZzNVEFABZaj53x/+Bzaw2PaxsNU04AZHi+BNr3IsU=
+X-HE-Tag: 1786407289-907893
+X-HE-Meta: U2FsdGVkX1/K4XcGzAucogjgYAIUi4X/nWfpmtAypt/lXKcCei9Rwpw4IdFf7GlnYDfAi2Tp4wWe0bRWrJDZOCI9wL8yaUs/CJDu0gsc3UhQXpi7ytZLAgED+T+a+La3Lw5gjghFy7WOT5dif/f5PlNo3EPOIOQpKXLj75keV+1EDG/Kk8DX7+tFNkW9j3hm2fNZI3jixfyfQjdj16MshRN3Ve09GFI5tIUio8+C3V2bLYribd7bLyy206bBb3SxRAwVEoIuyOOaoGk6TCnofKpDv/KezuO1qQm/D7bT8BKPAnlo9mzgIy95cSrDcDJaYjyrGXntjctRabH4mj3GgwtwChAnHnnMbOlAZTXEsqzRCFQVhJVA2pQzet7PyhlCQPhw7Jk+8r8F2j5z4DthqmxIyOJ5ME+LiQ6zPWFFf2VyuiHMEF4fBfEu5IJCl3FgFjFHTTIBz0Ykt/Tzo+xeoV30FRw8KgfktYLpmhCh0y+yXhok3Iwum0okK+GENX48ouL5uIT1X+vw/VxwTGoG0l8UTyr8ebRcr4+1W2JlPBvQ44HOXPp84wzweMQVSMiTAl1Apr8JomMUY2J2m4spfY8iGVezV7IbNqmX00Avi2n5cY0AVVyNklMY+17jVq0IRrPjWofOAEqEC70A+Y64m+u4kenxGu2fINzFsmppS9GaFjoD1Alq4eO+AZl8A//SGMlR34fLBMwAaVkppQnMOnu8NbwcxTfmbLua7BGDOrp7G8FPoH2kXUvX94w7NKRhbqIUf3Degt+IBRyyYcg+5zKSUDg54M5Ddj+/suLYRUdyssyi4nF0ccz02dhHN4OgiIDHRqKuo++KUtdcc1iI5mhl+EImpuXWI/oRd639lOd0zC78cru6fDGqqOkGS230ZLMykudG7D8zuc/enTl42v2oIIpDhoPx5ogsfZ1xFNA/kwUVvsM+tvdwis1RSli8zT83pD8Ml0XXgtY2e10
+ lwVl2RmZ
+ /46KIEwQUmDoKuLcWEuHA5Bk9cNREgHi43yv2P7/c0l0mQczsyZ/T7pT9MpW6DlBWe1e88hjTEftD27TTuWACyD05h//ybXuLuhXp82ZjNoHNDuhanxQsj1Ft85UAjhsHk5t8owouwwxaw2OO5IVsBwQH2DaclKZznQZoAucPQaBCITePwZo8tkTIX56829ZUC+B5m96eWtZi45C9zAZsauRIsxshTrdivGa7saDcWNuduZB7+CTlwyyW2tOtTMxEC5x0HfVTLnAkjrc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,82 +100,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Mon, 10 Aug 2026 17:32:15 +0800 Hongfu Li <hongfu.li@linux.dev> wrote:
 
-syzbot found the following issue on:
+> From: Hongfu Li <lihongfu@kylinos.cn>
+> 
+> When no name is supplied, cma_new_area() generates names with format
+> "cma%d\n", introducing an unintended newline character ('\n') in the
+> CMA name.
 
-HEAD commit:    562bfb501c54 Merge tag 'integrity-v7.2-rc7' of git://git.k..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=11a8cbb9580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=145fa60d73086782
-dashboard link: https://syzkaller.appspot.com/bug?extid=12ee2725d5fde63a9c96
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+Nice catch!
 
-Unfortunately, I don't have any reproducer for this issue yet.
+> 
+> Most CMA regions are created with explicit names, so this path is
+> seldom hit. The newline only creates cosmetic noise in debug logs,
+> traces and debugfs with no functional impact.
+> 
+> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-562bfb50.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/9cbf6ef0490e/vmlinux-562bfb50.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/7ee52864c79a/bzImage-562bfb50.xz
+Reviewed-by: SJ Park <sj@kernel.org>
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com
+> ---
+>  mm/cma.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/cma.c b/mm/cma.c
+> index a7929c758df1..a10ea37a261d 100644
+> --- a/mm/cma.c
+> +++ b/mm/cma.c
+> @@ -242,7 +242,7 @@ static int __init cma_new_area(const char *name, phys_addr_t size,
+>  	if (name)
+>  		strscpy(cma->name, name);
+>  	else
+> -		snprintf(cma->name, CMA_MAX_NAME,  "cma%d\n", cma_area_count);
+> +		snprintf(cma->name, CMA_MAX_NAME, "cma%d", cma_area_count);
 
-------------[ cut here ]------------
-current_is_kswapd()
-WARNING: mm/vmscan.c:3800 at set_mm_walk+0x210/0x270 mm/vmscan.c:3800, CPU#1: kswapd0/110
-Modules linked in:
-CPU: 1 UID: 0 PID: 110 Comm: kswapd0 Tainted: G             L      syzkaller #0 PREEMPT(full) 
-Tainted: [L]=SOFTLOCKUP
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:set_mm_walk+0x210/0x270 mm/vmscan.c:3800
-Code: 13 00 00 4d 8d 7d 08 e9 f7 fe ff ff e8 79 f5 2a 00 e9 b7 fe ff ff e8 7f 6b ba ff 90 0f 0b 90 e9 d2 fe ff ff e8 71 6b ba ff 90 <0f> 0b 90 e9 74 ff ff ff 4c 89 ff e8 80 f5 2a 00 e9 4e fe ff ff 48
-RSP: 0018:ffffc900027772b8 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff888024934a80 RCX: ffffffff824ff8e8
-RDX: ffff888024934a80 RSI: ffffffff824ff96f RDI: ffff888024934a80
-RBP: 0000000000020000 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000020000 R11: 0000000000000000 R12: 0000000000000000
-R13: ffffc90002777c38 R14: 0000000000000001 R15: ffffc90002777c40
-FS:  0000000000000000(0000) GS:ffff8880d5ed8000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b31923ffc CR3: 0000000109695000 CR4: 0000000000352ef0
-DR0: 0000000000000005 DR1: 0000000000000005 DR2: 0000000020040004
-DR3: 0000000000000056 DR6: 00000000ffff0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- try_to_inc_max_seq+0xf0/0x1090 mm/vmscan.c:4023
- try_to_shrink_lruvec+0x4bd/0x6b0 mm/vmscan.c:4977
- lru_gen_shrink_lruvec mm/vmscan.c:5128 [inline]
- shrink_lruvec+0x31e/0x25b0 mm/vmscan.c:5888
- mem_cgroup_shrink_node+0x227/0x6a0 mm/vmscan.c:6753
- mem_cgroup_soft_reclaim mm/memcontrol-v1.c:312 [inline]
- memcg1_soft_limit_reclaim+0x2d5/0x830 mm/memcontrol-v1.c:362
- balance_pgdat+0xa11/0x1f00 mm/vmscan.c:7177
- kswapd+0x556/0xb50 mm/vmscan.c:7462
- kthread+0x370/0x450 kernel/kthread.c:436
- ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+It also removes one unnecessary space!  Nice!
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Thanks,
+SJ
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+[...]
 
