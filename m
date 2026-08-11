@@ -4,84 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EC9DC5B572
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 13:23:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3348CC5AC67
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 13:25:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25B1B6B0099; Tue, 11 Aug 2026 09:23:51 -0400 (EDT)
+	id 2AA716B009B; Tue, 11 Aug 2026 09:25:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20ABA6B009B; Tue, 11 Aug 2026 09:23:51 -0400 (EDT)
+	id 281FE6B009E; Tue, 11 Aug 2026 09:25:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1215C6B009D; Tue, 11 Aug 2026 09:23:51 -0400 (EDT)
+	id 198BD6B009F; Tue, 11 Aug 2026 09:25:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E71746B0099
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:23:50 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 79538C03F1
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:23:50 +0000 (UTC)
-X-FDA: 85089056220.21.1A651A7
-Received: from lgeamrelo12.lge.com (lgeamrelo12.lge.com [156.147.23.52])
-	by imf18.hostedemail.com (Postfix) with ESMTP id F37781C0005
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:23:47 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E535F6B009B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:25:13 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 78AA2160413
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:25:13 +0000 (UTC)
+X-FDA: 85089059706.30.BE2E0F1
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 96E7914000F
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:25:11 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=n6B1xJph;
+	spf=pass (imf23.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786454628;
+	s=arc-20220608; t=1786454711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UKxRuo4pSeC7LqpuXp3BDVPoTGQXRVqbUCb3RMfEnRQ=;
-	b=vpmsXQn8kci41KmTZFIy/0iUWrL/u79ZLk8t/Tu4RXkFX4AEUXQCYgTgr/v9WIyExveBrX
-	oaLvbTod+gpmuWMaPYqddLakKsgezWEAoNSDlVmNoUOrxgOJtudYCqoB9xLqGdZzuIoWdT
-	5iU69ARkV/PC+ow+vmcmRKjEXVjIQ2A=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HfUDfNxB65XZqovwWVBLkrKpJgUq3OtZ1XoJNMhjK1c=;
+	b=oxry3bHwg/S/+lvH1llFq4NdlpJ84PU7bxu3FRl0qrelcPsb25VdZtDbzH6Vk2e+AHa8HN
+	53GX09YU3fo42dtDgg9Ri1a38dvrDcKRYEogeumrluj0e/LMrqj/LnA/MmzxL7YVBtfL92
+	MmIXz4+8vViDg8HhdrUrSEFMaoRFJjY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786454628;
-	b=1FmSugB1BUVwBcKYOM1N2EcmVt3AOs6Jy49eM0902n8/A6VAr2vGNAiBSnE3gQE+84Bw8s
-	Gh3ddNbJS1Lw5UvDdtE3zCwclAoJXClFqnjYtBbeivwnK1pwT5f9yTlzQ3ww+RwqsqqAqH
-	FY7RjT4hIwAxJdAuqkBFhaCVsuJifDY=
+	t=1786454711;
+	b=Sct8+kLKwpQt4xgos6hg6BSGo8Ji+k24u9HNmYlUYPQ6isrXE6aCoNfoZ3oXUUb4QQPNCR
+	rS8Cw9MTL3aFNzWVWkKxz31eyCcm+G2Kru44w8EIWJ6zDcNGp86rRGP74jf9dxVn/W3NfL
+	adfb5wcO84GHj0X5lA33gECLMi2geAg=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-Received: from unknown (HELO lgemrelse6q.lge.com) (156.147.1.121)
-	by 156.147.23.52 with ESMTP; 11 Aug 2026 22:23:45 +0900
-X-Original-SENDERIP: 156.147.1.121
-X-Original-MAILFROM: youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.1.121 with ESMTP; 11 Aug 2026 22:23:45 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Tue, 11 Aug 2026 22:23:45 +0900
-From: Youngjun Park <youngjun.park@lge.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>, Jianyue Wu <wujianyue000@gmail.com>,
-	her0gyugyu@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] mm, swap: keep hibernation swap slots out of the
- swap cache
-Message-ID: <ansiYRpljHxWMtiQ@yjaykim-PowerEdge-T330>
-References: <20260809144559.2104856-1-youngjun.park@lge.com>
- <20260810151642.871c9b5d9cd56f6efd45ff90@linux-foundation.org>
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=n6B1xJph;
+	spf=pass (imf23.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4997581cdc1so6526465e9.3
+        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 06:25:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786454710; x=1787059510; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=HfUDfNxB65XZqovwWVBLkrKpJgUq3OtZ1XoJNMhjK1c=;
+        b=n6B1xJphQpILHB/HXqgzISEXo1nkG9rVzEpXg4TtTRO2ncBIagO+T0FG8NelbJPDBn
+         +K6F42gEsQVRaJNnONMKkzxzUrFlSc1OcPupX2TlDvltKypNm6w20o0/v9QPjcXUTFX7
+         DMc1oHLIPVVEISzHLKHtyosZJ6kjWIp89F9tlAVW3jzYm3a8vQ8x/v+vfsZx0yOjoFn1
+         zdj7DU0+xnZon123ukmqrfSVZWEB61PHUBP6Q+aXtnWcappfy5QRgUjDSTGImCrWYc2f
+         635MmQVXw/BnGFudLMlnDxxyYE1VEFfkFzZpqxPs1XwNGDZk0Ghw3ezucRxhEFY2BIFh
+         eDgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786454710; x=1787059510;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HfUDfNxB65XZqovwWVBLkrKpJgUq3OtZ1XoJNMhjK1c=;
+        b=O0tvhCihGTeyJEbatsN2FCHFV6xOX6TLJyKu9y2GFV5XGQl7zmikWrprVDs+/turbv
+         vyIQtNP2uhKLQ84CJqXmYT7Lh15kn2NrBmzcnXgM5iEk2TooIYMg4p0b9v8BwvTp3KjP
+         lpswHZK7prTBFK1jteLjR/NORElodFMC+aBX4ltBojL6e4QfG5ffoAhcugnmefRrYmot
+         1bHlxV0ONi3tMRZNbqvnGDFQ6R06f/FW+JEv47HgPXdoWUymgwr3vp/e3CZCo6HL91qi
+         EX8HwZ40c56hoOCEB5QG3OYzMvECdWdKsUWI2GQqZ8uSk0JTFu6OzG7Li3vc0zz0FJpX
+         C7fA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr9XOKvqbjZmLFtw0ba6BCky99DWlaNf8Hu65r1JhChkN9Cdv5/4NH7nD7JEERfGh0b01DAL8dTHA==@kvack.org
+X-Gm-Message-State: AOJu0YxjUgCWT3H7SDGG4aSuCwGkWQJ6y2EGkKmJ1z8htDmqyWiWj2OQ
+	rydx1LKN1u7GGbYpgM3NABDZbffxDXyiuH3m3hPzsKYaneJ/5/MheCQZ
+X-Gm-Gg: AR+sD10YZmJVq8vgHsrsm/i3w0Z7Pmab0/tmlfsepm3YdxyiDJpuVsnI3zP1BypBMsv
+	Zc4Ea8sJ/ODdkH4BTKmUMAmvtRgnvnOXbuZ4gK2ybZB7aOMz6dXGWxPv5UBjPe/w3m95mVNtRdX
+	ar5C+XUqy9IByVdv0Bb9UJ2PGUM0bfkQ9W/dS8TMvg62j6011jqPcsxH9v6B1ZE6dsmSEverl83
+	+41CuL9I5VOmNYQwhtfN3tRgC58SMCg050YL9kolwWcb29JLt0WB8XJjMBbWPQ9RUT+4xZ4Pevw
+	dlmYAszt+GuOKRuILqxnCaDkkM7uSuNHxMten05GtxG+pv7+jM4bxkDz8ZmSUbf5veMMu+dXIY9
+	LjtTMFDOQ0J2lvO21cZTyxwANa3hbcQd9u0EmZ9iOQDxxpr8upY9n03XRhmWqOQS2LDZiby1s1w
+	bG/RqvJwLxFRhXxODXC9RUS8NBAbfJ2gSsl11WuhQ6xEM3eQkYUxoeiUYAarcbPlzoiwnHaZdEp
+	2HBaFmKsFM2y4R3sLcXgJ8nbA/njQMxZhGH
+X-Received: by 2002:a05:600c:4513:b0:495:3e08:ad19 with SMTP id 5b1f17b1804b1-49978468c2bmr48261215e9.9.1786454709883;
+        Tue, 11 Aug 2026 06:25:09 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49977df9489sm83541285e9.1.2026.08.11.06.25.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Aug 2026 06:25:09 -0700 (PDT)
+Date: Tue, 11 Aug 2026 14:25:07 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil
+ Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Pasha
+ Tatashin <pasha.tatashin@soleen.com>, Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org,
+ Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev, "James E.J.
+ Bottomley" <James.Bottomley@HansenPartnership.com>, Helge Deller
+ <deller@gmx.de>, linux-parisc@vger.kernel.org, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>, Vasily
+ Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ linux-s390@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org, Richard
+ Weinberger <richard@nod.at>, Anton Ivanov
+ <anton.ivanov@cambridgegreys.com>, Johannes Berg
+ <johannes@sipsolutions.net>, linux-um@lists.infradead.org, Thomas Gleixner
+ <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+ <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin"
+ <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Ning Sun <ning.sun@intel.com>, x86@kernel.org,
+ tboot-devel@lists.sourceforge.net, Ard Biesheuvel <ardb@kernel.org>, Ilias
+ Apalodimas <ilias.apalodimas@linaro.org>, linux-efi@vger.kernel.org, Vishal
+ Moola <vishal.moola@gmail.com>, Alistair Popple <apopple@nvidia.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: Re: [PATCH 03/22] mm: introduce MMF_KERNEL flag and set it for
+ init_mm
+Message-ID: <20260811142507.4c6c760f@pumpkin>
+In-Reply-To: <01f07ea2-8bdd-4450-8a49-548f8b646cfd@kernel.org>
+References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
+	<20260714-remove_pgtable_cdtor-v1-3-44be8a7685d7@arm.com>
+	<01f07ea2-8bdd-4450-8a49-548f8b646cfd@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260810151642.871c9b5d9cd56f6efd45ff90@linux-foundation.org>
-X-Rspamd-Queue-Id: F37781C0005
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 96E7914000F
 X-Rspam-User: 
-X-Stat-Signature: yyrxepm8aaqgy6tt9gyurxqhf86scw74
-X-HE-Tag: 1786454627-149872
-X-HE-Meta: U2FsdGVkX1+cPJ2v6/E5wKoxTCWpR8h+dtqxQCankQiMtj5v5XHYwSmUs5BFmribhdOpUBPFRa/rA3tP+ivrNQYhjB5zvZvGBNEKKHDJRPCBDr0zOHvmIq1mVKHEwzOBJ75fUop9nO8FhoeMtRUh555mzaG7XEcHXyxDG7bQ2HzAN+TWYPuq3BycfTFmUbJgSW3serMHkABMVk1GuAFNi6TZg4fPTnnPrNFXP25SOE7Jq0x7tdqmnK8TLz1L/ERQYs1cnmiQS6sjxfQv4B+z0HsEZ9n6OFsuULezYZdnBq44j+oH+TNk+k+XbFxAyA4kLBSXIVH5BN+LdbEx2HoeIwlIAIyYrfcclcb6H3Gf9D2FPF6B2L7KsRxrC1O1OiHRxwhdEu2GSSfI2SiMyToD6QBEUky6SLHEHS0xbseeqeFaXykQqrtZRsFGvSBY1okmQ2PsgBabUXCr6He3akR5P7mTGy2CQZcE0kk2b+hma0fp7dT3fHjEfDLK6vp0nCXz/w/SDAG0K87RLx9qBVhLv0b/usUg69Q4g8SYEbetwpkSLbTGMoyYe1dJ8BhARwNVKDAmykVy/zQ5Q4Y8aPD/ZbAy1NsFc4Yuas4+a1RmLom/veLVY7Y5Z9OwFFNwl6HX+tGpGZdbf429UTEEPu63F9He3jOoGyQgsjgniCcvlmpY9ZRA0+Mxtvb4fkkzg8sVSDxLmBW4VY/VYjy6TKzGbiOnL6sMSwsU9fTNhRD05Xu/zwWB+DHB3lxCSYj8AyQFbyufG3Z15OPH18fsmedE8f67N1vnNO0gO3ZlbE+qDJyUXeQ42qBlEvYc+6GdICB0aaP5xXUNRd7vq9uGmq9nUtjr9BOnC6aAhiI6pu2HrwGFpATmhPqOCnN8W4bTJkf0ccJqh4b2JdnbtJwcKYfPxR0MVC3eDvqDpEQffAMftHiCSlPyBftE2X9xvMmx0LFF3kQm4V6SfVzC/84o7YW
- WAtmP8LO
- mSFXnCZP78cYQjrdVZ+iKukUq/a5ELH3MvMspiiv4Pdc1ilHOD2/zXZXxlLcQ9z+HWm5TZRIW59YvgqaJRVQ7XR5Y3isz0cPItKKgZYp3sveAaRtrov098EChDk3x4ATjk0FdMgLjSVXybMdO3IcXzkroaUj+6swa2hkIfi7Ev5O4iS6DB3T3NQT5CtdaBiSM1k/HLglFTlWRaehZ0WwO1JyWJsM8ZDLdJBZglIUsgkxGp14ztveIZWkalwM/1Uldh5z8BjpEXz+EV48=
+X-Stat-Signature: oyuqxbx6f6otet4amkiqfrai1k4weii1
+X-HE-Tag: 1786454711-688041
+X-HE-Meta: U2FsdGVkX1/2k6XQ4F8MbPH98DMWUpPtFQFH/udL3OtWPZshwhbsyelj9zS5S4jaB7UI60i3k+i4KbCllHdcac60kJXjr5AwzgHIzeX6N9U4LB3SmKAyoHM4OPHOq8VVLlQRgpuiLmbvALnJ1XhWizQ6iSUf+8bCuPcKo9cV9GhahuIjTUdag8TeLgDPJzPJBZtzoADWbhz96ag6+KX4005U6gKEYSyVMiLvS8VEk+H2EkCInz7lTcrw48s9sZLrteH5P12MFNzrrTw0oTGi+qXtcOiSNnCeziGO4SYnwgNsI2PiCYH7oH9OTssx+HFgY5V9js6HDjUNskxhc+Qx9jVRlH2beK4ViZa4jODf8pYNtYjuHh4w/fd1su5H8M3j6x5qckpcw4wOZZOciyqTyrY0Zo5jNZnYJJlQwOGQSSrosdqIvRW7ddqtihDyDmIFv6noe4eQCIFbCgKLtfGPT0yuQO6Pa3kJTQiomU5QU97CLFlsFbqZYgl4o0Uxzhj8KsNrhu0hXJhfhXqXbL/9hgc7zsutFWQ1OS190b3K/HPc/3B2zV5tOV/8MDKaTQ8Fv4Jxnm9a6iyT2IaoYqBGn6aJYLFVBoMRMZMc6Z5he/qQiXc3Xe+DLnnLX47Ugon9moeq2rdckiqfN304joyxVySkg4twxWZQQMIpIsb4tQWIU5Y+6pwDUi9wCBcC5m7NWWBBqzL5rqEunRdHd87PPmtt9xH3QK+eLFio4EV6JBabHh9rpNFDCCSPIhLF6INuPgmwHQ0Y4Q42cglPGBnhEbPzUfmnPb4NdfBV1hqWfTCZcPLB3Dam6EtqQvJXxpZ013AFWBvrc+JEa2OwFSxU3RkQLsjqHkYa8CKFkRa+4lEksskOJa51XHbrboQmCzYLZZnyakMm3VVP0KSm9xt0u5dDg5JBjPNRv4GpqyorDf4gSSO2LmC/DPQ/7tZaRH9d3iGz17KQ0z62z9EgW98
+ MfXrBw9R
+ F/3KA/fumAOCFqipmPCujJY5z9L97fKkQUAQfohENTP6l7JDtsUx/wg9FUwHprzkFa74TsnziDgirlLP9ptXiOnkbXcWQF0SWRG4cDhehtDRumeg2pixtuD4CAg/JftyS/+2jZgdtOc23fgIB0df5ZQEPe4/cVtdJyGUzqLDxOkATeDtV8ao/2LQRTxERYT6njFRNL279QNJW4xMLEu6bs2/eJB8H6F0kiDkIQ0EKxxwRlmLfiDtu/gh3ykbNAqR0b90pvEDx/td9V8A32smhEqe4wM27Dpty8e7aMxZvRV3h54U2CXsntCYl8qHL+dhiHQoHXboBOA2K0/3UefI4i+yeDwbWJYwdk5pqd2uEiCEkoRaEK/S8+itpMrn/XOAeE9BWkZW0dvIG5FnMQGYwOGLIzkiF6PNNLemc4VZnhHkRmmpz/B10XJpB1NlEQcPtork6KlUKV9LMOvLxfA17o8ShMexN6ch/tZw5kFckin2mk9nZl/zHCr7LZnNHIyBKzDGevgbbEAQD5WbkZB8Zr4beHC4vIqMDtnPx2ETnt/zRt4vzfT2k0uJFmdiEIF3vxps6ZdLsYXGHq1g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,58 +153,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 10, 2026 at 03:16:42PM -0700, Andrew Morton wrote:
-> On Sun,  9 Aug 2026 23:45:55 +0900 Youngjun Park <youngjun.park@lge.com> wrote:
-> 
-> > Cluster readahead walks a raw page_cluster sized window of offsets around
-> > the faulting entry.  A hibernation slot looks like an ordinary swapped out
-> > slot, so __swap_cache_add_check() lets it in.  Readahead reads the offset
-> > off the device into a folio and puts that folio in the swap table where the
-> > hibernation entry was.  This has been possible for a long time.  It only
-> > wasted a folio and a read.
-> > 
-> > That changed with commit 0d6af9bcf383 ("mm, swap: use the swap table to
-> > track the swap count").  A slot with a folio in the swap cache should only
-> > be freed when the folio leaves the cache.  swap_put_entries_cluster() still
-> > does that, but the conversion left swap_free_hibernation_slot() freeing the
-> > slot either way.  Nothing points at the folio after that, and when reclaim
-> > drops it later, it writes to the table entry at the old offset, which
-> > someone else may own by then.
-> > 
-> > Patch 1 is the fix and the only patch for stable.  It puts the missing
-> > check back, so both free paths behave the same again.
-> > 
-> > The rest removes the cause.  Readahead should not touch these slots at all,
-> > so patch 2 lets only swapped out slots into the swap cache, which also puts
-> > back a bad slot check the swap cache rework dropped, patch 3 gives
-> > hibernation slots their own swap table entry type so that check covers them
-> > too, and patch 4 drops the guard and the reclaim, since no such folio can
-> > exist any more.
-> 
-> Thanks.  It's late and review is only partial.  I'd prefer to wait
-> until after 7.3-rc1 to process this series.
-> 
-> AI review suggests that more such fixing is needed in
-> __swap_cache_add_check():
-> 	https://sashiko.dev/#/patchset/20260809144559.2104856-1-youngjun.park@lge.com
+On Mon, 3 Aug 2026 15:59:35 +0200
+"Christophe Leroy (CS GROUP)" <chleroy@kernel.org> wrote:
 
-False positive. But, more fix needed by different reason.
+> Le 14/07/2026 =C3=A0 16:03, Kevin Brodsky a =C3=A9crit=C2=A0:
+> > mm code often needs to know whether some mm represents a kernel or
+> > user address space. This is currently done by comparing the mm
+> > pointer with &init_mm; besides not being particularly elegant, this
+> > ignores the fact that other mm's (e.g. efi_mm) may also represent
+> > parts of the kernel address space.
+> >=20
+> > Introduce a new mm flag MMF_KERNEL and set it for init_mm.
+> > Subsequent patches will use this flag to replace comparisons with
+> > &init_mm. No functional change is introduced for now. =20
+>=20
+> Did you consider performance impact ? This test is usually done in quite=
+=20
+> critical memory handling functions.
+>=20
+> init_mm is known at link time. Before your patch 08/22 there is just a=20
+> comparison of mm (r3) with a constant (loaded in r10):
+>=20
+> c0014048 <assert_pte_locked>:
+> c0014048:	3d 40 c1 09 	lis     r10,-16119
+> c001404c:	39 4a 03 98 	addi    r10,r10,920
+> c0014050:	7c 03 50 00 	cmpw    r3,r10
+> c0014054:	4d 82 00 20 	beqlr
+> ...
+>=20
+> After patch 08/22 we have, it first checks that mm is not 0, then it=20
+> loads the word located at mm+528 then AND it with 0x1. This load might=20
+> be costly.
+>=20
+> c0014048 <assert_pte_locked>:
+> c0014048:	2c 03 00 00 	cmpwi   r3,0
+> c001404c:	7c 85 23 78 	mr      r5,r4
+> c0014050:	41 82 00 10 	beq     c0014060 <assert_pte_locked+0x18>
+> c0014054:	81 23 02 10 	lwz     r9,528(r3)
+> c0014058:	71 29 00 01 	andi.   r9,r9,1
+> c001405c:	4c 82 00 20 	bnelr
+> ...
 
-The walk the AI review points at is the large folio swapin path, where
-swapin pulls the neighboring slots in together with the faulting one.  A
-bad slot cannot show up there.  The range comes from present swap
-entries in the page table or the shmem mapping, so every slot in it was
-handed out by the allocator, and bad slots never are.
+Thought...
+Could the check be replaced by one that checks for kernel static data?
+That would require that other mm that represent part of the kernel
+address space be static (and probably not in modules).
+ISTR there is an address range check that can be used - and might be
+cheaper than the explicit test for init_mm on many 64bit archs.
 
-The spot is still worth fixing.  The range is not pinned between the
-locked check and the locked recheck, a concurrent free can empty a slot
-in it, and hibernation can claim the emptied slot from the allocator.
-The raw count read in the walk then trips the countable assertion under
-DEBUG_VM, even though the -EBUSY fallback handles the changed range
-fine.
+	David
 
-I sent v3 with the shadow requirement of patch 2 extended to that routine.
 
-Thanks!
-Youngjun
 
