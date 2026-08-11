@@ -4,102 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4329C5CFCF
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 11:31:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A404C5CFC1
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 11:36:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B54CF6B0096; Tue, 11 Aug 2026 07:31:53 -0400 (EDT)
+	id 9D6686B007B; Tue, 11 Aug 2026 07:36:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B066D6B0099; Tue, 11 Aug 2026 07:31:53 -0400 (EDT)
+	id 9AE6A6B008A; Tue, 11 Aug 2026 07:36:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CD606B009B; Tue, 11 Aug 2026 07:31:53 -0400 (EDT)
+	id 8EB766B008C; Tue, 11 Aug 2026 07:36:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BE356B0096
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 07:31:53 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0AAB0803A7
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 11:31:53 +0000 (UTC)
-X-FDA: 85088774106.13.1510AA1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 7127D1A0003
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 11:31:51 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=om8xJIfj;
-	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 6D86E6B007B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 07:36:34 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 038D5A26EF
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 11:36:33 +0000 (UTC)
+X-FDA: 85088785908.09.362395B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 6478040009
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 11:36:32 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AepQbUvS;
+	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786447911;
+	s=arc-20220608; t=1786448192;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4h7/hkwvCsY0fI00T2PR/Y4OZG0mhUElOQ2zn4pF7HM=;
-	b=rTLazvlhZKd2iFrsUYxpZsLx02scCI+/pyPLtm2KLdLvVp+IohhCLy5XC/gMLj9wJMmPZB
-	BkXpWoXgbpxv6UZ8hNHx9KT7H1XYZ3ubuY3JY6MEU+5v3qst/8XCcjdYKJzsoehB6JtbJK
-	YGaaH6ntjrgdY58RA7X2NKwDWSUcCNo=
+	bh=3ZFxTjqYCVDel3mBfuW3KkCSTw+cakZjOBAmHaEPkPg=;
+	b=M2Ne+GfnAdjAyaPWWxD2A3uXIw+99YDZmE5n0r1+lvGmGcx/8+Tw1lpsPnRaID9/w36iXO
+	vEk0i2Uc0bytX5qZAn3Ha9sXYkTeEHaxGjzFiYudWl4Zia630/AnyEb9JUWb6K8Nx6vs8f
+	s152MZpXztKy5zpGiPZlqeM+NRjUt4A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786447911;
-	b=Ik9rAdaX41FFcb0nI+depx+8eZOuBWr1CSuT197fFqSt88bvdkiB+4VEVp7CzRNrNtKf4L
-	JMGAzROiNABfEEIwdgpa3xuTMwF13M6IAuCbap5Ky42RpGprc5r/4ScUNgUxKFjaaxBBQb
-	Mq43y9N+Nr2iAtqAQTdPHppmpLHqdoA=
+	t=1786448192;
+	b=fMNU5l+xgKsSTTXwhwDMJEbaUEBKuIM4kfzqXEZjneac7iMFIPxCk+++ugQFSwpN7yxmvd
+	QnQzFXvFVZHFdJ8PkvSpcoBC9ZfFhOdY4HGE57fOqzx+snNiWFOAnWuz4Jh9UoUE35BL6w
+	bbtN1SDm/CujT+CLvoUGrotYZtCMRVg=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=om8xJIfj;
-	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AepQbUvS;
+	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C38CD600AD;
-	Tue, 11 Aug 2026 11:31:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A141F000E9;
-	Tue, 11 Aug 2026 11:31:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C96AE4371C;
+	Tue, 11 Aug 2026 11:36:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 585481F000E9;
+	Tue, 11 Aug 2026 11:36:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786447910;
-	bh=4h7/hkwvCsY0fI00T2PR/Y4OZG0mhUElOQ2zn4pF7HM=;
+	s=k20260515; t=1786448190;
+	bh=3ZFxTjqYCVDel3mBfuW3KkCSTw+cakZjOBAmHaEPkPg=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=om8xJIfjsRUCvKibHk4AB92a86v/0sm2xMl+BtSmgoyg7QzhmHmd3v9z3YvwkioCW
-	 9u/nZK6wJXKOBRJSadI/b5pqpyXdCXcN7dsJ9BaeaAZz90F1BIBA4twS1gV3wuBHJO
-	 mJtZngYdB7FxDju+zrnYNhjNPFjwE8vD9dfqPU/3VUsDjvBzcsgX4U7GyWO21QietQ
-	 +uDGaQz1ywUPS27qK7TYb35Ab1PJEijr+OqHQQPgoG/BBG0vdmmBqVwPLY/LGZtoQR
-	 7NrPUAPpNv5bhHusvIMbXZwA2gJ2vJg4PJ/zmo8j6qYfhy4KZUMw6mp3S6iqu2krU4
-	 1EuINsbUcsIhg==
+	b=AepQbUvS3w/BT/5h4dSd/Z8AO2qZV9m2S7WE5Cck5btGEsFK21iN5IJJZvXQt+Q8y
+	 mF/hjb2oxuuLZjwGBFIgBaKkiuHNaS4fMRfcFpqanHRHudB+DzQwOk6o8R4dtVP1Za
+	 E3TDohCnhfdGNt4UoCYUxbDMxmLCsPy6lBgpMN0zHQin7i0jEm/iECq4Hl4thAX9ax
+	 TcfVD0HYwpDXWhaRJiPfB2TCh6rOIu24fOI8HSgHLLo+Yo63hG6y+wyeEHRRfzeGwA
+	 Ukrmgj0wmuTjcCGYczXnY0Ufk/Kc6s6fWmLjkfsF4Bm6j67li2fnhtkFrR4TwzD/tg
+	 xRY4fK0F/j3Lw==
 From: Pratyush Yadav <pratyush@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Tarun Sahu <tarunsahu@google.com>,  ackerleytng@google.com,
-  fuad.tabba@linux.dev,  Andrew Morton <akpm@linux-foundation.org>,
-  dmatlack@google.com,  Shuah Khan <skhan@linuxfoundation.org>,  Jonathan
- Corbet <corbet@lwn.net>,  david@redhat.com,  Pasha Tatashin
+To: Breno Leitao <leitao@debian.org>
+Cc: Mike Rapoport <rppt@kernel.org>,  Andrew Morton
+ <akpm@linux-foundation.org>,  David Hildenbrand <david@kernel.org>,
+  Lorenzo Stoakes <ljs@kernel.org>,  "Liam R. Howlett"
+ <liam@infradead.org>,  Vlastimil Babka <vbabka@kernel.org>,  Suren
+ Baghdasaryan <surenb@google.com>,  Michal Hocko <mhocko@suse.com>,
+  Baoquan He <baoquan.he@linux.dev>,  Pasha Tatashin
  <pasha.tatashin@soleen.com>,  Pratyush Yadav <pratyush@kernel.org>,
-  sagis@google.com,  Paolo Bonzini <pbonzini@redhat.com>,  Mike Rapoport
- <rppt@kernel.org>,  Alexander Graf <graf@amazon.com>,
-  linux-kselftest@vger.kernel.org,  andre.przywara@arm.com,
-  michael.roth@amd.com,  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
-  will@kernel.org,  vannapurve@google.com,  maz@kernel.org,
-  fvdl@google.com,  kvm@vger.kernel.org,  oliver.upton@linux.dev,
-  kvmarm@lists.linux.dev,  alexandru.elisei@arm.com,  skhawaja@google.com,
-  aneesh.kumar@kernel.org,  linux-doc@vger.kernel.org,  David Hildenbrand
- <david@kernel.org>,  yan.y.zhao@intel.com,  kexec@lists.infradead.org,
-  suzuki.poulose@arm.com
-Subject: Re: [PATCH v4 05/11] KVM: LUO: Support VM preservation across live
- updates
-In-Reply-To: <anphyjFv3FhF61iB@google.com> (Sean Christopherson's message of
-	"Mon, 10 Aug 2026 16:42:02 -0700")
-References: <20260728121138.1103610-1-tarunsahu@google.com>
-	<20260728121138.1103610-6-tarunsahu@google.com>
-	<anphyjFv3FhF61iB@google.com>
-Date: Tue, 11 Aug 2026 13:31:43 +0200
-Message-ID: <2vxzpkzo51wg.fsf@kernel.org>
+  Miaohe Lin <linmiaohe@huawei.com>,  Naoya Horiguchi
+ <nao.horiguchi@gmail.com>,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org,  kexec@lists.infradead.org,
+  rmikey@meta.com,  riel@surriel.com,  kernel-team@meta.com,  Kiryl
+ Shutsemau <kas@kernel.org>
+Subject: Re: [PATCH v5] kexec: keep the next kernel off hardware-poisoned pages
+In-Reply-To: <anr59P1ZCAuHxv6x@gmail.com> (Breno Leitao's message of "Tue, 11
+	Aug 2026 04:17:41 -0700")
+References: <20260810-kexec_posioned-v5-1-95e1b5e2e656@debian.org>
+	<ann9Kcesyb4T9Z8b@kernel.org> <anr59P1ZCAuHxv6x@gmail.com>
+Date: Tue, 11 Aug 2026 13:36:25 +0200
+Message-ID: <2vxzldac51om.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7127D1A0003
-X-Stat-Signature: zkszph7g8ayt6w6gxbt5iukigcqn9mjf
 X-Rspam-User: 
-X-HE-Tag: 1786447911-963128
-X-HE-Meta: U2FsdGVkX18Lxr1eT8N+CsWY3eJ30pnSAL4T1MeDfQ6ugCaQRU5R3FKNtzD0ze+RMzYuKm5hvOLTznN9HrXHuWoAxfygzcELpnJcKo8bLM9LEF+OBmkY982+DCD0CF1qc2WDY0xkSVSgJuVbFmJRaufV1jvooGnGEb+fyTBeU0x3dhNeXBVysL24hezzmXB30G1Qi4kCDloQu1L2IUKYFbsCcfPlD9b//OTiAkrwQfZNnB2kjXrVe0y7v/IFw/k/1Tqq7Lo5DajlKSktOpcXURcbev8bBKWK/+NlqtvrPS2/Cz/IiaVWXAOEzYWKorwvXPSjwoOjqv8z19o+cSuxjRfUQ8I1CVnwq9rHlqT3Hq8llP7XQnqJxC7mRBJyZESoevQh2HLA6xq/5YGj9dW4x6HoUd16jshAduCxZ0VfmtFw0bXjO/J4pqAEoWutPxpgvXFNYYP5hIF5jskrHvJ56Pr3WAnCPFRF/YMPiMBnhFAgwR9CuXRg0MHJt55xwEuhOMRwmf4z/TYhVLvHJ2ZiiplpxHGaKuYBaFzKFoGtfkT0EnYwVx/X5xFEfC0jzrE57MsR4+ga3ueKbUba3KIe5pGlv8ED6Cx9eL/BgTS9wuLZ8YGh4Tzn8/fRzXtwMuDlaB2Qp5+2fsYqnXensdb4sQ+XA0UNt2SORDwCYQpJKWS6OqnXjISdNxiGCah7wzDfyrTaoxmE6OvMBmsDdtKYXsJsG9PdH7+NMQoxlQEx1bHuJDJ3s9YNAlwlNOeaFurC+myULr6Y496RgabylOYv0JX4GhFO3xzHFN5+11KYFzrbJK4uMQ2DvDLnhJW3IGgwQPxz6kxsdb1I1y1i8ft5+Gf2iflmV1c6FkkdRgeYwQIV0z1/3rPF+AnNAP8wau458Q+/uFxvLxsBZDuh16cRQiHaAN7BlbOvJYhoOXQ6Uj4Jtu0nCntczdG/xwgXf0AcZJkUyt9dkupdiNqeyMP
- 0hXgADVZ
- 2Rs/dvUY+8etgqNqKfCUxfIggGRN6ksQrujnKjG4HlRrUIsBuYwk/WydeVu9R0aBWOxGSj/6FPBEEQ1llJybZbzS3u3u6M2f7pEein241sx6AccIhyo/WGIZisr0WD3bluQcKQ4EwJsdH+JAJqMKfCmccIxffpL3R8B3R0MJ/FAZNCxpGe95rkwDOTrDo2fwFVVPzoI5coQ6BJUOwUNMNi9Gkom1AHTdVPY1jJMVVUVobdFU81bbQHQH+QIr32QOZBI3ng4IWPtlngboKQKw91GYFQwFbSJyiawlyBWvb49fPPLYp9hW/qlOfvDvLcP/KrFkagrW0wBtg1jL7fZQt1N4gzDUihvRhMFfS1iMgVFbWt9i82odXlZcEMMSk4MZTaaGARppLcpGWkwefzE0ZD3aSZQ==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6478040009
+X-Stat-Signature: w481iwb8f6kti8aerd6kk6nh6abboqbx
+X-HE-Tag: 1786448192-560757
+X-HE-Meta: U2FsdGVkX18UgP6v8oomllfrU6IQ2l9Roy+qQNygeG2C1KT4DK6iYDyaBpQSSrStHJLLwG8iLRS97AS2LU0W3j2TGgYbrTq/f9EQbBI8fW1erhedrXhkd1/8rfac836glDVpOQwgrhAiddNLA6udGD/mvwXXBO9Za3hGnneOqmKPPorg0BqLdq9lRk+xIoMk7uE/aZpDrM9u6ivKG2ZAxr0hhNzEc+OOXrAH6z1ZTTTRHNauEF8GFwb/SOGCGskBf8YScV+gIbVpWXVQAA2VsHjOHn9cnnuGp7BX13q8T+P0PhCMTULCW7LW/c9zs71B6il+rnmvOkH21TPt67ojdImILUPn8jJPYqXW7lP29HTQ2Thgvo80IRqGrPmWQN1dI678TsOdADUS/gxCB29EBNJ2p3HXvzCq8xQxh+hAWDM/ElREpZ2ym3GV6mFE5SDVuijZsOCJK/pfx5ociH5QulbPpNpwLvPbA10YKUr2jcRhtkJ8o5uJq+m+11BxZC+t0KCiOsMH9nVXy2+O5XRf42ActpUJ3DHjacCqspEuya/o9Sobom2IpetTCdGNOf789dqxrcn6f3ETWVA1pCgL2qD0JSMU8yVFXhKmbxBMK0QRRunezCvLd2rds3Rp4mBJLfQHQjnWZVWvnYidk27h8iuGG8h7hg9RoC1ZeO6PWYU8cH+rG7I+renIt4sCug67NP6IIcsQ3IDC8aEerrSLIx+dCmk5rXnl4/RblkefKXrQKwIq+Gv9mQ9KCZIGtte4f0ew6hJbif2beUiZi1n/FSx+QVg9Bn1kzGKPVWaoKieQ3vuu8jyHNFmKfNwALOZVLJl2jMZZNYjZl1g/D8HeDpWtC2mzI4NfiHdpggza5ImNZMMAlQ8eInN/JiY/+XgRe2glH1p9JCAnpq2vxmY4B7jMnRgMXmD94/745sik4aIX4Iofv0r7/xWN1nj/9O1cLJXZJboVzQOt0tNlM64
+ ssUI3oB4
+ LA8MhqPgcC0rkcM4KXCqZ+tjxN1Bv88q4djmMwjtIC4y02XnXHjvvFyIhyTCy0rEN7EuXa8Jaop/hv9LeG5v7GBMJasbnA7PWW6QJKF9IAVlyoRTmhnHClLKHZKvIEuPyDtn/xYNq4H7PlPkma0Z4pz1L2sUSei1mflmEr6517JRYqxgW4B5JoaEMyLI4VV/8xLV+2TV/qyXBTaqoGUXlzYL60UA2USa9wVLGMAkiDb2NAfgW6eGmeXtcpMaQ8D2pa8HxQPZTXHGDQDwulvPFPA9QZ9++P2/b+JJ5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,115 +102,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 10 2026, Sean Christopherson wrote:
+On Tue, Aug 11 2026, Breno Leitao wrote:
 
-> On Tue, Jul 28, 2026, Tarun Sahu wrote:
->> Register a Live Update Orchestrator (LUO) file handler for KVM VM files
->> to serialize and deserialize VM state across kexec live updates.
+> On Mon, Aug 10, 2026 at 07:32:41PM +0300, Mike Rapoport wrote:
+>> Hi Breno,
 >> 
->> Currently, Only VM type (e.g. arch.vm_type on x86) is preserved as part
->> of VM preservation.
->
-> Why?
->
->> On retrieval, kvm_luo_retrieve() recreates the KVM VM file via
->> kvm_create_vm_file() and use an atomically incremented ID for the internal
->> fdname, as the final fdname assigned by userspace is not yet known during
->> retrieval. As this fdname is only used in debugfs infra, This will not break
->> any UAPI.
->> 
->> This infrastructure establishes the foundation for preserving guest_memfd
->> instances across live updates, and can be expanded in the future to
->> preserve additional VM state.
->
-> Uh, why guest_memfd?  As much as I want to push guest_memfd adoption, it seems
-> guest_memfd should be the _last_ thing we support, not the first.  As evidenced
-> by the last two decades, it's very doable to have KVM VMs without guest_memfd,
-> but it's rather hard to have VMs without vCPUs.
-
-You _can_ preserve vCPUs today using KVM_{GET,SET}_REGS, they just won't
-run in the background during the reboot. This series can save you from
-dumping VM memory to disk if it is backed by guest_memfd.
-
->
->> Also updates MAINTAINERS to include virt/kvm/kvm_luo.c and
->> include/linux/kho/abi/kvm.h.
->> 
->> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
->> ---
->>  MAINTAINERS                 |  11 ++
->>  include/linux/kho/abi/kvm.h |  39 ++++++++
->>  virt/kvm/Makefile.kvm       |   1 +
->>  virt/kvm/kvm_luo.c          | 195 ++++++++++++++++++++++++++++++++++++
->>  virt/kvm/kvm_main.c         |   8 ++
->>  virt/kvm/kvm_mm.h           |   8 ++
->>  6 files changed, 262 insertions(+)
->>  create mode 100644 include/linux/kho/abi/kvm.h
->>  create mode 100644 virt/kvm/kvm_luo.c
->> 
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index a3ed337e827d..0283f0fd6ef4 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -14539,6 +14539,17 @@ S:	Maintained
->>  F:	Documentation/devicetree/bindings/leds/backlight/kinetic,ktz8866.yaml
->>  F:	drivers/video/backlight/ktz8866.c
->>  
->> +KVM LIVE UPDATE
->> +M:	Pasha Tatashin <pasha.tatashin@soleen.com>
->> +M:	Mike Rapoport <rppt@kernel.org>
->> +M:	Pratyush Yadav <pratyush@kernel.org>
->> +R:	Tarun Sahu <tarunsahu@google.com>
->> +L:	kexec@lists.infradead.org
->> +L:	kvm@vger.kernel.org
->> +S:	Maintained
->> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git
->
-> NAK on taking changes through a different tree.  This is KVM code, period.
->
-> In general, I'm skeptical of the dedicated MAINTAINERS entry.  It's extremely
-> difficult to tell since this series is little more than a skeleton (either that
-> or liveupdate is way simpler that I was expecting), but I suspect that maintaining
-
-It's a bit of both. This series of course doesn't support everything
-that guest_memfd can. At the same time, I also keep being (pleasantly)
-surprised at preservation being relatively simple. For example, the code
-to preserve a shmem file (via memfd) is roughly 600 lines, a big chunk
-of which is comments. The code of course has some limitations, but it is
-good enough for use in production.
-
-> liveupdate for KVM (or for any subsystem) will require more subsystem-specific
-> knowledge than liveupdate knowledge.
->
-> E.g. the LUO APIs seem pretty straightforward; I assume the bulk of the complexity
-> is going to be in knowing what to save/restore, and how, which is much more about
-> KVM than it is about liveupdate.
-
-I think it is fine if you want to take these changes through the KVM
-tree, but I would like live update maintainers to be listed as reviewers
-at least.
-
-For one, we care about ABI breakages and versioning. The serialized
-state is a part of live update ABI and changes to it should be ACKed by
-us. For another, how the file handlers interact with their dependencies
-can affect the behaviour that VMMs observe. Those changes should also
-pass by some live update eyes.
-
-So I think we should have a separate entry for KVM LIVE UPDATE that
-lists the live update maintainers (or perhaps only kexec@) as a
-reviewer. The patches can still flow through KVM tree but we'd get a
-chance to ACK/NACK them.
-
-Of course this all can evolve later as we see fit but I think this is a
-good starting point.
-
->
->> +F:	virt/kvm/kvm_luo.c
->> +
->>  KVM PARAVIRT (KVM/paravirt)
->>  M:	Paolo Bonzini <pbonzini@redhat.com>
->>  R:	Vitaly Kuznetsov <vkuznets@redhat.com>
+>> On Mon, Aug 10, 2026 at 06:32:04AM -0700, Breno Leitao wrote:
 [...]
+>> > +	for (pfn = PHYS_PFN(start); pfn <= end_pfn; pfn++) {
+>> > +
+>> > +		cond_resched();
+>> 
+>> cond_resched() for every pfn is too much, isn't it?
+>
+> It is what the other pfn walkers do: the kpageflags read loop in
+> fs/proc/page.c and read_page_owner() in mm/page_owner.c both call it
+> once per pfn. 
+>
+> But I honestly don't have a strong opinion here, though, happy to batch
+> it if you prefer. Would this one look better?:
+>
+> 	if (!(pfn % MAX_ORDER_NR_PAGES))
+> 		cond_resched();
+>
+
+Now that we are looking at this, Sashiko also complains about a race
+with memory hotunplug.
+
+    Can the page pointer become invalid here due to concurrent memory hotplug?
+
+    The loop retrieves the struct page pointer using pfn_to_online_page() and
+    then yields the CPU with cond_resched(). Since this iteration runs without
+    holding get_online_mems(), could a concurrent memory hot-unplug event offline
+    and remove the memory section while the thread is sleeping?
+
+    If the vmemmap backing the struct page is freed and its page tables torn
+    down, dereferencing the pointer in is_page_hwpoison(page) upon waking
+    could cause a use-after-free regression.
+
+Kind of makes sense at first glance but I didn't go and look. Perhaps it
+is better to do the cond_resched() at the end of the loop?
 
 -- 
 Regards,
