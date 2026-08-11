@@ -4,111 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBD81C5B572
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 17:53:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CE31C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 17:53:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECB6E6B00A5; Tue, 11 Aug 2026 13:53:34 -0400 (EDT)
+	id 8B1F86B00A7; Tue, 11 Aug 2026 13:53:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA2A16B00A6; Tue, 11 Aug 2026 13:53:34 -0400 (EDT)
+	id 888AC6B00A9; Tue, 11 Aug 2026 13:53:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D91D26B00A7; Tue, 11 Aug 2026 13:53:34 -0400 (EDT)
+	id 79F336B00AA; Tue, 11 Aug 2026 13:53:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AF60F6B00A5
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:53:34 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3C1FFA018A
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:53:34 +0000 (UTC)
-X-FDA: 85089735948.05.EB938AB
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FF8A6B00A7
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:53:44 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D15D8140185
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:53:43 +0000 (UTC)
+X-FDA: 85089736326.08.877DC89
 Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 48D78180006
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:53:32 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm3 header.b=ijtaT8kD;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="F 7n+tHY";
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=linux@jaseg.de
+	by imf24.hostedemail.com (Postfix) with ESMTP id BC81B180013
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:53:41 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm3 header.b=BOkDF4Rz;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="N 4iS5iT";
+	spf=pass (imf24.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=linux@jaseg.de;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786470812;
+	s=arc-20220608; t=1786470821;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b3ArJhoaqsFvEuZHlfyWAtV6SGaCuVy7Av0qaKtOt1k=;
-	b=NReFxx5B96Svu2NCz5V4N830F5LxThaGEweJoDRCO/u9ctpb+1xjuk/Ik8Jn10DJsYln4y
-	IPrllOKLyJYLqrN+CRdIfZPGr/d9e6KmtcIX9bCoqkzeAoCiVmJAMBYrBqIUABU6XSd+AN
-	dU3kshrzQNsI/3pr3nGbtZpNJf5grFY=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm3 header.b=ijtaT8kD;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="F 7n+tHY";
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=linux@jaseg.de
+	bh=J+WO8Wd8uVuaOAqPz02lOuhC1hujQODpzz8Mj2pgUKU=;
+	b=MepB1IV9oynPO3OZ8q9EnOktyTk2aQr9jYkekwpUkKsf4JcDgGWcb94Ow4S/+JGxGTyS9W
+	M8POAz37WwIQGMtciay8wQynepcWnvZ0WyFDmL0N1YZDXIN/q0ODWcVsOjFGPcDvWaCDdm
+	TWsbl4FNagKbFDHBgjml5sEcDgMINUM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786470812;
-	b=OgxtpTToU12qaUlSBZTbmfyiBxV04j59JHWxSFqttjkrOM1Qpc02oZ8rWTOI1KWnIfuROC
-	2SSNCEmTFeTX4fvKZrjKoKaPsXsS+nRwEuRcJoGdyW54hcWGjcSnu3Af1edUzGkBLunYIc
-	qDy+wokfwvZeTLaJzItZ6AR4u05Z8+Y=
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.stl.internal (Postfix) with ESMTP id 2036D1300386;
-	Tue, 11 Aug 2026 13:53:30 -0400 (EDT)
+	t=1786470821;
+	b=J8CQVn76ezNy/8gzCXSMksmfHyskC5lPTSU5vFB+m517A0QzQXYOLck3S53C5K+14aCxvk
+	PR5/xU9QYrT94492coo/04QKOFERIPsclaN3ZEM7IwUdHCylZYEI5aHzli5yoFFnTAXYTP
+	fBWLGDTTpNdT0ANqYyLu2XJpLPUUwpI=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm3 header.b=BOkDF4Rz;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="N 4iS5iT";
+	spf=pass (imf24.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=linux@jaseg.de;
+	dmarc=none
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailflow.stl.internal (Postfix) with ESMTP id A52E71300394;
+	Tue, 11 Aug 2026 13:53:39 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Tue, 11 Aug 2026 13:53:31 -0400
+  by phl-compute-06.internal (MEProxy); Tue, 11 Aug 2026 13:53:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaseg.de; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1786470809;
-	 x=1786478009; bh=b3ArJhoaqsFvEuZHlfyWAtV6SGaCuVy7Av0qaKtOt1k=; b=
-	ijtaT8kDvWYfd3yO7OtyiAlRE0ZIplb3TPK1W2M6BA10SuK0UgAtjcGX0oE3nhdJ
-	PiZWC22o8wcjvWRNS/zjkaIimr0n9LVRM0tvbIy4UML1hZWjtYDZl+CiJ/g69qP2
-	ha+ZWvdrDWeVRbtW49NmTxjxwlmhD+g2G718CyihW1245v+yYuBiLqm81Xi8pn+i
-	lDW/+3bli1cJsp4GgqYBlW2dnGvdRyH5uazX0dA0QPmBy4llq+Ru3JmXd4W3Bfs1
-	ON6eS3YwR6pclmES5s264NOV2erZgIAUuR+AxbOS0JUZEPv1qD5oKKpQj6wQnekz
-	zP7bJ3Ky1wfC9BUlGo7URw==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1786470819;
+	 x=1786478019; bh=J+WO8Wd8uVuaOAqPz02lOuhC1hujQODpzz8Mj2pgUKU=; b=
+	BOkDF4Rz9/gooVjq3RpQHo3JgqyWe2UvkdyKkquJvQvwFmzg6JKoOyLQdtfEo9os
+	mQPrjjoZ8lPFt6CGUqgCaJL+KYD79POq7sSJkXuoAF2eXi1fvAA85T4Ytwt5ur/Q
+	nx+jUlDfH4eyDYxijQfeU7PLX023FwP9I1sIH97UyPDrGaSgF4aquxz32lGhkUgt
+	VPPGFo6LQAwm4b5XHSLQz91GJaXZDpSzOuxSp+H+TfvoKfrvN4LXASTCzHd6zyeS
+	EnDHlJha5SzE+CxhuQmFzFgWrs6c+eUJ8hr/mOBW15qfn+mIXzBlbV0RD4Rgtgzg
+	1zeoXrPUD16fpAI8XoHcOw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786470809; x=
-	1786478009; bh=b3ArJhoaqsFvEuZHlfyWAtV6SGaCuVy7Av0qaKtOt1k=; b=F
-	7n+tHYSFuWlN4o4SYZgF6PerK9cXZHzNOIbAIrxvG/Jw3R42BCKEUWgzv74DtCyw
-	rUcgXzQbXuFLrIutTWJ1kejWT9+CRwoJUT9aiVCyOBR/uPiZRKpdwLiSB7PM5+/H
-	BfnYe93/namBn1D+o63fBYUwZC/UaAvT2VSMRQLwopNnnawgjZ0iSlRNOa8tZqwO
-	RR2uHPELbcTiJi77bnhtXa5CfyUJ8inB8K20y/BcPQe9YbbLeDiFu9vS1GRwTVts
-	krh7NortTp/iCcQXgux/TCCZV620afOa+8s30z4mKCT0g8nwlQGQln4AY19Q6hjs
-	GQdHtxAcicxAkr+1jlmwQ==
-X-ME-Sender: <xms:mWF7ahBvdgF8epZoerAsdMmQKRY9NCiHXLY-iobD4PC7qsqhsgN0sA>
-    <xme:mWF7amGXHNobEqvw6CXL66lse6ZIj-mUZTYnUwZsc4tt2a8LmkkPi0ScpExFULbgl
-    Wf4JNbHgYmNYFzV7AmvfZn_wASXB3tZ8wNe-Zs5Yi0b-2rD7t2r>
-X-ME-Received: <xmr:mWF7apUvnSnecSShUC5ABb58WPvKqOgvN6WDuAu48TYhsYwpXuTFlyHSdxt0uIjyD3MLG5iU0GKAHEjItUvhCCw>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786470819; x=
+	1786478019; bh=J+WO8Wd8uVuaOAqPz02lOuhC1hujQODpzz8Mj2pgUKU=; b=N
+	4iS5iTGKooqdrvcsJTYS61BR/GSIT45Oo6QqU8ZU7sU0mXhtwYj7MB3Jt/Dx0ROe
+	WWCQLGzlOjc/ospWcxf6DRzXygSS7RJUve2IQJZUBh795lT0a4nr7wM+C75qpRZY
+	pAnHy1c3fGCJV8cdgknI5GL/qnynMG3dZKY3ktFPOILbcp96/cEcLmK1HqjrMdtZ
+	bVd1bKcDGJtqBekmzpDH8Kt/eUgT9wx7T1mZRCUw7rWoiHNEWiJRkv45NdCb7Ivo
+	8FBBpiS2U0nx5YufR55NmpXxHPL9ZGwYjt8vxD9aiX5ieIIFJl3fZp4EQaqD0WLU
+	zCDK0gxpQBPdBrFDcum2g==
+X-ME-Sender: <xms:omF7atYgKN-M4dSkgg2g107EOxf85SPIjPISOjO_-uyMGQ95gPTpoA>
+    <xme:omF7ambU4drf8-qImr2vGKCYoOERMgvkEowW8H90c7JuQF9F7gakJh1u5fwVAdbP7
+    vDb1ixUPNaU5b-Ye5w36rwhqVHs94AfSJUdLQnfXqqZhFz5p1vy>
+X-ME-Received: <xmr:omF7akP-ZfsgjJJ6pKgoUOCz0fWLB_ynbFeIAX7VEbiHq9JdofK_GrkuHP6QU0WhMjccqqKM_rY0m3u7Tezlymg>
 X-ME-Proxy-Cause: dmFkZTFP5tmiXRyqpvhao8uWnDWsuVG58E3QcpY8nNF+TN3d4+2z3XaWQJ1+2uEKcUq9Jg
     +xH/KDfBOi31TfxVE5vy2aZ5W5Eono+bvv7mBiiNvVW/C9tjIvrxCLzv7Tz6GJOSvAG1cd
     t11+FzpQNbill+yp1ZC7JKPVzEaxQ4CH2HewKTU1gYEn0mNFldMXWgoBvZ/c5OhwLZogLW
     sZeOMCUfQY9vOvCjGHA0ivpYn+5HBy3sK6RswFREIaUm9jlhbU7pV5ZXGDLpJAMlUAJ/Lo
-    y1vjaaTNNEiBF07QqH8YbZg0fsVTsE2lSAku2XiqZRlB3GAWdGnDFC/NxQNHJZjZwh0bAL
-    NFU+sk1NjKbEiriHkWskXNqpRyiqngUiDobuBKM0QHx4IectPTiNVC0LAnkIil116cieth
-    zlAJFqSExn0DMecmyqjTsWkD2ngU3mch+rJhp5ghpPvHYcUsU6CHEmiNL5gcm7pKojpoO8
-    fUnDVi8q2D+tB3RNg8+bAG4knndc4v8UKvQON5b1dgXr5OKaBku6F7yXG1GPPJwkfrL7jQ
-    EGcTagLVCnPlAjtfXZXy0P8J7sS0XyACESJHYYDdJ2OUni4Z+skjWf20Xpwr+zWL1ubmDC
-    Ll6gwazrEjfo6CiwO2x+aWpiJNWOBFsNaCTo8jTyf1t3R3yZMgHWANJia/Qw
-X-ME-Proxy: <xmx:mWF7akYLbKa4Ldqion9AVypKRG2td0FOiQT0IMdx4BEp4s2wNEAIiQ>
-    <xmx:mWF7arB2K5jQ7vH9tLL3KCSU8nMwn0AZVF2DZWl1CPCuZItwReOsKA>
-    <xmx:mWF7ahFAC4F5KSyCw9RpCBXNmmg4CQcvBQvPsk2Ct6QZdcB42lOoFw>
-    <xmx:mWF7atDdhYqdhtincgzKdDhXKGMZ16JSVedWEWvxbhg-Z7VjwfQr3g>
-    <xmx:mWF7arIkBDKrbmh1nTENBMBX06Dyq0TxrsND73UjyTyhqXlTGHTyLPQL>
+    y1vjaaTNNEiBF07QqH8YbZg0fsVTsE2lSAku2XiqZRlB3GAWdGnDFC/NxQNHJZjZwh0bYp
+    2D+LN2F74Yl3YoQ3TYGxnERSWoIxBO0+Rj9TdO4erTRPzAa6AXV7HsZRupEU6wVR1PLnZ/
+    qD+OrnCT6HXewM+ux4wHGxmKexKv0hHPnfmxW9hJCXJtO2BNPDGZ1Lle6+NhqPYEPMPKNb
+    X8R7eH/IiY0blGg6UPTOthFqGg5f8FXU1DJLEWoGZiH7qMjHDYZC3g35sbvFkqkMCq4alf
+    ePCRDURBuId8UuInZQ/cP018GY4SJfHKmWBqr+4fdNBUm01zIs5NrvTiIC/1gDOpHLjt7/
+    vRSUj7PMIURe49UfkaLBCD/7OYrpKZ/VT/L3AAfTp/3bPR88OP01AB0LJ4dA
+X-ME-Proxy: <xmx:omF7amk6I74XTH719pm20D4Jw17uGY_WXvpXv-1zgcz3k1-tH8Xd4A>
+    <xmx:omF7atbL7SGYJ6IhF5VsbqvIWP_50F2wK5RmksIElcj26ZbK3C0bTA>
+    <xmx:omF7arFeKkTYWFWjXsQqbKd3VyVMr7Rw9bhdMGFsIQC0tlshQplL5g>
+    <xmx:omF7aqIlFWIsTx-lbQsA0nCLMWVfVIX0FyTdhx7F9Q2DSOhpoNacaQ>
+    <xmx:o2F7areimsI17MhYeg6_qPD8pxiIA70rILVQJMKSbjrob-vXhArnNqyj>
 Feedback-ID: i60a14417:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 11 Aug 2026 13:53:23 -0400 (EDT)
+ 11 Aug 2026 13:53:31 -0400 (EDT)
 From: =?utf-8?q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>
-Date: Tue, 11 Aug 2026 19:52:52 +0200
-Subject: [PATCH v2 03/13] arm64/mm: add set_direct_map_default_nosplit()
+Date: Tue, 11 Aug 2026 19:52:53 +0200
+Subject: [PATCH v2 04/13] mm/secretmem: wipe secret pages before kdump
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260811-crash-zeroize-rework-v2-3-9561d13c2340@jaseg.de>
+Message-Id: <20260811-crash-zeroize-rework-v2-4-9561d13c2340@jaseg.de>
 References: <20260811-crash-zeroize-rework-v2-0-9561d13c2340@jaseg.de>
 In-Reply-To: <20260811-crash-zeroize-rework-v2-0-9561d13c2340@jaseg.de>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -150,14 +150,14 @@ Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-fsdevel@vger.kernel.org, dm-devel@lists.linux.dev, 
  =?utf-8?q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>
 X-Mailer: b4 0.15.2
-X-Stat-Signature: ogzsee9c7eoacqsx5sz4zehxdk6c6x5c
-X-Rspamd-Queue-Id: 48D78180006
-X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1786470812-170868
-X-HE-Meta: U2FsdGVkX1/2aCBmv3lAnNHGkyGHK6apIwFoGjK5uztB59dSEeUhVzSpma/mjrQ4M/PWoKzR9aurrqynYCgumTzMZQI3IWBhwMuC01ujz8i0TqWarBvpJKtksLNnMogISvmYtMfPfaxjYhCja+0doOZ1/jeDou5v2JlFxH2IFADTar0DyHjGNkBz/7zjYJibcwy/9TTZiN+E1ZMdR2b+AE1tBVwMbl6BuYhP2rVR7ohUnK6vRWD/eWkQj5Z8cXYUL1tthrvVQ4kCRt4J5D5MbPKBQ5K4wWAxMcvWG4LdWVBRJtlbbN2ryWmzJiuVEb5lzZVQYPYSzzN1dtlDL+KZobpLQCKt1EQ9Mvbj3IppzOl6MIXOKjTBLkvkovnCVe2IvB6OUDaUFFih2M4KE/TeVj8gkzdcn/aEa9nwl26wYlrHQrqqo6nuwzHochYEQgozh5P/YOO9ig2B4twz1T2OzElkBTuhMicDie8i9cO2iI/Is/ZqMaClaruHi+CcVm3CPg7+nHTJJ6Chy4VUrF3XRHbqYYq9gnrNyxjWN2LOnn2NMGU+/dMtcCEAXtTAot35ofcRCLIP5P62lKhaG3I65iZUOlqQGeHBDwJLhw4S5WlOY2gkOqjBuqsKqf7K2zXu/egLTVi6l4A4RPigc9TE5dTVCI7tKrsFtsIjLgs++OgTpH9uIKmsE/oMLuwpEHPFK0S9xQiwVqxZqoeAxDUNpiK2O7J0OQBvcM7YaiQXI3eY1oSjVPEvVZ1MlaKPKY0M6zTSjS6tMpSJmCHaWI7xfqsnQr4IuFeJfu4Jy7htxVZ6jW9gh0NYncI0zQ2KxEFGnx3tVQoDemwzHQXAJJYe7EmuTtQr2mH0GxucQqR1pF6twcbDznzxWynPHzkOKcy/qPIqWHTCZh1dr1bexS9lpROnJJjkYhYOCv+KeQVFQ6KaBQc6o+/Ut2Z+hiBF7JjWbC12/tbuWTfzcGR9HXc
- aTKuMovV
- ZU/oVmxgzVHYfZc2cUAoL8FUDKTq7B6ROrGs5eZemH4Vha656KhfEWNEZFyVqIJpqO0TOTOpjee3GgV4aD7xkX7qgPgYkUo6RBc1urfrWiWTC5r8zs32DKJgFTACiAgNKZpzshWu6vEA85gFjZkNTty9KCs6Bui1FTNILzRdxeWIbuLoG0Sk1EABN5UjdMZ5PHvSzS7+fOuS8SgNT7Kv5yckThVYf814gseoi2G1BslHWbPhd+TqRVFa3BHcmPiJw5bjRtrbwNgmmxHeJvt9cQu3bXvm/p41LEGBB0qEcvvk32nU8fHgldWlBMycIJS8d937ygig2e3Nf5htKBP/2OTVV5FJ4Fq+enWrU+1XoUIta2WNLYdT+IGhb2prb4u7+TgjxoHq1MIzGgao96cNu7/prcB0eAxjOLVcQYZOuSzxe15SDTghtyVPYNusbZEdu4jIu2fQCXdPz+k0X1p80B2XxHA==
+X-Stat-Signature: n5kcej67j1okxtcnpjqfc9zqsqngfzf7
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BC81B180013
+X-HE-Tag: 1786470821-511402
+X-HE-Meta: U2FsdGVkX1/LsvXrY3dYPLATdp0LCl88OQNWWE0NCaz2ba5DZWh54Ad7d47MVLLxt3G/phLbqCciW2dvRmE2R/4uQw24EKCSeEM+0IHu6VOngw1dqrDQ4u/r+iS3IGSLdHr+TjWmbYsRm4YzERqQ2Px2V8HDSa+tVkToENDrZkBfApcEs6Vj7wD/mt9KkvWP8+kw316yVnjgMnwiXHYtWhppkfHL+T7Gcb6Yy905sJm/++wSxVzCXaeyo3J4Jm/gyerjzoKDzCRjNS9rYO4s4E99JGWvsDF0g6YCzXD1xa3Jd7Mn7tyR0z+Ithnac/H2i/TbD7/0Are1VGGECP9JCh3tB1GMAYXu38jKS38QqIWf+Z5StzJ6icVhbs2HWCXKoT4dn+CixDWOvAp0mHBViWNwbUHsKEbYJuTghmbY3qL1aYf0j2Y5L7foRO5JRoKNz05E7xh6HGr0j0AEBWT+QemvwjUYY7zyhu871UDJZrTMahT/b1GbYlDNWw/boVYeAmww06jIhFMzo/SOeggnQYjkv1WcyIUZXLAmfI8HegU8s1ECox8gtAcPcT9XP01DAMGxdblXzJ7+FpND+qlMMJE2ERh054wzZf/3L+JO2R5dyOWUvThq2GYx81T9G/Ji9U3Vj1PDr2W3kl3gH2ZK44g8qOvv1pWdOb8EK56y6tIiOJ3swH+SNU+r+lBS6RsiWazeRIG/YqArsXWr7d+RKb9C7eavxf/QygihymN0DgjqBCVFNqLcUstN6yM4osB3J0JybFC1FK1lUre9TRTYBepYFrCtsHPlQkf8bR458AIr/pQXRXcPnKACy69pqB6jXe1Sw5wcJHY/0HP0pQ9u7HmOQpZyVCXzbtz2yRrXHgZzxN/RfDqpf+AKyOfxEtoBeXJWGHAh1KgCiVbNLxw2Mh+umoZLN0wNXm1qBcL7bywkHbcmRGHV0CgCCAvhLDGXLFP7CH8Zwx8ASbCCceB
+ zeJQnvDK
+ /ZeGILYBbtSlDvXXoKRj9A5nyI8QuZDJqas2P0k+I75rxW+RAYhg3AeGPP3nl9wvGnbNNNHqyKU10bo3CDnZzHv3EUgtHdsDyCh53qsylHn8bQS6cGc39tsF8Yo7TKTH1EDGuMyYbiqZhWvJ/Zaqv4L83yhZZA3n8EvkMcBbVTNUlS8cReESrSgPl34oHAFHP0ZM6Jrq55X8wLOhPY7h1uABhf/vVcMQPCE8+dZMTT/ZQRp5xyoBKPyHqJIIkVtT5tfaE2ZYZDXSb+BMI3fagWuy5SIPzlQgZg+7yZCFVZQWap6g1jRY3PcRkr5n4MGv4MZm1T3rBv5FkGZPKiuva87keLOF2VqkaCOJRoApXDcm0gG77a5Zynv+hm/UAQLe8ZziVML0ooiB8f4Gq8YljeAz3/rTQorc1JL2BA/xWm+ijVwZY/XB1D1i/exPAO8jgyoE+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,99 +165,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-set_direct_map_default_noflush() goes through split_kernel_leaf_mapping(),
-which takes pgtable_split_lock and may sleep. That makes it unusable from
-atomic contexts such as the panic path.
+Register a CRASH_WIPE_SECRETS notifier that wipes secretmem folios. As a
+result, when CONFIG_CRASH_WIPE_SECRETS is set, secretmem areas will be
+cleared before the kdump kernel is kexec'ed.
 
-Add set_direct_map_default_nosplit(), which skips the split and only walks
-the page tables to apply the permission change. Callers must guarantee the
-page is already mapped at page granularity. This holds for any page that
-had set_direct_map_invalid_noflush() applied to it, as that call performed
-the split.
-
-Architectures that do not need to split the linear map get a generic
-fallback to set_direct_map_default_noflush().
+The notifier runs after the other CPUs have been stopped, so the page
+cache cannot be mutated concurrently and the xarray may be walked
+without taking the i_pages lock. This is a best effort, defense in depth
+measure. s_inode_list_lock is taken with trylock only. If a CPU was
+stopped mid-modification the list may be inconsistent, and this late
+into the panic path, there's nothing we can do about it.
 
 Signed-off-by: Jan Sebastian Götte <linux@jaseg.de>
 ---
- arch/arm64/include/asm/set_memory.h |  2 ++
- arch/arm64/mm/pageattr.c            | 21 +++++++++++++++++++++
- include/linux/set_memory.h          | 17 ++++++++++++++++-
- 3 files changed, 39 insertions(+), 1 deletion(-)
+ mm/secretmem.c | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-diff --git a/arch/arm64/include/asm/set_memory.h b/arch/arm64/include/asm/set_memory.h
-index 90f61b17275e..cb5f44bb5a94 100644
---- a/arch/arm64/include/asm/set_memory.h
-+++ b/arch/arm64/include/asm/set_memory.h
-@@ -13,6 +13,8 @@ int set_memory_valid(unsigned long addr, int numpages, int enable);
+diff --git a/mm/secretmem.c b/mm/secretmem.c
+index d29865075b6e..db00b7d06080 100644
+--- a/mm/secretmem.c
++++ b/mm/secretmem.c
+@@ -13,9 +13,11 @@
+ #include <linux/bitops.h>
+ #include <linux/printk.h>
+ #include <linux/pagemap.h>
++#include <linux/notifier.h>
+ #include <linux/syscalls.h>
+ #include <linux/pseudo_fs.h>
+ #include <linux/secretmem.h>
++#include <linux/crash_core.h>
+ #include <linux/set_memory.h>
+ #include <linux/sched/signal.h>
  
- int set_direct_map_invalid_noflush(struct page *page);
- int set_direct_map_default_noflush(struct page *page);
-+int set_direct_map_default_nosplit(struct page *page);
-+#define set_direct_map_default_nosplit set_direct_map_default_nosplit
- int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid);
- bool kernel_page_present(struct page *page);
+@@ -187,6 +189,54 @@ static const struct inode_operations secretmem_iops = {
  
-diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-index bbe98ac9ad8c..a7bb6bfa12ed 100644
---- a/arch/arm64/mm/pageattr.c
-+++ b/arch/arm64/mm/pageattr.c
-@@ -275,6 +275,27 @@ int set_direct_map_default_noflush(struct page *page)
- 				 PAGE_SIZE, set_mask, clear_mask);
- }
+ static struct vfsmount *secretmem_mnt;
  
-+/* Caller must guarantee @page is already mapped at page granularity. */
-+int set_direct_map_default_nosplit(struct page *page)
-+{
-+	struct page_change_data data = {
-+		.set_mask = __pgprot(PTE_PRESENT_VALID_KERNEL | PTE_WRITE),
-+		.clear_mask = __pgprot(PTE_PRESENT_INVALID | PTE_RDONLY),
-+	};
-+	unsigned long addr = (unsigned long)page_address(page);
-+	int ret;
-+
-+	if (!can_set_direct_map())
-+		return 0;
-+
-+	lazy_mmu_mode_enable();
-+	ret = walk_kernel_page_table_range_lockless(addr, addr + PAGE_SIZE,
-+						    &pageattr_ops, NULL, &data);
-+	lazy_mmu_mode_disable();
-+
-+	return ret;
-+}
-+
- static int __set_memory_enc_dec(unsigned long addr,
- 				int numpages,
- 				bool encrypt)
-diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
-index 3030d9245f5a..65d0fa010368 100644
---- a/include/linux/set_memory.h
-+++ b/include/linux/set_memory.h
-@@ -44,7 +44,22 @@ static inline bool kernel_page_present(struct page *page)
- {
- 	return true;
- }
--#else /* CONFIG_ARCH_HAS_SET_DIRECT_MAP */
-+#endif /* !CONFIG_ARCH_HAS_SET_DIRECT_MAP */
-+
-+/*
-+ * Variant of set_direct_map_default_noflush() that is safe to call from atomic
-+ * context, for pages the caller knows are already mapped at page granularity.
-+ * Architectures that need to split the linear map, and can therefore sleep,
-+ * override this.
++/* Called far into vpanic from crash_core.c with other CPUs stopped and
++ * preemption disabled
 + */
-+#ifndef set_direct_map_default_nosplit
-+static inline int set_direct_map_default_nosplit(struct page *page)
++static int secretmem_crash_wipe(struct notifier_block *nb, unsigned long action,
++		void *data)
 +{
-+	return set_direct_map_default_noflush(page);
-+}
-+#endif
++	struct super_block *sb;
++	struct inode *inode;
 +
-+#ifdef CONFIG_ARCH_HAS_SET_DIRECT_MAP
- /*
-  * Some architectures, e.g. ARM64 can disable direct map modifications at
-  * boot time. Let them overrive this query.
++	if (!secretmem_mnt)
++		return NOTIFY_DONE;
++	sb = secretmem_mnt->mnt_sb;
++
++	/* If the list was modified in the exact moment we panic'ed, it might be
++	 * in an inconsistent state that would be unsafe to iterate. If we can't
++	 * get the lock, too bad, that's all we can do here.
++	 */
++	if (!spin_trylock(&sb->s_inode_list_lock)) {
++		pr_crit("crash_wipe_secrets: can't acquire secretmem superblock lock.\n"
++			 "crash_wipe_secrets: skipping zeroizing secretmem.\n");
++		return NOTIFY_DONE;
++	}
++
++	list_for_each_entry(inode, &sb->s_inodes, i_sb_list) {
++		XA_STATE(xas, &inode->i_mapping->i_pages, 0);
++		struct folio *folio;
++
++		/* no need for locks if we're burning down the house :) */
++		xas_for_each(&xas, folio, ULONG_MAX) {
++			if (xas_retry(&xas, folio) || xa_is_value(folio))
++				continue;
++
++			/* secretmem_fault() already split the linear map */
++			set_direct_map_default_nosplit(folio_page(folio, 0));
++			folio_zero_segment(folio, 0, folio_size(folio));
++			crash_wipe_cache_range(folio_address(folio),
++					       folio_size(folio));
++		}
++	}
++	spin_unlock(&sb->s_inode_list_lock);
++	/* off to kexec()! */
++	return NOTIFY_DONE;
++}
++
++static struct notifier_block secretmem_wipe_nb = {
++	.notifier_call = secretmem_crash_wipe
++};
++
+ static struct file *secretmem_file_create(unsigned long flags)
+ {
+ 	struct file *file;
+@@ -212,6 +262,8 @@ static struct file *secretmem_file_create(unsigned long flags)
+ 	inode->i_mode |= S_IFREG;
+ 	inode->i_size = 0;
+ 
++	inode_sb_list_add(inode);
++
+ 	atomic_inc(&secretmem_users);
+ 
+ 	return file;
+@@ -263,6 +315,7 @@ static int __init secretmem_init(void)
+ 	if (IS_ERR(secretmem_mnt))
+ 		return PTR_ERR(secretmem_mnt);
+ 
++	crash_wipe_secrets_register(&secretmem_wipe_nb);
+ 	return 0;
+ }
+ fs_initcall(secretmem_init);
 
 -- 
 2.53.0
