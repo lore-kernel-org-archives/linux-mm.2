@@ -4,143 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0A13C5AD7B
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 04:23:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD3A0C5AC67
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 04:32:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3739A6B007B; Tue, 11 Aug 2026 00:23:18 -0400 (EDT)
+	id 382706B0092; Tue, 11 Aug 2026 00:32:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34A5F6B008A; Tue, 11 Aug 2026 00:23:18 -0400 (EDT)
+	id 332A66B009D; Tue, 11 Aug 2026 00:32:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2611E6B009E; Tue, 11 Aug 2026 00:23:18 -0400 (EDT)
+	id 248C06B00A3; Tue, 11 Aug 2026 00:32:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EEC126B007B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:23:17 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 774B2140314
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 04:23:17 +0000 (UTC)
-X-FDA: 85087694034.18.0CEAC7F
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 2A36720003
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 04:23:14 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=fCDPROh5;
-	spf=pass (imf31.hostedemail.com: domain of venkat88@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=venkat88@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id F1A686B0092
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:32:05 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8BD8F140316
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 04:32:05 +0000 (UTC)
+X-FDA: 85087716210.30.392CE21
+Received: from out-182.mta1.migadu.com (mta1.migadu.com [37.59.57.117])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D0FDF40004
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 04:32:03 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=okguh+11;
+	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786422195;
+	s=arc-20220608; t=1786422724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VOaIwkaxwacg2X/k6KlkBM/881r7wvgZqaaDMVUJj+g=;
-	b=ohJvCO6eBCfx9p5C3sHQDAP9FTxLMmRlQZKCyosApeFu6tq/HT+hds0rODkwbTMuLb9jsu
-	neM8PCzJrtvaA3yIVwKOkLOZaeuv3dMCGQ3dCncMXFddVbHumInBPIQetD00Un9Vhisz3V
-	lwzk7dYd28otKIzmYXOD56y2l0UhNQo=
+	bh=GTngnHPe1Gqy+5LwJJcOK53VCVVuZACNEtnsThA2J0k=;
+	b=P9NuZb0iXMvRKzMlqZDdiFfGLJQPuNf/UDAdsWWF0VzKnoDjbNEvxvP3ho7q9WbRDai/D0
+	Y2jPBkwNycHUXDAzxsImvb+HH6T5Z7Up0YJBq3uaZuVCEat6holcU8D6lV/Q8gIvVm6XHi
+	X3jda3GKAL7p8RhhrLXmSvDch8sHIkw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786422195;
-	b=o2OlJkMBPtiWvJitNU+QNR7Yb2NeQZPCht1gDNHgiICfBCLG5xahbLGwhOgYv0tqLQO+Rf
-	KUTXQV/JBO9UQOnh0GFA2o2Ar1+i9gMiPW1iA1p4I8XNJALAjHweQddQcSEljJ/0LxIGJJ
-	6pBPPLV4+aPQY2Uo9uA7ajr8ECpTqE0=
+	t=1786422724;
+	b=UAw/05ML2zy2f/v0RYA9lFRB5PuhL0J5xTkGh+Sg0KWmsRaD9LRD5DLtmlAJl0F7KcEm6l
+	3CjsxCUBjnWdk2hHdvVe4D12q4LUz9VhxVUsXf/C/eLrZKY7/LAIldzQGrDbRUvuf0bJwB
+	4QNgdfqHKD6zFe8HSQuFy9Tj84iORE0=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=fCDPROh5;
-	spf=pass (imf31.hostedemail.com: domain of venkat88@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=venkat88@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67B0MIcQ3036438;
-	Tue, 11 Aug 2026 04:23:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=VOaIwk
-	axwacg2X/k6KlkBM/881r7wvgZqaaDMVUJj+g=; b=fCDPROh5B9BiwwzwUxlZ0p
-	/XTRKPOkFQXGiCMYvYd8W6Q3IAsHEpNI42EVnU7TSGzL34MtxKgyBabcic8bWgVw
-	RExJ4VkSYtlCqQKH44GWcFOPmSSsl6C2cBxvKnd8jCDCduk7ayANww0SeL4xnvlp
-	x8ebbPxyy+0IE31/gCcDotPu+r/nwsB7gUXrDOGjPgsWl7+0FZKQ5/3faMI7Cz+9
-	TXWpEKv6yOfNy4gN6GlmO530JNW0rrJjkh3TOlRts9Fq81ezn5ZdqVOEPEgDDHnu
-	8L06fpA6Up/xxwzXzbDosm7u4zme7l3jZ4U307USG3BfY26e1SmosMzB756hVSTQ
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvp2tpdv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Aug 2026 04:23:10 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67B4BIPv018940;
-	Tue, 11 Aug 2026 04:23:09 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxfsjqhhj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Aug 2026 04:23:09 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67B4N7sT6161202
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Aug 2026 04:23:07 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4C28258052;
-	Tue, 11 Aug 2026 04:23:07 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C6B6E5805E;
-	Tue, 11 Aug 2026 04:23:04 +0000 (GMT)
-Received: from [9.123.12.38] (unknown [9.123.12.38])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 11 Aug 2026 04:23:04 +0000 (GMT)
-Message-ID: <627c5c2f-a0b3-4fba-811f-7b4ed4c74dbb@linux.ibm.com>
-Date: Tue, 11 Aug 2026 09:53:03 +0530
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=okguh+11;
+	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Mon, 10 Aug 2026 21:31:39 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786422722;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GTngnHPe1Gqy+5LwJJcOK53VCVVuZACNEtnsThA2J0k=;
+	b=okguh+11lTwJyUXg1H+ENk09yn1C4YYv5gcEpnnolfNwEFUvN58y81/ZkqPfzgCGfrSsVP
+	fLapUNRsoeWLcidPHwRgv3+/8wJ+BX1K5FATo71VLkXXpU33P4R2FXIvJs5xP1co+XPgF/
+	3IQ/lenlFf7PZDCarqOjSbgleKCLuSQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Guopeng Zhang <guopeng.zhang@linux.dev>
+Cc: hannes@cmpxchg.org, mhocko@kernel.org, akpm@linux-foundation.org, 
+	roman.gushchin@linux.dev, muchun.song@linux.dev, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Guopeng Zhang <zhangguopeng@kylinos.cn>, Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v2] mm: memcg-v1: fix memsw and TCP failcnt accounting
+Message-ID: <anqlhbQ8BSJ1AKQ4@linux.dev>
+References: <20260811030843.109104-1-guopeng.zhang@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] powerpc: userspace processes crash in ld64.so.2 when
- running recent linux-next kernels
-Content-Language: en-GB
-From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Ritesh Harjani <riteshh@linux.ibm.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, ajd@linux.ibm.com
-Cc: LKML <linux-kernel@vger.kernel.org>,
-        Christian Brauner <brauner@kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>
-References: <75419f88-eab9-444b-bf97-28a9765819ad@linux.ibm.com>
-In-Reply-To: <75419f88-eab9-444b-bf97-28a9765819ad@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=AMtp2X5w c=1 sm=1 tr=0 ts=6a7aa3ae cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=ooee5C11TIdXIoiR4BMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: uvObd9Lph9ADs967J5aV-AEQPGlBVQsC
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODExMDAzMSBTYWx0ZWRfX83+QPcr4DCYE
- xhbWKYnXXJMFoM06mzEMr0C898pl/ceQ3DJHleVEjAhEEvFd90FSHys7A26NJ352l+ijg7CNbXH
- 3DgOxdMdRFT8RsxXj8GDBMqRFIh9a9J6KTI22JenN1NXWTOmuAxN5l5VKWpj+/mdOu9zXZ7FQVc
- j2qd6a94TJlu6qQ8TUobzNIL0aakXdyzci1fsqe8b6xq3jAvacSX0a1PKFbUuDwFq0nzS3gUgCl
- qDZGoNqWAmRsbCg+YEE+F7iz5Mme50gTzEdMglNsoWxKBmF/rm8rgNipE/8QHD9QPKw/3BTBRlo
- DeT84C5qwzRi7z0/I6dXHiKONxS40e21/eDh/VjA/+n3h6B1bhsKTiY3erYrFA61tPBQPSRwZqv
- EvrhmNngw4LizQIAAIlrHtfwnYODbiwQfwDR95bk+/mhvUIlB7sgFWavkkTcUKbqoVutRNobmU8
- jTC+d/qDf4A6CIwABnQ==
-X-Proofpoint-ORIG-GUID: uvObd9Lph9ADs967J5aV-AEQPGlBVQsC
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODExMDAzMSBTYWx0ZWRfX5daGqX6rmPcc
- qBbRqET6shuhCv9WJzs0iMIq/99HPqyhFQPwuRtST2c0ymPHi0aXxJj543wqgZigwkDy0fEB8GG
- SToF+Rap9D2+l6W6rhi6uy6sPjB7EyQ=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-10_06,2026-08-10_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
- priorityscore=1501 impostorscore=0 phishscore=0 spamscore=0 bulkscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608110031
-X-Rspamd-Queue-Id: 2A36720003
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260811030843.109104-1-guopeng.zhang@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: ybeoiuuoc37xfakabobh9hj9gspdieu5
-X-HE-Tag: 1786422194-702269
-X-HE-Meta: U2FsdGVkX1+mfgNSn8Oh+5Yx4GJMLTRLRG4YdfLi2e2+lgX+udFKwjqmiYWIXQ4zIR/j/Kf1/qFHwsB8RMV1qDaNfT9vTIJq8kmvyy5gAaaXRFZJmy0tV5JRZVHMb+MwWByM9wyyTmtXw0QElvQW57WKE9GApLMFXj+iryw2DZzVBZeRbYLzT811lrKnUq6htM22W2qhy61fByaceZ6bgYK2xQB+PZPMHSPlSSX8QXgGE4uf8k82/Nu7GQLnz9aImgEKkPe+sRjWoMo/NOErnuPeNgxTnSLMD4B6hCM9nYB7co1xM8IfPVARdcvq4vhCQkXwG5Dpzztrd+sTJ0F97XWx3GYchG14pAFumKcgCJgAqK8vnnRGJJclX8rwO7WS9Nv6HEckwoPI+vpPL9fEvYSjZgfm266nrgLfRx/qw9XgKhUkzYvVXmv/qDYcW5U2qpnr2L8I/9GBWA10Qlmf+WJY2HUmcBLwyWNsIvJ4nk4CniknhOXM/E5QX49zS8ffWmSdijoc3OB8MEtj+iQPUrEZ6jPtzrCD/f/eaVj44wLsfZopNhImudHgPoJE4zpVeM5qHDPp6AZJUq20yeJFntjpYx2idrITBSVU92KrNWgIIM3XxP4gPaEFaQbYkhbcCMHMBSP6QDawd45aTrFx9eQeCq9/k0h7mFf84DqPa2+vyyJZuyWtWf8wtGwFlYIK1yhbV8nsZsZW6w8lZ6RkU8nahkaqyl5LcoBhLsgmMrWqv7wA0ufeuwhRRP+hQvqRpM4+BzcHwTAb79B6ukm0UMV4KVzi5Vn/UVQK5vO9/1QUlRnmrK+/Lo1i+XqGV5Okavm9oF2JMOYFJ1KMtgOAU813lKAh7Id4KpnoKpGL3HMT+cBGZvKTSZBQnY22L8krHzLKu+orYy+z1ge9lCkEJV6xW5NJC7fcGhNl4bWbzds6v5H6v3HdYQ3Yus5MF3KtdTvSNE9cf7pivtxcq4S
- keO/Zcir
- J8LNaDQDKJAEBB1BxWpZ7St1fVh/mqriGBQR/VCja0hgCdIX7NblQxISeY8qq3/qJW8vqkSVzKJ/jGBLrp6pyE7QaNOnf6Ebaqvd5rPQoIdEDu6p3cCRkU4WJ9SUy0Pr/VYIkBzwJnKRdJWxT8rRioIRBwbJcowzWVLgt40yf4tl1elKr1GY6vOB+ySkyVregT13Fkvkx0jtz2vQU8/6D6Npl0LuSyy9Mhrk8QJeu/mODvI8QCMfOB0B8/cVdNjxTfQ/o7YsmDOO85xsADpBpTyfkqVbHNJZdc2HgfKJKt2Xi4ampWgNIvJB01ITqqGslH/Ou
+X-Stat-Signature: 89rzz1zridxe4n5bafrbxajexksygjm5
+X-Rspamd-Queue-Id: D0FDF40004
+X-HE-Tag: 1786422723-649954
+X-HE-Meta: U2FsdGVkX1/hkdMQZM+DYeXfKO55qDexTWwwCRyDB4zwmHnvHyTYXIrYXXzKBK8m++h3raRmxwELljRDbS+Fx7To8I8xmaZpZxClYPJuc4GbgeUzL5q0Sk/dV/uPmZ/Q2pFqBPOVjmhKKQZs4DLa+dCYrr4C412DKkPNARt44vmpja7I8r06rn+diUdAe6ESvp4yAiVslGpVbGLUAimgFlkHVIy3SQXOqYqtu5CW1vfbm+3EAzmJSmngTA4Urktm+FetA+teXlOK5+1mQv9KLjIEld6I1TYn+peKeq7YzO8Y9xxYqdAV5XZLxQWBgwxVtsGAUpf7n0jIRO95it3cL7zn4HeI58Kc0Qk+qPb5R1k+c9RKhth5mS9xaXBIFE+hyYXKgApbkHTMO+/xGwjw3HMA5c96tLlPy+txVBI41Abu0OD3FpLBzlg27aO4QTmUCt0/k4XBiMJvgd042bnxO8ezPG+jrpsAVcRLL+iZ+pdlZi/bMgm1KrggsnV9Da6xGTmcpEYdNokSJxy3w5Hpi2Ems7kp7PXNee7btYFjhZV/PP2RLgFp3/01qcFXNhr2doB/+CXsSiKrvzjIMFoIrT3UI3XAl6JtY6NxNagOTgI805x/ZPurs9nNxDAjjH875Ld26nRbACaUBS240hJwzT7nzBm8WYWSxChlSQbUNf52ZtF2wsT/5bC0ExcRZ4KdQNCTcZ+EXkmUFmTTuTP2htrUx3wUPVkvHBXFJsFDNvcUdwamBgtqzlK3Wv/vMajnu48fuV8X6h8kiWav8Jr0IXBqOLEoytgc6Lh6HuBCpYzRzIx2+EMEQ29xYzHYFWfGr3gbMkec6xvLDBnKxo5RLZUy/SB1pfVa/GnQk0cm51ZBnS6lrkeqQBEaIsg8xalxl3tqqTwOT/g6Z2JeSDI4jvy4VySEGIRYcvye+6IWI/nEwEsBl2yheUZfq1X9oHnVs4Z0/LVylLHllwz7tvr
+ zKUFvfjt
+ 32/uxBpDTVr3/TSkje/Xd44l0Pkri594bLw0pPb+/sirLk2NSJ6v5725qR5zydv38j/tP4dhvBo2BsSt5i2n5CdDQ8faPeqxFSpQktCqw64kJY6Dmjd+W6yWRv/o8UxIGNsPd5tzzq0LUEcNOm99q+vbMK8UkafIgnb7RGb1+DV9jOEwVXTWHqN/xZkBUleM2wk6htouhnI4kUAD49cXwSk61L+tX/1t+dlrEo+a+e4P/JvGzvRuM9ydUY54dH71YaR8RCtNsgrF3NrS52NV65snbe3BK+dg7iAVwChed5clA1lNoZ/T5VQqBVGMQBDxtdWio9Q2ZfwLDc91SIUV73pA/Kphu33JIrMbdQVWyaWTwsyfxVxA9tKyxCQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,150 +88,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Aug 11, 2026 at 11:08:43AM +0800, Guopeng Zhang wrote:
+> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+> 
+> Commit 0e2759afcaf9 ("page_counter: track failcnt only for legacy
+> cgroups") made failcnt accounting conditional on track_failcnt. It
+> enabled the flag for memcg->memory, but not for memcg->memsw or
+> memcg->tcpmem.
+> 
+> Consequently, memory.memsw.failcnt remains zero when the memory+swap
+> limit is hit. memory.kmem.tcp.limit_in_bytes still sets
+> memcg->tcpmem.max, but TCP charge failures are not reflected in
+> memory.kmem.tcp.failcnt.
+> 
+> Enable failcnt accounting for both v1 counters.
+> 
+> To reproduce memory.memsw.failcnt:
+> 
+>     CG=/sys/fs/cgroup/memory/memsw-test
+>     LIMIT=33554432
+>     mkdir "$CG"
+>     echo "$LIMIT" > "$CG/memory.limit_in_bytes"
+>     echo "$LIMIT" > "$CG/memory.memsw.limit_in_bytes"
+> 
+> Start a child process in the cgroup and make it allocate and touch 96 MiB
+> of memory, causing a memcg OOM.
+> 
+>     cat "$CG/memory.memsw.failcnt"
+> 
+> Without the patch, memory.memsw.failcnt is 0. With the patch,
+> memory.memsw.failcnt is greater than 0.
+> 
+> To reproduce memory.kmem.tcp.failcnt:
+> 
+>     CG=/sys/fs/cgroup/memory/tcpmem-test
+>     LIMIT=65536
+>     mkdir "$CG"
+>     echo "$LIMIT" > "$CG/memory.kmem.tcp.limit_in_bytes"
+> 
+> Start a child process in the cgroup, create a TCP socket, and reserve
+> 1 MiB of socket memory with SO_RESERVE_MEM. The reservation fails with
+> ENOMEM.
+> 
+>     cat "$CG/memory.kmem.tcp.failcnt"
+> 
+> Without the patch, memory.kmem.tcp.failcnt is 0. With the patch,
+> memory.kmem.tcp.failcnt is greater than 0.
+> 
+> Closes: https://sashiko.dev/#/patchset/20260810074247.52747-1-guopeng.zhang@linux.dev?part=1
+> Fixes: 0e2759afcaf9 ("page_counter: track failcnt only for legacy cgroups")
+> Cc: stable@vger.kernel.org
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
 
-On 03/08/26 6:40 pm, Venkat Rao Bagalkote wrote:
-> Hi,
->
-> We are seeing random userspace crashes while building the kernel on
-> ppc64le when running recent upstream/mainline or linux-next kernels.
->
-> The failures occur in different userspace programs, but the crash
-> signature is consistently inside ld64.so.2.
->
-> Environment
-> -----------
->
-> Architecture:
->   ppc64le
->
-> Platform:
->   IBM Power systems (LPAR)
->
-> Userspace:
->   RHEL userspace
->
-> Workload:
->   Kernel build
->
->     make -j32 -s && make modules_install && make install
->
->
-> gcc version 14.3.1 20251022 (Red Hat 14.3.1-4) (GCC)
->
-> GNU ld version 2.41-63.el10
-> ldd (GNU libc) 2.39
->
->
->
->
-> Observation
-> -----------
->
-> The issue is observed when the system is booted with recent upstream
-> kernels.
->
-> The same LPAR, userspace, toolchain, and source tree are able to build
-> successfully when booted with the base OS kernel.
->
-> Typical failures include:
->
->   sh
->   fixdep
->   make
->
-> The source file being compiled when the failure occurs varies from run
-> to run.
->
-> Examples
-> --------
->
-> Example 1:
->
-> [ 1277.872746] fixdepsegfault (11) at 29ac0
-> [ 1277.872746] fixdep[122982]: nip 3fffbebd8214 lr 3fffbebd7358
-> [ 1277.872746] fixdep[122982]: code 1 in ld64.sofffbeba1000+50000]
->
-> [ 1277.872793] fixdepcode:
-> f90104a8 7ce903a6 f9410060 f9490008
-> f9490010 f9490018 39290020 f9490000
->
-> [ 1277.872805] fixdep[122982[37214,3fffbeba1000+50000 f9490018 
-> <ea628000> 7e731050 f9410030 fa610020
->
-> cripts/Makefile.build:289:
-> drivers/gpu/drm/amd/amdgpu/../pm/powerplay/smumgr/vegam_smumgr.o]
-> Error 139
->
-> Example 2:
->
-> [Sun Aug 2 12:36:38 2026] sh[115552]: segfaultbcd0
-> nip 3fffbd73d004 lr 3fffbd73c148 code 1 in
-> ld64.so.2[35004,3fffbd708000+4d000]
->
-> Example 3:
->
-> [Sun Aug 2 12:40:08 2026] fixdep[134469]: segfault (11) at 
-> 2bcd0c3ca004 lr 3fff8c3c9148 code 1 in
-> ld64.so.2[35004,3fff8c395000+4d000]
->
-> Example 4:
->
-> [Mon Aug 3 05:44:20 2026] make[600291]: segfault (11) ip 3fffaf3b5004 
-> lr 3fffaf3b4148 code 1 in
-> ld64.so.2[35004,3fffaf380000+4d000]
->
-> Notes
-> -----
->
-> - The crashing executable varies (sh, fixdep, make, etc.).
-> - The object file being compiled also varies.
-> - The crash always appears to occur in ld64.so.2.
-> - The issue has been observed on more than one system.
-> - A fresh OS installation with ample free memory reproduces the issue.
->
-> Let me know, if any more info is needed.
->
-> If you happen to fix this issue, please add below tag.
->
-> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
->
->
->
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-As part of debugging and suggested by Maddy, I reverted the following 
-commit:
-
-   263e5159e00a ("powerpc: Fix exit_flags field placement in pt_regs for 
-ptrace")
-
-and rebuilt/booted linux-next with only that change reverted.
-
-After booting the reverted kernel, I rebuilt the latest upstream kernel
-using the same userspace and toolchain. The build completed
-successfully and I did not observe any of the ld64.so.2 userspace
-segfaults that were previously seen during kernel compilation.
-
-Kernel used for testing:
-
-   7.2.0-rc5-next-20260731-00001-g79d9c1ce90a9
-
-Top of tree:
-
-   commit 79d9c1ce90a9873422ca4d6d0124a1d1c10a098c
-   Revert "powerpc: Fix exit_flags field placement in pt_regs for ptrace"
-
-The upstream kernel build completed successfully:
-
-   INSTALL /lib/modules/7.2.0-rc7/kernel/net/openvswitch/vport-gre.ko
-   DEPMOD  /lib/modules/7.2.0-rc7
-   INSTALL /boot
-
-Based on this testing, reverting commit 263e5159e00a appears to
-eliminate the random userspace crashes observed during kernel builds,
-suggesting that the issue may be related to that change.
-
->
->
-> Thanks,
-> Venkat.
 
