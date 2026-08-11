@@ -4,102 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20E1AC5CFC1
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 10:32:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCDD6C5CFCF
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 10:58:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20DFE6B0095; Tue, 11 Aug 2026 06:32:10 -0400 (EDT)
+	id 6D1426B007B; Tue, 11 Aug 2026 06:58:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BFBA6B0099; Tue, 11 Aug 2026 06:32:10 -0400 (EDT)
+	id 65B3E6B008A; Tue, 11 Aug 2026 06:58:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D5F16B009D; Tue, 11 Aug 2026 06:32:10 -0400 (EDT)
+	id 5226D6B008C; Tue, 11 Aug 2026 06:58:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DF57A6B0095
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 06:32:09 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 67C11C0386
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 10:32:09 +0000 (UTC)
-X-FDA: 85088623578.14.B99AEE5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id BE416140004
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 10:32:07 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QkssVT/Z";
-	spf=pass (imf26.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786444327;
-	b=5lhqG7Ci1L0+zUdRJMjnRwMacijRbTBtujfZUaGhPi3zJWtOYsNhQqZjKu795UyKHvnlAY
-	eQmnbkCC+JRa95NxIn94j/xpX6rSw7Bcz4YpUTY/WIZfxJZA6JYm9zXX/o04dGhMKh+are
-	zvDvptnXTKmJKb+nIejZYlGsT+ZCl8g=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QkssVT/Z";
-	spf=pass (imf26.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2194C6B007B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 06:58:16 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9652B1A03D4
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 10:58:15 +0000 (UTC)
+X-FDA: 85088689350.05.79AECC0
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8330340002
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 10:58:13 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tKGjJivw;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf12.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786444327;
+	s=arc-20220608; t=1786445894;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6kqp/Jib2qHuKnuXjTW7DmBQCS/40A0zxBCp5T9KsPM=;
-	b=54S3NiMsf3XjqOtS22hRwIjfpYqc/+sRAJIHwUn8DbNu3Qa0HhL2x9qXq3ox5DHY5jw87O
-	TGvghAsSdU9jhcKoKAR7op82yYykoZ8YLpJFYpTW7Rx9wuM8pFJzoMCZ9l/wdIy/UQOoAy
-	zeqZ8B2W4HnO/el7JGv8WQM2xMx+sCM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 071CA439CB;
-	Tue, 11 Aug 2026 10:32:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E6B1F00A3A;
-	Tue, 11 Aug 2026 10:32:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786444326;
-	bh=6kqp/Jib2qHuKnuXjTW7DmBQCS/40A0zxBCp5T9KsPM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=QkssVT/ZEngrzN04DrcXhMOGvp2/M5W0FwI70XNEh6QmviL80rjbG/xm8Z8DY/veP
-	 4/5hlZB68qF+W0qhrPBu5QDHdz3LEebs5hqxgz2tSMDSR18UIxm6/2431u8q7I28du
-	 4aEWTQIDWhF2GnpPLVvUbA14iMQp0K+2zHB07Zks59uo8rVarUwQQa6ooozIlDHYvA
-	 Z3mRlx13lH0cw3mBOSJ0fVwwSye7D9hO8Ae9MJcZvPI7XmEu1ahiNwljhCI63aDXFd
-	 ZJDHJ+g49/1tM/69n2VTE+I2MMdqysmC6BCKSzET2ZAzZuovCQj6yokstS57mwsjHh
-	 nB/WQuPbeVmGA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Tarun Sahu <tarunsahu@google.com>,  fuad.tabba@linux.dev,  Andrew Morton
- <akpm@linux-foundation.org>,  seanjc@google.com,  dmatlack@google.com,
-  Shuah Khan <skhan@linuxfoundation.org>,  Jonathan Corbet
- <corbet@lwn.net>,  david@redhat.com,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  Pratyush Yadav <pratyush@kernel.org>,
-  sagis@google.com,  Paolo Bonzini <pbonzini@redhat.com>,  Mike Rapoport
- <rppt@kernel.org>,  Alexander Graf <graf@amazon.com>,
-  linux-kselftest@vger.kernel.org,  andre.przywara@arm.com,
-  michael.roth@amd.com,  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
-  will@kernel.org,  vannapurve@google.com,  maz@kernel.org,
-  fvdl@google.com,  kvm@vger.kernel.org,  oliver.upton@linux.dev,
-  kvmarm@lists.linux.dev,  alexandru.elisei@arm.com,  skhawaja@google.com,
-  aneesh.kumar@kernel.org,  linux-doc@vger.kernel.org,  David Hildenbrand
- <david@kernel.org>,  yan.y.zhao@intel.com,  kexec@lists.infradead.org,
-  suzuki.poulose@arm.com
-Subject: Re: [PATCH v4 06/11] KVM: guest_memfd: Move internal definitions to
- internal header
-In-Reply-To: <CAEvNRgEVxQS2r0_iPHciV=NEKFzwnrfitp-QdP1keAg5Ud7-TQ@mail.gmail.com>
-	(Ackerley Tng's message of "Thu, 30 Jul 2026 11:12:54 -0700")
-References: <20260728121138.1103610-1-tarunsahu@google.com>
-	<20260728121138.1103610-7-tarunsahu@google.com>
-	<CAEvNRgEVxQS2r0_iPHciV=NEKFzwnrfitp-QdP1keAg5Ud7-TQ@mail.gmail.com>
-Date: Tue, 11 Aug 2026 12:31:59 +0200
-Message-ID: <2vxztsp13q3k.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=RMPfsClutHKF0jEs4FSR4QcGXWVBEFIj5vjA+eQoUl8=;
+	b=GuvXa2D5nsdc4WrEIUHT5K3lpv/0Eg5lB9Dc6qL9yYPOs7AZO3sajV9NEfi5Tr+A4NgKaD
+	WIKz/WMV4HwJmt5YlKx5LS5lTZSnv0A9Ucale4ALX98CbT4jkWtsPomAGZDaaUzXhhc3Hx
+	11a988hZkOLh9koI7xEkfnIwnQM8DVI=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tKGjJivw;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf12.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786445894;
+	b=KMl3MVj6OLIkkXs8UwxjtKcTGA+CY5DeZlU8wG9aQfI5vwsCF07f7E+Dt/Kje/Pd8AfO2Y
+	pVW7FXzJcWKqg2WXQQP7RuzQXd9zuVqPXR6Xk1xK62hey/CFVHIsvOMYKrSGCa02st6GXT
+	HvUEhME7iZZzVU9it7MTmpYJEeQBcto=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 44D0C1682;
+	Tue, 11 Aug 2026 03:58:08 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 820043F86F;
+	Tue, 11 Aug 2026 03:58:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786445892; bh=E2Q5I65meboDct+4hfaKsQDzSd1S1/tsAKEVH3DzJwo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tKGjJivwGyrqmHqJQhgHkKc1NYH5dpUS0DWnYV/mVHQACS1frf2TRd2UhTyMG8JvA
+	 Bw0BndUTcgOm1QZBl4JI/V5svJA1QNwOZVE/G2oL5rd2q44W5xc5apxl/s1/v2NISQ
+	 JQrQY7r9UAbIHixEwxX6nTsx2ykLpYcEoEZ681SE=
+Date: Tue, 11 Aug 2026 16:28:09 +0530
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Dimitri Sivanich <dimitri.sivanich@hpe.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>, 
+	Stefano Stabellini <sstabellini@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	David Hildenbrand <david@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+	Mike Rapoport <rppt@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, ziy@nvidia.com, 
+	pfalcato@suse.de, agordeev@linux.ibm.com, ryan.roberts@arm.com, 
+	linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-parisc@vger.kernel.org, xen-devel@lists.xenproject.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, kasan-dev@googlegroups.com, 
+	linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	damon@lists.linux.dev
+Subject: Re: [PATCH 3/9] mm: name pointers to copied PTE values ptentp
+Message-ID: <e7osakog3yvdewhdlrk3bsp27pwt2nnhroeb7zihlfxyjotarb@rwxkcb25crh3>
+References: <20260806083926.1807279-1-usama.anjum@arm.com>
+ <20260806083926.1807279-4-usama.anjum@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BE416140004
-X-Stat-Signature: mg7w91uhipsqnr4krgsh7umhbe9qyfms
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260806083926.1807279-4-usama.anjum@arm.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8330340002
+X-Stat-Signature: a3er1r5z9xzfn1jyu31suxjfhbs98ggk
 X-Rspam-User: 
-X-HE-Tag: 1786444327-982601
-X-HE-Meta: U2FsdGVkX1+IAMHdC2RTJ2LNKlkQJk2TfD99335dQDXy+9bjOaazDQhl1iPTN/9E97lGEZ8EVG70OUw5YBOR9a5D0MUrmmnp/SXtrGaQgQpSvD2xPFHFGQsL0RmUFYWg1WRP+gsszk0A2lY+xc1/qvR8XTy5u7F3mNhmC3n3FWNk0Q27d+IWVUfM0i9eBpglkWulkaWArXALXOnI2Vfl9SVXMPCvv7nPTG0YFmwrAzSCyeiftd/RGZU9njxNmrHdWiPYPR6J/Pc0KzUbfBpY7FJgWBtrY1KwEPyJcty8GZ+5YNgEg/9FcyI6Zz9Gi98J9YdS0jnhcGd3j26wtWmPcvt+IoMgmpX51onFC4ha7ICVftra+EPPLUrIKV640P3CcvXj2aSLcHKwRbQ3RV0Y+8bl2p+o58YG5wBe9BiCtouB4oYFMnObU1MmYr6WTFKvR8JSHSVFxRjAlUWel7Q3/vVN3Gi4RbFqPONFdC4RQAgVjDRUjUB5v8Ui3eRwb2TBHjiZQv+DN6EA4wz23rJos9n6hNd/9YZ2Wl00aLd1CfEFYKOnNmAFnUvpuw945wK6J6+z20mOyWhdB8e+g8Y2Kn28hs05wlk/bN9SJmRboqLBP34waglUN7YY9gAgrXDPWj0VDS1ZmWz9Cx7FKch8Z7r/52bvLYla+MuG21Mn/4KxtQjH3dN5qK83HEWcJN3TdzYqijWca5wa3rPIQ2zUwlillq/kUd+w+Sj695+QsnrTHuozw7aa5/CI8J4uw3dkfBIMZabG7PbLfZgvHdPQvWCREb8Fq0cPA3uuL4JzehYsMt3qwgv/jqszfugn44uSqPcoJ7i/Sq4PJ8szGngpUNpqXHZU7D9U+q4KP7Eyyq5mm5HNR3VXWYn2UsGOBue/IeDyTqSHWNVAUT8frDN/22Hh1uM6pZpSOsuDvt2dsLbB+IvXsrmYpR72MEsQngrUNe8wPhLs193R5uJl0/Q
- 9ggKkj9T
- wA53oZzx1ru6SnLEgy7C2qb90/VNdnpxQ7wRVHZHHvUOsis79bQPfiaaabXN1nqQXSrHwcMmgnfW7mbw8MJbXsyPIcFkgCxf9zAu17XqVKsG7J4aURFbq49iPOum0YLZsyPyR6R9h95/e2ehCwO5T6U40OnkG2hC2x6xuDkxxgcg1SBJyF2CHyDPWyhbE8/ntiI20NAvdMeBBQgYXtqzok6vThp+iCgHrLyb9WdlwOFPA9Kef2Q8OmAc/mxEc1r6QNNFY29Ef8uqqfqtQKP9a52sIzbrHus29xUW/
+X-HE-Tag: 1786445893-274179
+X-HE-Meta: U2FsdGVkX18h6d8V8ZUB3CZho/j93NNrKUwm9GMovQOkUdBVQEnrMDWzE/xDvxybWUXmzKeEkpGO93RCngDbob1vW16X1cCZofBQl3JzOzWNt1D3GAPUIDyOdSxd2MWkNnwQ9pPD7g41VM6Oc+T8xqzhPA0PXD7rV9QsH+Aujp3xdzzzlzS03CWeXrPs827gdMY5Lx7lkgS773rOiNbsoH5ZjZcSP6XQ3ORYdxO9/slVdYth3TV6PcYdZfWqJfVroTaG1H3fvK/wIR0Zs7MznAl00rKugQlZyZLVe1m/+ud5sUYj5pnwFoZsXhlGj0rIKSqxgNexD/lSlkq7+fuVwadQ6HtU4UqUpvK8vaYKwkgEbG57X/FA5LQPRB+q3RKg/5d+ZcZBBi2bd2JEicyS26eD5jcwWQx4OpSBxaMvyWTocj35NeOATsL7n9mt/uicyMZnvrznV0yHhErJYmczz3aJyTtDANL5HN1NQwAEjKka+4Ro6AZ58rQ52hM8H2xSgcKjOJyQHXe6qQRy/hl7DvC9mj2YIuVyLSmdLsM7HeH9hRYrCmDEnF4QC175Ltci4Wy+HmkyiVgxfqHXiuILqrddWw3Lz5O7XTptS8rxDGx6sXLVKG2uUtxWIawNuhz0pgI7AAa/nVf7RQLXB+pP/YL2oawwSlvXnrCNmxzEVgcUiECo0MrvdNQTi1iHGQRfPwpfIQFcNCq9rAPP2QrEs3DSs7vleKEueWhf2OEdI2sReRKAb+diiNZHIDCKAGUMCzZy3laH9K8DByYxJjbho/uN0e6uM+M9ODVz62koKd6IC2g21prhQKndoXGBJeOsEzXG7l9+b6FwYA4ibwBLECbGC1v2r3op0V5QYvpStSdFGje0sCKXdjFYR2qoNDdz41BM+Bisd6qynCvT36gwIP9fVSbnfugzWC6k48QE25RkdBUU/Poi/QnWu+sH7HjWaSaFAPS/QEo2C5qN517
+ g6W00SFa
+ NAaAPmLGhSsyXbNSEV1ZBeCq1X4DUEJO85XgqKPXeNNzyeMnev+i9jUl/UvTSF+573CQyPwrDBx10sR2fVcnBtfM7EaN+oq9YMt29YnBtmFBo3duKHESTYV4ma3joR3mT9MRMNdnMfXju9mRt5xYPcOl2v6uz+dYAfiYb9JGAvkVk8/ic5360+4mOxuIKfosH5HxUNwX+KkQNNnomctev49x2h9ZJ2kaOS7jZwFw1UHtBP6G54i4yiafHX9FfQZ1y/QEZbsajaYLmJD6ckVXZXNA1+ReU1R6bAOdZNlFMVLG2YdBHfonUOAkDCZtDXTdz0Npq8VFSeeI3rt1CsSnF6J+wWn0KmoLjLOaXh1WeesCYhev7NFd5FGG4ldnGiy8u/HeKwx4NYDSPuenA5b0OIDFiAQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,39 +115,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30 2026, Ackerley Tng wrote:
+Subject line is very confusing. Perhaps something like the following.
 
-> Tarun Sahu <tarunsahu@google.com> writes:
->
->> Extract 'struct gmem_file', 'struct gmem_inode', and GMEM_I() from
->> virt/kvm/guest_memfd.c into a new internal header virt/kvm/guest_memfd.h.
->> Also split __kvm_gmem_create() to expose a non-static
->> __kvm_gmem_create_file() helper that returns a 'struct file *' instead of
->> an fd.
->>
->
-> This is done basically to support a new virt/kvm/guest_memfd_luo.c
-> file.
+mm: Rename pointers to copied PTE values as ptentp
 
-My $0.02 on this: I think it is useful to split out the live update code
-into a separate file. It makes for easier reviews, and puts a clear
-boundary between core and live update. We have done it for memfd/shmem
-for example (see mm/memfd_luo.c) and for other live update series in
-flight like PCI or IOMMU.
+But even 'copied PTE values' is not very clear as well.
 
->
-> Would like to know what Sean thinks of this! I'd like to know for future
-> guest_memfd work too.
->
->> These internal definitions and helpers allow upcoming guest_memfd Live
->> Update Orchestrator (LUO) preservation code to access guest_memfd
->> internals and reconstruct guest_memfd file instances from preserved state
->> without installing them into a file descriptor table up front.
->>
->> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
-[...]
+On Thu, Aug 06, 2026 at 09:38:41AM +0100, Muhammad Usama Anjum wrote:
+> The hw_pte_t conversion must retain pte_t * for pointers to standalone PTE
 
--- 
-Regards,
-Pratyush Yadav
+We need to explain what is `standalone PTE values` first.
+
+> values. Name the value parameters ptentp in the install_pte callback,
+> write_protect_page(), and guard_install_set_pte() so the later mechanical
+> conversion can distinguish them from pointers to PTE table storage.
+> 
+> Some functions already use the ptentp name, including:
+> - madvise_folio_pte_batch()
+> - folio_pte_batch_flags()
+> No need to convert them.
+> 
+> This is a naming-only change.
+
+Small nit - s/naming-only/rename
+
+The commit message needs rewrite clearly explaining the following details
+
+- What are standalone PTE values
+- How these are different from HW pgtable pointers
+- Change is just a rename for pointers into such 'standalone PTE'
+- These renamed 'ptentp' here would be used for skip or replaced during
+  upcoming mechanical change via a script
+- No functional changes intended
+
+> 
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> ---
+> Changes since RFC v1:
+> - Update the description for the architecture opt-in conversion.
+> ---
+>  include/linux/pagewalk.h | 2 +-
+>  mm/ksm.c                 | 4 ++--
+>  mm/madvise.c             | 4 ++--
+>  3 files changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
+> index b41d7265c01bc..c34d826c5e4a2 100644
+> --- a/include/linux/pagewalk.h
+> +++ b/include/linux/pagewalk.h
+> @@ -89,7 +89,7 @@ struct mm_walk_ops {
+>  		       struct mm_walk *walk);
+>  	void (*post_vma)(struct mm_walk *walk);
+>  	int (*install_pte)(unsigned long addr, unsigned long next,
+> -			   pte_t *ptep, struct mm_walk *walk);
+> +			   pte_t *ptentp, struct mm_walk *walk);
+>  	enum page_walk_lock walk_lock;
+>  };
+>  
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index ad05d7791307e..11d50518d02e9 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -1292,7 +1292,7 @@ static u32 calc_checksum(struct page *page)
+>  }
+>  
+>  static int write_protect_page(struct vm_area_struct *vma, struct folio *folio,
+> -			      pte_t *orig_pte)
+> +			      pte_t *ptentp)
+>  {
+>  	struct mm_struct *mm = vma->vm_mm;
+>  	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, 0, 0);
+> @@ -1371,7 +1371,7 @@ static int write_protect_page(struct vm_area_struct *vma, struct folio *folio,
+>  
+>  		set_pte_at(mm, pvmw.address, pvmw.pte, entry);
+>  	}
+> -	*orig_pte = entry;
+> +	*ptentp = entry;
+>  	err = 0;
+>  
+>  out_unlock:
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index 07a21ca31bad4..c324cc991f841 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -1101,12 +1101,12 @@ static int guard_install_pte_entry(pte_t *pte, unsigned long addr,
+>  }
+>  
+>  static int guard_install_set_pte(unsigned long addr, unsigned long next,
+> -				 pte_t *ptep, struct mm_walk *walk)
+> +				 pte_t *ptentp, struct mm_walk *walk)
+>  {
+>  	unsigned long *nr_pages = (unsigned long *)walk->private;
+>  
+>  	/* Simply install a PTE marker, this causes segfault on access. */
+> -	*ptep = make_pte_marker(PTE_MARKER_GUARD);
+> +	*ptentp = make_pte_marker(PTE_MARKER_GUARD);
+>  	(*nr_pages)++;
+>  
+>  	return 0;
+> -- 
+> 2.47.3
+>
+
+How did we ensure that the above changes are comprehensive and nothing
+else got left in here ?
 
