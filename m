@@ -4,92 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35D6CC5B572
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 14:42:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26523C5B56A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 14:48:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BF866B008A; Tue, 11 Aug 2026 10:42:27 -0400 (EDT)
+	id 05BEF6B008A; Tue, 11 Aug 2026 10:48:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 222726B008C; Tue, 11 Aug 2026 10:42:27 -0400 (EDT)
+	id 032AD6B008C; Tue, 11 Aug 2026 10:48:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09F726B0095; Tue, 11 Aug 2026 10:42:27 -0400 (EDT)
+	id E8D4B6B0092; Tue, 11 Aug 2026 10:48:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DD5816B008A
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 10:42:26 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6B03A1C1288
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:42:26 +0000 (UTC)
-X-FDA: 85089254292.30.8021E29
-Received: from relay.hostedemail.com (unirelay03 [10.200.18.66])
-	by imf05.hostedemail.com (Postfix) with ESMTP id AEFF7100009
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:42:24 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B9DCF6B008A
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 10:48:38 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3CCB940472
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:48:38 +0000 (UTC)
+X-FDA: 85089269916.18.1DD4FCD
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 93F2D18000C
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:48:36 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=aUhnFxXU;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf16.hostedemail.com: domain of 3QzZ7agYKCPYqcYlhaemmejc.amkjglsv-kkitYai.mpe@flex--seanjc.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3QzZ7agYKCPYqcYlhaemmejc.amkjglsv-kkitYai.mpe@flex--seanjc.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786459344;
+	s=arc-20220608; t=1786459716;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gcSfS7QNtE6S94cqoaez+NvxQo3hToTMKglv3I/la3A=;
-	b=u3jh4i/NUY76sNKtkjKYi9s6QyYNWcumOuNdME+PL4jN64WyG/4RQMiIJS6R68lkI09fgT
-	y5ogSuedbKy4YiOUMX+IaON+MQWSn0roxn52Bq8ob/Zu7QSGu6WJEdImZ7gqrNWFBn+m/C
-	lW20NnQz7QPdvDhc5dqAlBHRwXPhQ94=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=rVhz6t6uiOZc1DDgF6HOTd7wvK1RF7/iSTLQV7TuFds=;
+	b=EMdFOlmRAjmhiTkN+IkkxtewcA39Chphlh94knBRGHM6uMsQlBvxnUw4xKzKpVY7eSxpgj
+	hnJRBIYm6IYM09l9A36IUBvdoQWiNYQt7REeRIBQWbYHfqYka+LNS86fFTUIVpxGXC3U1/
+	sx7B7KAPIAvWEJNQx3ahvCfaKdEjNI8=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	none
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=aUhnFxXU;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf16.hostedemail.com: domain of 3QzZ7agYKCPYqcYlhaemmejc.amkjglsv-kkitYai.mpe@flex--seanjc.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3QzZ7agYKCPYqcYlhaemmejc.amkjglsv-kkitYai.mpe@flex--seanjc.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786459344;
-	b=yyeupxgzShOzBGv/h5LnZSrYS0BdQj8X/vFDqStuLu2IWHe1elLz+Gbx4AK6xbM2KUBEFU
-	j0pjEcn7tqJsSVMmQHOscatbRboBQ/sd3jUp7tXBkzAlGSMUmQdR6Rydk35akzgCyMCeG5
-	TJhNnTuWWGS/USHbX4x6G5Aef4eh36s=
-Received: from omf06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 80210A04AB;
-	Tue, 11 Aug 2026 14:42:22 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf06.hostedemail.com (Postfix) with ESMTPA id 1BDE720010;
-	Tue, 11 Aug 2026 14:42:18 +0000 (UTC)
-Date: Tue, 11 Aug 2026 10:42:29 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand	 <david@kernel.org>, Lorenzo
- Stoakes <ljs@kernel.org>, "Liam R. Howlett"	 <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport	 <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko	 <mhocko@suse.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams
- <clrkwllms@kernel.org>, Simona Vetter	 <simona.vetter@ffwll.ch>,
- =?UTF-8?B?SsOpcsO0bWU=?= Glisse  <jglisse@redhat.com>, Christian
- =?UTF-8?B?S8O2bmln?=	 <christian.koenig@amd.com>, "Paul E. McKenney"
- <paulmck@kernel.org>, Sean Christopherson <seanjc@google.com>, Paolo
- Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, kvm@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <20260811104229.72fdd928@gandalf.local.home>
-In-Reply-To: <a552b227e18ddbb3fa1f2edf2d1cb30ee6ccff13.camel@infradead.org>
-References: <a247c49dd61af1df7ddc4dcb1cccbcb36b04d9d5.camel@infradead.org>
-	<20260811135537.GC544626@ziepe.ca>
-	<1d669aca4ffee797b9c29215382444a5b23624b3.camel@infradead.org>
-	<20260811142730.GG544626@ziepe.ca>
-	<a552b227e18ddbb3fa1f2edf2d1cb30ee6ccff13.camel@infradead.org>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX19dAleZhUOu5jMhgkH99lyj0Dn95BWTID4=
-X-HE-Meta: U2FsdGVkX1979J+Q3OdtvU+zN/hhYl9JQhI0wFYQuN1ZrCOyLwM835zzoagX5l163DZzohmxYfjMQMg9LMvXrD6bg3AeHd1TrLiR6S1r8L72HAN+v3XhoxZRX8xO+2I0Jc1dgxN+O60SUmzois9+y6MU9QJdwUAoXwKZYXZvgflOY5MkQGkqp/ZeTZ3GzgxqRZ0WF8S3WS8LB8o7TyvqBGXiA98/d9imuVuTVh0RKt7dphRhabMtXLx1CHkUp+8F6TrPt7w6fDOjixFfwzPAI0/VQK18sVl3nuIRCZ+fXGfIeFWakblsUYrcuLOfrE2v16Fx2y20k2tKyfUJUKu/Aa1kEnu9UsWEY7fVgeGUG4kiRo2q1nZuksArsq2JybJg
-X-HE-Tag-Orig: 1786459338-307469
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: AEFF7100009
-X-Stat-Signature: oxypg9f677wxwcpnaarkrfp38fcwugwo
+	t=1786459716;
+	b=hW2DpoZxt5Nmm9aZQBvuKr2Sjbo92cN5tRLIOHpfxi0CfSm5huIwGsn4okRlUbSzq7Ya/g
+	6t8UqvyxhQt1AYv/jkJwHIdDA8mE6ziPgwjQk4oTe5Gu70Sy+22JDavaP2ibJygqW5z3P/
+	yuC1WQk3mpfusdnv272I12ON/sp3S74=
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cca5e0a0c9so68020375ad.1
+        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 07:48:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786459715; x=1787064515; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rVhz6t6uiOZc1DDgF6HOTd7wvK1RF7/iSTLQV7TuFds=;
+        b=aUhnFxXUdpdPu+gEUWmT4Y3Gky4k66QGa58nzbYofTglBwQPFO6WELPKoN8fReYsLG
+         8E3UgNq0vGUzVPMhn0psDagl5VtEd8rCt9yZGRqXaY1G7b1wNKP8QKduO2E8TLs0bmtP
+         hcCdnSWMgzSGtwRm+EcHfP8fFM1oItfGXugSSaH8hMeXOoQejhy5ODwXuhAVwnN+x1cM
+         5UvzzfY7esYDXlRQsQ4e8WOK1FV6nKTypXJSJl0H2hwzo+0CXBGi1pMrGBMxdbAdehDf
+         BaWMFZjqJm5HfXiWKDxBwNZHSEw+pQzTDQI1CJ8iPgSD1q/UhVhBFKBFS62lNZGX1JTr
+         RTFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786459715; x=1787064515;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rVhz6t6uiOZc1DDgF6HOTd7wvK1RF7/iSTLQV7TuFds=;
+        b=SIJ32kx6hB/dfXmQ8uJWAnyINL1xW1WydcdbZai8zq5LaGsbkWnkPIkZA208HscIza
+         677q0BKhryFlr3Q4Atyxj5nMBlGvyuIrwu64Az77+ZVXetwzaUQpj8fxwJCj/hJ20SuP
+         cyVXF0fWQVRa6Hdv/TOjX+YEACQZnnNj+ksNREsqkcEJvraBkrzsJ3gJMMz62WJdcl5W
+         bOQL26oDBTYMEKjtc3MnEYgv2jJ2HH1noS7dApZf2Ix344o27P7n6dOl6OLtNoJOoq/u
+         vdp2njE/HugwALn6aKR1/PHODBooF/XxBHusMW2RTG+4QsSPBxvgKkT8VwChn6RUBh/F
+         u17Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpAD+2JgIFpUSNdpOWasltp3+QTFj1diSbQy3AtKU3MFiYSfQ1CgRjK774tzIJ5KVFb5E3cF13IeA==@kvack.org
+X-Gm-Message-State: AOJu0YzCRfWAGodSIU0pCUlErnXp357FMt3u4MEc2nXerjUjwh6mldpC
+	VSFmI605QwEYB5V2ooYJ2qZN/e20MnW3trGl8KXY0nvX5PTkzsQkDyTxmCtFs7H1erXnWtDw57v
+	wU14LhA==
+X-Received: from plbje14.prod.google.com ([2002:a17:903:264e:b0:2ca:eea9:9845])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d488:b0:2d1:1a18:4d0a
+ with SMTP id d9443c01a7336-2d3177a2163mr42800725ad.9.1786459715153; Tue, 11
+ Aug 2026 07:48:35 -0700 (PDT)
+Date: Tue, 11 Aug 2026 07:48:34 -0700
+In-Reply-To: <9huzqzk4zt3n.fsf@tarunix.c.googlers.com>
+Mime-Version: 1.0
+References: <20260728121138.1103610-1-tarunsahu@google.com>
+ <20260728121138.1103610-2-tarunsahu@google.com> <anpXjM_lg_UTpl0q@google.com> <9huzqzk4zt3n.fsf@tarunix.c.googlers.com>
+Message-ID: <ans2Qvo0453cc_DD@google.com>
+Subject: Re: [PATCH v4 01/11] liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
+From: Sean Christopherson <seanjc@google.com>
+To: tarunsahu@google.com
+Cc: ackerleytng@google.com, fuad.tabba@linux.dev, 
+	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
+	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
+	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
+	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
+	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
+	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
+	suzuki.poulose@arm.com
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User: 
-X-HE-Tag: 1786459344-107451
-X-HE-Meta: U2FsdGVkX1/kAuQBQKZ2jg7djF3EZK1gmAygtqdndF5b1dMUOdvarAV1kdCbraQocI5omZiImjzkh6Ttiao/mTp4EHSWIqrApk0s9FbQPR49LgLy1WFlQwnhfgQ9Lh1oK5r9T8EP9frRkTbXEcfGljiejJuImkQP56+EvXcfq/audD8eg9wIqg9BByo0RFHoYh/0j/2Ip3OL6S71aRO6TfBbytsU+FTjbvbB1Lln0tJN/EXMnr2MIdwBOHqmKl87+KawliED1KcQ6x5fMpVF5nCRutQK90WVJCprA3TCRT/0/rKDMfrvNTIHhTg77QSFgllSBQhjYjjgJ6tnMR3GX3d6yDjCjvRcrUGbynClIm4X+npfvogFIHkG8GWi/6tnPzTtoJv1KpwSGCCHifiq0+vQrXdXS1gwSge6jmohFipvIQUDbD3SKLw5jqT+k9IHCXLUSzoLcTR8tLb/4O8bT4c9hJW+e9lpbo4U2CfCjwFPd2gx+3biDvSasRf6jvWxVM+O0P3lfSLuJFnuOvUIq+QP8Usr0gGcLN8Hmclv5i7aXQc4imEbs8N9JSPn2q896zVDbzJO7+3unu/dyjAwRaW91XdHyIYs1qUmXdHhCM+UfVbNWyEUefpTzH/XtrHC0wTDK4Hch9lAlsIE/2vBt1tygfj6SzCwlvlu55ce9GEZIIhLZsSfuPs4q1l37yrwDSCGHp3t8uU5u9mEB9dm02Eg/EkNKt20JKPTBpy9ut2xBohGaFwMtP66pNuXx4/FWuARQ1A8F3+HpbmfKEvgj7rWpbr4dxiEWyctXZnP6n79tWBFEdEHZZFCq6PbIi6hanQjv2zWEm+1cw6T47QQQyq59Q31zIt6m04Py7zZw7YOasUaaFcG8XcQ4Hp1l78VPdmrutDqWYWzZ5kII0A9BTFladCNPFMZ0vLjdhhYyHqsEE3EO4lfBPamrEXi637QJqNm0bK4umCuxFrzHlQ
- Jrh4cfMc
- IPF3J7QHL1AS1nwwSldNTcVv/c7fbqfCrAlXJCqwAM3oVQpvsRKwJLOvKDJhQH9FvOedIOnPRV9zJdog=
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 8bsq6tkzyhz5f1ajc4usqkezukbdzgji
+X-Rspamd-Queue-Id: 93F2D18000C
+X-HE-Tag: 1786459716-583768
+X-HE-Meta: U2FsdGVkX18ffCqPwkVt6OBWnrhZEtJSgUh/CAHgP5SBgiZAutKxOS1BLx0DdHwH+2pCj3ghLBn+cvMQxqaXZVwQxqZ1FcnqYYUb+lECiARoPwy4qso9EiADzAWml+ZkALDjV53Z4scS36sMSvwg0WL6pmLPFH3x70pA+6k4HfX4AVyw9lwUaFad+RckHp2j0FfZBpfmehu+jH7q8x2En8FFTsASxIH6mwj8I11yUEc5WGYrYgK8NGj/JfkB7pHbRm/uvA+HvDABXNFfK0KC3E1QVFZFQ7OveTURAxHQRZZWRkMVb/AiMhgHQHfqAlS5dV7S2p1E6gq7R25R9SSGIu716JdmHxZBVCypXfm82Z3Arpq4LR92YLZ3hU3u3KvCxdvncskixHy/LCmSm47z7I5a5O+bJQ+tR4SEPLm0Cmg3idMKhrd7J62Q1KLdItadGaoAWqyzFroKG244VgOwy1FvgpOBK/oal7wTt2AIHWhJzMRJVFaT2Yv2vZshw+BU59bZGes6DZvFwhQTi11Pm9h16yjSpGL9Uybf4g/0gZ0O2M5PgP/6rUSEVfrnUnRmm3g0Q/YudTZUDWL5TO7m6TkqgvfRhJ5U/UuI9snotP5tY0FBolx6f6XooykmmuQrCpHNeVG8H+f9mVD3d5vYrI4CkMJHDSZsNasUhUuPTHY2cl1G8Z1Bu6mMPJkv/w0bNowaeOV6BkpG3h7DsOGyIOuy09EWRfmxqAMb4sG6YKF37sy8l1GRrMNz0p80ogV/b7vvLVrIY10Hbg9FBK9pSeILCWpv7LyEx0+5iTx2vrAENyRH2ea0DqowIxc7hhp9uh1y0Sh80vBT1WD6u0Xqu+1uFrtKCIsIa/VmD/L+ReDsoyRcAO5WYCaTcJCckccdBk+JztJRuaLaWJ8U8DczQvIG8P38oZHCA4wqQ0npwOlnJERaRXHJG0HhJScNJb/iuHAHJGLYOMTpRKvgtOy
+ OiaQafna
+ 9d4beszxHH83RlAKWA1zhUkE6zMMEgemb6F+7+YNq68Kn4PICWoJtSwb3DYDDROkQL0ZSZRPwfr+4YxV2H3oHkvogFUx4C7hrS/vPoxnE9OAz5MEzjt8+lTz2MlNfuMgPBW0PxGUpRr1p/KUUGJbIRhJM0BpwjnFajLfA3ve5xadXY8RwdfX8sM/PGi2MRgafnJBtGEXOmoxoyBjrd18e1iYyG6druMIcmNJj/NvI5zbXfthGNjxHQSS6iWOGp4UFUO33dj91gEr6fck9XFYjGFhX/xb2mbf41P+TG2VgIzrxA7J3Q4ffxNeu5qufyWQCpKgLUJWEiSW5ESkZRhkD6ITtFlaZu9UnC53nDhLjXMfy4OYhgzlPqDa3swiLFHfxA7ESPb8cGaXjgLl4WmkfBbDsgCHpT5mPr7Z+0L31DMkj1rKIh14rArJ2vrRPTKDR2BuN6LjzWOhEaDtYYmQiXzCNJ4belQYCoPT52Q/1Qq1vhGlvpcSKMZeGQpxaBK/D2YacQcxgzAOEJ14amZmAEQasqxTBTps2UuwqrxIrmS8XmlruckpFdO6AZVTV7WiKo/dVoaNTQNvQkPzTSdcM5IuOZ6waUMYEGtzjSmpsOOekQh1OjD5+t99lnFgZYBRIdjjX1fryC4nzuG5wF6FHnVmx/WXl+IplVWkf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,38 +119,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 11 Aug 2026 15:33:18 +0100
-David Woodhouse <dwmw2@infradead.org> wrote:
-
-> > If might_sleep doesn't work sanely at all in preempt_rt then just
-> > globally turn it off?  
+On Tue, Aug 11, 2026, tarunsahu@google.com wrote:
+> Sean Christopherson <seanjc@google.com> writes:
 > 
-> Turn might_sleep off? Or PREEMPT_RT? :)
+> > On Tue, Jul 28, 2026, Tarun Sahu wrote:
+> >> Introduce the LIVEUPDATE_GUEST_MEMFD Kconfig option. This option
+> >> enables live update support for KVM guest_memfd files, enabling
+> >> guest_memfd-backed memory preservation across kernel upgrades.
+> >> 
+> >> Currently this support only guest_memfd files that are full-shared
+> >> (INIT_SHARED and no support for private_mem).
+> >
+> > Why?  Specifically, why do we need/want a separate Kconfig for guest_memfd
+> > liveupdate versus KVM liveupdate?  I can _maybe_ see a KVM-wide Kconfig, but
+> > even that seems like a stretch given that (AFAIK) hypervisors are the one and
+> > only use-case for liveupdate.
 > 
-> The RT maintainers are on this thread if you want to pick either of
-> those fights... that was not the course of action I chose to take.
+> LIVEUPDATE is used in many subsystem. It is possible to enable
+> liveupdate and kvm without enabling KVM_GUEST_MEMFD. So GUEST_MEMFD
+> preservation must depend on CONFIG_LIVEUPDATE and KVM_GUEST_MEMFD both.
+> LIVEUPDATE_GUEST_MEMFD Kconfig is wrapper on both of them. It need not
+> to be visible in menu, So I can make it hidden. WDYT?
+> 
+> Also, KVM VM_FILE preservation and GUEST_MEMFD preservation both depends
+> on LIVEUPDATE_GUEST_MEMFD in this patch series. [PATCH 05/11]*
+> Which is wrong. So I will update KVM VM_FILE preservation to depend only
+> on CONFIG_LIVEUPDATE.
 
-I guess the question is, what exactly is the reason for sleeping to be
-prohibited? In RT, sleeping is allowed in most context because most context
-are threads (like interrupt handlers and such). Now, you still can't sleep
-in NMIs and hard interrupt handlers that were not converted to threads, but
-I'm not sure that's the case here anyway.
+Or just handle it all in the makefile?  E.g.
 
-If the non_block_start() is just a big hammer to make sure things are fine
-in non-RT, it will likely still be fine in RT even though it may block and
-sleep. But what it blocks on are sleeping spin locks that likely would not
-cause an issue here if they didn't cause an issue in non-RT.
+diff --git virt/kvm/Makefile.kvm virt/kvm/Makefile.kvm
+index d047d4cf58c9..e6f098498795 100644
+--- virt/kvm/Makefile.kvm
++++ virt/kvm/Makefile.kvm
+@@ -13,3 +13,8 @@ kvm-$(CONFIG_HAVE_KVM_IRQ_ROUTING) += $(KVM)/irqchip.o
+ kvm-$(CONFIG_HAVE_KVM_DIRTY_RING) += $(KVM)/dirty_ring.o
+ kvm-$(CONFIG_HAVE_KVM_PFNCACHE) += $(KVM)/pfncache.o
+ kvm-$(CONFIG_KVM_GUEST_MEMFD) += $(KVM)/guest_memfd.o
++
++ifdef CONFIG_LIVEUPDATE
++kvm-y += $(KVM)/kvm_luo.o
++kvm-$(CONFIG_KVM_GUEST_MEMFD) += $(KVM)/guest_memfd_luo.o
++endif
 
-Thus, perhaps something like this:
-
- 		if (ops->invalidate_range_start) {
- 			int _ret;
- 
-			if (!IS_ENABLED(CONFIG_PREEMPT_RT) && !mmu_notifier_range_blockable(range))
-				non_block_start();
- 			_ret = ops->invalidate_range_start(subscription, range);
-			if (!IS_ENABLED(CONFIG_PREEMPT_RT) && !mmu_notifier_range_blockable(range))
-				non_block_end();
-
-?
 
