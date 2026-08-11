@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AF05C5B572
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 13:22:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D09F0C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 13:22:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA1B96B008C; Tue, 11 Aug 2026 09:22:19 -0400 (EDT)
+	id 516F66B0092; Tue, 11 Aug 2026 09:22:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D522C6B0092; Tue, 11 Aug 2026 09:22:19 -0400 (EDT)
+	id 4EDC86B0093; Tue, 11 Aug 2026 09:22:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCBD16B0093; Tue, 11 Aug 2026 09:22:19 -0400 (EDT)
+	id 406556B0095; Tue, 11 Aug 2026 09:22:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 962C76B008C
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:22:19 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 13FC01A0426
+	by kanga.kvack.org (Postfix) with ESMTP id 0CD876B0092
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:22:20 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 950051A0407
 	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:22:19 +0000 (UTC)
-X-FDA: 85089052398.10.8C83EEF
+X-FDA: 85089052398.20.F472960
 Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 297C3A000B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:22:15 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9C33920005
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:22:16 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
 	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	spf=pass (imf31.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
 	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786454537;
+	s=arc-20220608; t=1786454538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Hu8LDQuZx6ntJh2r6iUjCQ4WU/68a3EW6sVNFRDhEEE=;
-	b=ZO7AuotgLIG4PtvcKzA10SgVHgPWETdMJt38RihmHUliGiX8AnrDzsh/uI4YteQfsPxlBc
-	FSY/JEf0G1v+OnDvYjiUb330C1BAl0J5HCChC84zUObdIN4vCL9NuhvcEtWlk7kyT1PT95
-	PBPoj1PuPEbaYrHRxPoP9p/QVkGSXso=
+	bh=85M9vtfQGnwt3VvMScDiQGiivtLgVMqslBPynvyYrzo=;
+	b=0s5NPYHo7vg3885uX3IWdgvbRAW8aWJrRvKwWhm7vub/pFG0yucpFwu1wcgIkR5tUqugcO
+	WqdCHsNFKuO0KuTKMrWIx3dYJuhyrjZ4TytAomh1k0V7+pVo8eEj6bWxzDN6KUzTwONHwc
+	4s+Yd5oksAr7YE64JgAJSCNn84Mq3WM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786454537;
-	b=Edtwr+mCgO1Apen3XpvBwWhdsU2nKbp+Z0DdJsf37uNQzQrklVyigyRiRA0HsYsikjlEGh
-	+Cy3WK9YPvJUHKXZSUrzgj1v8/9XPfH866F7FCfihz9GYGy2dDuAkXvwPQZ6qEaRde1HT5
-	hopxFnLNSJSVxvGRj5i3Ap9tXnPbglU=
+	t=1786454538;
+	b=mprvYh+g9bsWy6r5bndXmwKeM0yx6pJvGBlr/z6Yxg5ye+ErVa+NfG3QrdGapD0ax118qF
+	qD484r2GIdYYvXPxkK/kKQU6lzo+TBlyeq2aNhFbvfS78714WgZA8gINhKkXgRmruLK7WC
+	Mt2dBcL4AqmXTBGEQ91Usg8fntFaAmw=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
+	imf31.hostedemail.com;
 	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	spf=pass (imf31.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
 	dmarc=pass (policy=none) header.from=lge.com
 Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 11 Aug 2026 22:22:13 +0900
+	by 156.147.51.102 with ESMTP; 11 Aug 2026 22:22:14 +0900
 X-Original-SENDERIP: 10.177.112.156
 X-Original-MAILFROM: youngjun.park@lge.com
 From: Youngjun Park <youngjun.park@lge.com>
@@ -65,22 +65,22 @@ Cc: Chris Li <chrisl@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Youngjun Park <youngjun.park@lge.com>
-Subject: [PATCH v3 2/4] mm, swap: only allow swapped-out slots into the swap cache
-Date: Tue, 11 Aug 2026 22:22:07 +0900
-Message-Id: <20260811132209.2862708-3-youngjun.park@lge.com>
+Subject: [PATCH v3 4/4] mm, swap: drop the swap cache guard and reclaim in swap_free_hibernation_slot()
+Date: Tue, 11 Aug 2026 22:22:09 +0900
+Message-Id: <20260811132209.2862708-5-youngjun.park@lge.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260811132209.2862708-1-youngjun.park@lge.com>
 References: <20260811132209.2862708-1-youngjun.park@lge.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 297C3A000B
-X-Stat-Signature: f4k8j4ooc1kcm4jqekbzxt855zs84sou
+X-Rspamd-Queue-Id: 9C33920005
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1786454535-291234
-X-HE-Meta: U2FsdGVkX1/7lMRMUkz6YWIRo87+JFW/Hj3J2tyaqfUJFbI2VT8jmZZrjeI9jbddga8I3NRXFVVi3yvTW0rPY2PIJtE39O4o+BuhNRCx7D4r9+ytz3nu1L/uiDnEsExJvQVNnO6EnHgbA4PMODzp1VnDKxLsf1jG4sD7FiULf93oJ4k+oR5F6DfloUVi+ZFVtWyUXhK+JP4DjSdrFg7CT4BNxWgmPfv6C6hBBmhg26Il+Yx7EzIEiBxoriV8yxaJC4twTuCFyaO+UdfhsYwNMAwWownGnO4oif1nE5+gOUPyKLN55CVQSNYjBoxlRxa3RAqsRIO6y7sxv9Y4Yd6b3+bQnE6x6iL2vqtxIqHjK4tyNkPhyAkFkNkZVqFRREiIsyBeA8Yq2U+mjx+dj9VRYosh5mkj3AeBy8VWQoJlX5eJds5i2tei+0gCL/JMpJeDh69WAi8an9XZZPbRPRPOTkHZzXdUhylbf8rsvD/gaiZ55LUugXsBzlvHXoWg6JxKRwc4IoYrwZKAiqO26QPojXjCJyJFGzFu1E66jWWKxbs3vjtGeIxYPvgzE6XgjaO8IMgfBhWD2DH0yB6nL6m5Lcuex321jIWpZ4J3yDaqmn+Xm0FcK8nxT8tdOstngLSTKQVgGmWmBZPwH5ts9VYt/fSNh9AjmyPv36jaqmQwD5CSiVGjetFrQkIncLAtK7VSZld9aBCTsXuoWF+i2ufLyJj3yAqJR500TrhgzA6k/i3tbP69cFoPjP3kf+haokL6cX0vLQKm/MCWw/DQo7R06mKbKEkJiajAz6vaji4efWvfyGtmx49NGCzwE3Eph70st5ys21vQGAiKylcUKi1Foicnk7xMpE90BZeWqHuijxMjI5oIA6L8p9TQ+CjPYXJRzTzNwF/k1EOvm1+WSKBvL7YykzER2x/g6uq9xKLwic0DimWHpQLrXBS89Cfa/64JXgSggKMxiOuw+hOSUxU
- r/Rmjygi
- wxT+E4pQXQBxlFn0nsvhk/W2S7sNdhdRJMdR00hOxWQGD4TtzssQK3mfQIBCza6RzJ+/TE3DlVBhdxNddISaWf9IbrMZhfinu5ywQq3nXQh/LdqVNmT9/0Qc8k6oloEi1uLeHlzeqOpSQ1HnGJRj+n5oGgd/jJOUt71Wfo0yo4uIWKiwBEqJGFPI+WQ==
+X-Stat-Signature: dihebqucdscitihhoidnxpq4axsf1y8h
+X-HE-Tag: 1786454536-50845
+X-HE-Meta: U2FsdGVkX1/oYBnWxnB/zc12QpjGyLFdYbERN2oreYA8YMhDbt1iuVx7pw6ZADsHg7rZAhXwRORltTQR6caRnHnDQk/BVeAm0V8ilQo8gd26O3048mD5L+qitcAdvnJOLBhBTLW2eBdrjKXS2xhSQ+djdyhwrd/HgYn6E+e4m7pWv1Lg0wsbFvC2qQldOxCk+QVKbLgKg8Q7VUQWeXjsJohq2FFf2AiZvX9MS8RkWvWxFJUNzDet3rC6sF929wM3PnrW/UBXmBBux3f7hbIF0HWpBNsrKpMPVtu3qFjyenm6nCRI1HvSaEd4TCUyk3g6C2cd5O/svchXS/c6UZqS7CWvjOjLbbKITD5d0O5S2NJUEhUTeQ9zyHJbBszkHAzvMjG1oPZOddeFqkb9GtVYS7/yh7TqlfuGTzAnGGGgo1L/l619mozQ+KIFrWz7WmLcE17U/r6DkOpJ9gVNc8JZckCwcvLN+mJetV36cbKYfxDoanGs8bLwo+0S0dGedSC0f0dqnWs6yor/trAzlXVhdZXMqtICKBQHKLRjrTevIkNWehH8fs0wLLgCJidz4c6K/0cfX+SJRW1XI0uh884t2fNEHzfoouv0lbd/JlSgfnlNQSwjtoYMpYfDYY0ljrtbTjABewIMLueEK0IP6gPBsoTFcTn2D2QA+MLw4ViGQdfHCpNo+YUpM5GqcNVLgItmMG0MlcGFH2Trj4okLOPUvkunHyMysIbd2zcpNTpMziQM370GbJi1iug7TphO/mV4NiwqXvTE/05wtQW7yE8hDAFqdLJYPqIUGagtoDmVbuWxj1kAG3gYj1uAhsIRMADa8cJwl7Hs6Eo9TQTu1hsbb/lTP/CoPQZIb4VNb9YTfUamfgu6td2ARU6z0z0gmvoLBr8B7DTUK6TRiyg8ZM7iKNI+/PW5FFxiTZ27RWwfnhSIg+PysAOEg3PomiSlvz1vxRbfLiafoydjy+eUg1L
+ gCvc5ly2
+ gnuzL78tyFA5OH85HNnjNgwndJ/udMy13D/kFDrGEXuNkv74dD6rwTW5czdHHWIHojBm25FrCTNt9cMWT2arMhjxW8ydmSnKpwmyCvLXRTXkX0I1DUSmLV+yprZ/V0/7uwVVy0i2m37xknfxv0PcGpCM/dQoZqqGvS/Q8cJoK7lDcMNqhXBLdq7wg4a8FTLEKgh0ASUB1rMyY5Eo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,74 +88,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__swap_cache_add_check() turns away folio entries and slots with no count
-and lets everything else in.  That is safe only when the caller owns the
-slot.  Cluster readahead owns nothing, it walks a raw page_cluster sized
-window of offsets around the faulting entry, so it can land on any slot.
+Both are there for a folio that readahead might have put on the slot.  A
+hibernation entry is not a shadow and has no swap count, so the swap cache
+turns it away and no such folio can exist.
 
-A bad slot gets in.  The check reads the count with __swp_tb_get_count(),
-which shifts the count bits out without looking at the type, and
-SWP_TB_BAD has all of them set, so the slot reads as SWP_TB_COUNT_MAX.
-Readahead then allocates a folio and reads the offset off the device for a
-slot nothing will ever swap in, and the folio entry that replaces it drops
-the bad marker.
-
-Readahead used to be guarded by swap_entry_swapped(), which goes through
-swp_tb_get_count() and gets -EINVAL for a bad slot.  That call went away
-when the swap cache checks moved into __swap_cache_add_check(), and the
-raw accessor there does not do the same type test.
-
-Require a shadow entry instead.  A slot dropped from the swap cache always
-gets one, empty if there is no workingset value.  The type test runs first,
-so the count is only read off a countable entry, and the check as a whole
-runs before the folio allocation in __swap_cache_alloc().
-
-The large folio walk in the same function does the same raw reads.  A bad
-slot cannot be in its range, but the range is not pinned, so a slot freed
-and then taken by hibernation still trips the countable assertion there.
-Give the walk the same shadow test, the folio check folds into it.
-
-Reproduced with a badpages list written into the swap header by hand.
-Readahead took over four bad slots before this patch and none after.  It
-needs a crafted header, so a normal setup will not hit it.
-
-Fixes: e1e6750df3b4 ("mm, swap: add support for stable large allocation in swap cache directly")
-Acked-by: Kairui Song <kasong@tencent.com>
 Signed-off-by: Youngjun Park <youngjun.park@lge.com>
 ---
- mm/swap_state.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ mm/swapfile.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index b76eb3d876fd..6341f1bfffa2 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -181,9 +181,14 @@ static int __swap_cache_add_check(struct swap_cluster_info *ci,
- 	old_tb = __swap_table_get(ci, ci_off);
- 	if (swp_tb_is_folio(old_tb))
- 		return -EEXIST;
--	if (!__swp_tb_get_count(old_tb))
-+	/*
-+	 * Only a swapped-out slot may be brought into the swap cache.
-+	 * Cluster readahead walks raw offset ranges, so it can land on
-+	 * slots that are free, bad, or owned by hibernation.
-+	 */
-+	if (!swp_tb_is_shadow(old_tb) || !__swp_tb_get_count(old_tb))
- 		return -ENOENT;
--	if (shadowp && swp_tb_is_shadow(old_tb))
-+	if (shadowp)
- 		*shadowp = swp_tb_to_shadow(old_tb);
- 	if (memcg_id)
- 		*memcg_id = __swap_cgroup_get(ci, ci_off);
-@@ -196,7 +201,7 @@ static int __swap_cache_add_check(struct swap_cluster_info *ci,
- 	ci_end = ci_off + nr;
- 	do {
- 		old_tb = __swap_table_get(ci, ci_off);
--		if (unlikely(swp_tb_is_folio(old_tb) ||
-+		if (unlikely(!swp_tb_is_shadow(old_tb) ||
- 			     !__swp_tb_get_count(old_tb) ||
- 			     is_zero != __swap_table_test_zero(ci, ci_off) ||
- 			     (memcg_id && *memcg_id != __swap_cgroup_get(ci, ci_off))))
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index a337387f7431..4fba1770ce61 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -2203,18 +2203,8 @@ void swap_free_hibernation_slot(swp_entry_t entry)
+ 	pgoff_t offset = swp_offset(entry);
+ 
+ 	ci = swap_cluster_lock(si, offset);
+-	/*
+-	 * A slot with a folio in the swap cache is freed when the folio
+-	 * leaves the cache, the same rule swap_put_entries_cluster() follows.
+-	 * Readahead can put a folio here, and freeing the slot now would
+-	 * leave that folio with no entry behind it.
+-	 */
+-	if (!swp_tb_is_folio(__swap_table_get(ci, offset % SWAPFILE_CLUSTER)))
+-		__swap_cluster_free_entries(si, ci, offset % SWAPFILE_CLUSTER, 1);
++	__swap_cluster_free_entries(si, ci, offset % SWAPFILE_CLUSTER, 1);
+ 	swap_cluster_unlock(ci);
+-
+-	/* In theory readahead might add it to the swap cache by accident */
+-	__try_to_reclaim_swap(si, offset, TTRS_ANYWAY);
+ }
+ 
+ static int __find_hibernation_swap_type(dev_t device, sector_t offset)
 -- 
 2.48.1
 
