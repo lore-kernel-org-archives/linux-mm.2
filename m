@@ -4,83 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4751CC5AD7B
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 03:36:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8D25C5AC67
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 03:40:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C5446B007B; Mon, 10 Aug 2026 23:36:56 -0400 (EDT)
+	id E235A6B008A; Mon, 10 Aug 2026 23:40:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84EE16B008A; Mon, 10 Aug 2026 23:36:56 -0400 (EDT)
+	id DD49D6B008C; Mon, 10 Aug 2026 23:40:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73CDE6B008C; Mon, 10 Aug 2026 23:36:56 -0400 (EDT)
+	id CE9FB6B0092; Mon, 10 Aug 2026 23:40:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4748A6B007B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 23:36:56 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BCAE91C08A4
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 03:36:55 +0000 (UTC)
-X-FDA: 85087577190.09.427C461
-Received: from out-173.mta1.migadu.com (mta1.migadu.com [37.59.57.117])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0530E40006
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 03:36:53 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QADIpN8J;
-	spf=pass (imf17.hostedemail.com: domain of ye.liu@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786419414;
-	b=lAAgLLPfoLm7FqnJuySNwHvwIQ86YfskGLGMdJZrr9qLnhocc+jOeESYk8Qd5dwrOxK4aV
-	HzvPWatjGVqeEupKIg1yRFDT26co5DWauzjkSnzUO0f4WMXOn5WQBSABuqnIA+eBfb9Loj
-	kG6PV532iAKhNlPu4OTzkRIxBB2zIIQ=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QADIpN8J;
-	spf=pass (imf17.hostedemail.com: domain of ye.liu@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A5FD76B008A
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 23:40:57 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 23CFD1402FE
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 03:40:57 +0000 (UTC)
+X-FDA: 85087587354.28.966CFD7
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 3E190140004
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 03:40:55 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=owwF8cog;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786419414;
+	s=arc-20220608; t=1786419655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=3rmW+tHa6kovhH6yy177yV/pA5fI2DQqyj8ArGhMWDg=;
-	b=zdDiDyy4MpyR/iPHeUVlw8GpmH3bYUcpvNwlkUqTqjg05EGfka/80CFfbI28o2ENeMPO76
-	Iw+5Jnhe4iikuSMJYIi/qNbaDNfbvBRL68t9fHPSAH/dIduEPpR74E+2WFCe4SJd8qf0KM
-	F7G5vSoyZJ0VfYelfusZtTHGOr8qzEw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BTISO9RnoqUtAb9p7G8hDIEEL3dlWgZWk60pW4cP7tY=;
+	b=Eb49H/bO1BvhdB47BgXyyIEcUNYsOG68Euez80s8p+QTUInGr38jzVU1797wdlYpN33fiB
+	absDL3zvCsxPlbSPx0MA5xDlGdiVahZsBMtRL/H2YxmY8DOPzKxDvlVaZbIh9Iour6Poy6
+	lVBDVWTc7Z0c11s0c6cugwPzDNxSw4w=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=owwF8cog;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786419655;
+	b=yPoD9vvulcIGgbwA9JpfiQjMlV0YgPSIptuLI7aOUly8OtEn4q5u9oDi8951+rCELYY9oq
+	RF76NdNFkqfmH3/ND50Yn93lEalIckXA4gA1KpwXRRBB9YnQoMisU0g/XxjUrKHsHCOvUJ
+	QUuWaY3ILaP1wF1HPitoKrVNryaXBGg=
+Content-Type: text/plain;
+	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786419411;
+	t=1786419654;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=3rmW+tHa6kovhH6yy177yV/pA5fI2DQqyj8ArGhMWDg=;
-	b=QADIpN8JxDQrtlOR105KV7dV83Aqxk9jlF9GvAE5AtX+AS2UoxLPzvTKnQMtlHXBVlbizm
-	5ZTTh3MFXu/2TgDR9L9wR+/KVcSEw0IOBFyiv7NdDxmIIciougrn3hd/De1N0MJIC6xFk1
-	2Z4b9HStb+7CT7beqHooD/ItS1O8oO0=
-From: Ye Liu <ye.liu@linux.dev>
-To: Michal Hocko <mhocko@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Ye Liu <liuye@kylinos.cn>,
-	David Rientjes <rientjes@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] mm/oom_kill, proc: replace magic number 1000 with OOM_SCORE_ADJ_MAX
-Date: Tue, 11 Aug 2026 11:36:08 +0800
-Message-Id: <20260811033609.3992348-1-ye.liu@linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BTISO9RnoqUtAb9p7G8hDIEEL3dlWgZWk60pW4cP7tY=;
+	b=owwF8cog8cfLuw1hrPJLGKGk11LYGONgrmm2OsRDLqFc6jbkInni2vOgkq1PpKGwO0g1dZ
+	amQD9vOLPJUGQBem7OHcoJfRdCQd/qlyAOT2YBMBTcv3hUpvROW/SVH8i23SHWJ4ghg1xG
+	jQ+spXhgjcBe3B46I154hXG8vLSRe4k=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH v3 03/17] mm/mm_init: skip initializing shared vmemmap
+ tail pages
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260804035535.2846016-4-songmuchun@bytedance.com>
+Date: Tue, 11 Aug 2026 11:40:35 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Michal Hocko <mhocko@suse.com>,
+ David Laight <david.laight.linux@gmail.com>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <BAFC9F46-9588-4A0A-BCF5-2A865CC4A801@linux.dev>
+References: <20260804035535.2846016-1-songmuchun@bytedance.com>
+ <20260804035535.2846016-4-songmuchun@bytedance.com>
+To: Muchun Song <songmuchun@bytedance.com>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0530E40006
-X-Stat-Signature: fmuxowwuokb55t19uwsfndpboc677rmp
 X-Rspam-User: 
-X-HE-Tag: 1786419413-145342
-X-HE-Meta: U2FsdGVkX1+LAU2fbgOUl+1cOmQcb7C15MZBM9Xd5onpCSC+QI3mJ32jWsBMtkjxYaOSYsSq3WawBFJ2+1hs30ZKpuc1ilYpwwHMntKlPt5DAUu7kd+BHuA9lnVmmwdPKV1xbn2bSkv5mnhzuMCWg0OGF/vuAxrfbsHfHlMNN3fhE8VZdmhWpl3kGE8/ROdSKe1jQ0virIOUMlp4wTDS9IbNPsUPDhwH2h3xE8xY7eO34zfff27DfJv51SkFL9B68yYAHtv8sazcwPqF0Iw5ZDsiNSksp2PETg4P01s3LfDltPoenC+4nNRowXQYtdxAQXhTcGrJ8WtrqBhTzd4tVKhC36nNJwgB52awuKuK5retYDJ/hiwjt9B0XrvQEqkCM5da+4kyvr7NynoSJ2eLtvedBB8+iKWfxONNf+taX+ZPkVwSC4KiqRF3SyruTPv2GohxmpsBfe1gdLq2yGXMhnA8xXFWv2foFWNlRTxmMQwuWjIqV8+Fb1SpDT0G7ZEATd5WM1/m7lUwB83vX+U52zrp5l+t2skMkQTz68BAtCuEPNP9A7xcecZ9gcOn8S5LnNTXl3GSGEYho4ZR9TO3exQjgQETAtewDYIEZUyr3aJEHLcWghHw+KAbEvD8RsTTXZbbMElIXMVi2/EIyoR+QOtrDLNvuzqKOiBoLTso0C+bCjwVB98Ja1XPIeoBAGGGhoflm+Epzbw1UWc7aa7lUsz6hOknZOxJLKk8U14WM8LVw8mBlXEClloM41vMAxCnIyjOvIXLpT86+ePU9LbwuqkHTOnW4pejP0yKWtEdGecF8Bb5JgJEHdXOoYtMGDSWK9XEC67Jf5oEbZWELjq314VUJeVMg0B7TTzZsjKwLUEia0VkqEtr/X50n+kDw3pnp7Tby0zD0cjvPkSGonmb2LT65zg5iMNdYkNsOjlwSovsVuPTnrNm8c5uOJi3DC38QcRO+Kg364IKHm0AFoZ
- 1kHawkUD
- buFFYRJNd+dlkHJ7MHXcZp9AbdWqiTNn4f7oyWSnyvol3Pnxi1lgp18op+/Y1qivrpIveXf4JxLQlwY72+GKZ5oHlQ0rEMQgnJpXjIgTJrAdsVd/zP7ypDwSGT+v8ydSeSMNEboG7i2kc3Cjli1KRSd2rPseFU4VAsn1eysTjwHclPkc5keDhUaolcPLTxL/47dRcJ6+EpbiRN+g=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3E190140004
+X-Stat-Signature: ts7u48ctnhxxpxi8nh3jia6j6de9q18u
+X-HE-Tag: 1786419655-131442
+X-HE-Meta: U2FsdGVkX1+QSGS95hhwWPi3s9WU1hlxJ0gzrmjIZ6J9X53Fc4ejDBI+ZdCm7+3oZg1xxvt0hig5rmpYlk+mcyty/aE8Nl7xIPd1oF6KdkBKz2kGs8CvdXWVOmZNy/090FQ9aP3kPUGTLlsfGd838faIdw9sjRFyrA3s+8LOuiIZfawq6PoaZeCSizQsy4zD8BQUE6WdUYpSIImGxQ2ciq3+STjZJrgwcWdV1IrHyusCQjEKrPxTvJ7SvaTXwwljbHVQhnDxMtXDiwDiAOmPV8RmRkSFf3R/7v94wbpXlZss7CULwD9Cxxn6G4xvc+6VoybdUo3TYdddy2F1NJpXlIvawFgczkFEAAhK9NBNLu3TJIBrjMU7OMC4mCo5WhSXc8qmj6tB5AhNEd+D+/jytmMZW8UD2MYkOuklHoEZoKtNlVLyXSL1DLZWL/bkkoOovgJ3ZHbN1pvHkYc+HRotPaG+orkPGBMr6rYOtuvGTs66+kqzHsqh/vpIX90Z46W3YVz2eo9lcEV03dydhg2c++UwsHFT/NNMh4eufQLMfjfGpyCkOp1EKKNPEeMAqFE//efPTJtXrTt30lq9ApbuscPHKEI9G6rw5+Pti0MZ1VIl3j6MoqaQ3HEeBmQQadlyITugk6rsjWy7vdM+cgcgUJFYhMbQ6AHlcT3lW2RkbgWNWbQ3Cv7mTD7GfRnYlgp5jF3XBmO7yKWzC8f4VP6XOvQWTcmUCdMUfHBXFCqECwnk8f7y9PNBge2H2n05LHT+h0sH/wjJk5nlmrJmARYi3GLjisfYEz8p/hHWDxUE2KNfZidPPGj+pBKag/WwmSpryn3+qm1/uv7cxnOv8Sd/H92Vg9lf92yu00rnT8CSOXLnJDaUXWG0NDGRWH1oHYiovGzF0weDW2vy/4ZHxroKPkwniRR3vifQCJ+BRFrM0RH6oT6ZrCHXf/C9He3gfNhvepUw5lTTqJNWF3SS8ra
+ ykcvhB3Z
+ jkaOaZi5+BQO8L7EmRwh8cG2QSMY32laTV7PSPrKd370K4A3BNAnYr2nkQqmLeRHRLGPwATilcReF88N6eqXZrXM/7zNiXM4nPlepK5dD2xWDJ/RIvO7CBRSLrmx+GNvkIRmtnyqzyBzo2L/OAxwmi/3wMM1LYkYgwsfHyTdmBlisQT8dVGv8pXzlGKdgAodqFwPO1wKDU/GZfIdSrPzQOci2F9txxdnwDMILnr/XqaDeml9Ts9FB0k0KezV89zIjfMob81nWEaHB1miiDCsxbh8TDihBhroVh4zP701+Tvjw6Cuaha/4maJbTlqlVrNgikrv6LXVyo2oOqdHbvtQ6LxC7kP3xpg37BIlNVr4l1BGh7q84VOvdOyUHIdjjOj9yc49
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,51 +99,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ye Liu <liuye@kylinos.cn>
 
-In oom_badness() and proc_oom_score(), the oom_score_adj normalization
-uses a hardcoded 1000, which is the value of OOM_SCORE_ADJ_MAX defined
-in include/uapi/linux/oom.h.  Other code in the kernel (e.g.
-fs/proc/base.c oom_adj handling) already uses OOM_SCORE_ADJ_MAX for
-the same purpose.
 
-Replace the magic number with the macro for consistency and
-readability.  No functional change.
+> On Aug 4, 2026, at 11:55, Muchun Song <songmuchun@bytedance.com> wrote:
+> 
+> memmap_init_range() initializes every struct page in the target range.
+> For compound pages with vmemmap optimization, the tail struct pages are
+> backed by a shared vmemmap page.
+> 
+> Initializing those tail struct pages would overwrite the shared
+> vmemmap page contents, requiring users such as HugeTLB to restore the
+> metadata afterwards.
+> 
+> Track the compound order for HVO-backed sections and use that metadata
+> to detect struct pages that fall into the shared tail vmemmap range.
+> Skip those shared tail pages in memmap_init_range(), then initialize
+> pageblock migratetypes for the processed range with a helper after the
+> per-page initialization loop.
+> 
+> Keep direct mem_section access inside sparse helpers by exposing
+> pfn_to_section_order() to users that only need the order associated with
+> a PFN. This lets memmap_init_range() skip shared tail vmemmap pages
+> without exposing __pfn_to_section() to !SPARSEMEM builds.
+> 
+> This is a preparatory change for consolidating handling across users of
+> vmemmap optimization, and it also avoids redundant initialization of
+> shared tail vmemmap pages during early boot.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
-Signed-off-by: Ye Liu <liuye@kylinos.cn>
----
- fs/proc/base.c | 3 ++-
- mm/oom_kill.c  | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+Sashiko said there is a missing assignment for the new order field in
+struct mem_section. This is just an observation, not an issue, because
+assignment is placed in patch 10. There's no extra action to take for
+this report.
 
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index 6a39de424f62..58be38942460 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -594,7 +594,8 @@ static int proc_oom_score(struct seq_file *m, struct pid_namespace *ns,
- 	 * exporting for a long time so userspace might depend on it.
- 	 */
- 	if (badness != LONG_MIN)
--		points = (1000 + badness * 1000 / (long)totalpages) * 2 / 3;
-+		points = (OOM_SCORE_ADJ_MAX +
-+			  badness * OOM_SCORE_ADJ_MAX / (long)totalpages) * 2 / 3;
- 
- 	seq_printf(m, "%lu\n", points);
- 
-diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-index 5f372f6e26fa..08bff7a55db8 100644
---- a/mm/oom_kill.c
-+++ b/mm/oom_kill.c
-@@ -230,7 +230,7 @@ long oom_badness(struct task_struct *p, unsigned long totalpages)
- 	task_unlock(p);
- 
- 	/* Normalize to oom_score_adj units */
--	adj *= totalpages / 1000;
-+	adj *= totalpages / OOM_SCORE_ADJ_MAX;
- 	points += adj;
- 
- 	return points;
--- 
-2.25.1
-
+Thanks.
 
