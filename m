@@ -4,140 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E314C5AC67
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 19:20:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82F50C5CFC1
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 19:25:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D4CB6B007B; Tue, 11 Aug 2026 15:20:25 -0400 (EDT)
+	id 5890C6B007B; Tue, 11 Aug 2026 15:25:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AC046B0088; Tue, 11 Aug 2026 15:20:25 -0400 (EDT)
+	id 539B26B0096; Tue, 11 Aug 2026 15:25:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C2A06B0096; Tue, 11 Aug 2026 15:20:25 -0400 (EDT)
+	id 427AF6B0098; Tue, 11 Aug 2026 15:25:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DE1326B007B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:20:24 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 62BFA1601EA
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:20:24 +0000 (UTC)
-X-FDA: 85089954768.19.7F2F6B4
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 7915A180011
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:20:22 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 01D8B6B007B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:25:46 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8151CA01F5
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:25:46 +0000 (UTC)
+X-FDA: 85089968292.04.8A66A57
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E81B4180008
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:25:44 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=T66BHWbH;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf24.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786476022;
-	b=X6AV0X1KKN/69vvpywyU13Exk7Cf2v47bfpQKIgb2kxtIrbCG/7yxr2XMarSrmQJDc2e40
-	yl5pvllTjw9+fYRRE/vGFMLJa1jmdfECeuu5m7/EmSb7XwOBC68Muv0m4vMMO/x9w5glQP
-	E/OM7C0/QTZbfE0Pozp7hCmReBX8t0M=
-ARC-Authentication-Results: i=2;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QjR46Q4l;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786476344;
+	b=bP8nGh+orSgOrrPlA2w/QYyPxfr3D/B5K8xMNZB0wDYElJ0AG1oWJfNkEniJnhvgfZQn7C
+	OdYZS9FMoRxeZnDwujYvp1BhTni6W438cS73McZh1cULQdjDUbR4iHuKR6w2WGQfwnU70S
+	WH0VuKjjNaiXNuvMln6PfW27jrwsQCw=
+ARC-Authentication-Results: i=1;
 	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=T66BHWbH;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf24.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786476022;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QjR46Q4l;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786476344;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C0tI9qUXL0/pdjc8WBu7cnqr0pTI/K9DzaSGDO9Uh+8=;
-	b=wlDn8vDX20AArDY/+WvwckN09wQ7Dvw4RPAodRye5fBx+YhO6GK/QQnXgoiSCjo3bsMJeT
-	nYXNmMF5HBpzChELFpv5cKsZ32j/xqkxrTcMXKX/Nz0utM3mdjZ5EnrowGM/aCXCB6XxZh
-	c7an74c83can8VZ7P3OuTXRtwEm/zGY=
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-47f703a9d05so96304f8f.0
-        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:20:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786476021; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OLihG5WC+GWySqBOPR1qhiebILQ13HPsGxcvx2V6VtIZnyPDOcnmgsctzQks57UW6N
-         5N1GkCPbwdkWKPRu+VCUXOMLk2Q9Sj+lHIpREBHaHvpqGP2cdZLZfOb1lut9wEbgVAOl
-         nJvzECGRhyJLW0jk2vKMayOyajvaaPCHuzniwo0SFNBJe4MhSMBdw2ZclHR4Njy7Z6wq
-         rHb6sgw7UJu3HXDxfrjQugbNdkC4lCfeJW5tK8m0/fTBVEvGdgA5+0dvMx2+8UcbXaf+
-         nIg+6m5aAQ5rNsBmxwLU5b/A+GcrpHt1wV4tm/ZvfWXJrSvZIOvzoN2fNuwo7aN/m49R
-         aGiQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=C0tI9qUXL0/pdjc8WBu7cnqr0pTI/K9DzaSGDO9Uh+8=;
-        fh=k18gi2DdLBYakATxE7eUd9kOeIG/9ssNB7+OQa6KCEE=;
-        b=IFeulbeJxMFjm3xb7crbiXT83WafSea2008f1HBsmWmrUksYII/Jcu+8WzHcXpjg31
-         Cw15+k+/qEpHXZMraGMJhYkvLUNWcw33zH16Jg1Gg35Sk7AVJymKr3mBEWm6w+bpqWkg
-         W7xy7xO7p/Pljn2hv5X8ZbuPKVU+VZixz5Dr6ufdGcqXRhimDjXMABbbuMxUjMIM2heA
-         jtbA09pdIOIk/CjdzzxcpyerbIu0DTvfHCl4JXz4z+ZSoyL0ibga5OaqT9//3P8Wnebr
-         0v8Gwdc/X1Zz47sRXl+4NR4N5crtfvKkhGaKGIYq3CHF31GUD45gnIiJeWh/ZRPDmgeO
-         A2IQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786476021; x=1787080821; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=C0tI9qUXL0/pdjc8WBu7cnqr0pTI/K9DzaSGDO9Uh+8=;
-        b=T66BHWbHgJrr0mAq+d5YUVY42KuiXvIo3cI0rWFAeUMzzt9khumxK7J9EUibEA6zlP
-         56yG5AU7gSWWQ9m66rO1bYiaukyTm9YFOdz7j5jyvfnPpX01vSGXfi3OYwKnA1G/dvWA
-         e4E25Sxz7hoSW9hVwsQoFwmCvpN607nsKI4XnYfh9aZjctsyN8jXDiNJPj8+p3MmrS83
-         ImNT5Q/QHmyb4sGlZj9/mJjcbnmUYFTfLb2xHOjk7Iw9vtaBsn3mS9AMNZHCa7RV5iRm
-         b982LXNr93sNj4O9GbTPiq3vons+iu3zujXb3OWC7K9Z4abuO1D6rC0FI5/nSsl75i+r
-         Il6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786476021; x=1787080821;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=C0tI9qUXL0/pdjc8WBu7cnqr0pTI/K9DzaSGDO9Uh+8=;
-        b=O3SXOWiW1jAlJONz3oOZK17I9WG/+vHiAy+6UPW+44tEVesmqk/Eu3I5x/nHeHaG+U
-         +MYmL7LotGrpjqpEyxho3BYV1pRUEqWDQ2sWZY80THRIfBYqil7Fo+/6aRzmOKM4GE5v
-         BU/rDs50+D50ni9GiTHAAEXWsx+7zG19cezPpx0aGeknDJamowjUj8rjbp95b9TwIPh1
-         SR+SpMwG5qn18a6aj9kIzwt7hsIPREoaU8h86RYarod+PMWkKD3YPH1z25NUgI0Ek0Ah
-         0Gg0VfS0QMn2UuKSOS8pjG5We22FlBC/0ATjXPaHEvuWh+9dBVuU1IHc0inVeadoite0
-         qa5Q==
-X-Forwarded-Encrypted: i=1; AHgh+RoNMWRkBUUEg6X/m0STxSGsoEkKqRmqRWfosxejw/xgxhuFAF6bIsEIOiMfoOzfnZ5Wdmn6zDgbAw==@kvack.org
-X-Gm-Message-State: AOJu0YxixzRC11a1AZYTsMsMl8prUqNEKtHRt7NFznnfG/Av4/mHvyTo
-	twRktAi76ltJfSW/vAdyAwYMi/blinlk4Cc2qoGLMpsVH6jSGD2y3NUL/dCkq0xxrCP2AsRxQkT
-	NX7qQd3fdCTBrK2Qxz21vyO13YlfQU5c=
-X-Gm-Gg: AR+sD11tUCPW6jFJyCenyqWILfnDEfa8BnwutkHeRhOLEoLkSKCv55EekrJp4q2TlXg
-	DdiTjHUGP2fhyKBp/uJnntGMKheMqEP0UyuRfGmtCpSYLzfGGfpOS4g3QQd+fvsA1RaJOhR9znC
-	8JHC0ptVzEk+sIeiz+YyUmoLWedB6yXc6S5m7NgB0CtgfzCK/mFxgxGOyb1bC3iUZx3J50QoyTh
-	iidVxCy8S5bQR4YYNlYXkmd8WDCz/p5WWrpT5cPLQxKUrVdRr6QMATAVfCy4aZDbkNoL4ljf5yR
-	FiqbjapoXuDJKvKy5u+bP+H4v0bHy1MjR0cMcSupjJcB9pxGepSxdQWVCswmhXO9C5xzVLct126
-	U
-X-Received: by 2002:a05:6000:2687:b0:47f:d072:87d7 with SMTP id
- ffacd0b85a97d-4814ad8531cmr9844062f8f.9.1786476020845; Tue, 11 Aug 2026
- 12:20:20 -0700 (PDT)
+	bh=d/kFT/bPhzj3VGlufcHrxy72DzfiKj46fSUWmYSSRdY=;
+	b=S5FXJeM/teXZgNufjlcuObDDEKOxcElbtxxuUQUMWe7QnR+gX++p19R9mG7vXGEQbC+RD5
+	WvfWDykzyRUpsMhUQqCLO2KO+6yfWUUB/ke60oPo8QNVKLDbXzdS69bhElGzkv9hFxVcEL
+	CsEYwf1SzIJM2zkNq+NHi1q1530X22A=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0CBF5600AD;
+	Tue, 11 Aug 2026 19:25:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B2051F000E9;
+	Tue, 11 Aug 2026 19:25:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786476343;
+	bh=d/kFT/bPhzj3VGlufcHrxy72DzfiKj46fSUWmYSSRdY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QjR46Q4l38ohpBPR9a3NVpyj00X97b0QAtzWD4CJusxEIHEk06ZVprfqvGEwliaFz
+	 ApBeXPVAZFUoE+1iAOYtGAf1euN2IjulS05jD3suRf8nP+UXfJAjvY23m4sDGtj2gN
+	 0iZV+swR1WmPVz6C9JwEZAJHMXnIVG0wfTVbm3960TN4McRip96oHmA0zV1PTgK4PR
+	 sMEkhML8HuqBfgHxpw5B+Vxc7jB7S5Ing8jtzB1kK0TmQkbcsUP5Z6S8nxav9KhiA5
+	 LIHxirdJ5+/7iEag07J0iZPWWUreSRXob3X4jSbGiOtkALzPRhYglSoT5SwTdh0u/I
+	 C3aXsRk4aSs+g==
+Date: Tue, 11 Aug 2026 20:25:07 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Alex Deucher <alexander.deucher@amd.com>, 
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Boris Brezillon <boris.brezillon@collabora.com>, Steven Price <steven.price@arm.com>, 
+	Liviu Dudau <liviu.dudau@arm.com>, Huang Rui <ray.huang@amd.com>, 
+	Matthew Auld <matthew.auld@intel.com>, 
+	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 17/20] mm/vma: only permit MAP_PRIVATE /dev/zero to be
+ mapped anonymous
+Message-ID: <ant1xwiG3djtoXoe@lucifer>
+References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
+ <20260806-b4-scalable-cow-virt-pgoff-v4-17-ab318a350404@kernel.org>
+ <c7930f14-5978-4709-bac2-54950c988883@kernel.org>
 MIME-Version: 1.0
-References: <20260811051434.3805648-1-wfelipe@google.com>
-In-Reply-To: <20260811051434.3805648-1-wfelipe@google.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 11 Aug 2026 12:20:09 -0700
-X-Gm-Features: AUfX_mxREYM0a5ro6axfuWwtuNUtoNVGyXynzVlYalBNbqZUMOkUoPV4WEi7gaY
-Message-ID: <CAKEwX=PW8D6z3Oq7o9OYGXV1YF3g8mxq8rGDU-Tjn2FQQZ-XZg@mail.gmail.com>
-Subject: Re: [PATCH v2] selftests/cgroup: test_zswap: skip test_no_kmem_bypass
- if debugfs is unavailable
-To: Wilson Felipe Pereira <wfelipe@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, 
-	Anshuman Khandual <anshuman.khandual@arm.com>, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 7915A180011
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c7930f14-5978-4709-bac2-54950c988883@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: 4h1kkcpx8b3hcspkfeibuxhyz3aes984
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786476022-102350
-X-HE-Meta: U2FsdGVkX1+W9jIR0uEIX1clV0idZSM+D+b8+O3pm1qpxqvo+oLqkcCRGQIUJjWZIcZTyXABoKydaxS1Y61PFpfqFWWb2EoDoTyHuyURXCAcH/JceSiHKeNgMIOA9jyDRFBm4tB6SlWjI06WgwP4UcKqxkXebsLmykpB5TM4N807bmIWanxuMksZoClTN+rKIA6Oobv0AnwPNxeKnRuI+o1XDrUfPACX80jCJ6wPbsk8dA0DCXR/KcamCH1e6DPv403b4kILx1l1/UIQZfbjnxfgnG/DBuyZnyecI3dtpuSgEaDmm0N+qiLWL+mrBUtMsg4T/+ySczTEf+ss9qtEZ+ULEJ4zul7wk6ZiBeZoXBcVxrfTSIk4ktW1+b9MpREcqniJnhGfNa0Grk5LpmtinkPe2Dle2I2Dmj3dLo2YOSq0prAKFHUZUs5HaLstldB2nYS3io1TKLNZXxNHIUdVPCjkDr9AKmzW8pAXka0qaynJjxq21AnmNimcHFQGsYK0DrvGnjjMTMYtIAFHIQjTO5JpszBlc/dBOvW5zMpydVAoBcjnEEPoJsneqLXt1ObYOhbgYxtU3me10pRhhEuUokb3MsbA9yuAXfgsWe8zaUkLVW90QpV9lRuTC+Yg788Unves6kKnRY3CRwqROo3YBVtNk/wK0LiYfMgMOUyzEJ+mFCuYBORVST8DTkhjOrg99ICvxHrMDIRaZjqYYRJ4CWmwbemFjjgzvlGIcqwTY01YlGE7JBHvbEAfSzB1KUmtQ3vzvTfxO4dYVhNagki8pvozp1SMWCRydI0SAxgOTeT8awQlzGPl0nVwCrFkTA3TLgAsq4+of/0FZjGA2Nw++A7PTOKXgLUBy3D903/1QQvjxP8LvwneHxe30vO2Cmaq/DH4Iky7D0RrGzaJ6s2fgzBKo0ZaJa4KFt/H9UFIDigBTrCk+9SE0TL1XnkWTrROXkVTJKIQ0XXuRsheqQ1
- r8mqw2oS
- 5fG2eyih4ACBUbvd2/OWgsttJ3buuMOYQRfelKG8bkGhr99nKMrweKwgRA90TPY42OWznD38CmheuWX2M3n+hh77fzJNhQ+ploPEq8ZX06V0EoZBIPlrRXx/1KFFG/TkcHZ871/ETd9EjyaDeEnNe9LF4c1sqRf26q5dRIXt4hBceLkO7Mzm7NIluwG8GZEV9rY7EQI7gBZk7LcM6i4saMJ0zVXY8p8/l4EVB6LMLSBQkM/anBmNO/Mh3v3p0NT4vi0+l1TYH1xA5CLAAsNpUVOMAJ0PzRrnLcRG6IsuMIyyHxNjETbj3SYnYQLNtTe11i/PnNq0D2+xW4cM0cKKL0xak9tmqd6u2a9cCF8LuBVxh5xHct7Mk7Bp/fYwKo80vzBKBHRCfYu7T3suZWpgwQ/Mhko+CN9L45KIING1VFjtad9yht7GJs7y48XFfithxGJVC47AbC1V3m/ZsvmHH/Dr2XVBPIe6gxJ7u6tEEvgspNsTdQT3GADAfsovvuLTKmkx7MJJyhpGKEyQ=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E81B4180008
+X-Stat-Signature: m9ouq16877fry73ab4ruwfrezjtgx9mr
+X-HE-Tag: 1786476344-855726
+X-HE-Meta: U2FsdGVkX19VRCdz/8jt0miZMOtxBsFEjrLWmRBti2VvXEeD3WxCTL5CRonhrNciiwaqG7j29gyyOlvoiZVtJJ770jxxSJK2Dj3bBF2EWooIPKzWybqtw4tuJBmZIp8jSNCuUaNMpEFM00xiK/unPQVIHS+pRvqn2hIUhIJcGlygRSvUEacKbRk/Tke/VcqAR8kiNRZJukQ8epzlKgQ4tf8JykQ7KXs6ZO+MG3aqUNTvtYfRpf41yoDR+mhx+XxSQ9VSQzE5s+xWqyDbb77fz1lw7fZqHXeFDDamO/1zrgsj8t171MsDeyFNSyOT5g1lVSYFoAq5BkXmohBx61b8xjYmied+ISgTSFXt2bdcAuQ6uGLh00s+ZL/nfVXtG4HqpZMpxEI6dTN3HhIvqfDhrdmwlsyGnlQ7mbaFqowJ0REwHR1X8JzT0CgqojmJAAEjMLFNO25F7SAFx5SmepRgKWrDYCJKTEiPzJuEPA+iY1m9Fdv2+t8RBh+ZsSE9ukSqAO+sGVsbN8OlbnZC06Tfh2wPOd2hFjfY4haM1EBeHHpeKt3sgKfI2Zj1DkhZUBM8NHH5eaTyJBD3E843x+60nYOMSBrzUTAuHafnfYVVz+woc6w+GG3ESL7j0a+vKIwt7H8Pk5X0NP0ELaqh8Fui4BKrjPABE8oObShncvoNf3AO2BnWWn6FaGLZDkWbyt59sKpDHfqE79Sf71dToUmZx+43DZz1IJnv9+ifrFMbH2Nro73NaCh9N8D2MQGkIAprZ8Whg6axpRruXzjO35MfjWzK8Rhwpubf2W5J+9QwMpN4qtCWo7RvrlPKpsoZqnc8oS4+OQo5Ma2qSi0UsfaIaLKTQ9HHChzkCZHs63ZSL+Kslr3W851zfYl0J7XkKR873gC+RI7Fh1dF+9WXJ6g8xxXQcDtp5mM7UBz3XB6Uj169Fsr1Rp3YmZSwHr0zEm0lcZjEKY0sGXfYbd6mTm9
+ YnX9sw8Q
+ DpcTW2yYd+BHuGVi1BXMtwcbaTNNOIxlqjBrx9A9NB1MZbKXFBgOR4FADzciarO5tVBzHN9eJp7caN9U2wGq62xieGjpLY2x9GwSe2BjU9XNFu3X8/eatHEleC8WDwpXkAISezm8BQx0QvYdxYHsxLmJfFXYfRHCQMFti09C7Lj7qqmv1k0M3Cch1JORpCsaamEd0twuz9T56qkTO1siE/4/cx6NMCcVRs90veU9paxx3EKff8BC3SmhTFDwowzVy0UPG/v1WPgN2oBTHe4BrK5MwsjFw9tAMu6pBcQXWFtRmYCGT4oFl6l26QHdHEvDkl7wJGo/eFIspW+mYbyoYiTLIsXV3Orsu8b9OmQbmZ/HN1w6QZZ32yJvPFgH5Hdseq37xGTofBz3wgWQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,24 +132,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 10, 2026 at 10:14=E2=80=AFPM Wilson Felipe Pereira
-<wfelipe@google.com> wrote:
+On Tue, Aug 11, 2026 at 07:07:27PM +0200, David Hildenbrand (Arm) wrote:
+> On 8/6/26 22:21, Lorenzo Stoakes (ARM) wrote:
+> > In order to use mmap_prepare() with MAP_PRIVATE mappings of /dev/zero
+> > without the success_hook hack we explicitly permitted mmap_prepare handlers
+> > to set NULL vm_ops.
 >
-> test_no_kmem_bypass() needs to read
-> /sys/kernel/debug/zswap/stored_pages via get_zswap_stored_pages() to
-> verify that compressed pages are charged to the memcg.
+> The sentence is a bit hard to get as you are mixing "with" with another "without".
 >
-> When running in an environment where debugfs is not mounted or
-> CONFIG_DEBUG_FS is disabled, get_zswap_stored_pages() fails, causing the
-> loop to terminate early and report a false negative (KSFT_FAIL).
+> >
+> > However this is dangerous and we really only want to allow this for
+> > MAP_PRIVATE-mapped /dev/zero.
+> >
+> > Make it possible to explicitly identify /dev/zero by setting a global
+> > DEVZERO_MINOR device minor number then explicitly check for this in mmap
+> > code for a MAP_PRIVATE mapping and only set the VMA anonymous if we have
+> > positively identified it.
+> >
+> > Then remove all ability for mmap_prepare or mmap hooks to set a VMA
+> > anonymous and update mmap_zero_prepare() to leave it to the core mmap code
+> > to mark the VMA anonymous.
+> >
+> > Note that this disallows nested MAP_PRIVATE-mappings of /dev/zero
+> > regions. Doing this would be broken in any case.
 >
-> Selftests should not fail if debugfs is unavailable, and it should print
-> a message when it is skipped.
->
-> While I'm here, also add a warning message if the test is being skipped
-> due to totalram size and make the check for totalram more readable.
->
-> Signed-off-by: Wilson Felipe Pereira <wfelipe@google.com>
+> What exactly do you mean by "nested MAP_PRIVATE mappings"? You mean, reusing
+> parts in other drives?
 
-Acked-by: Nhat Pham <nphamcs@gmail.com>
+I should have said stacked I think.
+
+>
+> Do you mean things like ...
+>
+> [...]
+>
+> >
+> > An example of this is drm_gem_shmem_mmap() which deliberately clears
+> > vma->vm_ops before handing the VMA to dma-buf. Cases such as this will be
+> > updated when they are converted to mmap_prepare.
+>
+> ... this?
+
+Yup.
+
+>
+> >
+> > Also, in order to avoid a single commit bisection hazard, add a temporary
+> > workaround to set the VMA anonymous only after vma->vm_file is assigned in
+> > __mmap_new_file_vma().
+> >
+> > This is because vma_set_range() calls vma_set_pgoff() and
+> > assert_sane_pgoff() in turn, prior to the vma->vm_file being assigned. If
+> > we set the VMA anonymous early then this assert will fail.
+> >
+> > This is removed in the subsequent commit.
+> >
+> > Also update the VMA userland tests to reflect the change.
+> >
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > ---
+>
+> [...]
+>
+> >
+> > +static bool map_is_dev_zero(const struct mmap_state *map)
+> > +{
+> > +	const struct file *file = map->file;
+> > +	struct inode *inode;
+> > +
+> > +	if (!file)
+> > +		return false;
+> > +	inode = file_inode(file);
+> > +	if (!S_ISCHR(inode->i_mode))
+> > +		return false;
+> > +	return imajor(inode) == MEM_MAJOR && iminor(inode) == DEVZERO_MINOR;
+> > +}
+>
+> My brain is a bit slow after digging through this series.
+>
+> We identify shmem, for example, through shmem_vm_ops/shmem_anon_vm_ops.
+>
+> So naturally I am wondering: couldn't we do something similar to identify that?
+> Like, checking for zero_fops?
+
+We don't assign vm_ops for a MAP_PRIVATE-/dev/zero mapping. So that won't work.
+
+We could expose zero->f_ops but then it's literally in drivers/char/ and that's
+just weird to expose in mm.h or whatever.
+
+I'm giving a really minimal possible thing to export, which is the DEVZERO_MINOR
+number which avoids all kinds of weirdness like that. No driver stuff exported,
+just a number :) MEM_MAJOR is already available.
+
+So I think it's the least bad choice in this one, very very specific scenario.
+
+>
+> > +
+> > +static bool map_is_private(const struct mmap_state *map)
+> > +{
+> > +	return !vma_flags_test(&map->vma_flags, VMA_SHARED_BIT);
+>
+> Can't we use the is_cow_mapping() helper instead somehow?
+
+Lol... yup. Let's see how the rest of the review goes and we'll see whether I
+can ask Andrew to change it or I'll change it on a respin.
+
+>
+>
+>
+>
+> --
+> Cheers,
+>
+> David
+
+--
+Cheers, Lorenzo
 
