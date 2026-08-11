@@ -4,148 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3348CC5AC67
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 13:25:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97810C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 13:26:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2AA716B009B; Tue, 11 Aug 2026 09:25:14 -0400 (EDT)
+	id B10EB6B009E; Tue, 11 Aug 2026 09:26:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 281FE6B009E; Tue, 11 Aug 2026 09:25:14 -0400 (EDT)
+	id AE8A36B009F; Tue, 11 Aug 2026 09:26:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 198BD6B009F; Tue, 11 Aug 2026 09:25:14 -0400 (EDT)
+	id A26266B00A0; Tue, 11 Aug 2026 09:26:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E535F6B009B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:25:13 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 78AA2160413
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:25:13 +0000 (UTC)
-X-FDA: 85089059706.30.BE2E0F1
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 96E7914000F
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:25:11 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=n6B1xJph;
-	spf=pass (imf23.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B81A6B009E
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:26:09 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0A9D94037B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:26:09 +0000 (UTC)
+X-FDA: 85089062058.05.DD1770D
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 556C8120014
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:26:07 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Vy/a3r5Q";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf29.hostedemail.com: domain of 37SJ7agkKCHorYpslqYfsemmejc.amkjglsv-kkitYai.mpe@flex--tarunsahu.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=37SJ7agkKCHorYpslqYfsemmejc.amkjglsv-kkitYai.mpe@flex--tarunsahu.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786454711;
+	s=arc-20220608; t=1786454767;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HfUDfNxB65XZqovwWVBLkrKpJgUq3OtZ1XoJNMhjK1c=;
-	b=oxry3bHwg/S/+lvH1llFq4NdlpJ84PU7bxu3FRl0qrelcPsb25VdZtDbzH6Vk2e+AHa8HN
-	53GX09YU3fo42dtDgg9Ri1a38dvrDcKRYEogeumrluj0e/LMrqj/LnA/MmzxL7YVBtfL92
-	MmIXz4+8vViDg8HhdrUrSEFMaoRFJjY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786454711;
-	b=Sct8+kLKwpQt4xgos6hg6BSGo8Ji+k24u9HNmYlUYPQ6isrXE6aCoNfoZ3oXUUb4QQPNCR
-	rS8Cw9MTL3aFNzWVWkKxz31eyCcm+G2Kru44w8EIWJ6zDcNGp86rRGP74jf9dxVn/W3NfL
-	adfb5wcO84GHj0X5lA33gECLMi2geAg=
+	bh=W70NQ8qweOhk0vfOOOPEvDwhbPTM+yme1ctvOdIAjTY=;
+	b=LzyCalBgZLtyJzvgf34P9XOfHHb9aGOzf3EPpVOP8bppZ571S1OArrjSMacXEvKzYF57Jp
+	g2HrdMXbvyZk3nibZt1sNFzDxm+6EImSP0l3zPLqGrPckXUgWgw3aNHneI1/S82l0yD+YT
+	ZN9nC/YOjhhjsH0hVtm9tnKV5SeMEZw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=n6B1xJph;
-	spf=pass (imf23.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4997581cdc1so6526465e9.3
-        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 06:25:11 -0700 (PDT)
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Vy/a3r5Q";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf29.hostedemail.com: domain of 37SJ7agkKCHorYpslqYfsemmejc.amkjglsv-kkitYai.mpe@flex--tarunsahu.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=37SJ7agkKCHorYpslqYfsemmejc.amkjglsv-kkitYai.mpe@flex--tarunsahu.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786454767;
+	b=1CVxy4Po9u4ubLWr9oQPmC1BK6jy+WYmXfp6u/N6CYOa4JQMdEiA4OVJWbVZlxNitNdO8I
+	E0B21LwG0wzx+x2lzbPVAvV5NngH5cAnsTw/puuK8SJke2ZNbw+kakw9/AddEkzvc577Jh
+	3d8ZpvBEBQ98mKlc7hWO3ybfQkLI0JA=
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6983e384c66so2291882a12.1
+        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 06:26:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786454710; x=1787059510; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=HfUDfNxB65XZqovwWVBLkrKpJgUq3OtZ1XoJNMhjK1c=;
-        b=n6B1xJphQpILHB/HXqgzISEXo1nkG9rVzEpXg4TtTRO2ncBIagO+T0FG8NelbJPDBn
-         +K6F42gEsQVRaJNnONMKkzxzUrFlSc1OcPupX2TlDvltKypNm6w20o0/v9QPjcXUTFX7
-         DMc1oHLIPVVEISzHLKHtyosZJ6kjWIp89F9tlAVW3jzYm3a8vQ8x/v+vfsZx0yOjoFn1
-         zdj7DU0+xnZon123ukmqrfSVZWEB61PHUBP6Q+aXtnWcappfy5QRgUjDSTGImCrWYc2f
-         635MmQVXw/BnGFudLMlnDxxyYE1VEFfkFzZpqxPs1XwNGDZk0Ghw3ezucRxhEFY2BIFh
-         eDgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786454710; x=1787059510;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1786454766; x=1787059566; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=HfUDfNxB65XZqovwWVBLkrKpJgUq3OtZ1XoJNMhjK1c=;
-        b=O0tvhCihGTeyJEbatsN2FCHFV6xOX6TLJyKu9y2GFV5XGQl7zmikWrprVDs+/turbv
-         vyIQtNP2uhKLQ84CJqXmYT7Lh15kn2NrBmzcnXgM5iEk2TooIYMg4p0b9v8BwvTp3KjP
-         lpswHZK7prTBFK1jteLjR/NORElodFMC+aBX4ltBojL6e4QfG5ffoAhcugnmefRrYmot
-         1bHlxV0ONi3tMRZNbqvnGDFQ6R06f/FW+JEv47HgPXdoWUymgwr3vp/e3CZCo6HL91qi
-         EX8HwZ40c56hoOCEB5QG3OYzMvECdWdKsUWI2GQqZ8uSk0JTFu6OzG7Li3vc0zz0FJpX
-         C7fA==
-X-Forwarded-Encrypted: i=1; AHgh+Rr9XOKvqbjZmLFtw0ba6BCky99DWlaNf8Hu65r1JhChkN9Cdv5/4NH7nD7JEERfGh0b01DAL8dTHA==@kvack.org
-X-Gm-Message-State: AOJu0YxjUgCWT3H7SDGG4aSuCwGkWQJ6y2EGkKmJ1z8htDmqyWiWj2OQ
-	rydx1LKN1u7GGbYpgM3NABDZbffxDXyiuH3m3hPzsKYaneJ/5/MheCQZ
-X-Gm-Gg: AR+sD10YZmJVq8vgHsrsm/i3w0Z7Pmab0/tmlfsepm3YdxyiDJpuVsnI3zP1BypBMsv
-	Zc4Ea8sJ/ODdkH4BTKmUMAmvtRgnvnOXbuZ4gK2ybZB7aOMz6dXGWxPv5UBjPe/w3m95mVNtRdX
-	ar5C+XUqy9IByVdv0Bb9UJ2PGUM0bfkQ9W/dS8TMvg62j6011jqPcsxH9v6B1ZE6dsmSEverl83
-	+41CuL9I5VOmNYQwhtfN3tRgC58SMCg050YL9kolwWcb29JLt0WB8XJjMBbWPQ9RUT+4xZ4Pevw
-	dlmYAszt+GuOKRuILqxnCaDkkM7uSuNHxMten05GtxG+pv7+jM4bxkDz8ZmSUbf5veMMu+dXIY9
-	LjtTMFDOQ0J2lvO21cZTyxwANa3hbcQd9u0EmZ9iOQDxxpr8upY9n03XRhmWqOQS2LDZiby1s1w
-	bG/RqvJwLxFRhXxODXC9RUS8NBAbfJ2gSsl11WuhQ6xEM3eQkYUxoeiUYAarcbPlzoiwnHaZdEp
-	2HBaFmKsFM2y4R3sLcXgJ8nbA/njQMxZhGH
-X-Received: by 2002:a05:600c:4513:b0:495:3e08:ad19 with SMTP id 5b1f17b1804b1-49978468c2bmr48261215e9.9.1786454709883;
-        Tue, 11 Aug 2026 06:25:09 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49977df9489sm83541285e9.1.2026.08.11.06.25.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2026 06:25:09 -0700 (PDT)
-Date: Tue, 11 Aug 2026 14:25:07 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Lorenzo
- Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil
- Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Pasha
- Tatashin <pasha.tatashin@soleen.com>, Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org,
- Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev, "James E.J.
- Bottomley" <James.Bottomley@HansenPartnership.com>, Helge Deller
- <deller@gmx.de>, linux-parisc@vger.kernel.org, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
- linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>, Palmer
- Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>, Vasily
- Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- linux-s390@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org, Richard
- Weinberger <richard@nod.at>, Anton Ivanov
- <anton.ivanov@cambridgegreys.com>, Johannes Berg
- <johannes@sipsolutions.net>, linux-um@lists.infradead.org, Thomas Gleixner
- <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin"
- <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Ning Sun <ning.sun@intel.com>, x86@kernel.org,
- tboot-devel@lists.sourceforge.net, Ard Biesheuvel <ardb@kernel.org>, Ilias
- Apalodimas <ilias.apalodimas@linaro.org>, linux-efi@vger.kernel.org, Vishal
- Moola <vishal.moola@gmail.com>, Alistair Popple <apopple@nvidia.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
-Subject: Re: [PATCH 03/22] mm: introduce MMF_KERNEL flag and set it for
- init_mm
-Message-ID: <20260811142507.4c6c760f@pumpkin>
-In-Reply-To: <01f07ea2-8bdd-4450-8a49-548f8b646cfd@kernel.org>
-References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
-	<20260714-remove_pgtable_cdtor-v1-3-44be8a7685d7@arm.com>
-	<01f07ea2-8bdd-4450-8a49-548f8b646cfd@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 96E7914000F
+        bh=W70NQ8qweOhk0vfOOOPEvDwhbPTM+yme1ctvOdIAjTY=;
+        b=Vy/a3r5QCB2i5MnwOeY4KDRcOYVMqIoQebLL8cdR0Uqx5sevOOfYJEbT6mKTok/1el
+         bEQtIpwQlOQti84BeRCJW63DobrizrHA+hbNF8y8wK1kJr3KxgiS0jjJNMufBTSlUCVr
+         osDHc4Oj2Xg82pe8wIo7Ga6cZfFR4nCXAPzXhnT5i6huVuAbFiPSuVdxkXUOkHo20sWz
+         DFNJ3nc5yILvXtgCaCyfSck4pDIhnxC2qSOmHboRRw9lDV+a5DsB8rDvQOFCusaHoea5
+         y42VuhesqEuqdq0nZXZTOeVyaMGKI/nxowkojJ6WFb+S1DJ3tZW4LEXIBAOJHrDzxprt
+         m+xQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786454766; x=1787059566;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=W70NQ8qweOhk0vfOOOPEvDwhbPTM+yme1ctvOdIAjTY=;
+        b=stYg6ZXyVoQuy3waHcTHZlorQ4VFby6SjMapOii/e+GemiJpPI/O1AsVd9xn3AYQdT
+         tKS8ONbaGRdZbc1QmS91H4cXWJixioSoCFH9AVZSa+KnwF+tmigqNd5dznm7Y3ehxirE
+         HPNVaZysLdcVdYSHh1O3MXhSq76aMbfeKGpq5PxgVtGRC1JdsfoYjFfRg2SBX89D7YLr
+         +A4Zmqq76kyat8DBaIggmaKQ9Bh88iCIZI/JJVnm+irTF72fyt8GJJ/JNdez3XUFnJHA
+         SufrmoDU0ZjrZ1VOCY8DNKRwlspGjRHHzyRhCoxYNSaiBkhoXEFrxc14hM1VTawft9mO
+         yGlQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpVDgiLoXaHuA9NScVQlnU+nKpC/IAM89YqCZ0h5l/s/zkG83Xlcy/3+lL+6SHZ5R7qkL27RhaO2Q==@kvack.org
+X-Gm-Message-State: AOJu0YyTpLyFWF3dp62orVF5PdJ4CKkDayXNfzi9s1gAZcF30/viEx2X
+	7l4oJKroqFtZARsMj14bXHPmJjNKTDRQN3qlMJqu9urt9MczWe9odvMNLotvWVw7itBC6GyTa1v
+	PedPC/YqFPZnPt7Y90g==
+X-Received: from edqs15.prod.google.com ([2002:aa7:d78f:0:b0:698:b78e:8827])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:158b:b0:6a1:e59c:62c6 with SMTP id 4fb4d7f45d1cf-6a364525fe5mr1952585a12.18.1786454765239;
+ Tue, 11 Aug 2026 06:26:05 -0700 (PDT)
+Date: Tue, 11 Aug 2026 13:26:04 +0000
+In-Reply-To: <anpXjM_lg_UTpl0q@google.com>
+Mime-Version: 1.0
+References: <20260728121138.1103610-1-tarunsahu@google.com>
+ <20260728121138.1103610-2-tarunsahu@google.com> <anpXjM_lg_UTpl0q@google.com>
+Message-ID: <9huzqzk4zt3n.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v4 01/11] liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
+From: tarunsahu@google.com
+To: Sean Christopherson <seanjc@google.com>
+Cc: ackerleytng@google.com, fuad.tabba@linux.dev, 
+	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
+	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
+	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
+	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
+	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
+	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
+	suzuki.poulose@arm.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 556C8120014
+X-Stat-Signature: 8pdydfariepfgb1fgaa46j6pj86qy9zt
 X-Rspam-User: 
-X-Stat-Signature: oyuqxbx6f6otet4amkiqfrai1k4weii1
-X-HE-Tag: 1786454711-688041
-X-HE-Meta: U2FsdGVkX1/2k6XQ4F8MbPH98DMWUpPtFQFH/udL3OtWPZshwhbsyelj9zS5S4jaB7UI60i3k+i4KbCllHdcac60kJXjr5AwzgHIzeX6N9U4LB3SmKAyoHM4OPHOq8VVLlQRgpuiLmbvALnJ1XhWizQ6iSUf+8bCuPcKo9cV9GhahuIjTUdag8TeLgDPJzPJBZtzoADWbhz96ag6+KX4005U6gKEYSyVMiLvS8VEk+H2EkCInz7lTcrw48s9sZLrteH5P12MFNzrrTw0oTGi+qXtcOiSNnCeziGO4SYnwgNsI2PiCYH7oH9OTssx+HFgY5V9js6HDjUNskxhc+Qx9jVRlH2beK4ViZa4jODf8pYNtYjuHh4w/fd1su5H8M3j6x5qckpcw4wOZZOciyqTyrY0Zo5jNZnYJJlQwOGQSSrosdqIvRW7ddqtihDyDmIFv6noe4eQCIFbCgKLtfGPT0yuQO6Pa3kJTQiomU5QU97CLFlsFbqZYgl4o0Uxzhj8KsNrhu0hXJhfhXqXbL/9hgc7zsutFWQ1OS190b3K/HPc/3B2zV5tOV/8MDKaTQ8Fv4Jxnm9a6iyT2IaoYqBGn6aJYLFVBoMRMZMc6Z5he/qQiXc3Xe+DLnnLX47Ugon9moeq2rdckiqfN304joyxVySkg4twxWZQQMIpIsb4tQWIU5Y+6pwDUi9wCBcC5m7NWWBBqzL5rqEunRdHd87PPmtt9xH3QK+eLFio4EV6JBabHh9rpNFDCCSPIhLF6INuPgmwHQ0Y4Q42cglPGBnhEbPzUfmnPb4NdfBV1hqWfTCZcPLB3Dam6EtqQvJXxpZ013AFWBvrc+JEa2OwFSxU3RkQLsjqHkYa8CKFkRa+4lEksskOJa51XHbrboQmCzYLZZnyakMm3VVP0KSm9xt0u5dDg5JBjPNRv4GpqyorDf4gSSO2LmC/DPQ/7tZaRH9d3iGz17KQ0z62z9EgW98
- MfXrBw9R
- F/3KA/fumAOCFqipmPCujJY5z9L97fKkQUAQfohENTP6l7JDtsUx/wg9FUwHprzkFa74TsnziDgirlLP9ptXiOnkbXcWQF0SWRG4cDhehtDRumeg2pixtuD4CAg/JftyS/+2jZgdtOc23fgIB0df5ZQEPe4/cVtdJyGUzqLDxOkATeDtV8ao/2LQRTxERYT6njFRNL279QNJW4xMLEu6bs2/eJB8H6F0kiDkIQ0EKxxwRlmLfiDtu/gh3ykbNAqR0b90pvEDx/td9V8A32smhEqe4wM27Dpty8e7aMxZvRV3h54U2CXsntCYl8qHL+dhiHQoHXboBOA2K0/3UefI4i+yeDwbWJYwdk5pqd2uEiCEkoRaEK/S8+itpMrn/XOAeE9BWkZW0dvIG5FnMQGYwOGLIzkiF6PNNLemc4VZnhHkRmmpz/B10XJpB1NlEQcPtork6KlUKV9LMOvLxfA17o8ShMexN6ch/tZw5kFckin2mk9nZl/zHCr7LZnNHIyBKzDGevgbbEAQD5WbkZB8Zr4beHC4vIqMDtnPx2ETnt/zRt4vzfT2k0uJFmdiEIF3vxps6ZdLsYXGHq1g=
+X-HE-Tag: 1786454767-850052
+X-HE-Meta: U2FsdGVkX19FgpfUhIVlKnfXgRi+HuTR9i4XoseCDyyeiyncm+sg/sqyD0XVowkiXVcYsD7kUbZO27rc0I5gzzqEriQzzYEoLuWkQ5WhMkk6/HAPJbfj9PopDMuuJhd1fTClpTNdkgQd5GfneczmDMK1qJruHznu1sXBQtxol25nImOwcILpAN3juvJeMzNPfN2paudAy6ssxztr/5kTCaW/TUBgR+AdMkllzGL1TfK2ECkCMTfY6GK1jDvKnEa9cvzCjnhfc5T9/dkwKQ2vRfJ1jcOYM1cQYirKS206HEd8RFhbJkzSchfBn1+EBqX5eLVubW1cqCF2LxwkvUVll7VkCxjQ8pl9xkRsZFn8d6JnQfW5n18HbNcm4arLQo92cz+5VdDg2GZhwDo3e3JVwzf41zweYCguC37tExpGzCe+MYfRH5Me+iBFaACU4PNaGDp4uCw3VPvS4z7czeVZ5vXJRapcsjuK3pQRG/UldBXez9+QdlW0Th8tQFHiNIURU4hNRChErltP7Q9qa9ut3D8+SEB9CJazDhosyPDziskiHqp1LpoKwlITU4QF4clNCASvyvrP9UUpnJOHtfaWfxOyB6PRSS0XiYEYQ6I0R4cvvcfgChrdxb7Q8CzY/LOJzLCE0wVPjCQkOJXTCVGo1WcY7oXZKx+K+hRdkfwViNxsLyvnhBC1dtLRgXRUddCjArFkHQBtOatxiQfFnmahdAaixO/EgIHdALZyzGshkDV6aDEURMxWLlZ6Y9LZah1wKUGsdNhok9woF0hzR+ZckSVP8hi78rmJLbBY08M7n/liPGA5z/rStGCOzYRyAITo9psSuVVR8uu+nAK+LmNhpg940HMNgLL/PGsRdkKJ5DtUDhb+Fbc3yp/SCSPciAYSw39CiR+oZW3RkdsNdpYHTzAB3wEQj4zjvAp092dZPMSuoxXXg0VuWsTXSDoCm8zfjHJBM4uMhzgk/klRu2w
+ pejCwVNE
+ OguOA1uBtbmHOOftiet87QXfu9ppAux6AE/i8H5mEcUz37JJWwOTYRMhuCw8yFikxFqkibIS5VvhsQq99Pjr3DXP2+FFfSZgV4TrFDqkLa8wzNMZ2HECf5aSSxwnnacDMniL5g0L/WBOwTmBIKS4xF5HiWvUKlWW/d/dy7DInmhJavva9aGnAo8ahOtNz93tfpof5XLTesnhgrSg+AixjG3LTSkJImUiTOB1Iu7V/U5ZxiMU4Tq6Gbj13TS+Vk8+yIDGDpQg7OUU0q+qVQJIwnw/42L5A8SiEQbIxGFhlg5eJZLXXL+XuPXwls/0JSBSYKAF4InjJFaJbFhWvgv1kShT8wzvK46mDJE+Fim02W67D3i49SXngiqU30Bd+pZTuNf4iAcbAl6ez+cUZPO2LsJm7UPsPR+lrWdIC3DQR19MlgcF8WUrAXgTPJMPKvy9gRImWp/LK/o7eGE7RoXV7OTYUbHsNAI2PSWJ2XRmjb97Fy/rONac56f6DtOOBfMqVr0nMG1u2TMd2dNmO2AQpoLYHsJrCpJ6xugtUEhiMu6ENJDoDQrPX534twnOhe5ZazempkYgWhdOrWN1JYJTv5zDEsnbMuAMOpNSo+DKD2QmKP5M9qcnyKI4f/2mrZKl5fgx4oy+WbGofC8eu8qxZtnDuBQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,55 +119,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 3 Aug 2026 15:59:35 +0200
-"Christophe Leroy (CS GROUP)" <chleroy@kernel.org> wrote:
+Sean Christopherson <seanjc@google.com> writes:
 
-> Le 14/07/2026 =C3=A0 16:03, Kevin Brodsky a =C3=A9crit=C2=A0:
-> > mm code often needs to know whether some mm represents a kernel or
-> > user address space. This is currently done by comparing the mm
-> > pointer with &init_mm; besides not being particularly elegant, this
-> > ignores the fact that other mm's (e.g. efi_mm) may also represent
-> > parts of the kernel address space.
-> >=20
-> > Introduce a new mm flag MMF_KERNEL and set it for init_mm.
-> > Subsequent patches will use this flag to replace comparisons with
-> > &init_mm. No functional change is introduced for now. =20
->=20
-> Did you consider performance impact ? This test is usually done in quite=
-=20
-> critical memory handling functions.
->=20
-> init_mm is known at link time. Before your patch 08/22 there is just a=20
-> comparison of mm (r3) with a constant (loaded in r10):
->=20
-> c0014048 <assert_pte_locked>:
-> c0014048:	3d 40 c1 09 	lis     r10,-16119
-> c001404c:	39 4a 03 98 	addi    r10,r10,920
-> c0014050:	7c 03 50 00 	cmpw    r3,r10
-> c0014054:	4d 82 00 20 	beqlr
-> ...
->=20
-> After patch 08/22 we have, it first checks that mm is not 0, then it=20
-> loads the word located at mm+528 then AND it with 0x1. This load might=20
-> be costly.
->=20
-> c0014048 <assert_pte_locked>:
-> c0014048:	2c 03 00 00 	cmpwi   r3,0
-> c001404c:	7c 85 23 78 	mr      r5,r4
-> c0014050:	41 82 00 10 	beq     c0014060 <assert_pte_locked+0x18>
-> c0014054:	81 23 02 10 	lwz     r9,528(r3)
-> c0014058:	71 29 00 01 	andi.   r9,r9,1
-> c001405c:	4c 82 00 20 	bnelr
-> ...
+> On Tue, Jul 28, 2026, Tarun Sahu wrote:
+>> Introduce the LIVEUPDATE_GUEST_MEMFD Kconfig option. This option
+>> enables live update support for KVM guest_memfd files, enabling
+>> guest_memfd-backed memory preservation across kernel upgrades.
+>> 
+>> Currently this support only guest_memfd files that are full-shared
+>> (INIT_SHARED and no support for private_mem).
+>
+> Why?  Specifically, why do we need/want a separate Kconfig for guest_memfd
+> liveupdate versus KVM liveupdate?  I can _maybe_ see a KVM-wide Kconfig, but
+> even that seems like a stretch given that (AFAIK) hypervisors are the one and
+> only use-case for liveupdate.
 
-Thought...
-Could the check be replaced by one that checks for kernel static data?
-That would require that other mm that represent part of the kernel
-address space be static (and probably not in modules).
-ISTR there is an address range check that can be used - and might be
-cheaper than the explicit test for init_mm on many 64bit archs.
+LIVEUPDATE is used in many subsystem. It is possible to enable
+liveupdate and kvm without enabling KVM_GUEST_MEMFD. So GUEST_MEMFD
+preservation must depend on CONFIG_LIVEUPDATE and KVM_GUEST_MEMFD both.
+LIVEUPDATE_GUEST_MEMFD Kconfig is wrapper on both of them. It need not
+to be visible in menu, So I can make it hidden. WDYT?
 
-	David
+Also, KVM VM_FILE preservation and GUEST_MEMFD preservation both depends
+on LIVEUPDATE_GUEST_MEMFD in this patch series. [PATCH 05/11]*
+Which is wrong. So I will update KVM VM_FILE preservation to depend only
+on CONFIG_LIVEUPDATE.
 
+*https://lore.kernel.org/all/20260728121138.1103610-6-tarunsahu@google.com/#Z31virt:kvm:Makefile.kvm
 
+~Tarun
 
