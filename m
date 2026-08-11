@@ -4,117 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B61FC5B56A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:20:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D4C9C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:20:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1772C6B009B; Tue, 11 Aug 2026 12:20:36 -0400 (EDT)
+	id 71C816B009F; Tue, 11 Aug 2026 12:20:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1285B6B009F; Tue, 11 Aug 2026 12:20:36 -0400 (EDT)
+	id 6F3E16B00A0; Tue, 11 Aug 2026 12:20:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 067B76B00A0; Tue, 11 Aug 2026 12:20:36 -0400 (EDT)
+	id 609416B00A1; Tue, 11 Aug 2026 12:20:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CF4506B009B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:20:35 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5370F1404E4
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A38F6B009F
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:20:36 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A1816C04CF
 	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:20:35 +0000 (UTC)
-X-FDA: 85089501630.23.9858B3B
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9E80120011
+X-FDA: 85089501630.06.A914344
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id CC4F820013
 	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:20:33 +0000 (UTC)
 Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fNQlldhn;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of imv4bel@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=imv4bel@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786465233;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=mkETv97u7qIlNZ5VKVja2JYD2hjPriEq9ckMj58Ed+Y=;
-	b=OHn/rks8Wpt/fGo3CEY9eb9sNE28ZOBWCkgDnDY28hQcpjX5fHpGAHSTsQ5yUUMtj34VOy
-	YuBbKta0QgFZpKcb4s3pGM3m3PQYu6zfYYy+WsPOcEbAtmHLy4Z0aSKng7VKJrHJEGso8c
-	9ccR8mo8dXC2vBxP+y4RfVTzT6qYr88=
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=acTIzyrQ;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786465234;
+	b=Fxodfo34JH3L4TbvhGdG3nC5o7lg8DiPlPIh93x1cwajSTywoycW8hs6vnppK/KiqnTwtx
+	v6TYL1YIeGXez9BptS5lgEUY+DDLyRqPH/4HA07e4PeGsQWzy9VxZmbibuHf80+5cRAZny
+	0FDyM38YQ9LTBNJuLQPBvfgH4iVAo1M=
 ARC-Authentication-Results: i=1;
 	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fNQlldhn;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of imv4bel@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=imv4bel@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786465233;
-	b=VMzsJE290HxHXVt4AOGUvVW+cNvjK2TU1EsHZdhht/Ryb83JZHouEwkEFVQO9HeDIY2KCD
-	OfFC+f9JNRlqPlomA39Y2+2s308FB+AbnXiVtXIMVCjNjg/NuDVz5746YPADLRr+w0fzOv
-	nduNXGyKYa2yTIs9r4wjOdqJ+4pN2TE=
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cf50c6f235so1871955ad.0
-        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:20:33 -0700 (PDT)
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=acTIzyrQ;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786465234;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=rABLzlg0u43+P339RMNGZnI+bssjGoZAX7d22G0Ys3U=;
+	b=WtZpeeKY/ACLhXp2oktt31IGx8xebBsSfrd3ptCw/8ukvrF+KddwETFFkg69e0JD2KUtqq
+	Ptu/QJzmZANf9vxXGjHfG2sMtoDSwffDl6C3kqw2rHW2cCdT+sCspLvfazGJIF0eZEDzHz
+	KexwomgG8cCUGTohipPSAgbeTUEpgGs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id EA3874332E;
+	Tue, 11 Aug 2026 16:20:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0581F000E9;
+	Tue, 11 Aug 2026 16:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786465232; x=1787070032; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mkETv97u7qIlNZ5VKVja2JYD2hjPriEq9ckMj58Ed+Y=;
-        b=fNQlldhn6vKv0vLAcv4Hzh9Pfgl5i2wIXBBJ7V/fVvVCebubYM4HjJuTJHBIxcF5Zr
-         3+qw937oIsV9b2Ebm4DQZuqSCZABM+tCQkfk/HkIiovRkxZ1T+Q+FSMtvmiepQIQ7uQV
-         GKsOIEd7M0MZncmohVctAqux+FrzLzAexSuJ39/la4KXQJz+QD82DPOTdaVGaAEN4GTZ
-         UWD6pgXtSgEHcdmpPVHLAGwyWhM6WoUgcEqwSHKKJ7pHpUT710lZWsc6r3xy5QLUksyS
-         7PzyXE1xvPHKZkZ7/gaWn2WsWGyaX3FWASAoMhmOQ+xqWCu2kdoQ7fFyz+1ZWp81NbNA
-         qd4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786465232; x=1787070032;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=mkETv97u7qIlNZ5VKVja2JYD2hjPriEq9ckMj58Ed+Y=;
-        b=oRdw5mk0WM1UiNMLFJMUCo96XUziO6W/NK+rrdn4D7WGO53RPdtqQ7sIR+5OR8BtVW
-         axg/yQS3VgiQYE5w9Ca80447NPjoFayTeXbw9vleEBVPo/rH4W2RFMiOASHv7zPWSlKs
-         cDsGQBJ8tH5ohPSTE+yTXDl12VZuobrYnyY/D2submxvVbDGY6+ub8aqvfvrQmYIoQ1C
-         TSi5Bf00HvxDny02dTl4QBitTfHoCa6e0xdluOwQYB5F3zg+KpsIFnG/NG/+WVegQEmx
-         1qQxl4SEYEIcxM7PO5WW9lSwJAZcaa+Q5TRu5CuNGrHTZ38DVguA2s+wqZjUzcklEJl6
-         8UYg==
-X-Gm-Message-State: AOJu0YyXw8AhliP8McwKCJALCCWxHSCEZm9B46xq2FWj+HuI7DmgEGye
-	0PuBANzYLbnrl9SMDoqBhQ5yoI2QEXVV0+lAV6CzmK+iVDfqaPmtLLt3
-X-Gm-Gg: AR+sD10TBimE6QPNnrX0SNDSVVllo1z0UvlNO7ZQQYhm12x4F2Mf3QeZtv+phBJEO7w
-	t7/UI7bOnWxCiD29IEquuhwKBQ7qmxY+RaOmd1yg6B5cjH0BLlYJ+tJbfpyYxPnZpwD8Dxm6Kp5
-	M1yE0oi5CqudgFJBzUeBcoAf4TEtzF0rqHdJo9rbfbqUBEThyrFAcchdg8+JTc60KUokLYKeS34
-	j58HNprc+hzwDOszOIpqw7EIQCXHSaWgVjKZDCoT5KN0TDxppKCVc+A65YLkrETNWcFhyUlkBma
-	yxKOJX2wmBzDWJmgh6cWJnoX4d9ABEf78VeQgynA+Cgv7y/QbfnoY40/+xSdmq6QK0p2pGOCN47
-	RGLVAuykouXtjGv34arCc4fWCrQlGqsqMZGJl5wcIwD4D13KZzun7f1D/JndC8kQDcO7bnanxP3
-	18PpAqkjNB3wPVroV3EIp8Db59DRiTSxswIjNmy/kzoZpIrlLgzip7wViWZfeRgdjXOV54J/uHU
-	fezEzrRS7/nloh2V95vXA==
-X-Received: by 2002:a17:902:e80b:b0:2d0:cc92:f7a3 with SMTP id d9443c01a7336-2d32bdec182mr21923025ad.2.1786465232190;
-        Tue, 11 Aug 2026 09:20:32 -0700 (PDT)
-Received: from v4bel.. ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d315f30027sm10547465ad.25.2026.08.11.09.20.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2026 09:20:31 -0700 (PDT)
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	imv4bel@gmail.com
-Subject: [PATCH v2 0/2] mm/pagewalk: fix stale walk->action escaping walk_pmd_range()
-Date: Wed, 12 Aug 2026 01:18:56 +0900
-Message-ID: <20260811161949.3879321-1-imv4bel@gmail.com>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: cqtko91qtxfngxeomwigtd9i3w3skp16
-X-Rspamd-Queue-Id: 9E80120011
-X-Rspamd-Server: rspam03
+	d=linux-foundation.org; s=korg; t=1786465232;
+	bh=rABLzlg0u43+P339RMNGZnI+bssjGoZAX7d22G0Ys3U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=acTIzyrQRgh1FIirEmgF/tH7NRIIlVSax39cdCWA7OWihUsPz3hnQWANNtJJr0ViB
+	 p/pplBIzwCxHcSImUCPEffJVZXYhcFHJgmXdvRqzLHFEWm+Y1NPc7dm352kpJMwVSX
+	 apLW+KJT15K+EgM+v3CsoZBxt1YFrEWdbnr3eAMk=
+Date: Tue, 11 Aug 2026 09:20:31 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko
+ <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+Subject: Re: [PATCH] selftests/mm: thuge-gen: fix test_shmget() for
+ PAGE_SIZE check
+Message-Id: <20260811092031.8e6eadf43c3df4c1c6005ec0@linux-foundation.org>
+In-Reply-To: <20260809-selftests-thuge-gen-fix-v1-1-1919f4b3d12f@kernel.org>
+References: <20260809-selftests-thuge-gen-fix-v1-1-1919f4b3d12f@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: CC4F820013
 X-Rspam-User: 
-X-HE-Tag: 1786465233-636218
-X-HE-Meta: U2FsdGVkX1+6rVSIwEo94i1TnSnSDxabAgS2v5Rqi1Wm2lA0NNuR6l1ziQqFISDlCEji53VvQT7n0S/w0Na1Wan+V8u7167Jpawxg4vkT/OrddM7Axfh10TYLAdT8m9j8zptUTyrOzrBsHSNZO1z+M0EZjUGuOX487u34uc8zFhrQK5vDyI2x38VepVaMv5YvkP0iR8v9tUr4FBVJiErQjDgHcW4pJytQlgggEk3R72KSs1XIg80o3WvX9izXfI0nUZgDTaGKxAs3nbDUVHrb9mxFr8X/4ufBQPwMLpJAhHqFyolCL+PMKEWtucgS66KJnMvBFlAVvvB11t/FersXKF1+E+JLbRBPDMlGyw9a5nikGjjX5J/8m2UyjwoYdGyQivyaii0W1GsT4rhALBhDBOPZge4EAlWH90MMMizim+niDpHCmKHJmbfUQl1jFXXjkBjNqXx4uTTDGYKUFe8S9iFR4VGjT64VN6vhm7z/p0COVCNbINw7cYXkhWn1fQ1daUbTPUHUJMZQ35/7S7fQAsFrvyttggB8tFs3OBo646VocPuC2RHrpkq0rNjA8gyRngX4JTA5IWdXnYLItTKqMWrhdWamqge5XvCuOk4w1bXcCpdWhvmxYKoRciXayOmOAnBGgqYLrVGVmNPnD4QXB0ffBPi8QErUgb9oRL23grGBE8oCVZ9NNGU9UBkdUearcRQQ5uDBLRrtZAW+KQSdv0bvzjYcXcOi1Ebe64PfLVKEKRjYARJvqcjahoxdxnaWWwe3ePpp6Wb/AB30nzZdTVnr3RG3gv57tOdaFMNPqvjGJJbFkVjpR3cLYmqtZI3m6mZHerXXLklUx5QfAzm07jpkLpEoiBZEhT4nIQuXEB+wzHRKK2/tDTGt/j/OmXzYES9FHHr+OlDI28rZR3jXgGAuZG5SlNi8ADH5es/HgvWqfnvlyZdQnBost700x50vcdD6RstXa5zg+fIlP1
- ms5P6AKi
- x8gmZEy2DzaJZ9yCdE/lOC3W9wEv6nJrzxRB+4VwPwRpC7JWyzUsiXMPz71dzrhTo/LAVDZzbgQT9R4bHa0FmQcbHbJF9koTMazj3yRLmZYcgxD+ePyifvFbizOQSxMp0BjWe1G3idR8AmH+CRxY5OR3Qwxd0gLJrsC/qdzFK0SKNQtpiXhJ+fEV5jPtCRMcyWOSuQ/5rediwq+S/POxGkpIK+VDqk7JHkZhEhzkMt56iGuCUxJ5N/y2ttPes2yaSq7JsMdQR/LhY/jvoJARjf9xTPvtXhVBo0YCCum+gL3s8N++e4Kjwl7dbGAmSxWROWuaeM7djCWVys8e0YIGIXLCYfI0YDo2+MZ82tLzfne0u493qA+gkjccVWyMm1+uS0oWrX9RCXD7lzTxtLMYAkjRo312dIViymgHkPvAvbtaSjg17KzCpKrU1zienifRAiXNydbqkWFbT/3g=
+X-Stat-Signature: iqoj337ea184hud7odywbdk399mbnuej
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786465233-307719
+X-HE-Meta: U2FsdGVkX18eQybGbN1gwFdIE/4FZg7hLfgywASMg0bt7GsGc+iNSEiVsel9PiYklyDgIy6pW1EtfBIZpugphojg27OT9v9XK/dGSl7nSdxB0QlM2B9hfwMEmk8bPVpxSHrpezaMzMl1/EFQgfJfaBa6lhHqFWVKbD+j3N2CKCrj+54ElXMc85E3sFPkAk9o5ftRGO8hTzEN0Yyt5s3CkiAQe/5YHkpzULokx847pwelCV+4UWLj+SYbEz9hik7R/zW7Zpkh9Mrq/hoLlPK8iDH7zeDGamqHzRLX+gv+WGHttnQWVyQ28J3lWfqHdbl9NHWPLVIsp2cghfc6ezy7GwVqTX4HgcFk82GQJrbp9K8eHaKuk2T5/Mhpx8tChHrtQAXWG56KfHp4SCrRlGQOSb52MElLGsXL01QXB5Ctk+Q97XwJWDjgqM/Ea95mXCfz1PL8jNvXlxT81bhUJNyO/lJrwrz5oygE9oZGZHZzzOoIV5MbFiPRuQUZUllub0ytg8AO67EDMw3Q8Zok2W7MrcoGU18/jXOt1BcFkHja1r5QV26DSY5UeWGiTQxo6jkyIasfNQMfdbE3+S6L1NilrP//dnkiyeC5eOxDQwaSbjGl8kJagVWRtTdUgjOw5gssl6RcLL8tfnhXhjvkJiFZRpCFjUTjN+QqxjBGDGB8+wsm2Rj6pmYCOHDwCeGI+7uPRshJpiPCGe28f7DBQehuvAb/Hh1i2bBHYuOYcIQjVvNRcyk0hLd7z+iAt0PJxOci2sJ4yncI8w5U4huxXuLrHeIjeLznY6fZWNf3/Z+EMc/Oa4lPvoWHOqrGqxqKLhbxwQuUU4tynWK4D0uLDLG8k7QuMYJzYYZ43GTZP+fWgyBERG6yrV/854YkN8i7K1+Yl+Gwlmp+Id7lmmVEqPHvxa99Ix8yR6jHrdKCxhD6kK9DiATHQgsRj/WPFWsWNcQ0iyw0/c75sL70yq5w2ME
+ BGHOgg6r
+ FHxiGAeuHY7A2Gd/5wSfRFF2btSVK2tFAzdTeFdk06Yin9Q26uLXmxiUyv9equ9aiGvzuDGSIrg14xvjiZsI2BqE0CJ1iZ3vry3yhah09FIMqs7lsXyK1KaWpT0tf6rZfOshcMrzKys620HL59g9g3bapSZ+do2C6q9SVPWdEDXe0YayS5wYlJEhx+UEF8QxntlHyGSmf9PZfCsW0aEg7C+W/quQ1Ut9Z+sDPnyxe+fwxTMU8rnPxSZULEFLHgkvLfJOgwGl8o1zZ0kTPS/jgTipBJyYYeWr8278AONk9H5eI4gA9/RD9cue78bpX6JElz2qD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,35 +94,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-walk_pmd_range() could return with walk->action left at ACTION_AGAIN,
-which causes walk_pud_range() to retry the PUD walk and invoke the walk
-callbacks twice over the same range.
+On Sun, 09 Aug 2026 11:03:35 +0300 "Mike Rapoport (Microsoft)" <rppt@kernel.org> wrote:
 
-Patch 1 is the fix.  Patch 2 adds a regression test for it.
+> Commit 49a4e7186b08 ("selftests/mm: thuge-gen: add setup of HugeTLB pages")
+> changed thuge-gen test to use common functions for reading hugetlb
+> attributes from sysfs, but it missed that the original read_free() function
+> special cased PAGE_SIZE tests.
+> 
+> For PAGE_SIZE tests, failure to read sysfs was ignored and read_free()
+> returned 0.
+> 
+> This allowed test_shmget() to essentially skip the check of how many huge
+> pages was consumed when it ran with PAGE_SIZE.
+> 
+> Commit 3199b0c09efa ("selftests/mm: fix read_file() return value check")
+> fixed the common read_file() to actually return error on failure and this
+> exposed the issue in test_shmget() that checks the number of free hugetlb
+> pages even for PAGE_SIZE test, tries to access
+> 
+> /sys/kernel/mm/hugepages/hugepages-<PAGE_SIZE>/free_hugepages
+> 
+> and obviously fails there.
+> 
+> Gate the checks for free huge pages on size != getpagesize() and initialize
+> before and after variables to values matching PAGE_SIZE test.
 
-Changes in v2:
-- 1/2: reworked the changelog along the lines Lorenzo suggested and said
-  how the bug was found; the fix itself is unchanged (Lorenzo)
-- 2/2: new, races smaps against MADV_DONTNEED and checks that Rss does not
-  come out twice as large as what was faulted in (Lorenzo)
-- v1: https://lore.kernel.org/r/anmdrYGVqM-U4vlo@v4bel
+Thanks.
 
-Hyunwoo Kim (2):
-  mm/pagewalk: fix stale walk->action escaping walk_pmd_range()
-  selftests/mm: add stale walk->action race test
+> Fixes: 49a4e7186b08 ("selftests/mm: thuge-gen: add setup of HugeTLB pages")
 
- mm/pagewalk.c                                 |   6 +-
- tools/testing/selftests/mm/.gitignore         |   1 +
- tools/testing/selftests/mm/Makefile           |   2 +
- tools/testing/selftests/mm/ksft_pagewalk.sh   |   4 +
- .../testing/selftests/mm/pagewalk_race_test.c | 138 ++++++++++++++++++
- tools/testing/selftests/mm/run_vmtests.sh     |   2 +
- tools/testing/selftests/mm/vm_util.h          |   1 +
- 7 files changed, 150 insertions(+), 4 deletions(-)
- create mode 100755 tools/testing/selftests/mm/ksft_pagewalk.sh
- create mode 100644 tools/testing/selftests/mm/pagewalk_race_test.c
-
--- 
-2.43.0
+Which is in mm-stable.  I'll plan to slip this fixup into mm-stable
+later this week.
 
 
