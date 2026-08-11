@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 904B9C5B572
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:54:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EB7FC5CFE7
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:56:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 733A96B008A; Tue, 11 Aug 2026 12:54:21 -0400 (EDT)
+	id 8BF3B6B00A1; Tue, 11 Aug 2026 12:56:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70C4D6B00AA; Tue, 11 Aug 2026 12:54:21 -0400 (EDT)
+	id 897996B00A3; Tue, 11 Aug 2026 12:56:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D5F16B00AB; Tue, 11 Aug 2026 12:54:21 -0400 (EDT)
+	id 75E9E6B00A6; Tue, 11 Aug 2026 12:56:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 254C46B008A
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:54:21 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8135A160139
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:54:20 +0000 (UTC)
-X-FDA: 85089586680.25.2E0E67E
+	by kanga.kvack.org (Postfix) with ESMTP id 4AB386B00A1
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:56:47 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C6FBC1C00B8
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:56:46 +0000 (UTC)
+X-FDA: 85089592812.03.60DD615
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A389B40003
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:54:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BVuTUgTS;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 062832000D
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:56:44 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="W/Vb1pQG";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786467258;
+	s=arc-20220608; t=1786467405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iX4NIPlAP4xo5UV8mClruOl7gqvsKTG+5TRTfDvmpvk=;
-	b=RtiSJ0ELIcvgRmgnK0mcead2RyCbHCVkDHjmZRr7I5telWN++YraqAilbDMgwQqBEic0El
-	nnN7mUwIO+BLw9RwSCWeI7sQ+pGHfhJ2ZLsIG4lUV2B6pkbhYr6MrMHQR7p/TsWqdOyOuF
-	11j+gSqU9IzIW/MxD1+TJTYioedUIJY=
+	bh=r5qZYpI3vdFTuCg+CitkfYsMkpKr8Bt5j6c7z26nFx8=;
+	b=hn5wVVpI2Low6velsbJIWQQOgGZJtF2HVShBM6MoCtA/9CR+FGXfxNJP5EQa2lcIEUDcv/
+	ZUxRKg4WqK1CBa/EDhfxBLTjU+OIlCR/ksiDxs4RToipkRghlhOPfslRjVRJzRabEIfsHG
+	MjFJP16Y9YGrkVYjvFn9MGrdHE8SGJA=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BVuTUgTS;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="W/Vb1pQG";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786467258;
-	b=zpROQWmQuFPMPOlaQvbKUJm3qjEhu+ZyBxGushZcWRj2fc2vfYgT6I5dzy/Z62mhnXGjnw
-	c0JWZVpbh/1aiugv0MVU29NsJ9ov9OIj2msYtHtXrroAERH1IT1ijbn3lp6jEHVivzUeRK
-	Puw7jMdDQ3/TEZPvZWBTFEDWzZZcy+g=
+	t=1786467405;
+	b=LTT2XUhLWXcREA9OMvCqhpwSfjQ6shhLMLWHcgZ1f96kTJD+amxSrUKH5CCQF8f3TLefen
+	X8T4DKP8diq05NhgqBhLhsNfWg03rIKvyk3qm3as7jPyaH27mPY/UBXzdK8D907ArEQKvh
+	L0u6e7BQXjHSvTHI56EkIcJ1MDAA2iM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 44379600C8;
-	Tue, 11 Aug 2026 16:54:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE4F91F000E9;
-	Tue, 11 Aug 2026 16:53:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7B209600C8;
+	Tue, 11 Aug 2026 16:56:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE01C1F000E9;
+	Tue, 11 Aug 2026 16:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786467258;
-	bh=iX4NIPlAP4xo5UV8mClruOl7gqvsKTG+5TRTfDvmpvk=;
+	s=k20260515; t=1786467404;
+	bh=r5qZYpI3vdFTuCg+CitkfYsMkpKr8Bt5j6c7z26nFx8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BVuTUgTS8NxWWwARaVJz/KRZzymf5VYlMfEogAS68Xd1KTjRCHgyCB9tlLuO/b1O0
-	 VvQTxUJzG8YLkm8kmQyQEBrnso7ux0wK9zUC4dX+58Aqm+yW2LY9CF02PAKMRjN13f
-	 nrMX349UIgxtoTLCUvDLeQSKDLXhy1CG3NjkZcqY6Vbu2ZTVfIKyendySzeb/TsKNF
-	 KM5gDZSj71VZtZkaoh+Jnapeku29oufgwAnkJSqa/MZnMp0U+5k5lyqAd5OilOD5LP
-	 ZXQrBMt0AKkjIcLnZLdsezUjqpQkYNgT0bhQfGppMx0atyu1LNUqDnH7O0i1DtnHfc
-	 czlElRvINGfZA==
-Message-ID: <cb6cb8c4-a8b7-463a-8ef5-75c99ff5638c@kernel.org>
-Date: Tue, 11 Aug 2026 18:53:53 +0200
+	b=W/Vb1pQGIt8ImwWIbkSP5AG6G/VOBiBOX4x6XHdZksbRB66RKihy0UhfB3ZBNSKqk
+	 MDe+qKP8SivV1qPY3Ye13lmBHpKmXPkTam8vcWXlNVMSCcXSBL9FVVP4g5Et/2gzen
+	 d1QUqGImGS7T28Jvk8kwx5h4GH7SnzU0FtHbyq4M/DyIMfLUsuVhCrVbIbruG0Za8A
+	 NjVzOGJp3jQgNX24mDf9MErtOAmZu0Y4TCtIaP8Cd5d66fLUvnvMitsYvVNEyc5CcH
+	 kTsI9nuDVOLeqhtOq99QUOnZd5WsJ5nmLRuAFp9qrhu7DM4Lljby9bJpgvaBoe1yLH
+	 /oAqNA1sLwjaw==
+Message-ID: <cf70ce8f-cdde-43ec-a50e-796d4e390f3f@kernel.org>
+Date: Tue, 11 Aug 2026 18:56:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 15/20] tools/testing/vma: expand VMA merge tests to
- assert anon pgoff
+Subject: Re: [PATCH v4 16/20] tools/testing/selftests/mm: test anonymous page
+ offset merge behaviour
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
@@ -129,7 +129,7 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org,
  linux-trace-kernel@vger.kernel.org
 References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
- <20260806-b4-scalable-cow-virt-pgoff-v4-15-ab318a350404@kernel.org>
+ <20260806-b4-scalable-cow-virt-pgoff-v4-16-ab318a350404@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -176,17 +176,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260806-b4-scalable-cow-virt-pgoff-v4-15-ab318a350404@kernel.org>
+In-Reply-To: <20260806-b4-scalable-cow-virt-pgoff-v4-16-ab318a350404@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: ppjdziftddyn7gsyq7f5zbuffq3aj8ja
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A389B40003
-X-HE-Tag: 1786467258-3056
-X-HE-Meta: U2FsdGVkX19rBCC8ic3NC5uwFDM5WX2JH/7B6Er4RrzvvBGUqKB7vowt+9GMY21jibjrYqQYqZn7z++nkrZTof0fUFYW60mJKUg00fqs9nRM0Fvywo3VKk7UvjeXReICRb8CXUpjQukh92iNVaVTD82+6P2bZjN62R/7CjauvOtOxabj5OtQ1NHmz+FTDBoR1Vn46fwAIUJ1XJZZlJrG1eCaFjC6FaazfR7THn1NT1KGngjWTzDc1tAxLnVlWYjzohHDLc7638LOGoHGeOK9moyjrtEFxCrtWCcaWIpDACe/EKkXIRfEkCdPdr6qbQohREEILCqlyOq//xNen2W+68DmpXYGGXSWWv3VrP/ex9T0Tewl0ku3BZwkaE1wpIawq+mNNkXSmZqLeGOS3EuWwQFqevr2GSMVlmMrCVBFn8afgV3PfPN36qyDvTbxpymubdXDM4ALXo6GONtNnoQ2UFpQK32rD+HV6ObgP0lv8dYSanHot1D7BX3aKr8RHnUprb63z+so5YVO/ISxARLu0ht36W0wmN2S1kHj4U3pzojTy6VhhJ/0G5fEnuYPV8xWN4SZ4nHUdKU+mOSRIGtTI/ybO7eQ3gFjG1FJjdQmHrqyHGqSEWSautVNOXkkygsd2/QM2qy+W05WbmFoiZh2GDgVL/2Qy062nxgsDUFkVBFvtkbDSfN55uoqcr0sLpF1M5VL4HrBu8CepoaKSPRQbLq8fdTOODopbCsN6H3DGoR0VxbFzbLfwwC4ezIE9eO+UC85ywwGU8Gdymq1GGMUWs4fkviPWpp3Ve5+peTlu6e32IDbjn9narZ4abGsZfRv4RTgUAV8nYWc/9/40y0tP6tqqc9lWOBOjB0163gVFMMaPc4OVfj1o9C5bFz50WoAOnaz6bHfbtQdzLlQ2mLbR2XMcW+KbKIOpGWdnUX7l1xJlHjQPANlqa/zDHf1/OBfu/y0KU7H9E7Zc4jL+5K
- 7oqPQOV/
- YRbmij3Jv+DCzkMca48LDwIVeUGvG2K4uf9MsvrTwpeeASDYIA87rXvoxULhYd+QVtSzrIqQY/+AneTD0kSRhC8a/m1ktDcytMANYnk1AaX7zGAPR8lVH82QpGi+ACLJPIVEChPcEvVS9r0XVG79yZI0OLfNE2D2PkiTFOPNMITWGO8Ua2ih1R5oB4h37bQhiAYNNPjpojpXh0gI6/64ApUUsK3twKeEPwsLJpHErsx4iNkM/QcIXKQOqZhPWX+5FKR7ORZTuu8/C3uIQDXrSVKE/3MWhbtQL0aKvwKLTWzgXHkdE8xb6W9kzQMXPkDqUZvFz9hFXUV3O5wvSYIBlhz92z9TY5zIYQpvE
+X-Rspamd-Queue-Id: 062832000D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: uqmgob9mefqt4k15j446muks9gejo6qh
+X-HE-Tag: 1786467404-926219
+X-HE-Meta: U2FsdGVkX1//0+lCTjjHPb2LFgnmOYdStVyuXe7Ifzo58YxBLAbnTP83Q/DcI7mY9daOUFJfKyoetlADSkggbRwClickUc9UZBOZPq9AJeeGXJEoNsgJ6cr6dFO9no+ZkDuUdVtcaRV77xQTUq02IYrbyeNgY9oNm3CowxqP3PK59Et9Kumn+ftYzNpeKtdlwbNxdwQ3XbBjMvyFlfIq7ND3Z7ptO5lKPvu6cA8M51dJ/ataMBHVrm32UbSIYMeaQ04jnOzmmtLgzC9UX6LzISY0d4PJOLN18iQ6VVMIQS2gjCA6RbXWJjMcBNr5hCvy4tvzBV0lE2nO+4AJCp7XpuSPKxE2qgh1EH7omRuavtmdmWaAz/yau6/ponkcDlkb/bnFwVY3xtfV5LX10Ybhu4kfdH2wlCt2l36Ju+TQ9ZEpLBDuJMJFsuda/9viAld4fZHGJsDnFGkNFW2aaHFVNoAmw3evdseDd0jsJKpzDRFQBJ936QZIWaAVYkLlrZP1vikcBtYX7U1o9kfjqLPkgzvFj8yh1agVVelljC5cbVLK9e+zwC20EPCrFzcH01tSSsLQ4twRDFHoyYb9q1xuh3Ez6tT1/X3BxKn2SLtdoyQE0kZpTuq7FMV3wX9GaWX5HCnSYxEHB66o/MC9Q5v2FuiIZ2qMRrQbEMX/X8XYuIh/D+/MOLw8wfN5pWmavpcfvxyXZ/2EHueg7aaM37Y0/O3blpfXG6CkBb+oZPSbSrB8t2NPTMH3y/50sHWorUNi+mc0jmIpUrfKsy2NJ6Fwp8p/RJQnMog3N6UrdCGkOwYD2FB8T7E22zEhhswpM+daXDlrMP4blQaTfVzVbWIrU2qzlibRxIQZHoiUkmxlfgX//Kfi/LYuq5Uo+GNtoL2BZbpaXv7skVF556+CPQpG6zX+KFcev7Nyry5jUSXCjfB4hvcB7Xy0I4Zx42NFwGgeh72cPH6O4uvkg+I9WoA
+ 1OvZiav+
+ i6644/bN5wF+JKGdJ+cIuYWqo5W/mLtV5i0MFnXbRIZQiiXLd+g/i7axNeGieu4c/AeCmWprjwS0bhaamF2Qc7rGo2TFDryaeKc+2bzG+GX/+uVHR5Y+HJzWuY6VQUM44nJ6H9lKGynAXcbLtZWcVRtKGzmdaMjs99bU7Neo+fFlCslk2kDobRB3vbB9Uo4AbZcobmENHRiJyAiWIxsNPG4cbqiBhhHEKTZ5/fJZd1TLdVXhriQAXgiQV1lhj+xOPxNsBMaqle416l0nLfe5IH7xc/eO1ViBtFQvcs/IgS0o/o673GXan/2T6Ll1OniUWcnt9fEmOHqGRZn3eQ/JSJzR4b7Jbedf15PWQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -195,14 +195,52 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/6/26 22:21, Lorenzo Stoakes (ARM) wrote:
-> Now we have introduced the VMA anonymous page offset attribute and update
-> it when VMAs are manipulated, update VMA merge tests to assert that the
-> anonymous page offset is as expected.
+> While maintaining anonymous page offsets for VMAs has no impact for most
+> merge cases, it does impact MAP_PRIVATE-mapped file-backed mappings which
+> happen to have matching page offset but not matching anonymous page offset.
 > 
-> Also update instances where we could use vma_start_pgoff() to do so.
+> Assert this behaviour by attempting to map an unfaulted MAP_PRIVATE-memfd
+> region with a faulted one with compatible file page offsets but
+> incompatible anonymous page offsets.
 > 
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > ---
+>  tools/testing/selftests/mm/merge.c | 57 ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 57 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/mm/merge.c b/tools/testing/selftests/mm/merge.c
+> index 519e5ac02db7..cb7cdb6b7ada 100644
+> --- a/tools/testing/selftests/mm/merge.c
+> +++ b/tools/testing/selftests/mm/merge.c
+> @@ -1305,6 +1305,63 @@ TEST_F(merge, merge_vmas_with_mseal)
+>  	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 2 * page_size);
+>  }
+>  
+> +TEST_F(merge, anon_and_page_offset_mismatch_memfd)
+> +{
+> +	struct procmap_fd *procmap = &self->procmap;
+> +	unsigned int page_size = self->page_size;
+> +	char *carveout = self->carveout;
+> +	char *ptr, *ptr2;
+> +	int fd;
+> +
+> +	/* Create a 10 page memfd descriptor. */
+> +	fd = memfd_create("anon_page_offset_test", MFD_CLOEXEC);
+> +	ASSERT_NE(fd, -1);
+> +	ASSERT_EQ(ftruncate(fd, 10 * page_size), 0);
+> +
+> +	/* Map a region using the memfd at page offset 0. */
+> +	ptr = mmap(carveout, 5 * page_size, PROT_READ | PROT_WRITE,
+> +		   MAP_FIXED | MAP_PRIVATE, fd, 0);
+> +	ASSERT_NE(ptr, MAP_FAILED);
+> +
+> +	/*
+> +	 * Map another separately, and fault in, at page offset 5:
+> +	 *
+
+"Fault in" is imprecise, as a read-fault won't do. "Trigger a CoW fault." might
+be better.
+
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
