@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AFA9C5AD7B
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 01:47:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5863BC5AD7B
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 01:48:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31FB06B008C; Mon, 10 Aug 2026 21:47:37 -0400 (EDT)
+	id 062B66B0093; Mon, 10 Aug 2026 21:48:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D6D76B0092; Mon, 10 Aug 2026 21:47:37 -0400 (EDT)
+	id 013CC6B0095; Mon, 10 Aug 2026 21:48:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E79C6B0093; Mon, 10 Aug 2026 21:47:37 -0400 (EDT)
+	id E6F626B0096; Mon, 10 Aug 2026 21:48:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F1B926B008C
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 21:47:36 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 80133C02F7
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 01:47:34 +0000 (UTC)
-X-FDA: 85087301628.30.FA6F9CA
-Received: from out-175.mta1.migadu.com (out-175.mta1.migadu.com [95.215.58.175])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 42F4E18000C
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 01:47:32 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fni5WM2z;
-	spf=pass (imf24.hostedemail.com: domain of guopeng.zhang@linux.dev designates 95.215.58.175 as permitted sender) smtp.mailfrom=guopeng.zhang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BEA796B0093
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 21:48:51 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 509531402EE
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 01:48:50 +0000 (UTC)
+X-FDA: 85087304820.09.D93644F
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1DE6120003
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 01:48:47 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dICgdgX8;
+	spf=pass (imf03.hostedemail.com: domain of guopeng.zhang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=guopeng.zhang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786412852;
+	s=arc-20220608; t=1786412928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vXSP3rMmLOlY5oMvjw5F843dB49FoaX+dyKSJWS/MBA=;
-	b=yfg8+eXgEyKL6QIwfr2BVAVvBW5ky2NZELWKw32fQsSWX0gcTPnoWLJZOwXlOpcGGqOFyZ
-	s+jRk5H3pHgHLQGQIe/VYxn4HRVr5+XA5EPO8TCQr3vtI0q8lMOMAiyrFYsqkfQr9+paAA
-	qhT/xEKBYd+jgOFKpXKyguGFMbVVhL4=
+	bh=ZkR9Jrw3xAmJagDyGOXNwoyN0RpcRJIgBllJw9AEJU4=;
+	b=OFv5DPq4fSp5A+QS3sASW64H+8fGaIBHvAGmWDzv91y/AaXhjHumF9I5zjmsN4ATOVvaYK
+	3pYWCnIpjlhjKU1wS9JwAGUqBSv/EBzlIiwG350RWo5GcqHIt92Z+aRakBgoUh25pentW1
+	MbJKB+B382qw1u6smgV67jYvjbXIjo0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786412852;
-	b=12QEPwu5AGhqSX4hWLU4Tyt98g4F4q6Kw/bWYTHzoM+3ZG3gbuKLKSoptLHmBL1YActNUe
-	2Ax9BpLrhRDr/m6BsqHYI7iK8qBEvoLcV+N6lvIJONr4JEhsjvEoEuUwf6acla9/YmGF5b
-	5EupdAmgz2AeLIWfhR+v5zDCgKEwL1U=
+	t=1786412928;
+	b=ZAND2P71HacjL7y4MXUoaQUFOd1QaxMOlug/9P08Q6fjTDSqRW0fnhDRZxmmDN2iE8ohNQ
+	suu7zDEJJQ0PyQ2QYJHabw3KUDJQxk6Hy8NujKA/1vtqaUoxWs1gsIVKY9AOiOQaE8c9kp
+	5Ep974IsTGGFOEMQ9QCzU3e6mqMWqTE=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fni5WM2z;
-	spf=pass (imf24.hostedemail.com: domain of guopeng.zhang@linux.dev designates 95.215.58.175 as permitted sender) smtp.mailfrom=guopeng.zhang@linux.dev;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dICgdgX8;
+	spf=pass (imf03.hostedemail.com: domain of guopeng.zhang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=guopeng.zhang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <39efdcc9-3dea-4669-bb82-04568fe2c58d@linux.dev>
+Message-ID: <fbffc1dd-a606-4307-aad1-2172e010de88@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786412848;
+	t=1786412923;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vXSP3rMmLOlY5oMvjw5F843dB49FoaX+dyKSJWS/MBA=;
-	b=fni5WM2zXzlCkn/LRqi7o4f3BY91YWHhHUStmRfuCHNIhly1vQnlVkgIlL6WWuSqEYxXvp
-	RMecZgI+XxCyjF5/foVr/aPN2g4K6IiTg0SlHBl7i9D2WAUiA2SkjCvVKtpj2Qj/zpEzcm
-	DPr+ezJIC+HKxyhn7KLuFyo8U2HFoAY=
-Date: Tue, 11 Aug 2026 09:47:09 +0800
+	bh=ZkR9Jrw3xAmJagDyGOXNwoyN0RpcRJIgBllJw9AEJU4=;
+	b=dICgdgX8gaKSk4Qf7qPJHjC3t91MFlzNSnOpWSNHNtWABVNfQ/J1xiBig+1w7K8I5jfg9C
+	CQZsDqtAymdDCAcdB4/TW/DT6lnyiSF6Otg1y8PRQK4TKmNJHSgUufoh0+QOLoRLyI0oi0
+	axGFMuu3l9UfhnlCk1Pog9Vy0dgXx7A=
+Date: Tue, 11 Aug 2026 09:48:38 +0800
 MIME-Version: 1.0
 Subject: Re: [PATCH] mm: memcg-v1: fix memory.memsw.failcnt accounting
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: shakeel.butt@linux.dev, hannes@cmpxchg.org, mhocko@kernel.org,
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: shakeel.butt@linux.dev, akpm@linux-foundation.org, mhocko@kernel.org,
  roman.gushchin@linux.dev, muchun.song@linux.dev, cgroups@vger.kernel.org,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Guopeng Zhang <zhangguopeng@kylinos.cn>
 References: <20260810074247.52747-1-guopeng.zhang@linux.dev>
- <20260810114749.368140ad5be4fa10085bbee0@linux-foundation.org>
+ <anoh5K01Qcn2t1Xh@cmpxchg.org>
 Content-Language: en-US
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Guopeng Zhang <guopeng.zhang@linux.dev>
-In-Reply-To: <20260810114749.368140ad5be4fa10085bbee0@linux-foundation.org>
+In-Reply-To: <anoh5K01Qcn2t1Xh@cmpxchg.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 42F4E18000C
 X-Rspam-User: 
-X-Stat-Signature: ea98zwjbopji1kczea5epaxewkqm6opc
-X-HE-Tag: 1786412852-230838
-X-HE-Meta: U2FsdGVkX19FeRnYRK0cNDpYNykClWXOXE5s5se5uUHxcpszXRBdlLkE/+t4/MFDD8pT+jHc316g6GmgZJ17VCFldvKRD00/0qnvvmOZqyn4hbiiVBLEdRI8rpesBnhm5quS2UJlJMpN6kfRdFsDyH0na2L6T6DvgGk4rhMQQe5Y0wD+cPKOGiKtXV8yCXDv0mI0nnXz7oiCFwjd3zPKkdCPrz4527rMjk/phKHKB/Hgjlnhq5wCuuyJtHY0Yt4ZcOZj8eY4HR1Z3xFCE2vpFEcvNWyHcdKnpjx39AEXudIiBr8f6o54dT4dLJzXlQVsQIXz18Eqthrpj/TSBnYwUgjBJQ1/0pUfFzjc3BqZQf50GE3Q+ilg37PIwyWuH8wEG4emklzDFYSTZXqQ83F2v/0PbAgnrnxpTem+3uBG5mRZXtN+zpW8av3PnmzERY5ZbYBPd82J6IPcIcb8MK1Gl/73cQ4mGh+C9ii2bP7dcWQhMWXluchgWNWnaFwIZENIBu+cyXOgxbIhf4Rg9+afSJPy5nccMswF7Xz6p4utxjGCCogGzIyAjv2bwKzeUTNXCeKHD/vtSaDdx5TI7ZLlsthm3HB/Pvmt+Y9RCzqXZ4ORhV6NeSxtzHiwg9kXjQy0pI1nqlDlBPl5XAm5NhizMYQ8kNgiw/nesJH+RF0eDgvIvMZRArsPsREO0+nZbvOA8y1BDPXVLz4tIvgzqNXoaiG2yMscXkq0cfsjAKkHTfyEsm8Si29DPe76ZwVq3mtLQBvtKkfTgW2ippDf9JcZ8fWh0jh4LxeIMTZwJndHGA9s0vtrgUQFRDbugkSNE58KsHY3dM5wxcJWTMwPiHSvCwNed7LPmodismZmGRh79W38Io5uRkHV5/+C3oszGoT4+5rrOM0GysfQv7wpq86wa4DeEDZ8Ik3PP3HXcN+hAIhtuVMMSGc4+1zGKsgvMOUDEkgLc5Kv+SbZWqeUPoN
- k6Ya/HKX
- 8J2voIXDyoQnLeQNQOJN6ANh63f+z69Gw3LHgy+f148YktrDtM7Z5f5qH40mu+hClvh5S/l3Vx2hi4OVWL2PHith6gNOV0xJVPJZUlpcrlOmu0tkr7/+PV4QhlWurBGVUutIdp3eHox+FKpu2MHdCCXg61/QCZ/hl3Quv1eEpTXgwrnA5SGCfsQ51sLMV874v6b/KCaPqmNQd9MgM8Vlgl9sCkAePEh4hyw5VaJ8n1isvvRmTgmXtbYFxDmubaX+xp4cVuQ9k3OdT6fbQQZWufJTUgNnrXjOSFYWdppSJ86RQqt4=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1DE6120003
+X-Stat-Signature: 6t4zg3bby6bwq579cbm4oqtzxkxg4irj
+X-HE-Tag: 1786412927-817073
+X-HE-Meta: U2FsdGVkX19ENBBx8ezOmHECQkfiya+wVtH3px8KDEOQb2OlrbFkawDSJDYi6y/9cOeBBHY9g0x5nHl4Ri9RnvMMVrDJFSIN/+tdinMk6EKii8iZdQv32LdIFXvPPMQJHJ9ptOTnv163wlaAnPxtR9wsPGFUEmQacuGasmbcWIn5rOlQl6GfnahaHepZhk9orX18g6/rx+OqpRmFYmADiSYl4AXzNxf2eFdy78hZuMWwuxA2643+Z9XzbDq/cFj+hUy/umEtk87ISbVu7L/0CCZpfhH0khdmzlOHhW8G3WiH8BOlLeaWybRkdUAL/C6wVa5gZ6yB317Hj6nq7XrvDqe/aojGiiBovFUBQEMDptaTtEpU6wpAY3aQn7BvTsVz32XYHczRcqnQ7Kz3aNOAQOi/yyFiLewUldxvY1aWtLoaP4ySYif/yJR5kT0bnm4vK9WEjkOVFJzQZ4KPfT2TOcy+cXxMAuDsJVD35td5sZjmiY31RYbWpQLUuXFM5ttk1nV1nc65GJyIgeiXf7Tz99gNDn6uKJN44+souFcd4DMq+UNsylskHoJSii3SZNv5rI5j9xplHcaBKvQIY9a8SqzvVKnPZFAyFu7IUL4cZqck4ENmGiDpRiJK/bUeqwCrq4zxpLj2GaTVQCNWXmk4VBsBkw9Faxb4LpjvF4UjYnlMJBeeMUVB2c+uKzyW98gINueSkDn6H7uE1jwPwfUMdsPERy3BPzNrT6yDoenKxEaLRLgZwduTUyhpVz8+K5BJFePqquOFxoevZa2zDPFypl6Y+KuSVzYiHf/rmDw5/BWMC4C1XK7AbVH73ysz2Ov7jEA77zON2LyzTx/lpb66YuKANUwmKivXkCYPt1nR7+IGj/MvFLQBb6OXNTSEZdDLBh11pYnFgtx5g4L0iy6cMRl9Laz8+Pycgo2WUdQr1mwBc2W4Ze3KOQH6+sEKtkX8ZWmhwWZyGtC8mU/6MOB
+ fcA6OhJP
+ tDvMq/slt2g08P4J5z7AI3TTnQO118qT/pvh7BSmDK8YxDzQnURy6Wsc5tE+PpwmYJxpU8/eXZPmqSi6gc0W/C9j6dZG0PIq0xND/hIHjkjZO39A5l/TH6+z4pdUFK0ARo3kwcbA+77puP1A9x7vkZowZ+cfFZj0y2k47s0oFO7+Dd2qxkhaXmyntfNzUhT4PUPZlAKW5TdE1j922mDQQ/bOPMdgt0na2CCfAzT2FkjRT3lQhL/9u4khjYm4ze3VcloEvem/2ShNDf1rjPkhB806HkBSO7HBkyfZ6ubu+xnmxPac=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,9 +94,10 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-在 2026/8/11 02:47, Andrew Morton 写道:
-> On Mon, 10 Aug 2026 15:42:47 +0800 Guopeng Zhang <guopeng.zhang@linux.dev> wrote:
-> 
+在 2026/8/11 03:09, Johannes Weiner 写道:
+> On Mon, Aug 10, 2026 at 03:42:47PM +0800, Guopeng Zhang wrote:
+>> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+>>
 >> Commit 0e2759afcaf9 ("page_counter: track failcnt only for legacy
 >> cgroups") made failcnt accounting conditional on track_failcnt. It
 >> enabled the flag for memcg->memory, but not for memcg->memsw.
@@ -119,21 +120,25 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 >>
 >> Without the patch, memory.memsw.failcnt is 0. With the patch,
 >> memory.memsw.failcnt is greater than 0.
-> 
-> Thanks.  Nice changelog.
-> 
+>>
 >> Fixes: 0e2759afcaf9 ("page_counter: track failcnt only for legacy cgroups")
+>> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
 > 
-> I'll add cc:stable to this.
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 > 
-> AI review thinks that memcg->tcpmem.track_failcnt should receive the
-> same treatment:
+> Sashiko raises a valid point. kmem.tcp.limit_in_bytes is deprecated
+> and will warn if set, but the functionality is still there for the
+> time being. No need to leave it broken until it's removed.
 > 
-> 	https://sashiko.dev/#/patchset/20260810074247.52747-1-guopeng.zhang@linux.dev
+> Could you add
+> 
+> 		memcg->tcpmem.track_failcnt = !memcg_on_dfl;
+> 
+> as well?
 
-Yeah, tcpmem has the same issue.
+Thanks for the review and Ack.
 
-I'll add
+Agreed. I'll add
 
     memcg->tcpmem.track_failcnt = !memcg_on_dfl;
 
@@ -141,5 +146,23 @@ and update the changelog accordingly in v2.
 
 Thanks,
 Guopeng
+
+> 
+>> ---
+>>  mm/memcontrol.c | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>> index 6939a4fbb991..4ffe5b3733d9 100644
+>> --- a/mm/memcontrol.c
+>> +++ b/mm/memcontrol.c
+>> @@ -4235,6 +4235,7 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
+>>  #ifdef CONFIG_MEMCG_V1
+>>  		WRITE_ONCE(memcg->swappiness, mem_cgroup_swappiness(parent));
+>>  		memcg->memory.track_failcnt = !memcg_on_dfl;
+>> +		memcg->memsw.track_failcnt = !memcg_on_dfl;
+>>  		WRITE_ONCE(memcg->oom_kill_disable, READ_ONCE(parent->oom_kill_disable));
+>>  		page_counter_init(&memcg->kmem, &parent->kmem, false);
+>>  		page_counter_init(&memcg->tcpmem, &parent->tcpmem, false);
 
 
