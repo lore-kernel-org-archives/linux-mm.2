@@ -4,86 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AB6FC5B56A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 15:12:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C7A7C5B56A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 15:14:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 961036B007B; Tue, 11 Aug 2026 11:12:47 -0400 (EDT)
+	id 2388D6B008C; Tue, 11 Aug 2026 11:14:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 938976B008A; Tue, 11 Aug 2026 11:12:47 -0400 (EDT)
+	id 1E95B6B0092; Tue, 11 Aug 2026 11:14:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84E1D6B008C; Tue, 11 Aug 2026 11:12:47 -0400 (EDT)
+	id 0FF726B0093; Tue, 11 Aug 2026 11:14:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5511E6B007B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 11:12:47 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DF1721602DE
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:12:46 +0000 (UTC)
-X-FDA: 85089330732.28.88842C1
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E73966B008C
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 11:14:40 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8AF7A140453
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:14:40 +0000 (UTC)
+X-FDA: 85089335520.02.75B2BA2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 30395C0005
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:12:45 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jKA8YClY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf25.hostedemail.com (Postfix) with ESMTP id B8FDAA0015
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:14:38 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kwVi9cZ5;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786461165;
+	s=arc-20220608; t=1786461278;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KjnbmQ0CjfvfCvabbRwgNKDlNYfwps6m9E+P6DWnXxQ=;
-	b=A/CpSlxWo84koiSEbskJLRhYWuMdAm7mH0Ma8q1y/EZMIeYJXzX/ZLlly1T1gFtFSutwxk
-	SvMjwvRxcldLBkH2RwOt/yEVQ36Q74qdl6YlEOYeC93RGZB3ohMSavInffhdkMpfeP1pbB
-	3OTJ49bat+HXVxiQkrDfKycUZxGeUyA=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jKA8YClY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=B5c4lkyp/O352kmRxSv99z3xaNt4JvhFYqQVngOI5Wk=;
+	b=TSNR4r5wYU1E/8rILPhDXzrMNZeb1KRfQkVQgBVGVRxMSYfdfBPEu5V3QXk3bosPGS/Z2d
+	4du6I0/tSGISzJpO7KE8dFKItFqb2DpVl/HIzWB2tC3q1gAJsfvhgrYKOnUxlxvPQw5ttU
+	yV/O4BO+pT/WfB+nvUMt5ucRDhnZDUk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786461165;
-	b=EcJsxc65TFb07bEKMoWqh0K/SfenArc3hb6RQbxtTkA0hBKjrackLCEjRJpLIXwgW0Berr
-	2p61T8f3NkaMlC0aJfTb5auvTnfsqXB6numDRUkLat37AJf9inCbjczePy24ABEeB1v8cb
-	PdPtRUIEGMhJcULjfXbg/bZIq6iH/I8=
+	t=1786461278;
+	b=U6MKN2htJU2D41HoYTcNwU0t2VWzpZ/OXKLCLbKrr9ewtBaWmM4pVXNqBdGrI98rHUQpFn
+	bqXYo47/2tpdHamD62nfdLGKscdmBKyxMevZ4r3gc/65QjjcSm9GI7tKi37XTatHwoMSDp
+	hW/liSeJHjhlGPMPalsaExZAwcWmzZ4=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kwVi9cZ5;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B02D5600C3;
-	Tue, 11 Aug 2026 15:12:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481201F000E9;
-	Tue, 11 Aug 2026 15:12:37 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 576FB600AD;
+	Tue, 11 Aug 2026 15:14:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C4B71F000E9;
+	Tue, 11 Aug 2026 15:14:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786461164;
-	bh=KjnbmQ0CjfvfCvabbRwgNKDlNYfwps6m9E+P6DWnXxQ=;
+	s=k20260515; t=1786461278;
+	bh=B5c4lkyp/O352kmRxSv99z3xaNt4JvhFYqQVngOI5Wk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jKA8YClY4dU0SZbFCX+nX9ALHXaAF20S0uGoTYSxg5w75bE1NwCY62evaVYkNAPu/
-	 Bd/q7K9i9DO+b0WWHVcv/gLPWt+Tt0ILRby87yQpaUOfNyGln0BebF1/izQX7MtON0
-	 XrrKtaeU865KbkDPKqNQuCdLPhT7VFJ0Xm3pAS4zysFw/rBr5jENWy/V43y7bD4vdy
-	 0C+G7U8jTrD3DrnXUJ3Xtgxj8IrQMetLRD+eE0GPzTAiHiFrQPf3PUYhpM0g+XSmDy
-	 vVP0rMGdX3CFM0/nCEhd5Kp9uWFI7VQuWrZ3aVqE5DsrnXuLz+3b5hBxB66NfXMFsH
-	 358dILGA9WzYQ==
-Message-ID: <0b3ce586-a090-4741-b269-488106d33e3a@kernel.org>
-Date: Tue, 11 Aug 2026 17:12:36 +0200
+	b=kwVi9cZ5mJDbomvempSuT38rEX96yv1TgwsDLUDunVpi1syrOHg7zwScqRdYGd5kl
+	 n5hl2gPdjH6upwxFkyly8dJbNzmTb6fyu3Jt52bHGe6mEZy8tceQJWK8QWN5sJQLMq
+	 fZ8FVaysZQ/xKq3oCKA63Bik6teeyJ7ZtayoSlt26LNQl1CWtCLIgfqExBEtZ4XptE
+	 j1MjzOA9HFzluoW9QpTKQlus+Eu3UFz9ZJT4rlJnv855B2juyNzkmnJ6LGDsrRYYZk
+	 1TqC/3v8nKn6nYyaSvmYLtCNqy2JokCVn3qEMdMy6G4ZkM2rKEwyS6Q9lvh8KTOazn
+	 nHU7iyeHYKUeg==
+Message-ID: <8bb53d9a-8870-410c-9a41-f8b536ef0780@kernel.org>
+Date: Tue, 11 Aug 2026 17:14:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-To: David Woodhouse <dwmw2@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Simona Vetter <simona.vetter@ffwll.ch>,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- "Paul E. McKenney" <paulmck@kernel.org>, Paolo Bonzini
- <pbonzini@redhat.com>, linux-mm@kvack.org, kvm@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <a247c49dd61af1df7ddc4dcb1cccbcb36b04d9d5.camel@infradead.org>
+Subject: Re: [PATCH 3/4] mm/secretmem: zeroize secret pages before kdump
+To: =?UTF-8?Q?Jan_Sebastian_G=C3=B6tte?= <contact@jaseg.de>,
+ =?UTF-8?Q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, keyrings@vger.kernel.org, linux-mm@kvack.org,
+ linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org
+References: <20260731162739.158320-1-linux@jaseg.de>
+ <20260731162739.158320-4-linux@jaseg.de>
+ <70c578dc-769f-465f-a146-4a4695f747c1@kernel.org>
+ <adcafa9f-2365-484b-b31e-19006833efaa@jaseg.de>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <a247c49dd61af1df7ddc4dcb1cccbcb36b04d9d5.camel@infradead.org>
+In-Reply-To: <adcafa9f-2365-484b-b31e-19006833efaa@jaseg.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 30395C0005
-X-Stat-Signature: ftm9k5jr8snu9pohwn8jggpu9j4zqfmq
 X-Rspam-User: 
-X-HE-Tag: 1786461165-443641
-X-HE-Meta: U2FsdGVkX18Mxf7uPk9hLHMxPDAgk6zHuYgNJRxlaT+EEigKW6evWqynKqxdiq0dGFTjlWNv5W6AgYsQRtRkv8L31Cur3U8m3IxxJ77Ii6zMT5UeI38NeH4S+uxJvgnAK2QFQmeF3DRuiaN6jX04mexkZ8fCVedtUzyE5+O4k5jrFxW8l/qViJqMY8CPPMNpUSKycyPypFa3B/1ALXm502CYHjDal3oEnvm5mf01wEHVGGcL4gGDfje2GZdgmbGFn5FrvI6jDr+TTS5j/F+hRovDs4ssYJ/4YKFAVHFkL7ZE0flRt4pXyZSDUu6dVkOyX1f/nd2keCv1oCrMZTGpdtIOOOPmUnDTTay9x5ckrZJCU/W3nKwfIQIIENy3uCRNoD5bKQK1RqT1LbddCjoxihf0s4g9EHezyIOg9defP/RATYmvF7P+eLB13cmSKsoJt+KngLXhcz82qeBZX/HnkV/Nig2bEHO+3xG5lTWwvTM0wMB+bFDWvIQwAodnNcu4MLT5TqoadTxASeluHC+Ep7a7eEtecLpr9WH21uNob9FeVmXMahy/WUZGGOYinfTZ/UcCVx9mj928hASM3zNjgnA+bff8L0wzUMSachrvRYkee5J198l5f+eNo3HOIvNDgQo6FuIxpYxN1o+VKS7YOp3h//Q2j+uwwmHGBSj1EwSZ8M3+XKEfzukUgj76ikEySJsimfCulllxJalLhMeUFFq/oi47QC15WsJE/BDEPgqG7VwvRmQQ9gcHVaFjAOgdxloz14tcOUeDJToISmG5sSHcwgZPElhLa36aHXj71tJE8m2USkyYi0D/sDquhNQYkTvajr82kDDj51ZwzKvpaYFZDDE4Bedm5QDgutIymmD1L939kbHJiO7bar2wrt+NNFj3rGj1uY+SmldslnywiR3+bFFcctHKh6AeqeOIGMYVrfaPdGIILpLqOm2wXsLUx1SEqTonoQ3JAmY95TK
- RfFXIiRo
- 8Kk1+92oUj72KrdJlno2E513nAFDjxcA1Bse5LQ3BMpw3WFWMMEWxvWVf0LgrbEQ2pBZrh530+ebgV/exUrkJvaDMQui296J8QbZuhYhaA9mgUYHjr54D7/56rbUOTauvcXNPcaoQ076D3d64clMnwfvSBFBeaQuBS49BFXj83A33rQYNFoytoTR4x0Tx3t+tD77LWPmFyZRIefOmrfXK0E1/wN1xeeVWVFTQLapODgvVFR2kepoP3L5O+vgytHaCPbdT5Du0EPHv3MB/97vdvJrtz7UJJbC8qVo+vpNsfmcUj3iVnHANeLCFMP48ZDSs0/JW/mHLREZoJ/KGtpOKHZdLIGKz6eD9YahM
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B8FDAA0015
+X-Stat-Signature: 5g953iif5c15czxi7zqebw3qcdncdtbc
+X-HE-Tag: 1786461278-285132
+X-HE-Meta: U2FsdGVkX19/8znMCR0lxaI1cZs+ESkryMD5ElDj2kk84NB0l02/STg5C7AvR9qbfuWjV52mNnHurz3D4jX1/UjTtDr7olOeWKwnEimz1Ht+slqANhJRgHELlFuM/lkDAVh4lqRm5azpW46o7sex42ZGkVa5ST0x3V8mKBt+UCmeNvNNKpqMNlXlzHSWRkp65yayOTpUqy2HksyrLEWkxpAzLSlANxAMfeDTXHi60GHAfWeGEJARtMPFo0VHtsnCiR2LG30sOMNJpzM+iC3HZMtouKctpAfSwsNxCbHfEjmPXbJyH5rIXk5/a0smifJ2wROTTlGg7oCYUznjJN531fawh+1Tv91nmChVydX8PCAYRVLBP8M3jsyVVxon1n89QYc5J32PHcnrlihTIN44dTKiqFyhp8oCBBERqPYybgKAPGIwlO2H2J8lu1RMjSSJH9UMsg93L/HCGahoxoCresnnD4bnbXMhyfg5RW1De5sZaFS60hnQDo7bnuotwGupj96O6bSt2eVWhOTemNI6Tp9eKl96I+w7UF7azgqVWEk+qYgOlKyR4Oo7yZsn/1u5sTFMgwDS9IZbhzAR8c05L9HfoiJ8fopqIXbtC4RNOeZsCokNUaa4wBp/06h+MGOR6VdSfUOt5WwEAjt3sIUQm8h4uK0MSWn2gCofU4KUxP/VRYJpZxpVAdpr4nr9uMor0y/gQK0IwxSkPJNYgI+v+L0O4pT3Zg1CtzPfC6IMKmfxrj+t0qNkmckHfguxdJD0FDl0Rpv06vi4T7/0h1iq+q3pkR+F0+uNZPGMpu0tAx2MlJFL6LkZE4BPhQu18pJmLevLj+l9RAP1dO3V+3zvvfDHiwkxwMoB3jcejH+c8lRTTMkngQdkLflbfGEb2+q5E/OE0OzoaVKSGsUmjKD0hXirWd+wxUdjHvZN2CqMCqAc1NwJJDdseJ8Tbi3v1mWu7y1UiM8xt+Ypma7OZkg
+ OkYCLLhS
+ chFx2dWPZmrCNuiVnB6OT1tf7GntkF1ATljTaVqw8lx2p8H9MEsjlAhDSVNeooswuBY7XaxXr/WEZy/e3VYgsUpO2LpF43NBSdZyWxEZ4m5RTLv7KYSJ5blU8Qk4yIx3AmzeJip1qZICIepjdgIiZbsw2xVxvEZ8N0wOslRkgStX7pt7wsBFkTZHIo1jbgHe5cyEyJJDxmVASgFf65L+gqRSmJOM968mxrkJPzDowBErCQY3aav6uTznTs1AvaveIfw8jyCFdk/ajjuR0lfzhfODekg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,75 +142,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/11/26 10:58, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
+On 8/11/26 17:05, Jan Sebastian Götte wrote:
+> On 8/11/26 16:53, David Hildenbrand (Arm) wrote:
+>> On 7/31/26 18:27, Jan Sebastian Götte wrote:
+>>> Register a CRASH_ZEROIZE notifier that wipes secretmem folios. As a
+>>> result, when CONFIG_CRASH_ZEROIZE is set, secretmem areas will be
+>>> cleared before the kdump kernel is kexec'ed.
+>>
+>> Are you actually using secretmem in your use case? I heard some rumors that
+>> secretmem isn't used all that much in practice :)
 > 
-> This effectively reverts commit ba170f76b69d ("mm, notifier: Catch
-> sleeping/blocking for !blockable") for the mmu_notifier call sites.
-> 
-> The non_block_start/end() annotation causes the scheduler to complain
-> about *any* voluntary sleep in a non-blockable notifier. But that was
-> never the actual constraint. As Michal Hocko put it when the
-> annotation was first proposed (quoted in commit 312364f3534c
-> ("kernel.h: Add non_block_start/end()")), the OOM reaper "shouldn't
-> depend on any locks or sleepable conditionals" and checking for
-> sleepable context was "the best thing we could come up with that would
-> describe these demands at least partially". The real requirement is that the reaper
-> must not block on anything which may itself depend on memory
-> allocation (or on the dying mm) to make progress — which is why
-> spinning locks were always considered fine.
+> I'm aware nobody is really using secretmem. I decided to build this on top of
+> secretmem because it's an existing API that actually kind of fits the use case.
+> While I could have added a new API just for this (marking userspace memory as
+> wipe-on-crash), making it part of secretmem instead gives some additional
+> defense-in-depth protection for both users who only need wiping, and for users
+> who only want secretmem's additional protection against kernel memory read
+> primitives so I think everyone wins here.
 
-I think it's conceptually more than that: "we mostly do care about it to make a
-forward progress". So yes, memory allocations are the obvious problem, but we
-also wouldn't want to wait on any lock that will be hard/impossible to get while
-reaping.
+What I was thinking when I looked at patch #3+#4: 50% of the users you add are
+irrelevant in practice.
 
-Just take a look at what some mmu_notifier_range_blockable() users end up doing:
-they skip taking locks.
-
-[...]
-
-> 
-> diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
-> index 245b74f39f91..cd5d15cd646a 100644
-> --- a/mm/mmu_notifier.c
-> +++ b/mm/mmu_notifier.c
-> @@ -520,11 +520,7 @@ static int mn_hlist_invalidate_range_start(
->  		if (ops->invalidate_range_start) {
->  			int _ret;
->  
-> -			if (!mmu_notifier_range_blockable(range))
-> -				non_block_start();
->  			_ret = ops->invalidate_range_start(subscription, range);
-> -			if (!mmu_notifier_range_blockable(range))
-> -				non_block_end();
->  			if (_ret) {
->  				pr_info("%pS callback failed with %d in %sblockable context.\n",
->  					ops->invalidate_range_start, _ret,
-> @@ -591,14 +587,9 @@ mn_hlist_invalidate_end(struct mmu_notifier_subscriptions *subscriptions,
->  	id = srcu_read_lock(&srcu);
->  	hlist_for_each_entry_srcu(subscription, &subscriptions->list, hlist,
->  				 srcu_read_lock_held(&srcu)) {
-> -		if (subscription->ops->invalidate_range_end) {
-> -			if (!mmu_notifier_range_blockable(range))
-> -				non_block_start();
-> +		if (subscription->ops->invalidate_range_end)
->  			subscription->ops->invalidate_range_end(subscription,
->  								range);
-> -			if (!mmu_notifier_range_blockable(range))
-> -				non_block_end();
-> -		}
->  	}
->  	srcu_read_unlock(&srcu, id);
->  }
-
-It's a bit odd. We have infrastructure to disallow blocking, and do so on
-multiple paths (just check for mmu_notifier_range_blockable() users where we
-skip taking mutexes, not performing memory allocations!), but now essentially
-allow blocking on some paths.
-
-That's just inconsistent. If we want different semantics, I think the whole
-thing should be re-thought: if blocking is suddenly allowed.
+Or are you saying that you are going to start using secretmem for your use case?
 
 -- 
 Cheers,
