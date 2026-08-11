@@ -4,170 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F21F3C5B56A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 19:38:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EA59C5AC67
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 19:38:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74BFD6B007B; Tue, 11 Aug 2026 15:38:10 -0400 (EDT)
+	id 7C1F56B0095; Tue, 11 Aug 2026 15:38:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 724866B008A; Tue, 11 Aug 2026 15:38:10 -0400 (EDT)
+	id 799496B0096; Tue, 11 Aug 2026 15:38:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63B546B0095; Tue, 11 Aug 2026 15:38:10 -0400 (EDT)
+	id 6AFA06B0098; Tue, 11 Aug 2026 15:38:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3053F6B007B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:38:10 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6A2D51201F5
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:38:09 +0000 (UTC)
-X-FDA: 85089999498.14.D0A9DD5
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013068.outbound.protection.outlook.com [40.107.201.68])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8F02D100010
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:38:06 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=NEsFGMkh;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.68 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786477086;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 40CBA6B0095
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:38:37 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BADC4C0223
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:38:36 +0000 (UTC)
+X-FDA: 85090000632.23.58BFA42
+Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
+	by imf08.hostedemail.com (Postfix) with ESMTP id A3787160004
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:38:34 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm3 header.b=keVFG8pp;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="k VEP8+A";
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of contact@jaseg.de designates 202.12.124.139 as permitted sender) smtp.mailfrom=contact@jaseg.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786477114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wAu1a+d1NPMHdf3zHTDTxjSzZgyMUkS78CETRBT0b/k=;
-	b=QtyMtyM0gIaUlGKqpe0XLPLvU5w2pvgguCdx7kLX3dmT47r7qbywbBD/5piqVgfEeO8dhU
-	tsv0gxsgEp7a2tHL4AhaFFwSwH/AQVaGENCa7HWRvNDP8LYBi75N+1H7ZHH10A6Vy48n7L
-	2Jg/KEr4yXX6nO7dNNgss+vQ80blNd4=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=NEsFGMkh;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.68 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786477086;
-	b=Pg6dgZaoOYDhijLSC0sBCEOrnsEDurJ86Kg8k44stQkLqMvas6PiAsK2Cx7FMF6I34bvHc
-	XHjV6u/06cZElQjWq0v1q95XlR+nsHsR7gZ8xHREYgMmeYVqyQ3LnGroH+Pn9o8iN3GlE+
-	NxbVwttiaZ5VtlNM1lM7IGw1pEDYkHo=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=p1oxQ2Kg5+cgYLiKCn6soq2wYQoZP4OY0/JK9pdWZXVOdfNYrUfQZPtcl0pPgR96OQzd+dqP7UTABY9lTcKxMsMZw+evwMCYH/NOGLue1+cGI96pHwMUOy3XjcGefX52Xuk8TSVa4kYbyjU0rvweVOwoSoG0inY8M4olSJiXPthFWjqE01AzDwBbpNQJBQkAH9WPyFR7Wrizy2lmE5umNivGgZiPAJzaKn+OfUHqkFFdG+gSwFSziPwTe8pY/lNNZl1A6I/BBbr6prmC22LDdHOGkIzCv9NHm15EWSuNKsuSqZmxPtsbGZYa+GicggbwXUI6bIqAD8La8LQe/Cjqmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wAu1a+d1NPMHdf3zHTDTxjSzZgyMUkS78CETRBT0b/k=;
- b=v4KrqqtjTpC6zp+qW67Jo9dK8h+GivTOE8u9cFxYJ6Lb1RRmgLMepQDmuSFMZN5iD8Jf2HR6MDebKxf0HEaGRsjAgmWH/Zt8bGMqhTX+8k3tSBQw4qV3zU47wO/DRtaeM7FUK382Xf40meLL9/RYNVyodIKfUuVIxe8akjYh11nNebWiAoebl75O0+L6iQnVzLkBT32LWBC0iGxiOOyt+8tL31TK3oBXGsMQ2IEJPL7MF/04JLGh1tvoRzzBcvjfcz8E2xBBrlv/ysFFNA6VwHBdXc9mTaLw9AU+9Rkcn+d0AF/aRDzGDh54zk8D98SZ6iZ/ewtLGdzvI8Y5WGC+fg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wAu1a+d1NPMHdf3zHTDTxjSzZgyMUkS78CETRBT0b/k=;
- b=NEsFGMkh+IIj9b8yPPQOIQxot4LUYqwZg7wV/1zpqmZS4TPfVpv5BAFlzzE6tCbcyO5JF3Z2NMRE2P+Bqtls/vLfJd/Bgnyo1nMEEIuZ0EfskTjFm0vujYK9jjRCWXI2UPtLzW8uk0z6uvCy/3X76XpW55j8EukDVhS7upQc0cskkueVegPrArTban/4OTeIPug5rzU3aGBDYABEAbKdc7Mq/IaG68WKCs0AmZyhqvoDAJS40G5+jiS/4t5HVe/7vUuZ4SDc/GiUkTVh7dvWQjXzmS16iq1DCqSeEeottKQmZtibQ+UqCqucDdItWklTi9JLSYCrlyQSbqOVG3AR3w==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by DS2PR12MB9751.namprd12.prod.outlook.com (2603:10b6:8:2ad::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Tue, 11 Aug
- 2026 19:37:59 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0315.011; Tue, 11 Aug 2026
- 19:37:59 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 11 Aug 2026 15:37:58 -0400
-Message-Id: <DKMD9S2SNWGG.XECBZ6G8LS3@nvidia.com>
-Subject: Re: [PATCH 1/2] mm: replace custom bad page map ratelimiting logic
-Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
- Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
- "Michal Hocko" <mhocko@suse.com>, "Brendan Jackman"
- <brendan.jackman@linux.dev>, "Johannes Weiner" <hannes@cmpxchg.org>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-To: "Pedro Falcato" <pfalcato@suse.de>, "Andrew Morton"
- <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>
-From: "Zi Yan" <ziy@nvidia.com>
-X-Mailer: aerc 0.21.0
-References: <20260811172156.356053-1-pfalcato@suse.de>
- <20260811172156.356053-2-pfalcato@suse.de>
-In-Reply-To: <20260811172156.356053-2-pfalcato@suse.de>
-X-ClientProxiedBy: BN9PR03CA0519.namprd03.prod.outlook.com
- (2603:10b6:408:131::14) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=ACCE0ULeByOYA7YhgUX1DRUvF3xjVfa2RU3k/FuhH8g=;
+	b=MQxM3b+MQH1leSb+HdM/zDDej9GCTtwjlyvIdrYD+Bwg8zwtZRGalsHijaZxttw0VlpYdY
+	u8l16OSB8+PGq9nr1JeZ2JEfGTePHF3LlGYWvqKCES8RjeoD3I9Mvbhmc+UengdLdFmMed
+	Ki3F0He0iu64hSM3R/1bA48YQh7E66w=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm3 header.b=keVFG8pp;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="k VEP8+A";
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of contact@jaseg.de designates 202.12.124.139 as permitted sender) smtp.mailfrom=contact@jaseg.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786477114;
+	b=WJiNQtSQbTrx/ybCsMs9tq4oyxSLwb0BJiheVTljg8fYZHR1FUWppfE2KkvfQtX+2dmlGm
+	IbLOMe13lkNHfEYUn0/z90t/OP/jNhJ9/od/3157RUCi9qaMSYo43Jz2I0Ls+ZZ3kTVzp/
+	5Dz9QbTf6RR7wXpCvPNuMIxPbIZ4h0k=
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailflow.stl.internal (Postfix) with ESMTP id 57A4B130049E;
+	Tue, 11 Aug 2026 15:38:32 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-07.internal (MEProxy); Tue, 11 Aug 2026 15:38:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaseg.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1786477112;
+	 x=1786484312; bh=ACCE0ULeByOYA7YhgUX1DRUvF3xjVfa2RU3k/FuhH8g=; b=
+	keVFG8ppzrE7UbbLjDHiHSJtI9Dx+qC2GlT9JBlIpkopIeTpIFALoZj3OtkLvdfN
+	dfL2TBMn3a8uaRV/m816Rf06e3mr0hroGzSdd+B5ec8J0g2eXeGeXjAuwNMSLkNY
+	QIjP2XadwJIHsrJ/wbPmwKdH35yPb1NnCPs66i2bSRa4Uq99sf8Nuw0Mf6pCfK+J
+	kThrNnZcp1NSqIPErfXOc0RfhaVu59cUmelnkBO3KSzIXrXopIKIgEgDldYVzvNI
+	welmLWkOkfy/F4HepsMn0mcxgLK91+D5vUgKj8fPfntYtmvq7Qhm1HYOa6KmzjUl
+	6UkxnbzI2bD68I7n+GzHEg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786477112; x=
+	1786484312; bh=ACCE0ULeByOYA7YhgUX1DRUvF3xjVfa2RU3k/FuhH8g=; b=k
+	VEP8+AWcOEN0Mp8eXvv+rwkUV7PDWhxr0tETvHConAUEJWsr5f8F6/s0efBUcZ+t
+	+tKA/3QG8yfvjLoGuQ6/Misma2xkaBu88+TWXveDjIS3BEt7BxwsiXHU0cozOXqR
+	FG3TNEhUFL1/1aVP9JL7O6hqjhW3wkdWINPBSoZp1gTB42ghiPvu1HXAlOxieyJc
+	B5nrDMw0Q2ZQEKk5fID63UCSF/YVDhETlOCv3eVsPxfm2H2kGwpyif3PZ+VFZXAK
+	7csxHjdbjst4EPf3kEKw164Lo1wXGh4eu544U4PqHAfbOSwnSwjdebJ2kwl+NidD
+	vDFxPVxM+qN6NWXI1f83A==
+X-ME-Sender: <xms:NXp7am3-JJHEDtakJK9cAwxYvmI-jjPH2GCQRBduEHk2S38me8JTOQ>
+    <xme:NXp7avov-avCmDj8oLbuR8A5eYaVWYCcUyJXQ22XIB5_lUbdCTR9RmC5ytOyYdN1w
+    7mGQ0P5p7r1wS-EMaHeIKH490Nwj2DOR79-a-fRez07FIS_Xc0a>
+X-ME-Received: <xmr:NXp7arqerxAnts3xbAyAAikoad2gB26eLQppY9rMC6Cwoki__UgeviPCfAfNuPIOwBcPWUsCfXfuh8u4c2cAyIE>
+X-ME-Proxy-Cause: dmFkZTFMHFIUIFNvfOCiTcNbNas89HIxDpu9vnd9/UyYgPH+U8B/ewhZbOiCiNis/URMGi
+    +GT3IjL+W7d23Jp2vVIoo0Dbticg5NyiB4xdyohEAzMY0lTBOp6JwJcW/q1E+SUSRo1/Az
+    Amazx7B1t7Blz7aJHJrO+95WGbidE49E7NYEFoPjlZ9V6JiRV3Zj99ZPpw65cgBRTJN3ty
+    V/otn2YNr7GDO5K1Y3PMGh6dJY1GfVQQ3Nadzvp6cPmJMPN1NICOE+yG1W3AymuWe2qnWi
+    fcMMX1Ez44JzFnr50gj0OpqfOcphWiK5daA6xFPWxoB/nhcjlc+u9hcZFFOQ40nBAzjsnK
+    NMSjsTAO0vS1FK0Nr7jBjGyYa27zDR8eNYzNfRC9pXsGY1rmnGcC+AIF1Zb/D/6KLKa9Ou
+    KKiKG/B9ngGjM2/SC/ymMZ66VQj0q2OuI7Rvit9fFSdQI6+bU9vCZMe1Mp6T2VQcXOYvOw
+    3ZVzBxjUPfcm392xJSNo3VbfDVgmBsZBqpFK3IPQn8t47FgUF5IyQdJVItFen8viK6s5Mi
+    SEmladhakf8mkcxN38BHlSQJK3l1sP+qkjxo+US0nY0YwThgQliMkpmx6ze9nRadCGZU2R
+    pFDTS02lG661OsONPL4SRaIr3QDOgPy97mTuAyYveBqhiYE7Jf2293Ztmz/w
+X-ME-Proxy: <xmx:NXp7agecPCXtitwtn-MKPhHK6ycgOCvoVLPCy0jV8P3xwJrr1XpGnQ>
+    <xmx:NXp7at1-8sj_G9Pne2cEf1vpSgTqhA2o4Ge-0aRba0lPolsRGpaEJA>
+    <xmx:NXp7ajopnqavo_iqjEeHVPULvVuOnZ9VXmNSk83PNejxnKRLeZCFXQ>
+    <xmx:NXp7akX6WQfEGCSrvykRgTkoakw86_WE-9CjQg8gLIhQb09ObgHPHg>
+    <xmx:OHp7as81X0aOqOxljXrCGrq-RZMo05SALg18SFfIAdpgXoxGsje0SZ8t>
+Feedback-ID: i60a14417:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 11 Aug 2026 15:38:22 -0400 (EDT)
+Message-ID: <d242ab53-a39e-421d-ac39-4bee49be6ac0@jaseg.de>
+Date: Tue, 11 Aug 2026 21:38:20 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DS2PR12MB9751:EE_
-X-MS-Office365-Filtering-Correlation-Id: ee911ed3-1fba-482e-e27f-08def7e00cf6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|1800799024|7416014|376014|18002099003|22082099003|11063799006|4143699003|56012099006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	mn7WJ6WrLWh7OtD80qUUMoOvURJviU9SchAdm54hu4LAj2oBIVFS3ZvE3VdsSStkW+suFZFsbWLECcsM34JJ3bunYaLzdIAe4bjhRfhKV30gSISKdWR1zCkbJ4snKvP9gnTXCoiHQ6iHyE1MvBJ9dyfKGwnJ+9TOKsuIvGTSOEzstcohAvCxe3SiKnt2gw72fIAwXmEkRBG/i2tJzNfJwZH0npCtIGgvoMMzfPQ5vTLb3fCA8Wj9LNmZvo+OHp9PMtygDBFfZtVOTWgje/wBO6Uutg2ks/Vxzy6bZ1fNRcxNalYfY/5UedQZfMK9nQDCiMBJogRO0fG5OwSc1y330XPF44vXxSUPmTZFH9bZJlAxjBkCSIGycHoJLkifWxOk1+4mSrWCRdsMJvgepU4PbIJXA6Rx/ky8GCn8vNY9mRY8z0W9bslXlcCk57n1EjvFKYWs1rq7gDUCu7EPg/HZWs8SBsOQswMrmF/ygPZdBSH68eFS4we52V1GyEaZTadIH5WbWqiCuOAbZix1YuSUrsuX44x43xQcEK7ToSqIZ3ztI/YSF8sEYA4dyr5rFtj/BDGsxgXI314t6auS5Bl8RpE1pO7EOWSCSA3xg1nNC0vDnViMZvD196phstCmSJywZf9Tk1phuhDNJX9hYEIFE2OO/K+cHUQPSjzqM49VY1Y=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(7416014)(376014)(18002099003)(22082099003)(11063799006)(4143699003)(56012099006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OU4vY2c0RmdCVDF4c0I0dlVaRDhlYnErSXluRENSNFhIYVRibVFlWC9pN2Vt?=
- =?utf-8?B?cEMvdm9qZlhZZzQybFMxZG9XYkVFTkZjL1JMSmxoUGxFVlFueHB1c1BqUnU0?=
- =?utf-8?B?Wmp0YmZsaTlhbXcrWkV2Nnc3NFNJQ0M2N2cxdENzT1VJVmFwS3NWVy9GSEVh?=
- =?utf-8?B?akdlSVk1dkN5cFdOL2Iyd0hmUytRZkt2R05MVithWm1MTkhXcy8rbFJsZ2lS?=
- =?utf-8?B?UXdnUXY4NEpJL0JUcDBvaFBBaFZUSmw4R2hEUkNRZ0lyUGY0eTV4emhTTHE1?=
- =?utf-8?B?Y014U1FobktNOStZMXhkODN4UkJwUmIyeTd5dWhtUWxZSXlZZnBVemE0ekJ2?=
- =?utf-8?B?L0djK3NneDBUTkNWbVdVakxMMEdBbUlPelJyZFMzVWhSeU1yL1c0RjR3dGZ3?=
- =?utf-8?B?NWVFSmNUbjZYRHZYTnJVdW04Ynh2WGNJODYvMDcxVS9SS1BBQzdWSjE5MGRh?=
- =?utf-8?B?Rnd4MTdLbzNUdnlrVTB6LzdDMmU3UkY2cXA5UWFTeW53aEM3OENNOGgvb2w5?=
- =?utf-8?B?V2tpUWRyR2x2bWgwMU9rcjQzTHhUajI5YUdnM1Z1c2htWlR4TGdUdXJ6SHJD?=
- =?utf-8?B?UzJmRFNnMEQ1TUhiWkt2ekpQdGtYV0dKNVNUSFZpWFJtWWNjb1RxbndCcUJY?=
- =?utf-8?B?ajlNK3NVaUZZVElNTkQwNzJvUlpOamJ3OXR5ajU5NGNXMWpPRDdaWmROdk9r?=
- =?utf-8?B?d2FKTnhjcUpMODBNZ2poM0pXTUJaQTlzMVA0NDVVVEwyRHl6QmtkZ1FDR1l5?=
- =?utf-8?B?QkcyamZGV0c4b3I2b21zUW9UV3F3RW56SGJGVmwwWno4Q1VMSC94S1NBK1cy?=
- =?utf-8?B?akQ5aG9VS0VVY1ZpYVRhYytiMFpMdlRyajNxMzRuQ3JlUjQrRFJOSDZ6T0ky?=
- =?utf-8?B?V2FtM0pLbS9idUtPdENIUkd1V3E0LzBLRmVvTTZJVmwyNzU3by9xUmlMdHls?=
- =?utf-8?B?NWlXMWFZTm1ZMUlaRGxuanpVNW9rNVZNS3MrY1FhMWtCcWw1bk1tTGJ6Ym5q?=
- =?utf-8?B?VjlOMTdJMCtaVnc3RVczblNweHhXdDM2RXljQ3NCbGxLTUhMUzV0WnhtWkVt?=
- =?utf-8?B?RHN5TmlWMmlUOFhuVkZpZWxONGxXTWpMdjc4UVlDWkEwdXQ1b0NBWVpxUzBS?=
- =?utf-8?B?OUdFWGhhYW5wbGs5K1VXdzgxaWZNMUlIQkw3M3NhMnlrZUtSOHcySWlBQ0pN?=
- =?utf-8?B?K0NBcjV6Y2hqS1ZDVnJkaXA0b0srRm1NTWpOdEU5aWJxcUlRYTVCaEtPOEhY?=
- =?utf-8?B?SFhnNk9TeDFuQ05HRWFsRjJsaks1ZC9CaUxkSFZKMEVxRU9DbFpMWUdiNUFK?=
- =?utf-8?B?Y1Z5NGRTVCtLRGpsa2d4SlRkM2NCdGFDa3FzVjFPblZQK096cVRkRWhWUTMx?=
- =?utf-8?B?OU1KdG42Z09YSjkzRWk3QWswbDhyemJlT3Z3dWhLcUlYNXpRb011SS95bkxX?=
- =?utf-8?B?VjhpRHVkWTRUcUx1YlhzZnpPY2lza08wcUlRVWpFWkJ1U1k5aVpuZjFmT1E1?=
- =?utf-8?B?SWUzRFdZbnZZUG9QZ1huZUhPRWJ3M3ZmU1BoYWN5d0ZyVW9Vb0V6YmhWNCt6?=
- =?utf-8?B?SVJMckJtRk5NVG9PMWp1MnNJb0NWZDhFa29sTFU5VHNKRkZWNSs0a3JpeXJ5?=
- =?utf-8?B?cGhsY1k3NUpOU290aE5vUUxjTmxkU2VwS1BTbXhFSXBlOXloR01ISlFBRjcz?=
- =?utf-8?B?czFvSXAza3V4eHphdWlDc2doVDFFY3ZyaXdkMVZSMjNHVkVRVXJ5b2tmMnlK?=
- =?utf-8?B?UUVaWXZxMFV6WHpDaUVJaUNRallhWUpuUGxhT3hONHRLYldHSzJ0b1JBQlB0?=
- =?utf-8?B?QTR0Q0N6enhzYTZ6TDhNeUVIMVNBOE5xWm9SWUdJSERHNTA1TTlydVZPVmNC?=
- =?utf-8?B?K25pRlYybGtvRldsQmhZUi92SWlsb2JYSGNGU25hWDdpU05lanNML1k4eFQv?=
- =?utf-8?B?SHBJUkoycmtnZ2NlYWcyWkdybysyaXEwOER4TURreElVdFh4ZElZOFNhQ0Fk?=
- =?utf-8?B?UGhDd0pvVzRlTTRJcEkzcGh5QmRMaXFoSEZYY2hVK0g0cUErdjh3WU9meDZJ?=
- =?utf-8?B?eW84MHJLWUtta2R4WHlLbkZHdjJQUTA1VWVmUjVOTTVPOFBBamFTVGZCWm9a?=
- =?utf-8?B?bzRuTHpUNk01NEk0TEY5MnBqZjcyLzVnNzY4OFZ3YU85Rkh4UXo3T1pDdk5p?=
- =?utf-8?B?L1BnUld4b3ZRdlRDYXF5VGZvaVJ5bnBnbWp6UVFhaXB5VlpVWFJUdFRRdStJ?=
- =?utf-8?B?M29jQzZwZnhGUFVoN0pRUC9Fb1pPK2dEOWNoK0dsSDdrU1hWVkYvQzZDbkJB?=
- =?utf-8?Q?qcI8+i4WP23gp5p0ow?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee911ed3-1fba-482e-e27f-08def7e00cf6
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2026 19:37:59.6958
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NOz8h4/ZpaK6iL9vmYKg+8P6gLT/nxBe4pIjPkZEzKfLyoQslduGH7UUFKFIz3Pv
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9751
-X-Stat-Signature: gw496nxo4oryqq56paicu9i6ucw41nko
-X-Rspamd-Queue-Id: 8F02D100010
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/13] CRASH_WIPE_SECRETS: Wipe secrets before kdump
+ (was: CRASH_ZEROIZE)
+To: Eric Biggers <ebiggers@kernel.org>, =?UTF-8?Q?Jan_Sebastian_G=C3=B6tte?=
+ <linux@jaseg.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Dave Young <ruirui.yang@linux.dev>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ David Howells <dhowells@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>, Lukas Wunner <lukas@wunner.de>,
+ Ignat Korchagin <ignat@linux.win>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>, Keith Busch <kbusch@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+ Sagi Grimberg <sagi@grimberg.me>, Trond Myklebust <trondmy@kernel.org>,
+ Anna Schumaker <anna@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
+ James Bottomley <James.Bottomley@hansenpartnership.com>,
+ Marc Dionne <marc.dionne@auristor.com>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ "Theodore Y. Ts'o" <tytso@mit.edu>, Jaegeuk Kim <jaegeuk@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
+ Mikulas Patocka <mpatocka@redhat.com>,
+ Benjamin Marzinski <bmarzins@redhat.com>, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org, keyrings@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-nvme@lists.infradead.org, linux-nfs@vger.kernel.org,
+ linux-integrity@vger.kernel.org, linux-afs@lists.infradead.org,
+ netdev@vger.kernel.org, linux-fscrypt@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, dm-devel@lists.linux.dev
+References: <20260811-crash-zeroize-rework-v2-0-9561d13c2340@jaseg.de>
+ <20260811182012.GB2895176@google.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Jan_Sebastian_G=C3=B6tte?= <contact@jaseg.de>
+In-Reply-To: <20260811182012.GB2895176@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A3787160004
+X-Stat-Signature: zbt1nguo9pc7q5z5r3j4saoq5czyz9wt
 X-Rspam-User: 
-X-HE-Tag: 1786477086-16956
-X-HE-Meta: U2FsdGVkX19oqIamcJwzUoyLFczyVTFSnxFB7Cn7ISMZ6ek5HeuuVKox+UV8jbdC75R5yG+F8yiHtpVJhDXiHHN2z4yINo/bWVBVSXemmR4g2wvTOzAUKjqMQCaChfwfzBAzEIsWi4O+HWH5Lmn/MfJCBkSUirM96rFlapgMs2L5E408kfsw6iq52aRgZR/ZWCC6tnVRsJnrMMLgsgcXGn28sNQHUIsq4Lxbok1JquUUn8eTKzjPRTSvXUCAujvJimVX9Pixmkz2AgPT702twiQ2HUHPHiRFjEtpaEKNByS/iP7ZO02HJ/fEHzm2Y9llgXtmQc0evGkkPkkE+0eGmTzMCHTjD1+4B4JZxYNj957UIz7mu0f/silwXDOYRy7TAcVFO9IxUV1mlD4jReTwpEmBXiYcA9Rztgsi1kVBuhCO7KklM6Hr37rzzArTdSbGJTo2d3n+Kl3DEeyj8mnhgZPM3yDF3ixa+o671OzT6PPmJ2UmDIJLkr4pG1t1e7hbcPN+uteyX5igAoZ+NctRZkWHExxVxp79Yx3TnRk8F5+wGDNwJwm7+qodnvCtkxpEBiTm6XqCy8M9WUWtjbMlCMq7HnsQwmQVeDQTM0b/tK98DH2QNIhrzBPpaTirCpGzP7ppgdMdf20DHsfsithmiJnuZdaoG3JYB1enxDoQdkQ8myFM1cz2nYvB0RcHAe92KC17LIbzNdk1rbkAiFISfBfVfCPLoXWhZdXQCLW7NjGZQtbiGjMoIKQKTeBtjT5ssLEO+YMTT1kuv+XBOYSqwjpHNSRLK4xCV92F/pHRJw75U2zhMim6VvS2aw9RhjohhvCWLhAjWCysTbZEMFRHA064AdT2INTGf+VZGVqi9ZUBhicTcQl8le/ikFHXW614sKGmloa3K+vRpqUEhUjRn1w+sZ4l7RqiuCf2+B3ZR2jKilyYRalCFBopUpJaqVeZ80UkLyuWkWwj3G/nBDi
- dA63qcJ1
- 8TFz9Rzzwv9Z/46yJemHGNx3oLFVXdheULggkzFQtbMacQU9a974sFsXwqndViiMHxKXAmQjPkI21YQNEGIfQ1WTucMMo7NHG1v2nls+iUkfqwYzkZCy1W7SKxX/OShlbMfWBV0vkJiTOJDD1adQsaJ+xwCESSPu+gIMu6J+PKB6UD8S1wMuQHkYq1xNdrwRkKPVfjJ1e9J6BbxR8yNTcSEmqCP8qTeWTrvawn13aaJBTNH3HMfbht8AKgZzkaLpMH+3smQX1N4C4oairlKiGLKwaIZZb9CGiHd67Z7Ws/QWpcelhIzuAoCvEezY8gAcib7Nj0hWnrXQvkl68LycVlklgpT+eLodTsCLn5VBz2iGotvl5BM+uWVsfGSqUsuQUWwqek4j9iEFyitKU7WBF++UI1g==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786477114-677081
+X-HE-Meta: U2FsdGVkX19j3ruaTrZDmmpe6qd1Qq5FBOO2Gx5FO5u53tw6Nve+oF5AQafNL2FpjJfhuIciOWoVLadbdlCEdcK/K84IHCtOPIZOLbZQnYc64eAqYlYiSvfl4bVRmXqHQmyUlw8lTmbahVFSCM0mcVnJ4OLIEG4OzAz8wdLNpq9JDlvnA/bUjcUnXf/g3bzcqTGr3PykkCuGDMA2UgW803CyggdQoZQdV46LVue/NH0aAHGpQU/zahRlSH+2oC8HJLBtuEWxrrBtBx/kwHYrQKX/HBJNmYKM1aJDXJmt2C6k31JnFRwb9kZnzrH1ksHDhY2dQqobBbew0RK7frgNk9krhY8xpkZj8n1FRhK2ijuAqSoaiCq4Fs+AFmxp9pogzC604nhC/E/i5or4nO6zvYHNwMeHswIk/V2RfEL4JYms5oWRUksU7yCPa7c/buONGSbFfcOxgl/OXzW/YnvOPga3n2YJoRg/xTaQ3ygFLLPqKZiogC84MTyR4ZLqTyH9iwRF2WhDEbddJKiYcgHUzSEzvZExFQc+ZjqSbsTvxGr/vx/issX6N37wiQpo13JxDmAwVx2/HhP1UYp/VRdw/s2/vUyJD5FlQQZbxe5ahZwor2jIKH1U7o5TSSBKFJwCRCUSvX6MgeXyOmOKJ338XCAKULVFMOVl1Ax0umpMI/VR9XH5QJlTtcLmnCElfLgkqnlGIIaArrV+35bcPli85zT//9BDVqtdaQmw5eMyvPAFnilhuG2vo93hAPMW7vkCbPF1cZkypVXbawzHw+WkmhJDsaEVbD/AHbttuBlep2uxU0q2GBu2SPThPcWj8M+JXFobbFzk+xbJCvu3pMlYcz7kq84sPjZMn9WTC+zzXTnGuJPeArRJsgDUemdEgS9Hhm1Dm4H1KSgNt4dgAPAS4Uh+68zPE9/rDLhxQiDbgvz+Zbh0C6nlmR9JQvweMyx/E3c/b0Rk79+JpiDkr2w
+ 8cij8KQq
+ dzKt0coQUxcwnCtIa/0sukP/lzaDMbpZW/MHuqU2NVbIbofyfvg/XgptsZrMelNn2iKEzqQb6qBmFCu6N9Xxqif3Y/l1aTB3IuXGh+CAnN7mlgsNP6tsj1MJObHXUQhFb89zQGEWg8bMjpK2VzkEI4UD9owo81hQk7POGrlOmEAnbxBeuJbiOLRJnmaILKw+SMDHfuzje2tRP1gN+Q/C+fbqb/GP1RtPJu5fdj3x3uLimDtA7DVSghnb6omsaqSR00ZJQ1LUNlAVzHEK9yOGjwtsOIK+vPZ+38/iN+IFBkvp4zO4AlkTSIm7gnnuXb4NHfWRHcW9jI1peh6fyLWI2kbZxueQLHX15LAPFT4vNOKJqwAtrYhoBjDErv76AjS9kHawVPyMl28/hgTomoyd8opHFDc8tcKHisLy4DGFJnaGqdeiD2mQ/P2j4OpE//OSkP51l1DJEDx+uHkHnbbnn79sc/yVM7ArM+M4mHWXOkj7fR9ofziVoAFc+zWFE0E6Y3OrDlBHVpXGneDLqjgnbF47mFSfIgavTt1V16Vj1496tMud248ZnjkvwW+StzUxK8uun
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,29 +164,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Aug 11, 2026 at 1:21 PM EDT, Pedro Falcato wrote:
-> The current logic (allow up to $BURST prints per minute) can be entirely
-> replaced by the generic version in lib/ratelimit.c, used around the kerne=
-l.
->
-> Do so. The only functional difference should be that the new logs will
-> read something like:
->
-> KERN_WARNING "print_bad_page_map: %d callbacks suppressed\n", ...
->
-> But that should be fine enough.
->
-> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-> ---
->  mm/memory.c | 30 +++---------------------------
->  1 file changed, 3 insertions(+), 27 deletions(-)
->
-Great!
+On 8/11/26 20:20, Eric Biggers wrote:
+> On Tue, Aug 11, 2026 at 07:52:49PM +0200, Jan Sebastian Götte wrote:
+>> I'm using linux on an embedded target in a Hardware Security Module-like
+>> application. One requirement is that I want the system to be able to
+>> quickly erase its memory when it detects physical tampering. I'm
+>> approaching that by using kdump to load into a small payload that
+>> instead of dumping RAM, erases RAM from start to end. However, writing
+>> all of RAM, especially on an embedded target, is rather slow. For this
+>> reason, I propose the mechanism in this patch series:
+>>
+>> Add CONFIG_CRASH_ZEROIZE (default off), which when enabled makes various
+>> subsystems handling secret data do a quick, targeted wipe of these
+>> secrets before kdump. This behavior might also be interesting in cases
+>> where you run a normal kdump kernel but you still want to keep things
+>> like fde crypto keys out of these dumps.
+>>
+>> CONFIG_CRASH_ZEROIZE is a best effort, defense in depth solution. There
+>> are circumstances, such as when a panic is triggered after memory
+>> corruption, or when a panic interrupts some operation that mutates data
+>> structures under locks, when the kernel cannot safely wipe some memory
+>> areas. The handlers proposed in this series will just print a warning
+>> and skip the affected areas in this case.
+>>
+>> This series introduces handlers for the major locations I found where
+>> having this sort of thing makes sense. Notable omissions right now are
+>> the Ceph and CIFS subsystems. I have WIP patches for these, but since I
+>> can't easily test them right now, I omitted them from this patch set for
+>> now. Currently included locations are:
+>>
+>> * various key types in security/keys
+>> * rxrpc
+>> * fscrypt
+>> * dm-crypt
+>> * crypto tfm instances
+>> * secretmem (which I'm going to start using in my application)
+>>
+>> I've verified this patch series on an ARM64 target using the helper code
+>> at https://codeberg.org/yasec/crash-wipe-test . This code stuffs the
+>> affected kernel subsystems with keys and secret data, then crashes the
+>> system, takes a RAM dump and verifies the dump is clean of secrets. Note
+>> that the helper code is partially LLM-generated, so read with care. It
+>> passes a positive control test with the config option disabled.
+>>
+>> The patch series applies on top of linux-next but should work on 7.0.0,
+>> too. I've tested the patches on a Arduino uno Q (Qualcomm QRB2210,
+>> ARM64) embedded target.
+> 
+> Can we not?  It's already hard enough to zeroize keys and data at the
+> normal end of their lifetime in the kernel: that's something that is
+> always a struggle, with fix patches regularly going by for many years
+> and many subsystems never fixed at all.  If we can barely even do that,
+> we aren't going to be able to correctly and completely implement and
+> maintain separate zeroization code for every kernel subsystem that runs
+> only on kernel panics and has special constraints, like not being able
+> to take locks.
 
-Acked-by: Zi Yan <ziy@nvidia.com>
+These crash wipe code paths are less critical than places where you'd 
+use memzero_explicit or kfree_sensitive. They are "only" a defense in 
+depth / hardening measure. For most of these, if the crash happens at 
+the exact time when data structures are being modified or when things 
+are being intialized/deinitialized, they can skip things so they can 
+never be 100% reliable anyway.
 
---=20
-Best Regards,
-Yan, Zi
+It's not realistic to clean *all* sensitive data in the first place, 
+since that would include plaintext as well, which would mean cleaning 
+the entire page cache which would be too complex, take too long, and 
+destroy forensic evidence that people might want to keep intact for 
+regular kdump uses.
 
+> This is never going to be done either, with the scope always wanting to
+> grow to include other keys and data.  You may think this series covers
+> "almost everything" but it's actually not even close.
+
+I'm sure there's always more. In my particular application, I'm using 
+this not for complete coverage (for that I have another full memory wipe 
+afterwards), but for speed - I want the obviously sensitive stuff like 
+keys gone as fast as possible, with the full wipe cleaning up whatever 
+the fast wipe here missed.
+
+> Could you perhaps narrow the scope to one or two things that actually
+> are useful and can reasonably be supported for the application?  For
+> example, secretmem seems to be the only thing you mentioned that you're
+> actually planning to use.
+
+I'm open to whittling down the scope of this series. In my use case I 
+need at least secretmem as well as dm-crypt, which then pulls in the 
+crypto tfm stuff. Personally, I could live without the other bits, I 
+just thought they'd be easy enough to include.
+
+- Jan
 
