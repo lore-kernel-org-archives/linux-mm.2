@@ -4,125 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08919C5CFCF
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 14:52:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1665C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 14:53:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBCAF6B0093; Tue, 11 Aug 2026 10:52:06 -0400 (EDT)
+	id BD5D86B007B; Tue, 11 Aug 2026 10:53:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6DC96B0095; Tue, 11 Aug 2026 10:52:06 -0400 (EDT)
+	id BAE396B0096; Tue, 11 Aug 2026 10:53:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5CE36B0098; Tue, 11 Aug 2026 10:52:06 -0400 (EDT)
+	id AC39A6B0098; Tue, 11 Aug 2026 10:53:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 95B266B0093
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 10:52:06 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1C71BA04B2
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:52:06 +0000 (UTC)
-X-FDA: 85089278652.04.1538832
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2BC6618000F
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:52:03 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=V8GSuDwq;
-	spf=pass (imf06.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786459924;
-	b=enttoymaLSN7560Z1RA+S6GaRkya8YBqE7X9eAAbuMXdBNq58nG6o0QvIJvgHmMm4I4dwi
-	1oKB/Ff3nSGEUJ6P0JFxwQlCF079kdLKlyaENS87aB30AOY6zbB2rhAzSeaDP+W6Oo5vCD
-	J0moy0mE21GXIe1BbJlVUktO7VFrYIY=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=V8GSuDwq;
-	spf=pass (imf06.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 84CEA6B007B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 10:53:53 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F15C01403B2
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:53:51 +0000 (UTC)
+X-FDA: 85089283062.26.95934C7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 27D0D4000D
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:53:49 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j3DwOWGH;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786459924;
+	s=arc-20220608; t=1786460030;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xDhehgrrAOSRIdcwgmYMsgv1I5rPT085cxMqoCOwSbU=;
-	b=IJE7OyZcY77ALzn2loopMjBAp0Ml1rnHEMdTdq3DT3eoBc+4ORn5B0PbSEO64gqioW9e0r
-	elMENPvrhwoJd5LaDIaXLshwitkjuwtXHnkXCvmJra295BKnqVA+X1E474tcrHXiro/ex0
-	RuGtc0092zkIdSqxBX0PlvcaFHZ3J+4=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=xDhehgrrAOSRIdcwgmYMsgv1I5rPT085cxMqoCOwSbU=; b=V8GSuDwqveAqI2bqQieqG7EtHg
-	eEEnasEdiZliXbP7agGL3h0BTexorRppTEp1vvgcYKNWcQPKxAE+aj6r2kqxu5qt/dCIkReEDkGfk
-	Mv39k2CrHgvirJviGuUmpI0rl5In8PV6s/MzvXA6w407ZEF8rImshyHYqTLstwADLO15oulaVOYpa
-	k/2Al6fKhV2KN5Y9uc3ST9gqZoUbA7TVvF12pppLqhZxWWIgV8niqXkX3KZ33dryOP8retFs8ljAi
-	lD12KJ6b9+T+lsWTYBB9iUdCmdJ1ZXHmnk8KqQEI7u/mrZLS3tcxSF9fzosVw2ITsHnrk/QfPc4Es
-	IfcuYK0Q==;
-Received: from [96.67.55.146]
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1wtnp0-000000001Gy-1SI4;
-	Tue, 11 Aug 2026 10:51:18 -0400
-Message-ID: <b04cad808d5dc2a799c363b43a18e9cab18005f5.camel@surriel.com>
-Subject: Re: [PATCH v5] kexec: keep the next kernel off hardware-poisoned
- pages
-From: Rik van Riel <riel@surriel.com>
-To: Kiryl Shutsemau <kas@kernel.org>, Mike Rapoport <rppt@kernel.org>
-Cc: Breno Leitao <leitao@debian.org>, Andrew Morton
- <akpm@linux-foundation.org>,  David Hildenbrand	 <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"	 <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan	
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Baoquan He	
- <baoquan.he@linux.dev>, Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi	 <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, 	kexec@lists.infradead.org, rmikey@meta.com,
- kernel-team@meta.com
-Date: Tue, 11 Aug 2026 10:51:18 -0400
-In-Reply-To: <ansuaOyItxGTBlTl@thinkstation>
-References: <20260810-kexec_posioned-v5-1-95e1b5e2e656@debian.org>
-	 <ann9Kcesyb4T9Z8b@kernel.org> <anr59P1ZCAuHxv6x@gmail.com>
-	 <anskyrEVUlnTVEgF@kernel.org> <ansuaOyItxGTBlTl@thinkstation>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	bh=WOQ+ZDQlG4AKI3By2UcE7AwtPip92RrNEzmk3JDxMwM=;
+	b=a+3oYiPJZoS3+82zqM3UBCUhwUK6neCD/7toN1OE3ps4vgs81t1FSNFuArHbZ9J9/T/ZoK
+	yGcIk6l/nteQAsg6CNiTK45/E11Gx5SYjC1mPZHQTzxkQkfGv1Z7RjyMgAGFlaq9H7zSgq
+	WGk9EIUZZViNkHTY6nP4MAOjtgvQ5RA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786460030;
+	b=0ySKMDO8quYCOD9vyF4KOUEPYeDbTV0TMnV/20m6bX+S/qFI5iu5Vp4V33yaw3+3K6N3dE
+	PL55HZhjR5n8VSWTYWu6baV1SMer/s2/4bc4nQEIFd0xA1QvMps3mMh7YRrECPPTT2OS2P
+	F+0R9xVLuupdXmhji3rouQNt5Xx46+w=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j3DwOWGH;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A31FB600AD;
+	Tue, 11 Aug 2026 14:53:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B98A11F000E9;
+	Tue, 11 Aug 2026 14:53:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786460029;
+	bh=WOQ+ZDQlG4AKI3By2UcE7AwtPip92RrNEzmk3JDxMwM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=j3DwOWGHCbOKunQHJX9r6q/6jhfbcqkJhlWMr/zGpsEPrq66tNBjEzQaeuRwDlthg
+	 zD04p9EopxztJHrvTQ23GYueVSUFDCeZyhEbiFlGHXE+VRYjRZnPY+CjjclZzkAmP9
+	 MbOXmCeYZ3UChssgOyaWxM9l2/RyEo8OkbysfDh+s5Z9ZZGCxBItU02jXgvIwq7+Oj
+	 aM6DO4Z8SXKbFoeoSnCjgLhrmJyLTZ29uFWM2dUp4RPZ10w/zTMJyD6JJ0TXNPbJAT
+	 LkIf8najK5XDF/2oopUi1aCnog8hbMD98ceHFdh2wUDho1gbXCohI3NHc+S5eFCK5C
+	 CqeoL69fKEKrg==
+Message-ID: <70c578dc-769f-465f-a146-4a4695f747c1@kernel.org>
+Date: Tue, 11 Aug 2026 16:53:44 +0200
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 2BC6618000F
-X-Stat-Signature: xjup5aazfrf5haarzj6ci1kj91j6fnac
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] mm/secretmem: zeroize secret pages before kdump
+To: =?UTF-8?Q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, keyrings@vger.kernel.org, linux-mm@kvack.org,
+ linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org
+References: <20260731162739.158320-1-linux@jaseg.de>
+ <20260731162739.158320-4-linux@jaseg.de>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20260731162739.158320-4-linux@jaseg.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 27D0D4000D
+X-Stat-Signature: gzcax6b76dposj6ir3gtidh6ibm8q8tx
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1786459923-985105
-X-HE-Meta: U2FsdGVkX19/b5rhtVcNiJ6mv9CTvWxNfL0CNTkfAq4EKlaCBf0bV0jOUyJqzwizsMLzxPOxrPhRW0pY43Q2HHZRG4OD7bOAhKs1q4ezYVl/TehiSzORzItCI/9LrqSaT+HtmshVVlyEiIQWMgBGFi2jNbfIupa9PA+9v2Na2z01JR5gl6uoLX//VV+qzB8T4B11NaN7uSBM1cUq+plYeoazIpJenwE+2TnOtL4MEAsG0WDwysU6U9CinVJ8CwVmggYuTyB4f0EVQL5OFxAXr3JQH5fiUOJcxAnkqSpKwmtb8IBp/Gs2v5Q5qP9pUAmd8zBcq35ue3NTkjwl6FfEJMJVXGEuwNpcIrc0zUa3E6CvN/m31MX1lJuaeC1zbQyQz+ZqOOoBzfWMD74s3Y43a4tCevxUTDuh5cYdoSKcL28z8RkVVn65PK7a45va8InhQMUUvBbMHi9qSqrHba6WTcpeH2/fkJIHYsrm59owa8svP+Sk87ZvNMwqmKiC7CQpCvrAXi+9MlS06sO6wznBH1TEAJRmp8BsMzv2LeXGRw2KI+SPVrK3mn3PzaH5tsVYsMVa4snmA3dUxO0os7KdHOGeU6GekWGSP5WpaPQmRUKJS8+YdKRfGSGRIWCoiV/PuNnpcDAp15S9iV3oWe5g0bkKwyCWA8vu/Gye/vOAacLs3U1RpIqTVbR2ybK6CPSjBVV8sbza2s3fcoHiVm3773iMPaqbyXKcYEf/E3jdKWN3uWJteWy0dKbrmhb55LrV0sPSRxzvpFJF9xZj3/BB7+g8lV+PWFs44VjY5tX8q/ChQPfukunV2U5D2ojwXqV7jxSi8/v5Uq624GRWnqg81ll5hgHbqGwQarkD9ZrO4+UCLQvh0t08x6Jq80qsXeNPsJHdq3pUDb3JelbnM96KLqbw1bM1eGTF/ry20QjNhUHfZ718FOGpFwHGVdKNgy/aWyitjElFyr95K0BiZKc
- m5VN5gXf
- tH6kPKVFNKt4DhzJ5m6ZApO4bB+cWfCUZjefWL+SsxFUmNoIofJiVxqjsXWCJwsfz1G02gYz0zA2pP2L3idiK+6e5CEgD6RGF8Zhn5elH6VgUYeC7QJZB9rjCOYa7B75xr0LxWxHrqgVy021Vyhih/NSBZyUtvseiK3amU43ttw7JfcMk59DPhqE0ZIG3zE/+gZ9vdpLhiGQXbY1nOhnLjGxTYTGPZH9onJf6HVqZHb0cza3ZLXVWNqXjDsfzCR+y4PNMn4bhwGH/OESPTLDK/kLSdd6sdTfwNBHsxi548A7GSR8=
+X-HE-Tag: 1786460029-328285
+X-HE-Meta: U2FsdGVkX197gZZzuNba9Oedb7P8gqMHK4qTdxjefu5USMmBirrAPSxp8D30OND3H84RjK+Gea2G7MUSSHRNKb2FzplnhlQHZ8UN6TCJSE7+HZ3w77c7RoOktBea9MPnhI+HndLmH0GQtWsnYWT1BMGXTiFVXa3G/3UdbBKx8BQ/bBbLzmNp00hvDEyznpYxz8szgsorhYuPH4fl6BuJkdeoXuxjRzMw0nAjf5b8kWmTycG8fyWuW/iGmdJ7PEMqwx4c28FotXkrWJIvmpvkZVxaZ2og+l9JwywEjq/jD6Q7kwiX4faHufz0JU/FKP3SY2cNpbJc1gkG+WrwzD0ebNQfnniADP6FHsmAwXiKOUXCBKPyIbxqkaKkc/QxF6aEbMCKqO+vUd60S5rrsyTkKSp1SroXbikJ4bPxLveZNsk92WrPsj98I/ooDwAoNQHkMrtDu4i3xcjZJU3yJ6vtdiiVM4pJMl29BLRY9h0yZ6IgvNde4l7AcTdP/GgYsSo08tuyBMFhoFjTqangIoMS8DayVZQGw24b2zwinN+B7IoCpRjfQ0gtFfc0LJ6qkvBaVvK7wctdHboJOwBIItNxLfNbvYJfIY9IwbCwfFVhYlrg9nVyMiVxM3wE6jCjBZ8xjcCStWTeBECD85VWJtmPk4rDkMWi+cfu59vtS5PY5ymmT35U72yhFChWiRly+ZclEW06YuDJRT8JbcPABp+ycPjz+h9jUHLzbFGsL4LE+ynOP4nP8B7zmrNcJx9qmfgbA3uDrYGc+SCyuQlUM/LKRubid9MpBjCKhiXHlBFEk+4Sx8FV/GaeaXirCoQH7SA05PsDxJPEM/is7mMzpBKI9k2bmDOvn6TnVl9uyJVpJf0yQcHEDhJ9DbKTZGtlyF6AICb7pNYxH2BaYKkBdNLAVY5R3+ewZKu9EgDQ3HZWPLGkH4VuFR2yqcbWPSL65adxaXOQqW88abRN2ic3qv5
+ oqehpTry
+ sjMrVxj81hGivwSWiZplt07bye+z0NAeND87CLXtjUSe2NrdD3zwPZKFAW3KPd0AqJvCx5Qc6jPWbwmL/nwb7OEytHo+HaGYWxATGdApZQzosvO/x3OAj77fRejoVLgtZ8Ngl1zy+kcJjQmuORQn2TMlE88JhOJMwXlB6tbGSGhHVLEpNf9vjNaC2QGPp0wqBqCXfNCEgeUvJQSHspFO5CPwHsa+r4EMiGLwnacUdKRAqbhipW59R9F2j4PO2NoVbtFHUggFnoRPP/CxrbvgzjvxOEw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,32 +139,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2026-08-11 at 15:21 +0100, Kiryl Shutsemau wrote:
-> On Tue, Aug 11, 2026 at 04:34:02PM +0300, Mike Rapoport wrote:
-> > On Tue, Aug 11, 2026 at 04:17:41AM -0700, Breno Leitao wrote:
-> > > > >=20
-> > > But I honestly don't have a strong opinion here, though, happy to
-> > > batch
-> > > it if you prefer. Would this one look better?:
-> > >=20
-> > > 	if (!(pfn % MAX_ORDER_NR_PAGES))
-> > > 		cond_resched();
-> >=20
-> > Can't say I know the magic number here, but I think it's better to
-> > batch.
->=20
-> Hm. I thought cond_resched() deal with this internally, no?
->=20
-> We call it in pretty tight loops, like clear_contig_highpages() or
-> copy_folio_from_user().
->=20
-> I think adding external batching might be a bad move.
->=20
-cond_resched() should be really cheap, indeed.
+On 7/31/26 18:27, Jan Sebastian Götte wrote:
+> Register a CRASH_ZEROIZE notifier that wipes secretmem folios. As a
+> result, when CONFIG_CRASH_ZEROIZE is set, secretmem areas will be
+> cleared before the kdump kernel is kexec'ed.
+> 
+> Zeroization runs after the other CPUs have been stopped, so the page
+> cache cannot be mutated concurrently and the xarray may be walked
+> without taking the i_pages lock. This is a best effort, defense in depth
+> measure. s_inode_list_lock is taken with trylock only. If a CPU was
+> stopped mid-modification the list may be inconsistent, and this late
+> into the panic path, there's nothing we can do about it.
+> 
+> Signed-off-by: Jan Sebastian Götte <linux@jaseg.de>
 
-It gets compiled out completely with PREEMPT_LAZY
-or PREEMPT_FULL.
+Are you actually using secretmem in your use case? I heard some rumors that
+secretmem isn't used all that much in practice :)
 
---=20
-All Rights Reversed.
+-- 
+Cheers,
+
+David
 
