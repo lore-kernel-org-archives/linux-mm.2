@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8CADC5B56A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 19:13:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79EEBC5B56A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 19:13:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2D1F6B0092; Tue, 11 Aug 2026 15:13:09 -0400 (EDT)
+	id 6D2E96B008A; Tue, 11 Aug 2026 15:13:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A03C26B0093; Tue, 11 Aug 2026 15:13:09 -0400 (EDT)
+	id 6A9EA6B0095; Tue, 11 Aug 2026 15:13:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F4806B0095; Tue, 11 Aug 2026 15:13:09 -0400 (EDT)
+	id 59B586B0096; Tue, 11 Aug 2026 15:13:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BA4D6B0092
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:13:09 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E96D4C01F1
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:13:08 +0000 (UTC)
-X-FDA: 85089936456.08.FEC1E14
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D86C51C000E
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:13:06 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=P3W++ZrB;
-	spf=pass (imf21.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 397C36B008A
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:13:41 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C27BC1A01C8
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:13:40 +0000 (UTC)
+X-FDA: 85089937800.01.BEC49D3
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9D009A000A
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:13:38 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=AmbVgFR3;
+	spf=pass (imf15.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.50 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
 	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786475587;
+	s=arc-20220608; t=1786475618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=13Kf+CzUR8iB8c2kAWJoRkeyyOq2EPKvK6cuZ7o6Qi8=;
-	b=rFWk0XF5cZAyKqPR/VnEmvkNIFUkWImqbYtKD9hCoR2EijSy81OYxZMRNkEHLJONZ8ccjV
-	08rBKZYDfpmIZSnzAd1zh1Wk+mvthdoSVkxFlfVwuCBTRgtBXqPgilLYF4s2jQGUgf9k+M
-	PNGcLIqB756Lt82PhIwOVDZ0S7YXlaA=
+	bh=JGgTTrOlpU5V9+iEvkXg7TLjlPJJLUAmemLOJS8lidU=;
+	b=CVc4IZkdXFFgBaLlfaolbzaNJPN+zuG8a3G6alGvfRX0fcxHl0YZ2GvRB2aY8w4Do8FV5P
+	7lE2LDNWvKv36yp8ytxsHG8IEpYqP+9KlDZqbwKln6S96JtDjhGnrJyKxi5rkqWIHwe2c0
+	ZeM4RNhv+JH7N2Pq2+6pwtDRlhEI1Es=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786475587;
-	b=0CkuLQH7xDK1fa3JM6qhlen90Zk/mjYg2VZ92GFNXC6DusF71Q/gGTs5w2a1od2UK/JqRB
-	38U7KOdgKCEE8cev34ZTblPdaLXM4DItpQ8gsWqi8TpCCs4Is/kMw/mlaLel8y2jALQjY0
-	0T4+69Ic03LlwBn1DcTCxxwioj6vPgA=
+	t=1786475618;
+	b=QYUM3ZVTHql+PsuG77wPGgSC8jAt6j7og7MKfyJMwA7lshNLkQy0Ghh6oDvt4buEefWt1k
+	nGT8W7tGBKOY6aaFpuIOw7ede8QbkQ3qxhqKZJzkcAaOvwO18e7jVSVTLKNjLu9+aiAELd
+	xjTXgRkCCGNo5ys5BoqI86wnxlIjVUM=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=P3W++ZrB;
-	spf=pass (imf21.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=AmbVgFR3;
+	spf=pass (imf15.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.50 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
 	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-529a1ee0e62so2349851cf.2
-        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:13:06 -0700 (PDT)
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8edda5d56a5so1887476d6.3
+        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:13:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1786475586; x=1787080386; darn=kvack.org;
+        d=cmpxchg.org; s=google; t=1786475618; x=1787080418; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=13Kf+CzUR8iB8c2kAWJoRkeyyOq2EPKvK6cuZ7o6Qi8=;
-        b=P3W++ZrBZuyfOOCeGeAWlWSXy2kthF7w8cRxVlkH0dJfu10JBZi6FqBFrawOeexJSg
-         kVbcoNPBo/MhblGMVzH2gEXyWCMfvNSIA7gzm0P6DRKRcBZhieDAjIA3A0L/NCeyHRUt
-         uhYDUX3MqUUu1BbzxL/srvv3+q8oQo2+ciO3z1pEdgTYismvBSznOJ4yACCcEE7sOmHR
-         QATKZhXzKxhlPsVIhDtpaGkFciKeFR49ATK7vmF4U1FpxTeIT4gcZNuaHk3vTi5FWLcL
-         OFteGLIDTthoo9DIlLb7nQdUyY2OnVweatiM6DZ/Xf+a2JWF01ZZ9SupLORKVc0enSUV
-         JjtQ==
+        bh=JGgTTrOlpU5V9+iEvkXg7TLjlPJJLUAmemLOJS8lidU=;
+        b=AmbVgFR3MGWXVr8VE5hAWxFin9q08JD2N7QVv2tsLLoRAffWuNJR3QVZaUYdVQyx5j
+         OlY+GcNJPkeTgmY3wxpkaxiSDaaWvwSZgfTDltHfsEX8Xf5IGw3VZRg6lhZL+IfZPSaI
+         1RVV6lTthnULuz9CDymeIap5pIKwOlo3yz0tQ3klWXrupIKQE2UBFmMLMsIdqPxxd9mR
+         roflY02pt9x+N8zDCjGxWrfx8ymQ5GKHY3l3LrnlHGebB5ASdKbgefPUc29jE931aWS6
+         T5fRarVYoAsA487m+nV8oefS/lociINNLQsFOr3JvVlIFZsfju8gB76WBl2qYsIHxLOH
+         9c3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786475586; x=1787080386;
+        d=1e100.net; s=20251104; t=1786475618; x=1787080418;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=13Kf+CzUR8iB8c2kAWJoRkeyyOq2EPKvK6cuZ7o6Qi8=;
-        b=LybTEKipLkZE1sUjZPBRnvENIogtjHvIIXL7esqgIfDxFUL+iQSU/pLcGz9/svMXdA
-         +FoXX1gLRdkfkKV2xM2/FE80HxHcSuo0x2G8+an89U3j1eqGMe4kX+B04X64LbpNgDxV
-         S7t9oGtM73hcO8dUrERCE4YYJbIhE6iRrh7h7SsRoy5vQTVwSdAVQRQe0aAkBscVMzkJ
-         Bv4y/wMb02rxWOdupShVhTLcj4SLVMSrSZx0Q5TENO1BXXe4pcuEfCUH0YMZ8O9b+d99
-         5l66ZDZjBNYG53bGSdAly3FA/x6Wp1Auo+xkdkIIZHSpEah+pxn5Q9IXd4KogeNRfE1a
-         e8Uw==
-X-Forwarded-Encrypted: i=1; AHgh+RqWcC//BdTwzdw6WYSY0sK83tupjpFw+O3yjWO0rjNham15AtqUo6TMX8E/a50m2Ao3G2lbrCIOGg==@kvack.org
-X-Gm-Message-State: AOJu0YwQHS4lWChdd3XlnHKpl0/pNywoASvBGXXMr2E4/ch0YPHo5hqL
-	rS/hMJ5isddQAvZspwkQeQLH1kaeirN/AxlZq3ydamKzvHAZ1XkE1Ik8WbqdP92j4cg=
-X-Gm-Gg: AR+sD1002acreyEvoUtwIOjUWfQYEzrRBJeWGwmFEUOvBwRMY8bGOy2HnyCAPJFKbTz
-	tH39RUJ1kOCTD44R8iX9+tYtOY8GeFQ4FWujRdM5Dlbba8WxO3pMsPoKugyU1u+SaqeeYTb7bkL
-	zLKr3myhaHQsSqIc6iEVynxpxfmTon50Yy9zGWgBrh/KnOOizdXS7Lp4Ktd7FCP5OHnYaJ+kdSa
-	lNqRzMQnTl8rM97LIjrhaFNYmmefgueFKwJQSGd0+I6REiv9CHvEql07S6/MVwoQZMDwOzGrx5+
-	qQ7o6zHVNgQths3GJnkd/4mTQ0mMXdpySpqRbcq/ITGIGIwMiPmhYb5L9PO1GnoGRwLW0zXHyi6
-	pS9VaW7YRe7VDsTi2jpTsLeLEwHlD36Ro9kUHMXzSGY0xeaA0673ox/1l+tBG0ce6qfPpit+kAz
-	bHQpeSD5eDFhBt2IDD/yl3SGs1hzqa0OJSKjeWWEw9Zi1ywR6CStztNjyXZ9v1+8otyMTW+w==
-X-Received: by 2002:a05:622a:c9:b0:51c:2135:b00a with SMTP id d75a77b69052e-52d5870ba14mr49521511cf.40.1786475585541;
-        Tue, 11 Aug 2026 12:13:05 -0700 (PDT)
+        bh=JGgTTrOlpU5V9+iEvkXg7TLjlPJJLUAmemLOJS8lidU=;
+        b=lX0BUWCM/GukJrnVGn03KzzTj+u1LSXWVxrL09YLxK26ffkSf26DM0IaSW2XXaiZpM
+         aa393iJG8IdTa1pMWK1IZDHVlbjJLp35Bta/h3EJEvc+JVpByozvFPD6TQ8/kqBMYKdS
+         D29pjK6NG2DsYp56TsvxjyPu7y4TnEsa5pCcu8QQ6kWqyHba1dTJKNodZUL3Gm3qED66
+         j+CRJKtEMf7/a3uyMJhhvQ5VCLim5eBVM+/RZxtNJXQoxqs6haptYBrW9LbY7hYiWA41
+         5Oq7pzW1tEGXnWmZjbwBQpL1B/XxBBpXmqoohfa1TDYcooBWMSp9Eea4TBwffAnBUjbz
+         fkqQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrXork3FGYHzKmLQcmdSSBQYOJ3D94tKkGzjIhEvsPFJBoE7Sad0yrscr+U7g2cd29mX7NVqheTMA==@kvack.org
+X-Gm-Message-State: AOJu0YzpJ6kYRB6Gh1wZvhn2kCCKO7jenzrugmuxH2Oeqqg3tKFjjqeH
+	mrGVa6hQy+RmoktUmEYZqfuHtJUtbVjgQHAZFBO2WJJ7Lx/I+uMjKG5PD6F20vSWv6s=
+X-Gm-Gg: AR+sD10JddvVBIehksjGO4cEf3JLpCvsE8hRAAQoiAlwRQk8+EFwgTeLw9PhWx4xUIW
+	p90r+vnfkNUtZgHOTYGWSnyxpewepc1RkiZmkiF4cM096CuB8wsEslHkenyvOwU8WrRpPxPJGSS
+	BV4x4fBTOZPIU8T0MOfjcM+oz1eCdaX5uApcwTp+IsDMigqr++z8DMpsTPzxcKkwfQQhwHloPHe
+	TrboYMYKhgSzSKBm2nd2gx0V5BIXgi/aQgBlQL4h3AjFDriaHm47Mn1ekR3hpLza0nL1/Ug7IxD
+	9szq/yz7xFIIfJEk9EhGpo27PoKsWn0xdWoYeGJkGLq55h0jl13nmC2pggr5QwLTgUclrm1dy6x
+	7HMLzGl19fLY0QsMvRMS02dBrU2KDVZe882w5vWI4bIVGj/RMIYLiHRpDYsw8ixFezXE62SmuYh
+	JsmMqsTy9kNm5DtrnfShgzspxFYQ08wP+Y2JalA13ZQyXawT5STfq57wHkFmw=
+X-Received: by 2002:a05:620a:198c:b0:934:9f6d:d1a6 with SMTP id af79cd13be357-936a8eefff8mr464006785a.17.1786475617703;
+        Tue, 11 Aug 2026 12:13:37 -0700 (PDT)
 Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90a6c3ee5d5sm5634726d6.47.2026.08.11.12.13.04
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-936a85e5a14sm170303985a.38.2026.08.11.12.13.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2026 12:13:04 -0700 (PDT)
-Date: Tue, 11 Aug 2026 15:13:03 -0400
+        Tue, 11 Aug 2026 12:13:36 -0700 (PDT)
+Date: Tue, 11 Aug 2026 15:13:35 -0400
 From: Johannes Weiner <hannes@cmpxchg.org>
 To: Pedro Falcato <pfalcato@suse.de>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -105,22 +105,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Brendan Jackman <brendan.jackman@linux.dev>,
 	Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm: replace custom bad page map ratelimiting logic
-Message-ID: <ant0P8xsljuhpV9N@cmpxchg.org>
+Subject: Re: [PATCH 2/2] mm/page_alloc: replace custom bad page ratelimiting
+ logic
+Message-ID: <ant0X_RB3PL44l8b@cmpxchg.org>
 References: <20260811172156.356053-1-pfalcato@suse.de>
- <20260811172156.356053-2-pfalcato@suse.de>
+ <20260811172156.356053-3-pfalcato@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260811172156.356053-2-pfalcato@suse.de>
+In-Reply-To: <20260811172156.356053-3-pfalcato@suse.de>
 X-Rspam-User: 
-X-Stat-Signature: nf75e9nsz3r9emazwjp5yigagkpuxeqh
+X-Stat-Signature: aju3z8htbyj83gee65z9dzc7xubqt8f9
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D86C51C000E
-X-HE-Tag: 1786475586-658958
-X-HE-Meta: U2FsdGVkX1+z/Y/8eA/L6BDH7dz1ig9RcTdnCpLe1ilBkwEjW5J4LfgAZRObRIqBs5vblfQwtgMeua2mCwUgOaq8zL0OsRMMa9BwIyYlPX1vom62StLwKkG1exAxbwSCzubXFvm9jEIPM9CIABcymUjjFxNdsgUSnZKH9QV2yNMRLEDR7yY7FlCCRbrDG5raG8LKg0tyE0exvCK8uPuTG7Hy/aPEL54m2yyYc6bmj++clj+v9Uw6QugMETKJnF1ZMxAdFmAQxgQTPLWsFGXVqkv0gSrEO9B19+QmHwjBr4WerM4WCO4YBnjc8v6u6z9TNEZIimrUEpmaYKTX/SXc9cHugrLvC+BAYFkjBUeDiLDEHAeKG8hRA+Gi6/fe8a012Jfgb1nY1Wnn+ZzhKlJ/Uziv6x64gMd+vy8D6o7mLELj1LtIfYDmeWzbJrRMtydOZHRMV3TRLgW65RKxUDwkCHsUOIQhVLoN1eTLKcThZPo8QCXS9oMpcdpkwjR7l7xdTAkMWOCD9WuIobaH9Cg3Vdg4X8oWCjRe0HompH4qd3DYUXfrmlBSOrzAni34KcEL/X9IyKfL6oKNZ79Y8mIOFrru5/+9viNa+5SwGh/wffVXND3LZ5WXuLLNH8msVV9eHvL4OGQ41vUYLg0vG37iKDHAQu/DCr/Ksdcxr5yzzk+yJZDWbGneJ5V8bFGq90tVYg9RpZYNbfCB2YcN/eDl3WbQ0ezDbqgt14AqX4H3cJAJnXORWLRH2XQb+okp5k+rDdfwwvqR+iL0g6T4ClsFURLlcEOJrWKIete8G/Xnbkx+9qF7tsv9Mso/rVOP2hKeBjRTNeBHTC9M/A2fOFwqkZozMAxh+hbK2YkGLQS9fSLGNXwJ9jrvn/wfrTPr6pHIZL2RIbYWLgFBQFbhaiCP5pOFd7pNPdtqsSlP/70UVGdG3IW60D/q5r3bpESiNRYqyl3HQbGGOchBmX2gNJ4
- qxJcHf9O
- 2rSRWI2KtHfn4WD1h5vSHF2ZXIla5/VQ3gxQ4NM/VBN4ZkVRKIL/q6xyyM+t9HWA8KIHvTj+sJz7NtdNx3pDIHYyCzBGMgPLHM8PizVvuIku6A9e80jOR2R2TCN9iyBKN7RyxeZlTLOZJpWajdSckfzDQ3akzo9ajScQtS+enZhkj+UCoqKWyTDMK/BpMmwowsbiBLS45GEju5AZnwDNmIUw3MpJJvnyZnsaNP3HzZ0v5xYXPLX5/MMWHFadHsFo/js/0S7Pi/4EItlYLgS2Bn9GbZd5nmzwKwgfG8SZVc8hWkiSJAkNibHxmIzKeDpnc7UX15zpj2Meoued1NsKATjv65K8aaaLPVskBVDjlRQ5hxYWIf3o78LBsya7s+iXqB8S5Zj8bMO9Zut4ivn9QXmBDgRlM/fiuUwroda7w7yZal+U=
+X-Rspamd-Queue-Id: 9D009A000A
+X-HE-Tag: 1786475618-667612
+X-HE-Meta: U2FsdGVkX180yopGInfAniSjI4/Whj8bTrbtD4AmGw2bLEbmJny40uH0D+fUqZJrSNLC46Syp9cb2xM5hQeOa5SZYGQ+m2KEQBEAbON0QoxUXPkkzWTGQW3zQpr/P/g9UVaQ45hEW6lCTOBVtbJSR+JlGnezD8nSRUyxnW4DqzZhkNJYchyTeFjYUN58hJhikOZvs3S4UPEJXPS8DN1QU5QCkOk2sfVy1g+ffsO5ZGMMnyUPB7EgPB5q+gTfGsG48stO4I10SPPFbXqfOesN4kI7lDHPXuKc2pS320givVcDcI/+I2iCOrXD6MFzEUqF911XWQEbJG2pHmU0J/xYUOjcB4lJhu7fdYUvv3OIZBM3hFji+ufFoDp6O/X4t8UweP6X2CcZ8tRNiXL1sUSL53s1rpj6tBB/xw1NMfNjX29czP3bfF/vRJXTZB0E0JMK07yaxpf1iem0D7ocpOASXBzzWjxa+zPpREBZJ4Uv4rvke1QMvAwA2y0vnjFu25f0WCRNjPT79eiYrGCU8uFDTXRx84w3PrbLzwvI5QC0UFbbOabVc7dK7UqUz7tE7TfaZxBrhK69ECu0/geuGFhbESkUX1AO7XmqIk2NEUVnMdk5jAsYUlLc/O744eZXei1ZYDHKsoB7eIv5L8ilr8lINJ00YMhbrAk+u9JSwJFF94cvxTnGMeIbfdxRo8jkjxgy0LhzmGRslnPHsc5Q7059kMJBdTA/TyRK77g4KhzxO4KYiBMxO3t1q5FU+UhTJLJjIi1QlIJDYvHPrhYvnGA3z206E0kUj6c2lil98zNtlTn9Hcu//3BngqecOuFo9WMjMvE1gQbULR3r4vzPgol/8RlpcsyDZk42WUjX+odwksvrFNBwlbtc7NO6jSmv+6cukwuFCCly0MaH8YqgyE1TO0q+x6sL4PKOGtqDC2S1tluKvLL/ha0zehPzvLMo2SWbr8fG8Gw/k49pJ8HdtoJ
+ qhADMRgp
+ f+CbEM++U60Ieu6TfKL8lRVEVaoiLADaxjUJAZeGenOEUYNPjx8gC0a8sYfH63ZYzRYAh9wPZiGXZnM30A3BCZO6bjGrQT6lKXr4jdUHq99lFrbgShXweKB642j0/Z9ChJsxMukY0OrlurkeqAQEYue0XRAcLk9H7Fvq8FUaN0Jr1DyhNeT1VsCLMFVh4yPc1g+9h4DErVniJVv0Zpqu4vTL54i+GAopdSn6fl02UsKIy11gOTz01gmYTy3AS9608uuu/OGm6Uv9LcG/+TFyBX5/EWXn/YLY1AMRrGSuGjYiZynIphfdzSpv3pY1e9ELc415DixAEFP7Eq2hx9bFB3qPn/XeOqZU1yyoO7mjwCvivjyDSRifhjDeW7CZLUcqspkRBENP/vIaDQPvxf0wYFRta1kdiqI/HF4Aexd0MUk9hfZI64k1aJCJuFQWS7m18qb6DRZR3ge5J8c51T/tgyQBOAqdVvYUQcXhn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,14 +129,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 06:21:55PM +0100, Pedro Falcato wrote:
+On Tue, Aug 11, 2026 at 06:21:56PM +0100, Pedro Falcato wrote:
 > The current logic (allow up to $BURST prints per minute) can be entirely
 > replaced by the generic version in lib/ratelimit.c, used around the kernel.
 > 
 > Do so. The only functional difference should be that the new logs will
 > read something like:
 > 
-> KERN_WARNING "print_bad_page_map: %d callbacks suppressed\n", ...
+> KERN_WARNING "bad_page: %d callbacks suppressed\n", ...
 > 
 > But that should be fine enough.
 > 
