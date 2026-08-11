@@ -4,152 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABEA1C5AC67
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 21:52:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31F51C5AC67
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 21:58:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32D916B0093; Tue, 11 Aug 2026 17:52:28 -0400 (EDT)
+	id E5B276B0092; Tue, 11 Aug 2026 17:58:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 305BF6B0096; Tue, 11 Aug 2026 17:52:28 -0400 (EDT)
+	id E0BD66B0096; Tue, 11 Aug 2026 17:58:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F4796B0098; Tue, 11 Aug 2026 17:52:28 -0400 (EDT)
+	id D227B6B009B; Tue, 11 Aug 2026 17:58:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E120C6B0093
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:52:27 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5BD8CA0265
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 21:52:27 +0000 (UTC)
-X-FDA: 85090337934.09.509D1CB
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5C14B40006
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 21:52:25 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Sl6o57kA;
-	spf=pass (imf27.hostedemail.com: domain of mykyta.yatsenko5@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mykyta.yatsenko5@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B6FCD6B0092
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:58:00 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 45F6FC01ED
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 21:58:00 +0000 (UTC)
+X-FDA: 85090351920.08.B8F6EBF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4465840004
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 21:57:58 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VmpzmsHA;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786485478;
+	b=d2WyWp/lgwIekOHfGYASiI6R6nYhQGBAD2Hnz3fTtMawxDPfP+KUtwmYSv9VkOeA3vw2Yb
+	QmBDvjxpv8wJtE35tDCM4/G8qFimUs3uHJSJ44bipe4GtR1UMXu4se+oIqP80bioKuaeFj
+	Q5FayY+FNccyC32bDYzXRfF6FgCBH5c=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VmpzmsHA;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786485145;
+	s=arc-20220608; t=1786485478;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cO/QN6+P0rr7qVL0NUwrQFJNJtRB0sM12Pld8uxMkv0=;
-	b=M3enrvLImt1gsdvnQnE41sR7bLGsFC+nPGPOnHUZo5HxGEKOZqT045PRi5ozzOuPoTbMh0
-	rEpYNle+vtX12nBZs91GKHbu4WD2Sbq39/jQUWgOZqvddnozmTP0arVTgTO6JpkV/pzrRI
-	61u52r6glLsoZJYj9B6zoLNbHvkMlOM=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Sl6o57kA;
-	spf=pass (imf27.hostedemail.com: domain of mykyta.yatsenko5@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mykyta.yatsenko5@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786485145;
-	b=Rz2sjIs11vduVATVv8iPM5d9R83OkYQukMdNOn7i/KWxKBZa0dwa+qT/AGy6Q7Schb10SW
-	CWeMm2UQcdssKuJ0uOooqEvu3Bbcelbu6KEW9gJinzPGxXX6CXblVC0fTXo06R4usgnUQ9
-	d2FePwGYQkXSqW2Do/6Ewg+nU3ftaAY=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4954aff6088so1237835e9.3
-        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:52:25 -0700 (PDT)
+	bh=GyqevDNjsJZverOYk+emEjJn1/V3eS41pms2qKDvjNg=;
+	b=LBR8fImZTCUg4oOe07dapCB4VsgHCQbvOhzYA0yane4FHkthyjrycX7qxuKvKQVh1hffrx
+	bokeIwe0wKdVkcUOY5Lq4kE+IWc/c8lQ43Ejl3j2K/OZf9RDDUn27f3sZR0Hm/BPGsA6Mt
+	53BcwSrtKMKW881nNf+TlQDci96+1oQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 19D4F41096;
+	Tue, 11 Aug 2026 21:57:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A721F000E9;
+	Tue, 11 Aug 2026 21:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786485144; x=1787089944; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cO/QN6+P0rr7qVL0NUwrQFJNJtRB0sM12Pld8uxMkv0=;
-        b=Sl6o57kAHyhQZEA9uLtiINvkadf9EPIncOYmSRPeEI/OR3yGc5vrwZ8sfFQgtCarDV
-         1Cxin7FgfP5dnVVSyYsoF/jfjklePSoytYHkZC27eHdpr4K9ioDWJij9Pg92hl0M1HLD
-         euREQ3QY2lQ/OiXUnC+5B74AF9HXhUP9eAWrubhyq5Cxe+xaVpb615ADrZQ22q1BN8AT
-         RVs7TbWdbNLatnHL4t5y92AnJlSt3nnSCK12izjl1pL5QR2lr0qG5IwB5Z7jrunFSiid
-         9rNIgG0lhKlMyesgI3OTLEv/myXSpMnE/r7vJ7EUbspA79KFn6DEtQwKjyf+5jWFeUEA
-         IFvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786485144; x=1787089944;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cO/QN6+P0rr7qVL0NUwrQFJNJtRB0sM12Pld8uxMkv0=;
-        b=rD9OOPhNgHGvHCXLNZaA0rkvJ4ehQvMvyaXRc3Fx5I9TuPrhKjPuVsqWkqoA5vyjAA
-         VPwMlekVAjwKHaY0xUWwmh1XiwHOcFlm/RHw3FqbhC50RYj7yfK+iK+xStcKpcXhJlpO
-         I0O6E2QcP6NuQVpCa3H8vq8fLBobuGH+mRdv4JD2KukIilghtPrWZlJOGlv9HN+X9pkD
-         38RH/8z2dUFHqOjaZI5LNM4aufcH70w9BtnJveHcu4emHXhxckdaH5iqtbFTjJ6P4c92
-         i5iKhAUhIFHfU0qwK1QI0z3cDykHhYHRm1Cqym9VeCAcF2zH987tVh1VWRcXWUdIVM2I
-         sgSw==
-X-Forwarded-Encrypted: i=1; AHgh+Rq95E06aOq6+HDNC9gXGPFos6JC24ZK9qmmTiJEX/QrT1H+70seijPuHZWXtRB3SRyORgYszRejTw==@kvack.org
-X-Gm-Message-State: AOJu0YwFf2IGIqjcXO3oysKXDn66XQwAUDwot5sozcw5SkP8fcS44cRc
-	H8BQEifXRWqPyTJB6i7jnBwXgeoW/cmRZhrQMXuVf4ugBA7v0Z+zGBpi
-X-Gm-Gg: AR+sD13SeWiTN8KxV/CC7qkMmTXCHdH4QTQUin0L0LcvBBxGqcOpm/RaOaYzJzrSjUl
-	pNWnAG6c8SsSyb/xDAJmfRB70ZvFuJrN/gNwhi1Ei+Lv9bgVehzYigg7RfItRgt6iu0tflLbsc2
-	LdvlqXIpT6+KIc95bmncjHdIO25Lrrwxs9uJEVeY8sNlWLo8vxgzYnC9teTi5nHhnq0J1/VO9Ha
-	t/q3+h3Nw14cLZPuA18kp9pu2iYFJoyp8zBTNxMAcM5PZVtUo7iArU/Pp5rw9Wq0jVyuPQYHUZH
-	Jg6NNCDtDHoMO2wuC4niM0G0ZZZUMkN1rGQg/OO6T9PIYQ7Y/bjP0w2kcoO6p5jESEKlzibsiqi
-	bK18haaTfwLpaUGrs9B8JjjACoL6hY9XdqwZquWqJKwtG5QPJStyP1Ffc/8i7rTSio63mqh7OYe
-	UVqq9SfmScwr6MvNZMEVZxP7MBMptlRjXWm9K5LNdrSYKsRRwH0RrZumsVE2BRGERsbfJV+GI9R
-	Fyhr+6SvOl2qyTh47a53yt1XS0mr/26kK9ZKiR6387dM8hJ
-X-Received: by 2002:a7b:c7d1:0:b0:493:c634:952 with SMTP id 5b1f17b1804b1-4997c1192c0mr2281545e9.7.1786485143366;
-        Tue, 11 Aug 2026 14:52:23 -0700 (PDT)
-Received: from ?IPV6:2a01:4b00:bd1f:f500:f867:fc8a:5174:5755? ([2a01:4b00:bd1f:f500:f867:fc8a:5174:5755])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4997aaa7aabsm21966655e9.7.2026.08.11.14.52.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Aug 2026 14:52:22 -0700 (PDT)
-Message-ID: <4a011b5f-7f84-40dc-a409-39f11326910c@gmail.com>
-Date: Tue, 11 Aug 2026 22:52:20 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next 2/4] bpf: add bpf_thread_wq kthread-backed
- workqueue with cgroup placement
-To: Hui Zhu <hui.zhu@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>,
- Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
- <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- JP Kobryn <inwardvessel@gmail.com>, Andrew Morton
- <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
- davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, KP Singh <kpsingh@kernel.org>,
- Tao Chen <chen.dylane@linux.dev>, Mykyta Yatsenko <yatsenko@meta.com>,
- Leon Hwang <leon.hwang@linux.dev>,
- Anton Protopopov <a.s.protopopov@gmail.com>, Amery Hung
- <ameryhung@gmail.com>, Tobias Klauser <tklauser@distanz.ch>,
- Eyal Birger <eyal.birger@gmail.com>, Rong Tao <rongtao@cestc.cn>,
- Hao Luo <haoluo@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Kees Cook <kees@kernel.org>, Tejun Heo <tj@kernel.org>,
- Jeff Xu <jeffxu@chromium.org>, mkoutny@suse.com,
- Jan Hendrik Farr <kernel@jfarr.cc>, Christian Brauner <brauner@kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>, Brian Gerst <brgerst@gmail.com>,
- Masahiro Yamada <masahiroy@kernel.org>, Willem de Bruijn
- <willemb@google.com>, Jason Xing <kerneljasonxing@gmail.com>,
- Paul Chaignon <paul.chaignon@gmail.com>, Lance Yang <lance.yang@linux.dev>,
- Jiayuan Chen <jiayuan.chen@linux.dev>, Emil Tsalapatis
- <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>,
- Barry Song <baohua@kernel.org>, Geliang Tang <geliang@kernel.org>,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, cgroups@vger.kernel.org,
- linux-mm@kvack.org, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-References: <cover.1786086076.git.zhuhui@kylinos.cn>
- <cfb06f2626062fa60efbbd9d34089819b1a34522.1786086076.git.zhuhui@kylinos.cn>
-Content-Language: en-US
-From: Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>
-In-Reply-To: <cfb06f2626062fa60efbbd9d34089819b1a34522.1786086076.git.zhuhui@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
+	d=linux-foundation.org; s=korg; t=1786485477;
+	bh=GyqevDNjsJZverOYk+emEjJn1/V3eS41pms2qKDvjNg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=VmpzmsHAmQHSyoV0C7c4aOxavkL7BoFzwFL9KJhsqUwI9BCiNZdC7FQeiW765pIET
+	 0UK0pAQ489an6CfMgI7dR9Rs0C0dU6NMYudt/7FYTFPFh+gojk0B+DJv+WwLwiV7de
+	 PteOqFh8Jp2Rh3YRv+dFEKPMRhMRaJc94dUa1u6Y=
+Date: Tue, 11 Aug 2026 14:57:56 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, Max Boone
+ <mboone@akamai.com>
+Subject: Re: [PATCH v2 1/2] mm/pagewalk: fix stale walk->action escaping
+ walk_pmd_range()
+Message-Id: <20260811145756.6a9af6f7d3d04c8b00a0f3ee@linux-foundation.org>
+In-Reply-To: <anuDYOPa0kTD9bul@v4bel>
+References: <20260811161949.3879321-1-imv4bel@gmail.com>
+	<20260811161949.3879321-2-imv4bel@gmail.com>
+	<20260811123702.f3c60a3573e148c53ad35b97@linux-foundation.org>
+	<anuDYOPa0kTD9bul@v4bel>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5C14B40006
-X-Stat-Signature: rxe7ypziiro8eqq9yaxjt1iejsdhpyrz
+X-Rspamd-Queue-Id: 4465840004
 X-Rspam-User: 
-X-HE-Tag: 1786485145-555145
-X-HE-Meta: U2FsdGVkX18uzBiOrHJoU1ouUox/EDdZHMjwaGQlx68WYINkCe7JVAXXdMZpbI2eJhgGqVsM4vDEC9G4sRCaLS732vXLb8nH9cNl4ZHrFjrcKFSbYpYLF20W1UBiH0grkTzo8VEk06skWYmUC8ZnWaRSiBe5iaNE6l6cZh6huWPCVNJd+riyu+gJjlngwquvG0d4s60TENIMQvCZK9uJ0ckU6EnvsgzyiDoXxziBMRVTTfZmrSkOskpOJTaiT9IZPSblPVv80wqcIGhnNx8SDw74pNwNJY8gx/CnvBKD4MvLcU2oXEOVbH9+oP0COX1BGuE3XLDu0nEJk2lGiAhmL9xYlisLE9ID2uqbk+4zim/n7iaEvrIkXRZ6K6oehdo88aRGmBV1IPa4S43AWdA3LwomnHlcoXGdnroBQmcD49IxYqu6Or5YgRV4FlIonCUhQZp5tp/CDq2EjoqROBx+BOV0sikuxU77CZroymBXv/0gTOyKw5Kv9V8cbIpcQUnlttqLrnX+t8J4SnHQs37lmfGeDMItgFKzYpclBntXQTfZpmG6XjVwMAFhSBGqLrGd2E04ZzCBUdKXb5i5c7kHY9uji+aGcFFe8bzqReKscVdfbiy4JObgH2KcOMMvMwtVpfCN+gwTNvZXEdkskgTHfggUqPfQvtmfnY/p0jHXR6Q939NQ3HtvfmgQy2gO+w5Rh0ulxBGodjKIStusIaaWNFsCrJblRrMYnoAWSJCKTwIDYDfalZHaYRFuM8ejrlJnp5sSvPVzZa9QkwxPmYMPwlDThVRPXe0wC+UMO/qvMyxdCkYOmAVps/zXW6NcRfNUX7jDIPuOD3owTFfpCGDATIpswR7ppaKtzooQ4x8HfAmJzRKDzEYfosXFs+PQwI9WZtglRw1a5gEA6ho/Gmv626rkIwDcQTWDfsTZ4PEIFE9tKgHQV5sK9V/AWJ/4lGJD7NIt/k56HNpSFiiJcGB
- O4GmIrnq
- U0VJ66SK95vwbZbRjdfEUrbkDchWNXb7mOa3yIQix2D9Zbx2wgheT8XkFU8KkMEeyqtnLwix/YVL0DGHSsnZYIxA4VL4Cputvy4gGtS6EeNvywsHIuJm38dQarJxs9pPLjiUgKeHgobWUzxs455/SZ709HdXgJKnFY9PAlX7Yob9LnwKF5otuK99bl6VCWMRCER3ClgNrZFRVqDdU64ClZ5l+SjjLpW+ynKSHcqLi18Pmc7KPwT3ckWrJEzZI5ddwPhCuR3tI/R+wtCL8KWiZrHiQ9uoaHUNGmME/EMgm9uZMUJiNKkf6+0OvzBR6+UQrB0m8OLWAYSZYuXgJTdQ4ZFO682oz2Q0Vzp9PnD6YwnobllNRY762Kht99EsyluG5kJw0pJm6XaNuTeVw0DYqMtX8WBdVzpmgWy71sdRKIzZU3pfKw/1UwLPdq8jyHwwdbTtI9JxeNL2Vd5EOsv4HJ37q+3m3Aio+fA16gI6Y8jim4qzdmQzyvP2FzX7J0aFC8OBwBkbjAMROuwQhZDeD7L8YFEf8n7pi/+g6012dFMPBMsdfsOwOGbOtcvbIZxINwQimpooGYdMrIRkRlmPmNBBVm2FdfQvrcwemzxSWguZ8uFqo4IZT2tVwCPey7GQzpZlN
+X-Stat-Signature: p695qa389f9577pe71ng5bys7ekgepw8
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786485478-432602
+X-HE-Meta: U2FsdGVkX1/OgjHtqB1Gr0EBupTGofmLeXKkGYouTOo4nqQh4TP+tYlcNfAoKV9LLXHn9Es2D+TlXndqulMS1PUxWwRQJ7uJEQ81iEDwfJEhXAxI8z3B+3V4+KAihALQg/PKz+FMlTceq7sgXhr19mvgjfv/IYd2AD6Wi6QyZn4LBqnwq5iRMew31OmiXkySEtW4PARCTVYVSIeeuR3qqa/rgSvNQjbXoOM9F5GPHcJjeSM/UpMCy3tKSltMpADuwMXliO6rrMep0yxQubySzLcI+8egeV05qL+tZ81qM6tvn+kifjo0CtmZBCEparGz13v1hmIWSlWYHYrq4PRJUFMx+6unhFYqXFfnb5248Tv771Oe62g/2bPQMKa2WLENZVkGyw6OBqAb5RRvsn2dIuz89S+FQFOeY/54IDyogatrFZ+O5t8+KKNJ4L9uDgwMkTvz6pN4bwfMAJVioCxjhaseG89M2PMa5+gbj/jzj6tUBDbMdLrPceeMQ05G6hLeKQH6nioXITIPyrLYkso2lwiMD5feY5/L2v0mzR3yDoETMgeqKdOMblm6YSvqqUcvBdYTTQbLFwUvrhP6UchfXOR3bZMushnDZpTvZ+zTBsUyreVQChVou3b3Qnu3zEHq0DuPAjgY0HYP978q8ZLT51E7+zYMCJOuR8k3YNQYyh4l3E6wYELJHzJAOuw4tVTgnec2hnWHYZi8LPZdeGKPHx1l3uHkQlQ58s7yW3sofHsrlNy/xp9075nfIdMRBFaShe3FHH7YP3ksyuoHjqELzwtPId08GWHJLZdBT6O0gye8NXNkFm2K3Sqn9S45Iq2l57xJhnDs01wem72w3zfxCqCY2jx0XlD0bvksgeqcc/a13JLvwDGapU7CoOZnISdQpYr/C4JgebYh8vOUJINmecHUH4hK6CpjIIEXmCoQkMDJkHqzFeTGKauwFs3MSuwSCO+gs2ALBgES0uZHc1c
+ jMDsKlHz
+ iKQOhCcP5dLEUr9gdpLc0twroJcHxBcJ81WV73daD1Q9bAhbQFPAAZRMB36t89407XBLqbX+/4YyGU8rQRKYq4kxKCE6H1KQwF0S6eNL4fXvp7Av8fZNFysRyNCx9YvgPuS/WFCL3aJNM9XedubUxjtfyAYjWVlr2wWaBIYxAlPLCbOia3WmwTbIwsZbNpocLb1thhhrKEv2HOpLyPi6w3BVo/MI+dX/ycp2rzUF1Y3P4OrhYyZik/nquQ2odW0ten3exjFsAcNCJrHSVdGr4Mgtlmvnoi+yqGPmmYjcs9Ywpt42+lyV3L8MPxnKVXfV5v8BD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,947 +95,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/7/26 8:01 AM, Hui Zhu wrote:
-> From: Hui Zhu <zhuhui@kylinos.cn>
-> 
-> Introduce bpf_thread_wq, a new BPF embedded map field similar to
-> bpf_wq but backed by a dedicated kthread_worker instead of a system
-> workqueue. The worker kthread can be attached to a specific cgroup at
-> init time so BPF-deferred callbacks run under the resource limits of
-> the target cgroup.
-> 
-> Three kfuncs are exposed:
->   bpf_thread_wq_init(twq, map, cgroup_id, flags)   [KF_SLEEPABLE]
->   bpf_thread_wq_set_callback(twq, cb, flags, aux)
->   bpf_thread_wq_start(twq, flags)
-> 
-> bpf_thread_wq_init() is registered only for BPF_PROG_TYPE_SYSCALL
-> programs. It creates a kthread worker and may attach it to a cgroup;
-> those paths can sleep and acquire kthread and cgroup locks. Restricting
-> init to syscall programs prevents it from running in BPF contexts that
-> may already hold locks which could deadlock with those paths.
-> 
-> bpf_thread_wq intentionally avoids the bpf_async infrastructure used by
-> bpf_timer and bpf_wq. That infrastructure drives cleanup from irq_work
-> in hardirq context, while bpf_thread_wq cancellation and final teardown
-> may need to sleep through kthread_cancel_work_sync(),
-> kthread_destroy_worker() and a final cgroup_put().
-> bpf_thread_wq_cancel_and_free() therefore cancels work synchronously and
-> drops the context reference; the last put waits for tasks-trace RCU
-> readers and then schedules process-context work to run bpf_prog_put(),
-> cgroup_put(), kthread_destroy_worker() and kfree().
-> 
-> Add BTF/map support for bpf_thread_wq fields, map teardown hooks,
-> verifier handling for the callback kfunc, and cgroup_kthread_attach() to
-> move the worker into the requested cgroup.
-> 
-> Supported map types are BPF_MAP_TYPE_HASH, BPF_MAP_TYPE_LRU_HASH, and
-> BPF_MAP_TYPE_ARRAY, consistent with bpf_wq and bpf_task_work.
-> 
-> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> ---
->  include/linux/bpf.h                           |  15 +-
->  include/linux/cgroup.h                        |   2 +
->  include/uapi/linux/bpf.h                      |   4 +
->  kernel/bpf/btf.c                              |   7 +
->  kernel/bpf/helpers.c                          | 418 ++++++++++++++++++
->  kernel/bpf/syscall.c                          |  15 +-
->  kernel/bpf/verifier.c                         |  44 +-
->  kernel/cgroup/cgroup.c                        |  13 +
->  .../testing/selftests/bpf/bpf_experimental.h  |   7 +
->  9 files changed, 520 insertions(+), 5 deletions(-)
-> 
-> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-> index 73bacfc6444d..d63ce8319869 100644
-> --- a/include/linux/bpf.h
-> +++ b/include/linux/bpf.h
-> @@ -213,6 +213,7 @@ enum btf_field_type {
->  	BPF_UPTR       = (1 << 11),
->  	BPF_RES_SPIN_LOCK = (1 << 12),
->  	BPF_TASK_WORK  = (1 << 13),
-> +	BPF_THREAD_WQ  = (1 << 14),
->  };
->  
->  enum bpf_cgroup_storage_type {
-> @@ -267,6 +268,7 @@ struct btf_record {
->  	int wq_off;
->  	int refcount_off;
->  	int task_work_off;
-> +	int thread_wq_off;
->  	struct btf_field fields[];
->  };
->  
-> @@ -372,6 +374,8 @@ static inline const char *btf_field_type_name(enum btf_field_type type)
->  		return "bpf_refcount";
->  	case BPF_TASK_WORK:
->  		return "bpf_task_work";
-> +	case BPF_THREAD_WQ:
-> +		return "bpf_thread_wq";
->  	default:
->  		WARN_ON_ONCE(1);
->  		return "unknown";
-> @@ -412,6 +416,8 @@ static inline u32 btf_field_type_size(enum btf_field_type type)
->  		return sizeof(struct bpf_refcount);
->  	case BPF_TASK_WORK:
->  		return sizeof(struct bpf_task_work);
-> +	case BPF_THREAD_WQ:
-> +		return sizeof(struct bpf_thread_wq);
->  	default:
->  		WARN_ON_ONCE(1);
->  		return 0;
-> @@ -446,6 +452,8 @@ static inline u32 btf_field_type_align(enum btf_field_type type)
->  		return __alignof__(struct bpf_refcount);
->  	case BPF_TASK_WORK:
->  		return __alignof__(struct bpf_task_work);
-> +	case BPF_THREAD_WQ:
-> +		return __alignof__(struct bpf_thread_wq);
->  	default:
->  		WARN_ON_ONCE(1);
->  		return 0;
-> @@ -478,6 +486,7 @@ static inline void bpf_obj_init_field(const struct btf_field *field, void *addr)
->  	case BPF_KPTR_PERCPU:
->  	case BPF_UPTR:
->  	case BPF_TASK_WORK:
-> +	case BPF_THREAD_WQ:
->  		break;
->  	default:
->  		WARN_ON_ONCE(1);
-> @@ -502,6 +511,7 @@ static inline bool btf_field_is_nmi_safe(enum btf_field_type type)
->  	case BPF_TASK_WORK:
->  	case BPF_KPTR_UNREF:
->  	case BPF_REFCOUNT:
-> +	case BPF_THREAD_WQ:
->  		return true;
->  	default:
->  		return false;
-> @@ -644,6 +654,7 @@ void copy_map_value_locked(struct bpf_map *map, void *dst, void *src,
->  void bpf_timer_cancel_and_free(void *timer);
->  void bpf_wq_cancel_and_free(void *timer);
->  void bpf_task_work_cancel_and_free(void *timer);
-> +void bpf_thread_wq_cancel_and_free(void *val);
->  void bpf_list_head_free(const struct btf_field *field, void *list_head,
->  			struct bpf_spin_lock *spin_lock);
->  void bpf_rb_root_free(const struct btf_field *field, void *rb_root,
-> @@ -701,7 +712,8 @@ bool bpf_map_meta_equal(const struct bpf_map *meta0,
->  
->  static inline bool bpf_map_has_internal_structs(struct bpf_map *map)
->  {
-> -	return btf_record_has_field(map->record, BPF_TIMER | BPF_WORKQUEUE | BPF_TASK_WORK);
-> +	return btf_record_has_field(map->record, BPF_TIMER | BPF_WORKQUEUE |
-> +						 BPF_TASK_WORK | BPF_THREAD_WQ);
->  }
->  
->  void bpf_map_free_internal_structs(struct bpf_map *map, void *obj);
-> @@ -2725,6 +2737,7 @@ bool btf_record_equal(const struct btf_record *rec_a, const struct btf_record *r
->  void bpf_obj_free_timer(const struct btf_record *rec, void *obj);
->  void bpf_obj_free_workqueue(const struct btf_record *rec, void *obj);
->  void bpf_obj_free_task_work(const struct btf_record *rec, void *obj);
-> +void bpf_obj_free_thread_wq(const struct btf_record *rec, void *obj);
->  void bpf_obj_cancel_fields(struct bpf_map *map, void *obj);
->  void bpf_obj_free_fields(const struct btf_record *rec, void *obj);
->  void __bpf_obj_drop_impl(void *p, const struct btf_record *rec, bool percpu);
-> diff --git a/include/linux/cgroup.h b/include/linux/cgroup.h
-> index f2aa46a4f871..9b4a8dc748ac 100644
-> --- a/include/linux/cgroup.h
-> +++ b/include/linux/cgroup.h
-> @@ -923,4 +923,6 @@ struct cgroup *task_get_cgroup1(struct task_struct *tsk, int hierarchy_id);
->  
->  struct cgroup_of_peak *of_peak(struct kernfs_open_file *of);
->  
-> +int cgroup_kthread_attach(struct cgroup *cgrp, struct task_struct *task);
-> +
->  #endif /* _LINUX_CGROUP_H */
-> diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-> index ffd96e8b920b..0558520f67fe 100644
-> --- a/include/uapi/linux/bpf.h
-> +++ b/include/uapi/linux/bpf.h
-> @@ -7574,6 +7574,10 @@ struct bpf_wq {
->  	__u64 __opaque[2];
->  } __attribute__((aligned(8)));
->  
-> +struct bpf_thread_wq {
-> +	__u64 __opaque[2];
-> +} __attribute__((aligned(8)));
-> +
->  struct bpf_dynptr {
->  	__u64 __opaque[2];
->  } __attribute__((aligned(8)));
-> diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-> index 42414633cf26..bf6fb5f51d21 100644
-> --- a/kernel/bpf/btf.c
-> +++ b/kernel/bpf/btf.c
-> @@ -3665,6 +3665,7 @@ static int btf_get_field_type(const struct btf *btf, const struct btf_type *var_
->  		{ BPF_TIMER, "bpf_timer", true },
->  		{ BPF_WORKQUEUE, "bpf_wq", true },
->  		{ BPF_TASK_WORK, "bpf_task_work", true },
-> +		{ BPF_THREAD_WQ, "bpf_thread_wq", true },
->  		{ BPF_LIST_HEAD, "bpf_list_head", false },
->  		{ BPF_LIST_NODE, "bpf_list_node", false },
->  		{ BPF_RB_ROOT, "bpf_rb_root", false },
-> @@ -3850,6 +3851,7 @@ static int btf_find_field_one(const struct btf *btf,
->  	case BPF_RB_NODE:
->  	case BPF_REFCOUNT:
->  	case BPF_TASK_WORK:
-> +	case BPF_THREAD_WQ:
->  		ret = btf_find_struct(btf, var_type, off, sz, field_type,
->  				      info_cnt ? &info[0] : &tmp);
->  		if (ret < 0)
-> @@ -4145,6 +4147,7 @@ struct btf_record *btf_parse_fields(const struct btf *btf, const struct btf_type
->  	rec->wq_off = -EINVAL;
->  	rec->refcount_off = -EINVAL;
->  	rec->task_work_off = -EINVAL;
-> +	rec->thread_wq_off = -EINVAL;
->  	for (i = 0; i < cnt; i++) {
->  		field_type_size = btf_field_type_size(info_arr[i].type);
->  		if (info_arr[i].off + field_type_size > value_size) {
-> @@ -4188,6 +4191,10 @@ struct btf_record *btf_parse_fields(const struct btf *btf, const struct btf_type
->  			WARN_ON_ONCE(rec->task_work_off >= 0);
->  			rec->task_work_off = rec->fields[i].offset;
->  			break;
-> +		case BPF_THREAD_WQ:
-> +			WARN_ON_ONCE(rec->thread_wq_off >= 0);
-> +			rec->thread_wq_off = rec->fields[i].offset;
-> +			break;
->  		case BPF_REFCOUNT:
->  			WARN_ON_ONCE(rec->refcount_off >= 0);
->  			/* Cache offset for faster lookup at runtime */
-> diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-> index 4709a5ad0474..68e7456f0649 100644
-> --- a/kernel/bpf/helpers.c
-> +++ b/kernel/bpf/helpers.c
-> @@ -29,6 +29,8 @@
->  #include <linux/task_work.h>
->  #include <linux/irq_work.h>
->  #include <linux/buildid.h>
-> +#include <linux/kthread.h>
-> +#include <linux/jhash.h>
->  
->  #include "../../lib/kstrtox.h"
->  
-> @@ -1110,6 +1112,17 @@ static void *map_key_from_value(struct bpf_map *map, void *value, u32 *arr_idx)
->  	return (void *)value - round_up(map->key_size, 8);
->  }
->  
-> +static u32 bpf_map_elem_id_from_value(struct bpf_map *map, void *value)
-> +{
-> +	u32 arr_idx;
-> +	void *key;
-> +
-> +	key = map_key_from_value(map, value, &arr_idx);
-> +	if (map->map_type == BPF_MAP_TYPE_ARRAY)
-> +		return arr_idx;
-> +	return jhash(key, map->key_size, 0);
-> +}
-> +
->  enum bpf_async_type {
->  	BPF_ASYNC_TYPE_TIMER = 0,
->  	BPF_ASYNC_TYPE_WQ,
-> @@ -4769,6 +4782,397 @@ __bpf_kfunc int bpf_timer_cancel_async(struct bpf_timer *timer)
->  	}
->  }
->  
-> +/*
-> + * BPF thread workqueue (kthread_worker based) implementation
-> + *
-> + * Why bpf_thread_wq does NOT use the bpf_async infrastructure:
+On Wed, 12 Aug 2026 05:17:36 +0900 Hyunwoo Kim <imv4bel@gmail.com> wrote:
 
-If the existing bpf_async infrastructure does not work for bpf_thread_wq,
-does it make sense to keep using the same API: init, set_callback, start?
-Maybe a single kfunc that does init->set_callback->start, similarly to 
-what we do in task work (bpf_task_work_schedule()) will fit better?
+> On Tue, Aug 11, 2026 at 12:37:02PM -0700, Andrew Morton wrote:
+> > On Wed, 12 Aug 2026 01:18:57 +0900 Hyunwoo Kim <imv4bel@gmail.com> wrote:
+> > 
+> > > If ->pmd_entry() sets walk->action = ACTION_AGAIN, the pmd_none()
+> > > check is retried. The PMD entry may be cleared at the point of retry.
+> > > 
+> > > In this case, if walk->ops->install_pte is not specified, the code
+> > > continues to the next PMD entry in the range without resetting
+> > > walk->action to ACTION_SUBTREE.
+> > > 
+> > > This leaves walk->action erroneously set to ACTION_AGAIN, which is
+> > > incorrect.
+> > > 
+> > > This was incorrect but not problematic up until commit 3b89863c3fa4
+> > > ("mm/pagewalk: fix race between concurrent split and refault")
+> > > which updated walk_pud_range() to check for walk->action ==
+> > > ACTION_AGAIN upon walk_pmd_range()'s return, causing the PUD walk
+> > > to be retried.
+> > > 
+> > > In this case this results in duplicate walk callbacks being
+> > > invoked, which is erroneous and will break any caller that is not
+> > > idempotent with respect to this (and waste time for those which
+> > > are).
+> > 
+> > "break".  Please describe the breakage completely.  It's really the
+> > most important information in the whole effort.
+> > 
+> > IOW, when fixing a bug please describe the userspace-visible runtime
+> > effects of that bug.
+> > 
+> > eg, what were the results of the fuzzer?  
+> 
+> To be precise, this is an out-of-bounds write.
+> 
+> > Is there a Link:?  
+> 
+> This came from a local fuzzer, so there is no Link:
 
-> + *
-> + * bpf_timer and bpf_wq share a common cleanup path via bpf_async:
-> + *
-> + *   bpf_async_cancel_and_free()
-> + *     -> bpf_async_schedule_op()
-> + *       -> irq_work_queue()                // schedule from any context
-> + *         -> bpf_async_process_op()        // runs in hardirq context
-> + *           -> bpf_wq_work() / timer cb    // atomic, non-sleepable
-> + *
-> + * This works for timer and workqueue because their callbacks and
-> + * cancellation (hrtimer_cancel / bpf_wq_cancel_and_free) complete
-> + * synchronously and need not sleep.  The hardirq context is sufficient.
-> + *
-> + * bpf_thread_wq is different: cancellation and final cleanup may need to
-> + * sleep:
+OK, thanks.
 
-Sashiko already commented on this, if final cleanup needs to sleep, 
-we can't do it in cancel_and_free(), because that can be called from
-any context. That's why other special fields cancel_and_free() defer
-to irq_work.
+> 
+> > A stack trace?
+> 
+> ...
+> 
+> Should I send a v3 with the changelog fixed? (in 24 hours, I guess?)
+> 
 
-> + *
-> + *   kthread_cancel_work_sync()    - waits for the work to finish, can
-> + *                                    schedule out if the work is running.
-> + *   kthread_destroy_worker()      - stops the kthread, internally
-> + *                                    synchronizes with kthread exit.
-> + *   cgroup_put() (final put)      - may acquire cgroup_mutex and other
-> + *                                    sleeping locks during offline.
-> + *
-> + * None of these can be called from hardirq context (irq_work). Doing so
-> + * would trigger might_sleep() warnings or deadlock.
-> + *
-> + * Therefore bpf_thread_wq implements its own RCU-based cleanup:
-> + *
-> + *   bpf_thread_wq_cancel_and_free()        // sleepable (called from
-> + *                                          // map free / elem delete)
-> + *     -> xchg(ctx, NULL)                   // detach atomically
-> + *     -> kthread_cancel_work_sync()        // ok to sleep
-> + *     -> bpf_thread_wq_ctx_put()
-> + *       -> call_rcu_tasks_trace()          // wait for BPF callbacks
-> + *         -> schedule_work()               // switch to sleepable context
-> + *           -> bpf_thread_wq_destroy_work_fn()
-> + *             -> bpf_prog_put()
-> + *             -> cgroup_put()
-> + *             -> kthread_destroy_worker()
-> + *             -> kfree(ctx)
-> + *
-> + * The same design choice was made for bpf_task_work, which also avoids
-> + * bpf_async because task_work cancellation synchronizes with the task
-> + * and may sleep.
-> + */
-> +
-> +struct bpf_thread_wq_ctx {
-> +	struct kthread_worker *worker;
-> +	struct kthread_work work;
-> +	struct bpf_prog *prog;
-> +	bpf_callback_t callback_fn;
-> +	struct bpf_map *map;
-> +	void *value;
-> +	struct cgroup *cgrp;
-> +	refcount_t refcnt;
-> +	struct rcu_head rcu;
-> +	struct work_struct destroy_work;
-> +};
-> +
-> +/* Kernel-internal representation that fits in struct bpf_thread_wq */
-> +struct bpf_thread_wq_kern {
-> +	struct bpf_thread_wq_ctx *ctx;
-> +} __aligned(8);
-> +
-> +static void bpf_thread_wq_destroy_work_fn(struct work_struct *work)
-> +{
-> +	struct bpf_thread_wq_ctx *ctx = container_of(work,
-> +						     struct bpf_thread_wq_ctx,
-> +						     destroy_work);
-> +
-> +	if (ctx->prog)
-> +		bpf_prog_put(ctx->prog);
-> +	if (ctx->cgrp)
-> +		cgroup_put(ctx->cgrp);
-> +	if (ctx->worker)
-> +		kthread_destroy_worker(ctx->worker);
-> +	kfree(ctx);
-> +}
-> +
-> +static void bpf_thread_wq_ctx_free_rcu(struct rcu_head *rcu)
-> +{
-> +	struct bpf_thread_wq_ctx *ctx = container_of(rcu,
-> +						     struct bpf_thread_wq_ctx,
-> +						     rcu);
-> +
-> +	INIT_WORK(&ctx->destroy_work, bpf_thread_wq_destroy_work_fn);
-> +	schedule_work(&ctx->destroy_work);
-> +}
-> +
-> +static void bpf_thread_wq_ctx_put(struct bpf_thread_wq_ctx *ctx)
-> +{
-> +	if (!refcount_dec_and_test(&ctx->refcnt))
-> +		return;
-> +	call_rcu_tasks_trace(&ctx->rcu, bpf_thread_wq_ctx_free_rcu);
-> +}
-> +
-> +static void bpf_thread_wq_work_fn(struct kthread_work *work)
-> +{
-> +	struct bpf_thread_wq_ctx *ctx = container_of(work,
-> +						     struct bpf_thread_wq_ctx,
-> +						     work);
-> +	bpf_callback_t callback_fn;
-> +	void *value = ctx->value;
-> +	struct bpf_map *map = ctx->map;
-> +	void *key;
-> +	u32 idx;
-> +
-> +	BTF_TYPE_EMIT(struct bpf_thread_wq);
-> +
-> +	callback_fn = READ_ONCE(ctx->callback_fn);
-> +	if (!callback_fn)
-> +		goto out;
-> +	key = map_key_from_value(map, value, &idx);
-> +
-> +	rcu_read_lock_trace();
-> +	migrate_disable();
-> +
-> +	callback_fn = READ_ONCE(ctx->callback_fn);
-> +	if (callback_fn)
-> +		callback_fn((u64)(long)map, (u64)(long)key, (u64)(long)value,
-> +			    0, 0);
-> +
-> +	migrate_enable();
-> +	rcu_read_unlock_trace();
-> +
-> +out:
-> +	bpf_thread_wq_ctx_put(ctx);
-> +}
-> +
-> +/*
-> + * bpf_thread_wq_init() creates a kthread worker and may attach it to a cgroup.
-> + * The helpers used here can sleep and acquire several locks through kthread
-> + * creation/destruction, cgroup lookup and cgroup kthread attachment. Keep this
-> + * kfunc available only to BPF_PROG_TYPE_SYSCALL programs so it is not invoked
-> + * from BPF program contexts that already hold locks which could deadlock with
-> + * those paths.
-> + */
-> +__bpf_kfunc int bpf_thread_wq_init(struct bpf_thread_wq *twq, void *p__map,
-> +				   u64 cgroup_id, unsigned int flags)
-> +{
-> +	struct bpf_thread_wq_kern *twk = (struct bpf_thread_wq_kern *)twq;
-> +	struct bpf_map *map = p__map;
-> +	struct bpf_thread_wq_ctx *ctx, *old_ctx;
-> +	struct kthread_worker *worker;
-> +	struct cgroup *cgrp = NULL;
-> +	void *value;
-> +	u32 elem_id;
-> +	int err;
-> +
-> +	BUILD_BUG_ON(sizeof(struct bpf_thread_wq_kern)
-> +			> sizeof(struct bpf_thread_wq));
-> +	BUILD_BUG_ON(__alignof__(struct bpf_thread_wq_kern)
-> +			!= __alignof__(struct bpf_thread_wq));
-> +
-> +	if (flags)
-> +		return -EINVAL;
-> +
-> +	old_ctx = READ_ONCE(twk->ctx);
-> +	if (old_ctx)
-> +		return -EBUSY;
-> +
-> +	value = (void *)twq - map->record->thread_wq_off;
-> +	elem_id = bpf_map_elem_id_from_value(map, value);
-> +	worker = kthread_run_worker(0, "bpf_twq/%d/%x", map->id, elem_id);
-> +	if (IS_ERR(worker))
-> +		return PTR_ERR(worker);
-> +
-> +	/* Setup ctx. */
-> +	ctx = bpf_map_kmalloc_nolock(map, sizeof(*ctx), GFP_KERNEL,
-> +				     map->numa_node);
-> +	if (!ctx) {
-> +		err = -ENOMEM;
-> +		goto destroy_worker;
-> +	}
-> +	memset(ctx, 0, sizeof(*ctx));
-> +	ctx->worker = worker;
-> +	ctx->map = map;
-> +	ctx->value = value;
-> +	refcount_set(&ctx->refcnt, 1);
-> +	kthread_init_work(&ctx->work, bpf_thread_wq_work_fn);
-> +
-> +	if (cgroup_id) {
-> +#ifdef CONFIG_CGROUPS
-> +		cgrp = cgroup_get_from_id(cgroup_id);
-> +		if (IS_ERR(cgrp)) {
-> +			err = PTR_ERR(cgrp);
-> +			goto kfree_ctx;
-> +		}
-> +		ctx->cgrp = cgrp;
-> +
-> +		/*
-> +		 * kthread_run_worker() wakes the kthread, but it may not have
-> +		 * executed cgroup_kthread_ready() yet, which clears
-> +		 * no_cgroup_migration.
-> +		 * Do a queue work and flush to wait the kthread run.
-> +		 */
-> +		refcount_inc(&ctx->refcnt);
-> +		if (!kthread_queue_work(ctx->worker, &ctx->work)) {
-> +			refcount_dec(&ctx->refcnt);
-> +			err = -EBUSY;
-> +			goto cgroup_put;
-> +		}
-> +		kthread_flush_work(&ctx->work);
-> +
-> +		if (worker->task->no_cgroup_migration) {
-> +			err = -EAGAIN;
-> +			goto cgroup_put;
-> +		}
-> +
-> +		err = cgroup_kthread_attach(cgrp, worker->task);
-> +		if (err)
-> +			goto cgroup_put;
-> +#else
-> +		err = -EOPNOTSUPP;
-> +		goto kfree_ctx;
-> +#endif
-> +	}
-> +
-> +	old_ctx = cmpxchg(&twk->ctx, NULL, ctx);
-> +	if (old_ctx) {
-> +		err = -EBUSY;
-> +		goto cgroup_put;
-> +	}
-> +
-> +	/*
-> +	 * Paired with the map destruction path.  Ensures that ctx is globally
-> +	 * visible before we check map->usercnt.
-> +	 * If usercnt has dropped to zero, the destruction path will either see
-> +	 * the ctx (and cancel it) or we see usercnt == 0 here and cancel
-> +	 * ourselves.
-> +	 * Without this barrier, a CPU could reorder the load of usercnt before
-> +	 * the cmpxchg store becomes visible, breaking the mutual exclusion
-> +	 * guarantee.
-> +	 */
-> +	smp_mb();
-> +
-> +	if (!atomic64_read(&map->usercnt)) {
-> +		bpf_thread_wq_cancel_and_free(twq);
-> +		return -EPERM;
-> +	}
-> +
-> +	return 0;
-> +
-> +cgroup_put:
-> +#ifdef CONFIG_CGROUPS
-> +	if (cgrp)
-> +		cgroup_put(cgrp);
-> +#endif
-> +kfree_ctx:
-> +	/*
-> +	 * Not use bpf_thread_wq_ctx_put because ctx has not yet entered
-> +	 * the running state.
-> +	 */
-> +	kfree(ctx);
-> +destroy_worker:
-> +	kthread_destroy_worker(worker);
-> +	return err;
-> +}
-> +
-> +__bpf_kfunc int bpf_thread_wq_set_callback(struct bpf_thread_wq *twq,
-> +					   int (callback_fn)(void *map,
-> +							     int *key,
-> +							     void *value),
-> +					   unsigned int flags,
-> +					   struct bpf_prog_aux *aux)
-> +{
-> +	struct bpf_thread_wq_kern *twk = (struct bpf_thread_wq_kern *)twq;
-> +	struct bpf_thread_wq_ctx *ctx;
-> +	struct bpf_prog *prog;
-> +
-> +	if (flags)
-> +		return -EINVAL;
-> +
-> +	ctx = READ_ONCE(twk->ctx);
-> +	if (!ctx)
-> +		return -EINVAL;
-> +
-> +	prog = bpf_prog_inc_not_zero(aux->prog);
-> +	if (IS_ERR(prog))
-> +		return PTR_ERR(prog);
-> +
-> +	/*
-> +	 * Allow set_callback only once to prevent UAF: a concurrent
-> +	 * set_callback could bpf_prog_put() the prog while the worker
-> +	 * kthread is still executing its callback.
-> +	 */
-> +	if (cmpxchg(&ctx->prog, NULL, prog) != NULL) {
-> +		bpf_prog_put(prog);
-> +		return -EBUSY;
-> +	}
-> +	/*
-> +	 * Safe to set callback_fn after prog: bpf_thread_wq_start() and
-> +	 * bpf_thread_wq_work_fn() both check callback_fn with READ_ONCE()
-> +	 * and bail out if it is still NULL.
-> +	 */
-> +	WRITE_ONCE(ctx->callback_fn, (void *)callback_fn);
-> +
-> +	return 0;
-> +}
-> +
-> +__bpf_kfunc int
-> +bpf_thread_wq_start(struct bpf_thread_wq *twq, unsigned int flags)
-> +{
-> +	struct bpf_thread_wq_kern *twk = (struct bpf_thread_wq_kern *)twq;
-> +	struct bpf_thread_wq_ctx *ctx;
-> +	int err;
-> +
-> +	if (flags)
-> +		return -EINVAL;
-> +
-> +	rcu_read_lock_trace();
-> +
-> +	err = 0;
-> +
-> +	ctx = READ_ONCE(twk->ctx);
-> +	if (!ctx || !READ_ONCE(ctx->callback_fn)) {
-> +		err = -EINVAL;
-> +		goto unlock;
-> +	}
-> +
-> +	if (!refcount_inc_not_zero(&ctx->refcnt))
-> +		err = -ENOENT;
-> +
-> +unlock:
-> +	rcu_read_unlock_trace();
-> +	if (err)
-> +		return err;
-> +
-> +	if (!kthread_queue_work(ctx->worker, &ctx->work)) {
-> +		bpf_thread_wq_ctx_put(ctx);
-> +		return -EBUSY;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +void bpf_thread_wq_cancel_and_free(void *val)
-> +{
-> +	struct bpf_thread_wq_kern *twk = val;
-> +	struct bpf_thread_wq_ctx *ctx;
-> +
-> +	ctx = xchg(&twk->ctx, NULL);
-> +	if (!ctx)
-> +		return;
-> +
-> +	might_sleep();
-> +
-> +	/*
-> +	 * Prevent future callbacks from running and wait for any
-> +	 * in-progress execution to finish.
-> +	 */
-> +	WRITE_ONCE(ctx->callback_fn, NULL);
-> +	/*
-> +	 * kthread_cancel_work_sync() returns true when it dequeues a pending
-> +	 * work item from the work_list without executing it.  Each successful
-> +	 * bpf_thread_wq_start() call increments ctx->refcnt and relies on the
-> +	 * subsequent bpf_thread_wq_work_fn() execution to release that
-> +	 * reference via bpf_thread_wq_ctx_put().  If the work was pending and
-> +	 * got cancelled here, work_fn will never run for that queued instance,
-> +	 * so we must drop the reference ourselves to avoid a permanent refcount
-> +	 * leak.
-> +	 *
-> +	 * This covers two scenarios uniformly:
-> +	 *  1. The work is purely pending (not currently executing) - e.g. a
-> +	 *     normal bpf_thread_wq_start() call queued it but the worker
-> +	 *     thread hasn't picked it up yet.
-> +	 *  2. The work is currently in-flight AND was self-rescheduled from
-> +	 *     within the callback - kthread_cancel_work_sync() dequeues the
-> +	 *     re-queued pending node and then waits for the in-flight
-> +	 *     execution to complete.
-> +	 * In both cases the return value is true, indicating one orphaned
-> +	 * reference that needs to be released here.
-> +	 */
-> +	if (kthread_cancel_work_sync(&ctx->work))
-> +		bpf_thread_wq_ctx_put(ctx);
-> +
-> +	/*
-> +	 * Drop our own reference.  If the work was still in-flight above,
-> +	 * the refcount won't hit zero here - it will reach zero when the
-> +	 * work path calls bpf_thread_wq_ctx_put() upon completion.  Either
-> +	 * way, final cleanup (worker destruction, prog put, cgroup put,
-> +	 * kfree) happens exclusively in the RCU callback to keep the
-> +	 * teardown path single-threaded.
-> +	 */
-> +	bpf_thread_wq_ctx_put(ctx);
-> +}
-> +
->  __bpf_kfunc_end_defs();
->  
->  static void bpf_task_work_cancel_scheduled(struct irq_work *irq_work)
-> @@ -4915,6 +5319,8 @@ BTF_ID_FLAGS(func, bpf_modify_return_test_tp)
->  BTF_ID_FLAGS(func, bpf_wq_init)
->  BTF_ID_FLAGS(func, bpf_wq_set_callback, KF_IMPLICIT_ARGS)
->  BTF_ID_FLAGS(func, bpf_wq_start)
-> +BTF_ID_FLAGS(func, bpf_thread_wq_set_callback, KF_IMPLICIT_ARGS)
-> +BTF_ID_FLAGS(func, bpf_thread_wq_start)
->  BTF_ID_FLAGS(func, bpf_preempt_disable)
->  BTF_ID_FLAGS(func, bpf_preempt_enable)
->  BTF_ID_FLAGS(func, bpf_iter_bits_new, KF_ITER_NEW)
-> @@ -4976,6 +5382,15 @@ static const struct btf_kfunc_id_set common_kfunc_set = {
->  	.set   = &common_btf_ids,
->  };
->  
-> +BTF_KFUNCS_START(syscall_btf_ids)
-> +BTF_ID_FLAGS(func, bpf_thread_wq_init, KF_SLEEPABLE)
-> +BTF_KFUNCS_END(syscall_btf_ids)
-> +
-> +static const struct btf_kfunc_id_set syscall_kfunc_set = {
-> +	.owner = THIS_MODULE,
-> +	.set   = &syscall_btf_ids,
-> +};
-> +
->  static int __init kfunc_init(void)
->  {
->  	int ret;
-> @@ -4998,6 +5413,7 @@ static int __init kfunc_init(void)
->  	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_STRUCT_OPS, &generic_kfunc_set);
->  	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SYSCALL, &generic_kfunc_set);
->  	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_CGROUP_SKB, &generic_kfunc_set);
-> +	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SYSCALL, &syscall_kfunc_set);
->  	ret = ret ?: register_btf_id_dtor_kfuncs(generic_dtors,
->  						  ARRAY_SIZE(generic_dtors),
->  						  THIS_MODULE);
-> @@ -5035,4 +5451,6 @@ void bpf_map_free_internal_structs(struct bpf_map *map, void *val)
->  		bpf_obj_free_workqueue(map->record, val);
->  	if (btf_record_has_field(map->record, BPF_TASK_WORK))
->  		bpf_obj_free_task_work(map->record, val);
-> +	if (btf_record_has_field(map->record, BPF_THREAD_WQ))
-> +		bpf_obj_free_thread_wq(map->record, val);
->  }
-> diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-> index 8d111da88655..dea14823bacd 100644
-> --- a/kernel/bpf/syscall.c
-> +++ b/kernel/bpf/syscall.c
-> @@ -688,6 +688,7 @@ void btf_record_free(struct btf_record *rec)
->  		case BPF_REFCOUNT:
->  		case BPF_WORKQUEUE:
->  		case BPF_TASK_WORK:
-> +		case BPF_THREAD_WQ:
->  			/* Nothing to release */
->  			break;
->  		default:
-> @@ -742,6 +743,7 @@ struct btf_record *btf_record_dup(const struct btf_record *rec)
->  		case BPF_REFCOUNT:
->  		case BPF_WORKQUEUE:
->  		case BPF_TASK_WORK:
-> +		case BPF_THREAD_WQ:
->  			/* Nothing to acquire */
->  			break;
->  		default:
-> @@ -807,6 +809,13 @@ void bpf_obj_free_task_work(const struct btf_record *rec, void *obj)
->  	bpf_task_work_cancel_and_free(obj + rec->task_work_off);
->  }
->  
-> +void bpf_obj_free_thread_wq(const struct btf_record *rec, void *obj)
-> +{
-> +	if (WARN_ON_ONCE(!btf_record_has_field(rec, BPF_THREAD_WQ)))
-> +		return;
-> +	bpf_thread_wq_cancel_and_free(obj + rec->thread_wq_off);
-> +}
-> +
->  void bpf_obj_cancel_fields(struct bpf_map *map, void *obj)
->  {
->  	bpf_map_free_internal_structs(map, obj);
-> @@ -839,6 +848,9 @@ void bpf_obj_free_fields(const struct btf_record *rec, void *obj)
->  		case BPF_TASK_WORK:
->  			bpf_task_work_cancel_and_free(field_ptr);
->  			break;
-> +		case BPF_THREAD_WQ:
-> +			bpf_thread_wq_cancel_and_free(field_ptr);
-> +			break;
->  		case BPF_KPTR_UNREF:
->  			WRITE_ONCE(*(u64 *)field_ptr, 0);
->  			break;
-> @@ -1265,7 +1277,7 @@ static int map_check_btf(struct bpf_map *map, struct bpf_token *token,
->  	map->record = btf_parse_fields(btf, value_type,
->  				       BPF_SPIN_LOCK | BPF_RES_SPIN_LOCK | BPF_TIMER | BPF_KPTR | BPF_LIST_HEAD |
->  				       BPF_RB_ROOT | BPF_REFCOUNT | BPF_WORKQUEUE | BPF_UPTR |
-> -				       BPF_TASK_WORK,
-> +				       BPF_TASK_WORK | BPF_THREAD_WQ,
->  				       map->value_size);
->  	if (!IS_ERR_OR_NULL(map->record)) {
->  		int i;
-> @@ -1299,6 +1311,7 @@ static int map_check_btf(struct bpf_map *map, struct bpf_token *token,
->  			case BPF_TIMER:
->  			case BPF_WORKQUEUE:
->  			case BPF_TASK_WORK:
-> +			case BPF_THREAD_WQ:
->  				if (map->map_type != BPF_MAP_TYPE_HASH &&
->  				    map->map_type != BPF_MAP_TYPE_RHASH &&
->  				    map->map_type != BPF_MAP_TYPE_LRU_HASH &&
-> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-> index 7439afdc851a..4d713bb767e0 100644
-> --- a/kernel/bpf/verifier.c
-> +++ b/kernel/bpf/verifier.c
-> @@ -477,6 +477,7 @@ static bool is_async_callback_calling_kfunc(u32 btf_id);
->  static bool is_callback_calling_kfunc(u32 btf_id);
->  
->  static bool is_bpf_wq_set_callback_kfunc(u32 btf_id);
-> +static bool is_bpf_thread_wq_set_callback_kfunc(u32 btf_id);
->  static bool is_task_work_add_kfunc(u32 func_id);
->  
->  static bool is_sync_callback_calling_function(enum bpf_func_id func_id)
-> @@ -516,9 +517,11 @@ static bool is_async_cb_sleepable(struct bpf_verifier_env *env, struct bpf_insn
->  	if (bpf_helper_call(insn) && insn->imm == BPF_FUNC_timer_set_callback)
->  		return false;
->  
-> -	/* bpf_wq and bpf_task_work callbacks are always sleepable. */
-> +	/* bpf_wq, bpf_thread_wq and bpf_task_work callbacks are always sleepable. */
->  	if (bpf_pseudo_kfunc_call(insn) && insn->off == 0 &&
-> -	    (is_bpf_wq_set_callback_kfunc(insn->imm) || is_task_work_add_kfunc(insn->imm)))
-> +	    (is_bpf_wq_set_callback_kfunc(insn->imm) ||
-> +	     is_bpf_thread_wq_set_callback_kfunc(insn->imm) ||
-> +	     is_task_work_add_kfunc(insn->imm)))
->  		return true;
->  
->  	verifier_bug(env, "unhandled async callback in is_async_cb_sleepable");
-> @@ -1871,7 +1874,10 @@ static void refine_map_lookup_value(struct bpf_reg_state *reg)
->  		 * as UID of the inner map.
->  		 */
->  		if (btf_record_has_field(map->inner_map_meta->record,
-> -					 BPF_TIMER | BPF_WORKQUEUE | BPF_TASK_WORK))
-> +					 BPF_TIMER |
-> +					 BPF_WORKQUEUE |
-> +					 BPF_TASK_WORK |
-> +					 BPF_THREAD_WQ))
->  			reg->map_uid = reg->id;
->  	} else if (map->map_type == BPF_MAP_TYPE_XSKMAP) {
->  		reg->type = PTR_TO_XDP_SOCK | maybe_null;
-> @@ -7243,6 +7249,9 @@ static int check_map_field_pointer(struct bpf_verifier_env *env, struct bpf_reg_
->  	case BPF_WORKQUEUE:
->  		field_off = map->record->wq_off;
->  		break;
-> +	case BPF_THREAD_WQ:
-> +		field_off = map->record->thread_wq_off;
-> +		break;
->  	default:
->  		verifier_bug(env, "unsupported BTF field type: %s\n", struct_name);
->  		return -EINVAL;
-> @@ -10940,6 +10949,7 @@ enum {
->  	KF_ARG_WORKQUEUE_ID,
->  	KF_ARG_RES_SPIN_LOCK_ID,
->  	KF_ARG_TASK_WORK_ID,
-> +	KF_ARG_THREAD_WQ_ID,
->  	KF_ARG_PROG_AUX_ID,
->  	KF_ARG_TIMER_ID
->  };
-> @@ -10953,6 +10963,7 @@ BTF_ID(struct, bpf_rb_node)
->  BTF_ID(struct, bpf_wq)
->  BTF_ID(struct, bpf_res_spin_lock)
->  BTF_ID(struct, bpf_task_work)
-> +BTF_ID(struct, bpf_thread_wq)
->  BTF_ID(struct, bpf_prog_aux)
->  BTF_ID(struct, bpf_timer)
->  
-> @@ -11013,6 +11024,11 @@ static bool is_kfunc_arg_task_work(const struct btf *btf, const struct btf_param
->  	return __is_kfunc_ptr_arg_type(btf, arg, KF_ARG_TASK_WORK_ID);
->  }
->  
-> +static bool is_kfunc_arg_thread_wq(const struct btf *btf, const struct btf_param *arg)
-> +{
-> +	return __is_kfunc_ptr_arg_type(btf, arg, KF_ARG_THREAD_WQ_ID);
-> +}
-> +
->  static bool is_kfunc_arg_res_spin_lock(const struct btf *btf, const struct btf_param *arg)
->  {
->  	return __is_kfunc_ptr_arg_type(btf, arg, KF_ARG_RES_SPIN_LOCK_ID);
-> @@ -11132,6 +11148,7 @@ enum kfunc_ptr_arg_type {
->  	KF_ARG_PTR_TO_IRQ_FLAG,
->  	KF_ARG_PTR_TO_RES_SPIN_LOCK,
->  	KF_ARG_PTR_TO_TASK_WORK,
-> +	KF_ARG_PTR_TO_THREAD_WQ,
->  };
->  
->  enum special_kfunc_type {
-> @@ -11178,6 +11195,7 @@ enum special_kfunc_type {
->  	KF_bpf_percpu_obj_drop,
->  	KF_bpf_throw,
->  	KF_bpf_wq_set_callback,
-> +	KF_bpf_thread_wq_set_callback,
->  	KF_bpf_preempt_disable,
->  	KF_bpf_preempt_enable,
->  	KF_bpf_iter_css_task_new,
-> @@ -11258,6 +11276,7 @@ BTF_ID(func, bpf_percpu_obj_drop_impl)
->  BTF_ID(func, bpf_percpu_obj_drop)
->  BTF_ID(func, bpf_throw)
->  BTF_ID(func, bpf_wq_set_callback)
-> +BTF_ID(func, bpf_thread_wq_set_callback)
->  BTF_ID(func, bpf_preempt_disable)
->  BTF_ID(func, bpf_preempt_enable)
->  #ifdef CONFIG_CGROUPS
-> @@ -11460,6 +11479,8 @@ get_kfunc_arg_type(struct bpf_verifier_env *env, struct bpf_call_arg_meta *meta,
->  		arg_type = KF_ARG_PTR_TO_TIMER;
->  	else if (is_kfunc_arg_task_work(meta->btf, &args[arg]))
->  		arg_type = KF_ARG_PTR_TO_TASK_WORK;
-> +	else if (is_kfunc_arg_thread_wq(meta->btf, &args[arg]))
-> +		arg_type = KF_ARG_PTR_TO_THREAD_WQ;
->  	else if (is_kfunc_arg_irq_flag(meta->btf, &args[arg]))
->  		arg_type = KF_ARG_PTR_TO_IRQ_FLAG;
->  	else if (is_kfunc_arg_res_spin_lock(meta->btf, &args[arg]))
-> @@ -11852,6 +11873,7 @@ static bool is_sync_callback_calling_kfunc(u32 btf_id)
->  static bool is_async_callback_calling_kfunc(u32 btf_id)
->  {
->  	return is_bpf_wq_set_callback_kfunc(btf_id) ||
-> +	       is_bpf_thread_wq_set_callback_kfunc(btf_id) ||
->  	       is_task_work_add_kfunc(btf_id);
->  }
->  
-> @@ -11866,6 +11888,11 @@ static bool is_bpf_wq_set_callback_kfunc(u32 btf_id)
->  	return btf_id == special_kfunc_list[KF_bpf_wq_set_callback];
->  }
->  
-> +static bool is_bpf_thread_wq_set_callback_kfunc(u32 btf_id)
-> +{
-> +	return btf_id == special_kfunc_list[KF_bpf_thread_wq_set_callback];
-> +}
-> +
->  static bool is_callback_calling_kfunc(u32 btf_id)
->  {
->  	return is_sync_callback_calling_kfunc(btf_id) ||
-> @@ -12211,6 +12238,7 @@ static int check_kfunc_args(struct bpf_verifier_env *env, struct bpf_call_arg_me
->  		case KF_ARG_PTR_TO_WORKQUEUE:
->  		case KF_ARG_PTR_TO_TIMER:
->  		case KF_ARG_PTR_TO_TASK_WORK:
-> +		case KF_ARG_PTR_TO_THREAD_WQ:
->  		case KF_ARG_PTR_TO_IRQ_FLAG:
->  		case KF_ARG_PTR_TO_RES_SPIN_LOCK:
->  			break;
-> @@ -13158,6 +13186,16 @@ static int check_kfunc_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
->  		}
->  	}
->  
-> +	if (is_bpf_thread_wq_set_callback_kfunc(meta.func_id)) {
-> +		err = push_callback_call(env, insn, insn_idx, meta.subprogno,
-> +					 set_timer_callback_state);
-> +		if (err) {
-> +			verbose(env, "kfunc %s#%d failed callback verification\n",
-> +				func_name, meta.func_id);
-> +			return err;
-> +		}
-> +	}
-> +
->  	if (is_task_work_add_kfunc(meta.func_id)) {
->  		err = push_callback_call(env, insn, insn_idx, meta.subprogno,
->  					 set_task_work_schedule_callback_state);
-> diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-> index 38f8d9df8fbc..164e069c7576 100644
-> --- a/kernel/cgroup/cgroup.c
-> +++ b/kernel/cgroup/cgroup.c
-> @@ -3042,6 +3042,19 @@ int cgroup_attach_task(struct cgroup *dst_cgrp, struct task_struct *leader,
->  	return ret;
->  }
->  
-> +int cgroup_kthread_attach(struct cgroup *cgrp, struct task_struct *task)
-> +{
-> +	int ret;
-> +
-> +	cgroup_lock();
-> +	cgroup_attach_lock(CGRP_ATTACH_LOCK_GLOBAL, NULL);
-> +	ret = cgroup_attach_task(cgrp, task, false);
-> +	cgroup_attach_unlock(CGRP_ATTACH_LOCK_GLOBAL, NULL);
-> +	cgroup_unlock();
-> +
-> +	return ret;
-> +}
-> +
->  struct task_struct *cgroup_procs_write_start(char *buf, bool threadgroup,
->  					     enum cgroup_attach_lock_mode *lock_mode)
->  {
-> diff --git a/tools/testing/selftests/bpf/bpf_experimental.h b/tools/testing/selftests/bpf/bpf_experimental.h
-> index ff37ae5a113d..ea905ea5603c 100644
-> --- a/tools/testing/selftests/bpf/bpf_experimental.h
-> +++ b/tools/testing/selftests/bpf/bpf_experimental.h
-> @@ -351,6 +351,13 @@ extern void bpf_iter_css_destroy(struct bpf_iter_css *it) __weak __ksym;
->  extern int bpf_wq_init(struct bpf_wq *wq, void *p__map, unsigned int flags) __weak __ksym;
->  extern int bpf_wq_start(struct bpf_wq *wq, unsigned int flags) __weak __ksym;
->  
-> +struct bpf_thread_wq;
-> +extern int bpf_thread_wq_init(struct bpf_thread_wq *twq, void *p__map,
-> +			      __u64 cgroup_id,
-> +			      unsigned int flags) __weak __ksym;
-> +extern int bpf_thread_wq_start(struct bpf_thread_wq *twq,
-> +			       unsigned int flags) __weak __ksym;
-> +
->  struct bpf_iter_kmem_cache;
->  extern int bpf_iter_kmem_cache_new(struct bpf_iter_kmem_cache *it) __weak __ksym;
->  extern struct kmem_cache *bpf_iter_kmem_cache_next(struct bpf_iter_kmem_cache *it) __weak __ksym;
-
+That's OK, I pasted it in there.
 
