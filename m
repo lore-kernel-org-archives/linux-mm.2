@@ -4,78 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED291C5B56A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 17:10:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17628C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 17:12:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 025B46B007B; Tue, 11 Aug 2026 13:10:36 -0400 (EDT)
+	id D48016B0095; Tue, 11 Aug 2026 13:12:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3EBA6B0095; Tue, 11 Aug 2026 13:10:35 -0400 (EDT)
+	id D1F3B6B0096; Tue, 11 Aug 2026 13:12:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E589B6B00A0; Tue, 11 Aug 2026 13:10:35 -0400 (EDT)
+	id C0E156B009B; Tue, 11 Aug 2026 13:12:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C2A6D6B007B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:10:35 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4E6B014014C
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:10:35 +0000 (UTC)
-X-FDA: 85089627630.13.A63F6A8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 77FD940004
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:10:33 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I7X2++rf;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 9A7096B0095
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:12:07 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3A978A12F7
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:12:07 +0000 (UTC)
+X-FDA: 85089631494.12.EFB8260
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7F0FE40016
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:12:05 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C5fsfUyt;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786468325;
+	b=Q3eVq6Zb2SyIiZlmQH8yqh7qK1kS1uiEQMIzer865cX9zD8oFga7EiwVx0lFRg2V4W7SR7
+	iitculfdngUnkl1Hg2a6Hoa15YuwWoM/qVanZhmQsEqVnTaBoMTAJq7X+BzY3KKLjRBOiu
+	HpjbbDZgDTl666prZnhWII0Oorlez60=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C5fsfUyt;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786468233;
+	s=arc-20220608; t=1786468325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MCBNxDcN3O2GpPTZ53sd40013NC+rNNPo2MxMRjb1tM=;
-	b=2/dL3sffctLKY+JIF0RTZpaNu4b1V+p998dtiDgs/hu8yd+n7JnybN5nDCxBRvY1s+jjfO
-	vJEYACpBRQ7WrHObtk0LJGQxHgP1632SVNnVqM3yJURg+tag3Qg1ewJ13xNNbUtpszp2sL
-	Y3hJOg+5wZOsOFg6M80Xqdl5EUvds+M=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786468233;
-	b=kfK9D1UQUuKvz05qM5SPku9YpsxfxV2XtGYMr8SnSA6hoAGLuKmIbcgU4YXH1HBUF7JeoN
-	dwlmCAnHZROSCR94EtuJtz2Sdjopz9yFH+5MJDvWshzQ2Sb3bUR+B4matnocOb3m0LvOyW
-	1kmJVE+XwZqJYLVfBJvOmzyUuv00mnA=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I7X2++rf;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=pZIR+kTb1vaEP0SOLFxQlJy7QQ3zoJxZgV/8LQbwkY8=;
+	b=vBaPH2RgEu/OQYh9rKgU5h90HRz/mUkie/MyLnwOPMWiYSPJQK8AT1W9FdKMk8RXGj67wB
+	LFnQ72iAb5mxJ9X+pU34SofyCZFXMsdkvFuUpHKXxNbrXOr7OO2cwQQ5dh8o3NGUyfgj1W
+	NZeA1n+kHiFq9RStZIZDQuowV/gIrkM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9C7884179C;
-	Tue, 11 Aug 2026 17:10:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F401F000E9;
-	Tue, 11 Aug 2026 17:10:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F05BA600BB;
+	Tue, 11 Aug 2026 17:12:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D12031F00A3A;
+	Tue, 11 Aug 2026 17:12:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786468232;
-	bh=MCBNxDcN3O2GpPTZ53sd40013NC+rNNPo2MxMRjb1tM=;
+	s=k20260515; t=1786468324;
+	bh=pZIR+kTb1vaEP0SOLFxQlJy7QQ3zoJxZgV/8LQbwkY8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=I7X2++rfnldfSGFK+xk3u9oWU2zI6ibiB9i1kKaeSqwd52oaecMd1kwAbXY5ClATB
-	 zsgKLAKZbdRi2FdBGdkUkT5Q7bPpdvLJGBI6m0v60qeglppT8ylvq34hxD4Kh+QC8p
-	 87X6jBXozMN+0rikYQHRm2O69QcbDA5hZmSP/8ZW2yxo136a6K0GjihIcqoWTGjm/n
-	 ndEZ2Ak2332uGblLtgv4TQjTDlMntknShroH+5t5JD2Jj29EWHH1vKOsTzO7qJwKMr
-	 pFsX3EOuy6r3UEjYexlgJPClsObzPAx7lZxY4Kr6UArsDn5s3yySzIp+VrDda2RW+r
-	 ouUysHo7dNA2w==
-Message-ID: <26ca1c70-8526-42e4-82f3-0de90ba773ce@kernel.org>
-Date: Tue, 11 Aug 2026 19:10:27 +0200
+	b=C5fsfUytqsw6kTo91U7cmiAYC9oANteHMadRxEPieLDJ0gdltUPlCQ1AZ/vLa6UQj
+	 Qh1BHXHkEqSs3eqSqsvhlAKJbGayJ8POlvdEkBVfkShvr56pdl6W6PnmPZ9psH0xt+
+	 5aIYPYDajwYV7zeokBSfCoabO+L9+nDnpVa0hxLZOcDhjaa8LHgA8LNWlpDBbFEBKA
+	 kO5PZjC8W8Ud9xQv6Op5YXQ/D1ApixDbuLl2QhjgnOff7enPjil3aOTN3bkc73ptyc
+	 4PatbiL0ST/QfckmNFnsPQwtQR1P4W6nGTt32raaoQOhD2K/tJ2qTd+rEJvFFieEbM
+	 QrCBAqGXwlu4w==
+Message-ID: <b27f03ea-414a-4ae5-9649-2a05398fe082@kernel.org>
+Date: Tue, 11 Aug 2026 19:11:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mm/pagewalk: fix stale walk->action escaping
- walk_pmd_range()
+Subject: Re: [PATCH v2 2/2] selftests/mm: add stale walk->action race test
 To: Hyunwoo Kim <imv4bel@gmail.com>, akpm@linux-foundation.org,
  ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
  surenb@google.com, mhocko@suse.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20260811161949.3879321-1-imv4bel@gmail.com>
- <20260811161949.3879321-2-imv4bel@gmail.com>
+ <20260811161949.3879321-3-imv4bel@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260811161949.3879321-2-imv4bel@gmail.com>
+In-Reply-To: <20260811161949.3879321-3-imv4bel@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 3rktm48fyubxqw53onbu7x6g7aq98r5h
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 77FD940004
-X-HE-Tag: 1786468233-46778
-X-HE-Meta: U2FsdGVkX18x5GrQlRXrESJ1G9nQyG9f+57DFbNaifmrzBlGo7c/0VzWeE9yBB/TU25ggifPepbGoInx55QjoW/cLXYXOiTYMLLmUtLUiThwYbtHhMVnplJ7pQ9Wv+gcjek40n44ZE9IaxfnhNjC6TB5VT86s09VTIM5L9q6dYkT+v8Ts9UbRXbGux79y9nO1KNByUvg3dZttGG5zl9529EQOg7aKNGVfhLoZa8ULrqXY9+9qcQBv1yKuI08yc6fdb7IL+j9J7wMdjB2FAM8MWabj4J3EqzkVzze+7JpZ+3ua8RQKpYo71ep6mz4pBOTM2BRBSMBiB7uyB40odGeOcTC6OtW7JN9OF5xiDPDY2i4HWyrz8nBrb7iSZVEDoLM/pg/Tq4FHVuskOOdYB/LLnD8gYmz/1RMb0qclmzC6pjIZilIFfX90wlhs13ENc3LIZP3m90aQUSgidohZOwyp7uVBOZrsscdLXWHzbOWya8Wzt7tsSIDcfmUJojttus4NNHvnrFR/V0E1G9L1antGU8ALJSRQC7SM5fsasYAJd+9Hnc1RrUE/L3/npI4JB306mH/k4pGfeaE4rMwNMQTuRrkzH5OtB5BwuFwFzCnJLhe1uAytmZQ0rWyvehp5nO9MAmeDt42ETf0L1vYcVNRg0oqFce94VAgOi/tkQxm+WfSJzM+inRW6IEMpCcmURr1A4w7oxBdsbMwZe6J5KXMH8KfkwLDpigrYGeIVAVfJ1MuWoerPyZTRnC0HbUJhTjiXiJ3ifrmImMyB5HahuzVnEJ/5q4TCetoHXzn8kBhMEikZsPHytIHp7pM5e8jgd9tgT1Wx460wh781EPl27/vbuu6XdK2XsQ/EhUiamThmqNeFwfdajhdYX+TpfUlnivFjyMo4MacocWGApY2mTdCVqv+YQdsoWYMtQIL1NIukOmniyuyzdmMAGp6k0iNtvqU2Gh/068DXS8Cc3s9wo0
- y6PDV3HA
- uQrpQeBc9jXSHm7egDUUXj25n9wsBOAl/2+Way0p2B/zyBVLvYAo/+OI/ZIGhP9xWQ1VcFqrpXqDFq17+2Px5tBxYlvZGwT4sRWe/3bcy+O5txaz2v52ybePtFi7kzme5jrxJJBABFP/Ywicv9fLBj5ih+6Wby9soHb6JuJNAYBA3C5jM4aZlyVKrNL5Xyy+g1flY3Hy2nXEfbC/vjb+J8Zsqw1Jpz713iAPYBePFkIrngGIcvQn2XLXc1hEdRv34mH6n0918QZVxxirV54qKVEHfIC8SN59oWi/CZsd43tozMnmiL/gMdJaHvAM9Kx59oGoB4Ue8GPW8I6gTRhTj6Sys9Cimfn+4MzzY
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7F0FE40016
+X-Stat-Signature: fjdc319dirt44xzxk47anks1hdf6j55e
+X-HE-Tag: 1786468325-111939
+X-HE-Meta: U2FsdGVkX19NShoWKrPZFvVUCJrpdupogvqjGV3Iy5yEcYPjSY8M9yhuUsXP+ziLe24eQ5+BSZunJ6R/eGcWBb0smBnsM6vQu03H2/nVmDUyDet9zFFhQIqWK26hTzoti7aUgZYLirJP3QZRbuBmej/qYXlkJ/oM9VzwBjnZqeIPcVIWj8AdgCAeR3Hwf+YHjoQAtwWArUCc0Rttsa7Wf8LylOJDpAkq/jYjWx/dS8QvU16AEI7zCOWPIc++bGWnGODtzOUpFuPNByF78xWv232fuqPhLY8743nzOUA07Ap0Z1TpUFMEnY63QZ9mzfNYFIrXyiCbyrmzM36n8o2LXjlHpW9t7IyAXx1GOZj7RqGXf9gig+QiVnuZisncrOGUbCrBstYFYefykw0o+G9+Yk7b6KgEaNWfvuFODhiT2g36WYnpAF7YKm8Mb2qZY6IKsw9fjCP0uy9c5mEm/9EfxCUV0JpI74AxEem7WDee9SoPACWIyhbdHfvQZihFedkTtez+LIrcIPrFOOVCApyqbIWQmM6wullmbaTTe66pW4VQ18yPFyOy5TeBUmsZvomovXiWJzqFCal6mQCq4u9S2rILfEA3R8VvuSqe6PCGxPme7HvuNtEVzpLWl3ZPIZoQVJkUMU+jfW5d64IxKrtgFF3JMowxzUm0imHGN5G7hk4v4S5476huyYyPceE1CgTvJ9OKsX5QzdiWYxjv1KrzRMw8jW8gZazyKLYNKne0hxngKN1bYXRta/4Cb6O4L/E3VvnAvQp1PIbL5qyHipX4sc+gKmlOTKkFgo64dAq1BuiIe789kE1YAmuVPwY540PPDn57kLc3sWvI5DEIT+1RXzk1nqCyB5xfw0Ert1/uPspJm/gSwCty8KsHBwwWG2XkDXeUuo1XJz5Bik/x9Hqat9fFeyQU//jejeVA3rOaKSx/N6VlVyJXIw7p3ioS4M2JDoC1xHJpOYH3TRgBYgu
+ U3dbxYPZ
+ eb+JIUHWMqycITqFeIlHpjKT0lEkvUmxR8w/hEvkqR2mYciiOvGT0lx+1aXQAiYaMkCVWmkmBlaGkSNT1wUo+GTcFSJybPE//Fef1MEFF1j0f/Fu8DjiEJemRM+h9/FRUZnGKOiXLX+itPZPp8/cFvr9+Bnqhe9m7R5wcgi7dGmMiDkE1I+TwUzJC6PBq2vU26UcTpa0XUR6rEwirBt5IWcsoi8WM2Hrwr6YecvMQ/xMFTMEOlkbJH1xlAqnsvYzE9lxLvHypAkl3ifg9iBHjWQs8+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,46 +140,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/11/26 18:18, Hyunwoo Kim wrote:
-> If ->pmd_entry() sets walk->action = ACTION_AGAIN, the pmd_none()
-> check is retried. The PMD entry may be cleared at the point of retry.
+> The added pagewalk_race_test maps two PMDs and faults in 2MB of the first
+> one.  A second thread then faults in the second PMD and drops it again with
+> MADV_DONTNEED in a loop, while the main thread reads Rss for the mapping
+> from /proc/self/smaps.
 > 
-> In this case, if walk->ops->install_pte is not specified, the code
-> continues to the next PMD entry in the range without resetting
-> walk->action to ACTION_SUBTREE.
+> Clearing the second PMD while smaps_pte_range() runs leaves walk->action
+> erroneously set to ACTION_AGAIN, which causes the PUD walk to be retried,
+> so the first PMD is counted twice and Rss comes out twice as large as what
+> was faulted in.
 > 
-> This leaves walk->action erroneously set to ACTION_AGAIN, which is
-> incorrect.
+> mincore() is the caller named in the fix, but the second walk writes past
+> the length mincore() copies back, so it cannot be seen from userspace
+> there.  smaps reports what the callbacks counted, so the duplicate shows up
+> in Rss.
 > 
-> This was incorrect but not problematic up until commit 3b89863c3fa4
-> ("mm/pagewalk: fix race between concurrent split and refault")
-> which updated walk_pud_range() to check for walk->action ==
-> ACTION_AGAIN upon walk_pmd_range()'s return, causing the PUD walk
-> to be retried.
+> A failure can only come from the kernel counting the same page twice, so
+> missing the race is harmless.  On an unfixed kernel the test fails after a
+> few hundred reads at most and takes about half a second.
 > 
-> In this case this results in duplicate walk callbacks being
-> invoked, which is erroneous and will break any caller that is not
-> idempotent with respect to this (and waste time for those which
-> are).
-> 
-> A specific example of this breaking things is mincore which walks
-> an internal cursor data structure a byte at a time on assumption
-> that page table entry callbacks are called only once for each
-> entry.
-> 
-> Fix the problem by resetting walk->action to ACTION_SUBTREE prior
-> to the none check.
-> 
-> The pattern also exists in walk_pud_range() so fix it there too.
-> 
-> This issue was found through AI-based fuzzing.
-> 
-> Fixes: 3b89863c3fa4 ("mm/pagewalk: fix race between concurrent split and refault")
-> Cc: stable@vger.kernel.org
 > Assisted-by: Claude:claude-opus-5
 > Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
 > ---
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+I'm sorry, but I don't consider such a specialized reproducer for a problem we
+hit once a good fit for a selftest.
+
+Or am I missing something, that this here is more generic?
 
 -- 
 Cheers,
