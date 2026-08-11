@@ -4,83 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9ABDC5AC67
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 12:40:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15A4FC5B56A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 12:44:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B32566B008C; Tue, 11 Aug 2026 08:40:18 -0400 (EDT)
+	id 2AFD76B0096; Tue, 11 Aug 2026 08:44:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE2CC6B0092; Tue, 11 Aug 2026 08:40:18 -0400 (EDT)
+	id 260D36B0098; Tue, 11 Aug 2026 08:44:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 984886B0093; Tue, 11 Aug 2026 08:40:18 -0400 (EDT)
+	id 152606B0099; Tue, 11 Aug 2026 08:44:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EBF26B008C
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 08:40:18 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 46245403F7
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:40:16 +0000 (UTC)
-X-FDA: 85088946432.28.A71D93A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9D56120011
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:40:14 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KGt+2tWO;
-	spf=pass (imf13.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786452014;
-	b=1fqk9BVTCMh+o3c+KQ0Xv/Zu62Su6yQ9XO8YJ50SkYc/DQScdInDzF7gkND7DwNB20zQjE
-	daM08mws98GV2D7a8sN+/di5Ti56/sdCfcxRs7KLCq4k4WUFuIyATySDq9Pqo4FNPyIzVw
-	Jqll2TK13ZnLxL856fl2A17HAr1jQYE=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KGt+2tWO;
-	spf=pass (imf13.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E3F6A6B0096
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 08:44:53 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D830E120411
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:44:52 +0000 (UTC)
+X-FDA: 85088958024.17.7EE562A
+Received: from relay.hostedemail.com (unirelay10 [10.200.18.73])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 1E7F6180009
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:44:50 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786452014;
+	s=arc-20220608; t=1786452291;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d5KyEGK2gDTZnR9ONWdkjRYGPSDM1pP3aSec7OaL0No=;
-	b=eit8mkhfdMChI/gBi6I6xicEGDPiDAqPqaHqydeUnDG6qMxSFIZCICD8NcgFO4H7nsJZkC
-	TKRYa7Nr2S9etkQqOnFsCJ3gG+q4YR0ruftM7ZtOt4yNVrYVzYiERTZ2kCm3eLwsySp0Em
-	ONThgUM9FvHmCcw0V6sQ+VWKWc5cRyU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2BD36600AF;
-	Tue, 11 Aug 2026 12:40:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F374B1F000E9;
-	Tue, 11 Aug 2026 12:40:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786452013;
-	bh=d5KyEGK2gDTZnR9ONWdkjRYGPSDM1pP3aSec7OaL0No=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=KGt+2tWOShDWT53xguh5grN6IERZuI/BcSokJh/qo9xHrDHp71T2lTEV8vQI3kKH8
-	 sOujFReeKMeaVoSrS8UVExf60Ru+jd3nZucEoHFqgKlr3oD/x2eFor3QT9EDx/pSSG
-	 b7Gp+UNTJ9jd9tURmxMw6E92iQrsfM6GTEOr5vI6JAgRDOz3vUAmAF5UgRQOUY3DQv
-	 Eq7LdS74jTomov+Lqtp3eqg9I4dlCIxLq7zHhX+wOvYT7jkRzrvezC23saJp85LF4h
-	 il/alnH9MhPAE+csaCRah1/5UqNT05pglcNV7hD/nL/WJz1sSUlW4Z56sJTnG/R0ex
-	 UWmi9hh6E70KQ==
-Content-Type: multipart/mixed; boundary="===============4081865467468875899=="
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ntNh+Y1bgklM+/gMUnlAjEuI28WBEA7wmiH0UCF3kD4=;
+	b=nHpOv+9v8v874yCanUqP9/u9/MEbFhjoYADvqIxZbPd9NFQBVtVN+k+T1xq0GqtY2kCEuS
+	3CnbXhmUCl36qsdSmp7jW8QD34Vd3LZ+iK0pKNOvjqWPG1gv3GMFkEVj9eoZK25jfJrpKp
+	rv1eByav9WXxOcLVDnOam2Yp/Xklo6c=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786452291;
+	b=2wIEDo5dg2y3NEgsFSLQlBJ4GcrWiSl5AjhNDBK4bhu4/CxXvEX92Ir/hOu+BhQNGzLmO9
+	bpRPHiR6piosY7mawt64hEXC4PHKOMm+kAvA5N6f+iRzx+HaLhwyGLp8KhNc7rAxMIPCJi
+	8Yj8V2kkIRok04eEMVbSwh0Q6VQmnXY=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	none
+Received: from omf10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BC4F9C03D7;
+	Tue, 11 Aug 2026 12:44:48 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf10.hostedemail.com (Postfix) with ESMTPA id 4C25530;
+	Tue, 11 Aug 2026 12:44:45 +0000 (UTC)
+Date: Tue, 11 Aug 2026 08:44:56 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: gao xu <gaoxu2@honor.com>, "David Hildenbrand (Arm)" <david@kernel.org>,
+ Xiang Gao <gxxa03070307@gmail.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, "liam@infradead.org"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, "linux-trace-kernel@vger.kernel.org"
+ <linux-trace-kernel@vger.kernel.org>, "linux-mm@kvack.org"
+ <linux-mm@kvack.org>, "linux-fsdevel@vger.kernel.org"
+ <linux-fsdevel@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, Xiang Gao <gaoxiang17@xiaomi.com>
+Subject: Re: [PATCH] tracing: report buffer memory in /proc/meminfo
+Message-ID: <20260811084456.4699daf8@gandalf.local.home>
+In-Reply-To: <anrPJN-V8K4fhGzZ@lucifer>
+References: <20260810094025.136705-1-gaoxiang17@xiaomi.com>
+	<69df3080-a719-4131-a247-62bf47bda8a6@kernel.org>
+	<anm0SMuVpBz7wLac@lucifer>
+	<20260810105710.6ee5e493@gandalf.local.home>
+	<9bd98f51abd44d81a569d95e907070c6@honor.com>
+	<anrPJN-V8K4fhGzZ@lucifer>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Message-Id: <5c189189e30671eaac05435772319bfeec1c1bf5d8a21a4f7e4aa95f0e88910a@mail.kernel.org>
-In-Reply-To: <20260811112154.94053-3-tasos.papagiannnis@gmail.com>
-References: <20260811112154.94053-3-tasos.papagiannnis@gmail.com>
-Subject: Re: [PATCH bpf-next 2/5] bpf: Add user memory access kfuncs for mm_struct
-From: bot+bpf-ci@kernel.org
-To: tasos.papagiannnis@gmail.com,bpf@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,linux-mm@kvack.org,akpm@linux-foundation.org,david@kernel.org,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,kpsingh@kernel.org,matt@bobrowski.net,song@kernel.org,tasos.papagiannnis@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Tue, 11 Aug 2026 12:40:12 +0000 (UTC)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9D56120011
-X-Stat-Signature: jxjtayhjkuj8sc6iairf75mapbipyb9f
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19HxeI945sFhSHFXG6kqaLmhtmw1vOhsII=
+X-HE-Meta: U2FsdGVkX1/QjJUC/xnbXiOaV/S1Xe/nUTI/+y2jkEBo7+9ZhQxZh0f+Ysv2BBzu+vo7p+MSGyQwxfM006wwHKxG+1O4q65prgZZpDF2KqMTVadlOnu4ZjfkyTTIPY0U8uEsw2lPcpQ1bV8bPeyqrfCTrG+jj/EdbXoMsPh1MOYvCRaslHcG/WJC8MY0nztbI4pRAVrWT8i6DgrcC/yobtfcd4fHvTeFy2MMVcCyi8KAgTi9fnyB4/6DJatcF/7hrYHaTg+V2K5jmJR77kgPiCDaFDyIjePLuB/rNEz8/NZDZkFUgPy82Q6Fs598C/6R/iSLMOSmCBkukzUK5n7kijLObhY1x3eQ
+X-HE-Tag-Orig: 1786452285-923997
+X-Rspamd-Server: rspam08
+X-Stat-Signature: wokwckj86gfnu3ccfwaiatu7kxoxoetd
 X-Rspam-User: 
-X-HE-Tag: 1786452014-836282
-X-HE-Meta: U2FsdGVkX1+9aTLNHIjXIxaRJQtJah6Eb+eAxbB2nvfLA6bZa2/ifHufjM4wMHvTsRU2Q2ShbLZejo9ycqGcUmwVVLgLzxXAyicEQZRVZMhG2R5S7TtlmR6g0IHook2Fc6DJ4foVSdP4TUQU396mHFrog8afRkiXUgpEBwJ4+g9jbuGR5/ogPTFUDx2mJNtnYYMX5qrJR7rxP37jKRvk1GcdKM0r6mguak3mD2cRo+3Vh7erLtQGf7MjSQhyVMxk2iQPM9xk+PM96A+2cs4NMTMqQ4+4ndTHY3NQOd7adT6Cv2w6CYQCKEmj/Qz0IHoAeDqyirGuejGe5orQeUxx8reyM3QEX0HwH0vv41ukPWU5OdQEl100kgsSDbL3i0tblZWMNVcM35DzR/hWk+w1TdR8M1gAPRXz5BlzLH+hLtchPF3+jKa2nHghTdzOvzxdNTn9HFsoXlDHoOT9AR39ucU/e9ivunhkl5SsXlLEhvE0cukAdud2r9iLO88/enU8lcSOP7PfaboGm9pARTX9GnDInGBpLdgnE6btIrpzvTMDU3VubEUZuKKurj0bI7p2B2hcaqZYPNKPWIFq7QxrR3xNI/cA80EIkYkKmZ6CMqgTmxOJx8NIzxobb0BdlIc3iUo+jvCYy5TwuAo2BxRFX5Ss0oExwyi6ftwfOT3dl+B974Xj+27xviZpITclrQ0PSeiOlDJT33jdB0eSyTvs8ESaF9zz6G5VBV9WDmGbp1Hrk4OI4c/Ffge/bzbPccHw9lVPp13h1nu74e7jDcUjV19o/3x/j2xrr0pEsY0Nozp1WkCPCJetomp0kLs/f81/6YPjgNdIJBwunx9WXCzqa8nkTz2YGqdrFf1vIWfufx/5+R63QMBpLxpRWb7T5TmlqULZEvODMpG1CE0VADRNjkAMKcpqByWgDRmMbx65/jw4tAAx7GOCfbOnI+A+YZfFZY+2WjiyjQRxlHoBsXy
- t9GIJES7
- kNmLJjUQM1FMRL+YNakxqhTvHp1EbJWFGaoHVU7MNCrMdh2/lYAoZ3hwXDeFx8UidIG4LxLZ7CK8f3RBGViGm0z3lQCMJz2vGJTdvG/OUieegy5oHjLO1Mgkf4OkYzn0VgY61aJW7IoysrVxM2b9HHSk1XoldUPtBiBJuSMP5XkbfckMMoOPKOlicANVSSx96rjJx/h/nnKJnmZ3nQbPH+E0fPWDCDw59xR6vnj7qz1ic/nDmvAs1bnJ4FnHgZml8NVFx0FnbdDExbm6zb4nNzere4sI6CY5/HYU+WhhEn3+qCEUEykpckJoSBsQiIG0rdeFGXJvusJW3F90gkRq9S5QtOdlPz3A0312lRcgCb41/Dm6EJO3iVKMFlI6KSNE1fHh/sLBfB4+0cndsUejn45I8J1xf+VxwGtGCaTMmaDlEFuDFwOEWlngdYflE64pxf1CFP+2xsvAFJqnrdEERG51CvSMBvT6/UFwmqC9OyVSmPHPJXJzcllgQOP+vz+6eBtGlSRcL6WkTCc4UgPIrhpnn+l3hnaBnrZ/KjOw3yzBP2C1/k9DGtNoiPgC8rvWpxCuTfhVAAHTEAsI=
+X-Rspamd-Queue-Id: 1E7F6180009
+X-HE-Tag: 1786452290-334542
+X-HE-Meta: U2FsdGVkX19KSeLCjYcN4T2EaLNmXU1ZRd+YXXIu91JZTTgtC++gy99NbFB2dA1UPyvmvLPLlwf9yaXKkmDrHNsJn4OtGXR0uKFZLV5LiClU10HnLAUz5VkgqSj+tHDEu2XyqRTmUhMmuf8KU2Qdf0JOkzZXRfp7IfgBi0EMQ4bYDvbGZHPEjMfKi2g62gTLbXOU2QsUs3Byp4KbifltPNsyLllfaPpzI1YQQY50quJuQvARTAiF80fnapgDX4R2948od54iOek5/VPeN4vfoE3pzUzaCoqNKJBS1Ro/gqVyOqEDeenij+crDWF3hSJc50vCBynK1GXqyRiCAbRYwyt7Dal8uuULCVhwwV+TBs5bdA7QPtngLGFav5I673HO3Xu+xNz1sHBlWBDWRqVX2R0YAFkf2JCk8oHKS2ZcszHwKkrRR+y8rA/FFXSMo0v/WAAR/nQOokBpvFgCYJS7migLVQWcv1W4nAVKeqxi09sk9NlraZb0t6p1aMiNVOlXDB0AuhYUd+Vhme/bCvBErvcE1KLAqDzdqVf01B5f8W6cXfN9pntD1rbm1qztLQ7IWWc2BRmkC31qRCy921Z/YyAk3S6AiJ8NzGIOpOTJPAhDGxTYW4eR3DizzM6wF6BoZddipX6qtM1A1rpNq2saZfYoGTa1oN8jnBOD8DdrfVlVcTcO4XnS80t7PogF0PcfBzfW46g3sS0IDtrRTsOcPN2opy/rMMiaqk+NOe2Klm/b24FySOP56XYXzZ/7VY0rBjSjmk2oG6mdV/V7jK0GFWyR7rH3Jg8r79P+4kI01ht/3bnnHBTctqUuflkaLXtRJMMzLaY6Sp2oMIrLKYVLzOvqRvLodW9AiRKhU9qwK2VXlkUynpFLyVej/CEvhcUUxviu2JZWUEKPaAEOS2cmD+PN5PrhlSOOGgdpPxPeeKBzI3ENEdgHWxMsohAw6JSzafmCOZ/NjXQHWnvtHfA
+ l5MOV0a7
+ 4IATrid3qETr72oy4LUGxtDkvF9jlwjr2rVK2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,117 +96,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============4081865467468875899==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-> Register both kfuncs with the common BPF_EVENTS kfunc set and mark them
-
-This isn't a bug, but could the changelog be more precise here? The
-kfuncs go into common_btf_ids, which is registered for
-BPF_PROG_TYPE_UNSPEC, so they are reachable from any sleepable program
-rather than from a tracing-specific set.
-
-Relatedly, was gating them on CONFIG_BPF_EVENTS intentional? Nothing in
-either function depends on tracing, and the analogous
-bpf_copy_from_user_task*() kfuncs in kernel/bpf/helpers.c are available
-unconditionally.
-
-> diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-> index 6388b6b23e490..9ba3362832cd0 100644
-> --- a/kernel/bpf/helpers.c
-> +++ b/kernel/bpf/helpers.c
-> @@ -4931,6 +4931,8 @@ BTF_ID_FLAGS(func, bpf_iter_kmem_cache_destroy, KF_ITER_DESTROY | KF_SLEEPABLE)
->  BTF_ID_FLAGS(func, bpf_local_irq_save)
->  BTF_ID_FLAGS(func, bpf_local_irq_restore)
->  #ifdef CONFIG_BPF_EVENTS
-> +BTF_ID_FLAGS(func, bpf_copy_from_user_mm, KF_SLEEPABLE)
-> +BTF_ID_FLAGS(func, bpf_copy_from_user_mm_str, KF_SLEEPABLE)
->  BTF_ID_FLAGS(func, bpf_probe_read_user_dynptr)
->  BTF_ID_FLAGS(func, bpf_probe_read_kernel_dynptr)
->  BTF_ID_FLAGS(func, bpf_probe_read_user_str_dynptr)
-> diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-> index 891897f8a1b35..8931b3b2fc9d7 100644
-> --- a/kernel/trace/bpf_trace.c
-> +++ b/kernel/trace/bpf_trace.c
-> @@ -24,6 +24,7 @@
->  #include <linux/key.h>
->  #include <linux/namei.h>
->  #include <linux/file.h>
-> +#include <linux/mm.h>
->
->  #include <net/bpf_sk_storage.h>
->
-
-[ ... ]
-
-> +__bpf_kfunc int bpf_copy_from_user_mm(void *dst, u32 dst__sz,
-> +				      const void __user *unsafe_ptr__ign,
-> +				      struct mm_struct *mm, u64 flags)
-> +{
-> +	int ret;
-> +
-> +	if (unlikely(flags))
-> +		return -EINVAL;
-> +
-> +	if (unlikely(!dst__sz))
-> +		return 0;
-> +
-> +	ret = access_remote_vm(mm, (unsigned long)unsafe_ptr__ign,
-> +			       dst, dst__sz, 0);
-> +	if (ret == dst__sz)
-> +		return 0;
-> +
-> +	memset(dst, 0, dst__sz);
-> +	return ret < 0 ? ret : -EFAULT;
-> +}
-
-[ ... ]
-
-> +__bpf_kfunc int bpf_copy_from_user_mm_str(void *dst, u32 dst__sz,
-> +					  const void __user *unsafe_ptr__ign,
-> +					  struct mm_struct *mm, u64 flags)
-> +{
-> +	int ret;
-> +
-> +	if (unlikely(flags & ~BPF_F_PAD_ZEROS))
-> +		return -EINVAL;
-> +
-> +	if (unlikely(!dst__sz))
-> +		return 0;
-> +
-> +	ret = copy_remote_mm_str(mm, (unsigned long)unsafe_ptr__ign,
-> +				 dst, dst__sz, 0);
-> +	if (ret < 0)
-> +		goto err;
-> +
-> +	if (flags & BPF_F_PAD_ZEROS)
-> +		memset(dst + ret, 0, dst__sz - ret);
-> +
-> +	return ret + 1;
-> +
-> +err:
-> +	if (flags & BPF_F_PAD_ZEROS)
-> +		memset(dst, 0, dst__sz);
-> +	return ret;
-> +}
-
-This isn't a bug, but since copy_remote_vm_str() in mm/memory.c is
-already just a get_task_mm()/mmput() wrapper around copy_remote_mm_str(),
-would it be cleaner to have bpf_copy_from_user_task_str() delegate to the
-new mm-based kfunc (or share a static helper) rather than keeping two
-near-identical copies of the flag/PAD_ZEROS/return-value logic in
-different files?
-
-The new copy also uses a 'goto err' where the existing one inlines the
-error path, so the two now diverge in style too.
+On Tue, 11 Aug 2026 08:34:13 +0100
+"Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 
 
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+> > > Agreed. This doesn't belong in the meminfo. If you want memory statistics for
+> > > tracing, I may be OK if you add a "total_memory_kb" file in the
+> > > /sys/kernel/tracing/trace_stats/ directory.  
+> > Would it be possible to include this info in show_mem()?
+> > This would be helpful for analyzing low-memory and OOM issues.  
+> 
+> You have to back up requests with reasons, it's not a case of 'please add X to
+> Y' and then we deign to do it or not.
+> 
+> Justifications are required. We could add endless crap to show_mem() until the
+> CoWs come home, maybe even list the number of emojis used since last boot
+> obviously.
+> 
+> So - why are you asking for this? Is it only a handful of KiB used for tracing?
+> Is it GiB? If so maybe it's because you're doing something crazy? Why does a
+> kernelfs file not suffice, etc.?
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/31488001112
---===============4081865467468875899==--
+Well, it can be gigabytes. When you boot up, the ring buffer is set to the
+minimal amount which is two pages per CPU. On a 4K page machine with 32
+CPUs, that works out to be around 128K.
+
+You can see the minimal size by looking at the buffer_size_kb:
+
+ ~# cat /sys/kernel/tracing/buffer_size_kb 
+ 7 (expanded: 1408)
+
+(it's 7K of data storage rounded down after subtracting the meta data per page:
+  4096 - 16 = 4080; 4080 * 2 / 1024 = 7 )
+
+Notice that "expanded: 1408"? That means when tracing starts (enabling an
+event or function tracing) it will expand to 1408K of data storage.
+
+That means on that same 32 CPU machine, if tracing is started, the buffers
+will expand to 45M. That's without the user increasing the size of the ring
+buffer (by writing a bigger number into that buffer_size_kb file).
+
+Now I do know of some companies that make the per CPU ring buffer 1 GB
+each. On a 128 CPU machine, that is 128G of memory used for the ring buffer.
+
+> 
+> You need to engage with the discussion and back things up rather just asking
+> like you were typing into an LLM prompt...
+> 
+> But in general, no, it makes absolutely no sense to randomly output some trace
+> information there, unless you're about to offer up the most compelling argument
+> since the invention of marmite and butter on toast.
+> 
+> show_mem() is for critical memory information displayed at the point of OOM or
+> sysrq-please-help-me, not random stats.
+
+I wonder if it would be useful to show the tracing buffer if it is over
+some watermark. That is, if the ring buffer is more than 10% of the memory
+in the system, perhaps it would be good to show that?
+
+-- Steve
 
