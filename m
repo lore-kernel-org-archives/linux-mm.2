@@ -4,75 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD0D7C5B56A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 15:40:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E0C0C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 15:43:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06AF26B0096; Tue, 11 Aug 2026 11:40:20 -0400 (EDT)
+	id 1D0586B00A6; Tue, 11 Aug 2026 11:43:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01C976B009D; Tue, 11 Aug 2026 11:40:19 -0400 (EDT)
+	id 1A8436B00AC; Tue, 11 Aug 2026 11:43:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E76D06B00A6; Tue, 11 Aug 2026 11:40:19 -0400 (EDT)
+	id 0BFCB6B00AE; Tue, 11 Aug 2026 11:43:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BDA6F6B0096
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 11:40:19 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 66A441A0485
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:40:19 +0000 (UTC)
-X-FDA: 85089400158.05.6303DF2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9757340009
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:40:17 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ov/DJFsT";
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D853F6B00A6
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 11:43:40 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 713991C0C02
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:43:40 +0000 (UTC)
+X-FDA: 85089408600.16.86E9F5A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id AC544140004
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:43:38 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e1FIi7jq;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786462817;
+	s=arc-20220608; t=1786463018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ddfzN4LL8RZM548F01f0B4b75hLtyEj0OXR4HnBvYcI=;
-	b=jGoe50tEpyqRp2k7MK3Z5P1v4P9CJmRGjJwoH9pHvWx5v9JCAIyveJJJKEBiFh+3jbO3q8
-	nft1ULi/0niP8wO51mLoRiHcSgPjMwlXnux4k9DK0tzeOx7x8ijkbrHnWl6/mWBJttlKHj
-	QrFzNiusN+4Uh6f8eUXTugdZ0afOdxk=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ov/DJFsT";
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=DKom/OlPyx8ZT7/3gM8kilSNbFvpI+ZzFp07AvtIwJc=;
+	b=6Knfa1FYmtIwXDCSUcPzpLDAn4BN3rXjDBtX0VFsIKtFDUoPPnveODzaYvRXDrPsN6FvM1
+	9B1CXge616ecdVNE4pwKrfT+FYdIq7gUJ6PYFsHZicoQExgxUjAJx995pQGzK2w2suLY6R
+	iUhuBEN3o2ETX0fN0dM1AhX/QbejZ6Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786462817;
-	b=fmb3MxLABayUwetPrNoUnsRwRzjVN0DCmzCJ+N1sxqQ2qjmZD3CO9KLdzJ27fj4LAUv49n
-	SX3wsDzig9K1Ft396v3OL206ZNseWBYGQM4iqTmiKprvVw2Z6Thf4n0NVxyF5hrqXAbamS
-	Gdr37UwGgsNKdBQaleLg4ThrfLL7Zmo=
+	t=1786463018;
+	b=EXKZEYKXnjG/C4AkbqvwTzy5DeozA2EFzaSIeO9sxc41cNcoHxgWTNH55VGaU+yXA+7dXH
+	fW8rji4rbYgV2eNsu3kI7S1acovaPiYXlGRJxRh2w+rXORWw2pFCWs2U1veXBl2o4hLL94
+	2W27GA0W39LpaiVZx+9tbx2UzuaKKf8=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e1FIi7jq;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C19B543A57;
-	Tue, 11 Aug 2026 15:40:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0CE1F000E9;
-	Tue, 11 Aug 2026 15:40:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3FD3B600AD;
+	Tue, 11 Aug 2026 15:43:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C31F1F000E9;
+	Tue, 11 Aug 2026 15:43:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786462816;
-	bh=ddfzN4LL8RZM548F01f0B4b75hLtyEj0OXR4HnBvYcI=;
+	s=k20260515; t=1786463018;
+	bh=DKom/OlPyx8ZT7/3gM8kilSNbFvpI+ZzFp07AvtIwJc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ov/DJFsTT/RxE8H1HZktEketc8VZ1xNssjfKJAtsCRLXL0JwfSbWma8R2mYelXbwG
-	 TIMj7STY/TbE8asPHQvVk/4PEcSy3yg5hzv7cISm5vkJBnWmeYMZQkgevLCI0aGTvR
-	 iavwXtn9Ksfbl3jvLLGxcVv8N31CGy+vKzVQx4v3MCz2/ztQxXXDRZPPPpt3fxfUwq
-	 ArZeRMGwXhFPm40Kc81toeV1wRsxolfT1qaG/dt+YtFNF0UHKOdVaHJUXDGipNKQYI
-	 BeBJ04HCzt7hNbvuBVuEG+uNNIDKAA9/F0dpSz3LET/jL13Hx5SFK7mVgdbG0+lmFp
-	 w1rilioPGtF8Q==
-Message-ID: <479ae96c-bb84-470a-aa2f-f88ced0e0dfb@kernel.org>
-Date: Tue, 11 Aug 2026 17:40:12 +0200
+	b=e1FIi7jqG6CQzdgGuv5mCpItbPaSeX4LbBTzWN6ECSYTtRVp8ED2a5nuOZYGrv+Gr
+	 DN1ojBQPWKqCQCOuIdPwnQDxrYV8MIj0qvMnccMbo+sdrBfw7XCw+QG99JNRO+x6Sr
+	 Q+HroFpYkTEwJTQOcgAlNUcUsLeSz9XEhbTxfc8NJAOg/YkjdW5+PHPVXdsWwAstA+
+	 OvTjzTRKHICFwuHO/WNdmVrMlHqfB+vvX8OcfmJy7OM4Fc/rYAiNczLCDizE/kvWsT
+	 q0GH+XYonuEbulNmK10tbTIYtIdsXAQeSm6XF7ATZKmAFUb0g1dHixKwne6rYDxeHe
+	 ExvtrXoKryj7g==
+Message-ID: <cb189211-d139-4eac-b4f9-ceceaff52704@kernel.org>
+Date: Tue, 11 Aug 2026 17:43:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: Make VM_FAULT_RESULT_TRACE compatible with sparse
-To: Bart Van Assche <bvanassche@acm.org>,
+Subject: Re: [PATCH] selftests/mm: thuge-gen: fix test_shmget() for PAGE_SIZE
+ check
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-References: <e56c9e2aead04f79192c3110de80d846e41e3791.1786122711.git.bvanassche@acm.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260809-selftests-thuge-gen-fix-v1-1-1919f4b3d12f@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <e56c9e2aead04f79192c3110de80d846e41e3791.1786122711.git.bvanassche@acm.org>
+In-Reply-To: <20260809-selftests-thuge-gen-fix-v1-1-1919f4b3d12f@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: dsj38f9puu16zq4xn7w16q4zemo1u495
-X-Rspamd-Queue-Id: 9757340009
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786462817-793480
-X-HE-Meta: U2FsdGVkX18fR2wU/lxowMyQhmlyKsFpdjWwfz9kw/rVRIMC66rqZqzYwEkAEKjddcxaGVIFOhdRiaQwvybBxv//t+6d2v5xB5x865KPNuB+iZXps5R+GsCx6NDTQgI0OW8FFbEubsAJERC4b10C8spElkNKc41p+G8ZcKadvhoJAXr1zy113MCSmUxYX2XunvVpLhj/C9WgXiH26DX6VezuX5rbijn0XtqgVF/wWHArnrCE7HSDQuKDpzKK/w82Aw4mqrRwyswoiieSKNUhagt2l2cDkSHt8yq4MKTowydoa3R8sYQzvr/XFncUDlWhBm+COARktPJfDLArn+LQXY6+3hDSgfFFasa9KKhUg0CZJgcJHGq9jYuFL1ZZhmt6KN1yeSj4imoJkq+AT1JLBLHDdPiwsbW6uxjUqPRJ9ttBPWFuJihXv6daXZnVZ23sbWq0fG21ZBMCFk6XdBYmbNBcJMAWzCI9p35UQgs0Oi15Emly72wjA9/gMYL7QTZv7CVlIYuvsIwi3i825gAvs+pfv5+ZhBm95NjL56Mgv+i7C9GYF9vYDT76hVYu/OBBV+UDDiXSyFdOy4LOu/4heCjJo7OiWS0eVFn2Dezf1vvwdtukqEoG1t9p2N4cxVZIEvWlhVdc1lJAPfjOuLYEwy2t5lfr5y0kRtv8eXqyVd4LAYm4FqF8LAQPm0eGGL4sk8qUxCbXGOGA+A/jLDdNFVCNlOuAWm6MZ9BZX8rbouYDGnFqibI4nvBJlkW2UqcnfZshEu6dejc4aUowhosX7VKu4zQDDu/uUYEzOp32vrGmopx+Jus4qt+/nqFqd8UlqWS2Z3/9J5rHgT7+i2B0KQCIYNnA9OdAQBM6ruIL3PVLb6s8ts6ty1zPhDmASMsnA8MIWBi1tu26vJSlJ+f9PGn5WFBe4a2BDw2YM7cAxXgKY6Z0F4R2UMQNSw/V52zh4cRa4Kg/ZacPYgjNDjw
- WC0BLK0N
- WL990nsyKmNmLmlA6fxEpniv0aFo9fb0iEPTO4ouJytJ9COY168HeloB+dLvXAr21W3ssLq7GCQwDgshfFOAsydTzvnxioWg5CC3RlLLXgDcmNJkh6MwXAck14YSM1YdSavsCd/EZUfPftXsMFdFdrWYEs8GGQh1URtTu3IoBcs8xBICrAqXOST1DVuvVp946DcDVG1gR4c0vAczHZaWATtIU9CxpJbnIgCuhUjhKDsdJVMsa1yM5J8NFO1ynpHN5AcLf/jBpB/MgeLA3hBIOa5LvZ1DLfGjcnWhIKcsdyIJsDUEz6ro9hsiXTVv3DPZxKMTn/qLu+yK0nlzGhepcFlRXAg75yXm5mbH6IGIqd4G1yRxRX7f/jQYpM/oSBCOOnsgUKMWkayoMAbt6lfczOUSTlXOC4IMSM6bNk68qOsyl7PkWLVJDHtuOdw==
+X-Stat-Signature: hhoj18yqjq9idtbyh77djqamgb3dxpc8
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AC544140004
+X-HE-Tag: 1786463018-380825
+X-HE-Meta: U2FsdGVkX1+NV7HtL2uwKUF7J+tj9VmWh5F9VzqJo/3DihnjyFQvHiucZc998Cu9yk/fRED7su0dJdDncn/U+dj8cRGh45qFrUzyI9ygcqnf9oX6Q0h0Q23/oqJG19T5xwG/EkQXLGNrP+fBIrS/QLzVt2cSYBqvhI7xXT5eD6boaBKpRAhuBD5FhIXYdeVwbBHreIZDtujOOX1EWP+xNHUYtXUVyb7PVRt2nbLgBOYmS4V5EIaT0hgOVRK5jwYMWcbJNThn3MxrIPYy0SIq6ga0+KNCRvyNMbASoxMRU62EnPgrxTpelGgDYDajK8lwxdU/fn6GA07DO0pfktUCOVg/Dzhd3nguXx8pxFZHR0xU2quZB8vmhs6gHy4fj2NJIx4e9bFpg9gvLC4How4Q0SXds31jMVu8mjTZTdgaFv1+6DDp82WLn1zr8uJfXzSwyfnLBwzMTj8DRYukBBRuZlVm1ZSN2WKeWtWSCwuA8q0yzjt95ygS0jcxFm7NFienhmxIdwN6Lules/l7HcDdCj80tiVD/1+Uou6y0kMf4hxTr3YTiWXYdhNgrVRPS9I96fJys95bHCHfy4mN0eMyRIK4cKsh6gK4VYrC6jieu2zD8fs+pcIjVVFldjOQG/adgMcG2uBoS2eMbCtXCzmrdunyq+Ts1z0Qj8IjN/GFRdWp9Ouhf3wfxLhzPNRK9avbeKvX9FCNYAzGym9OlfIyb8qsXPfZbvYLHzveVKXSHtefh6p5ZI3x3IXIrvSOdMrV+2TA7dPFBaK7weia9lPsJN5bcNmOGlkWbR5gW2gRAjqH5F/H/RBXG6ZMo8XIk82W8xEQoU1DCWIhFIefukbNPApsflWfXOWeh3Ombmo/y12n3OJGiEqzh5l/ydZhMQLsvz5vxdVkfJCxu3UWIgmvQ/z27H+8BtQTMPyew1ZgkMb8OVc6buAeK+EvMMmnh25nZQMs4tL044L0vVaN4BP
+ iz0xjqhG
+ GyoSznQzToNuGq8Zl8MIk+NodxzSxPkdrFiadb/10jSuTF12358DkuWG1c8h42kVOU/WToaxF17AyWVtkIs52HR4GgX8FHdOMSjIv5nIHV91L79Wmyz23unZDXSM34mw51UDbJai9CDW8768yAyN5KDdeFXFzZzEAweHSXNwYrlL+Q2dt4kDLeQKeYlQ7pNcjQN8KLq2YOjeQnjeoLlcGaXiwam6YIPqrRWDjbWDmg7T6fFf0LY1subjuqAP9GJuSt/PBmifbGd71hEjAfZocBeuakbXPgrecyAKv+RW7blHEzG1cgsDGwr3nC1ocbL25atmcg937WjhQBCU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,17 +142,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/7/26 19:13, Bart Van Assche wrote:
-> Fix the following sparse warnings that appear while building f2fs:
+On 8/9/26 10:03, Mike Rapoport (Microsoft) wrote:
+> Commit 49a4e7186b08 ("selftests/mm: thuge-gen: add setup of HugeTLB pages")
+> changed thuge-gen test to use common functions for reading hugetlb
+> attributes from sysfs, but it missed that the original read_free() function
+> special cased PAGE_SIZE tests.
 > 
-> ./include/trace/events/f2fs.h:1469:1: warning: incorrect type in initializer (different base types)
-> ./include/trace/events/f2fs.h:1469:1:    expected unsigned long mask
-> ./include/trace/events/f2fs.h:1469:1:    got restricted vm_fault_t
+> For PAGE_SIZE tests, failure to read sysfs was ignored and read_free()
+> returned 0.
 > 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> This allowed test_shmget() to essentially skip the check of how many huge
+> pages was consumed when it ran with PAGE_SIZE.
+> 
+> Commit 3199b0c09efa ("selftests/mm: fix read_file() return value check")
+> fixed the common read_file() to actually return error on failure and this
+> exposed the issue in test_shmget() that checks the number of free hugetlb
+> pages even for PAGE_SIZE test, tries to access
+> 
+> /sys/kernel/mm/hugepages/hugepages-<PAGE_SIZE>/free_hugepages
+> 
+> and obviously fails there.
+> 
+> Gate the checks for free huge pages on size != getpagesize() and initialize
+> before and after variables to values matching PAGE_SIZE test.
+> 
+> Fixes: 49a4e7186b08 ("selftests/mm: thuge-gen: add setup of HugeTLB pages")
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
+
+Heh :)
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
