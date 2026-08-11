@@ -4,139 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3897AC5CFCF
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 15:29:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27066C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 15:30:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 513896B00AF; Tue, 11 Aug 2026 11:29:19 -0400 (EDT)
+	id 1DFA76B00B2; Tue, 11 Aug 2026 11:29:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EAA26B00B2; Tue, 11 Aug 2026 11:29:19 -0400 (EDT)
+	id 1B7CB6B00B4; Tue, 11 Aug 2026 11:29:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4004C6B00B3; Tue, 11 Aug 2026 11:29:19 -0400 (EDT)
+	id 080256B00B5; Tue, 11 Aug 2026 11:29:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 200786B00AF
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 11:29:19 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B31201C13B4
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:29:18 +0000 (UTC)
-X-FDA: 85089372396.07.E98B4C1
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	by imf24.hostedemail.com (Postfix) with ESMTP id CE64518000E
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:29:16 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b="E/le3N7t";
-	spf=pass (imf24.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.42 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D7FB06B00B2
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 11:29:58 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7A54EA287E
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:29:58 +0000 (UTC)
+X-FDA: 85089374076.16.B16E9F8
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 96871140004
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:29:56 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pOXwmdpF;
+	spf=pass (imf26.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786462156;
+	s=arc-20220608; t=1786462196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PH0RdPEa3oSLEapGNLL6x5bM2qkhDfi4j65pHbraVdA=;
-	b=w+ms1RZVhF5d8QrolTM7tvgO0BfZZWQ8R+bscWOTggOQlkfbmCiIx7aT6X2a75CPtYvVfl
-	00cjee+WWeryjaFhjmH4cuFcGwk/c1eZu+LAMnXSSiVO7DFeYIm2vYAN9zEaejmK6lDBTY
-	gsEx5Qof32HhBGLZmeZFgVWMqqnRUrc=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b="E/le3N7t";
-	spf=pass (imf24.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.42 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+	bh=dMGzaTR2fG9A9c/MgSioyYDGHbbLKIjYxPc4ZGRn4m8=;
+	b=eFZNmnY43URj+kiEyfO1Q7e7z2WNFk+Bhv+ke6QszulXXnBJqBbrgw9MvKdN0h/KcV/bMu
+	yi+8zrrnCW8tAADnXP1UUjsgrUNhF+YwZaq62OAZCOJJjxKL4z0csAPEKaOKSRSL6wq7rZ
+	j/Vn/jm6iWGI4CQ3mDUkUoFl+6jRPOk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786462156;
-	b=e0wbcRGCBYVQn7scnOpqhAx/zYEWfioFGpvmXweIWYqOz6XGputLIqjeefkdRn5EOoEkEQ
-	4QFvN3qgoNQ8n34+beKuebn1Dr1gc/cxq3FisADP2zJBxMJWhP8ieTStmzqNnN+3eHCqTW
-	2i1PEduKdOYx5PTInkMR/n0FAd39BpM=
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8f23e851626so6470436d6.3
-        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 08:29:16 -0700 (PDT)
+	t=1786462196;
+	b=UOBobgP9NkbMdP1mi6443TC44ETnWueofqS1cU1oJ2pa6R4oIaTNgnpmue+6rUHv0CtqSz
+	jEQu90OhD9x983O6sQ5DlpGL2s7mhXmQFv8Zmfx0kRM5+XUU/oIE9vLkfVx7r2XigOcZUk
+	JCqpY3jEKin6is5hYBVHNF55bOS5I2I=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pOXwmdpF;
+	spf=pass (imf26.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7e6b5737bb2so50730a34.1
+        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 08:29:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1786462156; x=1787066956; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=PH0RdPEa3oSLEapGNLL6x5bM2qkhDfi4j65pHbraVdA=;
-        b=E/le3N7t9FKlqSs2wyLaChUkn/fbAejODtnSDVo52un2syyDYwPo5kl6n8x5ZPeIWW
-         lftW+S3Sf4/VdCLCb4sXH3ZoxVZwO00FyTgR/qo790L1C+vKG5pdkKL9cjgbMWLENxEy
-         3KYwSUoLRVuwelds/YmFIle8R5vvldplSVErd3gCk1GKO2jSu42A+HzI76RkJKb+e/rB
-         bIAiI2XcMyvGTDXbZ4OwPvmXs0XQgzi2wHNlMObz47TMSPJRLT4mW26sGJ7dPD/SicrW
-         SUDijpYrMndB2ugNxOMdwpvvxfXsMsqcJ66PnwXCZb2C2GIcJge9wrZXrdLs9PBcrUnq
-         Efzg==
+        d=gmail.com; s=20251104; t=1786462195; x=1787066995; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dMGzaTR2fG9A9c/MgSioyYDGHbbLKIjYxPc4ZGRn4m8=;
+        b=pOXwmdpFufAyW7sv3DTUK+npwMig4edx3pVVZQJ2hAdImNKiOAvEI1QwRNTCa6AZ6l
+         GU1ALem5gKxBAV73jlWSCdqvjTqf2TnNgaYO+U51I3sJUAs310Rxl/LMG2ZNtYmQCyJM
+         GweAQ+Q9qoVRXBoS0Evgg5LSsaQI54Oimi7HvIlG4yS5S23z6DHPFnIejEAXqTcN8FBw
+         cwyJZBKTh/VNgOH9NWhPmqQs3YEfCG9EHm/8C6ZXWC2D/w34/1hJoccUvdZGtplZFrNs
+         7pDsxHxRFd/prKFLPPCZHt/aHukkCic8IUg0GhTsxhRsRVTPjeg2mciLZ/Uz7jq1dawz
+         QoRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786462156; x=1787066956;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PH0RdPEa3oSLEapGNLL6x5bM2qkhDfi4j65pHbraVdA=;
-        b=Qv8YSonD1SpGCTVi+px3oKfMt9cOb7GVmm/grBKw+kzolIVEq82T3rt/6q/t8XXqFp
-         4tA9zqUzgbGEzaVH9kv4zJilSl6heZQQBL+aV85v5L6GWxBGGpVjkLBWOaknXVux8ruQ
-         gnsj6RwAmV4XgGMzphf9M+HZ9cFN9M8xn7l9rXI2iLGPGwONqS4oD0hvSfv5fB6gAFJ3
-         G1EahuwD8tbBk6nyoTA8we0Ix3drM3f7CkijnAWGn0yDS10ywNk6GC4vC/7Xv/71eZV0
-         K7QNpF3/oNCg8Lerm25soHqnlbLhVZt3ukdWeJ48+Ni8XtPwg5EcWO+6wW/WJWc69l9C
-         GFbg==
-X-Forwarded-Encrypted: i=1; AHgh+RqBa2dSegXo3vvby4oyic7z45ASiAgl3JHzvoipKUnIjwQ0EQmVYseFQR8Om/05lK704dBNOBxIpQ==@kvack.org
-X-Gm-Message-State: AOJu0YxwGQThY8nC2vpEoz5Bht98Jvqc4kuH0hdjnC9wi3aIDh1UHyvQ
-	Xl/rUbAAg0C7pNo8BHVvIQr4ycu9W1772Gd1+MC5sjtMUHETVHjH/VfI//2hjyJnusY=
-X-Gm-Gg: AR+sD129EGeQHlNux1VJkcgLQeDA4vnGO01MwfHXQuMrh3aBigJ6JbDbPQ6RFRu55sr
-	gQhNck/ZkP0Ld9qKLxSs+sWKcZylFTq67DNzCXaH0YEFYNdFbeopZ0mhLATp0HCx7KXRjd7GiqM
-	DMWDkhYKoQGe7wj0hgjNWei/TCv2uovnbMdWX5rg76CHoXTJ8rn72faQ7L3lkCIy+CVXTuNWrzR
-	aBvtBSzREe6RQkL6kx+nJUT+iRXZYYcI21oqq9prJiDnpHe5Pdol083un1Q7OQ96IVQ3G75uUd0
-	4ztFeVVxug8bEJfudgWJXyiSUFluABASKDsk/8WySdYhssmSZDSTDqZXtU7tLmAuGIwv1STwQbp
-	6ABR1zV0xT+jc2RVV8BpKQ9ulyoO4w4KPwtOmP8KG5TDvZj0Azf2YQSHzbBC/OoXbUgEnWJyDnR
-	26AJI5hT7ovwxoDMMkJl0njEUCEMwPSti+l9UJqg==
-X-Received: by 2002:ad4:5ca5:0:b0:90a:6016:deab with SMTP id 6a1803df08f44-90a6c0dc16fmr9015366d6.8.1786462155946;
-        Tue, 11 Aug 2026 08:29:15 -0700 (PDT)
-Received: from ziepe.ca ([142.166.156.215])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90a6c3c1d73sm1372206d6.34.2026.08.11.08.29.14
+        d=1e100.net; s=20251104; t=1786462195; x=1787066995;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dMGzaTR2fG9A9c/MgSioyYDGHbbLKIjYxPc4ZGRn4m8=;
+        b=s2rl7k5ma+gFtW+CCi0O+IYs4R6sX4tTxyqW6kzUnRiSR3mp81jdk8lYkmi8ZSyTRg
+         VSOz78ZUQ+V5TwlhQAl+Jhr5c30ymGm49hG9AaURr4bdmCEEVl1MpkXpY8HQX7F3lHO5
+         cEbEmmb3vNoGaMBb0vWRcSlP+2XXQ9UiVlheleKTsoTUrhLjxakB1WQCRsU18P2Iot5X
+         +mFVIB6HZYf4dgajxTzLZxP6dnd29NE8s7VAdG0uS8IFn7JNxuiugCQ7s/sE/avEJ/av
+         BwC3yohk3fFoWG3vbMWGPT0Dg9ttJTeK8QeXaY4G7s6Wz+3Epvv8Pnsurfqn59tP/2EM
+         EuLw==
+X-Forwarded-Encrypted: i=1; AHgh+RquxznMeFL7BPilHHpxrajUkB0DXXIxbkuGHiDHSLvz83jWg6do+Fd0nYfDSdDdTpMGwSsa/W3ylQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy8+4gA8FMGFsBaamY7vmbwH02/ZGFPoga07jnyivXw8dTjmzHO
+	F3ny8kD5JsS/5qKuNtjY7+lRrWJcvXBPNz3ktNPUmZDiHA+btr9YvWiA
+X-Gm-Gg: AR+sD12eTLyJ/2wqdDxrCanbPsPYDvys8VRc7AUf6qU03jP9/0pSdIyL9J9ql7XSt2j
+	VhJoIdkVP3Yvn8kaQXeoKUSlxr2GnFhLqFihJQXmG87mdiHlkmXH7TLa6OPuH2P3cIes05EThYY
+	dBeKFxjYHHUTmy5MocokTfnizyv9Pl/1lP/gvWgQr/Ql5IsL8bZImu5Xe8ip16brwutI6GgXvtb
+	YC0KmUB5yeHt0kY5smswLGMiSMIIcJDne/v44zTEafI/NV4Cuf21hbVOl6jxlOX3M5Tmes1bBld
+	Ng3UijDRXDuA/S1j+4sZ2+TNrGpn4R7Xb5SDaC/2275IZVx0eZZ/xvNt3LH0isqvp6aJPlNym0Z
+	Hvnvher93nRNP6riYjgUNxKt0LTHjQIGunlw/NNubyO69WQPWlHFOjBrCBJWSzau/qowGUcZPd9
+	7iYh3czwbhPcrdktIofDk4B+/Du8H/JTQJ4jwAQtjW5kIo8e7Rv4JdPGKLcAirL0J+4X5yFJVme
+	k+zSe+IaMsm92LkNBRd1ksrGaJNlw==
+X-Received: by 2002:a05:6830:6617:b0:7e7:16b9:e274 with SMTP id 46e09a7af769-7f3a8203291mr3055974a34.8.1786462195335;
+        Tue, 11 Aug 2026 08:29:55 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:48::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f3b34266f3sm81980a34.24.2026.08.11.08.29.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2026 08:29:15 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wtoPi-00000002X6a-0ioj;
-	Tue, 11 Aug 2026 12:29:14 -0300
-Date: Tue, 11 Aug 2026 12:29:14 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	=?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <20260811152914.GI544626@ziepe.ca>
-References: <a247c49dd61af1df7ddc4dcb1cccbcb36b04d9d5.camel@infradead.org>
- <20260811135537.GC544626@ziepe.ca>
- <1d669aca4ffee797b9c29215382444a5b23624b3.camel@infradead.org>
- <20260811142730.GG544626@ziepe.ca>
- <a552b227e18ddbb3fa1f2edf2d1cb30ee6ccff13.camel@infradead.org>
+        Tue, 11 Aug 2026 08:29:54 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Rakie Kim <rakie.kim@sk.com>
+Cc: akpm@linux-foundation.org,
+	gourry@gourry.net,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	nvdimm@lists.linux.dev,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	byungchul@sk.com,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	dave@stgolabs.net,
+	jic23@kernel.org,
+	dave.jiang@intel.com,
+	alison.schofield@intel.com,
+	vishal.l.verma@intel.com,
+	ira.weiny@intel.com,
+	harry@kernel.org,
+	kernel_team@skhynix.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com
+Subject: Re: [PATCH 0/4] mm/mempolicy: introduce package-aware weighted interleave
+Date: Tue, 11 Aug 2026 08:29:51 -0700
+Message-ID: <20260811152951.195315-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260806080936.421-1-rakie.kim@sk.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a552b227e18ddbb3fa1f2edf2d1cb30ee6ccff13.camel@infradead.org>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 96871140004
+X-Stat-Signature: h4a4spazddnjs5p66cq6i3zpggarhast
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CE64518000E
-X-Stat-Signature: zw86cqwzs95idcjqwbodo8bjrmu3spaj
-X-HE-Tag: 1786462156-812431
-X-HE-Meta: U2FsdGVkX18o9TwfDc6SjP90ySA5L5OJcKz3fJuyVtyOnns/Vf7QPh0n9MBAU89e9ii5sPPnq9JJYg1w2cYMtsfp/uVcsn0CgrZ/LVb2bRdd+AmlMMw2EODly+nRDkLy6xyNi6gPP0AkG9rhCD0db2DNH8BJGI27pfD4vZueCsU/ESMRoC0Pcer20jiXos3fMZSbOiY3jrx4Qy1QTVESrPLtYT3AcYQH+RzK0SmuuuOJdYSrl6ICtLDmY8es/DXL04VXc+2n23GhAXnAEDpha2trJ3JqM6WqF+kPNkbLahWl2l2l+hC++VFy6FcMmeUbP8Fq9R6OteEY3/0EfEgZGGY1UnYNaUHJUXhVtZWZtNjRCXFUGt15SWMmoLZETguDFnJOLc/ABuIb216IYlu8EptpocPmBMxbJ62G5MP1wffGa7sRSinCzE2MLNJcyjm8Ts/G58fDEuKcGkxMbUSbEtI8wFu49XqiBuDaPvOnmAH4FwSG/8VQ+Dw1XuZMqTtkkvgXDZKJknip62N+H5ugfx3sO+9MJHZ8avnKNsfDx4y/yIdnIXL1V5SbG2uCaj0eamaCPJMTgndBTUmDoEZ+cNYGhKXm3jsDHGVWMmRr/cxICK1qrW66JBYHTbpfX2rjcOoYcMp2cl+JIgkBO0XTIKn91VPzS/DY2McRT2F+O5rHxlXgWXdUeuUEfYiTsHqa+A8OyP/RZOiZ3TIVgV2hGrUVH3Rg63eR+gLwouvt12s2Y2J9t4Dptbm/Ry5V78LOGMCGCNs8HVhfHJrxlM/AZOenqozhghOMhvkXQDZYlzDLTPn/AYdJAaArHjVs589scehAer6dBBJMWGr05uJypibXj+P+DAFVIHXHPXaTODnmz918U4mQOLOCJ4gMcryu8F7a6BsqHnUGxdbSTQmRye0VTXC+MDeBvpdXSWUfTNES8Kegm2+B6urRr+4wUHIAu4QdSzyqFlmpHsqVr91
- eSKcOYxk
- uTHMeLhqC8TuLflU3s00iPZwvObnvf8NKrYdN6rkoCmiyp+HnDEu8kz90I9YTJim+hJXaUNAWqY9fUyKlSSyMM6H7SgfjTHc8wPZxpbN9JJvt3EKpEUsSuZU3HmzTL0CsEmEQDMH0PLhVN2nuHr0YJFlC3G+pdK9zOX/zg2ysH7QL8UjxRnE9hvDDEZMZaeuNouzXCuMMLuL7JHzGWQj23nMOQeGsm62cxC2U3chZ7eDwDg71X/ckcZ3+QZqd/TycB+wLiGXkfo3vgOPP6ZS8EiDLcQDSBvd9Nq9UQYs8zM4MAnkme2PODtCcgYYTu5YBAbNbBXfTvznz+WA=
+X-HE-Tag: 1786462196-796609
+X-HE-Meta: U2FsdGVkX1/9pcuHO94D6bx27RW+hC93QUyq4eQE5QLOFH2QuNqCzVYW5oAs8QS3TJviPOIU1syUF8CDk03d+0isJnkraYBnTAmpOGxn79sYlmsEbyHtmvht3GmQyGHk9ppMQN+q4LubVl3QycYOkJpsa260k4IwfQ//6FWZi945KYzasbsJLwz7IFY+x+unNi77N9B74xHMs1HWSrcgai+FHg7oDSZX/O08J72imZQSqSdcWR0OzdQi+i/P+igTqBEDz1dtwZ22Y8PPaEP2+2QkQsKaGvzrxTNAvMhyLlWfv450yGK2UsUEXytqdI3e2jx7AatY18WEhszK3VQ2UHE/O+rfoE62Y6wbAncwyWeWjWITS5BUqJq33yDppSnyjDZBxGnX/cux0GmIeHCNad7D2qsbkSlU2iw0cELwUznXDe1OxCiChQ2QAkxPk1jVWqztkb79MsUcHUVrNdAm+AGk74nI9xLlvJi5kOApD/EhEJImFm30QqJueUw7fdtfaQs2YPAs2F+h2/BVwJIg7EHv/Ve7eG5hhuUQ6d66dEHNj9yjiGqFrZOdcfdKNsC9BQ+7/apmEMZEBRUUGgA1TBve6T94D9aYnrQPJide84baNloUDbqXepJ9iIqOV07LM5JTySmG5j5cwobIBp/3VznzDlUbwF/hTKG8Ty33mEVjuxiVPhUFuSia2opGFHOdzLB9/jNGLemY8OA7+fFTvwPSs4cDM64t4ZnHv03kgoc5ANeSL2bNi5VdC8e6f5VVXyc+ylxG86PjhtmS3VPhh1lVNFAmMsMXB1N2Cte/xuMcyeUUtCOzJa2BWN0zUvaJSTk4bvSSkhvfJ9I+3eNfzOPOyVpMHO/rrQLTaYpGSr01VjTFJ6758r2VeBYb+4AOOyRc/+f6+Wpj0AoQ232gYynxQQYEZyl6OsNL5Wq4ct9blVdtU4YqDkSauVeA8dPgkTcdIpZoxbd93apFkaZ
+ bhVP0/ov
+ bmP99vI2YHYnt8j47NRryO7I+RVmioyeV7YLWzK7TATqffG1gGwt5NDLETtdERk+b2fsvftZxyhXiQxIkANNwzmzKuOt5x2RExWJngHpVXiUeOjI9nDCYLvgi9NT0WGU7JAJYKsmDoi2XTVVPYEZh9HTsvLxP5tI4gQ98/rscqgC9kt+JfZwT/MYI9DzP31yFtapHUmpxxeMDNI5hahXCblY75cjIyMCoUVDtfWEg6nxOjZD2Xoacwr2j6jFOi5MwK8RVUo11EvpuiGX8qiCVcuPoBe+SC9CYMtmEfuv/Hl86SKlKFaCoMY6cvqsBOETIyE1v8o1sin93VDhSWQUz0ko2I+tB61j6U7SY6mdunIL4I8IM2dwYCNHi0/G9BPavC2Scbf1BGtiPbDsC4XySD4ctOUjYomuGHc8V5l90HCLMFRNRtroNChKY9C4Z76zEdySJKC+mH95/jF8syjPKWaEqdSod2iof4VYJmLqifcN0wygzxjxVzCqSbuSB8i6zH4RBFU88CDYLd52fDXsq+jWRnkpOUSgg7/HYNLDpn+uVBZtrVSae9AFxu/hNiVerd/izx2BkpiHcqSJHvpnJq+LcQ0d1rJ6IdvbHZPzseEhft2zGZZiaW7Wj+e7neBbOy+fqj1EsbRJ4CGQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,23 +145,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 03:33:18PM +0100, David Woodhouse wrote:
-> > At the cost of completely destroying the mm shootdown performance with
-> > 1s RCU grace period waits every mm operation. No thanks.
+On Thu,  6 Aug 2026 17:09:31 +0900 Rakie Kim <rakie.kim@sk.com> wrote:
+
+> Package-aware weighted interleave places a task's weighted-interleave
+> pages on the NUMA nodes of its local package, so that interleave traffic
+> does not have to cross the interconnect to another package. This keeps
+> each node's weight aligned with the bandwidth the task actually gets
+> from it, so effective bandwidth holds up on a system that has more than
+> one package. (A package is a CPU socket together with the memory
+> attached to it.)
 > 
-> I feel like we're not talking about the same things here.
+> Changes from RFC:
+> https://lore.kernel.org/all/20260316051258.246-1-rakie.kim@sk.com/
+> - Added an opt-in sysfs toggle (off by default) and a read-only sysfs
+>   view of the package topology
+> - Added topology validation with a clean fallback to plain weighted
+>   interleave on unsupported topologies
+> - Hardened the allocation, device-teardown, and node-hotplug paths
+
+Hello Rakie,
+
+I hope you are doing well! Sorry for the late repsonse.
+
+I have a few thoughts, some of which are carry-overs from the RFC
+discussion we had before! I think there are still some open questions,
+and I wanted to get your opinion on some of them.
+
+My first question is whether we want cross-socket allocations at all.
+The examples you gave seem to line up with node-restricted interleave,
+as opposed to cross-socket interleave. I think the wording that you
+use to describe the feature in 4/4 (which I will copy below)
+
+> The resolved mask is by construction a subset of the policy nodemask, which
+> mempolicy already restricts to the task's cpuset; package mode can only
+> narrow that set, never widen it, so cpusets and the task nodemask remain
+> authoritative.
+
+is 100% the right way to treat these package-aware (socket-aware)
+interleaving allocations, but the example below
+
+[...snip...]
+
+> Applied the same way to every source, these weights give the map:
 > 
-> The KVM patch which this enables does *not* behave as you have
-> described. Have you looked at it?
+>               node0  node1  node2  node3
+> global:         2      2      1      1
 
-It does, it calls synchronize_rcu() from
-kvm_mmu_notifier_invalidate_range_start() - don't do that...
+[...snip...]
 
-> Nobody's suggesting that we force any *other* MMU notifiers to do
-> anything that they don't do today.
+>               node0  node1  node2  node3
+> from CPU 0:     2      0      1      0
+> from CPU 1:     0      2      0      1
 
-Sure, but nobody should implement their own notifiers with such a
-heavy locking primitive.
+Is essentially the existing weighted interleave mechanism with a 
+nodemask/cpuset applied. With that said, I think a more interesting and
+illustrative example would be if the user truly would want to allow some
+allocations to go through cross-socket, but be able to control the
+ratio at which these slip through.
 
-Jason
+              node0  node1  node2  node3
+from CPU 0:     3      1      2      0
+from CPU 1:     0      3      1      2
+
+Maybe even more illustrative of the true capabilities of this series
+would be if you have an asymmetric system where you bind some
+host-level monitoring / logging workloads to one node (say, node0) and
+want that to be able to cross through to the other socket, but not the
+other way around:
+
+              node0  node1  node2  node3
+from CPU 0:     3      1      2      0
+from CPU 1:     0      2      0      1
+
+Anyways, these are just super hypothetical scenarios and I don't even
+know if the configuration that I'm listing would really be beneficial
+for the system. I think that coming up with some illustrative usecases
+which are now made possible by this series could help motivate why we
+would want to interleave across sockets. 
+
+> A task on CPU 0 now places pages on node0 (weight 2) and node2
+> (weight 1) at 2:1, which matches their effective bandwidth of 300:150;
+> a task on CPU 1 places on node1 and node3 the same way. Placement
+> follows the bandwidth each task actually sees, NUMA locality is
+> preserved, and interleave traffic stays off the interconnect.
+> 
+> To make this possible the kernel needs a notion of which nodes share a
+> package. The NUMA distance model offers only relative latencies and no
+> structural grouping, which is especially limiting for CXL memory nodes
+> that come online without an explicit package association.
+> 
+> The series adds a package-aware topology layer that groups CPU and
+> memory-only nodes into a "memory package", built from the physical
+> package ids firmware reports and, for a memory-only node, an initiator
+> CPU node or SLIT distances. A package can contain more than one CPU node
+> or more than one memory-only node, so the layer maps a package to a set
+> of nodes rather than to a single node or a single CXL device.
+> 
+> The feature is off by default and opt-in through a sysfs toggle. The
+> package topology itself is exposed read-only under
+> /sys/devices/system/package/; there is deliberately no writable
+> override, since a machine whose firmware describes its topology
+> incorrectly should be fixed in firmware. On a topology that does not
+> have the symmetric shape the placement relies on, enabling is refused
+> and any active mode degrades cleanly to the original flat behavior.
+
+I was also hoping to see what this interface looks like and maybe
+discuss how we should relay the information to the users, since this
+seems to be a new addition from the RFC.
+
+> Measured results:
+> 
+> System Configuration:
+> - Processor: Dual-Socket Intel Xeon 6980P (Granite Rapids)
+
+I think a description of this system's topology would help me understand
+the results below a bit better : -)
+
+> 1) Throughput (System Bandwidth)
+>    - DRAM Only: 966 GB/s
+>    - Weighted Interleave: 903 GB/s (7% decrease compared to DRAM Only)
+>    - Package-Aware Weighted Interleave: 1329 GB/s (1.33 TB/s)
+>      (38% increase compared to DRAM Only,
+>       47% increase compared to Weighted Interleave)
+> 
+> 2) Loaded Latency (Under High Bandwidth)
+>    - DRAM Only: 544 ns
+>    - Weighted Interleave: 545 ns
+>    - Package-Aware Weighted Interleave: 436 ns
+>      (20% reduction compared to both)
+
+Really awesome results!
+
+> A small CXL driver change registers a CXL memory node into its package
+> as the node comes online, using the initiator the driver resolves for
+> the region; this is where the package layer gets the CPU-side
+> association that plain NUMA distance does not carry.
+> 
+> The memory_package layer offers a broader interface for grouping and
+> querying package topology - usable by memory tiering as well - and
+> package-aware weighted interleave uses the subset it needs.
+
+I was hoping you could expand on this a bit more. Aside from the
+alloction-time placement strategy, did you have other ideas in mind for
+who could ingest the package information to make tiering decisions?
+
+I definitely think this series makes a lot of sense and I am
+hoping to hear more about it. Thank you, I hope you have a great day!
+
+Joshua
 
