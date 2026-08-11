@@ -4,137 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DD6CC5AC67
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 18:50:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D85EC5CFDB
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 18:52:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 65C7A6B009D; Tue, 11 Aug 2026 14:50:35 -0400 (EDT)
+	id 12EC26B007B; Tue, 11 Aug 2026 14:52:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60C636B00A1; Tue, 11 Aug 2026 14:50:35 -0400 (EDT)
+	id 0DF646B0088; Tue, 11 Aug 2026 14:52:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FB476B00A3; Tue, 11 Aug 2026 14:50:35 -0400 (EDT)
+	id F12716B008A; Tue, 11 Aug 2026 14:52:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 17CF16B009D
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:50:35 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A38E5401E5
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:50:34 +0000 (UTC)
-X-FDA: 85089879588.29.BB53C11
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B17F8160003
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:50:32 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Is/bll7u";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf08.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786474232;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C80386B007B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:52:12 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6B278140186
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:52:12 +0000 (UTC)
+X-FDA: 85089883704.02.72A51C2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id BBD45140007
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:52:10 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f9fcK+NV;
+	spf=pass (imf09.hostedemail.com: domain of vkoul@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vkoul@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786474330;
+	b=NLFSZSiBz3zre7cGh0xV7odlvW4XfNPX7mD3gTcn5k+Az+j7AywbQf8W1oUf9cB1UdZGvI
+	UesfWShXE1udivb0wJL2zxWbuYILJloENMGpCeCwxK2GryGZLNLLOiMnJv/LWuVSBN7y3C
+	eOWthtw9ZesdXgD1IDkJJZCOPj8BxY4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f9fcK+NV;
+	spf=pass (imf09.hostedemail.com: domain of vkoul@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vkoul@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786474330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D51mJpyz428idoK2nRe/fA0RUL86RM6cJFboL6lWHWM=;
-	b=xfn4da8x/VjVScZ8EA/t0YtVzTAEjrGBSRV1wMVE7+yEP6eB5uHD8NpgzD5w/ggljOmGhe
-	6QaMRzqMXunwp84kH+d8LaTIPj0ky7sPoztpC2WSbty/Qvksp9h9ixbEljpNJbrV9X2E63
-	uw0yVOG3DzPFb1FVSZLmcQ97SziuxQA=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Is/bll7u";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf08.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786474232;
-	b=evCGC5vJC4cAv2oZHIC/YioDqF29PrD+BNoF99da9059i1cDmyayJMEXR4mM8lFnQG6Akv
-	sythcjoQQd5VCQ6cRV/a8g3rqhNV2rSogIHccarq87+VsP3f8lc8Wn7f1TwhBWsPo7k2xY
-	twsnBCrh/z0ROOmuKzBf95ZpKQcpeQw=
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-66077ebd1d3so32430d50.3
-        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 11:50:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786474232; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YXpRRJahoPfggmLGQToRK07c2dBA7y7cSL3kCBt5XHPVz08gaALMXWuQkzCP+6wN88
-         QlVp6VuWmCPIpvS5fRJpiytHdYLxFOLrRerfFnYyIVea2cb7RVKYV9FKogwBcLtai0ST
-         uw4yiRbrCHlm9P8xrQ6sCVlKzS4mpPAoFJeAgXsxJsVoZaqxjxM6PJABJ6ML9PGZmpza
-         nhcCRC9RO8va6L597fu324BKvMk7kgRmwfe3xc1xpr/KRoCHfHHoDhJntmRQ5bcfU2/1
-         RO4CNSRl+A0M0lLUHZ0C/gZ3UYSRf66S9ebVDNBv1Ly2TriQ3ok/BPTOTSCkP0pcgycx
-         dbDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=D51mJpyz428idoK2nRe/fA0RUL86RM6cJFboL6lWHWM=;
-        fh=F5Dbq4DIuJxp7kAjEfEOvqW6NQdpd6it+jg+t3UV4k4=;
-        b=AU3rXfb/59TUypF/5HxgpRk9Rf/fx1Z31NhWdFTxVAETRGtv6baKMa6ZuCPLRfwzeV
-         qaWAePQamWjQksVSas957iuYZjbpaX5GAG0mNZ6A5DqC/aqZUwP+XikFY9/PGXoNxBz7
-         dItygZgPcImiAM5dC0dhU13Ni4HJgEPqV6xr56oCEBhRNYmjy/6mgnMMLlG8g/aVY95j
-         qDlxV9dbx5YhKy9seSjjGJbbrDMqaw0T2rRby11I2m4qc3imfloo9UumwAsUHnzZ7aNx
-         Ij9QEEFs49q70zK6OZK9BJtqxuDMKAEN+SlUfbpA3oUbioTb5Ee7at6h9bQzomqMFoBe
-         bFog==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786474232; x=1787079032; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=D51mJpyz428idoK2nRe/fA0RUL86RM6cJFboL6lWHWM=;
-        b=Is/bll7uj0/oJiQDQwVJBoLsqFj0R+6aQAuCui1C5iw4fXND35KtrFADoi0sIQpLd9
-         h3XmgS3wS6btCPPFc64CqRuhDwQDXiYKvEm2hw7M12Py7O8KpHnszHKOvyUSOdked02Z
-         kA8T4iMSlYOetYvDmmPCKkW05mWtReXohzGHjKb/ZyniWnkzGICJU0gejzVFKgLpNwhb
-         tIMw0cxxjjIBocMjxfMV4tVXr74nZI7uptkqkENIags8N/sOyWCbcxpg0BFfM1YRU74a
-         qS6/5aPR17j87bSkM1/az1TpTYZvYElBIFl2B/oI8ie7sKh9BGE3eeN015adtul/Oq97
-         arsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786474232; x=1787079032;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=D51mJpyz428idoK2nRe/fA0RUL86RM6cJFboL6lWHWM=;
-        b=oag9PKGCpcx0l5fETWMcuca3Cn1MA8ATFhw8i7dR442QDhNfqpiuoB+K2aUuE2IpXX
-         PkcWufpVtKWiOi44QYtrqGr6ckG/xxebO0NN11u7AazviitRoZmo2JgEEARwcu822N7Z
-         N4tv7I5Q/MgwKPh3MrgKoNCX1XLyFHfCOWJ6FNS5eySeMdxLTb1pVzs3a3/vezNcDhLh
-         6ceupm/7OPhLqXuqYeKYo4fpDZTIPhFa0tZsSVmp4F3s5rUMiCY8c6Ir3QgwL+O/Z0Ab
-         vhOYsq3k6nboQ6vZuMw9VOxRIlE1nEQ3etLboqg2EdDxaBMyKu0tYDQWiZclNlojQhju
-         mLzQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrjMyWHgcmvb4c6YUes2Cbix56bk9omh2ooPPZxJeYQGxp/sNvuVwaQh0AJp2pbbeMLwfqOXd4d7w==@kvack.org
-X-Gm-Message-State: AOJu0YzxK/v6LVwMBxpES1IYcVMyBz83MgRxIFEYgHzBJjmGBd+Hy5i9
-	jqbBN6suO6Ti6o+GMogDGMsdBopsPNtzyBoeFMkbNc+fwQT83ZWVG+csCAp0HE+L7+kFPjdA2Gg
-	NkMhOnyZDpAJvQvwu7t47wh5t2RBnIBg=
-X-Gm-Gg: AR+sD13eKELjvT66Nntp6yuRHpQUVe84CdtW9PaZMd4a1ZI45JJ/4RHnq8nuIjC9nAJ
-	zcHz5gZUV7uTeajwWd/V5Jfhdtzqu4uRi9h8u0sC9TvOxDYkV1TUGxOrPrBqqveqRn+C6T/znI1
-	3swBvdf1f5jHIyG420bgj1DCi+IXYIqrqakSvUSsGDtL/i6mmRsj50j/fwJ0Pt7LO6kq3yEN5Om
-	AsJH6vqHeBbfRbiDuLgu7pg5LuFo+1XikiHI1ZKnewJRe4cjDIsA9/jEAkucoo3hj773V3plmIb
-	0MbqEHNIegpRIocFYHJZnatfd8z64KUPVyyvlPKC+422p3w=
-X-Received: by 2002:a05:690e:140c:b0:668:6e10:f2a2 with SMTP id
- 956f58d0204a3-66b22ca2ec0mr3067399d50.1.1786474231571; Tue, 11 Aug 2026
- 11:50:31 -0700 (PDT)
-Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
- Tue, 11 Aug 2026 11:50:30 -0700
-Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
- Tue, 11 Aug 2026 11:50:30 -0700
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <20260811073332.1351893-1-sh_def@163.com>
-References: <20260811073332.1351893-1-sh_def@163.com>
+	bh=L0HTQS1LYVWSdc3RimfvMueRkxBKnov+tJfBP1Nzenc=;
+	b=3K2BS5zVpWTjxwp6DGR5V0e6aPobTOmS6Q4XO+pvJquwSIo1w/R0oEhRt/zaqrdtCnLyio
+	ZVBR67OiD20sNaCmKW/0hRMP5+Z8bB2/MI3GCfsv7xSygC4BFmB+YDvyLUaIb5WFYwcGLt
+	zwY5I6cMzYvHZuUrATQxjyxOHsHnBJE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B1915600AE;
+	Tue, 11 Aug 2026 18:52:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C9D1F00A3A;
+	Tue, 11 Aug 2026 18:51:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786474329;
+	bh=L0HTQS1LYVWSdc3RimfvMueRkxBKnov+tJfBP1Nzenc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=f9fcK+NVNWrvcSOcKHy6zfAbJxAzV4H4fy8MVkzolSHyhTXevNA14uYiezSHzn6pQ
+	 ycpaMxR2NK5BhnYOlevG/IFGX9tQA5Zq59bExZRq8ebTHdeuBPIJKdmorpcmlYiJYN
+	 enPNXmLxCznd3cawK4k1uWZ7ls5UQ+kBsVAJbZyI9ASkk1wotZU4MuXOcOSURRiwqg
+	 sT65TPpe9rPAxYbWb9c4r08z7q71qyz1ECpgE74A6BnSnCI7mMzF6uQjafv+S2Jyy3
+	 tECe4u8tzT2Nvo9T8WlyH+ZxIb0wNqskL4SGoz+McXb9NEhgBdQAaCdq0Vli+in/qH
+	 jqXBcNxLA7xiA==
+From: Vinod Koul <vkoul@kernel.org>
+To: Julia.Lawall@inria.fr, Alex Deucher <alexander.deucher@amd.com>, 
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Andrew Lunn <andrew@lunn.ch>, Andrew Morton <akpm@linux-foundation.org>, 
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, 
+ Borislav Petkov <bp@alien8.de>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Daniel Lezcano <daniel.lezcano@kernel.org>, 
+ David Airlie <airlied@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Eric Dumazet <edumazet@google.com>, Florian Westphal <fw@strlen.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Hans de Goede <hansg@kernel.org>, Hans Verkuil <hverkuil@kernel.org>, 
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+ Herbert Xu <herbert@gondor.apana.org.au>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ Jani Nikula <jani.nikula@linux.intel.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, Jiri Pirko <jiri@resnulli.us>, 
+ "Joerg Roedel (AMD)" <joro@8bytes.org>, Johan Hovold <johan@kernel.org>, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
+ Julian Anastasov <ja@ssi.bg>, Leon Romanovsky <leon@kernel.org>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Linus Walleij <linusw@kernel.org>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Mark Brown <broonie@kernel.org>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ Matthew Sakai <msakai@redhat.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Maxime Ripard <mripard@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Mike Rapoport <rppt@kernel.org>, 
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
+ Nicolas Palix <nicolas.palix@imag.fr>, 
+ Pablo Neira Ayuso <pablo@netfilter.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Ping-Ke Shih <pkshih@realtek.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Sebastian Reichel <sre@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>, Simona Vetter <simona@ffwll.ch>, 
+ Simon Horman <horms@verge.net.au>, Stephen Boyd <sboyd@kernel.org>, 
+ Steve French <sfrench@samba.org>, Takashi Iwai <tiwai@suse.com>, 
+ Thomas Renninger <trenn@suse.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Tony Luck <tony.luck@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, 
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, Will Deacon <will@kernel.org>, 
+ Yazen Ghannam <Yazen.Ghannam@amd.com>, 
+ Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: cocci@inria.fr, amd-gfx@lists.freedesktop.org, 
+ dmaengine@vger.kernel.org, dm-devel@lists.linux.dev, 
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
+ intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, 
+ linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-crypto@vger.kernel.org, linux-edac@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org, 
+ linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-media@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, 
+ linux-rdma@vger.kernel.org, linux-rtc@vger.kernel.org, 
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ linux-sound@vger.kernel.org, linux-usb@vger.kernel.org, 
+ linux-wireless@vger.kernel.org, lvs-devel@vger.kernel.org, 
+ netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, 
+ nouveau@lists.freedesktop.org, platform-driver-x86@vger.kernel.org
+In-Reply-To: <20260723184538.3888637-1-ekffu200098@gmail.com>
+References: <20260723184538.3888637-1-ekffu200098@gmail.com>
+Subject: Re: (subset) [PATCH 00/36] treewide: remove conditional returns
+ with no effect
+Message-Id: <178647430099.1113716.2263974283705757692.b4-ty@kernel.org>
+Date: Wed, 12 Aug 2026 00:21:40 +0530
 MIME-Version: 1.0
-Date: Tue, 11 Aug 2026 11:50:30 -0700
-X-Gm-Features: AUfX_myZtx69obOXn-V6mj23KtGWjAnWLsIUINM0nsuY_mNQQsXMZbtsmqMiySY
-Message-ID: <CAPAsAGyEsYfH7oHgctHRQF=7yiteCZKov8EU8rmeg_h8DAkRqg@mail.gmail.com>
-Subject: Re: [PATCH] kasan: fix quarantine_size accounting during cache removal
-To: Hui Su <sh_def@163.com>
-Cc: glider@google.com, andreyknvl@gmail.com, dvyukov@google.com, 
-	vincenzo.frascino@arm.com, akpm@linux-foundation.org, 
-	kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Sashiko <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B17F8160003
-X-Stat-Signature: 3ay3u6efy67dyxwrabowzbo7yo4u1ysm
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
+X-Rspamd-Queue-Id: BBD45140007
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1786474232-619487
-X-HE-Meta: U2FsdGVkX1/3ljNkFzB14Ncb4jaciNASQaeutroXPxgJNS5rJkmHdSIMkEp7ezQgAupB0KXauSoOO4vFHs9cMghepltLW07M9X9/dxT8a/iYjnAnK1O0WRJhlLAjEoau+o7UGiwgkiU7K9eguPz8gBajphNFwioDoQEo2s/+Die8bTU2QPObfDdy3vJm2k6AKZxut+J7oR1zaCwoVUcbOxXaOM2DxXcuBwXPGGndvmTqUQgGApu/LXqcgOToQKnYRkppsVyv1//DdusI1HxBz/2mQwLlijfes72IiQSGWQ7UKW86/eiW0OPQzKqjVdrP9eWSb8Z3qjtnjT1wr3gad+1KCm0qF5q8Eh4jMCrtmtLhlvTnDFTq0dGSB3kXqCS/DmTIs8t+xveptOhdtdxX3DLuavoWbJneHWoiw5tOVK7hkIXpW6nvXfqJKUaN/VqXTOJKDXBMxi9FlM4Dn8z3ETAetT5TlqA6H73DbuuWlqNUfl9uU/5PP28XmxgeRWZ3Y6p5KFq7yaA9HtYPmSao6WM2yG3PAhk3IIwniXmRiH6Qvc0kT3p1bTIDjXMvp/a4hqjYEOXB95rDKCpGpkVafgv+Vc5j4dPOM5OGDOcM6lyb8lV7RJpiIfb+/Du/GiXlwQQs7fNAxDex67adpOF3SaSyY6pF89E72gp/LyCwLT51kK7y5Z1kODfd5zwJu6ITvOkYO2jRZ0Ua/N9a8aKxvPat4oKoeUBKXg3iuxYXzp0gxGNcUJUl4TMNsgEBoT0zONiGKTdangrmRKKsJ+2d14P87yIKQWyOpgivo+JMxvIBD+30VK7GLHEIaSplDHvfQ7TJocyA8ioWfHtcow/pA9k1XM3/90McPctXl0qg1ZSz92iuesUqTlQVv7MOZnOOgYaLzXPt6UP8NPCUNYhAF0mkwgaTg32c5XkhoavKpbYjp4XGIuR9IiSDebhrq33Ue9Fj+WLnuWWVaJdpVJR
- v2Sy1URo
- /M2F+MOaD/DuNuMp9fzXb7fM+WQfEh8beEKWt64ADj//KoM+MxqjxS3hLPyJyyg5ZUeEPjGAJzSEu0/mlF0ighStnoXLp2r8N1q99jgKXLFMnr+Onr4t5x5bm4fTvZUnCMmdKZ28JMvKkOX+SDj2+c4lTp5HkZRReOa/wQWoxI+qRu2iRtCcxDyu5FmYHH4RHw0A/RuUCd/bK90yZ0z409b0h9DAVZx/CI5sb7XpnwQla5TbKnHIM739oAH2Q+dtJfg/IDFdorZM6FeQr4ko6eOpw8rv/1Bba+Ts5m1B/FNA24g9MEu83UjW+idmVwjlwdePzjwLapMZFXSai2vSeqagMSE0mhanSC++Z0OBG26Xyw4cYb0xAqD81xSeZynsAQhhMae55w0AgvTDa4nDZMNGxN2ZhJAP2foVgDmdWIHNeKnGVMO7y8ByQuQz2iZeeWCLkAI58qXIiWwQjz6RYYH/YRpeMUs7ecJ9C1hwZvbhbYv/LbDlfZOq7Re8jlIo9+1MJxYb6+prMhcG1Nm0I/b7L1Oho966IBWNIg74pPb+izUkDeM4EjZACWJa4r78SmQZXc9OJPgSMrysxhsSrOFRwhy+cUTox9jEVy+OXznIxLEefLZJ1hDMymoM3vVifOsZj
+X-Stat-Signature: k98zo7ym1dtjnha7u83t77fmhodf7ssi
+X-HE-Tag: 1786474330-663259
+X-HE-Meta: U2FsdGVkX1/ycGqmTDiKcElBXHFQkn37RquyEuHXxHLMgelQWS1/5r/ALwJhdW8x6glGgBKI1bd5CzCzAVcyKFgbK4BCS3fmDQqNCYD/JOqo0uJd0yGf1oeBPeXBwpihydQsIE/ejpnyw2VaxDFSBA6Un55rLgBMEvGzZpIhJej8JWtNexVn9i+yTWUirazlYMUvDJgZBWYwcEyK2SQ6XYNcE9Zr4kOKpE6E4KtiP1gh+bG/fQPxDsvdImsGRs1YZKUBDCuR/GcfWLQkohm1Qqe1vd1Fi5lvItohPeHNK8W2yg6lNw51jx0ADj9xVKrt/BNRK/7J0y/kcflAivNxW62B/Glxgtd4hraMNxkConoBBwAnO2T8cQubBBM9kAfnmFdcCLWm+hWVEhtWuMVXB/wTzZAqVnQZCufgnRy8CQmgCEkETIy7AURO7EcB5JXomZ4TLzyD1xwSdy+j2UJuHSophF2mcGq7g2fe2GN+CyMqg1+8cw8Tvnihqdj6ou4/eFQVCUrNRhjbAs+nc5POPOzXeupzzK01rI/XAV+1DRSXYXZH1XXK5h+yBdfE7dCGQC+FiHISDTdTgPm6QKPXUgtGOGTg2NTu0E8RMhLiIzdlZ7t3lMH8B5pPHtLJPnID5QdduThpz1wNx0E4bEa/2Gi7UsS0xcUwA3Ahf3JvJZ2eDgZ/fin9Z2OpXHw5PzbrsslT9FvkGxrmp7xe4dtHmrc6gmYcBhrAOu9eUF2F2hi4xWdD+qM3NWiXis6+/VACOT1U7MnIfOjdj5fqV5XNfO5xAu3S7kMcMi3XGO02xUuWuD+Z6o1fx2QEyf+VrgLhk9U2oARwys3xIbM61IF9ba4US2ypWaCigMT9ajAsCze1bTQjgvs6eAVNAfIMtMNrjus2n3In1djKP+VEUPpqFDoXbXPdRdjYAGlSBWv+HR4Y+N6owQjYicR1Q4bOKe+I5pHjjkyLDx6e/Kbu1Op
+ 60ameFfA
+ PEyyFJdl7QuR8a4gAV4jv3+mXabwIHC8XVqE9w+3+DylKPiS0MCnsqEcFiXqANwT32P1N6ND6r15wdzPB3rl9ODTYGAvhKlUyySTZRRLc8WLXAbkRPpcHH/j+omTfHLnnqWrTow4bFROtdyC07EDvz+uvzteKw5aM7Tpq0RqnFQ8uY5Wee+/uu1T0P44BZlMgzhKBr0j5/ZqS40w9n87+vHmw3/kuXtRLbMlc7ewQ8sblo91NaPDlxV51FBNetv3exh0WjoDciymD0xvAGWem3conhmJcgoC/GnOLAhDaW7rqdpo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,36 +151,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hui Su <sh_def@163.com> writes:
 
-> quarantine_size tracks the total number of bytes stored in
-> global_quarantine[]. It is incremented when per-CPU quarantine objects
-> are moved into the global quarantine and decremented when a global
-> batch is evicted by kasan_quarantine_reduce().
->
-> kasan_quarantine_remove_cache() also removes objects from the global
-> quarantine. qlist_move_cache() rebuilds the source batch and updates
-> its .bytes field, but quarantine_size is not adjusted accordingly.
->
-> As a result, quarantine_size remains over-counted by the size of the
-> removed objects. The stale accounting accumulates across cache removals.
-> Once the inflated value exceeds quarantine_max_size,
-> kasan_quarantine_reduce() can evict a batch even though the actual
-> number of bytes in global_quarantine[] is still below
-> quarantine_max_size, shortening the quarantine window.
->
-> Fix the accounting by recording each batch's size before
-> qlist_move_cache() and subtracting the number of bytes actually removed
-> from quarantine_size while holding quarantine_lock.
->
-> A KUnit reproducer used during testing observed the over-count grow by
-> 4698864 bytes after one kasan_quarantine_remove_cache() call with the
-> fix reverted. With this change applied, the over-count did not grow.
->
-> Fixes: 64abdcb24351 ("kasan: eliminate long stalls during quarantine reduction")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260808031459.3032812-1-sh_def%40163.com
-> Signed-off-by: Hui Su <sh_def@163.com>
+On Fri, 24 Jul 2026 03:45:02 +0900, Sang-Heon Jeon wrote:
+> While reading mm/memblock, I found a conditional return where both
+> branches return the same value:
+> 
+> 	err = do_something();
+> 	if (err)
+> 		return err;
+> 	return err;
+> 
+> [...]
 
-Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Applied, thanks!
+
+[19/36] dmaengine: qcom_hidma: remove conditional return with no effect
+        commit: 04b8c3de13871653a8ecbd9f1adfea4d0694ecfe
+
+Best regards,
+-- 
+~Vinod
+
+
 
