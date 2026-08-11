@@ -4,94 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1D53C5AD7B
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 03:07:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26554C5AD7B
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 03:09:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8CAD6B0093; Mon, 10 Aug 2026 23:07:26 -0400 (EDT)
+	id E875A6B009B; Mon, 10 Aug 2026 23:08:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A650F6B0095; Mon, 10 Aug 2026 23:07:26 -0400 (EDT)
+	id E5F916B009D; Mon, 10 Aug 2026 23:08:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A1526B0096; Mon, 10 Aug 2026 23:07:26 -0400 (EDT)
+	id D755C6B009E; Mon, 10 Aug 2026 23:08:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F0E06B0093
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 23:07:26 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D331340334
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 03:07:25 +0000 (UTC)
-X-FDA: 85087502850.03.5B26398
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 5E98C180009
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 03:07:24 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=Fe3qezAr;
-	spf=pass (imf16.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id B717E6B009B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 23:08:58 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4F73A1A0326
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 03:08:58 +0000 (UTC)
+X-FDA: 85087506756.05.0F2FA3C
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 37DCDC0007
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 03:08:56 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Z7i1XOOk;
+	spf=pass (imf28.hostedemail.com: domain of guopeng.zhang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=guopeng.zhang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786417644;
+	s=arc-20220608; t=1786417736;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cng7GWmuH0afMBNJaOnPoRqJa9xaiwRqJYVnLxI+0+w=;
-	b=X2DkDcINNwJuahhnZlbg0aJ/CkpzMu/JMFMZJDRmRPB0dsjIIph+IRGtJPj1Js0gS81Zgw
-	U/KE8bBX10Gln2AUqst6fL1LsP03dcBwSHSDKRG7rhHBBfLRtBhVLXCXbPluSPMksEYfdM
-	Ltvq0q/mbx1pB4zuDqPZPfajYxsUeHY=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=Fe3qezAr;
-	spf=pass (imf16.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+	 in-reply-to:references:dkim-signature;
+	bh=6RU1QcglTKSplI+6h+9d2ONdsvNoRJa+0z35rhprdP8=;
+	b=QRlsJNTSLtxMDdCBGDuiorUeNCAUvmP/VLhnzfqlHOJCezfKojcXNwdWFeFQSPw4mWjZAe
+	tfdJKOTzbYMEo3Y48At2r3PqyYvPdl6J/mNplQ89VvUNxjefunjam18c5oWJtWfTMBs6/E
+	M34WZUyz1j7raFqU5AJeuCPkVCB5qTY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786417644;
-	b=6XUl2nVogQ8iVahI0tmy15VV32JW3TJ1rgAL1hD0EsI6+iTxr6SxG/AIJ40h4K3YCjkybg
-	f1NOCaX4yMghSh5bshV37c7k+9GFGwlDuHGsY1FIeb3JXoVK5dhT4TzFboDhF8d8i68AoR
-	2EPfitCsn0+Yo4VVXK4VpZ8mpGXEXzw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=cng7GWmuH0afMBNJaOnPoRqJa9xaiwRqJYVnLxI+0+w=; b=Fe3qezArnzVz1Pb+5pmpOAIgcB
-	UW4WK1nDwE9bLqjp7C3Jj5yV5sXselN+PwuUh0zTTGkmfN6t4kesgCEezvcAsF8IYx4uLZ6OSpGU3
-	GLrDNS4XVzS4vR7Td68MCOqoOXPryHSP9IWYuQ7oQRVQemVnJycOy1DTPYVd5fx7tbAwNPIdK84Em
-	ztZG/gBdtb41/ZzHoNEcRbKNafwo1897lrhZYSOJNO9gAv10xQJw25N/QbQzhDqvGw/3YNdwwwcJu
-	ef7QHar4jrMtViZK9BuCZdT5REoBM/bAOn2ZnsFIziLSRo5aF6CFwgZ2VhIpesOb+DYeR0MhFoEU5
-	zDLAwYyg==;
-Received: from [96.67.55.146] (helo=fangorn.surriel.com)
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1wtcb6-000000007kZ-2dKV;
-	Mon, 10 Aug 2026 22:52:12 -0400
-From: Rik van Riel <riel@surriel.com>
-To: linux-kernel@vger.kernel.org
-Cc: kernel-team@meta.com,
-	Rik van Riel <riel@surriel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v3 4/8] mm/gup: break out follow_one_pte() helper
-Date: Mon, 10 Aug 2026 22:51:53 -0400
-Message-ID: <20260811025157.1632867-5-riel@surriel.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260811025157.1632867-1-riel@surriel.com>
-References: <20260811025157.1632867-1-riel@surriel.com>
+	t=1786417736;
+	b=LHl6imhk0kNCE1zTg1TlIiRIdA5WcbOgwIlCsEYcYmnevHHe4OSrn1Ozlee8/BG4T157Yv
+	lkWgSaIN2+FcQj3Qz936+tONMgnVbxXp7dIOSUL90ynpcIF53SyypNQ/UxdDFGmeSNsCQl
+	qOn9fygPWs4208678GU2/8zkM/IxDy4=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Z7i1XOOk;
+	spf=pass (imf28.hostedemail.com: domain of guopeng.zhang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=guopeng.zhang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786417732;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=6RU1QcglTKSplI+6h+9d2ONdsvNoRJa+0z35rhprdP8=;
+	b=Z7i1XOOkFFAUellA3NV7lMdxMXnkv4B5/1E1WrWvNwTIf7s+0fgOl20XIMzJpjCbsdMr19
+	l8PvtayKaT6f4jbWCJF+wqLEy/9tsDYpRDTLSmfok/0Rbebn1m/09lu+Y5cfjazRWYWzx/
+	++iU1n3QmmKsS9NtWMjZiSZq/3ULpkk=
+From: Guopeng Zhang <guopeng.zhang@linux.dev>
+To: hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	akpm@linux-foundation.org
+Cc: roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Guopeng Zhang <zhangguopeng@kylinos.cn>,
+	Michal Hocko <mhocko@suse.com>
+Subject: [PATCH v2] mm: memcg-v1: fix memsw and TCP failcnt accounting
+Date: Tue, 11 Aug 2026 11:08:43 +0800
+Message-ID: <20260811030843.109104-1-guopeng.zhang@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5E98C180009
-X-Stat-Signature: g1idmngnhysiqhzmxp89cks5ifo947qz
-X-HE-Tag: 1786417644-527136
-X-HE-Meta: U2FsdGVkX18dNggvqIP72UODu9qjMbBYwPYFgOc16xkAjppKyEunZdjpqsDl5147j+Rja7YYHsPkp5C6hxe8Xqzin8ugXLtvIVVk74tuT76ImQrdBKAs8fOQBAtmCH6Ds2luZrEZ4Y77Pp4CtryOf1iWZkCfGG1vJA3LVFGPtMvmi9eDdx4i+J0B7naf6fFBjy3UqdQC453+QKqrlJaskZ8IctJ/k47TEG5VszqWtU8buOtJ7I1pZj5DDsSowb6DxjcQaMSMhqDD54SUJTvhdudWa9SZhe8G34+SciR5Vqth86NUsWVFpwHBNLO4iiUOZ6pGnb6gT9O/3PorvlabObYb8TuO5h3Ho7s870Oc/Hhtz8ruiO0LUvhXKdHUdx5fXGe/DajwQqCoOWPZFbF3WOqPa4EmwYdf9n62j4zagdO+ccGPf9As35NTstn40cvf7YDYuK1KeubAT6Hb0PiHTis976Wyx3OYaA1inhOgptoT1gv78UbmU2MinUvTmBqzT9KRY932zaW9aTkviczQpe9eVpDl5OI9IlYgcecfZxwXeAwDdZrPN5+wp0U1hexFsB30Ag3wV9ys/B86txWQsPIL2XA2n5cLkmwvYZwHbh2DcsRi3BxBPLcPMF+AawGtfSN/+c6bc1PsGT/BFQgmWP8RjdwRjM1xv6LFHEgzueAPymUYWRXyqiXeDUA5HoHNZgFjAeSWWGWtc2Dv5DVNjorGbo1KTwbGOUTyoCmTVL0cqZ9mA7+VoNLpOY2BDga8TnaJ09tkdUKQK84K6W5iksmXhbhSUSYOGSvmeKvJu/Dl+s3vAwO+HoYl9LgHQp0TA79Mo2nUMJB7JRmVOs8qpbKeLTAI/l8RNFilGdMWx7uNVfQdPb/Odix4l5O/7IW5wqLmG4MHsIOvOM/iusPi3fv+WCD9EYHpSk19ptyaLBK5sUBOd+J36TNNQBin8YwhGKpPV13SJ5JkA6tsk0J
- jFA+X6mS
- D0Vc2Uq1xoPuahzeaFHo5YWiYCabLEOagudV2q0T68Abe9OgjOOOGcFlyL3Mu4Cz2ea0TZzJZOcprPQmbnKO2eoJAVAbWh4yzJAdsjjZcpaPB1YrHkDwRnDYzvYdHEyEWTUtDXciLRnjQxdxtK92UEREmrqa8Z00aiS0BK2XyEkmah1+9FItHXomXhy5yIcKlXwBKSXffOr3SyI5+KPOBmFhyW4Icm/TKQptEEY/u//yOKEpm24TUCddZ2+GJz6lADCte9+xNYjEudYARRcWBEYGGZawsqewrNzPvD9v4mDJzvbZhqYpbFpaf2xjexbRhKDyoY8vftHvuDYJW31c/sYqEVQ==
+X-Stat-Signature: xbhrq6s1u4an9s9qm5ujyyazzukzt69w
+X-Rspamd-Queue-Id: 37DCDC0007
+X-HE-Tag: 1786417736-478533
+X-HE-Meta: U2FsdGVkX1+yfy8HmnTJmm3G/HQaWAbUP6HsMOyulgF2eMRLzdeGzwelQ1Y2wSQF5nrlKhTqI4RQpJxLNOwB8W2QuR6SwmK2f7RFEnIAV80B1yfU2iy8C64T53bxQ6gxe4W+HbDXVgZn6PkjW97FRHDYYI8nvGaPKDAkoDiqZxLDf7YFfrSENDt/xxGbd472mabPSj03M32fObGSgcikVzxCHb9iFrkdvysqqlM5Z3duQLwcF8X2k57SUbhm4bemK/W8z66iPd4l4cpDOz9unUs8j5R9++N2H4J/XZDWCiS4Alv+1kJMUGFKDdo+zFmxVANd6Z8P4kyMFG+4TNdC7NDc5jsbuZfPCzDhTPjpm6PYzgZf8a/M4xJy7TLPf6mvuhC4Q1Xlmhcm5E1SvKQesdFv+qrLB3GLVEE53gAzh5GAx/xhsQoD5uyRCrzRoFlcu+zCzuMFG1PBlPCJd2Eer2z+1Vx8zhOO0XglwgQF1pEQqgwH+YRyR8B/CAP3TnoKyKP/dY+uE4hWrkFmAgFzx93WIUhkz6aNpEvyZhL7lKlQnjuvgdbDPTEwjLD8gyEjM5SaucBzg8v6Sg6Ok50P4R0cwPvUifuOi1YbmqX9+jLnsQB3BqzMO0DQE4qyFmqQ/gUdmcv/LdAaGoM6sUjdERD1SS/vikMHirBgv3Xi6AEOOPUJYClP5jiooITMop/58Qud6IgCkCBrmxWLfBNoiqKFwtHX9hrSF78BnlBYZ0H9LrOJ9foRUPFp0L5vx8Te8p4oqX8Mz8mzvD/Zicbnu3JoQkTzvPlF8D69Mo7/L3xLLb+LfmH93VHVhTJ7AT/f2/2GqjzIu4Hv3yZGW6Vx9uVrjJDfGrUGRW+0fpnI/9pPKFdYDkUHE82X/OfoLm9Y8vpbzGdi4Y205pwt0g4WcisIankNZ2/5WuRDiTSt0GkBCujWraBBarbRzPk9K4UllktHvwDM4/u6o9zjXGC
+ 4+XyvibQ
+ AKOyb4aRNu2Ibq0MZz47PP1DzoftnJ+zCWLHWtoAJdFpoXWanIpC63w5RYoCDk60lg31w2kZ673sDMH0KpU3vYCloHscLQ6/ZHBbFCiewjmDpswHkRDZAPywVQlVVBq5732WozekMlrTO3IYB+8CLi7vBtgahWerQUfKuEJ1F8NtR5jzm4fxOFkGnsIVf0GSpdnb+LtujQwIwM9hV1XWxFxY5Q3CK1anLDmmrWWcxNgTxQXOaznX5TYaUL17UqilxNPb6j2vBlvWbL0pDWZcInogDm+HoNNl4NG6zRwEc68s7GaM34WLtL7Ly10Jn/Y/Tb1meaB32/XaeKYJGR/ZbiVJoxvszg9imn4C+yKUGJK8iEKSMPnTzQyOHHEZbI4+Uk9FxuGoM2rgpH3fOPHKGtBo5UQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,163 +91,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-follow_page_pte() is 92 lines and does two separate things: work out
-which page a PTE maps, if any, and commit to the page it found. The
-first half reaches the second through five exit paths, two of which
-unwind the PTE lock in different ways.
+From: Guopeng Zhang <zhangguopeng@kylinos.cn>
 
-Split the resolve half into follow_one_pte(), which returns the page it
-resolved, NULL when the PTE cannot be followed, or the errno the caller
-must report. follow_page_pte() is left with one unlock and one exit.
+Commit 0e2759afcaf9 ("page_counter: track failcnt only for legacy
+cgroups") made failcnt accounting conditional on track_failcnt. It
+enabled the flag for memcg->memory, but not for memcg->memsw or
+memcg->tcpmem.
 
-no_page_table() can look up the page cache, so the case that needs it is
-recorded and the call made after dropping the PTE lock, as before.
+Consequently, memory.memsw.failcnt remains zero when the memory+swap
+limit is hit. memory.kmem.tcp.limit_in_bytes still sets
+memcg->tcpmem.max, but TCP charge failures are not reflected in
+memory.kmem.tcp.failcnt.
 
-No functional changes intended.
+Enable failcnt accounting for both v1 counters.
 
-Suggested-by: David Hildenbrand <david@kernel.org>
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Rik van Riel <riel@surriel.com>
+To reproduce memory.memsw.failcnt:
+
+    CG=/sys/fs/cgroup/memory/memsw-test
+    LIMIT=33554432
+    mkdir "$CG"
+    echo "$LIMIT" > "$CG/memory.limit_in_bytes"
+    echo "$LIMIT" > "$CG/memory.memsw.limit_in_bytes"
+
+Start a child process in the cgroup and make it allocate and touch 96 MiB
+of memory, causing a memcg OOM.
+
+    cat "$CG/memory.memsw.failcnt"
+
+Without the patch, memory.memsw.failcnt is 0. With the patch,
+memory.memsw.failcnt is greater than 0.
+
+To reproduce memory.kmem.tcp.failcnt:
+
+    CG=/sys/fs/cgroup/memory/tcpmem-test
+    LIMIT=65536
+    mkdir "$CG"
+    echo "$LIMIT" > "$CG/memory.kmem.tcp.limit_in_bytes"
+
+Start a child process in the cgroup, create a TCP socket, and reserve
+1 MiB of socket memory with SO_RESERVE_MEM. The reservation fails with
+ENOMEM.
+
+    cat "$CG/memory.kmem.tcp.failcnt"
+
+Without the patch, memory.kmem.tcp.failcnt is 0. With the patch,
+memory.kmem.tcp.failcnt is greater than 0.
+
+Closes: https://sashiko.dev/#/patchset/20260810074247.52747-1-guopeng.zhang@linux.dev?part=1
+Fixes: 0e2759afcaf9 ("page_counter: track failcnt only for legacy cgroups")
+Cc: stable@vger.kernel.org
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
 ---
- mm/gup.c | 100 +++++++++++++++++++++++++++++++------------------------
- 1 file changed, 56 insertions(+), 44 deletions(-)
+Changes in v2:
+- Enable failcnt tracking for tcpmem as suggested by Johannes Weiner.
+- Add the memory.kmem.tcp.failcnt reproducer and test result.
+- Update the subject and changelog to cover both counters.
+- Add Cc: stable@vger.kernel.org and the received Acked-by tags.
 
-diff --git a/mm/gup.c b/mm/gup.c
-index b755ceaac0f5..5af6a23285de 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -868,74 +868,86 @@ static long follow_page_pte_commit(struct vm_area_struct *vma,
- 	return 0;
- }
- 
--static long follow_page_pte(struct vm_area_struct *vma,
--		unsigned long address, pmd_t *pmd, unsigned int flags,
--		struct page **pages)
-+/*
-+ * Resolve one present PTE to the page it maps. Returns no page and no error
-+ * when the PTE cannot be followed but the caller may fault it in, and a
-+ * negative errno when the caller must report the failure.
-+ */
-+static long follow_one_pte(struct vm_area_struct *vma, unsigned long address,
-+		pte_t *ptep, pte_t pte, unsigned int flags, struct page **pagep)
- {
--	struct mm_struct *mm = vma->vm_mm;
--	struct folio *folio;
- 	struct page *page;
--	spinlock_t *ptl;
--	pte_t *ptep, pte;
--	long ret;
- 
--	ptep = pte_offset_map_lock(mm, pmd, address, &ptl);
--	if (!ptep)
--		return no_page_table(vma, flags, address);
--	pte = ptep_get(ptep);
-+	*pagep = NULL;
-+
- 	if (!pte_present(pte))
--		goto no_page;
-+		return 0;
- 	if (pte_protnone(pte) && !gup_can_follow_protnone(vma, flags))
--		goto no_page;
-+		return 0;
- 
- 	page = vm_normal_page(vma, address, pte);
- 
- 	/*
- 	 * We only care about anon pages in can_follow_write_pte().
- 	 */
--	if ((flags & FOLL_WRITE) &&
--	    !can_follow_write_pte(pte, page, vma, flags)) {
--		ret = 0;
--		goto out;
--	}
-+	if ((flags & FOLL_WRITE) && !can_follow_write_pte(pte, page, vma, flags))
-+		return 0;
- 
- 	if (unlikely(!page)) {
- 		if (flags & FOLL_DUMP) {
- 			/* Avoid special (like zero) pages in core dumps */
--			ret = -EFAULT;
--			goto out;
--		}
--
--		if (is_zero_pfn(pte_pfn(pte))) {
--			page = pte_page(pte);
--		} else {
--			ret = follow_pfn_pte(vma, address, ptep, flags);
--			goto out;
-+			return -EFAULT;
- 		}
-+		if (!is_zero_pfn(pte_pfn(pte)))
-+			return follow_pfn_pte(vma, address, ptep, flags);
-+		page = pte_page(pte);
- 	}
--	folio = page_folio(page);
- 
--	if (!pte_write(pte) && gup_must_unshare(vma, flags, page)) {
--		ret = -EMLINK;
--		goto out;
--	}
-+	if (!pte_write(pte) && gup_must_unshare(vma, flags, page))
-+		return -EMLINK;
- 
- 	VM_WARN_ON_ONCE_PAGE((flags & FOLL_PIN) && PageAnon(page) &&
- 			     !PageAnonExclusive(page), page);
- 
--	ret = follow_page_pte_commit(vma, address, folio, page, pte, flags,
--				     pages);
--	if (ret)
--		goto out;
--	ret = 1;
--out:
-+	*pagep = page;
-+	return 0;
-+}
-+
-+static long follow_page_pte(struct vm_area_struct *vma,
-+		unsigned long address, pmd_t *pmd, unsigned int flags,
-+		struct page **pages)
-+{
-+	struct mm_struct *mm = vma->vm_mm;
-+	bool need_no_page_table = false;
-+	struct page *page;
-+	spinlock_t *ptl;
-+	pte_t *ptep, pte;
-+	long ret;
-+
-+	ptep = pte_offset_map_lock(mm, pmd, address, &ptl);
-+	if (!ptep)
-+		return no_page_table(vma, flags, address);
-+	pte = ptep_get(ptep);
-+
-+	ret = follow_one_pte(vma, address, ptep, pte, flags, &page);
-+	if (!ret && page) {
-+		ret = follow_page_pte_commit(vma, address, page_folio(page),
-+					     page, pte, flags, pages);
-+		if (!ret)
-+			ret = 1;
-+	} else if (!ret && pte_none(pte)) {
-+		/*
-+		 * no_page_table() may look up the page cache, so it cannot run
-+		 * under the PTE lock.
-+		 */
-+		need_no_page_table = true;
-+	}
-+
- 	pte_unmap_unlock(ptep, ptl);
-+
-+	if (need_no_page_table)
-+		return no_page_table(vma, flags, address);
- 	return ret;
--no_page:
--	pte_unmap_unlock(ptep, ptl);
--	if (!pte_none(pte))
--		return 0;
--	return no_page_table(vma, flags, address);
- }
- 
- static long follow_pmd_mask(struct vm_area_struct *vma,
+Link to v1: https://lore.kernel.org/r/20260810074247.52747-1-guopeng.zhang@linux.dev
+
+ mm/memcontrol.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 70806373d5a9..17da1f43b7d3 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4235,9 +4235,11 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
+ #ifdef CONFIG_MEMCG_V1
+ 		WRITE_ONCE(memcg->swappiness, mem_cgroup_swappiness(parent));
+ 		memcg->memory.track_failcnt = !memcg_on_dfl;
++		memcg->memsw.track_failcnt = !memcg_on_dfl;
+ 		WRITE_ONCE(memcg->oom_kill_disable, READ_ONCE(parent->oom_kill_disable));
+ 		page_counter_init(&memcg->kmem, &parent->kmem, false);
+ 		page_counter_init(&memcg->tcpmem, &parent->tcpmem, false);
++		memcg->tcpmem.track_failcnt = !memcg_on_dfl;
+ #endif
+ 	} else {
+ 		init_memcg_stats();
 -- 
-2.55.0
-
+2.43.0
 
