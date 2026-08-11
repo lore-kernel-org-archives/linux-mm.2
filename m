@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B460C5B572
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 17:07:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF666C5CFEB
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 17:07:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 416EE6B007B; Tue, 11 Aug 2026 13:07:09 -0400 (EDT)
+	id BB9946B008A; Tue, 11 Aug 2026 13:07:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C6FF6B009F; Tue, 11 Aug 2026 13:07:09 -0400 (EDT)
+	id B69AE6B0092; Tue, 11 Aug 2026 13:07:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B6A86B00A0; Tue, 11 Aug 2026 13:07:09 -0400 (EDT)
+	id A5BFC6B0098; Tue, 11 Aug 2026 13:07:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EB5516B007B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:07:08 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7EBBC1A0126
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:07:08 +0000 (UTC)
-X-FDA: 85089618936.09.0406EE1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A4B43180011
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:07:06 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bf5TjJfO;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 73EF86B008A
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:07:55 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F0C91C016B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:07:54 +0000 (UTC)
+X-FDA: 85089620868.29.996E94F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 55678C0003
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:07:53 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=muZHQpJO;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786468073;
+	b=qfr7jwKF22A6X2vqi3Am7fq1lJ+w4YfJXd1rA7rJ5MmHhVmvOh8UXyw+Pk5uLWt1/6zBUf
+	i6uyu30iaDzC/2DA16qbl+k7jG8udQxZ6r1olzCTkuNUKEEB9QLN9BAOzFc2PQ/w4q/DdH
+	PlTVh0M/zuSg3IVYhZk3HPTitsA4YZY=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=muZHQpJO;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786468026;
+	s=arc-20220608; t=1786468073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tzHgNprRUHzM+nWJ/u98+1Hlh2UAUyJ3Kbr/TZIbCxA=;
-	b=XyJscGq3Lyjp4i8pvr5R14pbtCHgffvo8hZX973mcSQtnKYOs2lupp0nT9+85hig0WjjPH
-	slNFw8ujUwo4JhlsjlEWTtSFc7PmoVGG/8Kyj0CcdzSqt5Ecaapxa/PBrdr24eFdcB7fkZ
-	zYEPFp1a15gAgctTKvI+mwnIhv3zv2c=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bf5TjJfO;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786468026;
-	b=3Qjbj+IxKcVLPjMFYGZMaGCSoYfAHMUW1hbr/V2oBODwJpzPYPldl0rUjnOWRXmvZQIDAA
-	QlbhIubGMU2c53TCktEkNowwlpBC1mrw3W2wgLuitNEyRgN0Diq4+G6ZwTIhT5MlX18lr3
-	TZa3DY1iMQhfyl+8GVn61KAlepW8WOo=
+	bh=iUKLaNVgnm6yVlIUuq3S+v3XbNNRA5IFdKQLUZEf4Po=;
+	b=azuDi9AFCMQ2W79iKEXIoKYxcJqLfbMrDw38B6XaXCqGZch5SUY9XDPVwrlgotUyUzGikC
+	JB0YnYjiq1zzDccyPpNWJlYbJv86QP5m3yCUiwa1fzmRfnNv0R5YoTvhlrWXSe00hSwsbS
+	hYDzIi+E3Vz7wBFWw0FPQNFcofNiW58=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D268D42E10;
-	Tue, 11 Aug 2026 17:07:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56DAB1F000E9;
-	Tue, 11 Aug 2026 17:06:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 32CA4600AE;
+	Tue, 11 Aug 2026 17:07:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E4A1F00A3A;
+	Tue, 11 Aug 2026 17:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786468024;
-	bh=tzHgNprRUHzM+nWJ/u98+1Hlh2UAUyJ3Kbr/TZIbCxA=;
+	s=k20260515; t=1786468071;
+	bh=iUKLaNVgnm6yVlIUuq3S+v3XbNNRA5IFdKQLUZEf4Po=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Bf5TjJfOh3SVJsd4OtNdIG5B5d2xI11qP61qJcO2dcoDBDjurnJvmNPwolN5e/u0t
-	 B+s35+Ba3k0Ns93TcFR/N9sUve5/+B3Goi9qQ4RIFY2/TfV1P1ngNQrwNDWdpXcp/r
-	 4q69xnZYEQ2sxu0tJvaoTKAAFegaeOn7niN+JtEhikAMpqH+Kg8C+KtvXPzvej/CwY
-	 f4+zv+hOyB74boEfRrhRV6IzRg4W734UjR7CsmOmmM/IuOBia8qp9ei8JtAxef+bGo
-	 fuAaB+9VFjwnNgmP/8bxFEXx+LF/kKv9tXOqV2pglDl8d/GMZ6T8XshRpJkqe6TIUs
-	 eq8QHs1RDNSBg==
-Date: Tue, 11 Aug 2026 18:06:44 +0100
+	b=muZHQpJO9uzZAk0kMRcdaEMI9jcfs4Uu8oC32MtScjPY0WQhPC9xcG9YtLeaqYkRQ
+	 BghULgIcL5/Ouo5WcMWjVgCzG81bXQD6IdhgzJ6RLsQSkBK03Zm7Q/fe1OeV3TUm0h
+	 46THJIkIrI54+SDkzKF9E0cwdr8sdNPbtzdgd4zMW4gmlKrbgcMHPDNsbQ5FIgOYzV
+	 5i4BQIab45nRpWJ+5/jy2TB8m8BQIVBiwTgWhiKCPfXFIL663Lp+qsXIZ1AuT7UVS6
+	 vdbOBvZg6oEOgAzKgxsuG5rlZ/X3CLkTg0FKOgfOxRCP92SoTKocLw6YIaqodz+n1H
+	 r9H212Mfzjw/w==
+Date: Tue, 11 Aug 2026 18:07:36 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -107,25 +107,24 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
 	intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org, 
 	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 07/20] mm/vma: fix self-merge check in copy_vma()
-Message-ID: <antWi82nEl-7GY7u@gremlin>
+Subject: Re: [PATCH v4 16/20] tools/testing/selftests/mm: test anonymous page
+ offset merge behaviour
+Message-ID: <antWw3a0iEv4l1Yd@gremlin>
 References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
- <20260806-b4-scalable-cow-virt-pgoff-v4-7-ab318a350404@kernel.org>
- <3a0a9aaf-20f5-4f92-b848-00ab702e8fe2@kernel.org>
- <antTCpT9gXN7pSRn@gremlin>
- <20f5b9eb-c4ad-4241-9556-e9bfce9ac715@kernel.org>
+ <20260806-b4-scalable-cow-virt-pgoff-v4-16-ab318a350404@kernel.org>
+ <cf70ce8f-cdde-43ec-a50e-796d4e390f3f@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20f5b9eb-c4ad-4241-9556-e9bfce9ac715@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A4B43180011
-X-Stat-Signature: c857hnpxmgreeaa7w1gah35igbg5epw6
+In-Reply-To: <cf70ce8f-cdde-43ec-a50e-796d4e390f3f@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1786468026-398593
-X-HE-Meta: U2FsdGVkX19xD8RkG8X5rAu6xaLtuCtV5cOZ7a2tFBUSgbdrcCgXsHPMCJP3H0zYh8tzZw9NFfTCGncuA10mSw4gDFmmnCwvD+fGlf87+hofcsepVpCzxCTFeqM9A9/SMZFvJA+ZxIsDimktWCs5LtGn3Tryua8GJWK2jaGO5sOQfCvZ4Gcx/JT+O4R5MddRkXzI9NobSep7aNS0vRNXpWWWYOoj5ZybU8Vwx8O/lXNQaU7R9mZL2KGYpFeG72jqoPfpGSIAzzoQIN5Qwlm8Bh5go0Fsb5GvuHJxokDvcQQKrnD9RdcLNl0/F5LJhhoI3698V44SD0ujl29jKtEHXl69YyWGA0+wEKXdwlaIf73lYgCey9bpVGmzDRQknWu+iijCnfG3WAMZnIUi7iRjG/wEUJQnMs8Nampt85IRFrh3xPrBVtZK7osZQlBbKvSV4b2tIXEjAno7zBXYnF6ApeVZ6K6eAvpvfbHOON0OpqXCWP5F/wEL9eeNAONhr1D16XwJe08YpicffHHgHZfL7xaqS2iEWUHcHIay5sCA+/jmJthAaO/OcfUlMMENXVO8HKsD0cW797PP25BrP/wuuXnuo2yaZCmBOJjwtN2tiPaIgopg5tsfV/6pV4UAjrbo7uIVSiQyWyg/4GywXi9/wHxjOuSw2DYULJ2yO6frFWXxIfsOXadnKRohGPLgV309YMteiQaBeyqRN2/peIREFhebsinKltCMspa6xCcH9Cu+Zrjp0IgOTqrqOH+TvU55w/YQOjHyTE3g3l6EGzOQiMbhF5PE+u3kSr2eNTsCIMQiEgwF/8T7ak0r1BNBPcc9bsiMQ6Aq2Z6927LSKj5AYqmnvbsEio9lhh+/x98XBU2LDJCOH9FB8havmYGYFPktVqjs8XiROyfkvndA85w2bUZJzNxz/Q8YrJbb0/mC4ZJ8BOUXQKt0/uG3gkjr2GTCIqWUMv5q/2ZloB47iws
- 0tZF5yPV
- ZWtm+3qa7bxTEYFefMZ5M9Curg3Z7Sh6U7cVLbelek2HAKLVxhykgc0i34vxWJZ1ffQj6X/pKtu+3pat30yOeiJPVlR+5U56oVu8E0VH4XucsWqwCc1lr+APGKLVs/teIi/ghS7/YEr4UBoSbZgGWKOVWlOQwiFWcoPjzpeF+OnnLZ0yFrQvw1cun3EoM3+iOKi3nJPfUOFh8tpdXdyplyjzqTbY0ki8nF/2+7tD7FewBD+lJc61iMI+NM42U4PeowU8Gk4E6URIvYZPLFA4BOfMoVtVGq5CW6HZDY6u4ayzpHDEfhXaE6Um3GvFQzlbiJypFrMjTq3UpINrVsXFa9vtziAmXAG2n+OvbtN+xX7w3SipeGu7XdlkxY/My2QGefEYFtW4ogLLef+w=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 55678C0003
+X-Stat-Signature: i841ne1gmz7nyid7tyki6u8ozs966exa
+X-HE-Tag: 1786468073-182087
+X-HE-Meta: U2FsdGVkX1/MI3xZcQDiWgS8SJsBBWUxMt2EaSUtxKEPiIA/Cj1rn3pt/VDJVW4hyQp78nIF8m+o8y8T0ookDiEeZ53WlL80fJtsf3RY60Qpn8ZQxNrgyXdttxAQwGmzRcvNFRce0w/NF+7TV8tzcPxwC1NMlERCg9MBIDwcRaVeXc8f8AJW/BJ25I64LntOdSaFkRqEDVKBS3eQbYW6H4EJ8S3SX+WFvXKkQDdfh1yYtDz6s1KnSJpn/kX6AuPqRHXxNczuv3kC0t7MIxXCeuStSH/aMYfzkJedvUKPV3Z9RSBfGT9jLBFEPTZkbVy7xqdKWhjvoVfP45wF09tNNSBw5er+I1yJXrhiHrognVdGj+7c6LF7bghqoI0aMlPQHVzoNep564Hl5c9OiOdLrNtkwEqDYHPtSvOOdBUGeWFXOptDJpZ0+PaZGoWS74Tx1Iwb4BT1OVBVPkwCeSk4PWMHmk7asbqZOjidA2djdklnrLnlik49x0AWqPJaTF1bDNgbm6qMm9ofpET6aBheEUJcQaIVcj03gOyj5jhgO4pRwX88NwWu5nUkWU00SwMP6uovlWAfy0FmlkaK4MVl1A45PeMiC3TBa+8AGTpoOKa2yDa7U9bUwTJ251frG5/afz+2zDiVhtuuYdkZSuRvLO00ms+94FxkRepedsvoU6r43u8G6YQDieAwdKxpErYHFnJFnu/c6V7EMz2PodF/ZeeIrCCyjJI8E0AE7NaFd22VBmYR6LWOpDWOrCu+FY8qInb4Zw0IJeNXvM+eSDFFzbJ+aUfQwFpPZDiDQVSqf8fm1d30o+Lh3C2Dds6nrc/WyeJBVLItfo4nSreR+kAWHcpJiYi2+iuVIG7pl0oY4pqsFYl9s+4wG4+86820qiOhsc7iBDRguz/Zo6nV6JDUZhkzEjRWYDBuYE3Sqh24mxWkBQqE8JZR3OKzXImO0PXneOFg04wWKOxDRCcKMWS
+ rAbt1qW8
+ igRCuDUpui15h73ymNNJ1+RVlx86VyJ6MnMwKr3X/edsdHXlOsjihpsvkibFs/fMRihVzpBsLkxpc1zjI9MNxHMhOOySCklckakS6Z4cnPwIsvmeEvi77+100vODfktVauhyzv79CyvX0NlSV8U0ggt6sjHys4IvCRaHnH5DXzBdPEk+4nabGKfdRUU+H2nCA6zVfuYqI21GRif3r6r++eYvC72DzleVvG4h86dAGTAjJa1IdeRV+shqJGaERjbqBAB79fxo9ujJWmo+gc36+M3HQqcZNPPKcyBfZyfSyLnRFo7R5xkqMYYmrusLGOM0GPGXuGEqbnwEDHOJAenVvN01gktuaFVgec8yz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,48 +132,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 06:53:05PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/11/26 18:51, Lorenzo Stoakes (ARM) wrote:
-> > On Tue, Aug 11, 2026 at 06:44:01PM +0200, David Hildenbrand (Arm) wrote:
-> >>>
-> >>> Since copy_vma_and_data() which calls copy_vma() intends to reference the
-> >>> old VMA after the merge, it must have this pointer updated.
-> >>>
-> >>> This kind of self-merge is not possible with a succeeding merge, as the
-> >>> merge always prefers to expand the preceding VMA if possible.
-> >>>
-> >>> copy_vma() accounts for this by explicitly checking to see if a self-merge
-> >>> occurred and updating the vmap pointer if so. However it incorrect did so
-> >>> even for a subsequent merge (this is simply a noop so it had no impact).
-> >>
-> >> Took me longer than it should to find out that this is no real fix ;)
-> >>
-> >>>
-> >>> So change this to only check for the case which matters - a backwards
-> >>> merge - and rearrange the parameters to make it clearer we're doing that -
-> >>> i.e. check new_vma->vm_start < old_vma_start (having already renamed
-> >>> vma_start to old_vma_start to make it clear this is the previous VMA).
-> >>>
-> >>> Also update the existing wall-of-text comment to be a lot clearer.
-> >>>
-> >>> While we're here, replace the VM_BUG_ON_VMA() with a VM_WARN_ON_ONCE_VMA()
-> >>> and update the VMA userland tests accordingly.
-> >>>
-> >>> No functional change intended.
-> >>>
-> >>> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> >>> ---
-> >> I skimmed over it, looks correct, but the merging stuff is way over my head to
-> >> confidentially give a RB tag her :)
+On Tue, Aug 11, 2026 at 06:56:18PM +0200, David Hildenbrand (Arm) wrote:
+> On 8/6/26 22:21, Lorenzo Stoakes (ARM) wrote:
+> > While maintaining anonymous page offsets for VMAs has no impact for most
+> > merge cases, it does impact MAP_PRIVATE-mapped file-backed mappings which
+> > happen to have matching page offset but not matching anonymous page offset.
 > >
-> > Well that's what A-b is for ;)
+> > Assert this behaviour by attempting to map an unfaulted MAP_PRIVATE-memfd
+> > region with a faulted one with compatible file page offsets but
+> > incompatible anonymous page offsets.
+> >
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > ---
+> >  tools/testing/selftests/mm/merge.c | 57 ++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 57 insertions(+)
+> >
+> > diff --git a/tools/testing/selftests/mm/merge.c b/tools/testing/selftests/mm/merge.c
+> > index 519e5ac02db7..cb7cdb6b7ada 100644
+> > --- a/tools/testing/selftests/mm/merge.c
+> > +++ b/tools/testing/selftests/mm/merge.c
+> > @@ -1305,6 +1305,63 @@ TEST_F(merge, merge_vmas_with_mseal)
+> >  	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 2 * page_size);
+> >  }
+> >
+> > +TEST_F(merge, anon_and_page_offset_mismatch_memfd)
+> > +{
+> > +	struct procmap_fd *procmap = &self->procmap;
+> > +	unsigned int page_size = self->page_size;
+> > +	char *carveout = self->carveout;
+> > +	char *ptr, *ptr2;
+> > +	int fd;
+> > +
+> > +	/* Create a 10 page memfd descriptor. */
+> > +	fd = memfd_create("anon_page_offset_test", MFD_CLOEXEC);
+> > +	ASSERT_NE(fd, -1);
+> > +	ASSERT_EQ(ftruncate(fd, 10 * page_size), 0);
+> > +
+> > +	/* Map a region using the memfd at page offset 0. */
+> > +	ptr = mmap(carveout, 5 * page_size, PROT_READ | PROT_WRITE,
+> > +		   MAP_FIXED | MAP_PRIVATE, fd, 0);
+> > +	ASSERT_NE(ptr, MAP_FAILED);
+> > +
+> > +	/*
+> > +	 * Map another separately, and fault in, at page offset 5:
+> > +	 *
 >
-> Assisted-by? Half-assed-by?
+> "Fault in" is imprecise, as a read-fault won't do. "Trigger a CoW fault." might
+> be better.
+
+Andrew - could you fix up? Thanks :)
+
 >
-> ;)
-
-A schloppy schplatch I like? ;)
-
 >
 > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
