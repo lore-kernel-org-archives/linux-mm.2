@@ -4,87 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB451C5CFC1
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 22:07:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCD82C5CFC1
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 22:58:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7191D6B007B; Tue, 11 Aug 2026 18:07:13 -0400 (EDT)
+	id 613616B0088; Tue, 11 Aug 2026 18:58:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C8D06B008A; Tue, 11 Aug 2026 18:07:13 -0400 (EDT)
+	id 5C4AB6B008A; Tue, 11 Aug 2026 18:58:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BA1B6B0092; Tue, 11 Aug 2026 18:07:13 -0400 (EDT)
+	id 4B2E76B0092; Tue, 11 Aug 2026 18:58:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 15E3A6B007B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:07:13 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 75F50140136
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 22:07:12 +0000 (UTC)
-X-FDA: 85090375104.30.3E99598
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0232520009
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 22:07:10 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e7lRVh2H;
-	spf=pass (imf13.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 144316B0088
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:58:09 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 98C30A027C
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 22:58:08 +0000 (UTC)
+X-FDA: 85090503456.21.6CA76E2
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E110540002
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 22:58:06 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=eYipRNRy;
+	spf=pass (imf12.hostedemail.com: domain of 3_ah7agYKCJgK62FB48GG8D6.4GEDAFMP-EECN24C.GJ8@flex--seanjc.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=3_ah7agYKCJgK62FB48GG8D6.4GEDAFMP-EECN24C.GJ8@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786489086;
+	b=oSuYLYV+i5XOW/mzpUkxtlOOgaAERXIff48KVmKG50NT2CgZKVX81BJhd/5ongYXrIrDuh
+	392GxpSLUE22u+TZmMfjwjnfRaVwsQJpFsW+tb9nfW6gXv4Ux4RRfVqNLpNpCzG4ZSiYFI
+	8SILXwSTK2suqL5SaRuCTRIWUymvfZQ=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=eYipRNRy;
+	spf=pass (imf12.hostedemail.com: domain of 3_ah7agYKCJgK62FB48GG8D6.4GEDAFMP-EECN24C.GJ8@flex--seanjc.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=3_ah7agYKCJgK62FB48GG8D6.4GEDAFMP-EECN24C.GJ8@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786486031;
+	s=arc-20220608; t=1786489086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=pZc3lJcuznYHnJe1pVV119vmLSoLWOLL0tob4dAdTfk=;
-	b=MV2eRFMyU42ymUrUg9cMKLq5t3qq+xAnx6yKxWtsVlv6jLK+xf6+Ffb7i6sYF039rOMu1H
-	G94hfx6d15vq8/wGGsb8rs9X/ooHDu82PR5ZXG2hgj4h9/yt8Ksh3YllGt6hRGGdLbWb6A
-	11oKwVARdeFksJ730uw0Dc8xMtFdkRA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786486031;
-	b=DRrqOph1HzFl+d9/xBzU0OCJuVafakdzYCTatqCq0q+5uK+clPP/92izpBPGzwT9e30woz
-	DAt9g+bOiGqoIGjXdwluaXXw3/RLvxtORB1QswRvYa4WICdneBq7O0QdRGCMqdAxjFagMd
-	hhqXwuxWWjHHrJxWsXxUCrhrLzoiBoA=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e7lRVh2H;
-	spf=pass (imf13.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4E382600AE;
-	Tue, 11 Aug 2026 22:07:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C80161F000E9;
-	Tue, 11 Aug 2026 22:07:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786486030;
-	bh=pZc3lJcuznYHnJe1pVV119vmLSoLWOLL0tob4dAdTfk=;
-	h=From:To:Cc:Subject:Date;
-	b=e7lRVh2HAlqDwn2J4QJRyW8NRkKE3pfQW/40I53spD9lQQDbecMTtljyPtSczmiKD
-	 +xpGfh+EepW3ssIFuJdMIHnr0TMSw/gZfR08/yGkiKUqktNSIRriQZVMuV2V6gubWj
-	 GF/16ArJiAzD0IqRycBG8qCtI5lSjbW24Mo+34yinWppczssCj73CpEAe0KUh3kgUQ
-	 TiAc5pcBhqjZ0BHsq4wkf4eZvSEIwaZai9LgEkDCz2+dVMvZal8vnF+VsV6LvLhZob
-	 2XQkczxgibRN+gVxT4HdkAAxqwb1swuuaO6aQiL48dFjYoGGkt+VUSA6ibhJCzrLcb
-	 THt2I+wV8fQBw==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-block@vger.kernel.org,
-	Jens Axboe <axboe@kernel.dk>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Christoph Hellwig <hch@infradead.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] blk-crypto-fallback: Fix deadlock when encrypting large bio in dm layer
-Date: Tue, 11 Aug 2026 15:03:18 -0700
-Message-ID: <20260811220318.58331-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.55.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cEzv9TziceYkcHbMHh7lHIVizJF1nhviTwKFOEAR9lQ=;
+	b=GDwOWGrPDhHiSqtsVjwLrwKp7dTXgEJDfVGMgqnx/jTvPyAFY9F5vazRVcJdKqcVGacGB2
+	Z+jDrTLThZ24LKArN6ZbTHJrEljj7zdhBs3oHr6crAKsPpMirRVPWt+5mUq+TQAVpOWh8Z
+	Ktohgo/wPdJ4jTNmfqamo1DkBbRuxaM=
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84e375d9736so177299b3a.2
+        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:58:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786489085; x=1787093885; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=cEzv9TziceYkcHbMHh7lHIVizJF1nhviTwKFOEAR9lQ=;
+        b=eYipRNRyhuKA5C4gUj18Ky4AA2LUoK2r40ZQPZFYA7xl054nhZFumSWu7djK6Mt12t
+         ELFHGKgIiWm6TTF6I6lkNagJ7091f0vGgvFbczZoDAV0R5E3R1Bm5p1/8gphwTRShLn5
+         jmMbpDnDCG20V8dYicotO+RlG+Wdnh/7TGReDB3HSCxUdz1e91Xn3GK883ziZ9rUnb7Q
+         2T3+7in76hL5Uwo4mgu52jtMALf4y/XkGkvnYrqVo5ynC9rEIFPIwn4JtJyJnVH/UWos
+         n+in6NUyPDGd4/ZZ2WykQUbrz84R4XwZAk4HbJDMnh4Qtno0w9pP5R+v6R3Q/jVCANAM
+         ltQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786489085; x=1787093885;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cEzv9TziceYkcHbMHh7lHIVizJF1nhviTwKFOEAR9lQ=;
+        b=I9C6LQNpoyEt2CCh1KhwFwoiRH6D67s6dvtOMYWHPVI3eCJzQsSC8bIbUSTsS91f1u
+         eG4dUhlkoLefgH2ra2VSRZ8wyWl5Kzo6FnIz7yNI5YhlFF9a2bPRO6VnGdIgN17W1JJK
+         DXo9lPOqxqKmptN2D2xB7HGqAvZYM6sahjPFhnZbn4hU/PfABia0pnKRI31zKveuNC4q
+         VI8oEyG/Ew0i4/XEubp7fkExBdD4WAdYERrqGqafEZ0cVDRH5rTGKqxvaHY3YKiPblZ/
+         jsLy5A2I7fOtMu8HTkmUCaoZ5SrWEoYtTm9G513E4/vMZGwsyLttPLttwPZWf8hGB4IR
+         GXfA==
+X-Forwarded-Encrypted: i=1; AHgh+RqK8LrYNoNb2NxlTYwsPlNl6704lKuGOovdAcHDq+MDa70epcL93V1bZjvpgreifNc2YsBzs6pIRA==@kvack.org
+X-Gm-Message-State: AOJu0YwcNSwz3aq6DMTZpyW+ny53g+ICoZ80ZQE+vhzwoNvIWcG5Bv6x
+	rji7C9t+Ta6p+Q82hEgmyDzHutsb/C3ASrmhv4shZ89w6/xB9MrpYkluqtyjG/MvK6IXCK1yCB0
+	FVPM0FA==
+X-Received: from pfbhc13.prod.google.com ([2002:a05:6a00:650d:b0:84f:4ff1:f767])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:985:b0:847:8be6:2177
+ with SMTP id d2e1a72fcca58-84fb54f6116mr651351b3a.34.1786489085251; Tue, 11
+ Aug 2026 15:58:05 -0700 (PDT)
+Date: Tue, 11 Aug 2026 15:58:04 -0700
+In-Reply-To: <27f2326dc66d6341174c0e510aa518a1297b66ae.camel@infradead.org>
+Mime-Version: 1.0
+References: <20260811162423.GL544626@ziepe.ca> <f33571137d2e3973e440d09c7602edaebe08b714.camel@infradead.org>
+ <20260811172627.GN544626@ziepe.ca> <B25708F5-8425-4075-8D95-5E2A00C933DF@infradead.org>
+ <20260811181915.GO544626@ziepe.ca> <anuAq2s4mtyw4_Ql@google.com>
+ <CABgObfYR+vXBuSm3v5jbbZL8vF=XnocFAnjumdShgXBzod-HCQ@mail.gmail.com> <27f2326dc66d6341174c0e510aa518a1297b66ae.camel@infradead.org>
+Message-ID: <anuo_OxfvJbQnn71@google.com>
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, akpm@linux-foundation.org, 
+	david@kernel.org, mhocko@suse.com, rostedt@goodmis.org, bigeasy@linutronix.de, 
+	simona.vetter@ffwll.ch, jglisse@redhat.com, christian.koenig@amd.com, 
+	paulmck@kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: E110540002
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: xw1bq61su74np437pwcw7kmtwnfmi7uo
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0232520009
-X-HE-Tag: 1786486030-954415
-X-HE-Meta: U2FsdGVkX1+JwDyJRg3ZAcUbdKO27SmN/W+7RSXk7m94h33MSrXFmvXlUyGne2PR66m/xDdPxcguGssmhkKAZGDa6WDzBhCJaV+hda+zUfqpDrjhSf9K0eGxfg34DQ+yFg7rl2mdHHgbblZY0jabwBqW0mNwLQIM+lI8FVfX7NI0F/a71lXO+t2RGCJcPFxejbMdSVFu4f03tVpJ7EWpelA3lTmUYM56vmsw8h96QiuCAtq3BGX5+2WIOBgSkBnm6hnnIuwT0x1Tx2fEMPcI6eo6V5uorq2Bix0JqvthWwjKfVgIuhMSnI0zLAIjxZIY99o93F8hqqWe1iH9WEhvZ+kg9qQlz4PQIwnBeH8zViytz1CTtkITzdhodhqzCvC17aTohB2DI3e5pMJwUnpWBFLyzaAq7b0sEBcQ/rjTVtGgHOT8Ci8ihqxopctP6d/VlqVupbeKTYPz/RWRh5WBOze54u9gh8Jo7oM6bANBUbnMzkqmczIYOUpAyc4PO7xXlJgLcVJjKoJMcvlrdeYOPssRi7/pGs5fyarbAEyVXOMUI6uhBKzdOTWKGelc67+VV3QUc7FuqGfKE431MrfSqNlPTvs3GS8W4kt+dM9EQKXQP3zPHbvXIoF15XXjBoTbG2Z8b7oTpzH/r4ctsGh+hYVD85KFOOJNpG8ailP4z5JPUxtI9KV3QvcNA7oPK+C/x8Wncaoe95hrNpOgSCmeSeytlSZoAEZRkiZhppRKg6mvBcCFwO/uPjsMOBlde2oEpPR4Zfzc4tNIBtuKBgM5pff97Lygnp2WYgjAlT7q48P0UEz0pkFRHaK1CMfSn3AzAE1v/sDZ6ZLA4lf2qaTrR9b2ZW/QXWCjtkbmZBIZOcfXw6ysirf1w69A8Z9tMgr2vzkpV5pzdUuGjy+ifmY2ZvoI91ZRsUdAV+XfzziMmuleZqja0j48gh2T2qiJEueM53g4gQghOaC3QzaZuV4
- rbyM9uqf
- slcIUMgXSq9UXwjcXFBqOfv7Eu9+cFIe3Moo9CcAmvOPP9Bilv1YEI5rbaDZCTiJ85MuQV8rJdrAaGy3gX0dAt8o26qIqpT2Uv5kTExUbxfOsG4P+w4p4QbjgMATC6AyaPmY71XbnBXZxGION0hECTVRinoI+nr7m33JBCTMSkNKGRG6PChqjrSM3UdzEK1xyLlPBGim6SeVj/wwYECth8DUetcemJ7eWAu5p2JQP+sv2qAw=
+X-Stat-Signature: 8c43jorxfgi33n5mbf5zcfcbs3sqrn66
+X-HE-Tag: 1786489086-564248
+X-HE-Meta: U2FsdGVkX18O3ImADNUumfpRl/rwP/nT/3Wr4b5kE9Mn4JZa69l64GdR2nwBAkRomw08u4+pnMl8Rtoybs24XPOeIs1yhULj4FqHCPVqLK3qu90IKS10MPf46Du9oTqYLHFG2tvQOi30Rn1P3QP+zdghy2jfPMf978X1OGHxHFzrZFs4KPATFjAfYRICU5BE23mgi6bqlRXwpaxpDRLk4s/nACipYLQiX6w9JYZ93xRk+BLUAxg9b/w5C6zg1Bcmrid2N91KgJzeSRpVgPGFWXNzO1KQgCOhqr8qAiw6x4UyWYQZMuqtL/fz3ce/l78ne/qMsOX6VAqvKpoUYWNlgC3opmzoU1TkFce/b046MG//D8PzNPwa2ljB0h3sLVig4fJ901L46tABDUdJ69usQqQyjJXsk6RWd4a+1Wk8/OD9tC9dZdopdfBBWGf39n+FIaRKN6++qP67WvPofiFa9fFuRLNm41VSIE8WR6am3uodJT1tvrj+MioKoRJx+ZVUFhBI2eFJbiFeXtM4OjtiG3bf0pu3UIrQv/jr+76L2QiFpnJF/kMfFIfSeWE5jyHZbWzuCeX6VPNRL+JsW8Mr8y8/xwwiH7IOFQ6GwuvMag3l0Z4kMa7c1sF0oaH5CPNOdSlHdb+HXxhuyGLiMNgMJsUdsFqixeUrV4y2W/HNBmJyB4YpVTMnbS0m3zrsfXCeW98tJ/Mq95Rj6NL6VD/O3Yp0JsAwqeJKNsB0gyiUYz5JnPJYYbD702wbMdaoSdFX1NWczV5ukYkd/oY3dHO5OShzkkc69ZiLAtJ1k2AMaj2BESi87Vu6MqqYTWiy5mdkXfmlI/ev9bmdYokJRkm7B4grSiFQ9jMqw8b/ErJzVI9a191ZQO8V+oz3PY8EhOJvAuH5wwZpqYoKUBVDLDOfVDuv0MzkMgzHYgz7mo1bP4En9Okx5iWW6QkIIQnrIfVcuGiC9jO8n9Lgjp3UNH8
+ Z4qGpun+
+ O3uA89MwM9drMsfm3HUB2i76rWAEwHRpe2DhFtiNcgCnbKsnUi74dr7tVOfPzoUrIT0s35swF5qFJDTWLiKfx9y28s1mdt5IH/iO6QdYND+o4ZcdRN79TAe2pcEqOqkvPpOZeQsGLwYwTQZNgxIZ1LzKBPegaOtQn5BpHIJCT5/sIKhIyAQZQr4WJHcA5V92NkzRS+DWWKU0MpgzWL+HjR5ldOdoK9JVZPqG03t0umyiVZxEy8A2cQT6f+xiT/RDoVKGHZ1ZJ6jBDcmp8RnXA+IkZrGcjGREqNhMrOMvG3GPxDNyJMfphbzOrpUpO93kZU4KCJlGMzjZH1rzRR+P8TupbaPFYJDHHU9CaMwYuK2o6Dvw+T7ngvO50i9HW5n5Oyjytodo1XWZDiKHJRbYvfQR5TYmiSqR1Bl87FgiDp6vQJw2nvmlgnSUaq6hzpCXmWuYkt/R1tIUdow9m52YU4L2MMqwnNIywHRAQozeqXOLT/ACJs0BuW9dWT1xJHgL2wgMpohTblnpSz/Woh+bfZfB+Cq+JHVCnlSmPqVve0tMDRIcUNjzINMDK0+yuXzJ0nAiY8xK3xGR9SW3lX4qIPqIQCNLDFeIEUmiPyfhFwGq/r4F+IzziXk95tfSLPCFG2c6ew8DRaF1B8Rh1Q0JRSqzXRyWWBGPD0wC+niUQpQyh5oDzN2S/t24OSw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,173 +118,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Encrypting a large bio with more than BIO_MAX_VECS pages can still
-deadlock, even after it was attempted to be fixed by
-commit b37fbce460ad ("blk-crypto: optimize bio splitting in
-blk_crypto_fallback_encrypt_bio") and commit 3d939695e682 ("blk-crypto:
-use mempool_alloc_bulk for encrypted bio page allocation").
+On Tue, Aug 11, 2026, David Woodhouse wrote:
+> On Tue, 2026-08-11 at 22:21 +0200, Paolo Bonzini wrote:
+> >=20
+> > for_each_present_cpu(cpu)
+> > =C2=A0=C2=A0=C2=A0 if (per_cpu(kvm_gpc_reader, cpu) =3D=3D gpc)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cpumask_set_cpu(cpu, gpc_rea=
+ders);
+> > __kvm_kick_many_cpus(cpus, wait);
+>=20
+>=20
+> I'm literally sitting here watching you reinvent what SRCU already does.
 
-This is because __blk_crypto_fallback_encrypt_bio() assumes that the
-bounce bios that it submits will eventually complete, unblocking it from
-allocating additional bounce bios and pages.  However, dm-inlinecrypt.c
-calls __blk_crypto_submit_bio() from within submit_bio() itself.  In
-this case, the recursive submit_bio() simply adds the bounce bio to
-current->bio_list without actually submitting it yet.  That breaks the
-guarantee that forward progress is being made.
+The problem, for me at least, is that SRCU does this and a _lot_ more.
 
-To fix this, allocate the bio and bounce pages with GFP_NOWAIT if
-current->bio_list is set.  If it fails, punt the encryption of the
-remaining part of the bio to a kworker.
+> Which, again, is *fine* given the behaviour of *these* read-side sections=
+.
 
-Fixes: 488f6682c832 ("block: blk-crypto-fallback for Inline Encryption")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
----
+Well, yeah.  Why use a nailgun to put a nail into the wall to hang a pictur=
+e
+frame? (other than the indisputable fact that power tools are fun).  SRCU i=
+s
+fantastic infrastructure, but I genuinely think it's not the right fit here=
+,
+especially since we'll likely need a different solution for in-guest reader=
+s
+anyways.
 
-Changed in v2:
-- Switched to the less efficient approach preferred by Christoph
-- Use BIO_EMPTY_LIST
+> I get it. RCU is a versatile tool, and in *some* cases the *Sleepable*
+> variant of RCU gets used in ways which would cause grace period latencies
+> which are thoroughly unacceptable in an MMU notifier callback.
+>=20
+> But in the specific case of a dedicated kvm->gpc_srcu whose only
+> readers are tiny snippets of code that until today were always run with
+> rwlock_irqsave? That is *not* Jason's worst-case bugbear. It's fine.
 
- block/blk-crypto-fallback.c | 80 ++++++++++++++++++++++++++++++++++---
- 1 file changed, 75 insertions(+), 5 deletions(-)
+I agree it's more than likely fine for your use case, I'm not convinced it'=
+ll be
+fine for use cases that heavily overcommit memory, or do NUMA balancing, or=
+ (close
+your eyes) enable KSM.
 
-diff --git a/block/blk-crypto-fallback.c b/block/blk-crypto-fallback.c
-index 2a5c52ab74b4..ad4b5ca291c5 100644
---- a/block/blk-crypto-fallback.c
-+++ b/block/blk-crypto-fallback.c
-@@ -83,6 +83,10 @@ static struct workqueue_struct *blk_crypto_wq;
- static mempool_t *blk_crypto_bounce_page_pool;
- static struct bio_set enc_bio_set;
- 
-+static DEFINE_SPINLOCK(enc_rescue_list_lock);
-+static struct bio_list enc_rescue_list = BIO_EMPTY_LIST;
-+static struct work_struct enc_rescue_work;
-+
- /*
-  * This is the key we set when evicting a keyslot. This *should* be the all 0's
-  * key, but AES-XTS rejects that key, so we use some random bytes instead.
-@@ -172,13 +176,26 @@ static void blk_crypto_fallback_encrypt_endio(struct bio *enc_bio)
- static struct bio *blk_crypto_alloc_enc_bio(struct bio *bio_src,
- 		unsigned int nr_segs, struct page ***pages_ret)
- {
--	unsigned int memflags = memalloc_noio_save();
- 	unsigned int nr_allocated;
- 	struct page **pages;
- 	struct bio *bio;
-+	gfp_t gfp_mask;
-+
-+	/*
-+	 * During recursive bio submission (current->bio_list != NULL) any
-+	 * submitted bounce bios just get added to current->bio_list; they
-+	 * cannot complete and release resources yet.  Therefore, to avoid
-+	 * deadlocks, don't wait indefinitely for additional resources.
-+	 */
-+	if (current->bio_list)
-+		gfp_mask = GFP_NOWAIT;
-+	else
-+		gfp_mask = GFP_NOIO;
- 
- 	bio = bio_alloc_bioset(bio_src->bi_bdev, nr_segs, bio_src->bi_opf,
--			GFP_NOIO, &enc_bio_set);
-+			gfp_mask, &enc_bio_set);
-+	if (unlikely(!bio))
-+		return NULL; /* GFP_NOWAIT failure.  Fall back to kworker. */
- 	if (bio_flagged(bio_src, BIO_REMAPPED))
- 		bio_set_flag(bio, BIO_REMAPPED);
- 	bio->bi_private		= bio_src;
-@@ -206,12 +223,27 @@ static struct bio *blk_crypto_alloc_enc_bio(struct bio *bio_src,
- 	 * any non-zero slot already contains a valid allocation.
- 	 */
- 	memset(pages, 0, sizeof(struct page *) * nr_segs);
--	nr_allocated = alloc_pages_bulk(GFP_KERNEL, nr_segs, pages);
--	if (nr_allocated < nr_segs)
-+	nr_allocated = alloc_pages_bulk(gfp_mask, nr_segs, pages);
-+	if (unlikely(nr_allocated < nr_segs)) {
-+		unsigned int memflags;
-+
-+		if (!(gfp_mask & __GFP_DIRECT_RECLAIM)) {
-+			/*
-+			 * GFP_NOWAIT failure.  Fall back to kworker, even if
-+			 * enough pages are already free in the mempool (since
-+			 * mempool_alloc_bulk() doesn't have a no-wait mode).
-+			 */
-+			free_pages_bulk(pages, nr_allocated);
-+			bio_put(bio);
-+			return NULL;
-+		}
-+
-+		memflags = memalloc_noio_save();
- 		mempool_alloc_bulk(blk_crypto_bounce_page_pool,
- 				(void **)pages + nr_allocated,
- 				nr_segs - nr_allocated);
--	memalloc_noio_restore(memflags);
-+		memalloc_noio_restore(memflags);
-+	}
- 	*pages_ret = pages;
- 	return bio;
- }
-@@ -239,6 +271,25 @@ static void blk_crypto_dun_to_iv(const u64 dun[BLK_CRYPTO_DUN_ARRAY_SIZE],
- 		iv->dun[i] = cpu_to_le64(dun[i]);
- }
- 
-+static void blk_crypto_fallback_encrypt_bio(struct bio *src_bio);
-+
-+/* Encrypt a list of bios whose encryption was punted to a kworker. */
-+static void blk_crypto_fallback_encrypt_work_fn(struct work_struct *work)
-+{
-+	struct bio_list list;
-+	struct bio *src_bio;
-+
-+	WARN_ON_ONCE(current->bio_list);
-+
-+	spin_lock(&enc_rescue_list_lock);
-+	list = enc_rescue_list;
-+	bio_list_init(&enc_rescue_list);
-+	spin_unlock(&enc_rescue_list_lock);
-+
-+	while ((src_bio = bio_list_pop(&list)))
-+		blk_crypto_fallback_encrypt_bio(src_bio);
-+}
-+
- static void __blk_crypto_fallback_encrypt_bio(struct bio *src_bio,
- 		struct crypto_sync_skcipher *tfm)
- {
-@@ -273,6 +324,23 @@ static void __blk_crypto_fallback_encrypt_bio(struct bio *src_bio,
- new_bio:
- 	nr_enc_pages = min(bio_segments(src_bio), BIO_MAX_VECS);
- 	enc_bio = blk_crypto_alloc_enc_bio(src_bio, nr_enc_pages, &enc_pages);
-+	if (unlikely(!enc_bio)) {
-+		/*
-+		 * Failed to allocate a bounce bio during recursive bio
-+		 * submission.  We might be blocked on bios in current->bio_list
-+		 * holding mempool elements.  To enable forward progress, punt
-+		 * the remaining encryption work for src_bio to a kworker.
-+		 *
-+		 * The DUN may have been advanced, so make sure to update it.
-+		 */
-+		WARN_ON_ONCE(!current->bio_list);
-+		memcpy(bc->bc_dun, curr_dun, sizeof(curr_dun));
-+		spin_lock(&enc_rescue_list_lock);
-+		bio_list_add(&enc_rescue_list, src_bio);
-+		spin_unlock(&enc_rescue_list_lock);
-+		queue_work(blk_crypto_wq, &enc_rescue_work);
-+		return;
-+	}
- 	enc_idx = 0;
- 	for (;;) {
- 		struct bio_vec src_bv =
-@@ -591,6 +659,8 @@ static int blk_crypto_fallback_init(void)
- 	if (!bio_fallback_crypt_ctx_pool)
- 		goto fail_free_crypt_ctx_cache;
- 
-+	INIT_WORK(&enc_rescue_work, blk_crypto_fallback_encrypt_work_fn);
-+
- 	blk_crypto_fallback_inited = true;
- 
- 	return 0;
-
-base-commit: db2ddb87143519e20a95aa36c60b36107b736a58
--- 
-2.55.0
-
+E.g. it doesn't take all that much for even a single expedited sync to gene=
+rate
+a delay of 20ms.
+https://lore.kernel.org/all/20260309193059.2244645-1-seanjc@google.com
 
