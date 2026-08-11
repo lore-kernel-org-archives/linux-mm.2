@@ -4,89 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AD56C5AD7B
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 03:59:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE887C5AC67
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 04:14:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCFAE6B007B; Mon, 10 Aug 2026 23:59:37 -0400 (EDT)
+	id 5850B6B007B; Tue, 11 Aug 2026 00:14:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA6E66B008A; Mon, 10 Aug 2026 23:59:37 -0400 (EDT)
+	id 535966B008A; Tue, 11 Aug 2026 00:14:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBD826B0095; Mon, 10 Aug 2026 23:59:37 -0400 (EDT)
+	id 44C5B6B008C; Tue, 11 Aug 2026 00:14:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 93DD46B007B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 23:59:37 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 15636A0352
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 03:59:37 +0000 (UTC)
-X-FDA: 85087634394.26.5C5BFFF
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F7276B007B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 00:14:15 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A036D40149
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 04:14:14 +0000 (UTC)
+X-FDA: 85087671228.10.D93904A
 Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf20.hostedemail.com (Postfix) with ESMTP id CFF141C0009
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 03:59:34 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NHxquKxs;
-	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	by imf04.hostedemail.com (Postfix) with ESMTP id C64D940004
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 04:14:12 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RisPRFYq;
+	spf=pass (imf04.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786420775;
+	s=arc-20220608; t=1786421653;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mSI0U8pt55LTplJXVUrbY5Dvk4IrUWdS2aGBJhbKkKI=;
-	b=A9zqUiZtlCeET0vFAIqh3hybqQ0Libkq1kkl4fs0WJhmNpGSZ/G0GqAcjSm48XN7jJjt91
-	tUFWSoYMstkTMnqJFiU/cnR1fTyaGEcVbHKccKy3mtjq3VRSktoZZ42kF+bPWcVJirmssU
-	OmE1iZGibSc1kZw1TQExIY9kFRRqlkk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786420775;
-	b=6IPZd32wUBBSmmjWbWWjo6Rz9uy5cJifghVDZd+JhsL2+iiRQzAOziaZO8+VetsiVP63Ab
-	zeqPfvof3mIRkSI9qHJYFaEdVv3WswQEpQQtjXfgXh1I73vT21T8fE5eyO9iDr0g4ySC+T
-	/pALj6fd4SMuzjSJK26lBTBsmwoC2aU=
+	bh=GgnpJ28vans1RntJYD4IuvfP0AmT4NAbCO4b8APJluQ=;
+	b=qqGLwiTAHLJ/CRYJSmEOPeo3UvXymn1M7KnKafAskC8mSGdU5nOjuS2uYxGGQS0fFa9aJv
+	DtWY16hM0WKYMTJXNBcgOSeAIR5u+DwAA0ibjtNLx3xbEV6jJg8erP+mo4Bb7HU8YLjiYU
+	XNClIupVPYInS1MPWozZDXPhB+yKxfQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NHxquKxs;
-	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RisPRFYq;
+	spf=pass (imf04.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <47182b7a-b388-4aff-bb22-1da35d9993cd@linux.dev>
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786421653;
+	b=v66+h9AUhC2IgZzcS6FkN/Z0h9m8F/phqK+W+Aq+M7rNGgehzVIrFiiyNGA9VG+LW5uwc+
+	LMx3+2rUkuZ+1KMn5OtezqwuIF07Cwj4Bdv7cvc5pZ0WIqgvEJAocDFc62L9sFci3OUvyw
+	malfHm30CTXPycasnVhgxrhbCp/LLqw=
+Message-ID: <7864bd62-7289-4741-a905-23593130cea9@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786420773;
+	t=1786421650;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mSI0U8pt55LTplJXVUrbY5Dvk4IrUWdS2aGBJhbKkKI=;
-	b=NHxquKxscLo2W9S4Kaz7DdecEYMK2FNZijF8s9zr7Sf0B4VSiC5/7Qjj+h5l1y3LrsypmB
-	l/geyEkC2jM+YEROH5/OYeZMaDu9zckmOrpOzGsiuVqfdrB5yYjaOK5BI2O6MWSaNaPMU9
-	oC7+7DUP3Z2qjI3MuL0zJNTTfk8n6+M=
-Date: Tue, 11 Aug 2026 11:58:59 +0800
+	bh=GgnpJ28vans1RntJYD4IuvfP0AmT4NAbCO4b8APJluQ=;
+	b=RisPRFYqIgCnz1LNYTT0ra4MLK5/CZN+AT1pr362E9KitMbGDyIDueq/I2NNKXdddpBG2X
+	3wg30r2zPOtmIzV3VzBc/WVympEASKLpvXX2afZeR53fDSVgIsUf7Ki0N7Dpcq2uItR+e4
+	CaO1NWARimcCBTFCMHyyjeCz27w2EPY=
+Date: Tue, 11 Aug 2026 12:13:56 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 10/17] mm/hugetlb: switch HugeTLB to section-based
- vmemmap optimization
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
- David Laight <david.laight.linux@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>
-References: <20260804035535.2846016-1-songmuchun@bytedance.com>
- <20260804035535.2846016-11-songmuchun@bytedance.com>
-Content-Language: en-US
+Cc: cui.tao@linux.dev, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+ muchun.song@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Guopeng Zhang <zhangguopeng@kylinos.cn>,
+ Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v2] mm: memcg-v1: fix memsw and TCP failcnt accounting
+To: Guopeng Zhang <guopeng.zhang@linux.dev>, hannes@cmpxchg.org,
+ mhocko@kernel.org, akpm@linux-foundation.org
+References: <20260811030843.109104-1-guopeng.zhang@linux.dev>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260804035535.2846016-11-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Tao Cui <cui.tao@linux.dev>
+In-Reply-To: <20260811030843.109104-1-guopeng.zhang@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: CFF141C0009
-X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: n4jgcaq5u44q5rifqyhmstqmq375urb8
-X-HE-Tag: 1786420774-682854
-X-HE-Meta: U2FsdGVkX1/XRRM74Kpe2DEQW9hZKuQOu5G6/lcz4IxNba2M5G/ESbtlBZ/qVSj0u5CxqLcSCEMY5VroebMYlky/TWXKvxbI0UNmCl+F+jQv4TOX7WVhUPhxLBggAm4DZc06RlofsmP3bwv4nYpys9KHbwt8lz/rPYQYF0pyrMfKwfQ0g+DL8LfIOXiNkb2OBZC7CppL47je6cBtWCT/CMnLVGcdQ070EcwiXUEM/0hSfaPbynhA5FwLaDOQ2rhK9wN+UPPIx4nBUNUluBhSO6je4gPFblrjtbTWg8VPnfL5GFJUs0RCd+ueqKh27OseajLS6ZfBwXA5X7NhkcModiiWRiJWbvKl1fIlfA213ba4BUzUNZPoGaAv3J5kj/FSnHAmf3DhWsb2bXf/SZn5vxBczT2gzlg2bab4b1w9D/CYqTUUPFdVyYZundu5gBkJn0amBzsv8Ep/my5xRTXKY+K1neOXWF3qXpNGUZjt+xy7bBt8gEzjPfbX6bD8orPOrERrdZZoXr/16mn5dD7RwuL/6hdr1wYkUDgOZo1fKv3pTcw5MH+hDHQMLKtGgPDuLydQBbCbjy57VsG6s8zQVtozXN80+hYesAcvL7qeakGvXfFutotMnPkYrbTQGYANYMFgcCf6UTlHYnK5MaEVDXNparlWEXtt20wbbIuT7Kk++mPANisCFdl061cM2hFPptejksIYqsq0VW90up6yBvz8ueIOss9+SjztJXQHh8+J7GqVAqGEbfCCl5fItfKGW7OuCn2BaJkGG8qUW09UVMFpdcFnzzKqA/fpMnVRN8f7GCqYEp73J/woAy7MeXiNQMYfZUgKLFBawo3x31GKxO0nxVnXPE5cIT4CAMfleecsNxv6FZc2gep7TDnryigFUIQNFYcNEW0sgACw8dLvOx87ePQqgvJDOQSvZcccU20LnirUSM7HRi9njmAxITr3qOhLmidgKvcASkZd1CK
- BqmuyCBn
- AY70IIg4tFSK8X6wzZVhj/LhVnwHCjLPZw2tBPfmJflMtwMgf/tFmIMyln1QiuyG78ndGCrArSXHot4seBswgc97DX2ef9mm6dPKAa8HZFk/OMq9T35zBSlRYzQbk6I2xkb8ou406MWIHKz1wq2SCW5H+kLJDnu1ZQ2cKn10XBxUSQi53g4KVIsnacPTDA8g728Vi9657kZArbdm6XAgwhtKzu3aSkjkgLIqcqW9FK23V4potVFS6W7WBNsOR2BbBamcr5WTKu/wqZCQWWKZOZFHgSLivhAFyZ9qljwX1wXymodviIY56VGbG1i/Vmlq0D4BGTV5hIaPlyj0=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C64D940004
+X-Stat-Signature: sybcsosthfgqinuqxgb55zd7h869gusj
+X-HE-Tag: 1786421652-735860
+X-HE-Meta: U2FsdGVkX19gJYKFeiuBhxwWzRxnSrmCupbqFeZBPBjRlkMjqlwj8slMyT/lYLmZFjg9wJDMSDdHwtumfhu/bpF6i1DlkrxxX+yYzY9IoIQxP9BndsRX4qGZsUqZ5KmKLp7/kVPVnOYZiRnsNOPdQpvejMnqyQ1Lr+Fm7bJWEwqdxAAHISU/qD1zYOIIL/6TfOImxWdlh3YrM64+eogMbrzR2e3lIuUB8BbiHOS71PhKUd62hFLzwE+6KtPcbI29NpZT8bmExeqFzL2ZfokBZI4tOX/ycGf5hT3tBEk0siMNlF5GO1VxtZvT+aPjIvEBd7lI+T/6g3mLS7e+R4vRUzUeSz08um+DIqerYUXcSWzru1o//vOy8GWOWk5+x48hWgR4ksFd/4a+av4B0XyAYsSH4Cd4kT9Fbcwli970n1vWk903G9g7oE+n51zDA/l4iVu2sblhlCv50fE6LYiW8gRkthiwSXRYdDjLWxSBgarQVDsHb6eBiVPh3RW5jYyMnncKUUMeJYwKw2GGcb29AEZotnakYte+onE6ZrY/KZ+0Px335MfaZlImF63HX87Txgn32QPzawQtcHUhhMOl1W9BYz4lBOX5beBcD/YnRAXnXhER/8p5W6Hh3QD41cAxaiXCYBvripwBCfewOmChjTYidotRpj1YYa6LTbWyhPHvG/zRTY8Hq9U2VSR4acuiMay5vsiT5wIuQbIEtYU6NPeHvYdkRjshl9Z3HLNYG6Lqsnk6Hg1nBDgbw0ghxSTUFhOILB9jQnVAd/283TbAfCEfMW6/T6kNvHdQw/tqWDQtU5XxjOoU6jQgbqJiVL4RCmSNKb3W58UQ1ujZr9bljONMiHb1sZvpSv68JQcBPkePJmScN+T3ANS3i3PL9SFhoCbmLD8Hh2aGTsTbM028SWkp/MHAbiI93YyQukTlbzinxTPTsGvslgOKcacBxrg2/+/M2CNVXJ/Qc56oERv
+ Eh1ukNfq
+ kcigsKRQK8OHKxy9mrRaW+X8ugsj4H/JPoQp4KgZILu712cR2jRvGR7QM+I8eOoPQfL7zMtZ9fBbJSM/FCMLdhAShNL7SMKW+Q2IIcUL9ydO7aJjz3fEIVyCFCNNwjNZUFUlXGgsB5QSR3NZZt6A4EXMeMYdmUXMKYXluCUl/+HCL540USrYIIY5NPAdTM7C1++l5YsXXTO+kxPwZPltH6YTBkW4meC/wiFbttn6SmckBW8w6TNQ1XYVkM4xFZI9ippOLlI98qnZ0bKoIkM3O2jIuprmHwQCFLeO5cKkk5Bi+XnsdvZESnycCZuYX+nhoertWR5dUE/02Lfhx1HPB8gEIk6jXJ6zo9xucXcjlg0ZXZK7XEbn8/qsQbhVV/A/9BBRKX5+LhzG4wMpDG+LY0S6gMG3imfCXvW02lxnm/QZgOQ9qmfka/EbpHA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,406 +93,87 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/8/4 11:55, Muchun Song wrote:
-> HugeTLB bootmem vmemmap optimization still carries its own early setup
-> path, including pre-populating optimized mappings before the generic
-> sparse-vmemmap code runs.
->
-> Now that the section-based vmemmap optimization can derive HugeTLB
-> vmemmap deduplication from section metadata, HugeTLB only needs to mark
-> the bootmem huge page range with the appropriate order. The generic
-> sparse-vmemmap population path can then allocate and map the shared tail
-> vmemmap pages without any HugeTLB-specific early population code.
->
-> Do that by setting the section order when a bootmem huge page is
-> allocated and dropping the dedicated pre-HVO helpers and related
-> special-casing.
->
-> This removes duplicate early setup logic and switches HugeTLB to the
-> section-based vmemmap optimization path.
->
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+在 2026/8/11 11:08, Guopeng Zhang 写道:
+> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+> 
+> Commit 0e2759afcaf9 ("page_counter: track failcnt only for legacy
+> cgroups") made failcnt accounting conditional on track_failcnt. It
+> enabled the flag for memcg->memory, but not for memcg->memsw or
+> memcg->tcpmem.
+> 
+> Consequently, memory.memsw.failcnt remains zero when the memory+swap
+> limit is hit. memory.kmem.tcp.limit_in_bytes still sets
+> memcg->tcpmem.max, but TCP charge failures are not reflected in
+> memory.kmem.tcp.failcnt.
+> 
+> Enable failcnt accounting for both v1 counters.
+> 
+> To reproduce memory.memsw.failcnt:
+> 
+>     CG=/sys/fs/cgroup/memory/memsw-test
+>     LIMIT=33554432
+>     mkdir "$CG"
+>     echo "$LIMIT" > "$CG/memory.limit_in_bytes"
+>     echo "$LIMIT" > "$CG/memory.memsw.limit_in_bytes"
+> 
+> Start a child process in the cgroup and make it allocate and touch 96 MiB
+> of memory, causing a memcg OOM.
+> 
+>     cat "$CG/memory.memsw.failcnt"
+> 
+> Without the patch, memory.memsw.failcnt is 0. With the patch,
+> memory.memsw.failcnt is greater than 0.
+> 
+> To reproduce memory.kmem.tcp.failcnt:
+> 
+>     CG=/sys/fs/cgroup/memory/tcpmem-test
+>     LIMIT=65536
+>     mkdir "$CG"
+>     echo "$LIMIT" > "$CG/memory.kmem.tcp.limit_in_bytes"
+> 
+> Start a child process in the cgroup, create a TCP socket, and reserve
+> 1 MiB of socket memory with SO_RESERVE_MEM. The reservation fails with
+> ENOMEM.
+> 
+>     cat "$CG/memory.kmem.tcp.failcnt"
+> 
+> Without the patch, memory.kmem.tcp.failcnt is 0. With the patch,
+> memory.kmem.tcp.failcnt is greater than 0.
+> 
+> Closes: https://sashiko.dev/#/patchset/20260810074247.52747-1-guopeng.zhang@linux.dev?part=1
+> Fixes: 0e2759afcaf9 ("page_counter: track failcnt only for legacy cgroups")
+> Cc: stable@vger.kernel.org
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
 > ---
-> v3:
-> - Use the order-based helper for the bootmem vmemmap-optimized check
->
-> v2:
-> - Collect Acked-by from Mike Rapoport
-> ---
->   include/linux/hugetlb.h |  1 -
->   include/linux/mm.h      |  3 --
->   mm/hugetlb.c            | 30 ++------------
->   mm/hugetlb_vmemmap.c    | 90 +++--------------------------------------
->   mm/hugetlb_vmemmap.h    | 14 +++----
->   mm/sparse-vmemmap.c     | 31 --------------
->   mm/sparse.h             | 27 +++++++++++++
->   7 files changed, 42 insertions(+), 154 deletions(-)
->
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index 16c4c4caa126..fe28f98e1b22 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -171,7 +171,6 @@ struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio);
->   
->   extern int movable_gigantic_pages __read_mostly;
->   extern int sysctl_hugetlb_shm_group __read_mostly;
-> -extern struct list_head huge_boot_pages[MAX_NUMNODES];
->   
->   void hugetlb_bootmem_struct_page_init(void);
->   void hugetlb_bootmem_alloc(void);
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 7fabe6c66b4b..fd7dc85f58f3 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -5097,9 +5097,6 @@ int vmemmap_populate_hugepages(unsigned long start, unsigned long end,
->   			       int node, struct vmem_altmap *altmap);
->   int vmemmap_populate(unsigned long start, unsigned long end, int node,
->   		struct vmem_altmap *altmap);
-> -int vmemmap_populate_hvo(unsigned long start, unsigned long end,
-> -			 unsigned int order, struct zone *zone,
-> -			 unsigned long headsize);
->   void vmemmap_wrprotect_hvo(unsigned long start, unsigned long end, int node,
->   			  unsigned long headsize);
->   void vmemmap_populate_print_last(void);
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index d212bbff4c83..7d8507aa4c5b 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -52,6 +52,7 @@
->   #include "hugetlb_cma.h"
->   #include "hugetlb_internal.h"
->   #include "mm_init.h"
-> +#include "sparse.h"
->   #include <linux/page-isolation.h>
->   
->   int hugetlb_max_hstate __read_mostly;
-> @@ -59,7 +60,7 @@ unsigned int default_hstate_idx;
->   struct hstate hstates[HUGE_MAX_HSTATE];
->   
->   __initdata nodemask_t hugetlb_bootmem_nodes;
-> -__initdata struct list_head huge_boot_pages[MAX_NUMNODES];
-> +static struct list_head huge_boot_pages[MAX_NUMNODES] __initdata;
->   
->   /*
->    * Due to ordering constraints across the init code for various
-> @@ -3137,6 +3138,7 @@ static bool __init alloc_bootmem_huge_page(struct hstate *h, int nid)
->   	} else {
->   		list_add_tail(&m->list, &huge_boot_pages[nid]);
->   		m->flags |= HUGE_BOOTMEM_ZONES_VALID;
-> +		hugetlb_vmemmap_optimize_bootmem_page(m);
->   		/*
->   		 * Only initialize the head struct page in memmap_init_reserved_pages,
->   		 * rest of the struct pages will be initialized by the HugeTLB
-> @@ -3297,6 +3299,7 @@ static void __init gather_bootmem_prealloc_node(unsigned long nid)
->   			 * this folio.
->   			 */
->   			folio_set_hugetlb_vmemmap_optimized(folio);
-> +		section_set_order_range(folio_pfn(folio), folio_nr_pages(folio), 0);
->   
->   		if (hugetlb_bootmem_page_earlycma(m))
->   			folio_set_hugetlb_cma(folio);
-> @@ -3340,31 +3343,6 @@ void __init hugetlb_bootmem_struct_page_init(void)
->   		.max_threads	= num_node_state(N_MEMORY),
->   		.numa_aware	= true,
->   	};
-> -#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
-> -	struct zone *zone;
-> -
-> -	for_each_zone(zone) {
-> -		for (int i = 0; i < VMEMMAP_OPTIMIZATION_NR_ORDERS; i++) {
-> -			struct page *tail, *p;
-> -			unsigned int order;
-> -
-> -			tail = zone->vmemmap_tails[i];
-> -			if (!tail)
-> -				continue;
-> -
-> -			order = i + VMEMMAP_OPTIMIZATION_MIN_ORDER;
-> -			p = page_to_virt(tail);
-> -			/*
-> -			 * prep_and_add_bootmem_folios() can access pageblock
-> -			 * flags on bootmem HugeTLB pages, so initialize the
-> -			 * shared tail struct pages here before bootmem folios
-> -			 * start using them.
-> -			 */
-> -			for (int j = 0; j < PAGE_SIZE / sizeof(struct page); j++)
-> -				init_compound_tail(p + j, NULL, order, zone);
-> -		}
-> -	}
-> -#endif
->   
->   	padata_do_multithreaded(&job);
->   }
-> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-> index c48fcea076a5..7293706b532f 100644
-> --- a/mm/hugetlb_vmemmap.c
-> +++ b/mm/hugetlb_vmemmap.c
-> @@ -18,8 +18,7 @@
->   
->   #include <asm/tlbflush.h>
->   #include "hugetlb_vmemmap.h"
-> -#include "internal.h"
-> -#include "mm_init.h"
-> +#include "sparse.h"
->   
->   /**
->    * struct vmemmap_remap_walk - walk vmemmap page table
-> @@ -706,95 +705,18 @@ void hugetlb_vmemmap_optimize_bootmem_folios(struct hstate *h, struct list_head
->   	__hugetlb_vmemmap_optimize_folios(h, folio_list, true);
->   }
->   
-> -#ifdef CONFIG_SPARSEMEM_VMEMMAP_PREINIT
-> -
-> -/* Return true of a bootmem allocated HugeTLB page should be pre-HVO-ed */
-> -static bool vmemmap_should_optimize_bootmem_page(struct huge_bootmem_page *m)
-> +void __init hugetlb_vmemmap_optimize_bootmem_page(struct huge_bootmem_page *m)
->   {
-> -	unsigned long section_size, psize, pmd_vmemmap_size;
-> -	phys_addr_t paddr;
-> -
-> -	if (!READ_ONCE(vmemmap_optimize_enabled))
-> -		return false;
-> -
-> -	if (!hugetlb_vmemmap_optimizable(m->hstate))
-> -		return false;
-> -
-> -	psize = huge_page_size(m->hstate);
-> -	paddr = virt_to_phys(m);
-> -
-> -	/*
-> -	 * Pre-HVO only works if the bootmem huge page
-> -	 * is aligned to the section size.
-> -	 */
-> -	section_size = (1UL << PA_SECTION_SHIFT);
-> -	if (!IS_ALIGNED(paddr, section_size) ||
-> -	    !IS_ALIGNED(psize, section_size))
-> -		return false;
-> -
-> -	/*
-> -	 * The pre-HVO code does not deal with splitting PMDS,
-> -	 * so the bootmem page must be aligned to the number
-> -	 * of base pages that can be mapped with one vmemmap PMD.
-> -	 */
-> -	pmd_vmemmap_size = (PMD_SIZE / (sizeof(struct page))) << PAGE_SHIFT;
-> -	if (!IS_ALIGNED(paddr, pmd_vmemmap_size) ||
-> -	    !IS_ALIGNED(psize, pmd_vmemmap_size))
-> -		return false;
-> -
-> -	return true;
-> -}
-> -
-> -/*
-> - * Initialize memmap section for a gigantic page, HVO-style.
-> - */
-> -void __init hugetlb_vmemmap_init_early(int nid)
-> -{
-> -	unsigned long psize, paddr, section_size;
-> -	unsigned long ns, i, pnum, pfn, nr_pages;
-> -	unsigned long start, end;
-> -	struct huge_bootmem_page *m = NULL;
-> -	void *map;
-> +	struct hstate *h = m->hstate;
-> +	unsigned long pfn = PHYS_PFN(__pa(m));
->   
->   	if (!READ_ONCE(vmemmap_optimize_enabled))
->   		return;
->   
-> -	section_size = (1UL << PA_SECTION_SHIFT);
-> -
-> -	list_for_each_entry(m, &huge_boot_pages[nid], list) {
-> -		struct zone *zone;
-> -
-> -		if (!vmemmap_should_optimize_bootmem_page(m))
-> -			continue;
-> -
-> -		nr_pages = pages_per_huge_page(m->hstate);
-> -		psize = nr_pages << PAGE_SHIFT;
-> -		paddr = virt_to_phys(m);
-> -		pfn = PHYS_PFN(paddr);
-> -		map = pfn_to_page(pfn);
-> -		start = (unsigned long)map;
-> -		end = start + hugetlb_vmemmap_size(m->hstate);
-> -		zone = pfn_to_zone(pfn, nid);
-> -
-> -		if (vmemmap_populate_hvo(start, end, huge_page_order(m->hstate),
-> -					 zone, HUGETLB_VMEMMAP_RESERVE_SIZE))
-> -			panic("Failed to allocate memmap for HugeTLB page\n");
-> -		memmap_boot_pages_add(DIV_ROUND_UP(HUGETLB_VMEMMAP_RESERVE_SIZE, PAGE_SIZE));
-> -
-> -		pnum = pfn_to_section_nr(pfn);
-> -		ns = psize / section_size;
-> -
-> -		for (i = 0; i < ns; i++) {
-> -			sparse_init_early_section(nid, map, pnum,
-> -					SECTION_IS_VMEMMAP_PREINIT);
-> -			map += section_map_size();
-> -			pnum++;
-> -		}
-> -
-> +	section_set_order_range(pfn, pages_per_huge_page(h), huge_page_order(h));
-> +	if (vmemmap_optimizable_order(pfn_to_section_order(pfn)))
->   		m->flags |= HUGE_BOOTMEM_HVO;
-> -	}
-
-Sashiko suggested that removing the pmd_vmemmap_size alignment
-check might cause a kernel panic on architectures where a vmemmap
-PMD covers multiple memory sections (e.g., LoongArch with 64KB pages).
-However, this is a false positive, because LoongArch does not support
-gigantic HugeTLB pages and therefore does not rely on the section-based
-vmemmap optimization infrastructure at all.
-
-Muchun,
-Thanks.
-
->   }
-> -#endif
->   
->   static const struct ctl_table hugetlb_vmemmap_sysctls[] = {
->   	{
-> diff --git a/mm/hugetlb_vmemmap.h b/mm/hugetlb_vmemmap.h
-> index 7ac49c52457d..20eb03df542a 100644
-> --- a/mm/hugetlb_vmemmap.h
-> +++ b/mm/hugetlb_vmemmap.h
-> @@ -9,8 +9,7 @@
->   #ifndef _LINUX_HUGETLB_VMEMMAP_H
->   #define _LINUX_HUGETLB_VMEMMAP_H
->   #include <linux/hugetlb.h>
-> -#include <linux/io.h>
-> -#include <linux/memblock.h>
-> +#include "internal.h"
->   
->   /*
->    * Reserve one vmemmap page, all vmemmap addresses are mapped to it. See
-> @@ -27,10 +26,7 @@ long hugetlb_vmemmap_restore_folios(const struct hstate *h,
->   void hugetlb_vmemmap_optimize_folio(const struct hstate *h, struct folio *folio);
->   void hugetlb_vmemmap_optimize_folios(struct hstate *h, struct list_head *folio_list);
->   void hugetlb_vmemmap_optimize_bootmem_folios(struct hstate *h, struct list_head *folio_list);
-> -#ifdef CONFIG_SPARSEMEM_VMEMMAP_PREINIT
-> -void hugetlb_vmemmap_init_early(int nid);
-> -#endif
-> -
-> +void hugetlb_vmemmap_optimize_bootmem_page(struct huge_bootmem_page *m);
->   
->   static inline unsigned int hugetlb_vmemmap_size(const struct hstate *h)
->   {
-> @@ -76,13 +72,13 @@ static inline void hugetlb_vmemmap_optimize_bootmem_folios(struct hstate *h,
->   {
->   }
->   
-> -static inline void hugetlb_vmemmap_init_early(int nid)
-> +static inline unsigned int hugetlb_vmemmap_optimizable_size(const struct hstate *h)
->   {
-> +	return 0;
->   }
->   
-> -static inline unsigned int hugetlb_vmemmap_optimizable_size(const struct hstate *h)
-> +static inline void hugetlb_vmemmap_optimize_bootmem_page(struct huge_bootmem_page *m)
->   {
-> -	return 0;
->   }
->   #endif /* CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP */
->   
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index b69a7af76858..7759f9de748c 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -32,8 +32,6 @@
->   #include <asm/dma.h>
->   #include <asm/tlbflush.h>
->   
-> -#include "hugetlb_vmemmap.h"
-> -
->   /*
->    * Flags for vmemmap_populate_range and friends.
->    */
-> @@ -369,34 +367,6 @@ void vmemmap_wrprotect_hvo(unsigned long addr, unsigned long end,
->   	}
->   }
->   
-> -#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
-> -int __meminit vmemmap_populate_hvo(unsigned long addr, unsigned long end,
-> -				       unsigned int order, struct zone *zone,
-> -				       unsigned long headsize)
-> -{
-> -	unsigned long maddr;
-> -	struct page *tail;
-> -	pte_t *pte;
-> -	int node = zone_to_nid(zone);
-> -
-> -	tail = vmemmap_get_tail(order, zone);
-> -	if (!tail)
-> -		return -ENOMEM;
-> -
-> -	for (maddr = addr; maddr < addr + headsize; maddr += PAGE_SIZE) {
-> -		pte = vmemmap_populate_address(maddr, node, NULL, -1, 0);
-> -		if (!pte)
-> -			return -ENOMEM;
-> -	}
-> -
-> -	/*
-> -	 * Reuse the last page struct page mapped above for the rest.
-> -	 */
-> -	return vmemmap_populate_range(maddr, end, node, NULL,
-> -				      page_to_pfn(tail), 0);
-> -}
-> -#endif
-> -
->   void __weak __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
->   				      unsigned long addr, unsigned long next)
->   {
-> @@ -599,7 +569,6 @@ struct page * __meminit __populate_section_memmap(unsigned long pfn,
->    */
->   void __init sparse_vmemmap_init_nid_early(int nid)
->   {
-> -	hugetlb_vmemmap_init_early(nid);
->   }
->   #endif
->   
-> diff --git a/mm/sparse.h b/mm/sparse.h
-> index 16b9bd3070aa..bc4c58ef24a9 100644
-> --- a/mm/sparse.h
-> +++ b/mm/sparse.h
-> @@ -16,6 +16,24 @@ static inline unsigned int section_order(const struct mem_section *section)
->   	return section->order;
->   }
->   
-> +static inline void section_set_order(struct mem_section *section, unsigned int order)
-> +{
-> +	VM_WARN_ON(section_order(section) && order && section_order(section) != order);
-> +	section->order = order;
-> +}
-> +
-> +static inline void section_set_order_range(unsigned long pfn, unsigned long nr_pages,
-> +					   unsigned int order)
-> +{
-> +	unsigned long section_nr = pfn_to_section_nr(pfn);
-> +
-> +	if (!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SECTION))
-> +		return;
-> +
-> +	for (unsigned long i = 0; i < nr_pages / PAGES_PER_SECTION; i++)
-> +		section_set_order(__nr_to_section(section_nr + i), order);
-> +}
-> +
->   static inline unsigned int pfn_to_section_order(unsigned long pfn)
->   {
->   	return section_order(__pfn_to_section(pfn));
-> @@ -26,6 +44,15 @@ static inline unsigned int section_order(const struct mem_section *section)
->   	return 0;
->   }
->   
-> +static inline void section_set_order(struct mem_section *section, unsigned int order)
-> +{
-> +}
-> +
-> +static inline void section_set_order_range(unsigned long pfn, unsigned long nr_pages,
-> +					   unsigned int order)
-> +{
-> +}
-> +
->   static inline unsigned int pfn_to_section_order(unsigned long pfn)
->   {
->   	return 0;
+> Changes in v2:
+> - Enable failcnt tracking for tcpmem as suggested by Johannes Weiner.
+> - Add the memory.kmem.tcp.failcnt reproducer and test result.
+> - Update the subject and changelog to cover both counters.
+> - Add Cc: stable@vger.kernel.org and the received Acked-by tags.
+> 
+> Link to v1: https://lore.kernel.org/r/20260810074247.52747-1-guopeng.zhang@linux.dev
+> 
+>  mm/memcontrol.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 70806373d5a9..17da1f43b7d3 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -4235,9 +4235,11 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
+>  #ifdef CONFIG_MEMCG_V1
+>  		WRITE_ONCE(memcg->swappiness, mem_cgroup_swappiness(parent));
+>  		memcg->memory.track_failcnt = !memcg_on_dfl;
+> +		memcg->memsw.track_failcnt = !memcg_on_dfl;
+>  		WRITE_ONCE(memcg->oom_kill_disable, READ_ONCE(parent->oom_kill_disable));
+>  		page_counter_init(&memcg->kmem, &parent->kmem, false);
+>  		page_counter_init(&memcg->tcpmem, &parent->tcpmem, false);
+> +		memcg->tcpmem.track_failcnt = !memcg_on_dfl;
+>  #endif
+>  	} else {
+>  		init_memcg_stats();
+Reviewed-by: Tao Cui <cuitao@kylinos.cn>
 
 
