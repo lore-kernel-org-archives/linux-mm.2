@@ -4,124 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E740FC5AC67
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 13:29:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2336AC5CFCF
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 13:34:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E4BF86B009B; Tue, 11 Aug 2026 09:29:28 -0400 (EDT)
+	id 10D406B0098; Tue, 11 Aug 2026 09:34:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFBD26B00A2; Tue, 11 Aug 2026 09:29:28 -0400 (EDT)
+	id 096B26B009D; Tue, 11 Aug 2026 09:34:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D17266B00A3; Tue, 11 Aug 2026 09:29:28 -0400 (EDT)
+	id EA01C6B00A3; Tue, 11 Aug 2026 09:34:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B09916B009B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:29:28 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 40A9B40400
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:29:28 +0000 (UTC)
-X-FDA: 85089070416.13.689FB0A
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6C36140006
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:29:26 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ofWp8tOe;
-	spf=pass (imf17.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id B64336B0098
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:34:15 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3D63C40432
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:34:15 +0000 (UTC)
+X-FDA: 85089082470.29.EAD9587
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 871A580014
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:34:13 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BxLWykSJ;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786455253;
+	b=7bqlMWgQgombD0oUCL4083cWPAfAyeedAy2ehBhjdM6qctXRnhF6423jW6K6A4CDQn1cSD
+	aunZ2jM2IWjyAc+p13SQsC28M2VUwPgAw93FPLDKxjkHABMAB0c3zjxlI4FomOmUvPVcd6
+	IgcAaXD4Q03tGLw11pa+6sR3mdEz8EU=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BxLWykSJ;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786454966;
+	s=arc-20220608; t=1786455253;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J9vBjygmcNS+aVa3FlHNEQWeRjGqbbUmRSnb3iurApo=;
-	b=G2GraimYi5Pbl3/9OgaCi+/vfVJmIzs0OIl5B7PO2G8r60hVpXSMTTYXYCus60O75pk4e6
-	sQO0Zjp+/H9U0ID/Htto8ulyi9rz9dvOLof6wqTSlPxPH+AEGaY26wVd4vXozlYw2KQjyF
-	lUoaLXtoQ+bBIjyYTXiEkqPhOC0o0XQ=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ofWp8tOe;
-	spf=pass (imf17.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786454966;
-	b=XnDNsmuQy1TQdSTwAQeqjMhlYQRJ+X3+KQI7/tmjgoxkv7mC/b406IoGDooyEJI4JBxxYw
-	RC0tVWnuA1YZoiWcswB45QZnHiWj50/Cxdx35kovgDegYKmgUEGKYxuPIp/7CBnYul5oEW
-	TcDkVdaeVkVoG4RFhbj5mDRH+mis6UM=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4980fe6b3beso7996585e9.0
-        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 06:29:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786454965; x=1787059765; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=J9vBjygmcNS+aVa3FlHNEQWeRjGqbbUmRSnb3iurApo=;
-        b=ofWp8tOe5RDLgxtK/ZME7kiv++6IoOOiuRBGx6oCqbD5104TAo9XQSTgn5Mk2Gxrm7
-         2sq//gLo3YCbaL35LUBW0NAk1EeeooZkDwpffQaThNc4CaNr/oZZMdxXdUJKRt+H0tzD
-         Xu5Ajwqn8lwdY1Xrg4NSXE80G2q3HiMtKyh2KCJb0NupD25nQHuJJOBbw+W/2/hroEc5
-         Xo7kB/61Mte4cRjo/SXr8bJ/9r8IUmVQstWmJm6JZi4cW1Cy+5mBBFl9LqZ24gB6gG2c
-         snWZz66wb8dDmSKKS9s8ned6SsX3cKXvbKMGah0P/3iFJr0OmgbJAdqcfyghe/rKEZu3
-         JkMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786454965; x=1787059765;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=J9vBjygmcNS+aVa3FlHNEQWeRjGqbbUmRSnb3iurApo=;
-        b=SjFH7DmiL7HpQVc/ZOP9BqWZhclYPqVFL6wWjsMxpiLmPxJsYLwCWTpbcSjvgkSZWn
-         op2ELMzVdeSjIwLy5lqO16G4qWQYLNYm6hBFkr62vUBy8zHSQkPl5sHfUvfQ2avP6UZp
-         7SmA3Yrwp/A6QONU7xRLWMCL5vfPdQUk4OMtug8DpFcHso6pAosqywr0mSd5G3+dtvET
-         FEYrP651GYxwyeb5PlMfqVzobK7TVce800Bhqln7blA519Ct4lDw3IEAENtD3UOt93bm
-         bB3gqNSliSHxkbrh/D9id1Q7L0CUEpGGdAcYqE9ceU+LBDVj9TM1GQP+SCbvmfjktR0/
-         4Pzw==
-X-Forwarded-Encrypted: i=1; AHgh+RrSdOdHfvjTl502IxkouncZ+l7m8KIVxJAfrrU/Trcov+lMTYsrsdGSDiejmr2ozJGDuAKKMi6K/Q==@kvack.org
-X-Gm-Message-State: AOJu0YzMAVjVWP+3BmwyGaNsRYkXhTfyXB88vn3bjZh6M7Lid/4MYEHf
-	E4s1Hl8hYtoHGKXLE7dvQcEPiNlFNppRqmmabGLEirwL45HxkxWbdocQ
-X-Gm-Gg: AR+sD13qP+w37dE6vkZaFIpPvYFdf2Xeh2MSTfrx8d80OyBzYpW9Kvp+iGET4msRvPl
-	IJOuxE3mU4RV5n+HN9mpIcHi4XJrwhYs4VXBkklqIrxv13DNwdgdTeFkXVIWRQ3yFy7bd5iIXkX
-	xrc2YL78e0oNf6QHopVJQoUMyNDIzxAX2Edh07z3p/7+BQqCY/mLX2+6F06lEK9AXtV2IJYw4mh
-	duO/QsKnr9xVqXZaEdrsAtX7SYC0ggufXpxpGozSQcCHvnl9H1DCiuiCAsk4XsHdrnybVpSB5We
-	xs+CwaYrXy3QutyiZWokRcgo1lKt3wrY7L5LvzbC3it4KdX3nwXiBTL6XgImiTJrviDwmSAf3nB
-	Y6IsqbpgS5M7Uw10s5jRBzuMQy/RxFaweUb7UBi/Bo3cgBn95DSf8tkY/JZMzjYdszwowww1FfH
-	/pNI+8JSs2/1KBt0d0qk35iJm1ncjLM99apI/tmiUiNheRysRzQMxRuBssv2mu+DGVx4CA7F9N0
-	aTT
-X-Received: by 2002:a05:600c:4894:b0:499:60e5:248a with SMTP id 5b1f17b1804b1-4997a63788amr1222975e9.4.1786454964817;
-        Tue, 11 Aug 2026 06:29:24 -0700 (PDT)
-Received: from dell-desktop ([2a02:587:4b5e:1100:7303:647d:7cc4:8552])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4814a6b2ea8sm4285953f8f.16.2026.08.11.06.29.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2026 06:29:24 -0700 (PDT)
-From: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
-To: bpf@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	kpsingh@kernel.org,
-	matt@bobrowski.net,
-	song@kernel.org,
-	tasos.papagiannnis@gmail.com
-Subject: Re: [PATCH bpf-next 0/5] bpf: Add user memory access kfuncs for mm_struct
-Date: Tue, 11 Aug 2026 16:28:49 +0300
-Message-ID: <20260811132849.98483-1-tasos.papagiannnis@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260811112154.94053-1-tasos.papagiannnis@gmail.com>
-References: <20260811112154.94053-1-tasos.papagiannnis@gmail.com>
+	bh=bqIXDqrw8oYOmDkaTwdVQwShIjjzl5wSUAlKKnpj5I4=;
+	b=XZ+c9MS2B+vRfZ7pXyv6ensPVl3KCrWtFMb3kkPeu7+bQqZggo6xvaZ1Ym8a8g/DgAK0Dx
+	aDny0wR2loT+61DY+M5EV4YbdtF+LzBmUuKMJJAlTiR+VacuUyaqS0+mEraO+8E+0fhcWw
+	ZyRTItFZwzBRjJ3jPcl8Dd82njBX12Q=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id F00B840264;
+	Tue, 11 Aug 2026 13:34:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 203D91F000E9;
+	Tue, 11 Aug 2026 13:34:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786455251;
+	bh=bqIXDqrw8oYOmDkaTwdVQwShIjjzl5wSUAlKKnpj5I4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BxLWykSJ0ZeTjyaJFLJmd3CS4KqDBLMESXbjRfGoUkYaTwm/uJPT6QYVxHtxC2eG7
+	 sw8kmor8DZl1HJn+H2GYtgsd3prexT6eAAKYBjBVE1dbXPHZenSZlgdxQmKOKbW20I
+	 /e77S2PW8eey2UzfiFcONjEbiK9a1DFpsQtFNbpBFZBMdRzPstjuPA0bJ5F4PH+jPY
+	 7NeWxeern/MDmL0U+wOXEgly+js8cZh17BrMODv6OQZAagHfPVWck8bKCueuVef3yC
+	 psJU8yuyn2AXpojYzGIT7U3FPDQJcyturjUgIqlgzahJxNO6I5ckR2YTHF2+G8SBQi
+	 s2q/EjUJ3pi5A==
+Date: Tue, 11 Aug 2026 16:34:02 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+	rmikey@meta.com, riel@surriel.com, kernel-team@meta.com,
+	Kiryl Shutsemau <kas@kernel.org>
+Subject: Re: [PATCH v5] kexec: keep the next kernel off hardware-poisoned
+ pages
+Message-ID: <anskyrEVUlnTVEgF@kernel.org>
+References: <20260810-kexec_posioned-v5-1-95e1b5e2e656@debian.org>
+ <ann9Kcesyb4T9Z8b@kernel.org>
+ <anr59P1ZCAuHxv6x@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: m11nicehco8kqypybt94xtjywz7ahnzg
-X-Rspamd-Queue-Id: 6C36140006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <anr59P1ZCAuHxv6x@gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 871A580014
+X-Stat-Signature: 86poapgb4nut55erpfba7z1b7dgbddwg
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786454966-981831
-X-HE-Meta: U2FsdGVkX184NcSfDdClUoS1ellPDsv4Tkx4lVG9KZUDbHIqn371+JbFTLk2HatrSn0QzwuVXeWfkp7SQA8DNxjSlvFDwEeo1mCdEV+snomf/TGYnK8eup+ukmGbkc1tOxzSAOud8HeuK8Di75eCFShoUm+XjdYIO1tr1EFgBoHNiY7vplG5O0mthavy3sbYZyusCktVSE2eyhDTrgHU1aWIjtD80aH1SHUy216eYXTF0cDKGfpj/3JB+5M4vZHvexkbXzGkKKHRzfdi2P/sGk9QqbDn8zmXg8tdScfVoVRbUH3K/miT2ePn9IX3FujcYgiYEOzKnz2MBHTPu1JB+ashowXydHb9TRWZY8nNrpErQUoiuUBD9CpVnwKJj88iTtdFUI5BC+SfyFnKVxL0Ffbid/Tcda+3h8/hWkLr1CGBQDZcIBK3q0cB7MsQzp94HZlYiHPQG7HnWndQFCGaF8lOZ0nX9RZb0nIb80emKDIYniccRPeWnFR9iWr8/COZs1LOVtvjAGo+nKcPXJsB7N97Pkb2IOPIOSSjM9M2GZccuOHpjI3r9Ptk/9PX4GuKKanNzhhBndHrYx1DwjaSSGXcmdXp/AFswKGPbDg/jCs+SFxQUMp2JG1sByk1FcxqQpMTxX761F38QF9m/T0ct2zxvvXKa0XZf5z5iGuT13QYjmmmb1YBrxJ6ja/MiXhK3fGVwlC5Et+RQM1IVaDfqiffVU8m9eNOBLCHRLE+jF4trNnuMHWHXZ+Y7Fj/JwfG8r3lSf4KrzW4JuICdB5fWXhytNHv+Y7O6L2FGjZdm9HyG9DCam7K2JtFsef9GcWlxwHfS64IRGQFSg5UP83Fb4l5QkciNRrPKlj4zg4q82dA9vqO0m6AAKHD6njvNky47pMecFNejCo9RGRvRY2TCZJz7lL7bT+KMPco94iaXUETv7W0KxK820J5/JaPfYZo4VbBTpJHdT0US5OGz5Q
- MXVO7GSh
- d4gXHaathhY5bJXE0n2BJRnxWLMWBLrNCMQeIbeJN9wJ6e+H/NznaHjfnqqRF3JVHGOR6tmPb1PclIPQLQ7FNAsJdHZzCNMcGKWrbX5GibAKacIghraCdhkVz3IW0XI2OioQn2g5YWnglwFt1urGQJY/IXbrv+OcV88xOgKjpSFg6BlfB3lShgxdCSpSspKbRCutoiqvzrTn5eGVcTDnXhc3ScqKsW3Ap/qxbk4MoNYhQokL4lommEKvgn3ihHvBZ2H6PPYKM+jgVAnQkqBHFnHNxCmJG0ll62oew8QSLlzBuQFkUXk3/RXl6Chuq0rqouh7Xn0mtDbL8580FLj40EFy+CTJBdks4/Au9r3BHhs0t9NRPMth4NjxxDvV0pz1ynogy2H2CJxSFdcLxujrS5BS8H3wMQ78USSCSzlJehsLcxlxDZg9qJ8raSHnXyKi2Ro3RHlmzxo0mkymOcGYDEwJlcRWQ1D8G3bHW02OnoilCoMkYt8g5VOsVo43mW+kl/79j9IDXYWlLDobOB3tUXa8ILG2eBdM7oQmB/f9jB++X8jo7cHVgjr5iUFfzEkI0dZxTZUNQc+Rf1JBcTJP97GT1JMp8FBiA3gyET6zvIT65mQT9lHcTxm3gF5gBwB0hbosUN8td8XZOffQ=
+X-HE-Tag: 1786455253-957576
+X-HE-Meta: U2FsdGVkX19vAwR/aOPCUVjiRx0SWtVBv1W3LgKuP60HptMZb5rbDM6qs8sg+QqfOTlVw/CB/3c3rcH6/LirF30ndpBRGjWSTqxuVroCwhIAWHrFgmjeGTvm1tclvxfntuvPMCtKyTZHv1TOaMee/XrG1OSpvKfL8Ya7PlxGVE6QFXyihXepAHLXyAj92zCrnFKQ2iesNVyqUueN9hRR4yKWRYC6fVkxNjrzGYnjAeJpI8AnrjjwZDdeGS1CyUnvO/5FSr0agrUjdOy3OF+HWZ5lyFJ5S3zDyJmJJEZwZt33mcRf0IUm+wPRbI2a0RYG1S9/d83IbHD7mhdiiz0YTU9xEUE3zmYzTpgP0hJ54XkbCqFqGOQ48mbrUvniGSJdE7jnMDAFd+nazFU5Ta06GE4YC/v1vL8s2noY/AbcB4VE3ZW/tM1FMoq2yudgpI5jHt0GTyQaZWfLPzbMPn+I3L530/8UuX2okfrguadk/i2tnUPEwYFb+dce1Xf2ivep7//OC3Z+06hfS0sBLoj03ZeT2orAArIVlEVgnL0u+bhYru5ChyaGcwqus+E5+w7L3LTHj+1RPt5bHUg8+HrAdiIOUPLZJzELB6YAuA7mXZAhp2+A5JQ9rb0V+8lbkYDKoz4jrxpVOMKP6Iw1XxT1cmhKQk1b8MbgYQnQDXBjus0Hd78ff0RHt0lJRf61a/QRuNJIoD+co+7T0KDyj9Ypelf2x/TzEpp9COW7jTcsLUC1/ZDGe28MszDuHmx6/TI5vbof+q9Ll7MvRJDAvEfME8kCZI9/iuDk/rgQd4GFl6L8cWUejWPQvnLNwK77rV5iKLsu2cQvIInIyiKMMYeTjDwGWUGddy1uSgJsKRj9zMAd92IBRp8VoH3C4pcsGRAYDuhik2fLvmt2RB0QtQGd4VF+bbB8hUKu4Nz1bLqbgWJrLOdM2jlE+Pg3wrJmCio/3lfUVL+92X5pEyEor9H
+ gkJa/0B6
+ P1zPZRd56zJimNr9OWH2nIKEAfIy2Jk6WFC6r2i0C6jBRskWB9SwGunS125FuV2M3lkEK2rKGzf990avaqXdRH+4Yk5YoefExjIIUKmK7tpbShXjAlJYCPPlxRkhFQyoq8Khfhrl4HHICv+WCordC9SM5XkLLVBudMMj4fnqeRU9vV3Soc1lB5bWwsXSgkWHxe5R7TmhVt+xtTr0MHGMjnAv7oHejkkSVW5kLzBlGLS1tTr/Rh2IbuCqs5tjhypVp7r67TJNNSZhV+8OtyuIuIPOUFAqza0sZAeZjyiGvBi952IAqQNcBdNA7azXS2vfa2rFwzRSuxUzlRgApR2Hr8xBeJgx94fuv3efN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,14 +105,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-After looking at the output from
-https://sashiko.dev/#/patchset/20260811112154.94053-1-tasos.papagiannnis%40gmail.com
-and https://github.com/kernel-patches/bpf/pull/13211 I believe that fixing
-those issues in this series would complicate things.
+On Tue, Aug 11, 2026 at 04:17:41AM -0700, Breno Leitao wrote:
+> On Mon, Aug 10, 2026 at 07:32:41PM +0300, Mike Rapoport wrote:
+> > Hi Breno,
+> > 
+> > On Mon, Aug 10, 2026 at 06:32:04AM -0700, Breno Leitao wrote:
+> > > Memory failures (such as unrecoverable ECCs errors) are getting more and
+> > > more common. The kernel knows how to handle it while running, marking it
+> > > as poisoned (and SIGBUS user tasks).
+> > > 
+> > > Poisoned memory is removed from the buddy allocator, but, not from
+> > > other places. A current problem is that kexec will load new kernel
+> > > on top of a bad/poisoned memory, which is undesirable.
+> > > 
+> > > If the next kernel's image, initrd or purgatory lands on poisoned frame,
+> > > the relocation copy writes to the bad memory and the machine checks
+> > 
+> > What does the machine check here? ;-)
+> 
+> Not sure I got your question right. Did you mean:
 
-For this reason, please disregard this series. I will send another version
-separately.
+I meant that "and the machine checks during the kexec" reads as machine
+checks for something and that something is missing.
 
-Thanks,
-Anastasios
+"machine check exceptions" would have been clearer :)
+ 
+> 1) that there is no machine check exception when *writing* to poisoned
+>    memory, or
+> 
+> 2) just that "the machine checks" is a lousy way to write it?
+> 
+> For 1) I think you are right, and I had not thought it through. The MCE
+> (or a recurrent multi-bit ECC) would come from consuming the error, so
+> a load or an instruction fetch, and a store may well pass silently and
+> leave the poison sitting there.
+> 
+> The read back is what gets us, though. 
+> 
+> So the sentence should hang on the read, not on the copy. Would
+> something like makes more sense?
+> 
+>         If the next kernel's image, initrd or purgatory lands on a
+>         poisoned frame, the relocation copy puts them on memory that is
+>         known bad.
+> 
+>  	  The error is consumed on the first read back, whether
+>         that is purgatory checksumming the segments or the new kernel
+>         running from them, and that is what we want to avoid.
+
+I wouldn't overload the sentence, just 
+
+	The error happens on the first from a bad page and that's what we
+	want to avoid.
+
+looks enough to me.
+ 
+> > > Skip hardware-poisoned frames when placing segments: check them in the
+> > > kexec_file hole finder so it lays the next kernel down on good memory,
+> > > and reject a poisoned destination in sanity_check_segment_list() for
+> > > the kexec_load path, which cannot relocate.
+> > > 
+> > > The two hole finders walk in opposite directions, so each asks for the
+> > > end of the poison it has to clear: the top-down walk for the first
+> > > poisoned page in the window, the bottom-up walk for the last. A poisoned
+> > > hugetlb folio counts in full, as hugetlb keeps the flag on the folio and
+> > > the poisoned subpages on its raw hwpoison list.
+> > 
+> > I had hard time parsing these two paragraphs. Can you please add more human
+> > touch to them?
+> 
+> Sure, but that would cost more. :-) 
+> 
+> What about something like:
+> 
+> 	Skip hardware-poisoned frames that were detected by machine
+
+                                                          ^ memory
+
+> 	failure subssytem earlier when placing kexec segments.
+
+               ^ subsystem
+> 
+> 	To do so, add a helper that reports the first or the last poisoned page
+> 	in a range: memory is walked top-down by locate_mem_hole_top_down() and
+> 	bottom-up by locate_mem_hole_bottom_up(), so each direction needs a
+> 	different answer to jump clear of the poison.
+
+                          ^ stay
+
+> 	kexec_load() gets its destinations from userspace and cannot move them,
+> 	so there sanity_check_segment_list() just rejects
+> 	a a segument/memory block that happens to have a posioned page.
+
+        ^ single a 
+> 
+> 	is_page_hwpoison() also covers hugetlb, where the flag sits on the folio
+> 	and the bad subpages on its raw hwpoison list, so a poisoned hugetlb
+> 	folio is skipped as a whole.
+
+I don't think we care here about the list of bad subpages:
+
+	is_page_hwpoison() also covers hugetlb, so a poisoned hugetlb
+ 	folio is skipped as a whole.
+
+> 
+> > > +		poison = range_first_hwpoison(temp_start, kbuf->memsz);
+> > > +		if (poison != PHYS_ADDR_MAX) {
+> > > +			/* we hit a poisoned page */
+> > > +			if (poison < kbuf->memsz)
+> > > +				return 0;
+> > 
+> > Won't we break out on the next iteration boundaries check? I.e.
+> > 
+> > 		if (temp_start < start || temp_start < kbuf->buf_min)
+> > 			return 0;
+> 
+> Kind-of.  Sashiko keeps raising this underflow in the function, on every
+> revision since v2.
+> 
+> It dismisses it on this hunk because of the check, but reports it as
+> a real one on the two "temp_start = temp_start - PAGE_SIZE" paths above,
+> which do the same subtraction with nothing guarding them. 
+> 
+> Happy to remove it from here and send that as a separate patch.
+
+Let's make it a separate patch please and drop the if (poison <
+kbuf->memsz) here.
+ 
+> > > +	for (pfn = PHYS_PFN(start); pfn <= end_pfn; pfn++) {
+> > > +
+> > > +		cond_resched();
+> > 
+> > cond_resched() for every pfn is too much, isn't it?
+> 
+> It is what the other pfn walkers do: the kpageflags read loop in
+> fs/proc/page.c and read_page_owner() in mm/page_owner.c both call it
+> once per pfn. 
+
+I think it depends on the pfn walker, some of them cond_resched() once per
+"block"
+ 
+> But I honestly don't have a strong opinion here, though, happy to batch
+> it if you prefer. Would this one look better?:
+> 
+> 	if (!(pfn % MAX_ORDER_NR_PAGES))
+> 		cond_resched();
+
+Can't say I know the magic number here, but I think it's better to batch.
+We had a related discussion with Muchun a short while ago:
+
+https://lore.kernel.org/all/ak97z4tryYAGJgb_@kernel.org/
+ 
+> Thanks for the review,
+> --breno
+
+-- 
+Sincerely yours,
+Mike.
 
