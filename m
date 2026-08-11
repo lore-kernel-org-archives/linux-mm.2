@@ -4,189 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2956AC5CFE7
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:47:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 701EBC5B56A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:47:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F16A16B009D; Tue, 11 Aug 2026 12:47:26 -0400 (EDT)
+	id 5A2C06B009E; Tue, 11 Aug 2026 12:47:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC7E56B009E; Tue, 11 Aug 2026 12:47:26 -0400 (EDT)
+	id 552ED6B00A0; Tue, 11 Aug 2026 12:47:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D91E06B009F; Tue, 11 Aug 2026 12:47:26 -0400 (EDT)
+	id 440F16B00A1; Tue, 11 Aug 2026 12:47:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CE686B009D
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:47:26 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 215A5C013D
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:47:26 +0000 (UTC)
-X-FDA: 85089569292.08.894F7AC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5096112000F
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:47:24 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WmXVFlun;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 11A806B009E
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:47:53 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8BA3312014A
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:47:52 +0000 (UTC)
+X-FDA: 85089570384.11.1CBE09D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5E48E40008
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:47:50 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="gTV/2I8H";
+	spf=pass (imf12.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786466844;
+	s=arc-20220608; t=1786466870;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aAJmH2RZWtuo/nczs+6yqrQv07ilSQp4Hm9KiWaE9KU=;
-	b=1XCD81fmGe023W80u6os/O9oRUWOfPgt/z+AvsynOED/YOS7eM8l0DUh6M8ZwtFhE3vsd8
-	c1mCjwWaFP42bIT315XCtdPKePMs8Hu2Z7iV19Zbhk7D5soOiwjEdnLqsPOUMo/cI17mfK
-	XXb2xpi8Pl+kel8mmGibgndkgi/2s80=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WmXVFlun;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=DPBfDxKxUoGsTZQWDQK497a48XaoCti5RkP3xp/cBKo=;
+	b=Lcor08dvDPn6YOnzKvnBL0in7R/UtpkG9kykl94hYZt0SOinNwxHfnJqb/wO9HiISLRLYR
+	srrDbUdqfb8TnOXd75vhmYRGiuqVIyAWWfOYh1zNfVxO7RuGOpY/3poTrvg7PeSKRi6g8g
+	JONtsbAVvqza/0JKyeQ8F3mWCQbypSs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786466844;
-	b=P9oydXnidHf8jJ6ajpX6RmB7chvQ5iEvnpvYWkdXwMG0d0wUeVf8w0Eb9tXDcKiFyeWGHs
-	X72mV1TaxSr/iPGQ8W5rnS2tqLsrGsWo9LOFAsQ12AohwFMBezk1rb0wJlsjnWoidHs83f
-	ALW7MwGuvNX12xSwSFjzxpWQCYRvTJQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 74E5D402CE;
-	Tue, 11 Aug 2026 16:47:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73FAD1F00A3A;
-	Tue, 11 Aug 2026 16:47:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786466843;
-	bh=aAJmH2RZWtuo/nczs+6yqrQv07ilSQp4Hm9KiWaE9KU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WmXVFlunRxpDAll3Tg1HyKKOFpDURz7v3unAPbgW6vcpFaHuqSw91xJDoEak2/hJ6
-	 dJy9/hEr17V859sGvDWGdD2D/G3Rlhrx8qavJCmSat+jW0BWd56nTDYrxaqbaA26p9
-	 pmWmbRldbJGu+2K40KZilR1uKsAU1kdgQqfG8n67jUdg9NyBf8pz5twN7Z2NxRRmJM
-	 fv/T8znbn7zLsqbqGEyvrEz3zIncUWwNVQ0sEup0YrsOwdFallbS0jm8/z0BNBOmGr
-	 hk03RRkrYb8m+c8cyuZCmLVFAc+okHkQP0NOEqbnc2K3KFsDKXxavrI/VotHIpKC23
-	 i7SkXJnZgNsZw==
-Message-ID: <3cff4b8f-b523-4805-add9-e817e9bb6a82@kernel.org>
-Date: Tue, 11 Aug 2026 18:46:58 +0200
+	t=1786466870;
+	b=607jARNgzKf4uGeLeQs/f7fbKhVFv1KqCnOx/gcj/WEFF8CmBhQ/IYIwh/XoNe3KBDD5qV
+	HvOAZw6Z9Pn421207//jYI/0mKoA9WnGdr5+0O2bO0O0P18ptdGtrTPM0rAtGAS8zkQvIu
+	wD581LTUSBiFxYSYpg41YRZoDkJgpH0=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="gTV/2I8H";
+	spf=pass (imf12.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 392871516;
+	Tue, 11 Aug 2026 09:47:45 -0700 (PDT)
+Received: from [10.57.5.246] (unknown [10.57.5.246])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CAF723F86F;
+	Tue, 11 Aug 2026 09:47:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786466869; bh=k6fuvdQDvEP8Vgz2PTv5lXUtwGGjwj2b08wkJAsWaVA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gTV/2I8He3BRcDFubFelv3SAtZiIJOlWDCGYb/PqwlMmSJRZUV+SfPlIf2y0trfly
+	 nKQsPwWsI+/aVoYR5dV3ihriAWJ5e9TgHciz8Ikf7zi44esgAkNV9YyJAGhPOgjzVd
+	 dWAjOsQ/MfHlSTn8IGEVVhT1EzNUwNUvSRhbFuk4=
+Message-ID: <ac24fe96-dbe2-419f-86eb-2d0f78912877@arm.com>
+Date: Tue, 11 Aug 2026 18:47:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 10/20] mm/rmap: track whether the page VMA mapped pgoff
- is anonymous
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
+Subject: Re: [PATCH 03/22] mm: introduce MMF_KERNEL flag and set it for
+ init_mm
+To: David Laight <david.laight.linux@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Michal Hocko <mhocko@suse.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org,
+ Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org,
  Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Alex Deucher
- <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
- Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Masami Hiramatsu
- <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Youngjun Park <youngjun.park@lge.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kvm@vger.kernel.org, linux-s390@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
- <20260806-b4-scalable-cow-virt-pgoff-v4-10-ab318a350404@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260806-b4-scalable-cow-virt-pgoff-v4-10-ab318a350404@kernel.org>
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, linux-s390@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org,
+ Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>, linux-um@lists.infradead.org,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Ning Sun <ning.sun@intel.com>,
+ x86@kernel.org, tboot-devel@lists.sourceforge.net,
+ Ard Biesheuvel <ardb@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-efi@vger.kernel.org,
+ Vishal Moola <vishal.moola@gmail.com>, Alistair Popple <apopple@nvidia.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
+References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
+ <20260714-remove_pgtable_cdtor-v1-3-44be8a7685d7@arm.com>
+ <01f07ea2-8bdd-4450-8a49-548f8b646cfd@kernel.org>
+ <20260811142507.4c6c760f@pumpkin>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260811142507.4c6c760f@pumpkin>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: x1gi1byeoztiwnu7x3t1mun6qdxfmrb7
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5096112000F
-X-HE-Tag: 1786466844-993723
-X-HE-Meta: U2FsdGVkX1/JU2rbfmnfmZyfc+8/CPm5jEqcpoTCihrBQz1o+YhOc/PpQ/VM9rEORwdxQpwjoCnUTnKgfJ9hxu3+Icc6TP0lR1CkQN2X1A3N5JJBrnzFwX1ErCpYYWtLLJdy29vb4pqVVy+2J+40TB3qO8plPwCHsvw961t1dYPm3/WabbQt9DMzzy2foGkkgZuw0JGgRZ/SR9pmPcrr0eb6rechKF/Ek/+32eZYhoQJTIbHDKg0+vrJZWv1emSoTgpTbOBBTEL0MsM6nlHB7g/mwUxIz235rLXBI8rx2zmLMX7UYZFx/l5pzOulPq5+Rs/BPH9hQop42pC72niIudHCibIKthfv8gHLS00wJblqIN/EOBn6USzuGWHBZlnFPEc373g0v2VAwXdpbw5OGt8hcwxHu0DoW0kLyUIsCyxltk/h3ace6R1spKnj0s2MeWgxlsV3F81wf0CamQ08fbERfsC+ytrqUf7NyQkPxUgjRHges5bIhMCs0qRk+tLCCPh0SfTcdnKkDT8zRGPFj4ujO43c/lfbqKNraan68NBkMoxqVuCTOSddfoLSoOb/l4hTSrmF1FLwxypz4cHCe+Bnp6v5rj6Bl2ePzQzzfiSlOFnBjHel5LveZCIhSgCbs2OI3GHNH9z9dsQi2OS0EBHGEyH/UnOyl0F4MyB1Wr6X9bRhT33q1N3dJVlwR/RsPl8EyOEtxxL1A//klE7BZMGFwC/gRH0ERvw/nrk6dQcORv6/Qx6D9vfSamAflxj5CV9OOOZbLSqKZxyK8aMNjbmOT9jPiPVYlIkCfvfFBQc4qergE4Zx5eEv2qPNlEdNDwIYT6iNE22O9YhzJtW8kWkCzFChZHnRpI4ce7AsNE4CjZSVdn1lvHjR4urCA9PcTOp8kD2XQsm8LN5NWeR3z+oqgNzIEd7NPXKMFLX5bReF7C0Soil3JopmOsQ5YKZ66KhLsR7z5O6xKCHi90C
- V7DphWUt
- Ozti369kgQEJ3Sljd4cV/s/Yd25phZ4Im4VHnGJ3mi8D/QTA2I5FtCqyBoxukS13Ckkv6NpwatiBQ/MdRCD8IkQDbEoBsD/d/vRItC6aj1CFMwVk8HTiDxThL6Z/Jl8UWdxdSctGFiuhI6cX3bAPIyFTg46MjlmtxYKOv52Vbezqc/S3F7oYYBprCACyz7YpzALQIsjs5iq+JzQ0SSE+EvrsadAUaxczEKyrnw4wJv9Fcyr83EcWFj1PY3Cd23+gUzy5m6NpSylYgJHIHH7+aDKjy4Ci+BKGB3o9Lyc4ZPniM5ggAaaUIsr3Oz0+CbWu3QI82V8+PoxPPPEUwexnrH+Jpp0u8TcXgRoj/zKAWX6nkdRo=
+X-Stat-Signature: 3awx46zswhxp5dhah49yy896tnfaqmzk
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5E48E40008
+X-HE-Tag: 1786466870-152870
+X-HE-Meta: U2FsdGVkX194sI2KLyglfMt1bT/1pz4hK/iuv/iVD4vxELd26jE2wHDbphgJbNifaOXJh5yOSquQ+UA79vVqiEh/UKgqvazzTn6PepPCujHNbqKD2Lgn8mKHKRm4ErDyCHRCSYIJqajM4G3fgk5OGKwco0NgDcROl1CVq5NTNBTVa/GyFTbajhFbV2c1SO8Y/KJk1xot1YQ15oa6edAeaG0hvkokFX5TGeZhN5q4eVQNc4NvCeYTrKgPnxtMLK7bQppldHEIFC843O0oqt9++dIO2mDK0ukFReHraidqehSQilFu10Te8amS5mfoc+x//A0wz3FceDSKZ4SjLEGwXcLQwN6CaAA54ZJdKHya496lnXsYtlygLJ4VNGyUmx4/DyFH/N4QgtfP795/Z6qwuhMFLQMJlxwod788bSj8QBp7a7Rygc4y9yxhvAPZFohqdXElOHuqzL0EjC5FUpjCVpry5p5hPwVYdwtNrJN+1MR2bWf1zHk3NnAE1dy6hPilkI0+X4luyFd+hw384psCiIObq4b8NmKovz1wkdAfCjsmrXX9LIUItqJKCILEtW753RMHb/f/59FVkb2K1Cp7mFsPiTYyrPF/u0djVWEtXztzLbj/WE3rKDaBQUr/Wum5g2lDuWmsCTopcbTMrC4SLykFsr5BjmBVxLFzBWIWT9HM5go0a003fcEDvyWtbNmR0JpeOom7nB7bX6w51AKR63lqonxgzdQvZQwc+oowX10d59BwlyCMW4ckf5oeCzLU7ghoWUd03v42CJYE6iBA5hSlPEc3WKQTYvgbT27J/FFpYpXsyesUxNcFy5pjcAfPsouTbayb6403K9Gja0HtoV1m9xeNAEBInry1baAsuB2BLHHnkz9QNunbHJl9z/45ViAZPSAGktrzXPGChUkoi8DAwaCLy0mJHFaTb7hVhCWPk3LZ+d+nHXegtWelBZ/IKUhqV0P33AL5AyHqeiH
+ 3LqSsU8J
+ rrE7nRXy2+1bwayApwT8+HCU/aW2kUH0tcZlPxMLGvgSk0+kz6RbyhTZKiy5FiNuUkeDuXpYzNUxJFqJtii0N/PQUInLGqIQxxDVzIZL5cHWuKI0f5W+wFyons6se/eICsIJGOqhHDLu2HtdX2VqirKeXA7SIpnuDAKlC8KxTN0Jja00Dhp/2jjG2j+utDeUtNEDhzssgFF7soJ/YYQFwwfwcprzZpFzr5B1LB0QB9YN+huyn/jhas4mKn6rrQQavRIyvfPsqnSYH7nD0ON0LcjOpT9sG+To7L3uLlVdbwaVr5lAm+9kDSYtQOe0J1m54K8tnggqggJXQDYn26sNYNZPhY9k4lFcDSA5cGcIFu1pDx2DL4GPRc5OV1Y3fVp4Pb8ESwTdxi0lSzfmsbIXLtwt+nuA92d6jofFUHhtPC0Obzg+p4Z1AK2hRx7OhMUAfE/yE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -194,30 +126,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/6/26 22:21, Lorenzo Stoakes (ARM) wrote:
-> Update the page_vma_mapped_walk structure to track whether the pgoff being
-> tracked is an anonymous pgoff or not and update the comments to reflect
-> this.
-> 
-> This is necessary in order to determine the correct VMA page
-> offset in vma_address_end() when pvmw->nr_pages > 1.
-> 
-> Also document that pvmw->pgoff is meaningless for pvmw->nr_pages == 1 and
-> for KSM.
-> 
-> Do not set this field where pgoff is not specified.
-> 
-> This is laying the groundwork for eventually using anonymous page offsets
-> as the index for all anonymous folios.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+On 11/08/2026 15:25, David Laight wrote:
+> On Mon, 3 Aug 2026 15:59:35 +0200
+> "Christophe Leroy (CS GROUP)" <chleroy@kernel.org> wrote:
+>
+>> Le 14/07/2026 à 16:03, Kevin Brodsky a écrit :
+>>> mm code often needs to know whether some mm represents a kernel or
+>>> user address space. This is currently done by comparing the mm
+>>> pointer with &init_mm; besides not being particularly elegant, this
+>>> ignores the fact that other mm's (e.g. efi_mm) may also represent
+>>> parts of the kernel address space.
+>>>
+>>> Introduce a new mm flag MMF_KERNEL and set it for init_mm.
+>>> Subsequent patches will use this flag to replace comparisons with
+>>> &init_mm. No functional change is introduced for now.  
+>> Did you consider performance impact ? This test is usually done in quite 
+>> critical memory handling functions.
+>>
+>> init_mm is known at link time. Before your patch 08/22 there is just a 
+>> comparison of mm (r3) with a constant (loaded in r10):
+>>
+>> c0014048 <assert_pte_locked>:
+>> c0014048:	3d 40 c1 09 	lis     r10,-16119
+>> c001404c:	39 4a 03 98 	addi    r10,r10,920
+>> c0014050:	7c 03 50 00 	cmpw    r3,r10
+>> c0014054:	4d 82 00 20 	beqlr
+>> ...
+>>
+>> After patch 08/22 we have, it first checks that mm is not 0, then it 
+>> loads the word located at mm+528 then AND it with 0x1. This load might 
+>> be costly.
+>>
+>> c0014048 <assert_pte_locked>:
+>> c0014048:	2c 03 00 00 	cmpwi   r3,0
+>> c001404c:	7c 85 23 78 	mr      r5,r4
+>> c0014050:	41 82 00 10 	beq     c0014060 <assert_pte_locked+0x18>
+>> c0014054:	81 23 02 10 	lwz     r9,528(r3)
+>> c0014058:	71 29 00 01 	andi.   r9,r9,1
+>> c001405c:	4c 82 00 20 	bnelr
+>> ...
+> Thought...
+> Could the check be replaced by one that checks for kernel static data?
+> That would require that other mm that represent part of the kernel
+> address space be static (and probably not in modules).
+> ISTR there is an address range check that can be used - and might be
+> cheaper than the explicit test for init_mm on many 64bit archs.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+That is actually an interesting idea. Finding those "kernel mms" boils
+down to looking for global mm_struct, so checking if mm points to global
+data would achieve essentially the same thing without a flag (and likely
+faster). I'm not sure we want to bake in the assumption that "kernel mm"
+is equivalent to "mm is global" though.
 
--- 
-Cheers,
-
-David
+- Kevin
 
