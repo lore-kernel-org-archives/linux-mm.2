@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D64AC5B56A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:27:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03191C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:27:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 812D76B0088; Tue, 11 Aug 2026 12:27:04 -0400 (EDT)
+	id 098C06B00A3; Tue, 11 Aug 2026 12:27:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EA6B6B00A2; Tue, 11 Aug 2026 12:27:04 -0400 (EDT)
+	id 070516B00A4; Tue, 11 Aug 2026 12:27:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 727736B00A3; Tue, 11 Aug 2026 12:27:04 -0400 (EDT)
+	id EF08C6B00A5; Tue, 11 Aug 2026 12:27:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 59B426B0088
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:27:04 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E81ACA0064
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:27:03 +0000 (UTC)
-X-FDA: 85089517926.30.A32C42B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 26BF6140016
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:27:01 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WB6oAKSj;
-	spf=pass (imf23.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786465622;
-	b=FBR7KgKf1Ns8z1aD5YkHrAeeLr5+m2aJTwHQL9ARuaNJAbhD/QMqLp9lsb2wo147dt1x1p
-	DqnnuKjl0jqbhzc3SQFBu5qyyjAVFcewZnQ67Q0vixcmfkfC3J7bRTZA8EbfNSgzWJuAqy
-	IdV6l81dUx3TPlppbEXnIhpXmt6DYEQ=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WB6oAKSj;
-	spf=pass (imf23.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B88106B00A3
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:27:09 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4C8DE16010F
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:27:09 +0000 (UTC)
+X-FDA: 85089518178.12.587FE1E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 99576140008
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:27:07 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iwhuS8Zz;
+	spf=pass (imf09.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786465622;
+	s=arc-20220608; t=1786465627;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cCTSbjH+AbQqxolqBee1+aQwt0omi5VUnJSkZiGnZF8=;
-	b=YkZtlTbJ/6qtaiKIWcyGQ3bGGuPmBHLQ5SvL+RMCwqHPOfZFBix8nsc3DqOdtJACdkKiv/
-	hZjf6sa2lou6kwXBKz7uoJ6gsMkCJY52C/Ba+4RVmBxOJjo9Y/3RRa4mmDpzEN+Q95osL2
-	R0WUq1WMFwbEuFFHoktHG4e8+D2wYV0=
+	bh=vm9ZUJsoHkeWKAilO1rv/MZ18PhBhjaTd6u8ucy9JaU=;
+	b=ROhfpDU19fZ3qagzFWLSMdjVraD1EASWyIMwikLF4YzrpB555Y0rwCquFof1yFNkQHnJyG
+	n92cv3lzgb4pzxaF1avEQyalpE1+j+Pg7rpCw1R8IkGpV6vaEwUUZbxU8nUPqYjgjdwDf1
+	9xPit464CFf6mN9jEj9qljDecxlovd4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iwhuS8Zz;
+	spf=pass (imf09.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786465627;
+	b=XCL37pjHXCJxCvCQYGYe1e9UPF89Cm55sR3JdK24yaJ9DqhK/kRj6cr/Uro7HHEjDEi8wF
+	ZHcmh41s4cg825hdKVX8U7xLTQqSK1FLS0KkCgx0s/QRHhbBuftKncGDp/cqQyQaWsCiBe
+	QuBoYpD9+7BkUVtUZ86EbZ/Do3x46Bs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 614CD43F95;
+	by tor.source.kernel.org (Postfix) with ESMTP id 1864960A61;
+	Tue, 11 Aug 2026 16:27:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E121F00A3D;
 	Tue, 11 Aug 2026 16:27:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 306711F00A3F;
-	Tue, 11 Aug 2026 16:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786465621;
-	bh=cCTSbjH+AbQqxolqBee1+aQwt0omi5VUnJSkZiGnZF8=;
+	s=k20260515; t=1786465626;
+	bh=vm9ZUJsoHkeWKAilO1rv/MZ18PhBhjaTd6u8ucy9JaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WB6oAKSjESjeGTBWIaFg2Vz80ThcWdcNc2PPEL6VBsod2UdMjfrko6q/E0sjykUte
-	 6mD7MLWnhAzolIHI2EbfKgajXhMSmsgDGKMmBRj88tvW+HM+cdnIOs62Pn7/DR2TOe
-	 Nb0ECAbcH6l9mJhl3ShiWdATBjF2TyWlC7CWORVjG7Ha4BNLkjmPTwUea0YDbx1vHG
-	 useowan7Pb0zS0OkHo1eI+YGo9ig9bp1J2XQYhBM1D3OQTiMjCG94Y9tzAMZdtwH1B
-	 FOxdzs6svGvf7QDDWxH10dF9KyiZ/qcp2LdSdfbCPX4RKhk4wcGc6be/CyndAfnZXO
-	 JD4H3Pot+cLjA==
+	b=iwhuS8ZzkY3tEwY6VOBkNjUl46fOcBTf1/oqDwM3H4R7fNXnM8gTrBtveGlsDri2+
+	 7waYCMNBTp9DLC3bFrpvL6tCvTSrjMtDW0RD7dOto3r5x8cr3/LdN9FhaVSiIrDA6F
+	 lNQBoY6lvrG9yQNEiGP/LSneJSTzPPlrUs5fqE/Pg+XmgxZnJ01BJv3fwgqdUwKMob
+	 GCA1dk2dvjHmpZL67zhuEbzoTGZs8L0LmgkxIQDjMAiFwp3IHv08EmeIixZxQQJttA
+	 eo1Cr4ousfAYrdm+8rX6MuJ2A3sxlyv8Vr0kYaBxJEa56Yl4scs2uEVxdMo4ZAVrey
+	 Q4UF4K1T9XEuA==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
 	Shuah Khan <skhan@linuxfoundation.org>,
@@ -96,22 +96,22 @@ Cc: x86@kernel.org,
 	linux-efi@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-arch@vger.kernel.org
-Subject: [PATCH 1/4] memblock: get rid of CONFIG_MEMBLOCK_KHO_SCRATCH
-Date: Tue, 11 Aug 2026 18:26:37 +0200
-Message-ID: <20260811162642.3504565-2-pratyush@kernel.org>
+Subject: [PATCH 2/4] memblock: rename KHO_SCRATCH to KHO_NOPRSRV
+Date: Tue, 11 Aug 2026 18:26:38 +0200
+Message-ID: <20260811162642.3504565-3-pratyush@kernel.org>
 X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
 In-Reply-To: <20260811162642.3504565-1-pratyush@kernel.org>
 References: <20260811162642.3504565-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 26BF6140016
+X-Stat-Signature: zbe5bo4z87gqedbr4z1ewpyqtxbbeiyb
+X-Rspamd-Queue-Id: 99576140008
 X-Rspam-User: 
-X-Stat-Signature: dsnh8m351gmoaq7rc6ti4o3epqp6akmr
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786465621-997476
-X-HE-Meta: U2FsdGVkX18YU+HWYiHnoenvJyhIhQaZnQZOIl7J9ROGO5WDLFfB5QNiu0qYIV9vQ/HozlcF+VlqPbOkiiixGSmSdfWVAHBoYtHpt8FQnOP9kvnc2wUYNh7RpzxeaGlabl9nVMVTSdMoBVjHDpenugDW+ABy6qY/6HAnor1ocpm3mLkkJejibfUUFLmTD5eHEKrphMr7GJAWSizTHItvDDZiKp4gFtATN8kOylD/oktL7SgV9RdYUzq3F24K8ouz2vicxr+vbV9h/7ONUEPPiialS2b9A8CUYJxLlWio2LZPKWZUBwfUQ3aO+TZOdEV4+525Tdlov/uwoPB00H8oaGoY1zbGPbGNd0E0saaHUVjczaQ8cwW7zns9S0mEg1SCGscyfRQASsT2jZeiQRbRbdKag+dbbZ5xo4z8Y73I4dr8X4mEHA98tCj8JTLX73xYiO7qwuef1RsHXc4YuXVJzuU9IQnhwIJdvYNMryJ6aiThSeqzldsAcCAEQjDWuLOUiKqAyrmRBehD281ugAsroQFdPrcqqe6gvLXQYs8srS0qzOXlfulmRFJ9ne4WQhtUKHjS2SDum7+mbZ1qYInMvhktVDaCwdXm4quC4yJv7ZazoCwWQl2AU30sRGsNw9P2On08b2W3Tunya1VoDV1SYwYCnJfMoVoDgpRDi8QlEAuWGa5HHPkNEeW9oqe65YHP85gIf0wDptYazsBxYNlJZa4+wb2k6ImGA0iE5ZUwEdsmzYU/5KfLPLkMYRS33zEEq5OeWb8ReBZUIM1NZNQ8idJcUH6cayDFrLNtX4eUD3c5uCrRL4wt2MGBstw/+IDCYO58yzbVIQziYoGEFgRNHmi6zd/4re7cbyeaEWer4FeIS43CVJZ4h6xl1G8o11W68zN/a4IU9UGm1P0FT2MFMvOx1kQSwgdHwXaIsWppHFandbvV8H+TZM6gRDJhTBi47XNavo14bvQRDHT6GB4
- zt11LO4H
- q1+MVHg4F0u+ledwmfLPaQbReU19hQ4kkeP1TWQ0N9dij4+WcMHlkpDh6bNnOoNm1ktqUWPXQbmNhy5i49sNrrTSZ9r9W3bwSCfrnh1vNkECbbCpkP3S9st9n4zilmamPQfn+vEoRtZZHGNww3Ki1qvG1BzqDRSiTdMFl49zmNhLoBHm5hQSOVo3qagc2QXMELnClHeD+NU+GEMaI2EzuaduUIcXqRWn5O8BmPTmvFd1ghZ88NLY6VK2VX551aD5OC4n/x3c4VXuiX1r/ZB7ex7g68BpYDq4RMCVN
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786465627-704138
+X-HE-Meta: U2FsdGVkX19ft6aN7D0IrpNpxKmvxvpeGvdQY7XKzUkmtS82DoNN06q1F1GNYbefRcTY+wYnbYwO8alL0oR1ZI6iZjQyhGNqedxCURjaldjeEWHmGtn8u1kFlKQMu1Kl9nnzX+JzldODIBb26M1dnuyf+t2bz1Cw/AgSg9JCorLOsZsIxvzAbgwPNmItcL8JDwAuKP+x8/5tVEm7DYc3g6egh4fOkoCR5iWvXFaCXf58wouJ4pLNggwIPfBRIuYTjrlSPHKkp/EV8N/Gb1ywp0ersILcEX/HxU3avP5SF7xMKAtD7v7azkYqKvfX2DQnlZ0rS+oOaz0JikNnv9D78yQXWnOeUM/ErvTq92j+k0xPn0sGTv3m62Ieb8h6CnL/0z7YHjJ8YT+fqb35V5fPp9fIHvSKxWV4h+h4BtqaquoainBS0D2pSv2mWY1GVv9+cO84JA9JXLfW49JmITjZswrssacmOQ3P+OG+1I8NT73XFkDX63wuwT06NtiNB1ICCW/hKs559YBSZXprQ3xBmlFEFgcc9x+x9mpcpyw3LeZW0dzRQEjLb9vNo2eyNdCK2bWHTd44hvR0r27CFQ8DXLfH9oL3qHMDsHZFihEYCiQE5VHi/4H+571jK4QPd/DFIZ0/e3ogWhI6Fdq9cT3XwMsYOYzSdFvWUmCf0CToQcIwQspGMs836d4FO2rJhE2xSV2Nk69EngBc/iZZpJ/kFyP9oBlJ9RM2nA65PaVxWiRMVBzmQB0BXEd7JjmbF9JWv+RUwflYUvEuJLkFnksbyqXbyGweQ9MWiAarbi9eJifNUt7nooKgEinh4EGzsPRuJlgJJbCXBtELtepBG9I7GrVrn1+dbqNL26wTRFbOV5cSf/lgwwf4cSsfzozRPWGRwt/n2+wTunvMIzKCn+ciQzmgFQAs/VYEIsdU1HHjzIPP2DBMb73d5b2fxuD2yKIhZMJLQsxCbdojVzfgxZ2
+ 9pX0KUqi
+ IO5IW4BSnryu4jckIjdCso+E3Xl4fvM4dlq4Buhg21tG/a1TAvXMxxRp6tK/cxzJnQaDaf0hMXoaA2IZ0hpz65VzLkNlPqX0NXI+iQ7fERSPLIsYrX+Rm79LG+/3BZs7dIUY24BMuwOWaVHPReZVEOJda4Z4CCGhpuCc1+xkRLfPFYSvUjKue14hYTkpiH6iNJsVgfDXxV11hApfB3a0x6woLFIOAjRJpqxsYcANhY01CIQ3gfiZlOZyB6UmDFu1u0KSsr6QoTeV+ddSX8cneOZeKKg7Gq9bGAwNh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,80 +121,318 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-This config is only a proxy for CONFIG_KEXEC_HANDOVER. It is only
-enabled by KHO. No point in the indirection. Use CONFIG_KEXEC_HANDOVER
-directly.
+The term "KHO scratch" is vague. It does not accurately describe what
+the memory is for. Generally, scratch is for things that don't contain
+anything useful. This is not true.
+
+For memblock, KHO_SCRATCH is the _only_ useful memory during a KHO boot.
+It is memory passed by the previous kernel that is guaranteed to have no
+preserved pages, and so is the only thing safe to allocate from early in
+boot.
+
+In addition, KHO now has the ability to discover other "scratch" areas.
+These aren't directly passed by the previous kernel. Instead, they are
+found by searching the KHO preserved memory map.
+
+Memblock does not care about the difference between the two. From
+memblock's perspective, both are memory areas with no preservations and
+so they are safe to allocate from before KHO fully initializes.
+
+Rename MEMBLOCK_KHO_SCRATCH to MEMBLOCK_KHO_NOPRSRV. This name clearly
+shows what the memory is for from memblock's perspective. Update
+memblock functions and comments that refer to scratch to use noprsrv.
+
+There are no functional changes apart from the flag name change in
+debugfs.
 
 Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 ---
- include/linux/memblock.h  | 2 +-
- kernel/liveupdate/Kconfig | 1 -
- mm/Kconfig                | 4 ----
- mm/memblock.c             | 4 ++--
- 4 files changed, 3 insertions(+), 8 deletions(-)
+ arch/x86/kernel/e820.c             |  2 +-
+ arch/x86/realmode/init.c           |  2 +-
+ drivers/firmware/efi/efi-init.c    |  2 +-
+ include/linux/memblock.h           | 28 +++++++++----------
+ kernel/liveupdate/kexec_handover.c |  8 +++---
+ mm/memblock.c                      | 44 +++++++++++++++---------------
+ 6 files changed, 43 insertions(+), 43 deletions(-)
 
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index d62db9e776cf..db3b106c6335 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -614,7 +614,7 @@ static inline void early_memtest(phys_addr_t start, phys_addr_t end) { }
- static inline void memtest_report_meminfo(struct seq_file *m) { }
- #endif
+diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+index eb72537bc0b1..2a6e19f95251 100644
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -1363,7 +1363,7 @@ __init void e820__memblock_setup(void)
+ 	 * After real mode trampoline is allocated, we clear that scratch
+ 	 * marking.
+ 	 */
+-	memblock_mark_kho_scratch(0, SZ_1M);
++	memblock_mark_kho_noprsrv(0, SZ_1M);
  
--#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
-+#ifdef CONFIG_KEXEC_HANDOVER
- void memblock_set_kho_scratch_only(void);
- void memblock_clear_kho_scratch_only(void);
- #else
-diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
-index c13af38ba23a..f50daee8eff0 100644
---- a/kernel/liveupdate/Kconfig
-+++ b/kernel/liveupdate/Kconfig
-@@ -5,7 +5,6 @@ menu "Live Update and Kexec HandOver"
- config KEXEC_HANDOVER
- 	bool "kexec handover"
- 	depends on ARCH_SUPPORTS_KEXEC_HANDOVER && ARCH_SUPPORTS_KEXEC_FILE
--	select MEMBLOCK_KHO_SCRATCH
- 	select KEXEC_FILE
- 	select LIBFDT
- 	select CMA
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 9e0ca4824905..5415e0b38b5d 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -485,10 +485,6 @@ config HAVE_GUP_FAST
- 	depends on MMU
- 	bool
+ 	/*
+ 	 * 32-bit systems are limited to 4BG of memory even with HIGHMEM and
+diff --git a/arch/x86/realmode/init.c b/arch/x86/realmode/init.c
+index 694d80a5c68e..65110b2ee1a1 100644
+--- a/arch/x86/realmode/init.c
++++ b/arch/x86/realmode/init.c
+@@ -66,7 +66,7 @@ void __init reserve_real_mode(void)
+ 	 */
+ 	memblock_reserve(0, SZ_1M);
  
--# Enable memblock support for scratch memory which is needed for kexec handover
--config MEMBLOCK_KHO_SCRATCH
--	bool
--
- # Don't discard allocated memory used to track "memory" and "reserved" memblocks
- # after early boot, so it can still be used to test for validity of memory.
- # Also, memblocks are updated with memory hot(un)plug.
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 37e06e70c1d0..8e425791ad66 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -112,7 +112,7 @@ unsigned long min_low_pfn;
- unsigned long max_pfn;
- unsigned long long max_possible_pfn;
- 
--#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
-+#ifdef CONFIG_KEXEC_HANDOVER
- /* When set to true, only allocate from MEMBLOCK_KHO_SCRATCH ranges */
- static bool kho_scratch_only;
- #else
-@@ -2597,7 +2597,7 @@ int reserve_mem_release_by_name(const char *name)
- 	return 1;
+-	memblock_clear_kho_scratch(0, SZ_1M);
++	memblock_clear_kho_noprsrv(0, SZ_1M);
  }
  
--#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
-+#ifdef CONFIG_KEXEC_HANDOVER
- __init void memblock_set_kho_scratch_only(void)
+ static void __init sme_sev_setup_real_mode(struct trampoline_header *th)
+diff --git a/drivers/firmware/efi/efi-init.c b/drivers/firmware/efi/efi-init.c
+index 6103b1a082d2..a2edaf3766eb 100644
+--- a/drivers/firmware/efi/efi-init.c
++++ b/drivers/firmware/efi/efi-init.c
+@@ -178,7 +178,7 @@ static __init void reserve_regions(void)
+ 
+ 		/* Remove all non-KHO regions */
+ 		for_each_mem_region(r) {
+-			if (!memblock_is_kho_scratch(r)) {
++			if (!memblock_is_kho_noprsrv(r)) {
+ 				memblock_remove(r->base, r->size);
+ 				r--;
+ 			}
+diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+index db3b106c6335..186b965cfc89 100644
+--- a/include/linux/memblock.h
++++ b/include/linux/memblock.h
+@@ -46,11 +46,11 @@ extern unsigned long long max_possible_pfn;
+  * @MEMBLOCK_RSRV_KERN: memory region that is reserved for kernel use,
+  * either explictitly with memblock_reserve_kern() or via memblock
+  * allocation APIs. All memblock allocations set this flag.
+- * @MEMBLOCK_KHO_SCRATCH: memory region that kexec can pass to the next
+- * kernel in handover mode. During early boot, we do not know about all
+- * memory reservations yet, so we get scratch memory from the previous
+- * kernel that we know is good to use. It is the only memory that
+- * allocations may happen from in this phase.
++ * @MEMBLOCK_KHO_NOPRSRV: memory region with no preservation from kexec
++ * handover. During early boot, we do not know about all memory preservations
++ * yet, so we get memory with no preservations from the previous kernel that we
++ * know is good to use. It is the only memory that allocations may happen from
++ * in this phase.
+  * @MEMBLOCK_RSRV_HUGETLB: memory is reserved for hugetlb pages
+  */
+ enum memblock_flags {
+@@ -61,7 +61,7 @@ enum memblock_flags {
+ 	MEMBLOCK_DRIVER_MANAGED = 0x8,	/* always detected via a driver */
+ 	MEMBLOCK_RSRV_NOINIT	= 0x10,	/* don't initialize struct pages */
+ 	MEMBLOCK_RSRV_KERN	= 0x20,	/* memory reserved for kernel use */
+-	MEMBLOCK_KHO_SCRATCH	= 0x40,	/* scratch memory for kexec handover */
++	MEMBLOCK_KHO_NOPRSRV	= 0x40,	/* memory with no KHO preservations */
+ 	MEMBLOCK_RSRV_HUGETLB	= 0x80, /* memory reserved for hugetlb pages */
+ };
+ 
+@@ -158,8 +158,8 @@ int memblock_mark_nomap(phys_addr_t base, phys_addr_t size);
+ int memblock_clear_nomap(phys_addr_t base, phys_addr_t size);
+ int memblock_reserved_mark_noinit(phys_addr_t base, phys_addr_t size);
+ int memblock_reserved_mark_kern(phys_addr_t base, phys_addr_t size);
+-int memblock_mark_kho_scratch(phys_addr_t base, phys_addr_t size);
+-int memblock_clear_kho_scratch(phys_addr_t base, phys_addr_t size);
++int memblock_mark_kho_noprsrv(phys_addr_t base, phys_addr_t size);
++int memblock_clear_kho_noprsrv(phys_addr_t base, phys_addr_t size);
+ 
+ void memblock_free(void *ptr, size_t size);
+ void reset_all_zones_managed_pages(void);
+@@ -301,9 +301,9 @@ static inline bool memblock_is_driver_managed(struct memblock_region *m)
+ 	return m->flags & MEMBLOCK_DRIVER_MANAGED;
+ }
+ 
+-static inline bool memblock_is_kho_scratch(struct memblock_region *m)
++static inline bool memblock_is_kho_noprsrv(struct memblock_region *m)
  {
- 	kho_scratch_only = true;
+-	return m->flags & MEMBLOCK_KHO_SCRATCH;
++	return m->flags & MEMBLOCK_KHO_NOPRSRV;
+ }
+ 
+ int memblock_search_pfn_nid(unsigned long pfn, unsigned long *start_pfn,
+@@ -615,11 +615,11 @@ static inline void memtest_report_meminfo(struct seq_file *m) { }
+ #endif
+ 
+ #ifdef CONFIG_KEXEC_HANDOVER
+-void memblock_set_kho_scratch_only(void);
+-void memblock_clear_kho_scratch_only(void);
++void memblock_set_kho_noprsrv_only(void);
++void memblock_clear_kho_noprsrv_only(void);
+ #else
+-static inline void memblock_set_kho_scratch_only(void) { }
+-static inline void memblock_clear_kho_scratch_only(void) { }
++static inline void memblock_set_kho_noprsev_only(void) { }
++static inline void memblock_clear_kho_noprsrv_only(void) { }
+ #endif
+ 
+ #endif /* _LINUX_MEMBLOCK_H */
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index fe6f2ac7e458..13db1534c746 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -956,7 +956,7 @@ static int __init kho_ext_mark_scratch(unsigned long key, void *data)
+ 	int err;
+ 
+ 	if (start > *prev_end) {
+-		err = memblock_mark_kho_scratch(*prev_end, start - *prev_end);
++		err = memblock_mark_kho_noprsrv(*prev_end, start - *prev_end);
+ 		if (err)
+ 			return err;
+ 	}
+@@ -1029,7 +1029,7 @@ static void __init kho_extend_scratch(void)
+ 
+ 	/* Mark everything from last busy block to end of DRAM. */
+ 	if (prev_end < memblock_end_of_DRAM())
+-		err = memblock_mark_kho_scratch(prev_end, memblock_end_of_DRAM() - prev_end);
++		err = memblock_mark_kho_noprsrv(prev_end, memblock_end_of_DRAM() - prev_end);
+ 
+ 	/* fallthrough */
+ out:
+@@ -1994,7 +1994,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+ 		u64 size = area->size;
+ 
+ 		memblock_add(area->addr, size);
+-		err = memblock_mark_kho_scratch(area->addr, size);
++		err = memblock_mark_kho_noprsrv(area->addr, size);
+ 		if (err) {
+ 			pr_warn("failed to mark the scratch region 0x%pa+0x%pa: %pe",
+ 				&area->addr, &size, ERR_PTR(err));
+@@ -2012,7 +2012,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+ 	 * we initialize the page tables which we will need to ingest all
+ 	 * memory reservations from the previous kernel.
+ 	 */
+-	memblock_set_kho_scratch_only();
++	memblock_set_kho_noprsrv_only();
+ 
+ 	kho_in.fdt_phys = fdt_phys;
+ 	kho_in.scratch_phys = scratch_phys;
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 8e425791ad66..f7e42e813de1 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -113,10 +113,10 @@ unsigned long max_pfn;
+ unsigned long long max_possible_pfn;
+ 
+ #ifdef CONFIG_KEXEC_HANDOVER
+-/* When set to true, only allocate from MEMBLOCK_KHO_SCRATCH ranges */
+-static bool kho_scratch_only;
++/* When set to true, only allocate from MEMBLOCK_KHO_NOPRSRV ranges */
++static bool kho_noprsrv_only;
+ #else
+-#define kho_scratch_only false
++#define kho_noprsrv_only false
+ #endif
+ 
+ static struct memblock_region memblock_memory_init_regions[INIT_MEMBLOCK_MEMORY_REGIONS] __initdata_memblock;
+@@ -178,9 +178,9 @@ bool __init_memblock memblock_has_mirror(void)
+ 
+ static enum memblock_flags __init_memblock choose_memblock_flags(void)
+ {
+-	/* skip non-scratch memory for kho early boot allocations */
+-	if (kho_scratch_only)
+-		return MEMBLOCK_KHO_SCRATCH;
++	/* only use KHO_NOPRSRV memory for kho early boot allocations */
++	if (kho_noprsrv_only)
++		return MEMBLOCK_KHO_NOPRSRV;
+ 
+ 	return system_has_some_mirror ? MEMBLOCK_MIRROR : MEMBLOCK_NONE;
+ }
+@@ -1174,33 +1174,33 @@ int __init_memblock memblock_reserved_mark_kern(phys_addr_t base, phys_addr_t si
+ }
+ 
+ /**
+- * memblock_mark_kho_scratch - Mark a memory region as MEMBLOCK_KHO_SCRATCH.
++ * memblock_mark_kho_noprsrv - Mark a memory region as MEMBLOCK_KHO_NOPRSRV.
+  * @base: the base phys addr of the region
+  * @size: the size of the region
+  *
+- * Only memory regions marked with %MEMBLOCK_KHO_SCRATCH will be considered
++ * Only memory regions marked with %MEMBLOCK_KHO_NOPRSRV will be considered
+  * for allocations during early boot with kexec handover.
+  *
+  * Return: 0 on success, -errno on failure.
+  */
+-__init int memblock_mark_kho_scratch(phys_addr_t base, phys_addr_t size)
++__init int memblock_mark_kho_noprsrv(phys_addr_t base, phys_addr_t size)
+ {
+ 	return memblock_setclr_flag(&memblock.memory, base, size, 1,
+-				    MEMBLOCK_KHO_SCRATCH);
++				    MEMBLOCK_KHO_NOPRSRV);
+ }
+ 
+ /**
+- * memblock_clear_kho_scratch - Clear MEMBLOCK_KHO_SCRATCH flag for a
++ * memblock_clear_kho_noprsrv - Clear MEMBLOCK_KHO_NOPRSRV flag for a
+  * specified region.
+  * @base: the base phys addr of the region
+  * @size: the size of the region
+  *
+  * Return: 0 on success, -errno on failure.
+  */
+-__init int memblock_clear_kho_scratch(phys_addr_t base, phys_addr_t size)
++__init int memblock_clear_kho_noprsrv(phys_addr_t base, phys_addr_t size)
+ {
+ 	return memblock_setclr_flag(&memblock.memory, base, size, 0,
+-				    MEMBLOCK_KHO_SCRATCH);
++				    MEMBLOCK_KHO_NOPRSRV);
+ }
+ 
+ static bool should_skip_region(struct memblock_type *type,
+@@ -1236,9 +1236,9 @@ static bool should_skip_region(struct memblock_type *type,
+ 
+ 	/*
+ 	 * In early alloc during kexec handover, we can only consider
+-	 * MEMBLOCK_KHO_SCRATCH regions for the allocations
++	 * MEMBLOCK_KHO_NOPRSRV regions for the allocations
+ 	 */
+-	if ((flags & MEMBLOCK_KHO_SCRATCH) && !memblock_is_kho_scratch(m))
++	if ((flags & MEMBLOCK_KHO_NOPRSRV) && !memblock_is_kho_noprsrv(m))
+ 		return true;
+ 
+ 	return false;
+@@ -2499,7 +2499,7 @@ void __init memblock_free_all(void)
+ 	free_unused_memmap();
+ 	reset_all_zones_managed_pages();
+ 
+-	memblock_clear_kho_scratch_only();
++	memblock_clear_kho_noprsrv_only();
+ 	pages = free_low_memory_core_early();
+ 	totalram_pages_add(pages);
+ }
+@@ -2598,14 +2598,14 @@ int reserve_mem_release_by_name(const char *name)
+ }
+ 
+ #ifdef CONFIG_KEXEC_HANDOVER
+-__init void memblock_set_kho_scratch_only(void)
++__init void memblock_set_kho_noprsrv_only(void)
+ {
+-	kho_scratch_only = true;
++	kho_noprsrv_only = true;
+ }
+ 
+-__init void memblock_clear_kho_scratch_only(void)
++__init void memblock_clear_kho_noprsrv_only(void)
+ {
+-	kho_scratch_only = false;
++	kho_noprsrv_only = false;
+ }
+ #endif
+ 
+@@ -2861,7 +2861,7 @@ static int __init reserve_mem(char *p)
+ 	if (reserve_mem_kho_revive(name, size, align))
+ 		return 1;
+ 
+-	/* TODO: Allocation must be outside of scratch region */
++	/* TODO: Allocation must be outside of KHO_NOPRSRV region */
+ 	start = memblock_phys_alloc(size, align);
+ 	if (!start) {
+ 		pr_err("reserve_mem: memblock allocation failed\n");
+@@ -2886,7 +2886,7 @@ static const char * const flagname[] = {
+ 	[ilog2(MEMBLOCK_DRIVER_MANAGED)] = "DRV_MNG",
+ 	[ilog2(MEMBLOCK_RSRV_NOINIT)] = "RSV_NIT",
+ 	[ilog2(MEMBLOCK_RSRV_KERN)] = "RSV_KERN",
+-	[ilog2(MEMBLOCK_KHO_SCRATCH)] = "KHO_SCRATCH",
++	[ilog2(MEMBLOCK_KHO_NOPRSRV)] = "KHO_NOPRSRV",
+ };
+ 
+ static int memblock_debug_show(struct seq_file *m, void *private)
 -- 
 2.55.0.679.g6767b8d81c-goog
 
