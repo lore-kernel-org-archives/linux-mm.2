@@ -4,141 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 361C3C5B56A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:24:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFBC3C5B56A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 16:25:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DDE46B009D; Tue, 11 Aug 2026 12:24:28 -0400 (EDT)
+	id DB4FF6B0092; Tue, 11 Aug 2026 12:25:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B5106B009E; Tue, 11 Aug 2026 12:24:28 -0400 (EDT)
+	id D65596B0098; Tue, 11 Aug 2026 12:25:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A57C6B00A2; Tue, 11 Aug 2026 12:24:28 -0400 (EDT)
+	id C55606B00A2; Tue, 11 Aug 2026 12:25:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EAB006B009D
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:24:27 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 76F51400FD
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:24:27 +0000 (UTC)
-X-FDA: 85089511374.13.28EE53A
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9491A80011
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:24:25 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=cFGxTS+t;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.41 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786465465;
+	by kanga.kvack.org (Postfix) with ESMTP id 9C3096B0092
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:25:31 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 22413400FD
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:25:31 +0000 (UTC)
+X-FDA: 85089514062.17.9A8FCAD
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3925F80002
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:25:29 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="jin/+Ory";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786465529;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ge2DKXL/0cigzsh3KdWGGLhQNvufZEJOXUsvNTDWwxU=;
-	b=Mgdv+DXJB8FdjpUHd7fcboQTB/k+Rk4grajoTjRy/ui/klAUGPls0kQ/BtCODaYRDG7iiM
-	9NZ3nQRSjpd8aoHdKinfqkzLa7HwBalrEQtwOKaW1wbbszpCFbS1N5K+EhQtLCKYAhn/Vg
-	J8efgR8FwWgZJpAulU6s/bI50nOefEo=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=cFGxTS+t;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.41 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786465465;
-	b=cfE1aJ4XfnF5fG2UYrx2jGg+FWYMObfl1BNea6pM72TlgOLWoU8lj6niz+9g4r9nIIFPN9
-	I8mUktaLU6oZexolB5VuEaa5576qpDvCkPKp1j5LfLu70hmDf+6f+0lNpBV8uI+shwY79j
-	aL5v16aMFiqip0HJgiZZRh2y/ctDvh0=
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8fcc43c48f7so31742596d6.2
-        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:24:25 -0700 (PDT)
+	bh=A6H746CB/OnuO73WqTXpctQk5TZ3+mdwvVMiFPnzpXI=;
+	b=NMYCT+2g3yU1hhCKa8ylIcw98SxsdJ+IQq/PW8SAA6fCkvujJ4PJ8RkNnbB4Rvkjdx+3q/
+	UZEhifdaDQp2dwPR6KFPqF6kZ92XotNPHJc+mI05ztZr41d8xei4gl/9R7kwXY0Mcsq8I/
+	UL2u60OUCMBQIuLlSuZDD4PMdBnEXP0=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="jin/+Ory";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786465529;
+	b=FrVZP3JFQyc/QLzWvahChhDUPMhh2mGekLv/wsTJ+04OTzPquVNfnn2CroDduJOdMzItoq
+	Cdig9pOEK7DdHbrsrlEgM8ViRFnyZOg7RO1vEhStX/dHnC4mSZ2b+/WSYsDQp8eocKMn/m
+	742MFu1GFaG/NzNladiIM7XvJ5V0hMQ=
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-47fe377a217so684090f8f.1
+        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:25:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786465528; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Sk9DmUAl0qTb8WHBXqr8IrJ9kHKLGxr3tgFO7c2fuGHegggUOVt32k5I1pC7N/ABk5
+         NsgLoANfB6sroAEbPbNg431MYLkjACiyg6ebkHp/nxui+tiJvjMOk8s4uXZ4ZZRehH6u
+         JFg04uQzLpGnRKf/fazCpNBnx4oKyNc8qiUJlBGTvJToZwSg6lv61ofZFhEhmlnoKYVe
+         xnR2pYwg8mV7k1RB1fKBBodtzNpc5nkgrtmyDmtKWx/7oDQsIDXA07lGRdvOXBeVak0S
+         lnmAL/HZEPByHpPj+c3Ean1mpYLWmXo/J/8kZ6MvrPaYXw1018VNWeZrPjUNwmmZTGa9
+         TL1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=A6H746CB/OnuO73WqTXpctQk5TZ3+mdwvVMiFPnzpXI=;
+        fh=URecTL0A3pTK3rUOsvjgpQQhhed96dKTLcrxX+CLSOw=;
+        b=Q5HEDOkkG2qF5dmMXuiLO/TnaR6ri5ZkrHPykWEC9SG3/jBgsq/SrzNjYbgwzaTOp1
+         GlZsY8ZLJQsaUT6lWiy13vxGTLoyC9mIqDJKxxSuyVYM7JKDe7Jcit57fqO/weYUbV8X
+         pp3dXU2+IUnWTQXqtLqqGVHFHk7r8NFdG35X/z+eBpNCJj7gbxkPgtPkJKoVRywfjX+m
+         8RJ0cLvS1y+zE4YduzDmWKSXvxdqsNvqEmAm1iEkNazSh0T4f00B62a+8gUNnr1NSZG9
+         bpoelHEmDWl4xL5rDHEyx5W54SJYVq/pMiq3Sphs6cK+SR70RmXlFtFCbXdJPD3vTZki
+         4sUA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1786465465; x=1787070265; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1786465528; x=1787070328; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Ge2DKXL/0cigzsh3KdWGGLhQNvufZEJOXUsvNTDWwxU=;
-        b=cFGxTS+t1qTJIUUpU1SDNVEHtpmeLn55PbDS9qwdUFJS1FyvircLF1/COACCcwwcay
-         RBQmB09Jv12e1IshvEuA/43AM8LEOWdzNCwsRXI+23F3ubQxmHg/uCKr3VR/TVJfO17B
-         O66NE3JmfEyJq7eYyFi+yBJoIEeMOEZh+r5cIM7NyP4WBauMWy5sO87VV6Ex7eBGsr7s
-         9b2TFgK5rOMJS83tzpLc0ov/ZnzW/PBzlUnK7VNQ7l/8/rm+gCDLoydTyOKQ1PvqGLX3
-         UmQDYfMdjcNoSv99WGgksQ0Byv025Jf8nIYDzDViWRRjlRZ/NikkSP3Fjsr5GtMdkFpB
-         BNWA==
+        bh=A6H746CB/OnuO73WqTXpctQk5TZ3+mdwvVMiFPnzpXI=;
+        b=jin/+OryFs1W8liIOlgcW+fxo5grxh0XJaDDyHEG3uJk5Ov5ac+gmZY3RTX6K4MjeP
+         Zw9pTfeXxPykvAGFgUvDPMWtNND3hdCaQxdNPnyXDz4TXDVaVKhZxXfaeHSK8hdD4SVP
+         aiT5ki4Yut+0BbeIvHP2vVxo7BybZltXe2jo/J1lKJd7huflt2BYPQirHw/oWOUdo7wX
+         k61QtDlEMmwWTxT3Oh4tk2/7mfOSj4jtsmYzLWXt3wpVDWVfyzGTmdNeExqaWxcMbOjy
+         WFcBeHY8lP418VlcwsjRwVo6esWMPDZ05c32O/GLzHxb3MH2hXBvPU1tkNLsn1lPwj6B
+         aTog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786465465; x=1787070265;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1786465528; x=1787070328;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Ge2DKXL/0cigzsh3KdWGGLhQNvufZEJOXUsvNTDWwxU=;
-        b=nsx0Lhi14yZvyt8W03PtL74s98WDBHiUqaK68uxWqhRkDJ1WlHhfP2xBiYhLfqdy/1
-         tnlh7GwoMtSrV5AbNjhn9r8nRRZpGCY9Vd1tfVJUBEJXiKJyk3hbG1fEknrU+5Y96MnM
-         MYggR+4wpslGNU3wtQ0AMK/WcHRzYzqj0s79r7MWjPk4YcR3ijZTB56Twn3uMLl6N3wW
-         Kz84/294NspRqxwP2NkIsOr1DlNqeP6u5t3/vkwaj8QRX6Q5fvP+7hVLcc8qYb9FrMtE
-         PMCl7v3xTfYp8VtqsWt53fmEVY4DYc+yEp/nxvUd5vnBWzxs6bBqu6Qrz0qi+wNCMewG
-         Qbug==
-X-Forwarded-Encrypted: i=1; AHgh+Roz6TK+l+nqn8IVF27gN4i62Y++6A8igiKAids5tAwhix2LeHmAxFD1og6vvs122S12UfKeENTydg==@kvack.org
-X-Gm-Message-State: AOJu0YwNxEV/Z2S2IjNBxIqhUNSSkYBB4pEp1eWZ14Iny2COYSCOfWK1
-	B5KwCrFifz3rsfnEot8irbFPV1km+zdCiFIPtptENRr3ao1wAfrkbhXfYA7cFRnASzo=
-X-Gm-Gg: AR+sD12woDkUPaXmHCSKJT9BOJ+vC9HcGAFYX3lIO01Kv1vaIxvLEWQ6DWr/1uXYzMn
-	PFSBxEB69wlQ7dWZZVUuzBvNZLZNMpUdw1ChXKENHDbWJ/7B+RcBSqIKiudwvEfTZp6QCDuD7ZQ
-	+++XSHd1ONWkPCXpckNtWBZdS8IUhvye1csm1TWpiLQ6oqDZScfW6QD5nZIqbHHMhBntaSOu+yP
-	zHzNi0tk6ix6XgtWPxba6QurZb7UaoU/FB+6vnyuWvRIoUOM3r2z8O1O9K4rjr6hZfgLXY9C00n
-	ODjtHY3pEJlinM98yn7YP5Q3U5WfW7LAIaD4Tqv0as3aVD8FAf3Ac/PzTxc5/fLQ7Eqv2yngld6
-	EJNOPFyS+CMnuimjAjmQ3dIOe//q5DZ0H2xwJZA/R8RYV6WV8g5hAgQFO0rb6gO1vtm5TAhouYr
-	jVpCR7ZDqNYAX+tyh1XFJPCiWZAl+VKaAZut1oAMp8fO3mQcVy
-X-Received: by 2002:a05:6214:5d81:b0:8ef:ea2a:2728 with SMTP id 6a1803df08f44-90a66df2c02mr43379816d6.19.1786465464725;
-        Tue, 11 Aug 2026 09:24:24 -0700 (PDT)
-Received: from ziepe.ca ([142.166.156.215])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90a6c3c38c4sm2442696d6.36.2026.08.11.09.24.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2026 09:24:23 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wtpH5-00000002YAS-0rLs;
-	Tue, 11 Aug 2026 13:24:23 -0300
-Date: Tue, 11 Aug 2026 13:24:23 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	=?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Sean Christopherson <seanjc@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <20260811162423.GL544626@ziepe.ca>
-References: <a247c49dd61af1df7ddc4dcb1cccbcb36b04d9d5.camel@infradead.org>
- <20260811135537.GC544626@ziepe.ca>
- <1d669aca4ffee797b9c29215382444a5b23624b3.camel@infradead.org>
- <20260811142730.GG544626@ziepe.ca>
- <15a7bd252a9aaeefe393f5609ec383ce2c61694a.camel@infradead.org>
- <20260811152435.GH544626@ziepe.ca>
- <eac6f58590798a0bd96573d0ab15e0700937ec1d.camel@infradead.org>
+        bh=A6H746CB/OnuO73WqTXpctQk5TZ3+mdwvVMiFPnzpXI=;
+        b=G0TiLr+G8oBc2nG6xEk92KEuGlhYePZX09BD95vB7ccpKGLxD3DQeU8QiqdwAYC4XQ
+         9cFngL1sgwr0ZDEPk9a38CgoSR3XOFG1xyhiy9QNDT3ThqQ8K1nUsNomRvni8QIMV+X6
+         7zGcY7LQ/iuyLxRG8sSrWi6NHwImgNuPRrOydSazgV1xkuvTnrsPXUoceQy1WEmBZTEl
+         LAmJdOAqdFUZ8RBaYFWtw4IdcXN61sankas7iraGFlweGzjpnrFbBdvGz78vLrAsg4LP
+         BL0oM8Qs1h3QxAaPTGGdIIhYXmHmfdelwVhDQkJrH7hj6vQgw79mG1xzqdrWrTckEddM
+         KBqA==
+X-Forwarded-Encrypted: i=1; AHgh+RrcUyLxFQsyS4gtsYmq/suw5aXWJYMfQoTEoIt+a5Cu4f/jhRFrWVlE3sAJDSVjLGbLH11sXkMniA==@kvack.org
+X-Gm-Message-State: AOJu0YxNeZ+WKHeMGSTeyJ52PzPyvjGYj9TwMIb2WpcqctHz8BVaoxM4
+	DAN2QF/VmPZoiCfUBQVSw8iYgD6HxcvCk4bOOWUYQP0pedFeSj9e5Kx5Sw9hQTj/FDs/QC6jClz
+	Mmk9+evK80+t+JjRZdm+/qk50Aqs+2LA=
+X-Gm-Gg: AR+sD136/rMpg6UhY14BiFYdKBm2/JQa6outP0mJeIgolqUbGTUqqjHGxDu+cxn9t38
+	a8mEyVPh9+vIRupAm+0u+1F2GHFvkWK/saN2a8iiVVgvIh1T50OjqYVUP7TW41OlrpHqGI/fSzJ
+	2BdNDY9OZE2bJf8DphVOLSaP7bN9VFYtJc6E/oqmXw72YQEdAkz9eFUdm+Spv7W9xH6g6hcM9JO
+	NKXbGAcRK3pkqE8qiAY9RkcZZNKwQvL51i1NO/EoFmjSxOHvrMvEFutmMuxuG2cilSWwu9UKYnQ
+	X3rpMyNGne6tnoNOvh6e00S/diirZvYMKaMP1XuHfzHNefgI0p+ImR23iKN10eQEb9KG7fEFV3C
+	LeLjly5LV/Tk=
+X-Received: by 2002:a5d:588b:0:b0:47f:f87e:6485 with SMTP id
+ ffacd0b85a97d-4814fd76b52mr2315991f8f.15.1786465527243; Tue, 11 Aug 2026
+ 09:25:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <eac6f58590798a0bd96573d0ab15e0700937ec1d.camel@infradead.org>
+References: <cover.1786003779.git.xueyuan.chen@vivo.com> <anVWZVOt-xeD0dMH@google.com>
+ <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com> <anXJ-5_vO7-toSe1@google.com>
+ <CAKEwX=Mm2tXcen-quRXHf1Y2qSHYvpEUe4xiw-mHYaJnRUR-EA@mail.gmail.com> <7b83c51a-1777-45e3-ba38-89e12dc87b5a@vivo.com>
+In-Reply-To: <7b83c51a-1777-45e3-ba38-89e12dc87b5a@vivo.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 11 Aug 2026 09:25:15 -0700
+X-Gm-Features: AUfX_mzI47bUeYRbxULEPIKkxvomzIb9ULG0KeuqcVeIjh2Ci9rlsyg-OZcZv58
+Message-ID: <CAKEwX=N0Ocxa3o7A+F+2_iwEPtyvXzunfNXOsq7UaPEKWSB-gA@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction budget-aware
+To: Xueyuan Chen <xueyuan.chen@vivo.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, Barry Song <baohua@kernel.org>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, xueyuan.chen21@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9491A80011
-X-Rspamd-Server: rspam07
-X-Stat-Signature: nibi3pfnk7r3fg1q595g1713nhtrpsjb
-X-HE-Tag: 1786465465-472622
-X-HE-Meta: U2FsdGVkX18cqwAEYeew+WxTwx3cI/yvjiPC5VboLYZxv4ZnlUw6I4W0lghsxpOqbaajPC9JDwzUFTP6Ujc1Km/3wMgQaUF+0B9viTHD6jkq7m0OL10Nz+BnG/tW9Kr4huqmdgVFsxSx+6kB1/7yVvR9GOJJWCpZfH/oWMJNb+uBq3fZCYo6ZHdOXupy0yXeHceOPjl2eRHUi2IWGizvDjQpojlZthiU4ehDsgWiGUtnuXlvQlOQUBHHsbhuaGDsz//UQsjPDnq29b66fb+TLXPpZ4Zj60rLMxC2wgcZQl1WtytYPJJOqUmfsNYsA3GTV2I9r4+0cUwvN7isuGJsusNY9x+tt9xEnY9trECfMYqbwrIiLTT6ifK/x1WvwSCABMAUWk16AZ3z6LP81jmnbSq7Ven8nMLb0k8JvyIj++oD7qH/RFeBYilbft4C33BBKFlrCLoUWJFyVgI0eysFsBQ6ycMCI0wZegIPAWyPjvPbuW2/VM1Jb1XmuZy7Uxkj2nHkYTV50EAPtQmlj7DM9oEdfvL9X7lRJRbyiIC9pX93LMtjcAY3fO6T4obZwi13C4blh68gklVukt/rg2Lpbk/O5orjRETWbhEZGB5gVA7NSdMrXJWp6GH6IHCNevzV2u1h+UbwBwLQMKquZ75NIurdJGt+KRhrDFxk0DMxiLYS1gQ/t4kh2bHY4gHmtpCinBFEKdcwDYuf8WPNwXM5ZaFDXXJOGdSYaeH5Ps2eLPLbQu0yp1N5wamNsOXGzrePLLp/DyyOkH70jAYNFeleSb8GvQmXCQOrBq+Q3vmuIwc/OIDLxgS6PKFtuAiLESAG5blqDekv0DrmNr6+9Wpez21ncmRn+4mLhRrgzUSlHOKXCcMBhaY6q0D+ZeYUf8JXp+HbrlYbKKw+it9eRZfX7keduhj8725fz1Y6tECfGLRpdL0zhP+aF3pwjQQ3JpwyhE5nDf4dqMIqrp1CKAQ
- HLErRwS1
- nK99eqy2q3LIMV3+cjo66V5mUvSmUwuo27bBwGxcZfolmVZ99mZlUg/rEck0EUXIZwh/RiTnIFgw9AZTClSDB1uSExJV/m4TXf1TOMXfuGnHdG6KA4yPS5zX+tquGh7kki0INpHfU1+mbXczl0ev6by1fAejNPI0icnlq4MLuf5yB5jrw2z9JnIbHveiWLjEDgxdlB4XqETj0MZwoRgP30N55a5hhJSKDwms52FkfVeaj0sSiMCQM86hj4OvYXz3UqARFnxHEHtZH/+nizJeUKH6PJDvgtT45Mi29pixhQTSvjLsf188+D7odlC7RM34WWuTbZsuumjpI+kk=
+X-Stat-Signature: yqn3878mibrreww5jebn945rkjg41p8j
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3925F80002
+X-HE-Tag: 1786465529-540165
+X-HE-Meta: U2FsdGVkX19Am7jHdybF3jZfsSrAxaXxQg8rTXM+AcFj+Y34Z6ue+/huzh42zYht7XtiKiK1xb2RhYq1Q5XQPM6U59DSdgNgnfZDgTx5T5KKjJuX7IsKCi2AK/LPLkULsO6y7BfJlYiBXJspDZnHvZ1dSLeLetxzFkR4peinRjwSQoXb/RfHwVSS2yZkSpnDrVze79qaI+nIMKgyQ2roLmDp3TidV1X7Ri6s/6QVgeARuQ54jwlQ/cxWB1vJBzn6Fyb+psnfgRY1if4Cb6sqgdH/BsWGVaM5Xj3nJn8Fs0uWUnK4O01uypYY8+89Exv6ha55UJ90jGfESBaA1/kTPnLXRa1AHkBfe7WHBrP/U+NQ0/2XABhCQPYu9/NWb8YmWrYQvaFJn8wkqVB4X2z1dI11qxZzWWorwer+XLyzVKWx6c/3fNzuENXYqGTPwfVxybKLIcbk9s8mMzeN2rZJ6MpSuvGIMpVvhyI++LDkvjSa+w6wxJ60krWQoLXxHLlK5JZoKTBG32qXBvWCu84AHnwrrvbArdET13G/AlDSectgHamXXOHxK+xFbYycrI4fydYYvpUDRL3dm/3U3HgZRuPSBSU69Btfl+XIfzIf3zD/eqEfWRU/fVBrbNMFPGTljYy2mkvb4GOxKGxfUZwQlSPVD4232bZ6tswHmcB8AOm4XnMmyuxub0JiVQtMcQlDvwVFJRUuk4xh3ewhjlT6I8ewoDwvSA8zLBksBNRM8cA5vXONNbHtKpbwiUiI01gXQwWxLur+YWsK9gtQjgKYiLpfGFo3rhCu740OPnVyEd8Z+XeP2SU8oEFyGgCewygXLqTDfXXRUnRcnSZtJt4T4gDLWvBBO/ImUgBCRr0lQQxxZpctzegDtgJGozGTvG4yvhjtroS8NLC6WWB+8cF8HbK/gjw90/8H6OQKJEkZykxNUM8Oc8gdBjrOagEvRJU12NmyFP5B7aS2IowisYH
+ nK86sUGe
+ 8H0K/8iHuHWJrt2FBpge7n3c73seA6l0VyHiAbh39FBVPJoq+neyLxUf5tnPbSrPxZm9dkcOKipr4meoAt8M78ZpnTZykKoTvxtrZMD1w7+qibw79X5ha62rIeu7VBxjhF/vW+sE1hGvFekGJwy1nh/mrU/ay+ZLfVy1xWRMtsR6n+VxZSZ/aV9GGxmzLIwUjfhuuxVpscSH3lBj3a9xgS6VPghsbZcBnWhkK8FCrLvUGARhdVoc5SFldW90LTymg9wF0hKbxb5jGMaUR1YuSBKP1Z+tAoYS1bf/UTE05K/Qo5ueY4Z29EiFKHFK1pE/XxUrOAkCz1uGXOG9gxMk6UcuurQgpcTlH0rxyglUz/sqM/c1hxXScoB8C1JTJhH1qzeqQjHxz7C+5YY6w9mvXKioR9uNTelPRBpSDbU01uE3j3QT999VmURZe6XK92As27WVWMULlhftWQOj2wj3cpKuYW9OmT79bg4v2Wi3h938yOuJAaBX0nn4yfdmuPCVWgrJEenYqBgrQUtY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,28 +145,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 04:29:55PM +0100, David Woodhouse wrote:
-> On Tue, 2026-08-11 at 12:24 -0300, Jason Gunthorpe wrote:
-> > It is documented to be like this, even if it is hard to test..
-> 
-> So don't change your documentation :)
-> 
-> > Even for normal blocking notifiers you should not be using
-> > synchronize_rcu().
-> 
-> This is SRCU not RCU, and the read-side sections are converted from
-> rwlocks and never had any allocations inside them anyway.
+On Tue, Aug 11, 2026 at 2:04=E2=80=AFAM Xueyuan Chen <xueyuan.chen@vivo.com=
+> wrote:
+>
+>
+> On 8/8/2026 12:25 AM, Nhat Pham wrote:
+> > On Fri, Aug 7, 2026 at 5:12=E2=80=AFAM Sergey Senozhatsky
+> > <senozhatsky@chromium.org> wrote:
+> >> On (26/08/07 18:57), Xueyuan Chen wrote:
+> >>> Hi Sergey,
+> >>>
+> >>> Here is some additional data:
+> >>>
+> >>> I used the following definitions:
+> >>>    compactable ratio =3D freeable_pages / total_pages
+> >>>    memory reclaimed  =3D pages_freed * PAGE_SIZE
+> >>>
+> >>> freeable_pages is the estimate before compaction, based on the same
+> >>> calculation as zs_shrinker_count(), while pages_freed is the actual
+> >>> number of backing pages released.
+> >>>
+> >>> There were 264 callbacks in the trace:
+> >>>    callback elapsed time:
+> >>>      median:    5.77 ms
+> >>>      p95:      55.82 ms
+> >>>      maximum: 271.36 ms
+> >>>
+> >>>    compactable ratio before compaction:
+> >>>      median:   0.32%
+> >>>      p95:      2.86%
+> >>>      maximum:  8.33%
+> >>>
+> >>>    memory reclaimed per callback:
+> >>>      median:    3.80 MiB
+> >>>      p95:      30.45 MiB
+> >>>      maximum:  92.73 MiB
+> >>>
+> >>> The longest callback took 271.36 ms. Its compactable ratio was 3.25%,
+> >>> and it released 7,650 pages, or about 29.88 MiB.
+> >>>
+> >>> There was also a 241.91 ms callback (with 30 schedule-outs) with a
+> >>> compactable ratio of 0.44%. It released 1,019 pages, or about
+> >>> 3.98 MiB.
+> >>>
+> >>> Based on this data, it seems better to remove the shrinker.
+> >>>
+> >>> Would you prefer that I change v2 to remove the zsmalloc shrinker
+> >>> callbacks directly?
+> >> Let's bring in heavy artillery to this discussion, in addition to Andr=
+ew
+> >> and Minchan, adding Nhat, Yosry, Barry, Johannes, Brian (random order)=
+.
+> >>
+> >> Folks, I'm bullish on removal of zsmalloc shrinker callbacks.
+> >> I don't think those buy us much apart from memcpy-s and lock
+> >> contention.  Systems that want to compact zsmalloc have a sysfs
+> >> knob (and API) to do so (based on zram mm_stat numbers).
+> > Hmm we'd need to collect more data in our workloads to determine, but
+> > if we can compute compactable ratio (freeable_pages / total_pages) on
+> > a per size class basis, can we just skip the size class whose ratio is
+> > too bad? Would that at least cut down on the vast majority of
+> > fruitless memcpys and lock acquisitions etc?
+> >
+> > I'm always a bit hesitant to over-rely on userspace, especially when
+> > kernel has information to do something smart about it. It might not
+> > react in time, and many proactive reclaiming schemes back off under
+> > heavy memory pressure.
+>
+> Hi Nhat,
+>
+> I collected per size-class data. 53.7% of size classes have freeable=3D=
+=3D0,
+> so skipping them saves some time. However, 94.7% of zs_compact() time is
+> spent on classes where freeable > 0 =E2=80=94 meaning the cost is dominat=
+ed by
+> the actual compaction work, not by scanning empty classes.
 
-To be clear you should not be using any synchronize_[s]rcu() primitive
-inside the invalidation callbacks. These are well known to have
-multi-second delays on loaded systems which are a completely
-inappropriate performance characteristic for these mm callbacks.
-
-This statement has nothing to do with deadlock.
-
-RCU is always a trade off, you can make the read side run really fast
-and the write side is ghastly slow. If you can't handle the slow write
-you shouldn't use RCU techniques.
-
-Jason
+What's the distribution of these? Say if I were to skip all size class
+with compactable ratio below 20%, or those where we can free at least
+one full zspage? (IIUC, we only free any memory at all if a zspage got
+freed up from our internal compaction, correct?).
 
