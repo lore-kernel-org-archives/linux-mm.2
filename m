@@ -4,111 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 938C2C5B572
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 17:54:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA4A7C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 17:54:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 927506B00AB; Tue, 11 Aug 2026 13:54:10 -0400 (EDT)
+	id BE6216B00AC; Tue, 11 Aug 2026 13:54:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FEBE6B00AC; Tue, 11 Aug 2026 13:54:10 -0400 (EDT)
+	id BBE6D6B00AD; Tue, 11 Aug 2026 13:54:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8153A6B00AD; Tue, 11 Aug 2026 13:54:10 -0400 (EDT)
+	id AD4196B00AE; Tue, 11 Aug 2026 13:54:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D78B6B00AB
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:54:10 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7D47E16018D
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:54:09 +0000 (UTC)
-X-FDA: 85089737418.08.F71E671
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7ACA26B00AC
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:54:18 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EB40814015E
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:54:17 +0000 (UTC)
+X-FDA: 85089737754.25.B21B24E
 Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7F58C4000D
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:54:07 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm3 header.b=CO0Kje71;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="k oLw6IQ";
-	spf=pass (imf27.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=linux@jaseg.de;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0673512000C
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:54:15 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm3 header.b=U3I428v4;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="N FVSFrF";
+	spf=pass (imf29.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=linux@jaseg.de;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786470847;
-	b=ckxct8gMaFHeNZIKWPXcQEe/ycMmtb3kSMJ99O9YmW28zavhRQoX+Mpr1eMWR033rzZQKR
-	SSsDQCJx5aFzhL+mWmOmtzWn5QW6X7n/EUZefN3mPxXaZuxOWBh6h2y6Vag6G+jIVSpcQi
-	6ktdxjWmi3hP+jczuCbaqKjASGaSIrs=
+	t=1786470856;
+	b=Gf8UFdnvBofHeUoBuBvOM7N41BrXNDwJf4XJ9xvrR4I7CvOzr2OCaTpvyWoTqEqytnm4sJ
+	T2TcVrlyuOMuJa6KJITIVBdxABP40jnPOr8R353nafH4Tn76YjFzERInEobENObL5Gdo+0
+	oOgiBZj6D3ghlJCX3zbh3eXTRc3CY9I=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm3 header.b=CO0Kje71;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="k oLw6IQ";
-	spf=pass (imf27.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=linux@jaseg.de;
+	imf29.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm3 header.b=U3I428v4;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="N FVSFrF";
+	spf=pass (imf29.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=linux@jaseg.de;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786470847;
+	s=arc-20220608; t=1786470856;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZpsnlNCccEzAx1VvGs1BtMr3ZszQOnPZ7Dvx24ZVOoQ=;
-	b=LFk+6LCPzQN4x66dKl8yFCtH8T0EagDKodcvAdVp8v5Ps2xZLwdKwMVth/M3+j/URNtULl
-	kR2OrL+NipJVp7+LELSHD2jHLIlsBFcQ1mlvWGpQGVbkcPATT1TS++9roOoARAu0DAruKO
-	vbbPcWIlMv1pyCKYmmfltUCStjMPdqE=
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.stl.internal (Postfix) with ESMTP id 768401300399;
-	Tue, 11 Aug 2026 13:54:05 -0400 (EDT)
+	bh=FZBYWhL5n7JQ+WX8bMFfUS0qJovxuh7QkbRbWkvh2HQ=;
+	b=0/isQbjbiO/3HxSYjQk9VcYLDd8rqcuZridzkYYkMZ+5gxu3qZB7nbX/7KJdIaMfF7OBU0
+	cwdKXxw49lEit7/pw4+tHbNnvvB1D7xUycN+2OwQhVWSOdx+oQV8f4pb2ZyfkI7tIiXF66
+	H1PfSCuuwVgysAicKRcCSaHatF1UKDo=
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailflow.stl.internal (Postfix) with ESMTP id E7CC4130039C;
+	Tue, 11 Aug 2026 13:54:13 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Tue, 11 Aug 2026 13:54:06 -0400
+  by phl-compute-08.internal (MEProxy); Tue, 11 Aug 2026 13:54:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaseg.de; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1786470845;
-	 x=1786478045; bh=ZpsnlNCccEzAx1VvGs1BtMr3ZszQOnPZ7Dvx24ZVOoQ=; b=
-	CO0Kje71ADHAkCmXbnQAZokL+eSWvgwPZWPHmSNOEOVHrTnQpYRqXb1hqK2Uh/r/
-	Yd3x7VDfQYmeW35C1EDJN1ovLe9G9sdhLEjE0SMuPLGt7/sOh1Wd8prN4/uu6Lqm
-	qha8bFKTOzaB8Xl1n8NkI2GfBXs1RX2UJHbEueS78UVr7xN+39obSLaQs6q0l5Dq
-	EANeKWNx1Q4PWyA8udr9f3AfbbuhlciRtcPB1Z8t3mMBdrnykbUwsqViH6leJRVs
-	PF3UGXQF48IPvFdkDna56xKJyD6BHZwD6coo+eOmMthRuKaA7WeKH/2uHqZpzrYY
-	6UMvpA7pj39GegQSfpmpMQ==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1786470853;
+	 x=1786478053; bh=FZBYWhL5n7JQ+WX8bMFfUS0qJovxuh7QkbRbWkvh2HQ=; b=
+	U3I428v4Xek0tSEHP9VEkmh84J7xFx2TdU9S8LG8Hnyrt9FFLS3afQgWc4pLxMUh
+	oDOB6G5O6t7bhE7LBdDe7Xd9k/LUDmytiRYGMYxaetH4N17pKTtDPgG3q1z6H0a3
+	n4bfRz3VifmOrPkTBoHURT9d88Xjb8ZNs4IcVbOStH++mstZ1HzzikSXnbDdM5AR
+	cmqQjmAR7Ht+lxSsR9pE6KZ0pEOwmVYwt5c9IWgrVHohtRzyTh+Q9pgb+T6Y8ggs
+	vZ56sq37RhJOa3ubp9HuVWHnMzWAeOzxc4Y5zb5Je1U7IWLAxVfnOXNOfayNvO5/
+	gbYudKk97aPgWYyIByBOOQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786470845; x=
-	1786478045; bh=ZpsnlNCccEzAx1VvGs1BtMr3ZszQOnPZ7Dvx24ZVOoQ=; b=k
-	oLw6IQ54IYbzIorzGo/Fm0B2EF48jdeMVhpkER6hAlAzec9z9ubOQ6rRjdPVTFcc
-	MubOaAcsdMKqhJkjfR/utkUOiNg+8gEExZHQMDjQa59TqonNX06lcrgg8XkjpTb4
-	pnacKb6GoWq2VHJU70pbHR2oEK19mZk2PvSoj5X8jk4vD10oej5X/bb6bWaz3eU3
-	YYzcZU9/r753lY6x867A1rWK4WybMP5WuuH9Zoi+DwdxDogx1dBFXyxxTT1hy8/t
-	1ZAeV9pkJoYJ/b5bVN0hfT4BQqAFEklAkju521/YsTD7qA1u50yFPH++xKyGKKCp
-	PH4kIQZwcW7p8gtl1lzEg==
-X-ME-Sender: <xms:vGF7ap-78Cw810gkzWisJUAzuiMpXwBK7ozuqxBLIcNUgARH8MADFg>
-    <xme:vGF7amjL_5OwyUN72qGopD0KVc-DCcP7fvdq_mjaprq89Y6hJuefK8C4h8ZDyG0ja
-    1ssePlZZb0rQDz871exzHBdmC6Dq_lIEhgJDAojuPSFy14xVWIT>
-X-ME-Received: <xmr:vGF7atn4rxipHGchHUmh1LwuQ3ShBMoBsR87w1J2fN-MpT0rYMoCqIa1ap8CFEOM90WFY0lbHShBlJV71bW8rSs>
-X-ME-Proxy-Cause: dmFkZTFz4vgNe8oY8QyUL0mlPqEECv57Qi7HCBIaM0H0fEpf1xbY2+8hZG6UpCbiC57xgk
-    VavagF0YgIkokz9w1ZYP1FsIKkSgwmPUkWwZZopzEj1hsTumYxogfZ8LsE2lIsmrvQrzxe
-    DNsAmjkffjDdnK7Hikwb1PBijPzdc+/pLDsJWa/G9io4Zr2WihJBScLGTtc/AAEph99TK7
-    KMYjrfPBzTMOGahPoGoXnc0LQ7Z6pMXIRNlA+PEZw+HSeBor1z9UME1MTUTi3zab2cdg5l
-    S2ygLFXboS6erW/oqrZ0wC4vZEyPuJEZAHdMIjRfMGBWirnE5Gt0LHQJATpVfpt20aHeVC
-    WVD3qwZKQUbal0U+m98B4JhWUSNaJDclWMKiggs1inMalAO0xRnRH3Oouto/luMbNsCB2k
-    eSSMm2vjcQBKUvPCfA9hEqFDdbvDb3quCu37KQrVNZypjOu6fL7cprPZRqICDDKVtkztFU
-    yrFIasOIyWnuenf8eW7I1Zps/ju1bW9xOHNoW4ln3/bmbFFIXA1cNSJEjke0FYBk7fwY26
-    UXB3NzWKPPR2sQ+sCGiPGl0CFHNyi7yjk0GLrJPi2Yr6boERxx1j+qh0F9fuatJNPph+i3
-    qUZDH/7D50/AxoO6XxEpOgSyBH2Tr99IP5LbQWtXdp+AhwI4U5A+5y275YDg
-X-ME-Proxy: <xmx:vGF7aq1_jyJ3orlciFCUouprVANRIpGlkWCFcyvQc_aJBo0eKcNFOg>
-    <xmx:vGF7an61rf_JljW_69O71GwKPMZx349kMnGhgDw_-ouNaIEVpYCCNQ>
-    <xmx:vGF7aohArxPwGkmaLkAm1gbdwtxkaVYdmXSi-SXyVYuUkiwN-ay-HQ>
-    <xmx:vGF7aglBoOLkcA3og2op4zVMarAqmM_uURQoA1x32QUsN8vPKT9uIw>
-    <xmx:vWF7as3ir_QgDzIGYjVblmX7CRlZmtJIgtJFpPtTacPxRUOwiYwKxR3e>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786470853; x=
+	1786478053; bh=FZBYWhL5n7JQ+WX8bMFfUS0qJovxuh7QkbRbWkvh2HQ=; b=N
+	FVSFrFrsdHDuwX5bmwEFi+vfM4jbvPi1714oBu1Pe04LTQ4ur68y0wRIxq8PvQ/d
+	CK5ZGpzx+b0HGehJPn6zOIyrzHk/fGVB5FsDztbzGbCNFUuW3H0GhsS6WsR3vv6Z
+	BcB+8GzdZv2ZYrvwtzxpKcc6jVQrIpKkmaNznEjvmBPKa6D2QAMF1RqYLeKx/JPO
+	6FXrwSg7EIiA7UuparnXo61bTYDNTFy4zcXHHvvcPINcmkoilfMZj4hVTChqLkl7
+	mtUmU/6kAdq5UxKLWXnh2n2Q/VTAv/mlYQ4g00356aF5Px9u2TMDaBPeEvhaI8Pf
+	/0Wg9vZV7YHTADO1cCo0A==
+X-ME-Sender: <xms:xWF7agcUcHV810dBcwVWO-0wByEQ2xBhPXEwl2NknpB0F6K3NW67Mw>
+    <xme:xWF7arDfhYtv79rmwh-5DfRRdValYWTUL59GVlWFS3q7lnbndGfy1VmkjJRIP-hSF
+    RRPVTRDvknzlGjOPXU8GULe3UyNitYlp7cm-7yjQquxBeX46Yf6>
+X-ME-Received: <xmr:xWF7aoFLXxX4gYoHmQsdhuqDAgVmSvThwlCFyR3Y49qbILa9WSLPXbi_DlaluXse02X_vcyXa9c6ghT327XDOBA>
+X-ME-Proxy-Cause: dmFkZTFqRXkqeRY8YxPaiPG6bKtumQZ44ueOyE0ycsRtkYHYtMPeLw9KqkFTfoymoPXANQ
+    f8xIE59to9muOon1MQaYxt7DdSPzezKDm/5lwbw25fHysrcDraGpHHDQDBxbs7DNakPMfM
+    e6H9gUHyYw6Jnjx4Hrnr8P0aqcdlkP/OQCvkpK5i8nwVpDOUjiFIrGc2aHzhOHJwaTCmvE
+    SohzxPZY/BMExH4tATsvbW62+v/yi0C/jL+BZWLe9AwElVYGEpH8rm9jM3a5qxQfAZo+/L
+    Re7VHgx53z5HSeOGiZCoxmlFJwvoInomet06PrQYp2gmHd77fq1CpUHnH937B47mzUIvku
+    yUh4mUkbwyIu2ja7cJVK9b5XTWYB3dNvbtYJydefJ79hiiQApVeOYD7m1nli1tUKbs9WrY
+    rf6TqxumbHWQJhS9dRF7SycnMHQ6BSeUFwSC0Jc9Hnz+CpcUylmf2b4TB1iS15234kpK4m
+    awbwTHUT4h4bvy2Idl4MLcnpcyjQdT8Ab8gCmErQCN0e7s7wL39Q0j7anatprW32BrU2u5
+    COL6aNgtIPHavUk6F00gHusdEiFqlhHp0D1PYqraDFPTljJ+i0kxTOlnCQbqK1AkW0Osfk
+    J/vfxzuBWvaQmujMPvnwYblwydfhIlNC7DKYrx/NLuL6fNaINYhWN84Nk/Lg
+X-ME-Proxy: <xmx:xWF7ajWhWCACvP5bO-pmqXmBAmRXeF-U0U3przamkrmnRLj8AOCsvw>
+    <xmx:xWF7amYs0Zv_2aczeJOHicvIVvmoAn3YVBhfzpngMyYgZFoGtUyl7g>
+    <xmx:xWF7alBRfTlpL7kuASpGVnPd6eHEPUmnsKJ6PY5hfTOJ2mj8Lqkvgw>
+    <xmx:xWF7ajEW0QbI9MLp3s-6tY5Kr01DqRBB2uSkRGUl_9OjEvosCg4t9A>
+    <xmx:xWF7ag0IsNk0BBs9Q4B2iViJjlp5tI2fmcCO7rByHXbNsuc466shgXK0>
 Feedback-ID: i60a14417:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 11 Aug 2026 13:53:58 -0400 (EDT)
+ 11 Aug 2026 13:54:07 -0400 (EDT)
 From: =?utf-8?q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>
-Date: Tue, 11 Aug 2026 19:52:56 +0200
-Subject: [PATCH v2 07/13] security/keys: implement wipe op for big_key
+Date: Tue, 11 Aug 2026 19:52:57 +0200
+Subject: [PATCH v2 08/13] security/keys: implement wipe op for trusted and
+ encrypted keys
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260811-crash-zeroize-rework-v2-7-9561d13c2340@jaseg.de>
+Message-Id: <20260811-crash-zeroize-rework-v2-8-9561d13c2340@jaseg.de>
 References: <20260811-crash-zeroize-rework-v2-0-9561d13c2340@jaseg.de>
 In-Reply-To: <20260811-crash-zeroize-rework-v2-0-9561d13c2340@jaseg.de>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -150,14 +151,14 @@ Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-fsdevel@vger.kernel.org, dm-devel@lists.linux.dev, 
  =?utf-8?q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>
 X-Mailer: b4 0.15.2
-X-Rspamd-Queue-Id: 7F58C4000D
+X-Rspamd-Queue-Id: 0673512000C
 X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: i1hs3si1u46huw1rf7s6ggy1gkad1i3m
-X-HE-Tag: 1786470847-483100
-X-HE-Meta: U2FsdGVkX19ELNUhawRnKJs63Q9Vn0VewWLfGlt+Hsvk8XbY02x1OqXbo10wXD0IQh4mFsJPKQ/vpFBbkwKBVGQJBxeN1Ck12/fC0rDwjoxpfp29yhZqyxMLYoZJOSnaPVzzhiMHK5y0qGm0c2p5hbPl1m2pA5tONUep/LObNkOcQ1RxTsOX4Q1WWWnygTMu9rbPO7d5Xl8MNU8wZdn06r7302udSc6odEAVyl1zU60NXnsgsGb3LMFuVyCtiGROjq/q4mjBXBKhwgtp5UKLm27lyiqKXII+NP3YjwDQUpJmM0w6nXVn7JuWw+um1d5bajuZfSs9Ak/0XuVRaCmXRD8EBWDkw/uzOe6HTust3tfxwGU+TeAfO1Mc8a3T8LERKH+T2kD1604Nmc7oOOxD3vAqif1K0ARVCcGmUW4wjtpzNYsHMMedPyo92+fyvjpqXsFqzw6ZVFstf6gUaPhB8cx6/E9wbovS1Ex6FCJ/i5/lH1pgY32+w6a4mcA0DPjDn1HqbRdbSV3VD8vFYO787UZGobMGXgxZN1n9PWDmGwTXXff1poVkJE/KBv8l4D1khG2iBGPvHhwFky5tTikqggTFcqnGl3jw/9Z93C7m4EVKHfIRaATdFGJMNzio+YdYXk/MacFCUeBaecTfoUqUV6l5dmn7QURRSTzbu/BaNAbrpmt1rPvCSdCZ2HXCXaJKRiqMtlbZBhI/was6F4lYdKgtMDZ6ciipIfWjmzc2aVdZvSLsmg4OO0sktwa6W/+hAP1jXB8Q0m/9Nft+kx5Ob4W3Zsa15zzSgOQM4J2aANGN1YXPuiK/9JZhLinRzYEPM1F1JgLcMg9JEmic34ZOB68mEg0E8c1C0pQ7G4IqsDsp0QMyVmz5QTFHwZbQAJs87BuxTHA+c8nStNOAp238hQ5IRHSZjYvusY75VfhxeXMFygnzX0X57NVokIvXFaeWnQripduJnKwe12hsKTj
- J0PcJdLk
- sAaEEYkWd27ktxWk2RNBRzzf5kHQSJ0JkQXeE8aRuiMA0CIpmLWiGTK77D/QKES8vX98pEIu7HUzBaDsIY44o4P6So3YxSC4+E6lflnGDa2gw3faqG6vaW9YED2P0Qw7j7Sfba9sDPch6akZnlXKQwEzcz/qvhAlC3pgcWDTYlAbYF7o17aAVkSP6pol+b3L7krtnr35AzF+K5ZcGBn0QzErpmu4oV6rza9oC3LCCQNx0aUJJ9k32pMhSjdUXosqYRolWAW2+N7n8Q7DD1SZLAlpO9Q4IFLjB36QnDU4tj8gGT9fkFmhQfU2Fg1evonzcA+svNTrExNjBG9YdG9mMS4Uja36cK1EBIwH+z4ol0JDLJ1XA2JfS8wQ6KecSgnOeFTXgS6GWdC5XyWhxCHQImS9FSLCez10KuYAdsdRhSNcH84oGuJo5+rikd9SDB5LmTzZNeYKKlpulXS42D3tQvPAyaw==
+X-Stat-Signature: kyccynf3skbcdcwfmny6dsju8e5q5c89
+X-HE-Tag: 1786470855-692624
+X-HE-Meta: U2FsdGVkX186gSKxrgv4Uiu4mhRDI7aRYm1FtgSKqJnzSrc1dD1NuEqiIRIIDuWrhsOihC5pl8SCrrEAf8pSO+7m9nAuZdNYl/U0BztMCTjZ834RJ948VPN+bQnEftmc5tuAf90+bNDK9VdpWQhFlKuglRMfVRQ7WNs0JeW/JaX+/mRHcPmDdceY60hT0ynGZ3h8sTKeAiL6Bpmh5WQ6mDIiKXJZkBkHmiGbXERSQobeLMP8Jqf5J8eicYAm4L7he6uP0/hgGHKEoCLRMZ2LjaeCCs7Em1TUgpkzuszjUslsuz72/gd1OtM6kprYxGF4m3vZHnQgh7UspEWQkAlBf2edttOskpcfd3Yo0j30YhSkMhyoW6U7qCkCBTFmTCF63oShZfVL78weXG9/LcnU0j3FUQv9rdHGA0ZU4UcY4y34BLAS76RtlpsieBxd+pQpqIqwibivEUVYaL2ZFRH13BLegKDUHHIpdlDLGJRtSOxCuY5MJN4qvedXsv5NEtCyVI7GK1Ooc5bwh84Ewt+0ThW+YdE8iXgAwUNTrnKq+Ogyd0h7PLCemrDgNML0oYqlGoctCET2izOP/48/KYkJbcAjnn1XcpLWUfY+Sxzn9Fr7pa8wE4E8W2995A1Lsg2rmYMKLHJvc8nTBAuX8JpUTYqGtSwZiRtcTIT0zcklMRWqaoaOheeakNf1gULT0y4RKvErDJD5lcLG9wpadV3znBjwXBJ0DsHv1f5HRPUCMf9TZGE3vDP3l8AScW2etiuWa2ULjtEH6r6cwPR7ma+xe0SyM8RaOP1fPt5Vb9dOjB4ZXuIzihLew1cIrRU0+2vlZhRGswFm7r1ZUs45t/QwxZ1nWjdbM5VdzJhvs0kMAme/6TvJcZYkQB2//p2++8cwy+nPpYqnA4wesSu6ot6Znw8y8iitxmMH6Cx/OdrmR7YF4ufAypfaNkMoLmL0t0mNNxlGhGX/oAi4COgM3Tf
+ XZAtuqqv
+ QFx8w9mnMUQBwgUtuZP052gyPEyo5fqKMLTcEMR2UqHhpGv+K29IjabYqvyxonmtvmCMXRHpZoHEjJ12xj534HdmlVebwWkWgOt2j6wbhot8GDg1xGO/2IufP0TFKAYe3kk8UXlUuhV/gbekPb2n14RFucddktG+aCT5aq9uPuQX6zv6AomHVsUOOJhxSqaXHd11pVmTZnT9rNaxlLYSZqMwIIAWZxo3OE2wuPRImfZ1dTPPKj1OmOQ4atbDoeyX5ckHNyYVNpFDZROneA1f/2UwTET45hobK/sMDG37EdCIBzu3EcGStA0hB7dn7fdx6KluGHOQqFv6LgYKm+JQsJcy3d4Q/XEwBISNXd4H6jJq4YCDXM8LBqAnq7Wglu4F8ZVQB6Uf0qJUJHNCPktev/3FGC+P2WINNZF67YY/gV1n3IBk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,65 +166,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For keys stored in shmem only the ChaCha20-Poly1305 key is reachable here,
-so wiping it is enough to render the payload unreadable.
+Wipe the decrypted key material and the sealed blob held in the payload.
 
 Used by CONFIG_CRASH_WIPE_SECRETS.
 
 Signed-off-by: Jan Sebastian Götte <linux@jaseg.de>
 ---
- security/keys/big_key.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ security/keys/encrypted-keys/encrypted.c  | 13 +++++++++++++
+ security/keys/trusted-keys/trusted_core.c | 15 +++++++++++++++
+ 2 files changed, 28 insertions(+)
 
-diff --git a/security/keys/big_key.c b/security/keys/big_key.c
-index 268f702df380..c01a212bec90 100644
---- a/security/keys/big_key.c
-+++ b/security/keys/big_key.c
-@@ -8,6 +8,7 @@
- 
- #define pr_fmt(fmt) "big_key: "fmt
- #include <linux/init.h>
-+#include <linux/crash_core.h>
- #include <linux/seq_file.h>
- #include <linux/file.h>
- #include <linux/shmem_fs.h>
-@@ -35,6 +36,8 @@ struct big_key_payload {
+diff --git a/security/keys/encrypted-keys/encrypted.c b/security/keys/encrypted-keys/encrypted.c
+index 59cb77b237b3..9d6fe08ecb7a 100644
+--- a/security/keys/encrypted-keys/encrypted.c
++++ b/security/keys/encrypted-keys/encrypted.c
+@@ -12,6 +12,7 @@
   */
- #define BIG_KEY_FILE_THRESHOLD (sizeof(struct inode) + sizeof(struct dentry))
  
-+static void big_key_wipe(struct key *key);
-+
- /*
-  * big_key defined keys take an arbitrary string as the description and an
-  * arbitrary blob of data as the payload
-@@ -46,6 +49,7 @@ struct key_type key_type_big_key = {
- 	.instantiate		= generic_key_instantiate,
- 	.revoke			= big_key_revoke,
- 	.destroy		= big_key_destroy,
-+	.wipe			= big_key_wipe,
- 	.describe		= big_key_describe,
- 	.read			= big_key_read,
- 	.update			= big_key_update,
-@@ -279,6 +283,19 @@ long big_key_read(const struct key *key, char *buffer, size_t buflen)
- 	return ret;
+ #include <linux/uaccess.h>
++#include <linux/crash_core.h>
+ #include <linux/module.h>
+ #include <linux/hex.h>
+ #include <linux/init.h>
+@@ -970,11 +971,23 @@ static void encrypted_destroy(struct key *key)
+ 	kfree_sensitive(key->payload.data[0]);
  }
  
-+static void big_key_wipe(struct key *key)
++static void encrypted_wipe(struct key *key)
 +{
-+	struct big_key_payload *payload = to_big_key_payload(key->payload);
++	struct encrypted_key_payload *epayload = key->payload.data[0];
 +
-+	if (payload->data) {
-+		if (payload->length > BIG_KEY_FILE_THRESHOLD)
-+			crash_wipe_memzero(payload->data,
-+					   CHACHA20POLY1305_KEY_SIZE);
-+		else
-+			crash_wipe_memzero(payload->data, payload->length);
-+	}
++	if (!epayload)
++		return;
++
++	crash_wipe_memzero(epayload->payload_data,
++			   epayload->payload_datalen + epayload->datablob_len);
 +}
 +
- /*
-  * Register key type
-  */
+ struct key_type key_type_encrypted = {
+ 	.name = "encrypted",
+ 	.instantiate = encrypted_instantiate,
+ 	.update = encrypted_update,
+ 	.destroy = encrypted_destroy,
++	.wipe = encrypted_wipe,
+ 	.describe = user_describe,
+ 	.read = encrypted_read,
+ };
+diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
+index 0509d9955f2a..7b220c6381b5 100644
+--- a/security/keys/trusted-keys/trusted_core.c
++++ b/security/keys/trusted-keys/trusted_core.c
+@@ -14,6 +14,7 @@
+ #include <keys/trusted_tpm.h>
+ #include <keys/trusted_pkwm.h>
+ #include <linux/capability.h>
++#include <linux/crash_core.h>
+ #include <linux/err.h>
+ #include <linux/hex.h>
+ #include <linux/init.h>
+@@ -325,11 +326,25 @@ static void trusted_destroy(struct key *key)
+ 	kfree_sensitive(key->payload.data[0]);
+ }
+ 
++static void trusted_wipe(struct key *key)
++{
++	struct trusted_key_payload *p = key->payload.data[0];
++
++	if (!p)
++		return;
++
++	crash_wipe_memzero(p->key, sizeof(p->key));
++	crash_wipe_memzero(p->blob, sizeof(p->blob));
++	p->key_len = 0;
++	p->blob_len = 0;
++}
++
+ struct key_type key_type_trusted = {
+ 	.name = "trusted",
+ 	.instantiate = trusted_instantiate,
+ 	.update = trusted_update,
+ 	.destroy = trusted_destroy,
++	.wipe = trusted_wipe,
+ 	.describe = user_describe,
+ 	.read = trusted_read,
+ };
 
 -- 
 2.53.0
