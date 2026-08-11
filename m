@@ -4,138 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54B9AC5AD7B
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 02:31:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A86E1C5AD55
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 02:49:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1E7A6B007B; Mon, 10 Aug 2026 22:31:40 -0400 (EDT)
+	id 69B9A6B007B; Mon, 10 Aug 2026 22:49:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCEF36B008A; Mon, 10 Aug 2026 22:31:40 -0400 (EDT)
+	id 64C046B008A; Mon, 10 Aug 2026 22:49:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBE016B0092; Mon, 10 Aug 2026 22:31:40 -0400 (EDT)
+	id 53B8D6B008C; Mon, 10 Aug 2026 22:49:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 922AE6B007B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 22:31:40 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7132B16032B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 02:31:38 +0000 (UTC)
-X-FDA: 85087412676.06.0F01FCB
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A73B340006
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 02:31:35 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=UrsBdXiZ;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf17.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.161.42 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786415496;
+	by kanga.kvack.org (Postfix) with ESMTP id 228456B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 22:49:02 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A67C01C0BF0
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 02:48:56 +0000 (UTC)
+X-FDA: 85087456272.07.B86772E
+Received: from out-181.mta1.migadu.com (mta1.migadu.com [37.59.57.117])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4BCDCC0009
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 02:48:54 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZQSuEH8O;
+	spf=pass (imf22.hostedemail.com: domain of muchun.song@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786416535;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JgxUsn6bXXlTXTzE9w1hjUQJ+4UQHLS+g00NWeF1hYk=;
-	b=xAbkgN/nfUq0I3bLcPGesDa/Hg2hdw4sbgELTzElWWn0kaJ84SQcNfWndss6Leex9mmRPF
-	OP0QoBja3BGANMNa+M0LHqC8S5KE+wvGIB+0Nz3izYY8NkKnfj4VlYStar7OfNaD8Oo6S7
-	V2z2pS//LY5oUmywIZBM4YDZ1cOVZs8=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=UrsBdXiZ;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf17.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.161.42 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786415496;
-	b=k6ipjI6NXc71DZ4hXIH5DUmnPTQOD1VeEoDCxG3sc2BZOoujE+EgSPpd74PS2UjzsOPpXY
-	G/O5aCQuuDKU3ONWkw7jZL/oVku9+qrIkE0EISImA/4i2Lao/f4SwO7Zl11Ba3wngbwMDY
-	WPBlCOsKLkCzXnJoa33K5qB8D+KPIdc=
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-6acc74fee76so1137549eaf.3
-        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 19:31:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786415494; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ldn2KWKn9f7dtigAAE4Z8CZ0U1VaPJ+HKUY6Q+qOBCP+rAPEDxGuqGgsvm1/SCo5ci
-         XIMYJIGjVW8mY8lDtPSpVz7PrHtSpWIUhOyl/sCUSXoX6A6NmfxbHsaKq6mU5RNiIXpj
-         pf0jqU4OloxrcixwmKSa7+QSHafAM7d9+TfrU4dNJdAgIg9javuebGeuxpbl64EJQsew
-         vGa4bcZk/n9H/moefekRzrHvwB/E/moKnK1NEu4O8b1e0LuTZ+G5g2Z9prFhcXhftpBW
-         vhZ2EpHqo10zSQ/dLqZcSytfxFPIumYTRy32/R5X2S733JzGcgOc5MPHbhqILQSob3ZO
-         pUwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=JgxUsn6bXXlTXTzE9w1hjUQJ+4UQHLS+g00NWeF1hYk=;
-        fh=ddRjLPxiKB6keWZvGbeTpy6MLDp/U/F4/HgPEVsz+XY=;
-        b=kxIKkuRTZfb2+BRBS25MCsC3Y+RW49SMy8GLak1phgOngUlB1NjiifTuUyRSPfAxjD
-         U+JkKZ8SmTGhMPTiBr3wWBoK449W8Pl/nQiyvIZXijaJfx45VlopFEitf86QX0jGyXxO
-         RdQ/ezDEzmbsYqe0vVPtPeFlQyEsABPTam0p4/S7BAyDFAxjeTNhPJ19paZR88iLtfbZ
-         sft1cA7EF2U+TBcMpmnGvVo++h0sSvwwgFsYsKliTXYlTOVUn/ArHzTnb6iuvjB4OlXd
-         15M4XjzCBXGrbNQ6GcDscZyRtKuvs6kVLUpL8fou4j9MBvzP0D19Pwx/qcIUazEATSq3
-         H9vw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1786415494; x=1787020294; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=JgxUsn6bXXlTXTzE9w1hjUQJ+4UQHLS+g00NWeF1hYk=;
-        b=UrsBdXiZ2fZNOkiUk1qTN2GEIJsfKBH7OB8GB1kUBoucREP+gba/KrniN3LQip1Ths
-         0bHWRt6V5niTTuB0YLbtooIT1DkRwzjBz5QVsXmk2O/dX0SVhmOwiNHWtSe2XDaOyT74
-         g1fMZ5H0K93aVExEmRVAfgGbCWD/9isf89kDZkfvz1Md5Nc6QFoJNZCMzFqp9jrFsexe
-         xis8iwfwhYKwtUW4LJL1jAFCIEQlbN6SGuvDDsxnwjPrFP8DCEkZrqadEp0zbuLFlbpU
-         XVN4bLBjVe1yrU+orr/YIXCBJZrKTx631W24O/lMpEPzI8azlBH1PChVROsuC+bjRMXo
-         SKQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786415494; x=1787020294;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JgxUsn6bXXlTXTzE9w1hjUQJ+4UQHLS+g00NWeF1hYk=;
-        b=n6Z0XUqXyTUxGZYjH9k4H+qEUmWeymytenEUDmjDyYSu+OJc+33/qqkU/tHV/zxBet
-         WGZisujeydYjYHiAECBRB4ZWskcarVuUY/BCJtiZXXUlA1MGm94bZkk+F7VAiytnHkYi
-         wka/J6tVC3glYRR7t3oyECXCcxb1rDY0IbbT26ZwCeL98K/I+Zg1CWMvs9iE5knsGhKC
-         aNYBib+7TDbi1K0JlZcTUSH9aQlDiT70O95eC0mk20AR74LWYqXSuukcBBia9AYdsDDC
-         b3Tv2B15sSjkCDpwbY5O9i5Mjb9RpUlioFledVdVgCznMn9OcG8n5YfK3AHC5RElgImn
-         +9aQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpzAFbpJHtCBVOYo0Ip7Es7OGBbgI9ZV1aCwLjee4B3LAYFnGTlgoLvlfp9Wh5gRJhD1qnrmSl1LA==@kvack.org
-X-Gm-Message-State: AOJu0YwxNEqXWiaGryNGBPu4COlFeeuzkPZFGBXdQJZgdA/iIA2JtRSc
-	5+FpqaHZ5ib+f+0hRZ+vjDyfyjS4smG8S65jmcxNoVNOPue9o1UoRKZUETMBKcuc3nJYgTKWBE1
-	gOhB34v2nsRO9KRoW1KvOqjikW50M58rGbi0MlaONig==
-X-Gm-Gg: AR+sD138t2joAJeoTFJ/KSbp7aDqV0p9bmoKAkq7E95GsVIUBcfjA6jmwBR0RaY3jnM
-	ZJhZuQ1SbVGLZGNWjHjoSGg6CdAFggXURT6FsC/IrQ1jMvFLg7HLbXMS/IFcw7tcCv5ViPOFxi1
-	Zi/SgqxlVPGzRID12aQeCTiz8xhz+4DF0FnR05RJL1WyQAuHmnZrzmX45y75oaN5VdTpfWv1RYE
-	HITIRexRJVPFS3y25b+6AY6ygoj9T+G4bpL7bPLqPgk36cHFA6z0XGERUC9Klyoj/BYC0H0FEe3
-	OyIU0CEKFBIrlzdG1L/aWjQeO7kmSVY3U6lov6Nj8KNuMF8=
-X-Received: by 2002:a4a:e911:0:b0:6ab:f90:1da6 with SMTP id
- 006d021491bc7-6b041eb0f97mr13666641eaf.2.1786415494199; Mon, 10 Aug 2026
- 19:31:34 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260806055501.56761-1-cuiyunhui@bytedance.com>
- <anQyoZgi5Urnvvjw@lucifer> <919b804b-6f1d-417e-9c0c-d06f50d765d8@kernel.org>
- <anSar_i8UjniSbML@lucifer> <a6a9e0cc-e6cf-4f83-b6be-7d64058b8fa6@kernel.org> <anSqbW1w2bDDHpAx@lucifer>
-In-Reply-To: <anSqbW1w2bDDHpAx@lucifer>
-From: yunhui cui <cuiyunhui@bytedance.com>
-Date: Tue, 11 Aug 2026 10:31:21 +0800
-X-Gm-Features: AUfX_mwbnD7l5DBw46pgAlHGrER4CbOSHy1IXkZ3P9w15OLF8_3zuFbcxsU8T3Q
-Message-ID: <CAEEQ3wmJoUF5TDQDfMU_dUHnY+gg7MYG=OmmdB3Ynpdu9gJ7-g@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v2] mm/madvise: avoid skipping pages after
- splitting large folios
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org, liam@infradead.org, 
-	vbabka@kernel.org, jannh@google.com, 00moses.alexander00@gmail.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+	bh=ZhHjo3aIwixazs38WpONPdhAQWYBalHyX4mnm9h4mLg=;
+	b=dwOe/eWD4SZGL7ToKXljxdws82n1JCbb6KJw/x9yr7vx94k2J7i67hk7ZPC9OJIAEgoz7u
+	UKaDkjGbfq55LrbWgfTp6J5IUnOYTSZmGdZXdA42IM69yQqZM1W2GP+tqR0AM8IPQ4DGCV
+	dJT3UT1IiFNbb3Q8BCnqI4q9phk4CVc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786416535;
+	b=g7bdKpd5UXysgviNDHe6VhFVJ957UhVMs+sf+AUqefatwRqc0d5p2/QJZ3gA8NlbLu8ulU
+	B0Ig6UUwLhsOkkMG1DaqIQV9y05+orkrlab4huBZ5h4zpyOFdjXRnocyIGBIbqmHfWMOqL
+	N6R83H6wReBky5d3k36HsRvtzlTXRWg=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZQSuEH8O;
+	spf=pass (imf22.hostedemail.com: domain of muchun.song@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786416532;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZhHjo3aIwixazs38WpONPdhAQWYBalHyX4mnm9h4mLg=;
+	b=ZQSuEH8OMzSl9+vo5G7FZYxMvdPLWoizh5Q/APLwfiqTR//gsSmDE/j2IwSnqSHtQxh5G7
+	g4/LuySrHj6GvQMxJaE4+ccI+7lVXUwdTNkXhGf5l5oV/vKbm9/QPLYo32tn2bTW/JNJm9
+	tXqq547o0NdEvY14OFAEZtWOkbBNnK8=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH v6] mm/hugetlb_cma: Fix null nodemask dereference in
+ hugetlb_cma_alloc_frozen_folio
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260810230844.3778931-1-souravpanda@google.com>
+Date: Tue, 11 Aug 2026 10:48:31 +0800
+Cc: osalvador@suse.de,
+ akpm@linux-foundation.org,
+ usama.arif@linux.dev,
+ shakeel.butt@linux.dev,
+ wangkefeng.wang@huawei.com,
+ anshuman.khandual@arm.com,
+ david@kernel.org,
+ surenb@google.com,
+ fvdl@google.com,
+ gthelen@google.com,
+ hannes@cmpxchg.org,
+ riel@surriel.com,
+ sj@kernel.org,
+ vbabka@suse.cz,
+ mhocko@suse.com,
+ bjackman@google.com,
+ zi.yan@sent.com,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <15EAC670-AA9F-4361-985C-F8ED2C322CF9@linux.dev>
+References: <20260810230844.3778931-1-souravpanda@google.com>
+To: Sourav Panda <souravpanda@google.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 4BCDCC0009
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: hjsqcteuoratw46nfk81nxf176sa7xuw
-X-Rspamd-Queue-Id: A73B340006
-X-HE-Tag: 1786415495-109356
-X-HE-Meta: U2FsdGVkX1/FaouF7HFygDuSwbpc/QKSGSiQkZ3I5SGLOc8p6gvGWPswlxgKKNfJu3ZjXZdHi60DMzyNXXkSCX6FuWzki/ZdlgJIGZ/cAltnzt6yxjWC3mWL3xr2V5OaoJcEUB/uD/D+laxDzmjDCUD+xaDjEeB3j7uWuJbeEmXO8nmSoL1gj5V/4G0+h+CBdbdXKIOZaBNPIB92pRy/tjKOKMdQjR5s9RPIq+WEs3ImSD1pYp7NT38tQTMP0rG+/oKxTiSdyX55WzJ2bKUQlkvZSh7v0c9afg162mzjqymFuFOUfhDKkZmrwTWI4+86mns+cufEKIb++w6OYzs6KeLByEe3/kQtGj0K3dg8Lnb2Hl1GAODMC9aoH6egVvGAIKbSxj61BAEbEGzc/rDI2IjFay8d2oNqXcrnbJM8zpYXXrHz8o2n6ECh9yBBT84qzcE+MSrEggqQRWHEWFGX/wAflCnIUXw4T61IbJ7+n3V+hGjy5HDnvQOrcPGX7ugzAAMtVinMLgoFBHWjaiVtpQQHjTgbJlTQ1C8TlI/Nju5f/t5NPVbVzvp1J9B1XCCHXeX9SNbEadUoC48dLeW3SNeOOt7/f1T+hZZR8ZobS74K9hHDbfKzZZStJ+Qi7w6CSUF3PkOFXL3I272CephFuk3Mg4pC91XKGdI4OaHOXhDBBnenk8inw6VqobaK4UdF5uEkAxC1DdnTdf0Gn2UxCkAxscNX/mpbUdFpy+8nD418z8miHUh2w4e9vpLIrvEDn/4PLzVyKwC34gKn6HESzYEvVixpIkDpEQcS6hBD3tR4SX8FKJfCPo4J1oBUXPVOwfuyvJORbg6146Ytzwjk9rWUQvbLQTPV85CWQvym29HzAjdirz+mT89Cg1e6kTUEC1N7V+cgD20E8wF3mZLUnx1pKT+UBCbZSJg1MnzvEu2DiU1OGfnreRRxzmmKiQtBECypLFs8GNN5l405+M0
- nMxev5xa
- RcYO7oA5OXHxZvPgMNlYnWuZsLKoVbrjg1WkAC+YGgtaOuVxWOaEz4Ijy19VUl846W9EVt5aOn/LmonG5ZFj5Q+gXZkM07jXERRlh5PuJXq2rt3cIi5XtdwedlegX7pheA8xGWmzjzd1UIBcC0SS463+XPUtOsxwhgeXTbMM/TJIfT/r8eq4YHp4K4WQc6Q20RsBHMDifr8VhNALyiKp4KXeFFAEqoT/rL5TQ+n8OXI293BdNbQbM3Nf6dQR5RdsHtthLUq8jvUQXP7hsZhFxDwfdFlxF4MlgY8MJDsDAQx+UDrF43q+Hipl6Hz2eknK6EK3666k1Xo6decyqMIZ3UPPFzaKq64l9o0YL
+X-Stat-Signature: p6bjjwis843qce5azjufqhpsmj4ac5oh
+X-HE-Tag: 1786416534-659389
+X-HE-Meta: U2FsdGVkX19Wvs7fShHln24ayfo9MCOAS73c/lH5VTGCzpcyHxFdlVBEKP6RiAW586r6+utkuhQ8eO5JEo6sm5M1jdaf5M1c5tilG3A5lAv3hflCpKiQUmvd0mbmqmfDooAmg+e3TApb66FEAoDlrNjAxzazujN7cxwwQwFH1YyKVxxkO9DjaG3aFRKUzKxE1JJUpa65XWpVvhHVlAX/NrDT1WPDJpz+T8liksF89SqUE/4lGbFslzEAQQW3UFln2t9XYEiizDJP/50eN+t6ZYUz2wKv57M10klADplcwJ60bAE+L4ocO0/3WA3tPesnm7bAJjRoqoOXaQB3F3S5d/w/7/MAi4K7AJ4NmLV/eMHHwWrPRMcAbiL7cvuTX7qu79pFlLuX+NmVz18W7TN8bnyO229RzluzR75LW2sNG7Hqj/z+9dz0Bn/wjqDSH70dQe9xdyCWZxOA0a7gR8cLt2s73c278T8RLnvb/KRkxAKlufAXeCLGAKD2Jp7CKRFwb5RE0vfN+m7gTbnkmKEj6jAkf2dwIqgcExc3GXyDheqXbJjlo1Tpc8K64S7CM5h51lDNBJKveArMvfrDdi/sJVBGjJvCF4TPlF/SKbsZ3gsBnld4xDmVbQiTGD4qfCAwsbF60e1zpQ2GWiqCxsijwcwy11g8uCuLM5ZMiAXYmE9yQ/Ye8FV+6mMNZepPcn6Is024aOTH4pvZagI016gZgyOKXH4USw9zxF017Mv+eGXvlBxqhm90O3PgDIDDwB4KNkdmzSxbUQBlkAZRDcmGtqVKYydCmUEhvfYCmostYkTjQZ4iDBJBXvp0tOdfB5Gagpu9anpjp5KBwowqmavQuxT585gEbIClPi0h9fL8l4HTbUr5nU7ThzZB43BoGjXDuoTl4Y09edcU9K2w2BQ58tSiT034/6ziqjyMcE6IiXihixEHPZeTpsB/rzgTxDewN4ekmzWRFhf3rekwd0v
+ XAPoUkGn
+ TJ2aqFF4gphbC0ZrGiXbvRk3Xjz1ZciL1GoyLsBM10es9o3MVAUfvEn6HKWf34p2jt+LBLaZc/sg/Q4BStb4F8tBq5k62A4N+8LiZTm6Qw+5LRXlV7/HaxNwqK5/N2qUlbvGInZfGnOYjhonx+REs69hFDc/LQIIugJppsgurg7aD8VtngZHkSTPXPGykdAgDDiYWrGyqgkO4RNqP2xgVDVlOLLMZ4WqlDOcz9H92uWiIennKt4J6s5fvAQCDNLFnglXV7ZXeTyv867574jY+ARsyhIxBmKO8DUpZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,176 +107,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew, David, Lorenzo,
 
-On Thu, Aug 6, 2026 at 11:40=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.o=
-rg> wrote:
->
-> On Thu, Aug 06, 2026 at 04:46:10PM +0200, David Hildenbrand (Arm) wrote:
-> > On 8/6/26 16:34, Lorenzo Stoakes (ARM) wrote:
-> > > On Thu, Aug 06, 2026 at 01:35:30PM +0200, David Hildenbrand (Arm) wro=
-te:
-> > >>>
-> > >>> Let's at least split out the folio check into a helper to make thin=
-gs
-> > >>> clearer:
-> > >>>
-> > >>> static bool poison_splits_folio(const struct folio *folio)
-> > >>> {
-> > >>>   /* Hugetlb is, as always, a world unto itself. */
-> > >>>   if (folio_test_hugetlb(folio))
-> > >>>           return false;
-> > >>>   /* Soft-offline errors out, hwpoison traverse DAX intact. */
-> > >>>   if (folio_is_zone_device(folio))
-> > >>>           return false;
-> > >>>   return true;
-> > >>> }
-> > >>>
-> > >>> Then for your patch:
-> > >>>
-> > >>> -         size =3D PAGE_SIZE;
-> > >>> -         if (folio_test_hugetlb(folio) || folio_is_zone_device(fol=
-io))
-> > >>> -                 size =3D folio_size(folio);
-> > >>> +         size =3D poison_splits_folio(folio) ? PAGE_SIZE : folio_s=
-ize(folio);
-> > >>>
-> > >>> I tried writing something that was neater and nicer but AI kept poi=
-nting
-> > >>> out how it was totally broken and I really really hate this code (n=
-ot your
-> > >>> fault :).
-> > >>
-> > >> No, I don't think any such special casing on folios is the right way=
- to handle it.
-> > >
-> > > I mean the issue here is the stride varies depending on whether the t=
-hing is
-> > > hugetlb or not (and some weird DAX thing), and the poisoning causes a=
- split
-> > > otherwise so if you want to poison a range you have to account for th=
-at.
-> >
-> > We GUP'ed a single page and now try to be smart about which other pages=
- we'd GUP
-> > next.
-> >
-> > That's just wrong, and hugetlb special-casing is just ugly.
-> >
-> > The problem here is that, if we GUP'ed a page and poisoned it, the GUP'=
-ing the
-> > next page might fail and we'd return an error.
-> >
-> > But maybe that error can simply be handled? We have FOLL_HWPOISON.
-> >
-> > So maybe we can just use FOLL_HWPOISON and skip over the entries that a=
-lready
-> > return -EHWPOISON?
->
-> Yup this is ugly debug code so that works for me.
 
-Thank you for the review. Based on your feedback, I went back through the
-madvise, GUP, soft-offline, and memory-failure paths and outlined the
-changes I plan to make for the next revision.
+> On Aug 11, 2026, at 07:08, Sourav Panda <souravpanda@google.com> =
+wrote:
+>=20
+> alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
+> alloc_fresh_hugetlb_folio() as a fallback to allocate from all
+> nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propagates
+> the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() via
+> alloc_gigantic_frozen_folio().
+>=20
+> Additionally, hugetlb_cma_alloc_frozen_folio() previously attempted
+> allocation on hugetlb_cma[nid] without verifying if nid is included in
+> the caller's nodemask. Adding a node_isset(nid, *nodemask) check =
+ensures
+> the initial preferred node allocation honors the memory policy / =
+nodemask.
+>=20
+> However, hugetlb_cma_alloc_frozen_folio() dereferences the nodemask in
+> node_isset(nid, *nodemask) and for_each_node_mask(node, *nodemask),
+> leading to a null pointer dereference kernel panic when nodemask is =
+NULL.
+>=20
+> Fix this by checking if nodemask is NULL in
+> hugetlb_cma_alloc_frozen_folio() and defaulting it to
+> cpuset_current_mems_allowed. Enclose the allocation attempts within
+> the cpuset seqcount retry loop so that if the cpuset changes =
+concurrently
+> during allocation, the attempts are retried using the updated =
+nodemask.
+> This ensures that the initial node check and fallback loop safely =
+honor
+> the task's cpuset without violating cpuset constraints or causing NULL
+> pointer dereferences or unexpected allocation failures.
+>=20
+> =46rom a userspace perspective, this bug allows an unprivileged user =
+to
+> crash the kernel (trigger a panic) by requesting a gigantic hugepage
+> allocation with MPOL_PREFERRED_MANY on a system where CMA is only
+> configured on a subset of NUMA nodes.
+>=20
+> This can be reproduced by booting a VM with two NUMA nodes, =
+restricting
+> CMA to Node 1 (e.g., hugetlb_cma=3D1:1G default_hugepagesz=3D1G
+> hugepagesz=3D1G hugepages=3D0), and running a program that allocates a
+> 1GB hugepage area without reserving, restricts allocation to Node 0
+> using mbind() with MPOL_PREFERRED_MANY, and triggers a page fault:
+>=20
+>  void *ptr =3D mmap(NULL, 1UL << 30, PROT_READ | PROT_WRITE,
+>                   MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB |
+>                   MAP_HUGE_1GB | MAP_NORESERVE, -1, 0);
+>  unsigned long nodemask =3D 1; /* Node 0 */
+>  mbind(ptr, 1UL << 30, MPOL_PREFERRED_MANY, &nodemask,
+>        sizeof(nodemask) * 8, 0);
+>  memset(ptr, 0, 1UL << 30); /* Trigger fault */
+>=20
+> This results in a NULL pointer dereference:
+>=20
+>  BUG: kernel NULL pointer dereference, address: 0000000000000000
+>  #PF: supervisor read access in kernel mode
+>  #PF: error_code(0x0000) - not-present page
+>  Oops: Oops: 0000 [#1] SMP NOPTI
+>  RIP: 0010:hugetlb_cma_alloc_frozen_folio+0x75/0x120
+>  Call Trace:
+>   <TASK>
+>   only_alloc_fresh_hugetlb_folio.isra.0+0x2c/0x160
+>   alloc_surplus_hugetlb_folio+0x6d/0x100
+>   alloc_hugetlb_folio+0x3c5/0x660
+>   hugetlb_no_page+0x3d9/0x650
+>=20
+> Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic =
+hugepages")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sourav Panda <souravpanda@google.com>
+> ---
+> Changes in v6:
+> - Enclosed the CMA allocation attempts within the cpuset seqcount =
+retry loop,
+>  retrying allocation upon cpuset mems_allowed updates to prevent =
+unexpected
+>  allocation failures as suggested by Muchun Song.
+> - v5: =
+https://lore.kernel.org/linux-mm/20260809043250.2917406-1-souravpanda@goog=
+le.com/
+> - v4: =
+https://lore.kernel.org/linux-mm/20260726072935.3513996-1-souravpanda@goog=
+le.com/
+> - v3: =
+https://lore.kernel.org/linux-mm/20260705175119.440599-1-souravpanda@googl=
+e.com/
+> - v2: =
+https://lore.kernel.org/linux-mm/20260704174930.2885785-1-souravpanda@goog=
+le.com/
+> - v1: =
+https://lore.kernel.org/linux-mm/20260702215713.627941-1-souravpanda@googl=
+e.com/
+>=20
+> mm/hugetlb_cma.c | 23 ++++++++++++++++++-----
+> 1 file changed, 18 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+> index 39344d6c78d8..9debf033d4fd 100644
+> --- a/mm/hugetlb_cma.c
+> +++ b/mm/hugetlb_cma.c
+> @@ -3,6 +3,7 @@
+> #include <linux/mm.h>
+> #include <linux/cma.h>
+> #include <linux/compiler.h>
+> +#include <linux/cpuset.h>
+> #include <linux/mm_inline.h>
+>=20
+> #include <asm/page.h>
+> @@ -30,15 +31,27 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int =
+order, gfp_t gfp_mask,
+> 	int node;
+> 	struct folio *folio;
+> 	struct page *page =3D NULL;
+> + 	const nodemask_t *nmask;
+> + 	nodemask_t local_node_mask;
+> + 	unsigned int cpuset_mems_cookie;
+>=20
+> 	if (!hugetlb_cma_size)
+> 		return NULL;
+>=20
+> - 	if (hugetlb_cma[nid])
+> +		retry_cpuset:
+> + 	if (!nodemask) {
+> + 		cpuset_mems_cookie =3D read_mems_allowed_begin();
+> + 		local_node_mask =3D cpuset_current_mems_allowed;
+> + 		nmask =3D &local_node_mask;
 
-The issue is that using a page obtained for one address to infer how far
-the range walker can advance is the wrong abstraction.
+I don't think we need a local_node_mask, nmask =3D =
+&cpuset_current_mems_allowed
+is enough. nodemask_t could be a huge array, so it might consume a lot =
+of memory
+on the stack. I don't think we need to do that unless we see a clear =
+necessity.
 
-For an anonymous large folio, soft_offline_page() splits the folio to
-order-0 and handles only the supplied base-page PFN. Advancing by the
-pre-split folio size can therefore skip the remaining base pages while
-madvise() still returns success.
+Otherwise, LGTM.
 
-Lorenzo also raised the semantics of a range that covers only part of a
-hugetlb page. Looking at a range that crosses a hugetlb boundary exposes
-another problem. For example, with two 2 MiB hugepages:
+Thanks.
 
-hugepage A: [0, 2 MiB)
-hugepage B: [2 MiB, 4 MiB)
-requested range: [2 MiB - 4 KiB, 2 MiB + 4 KiB)
+> + 	} else {
+> + 		nmask =3D nodemask;
+> + 	}
+> +
+> + 	if (hugetlb_cma[nid] && node_isset(nid, *nmask))
+> 		page =3D cma_alloc_frozen_compound(hugetlb_cma[nid], =
+order);
+>=20
+> 	if (!page && !(gfp_mask & __GFP_THISNODE)) {
+> - 	for_each_node_mask(node, *nodemask) {
+> + 	for_each_node_mask(node, *nmask) {
+> 		if (node =3D=3D nid || !hugetlb_cma[node])
+> 			continue;
+>=20
+> @@ -48,8 +61,12 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int =
+order, gfp_t gfp_mask,
+> 		}
+> 	}
+>=20
+> - 	if (!page)
+> + 	if (!page) {
+> + 		if (!nodemask &&
+> + 		    =
+unlikely(read_mems_allowed_retry(cpuset_mems_cookie)))
+> + 			goto retry_cpuset;
+> 		return NULL;
+> + 	}
+>=20
+> 	folio =3D page_folio(page);
+> 	folio_set_hugetlb_cma(folio);
+> --=20
+> 2.55.0
 
-The first GUP resolves the last base page in hugepage A. Adding the full
-2 MiB hugepage size to that unaligned address produces the next address
-at 4 MiB - 4 KiB. That is already beyond the requested end at
-2 MiB + 4 KiB, so the loop terminates without ever visiting hugepage B.
-
-For MADV_SOFT_OFFLINE:
-
-- ordinary pages and large folios advance by PAGE_SIZE because
-  soft_offline_page() handles the supplied base-page PFN after any split;
-
-- hugetlb advances to the end of the current hugepage because successful
-  soft-offline migrates the complete hugepage and leaves a healthy
-  replacement mapped. If the walker advanced by PAGE_SIZE, its next GUP
-  would resolve that healthy replacement and soft-offline the same virtual
-  hugepage again;
-
-- ZONE_DEVICE does not need a stride case because soft_offline_page()
-  rejects it.
-
-Advancing to the current hugepage boundary, rather than adding the hugepage
-size to the original unaligned address, lets the next iteration start
-exactly at hugepage B.
-
-For MADV_HWPOISON, I plan to follow David's suggestion and walk at
-PAGE_SIZE using:
-
-get_user_pages_unlocked(start, 1, &page,
-FOLL_GET | FOLL_HWPOISON)
-
-get_user_pages_unlocked() is the appropriate interface here because the
-current gup_fast_fallback() flag mask rejects FOLL_HWPOISON, while the
-memory-failure madvise path enters madvise_inject_error() without
-mmap_lock held. get_user_pages_unlocked() acquires and releases mmap_lock
-internally, handles fault retries, and propagates -EHWPOISON from the
-fault path. FOLL_GET makes the page-reference ownership consumed by
-MF_COUNT_INCREASED explicit.
-
-A successful GUP is followed by memory_failure(). If GUP returns
--EHWPOISON, the address was already covered by an earlier larger-granularit=
-y
-injection, so the walker continues with the next base-page address. Other
-errors are returned. This avoids hugetlb, DAX, and folio-size inference in
-the MADV_HWPOISON caller.
-
-Device DAX is relevant only to MADV_HWPOISON because
-MADV_SOFT_OFFLINE rejects ZONE_DEVICE pages. Since the proposed
-MADV_HWPOISON walker advances by PAGE_SIZE and uses each GUP result as
-feedback rather than inferring the handled range from folio_size(), it
-should also avoid the same granularity problem for Device DAX. A
-successful GUP is passed to memory_failure(), while -EHWPOISON indicates
-that the address was already covered by an earlier injection. Advancing
-by PAGE_SIZE should therefore also work for Device DAX in principle. I do
-not currently have a suitable Device DAX setup, so this remains untested
-at runtime.
-
-Because MADV_SOFT_OFFLINE must advance past a hugetlb replacement while
-MADV_HWPOISON can use FOLL_HWPOISON feedback during a PAGE_SIZE walk, I
-plan to use separate walking models for the two operations.
-
-Before posting another revision, I plan to split the work into:
-
-1. the MADV_SOFT_OFFLINE range-walk fix;
-2. MADV_SOFT_OFFLINE large-folio and hugetlb selftests;
-3. the PAGE_SIZE + FOLL_HWPOISON MADV_HWPOISON walker;
-4. MADV_HWPOISON large-folio and hugetlb selftests.
-
-Does this separation of the SOFT_OFFLINE and HWPOISON walking models look
-reasonable?
-
-For stable, would you agree that I should omit the explicit stable Cc from
-the next revision?
-
->
-> >
-> > --
-> > Cheers,
-> >
-> > David
->
-> --
-> Cheers, Lorenzo
-
-Thanks=EF=BC=8C
-Yunhui
 
