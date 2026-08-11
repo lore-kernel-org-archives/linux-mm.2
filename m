@@ -4,140 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8BD9C5B56A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 18:26:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C353CC5AC67
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 18:39:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6C226B00AD; Tue, 11 Aug 2026 14:26:12 -0400 (EDT)
+	id 7CCA86B009E; Tue, 11 Aug 2026 14:39:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E42FD6B00AE; Tue, 11 Aug 2026 14:26:12 -0400 (EDT)
+	id 7A4116B009F; Tue, 11 Aug 2026 14:39:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D590F6B00AF; Tue, 11 Aug 2026 14:26:12 -0400 (EDT)
+	id 6E1276B00A1; Tue, 11 Aug 2026 14:39:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A127D6B00AD
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:26:12 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 216C01401A5
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:26:12 +0000 (UTC)
-X-FDA: 85089818184.15.2A5580B
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 28220100005
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:26:10 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=jdNFgTNR;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf14.hostedemail.com: domain of jyescas@google.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=jyescas@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786472770;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D4A16B009E
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:39:04 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C887E401D6
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:39:03 +0000 (UTC)
+X-FDA: 85089850566.25.BEEC53D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 168D340005
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:39:01 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bsq30oIX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of "SRS0=xC7b=GE=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=xC7b=GE=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786473542;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sPHOJuQuNJebZzMyVStdnYyi24KhNdsxUWqnnk8qPcI=;
-	b=0qr70wZtsU0RbCaTeFJ+BbRH6iSgpiAbWl72kTkWfuW/uwomk8lLLNMy/gipm3NskymwQO
-	ASc7s2LvXSTUKNZHdeAeOoGqfPesNW7hlmQV+QAEKDUTRuBq5POMSEEFB+u54hygKk09Tp
-	1J3UWm5U0IT08xg+hTpo0QmH2wafcZ4=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=jdNFgTNR;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf14.hostedemail.com: domain of jyescas@google.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=jyescas@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786472770;
-	b=MCQkzqqUIdgZosJxshl6TMcfxxegCy1TzBO+dx8OHetS/jY5nxBi2f1kl3INAZPZ3oMmp6
-	zXlFlNLKbEHu2VUz131i6TvlPCZtgWKpJo0APJPitXeIIIxsaApdp2irnzjQBIT/p8TGUm
-	RefDW4gi5HkfZup5YxFW+SoYDyJq0Fc=
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5b0129cf6ffso1230e87.0
-        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 11:26:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786472768; cv=none;
-        d=google.com; s=arc-20260327;
-        b=maFXjx/S5TB50IrmZQWEDnwOHLDqQ6ehreFyJt75tycM4+b8QT8I9oMluPs5HsBbmR
-         dg0ZOinDn8vqFiMCOnrOcGFSA6loyYkB9n00yzUbAJBeYew/jWv10Oynx88f+EfD3Mhd
-         S7sYstjKlXgfsASDk5en9ClsNdipWxGXPuf5IfnCc8CFckTc/EnPeejeML2+2cBCB/lZ
-         MgLTnvq3FPDereOIqEvB2dMA0V29A50g2spVVpjYDE5hnMw8DytL02zh2ObtEawhk5Vr
-         DA3gLU7OE095WGxj3TH7ehdJsr86KC2tzaqHInwVnmSFjeDtA51kYxDgCQ3iWIbn4Qn2
-         VLuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sPHOJuQuNJebZzMyVStdnYyi24KhNdsxUWqnnk8qPcI=;
-        fh=eVcXh9sszFVygF/6b6rr9/TsGaHhWOpV3hdRfUY8IeU=;
-        b=bFbW95mMoSePZfHDO40yiTqBVi0UyY9dFBQ2tD6Zxl1NSyG1uRmDVuhIo+F4pmk84m
-         Ogbbuy7SdHIReqXnv2xmMjpWskMRaKiZs9S+fB+9AlYgy//ES+ExT4otLCap28Zps9SL
-         ak8j04PEipoO1Pjcle7r21tL6EcEjJV2kxo0xeVKxajR7VU+KScQq/HehwHSaXcQfrSA
-         iBlC55bjt/EIOOLmHA2xqhjsGz5MTSl4CQeAQ/lilDwV+A+gspKVnf/PTXu4sy8YUnv7
-         /+X3+OIn2rBSU9LVyQCwiCIM6ivqTFyf3WpksBL6ZvAVkqOEOaL1XHitw8TMHzMCqdx0
-         /oOA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786472768; x=1787077568; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sPHOJuQuNJebZzMyVStdnYyi24KhNdsxUWqnnk8qPcI=;
-        b=jdNFgTNRO5R4R1qLbWyuxPA6skWLZ66Gy1OVoLhxmxcfJltGc3yrlUyuPrW96jLV81
-         dXkv6Xva6g6nUZw6LRMWUH7RqZJGaePPrWhcsKgINKYAcy7Bta73QGPIBt90QEdVreV2
-         mfXX/Y5ZuDuQeI/uj9jIR8+lNE3qKdysiRurZlyXk1/jwJB4wEEgDLcohnE1hX0AENoF
-         CFz2dU9WSCbhicd4kxZQFk/9e69tAoXWwIFKQS2wJRzXO1hjIrfSz4g4K473/1C7cG+5
-         J8R6i+WTH9TwP0nwDl9Y4NgTw2kctYkfIPrsO/W8mT14Tm2y/zTYC/HukZeVyMHN28qc
-         Oa4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786472768; x=1787077568;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sPHOJuQuNJebZzMyVStdnYyi24KhNdsxUWqnnk8qPcI=;
-        b=XnZMEMUhd4fmWdv5zLTc78NraR1n012U7ZLAk87zUafwgXoYP/jTGVa0ktWH0R3YEm
-         XFVy+g2FYWp2ewAlXtIYrSA6ld3Z1w4qvm2Z3wMoAJiBA5fLonNk8+fTAo+iddYgbzWS
-         tDPuGS+0l+io/Uj5QQZyUW/ea/VvCYhx4tozHIbzNuRJdyrRhs5aMMUEbq4P8EjgV1uJ
-         nnDvplFRX/wk6FLnKqG02ENx/tFPYwjtkJZnQkfMaFSs8NTQS0v7MEiFv6uqlyJnNoOQ
-         xKxmdRmjZpbLzYqut3x8SxbcgJ4heHMgT5yLbzVz1QTOAsD8nG2AJdvM8b09gq7wjbmi
-         Dq5A==
-X-Forwarded-Encrypted: i=1; AHgh+RrfU5XTgawkyVwOl8YGyTI7WKuOAGDKa4mPAAv10BFOhd9b+fELeJ5fq9TgiAUcvXuMDCY+GP6E2g==@kvack.org
-X-Gm-Message-State: AOJu0YxzhNJsV/eO9xXCJb06udQ94syD3sm3w8IHi7gEJLf/7dHCq/1M
-	T7uWbg+HlQsTSQvfDoIBWVZhsy3dZWH3qLygY8PaDpvYHSd0HrZdvhBiWJbNJRQfiS/ZKWfBVdg
-	vphUqCaK4YeUP6GkjDxB6EEe1pMkmvuGRb+oV9CDbRuC59xoK+f4AfbcNCZC8sA==
-X-Gm-Gg: AR+sD11/OrwtOSx8oQvYEjMrfwhSPcsPj7NcYVQyZjcA3GovXuY5Uq1Ugv5oFW8QyPd
-	rObLxkSDMieHHVJxYaqzGAXl0VlkuCHZ87jmQTJdVz0t8U85GQP4YGr4h9WnDIRz9KYsNSwP1Kj
-	sPkfRPpfhKTx6q/caahRw6r2zCJC2secE1PCGclSTt8AF07UCQLzs6ecv+dBh8NUfEgOSRSPoHo
-	vcEihBFVrEUfN3VQbmGe6jrZYFXWmv5h9gehY0tVDh1bXoRpcM++Q6+NnwjdLO4z6n0dXXRPcdj
-	GC2EEBuPuf2CQVxrl/KnIuUuz2QcwgrGrRSVsYXDKzF2lDybLOTbCPY2HwW1ne03da4DTXCiiJK
-	j/+P5HP8HpjsEow==
-X-Received: by 2002:a05:6512:a85:b0:5b1:5e30:ab4d with SMTP id
- 2adb3069b0e04-5b44d145993mr25332e87.5.1786472768062; Tue, 11 Aug 2026
- 11:26:08 -0700 (PDT)
+	bh=do2XKhDCxgRyux4sbGO+SL+POHJmP39DxWYxzqtT9Lw=;
+	b=Ig/lRYQmSynKUZkwbFs5w9BPKc5bSwZCVSpu2+BbjFrdzZoMQR3DWxfuOxgwFgH10YAi3U
+	L79LETw/p9zRc1WJdAzrHZ6Yj7lti/D+fxKCXeP9FiP4dVnA49e6rbntYK5501JJFchS44
+	9M3UUR5kMqAMHuB4dnEpbSaCmSWWGSE=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bsq30oIX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of "SRS0=xC7b=GE=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=xC7b=GE=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786473542;
+	b=8QpQxmNXSc4XYh+DU4X813Y56v4/UFTFntOcZUISXRJo9EQiR4EgcEcmP51A+uxZCXDw2J
+	k/3PcOyh26gnTJEOHvPVB25pSUr/KTfQ+mW/nfcxJ2y+HE2HcMKzE1hUPGjGBEmZ6ZCg+F
+	gpCzcuZ+mEd46HySoqRGXgEdE06H9Dc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4F0CA407F8;
+	Tue, 11 Aug 2026 18:39:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 287E01F00A3A;
+	Tue, 11 Aug 2026 18:39:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786473541;
+	bh=do2XKhDCxgRyux4sbGO+SL+POHJmP39DxWYxzqtT9Lw=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=Bsq30oIXhtCGipX2jCZP84ZNtzuM8tFQ3L5GV2brb1g9D4/D81M+YkOXerdUs0ZDm
+	 03iIxqptAvt9OJMyT8dZrRnesKqppvP1bCc3klOPzFXQdw3Tj+8Cex21Y9F41fiQP6
+	 fkax0rNyxxHPz3frRXLXT/7pY2ode3Afw4Ju+GaNbkiERm9XFiEN6kUkxRjLeY/rTm
+	 I3oa0HAkc8mNvuu6emrgVl6qZdVYQY9ILjQheCjVUhdgnzsTX0E59Oxe4DfWBNBoj9
+	 qp91mZuE0H1hsstPext0uX1OffjetvnRJxGjzkKY4h9BeE9V2+2SgtGsbDRz/HUkkQ
+	 vQn3lekeyLeZw==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id EC26CCE17BC; Tue, 11 Aug 2026 11:39:00 -0700 (PDT)
+Date: Tue, 11 Aug 2026 11:39:00 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Breno Leitao <leitao@debian.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/vmscan: report RCU-tasks quiescent states in
+ shrink_lruvec()
+Message-ID: <2a402225-57e2-4d5c-ab2d-7d8724b86246@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20260810-rcu_task_shrink_lruvec-v1-1-4d9f7d5251cb@debian.org>
+ <anqnkZceNHyvbR5S@linux.dev>
+ <e019296d-43f5-47bd-ab49-6dfd1d8da0cb@paulmck-laptop>
+ <anthYiiYPuUYbj1Q@linux.dev>
 MIME-Version: 1.0
-References: <20260806011048.517229-1-jyescas@google.com> <anRRLwa3N5bVCHET@lucifer>
- <9adb6304-a25e-4658-8fc7-e3a16c7d34f0@kernel.org>
-In-Reply-To: <9adb6304-a25e-4658-8fc7-e3a16c7d34f0@kernel.org>
-From: Juan Yescas <jyescas@google.com>
-Date: Tue, 11 Aug 2026 11:25:56 -0700
-X-Gm-Features: AUfX_myvCY6RcXQrquX3SEZEBp613HzCO0QoVm1i0_JwQgtHN2drwpNgY_mw-u0
-Message-ID: <CAJDx_riyetLWXjsygnkFJAbzAPe0NCTN0x019phG4XVLLz0bEA@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 00/16] Page Alloc Hogger
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>, android-mm@google.com, fvdl@google.com, 
-	tkjos@google.com, minchan@google.com, dskiba@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 28220100005
-X-Stat-Signature: 8q1dm3skgokh9afhtgmuhwcg1zs9icgx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <anthYiiYPuUYbj1Q@linux.dev>
+X-Stat-Signature: fwg7q7zjfhp646ek6ekq6zh8iexjomkb
+X-Rspamd-Queue-Id: 168D340005
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786472769-626402
-X-HE-Meta: U2FsdGVkX1/arZ9pQW3Qez6q6mhq78ClcZg18Ho35VGfm/SDvJupRHJU7b+Zi6kuIJ30s6xOJTilGUYT2iWY8PmQEduy6yhuy00Dfwx2paAt9CYeS6Kv77W1bsJ7MiMo10f4VhjGj5oTEpmuqLLL5X6dg973gDIjjYj4CsWFOdR7lkJMctpZOjtTO4Vib05J5gRa/sgxZv2NFCAZByjBPftlw/7b3BwBfh51bVlAlh5MFer35fGefHDN/BxboIEUamkn8m3yRXj9oKWpba4NBwX+jhIQ5NbGjw2F9sJ6qnK8UJq/2MTgpU0hInbN84Pbs1oih5BYUrHHL66SrLhSSyyuqh8E9xqp1z8JzcWNiLPmgLRwjjObNOVv4FyMAIyowV+Z5LxCC17sBb/QoaTzg4kfl98hrv/6M7YJlBeIpdvdzdjIx+NCYAHXiqvr7dT5J9FpSTR7nbZVB91NJWoBvbZ2hYpt8hy89iuGxcQQtSoFqD8d9iakM3NVNm5YONb0wLcOIuUOpdfE6DU2dwSwVhQQQ/OOnDDyG/QSMn2sH9kPffQXTwXGqgGLSDMStBnD6djJLjV1J/11ldSV7BIbB2KQplsulYMXnokgza3gYP+D66BInUhGWYnquq3IhYi8Op3aFZDqLdFH8YGZrbKuDO4b8HitXle/f7e8oDVaHNytuwdPO2tMf1+98xOhRCaHm0nXu0cEzQ4pQGKQCZC+OyQpZrbX6eaqeTlyFaXuFNvBRkBTnxuGQUAqxWv8CDY9vfZN90I8GrIvh/rOQYzR0PIc62yYEezoQm9g//x6Iq5OJ1plucNvxBSc2sAiurvBSimuigfx9sAy2zhfLQzIJI4dBMxgK8agiO5ChJeS2wJZbW/LyxPpVxDrjA0iThEex/M6Fa5rzm+aRTsUHRkEHZdR6tlfDOyKapiTZU66o1Uz5qzJhdXh/3EMjw2d/1XKZvUn770NbfDXgqZcmHN
- ObVNrBnq
- b7bqpEPQJOam/EgdsJiC8+VY9CxkTl0xEeYKmk6MR6aNViIwK6A3C63BY4uNvbfXOYABWCf6TN6BFNdFzbtSNJblSxa6ZzRyaY0DHz1U4vOz8JIjU0Z9am9jRfaZcIL418qtN/ZtowX6+LgtIVUmsTM1Po+VZfrMKIcFsimKW0hOkM3ewOoevilhjILDiG+qh1cKhWQB8msdVmIoR1MA/8sE5wAGmPZT+Qa09WdOQoHNsJEfCUWJsSjwyg8LwsyluQOj4uRC3feazkPQ/SCCSuN4ZXCm7HSWWrKDXb3sIMEfOlLUn7SSDvnlekMLP/tq9aspljWBtJxI05Z+HWJb4IPB2Ew==
+X-HE-Tag: 1786473541-455965
+X-HE-Meta: U2FsdGVkX189Cnu7qbKPCu3bYvUlzGS3cEoMGTbfsYjkRZ9pgV7DfhurpbZAxgr4TjI5uVulpl9q/NlOZbAQmroIgIaQH2s3bhx/hBT1stfM4ZyAs3LNgv32oNEfWfxSx5XkbmRveKqcDM+NKAp7/8g+59O/J7HWbhdSgR87vd3Bk47cJ99d8jpa0WcsBz05X2+d1HKcqT+gFmQvVJ3SyG2/tpVPjz9AilACToYC84pi/dY0hPWCKJIHcadmJGj7uxyPlT0/WiHd4pJfBFrS3J96fd4Fr0hK7BSVxxMXkW64wt9uVvpCitrhfze5B5OUqSROvetaxD0dXCIClkU903qg6r2/01vV7RkL9DIfb9t+w3bFFKEYadlRNVdh3iun3amS7JQgzuL1I+EOwGcBUrI4ifsjU/ycNbLQLq3v65Zy38gOMgX2S7LndoiQvhajYOpJ5hbzzgBYggHG4OFEDlbAKhYp9syj9G+LCGPZHHYqV0G4C3ZIwRJ6+GVrG5fueW0mSavV4XJsW/BdfN77CX5lX0RL+0WWpEDLUadTUKrp+jLQ0LzzvfawtYb6jyDDJTHkDC0ezDlWGKzxXG/1PTIZQIKagc1SByZoijPKo42nlyaeK7mm7RvfzH+DAIhYbvLQRdGwil+WuFACIRmVlsfQV7DfneM1ogejhT5BavLMF0asqVp0z16XBzteXrEwJS6QmwQf99+jaysa4lt+SeUkjlqZ4P2qfNarRzlcyudoinw4CshSehw7UvBFOM7/IXnCW4t7Ri8oO/pSXZ/GuL+Z7r9yNdiHOC3rQ5701mBc6OeWwpZ2x5vEGSiP1ye3PllnQLatYEpNv1r1uFbjUW3/YYlQRpHFhjDvHaSGlarGSlUNX754gm7iCuhw7GTuZ1mCrgcJ7yXrYndabKvLYiU+PtGshruGXYFFLQm4sF5JR8mVNEp5xz/BUsWKEJQkh27Vhnc0Hdf35zaXEH3
+ NJCg/T7L
+ SSIFgvCTILrqtl51FZe+z0YKqlxntHuqCbtgy0lAsGMOfykmE+zMHS3WmcHVYXikWa39F7grcpiSC2uTIwkJ3HAxTKmqAsv6oPcLjRwEa/k6X9mZCUXCW/tXqWJNnpTHWmLOsoBa3gKPnL2Aj4X0zcBD3TjF/n4Dh9WJ7YSPO4/PqHG6EziuLG4R5dqrdVKJkiS9D/MJ20eQZArUykO/MDtYU2TB9NOeIcu6KVKVb8D7vxjH+Lk3x0sfvt79J0cjv1NF3lWj3UhlUDor9ntKKiqAbQ2HuRyAd6VjW9ye8BrCCOMHfhKxD+4dEtGdKne6f3GujFcW6NpNmxUwWg443f5nhxNvCn1MlccgkemNV4wZz5XaurvOs6qmSwAoRcwzNFvlS1BWrtA11CP8eAIJjnuOUgK6QP+KQp5/DVUFQJDPG1olGHud1HCt9lylOl5sjH1XNKjoN0gNM3CJkNR8xZ0PxB6sEYUp3gCqcx8q+oDdFOHRxZFDmCfaRGk7cwI+M3gbgoLaSppdbvdmZXcfFoEApuUJopF136jnCXTQFcQwJzk2iFRx3urgwPjHEztH50UWVyXez8iriZ6DrQhCbP1LOnSZxE+PvvUCmCAt0gWfx7b2Pyazv+vhzBi/pyC7KX5FEnnUNnwbHte7lLUTI+/OaPGaqVNj9exEzwGTn7ChSMORmVwNnNjS3yObQHqDHszJyFdlBr/pVW0MjHhJSzZqalh8s/yvmlUnHX/+z3lmJxCc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,53 +106,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 6, 2026 at 4:17=E2=80=AFAM David Hildenbrand (Arm) <david@kerne=
-l.org> wrote:
->
-> On 8/6/26 11:48, Lorenzo Stoakes (ARM) wrote:
-> > Hi Juan,
-> >
-> > While I think there's possibly value in people not re-implemented their=
- own
-> > allocation injector, I don't think there's value in having this be part=
- of
-> > core-mm.
-> >
-> > I really don't want this to form part of any contract or to be blessed =
-in
-> > any way by core mm as it exposes internal implementation details and I
-> > really want to avoid adding extra maintainer workload here.
-> >
-> > I'd suggest keeping it as an out-of-tree module as David proposed
-> > previously ([0]).
-> >
-> > Alternatively, keeping it as part of tooling (e.g. in tools/testing) co=
-uld
-> > also work.
-> Yes, I would prefer if all MM-related testing modules actually go somewhe=
-re in
-> tools/testing.
->
+On Tue, Aug 11, 2026 at 10:54:23AM -0700, Shakeel Butt wrote:
+> On Tue, Aug 11, 2026 at 10:38:40AM -0700, Paul E. McKenney wrote:
+> > On Mon, Aug 10, 2026 at 09:43:03PM -0700, Shakeel Butt wrote:
+> > > On Mon, Aug 10, 2026 at 02:57:36AM -0700, Breno Leitao wrote:
+> > > > I am seeing some rcu_tasks stalls in the Meta fleet during reclaim.
+> > > > 
+> > > >   INFO: rcu_tasks detected stalls on tasks:
+> > > > 	0000000088620d09: .. nvcsw: 6735/6735 holdout: 1 idle_cpu: -1/8
+> > > > 	task:GlobalCPUThread state:R  running task  pid:2552016 tgid:2524552
+> > > >   Call Trace:
+> > > >    shrink_lruvec
+> > > >    mem_cgroup_iter
+> > > >    shrink_node
+> > > >    do_try_to_free_pages
+> > > >    try_to_free_pages
+> > > >    __alloc_frozen_pages_noprof
+> > > >    alloc_pages_noprof
+> > > >    pte_alloc_one
+> > > >    __pte_alloc
+> > > >    handle_mm_fault
+> > > > 
+> > > > Nothing promises direct reclaim returns in bounded time, and the scan
+> > > > loop in shrink_lruvec() only calls cond_resched(), which is a no-op on
+> > > > PREEMPTION kernels.  Involuntary preemption is not a Tasks-RCU
+> > > > quiescent state, so the reclaiming task never reports one and becomes a
+> > > > holdout.
+> > > 
+> > > I still don't understand why cond_resched() is being treated as involuntary
+> > > preemption but that is orthogonal to this patch.
+> > 
+> > The history is that cond_resched() was originally intended to be a
+> > preemption point in any otherwise non-preemptible kernel.  Therefore,
+> > because it is a preemption point, it counts as an involuntary context
+> > switch.
+> 
+> Thanks for the explanation. Is cond_resched_tasks_rcu_qs() voluntary or
+> involuntary context switch?
 
-Thanks David, apologies for the delay.
+That one is voluntary in order to take care of Tasks RCU's need for a
+voluntary context switch.
 
->
-> I commented on that recently when finding some of them in lib (and we als=
-o have
-> another GUP one at least in mm). Stuff that doesn't ultimately need to be=
- there
-> should just be somewhere else.
->
+Except that it doesn't bother involving the scheduler at all, but
+instead just updates the current task's state with respect to Tasks RCU.
+Much faster that way.  ;-)
 
-I think that works too, if this module is useful for kernel
-developers, we could place it
-in tools/testing.
-
-Thanks
-Juan
-
-> --
-> Cheers,
->
-> David
+							Thanx, Paul
 
