@@ -4,117 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7734C5CFC1
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 09:23:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 965FFC5AC67
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 09:23:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3C026B0092; Tue, 11 Aug 2026 05:23:24 -0400 (EDT)
+	id C19E96B0095; Tue, 11 Aug 2026 05:23:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E13966B0093; Tue, 11 Aug 2026 05:23:24 -0400 (EDT)
+	id BF1296B0096; Tue, 11 Aug 2026 05:23:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2B5E6B0095; Tue, 11 Aug 2026 05:23:24 -0400 (EDT)
+	id B2E896B0098; Tue, 11 Aug 2026 05:23:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B5AFA6B0092
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 05:23:24 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4A9BD1A02DB
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:23:24 +0000 (UTC)
-X-FDA: 85088450328.15.DEF39A3
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 503974000A
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:23:20 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=EbtKTIPx;
-	spf=pass (imf27.hostedemail.com: domain of jackzxcui1989@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=jackzxcui1989@163.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 93ABF6B0095
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 05:23:43 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2B9B51C06B6
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:23:43 +0000 (UTC)
+X-FDA: 85088451126.29.0A2159F
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 95F1514000F
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 09:23:40 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=ABIUFPga;
+	spf=pass (imf09.hostedemail.com: domain of liuqiangneo@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=liuqiangneo@163.com;
 	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786440202;
+	s=arc-20220608; t=1786440221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fo9j8kdnZ3d1Cb7R3JXH4+6v4YrCB+a7W8evI8c2Q1U=;
-	b=vv2/xdIMnwDF3u8MiiFQ47DyoOx1ZwLhBNEqBCC8rj7KoIQsEKbse+ajbiz//y7wsXnCS0
-	g6VnaRhQZTQtpkHkgvX/wciAc6oSai9lQuky4Gmlwec8Ul666ENOBpkyFYd6iN5vkyFfYD
-	txRhLvTmvnXZ9iy8iqJ5JpEKDOnNM4c=
+	 in-reply-to:references:dkim-signature;
+	bh=w3MYd2TVYjVgXHcht1S6pZlncyHsIQAl89MBKPGG9XA=;
+	b=CkCXZGO5pNIB7dP2pqZWGsq++mu7zSVpgNQrFXYd7MQI0673FNBsiqmIeG9a5ulxN04++u
+	pmWp8i0r3yBZeh/bQdeolvWQvPFiyB7Q5NvPZntGaIbNttAPHqY3In0Skp3u6g/r0/bPxd
+	0S2dxLiz+d4e6smzeHiJv/wXs4yzmpk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=EbtKTIPx;
-	spf=pass (imf27.hostedemail.com: domain of jackzxcui1989@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=jackzxcui1989@163.com;
+	imf09.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=ABIUFPga;
+	spf=pass (imf09.hostedemail.com: domain of liuqiangneo@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=liuqiangneo@163.com;
 	dmarc=pass (policy=none) header.from=163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786440202;
-	b=KWHOjFg0ExqBlUNc7Ygizl85hn3OsiFNlmy/fxYurrqP49XRtTMyjUMDjiH61vgSy4O0Mk
-	zEHr3U4TWDpCu1LFP6BKybSNbYNtmQbadOoNoHq/b7sTCeiomkd1WagVQlls14jAJo6oMw
-	KhTdjtUyonJ5UJJJba6+gx8QkWQVUzw=
+	t=1786440221;
+	b=aRuEMPxVBbWQV8h91qsle91puSfaRytSe+426dBFiJ8sDh87hcdM1bCPDi86ypwaCI3pSI
+	7G3HJczWmZjHsU4PzwYSlqaxu0I302Y6bIjttCOljKluRWOqbtk7pRNNwje58yzZqLXmJG
+	MEIZ3SwVA2aS70WsDrin+vr6ZIUgRXw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=fo
-	9j8kdnZ3d1Cb7R3JXH4+6v4YrCB+a7W8evI8c2Q1U=; b=EbtKTIPxIWSGrnDo9o
-	rLyi9otRSvWLd4uSSBTkMpjsQuXJq9/WSDYQRGxt9rcXTl6Oqz/f3TIH7ifqyeVF
-	5bkyNRy3ToVrnoH5eOThDU4ykIlo1z7Tc9G+vK0hiudifoT1gwNpHTVuWiol5XkR
-	EcziWewFP3XaFau8tqxifYL6M=
-Received: from zhaoxin-MS-7E12.. (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wBnRqbR6Xpq5jVXPA--.54025S2;
-	Tue, 11 Aug 2026 17:22:27 +0800 (CST)
-From: Xin Zhao <jackzxcui1989@163.com>
-To: brauner@kernel.org
-Cc: akpm@linux-foundation.org,
-	alex.aring@gmail.com,
-	allen.lkml@gmail.com,
-	arnd@arndb.de,
-	chuck.lever@oracle.com,
-	corbet@lwn.net,
-	david@kernel.org,
-	ebiederm@xmission.com,
-	j.granados@samsung.com,
-	jack@suse.cz,
-	jackzxcui1989@163.com,
-	jlayton@kernel.org,
-	juri.lelli@redhat.com,
-	keescook@chromium.org,
-	kuba@kernel.org,
-	liam@infradead.org,
-	linux-arch@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=w3
+	MYd2TVYjVgXHcht1S6pZlncyHsIQAl89MBKPGG9XA=; b=ABIUFPgalmmet5BOg0
+	6WOMthh2aBOugVzhYoQjk6qbo88Y3Y8ADSuNCeXIBVplqg8kb9O3TLQtDoCRG/jj
+	J0vJsgJdmzbi5yp3No9foL+JqGepmPLZL3v/iXS8OOXdc1AcUb5gTSbW+r8K6l29
+	6cMgVxky4c1089BYrUyHxRy6k=
+Received: from neo-TianYi510Pro-15ICK.. (unknown [])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wAXVi4O6npqFnMiBA--.20913S2;
+	Tue, 11 Aug 2026 17:23:26 +0800 (CST)
+From: liuqiangneo@163.com
+To: jgg@ziepe.ca,
+	leon@kernel.org,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mcgrof@kernel.org,
-	mhocko@suse.com,
-	mingo@redhat.com,
-	mjguzik@gmail.com,
-	peterz@infradead.org,
-	pfalcato@suse.de,
-	rdunlap@infradead.org,
-	rppt@kernel.org,
-	skhan@linuxfoundation.org,
-	surenb@google.com,
-	vbabka@kernel.org,
-	vincent.guittot@linaro.org,
-	viro@zeniv.linux.org.uk
-Subject: Re: [PATCH v8] coredump: Add bit 9 of coredump_filter for pre-exit files before dumping
-Date: Tue, 11 Aug 2026 17:22:24 +0800
-Message-Id: <20260811092224.2068821-1-jackzxcui1989@163.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260811-zerfallen-boiler-bissfest-cdb998278337@brauner>
-References: <20260811-zerfallen-boiler-bissfest-cdb998278337@brauner>
+	Qiang Liu <liuqiang@kylinos.cn>
+Subject: [PATCH] lib/test_hmm: fix NULL deref and wrong direction in devmem fault debug message
+Date: Tue, 11 Aug 2026 17:22:55 +0800
+Message-ID: <20260811092256.102101-1-liuqiangneo@163.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBnRqbR6Xpq5jVXPA--.54025S2
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjTRC_MVUUUUU
-X-Originating-IP: [124.77.128.89]
-X-CM-SenderInfo: pmdfy650fxxiqzyzqiywtou0bp/xtbC5xPn8Wp66dPLgwAA3A
-X-Stat-Signature: yp49jwgno146mjqf3yh684dou81g3fge
-X-Rspamd-Queue-Id: 503974000A
+X-CM-TRANSID:_____wAXVi4O6npqFnMiBA--.20913S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtr47GF47Xr43XF48Kw1DAwb_yoWDtFc_GF
+	409Fn5Wa4jyFyrurs3CwnrtrWFy3y7uayxuw1xJrZxuryYq39Iq34vqrsIqas8WrWqvFy3
+	Cr1DZry3Cw18tjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8db1UUUUUU==
+X-Originating-IP: [116.128.244.169]
+X-CM-SenderInfo: 5olx1xxdqj0vrr6rljoofrz/xtbC3w-2WGp66g9FZwAA3p
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786440200-39441
-X-HE-Meta: U2FsdGVkX19XqQGGTLIgGCiKKr1DVKPmCsDBtdV+i2IQ88SPqcwjk9MAqwmH81j3O/QibHFEETpLa3VPfsSFbzeNTCTt7YzqSy+pvlVyQPFOLn3is93jmlgpsnZScpPxdkvlgRchYRh1D1t09rFSky3ZEMi4uah+nwF4X9BnhkrElB5z/2YaweyiEPTDXOkTNLV7qG0JlZq6nl1fCXT+F8SFTPgeFrX/9ZJEUjZsL7ccQyQf6QWGY3OYVFd36wfO9F49uQbcrY85cTNeZrKVeszLh4Wj9ObGauNHUyjPGDg6iPQRAmSHSb369SvQ7vNtKPGEDNZqw5Md371tVgEKf75bAPvcl6Pjug6/L+/L2NdLTE+dVhoGxwHJarIHYxW9O6gztrGgGzBDYnQY7wwqFspsGnuiDc216F0fiParXM6ncfTEsSYCdawR4wtF/dcxSm0CxGK1IVg2sQR7zpv3/kHNSOwBmSHxolVPFYLu+9fgs+WIqy4O7f7b7trdOFkKEN7slMV5n5iN12rNSJYe0H//9grkF9R/Aub2RRcP9ibE8Z0smDg9/hc4/pPQw20Kky4K8xl5Cz4wF75dmGWPisnT0EU44IofFxjU2io8Ruk1V8S3t6uwDXmIav/f+0bhag3o3YEVW77yIdqvc2W66SwSmBSR/Zxevx5cFoTM3JOLQQ52XfRhm0v5hAXim4ZiUXz4U/XCvu3jAZ5kSe8wB6wSJskX4DJ8fnmM5T33yHOem3xVm4bo1awtg2997I7Y2da0GgQRbVxCJvjZz/0saAYQcZLfRqXYtH3NUgNUK26YnrEksHuW1CTGW2l2EUgoCoL6Ba2xvb5gbzdc8Gnt1HNbtjd2lDuMheO8ACvs4+XHcM2VgEujsfPmvbLWLJBCPbobLv26AQ3Dwvd5HiA2c3Fyo5xFG6nbgj63+rOlEV6eO+8kBv2ut9YKeSJ5TaBhESlP868S59rLKyh+WJL
- gnFvc1Vs
- 7DNiTQxHRDEBqW16AakBf2Z1fZArZQYb3OGdNKHCGD2HpnbytM9Nt2p5PONY/hof/5zezjo5mt8WqVsAmipTX67j+jjdsXBt/ckICsf/5U5pJ+uDGNzZjihAzbsC2BlDUthJs+xcwIk/BZW9oOken7Hnqy0qASIxREsb1tKATeKghwzbFnS69pazcJFcl8pb7v0gkBnC/i3pyTR7JT0EfPZ4XKEVXbPUowGtYvBVr8viAmRD+wWbiROXwvPlQzsmTt+aWO4WZloX+GB3bDRQzDeCx7f5uYXtOIQBMTu6zbH83DNyc9IgKo0/4RjPf9OlcrJ4W86ZBRzeTiYBnvvhTQ7uAR07kMnsXoqNiW6sNVhuhfJu8UCXNWUJ0XzMaIiL/dNFXz/sOKb5jSPyzZ9IKHVOmkZFCsZKXiy1dtXIRll117FpeqJHbTzvdq7qRITfDCy05rh7UtKV2FhfCtdF0D+1f5gzYySSIAgNTKPEoBFnxNFj+MWUBGMjDy08n/gVPilx1xvU7chrjBA2HHT2Id52O7A==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 95F1514000F
+X-Stat-Signature: kiu7jphjz37kkp5rnuz9q7gxfek4pk4u
+X-HE-Tag: 1786440220-421453
+X-HE-Meta: U2FsdGVkX18Lx8pp55rMSaku+CaU0TrljISTFY7WaWj9WguCZVAtNrfWZMyMf/5HvHu2tV+6gcz5RzDii/C7Xh6t4+tinY7hGajo0+P9oOOR7lQga7sy/bLsCSSUrZFLKfCCrdgBPI17b42LsEjvptN7iSt+UdZdIbpR0jECOCtbVNHgtEPJExp+sq11zvKTxuc1LpulcqOXa38hMQMbVlNRdMkcxIunqUWzY1/jWdna+iXmgBAE2hk6UGT/XeFn78BjYO4XmtXVO6GPkIa/ItASHkHIyA+2p4jWqgNdAT+Ag7MhX/JhuRMVeaKjGUZSEmuqp0JjPW5lJvtsSzAkn3wgFbHsI6FSSQkaVf0CTtry89uyuI2zxPU5hv2WBJL7O3xaWuyiJBzr22X9Vn1ayOuBUeSz82g/cnVJq9FcRh9Or7wCM7GSWQ0mVxBMNFCJ4SwjjUdWr40H6sILJ7hbmc6OlvATQBEc1mtD6KOrVIWjDTcCFpeWyLLQuwo5JSyKtD6/oZKuwti/H/SQhsIdO61x1yl+ut5rQEMURAyrRbRxgEGiRp7NsDyPsG6VXgm32Ez28DwzF996m4NuYRmf+X8q35yE0eNFjZIuIsqqGbMLs9ZKY6cpJnF7ew/Hsem7YrlBlacZJRNMVJDf1QrDrSAfhqhn0xYJzfuVPV44wDcpf+1J1t1ocV88RTLW1YrgwYHKZvEWVzgaH/jdaFC+cgi2OeemBY3Rf/bBdNkh8HRkOCXAzAYSQcxLeoFgyqVq0BwBbkaICgWYbQ4Tz1gyd6jeIkAnxm2O9Zb/7dSvRD+dvNVj+5+8QQFD3MLprh7YUqWqXnmP9FhXIPRvkOL8q2btOyepyigtrW4l3c+nyFdiLULVT9VgMTNLF7EIm9wmt7wdKS3MvUjA3/THIFBJcIcC5/EOoOMHD+S1a211IzLD6cidPJF4TpD3zh+xd1E721yGrVEp26I3+pTV0GL
+ pEVNqlbX
+ qOfdypgFpFkzg+DuQds0aifm4Sxs+YLycfAGhMG1CjVlHjUaXctpX3mtPLH2pk9PcfO7JuyuMjNIPo0Wo1s9BcjaqskKNx8aHWQ32f7wIv+pTjJbnNAUUfbjUT3YWfoRb4HsEURTSAwnWobz651l9C6k0bO8xCfSJ8W6fIzi5PN27NMiwdpnVTKvJvVW0qVi7YXdN5/zwue5p7tBnoNkG0MkSjB0208mGdIf/+qn/hy/4ul9MWd+wyZdl/ipqeN2AT6Tm/2ad7o7bpxBgR72jUuMBWuLYNegds6I9RvL46O/qVh0ZJ+o/lcOTS3tFwHpXheCrIJLaPW4aw/mWEUob4rZ4EPs7aGJ1IxJJlCXeqZZd2qFTZng23u7SuM7qDN9KERih
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,17 +92,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 11 Aug 2026 11:09:47 +0200 Christian Brauner <brauner@kernel.org> wrote:
+From: Qiang Liu <liuqiang@kylinos.cn>
 
-> Fwiw, I still refuse this patch for the reasons I mentioned in the
-> various other postings of this...
+Move pr_debug() inside the `if (dpage)` block to avoid a NULL deref,
+and fix the direction label from "sys to dev" to "dev to sys" to match
+the device-to-system copy.
 
-Yes, I know. I updated several versions because we found some obvious errors.
-Perhaps there are others like me who have the same needs and can benefit from
-this patch. If there are no new special circumstances, I will not update any
-related content regarding this patch anymore. Sorry for that.
+Assisted-by: Qoder:Qwen-3.8-MAX-Preview
+Signed-off-by: Qiang Liu <liuqiang@kylinos.cn>
+---
+ lib/test_hmm.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Thanks
-Xin Zhao
+diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+index 6e72a0d8a53d..1dae93ab1e93 100644
+--- a/lib/test_hmm.c
++++ b/lib/test_hmm.c
+@@ -1151,10 +1151,9 @@ static vm_fault_t dmirror_devmem_fault_alloc_and_copy(struct migrate_vma *args,
+ 		if (!dpage && !order)
+ 			return VM_FAULT_OOM;
+ 
+-		pr_debug("migrating from sys to dev pfn src: 0x%lx pfn dst: 0x%lx\n",
+-				page_to_pfn(spage), page_to_pfn(dpage));
+-
+ 		if (dpage) {
++			pr_debug("migrating from dev to sys pfn src: 0x%lx pfn dst: 0x%lx\n",
++				 page_to_pfn(spage), page_to_pfn(dpage));
+ 			lock_page(dpage);
+ 			*dst |= migrate_pfn(page_to_pfn(dpage));
+ 		}
+-- 
+2.43.0
+
+
+No virus found
+		Checked by Hillstone Network AntiVirus
 
 
