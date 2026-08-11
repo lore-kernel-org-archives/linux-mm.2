@@ -4,149 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09A73C5B574
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 08:10:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE690C5CFC1
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 08:15:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2F106B007B; Tue, 11 Aug 2026 04:10:22 -0400 (EDT)
+	id D74936B008C; Tue, 11 Aug 2026 04:15:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE0006B008A; Tue, 11 Aug 2026 04:10:22 -0400 (EDT)
+	id D24D26B0092; Tue, 11 Aug 2026 04:15:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCE706B008C; Tue, 11 Aug 2026 04:10:22 -0400 (EDT)
+	id C3B286B0093; Tue, 11 Aug 2026 04:15:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ACE266B007B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 04:10:22 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4EC361A01B3
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 08:10:22 +0000 (UTC)
-X-FDA: 85088266284.16.20644E0
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 799E14000E
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 08:10:20 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9AC3E6B008C
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 04:15:01 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 53BD31C0FDE
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 08:15:00 +0000 (UTC)
+X-FDA: 85088277960.28.0A85764
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5CC1C40004
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 08:14:58 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PpH7CPSf;
-	spf=pass (imf17.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=arm.com header.s=foss header.b=XtT64zIV;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf17.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786435820;
+	s=arc-20220608; t=1786436098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kRDEH2ssIQhIkVPOR6PkKFR0aBPP8ALbaUyGO3LvVVE=;
-	b=WAGhNGJcWRYbD20T1OwOBGw4T0ZYFRiXDfRqHqsUS1+wD3QLPJqGpwf9xQTZt3WdCRrxnX
-	Xc2UZdcNa1sbG/7SlMfN0WFj6XsA/RTCggsl8hYTeMlk2W7jEuqXnoLg+LklQZVELiomi1
-	+I4ns4xPmDO/RX7mNjZQqMg2OyKlNeQ=
+	bh=n06KfqtkNXhQlNqEjFRRwaaVIqjzOi0Sj4tC7sIqbqQ=;
+	b=GEDhmh+Mp4ObagyPAKFmiPwf9g47ENNpEgNTfsjM/anfXU1twJZ1XinBMEG9QWkOHWzer8
+	nU3H0s/j/bUHcYm4hTBKO4mv+BdcBl7wu/6ixJOdPY2/af5r7AaRleIWhi2jPY5FaOzmR6
+	FoBiIYOsK6rTg6R7Gv5Y4rNNtfmMHHk=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PpH7CPSf;
-	spf=pass (imf17.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=arm.com header.s=foss header.b=XtT64zIV;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf17.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786435820;
-	b=JdHftiKsNCi7yZAIbrcLjt9/hDfgU49msWHtD4Um3lXxEtpTlV6i0Xb/7Mb3vPb2XoR5nY
-	2v5zxaO+MXRxyfYusNWzxwofD6IZlW4wD/h2K6O73JLM3xzMu+wVcihzcHgdLejXbzScyj
-	PJz7f6B9MyXQSEBmpyiS86kqfq+REOA=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4955aa106b1so24444355e9.0
-        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 01:10:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786435819; x=1787040619; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kRDEH2ssIQhIkVPOR6PkKFR0aBPP8ALbaUyGO3LvVVE=;
-        b=PpH7CPSfKwoPqXVbCayvIdxqoADAxlgJ7USo946+V6KclRyYouXSIyeqsxtDazkHc8
-         QWLz16x8+bXxSQa6qVmG4S1XC7JLfDpem0V/1A/LRKejHswg07i+rGSPQs/AjLDUO51O
-         djykiUF1An7f+eQXLSRJZmwy2D6y1wmnTkUJkAsKxbopKubcXN+t2JEr7tvyAZgaLpCJ
-         HTRL55DXrMEKonrAORpwwsHwxK66GR+G44aPZ63Ni8z0Q8uZIdK2qH4L0au2dDJgy6Pz
-         YaabRNLlK5Y/nIuT2AmteN06qkzbk4JKCedMHrPljmHHEfqzcrwdt6BElO2vvZc8X/fB
-         /UMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786435819; x=1787040619;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kRDEH2ssIQhIkVPOR6PkKFR0aBPP8ALbaUyGO3LvVVE=;
-        b=G36EED7rZzVwDX31eWI0Qw+MyVkNsBwy3z4nZpa1e4q0athIvLEIjlt6M3W8QqLEuj
-         9vvc6dzDcbbCkRBMGPisE3lt0B4i+xhXQShe4pbXyQgWs9YFRdBU8Jrivvw8t3sX3QIG
-         Hxc50/65wDy9q8ik9EbS1BIAyYKPw/3xV4PVftyVi73QFXP1SdrAxfObPHn4pJXaZpR6
-         9/RK6M4hXFkr0k9HnD/GzWw6d07qx3y92TrVORGdDTiaDLmUs0sxEtfLx/LEPEBTIhb6
-         UHd063Mo1BNpFwPFtfD2y129Pq4KkMnrjgFux8o7XgYBsOBbZurTUAZhp4tpFZpueABK
-         5K0Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rr6KNHVMmV3oUSmGwCx7WuOFLVlK/zQAIbVu1eGgZ4uL1sz7SxuP3pSxRLYVdsG/l0dyPrdpfvjxQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz4V+2LWBd/DDiRkae4cwdGcXL+hLxoEjnUPF8ADNz7oPOfIlPV
-	y6aK6by2hf+yF9GbnY9UDnspEF5e4xSGYt5JqxetyopWUv9lrFzxRuIj
-X-Gm-Gg: AR+sD127ZqfWcMiYxP+8ziRtzJkMtO0PTjkvQskWu6bLz3mhdXduBHqy1LNpGZY7bsN
-	0dZWjbXnV7+uAJ2BIGlld2sqH/zBQ3l/ECEsJK30firNb49fZ6VbslTPpEhuKIR5VhMajcW6OwH
-	B3J9Qf/vzG9cSqrLbzB6/HXvVVqFM/zy6xv4+ej10nO/JO2GzGssxgYii5MynN8xn/IZN/lN+4A
-	asbu3xgwAO1F8HJ4RFcuzY0wuS1I1072z/WWhmBusxjRRI3qEBowKaPjEAENh7SQ4a8N8kAbx5d
-	qMQOM0FHLmkeSEPZ6db2G774dqfge7+LdR97zBz+tv5cvnqovkxhV4YfQPodhPFpQcf9qVl+oko
-	6kIexnp/d3AWHAl0MfcWie5/AqPeaHQ5NT6IcGbX6BEqLs1eHnZjht92sLXnDld7EmGevjviMeK
-	GztP8kkE0us5oF9IErq1JkBmBTxkrcMALHxzY0ReII6qDfrBcxThz7LfkG5/gh02EzZxaxI6B6g
-	npci4cqiwejE9QwPmuO868sx4H8gRbt4dQ=
-X-Received: by 2002:a05:600c:821b:b0:499:6a92:fff1 with SMTP id 5b1f17b1804b1-4997847e9b5mr25827975e9.18.1786435818734;
-        Tue, 11 Aug 2026 01:10:18 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4814a5ac6e6sm2454288f8f.6.2026.08.11.01.10.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2026 01:10:18 -0700 (PDT)
-Date: Tue, 11 Aug 2026 09:10:16 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Kevin Brodsky
- <kevin.brodsky@arm.com>, linux-mm@kvack.org, Andrew Morton
- <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
- Hocko <mhocko@suse.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
- Russell King <linux@armlinux.org.uk>, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Ryan Roberts
- <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org, Huacai Chen
- <chenhuacai@kernel.org>, loongarch@lists.linux.dev, "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>,
- linux-parisc@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, Paul
- Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
- <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org, Heiko Carstens
- <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- linux-s390@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org, Richard
- Weinberger <richard@nod.at>, Anton Ivanov
- <anton.ivanov@cambridgegreys.com>, Johannes Berg
- <johannes@sipsolutions.net>, linux-um@lists.infradead.org, Thomas Gleixner
- <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin"
- <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Ning Sun <ning.sun@intel.com>, x86@kernel.org,
- tboot-devel@lists.sourceforge.net, Ard Biesheuvel <ardb@kernel.org>, Ilias
- Apalodimas <ilias.apalodimas@linaro.org>, linux-efi@vger.kernel.org, Vishal
- Moola <vishal.moola@gmail.com>, Alistair Popple <apopple@nvidia.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
-Subject: Re: [PATCH 03/22] mm: introduce MMF_KERNEL flag and set it for
- init_mm
-Message-ID: <20260811091016.5ca67143@pumpkin>
-In-Reply-To: <33fc9d31-2866-4315-9510-0004deb93994@kernel.org>
-References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
-	<20260714-remove_pgtable_cdtor-v1-3-44be8a7685d7@arm.com>
-	<01f07ea2-8bdd-4450-8a49-548f8b646cfd@kernel.org>
-	<33fc9d31-2866-4315-9510-0004deb93994@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	t=1786436098;
+	b=WkPVYAY8dKdlyYKya/p8StxX0vWjJjH5WLRYPK2kRlyihCzi0CYfPAvq5Eq8p4BdTuioSA
+	5qRezdJU9IR+yU7oymJU5oMm1aNBN0bYosZbYITTvghclITRwuYINMFwl0MxBGi/LjSTIB
+	BA/TBnEOMR8z8QJuKl+UA61SdSR7EI8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 435B31516;
+	Tue, 11 Aug 2026 01:14:53 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 78C863F673;
+	Tue, 11 Aug 2026 01:14:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786436097; bh=IZfnC3W1jx8DOwdmA6H/g4xMnn+4NllgIVeEp2G/EAU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XtT64zIVe/+BggqVXpMVbwZPaCij0g5nlhCkNQ9hpNxlNzeqG8nXTBWkVItokk/Eh
+	 UirZJcfHdg7C0VnYvFiAKKtDSMJh9zSOPfjmzR3XiQ0EeVAyLmy8Lbyo34XoDQrPCc
+	 8q5HhfUOg/5vymPVbEnXBREol8QsBL/jUPiuHtIA=
+Date: Tue, 11 Aug 2026 13:44:53 +0530
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: Sourav Panda <souravpanda@google.com>
+Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org, 
+	usama.arif@linux.dev, shakeel.butt@linux.dev, wangkefeng.wang@huawei.com, 
+	david@kernel.org, surenb@google.com, fvdl@google.com, gthelen@google.com, 
+	hannes@cmpxchg.org, riel@surriel.com, sj@kernel.org, vbabka@suse.cz, mhocko@suse.com, 
+	bjackman@google.com, zi.yan@sent.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7] mm/hugetlb_cma: Fix null nodemask dereference in
+ hugetlb_cma_alloc_frozen_folio
+Message-ID: <xehyld3vcboeewkdddbxbjswbkyklc6ctf362fomjfb57ptqjv@o6x5saemiqfd>
+References: <20260811052909.475635-1-souravpanda@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260811052909.475635-1-souravpanda@google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 799E14000E
-X-Stat-Signature: rcsmpkg4oakge85nr83zk3dm6wdot5ew
-X-HE-Tag: 1786435820-77802
-X-HE-Meta: U2FsdGVkX187l5qumUm6aPGdLZrx2Fp+UVc/ThKW/St3hlimPdZfYkS2pK0KZgMpjntudIQZJ28mwKQiDTWhhjjrGmuIz4Tbjd4ZVH/tH8oHERvSheM2jW2TAjMi9tHtj8VprgqybJTkEh9pxH1UNUwRmoW3TW4viYpe5r0NC57kKRKKkY2JXMR07Pm/OSUy8/yxEtJG0M1vws80O//EcDcgoSsGCgz1qnso553pQcsxkGDpAeO4yGlZL124tmBFGO4lNudLzoPhsJUFNjRA//OeoMXeWsyIpaHOmG+N3n4Y7ktgcsMJ8rB1YZNU7dUHZRPcRIo6ROfsT2a+L3eC79gOX1Ko/XG+TqxjmgYSrevu45YxbFE2tORj/B/rWpF0breqmiHtU9s6HM8zeuNe0W80LUs+O9Cdr3QID0WrPVD8lFYva5Cmw/i2CCNOi68RYHpKGFfjgBwmx3Y90AtoAXgDWvI6i+dNfHCVu677QsZjAwVFIJrWQLkFhA6vC2Y4nUwvUKeALGO73uiZ7DC3yP60oVJlyS3CRDyxVm9Zcwn7zKU3EVksRXGOHjXRvXpjijyY2wLBvBAYxWATSbCLTDcn8ftkeis2NsKwuV58aoaYsmH63HOHmoakjFjEZ743mOJx2hcnM45Oc2BFeDFOQxX9jF1E9yI9FTVYgwRVTJzX/hpX1khj+mGL7s6aIoE0fYeNLszMoYgaxQHUvNnyR2iZ8z7gHdDbNkvxRXAdsHPEt8cZU92kMvGi45rP4ZpuLsvmYL5Cz68MAO4h5CwLRP0sMth/zE+EkF7WS6lcLDqNcl/boSlJUVOXLqCaBvB9tFYt8EMKdsKZiXJT93OaIQFIgWx94pXmrczHR2DFbvf4lFWfm9OLpoiVSbSgVG03FKsBbjUogjq2+kLf0n/0+dx5W3bfng+qqfx5QIHwrzAaLvbRQWwKuja2ORTSwqAHwaWDTV7OXkAQYtYQHuE
- k1ERXbPW
- rZR9MLsBFOSiJJV2zxPSdyw4SZbP7ln8qEDMH2VonaKyRuEkdTwMHnJn1BiWE8DhYFo1LC0DBZv3ZTkrTR6FJSrh8u5+bOmGlnAdceUQoqIzKbCov6h4+rXWdDh7KzmJnCwmW24h4UwgaqhyyMNk3s602Ej6ZImdvQi/qqQ0d15kL9Iaf2kURr8Snx+jZpcwyz5G2AnXOro0KdGBqFGX0SDdMxLqs+4V5qCNYLyf9khsavIWp07MO0C7/CTqu8pzMktgBwJNraWfW6zLDVUqgKzVSgerxEpXIsLAKLMYa9dKzdv0SPSHgFIni4x/OQjagw2O7gtVr+zS6171rFJhINHdH2xSCVayptJAjdTKBMD3Ljg/mfjjBJICUiBWX3sSeNLB00OmXXkOXDrEKOugRtJ73L9ImkW9wnynhQp9dcPb5+VUj4eSJER/Fmcj//EPa0NA8GVBRo+yO/y79kBKPjDRcF7Ndrix43OjlJJPZrjjWdZo2aBjU0vuHIY6P9LDI065Ap6ay+tdITzojDSrPVjyLcrQCNz+O+CamNrB+XuWY47SWoBJcAEdllciloOVpeiOmUKeNIl56iEA=
+X-Rspamd-Server: rspam03
+X-Stat-Signature: wm1px997gyjuesqeh7anbjrjur6tzcz3
+X-Rspamd-Queue-Id: 5CC1C40004
+X-HE-Tag: 1786436098-611594
+X-HE-Meta: U2FsdGVkX1+lLqt8jhkJ0HvAy2FOoOc/0j5ghZcowQyYocgJq8rQaGTqAZ++rGuUMMUz3DSNGnXSIbMdljdtF3wjJIYhWJDrEdfzEoPK4ECmf+8mcKVgrePeNui8dasTlclQs2qXIQpcgKQOyHr3RxrCVu3ns1mdRBzHL68DXlouTISONHKrx4gTKRiGxIVsZfYVKi1R44rp0+/g4vjgd81fgofI76gQ6Y0aid7DzyzWMPQZCAoOcJO7TT/Y2QzgixTlkyw40AVSIwasORnC4CkMrlCNJLUtY04D9w4Zw2RUJc5CQ1Tvz41YE+z03anAuVcu7aY2Cw09aGY2E6PaiD3LY0ct4YbuCM74HI/v5D6joB3bs15RmVhWXckc+s+V/y8kxjnwsDMNnLUaS9pXbNj1MpDZlCBjq/5nIkMzHTgyUqMgwHUMHoLccR89SD/q389UD+4SAgYm971N+M8xb5b2qJgSEiqYR3/0YuPGhg0MP36LdBbZyCG8sb6dgQL2eHs2U4IjJKec8ugCdMsU+XKntWNIxwFMokItE6bNYIrdMfPjd+0TQ/u9sfwwWsJsrpIpRZXNBylHgc8kMRGSqTyjveilXhHSEkb2FVoW4xzHxd/Sv89iI1Fw6QG7GcIN3YP9ZJOY/9yBagK6yVyqV7VmH2xzvh+T/DHFpSrEgN7f4XMgmjk7BMAuHDrHAaKsbohbyukrPI/CWs1h3YyY+KhO2HxCYYorn8TUTPqvRjb5gDTU9RX/++MnULKl1Iq1PPtQ25swFk13iF2IDaWDVYXwLLZnH7Vsru0cFoYAhdvkB/VACLgZs31jtpz6oK66ZuYnw/DPEEFUvdf/EcKn4gmWqLp/bhYoTHFhL8aUFu2d84qacJo4fiXKqo98Go01uVwGqxUADwVmxXqn3KK2nRzNkgdkygq8wkYXUsukXzL4SQvztwZjfGGfICgDjxzKQsSY29NDzmEMO7PXt/r
+ 7W+pUger
+ ojl7RyuCCrXt6oL7Zde5RR6R/neGFEMUwJ38Rj1zPHjrdpY+XjcXRF+nsVuLAdg5IzBNkRF/tfTQXUMasmwmykwwpZIidy/aNORZmQ2MsMRp300ElhYba9ebEu4zZZmif2b9fQKXgwKdpNHGAbAYQWDYj1Ka661CG1oTnUHDXuGvufM/i0eFeJ4fyX4s+qS3V61fSCQdNEr5nYniVCuxlYsDTToaHNp6CgdNAATcq+uoe9y5OsvGM+QX6/G9E9d34dvVRqWmJvvFyX4upV43DRNp+xCEK4qpEjQPmJvYF1ppuFRpvfd8Wz6XxAA4ySMzuJJRxJ/ZwbIrhXaSRwKP5LnD7vgvYsIb2A6lWQVmxBr689dad3MqpSePFv8XYLCq7Rz3TAUuQM7DZiucYEZBR0L7bH4uWa4InzsoFoE3xnN7YT9TydEHFzah1HA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,76 +92,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 5 Aug 2026 14:07:01 +0200
-"David Hildenbrand (Arm)" <david@kernel.org> wrote:
+On Tue, Aug 11, 2026 at 05:29:09AM +0000, Sourav Panda wrote:
+> alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
+> alloc_fresh_hugetlb_folio() as a fallback to allocate from all
+> nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propagates
+> the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() via
+> alloc_gigantic_frozen_folio().
+> 
+> Additionally, hugetlb_cma_alloc_frozen_folio() previously attempted
+> allocation on hugetlb_cma[nid] without verifying if nid is included in
+> the caller's nodemask. Adding a node_isset(nid, *nodemask) check ensures
+> the initial preferred node allocation honors the memory policy / nodemask.
+> 
+> However, hugetlb_cma_alloc_frozen_folio() dereferences the nodemask in
+> node_isset(nid, *nodemask) and for_each_node_mask(node, *nodemask),
+> leading to a null pointer dereference kernel panic when nodemask is NULL.
+> 
+> Fix this by checking if nodemask is NULL in
+> hugetlb_cma_alloc_frozen_folio() and defaulting it to
+> cpuset_current_mems_allowed. Enclose the allocation attempts within
+> the cpuset seqcount retry loop so that if the cpuset changes concurrently
+> during allocation, the attempts are retried using the updated nodemask.
+> This ensures that the initial node check and fallback loop safely honor
+> the task's cpuset without violating cpuset constraints or causing NULL
+> pointer dereferences or unexpected allocation failures.
+> 
+> From a userspace perspective, this bug allows an unprivileged user to
+> crash the kernel (trigger a panic) by requesting a gigantic hugepage
+> allocation with MPOL_PREFERRED_MANY on a system where CMA is only
+> configured on a subset of NUMA nodes.
+> 
+> This can be reproduced by booting a VM with two NUMA nodes, restricting
+> CMA to Node 1 (e.g., hugetlb_cma=1:1G default_hugepagesz=1G
+> hugepagesz=1G hugepages=0), and running a program that allocates a
+> 1GB hugepage area without reserving, restricts allocation to Node 0
+> using mbind() with MPOL_PREFERRED_MANY, and triggers a page fault:
+> 
+>   void *ptr = mmap(NULL, 1UL << 30, PROT_READ | PROT_WRITE,
+>                    MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB |
+>                    MAP_HUGE_1GB | MAP_NORESERVE, -1, 0);
+>   unsigned long nodemask = 1; /* Node 0 */
+>   mbind(ptr, 1UL << 30, MPOL_PREFERRED_MANY, &nodemask,
+>         sizeof(nodemask) * 8, 0);
+>   memset(ptr, 0, 1UL << 30); /* Trigger fault */
+> 
+> This results in a NULL pointer dereference:
+> 
+>   BUG: kernel NULL pointer dereference, address: 0000000000000000
+>   #PF: supervisor read access in kernel mode
+>   #PF: error_code(0x0000) - not-present page
+>   Oops: Oops: 0000 [#1] SMP NOPTI
+>   RIP: 0010:hugetlb_cma_alloc_frozen_folio+0x75/0x120
+>   Call Trace:
+>    <TASK>
+>    only_alloc_fresh_hugetlb_folio.isra.0+0x2c/0x160
+>    alloc_surplus_hugetlb_folio+0x6d/0x100
+>    alloc_hugetlb_folio+0x3c5/0x660
+>    hugetlb_no_page+0x3d9/0x650
+> 
+> Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic hugepages")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sourav Panda <souravpanda@google.com>
 
-> On 8/3/26 15:59, Christophe Leroy (CS GROUP) wrote:
-> >=20
-> >=20
-> > Le 14/07/2026 =C3=A0 16:03, Kevin Brodsky a =C3=A9crit=C2=A0: =20
-> >> mm code often needs to know whether some mm represents a kernel or
-> >> user address space. This is currently done by comparing the mm
-> >> pointer with &init_mm; besides not being particularly elegant, this
-> >> ignores the fact that other mm's (e.g. efi_mm) may also represent
-> >> parts of the kernel address space.
-> >>
-> >> Introduce a new mm flag MMF_KERNEL and set it for init_mm.
-> >> Subsequent patches will use this flag to replace comparisons with
-> >> &init_mm. No functional change is introduced for now. =20
-> >=20
-> > Did you consider performance impact ? This test is usually done in quite
-> > critical memory handling functions.
-> >=20
-> > init_mm is known at link time. Before your patch 08/22 there is just a
-> > comparison of mm (r3) with a constant (loaded in r10):
-> >=20
-> > c0014048 <assert_pte_locked>:
-> > c0014048:=C2=A0=C2=A0=C2=A0 3d 40 c1 09=C2=A0=C2=A0=C2=A0=C2=A0 lis=C2=
-=A0=C2=A0=C2=A0=C2=A0 r10,-16119
-> > c001404c:=C2=A0=C2=A0=C2=A0 39 4a 03 98=C2=A0=C2=A0=C2=A0=C2=A0 addi=C2=
-=A0=C2=A0=C2=A0 r10,r10,920
-> > c0014050:=C2=A0=C2=A0=C2=A0 7c 03 50 00=C2=A0=C2=A0=C2=A0=C2=A0 cmpw=C2=
-=A0=C2=A0=C2=A0 r3,r10
-> > c0014054:=C2=A0=C2=A0=C2=A0 4d 82 00 20=C2=A0=C2=A0=C2=A0=C2=A0 beqlr
-> > ...
-> >=20
-> > After patch 08/22 we have, it first checks that mm is not 0, then it lo=
-ads the
-> > word located at mm+528 then AND it with 0x1. This load might be costly.
-> >=20
-> > c0014048 <assert_pte_locked>:
-> > c0014048:=C2=A0=C2=A0=C2=A0 2c 03 00 00=C2=A0=C2=A0=C2=A0=C2=A0 cmpwi=
-=C2=A0=C2=A0 r3,0
-> > c001404c:=C2=A0=C2=A0=C2=A0 7c 85 23 78=C2=A0=C2=A0=C2=A0=C2=A0 mr=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 r5,r4
-> > c0014050:=C2=A0=C2=A0=C2=A0 41 82 00 10=C2=A0=C2=A0=C2=A0=C2=A0 beq=C2=
-=A0=C2=A0=C2=A0=C2=A0 c0014060 <assert_pte_locked+0x18>
-> > c0014054:=C2=A0=C2=A0=C2=A0 81 23 02 10=C2=A0=C2=A0=C2=A0=C2=A0 lwz=C2=
-=A0=C2=A0=C2=A0=C2=A0 r9,528(r3)
-> > c0014058:=C2=A0=C2=A0=C2=A0 71 29 00 01=C2=A0=C2=A0=C2=A0=C2=A0 andi.=
-=C2=A0=C2=A0 r9,r9,1
-> > c001405c:=C2=A0=C2=A0=C2=A0 4c 82 00 20=C2=A0=C2=A0=C2=A0=C2=A0 bnelr =
-=20
->=20
-> Is that a real problem, though?
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
-The cost of the read is likely to matter most if the branch gets mispredict=
-ed.
-I'd also guess the mm isn't usually NULL - so that branch needs to statical=
-ly
-predicted correctly as well.
-I'd also not assume that the mm is in the cache (unless the surrounding code
-has already accessed it), the L1 data caches are small.
-
-	David
-
-
->=20
-> What we could do is to just keep the =3D=3D &init_mm check internally on =
-configs
-> where we know that there is only a single such MM context.
->=20
-> Just a thought.
->=20
-
+> ---
+> Changes in v7:
+> - Removed local_node_mask stack variable as suggested by Muchun Song, setting
+>   nmask = &cpuset_current_mems_allowed directly to conserve stack space.
+> - v6: https://lore.kernel.org/linux-mm/20260810230844.3778931-1-souravpanda@google.com/
+> - v5: https://lore.kernel.org/linux-mm/20260809043250.2917406-1-souravpanda@google.com/
+> - v4: https://lore.kernel.org/linux-mm/20260726072935.3513996-1-souravpanda@google.com/
+> - v3: https://lore.kernel.org/linux-mm/20260705175119.440599-1-souravpanda@google.com/
+> - v2: https://lore.kernel.org/linux-mm/20260704174930.2885785-1-souravpanda@google.com/
+> - v1: https://lore.kernel.org/linux-mm/20260702215713.627941-1-souravpanda@google.com/
+> 
+>  mm/hugetlb_cma.c | 21 ++++++++++++++++++---
+>  1 file changed, 18 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+> index 39344d6c78d8..3e22161686d2 100644
+> --- a/mm/hugetlb_cma.c
+> +++ b/mm/hugetlb_cma.c
+> @@ -3,6 +3,7 @@
+>  #include <linux/mm.h>
+>  #include <linux/cma.h>
+>  #include <linux/compiler.h>
+> +#include <linux/cpuset.h>
+>  #include <linux/mm_inline.h>
+>  
+>  #include <asm/page.h>
+> @@ -30,15 +31,25 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
+>  	int node;
+>  	struct folio *folio;
+>  	struct page *page = NULL;
+> +	const nodemask_t *nmask;
+> +	unsigned int cpuset_mems_cookie;
+>  
+>  	if (!hugetlb_cma_size)
+>  		return NULL;
+>  
+> -	if (hugetlb_cma[nid])
+> +retry_cpuset:
+> +	if (!nodemask) {
+> +		cpuset_mems_cookie = read_mems_allowed_begin();
+> +		nmask = &cpuset_current_mems_allowed;
+> +	} else {
+> +		nmask = nodemask;
+> +	}
+> +
+> +	if (hugetlb_cma[nid] && node_isset(nid, *nmask))
+>  		page = cma_alloc_frozen_compound(hugetlb_cma[nid], order);
+>  
+>  	if (!page && !(gfp_mask & __GFP_THISNODE)) {
+> -		for_each_node_mask(node, *nodemask) {
+> +		for_each_node_mask(node, *nmask) {
+>  			if (node == nid || !hugetlb_cma[node])
+>  				continue;
+>  
+> @@ -48,8 +59,12 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
+>  		}
+>  	}
+>  
+> -	if (!page)
+> +	if (!page) {
+> +		if (!nodemask &&
+> +		    unlikely(read_mems_allowed_retry(cpuset_mems_cookie)))
+> +			goto retry_cpuset;
+>  		return NULL;
+> +	}
+>  
+>  	folio = page_folio(page);
+>  	folio_set_hugetlb_cma(folio);
+> -- 
+> 2.55.0
+> 
 
