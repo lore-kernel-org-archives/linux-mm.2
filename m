@@ -4,111 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 387D0C5B572
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 14:36:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35D6CC5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 14:42:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01BE56B0092; Tue, 11 Aug 2026 10:35:59 -0400 (EDT)
+	id 2BF866B008A; Tue, 11 Aug 2026 10:42:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0F396B0093; Tue, 11 Aug 2026 10:35:58 -0400 (EDT)
+	id 222726B008C; Tue, 11 Aug 2026 10:42:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFE346B0095; Tue, 11 Aug 2026 10:35:58 -0400 (EDT)
+	id 09F726B0095; Tue, 11 Aug 2026 10:42:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B844F6B0092
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 10:35:58 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2A1EF1A0456
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:35:58 +0000 (UTC)
-X-FDA: 85089237996.08.187FE11
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 794A81C0013
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:35:56 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JGttuWvP;
-	spf=pass (imf21.hostedemail.com: domain of joyetamdk@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=joyetamdk@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DD5816B008A
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 10:42:26 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6B03A1C1288
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:42:26 +0000 (UTC)
+X-FDA: 85089254292.30.8021E29
+Received: from relay.hostedemail.com (unirelay03 [10.200.18.66])
+	by imf05.hostedemail.com (Postfix) with ESMTP id AEFF7100009
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:42:24 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786458956;
+	s=arc-20220608; t=1786459344;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=nyOgrpKJkHA8gAiY75lnj2+ioe7jla8qo9VP71q6SwU=;
-	b=U2nM8f+E3nXotNABVUmFV9ahkU3S+FRW8KQOJCewlZ2HSuAEV1i73SZrg/kwg4i52TjV9L
-	9W+sxQGDMfN/HkindiqFfKUdMtsdLbHWMPSXoEoXoZoH3LrSKBZ+v0tnOMRJt0SV8d1Dnl
-	/RRanYWkUj0lTITknvel+9QTeUfmNv4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786458956;
-	b=2VaIBZbbnh5duhzPJTueeYrqMhRKJOy7bh8GSAAaYEdCP7A36LqTpwjg9o5ysHVavFf+7C
-	9wJsc7/0BPBvtEsglRnGHzGWZu09q0GDrtzBgC+gWUVlA6Da12Q8TPkptcGkZkpkItuBE3
-	X/+v3yI/ESV98FgP1rl5BGEHCSGKu/o=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gcSfS7QNtE6S94cqoaez+NvxQo3hToTMKglv3I/la3A=;
+	b=u3jh4i/NUY76sNKtkjKYi9s6QyYNWcumOuNdME+PL4jN64WyG/4RQMiIJS6R68lkI09fgT
+	y5ogSuedbKy4YiOUMX+IaON+MQWSn0roxn52Bq8ob/Zu7QSGu6WJEdImZ7gqrNWFBn+m/C
+	lW20NnQz7QPdvDhc5dqAlBHRwXPhQ94=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JGttuWvP;
-	spf=pass (imf21.hostedemail.com: domain of joyetamdk@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=joyetamdk@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4954f5e8020so16600695e9.2
-        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 07:35:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786458955; x=1787063755; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nyOgrpKJkHA8gAiY75lnj2+ioe7jla8qo9VP71q6SwU=;
-        b=JGttuWvPaJjyJgpN2uOGYhWPIe+328kDw0oQBz30TkXhCcoIZNjlgXDQHaJEkEft6Y
-         wzvBZbkoaBVvgX9D9ezWQnUEIURHozxIqtehhmKTOUTC7JHY5Uho7k01FVDD7uQkW1n2
-         jNWRSwVxEJiYDmli5eKE3W96OoncPVsHNU4FpYGcxV2lhfK2F9HPswN0fv6VIcJY7Fei
-         3TBajNnfw5uLpHguqCnBSN4z5pw8AU395G17kokzuNXN0Vo7OQOjxhHdFtFj8zPCdXKB
-         2s7K6JnMX3nDq/YhslztiPT6GoXNO9ztFBeEGlVmMjqqw8clsEz436Kz+EIFOjc8wENs
-         d+eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786458955; x=1787063755;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nyOgrpKJkHA8gAiY75lnj2+ioe7jla8qo9VP71q6SwU=;
-        b=DM6/dxQyRyBoNt2iyk5s0Ykfl5te8EoubWN7NifMjNJUZKruCd0LDveTQDcU5EKJCF
-         xbxDc34GdordmrWjb+yqfIWaH+XQYVxnYOBG6GEIQ+OZn7yTX32t3KE54NmMxXOiTqqB
-         gmAeCMc42qw3ArW3/OfNPquS6WHEOePyEZsf68hz7yI1bqlKmRTcD5npIeFL7n4WgydB
-         QcziqqNqepLfZaKYXx0Yyy6RxvE3Az8Lqv4gFE1Z2/W84NSUMRZ/08wmqaufGX8LQykG
-         5GwgZhL3SUfoDqT9PKm6aEYauWNcEc6mtovuQmy2JJkOQrLMNxLLl2ofCsM3a6o090W4
-         S6DQ==
-X-Gm-Message-State: AOJu0YyZgNAJsKzTqk2E82Ac8Cf6YVn8ccZGwAWmBcYAagBVTcGKBC64
-	LdkUq1TGUWyBeS/gcxDNQxwJ21xRuaWT18RwaHl1uVcMgscjvCoxQNXv
-X-Gm-Gg: AR+sD13b2GRk0KjI8ELKS+U/keP7vq23XUryVhv3uoS+EX7xkS3mDujCits6jbGYw5Z
-	n/ykWcnYhDyKAOpVRM3Htoi7cTS3DorCLYHswx/KUsDRxjBk2IH4/SsuYSMb6DucGvUzB8WKHBD
-	DDznnQSWjE31EF5+Jfz8tK5dPitTn7s5mi25IUZ/0b9CXNqZ89dVOL0r9FM1w5gWEy4V3Lbt7NL
-	DcwApdMkSnFT9ZRgkgZZfA1+JxMsO74hyY0tjw4J0uBb5IxLkx6EPMnuwD4OsT/FfyLV0wBZOGs
-	zxhtzwm16muoE8bFruYosvORvARExLc1NCHF6wAnlXV2ZP9GEmuzLeHU7H9SZhZVM9vQSoft8TM
-	qBCfOsz6yuLiq2UL+btcfYAnj5xqUDhsGjOSyZXzbJU/A5Hnueo0n5LviqHPFB356hdncIQNpwf
-	b6QT8SgndHkQDxf5xfW9hPS/MCI6dFtbkmeWyt/h55VcWjT2i2WT5FOtFVLtlADoxfckXRbaTq
-X-Received: by 2002:a05:600c:3495:b0:495:4811:7998 with SMTP id 5b1f17b1804b1-4997848412bmr75446575e9.17.1786458954997;
-        Tue, 11 Aug 2026 07:35:54 -0700 (PDT)
-Received: from localhost.localdomain ([45.249.68.153])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499788a5be9sm74296965e9.4.2026.08.11.07.35.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2026 07:35:54 -0700 (PDT)
-From: Joyeta Modak <joyetamdk@gmail.com>
-To: kees@kernel.org,
-	shuah@kernel.org
-Cc: linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Joyeta Modak <joyetamdk@gmail.com>
-Subject: [PATCH] selftests/exec: add missing SPDX-License-Identifier tag
-Date: Tue, 11 Aug 2026 20:05:43 +0530
-Message-ID: <20260811143543.45989-1-joyetamdk@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	imf05.hostedemail.com;
+	none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786459344;
+	b=yyeupxgzShOzBGv/h5LnZSrYS0BdQj8X/vFDqStuLu2IWHe1elLz+Gbx4AK6xbM2KUBEFU
+	j0pjEcn7tqJsSVMmQHOscatbRboBQ/sd3jUp7tXBkzAlGSMUmQdR6Rydk35akzgCyMCeG5
+	TJhNnTuWWGS/USHbX4x6G5Aef4eh36s=
+Received: from omf06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 80210A04AB;
+	Tue, 11 Aug 2026 14:42:22 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf06.hostedemail.com (Postfix) with ESMTPA id 1BDE720010;
+	Tue, 11 Aug 2026 14:42:18 +0000 (UTC)
+Date: Tue, 11 Aug 2026 10:42:29 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand	 <david@kernel.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, "Liam R. Howlett"	 <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport	 <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko	 <mhocko@suse.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams
+ <clrkwllms@kernel.org>, Simona Vetter	 <simona.vetter@ffwll.ch>,
+ =?UTF-8?B?SsOpcsO0bWU=?= Glisse  <jglisse@redhat.com>, Christian
+ =?UTF-8?B?S8O2bmln?=	 <christian.koenig@amd.com>, "Paul E. McKenney"
+ <paulmck@kernel.org>, Sean Christopherson <seanjc@google.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, kvm@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+Message-ID: <20260811104229.72fdd928@gandalf.local.home>
+In-Reply-To: <a552b227e18ddbb3fa1f2edf2d1cb30ee6ccff13.camel@infradead.org>
+References: <a247c49dd61af1df7ddc4dcb1cccbcb36b04d9d5.camel@infradead.org>
+	<20260811135537.GC544626@ziepe.ca>
+	<1d669aca4ffee797b9c29215382444a5b23624b3.camel@infradead.org>
+	<20260811142730.GG544626@ziepe.ca>
+	<a552b227e18ddbb3fa1f2edf2d1cb30ee6ccff13.camel@infradead.org>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19dAleZhUOu5jMhgkH99lyj0Dn95BWTID4=
+X-HE-Meta: U2FsdGVkX1979J+Q3OdtvU+zN/hhYl9JQhI0wFYQuN1ZrCOyLwM835zzoagX5l163DZzohmxYfjMQMg9LMvXrD6bg3AeHd1TrLiR6S1r8L72HAN+v3XhoxZRX8xO+2I0Jc1dgxN+O60SUmzois9+y6MU9QJdwUAoXwKZYXZvgflOY5MkQGkqp/ZeTZ3GzgxqRZ0WF8S3WS8LB8o7TyvqBGXiA98/d9imuVuTVh0RKt7dphRhabMtXLx1CHkUp+8F6TrPt7w6fDOjixFfwzPAI0/VQK18sVl3nuIRCZ+fXGfIeFWakblsUYrcuLOfrE2v16Fx2y20k2tKyfUJUKu/Aa1kEnu9UsWEY7fVgeGUG4kiRo2q1nZuksArsq2JybJg
+X-HE-Tag-Orig: 1786459338-307469
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: AEFF7100009
+X-Stat-Signature: oxypg9f677wxwcpnaarkrfp38fcwugwo
 X-Rspam-User: 
-X-Stat-Signature: ujq3cydqkih6nxcp48qjdp31sxc1ant9
-X-Rspamd-Queue-Id: 794A81C0013
-X-HE-Tag: 1786458956-324652
-X-HE-Meta: U2FsdGVkX1+PHxjRrzWYK9X1EBUsLhOTDCWkbO62G0JGJtCVQ2HWTpRx5+4xFsOzQMX+wS97+Ey/KuJekHFGKPVHCitvkgCh9IQOgmlIHqhg1N2FjJqpKYPShkGTZo8rV3JhOqxyE+25IHDYfIpCXsmM+Wgv2Tr25brLaqU2hyUEr/OgErdL6HpxuQMTdbi11aBpo6q7KwyPyyprzII9Nux1xvNnTeRWnxfRC9p21HEzW3+xmXMOCu5Y1F0mquPGiU6St47O71mpKykeHBe+/1xthniSMje2xuRKdtJJFQ0qYRHUF4OdOk7zwZj9b4YzEYsJxEhjqo0nxF6nttTaKDxsVnOW7yCPDZb3TfcZpKh/SbeLBrkMJjp3L03l2EgBEJnJTOuNKh1KkT9TXm9YkBfsUgxbASplldOfMQMDBFvpsgkD2+4x4ZG8kwmimEfnkPIT/e0W9uncd5ZAJODAHzXrILwVsc3loHXhyKU0eTcsVf5aos+IbJv0YMusQPpBSJRsnRKKfuaOF3Rkzpg6E5r18IDsjhATGpKxqF0946PxdMQR43Hsv55T7EFZ1dKSKvlHDpErnPaon0bGHo+B2819Gr7a5tT422bdJKUrY0xkayDe/aXI0pYJVFbl44reCbqHNjvs5el2rL/BCRMT0zwXvmzpa/BheqPce0qZD24j6/xUk3vc3cfCGRbds+tKs96Wzgu7M6T7pnns55OBMCyQRL4qIZfWPSJIOusbqEAPI/nHQaItwFDzlus1oJzlFHjOgesU8hsrcc/Rf8Q/n94SsMEgKso5BvSpNDMlgOJoXWLnrsJNEXHS3Aybyvh+kGcJtD1LyASU2Z860IeoMrPUJTvjlaNAZ6nflenf5XEJV4JXAJ8Fs9DtRPWYNXO9ohukMizHwmrTCEj9ugYT0A4Th/a/mX3rIFhs6nJASlpebdbLf2rUhpZQFq3omS4YwaJ0s0klEBh+Uqcitgh
- iykCxhp/
- 0pJoIg6Z2ygV61/eTAqK3Itlf2a8bVD6pfOPd3i3v+g6+jPjqsuonVMoG5yyWHRXLlwxGIWmTBcuHfHZHVEGhA3iHq2eHtYgOflW1OjZmOSdaEKSL0d+NrTyAcMjbb6YReefmBE+nag7e7gtpqv/keR4FQfZ3vLy2dA6N1R9reDjwesxtWP2lWpV3qozvECxpvUCLOFG4WLcGACXsMfOF/t5du7tgys7FON1yczN3SPaXxIEsuL9k5RQZswcNXblp09zmmVECnHoY6jYmkXhy2e+36jOL3RiBW58NhcMJxZVNX9/3jknklHjk/WY7lTXqYBlHaMTZXZjFsjGH5SbEWPoHYhtYQ34bmmNa3wUkKJm6iN3cjRxNIYxEaLcFQyfyp6BwbKrgCSAr91Z8FERIJ58EwA==
+X-HE-Tag: 1786459344-107451
+X-HE-Meta: U2FsdGVkX1/kAuQBQKZ2jg7djF3EZK1gmAygtqdndF5b1dMUOdvarAV1kdCbraQocI5omZiImjzkh6Ttiao/mTp4EHSWIqrApk0s9FbQPR49LgLy1WFlQwnhfgQ9Lh1oK5r9T8EP9frRkTbXEcfGljiejJuImkQP56+EvXcfq/audD8eg9wIqg9BByo0RFHoYh/0j/2Ip3OL6S71aRO6TfBbytsU+FTjbvbB1Lln0tJN/EXMnr2MIdwBOHqmKl87+KawliED1KcQ6x5fMpVF5nCRutQK90WVJCprA3TCRT/0/rKDMfrvNTIHhTg77QSFgllSBQhjYjjgJ6tnMR3GX3d6yDjCjvRcrUGbynClIm4X+npfvogFIHkG8GWi/6tnPzTtoJv1KpwSGCCHifiq0+vQrXdXS1gwSge6jmohFipvIQUDbD3SKLw5jqT+k9IHCXLUSzoLcTR8tLb/4O8bT4c9hJW+e9lpbo4U2CfCjwFPd2gx+3biDvSasRf6jvWxVM+O0P3lfSLuJFnuOvUIq+QP8Usr0gGcLN8Hmclv5i7aXQc4imEbs8N9JSPn2q896zVDbzJO7+3unu/dyjAwRaW91XdHyIYs1qUmXdHhCM+UfVbNWyEUefpTzH/XtrHC0wTDK4Hch9lAlsIE/2vBt1tygfj6SzCwlvlu55ce9GEZIIhLZsSfuPs4q1l37yrwDSCGHp3t8uU5u9mEB9dm02Eg/EkNKt20JKPTBpy9ut2xBohGaFwMtP66pNuXx4/FWuARQ1A8F3+HpbmfKEvgj7rWpbr4dxiEWyctXZnP6n79tWBFEdEHZZFCq6PbIi6hanQjv2zWEm+1cw6T47QQQyq59Q31zIt6m04Py7zZw7YOasUaaFcG8XcQ4Hp1l78VPdmrutDqWYWzZ5kII0A9BTFladCNPFMZ0vLjdhhYyHqsEE3EO4lfBPamrEXi637QJqNm0bK4umCuxFrzHlQ
+ Jrh4cfMc
+ IPF3J7QHL1AS1nwwSldNTcVv/c7fbqfCrAlXJCqwAM3oVQpvsRKwJLOvKDJhQH9FvOedIOnPRV9zJdog=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,26 +97,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the missing SPDX-License-Identifier tag to
-recursion-depth.c . The file uses the ISC License
- as indicated by the existing license text in the
- file header.
+On Tue, 11 Aug 2026 15:33:18 +0100
+David Woodhouse <dwmw2@infradead.org> wrote:
 
-Signed-off-by: Joyeta Modak <joyetamdk@gmail.com>
----
- tools/testing/selftests/exec/recursion-depth.c | 1 +
- 1 file changed, 1 insertion(+)
+> > If might_sleep doesn't work sanely at all in preempt_rt then just
+> > globally turn it off?  
+> 
+> Turn might_sleep off? Or PREEMPT_RT? :)
+> 
+> The RT maintainers are on this thread if you want to pick either of
+> those fights... that was not the course of action I chose to take.
 
-diff --git a/tools/testing/selftests/exec/recursion-depth.c b/tools/testing/selftests/exec/recursion-depth.c
-index 7b5c4f6d1928..a6c42a9b22d7 100644
---- a/tools/testing/selftests/exec/recursion-depth.c
-+++ b/tools/testing/selftests/exec/recursion-depth.c
-@@ -1,3 +1,4 @@
-+// SPDX-License-Identifier: ISC
- /*
-  * Copyright (c) 2019 Alexey Dobriyan <adobriyan@gmail.com>
-  *
--- 
-2.53.0
+I guess the question is, what exactly is the reason for sleeping to be
+prohibited? In RT, sleeping is allowed in most context because most context
+are threads (like interrupt handlers and such). Now, you still can't sleep
+in NMIs and hard interrupt handlers that were not converted to threads, but
+I'm not sure that's the case here anyway.
 
+If the non_block_start() is just a big hammer to make sure things are fine
+in non-RT, it will likely still be fine in RT even though it may block and
+sleep. But what it blocks on are sleeping spin locks that likely would not
+cause an issue here if they didn't cause an issue in non-RT.
+
+Thus, perhaps something like this:
+
+ 		if (ops->invalidate_range_start) {
+ 			int _ret;
+ 
+			if (!IS_ENABLED(CONFIG_PREEMPT_RT) && !mmu_notifier_range_blockable(range))
+				non_block_start();
+ 			_ret = ops->invalidate_range_start(subscription, range);
+			if (!IS_ENABLED(CONFIG_PREEMPT_RT) && !mmu_notifier_range_blockable(range))
+				non_block_end();
+
+?
 
