@@ -4,135 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A43E8C5CFC1
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 20:08:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FFB6C5B56A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 20:13:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F2246B0092; Tue, 11 Aug 2026 16:08:39 -0400 (EDT)
+	id 910EC6B0093; Tue, 11 Aug 2026 16:13:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A38A6B0093; Tue, 11 Aug 2026 16:08:39 -0400 (EDT)
+	id 8C27C6B0095; Tue, 11 Aug 2026 16:13:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 893AA6B0095; Tue, 11 Aug 2026 16:08:39 -0400 (EDT)
+	id 7D7ED6B0096; Tue, 11 Aug 2026 16:13:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 56D646B0092
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:08:39 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CA523C023E
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 20:08:38 +0000 (UTC)
-X-FDA: 85090076316.03.A6BF07C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 222CC1C0007
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 20:08:37 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MVsx4Y86;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B7C26B0093
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 16:13:45 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 608FE1201FF
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 20:13:42 +0000 (UTC)
+X-FDA: 85090089084.30.0A75F99
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E403E80010
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 20:13:39 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=a066R9N2;
+	spf=none (imf30.hostedemail.com: domain of BATV+83a8f2163782db0f52ba+8388+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+83a8f2163782db0f52ba+8388+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786478917;
+	s=arc-20220608; t=1786479220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ay4Sx1aFee/8WOMMoH+smEVqfxFPpuKMRZQpbR6u3yw=;
-	b=Yo2K8qYk6ktssNj5DktE1SD65gQa2z2vd6YmsMd+m39ilMgP5nSPG78PPuOzQOHap2/xiT
-	9pJNTNopkSbZ88ZIiCRWXSX5a2lV7oTB6jEdFY3//twLssp43B+iTw8zk5KIYsTzRyTBwE
-	wvBE7gA/dNmk/dCfWgNTrdKWRk22Qs8=
+	bh=6YbFpOmvNf504sQf2QihriBMoey+d8zmHbwInFB/oZQ=;
+	b=HSQnLZVPoE57nAt0HQdBToZo+lkGu0IG7f0zie/aPAX6j4CaCdQ65f/fe2C0HfTQe5xX6T
+	rwT14tjVS3B8nuTZBUZ1/Nhvx5T/RqH/fyzcbqLRjCNsjn4EA04KgQ0M/PeDmdOnAsMEwv
+	Uw++qIQHTyjP3NX4RFQbgkoxlpwvc8M=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MVsx4Y86;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=a066R9N2;
+	spf=none (imf30.hostedemail.com: domain of BATV+83a8f2163782db0f52ba+8388+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+83a8f2163782db0f52ba+8388+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786478917;
-	b=xUIBg5aMEE+XjCN8tPwUjhQRvXUbp1WcFUPRDOBoA0C1eEQQGai8bio1fxW9T6ruX/mZKD
-	XduTeItI66AJVbuY6u+oQFvxhYR2rOasWyA9ino//IkIIc4jQ756wFOrz5vxXmmTCGtA+v
-	+LkF7oULV4zEkyDdX51+qEq1yl93swE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 337F0600AE;
-	Tue, 11 Aug 2026 20:08:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384501F00A3A;
-	Tue, 11 Aug 2026 20:08:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1786478915;
-	bh=ay4Sx1aFee/8WOMMoH+smEVqfxFPpuKMRZQpbR6u3yw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=MVsx4Y86Lda8QCjyAeakFZeNbk1U1nnbpjqsIPtBxUMubFHCaQYUz20Z8mA0RiRLA
-	 VCd+fPtrTR+NcFIxYVzfhh214iv37GZnIs3sWMgVPEcj8F9bTxcMlXmXihxTs0oG+8
-	 fLgI8mKfy36hIx1mSwWptiKfVBg1ORNZHfRMBLR4=
-Date: Tue, 11 Aug 2026 13:08:32 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato
- <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan
- Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo
- <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>, Kees Cook
- <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, Ryan
- Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>, Matthew Brost
- <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
- <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
- <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
- Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin
- <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Arnd
- Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank
- <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer
- <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily
- Gorbik <gor@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Alex
- Deucher <alexander.deucher@amd.com>, Christian =?ISO-8859-1?Q?K=F6nig?=
- <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
- <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann
- <tzimmermann@suse.de>, Boris Brezillon <boris.brezillon@collabora.com>,
- Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
- Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
- Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Masami Hiramatsu
- <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra
- <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de
- Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Mark Rutland
- <mark.rutland@arm.com>, Alexander Shishkin
- <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian
- Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, James
- Clark <james.clark@linaro.org>, Jason Gunthorpe <jgg@ziepe.ca>, John
- Hubbard <jhubbard@nvidia.com>, Muchun Song <muchun.song@linux.dev>, Oscar
- Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>, Kairui Song
- <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
- <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Youngjun Park
- <youngjun.park@lge.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kvm@vger.kernel.org, linux-s390@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 16/20] tools/testing/selftests/mm: test anonymous
- page offset merge behaviour
-Message-Id: <20260811130832.3f18d4326a5ebe6eb18cfb5f@linux-foundation.org>
-In-Reply-To: <antWw3a0iEv4l1Yd@gremlin>
-References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
-	<20260806-b4-scalable-cow-virt-pgoff-v4-16-ab318a350404@kernel.org>
-	<cf70ce8f-cdde-43ec-a50e-796d4e390f3f@kernel.org>
-	<antWw3a0iEv4l1Yd@gremlin>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	t=1786479220;
+	b=0JASgpULKx3PkDuoMkfayiAMom1O/jg4gXh81mbV6H2QbnZYqBZwc92lx3b0VghhAiIIZa
+	+EKpfsw2P7Aq03dPesVBcHKHhQZ0XuoFIcvzs419IvGwNWv93m1e833bs/IzpGNnzDzrpF
+	BaRtlMG5reVirEJvD1STKlEUXc2UfGY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=6YbFpOmvNf504sQf2QihriBMoey+d8zmHbwInFB/oZQ=; b=a066R9N27OIM70SnmDCVlfwHs2
+	rp6/CjIfME+lq/Ia17LZWz0DPG2aQd4osZzsfh7lVX8KAHTxuZmNpwJN22+GUNTvvmLyG33knvKbM
+	MMO7XW0ko3H0+JYBjpl7KiSy8lfZrYft/YosON0EcQDPhbhnYDmHgieQdiOVTJWgjVLY2NFYCcYu2
+	0d1AU4mwSZ7yM3nXMw9LBiBE1nPDWH0nfOZXEr6O3BRa4l08i0yi2mNsxyls97QNGzqpJNoQNDiLv
+	Y5nANGdXeP9R68PIbwE3/TkrA0r9rqzQEHT83oU3RVE2W/IgcdOPEuE0unTx/lET+1Ht/eYEECl00
+	MUPAtPXQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wtsqv-0000000Etzg-1riU;
+	Tue, 11 Aug 2026 20:13:37 +0000
+Date: Tue, 11 Aug 2026 13:13:37 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>, linux-block@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Jens Axboe <axboe@kernel.dk>, Vlastimil Babka <vbabka@kernel.org>,
+	Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: [PATCH 2/3] mm: support fallible mempool_alloc_bulk()
+Message-ID: <anuCcb-Cma6JOAb0@infradead.org>
+References: <20260806221031.79050-1-ebiggers@kernel.org>
+ <20260806221031.79050-3-ebiggers@kernel.org>
+ <ann1i5VjTmgChjs7@infradead.org>
+ <20260810161404.GA1930@sol>
+ <anoIiy0V-m-05yZc@infradead.org>
+ <20260810182215.GA270444@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260810182215.GA270444@google.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E403E80010
+X-Stat-Signature: 9idi1o9hwgha9swts8bsofhzx7g5j7g7
 X-Rspam-User: 
-X-Stat-Signature: dtx5nwwnqeec3gg38ot5u534h3xpqmo1
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 222CC1C0007
-X-HE-Tag: 1786478917-456524
-X-HE-Meta: U2FsdGVkX1+B3YZRmCm8A1olvfI8TF+duWC0c7gMJuva+D8j6ep5wdtNj9831xPvhy3UNxs2zya640j5jnvY2Y6iR/DPQFlM8mPkFuLmreu8EhrCDj6XlvuMaMj/PmX6bDBH4y7r3tcI6XsYRGtrr55AdcydGqQhan90brPnD4FUPyI33erArblXwFLsmjm7KUD0pnfdZ8HD2pUkI5YE0ckDGlcl+8PWeTjxa1+VKkSdPX3bzGcxJVcrbg7KA0lpwjxMkG8B8H6ypNzIqR5HZM53hrepAFSjJOA0LoliHLps/8UmcJRhRGWG/nRkvouSVO9t8MBQqYn7NC64Wvzd6ZqNNgpIxu5LvDSNhFoL8vJPTTZqj+W/crjpH2Lm4ngP8vHN7dbkbWqIiXaGfNCg5Chr5F5rmD7tjfYPVXgrRAX5qI9dNm+Vcqgm27Musik320BXolHCEjXgGZOf6iY8PJ7NCiZ09iAC+7j6gPj3SedB1mrN1Avo4lph7OKdf01pNSQu0GDnB/89BW2scCqr2FtOza2WP4+a8cYm5aOPnAtwus5mDACyDwU/eLiTzkKv0Ny2s9Ii+4Q0eLuQp50bx+EFZfBY9M2/pW+JNiw7c0cA/2oUrz9YMwlysVjirtP9pF1jC04s9I6Wi38YnxYYmRE6TyFIisgP1ZY6c7biY7al7T/6KKWRkUOdE0bbWhLg4U8ZgIYrgPbV7sGHRXFaEBkbtzD0Rz/davULTNJuiudzsdPOjkzV/AhhTb8dAp8ngilA3PsD5JYlPrHG3jiKhJf/1jrBAjdrqkjpkx4Teo4pU04EWg5fZYrh3aZM8n8pgSrA0DG/KCEnY6owT7UVn1uLksegJScJYGJEHYei1RR3geuL0rsDt63F7Po/OwoWiAnDUBEFREYXGvSSTJvT+L8WhfmqUQi52AXidZ7FiKoX9kcpJXdIetPL7uhIwUAV771/0ilBEoSgG06WW1L
- I8beRHq5
- Z2X++h7Tk/nZ2B9o9ZJkawMLgaPPs3fhHbt84EDtBdybXM84O/eqnISK4O98qM9G90i+UnUHeUqSn8cEchF9Ufte9pODW5N9kfCN69UVL0EwpAG0/G0j9ZW3ZjhronBhYDBuj3JP4otM5PhIhDAYFiAqxR1JmMOBRksq6gy9vLWun/qLZDTq7lcfZ6zVtv9ozZiKnixVyWvws+eEsIiB1jrt5ifJ1CYNldjsQhJJiUQHOcwlY37Ci78FkoFvZnbiMYTWDfNEbl9T+uyFP0/fmLSWseWOs4AKfmnI9wF8yUjvtkujTw3is4mAFcQmU+aqz213pEm7xH11yqZBtfZ1HqobW3mejMYZude2C
+X-HE-Tag: 1786479219-195922
+X-HE-Meta: U2FsdGVkX1/R7KxJfP/4Eo/O8d6iwJgRBnhr6A08hcNFJrPnzCaf89p/UFBQxxYR8eAyKSlO7wFLBOXXH2ypJPuU6ReQhVQbFPYSl0AGzKEzf8wKv3yeUnb93bXba9aZpv5J+R5T5ZYOnW+VtX0m0ftLPT4w5K/f9HX4VVxkBCQ5EiND6YSfo5wZkIrG9IL8rf4Iz40NXag/FiE4mLD0pyyoh67jLHQzBoA/odSPWS/xRqWH3WqyVK6HCfVHhMS7vy11Rz7ZvKA1E9SouRlYWxvHNUqu8c2rKwFGqXi5fC+/E9SYPbryqmYcSK5FlkdCaFOXOWOQ+mvydwQ3KLVSY0CXHrY4h4Y02KkXZ/ojgaSZXu4d/3Z9BBzulLhSGNHjFann/ia9fdHNOEQDR2RSiYNOJnTzyDW6F/vAmettMlNVXBfezTzpa/GPiddhuKSEcZ2AN0nmX+vPY8VEwOsF6HfGbl8zgCufdD22t7AfWXA30MIG4TY+fZhyMP2arKbdT0eYhdD5UoTNZg/kEqd+sGGDbn1m220XGvkalXwnQKenV3ZZZzKgpFaTS+Z0ujJFzWwxxK4WAUKMYjZA4dqY28M2W/xobRT4wuyyYqpgCNadvW4nt+HbTxcm0BDQtha2gvejnIW6IdHFf2LqYgaGNq6j/7oVSSVF765i24GwasQi0WDEO2d3N7oO4Cy8IgBm+IEMcOGWwsa4EhntDlEssWet8BFZx68UN1xasJT436IuL0iAIH9Cwirzu6+VR0mlxNHzfCY3ybqCxYeKxTMmt7Ap3q1ssGRfQBkaBvUZC4FR2BmIT9y+xzgKhZmw1uRAheEJZ7UoGS5VzQlAU/FAd6Ze2ZhfVvjcRhOslVl3y+lzROTd1yaVJETS0/agXtWoCtVwPws2FqFjAdTkut6FePUR6wzQesBBu8auSC8f0eikwU6wq9Xb4/9hX8gYQ/w8Pdr85QH/Us0h5z/NLre
+ jJs8yt3O
+ 6e0tquATOXrUXXsrf0n6+So0vXb0LkEosD3FSh2aK1pu+KO218hElabiDjb5Jd40g/xTBjzoSexfIqvyBCpqJ3ulpuqbXJUH8G43KvZCef2i7FBSgY7tIW7NcvWCR8NF4GkFzZe5vgy11iI31Qss75N1ZvkmIAXWbe283YxT/p7W1eaPvIqc0rzNG3fUzknR6CSLUgV8UvDshHtaK8seef2Jv9Gj3tOfCB2b/0vBP+4j+87kEnqcQHNP7wXMlHWRziUKAAy7dMByEnYcN2FiQEcxFRzdh640+d+43VpAcTvpOG6qGpfpXzcR9mjrXkevcoiKCXY31LPF7L00X6StZ2MS+vo0+BxVNMFKosvaYHIr1A0TmfiaWOEVHYupLsoLeniW7xuklmZbymwLGXo6ptY0xYpLuqdRQILcZGcGx+UMkYbRzl/6PCLG6BhCX2ZRxDZ556fk0l0shfzUedhtcf71eHHVbgrpjh+tCuFrxHyawn7El9H7Y9q/Qxl62T8Q5wx8boT9waIMfpKu1KzaH9/p+WEopIyYRociA/tpC8rd/aq3LWbfkAx63uN7EIxaXcq76w+rVNvBhYtY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,26 +100,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 11 Aug 2026 18:07:36 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
-
-> > "Fault in" is imprecise, as a read-fault won't do. "Trigger a CoW fault." might
-> > be better.
+On Mon, Aug 10, 2026 at 06:22:15PM +0000, Eric Biggers wrote:
+> On Mon, Aug 10, 2026 at 10:21:15AM -0700, Christoph Hellwig wrote:
+> > On Mon, Aug 10, 2026 at 09:14:04AM -0700, Eric Biggers wrote:
+> > > On Mon, Aug 10, 2026 at 09:00:11AM -0700, Christoph Hellwig wrote:
+> > > > On Thu, Aug 06, 2026 at 03:10:30PM -0700, Eric Biggers wrote:
+> > > > > To fix a deadlock, blk-crypto-fallback needs to be able to make fallible
+> > > > > mempool_alloc_bulk() allocations.
+> > > > 
+> > > > It doesn't.  fallible mempool allocations are a concept that doesn't
+> > > > make much sense.  Please just go straight to the backing page allocator
+> > > > instead for callers that do not need the mempool guarantees.
+> > > 
+> > > It does make sense.  When alloc_pages_bulk() doesn't completely succeed,
+> > > there still might be pages available in the mempool.
+> > 
+> > But they should not go to a caller that does not need the mempool.
 > 
-> Andrew - could you fix up? Thanks :)
+> The caller does need the mempool.
 
-np.
+If it does not specify a blocking GFP_* mask, it by definition does not.
 
---- a/tools/testing/selftests/mm/merge.c~tools-testing-selftests-mm-test-anonymous-page-offset-merge-behaviour-fix
-+++ a/tools/testing/selftests/mm/merge.c
-@@ -1324,7 +1324,7 @@ TEST_F(merge, anon_and_page_offset_misma
- 	ASSERT_NE(ptr, MAP_FAILED);
- 
- 	/*
--	 * Map another separately, and fault in, at page offset 5:
-+	 * Map another separately and trigger a CoW fault, at page offset 5:
- 	 *
- 	 * |-----------|           |---------|
- 	 * | unfaulted |           | faulted |
-_
+> Now, as I explained in this patchset, whether this code can wait forever
+> for the mempool actually depends on whether it's a recursive bio
+> submission or not.  If it is, then it cannot wait, but ultimately it
+> does still need to use the mempool to get a guaranteed allocation.
+> 
+> Falling back to the rescuer kthread (which can wait on the mempool)
+> solves that.  But before taking that slow fallback, it's much more
+> efficient to check the mempool directly first, since pages may be
+> available there (and in fact it's fairly likely that they will be, since
+> regular allocations are always used first).  The whole point of the
+> mempool is that it can be used when the regular allocation fails.
+
+What is actually efficient is do skip the mempool entirely from the
+original submission context and do a non-mempool GFP_NOIO allocation,
+and only in the extremely unlikely case that this fails fall back to
+the rescruer thread.
+
+> This is also the only caller of mempool_alloc_bulk().  So I'm kind of
+> confused why it would not be allowed to implement the behavior that is
+> desired here, especially when the non-bulk API offers it already.
+
+Because passing GFP_ flags with all their warts is a bad idea where
+we can avoid, as is using up mempool resources where not needed, and as
+is having a possible failure path from a function that can only happen
+for non-standard flags.  (having a return value at all is also stupid,
+but that is forced on us by the braindead alloc_hooks).
 
 
