@@ -4,92 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23517C5AC67
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 07:34:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59240C5AC67
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 07:34:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16AA86B007B; Tue, 11 Aug 2026 03:34:13 -0400 (EDT)
+	id 33FCC6B0093; Tue, 11 Aug 2026 03:34:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 142006B0092; Tue, 11 Aug 2026 03:34:13 -0400 (EDT)
+	id 3175D6B0095; Tue, 11 Aug 2026 03:34:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 07F616B0093; Tue, 11 Aug 2026 03:34:13 -0400 (EDT)
+	id 257AE6B0096; Tue, 11 Aug 2026 03:34:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DC6486B007B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 03:34:12 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5DFC880353
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 07:34:12 +0000 (UTC)
-X-FDA: 85088175144.25.72A3534
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2D9D4180012
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 07:34:07 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=FvV6vGCU;
-	spf=pass (imf06.hostedemail.com: domain of sh_def@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=sh_def@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F22556B0093
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 03:34:36 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6A97A4037A
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 07:34:36 +0000 (UTC)
+X-FDA: 85088176152.14.5AA6EA0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id BBBA540005
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 07:34:34 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hYJgr4Uj;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786433650;
+	s=arc-20220608; t=1786433674;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=M4X/pEDEhzJriqH/Dn3z9EQyrzergLRc+6vzfSJPFlQ=;
-	b=R1Xcux3iHv5vj7wEdJPTj/WRd95goiG7CSMKXSHDXiFNpGXe++qibm549Yoq9LF6xB/q6S
-	XiH6s44bqi3AHyRLxH+Elzi3hoRRlyrsBOVWgTUtIx8D0uHXM5OXmQQEJZ/gR2Z8qpWRUx
-	2oFAhFztR9a4Y1tQ8LRtEzQqP9C1w7s=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=FvV6vGCU;
-	spf=pass (imf06.hostedemail.com: domain of sh_def@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=sh_def@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PH6cZGx9LYOHeKQhFjEwx6tN9N1GG4fsvAMNHfcjr+U=;
+	b=Wi2fGg+zRngcafU0cZWxSoPqxU6wOEfbekiRP+rteyBZ3VMYcJzumaWnWkEPtk/RNJ+8OK
+	lb4Vh8cwwzTz0NoM93XJWEgxzG3kIECDKwQOqDqz6KzTKkGS8CSjURuopix5nJETLWf51M
+	KPIsaVHhxJYbz2iEc3XlbrBaV20VvZY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786433650;
-	b=x8smQddtChged6mtbQ1YPJJ5+xQe0sKGG4YTB7GRf95i/pCBm7YxmZKbLZl8fUxWFxKa0W
-	/DxUJZ6gpSf+9s2auME7yVyNGJLHPOKb4gxL0FGALiXEf1JPYAX6wXPdxl+bpQOCNR2+co
-	tuSx7FrLvyUWF0ulbs9HKuZya8yq144=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=M4
-	X/pEDEhzJriqH/Dn3z9EQyrzergLRc+6vzfSJPFlQ=; b=FvV6vGCUbpByJVYo7Q
-	imuR0kRpyhtDLcOFTVCAZA0ZoHCkMdKMdo6wC3GiJxHeLWtWsixuNUhTrxT0bjBp
-	5CYns4Of2WWyc/m1WDKEy53WaK1DdoYAx1r2i6oa6z/E/DPQ/YgC9KYXP5Yltc6T
-	E+HE0hmX+50l6T/kmoe+H6dHk=
-Received: from localhost (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wAH3+lM0HpqmAU8NA--.183S2;
-	Tue, 11 Aug 2026 15:33:35 +0800 (CST)
-From: Hui Su <sh_def@163.com>
-To: ryabinin.a.a@gmail.com
-Cc: glider@google.com,
-	andreyknvl@gmail.com,
-	dvyukov@google.com,
-	vincenzo.frascino@arm.com,
-	akpm@linux-foundation.org,
-	kasan-dev@googlegroups.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Hui Su <sh_def@163.com>,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH] kasan: fix quarantine_size accounting during cache removal
-Date: Tue, 11 Aug 2026 15:33:32 +0800
-Message-ID: <20260811073332.1351893-1-sh_def@163.com>
-X-Mailer: git-send-email 2.43.0
+	t=1786433674;
+	b=qGbFqcAElLb6t29Il7pKWAvw2pzO1D7HG0n1buyIJT07HPMvzPTk0rhV/DfjFsxsr5Mtdi
+	mY/lIUsVWA/oNPdpNvXfpLlUBovkYRmPzWmsOIiWw6mHUcK6pqWBGQURooH1xRNyunBd0l
+	xziTN4VRyqA+znLLFzbWDIXGR7aCkeY=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hYJgr4Uj;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id F1A73400B3;
+	Tue, 11 Aug 2026 07:34:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D727C1F000E9;
+	Tue, 11 Aug 2026 07:34:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786433673;
+	bh=PH6cZGx9LYOHeKQhFjEwx6tN9N1GG4fsvAMNHfcjr+U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hYJgr4UjkDDJmyBrHtvX7sMiaB1LfpYKkoqma4LEDLxn2vAxGmcG8HDbfm0OcPpxO
+	 /PoguVv425iXNK1y+28ugx44Olws6TLU6cVlLpWCRA4qYDbC48QiYt0ue9yMu7yDPM
+	 hrgSU/23qphxumPAw638uBx+m5KQpLwy+pcczNPXpwAbPpHWu1r2/MQlKqDMuShDXC
+	 Ar6BiBaeawo3AAzB/piLKYsbf3BGkLDLEIet4ooFD7eH9tpOi/maVnpldU1wkj82qL
+	 fHHl5ygVUwlgIugjSD7Wr4SAmC0pX/fLfjhcGI+SdWugSlHhbNrwQBI1bbUzURAnYF
+	 +DX/gNrlHxk9w==
+Date: Tue, 11 Aug 2026 08:34:13 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: gao xu <gaoxu2@honor.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Xiang Gao <gxxa03070307@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, "liam@infradead.org" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	"linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	Xiang Gao <gaoxiang17@xiaomi.com>
+Subject: Re: [PATCH] tracing: report buffer memory in /proc/meminfo
+Message-ID: <anrPJN-V8K4fhGzZ@lucifer>
+References: <20260810094025.136705-1-gaoxiang17@xiaomi.com>
+ <69df3080-a719-4131-a247-62bf47bda8a6@kernel.org>
+ <anm0SMuVpBz7wLac@lucifer>
+ <20260810105710.6ee5e493@gandalf.local.home>
+ <9bd98f51abd44d81a569d95e907070c6@honor.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAH3+lM0HpqmAU8NA--.183S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ZFW3Wr1fuF4kXF45XrykGrg_yoW5JF1DpF
-	1UJFnxCw1kJryxGr1UG3W5Wr1rWFZ8Jas8A3y8WrsayF1rG3W2qryrtryjvayYyws5XF4q
-	qa4DGr1Fkr98CaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piHa0PUUUUU=
-X-Originating-IP: [183.192.100.171]
-X-CM-SenderInfo: xvkbvvri6rljoofrz/xtbC6RCB4Gp60FCanQAA3P
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9bd98f51abd44d81a569d95e907070c6@honor.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2D9D4180012
-X-Stat-Signature: hxtuixahj6gewcequn8fmxyy9p3jgt9x
-X-HE-Tag: 1786433647-794891
-X-HE-Meta: U2FsdGVkX18n7tKcwB7F9lvc1JGX2pCPeXKdft84L9wkV6cRxgQqjdq3WGPZpa0rqqEMdkiDUlM+v4F1fFmi+oE9VDAPtMyAhePWYFhoAsHaRZdKtFhIYECf6Wq67zDAJj0mqlj2tpbgN1Ch4QEeK70wahwrkkl9fxCLKP4bUPtpIDUq1GRVqZjswj46BQXCohUrIovOSVPU41PfQ17uOQONaQlYDHB7iiAt26RUq9pccxR3a97Eu2AwdrfLE2Meod+/gluhqS9GmGHI0IrjfyiDLT9bXFuv1kO8v4ymETjAUNwV4XTtxpMlo2P63MHAPQ5q73aZsF334+4vpA7vQWygucTjfBQ+Yzb8atdNPm1eOx/8BOND+jSn6qKVgqNSBbEEGbccv3GhSd15y0KjiJEYCSuMr8B3EayITlv2fLPQNExtOrZSgmWFhYjXr5bRAFsQd1PmE5p19Saq8Yh8oqL+ArPMBJwIJNJa15ieJRtq5aljC6dMTu7jrkR5MGgTc6BdoAOgwI4wLT3vD7K/SqBVdEjZRTzNlXXAfOVjJZpjaeZajrGSkcBblUOZfnQ5VqxwcWyEP3zolQMSAFQMS4YJ2MgCRFr1B4cLizmJLFn/+vl5wRETy10y+Tjm9753CEz1iz2llfA7eVkPxf/hhUS0aABbjBNsLfsFFpFCHvYHwenWPsxX57YWKzc5cBpDhDbrNWMrkM61P14fbK7ok6PV+FHnXSNQnXD1Bt3ecTHUdVrb0mSDbCIfoMLFPNiXKPnqYbFWnUSnwMJKqc8wkx5u7cE1IRDkDbnU7gNIKqrp0Gy2ASFRvdqmGVWd0v+qmwz4eRLL+xVbWowBQ3MwnV+VR/+A2Rwv8c0YCbBqVFil+6BHklLltS9rMsJ4YeJ/DetSWhL4gf5fNkWI//5rT11rppu6E07NLgK5h0twaHmeBxZQ671HVy049FhQNcfiz2p8zbniQw+l2++5lZ3
- 3rzFIMl7
- UaB/U7hRCEa1dg1g4qj+gR3vub6zwzXKVZZreXIVKT4GdiYrCdiy41MNTGUaNfO/dUv4oM1SeDyC9wTARzAkz82oCIOUjlB/t/tzCNdRDnLsbvEw7zONdkofQrHVMLlMVa1Dj0ikbnZs5Qr2v1ZFUb0lpSV9zGW6e8TSjm8mZgswqhLose2XUL1avAw6NzItBozqPNUh6Uqr7v5R42V0qN5DDOALOoHeIgQwNdqBeAxum1iCdlAKLDvGpMVSI7jE5QgYdkyqNNye8xjqs0PlwE7tC5zDkKRMkz0TcJC8X45SVX3F2u3/CwQaKh2OOqaf7Vl/6bldm6/6QZLWdVaiAlb+bflUMUky2JBLCvxoyh8mDgGtYCZaLjviWtbpL37Ped51ESXl+ppMKUjb2q4W37x3NvQ9rT2npv7wyFljzWBs5EF5z1/CrJDNcQTuh36/Dd2+ODTO3gnFY3gOSHNmbqf0SYJ5uDwEsbBvEXB44eooYVTJqVnPJX4xxMPQ23cSsUAYSJIaUiOrKx9OenHiOiPxODm649/Kjnro5zJggfK4vWQpzPfLM7YT4mNUfLJ0rM9QEe66023NPJUToeBb/4Kif6ez/DC/gTSVI97wadDNmKEo=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BBBA540005
+X-Stat-Signature: ph974f3hegimk9ak6ou5z5d3grp78zeu
+X-HE-Tag: 1786433674-451561
+X-HE-Meta: U2FsdGVkX1+jzDsAJxwcrrDsFH9X7Y5J06/NEFZeZC1qEoz3SzzzmUTYjld0J5IPlrUbFC1HV3JYDa/TmyXeXR14ivUyG6bBC7aujqLm6G/obcpzMT+cpNQ+w3BmezBDZAG/6SjKEhOPXgm8EITJoYNoIee3AtW43fpeYw1vIpxNUffbz2fXe2ze6pMdelGOaq0qEiHME4QDdMiqh9uXxZbNm9Zx2gFnJOBCOobuGOqbLge83CGbafDH9mwFU0DOrQVVWt0m3om+Ctvcb2MiYKpEfX1/FcURY84HP633H8TMMp/D3bx7zuRhJ0lakQlwVZ2Vaero3lSIAGRa5x9Rl/pMFawTw7wgDKXlNVzlyIVXXvwr7qZPCs1HZHCzjcBtPhIKQ8/2QisUDFgS5eolEyyCMXcRGVE/aiIBPbRMuZRX4Vl2F2WMPbXzZtA8wih04y1Qa/doDSz2hddvnHhmnUpRw9IDkw40C69w2jbLTx/nxsyBFgmlM+wGRZRhAFhL59jO1vLDw7/M2WSlkYSVCLp7y0/t5/1bb7LYqGeRTIPqd/kT18N0iGWYWaOSxN6JNwT140iAgkvBUDoryWlsdCBsiCH9ba9LbaYj1R1tXnaJV+qv+zp0FR4qdC4iUyNo1RKIa21gL4vm9B2GAdz3D6HbFqnV5PA51XZiYkTnWlfWkpPbdIEFIsiE0v4Y8mPqfN32xJEs/+zJdPTsIp7H7aK/WgTkeyVFVp3iLJvAE0Mg04XLWA1T8OJeTydFZfAERW9AddkkmoJuBcUdYFhgFF3xAvn5asVIe2SyWgoOGZnhrRn0UBi6965zUUEtfgvX0eQksDe8g341QC7D/bEANlZiBUD6fhGKq0MVXaQfgFvWOuH3pth6pVARzmHSBF99l7BXjtBZhm3UvVawo/61+P4K5VrvkAws1uYY5Zn+NKV/F6IF+sW5JxKLHD2Pvit2jSmHi7d1knFRcMxaLvr
+ AHI00SWe
+ xpgR7K3ov+kYvDcqBblNUSFJDbi+IJufYeglfeleXk2cl7uNdyQQP7QqRgpCXn5C9NBQ9eYm0YmRunl2Jaxt82tKXgP1xsDrMyzGSWrT/EWK/8YuOtJj3Z7DEztGCcSqnhm2oxRFDhhcD8b0K7fSv7lBQEK83KJkEh/GmoYAa+AoGWZxSET618jGGMf1kWyKFRJn2zzNWejf6gDDB8h9QewxRkv06pvKszgDH5D3ZTv909Lsm3dplf7cn1QMQY40KZXQ/uJOzBJ+JdFmInzbBIxqSsyAu6WVTiRzHV0212edbkWTKvkElelG6sUZrYnIyTFah
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,60 +101,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-quarantine_size tracks the total number of bytes stored in
-global_quarantine[]. It is incremented when per-CPU quarantine objects
-are moved into the global quarantine and decremented when a global
-batch is evicted by kasan_quarantine_reduce().
+On Tue, Aug 11, 2026 at 06:22:58AM +0000, gao xu wrote:
+> > On Mon, 10 Aug 2026 12:22:43 +0100
+> > "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+> >
+> > > On Mon, Aug 10, 2026 at 12:52:38PM +0200, David Hildenbrand (Arm) wrote:
+> > > > On 8/10/26 11:40, Xiang Gao wrote:
+> > > > > Report the data capacity of all ftrace ring buffers through a new
+> > > > > Ftrace field in /proc/meminfo. Include the main and snapshot
+> > > > > buffers of the global trace array and all tracing instances, while
+> > > > > leaving ring-buffer metadata accounted for by Slab.
+> > > >
+> > > > why? :)
+> > > >
+> > > > To report a handful of KiB as in your example below? Doesn't sound
+> > > > super helpful TBH.
+> > >
+> > > Yeah I think we need to stop with all the proposed additions to
+> > > /proc/meminfo :)
+> > >
+> > > Also something like this where you are making a change in output that
+> > > it is just your opinion that it is useful should be an RFC to see what
+> > > the community thinks first.
+> >
+> > Agreed. This doesn't belong in the meminfo. If you want memory statistics for
+> > tracing, I may be OK if you add a "total_memory_kb" file in the
+> > /sys/kernel/tracing/trace_stats/ directory.
+> Would it be possible to include this info in show_mem()?
+> This would be helpful for analyzing low-memory and OOM issues.
 
-kasan_quarantine_remove_cache() also removes objects from the global
-quarantine. qlist_move_cache() rebuilds the source batch and updates
-its .bytes field, but quarantine_size is not adjusted accordingly.
+You have to back up requests with reasons, it's not a case of 'please add X to
+Y' and then we deign to do it or not.
 
-As a result, quarantine_size remains over-counted by the size of the
-removed objects. The stale accounting accumulates across cache removals.
-Once the inflated value exceeds quarantine_max_size,
-kasan_quarantine_reduce() can evict a batch even though the actual
-number of bytes in global_quarantine[] is still below
-quarantine_max_size, shortening the quarantine window.
+Justifications are required. We could add endless crap to show_mem() until the
+CoWs come home, maybe even list the number of emojis used since last boot
+obviously.
 
-Fix the accounting by recording each batch's size before
-qlist_move_cache() and subtracting the number of bytes actually removed
-from quarantine_size while holding quarantine_lock.
+So - why are you asking for this? Is it only a handful of KiB used for tracing?
+Is it GiB? If so maybe it's because you're doing something crazy? Why does a
+kernelfs file not suffice, etc.?
 
-A KUnit reproducer used during testing observed the over-count grow by
-4698864 bytes after one kasan_quarantine_remove_cache() call with the
-fix reverted. With this change applied, the over-count did not grow.
+You need to engage with the discussion and back things up rather just asking
+like you were typing into an LLM prompt...
 
-Fixes: 64abdcb24351 ("kasan: eliminate long stalls during quarantine reduction")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260808031459.3032812-1-sh_def%40163.com
-Signed-off-by: Hui Su <sh_def@163.com>
----
- mm/kasan/quarantine.c | 5 +++++
- 1 file changed, 5 insertions(+)
+But in general, no, it makes absolutely no sense to randomly output some trace
+information there, unless you're about to offer up the most compelling argument
+since the invention of marmite and butter on toast.
 
-diff --git a/mm/kasan/quarantine.c b/mm/kasan/quarantine.c
-index 6958aa713c67..c220f0d8ddd0 100644
---- a/mm/kasan/quarantine.c
-+++ b/mm/kasan/quarantine.c
-@@ -365,9 +365,14 @@ void kasan_quarantine_remove_cache(struct kmem_cache *cache)
- 
- 	raw_spin_lock_irqsave(&quarantine_lock, flags);
- 	for (i = 0; i < QUARANTINE_BATCHES; i++) {
-+		size_t old_bytes;
-+
- 		if (qlist_empty(&global_quarantine[i]))
- 			continue;
-+		old_bytes = global_quarantine[i].bytes;
- 		qlist_move_cache(&global_quarantine[i], &to_free, cache);
-+		WRITE_ONCE(quarantine_size, quarantine_size -
-+			   (old_bytes - global_quarantine[i].bytes));
- 		/* Scanning whole quarantine can take a while. */
- 		raw_spin_unlock_irqrestore(&quarantine_lock, flags);
- 		cond_resched();
+show_mem() is for critical memory information displayed at the point of OOM or
+sysrq-please-help-me, not random stats.
 
-base-commit: d58772d8520c7ef247c4b95c9bd76d3a25da9ff5
--- 
-2.43.0
+> >
+> > And break it up for memory used. Ring buffers, events, etc.
+> >
+> > Perhaps even add one per CPU as well.
+> >
+> > I'm always conscience about how much memory tracing is taking up in the
+> > system.
+> >
+> > -- Steve
+>
 
+--
+Cheers, Lorenzo
 
