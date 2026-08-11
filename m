@@ -4,160 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35A43C5B56A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 17:54:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B869C5CFE7
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 17:54:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D1E66B00B7; Tue, 11 Aug 2026 13:54:53 -0400 (EDT)
+	id 298956B00B9; Tue, 11 Aug 2026 13:54:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A9066B00B9; Tue, 11 Aug 2026 13:54:53 -0400 (EDT)
+	id 270906B00BB; Tue, 11 Aug 2026 13:54:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BEA56B00BA; Tue, 11 Aug 2026 13:54:53 -0400 (EDT)
+	id 138246B00BC; Tue, 11 Aug 2026 13:54:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 076386B00B7
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:54:53 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 913A21A018D
+	by kanga.kvack.org (Postfix) with ESMTP id E945A6B00B9
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:54:54 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 70A874019B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:54:54 +0000 (UTC)
+X-FDA: 85089739308.30.7121011
+Received: from out-178.mta1.migadu.com (mta1.migadu.com [37.59.57.117])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6C6F8C000E
 	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:54:52 +0000 (UTC)
-X-FDA: 85089739224.05.44F596C
-Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A42C212000C
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:54:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm3 header.b=bYeDYVhg;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="G I03wCR";
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=linux@jaseg.de
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IAHxzHg3;
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786470892;
+	b=AbIfWK253tP1XL8GpNzErdIDxyVCs0qB4h0EKXhw/rSuXGvHBoZ8z4K5GzsHFTLYx9TvQq
+	cWn7kfuQSlLxrSL49MXFNB1kfTnD5ssh2pYTa9Tz46m2TIyz/uT0/pz6NFOLYNNd5bu08N
+	5w1bDLWIOb6EcgXqtdnaRNqtzGinZTU=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IAHxzHg3;
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786470890;
+	s=arc-20220608; t=1786470892;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jFYKhNM35RpDRZh/43hulCmfEJyGilMf3A0rl4qWOVM=;
-	b=v0pWT4u9N2lRIqIKu+7lwlEwENHVDRuOfSaM1ZedAP3N7qq1EwUO+qQj/80qiWiAlu4OrT
-	/ADzJpYye6otfIXHgkOm4+O3l2/+sRbHBBbS1JVM6pmGl+IJ5bpTCY9ZkzLs5Utn0RQuQi
-	EyvZ3022wkCFW04xdnNhvg6KheFERqc=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm3 header.b=bYeDYVhg;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="G I03wCR";
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=linux@jaseg.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786470890;
-	b=3HpA2QkF6yptgjGA7QJmIvv3YbL1JV2wMneIAQaO0cB7alOZoI1Cti/bEksk/g5JCM4prl
-	0Qw/o3Ox3hshxpqEB3DYyxn3FNGnEm/Yx9dGL1xDutKSlVkb0MFpfDHYLUilknBUYjfyke
-	32D74ysXW/5w7cHgPSpmhPs6C/PrY4c=
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailflow.stl.internal (Postfix) with ESMTP id A131F130038D;
-	Tue, 11 Aug 2026 13:54:48 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Tue, 11 Aug 2026 13:54:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaseg.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1786470888;
-	 x=1786478088; bh=jFYKhNM35RpDRZh/43hulCmfEJyGilMf3A0rl4qWOVM=; b=
-	bYeDYVhgtPE017gK8myw81IgEJUTe3W99CDML8CpqHp7fU6iAnzN86+mOx7pU8Z/
-	Xz25faE9dCrff2JgEY85A8il0GldVKWSWgOy4hiTb9CwSrAu1UA8ybprakhSKiLG
-	oIITSW+Nrjy2Sq/XXAbDUY1ZyI6YiBMXr9Yk2a9seCS5IMaaJ7N61dHXvoUtlz8j
-	3p4rf5eJtJC2ubYbpyEbWFEarW2qhkEHelWMe2AjTl6Xz3oyvWcBgxSp9m5mz04M
-	PiZPAArXKeBHB+U1EAtjh1PXTUxgcDuNYNeEWLP/jcovinleNGmuNB3spTKuDtdC
-	x6aphUNJ+Y8113Z0XSyupg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786470888; x=
-	1786478088; bh=jFYKhNM35RpDRZh/43hulCmfEJyGilMf3A0rl4qWOVM=; b=G
-	I03wCRG7sUINfnlJx1HoFrWP/Blr/bsvRmMMtdVhY+z8ikl856vyYKiKSfxJk7TJ
-	+Du+2B8fdmMwoashdCtrBOjKrt7zkIVhzPJwU97BFtkm9yeBnyEW9wLTOSe9RXan
-	IF1LrphRdo4Uk3avywoso/2ZA+IcNlIwlF46V0biEWeEsORBdaR7O6+Kzp+FqjId
-	by1N2tuNRk4YQ/cm2z2zowmmSbKc+xqSKdOTtViGytJI12Acn61UHhiLYE0YFZ+l
-	o+fCUXptxoEXuPVdfPm34ZKvgqE/lbkjRsqBea+Ym0d7dKpsuXfQrUtlDEY+S3wi
-	JfrtqmZ9utgGiPwezfe5A==
-X-ME-Sender: <xms:6GF7ak2aeI67ME2whQjDRFEFUSap2dHoqV5gaRqdIpQaKczG27_ffg>
-    <xme:6GF7alrOHZkIbt809LfaVJrW_HTu4cTVBGd32Dlfo2aA52FhJgt1HcVDGGXEZ53Pd
-    ie9ejQQf-9bWsIntw6gRpVKcWOLFyyIJofloeBpzpVC4wR9gPSNBA>
-X-ME-Received: <xmr:6GF7appNETAxMOIJoMSSYEXVLzHtyEW4fHehW-qDFB4UzD9f0PJdzjffpHYSEDkJg7_lcX-JIFlYipUTyCzV-xQ>
-X-ME-Proxy-Cause: dmFkZTFP5tmiXRyqpvhao8uWnDWsuVG58E3QcpY8nNF+TN3d4+2z3XaWQJ1+2uEKcUq9Jg
-    +xH/KDfBOi31TfxVE5vy2aZ5W5Eono+bvv7mBiiNvVW/C9tjIvrxCLzv7Tz6GJOSvAG1cd
-    t11+FzpQNbill+yp1ZC7JKPVzEaxQ4CH2HewKTU1gYEn0mNFldMXWgoBvZ/c5OhwLZogLW
-    sZeOMCUfQY9vOvCjGHA0ivpYn+5HBy3sK6RswFREIaUm9jlhbU7pV5ZXGDLpJAMlUAJ/Lo
-    y1vjaaTNNEiBF07QqH8YbZg0fsVTsE2lSAku2XiqZRlB3GAWdGnDFC/NxQNHJZjZwh0bMi
-    3ropPtGEXwJYJAu285XzhREMMjarFs0U0qMD7zjrDHqt6fJ8xSO2sk61ZxfqGLG5LEahc7
-    vwAk5zUO0ZCCm9fM+L422IUoCWwqFOjz+0aNT0kFyZ0Q1Ln5ckpifI68KSJbkT7he4JGsz
-    gnYBtMLYaheT0cogeUK3622EJ3Z+e4Ukbofzl4+gPfWHBkTRbmKjtE6P4Ot7qNxDbkBV9f
-    6r8fT1r6KlUCPnqErm914p+GFvLXJ9n92U6RxanpRYnFHvVP6n6k2ggCnlgrXR6Uub55UK
-    uDCtbwOviWOwgtdaHKlTAzhxVcXj+aqh2aNk2mWVG/8eK7aDZGpVw69gy5wQ
-X-ME-Proxy: <xmx:6GF7amdRcbsx2qfRi8Cd7iqirsDyMVXLbbc0EFhgE-YV-qN-A-n8YA>
-    <xmx:6GF7ar3414zMwqGprCZiQmHYu9pyMRwm63XrVoSErX6qc-cgchR1Pg>
-    <xmx:6GF7appNUtXCAZ3BPwO2kwj0wrqDcwnqsypWPF3DoBa2ZTNBOw4Q1w>
-    <xmx:6GF7aiW3O4vSZ6P4QnlVVOEiR378mmPRjHDcwpHayiuZTg9-sqozcg>
-    <xmx:6GF7aq85EqVYPI90O7QDsJHYjnOV5PSwDC15fyrxlypXGHf1F3HESgUy>
-Feedback-ID: i60a14417:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 11 Aug 2026 13:54:41 -0400 (EDT)
-From: =?utf-8?q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>
-Date: Tue, 11 Aug 2026 19:53:01 +0200
-Subject: [PATCH v2 12/13] crypto: api - wipe tfm contexts before kdump
+	bh=OlQGZdIlw8dZKOYB+3h54gW4Pow/7J1yzxtJDd3AvJo=;
+	b=BXXUA4PIW7//TXLkkgGA0IR67dYkZnrqqAzoLG9Tn4jAaBSPt7PsjEK4TQRSlOy/1mloKw
+	Ktrs64OD2Pu4Kt682UrdCEmm+hHsB6mJJtqWK5m52m3ZUtk54UtYsuPg0GOGW75E/Q5cDX
+	yYBXRlKW+ihV/64A2+uozZvFJE0oh0E=
+Date: Tue, 11 Aug 2026 10:54:23 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786470889;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OlQGZdIlw8dZKOYB+3h54gW4Pow/7J1yzxtJDd3AvJo=;
+	b=IAHxzHg3SZAFfF7I0+DqOl4o5Jn88kzxU2J5dQxlDMgdAmfj+lR5fYQUx7uBaMsccKWTwO
+	/MPhdZVkA5+ETCRy/MDoScErxkyKrbSJ/UrKxkLFs9QfP5kuDJosDgY40nnMT9HB4DzGLg
+	sO3XvGk9zhDUuU8hKdb0c03qVuJbk9Q=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Breno Leitao <leitao@debian.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/vmscan: report RCU-tasks quiescent states in
+ shrink_lruvec()
+Message-ID: <anthYiiYPuUYbj1Q@linux.dev>
+References: <20260810-rcu_task_shrink_lruvec-v1-1-4d9f7d5251cb@debian.org>
+ <anqnkZceNHyvbR5S@linux.dev>
+ <e019296d-43f5-47bd-ab49-6dfd1d8da0cb@paulmck-laptop>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260811-crash-zeroize-rework-v2-12-9561d13c2340@jaseg.de>
-References: <20260811-crash-zeroize-rework-v2-0-9561d13c2340@jaseg.de>
-In-Reply-To: <20260811-crash-zeroize-rework-v2-0-9561d13c2340@jaseg.de>
-To: Andrew Morton <akpm@linux-foundation.org>,
-  Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
-  Pasha Tatashin <pasha.tatashin@soleen.com>,
-  Pratyush Yadav <pratyush@kernel.org>,
- Dave Young <ruirui.yang@linux.dev>,
-  Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>,  David Howells <dhowells@redhat.com>,
- Jarkko Sakkinen <jarkko@kernel.org>,  Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>,
-  Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-  "Serge E. Hallyn" <serge@hallyn.com>, Lukas Wunner <lukas@wunner.de>,
-  Ignat Korchagin <ignat@linux.win>,
- Herbert Xu <herbert@gondor.apana.org.au>,
-  "David S. Miller" <davem@davemloft.net>,
- Keith Busch <kbusch@kernel.org>,  Jens Axboe <axboe@kernel.dk>,
- Christoph Hellwig <hch@lst.de>,  Sagi Grimberg <sagi@grimberg.me>,
- Trond Myklebust <trondmy@kernel.org>,  Anna Schumaker <anna@kernel.org>,
- Mimi Zohar <zohar@linux.ibm.com>,
-  James Bottomley <James.Bottomley@HansenPartnership.com>,
-  Marc Dionne <marc.dionne@auristor.com>,
- Eric Dumazet <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,
- Eric Biggers <ebiggers@kernel.org>,  "Theodore Y. Ts'o" <tytso@mit.edu>,
- Jaegeuk Kim <jaegeuk@kernel.org>,
-  Alexander Viro <viro@zeniv.linux.org.uk>,
-  Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-  Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
-  Mikulas Patocka <mpatocka@redhat.com>,
-  Benjamin Marzinski <bmarzins@redhat.com>
-Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, 
- keyrings@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org, 
- linux-nvme@lists.infradead.org, linux-nfs@vger.kernel.org, 
- linux-integrity@vger.kernel.org, linux-afs@lists.infradead.org, 
- netdev@vger.kernel.org, linux-fscrypt@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, dm-devel@lists.linux.dev, 
- =?utf-8?q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>
-X-Mailer: b4 0.15.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e019296d-43f5-47bd-ab49-6dfd1d8da0cb@paulmck-laptop>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 6C6F8C000E
 X-Rspam-User: 
-X-Stat-Signature: b4mhmhaqmy3kfiddwa6taq6rmhdmmygz
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A42C212000C
-X-HE-Tag: 1786470890-532703
-X-HE-Meta: U2FsdGVkX1+KBKOKwYeCf/WuwqPUtl4L0L5V+3GLV8fVHZUMYoUrGZA56BgexpAWHRgchOWRFQNFPCmrxXJc0fhL+muBvmysbQe+8wb+84lA7wAX7/3kuhKVnzN3CYOI4O4ymSKOwqe22USHjLUyzpobfWTgaKkAV84O1wzig9eFrBaqfDOENJnj6FtTJi2blBHzOKiTeOtNypFtAqMRst6Iaz/V0Lk5pDC2PVF4AerUNTFgsav5fyJmFY7Yf/1lPCwWiPVJVC3OzHyFFBM5NxuRewIBd46QHOrsPLnGG5MdPtZ9+JknIZQb3o5Spj7Lhq8Rrj7C676MMW/KTbOo8GtNctjzpDkGG556a0XylyIG7Ecae6RCnFK9Rg1tdBm/JS5yu8f7Ypd7CguHsgxiYy3olUcDS1MDAa651qPEbRfdpH4OkXrlxxeqxN6oapjWuRxdTrdDIHiJSu1Vrb+ZXoCp6IpKgpzmAroySPaJy1tpH6jTF+jEW6lu0YweKOxlqYaVXIPxEKUDjfc0jWfNvHdOMML74QHXOkSiorEGCHwG52ounnbqGpJhJRJMfWTIO3x42M9AJjzHxlfgHhpL7CNoJmqvbIWC+Kxy7IRMo/SD89jGwEHMWBvIrQfnVs/vN6u2YpbceDJDb7wHrXd15CwV5YGpk4kii6jvXyC1XyQaIbRpOoDXEaZ9UhBznTYSnDk8MganQVuElv7vgm132gUub99mGbqPQ1Z5YE2xu7kNdXcZRtoL8WOywH2zPRe1vdoo1YULhsYI7Lvy0ISn/yjPgtwZxWMbDo8pvPx55U+ouIBtGjTHFga3pbpbl15BlJPtcD7IWIoL43BWyDeqMVy5QDqBHYYHRjUILuR7JBkpYuU8iJnh/X99FwcfsYCse/NhyVeFsX8kKNAQ9H2byfw4Q1z62m7cFDIZ1oYXHIBTSUJlaKG90bYZVcqeE7OxS7Z6cCUT7TtzXCWofRx
- glOEmIG7
- Qos/rG4y8D110ur/Cu8isF1cwQh+LLJr35jlhmxROsTXA/a1hwxVue/kL6c+YfUV77rG6xspTEa9CzigcI475o4RtCc7CRM/1nIFnJ4XMO31BO6duCkvDKhJOwWg0JapnzcDJk0uud8IYixenJWLIkkWrDzcuzf+bE06dKsoCCSMPJGwL4lPDz8NpdDsdXEB7GWwvXnuosCx8JQf76QnYyi6/aFzuO6u5xjDfotnvs5y58JithF9p8JZR1wVjxwzVMhWAeWYA7a3Kq9vjT4kH7eGfxybA7acgmZQ28hgn4LCnzBsp3Xk0RmcCo798aGqhNojoN+PkrqRQ4bmGPENVi9mMEb7mjQlWQR4znZU5RuPRUn7GukN8NasIJjHpluQn+ETPYVTCDXphvqIkbHLJ1YVhZXcmjjVooEg/uGztWs2Dd4jPbEEuXKDjrlYP8nmE4GRi
+X-Stat-Signature: oz4mcw9shyx81zsrkea6zsmzaxyfhbg7
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786470892-175943
+X-HE-Meta: U2FsdGVkX1/8md5fAnBFx7w/LYB+OwAsUbWx3Be20M1xKcZAS4yuycUD0fL8xg7J1KTXdo2w6AQH3yRB+ULbf0EeR84mbBfwqfxTLF8JFgVCeG1Y65YObY7T7085eqpIf1UQRplKtaP6MneiWeQcSQT0n4obYcKZ9NR0OCea+dQ98iz23WRFTs1/nVE0L6VFnwrz5Pgfty4irwRD5gg/C7rfyS6GsXaetlq3Z8/054WKlg4FMFbeElvFouN5vodZKF6/nErys8594+Askzpuf4tZW4SkTGgyrz8KV+gjgK2Q49DczlIPurrOUTqzmz9j/RchCQEWXO3RlAaC5K5OTXZrop4Eq3Wut9K/Uwk6+6DX/DqGt3mY3PXmxhP4joOcofVrLONtLrom1WFBgBpu8AtuGDADY2DZ/FeuzAPQRx/L4nO4YVD5IQX/XeEBK6AxIp4qVphsdET1baocy3YgdsjQHwagcmzDq9wkSoYEOdvgBAMGMKbmfH551Yzci8aFLa+/FXDx20YlK/fHQo48qY/AIHE8ZT/FqcmsE5T2hxDq/a9TC56XbBBnrdVyX+CcPieCNbvvSjOV9Q2iqmHYuPtrZLoBu6S3TvqwZGysb+uazo2adyC/sZyLyrhHz/khJsfur9KbYG5Ewn6d6pzHGjZugjRHgLcJjESs+4uQbUqnlNiVli5nmmkXcdVKsz3R0TsAbStYjugV4cZx5r/EDkMnYbSrgrK0KswMxtvhcz4vWly9v1GdygjLvv4HPh/sOpHd3co7/TaDvdAsx0TTOT//udcaXxVb3vQzDIme88JUKLG5qR9Micp6n7srf7BjgStXL633d3YbqsOKJvnwVVBXpeQv3eFjsz+xduMkLYEj3ePUCcKU/wxdYjnjFmYbzd3B1sHtwqMRmMOx5hTpKuOoSG7jwq+0wmIz2ujog9n04W+3NWPJq6cZzpwnFLFqyq4kyfRUEfixEegpJB0
+ 3Wm1cy5g
+ aGKsCzfNiQXwM8yVvjm/UlUGnDADq46ycjMzDbWEcOD+nRGdXaduy+LtGTqIn7lv0TDFY9VdAbzEnWgL76D2BXJYSFrP0RQJlpYUOZcxHEdE/Y9UERMdBiEmkcehOgpzsVtEILgFwFO6uc9LY2JfiZmsuH6d44N6PLyDoDggtEGhEeau3Uknx1Jzo55xR+dvR93gIgalAqX6IQByPbqYCvuNCnw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,204 +94,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tfm structs contain key material like expanded key schedules. Under
-CONFIG_CRASH_WIPE_SECRETS, wipe all tfms before kdump to prevent
-leakage. Copies outside the tfm context, e.g. on the stack or in
-hardware key registers, are not covered.
+On Tue, Aug 11, 2026 at 10:38:40AM -0700, Paul E. McKenney wrote:
+> On Mon, Aug 10, 2026 at 09:43:03PM -0700, Shakeel Butt wrote:
+> > On Mon, Aug 10, 2026 at 02:57:36AM -0700, Breno Leitao wrote:
+> > > I am seeing some rcu_tasks stalls in the Meta fleet during reclaim.
+> > > 
+> > >   INFO: rcu_tasks detected stalls on tasks:
+> > > 	0000000088620d09: .. nvcsw: 6735/6735 holdout: 1 idle_cpu: -1/8
+> > > 	task:GlobalCPUThread state:R  running task  pid:2552016 tgid:2524552
+> > >   Call Trace:
+> > >    shrink_lruvec
+> > >    mem_cgroup_iter
+> > >    shrink_node
+> > >    do_try_to_free_pages
+> > >    try_to_free_pages
+> > >    __alloc_frozen_pages_noprof
+> > >    alloc_pages_noprof
+> > >    pte_alloc_one
+> > >    __pte_alloc
+> > >    handle_mm_fault
+> > > 
+> > > Nothing promises direct reclaim returns in bounded time, and the scan
+> > > loop in shrink_lruvec() only calls cond_resched(), which is a no-op on
+> > > PREEMPTION kernels.  Involuntary preemption is not a Tasks-RCU
+> > > quiescent state, so the reclaiming task never reports one and becomes a
+> > > holdout.
+> > 
+> > I still don't understand why cond_resched() is being treated as involuntary
+> > preemption but that is orthogonal to this patch.
+> 
+> The history is that cond_resched() was originally intended to be a
+> preemption point in any otherwise non-preemptible kernel.  Therefore,
+> because it is a preemption point, it counts as an involuntary context
+> switch.
 
-Also change two kfree() calls to kfree_sensitive() for good measure.
-
-Signed-off-by: Jan Sebastian Götte <linux@jaseg.de>
----
- crypto/api.c           | 78 ++++++++++++++++++++++++++++++++++++++++++++------
- include/linux/crypto.h | 11 +++++++
- 2 files changed, 81 insertions(+), 8 deletions(-)
-
-diff --git a/crypto/api.c b/crypto/api.c
-index 24227582cfcf..f919f52e8b5f 100644
---- a/crypto/api.c
-+++ b/crypto/api.c
-@@ -10,13 +10,16 @@
-  * and Nettle, by Niels Möller.
-  */
- 
-+#include <linux/crash_core.h>
- #include <linux/err.h>
- #include <linux/errno.h>
- #include <linux/jump_label.h>
- #include <linux/kernel.h>
- #include <linux/kmod.h>
- #include <linux/module.h>
-+#include <linux/notifier.h>
- #include <linux/param.h>
-+#include <linux/rculist.h>
- #include <linux/sched/signal.h>
- #include <linux/slab.h>
- #include <linux/string.h>
-@@ -397,6 +400,60 @@ static unsigned int crypto_ctxsize(struct crypto_alg *alg, u32 type, u32 mask)
- 	return len;
- }
- 
-+#ifdef CONFIG_CRASH_WIPE_SECRETS
-+/*
-+ * tfm allocations are tracked on crypto_tfm_list so that they can be wiped
-+ * before kdump.
-+ */
-+static HLIST_HEAD(crypto_tfm_list);
-+static DEFINE_SPINLOCK(crypto_tfm_list_lock);
-+
-+static int crypto_crash_wipe(struct notifier_block *nb, unsigned long action,
-+		void *data)
-+{
-+	struct crypto_tfm *tfm;
-+
-+	rcu_read_lock();
-+	hlist_for_each_entry_rcu(tfm, &crypto_tfm_list, wipe_list)
-+		crash_wipe_memzero(tfm->__crt_ctx, tfm->wipe_size);
-+	rcu_read_unlock();
-+
-+	/* off to kexec()! */
-+	return NOTIFY_DONE;
-+}
-+
-+static struct notifier_block crypto_wipe_nb = {
-+	.notifier_call = crypto_crash_wipe
-+};
-+
-+static int __init crypto_tfm_track_init(void)
-+{
-+	crash_wipe_secrets_register(&crypto_wipe_nb);
-+	return 0;
-+}
-+core_initcall(crypto_tfm_track_init);
-+
-+/* @size is the size of __crt_ctx */
-+static void crypto_track_tfm(struct crypto_tfm *tfm, size_t size)
-+{
-+	tfm->wipe_size = size;
-+
-+	spin_lock(&crypto_tfm_list_lock);
-+	hlist_add_head_rcu(&tfm->wipe_list, &crypto_tfm_list);
-+	spin_unlock(&crypto_tfm_list_lock);
-+}
-+
-+static void crypto_untrack_tfm(struct crypto_tfm *tfm)
-+{
-+	spin_lock(&crypto_tfm_list_lock);
-+	hlist_del_rcu(&tfm->wipe_list);
-+	spin_unlock(&crypto_tfm_list_lock);
-+}
-+#else
-+static void crypto_track_tfm(struct crypto_tfm *tfm, size_t size) { }
-+static void crypto_untrack_tfm(struct crypto_tfm *tfm) { }
-+#endif /* CONFIG_CRASH_WIPE_SECRETS */
-+
- void crypto_shoot_alg(struct crypto_alg *alg)
- {
- 	down_write(&crypto_alg_sem);
-@@ -409,15 +466,16 @@ struct crypto_tfm *__crypto_alloc_tfm(struct crypto_alg *alg, u32 type,
- 				      u32 mask)
- {
- 	struct crypto_tfm *tfm;
--	unsigned int tfm_size;
-+	unsigned int ctx_size;
- 	int err = -ENOMEM;
- 
--	tfm_size = sizeof(*tfm) + crypto_ctxsize(alg, type, mask);
--	tfm = kzalloc(tfm_size, GFP_KERNEL);
-+	ctx_size = crypto_ctxsize(alg, type, mask);
-+	tfm = kzalloc(sizeof(*tfm) + ctx_size, GFP_KERNEL);
- 	if (tfm == NULL)
- 		goto out_err;
- 
- 	tfm->__crt_alg = alg;
-+	crypto_track_tfm(tfm, ctx_size);
- 
- 	if (!tfm->exit && alg->cra_init && (err = alg->cra_init(tfm)))
- 		goto cra_init_failed;
-@@ -428,7 +486,8 @@ struct crypto_tfm *__crypto_alloc_tfm(struct crypto_alg *alg, u32 type,
- 	crypto_exit_ops(tfm);
- 	if (err == -EAGAIN)
- 		crypto_shoot_alg(alg);
--	kfree(tfm);
-+	crypto_untrack_tfm(tfm);
-+	kfree_sensitive(tfm);
- out_err:
- 	tfm = ERR_PTR(err);
- out:
-@@ -497,12 +556,12 @@ void *crypto_create_tfm_node(struct crypto_alg *alg,
- 			     int node)
- {
- 	struct crypto_tfm *tfm;
--	size_t size;
- 	char *mem;
- 	int err;
-+	size_t ctx_size = frontend->extsize(alg);
- 
--	size = frontend->tfmsize + sizeof(*tfm) + frontend->extsize(alg);
--	mem = kzalloc_node(size, GFP_KERNEL, node);
-+	mem = kzalloc_node(frontend->tfmsize + sizeof(*tfm) + ctx_size,
-+			GFP_KERNEL, node);
- 	if (!mem)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -510,6 +569,7 @@ void *crypto_create_tfm_node(struct crypto_alg *alg,
- 	tfm->__crt_alg = alg;
- 	tfm->node = node;
- 	tfm->fb = tfm;
-+	crypto_track_tfm(tfm, ctx_size);
- 
- 	err = frontend->init_tfm(tfm);
- 	if (err)
-@@ -525,7 +585,8 @@ void *crypto_create_tfm_node(struct crypto_alg *alg,
- out_free_tfm:
- 	if (err == -EAGAIN)
- 		crypto_shoot_alg(alg);
--	kfree(mem);
-+	crypto_untrack_tfm(tfm);
-+	kfree_sensitive(mem);
- 	mem = ERR_PTR(err);
- out:
- 	return mem;
-@@ -627,6 +688,7 @@ void crypto_destroy_tfm(void *mem, struct crypto_tfm *tfm)
- 		alg->cra_exit(tfm);
- 	crypto_exit_ops(tfm);
- 	crypto_mod_put(alg);
-+	crypto_untrack_tfm(tfm);
- 	kfree_sensitive(mem);
- }
- EXPORT_SYMBOL_GPL(crypto_destroy_tfm);
-diff --git a/include/linux/crypto.h b/include/linux/crypto.h
-index b7c97f1c47c9..59d6d62180fd 100644
---- a/include/linux/crypto.h
-+++ b/include/linux/crypto.h
-@@ -14,6 +14,7 @@
- 
- #include <linux/completion.h>
- #include <linux/errno.h>
-+#include <linux/list.h>
- #include <linux/refcount_types.h>
- #include <linux/slab.h>
- #include <linux/types.h>
-@@ -420,6 +421,16 @@ struct crypto_tfm {
- 
- 	struct crypto_alg *__crt_alg;
- 
-+#ifdef CONFIG_CRASH_WIPE_SECRETS
-+	/*
-+	 * Link on crypto_tfm_list, used to wipe the expanded key schedule in
-+	 * __crt_ctx before kdump. wipe_size covers __crt_ctx only, excluding
-+	 * this struct and any frontend preceding it.
-+	 */
-+	struct hlist_node wipe_list;
-+	size_t wipe_size;
-+#endif
-+
- 	void *__crt_ctx[] CRYPTO_MINALIGN_ATTR;
- };
- 
-
--- 
-2.53.0
+Thanks for the explanation. Is cond_resched_tasks_rcu_qs() voluntary or
+involuntary context switch?
 
 
