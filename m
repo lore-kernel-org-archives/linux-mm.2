@@ -4,103 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CEDEC5AC67
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 06:23:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C73A3C5AC67
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 06:26:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7305A6B008C; Tue, 11 Aug 2026 02:23:08 -0400 (EDT)
+	id BEF256B0093; Tue, 11 Aug 2026 02:26:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E0A76B0092; Tue, 11 Aug 2026 02:23:08 -0400 (EDT)
+	id BA0F36B0095; Tue, 11 Aug 2026 02:26:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F8966B0093; Tue, 11 Aug 2026 02:23:08 -0400 (EDT)
+	id AB6AC6B0096; Tue, 11 Aug 2026 02:26:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 381B86B008C
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 02:23:08 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AD2331A0358
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 06:23:05 +0000 (UTC)
-X-FDA: 85087995930.30.4DA6264
-Received: from mta21.hihonor.com (mta21.honor.com [81.70.160.142])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 040D0140004
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 06:23:02 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf23.hostedemail.com: domain of gaoxu2@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=gaoxu2@honor.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 88E966B0093
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 02:26:26 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0EC64C0334
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 06:26:26 +0000 (UTC)
+X-FDA: 85088004372.23.717ED2B
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A02A6C0003
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 06:26:23 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZMSFg7rO;
+	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786429383;
+	s=arc-20220608; t=1786429584;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zpn9Q6wCbwmAi1LjmnjfD/IaDhZQ0R7Hf16niZw3nMU=;
-	b=W8+rbRKrGjC5C1Q2qMzBv7fSOwjYbYGbH1jH6YuAb/0aXSM0Nju87ZkM7G8Mpauff+e3Ac
-	xy9tpTo3Jm4JV5GbES1pC+F0d65T12qwIYTRb9brts/gYZ6qatps+mFxp64J67ZenG1x6N
-	/z9ztocJhnvznu5Bb/arMYi5kNfygCE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=XrvIDI4l3ibJO+y9A4q6yHaI4leghzx/mVJIb4ZQWF0=;
+	b=8aTGwRrnZi1AMY/PA+yA+y2O0ImTSfNEmlaaR6W+yT9mzsrgsj3vscLu5aIjMpmA+zc1ii
+	dfIlEBX0AxiNX/gOc2ovUupjOiaLDKXj0axTZxZrTdgsHMQlbv3GvBds35ngjAMhGmVuoe
+	MczxAHz+TQCY5rLk2TEVLEvcOeOTD6o=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf23.hostedemail.com: domain of gaoxu2@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=gaoxu2@honor.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZMSFg7rO;
+	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786429383;
-	b=tbLelN7VcjqBg1R/LYyzwkQ5upKSCObX4n22K2lChH+LLen/U8YOR/g1s6whKPZSeOttAl
-	mVz0c+Q41ukncoN5bBS5QiK7CSzoJfNpn1tleKTjOhGjPAI2nGaxdwF1nJQlhQqe6AUSjU
-	4jBBUxzR1k9HgPXHw+9WUS93n3Q6EFg=
-Received: from TW001.hihonor.com (unknown [10.77.229.151])
-	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4hK1l66fMXzYl1n1;
-	Tue, 11 Aug 2026 14:22:58 +0800 (CST)
-Received: from TA008-1.hihonor.com (10.72.0.148) by TW001.hihonor.com
- (10.77.229.151) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 11 Aug
- 2026 14:22:58 +0800
-Received: from TA008-1.hihonor.com (10.72.0.148) by TA008-1.hihonor.com
- (10.72.0.148) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 11 Aug
- 2026 14:22:58 +0800
-Received: from TA008-1.hihonor.com ([fe80::e1cf:9270:9b1f:2b7]) by
- TA008-1.hihonor.com ([fe80::e1cf:9270:9b1f:2b7%17]) with mapi id
- 15.02.2562.045; Tue, 11 Aug 2026 14:22:58 +0800
-From: gao xu <gaoxu2@honor.com>
-To: Steven Rostedt <rostedt@goodmis.org>, "Lorenzo Stoakes (ARM)"
-	<ljs@kernel.org>
-CC: "David Hildenbrand (Arm)" <david@kernel.org>, Xiang Gao
-	<gxxa03070307@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, "Masami
- Hiramatsu" <mhiramat@kernel.org>, Mathieu Desnoyers
-	<mathieu.desnoyers@efficios.com>, "liam@infradead.org" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-	"linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-fsdevel@vger.kernel.org"
-	<linux-fsdevel@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Xiang Gao <gaoxiang17@xiaomi.com>
-Subject: RE: [PATCH] tracing: report buffer memory in /proc/meminfo
-Thread-Topic: [PATCH] tracing: report buffer memory in /proc/meminfo
-Thread-Index: AQHdKKxQUSjNT0U+CkilnXunKM92XraWlUIAgAAIaICAADvrAIABWdpw
-Date: Tue, 11 Aug 2026 06:22:58 +0000
-Message-ID: <9bd98f51abd44d81a569d95e907070c6@honor.com>
-References: <20260810094025.136705-1-gaoxiang17@xiaomi.com>
-	<69df3080-a719-4131-a247-62bf47bda8a6@kernel.org>	<anm0SMuVpBz7wLac@lucifer>
- <20260810105710.6ee5e493@gandalf.local.home>
-In-Reply-To: <20260810105710.6ee5e493@gandalf.local.home>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.166.85.101]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	t=1786429584;
+	b=YfyVDYpnLOoUmW2B2HJg20xJ4iPWoFjnQoZOyPirHxRKu1ehDizgcNOsE/NdBJV20G9AwW
+	poO1cr7/7YvYxt3CWRlbUtGABb2PlslL+tVfoDZfzN6aXwXA6MJ6SeTzaBYpqSydebuZaT
+	4eTDiGjDuZArNPwXHy5UCh8GuLiMHME=
+Message-ID: <c2e8b6d5-e444-4fdc-909a-a928e0e8f45a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786429579;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XrvIDI4l3ibJO+y9A4q6yHaI4leghzx/mVJIb4ZQWF0=;
+	b=ZMSFg7rODBkJTKpJce/kKymt/vvKd4Si1DCFMJdlSBmYZBWa5h2iXhozUCctMzolwmOoHZ
+	Yy8BPbkRSTT04rnxaf/kAAoWWUk7aqPtScK21NWYnDADO6FijO9fVdDoyRjbu4OpauPfUj
+	i0zD/9SLnH+8r7/xeyzinBz4Mbf5PP0=
+Date: Tue, 11 Aug 2026 14:25:59 +0800
 MIME-Version: 1.0
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 040D0140004
-X-Stat-Signature: taqjb5eyqmkhjo4c1ys7ukh3jmfdztwa
+Subject: Re: [PATCH v3] memcg: keep folio's objcg same as its node
+To: Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Meta kernel team
+ <kernel-team@meta.com>, linux-mm@kvack.org, cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Karl Erik Hofseth <karl.e.hofseth@opoint.com>,
+ stable@vger.kernel.org
+References: <20260807142406.443516-1-shakeel.butt@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260807142406.443516-1-shakeel.butt@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 7dh5eaf9y7t7epf34d1w9b7ucuxfwz8e
+X-Rspamd-Queue-Id: A02A6C0003
 X-Rspam-User: 
-X-HE-Tag: 1786429382-265871
-X-HE-Meta: U2FsdGVkX19HvE3w+mV5PxZw3n1N5XVCOLi6U/JXo2FMK8bbQ+2mkCLM9SR5sWsLaa1hb202T/LeAo3bXn3EfQtOoj7bbRi21zIW2D3MTDhN/vhn0MiIX9l2lWGqcqvDmhiapj0J9v5OFeOYw1wQ+0GEGB9rnZVccapJaovWeC5WPN/z+QMWQIyXYbQwpVjpvAZT6aUDfxhTzVEeYu4w5ms+X5tr5U6yyfoGxOXxnq1Q00tJQZiZix1ttegigar5tQ8cFbRqnpQOEYcgm3WeE17OD+QM2UL1OJeXS7rEhof5S8auuMDM3gvOfnRbvDooA1W3G2NKdt8DEwitswRMYa0RxG2n1VWE1v0caoTuOMz63i8sk6KHt1IdkKCqL7z3RNnpksZd6bknaeS21JbeGw1yhyTPhLgMhyeNRkPFI4jVl48yZ2p3JYVTc5NKYWGemi/0rB56SyDScANwFIv3Mb8UOtdrix76Lxs98k8QdtgKGTjPTpjIkFMlEoBf89YO2lmhdAUbJJgxzT9Nl25V3yWpqXuL8lMr0F18zkozBZdFYgX1pqWXukZ7WflIuPxue4WXhS2xepxb+bDC0dQDXPHICi5kalVEuuiLqINtDQp3AtH+wLzygknChz1ojwSuilokVnHaA+tHLUEowUuU/gJzeT3zJ4SCfM1z+yXgKOytYX1TL6FXFXoUsMIjeU9Za1xnYpMjZGNfB9mJEC1feDsOfP364SgEQfIs6w9PNkp338bCe3PBLjKt1RaEJY1df75o4DQ1XuRACzwdZZqaKU6CGdnBaECu8xO/uQmduaoz0udmn4nAzeb4oOFE6oNKJS2CjqzEXk345rp+Y5vLDRx2ZQy7SS1hV8Az8Gkg9C4VJMa/RBMM2dtlISgUggYI5k7O5E7QXTK5zyIhUrdl/Qnqnpz0Dr2AYFv3/IITg1+aLNXeefeCp5iwo1+SrZmUCYy4m838NK2MfjUFsUO
- CCJupyaw
- HPwuuVxZ+7GQNGsbWSgJhBCS3OLFTFoAeK3qwKXOWjUegtCJLV+HM1u7Qmqof1GbOzG/Oxyh6IsCwCHKOqagkX0xegWaZqPyHSRqYMF9J3pBJXjQxR3WtoT9okFZtemGaja7WAZ9iDo7+yxC5l7bdJPle+5Tf4xq3h3LjvvFhT93oBSl5Bj3toCgFVi2iHaEitMbkj4m1bVwElVsURbk17ymWkUIS/qGqo9CJ9uhtSfGpO2hlWr5IpqPubyZ58PNOG2V/anP3vN+ijLuaemoLZJppbuzblAN88HABECeMb6/bxjq1Pd8Q/D9gWdh61Zflyex3y8i7rQ8uGXirfqNgTSWfySHfvA94ILNTy3w51F2iejAUTwKJu8uMgA==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786429583-982276
+X-HE-Meta: U2FsdGVkX1/xK5zwIvr8k45E3TFz2o9/PeDb/XMcRFJOUUQdRi+WfWU8BqU3Gn/FiwWcVVRFGxe1jSnZmelNRB8+oMGqGMymkE7cqAOgMd8f+HNqGphF4VXQpi5x10XMqb3Jz+tZHlwq5ILd2U5rHRIrOKNyPnLNuZcIN3KPv66zIc4PfxObH8E3rs3wYjt7GpkYzfhHQNkseUSEuYyRkNECeVeNZO0msxc1VUBssraE5Jcr5tD6v0/UsltnTI9RdxwqOWngiOFr6KQBRvyNtzcYO+McvdktNI8LJtdDy7Mzp0dfCpA9AF33S9pZLzq0FsmHZsArE3JIpgqEvn4lPFbm99dIW8fq6CDAnrNkueaKdjCiGhy/eOjGGeRsoyjya+R15b3I73RcKwj7tXKky7oN5GjF2OECeR452EwPXZa/JshxZ7fxwTTjdTTNyw1CwyfXfxyMm25N1TZy5CXu1RukOmJB+AcwkgJl2c2CowRBtHXkj1YeOJzRuhB745JAjPJfjvaNqonB/HLELhODnz6tvRoufvAB9oxNH773QMyzGucSU+FTQiPj04jU/inNeD2o4jh0wdnoXOd+Lpt7FW9/Op6t2DLe+ZZnRhD1kukXJNVExWwD6rRGRWLPi7JY2aE0Ldwy6D/wUL/6hpejWbpfhRFmdST3bjCyhNGgdSCf9UdzzhlkeokjPzkfYEF2Z4iqhFkK+7sbAfAGAqZXu4OgeoeUhXkGoWZPc4Q8ibpegGAOvniD9aTKHzuC0bJc1iDlgBqay4OXy+ckt3/kItecTJZRwoH9JADYPLF05ajkdTiaMfehl82rg7r7YlxT7eKtoXNxVI+mk+WB+6T+z6Pr0CMcYV5VjmbmsdsCbPly2ze9lv7kMqiQPU/hMVJiHdZJtey1HoVDU0drcTmN03x1w9fCowqNrj8IP1SdjWbje0cYw9nvu4I1ftj8PEX6Q5yyDwpg6n4g6RIU+QX
+ MIpDG5WQ
+ rauk7rXCJshQhAb13MZt/6x7Q/t1CyhxwpvMtt95IFc7JjnDNff89v68mv5lGSAbIFthmL//LeJCAfd0vNrU41FNcQZUqgtXhlx1PzUMAlFx87UNhwzo36XABfw77eAMOJSWj4ldHEU/hxyUFHyiIoMKxc8g5vH99zIfIDdPIWJo+yN6TQDaUyn6BS/dmYvcMm4Hc7GizY3UNU179qXL4YalaV9wqmIhxxPQ2bETBs/wnmmwWN9bgOQT4QrcdeAyjEtvFCH6Kdg8k5saHcws75jWWoU9hLracEjZNsW89NLt0O+T2gyeB9G/sjJYr0ctZLlj2yF/gLw8IuNDm6cX0iqSMyxhVErLO+9t4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,30 +93,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-PiBPbiBNb24sIDEwIEF1ZyAyMDI2IDEyOjIyOjQzICswMTAwDQo+ICJMb3JlbnpvIFN0b2FrZXMg
-KEFSTSkiIDxsanNAa2VybmVsLm9yZz4gd3JvdGU6DQo+IA0KPiA+IE9uIE1vbiwgQXVnIDEwLCAy
-MDI2IGF0IDEyOjUyOjM4UE0gKzAyMDAsIERhdmlkIEhpbGRlbmJyYW5kIChBcm0pIHdyb3RlOg0K
-PiA+ID4gT24gOC8xMC8yNiAxMTo0MCwgWGlhbmcgR2FvIHdyb3RlOg0KPiA+ID4gPiBSZXBvcnQg
-dGhlIGRhdGEgY2FwYWNpdHkgb2YgYWxsIGZ0cmFjZSByaW5nIGJ1ZmZlcnMgdGhyb3VnaCBhIG5l
-dw0KPiA+ID4gPiBGdHJhY2UgZmllbGQgaW4gL3Byb2MvbWVtaW5mby4gSW5jbHVkZSB0aGUgbWFp
-biBhbmQgc25hcHNob3QNCj4gPiA+ID4gYnVmZmVycyBvZiB0aGUgZ2xvYmFsIHRyYWNlIGFycmF5
-IGFuZCBhbGwgdHJhY2luZyBpbnN0YW5jZXMsIHdoaWxlDQo+ID4gPiA+IGxlYXZpbmcgcmluZy1i
-dWZmZXIgbWV0YWRhdGEgYWNjb3VudGVkIGZvciBieSBTbGFiLg0KPiA+ID4NCj4gPiA+IHdoeT8g
-OikNCj4gPiA+DQo+ID4gPiBUbyByZXBvcnQgYSBoYW5kZnVsIG9mIEtpQiBhcyBpbiB5b3VyIGV4
-YW1wbGUgYmVsb3c/IERvZXNuJ3Qgc291bmQNCj4gPiA+IHN1cGVyIGhlbHBmdWwgVEJILg0KPiA+
-DQo+ID4gWWVhaCBJIHRoaW5rIHdlIG5lZWQgdG8gc3RvcCB3aXRoIGFsbCB0aGUgcHJvcG9zZWQg
-YWRkaXRpb25zIHRvDQo+ID4gL3Byb2MvbWVtaW5mbyA6KQ0KPiA+DQo+ID4gQWxzbyBzb21ldGhp
-bmcgbGlrZSB0aGlzIHdoZXJlIHlvdSBhcmUgbWFraW5nIGEgY2hhbmdlIGluIG91dHB1dCB0aGF0
-DQo+ID4gaXQgaXMganVzdCB5b3VyIG9waW5pb24gdGhhdCBpdCBpcyB1c2VmdWwgc2hvdWxkIGJl
-IGFuIFJGQyB0byBzZWUgd2hhdA0KPiA+IHRoZSBjb21tdW5pdHkgdGhpbmtzIGZpcnN0Lg0KPiAN
-Cj4gQWdyZWVkLiBUaGlzIGRvZXNuJ3QgYmVsb25nIGluIHRoZSBtZW1pbmZvLiBJZiB5b3Ugd2Fu
-dCBtZW1vcnkgc3RhdGlzdGljcyBmb3INCj4gdHJhY2luZywgSSBtYXkgYmUgT0sgaWYgeW91IGFk
-ZCBhICJ0b3RhbF9tZW1vcnlfa2IiIGZpbGUgaW4gdGhlDQo+IC9zeXMva2VybmVsL3RyYWNpbmcv
-dHJhY2Vfc3RhdHMvIGRpcmVjdG9yeS4NCldvdWxkIGl0IGJlIHBvc3NpYmxlIHRvIGluY2x1ZGUg
-dGhpcyBpbmZvIGluIHNob3dfbWVtKCk/DQpUaGlzIHdvdWxkIGJlIGhlbHBmdWwgZm9yIGFuYWx5
-emluZyBsb3ctbWVtb3J5IGFuZCBPT00gaXNzdWVzLg0KPiANCj4gQW5kIGJyZWFrIGl0IHVwIGZv
-ciBtZW1vcnkgdXNlZC4gUmluZyBidWZmZXJzLCBldmVudHMsIGV0Yy4NCj4gDQo+IFBlcmhhcHMg
-ZXZlbiBhZGQgb25lIHBlciBDUFUgYXMgd2VsbC4NCj4gDQo+IEknbSBhbHdheXMgY29uc2NpZW5j
-ZSBhYm91dCBob3cgbXVjaCBtZW1vcnkgdHJhY2luZyBpcyB0YWtpbmcgdXAgaW4gdGhlDQo+IHN5
-c3RlbS4NCj4gDQo+IC0tIFN0ZXZlDQoNCg==
+
+
+On 8/7/26 10:24 PM, Shakeel Butt wrote:
+> memcg_reparent_objcgs() has an inherent assumption that a folio's objcg
+> is the objcg of the folio's node.  Folio migration across nodes breaks
+> that assumption: the new folio simply inherits the old folio's objcg
+> while living on a different node.
+> 
+> Once the assumption is broken, the reparenting of the folio's objcg and
+> the reparenting of the folio's LRU list are no longer atomic.
+> memcg_reparent_objcgs() handles one node per iteration and drops all the
+> locks in between, so the objcg gets reparented in the iteration for the
+> objcg's node while the LRU list gets spliced in the iteration for the
+> folio's node.  Any LRU operation on that folio in between resolves its
+> lruvec through the objcg, and thus takes the lru_lock of the wrong
+> memcg, not the lru_lock of the list the folio is actually on.
+> 
+> Fix this by selecting the objcg by folio_nid() at charge time, and by
+> re-deriving it for the destination node in mem_cgroup_migrate() and
+> mem_cgroup_replace_folio().
+> 
+> Reported-by: Karl Erik Hofseth <karl.e.hofseth@opoint.com>
+> Closes: https://lore.kernel.org/all/anMmd1ADrDVwMO6v@work/
+> Fixes: f1cf8d2f36dc ("mm: memcontrol: eliminate the problem of dying memory cgroup for LRU folios")
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Johannes Weiner <hannes@cmpxchg.org>
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> ---
+> 
+> Changes since v2:
+> http://lore.kernel.org/20260806165813.2526415-1-shakeel.butt@linux.dev
+> 
+> - Refactor common code between mem_cgroup_replace_folio and mem_cgroup_migrate
+>    (Johannes)
+> - Always commit the destination node's objcg. (Johannes)
+> - In mem_cgroup_replace_folio, force charge based on committed objcg (Johannes)
+> - In mem_cgroup_migrate, if destination node's objcg is root, uncharge the
+>    source node's objcg. (Johannes)
+> 
+> 
+> Changes since v1:
+> http://lore.kernel.org/20260806061830.3294679-1-shakeel.butt@linux.dev
+> 
+> - In mem_cgroup_migrate, do obj_cgroup_put at the end (Sashiko)
+> - Handle scenario where destination node has been reparented to the root but the
+>    source node's objcg has not yet (Sashiko)
+> - Add comment explaining the race between migration and reparenting (Johannes)
+> 
+>   mm/memcontrol.c | 100 ++++++++++++++++++++++++++++++++++++++++--------
+>   1 file changed, 83 insertions(+), 17 deletions(-)
+> 
+
+Thanks for the fix!
+
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
+
 
