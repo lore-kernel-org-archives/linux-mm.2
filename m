@@ -4,139 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE1C7C5B572
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 18:21:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 249BBC5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 18:22:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFF666B00A2; Tue, 11 Aug 2026 14:21:10 -0400 (EDT)
+	id EB2786B00A4; Tue, 11 Aug 2026 14:22:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED6686B00A3; Tue, 11 Aug 2026 14:21:10 -0400 (EDT)
+	id E8A626B00A5; Tue, 11 Aug 2026 14:22:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEE9D6B00A4; Tue, 11 Aug 2026 14:21:10 -0400 (EDT)
+	id DA0E56B00A6; Tue, 11 Aug 2026 14:22:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B5F0F6B00A2
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:21:10 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 53877401D1
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:21:10 +0000 (UTC)
-X-FDA: 85089805500.14.25A50D7
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 5A23AA000F
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:21:08 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=qRr9CSih;
-	spf=pass (imf15.hostedemail.com: domain of jyescas@google.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=jyescas@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EC5E6B00A4
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 14:22:28 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 75FC01201BA
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:22:03 +0000 (UTC)
+X-FDA: 85089807726.01.47F505C
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 7107C14000F
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:22:01 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=o4R0lqgN;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf23.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786472468;
+	s=arc-20220608; t=1786472521;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SidcrzD+3N4Z9gUfmMlCvG/9oP2syRc8UCagR7fv1Mg=;
-	b=T3X6B1jOKTxe+WeopubuaucQeVBIoGEHRgs4R038G2u3FfSKOnvfUBcpH64SBJw8+w3QOH
-	vYyohNgZuF/xHDUa3z6znPgKAzZZjHipfcv9+jidjYJvcaPXL9lMFpMjjW3pA+nd7v/RdQ
-	4ZpkToHVk3kevU2H1gt+nRySIM/83V4=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786472468;
-	b=bQ5GQNKrK1Rc8Mq5FCQa4iFQcBpyS5vrywg5E7/bMkyW4bDET4XRka297VUFv6ErZDUXm1
-	FSn3dAjhgDUmgDJQt2CpD7gusvcQsAq0GA52FeC0Jh/oLdEjJs7at0CRtfM8W+N6Njf0GS
-	XelX+0Z39n/W4HbpkQgc0n9U59iFHA0=
+	bh=h1IAHc+ImDLE5s/30NfO2LKxy5ibfAwUYXAwFYdGURU=;
+	b=gRO2fz6/oSyLUAyvHCIxFsoKaddfMdlcxbnykTDyb775gmw+3/UXuaX5G3TksIrjSjRP3m
+	vaPFx7k0fRghXJTlrzGi2aKsll1jCtE97Glv0aPhjqe9+4w7v6+HSz3Ujhm1ob0JQ/d73V
+	tKUbcZhITzE1Z/9PBgS3On9UYaOjNc0=
 ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=qRr9CSih;
-	spf=pass (imf15.hostedemail.com: domain of jyescas@google.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=jyescas@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5b2a73da7e1so1068e87.0
-        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 11:21:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786472467; cv=none;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=o4R0lqgN;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf23.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786472521;
+	b=Z9LH9YoIfuEUB7c9SqfKqwLY99QP1G8psocpXd3tSHuTWkItVN4ZVR9vDPjbMXhDUe8so+
+	PxudeDPid/G0JuZ9l+XXWqAaVvzrsh7l6RlsMA9m6o4407rmdepMeBwPmdKDfmjROJXlog
+	1zWw5k35wwsQxGPODZUEs42Rp8VMezc=
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-664ae043b7fso24371d50.2
+        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 11:22:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786472520; cv=none;
         d=google.com; s=arc-20260327;
-        b=hxfL9zNb2Ia0OwC6VoxDFmiOL9cKH/Rz0TlvdPMM5pfUYTxnOAA5w43T67XJxbIdx4
-         AncqMAwWnwzN5UvBpc5jljdvkc7T3ZVS0P0naL3GdZDaf2Tq6SaWkSKf8xqs2KbwjHij
-         o+H5kR0mU9j9WjTrwULBJUK90u0Uzz7DnAwInCVXcrtyD1hjQG9uRGzcHKz3HD8vM1dY
-         xF65ZJlA+RhSxgN3tmy3Uoy/nd6dtllkpOUCIXpjDPJuCOe2t+iyK5lURsUdsPzTaXST
-         mkA4RieMVr9rxPd81YMUq4qm1ef3bL3dak+nnZzLN3j/a2j276EzJ1B1DDcCz+juy0Pp
-         Epxw==
+        b=oTqtagL40IGjCvniRroiSn2Cr22Swl7gKJphwTC04/fXSS1eA+lD83StIsfI/6lBYC
+         iG82aC/pW08bMKxQZskKdcoUxasFosH5szuQrjg+JtDxv/vfia8CtrBuZz3kH/l2Z+YF
+         fSZ8QkrGE/HEGjrUSqbuqBpZHtk44SGjMP+pHTNAffRfNAA0t6nP4+BUwNKDtrkFjFLi
+         fmQzHl+6j5T7Wh4MFuK9ip1AKLlsUExPuVs5J9gry9TFL2OkuzKFOAJbDvaQTOAgTH/n
+         m8W+WTOpoB28XG2EeeZAlcUIhmYmyrYyM+gPu/il82A7MWVIpG9dT4NI4xxrh9k/f1+F
+         yY8A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SidcrzD+3N4Z9gUfmMlCvG/9oP2syRc8UCagR7fv1Mg=;
-        fh=vYmebGit0g2QW8i/gK55ySJqlYuPY92p05jnC5TBppc=;
-        b=Y35LPTjmPC2K7E2/q98UsAjoEyn3XqFw9MibFHtK8oGdELtn0djiXQOBhJGkSS5Qe3
-         qkm/JJnlS9F241SezhXNusqfbg82Yuc3pG7NEVnq7EZSFSJIC/Urq2vZ3HqdyXiRZhgv
-         2Hu0i5W1eXH4x/9N1s7cEXe0MNzXrfGRdBslkFM5t7M2f7jYmb8fS/UqkFTDBykuJFqT
-         yUBG3k46JTy9qrAoQ8cG7DM5nnT8TPxEan0Ikxef7llOy2IiNmjQUKZVAngi/sCtd7S7
-         CvKqmFyi7MdkRdCBx98r6IF2yjj+Ja//PNlC0TwIw9+fVg0EeZe592euPzmz06Mi0H0i
-         hfgw==;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=h1IAHc+ImDLE5s/30NfO2LKxy5ibfAwUYXAwFYdGURU=;
+        fh=aU0wRiOtil005adofNewoDgaaerQEqGRcl4hTjLFsa4=;
+        b=YaVScuGEptnTehCq9UzKfjcAIx5ZwUOrRuTGLGtyRlo2hqyLlaELgNDh7XsyDUR54G
+         rJ0XUNQmflCOAspQmXMVUeslQCrkiPF7kmAq1UlqfUm6Fc+6Lu3XQMAxgeHjH6UyHFxa
+         yD0i2MXlnY+qkTsVuWnvjKc+24Ga8jxIfuT0Ee7Lh/H+HOlkG3pg0U5aOYy6SjrgisAq
+         zx6dhIAvbXVt0TPfJAl4vfzQWRxpJjabWtQT/R4IHAzgVzyXt6o25TzcLgP8+rF8uHv3
+         4KaZGdZChjAAUBJwgDpbAcJiIEkmcwASFxaMlVVefklCzq0a0VW7Mklz5SCZFzxfEHNf
+         fXCQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786472467; x=1787077267; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=SidcrzD+3N4Z9gUfmMlCvG/9oP2syRc8UCagR7fv1Mg=;
-        b=qRr9CSihUHH42neyT3vXOlEw1QIKvialkrYFsHMGYqmKi/R1FfOvMH4C7ZEg+/+Ir1
-         J5QUfkLayM9yh7BUN/nHgY9Xy9QLeAxevNid1DPHjo8JLEViYneV3MRs29RjPul0JWjG
-         Mr2SBoIf1yPHl2RpRGBW9+/jt0TyjNZPxrK322P2a6FVOzfM/QAa5Eiw/LBq9eX3BdhV
-         RrWmbPZElmSJRPdvgZP25p/BphTrQo5+/F1Qubz4OLC1YAotiuWih6+p/Oby9xHY8jS/
-         sCyVD/Y1CTRBrs/JuUHAJsRZO/dimo+rdIIi4C5nbt0GV7zdOPbEBSa4vxfVS5XR0aIp
-         dURg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786472467; x=1787077267;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1786472520; x=1787077320; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SidcrzD+3N4Z9gUfmMlCvG/9oP2syRc8UCagR7fv1Mg=;
-        b=c++r7Y4dK7HbVx1ejovHGaV/xRkOFY91J+jHATEKG083CzWELTb9rKF7xN+uHql1Kr
-         yzF7B/xiM8zr78FKcU3JmNjtdXcA4F3W6Qd2vp8qlbUU5klAMCK2LEv50T88VC9B+YYX
-         CbZFG5hN+26RMne1m04CUJvppzhcdJQmy7qMDVLhFnkMMWw1bF39h8C2wc+mtPAeeCit
-         u4TCB7C6RbMAN+D3thNyzB3Veei6aJhv7wwgOobNRrGYjltF2DEs0IsFLc1p7PRMtdqe
-         gFpu/nesMZcUoPg/Gs3fu03qprphWGjpwzNeAaGcWV3pvjgmG5ZhnWblgimB+MshHjNA
-         zOpw==
-X-Forwarded-Encrypted: i=1; AHgh+RrUYdrRFwmJ4FUQ4FWPAndhxU8YYmWkDYcj+o3Aj2AoPsYAfU49dJhdOPmHOnVL0hlWLwaB8aofWw==@kvack.org
-X-Gm-Message-State: AOJu0YyHhf2ycdNo0UMFkUIzVRHVryxgw4Rxi3cQ1zQ20ABZldYx9YGN
-	YamFctt0z4Yi9fcb1TIEVa3b/q+PUckbeW5E5WjQqeCAGjaWsJjszimXE61AG8TqH812IAn0hG6
-	Ed+EKZrcqB+JB/KvJEUJat8nEW7nl7DnD8i4idDnw
-X-Gm-Gg: AR+sD103owEexYd9KGGoFySuKUHXtuM3NzKwhOya+II0qXqKoLvivRaWOXwPfKNFmJ9
-	tjVyNUZuNjYnzovdz9WgDXiD9eZlN4z51RfJmIh+bL6huGKxE7zBUj/jjxNxyvtq1TmIvDdDJv8
-	fGM+6OpX4+BSlznwqfQBuXZkK+Ufmkn40KXoPgkCKCZ/q8rVeeNx/dzde14TY2kGBZmjaiilH1f
-	ZM7W0g1FNHArJuoKbJRnzL0/22KFk6dG4Nrk0eWi3SO00FXUlU19OaVfJ1CQ79nmTb9+2CBc1tW
-	kWVS37d/vmLdsj2a9ta2YhL0V51xVncJv0D+lWxE09YnYcXACLYn4o6TiHT7kmXu4vIxgjTcGGC
-	lA2g=
-X-Received: by 2002:a05:6512:1089:b0:5b1:5141:9156 with SMTP id
- 2adb3069b0e04-5b44d13f5c3mr18608e87.9.1786472466176; Tue, 11 Aug 2026
- 11:21:06 -0700 (PDT)
+        bh=h1IAHc+ImDLE5s/30NfO2LKxy5ibfAwUYXAwFYdGURU=;
+        b=o4R0lqgNbp2fKpSCXlO4VkYRf3rI+rbZ5rVQJq1QmHL7kF/P0SF5Q6w0JwSCDRPnRA
+         0bVAVlorCbdaKf6NQL3HiL8Md/CFzGQIwfsBvKqWBgQhaL+4GYL3g6tVLwuB/FlEoEnl
+         5KpXEwmEIVnyKOxNov/sHltNZVrSXfUtMG6BDILnx3kqdCy6+0P830QWLglojAqLxFeX
+         DLJpgik09xfSYUq9slmnDsMonzd5bmgYOcDLUD45kEzxyCScF17JzBuXK/gYqBpyZ0e3
+         wNwD+SX6HSagPp397fLONJ44g7zIeaVZP2H/8g9PEGu5K+QEPlU6EweNsazk2JGwOuFc
+         1wHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786472520; x=1787077320;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=h1IAHc+ImDLE5s/30NfO2LKxy5ibfAwUYXAwFYdGURU=;
+        b=DTxtpM+N+wqGKTGioBc1aFEvLeLiuIpR5VpI2jGfSAQ/MtWb9baMI7/VvJMQA6j3WM
+         ec4uDoydurlwIkUQq4dll34L5ETLWACvxIkg/XlqQ5NpuRrQD8u6vi/5oxywKf03wSmu
+         4P8qwDKqkmGOvUv5IxGos6AOSD48jCxILURsetzNbfAdAhdQa0ei6WTIhxFNLzreY/jm
+         HHnv7MaREWXEqnzQPZ9MbT3UYThg9Qe8zwBYMgiXnEAb8CEAPWk6GILBALNuOLN9ebcf
+         dhQ/BG5tcLS59RUd6f7STb0PDr8bOftfkYkhQYdTfj2+kk1wpLymg19uWCLTvnwdsQbj
+         hrlQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrbrCc26FLUCjTx++8Yw58IsAz4lgb/DL3ls+hg/jYP6xje4tbWMBjkzrG2KLqOF4TIYUQkVjWF3A==@kvack.org
+X-Gm-Message-State: AOJu0YxS2/GgBDzJfOlGFZFVShDMhFIOJt2MPwMlBX6G/gRdCSEZ6zWZ
+	e1xaJn2WkluT1fAy6x1xj0amcnaQmZumx1Rk9myID0t6diqo2T8T0q8E0GL59ltutMtyCCZCEYg
+	2iYZlWbBcQhY0WlBppRJY12EiPN6XzcUg1g==
+X-Gm-Gg: AR+sD12NAeYgP1LWhmDxgB2cqoq407bVvpp2kB76VyPLlvJEV/0ePHpeE/9ExwYUQBd
+	i8h1HdEKA2v070RSi41KzRW/MggdgG+5jcXtlyH006aPcncMKK1C3Ozho6q4f9M94vsEHFdSQeS
+	rNPCZFQ4qg0FzZZCq0f9lf8DylgiNcQgfrEyzOScO5fabyd7Kh2z6r4O7JsjKN1HCxjBJKeA0NX
+	xeLkLebBg+VAfAzxnZZpw7YESO0rDm1syMs7QYddtYBtHsQvzYIpFOZf9j4oAewGmjqttpXw1/D
+	8rNEWdXZGgtQyiZ+KwI8f2Kfmirm6tSOaejqR4AFbUoMOHI=
+X-Received: by 2002:a05:690e:454b:10b0:668:687c:9481 with SMTP id
+ 956f58d0204a3-66b22c9113bmr2438588d50.1.1786472520357; Tue, 11 Aug 2026
+ 11:22:00 -0700 (PDT)
+Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
+ Tue, 11 Aug 2026 11:21:57 -0700
+Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
+ Tue, 11 Aug 2026 11:21:57 -0700
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+In-Reply-To: <20260808191230.3345930-2-sh_def@163.com>
+References: <20260808191230.3345930-2-sh_def@163.com>
 MIME-Version: 1.0
-References: <20260806011048.517229-1-jyescas@google.com> <anRRLwa3N5bVCHET@lucifer>
-In-Reply-To: <anRRLwa3N5bVCHET@lucifer>
-From: Juan Yescas <jyescas@google.com>
-Date: Tue, 11 Aug 2026 11:20:54 -0700
-X-Gm-Features: AUfX_mzTwRJlvsI3r3fWSCJukfVrB8EoJ3kv8vAfsnBGQPoCIaduX5MiWIoM87M
-Message-ID: <CAJDx_rigKu_kwWCXy4dUNbqoA9b-T3U3Va4QX5-4=zn9yO4maA@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 00/16] Page Alloc Hogger
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>, android-mm@google.com, fvdl@google.com, 
-	tkjos@google.com, minchan@google.com, dskiba@google.com
+Date: Tue, 11 Aug 2026 11:21:57 -0700
+X-Gm-Features: AUfX_mzdyudspR2qnxw93U01qmHDghDXKx-kMHufO3qLoTeCvzr1GfrADzbbwqs
+Message-ID: <CAPAsAGxE_RRtk=H6LAsZ2=bz3XU7BZ1+3deutAtX++_kTYTYKg@mail.gmail.com>
+Subject: Re: [PATCH] kasan: avoid unnecessary quarantine lock cycling
+To: Hui Su <sh_def@163.com>, akpm@linux-foundation.org, kasan-dev@googlegroups.com, 
+	linux-mm@kvack.org
+Cc: glider@google.com, andreyknvl@gmail.com, dvyukov@google.com, 
+	vincenzo.frascino@arm.com, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7107C14000F
+X-Stat-Signature: gz96sgfi6sw3r4j6hjmxkmygabuukwey
 X-Rspam-User: 
-X-Stat-Signature: etawx8zq54yeqwnbto7zy67wywraecky
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5A23AA000F
-X-HE-Tag: 1786472468-405855
-X-HE-Meta: U2FsdGVkX19XXQv9mCcTc3cTEN6844xFg/vem+TXj70+BZFoHDUxi6gk2ojN8WhcvscZQ8yGNK+hihKn2F17JaDoTl4ulyGM/iIbPBUvOEnzbF9rCZ2W21DYlrE7VrH0h2t0bIfNkOGW4XkqseGEEziZ7mjL6+JSfWArsPzGu0/8Nl90J89i1YT6ILd5tP0ZE0GnlR1+5IetipqYs75j/w6SM0zjjW98p29zdhcDlS8HGRdcemKu1CzBstpbD63wngYRPx8OGzvNowf/Td+s8YgbN3gX+5fkbamhGLFEJLkCljV6LbYO8cX9SE8JOWuEiYKJLPax/hBTps/y1r4WqMDiPiVYGZUS7E+/B4BWf2lnw8KNwNO2IG5ZgJz8ySgfbfgXwoner8YKFR+7pl/BlHDUlWw0agZ6XcEhgGl1X3ihy0LOVg7MWpC4g1BmTDz4Mvlomkp5sHutmEEzxsseFmfzWGCh0SVdt/t/bqPEzths4oaRSA1pK2aBGKB9hdEQ9FQz8+Zv0lqlnnbRGUSUVvL6zS43qQPQJ8BhXvL+ZYkm4Zybvviz1+KYWENutgMo0asfkaveTp+Y0Pu0FWI2CfDtGALm3NdwH5aY6pgFXKA03l2utcdKp5knRjSseBzBQOi39g/8nQ3auyYUM6+OZ5cBQZLA68G+2GN29YtUuw4S9gDZ0pTCl9bGAh4ZL9/UpcFT+NK7f0KR6Pa06ystytql0KCwLERJlqYLl2RzDH4GSkqNq7MLAsxxEIon0mWKU2d9aeWMR10KQnJZvtCGbpfOMdIUyLLYAV+s3GugbGja0GhUkNJf0QYGn3ei3FRL4HHdZqTp84oXK3pJy89nEpxrYM636pU/JXfJHCumgRGWdCFhRAnb7jDtU+38xZVH9YcYwWUbW6QolbEq0WT/stgWklZ58fOVJyZYncuXltWP70I5ENliGAfAHDyCDn7jqf7iMSslDJPKtiya+Ct
- p45cymYa
- HTiIfiaQrziZHCG1Bg97B/dh7m77b0uhepO/gjZ4DqGlppgVKPpzOez53WOQInb7CBJIuIV0nQ6TeEiWhWDbRfA8rDo3oTPRgHvOhHiMqi0AwUjAJvCuqPQdGM9i21uUutpdMFWRGdHMp6SehE/ABVt3CtE8zZ56aaDBcto5AX3fIsIHyB/azXtMrYWyi8kUwwqkYjgZJLtUYlSVNCOsboflia5BP6wztpgbsnP0syakBeBvbBau+q8KSZVqSHsahMP2/S6zXgvsPonTr2qOh5Jw1T+M2iG5SsxgBI1UkLWAvRjeJXnbPpcFyu5q+ojNeD5It6LqXExR00OIVefojKWcGbg==
+X-HE-Tag: 1786472521-343396
+X-HE-Meta: U2FsdGVkX1+r/VZn7+DWFFTkHtFxVlFwD8kyCredA+TxIjea5aWan3775iGLZFO+juSNjFmX9F+xmcfLXvLMk6QYN1XivtcT0RQu0Q5eEIyfkBpjgjBAaYI2uln1esNhbXeo9SCk0Ct7PXeXwGW0zqnIea5e0aVymNd1X658t5yDqGgyfMLhk30hGJoPxqw4cN2c5e1U1bxPH8YMPsAUIeHM0eABrSH2ktlH8PokA/Of9fuLrj2Jf7ZgtEtuauy1k1MpxLlcXzyfXN0FYBJQR5JxVAXVndIOjrZTdTkRZcsz5hfTzk8LpVAEMDBIWpxdju/4ZTwr6aHydbHIU4ySJZDRhyoxpXvCkSkTHj0XHd+K5myp4HmLg1PqvzVnvJZ2cQS5j8vqM9VdG7YWTYgmW1EIHA22FdCdhrqZ7iP+4/rruXHUPVUT6/sGFzG/OQ1Y7dnG9dtbu69BwaYUYj6SQix1WF6Wr0RQdjoIKVI2YCcFN25TkfJroBfGYXyNn8XU4fv5xHv5seldPIw+P0Ji/11ImdLlCxCDcUqoejRPtJLuI0zXKRXTxSamFePk+lh2INhuaDPyoG/mvh71Jmlwm/9GqUWSULm5eZ9CTN+3A77BWo0x/uYyFenSE9Csg10jzc8rNwEa5niaYhmDszvmMAjI1t2/bqOIVHcKt+Dp/wW+l9BIrmd4nOngNGMk3PfTCMwAfO5iK5HomgolcZkMOYWF9a/u4YxfI37QuX6f1JmU3mVA+nxy1vZ3dJQ6KK7HZ9jLZ8h97pS0QQ1t7XbIQxyH/V9EVhl4Zku8WjatjA/w4S8qen/HGE53FSmrXHRdX39gsj2D111Gq3YPxpjmbuS4Asnk0tDh2kEHSn7n3WZfs8atko2VOxG9lOkx/dCHntSI8pf/a+JuU3E1rNcSZEYnpu6so2BC20fQXJxTHg4nWOISY4AzNmB/QJbNgnMmxGCU/Pcw9Smca+ti49h
+ djDfVhQX
+ F/2bEd6K1VnQtZE+qRel4CSfsjHWgNh+y5D4fAWiQPhplgzYUG4D5gFFZnD5TeQJ8EeeMyCKD0MX0xClYjxLpvrLXNWgWhCyjrqYc54wBvTq5pmHSyuTk0/9w89Ds2BWnu8Hb49++k/Xsxi+jsjpV/Oz8+vMA+VWypoH9tXOgjPDr/wvER5kDvGwpOjxZby0A1O9dlM4+eHp772bAExm4gc60XgkCc+ZVZOr6Z63BYfnHA0LilprQ/zWPi6NqLBPzMhxrbcztlVqtr2WWohHQYg4+soS9gH35rjObT4VcH+w1PPWyP5TSPeULniG90HC6GIE+16aldGoahXRYp64pThDfI0WuuNVRK3swP6kChIA5i9A63uWGdFfQdilz2T+6fW/rHN+/7oDHwARcd8GT44hKuQN+329dzp0ZZiTH6vw89fyi/77bJ37FsBQnHnzVy0KnI4JgLNDoWnnymWE0wngUX0SJOQ/mCl5W8NLU5GjWv4OVPXqGmp7kylNWCwHehggF1GcALpJcOUpbcv6k8DedmZgDDKHYYwusHpSKTaHrOW6pWNkWt/FNCzWLfprWZo5UHJt+e24jE25bDON6KVsBcS6L6CpN7GOJzSoW/cWsC80kVokFhtrxEo88CNFeXE0C
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,51 +141,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 6, 2026 at 2:48=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.or=
-g> wrote:
+Hui Su <sh_def@163.com> writes:
+
+> kasan_quarantine_remove_cache() drops quarantine_lock and restores
+> interrupts after scanning each non-empty quarantine batch so that
+> cond_resched() can schedule during a long scan.
 >
-> Hi Juan,
+> When no reschedule is pending, the unlock/IRQ restore and subsequent
+> IRQ save/relock cycle is unnecessary.
 >
-> While I think there's possibly value in people not re-implemented their o=
-wn
-> allocation injector, I don't think there's value in having this be part o=
-f
-> core-mm.
+> Check need_resched() before cycling quarantine_lock to avoid this
+> overhead when rescheduling is not needed.
 >
-
-Thanks Lorenzo for your comments. Apologies for the delay.
-
-> I really don't want this to form part of any contract or to be blessed in
-> any way by core mm as it exposes internal implementation details and I
-> really want to avoid adding extra maintainer workload here.
+> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Hui Su <sh_def@163.com>
+> ---
+>  mm/kasan/quarantine.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
 >
+> diff --git a/mm/kasan/quarantine.c b/mm/kasan/quarantine.c
+> index 6958aa713c67..db7170f6f1b2 100644
+> --- a/mm/kasan/quarantine.c
+> +++ b/mm/kasan/quarantine.c
+> @@ -368,10 +368,12 @@ void kasan_quarantine_remove_cache(struct kmem_cache *cache)
+>  		if (qlist_empty(&global_quarantine[i]))
+>  			continue;
+>  		qlist_move_cache(&global_quarantine[i], &to_free, cache);
+> -		/* Scanning whole quarantine can take a while. */
+> -		raw_spin_unlock_irqrestore(&quarantine_lock, flags);
+> -		cond_resched();
+> -		raw_spin_lock_irqsave(&quarantine_lock, flags);
+> +		if (need_resched()) {
 
-I understand and completely respect your concern regarding maintainer
-overhead and internal boundaries.
+I'm not sure about this one and inclined to agree with sashiko here.
+See https://sashiko.dev/#/patchset/20260808191230.3345930-2-sh_def%40163.com
 
-Do you see a way to provide similar functionality without exposing the
-internal implementation?
+With local IRQs disabled, the local timer tick cannot run, so it cannot
+set TIF_NEED_RESCHED due to time-slice expiration. Perhaps another CPU may set
+the flag remotely, but AFAIU nothing guarantees that this will happen.
 
+If need_resched() is initially false, it may remain false for the entire scan.
+IRQs would then remain disabled throughout, potentially long enough to trigger
+a HARDLOCKUP.
 
-> I'd suggest keeping it as an out-of-tree module as David proposed
-> previously ([0]).
+Current code should be fine, the bulk of the work is done by qlist_move_cache(),
+and the unlock/reschedule/relock sequence occurs only after each
+non-empty batch,
+at most QUARANTINE_BATCHES times.
+
+> +			/* Scanning whole quarantine can take a while. */
+> +			raw_spin_unlock_irqrestore(&quarantine_lock, flags);
+> +			cond_resched();
+> +			raw_spin_lock_irqsave(&quarantine_lock, flags);
+> +		}
+>  	}
+>  	raw_spin_unlock_irqrestore(&quarantine_lock, flags);
 >
-> Alternatively, keeping it as part of tooling (e.g. in tools/testing) coul=
-d
-> also work.
-
-That would also work.
-
-> (This is no comment on how useful it might be for debugging or testing
-> scenarios :)
->
-
-Thanks again for your feedback
-Juan
-
 > --
-> Cheers, Lorenzo
->
-> [0]:https://lore.kernel.org/all/97605949-82c5-49e0-84b6-b42e8078b55d@kern=
-el.org/
+> 2.43.0
 
