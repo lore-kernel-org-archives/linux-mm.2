@@ -4,70 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3175FC5B56A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 12:49:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAF71C5B56A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 12:49:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EECB06B009B; Tue, 11 Aug 2026 08:49:30 -0400 (EDT)
+	id 577076B009D; Tue, 11 Aug 2026 08:49:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC4866B009D; Tue, 11 Aug 2026 08:49:30 -0400 (EDT)
+	id 527CE6B009E; Tue, 11 Aug 2026 08:49:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDA816B009E; Tue, 11 Aug 2026 08:49:30 -0400 (EDT)
+	id 379EE6B009F; Tue, 11 Aug 2026 08:49:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B08896B009B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 08:49:30 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B14E0A0421
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:49:29 +0000 (UTC)
-X-FDA: 85088969658.20.EC6C953
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F5B26B009D
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 08:49:33 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8832E1403D3
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:49:32 +0000 (UTC)
+X-FDA: 85088969784.19.008BE76
 Received: from out-181.mta1.migadu.com (mta1.migadu.com [37.59.57.117])
-	by imf02.hostedemail.com (Postfix) with ESMTP id DC1BF80006
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:49:27 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FgdY7UQX;
+	by imf23.hostedemail.com (Postfix) with ESMTP id E3E63140004
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:49:30 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NUHw6mgB;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of nico.pache@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=nico.pache@linux.dev
+	spf=pass (imf23.hostedemail.com: domain of nico.pache@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=nico.pache@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786452568;
+	s=arc-20220608; t=1786452571;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u47oBE0boWW/Z9dLtIXQCCcO1q1VmCr6ZGR13oxSM8M=;
-	b=Okd1Yab3oYHP87ZDRAgHN3cOun2I0tw7/wWZJgbYAztKhBWxHTGDBDY+on/pNsJRifeY/1
-	XM17Auhy9huP9o4ju8jORYjLjSLe9r/MjIrilzpD9tFmxEerzDVB2cQw18C7p5K03AEyM1
-	h04bXn7bhYdqf/37N89rL21JLfjifug=
+	bh=S0naQZB/DpgBMpRSB18moV5dYuwkkCVZRrrnKUkrNGc=;
+	b=aRhQxG98kOjUpbnPkYCRziFNjkrgUaBgeDEk6xtZaHUBkoVJj4N8+TUJsyDMXkZeNOUwKU
+	aOHEQAWKenrPedNU1p5xFlX1neZy8UN9ZaIAQqk7nVJlCQdLhIJbRLxtHY/QeJqvdTVqj2
+	nXcwCfJ+F/IXImxAayda+b4kKQY3yCw=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FgdY7UQX;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NUHw6mgB;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of nico.pache@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=nico.pache@linux.dev
+	spf=pass (imf23.hostedemail.com: domain of nico.pache@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=nico.pache@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786452568;
-	b=TiCtS7MzJBn+XCHLKy05E4BwCPNgYfqXW4CRwhXIqqpnSB8ohYRb+x52C2v2qnAHlTdUwj
-	YuCWF9itbCGDIkBX1yctOhufIR21egLmPx/FRSqAccN9MJYXw++axieECfJces8fydX8tp
-	Ad4RI3CyBkmaCRbZ5mO7yTQPhIxzXvk=
+	t=1786452571;
+	b=zN9YwzbSofsBYA2+FSjOT54XoU9pdPk0QsL9IgeEXNBj2UxcYBRtHku7bmu98Hf/vy2+7u
+	tcDlvxaz5pavawNy281zIj5GFcX1Re5SoSm32H/bI1OzgSob7W6C/WsvUNxx4C8BlNqHiP
+	aGIw9/yIagd8ChlPvjPIaAEb02DhQWo=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786452566;
+	t=1786452569;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=u47oBE0boWW/Z9dLtIXQCCcO1q1VmCr6ZGR13oxSM8M=;
-	b=FgdY7UQX5jyHRSntUu1pa2fX7kXHK/7n4g3HTWKzTQpjBGwG+w/wrlSQSj49FudTxWFf+r
-	XrMx6KwhrTRWa52ehzMVQuysYiE1aWwAs8vUq/QGgWH73ReM9iXo9obMgICamB7q/4+jC+
-	xkS0/ArToShMHtFz9eOiWyP4/ng0B18=
+	bh=S0naQZB/DpgBMpRSB18moV5dYuwkkCVZRrrnKUkrNGc=;
+	b=NUHw6mgBxJCSbQkBC2lPDn37fHG4Qr2OrJl1bVwuRY5/JrSTKjQJlrUb6FCXScmuLpLmOT
+	7GXOPIq5oRWik7b6gpAVWFavUX/TH6GFRb34FNHHjLK0hEbI1LQn7bZ7l2CJbzD+NS3PnR
+	mFcwR2B02FA0LFe8uVmEjzcAhvZMj6U=
 From: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
-Date: Tue, 11 Aug 2026 06:48:35 -0600
-Subject: [PATCH v4 3/7] mm/khugepaged: introduce a count_collapse_event()
- helper
+Date: Tue, 11 Aug 2026 06:48:36 -0600
+Subject: [PATCH v4 4/7] mm/khugepaged: fix outdated comments
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260811-khugepaged_pte_refactor-v4-3-ddac39d61c4a@linux.dev>
+Message-Id: <20260811-khugepaged_pte_refactor-v4-4-ddac39d61c4a@linux.dev>
 References: <20260811-khugepaged_pte_refactor-v4-0-ddac39d61c4a@linux.dev>
 In-Reply-To: <20260811-khugepaged_pte_refactor-v4-0-ddac39d61c4a@linux.dev>
 To: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
@@ -84,13 +83,13 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  "Nico Pache (Red Hat)" <nico.pache@linux.dev>
 X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DC1BF80006
-X-Stat-Signature: 46kkf5c3aabwd5y9uq6m58q5xmzh9w1n
+X-Rspamd-Queue-Id: E3E63140004
+X-Stat-Signature: qptt15m4rnkc3n1x6m1tcdm9wbuy7myp
 X-Rspam-User: 
-X-HE-Tag: 1786452567-410508
-X-HE-Meta: U2FsdGVkX18SNcSdf+Xov5Jvh1tq/gl0SyAdKnGWoubDRa7pyCJpk1ZmLYhJmBKpEeVxDiAygBboMCi4uc9p+l418qEqw6TZY4GHfaeMG3vKO8Dd8s3deusYrP4tO+0WU2MCIVja73ezM1dI5NXrDUnzaEByYpu2DrK7veI7BadH5N0snz/Dq/imt9xQU3RbiSy9hFf9sXjZEooy7tpeegPXDjph3NG38H57JMd8x5GYO08Omt2tenjjplbETOJA1DVDd2ghMvpOQR44maI8l280SIAu8wmQNsjKJApvMxFHXoaXKQoyP4tbdUjq6SMBmznrNsscnG2kiFwFsoa7phkDCqg6qIMV3wRjMHBJEtGhHol01rlUkIVCgv9WO709oGmUPA6QTYiHa0purmKhkcs0ln3kDEtLgjrrns4xQMHyjz/HLc8qP0NovUfK4dYsujmeBv71PvqxQ6p+A1SVCzr5/Jw0R/4QZbmZ3XDcqmCvqFm54DXKHqMZR5wOFkV4ldkq9+Qx8O60s/EEs+OEgVox9jp0DmB7VYV1l7/B6HMIsXg0B7C3vsWBWTyJDxWhXx3vlENBaL76DRsFqzrQzvzJDAsbwQtvJpDk+c0AGHhAEsdwr8tvpY5VeiMbuXoJtAuf0AZFzRD7FD17oHFRv2zCe5IEffjlbmXVfxI9nctailThGFxh4Ls4Zj22RTcmdnx0LauegNabBoNhnI1vqUKjxmN6ZuDma5riyvWjYRcxSdKDhT0rFgBBcvyqHoRjYJbRZ6w7Px8pjeuEV8NvkolIXI+VolyitkBk4g3gHoCOzjm4b0WlmzzqaJV6azYGbi5MS/AmHIoKqNP4GVzKK49v19N6MzynNyjfRlW3v2hMRkFVmW9mOCXmsBqH/0p3ev36XKlQtsfKRZ1b2/Ly1Mxdk2VTNQiSL9SyjuwEAM0rzBPbIVAwDHEf6VuPk/V0q01nsYExpVTSwkHu52f
- k/08+AKB
- fEpP3ZmEIpMzZlflWxptLPMxS4Ta6q/UKsICdrpsK8LkVfxywsSHWmvGPkesgJk5ilM2MjDhrDtKthf1D0iBevvyt+dFIYyHc8btg6WatZhiHHPH3IpdNz7WUsxNgxfiyv4Hxeewx0J71z5tQyCB7aptLAottVHJ6EREPgMzQwx0dvnPWiTJj7CEe1J0FrHAPk4b8yTEEyb7CH/NJNIUgUSQ959nVTr8DFtchiuZu9sOX8CZb21z+c4KP/iZk/KElyvC7
+X-HE-Tag: 1786452570-910465
+X-HE-Meta: U2FsdGVkX1/5QOyjbc9wlStXlvfQE66D05hKT4sfsrG4Dx1lmR0d3yqK20pI67V/RsaxRtSsGaySGoctfeA1HKHjI/fkvpcIF+O0X+BGhr1TGdVa4ZZagUOFhiRi4e9WkZP6StVb7AiCZGiH/yKCiEauIS53UEM8uhiLAY/u9OELIDy1DMGmMrDLg7O7kS32G9Tz28voDsVxQMz/QHZKglZaM4rzqla19V2VPQ2pIyIXqheSNEknWYDIPYgvy9hCpXNcygk7UbVN0cgaqMEY7kWz6aEQPSarrVWE7g3W+HSMjrZltH1PkZiP6RYgncEy4nO7/AIhA3bMkYVgg/zD8WTjK2vsIDJII2e7OoRmA/VS1kGowvtTj2AY0H3JhUj3dzKZ4RaxvJlyu2HL3B+bIgE7p1kjOxG1eklJdbMd5E4hn4t4yVgr3gpedJ4sBQoHE2cZ2J0XXp8hvIen8nLJKY/YeankmVRZwH+BesA1k7m3hNXpY5jeAhkeYsJhQpzyifuSmrz/kOMW6t3Cbhe3vWZY0m5V7zU+ZuuP7z+qhBTR+qYf7ZOh68sgFF34GXhPkTkndi9ILHRjBb5nblnhp3IJPmRqavOuM72ezHfgM8uNthHMXkqEMeLU1a3oAumPXKQpAP2u4TwqAztwdpYNh+ExL7A8cMlvlV8Bh1X7pdnNfhx9lbUYo8fRZ+oJRNF+soyE8L3RvU6qJW0Bxwmn0Kdp9S6fb16q8eBwzsL+3z4nZQvwADBo1tT/zQoyLC7PTMiMEEFDoR0Q1SFhEHBx/AmSWBPUHBpARYoRaswjxtUCPW2UHEtvt6upZ+mJ+rAwA3mkevGTbjzWa0jg960K9uRgBLTso9wR0FhnUhnD8bpA8mxDilXKB4qVfWnPoigLhtwDOKIfC4W6Seney004zg9uhZIYpmcEoxPDLal7qslqzXkcpeUIpblU5tmERbxJ3hoZkzuW2bWwMS6kffb
+ NHp2u3+D
+ pkcSjUkaCvPBiG8cuSnd0tt3vP6IemQ7O6v22amkHGV6OJ2//kOPKbiS+CgAsv5C7PGSzzCny9UqogMlEetWvR/p7fTOhdhvf/Ntk7y1ULV+oPqV0hnmE6AkAJUXv1/tuXSH34WvG7swQQwLn4OdK1Tq8Yp4rW7AgFfWpcTxk40hs1ifihuofcxYiCiLRXgQCievf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,118 +97,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Provide a simple helper function to help reduce a often used, and
-duplicate pattern across the khugepaged code.
+Fix comment in collapse_scan_pmd() that still described the old
+folio_mapcount() > folio_ref_count() check and a "512" false-positive
+scenario. The code now uses folio_expected_ref_count() != folio_ref_count()
+which doesn't suffer from the same limitation.
 
-When collapsing to a PMD we need to record a vm_event and the mTHP_stat
-event. When doing mTHP collapse we only update the mTHP stat.
+Fix comment in collapse_huge_page() that referenced ptep_clear_flush,
+when the code actually uses pmdp_collapse_flush.
 
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Fix comment in __collapse_huge_page_swapin() that referenced the old
+function name khugepaged_scan_pmd, now collapse_scan_pmd.
+
+Also clean up some simple typos and stale terminology (mmap_sem ->
+mmap_lock, PG_lock -> folio lock, page -> folio, grammar).
+
+We also clarify a comment regarding where the max_ptes_none check is
+deferred to in mthp_collapse() from the original collapse_scan_pmd check.
+
+Update all comments that references a function to include parentheses.
+
 Acked-by: Usama Arif <usama.arif@linux.dev>
+Assisted-by: Cursor(claude-sonnet-4):4.6
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
 ---
- mm/khugepaged.c | 42 +++++++++++++++++++++---------------------
- 1 file changed, 21 insertions(+), 21 deletions(-)
+ mm/khugepaged.c | 44 +++++++++++++++++++++-----------------------
+ 1 file changed, 21 insertions(+), 23 deletions(-)
 
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 8babd4c97db6..cae510aa2914 100644
+index cae510aa2914..90d6e595d282 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -688,6 +688,14 @@ static inline bool folio_pte_referenced(struct folio *folio,
- 	return pte_young(pteval) || mmu_notifier_test_young(vma->vm_mm, addr);
+@@ -620,7 +620,7 @@ void __khugepaged_exit(struct mm_struct *mm)
+ 		/*
+ 		 * This is required to serialize against
+ 		 * collapse_test_exit() (which is guaranteed to run
+-		 * under mmap sem read mode). Stop here (after we return all
++		 * under mmap_lock read mode). Stop here (after we return all
+ 		 * pagetables will be destroyed) until khugepaged has finished
+ 		 * working on the pagetables under the mmap_lock.
+ 		 */
+@@ -788,8 +788,8 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
+ 
+ 		/*
+ 		 * We can do it before folio_isolate_lru because the
+-		 * folio can't be freed from under us. NOTE: PG_lock
+-		 * is needed to serialize against split_huge_page
++		 * folio can't be freed from under us. NOTE: folio lock
++		 * is needed to serialize against split_huge_page()
+ 		 * when invoked from the VM.
+ 		 */
+ 		if (!folio_trylock(folio)) {
+@@ -815,7 +815,7 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
+ 		}
+ 
+ 		/*
+-		 * Isolate the page to avoid collapsing an hugepage
++		 * Isolate the folio to avoid collapsing a hugepage
+ 		 * currently in use by the VM.
+ 		 */
+ 		if (!folio_isolate_lru(folio)) {
+@@ -927,7 +927,7 @@ static void __collapse_huge_page_copy_failed(pte_t *pte,
+ 	 * Re-establish the PMD to point to the original page table
+ 	 * entry. Restoring PMD needs to be done prior to releasing
+ 	 * pages. Since pages are still isolated and locked here,
+-	 * acquiring anon_vma_lock_write is unnecessary.
++	 * acquiring anon_vma_lock_write() is unnecessary.
+ 	 */
+ 	pmd_ptl = pmd_lock(vma->vm_mm, pmd);
+ 	pmd_populate(vma->vm_mm, pmd, pmd_pgtable(orig_pmd));
+@@ -1101,9 +1101,9 @@ static enum scan_result hugepage_vma_revalidate(struct mm_struct *mm, unsigned l
+ 		return SCAN_VMA_CHECK;
+ 	/*
+ 	 * Anon VMA expected, the address may be unmapped then
+-	 * remapped to file after khugepaged reaquired the mmap_lock.
++	 * remapped to file after khugepaged reacquired the mmap_lock.
+ 	 *
+-	 * thp_vma_allowable_orders may return true for qualified file
++	 * thp_vma_allowable_orders() may return true for qualified file
+ 	 * vmas.
+ 	 */
+ 	if (expect_anon && (!(*vmap)->anon_vma || !vma_is_anonymous(*vmap)))
+@@ -1159,7 +1159,7 @@ static enum scan_result check_pmd_still_valid(struct mm_struct *mm,
+ 
+ /*
+  * Bring missing pages in from swap, to complete THP collapse.
+- * Only done if khugepaged_scan_pmd believes it is worthwhile.
++ * Only done if collapse_scan_pmd() believes it is worthwhile.
+  *
+  * For mTHP orders the function bails on the first swap entry, because
+  * faulting pages back in during collapse could re-populate PTEs that
+@@ -1227,7 +1227,7 @@ static enum scan_result __collapse_huge_page_swapin(struct mm_struct *mm,
+ 		pte = NULL;
+ 
+ 		/*
+-		 * do_swap_page returns VM_FAULT_RETRY with released mmap_lock.
++		 * do_swap_page() returns VM_FAULT_RETRY with released mmap_lock.
+ 		 * Note we treat VM_FAULT_RETRY as VM_FAULT_ERROR here because
+ 		 * we do not retry here and swap entry will remain in pagetable
+ 		 * resulting in later failure.
+@@ -1291,7 +1291,7 @@ static enum scan_result alloc_charge_folio(struct folio **foliop, struct mm_stru
  }
  
-+static void count_collapse_event(unsigned int order, enum vm_event_item vm_event,
-+		enum mthp_stat_item mthp_event)
-+{
-+	if (is_pmd_order(order))
-+		count_vm_event(vm_event);
-+	count_mthp_stat(order, mthp_event);
-+}
-+
- static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 		unsigned long start_addr, pte_t *pte, struct collapse_control *cc,
- 		unsigned int order, struct list_head *compound_pagelist)
-@@ -708,9 +716,8 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 		if (pte_none_or_zero(pteval)) {
- 			if (++none_or_zero > max_ptes_none) {
- 				result = SCAN_EXCEED_NONE_PTE;
--				if (is_pmd_order(order))
--					count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
--				count_mthp_stat(order, MTHP_STAT_COLLAPSE_EXCEED_NONE);
-+				count_collapse_event(order, THP_SCAN_EXCEED_NONE_PTE,
-+						     MTHP_STAT_COLLAPSE_EXCEED_NONE);
- 				goto out;
- 			}
- 			continue;
-@@ -752,9 +759,8 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 			 */
- 			if (++shared > max_ptes_shared) {
- 				result = SCAN_EXCEED_SHARED_PTE;
--				if (is_pmd_order(order))
--					count_vm_event(THP_SCAN_EXCEED_SHARED_PTE);
--				count_mthp_stat(order, MTHP_STAT_COLLAPSE_EXCEED_SHARED);
-+				count_collapse_event(order, THP_SCAN_EXCEED_SHARED_PTE,
-+						     MTHP_STAT_COLLAPSE_EXCEED_SHARED);
- 				goto out;
- 			}
- 		}
-@@ -1264,15 +1270,12 @@ static enum scan_result alloc_charge_folio(struct folio **foliop, struct mm_stru
- 	folio = __folio_alloc(gfp, order, node, &cc->alloc_nmask);
- 	if (!folio) {
- 		*foliop = NULL;
--		if (is_pmd_order(order))
--			count_vm_event(THP_COLLAPSE_ALLOC_FAILED);
--		count_mthp_stat(order, MTHP_STAT_COLLAPSE_ALLOC_FAILED);
-+		count_collapse_event(order, THP_COLLAPSE_ALLOC_FAILED,
-+				     MTHP_STAT_COLLAPSE_ALLOC_FAILED);
- 		return SCAN_ALLOC_HUGE_PAGE_FAIL;
- 	}
+ /*
+- * collapse_huge_page expects the mmap_lock to be unlocked before entering and
++ * collapse_huge_page() expects the mmap_lock to be unlocked before entering and
+  * will always return with the lock unlocked, to avoid holding the mmap_lock
+  * while allocating a THP, as that could trigger direct reclaim/compaction.
+  * Note that the VMA must be rechecked after grabbing the mmap_lock again.
+@@ -1338,7 +1338,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
  
--	if (is_pmd_order(order))
--		count_vm_event(THP_COLLAPSE_ALLOC);
--	count_mthp_stat(order, MTHP_STAT_COLLAPSE_ALLOC);
-+	count_collapse_event(order, THP_COLLAPSE_ALLOC, MTHP_STAT_COLLAPSE_ALLOC);
+ 	if (unmapped) {
+ 		/*
+-		 * __collapse_huge_page_swapin will return with mmap_lock
++		 * __collapse_huge_page_swapin() will return with mmap_lock
+ 		 * released when it fails. So we jump out_nolock directly in
+ 		 * that case.  Continuing to collapse causes inconsistency.
+ 		 */
+@@ -1351,8 +1351,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
+ 	mmap_read_unlock(mm);
+ 	/*
+ 	 * Prevent all access to pagetables with the exception of
+-	 * gup_fast later handled by the ptep_clear_flush and the VM
+-	 * handled by the anon_vma lock + PG_lock.
++	 * gup_fast later handled by the pmdp_collapse_flush() and the VM
++	 * handled by the anon_vma lock + folio lock.
+ 	 *
+ 	 * UFFDIO_MOVE is prevented to race as well thanks to the
+ 	 * mmap_lock.
+@@ -1409,9 +1409,9 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
+ 		spin_lock(pmd_ptl);
+ 		VM_WARN_ON_ONCE(!pmd_none(*pmd));
+ 		/*
+-		 * We can only use set_pmd_at when establishing
++		 * We can only use set_pmd_at() when establishing
+ 		 * hugepmds and never for establishing regular pmds that
+-		 * points to regular pagetables. Use pmd_populate for that
++		 * points to regular pagetables. Use pmd_populate() for that
+ 		 */
+ 		pmd_populate(mm, pmd, pmd_pgtable(_pmd));
+ 		spin_unlock(pmd_ptl);
+@@ -1643,7 +1643,8 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
  
- 	if (unlikely(mem_cgroup_charge(folio, mm, gfp))) {
- 		folio_put(folio);
-@@ -1662,9 +1665,8 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
- 		if (pte_none_or_zero(pteval)) {
- 			if (++none_or_zero > max_ptes_none) {
- 				result = SCAN_EXCEED_NONE_PTE;
--				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
--				count_mthp_stat(HPAGE_PMD_ORDER,
--						MTHP_STAT_COLLAPSE_EXCEED_NONE);
-+				count_collapse_event(HPAGE_PMD_ORDER, THP_SCAN_EXCEED_NONE_PTE,
-+						     MTHP_STAT_COLLAPSE_EXCEED_NONE);
- 				goto out_unmap;
- 			}
- 			continue;
-@@ -1672,9 +1674,8 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
- 		if (!pte_present(pteval)) {
- 			if (++unmapped > max_ptes_swap) {
- 				result = SCAN_EXCEED_SWAP_PTE;
--				count_vm_event(THP_SCAN_EXCEED_SWAP_PTE);
--				count_mthp_stat(HPAGE_PMD_ORDER,
--						MTHP_STAT_COLLAPSE_EXCEED_SWAP);
-+				count_collapse_event(HPAGE_PMD_ORDER, THP_SCAN_EXCEED_SWAP_PTE,
-+						     MTHP_STAT_COLLAPSE_EXCEED_SWAP);
- 				goto out_unmap;
- 			}
- 			/*
-@@ -1731,9 +1732,8 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
- 		if (folio_maybe_mapped_shared(folio)) {
- 			if (++shared > max_ptes_shared) {
- 				result = SCAN_EXCEED_SHARED_PTE;
--				count_vm_event(THP_SCAN_EXCEED_SHARED_PTE);
--				count_mthp_stat(HPAGE_PMD_ORDER,
--						MTHP_STAT_COLLAPSE_EXCEED_SHARED);
-+				count_collapse_event(HPAGE_PMD_ORDER, THP_SCAN_EXCEED_SHARED_PTE,
-+						     MTHP_STAT_COLLAPSE_EXCEED_SHARED);
- 				goto out_unmap;
- 			}
- 		}
+ 	/*
+ 	 * If PMD is the only enabled order, enforce max_ptes_none, otherwise
+-	 * scan all pages to populate the bitmap for mTHP collapse.
++	 * scan all pages to populate the bitmap for mTHP collapse. The bitmap
++	 * is then checked again in mthp_collapse() for each attempted order.
+ 	 */
+ 	if (enabled_orders != BIT(HPAGE_PMD_ORDER))
+ 		max_ptes_none = KHUGEPAGED_MAX_PTES_LIMIT;
+@@ -1764,12 +1765,9 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
+ 		/*
+ 		 * Check if the page has any GUP (or other external) pins.
+ 		 *
+-		 * Here the check may be racy:
+-		 * it may see folio_mapcount() > folio_ref_count().
+-		 * But such case is ephemeral we could always retry collapse
+-		 * later.  However it may report false positive if the page
+-		 * has excessive GUP pins (i.e. 512).  Anyway the same check
+-		 * will be done again later the risk seems low.
++		 * Here the check is racy, but such case is ephemeral and
++		 * we could always retry collapse later. Anyway the same
++		 * check will be done again later the risk seems low.
+ 		 */
+ 		if (folio_expected_ref_count(folio) != folio_ref_count(folio)) {
+ 			result = SCAN_PAGE_COUNT;
+@@ -1790,7 +1788,7 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
+ out_unmap:
+ 	pte_unmap_unlock(pte, ptl);
+ 	if (result == SCAN_SUCCEED) {
+-		/* collapse_huge_page expects the lock to be dropped before calling */
++		/* collapse_huge_page() expects the lock to be dropped before calling */
+ 		mmap_read_unlock(mm);
+ 		result = mthp_collapse(mm, start_addr, referenced,
+ 				       unmapped, cc, enabled_orders);
 
 -- 
 2.55.0
