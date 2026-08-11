@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD97BC5AD7B
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 03:07:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1D53C5AD7B
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 03:07:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 535706B0092; Mon, 10 Aug 2026 23:07:26 -0400 (EDT)
+	id A8CAD6B0093; Mon, 10 Aug 2026 23:07:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50D266B0093; Mon, 10 Aug 2026 23:07:26 -0400 (EDT)
+	id A650F6B0095; Mon, 10 Aug 2026 23:07:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D52B6B0095; Mon, 10 Aug 2026 23:07:26 -0400 (EDT)
+	id 9A1526B0096; Mon, 10 Aug 2026 23:07:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 050466B0092
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 23:07:25 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 564A0C02ED
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F0E06B0093
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 23:07:26 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D331340334
 	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 03:07:25 +0000 (UTC)
-X-FDA: 85087502850.09.4EBD9B7
+X-FDA: 85087502850.03.5B26398
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf20.hostedemail.com (Postfix) with ESMTP id CC8A41C000B
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 03:07:23 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=cfi4HImM;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	by imf16.hostedemail.com (Postfix) with ESMTP id 5E98C180009
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 03:07:24 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=Fe3qezAr;
+	spf=pass (imf16.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786417643;
+	s=arc-20220608; t=1786417644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3RZbPAYAvl32QwZ/NBytlP1RvgJPCM8BP5+kfIW6nbE=;
-	b=NTAkfM43KFyh4xmQSTR4xXYRholmkk+UoFpwRLp9UCWVk8UCkdA6KFkljnb6OdCCF1l8pt
-	9AunPuiQmvX/V5TVGG7BNBJJ2OEd4ObekbckRoQGJbHOCqRyC8JB7Iwi0MFjc5kK5ueZ2D
-	QfljlM3w0jIL6IkWp44c8npjs7otzzk=
+	bh=cng7GWmuH0afMBNJaOnPoRqJa9xaiwRqJYVnLxI+0+w=;
+	b=X2DkDcINNwJuahhnZlbg0aJ/CkpzMu/JMFMZJDRmRPB0dsjIIph+IRGtJPj1Js0gS81Zgw
+	U/KE8bBX10Gln2AUqst6fL1LsP03dcBwSHSDKRG7rhHBBfLRtBhVLXCXbPluSPMksEYfdM
+	Ltvq0q/mbx1pB4zuDqPZPfajYxsUeHY=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=cfi4HImM;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=Fe3qezAr;
+	spf=pass (imf16.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786417643;
-	b=Yijy0+3kIeUlPtwb1R35zjL8wwRUos9v5SNZqczaDImUQ6PgDoTir0Trndcxs6PEuyHtQE
-	xvf4fb2+gRzgD1d4oCqPVqSwZgZUPZNgLc9vh+IKnbTRkDwGTP2pC61FI+tEC5C4f7+uyC
-	NYCiWBcqdlr0UGAsY1rdCAkB1b2p8/s=
+	t=1786417644;
+	b=6XUl2nVogQ8iVahI0tmy15VV32JW3TJ1rgAL1hD0EsI6+iTxr6SxG/AIJ40h4K3YCjkybg
+	f1NOCaX4yMghSh5bshV37c7k+9GFGwlDuHGsY1FIeb3JXoVK5dhT4TzFboDhF8d8i68AoR
+	2EPfitCsn0+Yo4VVXK4VpZ8mpGXEXzw=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=3RZbPAYAvl32QwZ/NBytlP1RvgJPCM8BP5+kfIW6nbE=; b=cfi4HImMhV4qUUW5bIGJpJ4mnR
-	1PShb1UDO+ftIPtt6/K82ZZU3h6dbBWlKUKmBcLeJEUes3hkHsg7lKqdRz+5TCrs2jD/3MxpW6f7p
-	8wuKx3bFxJqDgVTIcaZbSJFT3/SuX2lT1sET1WOh0FQWmitcQqj+STzd8xwbPk5qLNPVIYXDPdoUn
-	JELJvxGnXpEnyq2xGcROLAMLyppdays83XuaOfcoAxw1ahS73RLe1j2k4rlUTiGUYf6zusRVCPaOY
-	AH8W6UKFdm8zcZi0wVJujTMMpjcU/t59Qv0RW9ilGCWLqPlOQQhNUh3XmhaJsJTDJ+sU8bULblfFO
-	xys5upwQ==;
+	bh=cng7GWmuH0afMBNJaOnPoRqJa9xaiwRqJYVnLxI+0+w=; b=Fe3qezArnzVz1Pb+5pmpOAIgcB
+	UW4WK1nDwE9bLqjp7C3Jj5yV5sXselN+PwuUh0zTTGkmfN6t4kesgCEezvcAsF8IYx4uLZ6OSpGU3
+	GLrDNS4XVzS4vR7Td68MCOqoOXPryHSP9IWYuQ7oQRVQemVnJycOy1DTPYVd5fx7tbAwNPIdK84Em
+	ztZG/gBdtb41/ZzHoNEcRbKNafwo1897lrhZYSOJNO9gAv10xQJw25N/QbQzhDqvGw/3YNdwwwcJu
+	ef7QHar4jrMtViZK9BuCZdT5REoBM/bAOn2ZnsFIziLSRo5aF6CFwgZ2VhIpesOb+DYeR0MhFoEU5
+	zDLAwYyg==;
 Received: from [96.67.55.146] (helo=fangorn.surriel.com)
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1wtcb6-000000007kZ-2X8W;
+	id 1wtcb6-000000007kZ-2dKV;
 	Mon, 10 Aug 2026 22:52:12 -0400
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
@@ -76,22 +76,22 @@ Cc: kernel-team@meta.com,
 	John Hubbard <jhubbard@nvidia.com>,
 	Peter Xu <peterx@redhat.com>,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v3 3/8] mm/gup: split follow_page_pte_commit() out of follow_page_pte()
-Date: Mon, 10 Aug 2026 22:51:52 -0400
-Message-ID: <20260811025157.1632867-4-riel@surriel.com>
+Subject: [RFC PATCH v3 4/8] mm/gup: break out follow_one_pte() helper
+Date: Mon, 10 Aug 2026 22:51:53 -0400
+Message-ID: <20260811025157.1632867-5-riel@surriel.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260811025157.1632867-1-riel@surriel.com>
 References: <20260811025157.1632867-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CC8A41C000B
-X-Stat-Signature: wn7emx4ca73myyzj9s79xes4keewpeka
 X-Rspam-User: 
-X-HE-Tag: 1786417643-435620
-X-HE-Meta: U2FsdGVkX19ezLGiulzf6zU7a6KrhZgpsxKt2VX7ExOWAYsgo2pbEIVW71wFRa9EqQKoxYnWJHpRAsW6y68+3ieLM4aL28R+1eTZQgGb9WURp4+EBpryefW7Km4KPWvhA9p64ZXaUfDwX4SjOTEJY0JLHomCH3uXx4JElWK5wV5LaDAq9fHJkOalnbIFv81mrPc+UAYdft7n/l9ZTIiW7LmN2f7MlXGynfGYCjCU8K5NicpBP6883pdmd9+Lpq2dqRy+50eaHzCarc1LTYsZsjo+0b9ySbS0ii7GbGwt63u97EyBU8/NpLert9mdKMt9vSa3HyGx1s8q4/P9HwycB07VdIJFArN0IDWjmkXK8Thvy9UAxR4Kmsv+1H3+sGmfoY3xXy833Rpr5+rlGkG5WkIXodDjikZ7hn0N+ouV8JMnqUM/fwVeJy5glgYZXmcInX2vJsOa8siCFShl3nOsDQ8KIFlwhWBP8d5SPYPxGU8q5tXV8nMLffwCKygbv5h7XdLxklkUHsdLpm055CtUcGui0hJU6ahbHCGRbSWQIdwl+J0xnlsCpvuRycg5l8gQ+ZW/iglPpnWwEvECckTuBqWzk4CjKehsrsVmMPCnT7GRz8RC2ega+9eBoNA0OzjvnIgN8xWmGfVgYHA9/1ntyNPd4KENCoFqeKv2K8jHxyFHVCpACpiK8xJ2fSHO8aAqUV7nc9KadGvyN+f5o7V68mx3DvK0SqByYXJS1NBzD5qJTo5pJqLr7nOpwsRfWKDPKHoDMWeEI80uAcPdqALJ+spDFsn2l4RPsgNke4B8wXtWByGdT0rQt0kjdaP0vDTVV7xBNmM9kojr3IDMDLaQxd+5fzN7sqb8c1PHMWouRimefcVU7mGj3m7TURI8StolQRi/W6P41BRjwieDcM62Mietmj9bP8VTOBaHnnDohzsPeCJPtAfnUH9bnyqppXo+tH24uxW4mPz9dEDxlTs
- sMiESYyk
- l2EeC0R3ZAEEZwNUlllocmD4EYeFYwXvp9iE+Qjca36P9yKXtG0J1PP/AhgYI82KGpf5sc68wIWgppPUlu/7hPjTU3Ae5GQPZNPz6NtmsFIQ+LQHCqN98s0IUwAoawp82yNe8j1dccfxEzpRsAzNNNIXNcIrHbNHQgzK5J0EbNTqm/KTf/uH0xDPx6oHbdlocUn39UdfYnhGWti63wz27hkC820q4WAqroamK1ITLQynwLArJZMp1PEhCMGsOyM9+LPngAmdjtjZLjWfD3VHT6rkHKEki7/z9cY8LQWf8ca0gxcx5WC0hLyRCn1viY5ro3tt++YOP9yM29Plt3hW1IvQJgg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5E98C180009
+X-Stat-Signature: g1idmngnhysiqhzmxp89cks5ifo947qz
+X-HE-Tag: 1786417644-527136
+X-HE-Meta: U2FsdGVkX18dNggvqIP72UODu9qjMbBYwPYFgOc16xkAjppKyEunZdjpqsDl5147j+Rja7YYHsPkp5C6hxe8Xqzin8ugXLtvIVVk74tuT76ImQrdBKAs8fOQBAtmCH6Ds2luZrEZ4Y77Pp4CtryOf1iWZkCfGG1vJA3LVFGPtMvmi9eDdx4i+J0B7naf6fFBjy3UqdQC453+QKqrlJaskZ8IctJ/k47TEG5VszqWtU8buOtJ7I1pZj5DDsSowb6DxjcQaMSMhqDD54SUJTvhdudWa9SZhe8G34+SciR5Vqth86NUsWVFpwHBNLO4iiUOZ6pGnb6gT9O/3PorvlabObYb8TuO5h3Ho7s870Oc/Hhtz8ruiO0LUvhXKdHUdx5fXGe/DajwQqCoOWPZFbF3WOqPa4EmwYdf9n62j4zagdO+ccGPf9As35NTstn40cvf7YDYuK1KeubAT6Hb0PiHTis976Wyx3OYaA1inhOgptoT1gv78UbmU2MinUvTmBqzT9KRY932zaW9aTkviczQpe9eVpDl5OI9IlYgcecfZxwXeAwDdZrPN5+wp0U1hexFsB30Ag3wV9ys/B86txWQsPIL2XA2n5cLkmwvYZwHbh2DcsRi3BxBPLcPMF+AawGtfSN/+c6bc1PsGT/BFQgmWP8RjdwRjM1xv6LFHEgzueAPymUYWRXyqiXeDUA5HoHNZgFjAeSWWGWtc2Dv5DVNjorGbo1KTwbGOUTyoCmTVL0cqZ9mA7+VoNLpOY2BDga8TnaJ09tkdUKQK84K6W5iksmXhbhSUSYOGSvmeKvJu/Dl+s3vAwO+HoYl9LgHQp0TA79Mo2nUMJB7JRmVOs8qpbKeLTAI/l8RNFilGdMWx7uNVfQdPb/Odix4l5O/7IW5wqLmG4MHsIOvOM/iusPi3fv+WCD9EYHpSk19ptyaLBK5sUBOd+J36TNNQBin8YwhGKpPV13SJ5JkA6tsk0J
+ jFA+X6mS
+ D0Vc2Uq1xoPuahzeaFHo5YWiYCabLEOagudV2q0T68Abe9OgjOOOGcFlyL3Mu4Cz2ea0TZzJZOcprPQmbnKO2eoJAVAbWh4yzJAdsjjZcpaPB1YrHkDwRnDYzvYdHEyEWTUtDXciLRnjQxdxtK92UEREmrqa8Z00aiS0BK2XyEkmah1+9FItHXomXhy5yIcKlXwBKSXffOr3SyI5+KPOBmFhyW4Icm/TKQptEEY/u//yOKEpm24TUCddZ2+GJz6lADCte9+xNYjEudYARRcWBEYGGZawsqewrNzPvD9v4mDJzvbZhqYpbFpaf2xjexbRhKDyoY8vftHvuDYJW31c/sYqEVQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,14 +99,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-follow_page_pte() does two things once it has resolved a present PTE
-to a page: run the per-PTE safety checks (write-fault, unshare), then
-commit to that page: grab a ref, fault it in if pinning, mark it
-dirty/accessed, and hand it back to the caller.
+follow_page_pte() is 92 lines and does two separate things: work out
+which page a PTE maps, if any, and commit to the page it found. The
+first half reaches the second through five exit paths, two of which
+unwind the PTE lock in different ways.
 
-Split the second part into its own follow_page_pte_commit(), unchanged
-except for taking its inputs as parameters instead of local variables,
-so the checks and the commit can be applied at different granularities.
+Split the resolve half into follow_one_pte(), which returns the page it
+resolved, NULL when the PTE cannot be followed, or the errno the caller
+must report. follow_page_pte() is left with one unlock and one exit.
+
+no_page_table() can look up the page cache, so the case that needs it is
+recorded and the call made after dropping the PTE lock, as before.
 
 No functional changes intended.
 
@@ -114,106 +117,144 @@ Suggested-by: David Hildenbrand <david@kernel.org>
 Assisted-by: Claude:claude-opus-4-8
 Signed-off-by: Rik van Riel <riel@surriel.com>
 ---
- mm/gup.c | 78 +++++++++++++++++++++++++++++++++++---------------------
- 1 file changed, 49 insertions(+), 29 deletions(-)
+ mm/gup.c | 100 +++++++++++++++++++++++++++++++------------------------
+ 1 file changed, 56 insertions(+), 44 deletions(-)
 
 diff --git a/mm/gup.c b/mm/gup.c
-index e4e6d0993424..b755ceaac0f5 100644
+index b755ceaac0f5..5af6a23285de 100644
 --- a/mm/gup.c
 +++ b/mm/gup.c
-@@ -822,6 +822,52 @@ static inline bool can_follow_write_pte(pte_t pte, struct page *page,
- 	return !userfaultfd_pte_wp(vma, pte);
+@@ -868,74 +868,86 @@ static long follow_page_pte_commit(struct vm_area_struct *vma,
+ 	return 0;
  }
  
+-static long follow_page_pte(struct vm_area_struct *vma,
+-		unsigned long address, pmd_t *pmd, unsigned int flags,
+-		struct page **pages)
 +/*
-+ * The caller has already run every per-PTE safety check (present,
-+ * write-fault, gup_must_unshare()) on the PTE, so this only does the
-+ * per-folio work: the refcount grab, the FOLL_PIN accessibility fault-in,
-+ * dirty/accessed marking, and the array fill with the cache flush.
++ * Resolve one present PTE to the page it maps. Returns no page and no error
++ * when the PTE cannot be followed but the caller may fault it in, and a
++ * negative errno when the caller must report the failure.
 + */
-+static long follow_page_pte_commit(struct vm_area_struct *vma,
-+		unsigned long address, struct folio *folio, struct page *page,
-+		pte_t pte, unsigned int flags, struct page **pages)
-+{
-+	long ret;
++static long follow_one_pte(struct vm_area_struct *vma, unsigned long address,
++		pte_t *ptep, pte_t pte, unsigned int flags, struct page **pagep)
+ {
+-	struct mm_struct *mm = vma->vm_mm;
+-	struct folio *folio;
+ 	struct page *page;
+-	spinlock_t *ptl;
+-	pte_t *ptep, pte;
+-	long ret;
+ 
+-	ptep = pte_offset_map_lock(mm, pmd, address, &ptl);
+-	if (!ptep)
+-		return no_page_table(vma, flags, address);
+-	pte = ptep_get(ptep);
++	*pagep = NULL;
 +
-+	/* try_grab_folio() does nothing unless FOLL_GET or FOLL_PIN is set. */
-+	ret = try_grab_folio(folio, 1, flags);
-+	if (unlikely(ret))
-+		return ret;
-+
-+	/*
-+	 * We need to make the page accessible if and only if we are going
-+	 * to access its content (the FOLL_PIN case).  Please see
-+	 * Documentation/core-api/pin_user_pages.rst for details.
-+	 */
-+	if (flags & FOLL_PIN) {
-+		ret = arch_make_folio_accessible(folio);
-+		if (ret) {
-+			gup_put_folio(folio, 1, flags);
-+			return ret;
-+		}
-+	}
-+	if (flags & FOLL_TOUCH) {
-+		if ((flags & FOLL_WRITE) &&
-+		    !pte_dirty(pte) && !folio_test_dirty(folio))
-+			folio_mark_dirty(folio);
-+		/*
-+		 * pte_mkyoung() would be more correct here, but atomic care
-+		 * is needed to avoid losing the dirty bit: it is easier to use
-+		 * folio_mark_accessed().
-+		 */
-+		folio_mark_accessed(folio);
-+	}
-+
-+	gup_fill_pages(vma, address, page, 1, pages);
-+
-+	return 0;
-+}
-+
- static long follow_page_pte(struct vm_area_struct *vma,
- 		unsigned long address, pmd_t *pmd, unsigned int flags,
- 		struct page **pages)
-@@ -877,36 +923,10 @@ static long follow_page_pte(struct vm_area_struct *vma,
+ 	if (!pte_present(pte))
+-		goto no_page;
++		return 0;
+ 	if (pte_protnone(pte) && !gup_can_follow_protnone(vma, flags))
+-		goto no_page;
++		return 0;
+ 
+ 	page = vm_normal_page(vma, address, pte);
+ 
+ 	/*
+ 	 * We only care about anon pages in can_follow_write_pte().
+ 	 */
+-	if ((flags & FOLL_WRITE) &&
+-	    !can_follow_write_pte(pte, page, vma, flags)) {
+-		ret = 0;
+-		goto out;
+-	}
++	if ((flags & FOLL_WRITE) && !can_follow_write_pte(pte, page, vma, flags))
++		return 0;
+ 
+ 	if (unlikely(!page)) {
+ 		if (flags & FOLL_DUMP) {
+ 			/* Avoid special (like zero) pages in core dumps */
+-			ret = -EFAULT;
+-			goto out;
+-		}
+-
+-		if (is_zero_pfn(pte_pfn(pte))) {
+-			page = pte_page(pte);
+-		} else {
+-			ret = follow_pfn_pte(vma, address, ptep, flags);
+-			goto out;
++			return -EFAULT;
+ 		}
++		if (!is_zero_pfn(pte_pfn(pte)))
++			return follow_pfn_pte(vma, address, ptep, flags);
++		page = pte_page(pte);
+ 	}
+-	folio = page_folio(page);
+ 
+-	if (!pte_write(pte) && gup_must_unshare(vma, flags, page)) {
+-		ret = -EMLINK;
+-		goto out;
+-	}
++	if (!pte_write(pte) && gup_must_unshare(vma, flags, page))
++		return -EMLINK;
+ 
  	VM_WARN_ON_ONCE_PAGE((flags & FOLL_PIN) && PageAnon(page) &&
  			     !PageAnonExclusive(page), page);
  
--	/* try_grab_folio() does nothing unless FOLL_GET or FOLL_PIN is set. */
--	ret = try_grab_folio(folio, 1, flags);
--	if (unlikely(ret))
-+	ret = follow_page_pte_commit(vma, address, folio, page, pte, flags,
-+				     pages);
-+	if (ret)
- 		goto out;
--
--	/*
--	 * We need to make the page accessible if and only if we are going
--	 * to access its content (the FOLL_PIN case).  Please see
--	 * Documentation/core-api/pin_user_pages.rst for details.
--	 */
--	if (flags & FOLL_PIN) {
--		ret = arch_make_folio_accessible(folio);
--		if (ret) {
--			gup_put_folio(folio, 1, flags);
--			goto out;
--		}
--	}
--	if (flags & FOLL_TOUCH) {
--		if ((flags & FOLL_WRITE) &&
--		    !pte_dirty(pte) && !folio_test_dirty(folio))
--			folio_mark_dirty(folio);
--		/*
--		 * pte_mkyoung() would be more correct here, but atomic care
--		 * is needed to avoid losing the dirty bit: it is easier to use
--		 * folio_mark_accessed().
--		 */
--		folio_mark_accessed(folio);
--	}
--
--	gup_fill_pages(vma, address, page, 1, pages);
- 	ret = 1;
- out:
+-	ret = follow_page_pte_commit(vma, address, folio, page, pte, flags,
+-				     pages);
+-	if (ret)
+-		goto out;
+-	ret = 1;
+-out:
++	*pagep = page;
++	return 0;
++}
++
++static long follow_page_pte(struct vm_area_struct *vma,
++		unsigned long address, pmd_t *pmd, unsigned int flags,
++		struct page **pages)
++{
++	struct mm_struct *mm = vma->vm_mm;
++	bool need_no_page_table = false;
++	struct page *page;
++	spinlock_t *ptl;
++	pte_t *ptep, pte;
++	long ret;
++
++	ptep = pte_offset_map_lock(mm, pmd, address, &ptl);
++	if (!ptep)
++		return no_page_table(vma, flags, address);
++	pte = ptep_get(ptep);
++
++	ret = follow_one_pte(vma, address, ptep, pte, flags, &page);
++	if (!ret && page) {
++		ret = follow_page_pte_commit(vma, address, page_folio(page),
++					     page, pte, flags, pages);
++		if (!ret)
++			ret = 1;
++	} else if (!ret && pte_none(pte)) {
++		/*
++		 * no_page_table() may look up the page cache, so it cannot run
++		 * under the PTE lock.
++		 */
++		need_no_page_table = true;
++	}
++
  	pte_unmap_unlock(ptep, ptl);
++
++	if (need_no_page_table)
++		return no_page_table(vma, flags, address);
+ 	return ret;
+-no_page:
+-	pte_unmap_unlock(ptep, ptl);
+-	if (!pte_none(pte))
+-		return 0;
+-	return no_page_table(vma, flags, address);
+ }
+ 
+ static long follow_pmd_mask(struct vm_area_struct *vma,
 -- 
 2.55.0
 
