@@ -4,142 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E5F4C5B56A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 19:08:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6283FC5AC67
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 19:12:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25AA56B008A; Tue, 11 Aug 2026 15:08:14 -0400 (EDT)
+	id 65A866B007B; Tue, 11 Aug 2026 15:12:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E5436B0092; Tue, 11 Aug 2026 15:08:14 -0400 (EDT)
+	id 6326C6B0092; Tue, 11 Aug 2026 15:12:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 087B06B0093; Tue, 11 Aug 2026 15:08:13 -0400 (EDT)
+	id 571F46B0093; Tue, 11 Aug 2026 15:12:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CF8F66B008A
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:08:13 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AE919C01E3
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:07:57 +0000 (UTC)
-X-FDA: 85089923394.03.08D6720
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf29.hostedemail.com (Postfix) with ESMTP id BF961120010
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:07:55 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=JFNN5nKJ;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf29.hostedemail.com: domain of jannh@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786475275;
+	by kanga.kvack.org (Postfix) with ESMTP id 33B416B007B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 15:12:29 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B9A93C0167
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:12:28 +0000 (UTC)
+X-FDA: 85089934776.02.358F4CE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id EBCD6180008
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 19:12:26 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=I69u3zkO;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786475547;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C1hreM4FHEoohH+eGJumQkjd/LtpSUCRmMU2uj8Ja0M=;
-	b=wYHf6FE69NlV1uKRZkt+FpIkAWPv8LNtOQuN9CM0a+eI3EcIrXIi8QBuX/6LyQQpu51bvx
-	9W92pq/1WjTkDrcEy8DOKyVU5HbXgBv5oCYY8i/GHGRH3JlNDJa52MgCCOyg17YuqVkse6
-	zMg9P9HF4+mgJwiuhkyWPkK9aEALJ6I=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=JFNN5nKJ;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf29.hostedemail.com: domain of jannh@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786475275;
-	b=qe5BrgPcAi8GDWileI4mqoM4z5eNJORNM9Cvsh7wpl1rmHY3Bb/gYbCAv2KeXaOMXcGn6M
-	QOgqHfhnmYblbNBQar6P9i2NJB8AVjt93EDR5UBfNRpXn4kxqYXsD6nztOHNnJCFT/9PZS
-	hVYoJgJIiLDd2No+u4lMw15F5T+vJaw=
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cacef7d299so22795ad.1
-        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 12:07:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786475274; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pWX037JaORziF/nBDNN9QwO46XACu7/rggZYVEWMP5WYqbFHldsRl63eSoe9hu54EY
-         LjQgYgcnGWGjfUVcHKCoifiIHn1vMBqZ4dB2TXtaLW0IjDUifK+j+hiNbISuSW9WKeXo
-         2gQWfO04W+ULS9lyr4qVnyX9pOzlmtTHjr9YZyONUTt9ZOMwaXUc6kSTzIfHBRSespaw
-         dUGtIZVCGl/oTLg7QBAEzYxxefqKiI94f24vOwMzA13HVBJVwKiJyVIsBtmvjHiON4e2
-         2c9CRilghZqysdDjpFgaSIorAMYYymGtET0Qxp9rYkRlkTlA5rN8S+vynbM5rnuyXpAC
-         XqUA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=C1hreM4FHEoohH+eGJumQkjd/LtpSUCRmMU2uj8Ja0M=;
-        fh=ELZxw+L9UGMFJ2E4a29oowl/s3D0dsyeCLKYxiZzuSU=;
-        b=Xb+xoQZQLfrvPQYx0hWIVZGeeIYWvLgubkxcCcioLJODrt54Z8DUFrq8sPUcnpjtM1
-         nK3WGXArqZgx04WWs7bd+BkLNDdQU+bjeuW0oCLJegh0cx8mg8qntQJsrFrcQdMRpCoK
-         NEkAJM2+i1onQ4SVS9DB22ZWClM2pNvYTxOsHSgQIsGbPHtEjooojJw0fJvSfdhL5L6j
-         98igOs+UYB/R2FdupkDVZEb2692q4cUJCNQEGoZYLtd7r3arr25yd7KJXVyXuhgrrWjN
-         QKGbs41iVoiximHgIhA8EcereEf5JE4GS/dXImFRudJqALRu1Y4cEGoNh4CPK63B6Q52
-         4zdA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=+i5G5eQtKFOjTqpeKl14Jk+BOvdz+qV6fk5uL70Mp/c=;
+	b=5eJJnAOy444MA/gbYwDbFCoqB1Ew5NRRD2omc7FRlTxynE8ODkrT23Pkl4b5mWnsP0xyUK
+	GNPne3+AhSCkwlnhOodxZrnky0+1XP7zuBSzbcdhBCIUz/YKoQ2fyIT+pu7hB0uQkHsLT1
+	43TBRLswIp/IprvaqpDE+dtRCjZLEiA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786475547;
+	b=ltELoU1wpmyC5S+byq/7+9Lw/72sHgsjDuHXiGKIqy/1TlVm4UsL41zQc3n41oFSsOyBJx
+	n/tBJJfQ3QBhOeD0R/NQgmJLCK0PX3dk/lc154aVXve0LcIiMJ8RzqvAlHAOXbNJ55oAFL
+	dLS9owaU4bq/3WBJ5Z2RL2gFPT/yEiw=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=I69u3zkO;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2617B411EF;
+	Tue, 11 Aug 2026 19:12:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 976B71F000E9;
+	Tue, 11 Aug 2026 19:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786475274; x=1787080074; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=C1hreM4FHEoohH+eGJumQkjd/LtpSUCRmMU2uj8Ja0M=;
-        b=JFNN5nKJ/gqfkgl0trdDQbh20LmubyF95QWHin4gUSb6V2d6DT1JeQmMNbhs/xczav
-         Su1tnMz9xXwWK7jrtIg30/BiOL2oog5O3DX0sZ7JHieKYBP8ybN82mFxoUYVwXkRsqV0
-         t054SX3x5xt/wwRwooebQbz1CgynFs76U5IZB07Sbq+Ts7EAHozWwqoaqixd7AeK+suZ
-         QczHNIct0dx/Bi+eDZBXT+2Yw4whjWqxuN7HAbXEB5E9j9z7+qkLAcTYTO/7Yt1ZD5VP
-         YmvkPLLksUYduJr4Fk6aY6AP1hMIIXLh/y8qF42Pf8gboDggZHB6DBl5BxWsyoUra5Jg
-         gQiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786475274; x=1787080074;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=C1hreM4FHEoohH+eGJumQkjd/LtpSUCRmMU2uj8Ja0M=;
-        b=Z+Ov8aQi47ZXbCYAbLKET/vcXpXN2iyedVHsQ7BOGD7CA104b+k13mltYNUD+zftsI
-         wVzFqmM26uVRJTiWnKiDvSwegBXuyH49SM9DS2IPZLSRh/0wxgnDRhLS44am4z1KPr4y
-         SsQWs53mLcK60TF+J+qWKW8+ddlYG7e2L5R0p1BJwJu12ohzXn1430/nLWQhN2JaTdJ0
-         AInEUzlOjzuEtzGde9D9Yh51rpCYZJ4fvZjr8XmPO8ggF9LgDl1+cFpQoUYl1yPW0VnA
-         oBAexL38ljaQabbNqC3JI0E5s4bm2dwrEG/iD30gaD/x/lXWeChYzLy14kawcv2VPMol
-         6k3g==
-X-Forwarded-Encrypted: i=1; AHgh+Rox/96w/T8ZUXMQNajKoLkZTsS5OKUNRrX5WgZhgdiccD8Zy2GaSBNZ9XTVkn/S1WlcTS7iF9TQCg==@kvack.org
-X-Gm-Message-State: AOJu0Yxfmobyg9F4OBSKFz3CYNOgxpiSx+7YvxBzwjcM8YO+vd8S+1yL
-	lRFrdlU/9QpyMFdGtWVJkXCzJxJyqIWqMKY+yu9nf/aL0sCSTxtSo8ykzfB2zYZ77E/OzPFVERS
-	VoMJ6+xio2dYnZR9mA87X3oA3YUTkcF+ZEgWEvBfi
-X-Gm-Gg: AR+sD136ttUHgBoVVSq6AiM7bVZ2QucIJyQPQjR7elg7Beeaj2TjH06DYDfSwNHKPz6
-	VLR3Tgw/hjCRFnQtHAnJiPvH2W/a5sAPbQgqqxVCJZIxPOdC/ydMj8yAkS/5+xQv8L7h60UyHvw
-	s8F5zUEGdnZpC/txeaP31qq7rgeV4m7upLiazCxZWyWi+0JOFJQQWnIrBFSA6DObMJcROI24b21
-	4i5M3bQNf7h5KISM8otJpRdssZmFG2CTmGAyz7IugRaHXG1yGt9y7EiEXzBN/FwdpYRN1UB6y0A
-	asYQhQ7zCp4xVSGZde4J3fNe2TdjTJ64T+mbQwsA5cZJIIPvPIL/6nQI9YcmeTnUULjZfgJWiOx
-	7i55n/xyQ7fYZpbkeLb4Myqpf3G3jnoM=
-X-Received: by 2002:a17:903:1843:b0:2bf:3579:cdaa with SMTP id
- d9443c01a7336-2d33a99905amr481575ad.10.1786475273937; Tue, 11 Aug 2026
- 12:07:53 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260811-work-coredump-sparse-v1-0-cd3e8b1e356d@kernel.org>
-In-Reply-To: <20260811-work-coredump-sparse-v1-0-cd3e8b1e356d@kernel.org>
-From: Jann Horn <jannh@google.com>
-Date: Tue, 11 Aug 2026 21:07:16 +0200
-X-Gm-Features: AUfX_mwl8D17qLmpn2j9POaLRIWa5xMeaCP1oLEBxMsBs01SgCKLca4ifFR7LFM
-Message-ID: <CAG48ez3QwUopEyfB0tEc84A57g3GZdnptazJW+htiTi2e0Gc=A@mail.gmail.com>
-Subject: Re: [PATCH 00/11] coredump: allow to create sparse coredumps on the
- coredump socket
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jacob Lalonde <jalalonde@meta.com>, Josef Bacik <josef@toxicpanda.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Omar Sandoval <osandov@osandov.com>, Jacob Lalonde <jalalonde@fb.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BF961120010
-X-Stat-Signature: z8po91sp8cinozqj6qgxwx4dpg968ha5
+	d=linux-foundation.org; s=korg; t=1786475546;
+	bh=+i5G5eQtKFOjTqpeKl14Jk+BOvdz+qV6fk5uL70Mp/c=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=I69u3zkOHUBjUDeB0DWHA0jCm2xjNPzE7+QZF55ijRPURIVRy+1o3KcJtn2E9csd8
+	 hDwI6dEoJioia6AIvlSyCDXVLScUtTIPm2zGiT7j6e12dtF6tERmywhYwFrj7lV0EB
+	 HMWu/jeWefrEldBAlwg9vxNfnx3+5LR1PP0cmMt4=
+Date: Tue, 11 Aug 2026 12:12:25 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: david@kernel.org, ljs@kernel.org, nico.pache@linux.dev,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, usama.arif@linux.dev, zokeefe@google.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, Vernon Yang
+ <yanglincheng@kylinos.cn>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm: khugepaged: don't pass swap entry value to
+ trace_mm_khugepaged_scan_file()
+Message-Id: <20260811121225.fe45676262404b82270843a1@linux-foundation.org>
+In-Reply-To: <20260811133655.267739-1-vernon2gm@gmail.com>
+References: <20260811133655.267739-1-vernon2gm@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1786475275-235605
-X-HE-Meta: U2FsdGVkX18i7qJlSqOEw71O5xnF25Eu6oE8QtqxddSKaDORBkie8lgdDdPPY5u1m3T+tkepWsugTdAJjBUXWZ4eThpk2yvTzAYExal2YJVNkyz6lXAAGBuWc1uc5SnMwXPE6ma/Vh7DCR+H5z7AiBAc4PwH1rrOYjzL8vwqGnmKY6eDv0p23hoVGobTEq7u/jOvmDgZZugPZAHxORvAo/u5CVJsDC0dA7t4NMG5ChvgD8xTZb457fPBT//C87OA7KLg3G+qFDlThn9NnKyEjFujyHBuDRKlAG5ZbPcIoct7RYZJNGVkE4i4zPWtjSXvVouMrNmB4CHAHo/r7SvqdwrP4sNMdpcqpI3S5VKl1hQQkp+La+CPvNqcmvTYK703hk2u12av6sldFI6FSg/nheyKRhRZiDhKklhLfhdIaXy4KBpNWkd1YtZArwH77Xudw7BQA12aBCe6mgq+zZeJ8i0VT5aqUXbnLZKcHpfGH6lxuyfnQJUB+cWDjky2L2eZEqOtfTLaDtByl2aVshCYy2vQwMLes5tzHPK8YnA4POhB8+BXGzJUIvShbWxeuKl5HWnOK3vj/nMGRJecjPypTs+B4ab01gBiY7Lqc6eUDR1f4EaA9Njx6roaiR3ihvJ/GnSnYW24KWJ7jGIqxLZmJb+fEUdykeDio1WvVhdR7VrXdoYKXKPlU6aIesjlRMsUjp+i+JBFQmkqCA6vW67/jUx2ctoNp/Fz7l33FC6B+ht733eAKkbkhKlVDpT48VXTyIoPuBn455pcGn2TNre1KvbgYYZs2cLCAlAu6dpryomn74l81pFiKnvPzQbIKNapSu54iDG0Ql6r2Jc/MgP059D7H4D27ilWwfkyJg2nEyhhO3e/FhlfjXLycuTjqzZngVcHanb2pv9R28BiHfhXir9oxvMQMumn/qqJnA19gpsu8sJNc9PRU0dzBCElDOMQHxc06KTEYajKJIoD6Tm
- 29e2MbER
- zsC04zj/0QTF1dhCg5pKO7AQscyfKKqryW1cNGI7HWxiuFlVttX8BQrqW13CstAsjErOoUQfJ8O65wsvY/yS+FrtAupbFUnUGmx80x4lgSnSNuBM3vcy0G+sELMwzb7ZqwxxXPp2bERFxjm20aRQZDQF5fNhEfKej6H4cIHYkxvdkPDIxshRfa5Me5F8LnTsbojFNgX3diKeetYdPhUDHjZuOK+bNog9+hdfOWePN3v5Nioz/7xxoActtckM7Okyr96bxth4kH238YJc=
+X-Stat-Signature: o1p1jjjxtqikca1iizxabspe3piz3ct3
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EBCD6180008
+X-HE-Tag: 1786475546-279437
+X-HE-Meta: U2FsdGVkX19YfI5egthuHHVaCksahhDe0U9ZGokpdotl1uAB8gzUC4yF/qhLbQ6ojaEM/DxDAlq6Sk96JZYNCNe+8BY+13+LeB+/+lTS0Lu5Knkz/CMie+9nRdGc5+IZthCJ8hISE1aZr7LCrG0ZghiN/WFo/KKpoTHtKW3wQJjAAR9cFREgUvrVoF8fG2+MWMcFT1ioyq9oT2bDwl5lHvd5MNhSdyxllBE1tFRid1IRZK+nwoxzU6e8nrU+jkDxUFziWuazi2ZLOiPnziQUY9zoduTgErowci57NdetGhXOxUL5Scm6ZIPjKwHfnsnQYQ2oXFp8uarYsggssOI2vl2WnW+VpFLdxqTaYJAZ9pKzHkA++8GVvOl5v6TZovrtsOqEbDT6Ym768f001ReFejvjFU7m8E9SvjQaHXN4cfSLHtyhdKbH8kDTvRdLb5R/GjfVCxDWLcbnr1tgO2+hf8KwaNKXOwRVPcXS/Yb2j7+2wYUJ1FLXgZw2NzurxIiinbW2sQdVSwUf8rP98X8Mj0MgMpF1t+ZBp3NkDgwDbtZUbkeqFJvnevlJQNShQ5OJT6W/9TTeaeaG9Bchi7BUHBXQw9zJNifT5nQ8LiK5qcjJUCzCFFYRtXlOYv5NfyPimAA/5zvK2LbPkENBz0mHTiEootcTOgNRDu21cXpXy8YwOIfKeR7+bzXfe15XptJXDzhXPEwn5csmtQ+ZiXr/+kXl0ugsyEYMwLahoekehhaMNJKVyvxDK2I8E2NZfmXvMdVTXXSXD9ZjYTzAqw04ppeu5HeEBVamC3JPg2x9GQqgORmnXTfQgWBMY9AB7vSOQ89aPKoMu5Kjbq5XhDRjFrQ6xHPRUoDQCBJTBbw+KiAHj9/GhvYoGgmqmvdoPV/ADgUdX1yyrYl6/uks6Ql9Lg16Rb03zXdrWhIQ0mFJZ+TCveCPbBnrxOFl1dJI3Uh17rZAhBKM8m9oY/0CF3J
+ WRatux5o
+ 1qweCwS0qNFe828Ldtc/7Ars0RCWCenx2RPElFKCG1rH0iRdhFosxwhY0g+t2LRZiv/zPDKReAyDgtLEyhtQIF5rCR0W8TsxTyqmtVkSEQdXbz1vSGcQzvaUbdU5i+7w9LLMnzErwVzbFnpdv+aTM1bHSMeLLjDDD3smkCH425eAUAdM34Y7vK6EVkdc1VmjYFSKkIAIa++Lj+D8CtEwAHDJebU98pvWTjK0kU3Cr+yWn/AbiLh6Fv6sMm58gKJCGoC0HofxJEL4NJYZlt+qz2BLtJ8hJ/ulk4bvAq9FXyo6U29PzjqneP9MH8A8S2rYbe9vbtcPeJx2e9Yrv6lp2MXgY1Y64pjakcVXbA0XnZyljR1tGvrRO/BQiUSRH+U8+8tiC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,36 +93,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 5:27=E2=80=AFPM Christian Brauner <brauner@kernel.o=
-rg> wrote:
-> A server that raises COREDUMP_HEADER in coredump_ack->mask doesn't get
-> the coredump as a plain byte stream but as a sequence of frames. Each
-> one a struct coredump_frame_header followed by what it describes. A data
-> frame carries its bytes. If a server also raises COREDUMP_SPARSE, zero
-> frames are sent for unpopulated mappings. They only indicate how many
-> zero bytes need to be written and to not include data. Reassembling the
-> frames gives back the same coredump. A debugger and everything else
-> still see an ordinary core file and nothing outside the coredump server
-> has to learn anything.
+On Tue, 11 Aug 2026 21:36:55 +0800 Vernon Yang <vernon2gm@gmail.com> wrote:
 
-Hmm...
+> When the swap entries found exceed max_ptes_swap, the loop is left via
+> break with folio still holding the xarray value that encodes the swap
+> entry, not valid folio pointer.
+> 
+> That value is passed to trace_mm_khugepaged_scan_file(), which feeds it
+> to folio_pfn(). On FLATMEM and SPARSEMEM_VMEMMAP, the page_to_pfn() is
+> plain pointer arithmetic, so the trace event merely prints bogus
+> scan_pfn. On classic SPARSEMEM, the page_to_pfn() reads page->flags,
+> dereferencing the tiny encoded integer and oopsing khugepaged whenever
+> the trace event is enabled.
+> 
+> So set folio to NULL before breaking out, the tracepoint maps NULL to
+> scan_pfn of -1, just like exhausted scan naturally.
+> 
+> Fixes: d41fd2016ed0 ("mm/khugepaged: add tracepoint to hpage_collapse_scan_file()")
 
-I think what you're doing is probably the easiest way to do this in
-practice. I guess some design alternatives would be:
+Added in 2022.  Why so long - do people not use tracing?
 
-1. (overengineered, not generically useful enough): If the transport
-was a pipe (which already has the concept of different types of pipe
-buffers) instead of a unix domain socket, we could introduce a special
-representation for zero-filled pipe buffers and some API for receiving
-zeroed holes through lseek(pipefd, 0, SEEK_DATA), but that's probably
-not sufficiently useful for stuff other than core dumping to be worth
-the effort.
-2. (somewhat overengineered) With some refactoring, we could maybe do
-something like /proc/kcore and create a seekable virtual coredump file
-that we send over the socket via SCM_RIGHTS?
-3. We could leave the userspace memory dump out of the core dump data,
-and let userspace take care of filling out the memory contents using
-/proc/$pid/pagemap and /proc/$pid/mem? That would also avoid task
-switches and SKB allocations, and probably reduce the number of data
-copies involved in this by 1.
+Sashiko might have a found a couple of other tracing bugs in this code,
+which I suggest are on-topic for your patch:
+
+	https://sashiko.dev/#/patchset/20260811133655.267739-1-vernon2gm@gmail.com
+
+
+Also a possible bug mapping large folios which straddle i_size, which
+is a separate thing.
+
 
