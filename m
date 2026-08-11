@@ -4,111 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 664FDC5B572
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 17:53:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5BB9C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Aug 2026 17:54:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 751C66B00A9; Tue, 11 Aug 2026 13:53:53 -0400 (EDT)
+	id CA8F66B00AA; Tue, 11 Aug 2026 13:54:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 728C06B00AA; Tue, 11 Aug 2026 13:53:53 -0400 (EDT)
+	id C80246B00AB; Tue, 11 Aug 2026 13:54:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6402A6B00AB; Tue, 11 Aug 2026 13:53:53 -0400 (EDT)
+	id B6FE56B00AC; Tue, 11 Aug 2026 13:54:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CB576B00A9
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:53:53 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2C7EA018A
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:53:52 +0000 (UTC)
-X-FDA: 85089736704.06.9BF7C5E
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 88C3D6B00AA
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 13:54:01 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 26D3FA1376
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:54:01 +0000 (UTC)
+X-FDA: 85089737082.23.4EAB041
 Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D2EF540011
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:53:50 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm3 header.b=Z8bwl0Xj;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="a YONY/p";
-	spf=pass (imf17.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=linux@jaseg.de;
-	dmarc=none
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0C2ED140004
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:53:58 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm3 header.b=CZJ+DP1c;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="Y to8vG2";
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=linux@jaseg.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786470830;
+	s=arc-20220608; t=1786470839;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qSx5jstEMxGImoS/91W19MHOeSaIonN8JmHYqcRdoo0=;
-	b=uE2Fcci8uMnMnuCgSkfA4Prxhsh7vaw8+JpHvv67yWzKZpxyVBZeNWk0Z/TK5Y3gw9trSR
-	eM0cNEJGFT9xpDXdbEEVDGgJV0Fepkf5uVO+gnvoiQwAazxSP5TDEOBskGkCz37cNnYBul
-	oz2cSGezw6zlpqNQUxOeK8rOXuqkKsI=
+	bh=3JSH/iI45wy3MD9zA4sQib4hD7ZbkdXLzpNiNtsaJcE=;
+	b=gefY2qBn8eWWZfDG172IT15mCFTEfvaQNNdzMmVVZ+5JyifMVR0sTENBFYiba3cNDtTwTu
+	GRx8/pPg9irLcBJXn8v5Y2z4Iq1lJAdg0UkMwcHX1n/GkqwWPZ4q8LXfOGnuPD1++nSQ+C
+	wsF1Uq7X0ZURWh2A30Ci6Tfq5hUGEW0=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm3 header.b=Z8bwl0Xj;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="a YONY/p";
-	spf=pass (imf17.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=linux@jaseg.de;
-	dmarc=none
+	imf23.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm3 header.b=CZJ+DP1c;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="Y to8vG2";
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=linux@jaseg.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786470830;
-	b=1PTtjXf+N9EouN9KTbHciMxnNysrHe30VcdkFKudU9BoVpmSGnksC64BqVHv2jeSiuf3xH
-	E1/c2FcBlZt6TCmmIdqcm1BNI4j47w0FB6RXtNGBQrhXqksXWUKlRssOnVOYWssLFfApmE
-	66TmuZFOyUErMFAilYoQnWOjxXh+Xlw=
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailflow.stl.internal (Postfix) with ESMTP id BF9781300395;
-	Tue, 11 Aug 2026 13:53:48 -0400 (EDT)
+	t=1786470839;
+	b=kWOb56jltautAnI3vRLhL9fJJWzuOtq59DssT2XRTAoZvSuYTgvNF6BIsZ3GhZrItttN/W
+	+GGkWjFkL6qM11HipvVzdhpmKLYPpgiYWCJq7bNky5132stBrLbSDpwAEaUlGOkLMaqIRh
+	npSCJRO0AYTjhgtJ18pMXIIlgVSVtpg=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.stl.internal (Postfix) with ESMTP id 0645A1300397;
+	Tue, 11 Aug 2026 13:53:57 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Tue, 11 Aug 2026 13:53:50 -0400
+  by phl-compute-04.internal (MEProxy); Tue, 11 Aug 2026 13:53:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaseg.de; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1786470828;
-	 x=1786478028; bh=qSx5jstEMxGImoS/91W19MHOeSaIonN8JmHYqcRdoo0=; b=
-	Z8bwl0XjcJPZQLjW9pXCAUF5EWldkGiE9BEEdn2IuAMsXkmfOq3/dvpxmwnP2ZlY
-	8URUSWG/4y0tCxepJplqISoEiYwfVYK/s8vhmV3uUUrGk7zFTdPqMNIWZs+LJLOA
-	DyCqajFHL7DmdzdzkamxO9z9Wob/c73E7WLPk597ZlIvHS6jmRJcdG7aHu8F2dTW
-	imnXcLgJEGG44MAZQwOinFHlEgCrj6F0218t2fYyyxdt+sm7vHVsMLaS2sM+KzUd
-	IucUdBz7PmGhmm4mCSpIW5y7I3249h8Bo0TbSyj3VAlroAAslctclu3lTZEFlZsZ
-	2cMCxiZZ3x+umDldQ8whqg==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1786470836;
+	 x=1786478036; bh=3JSH/iI45wy3MD9zA4sQib4hD7ZbkdXLzpNiNtsaJcE=; b=
+	CZJ+DP1ctATAeRR/KJYvTUIM3t8q9GDjhKCZJvatoQooWR6rVWNSly772PQ/TfUy
+	ENUwOmU25bKc8x8iO+5/ZiNSoxDpy65ZsBKcuwerOM0xJtAMRQlKbIA2r4+K7cpo
+	4bjjS9E5oRvoOp38MPHnL+07j7CKJyZfjvfarLFn9unjoYWs69bl7jCUKKr8Ndsa
+	JTNOUd8st5x+6dnD+tzTK+EJVuqdzDYdM5RKFtGLtt2fo6MdxoDxsQEmWWm+1h5h
+	9r0ieubu+uMTq53Onf1eIiRRGrIEDqzqRf1iGgAN3ZRTwO/3zZolwRXxQuwQVsSO
+	JLp/WAXW/e6HViLutxDuDA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786470828; x=
-	1786478028; bh=qSx5jstEMxGImoS/91W19MHOeSaIonN8JmHYqcRdoo0=; b=a
-	YONY/pbby/jHIFWGCQYz+RGUa9FvXes2QTVlDwZtO0+s6y3GL7Z5zvn5OrsxGQO2
-	2CjUf18XoqUu7baCU6uNkr1s/KP55lhhgN6I1S5KKzcgSKi4I4ccbwwOkbop0hph
-	KrXZtXVQHK9BAjpJipdmlDKNbWmElQYO0/vPrhkYdaQ8FlfJg+CjWrk3WneBjwRg
-	pc+DdLurAGOzcoGOyySJWcadJMh5G3tKOlt3JRBZP/Nm7V58QJLsdxkMviUfgKSz
-	faob06Ye2Y6SZRYVO2pKJpjllwmXmNruMWGdOQU6jJuwND0RWOAx2Wp0dtqCg2ma
-	mGm/TdYa22Upi948CkHlA==
-X-ME-Sender: <xms:q2F7ag6rcMW7PiXU5aVJpGDMjV4y94oKSR98ceGllN2DVEqdO41whA>
-    <xme:q2F7aodWtq_UGq3M8P8T9aqgN8mqQTBDNAGndFFqhUm_HvSXiChe26yhBuoJs-LWV
-    FKzg3Q3CUg4vLxtFs9M4rLni7eZdMo12wZBq520sgFNd2w0dQP_KQ>
-X-ME-Received: <xmr:q2F7asO212iSnFyguVFX2i8LKazuh-gy3sRI-dv5M7tTiMrce552n4EusAmZ-Cefm6zvuGdbae04IA7lsGMs-mk>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786470836; x=
+	1786478036; bh=3JSH/iI45wy3MD9zA4sQib4hD7ZbkdXLzpNiNtsaJcE=; b=Y
+	to8vG2bwv0UUn+XNWPlW4HltiAZMSeXAls7xJHf405to9maLImvQ9bJiV7xuBJPt
+	xUIZWEgivpvjAZ/1QdoIo+b9/FKpN+LOU/6eXGlSokf48mJSnxOdoAhuJl9haavG
+	p1QQ0O5H31ulz2f1KK09UhIo4WQbcFU/ccZ7Ax2MFwad5tcauqP8cfc3flFLwxGe
+	Y75oecP+XNv5iwLqvldxhGrdvSZiAdo1RNEgog64rZDGoXYdeDr3/Tn4wnsVZDlr
+	v5P57anNA1u+0/KQAx/G2WWflCk6nIRdXxiG9tYHoiaBV0XQv8Cuv39dxLYqb4Hf
+	eNT7F4OO6XotcScVosu+Q==
+X-ME-Sender: <xms:tGF7aiJKno3z67rxtm3MwFWmSr1qq3YuYzcqq6y63Z8oTuM-n8nhVw>
+    <xme:tGF7ak8Hu_jhjkU4e82Xz7I9J6AizYJgLpYww1XpLix4ozUrHA2hHKre4tCCegENF
+    JKguZ2uOe7Yz-h17ITstcjZNXyrafTMgUbUcfzPTjfN-QuWyVja_w>
+X-ME-Received: <xmr:tGF7aoXciMDUTi6hA0_x7ZQsNOwlQ4EtBC8NLT6gl4HIwkC-AsF3-PTrFq6F3Ak_1-9hb2fTU-q8NQzKzWR_o4Q>
 X-ME-Proxy-Cause: dmFkZTFP5tmiXRyqpvhao8uWnDWsuVG58E3QcpY8nNF+TN3d4+2z3XaWQJ1+2uEKcUq9Jg
     +xH/KDfBOi31TfxVE5vy2aZ5W5Eono+bvv7mBiiNvVW/C9tjIvrxCLzv7Tz6GJOSvAG1cd
     t11+FzpQNbill+yp1ZC7JKPVzEaxQ4CH2HewKTU1gYEn0mNFldMXWgoBvZ/c5OhwLZogLW
     sZeOMCUfQY9vOvCjGHA0ivpYn+5HBy3sK6RswFREIaUm9jlhbU7pV5ZXGDLpJAMlUAJ/Lo
-    y1vjaaTNNEiBF07QqH8YbZg0fsVTsE2lSAku2XiqZRlB3GAWdGnDFC/NxQNHJZjZwh0bh8
-    kqbkKWELcjtAChbH2Wzn4QOL41OlbQEqlswqKr3P1+VpFR+XsiNX3rUaf5vdKXSnolPw5Q
-    /Ll/uLB1cldMhqyZbAiZQTCYwXiJkO7FdRZ/9Gqe2gvfTrCfAfdNHgTLVZMsAD+fn76T3x
-    gFGfQHvbVS8RM9muaXsf/hhgBhDP9KsibwWWSg2C80hHXEUnxirzCVePR8OTs9vajPnbRl
-    X6LpwU+UjkzYg6auPW6XF1a5W10elYx6W0MaLbP3aPYktTrXr0mX/LqhjI0xOv8F8rUXJl
-    m+CCx3AZq3TzeBvltaEQBfoUWTY6LYm9OAxOqDrHYgNL3v9VOvbb9AA+vdHQ
-X-ME-Proxy: <xmx:q2F7atztMqppu2lCJw-ae59-79OYTIhf_9RyZUK_28A5frxI4jADzw>
-    <xmx:q2F7ao60tNlXmCbxPM9_Vtf4u2b_FNL1_oEvj80sP9fbOVH7gyrr4A>
-    <xmx:q2F7apcLuELBIZJX3JNKD7FIGWcg6-VMv9HSb2EfWQYrubi0zhIlPw>
-    <xmx:q2F7at7pehO2MMvoObvrQcmAnnV-vM28a5gSPy_0kgEBunY_22OfOw>
-    <xmx:rGF7ajAHefbo5jnothnc_kPjagUMcTa_3pOxoBH00iCr7EwKCl7HBwFz>
+    y1vjaaTNNEiBF07QqH8YbZg0fsVTsE2lSAku2XiqZRlB3GAWdGnDFC/NxQNHJZjZwh0bM3
+    cLQaepUv4mccOXTYHSJClVmCRVjSn+gHGZSrZSr9AIOtFX696ePpwSJ3GivOeqzsZkLmTk
+    yyYQq6X2LYjRyPVZRsKI2XFbuaBY59zZqLm0Ubjaf2Up6v/CUhpiejbTg9OndalmiNo1NB
+    TgyZExpcvXKCRncIx0T/h5V17Yq+BBkt1Lp9C6cm0M6/7WFjIX6uj79fa7WzCqocBHAItx
+    lYJGO4yn0BYCEOUjuH4msbchVi4ZaVb/zXzuqFPnUz6EFLEG1rjqsToNrsNvdQ0zdS7Ksc
+    iAXcKrD3AR2kiGeCuPM2c70LXnp+ct6Uu0ATWnPyvkCwQAMtKo2ec5wQGj0w
+X-ME-Proxy: <xmx:tGF7asL5qDC481n5yJUehDCZHwRaJL4UwVQrDFm98jQ0hiVJMLyalw>
+    <xmx:tGF7ai30rrImeq9T90IIpB94BB1urAX1qiXxvs9BhUZjke5_4nNXEA>
+    <xmx:tGF7am4zJuXzY0djzripvWMbDrNrupcdCQQZTxKukPDBk7oCLv2Crg>
+    <xmx:tGF7aqDX5cdfqklMb2Ex7760XSkgmpeDBXmZI4o_6ZxqlfsL1Bb5ug>
+    <xmx:tGF7aroe6voaYG2F9rSNjt3fN3R27pPqoKVo5MIMqwC34HAnQgRdkqhC>
 Feedback-ID: i60a14417:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 11 Aug 2026 13:53:41 -0400 (EDT)
+ 11 Aug 2026 13:53:50 -0400 (EDT)
 From: =?utf-8?q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>
-Date: Tue, 11 Aug 2026 19:52:54 +0200
-Subject: [PATCH v2 05/13] security/keys: wipe key payloads before kdump
+Date: Tue, 11 Aug 2026 19:52:55 +0200
+Subject: [PATCH v2 06/13] security/keys: implement wipe op for user-type
+ keys
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260811-crash-zeroize-rework-v2-5-9561d13c2340@jaseg.de>
+Message-Id: <20260811-crash-zeroize-rework-v2-6-9561d13c2340@jaseg.de>
 References: <20260811-crash-zeroize-rework-v2-0-9561d13c2340@jaseg.de>
 In-Reply-To: <20260811-crash-zeroize-rework-v2-0-9561d13c2340@jaseg.de>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -150,14 +151,14 @@ Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-fsdevel@vger.kernel.org, dm-devel@lists.linux.dev, 
  =?utf-8?q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>
 X-Mailer: b4 0.15.2
-X-Stat-Signature: o17nws7bxp5m7sx6zjiduwgz68b5oain
-X-Rspamd-Queue-Id: D2EF540011
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786470830-848947
-X-HE-Meta: U2FsdGVkX1+5UCAI7vTJrCopXkdnGejfYj/8W8tQeyWOJOEycMLSSAfRx9H9dk9ck6lQo1Kl+KxNmG23YrpxORc/2TpNDQdPbWZh1D8DvPKVhVSU33dyT4h7lnkzxjRPONYbEsKjjE80EZ5720H26ga/8dsXT+VwDuClEWdabdUWJddHiMoY5DxDDq8yCN6vU9+ASM9kIhJji7yrekQe/U1R2Qx0WBdj1AT8arxmvaCZQRlTSfWzSkLKyCshTts7Vkv8MSen+PJnOHHoz2f12qoPwWX1KB9BlzIhbo2QEUjh2j/WE0TxHrBh3sjb3nXqNVq6loO88KwJt4WXSXvU8JIdgAUXa/8QnBZCjse6oXKVGieQaFTGwgyBf4eITlLcKHF0aSyYrp0I34uSkeNt/mVz2K8mTESpyDyaG8IbtSR73zJB+gjEB+MLt4bCUV3pT3fe9Sm7pU5LunmuahW2k5b3FJEy6bm6h1g6Mpx66kX/gK03LVQBcnsicTMcMV2i6KiWsY+M55ObMp+qPCJYWB3LyBiEbKk6MBp4mK7xcMg2eL/wQrklqnZ9fcBRJQrb2AVzAcly5wm7m2EO2rnXQJy6przg1vQmhn4CVaem4iSE8ofSMZITVEWQAWI784AOBr+OsNMm9KYrJpwti6tYitdEacgdQ7LNr2jHXDNfBhw2ij3yTPm+5Kipq3TlZQK8nyNU7OsWga6dfy2BCbQf4PWrCF0Dn9jafNq87IFJ9enLhCGPa3vtqXGWWBTGlrtbm+AOCrr3MgQEMlZzBHBZTYDNJKSg35Gm2XT12cJnv3c2cSAtfDaKADgiUPEkv/sfoBVi8gIZYMQYqaSl0sBbFeqegdi1JK2rp3h/qvqVoqpSPqz0oii5lpsjtqI41ItSEQyqhkTQudm0Lp6A48KJOdF/ZCLoRbV4eQoDDS2gAmnkK1DdPRYwo8NZ+4vbHX9YdGLscmMtTZld1MuDVyX
- k8VoG7Kq
- JDAhJ/Y1hA89UKPDa5iS+7sa0IYR33HOVjS/g2CjNtyEXiYCAgXPtC//gq7I8opVJxArUNQfKS2UGOJhGXGw3aqWrq9SwtHeG1y/lSbw70OByZnKra9I7SEZ/lNqSD+NUP8tcyRgrfV77IrWVrv1JKK0XMAXmch/5l1teyA/oMa9qju95G7qN7wW+VJ5j9FXfYwDaItkfaRoRJN3kl3PJVgMNhVNeXKkSLlbdtoD37E20htCpnRBOGl412e9Lph3s0QptCOvw5VG+qxJgjEEirrr7cE+3ABdkMIGZpKchkCD06futGyMPYHXUG3CbPl6V0FxoIn+b3kHRE0SOn8FJuDyXD1LfaWv7qFFnfkWx6M55LsmRFXooKQltjM7SX9HBOcyGkv3LB9pj7dl7FWylu7gTDtezPVIdVrSAwlxfRO7r2I+Y5/ki8C9DirD/a7RhMiYz
+X-Stat-Signature: xfpnpikbb6sgfnptn46bjrfjepahdrim
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0C2ED140004
+X-HE-Tag: 1786470838-298446
+X-HE-Meta: U2FsdGVkX1+y3h2jkStCFnCbRZbu9ngBHmWPcmHB44RXKkO0KevJHTzhREYJS9F6PE25bAGqpLu3NEYni2DiMMyBJ+8UaN4V87xVnhF6HPW2Ox1DTRY0IqQyxmUDgroB043L6ukDWTZ6h5DLqZz+l9bZMUacffiN5lGn0WR0zRzySeId5AFJxi4N/Roo8+jR3bSZggiUmBxhssECBGbUzIGSbZzwF0b5ZagsD7AQoLnenesG2GwmKo9be0UjmcbzLqEMy6bLteeMrjrKqXChb7tYcaVCUVvYaTFp0U3/JP6r4783ctW4fkGPZkTqnA5OjHFAkUsLcaLBJAFfdCUnu6K+1XR715iOoBr/5KLhjZAekTAzGgYGMnTqvY96Whfe05XLnucOX2CPArHZqPw8jJQm2R0DATw8OYNljSehMR4x6BV5I2jWsadK2ZgNX8WzAC2CK1rmumGnDo5+r7iO8htM/YxOBJ33osqyBN8nBzh5GFAEKhwTdu7NjY0tBScgtMw/qZ/BdpygtFuEHbjVNwk980k2G9m2NTTGoS+B6C11x3eNj7A2vsRekLk+32s0D/+UfhKc2S1gZRnJgtuSl5Zr2vggJOn2D/h7jixhxSBEsQWqD37t4bsAxBv6WmLyKXUtNRXlIeay/GVJFCjtU48SCvYo23+n1QkSqquW0zY6cIPWBgYcPaH9hmzHQ31xQIgZV53IJjMK1SyUNmuzsJdeGNHjaTPHHokCumVK/Z7X23aL8EC1XBv9vA7vLN1X74SdUTNioXvV/YlgKGeTN7lAlrFSEub9GCYYvNmmCJn8/fMTGn8BqRn/ozMs27lqBXlovY2Sl+7xW5a/Q2O0tcvgLcLm/YFDT82qYuSrUico6Q1kCyk/VXLnHqdUDZUIYWPX0GWcjU4LhSB7/KN1AvWWtqlnf5uqMjWWYCV4ArdSiHi1PEVNRvh0zztUiVHgIvtxB5KZvMMIV5j+JIP
+ 0SfASndL
+ vfvlgEiYwjYINPmizM+luN0RQE6RgZm1FilU5HuH3Td9d+OXEAHoh0MxgwKWF5lNFvA9Dqb2csqA3jcPzB0oPjAFSGmYYqVp/PgtzvlEGzbMoLv0/9tAvwQ2IjUszq3SZznjLR05T89KIWyantbXRXzzDDFTi7AvgUBuc1Y8hOmAThnEpm410VBkiAWqKHO6y7gUMFRMiSaqNuXCNDASxarJfRR13zf2CjW075V/2ucJn6m390UHfjqHg9whhk9uIXbubBi1OCNCxTE+px9EzrIcJLUBD3OMR4Xxb0SbwyPCiCrNYhcmou+ghviR4F83T5GLBKWwSGsezc5Q8Q/kivA2Y87Tq2Zm1IENUyezeKSTj6nQyuLvohluJvn83WNUFvC7LXyv2ferqrdk++0J/HOXIv/ykjJdpydu5mPrm5PhnVk0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,130 +166,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When CONFIG_CRASH_WIPE_SECRETS is set, try to erase key payloads on
-panic before jumping to the kdump kernel.
+Wipe the payload of "user" and "logon" keys, and of the key types reusing
+the user-type ops: s390 cert_store, NVMe TLS PSK, NFS idmap and PKCS#7.
 
-CRASH_WIPE_SECRETS notifiers run during panic() with other CPUs stopped
-and preemption disabled. In this state, we can't rely on free()'ing
-being safe, so we define a new `wipe` key op.
+Used by CONFIG_CRASH_WIPE_SECRETS.
 
 Signed-off-by: Jan Sebastian Götte <linux@jaseg.de>
 ---
- Documentation/security/keys/core.rst | 13 +++++++++++
- include/linux/key-type.h             |  9 ++++++++
- security/keys/key.c                  | 43 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 65 insertions(+)
+ crypto/asymmetric_keys/pkcs7_key_type.c |  1 +
+ drivers/nvme/common/keyring.c           |  1 +
+ fs/nfs/nfs4idmap.c                      |  2 ++
+ include/keys/user-type.h                |  1 +
+ security/keys/user_defined.c            | 15 +++++++++++++++
+ 5 files changed, 20 insertions(+)
 
-diff --git a/Documentation/security/keys/core.rst b/Documentation/security/keys/core.rst
-index 326b8a973828..35cb00a87c46 100644
---- a/Documentation/security/keys/core.rst
-+++ b/Documentation/security/keys/core.rst
-@@ -1596,6 +1596,19 @@ The structure has a number of fields, some of which are mandatory:
-      It is not safe to sleep in this method; the caller may hold spinlocks.
+diff --git a/crypto/asymmetric_keys/pkcs7_key_type.c b/crypto/asymmetric_keys/pkcs7_key_type.c
+index b930d3bbf1af..663a246742f7 100644
+--- a/crypto/asymmetric_keys/pkcs7_key_type.c
++++ b/crypto/asymmetric_keys/pkcs7_key_type.c
+@@ -74,6 +74,7 @@ static struct key_type key_type_pkcs7 = {
+ 	.instantiate		= generic_key_instantiate,
+ 	.revoke			= user_revoke,
+ 	.destroy		= user_destroy,
++	.wipe			= user_wipe,
+ 	.describe		= user_describe,
+ 	.read			= user_read,
+ };
+diff --git a/drivers/nvme/common/keyring.c b/drivers/nvme/common/keyring.c
+index 32d16c53133b..33303f035fb1 100644
+--- a/drivers/nvme/common/keyring.c
++++ b/drivers/nvme/common/keyring.c
+@@ -84,6 +84,7 @@ static struct key_type nvme_tls_psk_key_type = {
+ 	.instantiate    = generic_key_instantiate,
+ 	.revoke         = user_revoke,
+ 	.destroy        = user_destroy,
++	.wipe		= user_wipe,
+ 	.describe       = nvme_tls_psk_describe,
+ 	.read           = user_read,
+ };
+diff --git a/fs/nfs/nfs4idmap.c b/fs/nfs/nfs4idmap.c
+index bc397110d977..26f579ae2c73 100644
+--- a/fs/nfs/nfs4idmap.c
++++ b/fs/nfs/nfs4idmap.c
+@@ -190,6 +190,7 @@ static struct key_type key_type_id_resolver = {
+ 	.instantiate	= generic_key_instantiate,
+ 	.revoke		= user_revoke,
+ 	.destroy	= user_destroy,
++	.wipe		= user_wipe,
+ 	.describe	= user_describe,
+ 	.read		= user_read,
+ };
+@@ -412,6 +413,7 @@ static struct key_type key_type_id_resolver_legacy = {
+ 	.instantiate	= generic_key_instantiate,
+ 	.revoke		= user_revoke,
+ 	.destroy	= user_destroy,
++	.wipe		= user_wipe,
+ 	.describe	= user_describe,
+ 	.read		= user_read,
+ 	.request_key	= nfs_idmap_legacy_upcall,
+diff --git a/include/keys/user-type.h b/include/keys/user-type.h
+index 386c31432789..685fa054b0ac 100644
+--- a/include/keys/user-type.h
++++ b/include/keys/user-type.h
+@@ -40,6 +40,7 @@ extern void user_free_preparse(struct key_preparsed_payload *prep);
+ extern int user_update(struct key *key, struct key_preparsed_payload *prep);
+ extern void user_revoke(struct key *key);
+ extern void user_destroy(struct key *key);
++extern void user_wipe(struct key *key);
+ extern void user_describe(const struct key *user, struct seq_file *m);
+ extern long user_read(const struct key *key, char *buffer, size_t buflen);
  
+diff --git a/security/keys/user_defined.c b/security/keys/user_defined.c
+index 6f88b507f927..f4897c19c2dd 100644
+--- a/security/keys/user_defined.c
++++ b/security/keys/user_defined.c
+@@ -6,6 +6,7 @@
+  */
  
-+  *  ``void (*wipe)(struct key *key);``
-+
-+     This method is optional. It is called from the panic path when
-+     CONFIG_CRASH_WIPE_SECRETS is enabled, to erase the key material from
-+     memory before the kdump kernel is started, so that it does not end up in
-+     the crash dump. Unlike destroy(), it must only clear the payload, not
-+     free it.
-+
-+     This method is called with all other CPUs stopped and preemption
-+     disabled, and only for positively instantiated keys. It must not sleep,
-+     allocate, free or take locks, as they will never be released.
-+
-+
-   *  ``void (*describe)(const struct key *key, struct seq_file *p);``
- 
-      This method is optional. It is called during /proc/keys reading to
-diff --git a/include/linux/key-type.h b/include/linux/key-type.h
-index bb97bd3e5af4..21e07db0c5f2 100644
---- a/include/linux/key-type.h
-+++ b/include/linux/key-type.h
-@@ -122,6 +122,15 @@ struct key_type {
- 	/* clear the data from a key (optional) */
- 	void (*destroy)(struct key *key);
- 
-+	/* wipe the key material without free'ing (optional)
-+	 * - used from CONFIG_CRASH_WIPE_SECRETS during panic to keep keys out
-+	 *   of crash dumps
-+	 * - called from the panic path with other CPUs stopped and preemption
-+	 *   disabled
-+	 * - must not sleep, allocate, free or take locks
-+	 */
-+	void (*wipe)(struct key *key);
-+
- 	/* describe a key */
- 	void (*describe)(const struct key *key, struct seq_file *p);
- 
-diff --git a/security/keys/key.c b/security/keys/key.c
-index b34a64d81d47..213e6f1d5d83 100644
---- a/security/keys/key.c
-+++ b/security/keys/key.c
-@@ -12,6 +12,7 @@
- #include <linux/slab.h>
- #include <linux/security.h>
- #include <linux/workqueue.h>
+ #include <linux/export.h>
 +#include <linux/crash_core.h>
- #include <linux/random.h>
- #include <linux/err.h>
- #include "internal.h"
-@@ -1268,6 +1269,47 @@ void unregister_key_type(struct key_type *ktype)
- }
- EXPORT_SYMBOL(unregister_key_type);
+ #include <linux/init.h>
+ #include <linux/slab.h>
+ #include <linux/seq_file.h>
+@@ -28,6 +29,7 @@ struct key_type key_type_user = {
+ 	.update			= user_update,
+ 	.revoke			= user_revoke,
+ 	.destroy		= user_destroy,
++	.wipe			= user_wipe,
+ 	.describe		= user_describe,
+ 	.read			= user_read,
+ };
+@@ -48,6 +50,7 @@ struct key_type key_type_logon = {
+ 	.update			= user_update,
+ 	.revoke			= user_revoke,
+ 	.destroy		= user_destroy,
++	.wipe			= user_wipe,
+ 	.describe		= user_describe,
+ 	.vet_description	= logon_vet_description,
+ };
+@@ -152,6 +155,18 @@ void user_destroy(struct key *key)
  
-+/* Called far into vpanic from crash_core.c with other CPUs stopped and
-+ * preemption disabled
-+ */
-+static int key_crash_wipe(struct notifier_block *nb, unsigned long action,
-+		void *data)
+ EXPORT_SYMBOL_GPL(user_destroy);
+ 
++void user_wipe(struct key *key)
 +{
-+	struct rb_node *node;
++	struct user_key_payload *upayload = key->payload.data[0];
 +
-+	/* If we can't acquire the lock, the rbtree might be in an inconsistent
-+	 * state. That's all we can do then, as there's no point to waiting
-+	 * at this stage.
-+	 */
-+	if (!spin_trylock(&key_serial_lock)) {
-+		pr_crit("crash_wipe_secrets: can't acquire key_serial_lock. skipping keyrings.\n");
-+		return NOTIFY_DONE;
-+	}
-+
-+	for (node = rb_first(&key_serial_tree); node; node = rb_next(node)) {
-+		struct key *key = rb_entry(node, struct key, serial_node);
-+
-+		/* Negatively instantiated keys have key->state < 0 and never
-+		 * had a payload attached, so only wipe positive ones.
-+		 */
-+		if (key->type == &key_type_keyring || !key_is_positive(key))
-+			continue;
-+
-+		/* We have a dedicated wipe callback for this since free'ing
-+		 * isn't safe at this point
-+		 */
-+		if (key->type->wipe)
-+			key->type->wipe(key);
-+	}
-+	spin_unlock(&key_serial_lock);
-+	/* off to kexec()! */
-+	return NOTIFY_DONE;
++	if (upayload)
++		crash_wipe_memzero(upayload->data, upayload->datalen);
++	key->payload.data[1] = NULL;
++	key->payload.data[2] = NULL;
++	key->payload.data[3] = NULL;
 +}
-+
-+static struct notifier_block key_crash_wipe_nb = {
-+	.notifier_call = key_crash_wipe
-+};
++EXPORT_SYMBOL_GPL(user_wipe);
 +
  /*
-  * Initialise the key management state.
+  * describe the user key
   */
-@@ -1290,4 +1332,5 @@ void __init key_init(void)
- 
- 	rb_insert_color(&root_key_user.node,
- 			&key_user_tree);
-+	crash_wipe_secrets_register(&key_crash_wipe_nb);
- }
 
 -- 
 2.53.0
