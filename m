@@ -4,92 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F3F8C5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 11:45:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F075C5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 11:46:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09C4A6B0174; Wed, 12 Aug 2026 07:45:06 -0400 (EDT)
+	id 1FF006B00D7; Wed, 12 Aug 2026 07:46:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04D676B0175; Wed, 12 Aug 2026 07:45:06 -0400 (EDT)
+	id 188AA6B00DA; Wed, 12 Aug 2026 07:46:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA67D6B0176; Wed, 12 Aug 2026 07:45:05 -0400 (EDT)
+	id 050586B00DB; Wed, 12 Aug 2026 07:46:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C8E366B0174
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:45:05 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 643D5A2189
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:45:05 +0000 (UTC)
-X-FDA: 85092436170.27.F90685F
-Received: from mta1.migadu.com (out-96.mta1.migadu.com [95.215.58.96])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1C7404000D
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:45:02 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Whc9hjyv;
-	spf=pass (imf07.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.96 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CCDC96B00D7
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:46:25 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6256FA01AE
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:46:25 +0000 (UTC)
+X-FDA: 85092439530.07.FCFA696
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 55C5C120002
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:46:23 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tMsqib6R;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MR7iuXqS;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=orB4stpy;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zZDwUFpd;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786535103;
+	s=arc-20220608; t=1786535183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=awLAirVT4o54D5QHWR7PPvKWFAWXMSXCaLME1biIOnI=;
-	b=oH4x3RMf48iq7rXtZVS4Lt/EHPxxiRh/P2Dul4MZR60IammHyzX/CPV57M5tVA498d87vD
-	wEOgPors7BxHr3tu91IaBb3zNu7D9azkjcDZVuZcvUQhGUWPQ2jPAUSLoY2WPs1Z1KxFEz
-	oQXInwDnD4/QRSe/YmaC0LVdTO3ZZ80=
+	bh=4fUx2zvms+OpIRDy5HIRpqYJ3/My2Mv1XMvMmiX+J8I=;
+	b=2VRoBZHUqzTfWDCpJskg5t7DNJJTIhWDBptDntAZR+dhWSXlgcpDPldnaiq8WCF8A8ce4f
+	m8EK95/PTZMgF3BkfA/Nas9W57U83EDowiD8Aoj222bIeQmKyNLmAxLva7VSjKJj35Ul7k
+	KH2KCVzuRJNrPszGbMcxSBxk4vqIPhA=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Whc9hjyv;
-	spf=pass (imf07.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.96 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tMsqib6R;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MR7iuXqS;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=orB4stpy;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zZDwUFpd;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786535103;
-	b=OE5WETGdazhDQvW5oVQSEqMlhk8zV+eNOl+CmDupElfkTKrZIo1XftLisnPC3oY4lFnNuE
-	i+doAZOfuEXPNGgOBcR0PFbiuIqyRKP4PhoKUEOSeC6P0dptaemY4iZTncll3+Bx2jYIqE
-	0FTalnSIc0hNtL4JYfXDHOR6oX/b7AI=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=OeJXuVy3ZiqMCZp1FFMcdF8rNLBZd0geSn/rRWorVVs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786535101; v=1; x=1787139901;
- b=Whc9hjyvjWXoDATryBpBZNIVPy098CX5Qkf6kIq24ywjwXBIAz6lEYsEC/FztPgW/18OtxaK
- cIa6Fgdr56BRwgS2OSlAoxbBvTyIX+gi57v+IOL24+yw6bx7YfkjCK1yx13m4SLjcThSLRVWFN6
- vpwr1Z4iToHvckgALPF9dbCs=
-X-Envelope-To: linux-mm@kvack.org
-Received: from [10.63.123.245] (14.29.108.90)
-	by smtp.migadu.com with ESMTPS id c332a69d1f0206ed;
-	Wed, 12 Aug 2026 11:45:00 +0000
-Message-ID: <f83cbc30-ddc0-4c2b-a01e-4ba890df44ae@linux.dev>
-Date: Wed, 12 Aug 2026 19:44:54 +0800
+	t=1786535183;
+	b=Ei9Rbio0GJg43WQlLg+lPu3+bseIS9N8/doQvX7kBb/fR+QRrlGC/3hVb4ODnU/QhQWKG+
+	eQN0aoD6JTpIG9A6XLF7Kfag33pxM4ARQNDIt+a9aRBip5Cx6WhIpO1E9qZ35SMMFTCGxy
+	d79KBEK/993E9VffK9WY3buGqCxLhxY=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C2AB6822AA;
+	Wed, 12 Aug 2026 11:46:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1786535177; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4fUx2zvms+OpIRDy5HIRpqYJ3/My2Mv1XMvMmiX+J8I=;
+	b=tMsqib6RmoZkk3Fm5B6AWIjHa2Lx4UAbKi9bqOwW3em+d7uQzskBRRF7xJmcrzoTohmJ2i
+	vYV5W+rdTLQiGFfAh2xfL+K7Rd8CMQzunmafGerid9n2j9YtJACRVhx1Ox+V9I62wQs3Wq
+	3WjflYLgf7UWffEW+qFKh7cbDgk9mAE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1786535177;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4fUx2zvms+OpIRDy5HIRpqYJ3/My2Mv1XMvMmiX+J8I=;
+	b=MR7iuXqSIJQx5/oXWxV/aQyZ4sIKS0CcvvPPi1W1rRK+QPBzWFwhz5H5Tzfdcy5a9UzaUs
+	bwygh7ZbUl52ZcAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1786535173; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4fUx2zvms+OpIRDy5HIRpqYJ3/My2Mv1XMvMmiX+J8I=;
+	b=orB4stpyATSV447DU1enA22k6eamKgRKWo3oEis/EYYmK09OYTpIbQsY/tujfroUbrTdeu
+	AJ5MQGm9/FySDKpoPfNRqOPD+ARqds/vsZRjWdjhPZ3geJCLynA5w5LpCHvCYvR3Bh8hyg
+	wk84DwKSsTlk+5bpAOxUU7aykEyPC5g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1786535173;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4fUx2zvms+OpIRDy5HIRpqYJ3/My2Mv1XMvMmiX+J8I=;
+	b=zZDwUFpdaA1fbsWbteSSpBGfBMJoLQfE1xJTR4iZeLzXl18VgvoX6e9qkpAzLkLZgFmosT
+	FAk1fpkzfEnhJCCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B1360779B1;
+	Wed, 12 Aug 2026 11:46:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id i/LyJwNdfGoXfwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 12 Aug 2026 11:46:11 +0000
+Date: Wed, 12 Aug 2026 12:46:09 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Steffen Dirkwinkel <lists@steffen.cc>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "Denis V. Lunev" <den@openvz.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>, 
+	Borislav Petkov <bp@alien8.de>, David CARLIER <devnexen@gmail.com>, 
+	David Hildenbrand <david@kernel.org>, Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Juergen Gross <jgross@suse.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Toshi Kani <toshi.kani@hpe.com>, Vishal Moola <vishal.moola@gmail.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org, x86@kernel.org, 
+	syzbot@syzkaller.appspotmail.com, Jiri Slaby <jirislaby@kernel.org>
+Subject: Re: [PATCH 0/5] x86/mm/pat: CPA fixes
+Message-ID: <anxbSdxDlyq__-T1@pedro-suse.lan>
+References: <20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org>
+ <555ea1d43a12c30a8f1eaf10c899b3790d728f33.camel@dirkwinkel.cc>
+ <anCK3eWFMwZqq5ka@pedro-suse>
+ <anXvODEvV4f_Taj7@lucifer>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] mm, memcg: fix memory.peak reset clobbering other
- fds' watermark
-From: Ridong Chen <ridong.chen@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Tejun Heo <tj@kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
- <mkoutny@suse.com>, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, cui.tao@linux.dev,
- Ridong Chen <chenridong@xiaomi.com>
-References: <20260807090000.1532495-1-ridong.chen@linux.dev>
- <20260807132241.147c758d2904e00daf28ba4e@linux-foundation.org>
- <a318c942-0776-4678-a9cd-504e713d25f5@linux.dev>
-In-Reply-To: <a318c942-0776-4678-a9cd-504e713d25f5@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1C7404000D
-X-Stat-Signature: 7no1pkyctcf1r66efkucp7b43s6ich58
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <anXvODEvV4f_Taj7@lucifer>
+X-Stat-Signature: 4wdfho11axynjy8tm1g6m514raprt6py
+X-Rspamd-Queue-Id: 55C5C120002
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1786535102-293375
-X-HE-Meta: U2FsdGVkX18nsF/8aVnzywslpklVwfNv1LxlfXPOkRNEfBa7Ho7DBw0kIADt+VLzAIYbBDcO47e8czuN3am41Do9iGgUv2PLK6xD7RudwydKSFO0QECNG9FWX9nVjk4ViTSNOdiapCuoiliTgeJjKHmt90n5X25e352eqa5ABSfZm7zNL1sEGc69gRB5arUsxeCoqUlfCBg2eZ9c/KXS4Ccth63KmMQkNjbeYylpZutprsFzIv0lDql8XynLt8YgQcHDPKxFJ2vxRZvIorJfRE/kNnx9P7LeqYm34qdiIDVNGV7EKcjlSz5snzNZJHczFZs7bCK91xQmh+QDYm0dyI/E09xcCzbCBAZJeSFFBcKtsWtpBOXN/0vO4WUfxJq+1XSZ5EQWSgMt9CMkt2danv/4/Q3u41I4QvLRm02S8YYO3fElwGl4oyvNjOjANllo4mO6Mpm1d1MGWiyPsTPQTCCVOEfhNU4I3GsQWnSjxu2ivI12E7znFMPQD3rULrEw/PN/P1Eg5t0b46xRQjeepwnPmwmMni/MfPwuhQc2numw860FSkHidqeJQZeAK1hx4wV7sK1Z3fHMdnXGG2Qed2vWqZomrIMaNOA2llWpA1+Y/TjNe7PFBDxF+2BL1ekpct33O1HIycm7D2WUnXpqf9pKJnYMzrhcOGwXz4JYDdJ5GsU20BCcK9ewpY5GoSd+tW+QFwlg5iYsC9lDrrqGTUuks2LICDNn1tymGSUQrBde3OPSTgc07adHKpm+SeA1ALA9JCJ8WGgSsjGJpsClr36h6tbhIxOLF8ww0kLr6chvwIAfDF1cWAslilL/9R+V8aJh90/ZQucIzVH8b7kqmrwlWthIzOd7AbuIyKPCm8VG/xJChsCy4rcj8riBXb6XKxLQWynmTrv9dDIlZioNb0PqKc2cSDSG24KRSxAMoMIuLOOGSGXvc0B9L0nkIdUdIF0IejKEtorw7Rgb1DB
- WU+CoSAT
- kqpHOvq8l+/Rf3nrklIK9jp3hYRSEqYIXdkYwh+XPchkwsi87Sx007/JOBvlFOWtSAf2mkuajLAJ35/GttL/8ocz3rktytUwDkcyGuGmAi8JCNAP4O8FXa+tWTuomPcsyJhb9EA5YeHY7w9pqr8cUvmWVFLkuWMP8WaainQBkl4qzBh5v5G/jsFdnzvo2JfOflxoyBE1pgkkA30lS6tmbQHQ8n2hjr9dsEe3R7vezNKAzf/YfGM7i9ub2TildCYkB2Mu4oR1VzW6qGf7SWreRZbHdJe6NRO9PD1qnlH3bipQgr7RcI9QBtcrokchHA7PF9DONlsLHbWZw2CSykF26rx2aDl5NLRmZpRn6YnEPJ8YN0EE=
+X-HE-Tag: 1786535183-151378
+X-HE-Meta: U2FsdGVkX1/kQtJHYCwPK6qqQ7J1THkG9dHt3qsd/8ZWHOrqILg8nEM/T30iSCcpmldLR673EXn/nAczToEJcqo+3kGTDhSS1bi1MMp697K0M4gjnGKOuwbVcl305ss9of6y1hocXoYfvf0mdGlYOra7tlbn8kZ9qg3ftgDsBlgIAyXCVCNQM3pLaiJdZRGyqE73HGhR/RtOOTxCyfviGVwQDNJ7ODit3zcXU56SeyvnE37scPhyw5BTaQBMo99u9aG/KAPeKtHj7XHQvywqOWW0iJ7Fs10Wr8k1molsoD0dwAFMJEAV3Asdriq9pSYDjyAtm0EW7jLcNUotetZpQABKu4PRvR2LZkCZswNb50WPOgxx/4g6II3uE2/+fOBRfYeoQM6lwu80fVlZMJw1w1l7zPuo8Tly1Pd3a8Lf9YAaHGrLEIA9GoVDUycwLdLsd5XEOCGCQXcOvHuHjxARTxcrkRyMFSJpAr1sfnNAosZml9pm+dX5tveKVEmpLDg6N/tNkrRvzlpjJ2EV15FiPwDS01PyU6KUVHXPJhY1FZnmLj7lcMfvivuJT4dAQojiYl0dYROXLRIHymoxFc2EreXvkDtpAp4ZizkL6MeS3bz0eXIgUiEUXNVv41jMU0SUti/SOpOmL91ashobLVm+hVW5MZ3Fsb//dQj7m3Lxh6D8zd521IAPfnDVtT0zeD2Wsf5PRYkgT5SOoZ/eI0byNbaKrbkS6eFvUdo2wOolyAVa6EljVSOfE2Rxi9GDZAcBotAG3Rty/GQY5zoO58KghGzSRZit/459Olnympkb01N0UkPFvylLYUK3O1TTZ8VxMWc4lMsyHBu+EqPsMabUuX8zmv1HTyRiSdcyVr1gdQ8aWJN4o9cfQ5OGwlNlgIJ5od7m1YX9Me0VN47A/kZix6KlAoujHjPA+oKIbrzxLsQg9IZC3RJnZZmeyK9kZaZ0RDNgil/ixsCrEPJM9XG
+ hkJ8Z7Hq
+ h9y2avnG5gwR83bsgZAWlH2Xddv6oewIrcPI7dwYbYUl5Pjjv+XN+G9V77Fkm1uhRcRWOx21tatOl1qCQDPOUd6Gd0L5iINL955VDiBNAnAPdtMfiJ0xKLRWkxvloPzluDQyGWxZG1a2IfTPezusaEshHr+fVpjLKFjSOlRZFilMREkdgQ3HUo2g/GenzaUJMe5yL6BPYq3jvTpn3mSVylV/Y3SzsyNdOtnRXUv1FFVRcGWS3+zEYymvV3AI8T+x+ryHJJwu0OqZEG1jiqzDMrkTpKpHQq4e07Uw5REyZkHu76s77ePk9eRFWaxf9TwEFA9dzcfvTHibX5x00dO1EamJBBsxynyTPBwMK/8AUOCxDgxmQ/Uq1SmBttHmfjaa4m3WB/NKjcHWtJc+g/Vl5JlOHvCpRmJjh7Byx4rJu/gKnZBM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,53 +145,216 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Aug 07, 2026 at 04:36:08PM +0100, Lorenzo Stoakes (ARM) wrote:
+> Thanks,
+> 
+> If Mike's going to respin worth examining this.
 
+Thanks for taking a look!
 
-On 8/10/2026 10:58 AM, Ridong Chen wrote:
 > 
+> Let me paste in the attached patch to make life easier:
 > 
-> On 8/8/2026 4:22 AM, Andrew Morton wrote:
->> On Fri,  7 Aug 2026 16:59:58 +0800 Ridong <ridong.chen@linux.dev> wrote:
->>
->>> Two fixes for the per-fd memory.peak / memory.swap.peak handlers added in
->>> c6f53ed8f213. Each open fd reads back max(its own value, the shared
->>> local_watermark), and both bugs live in that scheme.
->>
->> Thanks.
->>
->> We're missing the preferred description of the worst-case
->> userspace-visible effects of the bug.  It appears they're quite minor
->> so I'll assume this series is a post-7.2 thing.
->>
+> >From time to time, the following BUG can be observed[0]:
+> >
+> >> kernel BUG at arch/x86/kernel/alternative.c:2576!
+> >> Oops: invalid opcode: 0000 [#1] SMP NOPTI
+> >> CPU: 0 UID: 0 PID: 355 Comm: (udev-worker) Not tainted 7.1.3-1-default #1 PREEMPT(full) openSUSE Tumbleweed  8c1795b03ec64f997e57a8ad38b1161e3b98da64
+> >> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS unknown 02/02/2022
+> >> RIP: 0010:__text_poke+0x2aa/0x450
+> >> Call Trace:
+> >>  <TASK>
+> >>  smp_text_poke_batch_finish+0x2a7/0x320
+> >>  __static_call_transform+0xb7/0x220
+> >>  arch_static_call_transform+0x5b/0xb0
+> >>  __static_call_init+0xe9/0x270
+> >>  static_call_module_notify+0x11f/0x150
+> >>  notifier_call_chain+0x61/0xe0
+> >>  blocking_notifier_call_chain_robust+0x63/0xc0
+> >>  load_module+0x1c92/0x20c0
+> >>  init_module_from_file+0xd8/0x140
+> >>  idempotent_init_module+0x100/0x2f0
+> >>  __x64_sys_finit_module+0x71/0xe0
+> >>  do_syscall_64+0xe1/0x610
+> >>  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> >
+> >which matches the following BUG_ON in alternative.c:
+> >	/*
+> >	 * If something went wrong, crash and burn since recovery paths are not
+> >	 * implemented.
+> >	 */
+> >	BUG_ON(!pages[0] || (cross_page_boundary && !pages[1]));
 > 
-> Agreed, post-7.2 is fine and neither is stable material.
+> Ugh yeah, it seems the CPA code is just teeming with this kind of thing.
 > 
-> Worst case for both: a reader of memory.peak (or memory.swap.peak)
-> gets a value lower than the true peak, so a tool that sizes or bills a
-> cgroup by peak usage under-reports it.
+> >
+> >This can happen if vmalloc_to_page() fails, for any reason. Such can happen
+> >if text poking races with CPA, which can possibly result in the collapsing
+> >of page tables (or breaking of PMD hugepages). It is not a problem for most
+> >users of vmalloc_to_page() (they solely own the vmalloc'd range) but, when
+> >CONFIG_ARCH_HAS_EXECMEM_ROX=y, various modules own a single execmem vmalloc
+> >range, and can call set_memory_*() in parallel on it. This can happen to
+> >race against __text_poke and cause havoc in vmalloc_to_page().
+> >
+> >Fix it by excluding against CPA using the init_mm mmap read lock.
+> >
+> >Fixes: 64f6a4e10c05 ("x86: re-enable EXECMEM_ROX support")
 > 
-> - Patch 1 (reader side, take peaks_lock in peak_show): a reader that
->    races an unrelated reset briefly gets the low value. Transient.
-> 
-> - Patch 2 (writer side, peak_write reset): a reset on one fd stores
->    the current usage into the other watchers instead of the old
->    watermark, dragging every other fd's peak down.
-> 
-> I'll spell this out in both changelogs in v2.
-> 
->> Sashiko might have found a similar race on the writer side:
->>     https://sashiko.dev/#/patchset/20260807090000.1532495-1-ridong.chen@linux.dev
-> 
-> Yes, that's the writer side that patch 2 fixes;
-> 
+> You'd need to somehow state the dependency on commit "x86/mm/pat: acquire
+> init_mm write lock on collapse to avoid UAF" from this series because this
+> depends on that.
 
-Hello everyone,
+Yeah, it's supposed to be queued up on top of the series.
+> 
+> That only goes back to commit 41d88484c71c ("x86/mm/pat: restore large ROX pages
+> after fragmentation") so you'd need to somehow indicate the backport would need
+> to port my change even further back...
 
-I would appreciate a review of this series. Should any feedback come up, I will 
-update both the patch and the cover letter accordingly.
+Hmm, I think this is the correct Fixes:...
+
+> 
+> >Reported-by: Jiri Slaby <jirislaby@kernel.org>
+> >Link: https://bugzilla.opensuse.org/show_bug.cgi?id=1271202 [0]
+> >Reported-by: Steffen Dirkwinkel <lists@steffen.cc>
+> >Link: https://lore.kernel.org/linux-mm/555ea1d43a12c30a8f1eaf10c899b3790d728f33.camel@dirkwinkel.cc/
+> >Cc: stable@vger.kernel.org
+> >Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+> >---
+> > arch/x86/kernel/alternative.c | 8 ++++++++
+> > 1 file changed, 8 insertions(+)
+> >
+> >diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+> >index 62936a3bde19..9071eb870eab 100644
+> >--- a/arch/x86/kernel/alternative.c
+> >+++ b/arch/x86/kernel/alternative.c
+> 
+> Should include cleanup.h.
+> 
+> >@@ -2559,6 +2559,14 @@ static void *__text_poke(text_poke_f func, void *addr, const void *src, size_t l
+> > 	 */
+> > 	BUG_ON(!after_bootmem);
+> >
+> >+	/*
+> >+	 * Exclude against change_page_attr() collapse in execmem ROX regions.
+> >+	 * These are PMD sized and this module may not own the whole PMD,
+> >+	 * thus breakdown/collapse may happen at any moment by concurrent module
+> >+	 * loading, which races with vmalloc_to_page().
+> >+	 */
+> 
+> Worth saying what this pairs with. Right now the comment doesn't really explain
+> why you're taking this lock.
+> 
+> >+	guard(mmap_read_lock)(&init_mm);
+> 
+> This is problematic.
+> 
+> text_poke_kgdb() -> __text_poke() can be called from pretty much any
+> context it seems. It's another debug_pagealloc type situation :)
+> 
+> Claude tells me there's a in_dbg_master() variable you can check to avoid this
+> and all other CPUs are stopped when it does this so it's safe anyway.
+> 
+> >+
+> > 	if (!core_kernel_text((unsigned long)addr)) {
+> > 		pages[0] = vmalloc_to_page(addr);
+> > 		if (cross_page_boundary)
+> >--
+> >2.55.0
+> >
+> 
+> I attach a patch (hand-written :) that addresses all this. Feel free to use it
+
+Artisanal!
+
+> as you like.
+> 
+> Cheers, Lorenzo
+> 
+> ----8<----
+> From 2759f0ea4457e572c2972c7e5a0bbb39f2a9a2e5 Mon Sep 17 00:00:00 2001
+> From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+> Date: Fri, 7 Aug 2026 16:23:40 +0100
+> Subject: [PATCH] fix
+> 
+> ---
+>  arch/x86/kernel/alternative.c | 39 ++++++++++++++++++++++++++++++++---
+>  1 file changed, 36 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+> index 62936a3bde19..cafcac95e90e 100644
+> --- a/arch/x86/kernel/alternative.c
+> +++ b/arch/x86/kernel/alternative.c
+> @@ -6,6 +6,9 @@
+>  #include <linux/vmalloc.h>
+>  #include <linux/memory.h>
+>  #include <linux/execmem.h>
+> +#include <linux/cleanup.h>
+> +#include <linux/kgdb.h>
+> +#include <linux/mmap_lock.h>
+> 
+>  #include <asm/text-patching.h>
+>  #include <asm/insn.h>
+> @@ -2543,6 +2546,30 @@ static void text_poke_memset(void *dst, const void *src, size_t len)
+> 
+>  typedef void text_poke_f(void *dst, const void *src, size_t len);
+> 
+> +static void poke_vmalloc_pages(struct page **pages, void *addr,
+> +			       bool cross_page_boundary)
+> +{
+> +	pages[0] = vmalloc_to_page(addr);
+> +	if (cross_page_boundary)
+> +		pages[1] = vmalloc_to_page(addr + PAGE_SIZE);
+> +}
+> +
+> +static void poke_vmalloc_pages_safe(struct page **pages, void *addr,
+> +				    bool cross_page_boundary)
+> +{
+> +	/*
+> +	 * execmem ROX ranges are shared between modules and can be collapsed to
+> +	 * huge PMD entries, and this collapse can happen concurrently with a
+> +	 * racing set_memory_rox().
+> +	 *
+> +	 * Prevent vmalloc_to_page() from racing by acquiring an init_mm read
+> +	 * lock which pairs with the init_mm write lock in
+> +	 * cpa_collapse_large_pages().
+> +	 */
+> +	guard(mmap_read_lock)(&init_mm);
+> +	poke_vmalloc_pages(pages, addr, cross_page_boundary);
+> +}
+> +
+>  static void *__text_poke(text_poke_f func, void *addr, const void *src, size_t len)
+>  {
+>  	bool cross_page_boundary = offset_in_page(addr) + len > PAGE_SIZE;
+> @@ -2560,9 +2587,15 @@ static void *__text_poke(text_poke_f func, void *addr, const void *src, size_t l
+>  	BUG_ON(!after_bootmem);
+> 
+>  	if (!core_kernel_text((unsigned long)addr)) {
+> -		pages[0] = vmalloc_to_page(addr);
+> -		if (cross_page_boundary)
+> -			pages[1] = vmalloc_to_page(addr + PAGE_SIZE);
+> +		/*
+> +		 * If called from kgdb cannot sleep, but all other CPUs stopped
+> +		 * anyway so safe.
+> +		 */
+> +		if (in_dbg_master())
+> +			poke_vmalloc_pages(pages, addr, cross_page_boundary);
+> +		else
+> +			poke_vmalloc_pages_safe(pages, addr,
+> +						cross_page_boundary);
+>  	} else {
+>  		pages[0] = virt_to_page(addr);
+>  		WARN_ON(!PageReserved(pages[0]));
+
+Hmm, yeah, this looks More Correct(tm), thanks!
+
+(for the record, after this email I tried exploring if we could feasibly
+Just Hold the mmap lock on callers, but it becomes messy quite quickly)
+
+Mike, if you get to queue up my patch then please replace the diff with
+Lorenzo's (with a Co-developed-by:, I guess, since he went to the trouble
+of moving quite a few things around). Otherwise, I'll figure out how to
+re-submit it after your series lands.
 
 -- 
-Best regards
-Ridong
-
+Pedro
 
