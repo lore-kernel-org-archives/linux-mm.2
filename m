@@ -4,115 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43B29C5B572
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 12:22:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D51A8C5B572
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 12:26:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 130426B00DB; Wed, 12 Aug 2026 08:22:47 -0400 (EDT)
+	id B21906B01F7; Wed, 12 Aug 2026 08:26:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E0396B00DC; Wed, 12 Aug 2026 08:22:47 -0400 (EDT)
+	id AD1656B01F8; Wed, 12 Aug 2026 08:26:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F10636B00E0; Wed, 12 Aug 2026 08:22:46 -0400 (EDT)
+	id 9E6B56B01F9; Wed, 12 Aug 2026 08:26:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BB2EA6B00DB
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 08:22:46 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 44D2EA0352
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 12:22:46 +0000 (UTC)
-X-FDA: 85092531132.26.E2FD823
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 424FC14000C
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 12:22:44 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zro8QyHG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 75C866B01F7
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 08:26:27 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 134DD1C0B7A
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 12:26:27 +0000 (UTC)
+X-FDA: 85092540414.12.3105F7E
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4B88F180005
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 12:26:25 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf06.hostedemail.com: domain of 3cGZ8agkbAIk5BCxnyyr4n22vq.t11tyr75r4p106r06.p1z@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3cGZ8agkbAIk5BCxnyyr4n22vq.t11tyr75r4p106r06.p1z@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786537364;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=O8oMuFGY/RWc1R/6w9PRBui77J3o7xvI9nYea/XZIDc=;
-	b=ifLyfBZLIZ32PUlz56rBKGsb+hlgOF5I/YHjra8p7UQ9zdbNGn+qOfXcdRM28XyD6LmI37
-	zzP5zWPNqb2xWm+kbw+IIm2YLhlJkkx2j5v0n7EguA09hyYBP6x64nckO4rHncypPnZb+e
-	JpkAZUg78rVNvoyVkJTcRG1olwK9oGg=
+	s=arc-20220608; t=1786537585;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=KwBwo9L8xQyqtv/i2/6defD8MNdrwToASIU8rpL79rQ=;
+	b=dGOnjeL+hWyU0GS5CLoXqPhlLgvRFyoGKro+R48mNq1MDQmW+35i2v+70jzCZhMtqYOCHF
+	YWE9XAaZsi4cg1BO0Qu3PZLSPhPgZGn6w3y3nTWI6QnEgdrUfAtr1ELUUo+tRInKfcsEw7
+	AY6IE/o4aQEVEqoCW4mgkXFL6SIIt5g=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zro8QyHG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+	imf06.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf06.hostedemail.com: domain of 3cGZ8agkbAIk5BCxnyyr4n22vq.t11tyr75r4p106r06.p1z@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3cGZ8agkbAIk5BCxnyyr4n22vq.t11tyr75r4p106r06.p1z@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786537364;
-	b=tbxaw3GYkq8WkWCNaoFiQYgmT6/YaDbDbUh+1NoZ1LUGKC6Xtw3cbAEACTZIF4ZPcpmzey
-	j+PX3IP209yaGqcAl+Y9MUf7mYeRm+qxDUtGpFr05mb0kc+UZNZH4ARAhOsSrJPXQdZhM4
-	Kuz3qln1HG9vrpFbwzl7tWezVQBTZpM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 70F8641FCF;
-	Wed, 12 Aug 2026 12:22:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 47E49C2BCB9;
-	Wed, 12 Aug 2026 12:22:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1786537363;
-	bh=HVMwfutLbBsXXsWHnvBGp5CQQGmqwVQauY//gtIYMoA=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=Zro8QyHG1rL9hLX9SlK+QAEPmnlsQ9gx0NqL3b8vV0srMjDN7EbRE7fInubO/n6Vj
-	 bcuub0Y4Mtj/hspw70BeQuak2r0pKCSHwBfkFlB+MR4d1xftmdnKGhDIxEro+eLAWd
-	 4hB1f7Z7W/dJ1xl1NQFzfwW7mewOKUPiQV4DIO2so9LFIxwMVJWTl/HxRv1yOe/fYX
-	 s4vR3xQVkTEt1oj1QFETbZa4dC7YWq2AFb+i1E4k96DHY/ldY9lFCpgwU+oe6qJXxG
-	 saEPnqHyZJTBZOA0LFnRDvzfSkNgBImvIEiA6jTLqa+gZ/WK5tKRazehQUUJwR9+aA
-	 Dv4gQvQvksXzQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 21B98C5B572;
-	Wed, 12 Aug 2026 12:22:43 +0000 (UTC)
-From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Wed, 12 Aug 2026 20:22:39 +0800
-Subject: [PATCH v2] mm/mglru: fix and remove redundant unevictable folio
- handling
+	t=1786537585;
+	b=QKOqqjhJ4GgPyANFzsjgO5CH/iyT+kRZBXc5IRdkl9JrjlM7xVUC8ntmHEsTqE+Gx/ZRln
+	iHn597Ym8J6NDS+3ldlJ4W4QsYW8aWY5ufPSnvyldkAUUoUmVqPSCWm59JTV1hl0hgembK
+	X8ewNof1pUcp7RvU9bD5CvPxPRC5PDE=
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-49d4cb3ca23so1150987b6e.3
+        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:26:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786537584; x=1787142384;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=KwBwo9L8xQyqtv/i2/6defD8MNdrwToASIU8rpL79rQ=;
+        b=qBRyfIScBfEIVwznuRuR2fkKrUEQLOp1/7Jhf7uNOkFQC7ZhLFZ1ZExAWygSfj0dXh
+         JEZOglvVRjOU5g1afIdbL0FwDgxVVrS6/SBB2nbRBhmiYGxDMnNiVW/NthJRp0a0Mz8q
+         hsKd3SDKN0smQ7J0DgJOYEHqyrurXBdB6EhTqjq95xuEv3pRb6YPIDqlq55awsOCJg+6
+         RCDn8keHxAnBDo0RwQCx47gKNQw/qGzxE8CKWQRBr0x62RtrZk5b0NV2ty4J/TG4glpr
+         46cluzcBuza5O6znV0DBPCJ5JaLbWUaK82LeYRMJilkCHGEy/mi+kytZ2813ga3UgR01
+         rAGA==
+X-Forwarded-Encrypted: i=1; AHgh+RqW6bZToXYjicob87laUH/eK5JLzD68heV465fq/2Gu7Y7MKtyVfazKiVfTOhdzyux/a0X3DGw4/w==@kvack.org
+X-Gm-Message-State: AOJu0YwRp65hu8Xuz+1Qvx5ulz+Ts65xfY4ovkYQldvaLEsT6EWeodX1
+	xsbGvKbKAlansfv1gKX2Xu7EM1Vtb7/NpLfRbJofywiWAWlzTUsDi43cFu1EAwzbV2kHL3I3p6+
+	qtt879ovTUjPIK26OlE7p2tTAmDCxI0J6KqY5Ae7/4NWcFZpHr2lHWGcRCUc=
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260812-mglru-mlock-fix-v2-1-a3fec5853c08@tencent.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNwQ6CMBBEf4Xs2TXdQrTx5H8YDtAuUoXWtIVoC
- P9uwbPHN5l5s0DkYDnCpVgg8Gyj9S6DPBSg+8bdGa3JDFLIk1BEON6HMOE4eP3Ezr5RCqM6ZSp
- VnRvIq1fgHO/GW/3jOLUP1mnTbI3exuTDZ7+caev9t8+EhKqVpSQjmEx5Tew0u3TUfoR6Xdcvh
- zMrX8IAAAA=
-X-Change-ID: 20260811-mglru-mlock-fix-20d8f8d4847a
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
- Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
- Oleksandr Natalenko <oleksandr@natalenko.name>, 
- Suleiman Souhlal <suleiman@google.com>, 
- "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>, 
- Yu Zhao <yuzhao@google.com>, Steven Barrett <steven@liquorix.net>, 
- Brian Geffon <bgeffon@google.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, Kairui Song <ryncsn@gmail.com>, 
- linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786537360; l=4125;
- i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=U29orzKk9D7il/dD5NUP46H8cRaJscTJfBNkl8jXS24=;
- b=glwH4HIia2IpuIdS3x5BsJrnJb+xJ61O2JdxsyE/WYO1gAglTuMnQhrPr7sy7LM1selJb22QA
- PMDF4R6eoApDe9EvRBQIRyjTjJ52/SV8EO0iUoQSgJdMLIxLo6cHncu
-X-Developer-Key: i=kasong@tencent.com; a=ed25519;
- pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
- with auth_id=562
-X-Original-From: Kairui Song <kasong@tencent.com>
-Reply-To: kasong@tencent.com
+X-Received: by 2002:a05:6820:c97:b0:69e:98c0:4bd6 with SMTP id
+ 006d021491bc7-6b0b2490e00mr3827700eaf.1.1786537584398; Wed, 12 Aug 2026
+ 05:26:24 -0700 (PDT)
+Date: Wed, 12 Aug 2026 05:26:24 -0700
+In-Reply-To: <6a7a6929.b50370da.49fe0.005e.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a7c6670.3668565d.e8814.0012.GAE@google.com>
+Subject: Re: [syzbot] [mm?] WARNING in set_mm_walk
+From: syzbot <syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, axelrasmussen@google.com, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, cgroups@vger.kernel.org, david@kernel.org, 
+	hannes@cmpxchg.org, kasong@tencent.com, kernel-team@meta.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
+	mhocko@kernel.org, mhocko@suse.com, muchun.song@linux.dev, qi.zheng@linux.dev, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
+	syzkaller-bugs@googlegroups.com, weixugc@google.com, yuanchu@google.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: pb8wqcki16sywk3aqd6ycnb4t6yi486h
+X-Rspamd-Queue-Id: 4B88F180005
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: ne7ez3qteyzcsbsqtmodak8z58xfprm3
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 424FC14000C
-X-HE-Tag: 1786537364-42918
-X-HE-Meta: U2FsdGVkX18UKBtlkOkz3I7I7vNux7tN86GsI7qHrmdxSrliHhb2SNN7F4iNF7z8DFsFEQZyeVydr6KHdRpMur9l84ILfyMgfiK9TOtj9HCLGXxWCj8FE+83di8W58A34AKvp31+gQJ12ODYaJlAc3hDN/TbBvq/RXcM5a+pqH6xPsQKyCAVsRwUObhsSDH8bUmL4Osv3Exzwk4677MzP1ubyZAI7D4TQNHySuQWGbVGta/xBxbS7caYbLptZ1jrYauTsyE+0dV1+wFqZmnvy/PTmpgpB/NnH8QzC4Ez8Duw9vXpLqqr/gr1FsFsxejEzMswWrzSN9SZS42J+vmScqxh3DKcHABZYuH9e8ph/KBIo7y2YUKJUQw4AlhdJ/tZICIwvWSjU5At4hd/KBNMtXFLVQkOTX8Qj/5FgFkwaDjgLaY8SFONOZRJGu+fI50o6B9KqS/1xQnAVXPDU6B2iSY0fpEfYUJzWChHZlV6eD/vMhf3tab+Oa/i4zBraFl/H8K77QeSoCds0QMorwgq1jmCQcAsTubNld6VzlloOigSYP3joBpPcCBqqGrFUZcllkXZOasIwZOu7hgftn524UCvbeTkxV8qlWNK9PR7ReFmejbwhDwZTkot+PPlCWgwPFjO7APRE1NgVMK+xfUDnjc+4ObnKbcbX+IJdbQ0/E42/FKveOTnscBfSoIG9v2sPaTJTjaBncT2Opr8xu8e+QeofTuHeu0cLDm9ye2gJSQJ+mDKLYzzKRNKC+PPpzcWOuI3TTIFx88pZTOlnacjxZOTNj05ENEC7kKMHJK18cQZKdEC0eJhqROGzY/Eh2A2hgRcqgOJ3iX9KD6xJ2nlAibBRZL1O4OLzMf9t2RQNT/lrx9/4Q4UsUPIQl14+OM22MWNOqtJoEMFvkn4ksG0k1WMN4nRv/RKjq4yO48RMG4wYHIHtBVoPm7lLhLHd3yLmIVbEM+NnSG7wbncij4
- pRhh+QVs
- vjbQdc0p8/Dqu/VIR0rSgqJhDier0DkGlRtSEMhcGUpLdX+442y3AqcjO1pmWWFIPhRWDBGdIfbgyXryReZwbRpVLYIEgYWjrGqmEjeDpl072gIrKaQorqBoz0Fbsrc3U8VAnhIGwFPMwtwRr2KktclmspmEgByv0n817Allvw4/dFt5RQP2XjmTFjmfsg0R21uAx7BiJkwJzyGUHP8jzeVX/LnF7QcT6alPZMMvERp0NhuWV2d7ARC76FbmAkGaadN/TEJvBoi5DIw4eGQYzJHo9LbaPsOv55fQ1SXd90s0n6XrDO3fu4mUrg0GtWR12CbV5jEBfGY2xV0TeoQryw9FESUOtFVdlE4mnLuiYuidVr28zX2+m34xu87/atpFG7wJ4wN0zzxoaA/dUqlc0qzmbz8D2yCwDK32lf5oEiPID0qEHnBpG50M1QbD1f1WaTblQ0xlH0GoHnPtFyk2BanlJxeptGEZlKCKgqE/Ygl6HV3U=
+X-HE-Tag: 1786537585-173877
+X-HE-Meta: U2FsdGVkX18SZvlGwAoaNo6w8xeCeluxcO0gkpksdR6lqEJme7EBXscqZ0JV4KbeAw6A3Jx0aF7EgZU1klxM6sNjxkm/bho22r8hjqpkebtIHumbDjOtBC2TmKGngzHhh6ZNRnm1aIuDjUzvQ7LYWOtbb0hSYPtVOp1BLaeDZhjj8lC1BC+Y43As95dxL0PLJZOsvqQ7Sd6i/e5c72dz46PZUxojXeEx5IpvJJo8m/mkoZtFqOCejmzWhVfTloPuaUES3vsxZuIiacAJ4A6iULFXWra97tAwdocZqnxj3tKgUXbGJVaBedatLGp8Mmx3p/48G9FSN+h5wTRrOXYWoXQBNjQpJpQic9B4bMHUimxrpmOhYqrzbnYDiXcgPQR9XA9XCmXeUXA8eiWuQBfkLvR/kDqh2mfmkF4UmTG7ypOso1fvD2sCWZrafQjHKKCKg+CoSns7jfSlHcIHxWjDyfEJgAhWnSXJwWVQ2crUinrqVVOvqa00Z4QkioNR92fhwZnDu/GD/SjmmsQ6mekIYboxMnyPngdOmCPA/HvB8qlThcY4oj37TOaGmjZd+p+WdaIaRHF4aIOrL3C+/iAl0jS8geqKvmVgWOw5TB7pWItLi3p7R/843bT66aT7D07Ebjvuxokb+pWC/TcQF7lQa7R+oOeGAak9/x/5A/QONGUX2O7p6XZKkN/Qonsb+x0IulbrYF0LFzwVJvFBiqvYt9Cn9HK12auU3oGdkXBJ2bCUGOMjsua/YymcNv1TaGD+xKA/f1lD2114/z78kHEprS+RytE5eYvRrzqK7e2JDX0KDLOUA8aPGdva9+HpIDGBJG8XSwc8q/Vgx+P4J4x9NZ6919/gcHebypaW/l6XvW0ztKAnCdK4K28v1dKQyBuzeyBUskRcYbuXtYJxlfn1Xfh6VDnmrDK3kesC2zm5Mwp0vbDGeDlrF+rSuvONfcodUX5mWv2My0Sn8Xj2PSo
+ jeYqVien
+ AB7uvCBvuE+R9eRoMvCqluCR+NqK7/wHzKJFen+iP6YUNDSiWvYCtKsqReYNpIGecGG4eoHrCccYPn3BHKirCol4aTTRrumpa4JfDYlXz/+tvXppntVPn+cN3gVy5emqvW/Ww2ujOW7yp2EGVyZMxzFwSDXYrfmbRHgpXIVkf5p0zQY89ihdbgSmZCljR03r29RfpYZPiFvCb4obrSWFsAHPXIf9bGdGh5HDxpTNTZZextfChCmADcc5Ogrn4DsDNUEi6bEc+mMIXDyx0GEnr92NbY2AdlL79CjByf9eSFeX5WlzpmyAEMWuYQqbkkl2QjMPnIEp1Aunyy7+d/fRpGczH5Z3Ngy6Q7qqa4Xwu04KpGRCZueNxD8NnXqZk4AVfh4ndQOkKP0g6BoZCzAphFfhjkTvuGEtu6hGam86nj0m8gKmR81YCUoqGMPjgu7yr8ElLmcw0bEGtYCCgOHnQm+gygvzNPfkELoK3OFngJuXqJ7Jimfe3/mVNEjl9ihgtVzW80WO1P2hGlAp2YzZbw1vbENNoNwPEF1lgCKXJ9r5lpLpY8kiJc6cFibHJFemInUbX7//8sG12SldR4UrqlXNekmnbsFmqd1XAZicroOF76PqwwIYzAGZeUGbJ4jhIX+CksOkWdhhSowasA+UuFLfdXi4jWmJVY3w00yxDMB3Ilq9dyk/tTlsdtZ4rPYCSs7BzEhdmWlJyoLPp2KjnM7UtrUPn488qV7X/wiL9P2phBHV0vG0Q8LteBOs552fckQhxTHtORMcr4Cjlwbv8H6ntXsDEiO852bRs4Fjfk52QV4GkpSBrXk5QGrt/x5F5gHEVX2Duvhp+lF2QHu1Tj7P3s39Ocz4/Ypw4lDyoKrUw+Wc+5QCkGWL361FLfXVO24eIT3xwq/53sXsBicSz501kpRlQX1HZ4uGkee3HANVSkRRgnAmWuRNTpgeAa73Vw79m/awZXIUa2uW3dzeGWW4+F0ab
+ YbNnrnl8
+ F9IksIp9AqXilThFE8VtSw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,105 +102,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+syzbot has found a reproducer for the following issue on:
 
-sort_folio() has a shortcut for moving folios that are no longer
-evictable but are still sitting on a generation list.  However, this
-shortcut is buggy.  It does not follow the PG_lru usage convention,
-and it has a more serious issue.
+HEAD commit:    f5bbbfec59b4 Merge tag 'probes-fixes-v7.2-rc7' of git://gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=11f44c79580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=c44651ea7dd2f307
+dashboard link: https://syzkaller.appspot.com/bug?extid=12ee2725d5fde63a9c96
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10d11149580000
 
-Unevictable folios are not threaded on lists[LRU_UNEVICTABLE], so that
-folio->lru can be reused to hold folio->mlock_count (see the comment in
-lruvec_init()).  Hence lruvec_add_folio() skips the list_add() for them,
-and every other place that turns a folio unevictable initialises
-mlock_count explicitly: lru_add() sets it to 0, __mlock_folio() and
-__mlock_new_folio() set it to !!folio_test_mlocked(folio).
-sort_folio() sets nothing, and the lru_gen_del_folio() right above it
-may have already poisoned folio->lru via list_del(), so mlock_count
-ends up aliasing LIST_POISON2, which reads as 0x122, i.e. 290.  The
-result is user visible.  On munlock, __munlock_folio() decrements that
-bogus count, finds it still non-zero and bails out before clearing
-PG_mlocked, so the folio remains unevictable and the Mlocked
-accounting stays inflated until the folio is freed.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com
 
-The shortcut also touches the LRU flags in the wrong order.  It calls
-lru_gen_del_folio() while PG_lru is still set, so a concurrent
-folio_test_clear_lru() (e.g. compaction, folio_isolate_lru()) can
-succeed on a folio that has already been taken off the generation list,
-which may lead to unexpected behavior.
+------------[ cut here ]------------
+current_is_kswapd()
+WARNING: mm/vmscan.c:3800 at set_mm_walk+0x210/0x270 mm/vmscan.c:3800, CPU#2: kswapd0/111
+Modules linked in:
+CPU: 2 UID: 0 PID: 111 Comm: kswapd0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:set_mm_walk+0x210/0x270 mm/vmscan.c:3800
+Code: 13 00 00 4d 8d 7d 08 e9 f7 fe ff ff e8 19 f7 2a 00 e9 b7 fe ff ff e8 7f 68 ba ff 90 0f 0b 90 e9 d2 fe ff ff e8 71 68 ba ff 90 <0f> 0b 90 e9 74 ff ff ff 4c 89 ff e8 20 f7 2a 00 e9 4e fe ff ff 48
+RSP: 0018:ffffc9000272f2b8 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff888023f04a80 RCX: ffffffff82500a88
+RDX: ffff888023f04a80 RSI: ffffffff82500b0f RDI: ffff888023f04a80
+RBP: 0000000000020000 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000020000 R11: 0000000000000000 R12: 0000000000000000
+R13: ffffc9000272fc38 R14: 0000000000000001 R15: ffffc9000272fc40
+FS:  0000000000000000(0000) GS:ffff8880d5fec000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005643a2ed4168 CR3: 000000003c7ec000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ try_to_inc_max_seq+0xf0/0x1090 mm/vmscan.c:4023
+ try_to_shrink_lruvec+0x4bd/0x6b0 mm/vmscan.c:4977
+ lru_gen_shrink_lruvec mm/vmscan.c:5128 [inline]
+ shrink_lruvec+0x31e/0x25b0 mm/vmscan.c:5888
+ mem_cgroup_shrink_node+0x227/0x6a0 mm/vmscan.c:6753
+ mem_cgroup_soft_reclaim mm/memcontrol-v1.c:312 [inline]
+ memcg1_soft_limit_reclaim+0x2d5/0x830 mm/memcontrol-v1.c:362
+ balance_pgdat+0xa11/0x1f00 mm/vmscan.c:7177
+ kswapd+0x556/0xb50 mm/vmscan.c:7462
+ kthread+0x370/0x450 kernel/kthread.c:436
+ ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
-So fix it by isolating them as common folios and letting the generic
-shrink path cull them. This matches the classical LRU behavior, and
-there should be no visible effect on the generic eviction or isolation
-behavior.
-
-There is no performance concern either, such a folio goes through this
-once, and then it is off the generation lists for good.
-
-Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
-Signed-off-by: Kairui Song <kasong@tencent.com>
----
-Changes in v2:
-- Proactively bypass MGLRU pid protection and lazy promotion to avoid
-  hot unevcitable folios staying on list for a long time.
-- Link to v1: https://patch.msgid.link/20260811-mglru-mlock-fix-v1-1-8b2321d0e1d3@tencent.com
----
- mm/vmscan.c | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 3194da7dcc79..ca2b926520ea 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4648,7 +4648,6 @@ void lru_gen_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent,
- static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_control *sc,
- 		       int tier_idx)
- {
--	bool success;
- 	int gen = folio_lru_gen(folio);
- 	int type = folio_is_file_lru(folio);
- 	int zone = folio_zonenum(folio);
-@@ -4660,15 +4659,9 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
- 
- 	VM_WARN_ON_ONCE_FOLIO(gen >= MAX_NR_GENS, folio);
- 
--	/* unevictable */
--	if (!folio_evictable(folio)) {
--		success = lru_gen_del_folio(lruvec, folio, true);
--		VM_WARN_ON_ONCE_FOLIO(!success, folio);
--		folio_set_unevictable(folio);
--		lruvec_add_folio(lruvec, folio);
--		__count_vm_events(UNEVICTABLE_PGCULLED, delta);
--		return true;
--	}
-+	/* unevictable: let it through and the generic path will cull it */
-+	if (!folio_evictable(folio))
-+		return false;
- 
- 	/* promoted */
- 	if (gen != lru_gen_from_seq(lrugen->min_seq[type])) {
-@@ -4921,11 +4914,9 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 	list_for_each_entry_safe_reverse(folio, next, &list, lru) {
- 		DEFINE_MIN_SEQ(lruvec);
- 
--		if (!folio_evictable(folio)) {
--			list_del(&folio->lru);
--			folio_putback_lru(folio);
-+		/* move_folios_to_lru() culls unevictable folios via folio_putback_lru() */
-+		if (!folio_evictable(folio))
- 			continue;
--		}
- 
- 		/* retry folios that may have missed folio_rotate_reclaimable() */
- 		if (!skip_retry && !folio_test_active(folio) && !folio_mapped(folio) &&
 
 ---
-base-commit: 1029098ee3275ea5b78e329ce132262affa2f8cc
-change-id: 20260811-mglru-mlock-fix-20d8f8d4847a
-
-Best regards,
---  
-Kairui Song <kasong@tencent.com>
-
-
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
