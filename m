@@ -4,87 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4505AC5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 23:46:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C186C5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 23:46:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11FBF6B0179; Wed, 12 Aug 2026 19:46:20 -0400 (EDT)
+	id 6EC746B0184; Wed, 12 Aug 2026 19:46:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D0836B0182; Wed, 12 Aug 2026 19:46:20 -0400 (EDT)
+	id 69D866B0186; Wed, 12 Aug 2026 19:46:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F01816B0184; Wed, 12 Aug 2026 19:46:19 -0400 (EDT)
+	id 58BD26B0187; Wed, 12 Aug 2026 19:46:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C489F6B0179
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 19:46:19 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3F6FC160478
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:46:19 +0000 (UTC)
-X-FDA: 85094253678.07.7CBC297
-Received: from mta0.migadu.com (out-16.mta0.migadu.com [91.218.175.16])
-	by imf23.hostedemail.com (Postfix) with ESMTP id F0360140005
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:46:16 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pjReRsjU;
-	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.16 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FC566B0184
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 19:46:51 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A3D3E40546
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:46:50 +0000 (UTC)
+X-FDA: 85094254980.11.3A27562
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E8FBE1C0008
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:46:47 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=uPrEfiSl;
+	spf=pass (imf20.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786578377;
+	s=arc-20220608; t=1786578409;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vxBH6Yw1jzGIgpGxwTg61Xu1HIIQyFKAXsqc4GMuFTM=;
-	b=LVNPxhhiqpPWRVsshM7ajFqit/9Sc1v23nVtpqTeQnfg3Mqqqm/Zey1s0Ow2zD13J/COt8
-	xzAFbxa045wASVastNitENpeFTJABEsfIvEeItA+kVm5cB/LqyTig+UXdaVYADlE1IZ9pj
-	apSFBIm4QJ5+VpQKPyw3PQcRqRzO5Yw=
+	bh=1kXvgWAnKqLXP7Mpf4jm46uSY4fg6EwwBH2E+vniV1M=;
+	b=GJ8nqFDhnYEjTzc2WQKYk73dqqAIey2tPkrq52NFss3hneztVbhZmU52mQIUwxN3H7PFyQ
+	l/+dNhiS8HDAxyoQXf9Y6+cRhEgNvTv7y1c6IF0NOKXpq2P93SHWKH6s78oESdCsoKMj2c
+	drMgLnkAXwXuRiBGMAS0yWqpYwtEEak=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786578377;
-	b=rV23LmZAstEyyUV9A3zlk6mwNThgA/XeYipF5rdBXeo7HAq8LpIUfRL4fWnrsr+tsJQM1L
-	8pRfyYY9/u3WSFUD8R3jQnrCr4LLJ+3uOtB/UBTk4dYiA8/H7R5/X2a7GZAyWGnknicqSR
-	7DwdKeIVqHAXtPVlvBMzHjDWFFrZloc=
+	t=1786578409;
+	b=AtsQmHEVwhuD/xlMooSINMScgsCZYiSZOGTg/Js+E19mR2q8gFa+6Vt4C8kaBjgWoPjb25
+	tDFGNWcLY2uOTP9i9db7m6vhFMZFucQjO1hId2dGfmHhR2+zsYCfms69uAQP2pjh1jnEg+
+	YTdv1+IX2slzzw2wZXwvlIBVdFCJyzk=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pjReRsjU;
-	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.16 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Suug6ZlLMRpt7AO3wExksttzRhjDowxSc/U7ICXnYsU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786578375; v=1; x=1787183175;
- b=pjReRsjUK7CyUIS/VWoH+vfERRzp+sncklUeXxXGg039MQaOLBKWvmxHiWiIB9PpQk7B6M7o
- rUFReJpRTI1SB1NQnLvEAQTtd9cNR4zi3cXXj5vMCA5K96QLQc5l+UiL37kw+K544UKsO0vaCGW
- rlJereWzZsS0ManoIwk1Vya8=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2a03:2880:10ff:a::)
-	by smtp.migadu.com with ESMTPS id cf2368f0b44ab78b;
-	Wed, 12 Aug 2026 23:46:15 +0000
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 12 Aug 2026 16:46:09 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Ridong <ridong.chen@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, cui.tao@linux.dev, Ridong Chen <chenridong@xiaomi.com>
-Subject: Re: [PATCH v2 1/2] memcg: acquire peaks_lock when reading memory.peak
-Message-ID: <an0Fp5HVk4xVtrSk@linux.dev>
-References: <20260807090000.1532495-1-ridong.chen@linux.dev>
- <20260807090000.1532495-2-ridong.chen@linux.dev>
+	imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=uPrEfiSl;
+	spf=pass (imf20.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=1kXvgWAnKqLXP7Mpf4jm46uSY4fg6EwwBH2E+vniV1M=; b=uPrEfiSl6Z3tixJX6/YYg0q4yD
+	CopOGYt59uJlUwLrw9EbN8U8JbpyZXyIw0nnZf7TTHFn6/nOloQbnyuu+kjTc5boQJc9mFovKTVIQ
+	o4DgezBGuu+6dxMFB8Y0iz9ILElTG3BCUFjotJzjCdakbYAEIBLHatNx/PgdlO8q1io8g2r7jBuWj
+	v+IhOw+m90tjyEFOAArQo8JEzJwn+1poq0fi72FIBVAGtkwS8cebLxbZ6Zl4WXEagYVDCMMD1m+7/
+	Fr6xVcAMKOTIXtuMvOyQRORgtyp2D1YvZxhCVO85vfc0VbtSxK0KrijVoLaVqv/CrxSwzFo6gnmP0
+	W7qpZDPg==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wuIej-00000002jNL-3qxu;
+	Wed, 12 Aug 2026 23:46:45 +0000
+Date: Thu, 13 Aug 2026 00:46:45 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Subject: Re: mm.git review status at 7.2-rc7
+Message-ID: <an0F5e6I7OJWTCLa@casper.infradead.org>
+References: <20260811205836.59301ca91b65781c6292a439@linux-foundation.org>
+ <6023e19e-32b1-4110-b9ce-5063f7976108@kernel.org>
+ <4535a2ca-d145-48b7-aacb-027e9ba258c1@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260807090000.1532495-2-ridong.chen@linux.dev>
+In-Reply-To: <4535a2ca-d145-48b7-aacb-027e9ba258c1@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: hbiwwrnfz5h4dr49xuazwms8eqzaw6oo
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: F0360140005
-X-HE-Tag: 1786578376-296477
-X-HE-Meta: U2FsdGVkX1+d97Nb3YzNRXoccTQ9ni/VjXp+oRPbgu0DNiL1UFHHr6fYPMkSE1jIqjO+ohFWbEPzi/ZGdb7/sHpTfCQZZA/jjMUiN57eLbRB35qh79DzuP/vG+WbBdf5c8bVEnPKzbv7PtgJIpHCiTG5VMaMisu6c01JE1aT/+YvSd1MG5lEWq9u9p2/GDL9Wt4SGt4S8ZJzVKddCMU3W1ABN/azvA1eKZe4mLmBod0bDSPyNHBplWLLixJwEvo4fSuwUn7Q4+qtyVAXOrvEpAe8GY4WAX7QgQ9MpPUOYlwfNnyfBqQSjMmnmKhp6uTN71AV2UxseSs19eSbvWMY/FhHWNyBeBh+76DyKDw+iB4sVSFmDQtaMlj02WhwHmK36maDIfBnS9VI1SFQakG7Zjt3qs9j1pmmO9LA8Id5xYhDdSQJVdE5KdsubG+e7VAle3WEjV7lVD6w6t9VxlFEq7we+Z4xXzyoMF938Qre6IEZNOEGHc+D0OISnTBPa1J4KJ42pduGz9PieYv65B4+Oh/DBV8JmrreUfWz2sTP3PbtdcUwOmckqWEnAs1kWR9F8B0qyTSL6ypKuW4YuWBDBCvzlUXbBjDGSmyndZ+juvbqRXpgJI97q0nRYlaEA5yrmNXmJKLOu1lxE2LAZOZ/PVYFlmPJS3hu8bnQo0rs42nWW5HvSUWf8EOTHplVANfGcs+ipt2QrAQGZlEVByjuM7dj2NNQlw4DlEATDTusbcO8lF236G6ECo01xS2sfOb2yYsOVVbsvxOdJ1ZqFFGzpodc1537cCkELGck3fD7nFLW9WhaDRjzDIpafRsAcZLlJXshpa9wg880FEC2v2wD1RUC+nfQZsw09neWGneuIlQzx3D8kSaBLzVlBIAFRc3MCi0KY75WTG22yMhLSEKdml/4APZBGNgrUh1/EF3aT4Eqks6MNoHeB/V+msPQrcLemsYwdXD7ZeiNbsutr4X
- ZIOKKy7h
- T89ayoGPtYfz3clMXKjx8ZMckIuPhNM8oyBb+c3yzYQYDEKsf+pUA8patjzU0rUJrIMMDeQ/PDd6rBZEH4+Me5yGRy+8qzc+wek437yf/wFC12xezkGwXD+rtkjGVwGGjjqGA5IX0w8j+cDQug+C5WyV8FUpj4Syp4qACsziscKRJxdBRQVfR4S0hw+IhM+akS4b6Vw4HV6gWEsQPROY7rn5TQg6bwFHWUsdjVRbo4bO+NJ5gXsGuTsX2CIfUGcQv4jtX5mINQZcd/jbfndD+KRXQKmKxd13dBaee92uq3u8bSec7Dw1ML6iBLRVnwtVI0G9mxHHlrLujnvNEZ31BwYSY50bV44qZjgxJKrTyMgnFUu/bVUlf9HRvrBXhtGEbdnhbJFns8mIs2ahNjFdhbqMLt4PNYIvHFbSFRTrAM2VaXg2XhW2Rl3W6T6Xd20dMWfV2s1l23SSI9sIa71BkhLvs/alGkY1I5woo
+X-Stat-Signature: x7n1gwmkxa6kc4i68zrwgzmioksgdzuk
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E8FBE1C0008
+X-HE-Tag: 1786578407-238839
+X-HE-Meta: U2FsdGVkX1+fTEu9aFJJBL1Z8bbbUASun0674qOTm3IzJxi80WjcC4wM96ugQIVEnqckJZHpbAct1i5dmqjwY3/jB92izMmo4ileiiVmB4n49cy2r3RMdgcYXlDiVhAlxQ2EFDKbdXrs+VZLGbdawd8RM0q4VfGbYkblvf09StsYGUBO7vz6nZHKQJBnA/JvN8Nj6RtwWhdSTnF1TD6j2ANSjjJvHULWQfwsam8q7FUzEj8p2HtpGHwmjQhI7MBwyg2H/HwYiEW80pIJWLKB6hbEL6uSJ7NrSVepW1B0NG7FDmAGJBtN2bj5TGqY4H8Xhp2kaKqys0ETwOlcwN5cqMtKcXAPIrfLXnRuKyt1RUtjyMIuyDNau8mRiJvUrRgWBie5F3+zoe3zC0ZW9Ylu3ZreXHWpdbcD826XROqhxZaGn4256Q0Cx5N6WVhbG5iferclrQhnS0eAYlcsr2G599Uy2WK24gv1CjcshJ6NkYCHhE7DakB+4ZDctTsD0ofy/BDcpEW7ZSgfvB6sK15RH3rYtEOKW0uziAIHeEiXrQWvPC+zjecujLptcEtrPo271THLbCXVBt671SP81YPGHbFpHhjipK7vuYljqD6I041K7mMW6NH1peDZtMX6gR20E37hB8NF/KdK3baaYDAjJOE5gTwcS0XnPbGGvgD63cHxLYRx+7ma6YdaHB8b1YR2Lw0FaccwkTHEMM0V7hhd+htP1tct6D7xfv2f0HdjZr7UqdxaGHdLdziPkulNvSlTeiOzXJPEV1DZDoFXePb8FXwEfiQ2bVj6D1DFNGZ75/WL1PMjMEcczHFIEnz+3KEV836BoFPWOQ4W/ye3gZeFiPy9DGewDX2F6jZeOb6zo9V8NhQmBvp6aLPBXwJa8cX0v1vXlUmYHH8QvWf+dMjRo2jKIGKi7cunikHDJW8ja2EXbmQRPQXS1lXyZkz7s7+dEY2TjR0M3HyZ+ojCkz0
+ hGo4UBie
+ txgETn/oB6iXaHQMZJHX7hs1MqSjvj6c8O5jlnVmHpD/S8oIjQ0JXNeqhRRNq6z8ZfOfQf48MF2NiqpHb7OLcZGPLdgpXFvPrb4Sw15Hysigf9tldRWgKISZK+r6K0aoxw97DJwTuUkdRNFqtOJ4GsJCYIZuRRNGhipGhhqkQly8OOUCwTsDhd/0ntZhjG5DkQ3kdoopPQzhw2QIszojN/rJFHAR3gQDXb4CnzRbOSNKKyXceY7acgOnRCC9Tzg+ViCQ1ceSQKDN0CYIDgpsy1bnJbhX8JrwzEn5MzlvEZD6f8Iyf6UX1U2n4wwa6uOCwrMgZIzgj1Y52f98=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,37 +89,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 07, 2026 at 04:59:59PM +0800, Ridong wrote:
-> From: Ridong Chen <chenridong@xiaomi.com>
+On Wed, Aug 12, 2026 at 10:37:13AM +0200, David Hildenbrand (Arm) wrote:
+> > We really need more maple_tree reviewers.
+> > 
+> >> Lorenzo Stoakes (ARM) <ljs@kernel.org> (6 total)
+> >>     "mm/huge_memory: separate out CONFIG_PERSISTENT_HUGE_ZERO_FOLIO logic"
+> >>         Link: https://lore.kernel.org/20260730-fix-refcounted-huge-zero-v2-2-c5d8a41b317f@kernel.org
+> > 
+> > I want to review that. I am still not convinced that we really need that right
+> > now. The fix was the important bit.
 > 
-> Sashiko reported that a reader can transiently observe a lower peak
-> within a race window [1]. peak_show() returns
-> max(local_watermark, ofp->value), but peak_write() updates those two
-> under peaks_lock while the reader takes no lock. The interleaving is:
+> Oh, good, we fast-tracked an unreviewed cleanup as a stable fix upstream.
 > 
->   writer (reset on fd A)                 reader (fd B)
->   ----------------------                 -------------
->   usage = page_counter_read(pc)
->   WRITE_ONCE(local_watermark, usage)
->   // watermark lowered to usage
->                                          lw  = READ_ONCE(local_watermark)
->                                          // sees the lowered usage
->                                          val = READ_ONCE(ofp->value)
->                                          // B's value not updated yet
->                                          return max(lw, val)
->                                          // both low -> low peak
->   WRITE_ONCE(peer_ctx->value, usage)
->   // B updated, but too late
-> 
-> Fix it by acquiring peaks_lock when reading the peak, so the reader sees
-> a consistent snapshot of local_watermark and the per-fd values. The same
-> race applies to memory.swap.peak, which shares peaks_lock and the
-> peak_write() path, so take the lock there as well.
-> 
-> [1] https://sashiko.dev/#/patchset/20260730115314.1069089-1-ridong.chen@linux.dev?part=1
-> Fixes: c6f53ed8f213 ("mm, memcg: cg2 memory{.swap,}.peak write handlers")
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> What is happening.
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Meanwhile a well-reviewed series which includes bugfixes is apparently
+not even being considered for this merge window because I spent a lot of
+time figuring out what Sashiko was concerned about?
+
+https://lore.kernel.org/linux-mm/20260805210557.1118966-1-willy@infradead.org/
+
+This was originally posted 5 weeks ago (ie when rc2 was current), so I
+don't understand why it's not being considered.  It's been tested by the
+people most likely to uncover bugs in it.  It's not going to get any
+realistic testing in -next because most people use neither hugetlb nor
+hwpoison.
+
+There's a bunch more patches to come, and getting this batch in now
+would be very convenient.  Otherwise it's going to balloon to 30 patches
+next kernel release.
 
