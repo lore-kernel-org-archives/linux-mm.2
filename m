@@ -4,82 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4569AC5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 04:04:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2BE5C5B572
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 04:06:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A9696B007B; Wed, 12 Aug 2026 00:04:25 -0400 (EDT)
+	id B59B56B0093; Wed, 12 Aug 2026 00:06:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05ACD6B0092; Wed, 12 Aug 2026 00:04:25 -0400 (EDT)
+	id B0AC56B0095; Wed, 12 Aug 2026 00:06:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB25A6B0093; Wed, 12 Aug 2026 00:04:24 -0400 (EDT)
+	id 9FA6A6B0096; Wed, 12 Aug 2026 00:06:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C46A96B007B
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 00:04:24 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 57FDBA1AB5
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 04:04:24 +0000 (UTC)
-X-FDA: 85091275248.19.FBFB55F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6DDF2180003
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 04:04:22 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EDp9Hek4;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786507462;
-	b=E3QfIjKtMLJcecvPslF4nCx8PQhe0FVPFD9m2SsQ/woV7IdxKU7RyGLeXViwa7sNQZFJPI
-	TNCEtXDE3oMge7ff0ZGXHRLMtomuhfNEjY7nk1JNN6bBtQdZk/VPa1GgfSBXDa8LBRuQ8k
-	N7g59Rn99KHUOq9AxOsvxFOG+odlnbQ=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EDp9Hek4;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 702006B0093
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 00:06:18 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DC968120278
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 04:06:17 +0000 (UTC)
+X-FDA: 85091279994.06.789AE84
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf26.hostedemail.com (Postfix) with ESMTP id DF04E140006
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 04:06:15 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Rg9GEe8O;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786507462;
+	s=arc-20220608; t=1786507576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FiLLmlbsLzuaMtcwBwMDwfL5w+GqVLTduA8mEqjoFy0=;
-	b=y6W6CtvX1mxstTpkfL8APqipca4wqpz1sXi49nMWvQrsBD52ktJBeYGnG4/yZiNnWcn8nY
-	RahqEmFfg/OvIPZ6meUjJshnvzVkZg40RWqLg5Z5cS0gQfN0t1mVcbMph+9mV6Jd99z6j0
-	dwl6wADd33FkWnFABAKJ0M0qC3VZ73E=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CC503600AE;
-	Wed, 12 Aug 2026 04:04:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80BEF1F000E9;
-	Wed, 12 Aug 2026 04:04:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1786507461;
-	bh=FiLLmlbsLzuaMtcwBwMDwfL5w+GqVLTduA8mEqjoFy0=;
-	h=Date:From:To:Subject:In-Reply-To:References;
-	b=EDp9Hek4af1hq1hEFwWlGF1kFT9CweEpNRXaghvS0UdHFeKVykTx39N2i2gthoNat
-	 8/d1L33hWn1VYNeFlXdBu0J3dTPeP85xFiB0QVEKpsv5cTuaYAPFvmEXhF3oGQpmz/
-	 He3wZ9UXNwSvJ/ylu3jpz8ICZg0B8tnMJU2akpFQ=
-Date: Tue, 11 Aug 2026 21:04:20 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: linux-mm@kvack.org
-Subject: Re: mm.git review status at 7.2-rc7
-Message-Id: <20260811210420.097a994cdb9a011f654227de@linux-foundation.org>
-In-Reply-To: <20260811205836.59301ca91b65781c6292a439@linux-foundation.org>
-References: <20260811205836.59301ca91b65781c6292a439@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6DDF2180003
-X-Rspamd-Server: rspam10
+	bh=nGj7AuQqLNogp9DrzWU8bky6bxff7hTLqE4y5/kLaao=;
+	b=fDKRdSjSLAycNdFGV6vUGjrbeolvarTzIVJdElby/Lai+sMDVY1ZnA9esJ/G0SzCpR4xjx
+	j2SsDf1bNClpMuS+GC7gghZZBxW+918BZGvCngXZuIcnEr17ahfUUmQPidmU/N1TEIn+hY
+	xYDb0xoWvmIwoOKJPqKiIVPpwh3o1fk=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Rg9GEe8O;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786507576;
+	b=MfVSFf/nsH0WXH6EWVUHHNkCc6/x6gbtuJddlFpYK0YrYHQJQEO6n3LI787gw2AkxngXPl
+	oCaL66OjHPMmWubJN1s7w2AWZ5SfCwPJSWGv0h3XI+aNvdGzxDHVGpExJWjkl/IYJ/uVv2
+	+HDm0i2UP3RRfvr73y8E0YFIymM/NiQ=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B399D1596;
+	Tue, 11 Aug 2026 21:06:10 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 018DD3F86F;
+	Tue, 11 Aug 2026 21:06:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786507574; bh=IHjypAHsNKjpNGDu8aCRCeoUOQ9LFF7rYITg0sTzbDM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Rg9GEe8ORnIQSzAFzPE9Q3CsOniFeZz3B5DAx1vSbU2ayamMlqi+pdI/abA/SWthR
+	 JHd2kD7S7LWpcNIoT65928j5y1fwj3S00eMdlQR9LYSfVNqmGWvx2Jo8nRyP2/XrUC
+	 occW+1n2ku+jahULG28ttJSOr0S4qPMQj+wCR/cQ=
+Date: Wed, 12 Aug 2026 09:36:11 +0530
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Dimitri Sivanich <dimitri.sivanich@hpe.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>, 
+	Stefano Stabellini <sstabellini@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	David Hildenbrand <david@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+	Mike Rapoport <rppt@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, ziy@nvidia.com, 
+	pfalcato@suse.de, agordeev@linux.ibm.com, ryan.roberts@arm.com, 
+	linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-parisc@vger.kernel.org, xen-devel@lists.xenproject.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, kasan-dev@googlegroups.com, 
+	linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	damon@lists.linux.dev
+Subject: Re: [PATCH 3/9] mm: name pointers to copied PTE values ptentp
+Message-ID: <hwkurkpobxysltkid5523qxndufebqqmat4qjaq6zhwno2drmh@efwoegm2huo6>
+References: <20260806083926.1807279-1-usama.anjum@arm.com>
+ <20260806083926.1807279-4-usama.anjum@arm.com>
+ <e7osakog3yvdewhdlrk3bsp27pwt2nnhroeb7zihlfxyjotarb@rwxkcb25crh3>
+ <b21c4cc9-84a3-429e-8156-0b9967b2f133@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b21c4cc9-84a3-429e-8156-0b9967b2f133@arm.com>
 X-Rspam-User: 
-X-Stat-Signature: phnochrrjq5wdafn3fx4u8x59z3wuapd
-X-HE-Tag: 1786507462-97657
-X-HE-Meta: U2FsdGVkX18WxXprodaUh9RDtCgqBb4/O3QKPQMNalNbGS9jDhK/gdjf7SJIH/m+qE9PliEVjr0CrafRD+HIbpA9ZOpg4e3U99p2f0pf0/lNHrYgjacv/0v+AiNBQ3lfviihG9p9r/P2T7rKyDN90v3xSQG6YkMDX/YoHLMgey2/zYg5nv8tR3cmbyf/tVREVlB1W7mrY7N3ypy/4pKO+7KcUP70aHLoFDT6MLk92cJexqKUe/69H0W++9PUNV9C9P8dpZBMf0QIZoiEqZ3Dyp26LJ8f3ilypSQro6QH+QefSOXdsaQfhB5Z8p1uVqvszcnJzUXFMugOx5fJ6kho2F8kWuMRdEVXOncM3+ReGO0pE7C3zpNozsmWh8vOPFjQXGKjVuGMxdQLHlcE6ztCpqzTF0T2iSKHD5vTS/oYNIcSoeeoskdVCs2bB87p5KlmoNjAq9lLz9UPTXNqm6Hpe5CPu5YtdKlJygceBkm/hwq44j4OCiXeXaO2YE9xwnGgdCbcI9cd7ioZ/5Ez8TQS48yPZDY/h30+q6cHoA+KDEmtkmm2ofPYkH/qg6Zxr1Vi9oa8kFP5TUzpmv98K9xgTl7GbAPaWMq+CHxHndHNB9MNtv/HP+WbJxLeraOw2rjEeLyR9+7qnzHiefUwWVwXd9faU7q6iad19O70zWGAl4MAOOFQyWf2WykJNe+ydO9p0AhA1pHeozT0T//ZL/MtCI+NoBsOwGrzTbM+3tL4IipAg4/ufoYKP0n1GKp58qBmsfdap/gaIKdTgl1/oA8t6VnUVqWKOnFRQRNd6Ot8eKIDqITO/OWdIZ4aWi8YBAHVHMw1VMPcTVGZmALy6e0z/+VdbpP/zNTX9jSH6kEqAl9uEZzi64nanqk7x4hTkOU/HuYncyt89dT6eNHtdRQRYOWj4uG6e5FFUVCUbrUB7sM+Q7EGu3NbPyWi4NK8zO4ug8zMb20YrMTN/8LWCh+
- n63Gbfxn
- dY6OFtu093BfKDW78WDr8D3LfKwqg2qWlBAIavhVkUt8uRsk8uEU7k6thOVcMcvUj1OBOFgxChDNmzdme1k6htjQcapgfwY8jtkDNZphT6H+zAiraURKUjjDXU1G9kLraCH2xRkYOxP8k2LSzb0aS4KIe9HijFllan5gKKRd0W6wNkh5BMNPEeDKvF+CYX/SDMaLEbabpFaKsQnV9D4FULOEUzx/90lNbCiRI9Jrl+zTVIkw8OXSSehXO0m+jkWiE/BsTWNyyRNwXf4/eNgsOtJvpVAtpuwlOYxeeGEdFoRTBTJ1n382Jr9/mvzGDonTun991Q69WXzi+TxU=
+X-Rspamd-Queue-Id: DF04E140006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: rr5g8j8hewdjheyxuqj5nugq5p4f3rjx
+X-HE-Tag: 1786507575-774721
+X-HE-Meta: U2FsdGVkX1/q2MYlqYXlF38y48ZS70xhs8xamzlx2GsyHrenB+M996zfY/3Ib3WxJ8i1sQl9a0mLWRYrUbBwPaw4ZjAYaHD6I7b1URY+IZqgwnjPk+fxOjnjl94S7X/Xq4fsQdpJ4efZboAg4a6hNw7MBZ5RKqPQ0eQ7I7I1Oms+i+4z4hKVatMwDJ4ojY6YpRMNIIeP7nf4YddW7n/LY0+IqnqAx5iDRbjj/YRrNRFlxRf0jnR2L/9xhGHiMMSnRUXOiTwMW2PAhVPk3pRNuJLPTTmIU/EMkVi55KURMptAQ0vYFMejgXEmjFO2/w6I+khM1nq3cPxiZZg/8NE235BS+jKzSz8lTY0nTyflu7RBauTTyD9uY9Vj2yR4loBfmLvd27UiqNsyfnSj/Bk+K9sLMBBGG0kKEYsywsO2pAQCqHiqhmBuo+2ppz/mnEJv2JbTVLQ6In5jei8K3TRL48UB/sFFHNou1iWBkZOB7yYwINPx0/K1hA3XoYxW04rnb6FE7A/23Gh7TaSMWRaPZEVkSD2Cwlh+vW79XTHGbjtdAHn8l+9/huauXbsr4xLdobsX5qdb7Y6INDOrU1YoWgN27aEB7m8UE4WHY+h8T2rE4HtaNeCcFCQx9q8t8A3loKtYBs8nByeGdjRj8bbC4j7Qsk3GPyHaAKThEIUWR7271lYj/OZBr1MDyctarhQhIph5NN+jI2J9UpqDWbkiT2xWMvBwNclhTmCvvr8VIN9IBxPLYf6kR2vIM+xQFeK8xjBNBmjcQz6/pxUN4HwiPRJ7ltzn9cha6NFiQTFyIz5WDWpBzJZuUzrkqsjPVz+0A5z1u07iaaJxm4LweobM7jKs6y87qbQacAdg5IXQj1Yjy94SU1t+pGPBms/pUAfolObz7+9VCv/kGfzrWKR+Zvb+Bu5/Qw1ELDVZXQlD5EECC4I/9RKQSnMjkMke6QC+jsdBTtfXUzOo9zyUXoo
+ uoOBJ1//
+ T4nmKzY0/mRyVzCdwXBR8b4ZkHiI2IuyJPeuS6a9+yudBFSL/6Iuhsr0VvbpELIhRy2HHqoRn/KnnyTRf0GDb/70CS88Ee21Yfk1Pj4nQMq15oiBweCCWZA9HildaNW1X+bM1m+jMwGWQKAO9E4LsENugptqmIgUhuLXyKPptj7Z3FWa98NpGMuXiYk8Ok8Yy6oRXQCFsqMy0EEc5jx8UzsOim3F+g7Uni4/maF0JboKm0YiDLiRyLu6C218NI5FDnZSDs36go07eIjs+CL2jKDDUcywAeLJ/9knfeJtgO1+YDMgeUG+S1v0K0Su0iPAFRq/Z/C589szKE9v7caJp3zFZmO8ShceCGQ7yJOxklMupHyefHVf44cCLOtmaYqIKoY0OHJrYSY5eV77gzv64IFSdXWUFTeOs82tCmE2DkIhsO+rFsjubQI8aGsaHdpQaueuU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,138 +117,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 11 Aug 2026 20:58:36 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+On Tue, Aug 11, 2026 at 03:09:07PM +0100, Muhammad Usama Anjum wrote:
+> On 11/08/2026 11:58 am, Anshuman Khandual wrote:
+> > Subject line is very confusing. Perhaps something like the following.
+> > 
+> > mm: Rename pointers to copied PTE values as ptentp
+> > 
+> > But even 'copied PTE values' is not very clear as well.
+> 
+> Something like:
+> 
+> mm: rename pointers to logical PTE values as ptentp
+> 
+> or
+> 
+> mm: rename pointers to software PTE values as ptentp
 
-> For the second week's batch we have 114 patches that look in decent
-> shape and another 63 which are not looking so good.  I'll continue to
-> chase these over the next couple of weeks.
+Yeah but we need to get these nomenclature right at the very beginning
+and also probably get it documented some where.
 
-These are the remaining problem patches, along with the cryptic links
-and comments which explain the various potential issues:
+> 
+> > 
+> > On Thu, Aug 06, 2026 at 09:38:41AM +0100, Muhammad Usama Anjum wrote:
+> >> The hw_pte_t conversion must retain pte_t * for pointers to standalone PTE
+> > 
+> > We need to explain what is `standalone PTE values` first.
+> > 
+> >> values. Name the value parameters ptentp in the install_pte callback,
+> >> write_protect_page(), and guard_install_set_pte() so the later mechanical
+> >> conversion can distinguish them from pointers to PTE table storage.
+> >>
+> >> Some functions already use the ptentp name, including:
+> >> - madvise_folio_pte_batch()
+> >> - folio_pte_batch_flags()
+> >> No need to convert them.
+> >>
+> >> This is a naming-only change.
+> > 
+> > Small nit - s/naming-only/rename
+> 
+> I'll fix it.
+> 
+> > 
+> > The commit message needs rewrite clearly explaining the following details
+> > 
+> > - What are standalone PTE values
+> Logical/software PTE is correct and better name here.
 
-As always, append a quilt filename to
-https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/
-to get at the actual patch and its Link:
+Right but we need to define these early on and then be consistent in their usage
+afterwards in the entire series.
 
+> 
+> > - How these are different from HW pgtable pointers
+> > - Change is just a rename for pointers into such 'standalone PTE'
+> > - These renamed 'ptentp' here would be used for skip or replaced during
+> >   upcoming mechanical change via a script
+> > - No functional changes intended
+> I'll update message in more elaborate way.
+> 
+> > 
+> >>
+> >> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> >> ---
+> >> Changes since RFC v1:
+> >> - Update the description for the architecture opt-in conversion.
+> >> ---
+> >>  include/linux/pagewalk.h | 2 +-
+> >>  mm/ksm.c                 | 4 ++--
+> >>  mm/madvise.c             | 4 ++--
+> >>  3 files changed, 5 insertions(+), 5 deletions(-)
+> >>
+> >> diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
+> >> index b41d7265c01bc..c34d826c5e4a2 100644
+> >> --- a/include/linux/pagewalk.h
+> >> +++ b/include/linux/pagewalk.h
+> >> @@ -89,7 +89,7 @@ struct mm_walk_ops {
+> >>  		       struct mm_walk *walk);
+> >>  	void (*post_vma)(struct mm_walk *walk);
+> >>  	int (*install_pte)(unsigned long addr, unsigned long next,
+> >> -			   pte_t *ptep, struct mm_walk *walk);
+> >> +			   pte_t *ptentp, struct mm_walk *walk);
+> >>  	enum page_walk_lock walk_lock;
+> >>  };
+> >>  
+> >> diff --git a/mm/ksm.c b/mm/ksm.c
+> >> index ad05d7791307e..11d50518d02e9 100644
+> >> --- a/mm/ksm.c
+> >> +++ b/mm/ksm.c
+> >> @@ -1292,7 +1292,7 @@ static u32 calc_checksum(struct page *page)
+> >>  }
+> >>  
+> >>  static int write_protect_page(struct vm_area_struct *vma, struct folio *folio,
+> >> -			      pte_t *orig_pte)
+> >> +			      pte_t *ptentp)
+> >>  {
+> >>  	struct mm_struct *mm = vma->vm_mm;
+> >>  	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, 0, 0);
+> >> @@ -1371,7 +1371,7 @@ static int write_protect_page(struct vm_area_struct *vma, struct folio *folio,
+> >>  
+> >>  		set_pte_at(mm, pvmw.address, pvmw.pte, entry);
+> >>  	}
+> >> -	*orig_pte = entry;
+> >> +	*ptentp = entry;
+> >>  	err = 0;
+> >>  
+> >>  out_unlock:
+> >> diff --git a/mm/madvise.c b/mm/madvise.c
+> >> index 07a21ca31bad4..c324cc991f841 100644
+> >> --- a/mm/madvise.c
+> >> +++ b/mm/madvise.c
+> >> @@ -1101,12 +1101,12 @@ static int guard_install_pte_entry(pte_t *pte, unsigned long addr,
+> >>  }
+> >>  
+> >>  static int guard_install_set_pte(unsigned long addr, unsigned long next,
+> >> -				 pte_t *ptep, struct mm_walk *walk)
+> >> +				 pte_t *ptentp, struct mm_walk *walk)
+> >>  {
+> >>  	unsigned long *nr_pages = (unsigned long *)walk->private;
+> >>  
+> >>  	/* Simply install a PTE marker, this causes segfault on access. */
+> >> -	*ptep = make_pte_marker(PTE_MARKER_GUARD);
+> >> +	*ptentp = make_pte_marker(PTE_MARKER_GUARD);
+> >>  	(*nr_pages)++;
+> >>  
+> >>  	return 0;
+> >> -- 
+> >> 2.47.3
+> >>
+> > 
+> > How did we ensure that the above changes are comprehensive and nothing
+> > else got left in here ?
+> 
+> The order of patches and even the code was found out after adding hw_pte_t
+> structure. Then everything was converted, until some pte_t pointers were left
+> which didn't require conversion.
+> 
+> If something is left, we'll get build errors when we build a converted architecture.
+> So the branch mentioned in the cover letter when built, would produce build errors.
+> (Those patches would be sent separately, after finalization of this series).
+> 
+> Whenever I'm rebasing (on mm-new), I'm rerunning Coccinelle script to see if new code
+> has arrived which requires conversion or renaming.
 
+But in the early patch where the manual renaming was done for the script to
+pick up 'ptentp' patterns needs to be audited again.
 
-
-#selftests-mm-fix-soft-dirty-kselftest-supported-check.patch: https://lore.kernel.org/db04536b-a98f-4025-a095-9ca49de10e12@kernel.org
-selftests-mm-fix-soft-dirty-kselftest-supported-check.patch
-#
-#mm-kmemleak-confirm-suspected-leaks-with-a-second-scan.patch: Catalin acks?
-mm-kmemleak-confirm-suspected-leaks-with-a-second-scan.patch
-mm-kmemleak-report-leaks-only-after-n-consecutive-unreferenced-scans.patch
-mm-kmemleak-factor-leak-confirmation-into-a-helper.patch
-selftests-mm-test-kmemleaks-n-consecutive-scan-leak-confirmation.patch
-#
-mm-kmemleak-default-min_unref_scans-to-2-for-verbose-auto-scan.patch
-documentation-kmemleak-document-the-conditional-min_unref_scans-default.patch
-selftests-mm-kmemleak-drop-stale-min_unref_scans-default-from-comments.patch
-#
-#
-#
-#maple_tree-add-rcu-locking-check-when-lockdep-is-enabled.patch+N: https://lore.kernel.org/6yf7k4fmg4tkbmli6t4qzrk2eiyuuynoc2oimbgaebught2yh5@dspb7xile3kj
-maple_tree-add-rcu-locking-check-when-lockdep-is-enabled.patch
-locking-lockdep-add-sequence-counter-to-held_lock.patch
-maple_tree-add-write-lock-checking-with-lockdep-sequence-numbers.patch
-maple_tree-stop-flooding-logs-when-debug_locks-is-set-to-zero-fix.patch
-maple_tree-documentation-fix.patch
-maple_tree-drop-dead-code-from-mas_extend_spanning_null.patch
-maple_tree-drop-maple_alloc_slots.patch
-maple_tree-clarify-comments-on-mas_nomem.patch
-maple_tree-use-prefetched-value-in-mas_wr_store_type.patch
-maple_tree-optimise-mas_wr_node_store-when-not-in-rcu-mode.patch
-maple_tree-micro-optimisation-of-mas_wr_store_type.patch
-maple_tree-add-bulk-parent-set-helper.patch
-maple_tree-catch-race-in-mas_alloc_cyclic.patch
-maple_tree-document-that-erase-may-use-gfp_kernel-for-allocations.patch
-maple_tree-warn_on_once-when-allocations-fail.patch
-maple_tree-document-erase-and-allocations-better.patch
-maple_tree-change-two-gfp-flags-in-tests.patch
-maple_tree-fix-argument-name-in-header.patch
-maple_tree-avoid-extra-gap-calculation.patch
-maple_tree-add-helper-mas_make_walkable.patch
-#
-#
-#
-#
-#riscv-mm-fix-concurrency-in-mark_new_valid_map.patch+1: Paul? TBU (Aug) https://lore.kernel.org/41c1a3ed-0afd-4bf9-9749-2031bff00fda@iscas.ac.cn
-riscv-mm-fix-concurrency-in-mark_new_valid_map.patch
-riscv-mm-exclude-invalid-thp-pmds-from-page-table-check.patch
-#
-#mm-khugepaged-refactor-per-scan-state-clearing-into-collapse_control_init_scan.patch: await David review
-mm-khugepaged-refactor-per-scan-state-clearing-into-collapse_control_init_scan.patch
-mm-khugepaged-extract-reference-check-into-folio_pte_referenced-helper.patch
-mm-khugepaged-introduce-a-count_collapse_event-helper.patch
-mm-khugepaged-fix-outdated-comments.patch
-mm-khugepaged-refactor-the-pte-state-checks-into-a-helper.patch
-mm-khugepaged-unmap-pte-before-releasing-vma-write-lock.patch
-mm-documentation-clarify-where-the-mthp-stats-live.patch
-#
-#sh-remove-config_numa-and-realted-configuration-options.patch+N: sh review?
-sh-remove-config_numa-and-realted-configuration-options.patch
-sh-mm-remove-numac.patch
-sh-mm-drop-allocate_pgdat.patch
-sh-remove-setup_bootmem_node-and-plat_mem_setup.patch
-sh-drop-dead-code-guarded-by-ifdef-config_numa.patch
-sh-drop-include-asm-mmzoneh.patch
-init-kconfig-drop-arch_want_numa_variable_locality.patch
-sh-init-remove-call-the-memblock_set_node.patch
-sh-remove-sparsemem-related-entries-from-kconfig.patch
-sh-drop-include-asm-sparsememh.patch
-#
-mm-cma-remove-stray-newline-from-auto-generated-cma-area-name.patch
-#
-kasan-fix-cache-shrink-race-with-cpu-hotplug.patch
-#
-mm-gup_test-keep-longterm-pin-state-per-file.patch
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-# mmend
-#
-#ENDBRANCH mm-unstable
-#
-#BRANCH mm-new
-#
-mm-hmmc-hmm_do_fault-suppress-sparse-warning.patch
-mm-hmmc-hmm_do_fault-suppress-sparse-warning-fix.patch
-#
-zram-fix-slot-lock-bit-position-on-big-endian-64-bit.patch
-#
-mm-page-writeback-document-folio_mark_dirty-locking-more-explicitly.patch
-#
-zsmalloc-account-for-handle-size-in-class-lookup.patch
-#
-#selftests-proc-make-proc-maps-race-work-with-read_implies_exec.patch: Suren?
-selftests-proc-make-proc-maps-race-work-with-read_implies_exec.patch
-#
-#
-mm-swap-revert-to-single-folio-writes-for-synchronous-swap-devices.patch
-mm-swap-add-a-new-swap_opsh-header-to-allow-for-pluggable-swap-ops.patch
-mm-swap-move-swap_ops-into-file-systems-for-file-system-based-swap.patch
-#
-#lib-kconfigdebug-make-debug_force_weak_per_cpu-depend-on-s390alpha.patch: acks?
-lib-kconfigdebug-make-debug_force_weak_per_cpu-depend-on-s390alpha.patch
-#
-kasan-fix-quarantine_size-accounting-during-cache-removal.patch
-#
-selftests-cgroup-test_zswap-skip-test_no_kmem_bypass-if-debugfs-is-unavailable.patch
-selftests-cgroup-test_zswap-skip-test_no_kmem_bypass-if-debugfs-is-unavailable-fix.patch
-#
-
+> 
+> -- 
+> Thanks,
+> Usama
+> 
 
