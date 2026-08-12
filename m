@@ -4,133 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C642C5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 22:34:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79BF2C5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 22:50:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D204D6B017E; Wed, 12 Aug 2026 18:34:18 -0400 (EDT)
+	id 378126B017C; Wed, 12 Aug 2026 18:50:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF7CB6B017F; Wed, 12 Aug 2026 18:34:18 -0400 (EDT)
+	id 34F7E6B017F; Wed, 12 Aug 2026 18:50:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0E6B6B0182; Wed, 12 Aug 2026 18:34:18 -0400 (EDT)
+	id 28CB26B0182; Wed, 12 Aug 2026 18:50:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 98B296B017E
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 18:34:18 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 179D51A04E0
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 22:34:18 +0000 (UTC)
-X-FDA: 85094072196.14.358F177
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6DE23100005
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 22:34:16 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cGPTP03w;
-	spf=pass (imf14.hostedemail.com: domain of robh@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=robh@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 09A496B017C
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 18:50:15 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6DF0680465
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 22:50:14 +0000 (UTC)
+X-FDA: 85094112348.20.5C70765
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 375E720004
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 22:50:12 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="qZP2/two";
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786575012;
+	b=GXJpVbLGAZW7BljByuprWQczCvp7F1nyAcpE6GQKxXCHaF2KBHzOD8oRol8onKFtzpcmPU
+	ZT5UFWPpQKnJpMFfP1J54o8nF6pC20aik2JLmiqDbRHtbjTKTV95nqqgM4r3zQZ3u9zDVa
+	hKlucVKQf+hrQzuDy6E4jPickHMG+pI=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="qZP2/two";
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786574056;
+	s=arc-20220608; t=1786575012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zIJaVQwgy3+phEYTr1LnspZFuRmzeHEpVwwk/PBOaCo=;
-	b=cII8Ds75bj2kQVWCk9kplxz3Gor1pa2IcnCh0jg0y6OG6zaKMA8PCmCPkJQBai4Kp4ZsaD
-	8Ry+Cs8HY+OpY1HWvVzqD4WPC+LIHDyd32h/iaAnW3MhfX9E7g04DM/Hiqk5UjKMwTZX6D
-	lWUIB8HT/9HUmVFiWhoUczROGIb9GW8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786574056;
-	b=6kEvvVdgsfwMIAU5JkgvNZihY5m0Oy2yHu3yBL/qO8dWrSbtgsZtoJrpT0aYm9qNAmGyXf
-	HhhuOp1MEsEdsLHXIbRNPwnjEPA+ntoUnW3/dBaLeZWDW97hMsHgqINrLDjEOI4QCDf7Tj
-	ZehVJ4ijSHPb+bhi0JOEUuVpj3tsd7o=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cGPTP03w;
-	spf=pass (imf14.hostedemail.com: domain of robh@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=robh@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=jX1mtHvsVWE4pAYEkaJGnNdeV9GfqdK01h7t4lsHXwE=;
+	b=A+q5aPBl/4zFF2ptGJp1psJy3HgCbZI5W+ehBW4vAv/1+NGM4ELaq3rw5bDU/uSODMyA0B
+	bW6XiQVtW8ZSCPhcD0shx1oeOxsF6tkBDE1zOcO09Wp27IhAnx8sRw8Hf2m3n+S4f2uj97
+	dao/V6BZJqIbKDFX3KuZ0nyYpiC0o+E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AC30E40AA8;
-	Wed, 12 Aug 2026 22:34:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BCDE1F000E9;
-	Wed, 12 Aug 2026 22:34:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786574055;
-	bh=zIJaVQwgy3+phEYTr1LnspZFuRmzeHEpVwwk/PBOaCo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cGPTP03wUG80YmVMBODmbasm4ppKUGuWWZcUwvqj46epN/xQO8bSWtSuxBsSzMTrm
-	 xVAi3EIOLC10qfV/rs8N0KHo3fqQtHQdL7PQ9jXzPzkuVeIBgKcwXHU3KIX+2rD14R
-	 n6ah8z+Q/9HwjWNp7R/I9R0wQg4Yqkc7nhslLLwNSozuRhmUl3Vy8JXtLk5xybQM0J
-	 /guRBSF2oOcCa+eBmtvEvHHraXmiyJe77EreH8uPP6jDQdm9BoLpnGwAGlm0CPZIyj
-	 oMUvUbXA8fJ9m9NcDjx70rQLJkU+OPiUVZtIs87OoQOux+/pyvd4DhAO9Twdc+Sp3T
-	 Op1aDi3RrsjGA==
-Date: Wed, 12 Aug 2026 17:34:14 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Thierry Reding <thierry.reding@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	dri-devel@lists.freedesktop.org,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Heiko Carstens <hca@linux.ibm.com>, Michal Hocko <mhocko@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	David Hildenbrand <david@kernel.org>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	linux-trace-kernel@vger.kernel.org,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Russell King <linux@armlinux.org.uk>,
-	John Stultz <jstultz@google.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	iommu@lists.linux.dev, Mike Rapoport <rppt@kernel.org>,
-	Chun Ng <chunn@nvidia.com>, linux-media@vger.kernel.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	"T.J. Mercier" <tjmercier@google.com>, linux-kernel@vger.kernel.org,
-	Sowjanya Komatineni <skomatineni@nvidia.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	linux-s390@vger.kernel.org, linux-mm@kvack.org,
-	devicetree@vger.kernel.org, Will Deacon <will@kernel.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Yury Norov <yury.norov@gmail.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Thierry Reding <treding@nvidia.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	linaro-mm-sig@lists.linaro.org,
-	Steven Rostedt <rostedt@goodmis.org>,
-	David Airlie <airlied@gmail.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Robin Murphy <robin.murphy@arm.com>, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v4 03/10] dt-bindings: gpu: host1x: Document
- memory-regions for NVDEC
-Message-ID: <178657405441.1338311.10765338394838016729.robh@kernel.org>
-References: <20260807-tegra-vpr-v4-0-5510d16af89e@nvidia.com>
- <20260807-tegra-vpr-v4-3-5510d16af89e@nvidia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260807-tegra-vpr-v4-3-5510d16af89e@nvidia.com>
+	by tor.source.kernel.org (Postfix) with ESMTP id 73C99600AD;
+	Wed, 12 Aug 2026 22:50:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34681F000E9;
+	Wed, 12 Aug 2026 22:50:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1786575011;
+	bh=jX1mtHvsVWE4pAYEkaJGnNdeV9GfqdK01h7t4lsHXwE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=qZP2/twoQ3M6TVc5K/4I1BejDEiVV/5s1xxUZWr+68fh1f4NGuze+uNFmhKGphuwS
+	 IDWzhDdhQucWY5qGffH0ue8tsfYipYzw11nEWRJfDAk1JemHr5cN6Ug+Ox+bZbNgOt
+	 GBZUmjLQXGzvtRqw8eYb/ANowk9aWXMTDNKByUmM=
+Date: Wed, 12 Aug 2026 15:50:10 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song
+ <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, Qi Zheng
+ <qi.zheng@linux.dev>, Barry Song <baohua@kernel.org>, Axel Rasmussen
+ <axelrasmussen@google.com>, Meta kernel team <kernel-team@meta.com>,
+ linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com
+Subject: Re: [PATCH 1/9] memcg: make the v1 soft limit knob inert
+Message-Id: <20260812155010.8710b4a9191c9ee4ad6da255@linux-foundation.org>
+In-Reply-To: <20260811203203.3456029-2-shakeel.butt@linux.dev>
+References: <20260811203203.3456029-1-shakeel.butt@linux.dev>
+	<20260811203203.3456029-2-shakeel.butt@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 375E720004
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: ji6fxrtihci7xg7u51g7hrrw76q5smei
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6DE23100005
-X-HE-Tag: 1786574056-216416
-X-HE-Meta: U2FsdGVkX1/4lCzlN24yOYIONPk3Bt5QztJVIktrFzX+GL6urJ7m0vwmzOxgbaGeyAlh+17UaPQCA89+b8L2GPO0iGQQ76ziIOhBrq3ujv6iF0Cuv10ZoSlgthZXFltiLLXUCb1NqTHZGuakFC3ZNF18rM7VplZDmKvRuYetEAlcu3YSRFtUH7rTCcDUvue5sHmGUEpf4ol23jkvaLjDlS6Zn00X6yLb8SAUn5+YnbCZIYWBq9db2WPJnjOoGMHFa8sNpHvsxkMCHwzqINo1LW9CDhQEOwwJCsCfXLUzNshm7F88HrPOdREPD2S2Y0vkrGNnrDYV3Ou2uwP8DBwOntl248jFaYXu+xGecp+pZepaIZFg99CqPbAxbu19G+H10phN0bY5Zq5lEFrp5lwvjgfgmXXGDSwlXcvzm/tyrTF8u7AzPJf8OYjrpOvqwBgahbOzpwiuOlWnMp0iwXpAaSFtdsYqE8eMrPOVRuJrE7qgo/scU0kjPyUrPjGxW1f0QS+Tddn4A1Z8MKMECb7h3miiR+WMDE6phj8Ylded2w7YeBlbWLzYKRHVOXlcqPd7bQSspWGuGB/mMKZlsLoJrJ9mOhSEclagCLyW1yzeqwCIpYHhhXj/lKIXVx/RrvhUv4OSVd5HACqPKcrFRKE/f9WMqAatCysmmLeJZfYTJqtpJklSEjHQ5lAFE63/Y8NGPfiR6m5e+TKeDKhBWn9y/BBKEoTdK/oq5Msj/bc6yyzNYgBto/XdnaSz/K+LWg7aUQw77/PhAqDVzF0tHoEb12iLHVc2EWLuoCMcE3wlx/ZO3DroEnP6+cLFzGv5gqGgx750nJNaCn3BvVZyObFdKT44UZQM59+5cQEeOje6vYoDk0nvNO2trloupHXEIv7r6OXZwsk85lWSz5L8rxWLpA4K54lql2ptnovQi3Ryrm0ZijI2pVZnbnkzQckzdxxGluaFw21x3brbQJ8eY14
- cbloXvLY
- TL97HVTIkbFRL7eoypTeqiq4ThVS6s/eoNByzMKcFg1AJ34usDqi8g4H6bHU7INU86Nny6EDA7ILlzFT7ygfMN35HdEDC1sDpoXV0iYcsYN4SfQCQmTtBpzE8JU7HPgo54tWBHsNekB/NsYyM1/mHywRbgKcEFXQvFAcfwCaVsuTL1UpE6irF65N1aU9tX3jKZ5GBylr3MXG2DPvz7glJN1AURI8KPsrfoGBOD68SFid6wHyWoN09vs/+VnV0En7gm90/xRjwdGd76NQsBSGSxsHANEgpkFAyhbfG2mrGQHZdEA02INe8sn+TVaNVRyxoAegDEQb+BHxP/Cj5Y8zTUXpE3Y1zLgXxBt+25bm4urZCLHgnz3O1/ZBNVIK5agaPLLImDqry1bB2VymUXG8ZD1kvGI3/mGlyAlqvSeVO2zso+G41+Ocjxl81hQ==
+X-Stat-Signature: n6hifj5534dyncqy44hwhpag8iuf69cx
+X-HE-Tag: 1786575012-687480
+X-HE-Meta: U2FsdGVkX19CuI9WWZmgcZOGA5R2d7F8HNkU2gc7ELna8TDSqzg6b5Tj3qHzcyTNdDXENFuRY6H9tlWOG2EbhLgZ9veHbEZ97Wo9IakNZUKA4TWvdzcOCbaIucL+rPpPyH2f7c/9blLT93GhSd2Oxy2/qLHXPtDIMaQQxUNpBzBPZw5nszCM9G5w1R4OdGm6FSamqtXy9qTP3atyFrWlV88JKQ1ctzz3RYJsJc0ESac5KTw5bCrya27B6yfYNQ8wIhJ/CsjkqP3Wk+4YeC2h3sSEhj7WbDmreXudGlbrPU+oc+ninW6TKvqQ/AaszVQZzt8Jvl373k94fvnkot6ff/VHcuSRlp5OlT8NTT6Vrtgk3yZs+tYX24mfYG1QMf84oj1I9buWCHjzMwVmB1ha/StY34pPzrJNUk9+70zBacptoaHLsUJiwEKc4dJ7vTBmOyjfmyROI5GaqBHMLkwiSoVlnNelgef8FofcjRemLI16t5YLcKfsq/j8wFtMSZu5TuJ9RON6arZyyaKO35z6ygNEo0xrpl9EiKXE2BppflQK7qXN2TjaG4KcmNwbLvFQi5ZCbGYPCYRghcZ1KVzDuRzuhU6zYP+020gw2NxQ+XwIWGLoDR17zDbf3R8ZBVHvSjgun4gms0/uebRYZiHAuVH1rDAi6sohicdytyb08oUv+YhyXROXcDzVD6CgJA5B+Zeml8eV9mmL47+0IpQN8Dptv71ktxe+EmBUISZy+4sN8vcJs6Y/mUpGshlhTT2Jp1Uo5OcUVQpxaO02vr79J4DApwzu19GP3K39ZzlWhdxexurHdEmGC5iMe6ube4GOy4qdlmPADEbb41JwbdnfDEP5/7za7kP7wknbF1IIJjF7Ac8iNZfUJ3wvvSQMJfSbOu2xp630AUZxwFKT0dZSaEaStqrLdVqx9H1eXsrX0JYpXoHrIAQ2Yo3fZ29GRv5QdteJWBLO7XKO3I2l2ae
+ MWwTHSL1
+ 0MmZQnnN9kitchDPF3i6kNCJfp73o8E7cj8S9bAdH66NgofH1zbCPG/XtO3nFL0gLTuzbJgIMm/Fk5D+aWOHOVrW5TenGUTHyJVrovXw8hJurHTpQbRGtenN0IjahvUiAiPSu6Sw9hTn1Q123GG1eaC9lEHKWPsR9PZfUdxfcu8xw8/4IP5L2K9O77+iqGmpIGCpL8FBXrHYSkL6sSRqoGv1NwtukStS/Jjw233oIVdCFNa98J9Y+N8SeVOuepjIlrizfx9qMKi962Yl4emPd4zCMZp5X7+9QuVLYldE5jXVIHzN69qaCu0DM2tCydFFMyHWRHgHJUm3hL1TIUy6uTh4Yn4qNizvJmcOyOB4AffmMegneBN3bMNOUY3zMsmaFJVt6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,20 +96,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 11 Aug 2026 13:31:55 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
 
-On Fri, 07 Aug 2026 17:54:23 +0200, Thierry Reding wrote:
-> From: Thierry Reding <treding@nvidia.com>
+> The v1 soft limit has been deprecated since v6.12 and nobody has
+> reported depending on it. Start the removal by decoupling the interface
+> from the implementation: keep memory.soft_limit_in_bytes, but ignore
+> writes to it and always report the maximum value on read similar to
+> what memory.kmem.limit_in_bytes already does.
 > 
-> The video protection region is a reserved memory region that can be used
-> for secure video playback. NVDEC can access this region to decode images
-> into securely.
+> Writes are still parsed, so malformed input keeps returning -EINVAL.
+> The knob now also behaves the same everywhere: it used to return
+> -EOPNOTSUPP on PREEMPT_RT, where soft limit reclaim has always been
+> disabled.
 > 
-> Signed-off-by: Thierry Reding <treding@nvidia.com>
-> ---
->  .../devicetree/bindings/gpu/host1x/nvidia,tegra234-nvdec.yaml     | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
+> This also fixes the syzbot report linked below. Soft limit reclaim is
+> the only caller that runs shrink_lruvec() from kswapd against a
+> specific memcg, so it is the only way to reach lru_gen_shrink_lruvec()
+> and in turn set_mm_walk(), which warns when called from kswapd.
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Thanks, I'll pluck this one as a hotfix.
+
+It's old code, yes?  Are there any theories about why the sysbot issue
+has just popped up?  Should we backport the fix?
 
 
