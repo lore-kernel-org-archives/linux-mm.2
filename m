@@ -4,89 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17516C5AC67
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 02:06:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEFFCC5AC67
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 02:29:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E81606B0095; Tue, 11 Aug 2026 22:06:15 -0400 (EDT)
+	id 954A36B0088; Tue, 11 Aug 2026 22:29:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E31F46B0096; Tue, 11 Aug 2026 22:06:15 -0400 (EDT)
+	id 904FB6B008A; Tue, 11 Aug 2026 22:29:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D489B6B0098; Tue, 11 Aug 2026 22:06:15 -0400 (EDT)
+	id 7F4B56B0092; Tue, 11 Aug 2026 22:29:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A84916B0095
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 22:06:15 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2ACE2C02CB
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 02:06:15 +0000 (UTC)
-X-FDA: 85090977510.08.6A14500
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 76D80180005
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 02:06:13 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ytMh5R8R;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 509A76B0088
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 22:29:49 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2ADDD402FB
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 02:29:47 +0000 (UTC)
+X-FDA: 85091036814.17.01663C5
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D0AAC1C0009
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 02:29:42 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=OawexQZn;
+	spf=pass (imf21.hostedemail.com: domain of mawupeng1@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=mawupeng1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786500373;
+	s=arc-20220608; t=1786501785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EuelHEjJwc9WOENkCsuVs9GnBflpggl6MKv0gvmcy5Y=;
-	b=B3WmuekLLvXwd/nlOEDP7nTeYlFYGV45WrRhLX+o8iXoBSjbi04nmdh1RsOrIgcFj/DGjX
-	g2Nv3Fd5vsM2emph2cfrvesux+gNmgtIhG9y0hz3dySnulXEKAJdjzapu8utBK5HIZkrgG
-	WPFpxlRRBjBSgJtSb/k851vyMDbaLPk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786500373;
-	b=Kta4cHZKavPHCnePTMUMvQCnW9RRJikmxVGjmlsSdrqwFdCtULRyxN7RikiweR5q3y9DmY
-	KyvGZ6hKalphfypV+4Nm30MJv7A6OKDoXyFe/N4mQWpnzvi76nssgdK9Y7JhX82mV0ZL1b
-	Wa+xOvnuSJWoV8jsinYMxa0PTnvsiuk=
+	bh=nbgtKbyUJOoGrSRo0vdiM7TcGb2+835RiKKqbSe5RYg=;
+	b=rmIGIqzowonqx+UQsKRU+pfx5EeRh8tRB9TVtV+81wOo+8K2Hd+0402c5YjX8p8QiQKB4j
+	R0OW7z9RftQQ5v7jQOpMS8aey33jNA6eSayOvM1P9Wmh9d830lkrsOk3AEWK+EP05m4kc+
+	vMdzR/NoHLR2Dr4/c9Io5hVIdLzH3hU=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ytMh5R8R;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D13EC600AE;
-	Wed, 12 Aug 2026 02:06:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 259911F000E9;
-	Wed, 12 Aug 2026 02:06:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1786500372;
-	bh=EuelHEjJwc9WOENkCsuVs9GnBflpggl6MKv0gvmcy5Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ytMh5R8RKS0Eyyxbln39Zr/MQTyJI1Sn1ybd78YJEJiwHH+BeU+ppp/q0pg5Yme2s
-	 8HCjorE6Fg7DBQTsA2VjYhRAABfx3LnbJL4L8yGz2geb4s4N+gd2IPyeRDoJoSqDEn
-	 UlpMNuRaqIKiRl6Zv3XBSZ3vLQggw1ku8tnxovdk=
-Date: Tue, 11 Aug 2026 19:06:11 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Wilson Felipe Pereira <wfelipe@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>,
- Nhat Pham <nphamcs@gmail.com>, Shuah Khan <shuah@kernel.org>, Anshuman
- Khandual <anshuman.khandual@arm.com>, Tejun Heo <tj@kernel.org>,
- =?ISO-8859-1?Q?"Michal_Koutn=FD"?= <mkoutny@suse.com>, Chengming Zhou
- <chengming.zhou@linux.dev>, linux-mm@kvack.org, cgroups@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2] selftests/cgroup: test_zswap: skip
- test_no_kmem_bypass if debugfs is unavailable
-Message-Id: <20260811190611.c72f19ada3912791a81a7a90@linux-foundation.org>
-In-Reply-To: <20260811051434.3805648-1-wfelipe@google.com>
-References: <20260811051434.3805648-1-wfelipe@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	imf21.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=OawexQZn;
+	spf=pass (imf21.hostedemail.com: domain of mawupeng1@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=mawupeng1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786501785;
+	b=6/HMfHpzmFeOBrjont0Zlhkp3RpBPqoWjaFkX0/abueos8+7xu/M3PM2GsatDA6D1jyZqy
+	P1thtvaXJKe5BZn9y8UoT5juYC1cAkh5b3aGXuR7eHZv19AcprHlqCMAaITYT81GFPUS1T
+	Otw743MuenLFgRO3vKLwcV6FIwM6reM=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=nbgtKbyUJOoGrSRo0vdiM7TcGb2+835RiKKqbSe5RYg=;
+	b=OawexQZnUrmJU72zTx2o9jTyrlxX84LbEDQ8kunP2nTQnwfvjM6xC6WJBv16P4/trwqMwmJ9J
+	/a2pfzFt9pKbTuuP51F6Nsl4wvXnwEIJAZV3WmBu7O8NrXCgx3/u3A74X4JSb2vS514Jq4SUR+9
+	02Mk+ggaiN6GWft3+WdqaM0=
+Received: from mail.maildlp.com (unknown [172.19.163.0])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4hKXH31MyFzpSvD;
+	Wed, 12 Aug 2026 10:18:55 +0800 (CST)
+Received: from kwepemj100016.china.huawei.com (unknown [7.202.194.10])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4B2E340537;
+	Wed, 12 Aug 2026 10:29:38 +0800 (CST)
+Received: from [10.174.177.15] (10.174.177.15) by
+ kwepemj100016.china.huawei.com (7.202.194.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Wed, 12 Aug 2026 10:29:37 +0800
+Message-ID: <ef7a72dc-fc5f-4b08-833c-05c4ab416605@huawei.com>
+Date: Wed, 12 Aug 2026 10:29:36 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+CC: <mawupeng1@huawei.com>, <liuye@kylinos.cn>, <hannes@cmpxchg.org>,
+	<mhocko@kernel.org>, <david@kernel.org>, <ljs@kernel.org>,
+	<hughd@google.com>, <mgorman@techsingularity.net>,
+	<yang@os.amperecomputing.com>, <zhangqiuhao@huawei.com>,
+	<wangkefeng.wang@huawei.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 0/2] mm: vmscan: fix scan overshoot and ineligible folio
+ scanning
+To: <akpm@linux-foundation.org>
+References: <20260811070849.1332165-1-mawupeng1@huawei.com>
+ <20260811184241.e423b81c8a50d5f212af1c3b@linux-foundation.org>
+From: mawupeng <mawupeng1@huawei.com>
+In-Reply-To: <20260811184241.e423b81c8a50d5f212af1c3b@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.15]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemj100016.china.huawei.com (7.202.194.10)
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D0AAC1C0009
+X-Stat-Signature: 3j3fa45ft3daeiopxf5wa1a7pejm55er
 X-Rspam-User: 
-X-Stat-Signature: ahe78qf78citfqz5xzghkgewji8mc9iu
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 76D80180005
-X-HE-Tag: 1786500373-898278
-X-HE-Meta: U2FsdGVkX18266zgrdJNyP9kxj38InXuSICCotVwTp1XQO6HezEKXq0vbNo3IHyZCUOLE+KQbyQdtj+x748Z6TWo+niZFjhABTBZhMvPJI5oSjXH8uOxIH1hgmnenodHuM60gOGcktfvUh3LzJgaE8bS9Oe3eX3SMpzyk0I9J0yOf25JGU02oSc3ZCm4lAaWsWNFJI5xqN5ow3w2tCms5ysJSb0KugBLGp1Ze73uhMJIzP+x+eftWscKjj3cyFC2fTLWCvNSsncnPipioK3BLsFiOIODnyZP5zUpZ4Z3j8R+yfVTXI/oOhujAzedEMaS6bDrmDpox+i25q4BCGqnkgTzvTN6MHDtO8Tj21TZFuN/NBBxaIsWP6YxAVYupxxcd16fTcXOQS4sG2TxM4DCJOkXMo7BTfmHJPYPGf8Rosj4IyBUZ8YYLae8BbI3XjBNlxTRhXLBLfZDYCVPmfTXLomEDXk7SvQGwsf1tAGiUtBIOvfTs0LZ4H4rDuvo2g7ZjZGS4LhBAzpmdMPYG3/Oar/GSEPNTZupPGFyuOPMurSG1hUMjq1HAtzdTQndSIBeir3beCEoz+YcpO+4x9Oi3xXNv6r79k8vw2lOOLKzvZVKHW2qAlP2VL142NKh8OCyECEvk/XculVlU31XiWCMZWaeHldOp1/IWn3go5dYnvAbcqswYmm8v3kNz1dKuh/jEvTK98b5fZotGIXDTMEhjJPdeiCyU/E0GxIQ6JRzXjRrCfm6ITpI6cq08CRCOgCJIoryEFJ7z2gNela86eJFd+nkSqvbZCSoEyI5FDPdIJqGNpQnO6sAQwa16NReHRvRmG49kCPPLPEucQ+l2ei3jDcWVHjZWYbTWruhQu5DM+U1QjHtaZ7gReD+eF6hFB6i4fHbJJ40fFlYVia4dY12WNr1tHIbmJ5JCL4v8Kdn9AQdqINopjrCyiz2VesO3lWmvOBjnR0AhZg3pMQBcZ9
- mMs/NMki
- zwg/h87eR0nG/XiDY+nOTqARCaFyQ/OMivq1HkBwghXJNK/fJZkjYPobKFKkDS5oTRpFZOhbfoDSlsl9CM0LbJ3dlQ3hVS0cU3FSbZjXrooRAR5IsZUCSeNhQUPzYER9bbsi7QiP+hAV9ZZNGzpDAJX+dUgsfVIOiRv+4yBmeDxD5D00MwcHdXZFzYlE9IWyeq+2SAsOkfZxuK25zQm/ePu9tQSWMeX+iihaYir8RcqTzXHILvJ7WUjYGXGQ1tbVm6ghEOdgO6SfEv7Gu6e+Cz4le8jcPkUr+SZuagUL2GFcn3I3QAeK176XzuRjpYoOwC17O
+X-HE-Tag: 1786501782-796014
+X-HE-Meta: U2FsdGVkX1/y7DrJYOFNwJbuX48n33pimO2McE7ikRzn85w6MawdYV5VjbjmUcdMmwUbgkHxhS6smXwJ/ZOcKh6IRcnMiirvlkl0MGPuEVokbi1qmRBdO02aTSBzORKaLgJOWnCcBcY/cCgD8JjKxCF6U90l7HX5vBvcCcF9vRR/P6iSRxAnB/mbGcwLDtKyfAOT4jrtD6SnBuns9+6yqXYUDFAEXr05igODt0MqC5+arcz4Ce5JvTYVIcHVlfJ3lsp3QSEbW11M1hj2vPTE5sc/cNDSAN7NE0VXyeV4XPnDarJLWd7/ma5JAfdYnThoB1BofNWLCx/KmqtwHTM8K/fMpaV9DbN+9IGxlk2EhV/uOgHFtbVkONqPFxVkpl+OGgEW7pKi+3/1oVXi6ow74Z7oA1CZpys7zHrg12DPyZ0iE9awpfp/DU5DUkbOkJ/sq1ZOECL3AEXS5AqVH2cKiahL0FVmgqP7DaxFLMNT4FKdqAhrc6AB3fauX8ua4RLp14sl5XucqyO3a1OHineAJfipSoNULERbL7lfgCNbE7SU863eK7nJoG0EH4OF6tl/xOTb4VZuJYsN4IyBb1mH5IXgzWGQLyaZN4ZeFlvqmTWUnVLY8laOxBhAkZU55OyBSiFYBpcjQBCpp1Nb/UKf/axRbVElUWVW/kJL4wR3+w6qhWdEF1TpcuDekZOf4P9Fbg+ZL/MLGcIaTQJUdgawlZR+LEG8HmP8FZkDtURIqitPlLYspMR282KlNyqbzPT1ahYmEAUyD/4TzWFrcx5zhryALeNFBGa8LkCkfOyDhPWUttXNK8NjR9TCGRT3wOgqlfcLaSYLIbJKk4qHLo35kv5ac1vLDl97FgJdDxP/Zgw99n8KLn1B44uEt9DwAz/6UIKOhNoy3TcpqzHpAzZQG+Z+s5lmomfulDZTKiShDV7r0aGyqPos19AcTHIm8RQuQmeuJaThnDbx7mk9kg1
+ nexsXlRs
+ xJKNFH6hItUoP2wscPVtjcvwrrIU4a/88vWRaQkjLaJ1kc+DAh6Rvk+T3eze7+iPddTXzepgr8R8puwqgbN4xQMfvr770eS03s7zWvwN4CSSE/rk4EYyJb2BlYaXRNuB0K8FkP7UOh0AugT4q0FbfU5GXMwAiHn2SikjdA0mYw5mAET81jDZS3m0eka6mSNpU+Cc5hfAgEJrpSwc/egY/gfZFDOnh8AYyUcqL0MxXbUY1NCkCOn7/zVOHIYg361Md4euCxwGEjLJnUTvpih+wzVgHzwARq2D6WBUJ/q740D7f4gW9RmXA/rw3/0W0w41hordwGlzsPY0tKmrS0EAzqou9WCKWAYYaEh2DJi8EsrGdEsTxucZIV2xdzg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,58 +103,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 11 Aug 2026 05:14:11 +0000 Wilson Felipe Pereira <wfelipe@google.com> wrote:
 
-> test_no_kmem_bypass() needs to read
-> /sys/kernel/debug/zswap/stored_pages via get_zswap_stored_pages() to
-> verify that compressed pages are charged to the memcg.
-> 
-> When running in an environment where debugfs is not mounted or
-> CONFIG_DEBUG_FS is disabled, get_zswap_stored_pages() fails, causing the
-> loop to terminate early and report a false negative (KSFT_FAIL).
-> 
-> Selftests should not fail if debugfs is unavailable, and it should print
-> a message when it is skipped.
-> 
-> While I'm here, also add a warning message if the test is being skipped
-> due to totalram size and make the check for totalram more readable.
-> 
-> ...
->
-> --- a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
-> +++ b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
->
-> ...
->
-> @@ -570,8 +571,16 @@ static int test_no_kmem_bypass(const char *root)
->  	/* Read sys info and compute test values accordingly */
->  	if (sysinfo(&sys_info) != 0)
->  		return KSFT_FAIL;
-> -	if (sys_info.totalram > 5000000000)
-> +	if (sys_info.totalram > GB(4)) {
-> +		ksft_print_msg(
-> +			"requires less than 4GB total ram, sys_info.totalram: %.1fGB\n",
-> +			(double)sys_info.totalram / GB(1));
->  		return KSFT_SKIP;
-> +	}
-> +	if (access(PATH_ZSWAP_STORED_PAGES, R_OK)) {
-> +		ksft_print_msg("mount debugfs at /sys/kernel/debug\n");
 
-Super nittynit: "mount debugfs at /sys/kernel/debug" sounds like a
-progress message.  "I just mounted debugfs at ...".  I think the below is
-more clear?
+On 周三 2026-8-12 09:42, Andrew Morton wrote:
+> On Tue, 11 Aug 2026 15:08:47 +0800 Wupeng Ma <mawupeng1@huawei.com> wrote:
+> 
+>> shrink_lruvec() drives reclaim in SWAP_CLUSTER_MAX (32) chunks, but
+>> isolate_lru_folios() may scan far more than that per call on a single
+>> LRU.  The excess is never charged back, so shrink_lruvec() keeps
+>> rescanning the same folios round after round.  When reclaim targets a
+>> lower zone, the same scanner also keeps walking zone-ineligible folios
+>> that can never satisfy the allocation, inflating nr_reclaimed into a
+>> false progress that delays the OOM.
+>>
+>> This series fixes both:
+>>
+>>   [1/2] Charge the isolate overshoot against the scan quota so the
+>>         next round skips already-scanned folios.
+>>   [2/2] Stop scanning once too many zone-ineligible folios have been
+>>         skipped, instead of force-isolating them.
+> 
+> This all sounds fairly bad.  Is there some report?  Real-world test
+> results?  Laboratory test results?  Something to help us understand the
+> impact of the issues and the situations in which they occur.
+> 
 
---- a/tools/testing/selftests/cgroup/test_zswap.c~selftests-cgroup-test_zswap-skip-test_no_kmem_bypass-if-debugfs-is-unavailable-fix
-+++ a/tools/testing/selftests/cgroup/test_zswap.c
-@@ -578,7 +578,7 @@ static int test_no_kmem_bypass(const cha
- 		return KSFT_SKIP;
- 	}
- 	if (access(PATH_ZSWAP_STORED_PAGES, R_OK)) {
--		ksft_print_msg("mount debugfs at /sys/kernel/debug\n");
-+		ksft_print_msg("debugfs not mounted at /sys/kernel/debug\n");
- 		return KSFT_SKIP;
- 	}
- 	values = mmap(0, sizeof(struct no_kmem_bypass_child_args), PROT_READ |
-_
+Sorry — this background belongs in the cover letter and I left it
+out.  Adding it here.
+
+## Situation
+
+We observed slow, unexpected OOM behavior during extreme stress testing,
+and while digging into the reclaim code during that analysis we spotted
+these latent risks in isolate_lru_folios() — the overshoot never
+being charged back, and the force-isolate path on lower-zone reclaim.
+The concerns below are the ones surfaced from reading the code, then
+confirmed by constructing the situation deliberately.
+
+The problem only appears when reclaim targets a lower zone while the
+LRU holds folios from a higher zone:
+
+  - reclaim_idx points at DMA32/DMA (the triggering allocation asked
+    for a lower zone, e.g. __GFP_DMA32), and
+  - the LRU holds folios from a higher zone (Normal/Movable).
+
+Normal userspace allocations go to the highest zone, so reclaim_idx
+never points below it and the zone-skip branch is never taken.  It
+needs a real lower-zone allocator to drain that zone below watermark;
+that is also why it went unnoticed upstream — the 1c7b17cf hard-lockup
+fix that introduced the force-isolate path was found only on a ~1 TB
+box running DMA32 module allocations.
+
+## Impact
+
+Reproduced on x86 QEMU, 7.2-rc6, with a kernel module doing
+__GFP_DMA32 allocations to drain DMA32 below watermark (LRU folios
+sit in Movable):
+
+  - A single isolate_lru_folios() call scanned 32794 pages and took
+    25 (32769 skipped): 99.9% wasted on ineligible folios.
+  - Across one run, isolate was called 339 times, 140-165 of which
+    isolated nothing (taken=0, pure empty scans).
+  - shrink_lruvec() charges only the 32-page quota per round and
+    never refunds the overshoot, so the same skipped folios are
+    rescanned round after round.  vmstat on a memcg OOM path:
+    Δpgscan_direct / Δpgsteal_direct = 2836624 / 112719 = 25.2x
+    (isolate -> shrink_folio_list returns the folio -> isolate again).
+
+Once max_nr_skipped hits SWAP_CLUSTER_MAX_SKIPPED, the current code
+force-isolates the remaining ineligible folios.  On the inactive LRU
+they reach shrink_folio_list() and get reclaimed though they can
+never satisfy the allocation, inflating nr_reclaimed and resetting
+no_progress_loops in should_reclaim_retry(), delaying the OOM.
+
+## A/B results (same .config, md5-identical)
+
+| metric                  | baseline   | patched | note |
+|-------------------------|------------|---------|------|
+| empty scans (taken=0)   | 140-165    | 0       | stable across runs |
+| isolate calls           | 339        | 7       | 48x fewer |
+| total pages scanned     | 343711     | 3140    | 109x fewer |
+| single-call max scan    | 32794      | 3104    | |
+
+Empty-scan 0 is the stable evidence (holds every run).  The
+Δpgscan/Δpgsteal ratio is volatile (baseline 56-26675x, patched
+65-1324x, ranges overlap) and is not relied on alone.
+
+## Caveats and reproduction
+
+  - Triggering needs a lower-zone-pressured box.  To confirm the code
+    analysis, the situation was constructed on a small x86 QEMU VM
+    (1500M, CONFIG_LRU_GEN=n) with kernel cmdline
+    `movable_zone=DMA32 kernelcore=256M` (DMA32 small, Normal empty,
+    Movable large), then a kernel module doing
+    `alloc_page(GFP_DMA32)` drains DMA32 below watermark.  LRU folios
+    sit in Movable and are zone-skipped while reclaiming for DMA32.
+    Observed via the `mm_vmscan_lru_isolate` tracepoint and
+    /proc/vmstat (pgscan_direct, pgsteal_direct).
+
+> Thanks.
 
 
