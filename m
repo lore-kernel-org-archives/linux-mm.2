@@ -4,100 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7942DC5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:38:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D585C5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:40:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6660E6B00CA; Wed, 12 Aug 2026 06:38:45 -0400 (EDT)
+	id B23C16B00CD; Wed, 12 Aug 2026 06:40:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63DD46B00CB; Wed, 12 Aug 2026 06:38:45 -0400 (EDT)
+	id AFC296B00CE; Wed, 12 Aug 2026 06:40:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5301F6B00CD; Wed, 12 Aug 2026 06:38:45 -0400 (EDT)
+	id A11D16B00CF; Wed, 12 Aug 2026 06:40:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C5886B00CA
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:38:45 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9FF0D1C0D9D
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:38:44 +0000 (UTC)
-X-FDA: 85092268968.30.D7BE9D3
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 062CDC0002
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:38:42 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=t3Y5XHE9;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf22.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D82B6B00CD
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:40:02 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 991AB80148
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:40:01 +0000 (UTC)
+X-FDA: 85092272202.10.B7255E8
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id DCB5540003
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:39:59 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VPTqmjPq;
+	spf=pass (imf01.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786531123;
+	s=arc-20220608; t=1786531199;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GFJPppF4fbIjWCaBGjvk/JQ0AsC0fVseKp2Qr4sN+Ik=;
-	b=ghJgENv+qEgbEvTSioJcxngYy5rpy5imZ6O7nj98+uoTqrXDF/7/kOpfeCPMTYkWO7pwgg
-	QpM6Uzk6UbIDrSSKBkVW+61cXNSwdi0w93bVnrAlP1NNRyobLVrRZErVu4ly1iJp9Ztvvv
-	z5cizxGs0mzdYIIsLaoekJ8iReRF9QY=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=f/zbV338bs86RCvE0uOChgTAyhcecT4O06NPuUtGzAI=;
+	b=X88K0RPRWwXBZUXMXkF67HwFL3ZjzleKlso0v4/rVDTmQX19S5kkDKGewvUaBcXMGUu3h8
+	fzuSrQoYWcuo0nXPHj51fWz3J6wUlw0IzK/h42RR0kHEz1vyDAqGaWOFrk1QG3/f5tJcYv
+	a6I1fiKXjYRrmjFTfY4j2pVXtOH81bs=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=t3Y5XHE9;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf22.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VPTqmjPq;
+	spf=pass (imf01.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786531123;
-	b=Z8jpZXIEia4h0K3zvGyo9TzL3jIZQNHlD9uWgs13JVHXlYrKnhnPMuZUc8FowrRji6Klsf
-	CgpZaM2kAIR8KBA1Ml7UQSjgxIp/HKhc5tgFX2Y8iB1nnJTzwXk92WvUeGzimi5GnBntRF
-	coQBFq+jv24OvPRWv3J0lHWx3TBgQJA=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=GFJPppF4fbIjWCaBGjvk/JQ0AsC0fVseKp2Qr4sN+Ik=; b=t3Y5XHE92C5mLGD5RfbigeRubL
-	b+Kc4FqL3X3iJnsjyS3DW2sPcWNsHuICor5owmDZ7jPQS04VKyLDbHXtC7yUnggiINH2oo9I8W9GM
-	Z2devRCFSycAONXrOEos0bGL+F0sKWQSCQdeYHZdPT+xlsTXj3ACx+vtCQVFL1HS9AEoBpiQAjcOT
-	RJ7pzpheFikn50CDOaODuO5eyn/x/4siFS5DhxbVuuW9gr/pY2xHyaHRvN5elt54hd6aAipizGP4j
-	BHrp0MnKrZU13EM1eSGHQDWaZrZP14nsIv2z4JuIHb9eyMCVpubDTnK4HVfKKgHGDRQb0um/14pJn
-	cm/hxhEQ==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wu6LM-004HY7-2k;
-	Wed, 12 Aug 2026 10:37:57 +0000
-Date: Wed, 12 Aug 2026 03:37:50 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Yosry Ahmed <yosry@kernel.org>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 1/3] mm, swap: ratelimit bad swap entry reports in
- get_swap_device()
-Message-ID: <anxL5hXgHBUZMolg@gmail.com>
-References: <20260810-swap-v1-0-375ef0767206@debian.org>
- <20260810-swap-v1-1-375ef0767206@debian.org>
- <a2e220de-19d4-4177-9703-0e8e5c57f269@kernel.org>
- <antOPhsllDia-UVh@pedro-suse>
+	t=1786531199;
+	b=NzAXKKDwDEdsI+9CEKpYLYyCKBvH/Mpf4SZ+8UiVJbWclob6JLO7d3FRAIwx3VesDZ0prL
+	o8fr69awWKjzT3mpYHtTrcwmmrSBmU0r2z6s2ZnXgP8tAu6LSQ/CAU5jViqr18WEP5+5aA
+	GG2QPG8zieJVs8u1h8uUAsxawlpHonU=
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c9cf07d2df6so486156a12.2
+        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 03:39:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786531199; x=1787135999; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=f/zbV338bs86RCvE0uOChgTAyhcecT4O06NPuUtGzAI=;
+        b=VPTqmjPq7V8PgWka1JrGQ6zm4WwQNo7CRt2oO1zhxpYWIOwvFZx+nUN+jMEu+YD1Dk
+         oCEdZI9E039pAi2awvWWVmdHL+Tts2xXbhN4z5R2GiJ1Xx6oFI7ScV3aBYsU/qjsMBVF
+         7o/zHAL9hpbEZP+AI2WJ33P6ojgi7NfB7BbivmdGcJdvhiFCzMvgQ5jFGfFOEMwTfmMm
+         /2XKIFex1FxapQBpzWWYChTDeXqVTlHfEPraff4t5MVMy3wrtxfca2M20aGkp6OCrg0h
+         FR667gzDmArs9+QdsPSCbS165597kTIjEBV9CZWPZYBgVJ1EY/ZizkQhPKWy0nmb61Nn
+         GJSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786531199; x=1787135999;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=f/zbV338bs86RCvE0uOChgTAyhcecT4O06NPuUtGzAI=;
+        b=YsaCQORbnpxa2iIwee8mNAYwe28C5cdOI6TzV3WuRrN5ZqB6d/uDyq4tTn1tmLDM2l
+         gI0LesoyB/WXjuXfF5JGILXlP5yWwh2RI4bY9Yyj7SsUymT3Jj/EuFys5rwTUd2BOZ4a
+         tQ74Hxy4PE+1Ubxh25C6nq1T70GX5iPyWLtANLjozl+wUuWL4fVVBCavZgi/gwQAfK39
+         wreOvHZ8u20ja6sRtYQLL/KJiYggmLCP2fc2EdZoRwMk+HWYC1tS8Rk0BpnPYFbdIhlH
+         aLt4xXag7rXWd0BQb/CGjyF5wBJyTKEcoAksbaoN6ms/VLwJgLTusaskLuLJqHdfX7ef
+         5KcQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq6grQMkY9IkonobTvv0J4aN0iCVTrpPyrMEmBjqtUpkHqhrFW7enDbEQRz2pcynUzl7C0XNklO0Q==@kvack.org
+X-Gm-Message-State: AOJu0YyaEiAVttx5jmk+SM1B/dZld0V4b8bY+mtu0eeZWDRllXPQrL6w
+	XgG6fcIhbgevXZVSaqW/FUkYAkLZwP9yXOQpYFdEvSr7GTY6xGK4ABzA
+X-Gm-Gg: AR+sD11kBHAO8jyx7xtF/nHeui74Um4PrfejL7i1w7MAEhga8ffNcaKrCYf98rtiCka
+	XilCXq4SvMJvdQRVMChd07TYbeRLB44GkOdQx1Cg5u1M0WS0o9xthBUhFskomVRiBNW2hHfmJ7X
+	bi8sef3gjC1R1e/8FoR8uhlkflBDVe5nSMgL8Ex6AEAcSeIDJs0SCOSCkmMzA09KB/d3vGD5ouC
+	8eCGclBqPA0zjoUHodDhP/wDXz9EXRpNWxEOyc7xwH/OXAss/Sg4BYJgjcFflEhEM9iKkggzmxC
+	qNrGp4WMHF8574CYeBLzN6LgIfSQUQozatQfN/4DUDblqCrR17AZ594PFAYl5BAO1acyYxm8jN+
+	/jm3nfPQ9CYclGSyQnWZFagV/MOpebLkrcQnNfRwySC1wHjnh03+MpK1ylBdfDerTL1jjUd4wiz
+	BHJnt3S+NDydf50k5VgA/erV38B2SAqK3SWj4bZcU5IEkudiFQH/G7S+niBZhtUddEyXgEyCOsq
+	wp5Vm6oXL9E+O4=
+X-Received: by 2002:a05:6a21:9cc8:b0:3c3:875d:704d with SMTP id adf61e73a8af0-3cc3f774c67mr4263074637.25.1786531198591;
+        Wed, 12 Aug 2026 03:39:58 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:85a:5c46:85a5:ec7:8aa8:72be])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31cf3d0b432sm9931990eec.8.2026.08.12.03.39.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Aug 2026 03:39:58 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Liew Rui Yan <aethernet65535@gmail.com>
+Subject: [PATCH v2 0/3] docs/mm/damon/design: add explanation of nr_snapshots
+Date: Wed, 12 Aug 2026 18:39:59 +0800
+Message-ID: <20260812104002.15225-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <antOPhsllDia-UVh@pedro-suse>
-X-Debian-User: leitao
-X-Stat-Signature: q4n7umzzfb5q8pyedhfc39xdxd48xc3h
-X-Rspamd-Queue-Id: 062CDC0002
-X-Rspamd-Server: rspam03
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: w1pay55mn1ady5693cf88t8b6hnmn9h3
+X-Rspamd-Queue-Id: DCB5540003
 X-Rspam-User: 
-X-HE-Tag: 1786531122-854408
-X-HE-Meta: U2FsdGVkX18fJI2JKDh5MLBYrW1jnzQYFudJE08dyr+9BmUJ7Kc5k8yKCExhv0GajGAklx0mZQzCKBoQD3cch0MLdRdYmm73V1su8FtbDIio+UScwQsBJAetUjTJ31qgqcGNtcB1KUZq+gBALSDeULAmwNq4KQ56RHfaYRra7SsWHDBY2ntpIzQFRwaAhIHUiQVzk4bLg4sB7amI9g7MaMgVs2lVhHRUFLSIDK9nqZ9BlHQ7+cKd+MzFLv8RT/kq1uzsxsDYPxb4c0iW40+ZenIN4Gu0YH98nmnYgTU1WJGQyw3hEgRZtXLI2AEpaqB5LVl4NBLup9S4Ikbrt3xw7wS1KXUEz8nE7rmdo0l58JIlK7+GZvqPo2Rglm/28eo19vwrI9L91stePZWtM7Ef8zhgnJ8IrB8EwWuTBl/z9Lso4VlGd0gmnFlHq8a+w6PiLE/yYK8BY35L7dORWXlthIdZsfO8xJ7KElBFBRt3VW60Bx9AzvG7WAvghlutH6BvnasauZpjVRPCqh4zDjV/5FXGD7g9rE20xLAeyRnl0BFCv0fnTXABPDDqdcorqVxgVB5thdqETCTveb2Ve9bWuzOqNCDFyoxwqHoSPg2SQCWRZGCkATkufSPy5MOcveFlYifRFs1YPAXXj/DNlKsd1ROQ15VnlclpuzFCMTM/avOzvV+B3o/lh7x0/60I2Z9yRjpDi9XvQW31mbH0svF60D3QFquKjiWIBTSEXlhGkKmczQO4ZVkmTbBlmgYN97FewB5XdE8UE4ecamdZI4babufLX1df+p0hvgY/tpYujVAQ7ZHGK9p/NujBJclQ8OM9KdPtmSNlwZPbN+9qkpz0y/IntTH0G/pewK2le5vom103CPH0HZFgAeyglsX0j1tQV8IiHeL+Sx/2uF+aIL8GI1ZtO64hi1heW+T+A64PmmoLvq1NYrJvU69RIpvjCPr1zVxsEns+43LySDDQQyD
- SGibV28V
- ZXRdHywZ3RGj6K+kv3juZAS4esHALAsIuQmjaWynM9f7YtMUku3fvB4XGgYjaTb/1pFaXjE/0xkpoyWo/nnwX1C67K5xZ0uyK6Wq41nQDZ4JCnJvwZhg+HeyigKyIztPLHNfU3wIuAkd8ieOx74Z85jEiyO+feIomg/j+sTE0jOk+R9aGp33WJJQNvZJjrHW/UR2AlLn27o5qTZqtPtyfYyO8PQSSh58FhuIwLR5MnRDTkhKfagtBbu5jCyygRlN9FP6amMKZGnFCk0u+hBxlKkdadBSlPJ+dRvEXaira14QKl2lkF/8UHCpeHGKqz332N4Og4SOsLjYS14I=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786531199-612517
+X-HE-Meta: U2FsdGVkX1+w6KRPYffDXa2us+5ovNddcKrX7KZpY3NOUxG9+BUcv8yaaWUCEPELwr6ZXKGwJxjvjmybp5yj2u03zhwWZQ29Y04mUR84k1ttGR3g/Tz/GJQtAVNeth4msLfV9k1GtbeGoVFpuVfVDmX8mwTApk1s14FRwVM4xLcAJWOLBY9rorPVtO3hJ8vUhljqzxUNsH6rouzfOMs+RfFoCYCb8Xd+nFA1y/XUwdeB037/OioDaF4ztL1PSf5wyKW0twchtnDcQtwane3RwWFB61xJyVGi/itCFBexfkyOFyl8IAcpOFg+ltQtuddMg2lgq+9ohCmUYQwukTsN5lK/8klVQkcocicjXhieG7qWwraHj2BnhHSVqeZXLR71tc3g439NWw6/seYxRJ5Ijy7iTDbC/gBe8bEucEwHk0JsS07KMXtRKw4Ko7Bf8+ADF7l/iHuZb9xazR4wcMWauYfoNMFYEU51QsKlRfmY73163+Afw8MHZKG0w6Ti8oXxCG+EHlY5JrD2W0oXUKwouJPbONFeBBX9NuvMkbQkOJdfSEWK+tykBJsmeV//vbLQrAOoQYEG7tYMM1Nk2x90r3Z/gpZGlxpiRbJ0S7Ao4D7rawFFSdhWEr3WkXT4+YHITRC66e6FP+RWWwhDnh/8T5GJB/0NVTcM0YyPIeKX/XO8qbV45oLjhYpNo+3wqkxgRI//rAJVHkSCYFtcyR72oJb8jZd4294K87/mN+TpmC5wZCs+GFDL4a798HYqC5/326TvSoBNo3hNDCW/xWCqHNp34rsUuOnkdEFhou2kB8tOUyPeuTdq3GuomkjT1dfYA7tE1/eUDOge0zYRsjq0RTM1aavtHWil1NHKQGVxv46kW8QpfXtTSW65KeZJaClvKX3l7PxRCbY+4cjez0j1eQ2BffE8nuHmNWbTRkuJTpHgkERr+M5pLa2yKwTasEczZ7rjyYYz4jvmv//gEoi
+ Vw1IROwc
+ umqsvob9JWGmYmJgC7fZoa+4Ji+vuJlGBMYOgBo/YYGrzA5nrrhNRkqcBdtPsZxoWXBb20+49eKsvaLBrKhIvBWXMOpTU1EYRNJ3D6F9/7VJ892RRvAlA8fnvCGTniKZpdJclskERs8Mcdry/pgG1zlPRUTm5abDwAue7EpGRcOIjg1lc4yKxNwEMZIxl2m3bccGk20ENgrUnL0ryfwwPV78WZPftPxFU7KR2VFbGgjxBTTiBGp+6CRQD7vsJL6UmdnddqejwlyENGFqfEDDiJQvRIglnGMrBSG83BAImPHFxGwM+AM9CqRZ2Lsmuy/fcy6dtB6yiwAVs4wm8emvabslefg9G/hi52DXNWpwa0Yef1kHC/YzIQTfLVpDD5Yv3KfGLKTzEarvD+D9/7XRClnK1CUTpLw0HBnd5BVCDwfelPdKz8ba4+ZVhLkKwu+mUm/ylgxX+f4r0XrmECmao6GLurh9wQ8A4/Ql9m6N7UuVcm1+FY96pBimfAGzCtu2wpA0Wb6tk5BMWx2w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,18 +128,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 05:48:52PM +0100, Pedro Falcato wrote:
-> > Couldn't some of the stuff you drop here (different entries) be similarly valuable?
->
-> I think we generally do a terribly lousy job reporting these kinds of
-> failures. Would be awesome to log this elsewhere, or possibly send
-> something like a SIGBUS to the faulting process, for instance.
+Add an explanation of nr_snapshots to avoid misunderstandings.
 
-That's precisely what the follow-up patch in this series handles.
+Changes from v1:
+- v1: https://lore.kernel.org/damon/20260811101841.804596-1-aethernet65535@gmail.com
+- Patch 1 word order adjustment: Repositioned "completely" ("tried to be
+  completely applied" -> "completely tried to be applied").
+- Patch 2: Use two spaces between sentences.
+- Patch 3: Add the "Reviewed-by:" of SJ, because he added this in v1.
+- Patch 3: Make some minor modifications, Patch 3 can be applied after
+  Patch 2.
 
-Patch "[PATCH 3/3] mm: fail the fault on a malformed swap entry instead of
-retrying it" propagates VM_FAULT_SIGBUS all the way up, so the
-application gets SIGBUS'd instead of retrying (and re-printing this
-message).
+Liew Rui Yan (3):
+  docs/mm/damon/design: accurate semantics of nr_snapshots
+  docs/mm/damon/design: difference between watermarks and nr_snapshots
+  docs/mm/damon/design: fix typo of max_nr_snapshots
+
+ Documentation/mm/damon/design.rst | 7 ++++---
+ include/linux/damon.h             | 5 +++--
+ 2 files changed, 7 insertions(+), 5 deletions(-)
+
+-- 
+2.55.0
 
 
