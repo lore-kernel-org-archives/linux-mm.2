@@ -4,91 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79BF2C5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 22:50:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33310C5CFDB
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 22:58:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 378126B017C; Wed, 12 Aug 2026 18:50:15 -0400 (EDT)
+	id ED1026B0336; Wed, 12 Aug 2026 18:58:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34F7E6B017F; Wed, 12 Aug 2026 18:50:15 -0400 (EDT)
+	id E82186B0337; Wed, 12 Aug 2026 18:58:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28CB26B0182; Wed, 12 Aug 2026 18:50:15 -0400 (EDT)
+	id D9AA86B0338; Wed, 12 Aug 2026 18:58:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 09A496B017C
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 18:50:15 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6DF0680465
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 22:50:14 +0000 (UTC)
-X-FDA: 85094112348.20.5C70765
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 375E720004
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 22:50:12 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="qZP2/two";
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786575012;
-	b=GXJpVbLGAZW7BljByuprWQczCvp7F1nyAcpE6GQKxXCHaF2KBHzOD8oRol8onKFtzpcmPU
-	ZT5UFWPpQKnJpMFfP1J54o8nF6pC20aik2JLmiqDbRHtbjTKTV95nqqgM4r3zQZ3u9zDVa
-	hKlucVKQf+hrQzuDy6E4jPickHMG+pI=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="qZP2/two";
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AEB786B0336
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 18:58:34 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1E64AC01CF
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 22:58:34 +0000 (UTC)
+X-FDA: 85094133348.28.4D777B5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 559C3A0003
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 22:58:32 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="pw4B/tZv";
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786575012;
+	s=arc-20220608; t=1786575512;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jX1mtHvsVWE4pAYEkaJGnNdeV9GfqdK01h7t4lsHXwE=;
-	b=A+q5aPBl/4zFF2ptGJp1psJy3HgCbZI5W+ehBW4vAv/1+NGM4ELaq3rw5bDU/uSODMyA0B
-	bW6XiQVtW8ZSCPhcD0shx1oeOxsF6tkBDE1zOcO09Wp27IhAnx8sRw8Hf2m3n+S4f2uj97
-	dao/V6BZJqIbKDFX3KuZ0nyYpiC0o+E=
+	bh=Xs9kYarR6shzvLO/ONqDC6uphwPH8pJQ2AhMCAQ8C+8=;
+	b=tZEA0wMn1G4IyowHQAJ+x1FtRuesQ8eCdOS1Ur2P3uCqO31tGPrWM7NyDUM1/d84lRGEio
+	pjy3DuzoiRTRbNgBRwcsoTM3bGmkeb82zROmxdPpnwg3icJZ5rapDsYDNZo2wCysfAdDMp
+	9L/4Nb6P8T1G6Pfh5vdCkqUvLJTC1L8=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="pw4B/tZv";
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786575512;
+	b=TuizAAYIO0b37OZjkJmZucJu74C0wRFZxl9eJ3C9AYsgttfaNIiYpJf2v8ITH5itIIxs7D
+	HBjvgab9C+ZUsnkfY9VxaHzJBWpCI0yFh8oC2+CBkkUL2LPjI1963Cl+uerawk16wyKBvn
+	1NO93A3hMFoYmErLoPdpQG2x0JSEgdc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 73C99600AD;
-	Wed, 12 Aug 2026 22:50:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34681F000E9;
-	Wed, 12 Aug 2026 22:50:10 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7152A40444;
+	Wed, 12 Aug 2026 22:58:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B831F000E9;
+	Wed, 12 Aug 2026 22:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1786575011;
-	bh=jX1mtHvsVWE4pAYEkaJGnNdeV9GfqdK01h7t4lsHXwE=;
+	d=linux-foundation.org; s=korg; t=1786575510;
+	bh=Xs9kYarR6shzvLO/ONqDC6uphwPH8pJQ2AhMCAQ8C+8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=qZP2/twoQ3M6TVc5K/4I1BejDEiVV/5s1xxUZWr+68fh1f4NGuze+uNFmhKGphuwS
-	 IDWzhDdhQucWY5qGffH0ue8tsfYipYzw11nEWRJfDAk1JemHr5cN6Ug+Ox+bZbNgOt
-	 GBZUmjLQXGzvtRqw8eYb/ANowk9aWXMTDNKByUmM=
-Date: Wed, 12 Aug 2026 15:50:10 -0700
+	b=pw4B/tZv7K+RDI7ncSfjgc7Xoms5biqKDoIU6JHPsU017gpdwrF1fdqRBvNZ3xhaA
+	 9D53P3RktGoUn1C64cj31m5I+GDEkbCHE5Y49Z6o6U1yellQZkMngVS+R/qhccSKBM
+	 5aHyOgxcnaHBPcBncentvbCUzc8rxjSxGdo8RiC8=
+Date: Wed, 12 Aug 2026 15:58:29 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song
- <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>, Lorenzo
- Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, Qi Zheng
- <qi.zheng@linux.dev>, Barry Song <baohua@kernel.org>, Axel Rasmussen
- <axelrasmussen@google.com>, Meta kernel team <kernel-team@meta.com>,
- linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
- syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com
-Subject: Re: [PATCH 1/9] memcg: make the v1 soft limit knob inert
-Message-Id: <20260812155010.8710b4a9191c9ee4ad6da255@linux-foundation.org>
-In-Reply-To: <20260811203203.3456029-2-shakeel.butt@linux.dev>
-References: <20260811203203.3456029-1-shakeel.butt@linux.dev>
-	<20260811203203.3456029-2-shakeel.butt@linux.dev>
+To: liuqiangneo@163.com
+Cc: jgg@ziepe.ca, leon@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Qiang Liu <liuqiang@kylinos.cn>
+Subject: Re: [PATCH v2] lib/test_hmm: fix garbage pfn and wrong direction in
+ devmem fault debug
+Message-Id: <20260812155829.43ebf2838420b8dcab83f55d@linux-foundation.org>
+In-Reply-To: <20260812092856.55296-1-liuqiangneo@163.com>
+References: <20260812092856.55296-1-liuqiangneo@163.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 375E720004
-X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: n6hifj5534dyncqy44hwhpag8iuf69cx
-X-HE-Tag: 1786575012-687480
-X-HE-Meta: U2FsdGVkX19CuI9WWZmgcZOGA5R2d7F8HNkU2gc7ELna8TDSqzg6b5Tj3qHzcyTNdDXENFuRY6H9tlWOG2EbhLgZ9veHbEZ97Wo9IakNZUKA4TWvdzcOCbaIucL+rPpPyH2f7c/9blLT93GhSd2Oxy2/qLHXPtDIMaQQxUNpBzBPZw5nszCM9G5w1R4OdGm6FSamqtXy9qTP3atyFrWlV88JKQ1ctzz3RYJsJc0ESac5KTw5bCrya27B6yfYNQ8wIhJ/CsjkqP3Wk+4YeC2h3sSEhj7WbDmreXudGlbrPU+oc+ninW6TKvqQ/AaszVQZzt8Jvl373k94fvnkot6ff/VHcuSRlp5OlT8NTT6Vrtgk3yZs+tYX24mfYG1QMf84oj1I9buWCHjzMwVmB1ha/StY34pPzrJNUk9+70zBacptoaHLsUJiwEKc4dJ7vTBmOyjfmyROI5GaqBHMLkwiSoVlnNelgef8FofcjRemLI16t5YLcKfsq/j8wFtMSZu5TuJ9RON6arZyyaKO35z6ygNEo0xrpl9EiKXE2BppflQK7qXN2TjaG4KcmNwbLvFQi5ZCbGYPCYRghcZ1KVzDuRzuhU6zYP+020gw2NxQ+XwIWGLoDR17zDbf3R8ZBVHvSjgun4gms0/uebRYZiHAuVH1rDAi6sohicdytyb08oUv+YhyXROXcDzVD6CgJA5B+Zeml8eV9mmL47+0IpQN8Dptv71ktxe+EmBUISZy+4sN8vcJs6Y/mUpGshlhTT2Jp1Uo5OcUVQpxaO02vr79J4DApwzu19GP3K39ZzlWhdxexurHdEmGC5iMe6ube4GOy4qdlmPADEbb41JwbdnfDEP5/7za7kP7wknbF1IIJjF7Ac8iNZfUJ3wvvSQMJfSbOu2xp630AUZxwFKT0dZSaEaStqrLdVqx9H1eXsrX0JYpXoHrIAQ2Yo3fZ29GRv5QdteJWBLO7XKO3I2l2ae
- MWwTHSL1
- 0MmZQnnN9kitchDPF3i6kNCJfp73o8E7cj8S9bAdH66NgofH1zbCPG/XtO3nFL0gLTuzbJgIMm/Fk5D+aWOHOVrW5TenGUTHyJVrovXw8hJurHTpQbRGtenN0IjahvUiAiPSu6Sw9hTn1Q123GG1eaC9lEHKWPsR9PZfUdxfcu8xw8/4IP5L2K9O77+iqGmpIGCpL8FBXrHYSkL6sSRqoGv1NwtukStS/Jjw233oIVdCFNa98J9Y+N8SeVOuepjIlrizfx9qMKi962Yl4emPd4zCMZp5X7+9QuVLYldE5jXVIHzN69qaCu0DM2tCydFFMyHWRHgHJUm3hL1TIUy6uTh4Yn4qNizvJmcOyOB4AffmMegneBN3bMNOUY3zMsmaFJVt6
+X-Rspamd-Queue-Id: 559C3A0003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 3am87fcq5tp1g9h1dgaxzsxnyxtzxz4h
+X-HE-Tag: 1786575512-575389
+X-HE-Meta: U2FsdGVkX1/HbWLKanZ9PF46BXC242sGFvW/IiFskQh6TGHVxrbe6czBkWehr+x581rhj0X39LiIk/BVADTpndOOZV4Hocif8dEGY/WU8NQHEMYjwOE0igej9PDmLKJORi7HOampm7jc4xL8CpplRuGUIklZPZgttJugyHZ0oHhb0MyNOF/OlXhkh0FTnSBs7Vaev8sk+P2hZ0mysM/DpuvjfgaZwMm195qmzj9IEf35M6+6MyckhrM34FK3gLurbgVA6BlFlTzspTqvLo3tAgwoFZri+4ACZz0ERTyzhG0GKs/UKpX0udv5I1Q2D4WYXynbnwghWbSLFJMg4lpK4Cud1PWlymHRxvBvtc7iTaEbTU+TqMY5kCIc0BVjjK5ePN/2V+qAmaooNBYHwQXkMjicZhMpw1hTogbSkyc3IROwjw2DAWrmAPP1H6RMASMcDM142ocNkjGVyqO9yvZzU+4hNFB1y5HAPGg+57cwRGLtNBxm3zK3KrLuBTl6pywMxzY2JliO/Qi+Fsv2LC9p3Jf3tFnUjJKAXBfJOKT7l9UbTwmtg0n6kuT/LAkne0+kZWGeSsqU1UGcbekqR0g26723dhGnMIIU3PGpulzSh+puXbo1OLMGw+qAnnVpOmzSSHIO8O0ZEeTpXxhHhQAwoFXPyNx6IPtrhstdTo5siID//Ce7btx/z4WA9vB2TBNtGirtxtMbdt4Y95hbD8ADeqF3zoHEh7RHidpCYfvCyjg4LlGX5i2vx0xJc9mTE9Cn6fBbGe4FuVNDRR4jrHuqjLapbPDCQuODcdpIkqxYAorQbLCUcviLBEk8QV0yZc7Dy0k5+Bg9Jy0p65s10iAp/zymojJl/4Nq4eWjEOSiV/6Ng/KYfZWNt0X8bC9cUYJZIZPyLfC9ujxnItA8KpZgMlJ2tyeGrDX2/lDsUKAVpv3ufszSZJq04fji24PfQ9V7C1JAGpIt5ZxOUcZ8O5o
+ YCbl+qMq
+ 4h7bICEg4NHJixhSmHDeUkXxTQbB+EjO2NAUshIsyDP3EoN8MesN8uae5Wkaah2f+LCxq1XeGsifhKcgju1uVOJHRtvduvpukEUOwMn3nW7heKm8G8ojRMkHw/SkDA4c1kWGpeIVXK2eS5x796zpV5Cv25zEomKKzpbsIXbI3HupcpNSfdHLEXLb6Gt3kX3Aq387ARrxsXsFFh3G/Ue643YKS/ChK+Xwl+o0T2ZJ924NWAtItQeKiUgOZbKZipEboKGxWmDAeb1ZGvTtxy8QJ+qPWzaoa1dkAFUoxK0cwxESIw7mb/GrQjzUqm6kVlI+jbOt0pTkVO64P4H2odK70YXEcr1hbGwgRMOw3K/0DeR8fKKKsNiRXlGaRJXNxH2maeo9e
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,27 +90,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 11 Aug 2026 13:31:55 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
+On Wed, 12 Aug 2026 17:28:56 +0800 liuqiangneo@163.com wrote:
 
-> The v1 soft limit has been deprecated since v6.12 and nobody has
-> reported depending on it. Start the removal by decoupling the interface
-> from the implementation: keep memory.soft_limit_in_bytes, but ignore
-> writes to it and always report the maximum value on read similar to
-> what memory.kmem.limit_in_bytes already does.
+> From: Qiang Liu <liuqiang@kylinos.cn>
 > 
-> Writes are still parsed, so malformed input keeps returning -EINVAL.
-> The knob now also behaves the same everywhere: it used to return
-> -EOPNOTSUPP on PREEMPT_RT, where soft limit reclaim has always been
-> disabled.
+> Move pr_debug() inside the `if (dpage)` block to avoid
+> printing garbage pfn for NULL dpage, and correct the
+> direction label from "sys to dev" to "dev to sys".
 > 
-> This also fixes the syzbot report linked below. Soft limit reclaim is
-> the only caller that runs shrink_lruvec() from kswapd against a
-> specific memcg, so it is the only way to reach lru_gen_shrink_lruvec()
-> and in turn set_mm_walk(), which warns when called from kswapd.
+> ...
+>
+> --- a/lib/test_hmm.c
+> +++ b/lib/test_hmm.c
+> @@ -1151,10 +1151,9 @@ static vm_fault_t dmirror_devmem_fault_alloc_and_copy(struct migrate_vma *args,
+>  		if (!dpage && !order)
+>  			return VM_FAULT_OOM;
+>  
+> -		pr_debug("migrating from sys to dev pfn src: 0x%lx pfn dst: 0x%lx\n",
+> -				page_to_pfn(spage), page_to_pfn(dpage));
+> -
+>  		if (dpage) {
+> +			pr_debug("migrating from dev to sys pfn src: 0x%lx pfn dst: 0x%lx\n",
+> +					page_to_pfn(spage), page_to_pfn(dpage));
+>  			lock_page(dpage);
+>  			*dst |= migrate_pfn(page_to_pfn(dpage));
 
-Thanks, I'll pluck this one as a hotfix.
+Looks OK to me, thanks.
 
-It's old code, yes?  Are there any theories about why the sysbot issue
-has just popped up?  Should we backport the fix?
+We could just remove the pr_debug.  I suspect it was a development-time
+thing and nobody uses it any more.
 
+Your patch prompted Sashiko to find three possible pre-existing issues
+in this code:
+
+	https://sashiko.dev/#/patchset/20260812092856.55296-1-liuqiangneo@163.com
 
