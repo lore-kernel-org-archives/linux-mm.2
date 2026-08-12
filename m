@@ -4,100 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6F04C5CFEB
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:50:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3D3BC5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:50:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBDF26B0128; Wed, 12 Aug 2026 06:50:46 -0400 (EDT)
+	id 173FC6B0129; Wed, 12 Aug 2026 06:50:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C94EE6B0129; Wed, 12 Aug 2026 06:50:46 -0400 (EDT)
+	id 14B246B012B; Wed, 12 Aug 2026 06:50:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD2BC6B012A; Wed, 12 Aug 2026 06:50:46 -0400 (EDT)
+	id 039FB6B012C; Wed, 12 Aug 2026 06:50:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A1F236B0128
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:50:46 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9AA39A0298
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:50:45 +0000 (UTC)
-X-FDA: 85092299250.25.2C86832
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 0D58B1A0007
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:50:43 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Kc9CsGgZ;
-	spf=pass (imf19.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DEAD46B0129
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:50:57 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 81130160245
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:50:57 +0000 (UTC)
+X-FDA: 85092299754.03.28A4D23
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 73C3B40002
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:50:55 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oGoittdM;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=scBGa8Hd;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=S6lOfvp7;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ZThrv6N3;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf27.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786531844;
+	s=arc-20220608; t=1786531855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9tOd6PpRPU/jaWpkEZh0iLAEcStPnZBl4J+E222fKyk=;
-	b=VC2RxP5u/AubdM5eePtFMjst1KEMDRulQ7pQjCyUfau9thaXw2Gg/oyxJaF422IJX6ugKI
-	VG+38u37AyKXHW7zmR3YIE4ACflGUYc5vmiWorbvCx5qdQM1s99iWJeJpUH1s0MHX+M5P+
-	gtvE8SBie7Lt0B/1cgC7+vCqzrvzPIU=
+	bh=YtE6Yx2HNNmNt17xsrGAWYsQEss7hpz4O8ku3vflf/Q=;
+	b=6Yo7DtNAyp1p/naRQtgrfk2X70SkG7K+QuoQ18TKtTOWhlRG4jYUJ/GRqXRNgDK8K6Y6b+
+	OA9+D9vzk6kuawVe8DlwGd27lt/ig097ypm/a1jAla/+q6sOY9vaBU2SMVfSIgs+Ygy7st
+	tYdhOH4FQL3sItSRcrOs0LFdYtRGPlg=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Kc9CsGgZ;
-	spf=pass (imf19.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oGoittdM;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=scBGa8Hd;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=S6lOfvp7;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ZThrv6N3;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf27.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786531844;
-	b=we5GxS0V6KZgrKOjoPOQw9dfkTY782bgDUxUbU6hn79oi5hE5YdjB+H1rSaeDbpgbGCbeu
-	CgqP4WDzMIkVciyym2ylOxKdCJVoPZLEaH53tuyvkmR9hDhkdruVNZIX2oxx+xw3E6GUeh
-	et+rguiP4Uu9utS4rGbInvU8KDL5rw0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=9tOd6PpRPU/jaWpkEZh0iLAEcStPnZBl4J+E222fKyk=; b=Kc9CsGgZuur17iN2D221RDMhj2
-	DcexZeEvhqKDDpgjdujdSRXnMZLhifzhaXSCbWHPYOXR5gr2xPoR0Ba95YP+I4OAeAYfEOGA3io/e
-	lNI9WWre2RHJC7vsBTKfOHEPZEHrX+CSlvG5J9uf8CoutJSTvvWJADYAYga5Qzbu9fRRaIwzIjBbT
-	D7tRC3pjpBMaq1NpTybBB4vXcOT7v8iOnfTmTLBeuR34EOyGgB+s0NC04cli07ynOByX4Q1Nk8CY8
-	D08zHJXD3i4imeKqH072dHxuOsfeBm2Qv7IefHeign633Fm0ElYMpRPN3311ONIEU/+Gg9zMge3il
-	tTNP6QTQ==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wu6XP-004I1e-0a;
-	Wed, 12 Aug 2026 10:50:23 +0000
-Date: Wed, 12 Aug 2026 03:50:16 -0700
-From: Breno Leitao <leitao@debian.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	t=1786531855;
+	b=mNqThKLq4Dc0npc+Jo78nVnhwi36KMW0vCKqUZ4xFd5Wxsbzhl5vdg4KZ1UI8EYMHEddYR
+	RVKeL+ThLYPsmd4wrph16cldRmoG+8eSzxaJNrO0rFJ3Vxcb/VESxhi1aifnIqGHP3tPmm
+	hIZK7bj47JJ2uXPD5pWGdtNEyBYJSYA=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id BB2928224D;
+	Wed, 12 Aug 2026 10:50:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1786531849; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YtE6Yx2HNNmNt17xsrGAWYsQEss7hpz4O8ku3vflf/Q=;
+	b=oGoittdMDb3ThZvRf9L1kywp8nX5c9YIpHpax1LVFmkCKJ/In4n/0Ygc/Xjw7/SKJTmajr
+	uGuV7XOPMslMBITAr1DMpUkxlzVzSuqdKiFEMeXYuHwYshY9v82nSn0GWQlgP0bREyMgSI
+	0ieE0VYNKXZYIQ/i+qeB6x876ZZc3U0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1786531849;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YtE6Yx2HNNmNt17xsrGAWYsQEss7hpz4O8ku3vflf/Q=;
+	b=scBGa8Hdhv42zKidMn+WeSsbTq5cPNn1R7LCXcaN/e6Hyv5R6sPYvmQwr0H18rTxV+IXIq
+	PJsEDctSqTppAUBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1786531845; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YtE6Yx2HNNmNt17xsrGAWYsQEss7hpz4O8ku3vflf/Q=;
+	b=S6lOfvp7PwSIadMy+hGB33tMwS7ZlFJWxQ6pJxyIe6pdv00uAOEPXCk1wM9y+ku/nzlKMS
+	mbFmScm8JP0jVBGCgGV4Bijfl1Rngsjcpo5PL2M9W9befArJVGYLxRx0Godyn4pE7X/aq+
+	rSy++d8SP6cLkc1JXsUxbwvlBZoWpro=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1786531845;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YtE6Yx2HNNmNt17xsrGAWYsQEss7hpz4O8ku3vflf/Q=;
+	b=ZThrv6N3Df9nPUuxRFgXRoxh75MI9vcqRejU99vJTmvLzwHIUnPYc2Xbp9Z6UxIHDCICRX
+	OkQoUj/Er1NNuIAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6FBCF779B1;
+	Wed, 12 Aug 2026 10:50:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id JNP5FwRQfGquSgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 12 Aug 2026 10:50:44 +0000
+Date: Wed, 12 Aug 2026 11:50:42 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
 	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Peter Xu <peterx@redhat.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH 3/3] mm: fail the fault on a malformed swap entry instead
- of retrying it
-Message-ID: <anxPuemqdGrQQ9xS@gmail.com>
-References: <20260810-swap-v1-0-375ef0767206@debian.org>
- <20260810-swap-v1-3-375ef0767206@debian.org>
- <8c16339b-6050-4a5e-aa89-9f2f96e7dcb4@kernel.org>
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: Re: [PATCH v4 5/7] mm/khugepaged: Refactor the PTE state checks into
+ a helper
+Message-ID: <anxPu3TBiI9bi53x@pedro-suse>
+References: <20260811-khugepaged_pte_refactor-v4-0-ddac39d61c4a@linux.dev>
+ <20260811-khugepaged_pte_refactor-v4-5-ddac39d61c4a@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8c16339b-6050-4a5e-aa89-9f2f96e7dcb4@kernel.org>
-X-Debian-User: leitao
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0D58B1A0007
-X-Stat-Signature: 6dkgjahnx6x64goio1x1p9qgrqk9axqp
+In-Reply-To: <20260811-khugepaged_pte_refactor-v4-5-ddac39d61c4a@linux.dev>
+X-Rspamd-Queue-Id: 73C3B40002
+X-Stat-Signature: j5bappxpdei61ajxr5mh191dq9wb5njz
 X-Rspam-User: 
-X-HE-Tag: 1786531843-28998
-X-HE-Meta: U2FsdGVkX1+sO37sWgCGT9Vxk7O0pWEQJy+d5sFFNbd9aInm0qfmA7orilUhWoD52oB8TaDnOIhfzHAdHTiuQk+zDpZhCJGLhL+bcOAFZZ3kX4RT9qIifrQLZNRxqLMpt/f0ctf9pzCMLuddoCnhA5IRthm07MD/xx4Pzy/Vomi55l8MafQvBYaB0YPpk5mC8KAkiRfmDXs39hF3l4jKGtBIYmhb25zvSpzmOUH2ZV+vN6aO7N2cHBSVhRqM3R/LpcJjGVoweMvFYTzvvejrFmT6prgnM+CZTY+d0AWyadBzw4hIsFjSAwR9kLMMfYToEOUmQe/nY50fwOL8YmFKJDQwDuevr0JvjxfNeJdO5gTcvVaVfTNnrOcJDJ9v0lToV7YFot4zNSlxFtKH+BAjpSX5hMcrl4NEV78Qu+KjPBHz/ay1vZ2UOey2D96qrzQBSVNKNuhGJM/yE5xs8ji++EcagpsOvhfQlmvh+sC/gOtDaBuvOBMC9/vZb09tyJ/iqkzRQt4u1Zjm+Z/GpTnSKYhOF0nAkqNxB34k+nph4EowmwULENgEIRITzx9ZEFW/2QekqELQ0PmBIJf+uqFgVYLRIHGN7407h20AE3eyWEpEvTIl7TKEhDzLtfNY0O2xl2t3qEfKHRl41eWHFGBlzdf3XZ2cDlch8RCWzbE1DzLTRnOhB40Cd/htGyOu59zWx8qP3hxm39Ys8A0Gwjz8/0nspTY/N1YNsVBN6nA/0qJaF/v63RRxmt372KaJpMJkNUI/9Yk85pEh0SajFgGMf/7tPj5ZULR/G5EzwNiSGwvcJB9FIEJ77b8nJUrKG1ypjeWicCTQFA9pd7PpfnP5dfa2DoNHdpiMfA9z7mbRitIcY9wTkh6vp1LW1SLRVUjFPIzzABnadxZigHF18u8zmi3ydX8pYHvE2acvat4eiF08wInCwqdsVSrlLx/HgFN+0QBG2ZDwPyWFdpEw9vC
- QDR3O4Uf
- BL80lePYYGiJE0MCaXUP5PxjQeJEnI3Xuc1afEAaupja3RK/PF7ZlO5nMGB+C57pLMybMERT9YJNcQeiKeoJULfsPX6f2jrb0TMZpWx2CNcZJ18C+t9Fb+h9Ngwm0fJ7BfIHo/vu5IfGfDNVcncYC6bZjG7HOQd11DALOCmOBW4rWEwmRRMe+ykjZclDQeBcbnMK05tBEJR39bXDSOUppue2DjAbYI3qq1Q3JcFZAjo07jCXGeW0twG7TXvB4NMRKWF1l
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786531855-921608
+X-HE-Meta: U2FsdGVkX18hrBrVNu+T7ic6f7VdIkU5Lw6sewWCm735HLQJvcxhx/kdkWdHvkscUkhX3l7tPVfv9jvsZGmfcZLXujOkO14LavEQ4MONZCDfUhRKzOQFAG2z8CSlB9dIOT9YV4K9Xgpk8Ev9tEokvl4v5Fe2bCCSRuprk8JHcxNqyCL3I97AT6vAjZMrdibiW5dKarY3un8r0/z8bIFfCPIsrKOnQqeQiH1aq9/vNf5A+eP1cMUHVu5KHbl9yOuckcJis9LgSfdm/Yfl0BOWs9zGEmDA0uCHgOVEL8ycLFyrwW6FVZgCWEQGiFTxLaCI9YmcPYCRDuHuWgGquoDDRpmZaxxVBP1ek+mJim3EhrGpsDKD0g11zWnQoZtjKSqJKPYU/GL6KAhgFQ9p8ZTaQAMh2LllOpFiFACv2ElXixw8R10fjBfPedXWk3qKjrcH6u6ex+m6VusoBgKe8VDZdOE+19E3MnfA08TM/PG7IbgGWmkTEJsNpZovZ2jxJhB/VXWe75fxDSEWq95FMb/mWvKZpwnFPPWaO9ttxCKi8o1rLISHGFYi3FRFk60oNynC0J6Xdusq7G56j+ZEfGK1sDBRo7XzJjhuMkFMOR2UORpBs3LIhzEYuGWl1C4uX5SNCAP4CaD7XKXzaE8raaU6P5UaxGxpraYtxVDaJe6ZcmXYG2nF67SDWN6iz3jw+d4U6FoLiFoHCTiTlKd+fumWQ7qttBbfkTesCfEn5B6Bjw1iUnMDfW9PDUGbRjIhq0aSKBqAi6uX/zytec6YdYGWUe8ltibl2zUdyrNVnmNVeNeYAMM77ZLRjtFrHirO1kmbaJ8pZ6hITAMFQ0mHGZeS32XO259zlh48itAR2iW7XxvfCiG2011gYWman1IpJShfB01m68whkNLPnVo1xxuGuLpMM5+ZSN9nXSEJe/m/Uw5jSKMj4J3eHJmJForj85TVYJiBNQYR8UsNfrqZNWP
+ KymMYcbw
+ EoPAJrzWk5LNPTzH9EZgKpcc28r9rhlRc9zf6YgbPBVJjJGk4m4UPKroFlep6zH1dTb9R2ZNcXOKcTASYUrT590c7GZ0AgLir/6AOc7C5vBAeJ4Ro+vW9vZTlBvwXeMb0qjg7iUZBC06a3tk6JDYwEdZ8vvXBGOi4Ze7zNL1OQVZsbKu0Wpc9PhY2wL+0l1CE7ZT7Bq5v/leJqrRzTiDYxv1ncdu9dLPJvmDxGpmmqdAyxbmg8r/u2u13fZ0E2ahlV5hcjnq3fjDfdDN3kN4YcSLdpgHQcguWDoMpI29/NHUQkmJnR9b2OkYIx1hjLuu7Dd7HlHPiO/+sISg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,28 +138,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 05:38:50PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/10/26 18:26, Breno Leitao wrote:
-
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -4957,6 +4957,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >  	/* Prevent swapoff from happening to us. */
-> >  	si = get_swap_device(entry);
-> >  	if (IS_ERR_OR_NULL(si)) {
-> > +		/* A malformed entry never becomes valid, so don't retry it. */
-> > +		if (IS_ERR(si))
-> > +			ret = VM_FAULT_SIGBUS;
-> >  		si = NULL;
-> >  		goto out;
+On Tue, Aug 11, 2026 at 06:48:37AM -0600, Nico Pache (Red Hat) wrote:
+> For anonymous collapse, the collapse_scan_pmd() and
+> __collapse_huge_page_isolate() functions share a large portion of their
+> logic. These functions both check the state of the PTEs and verify the
+> following:
+> 	- max_pte_* values are not exceeded
+> 	- uffd is not active
+> 	- lazyfree properties
+> 	- non-anonymous
 > 
-> Better update the comment above get_swap_device() to include "bad swap entries"
-> as well. Best do that as part of patch #2.
+> Merge these checks into a helper collapse_check_pte() to reduce code
+> duplication. We also add a helper struct for this function called
+> pte_check_context which allows us to pass the required parameters in a
+> clean and elegant manner.
+> 
+> A helper function is also introduced pte_check_fail() to provide a clean
+> interface to set the pte_check_context failure results and return
+> PTE_CHECK_FAIL state. This helps reduce code duplications across the new
+> collapse_check_pte function.
+> 
+> Two slight modifications are done to the original functionality. We now
+> warn (instead of crash) if the anon test fails, and we leverage the
+> vm_normal_folio function instead of page->folio, this should be
+> functionally equivalent.
+> 
+> No other functional changes intended.
+> 
+> This patch is heavily based off work done by Lance Yang, but modified to
+> deal with conflicts and feedback received during the review cycle [1].
+> 
+> [1] https://lore.kernel.org/linux-mm/20251008043748.45554-1-lance.yang@linux.dev/
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
+> ---
+>  mm/khugepaged.c | 298 +++++++++++++++++++++++++++++---------------------------
+>  1 file changed, 157 insertions(+), 141 deletions(-)
 
-Ack, I will update and respin.
+Ugh, this is quite a big change, can you break it down into a bunch of
+patches? It's quite hard to properly review otherwise.
 
-> I didn't look too closely, but conceptually LGTM
+The spirit of the change looks good itself, but the devil is always in the
+details :)
 
-Thanks for the review so far!
---breno
+-- 
+Pedro
 
