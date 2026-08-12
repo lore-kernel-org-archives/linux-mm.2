@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E3CFC5B56A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:04:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6462C5B56A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:05:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 911626B00FE; Wed, 12 Aug 2026 06:04:56 -0400 (EDT)
+	id D307E6B00FF; Wed, 12 Aug 2026 06:05:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C1926B00FF; Wed, 12 Aug 2026 06:04:56 -0400 (EDT)
+	id D07E76B0100; Wed, 12 Aug 2026 06:05:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B0CF6B0100; Wed, 12 Aug 2026 06:04:56 -0400 (EDT)
+	id C1D456B0101; Wed, 12 Aug 2026 06:05:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 550356B00FE
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:04:56 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DE35DA1653
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:04:55 +0000 (UTC)
-X-FDA: 85092183750.25.8EA7258
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 20EEA18000B
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:04:53 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gi+SrLoY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 973566B00FF
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:05:01 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 273CF160180
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:05:01 +0000 (UTC)
+X-FDA: 85092184002.04.1F87BE5
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 5C662C0008
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:04:59 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AnWlt6Ml;
+	spf=pass (imf28.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786529099;
+	b=7RR4D86OrSI+x1I1q1x28s1o4LAWHKJvVD6/eIwddhtA+R9MTUellUrqcA4/KG0iJ+NmQC
+	CBZc69fM6nYksR4cCIAxfu4jO6GISa3krt1xdSMD/IWIc2IUWE5of16JpoIFTo2AoxhC+r
+	AWx6iPfBDDFD+x196x0WOpXMQy730ME=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AnWlt6Ml;
+	spf=pass (imf28.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786529094;
+	s=arc-20220608; t=1786529099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JxZo8B7n4c14lfP0ZG1amHyFP5yaEQUN0LvXnBt5yBg=;
-	b=NR38vTOyZxFtBiPZTH7hhVICCX/exeQZ0ioZpt8fNaqxLDsNntei05AfnoDjF3thRFhwUD
-	MvaRqcPzb/JUY3kx5ukTIdDTI5+LVfzUen4xgT2wuNCOhy10paUdTnD0OksbsbeyuyB2c5
-	ss3SlM3OopBz3EJpPUXwd3K9gddRYtg=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gi+SrLoY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786529094;
-	b=3vHDzalk5j9kcLTDjsOI/lW3tdrf9oYA3KVnrsHoJJlfDGLr4k7/qHmlFkC0k5aH+972GL
-	wTC+HpUoS6kfhzOiqLTpux3pPG80BK8zZ2bOuS8sruw//M2/gFgkusB/6Ih5YNan0KbKKm
-	3gbLRRLBe3sdn1ubSXDepIBSrzQ1QOI=
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-84862b0d5f8so751938b3a.3
-        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 03:04:53 -0700 (PDT)
+	bh=5rY136w+JpL/ylEjfYfCsqSvAnSrsJPi+k0wPlzk9EU=;
+	b=SmPJIbCnUhAb3gUSzZF9xKBv8eLofs1ZIDd4GREq08Am5BWQUtn+XCFnuXxOHHHjRZdvvj
+	Wu97csG6/XEnbgc9TnBAtQNsfhf62mx6lJl7nDRV9SCiCuwTZYuQeIPqBW6J6rBv8TGXCn
+	74rCPlpSueZi0otgnsxFP5X6O0Emcz8=
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38e08baf860so922036a91.2
+        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 03:04:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786529093; x=1787133893; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1786529098; x=1787133898; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=JxZo8B7n4c14lfP0ZG1amHyFP5yaEQUN0LvXnBt5yBg=;
-        b=gi+SrLoYWsBj33Nst/9YsN9p3KZ1oAMoOjRnC6P6zpq+iaQ2G+6/CQLBFfsT7h/Qgt
-         mWC/Dep4kIcrgP2mqMdpkeuRhDk5O+MQ235+Hb+UXh9OhW8jdFIFyycSNNR8f/8AfXLC
-         6pE7HWXztQxs63h1/Oo54DD+bP2hIv60nVv3P+voraVvnwvshbrAb/jMDL5T7keZPKdR
-         XDAUme1TqQNzzwlgQvOoUHllOGlU6BF6fXaXajSQ42gNKFBDV2EXDNimNCTvUN7ixNbU
-         66I8QJzzdc0kgA773JAfVfpiDREYNF8iQXftBAuArNMhscdeGUDaTeNJRsQwbh9x5Gz3
-         0pyA==
+        bh=5rY136w+JpL/ylEjfYfCsqSvAnSrsJPi+k0wPlzk9EU=;
+        b=AnWlt6Ml66M6v/ELPrf9yu7m3Jbazhy1g1bybblnqdvSBvyTETuPMKcWefyuXdvCxp
+         2o9IhB0rtgfv+nJzAKnGLrBQXsxk0ZGvx5/tNRkKAox6Jgc/et8Vnbg2arHaeYSpWWgH
+         ltLNJ85sMDbF9WWbq2KUowZ9xm7xRLnZy1kV9OGiLvOmTRlA9qTES6ZmRpw63WoVX4SO
+         9rizrWeFfQqqzhAvQR4Yr7ybvx68XS5kby5MxP3Qmotij8TdgvuZ09f89w7XvPRgPyaT
+         CE81Uf0LpztStTrMQLFxJZ5PRbf62/uPhBg7sUnip6Rp23b9Aypsxaen0LlsniER9ste
+         1Ahw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786529093; x=1787133893;
+        d=1e100.net; s=20251104; t=1786529098; x=1787133898;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JxZo8B7n4c14lfP0ZG1amHyFP5yaEQUN0LvXnBt5yBg=;
-        b=H0x5AF8CkGVff2a9R9pVCi1Hw63YZNEOuEHRqx475EQgjU08bF93Sq15B7muiK+SBy
-         8BNfG53SaZVllqWmTLzMAB6koGjw7kTKAo8sGd3Y0dbRE7DyECSwKqyn5zlqdCe08JEt
-         w9Meyz2qGr8rsl2wqJ1Rh6wMicVZk2NdAh1BsAsCThx+XTsetiqvgQCNnnvsGOEtZ4sZ
-         cEHFu5c32/uEKIURP7Y7rhVy7ZrBp/TsR/C2uoE0zi8EXZ8JYxA68ySp0UxFdG+JjXp0
-         MKCksI/D9AdyGY664MB3DGkZ5KZ/WYU+3Fknj695XIIECitKuEtKPJvu8cd6wJ13ejxY
-         mGMg==
-X-Forwarded-Encrypted: i=1; AHgh+RqNH4Wey/E7JiPVOOugB2Eg0DH4nGSKGamJLj/j1tJTVYpkq80+IhQ+rHOrsY/T4r+ykVra3VkQTQ==@kvack.org
-X-Gm-Message-State: AOJu0YwNlSGgAH+RHlFcSYimkeoA7IoX1DaPCBHj6QV2K5L6I3/Anta8
-	pVU4iQKb0OmI3imTCfRNj86gx8H4awzNQ6ISxCODTKGIStgGrZUWEP/y
-X-Gm-Gg: AR+sD10+GOKqj1JGfWduL3ieFARUSwAvoUydCcua5TFQpWvc6blanh+fDRKo08PnZE+
-	vnmGZSzRSsjuxon7PZBs08s8oibPNaLhDJDw+OAWwHao3yhdlBplEiBGF1uNjUYEzfO9axStfb6
-	4gRNhC4LecwgF+mmxDSQkDKGt2S9tjo0msY5RY4kpFlhfTUtYAJ3asX/k4vJNZ1hn9FYJX+F0Yg
-	vqC9Zi6FIHngZXnS14baOymgp/EaNPDtQtI1zw/r6UmL5xVaaWKWzQpw59p0aJGP5KqZrSMzG3p
-	46pWaTojPv4iwI+lYFDJ32cw1F+Ip68nHUjKu1O52aCDPBJXwSIOTFHdoKYiJvphM3PWU88fCqV
-	w7GtDwf8VG3zHwCW5wokbiIrGxUn4Iaf6b7hx9WtuvPJtsIe5x7wsbYyF3we7jiNz1M8E8j59Ed
-	UT29ZbgB37BmpGfpFwrv4otQzhNGCCNptr7ExjclR1UPHpFHvg++nv5m0vlB6aykPhwP+h3NZfA
-	dmhG+ewCE6WC0Y=
-X-Received: by 2002:a05:6a21:4d07:b0:3c3:a20f:f729 with SMTP id adf61e73a8af0-3cc3f51e8camr4663363637.7.1786529092842;
-        Wed, 12 Aug 2026 03:04:52 -0700 (PDT)
+        bh=5rY136w+JpL/ylEjfYfCsqSvAnSrsJPi+k0wPlzk9EU=;
+        b=W9iPRmo8bnN1BfNXCagsxKwD4hTzakmP8Bk1u4YF29lYRjfgo2jzkhJ/kpLCnpnARj
+         yFPLJg4FUQENBsmTLqzMDcy0qzendIQ+DVoWeXQ/0tHZByXGlrA+gLubHIz4Ye++UNQ1
+         Ln+/AD71d7SKSWKnnI3MTm0DkLoJ2ToMt/zFRMoFRqXW2mCj0pRjmOiIw7hbBa4lDyH+
+         ng5NmMR/n1pUyfFFqVD68Iz6ASUALUgmygvauL9fsWTFbv6JOJlsNjZM3ez1jiLDo9HQ
+         uVhT77sCvk7g0kJMrV0IrEYnS7XlqM7rdANuPR7p92sTiQ0AZp/dJEl8KjTmjGsVpV1s
+         xiwA==
+X-Forwarded-Encrypted: i=1; AHgh+RpB3kU94GroXGNA/6o5rRCym2YqrYq2gN6g2bjcCuJbCBUufMykW+k0i7ilXgVx1ij8HaLtvhq+Fg==@kvack.org
+X-Gm-Message-State: AOJu0YzY8jHpgw9JmYiSK4aIwFmQeUxHG6hI3CMmqzolrWWAcFrND9GO
+	TGTqs15cufqpeaoVEt+Z7bEr4r09LOv59slB3dElMuFMUBN69o5xWN7H
+X-Gm-Gg: AR+sD13Uss9s97H2rp0zknWysWcVqC2L+Kg7sGgDMhD8QcAbtpB3LyJc5UZK/FGG4TD
+	y2nj5tFYXy5HaKmari5WW9qnmESSGdTwP8JUdSPwIVC0ueNDKmM4nvt08hk7TaGbMGp84dduaZj
+	5Sv22Jqx14atOsM7FIoFWX1ZuBY/xDuJibfJKei2mSM+irAMC/TaNLwMJtV89CxYUKbuwsi40kw
+	E2kWpQcE5OT5rp77vxpoV0rfdkt4W0tNrNTG/EKVBhQ9cNfcxmkLKcqBa2dLhtmqggbDzb2QZxY
+	GkqOrp87NMTwW828lFyluUpsNRAVggWq+D9SC7Fhb6Eg+GQlI1j3PgjhFJQHQZQ0/MzqhsV/JFz
+	mmnrqIPC09eF+FBSiw+/6f4PpTLqIXB7NQUDap2zT7kjHftH+1e/tprKPfYFbnP4Dkt8Nrgxf+k
+	tiQmvM+r33rgktEeH+dWlufLwocKczeN9giq/3S1Pqh9kRVZgB2y1erBXJGYEXdxxVF2MpY0cLL
+	GhDGa1Xsm2gtiQ=
+X-Received: by 2002:a17:90b:1a8b:b0:38e:fea2:df53 with SMTP id 98e67ed59e1d1-39301253b3bmr3943475a91.4.1786529098246;
+        Wed, 12 Aug 2026 03:04:58 -0700 (PDT)
 Received: from celestia.taila51cc2.ts.net ([2402:1980:85a:5c46:85a5:ec7:8aa8:72be])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14124454d3csm8821247c88.2.2026.08.12.03.04.48
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14124454d3csm8821247c88.2.2026.08.12.03.04.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 03:04:52 -0700 (PDT)
+        Wed, 12 Aug 2026 03:04:57 -0700 (PDT)
 From: Liew Rui Yan <aethernet65535@gmail.com>
 To: SJ Park <sj@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -108,22 +108,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Liew Rui Yan <aethernet65535@gmail.com>
-Subject: [PATCH 2/3] docs/mm/damon/design: difference between watermarks and nr_snapshots
-Date: Wed, 12 Aug 2026 18:04:32 +0800
-Message-ID: <20260812100433.6288-3-aethernet65535@gmail.com>
+Subject: [PATCH 3/3] docs/mm/damon/design: fix typo of max_nr_snapshots
+Date: Wed, 12 Aug 2026 18:04:33 +0800
+Message-ID: <20260812100433.6288-4-aethernet65535@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260812100433.6288-1-aethernet65535@gmail.com>
 References: <20260812100433.6288-1-aethernet65535@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 5C662C0008
 X-Rspam-User: 
-X-Stat-Signature: qqkgzhauwy1fqo4jdno79dwpeq4xi63j
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 20EEA18000B
-X-HE-Tag: 1786529093-166040
-X-HE-Meta: U2FsdGVkX1/4/Xg5dxOkwacBS4tmVrc/d8qk3mRfzOGdZlKMGQ1+VaZ4QqbfZjY9J7RmBPV/wuVLpNewonvQAbxhHYjev1jXo7EwtSCcVhkSnXy/Anh8rth5WqDtJXJwvwEG72yg0X0rr7PnAjq1+r0awDPuwHbCWbNVdypra02dv9DwbYffsxRHUnpkW9JUubElxLylvLCVon9GgLpNUDlugZUMTC879GwXTUEKOwfrRz47wRlFWxok3MFosoWaPjVxOA7YQwexK49dlAHwozJdobbQC+hggB9vHFOyoEt8aAiwtrLoOXbl6rzBmSL+CqZt1Q9qq/BVRioL9HSvsdf7z/0kBbrHVRX1CVMO22fF0x4YZFs8+zaOS6JPFipW0Jgoxt7pk0y1ML4/FMGcNyzGNPiIZ+722HaX4EUZocSU0SjpM51nSQw1TD5IwXi4bQgesvdd1NVwcNOlj5lszQNuyLeyoUgZuMzdqRszHHpx4kdu/nRx7NyGtYQx7j8ufE8pvr21N9ogdAezXvep60nXL+h/gFXKTVVB4YYNxFcf3oswy9JXaRh4K2Pfm7cEzoB5sxtWRujkNXII2H1hzdPb7Un8gVW/E3WCBbI+s9klJ3nknhFgybLfpbxU144aU43//xpmBL8Bbc6CTuXbY+nAHu8ppNX6ZgIhCJE1DlylLCqoPRR6koQSB2KsNwEE5vPjsa2Q/sMZqrNcZv8x01NL6yLK1s0krqmoloct1OJn7DyU7b4Laegzu1ziAfN/cEhi5FidcMWDgcV/YXNL1564yEEtWC6c6wAAhU21Io9FAKrWGeE2ILI/ES8fPsORsE1Nd+S+0dKS6L+5YvoYIwaBcZWGV8tyUZQ7kLQRx3xviDUqKvYVkod2oTHCpgAh22I+yKrPVrnV+R8SziN+EIx4Om1gQ+dVwTJ0JlRGfDb9pvHIv81SjZ3JaeffoWwA8WuUw1WUw4JLZ84Kai8
- YHWc8HDg
- gATmwY92SpPhAgSCIe7BTAF+U9erB8jRqktkRUW14Iaop8bM81fejcl5U45kWWx5roIXVyVVvTuskSeD5YdEafRjMNvU3Uj0/DyiKDiiWnBicvSEMwAJhbdEZKbP8tOnNGqLQM2KodKji/5dWQuoI/tvQ3xmb41/+ARq9e7FhMIDq+Wl7s1Gv6+N+t8vyLjkLjQygT0edc59mF8Hcj3luiRQc9Ccnx7CoqHdRVfXmaA0MMpOA8Mz4DCPBsTmDi6xMj+8ZpquiNiAb6exVWgwu9lseWo4rGhA5nbBB1yknoNgu83eC9iRxhrf4FW2spa9NZsNGRy5Dw6rFSCFc2+NzDckoFkWHZeWPJYSBljQJxCl5IwfTbY/2wk5RyFUAx7PCm3wwqb8Fq0IMGX6C+UYMyPWXwwPBzjTT8xZP6L3xabchlrucSKCpflIqoKjut59Qu+QqY0sGqA/DyX7cC5dkC/cseg==
+X-Stat-Signature: j556fggaphjweff6sx55w5zxg1bbhnec
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786529099-493855
+X-HE-Meta: U2FsdGVkX185LjKIBJBPiqvh2wrFZi4Vk0sEitZ5zA+2NsUD+s+Aef0U9JzbIhmWECyuKbmJXffCrpSUUgs47FmxDFT3yoCw20O8mItMZBO6GkUwlI1IJN1vu+fmZpIIKkx3Fnwyn18gyk0ciDvMljvBUWndXaGVCl3PlfXlu4NmTf+HEyWv2RtWKRpKSN2H51Fg8ErvfuPX5oi81J1GJXEkjj6xjTLLpQKO4t3rOgJns2cvnNhZ1MGjQI6jPSa5ImL7OIvLdy82g/h2y9FMtEgek+JQR/VkGAj023zD4e2UShJeqbre9DIueoGzjY4afoq2jlA+brr4NlSVyeJ9x5VKE8v0LzLPsux2xWO+NLp10A6vyfinKw2ILV/lcxdeoyvrnkA5O/k6GL8478QotI7mQ8wP48I3DZdH3G5KRDUSOb9B2lf5IxCEZOaMuVbxF4f0SdvKbD+Xzj+rkrzT9SSihfioJoacs9lH0Pt4yfE4f0yPmnuXRd58e18Jzfhq4ug7aUJp0D9Y7NHtJ6U+GpWgn1tfd5HheEJAQOpsMPu0KiCgFiFcpCIr9sC83ElXXLfoZOs/Sfhti65SXVEFpl7yxbDVh8WNtPqYkgnHgpLIciBVvLju7rozZjVBWU/K/inVOJvxKxYUZrP7yP0TcvnA2QDjmiMpLdZacsdg3bQTTSKkVVox3IS1YyUi6epoURCqG3sB7+wAE1QsebcAnEqcZViiYlOCNHghOU1bqV9CFPLoWreA4HvcthMKymFCY5fHN53wzWZJg+o8fbGdv81M4v7NdmgAf9B+ZEtZtUa97lbGdNfTsTV8ybLCIxXtzYZBH9eOJ49h0NDxpAzbyimdPlcBI4uujrJf7xEimvQiBaAjAch8mPvjCqvEFa0RE3PXu/s09DLAsCBd4C6gW2sG3CMpBnfPVa62gQUAhC7ODa7M9AJ0HNSzF2My6a1CZCcRNx+KZUAhYceGtIs
+ NRUCSHH1
+ ajFv5RXjhR0oYaJv7Y8M02RQIOtxmfonyO6hOPOBgSMYXWJUMak2zC1dEC1uSG6Qzk5J2NF59cTEphfcDw5UI5nrOl2Ll8r6SzWMkgLIn83zyhBCLUKelpdaSOEExBgD0P0TyQlWtRsKqkRczUlIG0hFQbHVGM6jFtn8SgZvTO0RUmA3EoMTOMMfO097kjJOzUst8FKlKuxeXrTCiKii8zLJ80fHtIcM+xfYZtsuzsak4mm07Oj9p/4UdxgH3Aqa5kDEncHZaaj0yhWQ2/28f2vAKYg7Nh7f5k4f0CreJO51fBtwjsXy/sD8nATAOPPBffAObeO8BUQ2DFLkqgD9tfI1HdUSLhz/Zzykp+Bz1Uor27AfawlP+OoR7M95jw5CIF60uIspEc4L6J/9C+2c1wwrqKlqApYTOBkRzPwT9q+KMBojJVc7HubgkcKTwkGhBQ7PihB3BH00nIislAmUfM+7cH2KDgCazmWXBGNHzWM5RoeQ10EdmBQRTBA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,28 +131,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Explain the difference between nr_snapshots reaches max_nr_snapshots and
-watermarks.
+Fixes a typo (nr_snapshots -> max_nr_snapshots) and corrects a grammar
+error.
 
 Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+Reviewed-by: SJ Park <sj@kernel.org>
 ---
- Documentation/mm/damon/design.rst | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Documentation/mm/damon/design.rst | 4 ++--
+ include/linux/damon.h             | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index 939298f2a9b9..1fcf0b8c044b 100644
+index 1fcf0b8c044b..62ba6cc2e999 100644
 --- a/Documentation/mm/damon/design.rst
 +++ b/Documentation/mm/damon/design.rst
-@@ -872,7 +872,8 @@ the action to the region will fail.
+@@ -871,8 +871,8 @@ action is ``pageout`` while all pages of the region are unreclaimable, applying
+ the action to the region will fail.
  
  Unlike normal stats, ``max_nr_snapshots`` is set by users.  If it is set as
- non-zero and ``nr_snapshots`` be same to or greater than ``nr_snapshots``, the
--scheme is deactivated.
-+scheme is deactivated.  Note that, unlike watermarks, even if a scheme's
-+``nr_snapshots`` reaches ``max_nr_snapshots``, monitoring will not stop.
+-non-zero and ``nr_snapshots`` be same to or greater than ``nr_snapshots``, the
+-scheme is deactivated. Note that, unlike watermarks, even if a scheme's
++non-zero and ``nr_snapshots`` equals or is greater than ``max_nr_snapshots``,
++the scheme is deactivated. Note that, unlike watermarks, even if a scheme's
+ ``nr_snapshots`` reaches ``max_nr_snapshots``, monitoring will not stop.
  
  To know how user-space can read the stats via :ref:`DAMON sysfs interface
- <sysfs_interface>`, refer to :ref:s`stats <sysfs_stats>` part of the
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index d642ce4fc83c..75ece3d03be2 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -549,7 +549,7 @@ struct damos_migrate_dests {
+  *
+  * After applying the &action to each region, &stat is updated.
+  *
+- * If &max_nr_snapshots is set as non-zero and &stat.nr_snapshots be same to or
++ * If &max_nr_snapshots is set as non-zero and &stat.nr_snapshots equals or is
+  * greater than it, the scheme is deactivated.
+  */
+ struct damos {
 -- 
 2.55.0
 
