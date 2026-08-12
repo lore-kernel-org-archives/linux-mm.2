@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91684C5B572
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 13:48:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 732B8C5B572
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 13:49:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E77F6B016C; Wed, 12 Aug 2026 09:48:41 -0400 (EDT)
+	id 487E06B016F; Wed, 12 Aug 2026 09:49:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5975D6B016D; Wed, 12 Aug 2026 09:48:41 -0400 (EDT)
+	id 410CE6B0171; Wed, 12 Aug 2026 09:49:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 488D36B016E; Wed, 12 Aug 2026 09:48:41 -0400 (EDT)
+	id 3008E6B0172; Wed, 12 Aug 2026 09:49:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 211936B016C
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:48:41 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B051416037B
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 13:48:40 +0000 (UTC)
-X-FDA: 85092747600.03.B211206
-Received: from mta1.migadu.com (out-249.mta1.migadu.com [95.215.58.249])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 97C3B80011
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 13:48:38 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bqt6VLL2;
-	spf=pass (imf30.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.249 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DE1E6B016F
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:49:08 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B505D403ED
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 13:49:05 +0000 (UTC)
+X-FDA: 85092748650.25.A364A93
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 28DAA160003
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 13:49:03 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UexFnpIW;
+	spf=pass (imf08.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786542518;
+	s=arc-20220608; t=1786542544;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yxJE5C6YtFE0Ee+SEe2FvdZ5LddPaUuMhy07fXctXXI=;
-	b=7i9gjvCmrj4Kf9CYphuyTxSe8vf2ARMy1qaOBSRnkBOiyXA9+dUSueQEIsb7H32ogB7FCB
-	7vkW6ZK/oCSnzVU0qgbhhtnSa1/oim5FHY9CF2rVQjlekWhwVBrL+UjfLnV6XURJRbuZVr
-	+G5bIf0w6F2IrHMzqXWGMmPXdV27XEc=
+	bh=OenMr5nT85sI6+yUZ5su20Q5jfaEjzyJzi9hJtpz57s=;
+	b=lcxZR7UxC/3o0f2g7AJrZoZQkvIBcoZGyUAjl6u4jzFuWbCLUkNSBRmsaIG60q1a8YBZyy
+	KcKHxyHOlfxOn+l58qS0UndWU7zMO/XePWvN3V/yr1KscS3fjxZzvkRZf/aDba/Qyd4fAC
+	VFHxubUICu0m/nZLe8USTPjZGue5TEk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786542518;
-	b=XYontf64F16sJ7DPpa6VSPbEi0HP3G3KS2QkWfw/Cx885OpOuaar3/8mjLR5tShA7jknY6
-	GsNear3Nv4GvfMiJiDvBOfTZ7xGtr/VePKyWPPOKVfjq9Cwqoyzx425Ew453OfXGRK0sSb
-	D3Is0dAgllgt1frtmizCDpwnkfKFnZA=
+	t=1786542544;
+	b=rLX2DJ2rRl6dUlfzULLfqw2pwAytQxr785XDt6n1/bjuhgWTE8KphfNCXSmtFC5/pPhH/X
+	0CI3wZliJ8Znhs+c+pck0/gSXZGJ4bSP5uIbwWjBbRFCc6tBXu/SOgRQbTf4TutsjQClwt
+	GozxI8amxHnwHavkqy7NH6ednuHQqdA=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bqt6VLL2;
-	spf=pass (imf30.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.249 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ASMCgRYWFh1U8hGKVOolQ/aTQ/PK231J3u3FwxsWacs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786542517; v=1; x=1787147317;
- b=bqt6VLL2oPMWtajSw0sxl/NU0Mo2Oiu8rit8fZeSxMtlJERaEfHNKZKZGumb5o1F/v0QRCK2
- qUUzXNLihvi8GGJFN+FA5creF05Y21skfBl4r/uq1Rk1GluMrGOYCYW47E7+tLQu4EMtBrQmm9x
- 8hNvs/6pH89NGSVYK7fZ3GIY=
-X-Envelope-To: linux-mm@kvack.org
-Received: from [192.168.1.116] (111.162.215.50)
-	by smtp.migadu.com with ESMTPS id 18dd0f5011e94cb8;
-	Wed, 12 Aug 2026 13:48:37 +0000
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <3ab5e2cb-0660-4b20-9e67-cb47e17ae554@linux.dev>
-Date: Wed, 12 Aug 2026 21:48:26 +0800
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UexFnpIW;
+	spf=pass (imf08.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A0F6360A9E;
+	Wed, 12 Aug 2026 13:49:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9664D1F000E9;
+	Wed, 12 Aug 2026 13:49:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786542543;
+	bh=OenMr5nT85sI6+yUZ5su20Q5jfaEjzyJzi9hJtpz57s=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=UexFnpIWk2+YiBJrt9VA2Sfiyzo5Isjw4CnK/CaYnaL2+bfwDCWo7W7E1fiiHF6bt
+	 NTBmKRKR2t20kh915uCjvT6d2N1ALd3LLMhii3XVXwSAYBYYoyYEukDPCAldIAf4vC
+	 sEHEObdblFY4n+akVftR4rtv4qfB3ZSFuSROdY4gQ97JnRWwbMtamPLobUoM9FYUQY
+	 SWpAc1UtsLTNSBn/HA5nd92QIvNPIGFU3EdPkhcSwama+ZcyD4fijjoSsJQE3Mt+3n
+	 frnZA5FzMSQWct/bezhFsRc1DKWbD8pb6l2s01bXo9zvXWRJMMZpHvWJur6a7N1IPe
+	 JFnGvrKJyIeFw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
+  Pasha Tatashin <pasha.tatashin@soleen.com>,  Alexander Graf
+ <graf@amazon.com>,  Samiullah Khawaja <skhawaja@google.com>,  David
+ Matlack <dmatlack@google.com>,  kexec@lists.infradead.org,
+  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 2/2] kho: Introduce preserve/restore APIs for
+ high-order pages
+In-Reply-To: <anxrM6HPKPq74So3@google.com> (Pranjal Shrivastava's message of
+	"Wed, 12 Aug 2026 12:46:43 +0000")
+References: <20260803113944.3694290-1-praan@google.com>
+	<20260803113944.3694290-3-praan@google.com> <2vxzmrur3880.fsf@kernel.org>
+	<anxrM6HPKPq74So3@google.com>
+Date: Wed, 12 Aug 2026 15:49:00 +0200
+Message-ID: <2vxza4qr30vn.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: cui.tao@linux.dev, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Harry Yoo <harry@kernel.org>, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Guopeng Zhang <zhangguopeng@kylinos.cn>,
- Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Subject: Re: [PATCH] mm: memcg: fix slab over-accounting for in-object objcg
- metadata
-To: Guopeng Zhang <guopeng.zhang@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <20260812124858.73487-1-guopeng.zhang@linux.dev>
-From: Tao Cui <cui.tao@linux.dev>
-In-Reply-To: <20260812124858.73487-1-guopeng.zhang@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Rspam-User: 
-X-Stat-Signature: sdnoeegqfj4faejoxq6hwz89j6qcpzrd
+X-Stat-Signature: 7xc5wum48ziimp3rj7gse1kjwpbdtm78
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 97C3B80011
-X-HE-Tag: 1786542518-158702
-X-HE-Meta: U2FsdGVkX18T2T/n3rSUGAuRMamJGLowgy+MM+zFCt5lAiz/cZDKM6GChDt3ezXcAjn2Jd4onDi79WT8KPpyQXDq5PxqbcJR0fM8Av7t2YZW38A6XWb4Uk2U4hxy0VK4Kp4Dg2K52AzC8EUkeShWR92TAnxsDM0qoPgGVwj78WYxpCPikvhtoCQN1wz9MgcQIN3KMtNEoQsFZK6IJ+DfTZZkKjlY9H9OtYsP70EgeAnmfMaU3UFvBGKeuhGEkepBljfZtzVpENArJijwVCyZoPPdw5DIAeO6adc8+G1yL7BBmWdP484Wl1xzAdAFbse3EPdwT4LD4UMOSa2rSUb5udK2fxAWd2Lvov+ETLiF6iCnBI1/JMgWHmKkI2wIFT0Fplvxp9QsfiatYYRziruRRBc4DIJ2wurmgWY0/IifF+VTfn5THv0ZDQLoP5JaS2qnNe99PZxDtpyqwJA6d1JJXMOH01QHnq/xU5EMft1hhVaVc6MKMG07nbO+ibQ9gDY+5pbpEL222RWPdcY4V9w40CSI9sLJt6gjeWbLOZX60CtsqQY2dKKLXzASEoGMXiXmpB0k8JXdm5Kp98jZcVhzinV3K+QY7N93MNpr4NKKOKPSBfl0oEVuNFsKHUDEI78STFGjfie3tMMdSZMGaO+C7kEYDJDFhRfbcj8i6dA+mq8LIzqOg/21AoaQswSOWiu1v4qKHEbq5n9lKQsYH8mXDTC4M3VQbu72h3EtqvyUiaU3Tssk9aAspnU1IRRuMr87RQe5ocS0ok3tF/JFHeHYzg/1fMe6TYVek3TupdaW2k1YWJZepgrbVtdimGxeiBaKxjt764k5w1yfJKbAp0o+2/v10ioURmQAQXS6cgpaDJRqUvglg/yTVbfs7MOSKq6mSlnS/X9ugljlTvoCP80/oLxqzsvOpU4AAuOjk6Zke1cebwo2Nk1gg8Ab9mFN82HJw8SOeYOwlwf2glBLCzF
- J2legl37
- 51zAkRqHpU+Uv11VHvZV7LIZuG4yMYC/48nHPnJJzjIagQRO0eYatuR67N+KjVY8lcJdXLgaKx8TYVfa4ttjSsZTqWF09mFFrWZM/qsQJkLbd6AIge8Gx3j0qLmT36Pg6G28J9oCWJ5ExdgPolOa9lOqlH3+UEjYNQTAEPfHf3AOM9mSzDuAgpOHc7YngPdGY29fQAZQWUXHyy4akGg0J7aypdKGH8Sfi59OKh06jG26qlkG2wGIuG/NyFbBAFzeWdSHyYyPDQgoZudu0zpJN9HgCx2J+q81/WDaHQvqfIbFlbG0c5KXnnPvTZWpTLG61uSUus8DzvtkCXx7nEvG+zAFB4ARej9bysaEDOS5WbQ8VTdm3QbZsWxfDc/SeNMwDNv8rl1Mar2AbSawNQ9M+Tiw+AQ==
+X-Rspamd-Queue-Id: 28DAA160003
+X-HE-Tag: 1786542543-587492
+X-HE-Meta: U2FsdGVkX1+e+hptjaJrULe0hsJ+VOpGs6E/hK5tJz/GBLgsHdKVahJqUBektR3NYL4YslfdWt2AoASmaMpCk1lEgvqg/ZHPVeFujkG89gMiCpBEtZp3lxr3Hk0r2Oa5BBEPqhDUxyTRmb5nsh4xXeIPVlwz3Q3sKKA5yUHLNYPFvVvGiE6j3oeZZBmZVDDxA/K+OTBVgUCfX1YQ67zArfQj5eTzZQUIq7Y1guy7GKRjZ/keuu0CWd+ux1WQeLpK3yI00M5hnU4kfWE5gnTK5cO0nRPwOqHBeyvT2DRpjYFlx7me3sJm6L6g6hOW+MrgbJqS8A1njvPsrbx/zzyvvd9o8OUBmBT97j27YHznUeADvQhksIH8gMd35JZK0KTEvB2iIWfVZ1Hwkm9KPSUvMMcg2fI0IZD9VI2WrqlAh/QtDSbYi9bxuKHXa2HM+QsAEudf2s4ymRBOxBzusX6ftF7ktom5ctqFXq/1mpiovIwc4fmccgiuHhVYQr2ckA66yI+i98KRDcFuzydXwrlXaH3xowyFKyfiGWGum0DKaF5RuMor7zY8cwNjNjrADdYasZhxmZS+497l4QqqwZ6UJgL8oC1EcZmp1+HXB2K3W/JBPfZqULRwH3uKWFMm+zbyKNu3rZ1RWfcJTS3gCvMytiGWqEQ5P41ArrVWJGcz/VRUBUEUU5QbszEG6rY4iiytwPS17aPQS6xCFnN2Rcmr18SyMd7oRFgumTF6ZMWxm6SlnbuO2bb2LwDKa5Q4XbatAQiVopreGY4iD7MS/ZWffjrVB/ENp+ugmxC6TjCF1TEUOVBon/rUa9VPu69wzcAwsh82Xd6jFsHKjBmW6nB6II7AggZCrX9yogIxIoFhreeqTjee8ZWgxozabN9ot5OMbBNQQQGNkOSYYkktufzdjOto4kSskEnPSOXfdlytOrYJMJLiUABJt5Ko/xu30+3PPclMW+Y9aNP9/vxWJ3Y
+ jwJyJbPP
+ xI7D0L83V6TU+an+3iF4vVzHtKJRCbBNwcKoWxeCabuehfQbsHQpIAtD2Ui//F7Dst9O4rtIMf2CKSkmwl5MXNAV+y81xJF7b+5DbO+AK7V8O9Qi6behuUgtB7nSM83k4iOLSiwPWlQBY3BK6UPMobHGmueXu/qHwJEqsMUVeLNfvvV04WhTDvrjS/K7sitKwO6qzZlebM1vottYO9SVdnZXtE+TEnQY7LuxQJJzEDfeINUE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,94 +97,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Aug 12 2026, Pranjal Shrivastava wrote:
 
+> On Wed, Aug 12, 2026 at 01:10:23PM +0200, Pratyush Yadav wrote:
+>> On Mon, Aug 03 2026, Pranjal Shrivastava wrote:
+>> 
+>> > The current KHO page preservation APIs (e.g. kho_preserve_pages) assume
+>> > that multi-page blocks are split into independent 4KB pages during
+>> > restoration. This is incompatible with high-order non-compound pages,
+>> > such as DMA buffers, which must be restored with tail pages having a
+>> > zero reference count.
+>> >
+>> > Introduce explicit preserve and restore APIs for high-order pages,
+>> > which preserve and restore a high-order page block as a single unit,
+>> > applying a refcount of 1 to the head page while leaving tail pages at 0.
+>> > Rename the existing internal helper to __kho_restore_page() and
+>> > consolidate the common restoration code into it.
+>> >
+>> > Signed-off-by: Pranjal Shrivastava <praan@google.com>
+>> 
+>> The code here looks very convoluted TBH. I think it will be simpler to
+>> make kho_restore_page() only return non-compound pages. That is, it
+>> returns 0 or higher order non-compound page.
+>> 
+>> Then kho_restore_pages() can call kho_restore_page() and then do
+>> split_page() on the page it got to turn it into 0-order pages.
+>> kho_restore_folio() can call kho_restore_page() and then do
+>> prep_compound_page() on the page it got.
+>> 
+>> And then you expose kho_restore_page() to be used by DMA APIs to get
+>> non-compound high order pages directly.
+>> 
+>> How does that sound?
+>> 
+>
+> I like the suggestion to use a single base primitive and mold it via
+> split_page() and prep_compound_page().
+>
+> However, To implement this, we'll need __kho_restore_page(phys, &order)
+> as the internal base primitive because callers (like kho_restore_folio)
+> need to retrieve the order from the KHO metadata to pass into 
+> prep_compound_page(), and a raw non-compound struct page doesn't store 
+> its order.
 
-在 2026/8/12 20:48, Guopeng Zhang 写道:
-> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
-> 
-> obj_full_size() adds the size of an obj_cgroup pointer to s->size to
-> account for slabobj_ext storage, which normally resides outside the
-> object.
-> 
-> Since commit a77d6d338685 ("mm/slab: place slabobj_ext metadata in
-> unused space within s->size"), slabobj_ext can reside in object padding
-> already covered by s->size. The extra charge then accounts for the same
-> memory twice.
-> 
-> The per-slab obj_exts_in_object bit introduced by commit b5bc35ace2c5
-> ("mm/slab: replace slab.stride with obj_exts_in_object") identifies this
-> layout. Use it to omit the extra charge only for in-object metadata.
-> Unlike in-object metadata, slab-leftover and separately allocated metadata
-> are not covered by the per-object s->size charge, so retain the existing
-> charge for those cases.
-> 
-> Reported-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> Link: https://lore.kernel.org/all/20260310113804.245647-1-ranxiaokai627@163.com/
-> Fixes: a77d6d338685 ("mm/slab: place slabobj_ext metadata in unused space within s->size")
-> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
-> ---
->  mm/memcontrol.c | 14 ++++++++++----
->  1 file changed, 10 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index d1312441a02b..aef480f46891 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -3526,12 +3526,16 @@ void obj_cgroup_uncharge(struct obj_cgroup *objcg, size_t size)
->  	refill_obj_stock(objcg, size, true);
->  }
->  
-> -static inline size_t obj_full_size(struct kmem_cache *s)
-> +static inline size_t obj_full_size(struct kmem_cache *s, struct slab *slab)
->  {
->  	/*
->  	 * For each accounted object there is an extra space which is used
-> -	 * to store obj_cgroup membership. Charge it too.
-> +	 * to store obj_cgroup membership. Charge it too, unless it is stored
-> +	 * in object padding already covered by s->size.
->  	 */
-> +	if (obj_exts_in_object(slab))
-> +		return s->size;
-> +
->  	return s->size + sizeof(struct obj_cgroup *);
->  }
->  
-> @@ -3539,7 +3543,6 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
->  				  gfp_t flags, unsigned int slab_alloc_flags,
->  				  size_t size, void **p)
->  {
-> -	size_t obj_size = obj_full_size(s);
->  	struct obj_cgroup *objcg;
->  	struct slab *slab;
->  	size_t i;
-> @@ -3580,6 +3583,7 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
->  		unsigned long obj_exts;
->  		struct slabobj_ext *obj_ext;
->  		struct obj_stock_pcp *stock;
-> +		size_t obj_size;
->  
->  		slab = virt_to_slab(p[i]);
->  
-> @@ -3590,6 +3594,8 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
->  				continue;
->  		}
->  
-> +		obj_size = obj_full_size(s, slab);
-> +
->  		/*
->  		 * if we fail and size is 1, memcg_alloc_abort_single() will
->  		 * just free the object, which is ok as we have not assigned
-> @@ -3632,7 +3638,7 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
->  void __memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab,
->  			    void **p, int objects, unsigned long obj_exts)
->  {
-> -	size_t obj_size = obj_full_size(s);
-> +	size_t obj_size = obj_full_size(s, slab);
->  
->  	for (int i = 0; i < objects; i++) {
->  		struct obj_cgroup *objcg;
-> 
-> base-commit: e7f630142df2afccce90555e4972e60008222311
-Reviewed-by: Tao Cui <cuitao@kylinos.cn>
+Oh, right. I didn't think of that.
 
+>
+> By having __kho_restore_page() initialize the head_ref = 1 & all_tails
+> =0 refcount pattern by default, all three public APIs can just wrap it
+> and call the appropriate MM subsystem helpers. I'll spin v5 with this
+
+Makes sense I think.
+
+-- 
+Regards,
+Pratyush Yadav
 
