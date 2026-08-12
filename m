@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 754C5C5B56A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 08:04:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 853FBC5CFEB
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 08:04:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E2146B00A0; Wed, 12 Aug 2026 04:04:38 -0400 (EDT)
+	id 4E5596B00A1; Wed, 12 Aug 2026 04:04:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B9166B00A1; Wed, 12 Aug 2026 04:04:38 -0400 (EDT)
+	id 420E66B00A7; Wed, 12 Aug 2026 04:04:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CF506B00A7; Wed, 12 Aug 2026 04:04:38 -0400 (EDT)
+	id 2E9B86B00AA; Wed, 12 Aug 2026 04:04:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 36F226B00A0
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 04:04:38 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C0BCE14032F
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 08:04:37 +0000 (UTC)
-X-FDA: 85091880594.11.B8BA0FC
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 10DE26B00A1
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 04:04:40 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 86CDB1C0F71
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 08:04:39 +0000 (UTC)
+X-FDA: 85091880678.06.FD7FB99
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 52A5740002
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 08:04:34 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	spf=pass (imf04.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1D9BB1C0002
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 08:04:35 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	spf=pass (imf21.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786521875;
+	s=arc-20220608; t=1786521877;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=t48h3kzXBMrtRbL06hPY3aelV4c4tRNevgGTuIqtj8w=;
-	b=bvAzPk+8dWmujmP1xA8qrrYpV2G0sB9yU1VmRrtGj1QtEyclCE0tXDzc9ToFIaESU3LsbR
-	pszoiESgx5PKp0AwXECCU72XQXT2rzJY5KSdQk2rejdxJ9oEpbHi/G7jpeYQH6p42RWw84
-	ummeQhvB8ta6m4BppzS3eGy7n5JTNwM=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn;
-	dmarc=none
+	bh=yAfXlDqwrV66jV+U51l1PjPH2xY6W4uIUHrBgRiG3go=;
+	b=e0dYFFEoga8st1xyEn89PEZ2Zxg/JkhO2iHBQNkCUNUmFn6OEYwvhdBMP5/yWSxbG4Hu03
+	0kFVAN3LUwZj/2bwPRjKzdn9QM76G8IabN7QzQEah+0xnxIg1uuICsbwHY8Mm0YU+KXKgT
+	B1AKZLJDBdhBXFNNltbChrdMo5TvOZc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786521875;
-	b=qG+wLt46bUrKOxzXNNtkR64/qmQEdXt5t4ia+r9YDSyISFKOXOG5brRWVXuDhwfzOSa5x6
-	+jgtrx9m852rt2+14J6U/YhKq1JfS+sYP8awirzmvMqmCyiR65fv92nJ17e9pGuwYc/J8t
-	8lbF9/CLxhAsTlI/lH8qKnyFHiUP0nY=
-X-UUID: 6e1474f6962411f1aa26b74ffac11d73-20260812
+	t=1786521877;
+	b=SZkZIlVl4TCsGAX+zDy/Tt4cXYqj41PgXLF7TDg2KiGi7lhcZf0xccoaMqike967G2rfy8
+	LYXhbr/mptxOHaw+KpOXomv8UuDi/5YytPjinxSV202WdBxfli5RnsAx6BVH096Wp7xXC9
+	1Pb0OBDDtgwNVElGIrMT1TviwxxovKY=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+X-UUID: 6f30d654962411f1aa26b74ffac11d73-20260812
 X-CTIC-Tags:
 	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
 	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
@@ -58,27 +58,27 @@ X-CTIC-Tags:
 	CIE_GOOD_SPF, CIE_UNKNOWN, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
 	AMN_GOOD
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:75e5a4f8-eae9-41d8-aad9-60c9e9fdeb0e,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.12,REQID:75e5a4f8-eae9-41d8-aad9-60c9e9fdeb0e,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:e7bac3a,CLOUDID:ef6834d9f8dad171e96e31e568c51f1a,BulkI
-	D:2608121604281BMG07Q4,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|81|82|10
-	2|127|136|865|898,TC:nil,Content:0|15|50,EDM:-3|-100,IP:-2,URL:0,File:nil,
-	RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,D
-	KP:0,BRR:0,BRE:0,ARC:0
+X-CID-O-INFO: VERSION:1.3.12,REQID:805cb2e1-2a05-4900-82e9-39d0179a355c,IP:10,
+	URL:0,TC:0,Content:0,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:-10
+X-CID-INFO: VERSION:1.3.12,REQID:805cb2e1-2a05-4900-82e9-39d0179a355c,IP:10,UR
+	L:0,TC:0,Content:0,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:EDM_GE969F26,ACTIO
+	N:release,TS:-10
+X-CID-META: VersionHash:e7bac3a,CLOUDID:8a5fe3aa4b666b997e91bda91c6aa5d7,BulkI
+	D:260812160428G7BWOWO4,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|81|82|10
+	2|127|865|898,TC:nil,Content:0|15|50,EDM:1|-100,IP:-2,URL:0,File:nil,RT:ni
+	l,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,
+	BRR:0,BRE:0,ARC:0
 X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_SNR,TF_CID_SPAM_AEC,TF_CID_SPAM_FAS
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 6e1474f6962411f1aa26b74ffac11d73-20260812
+X-UUID: 6f30d654962411f1aa26b74ffac11d73-20260812
 X-User: husong@kylinos.cn
 Received: from ctao-book.. [(111.162.215.50)] by mailgw.kylinos.cn
 	(envelope-from <husong@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 2092408523; Wed, 12 Aug 2026 16:04:23 +0800
+	with ESMTP id 1613457883; Wed, 12 Aug 2026 16:04:25 +0800
 From: Song Hu <husong@kylinos.cn>
 To: linux-mm@kvack.org,
 	akpm@linux-foundation.org
@@ -103,22 +103,22 @@ Cc: david@kernel.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Song Hu <husong@kylinos.cn>
-Subject: [PATCH 1/2] Docs/ABI: document transparent_hugepage/shrink_underused
-Date: Wed, 12 Aug 2026 16:03:12 +0800
-Message-ID: <20260812080313.330413-2-husong@kylinos.cn>
+Subject: [PATCH 2/2] Docs/mm: fix THP policy counts in transhuge
+Date: Wed, 12 Aug 2026 16:03:13 +0800
+Message-ID: <20260812080313.330413-3-husong@kylinos.cn>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260812080313.330413-1-husong@kylinos.cn>
 References: <20260812080313.330413-1-husong@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 52A5740002
-X-Stat-Signature: jhpekd48uui7sb1a8ptgsipb6c4f6f5i
 X-Rspam-User: 
-X-HE-Tag: 1786521873-754519
-X-HE-Meta: U2FsdGVkX18LMQPdbON2AS6jvSH8bSqLkmPuBcAzzmDwN4aoDnIGrnv8y4hNm/k76YjthjZLSfoz0vVDSyQEjEBQEyxXLm+lZVQV2OgLPp6vLUK0fUF9C8hu0MktZfKLFyC7GaiRt+Vn1AXtgd8KpBPncBHXYqVP6CfLCInxfA3d27tAZIjCBRpT+eoebTCRF7kOLpU/3yAKye1nGWZ6b8rVXH8dOUEYvPHdqA9Rz2fAlbwRM5mAL0JFQ/Ai20ctv/K+qYtPkwh1Ql6UluJO8jlrUWc57k6Nf07zDRatbzpuuFaxAZgd8eCGoq/VeyltWAkQHpZ03V7SJ44bKhvtxuHH3l2wWpSYEhxFNhXar4Vl900743inxyk72IudFEl55L3W2IuaPZ4v4i8aFZC3gtzh4QNEghCrrgFYd157JnAG+Z58xV7CLhGHm5FQ1GcpKX/6oqOhaQE3RkFuXOEbW/syobb/sL3WQ8HD9krV+9u4DcM5Zb6PW8tJ2b8Qo9HWEzN97UD3RIXAoXTjiZ4uGkpt/NYsW08hzfe4uuiS7BFJyEoXbHDgGzT+P7lXa2SGrM76LNf6RZeTH+qfX2D4o3FQlXX/ALCqrursZqnTd6fKYfqn0tM/J2KLu29X9ITEvHKrrjjTCsYRR0Sy2yG23r8s5WCz8q93SmbweifHeNNvGyoWpGZ8Bfs/4QJP/+6i6koHyie77dLgTx6QtoeE2y/tyyXx7pBetEOtPGYR6aweahCon+anjNSwhk4b9Hi7pZSVAMKI3h0JHuU5u1Fzs9cSkqcqhenJRJZU6WDohQIiA4TCLFucN9OKTzFVK9vEvC2KCyEEsiroOBQhbHEmyqksqXjuG8bTBLXJF3zmGerlkHgAmAtP3TiHxLIKeedmRPovlI4Qoa02ZHuglAdS5qc77ZkbQwH/LpbN0aNZaWNqWdz8qoUzizDOOvfwwDbqEqwsOets9fM3DLPaLPr
- SdIN/AQ2
- yyYHi7LFVhKMryTPKg1v0AtbqdKj+WD9H8jAkRSlMaCRyHBORrgLRZLpgQJlBs+hCKYuHJJp80yT66FsieOGEBBe92VN9rWaSMMSpoKjTgAVRiao=
+X-Stat-Signature: n8uc4ik3rcyttqbz5ccbe3dwxxzkdci6
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1D9BB1C0002
+X-HE-Tag: 1786521875-158742
+X-HE-Meta: U2FsdGVkX19eH/ZXN9IhPKUPqdvtAv9PZ5qmV4FlVPgEE3EIITUthZgKkzOTxlcKezqJfuuXp1P18gwsVGlLPHAFriAbMB0Rw+4j8TZAEWuyKjEpBt1QhWLQNt4NtGlelgMbcXiO/AVLY825MY77+ggFsBzmmx/Vrc8pyLqiyAKZNCZfk+s8w3BsMckhB+T+TkQcB0FeVX4ChMiQ0BHrt7i32EEda4lTNYiKWjMs2zg8XK5Fa5zcuIZAp2epJB7SXP6R4h+eBLON88RCN6XTAmW144x9kosS1UKIXp0hGExXla5tgtjOWpgRtcPLxXDRW+UhEcT+FVu056KYHNH40JVG+Ijq7EKe3IoXCPizJH834Dsp0ofS0/h0s+Du1L48GYZDn52hbOPHG9wWUaoM0FVFvb5LCDyCqafajvXNL4tMwoPB/OcXr3YIFOhpsWcxiMSzKW9F1X99JVD3pH81RwQ6DnyMXFXIMso9477RYBYLXUWEhmsZu/MNzjFQh5BFfVnICZQNOk4qMDW7UmEUB9rYr69hKjvq/zoR5YC9yjx0s1HQBg5oZ/wwGa1U+yBje4EcZiSMeZmYr5oV5DX9668mTE4i2vCbgR6nZJTLnyAZ/axgHlTytL7mFuPhPg2pT9I0yhZy3WcWXCGZBzEPoidTEzlkEEtgJsBahYLu46qJi1SINnal5EnKYLfX68vb+Vx283cGw2CUAV6toe/3UoZZZtoMd2IaPYP3EoXcW5jDTfxkA3VXfVxnKbsiIbcTvalwJjKh+nNM+P/ZzYTEakker1TZkNYx2ZE6EG3pQmGeopJue7BK3iO6IvFU+sqbI9eLDNAVl2jSGZyCMYtpCMPOHtq5deebh/eTQgEEX7dkNCElHusU7qYbsAg/PdOiEq/xheFE8/favN4xoGvdC/dq740ZxRb8uVYp13TtSiqJ43G4Tq1MWYrQH4fvItDXrmRvqVaBo469rhEDIT1
+ QbsO+GbL
+ R5pvx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,40 +126,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The shrink_underused knob was added in commit 81d3ff3c6f76 ("mm: add
-sysfs entry to disable splitting underused THPs") but is missing from
-Documentation/ABI/testing/sysfs-kernel-mm-transparent-hugepage, although
-transhuge.rst already documents it.  Add the ABI entry.
+transhuge.rst claims seven policies for transparent_hugepage_shmem= and
+four for transparent_hugepage_tmpfs=.  Both boot parameters are parsed by
+shmem_parse_huge(), which accepts six: always, within_size, advise, never,
+deny and force.  The "four" applies only to the per-mount huge= option
+(shmem_param_enums_huge).  Fix both counts to six.
 
 Signed-off-by: Song Hu <husong@kylinos.cn>
 ---
- .../ABI/testing/sysfs-kernel-mm-transparent-hugepage   | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ Documentation/admin-guide/mm/transhuge.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-transparent-hugepage b/Documentation/ABI/testing/sysfs-kernel-mm-transparent-hugepage
-index 7bfbb9cc2c11..bbdfae2c0caa 100644
---- a/Documentation/ABI/testing/sysfs-kernel-mm-transparent-hugepage
-+++ b/Documentation/ABI/testing/sysfs-kernel-mm-transparent-hugepage
-@@ -10,9 +10,19 @@ Description:
- 			- hpage_pmd_size
- 			- khugepaged
- 			- shmem_enabled
-+			- shrink_underused
- 			- use_zero_page
- 			- subdirectories of the form hugepages-<size>kB, where <size>
- 			  is the page size of the hugepages supported by the kernel/CPU
- 			  combination.
+diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+index b187d618452f..72e944f49da5 100644
+--- a/Documentation/admin-guide/mm/transhuge.rst
++++ b/Documentation/admin-guide/mm/transhuge.rst
+@@ -389,14 +389,14 @@ is not defined within a valid ``thp_anon``, its policy will default to
+ Similarly to ``transparent_hugepage``, you can control the hugepage
+ allocation policy for the internal shmem mount by using the kernel parameter
+ ``transparent_hugepage_shmem=<policy>``, where ``<policy>`` is one of the
+-seven valid policies for shmem (``always``, ``within_size``, ``advise``,
++six valid policies for shmem (``always``, ``within_size``, ``advise``,
+ ``never``, ``deny``, and ``force``).
  
- 		See Documentation/admin-guide/mm/transhuge.rst for details.
-+
-+What:		/sys/kernel/mm/transparent_hugepage/shrink_underused
-+Date:		Sep 2024
-+Contact:	Linux memory management mailing list <linux-mm@kvack.org>
-+Description:	Reading and writing this file controls whether khugepaged
-+		splits underused transparent huge pages (THPs) under memory
-+		pressure.  A THP is considered underused when its number of
-+		zero-filled pages is above max_ptes_none.  Enabled by default;
-+		writing 0 disables the splitting and 1 enables it.
+ Similarly to ``transparent_hugepage_shmem``, you can control the default
+ hugepage allocation policy for the tmpfs mount by using the kernel parameter
+ ``transparent_hugepage_tmpfs=<policy>``, where ``<policy>`` is one of the
+-four valid policies for tmpfs (``always``, ``within_size``, ``advise``,
+-``never``). The tmpfs mount default policy is ``never``.
++six valid policies for tmpfs (``always``, ``within_size``, ``advise``,
++``never``, ``deny``, and ``force``). The tmpfs mount default policy is ``never``.
+ 
+ Additionally, Kconfig options are available to set the default hugepage
+ policies for shmem (``CONFIG_TRANSPARENT_HUGEPAGE_SHMEM_HUGE_*``) and tmpfs
 -- 
 2.43.0
 
