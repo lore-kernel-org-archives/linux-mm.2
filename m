@@ -4,116 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A56C0C5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 21:38:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60CE5C5CFDB
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 21:42:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DE916B0328; Wed, 12 Aug 2026 17:38:42 -0400 (EDT)
+	id 489B96B0172; Wed, 12 Aug 2026 17:41:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78FCC6B0329; Wed, 12 Aug 2026 17:38:42 -0400 (EDT)
+	id 43A366B0175; Wed, 12 Aug 2026 17:41:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A58B6B032A; Wed, 12 Aug 2026 17:38:42 -0400 (EDT)
+	id 3550F6B0177; Wed, 12 Aug 2026 17:41:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D3AD6B0328
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 17:38:42 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9B0B41403A9
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:38:41 +0000 (UTC)
-X-FDA: 85093932042.02.B6A112C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C620540004
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:38:39 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Mipp/Tam";
-	spf=pass (imf17.hostedemail.com: domain of "SRS0=I2fA=GF=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=I2fA=GF=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786570719;
-	b=RoSNScIN6r3lydmLx3tALC7IvpspusjebwBHj4QA1ZMtJJQyj6mqA8WorZMBYCkxhuXaE5
-	V1JGX53nyyqqO3oNZBHnDuHwKugcbWTPeRdEZpDfrpZ6uBRvrm2IgjjZqVJldutIvlqLF+
-	GWg7M/AnzjTdizcCOKbgqdxqBqMk+hk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Mipp/Tam";
-	spf=pass (imf17.hostedemail.com: domain of "SRS0=I2fA=GF=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=I2fA=GF=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 1703E6B0172
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 17:41:59 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7E0FA802EE
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:41:58 +0000 (UTC)
+X-FDA: 85093940316.27.977C3EC
+Received: from mta1.migadu.com (out-3.mta1.migadu.com [95.215.58.3])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 283C580003
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:41:55 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eM67pAkU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.3 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786570719;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1786570916;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cp8VKR+mPn5OPJBFC9VfSl1Nu9BWx9Sa1qFuiOfB2n8=;
-	b=ibttTKdZpMk3ZNDqNilhsM9dc3mtbro/+DrOSLoJ66PIcU12KR9ix5xxE3kcCIRR21UgGh
-	CjGLWFRu/XSehgCR8QRlm7/EAioG8RBbNzIRUdtMVooHyw4LgQcFxYmF2pfV4zux+ngYUz
-	/7PczE9nPuyJ9s24uFldthJaK1xxSvE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 01A964039F;
-	Wed, 12 Aug 2026 21:38:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE0081F000E9;
-	Wed, 12 Aug 2026 21:38:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786570718;
-	bh=Cp8VKR+mPn5OPJBFC9VfSl1Nu9BWx9Sa1qFuiOfB2n8=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=Mipp/TamjMFifPGmGfcl3Aa7QIIOnIoUyxP5D2zaiECAy4CT+kswN3I69AAIXMqj1
-	 TIfrfHGeiC3EyvRqGYWBT6/CZW6A2ZFdyWIZyFrs2+4a882RT1BgAu6RV4wGrZuCQ0
-	 Uf5bIPpg66u1BEdyUQ62PQGF0lttJQWukYKr7OChDw8pMrAz8qXzu7zt2YT1gUTLFz
-	 5EPpBLTRA46qUC3Vk5MIMkwQaDOlvKgL59FWWAhne9iGmRq79LhrYcyfGwuQlkr7V0
-	 z5fb08Jf9qTh9XGB3p00AiEd+p1M+Z241W6YMJaDiNYb39skY3A+A5kRlfr9OTPQEy
-	 O0FoyCy9nblUw==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 519DECE0EBE; Wed, 12 Aug 2026 14:38:38 -0700 (PDT)
-Date: Wed, 12 Aug 2026 14:38:38 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <b736237c-64ee-4eb2-8201-5685a3853844@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <44c51ace9b0dc44b795f6f48c91cda440eed910b.camel@infradead.org>
- <20260812122759.GA662699@ziepe.ca>
- <c41c52f02f033ea980d4b5f9b8239d5e9411a03c.camel@infradead.org>
- <20260812134934.GC662699@ziepe.ca>
- <a48e6e7063122b22a8083bb0792984a204f316e6.camel@infradead.org>
- <fb87f673bf290cad133d113dbb0750a7752b9d30.camel@infradead.org>
- <a94b75e8b9b1d2191f365c0f4275fd5082332df5.camel@infradead.org>
- <d0692500893f303906fba1d7d596eb59a07a806a.camel@infradead.org>
- <anydY25Cl78l1HfU@google.com>
- <932DB129-1794-4855-A61E-F4C2B54B1EE6@infradead.org>
+	bh=32zE9UxQc7MlRCAQTkE3gRvYDAzRK0TQaYBKoF13bI8=;
+	b=OQ2kMC7JPKmGM251oar/aRIrVLwLnlFnrpV8t2PCQnQXaXvoO9edcIW1iHNeREjdbdweeM
+	a54XSk8ssZz5zxFdSRRiGLVrRNOInV5N5MhbdVQ98sp3M1qirOT7fWryl8Fa22GKPoapyN
+	oyKUfkEz0fA1YPuDLihutPMDcxAgbEg=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eM67pAkU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.3 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786570916;
+	b=mctpDL+1nMTBcjKUQxB4eXM22hfmIx6cTDBHB+78rrVApxYN0qg5bXWX9K5R9JmXyrf89U
+	nuwDRYEUq2APDpSPxTYCV6vdmsGnrhGL2jizHxepAsy879v7nmtnlOijSjLGEOcoLTS2nt
+	kEvMg4/wt3NAJpLxajMECLWie+YpQIU=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=2F5NhUpezBCQsHKeIjnstp2S/raV+rcTxDfwPc9Xn34=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786570914; v=1; x=1787175714;
+ b=eM67pAkUUhF8/me/ldGi3bvDUWGNU1Pd9opNRMcS+ebTYCsoa3RarEcx+NjIVgRds9QYw0QL
+ TKPCEmIKLwRZ5RsUTyFMoJdJnyS5/k360fnv4pmha4VxLR/F1Bmii8G8po19QfbzDOqSlN0UqIo
+ 02kz2Dfcqvc84NTYdbHL4JGE=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (2a03:2880:10ff:48::)
+	by smtp.migadu.com with ESMTPS id d28f7b4220e49d71;
+	Wed, 12 Aug 2026 21:41:54 +0000
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 12 Aug 2026 14:41:49 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: syzbot <syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com>, 
+	axelrasmussen@google.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
+	cgroups@vger.kernel.org, david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com, 
+	kernel-team@meta.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
+	mhocko@kernel.org, mhocko@suse.com, muchun.song@linux.dev, qi.zheng@linux.dev, 
+	roman.gushchin@linux.dev, syzkaller-bugs@googlegroups.com, weixugc@google.com, 
+	yuanchu@google.com
+Subject: Re: [syzbot] [mm?] WARNING in set_mm_walk
+Message-ID: <anzojtrifviGUjLN@linux.dev>
+References: <6a7a6929.b50370da.49fe0.005e.GAE@google.com>
+ <6a7c6670.3668565d.e8814.0012.GAE@google.com>
+ <20260812140358.343927ad8d0955b67c4e7ad5@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <932DB129-1794-4855-A61E-F4C2B54B1EE6@infradead.org>
-X-Rspamd-Queue-Id: C620540004
+In-Reply-To: <20260812140358.343927ad8d0955b67c4e7ad5@linux-foundation.org>
 X-Rspam-User: 
-X-Stat-Signature: wrbhzhgjg1i4s9cjbx8sbjaqonoqwbe7
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786570719-225625
-X-HE-Meta: U2FsdGVkX1/BtSdcSGx6Jo7de7cAWg6ERvnjS0VG9BmA4xkWqEbGtQ9dD6NBW9LT59znpL2iHTl8lLgD+lGAr0Hdrz+GbPbuOaAvxEIF5Tga9rU9qcw7G4ulnvH+R2ljUXMtClax9E5i85mXDcQbXs6AuudIq5MpCFMB431+HnkyoE3uSj9JWrHq5ewfLuGJc21RjCeVaYIMIr+NKsM/38egiRK1Rn2qKnW6/o+l1lsnr1ttuOebMXmDTYaesnf0pMZFi4AP+mfqJ1t9VK88TBFNzuE7oq/Lsw72rgSYgJ2yEEYPD5AdGsnrtouBaOrDFOUPnrMxHTLb7mpy7qIZ2CZovLJUyDmjFVKnBKkN0tO2FYqJ8MIvL3/4yB4dNbjIc0gWZjVJUQ11512PnMErPTuVSAb5sgkrsEMYg01ayweE+Xi59nOnkWQdJheuJL8lIiL35LqVeMjM7tlPfO3VSDa19lzycQLS1uoD2NfjiRfNjRsSp1hX2pViZe2XDbWpZkrMr6WE2P5c0N2WVlClncnqXG4uySivqGnp7/4FXaRjtBpqz/V2xGl4ERjn3rzYeR055gvrUGT2a/WF4FM/lx8ruCj1YiYjV6yi/hQXoDqR1bli79ZwnOFA3FFuhdQtEzH816We2NywfN6WRMHVET3NBN1L9t5jvCXUeAS17DST62yYV/CAewmWt8DpwYoV2R4r1lS3cC45kZOW//wRyU2GVT5E6/FJMMAbonUYCZuY/SSnDqcrCWiPkCVVN6KMzf/wcBAZA1aIFzKPz0rpaJta6QL1yiElI2PGeWDvd3stBw/B7sEJMCiywgXjNPtmwoQ9rnJPrm7Fvz09LYXZ4K8uXy1gzTmIHQP+xBTv5ZBnwyVEgfqH+jhcFHudAbz4v5T59OP6j3zHyrfbMscy03wAzcnv9wxJq4g6udBqvuimhNJgJQ4fkONTZqCzcUaU6kEfrdvaN2lnxRkBzuo
- 97yRvM+4
- w9HFywsRtGjBPYxvHksxc7vH6PYgWz3WihRBVeWuCYy8FeOWK6/KNaoo0nJCnR1HTfnhPg64owjO6i10Wv+gZNqi0p3Tuwdqe1lkDVvrRujPcXI+XfhcdUdi2agSnc4SmIc8DzOG44FHoyJtJk7JlMYPXSo/5tEvZisUm2BxrlWh9awMlGSkWV7m0M6VvDCZ9XaWAQGKuvm+bBBavABPz4cLLL6TJ6CxPGMH/FDmOp4+uWkJEJgJ10pSOKt52jfyQmAIOdjhhuoYb0tidU9YbZjByrQg7LMxqS5nzLmovPffAC+N+DbpMYGR03jBFuiCs6B9y/Dk+9UG8bHjf/m0OSPlVDvUifkS/jDQS4fsrAeHT3zIxxTRQCZHLKWk+cAn87pME5RWGJU4MhSuzr/hdySpmvrb9lpHY5hd4MoVXHlHoUvyyOYD+LqdxsHNsToRWU/Bkj86O0WxP+Ssbex6GEAmdYzaLAHqRqYLthR4x+RKY+kQGX7/LX6Ls/WiwNZ23NbMpIEyTZ+rCQf2Wjbk1V2hBdpddUJMFYW7FLgCiFcHcAM2cPJ+J9Lnsbhh5yXAQCQBZbMAFAfDO5QP3TiycLo9IAc+v2eg9QzowBl5ppivKlRgc4ToRSBvzu7lvslfWyheU2GJsmM4TjMhPlKnpcR9Cnw8+TIYMs8CHuUznkZ5gB2ADD/jciN0nr9t9adS4DWNpJ4yDtF4ks0HHewCz1KgtO44gIQRt6MaLrwBxPNXXOOS+86+KxEaEN2aUXyEgTVgmdLwjAl+fQSNAGxhggmqTfA==
+X-Stat-Signature: wjstw1a7q5dadfzjk14n9ay1otddteqt
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 283C580003
+X-HE-Tag: 1786570915-795094
+X-HE-Meta: U2FsdGVkX18MU5JzzezgQg7jzmt7c8cNPPCkpB8i3pkHf2pFXezVw9rF6q+HZ0K3OA2JAl2eqgs0ttaBdab6QSsXniVFEtbNiVZQUd4tkjDh/MZ1FJU3jrQm2Tr/OjadTIa9b3salFqExSisNe23C6GsZnVOpDJw9iiTX1uk1QfiWzBkR4ijInM4v0qOBuTgANCDF3u+k1dkTEraglLKHG3fshGqTFv6tN0Fw7ZEA6TWWPLM9mhb1J1tiPK0PWruzdavn0D8esj/+lhBt7QuG1LjPBzh0tJrLlMVLRxBhRp1vDt/4iG+5R3RJ7vf0Q0L6gj5H7+ftxTlnsw3fyupqIf5T3MdH3wzzfZLbSHrx9w70qlxyESQnGt6jJkkz8mIwc9t3ZHjqUJ6hKD74nnXQFD5GxBvIxL/GJljFKj1zRmpOoIYkJXUq3W+V3QgdpEeUl6hUUHQ8IgJU0rKCdGdfSsBU/YD3ciEqlqb/qMnEl95M8fqv53q6wYR01FHh96tYa1WPRHcUylcsithByzqK8l+jjKozJqT7C3aCWytflnWJTBMBZeNjVkFyByNwKUnIx2WsM4XWdM/gKUkl28WQDqLfoCUSXlvXmSUQRzNJB0EAXSFA1HxqfbkkyJYkFJgtZRWBrwyRjJDgS8DFsBE//Y3vCaSS3YI84pS1mkqSr4E5PH6R4W89RG0+2R8UMGGyTBsntV/8Qi5luCjX8PFiRUcVwA1XvUtryqzBkRh2EpEliCirvNh2sWXMaCiQ0sxvFVIGqQLeEIR138Es1dbDUF5ENCCPlpYWLCzPlJD48QuDZrrGecWs0d/FmduETZqKUYAMr+91Ya4EYuHFsvgs08fVkEOCKM0mWGtrVNnkmXtxQ7nULTRE2VGsucgEmyJaQm0Bh5mu7Nm2GMDOxo/V6pJoe8WKD+wZDWT4CBhjAgA9HlhDk+b8DSSh9WDw0Fx+yqDPmJz3zfsupHO/7n
+ zo9G+4Ml
+ FWacCrMoFIiHPq1mOnKGp1hA6bRFZIk8gTTTquFIDbL+yn52n5KA6vZCgzQ2boZjRWXWimokIw6A2yGQEdKhPCiYPqSeFUC8S2CGmpo3bZRVYX3BDP+6ZOQ9AEDR7ReINFsT4ASBjVpnTiHd/tHVC83lvZ4ml5rAajO0yRGYfQaMGtgS7Abamj9oTahd5l1E5irlhpsNcvS7UsbeXYLB8zrlNtx2eqbb+S0pEp0sXKGnUUSjSfBJZrrrcRt5uVRgJMD6oaZS1fLAUscqfLc9s3WttMWmVtCdGjeprlqvHs5JfmoKBFCOBpGq6iDWAgKXOx3ntqvoNzGbNuEvr4gEHzx4hODmvY7gYWbL3C40scSEhF6Yy5Gvj1vi9yTw1DAM1ljv4pGvwQRQ/80osnOTLYGH8FTXuxaOCl5Ow6CMBDiu38WQPIguIJBx9xZGDC2FX0HYM352y8g1RvVApLGYx50gD0+OvkF+0QFoQAKDbuJ75LXWSDI3Oul7XqygAj0NxqwHVlsiTDdfcscbRP18LIwbUYvz4FQJSmyPfYggn8lPbwLq4OWdU5vhrGzNPe0I2p9iVqOuwKKv8eSGft7HdDTeL7tDxkspfzf4qqZ2HqAp0Wh2W51UvuQ0AapmTlpajynIPF/1tKAZ5REmjWm9epAh3Jry3uRtF3JqYX+g/SMckN4nXK2u+4q0Jb4XUJHvF5KMvFVrf7eipKe1sj8+6/He7KswduJg8FB8iO8maEKM1Prd/x8TRt0Awy5LCgM/oh2zBTbmeTMdRB86MCpZb25dvM3FF+SZWiSbGauetFIVVH14=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,90 +95,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 12, 2026 at 06:17:50PM +0100, David Woodhouse wrote:
-> On 12 August 2026 17:20:51 BST, Sean Christopherson <seanjc@google.com> wrote:
-> >On Wed, Aug 12, 2026, David Woodhouse wrote:
-> >> On Wed, 2026-08-12 at 16:03 +0100, David Woodhouse wrote:
-> >> > On Wed, 2026-08-12 at 15:34 +0100, David Woodhouse wrote:
-> >> > > On Wed, 2026-08-12 at 15:05 +0100, David Woodhouse wrote:
-> >> > > > I'll rephrase that for my own understanding:
-> >> > > > 
-> >> > > > *If* we go all the way to building a whole SRCU flavour for this *and*
-> >> > > > implementing a spin-only variant of srcu_synchronize() which is
-> >> > > > tailored to the atomic-reader use case, *then* we don't need to remove
-> >> > > > the non_block_{start,end} guards around the MMU notifiers, which are
-> >> > > > basically never being called anyway and don't actually seem to protect
-> >> > > > against any real bugs.
-> >> > > > 
-> >> > > > Yes?
-> >> > > 
-> >> > > FWIW it looks something like this. I'll throw it into my torture and
-> >> > > latency tests, and we can see what Paul thinks of it. I'm still utterly
-> >> > > unconvinced it's needed, but I concede it has its good points.
-> >> > 
-> >> > This slightly refactored version is the one that's actually going into
-> >> > my torture tests...
-> >> 
-> >> Well, it survived first contact, and it's doing the soak testing now.
-> >> 
-> >> The average is basically no better than the try_synchronize_srcu()
-> >> case, unsurprisingly — as *both* of them just observe that there are no
-> >> readers and proceed immediately, in at least 99% of cases.
-> >> 
-> >> Like the existing rwlock case, it still manages double-digit p100
-> >> latency even when though *doesn't* actually sleep.
-> >> 
-> >> I don't *hate* it, but I do question the benefit of it over try-first.
-> >
-> >FWIW, the max latency and >8ms numbers are very appealing to me, as my concerns
-> >with using SRCU are all about the tail latencies.
-> >
-> >But I'm obviously not the one who'd be saddled with maintaining the code, so I'm
-> >more than a little biased towards choosing the more complex version.
+On Wed, Aug 12, 2026 at 02:03:58PM -0700, Andrew Morton wrote:
+> On Wed, 12 Aug 2026 05:26:24 -0700 syzbot <syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com> wrote:
 > 
-> Ack. Well, it isn't even *that* bad in terms of complexity. It's mostly just a while loop around the core of the try_synchronize_srcu() I posted before, and some syntactic sugar and safeguards.
+> > syzbot has found a reproducer for the following issue on:
+> > 
+> > HEAD commit:    f5bbbfec59b4 Merge tag 'probes-fixes-v7.2-rc7' of git://gi..
+> > git tree:       upstream
+> > console output: https://syzkaller.appspot.com/x/log.txt?x=11f44c79580000
+> > kernel config:  https://syzkaller.appspot.com/x/.config?x=c44651ea7dd2f307
+> > dashboard link: https://syzkaller.appspot.com/bug?extid=12ee2725d5fde63a9c96
+> > compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10d11149580000
+> > 
+> > IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> > Reported-by: syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com
+> > 
+> > ------------[ cut here ]------------
+> > current_is_kswapd()
+> > WARNING: mm/vmscan.c:3800 at set_mm_walk+0x210/0x270 mm/vmscan.c:3800, CPU#2: kswapd0/111
 > 
-> Let's see what Paul thinks.
-
-A single call to try_synchronize_srcu() that, upon failure, invokes
-synchronize_srcu_expedited() would work fine.  And a limited loop on
-try_synchronize_srcu() that invokes synchronize_srcu_expedited() upon
-repeated failure return would also work fine.
-
-But if you had a large system, an unlimited loop on try_synchronize_srcu()
-could wait forever on a system that was large enough that there was at
-least one reader at all times.  To guarantee loop termination, it is
-necessary to flip the index.  That way, new readers would use the index
-that was already seen to be clear, and old readers would eventually
-drain from the old index.
-
-So is your use case adddressed by the single call to
-try_synchronize_srcu() that, upon failure, invokes
-synchronize_srcu_expedited()?  If so, we have a solution!
-
-If not, please let me know, and I will put together that does the job.
-
-							Thanx, Paul
-
-> >> Again, I'll defer to Paul, but personally I'd want to see a more
-> >> compelling use case for it.
-> >> 
-> >>   ┌───────────────┬─────────────────────┬───────────────────┬─────────────────────┐
-> >>   │               │      expedited      │     try-first     │       atomic        │
-> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
-> >>   │ median drain  │ 32-128µs            │ 4-16µs            │ 4-16µs              │
-> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
-> >>   │ avg           │ 118µs               │ 13.8µs            │ 12.3µs              │
-> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
-> >>   │ >1ms          │ ~950ppm             │ ~990ppm           │ 838ppm              │
-> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
-> >>   │ >8ms          │ 42ppm               │ 4.4ppm            │ 0.10ppm             │
-> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
-> >>   │ max           │ 33.6ms              │ 17.6ms            │ 10.25ms             │
-> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
-> >>   │ fallback rate │ —                   │ 1.2%              │ 0%                  │
-> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
-> >>   │ sample        │ 32.6M drains, 10min │ 41M drains, 10min │ 40.5M drains, 10min │
-> >>   └───────────────┴─────────────────────┴───────────────────┴─────────────────────┘
+> Thanks.  Shakeel is working on a series which will fix this by removing
+> the calling code.  But it isn't a minor patch.
 > 
+> Shakeel, it would be good to have a backportable quick-fix to make this
+> warning go away?
+> 
+
+Actually the first patch [1] of the series will fix this warning and we can
+backport just that patch to the older stable kernels.
+
+Do you want me to send that patch as a standalone?
+
+[1] https://lore.kernel.org/all/20260811203203.3456029-2-shakeel.butt@linux.dev/
 
