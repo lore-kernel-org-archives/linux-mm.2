@@ -4,103 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC8FDC5B56A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 07:44:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFC67C5B56A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 07:45:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BED716B009F; Wed, 12 Aug 2026 03:44:01 -0400 (EDT)
+	id 030006B00AC; Wed, 12 Aug 2026 03:45:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC5916B00AA; Wed, 12 Aug 2026 03:44:01 -0400 (EDT)
+	id 0076C6B00AD; Wed, 12 Aug 2026 03:45:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADB6D6B00AB; Wed, 12 Aug 2026 03:44:01 -0400 (EDT)
+	id E60546B00AE; Wed, 12 Aug 2026 03:45:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C9C46B009F
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 03:44:01 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 207231402DC
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:44:01 +0000 (UTC)
-X-FDA: 85091828682.07.5DC59B6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 604B9180005
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:43:59 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CjN5FK0r;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786520639;
-	b=cOEmaKnyXtytwOGJ4kYtjHSXQJvxWuUROjCcXP3uwMZGaSAeYjjp70fsuNZpg/8cYtFTvr
-	DmwyD/svt3u6A9IHz4BKMVRBQhO+Hn7ugkFee7joL0keVuMl2Nj1x+n0D2JAyqj2IMUTYv
-	Lb5+uN3yMkgZpKtDqfroRiuvvVMnLpc=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CjN5FK0r;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id BCCCB6B00AC
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 03:45:10 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B96B280304
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:45:08 +0000 (UTC)
+X-FDA: 85091831496.08.E72D987
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id DF3C1C0006
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:45:06 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cdoe8Sog;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786520639;
+	s=arc-20220608; t=1786520707;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=9pSY0tJf8U6OX+aOr46oomP4FiiZ4map81yDZBrjHxc=;
-	b=EHT5LR7cwKxaXpnAsdSOl5Pttd9h6/h8GbG09lZtBMcKrYn0IOy/nZsVYirA8zdfeZT2Hx
-	Vw09MS9pWd+nszj7NFGpC7wNC4dC/0DgSDgIedN/vYDMUkiSBkGkZoPW2LFCAfaQpCLSDm
-	qwnJJQrVuTxCO3uZcnkSvau8vCNdP1A=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vn1J8IoLYo2N6KRD4KfkmqEuotdaeASG5oGODSKi6Rc=;
+	b=d71LskzWq0tDitCcJdpupKdupcj1DahIBfrC5pVGzcA5FfuOUAHimAEemcYKud0eC7IEzA
+	UDZ/iGDhJdeOyrWOMcBrPNesnEKOrhlKEOwLBmeHwJTDh3ZQz7A1QOYjn9Z/vP9oHxkoI3
+	79X1hGA6n9igYKxItgiymerkmYitpyg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786520707;
+	b=B6YAmGGUDfoEC2bnoPmMuTVMhF1zkHSP7pfRlR+gwALrA7s2AJXTKpXUmKrxiWAKxklRsU
+	Tvxj6kF5w3HlWaLbFX0cQ1kag9G8X9K8tCKl/Ip0jkZSfTBkUkiLvxRCrzzmbugFSgClyQ
+	uRrIqr99Hjn8eXZA0KIjuCfyuw0OGd4=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cdoe8Sog;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EB78160A7E;
-	Wed, 12 Aug 2026 07:43:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A28741F000E9;
-	Wed, 12 Aug 2026 07:43:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1611041757;
+	Wed, 12 Aug 2026 07:45:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B331F00A3A;
+	Wed, 12 Aug 2026 07:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786520638;
-	bh=9pSY0tJf8U6OX+aOr46oomP4FiiZ4map81yDZBrjHxc=;
-	h=From:Date:Subject:To:Cc;
-	b=CjN5FK0rTOFIzo4ODUJxYEJUSjRH9MALXcDU38oxqNAX86B56bE5xN76I6K+wji4C
-	 RXir87/+MEnvn2tOJ9gIDsra/gBEZrrj78Gn9Ztl21s3fm6CeRQyUOaJyY/7eOGRk7
-	 aC1s8aSq1wKt2be5o8JoVGMsULJ4tGJstV+fZGPohd1D+scU3BIIxKtAjCeN2TMypP
-	 b8YMYe3ZL7YqqSKrEIdzKxNXVbeHLjMpde37DlHqcASfy4TVtytfQMwOsOv/V8Gr3P
-	 Teh3IB5V0EOihnco4UiUdM3hUjGWqpTdbjjRprkpSmjUpEbvKws2QlCiU9jzS4bYJ5
-	 SBHza6KssC/PQ==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Wed, 12 Aug 2026 08:43:31 +0100
-Subject: [PATCH] MAINTAINERS: add drivers/char/mem.c to mm misc, memory
- mapping sections
+	s=k20260515; t=1786520706;
+	bh=vn1J8IoLYo2N6KRD4KfkmqEuotdaeASG5oGODSKi6Rc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=cdoe8SogitqTtjhixyexdwcKe9YPMs+Yv3ALhvXwnPpTpiQHHgtHIU2Kvmf/tvCfe
+	 oggcCbIUBuc1VtBD11yBaX6CZV23akWdXHhR7vmvQmTf9FeU/K5HyLx8ScOKOu/MCI
+	 mZVRDs6Md72KCznU8b8mf8O0Z19zbEhKf68BLTy+FDmENKL0AwaYnjnOlWTVkl0WKt
+	 8CMz31UtTpxFL9X8jC99C23AoooSyF6+LRkHS7pGx5WwJyJinQOaSPCMlxyeGKBEz6
+	 TPqa0O29n4BFZtWggM3uYQkqv6LSZBSMsujaW0gwqgStYj7MN1cA/tUmwY8ynxvcMa
+	 YZx3Ztj3A1koQ==
+Message-ID: <405dca4a-d38f-4314-bc90-4f971e19b01d@kernel.org>
+Date: Wed, 12 Aug 2026 09:45:00 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm: replace custom bad page map ratelimiting logic
+To: Pedro Falcato <pfalcato@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260811172156.356053-1-pfalcato@suse.de>
+ <20260811172156.356053-2-pfalcato@suse.de>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260811172156.356053-2-pfalcato@suse.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260812-add-drivers-mem-to-mm-maintainers-v1-1-6218b861f4c8@kernel.org>
-X-B4-Tracking: v=1; b=H4sIACIkfGoC/yWNQQrCMBBFr1Jm7UATpUSvIi5iZqojTCqZtAild
- zfVxV+8v3hvBeMibHDpVii8iMmUG7hDB+kZ84NRqDH43g99cB4jEVKRhYuhsmKdUBU1Sq5t+zs
- ew3CiFFJ0Z2ied+FRPr/G9fZnm+8vTnUXw7Z9AS9Z6CSFAAAA
-X-Change-ID: 20260812-add-drivers-mem-to-mm-maintainers-f3864dc8ca19
-To: Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, ljs@kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1537; i=ljs@kernel.org;
- h=from:subject:message-id; bh=5FPUkWxhyFZqy4oqKvasLCDj58u8MXGFOyogOnBtw8A=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJqVLQPP1/y9599DMv7ENbauOhKyenH5movMWYvsdnzm
- 3nZrennOkpZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCRV9kMf2WVdSb90FY8n/Lz
- o/jOw7uUKw/2P8+QidaxvFh+v0Di2BFGhk9nZ99WWe5l+1VvjwBna+Aa1rgzW1xl+X/FnHn97s4
- LTw4A
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Queue-Id: 604B9180005
-X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: 6dkfbxxipq69qk43nkzycaokmnh14pn7
-X-HE-Tag: 1786520639-4554
-X-HE-Meta: U2FsdGVkX18pURuOhws5oduHq9vYK1auDgsfFpAWoLlqOrlSUIkRijrwswim8S1ddfqawgFhMGq0zq5rF7Sb8phCwpSYoVQS8C+dUB9zedGM8la0KLJae+G9nzD5AS4h/CpuPo1omBGV7Ww4icV1U+knYwf/dp97BrDb6Tgmde+sRe/BOxJlCPallBn6SYhO/xeekU9fXeGt/AnTQYBnUI4jNtAGZ3FzJ/DGVSxeA/mp/l4eDboj30H2uoeBspdcTtacnKjcY2QMAKuvYOVRmIXUwspz2OeiNqEbKexjkYKvI/OJRnj4Pz4YjMd9nTVangmYZwaaCDKP+eKePHdBDy4fz9k9cig0kHBTOzXzel3bQgTFEh6JvktL+4N7DMTrGaaMvuJzytNAOq5nIqR6pfXJ/enOfYzLYOqxFmOt+Hms4RvHqik9lSLEr+6ADNjW2FCtlBFKsZ/gFEa2DtOVrv+4UrSs6mXyqDeSSn5ifkDDOTylYkLZSMtbQfEa1lIPsK+uj0YEPe0AVeFsgR8k8QlK6noKeC9e7M/x69kAHu3zSJx19DCJ5x3mg2r1Ut8F0K5vULGcB5QPGGaxBwlMDyG3z6rYpHk/DCoAsz4qqvznDuR5a2sqE5cc9ERIavsaKTVa0CZl8bYtAHVh/XC4/EIRoAv1JHrwbGpTxWeZfYhNMh2cgH29BHxwzxWVQBwGK6dNQMPt5wzpiS6QB0VZcrwDol/mCzAgvGlFKoGk2LxANkKRaLx407iKXM48uBXyd9AIOmVRWhLPM6dG7/L4mYcwQR276jhhOIwtKQikvflcOu4qXg4a+i6oYKjDvroxBNNcrpN6RuhkqBDSoLUE7V3HkBtVoca6foEEbGqtwKh62ApWH//2vJKemBljczdAJOVkNpgnoKOgUiWQefQKkDPqSR8NIQSZ4yOVro3wJmbSwv66bHSwtyGJ1jBYIcwI56IqV1EM7sJNi9gcJ6M
- SramUPtj
- rLW5Cgv7aczuu60pKya71eJfKwu5xs79DRcq5EY4ckDeb4O61B8U8ZpLjAx5pyL3cW6Ef32078kJCE9yLl1V34OEvkzq4cLGTXDvZ2tBa2oKNG/h1fMv9+LdAyYoTG7Gj7znuLXiZdCMidxe/dQ5q31Tu8Yssecbv68WjwH2CNFP7VXIAOtzBOGrE+x8To2CLxyy2OwnXIC7iSrbs8Q+YeiD+vJhrawkyKLVeU1YzuFbGbVyvRm44LvYJpSeOnPWfH7y+2TncnVtC/7go6dkYE2ueWL1g8JDsZnRsNaI/Tu3zfqeNScWzLFOPJ4JTsJsGls0wcEdJsrsXc8B1BHpBUEt02QP8am6TYBCD0+oITuBl3ag=
+X-Stat-Signature: s83d47ax3kyoy5pgw51hrsruomjmix6j
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: DF3C1C0006
+X-HE-Tag: 1786520706-175397
+X-HE-Meta: U2FsdGVkX1+FX2pg0BfGidSWA+8sEz7Lm1cdqx7Jn4n6Bq9Mp6JjJRJ6SFpZwkPJ1d2UAvhd3fn2cmD5Oujr0xxehVrqnHSpDYEKLYWjBwip+DhDg9L7G3q9Gl4er+O8mrXeYW6NLsGQpF+TmVHrw/7xU+Xr3HsnDDGwvgbNTzDVqx4crDPKsRx5kUqycEImwG9/ESA/kxb9khgM7UOqPwLhuqVYymS/YsNvRv1+3PGH1/zC8mOLw0KT0AHEduvSCWCUDSeodRapWkUxQXDMGV+vHjlJOGGnj0VFWXkE4SrojH77h5SB+rrGTUBsW9pwZksLXEcmQ6ztnwTv5IKWFwJekGm16iK7QSauM7mWPRFyZNy7RbLkSHEVCe/Hu48wJq1xVIb2od+7fZuswKPGD3mWyRcENTz0cQoqt4NYyLrMDM9i+S458keX1u1wb09W2s6Hr8ia35GloPLFORYqcFuncwU49WH/NqFchBlHBil7+8j/+2xjel8b1LeGoaFjzKls+IFguExz41V7vfWkL4fxArMp9pRFVrvcyz1l3aBLv/rhoMbAW02z99SbliC+TZcQaW2LDnUdJnucGkeXaXkVgdpy9e9/vZNOz39tllCh6pJ4iNQVSj7prh7QlO9GNriNMsDaBWdnmEdY1o36H/oDvg05RaFaxcAQL0XOzGbSa7RGeY3Cf2HRN36Lx5fu+4Xu3TYS7buum6/jFnmaLSniDXnXX2rRsWEM1tmB1ub/CMYQ/0dyk3kI59U1GEhxl6DxVbnf0FYKisqgJ0TFIotPXxYfpNfOSxdA2GjBLKGqD56wuTfRzVm0uvFWeyQ/jTH3+WANUMFAZJ8RUKAHtc8vmtCX79d/SKMNDu5C6uSlw85I8mq4nn1ZXH6hpn33wDOyoczjK0fq6w/Dh+ehKGX2vUIfhojuwMBzEweJtnFNAkF9a6edTKj2HbUQjSA4mk0+x8CMf5OReAUFQ5e
+ R5zBD0vB
+ vyGiw2e8nnyHxHAZxnbU8c8OaexJv+zUfD6w+6aP46rAWKnaW19Db50GcABcslUBjRFgGxk2iZObO788eykPqYTXlFBXht0UjQztRkp2i+rh3yailvhvpp9yXau4om1jyRnj989OFYFzZPSgXVLm5/VNo/nAePS48pAwxZqWhdDy69uQJNSQNm3rWoSUoZO82KpvyBxU6dqhuYdiB8RImAfsHCoewLkGrVBQGby1U8WbxWxgPQbyejPtoPuQxyQiEfHdJUpCtPjcfzotiUcOYLZM3gJhCS6haptWz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,51 +143,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This file is a 'special' driver that implements /dev/zero and /dev/mem
-among other things.
+On 8/11/26 19:21, Pedro Falcato wrote:
+> The current logic (allow up to $BURST prints per minute) can be entirely
+> replaced by the generic version in lib/ratelimit.c, used around the kernel.
+> 
+> Do so. The only functional difference should be that the new logs will
+> read something like:
+> 
+> KERN_WARNING "print_bad_page_map: %d callbacks suppressed\n", ...
+> 
+> But that should be fine enough.
+> 
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+> ---
 
-As such it makes sense for mm to be cc'd on mails and to have some say in
-how things are changed there, so add it to the mm misc section.
+Well that's nice!
 
-Uniquely, it provides the 'old way' of obtaining an anonymous mapping -
-MAP_PRIVATE of /dev/zero - so is directly tied to memory mapping, therefore
-also add it to the memory mapping section.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-scripts/get_maintainer.pl copes perfectly fine with files in multiple
-sections so everything should work correctly.
-
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8014b9f8253e..27160fbe21dc 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17109,6 +17109,7 @@ F:	Documentation/ABI/testing/sysfs-kernel-mm-memory-tiers
- F:	Documentation/ABI/testing/sysfs-kernel-mm-numa
- F:	Documentation/admin-guide/mm/
- F:	Documentation/mm/
-+F:	drivers/char/mem.c
- F:	include/linux/cma.h
- F:	include/linux/dmapool.h
- F:	include/linux/ioremap.h
-@@ -17311,6 +17312,7 @@ L:	linux-mm@kvack.org
- S:	Maintained
- W:	http://www.linux-mm.org
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-+F:	drivers/char/mem.c
- F:	include/trace/events/mmap.h
- F:	fs/proc/task_mmu.c
- F:	fs/proc/task_nommu.c
-
----
-base-commit: f5bbbfec59b4e2fb7520a91de3df8a6174325d6a
-change-id: 20260812-add-drivers-mem-to-mm-maintainers-f3864dc8ca19
-
-Cheers,
 -- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Cheers,
 
+David
 
