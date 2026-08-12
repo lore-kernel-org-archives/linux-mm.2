@@ -4,131 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE83DC5DF65
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 22:33:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C642C5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 22:34:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A5176B0168; Wed, 12 Aug 2026 18:33:41 -0400 (EDT)
+	id D204D6B017E; Wed, 12 Aug 2026 18:34:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57CB66B017C; Wed, 12 Aug 2026 18:33:41 -0400 (EDT)
+	id CF7CB6B017F; Wed, 12 Aug 2026 18:34:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 492DC6B017E; Wed, 12 Aug 2026 18:33:41 -0400 (EDT)
+	id C0E6B6B0182; Wed, 12 Aug 2026 18:34:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CCC86B0168
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 18:33:41 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 990D5A03BB
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 22:33:40 +0000 (UTC)
-X-FDA: 85094070600.17.C74BEBE
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 98B296B017E
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 18:34:18 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 179D51A04E0
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 22:34:18 +0000 (UTC)
+X-FDA: 85094072196.14.358F177
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D134840003
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 22:33:38 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NxnDcAN9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of robh@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=robh@kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6DE23100005
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 22:34:16 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cGPTP03w;
+	spf=pass (imf14.hostedemail.com: domain of robh@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=robh@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786574019;
+	s=arc-20220608; t=1786574056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aHVs81CE2IQ9JD4d8n66KMCOswlVQXDqi/24OSbt1Sk=;
-	b=NO9Lfdh6uHm2xecWALeLF9XmbAoQFN6R2sLGkTc+aYRVXU0ShXhaIoo7NhiP71JvcxGj7h
-	aExXasQIQpvGVhhysV5b1DEqU05BhDq1SOibZIxuYaoXmxsdNHLRNED4/ycSv2//dmEKQg
-	HIDmLXA4fk9mMHVXFDdKwFQIbGy6p3Q=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NxnDcAN9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of robh@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=robh@kernel.org
+	bh=zIJaVQwgy3+phEYTr1LnspZFuRmzeHEpVwwk/PBOaCo=;
+	b=cII8Ds75bj2kQVWCk9kplxz3Gor1pa2IcnCh0jg0y6OG6zaKMA8PCmCPkJQBai4Kp4ZsaD
+	8Ry+Cs8HY+OpY1HWvVzqD4WPC+LIHDyd32h/iaAnW3MhfX9E7g04DM/Hiqk5UjKMwTZX6D
+	lWUIB8HT/9HUmVFiWhoUczROGIb9GW8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786574019;
-	b=3kVK8UCF5PNRTSX0GaRscozyjA4VGu3rTKf9peSoWAoBSqyAkEtb22oecIMdQyAVlClkDY
-	XUCr6HZUss2IC1qaPu18/GS0hYwFqavvbPipGMwr6Kojtw1AqmwD7zrNo4uXu6uS1PBlVh
-	sdhSqjb8/M67NfWzI174X7DsAHD6CTA=
+	t=1786574056;
+	b=6kEvvVdgsfwMIAU5JkgvNZihY5m0Oy2yHu3yBL/qO8dWrSbtgsZtoJrpT0aYm9qNAmGyXf
+	HhhuOp1MEsEdsLHXIbRNPwnjEPA+ntoUnW3/dBaLeZWDW97hMsHgqINrLDjEOI4QCDf7Tj
+	ZehVJ4ijSHPb+bhi0JOEUuVpj3tsd7o=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cGPTP03w;
+	spf=pass (imf14.hostedemail.com: domain of robh@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=robh@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BD844414B4;
-	Wed, 12 Aug 2026 22:33:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6503E1F00A3F;
-	Wed, 12 Aug 2026 22:33:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AC30E40AA8;
+	Wed, 12 Aug 2026 22:34:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BCDE1F000E9;
+	Wed, 12 Aug 2026 22:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786574017;
-	bh=aHVs81CE2IQ9JD4d8n66KMCOswlVQXDqi/24OSbt1Sk=;
+	s=k20260515; t=1786574055;
+	bh=zIJaVQwgy3+phEYTr1LnspZFuRmzeHEpVwwk/PBOaCo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NxnDcAN9Z4zXwB8VaQ4ooTdrRgky6Q8zLm6mxJ1RjWe0Ovnre8a/4e3j/pRx23n0/
-	 cgEf7TjrJMOhg0gmXjJXZ4JO3u25sFIG+ohZ87f1hnkqMiFEbX7HY4rFnFRxcBbrlh
-	 tarqc9v8P+vKy7klLcouGokQZCYzNvAPTFlHUzDvkg0nGKbkA5JZXjdnJZSEsnLwSd
-	 kSwV3PlOUlPY3k2iIRlibhfvsba3Q+ayHFC5C16qaWaoflAOG0WuK1M2/oFs8EbGqQ
-	 7FfrFAcQJBPX6Dt+03UO4/bZ+nDwz1sfdBzJP5rXNK3BVTpjgRsNEjab5htv4BFZXL
-	 /sa4Zn9VXn4YQ==
-Date: Wed, 12 Aug 2026 17:33:36 -0500
+	b=cGPTP03wUG80YmVMBODmbasm4ppKUGuWWZcUwvqj46epN/xQO8bSWtSuxBsSzMTrm
+	 xVAi3EIOLC10qfV/rs8N0KHo3fqQtHQdL7PQ9jXzPzkuVeIBgKcwXHU3KIX+2rD14R
+	 n6ah8z+Q/9HwjWNp7R/I9R0wQg4Yqkc7nhslLLwNSozuRhmUl3Vy8JXtLk5xybQM0J
+	 /guRBSF2oOcCa+eBmtvEvHHraXmiyJe77EreH8uPP6jDQdm9BoLpnGwAGlm0CPZIyj
+	 oMUvUbXA8fJ9m9NcDjx70rQLJkU+OPiUVZtIs87OoQOux+/pyvd4DhAO9Twdc+Sp3T
+	 Op1aDi3RrsjGA==
+Date: Wed, 12 Aug 2026 17:34:14 -0500
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Thierry Reding <thierry.reding@kernel.org>
-Cc: linaro-mm-sig@lists.linaro.org, Sumit Semwal <sumit.semwal@linaro.org>,
-	Russell King <linux@armlinux.org.uk>, linux-tegra@vger.kernel.org,
-	linux-mm@kvack.org, Maxime Ripard <mripard@kernel.org>,
-	Yury Norov <yury.norov@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	iommu@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	linux-trace-kernel@vger.kernel.org,
-	Steven Rostedt <rostedt@goodmis.org>,
-	David Hildenbrand <david@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Simona Vetter <simona@ffwll.ch>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Brian Starkey <Brian.Starkey@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	dri-devel@lists.freedesktop.org,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Heiko Carstens <hca@linux.ibm.com>, Michal Hocko <mhocko@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	David Hildenbrand <david@kernel.org>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	linux-trace-kernel@vger.kernel.org,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Russell King <linux@armlinux.org.uk>,
+	John Stultz <jstultz@google.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	iommu@lists.linux.dev, Mike Rapoport <rppt@kernel.org>,
+	Chun Ng <chunn@nvidia.com>, linux-media@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	"T.J. Mercier" <tjmercier@google.com>, linux-kernel@vger.kernel.org,
 	Sowjanya Komatineni <skomatineni@nvidia.com>,
 	Thierry Reding <thierry.reding@gmail.com>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Robin Murphy <robin.murphy@arm.com>,
+	linux-s390@vger.kernel.org, linux-mm@kvack.org,
+	devicetree@vger.kernel.org, Will Deacon <will@kernel.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Yury Norov <yury.norov@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Thierry Reding <treding@nvidia.com>,
 	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	John Stultz <jstultz@google.com>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>, devicetree@vger.kernel.org,
-	Mike Rapoport <rppt@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Suren Baghdasaryan <surenb@google.com>, Chun Ng <chunn@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, David Airlie <airlied@gmail.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>
-Subject: Re: [PATCH v4 02/10] dt-bindings: display: tegra: Document memory
- regions
-Message-ID: <178657401505.1337249.16016860893024599580.robh@kernel.org>
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	linaro-mm-sig@lists.linaro.org,
+	Steven Rostedt <rostedt@goodmis.org>,
+	David Airlie <airlied@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Robin Murphy <robin.murphy@arm.com>, linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v4 03/10] dt-bindings: gpu: host1x: Document
+ memory-regions for NVDEC
+Message-ID: <178657405441.1338311.10765338394838016729.robh@kernel.org>
 References: <20260807-tegra-vpr-v4-0-5510d16af89e@nvidia.com>
- <20260807-tegra-vpr-v4-2-5510d16af89e@nvidia.com>
+ <20260807-tegra-vpr-v4-3-5510d16af89e@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260807-tegra-vpr-v4-2-5510d16af89e@nvidia.com>
-X-Rspamd-Queue-Id: D134840003
-X-Stat-Signature: z6x7t4uoot4oybu98j3yx7yx3kxp98wm
+In-Reply-To: <20260807-tegra-vpr-v4-3-5510d16af89e@nvidia.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786574018-314662
-X-HE-Meta: U2FsdGVkX1/flXMaPfsaMoY9EuLjZCxB/o2UvjCB8Y6lqZ0CBQH07bMYPEBXlckGcjnsDb1HVetpQze5R0tkxgUnfr3g7ecwEfammHYgraiVR01fVZwkIBYYhAOhXmiT2oJMKbPy0iB7Rcooh6qKRSkxyLaU4KfMn72jQYlDiVeElhMvklYsBpipXEw7Pgjh6D9prHOoXKe7m3ajwXRrt15804XAvVmANu3X0jpcBp1s+uFjCZXR1FjqLYYWRyOYlQ8m/xczhold1gpSF0FqZUWLkR4Tq7nEEbE9xnIUKdxdlBZsMLh13FW+ZfI/MOD+9cfLCABsiDg6HFzMG1rDNfyXnW5twgUZnGeuX6IA0KpEdm4g0jq9bRwfcGW/pqAiUn2tpPVhNcZ9pnWKnfzXF0+PuiKxUy9uTB+fkxWutM+c/qnB1QXxYhx4udHgvK3KMKOyOUxE6Xk5CZfxy2qDibMKLjddMwelAxbBb1x1XNe+oa7+bnohDg5PLUYxDbk/hw9lSOysVIP7V+hX1MNM2KEE8ABetUGCIdg1YlfGLaT+LkR3ZqYHholaScifN3UySMyXB3IEZjPqDYzAWWYKtt5tJRVUxswY9KEdzm9X6xL37Pw+Nxk9prgitNtfhNrWLL0cVX/0fWFxAIfOym1Vvq1saGUOdb7vL0degwLWHgIqWRLNmTASPtFZR+AY+J6qTjXW4vBP9N/5RXT/kJyoL4VXe6gYn9rJkEs8n0IrxOsJDAmOOkbQ7lKfj4IcNOmBO72krt9TM/JxHgy2y0ZBDEsweMYnXv0iRlaXhmd6/irf6hFLuSNM+XaZ7+xidknhio38lQ4b6dxrZmpWIAiERFKzTyo5y81h46WM1bTgH7qOXmNgXqhhWAiFmzPOxaHCQ0HNjdNv5J+6S3gFNl3BB2BU1rvZDUnt+Mb661Eoa+qmbp5mkK1t/f4MV0tV13wI6aPvSbDJ+Ih57+7qcQ2
- 6wgvU09f
- wuwK/PuOHVvUbJKLMjdts/FHcJVZXrfy3L4oFMzpc6YUc7z2wlaNbEjDd3q2pYK5/pIqAZJbBTrOFwjMa9iiER23zW2Xm9I4X54Ka6ddIp8lebz1U2dgNXoxJCX1PkCtdl61p7iYRfVx42afympl0S8fyIHA5yz2ZidkWHC1UGWALD96+hiByMn5hg5nl7oE6iruKA1WFFw5UQ9K6wWA7kcS3OtY8Qp4dBGeNrPTTDiNIKDDu2GAiL3QIuAnDqxDV0cDCK9qlG34yqpCl1qIpZ9UUNh2GEicYtYxNaplWxzTpyrQzlYO+ISD2RD3yMXq7vWFRQ22OxV8vemGgZA/x81ftUBa15gA9jfc2LBhmAFh2KW2BitzYfXtQw27zFf4tnu/2HBKkP7eEY189dSp7EznrF6Uv0c1BTiPG1bGxI5qDQB3sXpFQjm/5xg==
+X-Stat-Signature: ji6fxrtihci7xg7u51g7hrrw76q5smei
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6DE23100005
+X-HE-Tag: 1786574056-216416
+X-HE-Meta: U2FsdGVkX1/4lCzlN24yOYIONPk3Bt5QztJVIktrFzX+GL6urJ7m0vwmzOxgbaGeyAlh+17UaPQCA89+b8L2GPO0iGQQ76ziIOhBrq3ujv6iF0Cuv10ZoSlgthZXFltiLLXUCb1NqTHZGuakFC3ZNF18rM7VplZDmKvRuYetEAlcu3YSRFtUH7rTCcDUvue5sHmGUEpf4ol23jkvaLjDlS6Zn00X6yLb8SAUn5+YnbCZIYWBq9db2WPJnjOoGMHFa8sNpHvsxkMCHwzqINo1LW9CDhQEOwwJCsCfXLUzNshm7F88HrPOdREPD2S2Y0vkrGNnrDYV3Ou2uwP8DBwOntl248jFaYXu+xGecp+pZepaIZFg99CqPbAxbu19G+H10phN0bY5Zq5lEFrp5lwvjgfgmXXGDSwlXcvzm/tyrTF8u7AzPJf8OYjrpOvqwBgahbOzpwiuOlWnMp0iwXpAaSFtdsYqE8eMrPOVRuJrE7qgo/scU0kjPyUrPjGxW1f0QS+Tddn4A1Z8MKMECb7h3miiR+WMDE6phj8Ylded2w7YeBlbWLzYKRHVOXlcqPd7bQSspWGuGB/mMKZlsLoJrJ9mOhSEclagCLyW1yzeqwCIpYHhhXj/lKIXVx/RrvhUv4OSVd5HACqPKcrFRKE/f9WMqAatCysmmLeJZfYTJqtpJklSEjHQ5lAFE63/Y8NGPfiR6m5e+TKeDKhBWn9y/BBKEoTdK/oq5Msj/bc6yyzNYgBto/XdnaSz/K+LWg7aUQw77/PhAqDVzF0tHoEb12iLHVc2EWLuoCMcE3wlx/ZO3DroEnP6+cLFzGv5gqGgx750nJNaCn3BvVZyObFdKT44UZQM59+5cQEeOje6vYoDk0nvNO2trloupHXEIv7r6OXZwsk85lWSz5L8rxWLpA4K54lql2ptnovQi3Ryrm0ZijI2pVZnbnkzQckzdxxGluaFw21x3brbQJ8eY14
+ cbloXvLY
+ TL97HVTIkbFRL7eoypTeqiq4ThVS6s/eoNByzMKcFg1AJ34usDqi8g4H6bHU7INU86Nny6EDA7ILlzFT7ygfMN35HdEDC1sDpoXV0iYcsYN4SfQCQmTtBpzE8JU7HPgo54tWBHsNekB/NsYyM1/mHywRbgKcEFXQvFAcfwCaVsuTL1UpE6irF65N1aU9tX3jKZ5GBylr3MXG2DPvz7glJN1AURI8KPsrfoGBOD68SFid6wHyWoN09vs/+VnV0En7gm90/xRjwdGd76NQsBSGSxsHANEgpkFAyhbfG2mrGQHZdEA02INe8sn+TVaNVRyxoAegDEQb+BHxP/Cj5Y8zTUXpE3Y1zLgXxBt+25bm4urZCLHgnz3O1/ZBNVIK5agaPLLImDqry1bB2VymUXG8ZD1kvGI3/mGlyAlqvSeVO2zso+G41+Ocjxl81hQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,27 +139,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On Fri, 07 Aug 2026 17:54:22 +0200, Thierry Reding wrote:
+On Fri, 07 Aug 2026 17:54:23 +0200, Thierry Reding wrote:
 > From: Thierry Reding <treding@nvidia.com>
 > 
-> Add the memory-region and memory-region-names properties to the bindings
-> for the display controllers and the host1x engine found on various Tegra
-> generations. These memory regions are used to access firmware-provided
-> framebuffer memory as well as the video protection region.
+> The video protection region is a reserved memory region that can be used
+> for secure video playback. NVDEC can access this region to decode images
+> into securely.
 > 
 > Signed-off-by: Thierry Reding <treding@nvidia.com>
 > ---
-> Changes in v4:
-> - typofix
-> 
-> Changes in v3:
-> - document properties for VIC
-> ---
->  .../devicetree/bindings/display/tegra/nvidia,tegra124-vic.yaml |  8 ++++++++
->  .../devicetree/bindings/display/tegra/nvidia,tegra186-dc.yaml  | 10 ++++++++++
->  .../devicetree/bindings/display/tegra/nvidia,tegra20-dc.yaml   | 10 +++++++++-
->  .../bindings/display/tegra/nvidia,tegra20-host1x.yaml          |  7 +++++++
->  4 files changed, 34 insertions(+), 1 deletion(-)
+>  .../devicetree/bindings/gpu/host1x/nvidia,tegra234-nvdec.yaml     | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
 
 Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
