@@ -4,132 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97FFFC5CFDB
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 21:34:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A56C0C5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 21:38:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 84E906B0325; Wed, 12 Aug 2026 17:34:58 -0400 (EDT)
+	id 7DE916B0328; Wed, 12 Aug 2026 17:38:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FED46B0326; Wed, 12 Aug 2026 17:34:58 -0400 (EDT)
+	id 78FCC6B0329; Wed, 12 Aug 2026 17:38:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7146B6B0327; Wed, 12 Aug 2026 17:34:58 -0400 (EDT)
+	id 6A58B6B032A; Wed, 12 Aug 2026 17:38:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 49D776B0325
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 17:34:58 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C3D171C0836
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:34:57 +0000 (UTC)
-X-FDA: 85093922634.03.56E2B5A
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 218AB1A000A
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:34:56 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=LvoF8Cri;
-	spf=pass (imf19.hostedemail.com: domain of 3_uZ8agYKCBsJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3_uZ8agYKCBsJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D3AD6B0328
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 17:38:42 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9B0B41403A9
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:38:41 +0000 (UTC)
+X-FDA: 85093932042.02.B6A112C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C620540004
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:38:39 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Mipp/Tam";
+	spf=pass (imf17.hostedemail.com: domain of "SRS0=I2fA=GF=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=I2fA=GF=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786570496;
-	b=Rlv1x1H3nWklERcA5qHin+I9wWOvf7BuFcy5/Z2ro2ufV5N0SjRWsudSJDRTjbvov0foYc
-	NZ3NSJZ3lPCn1+FAfsl0jNAnpdJt0fcZJS43Nh8NPptf9CWq/xZ0XhBfLQ/hg7F534S/d+
-	uge0QIe/0KZZ0/aeShS7epIPA0OneOM=
+	t=1786570719;
+	b=RoSNScIN6r3lydmLx3tALC7IvpspusjebwBHj4QA1ZMtJJQyj6mqA8WorZMBYCkxhuXaE5
+	V1JGX53nyyqqO3oNZBHnDuHwKugcbWTPeRdEZpDfrpZ6uBRvrm2IgjjZqVJldutIvlqLF+
+	GWg7M/AnzjTdizcCOKbgqdxqBqMk+hk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=LvoF8Cri;
-	spf=pass (imf19.hostedemail.com: domain of 3_uZ8agYKCBsJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3_uZ8agYKCBsJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Mipp/Tam";
+	spf=pass (imf17.hostedemail.com: domain of "SRS0=I2fA=GF=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=I2fA=GF=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786570496;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1786570719;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gd+C2m5glZwGB8A6MFkRhDf1k0GKC1mWi3Ys+MVAnsc=;
-	b=4vrnpKrFD/L+0hYeJYfvpTGpWqdYlnP5GebG9xWcdgzI6qQLF35Zioeuw8LTe+6yJAkLng
-	VLfanRCQZKjgPT2jfS4Ss47TlNoHamr+5ZwxlH/rRkNdiZ5MgX4z9eeRcuQ+lAD3Zlrt7d
-	SIs5kSRFgg4fgaAPWgdLpiiMiKn2eKs=
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cee1ec30f2so21774435ad.3
-        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 14:34:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786570495; x=1787175295; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Gd+C2m5glZwGB8A6MFkRhDf1k0GKC1mWi3Ys+MVAnsc=;
-        b=LvoF8Cri0Y67/16Ix6LpILe9Fj0IBaVlaPGS5efGYKWizYTmiyBj1aVejf6AyE1YSl
-         6xL3gkw79S/2R3ciyqiCJvVJlUd33MhtR/0wmuwNxiAUNFpKNqYQ7mLge12+XNegGa0k
-         wo8MCo5cGq0gyRiGJrO3471dSVAdWzNPH/R0UcKQiQaKVrCQhaX5aJKyukdzkKv8w4p9
-         4P5seXOFei5P0GC9Lz8N3ddThV+QmO1mmUT0yhnfW7oifoU4olV+3k8brVpbm+bJcmYj
-         aMv1rkaoxUUPyaslLNlT+eY+6DrrTIe0QVI+TiDgsyTFD5jZuNCQ/N5oDv01TWAn/H0K
-         mahA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786570495; x=1787175295;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Gd+C2m5glZwGB8A6MFkRhDf1k0GKC1mWi3Ys+MVAnsc=;
-        b=lknwDYde7ybsoatph7XGjd+QNHXZCTzWJdMOdsPQa/iNH4J5t3W7ImObQRNyAlKi26
-         H9OjgBPIPRkEZo9gltVE6Hvfwl5zLJEdAWeOBwqP0I8vJLKCCXg3MCA3SsmUzc8gwI6y
-         05kOmYRS+ZCsI+SY+wpRzUyQ/Uczw+42qHjefkT/frLM5sW4jHT+J5SjZfGW7drFFr4n
-         jvSPRNh7Uwno07c602LQvnQRVSspMOW+d9IiW8cshQ2fbyG4tIlWn9iHFi3/HByu07Mi
-         qnm5+WLDiRMWr0+yGAAyVLJMBNOiT5YcA5KFyUXMGlzbkII8aI/Ve9jJSf+RtOY/nrIr
-         SeGw==
-X-Forwarded-Encrypted: i=1; AHgh+RpVjdsi6qhaTTxrORzRS5mAJiYSiDOo77fMTDilc8pUaa0Qgeksa7oF103jTtWismqLedvJeevm8Q==@kvack.org
-X-Gm-Message-State: AOJu0YzbnUVH7Y8mZUpi/6ntlsbAuXE47dS02eWqGcXoA7QC9LG/w6wB
-	0IgqC+4wFt5iwaRI45tRtwP1p08/4igkShsdyQ+uT0xnNtgB82P1SajY0FZHzqFQffThSrGIdQ3
-	+UCSi6w==
-X-Received: from plblf13.prod.google.com ([2002:a17:902:fb4d:b0:2ca:eea9:9845])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d990:b0:2cf:9344:b80c
- with SMTP id d9443c01a7336-2d37ebb2b42mr10699005ad.18.1786570494619; Wed, 12
- Aug 2026 14:34:54 -0700 (PDT)
-Date: Wed, 12 Aug 2026 14:34:53 -0700
-In-Reply-To: <69c86172-9175-46cc-895e-9ecd449332cd@kernel.org>
-Mime-Version: 1.0
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-7-2fc18ee6d3ba@google.com>
- <ed483d25-d908-4248-b8c7-862dd35dc6d4@kernel.org> <annnrGR1noVuBkCc@google.com>
- <69c86172-9175-46cc-895e-9ecd449332cd@kernel.org>
-Message-ID: <anzm_YLft-J7pxiy@google.com>
-Subject: Re: [PATCH v10 07/41] KVM: guest_memfd: Stub in ability to enable
- in-place shared<=>private conversion
-From: Sean Christopherson <seanjc@google.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+	bh=Cp8VKR+mPn5OPJBFC9VfSl1Nu9BWx9Sa1qFuiOfB2n8=;
+	b=ibttTKdZpMk3ZNDqNilhsM9dc3mtbro/+DrOSLoJ66PIcU12KR9ix5xxE3kcCIRR21UgGh
+	CjGLWFRu/XSehgCR8QRlm7/EAioG8RBbNzIRUdtMVooHyw4LgQcFxYmF2pfV4zux+ngYUz
+	/7PczE9nPuyJ9s24uFldthJaK1xxSvE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 01A964039F;
+	Wed, 12 Aug 2026 21:38:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE0081F000E9;
+	Wed, 12 Aug 2026 21:38:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786570718;
+	bh=Cp8VKR+mPn5OPJBFC9VfSl1Nu9BWx9Sa1qFuiOfB2n8=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=Mipp/TamjMFifPGmGfcl3Aa7QIIOnIoUyxP5D2zaiECAy4CT+kswN3I69AAIXMqj1
+	 TIfrfHGeiC3EyvRqGYWBT6/CZW6A2ZFdyWIZyFrs2+4a882RT1BgAu6RV4wGrZuCQ0
+	 Uf5bIPpg66u1BEdyUQ62PQGF0lttJQWukYKr7OChDw8pMrAz8qXzu7zt2YT1gUTLFz
+	 5EPpBLTRA46qUC3Vk5MIMkwQaDOlvKgL59FWWAhne9iGmRq79LhrYcyfGwuQlkr7V0
+	 z5fb08Jf9qTh9XGB3p00AiEd+p1M+Z241W6YMJaDiNYb39skY3A+A5kRlfr9OTPQEy
+	 O0FoyCy9nblUw==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 519DECE0EBE; Wed, 12 Aug 2026 14:38:38 -0700 (PDT)
+Date: Wed, 12 Aug 2026 14:38:38 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Michal Hocko <mhocko@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
+	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+Message-ID: <b736237c-64ee-4eb2-8201-5685a3853844@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <44c51ace9b0dc44b795f6f48c91cda440eed910b.camel@infradead.org>
+ <20260812122759.GA662699@ziepe.ca>
+ <c41c52f02f033ea980d4b5f9b8239d5e9411a03c.camel@infradead.org>
+ <20260812134934.GC662699@ziepe.ca>
+ <a48e6e7063122b22a8083bb0792984a204f316e6.camel@infradead.org>
+ <fb87f673bf290cad133d113dbb0750a7752b9d30.camel@infradead.org>
+ <a94b75e8b9b1d2191f365c0f4275fd5082332df5.camel@infradead.org>
+ <d0692500893f303906fba1d7d596eb59a07a806a.camel@infradead.org>
+ <anydY25Cl78l1HfU@google.com>
+ <932DB129-1794-4855-A61E-F4C2B54B1EE6@infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <932DB129-1794-4855-A61E-F4C2B54B1EE6@infradead.org>
+X-Rspamd-Queue-Id: C620540004
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 218AB1A000A
-X-Stat-Signature: 9h1w8gwpkezdsokuobiyxcmfmgw14mqp
-X-HE-Tag: 1786570496-200473
-X-HE-Meta: U2FsdGVkX1+vP1Sj31/ADN8mTC3R4+OOH22T4s/3e3bzXJ9ZPIif9nS6b1lKNYv+0RlT4VOZS1Zh/J7WomighseLDRe9r0OMXIb2WRFCUcnP4i2ijdXEDAvVcL9SVxrGI+3x7hi43eZJ1a9ptmxe7CoK3GfbXKOb+pX/tph1IiFVI5+gHALCY3xx0aI9cgfabltIlK+6uTAKWwjB+o66t8hcJ4Lz+zUfK9oWktO5Pj2m3ehwmzplLWdY0R5O68e0+oqrX1DXRrfZxJ/Lk/2l5Lp5JizJieHYlaP2QNE0Rsz5/K6sYapdkkJPyzA8z36lr98xPKRmTg4IJSGrh/YPchuMWkpmmkHRnjLNhIy7lOM5btWXvUSbU4Xy7qo4ykRIri+mEFtn2PoxASSMCamyC9BV8D02mCNg4Xji3Fal7+a94tnOGtnhxxLJ4P2FS66ydNVLns3RpWsFK/X0TYZN65gUymJtljAMDJ3lDXKddcfjSHntYnxLf5YZ1Re87CkVbQO1jNz3JSrikFveMTCDqiAhGW2HrqxN+yJ9t7tsDcqdr4dxQBIi8BXFW6J/GMkpzad+QKFxXRo9T8/X8rUFGRqVfA5nWwGrAy9MUzrU4jJ0L8SuY1uvG3i3jVazUedXZQb9xWMH5QARWl4lT8Pj+Nt2CCcAs7xMocBvtCsPMXyMd1FE2FsPM341vRi1fntrY9F37n7Z+R6Xbox+iqwjHuZ7cYPmevGIUS5SylE5F5UkRBf8bK5cGB0ia++s2cwAlhgN611wbkDeETz3rmLJSTT2Xhd6MS13OHA1pRGDUh+OJ62hx3VEC3mKrMjMQkSW8InT76bEUl3VrkTShDL5SiofgfNYVgkrqHVDBUPOYehxeieWh8+ApwJCZoQGrx5gJXa7/C39mI+j1PKkxoKqGKew/owwzpbDiT/1HskZqge9jfX1cLLWLn0vbvpUGNyf6vdMumhO4/sWIbvZY5K
- CYWcrCXh
- Q8MziUPH26uu/Bw2p3Gl51wd+V2Ax6Fg/xWA23wm+PFEqDob5Hd9+/43LZLtYUhf1vtO27Ou4lvafa7gWqX5FoQJK5fup3vhJEbu+eSZG8V2V99JQQu+TbGX1lb3V3jV+8NTxCNGdUS0BiDXyUZGfjpLTHYAKTdxwB575lbRVBUCeolKGNWartIKQKa30Zck+Cx6lLlorA9SxOEC0OIEGukKWj5UnU3u+ylyJ6Y6DghtAilO4a46rrGnU8zCYgy3gcQbnU6a5WNTFAxqXHdNny7oUo6gLN2Br3vgVWBzWNudjIChQlokOEa9Wi14+GZdPLCeHp/znEkLegIclRwvuaOPHk5zX5/1cfqayIGaAL4tICREMO8BxUCAHB79L6/9Kwjd7ejebX7xCPOaTCCnRz5NkDz3LEZpXrUrIbF5QN5JxRWogBnHRpHAKWA6VOY7H8IM0Xff7iX35KXOVNHnbV4dmqo7cfG/RdzLyK2DG3TaXfGKA/r/FagqJis08PH0gYHr8Ry735b/FJ39QDXqe27vwyKnzVAGadxFEWj3kBgnnvczttHKdtTESjoGhzpB6XoyOJ30K+xuxgRlyu01th4gNKLWGbP0Fav/wTUYotaSk0G5eGqZ+4FdVX1bmllmpdPEpXgvTMW9+9WEe3Pm7xfIWXRewYe5WBsaTuJakvaDZBZU=
+X-Stat-Signature: wrbhzhgjg1i4s9cjbx8sbjaqonoqwbe7
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786570719-225625
+X-HE-Meta: U2FsdGVkX1/BtSdcSGx6Jo7de7cAWg6ERvnjS0VG9BmA4xkWqEbGtQ9dD6NBW9LT59znpL2iHTl8lLgD+lGAr0Hdrz+GbPbuOaAvxEIF5Tga9rU9qcw7G4ulnvH+R2ljUXMtClax9E5i85mXDcQbXs6AuudIq5MpCFMB431+HnkyoE3uSj9JWrHq5ewfLuGJc21RjCeVaYIMIr+NKsM/38egiRK1Rn2qKnW6/o+l1lsnr1ttuOebMXmDTYaesnf0pMZFi4AP+mfqJ1t9VK88TBFNzuE7oq/Lsw72rgSYgJ2yEEYPD5AdGsnrtouBaOrDFOUPnrMxHTLb7mpy7qIZ2CZovLJUyDmjFVKnBKkN0tO2FYqJ8MIvL3/4yB4dNbjIc0gWZjVJUQ11512PnMErPTuVSAb5sgkrsEMYg01ayweE+Xi59nOnkWQdJheuJL8lIiL35LqVeMjM7tlPfO3VSDa19lzycQLS1uoD2NfjiRfNjRsSp1hX2pViZe2XDbWpZkrMr6WE2P5c0N2WVlClncnqXG4uySivqGnp7/4FXaRjtBpqz/V2xGl4ERjn3rzYeR055gvrUGT2a/WF4FM/lx8ruCj1YiYjV6yi/hQXoDqR1bli79ZwnOFA3FFuhdQtEzH816We2NywfN6WRMHVET3NBN1L9t5jvCXUeAS17DST62yYV/CAewmWt8DpwYoV2R4r1lS3cC45kZOW//wRyU2GVT5E6/FJMMAbonUYCZuY/SSnDqcrCWiPkCVVN6KMzf/wcBAZA1aIFzKPz0rpaJta6QL1yiElI2PGeWDvd3stBw/B7sEJMCiywgXjNPtmwoQ9rnJPrm7Fvz09LYXZ4K8uXy1gzTmIHQP+xBTv5ZBnwyVEgfqH+jhcFHudAbz4v5T59OP6j3zHyrfbMscy03wAzcnv9wxJq4g6udBqvuimhNJgJQ4fkONTZqCzcUaU6kEfrdvaN2lnxRkBzuo
+ 97yRvM+4
+ w9HFywsRtGjBPYxvHksxc7vH6PYgWz3WihRBVeWuCYy8FeOWK6/KNaoo0nJCnR1HTfnhPg64owjO6i10Wv+gZNqi0p3Tuwdqe1lkDVvrRujPcXI+XfhcdUdi2agSnc4SmIc8DzOG44FHoyJtJk7JlMYPXSo/5tEvZisUm2BxrlWh9awMlGSkWV7m0M6VvDCZ9XaWAQGKuvm+bBBavABPz4cLLL6TJ6CxPGMH/FDmOp4+uWkJEJgJ10pSOKt52jfyQmAIOdjhhuoYb0tidU9YbZjByrQg7LMxqS5nzLmovPffAC+N+DbpMYGR03jBFuiCs6B9y/Dk+9UG8bHjf/m0OSPlVDvUifkS/jDQS4fsrAeHT3zIxxTRQCZHLKWk+cAn87pME5RWGJU4MhSuzr/hdySpmvrb9lpHY5hd4MoVXHlHoUvyyOYD+LqdxsHNsToRWU/Bkj86O0WxP+Ssbex6GEAmdYzaLAHqRqYLthR4x+RKY+kQGX7/LX6Ls/WiwNZ23NbMpIEyTZ+rCQf2Wjbk1V2hBdpddUJMFYW7FLgCiFcHcAM2cPJ+J9Lnsbhh5yXAQCQBZbMAFAfDO5QP3TiycLo9IAc+v2eg9QzowBl5ppivKlRgc4ToRSBvzu7lvslfWyheU2GJsmM4TjMhPlKnpcR9Cnw8+TIYMs8CHuUznkZ5gB2ADD/jciN0nr9t9adS4DWNpJ4yDtF4ks0HHewCz1KgtO44gIQRt6MaLrwBxPNXXOOS+86+KxEaEN2aUXyEgTVgmdLwjAl+fQSNAGxhggmqTfA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,52 +121,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 12, 2026, David Hildenbrand (Arm) wrote:
-> On 8/10/26 17:01, Sean Christopherson wrote:
-> > On Mon, Aug 10, 2026, David Hildenbrand (Arm) wrote:
-> >> On 8/7/26 23:52, Ackerley Tng via B4 Relay wrote:
-> >>> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> >>> index 65fbce46b63f4..9477ecebbbced 100644
-> >>> --- a/include/linux/kvm_host.h
-> >>> +++ b/include/linux/kvm_host.h
-> >>> @@ -2580,6 +2580,8 @@ static inline bool kvm_vm_mem_is_private(struct kvm *kvm, gfn_t gfn)
-> >>>  #endif  /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
-> >>>  
-> >>>  #ifdef kvm_arch_has_private_mem
-> >>> +extern bool gmem_in_place_conversion;
-> >>
-> >> Is there a "supports/has/enable" in there? And should we call it "kvm_gmem" for
-> >> completeness?
-> > 
-> > It's kinda stupid and definitely more than a bit inconsistent, but overall I think
-> > I actually like "gmem_in_place_conversion" the best.
-> > 
-> > gmem_has_in_place_conversion and gmem_supports_in_place_conversion are misleading
-> > because it's not just that guest_memfd has/supports in-place conversion, it's that
-> > that KVM is tracking PRIVATE in guest_memfd and so in-place conversion is the only
-> > option.
-> > 
-> > On the other hand, while gmem_in_place_conversion_enabled is better, it's not
-> > quite accurate either because userspace isn't strictly required to do in-place
-> > conversion.
-> > 
-> > As for a kvm_ prefix, IMO gmem_ is sufficient for a namespace, and not having kvm_
-> > is consistent with most module params in KVM.
+On Wed, Aug 12, 2026 at 06:17:50PM +0100, David Woodhouse wrote:
+> On 12 August 2026 17:20:51 BST, Sean Christopherson <seanjc@google.com> wrote:
+> >On Wed, Aug 12, 2026, David Woodhouse wrote:
+> >> On Wed, 2026-08-12 at 16:03 +0100, David Woodhouse wrote:
+> >> > On Wed, 2026-08-12 at 15:34 +0100, David Woodhouse wrote:
+> >> > > On Wed, 2026-08-12 at 15:05 +0100, David Woodhouse wrote:
+> >> > > > I'll rephrase that for my own understanding:
+> >> > > > 
+> >> > > > *If* we go all the way to building a whole SRCU flavour for this *and*
+> >> > > > implementing a spin-only variant of srcu_synchronize() which is
+> >> > > > tailored to the atomic-reader use case, *then* we don't need to remove
+> >> > > > the non_block_{start,end} guards around the MMU notifiers, which are
+> >> > > > basically never being called anyway and don't actually seem to protect
+> >> > > > against any real bugs.
+> >> > > > 
+> >> > > > Yes?
+> >> > > 
+> >> > > FWIW it looks something like this. I'll throw it into my torture and
+> >> > > latency tests, and we can see what Paul thinks of it. I'm still utterly
+> >> > > unconvinced it's needed, but I concede it has its good points.
+> >> > 
+> >> > This slightly refactored version is the one that's actually going into
+> >> > my torture tests...
+> >> 
+> >> Well, it survived first contact, and it's doing the soak testing now.
+> >> 
+> >> The average is basically no better than the try_synchronize_srcu()
+> >> case, unsurprisingly — as *both* of them just observe that there are no
+> >> readers and proceed immediately, in at least 99% of cases.
+> >> 
+> >> Like the existing rwlock case, it still manages double-digit p100
+> >> latency even when though *doesn't* actually sleep.
+> >> 
+> >> I don't *hate* it, but I do question the benefit of it over try-first.
+> >
+> >FWIW, the max latency and >8ms numbers are very appealing to me, as my concerns
+> >with using SRCU are all about the tail latencies.
+> >
+> >But I'm obviously not the one who'd be saddled with maintaining the code, so I'm
+> >more than a little biased towards choosing the more complex version.
 > 
-> Maybe we should have a helper function instead of accessing the module parameter
-> directly, then the gmem_in_place_conversion could just stay file-local and
-> kvm_gmem_in_place_conversion() would be used by other code that wants to obtain
-> the value.
+> Ack. Well, it isn't even *that* bad in terms of complexity. It's mostly just a while loop around the core of the try_synchronize_srcu() I posted before, and some syntactic sugar and safeguards.
 > 
-> Instead of the
-> 
-> #define mem_in_place_conversion false
-> 
-> We'd have
-> 
-> #define kvm_gmem_in_place_conversion()	false
-> 
-> just a thought ...
+> Let's see what Paul thinks.
 
-FWIW, I'd rather prefix kvm_ than add a wrapper to get a boolean.
+A single call to try_synchronize_srcu() that, upon failure, invokes
+synchronize_srcu_expedited() would work fine.  And a limited loop on
+try_synchronize_srcu() that invokes synchronize_srcu_expedited() upon
+repeated failure return would also work fine.
+
+But if you had a large system, an unlimited loop on try_synchronize_srcu()
+could wait forever on a system that was large enough that there was at
+least one reader at all times.  To guarantee loop termination, it is
+necessary to flip the index.  That way, new readers would use the index
+that was already seen to be clear, and old readers would eventually
+drain from the old index.
+
+So is your use case adddressed by the single call to
+try_synchronize_srcu() that, upon failure, invokes
+synchronize_srcu_expedited()?  If so, we have a solution!
+
+If not, please let me know, and I will put together that does the job.
+
+							Thanx, Paul
+
+> >> Again, I'll defer to Paul, but personally I'd want to see a more
+> >> compelling use case for it.
+> >> 
+> >>   ┌───────────────┬─────────────────────┬───────────────────┬─────────────────────┐
+> >>   │               │      expedited      │     try-first     │       atomic        │
+> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
+> >>   │ median drain  │ 32-128µs            │ 4-16µs            │ 4-16µs              │
+> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
+> >>   │ avg           │ 118µs               │ 13.8µs            │ 12.3µs              │
+> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
+> >>   │ >1ms          │ ~950ppm             │ ~990ppm           │ 838ppm              │
+> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
+> >>   │ >8ms          │ 42ppm               │ 4.4ppm            │ 0.10ppm             │
+> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
+> >>   │ max           │ 33.6ms              │ 17.6ms            │ 10.25ms             │
+> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
+> >>   │ fallback rate │ —                   │ 1.2%              │ 0%                  │
+> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
+> >>   │ sample        │ 32.6M drains, 10min │ 41M drains, 10min │ 40.5M drains, 10min │
+> >>   └───────────────┴─────────────────────┴───────────────────┴─────────────────────┘
+> 
 
