@@ -4,140 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 118E1C5CFCF
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 00:45:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D603C5CFC1
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 01:11:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9BB76B0088; Tue, 11 Aug 2026 20:45:27 -0400 (EDT)
+	id D15B96B007B; Tue, 11 Aug 2026 21:11:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4C6B6B008A; Tue, 11 Aug 2026 20:45:27 -0400 (EDT)
+	id CC6D16B0088; Tue, 11 Aug 2026 21:11:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3E1F6B0092; Tue, 11 Aug 2026 20:45:27 -0400 (EDT)
+	id BDC6B6B008A; Tue, 11 Aug 2026 21:11:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D6A76B0088
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 20:45:27 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E5F5640273
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 00:45:26 +0000 (UTC)
-X-FDA: 85090773852.16.8E31B55
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 16BA340003
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 00:45:24 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UXe19sBu;
-	spf=pass (imf11.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786495525;
-	b=GnvX2fibi15g/5VSwoJNlehxJ6vSd36da+5xcFurQkFyaY2Pd5iS2D/HdeYrP3ipl3+so5
-	ob1HmBY9UIwhUQ89U4W1hIvslDjrmqmW7wg+5RT8RZRkI2V6eEY5Ma1wLgYwXDI39RgZqq
-	8i4btquf9+uuduIHySkRsyvadE2/8sU=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UXe19sBu;
-	spf=pass (imf11.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786495525;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 95D4B6B007B
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 21:11:04 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8CC511202B5
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 01:11:02 +0000 (UTC)
+X-FDA: 85090838364.07.F617427
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E6F6580002
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 01:11:00 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uuwrgwlT;
+	spf=pass (imf02.hostedemail.com: domain of 3I8h7agYKCPwwyvirfksskpi.gsqpmry1-qqozego.svk@flex--surenb.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3I8h7agYKCPwwyvirfksskpi.gsqpmry1-qqozego.svk@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786497060;
+	b=1XUbf7Bmt8AAjibU0xxKQMKz48d7cYHRwiRaArNJ6Muqwx/cy7c4UVEwSrMVWso082vQEC
+	fuqOc5iEDjGtZP/efMiAvY1kaxVgsMbxAHuHtm9iC2GUtq3CpqNePnPg+swq6Uk4rjfFgV
+	Zq61jSlkfg+i2qX0Czw/FFpQppDiiGk=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uuwrgwlT;
+	spf=pass (imf02.hostedemail.com: domain of 3I8h7agYKCPwwyvirfksskpi.gsqpmry1-qqozego.svk@flex--surenb.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3I8h7agYKCPwwyvirfksskpi.gsqpmry1-qqozego.svk@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786497060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KpbiFA8KBEHzWB2KbcFFhiBo43qx2XKKHLf9CrKShXo=;
-	b=y2I9fqGuRM1/vtzGjhpUOO3hyLx19YHUIElfqhcEi+XPAZSjbPp60k4RlHEV/AXOweB9WO
-	rrXzb/3d+tH2ZvORjewzN+8Z5hW6A12+faodJGpdAb/NnT6eWuEM03bORlqhe64bdq/geU
-	XxqFKf82QwtnmrRm154HqIli1F3W2R4=
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5aeb8c19017so606013e87.0
-        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 17:45:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786495523; cv=none;
-        d=google.com; s=arc-20260327;
-        b=DacOUNpXw5QAX7HFz2NCySTPeMSW3Rj0SDG4dcfkmrbBKfYw8C2LkbnIXpEsBwKDto
-         UnqxlXFxDF02ZM50O7DlArUldb04yTlEib4AZN5ev0E+umEIR6d+UhldykvG/pOzf/Di
-         fK1IIAuz7wp2Wz8CXyizizl/MlW61GPE0K9bUidvEAbUo+I3qTVmuVAD0vGCw7b5wg4M
-         bdc1PJl+GgqL5KYmKtPdNIQJLK7HsimfRTtOmzPcIOtLOf/ZRLYmSyZ9kHnOS9PjjSBu
-         nfsF3/EWHsEzooMDIiaSBJdpWTJobRXWGhU8Cezo+RQys+tGxMeDg1s1wP10ZQTqHrdd
-         R3ZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=KpbiFA8KBEHzWB2KbcFFhiBo43qx2XKKHLf9CrKShXo=;
-        fh=FnTeqw5Sda9ic5PBHx80WvyTnZ/LRzXghBjE4EN16bI=;
-        b=iqbhfajB4oopmlt56AV4B3LJ+QvAU8chXd77kPqSTV8JYH/Ycx1I76/WixrfXHYlXV
-         iJI8ubuYXzNdI2iE1LPuo3CclPbwRy7iToRz7BM5d0x2gZXv7SDm81iDQCbPLd8CdUW+
-         61RcOFOXDDHvs3dTJFKeuZtz8jwJL0vR6x1Im55NaBqCQVv9rIGH88Vi2B2gNfDDdkoe
-         7jummx5Rb8azvGq3A+8XJBX4Fv5uLpv9SgKmU5Iu5Ai0ymIYe0pFdUZlqEnzwCSU3uRn
-         9b1f1/8X902WjGvwEqY/A5BAIqe8jnKpibWYkKpmBVMJOnvdeRhmiUWS2JHYabQubVKy
-         Oafg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ymmox5ngHEOJixoUwvIF+857zRrBcDTQSn1VqCUgM4A=;
+	b=22hb+vCyCX1FGNo/n/lFAdVX/5Jdn3uNgJzo3nuOgDAF1Nfo9FHz4X8oo3DUflUSnkmWh9
+	EygzfK9Cjh79dFbLdSoCiB/kX/aVOoF1K9Wx7Av47MGg5oxzmmyvpDBY6Hlpg/9p61aeCa
+	c4Y964I1mIQdgtcRlkVWC4f9aA1TEl0=
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38fa7b09921so763362a91.1
+        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 18:11:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786495523; x=1787100323; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=KpbiFA8KBEHzWB2KbcFFhiBo43qx2XKKHLf9CrKShXo=;
-        b=UXe19sBu3fsUCx129F8wE5YiEU3s4cgTfU+8KfVXXtvypJPIhtDxLEgtSc4EOx+Pzc
-         i4w4eeIq8jEjZ3outLJL+6QI8L/BtoPiPVlwb8lL9b6TSmNdXKp0HyvpEkfRo/v1IADl
-         YU6J7AezyDFtbvCXSS4Rv53SLgVweRUPpVjRCECE2wrPDkPUOJ3ndiSnuY2D16mr043j
-         GiSsdwA/uUxH1ENEsp30weTxwFXcBf/xM7NuBGt3vftKdX2IBFbpTYOt+Sbsdq9WfUgp
-         cbzB17RGWiGZPSBvEX0CadUvwQ4K74cILgptEjqLBRQTorjfSPbP+g3a9yqS+FuJM/Mg
-         6T0Q==
+        d=google.com; s=20251104; t=1786497060; x=1787101860; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ymmox5ngHEOJixoUwvIF+857zRrBcDTQSn1VqCUgM4A=;
+        b=uuwrgwlTLieLRUd18MruF76SBqOiAUGIqEN35e9yYuVqgC7hBSg1BpvINetW5hsX8m
+         V8iXdBWrcrUonoiWnCwNcU87KYYLcarAHd3YPV9yjkCddc2O3vl3mIYwFZE/MzHkz5N5
+         HNGp1AYogsXJh510PgYlEvroA2soHcSLLxrG9GYlEwtn9nwao6Pr38VP0Yc5okncGXo4
+         6sqPUI5MVOPGbbOFHp2dnrLL8lw0Kg2le7ACjexQe7x7IUXOOFgRM8z12EPVORDx9z2H
+         Ccy6DhuwRg0EL92xsuZ4o3/VN0R70bWkFdm5HIv3KZM8A1T9ubRiAeX7C1tliu/zS8Jv
+         zlDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786495523; x=1787100323;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KpbiFA8KBEHzWB2KbcFFhiBo43qx2XKKHLf9CrKShXo=;
-        b=tH9TQ0axgQ6GhUPgBmOgIF0jPW23GN7YPJayWRDuz6o1Ns1TsggUVntWQclXeK33A3
-         B0H0SbHGoelFHFqY/6/OdkdOeJpNu1Qt28+iBBOKJYGFRIy6xL3HsZsiKNLUJqtoSWNl
-         AHdiWLh1z7LRcf4QZPgL1XCXy4gecOBtaBHOYD8Gm4NpoZ3ODng3oWxREnMFWNex9joe
-         tcH/DHn9mydWk+D8hPENwDiW6wk8s+mdhXyp3RxoKpM6RZi2SQ2VRZNRRNV9zk2EvC2i
-         A8P+FGWhijCZyQlrZrk98i7xWdyLw3FRfUQQO888xTB7UgxfASY/NGfHbkrPjCDksP/C
-         Jedw==
-X-Gm-Message-State: AOJu0YxWen3I2kN36swt1TtIJ1JgwQEQdHbuGr5ubdQxmt7pRBHRZ7hv
-	uZP7qhUzeIQOp8pEJ9w95Rjg1LPnl7MMXt4eBmFPNgFquW0+I3QD7qQrRoO9SUS4eqPaeGGoOgj
-	CWcjhBZzw824cju+VSxn8LLDX7AP27Wo=
-X-Gm-Gg: AR+sD1046Ufa8u/ELRcm1vfvGfPDeht/Pbijisz4hQ7It6AXxi5zQZxQ4LiLK7HAkC2
-	+U1MMgIz63Vqwym6BsoTF4n+AlQ2/rOjNd0csQ4mCGHdU9VvYwPeLzd/nvqyAC6r1MQf5V5QGh/
-	hVZ+/RGDZ6cPLccgJup7978kyMy0D/OBA7bUnnGqg0HuFxQD0IpEN3E0st0rk68+drXK2SYPnXv
-	l/eC4QK0PSUyTNnlwcVe+oM6V4/ey2183wG5QwZkw+SjO0Butp0zbT0rAsTqPhvmJ0vlTD8ydd6
-	/PfcybNh0ODcUnagiMhuj1nzzLj+VN8xOGLkfkNqRqvUFjbsIuCK30wXtPeq/+q7mN6tLc3i0g=
-	=
-X-Received: by 2002:a05:6512:3c84:b0:5b0:1f06:f1e4 with SMTP id
- 2adb3069b0e04-5b44e331828mr156684e87.51.1786495523085; Tue, 11 Aug 2026
- 17:45:23 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260731-shrink_zswap_entry_v2-0-0-v2-0-e72083aa8734@gmail.com>
- <20260731-shrink_zswap_entry_v2-0-0-v2-1-e72083aa8734@gmail.com>
- <anpnowepnexrNea_@google.com> <CAJxJ_jgBK+jkGztHevvGiNx1YLVHdHqnwVenycx9wd-3Vffa3w@mail.gmail.com>
- <CAO9r8zN=VjGRSv6aG+7tSFa4hFO61SkZChGpgW=+8YsuSxBnFQ@mail.gmail.com>
-In-Reply-To: <CAO9r8zN=VjGRSv6aG+7tSFa4hFO61SkZChGpgW=+8YsuSxBnFQ@mail.gmail.com>
-From: Jianyue Wu <wujianyue000@gmail.com>
-Date: Wed, 12 Aug 2026 08:45:11 +0800
-X-Gm-Features: AUfX_mzjS2B6a7Oah5K0_j0Sz1CLzFURZtr3Lw8DD_PegB9Epqfjq8x38hfXUEM
-Message-ID: <CAJxJ_jgpHRMXDjXsBAkY_QBoz6ZmZcbtmtxu9c8-7bW=MccPVQ@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 1/2] mm/zswap: replace the zswap_pools list with a
- fixed pools array
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>
+        d=1e100.net; s=20251104; t=1786497060; x=1787101860;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ymmox5ngHEOJixoUwvIF+857zRrBcDTQSn1VqCUgM4A=;
+        b=eZdY2Rm5PXWIkKwHIQO+m+sjDlV0OAQvA92HDz1j4JBFBpEH7nGOc7oxBi+XjgPKXt
+         /dcwCEGTrpt81++Z1cnw+VDThP9pie5yLVZOXomh7T8/pocHamCvy/gr5ox7AM3tRQzu
+         6mMvNsWpO0XQ1SIAnC2qKopruPdiKzCb1MBHT6EkPQSH/g6rLElcdgskmVB5SwbNPUtB
+         /gDEr5+joZdsRO/tRJYLwQq8Hh9UxY4CYmuWNS3RdGSJZTUS8fd3dPoNj2YIKiCgwfZZ
+         qQQnB7pTDmLs0EYXgnM5ErjAH2km7vf+E2dFjtJHgqWfRgZiPezXKOxsq85kviLaLl5x
+         E8/Q==
+X-Forwarded-Encrypted: i=1; AHgh+RqrTK7eg5hIUCl7kBqq1aNuFjmoVXfJZpctcfELOHjLsEm1W3TKj7KeRySfj9oc1G8YDkazUdTLEw==@kvack.org
+X-Gm-Message-State: AOJu0YzGaBmtPZ6GVfbFhzBt4851H1Zvpwpf9F+hVnl8pIC1oUwwZtZ/
+	ro7tEc/yZoomv6I48pI2iQQ6P6ZvjLbFgTQy7MV13E2bTic+9n6RncOdhPsZhQhHXZ+hTx/HCdZ
+	dfFtdfQ==
+X-Received: from dlbro11.prod.google.com ([2002:a05:7022:158b:b0:140:ef7c:eac])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5847:b0:381:6c5:3f63
+ with SMTP id 98e67ed59e1d1-393011f39e1mr1328797a91.6.1786497059420; Tue, 11
+ Aug 2026 18:10:59 -0700 (PDT)
+Date: Tue, 11 Aug 2026 18:10:50 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
+Message-ID: <20260812011056.902771-1-surenb@google.com>
+Subject: [PATCH v5 0/5] mm: Unconditional per-VMA locks and cleanups
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org, 
+	david@redhat.com, willy@infradead.org, shakeel.butt@linux.dev, 
+	vbabka@kernel.org, jannh@google.com, aliceryhl@google.com, arve@android.com, 
+	cmllamas@google.com, christian@brauner.io, tkjos@android.com, 
+	dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
+	surenb@google.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 16BA340003
-X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: nsebzqx7fk4qyxpno5bc777trxb4bkcs
-X-HE-Tag: 1786495524-870046
-X-HE-Meta: U2FsdGVkX1+HzizNSpY68Kr6ahP9s5wYpRLYlkkn6TqmyZ49xsFca9iC9ezgn1ciB2F9EFz3Ij4f+dZsM1d0W1jS8Ro48S7ib+fmIbyCc2vBoO1+Q4SISt0+/MG9+RGzM9V0mx/WN9yygF2aTcrgOAeWpguJpsDe2Z4tFlkwKgLkc9ln+aEOaLlO7yaKUFd6GiFDkxkc496atW4i1G7EUUzGt54u7T6RL6IVnXDqLBc9Sw2nIa5Cp7caf3N7jTaaRcOvnDfl2Cd38uNQxEytiH46+0sX78bFmVD8hjR4LuYQWj81I1qyLVbcKP9o5hsW4qI9x3ezA+TNq8i8CyAekcAuMO2oSnjEfVsyCawIBgTlYp5nZRebrVVdutoZs97iR6uTrMoQzJGjChIU/X3+eahujUGcfYMVbDiFLChuzow12tzt20jlEKoMpVvZqLiPlzULmpgjW+KRus4unYe6eeGGFLXPbsXSQReb+A/2zmXPmDm2rwbGhuNaG4jXeOodUiH5a3AKkdPyMgDUlPQfLFSaedlRHggkYdlBlos9095+oc42cO4TOiM7eDUbo6VzfbFn5EO+WkEdG+M0N5ZLZpSOLF7IO1dFcp8yaTo6n4WumNh1lCf1kHet2bj1gd7ZKF//n9FEnume0s/qYZH0e1/OgexSh87+mTmagexE+bIZuVGuiheAEWSo/Uu6bOGfsOw6ARGPvmHGkm+9JADTJXIdnbwxj2q5KECZc4GqVSuBl2f5MHzE7lwpnEiu/JEmiUhQSJ74x+D+Ii92AY+q0GSyCIs6haY4QkVfIfxmLAk5M1cz+ChUTXNo/KGvSa2MGgwxW8Wg4Kn1dtHP9GfTfUxJ774Po4vtdnO0xegWQb4TbQjKRBlI0igwUOBzkMsPXSmvtvVWj9vIV2m2OJarMJJmh4DIHItdxce29pMRQ6Hto5/lF40qGROm3odmVr/bCiQv9POlYn+6AZV+UmK
- zcT9P1+U
- TwlMBiHjmwYGeoXhWFFAVkQOyhLJLCGeFfPGvbdSlHa5hG/f8QVY0MjmF3Q5LnssEmmzuBUxmuLNCBDRLnrfs4e9LxA/4+sgEMyld3VwSplPAMxV2GWSAO3oMTgzDFlAXuhmwNeFMfkMEK9S3MobzmgKhITaCCXSBFZs8SDrzWLYcHDOdPpzJf/gI8DS7w61/uvUGwFQzvy7genaSunNaGFjCfQuvVBj6TF5ix0RohKR6bFGarYVgEVsFCkAPUNre1l/MxeUl1/DgLR93/JvL27T3Fr2y3SPZLHcXq7SpE/4Fs17Is6JhKKhdgjk+9vJizA3LjMOOhL0mEoStv8rDQqM6h0aGgAaMjtliCkKGA/RhAFm+DHQXVQpDsBKVMY9i/4fe/UAQhnRprYNqQd35so/FIhJdHFVAj9c18qFNggEDaQ1Y5fp/WYKhLDG23uBlPJp127/nThpdS/TlOqp1GRo0dXTQMtQ168Vt+ip2NjVwbA/SEBXSXOKJ0A==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E6F6580002
+X-Stat-Signature: 7af33qewritwsbb39m8coqx8wzbzt53n
+X-HE-Tag: 1786497060-943681
+X-HE-Meta: U2FsdGVkX19qFetnGFSFho7zr+lXZLlj3pEMG7PJEPmfUipB90LNNOL5O4Ox7t8os7NPiHv2Wg53zk8scAcl4Z47ytvv7PpgyH4iHM79lEN+9B5cMDUI5QRPStMvE7dJqm+u9b6YUs2dvNG3sYqGBMZVToW1jOsymZAYXs21vebywxGvsJmpdexv5hz61N+ffs4+3l4FHQbq1NCqlo3P60va8prlOUDMzGZejsrJ9rJTMzkBnYme2dD/I+N4a4Z4p9EWAFrDx9HAS62gNpQk0I3l64QqtVuQrMdCujW5+/iKPRUDfGCn5fWTT8gqcIArL7+CwQpWTe8wLzXRBXtj2QiWFsVr5amHLAZtscetDOFCSHAmuGz3Yf9QiBwQcBqlI+ZG3YGORflZnVksV0zpfjnSvRl/zDT0XOpRB1XzqGruRtpJDYJ+vPDK5zw/HIz8tcfWalRDW+omA6x8ntmYJg/WfFtRcpgnd82y8jQ6A1V/N7/9krmImZy4Z0CIoW03dD/dnpkScPHlyBu+SmSl8xpxRy+3OBnxqINLZWib3c1tkH4vtedqwq2OJ1lmIGHz3lz5N/gUMv69jWrcs6YK2yMiYocQ/sMq7Av6CdHZBD4KT5jSRUTry+9H8hL/ezK+fTK0BD/kxt+f0UjTVkF8+kX/ba6ae4a9CGZR5RWD9eVnJp5pHwK1XeJ3PbuHq9fYoLK3MxHUFEoCbZeVDopPP6Yi2fr80eN3EiGjcDq7k4Br1L1vpN6msRmchfPCmtJBco+Rjj1xhjWcJH/5vQWhB3pLyVPy4ogEa++ACcsrF1WzKfbksIfDJIBfxy9DmhVd+OBQ6c79QvxcOh1hvW/EIdD/okdXbSBn3bHm7bjoYH3+vqlsoa9sHo2THM47/mhGE5+JDMG3UwoWNR1Jlx7nB9YHtm2by7cZqTii1h/cbyO6JUOkISpwKYukBMbrg1+DuV+gHrlc75T5AJ+ndzE
+ Znw0cZoc
+ yLSOPU5IGJ3bQcZsOK7fh8Maun5oY/lyJ3600dXI83/cO9kmpcxPxUNYdPCNGJf6eiJLodD9GqaQ/XRFP36UggVFQSGnAmDZqi2H6mmf8Ovrs+g6Dm80g+8dNzkKTxAd4WkPySXQUfwGVb5o+ufq/m1BZWb/FxnqO2g56pel1p9TitJyM/oyicwDMs+H5LP1YCVvPuvReA8V0R1EO8B73y+mMu7KHzWmEJvMIDgs6WY3fmrnnyB6v9aughlAFrh0w2/QK3biWLP8CmIUJnRLIOdzpNn0Jxf5ORY6YlvxbpJri89chGQjzC0n5XO2sBLuTa7Xo93UYaiAEBXZ/YDcHws2d3rylROQNO7V4vsBZkTGEMbTiE/pbirsnyI7ShTXVnwIFb5uh3+AOuhap2nOoqrgGahNFGqMq8L4opVWFHkAE/baLOuoNwcbuBaVanHIi0o3zNyL+Ejh3avSk3lquS7oiuh6bgyjwsEyTpcAjjTsrdrSLFWs32z7ba3zgM68ou+o1ILay3hZoxS5WLgfR7GJEcguK6NdCMSPAb6VtUDGZvawbwN76iPuEwOAS8y0tNG6N/HfZA9waLfpEY9ftHpZs7b8oARk+2+ucEMjTVXAiyPjv+1V/TQL0skbBqSYvV8PEekZEjI62ixYKpWax0uNmI1v9fjb6Ovcu9SOpK6tYvSER5rNiT418dqIUCY3KV9w4RcfmTVyOrdyAIC+oIuVUn5bmMHKtWgNKrkyCSmDOne9wv+pBa647t3PZHIcfHUt+He6g80L5gaWVAoo02msm3yyYJv72iM+vSvrTnVJrm0dxV/l7ZQ6vrLmPwr9dO4drYigOAGb1r6lmXzid7Y0xyD8bdlKB7a6RMqc5pxxegg6WDLSwgOMW9Cd4PYVtYO8IJJMbkz+qT/8ZIKZNI7axFpfJUbMjtbjNgjDWIN3kL6/sMeliK3rcu0gAR3ZCnSeh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,39 +113,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 12, 2026 at 12:22=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wro=
-te:
->
-> > > > @@ -404,7 +437,11 @@ static void __zswap_pool_empty(struct percpu_r=
-ef *ref)
-> > > >
-> > > >       WARN_ON(pool =3D=3D zswap_pool_current());
-> > > >
-> > > > -     list_del_rcu(&pool->list);
-> > > > +     /*
-> > > > +      * Clear the slot before scheduling the release so new reader=
-s cannot
-> > > > +      * see it; __zswap_pool_release()'s synchronize_rcu() drains =
-the rest.
-> > > > +      */
-> > > > +     rcu_assign_pointer(zswap_pools[pool->idx], NULL);
-> > > >
-> > > >       INIT_WORK(&pool->release_work, __zswap_pool_release);
-> > > >       schedule_work(&pool->release_work);
-> > >
-> > > Not related to this change, but I wonder if we can use call_rcu() or
-> > > similar here instead of the manual synchronize_rcu().
-> > Agree, will use call_rcu() to replace workqueue + synchronize_rcu(),
-> > so it no longer synchronously waits on an RCU grace period.
->
-> If you make this change, please do it in a separate patch. You can
-> keep it a part of this series if it conflicts with it, otherwise you
-> can send it separately. Thanks!
+v2 version of this patchset [1] was written by Dave Hansen and per his
+request, I'm taking over this series.
 
-Thanks for the hint, I think I can use a separate patch.
-I'll also check with CONFIG_DEBUG_ATOMIC_SLEEP to confirm no sleep
-in atomic context.
+tl;dr: Make per-VMA locks available in all configs. Simplify some
+of the per-VMA lock users now that they can rely on them being
+always available.
 
-Best regards,
-Jianyue
+Binder and networking folks: Your code is the target of the cleanups.
+I'm cc'ing you now on v2 because there's emerging consensus on the mm
+side that the approach here is sane. I'm not quite sure how this pile
+would get merged, but ack/review tags would be appreciated if this
+looks good to you.
+
+Longer version:
+
+When working on some x86 shadow stack code, it was a real pain to
+avoid causing recursive locking problems with mmap_lock. One way
+to avoid those was to avoid mmap_lock and use per-VMA locks instead.
+They are great, but they are not available in all configs which
+makes them unusable in generic code, or if you want to completely
+avoid mmap_lock.
+
+Make per-VMA locks available in all configs. Right now, they are
+only available on select architectures when SMP and MMU are enabled.
+But all of the primitives that per-VMA locks are built on (RCU, maple
+trees, refcounts) work just fine without SMP or MMU.
+
+The only real downside is that making VMAs a wee bit bigger on !MMU
+and !SMP builds.
+
+The upside is much cleaner code, lower complexity and less #ifdeffery.
+
+Clean up a binder VMA locking site now that it can rely on per-VMA
+locks.
+
+Building on top of universally-available per-VMA locks, introduce a
+new helper. Since the new API does not require callers to have a
+fallback to mmap_lock, it's much easier to use. Callers can
+potentially replace this very common kernel idiom:
+
+	mmap_read_lock(mm);
+	vma =3D vma_lookup()
+	// fiddle with vma
+	mmap_read_unlock(mm);
+
+with:
+
+	vma =3D vma_start_read_unlocked(mm, address);
+	// fiddle with vma
+	vma_end_read(vma);
+
+Which avoids mmap_lock entirely in the fast path.
+
+Use that new API for another binder site and one in the TCP code.
+
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-mm@kvack.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
+Cc: Todd Kjos <tkjos@android.com>
+Cc: Christian Brauner <christian@brauner.io>
+Cc: Carlos Llamas <cmllamas@google.com>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: David Ahern <dsahern@kernel.org>
+Cc: netdev@vger.kernel.org
+
+Changes from v4 [2]:
+Patch 1:
+- Changed vma_assert_locked() NOMMU implementation to assert ma->vm_mm is
+  locked, per Sashiko
+- Amended patch 1 changelog to include vma_start_read_locked() and
+  lock_vma_under_rcu in NOMMU considerations section, per Lorenzo Stoakes
+- Changed comments for stack_map_lock_vma(), per Matthew Wilcox
+- Added early exit in lock_vma_under_rcu() for !CONFIG_MMU,
+  per Lorenzo Stoakes
+Patch 2:
+- Updated changelog to explain the extra change making missing VMA
+  handling consistent, per Carlos Llamas
+Patch 3:
+- Rewrote changelog to better represent the changes in the patch,
+  per Matthew Wilcox
+Patch 5:
+- Fixed vma_start_read_unlocked() function name in the changelog,
+  per Matthew Wilcox
+All patches
+- Added Acked-by and Reviewed-by, per Vlastimil Babka, Lorenzo Stoakes and
+  Alice Ryhl
+- Rebased over mm-unstable, per Lorenzo Stoakes
+
+Applies cleanly over mm-unstable
+
+[1] https://lore.kernel.org/all/20260610230409.A44D29FA@davehans-spike.ostc=
+.intel.com/
+[2] https://lore.kernel.org/all/20260806200548.3124802-1-surenb@google.com/
+
+Dave Hansen (5):
+  mm: Make per-VMA locks available universally
+  binder: Make shrinker rely solely on per-VMA lock
+  mm: Add RCU-based VMA lookup helper that waits for writers
+  binder: Remove mmap_lock fallback
+  tcp: Remove mmap_lock fallback path
+
+ arch/arm/Kconfig                       |  1 -
+ arch/arm64/Kconfig                     |  1 -
+ arch/loongarch/Kconfig                 |  1 -
+ arch/powerpc/platforms/powernv/Kconfig |  1 -
+ arch/powerpc/platforms/pseries/Kconfig |  1 -
+ arch/riscv/Kconfig                     |  1 -
+ arch/s390/Kconfig                      |  1 -
+ arch/x86/Kconfig                       |  2 -
+ drivers/android/binder/page_range.rs   | 19 +-----
+ drivers/android/binder_alloc.c         | 62 +++++++----------
+ fs/proc/internal.h                     |  2 -
+ fs/proc/task_mmu.c                     | 93 -------------------------
+ include/linux/mm.h                     | 12 ----
+ include/linux/mm_types.h               |  8 +--
+ include/linux/mmap_lock.h              | 94 +++++++++++---------------
+ kernel/bpf/stackmap.c                  | 17 ++---
+ kernel/bpf/task_iter.c                 |  2 +-
+ kernel/fork.c                          |  2 -
+ mm/Kconfig                             | 12 ----
+ mm/Kconfig.debug                       |  1 -
+ mm/debug.c                             |  4 --
+ mm/init-mm.c                           |  2 -
+ mm/memory.c                            |  2 -
+ mm/mmap_lock.c                         | 61 ++++++++++-------
+ mm/pagewalk.c                          |  2 -
+ mm/rmap.c                              |  2 -
+ mm/userfaultfd.c                       | 61 ++---------------
+ net/ipv4/tcp.c                         | 31 +++------
+ rust/kernel/mm.rs                      | 57 ++++++++++------
+ tools/testing/vma/include/dup.h        |  5 +-
+ tools/testing/vma/vma_internal.h       |  1 -
+ 31 files changed, 166 insertions(+), 395 deletions(-)
+
+
+base-commit: 1029098ee3275ea5b78e329ce132262affa2f8cc
+--=20
+2.55.0.691.gc56d675ccc-goog
+
 
