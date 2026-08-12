@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00D74C5B56A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 13:42:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E963AC5B56A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 13:42:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B81426B0156; Wed, 12 Aug 2026 09:42:23 -0400 (EDT)
+	id BCFC56B015B; Wed, 12 Aug 2026 09:42:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B59886B015B; Wed, 12 Aug 2026 09:42:23 -0400 (EDT)
+	id B80F96B0163; Wed, 12 Aug 2026 09:42:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A95E06B0161; Wed, 12 Aug 2026 09:42:23 -0400 (EDT)
+	id ABE0C6B0166; Wed, 12 Aug 2026 09:42:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 830446B0156
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:42:23 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 01990140387
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 13:42:22 +0000 (UTC)
-X-FDA: 85092731766.14.1B58A68
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5C1C6140011
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 13:42:21 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F6YnCJWl;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A10A6B015B
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:42:44 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0FBBF403EF
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 13:42:44 +0000 (UTC)
+X-FDA: 85092732648.23.C4F3EF9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 77314A000D
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 13:42:42 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CWKzH0r+;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786542141;
+	s=arc-20220608; t=1786542162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/v3X9kDnaj2Mwr/HHxgw6e3NrNjwRw1A4OPoazOeV+Y=;
-	b=7mP3YL5BUSzbk/GhxtCTYVm1j70+DWzzthfuCP2ZxHayB9IRbmO7ZN/RIJ6yEsjhRThrmH
-	KPUHLjoyoj1sgRg5R/4Rt5C8Uv7ZBWRnAk5tGO7AVOZlvC3YbrbbUIKk7dIAGdBTTcBgbG
-	s1byfqPSQPifqAI3R12kkyZAUzODlms=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786542141;
-	b=x/v1Gx83Z2PPOlWJKRACCqZq7xDMWW4sHDAcRd5V9Mp4L+2POB4Oxrs+T7qNsYTyvXyKC8
-	a2dPJhYkL79slyj68nlM/MaL1Rq6ny9VGwXB7v9TSN0HhlLxImuRqwo/sb03zjuIqtpnWQ
-	gUN0Z7Ogb6vpjIjRtnako9TX8l4aO8I=
+	bh=Ir7XnZTfnKiE1NV6eZ+BZ1phE3SdBSyJA2vS3hmoEBE=;
+	b=OH9y8B0UKBEi/Jishg2bKMGVQEN2jEZxWgvVV9MAIz0Zv7PKGJ7BfABKQbSuvbYuH9brVX
+	VbIkDkdAxHucRQdzPjJEnkOJjN5E5BQo76glM3uTU39YCUMJYSAeGSwrnYyFIRBmrCpjYc
+	69ymGgAVb0TOg86EWI2QtqDCM2F6fBo=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F6YnCJWl;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CWKzH0r+;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786542162;
+	b=jYwfs/ILP/pq31iXHy7H9njgT9ypg0q54FVdMwnByg2IIOkt3tRQQj8vUnhGfGvaS6RZsX
+	HYC/1Zu6slZYeOZ6/4LIhtVxENdIH4xnszv6ZSuuANNxFtCf6HGkjk0G0zJCb0VqnV/Fdl
+	VFQ7gtGUaXXPIUgRcUqUaGPptJlGIQo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9884D40431;
-	Wed, 12 Aug 2026 13:42:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9FC1F000E9;
-	Wed, 12 Aug 2026 13:42:15 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F3CBA60A85;
+	Wed, 12 Aug 2026 13:42:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538911F000E9;
+	Wed, 12 Aug 2026 13:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786542140;
-	bh=/v3X9kDnaj2Mwr/HHxgw6e3NrNjwRw1A4OPoazOeV+Y=;
+	s=k20260515; t=1786542161;
+	bh=Ir7XnZTfnKiE1NV6eZ+BZ1phE3SdBSyJA2vS3hmoEBE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=F6YnCJWl07aBrUyTvYaOjCTLeFvwaF3p2SgFe3SAOg5tAl242wTSagMumlOFtMrE6
-	 fb2vDsZCP1OZOi2fUXaG3HfKFXoXYNFa4mcZmZDLk7xGZJ4gbpMV6GQPMNZPrI8vdr
-	 sUmHWk4NzSqAUjWjDosNI8F0xsKcyrHJ151vHgig0Jiba3RoqdTsbq1i+tfgkcPabe
-	 psTIP4pTLwXBvdcm7oJINbvvsJp5DQ44jHowy4CvZ4TeWZh2FOvhmOXsTh9KgHCcVS
-	 AKtbmk6aXuJgSUqqNs6MXwLG36TEqTXyBSGuY6PcodtdSfb+Pto5G/kcGuNTU7GvYo
-	 Xh5VUcKZJqIsQ==
-Date: Wed, 12 Aug 2026 16:42:12 +0300
+	b=CWKzH0r+k35uq/gBzVBizUYYZ2YhQI2uDduyLZc+iUOmijU4V9LzofSbavHnWDumE
+	 2zrnoXlZquLrxgtfJeUKT2QSxYTD3krlTBcv5z7PZLVmb8pW66nSaNyiw115Xp966F
+	 NR/DWTYd+BP0Sx+MDHHthdceL3kWv8zhCWjD7+N0CBCmeBGEMDS38bEDiQu1JxQKtr
+	 IvsCSrgMzGSzTsghoh56hHQzzlULSODd6GvbtFdXNp4tL0C7xIcc9FGVj8zGJu34in
+	 NJuLdbxDYtrHj+s8hRvHE4lfySVAalgKQmz7wSUrDAjxLsMV5RxCC78Y4W1scuTreX
+	 qZsvJO1cKiSgw==
+Date: Wed, 12 Aug 2026 16:42:33 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: Song Hu <husong@kylinos.cn>
 Cc: linux-mm@kvack.org, akpm@linux-foundation.org, shuah@kernel.org,
@@ -71,23 +71,22 @@ Cc: linux-mm@kvack.org, akpm@linux-foundation.org, shuah@kernel.org,
 	vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
 	peterx@redhat.com, linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] selftests/mm: restore enable_soft_offline in
- hugetlb-soft-offline
-Message-ID: <anx4NBqyMKwqvEGb@kernel.org>
+Subject: Re: [PATCH 1/3] selftests/mm: emit TAP header in uffd-wp-mremap
+Message-ID: <anx4SbvfHXOHVflm@kernel.org>
 References: <20260812120821.523860-1-husong@kylinos.cn>
- <20260812120821.523860-4-husong@kylinos.cn>
+ <20260812120821.523860-2-husong@kylinos.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260812120821.523860-4-husong@kylinos.cn>
+In-Reply-To: <20260812120821.523860-2-husong@kylinos.cn>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 77314A000D
+X-Stat-Signature: g4ooauh3dfbkht1bqxm3iru8xy4sizj4
 X-Rspam-User: 
-X-Stat-Signature: hj47ri96sfop6kctc637rc3k1zwsne5k
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5C1C6140011
-X-HE-Tag: 1786542141-294905
-X-HE-Meta: U2FsdGVkX198CzgH5v+El0n01ag7ZnwRlU0yPjvhHKhvBCnb//mcJgwmW/HmFZaq9vxmHI26Ly013r04n7rMVAY6L1Anz85CFWBjmoPHpz7HM7sVYzLnsSlhP+77M3OTrzFATL0dq4pK4BMRTearWQ5HWLsuZA3G2Asj4FzcVQOUhVfbO1SMRUxz7RpERh75pAu+bNi46iPLvB55T6B5+az+Eo30jMW6hZnFi7/qCXjlF8Pk09GDz+KDi4hNQSiVnFOs/QPilGkVNOtMTopaP50ftgPgkvK90gGCjUkbCjXnRuvwh2nHGR2q81UYvwxQCtt/Y4JUv6MSg3P0A1Hp85RvtyTdpQ5sWvjEQxcFkRNAsVkNlOfJZx95qm8bivbTjh6yL8UILTXGDs83yPQoGB/hqHtPr1S2uW5eKNFvd4jrHnJ+dT4vbbUW83Geu/S2iB6I37wLzTY7iv5CmbHQSo0/ph0N0/gF+tzZZSIFxog4YbcPLr5sqX+wTn9kbWt/Xg7FQyiqS9TD0QMjB82vedWuhuVjDlx7ReMrGWo3sm+QEidl8pP/CAaMwlxPNulKJSugiIncXoredW+eHT1TJIkrxbc7bW5XJ75KcS81I73Le8xHY2NHcqSAUdwvybM11YAWBZeCoejAyBOTteFCCjQKuUfPJLnZ+lTcWDDS29vISf6OY0GDjbSR7b4DM+uZevJtYeTIUmxDZqrZ6TbB4eeFV9P7uh7S1ytNJwJs8ubFIRrUA24jxu+dK+r+Jsl7Tpga/vWIADN2icxZikFbY0u4UtCJgiY1zJFg/I+lLybnn5o6mLh8uKdj734hsw1CVeL1Mi4p2JU4d9lAt31Asjbhf88bOyuUeEo4sUky66XwJRZbRIqAvMOpcEgAcgD/GVSSu0m5wz+0RHDnRGAKC2u3/eZI9V6eDzG87k9hmsi4NZxcy5TopAHtuJqdwMeHTDQVIcYIe3NIKLXtfy8
- Hrt3rl2j
- 3z3saqwaSUFi2rBhm+dXRy7pralRRw1XNBFapWYYwMQPBcExuokTSH7ec412DlqORRjls1zod4XnpUN1TWpXoV5GVq3ksy93NNOoxexkaS+mj1tZHWg7dXkgT2GSR1Ld+S0dmQXhhox0WILvpGs0wOyQA83h4umZfFsBdBJXN+4/20ARIHQE7kS+BH3WR4Csk4w7FF/KImllV6G0+35ifrQYzQhE4zQryT6l8g47CgGeSmGHt3yZ2biI4FfvhMWWdFmDFp/YEJlQKyPodinMe29Fl6motAA751ZcCzc11xjQCpG4D80iP32Wwmg==
+X-HE-Tag: 1786542162-24980
+X-HE-Meta: U2FsdGVkX18a1YaTgW5D8J3jIA9ZLh1il2IYmZWBcy8ciF0dccmuVdY57hF5sRs6zjTUwpfp751mIoTZNPCS0zPWg+bNNyNnPLKGBJGodTw+TA91b2IRZpdg35stIGAzp8pWlZ9n/NotPa/K59m7NAWJtvXL54s2xEQFgrzR8Ev89ORmnxhVPROeXgkzo/siOAwxPTe+Ee8NBKs9l/oa/AA7/iyEFMW7V3LILARfCLIL40WYqG80czrJBOTMBMmdFME7JTUUFbVUKlYm0oPsPxDDcLDb3Dt07UOptDI7yhlNyVCuDGpm3dzDi6CDctBvZry8ou3aTcT4hETpdHY3u8N5V9qhHpIcI6YXG1h+U4MdOWgw3Y5y1RItPc7/iM3pMwgLW5LkZXNaBVzgqTUkltEvEiUD6Caf9Aa8wdSoj/cUbERVxPTxDlYp30eBLgJPZhAu1IQbQ4ieXyDGhzVuXpDew6E0y/ZKD+Kr/M8iwlCgH/5IYyLChuUekC3UJMUrQyA49Gd3GTc07fxPZBVYYerstO7tT+iq7heIaquPHlhbJ+Kw+R4km8+fkuAaEwhLACXn8kzrOBlM3TwxhKn/rnPirGzvDg5Yi0fwqldFdG+8SF7y+0ao08eTblBoDxuwoa26bV46m4G756ZWfE/TDl1d2sWH+AryEQFTN/22H31zDRXmUrAqV7EJtqrVO7wbHF4waoQrctx975pjojauPMVvn4wcK4GEweEmDdzD3niVEY5c5GcPxAyqf7R5XsfZJgw+DwSkjj268thI+nAHuF3r4dM53TWOcWsLdTs2BumuoG75AWyNmIw5/NvBEjhTzhiMZu+W3CQB62m+lv73nHH5muc/v7t8U/X+9Yb28hbvv1WAeeCQB19Cr5caLjnQUR8+oU0n/R5SItbPpD4N9wDGMVStiOzEUUqbOkyTcpx+6lONY0GcbWt7rtw/aDl/TQe8d5u92bjQFXczSdb
+ AM9OtKpF
+ VpzTR+uNY63xSYDUORp/mYi2e0wR0FjdptiuoT9pscc/81/6znKsr3vvb+mzGAylOWPrE0/yVi3MQ5OoRdL0nOYGAOZyILlANcuXZiXHF7tBq29FHIoVl3/Frps8U8l86+oLlWXH3iBdBMSkM0c8cf/fOYdCcPTO5CyI8Yk3mB0ZoOJe+TpDcBF44fZiVSWJQ1vw7JLaKoAla0hFicQW1ATwtUOfxSQWSeISjAkWgK+mcxxn70ve49tMjByNC2rql6M35ru6rVtUs9B51aCGP46Jfig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,81 +94,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-On Wed, Aug 12, 2026 at 08:08:21PM +0800, Song Hu wrote:
-> hugetlb-soft-offline toggles /proc/sys/vm/enable_soft_offline between 1 and
-> 0 (test_soft_offline_common(1) then (0)) and leaves it at 0 when it
-> finishes, silently disabling soft offlining for the whole system after the
-> run.  Read the original value before the test and restore it before
-> ksft_finished().
+On Wed, Aug 12, 2026 at 08:08:19PM +0800, Song Hu wrote:
+> uffd-wp-mremap calls ksft_set_plan() with no preceding ksft_print_header(),
+> so the "TAP version 13" line is never emitted and the output is not valid
+> KTAP.  The sibling uffd tests (uffd-stress, uffd-unit-tests) print the
+> header first; do the same.
 > 
 > Signed-off-by: Song Hu <husong@kylinos.cn>
+
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
 > ---
->  .../selftests/mm/hugetlb-soft-offline.c       | 24 +++++++++++++++++++
->  1 file changed, 24 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/mm/hugetlb-soft-offline.c b/tools/testing/selftests/mm/hugetlb-soft-offline.c
-> index bc202e4ed2bd..35dcf661b091 100644
-> --- a/tools/testing/selftests/mm/hugetlb-soft-offline.c
-> +++ b/tools/testing/selftests/mm/hugetlb-soft-offline.c
-> @@ -99,6 +99,23 @@ static int set_enable_soft_offline(int value)
->  	return 0;
->  }
->  
-> +static int get_enable_soft_offline(void)
-> +{
-> +	FILE *fp = fopen("/proc/sys/vm/enable_soft_offline", "r");
-> +	int value = -1;
-> +
-> +	if (!fp) {
-> +		ksft_perror(EPREFIX "failed to read enable_soft_offline");
-> +		return -1;
-> +	}
-> +	if (fscanf(fp, "%d", &value) != 1) {
-> +		ksft_perror(EPREFIX "failed to parse enable_soft_offline");
-> +		value = -1;
-> +	}
-> +	fclose(fp);
-> +	return value;
-> +}
-
-We have read_num() in vm_util and write_num() that can replace
-set_enable_soft_offline().
-
-> +
->  static int create_hugetlbfs_file(struct statfs *file_stat)
->  {
->  	int fd;
-> @@ -185,6 +202,8 @@ static void test_soft_offline_common(int enable_soft_offline)
->  
->  int main(int argc, char **argv)
->  {
-> +	int orig;
-
-Please spell out what orig is this.
-
-> +
->  	ksft_print_header();
->  
->  	if (!hugetlb_setup_default(8))
-> @@ -192,8 +211,13 @@ int main(int argc, char **argv)
->  
->  	ksft_set_plan(2);
->  
-> +	orig = get_enable_soft_offline();
-> +
->  	test_soft_offline_common(1);
->  	test_soft_offline_common(0);
->  
-> +	if (orig >= 0)
-> +		set_enable_soft_offline(orig);
-> +
->  	ksft_finished();
->  }
-> -- 
-> 2.43.0
-> 
+>  tools/testing/selftests/mm/uffd-wp-mremap.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
 -- 
 Sincerely yours,
