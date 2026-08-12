@@ -4,89 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1029FC5DF61
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 11:33:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40EE2C5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 11:34:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA8566B0169; Wed, 12 Aug 2026 07:33:31 -0400 (EDT)
+	id D0CFF6B016B; Wed, 12 Aug 2026 07:34:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7F2F6B016B; Wed, 12 Aug 2026 07:33:31 -0400 (EDT)
+	id CE3F16B016D; Wed, 12 Aug 2026 07:34:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C702F6B016C; Wed, 12 Aug 2026 07:33:31 -0400 (EDT)
+	id BFA646B016E; Wed, 12 Aug 2026 07:34:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EA216B0169
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:33:31 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AE781A024A
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:33:24 +0000 (UTC)
-X-FDA: 85092406728.01.CBC92E1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E1FAC40003
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:33:22 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WAfmOkkk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 97A316B016B
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:34:10 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3E4921A0359
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:34:10 +0000 (UTC)
+X-FDA: 85092408660.12.32A4FDE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 85024100008
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:34:08 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HWH8+Zud;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786534403;
+	s=arc-20220608; t=1786534448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KYWG47sp8qKZimjrJ8C8fF2yBpjkop0LZO2aPuIaAlo=;
-	b=Z4SjE1GZyTZV41ZswLJRiks7BcZOsE5TX9rdgrKaCKMT9sI7/ICaZeUrkRE4Bp96UAlBXT
-	Em2kU+C/Wg0xCH57CxfrDHbxmftEFsyShjE7WnhB17rUFbswA0OTPCR6tIRSqrBLXXThs6
-	jKlONKR4ABHuLO4tTkGe39ZVjv71bys=
+	bh=E7z+H0RyDJEX93yExKfT9hg5WojlT1zdJq1l8ERyIWc=;
+	b=lOXyaFRex8cfAnPI8bqAKXZ95Q1mKseN1foUHdweI5z89X4yyJePpuuFduW9aeiqNRomSz
+	6nNQNgg6xRG7o70RpnLRBmxc0lFd3oP55vk6ni/dmschPZ4hFRHEHs3YycluKkfPOUpvs0
+	ep8LMcxfhYAuXt8uhRY89kilrD0Bo14=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WAfmOkkk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HWH8+Zud;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786534403;
-	b=df7Nt9DEwEiGLcrVhQD/j4jFDWG2YmN8HPA55jnSleX1cJX1KkhtQlx+af2+xLNRplzIB/
-	syiMXJgWisoaj+pKgsN9peU4YAy1feVwZTkqgFCn3ARB5OXPE5ZHUJtvb/vxgKkhdCH8V5
-	NHoihwjRz00npyraKWDrWwoBx4nB4s8=
+	t=1786534448;
+	b=NkjCtLeeOh7FtwwyWTJkVB4vHxbTYZG7/voufiBjyJp03yDH5nq7uVlSx9yBho5zj4qwXc
+	7w9ITEV9O2CPORH8J3wslRGP+yyxGNET3kG6Bs6eSqZiFYHBsL2CjlKur2zsMTEucRo/wu
+	H+IWAHi2Ayd7AujeWbADgi94Io0kLaY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 227154168A;
-	Wed, 12 Aug 2026 11:33:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A4B1F000E9;
-	Wed, 12 Aug 2026 11:33:15 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 034AA60A9E;
+	Wed, 12 Aug 2026 11:34:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E701F000E9;
+	Wed, 12 Aug 2026 11:34:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786534402;
-	bh=KYWG47sp8qKZimjrJ8C8fF2yBpjkop0LZO2aPuIaAlo=;
+	s=k20260515; t=1786534447;
+	bh=E7z+H0RyDJEX93yExKfT9hg5WojlT1zdJq1l8ERyIWc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WAfmOkkk8L6CsdaEyBcNrtXtVZNzObzW4S7aHcGWWKcuSHhZgMshz38NRWFsMIuro
-	 iQNzIOLVcCtVng/Y3s/5/8QQm7aRpslgEDM4EaOx+RrrhQu2QK6SJf1mYWLf0u+bIk
-	 mHgiI8kvImWzfFTKqNN3Q3uzw8gwmf2aEibx251l3EhnWebAqUXVi2yCauOG2EpYpk
-	 qT55BhQsRkzxVJJnOePDFfawyaPzcJ7biVmiXgaHLbICFQsgUR8tlkUIpE02A31EaL
-	 b2GxECR3H98e20PTqvhqig2eBGcYR+8QrQPpKISBdK8go4PyjRDC3+9XMOlZC8fnyy
-	 vp3RCZx1qSNlA==
-Message-ID: <1fb9ed88-67d0-4ac1-878d-0dc8e1135d19@kernel.org>
-Date: Wed, 12 Aug 2026 13:33:14 +0200
+	b=HWH8+Zudg5OBaZJSD7RU+A/ZnFocS165pqFBdzvxs/IHcVuvK/Pulap6KA0ZpVnX3
+	 eCFCToUaDAL/2KP4gGYEbA2FT1fRpf4iujeu7le0Bb9ysGGtDA51jIC37ULaIVZUFf
+	 hLPMgmLZm/n0zSQMq+gmVQaHrfk7jJ6tDJX107ib67Ij8JA1IpgFOQi4Pd1OqEFGfx
+	 oeq9+vV92clcA/35KTQwydUxltJ4j24vVcauOAAvni3BcTCLCcdBm4K3yRsuTfOkeQ
+	 CcUmB2qRx5eIqsXN0TJbOTL86PW0Ni2LLIz2uAsvC7tULX98rPyo4ullL8hCNrxOHq
+	 fRfyseknZbWDg==
+Message-ID: <2ad991b7-41f6-4138-9cfe-a7da15097954@kernel.org>
+Date: Wed, 12 Aug 2026 13:34:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V2 6/6] mm: Drop pxd_ERROR()
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
- <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>, linux-alpha@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
- loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-um@lists.infradead.org, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260811042119.3652929-1-anshuman.khandual@arm.com>
- <20260811042119.3652929-7-anshuman.khandual@arm.com>
+Subject: Re: [PATCH] MAINTAINERS: add drivers/char/mem.c to mm misc, memory
+ mapping sections
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260812-add-drivers-mem-to-mm-maintainers-v1-1-6218b861f4c8@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260811042119.3652929-7-anshuman.khandual@arm.com>
+In-Reply-To: <20260812-add-drivers-mem-to-mm-maintainers-v1-1-6218b861f4c8@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E1FAC40003
-X-Stat-Signature: r7bq9gqda4eh1hy7cwz5g4ctgz4i7npp
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 85024100008
+X-Stat-Signature: 7z4mhkhnbs7i34boh16qjhx1aojjecjr
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786534402-529227
-X-HE-Meta: U2FsdGVkX1/1atZrRfazTx7GX8o+AwmRapnVx1hy1+jDJz2gv60HoCTc5kNh8y8YMZNUF+HlEx/xUNozKmvXrkCdk8p7yibrx7wO86UMOFT72oJP7A9fLm0b0AE/f+QldAMmie1k8a40K+6uW7svCjtZPegfm9LvECdJ3p9KSiN4tZG5I5cHR/P7pHJFY8xc29NZZQZ4eRIbb4NDzc/HulLXfFZH6aAWJxc+Yk3pPfl1RxC3EcQlpv+ox31wn7GmyB+gdaJH0eqaOM0YoLj9rL8yVkgqHPkCZpZLBQjYAMsgRoWak6CM8pgPnM0EPAa9kSgRLuRPWl0Viuq0lCdMwNB3wZcwwgcqmYvVeUkZDIFUsrL1A1Lj6xU8WRGbSSrLvIWSggSPsANk42IkffBiDBALPoIAfzfAHf9j3ISyD8WngWLQygDN4gXdoeeJeZ5/Jm7vZ1FBvb/K3DeS+MflQmw+ZA0uPUj4xcEAEKsUefW4qMYAAbS+DU4O1Q5q71f718WMdGNOS3ceOK1DqU9v+BSyhuqv77OmPq9CAeYOtGA8JokdL6UhdQOtI+Zkxty6Wd0Y+s955cdXO/O4yg2q/iv7/lg0mhbwp8fACShCAhr04lGbF4IpSotXO0/Z4LAUWVGCVmc9p6TRoSy79RfNDTQ2xErYH+5T6KNaKYmKQRSPsJ7/xMnNiUfviUTBntBFYoLNuXRy/N/zu0RgLttsM8LW9H+lozfvEPx4ayNj1sazA+UZ2XPlOR/YIOJMAqtehWvRlp4sy4zepNGy+XaxEgAXaUBvcSppxzrwDu8ii4lPCI9qOzIYE7vGtJe2yUdy6O3Ot5oRWB8PELlbD/SO2tG1WvqBW9nBAcS8EExbwSFnvOc7lMYOsorVZGzSTsrweWSLahFqtz4kRCNMBWXkEtB9Cq9hMRVIVHqtJ6EUcUwW5zUkXTBgY0Ug9HuLQEghiijBWYjQbITycE/jx2w
- qIWi5Q+o
- ShY8r4ZczwlowyXzOlEebzmAV5siwf2XrKkMW477pY4F41sFC3dahMW9Ksy4Gu8uxLbvu0T1p7svd0dFJX1x08YYrgbXaj97opRR+Uz83kXTl2rVl1zqthSUOvOZOk0H5I03HmudDovkmYVkqgRHIfbgbjQc85LsGcs2iRyE/Xa7wxH5ArGwg9Wr22AvwHogoddMYEHH9MLMNcKiNGIQaqPuZUl5WHfXXHloOs6S+oR7UndPwq2h/eNM42AMW9zxECHBRzoWqros/rIbRVbINY+Dpn1yNZp1cgrtm83R1JSWcegaiJgvY6eTngETa6vIw/+3JWteFeg/iWaOsQ0stpVTPwfKefg/8E1PEWw0F8bVW2M40lfyU6Ammn1D0pxXiHUZv
+X-HE-Tag: 1786534448-47308
+X-HE-Meta: U2FsdGVkX1+mFB95Jt7yOjd0OdaR8ERHRgOiKAC7apJo0UfSadPQUJKMJ8nFHanIfEVLktJ/ylBXO3tzDoN0yXVkLFl6Bh3IR8XIz1P1BgVwm7qpOhmDGGaChwWnTELJ0hD90q8dLRci7TEondGbX905kJkFHcziyl7wEmmNh50kWhmyNGPr4RuNKrkjcvJIA7q9lgvINBsLJD0JNgga63GwM1CGbE63CwLS4x6XvWCSd2HCNOTsAUQSGTPnW+3HuP1rzAO9P7DR19AfouLZ2brVOn6FOCiDGG1vhB2IPsA2LJU3mnFHp5musUMIJx9/vRLZ5A/fyPS93ov3z9/32nhWfb5SxIwBpYYbh9O14cSgEAUpOzgzqxGla7ByxCY3jSRrUziThCXcJifPJ7Xjxq+yfP2Fkla6xuhBmErxpaesE4+E1D5JA0lmTBiZeThxoVOXd/uNtMGfVmzdrGW1e9Gke6yfqcJxUQqGbeYDfsxrP0i002C/vM+mufrC+9BjUEfeusBW6sztx/je99A8Nh6BarOgh+cwU+ns0Rr9v86fyEIkVP3kxJGbsE38KprNAMB6k6MxA5XEyOgzt/cJD1APbvCZQbJgILg6etQxb2Zk704m2Thb5+uwgQ0dg6Zr3F1Vkd/PXO6u0+Fqti5pja/4F7+83GaszLaGcEEhfyuyQC+A6cTlWz30ev7HAK+xDUCxQQWyC4iPOseU4cP2jGJ8aNgdopBcdv0RJNwkKCcTHGMPgp82Zoww2lkR8ria0EbYholxMXvM9OU3JOE2pSAzaPpmOzrVq4b8C8WvF1E64ZZZMsxwcNfO+d7vO2D6pmWwZdwzeugCeJr/ZRNeyHZ6d945CFLdykN+MYNwpyShiw8dvAWZ5NfPUgI7PlWuflv4ZKZGjWY97FfiiKX5N1C1EEQ7BtVPLsMzXcCJLQQvWFr1MfD4WnTRlXsk791V0poOULkMk00KBdxq5OV
+ khVL7sus
+ VKKbdkjYpVghUXQP2I9rlHmq/oMCn+vkABwhCcs4A0d7H9mb+Yu0iYg16T/HK/6rObEYdJi9IU9KsxBw6f7zDn5+GH24/pWjI+ORR52hgQ/Y/BpQrtB1k1Y5tIbeKJOcVFttUeICidIG79oJSId3xp+3diBXMHj8/xur7HuKCKAeqkTBQyQKA5LD72llvkG9p7aDxtwFLSZNSyEK/v0zIG0oTEpz515UxuingXSUgt0k/RrbAeKVDAZvhetv9hxCwj7FuwPCu3R97zWzgIFjJAXfEzQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,57 +143,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/11/26 06:21, Anshuman Khandual wrote:
-> pxd_ERROR() has been used in generic mm just to print the page table entry
-> in pxd_clear_bad() before clearing those out with pxd_clear() later. These
-> pxd_ERROR() macros have been provided by all platforms which basically did
-> the same thing.
+On 8/12/26 09:43, Lorenzo Stoakes (ARM) wrote:
+> This file is a 'special' driver that implements /dev/zero and /dev/mem
+> among other things.
 > 
-> Make pxd_clear_bad() use recently added ptval_to_str() instead for printing
-> page table entries thus completely dropping dependency on platform provided
-> pxd_ERROR() macros which can then be dropped off. First move all required
-> helpers in core MM into a header file which could then be used else where.
+> As such it makes sense for mm to be cc'd on mails and to have some say in
+> how things are changed there, so add it to the mm misc section.
 > 
+> Uniquely, it provides the 'old way' of obtaining an anonymous mapping -
+> MAP_PRIVATE of /dev/zero - so is directly tied to memory mapping, therefore
+> also add it to the memory mapping section.
+> 
+> scripts/get_maintainer.pl copes perfectly fine with files in multiple
+> sections so everything should work correctly.
+> 
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
 
-It might make sense to split this patch further up to ease review:
-
-Patch 1) provide ptval_to_str() a header.
-
-Patch 2) Stop using pxd_ERROR() and friends in common code, converting to
-pteval_to_str()
-
-Patch 3) Remove now unused pxd_ERROR() and friends from arch code.
-
-...
-> +static inline void
-> +ptval_bytes_to_hex_str(char *buf, size_t buf_size, const void *entry, size_t entry_size)
-> +{
-> +	if (WARN_ON_ONCE(buf_size < entry_size * 2 + 1)) {
-> +		snprintf(buf, buf_size, "overflow");
-> +		return;
-> +	}
-> +
-> +	switch (entry_size) {
-> +	case sizeof(u32):
-> +		snprintf(buf, buf_size, "%08x", *(const u32 *)entry);
-> +		break;
-> +	case sizeof(u64):
-> +		snprintf(buf, buf_size, "%016llx", *(const u64 *)entry);
-> +		break;
-> +#if defined(__SIZEOF_INT128__)
-> +	case sizeof(u128):
-> +		snprintf(buf, buf_size, "%016llx%016llx",
-> +			 (unsigned long long)(*(const u128 *)entry >> 64),
-> +			 (unsigned long long)*(const u128 *)entry);
-> +		break;
-> +#endif
-> +	default:
-> +		snprintf(buf, buf_size, "unsupported");
-> +		break;
-> +	}
-> +}
-
-Why not leave ptval_bytes_to_hex_str() in the C file for less churn for now?
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
