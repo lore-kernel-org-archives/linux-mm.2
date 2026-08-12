@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3B32C5CFCF
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 14:34:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88FA1C5B572
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 14:38:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FDED6B02A4; Wed, 12 Aug 2026 10:34:19 -0400 (EDT)
+	id A35A36B0166; Wed, 12 Aug 2026 10:38:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AEF06B02A5; Wed, 12 Aug 2026 10:34:19 -0400 (EDT)
+	id 9E6D36B0168; Wed, 12 Aug 2026 10:38:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39D5E6B02A6; Wed, 12 Aug 2026 10:34:19 -0400 (EDT)
+	id 8FC616B016A; Wed, 12 Aug 2026 10:38:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 126CD6B02A4
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:34:19 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8ED7CC03BB
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 14:34:18 +0000 (UTC)
-X-FDA: 85092862596.01.B8B671D
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 68B406B0166
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:38:36 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0E7901203AC
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 14:38:36 +0000 (UTC)
+X-FDA: 85092873432.20.BCC21DB
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 217D118000F
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 14:34:15 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=RzixdGVd;
-	spf=none (imf24.hostedemail.com: domain of BATV+5bb66369c51ae59fd3c1+8389+infradead.org+dwmw2@casper.srs.infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=BATV+5bb66369c51ae59fd3c1+8389+infradead.org+dwmw2@casper.srs.infradead.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id DDD19A0003
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 14:38:33 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=DgBoIh+z;
+	spf=none (imf15.hostedemail.com: domain of BATV+5bb66369c51ae59fd3c1+8389+infradead.org+dwmw2@casper.srs.infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=BATV+5bb66369c51ae59fd3c1+8389+infradead.org+dwmw2@casper.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786545514;
+	b=SnRuVcavXo7fA1H4qXC41GfRYvTbls7PUpiNQWaAqTpdpHXGb/0G1TSqwKKFn318dD0rmo
+	fVv6v2FqS2RWpkowxLoqSemx0a/tQOhME/O8J1EdfjJFovN8hXYOkItNoNUl86GqwZIWDH
+	h7sbaxYqU+o1hauMKgEv5E5WUDShgto=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=DgBoIh+z;
+	spf=none (imf15.hostedemail.com: domain of BATV+5bb66369c51ae59fd3c1+8389+infradead.org+dwmw2@casper.srs.infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=BATV+5bb66369c51ae59fd3c1+8389+infradead.org+dwmw2@casper.srs.infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786545256;
+	s=arc-20220608; t=1786545514;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZARXVhRHBjq1rWGwZ83P4vciQ/Vfnkb00xf1CbIBzmE=;
-	b=DitjtCEtlunin0jIYSYFzp2ZqqkyOfXtMqyyu1UqG1nBNOzIzo9N8prklvh3277Lx+e8Al
-	0td646qy4YUjWAmkZKQIO/cfQU7WxTPoTow+Bhxa1lFbnWfSw50jiT6xcBTqfJdmEDf6ti
-	1b07ajysaUXSXS974nf1lHgPdhgTjy4=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=RzixdGVd;
-	spf=none (imf24.hostedemail.com: domain of BATV+5bb66369c51ae59fd3c1+8389+infradead.org+dwmw2@casper.srs.infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=BATV+5bb66369c51ae59fd3c1+8389+infradead.org+dwmw2@casper.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786545256;
-	b=ZQeGe1ArE4alxcSiqygFa/PnRybO/TciEna2xmbr0hbWjlWkHveRvEn7Ymk8hGsZrT8Z9O
-	tzaB5ewju1oXZOiiB8fx4j4HmWKedp6LSHM3HbiF3JgMRBkFhv7M1pe/rG6WezrQFK/bmF
-	yW9RRJCrVbFK6Y5pxG6vsc0PWAvqNMo=
+	bh=93QnXaMOBw9iqWgnQ+zhbLuL6rbaVZDDgr9kabywcF4=;
+	b=5xF64oq09T1EuPm/iPKKsH/xqdKOtD8x0VvWnhxi7N81oA3N+9IkJPD+7sM5cvzWNprkgP
+	n6U8Qn+3D+L0ZWS0ipZc1LYabJh20WOj6QtdOkwHinSC4VBWyfisrvmfTTmWRsj7xQGMnM
+	iPJwCmqec1FyQ002WfG0t5D8dNrQJmI=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
 	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=ZARXVhRHBjq1rWGwZ83P4vciQ/Vfnkb00xf1CbIBzmE=; b=RzixdGVd+FqiWZIYbfgio6xCg/
-	v9ZC9sxzk1/2VHghvYuePXyObJz58svciUzc2y4Y3NUXoXSELcXZibbgJwKGsTXsQNXciHxI5P9yH
-	IJd6WGdwJKTGoHfJfIumKMDETPZkoEhwYwNABnQiGraTK+fC900YwKJU6RcqPxelmKKKsGT8pXmC8
-	iFhzK3e2dwJ7pHcsWLL0uEdW7u1NH+xmpgdyiTs9nxULCeWsi0nuENTS5I7l0rg+OKggN9GCm5qlV
-	8eMSJ32hmrZdcjL9W6Usi8axieazc8CxWfIAkr//VA83XQ2B74mqYPejAGGGejEp76VT3JCSYLxv1
-	32kiNdMQ==;
+	bh=93QnXaMOBw9iqWgnQ+zhbLuL6rbaVZDDgr9kabywcF4=; b=DgBoIh+zjlatPFlBzBv8K2LrO+
+	MLnj89HLTZL6996fUD41CiRrS5W79jb29v8y4LY6k4e0AFcPTJ/nI5c1vCUL1NeZ6pCma05tBkhdv
+	P4Ltm0SInGTNqg0H7O4RxCkq7PygiiROdt3QTgicGXMr5bRkJvQsQKjZoq5qKFMJNFZacurDhGgFB
+	6mCClxw6fYVOzVPE6kUyXDsHL3mBI9oQL78jeAUx8yVRTwvMyTnt94h03ogWfAeMXWdpKQ6VyXDyb
+	0HsutOpIOgBEFpHcigeUiPGnPzSG30lBAyrj3qhtJiEktsNpYActucIBTsbYS5hK2nbkFKpZpjwS1
+	rk8jiGiA==;
 Received: from [2001:8b0:10b:5:a3a3:d97e:a004:df29] (helo=u09cd745991455d.ant.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wuA1x-000000027At-2ldB;
-	Wed, 12 Aug 2026 14:34:09 +0000
-Message-ID: <fb87f673bf290cad133d113dbb0750a7752b9d30.camel@infradead.org>
+	id 1wuA68-000000027Uc-1I9r;
+	Wed, 12 Aug 2026 14:38:28 +0000
+Message-ID: <9e65be44430e7d013fedf9a1626caba020ad6d94.camel@infradead.org>
 Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
  notifier invocation
 From: David Woodhouse <dwmw2@infradead.org>
@@ -79,33 +79,32 @@ Cc: Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
  <paulmck@kernel.org>, Sean Christopherson <seanjc@google.com>, Paolo
  Bonzini	 <pbonzini@redhat.com>, linux-mm@kvack.org, kvm@vger.kernel.org, 
 	linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
-Date: Wed, 12 Aug 2026 15:34:03 +0100
-In-Reply-To: <a48e6e7063122b22a8083bb0792984a204f316e6.camel@infradead.org>
-References: <20260811135537.GC544626@ziepe.ca>
-		 <1d669aca4ffee797b9c29215382444a5b23624b3.camel@infradead.org>
-		 <20260811142730.GG544626@ziepe.ca>
-		 <a552b227e18ddbb3fa1f2edf2d1cb30ee6ccff13.camel@infradead.org>
-		 <20260811104229.72fdd928@gandalf.local.home>
-		 <37b83b429b9f14ea6ad4ca1c13cc8e565ec09033.camel@infradead.org>
-		 <anwraNIKJV8zwrNT@tiehlicka>
-		 <44c51ace9b0dc44b795f6f48c91cda440eed910b.camel@infradead.org>
-		 <20260812122759.GA662699@ziepe.ca>
-		 <c41c52f02f033ea980d4b5f9b8239d5e9411a03c.camel@infradead.org>
-		 <20260812134934.GC662699@ziepe.ca>
+Date: Wed, 12 Aug 2026 15:38:21 +0100
+In-Reply-To: <20260812142659.GD662699@ziepe.ca>
+References: <20260811142730.GG544626@ziepe.ca>
+	 <a552b227e18ddbb3fa1f2edf2d1cb30ee6ccff13.camel@infradead.org>
+	 <20260811104229.72fdd928@gandalf.local.home>
+	 <37b83b429b9f14ea6ad4ca1c13cc8e565ec09033.camel@infradead.org>
+	 <anwraNIKJV8zwrNT@tiehlicka>
+	 <44c51ace9b0dc44b795f6f48c91cda440eed910b.camel@infradead.org>
+	 <20260812122759.GA662699@ziepe.ca>
+	 <c41c52f02f033ea980d4b5f9b8239d5e9411a03c.camel@infradead.org>
+	 <20260812134934.GC662699@ziepe.ca>
 	 <a48e6e7063122b22a8083bb0792984a204f316e6.camel@infradead.org>
+	 <20260812142659.GD662699@ziepe.ca>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-wnUrnxZhZDs1Yt7NZqbO"
+	boundary="=-vF1ORSio6Vq2xkEwJ8nS"
 User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-X-Stat-Signature: 9bj6r86f9khj3dts8kxhnpd66s3qhw63
-X-Rspamd-Queue-Id: 217D118000F
+X-Rspamd-Queue-Id: DDD19A0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786545255-821464
-X-HE-Meta: U2FsdGVkX1+FT+KPT/oi/lSQth2bSw5yKrMcG4WiH0BuPwFZUG7RajhT/4gI4GYZLnLG9om0eLl162mJ/sQfEGv/XkXUW1onoR3QJmzEGlrSEBrEvaeK03Gf0zJQQZ5TA5qn0odwe/JAeQyQY7gCAFE48ronGTSFrzNYe0U09BEEYvUFYLyQGGZz7tVAtDEELNvAQ0FwHNMJHZFKuVANUnDJ9YqxIua9woHo8dHwYAoMCKfyZGDC0ig5q5kX8eA59+cky3r3Bg4lFHzFoT7zsX7A9YCNUI+XxsiQjpMV7OZQJlvMqkqwFTtN7jTfMa582DllNVwBO7uN+CYK13OKGKTK04CaycIG5D3p4nDlhqWLOeHrminIGpQR15Jpe8aqsn8UNzvvL6ANdgTprysgvY4Z4A8/rMlE8Yv3rDD5x7NJ+TCIUScuLYGwEU1BKcroPHVfEVAOzdI6aqaQtdPeVhMQOMBJ/IY6rBNDBXtgoRWJccwIApdG+YoVkUrg1DtG6O9mWQ9iTm7Mci06s1I2lToPEJEjEw+nA9jo1Gc8LqCfD2awwptYPYa1DaNmB7ruFhMsIYuFdWny6Fp7fiKGfHT4Hf17sJrHZGAIeGC+udvMLuLmC0KMMxwuaRlxsjbuhlZ56ALZK9YyjpgHU83C4otyObtt/ChcnuiuvmAUhJhAKhYzotX+GioXq3WM39ViCgErg1n61UmbPvgTwkxKW85ptYmFcjKgHdMYNwJQP/bGn2QcQ+27767Lk/Ghd763Y8EuL01NWxCm6zBOwAwKspYKvCwP8WM3pqgOvoyTxjZAINSIbBDbif/yVCq6k58DqR4KmZ1vmKa9sKyj9R8+9r5bahsLWfgSRYyo1MgVQBUlLslQPUJszn7iDcbonEllmGdWDYDbA1qJ+nWCHTPtu7mFd5nvg1oTdckwlSvTPfj50+B8ViiZI2og5QUj27T8qZv8SZq4I8io8JLJ4XW
- mVmU7l0N
- HieU4iGrq0J8PGll0n8J0ZyFLPI9VMVn1QZ5s+JMJAlOrUttDYFNpXyeHum4vby13YkUng+Y3ZiXt7EEdBjSPRjsyne/TM9T0F3TvdfRFQr6pD5dBUdFA1PYuyTBTgN1Luo6vlJRl+GMULynTf5HB/z4X/88F6vZbCcXHPgHbYCkhaqMlpgiS8/ABewfwof7jT8GUsUfApc430+S3rLi12e4q9j95lZyI3SnEreBDWE2GhXgGaW82TuuoLUQIH0O/kSgEX0V8yOHFWW2o8A/aawk8emt/RKRJLi2HGmXtLQiGllDr+5CAx5JTXxNKESpRu/eGvRrttJkqE88Iqx2YwKSduqYprQuhfL0RsCm2CtB/bQJXTlA3XINRnhHdS33TvE3dcCwKcMEEdB2hSKMxDpmdAkSlHaOg2kXBjsZj8AW11nfjZl0Cvg8DV8zlau2YhzmqJz1tD6450VvDSTzhrGx/9rGnlUnA2cYRNt0jlvho5e1jFmVLSclCR1ixrrznWCHUAhVSdJfY+9OxubH+lsd0pd03I/blcKbM+R63Q1DATnezOebxAnUCTg4Z8gt+0cI4p0SMNak5fAOpHbPwviKdOlyuLT1ZamaF2ovmfFyKOPHc4jqM4uGgBrV4tIXN4pFBopQwo39c9dwQc44HGEXsClCscXTqrkVVUejLlk2QvjVAvyfbmQQQ+E3coamKWKtSqLWRUieBeJvsyIcBXCSXHYApnNJ3ntPNjjGjDtmae6LuriWp57+5Gg3g4wmPXvtADmk9SAkuStX0ROfQfWOoXn8C+Usc+e1Qeum/et67GXIAz+RAlT9gbCppYDp28+jVMfUlojvvtl5ISNKXdAGIKw2FvXy+0VUsfqUKmOpNsXzEqnSBuffg7YnYdxxhNsiAoISFZHaHJJmHrYkTJCBjlPXWMcEEncBI9IR6oPMSQmFlaa7j0lPnQw==
+X-Stat-Signature: umq6sar7qtr773sba6hwucsy6btkyeik
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786545513-471245
+X-HE-Meta: U2FsdGVkX1+AzItpcJkhGkghQeUtVepK+RLqw8h5Qad6pvW4EZF+aQb/LQp7VV4+ENHKXipe+4SsKChfMqjF++e+8siXryX6LbtFs6G3id2roiA5q2d7M3o0pQDR0+crUO1l8nH8SJ+y8ImQXz1FnXhMmsWN5Gk/5OFWllHHI/tsq2rOo4+KdgK8efaY4I96R03THnawn4dDIIqFtpvbBaxka4Uf+WTVLWHSZZkZoiN+hHDpPDx4SwQNhzZZmK3VMKjHyoyfCfMx5T15ul9hjqyfrrPBQaKMf8xwk2IK2eGlmsMkTL4saprVia85vVKx+jMdW4qFHAaQa/1ZS3cCerTT9b6lIoFXMTszqR8U6FIaZ6pIQMnsofRsPfaIAsIuRhoOjYPSIa2NrtSQZZiuvw5vXm9F9Ku8mPBMsOqEl+NXY/453VO3QWvJogvf+TPN1Yclme10GcOwld9lN+nD3cTu9X1Fga62dI5rCnZ/qDEmZdSAdZQSc+pcdBxLc+2pZEMCcr21AT4F2rW06ZPl+rVhKEiZhFvADLThhycuDzmdl26dovWdybY8/tL4Kaa2c4A7KhV+Ii/P84N6IypyC5woIGLr93wloRysrolwlNGWd/FKrW607jFC3dtVXxTa94BuWcsED6qUdPd69wPLgTL4TLKUbFPtYCSPyWfhnewKX+ViZBHSvp/BSnWusVRFjSEvWDBRRq6rIePX09qSWNdHLdG8fK59OUiqn6HSBzlHqy2shng3BR3d5P28EUebD0PQvAdP9z2rTkKaC+PK0KXgGGrLzLCJEkvrjMjADegNhFNpZHTwKGbYVdRspBZ70xB78BV0y+Tki9prtGBNMxO+qou8Dg7n/XyK7DrNwz5ScygUK38MuUhIbnN2XMdl+Kc7YPwEA/PekdFSvsNUedgwWunwxrZUiZF65z23XD+DIi4JEAx7ogwBY4a7H/z1dQevC25RfeoHdji4EMP
+ tcyrXSuc
+ 6VT3s+vqqSbOsKuJZ/zRG1STaz7peF7yi7vGw852cMgT7qx7R5vfKDg4A/V4JFH76ZpZzaLqkYWlBk8tolAYsnjK812tKfeV66bb2YjcgTIeCdqod2KKlz6hDWoK120+/PhZD6YmuUmevmc0QM24sWNfR10yrxIUD2WUyoEx/TYLDI6O3HtuiS9QYaB6EXqxWHgmqWYdFxkib96l9sB9pkfORHxjvJehVKfnj3PnG7wLvuYfqJW7DCGqWA0thv9WdathBlFvyEuGeAEuA6F2GGRSkaru4ARtV/FvB31dmCoq5y3FpuJwRCj80zp7Sx0VYm5DfgeJQeDReWUJm8cSp2HrrWe6LIfWiJu1Rkgp45smzSmv1l0FHT0bpbwbFMV+FiBKyNHHAO2NgFkoRP+ZD7wMXDfXOwRsz3M3FAWeiCgtpTM+/o7SbyTh4RILNr1juCngBDNsFJyI8n/7wC7/phkTgR+zOYGW8YMh/SI0xMCtDmOf6c59FwVRLKLnCJirzA1J+T2ieCEMm09ujt74wZVCLH70TEiJY8AVcdUN0ul67CdPtcOG1qDrhqS7d11Zo6HcYpFxXo1/Jc7xGwe6Y2NDYjXrW2KT8AZ6qx3jG1+7vB0t6CS+u+KhfiuKLRCV4wULLmjS0K1I61yZYEGhIFF+sM+6BoGLddplSLc/kG2Imp1QwMQ7z1984zmLY4GV9sYmeuhwMJ6lB62OTlDQd8sCIZDmLlX8jyRNYAf5QddQRsFGAgE1/ywrjCY+mrXpu7pNfX1+DClJBCiykocF5WaoKX7MFdAyn4kVddR/QGT2db+l4pcBWI539LWZvsU5nedtZbGLNxENWBOmEnrWkcDoY4GxfqydQHS+oYSH2gq51Goc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,323 +113,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
---=-wnUrnxZhZDs1Yt7NZqbO
+--=-vF1ORSio6Vq2xkEwJ8nS
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2026-08-12 at 15:05 +0100, David Woodhouse wrote:
-> I'll rephrase that for my own understanding:
+On Wed, 2026-08-12 at 11:26 -0300, Jason Gunthorpe wrote:
+> On Wed, Aug 12, 2026 at 03:05:43PM +0100, David Woodhouse wrote:
+> > the non_block_{start,end} guards around the MMU notifiers, which are
+> > basically never being called anyway and don't actually seem to protect
+> > against any real bugs.
 >=20
-> *If* we go all the way to building a whole SRCU flavour for this *and*
-> implementing a spin-only variant of srcu_synchronize() which is
-> tailored to the atomic-reader use case, *then* we don't need to remove
-> the non_block_{start,end} guards around the MMU notifiers, which are
-> basically never being called anyway and don't actually seem to protect
-> against any real bugs.
+> If you think this blocked stuff is dead code then lets remove it, but
+> I'm pretty sure it is called and I remember seeing bug reports about
+> it being triggered in the wild. Vetter certainly added it because
+> their tests were actually triggering and they had bugs in their DRM
+> stack directly connected to this.
 >=20
-> Yes?
+> It might not trigger for your hypervisor case but we aren't here just
+> to make only kvm work now are we?
 
-FWIW it looks something like this. I'll throw it into my torture and
-latency tests, and we can see what Paul thinks of it. I'm still utterly
-unconvinced it's needed, but I concede it has its good points.
+I'm sure there can be real-world use cases where it can trigger, but
+when I was *trying* to exercise the code path, to validate my belief
+(from source inspection) that even the plain spinlock would trigger the
+splat, I ended up having to hack the kernel to do so:
 
-=46rom f912e839bf55759a1969e38d9e7897a30967fdb1 Mon Sep 17 00:00:00 2001
-From: David Woodhouse <dwmw@amazon.co.uk>
-Date: Wed, 12 Aug 2026 15:29:12 +0100
-Subject: [PATCH 1/2] srcu: Add an ATOMIC reader flavor and a spinning
- synchronize_srcu_atomic()
-MIME-Version: 1.0
-Content-Type: text/plain; charset=3DUTF-8
-Content-Transfer-Encoding: 8bit
+https://lore.kernel.org/all/787aa26cf62dfd361eea8ed19f384fc517892501.camel@=
+infradead.org/
 
-Some dedicated srcu_struct users have read-side critical sections
-which are short, never sleep, and never block on anything which may
-itself depend on memory allocation =E2=80=94 because they were, until
-recently, spinlock or rwlock critical sections. For such a domain the
-update side can safely wait for readers by spinning, from contexts
-where sleeping is undesirable or the grace-period machinery's
-latency (workqueue scheduling, jiffy-paced retries) dominates the
-actual reader drain time.
+Perhaps in the past it was easier to trigger 'naturally'?
 
-But that is only safe if every reader keeps the promise. Make the
-promise explicit and machine-checkable:
-
- - srcu_read_lock_atomic() / srcu_read_unlock_atomic() enter the
-   usual (smp_mb-based) read-side critical section with preemption
-   disabled and (except in hardirq, where it is redundant)
-   non_block_start() armed, recording SRCU_READ_FLAVOR_ATOMIC in the
-   per-CPU reader flavor. Disabling preemption enforces the
-   no-sleeping promise on every configuration and bounds the section,
-   so it is always running on some CPU; non_block_start() extends the
-   enforcement to even potentially-sleeping calls on paths which
-   happen not to block. The existing reader-flavor consistency checks
-   complain about any mixing with other flavors.
-
- - synchronize_srcu_atomic() waits for all pre-existing readers by
-   repeating the try_synchronize_srcu() both-epoch counter proof with
-   cpu_relax() until it succeeds: no sleeping, no index flip, no
-   grace-period sequence update, and therefore no interaction with
-   concurrent call_srcu(), synchronize_srcu() or srcu_barrier(). It
-   always provides the full grace-period guarantee: if the domain
-   turns out to have had readers of any other flavor =E2=80=94 a caller bug=
-,
-   since such a reader may be asleep and spinning on it would be
-   unbounded =E2=80=94 it complains and falls back to a real (sleeping) gra=
-ce
-   period internally, that being the only correct wait for a
-   possibly-sleeping reader. The flavor mask is rechecked on every
-   iteration so a first non-atomic reader appearing mid-spin takes
-   the same path.
-
-On Tiny SRCU (!SMP), spinning cannot be sane =E2=80=94 an observed mid-sect=
-ion
-reader can only make progress if we yield =E2=80=94 but it is also never
-needed: an atomic-flavor reader cannot be observed mid-section from
-process context on the sole CPU, so the try_synchronize_srcu() proof
-either succeeds immediately or the fallback is required anyway.
-
-The immediate motivation is the proposed conversion of KVM's
-gfn_to_pfn_cache to SRCU=C2=B9, whose mmu_notifier invalidation path drains
-readers before the primary MMU zaps a page. With the readers declared
-atomic, that drain becomes spin-only: no sleeping at all in the
-notifier, bounded by the longest reader section, satisfying even the
-strictest reading of the OOM-reaper non-blocking requirement without
-needing to touch the non_block_start() annotation=C2=B2.
-
-=C2=B9 https://lore.kernel.org/all/20260811132237.102400-1-dwmw2@infradead.=
-org/
-=C2=B2 https://lore.kernel.org/all/20260812134934.GC662699@ziepe.ca/
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Assisted-by: Claude:claude-mythos-5
----
- include/linux/srcu.h  | 59 ++++++++++++++++++++++++++++++++++++++-
- kernel/rcu/srcutiny.c | 21 ++++++++++++++
- kernel/rcu/srcutree.c | 65 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 144 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/srcu.h b/include/linux/srcu.h
-index 0d7543c7becc..c81dfd0896ad 100644
---- a/include/linux/srcu.h
-+++ b/include/linux/srcu.h
-@@ -71,8 +71,10 @@ int init_srcu_struct_fast_updown(struct srcu_struct *ssp=
-);
- //					0x4		// SRCU-lite is no longer with us.
- #define SRCU_READ_FLAVOR_FAST		0x4		// srcu_read_lock_fast(), also NMI-saf=
-e.
- #define SRCU_READ_FLAVOR_FAST_UPDOWN	0x8		// srcu_read_lock_fast_updown().
-+#define SRCU_READ_FLAVOR_ATOMIC		0x10		// srcu_read_lock_atomic().
- #define SRCU_READ_FLAVOR_ALL		(SRCU_READ_FLAVOR_NORMAL | SRCU_READ_FLAVOR_=
-NMI | \
--					 SRCU_READ_FLAVOR_FAST | SRCU_READ_FLAVOR_FAST_UPDOWN)
-+					 SRCU_READ_FLAVOR_FAST | SRCU_READ_FLAVOR_FAST_UPDOWN | \
-+					 SRCU_READ_FLAVOR_ATOMIC)
- 						// All of the above.
- #define SRCU_READ_FLAVOR_SLOWGP		(SRCU_READ_FLAVOR_FAST | SRCU_READ_FLAVOR=
-_FAST_UPDOWN)
- 						// Flavors requiring synchronize_rcu()
-@@ -92,6 +94,7 @@ void call_srcu(struct srcu_struct *ssp, struct rcu_head *=
-head,
- void cleanup_srcu_struct(struct srcu_struct *ssp);
- void synchronize_srcu(struct srcu_struct *ssp);
- bool try_synchronize_srcu(struct srcu_struct *ssp);
-+void synchronize_srcu_atomic(struct srcu_struct *ssp);
-=20
- #define SRCU_GET_STATE_COMPLETED 0x1
-=20
-@@ -296,6 +299,43 @@ static inline int srcu_read_lock(struct srcu_struct *s=
-sp)
- 	return retval;
- }
-=20
-+/**
-+ * srcu_read_lock_atomic - register a new reader promising an atomic secti=
-on
-+ * @ssp: srcu_struct in which to register the new reader.
-+ *
-+ * As srcu_read_lock(), but the caller promises that the read-side
-+ * critical section never sleeps and never blocks on anything which
-+ * may itself depend on memory allocation to make progress. Preemption
-+ * is disabled for the duration, which both enforces that promise (any
-+ * sleepable call in the section will splat on every configuration)
-+ * and bounds the section so that the update side may spin rather
-+ * than sleep when waiting for readers: see synchronize_srcu_atomic().
-+ *
-+ * The lock and matching srcu_read_unlock_atomic() must be invoked on
-+ * the same CPU, from the same context; passing the return value to
-+ * another task is not permitted for this flavor.
-+ */
-+static inline int srcu_read_lock_atomic(struct srcu_struct *ssp)
-+	__acquires_shared(ssp)
-+{
-+	int retval;
-+
-+	preempt_disable();
-+	/*
-+	 * Arm might_sleep() to catch even a *potentially* sleeping call
-+	 * in the section, not just an actual schedule: the atomic-domain
-+	 * promise must hold on every path, contended or not. In hardirq
-+	 * the annotation would land on the interrupted task; it is also
-+	 * redundant there, so skip it.
-+	 */
-+	if (!in_hardirq())
-+		non_block_start();
-+	srcu_check_read_flavor(ssp, SRCU_READ_FLAVOR_ATOMIC);
-+	retval =3D __srcu_read_lock(ssp);
-+	srcu_lock_acquire(&ssp->dep_map);
-+	return retval;
-+}
-+
- /**
-  * srcu_read_lock_fast - register a new reader for an SRCU-protected struc=
-ture.
-  * @ssp: srcu_struct in which to register the new reader.
-@@ -488,6 +528,23 @@ static inline void srcu_read_unlock(struct srcu_struct=
- *ssp, int idx)
- 	__srcu_read_unlock(ssp, idx);
- }
-=20
-+/**
-+ * srcu_read_unlock_atomic - unregister an atomic-section reader
-+ * @ssp: srcu_struct from which to unregister the old reader.
-+ * @idx: return value from corresponding srcu_read_lock_atomic().
-+ */
-+static inline void srcu_read_unlock_atomic(struct srcu_struct *ssp, int id=
-x)
-+	__releases_shared(ssp)
-+{
-+	WARN_ON_ONCE(idx & ~0x1);
-+	srcu_check_read_flavor(ssp, SRCU_READ_FLAVOR_ATOMIC);
-+	srcu_lock_release(&ssp->dep_map);
-+	__srcu_read_unlock(ssp, idx);
-+	if (!in_hardirq())
-+		non_block_end();
-+	preempt_enable();
-+}
-+
- /**
-  * srcu_read_unlock_fast - unregister a old reader from an SRCU-protected =
-structure.
-  * @ssp: srcu_struct in which to unregister the old reader.
-diff --git a/kernel/rcu/srcutiny.c b/kernel/rcu/srcutiny.c
-index f07159cae241..c04112d9c332 100644
---- a/kernel/rcu/srcutiny.c
-+++ b/kernel/rcu/srcutiny.c
-@@ -283,6 +283,27 @@ bool try_synchronize_srcu(struct srcu_struct *ssp)
- }
- EXPORT_SYMBOL_GPL(try_synchronize_srcu);
-=20
-+/**
-+ * synchronize_srcu_atomic - spinning grace period for atomic-reader domai=
-ns
-+ * @ssp: srcu_struct with which to synchronize.
-+ *
-+ * On !SMP this cannot spin: a reader observed mid-section is preempted
-+ * or interrupted-out, and can only finish if we yield the CPU. But it
-+ * is also never needed: an atomic-flavor reader (preemption disabled)
-+ * cannot be observed mid-section from process context on the sole CPU.
-+ * So a reader observed here has broken the atomic-domain promise, and
-+ * the only correct wait for it is a real grace period.
-+ */
-+void synchronize_srcu_atomic(struct srcu_struct *ssp)
-+{
-+	if (try_synchronize_srcu(ssp))
-+		return;
-+	WARN_ONCE(1, "non-atomic readers on srcu_struct at %ps; falling back to s=
-leeping grace period\n",
-+		  ssp);
-+	synchronize_srcu(ssp);
-+}
-+EXPORT_SYMBOL_GPL(synchronize_srcu_atomic);
-+
- /*
-  * get_state_synchronize_srcu - Provide an end-of-grace-period cookie
-  */
-diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
-index 76a78336feaa..5fa10c07cb3f 100644
---- a/kernel/rcu/srcutree.c
-+++ b/kernel/rcu/srcutree.c
-@@ -1715,6 +1715,71 @@ bool try_synchronize_srcu(struct srcu_struct *ssp)
- }
- EXPORT_SYMBOL_GPL(try_synchronize_srcu);
-=20
-+/**
-+ * synchronize_srcu_atomic - spinning grace period for atomic-reader domai=
-ns
-+ * @ssp: srcu_struct with which to synchronize.
-+ *
-+ * Wait for all pre-existing readers of @ssp to complete, without
-+ * sleeping and without involving the SRCU grace-period machinery =E2=80=
-=94
-+ * provided the domain keeps the promise that all of its readers use
-+ * srcu_read_lock_atomic().
-+ *
-+ * Atomic-flavor readers run with preemption disabled, so every
-+ * read-side critical section is bounded and running (not blocked) on
-+ * some CPU, which is what makes spinning here sane: the wait is
-+ * bounded by the longest such section. The proof of reader absence is
-+ * the same both-epoch counter comparison as try_synchronize_srcu(),
-+ * repeated until it succeeds; no index flip and no grace-period
-+ * sequence update occur, so concurrent call_srcu(), synchronize_srcu()
-+ * and srcu_barrier() are entirely unaffected.
-+ *
-+ * If the domain has ever had readers of any other flavor, the promise
-+ * is broken =E2=80=94 such a reader may be asleep, and spinning on it wou=
-ld be
-+ * unbounded. That is a caller bug: complain, and fall back to a real
-+ * (sleeping) grace period, which is the only correct wait for a
-+ * possibly-sleeping reader. The reader-flavor mask is rechecked on
-+ * every iteration so a first non-atomic reader appearing mid-spin
-+ * takes the same path.
-+ */
-+void synchronize_srcu_atomic(struct srcu_struct *ssp)
-+{
-+	unsigned long unlocks0, unlocks1;
-+	unsigned long rdm0, rdm1;
-+
-+	check_init_srcu_struct(ssp);
-+
-+	/*
-+	 * Order the caller's prior stores before the counter reads;
-+	 * pairs with the smp_mb() in __srcu_read_lock() as described
-+	 * in try_synchronize_srcu().
-+	 */
-+	smp_mb();
-+
-+	for (;;) {
-+		unlocks0 =3D srcu_readers_unlock_idx(ssp, 0, &rdm0);
-+		unlocks1 =3D srcu_readers_unlock_idx(ssp, 1, &rdm1);
-+
-+		if (WARN_ONCE((rdm0 | rdm1) & ~SRCU_READ_FLAVOR_ATOMIC,
-+			      "non-atomic readers on srcu_struct at %ps; falling back to sleepi=
-ng grace period\n",
-+			      ssp)) {
-+			synchronize_srcu_expedited(ssp);
-+			return;
-+		}
-+
-+		smp_mb();
-+
-+		if (srcu_readers_lock_idx(ssp, 0, false, unlocks0) &&
-+		    srcu_readers_lock_idx(ssp, 1, false, unlocks1))
-+			break;
-+
-+		cpu_relax();
-+	}
-+
-+	/* Order the caller's subsequent accesses after the proof. */
-+	smp_mb();
-+}
-+EXPORT_SYMBOL_GPL(synchronize_srcu_atomic);
-+
- /**
-  * get_state_synchronize_srcu - Provide an end-of-grace-period cookie
-  * @ssp: srcu_struct to provide cookie for.
---=20
-2.43.0
-
-
---=-wnUrnxZhZDs1Yt7NZqbO
+--=-vF1ORSio6Vq2xkEwJ8nS
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -528,23 +240,23 @@ vFEOOmuaq7VamuLEPFQtJM4olmipOW6CzrLcFz6J/6yAecEG3P1ZDoy08eSHvM40MAUgpwGa/w6o
 MAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTowOAYDVQQDEzFEaWdpQ2VydCBB
 c3N1cmVkIEcyIFNNSU1FIFJTQTQwOTYgU0hBMzg0IDIwMjQgQ0ExAhADNSi2uzJskfEdOMo4hV0g
 MA0GCWCGSAFlAwQCAQUAoIIBezAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNjA4MTIxNDM0MDNaMC8GCSqGSIb3DQEJBDEiBCDH93ktUJgQE7KJ3OrVBckDDmMCmx6S
-VaOGDDBlLimW/jCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
+BTEPFw0yNjA4MTIxNDM4MjFaMC8GCSqGSIb3DQEJBDEiBCDdXAT68niOGd685FjicCJfG+j/70oE
+57BDd3I3Y843LzCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
 aUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBT
 SEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAwgYcGCyqGSIb3DQEJEAILMXigdjBiMQsw
 CQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFz
 c3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAw
-DQYJKoZIhvcNAQEBBQAEggIAaVWlMQUSc2IAJ6y5/hJ19XqpMCAqUIYDnToBFQZT0FEq1k6rcsS1
-/WEGhloBlvwuugpJEhYelEzuwMptfFJIpj8S7mlau35ojcy7aESg0ZRGE1CFZwD4M1PRxrCC6fv0
-FCcl3IjXtCwnNgZQ81VpehLYj1zECXldUILXeMzC/czeU30B8ErMgzkE0v8B/i/xDVc4gSqMej8T
-lSD0XkknTv4BAVyItgxaW8OLEhLCQOqiER19x5NnSPpES4DGF3SQRvCilDb77hzwbnt+2B7gm/lB
-CltrT0EwqA0Qsq8JFcBTY8ygRJeLcc9oKR934pgEAjJW4djuYXeUTN9RRku2mnYgh+bPd0DjsQkK
-EfKWrDnxjmqpetpIidPUVEvR5tmEvX2GqTCpm7sf2lJe5NdF/yE7EyuuC5cjmkuNwS0IWQQOOqvO
-sGWv5F+C7C04ZpVqaFsNC2q34nR9WLz6PA3sgDSK6yApeNtn01nqnRV4EtfhMIUAOLDre+3eLHrx
-c9J4ncG8U/aSreiEx1T/cKUZ4zOV96PpIZqE0+zbeJyUz93EvuvDEIlzWjfu38BMfbzD/cIpG528
-bcxXxEtt75Pl1wrWsBtNFo9vN1eBu4m83kxDaDCOSzohnxC5yX9uwBTX7EOEZT57ely93pjfj8Nu
-Vbm99z2ufLYsCbHGermAZd4AAAAAAAA=
+DQYJKoZIhvcNAQEBBQAEggIAecpn/VqBGoWGzycQCmvlKu8Ngnc07MKIHGiAt3B3flS2N8CScbTH
+Fg1siU68k5rmqMxVZ7fyhNwt4P07MIrCSdGkbpDLTfQGJ5fb67RNJVfWDN2DQ5uY0b+JhdzWmWo2
+fF597oWRy1RnWJ076M0nf4GauMFU2fNWKeaLhwcxkYPbpu0eXY3Woemjso0wydseUUtBj+5lDd3x
+GjTTSMqTZftadSfGENLABmUchE8ur/283MWcsUdEr6KNt4/QcHH66EE8fo92OJqYIg+Azs+QyZjy
+yVKn5Zhq6bzO+u3+EE7M+AnrnQTlHE2AD4Ys7Ae8VAJTFFYm5G1cmBuFTQZlF8ofs9wArU+M22/e
+NFkCrHo39cXaZLCsGKcNZi2SHTlPZKineb4AjZQyOHz7/elVmH6T10C2X3iEbI7+WNXgWes7m67U
+KeOgh1txVUBT6OA3ZPV2oDC/IcMjIa5ZcfkVlBRVtZmuxjzy1osbXVzXbC2w1kBj7T62Z47bFLV0
+mxDjTkG6TXtq1yw3xaswjFsjdbYUFBa3AayiZV7ja/djy3pTc9roPvVv+4MJNdd7QLL16H/7IySS
+Hz44GZUeclM7Ku2eZSMGxP/Ji/lkaKBuootUlw+Xy7nV/ypWaAVG3B1ZJvYIdbvU9P50zuPUgxUE
+i0TLC2WzAdMGvQ9m1dx5GfwAAAAAAAA=
 
 
---=-wnUrnxZhZDs1Yt7NZqbO--
+--=-vF1ORSio6Vq2xkEwJ8nS--
 
