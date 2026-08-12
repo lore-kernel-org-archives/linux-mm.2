@@ -4,96 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEDA1C5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 21:02:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABBEFC5CFDB
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 21:04:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 975B76B0178; Wed, 12 Aug 2026 17:02:03 -0400 (EDT)
+	id 7F3A16B0322; Wed, 12 Aug 2026 17:04:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 926E76B0179; Wed, 12 Aug 2026 17:02:03 -0400 (EDT)
+	id 7CB576B0323; Wed, 12 Aug 2026 17:04:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8631A6B017C; Wed, 12 Aug 2026 17:02:03 -0400 (EDT)
+	id 707D76B0324; Wed, 12 Aug 2026 17:04:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BD696B0178
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 17:02:03 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A0F7440513
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:02:02 +0000 (UTC)
-X-FDA: 85093839684.24.6891EA9
-Received: from smtpout10.mo539.mail-out.ovh.net (smtpout10.mo539.mail-out.ovh.net [51.210.91.49])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0583A18000A
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:01:59 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=pixelcluster.dev header.s=ovhmo-selector-1 header.b=tAgVcEJU;
-	spf=pass (imf06.hostedemail.com: domain of nat@pixelcluster.dev designates 51.210.91.49 as permitted sender) smtp.mailfrom=nat@pixelcluster.dev;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 49C166B0322
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 17:04:29 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A094DA0442
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:04:01 +0000 (UTC)
+X-FDA: 85093844682.23.434D9D4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 05CBC100005
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:03:59 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="M7L/CM2k";
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786568520;
+	s=arc-20220608; t=1786568640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=T9TIIVYfyP1hghPMhmTqChfXDcPUAairEBLRBsUqb64=;
-	b=PdRsEsG46afLMQdaElqsXWljKeEjswMVkYVUM0DAv8VxnSIhjGD7aZR8DnS9Vp2/vGqLZ4
-	JYdONdSDxXObsiw+vsueTuxRZxjwsLEbIpVjCLeiJ6ljs+Bkb0R1bXjSjH88Toyp17+dfW
-	fgWeq6HLm7GrfffG9TdA9Jm8XsMeGUA=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kjntp49iT9Wxm1cuWnwjCVqtDnt7W8/fWzirIfwxfgY=;
+	b=Xl4YmG24r0UWLzWeRqP0gUXUNZNl3m+6sEM6oELCX6Vxpi+6rhMHn0GinQzSrMVQKHaoUr
+	MNn7nxl7O81J75dgKN/t+JiOAsVhX5KzxpwJf9Ywe9YHjOD96scALVeQzuyCMFfLpJfTsK
+	6+Y2ZpCw9NC1m1OhyytmO05z+G6Lizc=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=pixelcluster.dev header.s=ovhmo-selector-1 header.b=tAgVcEJU;
-	spf=pass (imf06.hostedemail.com: domain of nat@pixelcluster.dev designates 51.210.91.49 as permitted sender) smtp.mailfrom=nat@pixelcluster.dev;
-	dmarc=none
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="M7L/CM2k";
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786568520;
-	b=wabN+rd1DM/wjYCeCO2n6JsZNmqnNQS5dU26gh5h5gsIoeu4w7m80whSBUJ++zsO04BjjH
-	UMKDzKFP2+JMBRcTo/L69STXjkrma6HD6p6cDzzgjZrVFJmVO+4xTpGrBPW2hfqmwGHddv
-	PotFszXlJXDKxCMiR+dAi3eVKbHMT70=
-Received: from director5.derp.mail-out.ovh.net (director5.derp.mail-out.ovh.net [57.128.106.70])
-	by mo539.mail-out.ovh.net (Postfix) with ESMTPS id 4hL1Bs3dNvz4LdM;
-	Wed, 12 Aug 2026 21:01:57 +0000 (UTC)
-Received: from director5.derp.mail-out.ovh.net (director5.derp.mail-out.ovh.net. [127.0.0.1])
-        by director5.derp.mail-out.ovh.net (inspect_sender_mail_agent) with SMTP
-        for <rppt@kernel.org>; Wed, 12 Aug 2026 21:01:57 +0000 (UTC)
-Received: from mta7.priv.ovhmail-u1.ea.mail.ovh.net (unknown [10.110.54.185])
-	by director5.derp.mail-out.ovh.net (Postfix) with ESMTPS id 4hL1Bs1GNbz7tBb;
-	Wed, 12 Aug 2026 21:01:57 +0000 (UTC)
-Received: from pixelcluster.dev (unknown [10.1.6.5])
-	(Authenticated sender: nat@pixelcluster.dev)
-	by mta7.priv.ovhmail-u1.ea.mail.ovh.net (Postfix) with ESMTPSA id 541D5B81AA5;
-	Wed, 12 Aug 2026 21:01:56 +0000 (UTC)
-X-OVh-ClientIp:88.133.252.134
-Message-ID: <d5ea3344-24e7-4834-b743-4dec812ada70@pixelcluster.dev>
-Date: Wed, 12 Aug 2026 23:01:55 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Natalie Vock <nat@pixelcluster.dev>
-Subject: userfaultfd wp-async support for (GPU) special mappings?
-To: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport
- <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
- dri-devel@lists.freedesktop.org
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	t=1786568640;
+	b=vzzUvZVH97va8m4WkadtiKmgodwuyi8i1bfVXcQG6SxWH385TyRFPveVueo8/xjo6luCmp
+	8bp5yUuWbsbuicbRzdKPyCP/C9iA8NOOG1eRS19HNR11HG3y/bHutm+YBzqNtdlRBjz/9L
+	tw+sqen2/io09hXMAgaQ0sznDsXP6Nk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 882F8600AD;
+	Wed, 12 Aug 2026 21:03:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951761F000E9;
+	Wed, 12 Aug 2026 21:03:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1786568639;
+	bh=kjntp49iT9Wxm1cuWnwjCVqtDnt7W8/fWzirIfwxfgY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=M7L/CM2k5o4Ik35mAzj3NgcfHzwZQf6D1hc7uET1/UnSKnP7AKT2juBm3Bvlso8kN
+	 cRNA7/EvQwBAc6qwMlcJggMbUrw1oxKpiBKp5ZRZus38UshDBOW7V1uOqjP1OtQUf5
+	 boGRAVO0JuJGU8VWcTWjX4TYLFQeImnlLMw3AknE=
+Date: Wed, 12 Aug 2026 14:03:58 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: syzbot <syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com>
+Cc: axelrasmussen@google.com, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, cgroups@vger.kernel.org, david@kernel.org,
+ hannes@cmpxchg.org, kasong@tencent.com, kernel-team@meta.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
+ mhocko@kernel.org, mhocko@suse.com, muchun.song@linux.dev,
+ qi.zheng@linux.dev, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+ syzkaller-bugs@googlegroups.com, weixugc@google.com, yuanchu@google.com
+Subject: Re: [syzbot] [mm?] WARNING in set_mm_walk
+Message-Id: <20260812140358.343927ad8d0955b67c4e7ad5@linux-foundation.org>
+In-Reply-To: <6a7c6670.3668565d.e8814.0012.GAE@google.com>
+References: <6a7a6929.b50370da.49fe0.005e.GAE@google.com>
+	<6a7c6670.3668565d.e8814.0012.GAE@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-x-ovh-tracer-id: 16088265245785350599
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTENcapTGTz/DtMtzR+tulh/8IgOfyIAy0E7ZgGfgzt0x74nGHh+Af3SCltyISvAhYfN6Z7W2WI2lZ3YF0HhjPH8NaVRVJWyLTlPnSkCyvKLSsrgx8uQSSEYJmqvFhv9doqO1afN+znBMTHSLsSPTRbm3L40g5TnT0RiDSV2tTBsPCZPvK1g6U+c3VRFTZ8rn7ubQ+L3LBwKIik4bISvuP8+brxWUKsr/gAuWiH8s4gdYxTqJgseIC2pJP/jCh2K+U0UrqM96Whd9X/P8jww509uNsZZpw28RiTl8wYkI6JXilvJ3F1h52e65djX8/xuAvMbzEqdSWOLaKQ5GPiaz65dlwA2Wy64PKJJmFRbPPWRx2i4afiKZ4I+3E90qbeWK9TDyHM9afmrxASKpwfBkQq3Hm6s8ZL1KmZgharmd90YcIHRGvFW6KufR5nr5lc4BSRLfol4pNeefqHmySjGiWXfAdYEFJNBtqKWvdhhOSDtrf0TJWGbH2jVSh621iCYOGFs7vaMAYPjVSGy91UDPiGfQpq/w3Uc8Q9s3oZ/8D9WTyHySxgo35FEtiX6vUfobicwzrFFr6X++cdJ1u+iXaSJaekySfcul/BNAaVMsGSTlbN5FuyC3wZcyMA35dQk8Zci2Hyh8aIxNXJlpERVDIqQh+mvTgs+xX4wd+iIEjq1og
-DKIM-Signature: a=rsa-sha256; bh=T9TIIVYfyP1hghPMhmTqChfXDcPUAairEBLRBsUqb64=;
- c=relaxed/relaxed; d=pixelcluster.dev; h=From; s=ovhmo-selector-1;
- t=1786568518; v=1;
- b=tAgVcEJUgwum9/qzkJD9U/EPxozVngErwQYmskct11W/P4U/l8s4hfu6xmNtfV2PysHPtAgX
- 9ZdbcxPMWdNJQ8Ub+m8e4AMGWOSrHVPN10ewceX+VHgqYp+cZhO1SQvamUstEa8q1jdzKBY2zlc
- AyL9PTdtuvjW8TZwl4P0JFEHPbiEpdd+yXB81+g+lcXjgtfCxBdvedn7KUtehh2F0tVzgF+ejeX
- yZ5W/6d/9iwC38svX9Dha4JFCLe2w2eWRv8zhtHvyTSWBQXk29UEVkmm9ugphTWDQQ/Tl4TLEEg
- hSawDqVce05rpx62adpjrEQnfz/7/FIVTkQgWI3LR0zmA==
-X-Stat-Signature: hkfb1znhuhtka1oawphw6rpye9zdtgjq
-X-Rspamd-Queue-Id: 0583A18000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786568519-281626
-X-HE-Meta: U2FsdGVkX1/8MYB3ssGSnSXvCjBMohzQbVsYzYAF8T2ZUyYB1/uFcGl6p8Cfdxd1b58eslk/eeWk46N/ALZ4fzen52tixpru7FzFedO4Cv/cErDrGa1kG+7pE6+DsjJCD2rvuMcXshUd1Wk6muJawoevM0xf46E5fBhUpkaz6SKtPd/UMaJ6gg3SDXY1unGdPIgtyfBcgdD/vZtyEcxtK5Wf7y9y0rEUlNLe4UWvUIlYZw6N3HzI6Eork/BwwTzAcNSOHOwJ5zqNNo+kQod+qgTf3P6WeUsyDiMT+jU67uGGFgYidiv3BSQsEX2143BcqlLqZng0EzCan7XjrQ7UcFPEj84ToPp9Kts6ETcEMomobsuCihcfkaYu0LpZ11XNSHkwF6QGjo5AgwjcChHLOeEx2uCsEd1vAWYeqBwbg/vaoubiC1Mw9SKNIu2aY5RBCvnxT+L8exYCGHF74PA60mpD+oWXPEwysyvkM2XjbFPMfgc6ZnpU4sr3dNHpxMynSXFiMq7sIj0+XjI+2SK+yHbTm3B7WtMDdvcTVLlaAasvbhODM7SeRUDDFv08tlItXwFxdjHek9aK7EZ+1OdI/kynRKGjf66WELet4qkbnrYAG4goXoiVfLEReSa7RXH71ARCpFw4RyLEmcIgBNTNzxnt+murWaEc7K+7B9bj+btbp7TFvlRAoaWG8lBAaoaVQBNN1NNRdgoT3nlTzBPRWAJHaTeJpd4WmIjsZm0WgQekk9EV8wNNAvdu4M3sg2srhGRaOS6UEJLxVMDTqxxeg3hvkdOSM2hsrPMGiQw/IJfRw7sSGIKFacNd57yMRxB4Ni5qxUc+2sTE+uPaG2nMma4BE1NDJBKlE39Y7gfVJ/AsKNVp/1BZh/sSpcHUW/ndhQShfXJyfBxFvcLsbFlC+dqNHhUkVjSPc77vtcf4TN9RFdpa11spbOnJHF+YPueul9nhw01N9J9ohUdgHq+
- jcwUJS7D
- zmijzOCzuoIpQwFvqGPWp4oehvBLbWhMkbIFeB4Wl7T14no1/5pnMpYJiMF1V6vZ/pzNpInYFAC9m02iLtn+zrovwHU4BUJ+BtwlzC/bU3umgatNJhq8j6sQcncUR0BHhGpbvR9lSwRLTBI/IKBlF2F5M2xJpgiOfpAQxpM1Ct3Iq4gKw8eNqLbT+PkBgWa3oUebG/zIKw2hTtXJHTwKVJ4fxEPaFmSNjlIGzVk/D2nPAIssqoXD1jFqZFKR2mUjBGSUvVX2CQYalemKKpqvHMrkVg8TtJvSr4Kiv6PvWJpRn65wzeJ7LbIe2gb4Zhl6O8b820HJQDS6MMJwpadjD0dOZrIW2HK3d7jRdRXQY6D5ruYTO3AP83fVAFrb7fOA/95FsWS6TqRrMPJW2gFDp7fKAAXlKi6uy98+v
+X-Stat-Signature: xzbcrmtgo85oiupt5z1ewuf9s53y3h7u
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 05CBC100005
+X-HE-Tag: 1786568639-730597
+X-HE-Meta: U2FsdGVkX18aQ/f7znv/kzBoq3gWNTZzg4lC1EuTjzLnu7wSiEVnrEOmbgO0vZnonJJQnQZW9OFxRqlzGgamR+GLI5ymsPdTosZh7d9Gsz+kW/al88Aayo1dChm0iV/kVTzbUJHq8FuX8ckdlhGYZ+g6idGukGIEKG6k/7/yDun3kBf6VSPuOM4dAaYFggqRi61IqwJGMtTVJJ23odzgZRDewQe9OzFwrHEFO0k1s2iz//QxwbGkx4C8ha17fHCgFcDv/CB5/CTILf7I53bnGjIMP7YAz3Qa/h0aualdIBBB78Z6yHGEzKJuXdAdgYgLO3RUkkGVoE8oy8fh5HRxmc3cXYRaaPWBVVJV5JfQIpgVBYki90RquS7wlUG5tnruXXqVPHF1a+mXtAsYLGmUyBM04KkuaTlJOfdIq2+xDEEoLhIuLUqqo1ABjcKqDokf/xtvKwm5gGrzFzPs3Tz4P/Z8r+seu96NGdNgJ2OL4si3kVV5d9Y/VN4CeO/e0RccwJyI+k5TTEKOMsWrvvbcUf2VZa5utz6HWLK1LY+TXbQp2/nkAl4GLv6byFVdCE0RCldjoSS6cRnF1mZE6YB66uL+vft5rkCoFdv2oFIiYOA3iNuXo8uw6bfAkMzuva/rUec8L9OQFgal0lQ6kNOSiLbSEmSEaNr8Y3LbbP92HVyH4Dz9HTOVpb4bIrT9DYmNTxERCnk6i/aIRqf1M7XDZpL40ByiYJ/PpClU/8IVbUwj9sOqNqxcZ85V2kLDY0CPfGyuy5G5bTaLVf9TEk2lusVaXdp2Ph4dsoTfcqNzFIFTa8Vy/HLl1RsUBF5DLjlbcJkHkeRu3zKLENtRZhS4QCxlpta6NFUymL5b1EpURn/751HG61L0nKRilqGxsiMGwnx4Xq/GwahRvJoxa0fwOh5YOVRNYbNjSBjNgCjXuL0TZOTOO76v8zBzF+2OD+wpdIPyHNpf0asmf+vq2GJ
+ KyZ/IwIu
+ gRK9ixgja8OcdwjOHBELV4qW8/Xw+9qYENVRXSV/ICPie1jV1dLuVK3U+lzTEy83omTRNTkRKLMHYUZs0AYO5wkVLjOKjub9GR5Lt7dv6TZqXwjA6K6pJbXgVYLjyGO4Tz048Pz6a5g6oGBX5LbZithbzHjAHUmx9mShUi8pccXo5/h4kBKD4jGrcmb9r1rqevZmG5s38nTuIkPbbae1XP+WEvQvphtk5mVGHPSIk5VAmK3g4CsSiQaj1zJGnht60RIPRz9fU69ZlR3tz1WIbyzadbuQEbqy4PbOwJOs4c/xi2hNiXpIcAeawrwrW4JU3j4xgx/uuPB7O/L5BTsXO3YnmhyLlSFVgdPu72/jcnKE077cgtJCZBzy1ExYxarTYoFa0xHLZnOMbMLCG6GDVpePk1/ewZzO3/BUo6+H0uel1oNDNrud928SXda2YIABE2vev2kxWmf8+I3Cj709UvWdNQt2ZKga+fyKADSxXa5G+YOZpWoYVAmQuIv2D57XHm2j866MKrjd3emmlm0hmWqykEgvgb2TzGEYXaA0gkmWHFCUmFaakk8oks2thxjqfTHNDlnCJZsH186KDTaKOdKllqS5cCyn1XzTMH+VISpeM0uzbTsPk1krf/iE5y2Yo7Z2TfCH5fIHZPPF8KogioQ7vrcUgbHhoVDadHKhwdgmwmPwFyVcXyxrR+K9lnsN61R80DS+0GXI0fV8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,163 +95,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+On Wed, 12 Aug 2026 05:26:24 -0700 syzbot <syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com> wrote:
 
-lately I've been investigating some ways to efficiently query for 
-whether particular memory has been written to or not. The functionality 
-I'm looking for is pretty much exactly what userfaultfd's wp-async mode 
-exposes, but with a twist: The memory I'm interested in is GPU memory 
-mapped into users' address spaces.
+> syzbot has found a reproducer for the following issue on:
+> 
+> HEAD commit:    f5bbbfec59b4 Merge tag 'probes-fixes-v7.2-rc7' of git://gi..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=11f44c79580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=c44651ea7dd2f307
+> dashboard link: https://syzkaller.appspot.com/bug?extid=12ee2725d5fde63a9c96
+> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10d11149580000
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com
+> 
+> ------------[ cut here ]------------
+> current_is_kswapd()
+> WARNING: mm/vmscan.c:3800 at set_mm_walk+0x210/0x270 mm/vmscan.c:3800, CPU#2: kswapd0/111
 
-The broader context here is writing a "capture/replay" tool for the 
-Vulkan graphics API: The tool lives in a .so that is injected into some 
-app at runtime (LD_PRELOAD style). All graphics API calls (rendering 
-commands etc.) are then intercepted, making a copy of any call 
-parameters and writing ("capturing") them to disk. Later, these calls 
-can be read back from the file and "replayed", reproducing the exact 
-same sequence of rendering commands again (hopefully leading to the same 
-rendering output, too).
-However, one of the commands is a simple wrapper over mmap(), where the 
-input is a GPU resource and the output is a mapped pointer for free use 
-by applications. To correctly reproduce the behavior of apps using this 
-command, the capture/replay tool needs some side-channel to know which 
-parts of this mapped memory have been overwritten by the CPU, so that it 
-can perform the same modifications when replaying API calls.
+Thanks.  Shakeel is working on a series which will fix this by removing
+the calling code.  But it isn't a minor patch.
 
-The only part I'm interested here are writes done by the CPU. The GPU 
-may also write to the mapped memory itself, but there's no need to track 
-where it wrote.
+Shakeel, it would be good to have a backportable quick-fix to make this
+warning go away?
 
-userfaultfd wp-async tracking would be a pretty great match for this, if 
-only it could be made to work with GPU mappings, too. I've been hacking 
-around in the kernel and I did get my use case working fairly well with 
-only a few modifications:
-
-First, I mostly-reverted commit 3c58f641e81 ("userfaultfd: prevent 
-registration of special VMAs") for rather obvious reasons :)
-Then, all I had to change to get things to work was add handling for 
-encountering uffd-wp marker PTEs on a read fault inside insert_pfn(), 
-and allow the PM_SCAN ioctl for /proc/<pid>/pagemap to process vmas 
-marked with VM_PFNMAP if ioctl only does uffd wp-async bookkeeping.
-
-I included a complete diff of these changes at the end of this email, 
-but their quality is very much proof-of-concept only; it's not remotely 
-in an upstreamable state.
-
-Is this something upstream would consider supporting at all? I'm not 
-familiar enough with memory management to judge whether there are 
-fundamental pitfalls making this whole idea impossible (but for what 
-it's worth, it worked really well on every program I tried 
-capturing/replaying :P)
-
-Best,
-Natalie
-
----
-
-Here's the diff for my dirty hacks making uffd work with GPU mappings, 
-based on commit f5098b6bae ("Linux 7.2-rc5"):
-
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index d32408f7cd5ed..7ac75ac0a7794 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -2426,6 +2426,19 @@ struct pagemap_scan_private {
-  	struct page_region __user *vec_out;
-  };
-
-+static bool pagemap_exclusively_mark_wp(struct pagemap_scan_private *p)
-+{
-+	return (p->arg.flags & PM_SCAN_WP_MATCHING) && !p->vec_out;
-+}
-+
-+static bool
-+pagemap_exclusively_mark_and_query_wp(struct pagemap_scan_private *p)
-+{
-+	return !p->arg.category_anyof_mask && !p->arg.category_inverted &&
-+	       p->arg.category_mask == PAGE_IS_WRITTEN &&
-+	       p->arg.return_mask == PAGE_IS_WRITTEN;
-+}
-+
-  static unsigned long pagemap_page_category(struct pagemap_scan_private *p,
-  					   struct vm_area_struct *vma,
-  					   unsigned long addr, pte_t pte)
-@@ -2689,7 +2702,9 @@ static int pagemap_scan_test_walk(unsigned long 
-start, unsigned long end,
-  		 */
-  	}
-
--	if (vma->vm_flags & VM_PFNMAP)
-+	if ((vma->vm_flags & VM_PFNMAP) &&
-+	    !(pagemap_exclusively_mark_wp(p) ||
-+	      pagemap_exclusively_mark_and_query_wp(p)))
-  		return 1;
-
-  	if (wp_allowed)
-@@ -2844,7 +2859,7 @@ static int pagemap_scan_pmd_entry(pmd_t *pmd, 
-unsigned long start,
-
-  	lazy_mmu_mode_enable();
-
--	if ((p->arg.flags & PM_SCAN_WP_MATCHING) && !p->vec_out) {
-+	if (pagemap_exclusively_mark_wp(p)) {
-  		/* Fast path for performing exclusive WP */
-  		for (addr = start; addr != end; pte++, addr += PAGE_SIZE) {
-  			pte_t ptent = ptep_get(pte);
-@@ -2860,9 +2875,7 @@ static int pagemap_scan_pmd_entry(pmd_t *pmd, 
-unsigned long start,
-  		goto flush_and_return;
-  	}
-
--	if (!p->arg.category_anyof_mask && !p->arg.category_inverted &&
--	    p->arg.category_mask == PAGE_IS_WRITTEN &&
--	    p->arg.return_mask == PAGE_IS_WRITTEN) {
-+	if (pagemap_exclusively_mark_and_query_wp(p)) {
-  		for (addr = start; addr < end; pte++, addr += PAGE_SIZE) {
-  			unsigned long next = addr + PAGE_SIZE;
-  			pte_t ptent = ptep_get(pte);
-diff --git a/mm/memory.c b/mm/memory.c
-index ff338c2abe923..a06a31f7f45cc 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2698,6 +2698,10 @@ static vm_fault_t insert_pfn(struct 
-vm_area_struct *vma, unsigned long addr,
-  			entry = maybe_mkwrite(pte_mkdirty(entry), vma);
-  			if (ptep_set_access_flags(vma, addr, pte, entry, 1))
-  				update_mmu_cache(vma, addr, pte);
-+		} else if (pte_uffd_wp(entry)) {
-+			entry = pte_mkspecial(pfn_pte(pfn, prot));
-+			entry = pte_mkuffd_wp(entry);
-+			goto out_set_pte;
-  		}
-  		goto out_unlock;
-  	}
-@@ -2710,6 +2714,7 @@ static vm_fault_t insert_pfn(struct vm_area_struct 
-*vma, unsigned long addr,
-  		entry = maybe_mkwrite(pte_mkdirty(entry), vma);
-  	}
-
-+out_set_pte:
-  	set_pte_at(mm, addr, pte, entry);
-  	update_mmu_cache(vma, addr, pte); /* XXX: why not for insert_page? */
-
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index c3adedaaf7d54..aa1553ec5a3bb 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -2114,8 +2114,8 @@ static bool vma_can_userfault(struct 
-vm_area_struct *vma, vm_flags_t vm_flags,
-  	if (vma->vm_flags & (VM_DROPPABLE | VM_SHADOW_STACK))
-  		return false;
-
--	if (!is_vm_hugetlb_page(vma) && (vma->vm_flags & VM_SPECIAL))
--		return false;
-+	//if (!is_vm_hugetlb_page(vma) && (vma->vm_flags & VM_SPECIAL))
-+	//	return false;
-
-  	vm_flags &= __VM_UFFD_FLAGS;
-
--- 
-2.55.0
+> Modules linked in:
+> CPU: 2 UID: 0 PID: 111 Comm: kswapd0 Not tainted syzkaller #0 PREEMPT(full) 
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> RIP: 0010:set_mm_walk+0x210/0x270 mm/vmscan.c:3800
+> Code: 13 00 00 4d 8d 7d 08 e9 f7 fe ff ff e8 19 f7 2a 00 e9 b7 fe ff ff e8 7f 68 ba ff 90 0f 0b 90 e9 d2 fe ff ff e8 71 68 ba ff 90 <0f> 0b 90 e9 74 ff ff ff 4c 89 ff e8 20 f7 2a 00 e9 4e fe ff ff 48
+> RSP: 0018:ffffc9000272f2b8 EFLAGS: 00010293
+> RAX: 0000000000000000 RBX: ffff888023f04a80 RCX: ffffffff82500a88
+> RDX: ffff888023f04a80 RSI: ffffffff82500b0f RDI: ffff888023f04a80
+> RBP: 0000000000020000 R08: 0000000000000005 R09: 0000000000000000
+> R10: 0000000000020000 R11: 0000000000000000 R12: 0000000000000000
+> R13: ffffc9000272fc38 R14: 0000000000000001 R15: ffffc9000272fc40
+> FS:  0000000000000000(0000) GS:ffff8880d5fec000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00005643a2ed4168 CR3: 000000003c7ec000 CR4: 0000000000352ef0
+> Call Trace:
+>  <TASK>
+>  try_to_inc_max_seq+0xf0/0x1090 mm/vmscan.c:4023
+>  try_to_shrink_lruvec+0x4bd/0x6b0 mm/vmscan.c:4977
+>  lru_gen_shrink_lruvec mm/vmscan.c:5128 [inline]
+>  shrink_lruvec+0x31e/0x25b0 mm/vmscan.c:5888
+>  mem_cgroup_shrink_node+0x227/0x6a0 mm/vmscan.c:6753
+>  mem_cgroup_soft_reclaim mm/memcontrol-v1.c:312 [inline]
+>  memcg1_soft_limit_reclaim+0x2d5/0x830 mm/memcontrol-v1.c:362
+>  balance_pgdat+0xa11/0x1f00 mm/vmscan.c:7177
+>  kswapd+0x556/0xb50 mm/vmscan.c:7462
+>  kthread+0x370/0x450 kernel/kthread.c:436
+>  ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+>  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+>  </TASK>
 
 
