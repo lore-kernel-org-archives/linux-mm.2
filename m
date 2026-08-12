@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B30A9C5CFDB
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:54:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAFB0C5CFDB
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:55:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A07256B00D8; Wed, 12 Aug 2026 06:54:52 -0400 (EDT)
+	id E26786B0138; Wed, 12 Aug 2026 06:55:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9908B6B00DA; Wed, 12 Aug 2026 06:54:52 -0400 (EDT)
+	id DAFFC6B0139; Wed, 12 Aug 2026 06:55:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 881F36B00DB; Wed, 12 Aug 2026 06:54:52 -0400 (EDT)
+	id C9E906B013A; Wed, 12 Aug 2026 06:55:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 621086B00D8
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:54:52 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 553D1A01C6
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:54:51 +0000 (UTC)
-X-FDA: 85092309582.04.5B9E4FB
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A0E646B0138
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:55:27 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3C0911601FC
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:55:27 +0000 (UTC)
+X-FDA: 85092311094.08.B4DA4A9
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BE651C0005
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:54:49 +0000 (UTC)
+	by imf28.hostedemail.com (Postfix) with ESMTP id A2831C0007
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:55:25 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e4Kol6Pv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n8nYPjTU;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786532089;
+	s=arc-20220608; t=1786532125;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gcj6Nn0OFnz4GVFzatZ7HMT0a0oMws6ttw7Nr/ddbvA=;
-	b=FM+bSVMR9a9y+dYNjl7wOUkU0lmCMzMVDjLC7EBmWUbnZHClZ/KioLFRuUSk+TjfCHavAa
-	wr6C243VEi8Q2SPuVJapKJpztQ+SA8Q3YnwmzHKInP6x5Xf7EttUlOBWd/lQsw0pZK5j1D
-	mhP/B4KmlsiuqHx0lGcnug4OSnsAUz4=
+	bh=0fuyFHc5wlgCnwoU8B++ymoBOTLisMABJc8FzpoOvIo=;
+	b=eUTj2BSi1nO5kM4z22SSz5Y9H3cw5v+mrcSw9+uXj3VDetlpGYNgYELsSwT3eSS+s4QXjp
+	TZhHYobhVr/26gxoyWeWAK4xmP6AtuC8mfG5FUJfdlRjyT3nzwWI6f3wUqzq2nm0belPD7
+	n0rlyUfieZPU9U9DYYcmjE3Slb6mlgE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786532125;
+	b=TyIkquvZp6k4x0nryFo6U8B8m26zh2yKGHB+PfKxqgAMOEopm2h/wrZmJHmdrrdzLCLJKt
+	9QrGQuORlH+Cl8RrQbTISeQtaj+jUkUwgcCoOiLaxnBtAtRh0U3kEHw/BkY4V1VFG7hV8d
+	FcLUPk9lEY8na05nG48LaFu+UKd8Vas=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e4Kol6Pv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786532089;
-	b=pV1DIIjJcjkPBrhpq1yeILIujwKPZnpStgRJNidwFdRuMmY+scHMMlPNv+IsPF2bu8/f6Z
-	GGs2/gOJOcCnAAbs1Jv01kTfdqj1hMkwjbGWWemZzRquf59pPGc7417mes/I9D2JfkiJgr
-	ETDS2zi92yXUnrlQJyjyPYuizdu/tkQ=
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n8nYPjTU;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 222DF600E2;
-	Wed, 12 Aug 2026 10:54:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF661F000E9;
-	Wed, 12 Aug 2026 10:54:46 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3CD4F60A7E;
+	Wed, 12 Aug 2026 10:55:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891421F000E9;
+	Wed, 12 Aug 2026 10:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786532088;
-	bh=gcj6Nn0OFnz4GVFzatZ7HMT0a0oMws6ttw7Nr/ddbvA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=e4Kol6PvyyOtzPhPagi2RlBVhqqAA7P1Cs2LzWOU5K1eCStNaPc4a99nRCN1UdI6M
-	 vVZzjgAnLWr9tk7FkTojT23M+CeDDUgNibnxOMEvO/aH/86z7TvLYW1sJmAFChKosU
-	 jOb4iwX4pOZjt0f4Sk/0O9kKwQ5P0C3SKbEgXXQ1cuPk+BJrDgvIMJiZZD1MltiHN7
-	 p8Sw1hpDwgA0fBhzysexJXQoMAwQxwdXSngbgu/YZtBpNHSvr7VumdzRLyG7LUhRnd
-	 xhP939zAnPaZvj+3SVQDPxWI33MKbkpvx8+Zpl75fN9mjfoa89wePPk5BNR9FlrEPp
-	 +1+GaVfGdRPyA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: Mike Rapoport <rppt@kernel.org>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  Pratyush Yadav <pratyush@kernel.org>,
-  Alexander Graf <graf@amazon.com>,  Samiullah Khawaja
- <skhawaja@google.com>,  David Matlack <dmatlack@google.com>,
-  kexec@lists.infradead.org,  linux-mm@kvack.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] kho: Introduce a helper to init high order pages
-In-Reply-To: <20260803113944.3694290-2-praan@google.com> (Pranjal
-	Shrivastava's message of "Mon, 3 Aug 2026 11:39:42 +0000")
-References: <20260803113944.3694290-1-praan@google.com>
-	<20260803113944.3694290-2-praan@google.com>
-Date: Wed, 12 Aug 2026 12:54:45 +0200
-Message-ID: <2vxzqzk338y2.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20260515; t=1786532124;
+	bh=0fuyFHc5wlgCnwoU8B++ymoBOTLisMABJc8FzpoOvIo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=n8nYPjTU4r/Nd5BTMnlHtCFatnQm9LWvS5aKvriT5WDtXSrov6/RjloLlQQd609BJ
+	 +G89DQh9ybFgt26PdxwGCGvYh7592kAEzLdiTh+sfsMUT11eXw0FZ472s3CR1zIgcG
+	 Uba5hjuzY3TzP4kC6eQYU7AUrBGYZ2T0O2di1ePKwMj090KwRprS8SBgMnrisIXZzf
+	 VML+x1stzh5yEq2PsKDzuTLUppGzWe6NpmaBiYsXAgSY32m26r3eJ2L7aMmoIk0+GT
+	 HkP9gazQTQYC/vi1R6za0hdZKOm3eBRZrN5AsnrpraXIhkJWIzxwlANPpWjYU7XeCh
+	 RtP7C0BAoA3aw==
+Date: Wed, 12 Aug 2026 11:55:03 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Xie Yuanbin <xieyuanbin1@huawei.com>, akpm@linux-foundation.org, 
+	david@kernel.org, linmiaohe@huawei.com, ziy@nvidia.com, matthew.brost@intel.com, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, nao.horiguchi@gmail.com, liam@infradead.org, vbabka@kernel.org, 
+	surenb@google.com, mhocko@suse.com, gourry@gourry.net, tony.luck@intel.com, 
+	bp@alien8.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	liaohua4@huawei.com, lilinjie8@huawei.com
+Subject: Re: [PATCH] mm/Kconfig: allow user to select MIGRATION if
+ MEMORY_FAILURE is enabled
+Message-ID: <anxQuhNh8rTUYqpN@lucifer>
+References: <20260812091644.224299-1-xieyuanbin1@huawei.com>
+ <anxOypktGGq_9PZw@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: BE651C0005
-X-Stat-Signature: mh7b94ionx946t4o3194rhs93opobdtu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <anxOypktGGq_9PZw@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786532089-539454
-X-HE-Meta: U2FsdGVkX19/S4pxTVzPHX3uNCoMBhdlweg/M5uBenXQD4OTdl3pYHc8/OP5cy9mqb2R5swA2dKfLw8MMOWPy+jIsbbK6yJ6k3T9qpcgQRpFBUdh4sugz4d6I9uHjHYCbxU5piGEaXHV10TzvIM8JyleuE0QeXvgMAwAPvxQg7hIHG+NGSepPyvUpPpU0NG3pOX0+5xy0HifTdx6mHgDxXu2UvXfdvY+LZj+bYIIeHOYgJ9puNYgVNgtRdSYKA/4R+ohTNzRYLwmQDrwv9NeBFKSN0Jhp9eEggfWhZBDUMMIlHMr5dcPyge4BKtoGlUkuUT0FpCE3j6DcK7MDF7XbtSGnWSZZMU6iLAlsTBo8yDuq1Q/bzZ2AwnwJFlspncQ9AslhAZU8J++UASmMhjNaCmo3KhcgsLSlrtqnNHA2Qq2hCoXDVdmLW9nUSeYfm8Z7ZK51dD42d+JLYxRHzKnN0rGeqQMb9otxSxpVOPydaUTh5Kr6lXgSTGhzfw44qup/vt9uoN2vsqzUTP9TlmNGXfHN6nsiE+B/afH3MkOc+Kf9hlcKibVu1vL3tMCC1r5Px6s1W/3yeWK1si1De7P4h4AKiQkRPp6+JKjl7eEGwW28nXOpdzctrJ9u31fcziKkGcyBpfhK0nWqntWQbfpxwivgXYg9gC74VMwHTtB4TiNj83EGrLaP3WCTxUJjGBAe3myFF1dcw1xAJrgCBrj3sny9wHBX8+/JqbARgWMHbKGWQN2GD0lNUUy0K5Z74WgvBm2yOhJ+8cj72/bJAiSEWUumgFz3wnC/cTKaBebIgBw+Q2M8LUaZG0EDY9hmEj5peG6nXDnvfiJreW96xJ8EQGd7IdGALPdJttqyaEvwwzWoKQKwcUr+eA3W2xYlG49/l5rFFNmGvWW1iC2wPeHIcpSLfyx2SS99/4EHliV1uZuKYNJvwXnQq4prr7OhKIlO5Ft973iVkz5RxJz7/3
- 7A6gmOa5
- Yx4pqrhyyKlxTJ4Mq0bjcjX2UMMdbfqYRDP7QBx+b/XLiHJXS8UKwEUogA5UTBLy/YuZWwWOX1s0X03wTlqG01FIlBxDIgNxlqbCpmEMqi4ItZU/gPScOcpQV33N/ikiCJDhXsrc1xZwjJr1ttBDnghl0ir52qIqRS6eeW0fzyesJ3qPpAxl2RRevqX6FjdMoojR3a5U9bMmbUEgkAPDt04kHI8xzC6W7Hx795c2Tb6cWMcI=
+X-Stat-Signature: y7hskamx8gaq6ef4jny9g8h8np1up7hn
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A2831C0007
+X-HE-Tag: 1786532125-624795
+X-HE-Meta: U2FsdGVkX18vVSxxBk/OjMT8+J1x1cU4sKbV89Yh9etT7EmCe5f/tI7Osb57gl4YblHJVdk4sdtY84Ruk283NkPtY1Sa6p8QPAaq0zZQJev+HUCNpJlogrIHVxs2/dXv9FrIfXQiDcJ98mshU7PySaL9VvSbl5db9hBHCBdjZYejbVJiL6PP3jXMQ+woXE7Z05h/wUSm+SuEqNlRWP6PS8YJL1vrPV/WdRrQo1ZJEkeVZvhIMYcKQJReqwwmdHSr/bu0pV6q1+Bbf/A+RkQ+g8jUo4JlNTrWyVpBe2kwK0ar4D8BD4hFxOtlgCD12ydBJ0Z8aWzwbiRVQPMfyyI9vLgbUmZw44N6YX4ylF0FW1T1JFR7ugZruMlX2EwK4KZa9LhGqgVkqNgoKwDHIGLrUy0CarUCj0kZyqhtQKXAlP9HVfWteF1lDKt7N2fdzOzqkpz6Er0qFXx37b2RbUdSRwyPAN6SL7INvLZMYCkrTFi9lPdpJ36EB5ypz2MwhCwPid6xD3bG2BzQKCvEpNvlCdZUpSsgIGn9TgQ/LqZ9renObXOqGcxGV+vMCypxA9DVqfthu6ihmKGy5MAGOYRSs+By+yrjL+J/ium5QJybgVNeJ5D9klrlvv+oMn/1z+OXWotJ+7r1LRXWPj0MRSJ35Lc0VHBNFeObHG09RhB+x2xE9u2D9NCVtaOZFke7u9MJ5oxqIe85EGLptpRtWemIfdCJhcazDZ0KnIYuCV6orLf3PNZTvXSGL0NqVkc5BWtBOG8fUzxfDEU/AX0dtQSzOPpnD35eZFfpHnryoXB1+zy0tb6uOI/VQ/jqnC8kuNcwtlIsVOM8OIKv4iYMLr882Isevd1vNrxBXJtvBpbPh+J0u8l5mRC0y3x9vg66CqtmZzUsQmFUd1B3Jt7SqAlt2s0JnVUv5wFJ+0ru2AzmRDbvIqYjHvaHrY5JQUYCpcv5mdoQjjNEJ0b4cDiqGbc
+ yHrEMFA5
+ 2dffGxm8ECBz/Ld5bHBiZ/WdOgGST7qijphsNvPGBdRJmGeoIq649ILDtAhM9tFw9qSu4vLDZZbnBJcG8/OH0rUVWEeilQzOMZYGguUvfMumvoyoZv3FBBBCfgCEbdxnbQQqjRZVHFpu05lOV3lquExIIii2tOtlK49H/E+Us6fobGPSZSMrxjU8O4fkX/NzF0d2UZPd+sYBkmWOMIUU8WocuDXlxeLtxoQfCQjFfjNIeCV7WbElWmGkgXEiXEgotOsRDpjNBFnfK9oP4sI7GJH8LCYoEVcqtriWiQSHUM/t4BeH5dHRnES95yX/l2XtuUUK1wM73k7cx5tArl3wDSJSn/y8SA+fytJwwNXCH6cdgdQJtTEAzp6a3rSeylLCeKVa+Xr+5N0dTPhw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,85 +97,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 03 2026, Pranjal Shrivastava wrote:
-
-> The current KHO restoration logic assumes all multi-page blocks are
-> split into independent 4KB pages. Break out a helper to prepare for
-> supporting high-order non-compound pages.
+On Wed, Aug 12, 2026 at 01:45:30PM +0300, Mike Rapoport wrote:
+> Hi,
 >
-> Extract kho_init_high_order_page() to handle the refcount pattern
-> where only the head page is refcounted. Use the helper for folio
-> restoration that requires a similar refcount logic.
+> On Wed, Aug 12, 2026 at 05:16:44PM +0800, Xie Yuanbin wrote:
+> > Currently, memory-failure can be enabled without migration. However,
+> > migration cannot be selected by user when memory-failure is enabled.
+> >
+> > Migration is very useful for soft_offline_page(), which may be triggered
+> > by correctable memory errors. Most of the anonymous or file-mapping
+> > faulty pages can be migrated to other healthy pages.
+> >
+> > Allow user to select MIGRATION if MEMORY_FAILURE is enabled.
+> > Also, select MIGRATION by default if MEMORY_FAILURE is enabled.
 >
-> Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
-> Signed-off-by: Pranjal Shrivastava <praan@google.com>
-> ---
->  kernel/liveupdate/kexec_handover.c | 29 +++++++++++++++++++----------
->  1 file changed, 19 insertions(+), 10 deletions(-)
+> Do we want to make users decide if they need MIGRATION when MEMORY_FAILURE
+> is enabled?
 >
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 4834a809985a..e836efd98795 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -357,6 +357,24 @@ int kho_radix_walk_tree(struct kho_radix_tree *tree,
->  }
->  EXPORT_SYMBOL_GPL(kho_radix_walk_tree);
->  
-> +/* For physically contiguous pages. */
-> +static void kho_init_high_order_page(struct page *page, unsigned int order)
-> +{
-> +	unsigned long nr_pages = (1UL << order);
-> +
-> +	/* Head page gets refcount of 1. */
-> +	set_page_count(page, 1);
-> +	/* Clear head page's codetag to avoid accounting mismatch. */
-> +	clear_page_tag_ref(page);
-> +
-> +	/* For high-order blocks, tail pages get a page count of zero. */
-> +	for (unsigned long i = 1; i < nr_pages; i++) {
-> +		set_page_count(page + i, 0);
-> +		/* Clear each page's codetag to avoid accounting mismatch. */
-> +		clear_page_tag_ref(page + i);
-> +	}
+> Just make MEMORY_FAILURE select MIGRATION.
 
-That's sneaky...
+NO.
 
-The patch _almost_ looks like pure code movement, but then adds this
-little change. I'm not saying this is intentionally sneaky or anything
-of the sort, but these kind of things are easy to miss during code
-movement and should get a patch of their own or at least be called out
-in the commit message.
+Explain first why the hell one of the other options that selection migration
+can't be enabled.
 
-I don't know how page tags work, but IIRC when the change was originally
-added by Ran, he said that we don't need to clear the tag for tail
-pages. That held true for folios, does it not hold true for non-compound
-high-order pages?
+Changing configs just to support a weirdo no to compaction but yes to doing soft
+offline for debugging or whatever isn't really convincing unless a real world,
+sensible use case can be stated.
 
-> +}
-> +
->  /* For physically contiguous 0-order pages. */
->  static void kho_init_pages(struct page *page, unsigned long nr_pages)
->  {
-> @@ -369,16 +387,7 @@ static void kho_init_pages(struct page *page, unsigned long nr_pages)
->  
->  static void kho_init_folio(struct page *page, unsigned int order)
->  {
-> -	unsigned long nr_pages = (1 << order);
-> -
-> -	/* Head page gets refcount of 1. */
-> -	set_page_count(page, 1);
-> -	/* Clear head page's codetag to avoid accounting mismatch. */
-> -	clear_page_tag_ref(page);
-> -
-> -	/* For higher order folios, tail pages get a page count of zero. */
-> -	for (unsigned long i = 1; i < nr_pages; i++)
-> -		set_page_count(page + i, 0);
-> +	kho_init_high_order_page(page, order);
->  
->  	if (order > 0)
->  		prep_compound_page(page, order);
+The kernel isn't there to allow you to have broken configs.
 
--- 
-Regards,
-Pratyush Yadav
+>
+> > Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+> > ---
+> >  mm/Kconfig | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/mm/Kconfig b/mm/Kconfig
+> > index 8a24c130d008..b4c217383b51 100644
+> > --- a/mm/Kconfig
+> > +++ b/mm/Kconfig
+> > @@ -682,7 +682,8 @@ config NUMA_MIGRATION
+> >  	  demotion for memory tiering.
+> >
+> >  config MIGRATION
+> > -	bool
+> > +	bool "Enable page migration" if MEMORY_FAILURE
+> > +	default y if MEMORY_FAILURE
+> >  	depends on MMU
+> >
+> >  config DEVICE_MIGRATION
+> > --
+> > 2.55.0
+> >
+>
+> --
+> Sincerely yours,
+> Mike.
+
+--
+Cheers, Lorenzo
 
