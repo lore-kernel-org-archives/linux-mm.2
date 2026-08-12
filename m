@@ -4,138 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40EE2C5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 11:34:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64107C5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 11:37:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0CFF6B016B; Wed, 12 Aug 2026 07:34:10 -0400 (EDT)
+	id 263606B00E5; Wed, 12 Aug 2026 07:37:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE3F16B016D; Wed, 12 Aug 2026 07:34:10 -0400 (EDT)
+	id 23ABB6B00F5; Wed, 12 Aug 2026 07:37:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFA646B016E; Wed, 12 Aug 2026 07:34:10 -0400 (EDT)
+	id 177F96B00F7; Wed, 12 Aug 2026 07:37:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 97A316B016B
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:34:10 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3E4921A0359
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:34:10 +0000 (UTC)
-X-FDA: 85092408660.12.32A4FDE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 85024100008
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:34:08 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HWH8+Zud;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E2D486B00E5
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:37:05 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 88C8B1C0EB8
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:37:05 +0000 (UTC)
+X-FDA: 85092416010.16.DAF652B
+Received: from devianza.investici.org (devianza.investici.org [198.167.222.108])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 47C621C000F
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:37:03 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b=jmUgl7iL;
+	spf=pass (imf18.hostedemail.com: domain of include@grrlz.net designates 198.167.222.108 as permitted sender) smtp.mailfrom=include@grrlz.net;
+	dmarc=pass (policy=reject) header.from=grrlz.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786534448;
+	s=arc-20220608; t=1786534623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E7z+H0RyDJEX93yExKfT9hg5WojlT1zdJq1l8ERyIWc=;
-	b=lOXyaFRex8cfAnPI8bqAKXZ95Q1mKseN1foUHdweI5z89X4yyJePpuuFduW9aeiqNRomSz
-	6nNQNgg6xRG7o70RpnLRBmxc0lFd3oP55vk6ni/dmschPZ4hFRHEHs3YycluKkfPOUpvs0
-	ep8LMcxfhYAuXt8uhRY89kilrD0Bo14=
+	bh=zt5aG8T70pAVsz38Vf/LQqt7yVTDjwmbD2OUxXE/YKw=;
+	b=rq8bFCxVB9w/nnjRL71Ftp2OoaapzVPTRje7N89QjkrKr29xS5RZidZ11ZQZSsw/5ttyw0
+	SXqt2y//culMkuC3o3GrGNcsSF+Iws+N8Hbn2O4b4JMC1LKi9kXQ0GtS3Bxv8a3huMk9ed
+	KS6icLUzsLQeA/syKhiwx3K0ETSSj1Q=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HWH8+Zud;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b=jmUgl7iL;
+	spf=pass (imf18.hostedemail.com: domain of include@grrlz.net designates 198.167.222.108 as permitted sender) smtp.mailfrom=include@grrlz.net;
+	dmarc=pass (policy=reject) header.from=grrlz.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786534448;
-	b=NkjCtLeeOh7FtwwyWTJkVB4vHxbTYZG7/voufiBjyJp03yDH5nq7uVlSx9yBho5zj4qwXc
-	7w9ITEV9O2CPORH8J3wslRGP+yyxGNET3kG6Bs6eSqZiFYHBsL2CjlKur2zsMTEucRo/wu
-	H+IWAHi2Ayd7AujeWbADgi94Io0kLaY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 034AA60A9E;
-	Wed, 12 Aug 2026 11:34:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E701F000E9;
-	Wed, 12 Aug 2026 11:34:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786534447;
-	bh=E7z+H0RyDJEX93yExKfT9hg5WojlT1zdJq1l8ERyIWc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HWH8+Zudg5OBaZJSD7RU+A/ZnFocS165pqFBdzvxs/IHcVuvK/Pulap6KA0ZpVnX3
-	 eCFCToUaDAL/2KP4gGYEbA2FT1fRpf4iujeu7le0Bb9ysGGtDA51jIC37ULaIVZUFf
-	 hLPMgmLZm/n0zSQMq+gmVQaHrfk7jJ6tDJX107ib67Ij8JA1IpgFOQi4Pd1OqEFGfx
-	 oeq9+vV92clcA/35KTQwydUxltJ4j24vVcauOAAvni3BcTCLCcdBm4K3yRsuTfOkeQ
-	 CcUmB2qRx5eIqsXN0TJbOTL86PW0Ni2LLIz2uAsvC7tULX98rPyo4ullL8hCNrxOHq
-	 fRfyseknZbWDg==
-Message-ID: <2ad991b7-41f6-4138-9cfe-a7da15097954@kernel.org>
-Date: Wed, 12 Aug 2026 13:34:02 +0200
+	t=1786534623;
+	b=o7L6M2nEAJnP/C1OP1zq75kZ4GJL9JQMaW4kKZkSkmTFAwSMsCFJEv4weT/OXWNqHUjdu/
+	9KA/0IO9uNPHLybRXG7dLezuf2faS0Rwmh4JalXe+z5yzueyImpQQmYy9Nwp8Tj+oZCen9
+	4etzgLDLc+osIEMmKG6hdYKpJHjutQA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
+	s=stigmate; t=1786534620;
+	bh=zt5aG8T70pAVsz38Vf/LQqt7yVTDjwmbD2OUxXE/YKw=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=jmUgl7iLgfoUTZ1W8XhpUyUvliTn62FHeVsiCG0Z/UIJ61ojEssIleUCeHJiV0KQU
+	 4oryrUMBdJkrk/FWrelE64YPMAu7FQKIr+CYhS2RtF7SRQ6xUrQ+6QcLU+j6mlA8X+
+	 Do8TfjkyyO/aXIfS606LkNQrwlIw0nbvgzmTmueQ=
+Received: from mx2.investici.org (unknown [127.0.0.1])
+	by devianza.investici.org (Postfix) with ESMTP id 4hKmg01XsJz6vGx;
+	Wed, 12 Aug 2026 11:37:00 +0000 (UTC)
+Received: by mx2.investici.org (Postfix) id 4hKmfz5Q9xz4y6W;
+	Wed, 12 Aug 2026 11:36:59 +0000 (UTC)
+Date: Wed, 12 Aug 2026 12:36:59 +0100
+From: Bradley Morgan <include@grrlz.net>
+To: Breno Leitao <leitao@debian.org>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>
+CC: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+ rmikey@meta.com, riel@surriel.com, kernel-team@meta.com,
+ Kiryl Shutsemau <kas@kernel.org>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v6_0/2=5D_kexec=3A_keep_the_ne?=
+ =?US-ASCII?Q?xt_kernel_off_hardware-poisoned_pages?=
+In-Reply-To: <20260812-kexec_posioned-v6-0-e477887086f0@debian.org>
+References: <20260812-kexec_posioned-v6-0-e477887086f0@debian.org>
+Message-ID: <6D17A62B-3124-492F-9593-63F857DD475F@grrlz.net>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: add drivers/char/mem.c to mm misc, memory
- mapping sections
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260812-add-drivers-mem-to-mm-maintainers-v1-1-6218b861f4c8@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260812-add-drivers-mem-to-mm-maintainers-v1-1-6218b861f4c8@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 85024100008
-X-Stat-Signature: 7z4mhkhnbs7i34boh16qjhx1aojjecjr
+X-Rspamd-Queue-Id: 47C621C000F
+X-Stat-Signature: tahnfo1n7ytkhx5sy149iu36wmdaiij8
 X-Rspam-User: 
-X-HE-Tag: 1786534448-47308
-X-HE-Meta: U2FsdGVkX1+mFB95Jt7yOjd0OdaR8ERHRgOiKAC7apJo0UfSadPQUJKMJ8nFHanIfEVLktJ/ylBXO3tzDoN0yXVkLFl6Bh3IR8XIz1P1BgVwm7qpOhmDGGaChwWnTELJ0hD90q8dLRci7TEondGbX905kJkFHcziyl7wEmmNh50kWhmyNGPr4RuNKrkjcvJIA7q9lgvINBsLJD0JNgga63GwM1CGbE63CwLS4x6XvWCSd2HCNOTsAUQSGTPnW+3HuP1rzAO9P7DR19AfouLZ2brVOn6FOCiDGG1vhB2IPsA2LJU3mnFHp5musUMIJx9/vRLZ5A/fyPS93ov3z9/32nhWfb5SxIwBpYYbh9O14cSgEAUpOzgzqxGla7ByxCY3jSRrUziThCXcJifPJ7Xjxq+yfP2Fkla6xuhBmErxpaesE4+E1D5JA0lmTBiZeThxoVOXd/uNtMGfVmzdrGW1e9Gke6yfqcJxUQqGbeYDfsxrP0i002C/vM+mufrC+9BjUEfeusBW6sztx/je99A8Nh6BarOgh+cwU+ns0Rr9v86fyEIkVP3kxJGbsE38KprNAMB6k6MxA5XEyOgzt/cJD1APbvCZQbJgILg6etQxb2Zk704m2Thb5+uwgQ0dg6Zr3F1Vkd/PXO6u0+Fqti5pja/4F7+83GaszLaGcEEhfyuyQC+A6cTlWz30ev7HAK+xDUCxQQWyC4iPOseU4cP2jGJ8aNgdopBcdv0RJNwkKCcTHGMPgp82Zoww2lkR8ria0EbYholxMXvM9OU3JOE2pSAzaPpmOzrVq4b8C8WvF1E64ZZZMsxwcNfO+d7vO2D6pmWwZdwzeugCeJr/ZRNeyHZ6d945CFLdykN+MYNwpyShiw8dvAWZ5NfPUgI7PlWuflv4ZKZGjWY97FfiiKX5N1C1EEQ7BtVPLsMzXcCJLQQvWFr1MfD4WnTRlXsk791V0poOULkMk00KBdxq5OV
- khVL7sus
- VKKbdkjYpVghUXQP2I9rlHmq/oMCn+vkABwhCcs4A0d7H9mb+Yu0iYg16T/HK/6rObEYdJi9IU9KsxBw6f7zDn5+GH24/pWjI+ORR52hgQ/Y/BpQrtB1k1Y5tIbeKJOcVFttUeICidIG79oJSId3xp+3diBXMHj8/xur7HuKCKAeqkTBQyQKA5LD72llvkG9p7aDxtwFLSZNSyEK/v0zIG0oTEpz515UxuingXSUgt0k/RrbAeKVDAZvhetv9hxCwj7FuwPCu3R97zWzgIFjJAXfEzQ==
+X-HE-Tag: 1786534623-786999
+X-HE-Meta: U2FsdGVkX1/6xJUKIMJRkxLQCeCQU7s8mUxf4BEISyP3yXKzxSAhfrISErtLSutFc9qP4H1ffWpwwD/alOPqBjGv+o7uYSR8bvv4qvi5E1P5uMUihAR1nKVXOJ3gFdSzq0GbGld/Fvz6yy0ELWkUpHK1hvM9t4s55leEEOtO+thx0P8uJLdZvCNKAkJ/WWCLJd+nLNz7tLCcUIH3NNVdo0vydYwQUOrh82JB94Bmfuji1/46h0DVggDXiPbAjyfiqVsHJQOAAgkn8Rwdzi44ZIYbv8CNqOP4EC+XRIzlEXU38fKqhkhlnfkMcCxVYkUUWOG9WN2h+odnWWdjUF7O0/xjwG7pYqnOFQGzWNgxi8auFtIz/HF+2W9L7GHGLFMofdSlhviZdytQm/JXbH/13/DRQR9cHgTKLkKBHIhxK9iQu3koHMGi1LxnezKrRCsPfvNciz17lRfmBUgPrOO8NwSbkkHrTojPqT8GoqnbjjMRzd5oS+klqpSloda2aF81bpgdpPCzC27bwmJP+HbJQb6fnibFPxV9gEyEwWdjn5GXmlEfdP2ZymvJ+wrAx/ZdHHD3wEHvMcTavNJa1Y37gdOSN0nfb29YeZohWccMaHJ/ohrOOcfdT4z1iS/EsceqDSzMgdESrdGpsXtRs/bOipyo/qlg63hQtZQp2sSFi3/MBCY7bQ7OkV04343doTPV8qhYoUvaPRqO8K3TnTkQ0FIysFX0slWdpazCllpfYSIyyWSFaOCo8QB3X1rTY9Z6r2RRs99fg4S+as+40nFr6OpKJ9Fm5ZXTit4O9nXMBpOIvORFCdnRSvcRtMLMD5sgPh4u1z6VIky4E0R4LMdXpxeuLbJ2roQIq3M0DGdV+iO+ik2RvR2yPDGhTHEBiiAwOXZfzPjtSI/KwIsPwLSFFu32kRaqB1OUFbDcmyIg88jIn9LoIrwDaReiRZKQ4lrVn+m4aPTDRjZa6PCTzid
+ gQraU2HZ
+ 2+GtPczkiMvp3fJZTc7O1nhpJwRFMKogjxnckGVv94TFfoP/aINemmcbk0r62AJk8aCEd1yekJDNo6THw6Ucvg30hFZT5b9IUACWe78+wAsKqYOCEJGXETo8Kik3EibFcY9O5Tz+og1UNqkmw/MxRqaG5BPP+teVwdHL+QbMw9bU154vfDtnHciOcHM9xdIVVx1WLdSnQBwroxMvf2nYRFx0Avn91XZuRmEbLE7TV8WzeXoRBo0Bcc2qSt6sdpMznobD/VVm73WUWn92V/Y9mbDVkx3LIDHzSXTLtqcUlEFcf53gQc9etkt+dBq0Z5Sidk7rGdcEl7ndJMeStm5I9u2xGlz5KVFHXoEQRUtk3tkdtVfGU5Zj1vO82SMDaNhtzYMoFJa37Ibrjtb5ZQt3QGJZWCDSdYSfaaE1hINPmd5aBLRJ6fzx7zqvgflJOCkgMbGhD+B8YVAOl3mgCgMDYxtHGJeF+rRd2mMsTQ5LyaSBYUcnad+0u6uMYkiyJmuFsyNfwJV2c1YtqkQk0K9OQqzNHHBDv7zLRrC50tgSp3uG54dG8upJJg8VdSTZtSMtUhzK5CWrCeluvuxvEmA7IhJ1rRwB9G7zkom6ya9jyZ74O4NmN4CvzZ8mpoYh9iYj0qS88JPTPvwANDvqh0qk7Ywey4t3Br12EUzuaPraLYe1P0hZuvfLzjV6F37qPHHvuqU1WyYTgtxOxtPEn4fpESeBVoWQM5Iteu+rJxRjuOHJ51oZaSZDLWSuieVP/6mpMizKH9mn3e1O7og74a979bOZyTyb0zzJqtw2caLgO2yQIVKuWMop1v89gZ7bb5W22OtFjQLjjhaMPgZ+7XaobgjoWs0pZg1iIgISkJw5JsQBlYD+9FUKd73/p0mr7iZvceu/nSPgsSovzJEt8ANUH45j/RtclihsC4e61bQ/dTxve5BmbUlRlO8wAMxbvGjD8Hj2JXH1NK2TLR8oahjDcuwebISYw
+ L5GqKAUo
+ QLBXa2hTjhH65x2KBuVaf8+Lp9tbEboNC2tjASN+/IlulyfFlTUpuDlr97Qz41LC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,27 +100,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/12/26 09:43, Lorenzo Stoakes (ARM) wrote:
-> This file is a 'special' driver that implements /dev/zero and /dev/mem
-> among other things.
-> 
-> As such it makes sense for mm to be cc'd on mails and to have some say in
-> how things are changed there, so add it to the mm misc section.
-> 
-> Uniquely, it provides the 'old way' of obtaining an anonymous mapping -
-> MAP_PRIVATE of /dev/zero - so is directly tied to memory mapping, therefore
-> also add it to the memory mapping section.
-> 
-> scripts/get_maintainer.pl copes perfectly fine with files in multiple
-> sections so everything should work correctly.
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
+On 12 August 2026 12:31:50 BST, Breno Leitao <leitao@debian.org> wrote:
+>Memory failures are common enough on large fleets that kexec regularly
+>lands the next kernel on a frame the memory failure subsystem has already
+>marked bad. Patch 2 teaches the segment placement to avoid those frames.
+>
+>Patch 1 is a prerequisite. locate_mem_hole_top_down() walks candidates
+>downwards without ever checking that the subtraction stays above zero, so
+>the walk can wrap and report success with a destination outside of RAM.
+>Patch 2 adds one more downward step to that loop, so the bug is fixed
+>first and both patches rely on the same bail-out.
+>
+>Signed-off-by: Breno Leitao <leitao@debian.org>
+>---
+>Changes in v6:
+>- Split the pre-existing top-down underflow out into its own patch, and
+>  drop the "if (poison < kbuf->memsz)" guard from the hwpoison hunk now
+>  that the loop bail-out covers it. (Mike Rapoport, Sashiko)
+>- Reword the changelog: the MCE comes from reading the poison back, not
+>  from the relocation copy writing it, and the placement paragraphs read
+>  better split up. (Mike Rapoport)
+>- Move cond_resched() after the struct page dereference, so the scan does
+>  not yield between pfn_to_online_page() and is_page_hwpoison().
+>  (Pratyush Yadav, Sashiko)
+>- Keep cond_resched() per pfn rather than batching it. (Kiryl Shutsemau,
+>  Rik van Riel)
+>- Link to v5: https://patch.msgid.link/20260810-kexec_posioned-v5-1-95e1b5e2e656@debian.org
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+This is a two patch series with one patch, why?
 
--- 
-Cheers,
 
-David
+>
+>Changes in v5:
+>- Return -EHWPOISON instead of -EADDRNOTAVAIL
+>- Leverage is_page_hwpoison() instead of per-page check
+>- Link to v4: https://patch.msgid.link/20260807-kexec_posioned-v4-1-70d57f14625d@debian.org
+>
+>Changes in v4:
+>- Anchor the top-down hole finder on the first poisoned page in the
+>  window and the bottom-up one on the last, so each jumps clear of the
+>  poison in one step. New range_first_hwpoison(). (Kiryl Shutsemau)
+>- Count a poisoned hugetlb folio in full: the flag lives on the folio,
+>  not on the subpages, so the per-pfn scan missed poisoned tail pages.
+>  (Kiryl Shutsemau)
+>- Link to v3: https://patch.msgid.link/20260803-kexec_posioned-v3-1-83aa6ede0351@debian.org
+>
+>Changes in v3:
+>- Return the address of the last poisoned page in the range, or
+>  PHYS_ADDR_MAX when it is clean, instead of a bool plus an output
+>  parameter. Renamed to range_last_hwpoison(). (Pratyush Yadav)
+>- Add cond_resched() to the scan loop, as a segment can span half of
+>  memory. (Sashiko)
+>- Link to v2: https://patch.msgid.link/20260730-kexec_posioned-v2-1-f92d18551f64@debian.org
+>
+>Changes in v2:
+>- Change from pfn_to_page() to pfn_to_online_page(). (Miaohe Lin)
+>- Return the poisoned address once we find a hit, to avoid the O(n^2)
+>  rescan. (Sashiko)
+>- Link to v1: https://patch.msgid.link/20260728-kexec_posioned-v1-1-160c81d180fe@debian.org
+>
+>To: Andrew Morton <akpm@linux-foundation.org>
+>To: David Hildenbrand <david@kernel.org>
+>To: Lorenzo Stoakes <ljs@kernel.org>
+>To: "Liam R. Howlett" <liam@infradead.org>
+>To: Vlastimil Babka <vbabka@kernel.org>
+>To: Mike Rapoport <rppt@kernel.org>
+>To: Suren Baghdasaryan <surenb@google.com>
+>To: Michal Hocko <mhocko@suse.com>
+>To: Baoquan He <baoquan.he@linux.dev>
+>To: Pasha Tatashin <pasha.tatashin@soleen.com>
+>To: Pratyush Yadav <pratyush@kernel.org>
+>To: Miaohe Lin <linmiaohe@huawei.com>
+>To: Naoya Horiguchi <nao.horiguchi@gmail.com>
+>Cc: linux-mm@kvack.org
+>Cc: linux-kernel@vger.kernel.org
+>Cc: kexec@lists.infradead.org
+>Cc: rmikey@meta.com
+>Cc: riel@surriel.com
+>
+>---
+>Breno Leitao (2):
+>      kexec_file: stop the top-down search before it underflows
+>      kexec: keep the next kernel off hardware-poisoned pages
+>
+> include/linux/mm.h  | 14 ++++++++++++++
+> kernel/kexec_core.c | 10 ++++++++++
+> kernel/kexec_file.c | 20 +++++++++++++++++++-
+> mm/memory-failure.c | 40 ++++++++++++++++++++++++++++++++++++++++
+> 4 files changed, 83 insertions(+), 1 deletion(-)
+>---
+>base-commit: c5e32e86ca02b003f86e095d379b38148999293d
+>change-id: 20260727-kexec_posioned-72bb0a4143a0
+>
+>Best regards,
+>--  
+>Breno Leitao <leitao@debian.org>
+>
+>
+
+Thanks!
 
