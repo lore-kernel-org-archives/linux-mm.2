@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C186C5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 23:46:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AA50C5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 23:46:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EC746B0184; Wed, 12 Aug 2026 19:46:51 -0400 (EDT)
+	id 58C9E6B0186; Wed, 12 Aug 2026 19:46:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69D866B0186; Wed, 12 Aug 2026 19:46:51 -0400 (EDT)
+	id 53D116B0187; Wed, 12 Aug 2026 19:46:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58BD26B0187; Wed, 12 Aug 2026 19:46:51 -0400 (EDT)
+	id 404FD6B0188; Wed, 12 Aug 2026 19:46:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FC566B0184
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 19:46:51 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A3D3E40546
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:46:50 +0000 (UTC)
-X-FDA: 85094254980.11.3A27562
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E8FBE1C0008
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:46:47 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=uPrEfiSl;
-	spf=pass (imf20.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 133A16B0186
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 19:46:55 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7021940542
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:46:54 +0000 (UTC)
+X-FDA: 85094255148.16.12B1A0E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id EF55E40002
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:46:52 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M3RMi0eC;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786578409;
+	s=arc-20220608; t=1786578413;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1kXvgWAnKqLXP7Mpf4jm46uSY4fg6EwwBH2E+vniV1M=;
-	b=GJ8nqFDhnYEjTzc2WQKYk73dqqAIey2tPkrq52NFss3hneztVbhZmU52mQIUwxN3H7PFyQ
-	l/+dNhiS8HDAxyoQXf9Y6+cRhEgNvTv7y1c6IF0NOKXpq2P93SHWKH6s78oESdCsoKMj2c
-	drMgLnkAXwXuRiBGMAS0yWqpYwtEEak=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786578409;
-	b=AtsQmHEVwhuD/xlMooSINMScgsCZYiSZOGTg/Js+E19mR2q8gFa+6Vt4C8kaBjgWoPjb25
-	tDFGNWcLY2uOTP9i9db7m6vhFMZFucQjO1hId2dGfmHhR2+zsYCfms69uAQP2pjh1jnEg+
-	YTdv1+IX2slzzw2wZXwvlIBVdFCJyzk=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=STEyH6+S+leLoTBGNeAGk1gjokdgn1DVinq83zdPlOI=;
+	b=Iq74OBXlacauuAmBBbYNhMrsPBXzEosRn1xETS92IyUta0ToChX0STSTAgpc+5YFcJdg0g
+	1EyIvmDINo30yXKWTECohjiblNiZOskq/ocYSMxu0iePAhmEUnrCutkZPcfJ245OPgiaBZ
+	3deX1TRL1ah0zlHLY3qnWH+0rPC6I1E=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=uPrEfiSl;
-	spf=pass (imf20.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=1kXvgWAnKqLXP7Mpf4jm46uSY4fg6EwwBH2E+vniV1M=; b=uPrEfiSl6Z3tixJX6/YYg0q4yD
-	CopOGYt59uJlUwLrw9EbN8U8JbpyZXyIw0nnZf7TTHFn6/nOloQbnyuu+kjTc5boQJc9mFovKTVIQ
-	o4DgezBGuu+6dxMFB8Y0iz9ILElTG3BCUFjotJzjCdakbYAEIBLHatNx/PgdlO8q1io8g2r7jBuWj
-	v+IhOw+m90tjyEFOAArQo8JEzJwn+1poq0fi72FIBVAGtkwS8cebLxbZ6Zl4WXEagYVDCMMD1m+7/
-	Fr6xVcAMKOTIXtuMvOyQRORgtyp2D1YvZxhCVO85vfc0VbtSxK0KrijVoLaVqv/CrxSwzFo6gnmP0
-	W7qpZDPg==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wuIej-00000002jNL-3qxu;
-	Wed, 12 Aug 2026 23:46:45 +0000
-Date: Thu, 13 Aug 2026 00:46:45 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Subject: Re: mm.git review status at 7.2-rc7
-Message-ID: <an0F5e6I7OJWTCLa@casper.infradead.org>
-References: <20260811205836.59301ca91b65781c6292a439@linux-foundation.org>
- <6023e19e-32b1-4110-b9ce-5063f7976108@kernel.org>
- <4535a2ca-d145-48b7-aacb-027e9ba258c1@kernel.org>
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M3RMi0eC;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786578413;
+	b=HtBxAd3tR3Gj9WIIHhXMkDa0G72n9PPvyh+1eMmdgTap0pZOAbq/WInA3/d3MVOolKFenf
+	j55VU3eMDut6aYgr7A2Wzjf0RR8KaOxUl1AaR2aKyHheq5BD3fclVIYDDWPRFj18Iat1+E
+	EudtJQuA1z8oNRoWVk9a7ZO5MPoX2po=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 703BF600AD
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:46:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 070301F00A3A;
+	Wed, 12 Aug 2026 23:46:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786578412;
+	bh=STEyH6+S+leLoTBGNeAGk1gjokdgn1DVinq83zdPlOI=;
+	h=From:To:Cc:Subject:Date;
+	b=M3RMi0eCmHEW/N9RfgKNEe6lXHdIEpNYSTepzFpTd43JcPRHvF72rm7oxbktz6C8t
+	 bEGFGe4vm0RI4WHbYgED/j5dE99qxKuSaXE/QSZhAoWb2TpaxJZFTgDLhzRWTNkVXl
+	 NpHZxoGScnkFQ3p+ztr9aVLvtBHRtimRI36vgyTh8Re7ZVwRXmFpcTsIz0MSI5UY35
+	 zOajhk718/au0hw9wXd5dIFS9eOXetMSsQic1ejVNh4b0IMI1FFgIsM77MoKybHH/6
+	 ZWzog07G1bgLxNDnkmSbWRv8xYLKs0jv2lnJMUFoXSF+FcyjyctTo/5J+3QWZgCLPT
+	 Yg8PASndP6x0g==
+From: SJ Park <sj@kernel.org>
+To: damon@lists.linux.dev
+Cc: SJ Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: DAMON Beer/Coffee/Tea chat reminder for the week of 2026-08-17
+Date: Wed, 12 Aug 2026 16:46:44 -0700
+Message-ID: <20260812234644.128198-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4535a2ca-d145-48b7-aacb-027e9ba258c1@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 3kukhsaihjx9j56iqsfchbtmd31hwd6h
+X-Rspamd-Queue-Id: EF55E40002
 X-Rspam-User: 
-X-Stat-Signature: x7n1gwmkxa6kc4i68zrwgzmioksgdzuk
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E8FBE1C0008
-X-HE-Tag: 1786578407-238839
-X-HE-Meta: U2FsdGVkX1+fTEu9aFJJBL1Z8bbbUASun0674qOTm3IzJxi80WjcC4wM96ugQIVEnqckJZHpbAct1i5dmqjwY3/jB92izMmo4ileiiVmB4n49cy2r3RMdgcYXlDiVhAlxQ2EFDKbdXrs+VZLGbdawd8RM0q4VfGbYkblvf09StsYGUBO7vz6nZHKQJBnA/JvN8Nj6RtwWhdSTnF1TD6j2ANSjjJvHULWQfwsam8q7FUzEj8p2HtpGHwmjQhI7MBwyg2H/HwYiEW80pIJWLKB6hbEL6uSJ7NrSVepW1B0NG7FDmAGJBtN2bj5TGqY4H8Xhp2kaKqys0ETwOlcwN5cqMtKcXAPIrfLXnRuKyt1RUtjyMIuyDNau8mRiJvUrRgWBie5F3+zoe3zC0ZW9Ylu3ZreXHWpdbcD826XROqhxZaGn4256Q0Cx5N6WVhbG5iferclrQhnS0eAYlcsr2G599Uy2WK24gv1CjcshJ6NkYCHhE7DakB+4ZDctTsD0ofy/BDcpEW7ZSgfvB6sK15RH3rYtEOKW0uziAIHeEiXrQWvPC+zjecujLptcEtrPo271THLbCXVBt671SP81YPGHbFpHhjipK7vuYljqD6I041K7mMW6NH1peDZtMX6gR20E37hB8NF/KdK3baaYDAjJOE5gTwcS0XnPbGGvgD63cHxLYRx+7ma6YdaHB8b1YR2Lw0FaccwkTHEMM0V7hhd+htP1tct6D7xfv2f0HdjZr7UqdxaGHdLdziPkulNvSlTeiOzXJPEV1DZDoFXePb8FXwEfiQ2bVj6D1DFNGZ75/WL1PMjMEcczHFIEnz+3KEV836BoFPWOQ4W/ye3gZeFiPy9DGewDX2F6jZeOb6zo9V8NhQmBvp6aLPBXwJa8cX0v1vXlUmYHH8QvWf+dMjRo2jKIGKi7cunikHDJW8ja2EXbmQRPQXS1lXyZkz7s7+dEY2TjR0M3HyZ+ojCkz0
- hGo4UBie
- txgETn/oB6iXaHQMZJHX7hs1MqSjvj6c8O5jlnVmHpD/S8oIjQ0JXNeqhRRNq6z8ZfOfQf48MF2NiqpHb7OLcZGPLdgpXFvPrb4Sw15Hysigf9tldRWgKISZK+r6K0aoxw97DJwTuUkdRNFqtOJ4GsJCYIZuRRNGhipGhhqkQly8OOUCwTsDhd/0ntZhjG5DkQ3kdoopPQzhw2QIszojN/rJFHAR3gQDXb4CnzRbOSNKKyXceY7acgOnRCC9Tzg+ViCQ1ceSQKDN0CYIDgpsy1bnJbhX8JrwzEn5MzlvEZD6f8Iyf6UX1U2n4wwa6uOCwrMgZIzgj1Y52f98=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786578412-252794
+X-HE-Meta: U2FsdGVkX1/JluhlT7FRsDefOlnUF6i7EHESdEqHeyqgXTMPL/TBNx0Oa9QMFJEs26BKOq0ixTA223SizlMiDoYau1RSkVvk2biPOSV1MS3KG46uCBmc9bWGtPekVUzlC3DDqLYgCDh9QqnXURNi0UJc8RMFXsqeKi/so35rMenJarQ05CvgIfKvViSfuzDIRiHIY+RqVZXMTd3lGs7fMZPihnxOW/hNLqSL1YJ/TXrwgMoQPOHSTgYNEk7+djklxCr9feYAF7bNjfvNFlZ4xyHlUCZ2b6KYKwZiJWNgKUUAZ5ZYCYQVhDpvRoWCDq7E5p6iqEjywykddpeKt1cAMMm8h/y1baLkXKqSgvpBJce4EFPjJz/DV1werDWxroR5z0Z+QU1PN2SGX+PqYrWepLifbLx79+69c2mWbnoJZz0L0HJXP2BjgeerCcGuYSi/B8YKLje8zPqo6AgJ17pDphGr7EEY0/PaIZ8xxnLOV7BXAoh1yCcuP6SJ+PmiViAnyyxZ/6cDFd4P18zvoMOqz3ofB3+Tgho+Z3mNKb88EeU0ky/yomNaObg7BsFJKV72+YbzGPcua2oF1xuq7/nK/hZKn0yR7uxcgKRK71wLQ9QwAScS82+bKZZNG3zr10ATlpJM1onNEsy5x5EsiKoO8FzvEpaRa4cUJ4FpwqYCR7oc96j/sYjQ0EToFMlDtRnjM09P/kfK/YUPvUjKyHfs4ing+DJpuFPuHNoeFkhXMzzEvp3IBb2GubKRlKIYFwWXdbeM/5fE4krp7RxvneaKTGB5PQiPyBTg9+TvieBn91JmzPPeKn32UJg9sS0Rdif8yu0ks9b3XpkBOIlkHKNKVz/aP0xdYXoj//NJ5gS1YEYVS5HUyUesrtaJzSyXj9hGRKgAnqeh39HMI4CuGogIW1HfwjqAiogCtmExNvW66Todys5bYA7CUpPMfFSRVScfLJWscR315L+jRhCv45I
+ eTpPOkHf
+ dqIcG3h4J6kxP9v362x3Esb6KpYtf/xPwo3DBMbw0gFtRc2QdyXMeSPRumV1XsJrJDDnQ0mwNSeapcoNxUnOr5I464UBKfXZUbHyI6stBScA4XGBMKgSwCQ8VEuXHUDcyrPmA6BaCDr2XtzP4lRZe0TTJ4WHKJE1pLJMjNI724mxJxnB+f72uUnEbo3QBR/4Y10B1Rd27mEJBA9NDsifjQ7DLE5JsaSI8GPewX1YJhs51xA+fr4FnMOzq5X8rPhGeW2U1/sKVgZ+0scYBJpadFJXoXF/xaK5TQFbKb3DlXg0RxrWACDDI7uLT0nycXXxo9xLzqToI+99BXv8aoVxlYAM0/Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,33 +89,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 12, 2026 at 10:37:13AM +0200, David Hildenbrand (Arm) wrote:
-> > We really need more maple_tree reviewers.
-> > 
-> >> Lorenzo Stoakes (ARM) <ljs@kernel.org> (6 total)
-> >>     "mm/huge_memory: separate out CONFIG_PERSISTENT_HUGE_ZERO_FOLIO logic"
-> >>         Link: https://lore.kernel.org/20260730-fix-refcounted-huge-zero-v2-2-c5d8a41b317f@kernel.org
-> > 
-> > I want to review that. I am still not convinced that we really need that right
-> > now. The fix was the important bit.
-> 
-> Oh, good, we fast-tracked an unreviewed cleanup as a stable fix upstream.
-> 
-> What is happening.
+From: SeongJae Park <sj@kernel.org>
 
-Meanwhile a well-reviewed series which includes bugfixes is apparently
-not even being considered for this merge window because I spent a lot of
-time figuring out what Sashiko was concerned about?
+Hello,
 
-https://lore.kernel.org/linux-mm/20260805210557.1118966-1-willy@infradead.org/
 
-This was originally posted 5 weeks ago (ie when rc2 was current), so I
-don't understand why it's not being considered.  It's been tested by the
-people most likely to uncover bugs in it.  It's not going to get any
-realistic testing in -next because most people use neither hugetlb nor
-hwpoison.
+This is yet another reminder of upcoming DAMON Beer/Coffee/Tea chats
+(https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing)
+for the week of 2026-08-17.
 
-There's a bunch more patches to come, and getting this batch in now
-would be very convenient.  Otherwise it's going to balloon to 30 patches
-next kernel release.
+As usual, we have two time slots for meetings in the week.  The slot for Monday
+is already reserved, though.  Next six time slots are as below.
+
+2026-08-17 (Mon) 18:00 PT (reserved)
+2026-08-18 (Tue) 09:30 PT (not yet reserved)
+2026-08-31 (Mon) 18:00 PT (not yet reserved)
+2026-09-01 (Tue) 09:30 PT (not yet reserved)
+2026-09-14 (Mon) 18:00 PT (not yet reserved)
+2026-09-15 (Tue) 09:30 PT (not yet reserved)
+
+Please reach out to me (sj@kernel.org or whatever) to reserve the
+not-yet-reserved time slots for your topics.  The reservation is made in a
+First-Come First-Served way, and I will send a Google Meet link to
+reservation-confirmed attendees.
+
+Please note that other time slots are also available on demands.
+
+Shared Calendar
+---------------
+
+You can get the schedule via this shared Google Calendar:
+https://calendar.google.com/calendar/u/0?cid=ZDIwOTA4YTMxNjc2MDQ3NTIyMmUzYTM5ZmQyM2U4NDA0ZGIwZjBiYmJlZGQxNDM0MmY4ZTRjOTE0NjdhZDRiY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t
+
+
+Thanks,
+SJ
 
