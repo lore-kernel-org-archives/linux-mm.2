@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E65E8C5B567
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 05:41:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28B85C5B567
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 05:41:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4E5C6B0088; Wed, 12 Aug 2026 01:41:02 -0400 (EDT)
+	id 2894E6B0095; Wed, 12 Aug 2026 01:41:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFED96B0093; Wed, 12 Aug 2026 01:41:02 -0400 (EDT)
+	id 2618E6B0096; Wed, 12 Aug 2026 01:41:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B14A26B0095; Wed, 12 Aug 2026 01:41:02 -0400 (EDT)
+	id 19DE26B0098; Wed, 12 Aug 2026 01:41:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 824F36B0088
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 01:41:02 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ECF911602FE
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:41:01 +0000 (UTC)
-X-FDA: 85091518722.11.3C1D607
-Received: from out-182.mta1.migadu.com (mta1.migadu.com [37.59.57.117])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B528C1C0007
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:40:59 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=I5pWdTs6;
-	spf=pass (imf21.hostedemail.com: domain of hao.ge@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786513260;
-	b=DXmYAeCAVWtEg72et+JhEsPLl7ZlcJxk7VpLcgUJbNvq8hvjbYJr8JCww+K/C6uqLieMnb
-	C8DsrZmYaO5H/H48EVmi+Cv8Z3zoUrBIsNYe6bBSy3XXooAUjbrZiVbLjnLkSoy8tggRw8
-	hv68YEGbZxGPzceJnsazBIDwtzrVAx4=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=I5pWdTs6;
-	spf=pass (imf21.hostedemail.com: domain of hao.ge@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E32D76B0095
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 01:41:06 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5EA494033F
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:41:06 +0000 (UTC)
+X-FDA: 85091518932.07.CA7D07B
+Received: from out-171.mta1.migadu.com (mta1.migadu.com [37.59.57.117])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 4218FC0008
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:41:03 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QrHRZra0;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of hao.ge@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786513260;
+	s=arc-20220608; t=1786513264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=tgUVbxAMqq9eyDnj3cSJELw1GrjSzVkJC09UC840utI=;
-	b=rqkwqjw8/zzc/2fO0nyfikPlX1xy/GGTKneikXGHsP2ZXNWcuSB4hg/qhuzPSMJ2bJ9nlL
-	1LvraHxML/e+WmJGCpDbEfqQyM/6wbxO0IXPM2oqO4sgFQK6qyZF3vTiNx0JIDp7GGPCKI
-	rwB5dp90v2iCFd+RSMhO1Gbjrm7L5EA=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bJefnKdyyVU6NP3rSxhHMvWH6C76JvPIyTZYHfrF4TA=;
+	b=wnPmYm2vdreF+VJ1FvKoh590wbVaAJwZPxbbOeHg/jhEwGujq9jeOCyaZFjM4HAwyXHbIe
+	11ZlKwnWEhK8QFSg8nB7c9wFqFNcGS/pOHX2CM4dgzGiXhfAGK3imyI7KEIP/97m8JIbP0
+	pfuAltWveECVM6VAD+5ga1yIDUupFNE=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QrHRZra0;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of hao.ge@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786513264;
+	b=rCWiUOqd7Z34r9UbnawLlvubMkSxfsIfTMBLODSj2gkJvrioojwEjYPVSDqlmKzyZUJWHX
+	ZUGXakHuEN7l6/OKkSkoV8NE+Hqv+Kylm7wCnr5qADa/klcE9OvADxY6XPO5KwAsjWe4UW
+	iq2TZ0b6voHSw9zCK55w6niOjxPjTyE=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786513256;
+	t=1786513262;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=tgUVbxAMqq9eyDnj3cSJELw1GrjSzVkJC09UC840utI=;
-	b=I5pWdTs6iR44KCPchZFhbtaRPzzGzUHmQ//szAGW4Se8CL4a2SKesOe+A7bcEfGxIPpkB1
-	0r1Clyvu8DuLDvuA0qO63HmxVfA5FtapuDd8Uod6UMd0p8Hmw+Lp8thxh4EpZpEllPNgZp
-	h+4EntL4Ely3UAj0m0O0CEb0RIcYBCY=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bJefnKdyyVU6NP3rSxhHMvWH6C76JvPIyTZYHfrF4TA=;
+	b=QrHRZra0d0oMGEigxQe/Homsx9vdjks6wFLQ1hFnx/AzQPiam4RRF32oxnU9JqB9+pF861
+	eKbAeAGGchjXgw2qQpcl50hhXLwiIZF4Pu78nuy7A3hzOvtQaE6wLy/XrxMNuLIb0Zfi5r
+	vl+tD5IQW9MDinWepMWCNp8CYs+SYeo=
 From: Hao Ge <hao.ge@linux.dev>
 To: Suren Baghdasaryan <surenb@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -69,21 +70,24 @@ To: Suren Baghdasaryan <surenb@google.com>,
 Cc: linux-modules@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	Hao Ge <hao.ge@linux.dev>
-Subject: [PATCH v5 0/2] alloc_tag: fix undetected compressed tag overflow when profiling is disabled
-Date: Wed, 12 Aug 2026 13:41:03 +0800
-Message-Id: <20260812054105.102637-1-hao.ge@linux.dev>
+	Hao Ge <hao.ge@linux.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH v5 1/2] alloc_tag: move release_module_tags() above reserve_module_tags()
+Date: Wed, 12 Aug 2026 13:41:04 +0800
+Message-Id: <20260812054105.102637-2-hao.ge@linux.dev>
+In-Reply-To: <20260812054105.102637-1-hao.ge@linux.dev>
+References: <20260812054105.102637-1-hao.ge@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: B528C1C0007
+X-Stat-Signature: 3jdf9i7o6qzxfpshjt81ipogj33197si
+X-Rspamd-Queue-Id: 4218FC0008
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: fujmd66uoz871buwfyj9e6rp6oqkht34
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786513259-392385
-X-HE-Meta: U2FsdGVkX1+g/YFyALfhjlhY6CCapUv4mT/mEd5BgOf4tk4mZf6LBXx47agsxFxiYZU4L7iPLDrKQZGkzmHeoTnZH5mNCa3DQiiM0YLZJvfi6jCGG+atse3a9JtvDOF9RrDdolwkuS4OCs+2cwns9tZwCIYAw+GbTfrLjkNanUYWXecA4+Iz/KmTNl5g8mg8/WpVRhGVaf2OZx5Om5aQkydUxnr+gNuVguTRPZfebjHzf8DdPuaukc2c5bjTQ8d4e99BjJXmGGPA55Wydv1N+TfJThc6ksz5K7Sir3HI0KRRxX5u+s8YcRy8BCZW7EilyvAFBJ5vd4fvSR541qiH9Ag0lv1Qt/SwS9f75jCrYM4S6Tn2CaMgVJerSKDyWTqYWbNBQEvlfmGcpS1G2PASE6IkjFFIeRi4H60irYNNC7JxWKd29lvNmiuRGaLUOrIYkpVSjLl1mug6VkkoMbCchevQrZJynu1NXuA7tABSIdkVrr730gh5UFl55lpexUVq18c/Rkqggosl/Bmzw5uTpGANnUnJpJMr3cqViJ9B5Hb1e12dw4yWJPMM0eGAq689ORzgbiT7RaIPpmteUQP8N8SqucdO0c2pKDXvQ2xIgY1XB0XgMhR1032nhvJvZ1Lxn+8AQmyNhfmrfKJ6hWfn4n+e7uErfYYpXOnUOk+R0SYyciB2P8L5sF+Vw4BKEMyST5pCkPUGzMzvQwyLM8PnK+6GCaGvDnAeyGe8MaeYX+YrkvzBmC8PUdBpJBS/mYM5Mg+ADg3aSryOWYLKYO+7y6q0K6Kx9knL3J1gPuRYgsZwnXGVfZJ+01UtR63AN8Oaa1hXdrBxQJQiQcBlFv9L6efOGyWZpGb/rpZRqZ0UnJlG4J4THt10DwxCtvYHjJ0YZBQAHlP5cofsOPtdr9iCJc6xOeseqjxmWhovPQM5XitatkKDsDNcDTj4hMs9sEavj2cwOQseV7F07bPSZlb
- wHCyPzPu
- 2n0ZaGmm0tHPqkxgwU0opBZ1mVPi2SOqYS6mwsVkHjPzSd7uBD9K8m7JDDIDJdyVx96+1eQ9ORDfxbpjXANFrQMDMj2Zu7qn+LShkeHMKwN7F0d08LosXDXYDM3h8DIC/6hRZpXguBQSFojUUobztM6uSS4NJALFJB3RWxVHDkwIXCdwDnSPYA5p+bs71QrjryL3M3+Rh5pSc1zTA9KWPsPJ1zXvDECKxjdrH
+X-HE-Tag: 1786513263-748664
+X-HE-Meta: U2FsdGVkX1+Iz+bQcXwQvlZO5VHKSEbQr0E5J7W0yQB1oqSYOCsX/6w9dxLuMzWOT4UaBGy5VjgnJdGg1Q2tV1zrykYTH66V1vZ0OvLIjlmNVu9FqfoDRKNyOPLUTpHwWwAnV8WqtanMMqen56Oe+9Tdm17PTvvOXqUiiT7g8ZNxb9tmha8TJuZQM3o+wqvq993ZvOtG+ks4MXSJ8bKLOMNie07DwxBEOaDXWJ0ILZ34LzixCSAQuTeidypl7AtH5B2coR1gOag+h7aSegboJDp8lNCEJjdAnQ9rXRkwcj527oZjH/cFoJPCUtPfvaf/qElVgOMXhQvy9c7uRiTDMADukQ+69EFLH1JP8dNWDvcld5rabjOAkPQouRs6+gg2iugpHDJHmPwZzvT4gbDmewkKu1AXil1OovNstOSoPEKSxayOJ9PLeIz2pCo/uFBF+2VnErqAozN+bLXibaJiP+lxf1vT5Jjn9FEkRb5Au8tJf8dxAcZjaUozwhVkshR+vSeW9LFqYPLAttEuXeS8RWk+HGIHUu4aIlqTSpf5s/1Hhm9Nk9Yh54ulAdJGUJ2+Nap637fr2JKJyp7cJU21pS6Ec5fRpYIJ2/rZD83fqtUdKs6/rllsdGlEsUSn2okbEr1RqwOaSpLmYmuPTO6RzEWAlXaN/ZruuB4z5SgwS/8VZfGd8OnTBpoH+2hDWs05Xg9gRQbtYu5glkYmCbE5SQL0p0HKwCZqAmmPgtEZU3j/jRd0SbB9P6LpC4/4STBsFxdeL7RPVdwaSa0FZKktIuw+AIZumStmPGQAWv8dMWrxJrCxiQlxzVsRChdH3yU/exhveHFOi8Wb3SL5n2c1WyV4SHYBCkpKlntH1JzKBEQMQ8SPc/D4btpJ2vrW1zHWW9yS+F435nEXzR0Pqv8Lu/BP7uOR/reTHGIHOcuHYlIXX2E/iAuwYPy3Z6unGIk3ghhptIj2Hu9My7nkhJ7
+ Z/64LQ66
+ RNv7n224+cnJaTP0nXyHIdmryQUQYAEU0Gpw7gQptVw9nKX/Z1HpG5t87lWXObR8qIBIjYnSAcH/s3/+Jthj39p3oiRI71/3ZRUzsqO8QDpxjkiJ5Ul4812AgmOuT4+bpxwlI1N6cZJVQe5KR8/0sKSecqm53g93n3r+qiwX++BELQb5QgCsv+RE9ljfihE99yRtzYgV3JEsnisQmj8tuHVjP+H2dyYO6xXG5na/C0px/qGevFHTRB0hs0PmnZ6AINe3YvBTEPHdvG/g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,76 +95,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-v3 was a single patch. After discussion with Suren and Andrew we went
-for a more graceful approach: rather than failing the module load on
-overflow, let it load without profiling. Once profiling is disabled,
-codetag_needs_module_section() returns false, so on retry the codetag
-section is placed as regular module data.
+release_module_tags() is a cleanup helper. reserve_module_tags() can
+also fail after storing the reservation in the maple tree, in which
+case it should call release_module_tags() to undo it. Move the helper
+above reserve_module_tags() so no forward declaration is needed.
 
-A new patch (1/2) is added to move release_module_tags() above
-reserve_module_tags(), since the overflow path now has to call it and
-the helper sits below it.
+No functional change.
 
-release_module_tags() is what module unload calls to drop a module's
-reservation from the maple tree. By the time reserve_module_tags()
-detects the overflow it has already stored that reservation, and the
--EAGAIN return skips vm_module_tags_populate(), so the backing pages
-never get mapped. If reserve_module_tags() returns without calling
-release_module_tags(), the stale entry keeps pointing at that unmapped
-range; when the module is later unloaded, release_module_tags() walks
-it and panics.
+Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
+---
+ mm/alloc_tag.c | 92 +++++++++++++++++++++++++-------------------------
+ 1 file changed, 46 insertions(+), 46 deletions(-)
 
-Tested on an x86_64 virtual machine:
-
-# insmod overflow_tag.ko
-# dmesg
-  With module overflow_tag there are too many tags to fit in 13 page
-  flag bits. Memory allocation profiling is disabled!
-# rmmod overflow_tag
-The module loads without profiling.
-
-Changes in v5:
-- add Fixes: and Cc: stable to patch 1/2 as well, since 2/2 does not
-  compile without it (Andrew Morton)
-- restore frob-adjusted mem[type].size on retry instead of zeroing,
-  as s390 and parisc add GOT/PLT space there in
-  module_frob_arch_sections() (Reported by Sashiko)
-- drop the load_module() mem_profiling_support check; the percpu
-  counter leak is pre-existing and orthogonal to this fix
-
-Changes in v4:
-- add a new patch (1/2) to move release_module_tags() above
-  reserve_module_tags(); the overflow fix is 2/2
-- release the reservation on the -EAGAIN path
-- return -EAGAIN instead of -ENOMEM so the module can still load
-  without profiling (Suren)
-- reset sh_addr, mem[type].size and sym/str SHF_ALLOC before retry
-- skip percpu counters in load_module() when profiling is off
-
-Changes in v3:
-- use pr_warn_once() instead of pr_warn()
-- return -ENOMEM instead of -ENOSPC (Suren)
-- expand the commit message to describe the /proc/allocinfo impact
-  (Andrew)
-
-Changes in v2:
-- return an error after shutdown_mem_profiling() to skip
-  vm_module_tags_populate()
-
-v1: https://lore.kernel.org/all/20260804064408.105033-1-hao.ge@linux.dev/
-v2: https://lore.kernel.org/all/20260804122038.190270-1-hao.ge@linux.dev/
-v3: https://lore.kernel.org/all/20260805090633.141001-1-hao.ge@linux.dev/
-v4: https://lore.kernel.org/all/20260810093955.153015-1-hao.ge@linux.dev/
-
-Hao Ge (2):
-  alloc_tag: move release_module_tags() above reserve_module_tags()
-  alloc_tag: fix undetected compressed tag overflow when profiling is
-    disabled
-
- kernel/module/main.c |  25 ++++++++++-
- mm/alloc_tag.c       | 100 ++++++++++++++++++++++---------------------
- 2 files changed, 74 insertions(+), 51 deletions(-)
-
---
+diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+index 52aece27b00e..af44f90379f2 100644
+--- a/mm/alloc_tag.c
++++ b/mm/alloc_tag.c
+@@ -835,6 +835,52 @@ static int vm_module_tags_populate(void)
+ 	return 0;
+ }
+ 
++static void release_module_tags(struct module *mod, bool used)
++{
++	MA_STATE(mas, &mod_area_mt, module_tags.size, module_tags.size);
++	struct alloc_tag *start_tag;
++	struct alloc_tag *end_tag;
++	struct module *val;
++
++	mas_lock(&mas);
++	mas_for_each_rev(&mas, val, 0)
++		if (val == mod)
++			break;
++
++	if (!val) /* module not found */
++		goto out;
++
++	if (!used)
++		goto release_area;
++
++	start_tag = (struct alloc_tag *)(module_tags.start_addr + mas.index);
++	end_tag = (struct alloc_tag *)(module_tags.start_addr + mas.last);
++	if (!clean_unused_counters(start_tag, end_tag)) {
++		struct alloc_tag *tag;
++
++		for (tag = start_tag; tag <= end_tag; tag++) {
++			struct alloc_tag_counters counter;
++
++			if (!tag->counters)
++				continue;
++
++			counter = alloc_tag_read(tag);
++			pr_info("%s:%u module %s func:%s has %llu allocated at module unload\n",
++				tag->ct.filename, tag->ct.lineno, tag->ct.modname,
++				tag->ct.function, counter.bytes);
++		}
++	} else {
++		used = false;
++	}
++release_area:
++	mas_store(&mas, used ? &unloaded_mod : NULL);
++	val = mas_prev_range(&mas, 0);
++	if (val == &prepend_mod)
++		mas_store(&mas, NULL);
++out:
++	mas_unlock(&mas);
++}
++
+ static void *reserve_module_tags(struct module *mod, unsigned long size,
+ 				 unsigned int prepend, unsigned long align)
+ {
+@@ -922,52 +968,6 @@ static void *reserve_module_tags(struct module *mod, unsigned long size,
+ 	return (struct alloc_tag *)(module_tags.start_addr + offset);
+ }
+ 
+-static void release_module_tags(struct module *mod, bool used)
+-{
+-	MA_STATE(mas, &mod_area_mt, module_tags.size, module_tags.size);
+-	struct alloc_tag *start_tag;
+-	struct alloc_tag *end_tag;
+-	struct module *val;
+-
+-	mas_lock(&mas);
+-	mas_for_each_rev(&mas, val, 0)
+-		if (val == mod)
+-			break;
+-
+-	if (!val) /* module not found */
+-		goto out;
+-
+-	if (!used)
+-		goto release_area;
+-
+-	start_tag = (struct alloc_tag *)(module_tags.start_addr + mas.index);
+-	end_tag = (struct alloc_tag *)(module_tags.start_addr + mas.last);
+-	if (!clean_unused_counters(start_tag, end_tag)) {
+-		struct alloc_tag *tag;
+-
+-		for (tag = start_tag; tag <= end_tag; tag++) {
+-			struct alloc_tag_counters counter;
+-
+-			if (!tag->counters)
+-				continue;
+-
+-			counter = alloc_tag_read(tag);
+-			pr_info("%s:%u module %s func:%s has %llu allocated at module unload\n",
+-				tag->ct.filename, tag->ct.lineno, tag->ct.modname,
+-				tag->ct.function, counter.bytes);
+-		}
+-	} else {
+-		used = false;
+-	}
+-release_area:
+-	mas_store(&mas, used ? &unloaded_mod : NULL);
+-	val = mas_prev_range(&mas, 0);
+-	if (val == &prepend_mod)
+-		mas_store(&mas, NULL);
+-out:
+-	mas_unlock(&mas);
+-}
+-
+ static int load_module(struct module *mod, struct codetag *start, struct codetag *stop)
+ {
+ 	/* Allocate module alloc_tag percpu counters */
+-- 
 2.25.1
+
 
