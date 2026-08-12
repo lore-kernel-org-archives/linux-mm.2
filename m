@@ -4,146 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 231FDC5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 11:28:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DFB8C5CFDB
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 11:32:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE1626B00D6; Wed, 12 Aug 2026 07:28:56 -0400 (EDT)
+	id 233506B0164; Wed, 12 Aug 2026 07:32:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A91956B00D7; Wed, 12 Aug 2026 07:28:56 -0400 (EDT)
+	id 20BB66B0165; Wed, 12 Aug 2026 07:32:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 931D86B00DA; Wed, 12 Aug 2026 07:28:56 -0400 (EDT)
+	id 122A56B0166; Wed, 12 Aug 2026 07:32:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 61C116B00D6
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:28:56 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D6D81160196
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:28:55 +0000 (UTC)
-X-FDA: 85092395430.25.40F6D82
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0B7D440008
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:28:53 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Spd7Z52S;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D80396B0164
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:32:12 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6A530A2616
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:32:12 +0000 (UTC)
+X-FDA: 85092403704.30.29DB469
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A606B180003
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:32:10 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Bgkzq1hs;
+	spf=pass (imf24.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786534134;
-	b=E5NzgBRFRhUZC3b/DnyNWUAILHn05MXoptFd0oBth0GX/W0Ilqi6cGWIdAdEuguOz27QsK
-	Erg2CI1VkZMREgWR6J7dpqmeHL39AfH9KpVFQdpNryZty753sL84xQDhrtXX7fJYDFDiSM
-	uSgEywGXgx1p6UoyyPP8cfW6lS4Z/nI=
+	t=1786534330;
+	b=7cMFx/w4u+X7d91FYaXoY+hQpnOAJGu3PMJOv5OA6lm8P1dSGGql3L4V2+DiUIhv9YmzeP
+	re0os7o6JvlkuFIJ+O85JRZlDpX1AUqEHFHJWuPPqm1NfAi2J6Ky90BRSERHXKzC+LzAV+
+	97xzAPsPNqMYAiGF9+5TXhj++IcSWy4=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Spd7Z52S;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Bgkzq1hs;
+	spf=pass (imf24.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786534134;
+	s=arc-20220608; t=1786534330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FcnwOpb20k56OlzwMG66aE8z23tMLTn0GX7RmNBbTuo=;
-	b=jsGc/skd1Z2On6nnmV8KjPX2R9MUSLlx2P8/U5mNMizmfCVIlik3QbQQxVpHhDoTw8dAfi
-	IhwrxDxNlMA0OKbwmN3lpAqgatSrjKwELZM1HDlGXnYy4T5Vn9JLQbORtNRDgXm4LLe5y2
-	hH4BUSLyEA3q8VtWO1qUalpM1iQ6JcQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5169141447;
-	Wed, 12 Aug 2026 11:28:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662EA1F000E9;
-	Wed, 12 Aug 2026 11:28:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786534133;
-	bh=FcnwOpb20k56OlzwMG66aE8z23tMLTn0GX7RmNBbTuo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Spd7Z52S+anzxKYwnAgi/AtvjfESL5PwTKgIqubz4s2/gdBKPK1PBUL+UlGOLhMCN
-	 Gx9nQBExt2+4xzfpf19qghT7hdbZtU4r2pYjDOTTMKOgshUiKAvXf9X7JdXURMw0fH
-	 LgT83ZJzz7JUc2cD+zPnkxTRAw1/HGZPrammYkDmxGINgAjpR5xBV9YQn6w7l1PgnI
-	 4NNTDruHwZfVoRA+X5ZvwsdnHZZwvu2aICh2gWtdpmmvvDzh1VFJcxfUX/veCwqvAc
-	 0r7q5ksshsTKLeMxN29WYMJSFA8joiGkiYpaV39tgyHPTesTIKfhF8UTJiSXfjnGlQ
-	 dSxsr7d0sngOw==
-Message-ID: <7d8e17c2-9c9c-409e-ab4d-4e4fb0e51ec4@kernel.org>
-Date: Wed, 12 Aug 2026 13:28:44 +0200
+	bh=96LAzBjfGAx9nfZL8SX73XYEA1A5G1phryUkEZQ35/w=;
+	b=fO5nK/84GjkSMjsPIdvoqvu7ZGulpWLgoYnojeWplJO/2wRItjZSBHbdK28RKY7EsFuLHp
+	+KYGYtWHsknpGhMzMgNm6FP240gqXiPgzqvOqDAb1LEirYnF7j0FExolR7Gqogh1FlaOPb
+	efRGUAZJ6BbyUt02NpIW03AEGGAFuR8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description;
+	bh=96LAzBjfGAx9nfZL8SX73XYEA1A5G1phryUkEZQ35/w=; b=Bgkzq1hsvSlzCUSnGj2E/Lk8tY
+	1dMyAR9AzJbQC4LpK1CNVMN3IMg2XiBBdGGpHkZxiyzZHzvIp3lUvfGekHCX5qso78dVIIz/RZzCU
+	hVvG+mObEJqzW7JMq1qj9/03SAiuonCVJ7bOj/yPU94AS13q/qPSjmQLbpm0nHqqRNDSL9GTfJTki
+	7cfn0GrGjen4rSZ9S7hRf+NKHoJNEtW8bP6rjSgwUqTSuMZ4Tvjn4LUfe7bBvffBhNfU4VO18ZqA4
+	jZM4srYTplz+S6iuZ0U3OAwuI7bklGXi8w3NpWly3ODPPkf2aua3U5d1w/Dfozz2IlQpJhZVdTTkj
+	YSjXuH3g==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wu7Bo-004JJH-16;
+	Wed, 12 Aug 2026 11:32:08 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Wed, 12 Aug 2026 04:31:51 -0700
+Subject: [PATCH v6 1/2] kexec_file: stop the top-down search before it
+ underflows
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V2 5/6] sh/mm: Stop using pgd_ERROR()
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
- <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>, linux-alpha@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
- loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-um@lists.infradead.org, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260811042119.3652929-1-anshuman.khandual@arm.com>
- <20260811042119.3652929-6-anshuman.khandual@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260811042119.3652929-6-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0B7D440008
-X-Rspamd-Server: rspam10
+Message-Id: <20260812-kexec_posioned-v6-1-e477887086f0@debian.org>
+References: <20260812-kexec_posioned-v6-0-e477887086f0@debian.org>
+In-Reply-To: <20260812-kexec_posioned-v6-0-e477887086f0@debian.org>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+ Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Breno Leitao <leitao@debian.org>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, kexec@lists.infradead.org, rmikey@meta.com, 
+ riel@surriel.com, kernel-team@meta.com
+X-Mailer: b4 0.16-dev-f8e9d
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1669; i=leitao@debian.org;
+ h=from:subject:message-id; bh=FmvGEkh2rRrjTsnxxpplsZ7+GnyJWiiOZt1q+BoClXI=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqfFmsyEno7+ZM8jNDTttS6/P8qtEqZPqoheexT
+ 8D0MQRonQuJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCanxZrAAKCRA1o5Of/Hh3
+ bXSJD/9jfrIbSU3oHTQv0L6n64XBO1LZMWRmaCcv4mpdb64PYKBuJ1vpA5i8Tqe5xgTSKXXA23c
+ CuwqNJzcw1l3YXFoQsX3nttO24qrXYmd1hXK/jlkiBlgRxi+K3ue/Xmcz9108cNsRdieQmwVc6A
+ h7veNRxUviUn1rvqU4UrdmgY5FZC5phM5rnABwFMz/hOju74BJ2YBer7UB23/KC81X5lPomJxQu
+ DjRMiHU5OgXRDphVIdC1ehkv6d+D4L+kv2WGaJDqJ6qA6QsFScNowu+jY+WIbq+7nO2VY0RooHp
+ IUm06Yv2t0eN2jtT05X0mve/wbxwzrHerIWupYY15hnhalruDg4iPLEv0UER95+Z28F/c7LpfXe
+ 8a6LbuH6JVQSr/lfxxoNSoqSatUe0YEGHWNecjZS85BdNG1pqw3mmN5N/1z9hxNC2KpPXtQXwSe
+ nkAhZCovOV5Lnma3VIV4uFACGpv1O7NjkHsPX/xjEl/saVEWhnZW+Kk4/n577us+SJbLXQW+0Lm
+ N1imHnRQQYBGccSPA8iyjrYOZhhJdUxEbGuISLllYItLB+g5UzJdx8wvHro047EPIzHVqffnTe8
+ gofvKGUZtDyNj0/gzahda+W8EGVLlfGHHnyUE1bA3xQDQIiiTfONMjN28AA3hd0JGadH48d7q1+
+ sSI7+Vo85i3O9sw==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: A606B180003
 X-Rspam-User: 
-X-Stat-Signature: 7m6ez7hke9by8bihxmjkzauwg8sp7od5
-X-HE-Tag: 1786534133-176223
-X-HE-Meta: U2FsdGVkX1/V9dv+IlkutLwDVn/Pyq/kHnP53AvRD5pjH8J8JLeqUuKq7ZwqrDW/f0ktFKt5G0QximQwPV3ThVrgNuCAir4tRXgIIOCTlT8ZK5gs0wfYC/8M8grT66zKhAt22nzKFWMcECj+JOm5lgDSl9kI2+W1QX/h1z+FogZuxG/L7bDic1mCXVNtzTzJ6MA7s1c1CHO0htj+tQTfaD//Oggxj4EO5riiw/vi3R+AIVoBsv/XR+l/p6wKfMxR7PHUWeShvJNdGSRrh2vQD0f/qRTIRCo+/zi5g8nKaztuPz+sC1/9sLdaoxoX3kwdE32V4/6Q/jZBBW8DOheh7IZKMVDxZRAr3I8BK/R6avkFmtqJZXy92UqS56EXK9uCoB7nr+QUJCd3uxrRa4qXfxW++7VR971J8+SM7Ng5lOGwEFUX6A5xagMDnKWPm7rZ7hPc2bxnHQIbTqX1GE1ZlPCA9a6NEwT17cmA54QSBLggX4E6D+ADSwd7HMjjqtloI65IlvE/YXKXeDhQC1fYg8aP9aNapYqnrRTSSXYHLHaPXcH/kWLCNF6RM6UNXyCuiVI5Hae2Q8G609/bnCzoKKYBJOXKaxZSyfUENijiNnkkDv3S5U4zQH+/ZG131bkTQJt/OW9SU8dA2nX76d45x39OlTuIemp29+WW4dH1t8NEcq7Uz3f8v+2eaAQugtMlRy42qjdpL8WO5OwKfkBeuXqbFmbgbjOvhRFAfE6z5+iIfjRUjStQerBkfw7zdmhG5F+gV4rufcpdKqwph0Trjf2bNlWVes70O9E3i7beeZwGS1bnbr5CSEpKX+/B2x36BKkNAK6DXS7EzHBQ4aUh9EiQp7I8jMvGGl7mATfNrRXQoos47meNEGTZ8ia87WMBJAWRfYzVaf3AhK7AEwIZDfXAAb6eUBAty2/NfpXKxYZBfyu9JLMiWbMX4EANyvwYUJav+WxzxxPl10Q17H4
- pgAlsCpQ
- JDG4fEcM6+E9xwJ8+HlMBUfj0rOdgQm3P1xJ+ah9On6cs0D9xsHl03fYhFZp/3uM3vn5eyhDha1XhSWuV36hOx9uv9s+f2YmEkMcVQIl7Oa6l8swX81EHIAR2Tn9to2CvnpFGWk3PSXgoz0OsTxEB4qf6OmtgfVAFYm9nrjsHcfiT1XManafyb/wN4ieHW2Np3q0L+5q2SQaBlJx+XcbWhH/KzW6Oc531i7Fn+9COgV3GDZwuelnlf67yW1iQESaPmxonoq2bjyuhhgHNECy4CmtFEMyops55i/4WQlre1rq9e9QmE1AeeZAtcqLBZ5O2HAqi279fCpaBabm/dyayUVuSHTbbE8xkyMNUYGiIk7JgLG73wSX+d4lCCQ3D/+3Jul+Xy4Sb7RL6vpShJz7EQaXrAAr2BXldGspez/rwwhVAgkV3FjQDs37hIKxYZVm5eoe+LXhD73/ozoDttuUflVmUSRLhlmwOO+OndYsSQU1R9BcEJSBWnKSIMDTit7p76ZtjLnJrPskGmts=
+X-Stat-Signature: wx4re6njiffzpn7m3cquwjaj1xgp5q9d
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786534330-372865
+X-HE-Meta: U2FsdGVkX1/Zk+digcZGPfxbzhQxyUVereL+7Zhvgrc1HlHuxaJmm/1Ko/V+FgM4HCv+yAwANbPW4d5/Eqb6QJI/V0XboWGkq1MYuSIjDa2D1TfPPX6q5juozj16rJXb0m2lb5adyYv1gV0DSPl4yOOPO0irAbFQ33B9g70vY/cQXAtSGPjm5DpsyZwtHzLyOqMlKVgDeZzqXZTa16TtFx+fAUy+EcBzHGQSMxuIwPPxcWG2FGAT54p0Ct041I3IRHLxPGzObywtG9hbhxzaYj2JQS0AEZ4JCX8/MAzXV7c0wVQfV4hFAGKVbOe2KwdLAdPaNsYgLOkbkTPSw0OIHhB7iGenRnQoGAZUDsl0A0Isi4HxhlALoHPJiUymGipD2OeUmfjh9ZhGm0vI+F9sDWBt9379E0zmjp6LquS3uh6LVYK0JtI1P3Af/oQtgeCpdc3cy2fD3jSC9TUZFP15G5WCIL825KcnimfblXOCI6OGy2KMb1RXoYHXJW0NlVU3gdLgVYS8uHPpycMQAYmve0tWUUhWjt9pP9HM4iyYbVubNl0Dc/LISN2zU2sqLj4Yxpeyoec9/5AE6/mfvLx9eArJolTXYfO1AUhmhwlorGMqnW+huaZCMICGdGatDcdmdyGxDCoen30r9+EKzC4QbwWy/1ejrJI1kY8OuCpplT6srAunbj/hQvFP4Hji0PSMVrd2SPAlUNfbVWwq+dgei+EpWjKbu3FoxOjc8x97R3OiKbESMsV3/L0wsMOUcyi0vSPCXPxNCjZsYCmRPKoGhYHLlmlatV9p1cn0nRzF6X5wdyrn2cz9zjq4CjjQ+C6kgyBOSAwaNj1VIZCePYnYGd82JnZwEpoKNb1wvSRxJY4sPrKWYHNwl5176zGeSE56gzcfArMLOdOtU+gO8KsnCQ1HIjevz+QxtDQZu8ps2HwoPVfaQsPObxfpqsLDJJGtkId/QRKih1wUvfFDLzq
+ iUcfVQ/Z
+ hEByd7+9E803iL2HOdpKklUBa+mzQ1v1SIqxMfU3iffMOQ9dGNTr5J+c2vHYV2rtDTmRBq3PSwUMlyvUzxioIbaIp8kx8tgnNMxoctqchtxAAXx7kZdhRvGJ+LVwA9uf3A3MmlXSNfQKeADBliGRt3R8fy97FuZTRsgcTY3f3XWhYhBHjo92TxJwtq8w/Mv2hnQSpnsPcPuXxlog8NQ03r1pXBKK4rRGt07m5lfNg0vOeqyjxXCdgHvoDL81433KWwCy/KwoTzIs4HtfSFgNu+K3YM8fsfaSR5xImQZPWxQrkOn3RIpsMOJgZv/vXf0wFeTRbeUySq9sH86GLlOhFENEqgA9ckTqClKHsU76XjrY4MLQ+/f9ZDzlSz60/ti3FLv+aqNXNQaQ5dTSG5R5yEPRTNQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,41 +119,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/11/26 06:21, Anshuman Khandual wrote:
-> Stop using pgd_ERROR() in __get_pte_phys() when page table entry is already
-> known to be empty.
-> 
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> Cc: linux-sh@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
->  arch/sh/mm/init.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-> index 0bb8555568a4..585012293632 100644
-> --- a/arch/sh/mm/init.c
-> +++ b/arch/sh/mm/init.c
-> @@ -52,10 +52,8 @@ static pte_t *__get_pte_phys(unsigned long addr)
->  	pmd_t *pmd;
->  
->  	pgd = pgd_offset_k(addr);
-> -	if (pgd_none(*pgd)) {
-> -		pgd_ERROR(*pgd);
-> +	if (pgd_none(*pgd))
->  		return NULL;
-> -	}
->  
->  	p4d = p4d_alloc(NULL, pgd, addr);
->  	if (unlikely(!p4d))
+locate_mem_hole_top_down() walks candidates downwards by subtracting
+PAGE_SIZE whenever the window conflicts with an existing segment or with
+an architecture exclude range.
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Nothing stops that subtraction at zero, so a search that reaches the
+bottom of the address space wraps temp_start around and continues.
+
+The walk starts inside the range being scanned and only moves down, so
+bail out once a candidate ends up above end. That covers every step in
+the loop rather than the subtractions alone, and it matches
+locate_mem_hole_bottom_up(), which already bounds its candidate on both
+sides.
+
+This is a better check than subtracting with check_sub_overflow(), given
+that we would have 3 subtractions in this block, and this single fix
+would take care of them all (instead of three check_sub_overflow()).
+
+Fixes: cb1052581e2b ("kexec: implementation of new syscall kexec_file_load")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ kernel/kexec_file.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+index 59fb9d71e9d86..01a64d98fbcd7 100644
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -484,7 +484,9 @@ static int locate_mem_hole_top_down(unsigned long start, unsigned long end,
+ 		/* align down start */
+ 		temp_start = ALIGN_DOWN(temp_start, kbuf->buf_align);
+ 
+-		if (temp_start < start || temp_start < kbuf->buf_min)
++		/* A candidate above the range means the walk wrapped around */
++		if (temp_start < start || temp_start < kbuf->buf_min ||
++		    temp_start > end)
+ 			return 0;
+ 
+ 		temp_end = temp_start + kbuf->memsz - 1;
 
 -- 
-Cheers,
+2.53.0-Meta
 
-David
 
