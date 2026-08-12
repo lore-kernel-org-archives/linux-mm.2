@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D585C5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:40:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAE22C5CFDB
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:40:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B23C16B00CD; Wed, 12 Aug 2026 06:40:02 -0400 (EDT)
+	id AFC6F6B00CE; Wed, 12 Aug 2026 06:40:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFC296B00CE; Wed, 12 Aug 2026 06:40:02 -0400 (EDT)
+	id AAD366B00CF; Wed, 12 Aug 2026 06:40:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A11D16B00CF; Wed, 12 Aug 2026 06:40:02 -0400 (EDT)
+	id 99B8A6B00D0; Wed, 12 Aug 2026 06:40:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D82B6B00CD
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:40:02 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 991AB80148
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:40:01 +0000 (UTC)
-X-FDA: 85092272202.10.B7255E8
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id DCB5540003
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:39:59 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VPTqmjPq;
-	spf=pass (imf01.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 788DD6B00CE
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:40:08 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1F97E1C0D3F
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:40:08 +0000 (UTC)
+X-FDA: 85092272496.07.57107A0
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 61494120003
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:40:06 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SZ1sxRZS;
+	spf=pass (imf29.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786531199;
+	s=arc-20220608; t=1786531206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=f/zbV338bs86RCvE0uOChgTAyhcecT4O06NPuUtGzAI=;
-	b=X88K0RPRWwXBZUXMXkF67HwFL3ZjzleKlso0v4/rVDTmQX19S5kkDKGewvUaBcXMGUu3h8
-	fzuSrQoYWcuo0nXPHj51fWz3J6wUlw0IzK/h42RR0kHEz1vyDAqGaWOFrk1QG3/f5tJcYv
-	a6I1fiKXjYRrmjFTfY4j2pVXtOH81bs=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CySejvRkZl+O/T2betXJvXb5NuBv/ihH/Yp2vgUVu+0=;
+	b=v6gPT98svzaZ2/ClAMf1EgQ5ZWF3R/l2N301owFyJ59az/156Nf4I2/HyPR85TWdXS5X3r
+	aui1g6olIyXqAy6zpdJIxqQQ1rLokRtSIq3cPtfvfugs4xsLj+npfcyzA4zqIg4Y1buAcv
+	PAfyY+/jcroj4ccaCHqIrxM1lzZvvos=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VPTqmjPq;
-	spf=pass (imf01.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SZ1sxRZS;
+	spf=pass (imf29.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786531199;
-	b=NzAXKKDwDEdsI+9CEKpYLYyCKBvH/Mpf4SZ+8UiVJbWclob6JLO7d3FRAIwx3VesDZ0prL
-	o8fr69awWKjzT3mpYHtTrcwmmrSBmU0r2z6s2ZnXgP8tAu6LSQ/CAU5jViqr18WEP5+5aA
-	GG2QPG8zieJVs8u1h8uUAsxawlpHonU=
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c9cf07d2df6so486156a12.2
-        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 03:39:59 -0700 (PDT)
+	t=1786531206;
+	b=ZtqvIpI/AFzcdhuA9Sr7U1alOAZ83Iumhd5uQPKpbwtn3dP3xjW1BN+to5uz3SDgtKX/Eu
+	0/FBKOXS5LXHaThz1xd7q07yqwd/3lc7ryEQM/2Ry68KXi5yY3cfgpBls3+e8kK3/UCjt0
+	+b2oS+Ac+UCPIpMWhZCYfG3S38RIago=
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-38dc69c74b8so1017649a91.0
+        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 03:40:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786531199; x=1787135999; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=f/zbV338bs86RCvE0uOChgTAyhcecT4O06NPuUtGzAI=;
-        b=VPTqmjPq7V8PgWka1JrGQ6zm4WwQNo7CRt2oO1zhxpYWIOwvFZx+nUN+jMEu+YD1Dk
-         oCEdZI9E039pAi2awvWWVmdHL+Tts2xXbhN4z5R2GiJ1Xx6oFI7ScV3aBYsU/qjsMBVF
-         7o/zHAL9hpbEZP+AI2WJ33P6ojgi7NfB7BbivmdGcJdvhiFCzMvgQ5jFGfFOEMwTfmMm
-         /2XKIFex1FxapQBpzWWYChTDeXqVTlHfEPraff4t5MVMy3wrtxfca2M20aGkp6OCrg0h
-         FR667gzDmArs9+QdsPSCbS165597kTIjEBV9CZWPZYBgVJ1EY/ZizkQhPKWy0nmb61Nn
-         GJSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786531199; x=1787135999;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1786531205; x=1787136005; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=f/zbV338bs86RCvE0uOChgTAyhcecT4O06NPuUtGzAI=;
-        b=YsaCQORbnpxa2iIwee8mNAYwe28C5cdOI6TzV3WuRrN5ZqB6d/uDyq4tTn1tmLDM2l
-         gI0LesoyB/WXjuXfF5JGILXlP5yWwh2RI4bY9Yyj7SsUymT3Jj/EuFys5rwTUd2BOZ4a
-         tQ74Hxy4PE+1Ubxh25C6nq1T70GX5iPyWLtANLjozl+wUuWL4fVVBCavZgi/gwQAfK39
-         wreOvHZ8u20ja6sRtYQLL/KJiYggmLCP2fc2EdZoRwMk+HWYC1tS8Rk0BpnPYFbdIhlH
-         aLt4xXag7rXWd0BQb/CGjyF5wBJyTKEcoAksbaoN6ms/VLwJgLTusaskLuLJqHdfX7ef
-         5KcQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rq6grQMkY9IkonobTvv0J4aN0iCVTrpPyrMEmBjqtUpkHqhrFW7enDbEQRz2pcynUzl7C0XNklO0Q==@kvack.org
-X-Gm-Message-State: AOJu0YyaEiAVttx5jmk+SM1B/dZld0V4b8bY+mtu0eeZWDRllXPQrL6w
-	XgG6fcIhbgevXZVSaqW/FUkYAkLZwP9yXOQpYFdEvSr7GTY6xGK4ABzA
-X-Gm-Gg: AR+sD11kBHAO8jyx7xtF/nHeui74Um4PrfejL7i1w7MAEhga8ffNcaKrCYf98rtiCka
-	XilCXq4SvMJvdQRVMChd07TYbeRLB44GkOdQx1Cg5u1M0WS0o9xthBUhFskomVRiBNW2hHfmJ7X
-	bi8sef3gjC1R1e/8FoR8uhlkflBDVe5nSMgL8Ex6AEAcSeIDJs0SCOSCkmMzA09KB/d3vGD5ouC
-	8eCGclBqPA0zjoUHodDhP/wDXz9EXRpNWxEOyc7xwH/OXAss/Sg4BYJgjcFflEhEM9iKkggzmxC
-	qNrGp4WMHF8574CYeBLzN6LgIfSQUQozatQfN/4DUDblqCrR17AZ594PFAYl5BAO1acyYxm8jN+
-	/jm3nfPQ9CYclGSyQnWZFagV/MOpebLkrcQnNfRwySC1wHjnh03+MpK1ylBdfDerTL1jjUd4wiz
-	BHJnt3S+NDydf50k5VgA/erV38B2SAqK3SWj4bZcU5IEkudiFQH/G7S+niBZhtUddEyXgEyCOsq
-	wp5Vm6oXL9E+O4=
-X-Received: by 2002:a05:6a21:9cc8:b0:3c3:875d:704d with SMTP id adf61e73a8af0-3cc3f774c67mr4263074637.25.1786531198591;
-        Wed, 12 Aug 2026 03:39:58 -0700 (PDT)
+        bh=CySejvRkZl+O/T2betXJvXb5NuBv/ihH/Yp2vgUVu+0=;
+        b=SZ1sxRZSyRF13exKoBG11Q68YOpy+6fVf2SNC8jVFN+nDGmASqkOoNde5y6sn0uOyP
+         8cARbDPbtCb2BjFdOfWEbo/Rhrmg8Z/vXsVMyTTWjPADx8vOZ4QVeYPs0ZJ73moGsgGq
+         thB0csTNf2gY2ywTkmyjeSpiwVuWZNAF6nNenIr+oLCLAAmANxCDbXuBG3WA5ZFx09mR
+         AfHFzYHSsLx51S9pOMfJ03VpQEsqs0O/t34O/zFPG+PpQpycsAQqznvKSx+97S8Qtjzt
+         Sd5d/w84X2jpubk9H0l9jfOKv4XALe8t+mwQTbbDnKMGRm55+XRSz5fL0VPrHDVNhA2O
+         cIJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786531205; x=1787136005;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CySejvRkZl+O/T2betXJvXb5NuBv/ihH/Yp2vgUVu+0=;
+        b=Tj7qcPCqs/GmYXvUqUqfXKSgdQbOeUBqNGgL/qMutolnOvrAwnTV+1xhy87ZpB1ZFG
+         KoPYbX+5rII/xwKzY2OxK4I+zgXRa7twpdpp9izMCF+eQXQBFkwR8EG3L6L5pwVJS5rJ
+         5XOnueKOBeJydLhDbDtfo+0Z2MMb352E3H2oK3GgYidzGeFdFuLzlSxZzXx3ybqi8/PP
+         qRoAf+iPN5ObXkDjT6UC5Uk+OL6t03HJ6XkuAvupjv6GZBFHEd67Piiu0J7f815vVtw9
+         GEm4WrRMsGeIKNS0chQby8cVKNRvdfBjzUHPXU+CGq1Ka5i79vQN8qGmYWNEtaDLtxzY
+         yGKg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq0BkneaVbuMpM7b+uC/Lv+hZ7epeNu4h+McLnryev2gcA2bhJQgclXUbfXuv4iH9+ZPu/yzBToMg==@kvack.org
+X-Gm-Message-State: AOJu0Yz5KvyLSH50CRNdUAlcLpyocAlY+egStCXMyteJ89wQaHLLJAiL
+	fCeQoLg+hkcFF2X2zMmd6HdcY9pivfgsQlzG2nxkCioDhGqyRWOVNV9y
+X-Gm-Gg: AR+sD113NJik+tTyR+y7ZI9FX9ojsOMoHaNkbSc55eBIFGpZMBwTkDkIQaz9FBTKTtn
+	Zq4ZkeXM9FaT3iOro6KMsn9RHGmDAMjPeVHlD8wuvB9Q1R88oNTUohPKyxanYnEEGqlNknojBy4
+	E3xVq3cqlau1RW3l6lBPHX2/kCW2ZFob1lPGLMsZV9U5rTpU5nsenCybfklxVE30d5FUrUSTfHw
+	JjGwtmNLXuVETDF6udtuPPPKA87GIA76UDo3zqsdt6s9r/Pr+9GzKs9IDdMQfmA093eJa/r9EUE
+	jjW1m6zu3Zsj2zQw8MBvAWjjVVKU8NisPYwBLI+A4Vqvbu33X4glibr2XV6ulnpZQXDyVx71kG4
+	hcMEjDsqM9+ngb70DqrhWe0vLe9zMMOZcSfQESXFvEjWTRgzhDXSBEEzkhRSXWzYKo+pP5oG01/
+	WG6vezeZGg8rQkwxm/cDLCPXMueB2ynr9kvB9FEOIocg3XX+B2jF8KGP57nSyU2zRRR0W13BMuu
+	YCjeXv0tKi8snI=
+X-Received: by 2002:a17:90b:398c:b0:385:393e:7124 with SMTP id 98e67ed59e1d1-39301433f18mr3789699a91.14.1786531205162;
+        Wed, 12 Aug 2026 03:40:05 -0700 (PDT)
 Received: from celestia.taila51cc2.ts.net ([2402:1980:85a:5c46:85a5:ec7:8aa8:72be])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31cf3d0b432sm9931990eec.8.2026.08.12.03.39.52
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31cf3d0b432sm9931990eec.8.2026.08.12.03.39.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 03:39:58 -0700 (PDT)
+        Wed, 12 Aug 2026 03:40:04 -0700 (PDT)
 From: Liew Rui Yan <aethernet65535@gmail.com>
 To: SJ Park <sj@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -107,20 +108,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Liew Rui Yan <aethernet65535@gmail.com>
-Subject: [PATCH v2 0/3] docs/mm/damon/design: add explanation of nr_snapshots
-Date: Wed, 12 Aug 2026 18:39:59 +0800
-Message-ID: <20260812104002.15225-1-aethernet65535@gmail.com>
+Subject: [PATCH v2 1/3] docs/mm/damon/design: accurate semantics of nr_snapshots
+Date: Wed, 12 Aug 2026 18:40:00 +0800
+Message-ID: <20260812104002.15225-2-aethernet65535@gmail.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260812104002.15225-1-aethernet65535@gmail.com>
+References: <20260812104002.15225-1-aethernet65535@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: w1pay55mn1ady5693cf88t8b6hnmn9h3
-X-Rspamd-Queue-Id: DCB5540003
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 61494120003
+X-Stat-Signature: zs658d6f45jprz8ts4kobhg3d66xibkd
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786531199-612517
-X-HE-Meta: U2FsdGVkX1+w6KRPYffDXa2us+5ovNddcKrX7KZpY3NOUxG9+BUcv8yaaWUCEPELwr6ZXKGwJxjvjmybp5yj2u03zhwWZQ29Y04mUR84k1ttGR3g/Tz/GJQtAVNeth4msLfV9k1GtbeGoVFpuVfVDmX8mwTApk1s14FRwVM4xLcAJWOLBY9rorPVtO3hJ8vUhljqzxUNsH6rouzfOMs+RfFoCYCb8Xd+nFA1y/XUwdeB037/OioDaF4ztL1PSf5wyKW0twchtnDcQtwane3RwWFB61xJyVGi/itCFBexfkyOFyl8IAcpOFg+ltQtuddMg2lgq+9ohCmUYQwukTsN5lK/8klVQkcocicjXhieG7qWwraHj2BnhHSVqeZXLR71tc3g439NWw6/seYxRJ5Ijy7iTDbC/gBe8bEucEwHk0JsS07KMXtRKw4Ko7Bf8+ADF7l/iHuZb9xazR4wcMWauYfoNMFYEU51QsKlRfmY73163+Afw8MHZKG0w6Ti8oXxCG+EHlY5JrD2W0oXUKwouJPbONFeBBX9NuvMkbQkOJdfSEWK+tykBJsmeV//vbLQrAOoQYEG7tYMM1Nk2x90r3Z/gpZGlxpiRbJ0S7Ao4D7rawFFSdhWEr3WkXT4+YHITRC66e6FP+RWWwhDnh/8T5GJB/0NVTcM0YyPIeKX/XO8qbV45oLjhYpNo+3wqkxgRI//rAJVHkSCYFtcyR72oJb8jZd4294K87/mN+TpmC5wZCs+GFDL4a798HYqC5/326TvSoBNo3hNDCW/xWCqHNp34rsUuOnkdEFhou2kB8tOUyPeuTdq3GuomkjT1dfYA7tE1/eUDOge0zYRsjq0RTM1aavtHWil1NHKQGVxv46kW8QpfXtTSW65KeZJaClvKX3l7PxRCbY+4cjez0j1eQ2BffE8nuHmNWbTRkuJTpHgkERr+M5pLa2yKwTasEczZ7rjyYYz4jvmv//gEoi
- Vw1IROwc
- umqsvob9JWGmYmJgC7fZoa+4Ji+vuJlGBMYOgBo/YYGrzA5nrrhNRkqcBdtPsZxoWXBb20+49eKsvaLBrKhIvBWXMOpTU1EYRNJ3D6F9/7VJ892RRvAlA8fnvCGTniKZpdJclskERs8Mcdry/pgG1zlPRUTm5abDwAue7EpGRcOIjg1lc4yKxNwEMZIxl2m3bccGk20ENgrUnL0ryfwwPV78WZPftPxFU7KR2VFbGgjxBTTiBGp+6CRQD7vsJL6UmdnddqejwlyENGFqfEDDiJQvRIglnGMrBSG83BAImPHFxGwM+AM9CqRZ2Lsmuy/fcy6dtB6yiwAVs4wm8emvabslefg9G/hi52DXNWpwa0Yef1kHC/YzIQTfLVpDD5Yv3KfGLKTzEarvD+D9/7XRClnK1CUTpLw0HBnd5BVCDwfelPdKz8ba4+ZVhLkKwu+mUm/ylgxX+f4r0XrmECmao6GLurh9wQ8A4/Ql9m6N7UuVcm1+FY96pBimfAGzCtu2wpA0Wb6tk5BMWx2w=
+X-HE-Tag: 1786531206-822571
+X-HE-Meta: U2FsdGVkX19QkEOh9OTnnBZ9rQtJ/X0w5IrEJTKUF7FLmN7ebuNhzxzJnazXxw+GmTTV0JVzrNOFLQ19qpcXJ51Hj4Ds2XFXGN4RU6y3k+eD0Zx+cyGhMWn+b1t0sxCdR0R59ZP9BTqLl2/K3kCW0SmQX7vIy6i2wvOYoBpv8O+NGY4et3j5daoqR4jOctGb1pDaBbaffuXXm6CoEteOQe13Cbiw70YuVQG0oAzl7qL12sYioqJq/uBwtz5ORY2szk0Zf0q+x9OtdRsONqKt0nBgEy5A42RnKo2Rq9t8/t0tJvgTfpAbuVh33yT8RCx9B2LmIO1Pmf41zg+D/ylkFKSbppDJvvhdAy61Q08Zu947hRXhfrxnaMjqLy2xDgNzbVJiojK1FnO/xo3soH05jHrboGxZQBsm6KPmCVi3vxb9Z0sRiESfB1BGe8M7hwQ8aSi3JRdwRMPuv211HHJ0KELVA2Mc5LoFZ5os59JXu2cGGX2LVID/RxTYFImvy/bfRZ9V8Sib1eawPLIWMegHuWBTG+FIsm9f/f/5D7K0/bjI/bFmhGl4J/CYy+K5Hm6tqjJL5g3hGfAb2q2WGwQ3kaoCWU0lDfdCGYAit6twf5/UWpUpo6EhOnxe5NqxFWhjB3uZZBVRtefkrzj8DcCBDg/8OZ6yZRLiuxjHtL//6t/kLkOae2k2JXp/mVRAm04rX5Bn55tP2bhbsz+F8nuu5DdanwtAMOsEGj1XsQUONjEdKgmqfG5NnfbexN3jUjVtue9cF5z8yoni+TY2etvhXGjA/wPf9O+vj2memRm4RCRGmX3krpcGTNmaVd4fPpAQnI09jEHUhdnDDMHaXUxJjwna+orN6AQr6/aD5yJnmv79CMNRYeE1hAzHDDwbkQXVS3B25YIhOGDGy2Z28DAEd4B2K1Z0xecIZ3Yb5MQD8sEhjkbgL9Xtva2dhduRfTIHa447iL/rh6axqwrGtr0
+ hj4VDOvF
+ 0vME3/WfsKcha7HjVJz+NYhYwG0gDgDa0yGnk8T29MqHk0aBanhLRIub8C51zWRAj7lVTZZ81taAXhA8qTxaNc3V8/wesd8ndvxWWE5bBNEYjFhq6iTMK/9amPUzw468cFNqbXqLREJykmw1JAzZHGFxKZoUoTKlPu8nhuw5tyAaQ7/OkDwzOQdXfBvy/ewtIxYcHOmdA3b4TLsjcQFY5mW0kzRhA9OnuyLw712n7NZzVyzagSObHAMXFTHPTandJyPWU48LS0crfCnuwZZfWKch8rB79S4NOxlLLMv+HQx3xPDnJV7wYCj+p7uSx9MkBtqfR7YIKnSiLBR4Oo9bewrj07QyyaDyjg4BoCdgxeykTU56SGVlPmKBapOgQX29aNPlgqsN2IFE+V0Apnv7P7ghBrwuLiRIzMdKcq4Hu0ASuB9+YVveBUeMok+2tW/6wOfl1izq6y6WkpjPHoJmTiwJUqQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,26 +131,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add an explanation of nr_snapshots to avoid misunderstandings.
+Change "tried to be applied" -> "completely tried to be applied" to
+maintain consistency between the documentation and the code.
 
-Changes from v1:
-- v1: https://lore.kernel.org/damon/20260811101841.804596-1-aethernet65535@gmail.com
-- Patch 1 word order adjustment: Repositioned "completely" ("tried to be
-  completely applied" -> "completely tried to be applied").
-- Patch 2: Use two spaces between sentences.
-- Patch 3: Add the "Reviewed-by:" of SJ, because he added this in v1.
-- Patch 3: Make some minor modifications, Patch 3 can be applied after
-  Patch 2.
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+---
+ Documentation/mm/damon/design.rst | 4 ++--
+ include/linux/damon.h             | 3 ++-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-Liew Rui Yan (3):
-  docs/mm/damon/design: accurate semantics of nr_snapshots
-  docs/mm/damon/design: difference between watermarks and nr_snapshots
-  docs/mm/damon/design: fix typo of max_nr_snapshots
-
- Documentation/mm/damon/design.rst | 7 ++++---
- include/linux/damon.h             | 5 +++--
- 2 files changed, 7 insertions(+), 5 deletions(-)
-
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index aed6cb1cf483..1739aeec6eb9 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -846,8 +846,8 @@ scheme's execution.
+ - ``nr_applied``: Total number of regions that the scheme is applied.
+ - ``sz_applied``: Total size of regions that the scheme is applied.
+ - ``qt_exceeds``: Total number of times the quota of the scheme has exceeded.
+-- ``nr_snapshots``: Total number of DAMON snapshots that the scheme is tried to
+-  be applied.
++- ``nr_snapshots``: Total number of DAMON snapshots that the scheme is
++  completely tried to be applied.
+ - ``max_nr_snapshots``: Upper limit of ``nr_snapshots``.
+ 
+ "A scheme is tried to be applied to a region" means DAMOS core logic determined
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 0c8b7ddef9ab..33914594fb48 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -357,7 +357,8 @@ struct damos_watermarks {
+  *		Total bytes that passed ops layer-handled DAMOS filters.
+  * @qt_exceeds: Total number of times the quota of the scheme has exceeded.
+  * @nr_snapshots:
+- *		Total number of DAMON snapshots that the scheme has tried.
++ *		Total number of DAMON snapshots that the scheme is completely
++ *		tried to be applied.
+  *
+  * "Tried an action to a region" in this context means the DAMOS core logic
+  * determined the region as eligible to apply the action.  The access pattern
 -- 
 2.55.0
 
