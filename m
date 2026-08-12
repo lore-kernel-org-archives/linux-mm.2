@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65747C5B567
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 05:23:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD3A8C5B567
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 05:34:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 356066B0092; Wed, 12 Aug 2026 01:23:40 -0400 (EDT)
+	id 710F36B0088; Wed, 12 Aug 2026 01:34:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 308B06B0093; Wed, 12 Aug 2026 01:23:40 -0400 (EDT)
+	id 6E8F66B008A; Wed, 12 Aug 2026 01:34:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CEBB6B0095; Wed, 12 Aug 2026 01:23:40 -0400 (EDT)
+	id 6262A6B0092; Wed, 12 Aug 2026 01:34:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E6BA46B0092
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 01:23:39 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6093E1401A8
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:23:39 +0000 (UTC)
-X-FDA: 85091474958.07.7452BA2
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 406AB6B0088
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 01:34:10 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AC454A0319
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:34:09 +0000 (UTC)
+X-FDA: 85091501418.08.2B2EBDC
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C1388180008
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:23:36 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=nOU+bDHr;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf24.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com
+	by imf04.hostedemail.com (Postfix) with ESMTP id 163E640002
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:34:06 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SA0P293G;
+	spf=pass (imf04.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786512847;
+	b=51nTJCPiIXv1pAxvgg7flzcSvoKKZZJKRegMFCx4Tq2c9rBbzM3BGk9wEw1u/bxnwnu+4z
+	DLl6Kf1+8Vs9Nhia5KHQ4YRGSxWdiGM17BWp+d96OzPGE9CW7CDLA8QKAnYb9/doMRuPl5
+	5JEw0KAEkeYM2LE9tr3+Qwj50bCSGMM=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SA0P293G;
+	spf=pass (imf04.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786512217;
+	s=arc-20220608; t=1786512847;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0MRR1sD/tt7yZkFJEqu+9wLuGs5eII0ImDAAOpbgLmg=;
-	b=anqG2vz1cTo4Rd1TWjhPHIR5+ZofDZ2pVmJwoxojskNxzrQZ80Et/YvKL1lkvO2LuFUoiL
-	/e0c89NYqQ6BBSFwxj2wY7CBD0rT0Xk8OZfff3RJ8upGuI/ZcGK4LvOgu0bN1GvnNLbeI4
-	1HWOTtnKb0uwXdKi414vmZNW79uTh7Q=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=nOU+bDHr;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf24.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786512217;
-	b=Bs1Z7EcJu7iL/O5Qy+IbGYLU+m9dP4FbOFDtm+O/Qz3HT2EOAmiNm2AaDTgEC1GYIy1Bg/
-	2bq3JBCuLu2CXkUBIiyQ+UFBhOlt1n+liEVCDQYJ5x9A2U//pjE4O8+c6ag0S61IPKNDu0
-	q61XWQctCtezcMYxYAVQb/zYYsP6I1k=
+	bh=f4nTkWec/H8k1AdZskvzeJU48xWFGG5+HV/WJUcRVYM=;
+	b=pSvsEgXqBfHCepDik/a5f3qGioeG6L/qGAESB4yA7WZ6NcCaul4Yf3+v913iNXt0PIHC2J
+	Wfr9l5VFZ1RPMbgvNgvxPcs8wi4n33rN7tqqLE9ruNQ7EF7Cmnar8VsOhBt2g8n0/j6Sk8
+	LaHZxlOiAeoRU9Pq6Hij2gAc4EM7JRk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786512217; x=1818048217;
+  t=1786512847; x=1818048847;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=iE7WD9cC5Zp1jYTzEd47muCzZZ8TB+7wVvVGgHiezK0=;
-  b=nOU+bDHrWwJ7Szki4K7EKltw76KaJderPgWRE8r3cQiZVZHbUqH1BuzN
-   NvyyXE8OmZ7D5Y/87b2ToPL0fjJugoGawjqYKEytAt+4LdDO2XQgHWiyf
-   tjK+QU20Bx9gT3J2dMNPxzswLk/29rPram1zbGc02skgTIhvEGE1rHsFo
-   43hNzccYb2SbaqPFV8e4BPwI+x/oORQl89alZi1iBP6PGNz+dFIt5C418
-   XjowrGTb/dcGuUrxe7kXGRAMW+Sty+EtvHOuR8dLRUdcUwCvJ5SdAYLQj
-   N+MbCjhIVOAC1T7pyEd/7M82yuZzfH3Px+o5F4o7ZjBa6NjCBFKMC6RFh
+  bh=+nEGQQL5Gn+WI2vY6/f7bvYSr4WEHuPAEm+UsH53etw=;
+  b=SA0P293GJ8+kL8SHHeVg9S+LdtKdr0zzzXiPh6RxXeMW3ki4P80ZHbev
+   o4QG2K7AKPBYE8Nqov3xVCvbyHZbhR7VWHo1P3jLqn1ZMar7Q43gleTlG
+   MNZw/lUaBvGrfZCpnjBruVX0Bxt7TkjmrKeBuzpTkbT/owP+toFWlvRqI
+   4pJ9dktIprX+R6OzE6s9bGoK9HND4K5eiuCwIcL9dhWO/FTmxVKwm7piM
+   +Rw1CxRZEQdX/VXEyFteteeqW2+Ak0jMuOkElQzMfQlv8GIP4UuBzDAhD
+   sMMvM+0zkOne2dO2y5a5xsqStdg7RR8PWOlWCWAMA5DWaDKlCbjwEK2Ok
    A==;
-X-CSE-ConnectionGUID: 1nN4j3Z8ToKU/3NB9J5B/g==
-X-CSE-MsgGUID: lY9gxH4ZQo+1dx1gu9ZDJQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="112600175"
+X-CSE-ConnectionGUID: ZjBKdAjwQLSyY2YPDhi8EA==
+X-CSE-MsgGUID: oJwD24PoSXegPEplKhv+aQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="112600702"
 X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
-   d="scan'208";a="112600175"
+   d="scan'208";a="112600702"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 22:23:35 -0700
-X-CSE-ConnectionGUID: 1SnU3e7vSsmcahYLs71EJQ==
-X-CSE-MsgGUID: KGD9BSXaRIiKAaUKOK5hpA==
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 22:34:05 -0700
+X-CSE-ConnectionGUID: fPXyq4LvQsCVdziJqFJAOQ==
+X-CSE-MsgGUID: K7I87BFVSgisT8D/7Pn29Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
-   d="scan'208";a="261785396"
+   d="scan'208";a="261787286"
 Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 22:23:22 -0700
-Message-ID: <3722b4d2-ef2a-4ab8-9a24-7d61a776b05e@linux.intel.com>
-Date: Wed, 12 Aug 2026 13:23:19 +0800
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 22:33:52 -0700
+Message-ID: <079c36db-003a-462f-9877-5361f10d9571@linux.intel.com>
+Date: Wed, 12 Aug 2026 13:33:49 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 05/41] KVM: Rename memory attribute APIs to prepare
- for in-place gmem conversion
+Subject: Re: [PATCH v10 06/41] KVM: Provide generic interface for checking
+ memory private/shared status
 To: ackerleytng@google.com
 Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
  chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
@@ -115,20 +115,20 @@ Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
  linux-mm@kvack.org, linux-coco@lists.linux.dev,
  Xiaoyao Li <xiaoyao.li@intel.com>
 References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-5-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-6-2fc18ee6d3ba@google.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-5-2fc18ee6d3ba@google.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-6-2fc18ee6d3ba@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C1388180008
-X-Stat-Signature: 9yyht37upjsa5skpzwyfzku1qsjf95g3
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786512216-295501
-X-HE-Meta: U2FsdGVkX1+mxsfNB+OO/iAY6lwOfVv0i5+7lRPPtI8Whk2Q+Mew+PW7hN8g43WBPl19VhgnbdxiHw0n0q1OGmJOLKm4ekC0iEzfFiK2uCbfUI9xA9l/g6edU4Gx7VyWg6szXaIv78+xKGeVH/ifHd7ZQ6DUPZU8JlEuUmvE7243AZHni6V4nuAUa9BFO5m2fYCZLRbrdaA1FgNJY1uN+yo1/azJVT0cqM5ulcZpgFl3dXQfYeHoFebzzdYxOeJlNeCod05SZoeL4Vjmhnh+eVkCGM5eYb2gi8ThkS9gL5V6tep/eIYaLRADCG/2FQWuDo93bI7qMLB6MvIuCqJC0Qfsfz0+U28KUssH7I1Rm0s5YAnb9XNYB85ACMDrKZYWvHUkIobZHRQ+cfD4sLLwN7zzHf6z/6RSJEkq8Lldy3owZUWRcCebeEvkHHA+JGxwXVh2CY1XFl49loo3e/BOffD6nDLfZkznO1UVR0pLgrU5/86hfBkuGdG47/bAlr/7rswFicHo+8ouYxe4Wk6NW3zr/k+BOxYe1y+QxdjpoVc121QpT4oyzhADyAmm+AdRSoFvy9vcnwB3tHQ/X3iAfrkFWWq8JxCHZDtbwFFnjEK9p71aWL/bkH0YsphAJmDQLin2D4PQOHjFtVKfy6gc+HXTESDbO3/9/A1Bo1Nk+9NtmxVTz0gTWUv7jxcD0nZ/H4SOgr2ReDen7Nvl0m4leajLuuqyzVKaGKORXNBYyOgD2ZNxl9MAb96Z03fHHrEDHgQZsFIopLDvRpNuE99ZD3yM5IM0qR1il0AK8edSxYTnEQAZaZBq4mAHR4W0P6WdcuyxRGRTaJ8hq13OPzRI3eaZc/KAEPltxfufXULmavKDj2vf9c+dkMqMjxLY1G+UFJDVDoZ8GKoNe9viFOSVU3lwz+e5nPUfEZCR3tnjDfR0ggSBtMctrDy0zB3QBtJa7FHn81VlAB0/94UR7wm
- I2UCC4FM
- b8c4mQ73oJ+qe7oxLHt+8wD0G+fJXpkpSmJo4dVdc9+s0pP1wAbfwWN/Zl9DhEG4V9bNoSTdYa0p8p+I5SuV6d2RFCjEMuTzjrA1ql9OKOPV99pyJlkStKHUPZ15WpweItldQApC4J7O6twgSpKxRTvZGOyrivwE086H6+65Df5foUZE3sDPRuFUlIOD34AOWNAv4/atcKSe0eH0gBsZHt6iq9uZUOUkqJmtlId8qkmKvuZyNrt0fyjMdRuc8NslzIhMXPxyPcfzp/oUXzV4DJCWIvaoIOvJ5Khcd/x1ckzaCABtcmCurQttmzOFoGUFDIemm
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 163E640002
+X-Stat-Signature: ew197u74dh44fdn6g6cafq1k7awuai17
+X-HE-Tag: 1786512846-571549
+X-HE-Meta: U2FsdGVkX1+VVSo3j67WTf0KPBaGhFovKZL5chXAhlt0PjrvO9J1Gs3PC3v2nXzP/F00CuUVxrDlftya38frL7W0PXwldWFfgQYWhTMcs7oxHYiuRbo8eLjHLX6i8XKnjwOoAXfqsHqEMUK5BzPmtBcTcapc2VcVNCWnIyU2TYRdpiFQO29uTtfH9RgKGElD1qdd3i1hwNbKvPmwrXOPD2TMrJfF0nsRTHk9lL6XWG659Hc3fk0NxNCX5+Z6scCDVdhvP9R62wAhKyZ/bzI80M9dRxA+kvntGd14jr9GefXbw94HAdzhOMEnBEO9X8LV+qWoFds4uwrGzTFty5FdayrlAdZ6Z6IQ3cHuCZokYDP/FaQS7QGRCbXfU1NLItpFrQ+VkoTuJgeuM3OfgvThW7/M6FhEbBF1PlU6LV48JRpvDGfnF0DRvWvZembie++s+UATya3WaZmPb4lW1YB2l1y20584emjoZAbdNKaWpTnrQ0DG0nuZR+qq9YvN9ki3MJbOHyIwDMa9AoUGEmTXDjbR5Ez+jx3ZDmKprHP4l+eNgjlOfBuozQde0kXufF+kj4YuxpqfNEY51bSRcrefLxUIzJX/YO3VSnfGJJmiZSlSCl3fgmNuvw8pBDjr/Y4xytr8Q2U4SbrgXcrAUuS2dqDCnlFTUppCWMqMdZ197Q0AC6mI1DEgReT9p0OYw/LDCCMrpVlDaNGQRtTCdOcwvcRnU538VKRGVBhcQWpgZE6VrVCV9PAm0MgyIj6KjUskRapMVYYbh7vyMjzLeD5RouIpXlPbEGtcaVc00nAoUa+BG4ZACQKvy3tXS6GDjt/qeQYpCjv2k8VtZWL14MpmjlHfLX/i3UMh5IT/lTbVUhF+NV8Y+T3DurBIhmukshtlrDqOhSNSI47JnS7xXuooT5+gZbNOIYkzLVzvi+kcRmEfgWvzjdwxmg1B/gIvVdrm0VRf2mFxr9akOxI041O
+ /ubMT99o
+ 4n+PMmrtfdgLUfQDk+Cgv1fXARes5zqnZNWMVfm3UCy8cEpOCs6FrzpFXc4eeQQp1wOlcd9zpFZarkL4EAmUHnoeQpDHPtEU+kr4yEib6/WgWxxXGn3o7IoGW7PwS5W1KRrudfIM+JtipY0fHOIbleGrku7zN4ZfWOk8I9L4rGhwLm5STHceyRis4prWBM8zKhHumhf00v7d4r0NR8liKHwTA3RiH15RYuTD9h6eongWakAvOg3Cx2rhwLzf/3/fb7E56aSpK1womcP6DA9cWvhsmL7t/t2812CIDmiMiyx5Qxcnu567/qcwGUkm9m/L8g2Uk9izMwtm64O8naYdtVgyITw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,23 +139,23 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
 > From: Sean Christopherson <seanjc@google.com>
 > 
-> Rename memory attribute APIs to add a "vm_" in the name in anticipation of
-> moving PRIVATE tracking into guest_memfd, to allow in-place conversion
-> between SHARED and PRIVATE.  At that point, there will effectively be two
-> (potential) sources of memory attributes: the VM and guest_memfd.
+> Introduce a generic kvm_mem_is_private() interface using a static call to
+> determine if a GFN is private. This allows the implementation for checking
+> a GFN's private/shared status to be set at runtime.
 > 
-> kvm_vm_set_mem_attributes() already has "vm" in the name to indicate that
-> it is a VM ioctl. Rename it to kvm_set_vm_mem_attributes() to show that it
-> is setting the VM's memory attributes. (Drop the VM-ioctl scoping since it
-> is a helper local to the file.) Update the accompanying trace function to
-> match.
-> 
-> No functional change intended.
+> In preparation for choosing implementations between a guest_memfd lookup
+> and the existing VM attribute lookup, rename the existing
+> VM-attribute-based check to kvm_vm_mem_is_private to emphasize that it
+
+Nit:
+kvm_vm_mem_is_private -> kvm_vm_mem_is_private()
+
+> looks up VM attributes.
 > 
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > Reviewed-by: Fuad Tabba <tabba@google.com>
 > Tested-by: Shivank Garg <shivankg@amd.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
