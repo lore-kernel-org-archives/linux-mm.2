@@ -4,82 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79924C5CFDB
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:58:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 888ECC5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:59:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C1496B0127; Wed, 12 Aug 2026 06:58:14 -0400 (EDT)
+	id 5A2AE6B00B8; Wed, 12 Aug 2026 06:59:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 773306B013B; Wed, 12 Aug 2026 06:58:14 -0400 (EDT)
+	id 579B66B00D2; Wed, 12 Aug 2026 06:59:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 661AB6B013D; Wed, 12 Aug 2026 06:58:14 -0400 (EDT)
+	id 48F5F6B00D6; Wed, 12 Aug 2026 06:59:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E79F6B0127
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:58:14 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B7EC3140270
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:58:13 +0000 (UTC)
-X-FDA: 85092318066.02.B226F47
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 213946B00B8
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:59:05 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A90704021F
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:59:04 +0000 (UTC)
+X-FDA: 85092320208.20.1185BBD
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 05FA840006
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:58:11 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NsaIE5hs;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786532292;
-	b=V1nU4Zu7rKuu5+UWTTEPAeVkXGc1NpaRkpaz2e+tMb428JKsfT9rrL4xfDYRCZwBG7JrWk
-	VW+bYof4HEL48u/wMnF/EPPzTs43ESkAbB+0vD3qxv/JMUzVd9QHEe4YomDLPIshpsOQkj
-	j3BdA99F/0t0OWaQUPG2Yh5X6sAOEbs=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NsaIE5hs;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id F30DB20005
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:59:02 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="C4c/VyOS";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786532292;
+	s=arc-20220608; t=1786532343;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7/dvWIj0WiHmoWkLW9pLDekN4sILa8L7iFUCTv57xsw=;
-	b=VeFR3xh++++BdX5vsNdsL1TvjVBnxxyuPiJv5czuY9agNmjR/evabmhnI4+AvDariyen2J
-	swQWolc0RPt2SKclBiWE0BE1Q1SNdQO9k6SUMKgSAdMRLD4gXJi1DFpUOolvbz7uXm69xi
-	F71qSK4XFl12WMDoOifQt2zT5etfrPM=
+	bh=YVDEOvc21CteZ5TMBNcUHD+Aeyjv25kv7zM1vGXS/tI=;
+	b=iqxPzbnYj0IVEeHS9NrzP1VObhmj4Vdo48r075CIJipImxzD52aZXq5knmsEXcQLFRaB55
+	nL0UfkEC/nTLQmL3yEXcTPPkfyJpZrfNzQsM3EdXQQdpJ2CVHjK2Buvehf4YB+uaEP1i1m
+	YKu77fwDRe/tOoxIiC822W6nq1NR5no=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="C4c/VyOS";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786532343;
+	b=pARgaskIaT1f6OOk89yERiKrInque1H9e3TO3ozD4w1u35+mN24gtawdS453Rmv6EKpMo+
+	H39T8ifv6HIZVefLQJHT3IDIwPCD2sZ3jFd6/JHAUQt+pN/c9vgcBqcnINQ/CgAp+bmkE9
+	6zc44X9BKUtkQoZ5mB4L4f3xL7HVGhk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 955D3600E2;
-	Wed, 12 Aug 2026 10:58:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF6D41F000E9;
-	Wed, 12 Aug 2026 10:58:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 95FB760A7E;
+	Wed, 12 Aug 2026 10:59:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6195C1F000E9;
+	Wed, 12 Aug 2026 10:58:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786532291;
-	bh=7/dvWIj0WiHmoWkLW9pLDekN4sILa8L7iFUCTv57xsw=;
+	s=k20260515; t=1786532342;
+	bh=YVDEOvc21CteZ5TMBNcUHD+Aeyjv25kv7zM1vGXS/tI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NsaIE5hsgL1UwGKbNCNTYYd8Gt8pr0WW4g5C0pDZ65HSP1dKZzA0+GD/km6+PB5i7
-	 D+zPEMAWsvfkleZ4YUb/Ui0k629vB2oss1cvtxGsJTchhwoTrv5psFX+Acc576uZDu
-	 KE3ZKhRoONzwuoQHjMeHFAv55GbchVveKdY5THoUbRDXBN6i0SYvCmnZi51m5tV/MK
-	 Ya9tiMFSgPiyy6CE5C+/JcnCLZO3VcpwxDYX/Q50gKOvxIfrnM8RuLqALP3SSZR/nh
-	 1rV6pzNHmbJaNGc2QXAktye0aObcjhlSxdIMooIFm46lz6gmCYpdACE3abz/fDjUVD
-	 Kn0ni3yY4EqaA==
-Message-ID: <73935dc8-d501-4ff3-860e-640fb07d23aa@kernel.org>
-Date: Wed, 12 Aug 2026 12:58:03 +0200
+	b=C4c/VyOSbx/e8pqmJX8RzB21kZ03+KBHnAksmzw6moWobIT7bciODydX+z36ca6hE
+	 4FPD567diHVtHzyUyPHzONlNFx/Ug+YY6T5ec/VsHg4mBX7Ves2seh4q+gBRXBj6nV
+	 cwMzwbDP1l9k4GVtZNgtd5VoY9IRnLK/z2TNXVmHK4g8t4QqcbNcuqwOtTfcIRVGCA
+	 6O3hFi6IXLBatCirocmQxsLeT+3+Acjo+2q7eGfULmmwwm5G80nU3Yw94bRjZtRbvm
+	 JACTkexpoadnBW4w//HQdIcHeXkOulYxBkOTnuMTPj8OM8P38QFPZZOyUENTvSXZ9d
+	 0fhBKy9YM0zDA==
+Message-ID: <aa00ab8c-6c8d-484d-807e-0305ce190e0f@kernel.org>
+Date: Wed, 12 Aug 2026 12:58:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/Kconfig: allow user to select MIGRATION if
- MEMORY_FAILURE is enabled
-To: Xie Yuanbin <xieyuanbin1@huawei.com>, akpm@linux-foundation.org,
- linmiaohe@huawei.com, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, nao.horiguchi@gmail.com,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, gourry@gourry.net, tony.luck@intel.com,
- bp@alien8.de
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, liaohua4@huawei.com,
- lilinjie8@huawei.com
-References: <20260812091644.224299-1-xieyuanbin1@huawei.com>
+Subject: Re: [PATCH 1/3] mm, swap: ratelimit bad swap entry reports in
+ get_swap_device()
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Breno Leitao <leitao@debian.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jann Horn <jannh@google.com>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Peter Xu <peterx@redhat.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>,
+ Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20260810-swap-v1-0-375ef0767206@debian.org>
+ <20260810-swap-v1-1-375ef0767206@debian.org>
+ <a2e220de-19d4-4177-9703-0e8e5c57f269@kernel.org>
+ <antOPhsllDia-UVh@pedro-suse>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260812091644.224299-1-xieyuanbin1@huawei.com>
+In-Reply-To: <antOPhsllDia-UVh@pedro-suse>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 05FA840006
-X-Rspamd-Server: rspam10
+X-Stat-Signature: uoubfazoq1c64py4i9wced5e6u8kqwi1
+X-Rspamd-Queue-Id: F30DB20005
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: eedtmdubknmunfmrsntgof87d36p4gkp
-X-HE-Tag: 1786532291-744482
-X-HE-Meta: U2FsdGVkX19lJ7KywY7HPAp0vZpYmI1R0BvaqsuzE+taZV8IE3RMQbPaiHVE1rTYKYb43NYhNPB953B1ATDSYCgNagnRFdcT/Z8L5JYjW1dE/xlMb6x5hcqQpb667GbEOc9lIyWLiWPsH5YenLLD45VxsZA8uxhKkvBhNi1T5gTVxvAKmHAPADrEYMqIQ+n9TbC01+dmldRZwXQasoFwoKjgI1LuaJV7HdBwGeF/EndaVI2+SUz2f5NtGL8ZsUqjJOphiSj1oPzGtajysD68XkQDFLNabudYA57rdDssvDFZCFX9GoVxJLZEIT3to1s1PUU1xphKunUAk7QGy+pa/hXCdTHvVNNPmBBLN0bDU81phiqspp6Cgh1c+AxVjixnK/P2Wg7cn34b7VlFnAf55ahc/LkpF8sl52ludokrHdoJYtfr1XoSN02/pYk0gkN+a1AdtQJbt6YtG6TZUvXmcqepEHFq0nefkgC6GK3HQ6yCbR+V3XcFIgxB/zEwbLEWkjfnTfEL3E04vr+6TobXQKDLwtMV+lDomvbEgx9Sx5OkxMm34auB8PxP43mAK5nVyAMaz9M4pvZSqME5qES7yOkNo5OMbfSUvwa8WDf+3OLIyslFl5HAmAZ3TCe9G2Ma1KVGYkG+/bkAu9ueiJpdQvm8isCmEslCQM5TC3ZKbDGcH8Yd8m8N9GRQLmQ2Gls1jeIpqN5LDYBxOls/Gux4IZq6y+YBirZthyvZbvoLBf67JSSFuE3G37Z3bzPXXUWxatA4QJJxjDGUJSw8brqcAiKrl8OgxW72xkU9GJxU7pOVJfW5cSjLIRai6WPen0kXMeO1FZMOPBXUWx1hGRiup9s7BI6Wxc5nJRhrb/cHxXEeysWcZI8ZR4Oy5xvobx7nrXo2ZZys5tTISm+EswXT8FSMrJOx1BZonB9RZ9qmld+3TxEOkkil0qnAcFtJK6nQr5AaROoXfwEb+ox2UDA
- whMttKoo
- ZEBCGjiYOPLek/sf6Rak3eSvDBADAzp6dvMFlpzZV9uI0rCze9z3KfSxEd6zn7g9xitfaJasPhsVrFxPkBM8Jxg8oVAUmv7Qudn55Ek/tb/fFIV7qQ71YpiAoG5+Mutt2mhxK+Et36kEGqTwvGVxOfIzEoeGD72qC2ILLUjwB2LGTcteZwOBRoYL3xeiZjTPZ9sYwgzaSPgGohfZDW8e11/yXiBH7pSX/o2jYk3tIV6Oquh9IXRQge26z0xNIkA7M02DQDk77xtlSYlIjUsJu/LFL1+jInRtIKhR7jEusHI2X0YU+aCGRfj8WNOuu24ys5tGALODI5w+CEGGmyqUwXiqqT8zdQXtalNQhy/7dvbY2Ml13zIpisrVKJx8WqLA5d7VxaIhYysYA9G4yFEwmeFZ9VQ==
+X-HE-Tag: 1786532342-181524
+X-HE-Meta: U2FsdGVkX1+HZNU6b4y9T6SjvNGSwRP94vvhBP7YJUIknPtut86DwGU5wxhCK1JN1taQ3mQ8cdYX+QPMrvk7WQGvqc6CcSZbTUrNwu8tztGI5avPfQTeUZWD2hlkfC0nAK1np/bWe3/cufCp7d4p8+aBzcjnQXBUGLIADifxGSmRR6hI49gN/HmclpwxgzfapR+QLejOJ+Qdmg6hflI/3YgdXumtR8uW5g+EVRt4iB0yqLTuhZXH0D+vDOlXuMF8YRbrv+zS4aNDuNZFX+AsRXyozG5bJe5JjjdccOflLtrIlz4RjBPaEzyafRmM4cYNiRR5Cd8hrhnMAtxinwNSuJZ+7JzvQzRBpuaYzXeqV2WFIG7MkdQY71sXPh8/hCL4dJExtxv1d6Ta0lBbCGKxvzqzbLf8FYnBAhvsLNCUFor3XQ+alY+kBPhNpJ19WTRupdJPfo4kJ3bZHCWUYGNHCfWcDAyCOC/EhrENcHBkFrcxyQZk79/EU9zQsBj8N4rHtuJ9WOJsRzrT7I4727h5xaisfntWvWScbf9kQd6WqiUl1A/clHM61Xd8Xkwh+uE+RHtRb6JHnwn4wUGNg0tnq12MesU7FGDd51MgE7AZo+N196flC4iHtYUSGw030k45ZjebboFbbDiI7WxeA1TqUbeRmMR8C+gLrrFVubHeoA3un1Yz/2Kxmv4VT7y/oa+oZbauJR8xxYYaTkE9DPYOX/jcokHUugWhJXmJPom1WIcXJ+WNGWMUasAb9ihOjxB+qNtlmYsSCxndwUfRUwufI0mik0glpuBE23AykCeNiegX2ZFD9cnnP38kTuiOCh/5+LYSKd89WPXpJfUjQPxqdRpV4riNGf0BB/5eQa1vxPg83UgxeNt6e0BJZsoqV8FyGfR67azZLDrJ+2OExOtq/7rdnv743OQjal7J6pTyQw0VWusal+knAiI5HRRx53A95i4gnyQun5uPzSeaFuU
+ GvFlANtp
+ h6Ot7lA91axiEcpq4QMponvBVeCwODP2HNyW8ug0qTQwiybXLVegoKZNw8bq60NrcIcc2sK1NC9dxqTNS2nMHnc8yF+L/nmb1jI21b7BKEwuyFiYtb1cwAVh0ctmTIiQ0MvKgtmT24HYlC7j88UmDqUGBumw4z3ca9gO8+raeLNu9cfK6m0MveP9Lj1MLoerRi2wxcvij6Fu0iPtYPr/7T9nU12tGprVySNxP6eyzQS7Q3+22Hw2uC2y9aVZH74uNwZ7Db4oxFhYbALZjfYwk9MOu9cz6hGFXMphu2mI5MDamAmIlSSwdUmV6UtJAEJT0No8ZzIXjKRdObPJagd09JWnA1kgAeY67WaXB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,40 +152,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/12/26 11:16, Xie Yuanbin wrote:
-> Currently, memory-failure can be enabled without migration. However,
-> migration cannot be selected by user when memory-failure is enabled.
+On 8/11/26 18:48, Pedro Falcato wrote:
+> On Tue, Aug 11, 2026 at 05:33:54PM +0200, David Hildenbrand (Arm) wrote:
+>> On 8/10/26 18:26, Breno Leitao wrote:
+>>> A corrupt page table hands the same bogus entry to get_swap_device() on
+>>> every access to the mapping, and every rejection is logged. One machine
+>>> logged 6185620 copies of the same line in a few hours.
+>>>
+>>> Rate limit both prints.
+>>>
+>>> Signed-off-by: Breno Leitao <leitao@debian.org>
+>>> ---
+>>>  mm/swapfile.c | 4 ++--
+>>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/mm/swapfile.c b/mm/swapfile.c
+>>> index 4d4e3e3059f6b..9ab11dc24e4f1 100644
+>>> --- a/mm/swapfile.c
+>>> +++ b/mm/swapfile.c
+>>> @@ -1899,11 +1899,11 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
+>>>  
+>>>  	return si;
+>>>  bad_nofile:
+>>> -	pr_err("%s: %s%08lx\n", __func__, Bad_file, entry.val);
+>>> +	pr_err_ratelimited("%s: %s%08lx\n", __func__, Bad_file, entry.val);
+>>>  out:
+>>>  	return NULL;
+>>>  put_out:
+>>> -	pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
+>>> +	pr_err_ratelimited("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
+>>>  	percpu_ref_put(&si->users);
+>>>  	return NULL;
+>>>  }
+>>>
+>>
+>> In print_bad_page_map() we use something more advanced
+>> (is_bad_page_map_ratelimited): essentially a burst of 60 followed by 1minute of
+>> silence.
 > 
-> Migration is very useful for soft_offline_page(), which may be triggered
-> by correctable memory errors. Most of the anonymous or file-mapping
-> faulty pages can be migrated to other healthy pages.
+> Is it more advanced? It just looks like a handcoded version of __ratelimit.
 > 
-> Allow user to select MIGRATION if MEMORY_FAILURE is enabled.
-> Also, select MIGRATION by default if MEMORY_FAILURE is enabled.
-> 
-> Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-> ---
->  mm/Kconfig | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 8a24c130d008..b4c217383b51 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -682,7 +682,8 @@ config NUMA_MIGRATION
->  	  demotion for memory tiering.
->  
->  config MIGRATION
-> -	bool
-> +	bool "Enable page migration" if MEMORY_FAILURE	
-> +	default y if MEMORY_FAILURE
->  	depends on MMU
+> ... I hate it now. I'll send a patch I guess.
 
-As others raised, don't make this user-selectable. If some other config requires
-this, glue it to that config.
-
-Don't make it harder for users to figure out which mechanism A needs mechanism B
-to be useful :)
+Thanks for cleaning that up!
 
 -- 
 Cheers,
