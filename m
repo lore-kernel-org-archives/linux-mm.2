@@ -4,92 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 957D6C5B56A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:32:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7942DC5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:38:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 918B56B00C6; Wed, 12 Aug 2026 06:32:31 -0400 (EDT)
+	id 6660E6B00CA; Wed, 12 Aug 2026 06:38:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F1096B00C9; Wed, 12 Aug 2026 06:32:31 -0400 (EDT)
+	id 63DD46B00CB; Wed, 12 Aug 2026 06:38:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82E3C6B00CE; Wed, 12 Aug 2026 06:32:31 -0400 (EDT)
+	id 5301F6B00CD; Wed, 12 Aug 2026 06:38:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A13B6B00C6
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:32:31 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0FEEB1C0CFA
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:32:31 +0000 (UTC)
-X-FDA: 85092253302.18.6F88722
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7836E20002
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:32:29 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HeDSLgDM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 2C5886B00CA
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:38:45 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9FF0D1C0D9D
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:38:44 +0000 (UTC)
+X-FDA: 85092268968.30.D7BE9D3
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 062CDC0002
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:38:42 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=t3Y5XHE9;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf22.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786530749;
+	s=arc-20220608; t=1786531123;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7enFee0jAt08OEyw0dUeqUaEU2QqTLX8gKg/GfUdVQo=;
-	b=dykjeRMvespTZKBEWCJapScU0bhxLU/aOiPsBFb0ie6K55t5ecoCdFJthKTdsk0Qnqa2D9
-	2v5lhcNFq+P/yaRvz7rZmk6QRFj58mBQkzul29hZL7/gzRbOQM/EEWGzNzhuY63xDe7n7p
-	N3ibeveizNlwVZ8Mc7+W8Dlj6nDqWnQ=
+	bh=GFJPppF4fbIjWCaBGjvk/JQ0AsC0fVseKp2Qr4sN+Ik=;
+	b=ghJgENv+qEgbEvTSioJcxngYy5rpy5imZ6O7nj98+uoTqrXDF/7/kOpfeCPMTYkWO7pwgg
+	QpM6Uzk6UbIDrSSKBkVW+61cXNSwdi0w93bVnrAlP1NNRyobLVrRZErVu4ly1iJp9Ztvvv
+	z5cizxGs0mzdYIIsLaoekJ8iReRF9QY=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HeDSLgDM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=t3Y5XHE9;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf22.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786530749;
-	b=74kCtau2z+Rj/x5IDwp105CpsKp59NWR/q88ZpN+t2QVPXHWOXyj8nxdu0nluY/09VdR3B
-	x1p8TOnUuGzC0PqZ2EHLUK898csJhMBP21fwmvPaFMY/ZAI0GNgtAqgB2YstHlqHDOK4bP
-	6LW+ClpCI2JE9Wb4BtOoeJPSfphDNO0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 03CA560A88;
-	Wed, 12 Aug 2026 10:32:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011DA1F000E9;
-	Wed, 12 Aug 2026 10:32:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786530748;
-	bh=7enFee0jAt08OEyw0dUeqUaEU2QqTLX8gKg/GfUdVQo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=HeDSLgDM6lV5H3FjBS7R0fKuLaRZlILJlBAykX+QILIl6u593Cn5+YEZ6cP7bAL/z
-	 1hIIuDEvmhvWJe+sAi4nQNciJis5uxa++bY8vAFlUYXmTa16eLXdK8I90EKszZFt+y
-	 6XOWjBn8PaGLWuYCWt7CgHfGYAeXpNUsCB/NYAY+I2Ein1nwAsySA119VYUb3E406d
-	 FipOXlUdZIXF4n4qEfdue4yR74U85S59MD2Ej43NemqcvyFM4raZQTHea4HVJxJ49j
-	 hP9S9rigy180grTLHjxasl+WKjERwi+MM51yB3PKYnrUuZqGyRbN5KFTJhRK5KMY+c
-	 MQwBYbMgjsw0Q==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pranjal Shrivastava <praan@google.com>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  Pratyush Yadav <pratyush@kernel.org>,
-  Alexander Graf <graf@amazon.com>,  Samiullah Khawaja
- <skhawaja@google.com>,  David Matlack <dmatlack@google.com>,
-  kexec@lists.infradead.org,  linux-mm@kvack.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 0/2] kho: support preserving high-order non-compound
- pages
-In-Reply-To: <anr4-F-e5_vHEar8@kernel.org> (Mike Rapoport's message of "Tue,
-	11 Aug 2026 13:27:04 +0300")
-References: <20260803113944.3694290-1-praan@google.com>
-	<anr4-F-e5_vHEar8@kernel.org>
-Date: Wed, 12 Aug 2026 12:32:25 +0200
-Message-ID: <2vxzv79f39za.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	t=1786531123;
+	b=Z8jpZXIEia4h0K3zvGyo9TzL3jIZQNHlD9uWgs13JVHXlYrKnhnPMuZUc8FowrRji6Klsf
+	CgpZaM2kAIR8KBA1Ml7UQSjgxIp/HKhc5tgFX2Y8iB1nnJTzwXk92WvUeGzimi5GnBntRF
+	coQBFq+jv24OvPRWv3J0lHWx3TBgQJA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=GFJPppF4fbIjWCaBGjvk/JQ0AsC0fVseKp2Qr4sN+Ik=; b=t3Y5XHE92C5mLGD5RfbigeRubL
+	b+Kc4FqL3X3iJnsjyS3DW2sPcWNsHuICor5owmDZ7jPQS04VKyLDbHXtC7yUnggiINH2oo9I8W9GM
+	Z2devRCFSycAONXrOEos0bGL+F0sKWQSCQdeYHZdPT+xlsTXj3ACx+vtCQVFL1HS9AEoBpiQAjcOT
+	RJ7pzpheFikn50CDOaODuO5eyn/x/4siFS5DhxbVuuW9gr/pY2xHyaHRvN5elt54hd6aAipizGP4j
+	BHrp0MnKrZU13EM1eSGHQDWaZrZP14nsIv2z4JuIHb9eyMCVpubDTnK4HVfKKgHGDRQb0um/14pJn
+	cm/hxhEQ==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wu6LM-004HY7-2k;
+	Wed, 12 Aug 2026 10:37:57 +0000
+Date: Wed, 12 Aug 2026 03:37:50 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Yosry Ahmed <yosry@kernel.org>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 1/3] mm, swap: ratelimit bad swap entry reports in
+ get_swap_device()
+Message-ID: <anxL5hXgHBUZMolg@gmail.com>
+References: <20260810-swap-v1-0-375ef0767206@debian.org>
+ <20260810-swap-v1-1-375ef0767206@debian.org>
+ <a2e220de-19d4-4177-9703-0e8e5c57f269@kernel.org>
+ <antOPhsllDia-UVh@pedro-suse>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: jxyr7xojmz5h6bd7wosa7tyobsfjia77
-X-Rspamd-Queue-Id: 7836E20002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <antOPhsllDia-UVh@pedro-suse>
+X-Debian-User: leitao
+X-Stat-Signature: q4n7umzzfb5q8pyedhfc39xdxd48xc3h
+X-Rspamd-Queue-Id: 062CDC0002
 X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1786530749-136253
-X-HE-Meta: U2FsdGVkX1+eszjbgc8VNTbGRNHH7E75jtK9Z4GAWHHLeiu6FcDJDdc+3RcTseWOrcYlcM6B19/sJBIFJdJrCGYQR3za6pfgz6+2Nf2VByNy0Vkrf4gfjhtxSMuYKwtJKasr9y5jP4LR2IXRLzpJMj7KMLrHfDZjYSw1gZz+7wyjjOLUteL3QAso44oUv0ZOGjL1atdi7QyTTelbkV5UDz48ktLTdkxfpjQ3fVWISAaniZbVtWPNSmsIMDFBTyLzv9db1Coj4st6Hd8PFfYFqyt9JHjVnFe4kTjj1S84N4jqDoG/bQv0+rcdNOWOpoSvHzm9rXKOo0aRFONA3Wi2Ii4gcVr7j5jSM41caY4ZBTtzbuve4j0y5IiRd2rrF4Oj6n9qcFf/4zAg+U1MO6KEypZsb66t2WLtlQwM9h/GNl1TRJs0kzvuJWT6WdEecW6dUcs19ZgfbeWkYoWwF/M252erkU6PMMbWRiCRJvyy1Vk8nLWG949r31ohG2bQW99MHvaCR08/HU0ExQNGc2bDPFcfgoyBvu9RLCWKXrYn4g1r6b1d85ONXaMruY4sTvJ9MrO3tORHioiHk5EYRRVH6J7Jk7xTiLKuiE4xTu6Pu4+s01Kw8CtWKBZsJVk6xZNsngxJy/EzE+rEbDNPYLt+hLOJrvhUBVwztyVjqhRn0a7rGsepnDCIH0IAR9eYnjZudzbUkhMUtOdvS090IfKSiJL8dz+sjKOjjcv3rbdhVJiBRFzEdfRFw1wvHlFU8kgAteExoWU2XB/XsUjRQBaaMIiyrsbu0tEqrtikwPCJ7SLbXxYEzOFC/GVUEGYU1fU1KkiAg2ysluUq+PbgwFMmfwi2dI4xrE5QtN68INMfMK4ZpUSMLCLqnyLYLjXhDdqJEakToNbE6SXlLaYDSrnNksx5gjxuqScMgfcxKi50Uq0uaheCT+507jyF0F5NNq5HNzQs6x6OdXur2O28lE2
- kmhD75LJ
- cIX1Z3TNa77IQLBf67ajKMflYyCkTRgxzmfSu+CY0MqyOxjJ+kmIqv4Oy9Sfx1XzCINdFoxx+xrC3QcgMR/qZjrAbGE3GRMJ/j6YFRM0yGDQYNY5Alia+h4+G46ugaAuAi2fjPTP6MHnW0RYDUjl6ccWaSCyHQBvnNZ6zrPNP7QqQbfxh5qdA5qg/wi84sfq1q1st5pU11lQweGo=
+X-HE-Tag: 1786531122-854408
+X-HE-Meta: U2FsdGVkX18fJI2JKDh5MLBYrW1jnzQYFudJE08dyr+9BmUJ7Kc5k8yKCExhv0GajGAklx0mZQzCKBoQD3cch0MLdRdYmm73V1su8FtbDIio+UScwQsBJAetUjTJ31qgqcGNtcB1KUZq+gBALSDeULAmwNq4KQ56RHfaYRra7SsWHDBY2ntpIzQFRwaAhIHUiQVzk4bLg4sB7amI9g7MaMgVs2lVhHRUFLSIDK9nqZ9BlHQ7+cKd+MzFLv8RT/kq1uzsxsDYPxb4c0iW40+ZenIN4Gu0YH98nmnYgTU1WJGQyw3hEgRZtXLI2AEpaqB5LVl4NBLup9S4Ikbrt3xw7wS1KXUEz8nE7rmdo0l58JIlK7+GZvqPo2Rglm/28eo19vwrI9L91stePZWtM7Ef8zhgnJ8IrB8EwWuTBl/z9Lso4VlGd0gmnFlHq8a+w6PiLE/yYK8BY35L7dORWXlthIdZsfO8xJ7KElBFBRt3VW60Bx9AzvG7WAvghlutH6BvnasauZpjVRPCqh4zDjV/5FXGD7g9rE20xLAeyRnl0BFCv0fnTXABPDDqdcorqVxgVB5thdqETCTveb2Ve9bWuzOqNCDFyoxwqHoSPg2SQCWRZGCkATkufSPy5MOcveFlYifRFs1YPAXXj/DNlKsd1ROQ15VnlclpuzFCMTM/avOzvV+B3o/lh7x0/60I2Z9yRjpDi9XvQW31mbH0svF60D3QFquKjiWIBTSEXlhGkKmczQO4ZVkmTbBlmgYN97FewB5XdE8UE4ecamdZI4babufLX1df+p0hvgY/tpYujVAQ7ZHGK9p/NujBJclQ8OM9KdPtmSNlwZPbN+9qkpz0y/IntTH0G/pewK2le5vom103CPH0HZFgAeyglsX0j1tQV8IiHeL+Sx/2uF+aIL8GI1ZtO64hi1heW+T+A64PmmoLvq1NYrJvU69RIpvjCPr1zVxsEns+43LySDDQQyD
+ SGibV28V
+ ZXRdHywZ3RGj6K+kv3juZAS4esHALAsIuQmjaWynM9f7YtMUku3fvB4XGgYjaTb/1pFaXjE/0xkpoyWo/nnwX1C67K5xZ0uyK6Wq41nQDZ4JCnJvwZhg+HeyigKyIztPLHNfU3wIuAkd8ieOx74Z85jEiyO+feIomg/j+sTE0jOk+R9aGp33WJJQNvZJjrHW/UR2AlLn27o5qTZqtPtyfYyO8PQSSh58FhuIwLR5MnRDTkhKfagtBbu5jCyygRlN9FP6amMKZGnFCk0u+hBxlKkdadBSlPJ+dRvEXaira14QKl2lkF/8UHCpeHGKqz332N4Og4SOsLjYS14I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,44 +105,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11 2026, Mike Rapoport wrote:
+On Tue, Aug 11, 2026 at 05:48:52PM +0100, Pedro Falcato wrote:
+> > Couldn't some of the stuff you drop here (different entries) be similarly valuable?
+>
+> I think we generally do a terribly lousy job reporting these kinds of
+> failures. Would be awesome to log this elsewhere, or possibly send
+> something like a SIGBUS to the faulting process, for instance.
 
-> Hi Pranjal,
->
-> On Mon, Aug 03, 2026 at 11:39:41AM +0000, Pranjal Shrivastava wrote:
->> Introduction
->> ============
->> This series is required for the ongoing effort to preserve DMA allocations
->> across KHO [1]. It addresses a fundamental mismatch between the current KHO
->> restoration logic and the physical reality of high-order buddy allocations.
->
-> I skimmed through the patches, they look fine to me before the in-depth
-> review :)
->
-> But we are really close to the merge window, so we'll anyway need to
-> reiterate after v7.3-rc1.
->  
->> The Problem
->> ===========
->> The current KHO restore implementation treats all multi-page blocks as
->> split pages during restoration. Specifically, kho_restore_pages()
->> initializes every 4KB sub-page with a refcount of 1.
->> 
->> However, many kernel subsystems, most notably the DMA allocator (via
->> dma_alloc_coherent), frequently return high-order non-compound pages.
->> In this state, only the head page carries a refcount of 1, while
->> all tail pages have a refcount of 0.
->
-> This hints that these patches could be a part of the DMA preservation
-> series, unless you expect other users of the new API.
->
-> Generally, we don't merge new APIs without the users and if DMA
-> preservation is the only user, it's better to fold these two patches there.
+That's precisely what the follow-up patch in this series handles.
 
-Makes sense I think. We can review the patches here, but then they can
-go in with the DMA series.
+Patch "[PATCH 3/3] mm: fail the fault on a malformed swap entry instead of
+retrying it" propagates VM_FAULT_SIGBUS all the way up, so the
+application gets SIGBUS'd instead of retrying (and re-printing this
+message).
 
--- 
-Regards,
-Pratyush Yadav
 
