@@ -4,90 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6B8AC5B567
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 05:41:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22999C5B567
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 05:47:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2AB26B0096; Wed, 12 Aug 2026 01:41:10 -0400 (EDT)
+	id 0BF066B008A; Wed, 12 Aug 2026 01:47:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DB446B0098; Wed, 12 Aug 2026 01:41:10 -0400 (EDT)
+	id 06FE46B0092; Wed, 12 Aug 2026 01:47:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A2B86B0099; Wed, 12 Aug 2026 01:41:10 -0400 (EDT)
+	id EA17B6B009B; Wed, 12 Aug 2026 01:47:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 597AF6B0096
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 01:41:10 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CCD081C0E8A
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:41:09 +0000 (UTC)
-X-FDA: 85091519058.29.7F2F307
-Received: from out-186.mta1.migadu.com (mta1.migadu.com [37.59.57.117])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 0519720004
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:41:07 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Whpnxh9p;
-	spf=pass (imf31.hostedemail.com: domain of hao.ge@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id B4C8F6B008A
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 01:47:11 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 271831602F6
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:47:11 +0000 (UTC)
+X-FDA: 85091534262.30.F6074FA
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 82B911C0004
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:47:08 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=sk.com;
+	spf=pass (imf18.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786513268;
+	s=arc-20220608; t=1786513629;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TJw8Kb7KYo62APlX8MEZxvAZlhH4o0ziACenqfJhSwk=;
-	b=BgZSurqADTWIVFtI5hrNyPdNXtwyN2W7A0QWkaEwuWVAATwhOZjb2ASb/LSsxe6JlAGk3t
-	Dwwa/26P9FWJkKKDcUCUF+u8Q4/gfmMBI6Un60M8gTqAqMopoaz9vyH5mSi0WDZDsc9RR6
-	PfBy9u05q/xXAoD7uodVTZyQPoYuPgU=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Whpnxh9p;
-	spf=pass (imf31.hostedemail.com: domain of hao.ge@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786513268;
-	b=M0xtbBKo61Ma94x3dP8jwDNUb5yFkMUOkB/3U2wTCvQj40ec2bZD93X4/6VWYMaSNAkOAW
-	lblwzihRMfieW923/hWcNOxrzRAfQLdvU5rldTre4tJvnzhUDtx0qRrwVCzW1tTGJAGSIY
-	/g+5AxhM9zdwDjgYBpygImfYZQykD0w=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786513266;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TJw8Kb7KYo62APlX8MEZxvAZlhH4o0ziACenqfJhSwk=;
-	b=Whpnxh9pXp2+bTxNYX9GyGV2YNWyFmEhiFLBxTHM1emfN+vJjElCcTotxQwVy3X1umLo6t
-	yiTOJm0OqPnobb7aV185QEy//Yh3hnbhvUFaABU9uMRD6FwBkggx2YIhowltCfc/AyM1lq
-	HTTnFTnQdY/3c7KPSiV2czkyKaweldU=
-From: Hao Ge <hao.ge@linux.dev>
-To: Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Aaron Tomlin <atomlin@atomlin.com>
-Cc: linux-modules@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	bh=f3OZ6Miph1UkAdMzp7VXnJKJw84mK4Lp0naeCHFy0VU=;
+	b=4rUK/9zB67sKNCH+dkodRPuxq7QDmhVPh+zRedNg7GFv1fq4P4XhfPy4VhEOT6ciV2THFo
+	shs0p4QIlMywdF4+MjLQngy7zK30eecPa7VP66Ry5M0Bmbl/FOtCmfTK3L/4Ia82waTUH+
+	Bi+ZVc+U4zV+ZI9B4gCi+QbOJd3S2kg=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=sk.com;
+	spf=pass (imf18.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786513629;
+	b=cgaYqX81kZDqCFBXNsTjWT6qqXKcqcj2NFp4nP0HbzO3+EY27FyOXxeJzSoDB/UoiD0JLS
+	w7KYvdFUe5FTBLsLf+2ZUrpfP9g332grncEjLZfMd9YaOXTiDprKqh9iNauu/DkmLAJatw
+	uUhe+gANeaOG2vodMZd+fJCsCFdP/+k=
+X-AuditID: a67dfc5b-c2dff70000001609-fd-6a7c08d79c47
+From: Rakie Kim <rakie.kim@sk.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: akpm@linux-foundation.org,
+	gourry@gourry.net,
 	linux-mm@kvack.org,
-	Hao Ge <hao.ge@linux.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH v5 2/2] alloc_tag: fix undetected compressed tag overflow when profiling is disabled
-Date: Wed, 12 Aug 2026 13:41:05 +0800
-Message-Id: <20260812054105.102637-3-hao.ge@linux.dev>
-In-Reply-To: <20260812054105.102637-1-hao.ge@linux.dev>
-References: <20260812054105.102637-1-hao.ge@linux.dev>
+	linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	nvdimm@lists.linux.dev,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	byungchul@sk.com,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	dave@stgolabs.net,
+	jic23@kernel.org,
+	dave.jiang@intel.com,
+	alison.schofield@intel.com,
+	vishal.l.verma@intel.com,
+	ira.weiny@intel.com,
+	harry@kernel.org,
+	kernel_team@skhynix.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com,
+	Rakie Kim <rakie.kim@sk.com>
+Subject: Re: [PATCH 0/4] mm/mempolicy: introduce package-aware weighted interleave
+Date: Wed, 12 Aug 2026 14:46:57 +0900
+Message-ID: <20260812054700.1803-1-rakie.kim@sk.com>
+X-Mailer: git-send-email 2.52.0.windows.1
+In-Reply-To: <20260811152951.195315-1-joshua.hahnjy@gmail.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0519720004
-X-Stat-Signature: yaqfwo5ji6m9zhxuz9m1hyju5hwa6e9o
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrHIsWRmVeSWpSXmKPExsXC9ZZnoe51jposg3cNphZz1q9hs7j7+AKb
+	xa4bIRYnbjayWay+uYbR4vnWX4wWP+8eZ7e4fmslo8X+p89ZLB40rWKyOL51HrvFulOH2CzO
+	zzrFYnF51xw2i3tr/rNavHnsZvGtT9rifp+Dxcoff1gtjqzfzmQx+dICNouOl/dZLG5NOMZk
+	sXpNhsXso/fYHSQ9ds66y+6xYFOpR3fbZXaPzSu0PBbvecnksWlVJ5vHpk+T2D1OzPjN4rHz
+	oaXHi80zGT16m9+xeUydXe+xfstVFo/Pm+QC+KK4bFJSczLLUov07RK4Mh6v3sha8DC+YtL0
+	BsYGxh6vLkZODgkBE4m58x+yw9j7Zj5g6mLk4GATUJI4tjcGJCwioClxonUScxcjFwezwAZW
+	iVOn3zKDJIQFgiS6pj9nBLFZBFQljv5dywJi8wLNWfDrGyvETE2JdRtvgcU5BewkLn37BbZL
+	SIBH4tWG/YwQ9YISJ2c+AathFpCXaN46G2yZhMBPdolNZ5cwQwySlDi44gbLBEb+WUh6ZiHp
+	WcDItIpRKDOvLDcxM8dEL6MyL7NCLzk/dxMjMFaX1f6J3sH46ULwIUYBDkYlHt4LMtVZQqyJ
+	ZcWVuYcYJTiYlUR4q1dVZQnxpiRWVqUW5ccXleakFh9ilOZgURLnNfpWniIkkJ5YkpqdmlqQ
+	WgSTZeLglGpgdNQ/cEV389dDf1K1p536erdBYuJUfnNlXvEzkU9FK9h/JVm2z0ryujkz9KnO
+	u306b8rjWG9tO7F/WdrUCaXMpk8+zhaZxV6fnfAoXGBm8elHG6xv33HbcWabirlfp7FyUa3W
+	TJ6KlLXNe2UbljMdPfTuqaTP/hknH4Rt9n3zW2bB+pDv4bfX7FBiKc5INNRiLipOBAAzKRtA
+	0QIAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Ra0hTYQCG/c45OzsOB8dldNDQGIQoZAYFXxkm/bAvf0UXixR05MFN55RN
+	h5dKS7LSHKaJc2pYoulcTuctLRWX10kljjStecFymhneWOalckrgv4f3eXn/vBQuaCNcKYks
+	npXLRFIhySN4as/QIyPUzSjfDJMnLNbrSGiZHiRh66fL8P2TIhL2jd4hYfWoDkBr4zqAvy29
+	XDgyVgXgysw8Dju+WQk4eVeLwd7Gp1z4tqSfA2tMRhJ+0JgIaG4tJuG47i8H/pgOhDaVG5xQ
+	BcCqtU0ONA5bObBL34zBvKFSEj6YmyDgWE4PBqt1YrjRVEnCou5xboA7atFYuKjUkICyMsxc
+	VF/pjcrezGHIoH1IIsNyLhf1qTcI1DJ1Es3WFwKUnf6TRLbPCJXNLmIovygV6Rs+EmjF4H6B
+	vs47HcFKJUpWftQ/nCeerq7jxE2FJeYWpIE08CgoEzhSDH2caS+cxDIBRZG0kOlpC7XHLrQX
+	03cvF88EPAqnazmMaWABt4t99EUms8AK7EzQh5nurZeEnfnbO6XrNs7uphdTUze2kzvS/syQ
+	bZ1rZwHtxHyv7QC7fWemv/DrTgenPZj0xiI8Bzhp9ijNHlUKMC1wkciUMSKJ9ISPIlqcJJMk
+	+tyIjTGA7VMrbm0+fgVWzeeMgKaA0Ik/eDAlSsARKRVJMUbAULjQhZ+iTY4S8CNEScmsPDZM
+	niBlFUbgRhHCA/ygq2y4gI4UxbPRLBvHyv9bjHJ0TQOdgeQpVlXBVizOFMdm56echSFryRn9
+	vcFfyrfaVNr9anO0st+jTG9b1t7OcW5fCVEvtC6FStsDLw2vxkeWWJaeO/xyD7Olqho2Bgx+
+	kx3ZGVj2mWtiB1i+kNB1vvu+V/e7mUPsn2euGpdNP3VTJ4nlzedesfqSwa+b/V6Ys4SEQiw6
+	5o3LFaJ/JCQcpNACAAA=
+X-CFilter-Loop: Reflected
 X-Rspam-User: 
-X-HE-Tag: 1786513267-264500
-X-HE-Meta: U2FsdGVkX1/iAh3I8bhIvXCExtzevy2WJRs4JD7KnaV2ARNcDsPZATzcX8pSbpkPjBpMqTja6A2XiFBoHhYMuLq3RnocP3p1E9gpR2Mvod4Wek3AytT3KC8N+UYh8betSsC5bCp5I2C13ykxK2pOvtJvo9qgCW58H4nGhE+CRMW76CcoBKM6qIA02IMNFZ0g3fV7sXEWmH817Q/UJyz0Ycn65G69DOo75340fJYSCS66CTCSVwKiSbBlLPTJfd3Xm2dUDOwDHgaeYWqlCt9AhaDVwhGnKzhoF/ZFfXMW86V8q5XAFERu3XvwGjpgT3SkiIOiE29BECHAf2L2v9+UbAxPUSvlQC4roNk3207NEEFbWj11vVgbMg6nLQrXuMXdhRNXjDLuRzlJOTC7L0D0K6v6g1kJObHW7/RUovdBt8M7b07dRZ1TEZyzFB/7AiQCuj/odTU9J+oHJ5q4uuUaeDfUmsVJA7kcljzFiFqazMzK/BX7DOUhNVfujR0CNxgrHTxk1nG1dRsfthRueRZchNa4KLiYgKpBtk847qrks+NR5hQGzCqKeCGwVVhbc5XAvJ96U8Cuzd7+0h5LMmwbPnkUyvPN3zT+SIQDnsfw9HG7T23++lmPV44di9euN6Up3ksxQgkvFXAStxkdgapjOcU2/NL6gn2jftxq0A3NwgF8JyVRGy7f5dH4yzrFkfgHOVPnuDRzkGhXq4GxIpwpyY6Avw5vkAyhJKNZWKTLRr1KNlDQoXi4ECy5L32X+4oyoiNFlnYRayh0B1TW2HcNxXCa2F6Ct5YIWH4chJNQpgLpMbmjZct0qJmhDCgRYPW64+u3o5RMkSB2DzPwu/bP+cqwzvP2RfRg7xLnev0BGKaqnQbyxs7D78ex0Hkp2Ua0y5LxxjRikKnZrvgUIlnHyhMkFU1+nD1mgfAKLnPIRJVXPEcaENKFpThSBlbaLZn9zLgSMYAO6+aV6rnvmLo
- oka9IJfT
- 5BjWP+Vzf5CHTVhHWx3Vw9pn7rWoPiUz1fPOtE+xWUG/2zlxpo59zarjzRTIZDierdPYPoDKQsAGtB2dLceJIsxyvKneor5vVB91F+9yHIJcK+wAqcy8XolD5cv76aDTRdnUhRyBHAYRu6JHF0oK/rv0ZibVBGwNTxHehv4QiqAhqctHnqtXfqvdrVAv+pe6KK39J5LK3O8zHVngaksb/ue2tahHBnB6NdDE+X9kwZ0pkgCzuCoeS4IAYkdckLahfx9/F
+X-Stat-Signature: 3m5y5gsiug7xihgay9z7ebzfb8n4radu
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 82B911C0004
+X-HE-Tag: 1786513628-661738
+X-HE-Meta: U2FsdGVkX18gH63LP7PsxV7eZQX93Pr53/t+JzFOiDY+dHKezAu8rnB9iR0WVwM2Ubme9ht1YL9Kqy7WhFPhx+JReeYCQhzwTp8NZ8PdgdbwipORcfYO1cMjMLk6nPCsMoGo+VxeY6iEnkZMJjr5TX4bJtL0MhaD/+Y0VlMEQE2Kqk0hj6qbavSg5bkH+DCaBXmoJvrY+OwKP180qU7TTl5Y2gAW0IjnnBvbFXp/i+EuduDqU+LxlSnCE6mJPgl7UrgfVqJwCTX/QL26Ot2T4oTKQ+Jc1ftFpXwZ04TQ5hv5SaBv6UNu0mspD9orr7ddAnSo/ydsd28zMYD7veKfPKGB2r+QjNo/DHZyYHydS52NuJzFy6suLdUfhX/AmdKTWGOw/NaANF7bqLyPFJ//qNF0/sMlEQvwhwv3ik06khk4BNtyNaDcm5FmjkHzitWgwm0E2APiwMmsRuqJl7YYmOyxhu5s6S3KN3K8iKhilHyWKr2j8NDtMAJn4R99khPDtrEzrVYOLo1Zn1uy+jx4N7LMfQcgwqz+FAMVultJDecN6Ny0wKwgIAoKEtbjpiPoXCF94CG3W3jLpPfS+M6f9aEYBN184JRAgdP3XgqNyegtjmsn04sNpLGP0WPZ+Sa12gHtesa+2vGIDTJLJTlsLhWr8s9DACNRmFBzIy20gRCWU5YhZj4yHH/dVFsznIcywr0EG80I37IRAGnk/EBLQfyq61rAYWVxm+DSoWNUSJNDo8/tUFyRE/Gq5JvlzfTkaRF01Q4dg1QSvbbzRP2twhZDGlmTrH2KDtud5wyrYWgohPZXbi67XjwlylZn5T8xWT359pOkgX+FaJoa93I5voL6/N7cHye9fkQC/QUi8LgdSArP1w7IFwaeZBgkYUa8bK1KK6FM/c5JpMeNl67MxSf8JW2398Ru/g4NcqQ9DY9Eu4g+WA6Ut4N1MnVE/ROI/ALAFTWdwM03dXkh5WQ
+ EGl5URUi
+ wSpDN4/DkyOhBddap81FfUU1kXHOGgdk8PwNQMC3LSFQHS6ouITcAfiyKrz0+crD30KaOggeS3QnNp2oqxpNCz64wtOnasvA2IwgyL0e9MZ9qn9uFWBbK4VyXUa/Jg8l0OfRNQJ+3ocu/cQWkWdUcVJ+XkIkmnupVgMcPp5MU7hknIPU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,119 +132,287 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In reserve_module_tags(), the tag overflow check is gated on
-mem_alloc_profiling_enabled():
+On Tue, 11 Aug 2026 08:29:51 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+> On Thu,  6 Aug 2026 17:09:31 +0900 Rakie Kim <rakie.kim@sk.com> wrote:
+> 
+> > Package-aware weighted interleave places a task's weighted-interleave
+> > pages on the NUMA nodes of its local package, so that interleave traffic
+> > does not have to cross the interconnect to another package. This keeps
+> > each node's weight aligned with the bandwidth the task actually gets
+> > from it, so effective bandwidth holds up on a system that has more than
+> > one package. (A package is a CPU socket together with the memory
+> > attached to it.)
+> > 
+> > Changes from RFC:
+> > https://lore.kernel.org/all/20260316051258.246-1-rakie.kim@sk.com/
+> > - Added an opt-in sysfs toggle (off by default) and a read-only sysfs
+> >   view of the package topology
+> > - Added topology validation with a clean fallback to plain weighted
+> >   interleave on unsupported topologies
+> > - Hardened the allocation, device-teardown, and node-hotplug paths
+> 
+> Hello Rakie,
+>
+> I hope you are doing well! Sorry for the late repsonse.
+>
+> I have a few thoughts, some of which are carry-overs from the RFC
+> discussion we had before! I think there are still some open questions,
+> and I wanted to get your opinion on some of them.
+>
 
-    if (mem_alloc_profiling_enabled() && !tags_addressable())
+Hello Joshua,
 
-If profiling is toggled off at runtime and a module is loaded whose
-tags exceed the compressed-mode limit, shutdown_mem_profiling() is
-skipped. vm_module_tags_populate() still maps memory for the tags and
-the module loads successfully, but the total tag count now exceeds what
-NR_UNUSED_PAGEFLAG_BITS can address.
+I am doing well, thank you, and I hope you are too. Thank you for
+taking the time to review this series and for following up on the
+questions from the RFC discussion.
 
-Once profiling is re-enabled, ref_to_idx() computes each tag's index
-as its position in the alloc_tag array. update_page_tag_ref() masks
-it to alloc_tag_ref_mask before storing in page->flags. Indices
-beyond the mask are truncated and idx_to_ref() resolves them to wrong
-tags.
+> My first question is whether we want cross-socket allocations at all.
+> The examples you gave seem to line up with node-restricted interleave,
+> as opposed to cross-socket interleave. I think the wording that you
+> use to describe the feature in 4/4 (which I will copy below)
+> 
+> > The resolved mask is by construction a subset of the policy nodemask, which
+> > mempolicy already restricts to the task's cpuset; package mode can only
+> > narrow that set, never widen it, so cpusets and the task nodemask remain
+> > authoritative.
+> 
+> is 100% the right way to treat these package-aware (socket-aware)
+> interleaving allocations, but the example below
+> 
+> [...snip...]
+> 
+> > Applied the same way to every source, these weights give the map:
+> > 
+> >               node0  node1  node2  node3
+> > global:         2      2      1      1
+> 
+> [...snip...]
+> 
+> >               node0  node1  node2  node3
+> > from CPU 0:     2      0      1      0
+> > from CPU 1:     0      2      0      1
+> 
+> Is essentially the existing weighted interleave mechanism with a
+> nodemask/cpuset applied.
 
-This silently corrupts /proc/allocinfo: allocated pages get attributed
-to the wrong call sites, so the statistics it reports are wrong.
+The example I gave was not explained well enough, and I can see how
+it reads as a manually applied nodemask.
 
-mem_alloc_profiling_enabled() and mem_profiling_compressed are
-independent. Once compressed mode is established at boot, it stays
-active regardless of runtime toggles of mem_profiling.
+A nodemask or a cpuset names a fixed set of nodes, while package mode
+expresses a rule: use the nodes of the package the allocation is
+requested from. The mask is resolved per allocation from the
+requesting CPU, so a single policy gives {0,2} to a thread on package
+0 and {1,3} to a thread on package 1 at the same time. One nodemask
+cannot do that, since it is the same set for everyone who uses the
+policy.
 
-Remove the mem_alloc_profiling_enabled() guard. On overflow, shut down
-profiling, release the reservation, and return -EAGAIN so that
-layout_and_allocate() retries with profiling disabled: codetag sections
-are then placed as regular module data and the module loads without
-profiling rather than being rejected entirely.
+There is also the question of how a user would build such a nodemask.
+The package a CXL node belongs to is not visible today: on the
+systems I tested, the firmware reports node1 as the initiator for
+both CXL nodes. The topology layer in this series is what makes that
+association available, and the read-only view under
+/sys/devices/system/package/ lets the user check it.
 
-Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
-Cc: stable@vger.kernel.org
-Suggested-by: Suren Baghdasaryan <surenb@google.com>
-Signed-off-by: Hao Ge <hao.ge@linux.dev>
----
- kernel/module/main.c | 25 +++++++++++++++++++++++--
- mm/alloc_tag.c       |  8 +++++---
- 2 files changed, 28 insertions(+), 5 deletions(-)
+> With that said, I think a more interesting and
+> illustrative example would be if the user truly would want to allow some
+> allocations to go through cross-socket, but be able to control the
+> ratio at which these slip through.
+>
+>               node0  node1  node2  node3
+> from CPU 0:     3      1      2      0
+> from CPU 1:     0      3      1      2
+>
+> Maybe even more illustrative of the true capabilities of this series
+> would be if you have an asymmetric system where you bind some
+> host-level monitoring / logging workloads to one node (say, node0) and
+> want that to be able to cross through to the other socket, but not the
+> other way around:
+> 
+>               node0  node1  node2  node3
+> from CPU 0:     3      1      2      0
+> from CPU 1:     0      2      0      1
+> 
+> Anyways, these are just super hypothetical scenarios and I don't even
+> know if the configuration that I'm listing would really be beneficial
+> for the system. I think that coming up with some illustrative usecases
+> which are now made possible by this series could help motivate why we
+> would want to interleave across sockets.
+>
 
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index 46dd8d25a605..ed26f167be84 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -2944,6 +2944,7 @@ static struct module *layout_and_allocate(struct load_info *info, int flags)
- {
- 	struct module *mod;
- 	int err;
-+	unsigned long frob_size[MOD_MEM_NUM_TYPES];
- 
- 	/* Allow arches to frob section contents and sizes.  */
- 	err = module_frob_arch_sections(info->hdr, info->sechdrs,
-@@ -2966,18 +2967,38 @@ static struct module *layout_and_allocate(struct load_info *info, int flags)
- 	 */
- 	module_mark_ro_after_init(info->hdr, info->sechdrs, info->secstrings);
- 
-+	/*
-+	 * Save the sizes reserved by module_frob_arch_sections() so they can
-+	 * be restored if we retry below.
-+	 */
-+	for_each_mod_mem_type(type)
-+		frob_size[type] = info->mod->mem[type].size;
-+
- 	/*
- 	 * Determine total sizes, and put offsets in sh_entsize.  For now
- 	 * this is done generically; there doesn't appear to be any
- 	 * special cases for the architectures.
- 	 */
-+retry:
- 	layout_sections(info->mod, info);
- 	layout_symtab(info->mod, info);
- 
- 	/* Allocate and move to the final place */
- 	err = move_module(info->mod, info);
--	if (err)
--		return ERR_PTR(err);
-+	if (err) {
-+		if (err != -EAGAIN)
-+			return ERR_PTR(err);
-+		/*
-+		 * -EAGAIN means profiling was disabled but the module
-+		 * can still load without it. Reset state and retry.
-+		 */
-+		rewrite_section_headers(info, flags);
-+		for_each_mod_mem_type(type)
-+			info->mod->mem[type].size = frob_size[type];
-+		info->sechdrs[info->index.sym].sh_flags &= ~(unsigned long)SHF_ALLOC;
-+		info->sechdrs[info->index.str].sh_flags &= ~(unsigned long)SHF_ALLOC;
-+		goto retry;
-+	}
- 
- 	/* Module has been copied to its final place now: return it. */
- 	mod = (void *)info->sechdrs[info->index.mod].sh_addr;
-diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-index af44f90379f2..0a7b657fe2de 100644
---- a/mm/alloc_tag.c
-+++ b/mm/alloc_tag.c
-@@ -950,10 +950,12 @@ static void *reserve_module_tags(struct module *mod, unsigned long size,
- 		int grow_res;
- 
- 		module_tags.size = offset + size;
--		if (mem_alloc_profiling_enabled() && !tags_addressable()) {
-+		if (!tags_addressable()) {
- 			shutdown_mem_profiling(true);
--			pr_warn("With module %s there are too many tags to fit in %d page flag bits. Memory allocation profiling is disabled!\n",
--				mod->name, NR_UNUSED_PAGEFLAG_BITS);
-+			pr_warn_once("With module %s there are too many tags to fit in %d page flag bits. Memory allocation profiling is disabled!\n",
-+				     mod->name, NR_UNUSED_PAGEFLAG_BITS);
-+			release_module_tags(mod, false);
-+			return ERR_PTR(-EAGAIN);
- 		}
- 
- 		grow_res = vm_module_tags_populate();
--- 
-2.25.1
+These maps are an interesting idea, and I would like to look at them
+with you.
 
+This series only narrows the candidate nodes; the weights themselves
+stay global, so every source that reaches a node uses the same weight
+for it. Both of your maps give a node a different weight depending on
+which package the allocation comes from, so the weight table would
+have to become per source rather than a single global one.
+
+Encoding the weights that way came up in an earlier stage of this
+work, and it was mentioned again briefly in the RFC thread. As I
+recall, the difficulty then was less the placement logic than how a
+user would drive it: weights would have to be configured for every
+source, so both the interface and the structure behind it grow
+considerably.
+
+That does not make your suggestion less interesting to me. I think it
+could work well once there are clear scenarios for it, and the
+grouping added here is what such a table would be built on, since a
+per source weight only has meaning when the kernel knows which
+package each node belongs to. What I am unsure about is folding it
+into this series, whose aim is the narrower one of raising effective
+bandwidth by keeping interleave traffic within a package. Allowing a
+controlled amount of cross-package traffic points the other way, so I
+think it is a topic we could discuss separately, with the use cases
+worked out first.
+
+I agree that such use cases would make the direction much stronger,
+and I will think about whether there are cases where allowing a
+controlled amount of cross-package traffic would help.
+
+
+> > A task on CPU 0 now places pages on node0 (weight 2) and node2
+> > (weight 1) at 2:1, which matches their effective bandwidth of 300:150;
+> > a task on CPU 1 places on node1 and node3 the same way. Placement
+> > follows the bandwidth each task actually sees, NUMA locality is
+> > preserved, and interleave traffic stays off the interconnect.
+> > 
+> > To make this possible the kernel needs a notion of which nodes share a
+> > package. The NUMA distance model offers only relative latencies and no
+> > structural grouping, which is especially limiting for CXL memory nodes
+> > that come online without an explicit package association.
+> > 
+> > The series adds a package-aware topology layer that groups CPU and
+> > memory-only nodes into a "memory package", built from the physical
+> > package ids firmware reports and, for a memory-only node, an initiator
+> > CPU node or SLIT distances. A package can contain more than one CPU node
+> > or more than one memory-only node, so the layer maps a package to a set
+> > of nodes rather than to a single node or a single CXL device.
+> > 
+> > The feature is off by default and opt-in through a sysfs toggle. The
+> > package topology itself is exposed read-only under
+> > /sys/devices/system/package/; there is deliberately no writable
+> > override, since a machine whose firmware describes its topology
+> > incorrectly should be fixed in firmware. On a topology that does not
+> > have the symmetric shape the placement relies on, enabling is refused
+> > and any active mode degrades cleanly to the original flat behavior.
+> 
+> I was also hoping to see what this interface looks like and maybe
+> discuss how we should relay the information to the users, since this
+> seems to be a new addition from the RFC.
+>
+
+Sure. The toggle lives with the existing weighted interleave knobs.
+package_mode defaults to false, so nothing changes until the
+operator explicitly enables it:
+
+/sys/kernel/mm/mempolicy/weighted_interleave
+|-- auto
+|-- node0
+|-- node1
+|-- node2
+|-- node3
+`-- package_mode -> true/false
+
+The package topology view is read-only and lives under
+/sys/devices/system/package/. This is how it looks on the system I
+am currently using:
+
+/sys/devices/system/package
+|-- package0
+|   |-- package_cpu_nodes -> 0
+|   |-- package_mem_only_nodes -> 2
+|   |-- package_nodes -> 0,2
+|   `-- physical_package_id -> 0
+`-- package1
+    |-- package_cpu_nodes -> 1
+    |-- package_mem_only_nodes -> 3
+    |-- package_nodes -> 1,3
+    `-- physical_package_id -> 1
+
+package_nodes shows every node grouped into that package, and the
+cpu/mem_only files split them by type, so an operator can check how
+the kernel grouped the topology before turning package_mode on. I
+will update the documentation in the next version to describe this
+interface and how to use it.
+
+
+> > Measured results:
+> > 
+> > System Configuration:
+> > - Processor: Dual-Socket Intel Xeon 6980P (Granite Rapids)
+> 
+> I think a description of this system's topology would help me understand
+> the results below a bit better : -)
+>
+
+That is a fair point. The system used for the measurements is
+configured as follows:
+
+- Processor:                 Dual-Socket Intel Xeon 6980P
+                             (Granite Rapids)
+- Local memory (per socket): 12 channels, DDR5-6400
+- CXL memory (per socket):   8 channels, DDR5-6400
+
+It boots as two CPU+DRAM nodes and two CXL memory-only nodes, which
+is the topology shown in the sysfs output above. I will add this
+description to the measured results in the next version.
+
+
+> > 1) Throughput (System Bandwidth)
+> >    - DRAM Only: 966 GB/s
+> >    - Weighted Interleave: 903 GB/s (7% decrease compared to DRAM Only)
+> >    - Package-Aware Weighted Interleave: 1329 GB/s (1.33 TB/s)
+> >      (38% increase compared to DRAM Only,
+> >       47% increase compared to Weighted Interleave)
+> > 
+> > 2) Loaded Latency (Under High Bandwidth)
+> >    - DRAM Only: 544 ns
+> >    - Weighted Interleave: 545 ns
+> >    - Package-Aware Weighted Interleave: 436 ns
+> >      (20% reduction compared to both)
+> 
+> Really awesome results!
+>
+
+Thank you.
+
+
+> > A small CXL driver change registers a CXL memory node into its package
+> > as the node comes online, using the initiator the driver resolves for
+> > the region; this is where the package layer gets the CPU-side
+> > association that plain NUMA distance does not carry.
+> > 
+> > The memory_package layer offers a broader interface for grouping and
+> > querying package topology - usable by memory tiering as well - and
+> > package-aware weighted interleave uses the subset it needs.
+> 
+> I was hoping you could expand on this a bit more. Aside from the
+> alloction-time placement strategy, did you have other ideas in mind for
+> who could ingest the package information to make tiering decisions?
+>
+
+The case I had in mind is demotion and promotion target selection.
+With the package information, tiering could keep those decisions
+within a package: choosing the memory-only nodes of the task's
+package as demotion targets, and symmetrically preferring the
+package's CPU nodes when promoting, so that both hot and cold pages
+stay close to the CPUs that use them.
+
+To support this, the layer already exposes per-node "preferred" node
+queries: for a CPU node it reports the nearest memory-only nodes in
+the same package, and for a memory-only node the nearest CPU nodes.
+Nothing consumes them yet; I kept them out of the placement path so
+that tiering can adopt them separately when there is a real user.
+
+> I definitely think this series makes a lot of sense and I am
+> hoping to hear more about it. Thank you, I hope you have a great day!
+>
+> Joshua
+
+Thank you again for the careful review and for the questions; they
+were a great help in seeing what the cover letter needs to explain
+better. I hope you have a great day too.
+
+Rakie Kim
 
