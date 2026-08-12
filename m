@@ -4,97 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C667CC5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 21:26:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97FFFC5CFDB
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 21:34:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD7B56B0324; Wed, 12 Aug 2026 17:26:18 -0400 (EDT)
+	id 84E906B0325; Wed, 12 Aug 2026 17:34:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A61386B0325; Wed, 12 Aug 2026 17:26:18 -0400 (EDT)
+	id 7FED46B0326; Wed, 12 Aug 2026 17:34:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92B666B0326; Wed, 12 Aug 2026 17:26:18 -0400 (EDT)
+	id 7146B6B0327; Wed, 12 Aug 2026 17:34:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F79D6B0324
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 17:26:18 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 04438803EE
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:26:17 +0000 (UTC)
-X-FDA: 85093900836.15.228462D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 523C6C0006
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:26:16 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m2YhdIKZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 49D776B0325
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 17:34:58 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C3D171C0836
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:34:57 +0000 (UTC)
+X-FDA: 85093922634.03.56E2B5A
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 218AB1A000A
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:34:56 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=LvoF8Cri;
+	spf=pass (imf19.hostedemail.com: domain of 3_uZ8agYKCBsJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3_uZ8agYKCBsJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786570496;
+	b=Rlv1x1H3nWklERcA5qHin+I9wWOvf7BuFcy5/Z2ro2ufV5N0SjRWsudSJDRTjbvov0foYc
+	NZ3NSJZ3lPCn1+FAfsl0jNAnpdJt0fcZJS43Nh8NPptf9CWq/xZ0XhBfLQ/hg7F534S/d+
+	uge0QIe/0KZZ0/aeShS7epIPA0OneOM=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=LvoF8Cri;
+	spf=pass (imf19.hostedemail.com: domain of 3_uZ8agYKCBsJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3_uZ8agYKCBsJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786569976;
+	s=arc-20220608; t=1786570496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VZ14OE14W6R2szqcv6OQ5JAU2OtnvGYenTEQKteSjqE=;
-	b=WBe+NmnKwvMVoWbU9IgJps51mXYk593TKmKAY1wThRNOnUSMQn++LFwVTZuVpgCsM2G27S
-	ArvS1+NjaS4LvxWNT1SPbvbruKDzLxk6CJbkDeuMtyaQzXG2iD43ODDuR+/7p+7oQF2Ela
-	vmUvlZO8XYOZ3bKcL0tsW+HJALukvk4=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m2YhdIKZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786569976;
-	b=DHKmTiplzi7jnlEUamkQNc+vXd961N+s1MHxzsKzBJeL2x/eGQEbhUl67v8bJc3WvBJr4B
-	C+txR7KNgIXiGul4qGxUluaasKaZwLARa/ezUnLdXn03artnaBiv3f0YNbxlEtByLJA4Pz
-	L8qeuvJ+rvs2o/rfRRFZ7TpDXqU7dNM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 635B1410C3;
-	Wed, 12 Aug 2026 21:26:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D29A1F000E9;
-	Wed, 12 Aug 2026 21:26:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786569975;
-	bh=VZ14OE14W6R2szqcv6OQ5JAU2OtnvGYenTEQKteSjqE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=m2YhdIKZxPGAsE+fyk34oqW883dfKuKiM1yKE0mJVGS2lQwD8/OrByY100MokqwXa
-	 Ui8q91vgTqLDqi8KTyyPp/zj4LtPF3tMAmTdQmlgVM4r2GGtVrbK6rXtlQsBOLEQcr
-	 RHOHOISwF/eSVkuxn5eQiPiLv7A5Q2TcngViLvRnwiNdpYYUEKXsmPRw9ChiAUK3Xo
-	 c7L+zq85vvflb41d3lsfvmBH25k84bhHT6sG+tn/T5x+BOcl75Dpg2kND8t3sVPZps
-	 dJ1vy6+ueDy8OVBjVZ0hGy2fWhqlsQHEr2Vm5E15Yd5ApSjex3wTitm+7p+n7cUq72
-	 S85UkV9Tfkv3g==
-Date: Wed, 12 Aug 2026 21:26:12 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Brendan Jackman <jackmanb@google.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>
-Cc: Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, rientjes@google.com, 
-	patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
-	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, 
-	Reiji Watanabe <reijiw@google.com>, Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH v3 21/26] mm/page_alloc: implement FREETYPE_UNMAPPED
- allocations
-Message-ID: <anzinNUA6ZASDnvA@google.com>
-References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-21-6f5729aa9832@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260726-page_alloc-unmapped-v3-21-6f5729aa9832@google.com>
-X-Stat-Signature: imo9nobxpwpdbs51si8kayubw6z1jojc
-X-Rspamd-Queue-Id: 523C6C0006
-X-Rspamd-Server: rspam03
+	bh=Gd+C2m5glZwGB8A6MFkRhDf1k0GKC1mWi3Ys+MVAnsc=;
+	b=4vrnpKrFD/L+0hYeJYfvpTGpWqdYlnP5GebG9xWcdgzI6qQLF35Zioeuw8LTe+6yJAkLng
+	VLfanRCQZKjgPT2jfS4Ss47TlNoHamr+5ZwxlH/rRkNdiZ5MgX4z9eeRcuQ+lAD3Zlrt7d
+	SIs5kSRFgg4fgaAPWgdLpiiMiKn2eKs=
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cee1ec30f2so21774435ad.3
+        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 14:34:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786570495; x=1787175295; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Gd+C2m5glZwGB8A6MFkRhDf1k0GKC1mWi3Ys+MVAnsc=;
+        b=LvoF8Cri0Y67/16Ix6LpILe9Fj0IBaVlaPGS5efGYKWizYTmiyBj1aVejf6AyE1YSl
+         6xL3gkw79S/2R3ciyqiCJvVJlUd33MhtR/0wmuwNxiAUNFpKNqYQ7mLge12+XNegGa0k
+         wo8MCo5cGq0gyRiGJrO3471dSVAdWzNPH/R0UcKQiQaKVrCQhaX5aJKyukdzkKv8w4p9
+         4P5seXOFei5P0GC9Lz8N3ddThV+QmO1mmUT0yhnfW7oifoU4olV+3k8brVpbm+bJcmYj
+         aMv1rkaoxUUPyaslLNlT+eY+6DrrTIe0QVI+TiDgsyTFD5jZuNCQ/N5oDv01TWAn/H0K
+         mahA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786570495; x=1787175295;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Gd+C2m5glZwGB8A6MFkRhDf1k0GKC1mWi3Ys+MVAnsc=;
+        b=lknwDYde7ybsoatph7XGjd+QNHXZCTzWJdMOdsPQa/iNH4J5t3W7ImObQRNyAlKi26
+         H9OjgBPIPRkEZo9gltVE6Hvfwl5zLJEdAWeOBwqP0I8vJLKCCXg3MCA3SsmUzc8gwI6y
+         05kOmYRS+ZCsI+SY+wpRzUyQ/Uczw+42qHjefkT/frLM5sW4jHT+J5SjZfGW7drFFr4n
+         jvSPRNh7Uwno07c602LQvnQRVSspMOW+d9IiW8cshQ2fbyG4tIlWn9iHFi3/HByu07Mi
+         qnm5+WLDiRMWr0+yGAAyVLJMBNOiT5YcA5KFyUXMGlzbkII8aI/Ve9jJSf+RtOY/nrIr
+         SeGw==
+X-Forwarded-Encrypted: i=1; AHgh+RpVjdsi6qhaTTxrORzRS5mAJiYSiDOo77fMTDilc8pUaa0Qgeksa7oF103jTtWismqLedvJeevm8Q==@kvack.org
+X-Gm-Message-State: AOJu0YzbnUVH7Y8mZUpi/6ntlsbAuXE47dS02eWqGcXoA7QC9LG/w6wB
+	0IgqC+4wFt5iwaRI45tRtwP1p08/4igkShsdyQ+uT0xnNtgB82P1SajY0FZHzqFQffThSrGIdQ3
+	+UCSi6w==
+X-Received: from plblf13.prod.google.com ([2002:a17:902:fb4d:b0:2ca:eea9:9845])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d990:b0:2cf:9344:b80c
+ with SMTP id d9443c01a7336-2d37ebb2b42mr10699005ad.18.1786570494619; Wed, 12
+ Aug 2026 14:34:54 -0700 (PDT)
+Date: Wed, 12 Aug 2026 14:34:53 -0700
+In-Reply-To: <69c86172-9175-46cc-895e-9ecd449332cd@kernel.org>
+Mime-Version: 1.0
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-7-2fc18ee6d3ba@google.com>
+ <ed483d25-d908-4248-b8c7-862dd35dc6d4@kernel.org> <annnrGR1noVuBkCc@google.com>
+ <69c86172-9175-46cc-895e-9ecd449332cd@kernel.org>
+Message-ID: <anzm_YLft-J7pxiy@google.com>
+Subject: Re: [PATCH v10 07/41] KVM: guest_memfd: Stub in ability to enable
+ in-place shared<=>private conversion
+From: Sean Christopherson <seanjc@google.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User: 
-X-HE-Tag: 1786569976-241830
-X-HE-Meta: U2FsdGVkX18BJPd6+2tcAg2TIaQZ7eC63rl+RJAuge9ijTJftI6RmoYOjC8wWoL3uK9qM1q7RHdUcoTtay+jQeJZztt+UdBFb4WQB7AIYLw+cQVUFB9kX7dFpq7XAEpUnAww91+TBGRDpee2g3gaxiGMWfRp7ejAFVAVk5wN4HyfohveO2ME8wIegVm5C0L5q9BwCDI/LbqVMhjAR2b8yndMD/x2D407MeaI3RNl9kogPh8A8A6eMq4AL5lKpILSsCzvSrv9eKQllVWu/FxziP1abrdv3Z/N0/tLZTjuBNKhx/UhLMV22BDNN6Pgpb/+OffBxBak+MgLBfgNeXUyIrvPw8l4w+c2LvrwV64mO1CxV/sQdYE1jMUlKC8gFXyR6WxpVLVm95dYM+soTfLPjAMadxW5fX1gNsnGn1xJPE3oBokrareIPANCgqwx9L/KRY93HnqUUJpsSxY9IT2+sn+zvmuGRzOPnAMhDhisbW4trXMW41ARdDCARl365jRe3FoYDISWyqUWwkaGr4ewOvID+drbcVXTjgt8lr12kWyMQKJfxlqoHyZyN/02k/kjbHxXdho73rArIOG6fVOZXXBeVxYjaqVjGm6r7DURvAGOUz9A0O5mBsKRI64DUOzXdHVUh/BWNpUSKEgRFc6V+L2ednfEimDfo1uuyy8h8ogsBfUrMNjF+pxJJ3fsCrLwlNmED/N+g//+rsT3AJLGF8L1Zygnksm+NPVbXmkzxNt79+bDAWBpp2MdSB56eBEIaVvi7N9C01A7jGNNJtmJzDta9PzpDVs2q4UkP8cai2Aowtb3YFWXe5A0g4cc4JSsEeqiU5F7HNob1lCz+2OOU/g10Fkn7/bLCOvstscpz8Ew3jDb8YJ+H/A7L1PlETt+aDq+Y3HfLvH3k0noeNvyAjv/BQHSZEyKMxfdLz5irt04jz4sk1OhlZdmwTEG5Fg2AU1BQ8oP06a1gQjq0cg
- fXwBKigE
- cogdEVrrUCxKinW6/XI7GQhU9RjN1dJXiv/21JBS6srtMzAC/PIoe7WIcI1t+aguoUnArfPxv0OgPDO5EeJ5nYoMhfP8E3H2r2kAZp6+8lJgYFxEAT47hoREm2E3gCmPcOxciTJUti6foL8IXL+M9z42xFO7yc90o7/YKuzcgKtrgryiobsRl07oatUYNr/vjhcq6NWo/2OfQZmxpCTptsivJCzJvTQ10Z0UB45+mFjqHQUzE/rtM9WSD6zDYKLrgx8LUoRDb2LnMDSHsPd34Bb4B4usWSMPlLBxAxuRGv4dE24b7TWNWynH1Zm+Hmpfs609kvWX2IUV1ljGksI6FVb5myCHKNdMfzQZ6ewECUHQGIpNbl4sToZMK1w==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 218AB1A000A
+X-Stat-Signature: 9h1w8gwpkezdsokuobiyxcmfmgw14mqp
+X-HE-Tag: 1786570496-200473
+X-HE-Meta: U2FsdGVkX1+vP1Sj31/ADN8mTC3R4+OOH22T4s/3e3bzXJ9ZPIif9nS6b1lKNYv+0RlT4VOZS1Zh/J7WomighseLDRe9r0OMXIb2WRFCUcnP4i2ijdXEDAvVcL9SVxrGI+3x7hi43eZJ1a9ptmxe7CoK3GfbXKOb+pX/tph1IiFVI5+gHALCY3xx0aI9cgfabltIlK+6uTAKWwjB+o66t8hcJ4Lz+zUfK9oWktO5Pj2m3ehwmzplLWdY0R5O68e0+oqrX1DXRrfZxJ/Lk/2l5Lp5JizJieHYlaP2QNE0Rsz5/K6sYapdkkJPyzA8z36lr98xPKRmTg4IJSGrh/YPchuMWkpmmkHRnjLNhIy7lOM5btWXvUSbU4Xy7qo4ykRIri+mEFtn2PoxASSMCamyC9BV8D02mCNg4Xji3Fal7+a94tnOGtnhxxLJ4P2FS66ydNVLns3RpWsFK/X0TYZN65gUymJtljAMDJ3lDXKddcfjSHntYnxLf5YZ1Re87CkVbQO1jNz3JSrikFveMTCDqiAhGW2HrqxN+yJ9t7tsDcqdr4dxQBIi8BXFW6J/GMkpzad+QKFxXRo9T8/X8rUFGRqVfA5nWwGrAy9MUzrU4jJ0L8SuY1uvG3i3jVazUedXZQb9xWMH5QARWl4lT8Pj+Nt2CCcAs7xMocBvtCsPMXyMd1FE2FsPM341vRi1fntrY9F37n7Z+R6Xbox+iqwjHuZ7cYPmevGIUS5SylE5F5UkRBf8bK5cGB0ia++s2cwAlhgN611wbkDeETz3rmLJSTT2Xhd6MS13OHA1pRGDUh+OJ62hx3VEC3mKrMjMQkSW8InT76bEUl3VrkTShDL5SiofgfNYVgkrqHVDBUPOYehxeieWh8+ApwJCZoQGrx5gJXa7/C39mI+j1PKkxoKqGKew/owwzpbDiT/1HskZqge9jfX1cLLWLn0vbvpUGNyf6vdMumhO4/sWIbvZY5K
+ CYWcrCXh
+ Q8MziUPH26uu/Bw2p3Gl51wd+V2Ax6Fg/xWA23wm+PFEqDob5Hd9+/43LZLtYUhf1vtO27Ou4lvafa7gWqX5FoQJK5fup3vhJEbu+eSZG8V2V99JQQu+TbGX1lb3V3jV+8NTxCNGdUS0BiDXyUZGfjpLTHYAKTdxwB575lbRVBUCeolKGNWartIKQKa30Zck+Cx6lLlorA9SxOEC0OIEGukKWj5UnU3u+ylyJ6Y6DghtAilO4a46rrGnU8zCYgy3gcQbnU6a5WNTFAxqXHdNny7oUo6gLN2Br3vgVWBzWNudjIChQlokOEa9Wi14+GZdPLCeHp/znEkLegIclRwvuaOPHk5zX5/1cfqayIGaAL4tICREMO8BxUCAHB79L6/9Kwjd7ejebX7xCPOaTCCnRz5NkDz3LEZpXrUrIbF5QN5JxRWogBnHRpHAKWA6VOY7H8IM0Xff7iX35KXOVNHnbV4dmqo7cfG/RdzLyK2DG3TaXfGKA/r/FagqJis08PH0gYHr8Ry735b/FJ39QDXqe27vwyKnzVAGadxFEWj3kBgnnvczttHKdtTESjoGhzpB6XoyOJ30K+xuxgRlyu01th4gNKLWGbP0Fav/wTUYotaSk0G5eGqZ+4FdVX1bmllmpdPEpXgvTMW9+9WEe3Pm7xfIWXRewYe5WBsaTuJakvaDZBZU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,62 +137,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[..]
->  static __always_inline
->  struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
->  			   unsigned int order, unsigned int alloc_flags,
-> @@ -3433,13 +3580,15 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
->  			 */
->  			if (!page && (alloc_flags & (ALLOC_OOM|ALLOC_HARDER)))
->  				page = __rmqueue_smallest(zone, order, ft_high);
-> -
-> -			if (!page) {
-> -				spin_unlock_irqrestore(&zone->lock, flags);
-> -				return NULL;
-> -			}
->  		}
->  		spin_unlock_irqrestore(&zone->lock, flags);
-> +
-> +		/* Try changing direct map, now we've released the zone lock */
-> +		if (!page)
-> +			page = __rmqueue_direct_map(zone, order, alloc_flags, freetype);
+On Wed, Aug 12, 2026, David Hildenbrand (Arm) wrote:
+> On 8/10/26 17:01, Sean Christopherson wrote:
+> > On Mon, Aug 10, 2026, David Hildenbrand (Arm) wrote:
+> >> On 8/7/26 23:52, Ackerley Tng via B4 Relay wrote:
+> >>> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> >>> index 65fbce46b63f4..9477ecebbbced 100644
+> >>> --- a/include/linux/kvm_host.h
+> >>> +++ b/include/linux/kvm_host.h
+> >>> @@ -2580,6 +2580,8 @@ static inline bool kvm_vm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+> >>>  #endif  /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
+> >>>  
+> >>>  #ifdef kvm_arch_has_private_mem
+> >>> +extern bool gmem_in_place_conversion;
+> >>
+> >> Is there a "supports/has/enable" in there? And should we call it "kvm_gmem" for
+> >> completeness?
+> > 
+> > It's kinda stupid and definitely more than a bit inconsistent, but overall I think
+> > I actually like "gmem_in_place_conversion" the best.
+> > 
+> > gmem_has_in_place_conversion and gmem_supports_in_place_conversion are misleading
+> > because it's not just that guest_memfd has/supports in-place conversion, it's that
+> > that KVM is tracking PRIVATE in guest_memfd and so in-place conversion is the only
+> > option.
+> > 
+> > On the other hand, while gmem_in_place_conversion_enabled is better, it's not
+> > quite accurate either because userspace isn't strictly required to do in-place
+> > conversion.
+> > 
+> > As for a kvm_ prefix, IMO gmem_ is sufficient for a namespace, and not having kvm_
+> > is consistent with most module params in KVM.
+> 
+> Maybe we should have a helper function instead of accessing the module parameter
+> directly, then the gmem_in_place_conversion could just stay file-local and
+> kvm_gmem_in_place_conversion() would be used by other code that wants to obtain
+> the value.
+> 
+> Instead of the
+> 
+> #define mem_in_place_conversion false
+> 
+> We'd have
+> 
+> #define kvm_gmem_in_place_conversion()	false
+> 
+> just a thought ...
 
-Is it intentional that this is called outside __rmqueue() and doesn't
-cover pcplists refills through rmqueue_bulk()?
-
-IIUC, we will never change a pageblock to unmapped to refill the
-pcplists, so the unmapped pcplists can get filled in two ways:
-(a) When unmapped pages are freed.
-(b) When a pageblock is converted here (in rmqueue_buddy()), if the
-    allocation only consumes part of it, the new allocation might move
-    the rest into the pcplist through rmqueue_bulk().
-
-Does this mean that unmapped pcplists are less effective in serving
-allocations? There is a tradeoff here because converting a pageblock to
-unmapped is expensive, so maybe this is the right choice to make, I am
-just wondering if this was intentional and/or if we tried it a different
-way.
-
-Actuall, THPs are not covered by scenario (b) above if the pageblock
-size is the same as THP size, as the converted THPs are always consumed
-by the allocation, so the THP pcplist will only be filled when THPs are
-freed.
-
-I wonder if this would cause a problem for THP-heavy workloads (e.g.
-guest_memfd using THP, or any THP usage with ASI).
-
-The other thing (that I probably mentioned elsewhere) is that kcompactd
-does not produce unmapped pageblocks, so it seems like THP allocations
-will mostly hit this code path and convert a pageblock to unmapped.
-Actually, if we do bulk conversion to unmapped (e.g. in kcompactd) we
-could batch the TLB shootdowns as well, but that should probably be done
-separately.
-
-
-> +		if (!page)
-> +			return NULL;
-> +
->  	} while (check_new_pages(page, order));
->  
->  	/*
+FWIW, I'd rather prefix kvm_ than add a wrapper to get a boolean.
 
