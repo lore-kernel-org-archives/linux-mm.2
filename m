@@ -4,133 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D73B1C5B56A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 09:25:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AB27C5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 09:27:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E24D36B00E3; Wed, 12 Aug 2026 05:25:57 -0400 (EDT)
+	id 4D8636B00E4; Wed, 12 Aug 2026 05:27:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD55B6B00E4; Wed, 12 Aug 2026 05:25:57 -0400 (EDT)
+	id 48A666B00E6; Wed, 12 Aug 2026 05:27:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA4106B00E5; Wed, 12 Aug 2026 05:25:57 -0400 (EDT)
+	id 3A0536B00E7; Wed, 12 Aug 2026 05:27:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 971706B00E3
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:25:57 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 23118A0B9A
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:25:57 +0000 (UTC)
-X-FDA: 85092085554.28.52D3C79
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1AA6AC0007
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:25:54 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Tt9x+QhR;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FBOa9hNc;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BM4NJrdN;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=LjGPtZZg;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf28.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 15C596B00E4
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:27:26 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 86CE840193
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:27:25 +0000 (UTC)
+X-FDA: 85092089250.21.5781D9E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E1F2E1A0006
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:27:23 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FosPnie2;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786526755;
+	s=arc-20220608; t=1786526843;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uSXmi/X6VIXJSpaHbALVzu1i81Tq5CI7DGOYzCoOXrA=;
-	b=bACInGT86Dsx2lkYE2+f4D5p1XTLVSFJ4IaRuokLhYXGPLRTYtQbbKqQ+PfN+4EUUExV3x
-	kg2jRaUJKg3rnw0SQZEaGDeCnkKaIuVK5V9wdDmU8HPIRDEMLRnzXEwmfqi8fVsgY7tECN
-	DzZVbFeOb9dIr/gIBvp5sC3Yngxt0nw=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Tt9x+QhR;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FBOa9hNc;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BM4NJrdN;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=LjGPtZZg;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf28.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	bh=IUd4xsss48nguk+w9o+2Ozog63PCl0EQm/3UWwY4hHk=;
+	b=C+tFsrMgjoXDBu6AbrwFsrCN4jrIpKiSEU/xG1bN+qHITThN+0VA7Wvne8l3A9B/X9C+Zi
+	iXI4Ji0DQqb7Zh3eNLBbDLRzUx/6lhk6BSgxV6VCmA+DsiE3+0+ajfg4Wrf55Z6OhEB6nA
+	oKxeMHA2l/7ogeCgJDTVHQdZVcLWmYA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786526755;
-	b=avSzZ3DAbzJjoMdHZjEo2H1DIUyfIUe4ahToPk5HAVsDcBYhjS3mjia1CU04J/YET8Tif8
-	tST0DEKnySS3tk6KUIghl/QYGg6bTpvzYk7BUSmYIIwdsAydANfrpzvFPRdn7FlUXY6bJF
-	lFd/0rISWKQphKxgUzwCEZHiEFZ9u/U=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B8F3E8217A;
-	Wed, 12 Aug 2026 09:25:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1786526749; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uSXmi/X6VIXJSpaHbALVzu1i81Tq5CI7DGOYzCoOXrA=;
-	b=Tt9x+QhROvIfFwZjVNm9ekk8BGR0sR4WPttfxa+R0dgwUKVu3SXdOGD1edgOBiYpA3GXSG
-	gRpmE+x66hknl9GP5SZls1v+fvmaIZkIZf5ddV9+pZDGBrb2K0g5fdAoTPdZl03WPD8+Cv
-	QZ6kniSRQTlj092YdiQto2t/wy7uACU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1786526749;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uSXmi/X6VIXJSpaHbALVzu1i81Tq5CI7DGOYzCoOXrA=;
-	b=FBOa9hNcNO05tO0llJw/rXx5POcJsm8g5ND+Y9DhW4zschHYYlSnebPQKrOyOpioRTJtqh
-	ecK/vmzNnLs4kZDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1786526745; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uSXmi/X6VIXJSpaHbALVzu1i81Tq5CI7DGOYzCoOXrA=;
-	b=BM4NJrdNfHX4WvnnG43VCgDgtRLNe2XTPPlP4FHYpduIFPUdrB/RJmKjZucd99D9CDMwdh
-	aqFHOmQs/hwpwPlGt+X86wT/8Fz35E3zn52bd87BZR13FZAlJApOb+4jOYRUi3jU1p56a7
-	7rrpdF1+v55q/XK5OQjbX9GPkR/CYt4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1786526745;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uSXmi/X6VIXJSpaHbALVzu1i81Tq5CI7DGOYzCoOXrA=;
-	b=LjGPtZZgOFpnYYJORh6I+4YMMTIyvIOMF5q2EtN535M853tinYDAX2vMo5yfRD54XNIczs
-	du1nCdTKDvvDFJDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 61A83779B1;
-	Wed, 12 Aug 2026 09:25:44 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id aolgEhg8fGpJeAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 12 Aug 2026 09:25:44 +0000
-Date: Wed, 12 Aug 2026 10:25:42 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH v4 2/7] mm/khugepaged: extract reference check into
- folio_pte_referenced() helper
-Message-ID: <anw7_Y5zCoL3DhLf@pedro-suse>
-References: <20260811-khugepaged_pte_refactor-v4-0-ddac39d61c4a@linux.dev>
- <20260811-khugepaged_pte_refactor-v4-2-ddac39d61c4a@linux.dev>
+	t=1786526843;
+	b=fh7M0WqpAyQ1Aby+mBKlhtxIK7CebBjjfa8EsFpK/zsvFB4WuJ/n7hBSu1X9c6GA9OXkv7
+	PCWd6bM5sbE0Wk0A7Snb+DtFTca/5eWxKkeT7sQYF5rXBWbEax7++pwaQaqdbO01kP7P5v
+	UquURpjwxfdQq5Ac+7LZOsRrE+wWG0I=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FosPnie2;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2308D600E2;
+	Wed, 12 Aug 2026 09:27:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB231F000E9;
+	Wed, 12 Aug 2026 09:27:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786526842;
+	bh=IUd4xsss48nguk+w9o+2Ozog63PCl0EQm/3UWwY4hHk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FosPnie2TVYnhXl9SP4H2dqQBZdxucBIRXspPC/8qNjS7GEcpRXuQGCe5mrBI921T
+	 yXvENGLsQknuxZFKHVxnoABpxW2XXIdj87tdQ4q/Fd/XLqCRNdLWyJYQiQDmwrRXSV
+	 /vORARhOXd5KHeRvnB6WuGqcpVz9cVogeviZ4VQO1mf74lf9D/m8vPEOCA7PSRpTev
+	 Mwyd62ydRAxj1hAtwu9Vfcheglzz/r98SpVLcBJ5/+xoLg/DmPjA+OxTba4oyj6PUj
+	 1UttBdDYn330bgQWaX07GeRCj+w75GxoBXkmxoR2v0XY9voW4PJGNTR+WdyVGHDlKF
+	 M5FQ8SO3IV8Cg==
+Date: Wed, 12 Aug 2026 10:27:02 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Song Hu <husong@kylinos.cn>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, david@kernel.org, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org, 
+	nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	lance.yang@linux.dev, usama.arif@linux.dev, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	rdunlap@infradead.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] Docs/mm: fix THP policy counts in transhuge
+Message-ID: <anw8ASKdPWW9v86d@lucifer>
+References: <20260812080313.330413-1-husong@kylinos.cn>
+ <20260812080313.330413-3-husong@kylinos.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260811-khugepaged_pte_refactor-v4-2-ddac39d61c4a@linux.dev>
-X-Rspamd-Queue-Id: 1AA6AC0007
-X-Stat-Signature: yp3swfnuwngtdf7hknzwn1n75o4dbc48
+In-Reply-To: <20260812080313.330413-3-husong@kylinos.cn>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786526754-591140
-X-HE-Meta: U2FsdGVkX192DNH5YlsQxgc89NYv6jNuxez8rLdyevaRzfBUUP72mhhOBtJdmIvH50NvNKemYzBvkApNT/vxIzt/z+Z6NCegw5WZDnGMvPKEp549Mn8j1syG4xDGYaskdSnK7zRXMENxFWCb9/4iFsxJJ9WysuCHwKVMQdDSQFUfWxD0vZ7cFyt/1K/jhA02ATZVC9UUamATJMmqmNPpp63CLoWo0rmt3LYYUYOd/uLVZ26EGz/SDS++oIIvUXEzShP4fi2Lot3vNIVpmwANsrw033+l+ODd9YyJFFlzOhnoaDFqY03KcS8CF578Mk++OtsS4SDrUCxChm6gpZh71j63d763hm+bsvKp4j0VfZKkkZodoCSORNToc8Qd+H88Y1zpcZ1RYyEhgT3MRfY7o+BLIXhyID86FwK65rrhCILFty4O0+NmVrCdvqa7hZXxnRTis9XpnW3eTbdGsijfxAksOtefax+bOKLGnUadUDkIh8U8GVJRFvfLbD6VWQLnd8vpM018vnckpxnqOmpSXwALUspnLZL+8sqU/5VqYIboTkIltiNiARRbt55MYhmDq0ysDZvXDh/DBFPT9mfzKjwvyQdIvNW01CfLKbGavcTwpXI7RWZdNKzb2UQGDjBf2aLx/FmJmHbYgockDe+xO0Ma7ql3Dv4HEuqzKcM8jkz+GvNY6onQVL3rNSDVy3/GgasUAUZ49pwR+7bsEEwAgoZh9k60uRm9ZII34BSkYc+Pgp3m1kxxjlVFrkwwXtfCac9pRg2aHQAZ/sNHSkr03D0oJXx9fCDzueEZMgKpubGfvzrfYPvqkm6T0wdrt8TrAXUwlgAc8Sy85vWzUnGVX8BCQZkfbLv41xaQ/yO9Bg8iA87kD4oxFcRdLE1lxXdNOBnuG3jG4S4YPrxAzqaHK4I9Z/0a75VzlwFnWLRjzQ2HdWLZnZ3ranEA6OBR+x22mZU/Tci2yXe3MT/YiHV
- NK47Bmnv
- 5vKV0G1UtKRtVrpe80SVoh5lAoaDO6JHb736okSA6uunSelJZFTXWlZe6KDfU0+EIqlG9l6swdUVic/PWgBCoUBWjTQ6YPzUD3yGv9SKIjDmfm0QxQ02fy69fsB2zMOUfzU4dxOE4/bHH5lwIqhA/N5UHtffzUQIbK0st6ATGPVuq/bFGcb/r7SLeGVSzcDMYRn2Uf29Qa6BrPSYkktEp5S7VQFctT/zhh1ZzXg4xvGOyJNImkqOAd9lSZ3gz1PONKAhpNmP3goXIUcvF8Rc37CITFLAlxRbO6XS512wEsZlLUWAcP4+4F8LUDujaeOTY+4E/wsLcxzf2rO3ZjphPHG05LmUYnmq7nOps
+X-Stat-Signature: mcodkqjxpfjzraiab9jfeetuzokmjynf
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E1F2E1A0006
+X-HE-Tag: 1786526843-76889
+X-HE-Meta: U2FsdGVkX1/PLAgssdVreodeFU6pndxCQfWdJlmgmgtEVrJOAofHmL/lgKtQK2ijr4GyaMKak0GUd4klIPcovxW4QGWOFBU6cT8gNa+QxotPX/kVkYKnA0VDUgPVg8eCx9jb+mKEqpJ+hFT2aejugu2qPhvOsTuhKINLOHkeQV4M5l2mh/YJQjd++srxgSxpr4DH6ycpOO3s0VqsaasnUbz45tvtHS8x8CnKxH8WH5ILtIY2atFwGCFU5gxw4vLhLepcChPIkGrS0KSCIB95jX45TstGAagFcScoFXr55noNDfCIpVmi9tuIzOeZ8zfQd8JMgTmp5hQXzL5Ifrdip9ytnmnP3gRBkZioM4I78ahcv93FsBPFekROnBelITvNZPYHy9YVQTofFECIQTi+m1BrjZvGUl2mjdRg6QACOTZQfCu1wF3vTCgM0bY3ah29Pf/7JJIJ8M1BAPBAgq1hMySwTLm7F3i88TwJrw/mfRtxRsv2y+/oJ7xMLkx0uchaNz7ecqo6zxdFCR6wrmOXeTt45gDIqc+nFmDfqL6Q1fTLmQFu49zJiaNIKWvem1e+05ur5/vaY++VumZ5z8D9wO9DN21aor+Xg97RdZS7grNXAyKctqAqC9dL4Aq5KnmPp3bGnib+79JL1vfnRFGafvtAcQlYZe/fS3WM0XiDBD3GAFbzAowAz6vT1NG4DjaaZon09Wb/2VImscvQ4om7oWKrQCY0iThUv0y8Pn4M8T74SGyKvQmlwqOfonjrdX6C8D8olapXhKcKa0KKmZ8SXAJcgSF1ttCMHL2Z8rvEbVliyKxNV709mG5tQqB3a/91cKWlzYdLJj3m0QhE7rcxbj6A7ZwzUHLGtwoDHtdg+09fWx4djwQyWXmUzUOStaQKuYmyUtn0rwdEfFznFYuwuNh4/4Km7BSOSszDdZXksjQaN1mPiP2rYeIxgFRUqcHg7C+Str6ViJgc0Usi/ej
+ WgZ6OjFV
+ Qmtz5hHm45g+CenyAi79V1Vy9p37dPcYcAi/0xwQzP68+z/MFAh+7vpzOXy39CDimgkEHEan7vHVKeS1XqbJPXGAtECcAEhMOqOdieQLszpqJPHglS8gD1wlYQaVdQV7Wts6aPQcxqsF6TKjWYZvVetO+lwklVinKsWoNK01grRbMUyAEGobJ7o4JTIa4GlIEHSMSBFZ9npa0frw/TOK3K8W6gnBZ1lGcPKJAy6hwHdJ4GZIoomW52x69rXwsDorBhjun
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,22 +95,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 06:48:34AM -0600, Nico Pache (Red Hat) wrote:
-> This change deduplicates the "is this PTE/folio referenced enough to be
-> considered for a collapse" condition that was repeated in both
-> __collapse_huge_page_isolate() and collapse_scan_pmd(), extracting it into
-> a single inline helper function.
-> 
-> Also move the comment and use it as the function header. While we are at
-> it, updated the comment to clarify that a young pte is a recently accessed
-> one.
-> 
+On Wed, Aug 12, 2026 at 04:03:13PM +0800, Song Hu wrote:
+> transhuge.rst claims seven policies for transparent_hugepage_shmem= and
+> four for transparent_hugepage_tmpfs=.  Both boot parameters are parsed by
+> shmem_parse_huge(), which accepts six: always, within_size, advise, never,
+> deny and force.  The "four" applies only to the per-mount huge= option
+> (shmem_param_enums_huge).  Fix both counts to six.
+>
+> Signed-off-by: Song Hu <husong@kylinos.cn>
+> ---
+>  Documentation/admin-guide/mm/transhuge.rst | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+> index b187d618452f..72e944f49da5 100644
+> --- a/Documentation/admin-guide/mm/transhuge.rst
+> +++ b/Documentation/admin-guide/mm/transhuge.rst
+> @@ -389,14 +389,14 @@ is not defined within a valid ``thp_anon``, its policy will default to
+>  Similarly to ``transparent_hugepage``, you can control the hugepage
+>  allocation policy for the internal shmem mount by using the kernel parameter
+>  ``transparent_hugepage_shmem=<policy>``, where ``<policy>`` is one of the
+> -seven valid policies for shmem (``always``, ``within_size``, ``advise``,
+> +six valid policies for shmem (``always``, ``within_size``, ``advise``,
+>  ``never``, ``deny``, and ``force``).
 
-Nice!
+I'm not sure we really want to advertise 'special' testing modes like this,
+sorry. These are not modes anybody should be using in practice especially at
+kernel boot. We should probably stop people doing that...!
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+>
+>  Similarly to ``transparent_hugepage_shmem``, you can control the default
+>  hugepage allocation policy for the tmpfs mount by using the kernel parameter
+>  ``transparent_hugepage_tmpfs=<policy>``, where ``<policy>`` is one of the
+> -four valid policies for tmpfs (``always``, ``within_size``, ``advise``,
+> -``never``). The tmpfs mount default policy is ``never``.
+> +six valid policies for tmpfs (``always``, ``within_size``, ``advise``,
+> +``never``, ``deny``, and ``force``). The tmpfs mount default policy is ``never``.
+>
 
+Similarly here.
 
--- 
-Pedro
+>  Additionally, Kconfig options are available to set the default hugepage
+>  policies for shmem (``CONFIG_TRANSPARENT_HUGEPAGE_SHMEM_HUGE_*``) and tmpfs
+> --
+> 2.43.0
+>
+
+--
+Cheers, Lorenzo
 
