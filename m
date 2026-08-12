@@ -4,101 +4,189 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E8C0C5B56A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 17:18:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FD88C5B56A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 17:19:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0B5F6B02D3; Wed, 12 Aug 2026 13:18:11 -0400 (EDT)
+	id 819626B02D5; Wed, 12 Aug 2026 13:19:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE2876B02D5; Wed, 12 Aug 2026 13:18:11 -0400 (EDT)
+	id 7CB196B02D7; Wed, 12 Aug 2026 13:19:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1FCA6B02D6; Wed, 12 Aug 2026 13:18:11 -0400 (EDT)
+	id 695136B02D8; Wed, 12 Aug 2026 13:19:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A3C816B02D3
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 13:18:11 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 11AD51A0161
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 17:18:10 +0000 (UTC)
-X-FDA: 85093275540.21.829DD43
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 20F3D2000D
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 17:18:06 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=IPMOXnlS;
-	spf=none (imf31.hostedemail.com: domain of BATV+8f88a44aac2376c73a89+8389+infradead.org+dwmw2@desiato.srs.infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=BATV+8f88a44aac2376c73a89+8389+infradead.org+dwmw2@desiato.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DFC76B02D5
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 13:19:21 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B3822A03D0
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 17:19:20 +0000 (UTC)
+X-FDA: 85093278480.24.7FE77BA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E86DCC000A
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 17:19:18 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hLWxCl64;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786555088;
+	s=arc-20220608; t=1786555158;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ds42W/dXlJAXbQKntPBECqK3Gubna1cUNBXYw/z5vfo=;
-	b=f6MphWMV4emGV9Ji2EmvyaR0HWg+5rHecY3kZLmMioOLJFF2fRtc7g2abA918RGauNuMng
-	H9z4yHw3cLj1jAj9qSIFHlkT+0YQJcN3bQrZx8PvAls4VUklFMRNEkDQYpFWLqvVdQ7Pke
-	L+qe5xgERmcCkq7jjUfGwOk2RStqTnc=
+	bh=8WxyeD/4K/o06qOFzP7l98EIPHkrp93Cvie3fdx+YOA=;
+	b=Uhs6875kB7PKZnIBcUl3UparqMn6HduPMj7sMIUDgH6eLO3SvjbgqYPFDqiuh3bGW/p9AK
+	J6k4hq+1N6zUIbNNB3bKe7LXAsm74jmsp0yJHSq6unthy88yRzw8nSV1tBTVBVlgJRuzas
+	i9O1l3xA9KQbVCNY0SqXpvdBI9yM7oQ=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=IPMOXnlS;
-	spf=none (imf31.hostedemail.com: domain of BATV+8f88a44aac2376c73a89+8389+infradead.org+dwmw2@desiato.srs.infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=BATV+8f88a44aac2376c73a89+8389+infradead.org+dwmw2@desiato.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hLWxCl64;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786555088;
-	b=pGD4IWRQuVMrQ318lxRuM1HrfAyxoSbxhhNa5Wi8qHSQbey52fGjGXaaxgxTyJLFTpIH5u
-	ck2qscV8naIa6wcI1Vd+qW7PCC7tQcqFAYuGbjSZLJu7LAFJqqXD8Aw2JXGZB1slFBGgGx
-	lx/8KwB8UUz3IXKlZgg4eTEgZ76uoro=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=Ds42W/dXlJAXbQKntPBECqK3Gubna1cUNBXYw/z5vfo=; b=IPMOXnlSsdzwQrzSwlk4VEmg6P
-	5UCDuLxM6/KfRsgUHs5UL2PO1fWSvX7NG0h0tejkGarlAnmKsnHStu87KvuOLUJD4dB/cl3a6qoXQ
-	00SfWkRO7JnmQuNjFyYx0EptleEXkF5iYbGFFRzuXK6cGKGSD1WBws9hcq0XsKNHZvCL2ovN9laOL
-	BSyeAKZIFXy7SNIyhVJzoKG2oQIFO1IY8jlLs39OGO8IBWcUJOZDWA/db4I32Q4y4a3EA/xBGWtj7
-	msH8UuKpzc7aGr/anExAl/UI1joafQuJ/WLq1jO3VLmzq4PzHtxE5Zyyj50+5kDeo0FqQvDPmpViw
-	blrC0kLw==;
-Received: from [2a00:23ee:2978:2282:ac3b:fbd0:357d:8a84] (helo=ehlo.thunderbird.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wuCaV-0000000Fdcy-1sHl;
-	Wed, 12 Aug 2026 17:17:59 +0000
-Date: Wed, 12 Aug 2026 18:17:50 +0100
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>
-CC: Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>,
- Steven Rostedt <rostedt@goodmis.org>,
+	t=1786555158;
+	b=dA9BHb4o3Nbu3ZElvt+ZCP7FGxdBqDIaLvlMCCHB2gLmXL4VQSzjocqB6GNSfHTLNdsmXr
+	H5xs/7FzoLYgUiAgz56g1dIaz38s33ExcMHmugYvxIIEuphvd7qOZ57kyapo4wHvTotc7I
+	68cPGVEGiUVYqCZPTN+P8WfTTgC2E6U=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A403760DB5;
+	Wed, 12 Aug 2026 17:19:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E471F000E9;
+	Wed, 12 Aug 2026 17:18:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786555157;
+	bh=8WxyeD/4K/o06qOFzP7l98EIPHkrp93Cvie3fdx+YOA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=hLWxCl64FwqEYTiMqoHVw+thTGYp72pt2VffGqLy69crUuSqbNDx2idc8hBpx8w0J
+	 P3JAeDvIcyVd8+wRt0BAw61Hu6zDJOLsFFODqNhfCxEZsSTiJJN/2Y7LuwsSc8cLNb
+	 23NQDQc7YkGWiKnFaMI30ynO5fSaGB2yZ5FxirgtAYQpsvPUp6nIgZnNpkkp897Ovn
+	 wki1zPDK9TzVk+FQBO6+i7O13PJZeE0JzZQk+tKDMDirc7GfEZNVWzXyD3BCYeCmjV
+	 I8oFpfyH/8yCYBIBereVnICPY6/Yvq4V2ZyoWh25BXSNfIhIKtgzVZO3swyC/kPN12
+	 wnhjGkkwdbPgA==
+Message-ID: <cd7036f1-7efb-488d-8889-b61dcffd1b1f@kernel.org>
+Date: Wed, 12 Aug 2026 19:18:56 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 19/20] tools/testing/vma: add test to assert
+ MAP_PRIVATE-/dev/zero is anon
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>,
- Simona Vetter <simona.vetter@ffwll.ch>,
- =?ISO-8859-1?Q?J=E9r=F4me_Glisse?= <jglisse@redhat.com>,
- =?ISO-8859-1?Q?Christian_K=F6nig?= <christian.koenig@amd.com>,
- "Paul E. McKenney" <paulmck@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- linux-mm@kvack.org, kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_mm/mmu=5Fnotifier=3A_Remove_non=5Fb?=
- =?US-ASCII?Q?lock=5Fstart/end=28=29_from_notifier_invocation?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <anydY25Cl78l1HfU@google.com>
-References: <37b83b429b9f14ea6ad4ca1c13cc8e565ec09033.camel@infradead.org> <anwraNIKJV8zwrNT@tiehlicka> <44c51ace9b0dc44b795f6f48c91cda440eed910b.camel@infradead.org> <20260812122759.GA662699@ziepe.ca> <c41c52f02f033ea980d4b5f9b8239d5e9411a03c.camel@infradead.org> <20260812134934.GC662699@ziepe.ca> <a48e6e7063122b22a8083bb0792984a204f316e6.camel@infradead.org> <fb87f673bf290cad133d113dbb0750a7752b9d30.camel@infradead.org> <a94b75e8b9b1d2191f365c0f4275fd5082332df5.camel@infradead.org> <d0692500893f303906fba1d7d596eb59a07a806a.camel@infradead.org> <anydY25Cl78l1HfU@google.com>
-Message-ID: <932DB129-1794-4855-A61E-F4C2B54B1EE6@infradead.org>
-MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 20F3D2000D
-X-Stat-Signature: beuq49yo6jfuzufc4stbh5c59cnab3om
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Alex Deucher
+ <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
+ Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, James Clark
+ <james.clark@linaro.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Youngjun Park <youngjun.park@lge.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
+ <20260806-b4-scalable-cow-virt-pgoff-v4-19-ab318a350404@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260806-b4-scalable-cow-virt-pgoff-v4-19-ab318a350404@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1786555086-522856
-X-HE-Meta: U2FsdGVkX19yynCBedcWt7K+U7kcCv51Wh3tQsdHNoVGJc8e6nz0MuHZGt8om7+WGLXrBiz0yBQiVQdHuMTEUCzfkCZrZktyOObjg/2bXh7wFYpanG8SfopH0Bg9BobfXhXnkXIGQBd1YsmM06fIIKbJCzTN7a2CTc5HtH/IfxErfEWiaRUCxwXZZs/lPdmd7ajxu1KHziOW71iGqYLKrxtpFogxk5ex2Ckc2+iEG4XnZiQ+pdP0JvWTzRdy2HOvAlqtIX7LCP2KJsiZiLAvYfB8J94PiMu7EpwhTF7KOFzlfVW0emq0sCXoCw9I/twtacUSVWfoGyYlK0tpoSn4SC6KQse6EFhhmvmIDHjW2jyM4VmC4+F914TGjWLv/r/5UZYhJVMeSzhzqIxowoXpIJMCRnxw8o/67GC7rjoirwKXPUSxaFu2bWMQ2p+xQiObKXdjZ52x3AdICrZzpuyiqWSix2bebUckNRP3W8qDhEQWjdQNJhaCibWGASQJb3/Kpo8laG0iWX+emMFtZCmcoz3ZVeqtxVP5VMZiQjOuJKJ6gCgcIP0WfeaWvhdX9+yHio1sb7oQOCvG5Cgwvs1IcGljg6qGF2QLlhYD1GWfPHbCU+MzwvihYp4UzXWl9TdQmpAVJW+eZZJxFi+vj39RFEdIwUVWRAxJ0sU8e74vQnkfowtDOQHEg3vNFqmu3eKqXtWiMSh+RitKmTyPqljTnoixuKw4p4i84eWoX4Ml/Nj69wwBRCrKhBUA2BpNOSad14Wmg3Hzt+L2BdpUfcA6RY8OnjOCuZqcl+5jKfn3MwcpMVI5M9QlPu1n0juLLoAZaSW6gdJ6hr0c16Q0uSdx6M2sFE4MAs+PtYzghC+rSMwMA7nFN7yv13V54IfRSwVkJ2V8/pXc/0252hrp7qa47pjGHJ+79sdKtja/bG8U3owkbHyEchaaAUWBlhWoyAfqqJa63K6DwL7wPjzZCDH
- d9ENjV4S
- VdbuwhsA4Hn3dRy43e87Hc/NKQ2OBwJ5yWupWiXNLcfzPB9AzGvR6lsHrLFM25JLi1J4uljidlLlQvYXLrsNMMUZOv7W9io7XhmGZ4+Mye8kWrFRsva+yEEyhfhE1AM/0XI45MLm1Q/8ju+iIapXQHKf90drWEK4kgyIBGdcYrw1/nVNgodl777UwteNG1k/vOW1knrBgtBFJ4IZQg+MolWI0o7DBBlXOSRz1LhiN3AxCDuiMHBEc5LhAB3P82R7dEwVJzp9MNylzoh+qhu1QEmbkVisNP6BW4ziQFVIirObTLwb6SmSUCZl7eZnsCW0Tpp5Y3Kz52psygOefXhQMHF7DG/EKyXFOebM3hKmxEMs4W7AXGYPIdT3fM6Cx3PRP/U8zNRo0PSOX+g2s9OJvTd3qkCuocfRSErPRZAJMBypTFa+GwIxJHtjrFc0eEhbXsCqKllD15j6rzfVwmavNZt//ICZ43/bCDnSA/LpDHyD/ul0plxwseKRwCMwTGIKz7J+R8QCdhsVTpjs3o64wb8HkVqg/6/LuGLnCd0dPawr6snvt1cy3ONj6nXg0kJgddH9jJJPdCHQ9IRVQCAY5Kp9hLyuC317CqZipO50hY3yrBnVxMV8gzmpU+5I7aUH6b/zUOMgJXNn7p3uT8QLUO9dTCCgU7eaNGl9ngMYVMXjQnVNIYAD91ZjJlzflaHk28MJ61wTqicH1Sf0=
+X-Stat-Signature: doji9dbymf3a1itrywz3qm6fbfureo31
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E86DCC000A
+X-HE-Tag: 1786555158-323109
+X-HE-Meta: U2FsdGVkX19rkCR4iQrMKn/JTBPfmEUwiW+jcclSy+2LKZnKcjNjLSJlKtU+wO3dW9GEuusTSUAIxy8G4oVrzIeRrRrbbxbbTk9G9VMp7XMe0zq/GplSAhjsPH8WBHABoUfkypKrMLXBs9aBm9FicI4476ymcqni8NX10e2NfJ2vOOku7lLAbQ0AjNXRVhgWOFMZBOUG7D8N0ZCO0XYRy9YFL0XaSzjC1qZxaK8/s4PBEjb3wmX+61xSI/V0zRzBw3QcdvJej130Zp8/7wHpNAuUa6o1FbYt4RcsXnq82mLbOTfDaX4wfirGxoyNG/gfURSSg16UR2jR0WVu6o59ZNnTdFAC0ZuKd/qGlK8CUGABK3XbWN0o43/UisnHJMuvgK3EawI5NHDz59e5b6Kef/K0FvyLRWA01Pbd4mY8OoifeuTi+3pEkLCrq1E5Y+qz0uxZKdjbThaR0mgHnr5Eqel3uYjs/EyeFIvveSiETsCLQDMDbpD+Q4LkJXlRKlRIDxdu5XDDaWUFwiNbSUx51tNG5t8e6KMvPTFk5WY7tsUQnOi5A/yRsepTggxs9/1Apk7gAALrT5DiSxAzJME1DWXwJZJcz3Y9Wq1VEkdHGXC9ckfvcFdXWdP2dNGRXEBNAkhjyIhV1pi7W2qSMBlxdhO+3m/AFBRGa4Lj/oAIMY4XXdxgXf8IxS95DVgD0ZisdUOgK6Ea0fqg9mH0nywp1wd/p0Gt5mBP/FnOGQjmiTkO2NU/zW6KDKRT+ioLL0k3Q4M5V8C33oH3ZXeqv4/BILiQLl9fci4hXKzA2R6fypvCmSQZNqOpU4sgieKAQKkwQVbv2D/fl5ZSEmQHbgWIXQTz9SMr5Bt0a9LNP2g9Opp9BI++oHDjS4qeogXzzrE/2SYyOgALsDFJ8hF/DQHlst3NSeUbRa+L8p5wmVf+zZrVaYDzcuyhyty9qBspoXhX33t8kCHRbKLzK75nDtn
+ MGvU0F2q
+ OWkVHtxbaqDXkzhESV7D2vIm/XWveSkYVCoTxTGdlDYf6sfmNpzwktE+TEPe/FAt8IU1zp3hfiTT1vCcF+MG076cDOS6GWJHnU5mV+CEB9F3iceIAv/2fyxdIpTJHhDDDiKKVndpHzs8WRwsEekGRWvj1C6WyaiaIQe/G6zY/7FeFQUxiLgpScnM4f6dmHqAcuxBy0CvVfdCchix1FsfhKQbJQNR27thwfi7XWnpveBGAfvczyoxY36/iQiYgtAFZSqN0MR71mU1lytcWd6wLwviecTTFXcsd/5uQl3na9eiYjkMdrbz7MGJ4f/2ArghgRAuhN31L8QDMDPZLDQpvGEYhI5/0+3d9EYinfbCXdoNfxiRgxsahB0zACsft7xvOkdtGasNToBBrtkotfTzO4vgKCA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,174 +194,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12 August 2026 17:20:51 BST, Sean Christopherson <seanjc@google=2Ecom> w=
-rote:
->On Wed, Aug 12, 2026, David Woodhouse wrote:
->> On Wed, 2026-08-12 at 16:03 +0100, David Woodhouse wrote:
->> > On Wed, 2026-08-12 at 15:34 +0100, David Woodhouse wrote:
->> > > On Wed, 2026-08-12 at 15:05 +0100, David Woodhouse wrote:
->> > > > I'll rephrase that for my own understanding:
->> > > >=20
->> > > > *If* we go all the way to building a whole SRCU flavour for this =
-*and*
->> > > > implementing a spin-only variant of srcu_synchronize() which is
->> > > > tailored to the atomic-reader use case, *then* we don't need to r=
-emove
->> > > > the non_block_{start,end} guards around the MMU notifiers, which =
-are
->> > > > basically never being called anyway and don't actually seem to pr=
-otect
->> > > > against any real bugs=2E
->> > > >=20
->> > > > Yes?
->> > >=20
->> > > FWIW it looks something like this=2E I'll throw it into my torture =
-and
->> > > latency tests, and we can see what Paul thinks of it=2E I'm still u=
-tterly
->> > > unconvinced it's needed, but I concede it has its good points=2E
->> >=20
->> > This slightly refactored version is the one that's actually going int=
-o
->> > my torture tests=2E=2E=2E
->>=20
->> Well, it survived first contact, and it's doing the soak testing now=2E
->>=20
->> The average is basically no better than the try_synchronize_srcu()
->> case, unsurprisingly =E2=80=94 as *both* of them just observe that ther=
-e are no
->> readers and proceed immediately, in at least 99% of cases=2E
->>=20
->> Like the existing rwlock case, it still manages double-digit p100
->> latency even when though *doesn't* actually sleep=2E
->>=20
->> I don't *hate* it, but I do question the benefit of it over try-first=
-=2E
->
->FWIW, the max latency and >8ms numbers are very appealing to me, as my co=
-ncerns
->with using SRCU are all about the tail latencies=2E
->
->But I'm obviously not the one who'd be saddled with maintaining the code,=
- so I'm
->more than a little biased towards choosing the more complex version=2E
+On 8/6/26 22:21, Lorenzo Stoakes (ARM) wrote:
+> Now we've made MAP_PRIVATE-mapped /dev/zero mappings truly anonymous, add a
+> VMA userland test to assert that this is the case and everything is as
+> we would expect for an anonymous mapping.
+> 
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+>  tools/testing/vma/include/dup.h |  1 +
+>  tools/testing/vma/tests/mmap.c  | 50 +++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 51 insertions(+)
+> 
+> diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+> index aee36707abdd..41203b1c2323 100644
+> --- a/tools/testing/vma/include/dup.h
+> +++ b/tools/testing/vma/include/dup.h
+> @@ -20,6 +20,7 @@ struct task_struct *get_current(void);
+>  
+>  #define MAJOR(dev)	((unsigned int) ((dev) >> MINORBITS))
+>  #define MINOR(dev)	((unsigned int) ((dev) & MINORMASK))
+> +#define MKDEV(ma, mi)	(((ma) << MINORBITS) | (mi))
+>  
+>  #define S_IFMT  00170000
+>  #define S_IFCHR  0020000
+> diff --git a/tools/testing/vma/tests/mmap.c b/tools/testing/vma/tests/mmap.c
+> index c85bc000d1cb..ebe01362e530 100644
+> --- a/tools/testing/vma/tests/mmap.c
+> +++ b/tools/testing/vma/tests/mmap.c
+> @@ -45,7 +45,57 @@ static bool test_mmap_region_basic(void)
+>  	return true;
+>  }
+>  
+> +static int dummy_mmap_prepare(struct vm_area_desc *desc)
+> +{
+> +	return 0;
+> +}
+> +
+> +static bool test_pure_anon_dev_zero(void)
+> +{
 
-Ack=2E Well, it isn't even *that* bad in terms of complexity=2E It's mostl=
-y just a while loop around the core of the try_synchronize_srcu() I posted =
-before, and some syntactic sugar and safeguards=2E
-
-Let's see what Paul thinks=2E
+Ah, just one comment: should we call this something like
+"test_map_private_dev_zero", at least that'd be clearer for me.
 
 
+-- 
+Cheers,
 
->> Again, I'll defer to Paul, but personally I'd want to see a more
->> compelling use case for it=2E
->>=20
->>   =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90
->>   =E2=94=82               =E2=94=82      expedited      =E2=94=82     t=
-ry-first     =E2=94=82       atomic        =E2=94=82
->>   =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4
->>   =E2=94=82 median drain  =E2=94=82 32-128=C2=B5s            =E2=94=82 =
-4-16=C2=B5s            =E2=94=82 4-16=C2=B5s              =E2=94=82
->>   =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4
->>   =E2=94=82 avg           =E2=94=82 118=C2=B5s               =E2=94=82 =
-13=2E8=C2=B5s            =E2=94=82 12=2E3=C2=B5s              =E2=94=82
->>   =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4
->>   =E2=94=82 >1ms          =E2=94=82 ~950ppm             =E2=94=82 ~990p=
-pm           =E2=94=82 838ppm              =E2=94=82
->>   =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4
->>   =E2=94=82 >8ms          =E2=94=82 42ppm               =E2=94=82 4=2E4=
-ppm            =E2=94=82 0=2E10ppm             =E2=94=82
->>   =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4
->>   =E2=94=82 max           =E2=94=82 33=2E6ms              =E2=94=82 17=
-=2E6ms            =E2=94=82 10=2E25ms             =E2=94=82
->>   =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4
->>   =E2=94=82 fallback rate =E2=94=82 =E2=80=94                   =E2=94=
-=82 1=2E2%              =E2=94=82 0%                  =E2=94=82
->>   =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4
->>   =E2=94=82 sample        =E2=94=82 32=2E6M drains, 10min =E2=94=82 41M=
- drains, 10min =E2=94=82 40=2E5M drains, 10min =E2=94=82
->>   =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98
-
+David
 
