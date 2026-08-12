@@ -4,100 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEB36C5B567
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 05:22:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65747C5B567
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 05:23:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B92C56B0088; Wed, 12 Aug 2026 01:22:58 -0400 (EDT)
+	id 356066B0092; Wed, 12 Aug 2026 01:23:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B43ED6B008A; Wed, 12 Aug 2026 01:22:58 -0400 (EDT)
+	id 308B06B0093; Wed, 12 Aug 2026 01:23:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0D986B0092; Wed, 12 Aug 2026 01:22:58 -0400 (EDT)
+	id 1CEBB6B0095; Wed, 12 Aug 2026 01:23:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 768816B0088
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 01:22:58 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D63FA160281
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:22:57 +0000 (UTC)
-X-FDA: 85091473194.16.DF94E2F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 0D277160003
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:22:55 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kJ0EKCsu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of nathan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=nathan@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E6BA46B0092
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 01:23:39 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6093E1401A8
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:23:39 +0000 (UTC)
+X-FDA: 85091474958.07.7452BA2
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C1388180008
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:23:36 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=nOU+bDHr;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf24.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786512176;
+	s=arc-20220608; t=1786512217;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=z0N6OJ/27Ug3QgSr1OO1qU2RGmbk3As92oPs3a+1uKQ=;
-	b=2akiRi9xhi0NWS/ENs/yu3NKqHLaR/AJ+sj03/lbDkWn3pgEVoGevzR9AVzahxgZAVmISh
-	ql1FIVQhCXThrDLrsLuCW01w7Plnf8d/PFBSnNjmRq52qKxXR0EXjL9sIKGr2U3ooFT29W
-	uBMSox6yMBmhOUQK6MtuspnuyU7rti4=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0MRR1sD/tt7yZkFJEqu+9wLuGs5eII0ImDAAOpbgLmg=;
+	b=anqG2vz1cTo4Rd1TWjhPHIR5+ZofDZ2pVmJwoxojskNxzrQZ80Et/YvKL1lkvO2LuFUoiL
+	/e0c89NYqQ6BBSFwxj2wY7CBD0rT0Xk8OZfff3RJ8upGuI/ZcGK4LvOgu0bN1GvnNLbeI4
+	1HWOTtnKb0uwXdKi414vmZNW79uTh7Q=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kJ0EKCsu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of nathan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=nathan@kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=nOU+bDHr;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf24.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786512176;
-	b=JmJZFR7APk+Vp975w6xD7i54Q48ClydhXF835xMPV9lALEC35bfm8Lv7trOjqiv63kkrHj
-	ZEY4OEDdNeI6/+NvoEoPEGH4HlcYJ9AUVj54AFN5V3hNeTVThGTDn0eOOiJpS7R0E+QPaz
-	vg0vseYoL2iZUTS2UcF6cJELQ3ZW3Po=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 77ED240B1A;
-	Wed, 12 Aug 2026 05:22:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 772C91F000E9;
-	Wed, 12 Aug 2026 05:22:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786512174;
-	bh=z0N6OJ/27Ug3QgSr1OO1qU2RGmbk3As92oPs3a+1uKQ=;
-	h=From:Date:Subject:To:Cc;
-	b=kJ0EKCsuJEKADrYClfbcjpLpAf3V/ibD36KwUDBtU43CPKhwuvQ3ZBvGriwaKANIW
-	 ssGtdcNnOwI5pzK2vVklAWWstvtQDmRJF50fHlLUU2Xz1Rsz5wtq8er7dUIraoMGlH
-	 ZJZZ9vblQC4ehNNlCQuA5OD1GHd/ViMsIwSzrtkrikeJ8RTavTYfKAry7KuLEavUpp
-	 pJCMGGJztyBn30/qv+dml10LYIIicE3hrIeN02F/fsLuLXvn9/99rAdEuMenVbXLA7
-	 KAIjSKtHn1jyA331za+vhgeKZbZaZfe6IPUCzPP1Pud/Qhd2r8bqGAJxbsiNyrBnpV
-	 odxDRgtYBtjog==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Tue, 11 Aug 2026 22:22:42 -0700
-Subject: [PATCH] arch_numa: Avoid false positive fortify warning in
- setup_node_to_cpumask_map()
+	t=1786512217;
+	b=Bs1Z7EcJu7iL/O5Qy+IbGYLU+m9dP4FbOFDtm+O/Qz3HT2EOAmiNm2AaDTgEC1GYIy1Bg/
+	2bq3JBCuLu2CXkUBIiyQ+UFBhOlt1n+liEVCDQYJ5x9A2U//pjE4O8+c6ag0S61IPKNDu0
+	q61XWQctCtezcMYxYAVQb/zYYsP6I1k=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786512217; x=1818048217;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=iE7WD9cC5Zp1jYTzEd47muCzZZ8TB+7wVvVGgHiezK0=;
+  b=nOU+bDHrWwJ7Szki4K7EKltw76KaJderPgWRE8r3cQiZVZHbUqH1BuzN
+   NvyyXE8OmZ7D5Y/87b2ToPL0fjJugoGawjqYKEytAt+4LdDO2XQgHWiyf
+   tjK+QU20Bx9gT3J2dMNPxzswLk/29rPram1zbGc02skgTIhvEGE1rHsFo
+   43hNzccYb2SbaqPFV8e4BPwI+x/oORQl89alZi1iBP6PGNz+dFIt5C418
+   XjowrGTb/dcGuUrxe7kXGRAMW+Sty+EtvHOuR8dLRUdcUwCvJ5SdAYLQj
+   N+MbCjhIVOAC1T7pyEd/7M82yuZzfH3Px+o5F4o7ZjBa6NjCBFKMC6RFh
+   A==;
+X-CSE-ConnectionGUID: 1nN4j3Z8ToKU/3NB9J5B/g==
+X-CSE-MsgGUID: lY9gxH4ZQo+1dx1gu9ZDJQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="112600175"
+X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
+   d="scan'208";a="112600175"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 22:23:35 -0700
+X-CSE-ConnectionGUID: 1SnU3e7vSsmcahYLs71EJQ==
+X-CSE-MsgGUID: KGD9BSXaRIiKAaUKOK5hpA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
+   d="scan'208";a="261785396"
+Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 22:23:22 -0700
+Message-ID: <3722b4d2-ef2a-4ab8-9a24-7d61a776b05e@linux.intel.com>
+Date: Wed, 12 Aug 2026 13:23:19 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 05/41] KVM: Rename memory attribute APIs to prepare
+ for in-place gmem conversion
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
+ Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, linux-coco@lists.linux.dev,
+ Xiaoyao Li <xiaoyao.li@intel.com>
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-5-2fc18ee6d3ba@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-5-2fc18ee6d3ba@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260811-arch_numa-avoid-fortify-warning-v1-1-59ce3e689f3a@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXNQQrCMBBA0auUWTuQxBKLVxGRMZ20I5jIpK1K6
- d2Nunyb/1corMIFjs0KyosUyanC7hoII6WBUfpqcMZ501mLpGG8pPlOSEuWHmPWSeIbn6RJ0oD
- eU+wOrdm31kGtPJSjvH6H0/nvMl9vHKZvFrbtA/ITFe6DAAAA
-X-Change-ID: 20260811-arch_numa-avoid-fortify-warning-66af87403412
-To: Mike Rapoport <rppt@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
- stable@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4393; i=nathan@kernel.org;
- h=from:subject:message-id; bh=SlLaVPw6ZHbuS1BVax13M+yBfy0AfsczeTQZub6iweA=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDFk1zJrOP7fuuht76JlD5PGGl59vHxWM9/h2mCXXaf1aQ
- YbvR7cUdJSyMIhxMciKKbJUP1Y9bmg45yzjjVOTYOawMoEMYeDiFICJ7F7C8IeXOzH4cFOKb9cR
- /zrj6XsiH7v37Enfkbrpm7Bh9PxT0dWMDPu7yrs4b747+PD6/TbFmRe2/t+zbKvj9i8rXiae3Bn
- 9bjUnAA==
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+X-Rspamd-Queue-Id: C1388180008
+X-Stat-Signature: 9yyht37upjsa5skpzwyfzku1qsjf95g3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0D277160003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: hfdocqd8ajf5grjinb5qxisaz8sjh8wz
-X-HE-Tag: 1786512175-765324
-X-HE-Meta: U2FsdGVkX1//51Ygh9j+SS6WYn7tkCHPjLUeTCSABHtkI/1Fe8tGbshzCIbanJWnZpmHEQN4/7tG1yVkl5U5obByPoT0bhsKSs3eRWh09eAXKH4pj3Z10roP3zckyrAhXXX9QYhzywrTuDV27Nc2ckAQZV6VMnQR8RgXUgBxIdqmpJrc5mwfes+q6XWIRFE2fo6uQG8nvfcCR7xhbmSQpeLlpXdlaL4kjqIaUg5Xlowt8jnua47sn4HHI495BFvy8xxR9k47S8WotQ1f3aoJLsGptIR7VLIJNCOaJGNVLdFZGaYQTE0+pu+N0JzgLqxdefU6qcdhxvzM61azc4r7dVyHSHDG7IyBW1FOn75SuuJPLyGYKbxRporbIp0xL9kNMl0qV1rXih3KIAAUpel2sp/ExD9zUjDwYn8EVolNWXln1KT3wrR6pt4MJHJHO6Ql6iJ9NIE9X7cz0S+t1y929ecYFW5Gzd9LaVH+tF9RzSxOFR3PpdkjE/bSuVhK5Ax+C2Vzcs+PJZvuJkk6BECrrlZUCA0eSDN+Wng1PADniABS9JQKp0cRvLZVjuo/+WU9MdzAQWPJbDtejk8j0+Z7HnXbyXM6qwxLIHz7WqnlYOIC7zwC8TWHWC1QKwma8rn8RKKFnZ2kjVOgpCvTIl6NtGcSzCxhr9LBIHgK4rEuvztdx14I0VtmOtnM4869/fd3O5fD7iCQ7/EOl+JGSTFFBG0yaFcJqzHIwXUdELlS7tT0DLAkBwoz1CsVRrkSb6SJq998S5WvgvnFmHGAUg2EGBa7zTpOxwgcJpEihdWv2jvn+3IclpDsYvhCMzxTFsNcl8SfH7DGeD9y7hkawZlhsc36Jn8n5zoSQCYTVPiBa3A6MeCRBrd43k+fy4d11EvfrRsf3RiMygSCGcENTMt0FHHc4UqmgHXvcSSejVFQp4LQGvP6tIIpdEg08gECfNAhMN5NN+ywwUzsiv+5AC2
- B0rBZ6pg
- MA7Yl/9yTRfrpUorkORliCjyJBhDqw73y5XcHEvYtzmdUg/VHGWp5P2Brn8dyyUshJSR6574/qorryUgQ3bK1HB5RNoiQ6qO5eyG7eqzmsvFdHxWX2qjqzW/rgZKmEyzONWzV9Xr+oXswyO7E1oTAy/tqshXtwGxD5k95I/AeO25TG9ypVMsTQbwZxfO3L7TNf5XmpQd+342bw8YYtkBRGHomLUTSqk8XHk6fTC+o9U+rLirzJCPSKJlNWSOZHbkylNxBFAyTFydNgFXi2cGrrnG3UT2BfK5mFEgXQXOY/Y32A5fA5LJtR/uad2chGLSE++Fc
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786512216-295501
+X-HE-Meta: U2FsdGVkX1+mxsfNB+OO/iAY6lwOfVv0i5+7lRPPtI8Whk2Q+Mew+PW7hN8g43WBPl19VhgnbdxiHw0n0q1OGmJOLKm4ekC0iEzfFiK2uCbfUI9xA9l/g6edU4Gx7VyWg6szXaIv78+xKGeVH/ifHd7ZQ6DUPZU8JlEuUmvE7243AZHni6V4nuAUa9BFO5m2fYCZLRbrdaA1FgNJY1uN+yo1/azJVT0cqM5ulcZpgFl3dXQfYeHoFebzzdYxOeJlNeCod05SZoeL4Vjmhnh+eVkCGM5eYb2gi8ThkS9gL5V6tep/eIYaLRADCG/2FQWuDo93bI7qMLB6MvIuCqJC0Qfsfz0+U28KUssH7I1Rm0s5YAnb9XNYB85ACMDrKZYWvHUkIobZHRQ+cfD4sLLwN7zzHf6z/6RSJEkq8Lldy3owZUWRcCebeEvkHHA+JGxwXVh2CY1XFl49loo3e/BOffD6nDLfZkznO1UVR0pLgrU5/86hfBkuGdG47/bAlr/7rswFicHo+8ouYxe4Wk6NW3zr/k+BOxYe1y+QxdjpoVc121QpT4oyzhADyAmm+AdRSoFvy9vcnwB3tHQ/X3iAfrkFWWq8JxCHZDtbwFFnjEK9p71aWL/bkH0YsphAJmDQLin2D4PQOHjFtVKfy6gc+HXTESDbO3/9/A1Bo1Nk+9NtmxVTz0gTWUv7jxcD0nZ/H4SOgr2ReDen7Nvl0m4leajLuuqyzVKaGKORXNBYyOgD2ZNxl9MAb96Z03fHHrEDHgQZsFIopLDvRpNuE99ZD3yM5IM0qR1il0AK8edSxYTnEQAZaZBq4mAHR4W0P6WdcuyxRGRTaJ8hq13OPzRI3eaZc/KAEPltxfufXULmavKDj2vf9c+dkMqMjxLY1G+UFJDVDoZ8GKoNe9viFOSVU3lwz+e5nPUfEZCR3tnjDfR0ggSBtMctrDy0zB3QBtJa7FHn81VlAB0/94UR7wm
+ I2UCC4FM
+ b8c4mQ73oJ+qe7oxLHt+8wD0G+fJXpkpSmJo4dVdc9+s0pP1wAbfwWN/Zl9DhEG4V9bNoSTdYa0p8p+I5SuV6d2RFCjEMuTzjrA1ql9OKOPV99pyJlkStKHUPZ15WpweItldQApC4J7O6twgSpKxRTvZGOyrivwE086H6+65Df5foUZE3sDPRuFUlIOD34AOWNAv4/atcKSe0eH0gBsZHt6iq9uZUOUkqJmtlId8qkmKvuZyNrt0fyjMdRuc8NslzIhMXPxyPcfzp/oUXzV4DJCWIvaoIOvJ5Khcd/x1ckzaCABtcmCurQttmzOFoGUFDIemm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,101 +136,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When building ARCH=riscv using clang with CONFIG_FORTIFY_SOURCE and
-CONFIG_UBSAN_BOUNDS enabled, CONFIG_NR_CPUS > 64, and the default value
-of 2 for CONFIG_NODES_SHIFT, there is a compiletime warning from the
-fortify routines.
+On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> Rename memory attribute APIs to add a "vm_" in the name in anticipation of
+> moving PRIVATE tracking into guest_memfd, to allow in-place conversion
+> between SHARED and PRIVATE.  At that point, there will effectively be two
+> (potential) sources of memory attributes: the VM and guest_memfd.
+> 
+> kvm_vm_set_mem_attributes() already has "vm" in the name to indicate that
+> it is a VM ioctl. Rename it to kvm_set_vm_mem_attributes() to show that it
+> is setting the VM's memory attributes. (Drop the VM-ioctl scoping since it
+> is a helper local to the file.) Update the accompanying trace function to
+> match.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Reviewed-by: Fuad Tabba <tabba@google.com>
+> Tested-by: Shivank Garg <shivankg@amd.com>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-  In file included from mm/arch_numa.c:11:
-  In file included from include/linux/acpi.h:14:
-  In file included from include/linux/resource_ext.h:11:
-  In file included from include/linux/slab.h:17:
-  In file included from include/linux/gfp.h:7:
-  In file included from include/linux/mmzone.h:8:
-  In file included from include/linux/spinlock.h:60:
-  In file included from include/linux/interrupt_rc.h:17:
-  In file included from include/linux/smp.h:13:
-  In file included from include/linux/cpumask.h:11:
-  In file included from include/linux/bitmap.h:13:
-  In file included from include/linux/string.h:383:
-  include/linux/fortify-string.h:430:4: warning: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Wattribue-warning]
-    430 |                         __write_overflow_field(p_size_field, size);
-        |                         ^
-  include/linux/fortify-string.h:430:4: note: called by function 'fortify_memset_chk(unsigned long, unsigned long, unsigned long)'
-  include/linux/bitmap.h:248:3: note: inlined by function 'setup_node_to_cpumask_map'
-    248 |                 memset(dst, 0, len);
-        |                 ^
-  include/linux/fortify-string.h:462:25: note: expanded from macro 'memset'
-    462 | #define memset(p, c, s) __fortify_memset_chk(p, c, s,                   \
-        |                         ^
-  include/linux/fortify-string.h:453:2: note: expanded from macro '__fortify_memset_chk'
-    453 |         fortify_memset_chk(__fortify_size, p_size, p_size_field),       \
-        |         ^
-  include/linux/fortify-string.h:430:4: note: use '-gline-directives-only' (implied by '-g1') or higher for more accurate inlining chain locations
-    430 |                         __write_overflow_field(p_size_field, size);
-        |                         ^
-  1 warning generated.
-
-In this configuration, MAX_NUMNODES is 4. clang unrolls the for loop in
-setup_node_to_cpumask_map() past this, which triggers the fortify check
-when accessing node_to_cpumask_map on the theoretical fifth loop
-iteration because it would be an out of bounds write.
-
-Make it clear to clang that nr_node_ids is bounded by MAX_NUMNODES due
-to the logic in setup_nr_node_ids() by early returning in
-setup_node_to_cpumask_map() should that condition be violated.
-
-Cc: stable@vger.kernel.org # all applicable
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2174
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
-This is based on mm-unstable due to the move of arch_numa.c from mm/ to
-drivers/base/ living there. I have CC'd stable because this warning
-appears in my testing back to at least 6.1 but I see no reason why it
-should not apply to all trees. No fixes tag since this is a layered
-problem that just happens to appear under certain conditions.
-
-Another alternative would be using the __assume macro to say something
-like
-
-  __assume(nr_node_ids <= MAX_NUMNODES);
-
-but that seems a little more fragile.
----
- mm/arch_numa.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/mm/arch_numa.c b/mm/arch_numa.c
-index 442ea239bba7..bd7772b05bcf 100644
---- a/mm/arch_numa.c
-+++ b/mm/arch_numa.c
-@@ -105,6 +105,18 @@ static void __init setup_node_to_cpumask_map(void)
- 	if (nr_node_ids == MAX_NUMNODES)
- 		setup_nr_node_ids();
- 
-+	/*
-+	 * This check should never be true but it makes it clear to compilers
-+	 * that node_to_cpumask_map is bound by nr_node_ids, avoiding false
-+	 * positive fortify warnings when accessing node_to_cpumask_map in the
-+	 * for loop below.
-+	 */
-+	if (unlikely(nr_node_ids > MAX_NUMNODES)) {
-+		pr_err("nr_node_ids (%u) is larger than MAX_NUMNODES (%d)",
-+		       nr_node_ids, MAX_NUMNODES);
-+		return;
-+	}
-+
- 	/* allocate and clear the mapping */
- 	for (node = 0; node < nr_node_ids; node++) {
- 		alloc_bootmem_cpumask_var(&node_to_cpumask_map[node]);
-
----
-base-commit: 47870fb9b0e3bd20b45e3a069b4c766f3dcb721a
-change-id: 20260811-arch_numa-avoid-fortify-warning-66af87403412
-
-Best regards,
---  
-Cheers,
-Nathan
-
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
