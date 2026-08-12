@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E903C5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 12:10:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04055C5B572
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 12:11:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 511496B00F9; Wed, 12 Aug 2026 08:10:58 -0400 (EDT)
+	id 0091E6B00F7; Wed, 12 Aug 2026 08:10:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C2146B0100; Wed, 12 Aug 2026 08:10:58 -0400 (EDT)
+	id F22A66B00F9; Wed, 12 Aug 2026 08:10:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D8126B0101; Wed, 12 Aug 2026 08:10:58 -0400 (EDT)
+	id E38C56B00FC; Wed, 12 Aug 2026 08:10:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F8956B00F9
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 08:10:58 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9C70412035F
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 12:10:57 +0000 (UTC)
-X-FDA: 85092501354.07.0569A07
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E42C48000C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C282F6B00F7
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 08:10:55 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D5F58A035D
 	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 12:10:54 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	spf=pass (imf02.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+X-FDA: 85092501228.22.7F8FCC0
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 87B1A1C000A
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 12:10:51 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	spf=pass (imf20.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786536655;
+	s=arc-20220608; t=1786536652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gTQihTeY/ovliGutBkn9bHrjlC0qtEgw7nmEK5xgxUA=;
-	b=F/MZw2+xAIfcWU+okDFwsFPV3Nlnnq0csl3/HFZnLqTM0/lD4pnSRhuzI425qYrrJqQkj2
-	91DHM6U8EFgWeE+8yPxvIS3M0aN9+XHEfvl3KcqhgiaKbvoof4sYJQQkbnfzFBfqlN5RzS
-	jHIBH6/u6I0/KBDno2Js1Mm1q1DosIE=
+	bh=AHZGkcF6vmq6DfT7dxaFxVsRQXD0k0tgxtewWNuMhVg=;
+	b=M4GTH9fUEihAf0cR4ZWyx+fSN3Bq37YtgY+c6oaPY8O+e1NCgKFgnx3iLKY7iEb5LH6S92
+	JJ6RA/MxaBvJOcJO0vDcjhv0nBKA6hECls8rfSEdqTi/0u+yftzbRsxcq0Q1hSNDRII5ko
+	D2tvhUJ++rkkRJREmfZv6GSXhMFLX4o=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
+	imf20.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+	spf=pass (imf20.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786536655;
-	b=aJ25++TW1rEOJOT5FAf268C4x35BRXtviD0Cbdo+OtY+Nb4JPe7TlPYnvsjneaIHPtyedJ
-	mkzma8SVWEIX6vr9lrF4rpojGyXA728htQ4e3RplFJdP1jBUYVCXkLUZ1mb54oi8sSn4DE
-	6FWHxOO5yI5vbaI99KGldEJ75sdfaig=
-X-UUID: d9458464964611f1aa26b74ffac11d73-20260812
+	t=1786536652;
+	b=tvo9/zZaecPiT35RI+XEaUIn0xTgWbFVAqCGE6cPRiHOlNqUxUOCeELWpRH22NfFMdcmdW
+	9Ccg/MZyQ/EUlY9RazN5ySquV4C3EVoFoH+wgMioJdhaDUnRc6Bi/o6V0F2nZqG/d5X73C
+	bEeMNF094G7XqZgm62I8pXCtYcr15Ac=
+X-UUID: d787a3be964611f1aa26b74ffac11d73-20260812
 X-CTIC-Tags:
 	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
 	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
@@ -58,14 +58,14 @@ X-CTIC-Tags:
 	CIE_GOOD_SPF, CIE_UNKNOWN, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
 	AMN_GOOD
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:cea930ac-079f-40df-8e01-cb07d4516171,IP:10,
-	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:35
-X-CID-INFO: VERSION:1.3.12,REQID:cea930ac-079f-40df-8e01-cb07d4516171,IP:10,UR
-	L:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:35
-X-CID-META: VersionHash:e7bac3a,CLOUDID:c1b14ee53eeb8edb92911d479d49e75e,BulkI
-	D:260812201050MG02R5FB,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|81|82|10
+X-CID-O-INFO: VERSION:1.3.12,REQID:693dc26a-14a0-4723-a38e-e2be535dcc80,IP:10,
+	URL:0,TC:0,Content:-5,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:30
+X-CID-INFO: VERSION:1.3.12,REQID:693dc26a-14a0-4723-a38e-e2be535dcc80,IP:10,UR
+	L:0,TC:0,Content:-5,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:30
+X-CID-META: VersionHash:e7bac3a,CLOUDID:48f78fda794771af4f5c76461b928d39,BulkI
+	D:260812201047HWGODJE7,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|81|82|10
 	2|127|865|898,TC:nil,Content:0|15|50,EDM:5,IP:-2,URL:0,File:nil,RT:nil,Bul
 	k:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0
 	,BRE:0,ARC:0
@@ -73,12 +73,12 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: d9458464964611f1aa26b74ffac11d73-20260812
+X-UUID: d787a3be964611f1aa26b74ffac11d73-20260812
 X-User: husong@kylinos.cn
 Received: from ctao-book.. [(111.162.215.50)] by mailgw.kylinos.cn
 	(envelope-from <husong@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1067541705; Wed, 12 Aug 2026 20:10:46 +0800
+	with ESMTP id 500118119; Wed, 12 Aug 2026 20:10:43 +0800
 From: Song Hu <husong@kylinos.cn>
 To: linux-mm@kvack.org,
 	akpm@linux-foundation.org
@@ -94,22 +94,22 @@ Cc: shuah@kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Song Hu <husong@kylinos.cn>
-Subject: [PATCH 3/3] selftests/mm: restore enable_soft_offline in hugetlb-soft-offline
-Date: Wed, 12 Aug 2026 20:08:21 +0800
-Message-ID: <20260812120821.523860-4-husong@kylinos.cn>
+Subject: [PATCH 2/3] selftests/mm: emit TAP header and use TAP skip in mremap_test
+Date: Wed, 12 Aug 2026 20:08:20 +0800
+Message-ID: <20260812120821.523860-3-husong@kylinos.cn>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260812120821.523860-1-husong@kylinos.cn>
 References: <20260812120821.523860-1-husong@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: wqzgzhuzqpygjj6g1f3gdtte1xdjiq9u
-X-Rspamd-Queue-Id: E42C48000C
+X-Stat-Signature: dre8ntiqo6khnudoqmkm1ib69wsdqs94
+X-Rspamd-Queue-Id: 87B1A1C000A
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786536654-873072
-X-HE-Meta: U2FsdGVkX19VLUWEaqJ2lFW7M4y/10eKUjNg8FRg7UbjhaljmfUy3Ju4/h3eCILKOFkafv8/QPgms/F242TyC2gVRYsMNYWfMp/ZVibQtH+HSe8nwlmVxwisV3Kf3H0/8l2ErYEP75CqaQYAeYVxyzTztXbUunw00o/QKzBUv2QJZjJau52nacCymY9qCwRzEhJFn44pJRNKTvxqaszSkFEZ07OcAvrqSPVRmaVAGSqTHG0OzyedFUgGRpM+8/CjzKUyLm1feOKv+YrAOM+NmzRO8Ub5MBVOa+adI+RLglK9RlLLBTahBdfwkBSRULquGZDCwHmkOI2WeRS0CXSLFyEFEZ7vajxLceKLRddxFirVMlfvksYPnYOZlNbDHv62ZCoq9qkMVJVo4pZSvLJ1YosOpvdZ5lMIE9oH7fXM7bg+HTSbU0CSVNUptZHmFZfPfC+CmfonZmnotyoCBiWmftVOVDazMB8mFe6dulXRN+hWdEprdDtyvwfeujAOejbE+V+9CnEksBFVxByp74xp5Msjz89+CpssiWHNp+/Mg982Qr/a8RHhRH5YwHboKnBIpFb0fPW06eSGpCJ/wEalzOvBF0fd8js7MWvoF4swMfWK15UmOKYoUy9mSfiNH3wBDnqa8Gd/Nkx+QxvTERGnWSHY8ISHZiNUfiyURcUlHQHM3QYzxvH2WJS8I1Ouq5e/UwdoqCGsOb6yLTv+8z46AO2KScAwvDBsKkZO1INcIegEUbogFfHEYcMj6KygAOxf3q/Yhj+tLcXzU5vTR/gnn8gTKPxgw/osynl0JftFDec9t9XYWjDtDKRHbjs1JztyAN848tDMMFViTrsdytb5S6Lcl8mCNfTBBY2car8i9YLZpxkn4YcOAZsMjWyySAooaZELLYMkvKH/cz3JMhMjUJ6nvD2AHTp/n6kTIC6Hf4wiS4L5+h/ZK5uU6DGKwlIHbtd37Qalt8wrHf0Q58F
- vWNbvsBx
- SGzumPi/5UAG3YaXj8w2EngjPCJYmlfWDI7/9R0yUSDdKOOWnYqIq4XQ+0Q==
+X-HE-Tag: 1786536651-457774
+X-HE-Meta: U2FsdGVkX1/qBH+pf26T2sL3oLURstZpyI7XNUeCmf5KOQovlvJQyxMqKGha2osPuYA2mEvbU6uMQwFulpIRnET7UB3GaJQjp+zltlCZHNYFbfJLQa3WyI937HkmiohaEkaxZ0Q8c74Rb3sI61dEw2boQuS286ZScOhdC19ii8GFDhqNmu7B3PgNfOxManXjxqyH81l9XeH2kCQoVp8UISxZ83JTygsWND+r1epIk5RpS/S4NaU8+EsmSBGgqpziYLqtl1jakdvFqJCDFSL+UYL6DhAQ1sMBaTz4mxCWrLqE15WaEDxrMkEQwYcPptV1JR3xPMU0/edq0jlyP2IT43KI6k97heGeiIoMzdYj0Km2feuiGGed2AJs/ETdhnBdO1dldzNrDA456B9PuwcQGqkQ9ztaMXof1GupOaz2Ahsdzt5qXYiLf5Mn7FXig3YnKIhVqSMvbalZgulvAwaDqUrdQUwaIysZkYZUDGjH+tSCRZI8B3rkceSshdOVduKpS8E+ePLCNFBvbegcN96ZutYRCDZ8qdmP6tYIKtaKP+Z1XN70gDwmt3m0EEDjSxjnGu20rRKbjEC9birhzJrB4equXJM2lg/cm6MTOoJz40YuSLaSrgqxEu0tqv71iVkYJ1PYIpOp4ejrivi8AMEPKndZx0P19/zngIz5kiRg5kR/D9k9quYwSZ9E78pX5Fb6egvyQlv59teu3kpU8b2LQy8KIqLorncevz5BVIdCWu+ZMbPr5doQ4FA6EMsrVZuK0ly026qIIUOEy7jqu5PGBcF3lbyASsTaryUhtsB0aTsjOfcLVsohUAg8F6q8ZQgXjND2P+SUh4qEalM33KaMjHJNxtG/2RtzB1CcUCsIFJ9hoRHM2lSvzY2pRcuvprygZQAfOTdaz/VHN72Y0zQ/j3OgC33fT3Cw3YR0ROzLbLymGKzIGVE6Y4MchomUJ1ecT/f6EpuVwDyIhSN6Zk4
+ Jo4Q3/fj
+ lP1ars39bVSrRHZu1dx0k6R72slIjqcJnUiNMQ2zGY5sWetU+CBM7gsKV4A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,68 +117,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hugetlb-soft-offline toggles /proc/sys/vm/enable_soft_offline between 1 and
-0 (test_soft_offline_common(1) then (0)) and leaves it at 0 when it
-finishes, silently disabling soft offlining for the whole system after the
-run.  Read the original value before the test and restore it before
-ksft_finished().
+mremap_test calls ksft_set_plan() without ksft_print_header(), and its
+get_mmap_min_addr() skip path uses a bare exit(KSFT_SKIP) that prints no
+TAP line, so its output is not valid KTAP.  Add the header and switch the
+skip to ksft_exit_skip().
 
 Signed-off-by: Song Hu <husong@kylinos.cn>
 ---
- .../selftests/mm/hugetlb-soft-offline.c       | 24 +++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ tools/testing/selftests/mm/mremap_test.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/hugetlb-soft-offline.c b/tools/testing/selftests/mm/hugetlb-soft-offline.c
-index bc202e4ed2bd..35dcf661b091 100644
---- a/tools/testing/selftests/mm/hugetlb-soft-offline.c
-+++ b/tools/testing/selftests/mm/hugetlb-soft-offline.c
-@@ -99,6 +99,23 @@ static int set_enable_soft_offline(int value)
- 	return 0;
- }
+diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
+index 131d9d6db867..d055a4b3b024 100644
+--- a/tools/testing/selftests/mm/mremap_test.c
++++ b/tools/testing/selftests/mm/mremap_test.c
+@@ -111,18 +111,15 @@ static unsigned long long get_mmap_min_addr(void)
+ 		return addr;
  
-+static int get_enable_soft_offline(void)
-+{
-+	FILE *fp = fopen("/proc/sys/vm/enable_soft_offline", "r");
-+	int value = -1;
+ 	fp = fopen("/proc/sys/vm/mmap_min_addr", "r");
+-	if (fp == NULL) {
+-		ksft_print_msg("Failed to open /proc/sys/vm/mmap_min_addr: %s\n",
+-			strerror(errno));
+-		exit(KSFT_SKIP);
+-	}
++	if (!fp)
++		ksft_exit_skip("Failed to open /proc/sys/vm/mmap_min_addr: %s\n",
++			       strerror(errno));
+ 
+ 	n_matched = fscanf(fp, "%llu", &addr);
+ 	if (n_matched != 1) {
+-		ksft_print_msg("Failed to read /proc/sys/vm/mmap_min_addr: %s\n",
+-			strerror(errno));
+ 		fclose(fp);
+-		exit(KSFT_SKIP);
++		ksft_exit_skip("Failed to read /proc/sys/vm/mmap_min_addr: %s\n",
++			       strerror(errno));
+ 	}
+ 
+ 	fclose(fp);
+@@ -1250,6 +1247,8 @@ int main(int argc, char **argv)
+ 	time_t t;
+ 	FILE *maps_fp;
+ 
++	ksft_print_header();
 +
-+	if (!fp) {
-+		ksft_perror(EPREFIX "failed to read enable_soft_offline");
-+		return -1;
-+	}
-+	if (fscanf(fp, "%d", &value) != 1) {
-+		ksft_perror(EPREFIX "failed to parse enable_soft_offline");
-+		value = -1;
-+	}
-+	fclose(fp);
-+	return value;
-+}
-+
- static int create_hugetlbfs_file(struct statfs *file_stat)
- {
- 	int fd;
-@@ -185,6 +202,8 @@ static void test_soft_offline_common(int enable_soft_offline)
+ 	pattern_seed = (unsigned int) time(&t);
  
- int main(int argc, char **argv)
- {
-+	int orig;
-+
- 	ksft_print_header();
- 
- 	if (!hugetlb_setup_default(8))
-@@ -192,8 +211,13 @@ int main(int argc, char **argv)
- 
- 	ksft_set_plan(2);
- 
-+	orig = get_enable_soft_offline();
-+
- 	test_soft_offline_common(1);
- 	test_soft_offline_common(0);
- 
-+	if (orig >= 0)
-+		set_enable_soft_offline(orig);
-+
- 	ksft_finished();
- }
+ 	if (parse_args(argc, argv, &threshold_mb, &pattern_seed) < 0)
 -- 
 2.43.0
 
