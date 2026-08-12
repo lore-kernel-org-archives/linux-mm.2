@@ -4,133 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E16EC5B56A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 09:39:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07ADFC5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 09:40:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E1046B00BA; Wed, 12 Aug 2026 05:39:07 -0400 (EDT)
+	id F00176B00BC; Wed, 12 Aug 2026 05:40:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B92D6B00EF; Wed, 12 Aug 2026 05:39:07 -0400 (EDT)
+	id EB14E6B00C4; Wed, 12 Aug 2026 05:40:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A62D6B00F1; Wed, 12 Aug 2026 05:39:07 -0400 (EDT)
+	id DEF3B6B00C5; Wed, 12 Aug 2026 05:40:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DF54A6B00BA
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:39:06 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 629991C0942
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:39:06 +0000 (UTC)
-X-FDA: 85092118692.28.F765BAB
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4F5D740003
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:39:04 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xiMd7nu9;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=cxJDaTPQ;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Hrix0hut;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3oQZNh6q;
-	spf=pass (imf27.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786527544;
-	b=pBGFK0hMAL5xaTayZW170I3i79bRZWEKd+RL0p9lnIFK5y4FZR/PTFD4J/MovaqAyc/4RL
-	YRbBBDSSmFdKmgcskVA2h7JOG7DgpX5pfj8tnr3ntRu5dGD47kCfFg9cep/j7/CAaBZtwM
-	j3TEIIz0qM3SzKDmXzx+a9WXNjsseZY=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xiMd7nu9;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=cxJDaTPQ;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Hrix0hut;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3oQZNh6q;
-	spf=pass (imf27.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B663B6B00BC
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:40:12 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3AF5780131
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:40:12 +0000 (UTC)
+X-FDA: 85092121464.02.5492583
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5D4591C0007
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:40:10 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=g5NrxuZj;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786527544;
+	s=arc-20220608; t=1786527610;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YDyc87rtaYvBOaEu1VDS0tXBuH6KkTDubLpiL49NFJY=;
-	b=zYavZA9lB9v5haxsClirD4bOLnpdUBfwIEoV+ARkqe+BY4ssikpEcRg2W1RVcIxRdFXw7w
-	/NUfKr0Djm9Mo0Z6DJHtvh5AepppHdcZdPMT80VmYKnqr7hlT2BabFlYOMmnLddnWif2xa
-	cFCCpMZVBKzBHwA2bXalawSESxJ09pM=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 8D21F821AD;
-	Wed, 12 Aug 2026 09:38:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1786527538; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YDyc87rtaYvBOaEu1VDS0tXBuH6KkTDubLpiL49NFJY=;
-	b=xiMd7nu93CryAR2rFBoBVW+cmWLhGAcjylTTcp1HZHZdt7pJtdoKCVNHhf/hBExlYBjIHY
-	xnsfYmJ7joAVKeARoJn3khw1yzgw8psa79skhSdQ8yFHItLO0x1LuyGsNBMy0edoBG8E+l
-	H2Pf+MK4EmeU53eURjDTUllzlpNpOAA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1786527538;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YDyc87rtaYvBOaEu1VDS0tXBuH6KkTDubLpiL49NFJY=;
-	b=cxJDaTPQ6hRNHa/34EViiEdgcS6MwLw5g9YugF2yYnhFCHq2ci5Kk7TUtGuhNoJyfUDx1z
-	uZgiDYiK7sJnrUAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1786527534; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YDyc87rtaYvBOaEu1VDS0tXBuH6KkTDubLpiL49NFJY=;
-	b=Hrix0hutKT3vVvH62mE4PMdM32mB1PUYRldKmXEKyENCtTlrosGIKa62RZR1jyRSVOtSTG
-	N/G7JmIwe3RVs0CXK4Mq8sMXziYgbf3a8zXskqyaR1qT1SFeiIuEh2F20VukrpwrImTfkU
-	dbS4C1vJl2pdPbXopu24A8DO+UFtXh0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1786527534;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YDyc87rtaYvBOaEu1VDS0tXBuH6KkTDubLpiL49NFJY=;
-	b=3oQZNh6qCrTjPqwipueFCeCoYzB5Oce7/z3sSBJIEsinoPWyoRjHZWDEHI0G58roItWBoi
-	iamTlsCp0OK5aGBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2ECA0779B1;
-	Wed, 12 Aug 2026 09:38:53 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id gK7/By0/fGqrBQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 12 Aug 2026 09:38:53 +0000
-Date: Wed, 12 Aug 2026 10:38:51 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH v4 4/7] mm/khugepaged: fix outdated comments
-Message-ID: <anw_Fh7bBTPmmNQ-@pedro-suse>
-References: <20260811-khugepaged_pte_refactor-v4-0-ddac39d61c4a@linux.dev>
- <20260811-khugepaged_pte_refactor-v4-4-ddac39d61c4a@linux.dev>
+	bh=lptC3+bsQe9OhVLLZL0xbRgWdtc0K4Ssdaz+LY7bq7Y=;
+	b=xGp7QxWXLIzDUyAbl66rdirOjrQso/f1s4G1rk4zTzamVDfRBKAcmGR3UWH+Q1YE96G1Lj
+	pf/ejRcc7PqOJvDUqP8bJjA+wRbnjx8GGp6CRCW4PWguQpFwB6lepSB60a1fSl1j+JX6hz
+	Hdygk66EIppJt5itt2mZic490PQUlN8=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=g5NrxuZj;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786527610;
+	b=CyhwwjvsCGI0L9RlI3Vwx4eRwKfXg8iXREyEaIJ8mULcU9UQvEl9iJAAbzcdTlQDNuPKSU
+	505vQ9qwihHA2LfWLQy1mzBDH9pHPviY6cCelr9Oe8B8AR3dA5rD027yZ/T9kcqugU2LU/
+	nZpP9u+qoAtf3SmMLWsPPpitZOBJ2LE=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3A6351596;
+	Wed, 12 Aug 2026 02:40:05 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 006FC3F632;
+	Wed, 12 Aug 2026 02:40:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786527609; bh=ev4glunJmddrTbzF7PCDcRN30WkcDAddJrAQqh48rWk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=g5NrxuZjQB9klOoODQiv4fCwQUmouyRDYnWJYKgnQvLAZQvGQOHbZuEoc9wMKuLTI
+	 fe7n3tELw0qqiEZ5cnlxStDf+6caqQnLspdbRG1hoDuQIzrsgEY2wLf8/h9SPuVGZ+
+	 wJLWh0JpvefPu/DqptOFEqpeS6i8LJSjr3L/qwCc=
+Date: Wed, 12 Aug 2026 10:40:04 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 4/4] selftests: mm: test kmemleak's N-consecutive-scan
+ leak confirmation
+Message-ID: <anw_dDAEPUMvuVJL@arm.com>
+References: <20260713-catalin_pto-v1-0-5b93b1131089@debian.org>
+ <20260713-catalin_pto-v1-4-5b93b1131089@debian.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260811-khugepaged_pte_refactor-v4-4-ddac39d61c4a@linux.dev>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 4F5D740003
+In-Reply-To: <20260713-catalin_pto-v1-4-5b93b1131089@debian.org>
+X-Rspamd-Queue-Id: 5D4591C0007
+X-Stat-Signature: h1c6putwxdkz4g36xjkmwfqc8kcjjygq
 X-Rspam-User: 
-X-Stat-Signature: tguwj6rirwhp1aafpo5byg78ra5m41dk
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786527544-631350
-X-HE-Meta: U2FsdGVkX18xGKGujleYUSaAOPX3k8KDpwiGy2zx1M5IYf9Q0NcKVyGt+dmDj7icEnu86gt+/O9rejSXn2RDX194zUXFUGP5QMZ+dcGpHQn7iJbbLwfEjOxm3pEn7ZWNRBGkZE4PowSqcPWcasHEd6P2Xxies7cpeK7eiT60rwr4U0XCXupXSxn5IyjBtroSeZvXSX+KbrlJNLazNMYb/MGPI7jfAR/SjMyorOY6Z2LlwQdUTWdXjzPH4Zi8dYF+h03kHDIymTste/wZCT1CbIKizYe9j26Ya8tWGI8UtTASWISMcdlmibPUapIEZB8OAawJfaPUBiWKRZc5GGL+HKwLO0EA/3Pp6XL72IuIDxGxVH4ZnPWf6OjKFTVGZaFngymCZLVxrTc3Ra/4G1mbsU3v20mNyp4R6Vq9HsxH2qlGXzEQyBQyGeqQhixSGolgzqK+DZSdTb2Q0NcVKOQJeJ1LuCvF62JcLfa0GITV877tNDupZvkY3CrWuZDfxrTaO8MhtQi7oVr1aWuaMjA4Jemtkegxn0IQlptWHSpHEK9tLLM8NrCeoswDIusBUaUDuFOI9gw+XE6KPZBki9tnJ6PgBZ7mHCzY53qSo63NhsFn4JSsiGhdCYMdSH/VKQr4+gaQxvrZkGXgwgNfTfyR85BBuyY14ioha8ZJydliL4G6ik9wo2rRp7jBBVHQ9F8ZMK0hqZJIa9YOKgGdbHCXGatOHEW1934bHiZbT2qrTdoH3MDJWPz/uY9hmER0FeoYBJIniSvzbLehP011OeYOhfnw2DA0oLe6VtT1aoXTguiZp2W2jhP/hK56cCwyx4e5bkcRt6KpJ+sIBToahfhVDm4BxyTpv4hp6Cuv5Zi9rWras0jRS4LJX1CR0umPc1CDiDXZu1O6N2g/rdTxk7U2VBXAbm4Y1rvnudPomabWL5kzCzS3vTFSTzwzgB0wp1RemKeT/4RpSsgUfzM6VmD
- N1vqx8zH
- Y6BaoCc0cJEtrAvQsP3Kze9t7YVyp/ZMvMqCrf1lM6lVggkGma8nFkGGe768M1YZ00VL+d85CprTMZQBtcDTALsRwSgioJPfiJwbqnlagkVpe8jjmy36DFnDd3dYELoLYtFIhIPqbjYHttS7Ty1kQ/ZKZyxcyAHNs3qHDY2O+A8bJZNjf5cer149v0MboIQmKw6TCjgxHbfAzvgu1S8OBwyb9h3x8Ya6VPZmHBeNnVE+ctgPnz2PAD6jOYnaIfGFtFkc+//8UShAfwIZKqUg6/89Li6rC9sGOC8Em8VKOtlKF+be/JBU+Acx2T9s1atGucEBPyjO7IJmmf2eJmeehwOZIirgzW6d4gYNrnhIqPh/XT3w=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786527610-294668
+X-HE-Meta: U2FsdGVkX18qv23/k0HiubPiBMCDDZVDaLWF5itZKBH4KyCRhLrBGDzuhiStBO46kaNKMaz6+xl+kk86ph0VbGOUkLK2rtjqWVtJWQQ8eOU+4ryvqn1AKsgw3AHov0JagYt7j6uxzucdOOpi1quHnkdErSY/QtcfMurFIBVHG+JSUpQLelnohzP/w71/mldTyP5aBMHPAztSXF/IUN2adSbT5z0dkUCBskL0zBGNz0kYeJp3dh0hF8J3B9kFT178eAf8xFFeLfIcT/j/IN5uGItpfEb/CRYO5NQxbjXF5LENM8kCctuCwfEGNm9WINMSiq7UZgElT0KGkg3YbUUP8VFwuDRG9zsoA1viUbOWz57aSAobm2KpkefZxFkmPrt9rT1bWmyB2/WAN7ySpOl3MU4AO+eKOGQGonEn9CYyioCPgVRuRQ+VUqdScRXCK0nMgPEjOHhMpLxYcMMtCRI32fhFSamNLHDTsjIE5B/oLuU20D8Ee8yiz2MJC+IhvwSOI+oAW1olVCqPiMub846hEGk7nyI3w087VpbLTLhtA4zP3Q3/qLacuK4muAFSbPQqCwx+LbtACGxTHIPguxU1B1qBeWER3IToclNtUkBdY2fovk3CrTcnYuVAJW2oAlIi+aPkMBMSBe7cSPvgPeVHKN5V2dhRtUaL0pyol1Gnmk4ATTyKUAUVRb+7LGfr9FSJoZkoK/1/KTdkbtEXHwLW7/Lb4XYRmNgVSzJf4jD0UsM8p1VKUFjUF7G9W+tZY/2N20Doolsa1D1JyBp6Lr3PBM61zzibI1GdxLVnrF/XB2ZVsPHIaJxI6CCDM0gezdO2Y934/K3bD+y/F1GAsi3EJbIGRAoZ0aWqd+PBh9jDadfRUaQ3bY8ksouRT9hp43Gaj3XRfMtZuhBTLYSuoefofgLhxlApqlartpkwUBMOimiIFEeCNqTh8OTSnf46DmhnmVA1H8ovc4ygzxmAnF8
+ GGm8WtiL
+ TcOIPeMHqpLbpQOYbfKdIfVwu5wNIHMWWsOIGb7jxTYCv9JMiElsgX85juo0qpgTPeg18XlkdHg5Z2mQqj7Ax+yJi8P2Lv4HUim8Y9uneArlxUookVIHJXtsJ/EvdTfgIW5V0tLaNqAL4HS+zrZez0zSWvwuExiz68jsMVwRpyW4ZDlCDaWr0RhSW1/04c7Ss9KiEicnMzNhWovysp5arge6gcx2iLD+Z+f8Wb0Ja5FiJ6xKLVTnYIzilwKpd0Adl7J0jgMzD9KpyX+Zi11Z0ie1d2GAuDazOjB1A8G82CeKrsSahEm20t3+WOYTOKwex03nI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,33 +100,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 06:48:36AM -0600, Nico Pache (Red Hat) wrote:
-> Fix comment in collapse_scan_pmd() that still described the old
-> folio_mapcount() > folio_ref_count() check and a "512" false-positive
-> scenario. The code now uses folio_expected_ref_count() != folio_ref_count()
-> which doesn't suffer from the same limitation.
+On Mon, Jul 13, 2026 at 04:48:07AM -0700, Breno Leitao wrote:
+> Add a functional test for the min_unref_scans kmemleak module parameter.
+> Using samples/kmemleak's helper module it checks that min_unref_scans=1
+> reports an orphan on the first scan, min_unref_scans=2 reports nothing on
+> the first scan but does on the second, and that the parameter reads back
+> what was written.
 > 
-> Fix comment in collapse_huge_page() that referenced ptep_clear_flush,
-> when the code actually uses pmdp_collapse_flush.
+> It counts only the helper module's own orphans (matched by their
+> [kmemleak_test] backtrace, with the module kept loaded so the symbols
+> resolve) so unrelated leaks already present on the system do not perturb
+> the result. The test skips when run as non-root, without
+> CONFIG_DEBUG_KMEMLEAK / CONFIG_SAMPLE_KMEMLEAK, on a kernel without the
+> parameter, or when the helper yields no detectable orphan.
 > 
-> Fix comment in __collapse_huge_page_swapin() that referenced the old
-> function name khugepaged_scan_pmd, now collapse_scan_pmd.
-> 
-> Also clean up some simple typos and stale terminology (mmap_sem ->
-> mmap_lock, PG_lock -> folio lock, page -> folio, grammar).
-> 
-> We also clarify a comment regarding where the max_ptes_none check is
-> deferred to in mthp_collapse() from the original collapse_scan_pmd check.
-> 
-> Update all comments that references a function to include parentheses.
-> 
-> Acked-by: Usama Arif <usama.arif@linux.dev>
-> Assisted-by: Cursor(claude-sonnet-4):4.6
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-Acked-by: Pedro Falcato <pfalcato@suse.de>
-
--- 
-Pedro
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 
