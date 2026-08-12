@@ -4,129 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB81EC5CFCF
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 17:25:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B698C5B56A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 17:50:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90E5E6B0105; Wed, 12 Aug 2026 13:25:05 -0400 (EDT)
+	id 36B6B6B02DA; Wed, 12 Aug 2026 13:50:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BE9C6B02D7; Wed, 12 Aug 2026 13:25:05 -0400 (EDT)
+	id 31D166B02DB; Wed, 12 Aug 2026 13:50:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7ADA66B02D9; Wed, 12 Aug 2026 13:25:05 -0400 (EDT)
+	id 232F76B02DC; Wed, 12 Aug 2026 13:50:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 51FD76B0105
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 13:25:05 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DEE801603B2
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 17:25:04 +0000 (UTC)
-X-FDA: 85093292928.28.21ABB1F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id F3606C0008
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 17:25:02 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=okENkuhg;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EEC196B02DA
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 13:50:03 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8535BA03B3
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 17:50:03 +0000 (UTC)
+X-FDA: 85093355886.11.2EC9F15
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 29B554000A
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 17:50:01 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=e0sq6gSu;
+	spf=none (imf27.hostedemail.com: domain of BATV+8f88a44aac2376c73a89+8389+infradead.org+dwmw2@desiato.srs.infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=BATV+8f88a44aac2376c73a89+8389+infradead.org+dwmw2@desiato.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786555503;
+	s=arc-20220608; t=1786557001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4oSNzFjHuzTOgbEhKYNA4ws0ltCJrHAzS2GU8pXVakw=;
-	b=RNCEuhQSMvqcfiVCZ+sPYdOLK4b/8NXkJaaVRqGWraYLPsKZov5pitHeRxY8ppaTNqC+94
-	ZS7yMAG+33KlWW9jBC6yZ/yFnF995j69fw0RQ7Ce38nz7bULDORG5dYBPxyqFqZavx8ToG
-	LmjkcwhPRf0tf9sOFojtJshUL2K9SGA=
+	bh=bgdPYYGyUUn1IOAhtILtpO8XLrtOMFaovKbcoEt2Z6w=;
+	b=bNC/OaJfADXEFYwyiOC/abNIPQgCZzHeILQYQ1NqFTFc/gewl6+j0izqJYd9KdsuOvt8Do
+	cy4KI+056IGXKrIeop0uCLhv1OnjFu79+JkMbgPzYJQqvC1mf79DeVxODOqgyAaq00vdtj
+	QWVg6Y+PuH5pWmkIzPGOvoK1dNrUsJc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=okENkuhg;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=e0sq6gSu;
+	spf=none (imf27.hostedemail.com: domain of BATV+8f88a44aac2376c73a89+8389+infradead.org+dwmw2@desiato.srs.infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=BATV+8f88a44aac2376c73a89+8389+infradead.org+dwmw2@desiato.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786555503;
-	b=b7YhFvx9C4hxBB6wY9lAKTV6mVj9zKugF8BOKejhsHK/Ef9R5qiSrSspQaYlOVCHCpVAHe
-	7GO88q/jxU2bSVIiSawL5P4M+a83dPnL4B2Tb96WOi6NzCvG9lw5CumCd2vM+jsi/j7iv0
-	N1RTJFWKVolCn0ty6eG2f7pwjIKuxQk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 284A760A7D;
-	Wed, 12 Aug 2026 17:25:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 078981F000E9;
-	Wed, 12 Aug 2026 17:24:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786555501;
-	bh=4oSNzFjHuzTOgbEhKYNA4ws0ltCJrHAzS2GU8pXVakw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=okENkuhgzJjXS2UaQaKvB9ybQ+m9ds7pwF4/b8z12pNVDtXC7HNFGnfr3MAVGjum9
-	 OvD/UR/LQA7302JY5sAzT40e1zQDjEK91x2GZsHTbymznhWHeWiZDz7hwLCqiSn6HJ
-	 dVm/gtD6dBtUo5Ozo/Ni81ygCihwBpcTeoM/4Oqf/oGFAhL3/gVP1qSTk3tipcc1f9
-	 u+sOr4XyXy7FN4TCvoZtjmKo0V0yvHBm/1K/pWlH7wTBTxGJ51f5FevBzvXtye5VVe
-	 yrp075F1nLy9NekTz0yx4F7BHc6yPEj13/zVnbG0vx+U8pYkCM5NqOG4MzgR1FeG48
-	 OfkGs+4EOKBuA==
-Date: Wed, 12 Aug 2026 18:24:27 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Alex Deucher <alexander.deucher@amd.com>, 
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Steven Price <steven.price@arm.com>, 
-	Liviu Dudau <liviu.dudau@arm.com>, Huang Rui <ray.huang@amd.com>, 
-	Matthew Auld <matthew.auld@intel.com>, 
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 16/20] tools/testing/selftests/mm: test anonymous page
- offset merge behaviour
-Message-ID: <anysQa1hC83cdX_7@lucifer>
-References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
- <20260806-b4-scalable-cow-virt-pgoff-v4-16-ab318a350404@kernel.org>
- <cf70ce8f-cdde-43ec-a50e-796d4e390f3f@kernel.org>
- <antWw3a0iEv4l1Yd@gremlin>
- <20260811130832.3f18d4326a5ebe6eb18cfb5f@linux-foundation.org>
+	t=1786557001;
+	b=pYdssZcxsdaGcdM86O9s4Q2aBspFRtz6Jwgd2mfl6eth0WGEoEMKdSqNYgerh29PH05FPO
+	2q4ms27tnVzYzUUWV2OhNhEcLvHnxbJTmMcDMo0paTwO1i8oKdM20c8MHJYxnpAGV22opz
+	Cg54mbQfy2c66PBexcBttOpHAb1rM8g=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=bgdPYYGyUUn1IOAhtILtpO8XLrtOMFaovKbcoEt2Z6w=; b=e0sq6gSujRTYecy98463RKSYr5
+	ck7/pgTc+ObD6YsHZxdGLX56oUpdEwt0TgoOeohryUJY+eNLzKbUGii3Gzdzz3oy4+sb28IbywOli
+	ids4I0XSod+9N+LZ4qRHgHAAPeEL96JLTHIAr8kGOKtZ9LmxXajdrIPY7LExV40+EZWg24QGNJwhT
+	WF4dkdryVKMANkONGNaBPt7hwk9SpPypljTF3ayIdDtcDNODd1t7y16tRl70/YXDWNow6FB3vTMSY
+	/Vrj5k2L5YNxTvo7hnao6a45HYurKw74ie71aDfNvNZUKl2q1/gGFoGPjUzjG4JSRuj68kiclo/3T
+	TZw6HBhQ==;
+Received: from [2a00:23ee:2678:290c:4649:38e9:2279:b11] (helo=ehlo.thunderbird.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1wuD5M-0000000Feu3-2mNa;
+	Wed, 12 Aug 2026 17:49:53 +0000
+Date: Wed, 12 Aug 2026 18:49:50 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+CC: Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>,
+ Simona Vetter <simona.vetter@ffwll.ch>,
+ =?ISO-8859-1?Q?J=E9r=F4me_Glisse?= <jglisse@redhat.com>,
+ =?ISO-8859-1?Q?Christian_K=F6nig?= <christian.koenig@amd.com>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Sean Christopherson <seanjc@google.com>, linux-mm@kvack.org,
+ kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_mm/mmu=5Fnotifier=3A_Remove_non=5Fb?=
+ =?US-ASCII?Q?lock=5Fstart/end=28=29_from_notifier_invocation?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <CABgObfYjdQ13Gd9AH-kck85ZWch7j_E00rajawFuRdt5D=m3Sg@mail.gmail.com>
+References: <20260811135537.GC544626@ziepe.ca> <1d669aca4ffee797b9c29215382444a5b23624b3.camel@infradead.org> <20260811142730.GG544626@ziepe.ca> <a552b227e18ddbb3fa1f2edf2d1cb30ee6ccff13.camel@infradead.org> <20260811104229.72fdd928@gandalf.local.home> <37b83b429b9f14ea6ad4ca1c13cc8e565ec09033.camel@infradead.org> <anwraNIKJV8zwrNT@tiehlicka> <44c51ace9b0dc44b795f6f48c91cda440eed910b.camel@infradead.org> <20260812122759.GA662699@ziepe.ca> <c41c52f02f033ea980d4b5f9b8239d5e9411a03c.camel@infradead.org> <20260812134934.GC662699@ziepe.ca> <a48e6e7063122b22a8083bb0792984a204f316e6.camel@infradead.org> <fb87f673bf290cad133d113dbb0750a7752b9d30.camel@infradead.org> <a94b75e8b9b1d2191f365c0f4275fd5082332df5.camel@infradead.org> <CABgObfYjdQ13Gd9AH-kck85ZWch7j_E00rajawFuRdt5D=m3Sg@mail.gmail.com>
+Message-ID: <5364F424-42B7-4D1B-BE55-B6F9E68B0F2B@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260811130832.3f18d4326a5ebe6eb18cfb5f@linux-foundation.org>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F3606C0008
-X-Stat-Signature: wf85m8qwud8zaf9pubj39gjciq9tm1u7
+X-Rspamd-Queue-Id: 29B554000A
+X-Stat-Signature: 669kt7bwb996cyhf88i9wsaxegrwqyrs
 X-Rspam-User: 
-X-HE-Tag: 1786555502-707370
-X-HE-Meta: U2FsdGVkX1/2A8PNnJ0EJgrf+2BOycHb/AmdqyNFyrfI2jxcbDx1cxGWIXT8ezNj7+sGeSjVQFfcwuoW/YvXUFr8Z1DdQ2cdByt0l5WPIBnHuhQeC5YRbzgWBb6jUZsXvq3LLcHLyLtpcqCPDGMuIFFmFwTXRqyabt/gJXSWejhC4vp3X7U89CzEMF05+oidsbcOOvPvcgHsm5wTfFjKGG1kkD5YE9gTGktRNJRJLsjh+7a6FL0plm3msePS4zQzmQmqsqcNgSNbiH6waaVOTewEVs0rBtXLxoXVjZ01lkIHqbAPQC1hI+M+Ov+TFF/6yrNSIog+pRyYngeg7NWSp6Dp4t+uK/CgzQ7RWVU812tR2JAOmaDrQw83fmPsNme1Mz4vhfmuaGKBv8DWC2mWCMKb2joMl6bRrQwldRXSetXOF4/SaRAs0DfUZX3yqva2y0tSmKL453J9UuLNSxQNKFWFm0C1DxY8ADSR4qFYKSvQYeyEnQpQD51gUL2T9c1n7cSlAHkH3VssnCuidA0czMq1WjERIEHTxDWxYGqNE95NEOs1r90qvjHhOVArcWhn3ovrzlK0Gdwp6LJ2Pspo3wJQjtdlMu6+PjL6AjC7hfDbTFhKT1T5Cf4DMGpHuT/WkmeOekjDxHdRypqlREok2M1ej2zhpluJ6Zq7QxpVqQ+YFFkk5HpNdxrDmRNs1TlVrmWfPjBEZn/ptcHKB+Y050d9MSunYoHYOCO8FgaowHv0IjAZiTQ4SLxDSk5gcZAhcPS8yUSdb0HP5zePyR1h0z5VN2er8Iz5SwJ5+fq8hfnhrOO6fzZoC5R4vZ9HnqBwbN7wByJvt/BK5pLAd9AXShkSXhoByhqyjz9djCwQR1sbDicwT55i6dbziR1u78accgaQBKt14vhDO2ZCvW24cHYz4fZYtE7fSrOjrrj+XMK+v8hYs8wDgFXAQr0zvNf7nkc+vnwj+e2A/pseKqC
- KqoThsL+
- 8zwtP5LjOSi7X8r20J8BXlY3EsEgQ+t7sCf82zwZwSIUgTw00AQpksqQYIDjWPNMr4iBspGV3Oz4WZ6VH++Om/uQh9zLI7ra0QkalWafy0lT+9alDpOGS7yEzp0I4T47g4aSCwQ0PRGgOK+T3+irzlss7kymyvcBTnuhXYeydX7Ewem/vZgiRNNoW7fzDZQJX/1io79CAAJcLEkvqi9jiqhUsM7+TGuN8t6faTcANoyYF7dbigpanCx2dnOZI7rbzPnmeKqfFCrbrTVIZz7JVx4zyrqQ+nyfzZjTUS2YHgKca8rkGFlo4feCiN0AfE4ugNb+2iiJehFHmIyMGJ4sGUa94QEtWLVLxbJQ5
+X-HE-Tag: 1786557001-865300
+X-HE-Meta: U2FsdGVkX1/LPlwfsJpuWJmK7CV3GKY8RChl2ou4GV+pjnF7rp1/qvbIwOp3K513ut5UgIzTkwvmskf1ejiAeF9gvr98aWTlxSpsM0X1lAr+3yBO8x4SxU/vYgWXAj37bquPRKIiZkoCkFHW/fpEt3N0JeOgsVtf0RyHfU6Ia+RqIk+MqXfJiGSxoIJe8alemDktFyRtt4odg5HD9gZIhWvdxYlQ7fyi6WqIBtlkdMBSVhjwE3mNNQHv26gZmypZSg7w2kWQXYSN6Qao04eWUQoHa66SziMvoC0eTtFKXffTVJVRKj0AJg+Mw6o/pLUkw+3/lQ8o57efUVEXw5y69cJd3+4fhpyuhELsypro/vZyhb16pna6qb0WzXT/AmBmjHROP+MfC2NaYBio08KzsaJE7TYj3LKYdVsKZXmHfF3I6/iTLKv7tvj+F2v/e6inesxDMifZlsDn+wv3iOXAIllCnsIFya7krRKOR8Ff/qs65Xhn65aVNrKQD7MHbkS5Q693fWApYIUbPeSJLb416zGIYJsS+iMNNXdKCbA4ggxK9M8wtE2tgdJXE5qtBa///G+uvwOfBf7m0ByQhNS28fnuXyNhpIgL00LtXo2vAQzeCj1kFu0HB7/WYqJpwTBbDWyMqOZ1twPgbrGBlfp2lSZJi+OE1651PHxSQgKV6QZp3MkowsVaPdBWFes4SbP3Uf2GZya5w8z8sjebfbDEiKWuE0X7ID+bSKmreCl2545Yo5YOHrU8dLZNzyk9VqHhOp9JijqF7lNaczM8mrcnJwktc+EEPdVUUJ7B5NgKJGN+A1/4uThkGY3Glqao97mRQDZoHHCDb3WZwG61c1fKXcVn0pMY2JPLrnSkQUs6fzm/JQXAILt0VcuFwpUAZgcFRlBL28y+93xsNIOJjUxGF8v+1xYZf95lV/iery+5yRmnTFrFq6RHA1Mvwz1GIvVTtxtfItCBd4/yJl79B/d
+ UbfeiHN6
+ tP0KUgqBjCWE+fnLcPBLEbFj2vA+fB0+CE1N6C8JD8RWNQg9jpHPbN/kJENSvNnUJgtdxXJKXAPJU0sY2SR5qiLTHiJwgysDF7ATq2lyBSGMbMkpUgDb0mTdh3UTnKtbwJ9uYgZGgzknqsNkch+uBZmAcwcyfy94aAc2QfZrjun4VewzaihIyRfJIlGvyRz6zFCfROea7RScWBvY3NdPHh9jQQ/sEo40xw8rgmSOc20CWiFv+avVa9uzf0SGNP3TqbNR41EumVZd5oM4/JKJ23qhTNzRrjmHJON5qFeU3CObrYZ64fMrKUrS0lsGOnaPyxDC0YQ+70mjIjCELL1BVy7u5CD69G1SgdGsH0/qm1ElgJuPNf/fNQanCkY1wE9aWNBrh19oL/GzY1rG63NqZpt6qjLxmgZ0VOKqYZq63tv94BshbgXE0NtcRX/2DcySBrBbU3+YnezR9csoEucxRYNUbqx9DUZ8jLopvZUuemKEAtsacp3jWQuEggzvvSvpKCDoqLtNtDmdQ/6ysjTs4QT5am0GU5f/sLSOEtOBxbop+CLgFF+n33F9eXkAaiCj0tmP4KpEmSYPz58uXfvWkLgQcfY41o2YzvR65y88qJp9YGy3Sb1GNPWMlI5wQUL3pmv348+zVE0v9teHM0F++5sgBRbMwBl4SUaYOZsYE3cCO8T31vD2yHfNSbJb2m2SwKyXFqXXhe9JiiAI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,32 +107,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 01:08:32PM -0700, Andrew Morton wrote:
-> On Tue, 11 Aug 2026 18:07:36 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+On 12 August 2026 17:04:47 BST, Paolo Bonzini <pbonzini@redhat=2Ecom> wrote=
+:
+>> + * Atomic-flavor readers run with preemption disabled, so every
+>> + * read-side critical section is bounded and running (not blocked) on
+>> + * some CPU, which is what makes spinning here sane: the wait is
+>> + * bounded by the longest such section=2E No index flip and no
+>> + * grace-period sequence update occur, so concurrent call_srcu(),
+>> + * synchronize_srcu() and srcu_barrier() are entirely unaffected=2E
 >
-> > > "Fault in" is imprecise, as a read-fault won't do. "Trigger a CoW fault." might
-> > > be better.
-> >
-> > Andrew - could you fix up? Thanks :)
+>Making synchronize_srcu_atomic() spin in CONFIG_PREEMPT_RT is a
+>slightly tall request - it's basically putting it on the same level as
+>raw_spinlock=2E But if the MMU notifier guys really want to make OOM
+>notifiers atomic, this would be basically the only way to do so=2E
 >
-> np.
+>If instead it's okay to remove nonblock_start/end under
+>CONFIG_PREEMPT_RT, for RT kernels I'd rather avoid
+>preempt_disable/enable and only make synchronize_srcu_atomic() try to
+>skip the index flip:
 >
-> --- a/tools/testing/selftests/mm/merge.c~tools-testing-selftests-mm-test-anonymous-page-offset-merge-behaviour-fix
-> +++ a/tools/testing/selftests/mm/merge.c
-> @@ -1324,7 +1324,7 @@ TEST_F(merge, anon_and_page_offset_misma
->  	ASSERT_NE(ptr, MAP_FAILED);
->
->  	/*
-> -	 * Map another separately, and fault in, at page offset 5:
-> +	 * Map another separately and trigger a CoW fault, at page offset 5:
->  	 *
->  	 * |-----------|           |---------|
->  	 * | unfaulted |           | faulted |
-> _
->
+>   if (!try_synchronize_srcu(ssp))
+>      synchronize_srcu_expedited(ssp);
 
-LGTM thanks very much! :)
+Yeah, so in the normal case it's truly atomic but in the RT case both read=
+ers and grace periods quietly start to sleep again=2E=2E=2E just like spinl=
+ocks in RT=2E That seems reasonable=2E
 
---
-Cheers, Lorenzo
 
