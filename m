@@ -4,92 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BE36C5CFDB
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:45:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34C75C5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:46:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 190996B0122; Wed, 12 Aug 2026 06:45:45 -0400 (EDT)
+	id 145A86B00C4; Wed, 12 Aug 2026 06:46:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 169A16B0123; Wed, 12 Aug 2026 06:45:45 -0400 (EDT)
+	id 11CA76B00C9; Wed, 12 Aug 2026 06:46:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 081736B0124; Wed, 12 Aug 2026 06:45:44 -0400 (EDT)
+	id 0321E6B00CB; Wed, 12 Aug 2026 06:46:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D7EE76B0122
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:45:44 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6227B16028F
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:45:44 +0000 (UTC)
-X-FDA: 85092286608.06.5A78FEE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C3FED40002
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:45:42 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GlgD36p3;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D6A856B00C4
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:46:33 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5D2D9C025B
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:46:33 +0000 (UTC)
+X-FDA: 85092288666.26.F09579B
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 9C0B2160009
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:46:31 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=A6yu7fzT;
+	spf=pass (imf08.hostedemail.com: domain of 3BU98agkKCO4QbYSUhoXbWeeWbU.SecbYdkn-ccalQSa.ehW@flex--aliceryhl.bounces.google.com designates 209.85.221.70 as permitted sender) smtp.mailfrom=3BU98agkKCO4QbYSUhoXbWeeWbU.SecbYdkn-ccalQSa.ehW@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786531591;
+	b=jydbTLa1ZuM3kkvqSvoXYkViJtpoF5wr0ec2baLnUMtou5VdbwDP+y2lkMORnfiv4JC9TL
+	+RLe/3do8xO5tCiPv99IJDUydMV5QGxd3HWg8ezDQca957V/5FyCQh5kUcEFbJgDsIpbHq
+	kzsX5fshOax5yaR7LbTXIKwYtPpArFM=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=A6yu7fzT;
+	spf=pass (imf08.hostedemail.com: domain of 3BU98agkKCO4QbYSUhoXbWeeWbU.SecbYdkn-ccalQSa.ehW@flex--aliceryhl.bounces.google.com designates 209.85.221.70 as permitted sender) smtp.mailfrom=3BU98agkKCO4QbYSUhoXbWeeWbU.SecbYdkn-ccalQSa.ehW@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786531542;
+	s=arc-20220608; t=1786531591;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3jZ6wkNedTUfJCXrV76nCCr0yC0b1EaP+oUbDdDQRYo=;
-	b=XxgoX5HER2+l/rzjww4DJngYrN+VDbRwscGniLQp5RWcb0+m5AolDd4OubYlunYzeLjF2l
-	6RdYyEW5JsxeAQ5xPLfEAex7n37sWS4YGhQuKdIZ0ny7507IdCyrqETiSk9SztfnZb/Mfp
-	qSADrE9dvX02/VMTSCkyj/OyL9muDeo=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GlgD36p3;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786531542;
-	b=naxJOO144FjNJ2xNehQqCger6BFyaWPPFXflsGhZSTpgDBRYoOu4uZqTxyrhUqsK5V5x5c
-	PZ4+zsksbJT3fARmlzsyh07PQ25j82OAFsT+Gx5HH/KIDKWHojow9FBSM3uWR4NEW6ed+1
-	5SosWkbVL74yO5d0AKV/Idm+iLTQE24=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 21F4243716;
-	Wed, 12 Aug 2026 10:45:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3281F000E9;
-	Wed, 12 Aug 2026 10:45:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786531541;
-	bh=3jZ6wkNedTUfJCXrV76nCCr0yC0b1EaP+oUbDdDQRYo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GlgD36p3Ivo9rrgWpuswy69jInboKQ6Tv/dl2rmNw19xEJwbo+U4ok9R0u8rkgW7w
-	 rtWIG5tkFLIAZu3BOyKCKTZa08xbrhH73H3hu+58haHrluohur4JnvJlfRnBWV7/40
-	 jI1uHb5m/gSPdKD4G/FlCbyr8DyXbT+8gG0ZLKSg38zeHqADAiSAt1bZX0xbuJoUUi
-	 9Et4qRIbfh++CgxTv0+GeXANdeUau9lmIsBKECxkY54rn9Xddwqk1FLOvVjOdxeo10
-	 xuVpsAV/Cs3T9pToBKfAM2lLW5j7FjLhjZFBicyE6FED6eu/SjSXpHGVftvOA5QW7Z
-	 evyedK+1tcHbw==
-Date: Wed, 12 Aug 2026 13:45:30 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Xie Yuanbin <xieyuanbin1@huawei.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, linmiaohe@huawei.com,
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com,
-	apopple@nvidia.com, nao.horiguchi@gmail.com, ljs@kernel.org,
-	liam@infradead.org, vbabka@kernel.org, surenb@google.com,
-	mhocko@suse.com, gourry@gourry.net, tony.luck@intel.com,
-	bp@alien8.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	liaohua4@huawei.com, lilinjie8@huawei.com
-Subject: Re: [PATCH] mm/Kconfig: allow user to select MIGRATION if
- MEMORY_FAILURE is enabled
-Message-ID: <anxOypktGGq_9PZw@kernel.org>
-References: <20260812091644.224299-1-xieyuanbin1@huawei.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260812091644.224299-1-xieyuanbin1@huawei.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C3FED40002
-X-Stat-Signature: budiag65azkjmjn9bm18mown1ez61qmn
+	bh=We00DF4+3BigogDR3VtOXvT9GTf1WR0fMhM2uJPuB/s=;
+	b=nVV+glVpg62CJhAAr4l60Y3C5L6Es4W4FmR7cuYmhiZkZjaMRHN8GXxajMUg24PPA5M6Yq
+	puEWAmqVx+R1AmQdN8fnt+QvgBDxBKcSwFjjgpvOVOEdH51caQQOAWIh0fRY15iK6I1O6E
+	UnLpf4PyGgfyTvsAEuDZX+bPC1UgBWs=
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47f726186c4so405269f8f.2
+        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 03:46:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786531590; x=1787136390; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=We00DF4+3BigogDR3VtOXvT9GTf1WR0fMhM2uJPuB/s=;
+        b=A6yu7fzT4USnfjQNy+hwqibZWqd38t8KS9ICLcuUeuzYMAyRFb55QuMD52Jk8jcnyS
+         btUODJnPEE/sLKvsUhwpRObiVOvPt9XRQWN7/KViCb5ojK8MA/7pfQYYU9Ma/gfqODMu
+         fJhf61K0/qoq82tM4oUc+KJ9JUmkjjTrPxBt3csAKcuV/Hj9+4aa6F549Y1TwBMKBF8N
+         lLIrEY+8pqoHJ6BZTtZb1W5gOw+iXxTsXZQ75AbxkznLevdL7Y0EGd6sdmOGh3NNa+qC
+         M7cMLYAHo39KrNT/k1WUAxIbKpT3xpibGvO/PVtLslfIkhHQ4nuJYNjpft/ffokesD6d
+         7HjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786531590; x=1787136390;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=We00DF4+3BigogDR3VtOXvT9GTf1WR0fMhM2uJPuB/s=;
+        b=bz3Vqd4wln6DBO6kU5r8LvBajQipYCTIp9bFu+niOL+CnY9DaMkQZOEsh3eBR+fySQ
+         05rbHu2ST5q5escvHCa32wbRTRwokFqsjNGPI+DZft7F3H3yzs3n4yPRNGfGoXhcPib9
+         eQUJuwwzkedSLyEbYFsh22qd/HlDwUgwDsOdFUIoc8/sTUVoL0T5lrFhjWwMY8Gc31Fv
+         MP/PdUvtTpafTO2u/sDLvXiWHCj7AohDCECXxrFDxQkAwD8oz/eeppuRKXKzYe5t2E5g
+         o0wcxaQD/q3h+Uqib/7XQHtsMsYQtUWRUOjyPH2zjIaJzhQdqbduuw/iJtvwXSdVXjwH
+         ztBg==
+X-Forwarded-Encrypted: i=1; AHgh+RqSX/+QniGqnu/OqwvcU/pnAPl5hs7JyzuhuUK3Uoc6sy3IZP4LJ03C/7i3SF6hBJiYLFf493GeMw==@kvack.org
+X-Gm-Message-State: AOJu0Yy71FwObkKA+tC9Lx0D1vxtqLQTP4G2PErwQvUYEvzsQwo0z2SX
+	ht4dFZ1ImrI1ujgY7uF9Ynx9q9iGvN7OCya8T3yOStDpb5cIIAqaVXJ3KhNM9mLQyDvzl1yj8Mo
+	AQSJ72VLbRIUnECHlsg==
+X-Received: from wrou11.prod.google.com ([2002:adf:ed4b:0:b0:480:268:8efe])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:41f5:b0:481:56ec:b422 with SMTP id ffacd0b85a97d-48156ecb42cmr208328f8f.9.1786531589687;
+ Wed, 12 Aug 2026 03:46:29 -0700 (PDT)
+Date: Wed, 12 Aug 2026 10:46:10 +0000
+In-Reply-To: <20260812011056.902771-3-surenb@google.com>
+Mime-Version: 1.0
+References: <20260812011056.902771-1-surenb@google.com> <20260812011056.902771-3-surenb@google.com>
+Message-ID: <anxO3VT1JPAuSNf-@google.com>
+Subject: Re: [PATCH v5 2/5] binder: Make shrinker rely solely on per-VMA lock
+From: Alice Ryhl <aliceryhl@google.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
+	Liam.Howlett@oracle.com, ljs@kernel.org, david@redhat.com, 
+	willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org, 
+	jannh@google.com, arve@android.com, cmllamas@google.com, christian@brauner.io, 
+	tkjos@android.com, dsahern@kernel.org, davem@davemloft.net, 
+	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Queue-Id: 9C0B2160009
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1786531542-978545
-X-HE-Meta: U2FsdGVkX18smNql3WIkv4b654SH98wgk0tAfgT4DmTnnkFlLc63SdNTGlVXvJTfAbgRAPnq33Yrmtj91mLB1VdGWsOjXoqYJ4gLm+WeWv9ChwJZl3rbPBhPIirCaVf6aUsy5Rh+funFk9EzqhERoDzOi49GYFyf954vCpmILRT4CuY06IjavJnQtDArI+5dmk92bIVvPHllU/0nvmdSg/73So/wvX45rJkMofMZVg9w2BElzwnltUO85IHETt6kLzZUp+JQ/5qUJ5IBxkRmwbQ+KX79bgQj8yU/dXJ+I162tf8GI/ZHalfkMRkWsM7V66Oq5UQGOzLYHHhc6sruRysUIdXMihdzcmHFlTjcWHE6xEmKJb1fQX5dhfEtdQ0OTEulrU5Fr7EZne/njQUKVa0sBYFEn6R2wqaN3jK/ckAT8nIOMvU5SRISKzv5T0RA0jaDN1iURYast7wkjhIkpzSPgav/oc4z/Yt4pMtsz2pjYIrXLEiIc3z8Le5zPQdhEFjm1TPxURaaiy5HpF+M0o6iQMhCCLauUyeHfTLApb4sXKg+1CvOBDzLaZYVCZ1w7tRStUVvchJCcaYqOqJyITIwmgjQTzS0Hw3T+328yULIA1PJ2CeXGuCmlVxHcslahflWhIoGPMGANle/hwPXsrURQ6CVr5ylWQ8wWPUfv47tyTjVA113y9CKAKByymjmzGjVR6QD6QX3vxC7fqIcfB0VZgRcMXWtw5Rie52BaF7M4iTOgcddp9ZfnwIWTIudhKHK4Z4t7cOTteJSQnqIjK7dmjQSsrye0Rw1xhY8rXrukBO/XhZmGTKT0Xgl5yXvjCs47mJYHOBb5IHMfA6XzryfLzF7zRaAQLdxXoTxoqlQxFx7jnrhi52XEKuWhY52qbxcVS7i68f1o5GSHBj8EdwqNL0nE2QeSUKMb1D81qrrI4MtqVB6vVP5hQPamZD7mgmAyCr/U1rGaXvzga7
- eJZGUn0f
- 7i/tWYgLGJmwMZjff4muKcT2ETMHgiKvsP3rITx8N9NUCnyLhII8nO/SFYceM4K6eHl99EeqJ/HPTqAYopvL/a1vdIwdlF1RYnX2HZ2ycvNX41YxvM9dAj96RkvQMWHEhZOWejbPLwAQTqHuF0qWi71dgQ6iGtlJ4c0MmcfCHi+AeWEkJP9ohMv189AWYH6sjvcRgykmduuQ3MifKGE5oRyGQI90c3HoVEb06ddSlKn90rlhWlOuWRjQquvGhcu46ruiUee6lHzdK0a6p3Tpo1Sjj6Z6+qu5iw3ZFvB+QAf0NZzMDZepjJW1AOX7H7RR+yrbh11/m7iZOZBGUJH5/3t3NI9vKsq7v3QC8NRLi+3DH0tey4sVApgunrbtXCXFOUXd8IcBqpoA6iI6SO2O/RoEgfw==
+X-Stat-Signature: yrs45r1suhohes3eu8fi8oabxtkztkdi
+X-HE-Tag: 1786531591-779441
+X-HE-Meta: U2FsdGVkX1+BLBqgP5aTX2gbcJdSF98QAn983OS09YkOX/Ae/mysgaX6cIy+1Y5Jb5P6NjFvqEvYiIsSFfUBFxDAhSxO1BatrS5PE9h7I7e663WoXWuUClWo3lcfG8XJb4QIwxJhD3MbaYahI4Z/g7oj5tHqcR5syV1O4tNilFJL467zNsSvr7Bm+OyIWm0VvgW1fka7fRpcAqx2J57cnuycWE4yZhHPGdKeMkDlJGArqTOigmSXFn6xCPZrfxb8sdtZjR7xhaTxTMz9qu+Hg8ed2LyMCOw0CuBRDkRMdeCGalxmWv1Utkba4v4J4AfWxcS0bRRDUwNaK1BBBBC7SH8CDOmeb/wOOzqg6xM2zA5VS0W/vWaxTc0ZGrjuGe8B+F1gtn0k7YENEzoLQIngStCSjBvcVY50sJNmnppotrAkwma9ncw3bSHI2AHWwQJbtcq41m4lgv+balBeGAAPirNqTiI1LmLrKNe+oL7xcSDL4Kag7abkQIPFZt67JoF0RSg2r/Hsf2tRiXHvxrOBghtnI+xDnG9IMGnKsHmPzdcD7SZgnpW5nvMxQxgvbETt9WF04lvVeTf0u4G2iXSPtyhQ59NRvfvAD37oz5slrbBw0ab5s3HB6L+k3nNwIF9tui9T1V2PhcLUMfvYIk70cCOJ5bVkdo9lvQg3VqPq2w4TnVWTIvdQng1HcCaok0/8jzV0Nm06wdtr0McsFEUBURn7CVbvVVd/zpvQLpQZjmXjfjgT0+6ZscxdeMi+GqoCQSbQGImecufyJIeOP1JNcQy6IeexmP/0DJuifsrZxBHOVHxTBlMlc2bKmsZE3pbzuyADyHVQ6taRbEwWbogW7/YGu8AYz3kI1BwaGdV6B4wMsxidWcvYm4S+eEF8P7UxyRcf4x5XV7OW8FxGP4acSmEcqt19TQjL72q2oeK4QVfiVbRX5uBagIq5TDPMEXFrF0VbTT9G3qqMaO9neJu
+ J1YvstbF
+ CzmFgXCP9zxmW5eYHIM2c2tvcj39mcouqtX0RzmACmM07Ph9vz5aoGWSgzSL8RDWDDYwx9WZM2KKTI+LMcYmJruSUrMD/c3YKq52Sq2YwbKovZxlGXPEZT+tHUuhoDh9ookJUEbcLI76hX/YQRJ7i8AuKV3Q27rmz38YFIEsg7KJkqJ10nH4i4KikuDg0Q6hGhiHt3GnJ9+K6Wixb+q2H8BADrxC9uTV4H4vbS/RWinN5QbGNy0TTKGLWUJRkNcm/8kv6HZNrISk24SrzlzasmqX9iNsK+5v3xNdAnAcphj/+7jA+5z2mYuwhXNGK9Uq/90UtY8c7nTxtPHmA5nrg3mOzJTgaHf3mLdMeuEeiWd/EC3SUx0/foQ+IXiR34Irue/qVakpWbQeGkjYqr719LY6Z7vH27tYzVE8RFZVrp0cPwA5RQK8SCHM0DApvV2vJwc123X4KBrJ/s0/rHahuwQc3pgO4qNBYuJ5J47dDOlgAjZAd61pU66gqBNg7iqOgIAM25I+J4LO3jPbQJLUMqhTBuuhJ6kYSBpMOhL6Z0Cf+zStauUDXOek6gTMlMod72l4A81jYwD+qVEXxPNV4IW0YfOogZAd4iX9bTKag6JST0Z/azs1MXKyU3XQRIQILtUxoqyHkdOM73Z24i/x1G7lxiVJfVfVE1qY26TlDNGqJ1QAEfhh8oweDlQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,48 +113,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-On Wed, Aug 12, 2026 at 05:16:44PM +0800, Xie Yuanbin wrote:
-> Currently, memory-failure can be enabled without migration. However,
-> migration cannot be selected by user when memory-failure is enabled.
-> 
-> Migration is very useful for soft_offline_page(), which may be triggered
-> by correctable memory errors. Most of the anonymous or file-mapping
-> faulty pages can be migrated to other healthy pages.
-> 
-> Allow user to select MIGRATION if MEMORY_FAILURE is enabled.
-> Also, select MIGRATION by default if MEMORY_FAILURE is enabled.
-
-Do we want to make users decide if they need MIGRATION when MEMORY_FAILURE
-is enabled?
-
-Just make MEMORY_FAILURE select MIGRATION.
- 
-> Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-> ---
->  mm/Kconfig | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 8a24c130d008..b4c217383b51 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -682,7 +682,8 @@ config NUMA_MIGRATION
->  	  demotion for memory tiering.
+On Tue, Aug 11, 2026 at 06:10:52PM -0700, Suren Baghdasaryan wrote:
+>  	return LRU_REMOVED_RETRY;
 >  
->  config MIGRATION
-> -	bool
-> +	bool "Enable page migration" if MEMORY_FAILURE	
-> +	default y if MEMORY_FAILURE
->  	depends on MMU
->  
->  config DEVICE_MIGRATION
-> -- 
-> 2.55.0
-> 
+> -err_invalid_vma:
+>  	mutex_unlock(&alloc->mutex);
 
--- 
-Sincerely yours,
-Mike.
+With the err_invalid_vma label removed, this call to mutex_unlock() is
+no longer reachable as it comes right after a 'return' statement.
+
+Alice
 
