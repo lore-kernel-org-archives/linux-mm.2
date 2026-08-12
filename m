@@ -4,134 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66C6AC5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:52:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 357D5C5CFDB
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:52:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 631CF6B00CB; Wed, 12 Aug 2026 06:52:28 -0400 (EDT)
+	id 45D626B012D; Wed, 12 Aug 2026 06:52:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E1BA6B011E; Wed, 12 Aug 2026 06:52:28 -0400 (EDT)
+	id 40DD06B012E; Wed, 12 Aug 2026 06:52:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D29E6B012D; Wed, 12 Aug 2026 06:52:28 -0400 (EDT)
+	id 2FD9E6B012F; Wed, 12 Aug 2026 06:52:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 20BBA6B00CB
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:52:28 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BC526B012D
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:52:43 -0400 (EDT)
 Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 94383A02B0
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:52:27 +0000 (UTC)
-X-FDA: 85092303534.10.0F4CA5B
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 84B3B14000A
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:52:25 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Dgh8EKnZ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=77eZqBxk;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="o/Cp2yz/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8UOVGQ3G;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf26.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 869BA140290
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:52:42 +0000 (UTC)
+X-FDA: 85092304164.10.D68F5B9
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+	by imf09.hostedemail.com (Postfix) with ESMTP id BF6A814000C
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:52:38 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=U0vSnTAg;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786531945;
+	s=arc-20220608; t=1786531960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pSpsV2QEqj7345TXc/IC/jKaxhWsafTuvXiJciVUWZ4=;
-	b=vaXRN5luhywxU29bQ1QbEoj2EXYwxHd2QBhXzoAsGNdGbIZf1i9GrQuh9PxjCAua9CcnR5
-	iA00AJ6tFigrpaE0corSvDjyjfaQAxWsZBwiJaQr+LxlXQ0MaBIf2RXHNBdbwDWzitSa/c
-	E7a5l+HgSFoaDnKCgfY0t2J0tF0wpyg=
+	bh=5SXNks2tZYXAMlHzcZVIQbNtii10CEKmrX+VrYK5fTo=;
+	b=g0oz3Z562c74tusCypdjIrxogEsLblCX8ZHc7cSXJbDjB6awv1sJ+nGmSgQDTuwuZ2hU59
+	Xs5eMItXYgg2iyEAoXIfOCBfGdI2oekH6nwnPE1wJeY06hoVcnNZZ01z6ZJkFwgitYpAel
+	HP6nhh06q+QKRHOc7QkRiFOeLiS0p+k=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Dgh8EKnZ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=77eZqBxk;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="o/Cp2yz/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8UOVGQ3G;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf26.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=U0vSnTAg;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786531945;
-	b=1nMsW3oRXCo7QVWHTHvqB6+Se9FM5JV81Yauq3S3k/DQGPDE1rflVvB6vHnDdY0o6Jdwbq
-	CdKf5YyJA7W7zjBZXQ2UxBVrS9ilTRZTWNlg2BtfW6od1TMDLEMuhbU1XMw8H8SCwzL9m5
-	APDMjzhYlxy5vdLC/O9NcBrCMupB9TA=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2752D3E4A;
-	Wed, 12 Aug 2026 10:52:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1786531940; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pSpsV2QEqj7345TXc/IC/jKaxhWsafTuvXiJciVUWZ4=;
-	b=Dgh8EKnZeLCtNZQqYb12z548wjZGWv32QaeOfazH3Lto0xyIpv8ru5MXIeiUbkdqxnsJU0
-	bHCkUnixKHiH1l980XOfDG8Eri7Iih1AS21oDVtLz6DMC/UvDCZ7R7X7WptYvxst9hLSBn
-	ZC5iZEoEmT4tU2Ze+Q0gqWdbDjgaA04=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1786531940;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pSpsV2QEqj7345TXc/IC/jKaxhWsafTuvXiJciVUWZ4=;
-	b=77eZqBxkHD6SnP5GbxOcK7s90/HB90NqdF2I6zlm11anWjXbDNX37gK8ERk1wlJAiA6lFh
-	unbVU+y36+YnfTBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1786531936; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pSpsV2QEqj7345TXc/IC/jKaxhWsafTuvXiJciVUWZ4=;
-	b=o/Cp2yz/lFLii0PxE2QUbFNA0McVpi01R3Ew3RpiFFsvHrttbpI4tyKoAA4c8Ms0ZkIp6z
-	7UvPd+HNrrYUSLQXS5Bn1eE3TjqtrbS7WS/6cYTslvYqak/tAYARM7DQ/T/Za1p6EqtUYJ
-	KMqXtlkIugMm/jPSn1dv2i3ODHrH4mU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1786531936;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pSpsV2QEqj7345TXc/IC/jKaxhWsafTuvXiJciVUWZ4=;
-	b=8UOVGQ3G6ZimPrMtVkIO9yuCQem9Os9u+Wb21HW75y6YpE0HtjRO6OfJDetCaemd+cdxCK
-	cA9TsW7j3/HkKAAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D437A779B1;
-	Wed, 12 Aug 2026 10:52:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DqhIMF5QfGoOTAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 12 Aug 2026 10:52:14 +0000
-Date: Wed, 12 Aug 2026 11:52:13 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH v4 7/7] mm: Documentation: clarify where the mTHP stats
- live
-Message-ID: <anxQTcDupfEyoN1F@pedro-suse>
-References: <20260811-khugepaged_pte_refactor-v4-0-ddac39d61c4a@linux.dev>
- <20260811-khugepaged_pte_refactor-v4-7-ddac39d61c4a@linux.dev>
+	t=1786531960;
+	b=lHWYhSl4TiE7XCzIpglRIUGsAAczJBf46NVRWBhRtsZX8qmZJPkIe6ZXRMqXHsUa7ELw6+
+	ALGhc4X+i1+AIW3LtD9qAWMiEBaxV3gYT9d8biqvAAAN6B8dABH8JrjLmbzWjFqfIN5E0t
+	Os+ID6NAuUOQwOSBo8CJLtMBqv5IC8k=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1786531954; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=5SXNks2tZYXAMlHzcZVIQbNtii10CEKmrX+VrYK5fTo=;
+	b=U0vSnTAgPiSpgi1EHOsSRUh6lWjwd4P/T8CIlObPHeLZaHxVHyK6sGU3qNZlNZDrfn7zFk1DQ9+1vJXTJ/0FOCT38BP3/7M6Fgf9r0vQfrXP+l9CI+L6RTYk4Wkbimqp3FAjeUry6DBvzsZp7h/k52p79j3/AgM1OXytv9RGahs=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0X8rQc9X_1786531950;
+Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X8rQc9X_1786531950 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 12 Aug 2026 18:52:31 +0800
+Message-ID: <6e4aae7b-2c71-4109-945c-6481efde3636@linux.alibaba.com>
+Date: Wed, 12 Aug 2026 18:52:30 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260811-khugepaged_pte_refactor-v4-7-ddac39d61c4a@linux.dev>
-X-Rspamd-Action: no action
-X-Stat-Signature: kzkffdyuo8h1s4ccjdgu1nxyscqzxsns
-X-Rspamd-Queue-Id: 84B3B14000A
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] Docs/mm: fix THP policy counts in transhuge
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Song Hu <husong@kylinos.cn>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, david@kernel.org,
+ ziy@nvidia.com, liam@infradead.org, nico.pache@linux.dev,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, usama.arif@linux.dev, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, corbet@lwn.net,
+ skhan@linuxfoundation.org, rdunlap@infradead.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260812080313.330413-1-husong@kylinos.cn>
+ <20260812080313.330413-3-husong@kylinos.cn> <anw8ASKdPWW9v86d@lucifer>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <anw8ASKdPWW9v86d@lucifer>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BF6A814000C
+X-Stat-Signature: 6nrmkif379tnoindtenj8cn5opwhchga
 X-Rspam-User: 
-X-HE-Tag: 1786531945-656443
-X-HE-Meta: U2FsdGVkX18hCgDSHws+jr947z3C18TkBveFzQUUGQ3ZIFHaHylZ1RRT3SvMYiIsIjzcnUK6cEjLZDK5A4oF3oRRmVrWQvM/3VNUXMlIEZYiZUCB7hhLf+taJLSZyGMNQxXnuCKK+4OiLlQdrbGAgK75A9eJ8gAlzl7AEiI8OqvFvUN89nhy/jKd516AUwNV4Qz08fex18nWxO906P6JtdFNMNQVdQLoMlEEuaRINs2uEMn9DdS3+tqRFJJ2OBf91SsJPd2oBR++0bd6YtY2zBfhEnhQLtgy/8NxvWikZps5SCN4vPrVZrC5PP6+f2/STfdgtVnC7+NNss0zDk3WXJTm9e/jd14dH+G240jNaS14xbXQbFxlaD3+XIQxqkevdYUlCfOyCPv7INDxgWyMd1y5lmou+87I7NdFr1+/Sd5GCw81QFiWLnOCESVE8RFxfQeCZc/xtxAHqO2Fgj5VrVWEv98sddbDVlAvVSY97jGk3pXIo4Z/qf3b4ZtKVWnRc9Cd67MO1h9xbCBOuniHPGmVT2DySBhh4ziVf6tw1bzmRwjVec3dG+m+BZiHY/2dX5cI8IF96Pitk5akZMTiqVajMkuL73aNWJ4VS5YL4zFa0xSupPk9MOKDj5038/Ann7mR+/wWZ9hzY9OdPPKkiTi86CU7/50jw3ug0oIpfnBfw56TBhk0REBT+laQZnpsGr4j86noqp8jHOnwIJLBNPKmX3Djw7htlfBYPPUs52YJjrDRW8yQpBK6XiK3iVirp34GgB0EcC1RzevVTD+iDC78c7EypodJdfP+8RtK2SOzv5wKmCJvVY+9+gcqZa0Nl288xXbvWe0k9JxKnAVEkuKurcpGg8cWKRex2ixxTLny2eyvDX/kSkVAXQiOkSs3rpCn1iMtrWh8Lv38jVHou1gWPy6T2aTDuFRBuea9FxeR5E/X5Hrn43lezfspVWAYY1LQjs4LroK2XM6LETf
- wCUsdbIE
- UfmfbIwgsfN+K2yb7u9PoIHNLwVBln/+7nibDc3tEhWE3EpALQo1Q1xKIqII+3j7uyUICt3SUpQD2Jt0VfqqhWg8l7osRoXY0Ije/znzzJD9TqshMU18D5HtIcoYAxkv8qh7R5+ScZ2cekLiFg4Z43dounnBtzD2pp/gzSVi05M5hNs6DqxoMOo91d/GDdace+PJ/pfBY097aLwMUvjnCbJ8jQ3PkYDbQzb6efOr+VME7kMhSo5i8REd44GB5GCfW5bd6TjTSH3U0NCfNPLLFKvZmQQ2qQN1J4mAwJcszuqkeGchEKoUWBaOSHr8JybVikfQymeNghLqmm/78VogBwT9tX29dQD+naG7d
+X-HE-Tag: 1786531958-522615
+X-HE-Meta: U2FsdGVkX18r11CscWEaT2l8jy6keg1lgoYsfUL3pWTH4tJpf7KVVNGX8UPx+qudLNjUoyqXYoyFUC64oR0Ki3guN8i4Bk0OdkFo6JYO/XsX/WqGe/d1Kzc0ImXhcT+9RCNGcxgJoK6sLFWmeZALCJYCwUjNJvqC8vfHiYkA/YAW8WKQacSYUKNKa77yDxOKFk3KsljQMUJte+5zG1zR0jUj7wEGowz5+4v3H77DR6pEjXsfsaAUxLgYwNjmo7ZiYRKbkhJ1ddLwWa3bzWawcQuIlLJrmrrzgNs6/b0t2Mpvze736BOscS7rAhgPiFIUHIsbu7M3rJaCAvsWFR+gyHdzLHuWk8wWBCQo//UpVU4H0d2ykIDjUT0uqVOCTpA+rVaRv6arpjwgtPqNgkkTia5l9U7LX6mA1sFEm4fT5MJB9FRqL1qVvejbQYGRJsqQN7qZJYXPTwAVt4tEYdJHYPzUw2BblbdlRdHqShi2JbiRwZvQGsP6w43GPrU1tt05Okpk72e74IQkKItuz4JkWlyoSGy1s1DbSFaqrrKyrqVxLuxd+t5WDiuLJk4DTvxSiT/ZPVYhiHYAf/GurOzWsHsysNKHmWwyWVVP+zXgxxTyToPN99TU/IdG2OaGv6LU0LHJfMvYLKECR53RMHcrBnp7b2te2k7a3K2epnO9nqKQoC4hxhplq/cOb5GvupnZPoyFqFLWfFyvYpJhifsn9lomIBei4eGg/UEbFPg+Cd9GOcZej7FM3qHoxXd/lQS21n5fi5E7uHi0ZEb2n1CL1sNC/naulJj4sDjj8V6R3uLWcQ8Pd7dndmePedJllKJlGCITlzvC16CWCKo/RFQRl0IJAfp0Tim1u4z/nk4ZCPQbXO8TZ42sQWDOzW1/7seKsR4HlKh6sunwj3Gr44xsVmwaLo8uNo/XJj35Bz2HkTcPwrS6H/JvmtO6EIoRh3Xxy6fn2tSWwiPBddt3I+p
+ TE6Rx6FU
+ 86HDspVoVXrHeNpZgdPgxN+m2aqtPBu4w08SA0bnJ8P+p9sMsCRJAi4kvnSrvShvBYj03cad0Uy4gKtgY9gEAh43q6QmC12/ENWNWDZER5yfCmYpUzhP84jxdTGMOqd/K99kNKnqsNh74b93jaunU/SYV2wxgaTtFapkJ3Pk5bCS0Iy+cald75SFyJS8lwm4LiTfaqUnJjttMK1X+QqAYlyPaRIUM7kTSZJ7SJPIsJ0wnLyZxlg6Op9FgcIUxDZQv0Nq00k/RP98Pi0hvevcqqrfATKfJX4vOix2o0sgfZ50JTh7jWdHYjpg8KHZnG/MtswAS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,21 +92,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 06:48:39AM -0600, Nico Pache (Red Hat) wrote:
-> The note about khugepaged counters references /proc/vmstat for the PMD
-> case, but never mentions where the mTHPs stats can be found
-> (i.e.: /sys/kernel/mm/transparent_hugepage/hugepages-<size>kB/stats/)
-> Add a small addition to this section for clarity.
-> 
-> Also fix a missing period while we are at it.
-> 
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
 
-Acked-by: Pedro Falcato <pfalcato@suse.de> 
 
--- 
-Pedro
+On 8/12/26 5:27 PM, Lorenzo Stoakes (ARM) wrote:
+> On Wed, Aug 12, 2026 at 04:03:13PM +0800, Song Hu wrote:
+>> transhuge.rst claims seven policies for transparent_hugepage_shmem= and
+>> four for transparent_hugepage_tmpfs=.  Both boot parameters are parsed by
+>> shmem_parse_huge(), which accepts six: always, within_size, advise, never,
+>> deny and force.  The "four" applies only to the per-mount huge= option
+>> (shmem_param_enums_huge).  Fix both counts to six.
+>>
+>> Signed-off-by: Song Hu <husong@kylinos.cn>
+>> ---
+>>   Documentation/admin-guide/mm/transhuge.rst | 6 +++---
+>>   1 file changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+>> index b187d618452f..72e944f49da5 100644
+>> --- a/Documentation/admin-guide/mm/transhuge.rst
+>> +++ b/Documentation/admin-guide/mm/transhuge.rst
+>> @@ -389,14 +389,14 @@ is not defined within a valid ``thp_anon``, its policy will default to
+>>   Similarly to ``transparent_hugepage``, you can control the hugepage
+>>   allocation policy for the internal shmem mount by using the kernel parameter
+>>   ``transparent_hugepage_shmem=<policy>``, where ``<policy>`` is one of the
+>> -seven valid policies for shmem (``always``, ``within_size``, ``advise``,
+>> +six valid policies for shmem (``always``, ``within_size``, ``advise``,
+>>   ``never``, ``deny``, and ``force``).
+> 
+> I'm not sure we really want to advertise 'special' testing modes like this,
+> sorry. These are not modes anybody should be using in practice especially at
+> kernel boot. We should probably stop people doing that...!
+
+Yes, 'deny' and 'force' are testing-only configurations and really 
+shouldn't be exposed via the kernel command line. I'll clean them up.
 
