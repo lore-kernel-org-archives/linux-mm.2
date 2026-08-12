@@ -4,90 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABBEFC5CFDB
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 21:04:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C667CC5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 21:26:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F3A16B0322; Wed, 12 Aug 2026 17:04:29 -0400 (EDT)
+	id AD7B56B0324; Wed, 12 Aug 2026 17:26:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CB576B0323; Wed, 12 Aug 2026 17:04:29 -0400 (EDT)
+	id A61386B0325; Wed, 12 Aug 2026 17:26:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 707D76B0324; Wed, 12 Aug 2026 17:04:29 -0400 (EDT)
+	id 92B666B0326; Wed, 12 Aug 2026 17:26:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 49C166B0322
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 17:04:29 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A094DA0442
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:04:01 +0000 (UTC)
-X-FDA: 85093844682.23.434D9D4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 05CBC100005
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:03:59 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="M7L/CM2k";
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F79D6B0324
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 17:26:18 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 04438803EE
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:26:17 +0000 (UTC)
+X-FDA: 85093900836.15.228462D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 523C6C0006
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:26:16 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m2YhdIKZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786568640;
+	s=arc-20220608; t=1786569976;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kjntp49iT9Wxm1cuWnwjCVqtDnt7W8/fWzirIfwxfgY=;
-	b=Xl4YmG24r0UWLzWeRqP0gUXUNZNl3m+6sEM6oELCX6Vxpi+6rhMHn0GinQzSrMVQKHaoUr
-	MNn7nxl7O81J75dgKN/t+JiOAsVhX5KzxpwJf9Ywe9YHjOD96scALVeQzuyCMFfLpJfTsK
-	6+Y2ZpCw9NC1m1OhyytmO05z+G6Lizc=
+	bh=VZ14OE14W6R2szqcv6OQ5JAU2OtnvGYenTEQKteSjqE=;
+	b=WBe+NmnKwvMVoWbU9IgJps51mXYk593TKmKAY1wThRNOnUSMQn++LFwVTZuVpgCsM2G27S
+	ArvS1+NjaS4LvxWNT1SPbvbruKDzLxk6CJbkDeuMtyaQzXG2iD43ODDuR+/7p+7oQF2Ela
+	vmUvlZO8XYOZ3bKcL0tsW+HJALukvk4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="M7L/CM2k";
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m2YhdIKZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786568640;
-	b=vzzUvZVH97va8m4WkadtiKmgodwuyi8i1bfVXcQG6SxWH385TyRFPveVueo8/xjo6luCmp
-	8bp5yUuWbsbuicbRzdKPyCP/C9iA8NOOG1eRS19HNR11HG3y/bHutm+YBzqNtdlRBjz/9L
-	tw+sqen2/io09hXMAgaQ0sznDsXP6Nk=
+	t=1786569976;
+	b=DHKmTiplzi7jnlEUamkQNc+vXd961N+s1MHxzsKzBJeL2x/eGQEbhUl67v8bJc3WvBJr4B
+	C+txR7KNgIXiGul4qGxUluaasKaZwLARa/ezUnLdXn03artnaBiv3f0YNbxlEtByLJA4Pz
+	L8qeuvJ+rvs2o/rfRRFZ7TpDXqU7dNM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 882F8600AD;
-	Wed, 12 Aug 2026 21:03:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951761F000E9;
-	Wed, 12 Aug 2026 21:03:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1786568639;
-	bh=kjntp49iT9Wxm1cuWnwjCVqtDnt7W8/fWzirIfwxfgY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=M7L/CM2k5o4Ik35mAzj3NgcfHzwZQf6D1hc7uET1/UnSKnP7AKT2juBm3Bvlso8kN
-	 cRNA7/EvQwBAc6qwMlcJggMbUrw1oxKpiBKp5ZRZus38UshDBOW7V1uOqjP1OtQUf5
-	 boGRAVO0JuJGU8VWcTWjX4TYLFQeImnlLMw3AknE=
-Date: Wed, 12 Aug 2026 14:03:58 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: syzbot <syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com>
-Cc: axelrasmussen@google.com, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, cgroups@vger.kernel.org, david@kernel.org,
- hannes@cmpxchg.org, kasong@tencent.com, kernel-team@meta.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
- mhocko@kernel.org, mhocko@suse.com, muchun.song@linux.dev,
- qi.zheng@linux.dev, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- syzkaller-bugs@googlegroups.com, weixugc@google.com, yuanchu@google.com
-Subject: Re: [syzbot] [mm?] WARNING in set_mm_walk
-Message-Id: <20260812140358.343927ad8d0955b67c4e7ad5@linux-foundation.org>
-In-Reply-To: <6a7c6670.3668565d.e8814.0012.GAE@google.com>
-References: <6a7a6929.b50370da.49fe0.005e.GAE@google.com>
-	<6a7c6670.3668565d.e8814.0012.GAE@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id 635B1410C3;
+	Wed, 12 Aug 2026 21:26:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D29A1F000E9;
+	Wed, 12 Aug 2026 21:26:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786569975;
+	bh=VZ14OE14W6R2szqcv6OQ5JAU2OtnvGYenTEQKteSjqE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=m2YhdIKZxPGAsE+fyk34oqW883dfKuKiM1yKE0mJVGS2lQwD8/OrByY100MokqwXa
+	 Ui8q91vgTqLDqi8KTyyPp/zj4LtPF3tMAmTdQmlgVM4r2GGtVrbK6rXtlQsBOLEQcr
+	 RHOHOISwF/eSVkuxn5eQiPiLv7A5Q2TcngViLvRnwiNdpYYUEKXsmPRw9ChiAUK3Xo
+	 c7L+zq85vvflb41d3lsfvmBH25k84bhHT6sG+tn/T5x+BOcl75Dpg2kND8t3sVPZps
+	 dJ1vy6+ueDy8OVBjVZ0hGy2fWhqlsQHEr2Vm5E15Yd5ApSjex3wTitm+7p+n7cUq72
+	 S85UkV9Tfkv3g==
+Date: Wed, 12 Aug 2026 21:26:12 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Brendan Jackman <jackmanb@google.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>
+Cc: Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, rientjes@google.com, 
+	patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
+	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, 
+	Reiji Watanabe <reijiw@google.com>, Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH v3 21/26] mm/page_alloc: implement FREETYPE_UNMAPPED
+ allocations
+Message-ID: <anzinNUA6ZASDnvA@google.com>
+References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
+ <20260726-page_alloc-unmapped-v3-21-6f5729aa9832@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260726-page_alloc-unmapped-v3-21-6f5729aa9832@google.com>
+X-Stat-Signature: imo9nobxpwpdbs51si8kayubw6z1jojc
+X-Rspamd-Queue-Id: 523C6C0006
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: xzbcrmtgo85oiupt5z1ewuf9s53y3h7u
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 05CBC100005
-X-HE-Tag: 1786568639-730597
-X-HE-Meta: U2FsdGVkX18aQ/f7znv/kzBoq3gWNTZzg4lC1EuTjzLnu7wSiEVnrEOmbgO0vZnonJJQnQZW9OFxRqlzGgamR+GLI5ymsPdTosZh7d9Gsz+kW/al88Aayo1dChm0iV/kVTzbUJHq8FuX8ckdlhGYZ+g6idGukGIEKG6k/7/yDun3kBf6VSPuOM4dAaYFggqRi61IqwJGMtTVJJ23odzgZRDewQe9OzFwrHEFO0k1s2iz//QxwbGkx4C8ha17fHCgFcDv/CB5/CTILf7I53bnGjIMP7YAz3Qa/h0aualdIBBB78Z6yHGEzKJuXdAdgYgLO3RUkkGVoE8oy8fh5HRxmc3cXYRaaPWBVVJV5JfQIpgVBYki90RquS7wlUG5tnruXXqVPHF1a+mXtAsYLGmUyBM04KkuaTlJOfdIq2+xDEEoLhIuLUqqo1ABjcKqDokf/xtvKwm5gGrzFzPs3Tz4P/Z8r+seu96NGdNgJ2OL4si3kVV5d9Y/VN4CeO/e0RccwJyI+k5TTEKOMsWrvvbcUf2VZa5utz6HWLK1LY+TXbQp2/nkAl4GLv6byFVdCE0RCldjoSS6cRnF1mZE6YB66uL+vft5rkCoFdv2oFIiYOA3iNuXo8uw6bfAkMzuva/rUec8L9OQFgal0lQ6kNOSiLbSEmSEaNr8Y3LbbP92HVyH4Dz9HTOVpb4bIrT9DYmNTxERCnk6i/aIRqf1M7XDZpL40ByiYJ/PpClU/8IVbUwj9sOqNqxcZ85V2kLDY0CPfGyuy5G5bTaLVf9TEk2lusVaXdp2Ph4dsoTfcqNzFIFTa8Vy/HLl1RsUBF5DLjlbcJkHkeRu3zKLENtRZhS4QCxlpta6NFUymL5b1EpURn/751HG61L0nKRilqGxsiMGwnx4Xq/GwahRvJoxa0fwOh5YOVRNYbNjSBjNgCjXuL0TZOTOO76v8zBzF+2OD+wpdIPyHNpf0asmf+vq2GJ
- KyZ/IwIu
- gRK9ixgja8OcdwjOHBELV4qW8/Xw+9qYENVRXSV/ICPie1jV1dLuVK3U+lzTEy83omTRNTkRKLMHYUZs0AYO5wkVLjOKjub9GR5Lt7dv6TZqXwjA6K6pJbXgVYLjyGO4Tz048Pz6a5g6oGBX5LbZithbzHjAHUmx9mShUi8pccXo5/h4kBKD4jGrcmb9r1rqevZmG5s38nTuIkPbbae1XP+WEvQvphtk5mVGHPSIk5VAmK3g4CsSiQaj1zJGnht60RIPRz9fU69ZlR3tz1WIbyzadbuQEbqy4PbOwJOs4c/xi2hNiXpIcAeawrwrW4JU3j4xgx/uuPB7O/L5BTsXO3YnmhyLlSFVgdPu72/jcnKE077cgtJCZBzy1ExYxarTYoFa0xHLZnOMbMLCG6GDVpePk1/ewZzO3/BUo6+H0uel1oNDNrud928SXda2YIABE2vev2kxWmf8+I3Cj709UvWdNQt2ZKga+fyKADSxXa5G+YOZpWoYVAmQuIv2D57XHm2j866MKrjd3emmlm0hmWqykEgvgb2TzGEYXaA0gkmWHFCUmFaakk8oks2thxjqfTHNDlnCJZsH186KDTaKOdKllqS5cCyn1XzTMH+VISpeM0uzbTsPk1krf/iE5y2Yo7Z2TfCH5fIHZPPF8KogioQ7vrcUgbHhoVDadHKhwdgmwmPwFyVcXyxrR+K9lnsN61R80DS+0GXI0fV8=
+X-HE-Tag: 1786569976-241830
+X-HE-Meta: U2FsdGVkX18BJPd6+2tcAg2TIaQZ7eC63rl+RJAuge9ijTJftI6RmoYOjC8wWoL3uK9qM1q7RHdUcoTtay+jQeJZztt+UdBFb4WQB7AIYLw+cQVUFB9kX7dFpq7XAEpUnAww91+TBGRDpee2g3gaxiGMWfRp7ejAFVAVk5wN4HyfohveO2ME8wIegVm5C0L5q9BwCDI/LbqVMhjAR2b8yndMD/x2D407MeaI3RNl9kogPh8A8A6eMq4AL5lKpILSsCzvSrv9eKQllVWu/FxziP1abrdv3Z/N0/tLZTjuBNKhx/UhLMV22BDNN6Pgpb/+OffBxBak+MgLBfgNeXUyIrvPw8l4w+c2LvrwV64mO1CxV/sQdYE1jMUlKC8gFXyR6WxpVLVm95dYM+soTfLPjAMadxW5fX1gNsnGn1xJPE3oBokrareIPANCgqwx9L/KRY93HnqUUJpsSxY9IT2+sn+zvmuGRzOPnAMhDhisbW4trXMW41ARdDCARl365jRe3FoYDISWyqUWwkaGr4ewOvID+drbcVXTjgt8lr12kWyMQKJfxlqoHyZyN/02k/kjbHxXdho73rArIOG6fVOZXXBeVxYjaqVjGm6r7DURvAGOUz9A0O5mBsKRI64DUOzXdHVUh/BWNpUSKEgRFc6V+L2ednfEimDfo1uuyy8h8ogsBfUrMNjF+pxJJ3fsCrLwlNmED/N+g//+rsT3AJLGF8L1Zygnksm+NPVbXmkzxNt79+bDAWBpp2MdSB56eBEIaVvi7N9C01A7jGNNJtmJzDta9PzpDVs2q4UkP8cai2Aowtb3YFWXe5A0g4cc4JSsEeqiU5F7HNob1lCz+2OOU/g10Fkn7/bLCOvstscpz8Ew3jDb8YJ+H/A7L1PlETt+aDq+Y3HfLvH3k0noeNvyAjv/BQHSZEyKMxfdLz5irt04jz4sk1OhlZdmwTEG5Fg2AU1BQ8oP06a1gQjq0cg
+ fXwBKigE
+ cogdEVrrUCxKinW6/XI7GQhU9RjN1dJXiv/21JBS6srtMzAC/PIoe7WIcI1t+aguoUnArfPxv0OgPDO5EeJ5nYoMhfP8E3H2r2kAZp6+8lJgYFxEAT47hoREm2E3gCmPcOxciTJUti6foL8IXL+M9z42xFO7yc90o7/YKuzcgKtrgryiobsRl07oatUYNr/vjhcq6NWo/2OfQZmxpCTptsivJCzJvTQ10Z0UB45+mFjqHQUzE/rtM9WSD6zDYKLrgx8LUoRDb2LnMDSHsPd34Bb4B4usWSMPlLBxAxuRGv4dE24b7TWNWynH1Zm+Hmpfs609kvWX2IUV1ljGksI6FVb5myCHKNdMfzQZ6ewECUHQGIpNbl4sToZMK1w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,59 +102,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 12 Aug 2026 05:26:24 -0700 syzbot <syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com> wrote:
+[..]
+>  static __always_inline
+>  struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
+>  			   unsigned int order, unsigned int alloc_flags,
+> @@ -3433,13 +3580,15 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
+>  			 */
+>  			if (!page && (alloc_flags & (ALLOC_OOM|ALLOC_HARDER)))
+>  				page = __rmqueue_smallest(zone, order, ft_high);
+> -
+> -			if (!page) {
+> -				spin_unlock_irqrestore(&zone->lock, flags);
+> -				return NULL;
+> -			}
+>  		}
+>  		spin_unlock_irqrestore(&zone->lock, flags);
+> +
+> +		/* Try changing direct map, now we've released the zone lock */
+> +		if (!page)
+> +			page = __rmqueue_direct_map(zone, order, alloc_flags, freetype);
 
-> syzbot has found a reproducer for the following issue on:
-> 
-> HEAD commit:    f5bbbfec59b4 Merge tag 'probes-fixes-v7.2-rc7' of git://gi..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=11f44c79580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=c44651ea7dd2f307
-> dashboard link: https://syzkaller.appspot.com/bug?extid=12ee2725d5fde63a9c96
-> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10d11149580000
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com
-> 
-> ------------[ cut here ]------------
-> current_is_kswapd()
-> WARNING: mm/vmscan.c:3800 at set_mm_walk+0x210/0x270 mm/vmscan.c:3800, CPU#2: kswapd0/111
+Is it intentional that this is called outside __rmqueue() and doesn't
+cover pcplists refills through rmqueue_bulk()?
 
-Thanks.  Shakeel is working on a series which will fix this by removing
-the calling code.  But it isn't a minor patch.
+IIUC, we will never change a pageblock to unmapped to refill the
+pcplists, so the unmapped pcplists can get filled in two ways:
+(a) When unmapped pages are freed.
+(b) When a pageblock is converted here (in rmqueue_buddy()), if the
+    allocation only consumes part of it, the new allocation might move
+    the rest into the pcplist through rmqueue_bulk().
 
-Shakeel, it would be good to have a backportable quick-fix to make this
-warning go away?
+Does this mean that unmapped pcplists are less effective in serving
+allocations? There is a tradeoff here because converting a pageblock to
+unmapped is expensive, so maybe this is the right choice to make, I am
+just wondering if this was intentional and/or if we tried it a different
+way.
 
-> Modules linked in:
-> CPU: 2 UID: 0 PID: 111 Comm: kswapd0 Not tainted syzkaller #0 PREEMPT(full) 
-> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-> RIP: 0010:set_mm_walk+0x210/0x270 mm/vmscan.c:3800
-> Code: 13 00 00 4d 8d 7d 08 e9 f7 fe ff ff e8 19 f7 2a 00 e9 b7 fe ff ff e8 7f 68 ba ff 90 0f 0b 90 e9 d2 fe ff ff e8 71 68 ba ff 90 <0f> 0b 90 e9 74 ff ff ff 4c 89 ff e8 20 f7 2a 00 e9 4e fe ff ff 48
-> RSP: 0018:ffffc9000272f2b8 EFLAGS: 00010293
-> RAX: 0000000000000000 RBX: ffff888023f04a80 RCX: ffffffff82500a88
-> RDX: ffff888023f04a80 RSI: ffffffff82500b0f RDI: ffff888023f04a80
-> RBP: 0000000000020000 R08: 0000000000000005 R09: 0000000000000000
-> R10: 0000000000020000 R11: 0000000000000000 R12: 0000000000000000
-> R13: ffffc9000272fc38 R14: 0000000000000001 R15: ffffc9000272fc40
-> FS:  0000000000000000(0000) GS:ffff8880d5fec000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00005643a2ed4168 CR3: 000000003c7ec000 CR4: 0000000000352ef0
-> Call Trace:
->  <TASK>
->  try_to_inc_max_seq+0xf0/0x1090 mm/vmscan.c:4023
->  try_to_shrink_lruvec+0x4bd/0x6b0 mm/vmscan.c:4977
->  lru_gen_shrink_lruvec mm/vmscan.c:5128 [inline]
->  shrink_lruvec+0x31e/0x25b0 mm/vmscan.c:5888
->  mem_cgroup_shrink_node+0x227/0x6a0 mm/vmscan.c:6753
->  mem_cgroup_soft_reclaim mm/memcontrol-v1.c:312 [inline]
->  memcg1_soft_limit_reclaim+0x2d5/0x830 mm/memcontrol-v1.c:362
->  balance_pgdat+0xa11/0x1f00 mm/vmscan.c:7177
->  kswapd+0x556/0xb50 mm/vmscan.c:7462
->  kthread+0x370/0x450 kernel/kthread.c:436
->  ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
->  </TASK>
+Actuall, THPs are not covered by scenario (b) above if the pageblock
+size is the same as THP size, as the converted THPs are always consumed
+by the allocation, so the THP pcplist will only be filled when THPs are
+freed.
 
+I wonder if this would cause a problem for THP-heavy workloads (e.g.
+guest_memfd using THP, or any THP usage with ASI).
+
+The other thing (that I probably mentioned elsewhere) is that kcompactd
+does not produce unmapped pageblocks, so it seems like THP allocations
+will mostly hit this code path and convert a pageblock to unmapped.
+Actually, if we do bulk conversion to unmapped (e.g. in kcompactd) we
+could batch the TLB shootdowns as well, but that should probably be done
+separately.
+
+
+> +		if (!page)
+> +			return NULL;
+> +
+>  	} while (check_new_pages(page, order));
+>  
+>  	/*
 
