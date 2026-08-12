@@ -4,81 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CBF3C5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 03:58:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4569AC5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 04:04:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 114EA6B0088; Tue, 11 Aug 2026 23:58:42 -0400 (EDT)
+	id 0A9696B007B; Wed, 12 Aug 2026 00:04:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C5766B008A; Tue, 11 Aug 2026 23:58:42 -0400 (EDT)
+	id 05ACD6B0092; Wed, 12 Aug 2026 00:04:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF5D86B0092; Tue, 11 Aug 2026 23:58:41 -0400 (EDT)
+	id EB25A6B0093; Wed, 12 Aug 2026 00:04:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BE6276B0088
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 23:58:41 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 47418C0307
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 03:58:41 +0000 (UTC)
-X-FDA: 85091260842.29.52FCCDF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7ACF8100005
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 03:58:39 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Tdd76Dcv;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C46A96B007B
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 00:04:24 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 57FDBA1AB5
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 04:04:24 +0000 (UTC)
+X-FDA: 85091275248.19.FBFB55F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6DDF2180003
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 04:04:22 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EDp9Hek4;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786507462;
+	b=E3QfIjKtMLJcecvPslF4nCx8PQhe0FVPFD9m2SsQ/woV7IdxKU7RyGLeXViwa7sNQZFJPI
+	TNCEtXDE3oMge7ff0ZGXHRLMtomuhfNEjY7nk1JNN6bBtQdZk/VPa1GgfSBXDa8LBRuQ8k
+	N7g59Rn99KHUOq9AxOsvxFOG+odlnbQ=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EDp9Hek4;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786507119;
+	s=arc-20220608; t=1786507462;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=2WntlmElKiECWOFyWtUJKTVCfp2RQtCrEFllEEevxFo=;
-	b=LH+b6zBptYMLIRKoz4VEG+esp6D1IXhNMAppt79UfC+6hkip9wMgp7g5ncCKCoxwpr5FTk
-	tBY7VYozIKe/zzyGHo/gPblOZ9kgG2M7h2BezG3xLj+NbmIWJYlwzVVDlMWMb4+SM+mxGY
-	YMcChFd8IIZ+bh/ZosGcNshyWOTlYss=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786507119;
-	b=cr4qiXj33Fr5+y4lRmCY+t0vLYq/LlMRDA/hiGaV5m11PsRk19W3zWtFsD08CKiBzWfIc+
-	m5tz0e6hoAX94fEWV6RA6W8TopywrrdpuBeRtEPETeNy3v4QWijsjvky8T+cimmZ+fF1kw
-	Rlz6OiG+A47V0g0vNTbM39CSBe4CnIQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Tdd76Dcv;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FiLLmlbsLzuaMtcwBwMDwfL5w+GqVLTduA8mEqjoFy0=;
+	b=y6W6CtvX1mxstTpkfL8APqipca4wqpz1sXi49nMWvQrsBD52ktJBeYGnG4/yZiNnWcn8nY
+	RahqEmFfg/OvIPZ6meUjJshnvzVkZg40RWqLg5Z5cS0gQfN0t1mVcbMph+9mV6Jd99z6j0
+	dwl6wADd33FkWnFABAKJ0M0qC3VZ73E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2515141A53;
-	Wed, 12 Aug 2026 03:58:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0891F000E9;
-	Wed, 12 Aug 2026 03:58:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CC503600AE;
+	Wed, 12 Aug 2026 04:04:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80BEF1F000E9;
+	Wed, 12 Aug 2026 04:04:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1786507118;
-	bh=2WntlmElKiECWOFyWtUJKTVCfp2RQtCrEFllEEevxFo=;
-	h=Date:From:To:Subject;
-	b=Tdd76Dcv31lbOXUOVnwLg0ed6G9lQYNmibej91JskUnazDJbic2giZYPFMwVA9s41
-	 l7Ub4lxyih++T4kYzHy5qUdUYZxXLiI2NdEkUEdona5w5NeFLZApucbZV50gzWHrK7
-	 s7ZUgC62xnl39F/n5+QDrwTTLRRUj81YeJAGQTXQ=
-Date: Tue, 11 Aug 2026 20:58:36 -0700
+	d=linux-foundation.org; s=korg; t=1786507461;
+	bh=FiLLmlbsLzuaMtcwBwMDwfL5w+GqVLTduA8mEqjoFy0=;
+	h=Date:From:To:Subject:In-Reply-To:References;
+	b=EDp9Hek4af1hq1hEFwWlGF1kFT9CweEpNRXaghvS0UdHFeKVykTx39N2i2gthoNat
+	 8/d1L33hWn1VYNeFlXdBu0J3dTPeP85xFiB0QVEKpsv5cTuaYAPFvmEXhF3oGQpmz/
+	 He3wZ9UXNwSvJ/ylu3jpz8ICZg0B8tnMJU2akpFQ=
+Date: Tue, 11 Aug 2026 21:04:20 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
 To: linux-mm@kvack.org
-Subject: mm.git review status at 7.2-rc7
-Message-Id: <20260811205836.59301ca91b65781c6292a439@linux-foundation.org>
+Subject: Re: mm.git review status at 7.2-rc7
+Message-Id: <20260811210420.097a994cdb9a011f654227de@linux-foundation.org>
+In-Reply-To: <20260811205836.59301ca91b65781c6292a439@linux-foundation.org>
+References: <20260811205836.59301ca91b65781c6292a439@linux-foundation.org>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 6DDF2180003
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: kjnupgd1u3a47jqj8m5synngz1fizbou
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7ACF8100005
-X-HE-Tag: 1786507119-414661
-X-HE-Meta: U2FsdGVkX1/c2Zce7Au9BR6RQk8acS89knAUVsZRK6ddOHoogNZhJ9EUomVZnpW3Fw1AZ7/r4VLAd6YP9XZKyhQ8Fq0OBnbdiXElFokElzYvXzvQCC1PzTJeccr/VfsH34KI7aeQ88uH0nCje9b1SxQxGK06+gT3MazlZf9sJ4WaJPJeV/TOstHQTqvdRUKYv4glWWgrHcgdUIVppIOAULndRvsnFrXJnLT4Q1DrUi9W46/pTkaLqO+xi//u2sIyS//D9vlLODSPyiKFPcHA4ITGLnATn1YfmXSSZO4Sh3/aFCCG6pACfIFzl9QDrwAhRIXFIA8McQ0xQWQkaJc9CY2xuqOmcK1A8mYaoyNu08YQAW3/kzPleQW0b5PvGCdRy9eQ6But6x8MJLxVEByFrHO14X43nU3m8fooBzV5gJZOnj8hQQHY0z8duaZIRynOpjW10GZxBNcP4mrqPpGnPOMJG9HUSPAF3j3Fc0gOzwJD4i1hQmjj63zaCc8OLoxI5zHqfoR7Ud+UXldIkmeTX8wAEbSayGRA5Gzn9O5V0UW/Av/6sGZz8nioUeHCPLpYsZpEpk8MfJiq0XCt7CRCo/Zw5UYIFOxJMfKPrTvv10AZcWOBL03G6u1oxs7Zr2Pg4fRTpVDh5xdqhM3Spi0hx91ce3+ckKXxPxk5HsCvrjQbIsH6lBQgrtJnag797tGtXcYRJA83ia5Ny2VBpUsXbZ5CMwIgUX+S0m4u356MTsP4Hvu0iWtfLK8411wBEUMCcUpW6VHoH3OIT/7/64zRYwH3WfC0LSd1Wt2sf3Tfvw5x7m5YLVtie+R+QBbTH1VbjGneb6t2b7S7Gl0y6BgqZhrsm2ncNkGEMN2CNeKsZCCbrhJlDUQJvjV71qnoVK87O+qN1NK0WWpuObEcdFxdNTX6ROKwvHVzhUhvBaP2vQo4YN5Pe1Fl2iwYfe89DAD/kdYahoJUzpgR2YttbXc
- 34gfhFrW
- sXo4p5st6J/pkeOEzTjJCW4GIVhTNlJuYJjKfz2fi5NJKplmdOJj94I+PRjznRYsPiXvx119Gwif4dUyO32hBST5gwVAn8amhHCKihR4eXfpc4TSuYHHBLVxE5Wo7jvg52g3CzM+yiml3XK96AhmAluRfXP4bGCFZiD55hvqOl3PZa+jCkMuLuP7n0B1GazA8UJZDpb19p7rOwcukEei7yXsuRacpQYR2Gp1osLVrM6/JlmLgcR/+uMjum9FJ57apYOorOzdCGsZ9RLqFANSnh8Af7bsr94Urioy+z/JTdQtJlpMp40MfxH3FgoqWU1fmbsxWKhsKmD5wo3K1fU7GfzwM7VhHkzQ9qd+dY564cu/MEeIwAmsrsG/UiJf3nKE3EAHAQEIQOi8o/cV9DQ1nWv+ZmRncQdbYUOUyymz9LHNjyyOtxmZaXSp0OjrYeiTRAhnGvZyWYpTnzqa/z9ZvRgYDlEOOLHDSeJ0i1TW9CR/KAavF4e0kzXURgLlDW0ErS+ejxoHNAFIDOgUBvWYu7QnRKC8lmIVz5Jz31oJQEGag/STRCeElCars2/S+2PD6Cxp03gF23LJseoILbF1hH3JQ0NousWxmusJ0uXHfSJBS+oiXMQegfdEsu0yyt51a/LZrPxIx0wbv94NcVCqyo5NSd7Q8KaTgSXjTMDFn1mLdWpND81ElEGCoyJNTzHcFCN6aXd7+11ZG01rwCq7hVT/JF9+CMVD+7CxMuEbTbgaBT8H5CwiX0208TOW5/EKMT3ZIqMm7YNGBsoc8+y6ZtnyhV4TTdjsmzmZZIhIvSL8bA6n9XRn6fQDS+5L+YWXVo/CD1GA25zwnUX+bNsXY+FKbL5dpDieonE+/vN5XVcBku5UmqeAjduWV1qnN/TQyTvOesUWX6roTnxRGwK5xknwBtUcHIjN6gAqEnUfUzQY6c2IrYHakLMdbsaWDHX582Izl+Tv/U6f7zGCIytZr33CnxPpI
- 5irCXRLy
- ZUVMDz04BFp4eIukWTbWA2d0j1Ll3JKHTXhPRquDcC8=
+X-Stat-Signature: phnochrrjq5wdafn3fx4u8x59z3wuapd
+X-HE-Tag: 1786507462-97657
+X-HE-Meta: U2FsdGVkX18WxXprodaUh9RDtCgqBb4/O3QKPQMNalNbGS9jDhK/gdjf7SJIH/m+qE9PliEVjr0CrafRD+HIbpA9ZOpg4e3U99p2f0pf0/lNHrYgjacv/0v+AiNBQ3lfviihG9p9r/P2T7rKyDN90v3xSQG6YkMDX/YoHLMgey2/zYg5nv8tR3cmbyf/tVREVlB1W7mrY7N3ypy/4pKO+7KcUP70aHLoFDT6MLk92cJexqKUe/69H0W++9PUNV9C9P8dpZBMf0QIZoiEqZ3Dyp26LJ8f3ilypSQro6QH+QefSOXdsaQfhB5Z8p1uVqvszcnJzUXFMugOx5fJ6kho2F8kWuMRdEVXOncM3+ReGO0pE7C3zpNozsmWh8vOPFjQXGKjVuGMxdQLHlcE6ztCpqzTF0T2iSKHD5vTS/oYNIcSoeeoskdVCs2bB87p5KlmoNjAq9lLz9UPTXNqm6Hpe5CPu5YtdKlJygceBkm/hwq44j4OCiXeXaO2YE9xwnGgdCbcI9cd7ioZ/5Ez8TQS48yPZDY/h30+q6cHoA+KDEmtkmm2ofPYkH/qg6Zxr1Vi9oa8kFP5TUzpmv98K9xgTl7GbAPaWMq+CHxHndHNB9MNtv/HP+WbJxLeraOw2rjEeLyR9+7qnzHiefUwWVwXd9faU7q6iad19O70zWGAl4MAOOFQyWf2WykJNe+ydO9p0AhA1pHeozT0T//ZL/MtCI+NoBsOwGrzTbM+3tL4IipAg4/ufoYKP0n1GKp58qBmsfdap/gaIKdTgl1/oA8t6VnUVqWKOnFRQRNd6Ot8eKIDqITO/OWdIZ4aWi8YBAHVHMw1VMPcTVGZmALy6e0z/+VdbpP/zNTX9jSH6kEqAl9uEZzi64nanqk7x4hTkOU/HuYncyt89dT6eNHtdRQRYOWj4uG6e5FFUVCUbrUB7sM+Q7EGu3NbPyWi4NK8zO4ug8zMb20YrMTN/8LWCh+
+ n63Gbfxn
+ dY6OFtu093BfKDW78WDr8D3LfKwqg2qWlBAIavhVkUt8uRsk8uEU7k6thOVcMcvUj1OBOFgxChDNmzdme1k6htjQcapgfwY8jtkDNZphT6H+zAiraURKUjjDXU1G9kLraCH2xRkYOxP8k2LSzb0aS4KIe9HijFllan5gKKRd0W6wNkh5BMNPEeDKvF+CYX/SDMaLEbabpFaKsQnV9D4FULOEUzx/90lNbCiRI9Jrl+zTVIkw8OXSSehXO0m+jkWiE/BsTWNyyRNwXf4/eNgsOtJvpVAtpuwlOYxeeGEdFoRTBTJ1n382Jr9/mvzGDonTun991Q69WXzi+TxU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,242 +87,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 11 Aug 2026 20:58:36 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-mm.git's mm-stable branch contains 500 patches (67 series) and that's
-the plan for the first week of the upcoming merge window.  Review
-stats:
+> For the second week's batch we have 114 patches that look in decent
+> shape and another 63 which are not looking so good.  I'll continue to
+> chase these over the next couple of weeks.
 
-mm.git review status for mm-hotfixes-stable..mm-stable
+These are the remaining problem patches, along with the cryptic links
+and comments which explain the various potential issues:
 
-Everything:
-
-Total patches:       500
-Reviews/patch:       1.66
-Reviewed rate:       70%
-
-Excluding DAMON:
-
-Total patches:       355
-Reviews/patch:       2.25
-Reviewed rate:       90%
-
-Excluding DAMON and selftests:
-
-Total patches:       329
-Reviews/patch:       2.31
-Reviewed rate:       92%
-
-
-For the second week's batch we have 114 patches that look in decent
-shape and another 63 which are not looking so good.  I'll continue to
-chase these over the next couple of weeks.
-
-
-(This report picked up 26 patches from mm-hotfixes, I need to figure
-out how to prevent that).
-
-
-mm.git review status for mm-stable..mm-new
-
-Everything:
-
-Total patches:       207
-Reviews/patch:       1.43
-Reviewed rate:       71%
-
-Excluding DAMON:
-
-Total patches:       201
-Reviews/patch:       1.47
-Reviewed rate:       73%
-
-Excluding DAMON and selftests:
-
-Total patches:       177
-Reviews/patch:       1.48
-Reviewed rate:       74%
-
-Excluding DAMON, selftests and maple_tree:
-
-Total patches:       157
-Reviews/patch:       1.63
-Reviewed rate:       80%
+As always, append a quilt filename to
+https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/
+to get at the actual patch and its Link:
 
 
 
-Unreviewed patches by author:
 
-
-Andrew Morton <akpm@linux-foundation.org> (3 total)
-    "mm/hmm.c:hmm_do_fault(): suppress sparse warning"
-    "lib/Kconfig.debug: make DEBUG_FORCE_WEAK_PER_CPU depend on S390||ALPHA"
-    "selftests-cgroup-test_zswap-skip-test_no_kmem_bypass-if-debugfs-is-unavailable-fix"
-
-Audra Mitchell <audra@redhat.com> (1 total)
-    "selftests/mm: fix soft-dirty kselftest supported check"
-        Link: https://sashiko.dev/#/patchset/20260806181843.1839943-2-audra@redhat.com
-        Link: https://lore.kernel.org/20260806181843.1839943-3-audra@redhat.com
-
-Catalin Marinas <catalin.marinas@arm.com> (1 total)
-    "mm: kmemleak: confirm suspected leaks with a second scan"
-        Link: https://lore.kernel.org/20260713-catalin_pto-v1-0-5b93b1131089@debian.org
-        Link: https://lore.kernel.org/20260713-catalin_pto-v1-1-5b93b1131089@debian.org
-
-Yunhui Cui <cuiyunhui@bytedance.com> (1 total)
-    "riscv: mm: exclude invalid THP PMDs from page table check"
-        Link: https://lore.kernel.org/20260523042052.35476-1-cuiyunhui@bytedance.com
-
-Danila Tikhonov <danila@mainlining.org> (1 total)
-    "mailmap: map old addresses to Danila Tikhonov"
-        Link: https://lore.kernel.org/20260801153333.296218-1-danila@mainlining.org
-
-David Hildenbrand (Arm) <david@kernel.org> (3 total)
-    "mm: standardize printing for pgtable entries"
-        Link: https://lore.kernel.org/20260709044334.1741263-1-anshuman.khandual@arm.com
-    "mm/gup: factor out LRU cache draining for folio into lru_cache_drain_for_folio()"
-        Link: https://lore.kernel.org/20260806-lru_cache_drain_for_folio-v1-1-c6287d295e99@kernel.org
-    "mm/gup_test: keep longterm pin state per file"
-        Link: https://lore.kernel.org/20260810-gup_test_data-v1-1-fb1d41be5bb4@kernel.org
-
-David Carlier <devnexen@gmail.com> (1 total)
-    "mm/swap, PM: hibernate: atomically replace hibernation pin"
-        Link: https://lore.kernel.org/20260430195651.287659-1-devnexen@gmail.com
-
-Guodong Xu <docular.xu@gmail.com> (1 total)
-    "mailmap: add entries for Guodong Xu"
-        Link: https://lore.kernel.org/20260807-b4-mailmap-guodong-xu-v2-1-f7c71bc6bd9f@gmail.com
-
-Christoph Hellwig <hch@lst.de> (2 total)
-    "mm/swap: also use struct swap_iocb for block I/O"
-        Link: https://lore.kernel.org/20260713093350.2154226-4-hch@lst.de
-    "mm/swap: remove SWP_FS_OPS"
-        Link: https://lore.kernel.org/20260713093350.2154226-7-hch@lst.de
-
-Jann Horn <jannh@google.com> (1 total)
-    "mm/page-writeback: document folio_mark_dirty() locking more explicitly"
-        Link: https://lore.kernel.org/20260810-set-page-dirty-warnings-v2-1-1bd40fadfacd@google.com
-
-Karl Mehltretter <kmehltretter@gmail.com> (1 total)
-    "selftests/proc: make proc-maps-race work with READ_IMPLIES_EXEC"
-        Link: https://lore.kernel.org/20260808200312.6326-1-kmehltretter@gmail.com
-
-Breno Leitao <leitao@debian.org> (2 total)
-    "mm: kmemleak: factor leak confirmation into a helper"
-        Link: https://lore.kernel.org/20260713-catalin_pto-v1-3-5b93b1131089@debian.org
-    "selftests: mm: test kmemleak's N-consecutive-scan leak confirmation"
-        Link: https://lore.kernel.org/20260713-catalin_pto-v1-4-5b93b1131089@debian.org
-
-Liam R. Howlett (Oracle) <liam@infradead.org> (17 total)
-    "maple_tree: add rcu locking check when LOCKDEP is enabled"
-        Link: https://lore.kernel.org/20260630190843.3563858-1-liam@infradead.org
-        Link: https://lore.kernel.org/20260630190843.3563858-2-liam@infradead.org
-    "locking/lockdep: add sequence counter to held_lock"
-        Link: https://lore.kernel.org/20260630190843.3563858-3-liam@infradead.org
-        Link: https://lore.kernel.org/all/h3tpnj5kzcrxms5picmimtkpg4aypcpip5wbd6bt2rpdj5k7eb@nhtzs3lefrkq/
-    "maple_tree: add write lock checking with lockdep sequence numbers"
-        Link: https://lore.kernel.org/20260630190843.3563858-4-liam@infradead.org
-    "maple_tree-stop-flooding-logs-when-debug_locks-is-set-to-zero-fix"
-        Link: https://lore.kernel.org/fo5r2xl3fql6gyvjasfvfu4ftugjti2vxg7zskdw7hjeo3xvqm@kk66qmsf762s
-    "maple_tree: drop dead code from mas_extend_spanning_null()"
-        Link: https://lore.kernel.org/20260630190843.3563858-6-liam@infradead.org
-    "maple_tree: drop MAPLE_ALLOC_SLOTS"
-        Link: https://lore.kernel.org/20260630190843.3563858-7-liam@infradead.org
-    "maple_tree: clarify comments on mas_nomem()"
-        Link: https://lore.kernel.org/20260630190843.3563858-8-liam@infradead.org
-    "maple_tree: use prefetched value in mas_wr_store_type()"
-        Link: https://lore.kernel.org/20260630190843.3563858-9-liam@infradead.org
-    "maple_tree: optimise mas_wr_node_store() when not in rcu mode"
-        Link: https://lore.kernel.org/20260630190843.3563858-10-liam@infradead.org
-    "maple_tree: micro optimisation of mas_wr_store_type()"
-        Link: https://lore.kernel.org/20260630190843.3563858-11-liam@infradead.org
-    "maple_tree: add bulk parent set helper"
-        Link: https://lore.kernel.org/20260630190843.3563858-12-liam@infradead.org
-    "maple_tree: WARN_ON_ONCE when allocations fail"
-        Link: https://lore.kernel.org/20260630190843.3563858-15-liam@infradead.org
-    "maple_tree: document erase and allocations better"
-        Link: https://lore.kernel.org/all/20260617180419.GA231643@ziepe.ca/
-        Link: https://lore.kernel.org/20260630190843.3563858-16-liam@infradead.org
-    "maple_tree: change two GFP flags in tests"
-        Link: https://lore.kernel.org/all/d9cbb89faa5bdb71d451781d214a51ce8923a83e.camel@perches.com/
-        Link: https://lore.kernel.org/20260630190843.3563858-17-liam@infradead.org
-    "maple_tree: fix argument name in header"
-        Link: https://lore.kernel.org/20260630190843.3563858-18-liam@infradead.org
-    "maple_tree: avoid extra gap calculation"
-        Link: https://lore.kernel.org/20260630190843.3563858-19-liam@infradead.org
-    "maple_tree: add helper mas_make_walkable()"
-        Link: https://lore.kernel.org/20260630190843.3563858-20-liam@infradead.org
-
-Lorenzo Stoakes (ARM) <ljs@kernel.org> (6 total)
-    "mm/huge_memory: separate out CONFIG_PERSISTENT_HUGE_ZERO_FOLIO logic"
-        Link: https://lore.kernel.org/20260730-fix-refcounted-huge-zero-v2-2-c5d8a41b317f@kernel.org
-    "x86/mm/pat: acquire init_mm read lock on attribute change to avoid UAF"
-        Link: https://lore.kernel.org/all/20260626163213.2284080-1-den@openvz.org/
-        Link: https://lore.kernel.org/20260723-series-vmap-race-fix-v6-3-8cc77dcc0018@kernel.org
-    "mm/vma: only permit MAP_PRIVATE /dev/zero to be mapped anonymous"
-        Link: https://lore.kernel.org/20260806-b4-scalable-cow-virt-pgoff-v4-17-ab318a350404@kernel.org
-    "mm/vma: make MAP_PRIVATE-mapped /dev/zero mappings truly anonymous"
-        Link: https://lore.kernel.org/20260806-b4-scalable-cow-virt-pgoff-v4-18-ab318a350404@kernel.org
-    "tools/testing/vma: add test to assert MAP_PRIVATE-/dev/zero is anon"
-        Link: https://lore.kernel.org/20260806-b4-scalable-cow-virt-pgoff-v4-19-ab318a350404@kernel.org
-    "tools/testing/selftests/mm: add MAP_PRIVATE-/dev/zero merge tests"
-        Link: https://lore.kernel.org/20260806-b4-scalable-cow-virt-pgoff-v4-20-ab318a350404@kernel.org
-
-Wupeng Ma <mawupeng1@huawei.com> (1 total)
-    "mm/hugetlb: fix missing migratable flag on same-node hugetlb migration"
-        Link: https://lore.kernel.org/20260707110254.3147686-1-mawupeng1@huawei.com
-
-Phillip Lougher <phillip@squashfs.org.uk> (1 total)
-    "MAINTAINERS: remove git URL for Squashfs"
-        Link: https://lore.kernel.org/20260806181916.617881-1-phillip@squashfs.org.uk
-
-Ramin Moussavi <ramin.moussavi@yacoub.de> (1 total)
-    "microblaze: restore the page alignment of swapper_pg_dir"
-        Link: https://lore.kernel.org/20260727215823.1422701-1-ramin.moussavi@yacoub.de
-
-Sergey Senozhatsky <senozhatsky@chromium.org> (4 total)
-    "zram: set default primary compressor in zram_destroy_comps()"
-        Link: https://lore.kernel.org/20260729045745.775973-2-senozhatsky@chromium.org
-    "zram: validate deflate params"
-        Link: https://lore.kernel.org/20260729045745.775973-3-senozhatsky@chromium.org
-        Link: https://sashiko.dev/#/patchset/20260728092935.31139-1-haoqinhuang7@gmail.com
-    "Documentation: zram: correct algo parameters configuration documentation"
-        Link: https://lore.kernel.org/20260730075158.1339787-1-senozhatsky@chromium.org
-    "zram: switch to unsigned long indexing"
-        Link: https://lore.kernel.org/20260806031640.536615-1-senozhatsky@chromium.org
-
-SJ Park <sj@kernel.org> (5 total)
-    "samples/damon/mtier: error out for zero quota goal target values"
-        Link: https://lore.kernel.org/20260803134034.15217-1-sj@kernel.org
-        Link: https://lore.kernel.org/20260803134034.15217-2-sj@kernel.org
-    "mm/damon/lru_sort: error out for >10000 active_mem_bp"
-        Link: https://lore.kernel.org/20260803134034.15217-3-sj@kernel.org
-    "mm/damon/reclaim: skip damon_call() if ctx has not started"
-        Link: https://lore.kernel.org/20260803134646.16640-1-sj@kernel.org
-        Link: https://lore.kernel.org/20260803134646.16640-2-sj@kernel.org
-    "mm/damon/lru_sort: skip damon_call() if ctx has not started"
-        Link: https://lore.kernel.org/20260803134646.16640-3-sj@kernel.org
-    "mm/damon: adjust isolated pages stat for DAMOS_MIGRATE_{HOT,COLD}"
-        Link: https://lore.kernel.org/20260728140404.94476-1-sj@kernel.org
-
-Hajime Tazaki <thehajime@gmail.com> (1 total)
-    "mm: nommu: point to the write iterator upon split_vma"
-        Link: https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/syscalls/mseal/mseal02.c
-        Link: https://lore.kernel.org/20260702012546.665383-1-thehajime@gmail.com
-
-Muhammad Usama Anjum <usama.anjum@arm.com> (2 total)
-    "selftests/mm: skip khugepaged swap tests without swap"
-        Link: https://lore.kernel.org/20260727095225.372655-4-usama.anjum@arm.com
-    "selftests/mm: retry migration failures for the full runtime"
-        Link: https://lore.kernel.org/20260727095225.372655-6-usama.anjum@arm.com
-
-Vivian Wang <wangruikang@iscas.ac.cn> (1 total)
-    "riscv: mm: fix concurrency in mark_new_valid_map()"
-        Link: https://lore.kernel.org/20260629-riscv-mm-new-valid-map-ordering-v1-1-60d8c10c6292@iscas.ac.cn
-
-Zhiling Zou <zhilinz@nebusec.ai> (1 total)
-    "mm/page_table_check: skip special zero mappings"
-        Link: https://lore.kernel.org/cover.1784717203.git.zhilinz@nebusec.ai
-        Link: https://lore.kernel.org/e94478e4fb7912fb7e8ebebed5ce85d00dc9a69d.1784717203.git.zhilinz@nebusec.ai
-
+#selftests-mm-fix-soft-dirty-kselftest-supported-check.patch: https://lore.kernel.org/db04536b-a98f-4025-a095-9ca49de10e12@kernel.org
+selftests-mm-fix-soft-dirty-kselftest-supported-check.patch
+#
+#mm-kmemleak-confirm-suspected-leaks-with-a-second-scan.patch: Catalin acks?
+mm-kmemleak-confirm-suspected-leaks-with-a-second-scan.patch
+mm-kmemleak-report-leaks-only-after-n-consecutive-unreferenced-scans.patch
+mm-kmemleak-factor-leak-confirmation-into-a-helper.patch
+selftests-mm-test-kmemleaks-n-consecutive-scan-leak-confirmation.patch
+#
+mm-kmemleak-default-min_unref_scans-to-2-for-verbose-auto-scan.patch
+documentation-kmemleak-document-the-conditional-min_unref_scans-default.patch
+selftests-mm-kmemleak-drop-stale-min_unref_scans-default-from-comments.patch
+#
+#
+#
+#maple_tree-add-rcu-locking-check-when-lockdep-is-enabled.patch+N: https://lore.kernel.org/6yf7k4fmg4tkbmli6t4qzrk2eiyuuynoc2oimbgaebught2yh5@dspb7xile3kj
+maple_tree-add-rcu-locking-check-when-lockdep-is-enabled.patch
+locking-lockdep-add-sequence-counter-to-held_lock.patch
+maple_tree-add-write-lock-checking-with-lockdep-sequence-numbers.patch
+maple_tree-stop-flooding-logs-when-debug_locks-is-set-to-zero-fix.patch
+maple_tree-documentation-fix.patch
+maple_tree-drop-dead-code-from-mas_extend_spanning_null.patch
+maple_tree-drop-maple_alloc_slots.patch
+maple_tree-clarify-comments-on-mas_nomem.patch
+maple_tree-use-prefetched-value-in-mas_wr_store_type.patch
+maple_tree-optimise-mas_wr_node_store-when-not-in-rcu-mode.patch
+maple_tree-micro-optimisation-of-mas_wr_store_type.patch
+maple_tree-add-bulk-parent-set-helper.patch
+maple_tree-catch-race-in-mas_alloc_cyclic.patch
+maple_tree-document-that-erase-may-use-gfp_kernel-for-allocations.patch
+maple_tree-warn_on_once-when-allocations-fail.patch
+maple_tree-document-erase-and-allocations-better.patch
+maple_tree-change-two-gfp-flags-in-tests.patch
+maple_tree-fix-argument-name-in-header.patch
+maple_tree-avoid-extra-gap-calculation.patch
+maple_tree-add-helper-mas_make_walkable.patch
+#
+#
+#
+#
+#riscv-mm-fix-concurrency-in-mark_new_valid_map.patch+1: Paul? TBU (Aug) https://lore.kernel.org/41c1a3ed-0afd-4bf9-9749-2031bff00fda@iscas.ac.cn
+riscv-mm-fix-concurrency-in-mark_new_valid_map.patch
+riscv-mm-exclude-invalid-thp-pmds-from-page-table-check.patch
+#
+#mm-khugepaged-refactor-per-scan-state-clearing-into-collapse_control_init_scan.patch: await David review
+mm-khugepaged-refactor-per-scan-state-clearing-into-collapse_control_init_scan.patch
+mm-khugepaged-extract-reference-check-into-folio_pte_referenced-helper.patch
+mm-khugepaged-introduce-a-count_collapse_event-helper.patch
+mm-khugepaged-fix-outdated-comments.patch
+mm-khugepaged-refactor-the-pte-state-checks-into-a-helper.patch
+mm-khugepaged-unmap-pte-before-releasing-vma-write-lock.patch
+mm-documentation-clarify-where-the-mthp-stats-live.patch
+#
+#sh-remove-config_numa-and-realted-configuration-options.patch+N: sh review?
+sh-remove-config_numa-and-realted-configuration-options.patch
+sh-mm-remove-numac.patch
+sh-mm-drop-allocate_pgdat.patch
+sh-remove-setup_bootmem_node-and-plat_mem_setup.patch
+sh-drop-dead-code-guarded-by-ifdef-config_numa.patch
+sh-drop-include-asm-mmzoneh.patch
+init-kconfig-drop-arch_want_numa_variable_locality.patch
+sh-init-remove-call-the-memblock_set_node.patch
+sh-remove-sparsemem-related-entries-from-kconfig.patch
+sh-drop-include-asm-sparsememh.patch
+#
+mm-cma-remove-stray-newline-from-auto-generated-cma-area-name.patch
+#
+kasan-fix-cache-shrink-race-with-cpu-hotplug.patch
+#
+mm-gup_test-keep-longterm-pin-state-per-file.patch
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+# mmend
+#
+#ENDBRANCH mm-unstable
+#
+#BRANCH mm-new
+#
+mm-hmmc-hmm_do_fault-suppress-sparse-warning.patch
+mm-hmmc-hmm_do_fault-suppress-sparse-warning-fix.patch
+#
+zram-fix-slot-lock-bit-position-on-big-endian-64-bit.patch
+#
+mm-page-writeback-document-folio_mark_dirty-locking-more-explicitly.patch
+#
+zsmalloc-account-for-handle-size-in-class-lookup.patch
+#
+#selftests-proc-make-proc-maps-race-work-with-read_implies_exec.patch: Suren?
+selftests-proc-make-proc-maps-race-work-with-read_implies_exec.patch
+#
+#
+mm-swap-revert-to-single-folio-writes-for-synchronous-swap-devices.patch
+mm-swap-add-a-new-swap_opsh-header-to-allow-for-pluggable-swap-ops.patch
+mm-swap-move-swap_ops-into-file-systems-for-file-system-based-swap.patch
+#
+#lib-kconfigdebug-make-debug_force_weak_per_cpu-depend-on-s390alpha.patch: acks?
+lib-kconfigdebug-make-debug_force_weak_per_cpu-depend-on-s390alpha.patch
+#
+kasan-fix-quarantine_size-accounting-during-cache-removal.patch
+#
+selftests-cgroup-test_zswap-skip-test_no_kmem_bypass-if-debugfs-is-unavailable.patch
+selftests-cgroup-test_zswap-skip-test_no_kmem_bypass-if-debugfs-is-unavailable-fix.patch
+#
 
 
