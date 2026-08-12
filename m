@@ -4,104 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F947C5B56A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 12:19:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43B29C5B572
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 12:22:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 769BB6B012A; Wed, 12 Aug 2026 08:19:11 -0400 (EDT)
+	id 130426B00DB; Wed, 12 Aug 2026 08:22:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 741F16B012C; Wed, 12 Aug 2026 08:19:11 -0400 (EDT)
+	id 0E0396B00DC; Wed, 12 Aug 2026 08:22:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67F166B012E; Wed, 12 Aug 2026 08:19:11 -0400 (EDT)
+	id F10636B00E0; Wed, 12 Aug 2026 08:22:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 444886B012A
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 08:19:11 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BDE08120346
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 12:19:10 +0000 (UTC)
-X-FDA: 85092522060.14.E3E771B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 36FE5160009
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 12:19:09 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BsFRzI2n;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BB2EA6B00DB
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 08:22:46 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 44D2EA0352
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 12:22:46 +0000 (UTC)
+X-FDA: 85092531132.26.E2FD823
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 424FC14000C
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 12:22:44 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zro8QyHG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786537149;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1786537364;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SOSrpdrgv6m75PZgqu/T7iS0CPPWanT5qI9R6irTmB0=;
-	b=Rk9/5xfmknzxOM8TTodbfxOudRNBdbDtfaxjHF+ombnbKE/mHykdigyq4ZIZDV2R9LpfUo
-	74f0QNp9UVcnfWDG0KUwTLEt5xnPUdeBeyKwJYZWXFJRp5qA8jV5DVtAhr5MiCYOfnxDqb
-	b44OaXrCvBF88/Eg57+ELhbFfIednjE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786537149;
-	b=wbB/cSxJ3SOQ+VRR9Pk0vBQR+J4sDDzhWHvWWZrUxLLZCFFZ735bLk1+NJ30sHKXfNifyk
-	owsPKfa/90skhrqXWSRxeaH7d7XE/5pdE8m5XCbEiL+uohav44zuWJUN6Xphs4jznf4gg3
-	s8vmeiGs/9unFp8p0Sb1RlyagUueu7I=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=O8oMuFGY/RWc1R/6w9PRBui77J3o7xvI9nYea/XZIDc=;
+	b=ifLyfBZLIZ32PUlz56rBKGsb+hlgOF5I/YHjra8p7UQ9zdbNGn+qOfXcdRM28XyD6LmI37
+	zzP5zWPNqb2xWm+kbw+IIm2YLhlJkkx2j5v0n7EguA09hyYBP6x64nckO4rHncypPnZb+e
+	JpkAZUg78rVNvoyVkJTcRG1olwK9oGg=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BsFRzI2n;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B7EBF60A9E;
-	Wed, 12 Aug 2026 12:19:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99A31F00A3E;
-	Wed, 12 Aug 2026 12:19:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786537148;
-	bh=SOSrpdrgv6m75PZgqu/T7iS0CPPWanT5qI9R6irTmB0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BsFRzI2nY/1moZp4Yo1jlnOlYcl3kc9gOA06lA5u6dIR0/qRsH/qbcaotVI9o6wVc
-	 D7f2GopsSziedN0lyRn9BqFZ7s2cLl4ptJQVjlnLdsGkT0JaPDJqYjYH7uOrugOp06
-	 +MazIwctBjQKUerp5d4ILwNXf74z6BkGGmtr23nDuDeWS6qRXK6aHL/nlazZekMNAo
-	 JtEaAspJfrtH0EgLKph41ZGAWAfIUUSx+A47N4QFWZfBlBFtZo70kSZ3vA7ZOFpRRo
-	 3HI2LzekNYZsaoANA0beFRJaWuyBIGBJZiEXxjQ9fFzaCTF+KjHJaAKWQSp600T82H
-	 94rX0SYL89juA==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: axelrasmussen@google.com,
-	chenridong@xiaomi.com,
-	david@kernel.org,
-	hannes@cmpxchg.org,
-	kasong@tencent.com,
-	lianux.mm@gmail.com,
-	linux-kernel@vger.kernel.org,
-	ljs@kernel.org,
-	lyugaofei@xiaomi.com,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	stevensd@chromium.org,
-	wangzicheng@honor.com,
-	weixugc@google.com,
-	yuanchu@google.com,
-	zhangbo56@xiaomi.com,
-	baolin.wang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	"Barry Song (Xiaomi)" <baohua@kernel.org>
-Subject: [RFC PATCH v4 16/16] mm/mglru: reduce folios pulled from the oldest gen in inc_min_seq()
-Date: Wed, 12 Aug 2026 20:16:58 +0800
-Message-Id: <20260812121658.69965-17-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260812121658.69965-1-baohua@kernel.org>
-References: <20260812121658.69965-1-baohua@kernel.org>
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zro8QyHG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786537364;
+	b=tbxaw3GYkq8WkWCNaoFiQYgmT6/YaDbDbUh+1NoZ1LUGKC6Xtw3cbAEACTZIF4ZPcpmzey
+	j+PX3IP209yaGqcAl+Y9MUf7mYeRm+qxDUtGpFr05mb0kc+UZNZH4ARAhOsSrJPXQdZhM4
+	Kuz3qln1HG9vrpFbwzl7tWezVQBTZpM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 70F8641FCF;
+	Wed, 12 Aug 2026 12:22:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 47E49C2BCB9;
+	Wed, 12 Aug 2026 12:22:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1786537363;
+	bh=HVMwfutLbBsXXsWHnvBGp5CQQGmqwVQauY//gtIYMoA=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=Zro8QyHG1rL9hLX9SlK+QAEPmnlsQ9gx0NqL3b8vV0srMjDN7EbRE7fInubO/n6Vj
+	 bcuub0Y4Mtj/hspw70BeQuak2r0pKCSHwBfkFlB+MR4d1xftmdnKGhDIxEro+eLAWd
+	 4hB1f7Z7W/dJ1xl1NQFzfwW7mewOKUPiQV4DIO2so9LFIxwMVJWTl/HxRv1yOe/fYX
+	 s4vR3xQVkTEt1oj1QFETbZa4dC7YWq2AFb+i1E4k96DHY/ldY9lFCpgwU+oe6qJXxG
+	 saEPnqHyZJTBZOA0LFnRDvzfSkNgBImvIEiA6jTLqa+gZ/WK5tKRazehQUUJwR9+aA
+	 Dv4gQvQvksXzQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21B98C5B572;
+	Wed, 12 Aug 2026 12:22:43 +0000 (UTC)
+From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
+Date: Wed, 12 Aug 2026 20:22:39 +0800
+Subject: [PATCH v2] mm/mglru: fix and remove redundant unevictable folio
+ handling
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260812-mglru-mlock-fix-v2-1-a3fec5853c08@tencent.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNwQ6CMBBEf4Xs2TXdQrTx5H8YDtAuUoXWtIVoC
+ P9uwbPHN5l5s0DkYDnCpVgg8Gyj9S6DPBSg+8bdGa3JDFLIk1BEON6HMOE4eP3Ezr5RCqM6ZSp
+ VnRvIq1fgHO/GW/3jOLUP1mnTbI3exuTDZ7+caev9t8+EhKqVpSQjmEx5Tew0u3TUfoR6Xdcvh
+ zMrX8IAAAA=
+X-Change-ID: 20260811-mglru-mlock-fix-20d8f8d4847a
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
+ Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+ Oleksandr Natalenko <oleksandr@natalenko.name>, 
+ Suleiman Souhlal <suleiman@google.com>, 
+ "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>, 
+ Yu Zhao <yuzhao@google.com>, Steven Barrett <steven@liquorix.net>, 
+ Brian Geffon <bgeffon@google.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Kairui Song <ryncsn@gmail.com>, 
+ linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786537360; l=4125;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=U29orzKk9D7il/dD5NUP46H8cRaJscTJfBNkl8jXS24=;
+ b=glwH4HIia2IpuIdS3x5BsJrnJb+xJ61O2JdxsyE/WYO1gAglTuMnQhrPr7sy7LM1selJb22QA
+ PMDF4R6eoApDe9EvRBQIRyjTjJ52/SV8EO0iUoQSgJdMLIxLo6cHncu
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
+X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
+ with auth_id=562
+X-Original-From: Kairui Song <kasong@tencent.com>
+Reply-To: kasong@tencent.com
 X-Rspam-User: 
-X-Stat-Signature: s3ccky6egnjh7okm71ii3kosak418ibo
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 36FE5160009
-X-HE-Tag: 1786537149-570430
-X-HE-Meta: U2FsdGVkX197EQVbE5Am8/HcOgxd8araiOjqs9aGEsgKWzzIDT4qwjcsDWUBG0u3XpFtcliRwsWDfuH4dzkyhhb/hPuE3wmT1bQwCx8+I5/PZOcNY8yMyr7MR549WBHinvfGZUx1xRjrPIAo/qpEjyM/CSOa6sqLVMeIhemNGBUWyuVnQDGJzPzckcchfsIPG/f7vMUU4Q6jsyZBLkxz/00j/YG6sNwuwRTnh+ze/bOR9pEBiiefYOMRriezIMibOnGzIadPWRI2QNMesYUh6dnxlInXLzsR375JWqjNANu1xtfENoGPKCXznY67yGAsNoMzQS6mQxfy34S3GZvEt7yEP7e0Aa+3rxZXQ+uOv+Xv1SX78zOJbAcAjLtjG3k/Qe47o2mpFM/SOehE0HJXMdF/6RX3kpLe4iqZy6qsnZ0KQgRJ7UcNxjoEHKfqabBE+pJajzR9gfZvvEsNXCdTVKgTls2zgKbOMrU0ZiGwGo5+zMkrla65huJK/fgfpmZvLvm4ayymJ4QQ/Zo1W0Cg0YPpAw/c7MkbjOq3JXtJo2oxl8P82MN5/DTDrZxL16eT5ZtAHr7B3t9kB9qDQ/L515BzKj8SoYSmQ4M2rhjHJm42MRTcnjYgkufumzN63IBa8CExtVPOFo0JbhP+tVXFf9VaJ9QH+Oyv4T8tbxMta0jcU4x8uc2H659dmEZETIxP5eMiapcogNAzL9ydRxjaXFPkPHREQzBpg/3dZPSIMR+iZ0sixzUi9/nJ2hH74BezLStrForjV0LPbrMbmO3Kd4hXzQn4RGpColy+XPj9eS1eGfCMmtH++P6QRwzL9PeLOXG9ch/CWBm/M/33ajNvmMMgZ6ruoVdvr3y0JFjuD5Oz9f8w1gcc0QNQ2k/j6TQ8HPDFST1ZvFMBp0X6y42OwIyS7ZJICKODx1mrSRZHKqe9tMvcI3AbTlADj035fl4WQeqknMRCkRet1Mfzlq/
- 8XeC4Olf
- Z7UcVbL0q1N7WNqqYNJ1Hznfxhk04oOAbAzJDZiEv3lRvn7qxfJcOQOYjAP6zjpRqxZ3B0D2iU4cbCRApgE7GZzSG3HG3xActbWAw04Un4MEI2md3wi4GNDYTV+7N3lAwIknQe7MTn1yA2bHaFJNPvadvElsAYlO/h3Z8lJodPXs33/f3eGrdUrTfuaOTNRQhH+rMwTwESyfizUvneTluD8AGEBMyYg2htIQ1E9yM68T74yISviiMsvOeoOM/4YrC2ipTQyQIFphDdpp1HNAt13Pr9MMKkfMcgnC1cFXHHzEeXKieVKGe0/Dj/y9CPnAaphlxbTkO5Cd4n/dyhoPlRwbX1JXZpL/7nx5U
+X-Stat-Signature: ne7ez3qteyzcsbsqtmodak8z58xfprm3
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 424FC14000C
+X-HE-Tag: 1786537364-42918
+X-HE-Meta: U2FsdGVkX18UKBtlkOkz3I7I7vNux7tN86GsI7qHrmdxSrliHhb2SNN7F4iNF7z8DFsFEQZyeVydr6KHdRpMur9l84ILfyMgfiK9TOtj9HCLGXxWCj8FE+83di8W58A34AKvp31+gQJ12ODYaJlAc3hDN/TbBvq/RXcM5a+pqH6xPsQKyCAVsRwUObhsSDH8bUmL4Osv3Exzwk4677MzP1ubyZAI7D4TQNHySuQWGbVGta/xBxbS7caYbLptZ1jrYauTsyE+0dV1+wFqZmnvy/PTmpgpB/NnH8QzC4Ez8Duw9vXpLqqr/gr1FsFsxejEzMswWrzSN9SZS42J+vmScqxh3DKcHABZYuH9e8ph/KBIo7y2YUKJUQw4AlhdJ/tZICIwvWSjU5At4hd/KBNMtXFLVQkOTX8Qj/5FgFkwaDjgLaY8SFONOZRJGu+fI50o6B9KqS/1xQnAVXPDU6B2iSY0fpEfYUJzWChHZlV6eD/vMhf3tab+Oa/i4zBraFl/H8K77QeSoCds0QMorwgq1jmCQcAsTubNld6VzlloOigSYP3joBpPcCBqqGrFUZcllkXZOasIwZOu7hgftn524UCvbeTkxV8qlWNK9PR7ReFmejbwhDwZTkot+PPlCWgwPFjO7APRE1NgVMK+xfUDnjc+4ObnKbcbX+IJdbQ0/E42/FKveOTnscBfSoIG9v2sPaTJTjaBncT2Opr8xu8e+QeofTuHeu0cLDm9ye2gJSQJ+mDKLYzzKRNKC+PPpzcWOuI3TTIFx88pZTOlnacjxZOTNj05ENEC7kKMHJK18cQZKdEC0eJhqROGzY/Eh2A2hgRcqgOJ3iX9KD6xJ2nlAibBRZL1O4OLzMf9t2RQNT/lrx9/4Q4UsUPIQl14+OM22MWNOqtJoEMFvkn4ksG0k1WMN4nRv/RKjq4yO48RMG4wYHIHtBVoPm7lLhLHd3yLmIVbEM+NnSG7wbncij4
+ pRhh+QVs
+ vjbQdc0p8/Dqu/VIR0rSgqJhDier0DkGlRtSEMhcGUpLdX+442y3AqcjO1pmWWFIPhRWDBGdIfbgyXryReZwbRpVLYIEgYWjrGqmEjeDpl072gIrKaQorqBoz0Fbsrc3U8VAnhIGwFPMwtwRr2KktclmspmEgByv0n817Allvw4/dFt5RQP2XjmTFjmfsg0R21uAx7BiJkwJzyGUHP8jzeVX/LnF7QcT6alPZMMvERp0NhuWV2d7ARC76FbmAkGaadN/TEJvBoi5DIw4eGQYzJHo9LbaPsOv55fQ1SXd90s0n6XrDO3fu4mUrg0GtWR12CbV5jEBfGY2xV0TeoQryw9FESUOtFVdlE4mnLuiYuidVr28zX2+m34xu87/atpFG7wJ4wN0zzxoaA/dUqlc0qzmbz8D2yCwDK32lf5oEiPID0qEHnBpG50M1QbD1f1WaTblQ0xlH0GoHnPtFyk2BanlJxeptGEZlKCKgqE/Ygl6HV3U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,33 +120,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Pulling folios from the oldest generation to the second-oldest
-generation with MAX_LRU_BATCH can take a long time, as the spinlock
-is held throughout the operation and blocks other users.
+From: Kairui Song <kasong@tencent.com>
 
-Reduce the remaining batch size significantly. This reduces the lock
-hold time, allowing concurrent reclaim, lru_cache_drain, and other
-operations to make progress.
+sort_folio() has a shortcut for moving folios that are no longer
+evictable but are still sitting on a generation list.  However, this
+shortcut is buggy.  It does not follow the PG_lru usage convention,
+and it has a more serious issue.
 
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+Unevictable folios are not threaded on lists[LRU_UNEVICTABLE], so that
+folio->lru can be reused to hold folio->mlock_count (see the comment in
+lruvec_init()).  Hence lruvec_add_folio() skips the list_add() for them,
+and every other place that turns a folio unevictable initialises
+mlock_count explicitly: lru_add() sets it to 0, __mlock_folio() and
+__mlock_new_folio() set it to !!folio_test_mlocked(folio).
+sort_folio() sets nothing, and the lru_gen_del_folio() right above it
+may have already poisoned folio->lru via list_del(), so mlock_count
+ends up aliasing LIST_POISON2, which reads as 0x122, i.e. 290.  The
+result is user visible.  On munlock, __munlock_folio() decrements that
+bogus count, finds it still non-zero and bails out before clearing
+PG_mlocked, so the folio remains unevictable and the Mlocked
+accounting stays inflated until the folio is freed.
+
+The shortcut also touches the LRU flags in the wrong order.  It calls
+lru_gen_del_folio() while PG_lru is still set, so a concurrent
+folio_test_clear_lru() (e.g. compaction, folio_isolate_lru()) can
+succeed on a folio that has already been taken off the generation list,
+which may lead to unexpected behavior.
+
+So fix it by isolating them as common folios and letting the generic
+shrink path cull them. This matches the classical LRU behavior, and
+there should be no visible effect on the generic eviction or isolation
+behavior.
+
+There is no performance concern either, such a folio goes through this
+once, and then it is off the generation lists for good.
+
+Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
+Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/vmscan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v2:
+- Proactively bypass MGLRU pid protection and lazy promotion to avoid
+  hot unevcitable folios staying on list for a long time.
+- Link to v1: https://patch.msgid.link/20260811-mglru-mlock-fix-v1-1-8b2321d0e1d3@tencent.com
+---
+ mm/vmscan.c | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index c0350a8b61d1..8e6fcefe0353 100644
+index 3194da7dcc79..ca2b926520ea 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -3945,7 +3945,7 @@ static inline void flush_lru_batch(struct list_head *head, struct list_head **ba
- static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
+@@ -4648,7 +4648,6 @@ void lru_gen_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent,
+ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_control *sc,
+ 		       int tier_idx)
  {
- 	int zone;
--	int remaining = MAX_LRU_BATCH;
-+	int remaining = MAX_LRU_BATCH / (is_extreme_swappiness(swappiness) ? 2 : 8);
- 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
- 	int hist = lru_hist_from_seq(lrugen->min_seq[type]);
- 	int new_gen, old_gen = lru_gen_from_seq(lrugen->min_seq[type]);
--- 
-2.34.1
+-	bool success;
+ 	int gen = folio_lru_gen(folio);
+ 	int type = folio_is_file_lru(folio);
+ 	int zone = folio_zonenum(folio);
+@@ -4660,15 +4659,9 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
+ 
+ 	VM_WARN_ON_ONCE_FOLIO(gen >= MAX_NR_GENS, folio);
+ 
+-	/* unevictable */
+-	if (!folio_evictable(folio)) {
+-		success = lru_gen_del_folio(lruvec, folio, true);
+-		VM_WARN_ON_ONCE_FOLIO(!success, folio);
+-		folio_set_unevictable(folio);
+-		lruvec_add_folio(lruvec, folio);
+-		__count_vm_events(UNEVICTABLE_PGCULLED, delta);
+-		return true;
+-	}
++	/* unevictable: let it through and the generic path will cull it */
++	if (!folio_evictable(folio))
++		return false;
+ 
+ 	/* promoted */
+ 	if (gen != lru_gen_from_seq(lrugen->min_seq[type])) {
+@@ -4921,11 +4914,9 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	list_for_each_entry_safe_reverse(folio, next, &list, lru) {
+ 		DEFINE_MIN_SEQ(lruvec);
+ 
+-		if (!folio_evictable(folio)) {
+-			list_del(&folio->lru);
+-			folio_putback_lru(folio);
++		/* move_folios_to_lru() culls unevictable folios via folio_putback_lru() */
++		if (!folio_evictable(folio))
+ 			continue;
+-		}
+ 
+ 		/* retry folios that may have missed folio_rotate_reclaimable() */
+ 		if (!skip_retry && !folio_test_active(folio) && !folio_mapped(folio) &&
+
+---
+base-commit: 1029098ee3275ea5b78e329ce132262affa2f8cc
+change-id: 20260811-mglru-mlock-fix-20d8f8d4847a
+
+Best regards,
+--  
+Kairui Song <kasong@tencent.com>
+
 
 
