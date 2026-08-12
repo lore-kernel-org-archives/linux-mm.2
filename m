@@ -4,84 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34C37C5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 12:13:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 818F9C5B56A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 12:18:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D53A46B018C; Wed, 12 Aug 2026 08:13:45 -0400 (EDT)
+	id 3235F6B00F4; Wed, 12 Aug 2026 08:18:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2B1B6B018D; Wed, 12 Aug 2026 08:13:45 -0400 (EDT)
+	id 2FAAF6B00F5; Wed, 12 Aug 2026 08:18:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C68406B018E; Wed, 12 Aug 2026 08:13:45 -0400 (EDT)
+	id 211426B0104; Wed, 12 Aug 2026 08:18:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E8AE6B018C
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 08:13:45 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8801A80326
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 12:13:44 +0000 (UTC)
-X-FDA: 85092508368.28.A9D53A2
-Received: from lgeamrelo12.lge.com (lgeamrelo12.lge.com [156.147.23.52])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 3DC3BC0002
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 12:13:40 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf10.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	by kanga.kvack.org (Postfix) with ESMTP id EE99E6B00F4
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 08:18:22 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7350B80349
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 12:18:22 +0000 (UTC)
+X-FDA: 85092520044.29.E8FC97A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id D523712000B
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 12:18:20 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Yeol5q/2";
+	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786537100;
+	b=MaCmpOAFTca8K3JKPScJQAktB572XH/3Jsk/pDKq/6jiR5qftiXxo7r1UCne7n5nYuV1x3
+	1jzbL5O3efS1udnarvrUk7V+c0yw61ZV2TNo2GPrddbcVx0LDOOq36ZKlcm0y7Wcx7+wwM
+	Qg/Sei0i/O8OUPPjh/dunkSF6ArLNQs=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Yeol5q/2";
+	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786536822;
+	s=arc-20220608; t=1786537100;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rGvyKSX4FMqJGpB7PSKjb/22wa7UYZTgFnw6PhiP59A=;
-	b=qzMdqVs/IyhKlJEwwfNpsKrncRX01xd8yflyefOBT/abu1vBtYFIDKj2LavnuKwYnM6XAM
-	DlLMOMHljidIs+lk5yRHbERaIJfjjkS0Ou6DP/rOmcPC2Bn/WC7FUDPkeb+Ah8Ty9VKYzA
-	A1XzTXdQBQDI+pDfo8aMQtMXiZ7vNLg=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf10.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786536822;
-	b=QL1MDN0DlTOydwtloBqehdsHIlGACGSOmZPPCq2DNt/OGseKRW7uZ35aQ8htdGX8/uyMjb
-	VIPuItdmp7kaiDdiYen3sue4fv2GC+31DRUpKleY0syyTXo2Sbb7k8TclMcZQpqf1/E8QR
-	9t76KD7pphdAoO/s2MMFfvtaDB0bw6g=
-Received: from unknown (HELO lgeamrelo02.lge.com) (156.147.1.126)
-	by 156.147.23.52 with ESMTP; 12 Aug 2026 21:13:37 +0900
-X-Original-SENDERIP: 156.147.1.126
-X-Original-MAILFROM: youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.1.126 with ESMTP; 12 Aug 2026 21:13:37 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Wed, 12 Aug 2026 21:13:37 +0900
-From: Youngjun Park <youngjun.park@lge.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>, Jianyue Wu <wujianyue000@gmail.com>,
-	her0gyugyu@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/4] mm, swap: keep hibernation swap slots out of the
- swap cache
-Message-ID: <anxjcYKBMeAlgrBl@yjaykim-PowerEdge-T330>
-References: <20260811132209.2862708-1-youngjun.park@lge.com>
- <20260811114622.6a04927b0c7ca0c2d6b39cce@linux-foundation.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8SPnYkw1Tpm0RdC6K4fEpBajDKizXkw5kF84LatlXqs=;
+	b=UEcOcmrCOnNNdZ3MIeSE5W0dJRCV+RO2Y8pL5Hy7BZClwePcuV2CmwJLhnwey0/7/nww7r
+	92TW2Mapo4Vc6TeQHMJA0/cGaKO0X0xpisp4ahfHLHOp6ls1Re2JvZTLnmpWt8yEBysD/p
+	CZJt/nTGBp/5j4/I0VHAVtShn6bNkwc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6772C60AA9;
+	Wed, 12 Aug 2026 12:18:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 759FD1F000E9;
+	Wed, 12 Aug 2026 12:18:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786537100;
+	bh=8SPnYkw1Tpm0RdC6K4fEpBajDKizXkw5kF84LatlXqs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Yeol5q/25N+xnu1SXOdyiCkZybpJAjBsoTTDhfAYWyjY9mCkLZ/5oJczeJoI9uuWK
+	 AonvvY6ikwAM7pWjaw009NzdXeUKBSVAg1uqAp2JpFSQ3dFZwZWK0vb3hnJxyOt4wy
+	 4b3eYJwBF9l/LJqGetsBymGuqJEllDg7uKjG1blNYo9vBYdIrm8q8wNstwZdDW9+Dk
+	 zJs4Y1mnlnmt+T43CaOzHcgwuF3hUVCYnvhIAJ7NSlrzAF5G2Xak3LmVCRcJoY8Cw4
+	 QZWlIgZ5+B0+gHvlC4D5RQu02T4qP2hrhjGiBt2qRxIs5HMezylYX6kf5CXQ+zR3Jm
+	 yfuATH/+e7d0A==
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+To: akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: axelrasmussen@google.com,
+	chenridong@xiaomi.com,
+	david@kernel.org,
+	hannes@cmpxchg.org,
+	kasong@tencent.com,
+	lianux.mm@gmail.com,
+	linux-kernel@vger.kernel.org,
+	ljs@kernel.org,
+	lyugaofei@xiaomi.com,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	stevensd@chromium.org,
+	wangzicheng@honor.com,
+	weixugc@google.com,
+	yuanchu@google.com,
+	zhangbo56@xiaomi.com,
+	baolin.wang@linux.alibaba.com,
+	baoquan.he@linux.dev,
+	"Barry Song (Xiaomi)" <baohua@kernel.org>
+Subject: [RFC PATCH v4 04/16] mm/mglru: boost swappiness responsiveness in get_type_to_scan()
+Date: Wed, 12 Aug 2026 20:16:46 +0800
+Message-Id: <20260812121658.69965-5-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20260812121658.69965-1-baohua@kernel.org>
+References: <20260812121658.69965-1-baohua@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260811114622.6a04927b0c7ca0c2d6b39cce@linux-foundation.org>
-X-Stat-Signature: 9tk4nc41x31odjj4ij6sihyx7m5dghzx
-X-Rspamd-Queue-Id: 3DC3BC0002
-X-Rspamd-Server: rspam03
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1786536820-970136
-X-HE-Meta: U2FsdGVkX1+h5DzHW3zqJzYuAPWJ5wkmjYcPJi0lC5R2IEKNgZt5S5vhIyy4sdqzayZcXzDO51AE5ncE2lEuvpWrelMDl8+hso72TjCrFkYokrW9PLkUcJ5rBTObJFPFz2eldnpBqpJNgCOKvx5sUtemDVGoqCPW4l0xnLhdxrPueahNvJgmkHn9Vod4SJZrETMlzJW0ZohpxBqVOKEU6tqQjjwJfVlFG5EnH/0oI2ZX3NYhW/sKCvSGx7LiJo4dJw6bmcd6wnAJ7ur0Hg3GjAOGQMGs0TB71TonNwj+UvSQ0Axoc6BEQ7a0Fhlb9ZHrx50tYnE8PFD9DhZdZkOWqaQICPTlQObo6/A7B4WXO1xS+MsYfHuZgkzhrR58bpCHBSpGWPHKzWHm1W8nRPWCZd5F4BqiPMr/VdaDPXrWV3Z3hIVEl6ZpbZ3YSl+0Nj6r2S2VxDvCsEtGftrNH9PNFRjRJJbaa0TmwwCxMpJHSAVb+7nGezq3ok4+elN3NdFaL8DlaKYVWId4n94EM+tol48krFXlR0cKE2YIbmnwOWvSXD0r6PNtdnyeO055pMaaIvUE0KlUbFMATTJwl2AylGWsnDpUO2zwd7kBhnXPF51WWj6Gl4EOWPxUuTsOueSh8IOT+L290vj8F3pRx7twwr3te5EMYTZVsYKLyprolOhMTI4+mvmnt0TcBtguRTnqlj8LxeWPtqEmETCO8F7f40TqCzDa0IdQvKqxHj9odtajn+TOW0urXz6GDlUsIKz2WRhyTf3zra/g2A5FvvlC9fyzJf2PMU7WBs622H0WuRBsd/0ofBZ1zDPaw8e6d/kXN7bUOF7d8oLkG9Hhmme/pC6/XNxRbXTR61gOsnAEESIUFlY/eKybaVvCK4ilpiIdbaNh2tw4lBXn+1BR8k77fMln24FJ0qBETdNK7j8Pz0E/xrpozu27kduFiVNekTALGk4XJeQpzllzyZwNDpm
- slOnieFh
- i3upURxFdGA96eq8N51RQvj3cu5K5VcOZ81nAG34cKgfjZk79ANx0CSX0vywR7Mww41vIFTbXt/1T9Mia0GoUMJLrO6N+ehY00vuvTtqiQXes68L7YFHajorGA5vSZ8kWjIKUOc0c1GbaWyJDCQplkFUltPbCuAbvCx6xYOqDeyoYNHDlsB/ltWkCe3+odZfjcHIxkDLPvg/bNP0=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D523712000B
+X-Stat-Signature: c8k7inp3j4esw8756m6nfrutsmrmzi7b
+X-HE-Tag: 1786537100-237773
+X-HE-Meta: U2FsdGVkX19B3Ad8NpZC1gQG8H92W9glmg0FNezMFyKPcIEXIzwS5NwyMO9QKJNAuiCrhA2N8PaOmxqMxVRZ/7M/d5i5gxVyU1/GLhFwisJhJ+8imoEH9RDI6/JUUI3MwjU/0mRH4TNfC0xCIza914orLrR3v65OREwUaeiqELgw4A/nncdYAOGzp2fC51U6SJKooWnYscTcIDh7qkNMiWgCA9ZALPe8mLiF6TZJ4cqw9mpF3jUshB/AJVu9MKpD5rT18Hl4xU2zRYUozGG7W4ocHz+n0xwIbRk+wYFtcAaF2dqvBULT0Ic4n30osqqfY9If3PwCx3llPY9JZnhGC2YISoYCZ+6AAg1/zInV1NUmYYvjBH6cY/4UM2tPEwJmrvDO6piPdxb7ZDXAqigcCatxQPgpIhpiWxX4GgE53g1tGfksprMXGYlWGn852Xj5bRUmkmpuQbzPZu25Efl1wygZY2yLXKBzTcGPwzsS6hIaLHtvXSe4qYJVAl8EEaWg/kyZnOpQYnQXQcyJI11z0pqeXL9XnDibHSg0EbTSDxyvo6cLTFoeGKxr5wLU9vkWq5zQVeQ00KfCwgLlTLAVsGCO7G82oVyCj8q9Omnlv4KhQ19iVwihCGnuHlWHqjrqzBlzFOPl0EKH8PRgD4TD1/Rtph+2QgsJGAXfgL8eCUc6vfuHGP6M3VWm0dcBwN05J8aAXYDve/aPxAcRIOdUnfX5a2tOUasuKnIlxhE/Hv05ldXfOOzhuKY2ZeStFExFL0RUu4TXukpBo7ul6ULWZmN+OSbbJkkzmBd9OwENw7yqZ7+dZ5DrSAyCG52kwtZKcl74/YR4D2NZoQ0VFzvM0wVK57PF667otB/YlXhNLa+Z7XlWNo0i9sp1eLO42oKH9Nal2cvYFKbTx0ZRcaWSYsVtbpwsFqXK8KK0zrY3x5mt4XGklWW8lGfxMUb3YgABeP0RzpPIylbSS26sO+I
+ olPuNrA0
+ qEi9ucNeYJ+nF9ajJhYwbH6VbgopgCFRbkINLITnPBkjM2wWqLJsZvc6ZOli8PbCDKqdvR7euC67/V1KwI3ythknPQMt4rzQYcb6sVnaz9JkeN+t1pilsjCOHOxWTJZbNWR+CYFNIbl5ZSY+o7GDD2I6Ae9IaSQAw0Wzj4jzcKbRW4u2NlpmOg821747yVs1+QC1K9gDch6OgmeHsDzvLrsqESlmG3QUHc3ANzpHsVEgOBHt+J9Vh8Akv+pquVePtTyiwde010z7wdQE3RjcYsdLgAQQXMkFfYc2voVviwSX69KbRYo1uEfmIJ7IskHojbaCkYLb/0mgwU7Xk+umnOMgRs/nvFKvH3DNnzqjjcIV5knw07NN6Z3wrvezrHDW9VHI4uzEM98+QcbU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,48 +109,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 11:46:22AM -0700, Andrew Morton wrote:
-> When fixing things, please always take care to describe the
-> userspace-visible runtime effects of the bug, particularly when
-> proposing a -stable backport.
+The linear weight in get_type_to_scan() can easily be overwhelmed
+by historical refault costs when swappiness deviates from neutral (100).
+As a result, user-configured swappiness often feels unresponsive under
+memory pressure.
 
-Thank you for the advice and sorry for it.
-I will make sure future patches describe the userspace-visible effects clearly!
+Apply a smooth quadratic boost based on the distance from the neutral
+balance point (MAX_SWAPPINESS / 2). This amplifies the weight of the
+preferred scanning type (anon vs file) while avoiding hardware division
+via bitwise shift.
 
-> For [1/4] Gemini tells me "At a high level, this bug triggers silent
-> memory corruption, process crashes, or data instability across
-> completely unrelated userspace applications - typically occurring after a
-> system resumes from hibernation (suspend-to-disk)." Which is what I
-> figured too.
+Assisted-by: gemini:gemini-3.6-flash
+Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+---
+ mm/vmscan.c | 28 ++++++++++++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
 
-That is right, with one small correction. this can happen with
-uswsusp while the hibernation image is being created, not at resume
-time. Memory corruption, process crashes, or data instability across
-completely unrelated userspace applications can occur there.
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index dddd2ecf970a..2fd1e06eb192 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4838,18 +4838,42 @@ static int get_tier_idx(struct lruvec *lruvec, int type)
+ static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
+ {
+ 	struct ctrl_pos sp, pv = {};
++	int anon_gain, file_gain;
+ 
+ 	if (swappiness <= MIN_SWAPPINESS + 1)
+ 		return LRU_GEN_FILE;
+ 
+ 	if (swappiness >= MAX_SWAPPINESS)
+ 		return LRU_GEN_ANON;
++
++	/*
++	 * Apply a quadratic boost based on the distance from the neutral
++	 * balance point (swappiness = MAX_SWAPPINESS / 2).
++	 *
++	 * A linear weight is easily overwhelmed by historical refault cost
++	 * when swappiness deviates from neutral. The quadratic scaling
++	 * amplifies the weight of the preferred type smoothly.
++	 */
++	if (swappiness < MAX_SWAPPINESS / 2) {
++		int delta = (MAX_SWAPPINESS / 2) - swappiness;
++		int boost = (delta * delta) >> 4;
++
++		anon_gain = swappiness;
++		file_gain = (MAX_SWAPPINESS - swappiness) + boost;
++	} else {
++		int delta = swappiness - (MAX_SWAPPINESS / 2);
++		int boost = (delta * delta) >> 4;
++
++		anon_gain = swappiness + boost;
++		file_gain = MAX_SWAPPINESS - swappiness;
++	}
++
+ 	/*
+ 	 * Compare the sum of all tiers of anon with that of file to determine
+ 	 * which type to scan.
+ 	 */
+-	read_ctrl_pos(lruvec, LRU_GEN_ANON, MAX_NR_TIERS, swappiness, &sp);
+-	read_ctrl_pos(lruvec, LRU_GEN_FILE, MAX_NR_TIERS, MAX_SWAPPINESS - swappiness, &pv);
++	read_ctrl_pos(lruvec, LRU_GEN_ANON, MAX_NR_TIERS, anon_gain, &sp);
++	read_ctrl_pos(lruvec, LRU_GEN_FILE, MAX_NR_TIERS, file_gain, &pv);
+ 
+ 	return positive_ctrl_err(&sp, &pv);
+ }
+-- 
+2.34.1
 
-> Do we have any reports of this?  Reported-by/Closes?
-
-I found this while working on giving hibernation slots their own
-marker in the swap table, which I had discussed with Kairui.
-(https://lore.kernel.org/linux-mm/abp7aDgYLrxF3Me8@KASONG-MC4/)
-As far as I know there are no reports, so there is no Reported-by/Closes to
-add.
-
-> I'd like to grab [1/4] only, and defer the other three until 7.3-rc1.
-> This might be mistaken, but from a quick read, it's not clear what
-> benefit those three patches offer our users.
-
-Simply put, they are close to cleanups that remove unneeded work.
-(with a some little optimization.)
-
-Patch 2 keeps bad slots out of the swap cache, so readahead no
-longer wastes a folio on them.
-
-Patch 3 keeps hibernation slots out of the swap cache, with the same
-effect. no wasted folio at readahead time.
-
-Patch 4 removes dead code.
-
-Thanks,
-Youngjun Park
 
