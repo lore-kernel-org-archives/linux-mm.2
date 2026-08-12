@@ -4,94 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4C2DC5CFC1
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 03:11:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87B16C5CFC1
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 03:13:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAB4C6B0095; Tue, 11 Aug 2026 23:11:40 -0400 (EDT)
+	id 842196B008A; Tue, 11 Aug 2026 23:13:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C84A16B0096; Tue, 11 Aug 2026 23:11:40 -0400 (EDT)
+	id 818666B0092; Tue, 11 Aug 2026 23:13:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC7506B0098; Tue, 11 Aug 2026 23:11:40 -0400 (EDT)
+	id 730586B0096; Tue, 11 Aug 2026 23:13:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 978C56B0095
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 23:11:40 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 20A7C1401DC
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 03:11:40 +0000 (UTC)
-X-FDA: 85091142360.07.8CF0A21
-Received: from mta0.migadu.com (out-216.mta0.migadu.com [91.218.175.216])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9D73D140006
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 03:11:37 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=a8i42++q;
-	spf=pass (imf26.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.216 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A3DA6B008A
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 23:13:14 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BB34B1602AA
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 03:13:13 +0000 (UTC)
+X-FDA: 85091146266.22.A766828
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf19.hostedemail.com (Postfix) with ESMTP id BB9971A0003
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 03:13:10 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=TnMfDSKr;
+	spf=pass (imf19.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786504298;
+	s=arc-20220608; t=1786504391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/UzIDcAeVC7lvcPSEkeHrtgSf1XkfFAZbNuK3eaiWD8=;
-	b=XkXYu3FRGhzJ/dNS2TAeUxhxTQ73GAFQWT5AZr5c6oNBE2y9vb2b2jpQ1Fm9m9yycyVgMx
-	DczrQQmzGurlQ6qtsv0LCeBNbPHraOy3cm1zDD7GC4WEdFOGBEkVkUTEfWGFPoM0JlsGt8
-	VZeWTbeLeGlH6USiZhlp0XL1/qwa/Fo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786504298;
-	b=zk2zw99YB7ednJawWTWJdWvS/vExPQejyVPFSqDCUALoNhhehM8EnPzRbMef+q5i/I6JZJ
-	K1+1qnj7DZn4q53Zrtxg4hl2XGFtQD2EYyyPeHKaB8E0ytzHMikBl2WeDi8NrBBCe30t+c
-	HVAbZQpJqHExgwKq6hnPl+LJaBWUGfI=
+	bh=iIkb+oNCQB6v+cDYDKk4WBWm0waP5vQ78vq/F2O7yiY=;
+	b=Ru3GUyHYe5gdfh6nXEPenk+coCoECdCHt2Yfs7fQ5YYgTfW9l3NsTpwFiae8reZPPchi93
+	cSirA2wDtOqpkB5UAJ5i2zafOTmhs0osK9i5hrQvnxItjoBFIZ06MZrTNrFw2oN1Cpy1Z+
+	B8h0n57hwCxpKIjHZ646gXEdq6Svmvg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=a8i42++q;
-	spf=pass (imf26.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.216 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=t86JxHziNoCkZyq9Kev8+A/YFqRdo1YCTbOIRVlOfTk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786504295; v=1; x=1787109095;
- b=a8i42++q6uToawNvM+PY+NuMQIQX31H/wPyF9Kh9jXVzmmtPqtRfVFFpZtccLp0zoA70A7p2
- bnbNYUQZbxWI1Ia/dkUgWz9OlIdmZ+zSMWC1MI+i32A2lfdFOumHxIBze4oBimzSExCAevGe6QA
- Qp9B4JLJq9g62xPLGBJzKusg=
-X-Envelope-To: linux-mm@kvack.org
-Received: from webmail.migadu.com (2001:41d0:303:fc7a::)
-	by mta10.migadu.com with ESMTPS id 38281a8b4824b520;
-	Wed, 12 Aug 2026 03:11:35 +0000
-X-Migadu-Scanner: mta10.migadu.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=TnMfDSKr;
+	spf=pass (imf19.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786504391;
+	b=AG7LQmaSDVCW2PCjTDjp+tr65VHOzfISczy4JWwxq0KasN5P2056zphDFSxj0rstV4aSI3
+	M3C1WFCXvt3P/uzT25PiKLwu3XQzkRnDHGYXmp2CA72ayA/Q+TycV1idOuswJHvLvMfWXc
+	qTmx3SQxPTQvrzD104srhwr/bXu21Xo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786504390; x=1818040390;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=AkKijx+yhl0VzD/BsT+PyE6ekz5n9cwWuOOi+c1ujAc=;
+  b=TnMfDSKr548TJGD8PuteND1I/uTXa4UjUYFZJ6ippm3R/scduuHmxGV/
+   8mOjngGXt6eJBCGlV+lhkcWWnJV9v8GkezVEmaZZ6xSEmF9nmNZz846Vc
+   tBcy3I9O/M6FNw6ndxKMjX9gjizdYNYxYfKDeojb4q6BzP6SfhuzJb/kn
+   /kz0Q9vl4C/NMQRUe0yh5G3ELUrRBezN/jmlZ7AxnbQv0L/HdFLr7fhB2
+   J4VaYO0W+d8Ubfy/83KhcehJk53CB+Rxb5hGBjOTaY4ovOzrwrcVrFgg0
+   srz6SNtb0rs7GoxsHFi35fEgc0/boKLs02fecsG+IxeyBb0HdDIVMM5XK
+   A==;
+X-CSE-ConnectionGUID: z9JgBdF9RZGgSoPfPO7/jg==
+X-CSE-MsgGUID: hpRrSmRXTs6VwanGo5xxkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="87069590"
+X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
+   d="scan'208";a="87069590"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 20:13:09 -0700
+X-CSE-ConnectionGUID: +2b0w5VQSvqkwpgU/D8G6w==
+X-CSE-MsgGUID: /572NDDhT8KJyc2EdBGfOg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
+   d="scan'208";a="267358694"
+Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 20:12:55 -0700
+Message-ID: <06f8fbe4-80b3-4d5b-a8cd-2144087e3dbe@linux.intel.com>
+Date: Wed, 12 Aug 2026 11:12:53 +0800
 MIME-Version: 1.0
-Date: Wed, 12 Aug 2026 03:11:27 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-From: "Hui Zhu" <hui.zhu@linux.dev>
-Message-ID: <e0a9a4d24a5a667c94b9cdc79a268b624414c6bc@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH] mm/vmscan: fix missing NR_ISOLATED counter update in
- MGLRU reclaim path
-To: "Kairui Song" <ryncsn@gmail.com>
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Kairui Song"
- <kasong@tencent.com>, "Qi Zheng" <qi.zheng@linux.dev>, "Shakeel Butt"
- <shakeel.butt@linux.dev>, "Barry Song" <baohua@kernel.org>, "Axel
- Rasmussen" <axelrasmussen@google.com>, "Yuanchu Xie"
- <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>, "Johannes Weiner"
- <hannes@cmpxchg.org>, "David Hildenbrand" <david@kernel.org>, "Michal
- Hocko" <mhocko@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, "Hui Zhu"
- <zhuhui@kylinos.cn>
-In-Reply-To: <anrPeDFIs6JoPqhj@KASONG-MC4>
-References: <20260811071703.425097-1-hui.zhu@linux.dev>
- <anrPeDFIs6JoPqhj@KASONG-MC4>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 01/41] KVM: guest_memfd: Use kvm_mem_is_private() when
+ populating guest_memfd memory
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
+ Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, linux-coco@lists.linux.dev,
+ Xiaoyao Li <xiaoyao.li@intel.com>
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-1-2fc18ee6d3ba@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-1-2fc18ee6d3ba@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BB9971A0003
+X-Stat-Signature: 9mtwywi98w8k6dnx1tif8taxz3gzimjt
 X-Rspam-User: 
-X-Stat-Signature: ko49qmteea4esrmf8i8qx8immoqiouen
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9D73D140006
-X-HE-Tag: 1786504297-414161
-X-HE-Meta: U2FsdGVkX18v3GaFjoSICCJFClgsjjcX062sIiqlbDEvvLWMPZz0Wmpk54rZAMsFnji9xQLFNdnICIEvkxKYCEfGvfun/mQ+kxLoI120F1eRqDq5wMzkCgxw15hT9QWTKIb4JNmC7Iv5ESmG4Cswe2+CfJwbPSRzKUs/2Hi7zI+lmcKJpIGZbzxnFwxPSEmMXJCQhTq8eHCJk8551QoWL+aQzckapCLt1No79ORu/zLvlnIrsc1U65YiQy3vFtu+xVNfDQYv8+N2ffC2lAxpMQlNcnIWifmWmFRxXqqGPFOrKlrPr20ADjdW80T0hjzlva5rkyDkFQR8MB2g7G7VXyA+frH18BQE6Q8cS1ad4cqHSfMaKipOzSMDaNEQ2JfIUj8rb24Ul2SfOd9soqLDoaE2aTknWT72yDUX8J6u86utOYtKhMLZTD0q7kZIKAfkgm2kYjm7wdKsfdwmXN80/733KpXwqUxwoDwrlLBMbG7QEIL8vAcYNyHXpc/546A0WZhOOaIalv8tMNya6dRBliZvvJX5IY+1CwpfnX7Xgrmdf+bGfl+BABbMiVFl52d0YAuhLh0VJwuP5ZxNQNUYi6/7oqt4CqOFfNZYUxB9O3IlTlvm5D5hcBXxqWfMUrb2ewCefk62Le9zjGnR433sV4dUzL3CpS+d7sOml9QcatEXIIL66i88h3a3Bpo9Wsn5DCIhEUPHri/qRxw9x2PVNBcQkFH/lJfCZMdOoIsHUr+KuhHxT4Gu99JLXP38+AawJhAGTmcXQn6LEszn//pS1i8R9OgdO4wgc7pE4vuHZrZpKuDOoXgf+Hgg9BGsGit9oLHUKL8F/RKXwh8Acm3JI7IRChiy9YVQcemJiwLSxVu8yPhczR22pNl17ub2y6EclY/kVQUJHQDCMzLa07dqpZUP9BJ0lktKGVSFTwPwSa2Ngyu++f0OzJmYrEhzkoDxgsNZxW7utzATXQbLZIk
- sneHF8dP
- BlAVcNfTRRimbD5Sv/9Kbp+NqbyUtZiZ7/1U7QXddxWUVa5Kvj0EGIYum2k5ZLCpx/gIosdF7EqrWN+BLwE0Bfky/HX4MqeemqMNW+a+U8xCuhzKFPJNmQjwZXEq+HRVfirnbH2/2SVytYxks8Nu3AMMRU4hKAzvF8ABB1wRVgykat+nOOHLUNBWtXUXv6SEXjGnlKkS1wjAmTpFj+FXKzkO3qONO1dvtcwKtoDr3GcF60FKtVuEOwrnxgh6DMrDwFOXdy55d9rsVCPtTfEnCUyeZ2I+mgSp0qZfk3MzgMZM2PBOUh8j7JXThyhheMcY7KWow
+X-HE-Tag: 1786504390-536829
+X-HE-Meta: U2FsdGVkX1+FVncnDaMIa7tybI2Zjg3FPx57NNwjeI065MEbu1fLM3jR/A1Hy1ey0GnRiEg+fq9RGh+HDFA568nrSx9/edTjq8d9QiDTQAe+GP9jU3wrt+ILELi+y3o9dX/wwQ2pHP8aY9rP/yOA1KsLMl247CrYOgJdVrex8mYWTLqPOOtJh51rNBrJPcfdpVNTX16c7J/4Fha8Qrx3W35oWpup0azUdC5w1AJSkiQ7enNzhtNjsrWo6/hVCzfp/MCSF2tDekkWUTd0LmkVTq4SWrDkYwkXnWXZK8YBHoulKUwLYKEG4ePayTR7oEStIbzV9owv9LUgRp3BPEsBOIRfEksmuvncNYQDwXszaJ9z0mfs+OPSQq7BFNOLAgLuTncJnO/ZttM+NOfqmkoDlUKHAZm4SE9f5Gog5RJ64WCyrGtXewd8C7uSoFD8qOqBUjxzjx2efK6Rd8C2eTw9TeiYOycgISmUSAUU4WyHY354o+lzQId4L/uGWKTG6wsAKOD3Hi7zdP3BQ1AWUk8AxTKuPRdoeHJunKAdGAMExTi8eWyW7L0g/2x5mtKFTmiNGl1x9Oyv1IunYoxgCkdwGVrVhrFEpHsNB9/26PPP8syoCeGNMFZ24bKZcT0bnvwid9anprVwyCL4XuZQMIUb1sBhbUgLXNY2ksNEzunSEmaYT9cJs101eqh/1gLOKkAz3Gk5oTr/V/nj68KWZYZ63heFmpcxAtxPWMOwCDFl/UoSe8RCHfIaTgY+LVKSxww95IbhGLWLoRzl5MvHi5Z2URout+dZcKaruWCnyipbiS/2ADumIZTu+3k+EzLuobWBc/CufHotpsLE45pirmfoAeKTRc+/tvl/s7vCpdJRzIWwkosvCEYbztoSftUK8pKcmoCgGXxbthrFwUmZB8/09Zi0fHGCHE0l0WCajQguVhSvCt72JFsIFo4H5uqAgfr159gnTLxmT3akixZEPUo
+ zJRJfCQU
+ 1/hCRKD5312NjJhYAIQearQrMj0/LASdP2SxVXEcXjXM0DFONcBI7ox8kOvCob2EKD8lQqztNIm4k4fezt8hEhSUVKoswZC7X/4nR+NQBIC0qcLXB9pbsj2RTzDwd+v3wXDIFsKeXWrlK58rUPej2b4G18cMuTo+TceEW0PFQGf0VzyX0cHsm4LFZQmYo+FVM56xAw1mDikJK0vlJ2T2HsmaH3Ij1hFkQX43mpsjynF+MejWcta2rp8lQ/IZrUI12RrUP9O2xaNtxvphv88Phe4Uzt3VlIMdW9gEXt2VDQP3Pk+QxVuJdtgFD3joSZ7tPZ482gvTGBI2oXiIyHtQbXyf9eQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,75 +136,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->=20
->=20On Tue, Aug 11, 2026 at 03:17:03PM +0800, Hui Zhu wrote:
->=20
->=20>=20
->=20> From: Hui Zhu <zhuhui@kylinos.cn>
-> >=20=20
->=20>  The MGLRU evict_folios() isolates folios from the LRU without upda=
-ting
-> >  NR_ISOLATED_ANON/FILE counters, unlike the legacy shrink_inactive_li=
-st()
-> >  path.
-> >  This causes compaction's too_many_isolated() check and the OOMkiller=
- to
-> >  under-count isolated pages when MGLRU reclaim is active, potentially
-> >  leading to unnecessary compaction attempts or incorrect OOM decision=
-s
-> >  under memory pressure.
-> >=20
->=20This patch still doesn't cover the OOM problem, too_many_isolated is =
-not
-> used for MGLRU. I prefer to keep unifying them like what we did previou=
-sly
-> with writeback.
+On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> Using kvm_mem_is_private() when populating guest_memfd instead of using an
 
-I will address this in the v2.
+Nit:
+Using -> Use?
+> open coded equivalent.  In addition to simplifying the populate code *now*,
+> this avoids the need to provide a range-based gmem lookup API in the future
+> as well.
+> 
+> No functional change intended.
+> 
+> Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
->=20
->=20It might work for compaction though, did you test it?
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-I didn't test it, I just came to the conclusion through code analysis.
-isolate_migratepages_block() calls too_many_isolated()
-which reads NR_ISOLATED counters, and since MGLRU doesn't update them, th=
-e
-check may under-count isolated pages and fail to throttle when it should.
+> ---
+>  virt/kvm/guest_memfd.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index b596486d184ca..a11cf6dc785da 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -811,9 +811,7 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  
+>  	folio_unlock(folio);
+>  
+> -	if (!kvm_range_has_memory_attributes(kvm, gfn, gfn + 1,
+> -					     KVM_MEMORY_ATTRIBUTE_PRIVATE,
+> -					     KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
+> +	if (!kvm_mem_is_private(kvm, gfn)) {
+>  		ret = -EINVAL;
+>  		goto out_put_folio;
+>  	}
+> 
 
-
->=20
->=20>=20
->=20> Add NR_ISOLATED counter updates in evict_folios(): increment after
-> >  isolate_folios() and decrement after all retry passes complete, usin=
-g
-> >  the original isolated count saved before retry.
-
-
-The current patch is based on mm-stable. I will rebase on mm-unstable
-and use the existing nr_isolated variable.
-
-Best,
-Hui
-
-> >=20=20
->=20>  Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> >  ---
-> >  mm/vmscan.c | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> >=20=20
->=20>  diff --git a/mm/vmscan.c b/mm/vmscan.c
-> >  index bc324e37c5f1..723b513574b3 100644
-> >  --- a/mm/vmscan.c
-> >  +++ b/mm/vmscan.c
-> >  @@ -4817,6 +4817,7 @@ static int evict_folios(unsigned long nr_to_sc=
-an, struct lruvec *lruvec,
-> >  struct lru_gen_mm_walk *walk;
-> >  int scanned, reclaimed;
-> >  int isolated =3D 0, type, type_scanned;
-> >  + int isolated_orig =3D 0;
-> >=20
->=20The variable name looks a bit confusing, and what is your based commi=
-t?
-> In latest mm-unstable there is already a nr_isolated you can use.
->
 
