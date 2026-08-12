@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 793A1C5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 19:59:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAE7AC5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 20:10:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 403596B016D; Wed, 12 Aug 2026 15:59:02 -0400 (EDT)
+	id A7EFD6B0113; Wed, 12 Aug 2026 16:10:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38D996B0172; Wed, 12 Aug 2026 15:59:02 -0400 (EDT)
+	id A56CC6B013D; Wed, 12 Aug 2026 16:10:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22E426B0173; Wed, 12 Aug 2026 15:59:02 -0400 (EDT)
+	id 9454E6B015D; Wed, 12 Aug 2026 16:10:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E2CB96B016D
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 15:59:01 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 61DE8A0462
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 19:59:01 +0000 (UTC)
-X-FDA: 85093680882.05.8D92A33
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010065.outbound.protection.outlook.com [52.101.56.65])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 78F3F140004
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 19:58:58 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=g3qJQXou;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 698446B0113
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 16:10:25 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E2FBA14048E
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 20:10:24 +0000 (UTC)
+X-FDA: 85093709568.14.C1F9BEF
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010026.outbound.protection.outlook.com [52.101.61.26])
+	by imf17.hostedemail.com (Postfix) with ESMTP id EC97B40004
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 20:10:21 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=FhVJE3Q1;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf26.hostedemail.com: domain of ziy@nvidia.com designates 52.101.56.65 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.26 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
 	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786564738;
+	s=arc-20220608; t=1786565422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oNy2RlgN+93tij2pItmSE+mEg9Su1aKTCJppfcTAfps=;
-	b=jt4MmRWhjnybGDV1YNew/wIXpaHrwB8JkoFa2z7aRILLhrKx1MQng3rv7KlfRZxk2+5gzC
-	+Me+Zxbsnt7hQyoYV7CoSALgG+pZT8cknPL1RPFfN5GAgQleBlQF/teieloC+OXJ6i93Bi
-	va8P8aunNklHSAZWmePjDwV3HYMTwyM=
+	bh=Yt5nLK9TZwZlfK5MrUus1dOU6QWg8+fs2SaJmfVJKpQ=;
+	b=tUGiWUeWzYY68eIoR76q5Cy6tpNZgg/BmZoLkHQ3D4WAY8exQeZS0V2zOJmhBCg5hwcN1s
+	lbmyXK+bGB9KdrNaLIsOCyg34dF9TRfCPYBKbP5Ks2t3TOpSEiameBJdrtKAh3nvw+N+FW
+	Nkfvi+FTsAOSUDbqbIAfKt+yA9LySyQ=
 ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=g3qJQXou;
+	imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=FhVJE3Q1;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf26.hostedemail.com: domain of ziy@nvidia.com designates 52.101.56.65 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.26 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
 	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786564738;
-	b=1diA+d3D8Tre9YtVrcPLNmLRKFtPEzNcD+FCulIff8gsKnlxXEsPb2ZC656sPlHmktlm12
-	bjz0HOL27QsXzbe1v9c6dbZbudaqu67AoT+l/r3GEZW5BxEWrFWK47wsqoo/3ig/VxfTsC
-	qsuUeJjAcNZ5VG5OTw5th7ySpK/sbwU=
+	t=1786565422;
+	b=Q906gDyZxvwtPeGb7UuXTcRgj4Rdkri/ZXQ005zehWNMD41fjWL+KyAYKbrzmagLKJLc2y
+	Shn6WwY8DlO5QvGc6Gg3644Pa44bPr36RerDA9QezI1RXyh6bfM9c6IUO2QMiiHcYzf3hA
+	Dk2xxFaIu+c5n6CRew4rvHwUKIIStzE=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Nj6iqxz49GfzxzLdyLMbbfl77Jg+n2OFlhal0mNEXOJ4oGYWBBJkgBeuOpkAyfjOx5T5zVwUYuL4bBD5s6CLHWtPjd/Ww7SXHtdQ5+6XRt0ADjRQPezgeLSrHgtKP3enR0MEZA8KB1jf9RFSPb78DoVMFVhLJ1SpqXNgw+XCszvmVYST5doycF6ugC+a5wQy27s3CZm9xFduVQml14KMDGrTyg0Y0fScjrG44Ui/3sI/zPzY5nL250M53WZWByDBaqT8wXnTObD0nA/fPQE3o91gudbrLdvYQ96DiHtpB3wMuMjYHsRjE/1VwpF1jErWh8K5MobxLP2SUZNL3E+1JQ==
+ b=TsP/+0M0h6NRa7aOA3UCpwIkq96msGvKkZ72DaisxPUSsRp9ktRW8FpJeMa9wrHP5jykSTOo9YcTd96Jg3tt3t6ouWyxH3CpQVirLtQTVxzWkPnPATj2mnQ3PPjojFPvSg6QIuAI9ulIT4pxBJ81WuQE1jWUuNonG9K5GZ6O5UbMYA8gTliXHNB8f4CK4Q2aGQPABt/dZfGwjWAbm51GWkQ04XPN6W9ArOAWhTR45C4HVhku4CULLz9txbUJSYjHP0pE94eEb33ZrmNG+N4b6WY4XyHHM3cjeUlZDno6fxxN6c+Nuf+OqvZfzXGYY9oeJZVlKYOQTdJIk1POFhRZ3A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oNy2RlgN+93tij2pItmSE+mEg9Su1aKTCJppfcTAfps=;
- b=wJHpI5zF+cUKWp33b4qiIXC4LLlzyCa/ezP59wQmWeb8BpkflYAev1DgcUZEar65z6GmypFr6LOCWYybwbGLfiSKZ0QeSA4kj+RMKSSGSFc+fQpWwWt0mNFliWnv0eBxK1jEifC/nal+SvfqpKg+53KBU8MQbCA0hfPr5fOvKlgoTYpR7O4f6fH+9+67qgWoIYkehbiIbq5axSmDBBtWOT/YrAl8Q7sNYQ+Lxi3LVPa+H19yHIMW9hbC2m/7ZdJjK84DTUR8+5WAuiOWTjcIzvEDXQVd6fkka8psVgQdHVxXGlqbVA7vrtfccYBbd2G8bd+vIvMQpv5irEH3sGkr4A==
+ bh=Yt5nLK9TZwZlfK5MrUus1dOU6QWg8+fs2SaJmfVJKpQ=;
+ b=FovmcblcltvirXWhyk/h+WBv0hJCf/6ssYAnkRnFy6dKnbebrzG3H4Z47lMVcTvl0LRbcQ4WG+I9iRJPCU3sj2gCi/SG+fbvJgcKMZUmHt7G9MhDb3iIiTShtWX0zdvtQO0Fu0Vucv0dCD/AZB2/SB+vekmcfA5/q9AEDHR/luN5xgJkWHR/OvOIOzhq6QnzlB8v8rJCleZpOIhoG0fR2DGxPN/EoYx82GI4vuBLuGZUsyeHs4B90eaccc8b3jADPizZdlyAgrJDgI62+slDlrog3OD3fXa20ugt28BZb/kgkXJJ1F1y6o8auB+Hl4wLz0YKuEuCzSYtYtvTsSfq6w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oNy2RlgN+93tij2pItmSE+mEg9Su1aKTCJppfcTAfps=;
- b=g3qJQXoucKN4LiEgQ9UU3YOV/1AcEAuDuLSVgL9WCgW2zVjxoT4+PrvgtbHBDSqDFUkYsuSyPdh3oTVOYsfsnMLDz3hqeOj4JOfCEUeQ98NvHG1nE2ZWwn73mCXY2xbH2N/9AnUUl/dtpYOZqeYBlmn7H3W7n0/trjmWaeoir41gSeLcJxTBWSwQHpemoYeejLdB/wwjUTSeA9QO9xU4VxibbTaazzg3E2thq4cq3HHnRfxI7UZNtAuhAGF5dfaAr7Uov9VY4CJQ41ntrluidEN/7uPwsyahtY9PEs4QsHULTFH6xrWkVQ1F5kVcPWUnvThQZk+Q/c8Uwi9XjSn1qA==
+ bh=Yt5nLK9TZwZlfK5MrUus1dOU6QWg8+fs2SaJmfVJKpQ=;
+ b=FhVJE3Q1eewe07t2UOcj0b3KIEHiX5NgT35pzvilAx/BakT2vxhcGBpMNj39mrNYm99st1L4s6uExRABH/JkU4LGD3olYa+hC26eg+JqCLmimq8VuZw2ygtIUF3De7yhDWBA7YxJMqUf41gah+dyJClCJXq6tMI3GVIlrIhedziLLxXK9UeGaceGqXdHd+5p88w7KhYDkKIf7XNdrDZM1lFgsvZVPqDmRi45dLc4bDn38ZBqECP4BCF+RmF1wEH/Ghco9wzkJBNiJ/O+EulyH9LDoszVlRouIyE26VA8cUnf3BfffnEmLkfl2cSdQ+kJsme5NCqVqVkutqZdMIbtXg==
 Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by SJ2PR12MB8135.namprd12.prod.outlook.com (2603:10b6:a03:4f3::13) with
+ by MW4PR12MB7264.namprd12.prod.outlook.com (2603:10b6:303:22e::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.14; Wed, 12 Aug
- 2026 19:58:53 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.12; Wed, 12 Aug
+ 2026 20:10:11 +0000
 Received: from IA0PR12MB8374.namprd12.prod.outlook.com
  ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
  ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0315.014; Wed, 12 Aug 2026
- 19:58:53 +0000
+ 20:10:11 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 12 Aug 2026 15:58:50 -0400
-Message-Id: <DKN8CAY6257F.6TB3KM9OX4AV@nvidia.com>
-Subject: Re: [PATCH RFC 13/14] treewide: adjust comments on PagePrivate and
- PG_private
+Date: Wed, 12 Aug 2026 16:10:07 -0400
+Message-Id: <DKN8KXM1XAWF.2N62FWNIBYMQU@nvidia.com>
 Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, "Zi Yan"
- <ziy@nvidia.com>, "Ilya Dryomov" <idryomov@gmail.com>, "Alex Markuze"
- <amarkuze@redhat.com>, "Viacheslav Dubeyko" <slava@dubeyko.com>, "Trond
- Myklebust" <trondmy@kernel.org>, "Anna Schumaker" <anna@kernel.org>,
- "Richard Weinberger" <richard@nod.at>, "Zhihao Cheng"
- <chengzhihao1@huawei.com>, <ceph-devel@vger.kernel.org>,
- <linux-nfs@vger.kernel.org>, <linux-mtd@lists.infradead.org>
+ <ziy@nvidia.com>, "Baoquan He" <baoquan.he@linux.dev>, "Pasha Tatashin"
+ <pasha.tatashin@soleen.com>, "Pratyush Yadav" <pratyush@kernel.org>,
+ "Jonathan Corbet" <corbet@lwn.net>, "Jan Kara" <jack@suse.cz>, "Steven
+ Rostedt" <rostedt@goodmis.org>, "Masami Hiramatsu" <mhiramat@kernel.org>,
+ "Dave Young" <ruirui.yang@linux.dev>, "Shuah Khan"
+ <skhan@linuxfoundation.org>, "Mathieu Desnoyers"
+ <mathieu.desnoyers@efficios.com>, <kexec@lists.infradead.org>,
+ <linux-doc@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-trace-kernel@vger.kernel.org>
 To: "David Hildenbrand" <david@kernel.org>, "Matthew Wilcox (Oracle)"
  <willy@infradead.org>, "Andrew Morton" <akpm@linux-foundation.org>, "Muchun
  Song" <muchun.song@linux.dev>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R.
@@ -103,85 +104,88 @@ To: "David Hildenbrand" <david@kernel.org>, "Matthew Wilcox (Oracle)"
  <qi.zheng@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>, "Kairui
  Song" <kasong@tencent.com>
 From: "Zi Yan" <ziy@nvidia.com>
+Subject: Re: [PATCH RFC 14/14] mm/page-flags: remove PG_private
 X-Mailer: aerc 0.21.0
 References: <20260731-remove-pg_private-v1-0-142c97ba3562@nvidia.com>
- <20260731-remove-pg_private-v1-13-142c97ba3562@nvidia.com>
-In-Reply-To: <20260731-remove-pg_private-v1-13-142c97ba3562@nvidia.com>
-X-ClientProxiedBy: YQBPR0101CA0188.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:f::31) To IA0PR12MB8374.namprd12.prod.outlook.com
+ <20260731-remove-pg_private-v1-14-142c97ba3562@nvidia.com>
+In-Reply-To: <20260731-remove-pg_private-v1-14-142c97ba3562@nvidia.com>
+X-ClientProxiedBy: CH0PR13CA0036.namprd13.prod.outlook.com
+ (2603:10b6:610:b2::11) To IA0PR12MB8374.namprd12.prod.outlook.com
  (2603:10b6:208:40e::7)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SJ2PR12MB8135:EE_
-X-MS-Office365-Filtering-Correlation-Id: b08462ee-0485-4256-f9d6-08def8ac22be
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|MW4PR12MB7264:EE_
+X-MS-Office365-Filtering-Correlation-Id: 57d4e04f-3b14-4192-10bb-08def8adb6c3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|376014|7416014|366016|4143699003|11063799006|56012099006|10067099003|22082099003|18002099003|921020;
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|23010399003|22082099003|18002099003|4143699003|11063799006|56012099006|6133799003|10067099003|921020;
 X-Microsoft-Antispam-Message-Info:
-	O3k5fabA0ZwgSZA7eGIl1YsQm/52dhAiwJFGse/HtG5BRVOyq4IS4jhvnBL18BJH501aCBbGpZUkzuHmffwsLCBTcuxY7u27odzg47HYCB20t8+3dDwWy8mQ8RzmOSm9Q4FmFwvqNI0a/HZQk7KN2/EQ7Gdiqf6yEV+28hX1yCqVgybtm/lw2vjfbgRo8sVSrhaJPrzNhJcOPw1xAnxWeBrM9uNC51eQTgrzlORX/jmrRqFwhxV+ZMDAewvl+xJQdlB4WiK9lCR1nb2R5hxWMW4Yot4hfuPA2bOzaMX9fMTXbGscqw3W0C0SoxZueVjq1QqH44zBBZXDWUemdXTiuy8hIp6W0plLIiNd2it2Sfxho4vRt2UpKR4Abs2gkr+vZ4PfedXwqUdcyNX71H64+S3lerASHTGveHe77AzLmafHnziS5J2y3xZgeOZvAXmW9cl8G6uF2ukMuCoaZpmEUdoff8JWDJXVUeny74CXkRjb56h7FY60HuaBKC+X3hKi15MIMGlZSpK6eoXwL1Ck8gkB+CbwW7RVRUo+IbUfLVSdNoV7XAFWcX7Bl/0dIYLnTz4MN++xyuf3pyOTOzDr0J6xUCHEBkD93CxyUXpM+BIeIRER/F1j3YWfS9eXPdgeVDgYhxeqmSkky9a1ewdnIMghgUz6Nrk7DHsweoJ1QkplcvW1pNy5uoqcCLFJDHLrXLDdE+fl/Pmytw1BYY1oPg==
+	N2A8ol8XyrTdjQ+xpCQYUfg0h2EkaVKPzkZsKU39aGrwKpMaCeAuPtzyIhk/LRo+c+W8w48Cc8dshifaff9AN0XM0meZJIh8RQNlhpU6FSlqm5n6S6UVO54D4p8g4x4ofXHrZecF2sAg4/WgyT7j8nyuE1FcjhA2iTvsQKUHlC80NmIJDN2Kn7SgVR5FWkeUNO143eHo7ItwHsul5oYBOKYCREkK3x6kKyV5VTq5fyGwJCd0Hef0ALhz6vsaCEDNgOCgEPk1MxnAo6LFtp4x9lHjoV2/heSuylpxJ/j0oDX6r4BX/64qWVHZiZFf5zGcUqpqJLbERrngNQBUB34kbcg9xAXegh7G1CDfmwIifTTPQuyvHgiIu2kTsKFZ0EU4ErC0wR9u3c4DZ1R7aQEh9M6h70DOjaytXbhYJxI0kHdtMltR+JCf3J/1sfRgbEi9pfNr8ZRobS09RpdaxcpLqVVFo3qNX7nppbPfctVuzS5axnbefM1Cyi6GzXvhAkLmfv2a/KSZKVbKt8ZQ4Qw2irmbmD5DJxVagzKXasJ23h6bs/6NHp39UyqvbyzppJryhEuLf+q6vO7mV2By8VEKU4l3UPExrttiWVMfUygv8hzZMAE4srXFhW70G4yu54aHCn/lrXeK+g5TMWK/OxWwIAYuJLYUFE3jAE0Pnd1jGgF+T3SLLPu1y3ZW5yQdeU8PsJDxcMOZv0DOzla8R0pYjg==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(7416014)(366016)(4143699003)(11063799006)(56012099006)(10067099003)(22082099003)(18002099003)(921020);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(23010399003)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006)(6133799003)(10067099003)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Q1ptVml0enZ2QnRQTnNZVHRaYU0zeko2ell6OXYzV3RFV3pRSnN0RHZFcS9S?=
- =?utf-8?B?cldHWXFWVnpiWUJmNWlNbnRXVTkyV05QN05TYllRem9BSXpYSUR3QlFFMjRk?=
- =?utf-8?B?SlhUdjJlNWxMMTdGRHZnTnJTd01pWUtvZ3hCVDdoVUFIRXB1dlIzMGpPekkz?=
- =?utf-8?B?bVpZRDlmanRKSzA0S1ZNbjQ4U2FRV3lvZkVJMW9wY2lNY0FoMjBENDlraGdY?=
- =?utf-8?B?U2IrMHNHdXV5Y3NuUjd3eDR4ck5ueC9TSVo4dVlXM0xIRE9nWHhOQi9EdEJr?=
- =?utf-8?B?QUFwekd6WVo3dkNPQlRTc1RYdUVwRFpjTkhsT2IzK0NFZktHdDVPZUtKSjVj?=
- =?utf-8?B?NHVNY042c1UycjVWdXJka2N2dkRoS3d4RVQ2b3NSWnRDSUdmZmZndmVmeHl4?=
- =?utf-8?B?NTFXRTJlRWRsczMybnMwT1RBQlRKS3pHM1VLYkZETVk2OUFmcDljaFByYkJZ?=
- =?utf-8?B?azRrK3VDbndKL2lJbHl5Z05xQ2h3bWNET1N5OWJ2WjJTTnIxa2tZb1hGSXBH?=
- =?utf-8?B?SkZ0bUxLWVo1eTZUb3QzTkVVTlJ3Z2ZvVVdTeU1OVWhXY0s5cnQ2OTlqcVA3?=
- =?utf-8?B?eGhMUDRJWTBPeFV5NVE5cDFlZjNaM0ZVVlZBalZvZXUvTmRGNmlRdFhZOEF5?=
- =?utf-8?B?c1JkVmxtdTkrWCttLytRS1cxTktKRDN6ejZUZ1hkNzlqTFpWVXlHaFEwVEFo?=
- =?utf-8?B?L2RVNzBFOFN2Y3R2S1M5b0JnOTlFRVJZUzJZYnhpNnczTGY1NWRWQ1ZPYjEv?=
- =?utf-8?B?YXF4Wll2UkNsYjV4K0FRQmhjZVk0aTc1enpMM1NoNmRyVzZxRWpOTVdtQ0tW?=
- =?utf-8?B?T1ZUWDZORzdUdGI4V05VVnYwUlNHbkU3SVZmQ1JsVzRsVHBkMWRZSGNhbGJO?=
- =?utf-8?B?dU43c2ZSTnFDS0Fyd3NBRHJReEMwYko2WGs3NFlJUGZrVWpiVjdMSHF0T3Rp?=
- =?utf-8?B?TVU4MS9RWUp6UHQyeEhuQUVjb3ZxVkZDOFZZZittanlFY24vTjExdXF1MTJ6?=
- =?utf-8?B?Ung0cXVtTVpvMDBxNHJaZVpHZ1ljU05WZjEvajNEa1lTeEJ0bmZnSmo2TGpY?=
- =?utf-8?B?VkJzalFnTUZhK3VPa2F4ZnFTYXJVYThXYklCOURZVm9XczdTY0wwQm04UXZq?=
- =?utf-8?B?V0JVY25EZW5WRmx0c3ZMcUhFT1BucTJqcCtWQnEyemhOeDV2Ykxwc3BBWm55?=
- =?utf-8?B?QUNLOFBOdkZ0YzAveTFEcURLYTJqdWRXWjdHVlh2a2VvSDEvZmhLV2RpMHcx?=
- =?utf-8?B?NWxrSXNuK0J1TDMyUEVHejVvSXhaR1ZRd3VHYWlka3A2YkdlNG9FeEM0VDE3?=
- =?utf-8?B?bk1Yc244d29jbzFDMXo1dnJVQ2ViUUtVNjl3U090eHp1V3JNcXRFREoycFBR?=
- =?utf-8?B?bkt1MGp2emdacldMQzQzQkxJTlNtWEdRRGo0QUZCTm5pVGVOYWlmNW9yaGlS?=
- =?utf-8?B?QUxCMXB0NlFBRE9WQ0MwUnFQWExpTnczem9EeG1WbjQxWnZhMXptU1RMUE1Z?=
- =?utf-8?B?UGppMUJzbHNEU29sUFp2eURxWXVPN25Mc1htU1pLa1BXbW9PYndnd3lHaGhF?=
- =?utf-8?B?d21IOW4zeEV3Q0RCNHc1cXlvNldMVUNuNDhadGtHSGUydit0ZWxiWXV6NFor?=
- =?utf-8?B?UDROWG1KYTVoM1dtMVBhQlNudlczUTVyK1IzQksrVVlRVWxHc2xHcmM2SlFw?=
- =?utf-8?B?S2p1a1BBME13YnRxVnJKc3FkU2ZDNzMza0pSS0FPdFo5L0d6dmtXem1uMTNN?=
- =?utf-8?B?MzRhb3FrQ1dTdUNGS2w4NU5iQW4xTU9nVXpRcVRxR1d5R0VsSFpXUEFxa1ow?=
- =?utf-8?B?bTBNUy9TT2Z5bGI2cDRwT3g0ZHJvU1Q1TUpQalBPbGRVMjZmZUs0WkJrMldE?=
- =?utf-8?B?eVJkOWdhOU1qTUoyV1FiWEw4b0RYeHJSRlByNlM2U25xdFlDL1k0TkV5M0dQ?=
- =?utf-8?B?UVJTNlZMNXFLMDA2ZlNZVVVuMmVRbFNxTWN3Zjk5UFJ6TWlJa3d6b09wRngz?=
- =?utf-8?B?d244ZkkwWnhReHh4TzJLUnhVcUZwWk9jK09zWmdMMVA0eVQ4ZUhnMERyczhZ?=
- =?utf-8?B?cHpiNVpwdFRKOW9zVE9yV1Jrbnl6UWFjaFFDRGk3a3JXQWdSSmNRdWREdzRj?=
- =?utf-8?B?ZDRhcXJvZDRSOGZZM2pmRUExSU92VlRNcHdvSjFRc1dEKzZiWnYwcytuSjNt?=
- =?utf-8?B?OFpDVkhGN1RZZnd6dHFOT3N1WkRmQnJNcmRaZjBucUFmQ2Nqa1A4TkUyVHFi?=
- =?utf-8?B?SG5DckYxK2ZVbjVrdEZEMFUva0pINUkveTBUN1hERUVHVHJwS1BjSDdhczZs?=
- =?utf-8?Q?jAyPRolBpbHKn1g3B5?=
+	=?utf-8?B?U01BcWtNSUgrQ1A5clF2akNjTXRRdFU2RU5IWUxiVnFYK216T01PWjYwREli?=
+ =?utf-8?B?bDJ2dWNyWEYzbGdGTVdvdnNIRnZJVDl2azNUR3c1MDhYNmZ5djlxWkZQeHlF?=
+ =?utf-8?B?MzB0TVVVMTVBbE1oUVNySUlFQ3grY1AydG5hdDVDZ3k5cG4yWk52TitzSzI1?=
+ =?utf-8?B?ZEVJTzc0Y0NGK0t1SGZ1aU1CTFFvNEJWUXpYRnJDdmlXN3RlUHV1cFBlWG1Y?=
+ =?utf-8?B?VDRjUTUwendzL1J0eGY5VXgya2gwZ2dnekpmNndRYUxXajRnU3pmMnkwQnpL?=
+ =?utf-8?B?aGg3OS9QTGx1NGRrVmE2K0svV0dUZ3hKK3VlRXlQMWJ0Qzg0bXJwN0dEcFRR?=
+ =?utf-8?B?dFErREltL0haSlV5NTVvZ1E4cU5kdUpnRkdwY04rUVFYZUh6elluSEJUZS9s?=
+ =?utf-8?B?VWIzNHJ3ZFB2andIenptaEpzc1VjaEVxWVV4WnN4TTBkNk5wS0pwWWdsUzJk?=
+ =?utf-8?B?L0RweFhRUFE0ek1pYUdIVlNXdjg0aFR6VzhIUk1IVm5Eb0FjVldVc2hMTjRK?=
+ =?utf-8?B?SGVPMUxGWGFqNm81NkRJY0Ezck5KaGoyUDJTZE9kU2NnSGpFVFNWL0NndktY?=
+ =?utf-8?B?Yi85ZmxQdkN1eTI5ZDVPcklNT1Z1bklWRGdhQmJLQmlhNlZHek9wbEJSazc2?=
+ =?utf-8?B?d1FwVmZXQ1RxR0FST1A1MU5iSkFUQzlSUXg5WUlhT3RLWnVnTDlLazV1bW1B?=
+ =?utf-8?B?dXZkVUJVMDR4eGJvVEF5d0o3N29NL0hwZTJDMzVKTXh6NytDaDNFUm1tS0Vw?=
+ =?utf-8?B?S1NDYy82ZDBWNFlBMXMyVitaWHhOT0Z3Rmt1QUhpZHVHcEUwSlFSR2xEdytY?=
+ =?utf-8?B?VS9hclpNREo4dTRwRVQxZ3U4YWFCeWZhazZTRk8rMnVCcmRqMm9tenY0QWR6?=
+ =?utf-8?B?b1p1b2c3NTdlb295UDJXdlh0RGIvWTMzdzBTU0hZenVPYk5PSUp4QmdJeW5O?=
+ =?utf-8?B?WTJZdUoxL1JTQlBSbmlIampnVkhXNVJXbVZzVkxJUWl3VTZVSXRZdEIzYVhN?=
+ =?utf-8?B?SFpHMExpZVN0R25PMWc0MlVNN0lmSi8zZUc1Nk9GdUZLTkE5TXJ4aFl0VElS?=
+ =?utf-8?B?dnoydkdsNzRZN0pzNS9wb25HUy9rcU80LzRxSWJVZjJmSEFLU1RMT0dvS3hI?=
+ =?utf-8?B?K2R5VUIzbDlEUDhoNEFib2R0dkJHUXd0UmtWa3BHSm82Wm1TNCtBbDd5ejNH?=
+ =?utf-8?B?S2M1RENMMjRTK1AzUG9OZ3RMVGVKRE9aWmtBVWZyUDBTK0RXdFlzdzZtMnlh?=
+ =?utf-8?B?VkRDcmNHN1BsT24xL0lqZHJJVTg0UGR3VDJ6bzMzQkhqdjRMY1FGWFJScHQw?=
+ =?utf-8?B?M0dxUjArUjRtT2trQm5YUFRWQjVnL3Rpb0JsYkJ5bFpmSkJzd0RiWVFrelZl?=
+ =?utf-8?B?bzlaSHVQVXdtOHFUK2hLOEs4NGNPMFhRZW1RZkN3NzA4Qk0rVVQvb3hVdElF?=
+ =?utf-8?B?Q05NakdheEhJY2FzdVB0N1ZEelZ6WnJ3US91Uis3ejBzdFJ5akc2L0lNWWtm?=
+ =?utf-8?B?MlNPaGJ4NjNhY2Z1ekFONFBVd1NqcW5xa1QxYnNhZmhVQUtPaXZMNjI5R084?=
+ =?utf-8?B?UXBaUzlxTXk2SGVXSjNOaThkN0xTaFhRbHNMbXJHRkk3UTM4b0pnUnByY3gv?=
+ =?utf-8?B?dDBMZ0hTRkVDUnhwVStSekhTUDJEdXpkd0FhQ1FocFJuUmE2VVZ2ckNTV2xv?=
+ =?utf-8?B?MnE4SFZRL0VaS0tXdkdydkRCZC95VmpTaVpwVHNBeU90blZwbEFvY01JeWV4?=
+ =?utf-8?B?VmNnWmFJcko3a0F4UGFtd1I0U2hQakFPZUx6Nm84dWh1eWxZQ25LQ1h4cHZD?=
+ =?utf-8?B?TWYwRU5VUVlWQ3NrbkFzQytmbGxJcGJMZjR6L3ltNkw4eDRhOUFxT3BNV08r?=
+ =?utf-8?B?OGxuSiszMDFIbGRWMlpIUnphdld4cFdqN2VGNlF6MElzZytqWStRRElyRytQ?=
+ =?utf-8?B?TWNyTGxQZ2c3UWY3eUZ6UU1WOVV1UHNEdzZxd0NLRFBYUExnRkZQYVQvd3hP?=
+ =?utf-8?B?VnlqWUt6bUZOSVhpc3I2NDZ0QUJPZFRaUkR2OEJyaE12T3cwaEhibERyYzk4?=
+ =?utf-8?B?eXAwaE5ZcGpPMWZhVmlaWmpXZml4S2RKR0EzOFNzY1RMN1pXb3o4WnZzbEFa?=
+ =?utf-8?B?UVhaRk80Njh5bUl5RjBNTmZCOW1KejJYdWI2ckU1clZ3MmVqRHlmanhrdzNJ?=
+ =?utf-8?B?Wi9tZkJFZmRtRWRDa29RT1B2R0ZUZzFhZnAxUnRpRXcyOWVja3FBY0ZWMEoz?=
+ =?utf-8?B?QUtZNkdKMnZrMTV1Q0RwU2EvbWFmVFFWRnZWdXpCM09HZlFxay9FWTZlQWdj?=
+ =?utf-8?Q?n+k4MpVd23+QaZsuOp?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b08462ee-0485-4256-f9d6-08def8ac22be
+X-MS-Exchange-CrossTenant-Network-Message-Id: 57d4e04f-3b14-4192-10bb-08def8adb6c3
 X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2026 19:58:53.5945
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2026 20:10:11.3976
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: y/TFg1csI58uyq/xgiwRdSzyd07LLBUfTmwVbyvGI713Du7jncc2KnxKFxE2CEMg
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8135
-X-Stat-Signature: 1h4npgwmj4uytpst6u6huqg8pcptofb4
-X-Rspamd-Queue-Id: 78F3F140004
+X-MS-Exchange-CrossTenant-UserPrincipalName: ESrlsx0jfYAy2v/p3CLd/+I9g7kWMZSqYZNXD5/yEDLcS48YtMXl4W7xbGzLF76b
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7264
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EC97B40004
+X-Stat-Signature: fxtsbd7ty8hr3wpae8qugbwr4rwzxcyj
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786564738-384642
-X-HE-Meta: U2FsdGVkX1/i8CXplRsfj3pkI6joON2JwK0yXm8fWu6f9pNQCQBfSjIKthgbFLmXXr3MMDg0qrf2pRKW4r2cbyIQcJkxcwEbfnDXSCmbzx0egVr8/s5UeVsx2X9m/eTWBvlX/00pYuLp38uxyhBSOTqez3VWj5K+UJDAUHpYg3Vh8pGYkHA0OQQQMbxylJRnvVXcWBxDbev2HAoWVc97CPqEaiApbb2rr3pfnmGJXttPe5IZhBB2BmpXOH7i/aviIsPq/qLg+16kdaOCb2GBEdrFnehr9bt5dWrKFZN8/TqY8I7lkwQMr8QtWjQ9/ekmTGf7ZhecaERilZ9fjsG/om9CeEkLcI8/qFqYHqw7JKMqhg5fRsnlgIhZ4kQ+WjX7SVIEy6iaMO5M4Efz1t2p74aWn2jHz+hXe7tnZxWB5eAR98wpcWvQMiQKU3SJeAqgcEMWfV9f3VRUBADYhAf6s9DpC1RD3Yyei223ilUF3eCNaoZG53/tdxXTkHZ/On/wjgZ5RjPDtMKugtoWpaNNXritVZjRv7g8uwfKO5EP99nJtAUpL1iWmHkHBduh5dFs7KJm3WOrM5xj/FiSDTNypLZ0Pl5gtyPxaNtJ61pHTAKCg+DGXlYvUrn7Pkyb/8im1/xFw+jMnH4t+MGNescR+a2O751dkSR8g59P6VLw4+reFeEfynTSJfCkFMcMWWmxFDeL9Ov+qm1FwoNdj+kKst+LIcRpKCZJzq8gUn6JIJhv4YUMpYQxxOib0L1vGNrdtz6dXh224YbTvnB3+XmdfF9KcBtLvG9Djy+NtTMxv7VecpOE8oGj95MYIUe+1OKM/HzOXKI98LboIe8Uz2fxdt+NrmP4Or0Z8aVg9yPidEuh//iLLhXN7IZww8HnjUz+qH+BngyQtCxjHh4lcNCXPVakUOBmvLdxNMP4RmifPlgYTPqGJBTy4Nawnaf3OBOdHywrrx/gNleERUBzY0g
- Lh2SxCBo
- tJFDlnTod3Na8/bpKznMJXOuUmapEAodVr2k2CIEPfFMxqDNM0a9rRJ6Gtx0oI08QAeiZLlqQoWnDyL/0V8P7SD1RiTn2DjyisM57bnciFjEfUisgK7xBtKKukfqcBfwFAO38AiRfgfSLUhC2C+rQaatxb+BQMuCQjLWz9GQAgLI9XXrFkbGZ/SOZBIOpbQ4EVTQmyqCozkEv1GOaIJCI53PoH3zkGPGb3rn4LecqoXPtqcpMI6Um/hOO0CkeSbfHzM5HGUd7GOqidyPxNeFD5LgM/3pQD1XnIEbivGisM2d+nSfyE2BgKZdjj9SexOi+Tf+DnvgEltSrQ1xWOw197RMh0Uf9nuW+DKAq+tExjTGUvErcGjooDXu8FCaLSdnewHqcGJKM5BencRzWnZKKxNGKuUhRY2GK9F5u4O33srnfqGRd3m28tuw4vWFENbJy1GKX+ClrnsFus8e+qiwD9Y7KoQpU4j/YzoD0qWNLudvCyFcX5VDuUgniCWB95ARrCeIJNg8oSGKzyZ87i12fwNhrLRMPfwdruvp7JMmhjDslPLak6o3Rngp1yrJBfJMOf+gASmEDH8arVk1Qb5Er5EE+cKdUmn/PfoBsyMIibrFVtWZTZZp7cJSR98fjffJF4pB6DDJgxYXN6A2mOe4Z+H3PxyGzlUTD1VuyMcMMDuWDtp21t4VP2OvZaxDUxLxsHx1307dihYieNmkkdxnKfC7c10Etph/1PPMSv0N2tA23aVY9HYefflOVWapPBpAUqEfK2/vf5/EZ3yWye4W+KOVMEZqqBe6F6IG9s9VAEqGE0VgELt2zKSjc7LZLHTf4hbQFzge5s+drk2xc5vbA7WFE5d8dUigvgidFStepzTE3cmtCSwXvcAx1J3Zn0SAys33y6jY0R/W8j15L0t3xCq384msAgBkTEN3o
+X-HE-Tag: 1786565421-886749
+X-HE-Meta: U2FsdGVkX1/1K7gU0bGs5X+w0KlvQiIKBxXUv6lIrXfyEnRXwwI9WO+wBGvuyAkssP+SgyNsJ86zt3hqoaZae6SUg4r71d+8UQ9BxsjpDbMH8O8zY2nDWHvcK5BtxClKgLNwYY/M93Njq6ZgK2H8NKU22LittlOQqW5EwU2vnSJuyV4bCDVxngz5yVyzy5H9681EJmWYAeYpN1xaCsj5wP/hEDnn4foRJEAIL9ylP4zQGXBSKF+H3Qt9kEKeEaiEzwB2lGMio9eFxBS5YqsCQuzcxfJGpuUk8pGdYb9sqHVGmYutV1k3zIXq4/TCMi7BbaRm2f+1DxMeinmnoTgsyWve/Hqx0D5LOd2MdR1a+Phod1fod5Q+5e4D+P+DdDPEN693iHRG9c8uriYhHwPe9djYu3AX/6+bt1Go9uzHVh33egY76qTjulYUD71+43aIMk0M0hoxhY3oa1aExRXwI4/E94mb96yqufyxa9TNd5bDUtQOZ9aN0qyYr9+82Gdh7YC9l3JpX7DQdhU0Luj7BeG6thIdL2ag1ohz8wjOZoAf79oeRmeh3UjD/0ZI9MrIhwX89g0iiLBrj1W80MaEbT5LYTMAXq8ovNhIQUDmpP6Cve8nXJkO2qyS3pdBdQaGl2mrmjNiomkYdQNc/A2CqA30494njAWKt9mLukUDLLNJy8DVn2Me+LOk1ZkN4iVpgFliY/U2A1Iqo5+DoFwHnLfVWO9ULHcbj1uU+ONu+2SYRQ3pq6gALaezTjPX5Nl3eFkGRlzjcbBCaf8TU6EYwxxtK+9ATO+l+GYjGNHBr8b2AQhVDO++qGaZqSlTwp4cICPx6FDDffEZvZPlATitjDTd4DZU8y7x3oNPnPYKAnnlOrHi6bd09mg3hn9zJNKnHBhzZRd5D1xHXL/znGmMuuqoKWUSuj2qVdm8dAvjt3GxocgWenmkCYYTqBV9A8u41yPhNMPUL0curkHqj2v
+ /2+F/dNk
+ eTza36Ig5keMP384Ro0lOJTfErHe0ttawTe2AdEHh24pXih0A7kz4WW5OIaOCpHrLoXv2ttGOXzUzc4qEjn1bVH8R+VxVFheUiRjHu8fPEsAxinDot1sb6cyzvMbhJdZ53WvdaxG4+EO7H04OfKed72JRQiAXb16doyEzBhfg4NJzO0iXR9DLt/s4HmP/5ov4WRULDWmARxEtHDiZCY7TodCYGAmcENCABU2vHAy80FZePIogno07S+tolHt3cvfFyYZsimeiN2KCQhvPZG0uORU6zFhcPIGCcInb6C8dTPdXh7h+jtnUHdCZQ+g8F9kTZQovoU6awCK9QtVBIt62//hxc8Q5vMPTI2TieyCwTR8dIhN6KSW+YDHWOp6Rm3GDjSdhNZx8yy+8FufybIx4HD1sezjqI8oEafbobWGHDb58TYG3g2HzvZpzDdehQUePSsLixyVLxW5Bk4GW6oU2meiPjlbx5+gq0jhwJzguqN7FFbj+JBu10MTxdHYGp93YkF5QvHYR57DA/9U1FxjmwK8ERKK9BkV/bonQvqfHOtbkywnyssSu9+EPFGWlsNgoIQWUauE9UYzcxxPFxuKJYVvzoFjiTF6RWdBKo5T8rNP4ZYoHNmNlhEqxdc6VYYpnwfRHbX/KYmbfpSkDRymhygCq5r+XO4rJuaxAJjwGAN9Ue5zcdLDs54OXPfQtFGWZUqIDMAgoEodc2R274ls3YEif/soj4+pmYGRt9h3iWXHR6hzWWNyKz79qvLzuJ4Rckxr/mt0lxxbHeZ5GYhQvqeBTz/+pKu56pFESqxaMxRKrlaM5F9+VXRphiMacEN8kW8CmBhgjwh2SHB9+3OQ4u82QjQH3RCT9aL3kzH2Z5ohLliUUdwEpRTKSjbsKIlgqfcwx/7a2HBi3vhfy4Ro/6i4HdHuEx9YtB6Wt/vwUvDaYNvVmHwsDe4gVoalDPJ2r1pqwOUR6/A2kUa/h9feiiRQgVVZF
+ RW+Hy0DG
+ jbmSreTOSNNGes4yOhJzo/dGrgxzU5mSnOTcrOxPwZMQpzCJ3kcaeg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -190,46 +194,152 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Fri Jul 31, 2026 at 10:13 PM EDT, Zi Yan wrote:
-> PG_private is going to be deleted. Adjust related comments to refer to
-> page/folio->private instead.
+> folio->private !=3D NULL indicates a folio carries private data, replacin=
+g
+> PG_private. All PG_private users are converted. Remove PG_private and
+> reserve the space as __PG_folio for future use.
+>
+> Also update files in Documentation. hugetlbfs_reserv.rst is outdated and
+> left unchanged. It should be rewritten.
 >
 > Assisted-by: Claude:claude-opus-4-8
 > Assisted-by: Codex:gpt-5
 > Signed-off-by: Zi Yan <ziy@nvidia.com>
-> To: Ilya Dryomov <idryomov@gmail.com>
-> To: Alex Markuze <amarkuze@redhat.com>
-> To: Viacheslav Dubeyko <slava@dubeyko.com>
-> To: Trond Myklebust <trondmy@kernel.org>
-> To: Anna Schumaker <anna@kernel.org>
-> To: Richard Weinberger <richard@nod.at>
 > To: Andrew Morton <akpm@linux-foundation.org>
+> To: Baoquan He <baoquan.he@linux.dev>
+> To: Mike Rapoport <rppt@kernel.org>
+> To: Pasha Tatashin <pasha.tatashin@soleen.com>
+> To: Pratyush Yadav <pratyush@kernel.org>
+> To: Jonathan Corbet <corbet@lwn.net>
+> To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+> To: Jan Kara <jack@suse.cz>
 > To: David Hildenbrand <david@kernel.org>
-> Cc: Zhihao Cheng <chengzhihao1@huawei.com>
+> To: Steven Rostedt <rostedt@goodmis.org>
+> To: Masami Hiramatsu <mhiramat@kernel.org>
+> Cc: Dave Young <ruirui.yang@linux.dev>
+> Cc: Shuah Khan <skhan@linuxfoundation.org>
 > Cc: Lorenzo Stoakes <ljs@kernel.org>
 > Cc: "Liam R. Howlett" <liam@infradead.org>
 > Cc: Vlastimil Babka <vbabka@kernel.org>
-> Cc: Mike Rapoport <rppt@kernel.org>
 > Cc: Suren Baghdasaryan <surenb@google.com>
 > Cc: Michal Hocko <mhocko@suse.com>
-> Cc: ceph-devel@vger.kernel.org
+> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+> Cc: kexec@lists.infradead.org
+> Cc: linux-doc@vger.kernel.org
 > Cc: linux-kernel@vger.kernel.org
-> Cc: linux-nfs@vger.kernel.org
-> Cc: linux-mtd@lists.infradead.org
+> Cc: linux-fsdevel@vger.kernel.org
 > Cc: linux-mm@kvack.org
+> Cc: linux-trace-kernel@vger.kernel.org
 > ---
->  fs/ceph/addr.c           | 4 ++--
->  fs/nfs/file.c            | 4 ++--
->  fs/ubifs/file.c          | 6 +++---
->  include/linux/mm.h       | 6 +++---
->  include/linux/mm_types.h | 4 ++--
->  5 files changed, 12 insertions(+), 12 deletions(-)
+>  Documentation/admin-guide/kdump/vmcoreinfo.rst |  2 +-
+>  Documentation/filesystems/vfs.rst              |  6 +++---
+>  include/linux/page-flags.h                     | 19 ++-----------------
+>  include/trace/events/mmflags.h                 |  2 +-
+>  kernel/vmcore_info.c                           |  1 -
+>  5 files changed, 7 insertions(+), 23 deletions(-)
 >
+> diff --git a/Documentation/admin-guide/kdump/vmcoreinfo.rst b/Documentati=
+on/admin-guide/kdump/vmcoreinfo.rst
+> index 7663c610fe901..5f1df6d080508 100644
+> --- a/Documentation/admin-guide/kdump/vmcoreinfo.rst
+> +++ b/Documentation/admin-guide/kdump/vmcoreinfo.rst
+> @@ -325,7 +325,7 @@ NR_FREE_PAGES
+>  On linux-2.6.21 or later, the number of free pages is in
+>  vm_stat[NR_FREE_PAGES]. Used to get the number of free pages.
+> =20
+> -PG_lru|PG_private|PG_swapcache|PG_swapbacked|PG_hwpoison|PG_head_mask
+> +PG_lru|PG_swapcache|PG_swapbacked|PG_hwpoison|PG_head_mask
+>  ------------------------------------------------------------------------=
+--
+> =20
+>  Page attributes. These flags are used to filter various unnecessary for
+> diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystem=
+s/vfs.rst
+> index e7677423a20f7..5cc07f82fe371 100644
+> --- a/Documentation/filesystems/vfs.rst
+> +++ b/Documentation/filesystems/vfs.rst
+> @@ -649,8 +649,8 @@ Writeback.
+> =20
+>  The first can be used independently to the others.  The VM can try to
+>  release clean pages in order to reuse them.  To do this it can call
+> -->release_folio on clean folios with the private
+> -flag set.  Clean pages without PagePrivate and with no external referenc=
+es
+> +->release_folio on clean folios with folio->private set. Clean pages
+> +without folio->private set and with no external references
+>  will be released without notice being given to the address_space.
+> =20
+>  To achieve this functionality, pages need to be placed on an LRU with
+> @@ -674,7 +674,7 @@ filemap_fdatawait_range, to wait for all writeback to=
+ complete.
+> =20
+>  An address_space handler may attach extra information to a page,
+>  typically using the 'private' field in the 'struct page'.  If such
+> -information is attached, the PG_Private flag should be set.  This will
+> +information is attached, non-NULL 'private' field will
+>  cause various VM routines to make extra calls into the address_space
+>  handler to deal with that data.
+> =20
+> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> index 0e3628ea080c4..eb2961ed61018 100644
+> --- a/include/linux/page-flags.h
+> +++ b/include/linux/page-flags.h
+> @@ -44,10 +44,6 @@
+>   * Consequently, PG_reserved for a page mapped into user space can indic=
+ate
+>   * the zero page, the vDSO, MMIO pages or device memory.
+>   *
+> - * The PG_private bitflag is set on pagecache pages if they contain file=
+system
+> - * specific data (which is normally at page->private). It can be used by
+> - * private allocations for its own usage.
+> - *
+>   * During initiation of disk I/O, PG_locked is set. This bit is set befo=
+re I/O
+>   * and cleared when writeback _starts_ or when read _completes_. PG_writ=
+eback
+>   * is set before writeback starts and cleared when it finishes.
+> @@ -105,7 +101,7 @@ enum pageflags {
+>  	PG_owner_2,		/* Owner use. If pagecache, fs may use */
+>  	PG_arch_1,
+>  	PG_reserved,
+> -	PG_private,		/* If pagecache, has fs-private data */
+> +	__PG_folio,		/* Do not use: reserved for folio identification */
 
-I will fix the issues pointed out by Sashiko in the comments from
-include/linux/mm.h, fs/ceph/addr.c, and fs/ubifs/file.c[1].
+Sashiko asked how to detect leaked filesystem private data during page
+free time after PG_private is removed.
 
-[1] https://sashiko.dev/#/patchset/20260731-remove-pg_private-v1-9-142c97ba=
-3562%40nvidia.com?part=3D13
+Answer:
+
+After the conversion, folio/page should have an elevated refcount whenever
+->private is set. That would help detect leaked private data. I tried to
+enforce ->private needs to be NULL at page free time[1], but that might
+cause trouble for certain use cases.
+
+[1] https://lore.kernel.org/all/20260223032641.1859381-1-ziy@nvidia.com/
+
+<snip>
+
+> diff --git a/kernel/vmcore_info.c b/kernel/vmcore_info.c
+> index 8614430ca212a..5a417f8a922ab 100644
+> --- a/kernel/vmcore_info.c
+> +++ b/kernel/vmcore_info.c
+> @@ -216,7 +216,6 @@ static int __init crash_save_vmcoreinfo_init(void)
+>  	VMCOREINFO_LENGTH(free_area.free_list, MIGRATE_TYPES);
+>  	VMCOREINFO_NUMBER(NR_FREE_PAGES);
+>  	VMCOREINFO_NUMBER(PG_lru);
+> -	VMCOREINFO_NUMBER(PG_private);
+>  	VMCOREINFO_NUMBER(PG_swapcache);
+>  	VMCOREINFO_NUMBER(PG_swapbacked);
+>  #define PAGE_SLAB_MAPCOUNT_VALUE	(PGTY_slab << 24)
+
+Sashiko asked if removing PG_private from vmcoreinfo breaks back
+compatiblity for related userspace tools.
+
+Answer:
+
+Userspace tools will adapt to the changes.
+
 
 --=20
 Best Regards,
