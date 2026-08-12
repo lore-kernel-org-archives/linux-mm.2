@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A01D6C5CFEB
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 11:28:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 231FDC5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 11:28:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4ED526B015F; Wed, 12 Aug 2026 07:28:35 -0400 (EDT)
+	id AE1626B00D6; Wed, 12 Aug 2026 07:28:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49CA56B0160; Wed, 12 Aug 2026 07:28:35 -0400 (EDT)
+	id A91956B00D7; Wed, 12 Aug 2026 07:28:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 364D66B0161; Wed, 12 Aug 2026 07:28:35 -0400 (EDT)
+	id 931D86B00DA; Wed, 12 Aug 2026 07:28:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E99DB6B015F
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:28:34 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5BE301202CB
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:28:34 +0000 (UTC)
-X-FDA: 85092394548.18.D50DE1B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 99C25140006
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:28:32 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R770ZzSz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 61C116B00D6
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:28:56 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D6D81160196
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:28:55 +0000 (UTC)
+X-FDA: 85092395430.25.40F6D82
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 0B7D440008
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:28:53 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Spd7Z52S;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786534134;
+	b=E5NzgBRFRhUZC3b/DnyNWUAILHn05MXoptFd0oBth0GX/W0Ilqi6cGWIdAdEuguOz27QsK
+	Erg2CI1VkZMREgWR6J7dpqmeHL39AfH9KpVFQdpNryZty753sL84xQDhrtXX7fJYDFDiSM
+	uSgEywGXgx1p6UoyyPP8cfW6lS4Z/nI=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Spd7Z52S;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786534112;
+	s=arc-20220608; t=1786534134;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EG+9d2areJevimTNoL+CVRXPlsVq0h4r/7sK+coGE+g=;
-	b=4N6BDQ8PxgAhnUGH1H8uiO38vLCIvHMmvaot12HwdsGCUMcglXwAPduKs9+Rj+/aU4Cw7G
-	JNl+FehIRBLxNu0zhqbwEYSvUbt/lN8bC7337MeRricQO4Wf10ThbxNlN0HRTWcQkXbsi5
-	xJ8Uje6BaPGqBlNUxWXX0TE5KxolZnQ=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R770ZzSz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786534112;
-	b=lizqJKH6Fnfd4VKSbKmaUaqk/uvNSYPb6xWmpZY4iLP/sZxh5N49Hx17DUipEPKG3KgbW+
-	Ioulm9SWICbw0BFj5BSipKqGVR/IoguXHEnEE3vj9fJVo1D29jIHzjiTeyqYPZMrN1b9v9
-	AzrJWE+EHymSRnLcP5yh43tdYQS53dg=
+	bh=FcnwOpb20k56OlzwMG66aE8z23tMLTn0GX7RmNBbTuo=;
+	b=jsGc/skd1Z2On6nnmV8KjPX2R9MUSLlx2P8/U5mNMizmfCVIlik3QbQQxVpHhDoTw8dAfi
+	IhwrxDxNlMA0OKbwmN3lpAqgatSrjKwELZM1HDlGXnYy4T5Vn9JLQbORtNRDgXm4LLe5y2
+	hH4BUSLyEA3q8VtWO1qUalpM1iQ6JcQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1DFBD600E2;
-	Wed, 12 Aug 2026 11:28:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022BA1F000E9;
-	Wed, 12 Aug 2026 11:28:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5169141447;
+	Wed, 12 Aug 2026 11:28:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662EA1F000E9;
+	Wed, 12 Aug 2026 11:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786534111;
-	bh=EG+9d2areJevimTNoL+CVRXPlsVq0h4r/7sK+coGE+g=;
+	s=k20260515; t=1786534133;
+	bh=FcnwOpb20k56OlzwMG66aE8z23tMLTn0GX7RmNBbTuo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=R770ZzSzgdG86/NXMage81wzUFeS0CV8TJN+FTy3GqkZs91oKKb+UMP3HprpsS0ll
-	 0Wg7pTbwr86EN5F6uluXTEl+Pj1fSitU/XvpIx9ciPNyYlETh2LqI/+D2gDsppo6OD
-	 yB0zB3DtxgJOAm/4vvR0MKlV6fDYEwT1SPtfC+hetiB9t/IGN6ZuTReZewi6NTenyE
-	 vAMBpBqNVWCwPI0e2bxOG/EloArZkrD68ZAi1ERAwEkV3Qg0+K0lrcjS0HdYC6p9yB
-	 G+Ls0Si3VJrq7ZaFnE4H1CBwSfg75sQl53X9g+96xUtYtDwT8TDmYw2qMhkU3o2aBj
-	 CXwwy98HEtYrQ==
-Message-ID: <28c24991-590f-4980-a92e-26c89288cae7@kernel.org>
-Date: Wed, 12 Aug 2026 13:28:23 +0200
+	b=Spd7Z52S+anzxKYwnAgi/AtvjfESL5PwTKgIqubz4s2/gdBKPK1PBUL+UlGOLhMCN
+	 Gx9nQBExt2+4xzfpf19qghT7hdbZtU4r2pYjDOTTMKOgshUiKAvXf9X7JdXURMw0fH
+	 LgT83ZJzz7JUc2cD+zPnkxTRAw1/HGZPrammYkDmxGINgAjpR5xBV9YQn6w7l1PgnI
+	 4NNTDruHwZfVoRA+X5ZvwsdnHZZwvu2aICh2gWtdpmmvvDzh1VFJcxfUX/veCwqvAc
+	 0r7q5ksshsTKLeMxN29WYMJSFA8joiGkiYpaV39tgyHPTesTIKfhF8UTJiSXfjnGlQ
+	 dSxsr7d0sngOw==
+Message-ID: <7d8e17c2-9c9c-409e-ab4d-4e4fb0e51ec4@kernel.org>
+Date: Wed, 12 Aug 2026 13:28:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V2 3/6] sh/mm: Stop using pte_ERROR()
+Subject: Re: [RFC V2 5/6] sh/mm: Stop using pgd_ERROR()
 To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
  akpm@linux-foundation.org
 Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
@@ -86,7 +86,7 @@ Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
  linux-um@lists.infradead.org, linux-arch@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20260811042119.3652929-1-anshuman.khandual@arm.com>
- <20260811042119.3652929-4-anshuman.khandual@arm.com>
+ <20260811042119.3652929-6-anshuman.khandual@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260811042119.3652929-4-anshuman.khandual@arm.com>
+In-Reply-To: <20260811042119.3652929-6-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0B7D440008
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: rsywo3txnkhy8xj4bg15ek35sb8u4drm
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 99C25140006
-X-HE-Tag: 1786534112-177895
-X-HE-Meta: U2FsdGVkX19wF/jEMFJ6M19X/M5HlfPSL0hHc08Dko2BCkUjLQYP7n1DJTwbFHC1ht/KPJS1VOaM4Cvy7q5zzdSNzHN2nzXhLPOwbcsIYAPujalCRrgBP/+Ier3aJnKWR9aqby8KPITox8WwE1ZSv24p+/hFzLukTUXEjGD8lIDP9nFgSe8Rc2sAHoo2aV/73SXMZ0YTTQafZGIgy7F5dQJW/vOh8KIIz1TPAJ52kFwAAqtq9e+G+ot29VX4KR4pwUjPwWaThKZPfBq+HfyGVYMW0pKcEAQAHaSPZQUuHfj8acu9sL7DZthE0D81gTSyX3hFkv8Bqx3qJmaprZWF5cHqtqpxlnWX5uNT29plbywOmY4NCznFYZkSmUHpoS4ZgzbYELeXz+PhjAOKXfKnCD666JIflm06i3XQRUlxeNK4P8IsWMCwVabKqGMg1gdxnN3+aoGBL9CcfBD/VZozFn450qVlGGfKjsQ1zJq6zI+sK+hDyPxk6OZXNAHQg/GamyPGzRGFq/BvC89+b4mnwrqu//scV70f82TaA7imFEn33ndEhzgaiYsv1tnXTrnJaBBrYp5+huJujJQSc8mpvKOYWL4Rv9Ctmmmw050UN1QJWmxCZdp5FXvUxlSwxhgZpzF0IK7pkdfh8Qoq3WdptFShpPJa74UmOqRZNQu+FwhPuFrCWUyrBHfXx444faoDVoV+3Drc4djBQVX1u7GBBsgAh2chjrgL1uQkJ6o2gyXoh7CsxJsZd8RDSRPLZR+zEiFZfFkWFshYwqKxl/qA0D+ESVWqeZOtYA48MXAcWs6e+febILLSSxqAs2gAguBMH9S0H85T39EEK6G8aVVH87LzVCFXkLAwQ5DDcUm4077DVrhWdEc3F+zLf8jWfx8tIjctFSNd/neOJujd2cQrxXabeWSTzS4AEmcSseX1nkWEAz453hpWc5/+T0Hvw2iPyDx29HG7hELZAUpYZw5
- emk/25qS
- DeH43/5WHpqhiQyTbBxx6RoqbzJVaOZc8NEDjN8JEjYdQ7oB0+ccMwlpl29Tfc8y6Dx40KY14BsDlIHvxJy0t68/YbpmevDZy+Td+2B4tirEDgbYih77Oz3m+UxCbCr2zGo/soqTwKkOlB6TqIZ6muxrheZ/2b2NgLsrHCRdsDZ2K2okjuZcAe4ZYPjwUVdZ8vSAomdpr70UZXajqIc9Pld5u6SXCmS/QjorIFQype3/XyNKvkX5Q+30l4ewJqDcz5IPMw63J06VYEjrPJalbpih5T7TESPeULDxJllonJnj9DywW8lgIZz9UaawQu+jO79PLWBLtrMF2HokB5v2wXUFZgaJFZ9rlSSgLr1dKPpZnPDIJMVRx7XjfIkcvmjZH2omOHukKBFsK4VNPjm8VlXG3/j3vW/5ls5rkCjBDnYaVfROgpRt2EwdrkCVY6Md5tDUKokOmhnWbPC0sKFGkvt28YNwbWKLBMSaSWVnBwAy1PBiI3PrBkaOeH/5S2SgbBm3FQCu0b1Ru4b8=
+X-Stat-Signature: 7m6ez7hke9by8bihxmjkzauwg8sp7od5
+X-HE-Tag: 1786534133-176223
+X-HE-Meta: U2FsdGVkX1/V9dv+IlkutLwDVn/Pyq/kHnP53AvRD5pjH8J8JLeqUuKq7ZwqrDW/f0ktFKt5G0QximQwPV3ThVrgNuCAir4tRXgIIOCTlT8ZK5gs0wfYC/8M8grT66zKhAt22nzKFWMcECj+JOm5lgDSl9kI2+W1QX/h1z+FogZuxG/L7bDic1mCXVNtzTzJ6MA7s1c1CHO0htj+tQTfaD//Oggxj4EO5riiw/vi3R+AIVoBsv/XR+l/p6wKfMxR7PHUWeShvJNdGSRrh2vQD0f/qRTIRCo+/zi5g8nKaztuPz+sC1/9sLdaoxoX3kwdE32V4/6Q/jZBBW8DOheh7IZKMVDxZRAr3I8BK/R6avkFmtqJZXy92UqS56EXK9uCoB7nr+QUJCd3uxrRa4qXfxW++7VR971J8+SM7Ng5lOGwEFUX6A5xagMDnKWPm7rZ7hPc2bxnHQIbTqX1GE1ZlPCA9a6NEwT17cmA54QSBLggX4E6D+ADSwd7HMjjqtloI65IlvE/YXKXeDhQC1fYg8aP9aNapYqnrRTSSXYHLHaPXcH/kWLCNF6RM6UNXyCuiVI5Hae2Q8G609/bnCzoKKYBJOXKaxZSyfUENijiNnkkDv3S5U4zQH+/ZG131bkTQJt/OW9SU8dA2nX76d45x39OlTuIemp29+WW4dH1t8NEcq7Uz3f8v+2eaAQugtMlRy42qjdpL8WO5OwKfkBeuXqbFmbgbjOvhRFAfE6z5+iIfjRUjStQerBkfw7zdmhG5F+gV4rufcpdKqwph0Trjf2bNlWVes70O9E3i7beeZwGS1bnbr5CSEpKX+/B2x36BKkNAK6DXS7EzHBQ4aUh9EiQp7I8jMvGGl7mATfNrRXQoos47meNEGTZ8ia87WMBJAWRfYzVaf3AhK7AEwIZDfXAAb6eUBAty2/NfpXKxYZBfyu9JLMiWbMX4EANyvwYUJav+WxzxxPl10Q17H4
+ pgAlsCpQ
+ JDG4fEcM6+E9xwJ8+HlMBUfj0rOdgQm3P1xJ+ah9On6cs0D9xsHl03fYhFZp/3uM3vn5eyhDha1XhSWuV36hOx9uv9s+f2YmEkMcVQIl7Oa6l8swX81EHIAR2Tn9to2CvnpFGWk3PSXgoz0OsTxEB4qf6OmtgfVAFYm9nrjsHcfiT1XManafyb/wN4ieHW2Np3q0L+5q2SQaBlJx+XcbWhH/KzW6Oc531i7Fn+9COgV3GDZwuelnlf67yW1iQESaPmxonoq2bjyuhhgHNECy4CmtFEMyops55i/4WQlre1rq9e9QmE1AeeZAtcqLBZ5O2HAqi279fCpaBabm/dyayUVuSHTbbE8xkyMNUYGiIk7JgLG73wSX+d4lCCQ3D/+3Jul+Xy4Sb7RL6vpShJz7EQaXrAAr2BXldGspez/rwwhVAgkV3FjQDs37hIKxYZVm5eoe+LXhD73/ozoDttuUflVmUSRLhlmwOO+OndYsSQU1R9BcEJSBWnKSIMDTit7p76ZtjLnJrPskGmts=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,10 +152,8 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/11/26 06:21, Anshuman Khandual wrote:
-> Directly use pr_err() in set_pte_phys() and drop pte_ERROR() which helps in
-> eventually dropping pte_ERROR() macro across the tree. In this new printing
-> __FILE__ and __LINE__ has been dropped because they are always the same and
-> don't really add any value.
+> Stop using pgd_ERROR() in __get_pte_phys() when page table entry is already
+> known to be empty.
 > 
 > Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
 > Cc: Rich Felker <dalias@libc.org>
@@ -164,62 +162,27 @@ On 8/11/26 06:21, Anshuman Khandual wrote:
 > Cc: linux-kernel@vger.kernel.org
 > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 > ---
->  arch/sh/include/asm/pgtable_32.h |  5 -----
->  arch/sh/mm/init.c                | 11 ++++++++++-
->  2 files changed, 10 insertions(+), 6 deletions(-)
+>  arch/sh/mm/init.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 > 
-> diff --git a/arch/sh/include/asm/pgtable_32.h b/arch/sh/include/asm/pgtable_32.h
-> index 5f51af18997b..c8eb9a7a4c4c 100644
-> --- a/arch/sh/include/asm/pgtable_32.h
-> +++ b/arch/sh/include/asm/pgtable_32.h
-> @@ -401,14 +401,9 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
->  #define pmd_page(pmd)		(virt_to_page(pmd_val(pmd)))
->  
->  #ifdef CONFIG_X2TLB
-> -#define pte_ERROR(e) \
-> -	printk("%s:%d: bad pte %p(%08lx%08lx).\n", __FILE__, __LINE__, \
-> -	       &(e), (e).pte_high, (e).pte_low)
->  #define pgd_ERROR(e) \
->  	printk("%s:%d: bad pgd %016llx.\n", __FILE__, __LINE__, pgd_val(e))
->  #else
-> -#define pte_ERROR(e) \
-> -	printk("%s:%d: bad pte %08lx.\n", __FILE__, __LINE__, pte_val(e))
->  #define pgd_ERROR(e) \
->  	printk("%s:%d: bad pgd %08lx.\n", __FILE__, __LINE__, pgd_val(e))
->  #endif
 > diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-> index 110308bdef01..b3c7fd84ceb4 100644
+> index 0bb8555568a4..585012293632 100644
 > --- a/arch/sh/mm/init.c
 > +++ b/arch/sh/mm/init.c
-> @@ -78,13 +78,22 @@ static pte_t *__get_pte_phys(unsigned long addr)
->  	return pte_offset_kernel(pmd, addr);
->  }
+> @@ -52,10 +52,8 @@ static pte_t *__get_pte_phys(unsigned long addr)
+>  	pmd_t *pmd;
 >  
-> +static void print_bad_pte(pte_t pte)
-> +{
-> +#ifdef CONFIG_X2TLB
-> +	printk("bad pte %p(%08lx%08lx).\n", &pte, pte.pte_high, pte.pte_low);
-> +#else
-> +	printk("bad pte %08lx.\n", pte_val(pte));
-> +#endif
-
-I'd avoid that helper if possible, so we don't encourage new users.
-
-Shouldn't we just switch to pr_err() right away?
-
-> +}
-> +
->  static void set_pte_phys(unsigned long addr, unsigned long phys, pgprot_t prot)
->  {
->  	pte_t *pte;
+>  	pgd = pgd_offset_k(addr);
+> -	if (pgd_none(*pgd)) {
+> -		pgd_ERROR(*pgd);
+> +	if (pgd_none(*pgd))
+>  		return NULL;
+> -	}
 >  
->  	pte = __get_pte_phys(addr);
->  	if (!pte_none(*pte)) {
-> -		pte_ERROR(*pte);
-> +		print_bad_pte(*pte);
+>  	p4d = p4d_alloc(NULL, pgd, addr);
+>  	if (unlikely(!p4d))
 
-Maybe similar to my reply to patch #1, actually print something more useful than
-just "bad pte" ? And possibly also just use ptval_to_str().
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
