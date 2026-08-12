@@ -4,88 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 199ECC5CFDB
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 23:44:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4505AC5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 23:46:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B7BE6B033E; Wed, 12 Aug 2026 19:44:35 -0400 (EDT)
+	id 11FBF6B0179; Wed, 12 Aug 2026 19:46:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 190116B033F; Wed, 12 Aug 2026 19:44:35 -0400 (EDT)
+	id 0D0836B0182; Wed, 12 Aug 2026 19:46:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 057A16B0340; Wed, 12 Aug 2026 19:44:34 -0400 (EDT)
+	id F01816B0184; Wed, 12 Aug 2026 19:46:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CD5286B033E
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 19:44:34 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 58A261204C4
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:44:29 +0000 (UTC)
-X-FDA: 85094249058.25.52D36E1
-Received: from mta1.migadu.com (out-109.mta1.migadu.com [95.215.58.109])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 264FE120003
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:44:26 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=V7Au1q1M;
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.109 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786578267;
-	b=ftej2n0H1+ApuBP0xS0cRXGzR15aaE0OqL2aPLQq5BbaXHu4/3vEoQdWQbpj9ALZGiclyA
-	Vz4XL43if94x87LFVB7Tr5A36plaVWeOiK4kCsvW2LXZH0dmHPrOT+GU5AHe/2UwCHmanU
-	H0b7P/pHEhYLInQ4qx3pxiAv90vRD80=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=V7Au1q1M;
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.109 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C489F6B0179
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 19:46:19 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3F6FC160478
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:46:19 +0000 (UTC)
+X-FDA: 85094253678.07.7CBC297
+Received: from mta0.migadu.com (out-16.mta0.migadu.com [91.218.175.16])
+	by imf23.hostedemail.com (Postfix) with ESMTP id F0360140005
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:46:16 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pjReRsjU;
+	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.16 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786578267;
+	s=arc-20220608; t=1786578377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/MfDVEZOMEZxR4bNh/b4vpiJYHJ3uTy5PgVi02+bH7U=;
-	b=v9y/1qAH0F9a7bTpbM2XlmwA3PcfAv1GxkUaB1hHR684jaAcI3ulk8vtvpJlp/r9OVzytr
-	8YKCO5QnXU08zazIV6xx+oeFnV25H4K6B9gdRivSq1wHgeINdiRGyxvHIiVrXeHxyd6qIg
-	c6nD8UU6MA/ZPnMlnJ9UuYoTfsVq0cM=
+	bh=vxBH6Yw1jzGIgpGxwTg61Xu1HIIQyFKAXsqc4GMuFTM=;
+	b=LVNPxhhiqpPWRVsshM7ajFqit/9Sc1v23nVtpqTeQnfg3Mqqqm/Zey1s0Ow2zD13J/COt8
+	xzAFbxa045wASVastNitENpeFTJABEsfIvEeItA+kVm5cB/LqyTig+UXdaVYADlE1IZ9pj
+	apSFBIm4QJ5+VpQKPyw3PQcRqRzO5Yw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786578377;
+	b=rV23LmZAstEyyUV9A3zlk6mwNThgA/XeYipF5rdBXeo7HAq8LpIUfRL4fWnrsr+tsJQM1L
+	8pRfyYY9/u3WSFUD8R3jQnrCr4LLJ+3uOtB/UBTk4dYiA8/H7R5/X2a7GZAyWGnknicqSR
+	7DwdKeIVqHAXtPVlvBMzHjDWFFrZloc=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pjReRsjU;
+	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.16 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=GRGPu0x1sRERIuQs56PTW8nQYd9NgZlk3OlXceQWbKE=;
+DKIM-Signature: a=rsa-sha256; bh=Suug6ZlLMRpt7AO3wExksttzRhjDowxSc/U7ICXnYsU=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786578265; v=1; x=1787183065;
- b=V7Au1q1M522y8KIDAXqAu3KtyfWzd2A2IYxgxXkZPwVPEnBlOOFlRiy2BRPHLE6WeS/cJkgO
- smiZye2sltUNYM69JXanNC58hwcca1b+HXG21ihDSu5ecs5SRDDJf8S76gg919S5ej7BlVE+wHK
- jfKBlhCtrZcR9868IexsKYZU=
+ t=1786578375; v=1; x=1787183175;
+ b=pjReRsjUK7CyUIS/VWoH+vfERRzp+sncklUeXxXGg039MQaOLBKWvmxHiWiIB9PpQk7B6M7o
+ rUFReJpRTI1SB1NQnLvEAQTtd9cNR4zi3cXXj5vMCA5K96QLQc5l+UiL37kw+K544UKsO0vaCGW
+ rlJereWzZsS0ManoIwk1Vya8=
 X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2a03:2880:10ff::)
-	by smtp.migadu.com with ESMTPS id d0345f5f1396112a;
-	Wed, 12 Aug 2026 23:44:25 +0000
+Received: from localhost (2a03:2880:10ff:a::)
+	by smtp.migadu.com with ESMTPS id cf2368f0b44ab78b;
+	Wed, 12 Aug 2026 23:46:15 +0000
 X-Migadu-Flow: FLOW_OUT
-Date: Wed, 12 Aug 2026 16:44:19 -0700
+Date: Wed, 12 Aug 2026 16:46:09 -0700
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Guopeng Zhang <guopeng.zhang@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Harry Yoo <harry@kernel.org>, cgroups@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Guopeng Zhang <zhangguopeng@kylinos.cn>, Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Subject: Re: [PATCH] mm: memcg: fix slab over-accounting for in-object objcg
- metadata
-Message-ID: <an0E_lt2_53GBWjt@linux.dev>
-References: <20260812124858.73487-1-guopeng.zhang@linux.dev>
+To: Ridong <ridong.chen@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>, 
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, cui.tao@linux.dev, Ridong Chen <chenridong@xiaomi.com>
+Subject: Re: [PATCH v2 1/2] memcg: acquire peaks_lock when reading memory.peak
+Message-ID: <an0Fp5HVk4xVtrSk@linux.dev>
+References: <20260807090000.1532495-1-ridong.chen@linux.dev>
+ <20260807090000.1532495-2-ridong.chen@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260812124858.73487-1-guopeng.zhang@linux.dev>
-X-Rspamd-Queue-Id: 264FE120003
+In-Reply-To: <20260807090000.1532495-2-ridong.chen@linux.dev>
 X-Rspam-User: 
-X-Stat-Signature: phm9bbnphoqocno38shbo6bq8obreago
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786578266-446421
-X-HE-Meta: U2FsdGVkX19At0WeHajMZFYq1a8+d410cVHrIFT4KPen6PGSlcNHCcwPkz4bUEPQ1hp8+tYhBXnBUANFwTTXiDVaMwoO/9Y5o0WcqbokwRJUhmALnTRGhgh3CdCSEWIWsc/KfkXS6uzKvE0lf+LgO1rIaOA0tEzFuiI87VavNsolp7YOaa4n5ZpFXeAOI4J1/Uu8jgJR7C1J77aZ3a3RVStZunRZCzMoXqakdaLtwMpIK3agzBCJPRKvKKnuxVPjyFXsJ6+dvoLgvIFy69575XOpP76vCCvf5lBUyjkXzlfbhS+cP7q12zKVbI7ni4ymqXupfvX9HMaHbFJS6jMs1afK440ImTbDJ9AIUuUlH1iHwR+Ccns9zsQLcEcHfivLptJwptKiWaT4IfkB5cCOgx2UH3pb5eVN1gDVf19W+TtnJNZB/b7e6f2zr/8Y24MYkV3KtFcQ0RFeu1t9UqI9lJh+TQF3oiCQOW2Lry6NDePaAYBETWiwgqTogtvTPh1ZmQNwWvRsYh6+D4XlHy/Hhv+j8f0fQrp8ebF34i8Ksa8fhgJEya3NTytmWFlwgW2/zTFVyg+bpERF3GtrMJlcsKiTmjkI4rqtLFuKrJ3V1KCnEg6LUFOzktm5a7seoZpAdiDZ/zmomN3vFxxGlkWjCLQRy7W2sNptavgApEpQ9CnZgPvOMVtR5NHsjgvmFCz2uU8ieEldbr7ksksYHqxBhF8BqECuc2Iqi1dkvbiQxw5k8MnMqUmK8vSH2b+balhaGMW0+JodjZxwp04rYUiuK8n6uMpcRraPLOOtYopB63ddaiyqCZyDSLvrB81UWtrn1tlY8UzG+fDKqZuFyf+C4fbHlL34HJv3Urc2NXyvyqDy8cYrdd2iKpkIUz4mo8BFtVjpDw8TjFvZjfOpOVTuoKqDwelbF7kDZRI7mpOmZqTowvgK8qjuQgOYRuI0V9aMqR12kFPPDNJ71CSk5Tp
- 5Og7rfdJ
- pXm7ZHwC/9Q6WgSLo2QRWWJ4ZRpndTR+z4mQ4U5ZAxvGDlogYcDDUaaFIxtRcxNHhhGOjUMZBZh9nXN2//KBh11DVvhhOdfmg5ngRnUI2ebyFLH2WdRMPVksm426R30jPJdSdxo6q/AympDq1nld9rfCqERD94H48OnYgtQdtw3RXzLcWARrCQU8DAfin5N931MHdZvnlSkZMK0BQGyi382Qf32rpJcv8DLMMmXwiT5++YjT6PgTHaGcQCzPAwl8nkt+SpxYZr34OZCeTFqaE9zwqmGTlM8CKKE6sbVv994CHSEtpYazq5DjsM3KasMcU61ovKv+EZqKVRnYoJhaCTEO57XkeaZNH+lSCL3QOxIzvBbY4ZoF4z2xrnYdHR0lUpWf2lDLvOHqeNjT0cz0NJbcFtwuMaRRu/LbGbTvoVPKRW/g=
+X-Stat-Signature: hbiwwrnfz5h4dr49xuazwms8eqzaw6oo
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: F0360140005
+X-HE-Tag: 1786578376-296477
+X-HE-Meta: U2FsdGVkX1+d97Nb3YzNRXoccTQ9ni/VjXp+oRPbgu0DNiL1UFHHr6fYPMkSE1jIqjO+ohFWbEPzi/ZGdb7/sHpTfCQZZA/jjMUiN57eLbRB35qh79DzuP/vG+WbBdf5c8bVEnPKzbv7PtgJIpHCiTG5VMaMisu6c01JE1aT/+YvSd1MG5lEWq9u9p2/GDL9Wt4SGt4S8ZJzVKddCMU3W1ABN/azvA1eKZe4mLmBod0bDSPyNHBplWLLixJwEvo4fSuwUn7Q4+qtyVAXOrvEpAe8GY4WAX7QgQ9MpPUOYlwfNnyfBqQSjMmnmKhp6uTN71AV2UxseSs19eSbvWMY/FhHWNyBeBh+76DyKDw+iB4sVSFmDQtaMlj02WhwHmK36maDIfBnS9VI1SFQakG7Zjt3qs9j1pmmO9LA8Id5xYhDdSQJVdE5KdsubG+e7VAle3WEjV7lVD6w6t9VxlFEq7we+Z4xXzyoMF938Qre6IEZNOEGHc+D0OISnTBPa1J4KJ42pduGz9PieYv65B4+Oh/DBV8JmrreUfWz2sTP3PbtdcUwOmckqWEnAs1kWR9F8B0qyTSL6ypKuW4YuWBDBCvzlUXbBjDGSmyndZ+juvbqRXpgJI97q0nRYlaEA5yrmNXmJKLOu1lxE2LAZOZ/PVYFlmPJS3hu8bnQo0rs42nWW5HvSUWf8EOTHplVANfGcs+ipt2QrAQGZlEVByjuM7dj2NNQlw4DlEATDTusbcO8lF236G6ECo01xS2sfOb2yYsOVVbsvxOdJ1ZqFFGzpodc1537cCkELGck3fD7nFLW9WhaDRjzDIpafRsAcZLlJXshpa9wg880FEC2v2wD1RUC+nfQZsw09neWGneuIlQzx3D8kSaBLzVlBIAFRc3MCi0KY75WTG22yMhLSEKdml/4APZBGNgrUh1/EF3aT4Eqks6MNoHeB/V+msPQrcLemsYwdXD7ZeiNbsutr4X
+ ZIOKKy7h
+ T89ayoGPtYfz3clMXKjx8ZMckIuPhNM8oyBb+c3yzYQYDEKsf+pUA8patjzU0rUJrIMMDeQ/PDd6rBZEH4+Me5yGRy+8qzc+wek437yf/wFC12xezkGwXD+rtkjGVwGGjjqGA5IX0w8j+cDQug+C5WyV8FUpj4Syp4qACsziscKRJxdBRQVfR4S0hw+IhM+akS4b6Vw4HV6gWEsQPROY7rn5TQg6bwFHWUsdjVRbo4bO+NJ5gXsGuTsX2CIfUGcQv4jtX5mINQZcd/jbfndD+KRXQKmKxd13dBaee92uq3u8bSec7Dw1ML6iBLRVnwtVI0G9mxHHlrLujnvNEZ31BwYSY50bV44qZjgxJKrTyMgnFUu/bVUlf9HRvrBXhtGEbdnhbJFns8mIs2ahNjFdhbqMLt4PNYIvHFbSFRTrAM2VaXg2XhW2Rl3W6T6Xd20dMWfV2s1l23SSI9sIa71BkhLvs/alGkY1I5woo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,30 +92,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 12, 2026 at 08:48:58PM +0800, Guopeng Zhang wrote:
-> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+On Fri, Aug 07, 2026 at 04:59:59PM +0800, Ridong wrote:
+> From: Ridong Chen <chenridong@xiaomi.com>
 > 
-> obj_full_size() adds the size of an obj_cgroup pointer to s->size to
-> account for slabobj_ext storage, which normally resides outside the
-> object.
+> Sashiko reported that a reader can transiently observe a lower peak
+> within a race window [1]. peak_show() returns
+> max(local_watermark, ofp->value), but peak_write() updates those two
+> under peaks_lock while the reader takes no lock. The interleaving is:
 > 
-> Since commit a77d6d338685 ("mm/slab: place slabobj_ext metadata in
-> unused space within s->size"), slabobj_ext can reside in object padding
-> already covered by s->size. The extra charge then accounts for the same
-> memory twice.
+>   writer (reset on fd A)                 reader (fd B)
+>   ----------------------                 -------------
+>   usage = page_counter_read(pc)
+>   WRITE_ONCE(local_watermark, usage)
+>   // watermark lowered to usage
+>                                          lw  = READ_ONCE(local_watermark)
+>                                          // sees the lowered usage
+>                                          val = READ_ONCE(ofp->value)
+>                                          // B's value not updated yet
+>                                          return max(lw, val)
+>                                          // both low -> low peak
+>   WRITE_ONCE(peer_ctx->value, usage)
+>   // B updated, but too late
 > 
-> The per-slab obj_exts_in_object bit introduced by commit b5bc35ace2c5
-> ("mm/slab: replace slab.stride with obj_exts_in_object") identifies this
-> layout. Use it to omit the extra charge only for in-object metadata.
-> Unlike in-object metadata, slab-leftover and separately allocated metadata
-> are not covered by the per-object s->size charge, so retain the existing
-> charge for those cases.
+> Fix it by acquiring peaks_lock when reading the peak, so the reader sees
+> a consistent snapshot of local_watermark and the per-fd values. The same
+> race applies to memory.swap.peak, which shares peaks_lock and the
+> peak_write() path, so take the lock there as well.
 > 
-> Reported-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> Link: https://lore.kernel.org/all/20260310113804.245647-1-ranxiaokai627@163.com/
-> Fixes: a77d6d338685 ("mm/slab: place slabobj_ext metadata in unused space within s->size")
-> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
+> [1] https://sashiko.dev/#/patchset/20260730115314.1069089-1-ridong.chen@linux.dev?part=1
+> Fixes: c6f53ed8f213 ("mm, memcg: cg2 memory{.swap,}.peak write handlers")
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 
-This looks good to me but would love to have Harry's comment on it.
-
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
