@@ -4,112 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2BE5C5B572
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 04:06:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 294E6C5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 04:33:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B59B56B0093; Wed, 12 Aug 2026 00:06:18 -0400 (EDT)
+	id C77406B0088; Wed, 12 Aug 2026 00:33:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0AC56B0095; Wed, 12 Aug 2026 00:06:18 -0400 (EDT)
+	id C26776B008A; Wed, 12 Aug 2026 00:33:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FA6A6B0096; Wed, 12 Aug 2026 00:06:18 -0400 (EDT)
+	id B17036B0092; Wed, 12 Aug 2026 00:33:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 702006B0093
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 00:06:18 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DC968120278
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 04:06:17 +0000 (UTC)
-X-FDA: 85091279994.06.789AE84
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf26.hostedemail.com (Postfix) with ESMTP id DF04E140006
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 04:06:15 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Rg9GEe8O;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf26.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786507576;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 83DD56B0088
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 00:33:57 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ECD271402EC
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 04:33:56 +0000 (UTC)
+X-FDA: 85091349672.30.9C0469A
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 1717A40004
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 04:33:54 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XWd3qbwF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf27.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786509235;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nGj7AuQqLNogp9DrzWU8bky6bxff7hTLqE4y5/kLaao=;
-	b=fDKRdSjSLAycNdFGV6vUGjrbeolvarTzIVJdElby/Lai+sMDVY1ZnA9esJ/G0SzCpR4xjx
-	j2SsDf1bNClpMuS+GC7gghZZBxW+918BZGvCngXZuIcnEr17ahfUUmQPidmU/N1TEIn+hY
-	xYDb0xoWvmIwoOKJPqKiIVPpwh3o1fk=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Rg9GEe8O;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf26.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786507576;
-	b=MfVSFf/nsH0WXH6EWVUHHNkCc6/x6gbtuJddlFpYK0YrYHQJQEO6n3LI787gw2AkxngXPl
-	oCaL66OjHPMmWubJN1s7w2AWZ5SfCwPJSWGv0h3XI+aNvdGzxDHVGpExJWjkl/IYJ/uVv2
-	+HDm0i2UP3RRfvr73y8E0YFIymM/NiQ=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B399D1596;
-	Tue, 11 Aug 2026 21:06:10 -0700 (PDT)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 018DD3F86F;
-	Tue, 11 Aug 2026 21:06:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786507574; bh=IHjypAHsNKjpNGDu8aCRCeoUOQ9LFF7rYITg0sTzbDM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Rg9GEe8ORnIQSzAFzPE9Q3CsOniFeZz3B5DAx1vSbU2ayamMlqi+pdI/abA/SWthR
-	 JHd2kD7S7LWpcNIoT65928j5y1fwj3S00eMdlQR9LYSfVNqmGWvx2Jo8nRyP2/XrUC
-	 occW+1n2ku+jahULG28ttJSOr0S4qPMQj+wCR/cQ=
-Date: Wed, 12 Aug 2026 09:36:11 +0530
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Dimitri Sivanich <dimitri.sivanich@hpe.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>, 
-	Stefano Stabellini <sstabellini@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	David Hildenbrand <david@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
-	Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
-	Mike Rapoport <rppt@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, ziy@nvidia.com, 
-	pfalcato@suse.de, agordeev@linux.ibm.com, ryan.roberts@arm.com, 
-	linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-parisc@vger.kernel.org, xen-devel@lists.xenproject.org, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, kasan-dev@googlegroups.com, 
-	linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	damon@lists.linux.dev
-Subject: Re: [PATCH 3/9] mm: name pointers to copied PTE values ptentp
-Message-ID: <hwkurkpobxysltkid5523qxndufebqqmat4qjaq6zhwno2drmh@efwoegm2huo6>
-References: <20260806083926.1807279-1-usama.anjum@arm.com>
- <20260806083926.1807279-4-usama.anjum@arm.com>
- <e7osakog3yvdewhdlrk3bsp27pwt2nnhroeb7zihlfxyjotarb@rwxkcb25crh3>
- <b21c4cc9-84a3-429e-8156-0b9967b2f133@arm.com>
+	bh=gy1zI1GXyroGfJFfqMluytO0IUsUPNG66YqCeb7UD1Y=;
+	b=2IQj9PtrK0/bjf2wyytu9wB7MWF5kZMfaThQ5o4VlM9UH5IiGyM7H6hR72M+v0Yqc/7Flm
+	7VOQpqfra9HiDForFY90c88yuYxiV0iQrvQ38HQlUXBnEmAzngZ5Rxy+nwt0uGkf1yxghS
+	7eimkpnUVKzGxOziYkZz6tkuc0n3NVA=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XWd3qbwF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf27.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786509235;
+	b=mbTdiqukXv1GdaoEx0j5IrsR/aJYShyQ6LogF36QF7pyOOXEyWAvN8Ha+MOugNBffp+bmi
+	xncqyvsHPgrNhh8TWQpT/fYGj2MIlpzgPce7on+5pPhOssf9L8oHlIukgRyP1goiO7HGL9
+	hoIDfgyeetT/GiMOUn+Tv2h0Zn7W2gM=
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c15b1da6b82so53273666b.1
+        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 21:33:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786509233; cv=none;
+        d=google.com; s=arc-20260327;
+        b=nVLeQG4mfNAX54DQqF2VkIQKpb4LGB0OuZSRpZYRxvWVQ7QAQwRa7Squi28/5Hvsao
+         XSceMegoEkKLigpnnDbQvqbXx9UTAxOAvetXqTn7wrE62KdgrLApbpHYJ7SEjDqfsFOv
+         4I2oSU4E92d/fVafclFBzZo0mJAAXE4KvQ8MeI1GqU5ONuotzCT5l4WJZHxLbdxuXPd+
+         5QDX/aGRUMzLTY48LQSq2EoL2hQTEH/QG2iNzty1Q+xupsvlHqAgxBwwNu2y5jVXtCAS
+         BxZGyU2neuV9FwjsUFr2j1WQuYTcEdRVRL/hySEWU2Qi9Ywnqee85gIkyLZv5ZWQCgSu
+         1S4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=gy1zI1GXyroGfJFfqMluytO0IUsUPNG66YqCeb7UD1Y=;
+        fh=eBvjfVxDFI93yOgWjA7cOpso+ZB77BHpD9tRb1Yest4=;
+        b=ntMSL/i2E+aE3uJApHE0CzZCng6EHPenJx+WMIPcJs4h2lONGMFGOSEsGPVPBpUivB
+         DmYIrtElXiV0QrJjfHhUOWaTvrZAQchFRH9Qn+yPGF8Sn8a+vF62ENVxoziD+opsnijb
+         mAZ4CTiaUCbMdWk4QDkg/Z3D93Iye+ck8/s954LTWReotslX4CGgoxUIKMAi+gTaOHat
+         +C9uFjeG8bsZoSHIk8kEBVTZms600915Haswp+wVwk1QyTbTbO0Vy27VdVfUSNOn7RMV
+         4NuuEuCu8lx3V61Kdo0/DMlfhi71MdS2V+OTKkobj1VBAXOdzq1DPwxwiU6Mlu6/26ZF
+         spEw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786509233; x=1787114033; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gy1zI1GXyroGfJFfqMluytO0IUsUPNG66YqCeb7UD1Y=;
+        b=XWd3qbwFUuxp1ki4F5s//MfFFkigS++7ayU93ZCnLprAOWdcfG0HOMEy4DeCpyTUoz
+         luYAs2l5YU7cfxPtlnrxO0xHQ0/i6TlnvilsepjU+WayLj+MvmDO3HuZPgWCV9BrWG2e
+         V1sAad9lhJ32j994C5itOtpEK+0k6iur9Dbgu2AWbRepZb7NwkEYB1PvHx+Mcp/xloTk
+         RAP2JyO/P4Go+BWWwDLaXPYcMwCeG93UuUZauqQytCdWaOIF3ZAOUzC8M7DyvI6mdsg0
+         1yLVuNtrSpdgzvUWJ//YT10bZ+gu2wbzHx3fn3duXG8bpQgZV4ZggN0gAW/1O//n0N7e
+         iJPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786509233; x=1787114033;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=gy1zI1GXyroGfJFfqMluytO0IUsUPNG66YqCeb7UD1Y=;
+        b=WuBYiUTKc3juDNrT8JaZ9j5gc4WFHxqWz9ujf9Mr6RB9gN2KAW+xKSwDQJtrhKHK+d
+         Wps5bN4dS9QyO74nJVsnePAcoq2Od+KBduXiJC7yDkVoUOK3s92eqgE9Q4a0xXK+zoDb
+         4tVF+1mQSZdpswdgjwuGgI6fN0IIoX1fI8nXr7fJDmeo7G4HgQsBThJSkxr+IpY30pIM
+         zrVF8Ax6/jPuzjpFdSk4ivVByPTKHnY3ctkTKowO1XvpIbdKjreQ/RpONrBSSzndxHAw
+         WnouUpNKQFZT+1iI6xEw4tkIA8ceCpytsbKcHP9PklIkpbSTRER3jHpmpnQeWAScvDJw
+         achg==
+X-Gm-Message-State: AOJu0YwVT1RV4yoVTIU6XQIwsx1ZM3s4UfYf8J+INg+TuEJYrTq7uCE8
+	LV0xkhaGDsMhEI4EYxlSrr/FHr6B1OAyTd2G0IqlnMq2HA6Y62bXusXBn+mFihkbHHx1MCTDFrC
+	I1qjG2RyPXoeicQ1j7U54E9/zYFnK+JQ=
+X-Gm-Gg: AR+sD12jD2T2+jgy5y2pwKTYtlB0vllOatL2rhuBW6tMy7XTm3OSJoKxSVm0dWJ8+Kv
+	50BF5YwuuP0D+Tlx53Csx5hijRjmZjpY2lrd8GcWzUsLcPS3QtFJ1xv7rdIB8DM3aiQYsG5BvNA
+	Lq1+g5NxExWeqrEl0QjlCUXZ6KtfQG9pBI1q1oYOQ00J3ld0Rqr3yT2kirTwA+ijPJ9RXtB1wYc
+	ZkfLOl/nucGiSHZFtDwOYBSGZ6f/RHbq0R8JVQtGzH39cnoFXanK245Kci6PQ2OuTHsBBgrhZnM
+	yFtw7bPBkhXJNbsi+2HP1QOAEKgfNNd1sm9wlW2nRAPjr58uNES53IFjOZ57S7FAUB56YJXzEdi
+	5F29SjoSxzYyr
+X-Received: by 2002:a17:907:1c0f:b0:c1f:e9d9:64d4 with SMTP id
+ a640c23a62f3a-c20f2eadd70mr102822066b.11.1786509233434; Tue, 11 Aug 2026
+ 21:33:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b21c4cc9-84a3-429e-8156-0b9967b2f133@arm.com>
+References: <20260811-mglru-mlock-fix-v1-1-8b2321d0e1d3@tencent.com>
+In-Reply-To: <20260811-mglru-mlock-fix-v1-1-8b2321d0e1d3@tencent.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Wed, 12 Aug 2026 12:33:16 +0800
+X-Gm-Features: AUfX_my9hsGTS003zWy5nQRyHmMtI6GZWhD6COMTnNNqrfcd37GSx6vhXbVAVVQ
+Message-ID: <CAMgjq7CKvvcJLqc2Chi+shiTSUA1aAdyauXGViMGNcVixPjRuQ@mail.gmail.com>
+Subject: Re: [PATCH] mm/mglru: fix and remove redundant unevictable folio handling
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Oleksandr Natalenko <oleksandr@natalenko.name>, 
+	Suleiman Souhlal <suleiman@google.com>, 
+	"Jan Alexander Steffens (heftig)" <heftig@archlinux.org>, Yu Zhao <yuzhao@google.com>, 
+	Steven Barrett <steven@liquorix.net>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 1717A40004
+X-Stat-Signature: adxq73z6bssccbq6wkgmr9u6wbpjs7ea
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DF04E140006
-X-Rspamd-Server: rspam07
-X-Stat-Signature: rr5g8j8hewdjheyxuqj5nugq5p4f3rjx
-X-HE-Tag: 1786507575-774721
-X-HE-Meta: U2FsdGVkX1/q2MYlqYXlF38y48ZS70xhs8xamzlx2GsyHrenB+M996zfY/3Ib3WxJ8i1sQl9a0mLWRYrUbBwPaw4ZjAYaHD6I7b1URY+IZqgwnjPk+fxOjnjl94S7X/Xq4fsQdpJ4efZboAg4a6hNw7MBZ5RKqPQ0eQ7I7I1Oms+i+4z4hKVatMwDJ4ojY6YpRMNIIeP7nf4YddW7n/LY0+IqnqAx5iDRbjj/YRrNRFlxRf0jnR2L/9xhGHiMMSnRUXOiTwMW2PAhVPk3pRNuJLPTTmIU/EMkVi55KURMptAQ0vYFMejgXEmjFO2/w6I+khM1nq3cPxiZZg/8NE235BS+jKzSz8lTY0nTyflu7RBauTTyD9uY9Vj2yR4loBfmLvd27UiqNsyfnSj/Bk+K9sLMBBGG0kKEYsywsO2pAQCqHiqhmBuo+2ppz/mnEJv2JbTVLQ6In5jei8K3TRL48UB/sFFHNou1iWBkZOB7yYwINPx0/K1hA3XoYxW04rnb6FE7A/23Gh7TaSMWRaPZEVkSD2Cwlh+vW79XTHGbjtdAHn8l+9/huauXbsr4xLdobsX5qdb7Y6INDOrU1YoWgN27aEB7m8UE4WHY+h8T2rE4HtaNeCcFCQx9q8t8A3loKtYBs8nByeGdjRj8bbC4j7Qsk3GPyHaAKThEIUWR7271lYj/OZBr1MDyctarhQhIph5NN+jI2J9UpqDWbkiT2xWMvBwNclhTmCvvr8VIN9IBxPLYf6kR2vIM+xQFeK8xjBNBmjcQz6/pxUN4HwiPRJ7ltzn9cha6NFiQTFyIz5WDWpBzJZuUzrkqsjPVz+0A5z1u07iaaJxm4LweobM7jKs6y87qbQacAdg5IXQj1Yjy94SU1t+pGPBms/pUAfolObz7+9VCv/kGfzrWKR+Zvb+Bu5/Qw1ELDVZXQlD5EECC4I/9RKQSnMjkMke6QC+jsdBTtfXUzOo9zyUXoo
- uoOBJ1//
- T4nmKzY0/mRyVzCdwXBR8b4ZkHiI2IuyJPeuS6a9+yudBFSL/6Iuhsr0VvbpELIhRy2HHqoRn/KnnyTRf0GDb/70CS88Ee21Yfk1Pj4nQMq15oiBweCCWZA9HildaNW1X+bM1m+jMwGWQKAO9E4LsENugptqmIgUhuLXyKPptj7Z3FWa98NpGMuXiYk8Ok8Yy6oRXQCFsqMy0EEc5jx8UzsOim3F+g7Uni4/maF0JboKm0YiDLiRyLu6C218NI5FDnZSDs36go07eIjs+CL2jKDDUcywAeLJ/9knfeJtgO1+YDMgeUG+S1v0K0Su0iPAFRq/Z/C589szKE9v7caJp3zFZmO8ShceCGQ7yJOxklMupHyefHVf44cCLOtmaYqIKoY0OHJrYSY5eV77gzv64IFSdXWUFTeOs82tCmE2DkIhsO+rFsjubQI8aGsaHdpQaueuU
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786509234-703136
+X-HE-Meta: U2FsdGVkX18tPMMdE4SX5KuXdEXHqNRtw8q2/vjskBlNHhwoCQ4sweNVSeC/aRfvBPM9hNjBNv4xn2/uJSTJ2WlIKnNcs1FGT9DDk0GLXAHYhr/Qe+t3PxNNuCYtM3LHKBAqbIkSHaCydy+mo3Ubh0kzI1UGig03nxVtSKOpN22oNH6/k3ZJv4OIKXmeel8zT1Y1LnQW4nE1aFkMO67vCPP24vE8v9pQA7/eYVJtigfXyt7c+ZR2qc1l3gRI1LIZl1v7aA9Uar6Vm4BCAuPi0A5axbJAtRUiSgXuOTFlojsuuU2fX6IqfsAMq+MTX610OVK9wUD8TQ7qXg5pljHwcFOh9D9gMz85MWO/mX6ZEIL8iQ8LP3ZeAY5LoaLRXPBILPJRFiebmjSd+HChzj+uAS1Wlhu2iX0slJ9cLYUWiUa67qgDzuZYkXnGsG2xePzqGZDnWEfZbXvMhnz0A/zBW8OM1HUoN3Yf4aRujh3v7bm4TblcANNuDOFQUaXhV071lPhUiSyj40hNe2F28ZIL0TrKqI84/J38ZmGsdfA0qNQiMhFQTeiGAVbLfP8isOMjuTfdRNfzQ1GoY75pwSetKzM1AK0S2kMcBuL1bMTXS+izWDBXQhrUhql6SmqE2P4ev+MCyUotShU+uY1gFtu9CkJEW7FyNcP115i9Bj7BjSrXAF2t/Nc1VQuFL5gzWCmKu3gwKd6HOyqNoHzUoqGnm0AWnyGLRgspyL3DwdbcUgVtbZlyJeiEuM4v0SS+DDAkQSYr/RSk9YVx+KLfP3bwuETjyEg6xLe5RUvuXXrgL3B+OgO/4DZqVgvgXbdKzFApIL23FaR5UvKNMM3zgh+kozdZslSYPXapPGMD7kRf2W3+jrU+l4tJet7YhDT1d+hVXQh1DBD/PADiwmpFx291QrIeKjrmhvJZhyvfcJW2aLMUtkR/VSx9xrnIR58t+8xpPjnSD4EJ2MEBMidfmbw
+ uc9o9XTv
+ Lu2dT4+T36hIdCvHNHZAUvp6OhutIZehCZdavRugmbtqxrXIfLBJ4YJHiUXoejNJWw8Bq6gybXfejvzW4GRaagG/v9y+TSSsFhWNqWd5dD0qahW+8rSqmvuIr521iQC3MPjOmSWQ+5XWyE6F/MT3syjBbbGR6lW8P3Sj97H6vOnhxOvhnBzOnPm/1x7N8qAm5o/eCWaj+xIDXXvvQHKPC/EBOc3FVt0ok9SL8jZH+9n6Bt3zpG44ChV9JgU5Zg7vAwXYnyL9taKnqhkSrxx154V89+4xtviax5GkyNgmtFx30LApR4kbf/BOmesUW70cUylxCY+PIjL2b1woazKujtQamb4lPxykkfFzVY4IYLiNk47AxI7BqA5PvPqLZmgshE0AJyY+zVCyEY1BGWvgdyyrpbCHA+7cQ8pOzlFykrIGJr+g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,154 +143,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 03:09:07PM +0100, Muhammad Usama Anjum wrote:
-> On 11/08/2026 11:58 am, Anshuman Khandual wrote:
-> > Subject line is very confusing. Perhaps something like the following.
-> > 
-> > mm: Rename pointers to copied PTE values as ptentp
-> > 
-> > But even 'copied PTE values' is not very clear as well.
-> 
-> Something like:
-> 
-> mm: rename pointers to logical PTE values as ptentp
-> 
-> or
-> 
-> mm: rename pointers to software PTE values as ptentp
+Sashiko reported this (TLDR: mostly a false positive, but I will send
+a V2 to make things a bit cleaner):
 
-Yeah but we need to get these nomenclature right at the very beginning
-and also probably get it documented some where.
+--- Patch [1]: [PATCH] mm/mglru: fix and remove redundant unevictable
+folio handling ---
+commit 4d1ddce0f76b4c4700b6f963424566b2fce82fd9
+Author: Kairui Song <kasong@tencent.com>
 
-> 
-> > 
-> > On Thu, Aug 06, 2026 at 09:38:41AM +0100, Muhammad Usama Anjum wrote:
-> >> The hw_pte_t conversion must retain pte_t * for pointers to standalone PTE
-> > 
-> > We need to explain what is `standalone PTE values` first.
-> > 
-> >> values. Name the value parameters ptentp in the install_pte callback,
-> >> write_protect_page(), and guard_install_set_pte() so the later mechanical
-> >> conversion can distinguish them from pointers to PTE table storage.
-> >>
-> >> Some functions already use the ptentp name, including:
-> >> - madvise_folio_pte_batch()
-> >> - folio_pte_batch_flags()
-> >> No need to convert them.
-> >>
-> >> This is a naming-only change.
-> > 
-> > Small nit - s/naming-only/rename
-> 
-> I'll fix it.
-> 
-> > 
-> > The commit message needs rewrite clearly explaining the following details
-> > 
-> > - What are standalone PTE values
-> Logical/software PTE is correct and better name here.
+mm/mglru: fix and remove redundant unevictable folio handling
 
-Right but we need to define these early on and then be consistent in their usage
-afterwards in the entire series.
+This commit removes the !folio_evictable(folio) shortcut in sort_folio()
+to rely on the generic LRU culling path instead. The goal is to ensure
+unevictable folios are handled by isolate_folio() and shrink_folio_list()
+with correctly initialized mlock counts.
 
-> 
-> > - How these are different from HW pgtable pointers
-> > - Change is just a rename for pointers into such 'standalone PTE'
-> > - These renamed 'ptentp' here would be used for skip or replaced during
-> >   upcoming mechanical change via a script
-> > - No functional changes intended
-> I'll update message in more elaborate way.
-> 
-> > 
-> >>
-> >> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> >> ---
-> >> Changes since RFC v1:
-> >> - Update the description for the architecture opt-in conversion.
-> >> ---
-> >>  include/linux/pagewalk.h | 2 +-
-> >>  mm/ksm.c                 | 4 ++--
-> >>  mm/madvise.c             | 4 ++--
-> >>  3 files changed, 5 insertions(+), 5 deletions(-)
-> >>
-> >> diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
-> >> index b41d7265c01bc..c34d826c5e4a2 100644
-> >> --- a/include/linux/pagewalk.h
-> >> +++ b/include/linux/pagewalk.h
-> >> @@ -89,7 +89,7 @@ struct mm_walk_ops {
-> >>  		       struct mm_walk *walk);
-> >>  	void (*post_vma)(struct mm_walk *walk);
-> >>  	int (*install_pte)(unsigned long addr, unsigned long next,
-> >> -			   pte_t *ptep, struct mm_walk *walk);
-> >> +			   pte_t *ptentp, struct mm_walk *walk);
-> >>  	enum page_walk_lock walk_lock;
-> >>  };
-> >>  
-> >> diff --git a/mm/ksm.c b/mm/ksm.c
-> >> index ad05d7791307e..11d50518d02e9 100644
-> >> --- a/mm/ksm.c
-> >> +++ b/mm/ksm.c
-> >> @@ -1292,7 +1292,7 @@ static u32 calc_checksum(struct page *page)
-> >>  }
-> >>  
-> >>  static int write_protect_page(struct vm_area_struct *vma, struct folio *folio,
-> >> -			      pte_t *orig_pte)
-> >> +			      pte_t *ptentp)
-> >>  {
-> >>  	struct mm_struct *mm = vma->vm_mm;
-> >>  	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, 0, 0);
-> >> @@ -1371,7 +1371,7 @@ static int write_protect_page(struct vm_area_struct *vma, struct folio *folio,
-> >>  
-> >>  		set_pte_at(mm, pvmw.address, pvmw.pte, entry);
-> >>  	}
-> >> -	*orig_pte = entry;
-> >> +	*ptentp = entry;
-> >>  	err = 0;
-> >>  
-> >>  out_unlock:
-> >> diff --git a/mm/madvise.c b/mm/madvise.c
-> >> index 07a21ca31bad4..c324cc991f841 100644
-> >> --- a/mm/madvise.c
-> >> +++ b/mm/madvise.c
-> >> @@ -1101,12 +1101,12 @@ static int guard_install_pte_entry(pte_t *pte, unsigned long addr,
-> >>  }
-> >>  
-> >>  static int guard_install_set_pte(unsigned long addr, unsigned long next,
-> >> -				 pte_t *ptep, struct mm_walk *walk)
-> >> +				 pte_t *ptentp, struct mm_walk *walk)
-> >>  {
-> >>  	unsigned long *nr_pages = (unsigned long *)walk->private;
-> >>  
-> >>  	/* Simply install a PTE marker, this causes segfault on access. */
-> >> -	*ptep = make_pte_marker(PTE_MARKER_GUARD);
-> >> +	*ptentp = make_pte_marker(PTE_MARKER_GUARD);
-> >>  	(*nr_pages)++;
-> >>  
-> >>  	return 0;
-> >> -- 
-> >> 2.47.3
-> >>
-> > 
-> > How did we ensure that the above changes are comprehensive and nothing
-> > else got left in here ?
-> 
-> The order of patches and even the code was found out after adding hw_pte_t
-> structure. Then everything was converted, until some pte_t pointers were left
-> which didn't require conversion.
-> 
-> If something is left, we'll get build errors when we build a converted architecture.
-> So the branch mentioned in the cover letter when built, would produce build errors.
-> (Those patches would be sent separately, after finalization of this series).
-> 
-> Whenever I'm rebasing (on mm-new), I'm rerunning Coccinelle script to see if new code
-> has arrived which requires conversion or renaming.
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 3194da7dcc795..eca5ff64238dd 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4660,16 +4659,6 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
+>
+>   VM_WARN_ON_ONCE_FOLIO(gen >= MAX_NR_GENS, folio);
+>
+> - /* unevictable */
+> - if (!folio_evictable(folio)) {
+> - success = lru_gen_del_folio(lruvec, folio, true);
+> - VM_WARN_ON_ONCE_FOLIO(!success, folio);
+> - folio_set_unevictable(folio);
+> - lruvec_add_folio(lruvec, folio);
+> - __count_vm_events(UNEVICTABLE_PGCULLED, delta);
+> - return true;
+> - }
+> -
+>   /* promoted */
+>   if (gen != lru_gen_from_seq(lrugen->min_seq[type])) {
+>   list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
 
-But in the early patch where the manual renaming was done for the script to
-pick up 'ptentp' patterns needs to be audited again.
+With the early !folio_evictable() check removed, how does this path handle
+actively accessed unevictable folios?
 
-> 
-> -- 
-> Thanks,
-> Usama
-> 
+If a folio is added to MGLRU, then the mapping is later marked unevictable
+(for example, via shmctl passing SHM_LOCK), and the folio is actively
+accessed by userspace, it will accumulate elevated MGLRU references.
+
+When sort_folio() runs, wouldn't it hit this promoted branch (or the
+subsequent protected branch) and return true?
+
+sort_folio() {
+...
+/* promoted */
+if (gen != lru_gen_from_seq(lrugen->min_seq[type])) {
+list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
+return true;
+}
+
+/* protected */
+if (tier > tier_idx || refs + workingset == BIT(LRU_REFS_WIDTH) + 1) {
+gen = folio_inc_gen(lruvec, folio);
+...
+return true;
+}
+...
+}
+
+If sort_folio() returns true here, the folio is skipped for isolation.
+It never reaches isolate_folio() or shrink_folio_list(), which means the
+deferred !folio_evictable() check is never evaluated.
+
+Could this cause actively accessed unevictable folios to circulate
+indefinitely in the multi-gen LRU lists, artificially inflating the
+active generations, instead of being culled once and for all?
+
+
+========
+
+The answer is we are fine, or at least I don't think that worth a
+standalone optimization.
+
+We have two kinds of unevictable folios here:
+
+1. mlock(): mlock_folio() sets PG_mlocked immediately but defers the
+list move to the per-CPU mlock folio batch (31/CPU), drained on
+batch-full, by every lru_add_drain*(). These folios sit on a gen list
+only briefly and are then moved off properly regardless of hotness.
+
+2. SHM_LOCK / unevictable mapping: these do stay on the lists until
+scanned. When their generation becomes the oldest, if they're not
+worth protecting they're isolated and culled via the generic path. If
+they are hot, they may be protected for a few extra passes, but this
+protection decays, so it's not an indefinite circulation, and
+correctness doesn't depend on when the cull happens.
+
+But to avoid any potential issue or concern, I'll send an V2, let
+sort_folio just return false for unevictable folios. I think this
+change barely has any visible effect though, just to make it more
+consistent with classical LRU which also unconditionally isolates
+them.
 
