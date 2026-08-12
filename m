@@ -4,88 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E8F3C5B572
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 15:06:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2114AC5B572
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 15:15:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33BCF6B0161; Wed, 12 Aug 2026 11:06:51 -0400 (EDT)
+	id C7A166B02B2; Wed, 12 Aug 2026 11:15:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3130E6B0168; Wed, 12 Aug 2026 11:06:51 -0400 (EDT)
+	id BFC446B02B3; Wed, 12 Aug 2026 11:15:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22C936B016A; Wed, 12 Aug 2026 11:06:51 -0400 (EDT)
+	id AEB6D6B02B4; Wed, 12 Aug 2026 11:15:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E927C6B0161
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:06:50 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 535A0A29BD
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 15:06:50 +0000 (UTC)
-X-FDA: 85092944580.14.03F97B0
-Received: from devianza.investici.org (devianza.investici.org [198.167.222.108])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2C13C180011
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 15:06:48 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=r00F92aQ;
-	dmarc=pass (policy=reject) header.from=grrlz.net;
-	spf=pass (imf16.hostedemail.com: domain of include@grrlz.net designates 198.167.222.108 as permitted sender) smtp.mailfrom=include@grrlz.net
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 873A86B02B2
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:15:55 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 02F114043B
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 15:15:54 +0000 (UTC)
+X-FDA: 85092967470.16.92DB6CE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 62DF140006
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 15:15:53 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GHTlujo+;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786547753;
+	b=XhPTd66CnlTgbK/9jsyfc4EhP0VukMQ9IqfqihwbMhhspPgYWWIptoTKyK2h2M6YARQRfj
+	G1pw7GG9FYeN2ytEIoGa7+GVmRtbnhT9HZV4eRZViQojbmulu80rSUKxqcAEDe9JB2AkI/
+	J24cdbEv5TQSDcHCDssxC1OVzIwUiPA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GHTlujo+;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786547208;
+	s=arc-20220608; t=1786547753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=XDUATBNDii0rNPk0EPcFSgfeQuKfSAIXVv7jigaLJ2w=;
-	b=3A7DvWtHw0IdtMHUG1UtF1urQxQ8iQ7+YfgjzyRSKj/3he2bpEjko2jfMxgSuHFqNUTM29
-	+rx89UoHuwGM+KXyGcHWzoElSg2qfMstbD+9guTMKqZPlRDiLpL3hA/DMnPhjl5g7CJCrR
-	CuAUqiiBPMyby49AyaiHtiYyegzksk0=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=r00F92aQ;
-	dmarc=pass (policy=reject) header.from=grrlz.net;
-	spf=pass (imf16.hostedemail.com: domain of include@grrlz.net designates 198.167.222.108 as permitted sender) smtp.mailfrom=include@grrlz.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786547208;
-	b=neglgVssHZBMd3zNmHt9J2EJnvLQelXyjr22SOpZpDd/oHhhXC+JZSvr7m9xz6R5knXDcB
-	EAIcFkl+1/AAQI3v5GBC4I7grAqFbfn3BMTl9r3u0Pcz1s6LX2toCqY33atSDON8x04baH
-	tZ6gTcpQvisteBzCIfUoCYCWZt5mn6I=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
-	s=stigmate; t=1786547205;
-	bh=XDUATBNDii0rNPk0EPcFSgfeQuKfSAIXVv7jigaLJ2w=;
-	h=Date:From:To:CC:Subject:In-Reply-To:From;
-	b=r00F92aQkFiiqDI4p41cgXIft6pY2N1ydZXbq+hN2+psjMJhAzrMv+g6ybxjuZQ91
-	 M4+6YqEHKuDLIo5gh1nSZ2S5iNQObZe3tblnvfIjJ2eXJyyEjSlt/bNTQa3leH/ahE
-	 lx/z5KaeGnRpd1pXbU33K40MCrxUdSRkmVct0qeM=
-Received: from mx2.investici.org (unknown [127.0.0.1])
-	by devianza.investici.org (Postfix) with ESMTP id 4hKsK10jvsz6vLd;
-	Wed, 12 Aug 2026 15:06:45 +0000 (UTC)
-Received: by mx2.investici.org (Postfix) id 4hKsK04HyKz4y6W;
-	Wed, 12 Aug 2026 15:06:44 +0000 (UTC)
-Date: Wed, 12 Aug 2026 16:06:45 +0100
-From: Bradley Morgan <include@grrlz.net>
-To: leitao@debian.org
-CC: akpm@linux-foundation.org, baoquan.he@linux.dev, david@kernel.org,
- kernel-team@meta.com, kexec@lists.infradead.org, liam@infradead.org,
- linmiaohe@huawei.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- ljs@kernel.org, mhocko@suse.com, nao.horiguchi@gmail.com,
- pasha.tatashin@soleen.com, pratyush@kernel.org, riel@surriel.com,
- rmikey@meta.com, rppt@kernel.org, surenb@google.com, vbabka@kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v6_1/2=5D_kexec=5Ffile=3A_stop_th?=
- =?US-ASCII?Q?e_top-down_search_before_it_underflows?=
-In-Reply-To: <20260812-kexec_posioned-v6-1-e477887086f0@debian.org>
-Message-ID: <5AEF66B9-D749-4E2F-8B24-62988FE9D960@grrlz.net>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lPh6g5iGS2WA0/mUV2gpwWeFGaucRmMGFZUtCeA+ObU=;
+	b=B6X7ju7vSurVL+Gzw/VepH6xUsC+zTjShjXhtca651Sh3hMDtVAf8iBd+NbhMvl3jbP7+z
+	SMWvc0V6mwYzAQobaCwz9coWhgUhyFW97oAO2ZXC0k0xn3RXXNvOU24TSlebyC13rBq+hV
+	LJdzdr+5T27Uvt+uXEK+sKlb0PEJzaQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C549860A92;
+	Wed, 12 Aug 2026 15:15:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008BC1F00A3F;
+	Wed, 12 Aug 2026 15:15:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786547752;
+	bh=lPh6g5iGS2WA0/mUV2gpwWeFGaucRmMGFZUtCeA+ObU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GHTlujo+BUk2vYYvApA/At9WHYcS7dfyrj1YiE1mvYOM7GM0fv23hslpd7x1OO8zW
+	 wTiQCxVEmf4xbV71gl4VNve+a7mhG/wg0AINZVJXshFlDjvmkd9MAkiovyCwP9t1pQ
+	 LJJA1rhMImJXrBZlq1rB4HpGE95EW4qEtsNz0sYSOFTqIitPsQ5ciVrMRDStX8R1SE
+	 8OE1obJb4jSajGyZFxSFFb4XuoeATEsGJuHDk9oGTFuJigl6RK6KQjEwgd741BzNKT
+	 2XtVNk/hM7PldF3d6neux8mWAC6PtobkW+ahB1meoeN5bCJzI8qbSDbKHiRzym6Rj6
+	 Tpn9tyLCEaajw==
+Date: Wed, 12 Aug 2026 18:15:41 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+	Steffen Dirkwinkel <lists@steffen.cc>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Denis V. Lunev" <den@openvz.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	David CARLIER <devnexen@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Juergen Gross <jgross@suse.com>, Kevin Tian <kevin.tian@intel.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@kernel.org>, Toshi Kani <toshi.kani@hpe.com>,
+	Vishal Moola <vishal.moola@gmail.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, stable@vger.kernel.org, x86@kernel.org,
+	syzbot@syzkaller.appspotmail.com, Jiri Slaby <jirislaby@kernel.org>
+Subject: Re: [PATCH 0/5] x86/mm/pat: CPA fixes
+Message-ID: <anyOHfbXJAAmbcdi@kernel.org>
+References: <20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org>
+ <555ea1d43a12c30a8f1eaf10c899b3790d728f33.camel@dirkwinkel.cc>
+ <anCK3eWFMwZqq5ka@pedro-suse>
+ <anXvODEvV4f_Taj7@lucifer>
+ <anxbSdxDlyq__-T1@pedro-suse.lan>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <anxbSdxDlyq__-T1@pedro-suse.lan>
+X-Rspamd-Queue-Id: 62DF140006
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: qmaeh3p99uutizxe463wssat5ej7r3ib
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2C13C180011
-X-HE-Tag: 1786547208-811761
-X-HE-Meta: U2FsdGVkX18eEUqTgHIH+rzs4gnR4H93vzzSXSRzIIQUVHySLPgbAuOcWGCAKsn9ssKK7XJBvg1aBklHSxJ9i7+bHKPXNdpcSnPPcG3u8H++qxomkcEmcl3AZPMVLeMycVvVgmhOi3Y6x1OxKrpOX2fiix5FTAzZNgR2BTX/hJt4v168wlqe1T7/oB0jGrqEmsBPhGSJtkxJvCgmNEqOaEQHRwdeCjyNEozkS6XguSEzKsjo5xPq3eYepqxpXBTqU+hozVC48yvfTAy4XVvIeQhbIN8W46w+nohW8gBojX02CsS8QmjdBn8PlxcFCiPe36lWSm6pMOiRB3F6SWNzgimPAFoz/blzOVBhEEiqB/oLnf/vG5Fh4JXmR3QnMyUVwyMokgdGIvaYzUj83A3J4hBv6YviDZYx3uIqoC+nwLBQrt5slFUNcRrh6O/uxZXajZVbllg1WQA/QjKfMaWZHrY1BmCSqaut+uCFrg5ZkjAzw5R5fJipAe+RmorFw2jm56hhJySB1AhZkaF5VkIuOpx/HCgI6B7ufn3EHXzy9T5k/LjdqwR7AOpwEYOinYL84ONdFkdReyF8TlFFyV+MElX3Q9ZL53ttrlPIobX7sOXdYr2NTOPga/9OmNfqO7ujhw7d8F+hH+jjLFZ3Ckuof8K+8XoVLCQ5MMidwlG1o7+HwUdgnwIGCc4v/QCoZoOyJ5wtuWbgnEgMbiTdLaFnHiN0LYz58WRy1QSgQpnQ6Y1mVXcPB5ns5q2SdsTftA9R6CBCvBerxGW8IumRslYU/lC3otxxZU9NWlEPtTNbvXWiEoVrXaay8KzhfwrTKiySzpWH3ekU9OupNC38fPstff7kT9Oy8m5WrWGRAKlbrcL0GDQJd9gU0IgTvNFkZRj1f/l2H3XmNgzPtQnCMxfVgx8DSKjb8BeBNX0aEjdUrjWfFEXBL22tOWY4LcN0m06qXwuJcl41fsu1qdcGW/P
- VEvoEPfF
- XbdmI56wP/fnYvbkTFkF3Ap1lQWkNd5rmd6XRNec2ia/w8jOVA8wr/WwU8lD1saSXtfTAoCm1dsxSd7V32O3yTwawoCvPGzCf2ubupWlAN8fHfkRJ7LTln2g6r7LH2jzZa83KAgLy6LN9syOGnjErvjETtLfym14/rNvmlO3o9lzIjz3gnH7juLyv1AyiJXXSiOcvWvbUjY8YNHJ4GSUx8WQOZ4K4Nr45bEYNxCgKtROnDs7Ze2IjiEclt705VVnP1zXNDOrU8ICm/UTmH8O9HDPX5z8XsUhVzDdhmGnFri78M3OLLWWtaXO0TMKbwD/VWfBEtVsQ74JlMiNSdJhxZxBblOjxE+Y09QjQfqra9XHfjdTCoHTbeo4vM+Y7lQZZn8Nn65dqdaSBC2tcpVOmjPKOWXF7UyqRzX8l/e4Y41h8FYyphkoA674HSDF8VkwpUAvAJQp9F8N9S0SH8VdQyn3FIidWxF4ZATgekFat1hcTu6jTLoUMmOzQZlyEBpBt9w9ZTks9730aMdyprD9fCFKCenYBHxpT02md
+X-Stat-Signature: zicp3jpjxmtkwg5d7dmdxmnx8rge7n16
+X-HE-Tag: 1786547753-518117
+X-HE-Meta: U2FsdGVkX1+Ji4XdQ8Hor+Q+ukl6O8lxE9v0yTT4NU+6+EOZWh4LBb3EqMD4v0OCSHlSupZvSDKeVl7A9MiGeVuUUTaZL0djwYj7LU166ePI7008JHf2ZQFDNCt4HT1+VQuqj/Hr+gyP3iAKQzggTMIztaoRYmfNHdLlDNbOWjKa3g7uFF7h+cynQ8fk4UEhivBPTI8ja4BZSiWATcB5YyKPMTerRY7lBch70yQ3hQxRqRFTIBeprDmEkNFNR9QzMg6ndm30kC5aM9cMqc1l2n3S4oAq/IOnQGPGHfdrPJOjRJIsZZS7ehHp7EGfvEkelwKQOXj4bsYxVPPBZwihwC5O0l6kNKIB9qD2AnfhOxjLYhmZnQZMI/BpbofU7xbXTwk7gLHOD30LRLm1e5Kmo6bs5mciUn9L4djKaWWnvZYmXMzpdDpe4cfeNgtzoSqu+lIdIjBWWE9Zwi2PHwvufMJHm9+bxA4TDJR/M4NP0MoggZv/Humkf8oQUIjzeEmVg3hSuHjvYBxNJQPSW2y+Upph613NXBkfhEUnftPa5ZSJ+1XWqsD8WZLn+w0YIC6myuPGd6OesZCjGtyC/DAXxvfuz96TDbyGkWtAF2R9ykMHerhLcZg7hG5NQWaZpKO637dROcMrYX49iDqYRGa3CAzkmKBdqawjynyre/GAbgJHIPjVWkLOkfPoGNfHxHEr0rvJn9WpsMxVLNzQOeEH5S/VtdLh7DlMKejYl8Z7YMGSRFFu8fR6HvY7+O0Js4vr1Pd7FBZlNWq2+MFH7sfTtoq4N48ocZWcEijxMcZFPMpQT7IL6luiLzah2wraPMYYgxnb9ubrexKRKnO9tcXxkNppQlaN68/7OCF80CNj+AAL3KUj+ZeB+6ra8DklnFQIYGLvu7u5YvwgAH/f+KG1xN276O7fQf3uyhmKNNCqpZSMveyWcaGAt9RxgaYpILZuuNIkB2/4sB3GeD6W9tE
+ MORpwJrT
+ zq+Joz24pEmHdBe018M6LLXdAltGPhwNFoJh3vPKNamfVHdblppM70W6yzzNirwInJL+/VQrfwDzdQ2uv1P21ylFpnx3w4P1bGZBUCcmCyqBdRpp2ZWpXy7FmqCa409qhtZLDPbCajbjt4tQhdxTY1vTWIRYUIkmD2yL2hWwHst0mtdfrSpup95AqLdc+IHpVfYdIqo0tiPXjHuxUP1achoZTQh41Mv+Hy/kK5zt86vJsL8kS9NuP2ULKcV1en3J0Fqfm/N62ieHaGV5DRs1jnRN2+xWIScDNQVYhkwqrwvbJMMsx7xCJhvMGkzWMyRd9S43FMMrX1DX+xO4jVqHqtlWVIlxrsDq1VLB4zh3lpAzQNCGW0/d3vo32NQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,24 +115,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Breno,
+On Wed, Aug 12, 2026 at 12:46:09PM +0100, Pedro Falcato wrote:
+ Just Hold the mmap lock on callers, but it becomes messy quite quickly)
+> 
+> Mike, if you get to queue up my patch then please replace the diff with
+> Lorenzo's (with a Co-developed-by:, I guess, since he went to the trouble
+> of moving quite a few things around). Otherwise, I'll figure out how to
+> re-submit it after your series lands.
 
-> Nothing stops that subtraction at zero, so a search that reaches the
-> bottom of the address space wraps temp_start around and continues.
+I moved some things around as well and here's what I've got:
 
-ack, and the wrapped value sails through both existing checks since
-it is not below start or buf_min, misses every segment and exclude
-range, and the loop breaks with kbuf->mem pointing outside of RAM.
+https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=cpa-fixes
 
-since the walk only moves down... temp_start > end can only be true after
-a wrap, so the new check has no false positives. It is also what lets
-patch 2 drop the poison < memsz guard.
+Build tested only for now.
+ 
+> -- 
+> Pedro
 
-
-Please absolutely add:
-
-
-Reviewed-by: Bradley Morgan <include@grrlz.net>
-
-Thanks!
+-- 
+Sincerely yours,
+Mike.
 
