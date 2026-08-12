@@ -4,87 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4E92C5B56A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 16:35:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A67F3C5B56A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 16:42:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1659F6B02CA; Wed, 12 Aug 2026 12:35:30 -0400 (EDT)
+	id 20DCF6B02C9; Wed, 12 Aug 2026 12:42:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1161B6B02CB; Wed, 12 Aug 2026 12:35:30 -0400 (EDT)
+	id 1BEFE6B02CB; Wed, 12 Aug 2026 12:42:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02C106B02CC; Wed, 12 Aug 2026 12:35:29 -0400 (EDT)
+	id 0D55B6B02CD; Wed, 12 Aug 2026 12:42:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D40456B02CA
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 12:35:29 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D8B0B6B02C9
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 12:42:49 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 57F8FC03BB
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 16:35:29 +0000 (UTC)
-X-FDA: 85093167978.20.42CD494
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 5FDAF2000E
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 16:35:27 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=p32sLKDB;
-	spf=pass (imf31.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6A1AD160415
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 16:42:49 +0000 (UTC)
+X-FDA: 85093186458.20.EBB245C
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 17175140006
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 16:42:46 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=YNqu+J8i;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf09.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.182 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786552527;
+	s=arc-20220608; t=1786552967;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YSUpb+6RTJo8/wzaYanzl+1PtFvc7EMmB59ikEuyXy8=;
-	b=J3s7aPYO4xX5VjgD72P1lXTw1NM3OgZlFxlT5fvDiGHVX/avd2rAh04pfZ5XWwjIK2Za4u
-	e1M5K7u22zZtHgTIsecEfY9IRinrqeWW2VxwVkVpLpp62sNHruJPcSBGFtGvyvNc10vW0Q
-	Sq1dAXwSW21xUuT2FR5P4wHtI0O3TbM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786552527;
-	b=x0D4s9poUAj7s4w/k/lzdbvXcG8b3QGS2EzUNGTplcKpZmlSIxKZ3li9X4O3FqSsyWsaTP
-	3zZyxQFGfG63GI0BjZ7wcSaPuFjZxvWO0JCQorOTjYyk9AlsZBsZF9ES9R9rdYecK0rKTl
-	9S4yFJA8eDFrYOP1n+MqkqQtsGFm2fI=
+	bh=x/EWoL2S0wFVxxUH9CDFZoGkIehfFWNIp7hAQk9bjwQ=;
+	b=7/b+iJLS2FetjaETzbblHZd99ItCxCohTi8D2iVavtRPxyH9QvvqB/dULVcGT5JX+ihtaO
+	rZWqmQ1Lv81HkwRVZ2Uw6gDXTwizjf/QyN7s3y734m4gFVleo+xr9TpFtOtV6ochiawYMv
+	+yFoqOlf9hf5uZUoXLcTA9kbpwIa4LI=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=p32sLKDB;
-	spf=pass (imf31.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4F2C31596;
-	Wed, 12 Aug 2026 09:35:22 -0700 (PDT)
-Received: from [10.2.198.93] (e142334-100.cambridge.arm.com [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5A69D3F632;
-	Wed, 12 Aug 2026 09:35:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786552526; bh=vAzC+X//h7RK+RdYehEeObcWvbQXeEefa6AO2LuUd2U=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=p32sLKDBQEa8FZowC/IPTW+jRnqWB6wR0HJwddeZPIupI5zuWI2RDJ2GDulX9SC0j
-	 K/0N3zp8pNXrmuJkvGN3GgIQOHS+JvDVws0V+pE30ns7ZPorEfMmBTfzQnVF3I6B9y
-	 j1bCKvzFsVOpOGAt1Y90XAdlwMKJ8b/vVVE8oPhU=
-Message-ID: <4ef8b130-6c36-474e-904d-901c0d967c38@arm.com>
-Date: Wed, 12 Aug 2026 17:35:22 +0100
+	imf09.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=YNqu+J8i;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf09.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.182 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786552967;
+	b=7YIihRuGBygeWWmLgZ/LTDWtYOgoY6Q2yab1FFaEKGxpQqlp1fwrXKBcMqQbAD374A48vg
+	JdXYOeEzecby0j8D9v2s1qq1Z/DuSKKIvqV1S44fqo4tNlAItsKnXdDanf+PGXPKj+86i+
+	xqLmfdv777IKcJbYdqSxAmhqqYh6uWo=
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-92e6c4a867cso80492485a.0
+        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:42:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1786552966; x=1787157766; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=x/EWoL2S0wFVxxUH9CDFZoGkIehfFWNIp7hAQk9bjwQ=;
+        b=YNqu+J8irBt7vE0FCxCBzbjk6NwFWu6kKeEekc8Zhtbl8cIiUzESrUZDnVmZkWpH7G
+         z4smf4XwqQz0ATHsd3QKbWbEX7ojB26yDdV1QgI/iUGu63FMJ5cJmigDMqMb7CTN09Mk
+         pWUtUnnis+kVgjpe4YH7zqPXs07dL+EVfqiNYc9pwsblYBFK6lKSjUPdMOohJhgL9d4C
+         1NOEmDTjHrpBWuQZkDC5srlVeMpXjOxWy9I0I4NSD3aLBfHYT24hCr+1GX17mDBnSiiD
+         LrfyKfGqOtbFw88/xJJ+V55wUHei1fsYl3ATtywyPq122cs3R/y/dYXGZoeq7of5GVTx
+         urnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786552966; x=1787157766;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=x/EWoL2S0wFVxxUH9CDFZoGkIehfFWNIp7hAQk9bjwQ=;
+        b=CDagUgtx7NnkDuDOBVVpQFNmZEdOUhlY9seF+en0q2fP4uxpDXUfJA6P7YGXwLkKo+
+         C3mfUFonidn96nTwC2HI1L84/qNqC3mskM+w0OlUChtcdKVPpKNcoWHYUSU2thNul+gL
+         l+m3uPRkb9wCQZDYug31SVBTKwy8hC87Ko2Ar5jEZv2nIuJ3/TAWjvMA2nUWf/9Aq7Bz
+         zFnnA8lg7huqCo8kqtytICdHvedW64J5GFGEGrx7GmyBq3pIWGwobtC+XkGAkPl+HmSW
+         3mJE1up0YXvmhE3nZpfXTa5IGNRlSTaM+omAnlt7qVfEU1hfDAY1pYogAd+9tf6Upzek
+         ijfA==
+X-Forwarded-Encrypted: i=1; AHgh+RqDZI0siK5aGiOg+kDIp6I1lsdzJ+zQN6V2t7quH0bCdHDp2zTu7T8YLTlTljCjHyN/H9eipzXq7Q==@kvack.org
+X-Gm-Message-State: AOJu0YxVkr8LMF3WpWvj8QOkJv9IKGqSnjg/s2f95GfSi2us9J4CAGH3
+	6LF+CDOm386DtkT+0WTW0MpvTu50lr7JnW9+dBA94slEie6Px4LjXi79JACy12UoIp8=
+X-Gm-Gg: AR+sD10vbFqZA/xdqu6nhz2xW8qQe6RmH5Z1gb46jqTjBnqW5eU5cqZrA1YAp6O53OK
+	0yCcQhUl4dr6bGOydkrPKOL7mkBg/aqGTpihcwEX+/TfGaNDKCDNhWNmULRdv8/rPO9ftSK57NT
+	qr5DgbLYwY2YrsbDPX+RRE4/fEomG12DJOkQ7gcvMjaZ6lS9RAnpVLrMcc5Ije0XEsSF043cSk6
+	WIp2iTYzpUCuX+sokpN2QN7/5ujjR/TB/c13Zw7+64inY8SJeE5/goAAfK5TypWLvE78SoicheR
+	lOWJ1DOhkwXL28g4jTO++EUmV4UPqkODF8hcLabdNTuw+wd3EZfi+vUyqRaJ/swVMYtl807podX
+	3MTtRsefsgloGM0xB4FPdQn/peXImSI/Xm3WFt4BgLD3E13TcJj4MXtv8v378nXNR05EL+4gKqi
+	k0yhRCDNqqB0E/3e95Qkdl7h9926KKHaF3qZKpjAi5e4QQQHN5pBhwIjgGV1E=
+X-Received: by 2002:a05:620a:1b8c:b0:915:f96b:8f5a with SMTP id af79cd13be357-936b3d9dee5mr568196385a.36.1786552965979;
+        Wed, 12 Aug 2026 09:42:45 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-936b5dd3f5fsm167905385a.8.2026.08.12.09.42.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Aug 2026 09:42:45 -0700 (PDT)
+Date: Wed, 12 Aug 2026 12:42:37 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Ridong <ridong.chen@linux.dev>
+Cc: Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, cui.tao@linux.dev,
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: Re: [PATCH v2 1/2] memcg: acquire peaks_lock when reading memory.peak
+Message-ID: <anyifeWkUecN6Z0a@cmpxchg.org>
+References: <20260807090000.1532495-1-ridong.chen@linux.dev>
+ <20260807090000.1532495-2-ridong.chen@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: usama.anjum@arm.com, shuah@kernel.org, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org
-Subject: Re: [PATCH] selftests/mm: emit KTAP output from ksft_kmemleak_dedup
-To: Song Hu <husong@kylinos.cn>
-References: <20260812132142.582390-1-husong@kylinos.cn>
-Content-Language: en-US
-From: Usama Anjum <usama.anjum@arm.com>
-In-Reply-To: <20260812132142.582390-1-husong@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260807090000.1532495-2-ridong.chen@linux.dev>
+X-Rspamd-Queue-Id: 17175140006
+X-Stat-Signature: gdc16kgag76nbxf5rfgjgxm5c3aiqmhf
 X-Rspam-User: 
-X-Stat-Signature: hm8u9a5o3janocuczhs4637wzpr54c6t
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5FDAF2000E
-X-HE-Tag: 1786552527-624163
-X-HE-Meta: U2FsdGVkX19tc/qmSlaG9+63NTDBmE8tS7WYVRSpo7cmP6OxpiMgyrBcpI+oVgORCnjmbIhLPJG3+ZKB6a/Zg/5Ge+CpplRtlMl/zTLIHoa5SQEMxMEW4pZpQnQKuAgdN4gzPwGFlNILRp3SJn1yxW2V+EiZ7UNPlFqNAiY+u5U/Q6T76K/Korpsi8BuHb+Fc+oaZvnQwv+f7ws9aK9ALfjK+BBmTHUSWRGYz0QVOl+shL9yHiI9SeFRpmK0UexW/eQeeJJbHk0wL96bGymzpxupixk+2B7rjFJv1Zy11QJ9rNMv2WdfPnhRclqgv0xBMbSUQ9x+Mo1ih8viKD/VqKFfM/TX2+zFpga8kKZh3+IBTIS35PiJSb622pHZ/Cix/D5cs+RT84tnfeGcsqVTZ1M1+ugGdfTlY1BBSuwo6k960zb54wci91lSO+ftSZ5OGRuqSpJuTcxIruDYcbElRFhend9b47tbtRVUtor4QTy7cwapz9j7k+tokseelbMxYu2kXkzm2Ps0fexIkZ4HqbMkjFEupFIC5WKZlklC44IawyY59AKh8uYNCS1HxmaFShWhpHhgSexOBUmEXSI6CzB0SI/5KI95UkwqvPoqGOnAzrcLOZsPOCTZi+uK2ttTxXp+o3Rdv7zj4i31Ws2v9SfXzUw9QyXIHsnbkk/SKWjod64JEd0t2f7KRODn7Xgeuzpv4FYTKEdYpnvdWq0ciCZ1kHA2EStnpwwDhzfkM2ONB3yZHL1D8iE+bQWcwoUVyCFAKhYJiZTpugFgD1Z6n8JQAf6KJFZ5ZRxJBwFhqhCaE6zqExzwWeNMwt48QJ6Q748RUhyW0znWjjKmD5N9DfAd+ER6fqiLQsBFsT+rjWR9LqonLRp5pbaJgb2KHW7GFwrnE0Yo3c89xSxv3TUFyHXtIVk7J1P+Gs6HRBKw6TPyyBHgIMHiPVaH1tSrlN+jxAbyNfqTWrwfZw4Gi0x
- HPvq6+Di
- r97tna0Aw0RkloL/JbApG6r62pBuL73kkqfQOiw8PBGaCmRGX1XPBStv8ls1/3JQ2mR1dbS4QZPMbDhur8pQglyURRZ5LNLipSrrW8F3aqi3FVOJBa5B1tMTmXCG4vsP5gUx2K0yllIWP02OwCmW/aW4tSpm1qP3bGczYfFbd3SSIKbvbzwwn4IymXkPz2XLZur5FanGSIitS0i+dDf9QA8LUrpJp3c1CC3L7h2mTzYMTI7Bat8rs3KwhMyiKvQ2HViJ3vsncxVMaMxCMstNnHDFT8b/kHAqQ+qEWvaDK+EbZdZXq4wEnVwRjSA==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786552966-741212
+X-HE-Meta: U2FsdGVkX1+khR/n4GvUObJGi3A1NMSjqWSnmcUZqdO2SKuF6nUfE0lRCdFQJ2rsYmc6iSduUqvHhmgzg4S9hmHBnIBAIeDRf8+FEafHqU4U0WSVpFW71wMi7xB0dGRBIyIaMhhx7870u/KddaVRZY8ASdBooWUx/7svjY3UYrbrzmXE44d4X6g1LOkPtjM0svFrC5uJiwTsdOmG36B36vDqjp0xI6jmjdPgCIFHJGc4cwVlSJhkpFQK2dGeW3UbMbm/K1H1OetAu3OERATaRd9WmSUMrPOv2pGvUZRByistdmWcXm+o4pmoT8rTcPpNw/y6jhxHO1oc4FH4Wa7Ors6qIQMNC8B7AnUKAv1Jm+h8cYa04KziV5DCa5/+DvPu9SXBYn1juux6DWyL4Z42Y/v4Fe/CwFWuLWqn3Vnmtm3qT2gChvMoFI0tSPTA6skXeemWzICq1qgzRyI7WCAoNLa4yHi+BQZKNEsrQTR70Fm6HQ6FLDzBOSqDNIXXzq/gnMvxt3UMdnotoxEX96EuiXAxTqs0ip7fxJKy9YXCdupEHh5o1GOsoe85hnVb2zaAyDmNO6f1surx7LHUHV0ptgWp7F8DwVnMKeutmwpqfzuaIPkx1gj317+60ChOURAvNmu2FHKNquTM9XSwfUoXzBfuMtwCSX48EyCEnfmKXTppmw0flx0z4cnyFDFtucYK1NjxzkdbC2ZruXtaKCMGHHOeQRJZ8OwoTuVYVzcqlBCl3y6JBLTJ6z5CrNWHQK9Povu5WC80tO1DApf4ZIQP0pjox1+3FpkNFClXN63P/S3/cqkCC3l41OLvo87Ag85SUAFZT/uXaJhqN6zy/x+sKQ/QjUUQ+oSVgJdbF3eTj6dPz5ihkpmPK7N+ONBDywJVkA1BMe0FqVkOlGOId8e4uuyO8fZBYbuq3StRcYAhdrOXLK6IT+xikARdhV1+kuLlBf/vxizZ8ldRYN32Ygp
+ TA9Khk/1
+ k1O9TKt713D8dDKku4H/YjHKdemCWoSWQWp2XXlvo2TETJzBX4nMiMYhaITscOdK3EkrkosFEcyc9UQtmAdOWTH4mLVvesnijBU7FbX9z7MNocPG0Prj2vq2z8zK2+DkPh2NG4lHO9zn7sIOp0yqHu7aqWd6niH/Tfb5PpH69hvhu2O7MXlRnd0gOBYA6kzIVVin4e1O4UeRhasnYYBEDcF4SseysGB3ULr9kyRcK5BlFgV/0rc9lkMFckJHSnzWqgUmikVOsn+xYvH0s9fFEO81aiK9q/Y1phVuRFCSMB2KnZDV8mSn4gPE7FIEuIESKx+bx7w8//HMGxfTImWvrj8eM1LoL9q28PPA99ES548hfCeZgz+RbYZjTJbzUL+ENfQ5cvWR2sPOs/EjpD/wLwThHghaex3i05opb5hyDJVRDtu/bM0LCy0HZu4lzbbeI4jLS6PAPubGvAyn/8PGKqwzVPHzNw1u7t1WDeiwuEkuD8Mj9yrWffMXCIfoCoc+PZv014eGxlkLdgZBpQDNJ6gHKEP88aQ+uvf66lZ0v8/HFbYSsPpCHjTds1dckfcpdo3AWUymamCEoGog=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,71 +126,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/08/2026 2:21 pm, Song Hu wrote:
-> ksft_kmemleak_dedup.sh reports its result with raw "SKIP:"/"FAIL":"PASS:"
-> echoes and bare exit codes instead of KTAP, so parse_kselftest.py cannot
-> read it.  Convert it to the ktap_helpers.sh API, like its sibling
-> ksft_kmemleak_confirm.sh.
+On Fri, Aug 07, 2026 at 04:59:59PM +0800, Ridong wrote:
+> From: Ridong Chen <chenridong@xiaomi.com>
 > 
-> Signed-off-by: Song Hu <husong@kylinos.cn>
-> ---
->  .../selftests/mm/ksft_kmemleak_dedup.sh       | 20 ++++++++++++-------
->  1 file changed, 13 insertions(+), 7 deletions(-)
+> Sashiko reported that a reader can transiently observe a lower peak
+> within a race window [1]. peak_show() returns
+> max(local_watermark, ofp->value), but peak_write() updates those two
+> under peaks_lock while the reader takes no lock. The interleaving is:
 > 
-> diff --git a/tools/testing/selftests/mm/ksft_kmemleak_dedup.sh b/tools/testing/selftests/mm/ksft_kmemleak_dedup.sh
-> index d01950244490..2db7f006808f 100755
-> --- a/tools/testing/selftests/mm/ksft_kmemleak_dedup.sh
-> +++ b/tools/testing/selftests/mm/ksft_kmemleak_dedup.sh
-> @@ -19,24 +19,30 @@
->  #
->  # Author: Breno Leitao <leitao@debian.org>
->  
-> -ksft_skip=4
-> +# KTAP output helpers (ktap_skip_all, ktap_exit_fail_msg, ktap_test_pass, ...).
-> +DIR="$(dirname "$(readlink -f "$0")")"
-> +# shellcheck source=../kselftest/ktap_helpers.sh
-> +source "${DIR}"/../kselftest/ktap_helpers.sh
-> +
->  KMEMLEAK=/sys/kernel/debug/kmemleak
->  VERBOSE_PARAM=/sys/module/kmemleak/parameters/verbose
->  MODULE=kmemleak-test
->  
-> +ktap_print_header
-> +
->  skip() {
-> -	echo "SKIP: $*"
-> -	exit $ksft_skip
-> +	ktap_skip_all "$*"
-Please use ktap_test_skip to make it generic please.
-> +	exit "$KSFT_SKIP"
->  }
->  
->  fail() {
-> -	echo "FAIL: $*"
-> -	exit 1
-> +	ktap_exit_fail_msg "$*"
-Please call ktap_test_fail instead here to mark the failure.
-ktap_exit_fail_msg is usually used in unrecoverable error case.
+>   writer (reset on fd A)                 reader (fd B)
+>   ----------------------                 -------------
+>   usage = page_counter_read(pc)
+>   WRITE_ONCE(local_watermark, usage)
+>   // watermark lowered to usage
+>                                          lw  = READ_ONCE(local_watermark)
+>                                          // sees the lowered usage
+>                                          val = READ_ONCE(ofp->value)
+>                                          // B's value not updated yet
+>                                          return max(lw, val)
+>                                          // both low -> low peak
+>   WRITE_ONCE(peer_ctx->value, usage)
+>   // B updated, but too late
+> 
+> Fix it by acquiring peaks_lock when reading the peak, so the reader sees
+> a consistent snapshot of local_watermark and the per-fd values. The same
+> race applies to memory.swap.peak, which shares peaks_lock and the
+> peak_write() path, so take the lock there as well.
+> 
+> [1] https://sashiko.dev/#/patchset/20260730115314.1069089-1-ridong.chen@linux.dev?part=1
+> Fixes: c6f53ed8f213 ("mm, memcg: cg2 memory{.swap,}.peak write handlers")
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 
->  }
->  
->  pass() {
-> -	echo "PASS: $*"
-> -	exit 0
-> +	ktap_set_plan 1
-ktap_set_plan must be called for fail and skip cases as well. So please
-move it to the very start of the test.
-
-> +	ktap_test_pass "$*"
-> +	ktap_finished
-ktap_finished must be called for all the cases (skip/failure) as well it
-prints the final line that how many tests got pass/failed or skipped.
-
-Please look into how other tests work  and then refactor this test
-accordingly. 
-
->  }
->  
->  [ "$(id -u)" -eq 0 ] || skip "must run as root"
-
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
