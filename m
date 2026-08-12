@@ -4,127 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72832C5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 11:12:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17855C5CFDB
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 11:16:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C7BA6B00F3; Wed, 12 Aug 2026 07:12:21 -0400 (EDT)
+	id EE9096B00C9; Wed, 12 Aug 2026 07:16:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 850776B00F5; Wed, 12 Aug 2026 07:12:21 -0400 (EDT)
+	id EC0866B00D5; Wed, 12 Aug 2026 07:16:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C98B6B00F7; Wed, 12 Aug 2026 07:12:21 -0400 (EDT)
+	id DD6276B00D6; Wed, 12 Aug 2026 07:16:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 396926B00F3
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:12:21 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C095A12028B
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:12:20 +0000 (UTC)
-X-FDA: 85092353640.17.A7DD4DB
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 09216A000A
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:12:18 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Qv8iCWCj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B7BC76B00C9
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:16:21 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5493316025D
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:16:21 +0000 (UTC)
+X-FDA: 85092363762.22.2B74940
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 880B040005
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:16:19 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QpYnab0n;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786533139;
+	s=arc-20220608; t=1786533379;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DniDtpSNvo/ABReRZwqLfy9Ok6b/HLHOLbbY3qeelds=;
-	b=UR716QTfIiOxgt4s4vhw1zSCQEwh8v+40oZzI2kUWc+4MjjABS6rQmYHXKsoUQ+qGFje3I
-	gbsFuL2OyB2bW8hqwykSuFq2aiAj31KKiVRGTNv3PdO9i4Lz/5eSiKl2h0CKBVRjwyfr8Q
-	Fk8MNWX3CHkZ0J733DOfr5NIvH3pwMc=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Qv8iCWCj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com
+	bh=YkQoXb0oPuJag9CbgccsDCcg6lD66fmA+f0vn+2nKnc=;
+	b=pOA3jtM6dRJHQ0zaR5TWvkIhVMMOmfhmL3LRU4IORo36PRu2SCBwthqIVuc20OUip3I1G5
+	xrBrw/jgAFmKHM1HxHHk0HSioXJh/5Br2X5solAIgGb0llE4GW6Xc8I52UoUS6cS6xBjZe
+	tFwECjptPYr8fQ/sO0keEEkTLXmoJZM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786533139;
-	b=r9Ay2L9QU+v4EPK7laMzmGlYP7zzHQx6v5ZMWXmRTAGYGxO+nhQ5c/aYHcgdBb/n1KEG4U
-	iFN9jXhDQvQa7XSqoLVGPq9U/nQfF9nbVMXGjNlB1wIyyaZcQrQiX+IjnqoIjSWTiDln6l
-	LcJe8QxF7LHpQ2wSm8zGAOVHVv1HhEk=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-496bb7cdf51so9303435e9.2
-        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 04:12:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786533138; x=1787137938; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DniDtpSNvo/ABReRZwqLfy9Ok6b/HLHOLbbY3qeelds=;
-        b=Qv8iCWCjXryW84bn4VmuCPeTHVeS9I/9kInLFXE40hNW/oER7TsQrk/KKPBZZy+mLp
-         I9qgtE+EK/0Tg4uyz4MYHsRmX/Br/h6QLiqrkyY6Qn7Je19xKay74Vi4mfTnccu/zWW3
-         rmsnEajvOtn3DeO4EwRsCJI+hjU5Ucz/r4dfD2kfphbWSIIFQBXqDfyV7VtH6HNTC+/r
-         RI/+nw+e3leL2E6WIdYg2bG4H9y2tLpWWujtGKloHOjRqphJs7IcT+e6iE7LHpTIevDn
-         Q6AcaH+WRM2jFFHtH49Sk+2hVy1ceOMGPqC92OjLOTY29HnhQ/VWefwWLqCpNAgSbWdX
-         CWrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786533138; x=1787137938;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DniDtpSNvo/ABReRZwqLfy9Ok6b/HLHOLbbY3qeelds=;
-        b=fNYIe4uxG8JtVCoECBSwgUaztcqAx84ffEtVxzdv6wMkvMvWzYARElhe2xMyw8pN+F
-         U3X3+Xxq1leExb7RsATEDR72WlhXhicE7NoqlwoFir7H9Dvj/GQmp0gEQbqS+fLGk8ES
-         n+YgIZr1DHH9pn3gghzHG4pIlPO3IzUIuNeAMKWFm3OOinRKGaD2ST8yZvnCpXWaJ2oZ
-         MMlBJn2gvkYJdYZgCdZQiVJyd80XuVte13gA68BRj+25085KZIgW3BRv0S+CsYxHqJFZ
-         i9qkYYmBrqO7UVr/uOyUNhIqz6vv6gOv7DB3dhEEdy+gLmA3gFj4rPVOEXwsg0EK7GtI
-         Dl7Q==
-X-Forwarded-Encrypted: i=1; AHgh+Ro/7mwDqvAlmu/3pUDr/9E4XMqq+aJo/QAGhLQ+55x+H/gNQYg1h0pMvKvrG3n/4Zlgmbun6QIo1Q==@kvack.org
-X-Gm-Message-State: AOJu0Yy0cTzwn+yDfv0c3v3VyCsFVexA7EkBP0wm/T+CQ/we3FZtKqwe
-	nT7gR5mug7vz0IXCFlHuGBUl/7rx//iObBQ0scgpsAdOXv/1M0PLcFNj
-X-Gm-Gg: AR+sD13q8CLFOl3PSjhoQliW5BcHyuPf6ypB8MOjIp9a5EhK1ibpAG/FxnJtl4kQqTp
-	yxyeqzDR03JzrsKK9T6LU0VNIjJ3isL3CJWMsWxKdHarK/PnWtoNPdGVILoLAwY4JGva8oCAtvs
-	tAy/4d90sacKmXaF838g3jLKk/BoQUbj7DqYOXRh1su0AbyEHqmZsh9hUDMkmGR19s5s6uBgKkO
-	goin8X6CLlmZbAruXaUVZ9uD4uEyVQdy1R8rzwTLWabxooDYj/Erd+N24iwal8qfmMY8XBAjgR/
-	vLoY3W2LX1f302SYSoXgoau8N24obv+9n3smEhPFelpNBDMuVnXIuVCgJgsmlNl2JwIZYeGPJ14
-	Opy/gUSEJXxC8lNs1t8GJdpMYBI+n4aiQHRYTQbEAQ5OxoI93zNW+jyYDJFJaCeU04twpU8Fcgp
-	5VQh3D9aR5QAF7BBHLvG6MSUDzHZ+fQcHGdGvBnLTE4hK2COdpUbcG4Fh3myBzqgwJa1d5lydB1
-	S2UelOqcI/7+UA=
-X-Received: by 2002:a05:600c:6305:b0:495:6396:8b67 with SMTP id 5b1f17b1804b1-4997c0d7658mr46390285e9.4.1786533137639;
-        Wed, 12 Aug 2026 04:12:17 -0700 (PDT)
-Received: from dell-desktop ([2a02:587:4b5e:1100:7303:647d:7cc4:8552])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4997c9417bcsm54830855e9.4.2026.08.12.04.12.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 04:12:17 -0700 (PDT)
-From: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
-To: bpf@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	kpsingh@kernel.org,
-	matt@bobrowski.net,
-	song@kernel.org,
-	tasos.papagiannnis@gmail.com
-Subject: [PATCH bpf-next 3/3] selftests/bpf: Test linux_binprm user memory kfuncs
-Date: Wed, 12 Aug 2026 14:11:40 +0300
-Message-ID: <20260812111140.7762-4-tasos.papagiannnis@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260812111140.7762-1-tasos.papagiannnis@gmail.com>
-References: <20260812111140.7762-1-tasos.papagiannnis@gmail.com>
+	t=1786533379;
+	b=h838VplwAu4+5OCHvZ7E8o9PQhU0WEuqfVosBVZPuEYuU24mnMu2gFFfbRW1x1Ua86FdeA
+	gzHgeiMR446/y+V5e8Waimi5I/Ngx/inSmsKGvN0ZMtOHnqlsOx+azt5ffhrmHAZ/iJZlp
+	pASwdQXiJLmPWigoK8la6RVVjOxth2A=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QpYnab0n;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B4B1540A54;
+	Wed, 12 Aug 2026 11:16:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D991F000E9;
+	Wed, 12 Aug 2026 11:16:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786533378;
+	bh=YkQoXb0oPuJag9CbgccsDCcg6lD66fmA+f0vn+2nKnc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=QpYnab0nUAcCJt+cGKDODAg3Qx17qgpheF1kaPKjsEoNN2gGuC0MuGrznO70IIyhN
+	 q50JvXDgyoCv5Jx5qqIDGxWfc6HKUhKU1cTL6H08Bu0/sTb+uVVkxHOr9rNxyxfXN+
+	 uTOwGwCn+zeXNrwSywo8TfLqLOj8YKABP/oehAVFpqhoXslPkdGl4cJu2E5FlZnHvd
+	 OHboyKwgV46xqG0UclX10xA1e/iuxKmzt5h+ORt+lsnPp3+vkZZha97q3G8FyC0e7Y
+	 cjS1vMXaxJ+pGqTfML7xuwxCWKh+43tBp3fxPKAcuInhN6x79dSPFwsyX+48ySeYf2
+	 SVT6YpwBVn8/Q==
+Message-ID: <ac5a912b-fc98-4b77-b453-2f9bd8f9e6db@kernel.org>
+Date: Wed, 12 Aug 2026 13:16:10 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 09216A000A
-X-Stat-Signature: fk3dseamyrt4jwrz89izd1dyp1jr5jat
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC V2 2/6] parisc/mm: Directly use generic
+ [pmd|pgd]_clear_bad()
+To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
+ <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>, linux-alpha@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-um@lists.infradead.org, linux-arch@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260811042119.3652929-1-anshuman.khandual@arm.com>
+ <20260811042119.3652929-3-anshuman.khandual@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260811042119.3652929-3-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786533138-591793
-X-HE-Meta: U2FsdGVkX1/t6pBoPPDGBUHaBuec6TF/I5mU0zpRjw9JeCTwa1AhoapZRAyNde1N9cgXyuBvaL6t8Yj6svbAJKgP4Ak3KXPDtkF2mgLG1HEOw2tjcc+mkq/cajGGSEcOdEFMAp8diiwLxSl0869yqt1kLfKjLDOUyrsZVX6nNpi93+y2tbwWrD70EIdd7dr52X2vTDvRumiMJS/r8OMLAa9PhxvUb+DWspyXviyuCneUg+R7QIdB2sWbhSm+S6XAFZRT4on0ydfSdSdQZhKvlpxNB0RholT8iD7v/pFBejQdq0tS6eZ4Z7pL9EpdHsbrEWJpX4f4xriCyr9k14i/iBFBwek1xxXeK+6yWnfRBHsEP29nwiqeZWyvwzseZg/aNTqGAsZPXI5FMr+Dizj3ZiI0qySrV8FkuxgCOiN/Jg7goRqvH/jhgZMPg/HYSkdlOW0exHlgKuUTy+GxX7k/b9SJY311m9o9XfL6+HkMxnWeDMl+f6WEY5YQQXDcKJdosD7i/KYhqedw4uZSV3ea8NtvkEirx/SM2JN6SIyegrkGY55/GLJBTh5YIPpZmF9NCP+KUhXz6rltXPT1iQ5ednKBnGX2D+v9QLml0Ph2MoQeUN0Txu3E1MZoZDUnm80bIHLIhKmUTPiKy4S1zuo8ScPWwA2lP6Q0Hdcn2iCsTIi/8sc96ENdGaRQjJgNdl14dqO+aEQwWBqu0p+CKLVheaF9kvNOjlxF6eCDnVdyNtFdrhENmKA/vYS9gaCv7PG7ORr8LSej6N2j8p3Vs9edCHv8C93NdfPcbjJXDh0Sqb8jvZqK3n6Cqa1XDWcKAmWrMz3ep6cAhCcbJGdiluQldm7kVvZurtCcm0yfPEW2AZ4ZQONLdy0KxyMZAkFz78vvxMAum4aGIY0ekGUdqBXDCWmtfkbbc4+Qyn3NbbhYfgBhCZCobPcRUhus4M5Q+9ivpTgvO22z92wlz8bYSwi
- ojKhJ/o+
- oe0OmaMFuqDBgNcKN0GY7lVJhMe4/PVtr34/KgOG3qrKp5Fa5uv1KoLWS4Rw5hHl3S9G6Rjo6WRhoA9JeMKEOTtluI/fX/fvjj+VIeqHh9FMmOttbiWzpjyZeNuiq4ESylfliocFUmoaTK8/p154YFit25PIpiFSI+PJ+w+8nmqA/1yms1qYXZTfiY1C5PyISXjy+xvr3INmKCUZV4/hFE66eZfAG6JKbWScUq0p5CjJ6Gsozkl+kMj+ASOAm6+8bqNPp01iBSSzrFUIPcKPD96qOUj+gsYgj1qaH0m1+7b5YrdOqDcjkRgIqxi9enlPZQSgNNWz0G6p5fGiPUpX68uQVgY/ylCKM5++gv+0xXhYzSu43GvA0UZoEbKp/UE2vOCOruLQTIh7RQxTOf/ZcIDLRdzDavSsYiY8OpcfZwkrdP0INsZZq61WL/u7FDPg505bV6bHb7dXodY+bx/yPj79+Y51ABX5ObBBGm+B3CYgXuf4CpVCQry6H6zQwzJYIQqlRE+x3aiXkFqQPTfjjH18j+B2/Xi4BmEYPdpokgGYTe7AlXyLeN1gBCuUl/WlRb0vpRReMdubYC9Y=
+X-Stat-Signature: 7f8j9r9jd3bh139x8r36cisoc6f7jgwz
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 880B040005
+X-HE-Tag: 1786533379-271504
+X-HE-Meta: U2FsdGVkX1/uhtNal1Ka6kSnnvcOPPT/16XE0VLXzzka7dovrjF7aYXd3r2E5lZJctEHAOToebRvvmQTUkZ3wLtXOMT0vx58WzTS5fR9kWc0WoqMbTK+7Pu7t862Io+feCNipodSrOhsIiEVHxmdkrLgXcBgQHK9KagqZ7E7qDzd+cXNqyTPgUv8DZDGqcHzs0hdxZYOQqqkJ5RajngFopm055IUEpRjBD5mII9rSd3sbmJDB4pet95vqCduYtWJrGs50WHQTgz888LL8/CVW8Ybimc1y72VMoU0+MeyA92Blyk20kBkC4CB6qj6ixX0bPo4hpLnfV/fRcdbyMu/wzra9LGGkY/2tuHKqVKvDJaXiT+0AQgY43WTSmduxrJM22XRO7Ba9U2W/QS1B3eJQ5R6BgqPWaEz448vZfCdR2bl1XFsthjrAkQFzS8EXMfz4mKa5Ff0qmS7BQ465NnfRIK5Q4bY8E7QbWbLeeJhaeQnuVcF5ro8qt9yYH5ey3X5SauGHvO2df6p9xftSuy1Cf+XxboN88VIqQBo/6CEYAo5J6xWr1Htcs95PgNcTrrrVYb0FzPVf7VzUuVZGHK6W0sOLob9PpR+HX2ZRy+uFDHf9Ee3U0vVCfmCpNMti1hD3d/t7BX6MIu1dGxKMBBg8llkiRYPIoa+XPp9a93phhDlE2z4gYtsxwGAvWpfqOPujUzlAQ+2cnQJ07eP1J3ZNRjsBiCjWZRNhuGy1HGvpx6uYj5YqR86uijPiNTs1xg7Re5cBovXMjGeDay/vPpDoSjnetOxIiCbGLWGTiI6j+VqkR4r35/Ci8bJS53mWoZk9i12TZgMMJoAu5VLUj6CnjnGpqSxPIy8lsLCYT4tUQXXCfF9MDyJ7o7/C/6Lf4oN57Em95xiwI4M47Ex0haaun2PFLvguraWVG3hP+gzW7PHwpRIOcfhpxqq01eSOugpplh7kX9VgEvlOVwMfe3
+ VYbxfwzz
+ Hfi8/pOKErjkUdgvKv5vsULMFwX8FNw6JxKNigIpIqmoQJmeH4CuzWdME+gOcODIWbo7Vwpk10VHAizP/2uMVb75TwIx3bEvm2w/dK6JvhjpcfeZGJxpLfwY8FIW48Llf3ZTI6HIkctY09n6CqDRVYc87rzBkPqZovmPOqzk7ChL9cLApobQxRy/hEY5tOHInPmGeHGvfOJ2xXsipch/RtTL6qgs3O3p2Ny5u1aCMAxBX5b96yrk/mUrFHyzI5spPcjDyEWFfveic/0wA99IgST7BFEXtOScWAYBe5MDJ1duBAjPo78zMA5wEiOkjqYCELGDX4T6S8TLaSKpzXUbvLt/i57I/OOH74AAAlQ7NnQO9zwdUwsKMh4i6IDC+Z+SHuLHZGnmJAxUocvb/SZ52PbmctSQOq9NRQSPZtpR40+tVpJHQjeWoTI/zSpWfiPPqTxvXVwQN4IYfeUl21Zqzp5qvHhRX6PPxRSlx9xVnDpi2SjY+BwpwoIvBv9LMnZlSTl8YxERFiDUbwXQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,162 +152,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch adds a sleepable BPF LSM program attached to
-bprm_check_security to test bpf_copy_from_user_bprm() and
-bpf_copy_from_user_bprm_str().
+On 8/11/26 06:21, Anshuman Khandual wrote:
+> Drop [pmd|pgd]_ERROR() followed by [pmd|pgd]_clear() instances. But instead
+> directly use semantically equivalent generic helpers [pmd|pgd]_clear_bad()
+> in unmap_uncached_[pte|pmd]() which helps in dropping their corresponding
+> [pmd|pgd]_ERROR() macros across the tree.
+> 
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: linux-parisc@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
 
-Starting at bprm->p, verify that bpf_copy_from_user_bprm() can copy the
-contiguous NUL-separated argument data. Then use
-bpf_copy_from_user_bprm_str() to read each argument separately,
-by advancing the offset based on the returned length.
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Signed-off-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
----
- .../bpf/prog_tests/copy_from_user_bprm.c      | 52 +++++++++++++
- .../selftests/bpf/progs/copy_from_user_bprm.c | 74 +++++++++++++++++++
- 2 files changed, 126 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/copy_from_user_bprm.c
- create mode 100644 tools/testing/selftests/bpf/progs/copy_from_user_bprm.c
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/copy_from_user_bprm.c b/tools/testing/selftests/bpf/prog_tests/copy_from_user_bprm.c
-new file mode 100644
-index 000000000000..3d5080a3975e
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/copy_from_user_bprm.c
-@@ -0,0 +1,52 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <errno.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+
-+#include <test_progs.h>
-+
-+#include "copy_from_user_bprm.skel.h"
-+
-+void test_copy_from_user_bprm(void)
-+{
-+	struct copy_from_user_bprm *skel;
-+	pid_t child;
-+	int status;
-+
-+	skel = copy_from_user_bprm__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		return;
-+
-+	if (!ASSERT_OK(copy_from_user_bprm__attach(skel), "attach"))
-+		goto out;
-+
-+	child = fork();
-+	if (!ASSERT_GE(child, 0, "fork"))
-+		goto out;
-+
-+	if (!child) {
-+		char *const argv[] = { "first", "second-argument", NULL };
-+
-+		skel->bss->monitored_pid = getpid();
-+		execv("/bin/true", argv);
-+		_exit(errno);
-+	}
-+
-+	if (!ASSERT_EQ(waitpid(child, &status, 0), child, "waitpid"))
-+		goto out;
-+
-+	if (ASSERT_TRUE(WIFEXITED(status), "child_exited"))
-+		ASSERT_EQ(WEXITSTATUS(status), EPERM, "exec_errno");
-+
-+	ASSERT_EQ(skel->bss->bprm_argc, 2, "bprm_argc");
-+	ASSERT_EQ(skel->bss->invalid_flags_ret, -EINVAL, "invalid_flags_ret");
-+	ASSERT_EQ(skel->bss->copy_ret, 0, "copy_ret");
-+	ASSERT_EQ(skel->bss->str_arg0_ret, 6, "str_arg0_ret");
-+	ASSERT_EQ(skel->bss->str_arg1_ret, 16, "str_arg1_ret");
-+	ASSERT_EQ(skel->bss->args_match, 1, "args_match");
-+	ASSERT_EQ(skel->bss->str_args_match, 1, "str_args_match");
-+
-+out:
-+	copy_from_user_bprm__destroy(skel);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/copy_from_user_bprm.c b/tools/testing/selftests/bpf/progs/copy_from_user_bprm.c
-new file mode 100644
-index 000000000000..679363811edc
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/copy_from_user_bprm.c
-@@ -0,0 +1,74 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "vmlinux.h"
-+
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+#include <errno.h>
-+#include "bpf_misc.h"
-+
-+char _license[] SEC("license") = "GPL";
-+
-+static const char expected_args[] = "first\0second-argument";
-+static const char expected_arg0[] = "first";
-+static const char expected_arg1[] = "second-argument";
-+
-+int monitored_pid;
-+int bprm_argc;
-+int invalid_flags_ret;
-+int copy_ret;
-+int str_arg0_ret;
-+int str_arg1_ret;
-+int args_match;
-+int str_args_match;
-+
-+extern int bpf_copy_from_user_bprm(void *dst, u32 dst__sz,
-+				   const void *unsafe_ptr__ign,
-+					   const struct linux_binprm *bprm,
-+					   u64 flags) __ksym;
-+
-+extern int bpf_copy_from_user_bprm_str(void *dst, u32 dst__sz,
-+				       const void *unsafe_ptr__ign,
-+					       const struct linux_binprm *bprm,
-+					       u64 flags) __ksym;
-+
-+SEC("lsm.s/bprm_check_security")
-+int BPF_PROG(check_exec_args, struct linux_binprm *bprm, int ret)
-+{
-+	u32 pid = bpf_get_current_pid_tgid() >> 32;
-+	char args[sizeof(expected_args)];
-+	char arg0[32];
-+	char arg1[32];
-+
-+	if (ret || pid != monitored_pid)
-+		return ret;
-+
-+	bprm_argc = bprm->argc;
-+
-+	invalid_flags_ret = bpf_copy_from_user_bprm(args, sizeof(args),
-+						    (void *)bprm->p, bprm, 1);
-+
-+	copy_ret = bpf_copy_from_user_bprm(args, sizeof(args),
-+					   (void *)bprm->p, bprm, 0);
-+	if (copy_ret)
-+		return 0;
-+
-+	args_match = !__builtin_memcmp(args, expected_args, sizeof(expected_args));
-+
-+	str_arg0_ret = bpf_copy_from_user_bprm_str(arg0, sizeof(arg0),
-+						   (void *)bprm->p, bprm,
-+						BPF_F_PAD_ZEROS);
-+	if (str_arg0_ret != sizeof(expected_arg0))
-+		return 0;
-+
-+	str_arg1_ret = bpf_copy_from_user_bprm_str(arg1, sizeof(arg1),
-+						   (void *)(bprm->p + str_arg0_ret),
-+						bprm, BPF_F_PAD_ZEROS);
-+	if (str_arg1_ret != sizeof(expected_arg1))
-+		return 0;
-+
-+	str_args_match = !__builtin_memcmp(arg0, expected_arg0, sizeof(expected_arg0)) &&
-+			!__builtin_memcmp(arg1, expected_arg1, sizeof(expected_arg1));
-+
-+	return args_match && str_args_match ? -EPERM : 0;
-+}
 -- 
-2.55.0
+Cheers,
 
+David
 
