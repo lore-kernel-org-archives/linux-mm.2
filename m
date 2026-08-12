@@ -4,127 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9956C5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 11:12:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB26EC5CFDB
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 11:12:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DB0D6B00EC; Wed, 12 Aug 2026 07:12:15 -0400 (EDT)
+	id 9D59D6B00F1; Wed, 12 Aug 2026 07:12:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78E0B6B00EF; Wed, 12 Aug 2026 07:12:15 -0400 (EDT)
+	id 913BA6B00F3; Wed, 12 Aug 2026 07:12:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62C566B00F0; Wed, 12 Aug 2026 07:12:15 -0400 (EDT)
+	id 7DAA56B00F4; Wed, 12 Aug 2026 07:12:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3384E6B00EC
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:12:15 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C2E3B1C0A7A
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:12:14 +0000 (UTC)
-X-FDA: 85092353388.09.4DB2F77
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 08FB3140004
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:12:12 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jAD7Af5o;
-	spf=pass (imf09.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 54BC26B00F1
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:12:20 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C505B1601FC
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:12:19 +0000 (UTC)
+X-FDA: 85092353598.15.980B623
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2D42720003
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:12:18 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="o2/oPsgT";
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf03.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786533133;
+	s=arc-20220608; t=1786533138;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HnziYhdT7UChl1G7MKYkZ/8e/rooUTVlGFzd76e4LeU=;
-	b=ECIcdlBc4eCevMh4qiFVgAg+oKyPud77g6EB5hhOmKBXq2S5EDTRZDOuRP1FPeLHkrbH6Z
-	vWgTyK3dj9ASFVr7ACrFUr0pighgNHgFfbkbMon7CnVrsrisXoVcs29khyK7V0uNK2GGfG
-	1m8j6mSIHuBp5mzTkewiNph+kV7U1g8=
+	bh=wfAKwb7BHAfKwks4BwOH8LurhNbOUrjBmbZm8v/M8ho=;
+	b=Rxz3djWX1xgxdZ714J/YnQIgHlw0XXrhkLmW6mqYmLnCSwQZfJFNbPklbatUYyfhQpSs1C
+	ohN5suqFX6mAZfoILL62gA7wHvAh1uCm8Ee56XDBs0RRfnlx5ZEiI6tlkLkIF1Wt05ORzq
+	a8yWO1e1gG8eT9OivGilnTKnYKueT+Q=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jAD7Af5o;
-	spf=pass (imf09.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="o2/oPsgT";
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf03.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786533133;
-	b=PFWSOSo5XrqifTW1PLYcyKQQSGSxndAvfJGv+sk9uRNbLg9xSvQWzkzYg7So+Lx51geMFJ
-	YTt9YYTOeWoj9CuwWNaoPiCYcH5hMvLCam0P7wb/ymySmmJQS20zkqCn8xAXHAwHGX6el4
-	46dBEkFePmTnJ3wkFD9cB0e8hPwcPoY=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-49553515a8bso11975275e9.1
-        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 04:12:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786533132; x=1787137932; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HnziYhdT7UChl1G7MKYkZ/8e/rooUTVlGFzd76e4LeU=;
-        b=jAD7Af5o0ckup/xB3iiWFvpEtNmmM7t8ancbSXBYt4KmuoW3dGYxuFBI9KNxaeGhdy
-         FYKuXDJzK+dZC7mdi/TTFgj99QTAX2DGW0H+sX/bT/qGUPFsjMcDufac7xuhlR87AZA5
-         dVwmrBwVoZwAlxEjp3rUDujineel6XY0n6UJJkvaRqH8/2W3a6uZHlelDIcYcXlySXO7
-         0wHe4Wq80Wpcs0c+D0O9j7zz2vA0bErhcgd/O2C3gNb4jRm7xHVeaL2fq6rzgKdsBnMU
-         uYpdWIn3h6WocfDeJS7nZqcJKKE99WE7AXH/qbMZ6VJgeh0ht7wakRNY4I2Pgx4kSAZk
-         Vs3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786533132; x=1787137932;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HnziYhdT7UChl1G7MKYkZ/8e/rooUTVlGFzd76e4LeU=;
-        b=j6wYyrjZl7KhteLb4May05MFeRjVRItYi9bt8SAeha9VviCx1M+UprolwjCjzd8nTs
-         8m/4jUCeMpT00bidfFKySp0hUYT3UjLOnQD3Ymq+KgAIgU3nI4AuFzDb2TOPr3vEXfmC
-         BwIgWCDxkOiXYyGbC/lQ4zXQem+/bgmRx1in0o/q7VGFQkzF0Tf9uHTFZlbLfKHuTbuZ
-         jWnTSfJZjl/u9YrPF8qhOjDeVhRDqakKQNfISd4ww/iwT0nuIeRH1xgRFDOhSOkIDuiM
-         1h1LzwZfki6+vtLLpJpBYsnC2zUfNqIFIKEJcytABjuIDvm6qZ2MNfrxyP2baJWas1P0
-         8UYQ==
-X-Forwarded-Encrypted: i=1; AHgh+Row47Yuhp6NVfBTDxJCN7Vu8nVRJ4PNpuRS/shRG2C9WOPD2owaap4HzABwOqJZo3IjVG3h8owNZA==@kvack.org
-X-Gm-Message-State: AOJu0YyCC1HplXffw1jENQHJR8ugsnb7GvQuCXiJV3Lh23cHGMf3Zplt
-	JfU3a82dQaukXky45m70OF3poBAhbvx9iMu/P7kgSK30SULJEB65njcO
-X-Gm-Gg: AR+sD10VJQN9eS00dzbK8z8Fje26LAnyTnDAls7mr6vSENJ2XQyzs4nZRR5Bi7m0IZJ
-	UnDMqy6CimFwoKhHqfovcNM0ZP6uUgpi/wyMFkEZKNdUU9fgfOiqJOCrtxqOWnNtD3W5UT38XEr
-	m3Yuil12JacRHD5IA4hkmG4WCE5kkoH7Stxgu7Zz+CsrbZkoIhxRbM21TqHk1in4UI/nUjx1Feq
-	JrAuJr/HC27WHYkMuu4Zxq5dj+v/qAdbkkbIKFu8xadYuA5jjigGjRYjBMAS0pLtiLMOJxw5dm0
-	KLQ7bxnuLqvHerVPW67x7co5EjdLeRjP2T3leb6+I/qxEn1EvLZSJFcSelZhshSv2M+GfRJS2tp
-	Z6XAf8p+FEOYtX0HcwOQY/beGC+9ytc55xnpn76ZYlx85jAh989ygHKqBCRMnU7I82PvTP+pvQw
-	MOu0+FDfz97H5zm+MOVyUm6H0mjZ3M27nSCY57Iqc7N4x26qoyIab2fOY+VJznot+KBdp3QxGeq
-	Kqy
-X-Received: by 2002:a05:600c:4690:b0:490:c6c2:52 with SMTP id 5b1f17b1804b1-4997c0fe67cmr52327655e9.3.1786533131316;
-        Wed, 12 Aug 2026 04:12:11 -0700 (PDT)
-Received: from dell-desktop ([2a02:587:4b5e:1100:7303:647d:7cc4:8552])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4997c9417bcsm54830855e9.4.2026.08.12.04.12.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 04:12:10 -0700 (PDT)
-From: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
-To: bpf@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	kpsingh@kernel.org,
-	matt@bobrowski.net,
-	song@kernel.org,
-	tasos.papagiannnis@gmail.com
-Subject: [PATCH bpf-next 1/3] mm: Add copy_remote_mm_str()
-Date: Wed, 12 Aug 2026 14:11:38 +0300
-Message-ID: <20260812111140.7762-2-tasos.papagiannnis@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260812111140.7762-1-tasos.papagiannnis@gmail.com>
-References: <20260812111140.7762-1-tasos.papagiannnis@gmail.com>
+	t=1786533138;
+	b=6BuJqDzni8LPRRc4yu36lv+s5VakJ4fO6JcsKVXiccUw2zj/nBgWIp0Sj2m2GeyQO4xIlS
+	oWZonaQ0IJ8woULbsHNlZzFagAP+5FBua3sLyBpYpHCNq7NjGt4ZDp7FikJo7JeVrUuy74
+	SI1tEXvuRrhJ7ga543Pa8LsJXubc+ec=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=wfAKwb7BHAfKwks4BwOH8LurhNbOUrjBmbZm8v/M8ho=; b=o2/oPsgT8gcfdJPToPnecYrXEY
+	JESoF7pDhaqGxbh9ocFyX3YVUH/FjZuDIMgtE8vfuQEIj70ltqRFqBjiIcDWdegYRMCqRYVdVuYl4
+	UlDTVngR5rQP97DrXqNPuQdNunlIJa7ZDeNlVB1FfnQN0PJGV8e4tpypn9hUMpwmHpR29xidDMEJU
+	WTHogF/NFBajrCoiytFW3YQfECpHTAfXHEtxyWh/8rSTzrSR4SZwXkojbSAsw9bQ1t3J1TBRcjy5Q
+	AoStvSzvaSIfQD2VqXmQbfl9y9x77/1080CcswJUXIj1gsFMVybP5PXZA11/KnbSgKk4nP7jAVCKo
+	5VEGAkAg==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wu6sK-004Ifd-32;
+	Wed, 12 Aug 2026 11:12:01 +0000
+Date: Wed, 12 Aug 2026 04:11:54 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kexec@lists.infradead.org, rmikey@meta.com, riel@surriel.com, kernel-team@meta.com, 
+	Kiryl Shutsemau <kas@kernel.org>
+Subject: Re: [PATCH v5] kexec: keep the next kernel off hardware-poisoned
+ pages
+Message-ID: <anxUnuML9UTepBTu@gmail.com>
+References: <20260810-kexec_posioned-v5-1-95e1b5e2e656@debian.org>
+ <ann9Kcesyb4T9Z8b@kernel.org>
+ <anr59P1ZCAuHxv6x@gmail.com>
+ <2vxzldac51om.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 08FB3140004
-X-Stat-Signature: rjdjapexqrxe19363k1cw6ss1m79xptm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2vxzldac51om.fsf@kernel.org>
+X-Debian-User: leitao
 X-Rspam-User: 
-X-HE-Tag: 1786533132-797389
-X-HE-Meta: U2FsdGVkX19NNkWjFqcISyFFwEAS4JUZE+tygKAUkMiW0OJDzt00zfRuCbUiynCZPtzvSjxWuxynCGfiYXY7phxMH5WLeYevBS64J12C8fWaktx0A1rlm12AyBhk6klgZp3Q0+VyDYuvdO9MDHWXXjKP1Kx09q66ax5LYevRd3pVtWTMmPLTCg3MnHNcaL2KFycprJMsdixxn0/PDm9tZKX6vPGAN5td2dFfrFnpTdrnOJS2fFyYJxvTGopAw3A90cR6aqASUgwMRbEEAQfiG1+QKCtgjUDGqh1+flbnSn4ac7xUpOz3dd6MdS/Gm4hiuE+zPYZ1GXsL3O6woeGFVjP5vVF7tN9ln1wEu9Sr2QsdIP2WXhClyIUPkBdIG6d59ZU+vbxu1PSVg+k0wKe7y+FX+5GK6Ou9j7azAZcmloVqPuXjDQFd8c9Y4HpKdz5GMrvN7p+5SKsvgPyjup1QymnLlfzMTYClAxXKkAmEZbPD/RaC7VOeNOTcleIe24/QFMXta2lAzF81SArcLO5UVbLGveJXhTME/MLsKfCaAshPtjYxnEYaaNuiQXaHdjd15fDJRAz0ZJ0/iPn1Pdjx0Cu1zsLjvB8cUSg9miRxaFtrnhYCg0HuQ3Lyz5gwUkGcMLIft2v4zwVBpHXxd1baQ0GXr0UQzgI/pJsFtkeLXrJAvP+bjkuegdOShZk4dJ4OiHiqa3zLTKIV8xxO/C4xs3exZJtaAc6IKKYT/BjYBNkxgVsa/acNEi5MTl5erFh/kH0dnjnLVGwSS+tEx/gAAtMrp0EglLKluCtLwdaZ5ASQouLRb9BDCVfxaHMEw9OCBF6xQTh5u72A9SDTYAjYRdsvyR+7jWsDri+JYB+aVPMrhryewelQ0Htrh1vE3WIXjFJCxAywv/qmnbf0RplqwO1iYJ0lHWwuuHP5RWnE4fYwydlgR5fgqKJmX2K/I1QE7875P6Fuu1IVJgx2UH2
- ucuR8xh9
- ZmTzoVKEbR0MC09fcmhPUmxeQjAsBb48PdTG9+X35bFAOdVNHM2vLX0MW2fR23jkMiNaRqOp1SlUs01B2waIq8Ur/YnEsOqq+SPHjcaRjB8Q+PJDIeQ0o1dIiauJinbWCVviRYf06j7KuNqu/Xp5tFu4zGqnRh1V+7Za928BzRag+n4xx5GFXL6cZBeDD6bliNmMuN0lNWXs8TTXCi+wd1NikrHJiJ1Jgcfw0P1WsxDUl32D3OV0gIXE40MrNPj0k4GUtFSAuh7tttvG/Pqrq9+kLiQcTSquTr9KzrAdxzkzs0bo+1/k5h/UO5+sngWz00TQAmR9QokvGxHObr2qnqxq7w/dCc2nw/dYzX0S8kOTZ1MP4eUO8abgPrgR24i7JCH3NiF+Fam88QX5fiGePtvq5FX/tbtVr8BwlOubm0X67kqV3BwPz4YuJ4TyzFZY4B467hn6KF14eFok3YAaNvXYhP1y1OyEKPD5jUHL5cHeg+8vUn9v1IQ3Mcdo6Uye35pD5xdwRXutBi9cqUfALXlI9AqxDoDjA0Ol/
+X-Rspamd-Queue-Id: 2D42720003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: b71g6dhinfakoxjegexha1c7rer6cuaa
+X-HE-Tag: 1786533138-90160
+X-HE-Meta: U2FsdGVkX18rzkCmcQVBDr+boCqmkdR6HfuCJR5EhWsFSX8K0/UGOSM5jWAszO9g7mtLXrWGnbFB+pqfPj6KbfrRiNXgoKV3n7lzME9I53cWMCTPRo+Hao109BhD57aZX70jGpn14YIaPHVoPPulDS5QNggL8tpGs+lMERs9rzu9FAOR9R5c7h8GCWiXIsjH1ccSWSyR/J1APIMpCCFnp7ANhXvOYJ7FdnM9VJ/PncFwNxxTSWoIcBj2KqrjuZRFUTiCZdkjzv3Yztdn6gLf2TQHj39yJftEmqXLkH2dAQL5FuhKOYmuh1MiW0UfrbdYDewZi8uUC/4RPvyScpmHf7FJcLS4TFjNtxi5ti5YBl3vwiA2FvmlF5n54Xd1FGmYpVOsBKXXd/uHmKLEJZpTJlQdIhb7zyf93GiESsurRHXW3b5/XZL2UexJjni/NLfDwsfV+YuOsBel5kKg5dZexZtJTos2aywTWb0qcWFcUem7KEO2VhKt6vpfe1zadPwElIOFQyxA2mpujtITj+iu0hlLbXsf3zoIDnoxqhdXylAToyHfIoBWiBlw+8Xrq50zqmWL1i9snJXlkqr73mV8OFNJk5kY4POjNAZ9b5hYkx1Hx6bYpSM29GCTBgo+AqkytyJJwjO54BY36ZalBJeXXJR3oXp5YnfVRe0c/qGW0bbDJDhsoHHLG60IfK03kzWBhOw38aFYPZmpNaO8JEDXSFpXJ9BOXcjmnxTjz+IXy0X4JXO4hO6gJkxg2p0He/Mpl4y5u/Dad+HxR3KqFItz147lqkAJK2tci4SY/N7s/pv+ONTUxWkplitndFcmgh5c3xk5zhvc00Snrc7hBa4b7AytcXQsIw9CngrwGEnc9893wunZKTXXCnrXlAsZycWdG3xei665bBVA9FfBRSbHCfWmQ+59ejtjKRCSxY8JzR+prG9zDanXuTIEHb35P9cgWEWhFG+UWo8E5JmcFkA
+ Y/nngKlU
+ SdR27gw9bbbnmHmdRJGfCwuIcuS634l8efJE32pG6sz/078Q3Qq7tTtEi+nbhs6S7zGbEtEzpJQ0oB+w+Tk7U5pHaMfKDx4ThsiWTxmqxlr2UtdoDhOjZ6v48J3qwAo8EO5B3o0cWvZlatHyUSavn/24TlYrOFm2z+7jqOVXMjai5q75dhJBzl1xAUbs+7PrtvD+A/PC3uZqCgKQO3tl9JNauI4g9Knzf166HGPHaSu/fE6YaYpksH1B/6rG+wr1xf2WrnVZj0FahYkw6CYg3YoQelYQojxJyQe9+5VHMQSt+RM7P7OtZt2RxBmaBB7OnA1jfwHatZvx0XYs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,120 +103,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-copy_remote_vm_str() gets the target address space from a struct
-task_struct. This does not work for an address space that exists but is
-not yet associated with a task_struct, such as the mm held by struct
-linux_binprm during exec.
+On Tue, Aug 11, 2026 at 01:36:25PM +0200, Pratyush Yadav wrote:
+> On Tue, Aug 11 2026, Breno Leitao wrote:
+> 
+> > On Mon, Aug 10, 2026 at 07:32:41PM +0300, Mike Rapoport wrote:
+> >> Hi Breno,
+> >> 
+> >> On Mon, Aug 10, 2026 at 06:32:04AM -0700, Breno Leitao wrote:
+> [...]
+> >> > +	for (pfn = PHYS_PFN(start); pfn <= end_pfn; pfn++) {
+> >> > +
+> >> > +		cond_resched();
+> >> 
+> >> cond_resched() for every pfn is too much, isn't it?
+> >
+> > It is what the other pfn walkers do: the kpageflags read loop in
+> > fs/proc/page.c and read_page_owner() in mm/page_owner.c both call it
+> > once per pfn. 
+> >
+> > But I honestly don't have a strong opinion here, though, happy to batch
+> > it if you prefer. Would this one look better?:
+> >
+> > 	if (!(pfn % MAX_ORDER_NR_PAGES))
+> > 		cond_resched();
+> >
+> 
+> Now that we are looking at this, Sashiko also complains about a race
+> with memory hotunplug.
+> 
+>     Can the page pointer become invalid here due to concurrent memory hotplug?
+> 
+>     The loop retrieves the struct page pointer using pfn_to_online_page() and
+>     then yields the CPU with cond_resched(). Since this iteration runs without
+>     holding get_online_mems(), could a concurrent memory hot-unplug event offline
+>     and remove the memory section while the thread is sleeping?
+> 
+>     If the vmemmap backing the struct page is freed and its page tables torn
+>     down, dereferencing the pointer in is_page_hwpoison(page) upon waking
+>     could cause a use-after-free regression.
+> 
+> Kind of makes sense at first glance but I didn't go and look. Perhaps it
+> is better to do the cond_resched() at the end of the loop?
 
-Add copy_remote_mm_str(), which operates directly on a struct mm_struct.
+Agree. I was calling cond_resched() earlier because I wanted to call it
+before the "continue", but it is rather unusal. Let me move it at the
+end of the loop.
 
-Signed-off-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
----
- include/linux/mm.h |  2 ++
- mm/memory.c        | 25 ++++++++++++++++++++++++-
- mm/nommu.c         | 25 ++++++++++++++++++++++++-
- 3 files changed, 50 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 485df9c2dbdd..eede435bf4a3 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3222,6 +3222,8 @@ extern int access_remote_vm(struct mm_struct *mm, unsigned long addr,
- 		void *buf, int len, unsigned int gup_flags);
- 
- #ifdef CONFIG_BPF_SYSCALL
-+extern int copy_remote_mm_str(struct mm_struct *mm, unsigned long addr,
-+			      void *buf, int len, unsigned int gup_flags);
- extern int copy_remote_vm_str(struct task_struct *tsk, unsigned long addr,
- 			      void *buf, int len, unsigned int gup_flags);
- #endif
-diff --git a/mm/memory.c b/mm/memory.c
-index 6b8280cfc1db..a70c43d9b17e 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -7218,6 +7218,29 @@ static int __copy_remote_vm_str(struct mm_struct *mm, unsigned long addr,
- 	return buf - old_buf;
- }
- 
-+/**
-+ * copy_remote_mm_str - copy a string from a remote address space.
-+ * @mm:	the remote address space
-+ * @addr:	start address to read from
-+ * @buf:	destination buffer
-+ * @len:	number of bytes to copy
-+ * @gup_flags:	flags modifying lookup behaviour
-+ *
-+ * The caller must hold a reference on @mm.
-+ *
-+ * Return: number of bytes copied from @addr (source) to @buf (destination),
-+ * not including the trailing NUL. Always guarantees a NUL-terminated buffer.
-+ * On any error, return -EFAULT.
-+ */
-+int copy_remote_mm_str(struct mm_struct *mm, unsigned long addr,
-+		       void *buf, int len, unsigned int gup_flags)
-+{
-+	if (unlikely(len == 0))
-+		return 0;
-+
-+	return __copy_remote_vm_str(mm, addr, buf, len, gup_flags);
-+}
-+
- /**
-  * copy_remote_vm_str - copy a string from another process's address space.
-  * @tsk:	the task of the target address space
-@@ -7247,7 +7270,7 @@ int copy_remote_vm_str(struct task_struct *tsk, unsigned long addr,
- 		return -EFAULT;
- 	}
- 
--	ret = __copy_remote_vm_str(mm, addr, buf, len, gup_flags);
-+	ret = copy_remote_mm_str(mm, addr, buf, len, gup_flags);
- 
- 	mmput(mm);
- 
-diff --git a/mm/nommu.c b/mm/nommu.c
-index ed3934bc2de4..8fbe6306d074 100644
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -1752,6 +1752,29 @@ static int __copy_remote_vm_str(struct mm_struct *mm, unsigned long addr,
- 	return ret;
- }
- 
-+/**
-+ * copy_remote_mm_str - copy a string from a remote address space.
-+ * @mm:         the remote address space
-+ * @addr:       start address to read from
-+ * @buf:        destination buffer
-+ * @len:        number of bytes to copy
-+ * @gup_flags:  flags modifying lookup behaviour (unused)
-+ *
-+ * The caller must hold a reference on @mm.
-+ *
-+ * Return: number of bytes copied from @addr (source) to @buf (destination),
-+ * not including the trailing NUL. Always guarantees a NUL-terminated buffer.
-+ * On any error, return -EFAULT.
-+ */
-+int copy_remote_mm_str(struct mm_struct *mm, unsigned long addr,
-+		       void *buf, int len, unsigned int gup_flags)
-+{
-+	if (unlikely(len == 0))
-+		return 0;
-+
-+	return __copy_remote_vm_str(mm, addr, buf, len);
-+}
-+
- /**
-  * copy_remote_vm_str - copy a string from another process's address space.
-  * @tsk:	the task of the target address space
-@@ -1781,7 +1804,7 @@ int copy_remote_vm_str(struct task_struct *tsk, unsigned long addr,
- 		return -EFAULT;
- 	}
- 
--	ret = __copy_remote_vm_str(mm, addr, buf, len);
-+	ret = copy_remote_mm_str(mm, addr, buf, len, gup_flags);
- 
- 	mmput(mm);
- 
--- 
-2.55.0
-
+Thanks for the review,
+--breno
 
