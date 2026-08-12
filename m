@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3497C5CFEB
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 11:28:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A01D6C5CFEB
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 11:28:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 70E6F6B015E; Wed, 12 Aug 2026 07:28:06 -0400 (EDT)
+	id 4ED526B015F; Wed, 12 Aug 2026 07:28:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BEC66B015F; Wed, 12 Aug 2026 07:28:06 -0400 (EDT)
+	id 49CA56B0160; Wed, 12 Aug 2026 07:28:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 560A66B0160; Wed, 12 Aug 2026 07:28:06 -0400 (EDT)
+	id 364D66B0161; Wed, 12 Aug 2026 07:28:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 304F16B015E
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:28:06 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 27D90C0329
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:28:05 +0000 (UTC)
-X-FDA: 85092393330.01.5797956
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5ADBE80006
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:28:03 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q2KHEiY0;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E99DB6B015F
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:28:34 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5BE301202CB
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:28:34 +0000 (UTC)
+X-FDA: 85092394548.18.D50DE1B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 99C25140006
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:28:32 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R770ZzSz;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786534083;
+	s=arc-20220608; t=1786534112;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hN9mu9+V031acX0Mqhgz0E8VuHMeV/rI+t3IxqOP4Jw=;
-	b=2tfw+gX2w5KSDeYQ/eF43YazeT7zqYNyIdvA7Tzt1/hZnxb6LffWyESQEparoZv1Edx3HV
-	xSMAYnI3haP8MfApS/PH52yy4lH/y2EGp3I21SQT3mFV7LnVJp3TJ7BQZsxdCcDxiwye6O
-	paBVZ8p9mPjoz5uJlIiPmVWxflWLnXo=
+	bh=EG+9d2areJevimTNoL+CVRXPlsVq0h4r/7sK+coGE+g=;
+	b=4N6BDQ8PxgAhnUGH1H8uiO38vLCIvHMmvaot12HwdsGCUMcglXwAPduKs9+Rj+/aU4Cw7G
+	JNl+FehIRBLxNu0zhqbwEYSvUbt/lN8bC7337MeRricQO4Wf10ThbxNlN0HRTWcQkXbsi5
+	xJ8Uje6BaPGqBlNUxWXX0TE5KxolZnQ=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q2KHEiY0;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R770ZzSz;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786534083;
-	b=lHperwOjPFC5HHwUCI6hb5jwLHjK1wYb+oiVpb7WVYwtPSQbpZjZdobibuquD43sqxY1Pu
-	Do2YOiZwNZN3ZTsGvRy2bNtFi8YPz+BcVcDnnKjonbMSRZfCH6PqkrpvYC/+mN5jKbP0kW
-	kWpJjJRU0JzS1FlcIrEm7SWK1AJ9vDM=
+	t=1786534112;
+	b=lizqJKH6Fnfd4VKSbKmaUaqk/uvNSYPb6xWmpZY4iLP/sZxh5N49Hx17DUipEPKG3KgbW+
+	Ioulm9SWICbw0BFj5BSipKqGVR/IoguXHEnEE3vj9fJVo1D29jIHzjiTeyqYPZMrN1b9v9
+	AzrJWE+EHymSRnLcP5yh43tdYQS53dg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9E641429F4;
-	Wed, 12 Aug 2026 11:28:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C454E1F000E9;
-	Wed, 12 Aug 2026 11:27:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1DFBD600E2;
+	Wed, 12 Aug 2026 11:28:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022BA1F000E9;
+	Wed, 12 Aug 2026 11:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786534082;
-	bh=hN9mu9+V031acX0Mqhgz0E8VuHMeV/rI+t3IxqOP4Jw=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=Q2KHEiY0kJPCcIYq9uuwvfgaJdiV/X0/c44OKVc/4dSWy0qA2VWIcaZbl6Dz/uIqZ
-	 pDkZyaDysF54dnmgnvC+SrOIVOvTBQ02r8B+6lYweA0Eiqjdrt5y8V/KSLMoOJAmW3
-	 uX7KmbdDFJCRaA7qBMCiZpJtWF47js7B31WPas44jYLBsJ7UnN3BVaVynp1SsnzJjn
-	 ZbUSBYOphl83NNs9qk2xX44sCnMn+bLiFfzfcdTlIhS92ltmn8kw7657TWH1+dg426
-	 tod0X1enWIiHrwBrweIR8q/4pZYJuLhojA1auUJ36AHreTWN0YTls2t3pobUYYNk5Q
-	 JnqGgZqKKIeyA==
-Message-ID: <9a66d741-536e-44ac-b02f-395b5fc8ab6d@kernel.org>
-Date: Wed, 12 Aug 2026 13:27:54 +0200
+	s=k20260515; t=1786534111;
+	bh=EG+9d2areJevimTNoL+CVRXPlsVq0h4r/7sK+coGE+g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=R770ZzSzgdG86/NXMage81wzUFeS0CV8TJN+FTy3GqkZs91oKKb+UMP3HprpsS0ll
+	 0Wg7pTbwr86EN5F6uluXTEl+Pj1fSitU/XvpIx9ciPNyYlETh2LqI/+D2gDsppo6OD
+	 yB0zB3DtxgJOAm/4vvR0MKlV6fDYEwT1SPtfC+hetiB9t/IGN6ZuTReZewi6NTenyE
+	 vAMBpBqNVWCwPI0e2bxOG/EloArZkrD68ZAi1ERAwEkV3Qg0+K0lrcjS0HdYC6p9yB
+	 G+Ls0Si3VJrq7ZaFnE4H1CBwSfg75sQl53X9g+96xUtYtDwT8TDmYw2qMhkU3o2aBj
+	 CXwwy98HEtYrQ==
+Message-ID: <28c24991-590f-4980-a92e-26c89288cae7@kernel.org>
+Date: Wed, 12 Aug 2026 13:28:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V2 1/6] loongarch/mm: Stop using pte_ERROR()
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [RFC V2 3/6] sh/mm: Stop using pte_ERROR()
 To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
  akpm@linux-foundation.org
 Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
@@ -87,8 +86,8 @@ Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
  linux-um@lists.infradead.org, linux-arch@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20260811042119.3652929-1-anshuman.khandual@arm.com>
- <20260811042119.3652929-2-anshuman.khandual@arm.com>
- <e0ada89f-26b2-4e82-8273-8ea7b391c147@kernel.org>
+ <20260811042119.3652929-4-anshuman.khandual@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -134,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <e0ada89f-26b2-4e82-8273-8ea7b391c147@kernel.org>
+In-Reply-To: <20260811042119.3652929-4-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5ADBE80006
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ro39uxzjp64timtx683k3iidkjosimc7
-X-HE-Tag: 1786534083-868626
-X-HE-Meta: U2FsdGVkX19dF5CXWdXP1gfV7yH7cdtX144NNUna8RQ2xp3GnVrso9h4jkQD/S2EqOf1JDVmr6Bv/6f92fOaDji+VXmQTGrBKDm+Nt5dPabgLqxR2rIAH88uS7ON9uA8a9awxWMhavX1ffKGuWIO0iYx92btGi7gTnML6rItNKsN1c7BcAFLaZabVr7XD1iyUfs4tvoi5zNbCWTzBRCJehJq7RQeX7kg+iy3Cm2WRAMjJDh7LEQEpxNi/epWn104ve4aPnVzqb/BF1IQ1OJ0sUbrJVt+Uq5wO5FXbnQ0QauQimpNFudVC50hwHDWBCIZXGeLI8Xp10Bo/ccNEOcM58oXAMUzcnCiQSB3iPKPIoyaOETq3G6lunIyHggi1SUDzqgx3MeXmCh/SJBkQ2yp6hLdg22utlqmRbBPSSWEJiK2jQbENnWaU9igP9mV37Gn62/cpjUj3MMwowfBcG/Ofr6uLUU6LdcQDwvtETlL+uJh9y8cYRyl2GKSm/E/iaTDQbr/n5QDIql4/Po8EfkoU0otAR8AO7eEcRTZ+0b72lzYtkMeOLLCNWIMq7fcQvJVuaaqM0IRl8fA915kQzRIHmPYXz/mdtsk/vSgkZfqiufVtKiO82UxYfatEVBEXS/m8Lbq0I2dbRfHhuxmrGj6UF4RqOgL6nCFPkoYfdBToa7xOZC0JHlg8It1U5MhppVtDM+ocd9O5fuGVAMGjLpy70Sk7crRNNmyiblKkBAiFxkWyyOoR1XkGoELJWqBLRAwPT0Hit3Ql7V+RYSxY1k/+SGXkrmZ+QXCuqlEGkq7IIRrdw+oWM7KcJfsHig8OSb2wIiHsSHXg+uK+7Z3jHRFxTGGXfDUoHh5uejcr6tf5mhOenr6P/OeqP+5lZO8zTxS/SVf+LCdOvF9sgu/Q/aqjkkhdYVXlTLP6q+xnupC2pDjTKJr5THn56SNw1XGUdIVsNMrNZz4mNmay5TBAOo
- smN9Nt2D
- KRSaSkztQfBq3q91yPDDBLkyjyVmlAr184dGnEizC++T4PgLdItPM4DiXQNtrRN1f7bDKBA9u8bK+bs6bU+qvpK1Qw/pcagQGXegwxq1VnDidrj6wglAukvqO5jNpD5P08mw+mLKmcz5FwC7aUKxux4bW2TB9Srh8jZDG9nM2aRMBfMXGckkixj41oSG9XcPotlDe3APf8qMHfnwYQ80rsjO8Bp+tX5XcwFsHxmPkXvvHbYwOJvLOek3inIeuQ4puP3r5Ng1O86OLHXkciD1tPcaRs7Pwqi7zSEKRc8UAval76QD/DypkgF5KWNyEzMRcwuVXi9GybQM3MBakugIrsN9FKRhBHnhMviBZcgsZ5M2jyFUS1D5aOdQlrGvaCxoNXVtt7x05FP7BlSz1PWV+w6zQnR1cMRU0clahlJS4qeGweYYU0aqFe7Je+V8TFgL2h0RrmpPlX8m64SXRLPyt1b6kbQ==
+X-Stat-Signature: rsywo3txnkhy8xj4bg15ek35sb8u4drm
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 99C25140006
+X-HE-Tag: 1786534112-177895
+X-HE-Meta: U2FsdGVkX19wF/jEMFJ6M19X/M5HlfPSL0hHc08Dko2BCkUjLQYP7n1DJTwbFHC1ht/KPJS1VOaM4Cvy7q5zzdSNzHN2nzXhLPOwbcsIYAPujalCRrgBP/+Ier3aJnKWR9aqby8KPITox8WwE1ZSv24p+/hFzLukTUXEjGD8lIDP9nFgSe8Rc2sAHoo2aV/73SXMZ0YTTQafZGIgy7F5dQJW/vOh8KIIz1TPAJ52kFwAAqtq9e+G+ot29VX4KR4pwUjPwWaThKZPfBq+HfyGVYMW0pKcEAQAHaSPZQUuHfj8acu9sL7DZthE0D81gTSyX3hFkv8Bqx3qJmaprZWF5cHqtqpxlnWX5uNT29plbywOmY4NCznFYZkSmUHpoS4ZgzbYELeXz+PhjAOKXfKnCD666JIflm06i3XQRUlxeNK4P8IsWMCwVabKqGMg1gdxnN3+aoGBL9CcfBD/VZozFn450qVlGGfKjsQ1zJq6zI+sK+hDyPxk6OZXNAHQg/GamyPGzRGFq/BvC89+b4mnwrqu//scV70f82TaA7imFEn33ndEhzgaiYsv1tnXTrnJaBBrYp5+huJujJQSc8mpvKOYWL4Rv9Ctmmmw050UN1QJWmxCZdp5FXvUxlSwxhgZpzF0IK7pkdfh8Qoq3WdptFShpPJa74UmOqRZNQu+FwhPuFrCWUyrBHfXx444faoDVoV+3Drc4djBQVX1u7GBBsgAh2chjrgL1uQkJ6o2gyXoh7CsxJsZd8RDSRPLZR+zEiFZfFkWFshYwqKxl/qA0D+ESVWqeZOtYA48MXAcWs6e+febILLSSxqAs2gAguBMH9S0H85T39EEK6G8aVVH87LzVCFXkLAwQ5DDcUm4077DVrhWdEc3F+zLf8jWfx8tIjctFSNd/neOJujd2cQrxXabeWSTzS4AEmcSseX1nkWEAz453hpWc5/+T0Hvw2iPyDx29HG7hELZAUpYZw5
+ emk/25qS
+ DeH43/5WHpqhiQyTbBxx6RoqbzJVaOZc8NEDjN8JEjYdQ7oB0+ccMwlpl29Tfc8y6Dx40KY14BsDlIHvxJy0t68/YbpmevDZy+Td+2B4tirEDgbYih77Oz3m+UxCbCr2zGo/soqTwKkOlB6TqIZ6muxrheZ/2b2NgLsrHCRdsDZ2K2okjuZcAe4ZYPjwUVdZ8vSAomdpr70UZXajqIc9Pld5u6SXCmS/QjorIFQype3/XyNKvkX5Q+30l4ewJqDcz5IPMw63J06VYEjrPJalbpih5T7TESPeULDxJllonJnj9DywW8lgIZz9UaawQu+jO79PLWBLtrMF2HokB5v2wXUFZgaJFZ9rlSSgLr1dKPpZnPDIJMVRx7XjfIkcvmjZH2omOHukKBFsK4VNPjm8VlXG3/j3vW/5ls5rkCjBDnYaVfROgpRt2EwdrkCVY6Md5tDUKokOmhnWbPC0sKFGkvt28YNwbWKLBMSaSWVnBwAy1PBiI3PrBkaOeH/5S2SgbBm3FQCu0b1Ru4b8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,60 +151,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/12/26 13:19, David Hildenbrand (Arm) wrote:
-> On 8/11/26 06:21, Anshuman Khandual wrote:
->> Directly use pr_err() in __set_fixmap() and drop pte_ERROR() which helps in
->> eventually dropping pte_ERROR() macro across the tree. In this new printing
->> __FILE__ and __LINE__ has been dropped because they are always the same and
->> don't really add any value.
->>
->> Cc: Huacai Chen <chenhuacai@kernel.org>
->> Cc: WANG Xuerui <kernel@xen0n.name>
->> Cc: loongarch@lists.linux.dev
->> Cc: linux-kernel@vger.kernel.org
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>  arch/loongarch/include/asm/pgtable.h | 2 --
->>  arch/loongarch/mm/init.c             | 2 +-
->>  2 files changed, 1 insertion(+), 3 deletions(-)
->>
->> diff --git a/arch/loongarch/include/asm/pgtable.h b/arch/loongarch/include/asm/pgtable.h
->> index 223528c04d73..a32a8fff70c1 100644
->> --- a/arch/loongarch/include/asm/pgtable.h
->> +++ b/arch/loongarch/include/asm/pgtable.h
->> @@ -128,8 +128,6 @@ struct vm_area_struct;
->>  #define ptep_get(ptep) READ_ONCE(*(ptep))
->>  #define pmdp_get(pmdp) READ_ONCE(*(pmdp))
->>  
->> -#define pte_ERROR(e) \
->> -	pr_err("%s:%d: bad pte %016lx.\n", __FILE__, __LINE__, pte_val(e))
->>  #ifndef __PAGETABLE_PMD_FOLDED
->>  #define pmd_ERROR(e) \
->>  	pr_err("%s:%d: bad pmd %016lx.\n", __FILE__, __LINE__, pmd_val(e))
->> diff --git a/arch/loongarch/mm/init.c b/arch/loongarch/mm/init.c
->> index 3407030f3e7a..be9b127daef2 100644
->> --- a/arch/loongarch/mm/init.c
->> +++ b/arch/loongarch/mm/init.c
->> @@ -203,7 +203,7 @@ void __init __set_fixmap(enum fixed_addresses idx,
->>  
->>  	ptep = populate_kernel_pte(addr);
->>  	if (!pte_none(ptep_get(ptep))) {
->> -		pte_ERROR(*ptep);
->> +		pr_err("bad pte %016lx\n", pte_val(*ptep));
->>  		return;
->>  	}
->>  
+On 8/11/26 06:21, Anshuman Khandual wrote:
+> Directly use pr_err() in set_pte_phys() and drop pte_ERROR() which helps in
+> eventually dropping pte_ERROR() macro across the tree. In this new printing
+> __FILE__ and __LINE__ has been dropped because they are always the same and
+> don't really add any value.
 > 
-> Ah, I missed that we want to print actual values, I somehow thought that we
-> would be printing pte_none() ...
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> Cc: linux-sh@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+>  arch/sh/include/asm/pgtable_32.h |  5 -----
+>  arch/sh/mm/init.c                | 11 ++++++++++-
+>  2 files changed, 10 insertions(+), 6 deletions(-)
 > 
-> Maybe we should just be more verbose while at it?
-> 
-> pr_err("unexpected set PTE at %ul in __set_fixmap: %016lx\n",
->        addr, pte_val(*ptep));
-> 
+> diff --git a/arch/sh/include/asm/pgtable_32.h b/arch/sh/include/asm/pgtable_32.h
+> index 5f51af18997b..c8eb9a7a4c4c 100644
+> --- a/arch/sh/include/asm/pgtable_32.h
+> +++ b/arch/sh/include/asm/pgtable_32.h
+> @@ -401,14 +401,9 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
+>  #define pmd_page(pmd)		(virt_to_page(pmd_val(pmd)))
+>  
+>  #ifdef CONFIG_X2TLB
+> -#define pte_ERROR(e) \
+> -	printk("%s:%d: bad pte %p(%08lx%08lx).\n", __FILE__, __LINE__, \
+> -	       &(e), (e).pte_high, (e).pte_low)
+>  #define pgd_ERROR(e) \
+>  	printk("%s:%d: bad pgd %016llx.\n", __FILE__, __LINE__, pgd_val(e))
+>  #else
+> -#define pte_ERROR(e) \
+> -	printk("%s:%d: bad pte %08lx.\n", __FILE__, __LINE__, pte_val(e))
+>  #define pgd_ERROR(e) \
+>  	printk("%s:%d: bad pgd %08lx.\n", __FILE__, __LINE__, pgd_val(e))
+>  #endif
+> diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
+> index 110308bdef01..b3c7fd84ceb4 100644
+> --- a/arch/sh/mm/init.c
+> +++ b/arch/sh/mm/init.c
+> @@ -78,13 +78,22 @@ static pte_t *__get_pte_phys(unsigned long addr)
+>  	return pte_offset_kernel(pmd, addr);
+>  }
+>  
+> +static void print_bad_pte(pte_t pte)
+> +{
+> +#ifdef CONFIG_X2TLB
+> +	printk("bad pte %p(%08lx%08lx).\n", &pte, pte.pte_high, pte.pte_low);
+> +#else
+> +	printk("bad pte %08lx.\n", pte_val(pte));
+> +#endif
 
-On second thought, why not simply use ptval_to_str() here as well?
+I'd avoid that helper if possible, so we don't encourage new users.
+
+Shouldn't we just switch to pr_err() right away?
+
+> +}
+> +
+>  static void set_pte_phys(unsigned long addr, unsigned long phys, pgprot_t prot)
+>  {
+>  	pte_t *pte;
+>  
+>  	pte = __get_pte_phys(addr);
+>  	if (!pte_none(*pte)) {
+> -		pte_ERROR(*pte);
+> +		print_bad_pte(*pte);
+
+Maybe similar to my reply to patch #1, actually print something more useful than
+just "bad pte" ? And possibly also just use ptval_to_str().
 
 -- 
 Cheers,
