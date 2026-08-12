@@ -4,127 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B083FC5B56A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 09:18:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF3E1C5B56A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 09:18:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89A916B00BB; Wed, 12 Aug 2026 05:18:36 -0400 (EDT)
+	id B0B4F6B00BD; Wed, 12 Aug 2026 05:18:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8717C6B00BC; Wed, 12 Aug 2026 05:18:36 -0400 (EDT)
+	id ABC6B6B00BF; Wed, 12 Aug 2026 05:18:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 760856B00BD; Wed, 12 Aug 2026 05:18:36 -0400 (EDT)
+	id 9D4466B00C0; Wed, 12 Aug 2026 05:18:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FD346B00BB
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:18:36 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B4F1516018A
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:18:35 +0000 (UTC)
-X-FDA: 85092066990.12.B19E327
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E153780005
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:18:32 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=sk.com;
-	spf=pass (imf30.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786526314;
-	b=xF5dLv6ANV8CCH9tb96eRygRODNCqQsPTAYpDI9mIQU8r3q3Tn8IR1f7QCoKALxWnfbBkq
-	qFoxRlCL7uFU7cqo9t1ozdzKj7K633TN3r+nUmhHM2IvHkdX0blcce5T+4Ng5irwE6ox4x
-	ogekCwHk2f2ZfHOsB5DmftJ9l3ZQJ0w=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=sk.com;
-	spf=pass (imf30.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 77A336B00BD
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:18:54 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F32FE1A0106
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:18:53 +0000 (UTC)
+X-FDA: 85092067746.19.D7D895A
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 24F42140006
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:18:50 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=BWThciDu;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf23.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786526314;
+	s=arc-20220608; t=1786526331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Jt6mbpCJa2ZdmOrtEi7EkS/CiKenyoRavN+eUpJ7t3o=;
-	b=F/RHiYYSLMKP0O1K/dZxEo/aNjL+OWS3ROmq4ot1hn/Gfrgg6I+JwZAkdQM6h7Pf77FhuG
-	Pc+IVDLAe65NfYv25sCdgL0S44xaJ0NhNjkgU8q4kaFioE/QoVCVukoaLj61kak7vYrl/N
-	W/eWQZ89Dh6G5HA64ssOnZl4xi5IGdM=
-X-AuditID: a67dfc5b-c45ff70000001609-b0-6a7c3a61053e
-From: Rakie Kim <rakie.kim@sk.com>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org,
-	gourry@gourry.net,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	nvdimm@lists.linux.dev,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	byungchul@sk.com,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	david@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	dave@stgolabs.net,
-	jic23@kernel.org,
-	dave.jiang@intel.com,
-	alison.schofield@intel.com,
-	vishal.l.verma@intel.com,
-	ira.weiny@intel.com,
-	harry@kernel.org,
-	kernel_team@skhynix.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com,
-	Rakie Kim <rakie.kim@sk.com>
-Subject: Re: [PATCH 0/4] mm/mempolicy: introduce package-aware weighted interleave
-Date: Wed, 12 Aug 2026 18:18:20 +0900
-Message-ID: <20260812091823.1817-1-rakie.kim@sk.com>
-X-Mailer: git-send-email 2.52.0.windows.1
-In-Reply-To: <anwcRyfzs5lklpzk@lucifer>
-References: 
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=FfJ5nAyyp3uAf1i1mDP7ix0yMVKhktD7PymhKvowdmk=;
+	b=G7Tm2e1IwQd1xe/shPi0Q/Y3bc7iqo7Jc0NgeD6VY7+JC5pedSBlxVHAn2/kNPRwXSJVWB
+	BkdbyA+5jKBgDtAsCn3oI3G2VdHfx11SZyri9HoRguOujDHO1/LrBQIO7oQg+PqrmE5P6W
+	rwUsrW0n53mEgWqiqg/afX37Vlgu5/w=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=BWThciDu;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf23.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786526331;
+	b=3TdYxt180y+WnZ5hDvxjJYsaGgXnpfneG2ICnvLHbeIm+xMeVEUgK3Ne/dwY5QljV5fX5N
+	yo/d2B02289vCW7PfwZPn/JxkCzZB7xahYX9k+CumsDyNQp4hSRh9zTnjOHnXAkbH5FXVJ
+	PlZ0GY/IsR/8s3UOLDEYjLXcGvpLJws=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=FfJ5nAyyp3uAf1i1mDP7ix0yMVKhktD7PymhKvowdmk=;
+	b=BWThciDuZL39Kr3k4Repy9byHSsEFtIsDQbspS4kgW9CVTJCKluwmbYtGvVrlTkijwxZtrk4f
+	dZfXzvKQ01VfRC57JIBtmZgB1x/uJHbweVIy/xBrCs2IwmBpl5RjifVcJ5gZG/QWbEYWKvMbR3w
+	0QMqOcLMR4CrmGk48vddvAs=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hKjN62CLDz1T4Fq;
+	Wed, 12 Aug 2026 17:08:54 +0800 (CST)
+Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
+	by mail.maildlp.com (Postfix) with ESMTPS id A48542DBF7;
+	Wed, 12 Aug 2026 17:18:44 +0800 (CST)
+Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
+ kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Wed, 12 Aug 2026 17:18:43 +0800
+From: Xie Yuanbin <xieyuanbin1@huawei.com>
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <linmiaohe@huawei.com>,
+	<ziy@nvidia.com>, <matthew.brost@intel.com>, <joshua.hahnjy@gmail.com>,
+	<rakie.kim@sk.com>, <byungchul@sk.com>, <ying.huang@linux.alibaba.com>,
+	<apopple@nvidia.com>, <nao.horiguchi@gmail.com>, <ljs@kernel.org>,
+	<liam@infradead.org>, <vbabka@kernel.org>, <rppt@kernel.org>,
+	<surenb@google.com>, <mhocko@suse.com>, <gourry@gourry.net>,
+	<tony.luck@intel.com>, <bp@alien8.de>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<liaohua4@huawei.com>, <lilinjie8@huawei.com>, Xie Yuanbin
+	<xieyuanbin1@huawei.com>
+Subject: [PATCH] mm/Kconfig: allow user to select MIGRATION if MEMORY_FAILURE is enabled
+Date: Wed, 12 Aug 2026 17:16:44 +0800
+Message-ID: <20260812091644.224299-1-xieyuanbin1@huawei.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrLIsWRmVeSWpSXmKPExsXC9ZZnoW6SVU2WwZ61zBZz1q9hs7j7+AKb
-	xa4bIRYnbjayWay+uYbR4vnWX4wWP+8eZ7e4fmslo8X+p89ZLB40rWKyOL51HrvFulOH2CzO
-	zzrFYnF51xw2i3tr/rNavHnsZvGtT9rifp+Dxcoff1gtjqzfzmQx+dICNouOl/dZLG5NOMZk
-	sXpNhsXso/fYHSQ9ds66y+6xYFOpR3fbZXaPzSu0PBbvecnksWlVJ5vHpk+T2D1OzPjN4rHz
-	oaXHi80zGT16m9+xeUydXe+xfstVFo/Pm+QC+KK4bFJSczLLUov07RK4MjYt281csCi2Ysu2
-	94wNjB9duxg5OSQETCS2HHjC3MXIAWa3LXYEMdkElCSO7Y0BqRAR0JG42TWNqYuRi4NZYCer
-	xPyHe5lAEsICQRJd058zgtgsAqoSP15PB7N5gcYs2jOXEWK8psS6jbdYQGxOAXWJtZf/gvUK
-	CfBIvNqwH6peUOLkzCdgNcwC8hLNW2czgyyTEPjKLvH2xxVmiEGSEgdX3GCZwMg/C0nPLCQ9
-	CxiZVjEKZeaV5SZm5pjoZVTmZVboJefnbmIERuqy2j/ROxg/XQg+xCjAwajEw3tBpjpLiDWx
-	rLgy9xCjBAezkghv9aqqLCHelMTKqtSi/Pii0pzU4kOM0hwsSuK8Rt/KU4QE0hNLUrNTUwtS
-	i2CyTBycUg2MEncvCV+zNc/7eFnOPniZs8S1sNsffSrrZFzUW67yMb5dMyGjVOruIQ7BiL9s
-	J+yl134svLL360bbRc3i6QUv3O4/+z47NTxAnG/G5aXtm4t3/ZddyM5Z6PCkqGDWY7k0Vb0f
-	vX//vtK4t2xW4Wapzbm3fFnVKr6Xa5WbLzrHa5K5wu+5FbeXEktxRqKhFnNRcSIA7Yb609AC
-	AAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Ra0hTYQCG+87Ozo5jg9NadFIxGIkkqYUFXyFldPvqh1RkQXg75CGn25RN
-	xUuSaYgtErXLdFMTLdF5n27eEZZ5I0uUTOct0ZpmpHkvtXJS4L8Hnvd9/7wkR9SM25NSRSSr
-	VDAyCcHH+Vkufm7MybuhR5aGPWBOZRkBRyd7Cdg4eB2+e6ojYOfQfQKWDpUBaDX+AvDnaAcP
-	frSUALj4ZZYDWz9bcfgpSY/BDmMeD77O7eLCim4zAd9ru3HY35hDwLGyP1z4bfICXElzgONp
-	3rBkbYMLzQNWLmyrrMPgk758AqbOjOPQkt6OwdKyELhuKiag7s0Yz9sJNWhHeSjfEIUepfTz
-	UE2xKypsnsGQQf+QQIaFTB7qzFrHUcPECTRdkw3Q4+TvBFoZRqhweh5Dz3T3UGXtBxwtGpyu
-	ULf4XsGsTBrNKj1OBfFDDEVNnIgC/5ha0xxIBD/OqwFJ0tQxOqXwjA0JSkK3t/ipgR0ppg7T
-	Q+rnmBrwSQ7VwKVfTLRgNrGHukarNVZgY5xyptdmNdss3JopaM7dZpo6RFdUW3Ab21EudHn/
-	5nZXRAnor1Wt//K76a7sqe0MhzpAJxt1nHQg0O5Q2h0qH2B6IJYqouWMVHbcXRUWEquQxrjf
-	DpcbwNanRQkbGfVgqf+iGVAkkAiEvY7xoSIuE62KlZsBTXIkYmG8Pi5UJAxmYuNYZXigMkrG
-	qszAgcQl+4SXb7JBIuoOE8mGsWwEq/xvMdLOPhF0B/imh5tatJaClfpX9m9blSON9NjmoJ+P
-	py5RLu9x1a5OVqUuJJW75S1P+WV4goFqSBl/TwkS+m4wmS48H9nI3gfz/ucW1YEOGseXlzSe
-	vB7rnDFg19mN+fZVovz0ssm4VlXXO17Q1rT/6rwm0fmgWKLzDbtm8upTNIV2tUhwVQhz1JWj
-	VDF/AdkS2W/PAgAA
-X-CFilter-Loop: Reflected
-X-Rspamd-Queue-Id: E153780005
+Content-Type: text/plain
+X-Originating-IP: [10.67.109.17]
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemj100009.china.huawei.com (7.202.194.3)
 X-Rspam-User: 
-X-Stat-Signature: 6zzuaitqgxbrauh9rw5w988911nhojyc
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786526312-478011
-X-HE-Meta: U2FsdGVkX1+SvOtOs8qXdcwTk89Ab4DQn3cCxXMUUKDVHukBcyhWTf+L2wF+7wlDnppYXPTrv4/FBHK5D+ov6GNGFHbFHQpswvmJI6v4cohYIpa0FIDnLPDNX0BHpPKJ8dZnZDY9azUmKb6bsQQzqcZQAKOwMrkQ2arv/sLJ7VT8Lh55Ns3agON/xw8HasDFt0ul0l+pRI9n4mi/hJhjtGlQO/fjPraeLOaJx3WFSgVF3NTXhTl7PKC9QWBBWWVY+LlDxWedKvhf3FAjzVF6dCR/CMiJQxIAvccJve+FL41L+CkO9KSJSCnCBDzRDXwX9pFm8MaZ2rgcgh11IOoH4SJRhigN0jDx/wyW7FJYOZnZtaMha/fzrYKXcLdBtnfsr3ZvSI2PC5d6GVZf0RVPo0MJFpxMkEFpZnb+Zq8GPVBKKn2HEUGUyAmYHdMhTxsltAwb/fAf3E2nNi3N3gNQp25ne37JXIwpfHzY4hZtBqYzOM/9a8mPIQ8RBEYORiopurIPlk7p/nGF6pdLg6mD0fLbygtFGaZToSldKvJVAY0L2+ska5Skmu4B5XwGmTRxveZnpCzMZX1XnskQC6V3AnNOX920vKtD8CPTtZkuS/FYGBcDsIkICy8Tk9UiR/jquA+LkLUIeVdZPiY052X9KI3XCwSB1YOrDkzs2A8raUGf8j+AUzvCgXTrb/64RM/hJpv7G1m53Q/7YaFIEUqGhEjLVtRseFaTA5JyTn+EzMksQJxXsNhaEJ99CRMbOmEVnMzPBOGfAkfoJRpEAiBrL4dL1T+QVobE7dpqqwlcprUHoOCNtwy5iZ23oo5dX+YIrPXaKVBAvriA07JdRDfPpbTw4UqgXqt8GD7UixBRgRH1hPQMPcZGLVJGC+zpjO7+JBzWpwe1VurzVQWnzksdF0z4+Up7A0VLX1S1kGFnsdrygih1Fs8IGnOkKeGCLupGVk9bvS6w44PUe/bujn9
- f65pbnat
- rV+V9xa0BaiyFN21MvXUMIpD64iSqw3/cOYUg5XHZ8xSxbMHqUDTGl2DuEYgUh07C3eLu0Hrr5x6PV9XUJYrcDaUloA2PJPjsME/8eqTzg++EScOkRrv+AlZvSnToTkcStnK+L4DAEiTEXWzCkNn7t7nR2Q==
+X-Stat-Signature: xbgbmn6qwsr7ps94cohq98aitbsseu9d
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 24F42140006
+X-HE-Tag: 1786526330-846679
+X-HE-Meta: U2FsdGVkX1+O2HvJ3HQQRIvf74C180clvV7qVTEDzjiqMP8n7wxh6tQ5T15yUd4YptdrH8mZ6VnLwTmOX1zZ/917hy0Z/CHLo0vNuK/DJUpsJk7hyWX5tahkBy96NhCCkbL3pfOwETIAVjsLolHCndlqwOE6JLLdTcaBeqHUmsc/OGWn3J65RfCY1+IjEwJyfS8VTNzBa4nB/r17FqiLopPB8mQX9wJWKtbOSCyRoHJm93L+N362oZFdsskw8rb9CPY2QY+0yjNHcjTkWIAOkg+f+r7EBL5WVuSmNTax+tQZsCbwIgSdf5hHTHYV2pHagIjGWs36HZbVTItCUfncfBcXCuPypaWn5hOYDuLPmNZbMkhgJ0E9CnVdNLO3yWXdxn+/EmWe6pELRVBq7+bxTWi+sRyNHjTzwPMMmRLkvX+PMgtC12354zkNUiOtgmTF3ex0ayc4XIhwI7GsxqXL0kTKZH46mIhMlMAuKr1mQhipCBHFHSwVyl16I+azBLkFdWoUxA2BI/cTFW74DlSQkwxzLLOFjSTs3T2PZSgQ5gmACipZ5ZT5ChJ38W8Iti1/O3Ej8TfHzLIs3MTfGF0rNHyiwutxEO4mVVoHjjZBItWABqvOqbGjaVYtzGPWjI5+Nz0hYE98WUexJBLlESIep7bWPdp5GwXBAyQaFPr1Gc7MXC2UMrNWD9EEES/DtwmabcJao1gPGsRiCtyiLm38rDpgE0ZD3wQVOOWoYVB3SZH/VMK3QJBUuoa3nE4mi703j9jcYakw1tcOcl/7C//q0Lc0YMZfLwyJo1mTGc93syCgIdyNibqNa2fH8gdkx9MBSN4RPaoVtFB3T+n6yZxcQNzHHtgCfv2fX9R2muwf/01+4KCvVWVU9QZUQdgvv39pWNHZolFmhY+NLN7U3nKWd6oVfBKHEL/Aqev9emjJvFVNI8QqfvhO/w4v2gsP87UBnYYcrWUfUY3dbIPpCoG
+ vMLCDLmG
+ K6woLO1zTulfhIKAwjNVtYKJkTXO2B5/ucg0BGguhsADKXOKv2T8BizVm97bqHM4Nzqc8uuFgeDI93N0Rpdx60CIkPgWiMja4nnCeGxyFiUSNbS1wkn4i2EN3QEmpvCThqI3RCDBXkwR80GePUBFwp92/sW2mybe9wcVy0xl4Trn4XqzOkTXBmACsWZbYNH93tgzlq7a/2+UAlA5Ievqn0ANfj7AGHDuqH+NNvIOetrH70BWweCnWTS4frJKvnmiZtCoJoGltQAiBTnekEXANifOCKGfuTGfu0MeUHAWl36WWX64aTWhLmYS09kA1brZ1s2MwxBvC2v8rKYopGCrzF7IONo5Dm+PyEod80lzjXk5ZUR/zUrOJOkEkSSkC9iRCF0FXbiwb+/1CEtz433QSDc82+MTIQiuw86P2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,270 +101,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 12 Aug 2026 08:16:23 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+Currently, memory-failure can be enabled without migration. However,
+migration cannot be selected by user when memory-failure is enabled.
 
-Hello Lorenzo,
+Migration is very useful for soft_offline_page(), which may be triggered
+by correctable memory errors. Most of the anonymous or file-mapping
+faulty pages can be migrated to other healthy pages.
 
-Thank you for taking the time to review this series and for the
-advice on how to submit it.
+Allow user to select MIGRATION if MEMORY_FAILURE is enabled.
+Also, select MIGRATION by default if MEMORY_FAILURE is enabled.
 
-> On Thu, Aug 06, 2026 at 05:09:31PM +0900, Rakie Kim wrote:
-> > Package-aware weighted interleave places a task's weighted-interleave
-> > pages on the NUMA nodes of its local package, so that interleave traffic
-> > does not have to cross the interconnect to another package. This keeps
-> > each node's weight aligned with the bandwidth the task actually gets
-> > from it, so effective bandwidth holds up on a system that has more than
-> > one package. (A package is a CPU socket together with the memory
-> > attached to it.)
-> >
-> > Changes from RFC:
-> > https://lore.kernel.org/all/20260316051258.246-1-rakie.kim@sk.com/
-> > - Added an opt-in sysfs toggle (off by default) and a read-only sysfs
-> >   view of the package topology
-> > - Added topology validation with a clean fallback to plain weighted
-> >   interleave on unsupported topologies
-> > - Hardened the allocation, device-teardown, and node-hotplug paths
-> 
-> Please put change logs under the cover letter :) in mm we put the cover
-> letter in the actual upstream commit so it's better to keep separate for
-> reviewers.
->
+Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+---
+ mm/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Thank you, I did not know that. I will keep the change log out of the
-cover letter body from the next version.
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 8a24c130d008..b4c217383b51 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -682,7 +682,8 @@ config NUMA_MIGRATION
+ 	  demotion for memory tiering.
+ 
+ config MIGRATION
+-	bool
++	bool "Enable page migration" if MEMORY_FAILURE	
++	default y if MEMORY_FAILURE
+ 	depends on MMU
+ 
+ config DEVICE_MIGRATION
+-- 
+2.55.0
 
-
-> I see the RFC was from march and tied to an LSF session I think?
-> 
-> While I don't want to be too pedantic, I think you should only really
-> un-RFC in a situation where you have a good sense that the relevant
-> maintainers are happy with the _concept_.
-> 
-> Looking at the RFC thread it's not clear that David was OK with this on the
-> mm side, though I see you got some feedback from Jonathan on the CXL driver
-> side.
-> 
-> So I wonder whether next respin this should be re-RFC'd unless you get
-> clear feedback that we want to go in this direction?
->
-
-You are right about the LSF session: the RFC was posted with that
-proposal in mind, but I could not attend for personal reasons, so the
-discussion I had hoped for there did not happen.
-
-Your point about the concept is fair as well, so I will post the next
-version as an RFC again.
-
-
-> >
-> > Weighted interleave places pages on nodes in proportion to per-node
-> > weights that are set from each node's bandwidth. Within one package the
-> > weight given to a node matches the bandwidth a task sees from it. Across
-> > packages it no longer does: a memory node's physical bandwidth is fixed,
-> > but the bandwidth a task effectively sees depends on which package its
-> > CPU is in, because memory reached from another package, over the
-> > interconnect between them, is slower than the same memory reached within
-> > the package. The weights are set once from device bandwidth and applied
-> > the same way wherever the task runs, so a node in another package is
-> > given a weight higher than the bandwidth it can deliver to that task.
-> > The kernel has no package abstraction and does not record which package
-> > a node belongs to, so it cannot tell which node pairs are separated by
-> > the interconnect.
-> 
-> Please please - break up huge paragraphs like this :)
-> 
-> It's 2026 so I have to mention that if you've used AI to assist with
-> writing it (which is fine) please do a pass over it manually to curb AI's
-> tendency to be overly verbose + definitely try to break up paragraphs into
-> smaller charts at least :)
->
-
-I agree. Reading it again, my sentences are too long and the
-explanation is more verbose than it needs to be, which makes the
-cover letter hard to read. This needs to be fixed.
-
-I will rewrite the cover letter for the next version in a form that
-is easier to read.
-
-
-> >
-> >           node0             node1
-> >         +-------+         +-------+
-> >         | CPU 0 |---------| CPU 1 |
-> >         +-------+         +-------+
-> >         | DRAM0 |         | DRAM1 |
-> >         +---+---+         +---+---+
-> >             |                 |
-> >         +---+---+         +---+---+
-> >         | CXL 0 |         | CXL 1 |
-> >         +-------+         +-------+
-> >           node2             node3
-> 
-> ...though I _love_ ASCII diagrams so this is great ;)
->
-
-Thank you.
-
-
-> >
-> > The numbers below are illustrative single-stream bandwidths (GB/s).
-> > Local DRAM sustains 300 and local CXL 150; any path that crosses to
-> > another package, over the interconnect, is capped at 100, so a node in
-> > another package delivers 100 whether it is DRAM or CXL. Note that local
-> > CXL (150) is still faster than any node in another package (100). The
-> > effective bandwidth each CPU sees is therefore:
-> >
-> >               node0  node1  node2  node3
-> > from CPU 0:    300    100    150    100
-> > from CPU 1:    100    300    100    150
-> >
-> > Since a single per-node weight cannot encode the interconnect penalty,
-> > a reasonable set of global weights is taken from local device bandwidth
-> > (local DRAM : local CXL = 300 : 150 = 2 : 1): node0=2 node1=2 node2=1
-> > node3=1.
-> 
-> Also great that you provide the receipts on actual observed real-world
-> numbers that's great.
-> 
-> NUMA isn't my area so I can't comment here on the technical details but
-> thanks for providing this :)
->
-
-Thank you. I will keep reporting measured results with the next
-versions.
-
-
-> 
-> >
-> > Applied the same way to every source, these weights give the map:
-> >
-> >               node0  node1  node2  node3
-> > global:         2      2      1      1
-> >
-> > A task on CPU 0 gives node1 - remote DRAM, effective 100 - the same
-> > weight 2 as its own local node0 at 300. Worse, node1 is weighted above
-> > node2, the task's local CXL at effective 150, even though node2 is the
-> > faster of the two. The flat weights rank a slower interconnect-bound
-> > node above a faster local one, which is exactly backwards.
-> >
-> > This series makes weighted interleave package-aware. When it is on,
-> > weighted interleave prefers the task's current package: while the
-> > package's nodes have room, the task's pages are spread across them by
-> > weight, so allocations stay off the interconnect. The rest of the
-> > policy nodemask is used when the local package cannot serve the request
-> > - when a node in it is under pressure and the page allocator falls back
-> > along the zonelist, or when the policy nodemask happens to exclude every
-> > node of the current package, in which case the package spanned by the
-> > policy's own nodes is used instead. The nodes considered are always
-> > within the policy nodemask, which mempolicy already narrows to the
-> > task's cpuset, so cpusets and the task nodemask stay in control.
-> >
-> >               node0  node1  node2  node3
-> > from CPU 0:     2      0      1      0
-> > from CPU 1:     0      2      0      1
-> >
-> > A task on CPU 0 now places pages on node0 (weight 2) and node2
-> > (weight 1) at 2:1, which matches their effective bandwidth of 300:150;
-> > a task on CPU 1 places on node1 and node3 the same way. Placement
-> > follows the bandwidth each task actually sees, NUMA locality is
-> > preserved, and interleave traffic stays off the interconnect.
-> >
-> > To make this possible the kernel needs a notion of which nodes share a
-> > package. The NUMA distance model offers only relative latencies and no
-> > structural grouping, which is especially limiting for CXL memory nodes
-> > that come online without an explicit package association.
-> >
-> > The series adds a package-aware topology layer that groups CPU and
-> > memory-only nodes into a "memory package", built from the physical
-> > package ids firmware reports and, for a memory-only node, an initiator
-> > CPU node or SLIT distances. A package can contain more than one CPU node
-> > or more than one memory-only node, so the layer maps a package to a set
-> > of nodes rather than to a single node or a single CXL device.
-> >
-> > The feature is off by default and opt-in through a sysfs toggle. The
-> > package topology itself is exposed read-only under
-> > /sys/devices/system/package/; there is deliberately no writable
-> > override, since a machine whose firmware describes its topology
-> > incorrectly should be fixed in firmware. On a topology that does not
-> > have the symmetric shape the placement relies on, enabling is refused
-> > and any active mode degrades cleanly to the original flat behavior.
-> >
-> > Measured results:
-> >
-> > System Configuration:
-> > - Processor: Dual-Socket Intel Xeon 6980P (Granite Rapids)
-> >
-> > 1) Throughput (System Bandwidth)
-> >    - DRAM Only: 966 GB/s
-> >    - Weighted Interleave: 903 GB/s (7% decrease compared to DRAM Only)
-> >    - Package-Aware Weighted Interleave: 1329 GB/s (1.33 TB/s)
-> >      (38% increase compared to DRAM Only,
-> >       47% increase compared to Weighted Interleave)
-> >
-> > 2) Loaded Latency (Under High Bandwidth)
-> >    - DRAM Only: 544 ns
-> >    - Weighted Interleave: 545 ns
-> >    - Package-Aware Weighted Interleave: 436 ns
-> >      (20% reduction compared to both)
-> >
-> > A small CXL driver change registers a CXL memory node into its package
-> > as the node comes online, using the initiator the driver resolves for
-> > the region; this is where the package layer gets the CPU-side
-> > association that plain NUMA distance does not carry.
-> >
-> > The memory_package layer offers a broader interface for grouping and
-> > querying package topology - usable by memory tiering as well - and
-> > package-aware weighted interleave uses the subset it needs.
-> >
-> > [PATCH 1/4] mm/numa: introduce nearest_nodes_nodemask()
-> >   Add a NUMA helper that returns every node sharing the minimum distance
-> >   from a source node.
-> >
-> > [PATCH 2/4] mm/memory-tiers: package-aware topology management
-> >   Group NUMA nodes into memory packages from firmware topology data,
-> >   expose the grouping read-only under /sys/devices/system/package/, and
-> >   validate the symmetric shape that package-aware placement relies on.
-> >
-> > [PATCH 3/4] mm/memory-tiers: register CXL nodes to packages
-> >   Bind a CXL memory node to a package using an initiator CPU node.
-> >
-> > [PATCH 4/4] mm/mempolicy: package-aware weighted interleave
-> >   Prefer the current package for weighted interleave node selection,
-> >   behind an opt-in package_mode sysfs toggle that is off by default.
-> >
-> > Rakie Kim (4):
-> >   mm/numa: introduce nearest_nodes_nodemask()
-> >   mm/memory-tiers: introduce package-aware topology management for NUMA
-> >     nodes
-> >   mm/memory-tiers: register CXL nodes to memory packages via initiator
-> >   mm/mempolicy: enhance weighted interleave with package-aware locality
-> >
-> >  .../ABI/testing/sysfs-devices-system-package  |   35 +
-> >  ...fs-kernel-mm-mempolicy-weighted-interleave |   17 +
-> >  drivers/cxl/core/region.c                     |   54 +
-> >  drivers/cxl/cxl.h                             |    1 +
-> >  drivers/dax/kmem.c                            |    3 +
-> >  include/linux/memory-tiers.h                  |  113 ++
-> >  include/linux/numa.h                          |   11 +
-> >  mm/memory-tiers.c                             | 1009 +++++++++++++++++
-> >  mm/mempolicy.c                                |  200 +++-
-> >  9 files changed, 1439 insertions(+), 4 deletions(-)
-> >  create mode 100644 Documentation/ABI/testing/sysfs-devices-system-package
-> >
-> >
-> > base-commit: 8cd9520d35a6c38db6567e97dd93b1f11f185dc6
-> > --
-> > 2.25.1
-> >
->
-> --
-> Cheers, Lorenzo
-
-Thank you again for the excellent advice. What you pointed out matters
-for how a patch is delivered, so I will keep it in mind for the next
-version and the ones after it.
-
-Thanks again for your time and review.
-
-Rakie Kim
 
