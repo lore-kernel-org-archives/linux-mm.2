@@ -4,208 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA548C5CFDB
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 23:33:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2A26C5CFDB
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 23:34:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 462AC6B017F; Wed, 12 Aug 2026 19:33:44 -0400 (EDT)
+	id 723D56B0183; Wed, 12 Aug 2026 19:34:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 414D66B0182; Wed, 12 Aug 2026 19:33:44 -0400 (EDT)
+	id 6FB976B0184; Wed, 12 Aug 2026 19:34:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B50A6B0183; Wed, 12 Aug 2026 19:33:44 -0400 (EDT)
+	id 6150A6B0185; Wed, 12 Aug 2026 19:34:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E89716B017F
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 19:33:43 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C4EB7120352
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:33:41 +0000 (UTC)
-X-FDA: 85094221842.01.DE1BA37
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 62F4320006
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:33:37 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=bE2230Q1;
-	spf=pass (imf13.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 191C86B0183
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 19:34:13 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id ECC521A04D9
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:34:10 +0000 (UTC)
+X-FDA: 85094223060.27.7E11B3A
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 164A280002
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:34:08 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iyFopiBB;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf02.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786577618;
+	s=arc-20220608; t=1786577649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cYrQ70s3vdPGxS2vI91aZhIP0XvaSZRVjOk/qu1vI5k=;
-	b=3nfqfKUETbor8pUEqXABMy5QO2sbEg/wxqDtGktyo+bNLZUGnu6SrmeNTZ531sGHq9Ga+L
-	9fuvF3kIwFfhx6yGWFHM6/QoKwiK2+Cvd6qw866usVIa3/09D/WVegdHmo07HPkQjbpcHD
-	Zz+vwQ2rowZfAHYfQoiZGh74Rv3nft0=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1786577618;
-	b=MOWC+PR4sxOtte7a073G/3eb4jyJYKxLLbTo7xqirhyH2fqmlexG9XW+st6GZgeDOBoMdO
-	WECC0Paf9NPgV5Hg9A1kJO29v/vuV9F4rxrXVXZJ8QrU+qOTBEevWkLjfCbEQ+fniV79He
-	c7pIC7KfPPzFCeO/J73kruvYuwn5XC0=
+	bh=thS6W+fao1nFVWmRcc04F9UA6vYDU4/A39G2jwslH5c=;
+	b=jkV7xayXQU5gc32txDaovsSzzsJGJSjsC6QQ/ROLFm0uJFGZcI1wx+Ff19OQeZOBzshsqK
+	CiINRi1ycbasqRd6xaZ/q2Wq8cw78VBHkElgiKqKls25fUNhy7hj4bBFkf9lOE7157wkqP
+	i8J9nWPC4LwGz9SbQceNp2F+ssgGRWE=
 ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=bE2230Q1;
-	spf=pass (imf13.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786577617; x=1818113617;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=xGn0BlALxifTIiMRRO49J8CzA+QxR9A2088o/RqJlfk=;
-  b=bE2230Q1r0VtA4zmrPf+ak4z6iH3TMMLGwMa/fDx/ydbTnOtn54SgyLS
-   SKfXz9aRQ4NAURpuuy0fFl4lMZvP+fVRNpp5bk23QS7wsdY7DeEr3x9P2
-   +6BLoLFCR2sXHhJqRmKR4QJUst4ULIRSSJz0kUlrY7z/9GKogO39TXAZb
-   yIcnQ6kDLaabqMMSLLj1tZGCknZJssUPsq3cndpJ9IJEji8EGCra2B8An
-   YorUgGoyvbMkY1x/vw/LEo/GuBJ0YioqSf2qdyijEcip0bkwZ1Y4UcEUF
-   YM+lzeONcyatI2psmhxpiLAEjMFx4VrlRDGtfHQLqYDsCudCB6d0MLVDm
-   w==;
-X-CSE-ConnectionGUID: jxQkULkFQlak0Dgz8rDxfA==
-X-CSE-MsgGUID: thJzqjf5TueKhRwO3FuvnQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="87026577"
-X-IronPort-AV: E=Sophos;i="6.25,220,1779174000"; 
-   d="scan'208";a="87026577"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 16:33:35 -0700
-X-CSE-ConnectionGUID: y/nwQdxfTbi47aI5N9oukw==
-X-CSE-MsgGUID: VQ9+tAxsTp6E6Pp8hUmE2w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,220,1779174000"; 
-   d="scan'208";a="268956318"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 16:33:35 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 12 Aug 2026 16:33:34 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Wed, 12 Aug 2026 16:33:34 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.16) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 12 Aug 2026 16:33:33 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=j1r13i2hHcRdL0EHtoD2tbh+lFw3Tb8H4iYWXiV323MCuryAf72AOZEGU2Cpl+24vSHGgqhRtUsbzH09gRWxR0jdJMU0c3e1Cwl6fVQjLA17nvVW75+WJfmxQjztJgvAD8Y3nAjVX8MO0LjhPW/NSLThWfSS+ZypvOGhdrsXD2NK0IQkMt6ZcM6H7RyA7B3g3K6iAYLhaj4YV50w62+6fJTr68+59s+XfhsUz7z4PwGVjKN26kG8lvV+gxFwWMh6rDFn9VRW8dx5IOQQaquwYACKicOCstEAp5L0c4wGi75VHFoMF2BGgFqEE0TmSHis/Jlm8RCsCMKH9r0zRDkKtg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=axf4jE2KIk6fTsMZSlaS3wrrsuiDw3+FEHvqzX6xtxs=;
- b=Fywv6wVbffJRXDSblawTNahMSRf0rv5diDlPKIeb1JKnEtFANGn4AAlgYAlLtdbcOK+gAtztzxxnmgyAmjHO2Y4N61vqVDRMia8BAjRI//dQmv7JTeSxE3WoU/G6DrvRfFB2Ej/2/1ZIeNe7975xc5eGb4I+JmiSb4YTVWFQCSZSoLUXrod/5A520PFgBQ2EgEibYXhigaV1wRDunYbJ8JkjewgCvPYfZtb5l9OxkUXU3/pns6yruqcKpQnVXBlgeuot6IrSHAnNRQ88FLvjrAKm9F8t//ihPjRRdvTYSCXOV8fbwpRfFtsWjS6iHQ8CtW1ym42lvD2hIo9yJP+oIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by SA0PR11MB4654.namprd11.prod.outlook.com (2603:10b6:806:98::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.13; Wed, 12 Aug
- 2026 23:33:28 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c%4]) with mapi id 15.21.0315.011; Wed, 12 Aug 2026
- 23:33:28 +0000
-Date: Wed, 12 Aug 2026 16:33:24 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>
-CC: <intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, Andrew Morton
-	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, "Lorenzo
- Stoakes" <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
-	<baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, "Dev
- Jain" <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
-	<lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Joshua Hahn
-	<joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
-	<byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Alistair Popple
-	<apopple@nvidia.com>, Balbir Singh <balbirs@nvidia.com>, Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>, Thomas Hellstrm
-	<thomas.hellstrom@linux.intel.com>, Francois Dugast
-	<francois.dugast@intel.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v3 3/6] mm/migrate_device: Fix THP splitting of a CPU
- faulted device private folio
-Message-ID: <an0CxFPPnvPWljyp@gsse-cloud1.jf.intel.com>
-References: <20260805231041.3791771-1-matthew.brost@intel.com>
- <20260805231041.3791771-4-matthew.brost@intel.com>
- <87ik5in224.fsf@DESKTOP-5N7EMDA>
- <anopzF3Hk/RRh8kC@gsse-cloud1.jf.intel.com>
- <87cxvnn41l.fsf@DESKTOP-5N7EMDA>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87cxvnn41l.fsf@DESKTOP-5N7EMDA>
-X-ClientProxiedBy: BY3PR03CA0019.namprd03.prod.outlook.com
- (2603:10b6:a03:39a::24) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iyFopiBB;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf02.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786577649;
+	b=h27sqZ5EB+dwaR5h+fyoCC267ff0cUDEDSh76Zu4EaYszDhEYxLMJxh45SjNNNrMHJ9IpR
+	IUT3cqwVYt12VCStQkjpmmZrMVObuaXhmuoPRWnveQhpG/ghDZwPhe0OXFBP2m1GiGFb8n
+	3j6NEqJwrHdWX7YqViQP0GP2JXoubwY=
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-51c10ed63c0so48151cf.1
+        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 16:34:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786577648; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XZKOLdON5EwdzE7iT0LQQv5oZtI22ggbZhp52KpreMTr9ea67XhZyDiFiJboL2dKgi
+         M2cf75BdSJNAUTMz3Ymp+NfWnbGHSa0bdF/pQU8cqgXmMiWkDuQhTYzf3pBuWU6FSYxE
+         jcvXg4EDH1gR/LfwJ4T2aiQFd3bFIvi3v1QJI4I9rpjjaH2CZNE0iZ4yAQw9a8E0Y5iU
+         XeUiMXprwfzdAOazVPzgdNvwPqWWn0sHZcR2o6R51XQ4ZGdj8zuX37+3IIKUnVj6gZvq
+         aAeUv7H/ccFlcg5fYjcvm9/eB5iHTUcII17/1wFmDAQZD8n6pCgIkdmKI49bzdJdXm2w
+         /zyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=thS6W+fao1nFVWmRcc04F9UA6vYDU4/A39G2jwslH5c=;
+        fh=+5Ty1yjXw0mr8DA4Zjji3Mx6ndeEbpvjiNdRF/fGIhU=;
+        b=jp6eI4eUlMKzRP4Jwwy76rzG7qlJ6JxQ2uBe1A3ISIogd3ODH89IAGNlfPJW1gPRc6
+         LfVY61pCs7zNPf3Uu2VaKggKtUSI3NMAx1Ys7rrMt15bs6FCQiIt+9zPER5L8yhe3eNn
+         ZC0ofis6Pc3t9O58CZ8k88hNJmQbEDEjsX3ViMuEcAyNdcEURjV2E1bWDhRuqrOq1JBD
+         chwmLsocWinYNteP1ek7PUWnfUxIH6EExmgY2Ti9fMUJ8RfUVra2X+psvcBB58YTi08E
+         uuc2AZrKzIHMnnZaMgwpoqtl1bXJG0basJYuZB56aT7yWmoOA2XopJD1RzBrP49gEscd
+         tsEQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786577648; x=1787182448; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=thS6W+fao1nFVWmRcc04F9UA6vYDU4/A39G2jwslH5c=;
+        b=iyFopiBBTQtmoGKnCVFD3TyBiimBdgGEZMtf69gdbpTiLfFmbM6HDYFP5CvHgAUjbF
+         EQl+hv5vuLOxIN/Ys91YbMNx/ldJ4OKnsImJXRue0j9J2LOBUWNEQ9SrQ/48pEQAmABK
+         lxhuZvqhqcpaFhX4HZQKu8KnNQUDwWsK6LsKOaucb1KSEws1BduA1eLHPRkpCMA+2MLS
+         72/XQoRMraZFkMI6r4uCWmoCUc3ba0F3GRJjaCDBDGruweaD1S6K7EiwTBK9P0C8gCnc
+         Xgi9emX/7yebS9vm6oPQeSOS232JHYbb8jkzBM+N+/D+8GfAy+zhdUG4hOhZKtww9Q0Q
+         arEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786577648; x=1787182448;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=thS6W+fao1nFVWmRcc04F9UA6vYDU4/A39G2jwslH5c=;
+        b=fe9KVsKQPW7YesfCZ1frEow4qqx8dzDQsPed331q4sx/TYn/mvNdnSw1vDHPpmnFBw
+         tPDXysshzpX5vOQFXIjpIA0s+1jxtvT0OyaP0Kj+VBj/IhkMWJz7WNEY6twa3LKAMpgk
+         IkaV1stZNKbJ14m9SCo0JIQjQwRUgjuPPrNAyfCtBVI0SQoFlHcO4jKcCBjXkwOm8L0o
+         mZq4GC4k0J+336MbLGqUZV13esW/bPgjKutnno6fmdFG91ixkCv84BZ30UHVjAsHwP/3
+         jztFghpHM0YF2WkaNMliUv/FzpfTjHaKClnqFwmzW/5W24Ur+ooTKXQ9Ib78SbWfwSH5
+         b/Vg==
+X-Forwarded-Encrypted: i=1; AHgh+RrmdHrT9LZXJE8DSaSpKf90i0pEDapjhUOl4zIZ1lCldj4XjOwdjRdyg9WPEgEEEarvIBmvRKlaYg==@kvack.org
+X-Gm-Message-State: AOJu0YwXPs8Y6PlU9zGO74zW2BLgXw2tEhTXMcpadSdjENlWhKJFpiou
+	sgqEwA71FNEhohJIimLxR15ut+79UziayS4Dd/iryI6JL642s18h/9LBSg849sHfy4NyUXWlAE8
+	DGoldA+weMX/pBOUW5e7Yv4cIyXo2p5aUgNXrPPHG
+X-Gm-Gg: AR+sD1351tU92K50fJ2M1A0lrEhh+N2BBnNY9qfdPo6+XRzrVUcdugfb+b0af94tWYL
+	ncR8PE90qwVD6B7DpTnx+6Dp+4GIEtUMUFu6QSe/2FkBXCHjgirbDil5mVRaVfrbX8TnlsHUnxx
+	ZzO7FyzobSFeaq11aKao2vFlGDW8PcRdO1OSz828zt8AkOu5GU5Dxcpv2QbAfbCEW+Q3d010nCu
+	I701q8NUQDqVPpWA6dJMtTkA8OSa1bLJfYtH+MuSyvWqRRSjM4+dGoKkMY8+7nTyru1TNy0EDL2
+	46ms/MY5l/FT+fl2g8qzhGZ20VcasfvUWd99ucyWHfI=
+X-Received: by 2002:a05:622a:1818:b0:517:5e32:2d14 with SMTP id
+ d75a77b69052e-52d76908a9dmr2273101cf.10.1786577647658; Wed, 12 Aug 2026
+ 16:34:07 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|SA0PR11MB4654:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8f1a750c-6a1d-4f13-d493-08def8ca1c7e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|1800799024|366016|7416014|376014|18002099003|56012099006|10067099003|11063799006|4143699003|6133799003|22082099003;
-X-Microsoft-Antispam-Message-Info: Ts643CH8rZ8zQsRQozl2IX3ztY0dafOH0/dInI/yzS8h1RF6LS9+ZuEGlU/Pfr0XpVaGsYV4b5I54XQi28L4JuzHl2e47v8wgfSrNNuxHcgDXGPwKGdg2NrpL9mtE5wdQZepIwVrGA/bwhau8u/rJcnvyuiwUEa7t5H42h8CtL4ZZN/340+FGKGIMdl04r4Fupro9vN2q7T/P8yR3FVmKtocsbZY4NIIbtAgK9wovC5O3wcpCSIrGKmpxHXCkXutpb4+pIp6SjaQ2zvF/DJfLEezNNqtjXhjvRJPb0E0L8wpmmlkWsd9XdR2dLsNPP8LaC1ooyaDLKqmn9+jbQIzS+4nb9Eit5v+BCuH0w85OiDepiuW3CFMu9vTWX9oZsmYnwKG4iu8y5dzs0owmz6sMFcjw8QwgCR8lfOxtx4zTcT2BR7odI6UA55jmxElQDbV/G3c2CzVO8ZcIHjnfF8ZZagzrmCU+WFvwYyUwM3kWfemfPtL/XybuzJp9aP5RNzh3TBP859grZR3YdbDfhyg+Rx1AqSJV4Dr/YLjMEfx8Kvm7pCgdH5pmZR+cnNPa+kR40fdWOok18VXuFlQ60A3DfuoWzFlYlQo1jjDs9/BIJ0=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(7416014)(376014)(18002099003)(56012099006)(10067099003)(11063799006)(4143699003)(6133799003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?HBbLeSEUQBKT/E07dwQieTm+8CGxvGjhXzkuFcC7h3dISYYxPoqy6f3W+6?=
- =?iso-8859-1?Q?hrFUFJsU/e9Y956eP3Xgok0oHdV5P5hRVz6Eqw2hTI3AyeL0/rsmEyVVQ8?=
- =?iso-8859-1?Q?KXiQs/lb1f3b/EdnzFp6qs3TpgpY4NIHpOQUN00wgOkCluVshNEyQWgFgX?=
- =?iso-8859-1?Q?cx60QySvv8C0YBvfgSZZmpf94QuavF6w/mChVIuYL2QTXPRUywl7UWdmyM?=
- =?iso-8859-1?Q?+iNmzQtwLIpAgGqk4MtJJsFR6e/Ay4tz8BP1NjhbajBGRaswOuZmq1YzQG?=
- =?iso-8859-1?Q?2lPDlboAnsCD7jsXgp2ncDsrPIoIQLgSBe4V2UhIVWN+9evm7a45tQalRN?=
- =?iso-8859-1?Q?eiSt9u7v7snOQwKSSGgAGsIWp5KSQDT2yhe8rf9n/49Y364ijie4WMjZpu?=
- =?iso-8859-1?Q?sjjQi9JB5FdUaOvssMloh5l+CMvSeZiB1xzks7JJy+g3cPLD/+muehIRxR?=
- =?iso-8859-1?Q?acUF0fudNdie3Vxjn3PTjzU/DQ0RIcMPx1HkS1e9KXuvOSB6zi03Gelkbx?=
- =?iso-8859-1?Q?OeY/zmgaP9U+VTkIQihXSV2HgXXVNGsbuLc8tmfi6dGR4COahqTzNiBbe6?=
- =?iso-8859-1?Q?3uX4fbn4IvbFa20SwzPzafTb30TupLKjiJSC7gbkkCo2EuymP5podeJNul?=
- =?iso-8859-1?Q?2P/S7n82TqRIM+zdof1WQfQpTiOqusCHkvNwY+QhZ7An8hfqxKEgPAk9BV?=
- =?iso-8859-1?Q?LSdHnSp5cWuYDxOBpwRTlnrlcoSXniyRIpMvAwA04FRwawd3/ZIpE++Cju?=
- =?iso-8859-1?Q?zCN3K2CJg0kfVC2cW91JAqQmicK5o/HIYDkHbKaQh51nBPovbyI5F5xPqT?=
- =?iso-8859-1?Q?FA+zbEdkZdAw6pNNjJCJ9ENBxSbYgqdO+EtFkU8Q4JNnEkZq12v/ASI0nd?=
- =?iso-8859-1?Q?15uqqGfOn38pbfex3UVE5woA1RqAOI3OXlxrPEwnpuGgtZ5b3fFk3M6/qK?=
- =?iso-8859-1?Q?Ye74rwyAQVbrIYM25mxorllWwRhykbHyQhhF5GdzipEdhpLd/U8Zqtt0iK?=
- =?iso-8859-1?Q?HuWVLIsRsAUejxluk9p1SxdjdHvV0S7YCJfU4duNadqwgT866DSr35pcwt?=
- =?iso-8859-1?Q?nPZ39IBD9U3zBsj1QXPgTQ6DXS576KkyH/tjkZVxEauc9VVb56SNJfMJkX?=
- =?iso-8859-1?Q?v9+3VHvD5TelWIIShBvE86kd7m3FYeFUlGA046IbBSobJUD8ESJ1gONjyZ?=
- =?iso-8859-1?Q?6UtmCw9TrZSQ8LnyEmUSyQExqzb9rLVrO80nA2u0x8jnSrBvhWpCSzwtfH?=
- =?iso-8859-1?Q?tAmDqngL3qv0//Wd1NXXyqFEK16yG9I0wBJ/Il2+x5VWJ2eI3Dkn71CoMz?=
- =?iso-8859-1?Q?sBxIA2RNwI9qdbKWW8nDFl5T83Nloy4uJIHhAsA2MdzT0Qpcd1eoCkxKFa?=
- =?iso-8859-1?Q?+tthofRfr0iTM5YreF24NIKZIAaOylfqhwG+jLucs1+LZBf9DYBmrO1NIB?=
- =?iso-8859-1?Q?ThWknZ2MjVl3BbnSDFeSNMQaRSsf3X8TOR10T4ZEY362NhZa6zhsjnfLnn?=
- =?iso-8859-1?Q?JXcjMRVZG3/Pu7bthxmh/1yl475s940tGKv87wQkvr5++Pa7OGCp1ZiLQO?=
- =?iso-8859-1?Q?NnLCOzzMk1ZUXZBErfwuOj0I8J4c8Fn9cO7/okx4BK/YL0iAfp64vQPa3T?=
- =?iso-8859-1?Q?qkOCwDlZ0mq4Kz2oG+gjiw8FP4WbiBvHCMRXsjg8agVB9npnO/AafM0T6y?=
- =?iso-8859-1?Q?Anv6Cclvn6tCDpvrUlotsKUDNVCtcKM6t8Ug6D/bt7kaq5OfZQPcc1ttIc?=
- =?iso-8859-1?Q?+L6JMvYUaZ8nysIwhsDTmOXBe0TVIRiZ3YWdq64vnxQBZTaXPZSFprhPp3?=
- =?iso-8859-1?Q?vzJhY/SDg08nYmDTWVgRbb5ZreWw86E=3D?=
-X-Exchange-RoutingPolicyChecked: ZTBHpzFc75+WNc7T0ZddPpuX5R2sgipZtno8Mvya0onbXM0LirxONsl6rrKDDgV1jVffDeVy1V+Kp2erX/ZFy+U7NJShKS0mudT9aN+V7iwQ4kv7cWVFjhv5OsBcj3keBqJYoVkCN29Smui8xn1PCHd0Ng2nVd9AVYZM1gQk4Q559th8IkNPYv31xvJ1OEtjOumss2kv7ZdGKcCIdeaVQn5UcuEBSQVl8piVRSg6HrGiR0cIC9EMSwN9F8+A+tlyMOCI0SrTxbpZpdHv2hpwmsKrxdJAK4ZvQhWnBW1FcPjfga49rq+4wsPoEaw9ORnRMnA/9c7HH5WlZ63hQxdZdQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8f1a750c-6a1d-4f13-d493-08def8ca1c7e
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2026 23:33:28.1251
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lzcnvj7uqbAEaxX97kW5aOpx7HFXajv9sHYRKZrlGl23MkHlCgd8+SuMoz4mUVr6x7tJyatMXg+YbPb7uYABBw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4654
-X-OriginatorOrg: intel.com
+References: <178656406317.2437052.7257990869957704195@slm.duckdns.org>
+In-Reply-To: <178656406317.2437052.7257990869957704195@slm.duckdns.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 12 Aug 2026 16:33:55 -0700
+X-Gm-Features: AUfX_mxczg7oTc2X7HTyQR0Stgtoe03j6Jl-M6qjMNje4w6VW78_BUeDVB4GCoo
+Message-ID: <CAJuCfpGidP8p16aacUDpox4UiROdQDrwMTEXmZmb+hXWNhi+zg@mail.gmail.com>
+Subject: Re: [PATCH] percpu: Drop CONFIG_DEBUG_FORCE_WEAK_PER_CPU
+To: Tejun Heo <tj@kernel.org>
+Cc: Dennis Zhou <dennis@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	Steven Rostedt <rostedt@goodmis.org>, Gabriele Monaco <gmonaco@redhat.com>, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: ysimay9d4tnydewsjyfrhd8otx37qm8x
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 62F4320006
-X-HE-Tag: 1786577617-693275
-X-HE-Meta: U2FsdGVkX19hVrqcChG3xtyUFv5BHDnIIoX52u13d/Gl10GtWrqms12ISQWYTn1kNy9le4xmqn7o4WFuFQWKFLQxT5QoLav0PFbE2bdfSSvKI0uraJPRjRYVTfKIE0Juso+mWJt+iY4hUXQfhEIsv6eoaRO0cFjyobbQdv2egDAEjAKpeqClUgiITt55DR36IVPzZfZXE8OA1TQQ1nlbr+pAPCYx9x9FgvBeOEt6xviK/xvyNgGpXuKKJkPnX3yA98qDwxDS/HCWEyREm5U/VDsx06XullP1sfbQvrQNoMJdtMPw9ryd0q033JwFxM3oRZaTG42Pwt3UMblphy31eYWiXlXKNWxVjFXIumlzNyNBkXJNzizH17AF8bzRu9jBKtksiUuhI2r07eIgLPKtagpd1huoBjN/fg04DIVDnwCCnG+44Z19+svXuwVupBUoPDr8oGhP1yZLzHHnQOPC2uMEztzn1kfwdtQIEdniEF8IMUmZU8R0g3L9cGzls6iiexDLLOgoK4pmwaxgs6MoaEp8LzD0uzVJTNHXAEsd4laCRXQ4RioalOG5ZX5157rxsImJcfWM/VTRTKb5hiZ1soJ4XBhSqtNVcnaaCYwwA6QStAd2fUwiU+GFxx8fN9mV5tJdWC+/I1qkRqYP9daXhrgl1qmbm4+XlXnO9MBD4H8LFrcTvBmKozOrGfI8i6fvDWWu3TmMeV/ceZdWXQyXaAtTqU94xUJws1hskjk20AZvLyVohjH9m7dsN8hasrrMpNJnIsOqItepHVI1byPVpuFCe6G7VuCYECxesTcL3EoCP52v3qAT3KgbMxf+3Ey0yHVGWjMYyayiKFm7V5bYx9LCbfZ5QibQ1L05VQKwkZlVwslqNtcJD5BT8ZucdGzwtXsobAKYGqfSr4XmXEK+xFL3Qot64pptgBfm8V4gOxsD6gB5J5wKCkPDjMywiNpwoZbIy425SOR3NyzOBJU
- e+QFTlbJ
- UFnquAsADr/ZL4UtRScv1puHytSgQrYlJ/h4Qy8P7HD4WUVL52c8/0KjMX7gr7bt3NZEaCF+4iU2di9zMs5wtypZrAiaCvQyIm6v1bUQ4eQUDdbOSOxHFVqF8gnBnZzi8mr4hOY0U1PEqrf09oipyo77H6hn7MC0iFSlDVnzgeby1OcPqNyGsAlYCbhk/c2GbQeCyDZaA0RYPXOrD/GecGciFON+WBgoGd5MyfHxAwapKnKeaTsFNHA8eXX01m7jbWlCW8rzdRGUbYBCmFifiG5mgBjxbqmMVFSLeFwqv2ycXP82raf4gPCFQGs2xLGEsSRwoAV+DU1AK2W/CzfxY/0t31oTF3tmM/b0dIE9FX0Z4np3IzzszD8DGIsFXwHozP5Zkny2CrChTuErQxWtLKfRF1qWIT3fIi5SCKuxiLkI5a8nuKtG5Ev5PvibiatSmeTVssiFJwo3scxl1m6gCKiZQd5dV4OKJ4gTa4MlxnltJYn+/pIe4p6JY10MWCE2h7UxRT4YuGXnu6HerMVL/KSXBoFKMlI+kXYt2RheEVcma49TGN85LZDCnIGawWMbdPYqb0jdYCz50jFSIupYCTtIri/RWezj6pHE1D/RugplkkhbhpPCi/mcWe6BsPMIDlxnz5qy87DnIuNfWG/sHJu1kYoCclGUitQmI/ZC8Ly9CtW7AtzRhI5eUZWQr/r9jc3seEoqgZT+CrtVDYxBXMM9BglXE4F3fOaqbb6UL1dkPRK7JIjWzcybKfCZLlsCGnvXZlmA0L3byBUORF880msroflGogBLd6xfPrvw4piXYhkXwefKVznuSuc6Xo51Ggq29POG9mKfPQeRyEBxeT+wZ8K+8rmj6YWP1AaUOVCxvz9ZGmzpDS8s7t+1vmyeg6LYKgfsUgXba5A23CtvaGPAo9mr8+Xqtft0jzyPTMxpZrMn6EVMFrDP5EDg2tabd+9PpCqfvOJ+oYtc7X6Nk7e0/0lNJ
- CohEJNvK
- UbBbJyL9CzLB5kYy/RVsXjfJH3sERlLipxXYMJ/MwF8Fc39nny60hftNMYo7tfrdow3SN/nvQ8PzWx8XxfrJVuZo8j6h8znccNtITtuCBYPDxG87+OaocJIXQxF7EzZxgenk/IdMYAtn7Zl4auwVcReZTtXWolVUVZUbdYxos6z5f5a6pBKJ8w==
+X-Stat-Signature: aco59r7bs1hkmwukspndds6fqq1h981b
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 164A280002
+X-HE-Tag: 1786577648-81228
+X-HE-Meta: U2FsdGVkX18s8epBF/FE74CaI1PY5sXAP8D3c8cpLv57s3RMde+m7GajbM1AH1vigKCckBVNd8DCFFygXtaLn/RMRMOKVRjSP1YCd30WYM+nt0r4rIeXkDCgRJ5ej+xD11fuFuIHHW1dzJIqNFmOnOw0Qqm0X6aV1hY+8l+o0PG86cB3DUm+/I4N9mVubLqF9/aeESpa1yGC/BoewE8irrt5Mlx1Ky6ku/CamIZa3jdeeScR5p7CuFxpnOfSZyeuC9liUK7pPv0D0x6IdXfBP2kljRsGt9S4jleZPA9+TaBvKKtUerPc0UBMMLFNzUAJo+A+g2h0zCe67Ueany4Kpj9qd9N0bqz6LJ/y2tA7kbTNUdXMpOGWtSF4pX0wsQLN0VacItTswuzZO09zYzm6lXm8mPHiI6ISweqUGktdrllAq8zK4HzpJ5mLExf247O7uki5YVaMOqpd4SUocHh4VzpZUfKYfFXxIx5JFrS5gfjZx3zCf/bupXmHLyobEKwGvllS6MyPbvlJXEr8itlMT6OUULjLD8EyeK70Hx/NiAJldn01SDBIeD9wGbntJcpicNQQ1eQzPgpINohf+/sOhLUdqN8Bh4Nw0lmAGR1JIbZiRHX6oh2pH+2EcUjAsVHV4vTeKX99TG4uv+v/VOocbZJBLm0umO0OgRxBVGSrWyFxN+1/0SAHINbuQgtss0lnVnA+PCoY++Hl0cLapae9u/8m0PVb7diHG/60FLpo5OtIXAM+7skU19h3PamuP10Wxs9X06+dC1e2J/MuesIf9XwP5GpoFCVLgNtAzrli291mkyl/OYZKPuQQryGBMLyNtSEsu8GBwMP0P0Yu+00qlrmgQTqljofUH21ROnX0k3M45IeWWQkOBFeAp0FNXles1X22OdkBzvLLXGcZRJ+PzZdEcfYYB7DC/FISnVIROeoSVBsCdIeHicUXo+FTfVLAMs3i5J7RiRnktFH2Wdi
+ xwTP6E88
+ ylCa6nRdoV4CERfmnh7pWHB9AE7h44nYLPXpEtjFl0vTUZkx5OtExKNMhmNEBwE1LJb8UjteDmfr5Y8GUhqpMYJ9xUNXlQmUi9na1F91gp/J0b+TQb77sGWNBGPvbvxMkJdDdTY3knCJbDTxFz4YZmKyLcZ7lFgQsxOPBn2ZuNL7FrGWdgWgmI436z1NrSZpgiKFmuzMasf5rIA6fnWw1sOG/Vv2TQwjyqeZfGGtJtuS/E2ASKmcFMm4011ZmLQJ8ZZ1T+ob29P8bBtubFTj6cJ0D1Jz6Pc37prm0RnoudoFlHhufHiivKsGPasFewaqOPoCtbU0j9dyK9ePrrxLhdliFNaB/bvGFROKZTa28G1m0Agb3pX4wJ1kOuDTZes6bDVXZVYyDwhgVxkc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -213,356 +141,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 12, 2026 at 04:20:22PM +0800, Huang, Ying wrote:
-> Matthew Brost <matthew.brost@intel.com> writes:
-> 
-> > On Mon, Aug 10, 2026 at 10:26:27AM +0800, Huang, Ying wrote:
-> >> Hi, Matthew,
-> >> 
-> >> Matthew Brost <matthew.brost@intel.com> writes:
-> >> 
-> >> > When a CPU faults on a device private PMD and the device driver can only
-> >> > allocate order-0 destination folios, __migrate_device_pages() has to
-> >> > split the source THP via migrate_vma_split_unmapped_folio(). That path
-> >> > is broken in two independent ways when the fault is what triggered the
-> >> > migration.
-> >> >
-> >> > First, the split never succeeds. At the point folio_split_unmapped() is
-> >> > called the folio carries two references beyond the ones it is
-> >> > entitled to:
-> >> >
-> >> >   1 - taken by do_huge_pmd_device_private() for the duration of the
-> >> >       ->migrate_to_ram() callback
-> >> >   2 - taken by migrate_vma_collect_huge_pmd() when the folio was
-> >> >       collected
-> >> >
-> >> > (the mapping reference having been dropped by set_pmd_migration_entry()).
-> >> >
-> >> > folio_split_unmapped() requires folio_expected_ref_count(folio) ==
-> >> > folio_ref_count(folio) - 1, i.e. it tolerates exactly one caller
-> >> > reference. With both of the above held the check sees 2 against an
-> >> > expected 0 and returns -EAGAIN, so the migration is abandoned and the
-> >> > CPU fault makes no progress.
-> >> >
-> >> > The PTE-based split path does not have this problem:
-> >> > migrate_vma_split_folio() is called before any collect reference is
-> >> > taken and explicitly skips folio_get() for the fault folio, so the fault
-> >> > reference is the single caller reference the split expects.
-> >> >
-> >> > Fix it by dropping the fault reference across the split and re-taking it
-> >> > afterwards. do_huge_pmd_device_private() derives the fault page from the
-> >> > PMD entry, so it is always the head page of the folio and always ends up
-> >> > in the head folio of an uniform split to order 0; re-taking the
-> >> > reference on the folio therefore puts it back exactly where
-> >> > do_huge_pmd_device_private() will release it. The folio cannot be freed
-> >> > while the reference is dropped because the collect reference is still
-> >> > held.
-> >> >
-> >> > Second, the folio is split globally but the page tables were demoted
-> >> > only locally:
-> >> >
-> >> > 	split_huge_pmd_address(migrate->vma, addr, true);
-> >> > 	ret = folio_split_unmapped(folio, 0);
-> >> >
-> >> > migrate_device_unmap() unmaps via try_to_migrate(folio, 0), deliberately
-> >> > without TTU_SPLIT_HUGE_PMD, so every VMA that PMD maps the folio is left
-> >> > holding a PMD sized migration entry. A folio that was PMD mapped in more
-> >> > than one VMA -- after fork(), for example -- therefore keeps huge
-> >> > migration entries in all the other VMAs while only migrate->vma is
-> >> > demoted.
-> >> >
-> >> > folio_split_unmapped() does not notice: the folio is fully unmapped, so
-> >> > it only looks at the refcount and happily splits to order 0. The other
-> >> > VMAs are then left pointing a huge PMD at an order-0 folio, and
-> >> > migrate_vma_finalize() -> remove_migration_ptes() walks into it:
-> >> >
-> >> >   page dumped because: VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
-> >> >                                        !folio_test_pmd_mappable(folio))
-> >> >   kernel BUG at mm/migrate.c:368!
-> >> >   RIP: 0010:remove_migration_pte+0x56a/0x9b0
-> >> >   Call Trace:
-> >> >    rmap_walk_anon+0xfc/0x260
-> >> >    remove_migration_ptes+0x79/0xb0
-> >> >    __migrate_device_finalize+0x113/0x290
-> >> >    __drm_pagemap_migrate_to_ram+0x278/0x360 [drm_gpusvm_helper]
-> >> >    drm_pagemap_migrate_to_ram+0x5c/0x80 [drm_gpusvm_helper]
-> >> >    do_huge_pmd_device_private+0x160/0x280
-> >> 
-> >> Which is the branch your patchset based on?  I found that
-> >> drm_pagemap_migrate_populate_ram_pfn() in mm-everything-2026-08-08-07-08
-> >> still don't support fallback to single pages if THP allocation fails as
-> >> in the following comments,
-> >> 
-> >
-> > This entire series, on drm-tip (i.e., the 6 patches posted here [1]).
-> >
-> > [1] https://patchwork.freedesktop.org/series/171651/
-> 
-> Thanks!
-> 
-> >> 	/* TODO: Support fallback to single pages if THP allocation fails */
-> >> 
-> >> 
-> >> > Without CONFIG_DEBUG_VM the VM_BUG_ON_FOLIO() is compiled out and
-> >> > remove_migration_pmd() installs a huge PMD pointing at an order-0 page
-> >> > instead, along with add_mm_counter(mm, MM_ANONPAGES, HPAGE_PMD_NR). The
-> >> > victim mm then maps 2MB of address space onto a single 4K page, which
-> >> > shows up later as bad rss-counter state, leaked page tables and page
-> >> > allocator freelist corruption in unrelated processes.
-> >> >
-> >> > Note this second problem was latent before the refcount fix above: the
-> >> > split always failed, and the failed attempt left migrate->vma demoted,
-> >> > so the retried fault took the PTE path, where __folio_split() unmaps
-> >> > with TTU_SPLIT_HUGE_PMD and demotes every VMA.
-> >> >
-> >> > Fix it by walking the rmap and demoting every PMD sized migration entry
-> >> > mapping the folio before splitting it. Demote with freeze = false: entry
-> >> > creation in __split_huge_pmd_locked() is dispatched on
-> >> > pmd_is_migration_entry(), not on freeze, so a migration PMD becomes PTE
-> >> > sized migration entries either way, and freeze only controls a trailing
-> >> > put_page(). With freeze = false there is no refcount change at all,
-> >> > which makes the demotion idempotent across N VMAs.
-> >> >
-> >> > rmap_walk_control.anon_lock is deliberately left unset:
-> >> > folio_lock_anon_vma_read() depends on folio_mapped(), and the folio is
-> >> > already fully unmapped here. This mirrors remove_migration_ptes().
-> >> >
-> >> > Finally, refuse the split for a folio that is not anonymous. The rmap
-> >> > walk would otherwise reach a file backed VMA, where
-> >> > split_huge_pmd_address() zaps the PMD instead of demoting it.
-> >> >
-> >> > Fixes: 4265d67e405a ("mm/migrate_device: add THP splitting during migration")
-> >> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> >> > Cc: David Hildenbrand <david@kernel.org>
-> >> > Cc: Lorenzo Stoakes <ljs@kernel.org>
-> >> > Cc: Zi Yan <ziy@nvidia.com>
-> >> > Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> >> > Cc: Liam R. Howlett <liam@infradead.org>
-> >> > Cc: Nico Pache <nico.pache@linux.dev>
-> >> > Cc: Ryan Roberts <ryan.roberts@arm.com>
-> >> > Cc: Dev Jain <dev.jain@arm.com>
-> >> > Cc: Barry Song <baohua@kernel.org>
-> >> > Cc: Lance Yang <lance.yang@linux.dev>
-> >> > Cc: Usama Arif <usama.arif@linux.dev>
-> >> > Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-> >> > Cc: Rakie Kim <rakie.kim@sk.com>
-> >> > Cc: Byungchul Park <byungchul@sk.com>
-> >> > Cc: Gregory Price <gourry@gourry.net>
-> >> > Cc: Ying Huang <ying.huang@linux.alibaba.com>
-> >> > Cc: Alistair Popple <apopple@nvidia.com>
-> >> > Cc: Balbir Singh <balbirs@nvidia.com>
-> >> > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> >> > Cc: Maxime Ripard <mripard@kernel.org>
-> >> > Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> >> > Cc: David Airlie <airlied@gmail.com>
-> >> > Cc: Simona Vetter <simona@ffwll.ch>
-> >> > Cc: Thomas Hellstrm <thomas.hellstrom@linux.intel.com>
-> >> > Cc: Francois Dugast <francois.dugast@intel.com>
-> >> > Cc: dri-devel@lists.freedesktop.org
-> >> > Cc: linux-mm@kvack.org
-> >> > Cc: linux-kernel@vger.kernel.org
-> >> > Cc: stable@vger.kernel.org
-> >> > Assisted-by: GitHub_Copilot:claude-opus-5
-> >> > Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> >> > ---
-> >> >  mm/migrate_device.c | 98 ++++++++++++++++++++++++++++++++++++++++-----
-> >> >  1 file changed, 89 insertions(+), 9 deletions(-)
-> >> >
-> >> > diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> >> > index ae9027421b80..ae17bd516d24 100644
-> >> > --- a/mm/migrate_device.c
-> >> > +++ b/mm/migrate_device.c
-> >> > @@ -899,22 +899,104 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
-> >> >  	return 0;
-> >> >  }
-> >> >  
-> >> > +static bool migrate_vma_split_pmd_one(struct folio *folio,
-> >> > +				      struct vm_area_struct *vma,
-> >> > +				      unsigned long addr, void *arg)
-> >> > +{
-> >> > +	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, addr, PVMW_SYNC | PVMW_MIGRATION);
-> >> > +
-> >> > +	while (page_vma_mapped_walk(&pvmw)) {
-> >> > +		if (pvmw.pte)
-> >> > +			continue;
-> >> > +
-> >> > +		addr = pvmw.address;
-> >> > +		page_vma_mapped_walk_done(&pvmw);
-> >> > +
-> >> > +		/*
-> >> > +		 * Demote with freeze = false: the PMD already holds a
-> >> > +		 * migration entry, so __split_huge_pmd_locked() creates PTE
-> >> > +		 * sized migration entries from it and leaves the refcount
-> >> > +		 * alone. There is at most one PMD mapping @folio per VMA, so
-> >> > +		 * stop the walk here.
-> >> > +		 */
-> >> > +		split_huge_pmd_address(vma, addr, false);
-> >> > +		break;
-> >> > +	}
-> >> > +
-> >> > +	return true;
-> >> > +}
-> >> > +
-> >> > +/*
-> >> > + * Demote every PMD sized migration entry that maps @folio to PTE sized ones.
-> >> > + *
-> >> > + * migrate_device_unmap() unmaps with try_to_migrate(folio, 0), i.e. without
-> >> > + * TTU_SPLIT_HUGE_PMD, so a folio that was PMD mapped in several VMAs -- after
-> >> > + * fork(), for instance -- ends up with a PMD sized migration entry in every one
-> >> > + * of them. folio_split_unmapped() below does not care, it only looks at the
-> >> > + * refcount, so splitting the folio without demoting all of those first would
-> >> > + * leave the other VMAs pointing a huge PMD at what is now an order-0 folio.
-> >> > + * remove_migration_ptes() trips over that in migrate_vma_finalize().
-> >> > + */
-> >> > +static void migrate_vma_split_pmd_mappings(struct folio *folio)
-> >> > +{
-> >> > +	struct rmap_walk_control rwc = {
-> >> > +		.rmap_one = migrate_vma_split_pmd_one,
-> >> > +	};
-> >> > +
-> >> > +	/*
-> >> > +	 * Do not pass .anon_lock: folio_lock_anon_vma_read() requires
-> >> > +	 * folio_mapped(), and @folio is already fully unmapped here.
-> >> > +	 */
-> >> > +	rmap_walk(folio, &rwc);
-> >> > +}
-> >> > +
-> >> >  static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
-> >> > -					    unsigned long idx, unsigned long addr,
-> >> > +					    unsigned long idx,
-> >> >  					    struct folio *folio)
-> >> >  {
-> >> >  	unsigned long i;
-> >> >  	unsigned long pfn;
-> >> >  	unsigned long flags;
-> >> > +	bool fault_folio;
-> >> >  	int ret = 0;
-> >> >  
-> >> >  	/*
-> >> > -	 * take a reference, since split_huge_pmd_address() with freeze = true
-> >> > -	 * drops a reference at the end.
-> >> > +	 * migrate_vma_split_pmd_mappings() walks the rmap, and
-> >> > +	 * split_huge_pmd_address() zaps rather than demotes a PMD in a VMA that
-> >> > +	 * is not anonymous. migrate_vma_collect_huge_pmd() does not check the
-> >> > +	 * VMA type, so a file THP can reach here; the rest of the migrate_vma()
-> >> > +	 * machinery only supports anonymous memory anyway.
-> >> >  	 */
-> >> > -	folio_get(folio);
-> >> > -	split_huge_pmd_address(migrate->vma, addr, true);
-> >> > +	if (!folio_test_anon(folio))
-> >> > +		return -EINVAL;
-> >> > +
-> >> > +	/*
-> >> > +	 * A CPU fault on a device private PMD holds an extra reference on the
-> >> > +	 * folio, taken by do_huge_pmd_device_private(). folio_split_unmapped()
-> >> > +	 * only tolerates a single caller reference, so the split would always
-> >> > +	 * fail with -EAGAIN while this fault reference is held.
-> >> > +	 *
-> >> > +	 * do_huge_pmd_device_private() derives the fault page from the PMD
-> >> > +	 * entry, so it is always the head page of @folio, and therefore always
-> >> > +	 * ends up in the head folio after an uniform split to order 0. Drop
-> >> > +	 * the reference across the split and re-take it on the head folio
-> >> > +	 * afterwards, leaving the reference exactly where it is expected to be
-> >> > +	 * released.
-> >> > +	 *
-> >> > +	 * The folio cannot go away while the reference is dropped: the
-> >> > +	 * reference taken by migrate_vma_collect_huge_pmd() is still held.
-> >> > +	 */
-> >> > +	fault_folio = migrate->fault_page &&
-> >> > +		page_folio(migrate->fault_page) == folio;
-> >> > +
-> >> > +	migrate_vma_split_pmd_mappings(folio);
-> >> > +
-> >> > +	if (fault_folio)
-> >> > +		folio_put(folio);
-> >> >  	ret = folio_split_unmapped(folio, 0);
-> >> > +	if (fault_folio)
-> >> > +		folio_get(folio);
-> >> > +
-> >> 
-> >> Is it better to pass "extra_cnt" to folio_split_unmapped()?  This
-> >> follows the coding style of the other migrate functions better, like
-> >> that in __migrate_device_pages().
-> >> 
-> >
-> > That is an option. To be minimally invasive, I went this route. I also
-> > didn't know offhand what would happen if our head page had an extra
-> > reference and we then called folio_split_unmapped() with "extra_cnt", or
-> > how that would affect the reference counts of the newly split pages
-> > (i.e., whether we would need to adjust the reference counts of all split
-> > pages after folio_split_unmapped() returns). However, I could quickly
-> > reason that dropping the reference and then reacquiring it was
-> > functionally correct and safe.
-> 
-> This makes sense for me.  Thanks!
-> 
-> I have another question.  If we have to split the large folio when
-> migrating from device to ram, should we still migrate all pages of the
-> original large folio, or should we migrate only the faulting
-> normal-sized page of the original large folio instead?
-> 
+On Wed, Aug 12, 2026 at 12:55=E2=80=AFPM Tejun Heo <tj@kernel.org> wrote:
+>
+> alpha requires percpu variables in modules to be defined as weak so that =
+the
+> compiler generates GOT based external references for them. This puts two
+> extra restrictions on percpu variable definitions. The symbol must be
+> globally unique even when static and a static percpu variable can't be
+> defined inside a function. DEBUG_FORCE_WEAK_PER_CPU exists to give generi=
+c
+> code build coverage for these restrictions without building for alpha.
+>
+> MEM_ALLOC_PROFILING defines a static percpu counter at each allocation ca=
+ll
+> site and thus can't be built with weak percpu definitions, so it depends =
+on
+> !DEBUG_FORCE_WEAK_PER_CPU. As allmodconfig enables DEBUG_FORCE_WEAK_PER_C=
+PU,
+> this knocks MEM_ALLOC_PROFILING out of allmodconfig build coverage.
+>
+> allmodconfig coverage for MEM_ALLOC_PROFILING is worth more than build
+> coverage for restrictions which only matter to alpha module builds. Drop
+> DEBUG_FORCE_WEAK_PER_CPU. Restriction violations will now show up only on
+> alpha builds.
+>
+> Reported-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Tejun Heo <tj@kernel.org>
+> Cc: Suren Baghdasaryan <surenb@google.com>
 
-This is a choice made by the upper layers that call the migrate_vma_*
-functions and populate the migrate_vma arguments. In gpusvm/pagemap, we
-still migrate the entire 2 MB region of memory as 512 4 KB pages upon
-higher order failure, matching what we did prior to having 2 MB device
-pages.
- 
-The reasoning is that migrations are expensive due to the CPU overhead of
-migrate_vma_* and because GPU copies are issued, requiring larger transfer
-sizes to achieve the full bandwidth of the bus. For example, a 4 KB copy
-provides less than 1 GB/s of bandwidth regardless of PCIe speed, whereas
-a 2 MB copy can nearly reach the theoretical maximum bandwidth of PCIe.
- 
-Early in the development of gpusvm/pagemap, I had a knob that forced only
-single-page 4 KB faults and migrations, along with a test case that
-measured the fault time in user space for a 2 MB buffer. If I recall
-correctly, it was about 58× slower than batching 512 4 KB pages together
-into a single fault and migration on a low-end BMG part.
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
-So on higher order page allocation failure, the preference is still do
-the larger migration.
-
-Matt
+Thanks Tejun and Andrew!
 
 > ---
-> Best Regards,
-> Huang, Ying
-> 
-> > Matt
-> >
-> >> >  	if (ret)
-> >> >  		return ret;
-> >> >  	migrate->src[idx] &= ~MIGRATE_PFN_COMPOUND;
-> >> > @@ -935,7 +1017,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
-> >> >  }
-> >> >  
-> >> >  static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
-> >> > -					    unsigned long idx, unsigned long addr,
-> >> > +					    unsigned long idx,
-> >> >  					    struct folio *folio)
-> >> >  {
-> >> >  	return 0;
-> >> > @@ -1103,7 +1185,6 @@ static void __migrate_device_pages(unsigned long *src_pfns,
-> >> >  	struct mmu_notifier_range range;
-> >> >  	unsigned long i, j;
-> >> >  	bool notified = false;
-> >> > -	unsigned long addr;
-> >> >  
-> >> >  	for (i = 0; i < npages; ) {
-> >> >  		struct page *newpage = migrate_pfn_to_page(dst_pfns[i]);
-> >> > @@ -1177,8 +1258,7 @@ static void __migrate_device_pages(unsigned long *src_pfns,
-> >> >  					goto next;
-> >> >  				}
-> >> >  				nr = 1 << folio_order(folio);
-> >> > -				addr = migrate->start + i * PAGE_SIZE;
-> >> > -				if (migrate_vma_split_unmapped_folio(migrate, i, addr, folio)) {
-> >> > +				if (migrate_vma_split_unmapped_folio(migrate, i, folio)) {
-> >> >  					src_pfns[i] &= ~(MIGRATE_PFN_MIGRATE |
-> >> >  							 MIGRATE_PFN_COMPOUND);
-> >> >  					goto next;
-> >> 
-> >> ---
-> >> Best Regards,
-> >> Huang, Ying
+>  include/linux/percpu-defs.h |    7 +------
+>  include/rv/da_monitor.h     |    2 +-
+>  lib/Kconfig.debug           |   16 ----------------
+>  3 files changed, 2 insertions(+), 23 deletions(-)
+>
+> --- a/include/linux/percpu-defs.h
+> +++ b/include/linux/percpu-defs.h
+> @@ -65,13 +65,8 @@
+>   *
+>   * Archs which need weak percpu definitions should set
+>   * CONFIG_ARCH_MODULE_NEEDS_WEAK_PER_CPU when necessary.
+> - *
+> - * To ensure that the generic code observes the above two
+> - * restrictions, if CONFIG_DEBUG_FORCE_WEAK_PER_CPU is set weak
+> - * definition is used for all cases.
+>   */
+> -#if (defined(CONFIG_ARCH_MODULE_NEEDS_WEAK_PER_CPU) && defined(MODULE)) =
+|| \
+> -       defined(CONFIG_DEBUG_FORCE_WEAK_PER_CPU)
+> +#if defined(CONFIG_ARCH_MODULE_NEEDS_WEAK_PER_CPU) && defined(MODULE)
+>  /*
+>   * __pcpu_scope_* dummy variable is used to enforce scope.  It
+>   * receives the static modifier when it's used in front of
+> --- a/include/rv/da_monitor.h
+> +++ b/include/rv/da_monitor.h
+> @@ -24,7 +24,7 @@
+>
+>  /*
+>   * Per-cpu variables require a unique name although static in some
+> - * configurations (e.g. CONFIG_DEBUG_FORCE_WEAK_PER_CPU or alpha modules=
+).
+> + * configurations (e.g. alpha modules).
+>   */
+>  #define DA_MON_NAME CONCATENATE(da_mon_, MONITOR_NAME)
+>
+> --- a/lib/Kconfig.debug
+> +++ b/lib/Kconfig.debug
+> @@ -613,21 +613,6 @@ config BUILTIN_MODULE_RANGES
+>          It also records an anchor symbol to determine the load address o=
+f the
+>          section.
+>
+> -config DEBUG_FORCE_WEAK_PER_CPU
+> -       bool "Force weak per-cpu definitions"
+> -       depends on DEBUG_KERNEL
+> -       help
+> -         s390 and alpha require percpu variables in modules to be
+> -         defined weak to work around addressing range issue which
+> -         puts the following two restrictions on percpu variable
+> -         definitions.
+> -
+> -         1. percpu symbols must be unique whether static or not
+> -         2. percpu variables can't be defined inside a function
+> -
+> -         To ensure that generic code follows the above rules, this
+> -         option forces all percpu variables to be defined as weak.
+> -
+>  config WARN_CONTEXT_ANALYSIS
+>         bool "Compiler context-analysis warnings"
+>         depends on CC_IS_CLANG && CLANG_VERSION >=3D 230000
+> @@ -1053,7 +1038,6 @@ config MEM_ALLOC_PROFILING
+>         default n
+>         depends on MMU
+>         depends on PROC_FS
+> -       depends on !DEBUG_FORCE_WEAK_PER_CPU
+>         select CODE_TAGGING
+>         select PAGE_EXTENSION
+>         select SLAB_OBJ_EXT
 
