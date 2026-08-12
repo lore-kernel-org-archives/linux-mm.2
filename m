@@ -4,96 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF3E1C5B56A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 09:18:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FFA5C5B56A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 09:19:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0B4F6B00BD; Wed, 12 Aug 2026 05:18:54 -0400 (EDT)
+	id 31E086B00DD; Wed, 12 Aug 2026 05:19:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABC6B6B00BF; Wed, 12 Aug 2026 05:18:54 -0400 (EDT)
+	id 2F4F16B00DE; Wed, 12 Aug 2026 05:19:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D4466B00C0; Wed, 12 Aug 2026 05:18:54 -0400 (EDT)
+	id 2332B6B00DF; Wed, 12 Aug 2026 05:19:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 77A336B00BD
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:18:54 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F32FE1A0106
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:18:53 +0000 (UTC)
-X-FDA: 85092067746.19.D7D895A
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 24F42140006
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:18:50 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=BWThciDu;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf23.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id F39EC6B00DD
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:19:30 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 88B72C016A
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:19:30 +0000 (UTC)
+X-FDA: 85092069300.18.A71FD2E
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 203CF18000D
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:19:26 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Ez5poWQF;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786526331;
+	s=arc-20220608; t=1786526368;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=FfJ5nAyyp3uAf1i1mDP7ix0yMVKhktD7PymhKvowdmk=;
-	b=G7Tm2e1IwQd1xe/shPi0Q/Y3bc7iqo7Jc0NgeD6VY7+JC5pedSBlxVHAn2/kNPRwXSJVWB
-	BkdbyA+5jKBgDtAsCn3oI3G2VdHfx11SZyri9HoRguOujDHO1/LrBQIO7oQg+PqrmE5P6W
-	rwUsrW0n53mEgWqiqg/afX37Vlgu5/w=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CaCusDgVv2l8Ud0TpqaYcXSMcsXjIAmjWTTMpzz/8oc=;
+	b=wISMhYB9gOhYFXq5nmInT+Aip3aSm8AgdndRBs15BleOXBWpdVcUKHhuDH8eJ8S1ItuyJZ
+	LlEoHjMUzBcM54QnN80u55BZE6ZuNdowvEBENFWnjryjVezC6ti8TpRYi009/9Fb1ywhLW
+	KvYYYah03n0aN5viZubVMbwYWotmSf0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=BWThciDu;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf23.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Ez5poWQF;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786526331;
-	b=3TdYxt180y+WnZ5hDvxjJYsaGgXnpfneG2ICnvLHbeIm+xMeVEUgK3Ne/dwY5QljV5fX5N
-	yo/d2B02289vCW7PfwZPn/JxkCzZB7xahYX9k+CumsDyNQp4hSRh9zTnjOHnXAkbH5FXVJ
-	PlZ0GY/IsR/8s3UOLDEYjLXcGvpLJws=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=FfJ5nAyyp3uAf1i1mDP7ix0yMVKhktD7PymhKvowdmk=;
-	b=BWThciDuZL39Kr3k4Repy9byHSsEFtIsDQbspS4kgW9CVTJCKluwmbYtGvVrlTkijwxZtrk4f
-	dZfXzvKQ01VfRC57JIBtmZgB1x/uJHbweVIy/xBrCs2IwmBpl5RjifVcJ5gZG/QWbEYWKvMbR3w
-	0QMqOcLMR4CrmGk48vddvAs=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hKjN62CLDz1T4Fq;
-	Wed, 12 Aug 2026 17:08:54 +0800 (CST)
-Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
-	by mail.maildlp.com (Postfix) with ESMTPS id A48542DBF7;
-	Wed, 12 Aug 2026 17:18:44 +0800 (CST)
-Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
- kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Wed, 12 Aug 2026 17:18:43 +0800
-From: Xie Yuanbin <xieyuanbin1@huawei.com>
-To: <akpm@linux-foundation.org>, <david@kernel.org>, <linmiaohe@huawei.com>,
-	<ziy@nvidia.com>, <matthew.brost@intel.com>, <joshua.hahnjy@gmail.com>,
-	<rakie.kim@sk.com>, <byungchul@sk.com>, <ying.huang@linux.alibaba.com>,
-	<apopple@nvidia.com>, <nao.horiguchi@gmail.com>, <ljs@kernel.org>,
-	<liam@infradead.org>, <vbabka@kernel.org>, <rppt@kernel.org>,
-	<surenb@google.com>, <mhocko@suse.com>, <gourry@gourry.net>,
-	<tony.luck@intel.com>, <bp@alien8.de>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<liaohua4@huawei.com>, <lilinjie8@huawei.com>, Xie Yuanbin
-	<xieyuanbin1@huawei.com>
-Subject: [PATCH] mm/Kconfig: allow user to select MIGRATION if MEMORY_FAILURE is enabled
-Date: Wed, 12 Aug 2026 17:16:44 +0800
-Message-ID: <20260812091644.224299-1-xieyuanbin1@huawei.com>
-X-Mailer: git-send-email 2.55.0
+	t=1786526368;
+	b=H8/qb4iOWLHyx37aZl/YqdefyDo6LFdJEdg1EL9IuPkVZSJtkzG2En+svKvfuxTPQaM/WY
+	3DkwGhZ/Ot4NHh74nTGLTRbdKItcAYKesCl1z5XE3baRP1qLaErIuS2ze+wOlPFgCnYbIA
+	QNdvQRCtryxmjgyzZKDGePpxVMK/5Eo=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1786526362; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=CaCusDgVv2l8Ud0TpqaYcXSMcsXjIAmjWTTMpzz/8oc=;
+	b=Ez5poWQFsiVlIWZNRch50Y9b1MjNjI1z/xJiAj1tFHwbC9bY1M0C6gUGItC3Q28DFXXNbZ1MWWEKJKGM4Nb3wx8Iw3vWDBmQ/qVkcIL3WooRtx9p6h1fagRwd+YvDH7oVm8cOqBHno15ss0GYdTJ4sRiK4/EmH9oNYrZRzgkB7c=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0X8rG8n8_1786526359;
+Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X8rG8n8_1786526359 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 12 Aug 2026 17:19:20 +0800
+Message-ID: <f78bdc98-545f-46a7-9c99-a62807bbd2ac@linux.alibaba.com>
+Date: Wed, 12 Aug 2026 17:19:19 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.109.17]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemj100009.china.huawei.com (7.202.194.3)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/7] mm/khugepaged: extract reference check into
+ folio_pte_referenced() helper
+To: "Nico Pache (Red Hat)" <nico.pache@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20260811-khugepaged_pte_refactor-v4-0-ddac39d61c4a@linux.dev>
+ <20260811-khugepaged_pte_refactor-v4-2-ddac39d61c4a@linux.dev>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260811-khugepaged_pte_refactor-v4-2-ddac39d61c4a@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: jn6653q8aiit7et8hco7mcaimnucmmti
+X-Rspamd-Queue-Id: 203CF18000D
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: xbgbmn6qwsr7ps94cohq98aitbsseu9d
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 24F42140006
-X-HE-Tag: 1786526330-846679
-X-HE-Meta: U2FsdGVkX1+O2HvJ3HQQRIvf74C180clvV7qVTEDzjiqMP8n7wxh6tQ5T15yUd4YptdrH8mZ6VnLwTmOX1zZ/917hy0Z/CHLo0vNuK/DJUpsJk7hyWX5tahkBy96NhCCkbL3pfOwETIAVjsLolHCndlqwOE6JLLdTcaBeqHUmsc/OGWn3J65RfCY1+IjEwJyfS8VTNzBa4nB/r17FqiLopPB8mQX9wJWKtbOSCyRoHJm93L+N362oZFdsskw8rb9CPY2QY+0yjNHcjTkWIAOkg+f+r7EBL5WVuSmNTax+tQZsCbwIgSdf5hHTHYV2pHagIjGWs36HZbVTItCUfncfBcXCuPypaWn5hOYDuLPmNZbMkhgJ0E9CnVdNLO3yWXdxn+/EmWe6pELRVBq7+bxTWi+sRyNHjTzwPMMmRLkvX+PMgtC12354zkNUiOtgmTF3ex0ayc4XIhwI7GsxqXL0kTKZH46mIhMlMAuKr1mQhipCBHFHSwVyl16I+azBLkFdWoUxA2BI/cTFW74DlSQkwxzLLOFjSTs3T2PZSgQ5gmACipZ5ZT5ChJ38W8Iti1/O3Ej8TfHzLIs3MTfGF0rNHyiwutxEO4mVVoHjjZBItWABqvOqbGjaVYtzGPWjI5+Nz0hYE98WUexJBLlESIep7bWPdp5GwXBAyQaFPr1Gc7MXC2UMrNWD9EEES/DtwmabcJao1gPGsRiCtyiLm38rDpgE0ZD3wQVOOWoYVB3SZH/VMK3QJBUuoa3nE4mi703j9jcYakw1tcOcl/7C//q0Lc0YMZfLwyJo1mTGc93syCgIdyNibqNa2fH8gdkx9MBSN4RPaoVtFB3T+n6yZxcQNzHHtgCfv2fX9R2muwf/01+4KCvVWVU9QZUQdgvv39pWNHZolFmhY+NLN7U3nKWd6oVfBKHEL/Aqev9emjJvFVNI8QqfvhO/w4v2gsP87UBnYYcrWUfUY3dbIPpCoG
- vMLCDLmG
- K6woLO1zTulfhIKAwjNVtYKJkTXO2B5/ucg0BGguhsADKXOKv2T8BizVm97bqHM4Nzqc8uuFgeDI93N0Rpdx60CIkPgWiMja4nnCeGxyFiUSNbS1wkn4i2EN3QEmpvCThqI3RCDBXkwR80GePUBFwp92/sW2mybe9wcVy0xl4Trn4XqzOkTXBmACsWZbYNH93tgzlq7a/2+UAlA5Ievqn0ANfj7AGHDuqH+NNvIOetrH70BWweCnWTS4frJKvnmiZtCoJoGltQAiBTnekEXANifOCKGfuTGfu0MeUHAWl36WWX64aTWhLmYS09kA1brZ1s2MwxBvC2v8rKYopGCrzF7IONo5Dm+PyEod80lzjXk5ZUR/zUrOJOkEkSSkC9iRCF0FXbiwb+/1CEtz433QSDc82+MTIQiuw86P2
+X-HE-Tag: 1786526366-916727
+X-HE-Meta: U2FsdGVkX1/NSqS9buAJW4FxZzDDRQ/wIFMg4RlaTOCGGVlO6xtUJJ9Z5eWj19+FrjfHiJs42vpAYV2DYFlCfAQTtKJgD7be0ot5UKTXUpVbYbTgmwxUCMXDelur6MBHRX9+75z/rhiQkSPsoECztDTjfZDEV6Wwiv8YlZgWo+1k391mHte1Hj5/m5rg5/V0y9wPbT4CZK897IX4g3tbwR+RCZCIec0RVmaHomN5d1iHHSH6zN4Qsn6QFn8Rc7riRGPu/SYNIsIyHmRJsCmfTJKmHA64j7U9PZjTp/jXXqAti9HGOSFHU0+0eFHpveP+HVhAivus/oubtlsEy/b+jFd+ISjSXkhmE8WHm0l2HmC0ArKCvc+B/YZSQpdujggiV+r4AetfSoIOyysg/RT7ZWvihsi2dMDYGwrEX4MGHzU9LfKYzrawA/KwRVBBAcBV8ez6ocjtcoKvq490SX4/IBPGvwajmcscWiGlonRUUb1UN1usbVWInVeWtBKBzlEv9/Vov+W18FvFC11y1q9CapnZ9EajYFDoALihbuMIVnLhpJaWUTFGwoG7h2vpKky01lQt/+gQYVgukvWKC8iBp321O1uJ0rXrMotjnGT9IUQAI+0umimvCNnQRGVhCafPummm6Z87+A1ZEihkdUwW8g6D6iICdu8gBPxZlPhng71XEQ1gezvlaAL2mPlnCD0UyTjXl7QOhXCisAUlTgj3uD8ny5+ineDy/VxJM+1JRDTiu1LsMdzRFZnN7++YHXN0sjFgQQAnXv0BpRkZh8vkq5Et+pGU3DJvg3HmnyVjeLzF68lclhFXQu4ye5jIK82i7es2/aGXifszuTU5VSIK73GV9NlxWQGVqMjeQdxtWFC9ZDSxEP0E7yf1JO2y2R0NJ+Xo0TLcDCYyw3dy3raD1z9sH1y7xK4npLlydcf6gm2y3F9E4xFHGXehUIi12dDNjt3IKHXhSCPR/ljJazO
+ I8+ke/IC
+ tiOYkJLQ16gH9Ygx1qxh/pwB34/oI5fsUgWjaaUQgw4Wto5UbzqhS9woxOg4Bufh3noCuSTuNrW4xAqZUoCwEwUvFrwM+OoJ13/PZDrxTDdFQn2e5mzmbitO3pEklOFXHB9tdSlWoWSfld/5IarJrxEwOn+9AkA8tqqxNNH6T5UTn6/f6qxDlBZPaDbO1r/s//FVAuLhirD2ep4GcdKl365H2kaMW8iKvLcSKcA6mR6UGKoMMX3xDBbWdHR3DJzntRxRLRgzKYJ5zkuYVvue6+rmVGgWFJBCcVuf9wt2EQAO+k21jikStaibgyZ8c8zPj1JiidqgBnFH7Z13I/nqZh/vpg+9Lc5yPDvmJErl9DnNbzRbag5sCg44DCA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,36 +96,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, memory-failure can be enabled without migration. However,
-migration cannot be selected by user when memory-failure is enabled.
 
-Migration is very useful for soft_offline_page(), which may be triggered
-by correctable memory errors. Most of the anonymous or file-mapping
-faulty pages can be migrated to other healthy pages.
 
-Allow user to select MIGRATION if MEMORY_FAILURE is enabled.
-Also, select MIGRATION by default if MEMORY_FAILURE is enabled.
+On 8/11/26 8:48 PM, Nico Pache (Red Hat) wrote:
+> This change deduplicates the "is this PTE/folio referenced enough to be
+> considered for a collapse" condition that was repeated in both
+> __collapse_huge_page_isolate() and collapse_scan_pmd(), extracting it into
+> a single inline helper function.
+> 
+> Also move the comment and use it as the function header. While we are at
+> it, updated the comment to clarify that a young pte is a recently accessed
+> one.
+> 
+> Acked-by: Usama Arif <usama.arif@linux.dev>
+> Signed-off-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
+> ---
+>   mm/khugepaged.c | 32 ++++++++++++++++++--------------
+>   1 file changed, 18 insertions(+), 14 deletions(-)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 1e26ea97381a..8babd4c97db6 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -672,6 +672,22 @@ static void release_pte_pages(pte_t *pte, pte_t *_pte,
+>   	}
+>   }
+>   
+> +/*
+> + * folio_pte_referenced() - Check if a folio or its PTE mapping was recently used
+> + *
+> + * Return: true if recent access was observed through either the folio state
+> + * or the current PTE mapping.
+> + */
+> +static inline bool folio_pte_referenced(struct folio *folio,
+> +		struct vm_area_struct *vma, unsigned long addr, pte_t pteval)
+> +{
+> +	/* The folio was referenced previously ... */
+> +	if (folio_test_young(folio) || folio_test_referenced(folio))
+> +		return true;
+> +	/* ... or the PTE mapping was recently used */
+> +	return pte_young(pteval) || mmu_notifier_test_young(vma->vm_mm, addr);
+> +}
 
-Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
----
- mm/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Thanks David for asking again to move the 'cc->is_khugepaged' out of 
+this helper. I also suggested this before[1]. So
 
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 8a24c130d008..b4c217383b51 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -682,7 +682,8 @@ config NUMA_MIGRATION
- 	  demotion for memory tiering.
- 
- config MIGRATION
--	bool
-+	bool "Enable page migration" if MEMORY_FAILURE	
-+	default y if MEMORY_FAILURE
- 	depends on MMU
- 
- config DEVICE_MIGRATION
--- 
-2.55.0
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
+[1] 
+https://lore.kernel.org/all/62b2bd29-28d2-4440-a970-526dd5d5bbe0@linux.alibaba.com/
 
