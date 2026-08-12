@@ -4,147 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 888ECC5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:59:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CA98C5CFDB
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:59:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A2AE6B00B8; Wed, 12 Aug 2026 06:59:05 -0400 (EDT)
+	id E07A26B00DE; Wed, 12 Aug 2026 06:59:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 579B66B00D2; Wed, 12 Aug 2026 06:59:05 -0400 (EDT)
+	id DDEDA6B00DF; Wed, 12 Aug 2026 06:59:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48F5F6B00D6; Wed, 12 Aug 2026 06:59:05 -0400 (EDT)
+	id CCDE46B00E0; Wed, 12 Aug 2026 06:59:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 213946B00B8
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:59:05 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A64606B00DE
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:59:58 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A90704021F
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:59:04 +0000 (UTC)
-X-FDA: 85092320208.20.1185BBD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id F30DB20005
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:59:02 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="C4c/VyOS";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C87271C0DF2
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:59:57 +0000 (UTC)
+X-FDA: 85092322434.20.47A8D00
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B0C6A40005
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:59:55 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xTmP5Qpg;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QnF+b7tp;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OyuT4XMr;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="4/YckPR1";
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786532343;
+	s=arc-20220608; t=1786532395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YVDEOvc21CteZ5TMBNcUHD+Aeyjv25kv7zM1vGXS/tI=;
-	b=iqxPzbnYj0IVEeHS9NrzP1VObhmj4Vdo48r075CIJipImxzD52aZXq5knmsEXcQLFRaB55
-	nL0UfkEC/nTLQmL3yEXcTPPkfyJpZrfNzQsM3EdXQQdpJ2CVHjK2Buvehf4YB+uaEP1i1m
-	YKu77fwDRe/tOoxIiC822W6nq1NR5no=
+	bh=QswIT/rCI0cwQtVcS8lMq+TQBP18UyXHMFLt/8eLSNQ=;
+	b=dSN3KWbOPmnbcWqY+NtBMEGkD0Jvumfxe7qHHc0kS0DNRd45EA1BVb8g83rRNR5Kn3McpY
+	c+eRUYGYDmSZioKHhOQ1hnVrDSLNcxKx0CIUa0o439RusCDsQ+yS2EnMH4nHP56ABoniaN
+	cc37j1t7deJROQS1da4AbKeEUWkf4oU=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="C4c/VyOS";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xTmP5Qpg;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QnF+b7tp;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OyuT4XMr;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="4/YckPR1";
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786532343;
-	b=pARgaskIaT1f6OOk89yERiKrInque1H9e3TO3ozD4w1u35+mN24gtawdS453Rmv6EKpMo+
-	H39T8ifv6HIZVefLQJHT3IDIwPCD2sZ3jFd6/JHAUQt+pN/c9vgcBqcnINQ/CgAp+bmkE9
-	6zc44X9BKUtkQoZ5mB4L4f3xL7HVGhk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 95FB760A7E;
-	Wed, 12 Aug 2026 10:59:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6195C1F000E9;
-	Wed, 12 Aug 2026 10:58:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786532342;
-	bh=YVDEOvc21CteZ5TMBNcUHD+Aeyjv25kv7zM1vGXS/tI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=C4c/VyOSbx/e8pqmJX8RzB21kZ03+KBHnAksmzw6moWobIT7bciODydX+z36ca6hE
-	 4FPD567diHVtHzyUyPHzONlNFx/Ug+YY6T5ec/VsHg4mBX7Ves2seh4q+gBRXBj6nV
-	 cwMzwbDP1l9k4GVtZNgtd5VoY9IRnLK/z2TNXVmHK4g8t4QqcbNcuqwOtTfcIRVGCA
-	 6O3hFi6IXLBatCirocmQxsLeT+3+Acjo+2q7eGfULmmwwm5G80nU3Yw94bRjZtRbvm
-	 JACTkexpoadnBW4w//HQdIcHeXkOulYxBkOTnuMTPj8OM8P38QFPZZOyUENTvSXZ9d
-	 0fhBKy9YM0zDA==
-Message-ID: <aa00ab8c-6c8d-484d-807e-0305ce190e0f@kernel.org>
-Date: Wed, 12 Aug 2026 12:58:53 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] mm, swap: ratelimit bad swap entry reports in
- get_swap_device()
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Breno Leitao <leitao@debian.org>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jann Horn <jannh@google.com>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Peter Xu <peterx@redhat.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>,
- Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com
+	t=1786532395;
+	b=aBt1UrQ5Vp718cqRxfcXgFXipu9oOeZ34JUKcI4rFkxlTlrvWqExn9gEY4lZ9Kx7QhVNE/
+	x6Riy83ImSQX/Y9/DI4Z2CTmysWPDIy4Fhrnu6XV7FLldElJ4GkrFZUzEHF6fgyCbbvzsI
+	c4IsqgUPkIV2hGzvX6NBxwwnXenVqFg=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 221CC82269;
+	Wed, 12 Aug 2026 10:59:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1786532390; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QswIT/rCI0cwQtVcS8lMq+TQBP18UyXHMFLt/8eLSNQ=;
+	b=xTmP5QpgCWjnmFqwHeaCcaCSVqDoYDOSw5qtviOUvuRjYfKXskmGQqp2azXD9jTkI/Ifwo
+	VlMIE80CCma98enNhKq0iKA4c+8VLCfK+m5Lno6GPPZN6qOj/MLjRn/QWLcvUR9jYuRU7/
+	m38xUuthh6M95bZwiCpyH6Z4QB/yKzg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1786532390;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QswIT/rCI0cwQtVcS8lMq+TQBP18UyXHMFLt/8eLSNQ=;
+	b=QnF+b7tpmRhs+oViGdTXNhikTCZPxrgx7dIELfx7xGlyBQbF4SRJATas4+XHsxSig+KAoS
+	r+UioboklOPeB9Ag==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1786532386; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QswIT/rCI0cwQtVcS8lMq+TQBP18UyXHMFLt/8eLSNQ=;
+	b=OyuT4XMrdrjjGUnxk5suZMco9xrBJGrZMY9Jxf8Z25hZQjOxMmy6UuGiwFFg9nzxRQ6/I5
+	YzfCGuf1njQUkgaFKYVJmnJKMx5GWeX/3fg6hWPA1cj+8OVASJKFbSvgOwNM3JbtExC2E8
+	59HxA6sER6xXDJl9za3ZJNZ8DR7sarE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1786532386;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QswIT/rCI0cwQtVcS8lMq+TQBP18UyXHMFLt/8eLSNQ=;
+	b=4/YckPR1pDvDmjE+MXaRyQyw4tGdbfM6JwvvMKTrT0v28ROgDz3/On4+FywHdusja5rfra
+	CTnYENy60VwEpuCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7E7D2779B2;
+	Wed, 12 Aug 2026 10:59:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id sX6nGyBSfGr+UgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 12 Aug 2026 10:59:44 +0000
+Date: Wed, 12 Aug 2026 11:59:42 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Peter Xu <peterx@redhat.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH 3/3] mm: fail the fault on a malformed swap entry instead
+ of retrying it
+Message-ID: <anxRBd_LJaHmtzDS@pedro-suse>
 References: <20260810-swap-v1-0-375ef0767206@debian.org>
- <20260810-swap-v1-1-375ef0767206@debian.org>
- <a2e220de-19d4-4177-9703-0e8e5c57f269@kernel.org>
- <antOPhsllDia-UVh@pedro-suse>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <antOPhsllDia-UVh@pedro-suse>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: uoubfazoq1c64py4i9wced5e6u8kqwi1
-X-Rspamd-Queue-Id: F30DB20005
-X-Rspamd-Server: rspam03
+ <20260810-swap-v1-3-375ef0767206@debian.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260810-swap-v1-3-375ef0767206@debian.org>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-HE-Tag: 1786532342-181524
-X-HE-Meta: U2FsdGVkX1+HZNU6b4y9T6SjvNGSwRP94vvhBP7YJUIknPtut86DwGU5wxhCK1JN1taQ3mQ8cdYX+QPMrvk7WQGvqc6CcSZbTUrNwu8tztGI5avPfQTeUZWD2hlkfC0nAK1np/bWe3/cufCp7d4p8+aBzcjnQXBUGLIADifxGSmRR6hI49gN/HmclpwxgzfapR+QLejOJ+Qdmg6hflI/3YgdXumtR8uW5g+EVRt4iB0yqLTuhZXH0D+vDOlXuMF8YRbrv+zS4aNDuNZFX+AsRXyozG5bJe5JjjdccOflLtrIlz4RjBPaEzyafRmM4cYNiRR5Cd8hrhnMAtxinwNSuJZ+7JzvQzRBpuaYzXeqV2WFIG7MkdQY71sXPh8/hCL4dJExtxv1d6Ta0lBbCGKxvzqzbLf8FYnBAhvsLNCUFor3XQ+alY+kBPhNpJ19WTRupdJPfo4kJ3bZHCWUYGNHCfWcDAyCOC/EhrENcHBkFrcxyQZk79/EU9zQsBj8N4rHtuJ9WOJsRzrT7I4727h5xaisfntWvWScbf9kQd6WqiUl1A/clHM61Xd8Xkwh+uE+RHtRb6JHnwn4wUGNg0tnq12MesU7FGDd51MgE7AZo+N196flC4iHtYUSGw030k45ZjebboFbbDiI7WxeA1TqUbeRmMR8C+gLrrFVubHeoA3un1Yz/2Kxmv4VT7y/oa+oZbauJR8xxYYaTkE9DPYOX/jcokHUugWhJXmJPom1WIcXJ+WNGWMUasAb9ihOjxB+qNtlmYsSCxndwUfRUwufI0mik0glpuBE23AykCeNiegX2ZFD9cnnP38kTuiOCh/5+LYSKd89WPXpJfUjQPxqdRpV4riNGf0BB/5eQa1vxPg83UgxeNt6e0BJZsoqV8FyGfR67azZLDrJ+2OExOtq/7rdnv743OQjal7J6pTyQw0VWusal+knAiI5HRRx53A95i4gnyQun5uPzSeaFuU
- GvFlANtp
- h6Ot7lA91axiEcpq4QMponvBVeCwODP2HNyW8ug0qTQwiybXLVegoKZNw8bq60NrcIcc2sK1NC9dxqTNS2nMHnc8yF+L/nmb1jI21b7BKEwuyFiYtb1cwAVh0ctmTIiQ0MvKgtmT24HYlC7j88UmDqUGBumw4z3ca9gO8+raeLNu9cfK6m0MveP9Lj1MLoerRi2wxcvij6Fu0iPtYPr/7T9nU12tGprVySNxP6eyzQS7Q3+22Hw2uC2y9aVZH74uNwZ7Db4oxFhYbALZjfYwk9MOu9cz6hGFXMphu2mI5MDamAmIlSSwdUmV6UtJAEJT0No8ZzIXjKRdObPJagd09JWnA1kgAeY67WaXB
+X-Stat-Signature: anxpxo9jfioyx9izsgrrmzsqo6ok6oct
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B0C6A40005
+X-HE-Tag: 1786532395-161695
+X-HE-Meta: U2FsdGVkX1+eqMFMth4cPttc7A5yyOFGh22nhbJrvGZ4leWPNd3d9F7JJuljP3zPYJnLMuXqxTWR27fCRhxhmM3w+yUBZVPPZ9xcpFelhZd16dU0Mw8BXtKKYmrqIwLDag0FqKT73G6vnPN6smTfhw2FAfKV9jTENwnJGn36K7D4PZBhHF6et+haQl84DS9spJInjpqMEvJUivK+ZjG9eu6cShYNmKoXv6IVhd9HsELEsZFjtAjz5hI41ZOHM3OfGXfLx7OBC3G13Fuxf12ecEA+oXe+417uMZqoIwH79WerlXhG5z+5+xFPAg0kC3O610uLohaAfKqkOx+l89K1V3CK0N5+XyrvWuE+xYvTHgmg1EuGNUGka4+2ve1ab+/XhhI7PbsXyomec5lu73qkpAjBDw6Mr2J9K2OGsUkGJ9Eb5YE/P6lYQLe6+e88gduLAxpIrd2yNFj0ahs+vrFI6hJNtmChx8H5VFEVNslGBTuUOGHSw+DzsVkCqFL/FyRH34/u7BHZE/Wr5DMpAnfLY1IogLiWmmPHztUmM66IEewyVcU8JVJsG0KR3m/tzEjlTiMpEIi5AL8FW1IK1aJm2z8P3mnLHZh31uTYYnepQwPXY1ptdGhkIrPisk+OsZSyDL9tWHlcj2/a66thZEiwdF4wPgMk2uJ0tNMNEiuXW+qpAOlkgAOMNXw1Vkzjgt5wspppDmtRHjYW+nfKW217+Shpi5KvTE83bGlqbbVh4fIhQYDiCnQ4+XEg8LQFjwu8SLV+CzSmWlJH6ds/wjF8G3ZBYye/bY7bhHPGqBYu1HWlYlee7RSVpk/Ls2zKzxj4oOt//FPkNd6nTwNAA6Capm8AeVmL+j2NcbaxfBdDzKoEbxgM7bLYoe2zTf5HiuTl3NKrxrS14FL30BX1OP3VIdF7HeCh0mzSIKpwjqtDXjbcwlM0Ky2WU9M7xWQwxhnjBLAl3UUMYBnJekFyw7C
+ lSPQzjIo
+ 8TWvDEvIMQxEisB37huejPvpGBeC8C6w0zO52yrPk+haJjN8FevShTgHmAKsZLNoLwRuNiwaefo6m7R1ub2P6I64drutYhYh1eqhSxQLcccJJTZ9JtjN0UXjtNzc10RBp/x4bx6j9EJvu94Tu5bT02S4cO7ZFEppQ37mWlGhx3dK7eneOFEQp8PlGMIcU/wuiDbpWaXUZWmhdLuIg30UlvKR02ljQphy6gE469EnTSF4MzTLb2UJ0xBVCEXw5Ehl2AWbd3nFmFtCgM67fE9X0ZO7iiw2M58RvPZ2PzkkTQOz2ZNYHE4CcA6F+K5ojLWHDcFCkRFRqFcdXVQ0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,52 +142,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/11/26 18:48, Pedro Falcato wrote:
-> On Tue, Aug 11, 2026 at 05:33:54PM +0200, David Hildenbrand (Arm) wrote:
->> On 8/10/26 18:26, Breno Leitao wrote:
->>> A corrupt page table hands the same bogus entry to get_swap_device() on
->>> every access to the mapping, and every rejection is logged. One machine
->>> logged 6185620 copies of the same line in a few hours.
->>>
->>> Rate limit both prints.
->>>
->>> Signed-off-by: Breno Leitao <leitao@debian.org>
->>> ---
->>>  mm/swapfile.c | 4 ++--
->>>  1 file changed, 2 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/mm/swapfile.c b/mm/swapfile.c
->>> index 4d4e3e3059f6b..9ab11dc24e4f1 100644
->>> --- a/mm/swapfile.c
->>> +++ b/mm/swapfile.c
->>> @@ -1899,11 +1899,11 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
->>>  
->>>  	return si;
->>>  bad_nofile:
->>> -	pr_err("%s: %s%08lx\n", __func__, Bad_file, entry.val);
->>> +	pr_err_ratelimited("%s: %s%08lx\n", __func__, Bad_file, entry.val);
->>>  out:
->>>  	return NULL;
->>>  put_out:
->>> -	pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
->>> +	pr_err_ratelimited("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
->>>  	percpu_ref_put(&si->users);
->>>  	return NULL;
->>>  }
->>>
->>
->> In print_bad_page_map() we use something more advanced
->> (is_bad_page_map_ratelimited): essentially a burst of 60 followed by 1minute of
->> silence.
+On Mon, Aug 10, 2026 at 09:26:51AM -0700, Breno Leitao wrote:
+> do_swap_page() returns 0 when get_swap_device() fails, which the fault
+> handler reads as "handled". For an entry that can never become valid
+> the retry takes the same fault again, so the thread spins until it is
+> killed.
 > 
-> Is it more advanced? It just looks like a handcoded version of __ratelimit.
-> 
-> ... I hate it now. I'll send a patch I guess.
+> Return VM_FAULT_SIGBUS for a malformed entry, as the sibling arm
+> already does for an unrecognised non-swap entry. A NULL return still
+> means swapoff, which is still worth retrying.
 
-Thanks for cleaning that up!
+What kind of SIGBUS do you get from this? as in the si_code. Out of all
+the options
+
+#define BUS_ADRALN	1	/* invalid address alignment */
+#define BUS_ADRERR	2	/* non-existent physical address */
+#define BUS_OBJERR	3	/* object specific hardware error */
+/* hardware memory error consumed on a machine check: action required */
+#define BUS_MCEERR_AR	4
+/* hardware memory error detected in process but not consumed: action optional*/
+#define BUS_MCEERR_AO	5
+
+I would say this would fit none of them. The default (AFAICT) would be
+BUS_ADRERR, and I think that one is quite overloaded with meaning (namely,
+with regards to memory-mapped IO past EOF, or EIO on file IO). I wouldn't
+love to also use it for this, IMO.
+
+> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  mm/memory.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 4238778b66c42..2842cd976f1d3 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4957,6 +4957,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>  	/* Prevent swapoff from happening to us. */
+>  	si = get_swap_device(entry);
+>  	if (IS_ERR_OR_NULL(si)) {
+> +		/* A malformed entry never becomes valid, so don't retry it. */
+> +		if (IS_ERR(si))
+> +			ret = VM_FAULT_SIGBUS;
+>  		si = NULL;
+>  		goto out;
+>  	}
+> 
+> -- 
+> 2.53.0-Meta
+> 
 
 -- 
-Cheers,
-
-David
+Pedro
 
