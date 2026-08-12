@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E8CFC5CFDB
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:49:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6F04C5CFEB
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:50:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D5146B00D4; Wed, 12 Aug 2026 06:49:27 -0400 (EDT)
+	id CBDF26B0128; Wed, 12 Aug 2026 06:50:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AC436B00D5; Wed, 12 Aug 2026 06:49:27 -0400 (EDT)
+	id C94EE6B0129; Wed, 12 Aug 2026 06:50:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2AB06B00D6; Wed, 12 Aug 2026 06:49:26 -0400 (EDT)
+	id BD2BC6B012A; Wed, 12 Aug 2026 06:50:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CFEF16B00D4
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:49:26 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 75AD51C0241
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:49:26 +0000 (UTC)
-X-FDA: 85092295932.20.A66E5AE
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A1F236B0128
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:50:46 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9AA39A0298
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:50:45 +0000 (UTC)
+X-FDA: 85092299250.25.2C86832
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D56B880005
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:49:24 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=cb1+nKww;
-	spf=pass (imf02.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0D58B1A0007
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:50:43 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Kc9CsGgZ;
+	spf=pass (imf19.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786531764;
+	s=arc-20220608; t=1786531844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aARderwjQ6N4kQxpGMM3ujaudWzwA8axkvxYGtg/BE4=;
-	b=D0pvRBjku9dTgRzVaOhc5sLdfjT+jkM34UL9JgK29gYXw1Sznk2h8DQhREfMmHF4xEjHeH
-	vzGK76ZnXgMxC8BqcZq4iKxbyYF5DfTC9hvqCDwmh99dlfRVsJWFooq4LRAM0Vx0iofnN2
-	HLJIZsTnR4X/5xu5Robdl56UB3TF650=
+	bh=9tOd6PpRPU/jaWpkEZh0iLAEcStPnZBl4J+E222fKyk=;
+	b=VC2RxP5u/AubdM5eePtFMjst1KEMDRulQ7pQjCyUfau9thaXw2Gg/oyxJaF422IJX6ugKI
+	VG+38u37AyKXHW7zmR3YIE4ACflGUYc5vmiWorbvCx5qdQM1s99iWJeJpUH1s0MHX+M5P+
+	gtvE8SBie7Lt0B/1cgC7+vCqzrvzPIU=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=cb1+nKww;
-	spf=pass (imf02.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Kc9CsGgZ;
+	spf=pass (imf19.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786531764;
-	b=A5mXQgKeh3s8ij9o7jFwVkX+0QHkFbenCxIJ57J8WWmMYV22VmW4xr8cjcjvXs7NTmUTpZ
-	u2/htyg/foGGl26E6Q7untcwwEKj4cWD+M/RfYBpMKKktRy7VZ39OWRkYpG4W8sOSNJGP4
-	WaZ6/UuN2r5rHBWI86crairEPIjnOC0=
+	t=1786531844;
+	b=we5GxS0V6KZgrKOjoPOQw9dfkTY782bgDUxUbU6hn79oi5hE5YdjB+H1rSaeDbpgbGCbeu
+	CgqP4WDzMIkVciyym2ylOxKdCJVoPZLEaH53tuyvkmR9hDhkdruVNZIX2oxx+xw3E6GUeh
+	et+rguiP4Uu9utS4rGbInvU8KDL5rw0=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=aARderwjQ6N4kQxpGMM3ujaudWzwA8axkvxYGtg/BE4=; b=cb1+nKwwBiZzY0YKxO+M/J4Utc
-	oLwn0Cbv2qTSbjs7MdJLK9qDMiRRJXCtu7Q7HW8WhcqGmbBsK/dUEHgJlu9CCQ68HfCREZoLS4jDT
-	IhlPjLEMslK8MvgKpZUWw/ygpPh7+8M5gZiQUIHwnQbyt4B2pxXSoneLA/RvSDIviElTg8Hy7jg43
-	C2QftDu/PsUPkfqlpUXApLIBDmZixqjX0ybAZZ/icio80qJuLr5Z5m0hRq00S6qj7Uk8SWLXScvF1
-	ZaD2XtKhO6CVzTQ3A1TjlPH1MkgZGjJLEGG22fHxxx8dPpijzrd7hUOnjzuaewzA0iXa+XsGMBvN4
-	ZOQNJLrQ==;
+	bh=9tOd6PpRPU/jaWpkEZh0iLAEcStPnZBl4J+E222fKyk=; b=Kc9CsGgZuur17iN2D221RDMhj2
+	DcexZeEvhqKDDpgjdujdSRXnMZLhifzhaXSCbWHPYOXR5gr2xPoR0Ba95YP+I4OAeAYfEOGA3io/e
+	lNI9WWre2RHJC7vsBTKfOHEPZEHrX+CSlvG5J9uf8CoutJSTvvWJADYAYga5Qzbu9fRRaIwzIjBbT
+	D7tRC3pjpBMaq1NpTybBB4vXcOT7v8iOnfTmTLBeuR34EOyGgB+s0NC04cli07ynOByX4Q1Nk8CY8
+	D08zHJXD3i4imeKqH072dHxuOsfeBm2Qv7IefHeign633Fm0ElYMpRPN3311ONIEU/+Gg9zMge3il
+	tTNP6QTQ==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wu6W7-004I0K-2V;
-	Wed, 12 Aug 2026 10:49:04 +0000
-Date: Wed, 12 Aug 2026 03:48:56 -0700
+	id 1wu6XP-004I1e-0a;
+	Wed, 12 Aug 2026 10:50:23 +0000
+Date: Wed, 12 Aug 2026 03:50:16 -0700
 From: Breno Leitao <leitao@debian.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -79,25 +79,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
 	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	kernel-team@meta.com
-Subject: Re: [PATCH 2/3] mm, swap: distinguish a malformed swap entry from a
- dying device
-Message-ID: <anxOqNmL24Cj9A7K@gmail.com>
+Subject: Re: [PATCH 3/3] mm: fail the fault on a malformed swap entry instead
+ of retrying it
+Message-ID: <anxPuemqdGrQQ9xS@gmail.com>
 References: <20260810-swap-v1-0-375ef0767206@debian.org>
- <20260810-swap-v1-2-375ef0767206@debian.org>
- <da69545e-4b80-4cd0-8d70-a73023445e9f@kernel.org>
+ <20260810-swap-v1-3-375ef0767206@debian.org>
+ <8c16339b-6050-4a5e-aa89-9f2f96e7dcb4@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <da69545e-4b80-4cd0-8d70-a73023445e9f@kernel.org>
+In-Reply-To: <8c16339b-6050-4a5e-aa89-9f2f96e7dcb4@kernel.org>
 X-Debian-User: leitao
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D56B880005
-X-Stat-Signature: a9iw4c1zmxm63of5f1yomp4hm7h6a9md
+X-Rspamd-Queue-Id: 0D58B1A0007
+X-Stat-Signature: 6dkgjahnx6x64goio1x1p9qgrqk9axqp
 X-Rspam-User: 
-X-HE-Tag: 1786531764-454672
-X-HE-Meta: U2FsdGVkX1/Fv2TfkdL7loQlIkF/wwmD3d3Dfvr30Q2S9jEv5LtKrsOs5okdgPMTUMap2PVokKpgsVTlCGukYWUb7GrhZr58F6fLUzryCFbvk/bQHhJMq4wUVxk5m1dHv3mg5he7py4g9VeBkG6GqXLnJvVc0INOkichkUMaZBVrk9NKuAdQXxGxY3My884HS7RHo4ncCOxQ7PlYQG9ra/UrNxkCZktjEVuVvvHf+Yc/DsD7TQb/XSWHMwRAHqk7qsRe8RPp/dLT5OoumXaSrkta+/pFfuVD8bjPHefuMBlPkvbbujUe5/a2xHuXGbydzG02SIV4jA5s5+HWuTphh1uBT5Cmu1Z8bRE9cwenZp+f/0iMYWA1V+dQs8fexeHyiJfy0rJN+qe72E7VkHg1fb5UWrpGx0v8nlmmkH2CzJ2RhiIRVAyid+WR3iuyt54jTUAAjOwq6/S0Sw0WxI8DBjR1tXVx1vfRohCmtoN8Hn30zqzpM6WY90m0xKoLp+I+S7MkcY3/17GwrcgOkO58U86x91OHtgXHLCJMzi+MaZxuQQXebT0VCidlE+VNVBRG+zYHwp6e3yp3esASD445EtYzg5ZeeVz+F0XID/oU/zeeiOUpIRfMlv1TvtDBt2xvWzTQYTJ2/BuJmzEslr1DgFHIlcud/H0oEl9iCZiNNMFAkdSah8vbowGjYCorqQDGiP3ZbQSc4ZrHcHOGTB9ThVKqKXlD0zDz5pwDfxdAwX/VRGvPqboA8uamp+MIEmtE2kk8P/kZOGX8UPVasy6SW8QEN01cwPPHLBbNKJdEwh340Ac97xdAA4uDMaynpwNVK+pCbyeI3QkbK46IZVIBopMWECbg3EGVoR9hQFLAelaLp6TOiAvsBOBZrxdcQG+KGFh4/B/u05IY4XFNTjdbKcHzS/7Ma/8K5reRTvhzvuEjCLgjrFOP4Dq4KlCZw9DXVVrcibcKv1EfxY7kgio
- 3qTwC+bX
- heVyQmfZjCRwD7g5KmYoEZBMHPkJ0dwmjF+ZD1LIaQv89nAjFt7t6+JGpT/uuzGla2mNupJ8pu0qQqE/6xD6xFO5BO7IroX5Jl5s7aaXHShXG/AcmZLbxsrf6b5swHCIpYGenfsLsnliJzC7vAq/bgN+vCtsOaTD+QQMrVdp2n7qvjCnaO+KEpS6FsVAzaWsySsiwBF3UuRhhXYZo+mG7fn8ri9l3X+xHz3yDeK3CZmahJzldUDNY0Ua/GI0tCioBtYS7
+X-HE-Tag: 1786531843-28998
+X-HE-Meta: U2FsdGVkX1+sO37sWgCGT9Vxk7O0pWEQJy+d5sFFNbd9aInm0qfmA7orilUhWoD52oB8TaDnOIhfzHAdHTiuQk+zDpZhCJGLhL+bcOAFZZ3kX4RT9qIifrQLZNRxqLMpt/f0ctf9pzCMLuddoCnhA5IRthm07MD/xx4Pzy/Vomi55l8MafQvBYaB0YPpk5mC8KAkiRfmDXs39hF3l4jKGtBIYmhb25zvSpzmOUH2ZV+vN6aO7N2cHBSVhRqM3R/LpcJjGVoweMvFYTzvvejrFmT6prgnM+CZTY+d0AWyadBzw4hIsFjSAwR9kLMMfYToEOUmQe/nY50fwOL8YmFKJDQwDuevr0JvjxfNeJdO5gTcvVaVfTNnrOcJDJ9v0lToV7YFot4zNSlxFtKH+BAjpSX5hMcrl4NEV78Qu+KjPBHz/ay1vZ2UOey2D96qrzQBSVNKNuhGJM/yE5xs8ji++EcagpsOvhfQlmvh+sC/gOtDaBuvOBMC9/vZb09tyJ/iqkzRQt4u1Zjm+Z/GpTnSKYhOF0nAkqNxB34k+nph4EowmwULENgEIRITzx9ZEFW/2QekqELQ0PmBIJf+uqFgVYLRIHGN7407h20AE3eyWEpEvTIl7TKEhDzLtfNY0O2xl2t3qEfKHRl41eWHFGBlzdf3XZ2cDlch8RCWzbE1DzLTRnOhB40Cd/htGyOu59zWx8qP3hxm39Ys8A0Gwjz8/0nspTY/N1YNsVBN6nA/0qJaF/v63RRxmt372KaJpMJkNUI/9Yk85pEh0SajFgGMf/7tPj5ZULR/G5EzwNiSGwvcJB9FIEJ77b8nJUrKG1ypjeWicCTQFA9pd7PpfnP5dfa2DoNHdpiMfA9z7mbRitIcY9wTkh6vp1LW1SLRVUjFPIzzABnadxZigHF18u8zmi3ydX8pYHvE2acvat4eiF08wInCwqdsVSrlLx/HgFN+0QBG2ZDwPyWFdpEw9vC
+ QDR3O4Uf
+ BL80lePYYGiJE0MCaXUP5PxjQeJEnI3Xuc1afEAaupja3RK/PF7ZlO5nMGB+C57pLMybMERT9YJNcQeiKeoJULfsPX6f2jrb0TMZpWx2CNcZJ18C+t9Fb+h9Ngwm0fJ7BfIHo/vu5IfGfDNVcncYC6bZjG7HOQd11DALOCmOBW4rWEwmRRMe+ykjZclDQeBcbnMK05tBEJR39bXDSOUppue2DjAbYI3qq1Q3JcFZAjo07jCXGeW0twG7TXvB4NMRKWF1l
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,34 +105,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello David,
-
-On Tue, Aug 11, 2026 at 05:36:31PM +0200, David Hildenbrand (Arm) wrote:
+On Tue, Aug 11, 2026 at 05:38:50PM +0200, David Hildenbrand (Arm) wrote:
 > On 8/10/26 18:26, Breno Leitao wrote:
-> > +	return ERR_PTR(-EINVAL);
-> >  }
->
-> Is -EINVAL really the logical right return value? Running into bad swap entries
-> sounds more serious to me than "-EINVAL" :)
 
-Good point, maybe we need a strong drug here, what about -EIO?
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -4957,6 +4957,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> >  	/* Prevent swapoff from happening to us. */
+> >  	si = get_swap_device(entry);
+> >  	if (IS_ERR_OR_NULL(si)) {
+> > +		/* A malformed entry never becomes valid, so don't retry it. */
+> > +		if (IS_ERR(si))
+> > +			ret = VM_FAULT_SIGBUS;
+> >  		si = NULL;
+> >  		goto out;
+> 
+> Better update the comment above get_swap_device() to include "bad swap entries"
+> as well. Best do that as part of patch #2.
 
-I picked -EINVAL because it is what the swap code already returns for
-this exact condition. 
+Ack, I will update and respin.
 
+> I didn't look too closely, but conceptually LGTM
 
-	* Returns -EINVAL if the swap entry is invalid, which might
-	* occur if a page table entry has got corrupted.
-	*/
-	int swap_dup_entry_direct(swp_entry_t entry)
-	{
-		si = swap_entry_to_info(entry);
-		if (WARN_ON_ONCE(!si)) {
-			pr_err("%s%08lx\n", Bad_file, entry.val);
-			return -EINVAL;
-
-But, I do agree -EINVAL is too soft given the situation we are in.
-
-I will return -EIO in the next version, if I don't hear any concern.
-
+Thanks for the review so far!
+--breno
 
