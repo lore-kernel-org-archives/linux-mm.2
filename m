@@ -4,92 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0786C5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:06:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E32F8C5B56A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 10:08:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C21946B00C1; Wed, 12 Aug 2026 06:06:48 -0400 (EDT)
+	id EBD566B0108; Wed, 12 Aug 2026 06:08:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF8D86B00C5; Wed, 12 Aug 2026 06:06:48 -0400 (EDT)
+	id E95716B0109; Wed, 12 Aug 2026 06:08:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B36E26B00C6; Wed, 12 Aug 2026 06:06:48 -0400 (EDT)
+	id DABDC6B010A; Wed, 12 Aug 2026 06:08:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 91B816B00C1
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:06:48 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1F94DC016B
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:06:48 +0000 (UTC)
-X-FDA: 85092188496.30.023CD4D
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D68B91A000D
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:06:43 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ukPsUs3H;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B6B866B0108
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 06:08:54 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3F325401FA
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:08:54 +0000 (UTC)
+X-FDA: 85092193788.29.611AD5B
+Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 47B2980004
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 10:08:52 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm3 header.b=DcXGvPte;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="U jdjRg4";
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of contact@jaseg.de designates 103.168.172.142 as permitted sender) smtp.mailfrom=contact@jaseg.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786529205;
+	s=arc-20220608; t=1786529332;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=whbGaMoThWv2dBW7Kxk5/d4zBPlY4UqC7T4kOF653JI=;
-	b=AZwCEv9jz4Kyt7Ay8niYTOrGge+CudQWQwATelDlu17TM1uEON1tmTQk92xPbJSWVIthP5
-	a8ddU8AibsD2VfzdHzVtZ+fPC1yceEJJivANaMEszgFY195G7yN1GXOGAEYGokxNxtVBEb
-	qE/Ao52b8rTvKzqRexwh/+yWO3+lJVM=
+	bh=bW88MBwEWiHxXalK9p7mEtRxunSdhzNV0Ppwj/k9i1k=;
+	b=rmskmLH6HhTx/qeUrhgRJD+mNg2oQuwDsMJ2FdzT5nRjx1+PLhbdirOEns+6YDLQmYa2px
+	OJs8vvcUrmxDGe2VDoXdTbi8y74Z5UxPcygJsw8l7ZfOhk+8CGSLqyrhneh3vYSSrY0Bgv
+	tO8xHkMgl+w/Vr0U7Ft4pPe0LxtnYoc=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ukPsUs3H;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm3 header.b=DcXGvPte;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="U jdjRg4";
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of contact@jaseg.de designates 103.168.172.142 as permitted sender) smtp.mailfrom=contact@jaseg.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786529205;
-	b=ihnBs7ziMeWdYoFAp39mrsgXJ/vSB8cq+VPsQMGRb9wpnBmpoC47PYgm9Mj1CVWFplHdhY
-	C0HawN5VswznH6KUiw8JFnvvK0oKeav94bhg+HG+6tk4slp1iK4ppJhGkHGVpTGG+4OwNC
-	QSKbN0IkDfyyJrdgYTBBlJvLPiZu5uM=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1786529201; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=whbGaMoThWv2dBW7Kxk5/d4zBPlY4UqC7T4kOF653JI=;
-	b=ukPsUs3H5gm/TgSR4DKe2upzPVQANr3kkcPMiiAl/AuPeWMgMzUaC+TeBzs4X3tbUI8A/ST3BMtWbsXN6pW1gvv5KUzN6rjS0rJQmbPFFQVoHuRrClTceHTpSLwmqF59MMDMvLMZTPgF90MMTAlF3hTbqyOJ2u6vJ1+HwpGs9rk=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R261e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0X8rG3jP_1786529198;
-Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X8rG3jP_1786529198 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 12 Aug 2026 18:06:40 +0800
-Message-ID: <9ac2eb18-1b8d-49b1-bbf5-757c4164c566@linux.alibaba.com>
-Date: Wed, 12 Aug 2026 18:06:38 +0800
+	t=1786529332;
+	b=VdygeDxIDKls38ctoYUPD21P0ug7hOJ3XzTT2ACO4CHOPsdDkbrC+q+86HaT1spAClp41G
+	tjLikDw1MECjoA39605HCX3z6+EUMwNtSizeXpgXPrcE4jzbJyC+F3Y/BoQU8XJ2OIZGAX
+	+svLjJgfoxuDAHv3hzpHXyx9jJW7W68=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.phl.internal (Postfix) with ESMTP id BBF2A1380318;
+	Wed, 12 Aug 2026 06:08:51 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Wed, 12 Aug 2026 06:08:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaseg.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1786529331;
+	 x=1786536531; bh=bW88MBwEWiHxXalK9p7mEtRxunSdhzNV0Ppwj/k9i1k=; b=
+	DcXGvPteCscZI/GwRFTH4mv+X4SBB/L2nxEuJXbaNHkr7F0smm74zCR8ytyfyDK2
+	deNYonkvGo9MorQPdzMgQpumMiqEhc8kh7MDjUKKqGqjt+dgXudLF2NAd+JuTt7x
+	UOp9kU5qnPaxYmSlfLw9SLn1YvREorfEChCB8Vdv59wlD+g3/yCoYgGcpIqSe4Rc
+	Qq1tBLIylDAWQwRLdfmoCCE0zKkoMgVOuw4NGvt6C++AcqG/yFKk+wuMQ/frzzUe
+	WpyHueUkS66e1tAjVlj6aRNRY0MVy/A61UttJXizY4zHHKHxwuCQ04mYK+JdJibV
+	BW5DkvddWVJNd+e4921zzA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786529331; x=
+	1786536531; bh=bW88MBwEWiHxXalK9p7mEtRxunSdhzNV0Ppwj/k9i1k=; b=U
+	jdjRg4+0h4GBVHbZWuRmenc5MOZBfXytCFvmTozoVejQhqsVKAEMlXEwYPkPtGUf
+	ngjYTyAlntHn8cPfnVBmFXK6yymSNOQjVjq/zODcJ/9KAsZQleveajikxRPmdHh+
+	f0699mdyLBUNwQDcrQyRiireEzWnN1ycYuWE7UFyW7W5Vk+y62fJjCiUztDkiwHF
+	hSPudpSXapetWUF82JoBdX+pfYcfIkKdL7WAcPaR+mxL4Agav8Dq2b1FFMhPkhW0
+	HB0CWybFVT+kC+5ykPmgP4BfbRihc8/zeqNji8x9JptmpqNW06HCLUF8eo8SwZoq
+	IYnBLOl1NKyId+2gBMSzQ==
+X-ME-Sender: <xms:M0Z8agx7iq5l6vNO6xYCruRD2E00yv5vuI2Kb3O7lpjSeZknJuQQxg>
+    <xme:M0Z8atE67uJ8acOVlANAZcbJPqLF1EXgJHG8w-W29FC42CpoMUpPc6zJZrUmQ15pJ
+    vbAW4CmdwXunbNC3IL4ubajn9C7kB0m_c4Th5Y1NuVPh6cIuhZOS6A>
+X-ME-Received: <xmr:M0Z8ao6-Ga9RNzEg3L_Tve-n8wkgt46prWBGzOHpl3dDvS1SWuS8m7L0jyPxpVTOqCKd2Q0SAuTvsdN3islXKgI>
+X-ME-Proxy-Cause: dmFkZTFhXuUc5zonLNYLcZR1VVfiawIf/DLo3p0z5ttoTk/im5FO3AIzDhACbr4L+QCnil
+    kioW5B72/SP07lPyYbCILOUlCTgqnf/GMHpVt2rW3DvDsF8fWXLyV6Ac927tGENmhoEL+J
+    Z6CH2rvUSCSrM3xrC6dBhmoeT9oKOxUe4lTyzrsaEkFV1JXqZigC3Blmzh555hht6TIiKi
+    4nTF00vMvYIsG9kgYkE+A7k3OF7cYtOAnFjzfRjDuHBWPJ8P5jOo39HJ5TosgHthcL4QlG
+    P7LPfpZKOLHflDDP05PIzu6Ek0lvi9TNUbB3XsXC6/c/eoqN+joQ+KYmRU6qOJdnW6tfk2
+    b3LcfBVqFT/qDJEWQC1jHMYXTbxwbN1oIMefnFPjOiXoCu9W7XlYR2+Vi6xD+4IcDtaHDf
+    3Pk7JEFjV5aRi/7eHGIdN9qQLITdCzsUHDcCHNYmXmuCjX0de6WRjIKRBxkr9zr/UoSGMy
+    BNKaooHXOUsyG6uKaR7kNVptOhuOAnNTQ7wosLA3fxbSinTppxLVYVo701XXDmkSXpvxOt
+    2fnf6YwlDC373uXVWWSjQbW5oUSUiaeZBnj2S+q+kGyVEaXlZUP3YiSxUlbXsnbIPZIJSU
+    LpZLpLWNEokxMls5XhgH+3e+Mki9vSCEGaM/bL8SmICNy1uQbJHeVjIUfaAg
+X-ME-Proxy: <xmx:M0Z8ar5LFW4HLTNx65wrmfFVFhE9YUH4fWdaEbGOL_R2dQ7JIIx9kQ>
+    <xmx:M0Z8arveqDruVQu_W3KqNZ2-dNqOPrxild92m5A8icNTm2aZXyRXQQ>
+    <xmx:M0Z8aoGd6MFhQRaDPRdZ0DLf5Q5xuyIoonETpFoTn-LlvXMTUatv4g>
+    <xmx:M0Z8ag6NID7YDETuV96A4Hm8RKzm3lppAKyjDREHWTD8S7uA_ah42g>
+    <xmx:M0Z8ajPt2vz0J2SwGT_bgJZVQ8rEA86QoRBfb4QhSwW7QoKJpm_Hd2Xr>
+Feedback-ID: i60a14417:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 12 Aug 2026 06:08:41 -0400 (EDT)
+Message-ID: <9765f7ea-36bb-4c7b-a19b-7facec97b762@jaseg.de>
+Date: Wed, 12 Aug 2026 12:08:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mglru: fix and remove redundant unevictable folio
- handling
-To: kasong@tencent.com, linux-mm@kvack.org
+Subject: Re: [PATCH v2 01/13] kexec: add CRASH_WIPE_SECRETS to wipe secrets
+ before kdump
+To: Baoquan He <baoquan.he@linux.dev>, =?UTF-8?Q?Jan_Sebastian_G=C3=B6tte?=
+ <linux@jaseg.de>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
- Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Oleksandr Natalenko <oleksandr@natalenko.name>,
- Suleiman Souhlal <suleiman@google.com>,
- "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>,
- Yu Zhao <yuzhao@google.com>, Steven Barrett <steven@liquorix.net>,
- Brian Geffon <bgeffon@google.com>, Kairui Song <ryncsn@gmail.com>,
- linux-kernel@vger.kernel.org
-References: <20260811-mglru-mlock-fix-v1-1-8b2321d0e1d3@tencent.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260811-mglru-mlock-fix-v1-1-8b2321d0e1d3@tencent.com>
+ Mike Rapoport <rppt@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Dave Young <ruirui.yang@linux.dev>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ David Howells <dhowells@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>, Lukas Wunner <lukas@wunner.de>,
+ Ignat Korchagin <ignat@linux.win>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>, Keith Busch <kbusch@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+ Sagi Grimberg <sagi@grimberg.me>, Trond Myklebust <trondmy@kernel.org>,
+ Anna Schumaker <anna@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
+ James Bottomley <James.Bottomley@hansenpartnership.com>,
+ Marc Dionne <marc.dionne@auristor.com>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Eric Biggers <ebiggers@kernel.org>, "Theodore Y. Ts'o" <tytso@mit.edu>,
+ Jaegeuk Kim <jaegeuk@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
+ Mikulas Patocka <mpatocka@redhat.com>,
+ Benjamin Marzinski <bmarzins@redhat.com>, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org, keyrings@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-nvme@lists.infradead.org, linux-nfs@vger.kernel.org,
+ linux-integrity@vger.kernel.org, linux-afs@lists.infradead.org,
+ netdev@vger.kernel.org, linux-fscrypt@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, dm-devel@lists.linux.dev
+References: <20260811-crash-zeroize-rework-v2-0-9561d13c2340@jaseg.de>
+ <20260811-crash-zeroize-rework-v2-1-9561d13c2340@jaseg.de>
+ <anw9ILJiO5xIjP4f@MiWiFi-R3L-srv>
+Content-Language: en-US
+From: =?UTF-8?Q?Jan_Sebastian_G=C3=B6tte?= <contact@jaseg.de>
+In-Reply-To: <anw9ILJiO5xIjP4f@MiWiFi-R3L-srv>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: kpgyrwfy9eukzxxebh3utp7ajz7yzqmg
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D68B91A000D
-X-HE-Tag: 1786529203-940708
-X-HE-Meta: U2FsdGVkX18NXCZRC3gQFOymkvwNhXH7Ew5IuJ+XMbAETlPzB2rIjQiE8TgL83TFsw3BZ/QeRLyeqNUQqcaYdqHLXy+HXWYEpq1dd5rKBxSp/1yg81sZHT7Vt1rnRxXBF1h9UKmfErrozXPS/h1hF4pw26cmun5IKKBOm2lavh/q2I86xCgWQxKr+GpGWUUaVHjrDHEpE8Nk/zuFC4p6LtfeBm0VvQzESyVVUt3Vvc9bgdt10DuemLvI5G2sClqXIkgcerm7/3GU22S6bRzn+K/ryNvOloZriY46+lrncJi3p4oQY4oC2nOBSTTSfk8s0Xtpdqc/dNBU+571i0cyyYM8Jnd5MqjAZo9uOoDMpVo15BwEBr1CmrRt6L3ID2u2IrRMWtHmtOCuChlY9THTZk85cZf1NyInZUDcIQjrNpoxWIeXHVfQhuZuvVSaSXxLIW/fKXs8p6uGYVj7VMWyRmckDnCIdON4+jBPVMAhkqgqpR7ZqFqLeOZFvQRPWCFZZ932agw88uoBk2EGBLzzCV9COs4+26zu9Ux2n9GECJfsoIJa8+MppVULfaUx+22NMojSYku9I1wo5DICqfkXSqYz++O/epaRp7xiSs6q+iKTlfnyGl5cTSDgAALWEdTaToXggjEcBYeuPfyqY+p5x/g4HCRhTlQacTYYcO25grgwFKvV9ucMUonUSp2/CgsATBBiIpxbu1n35rO6cvC5jUo6SlpdhPJvKsZBqYJDZZq+mNeXakG9G+w8jgSfSe3voWP/+5MAejULvJpHd6u9S+bxGo0BliuCuHm9wlmK/NcFJ0/B2W9nleVLMp2E0Sdn23oyhXZWnFhKTBaP/VcaxTm3eI2WLBNY0wqlTRhBr7pPQVX4iI8kvyhKJgjE5eOlgGGy9/R7GBinatTRXexhTbSNJjRl3wNPlzrSkcmCSWshN4cy7EJfglI9OccdZDaEK4xYvkj0Nj9J1NaUHBz
- Xow8pMqr
- YTPfnA971QKBMR26ZwFjBYM3nrngd8r0WO0Fd6MqP40kJ+s7RextAe8h253NPq0Kk4RJPAym1VIRAYswwaZyx/wtLMyyweyXhP12/HqbKDsgfMsSh1kvhSxUDSTBLiYTjoKwCUdyJtNqBQBZ9zsWFkrluWuKC2Vdzge5tLaqdpumxy57O6FkcwjU/5YcWcCllu+5mbeGgBvN0WKeg9vHxM/UWG1HMOZKK4Q7pSGXogX4PlpdKNxDdCx+TmWgcQ6X264iD3b4uqce58Fa3WXZzlYX0ZHo4jfyDOMFCWJQ1VX4uxJEEWkKf8Fcrjafv2h3ZFP9Pj4o/bgrYhfQ=
+X-Rspamd-Queue-Id: 47B2980004
+X-Rspamd-Server: rspam07
+X-Stat-Signature: hxajt1ioq698epowsf4zq1s3wyku7u31
+X-HE-Tag: 1786529332-613521
+X-HE-Meta: U2FsdGVkX1/Dcqg8l2vX0fSJoC0mpKj82a2CxDb8uekDvogrdaAq7n6xp135zNONNFrYYbuyF3IMANknR4kkeEqI0u/wOmSCib04BaVCOxEWfH7DmBwrVRadWt4bDoCR4UJJIkW0dHmWh/tO88Mvk3KDnjbYjvWAZhJfdLrno9NHdpqnCvIrdejKFHd1TIm8+NWHhlXPTiO4p6xlLw6IjO271jX1mLtTKmE8lEIpJn+3WY33p6Lv3YxeaXkKJ+5C/YplOp9WD1g4jDiiiCbYZ0Wa1Vu1gROkuIjkag5DRYOXt4bLFWMIrnGVb4RJf640azbwrUFXq3y6kBUP5BywXBkcR6o4L3xT3sKiHzYKNuOZDT7cNxRNhaUvdA9QgumXDc0j/ItikzknCtpHJKM480goUrqN+wyyh6BoT2AMdTkG1TF3/BzyhF3zDS7NcEnqDo+8QC1o/w//7WEtD32HmOwf3uXMZMntMRZa1i8/oDxTHOxlJ8/jWfC0eq9w9cugmy23couHNTHBq6jmEPaS3MIsxE5XL0mLAXoZJIeMeItvwGjHRJ6ljRrOQ8LMIiYZoxL/CwAeTyQTLHYex8NICxZhgTT97lRem8yw9G5TfzveyRQfOTzEjfaGVCLwD5BilxkJqLGhA+B2eV3+TFfsNqEMYmu6PtI4GgDbZXivpTLUlrGyLTlB5xHzT/Ufh7daoSu8UGyz33YFazCyt+bIeZEvO6zQ+MQgLSIYMWTjf/C5OfNpVKL9Pf9Yx5Bn5zBP0yasQXKz2/PYjz2+xIcQV5L15qMYG1j2d70YqJwa4tiLrTzTbC1APg5GXe06s3EHpclp+LXEEWr1mkqyITxdhMsIJ5WOJPGTo/yCCX8Ji0Yvg7M/ESqWmncY/QVTePH3Iz+ySAOsTItADAFrW776ANLYKSOaHPwPbZkpR2g5N+JMddaqD1r2fdatnNxOigG8ZRP2n9mLVK0dyJFnbSD
+ g5X4mgQh
+ zTD5/fA6yg7mRhTbI0aWFTIJlfpG+jPQdTarFzkidj1HWKiM8eFxUezeSzR+ylcQS9orxgDSnfJ3M5SctBBB+aTM3bDraBrFiwafSwXf66ukKBIk06KWYVId9CUlj2pwSLNiGtOiAdBT11lK2uDABcZYlcV4Ept2kfbdZS1eLKK2sfC7R+Ko7ybDwYDgeYjKUDpGN3KWafbHYRnrYeq+YPW2liQcvCPMARvyfKsK8VlGQ5XFT6T028weq/0jhkPOf1gneo7D0xwyB5zWe9jPyVmo/UOJ7eWWLSNOYHlwZ4xYjS1tDGyxB9FeFDq7H2coZk0Xv0ouMc/4+Fs3on2d9vlRyUIYAU//vSaLHlPwcXn5LBOgFyhaP2FMUPW+RBBi0MjcyiLx9DkQ7BtbenvPFryusiBo4dXsDRAKFKemKpxvwwrklJo9t6uC8cZdwKExTy3+yabnyduldK+0iBquoWbY/dW2Y+9ApfjwyJLnmpWWb80XdM6tYseKJsbur1oq+8qkZ/xfl3aIc4GJ7Q4cnQOqdYg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,56 +166,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 8/12/26 11:30, Baoquan He wrote:
+> On 08/11/26 at 07:52pm, Jan Sebastian Götte wrote:
+> .....snip...
+>> @@ -142,6 +170,7 @@ void __noclone __crash_kexec(struct pt_regs *regs)
+>>   			crash_save_vmcoreinfo();
+>>   			machine_crash_shutdown(&fixed_regs);
+>>   			crash_cma_clear_pending_dma();
+>> +			crash_wipe_secrets();
+> 
+> I remember when crash_cma added this, we argued a lot about the risk,
+> finally it's added in with an added note to tell it's an opt-in feature
+> and risky. I don't know if it opens a Pandora box, I think anything
+> wanted being here need prove anything else has been tried, and the thing
+> is very very important. If we don't guard the door well, one day one guy
+> cold come and said I need ask Oracle database to do some transactions
+> before juming into kdump kernel because the actions will save billions
+> of dollar.
 
+I see your point.
 
-On 8/11/26 5:40 PM, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> sort_folio() has a shortcut for moving folios that are no longer
-> evictable but are still sitting on a generation list.  However, this
-> shortcut is buggy.  It does not follow the PG_lru usage convention,
-> and it has a more serious issue.
-> 
-> Unevictable folios are not threaded on lists[LRU_UNEVICTABLE], so that
-> folio->lru can be reused to hold folio->mlock_count (see the comment in
-> lruvec_init()).  Hence lruvec_add_folio() skips the list_add() for them,
-> and every other place that turns a folio unevictable initialises
-> mlock_count explicitly: lru_add() sets it to 0, __mlock_folio() and
-> __mlock_new_folio() set it to !!folio_test_mlocked(folio).
-> sort_folio() sets nothing, and the lru_gen_del_folio() right above it
-> may have already poisoned folio->lru via list_del(), so mlock_count
-> ends up aliasing LIST_POISON2, which reads as 0x122, i.e. 290.  The
-> result is user visible.  On munlock, __munlock_folio() decrements that
-> bogus count, finds it still non-zero and bails out before clearing
-> PG_mlocked, so the folio remains unevictable and the Mlocked
-> accounting stays inflated until the folio is freed.
-> 
-> The shortcut also touches the LRU flags in the wrong order.  It calls
-> lru_gen_del_folio() while PG_lru is still set, so a concurrent
-> folio_test_clear_lru() (e.g. compaction, folio_isolate_lru()) can succeed
-> on a folio that has already been taken off the generation list, may
-> lead to unexpected behavior.  The generic path gets this right:
-> isolate_folio() clears PG_lru first, so a racing isolator loses the
-> atomic and bails.
-> 
-> And the shortcut is redundant.  A folio left on the generation list is
-> picked up by isolate_folio(), shrink_folio_list() sends it to
-> activate_locked on the !folio_evictable() check, and evict_folios()
-> then hands it to folio_putback_lru(), which sets PG_unevictable and
-> counts UNEVICTABLE_PGCULLED from lru_add(), with mlock_count
-> initialised properly.
-> 
-> There is no performance concern either: such a folio goes through this
-> once, and then it is off the generation lists for good, since
-> lru_gen_add_folio() refuses unevictable folios.
-> 
-> So just remove the shortcut.  This consolidates unevictable handling in
-> the generic path, and makes maintenance easier.
-> 
-> Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
+> And what does security people say about this wiping? Is it very
+> important information and wiping is mandotary? There's no any other way
+> to wipe it or pollute it, no way in kdump kernel?
 
-Good catch. Make sense to me.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+I'm doing both - my kdump kernel does a linear memzero of all of DRAM. 
+However, that's too slow - it takes several hundred milliseconds, and I 
+want these cryptographic keys gone within no more than 10 ms.
+
+Doing this in the original kernel is cleanest I think, because to do a 
+targeted erase in the kdump kernel, that kernel would have to know all 
+the original kernel's symbols, and it would have to forensically 
+reconstruct it's memory content similar to the crash utility. I think 
+that's too complex and error-prone to do in this use case.
+
+I can imagine one alternative way to approach this, tell me what you 
+think: Instead of registering wipe handlers that memzero places on 
+panic, I could put an optional registry of (addr, len) descriptors into 
+crashkernel memory that the original kernel populates with the PAs of 
+buffers to clear ahead of time. Then the kdump kernel could do the 
+actual memzero. This would remove all code from the actual kdump path 
+here. The registry could be made per-core to avoid locks.
+
+> I noticed it's
+> happening on en embedded target, is it possible you do this on your
+> embedded kernel tree, but not mainline tree?
+
+I could keep it in a vendor tree, but I think the functionality is 
+useful beyond my particular use case.
 
