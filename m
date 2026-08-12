@@ -4,144 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7331DC5CFDB
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 20:57:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAC1DC5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 20:59:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 501746B013D; Wed, 12 Aug 2026 16:57:08 -0400 (EDT)
+	id B470B6B016A; Wed, 12 Aug 2026 16:59:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D8406B031A; Wed, 12 Aug 2026 16:57:08 -0400 (EDT)
+	id AF7D76B0172; Wed, 12 Aug 2026 16:59:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C7C86B031B; Wed, 12 Aug 2026 16:57:08 -0400 (EDT)
+	id 9E66A6B0173; Wed, 12 Aug 2026 16:59:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 190E06B013D
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 16:57:08 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AAE4D1A04CF
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 20:57:07 +0000 (UTC)
-X-FDA: 85093827294.17.F13CB57
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id EF78F180007
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 20:57:05 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Xn/nWXs9";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786568226;
+	by kanga.kvack.org (Postfix) with ESMTP id 564196B016A
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 16:59:44 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D3ECE1A0499
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 20:59:43 +0000 (UTC)
+X-FDA: 85093833846.30.AB0F850
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E38DC40007
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 20:59:41 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fOQaGiE2;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf04.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786568381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+9ZFW+aVhLGxLPkKWmi/fbYeB5bvrDK0sOMD6gIL560=;
-	b=vLjm2EYw3JwjUOZxPhNZALT+jg+EjlGSrOrRnXDaj9HD6MTzaYXJ0NnOXajFInG5gtFB/F
-	g1+whJfxl+40q5czUS++vaTWEcyEbNSLtzDd/t5Sf6hEfZjqFowqV3jATX7zP/92DRJkY+
-	LKyhf/ipLTISuaj6pluAA4f2NsYn/1I=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Xn/nWXs9";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786568226;
-	b=Hy3Sk/Lbp7amz9vsvkSDqLlORoBfIRVg4phQc9fbh8PIloA/y5wimjycCztK1Hd6aKjPVB
-	hjsIn1n9SizMPeCGYc7xNNBil9q1O4agKJUjEKGs87jISdaLqZdAwI335ExcrZrP6hxlRi
-	6kpNOjc+xPX4sra+QAKO+BlwtCRC0no=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5ED9C600AD;
-	Wed, 12 Aug 2026 20:57:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9811F000E9;
-	Wed, 12 Aug 2026 20:56:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786568225;
-	bh=+9ZFW+aVhLGxLPkKWmi/fbYeB5bvrDK0sOMD6gIL560=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Xn/nWXs9fsprt8KNuxsmV8ASDeOoIb3H3jnEU2ohhQbqJ73DTBSViJ0gACuAYdMFf
-	 8AYLdX6yGr0XjrF7kyelORCUS+rYx2YsRBihiqVl8NHcWy8N0OxBfiJWM/dKJzp3rj
-	 lFx3pM5Klp+xoVyTg4BXchWQX6gAilvkxFX0dxFU6F4uKkEHyxbwAPsdWgPSg27tn/
-	 mnUjvY/HbvB7u3HqUtvWlSgeCxfL6+XJpKmrOqq9TmuXIazyq2O/u+AaHEBow3wgTN
-	 MaexoowVWFZ1Ki80w/4QblpRus3K81F5jMobOkqylzN/FAHQtoOkgPzRfhFU7IQN3p
-	 wX7k1G1joi4Mw==
-Message-ID: <3dd59ad8-2f00-4332-91f8-7871e8d60b02@kernel.org>
-Date: Wed, 12 Aug 2026 22:56:56 +0200
+	bh=cG6kQ9uiiQnTnSbk7yBwezCJNC8B3xUK4sacoj5tne4=;
+	b=3vOuIeekMc66Y18AoA67InthTZZ1nG+sZ9/9UXvdCiJF/U9oKKPr3rZYXoyncXHP595cZH
+	eZ0wXmDdbBro/E1GXnH1FtLyHYBpRrZmo9ADnIlKT5nd2U9YqZTOCLzF7KtFCPlNrAFseN
+	JlhWbnvLVYM6LOIgYe4dNIzK1yurHtc=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fOQaGiE2;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf04.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786568381;
+	b=rKAm/mMP3qIVeaQevY0WbJGpOoEBO60TOUaKtmww1DHPhqRYnsyI6/wsRF4ucRxOvKVDCi
+	1mSAZBe8OFFignwtPA2wzckOTW6FEvUAyQK6rFiAectoAdbOsJ5K3lLYg21dKCRexOHFY7
+	EsYYlR6pGI0ix3CnnRMyuxJEWYmXvi4=
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-4798bea72f9so744583f8f.1
+        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 13:59:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786568380; cv=none;
+        d=google.com; s=arc-20260327;
+        b=eeOWKfxUyXmGKQjzKOOICtLsvr8niXo7hXumu92bNlIyP0A99o44NSjGAiePVKx9tm
+         7ba3w+Wx+DIdWx+k0YOHlImsKvFsKYTVM6j1f3sRW8Fov5o9C+mgMEAB1oaWvjFLo1lH
+         poX/+ppOATo/QPfpkIiVgS1kiAJLUt0EtxZr0YmCu0MkCt1aOEUNWs8E5ZwyYepmEXyL
+         Kc3LLpYLdoGey2D1em+5e5ctoy22Gc60ExFE+1Y4PYDaIrS9Tt8BSDQAuX7cuQfVawLD
+         YUKb8v9NDcOuz5h8fXSrWoEq9w4Tz2KRMtA2YbYMBvB2Fx2Xbu4b0KR2OeEY7kVtD6Z/
+         lYKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cG6kQ9uiiQnTnSbk7yBwezCJNC8B3xUK4sacoj5tne4=;
+        fh=zMrphilSGe1GLQq797OABetX/N4TTeCZKKFFFyY4MbM=;
+        b=PyxTHzOnaSolH8hNJvkeWQOU/I8BsPTleDbjrJ4T7VWlxdVy33kHScEE1p/LueyG9g
+         neMcYuNgh/S3hmI0KNWa4NO7grTW3jEGb9ORByzvv0nerx6inTWnthCpluvlSSSAw7K+
+         Nh5R8iHgT+MFGQjN3caEWV3DW9zPMet8Ap5xCbEEa6NLdvBIzOTX4sPR1kPuv3jra9qj
+         /lNW/DYmpSKi2BpQ1HPAJ+9zthlcmE40Ng76q5F8C4OmvAGLaui7Rypi9cQUpmaNA5BI
+         D//nFv2bt0O3v0jcfclL4xuIhhy6PfpM+zTK7IgOvXSbVknYpDONVQ2hT+NETbBJone5
+         G1Hg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786568380; x=1787173180; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cG6kQ9uiiQnTnSbk7yBwezCJNC8B3xUK4sacoj5tne4=;
+        b=fOQaGiE2azirxd6PZaa6JQojlAQhEqefRGqJ1bvN2/u7np6yLsfjLWKk+XiXKQL6bC
+         oZ+hO7iEgxclpgTdo3UYE+5T0Q9+qfsgh9TbS9bnls3ALf452DWdnSFuz77BdDMsdPXc
+         q3C9/j2xzo4VTOdwGOrbq6zo68kZ1wcBT5bsznSZNUfdCozUsfoer1Tgn6v2+r0wUep4
+         Hf79f4b7rXjsHcduKzX2eZrRjrbazG2mkSGWU96F44xcUuXMcevgNulVr3fIwMsx/h/8
+         aTiENYc+mePgIkirI10+JErDNRhELqcH7Zb6Isov7+NaxomtHJuLOwGiVfSngY3ABYnc
+         eqvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786568380; x=1787173180;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cG6kQ9uiiQnTnSbk7yBwezCJNC8B3xUK4sacoj5tne4=;
+        b=nYTz7rwBqIWVpYKeifkWJ2FZemSepHA7tfCR64t4OkJbEWDPFEFb+2kqvwt2jrDREa
+         xEDqkH2DSxEIJzZMxuefWWtyq7UgUjl3evN8VzVlW66kKffeeQwmnYEVlrI73X81Ekb6
+         ZMyyIYfuuFpZjtNCSfArA72gLfK1pNdvn1gMvWOgXLA9qaUd5ldpjb4uEc5mjPSF0I8S
+         PyH6v8F4KGlxfoGz3qElzzYzWGsBn8sH9dhJInokaHkCuNUlvmkDNp6HnxwHlMzzu8jw
+         gAYOXGKaXDBGdHVkKRO1DXSwv2FTZT3HaWJSS7Yf+A4PtFGtn7PAYp7NSQKJV0lqg0jt
+         Y5Cg==
+X-Forwarded-Encrypted: i=1; AHgh+RrrnHBA2PQHEjDiPSCJ9Bo6scS4nNbJz6ZlBlSlUyP1SypUhUh4k0/sL7+vIl5r2ol/f/xDDtAc3w==@kvack.org
+X-Gm-Message-State: AOJu0YwU65uacuRyTN06gT51+a+iXml5C2IrI1Aa9FWhxGnT8Uf8sBEH
+	Sp7Q28KF1ASZVQV46m1ymzAbN3OJx7S057OeZ7iFJKfu6E2BaVCgZ8TIl/XS+WRH3F/TYNvjPkD
+	L6fm6o+PUMLCNLuq9ocLIxNxitUzX2Do=
+X-Gm-Gg: AR+sD13p5JS8NJ7RAwu+vbPtuDvkjrUmF47Pg8xgs5TQ4FDCTq4g/3fzVoC7BKm99a/
+	itO42eZ6tghplc+kydW7p6hEFJNwSlgFtcpL93E2q6FJcscq14S/vivCWIY1PQFGXZ7g0KaDPZ0
+	qOKGotZCr9xxH320R+JhU4S+3GhEcAcL8bZ/OIKwCsnXEjI5LeyLAjOIZzXVijS4AeSmCsjkWaq
+	AlZx6NKRZylnCmeNt5FcZqe4BQ9G2eGF3ctMg27dUPkraJ5zkbIFcBBL8gkWr8sGrj6g0LbiNTm
+	Qs/vIFJ6OB7TNeCfE16jAWiK3R3VQ5tQiDwZO5sxkXvJlJwDr9jRatSuyxMalDhqsShiJPq8daK
+	5FbcXVDROFAK3kGqCdVGM4hmJzdiXFAFD79k=
+X-Received: by 2002:a05:6000:60b:b0:47f:eb22:4d9a with SMTP id
+ ffacd0b85a97d-48159fee3d5mr1167517f8f.22.1786568380185; Wed, 12 Aug 2026
+ 13:59:40 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 5/7] mm/khugepaged: Refactor the PTE state checks into
- a helper
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Nico Pache (Red Hat)" <nico.pache@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
-References: <20260811-khugepaged_pte_refactor-v4-0-ddac39d61c4a@linux.dev>
- <20260811-khugepaged_pte_refactor-v4-5-ddac39d61c4a@linux.dev>
- <f1371b4d-6e98-4699-8c1b-7612f6d70f02@kernel.org>
- <20260812123959.d4e31d68e8db85b9fd3981eb@linux-foundation.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260812123959.d4e31d68e8db85b9fd3981eb@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <CAJnrk1bk66ZhRAS7mojSnD5RBfFS+0ChAPymE3ObRWr0C_udWg@mail.gmail.com>
+ <CAO9r8zPpe6fWOSXtRUjFB8WNMroeBqvLT+2QtAU4E27AtLUXMQ@mail.gmail.com>
+ <CAJnrk1YifN22mA5PFRVrh3m_ygxax6x4_8nraG2hPqCzyzBj7A@mail.gmail.com> <anpsLy_pCanocgS1@google.com>
+In-Reply-To: <anpsLy_pCanocgS1@google.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Wed, 12 Aug 2026 13:59:25 -0700
+X-Gm-Features: AUfX_mwFa8e6pDMfp1WdXiJ_HKLGDCz9OWII2-x-7qK48Cw8cAhcq_BvLRoXfk8
+Message-ID: <CAJnrk1Yoj7fqbzurmHkbA-vegpQu3cf-_dfvKor_VxuNhPR-AA@mail.gmail.com>
+Subject: Re: memcg stats flushing (WAS "Re: [PATCH] fuse: disable default bdi strictlimiting")
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Miklos Szeredi <miklos@szeredi.hu>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, kernel-team@meta.com, 
+	fuse-devel <fuse-devel@lists.linux.dev>, Jingbo Xu <jefflexu@linux.alibaba.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	linux-mm <linux-mm@kvack.org>, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Yunzhao Li <yunzhao@cloudflare.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E38DC40007
+X-Stat-Signature: jctnijrgdorxaqy8o691phzyo8o6mpn7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EF78F180007
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 8mzn1t46ajqxju8q91y3a4phimuwa1e8
-X-HE-Tag: 1786568225-617273
-X-HE-Meta: U2FsdGVkX19R9qgBPf9XUTh9V0sEAno+kXoQC7pNwNRtLbdpDQJkwSJPj401KP7b/cs8mFF/0qIXoDzg8PrNG56yA1MY23zqsD55OVfhPXqS1orFRRmQaQ8FSsQfBLbiAFykmNR6FV3XH2M54eSY0YblQIMRRgbTfUKH5KLVLXn1mOcib9ae3zPcl73IEr+7eRaev/Xa/ARZIBCXjg7/9meZjUH8oDH7Ua5FHxVRBKlaEELUdrjBrbqVPuSPu21Jv5pC+dsEIIG5QN1MwSLubiPhSznVbGhvdUEafrRo89O2RtyzV2EZ/tKYT1dIWZ/SzmPfELHIZtYmj6bDlVtgnvHkkWubQ9SC7UvnPqdvpq+V0x/Fk/Ves+RHH0UK/7p/wwSH1A+oHDbNSPcXSTFzYIFHJAO3RObb7LuwFO3vCNSUIfEVQ9kI0t+v33AyrVeSF7KAV/IkZTdqQc9aAXlAjc9AcmvUTwRdA8UmiKxOcgPRpCSoZytYjZVOgKkyNLJPfxrPJBBhcF2Qs0UjKT5sN+ivkfAAyGg4OhSkFISYRNqvXVu4QDGMd4K/SmfY1gOJ+00ZOdZiReOpf4i1QCiKMnSHsCivhdw5GNEy93/XzuYsvW71cYvwm/op4GIeF1f8mZTTw9zPlLSiYzLo9LHUYvJBxgXFZKH3I8deJAvDUESHjenmfr48b406wSJNeMsnJrsbpAGk98tiqgZ2OuKp9jUXHasH+3/nTu7yhgY1VdSJa+10JWHpM/kE1Zw20tZQqn+3U7v/1zCsNiu7CEv6TnsmGDy9AgfylYWYvuxOYrZSpG6N5U09orzRVIWbt3B7cwmDEIKpZv033G8qE/jPULjf3GDU2YOalc7+gVlPBynJvFfKRnSKShkDerbtEjqt2tuSHg5BEHLZ10xRPD8QSdDsFqotKcVoYBclqoGiSUmDlvGdr+U1b1m0QYtpLADEs17f/x2mR9EhN+wjr5f
- I+m5qww4
- 3m3YdVTdUiC8rsXkV45kR0i9qirfXpxd8PPYovg3/vRoRtpAsHW88z2OzJrUNDwVw1po5oOsyFvTp1aSDnrl97Vfwbr5gS2F4xydy9zgKHm6gW4kaLms55KVLePDH3y2Y+3DurJ1NBDJTnzZRX/NiFixwLP86I2UXQ46p4paCTbGWEt3l7sURL4OxEKH8cMplpakw7KO1RJQk8dFp/PFAZdhIhtoTQDn4LIxCRQqKlNuHCA4OvduHDD3FQsGz4AnXqhyOtvnNpzhHEA2o1+psHQ/F7g==
+X-HE-Tag: 1786568381-704887
+X-HE-Meta: U2FsdGVkX1/uMtLWziDuxRM64NYx0BN9xxzblwULPnRsk8ZMR0TnyrDysRObAe09oI+o+ecpPm8A0erGTO1ZviHOh3mC3qEmAZR/3CmXVqQr2GAich8AgHlbqaEtQ6GHb6z4XVoq/IwNocnsDh5TFymfSdKD8uMiR5yRumczCxId4dQkgayS5KwhVy7bO0RWne5Wd5e6nRY+VhbvwNnWxEu+SBm4XlvnXtX2iGGbxjGVSpJx33RdCw1VzPc2KMkaeENAYMl5HSfK/0doBgmbbl3Hp7OTRqyVOR05CQC7rsNQ/py54KPrSK27iCfM1B0kC0HCVcMHnZqWFp2qpnrCdyk3NS6ZTAWxlaRA7RFXEuiAI0V2+2/kHIWDmRTnPGwLkzUI2AaPbRIwaUiOgqWHhu6OEmILiDNDei0Up2TyUjBRiLUnWJSvOVAjqb8xqmeTeUbW5ZmYDkBvslCQv+QMlh8NvQ+PM1V+d3iOhwf7b4trSw8paLiqw7A1y50sSg2ObaJTm45/GCh1u3WOVmkM44UqD5+ZTXn4np7r3SkDJTEn9w/Y604xZLIVGPd1hIouqnp7049yPnxLj5rq9bIuTeIJgLYT9bJRsMZxGDzIEZrTU1TB4q+d22H6mJdJUaCKJVFW36jxA4XvFwo2/AcNzOB4Mhumxf19NaaYAfyscNhsd4mQHJnwFJ2pMRDziljnptWf51sVBUU/2opc4yqviLpC3lQfel8WpQYJ/MSv9q65bSD15ZPfSMBPS2m6FF2VudXLbThjUI9z09z+ZG/5pVZHHtlJHW35RksD9sVXx7iD7sY1Z1noke6sb5VhZH/BwAagHkydsgJzwZBbV9WGvzPL8y7IMUkEJ9ykCtOee9aJ1Pk55aJzFYrNvj4Uyp7pFuMCeYnuxssq5AM2R5dvLVu3De69o1fxCas2VWqCFxpYJMgX1HsTKVIQOCAIh9tQWTn5hZu06dh6rlHftzp
+ bGRcp+4u
+ uXUz++zUYGeewneY9ZxIM8S67xmWegOwTdG0yq0WmZRXs8+d8KVALLVxc1VzhU3f0BggaNGDHAmNKW5z0QGYuLphcxO3XHbX0MRh1icAH+W5VUoQ3WsDD1+XQ8z0dYORaGceR5Op8ia+ktu6XevgTJY7FZYOWkspDzm2qfexEm3Hl8z2TqJBJFVF+4cGjGIgtNrKRTAAn+BlCPn9x7O4tAhBxJai0GO/tbeT1JVw9iMHd6SqYDgJtwjQaAyElGiYG5nlYRTirLU3m+JOypGAsgjZOkPXYwg+V9ibfsoiduiPr2IlGP1afp65leM3s8gW5jGOQyTUsBw4jHfvzEhbPUxiWWCUzjzw2pO2H6jO8l3pq9ttLkwZXS/IFdkjTBfYQvrszoMoQnszlgoJLS+k4FKFtztKfo5FRI3oBocIaSZ+FpKAPDY0QMuq+1OtsDsqgJSQLmWTT1CW2nZQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,56 +147,251 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/12/26 21:39, Andrew Morton wrote:
-> On Wed, 12 Aug 2026 10:40:08 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
-> 
->> On 8/11/26 14:48, Nico Pache (Red Hat) wrote:
->>> For anonymous collapse, the collapse_scan_pmd() and
->>> __collapse_huge_page_isolate() functions share a large portion of their
->>> logic. These functions both check the state of the PTEs and verify the
->>> following:
->>> 	- max_pte_* values are not exceeded
->>> 	- uffd is not active
->>> 	- lazyfree properties
->>> 	- non-anonymous
->>>
->>> Merge these checks into a helper collapse_check_pte() to reduce code
->>> duplication. We also add a helper struct for this function called
->>> pte_check_context which allows us to pass the required parameters in a
->>> clean and elegant manner.
->>>
->>> A helper function is also introduced pte_check_fail() to provide a clean
->>> interface to set the pte_check_context failure results and return
->>> PTE_CHECK_FAIL state. This helps reduce code duplications across the new
->>> collapse_check_pte function.
->>>
->>> Two slight modifications are done to the original functionality. We now
->>> warn (instead of crash) if the anon test fails, and we leverage the
->>> vm_normal_folio function instead of page->folio, this should be
->>> functionally equivalent.
->>>
->>> No other functional changes intended.
->>>
->>> This patch is heavily based off work done by Lance Yang, but modified to
->>> deal with conflicts and feedback received during the review cycle [1].
->>>
->>
->> TL;DR, I think this patch here needs some more work, and we should not fast
->> track it at this point.
-> 
-> This has been floating around since July 6, so it's never been
-> fast-tracked!
+On Mon, Aug 10, 2026 at 5:48=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> On Mon, Aug 10, 2026 at 09:49:31AM -0700, Joanne Koong wrote:
+> > On Thu, Aug 6, 2026 at 2:31=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> w=
+rote:
+> > >
+> > > On Thu, Aug 6, 2026 at 2:04=E2=80=AFPM Joanne Koong <joannelkoong@gma=
+il.com> wrote:
+> > > >
+> > > > I'm not too familiar with memcg or vmstat so apologies if this is a
+> > > > naive question, but does it make sense for memcg to just do a simil=
+ar
+> > > > approach to what vmstat does? As I understand it, mod_lruvec_state(=
+)
+> > > > updates the node counter and the memcg counter (if memcg applies),
+> > > > where for updating the node counter, mod_node_state() does some
+> > > > batching where it updates the global counter for that stat only onc=
+e
+> > > > it crosses some threshold (pcp->stat_threshold). Could memcg keep i=
+ts
+> > > > per-CPU counter as the accumulator but once it reaches some thresho=
+ld,
+> > > > it then propagates it up the parent/ancestors into a per-memcg atom=
+ic
+> > > > global counter? The atomic would then only have to be touched once =
+per
+> > > > batch than on every update, which might eliminate the overhead of t=
+he
+> > > > per-memcg atomic you saw previously? It seems like this would get r=
+id
+> > > > of needing to do any flushing altogether, as we could just read tha=
+t
+> > > > global counter directly.
+> > >
+> > > The memcg stats perform similar per-CPU counting and thresholding. Th=
+e
+> > > main difference from vmstat AFAICT is the cgroup hierarchy. In vmstat
+> > > we have per-CPU counters and a global atomic counter for each stat.
+> > > For memcg, we have the same for each cgroup, then we also have a
+> > > cgroup tree. When we read the stats of a cgroup, we usually want the
+> > > hierarchical stats including all of its children, so we can't just
+> > > read the global counter.
+> > >
+> > > We use rstat, a cgroup framework that keeps track of which cgroups
+> > > have updates on which CPUs, and then memcg has thresholding logic on
+> > > top to only flush if the number of pending updates exceeds a
+> > > threshold. Essentially, if the magnitude updates on a CPU exceeds
+> > > MEMCG_CHARGE_BATCH, we add it to a global per-memcg counter. We only
+> > > flush if that global per-memcg counter has > NR_CPUS *
+> > > MEMCG_CHARGE_BATCH updates. So in theory I think we tolerate up to 2 =
+*
+> > > NR_CPUS * MEMCG_CHARGE_BATCH of stale stats (combined for all the
+> > > stats).
+> > >
+> > > See memcg_rstat_updated() and memcg_vmstats_needs_flush() for this lo=
+gic.
+> > >
+> > > Looking at this code again, it made me realize that we already iterat=
+e
+> > > the per-CPU stats_updates on every update to increment the number of
+> > > pending stats on this CPU. I wonder if we can replace this with
+> > > actually updating the stat on each parent, then the flush path only
+> > > needs to accumulate CPU counters. Or maybe as you mention, we update
+> > > the global per-memcg counter when updates on a CPU exceed a threshold=
+,
+> > > and forgo the rstat flushing logic completely.
+> > >
+> >
+> > I can run some experiments and see if updating the global per-memcg
+> > counter per batch and forgoing flushing could be a viable solution.
+> > I can use my setup to test it for writeback, but for the zswap use
+> > case, what's the best way to test if the changes are too expensive? Is
+> > there a benchmark program you're running?
+>
+> I was running stress-ng and measuring the latency of zswap_load() and
+> zswap_store() with bpftrace. But I suspect whatever works for writeback
+> should work for zswap :)
+>
+> >
+> > For updating the stat on each parent and having the flush path only
+> > accumulate CPU counters, I think this means we would have to
+> > unconditionally walk the ancestors + update its counters on every
+> > update, as we wouldn't be able to early break if the flushable
+> > threshold was already exceeded. I don't think we could replace the
+> > stats_update update, as it seems like readers still need some way of
+> > knowing when to flush. It seems like this could be a nontrivial
+> > performance hit, but maybe it's a non-factor in reality. If you think
+> > this would be useful to get benchmark numbers on, I can run some
+> > experiments on this too.
+>
+> I think we need to experiment with how much work we can shift around
+> between the update and reader sides.
+>
+> Right now, on the update side, we call __css_rstat_updated(), which
+> iterates the parents and puts them on the per-CPU rstat tree, then we
+> iterate the parents again in memcg_rstat_updated() and:
+> - Check if flushing threshold is already met.
+> - Update per-CPU counter for stats_updates.
+> - If per-CPU update exceeds (another) threshold, we update an atomic for
+>   stats_updates.
+>
+> The flush side checks the flushing threshold and does an rstat flush,
+> which will walk the update trees on all CPUs and iterates all child
+> cgroups on it. Pretty expensive when the threshold is met.
+>
+> I think we discussed two different options:
+>
+> (a) On stats updates, iterate the parents and update the per-CPU
+> counters of the stat directly.
+>
+> In this case, we can't keep using rstat, as we would still need to add
+> the cgroup and all its ancestors to the update tree anyway and the flush
+> cost will remain similar. So on the flush path we'll need to iterate all
+> CPUs and add the counters. We can explore if use a cpumask can help
+> here, but perhaps not since we'll need to update it atomically on all
+> stat updates.
+>
+> I imagine that if we do this we'll drop the stats_updates optimization
+> to avoid adding more cost to the update side. We'll be replacing parent
+> stats_updates modification with parent stat counter modification. But
+> maybe it's feasible to keep both to limit the cost of flusing.
+>
+> This only works if the cost of iterate the CPUs on the flush side ends
+> up being cheaper than the current flush. I imagine the average cost will
+> be higher but the cost should be much more consistent vs the current
+> flush, so the tail should be better.
+>
+> (b) On stats updates, iterate the parents and update the per-CPU
+> counters of the stat directly AND update a global atomic if the per-CPU
+> counter exceeds a threshold. I think updates may get too expensive as we
+> may need to update multiple atomics, especially when updating the root
+> counter as it will be contended by all cgroups.
+>
+> The flush side becomes an atomic read, so should be very cheap, and we
+> can drop other heuristics and optimizations.
+>
+> ---
+>
+> I think ultimately we need to experiment with these approachs (and
+> perhaps others) to check what actually works in practice. You'll
+> probably want some benchmarks or synthetic tests with many cgroups to
+> exercise the worst case scenarios.
+>
+> For the zswap stats, I used to run stress-ng with a bunch of workers
+> (20, 50, 100, ..) in cgroups of different levels. Since all workers are
+> in the same cgroups, all the parents are common and all threads end up
+> competing on the same atomics, so worst case scenario. I was also
+> testing in a VM that has more CPUs than stress-ng workers, to exercise
+> the full extent of the concurrency and contention.
+>
+> This could be a lot of work, so I am not really asking you to do it, but
+> just brainstorming and sharing ideas :)
 
-That's not what I mean. Stuff must be reviewed. Review capacity is limited. Some
-stuff gets de-prioritized and reviewed later.
+Thanks for your guidance and insights on this, Yosry! Your responses
+have been very helpful.
 
-I managed to review it now, but concluded that it needs more work.
+I'll do some experimentation with this and try to get a sense of what
+the update costs are.
 
-Instead of reworking the patch now to squeeze it in just before the merge
-window, better to resend this single patch for the next cycle.
+One thing I was unclear about and have been looking at is how
+pervasive/important this issue is outside of the writeback case. It
+looks like there are roughly 4 other categories of users that rely on
+stats that can be 2s stale: zswap, cachestat(), working set, and
+vmscan.
 
--- 
-Cheers,
+Of these, vmscan is the only one that looks troublesome. Some armchair
+analysis below:
 
-David
+a) zswap (zswap_shrinker_count()): 2s of staleness looks fine. the
+stats are only used to calculate the compression ratio and the ratio
+scales a count that comes from a list_lru and *isn't* stale. The ratio
+is an average over the whole pool, so it seems like that should be
+fairly steady across 2s. A stale result doesn't seem too bad - afaict,
+it is a heuristic of how zswap should get weighed against the other
+shrinkers.
+
+b) cachestat() syscall (filemap_cachestat()): seems preferable to just
+rely on the 2s flusher worker. The results are returned back to
+userspace and not used for any internal kernel decision-making, seems
+ok to have one field in it (nr_recently_evicted) potentially be stale.
+Seems better to err on the side of less frequent flushing anyways, as
+the call path is invoked from unprivileged userspace and flushes the
+root memcg.
+
+c) workingset: looking at the original commits, the calculations are
+estimates that don't require exact stats -
+
+refaulting (workingset_test_recent()): commit 9b3016154c91 ("memcg:
+sync flush only if periodic flush is delayed")
+    Now the question: what are the side-effects of this change? The worst
+    that can happen is the refault codepath will see 4sec old lruvec stats
+    and may cause false (or missed) activations of the refaulted page which
+    may under-or-overestimate the workingset size.  Though that is not very
+    concerning as the kernel can already miss or do false activations.
+
+shadow-node shrinker (count_shadow_nodes()): commit d4a5b369ad6d ("mm:
+ratelimit stat flush from workingset shrinker")
+    On further inspection it seems like we don't really need
+    accurate stats in this function as it was already approximating the amo=
+unt
+    of appropriate shadow entries to keep for maintaining the refault
+    information.
+
+d) vmscan (prepare_scan_control()): for determining whether reclaim
+can deactivate, there's this logic
+
+                /*
+                 * When refaults are being observed, it means a new
+                 * workingset is being established. Deactivate to get
+                 * rid of any stale active pages quickly.
+                 */
+                refaults =3D lruvec_page_state(target_lruvec,
+                                WORKINGSET_ACTIVATE_ANON);
+                if (refaults !=3D target_lruvec->refaults[WORKINGSET_ANON] =
+||
+                        inactive_is_low(target_lruvec, LRU_INACTIVE_ANON))
+                        sc->may_deactivate |=3D DEACTIVATE_ANON;
+                else
+                        sc->may_deactivate &=3D ~DEACTIVATE_ANON;
+
+(and same for DEACTIVATE_FILE for file-backed folios)
+
+target_lruvec->refaults[] gets set at the end of the reclaim pass. It
+stores the same lruvec_page_state() value that prepare_scan_control()
+will read at the start of the next reclaim pass, which means if
+reclaim passes happen more frequently than the 2s flushes (eg under
+sustained/heavy memory pressure), this logic will incorrectly assume
+no refaults occurred and deactivation is disabled, which afaict means
+folios won't be moved from the active -> inactive list, and reclaim
+will start evicting pages from the inactive list that are hot (eg more
+refaults).
+
+This is from reading the code rather than a reproducer though, so I
+don't know how much this matters in practice. Unlike for the writeback
+case, I don't think flushign more frequently solves the problem. It
+would shrink the staleness window but not eliminate it. Maybe one
+solution is to keep the deactivation state for a period of time if
+refaults were observed.
+
+If it turns out iterating the parents and updating the per-CPU
+counters of the stat on updates is too expensive, perhaps it makes
+sense to keep the existing rstat logic as is and have caller-side
+workarounds, as only writeback and vmscan would require them.
+
+Thanks,
+Joanne
 
