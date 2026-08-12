@@ -4,87 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 941FAC5AD5A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 09:29:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9CA8C5B56A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 09:30:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8106A6B00B7; Wed, 12 Aug 2026 05:29:23 -0400 (EDT)
+	id 79E236B00A6; Wed, 12 Aug 2026 05:30:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E7D86B00C1; Wed, 12 Aug 2026 05:29:23 -0400 (EDT)
+	id 74D9C6B00AE; Wed, 12 Aug 2026 05:30:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 700CE6B00C4; Wed, 12 Aug 2026 05:29:23 -0400 (EDT)
+	id 63D1D6B00BC; Wed, 12 Aug 2026 05:30:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BD686B00B7
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:29:23 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D223A12012F
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:29:22 +0000 (UTC)
-X-FDA: 85092094164.01.FC14467
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 5D52440005
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:29:19 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=Xe5mp+T0;
-	spf=pass (imf11.hostedemail.com: domain of liuqiangneo@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=liuqiangneo@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786526961;
-	b=ojWNx8AcFUnXfWEXpzlE96vnph/ydSGTJqTdNlIjQbNnXh+9SrjFyIqZlOPXuloAJ2OPIS
-	HKiKHzWAG7LxNsa0FeAQ0h1raXRZLHhbpteNvq8sJmY20OuleHG18D4RJwoEvyxTjXIDQf
-	SnlNoC3VgVHroEu9jIXO1HbMPQFSleI=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=Xe5mp+T0;
-	spf=pass (imf11.hostedemail.com: domain of liuqiangneo@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=liuqiangneo@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 351A06B00A6
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:30:29 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4973CA216F
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:30:28 +0000 (UTC)
+X-FDA: 85092096936.20.D590E74
+Received: from mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A233514000C
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:30:24 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=K+KKG6z9;
+	spf=pass (imf09.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786526961;
+	s=arc-20220608; t=1786527026;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=hX48ssPHsQP8j8lGLGLWAzja1k4ufXko/jDU3I4YxOM=;
-	b=l58/YrMaIrAlMkG1Ni506MEijwwIfHO4X8gv19zbdxi6dHvJcJ+hiVd0a6AdhaoPRsUga9
-	y82HaJOiUUtKQ5LaWneLNCyoYDDKauere2B479eTDxk/DmLA2H/ekupeiqeQI92p+17DFb
-	j90SXd8w6vJgbatCqj6gnhFaSvd6nEk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=hX
-	48ssPHsQP8j8lGLGLWAzja1k4ufXko/jDU3I4YxOM=; b=Xe5mp+T0V8EYB8CvJM
-	EH1oPzKX+ap2MBHXsZjhAyzP/tDTtZ9WzF9yE8lWCwTz+j2dJ2XkKw+extGP+nHj
-	sq3UTCxgvBh3dKjdCrbCo1NveMhV/TyFI2tkOyUbi7punJa2LgblOaci6afFP7M7
-	2P8uGwt6S9DK4ExPVXOAooMD8=
-Received: from neo-TianYi510Pro-15ICK.. (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wAXa1DbPHxqXVIaPQ--.57380S2;
-	Wed, 12 Aug 2026 17:29:00 +0800 (CST)
-From: liuqiangneo@163.com
-To: akpm@linux-foundation.org,
-	jgg@ziepe.ca,
-	leon@kernel.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Qiang Liu <liuqiang@kylinos.cn>
-Subject: [PATCH v2] lib/test_hmm: fix garbage pfn and wrong direction in devmem fault debug
-Date: Wed, 12 Aug 2026 17:28:56 +0800
-Message-ID: <20260812092856.55296-1-liuqiangneo@163.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fi1Sk4Bvje0wghFbC6BANw7VYtZF68SyZp7oYrXoxaI=;
+	b=DWKKOvAfb2wWXXxd1ymEfZnYYErqs/KdW7fCFBrp29QcBrD/nFIDF1Y/nwKnjPRbct8vXD
+	ImreO53oiNv34J+1IohK7bOH+gAJy5JkXqg8qdmbm0GhrPkRSKhDqCK4a5vnoMJDhYI6cs
+	opopZmrov6Dw91X1NhCqo14kwQqMv1Q=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786527026;
+	b=5o9fMlCY9bq3vMzhuqmaSEJcYEWerwNNGa09n61Sdma1LKZ16najpjhAXbf9WySjy7PKXi
+	r9c+53wAkt0BRnwVUS8Xz7topn1egfy5R1kZU5brodKqE6CKquYTPiDyFFhU8+ckpJvxCa
+	k6T+drnkp3p551/qTaGB8p4YMBxF3/c=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=K+KKG6z9;
+	spf=pass (imf09.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=5Hb81DX76S8IAtLPuaQ2fxU+mq3IGFWwbuaXDXn7mzM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786527020; v=1; x=1787131820;
+ b=K+KKG6z9cIX9FtV4SGWxRFZtkclJ4Ip7BFSWS0p9EXL4lcbba2/pLfi2aZfUuk+5r3CDEm1j
+ W6szvLRQ6EhL+a+giwTbBdWM3A40Qo2tyt/eFA104x0TxZSuEnJxPhsqGTe5Au2rrkD2koxtgFK
+ /EtO5qN45kjk2sssO05EjFmU=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (3.112.29.171)
+	by mta11.migadu.com with ESMTPS id 5cf300efea8cce09;
+	Wed, 12 Aug 2026 09:30:20 +0000
+X-Migadu-Scanner: mta11.migadu.com
+Date: Wed, 12 Aug 2026 17:30:08 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Jan Sebastian =?iso-8859-1?Q?G=F6tte?= <linux@jaseg.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Dave Young <ruirui.yang@linux.dev>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, David Howells <dhowells@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Lukas Wunner <lukas@wunner.de>, Ignat Korchagin <ignat@linux.win>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Eric Biggers <ebiggers@kernel.org>,
+	"Theodore Y. Ts'o" <tytso@mit.edu>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org, keyrings@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-security-module@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-nvme@lists.infradead.org,
+	linux-nfs@vger.kernel.org, linux-integrity@vger.kernel.org,
+	linux-afs@lists.infradead.org, netdev@vger.kernel.org,
+	linux-fscrypt@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	dm-devel@lists.linux.dev
+Subject: Re: [PATCH v2 01/13] kexec: add CRASH_WIPE_SECRETS to wipe secrets
+ before kdump
+Message-ID: <anw9ILJiO5xIjP4f@MiWiFi-R3L-srv>
+References: <20260811-crash-zeroize-rework-v2-0-9561d13c2340@jaseg.de>
+ <20260811-crash-zeroize-rework-v2-1-9561d13c2340@jaseg.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXa1DbPHxqXVIaPQ--.57380S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWrtr47GFyUWF1UXw45CFW5GFg_yoW8Jry7pr
-	48JF47K398X3W3WFW0kFs0y3WrW3Z5AFZ3CFWDC34rZay5XFyFv395Kry0vwnIqw48ta4f
-	ZF48tF4UZF1qkaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jOPEfUUUUU=
-X-Originating-IP: [116.128.244.169]
-X-CM-SenderInfo: 5olx1xxdqj0vrr6rljoofrz/xtbC4BwAYWp8PNyyLQAA30
+In-Reply-To: <20260811-crash-zeroize-rework-v2-1-9561d13c2340@jaseg.de>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5D52440005
-X-Stat-Signature: b86pdam96q7y799wpi4s6fijz8fcim8r
-X-HE-Tag: 1786526959-588868
-X-HE-Meta: U2FsdGVkX19bi/3HuNKqYuf6dSCqqaDdNhb7uQwyr+7KH78ZJrctJw8IJGiHf3wETXYTXqYkXFTca9zmMmkaH7zGgk2NnKQJxtyCnZ6QC1fCAo8UHmMdFQBh5+sa2xUUjRsv/lThC2ed9EC0qNnsnNeIY+IO9jwYSBi4Ozmzd1qyVxVYf+WydikiekDh2oLGVx/cOaO9Lj+mjSEAP+Bj4VtxJI3RJOiC1c3vgWk/SQ0mcHs6CXjd5OCHwQvNt6deCYKOnryqBHGM3AcY7MeobQL/wMHSaNBxk1qDGE5QTKoG7ihJjOawZVM8PnE+TX8wCdKIelJxMSsvWBSUAYJLMyfPuBtaygCOnVZbmHifxh+22TSopKaoiZf7BVJqGQgoChXx9hKQNnSEaHNNOzCIFBYoGQ7QV+VhoKKTQ8Lj32bcJuiCUMXlRm5NcHekEER4rNQOrAygZ8uUu0SzRV+uy3PUMBeLDSoTAMuOCI53uCLYozG3Rz7LousIZssI27nFnZ05ziFbYV5B+ADWbJiGWf42UMO5aIRamgxGhFJ2wU4wnAvhjQ4u9DLV/QEaw4NEjqShYwKko77LJ4cQ0VU6NayjeoNk33nQqay0b/uZ3qCsRQxT9jHbwInjQWf25Vk18RkQhiGtjRD0DLcLVx5W/eYeSFNGg/XXMaCE+FByQWlhuFEZEQr+8rVXaI8QbnWMYIuiBuOZHKsTbD+tmGrRxLzB70aq3sHPYkRvDa8cdej39ZpYaJP9C7K0PgwtT4dgK+WCfxGLqF+l533oqQlgxmI9KQNZvD99/pJAYnvu8s1y3yzVf2kYfLxX6wq82sr4PdMxDoTQdzlq4vnrkVkVFGDrAld7AVi1S4hEf1h+b8qjU8IWNYAKwE+A6DFCtAucGk3zmATEqLy2HbNl1Bw9qdShwcilCslhaotDrkg3Hrw6DxF868S3bMEai6A3Es6/HvWp5SZfwLOKt3KOvSc
- odZdA9JA
- 4CMDDTDPSBIdshrREiVuHaMaSJea3Sy7tSVaIXP8Boj3haS7JosHlwtbzc9Ie7weMFR28YIuKvvrwgRHwDAGp4fHDFP+rvya9LwuYiovcvV435L5wIfhHmItZqq8VvkMzAoTh+f3yfhT4zDg4kYWIIiaQRMRG3ehtGj1GCaHTbl+/U9+JqLzeBrIas8zhwclopRm2TZc4BfbWXH4XAIryTHspZcd2f7ykoUVqZgnVLUemHUIRUS3a9fu6tipBb/FkxxDYBCRsmcyXfLiPjvgnES9gu1bo+ENHf/PkCkyBBay+a6KDPWe1Lta94VtRbVcSnkJvYEi5hdsdJfWt2APG4Ihdf0f3zSCkeaOU2U1M5IyDi8ZNU7KmouB5rfQs1bjx6TMCqje2Au58h/mz24uc+xiW+ZbZ9EJcK+TBcavGguzUuaHgio2Yje2lvw==
+X-Stat-Signature: oiocwzy8zforiaswiqkpxiygy3to6mkq
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A233514000C
+X-HE-Tag: 1786527024-427727
+X-HE-Meta: U2FsdGVkX18+ca8aPLJAx4n0CIM8oh2+C36yHQngyLDOigW0esw9sThYInWx6PtY5GXFIB0Whvl7QlxBW1elScZnkix6SjM4p1ZLk9Z4pW0MxAZDmQYxMV6RkwrK5hgzhLX4T6BLKCsLUWMT5Imi0Lvzr90hDUpeCnt2dqf61fzdRJoU0HFh2/3W8Qin2lXG7vS1Sdu8XVExAg8zJkYjZgUx13FEWvLtobbz0EgNdlwkSzLMO9sJgfUXHvmy6zsC/t9l1IUNwmsGEKE+jJRscp6rKnVx6OMbRrqUVA/mM6qYP2YO1kZXtYZxwdX1mCUIxteVq/SmG8GFAdEXhujQx79YHy3Z3m7d4EVhf5iqyK06GXMFFOJ2amBmm8FNBnej7ullGFDtDs6/s1veyVOgQaUxs+SKMiL5aNATM3U5tmxZFk8naajwZ18Kuf7FS9QFAXq+JfiDiWYbREjLQqBTwZBwgQzti2zvNMXhxPC5RGFlfVuu2qZlgx/TusWD0aG72rFyV1xL7haB2mhsinpL3Ah+rXu/gZyaRFkQcPyABCtlFLBgUl8c96UBBtRyjHfJTLoNY90pPcC9YsRuRtu3HzuMkXy3m65C9edNpJbhdB4KFqE+1JSPXUp17080SlGR62rIAPO5x4PdaWZPouUfli8NeLFDruC1Xc+jghTAMMFzIWThNqN2pPp7bMLnmIEPdHVQEWN3Sf4Dy8892eGHXh+vM2uIZwqi1hrLmlV9z8TOrE1cEE1sK/7oxZv9HLQMREN8pzXeYz4+YW1LA6rbzQuM9Z/qN4E0dpT5j1LUtRC2rlUp7Ikh5DnzrIHan9xRZmwf36l07mxH3vHxJ/b/+6/QC3nkihAptXHLJ/qu57CWHV1EQ9RYCrsBVocQdqzs/zWZ++EsoGNicpqvpPbNobr5KF61g8SJBCKA9/Bf+Ej+h+7s8xYMBcEBDAqlyhOVD3vkl/NxnjWQzDrG/l6
+ LtEINWFe
+ SXc9grxlrYDS9rGRduTl0wJYWaFSzCUWwxA5ro8J9YN20LI6TV2yqbOpPXzFKLVPzqucQdJtkKZgf4j9TpdhkuxZ/rI+R3+0OlUZ3WNea6cJDn03l/zxebDnylsuPMk5+5D20YcIZCHZxe/LOhFeB8wxIQ5PElqoMugpLiiGnUg+jCJa/HDw6IY8Bs4cUfe4vRe1Tb+KUCvWMyliPnOSh92wXC4rYHfHVBlsDKKF1yCIApdC93lwAp8Knd9xwQew2f9ZtK0TO3/rmUavUfVGWeTvkeKE/M+yzjSg4zOyw3VRTt6lVzaF4y67Fud4VvHV1n94/Wsa6IIqrjS8Kk1rDyIqH+Cr4EmpR5RgPB9U9LFQSdj1UR+ZJDx4UANI6+h36CGWETPh2H0s/o/4g72dv+Nqi34k0GmXTEBWqFL1riXg9R7h315EEMrxfPLUym/1rSIC9PgRdmBAN53c47wMBJoHuJQRxqx8cAANH9tCwwkD5Sqck+vf8kbTW57rwP5SyN2BfD/S0LUgiwT4J4PqPHBp5WBCSvSim0KZM0i2EZiN4AXF1zNPrn/olvc7Pwux4lNlzDxAwyuNxiDupka6CRx0zY/Wpo34ARaUvfFT/triu1rKwPqFoU19oVw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,47 +129,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Qiang Liu <liuqiang@kylinos.cn>
+On 08/11/26 at 07:52pm, Jan Sebastian Götte wrote:
+.....snip...
+> @@ -142,6 +170,7 @@ void __noclone __crash_kexec(struct pt_regs *regs)
+>  			crash_save_vmcoreinfo();
+>  			machine_crash_shutdown(&fixed_regs);
+>  			crash_cma_clear_pending_dma();
+> +			crash_wipe_secrets();
 
-Move pr_debug() inside the `if (dpage)` block to avoid
-printing garbage pfn for NULL dpage, and correct the
-direction label from "sys to dev" to "dev to sys".
+I remember when crash_cma added this, we argued a lot about the risk,
+finally it's added in with an added note to tell it's an opt-in feature
+and risky. I don't know if it opens a Pandora box, I think anything
+wanted being here need prove anything else has been tried, and the thing
+is very very important. If we don't guard the door well, one day one guy
+cold come and said I need ask Oracle database to do some transactions
+before juming into kdump kernel because the actions will save billions
+of dollar. 
 
-Assisted-by: Qoder:Qwen-3.8-MAX-Preview
-Signed-off-by: Qiang Liu <liuqiang@kylinos.cn>
----
-v1->v2:
-- Rebase from mm-everything to mm-new.
-- Change commit message.
+And what does security people say about this wiping? Is it very
+important information and wiping is mandotary? There's no any other way
+to wipe it or pollute it, no way in kdump kernel? I noticed it's
+happening on en embedded target, is it possible you do this on your
+embedded kernel tree, but not mainline tree?
 
-Link to v1:
-https://lore.kernel.org/all/20260811092256.102101-1-liuqiangneo@163.com/
----
- lib/test_hmm.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Anyone who wants to do thing like this, please prepare answers for them,
+and be ready to accept failure.
 
-diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-index 6205fb313bd0..7c4d10eae6fe 100644
---- a/lib/test_hmm.c
-+++ b/lib/test_hmm.c
-@@ -1151,10 +1151,9 @@ static vm_fault_t dmirror_devmem_fault_alloc_and_copy(struct migrate_vma *args,
- 		if (!dpage && !order)
- 			return VM_FAULT_OOM;
- 
--		pr_debug("migrating from sys to dev pfn src: 0x%lx pfn dst: 0x%lx\n",
--				page_to_pfn(spage), page_to_pfn(dpage));
--
- 		if (dpage) {
-+			pr_debug("migrating from dev to sys pfn src: 0x%lx pfn dst: 0x%lx\n",
-+					page_to_pfn(spage), page_to_pfn(dpage));
- 			lock_page(dpage);
- 			*dst |= migrate_pfn(page_to_pfn(dpage));
- 		}
--- 
-2.43.0
+Thanks
+Baoquan
 
-
-No virus found
-		Checked by Hillstone Network AntiVirus
-
+>  			machine_kexec(kexec_crash_image);
+>  		}
+>  		kexec_unlock();
+> 
+> -- 
+> 2.53.0
+> 
 
