@@ -4,93 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F332C5AC67
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 02:36:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9906EC5CFC1
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 02:46:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCBC56B0088; Tue, 11 Aug 2026 22:36:04 -0400 (EDT)
+	id 99B3D6B0088; Tue, 11 Aug 2026 22:45:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA4186B0093; Tue, 11 Aug 2026 22:36:04 -0400 (EDT)
+	id 96EEC6B008A; Tue, 11 Aug 2026 22:45:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB9836B0095; Tue, 11 Aug 2026 22:36:04 -0400 (EDT)
+	id 886486B0092; Tue, 11 Aug 2026 22:45:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A60476B0088
-	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 22:36:04 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3020F80296
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 02:36:04 +0000 (UTC)
-X-FDA: 85091052648.19.35D3346
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C9CEE80004
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 02:36:00 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=ARchWuSN;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf30.hostedemail.com: domain of sh_def@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=sh_def@163.com
+	by kanga.kvack.org (Postfix) with ESMTP id 62FE46B0088
+	for <linux-mm@kvack.org>; Tue, 11 Aug 2026 22:45:59 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D8A931402BF
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 02:45:58 +0000 (UTC)
+X-FDA: 85091077596.05.04C145C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5078A20002
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 02:45:57 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AObcdImc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786502162;
+	s=arc-20220608; t=1786502757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E48rZGlJpEk2yaQSzI9zGHJcjap4/8TJxtr1yxQ2/gc=;
-	b=GXFOxN26FYBD3p2e7Z3T/leLp4+15UnAadlKgS7aHobDcZCRDsdWmvi2g+Ftm8aNUavdTt
-	SnAylg4JufZxTXtJ7Gre3XRmfWSQe0WLnt1XARGiDmtml+MK7W9jQKpimsaQH8pdCMzqvP
-	qqeTO9irvAErFPGiK4ZTNPdxJZxUBvY=
+	bh=+wN4tIqwkqpx5GNi0C8cNZGttKmLphAMJrFg1BPO7Ao=;
+	b=yStJ655LJsM8wcFxWer+TIqPfJudriJMJEfvbKvZFv2DG9/oKen0X2Ubv1kKA0fvx73xr1
+	Y9r4vs7hpg121cF+3/rWvLJnPxFC9K07jOBmKRQteQO7U/W84jPVpeYHhscvGoMTuz3/jl
+	BOVx1NlFYGHQeu+kYuyT0qeg6Ojd7tY=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=ARchWuSN;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf30.hostedemail.com: domain of sh_def@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=sh_def@163.com
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AObcdImc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786502162;
-	b=ordLWnBMfyECSFvkbq7ET1B5kH0wIwPX+TLO4guvSsfG49tNTidVDOEaSuybMNuO8ceEO+
-	THu7vx38S0lnMgvGwhfWmzaLg04KFhzk+uecrqEpV6BIm2lYl8dSfZVUcP+nlgWMJwakFV
-	Z/nv7dAXFUB0Bup5ndy67R4fILaDiPA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=E4
-	8rZGlJpEk2yaQSzI9zGHJcjap4/8TJxtr1yxQ2/gc=; b=ARchWuSNwdfkWAW2QR
-	tJYuU2WAYaKaGWuuc40APKEZ5fNTzTFIXZqKkLuRjKBqroKU26F8faeW9HImicA6
-	Uzg6ZpwkWE35ZM4x6M/kG30vaHbfPqUa8qTfC6olbQOKwqDKeTT8Ez8e3hRKXn2J
-	A/c1zLB2K7OSVGf0tPMFRP4Fo=
-Received: from localhost (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgD3vw_s23tqtHd3Mg--.32002S2;
-	Wed, 12 Aug 2026 10:35:25 +0800 (CST)
-From: Hui Su <sh_def@163.com>
-To: akpm@linux-foundation.org
-Cc: ryabinin.a.a@gmail.com,
-	glider@google.com,
-	andreyknvl@gmail.com,
-	dvyukov@google.com,
-	vincenzo.frascino@arm.com,
-	kasan-dev@googlegroups.com,
+	t=1786502757;
+	b=dW4OfAIq1s0TNKLQVW9EHLVRl0+roEsk6rl8k017Dffk9ZX96EuzCdkEJv4kPKuEkvHiBX
+	ispJNE8Lj6PchphWf0G3w5X5V4rVUsi88d2lPVi71uolxJukMaj/JFR/heFngJnVWGluQJ
+	KxofNFNe/s9ddk/10uc0S//bJvcHiUA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D3DD4600AE;
+	Wed, 12 Aug 2026 02:45:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E07C1F000E9;
+	Wed, 12 Aug 2026 02:45:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786502756;
+	bh=+wN4tIqwkqpx5GNi0C8cNZGttKmLphAMJrFg1BPO7Ao=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=AObcdImc7khHLVpGq0Y9RAd14XKdCLpuqYepsxUdNSTw55wqUqKzNH2XBo7ZBtpwU
+	 kVQuydSEH6wYUTkAA1yKrz4j4ROh34uG+vq67B6wI0UgI4JovGscNczZUhzSbANhcx
+	 Kl6d8pFE9KIlJhdVbYVAsZUlKHxfr1Q4ugawg5zE26HAAQOXaHXxfHn5dDU6nKjPpe
+	 yEAEoOzk70KaxTXR3LSCXy7/sWMxuTEMAS+0bsIyGvkb6X84JPkoqmSsqTjuTpQ/4y
+	 BHv7Ydh/gKobIMa1i2qWB0oxmhoq/Sw+IG4RQD5+1Qei0pQWs9ClOMReLcrNThdfSH
+	 dPNe5Z13Oonyg==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SJ Park <sj@kernel.org>,
+	Wilson Felipe Pereira <wfelipe@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Tejun Heo <tj@kernel.org>,
+	=?ISO-8859-1?Q? Michal_Koutn=FD ?= <mkoutny@suse.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	sashiko-bot@kernel.org
-Subject: Re: [PATCH] kasan: fix quarantine_size accounting during cache removal
-Date: Wed, 12 Aug 2026 10:34:42 +0800
-Message-ID: <20260812023441.2067480-2-sh_def@163.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260811182914.ed2cba4ef1a8a88335b9edab@linux-foundation.org>
-References: <20260811182914.ed2cba4ef1a8a88335b9edab@linux-foundation.org>
+	cgroups@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2] selftests/cgroup: test_zswap: skip test_no_kmem_bypass if debugfs is unavailable
+Date: Tue, 11 Aug 2026 19:45:53 -0700
+Message-ID: <20260812024553.8493-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260811190611.c72f19ada3912791a81a7a90@linux-foundation.org>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PigvCgD3vw_s23tqtHd3Mg--.32002S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7WrWDur4DZF1kuryrCFyUKFg_yoW8AF43pa
-	y7Jw13Cw1ktryxGFn7W3WrWr1rKrWrJas8J34furna9F1rGw1IqryfKrWjvFy3urs8XF4j
-	qa4DGrn5CFy5GaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Uov3nUUUUU=
-X-Originating-IP: [183.192.100.171]
-X-CM-SenderInfo: xvkbvvri6rljoofrz/xtbCwg+rC2p72+-PcgAA31
 X-Rspam-User: 
-X-Stat-Signature: oyhnaib7zsh1t1oft6mymy3r5enirjtc
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C9CEE80004
-X-HE-Tag: 1786502160-364253
-X-HE-Meta: U2FsdGVkX1/iqaw4N0pRDR13v2pcp/EaoWzo4dZPzlVxe0NZLfZwY/PQZgXqxjZSJC0Vr5wBHZCjXWyz6GKnTgDxik/JhMIlB5DEP0GVdFN1Py0gPDJmL5sxzHY3YxDSjkswuddlP8cTui7z5+3xnas0Ng9RPAIt9xYgJMGTKwUykTfQ2eqP9XbQ8Stif18wfdLrXYMD+T0T2VbIZzjAbdJjR0gaqFrKOXAzrRy1xt6Fp8OpepqXUKQSlPo/bBt/1ndWiX7IULCTSKXkLCUs0hKZJmc9NV2HsW6ddbSWxO9urBWfX0JX/cpNJS473g7PlVTbb45JrXmB8nEJ+o57MGDSDZdbvDmjFccBvhMlIgGAbCcI+Jyat03pAUVxvrSj6tr9+mYJ/E9m05pLyrEbUCl/hLw1qrB7SvGZBFByNssFzcTLt0o6Tnqv4rG5hVkqLiHiN90fhWIlPZw9Y94yDiup2h+7fFmHhbhlQWNhMW3vjY3+DZQ+LNo6Jb2N2hyqvHKD4x9EnKL7XnRUsd7Atu61sOJfHu/EBMHppZL7a9OtCKhZHDwMebEwBXplmA0E9vJb1s3faPq+fWDKBeHwTBTLhFre+c69zZpCi5DwgNSEDZbACjH6xJERqsiXqAj1ZG4643uuLjY9fLHkqk/qk+PJRqoGej6Bk4q7k6anJRi5Ph9NOEfqoQg8QvGRmjI3+bcNYd8jAYma8Z1qC3Z8rJdqyrR5ky01VLRteMtyfHTPjPN2Xex5KtRlmxltRz4BYw6zlX2q4mONgkR5c8KVK4Mm4zt7xItPOA/uCgV9+PxH62sOdoe00VwhLsYLxa2Aeg4oGKKCWc9/toT+1bbKt0ztjxZ1kb733uSu5+wQ6Diqwie+3CDptZyYyjtoh/McZYaF+NS4CBcj1sSir43cm6IukPRsuI7rxgFYN3gPlnvf0vBPgxfx4OyjOltSuA5abiKFkzueeCLoQgPd3kS
- jJUTWYUG
- XvgVZhZeaKdshmuhU5P0rPHgz80YGwL4nIXeBO36YON2vOuZl5Txa8ZTRaFv6+4HGNXPG4nR2CVa4S7WFo9hBYhT8C466rAM1bQ/mXW4zmtCPauB0q22BkfeONAjmlIpmEKVHmjimud2V8m8er/r23LRSTOU0iGezarN4BTgbwENb4MJ7p5eWdo5/wuHuJYXc8UzPkPqk8SJDzmp8BZQvrRDPd2ac+dZP8PGFDZrTPVNgrto9Hu0kzAC5BpxmHlfFdlkN7phDz7/ARThMJo+wbAmBqPtc4VrP/w98skQ3WEkvah+d+IQODe+GF07UQtpixuW2DO9sAXQ5wB29k7Y25ywOv6WVg0JCIoQqIVa7IOrZy/Wigcx+v+JBNF5AvPQ0F9vbk2O4lNJTEqg9/rCLGKw0OSmyCNY8ENtlfFaeK67fR5IK4v/DgfD6xvrAcDrRoCrfS5oz554IAdjpZtL5HWyy5wlBaNU1YoAaaPGs8Dl8AZGbbWTR6vkdRU+pu3atqlhkUJzBnF9mcFVXIDK7ALLHLOYeEgnkn2aZNGmAIm7r9LfF6JGOXUrW6SfHXObL8ForpSWhvxH0gzWJ3wcJni1242xjvm12Bt3iWfaF6/k3yHU=
+X-Rspamd-Queue-Id: 5078A20002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 9k71ik3e7gymnhnhkc7wwysdspe39hrz
+X-HE-Tag: 1786502757-180352
+X-HE-Meta: U2FsdGVkX1/5elxFRELRWRq24SGjl+kXqrXzKgsJ2+5nx4yT2XUlUqPWR1xskNhFaCRdnFmmTQfs5JraaZEwvrcVslUYDhdQ82oWolbEisZgphC4ZnHxqPx8PGiyksy4gQnrZxUafH14MkveFoF7VVFIa6EkJsqsG6HtZw/ypOf3vmzrmc5ZoroQmRXSTEhJ6OQ2ZpiS4H2OoBiqROn2blTJsB7645XKkzFEUc3ra37IPSYBi1v/P1SpH7InRloqac15/QvoN2IsubRRATbUZmwS9UpYe0HF3gpx23AsWpCY8LKbseFEOic0s5PyK5dYlh0MfCnHQ7wjLPCw4yWUwGj4JCN+Nq+7V64saMlACNGK5CFh8HxpjqbLhYElmi7fjjKK6C0po8b/DwrlU0kdlbNTg1Wj6M6ciVBpyY/EnifsrUPCxUuI4XYQw3J80ObyjTU4j01Fu+CtGPnJTR1h39Ti6fFSfmkmlLiRPzYJQoDNSjdt2fODg2E2Kciw7fxpvmAF2uqiX62Moj98nJ+FHaUhPA0ep1Np0fsJS5+oZ1/Dqk7Go334UDMY8HNwjPYuK4cnGLS6/FJs2TD/OUMH0Y8m/zv7JTbGlWw0vISXBrgZ6aSbOdJboioBMFngTFanenpWE/E006uU+72yO/8zldD+JVSTYgQKqUCBPmU7JAJqJ266nwF2Q6WRyedrwyShS+TpzF13dTXwFIGVO+KWXX+cE64foaaGWqw7r4A14VLtv5ut9xDjhG7ZjwwzRMhxBcnGqU1RTwutUis7m2jYZ2xYNNGPRpXa72JF73EZNqg3VQwV0Jq1sf7fJQBHPL0UbOUl+gEG3iXet7dMn6AdrnWmYXN2PT2/yZRSgz94pz4YBC7FdWT15lqm240Ww26elBSYlOmtgqXBKPDFcrbYDC1koCmxU+Oe6zuFvv0ysTLZUH5Mno05C2/E4xYZokjKRthWxEXoaB+A3pPOas5
+ z2VHuU51
+ f92+ow57ZZA1q9ralig8vbstdsJ48/IwwKMHZo1bJk6ipKRKLkE9MxAbVSogbsn+Fhh+0q22Y7vCtogJzfSy9ETCp+RqjOhh5VfPF+xY4bxXZqshFjDkq8t2OEo/jXCNWn/43O3l1OPsJibUJFoRMj/jnrPFY3xWEwxzsEfbTE7Z4vuo3klV+KpsLsfSeE5Msww2Jneu84PSGS1SxYw5diPDOj8+uITnlNgJ59YTJTURmCVZWebBEUh+CxbdVmhNA6BNjMdO0/yaZqP4kOUskbUtPIDi4g7YHhva4jsqrCDDVptT4ojHPtFSy5AcStIFKXFZ/pNhBfH76nuU9E5wi0jAD7Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,42 +101,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > quarantine_size tracks the total number of bytes stored in
-> > global_quarantine[]. It is incremented when per-CPU quarantine objects
-> > are moved into the global quarantine and decremented when a global
-> > batch is evicted by kasan_quarantine_reduce().
-> >
-> > kasan_quarantine_remove_cache() also removes objects from the global
-> > quarantine. qlist_move_cache() rebuilds the source batch and updates
-> > its .bytes field, but quarantine_size is not adjusted accordingly.
-> >
-> > As a result, quarantine_size remains over-counted by the size of the
-> > removed objects. The stale accounting accumulates across cache removals.
-> > Once the inflated value exceeds quarantine_max_size,
-> > kasan_quarantine_reduce() can evict a batch even though the actual
-> > number of bytes in global_quarantine[] is still below
-> > quarantine_max_size, shortening the quarantine window.
-> >
-> > Fix the accounting by recording each batch's size before
-> > qlist_move_cache() and subtracting the number of bytes actually removed
-> > from quarantine_size while holding quarantine_lock.
-> >
-> > A KUnit reproducer used during testing observed the over-count grow by
-> > 4698864 bytes after one kasan_quarantine_remove_cache() call with the
-> > fix reverted. With this change applied, the over-count did not grow.
-> >
-> 
-> Thanks.
-> 
-> > @@ -365,9 +365,14 @@ void kasan_quarantine_remove_cache(struct kmem_cache *cache)
-> 
-> Sashiko might have found an unrelated pre-existing bug in here.
-> 
-> 	https://sashiko.dev/#/patchset/20260811073332.1351893-1-sh_def@163.com
+On Tue, 11 Aug 2026 19:06:11 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-Thanks for pointing this out.
+> On Tue, 11 Aug 2026 05:14:11 +0000 Wilson Felipe Pereira <wfelipe@google.com> wrote:
+> 
+> > test_no_kmem_bypass() needs to read
+> > /sys/kernel/debug/zswap/stored_pages via get_zswap_stored_pages() to
+> > verify that compressed pages are charged to the memcg.
+> > 
+> > When running in an environment where debugfs is not mounted or
+> > CONFIG_DEBUG_FS is disabled, get_zswap_stored_pages() fails, causing the
+> > loop to terminate early and report a false negative (KSFT_FAIL).
+> > 
+> > Selftests should not fail if debugfs is unavailable, and it should print
+> > a message when it is skipped.
+> > 
+> > While I'm here, also add a warning message if the test is being skipped
+> > due to totalram size and make the check for totalram more readable.
+> > 
+> > ...
+> >
+> > --- a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
+> > +++ b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
+> >
+> > ...
+> >
+> > @@ -570,8 +571,16 @@ static int test_no_kmem_bypass(const char *root)
+> >  	/* Read sys info and compute test values accordingly */
+> >  	if (sysinfo(&sys_info) != 0)
+> >  		return KSFT_FAIL;
+> > -	if (sys_info.totalram > 5000000000)
+> > +	if (sys_info.totalram > GB(4)) {
+> > +		ksft_print_msg(
+> > +			"requires less than 4GB total ram, sys_info.totalram: %.1fGB\n",
+> > +			(double)sys_info.totalram / GB(1));
+> >  		return KSFT_SKIP;
+> > +	}
+> > +	if (access(PATH_ZSWAP_STORED_PAGES, R_OK)) {
+> > +		ksft_print_msg("mount debugfs at /sys/kernel/debug\n");
+> 
+> Super nittynit: "mount debugfs at /sys/kernel/debug" sounds like a
+> progress message.  "I just mounted debugfs at ...".  I think the below is
+> more clear?
 
-The issue found by Sashiko was fixed by a previous patch:
-https://lore.kernel.org/lkml/20260808031459.3032812-1-sh_def@163.com/
++1.  I was feeling similar.
 
+> 
+> --- a/tools/testing/selftests/cgroup/test_zswap.c~selftests-cgroup-test_zswap-skip-test_no_kmem_bypass-if-debugfs-is-unavailable-fix
+> +++ a/tools/testing/selftests/cgroup/test_zswap.c
+> @@ -578,7 +578,7 @@ static int test_no_kmem_bypass(const cha
+>  		return KSFT_SKIP;
+>  	}
+>  	if (access(PATH_ZSWAP_STORED_PAGES, R_OK)) {
+> -		ksft_print_msg("mount debugfs at /sys/kernel/debug\n");
+> +		ksft_print_msg("debugfs not mounted at /sys/kernel/debug\n");
+
+This reads better for me.  I also find this is more consistent to similar skip
+messages in main() and check_zswap_enabled().
+
+>  		return KSFT_SKIP;
+>  	}
+>  	values = mmap(0, sizeof(struct no_kmem_bypass_child_args), PROT_READ |
+> _
+
+
+Thanks,
+SJ
 
