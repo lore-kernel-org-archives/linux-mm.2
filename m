@@ -4,161 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 305C0C5B56A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 13:20:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC3BCC5B56A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 13:21:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D30286B0208; Wed, 12 Aug 2026 09:20:49 -0400 (EDT)
+	id 51B7C6B0209; Wed, 12 Aug 2026 09:21:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE0F26B0209; Wed, 12 Aug 2026 09:20:49 -0400 (EDT)
+	id 4CBB16B020B; Wed, 12 Aug 2026 09:21:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCFDD6B020A; Wed, 12 Aug 2026 09:20:49 -0400 (EDT)
+	id 40BD06B020C; Wed, 12 Aug 2026 09:21:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 55E876B0208
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:20:49 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DE67C1A0252
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 13:20:48 +0000 (UTC)
-X-FDA: 85092677376.13.C028880
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011071.outbound.protection.outlook.com [52.101.57.71])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A88734000C
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 13:20:45 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=ErFaPugi;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf01.hostedemail.com: domain of nikunj.dadhania@amd.com designates 52.101.57.71 as permitted sender) smtp.mailfrom=nikunj.dadhania@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786540845;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 05CEC6B0209
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 09:21:39 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 72C02A035B
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 13:21:39 +0000 (UTC)
+X-FDA: 85092679518.02.3148DA1
+Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [118.143.206.90])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6BAFB4000A
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 13:21:33 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
+	spf=pass (imf04.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 118.143.206.90 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786540897;
+	b=seKZOgiLyUhAkDwtDmmrFvbVnxm1Nz+NCN3aRlnoJXEPrE5IkNV3+JrJxggtcTU1nHX4Vg
+	HfwSu4rVFXgbQw6Nu/vFzt8EIkb7IukidUyHvIdwmqiucfG/BUf/cc7+qTuLRQFtNh3I1n
+	ow6/oIX+njJC3TvFKqPOdJ54f0Z6684=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
+	spf=pass (imf04.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 118.143.206.90 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786540897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8DHCEDBErF1D1EW8S1AgvnN4skuEBB1iUgfTYIbU8dg=;
-	b=HFVAKaUvJTCuKMQ+JoGrrSe4Mn70JzNcWhXmW/jSzB+hCSXWKMwpkLODcmerrMONkkbJju
-	oegX0+E/tdEBBielRKKSeWeDpZjJGI1iiDdFDlSLabZWSTFwuf50rWk941z+C+L48d2dgA
-	8L0OF6kxOxTiv3Vir5MwO0OcsdEvOtA=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=ErFaPugi;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf01.hostedemail.com: domain of nikunj.dadhania@amd.com designates 52.101.57.71 as permitted sender) smtp.mailfrom=nikunj.dadhania@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786540845;
-	b=HCcWkeU5EO9/X0Cu5Hm3tEXi0/flWoCC6XLd2/APVNwB4GkDMMrxDjUgQCeXcLLvi0dxU9
-	rOr2azadJDQdhP6vXDKOVWw8KoCMR0Nar/4ezdIB4qTNgG+89Ywbj/WDU2CdowttTLDXpW
-	I8xqQ9ZGi3loBVJKUI9hhC6jGxo4RpM=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a6iqBAcsUigCZQAR4FD9reMQCvbGBWzF9ux4CmcDdJOlyC4s2TrMdd97VaChTEYjQf50gSvxIAhyk6bYFRlOe7xoTio+q3TWLZ0i1/n7mF9YYQB26x1CF/TjZ6pbwVXk7h5fm8/TdJASsElcia3eg9PFSEPfoKYUhLC1K/Veu1AFlWjeZyOA2Z/8Lasi0fRqr0dSGQzXiP8Hr3sOcqVpmDdbothbwizUzhAYoDGE4t0ilzLTKadWjNRowu2u436ZlvRgIZCCdSVWSYalSdqXrvfnmyXZPSxlBNGQlR44B1HW2Jcip2hDIYAAbRMUxfeLISYmWegaXKjdqZhF26SdLQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8DHCEDBErF1D1EW8S1AgvnN4skuEBB1iUgfTYIbU8dg=;
- b=nkrqGt27O/WKIJkKYiz+sj5ni83S/t/31toQy56v/EXq9t0tVJq5S5fTZqMZEk4pvhED+09NAPEDomJOJD+CcKLD6RpXfM6VnhgZyYhf6akgwl/xXlM1/6rZoYZKC0ZvFudw4Xol2/kHQny1Igs5IQ90+2glude4p5WsGiR49MltQMfF1u+MxHZThfPRmwEYO/ZjvDCJF6FVW3GZ7SxYs9mCHo4ums5H9PhYp0PMUtQtV2+g3iwuLaFjeaUCy8/apfKOi9an4B6Z3cQXC+1Ypz1CQ014zdYDwUXvVSUabm1FO3fNQqkumxKjELU6L3WjyVSiRL60RSGCG+wJV+s59w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=suse.de smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8DHCEDBErF1D1EW8S1AgvnN4skuEBB1iUgfTYIbU8dg=;
- b=ErFaPugiWpSwt43b9mc9PCPRKBbDZ6WXa1Budb8k1zDHBunss6jfrqTQjMpuE9D4Hk5bNwevPFdshU/bfm3i35iwBQlE2hrMJfa/bqj3gNMrTuE6evFnesaY7FSKs/siM/aT0Pq+ViXf7xydhcE+GQimsIm806BK+uHYDDI7+Ls=
-Received: from IA4P220CA0012.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:558::17)
- by PH7PR12MB6419.namprd12.prod.outlook.com (2603:10b6:510:1fd::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.19; Wed, 12 Aug
- 2026 13:20:33 +0000
-Received: from BL02EPF0001A0FC.namprd03.prod.outlook.com
- (2603:10b6:208:558:cafe::23) by IA4P220CA0012.outlook.office365.com
- (2603:10b6:208:558::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.315.14 via Frontend Transport; Wed,
- 12 Aug 2026 13:20:33 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL02EPF0001A0FC.mail.protection.outlook.com (10.167.242.103) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.315.6 via Frontend Transport; Wed, 12 Aug 2026 13:20:32 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 12 Aug
- 2026 08:20:32 -0500
-Received: from [10.252.195.98] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.45 via Frontend
- Transport; Wed, 12 Aug 2026 08:20:21 -0500
-Message-ID: <e5311d9c-d086-4681-a470-f8b79ade27f5@amd.com>
-Date: Wed, 12 Aug 2026 18:50:20 +0530
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UX/pMAx7SWqbMxw3Wa1pLWOShmrf7BHgzWflqvh2wbQ=;
+	b=IN2VvTXSjexsB2iZjBwe/v+2y/sag2rV+kjWTQSLDq+55GFRYgsnEXbP9J0pxztSDAHXZm
+	36pE6uvIZjg0nVqlYaxwU8vJAwoRdO5wIY09AnPjyxRA30Cwtjf/H+f1CzjiqdagqTFqmt
+	kX1qLWTYPTxOpLve5XEP4KhyT2u5ZHU=
+X-CSE-ConnectionGUID: 1UgUDRZ1QNivzZEq0+sAiA==
+X-CSE-MsgGUID: clK7nHn8Q7yVdSSwnMxQoQ==
+X-IronPort-AV: E=Sophos;i="6.25,219,1779120000"; 
+   d="scan'208,217";a="159081093"
+From: =?gb2312?B?uN/P6A==?= <gaoxiang17@xiaomi.com>
+To: Steven Rostedt <rostedt@goodmis.org>, Xiang Gao <gxxa03070307@gmail.com>
+CC: Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+	<mathieu.desnoyers@efficios.com>, Lorenzo Stoakes <ljs@kernel.org>, gao xu
+	<gaoxu2@honor.com>, =?gb2312?B?06G0sw==?= <yinchuang1@xiaomi.com>,
+	"linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>
+Subject: =?gb2312?B?tPC4tDogW0V4dGVybmFsIE1haWxdUmU6IFtSRkNdIHRyYWNpbmc6IGFnZ3Jl?=
+ =?gb2312?Q?gate_ring-buffer_usage_statistics?=
+Thread-Topic: [External Mail]Re: [RFC] tracing: aggregate ring-buffer usage
+ statistics
+Thread-Index: AQHdKZr3AIp7eq0PuUyEknsvZXxszLaaZZoy
+Date: Wed, 12 Aug 2026 13:21:29 +0000
+Message-ID: <cd441eb194d54265b1bf9ab659716c45@xiaomi.com>
+References: <20260811114818.1449933-1-gaoxiang17@xiaomi.com>,<20260811100830.7976bbe8@gandalf.local.home>
+In-Reply-To: <20260811100830.7976bbe8@gandalf.local.home>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.237.8.166]
+Content-Type: multipart/alternative;
+	boundary="_000_cd441eb194d54265b1bf9ab659716c45xiaomicom_"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 9/9] x86: re-enable EXECMEM_ROX support
-To: Pedro Falcato <pfalcato@suse.de>
-CC: <rppt@kernel.org>, <akpm@linux-foundation.org>,
-	<anton.ivanov@cambridgegreys.com>, <bp@alien8.de>,
-	<brendan.higgins@linux.dev>, <da.gomez@samsung.com>, <danielt@kernel.org>,
-	<dave.hansen@linux.intel.com>, <davidgow@google.com>,
-	<dianders@chromium.org>, <hpa@zytor.com>, <jason.wessel@windriver.com>,
-	<jikos@kernel.org>, <joe.lawrence@redhat.com>, <johannes@sipsolutions.net>,
-	<jpoimboe@kernel.org>, <kgdb-bugreport@lists.sourceforge.net>,
-	<kirill.shutemov@linux.intel.com>, <kunit-dev@googlegroups.com>,
-	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-modules@vger.kernel.org>,
-	<linux-trace-kernel@vger.kernel.org>, <linux-um@lists.infradead.org>,
-	<live-patching@vger.kernel.org>, <lorenzo.stoakes@oracle.com>,
-	<luto@kernel.org>, <mark.rutland@arm.com>, <mbenes@suse.cz>,
-	<mcgrof@kernel.org>, <mhiramat@kernel.org>, <mingo@redhat.com>,
-	<peterz@infradead.org>, <petr.pavlu@suse.com>, <pmladek@suse.com>,
-	<richard@nod.at>, <rmoar@google.com>, <rostedt@goodmis.org>,
-	<samitolvanen@google.com>, <shuah@kernel.org>, <song@kernel.org>,
-	<tglx@linutronix.de>, <x86@kernel.org>, <bharata@amd.com>,
-	<ananth.narayan@amd.com>
-References: <20250126074733.1384926-10-rppt@kernel.org>
- <20260812063316.21371-1-nikunj@amd.com> <anxa3VjtukAkY4Cl@pedro-suse>
-Content-Language: en-US
-From: "Nikunj A. Dadhania" <nikunj@amd.com>
-In-Reply-To: <anxa3VjtukAkY4Cl@pedro-suse>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FC:EE_|PH7PR12MB6419:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5bb03f0a-4f55-4dce-2e70-08def8747ce6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|376014|7416014|36860700016|23010399003|11063799006|10067099003|56012099006|18002099003|22082099003|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	ZoKC0kyZYWdpGI8twWDSDDwTu998XtttPGzTOOY35QPQqCCcG65RhHQDRNhAxbecIiAiEYlOVrXzVTvUxpLCy2jrUYz3NJnBaNXOuhhy4bgoJ9jtPUfQlNnjgP6+xUkFeT3hrRZ4SnJL23gmrIpQ2+xHItGYdyq25lvhbhQDh4gh5SaXFVUrVlU+LpnbGeFw83zVAW6m85cFBWkHWFH1awW/0jZEq/IQs3/M/hzDK9jNMVTb+dKzidC2LbiQgnEq1ssOphNrQwe8tLqHF2AlryWfCAHXrN3agc4d0A3f4lxtnj3GFda+zQ+EVDepKYUbVM+Omb/osh5CgJm15svIx69ZgruAlDrlw1sOd+C/7apO1j1b+psKbxs4azSr3zHxJ5M/ZZoUpWMCXZp2xbI8HEMI9QwLIriEI2/ofS70JaYaGrLQ2B+um+/LnCuHJ7MICazpiCu2rnn/rnrVdpq/Q2qtqEjmmD6+QCn430aYyqyZAtr9bnfCcr7q9IUMR67NRwfzVXhQzF4razDSko3B18NBb5OQ2/0R03SoxNs/Fs+FnkUYAjLIBGvSis+HsSgKdEfs5V/WBYPKV8FVwL7rGk5/EZj77A+LV6i8hKihloc5JpimCwsdaTf2YeQdQGw7rUdouFro5xo43EVAuMxd/2WoN9Q9FedohT5HoOIauYmnmlqfuOsskrEcY1zFzhPAGkbar35sww1GNuszhny/xQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(7416014)(36860700016)(23010399003)(11063799006)(10067099003)(56012099006)(18002099003)(22082099003)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	S12wl5c9reU3Sw613S69LgE05fnqEQN8C8JUj1kFiJfCAuVa1XJyYTUaDrhqPPTRn1tzcfQ0XCOtxsc6fnQC+VwH/QVJgzpoF3dGGiQHMRFpVrUpn3BHQ8UEYHYmzuieuy86o7gv7Gghs3WGJzz4Jwe83FRvMj2ogFSq8SR0F+sbIXTg+VEZ+RFqH8MIotktIaWyYCPInYCymxZTk2JwCF6v9qLPXBQV4XJdMn1MIdCmPho8Q4b9UTMVMjgm7cm3vfPNPmBOIUfntLdmNtHJ6MNdODuvxcUF8EsdIjp5dpqWWV5WK9GmevaKcmCLpyRAIQE6ubz8EFpoLG3DyWS570e5S5v88LRC46K/dZlqtHknzpdvr0KoPUuepV2GXhwFUb0Hn5umiBkbbkPKufrB7krAXWDycSGn8IpNhTmYpIzlYS3Rv2BbqHVUFCqqAHwU
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2026 13:20:32.8107
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5bb03f0a-4f55-4dce-2e70-08def8747ce6
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A0FC.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6419
-X-Stat-Signature: sarukdfzbwynx31k5rgrpjzwgmxet9js
-X-Rspamd-Queue-Id: A88734000C
+X-Rspamd-Queue-Id: 6BAFB4000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786540845-543847
-X-HE-Meta: U2FsdGVkX18zIL34FlI5IropE+bBZZ+ZnFt2QsHD1AxHkNyOz58R6y9/d5XUSr94psdTpt9vBS7OoeZwzZ0XA8DxK1bMGzq+qFe3vMvc6VjJv0L4/Kl1tSvqM6fJ46RZ2urh3MxIkIZ5VzSSndEXgbA7VXo/GCNKOYQcoV752kKyY6aBky3cPMsunyEHJmS7DLIz7wRltubUsNxaxo381Q8sO4x/rFD17zdga0v0SnB37cPk/f7VA6SLV172Pjonk69OCA+XTt5cSxoQmVscPomw0wtfBS7HAQu5/wxHceduHZDj5XgEkrdaUBr/PH/jfSVuXBd67Q1Z7Iucf9FeiwXxRLR0qNB37AAeqyB4U8vdZHbg6eG1OmV1adsGDKEmwmNPobWD2jCVJUmIinLba6UHs0Wn/gN+CyrVWHX3tHSiN/L8PZWTGK7qhmyut4IcQn++DOpXkfTZ7wz6cwEKvkGkfro3sswGZ89X6AncqXAlrf3XiX19V0cuz6JSO1tY9h17c+89dUT8C74wUkQWn0k2inCGQLR4Vy7OyGUEUb5K/0wpf6edulMf+K34EXv1vnoom/nSsa4ZcfzT4V6yMs9U7CMtz5OOmXzW2uvUPBCBwrFSBbABHE1GoHGCxMVRMjwGTNGPOBy6xHcy9hLS6Ap4MwjkawfXf3tnCQoIyMaiVJtIDZsm1TOYdoXUTMI9LM6agJj0uzdEC4d+850kqzCOR8lj9reBG7B+jcGhLcqaV5daPt+vDF/ta0LEwNCo6Ad13B5U+RAY9DysT91NMy/hvuGKueLeduO3YJHRHTR30cWhjF6hHbYWBXa8aG7yDEsUoow6CH0h51ljQrgNKIozL2J5UNo5c2gSB3A/YbSCXOAy1Ek3LACErFNEupPLvvB5mn+Uepya5CKC2xxzZoQ9XoWDJqp76S6WI22IB/1tv0sTZ0vqWpAAmVL5UyK1TcAX58FVLKGtUHIkvfn
- 7IjgeaBp
- meSDncOfYUPHPzOvTVR/CixHXj2K3MWn0mfn/TSQyi6rc+2D+Vg6InP97Vt5Ye6pcVLfPAGbtMmbFr1YmxVOJPSZEu2k866mFVabq2mVV6+Ut6RmAFDU84emZek8esGHkob7vTmbLNbRzHJIpkbsZzWi2sd+gg5u+e1SDYlnfHRcUqh9tJGBN5/6lC3fphVLIyVDKmg8rIndEbYrpZ8Klo/Dr4UYP4h11gNt3LyDcmrxUhCTi4VCiNTaBdwx+RyErnrE9aJMwCswV1xL1CIZfNXwQF8qtr+XxYvV7MMtnWUZixim8xQfMU9dwzJ2vJbbBnXKKQqERn4XXRdWdg35TV4HFTWmYwl65pwkp0XKI1MZzb+73/kIvu9tJ4gocHEw7JfZKv31M2BLSZOrVM6yoAn/5+IxdxOHfPTBuzq+oPdttdrJGQUfz+PXAFvEnA3A2/4AiMIRlTWkpHnywoBuNoa+TPAi98LpAIN0oQ/BrLCokbam0YzNTeA9IPG/yvaW65flC4TFPPXeTX1aOR1li0GtyEicHIu8zSkaRvE7CbxptDuOjs9By68rHCqUT4Qb9dlr/YDiPrOjCdxWr3YNBKWl7lg==
+X-Stat-Signature: 1n9fbwbn6bugtiqygcudx1pigjnje19y
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786540893-533192
+X-HE-Meta: U2FsdGVkX18WULQh0FG5mREQDVGDlkmpRvAFLl8X/7qLvAk6DnT+NMVf2LlYLJfqZsv0AwJ9Crw1f6SQikbXePWSnRmPUYi+VzsTgLWU/4YQD9X5cjw+OtH7fY7tFbvdDADvsf+RRPJ2f0smNB6dZG1XtsoEMD3f0OQyXLZo6r/VdCmhPwAyRK5JkN6Hhi4a69ZvdIVbRQYY2PJf73k/SbGjMgVhKS56iTvnfO3EpYFIiH/Cy3iTTgtcXgiGszgEl3RHAFQgWE+rd01wR+RzXPOrxAC45gzOmOlKjmEtbSQm8mNNFZVTOeDVe1OXYBxTFxkng35yn7EdYhoSOcPwFjQ9N+Flu+kbvFm+RogeMkC8F0xe3Xh+uo1mg9C0j+CFP9rYLqnaCyBSShfr9vhHqWf7QBAqQJWAXU7ReL0gSeZnNjnCVUHPLRqfQrga6jlxqqutvhiweyxXiFKRTMvT2+6MEQUwGLmo6WSJmienazdp7ARtoCXOlrmfu85sWvNIDaqrovHqnhgoOJfn9wXykL5QcZJM6BlIa94eS0i1WRHMS4t23glU7RJv7PuE3W/lZhcTHTFIgvF4OdFZnfS11qSqKcVWkQMyN2BSATEn7C7T5YlpwcmnG3fx2CMyVy62NEIsUTrLpgl/l+aBSGfc09M5C4hhRs+nPiTWUNTWgH88xdaIX6/wYYGgjxQUHWENUGq4W3+/srvkZCEU0SXBUpjF1Oa+BEGS3Q5pnNxJSk7N6q0Yt6fExOX4HSVLZyCGnZjgZAx633PC1fTI4OgB23AWHNZExtUqrPpcbWJ5lmZxCRNgwOOq+QoQ/q7Rv99TcxvE1re3YaFClW73cm/B058C2SQl5pb30U0EQpqDiOqlda9lKZD0SNl14s2yG0nmE4A8qqnowERAZP4RAhrkLiRV3AEhz22shOKhWc+emlP6Ys5obXrWIbBMlE7LL59CNBdxjKTKjFo6PI+VElJ
+ llGaj9ds
+ ILD8KiF4TdM2XJj5xFI4CILkzFCYXU3MVc0pqmkyhXN3pqqhCVzozwKhKS/zzLvhviywkyqwTouIkjrMlTGegsGX/B6ArXnuUh5+ZvnkDgoGzol9l0LSVxr+QC12lXqOJ7p/Xb2xddf1lMQNpIRXS3zsvDbBg4nYFo5peiJDgdjWsxbKsmI++8VHxSmpM3I0tqGddxB/35n9vv6c//HY7FBmFBxr4oF0usPLr7Ap+h/t4qYDXOqOXqxRLixcRbbgwx/3RALTJ55C8obA7VUci7lRqPedOA3cfW2i5Gi5BOuwr4V6vFpJ2ZmQ3YYQMw+3uV9m28BnU5vBFOq3/ta37YzucWGa9zM91FUEUXIKy/7d/vDz4EaEYxobPgzFDBU/5Yr29PNSCmeVudSGMEtFyz+tFCMmMtZnw7sbz4ntiuTQ4KPDHKFRXJIO2/+LvCACg6WFzg7njhjXrGZlP6Vlj+EBUXz8syZRXWd0nN0wFKOUTrnoybtXx7fSAW/TPz5KbZSfNjZ8UDfLdX0MsgD6OBK4ZdgH2iozXbT9a8H9cK3MqZR/jG8IS2NuUZw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,17 +92,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+--_000_cd441eb194d54265b1bf9ab659716c45xiaomicom_
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 
+DQpUaGFua3MsIFN0ZXZlLg0KDQpGb3IgdGhlIGluaXRpYWwgaW1wbGVtZW50YXRpb24sIEkgcGxh
+biB0byBhZGQ6DQoNCiAgL3N5cy9rZXJuZWwvdHJhY2luZy90cmFjZV9zdGF0cy90b3RhbF9tZW1v
+cnlfa2INCg0KVGhlIGZpbGUgd291bGQgdXNlIGFuIGV4dGVuc2libGUga2V5L3ZhbHVlIGZvcm1h
+dC4gSW5pdGlhbGx5IGl0IHdvdWxkDQpyZXBvcnQgdGhlIHJpbmctYnVmZmVyIGRhdGEgY2FwYWNp
+dHk6DQoNCiAgdG90YWw6ICAgICAgICAgICAgICAgICAgIDM5NTY2NA0KICByaW5nX2J1ZmZlcjog
+ICAgICAgICAgICAgMzk1NjY0DQogIHJpbmdfYnVmZmVyX2xpdmU6ICAgICAgICAzOTU1NDQNCiAg
+cmluZ19idWZmZXJfc25hcHNob3Q6ICAgICAgIDEyMA0KDQpIZXJlLCByaW5nX2J1ZmZlciBpcyB0
+aGUgc3VtIG9mIHJpbmdfYnVmZmVyX2xpdmUgYW5kDQpyaW5nX2J1ZmZlcl9zbmFwc2hvdC4gVGhl
+IHZhbHVlcyBjb3ZlciB0aGUgZ2xvYmFsIHRyYWNlIGFycmF5IGFuZCBhbGwNCnRyYWNpbmcgaW5z
+dGFuY2VzIGFjcm9zcyBhbGwgdHJhY2luZyBDUFVzLg0KDQpBZGRpdGlvbmFsIGFjY291bnRlZCBj
+YXRlZ29yaWVzLCBzdWNoIGFzIGV2ZW50IG1lbW9yeSwgY291bGQgYmUgYXBwZW5kZWQNCmxhdGVy
+IGFuZCBpbmNsdWRlZCBpbiB0b3RhbC4gUGVyLUNQVSBzdGF0aXN0aWNzIGNvdWxkIGJlIGV4cG9z
+ZWQNCnNlcGFyYXRlbHkgdW5kZXIgdHJhY2Vfc3RhdHMvcGVyX2NwdS9jcHVOLyB0byBhdm9pZCBt
+aXhpbmcgYWdncmVnYXRlIGFuZA0KcGVyLUNQVSB2YWx1ZXMgaW4gb25lIGZpbGUuDQoNClVzZXJz
+cGFjZSB3b3VsZCBwYXJzZSBmaWVsZHMgYnkgbmFtZSBhbmQgaWdub3JlIHVua25vd24gZmllbGRz
+LCBzbyBuZXcNCmNhdGVnb3JpZXMgY2FuIGJlIGFkZGVkIHdpdGhvdXQgY2hhbmdpbmcgdGhlIGV4
+aXN0aW5nIGZvcm1hdC4NCg0KRG9lcyB0aGlzIGluaXRpYWwgZm9ybWF0IGxvb2sgcmVhc29uYWJs
+ZT8NCg0KVGhhbmtzLA0KWGlhbmcNCg0KDQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fDQq3orz+yMs6IFN0ZXZlbiBSb3N0ZWR0IDxyb3N0ZWR0QGdvb2RtaXMub3JnPg0Kt6LLzcqx
+vOQ6IDIwMjbE6jjUwjExyNUgMjI6MDg6MzANCsrVvP7IyzogWGlhbmcgR2FvDQqzrcvNOiBNYXNh
+bWkgSGlyYW1hdHN1OyBNYXRoaWV1IERlc25veWVyczsgTG9yZW56byBTdG9ha2VzOyBnYW8geHU7
+INOhtLM7IGxpbnV4LXRyYWNlLWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWtlcm5lbEB2
+Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LW1tQGt2YWNrLm9yZzsguN/P6A0K1vfM4jogW0V4dGVybmFs
+IE1haWxdUmU6IFtSRkNdIHRyYWNpbmc6IGFnZ3JlZ2F0ZSByaW5nLWJ1ZmZlciB1c2FnZSBzdGF0
+aXN0aWNzDQoNClvN4rK/08q8/l0gtMvTyrz+wLTUtNPa0KHD17mry77N4rK/o6zH6733yfe0psDt
+oaPI9LbU08q8/rCyyKvQ1LTm0smjrMfrvavTyrz+16q3orj4bWlzZWNAeGlhb21pLmNvbb340NC3
+tMChDQoNCk9uIFR1ZSwgMTEgQXVnIDIwMjYgMTk6NDg6MTggKzA4MDANClhpYW5nIEdhbyA8Z3h4
+YTAzMDcwMzA3QGdtYWlsLmNvbT4gd3JvdGU6DQoNCj4gT25lIHBvc3NpYmxlIGludGVyZmFjZSB3
+b3VsZCBiZSB1bmRlcjoNCj4NCj4gICAvc3lzL2tlcm5lbC90cmFjaW5nL3RyYWNlX3N0YXRzLw0K
+Pg0KPiBJdCBjb3VsZCBwcm92aWRlIGFuIGFnZ3JlZ2F0ZSBidWZmZXIgdmFsdWUgdG9nZXRoZXIg
+d2l0aCBhIGJyZWFrZG93bg0KPiBmb3IgbWFpbiBhbmQgc25hcHNob3QgYnVmZmVycy4gUGVyLUNQ
+VSBzdGF0aXN0aWNzIGNvdWxkIGFsc28gYmUgYWRkZWQNCj4gaWYgdXNlZnVsLg0KDQpBcyBJIHBy
+ZXZpb3VzIHNhaWQuIEknbSBPSyB3aXRoIGFkZGluZyBhIGZpbGUgdGhlcmUuDQoNCi0tIFN0ZXZl
+DQo=
 
-On 8/12/2026 5:08 PM, Pedro Falcato wrote:
-> 
-> https://lore.kernel.org/linux-mm/anCK3eWFMwZqq5ka@pedro-suse/
+--_000_cd441eb194d54265b1bf9ab659716c45xiaomicom_
+Content-Type: text/html; charset="gb2312"
+Content-Transfer-Encoding: quoted-printable
 
-Yes, this is the same issue. Thanks for the pointer.
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dgb2312">
+<meta name=3D"Generator" content=3D"Microsoft Exchange Server">
+<!-- converted from text --><style><!-- .EmailQuote { margin-left: 1pt; pad=
+ding-left: 4pt; border-left: #800000 2px solid; } --></style>
+</head>
+<body>
+<meta content=3D"text/html; charset=3DUTF-8">
+<style type=3D"text/css" style=3D"">
+<!--
+p
+	{margin-top:0;
+	margin-bottom:0}
+-->
+</style>
+<div dir=3D"ltr">
+<div id=3D"x_divtagdefaultwrapper" dir=3D"ltr" style=3D"font-size:12pt; col=
+or:#000000; font-family:Calibri,Helvetica,sans-serif">
+<p></p>
+<div><br>
+</div>
+<div>Thanks, Steve.</div>
+<div><br>
+</div>
+<div>For the initial implementation, I plan to add:</div>
+<div><br>
+</div>
+<div>&nbsp; /sys/kernel/tracing/trace_stats/total_memory_kb</div>
+<div><br>
+</div>
+<div>The file would use an extensible key/value format. Initially it would<=
+/div>
+<div>report the ring-buffer data capacity:</div>
+<div><br>
+</div>
+<div>&nbsp; total:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &=
+nbsp; &nbsp;395664</div>
+<div>&nbsp; ring_buffer:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;395=
+664</div>
+<div>&nbsp; ring_buffer_live:&nbsp; &nbsp; &nbsp; &nbsp; 395544</div>
+<div>&nbsp; ring_buffer_snapshot:&nbsp; &nbsp; &nbsp; &nbsp;120</div>
+<div><br>
+</div>
+<div>Here, ring_buffer is the sum of ring_buffer_live and</div>
+<div>ring_buffer_snapshot. The values cover the global trace array and all<=
+/div>
+<div>tracing instances across all tracing CPUs.</div>
+<div><br>
+</div>
+<div>Additional accounted categories, such as event memory, could be append=
+ed</div>
+<div>later and included in total. Per-CPU statistics could be exposed</div>
+<div>separately under trace_stats/per_cpu/cpuN/ to avoid mixing aggregate a=
+nd</div>
+<div>per-CPU values in one file.</div>
+<div><br>
+</div>
+<div>Userspace would parse fields by name and ignore unknown fields, so new=
+</div>
+<div>categories can be added without changing the existing format.</div>
+<div><br>
+</div>
+<div>Does this initial format look reasonable?</div>
+<div><br>
+</div>
+<div>Thanks,</div>
+<div>Xiang</div>
+<div><br>
+</div>
+<br>
+<p></p>
+</div>
+<hr tabindex=3D"-1" style=3D"display:inline-block; width:98%">
+<div id=3D"x_divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" =
+color=3D"#000000" style=3D"font-size:11pt"><b>=B7=A2=BC=FE=C8=CB:</b> Steve=
+n Rostedt &lt;rostedt@goodmis.org&gt;<br>
+<b>=B7=A2=CB=CD=CA=B1=BC=E4:</b> 2026=C4=EA8=D4=C211=C8=D5 22:08:30<br>
+<b>=CA=D5=BC=FE=C8=CB:</b> Xiang Gao<br>
+<b>=B3=AD=CB=CD:</b> Masami Hiramatsu; Mathieu Desnoyers; Lorenzo Stoakes; =
+gao xu; =D3=A1=B4=B3; linux-trace-kernel@vger.kernel.org; linux-kernel@vger=
+.kernel.org; linux-mm@kvack.org; =B8=DF=CF=E8<br>
+<b>=D6=F7=CC=E2:</b> [External Mail]Re: [RFC] tracing: aggregate ring-buffe=
+r usage statistics</font>
+<div>&nbsp;</div>
+</div>
+</div>
+<font size=3D"2"><span style=3D"font-size:10pt;">
+<div class=3D"PlainText">[=CD=E2=B2=BF=D3=CA=BC=FE] =B4=CB=D3=CA=BC=FE=C0=
+=B4=D4=B4=D3=DA=D0=A1=C3=D7=B9=AB=CB=BE=CD=E2=B2=BF=A3=AC=C7=EB=BD=F7=C9=F7=
+=B4=A6=C0=ED=A1=A3=C8=F4=B6=D4=D3=CA=BC=FE=B0=B2=C8=AB=D0=D4=B4=E6=D2=C9=A3=
+=AC=C7=EB=BD=AB=D3=CA=BC=FE=D7=AA=B7=A2=B8=F8misec@xiaomi.com=BD=F8=D0=D0=
+=B7=B4=C0=A1<br>
+<br>
+On Tue, 11 Aug 2026 19:48:18 &#43;0800<br>
+Xiang Gao &lt;gxxa03070307@gmail.com&gt; wrote:<br>
+<br>
+&gt; One possible interface would be under:<br>
+&gt;<br>
+&gt;&nbsp;&nbsp; /sys/kernel/tracing/trace_stats/<br>
+&gt;<br>
+&gt; It could provide an aggregate buffer value together with a breakdown<b=
+r>
+&gt; for main and snapshot buffers. Per-CPU statistics could also be added<=
+br>
+&gt; if useful.<br>
+<br>
+As I previous said. I'm OK with adding a file there.<br>
+<br>
+-- Steve<br>
+</div>
+</span></font>
+</body>
+</html>
 
-Will get back with test results on the above thread.
-
-Regards,
-Nikunj
-
+--_000_cd441eb194d54265b1bf9ab659716c45xiaomicom_--
 
