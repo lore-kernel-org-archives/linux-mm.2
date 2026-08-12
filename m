@@ -4,104 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E176FC5B567
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 05:09:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEB36C5B567
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 05:22:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81FF26B0088; Wed, 12 Aug 2026 01:09:11 -0400 (EDT)
+	id B92C56B0088; Wed, 12 Aug 2026 01:22:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D08D6B008A; Wed, 12 Aug 2026 01:09:11 -0400 (EDT)
+	id B43ED6B008A; Wed, 12 Aug 2026 01:22:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C05F6B0092; Wed, 12 Aug 2026 01:09:11 -0400 (EDT)
+	id A0D986B0092; Wed, 12 Aug 2026 01:22:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4486A6B0088
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 01:09:11 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A78481402ED
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:09:10 +0000 (UTC)
-X-FDA: 85091438460.21.C6ADECB
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 0BEF020005
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:09:08 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eCCWqKWX;
-	spf=pass (imf31.hostedemail.com: domain of 38_97agcKCD41kjqnujlttlqj.htrqnsz2-rrp0fhp.twl@flex--wfelipe.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=38_97agcKCD41kjqnujlttlqj.htrqnsz2-rrp0fhp.twl@flex--wfelipe.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786511349;
-	b=Z/qNf2sqj4E0LvnIg7MJXSfUNNx4ZANqUAjWX2yn6/p+keAk/KUmJMRCUKfZw/P6wdWVbQ
-	zZApS8HFu8jUSlL8DkGLyJi2cCJZq71Hs6nWRKaz5kLdjJjLJAgI0LSNUiYH89sJ8uUy5y
-	vmemgljA1VaSvZYVi0nyBTGqKXz6z9U=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eCCWqKWX;
-	spf=pass (imf31.hostedemail.com: domain of 38_97agcKCD41kjqnujlttlqj.htrqnsz2-rrp0fhp.twl@flex--wfelipe.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=38_97agcKCD41kjqnujlttlqj.htrqnsz2-rrp0fhp.twl@flex--wfelipe.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 768816B0088
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 01:22:58 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D63FA160281
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:22:57 +0000 (UTC)
+X-FDA: 85091473194.16.DF94E2F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0D277160003
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:22:55 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kJ0EKCsu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of nathan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=nathan@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786511349;
+	s=arc-20220608; t=1786512176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Thn+HKkCXc42d+b79Pai7lKi10VN8wTMXKW37O027s0=;
-	b=FUNZdpdQJU4f5McKHm0frAgauNVwvqRSmL2DqdAstJfMJscaH8b92mW2oVbLlg7oOJ+HCo
-	ic3FyMhHw2ntMhVRCp4EVivTpmXRFThpShv2Zn8CNoxCUXt1FdEE2WvK5Wdpu5gezTWaqV
-	DVv81NrR9Xv06oPwCzx9UIrMgTqDffs=
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38ea32e57e2so1014641a91.1
-        for <linux-mm@kvack.org>; Tue, 11 Aug 2026 22:09:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786511348; x=1787116148; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Thn+HKkCXc42d+b79Pai7lKi10VN8wTMXKW37O027s0=;
-        b=eCCWqKWXLM0DDILo37JDWS+MkIWvg65X3QfBNx4M5vj3ZPqD7HrabFEpezIrgB1TGy
-         zEai6cDDE9NPKznZdm/DioWhozOJS6m5JVYDlr0LzGgeu2GSt80LmTwKKovfRQ2SrM/w
-         RyCq0zndvpMF/oAc2MuacrklEu4O8hhvEisvce13fvbZQsdnQ6Zv398kKg0W4mIW7RHi
-         b/alRXHBhkCAK7vxIeZGVKqr/TDFcYc44T0u5r4JciUoM790TElvbWBAGrIR0tiOH0P1
-         uraCnZRmKa3Cq/+B13gkIvFtR2UjtkUXX9s44ogXKfOi8ArWlfsJD9uG1WUZ+aRp9JA3
-         67Yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786511348; x=1787116148;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Thn+HKkCXc42d+b79Pai7lKi10VN8wTMXKW37O027s0=;
-        b=Nkeu8vjEvakYoF0K6ZesG5SHIbxFNwWGruRqYfYeSRz5O8HW4jTmpoPn3/FVtEDmqY
-         UJi5EViqs1IyqVPaaHp8exx+1dowHn/8BsLNm6/VmSgIBUilqOGctmr76zdtFPwgmGIS
-         r5lT/37qK4vOJMWHkD+UaJY+KiP/WDvPoZ97nYp0ZiMSgQ8FcxxXPmPDVRu1hx23O94d
-         NR1gUjw5L0MaAvhWgiRphtbX2ttErrALqIYU2iwnriY6bKgq4v/zq0yxV7gW8+cAEnkp
-         s03kyfuqB6d6SjRXEwdn4n8OgnSmwz/dINE+vlc5ms95GJpQhcfDED3a/zj2R/iM4ZVv
-         RoEQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoD9fZMmH9Jd3Ni+zKmxCGSXaTPjUEw75MsGN5Hzybl2RMgd9x7OFiSVRjsKLRvt6vJ8JR5w4Di+A==@kvack.org
-X-Gm-Message-State: AOJu0YwwK4fd6D+ybRoHbOWOWzInaFNx7n1UJioffZmxIAMzWWvaq7Z1
-	bhC3CpGISxu2u3FfM7fOAXCh9EhJ3r95hnmLXZAzvShpozbILHYNwCtP0kUS64Xa2bsjijaYgLA
-	n8h1kaJmIUw==
-X-Received: from pjgg14.prod.google.com ([2002:a17:90b:57ce:b0:380:f969:825e])
- (user=wfelipe job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2ecb:b0:36a:5d1f:7b6
- with SMTP id 98e67ed59e1d1-39301252d62mr2984597a91.2.1786511347564; Tue, 11
- Aug 2026 22:09:07 -0700 (PDT)
-Date: Wed, 12 Aug 2026 05:07:55 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260812050848.848882-1-wfelipe@google.com>
-Subject: [PATCH v3] selftests/cgroup: test_zswap: skip test_no_kmem_bypass if
- debugfs is unavailable
-From: Wilson Felipe Pereira <wfelipe@google.com>
-To: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, 
-	Anshuman Khandual <anshuman.khandual@arm.com>, SJ Park <sj@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>, "=?UTF-8?q?Michal=20Koutn=C3=BD?=" <mkoutny@suse.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Wilson Felipe Pereira <wfelipe@google.com>
-Content-Type: text/plain; charset="UTF-8"
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=z0N6OJ/27Ug3QgSr1OO1qU2RGmbk3As92oPs3a+1uKQ=;
+	b=2akiRi9xhi0NWS/ENs/yu3NKqHLaR/AJ+sj03/lbDkWn3pgEVoGevzR9AVzahxgZAVmISh
+	ql1FIVQhCXThrDLrsLuCW01w7Plnf8d/PFBSnNjmRq52qKxXR0EXjL9sIKGr2U3ooFT29W
+	uBMSox6yMBmhOUQK6MtuspnuyU7rti4=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kJ0EKCsu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of nathan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=nathan@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786512176;
+	b=JmJZFR7APk+Vp975w6xD7i54Q48ClydhXF835xMPV9lALEC35bfm8Lv7trOjqiv63kkrHj
+	ZEY4OEDdNeI6/+NvoEoPEGH4HlcYJ9AUVj54AFN5V3hNeTVThGTDn0eOOiJpS7R0E+QPaz
+	vg0vseYoL2iZUTS2UcF6cJELQ3ZW3Po=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 77ED240B1A;
+	Wed, 12 Aug 2026 05:22:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 772C91F000E9;
+	Wed, 12 Aug 2026 05:22:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786512174;
+	bh=z0N6OJ/27Ug3QgSr1OO1qU2RGmbk3As92oPs3a+1uKQ=;
+	h=From:Date:Subject:To:Cc;
+	b=kJ0EKCsuJEKADrYClfbcjpLpAf3V/ibD36KwUDBtU43CPKhwuvQ3ZBvGriwaKANIW
+	 ssGtdcNnOwI5pzK2vVklAWWstvtQDmRJF50fHlLUU2Xz1Rsz5wtq8er7dUIraoMGlH
+	 ZJZZ9vblQC4ehNNlCQuA5OD1GHd/ViMsIwSzrtkrikeJ8RTavTYfKAry7KuLEavUpp
+	 pJCMGGJztyBn30/qv+dml10LYIIicE3hrIeN02F/fsLuLXvn9/99rAdEuMenVbXLA7
+	 KAIjSKtHn1jyA331za+vhgeKZbZaZfe6IPUCzPP1Pud/Qhd2r8bqGAJxbsiNyrBnpV
+	 odxDRgtYBtjog==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Tue, 11 Aug 2026 22:22:42 -0700
+Subject: [PATCH] arch_numa: Avoid false positive fortify warning in
+ setup_node_to_cpumask_map()
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260811-arch_numa-avoid-fortify-warning-v1-1-59ce3e689f3a@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXNQQrCMBBA0auUWTuQxBKLVxGRMZ20I5jIpK1K6
+ d2Nunyb/1corMIFjs0KyosUyanC7hoII6WBUfpqcMZ501mLpGG8pPlOSEuWHmPWSeIbn6RJ0oD
+ eU+wOrdm31kGtPJSjvH6H0/nvMl9vHKZvFrbtA/ITFe6DAAAA
+X-Change-ID: 20260811-arch_numa-avoid-fortify-warning-66af87403412
+To: Mike Rapoport <rppt@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+ stable@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4393; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=SlLaVPw6ZHbuS1BVax13M+yBfy0AfsczeTQZub6iweA=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDFk1zJrOP7fuuht76JlD5PGGl59vHxWM9/h2mCXXaf1aQ
+ YbvR7cUdJSyMIhxMciKKbJUP1Y9bmg45yzjjVOTYOawMoEMYeDiFICJ7F7C8IeXOzH4cFOKb9cR
+ /zrj6XsiH7v37Enfkbrpm7Bh9PxT0dWMDPu7yrs4b747+PD6/TbFmRe2/t+zbKvj9i8rXiae3Bn
+ 9bjUnAA==
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0BEF020005
-X-Stat-Signature: rhf6h9q74atzsdy4q5pwncjhhwfz54pc
-X-HE-Tag: 1786511348-161796
-X-HE-Meta: U2FsdGVkX1+Qb2V+QoLViy/lvZO5cObxGTZ/8KfBh76PGPc2Junsuiu3jAafpe81z6BZdjNQpsmg4SA7/cFcAkzx2OtYMXPzeI8r05t0cFBreZV3jIoP+y3lH5Cxm8arChUuHDUr+kITThxvDZWGGtOyMrfAi1yMFWRb40bUcIP44ujmejpsTqYvI7aYE6D4eNwudSH9uoUp6GTbUIICFnpwbga8bHzjoWKZ8roVpdYsuxTZNJMZrjTr5Uw8lVl5V3X09O8ZLsrlT/3GeROk2OP4Ur+wQoU+hlUds1gX5LqoNxkdAlyLSJlrRbKFdFILkbWbm9Feck/HsH3FMCTw01NKQFqG0zL2Dd0WdUfUoHjTXYT9Q6jbi4E4g76lYWGbeECCx2YmfopKoe6okVYrUVGdko3XtdlCE5QeE99yrgQ9lGNH2MwO2t1Qj0HamRxOD961jdmeLOiA8Ei9wm2h76wJPRsA0tJqAAwlnWWqz3tDAved1JqHuh35Ve0bnyXKS8BFeQRVMwTP3lhoSI9Ua59rk4y0ds+xpoGMIjbrhzNJ48J+qmeYBd5gmaxS4AnezcPr+JBywHOteem8MzvGvMQW8eXfMqug72kvRfbSV6LNuvQzQFhla90USlSq7kpo5LwwrPSE4WSdYBQVh+z+qFZnmEsjNn8LoQYS9kYIoP1+1fRCSjgn+MLalotn/AK5LplTiFml6CbFiTNWmkN2TtGF31Tk/z7vgRKRHJoYiO85xfNqcJX3ZE9yV+74u8ibVWq1FjITqrvuL4Es1abGP/IbJ30euQ5YFUmqcSX8AopGHMTJ1q4UAKHKoN3ajRKlYxMVI+2fdek+PhhXHs1JWz61Xk0mZ6dRW3cLTzB/zg2NR7QqkHJnhNhkNH/jYIyMEOLZOoF57QmvTf6g83pxsNFw3vqSydiT4RyrtPV9g7wSVDNtUiIOLpqJPkxNd6RR672GrJGjSmeIZ/Rhcmd
- 30xARafV
- GYbZI781pnIuGXTzYfU9cbjJFCPcHp+OoyrbYL/WP9Rd3Y/oL1Jm7Jc64D5Yk/VELFQaV0hj0RhZCOec5LbNiVtoZ0pgf2dOEh+LIa01JlFEQlVy8zvG1MIMGCtILSovLzIYFygIuctGqdA5h2tl/J2FOSeq9RogTQE0EpZCNhxSsOwPVOVZJYNh/FLm+O7zhu2HXgTEwVXuCTK1jUsc8cLQ7gdTgBU1MTQRiHl0znWSS04Ehhoemj33CXXYmOO+haKj1eSejbTPncrrXPESklNGMygqT83353CVyGBC1vNeBNCFPm0/qJG931y40R+LA4hi4+jpDp6PHR36qPSVf+ETGOPKno0ZgBR/2MglHRTe4VCEMmDaQT6DYLzutx0BZyJexmZlPL62NTtezcmm07+Pl66yiQFHqyFzT7fA3Mb2V92pkAXOsMN2OrWtoj1HK1IWFH7cMem6TbK1z2MOfS1o8xUQcrMZ+6meH6G7NL5KjQUvWTrea/oma46rQxaeF+3tgWcWIU9waXxYFiXvNr1OdLvCdcnoevOHSTXH6VVgofP9ngLJcLSMceDD8NRYWsIS1PQWVobntmAH5zGGUgw+ryMtRGiEwPeQSkFDhfd2YKbFaGvUYykUnSemC3GCd3HJRkrY3VoTt/5TNf0HR/392AWRbFLlM57uEzcwj7QwzZpd1TduTo+6rDy8AuvWsj6knglfPXFV8P85HMODH0fU9WnApnUg71pnpU3rW7FbI5E8=
+X-Rspamd-Queue-Id: 0D277160003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: hfdocqd8ajf5grjinb5qxisaz8sjh8wz
+X-HE-Tag: 1786512175-765324
+X-HE-Meta: U2FsdGVkX1//51Ygh9j+SS6WYn7tkCHPjLUeTCSABHtkI/1Fe8tGbshzCIbanJWnZpmHEQN4/7tG1yVkl5U5obByPoT0bhsKSs3eRWh09eAXKH4pj3Z10roP3zckyrAhXXX9QYhzywrTuDV27Nc2ckAQZV6VMnQR8RgXUgBxIdqmpJrc5mwfes+q6XWIRFE2fo6uQG8nvfcCR7xhbmSQpeLlpXdlaL4kjqIaUg5Xlowt8jnua47sn4HHI495BFvy8xxR9k47S8WotQ1f3aoJLsGptIR7VLIJNCOaJGNVLdFZGaYQTE0+pu+N0JzgLqxdefU6qcdhxvzM61azc4r7dVyHSHDG7IyBW1FOn75SuuJPLyGYKbxRporbIp0xL9kNMl0qV1rXih3KIAAUpel2sp/ExD9zUjDwYn8EVolNWXln1KT3wrR6pt4MJHJHO6Ql6iJ9NIE9X7cz0S+t1y929ecYFW5Gzd9LaVH+tF9RzSxOFR3PpdkjE/bSuVhK5Ax+C2Vzcs+PJZvuJkk6BECrrlZUCA0eSDN+Wng1PADniABS9JQKp0cRvLZVjuo/+WU9MdzAQWPJbDtejk8j0+Z7HnXbyXM6qwxLIHz7WqnlYOIC7zwC8TWHWC1QKwma8rn8RKKFnZ2kjVOgpCvTIl6NtGcSzCxhr9LBIHgK4rEuvztdx14I0VtmOtnM4869/fd3O5fD7iCQ7/EOl+JGSTFFBG0yaFcJqzHIwXUdELlS7tT0DLAkBwoz1CsVRrkSb6SJq998S5WvgvnFmHGAUg2EGBa7zTpOxwgcJpEihdWv2jvn+3IclpDsYvhCMzxTFsNcl8SfH7DGeD9y7hkawZlhsc36Jn8n5zoSQCYTVPiBa3A6MeCRBrd43k+fy4d11EvfrRsf3RiMygSCGcENTMt0FHHc4UqmgHXvcSSejVFQp4LQGvP6tIIpdEg08gECfNAhMN5NN+ywwUzsiv+5AC2
+ B0rBZ6pg
+ MA7Yl/9yTRfrpUorkORliCjyJBhDqw73y5XcHEvYtzmdUg/VHGWp5P2Brn8dyyUshJSR6574/qorryUgQ3bK1HB5RNoiQ6qO5eyG7eqzmsvFdHxWX2qjqzW/rgZKmEyzONWzV9Xr+oXswyO7E1oTAy/tqshXtwGxD5k95I/AeO25TG9ypVMsTQbwZxfO3L7TNf5XmpQd+342bw8YYtkBRGHomLUTSqk8XHk6fTC+o9U+rLirzJCPSKJlNWSOZHbkylNxBFAyTFydNgFXi2cGrrnG3UT2BfK5mFEgXQXOY/Y32A5fA5LJtR/uad2chGLSE++Fc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,96 +105,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-test_no_kmem_bypass() needs to read
-/sys/kernel/debug/zswap/stored_pages via get_zswap_stored_pages() to
-verify that compressed pages are charged to the memcg.
+When building ARCH=riscv using clang with CONFIG_FORTIFY_SOURCE and
+CONFIG_UBSAN_BOUNDS enabled, CONFIG_NR_CPUS > 64, and the default value
+of 2 for CONFIG_NODES_SHIFT, there is a compiletime warning from the
+fortify routines.
 
-When running in an environment where debugfs is not mounted or
-CONFIG_DEBUG_FS is disabled, get_zswap_stored_pages() fails, causing the
-loop to terminate early and report a false negative (KSFT_FAIL).
+  In file included from mm/arch_numa.c:11:
+  In file included from include/linux/acpi.h:14:
+  In file included from include/linux/resource_ext.h:11:
+  In file included from include/linux/slab.h:17:
+  In file included from include/linux/gfp.h:7:
+  In file included from include/linux/mmzone.h:8:
+  In file included from include/linux/spinlock.h:60:
+  In file included from include/linux/interrupt_rc.h:17:
+  In file included from include/linux/smp.h:13:
+  In file included from include/linux/cpumask.h:11:
+  In file included from include/linux/bitmap.h:13:
+  In file included from include/linux/string.h:383:
+  include/linux/fortify-string.h:430:4: warning: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Wattribue-warning]
+    430 |                         __write_overflow_field(p_size_field, size);
+        |                         ^
+  include/linux/fortify-string.h:430:4: note: called by function 'fortify_memset_chk(unsigned long, unsigned long, unsigned long)'
+  include/linux/bitmap.h:248:3: note: inlined by function 'setup_node_to_cpumask_map'
+    248 |                 memset(dst, 0, len);
+        |                 ^
+  include/linux/fortify-string.h:462:25: note: expanded from macro 'memset'
+    462 | #define memset(p, c, s) __fortify_memset_chk(p, c, s,                   \
+        |                         ^
+  include/linux/fortify-string.h:453:2: note: expanded from macro '__fortify_memset_chk'
+    453 |         fortify_memset_chk(__fortify_size, p_size, p_size_field),       \
+        |         ^
+  include/linux/fortify-string.h:430:4: note: use '-gline-directives-only' (implied by '-g1') or higher for more accurate inlining chain locations
+    430 |                         __write_overflow_field(p_size_field, size);
+        |                         ^
+  1 warning generated.
 
-Selftests should not fail if debugfs is unavailable, and it should print
-a message when it is skipped.
+In this configuration, MAX_NUMNODES is 4. clang unrolls the for loop in
+setup_node_to_cpumask_map() past this, which triggers the fortify check
+when accessing node_to_cpumask_map on the theoretical fifth loop
+iteration because it would be an out of bounds write.
 
-While I'm here, also add a warning message if the test is being skipped
-due to totalram size and make the check for totalram more readable.
+Make it clear to clang that nr_node_ids is bounded by MAX_NUMNODES due
+to the logic in setup_nr_node_ids() by early returning in
+setup_node_to_cpumask_map() should that condition be violated.
 
-Signed-off-by: Wilson Felipe Pereira <wfelipe@google.com>
-Acked-by: Yosry Ahmed <yosry@kernel.org>
-Acked-by: Nhat Pham <nphamcs@gmail.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: stable@vger.kernel.org # all applicable
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2174
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
-v2 -> v3:
-  - Update debugfs print message to be more clear (Andrew Morton).
-v1 -> v2:
-  - Check for debugfs availability using access("/sys/kernel/debug/zswap/stored_pages", R_OK)
-    instead of calling get_zswap_stored_pages() (Yosry Ahmed).
-  - Update debugfs print message to exactly match gup_test.c (Anshuman Khandual).
-  - Add GB(x) macro to cgroup_util.h (Yosry Ahmed). Cast to unsigned long long
-    to prevent 32-bit truncation without altering existing MB(x) signedness.
-  - Update RAM check to GB(4) to match comments and format totalram output
-    with 1 decimal place (%.1fGB) (Yosry Ahmed).
-  - Fix commit message typo (Yosry Ahmed).
-  - Moved stored_pages back inside the for loop.
+This is based on mm-unstable due to the move of arch_numa.c from mm/ to
+drivers/base/ living there. I have CC'd stable because this warning
+appears in my testing back to at least 6.1 but I see no reason why it
+should not apply to all trees. No fixes tag since this is a layered
+problem that just happens to appear under certain conditions.
 
-v1: https://lore.kernel.org/all/20260801041255.752039-1-wfelipe@google.com/
-v2: https://lore.kernel.org/all/20260811051434.3805648-1-wfelipe@google.com/
+Another alternative would be using the __assume macro to say something
+like
 
- .../selftests/cgroup/lib/include/cgroup_util.h      |  1 +
- tools/testing/selftests/cgroup/test_zswap.c         | 13 +++++++++++--
- 2 files changed, 12 insertions(+), 2 deletions(-)
+  __assume(nr_node_ids <= MAX_NUMNODES);
 
-diff --git a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
-index febc1723d0903..c0f07226b222f 100644
---- a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
-+++ b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
-@@ -7,6 +7,7 @@
- #endif
+but that seems a little more fragile.
+---
+ mm/arch_numa.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
- #define MB(x) (x << 20)
-+#define GB(x) ((unsigned long long)(x) << 30)
-
- #define USEC_PER_SEC	1000000L
- #define NSEC_PER_SEC	1000000000L
-diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-index 49b36ee791606..f7b4c4370db63 100644
---- a/tools/testing/selftests/cgroup/test_zswap.c
-+++ b/tools/testing/selftests/cgroup/test_zswap.c
-@@ -20,6 +20,7 @@ static int page_size;
-
- #define PATH_ZSWAP "/sys/module/zswap"
- #define PATH_ZSWAP_ENABLED "/sys/module/zswap/parameters/enabled"
-+#define PATH_ZSWAP_STORED_PAGES "/sys/kernel/debug/zswap/stored_pages"
-
- static int read_int(const char *path, size_t *value)
- {
-@@ -55,7 +56,7 @@ static int read_min_free_kb(size_t *value)
-
- static int get_zswap_stored_pages(size_t *value)
- {
--	return read_int("/sys/kernel/debug/zswap/stored_pages", value);
-+	return read_int(PATH_ZSWAP_STORED_PAGES, value);
- }
-
- static long get_cg_wb_count(const char *cg)
-@@ -570,8 +571,16 @@ static int test_no_kmem_bypass(const char *root)
- 	/* Read sys info and compute test values accordingly */
- 	if (sysinfo(&sys_info) != 0)
- 		return KSFT_FAIL;
--	if (sys_info.totalram > 5000000000)
-+	if (sys_info.totalram > GB(4)) {
-+		ksft_print_msg(
-+			"requires less than 4GB total ram, sys_info.totalram: %.1fGB\n",
-+			(double)sys_info.totalram / GB(1));
- 		return KSFT_SKIP;
+diff --git a/mm/arch_numa.c b/mm/arch_numa.c
+index 442ea239bba7..bd7772b05bcf 100644
+--- a/mm/arch_numa.c
++++ b/mm/arch_numa.c
+@@ -105,6 +105,18 @@ static void __init setup_node_to_cpumask_map(void)
+ 	if (nr_node_ids == MAX_NUMNODES)
+ 		setup_nr_node_ids();
+ 
++	/*
++	 * This check should never be true but it makes it clear to compilers
++	 * that node_to_cpumask_map is bound by nr_node_ids, avoiding false
++	 * positive fortify warnings when accessing node_to_cpumask_map in the
++	 * for loop below.
++	 */
++	if (unlikely(nr_node_ids > MAX_NUMNODES)) {
++		pr_err("nr_node_ids (%u) is larger than MAX_NUMNODES (%d)",
++		       nr_node_ids, MAX_NUMNODES);
++		return;
 +	}
-+	if (access(PATH_ZSWAP_STORED_PAGES, R_OK)) {
-+		ksft_print_msg("debugfs not mounted at /sys/kernel/debug\n");
-+		return KSFT_SKIP;
-+	}
- 	values = mmap(0, sizeof(struct no_kmem_bypass_child_args), PROT_READ |
- 			PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
- 	if (values == MAP_FAILED)
---
-2.55.0.679.g6767b8d81c-goog
++
+ 	/* allocate and clear the mapping */
+ 	for (node = 0; node < nr_node_ids; node++) {
+ 		alloc_bootmem_cpumask_var(&node_to_cpumask_map[node]);
+
+---
+base-commit: 47870fb9b0e3bd20b45e3a069b4c766f3dcb721a
+change-id: 20260811-arch_numa-avoid-fortify-warning-66af87403412
+
+Best regards,
+--  
+Cheers,
+Nathan
+
 
