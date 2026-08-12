@@ -4,127 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22999C5B567
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 05:47:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56F45C5AD5A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 05:47:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BF066B008A; Wed, 12 Aug 2026 01:47:12 -0400 (EDT)
+	id 6B4686B009B; Wed, 12 Aug 2026 01:47:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06FE46B0092; Wed, 12 Aug 2026 01:47:12 -0400 (EDT)
+	id 68B2A6B009D; Wed, 12 Aug 2026 01:47:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA17B6B009B; Wed, 12 Aug 2026 01:47:11 -0400 (EDT)
+	id 5A4E26B009E; Wed, 12 Aug 2026 01:47:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B4C8F6B008A
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 01:47:11 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 271831602F6
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:47:11 +0000 (UTC)
-X-FDA: 85091534262.30.F6074FA
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 82B911C0004
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:47:08 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=sk.com;
-	spf=pass (imf18.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 30FB06B009B
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 01:47:50 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BE0EBA0297
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:47:49 +0000 (UTC)
+X-FDA: 85091535858.04.5F610C8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id F2F3CA0006
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 05:47:47 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ruEA3kvk;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786513629;
+	s=arc-20220608; t=1786513668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f3OZ6Miph1UkAdMzp7VXnJKJw84mK4Lp0naeCHFy0VU=;
-	b=4rUK/9zB67sKNCH+dkodRPuxq7QDmhVPh+zRedNg7GFv1fq4P4XhfPy4VhEOT6ciV2THFo
-	shs0p4QIlMywdF4+MjLQngy7zK30eecPa7VP66Ry5M0Bmbl/FOtCmfTK3L/4Ia82waTUH+
-	Bi+ZVc+U4zV+ZI9B4gCi+QbOJd3S2kg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IWjDjgp43HDOKAAvhXf6tJ9XRcep7H8R/FphtBkyvCY=;
+	b=B2Ipd2DUF6a6zc4eObbqTWTmV9lymQupnpzQW0/fObN8tXOBgb/xuhlGX1yZ1ZUg7uCABK
+	YvcE2FPF97a9uZi98u+XhVWYWqhCl3OpgksbaloAKnBs8wNfZgtq8gNOpBObYooUmT0HFQ
+	E04rGzOyVd67DmjrdPUwnyln2nMXRDM=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=sk.com;
-	spf=pass (imf18.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ruEA3kvk;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786513629;
-	b=cgaYqX81kZDqCFBXNsTjWT6qqXKcqcj2NFp4nP0HbzO3+EY27FyOXxeJzSoDB/UoiD0JLS
-	w7KYvdFUe5FTBLsLf+2ZUrpfP9g332grncEjLZfMd9YaOXTiDprKqh9iNauu/DkmLAJatw
-	uUhe+gANeaOG2vodMZd+fJCsCFdP/+k=
-X-AuditID: a67dfc5b-c2dff70000001609-fd-6a7c08d79c47
-From: Rakie Kim <rakie.kim@sk.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: akpm@linux-foundation.org,
-	gourry@gourry.net,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	nvdimm@lists.linux.dev,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	byungchul@sk.com,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	dave@stgolabs.net,
-	jic23@kernel.org,
-	dave.jiang@intel.com,
-	alison.schofield@intel.com,
-	vishal.l.verma@intel.com,
-	ira.weiny@intel.com,
-	harry@kernel.org,
-	kernel_team@skhynix.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com,
-	Rakie Kim <rakie.kim@sk.com>
-Subject: Re: [PATCH 0/4] mm/mempolicy: introduce package-aware weighted interleave
-Date: Wed, 12 Aug 2026 14:46:57 +0900
-Message-ID: <20260812054700.1803-1-rakie.kim@sk.com>
-X-Mailer: git-send-email 2.52.0.windows.1
-In-Reply-To: <20260811152951.195315-1-joshua.hahnjy@gmail.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrHIsWRmVeSWpSXmKPExsXC9ZZnoe51jposg3cNphZz1q9hs7j7+AKb
-	xa4bIRYnbjayWay+uYbR4vnWX4wWP+8eZ7e4fmslo8X+p89ZLB40rWKyOL51HrvFulOH2CzO
-	zzrFYnF51xw2i3tr/rNavHnsZvGtT9rifp+Dxcoff1gtjqzfzmQx+dICNouOl/dZLG5NOMZk
-	sXpNhsXso/fYHSQ9ds66y+6xYFOpR3fbZXaPzSu0PBbvecnksWlVJ5vHpk+T2D1OzPjN4rHz
-	oaXHi80zGT16m9+xeUydXe+xfstVFo/Pm+QC+KK4bFJSczLLUov07RK4Mh6v3sha8DC+YtL0
-	BsYGxh6vLkZODgkBE4m58x+yw9j7Zj5g6mLk4GATUJI4tjcGJCwioClxonUScxcjFwezwAZW
-	iVOn3zKDJIQFgiS6pj9nBLFZBFQljv5dywJi8wLNWfDrGyvETE2JdRtvgcU5BewkLn37BbZL
-	SIBH4tWG/YwQ9YISJ2c+AathFpCXaN46G2yZhMBPdolNZ5cwQwySlDi44gbLBEb+WUh6ZiHp
-	WcDItIpRKDOvLDcxM8dEL6MyL7NCLzk/dxMjMFaX1f6J3sH46ULwIUYBDkYlHt4LMtVZQqyJ
-	ZcWVuYcYJTiYlUR4q1dVZQnxpiRWVqUW5ccXleakFh9ilOZgURLnNfpWniIkkJ5YkpqdmlqQ
-	WgSTZeLglGpgdNQ/cEV389dDf1K1p536erdBYuJUfnNlXvEzkU9FK9h/JVm2z0ryujkz9KnO
-	u306b8rjWG9tO7F/WdrUCaXMpk8+zhaZxV6fnfAoXGBm8elHG6xv33HbcWabirlfp7FyUa3W
-	TJ6KlLXNe2UbljMdPfTuqaTP/hknH4Rt9n3zW2bB+pDv4bfX7FBiKc5INNRiLipOBAAzKRtA
-	0QIAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Ra0hTYQCG/c45OzsOB8dldNDQGIQoZAYFXxkm/bAvf0UXixR05MFN55RN
-	h5dKS7LSHKaJc2pYoulcTuctLRWX10kljjStecFymhneWOalckrgv4f3eXn/vBQuaCNcKYks
-	npXLRFIhySN4as/QIyPUzSjfDJMnLNbrSGiZHiRh66fL8P2TIhL2jd4hYfWoDkBr4zqAvy29
-	XDgyVgXgysw8Dju+WQk4eVeLwd7Gp1z4tqSfA2tMRhJ+0JgIaG4tJuG47i8H/pgOhDaVG5xQ
-	BcCqtU0ONA5bObBL34zBvKFSEj6YmyDgWE4PBqt1YrjRVEnCou5xboA7atFYuKjUkICyMsxc
-	VF/pjcrezGHIoH1IIsNyLhf1qTcI1DJ1Es3WFwKUnf6TRLbPCJXNLmIovygV6Rs+EmjF4H6B
-	vs47HcFKJUpWftQ/nCeerq7jxE2FJeYWpIE08CgoEzhSDH2caS+cxDIBRZG0kOlpC7XHLrQX
-	03cvF88EPAqnazmMaWABt4t99EUms8AK7EzQh5nurZeEnfnbO6XrNs7uphdTUze2kzvS/syQ
-	bZ1rZwHtxHyv7QC7fWemv/DrTgenPZj0xiI8Bzhp9ijNHlUKMC1wkciUMSKJ9ISPIlqcJJMk
-	+tyIjTGA7VMrbm0+fgVWzeeMgKaA0Ik/eDAlSsARKRVJMUbAULjQhZ+iTY4S8CNEScmsPDZM
-	niBlFUbgRhHCA/ygq2y4gI4UxbPRLBvHyv9bjHJ0TQOdgeQpVlXBVizOFMdm56echSFryRn9
-	vcFfyrfaVNr9anO0st+jTG9b1t7OcW5fCVEvtC6FStsDLw2vxkeWWJaeO/xyD7Olqho2Bgx+
-	kx3ZGVj2mWtiB1i+kNB1vvu+V/e7mUPsn2euGpdNP3VTJ4nlzedesfqSwa+b/V6Ys4SEQiw6
-	5o3LFaJ/JCQcpNACAAA=
-X-CFilter-Loop: Reflected
+	t=1786513668;
+	b=lGsyNoh87rFUmnkPCnA8rI8RdeofwA9TAcFOmndjfFFEvyItTh//HkcnPEadLNx67BqEw5
+	xR6upBChx9ZIQIZ1zO6p+j4IZxxEy2XsByoums9pIjdWkBhVuxa2S50snS7pBmRunadXZw
+	hX1rYjBpLOYGH6SybMxbW8BZP+1R1GU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6D6AF60A7E;
+	Wed, 12 Aug 2026 05:47:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3DEB1F000E9;
+	Wed, 12 Aug 2026 05:47:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1786513667;
+	bh=IWjDjgp43HDOKAAvhXf6tJ9XRcep7H8R/FphtBkyvCY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ruEA3kvkxtFK7eWbkAqQPen2AEMf+hlBpUgBhnXOPr9FJ/KiPmgD7eVNKyF39gyr8
+	 bK22sipkB+8gno+UM3kQXsWneAHxc/0If9eU5cgeb7WifH7vwo+7A5aL/KR/qVmOg4
+	 Bp/vobOrCFOQRgVZhubk/5vbkMdDLmoMGBelxhi8=
+Date: Tue, 11 Aug 2026 22:47:46 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Nick Desaulniers
+ <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, Justin Stitt
+ <justinstitt@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ llvm@lists.linux.dev, stable@vger.kernel.org, Kees Cook <kees@kernel.org>
+Subject: Re: [PATCH] arch_numa: Avoid false positive fortify warning in
+ setup_node_to_cpumask_map()
+Message-Id: <20260811224746.fdb85bcf47533e12d365b182@linux-foundation.org>
+In-Reply-To: <20260811-arch_numa-avoid-fortify-warning-v1-1-59ce3e689f3a@kernel.org>
+References: <20260811-arch_numa-avoid-fortify-warning-v1-1-59ce3e689f3a@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: F2F3CA0006
+X-Stat-Signature: zsce91pg88fpam7t9yatwyifjpgkmnxg
 X-Rspam-User: 
-X-Stat-Signature: 3m5y5gsiug7xihgay9z7ebzfb8n4radu
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 82B911C0004
-X-HE-Tag: 1786513628-661738
-X-HE-Meta: U2FsdGVkX18gH63LP7PsxV7eZQX93Pr53/t+JzFOiDY+dHKezAu8rnB9iR0WVwM2Ubme9ht1YL9Kqy7WhFPhx+JReeYCQhzwTp8NZ8PdgdbwipORcfYO1cMjMLk6nPCsMoGo+VxeY6iEnkZMJjr5TX4bJtL0MhaD/+Y0VlMEQE2Kqk0hj6qbavSg5bkH+DCaBXmoJvrY+OwKP180qU7TTl5Y2gAW0IjnnBvbFXp/i+EuduDqU+LxlSnCE6mJPgl7UrgfVqJwCTX/QL26Ot2T4oTKQ+Jc1ftFpXwZ04TQ5hv5SaBv6UNu0mspD9orr7ddAnSo/ydsd28zMYD7veKfPKGB2r+QjNo/DHZyYHydS52NuJzFy6suLdUfhX/AmdKTWGOw/NaANF7bqLyPFJ//qNF0/sMlEQvwhwv3ik06khk4BNtyNaDcm5FmjkHzitWgwm0E2APiwMmsRuqJl7YYmOyxhu5s6S3KN3K8iKhilHyWKr2j8NDtMAJn4R99khPDtrEzrVYOLo1Zn1uy+jx4N7LMfQcgwqz+FAMVultJDecN6Ny0wKwgIAoKEtbjpiPoXCF94CG3W3jLpPfS+M6f9aEYBN184JRAgdP3XgqNyegtjmsn04sNpLGP0WPZ+Sa12gHtesa+2vGIDTJLJTlsLhWr8s9DACNRmFBzIy20gRCWU5YhZj4yHH/dVFsznIcywr0EG80I37IRAGnk/EBLQfyq61rAYWVxm+DSoWNUSJNDo8/tUFyRE/Gq5JvlzfTkaRF01Q4dg1QSvbbzRP2twhZDGlmTrH2KDtud5wyrYWgohPZXbi67XjwlylZn5T8xWT359pOkgX+FaJoa93I5voL6/N7cHye9fkQC/QUi8LgdSArP1w7IFwaeZBgkYUa8bK1KK6FM/c5JpMeNl67MxSf8JW2398Ru/g4NcqQ9DY9Eu4g+WA6Ut4N1MnVE/ROI/ALAFTWdwM03dXkh5WQ
- EGl5URUi
- wSpDN4/DkyOhBddap81FfUU1kXHOGgdk8PwNQMC3LSFQHS6ouITcAfiyKrz0+crD30KaOggeS3QnNp2oqxpNCz64wtOnasvA2IwgyL0e9MZ9qn9uFWBbK4VyXUa/Jg8l0OfRNQJ+3ocu/cQWkWdUcVJ+XkIkmnupVgMcPp5MU7hknIPU=
+X-HE-Tag: 1786513667-539667
+X-HE-Meta: U2FsdGVkX1+iBeWf2673xrwuDEbg+mHUIj6CkhHSJhK/mqOO2vvCdxp2Kh+flEsvbsnudvTUDJYFy8D6qwlSiePfX/7AGvyXOJFk9vSe2p4LA0yiiqdHQGxX0D5hoxZv2rz3r3ish6H3mfBQieHZFIkC8xzh7MAKhoRU2+r6aKz9b1Gw4LUpdLftj7aPezQdRYJNDNwxm+J0a0qMMg+koT3OI65mzCbdc5objIrYA3tjLnanUJX/bnHm4jxtrNPSA68VxjuQeZnvpR8aFJA72G5nvSLG/G+kVDN/2Jc/HdPoYxyQ5Imi7hK/kYE0/2bZYcebZSaayRovUAUi/ksxMSPLtvLUzDytrH7vQCDZd3EGWOrxbs7SiwPFimrkdPufZ+GdY5LXuWuioK+BZlJLoN6Oiw1wcoDwIz/M2rSqwDAI3wdwLc5z5bnhk89ZXe1L5vi75IMHVTsIoT15cLozxOFvZ9WsrGQHoXGcVez3B3cKkxoHSgDdjtJ528Hd3HZ9JjCRjhv+W83d+S0a9Z/K+2Q0gVaN3KgAOnOgPJjoNing7oRWMsszEKOcORi02BGqaI2tcGemePe7V/GaSTfIbX28XuJWacxRJTX6w6MMLt6KzxQwaDRJCtWNTNcJgS5MCsj60hFBVrJXbTXW/hbFGfUa7+VHtAC0jgPcsYG3jRhkyVEFn0uhYlFdRRIMNdUIFDCXJvGGNGrDkNxXwztkTJLKNrEDLKMgU6Xy6YkwgsdACpPgc1+eeaRlP7o1lSM10pAVCBXempRcURbke91qzni6N60J5fDDNshrd+JqWTLODcWik1EhpmpZsAgMedtQ5gBJyYbhoAXbE5SEn1/5+8FdLQWGD188avHvQ0hTXFl2rMFltUKO6FsqGzvO83w5WxSZWncuZ0hYjYAPCmjME43IjZf7LppSOX2O2CzbdTPxlaBhuBPwuvtTRvecSFU7+EA2+wnyLi7Wjcxy8Xa
+ TOt/sRK1
+ 2F0kc1s1K9aoR2xEW67BQkZ9jFXX/CIQqIGpK+cYflk81QVdmoJE4sGK0STjs9rK5r7mXBYp2uYXDWNJw7t4MexQdfnFvp8ezrsIOno2cMzQopezrqo7xcekC4OBnvT0KvUcO93qksbFeKoEMq3UK6MAwjoK+E+SDQheDeHo6c9/qRTPN3kS9Pi8R+Illwccq0EDU/BT9satx1UEuyIjn+O2ga9uyBRKiwknOCr94GoZZnUpOUGcMjBXLlAkxBiwkj5a62dw3zQh+DMQi8Mm87d1qKRysAQOM6dCEPhAlTjXIPOum6Gy+KJuOUfkoU4rVuwSiyP8301T8TNFin63pEcPgrA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,287 +92,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 11 Aug 2026 08:29:51 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> On Thu,  6 Aug 2026 17:09:31 +0900 Rakie Kim <rakie.kim@sk.com> wrote:
+On Tue, 11 Aug 2026 22:22:42 -0700 Nathan Chancellor <nathan@kernel.org> wrote:
+
+> When building ARCH=riscv using clang with CONFIG_FORTIFY_SOURCE and
+> CONFIG_UBSAN_BOUNDS enabled, CONFIG_NR_CPUS > 64, and the default value
+> of 2 for CONFIG_NODES_SHIFT, there is a compiletime warning from the
+> fortify routines.
+
+(cc Kees)
+
+>   In file included from mm/arch_numa.c:11:
+>   In file included from include/linux/acpi.h:14:
+>   In file included from include/linux/resource_ext.h:11:
+>   In file included from include/linux/slab.h:17:
+>   In file included from include/linux/gfp.h:7:
+>   In file included from include/linux/mmzone.h:8:
+>   In file included from include/linux/spinlock.h:60:
+>   In file included from include/linux/interrupt_rc.h:17:
+>   In file included from include/linux/smp.h:13:
+>   In file included from include/linux/cpumask.h:11:
+>   In file included from include/linux/bitmap.h:13:
+>   In file included from include/linux/string.h:383:
+>   include/linux/fortify-string.h:430:4: warning: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Wattribue-warning]
+>     430 |                         __write_overflow_field(p_size_field, size);
+>         |                         ^
+>   include/linux/fortify-string.h:430:4: note: called by function 'fortify_memset_chk(unsigned long, unsigned long, unsigned long)'
+>   include/linux/bitmap.h:248:3: note: inlined by function 'setup_node_to_cpumask_map'
+>     248 |                 memset(dst, 0, len);
+>         |                 ^
+>   include/linux/fortify-string.h:462:25: note: expanded from macro 'memset'
+>     462 | #define memset(p, c, s) __fortify_memset_chk(p, c, s,                   \
+>         |                         ^
+>   include/linux/fortify-string.h:453:2: note: expanded from macro '__fortify_memset_chk'
+>     453 |         fortify_memset_chk(__fortify_size, p_size, p_size_field),       \
+>         |         ^
+>   include/linux/fortify-string.h:430:4: note: use '-gline-directives-only' (implied by '-g1') or higher for more accurate inlining chain locations
+>     430 |                         __write_overflow_field(p_size_field, size);
+>         |                         ^
+>   1 warning generated.
 > 
-> > Package-aware weighted interleave places a task's weighted-interleave
-> > pages on the NUMA nodes of its local package, so that interleave traffic
-> > does not have to cross the interconnect to another package. This keeps
-> > each node's weight aligned with the bandwidth the task actually gets
-> > from it, so effective bandwidth holds up on a system that has more than
-> > one package. (A package is a CPU socket together with the memory
-> > attached to it.)
-> > 
-> > Changes from RFC:
-> > https://lore.kernel.org/all/20260316051258.246-1-rakie.kim@sk.com/
-> > - Added an opt-in sysfs toggle (off by default) and a read-only sysfs
-> >   view of the package topology
-> > - Added topology validation with a clean fallback to plain weighted
-> >   interleave on unsupported topologies
-> > - Hardened the allocation, device-teardown, and node-hotplug paths
+> In this configuration, MAX_NUMNODES is 4. clang unrolls the for loop in
+> setup_node_to_cpumask_map() past this, which triggers the fortify check
+> when accessing node_to_cpumask_map on the theoretical fifth loop
+> iteration because it would be an out of bounds write.
 > 
-> Hello Rakie,
->
-> I hope you are doing well! Sorry for the late repsonse.
->
-> I have a few thoughts, some of which are carry-overs from the RFC
-> discussion we had before! I think there are still some open questions,
-> and I wanted to get your opinion on some of them.
->
-
-Hello Joshua,
-
-I am doing well, thank you, and I hope you are too. Thank you for
-taking the time to review this series and for following up on the
-questions from the RFC discussion.
-
-> My first question is whether we want cross-socket allocations at all.
-> The examples you gave seem to line up with node-restricted interleave,
-> as opposed to cross-socket interleave. I think the wording that you
-> use to describe the feature in 4/4 (which I will copy below)
+> Make it clear to clang that nr_node_ids is bounded by MAX_NUMNODES due
+> to the logic in setup_nr_node_ids() by early returning in
+> setup_node_to_cpumask_map() should that condition be violated.
 > 
-> > The resolved mask is by construction a subset of the policy nodemask, which
-> > mempolicy already restricts to the task's cpuset; package mode can only
-> > narrow that set, never widen it, so cpusets and the task nodemask remain
-> > authoritative.
+> Cc: stable@vger.kernel.org # all applicable
+> Closes: https://github.com/ClangBuiltLinux/linux/issues/2174
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+> This is based on mm-unstable due to the move of arch_numa.c from mm/ to
+> drivers/base/ living there. I have CC'd stable because this warning
+> appears in my testing back to at least 6.1 but I see no reason why it
+> should not apply to all trees. No fixes tag since this is a layered
+> problem that just happens to appear under certain conditions.
 > 
-> is 100% the right way to treat these package-aware (socket-aware)
-> interleaving allocations, but the example below
+> Another alternative would be using the __assume macro to say something
+> like
 > 
-> [...snip...]
+>   __assume(nr_node_ids <= MAX_NUMNODES);
 > 
-> > Applied the same way to every source, these weights give the map:
-> > 
-> >               node0  node1  node2  node3
-> > global:         2      2      1      1
+> but that seems a little more fragile.
+> ---
+>  mm/arch_numa.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 > 
-> [...snip...]
-> 
-> >               node0  node1  node2  node3
-> > from CPU 0:     2      0      1      0
-> > from CPU 1:     0      2      0      1
-> 
-> Is essentially the existing weighted interleave mechanism with a
-> nodemask/cpuset applied.
+> diff --git a/mm/arch_numa.c b/mm/arch_numa.c
+> index 442ea239bba7..bd7772b05bcf 100644
+> --- a/mm/arch_numa.c
+> +++ b/mm/arch_numa.c
+> @@ -105,6 +105,18 @@ static void __init setup_node_to_cpumask_map(void)
+>  	if (nr_node_ids == MAX_NUMNODES)
+>  		setup_nr_node_ids();
+>  
+> +	/*
+> +	 * This check should never be true but it makes it clear to compilers
+> +	 * that node_to_cpumask_map is bound by nr_node_ids, avoiding false
+> +	 * positive fortify warnings when accessing node_to_cpumask_map in the
+> +	 * for loop below.
+> +	 */
+> +	if (unlikely(nr_node_ids > MAX_NUMNODES)) {
+> +		pr_err("nr_node_ids (%u) is larger than MAX_NUMNODES (%d)",
 
-The example I gave was not explained well enough, and I can see how
-it reads as a manually applied nodemask.
+Sashiko wants a \n there.
 
-A nodemask or a cpuset names a fixed set of nodes, while package mode
-expresses a rule: use the nodes of the package the allocation is
-requested from. The mask is resolved per allocation from the
-requesting CPU, so a single policy gives {0,2} to a thread on package
-0 and {1,3} to a thread on package 1 at the same time. One nodemask
-cannot do that, since it is the same set for everyone who uses the
-policy.
+> +		       nr_node_ids, MAX_NUMNODES);
 
-There is also the question of how a user would build such a nodemask.
-The package a CXL node belongs to is not visible today: on the
-systems I tested, the firmware reports node1 as the initiator for
-both CXL nodes. The topology layer in this series is what makes that
-association available, and the read-only view under
-/sys/devices/system/package/ lets the user check it.
+Lord only knows why nr_node_ids is unsigned but MAX_NUMNODES is signed.
 
-> With that said, I think a more interesting and
-> illustrative example would be if the user truly would want to allow some
-> allocations to go through cross-socket, but be able to control the
-> ratio at which these slip through.
->
->               node0  node1  node2  node3
-> from CPU 0:     3      1      2      0
-> from CPU 1:     0      3      1      2
->
-> Maybe even more illustrative of the true capabilities of this series
-> would be if you have an asymmetric system where you bind some
-> host-level monitoring / logging workloads to one node (say, node0) and
-> want that to be able to cross through to the other socket, but not the
-> other way around:
-> 
->               node0  node1  node2  node3
-> from CPU 0:     3      1      2      0
-> from CPU 1:     0      2      0      1
-> 
-> Anyways, these are just super hypothetical scenarios and I don't even
-> know if the configuration that I'm listing would really be beneficial
-> for the system. I think that coming up with some illustrative usecases
-> which are now made possible by this series could help motivate why we
-> would want to interleave across sockets.
->
+lgtm otherwise.
 
-These maps are an interesting idea, and I would like to look at them
-with you.
+> +		return;
+> +	}
+> +
 
-This series only narrows the candidate nodes; the weights themselves
-stay global, so every source that reaches a node uses the same weight
-for it. Both of your maps give a node a different weight depending on
-which package the allocation comes from, so the weight table would
-have to become per source rather than a single global one.
-
-Encoding the weights that way came up in an earlier stage of this
-work, and it was mentioned again briefly in the RFC thread. As I
-recall, the difficulty then was less the placement logic than how a
-user would drive it: weights would have to be configured for every
-source, so both the interface and the structure behind it grow
-considerably.
-
-That does not make your suggestion less interesting to me. I think it
-could work well once there are clear scenarios for it, and the
-grouping added here is what such a table would be built on, since a
-per source weight only has meaning when the kernel knows which
-package each node belongs to. What I am unsure about is folding it
-into this series, whose aim is the narrower one of raising effective
-bandwidth by keeping interleave traffic within a package. Allowing a
-controlled amount of cross-package traffic points the other way, so I
-think it is a topic we could discuss separately, with the use cases
-worked out first.
-
-I agree that such use cases would make the direction much stronger,
-and I will think about whether there are cases where allowing a
-controlled amount of cross-package traffic would help.
-
-
-> > A task on CPU 0 now places pages on node0 (weight 2) and node2
-> > (weight 1) at 2:1, which matches their effective bandwidth of 300:150;
-> > a task on CPU 1 places on node1 and node3 the same way. Placement
-> > follows the bandwidth each task actually sees, NUMA locality is
-> > preserved, and interleave traffic stays off the interconnect.
-> > 
-> > To make this possible the kernel needs a notion of which nodes share a
-> > package. The NUMA distance model offers only relative latencies and no
-> > structural grouping, which is especially limiting for CXL memory nodes
-> > that come online without an explicit package association.
-> > 
-> > The series adds a package-aware topology layer that groups CPU and
-> > memory-only nodes into a "memory package", built from the physical
-> > package ids firmware reports and, for a memory-only node, an initiator
-> > CPU node or SLIT distances. A package can contain more than one CPU node
-> > or more than one memory-only node, so the layer maps a package to a set
-> > of nodes rather than to a single node or a single CXL device.
-> > 
-> > The feature is off by default and opt-in through a sysfs toggle. The
-> > package topology itself is exposed read-only under
-> > /sys/devices/system/package/; there is deliberately no writable
-> > override, since a machine whose firmware describes its topology
-> > incorrectly should be fixed in firmware. On a topology that does not
-> > have the symmetric shape the placement relies on, enabling is refused
-> > and any active mode degrades cleanly to the original flat behavior.
-> 
-> I was also hoping to see what this interface looks like and maybe
-> discuss how we should relay the information to the users, since this
-> seems to be a new addition from the RFC.
->
-
-Sure. The toggle lives with the existing weighted interleave knobs.
-package_mode defaults to false, so nothing changes until the
-operator explicitly enables it:
-
-/sys/kernel/mm/mempolicy/weighted_interleave
-|-- auto
-|-- node0
-|-- node1
-|-- node2
-|-- node3
-`-- package_mode -> true/false
-
-The package topology view is read-only and lives under
-/sys/devices/system/package/. This is how it looks on the system I
-am currently using:
-
-/sys/devices/system/package
-|-- package0
-|   |-- package_cpu_nodes -> 0
-|   |-- package_mem_only_nodes -> 2
-|   |-- package_nodes -> 0,2
-|   `-- physical_package_id -> 0
-`-- package1
-    |-- package_cpu_nodes -> 1
-    |-- package_mem_only_nodes -> 3
-    |-- package_nodes -> 1,3
-    `-- physical_package_id -> 1
-
-package_nodes shows every node grouped into that package, and the
-cpu/mem_only files split them by type, so an operator can check how
-the kernel grouped the topology before turning package_mode on. I
-will update the documentation in the next version to describe this
-interface and how to use it.
-
-
-> > Measured results:
-> > 
-> > System Configuration:
-> > - Processor: Dual-Socket Intel Xeon 6980P (Granite Rapids)
-> 
-> I think a description of this system's topology would help me understand
-> the results below a bit better : -)
->
-
-That is a fair point. The system used for the measurements is
-configured as follows:
-
-- Processor:                 Dual-Socket Intel Xeon 6980P
-                             (Granite Rapids)
-- Local memory (per socket): 12 channels, DDR5-6400
-- CXL memory (per socket):   8 channels, DDR5-6400
-
-It boots as two CPU+DRAM nodes and two CXL memory-only nodes, which
-is the topology shown in the sysfs output above. I will add this
-description to the measured results in the next version.
-
-
-> > 1) Throughput (System Bandwidth)
-> >    - DRAM Only: 966 GB/s
-> >    - Weighted Interleave: 903 GB/s (7% decrease compared to DRAM Only)
-> >    - Package-Aware Weighted Interleave: 1329 GB/s (1.33 TB/s)
-> >      (38% increase compared to DRAM Only,
-> >       47% increase compared to Weighted Interleave)
-> > 
-> > 2) Loaded Latency (Under High Bandwidth)
-> >    - DRAM Only: 544 ns
-> >    - Weighted Interleave: 545 ns
-> >    - Package-Aware Weighted Interleave: 436 ns
-> >      (20% reduction compared to both)
-> 
-> Really awesome results!
->
-
-Thank you.
-
-
-> > A small CXL driver change registers a CXL memory node into its package
-> > as the node comes online, using the initiator the driver resolves for
-> > the region; this is where the package layer gets the CPU-side
-> > association that plain NUMA distance does not carry.
-> > 
-> > The memory_package layer offers a broader interface for grouping and
-> > querying package topology - usable by memory tiering as well - and
-> > package-aware weighted interleave uses the subset it needs.
-> 
-> I was hoping you could expand on this a bit more. Aside from the
-> alloction-time placement strategy, did you have other ideas in mind for
-> who could ingest the package information to make tiering decisions?
->
-
-The case I had in mind is demotion and promotion target selection.
-With the package information, tiering could keep those decisions
-within a package: choosing the memory-only nodes of the task's
-package as demotion targets, and symmetrically preferring the
-package's CPU nodes when promoting, so that both hot and cold pages
-stay close to the CPUs that use them.
-
-To support this, the layer already exposes per-node "preferred" node
-queries: for a CPU node it reports the nearest memory-only nodes in
-the same package, and for a memory-only node the nearest CPU nodes.
-Nothing consumes them yet; I kept them out of the placement path so
-that tiering can adopt them separately when there is a real user.
-
-> I definitely think this series makes a lot of sense and I am
-> hoping to hear more about it. Thank you, I hope you have a great day!
->
-> Joshua
-
-Thank you again for the careful review and for the questions; they
-were a great help in seeing what the cover letter needs to explain
-better. I hope you have a great day too.
-
-Rakie Kim
 
