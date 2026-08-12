@@ -4,147 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6808AC5CFDB
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 11:00:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A468C5CFDB
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Aug 2026 11:02:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72A056B00DF; Wed, 12 Aug 2026 07:00:23 -0400 (EDT)
+	id 0C6366B0144; Wed, 12 Aug 2026 07:02:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7018F6B00E1; Wed, 12 Aug 2026 07:00:23 -0400 (EDT)
+	id 04F676B0145; Wed, 12 Aug 2026 07:02:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EFF26B00E2; Wed, 12 Aug 2026 07:00:23 -0400 (EDT)
+	id E7FDE6B0146; Wed, 12 Aug 2026 07:02:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EB446B00DF
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:00:23 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 58463140270
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:00:22 +0000 (UTC)
-X-FDA: 85092323484.22.ABF8EA9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 922BB8000E
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:00:20 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jb9O0ZCO;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id C71766B0144
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 07:02:27 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5CAAFA25D9
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:02:27 +0000 (UTC)
+X-FDA: 85092328734.24.9C48A88
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 47E5E4000D
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 11:02:25 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=H1JzWXKL;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="poLI3x/t";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fV6me2Yo;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CyVqWLWZ;
+	spf=pass (imf07.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786532420;
+	s=arc-20220608; t=1786532545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8QnBF5cx9VLaWvudPLevSkmZpIlMTP6N0U12ZPxdSiY=;
-	b=4DVaFUiwRR0zHGX7Tbuw1xnq0Xtj8DYW1JKnBkjI5QxM2bawUKvX/snTMl+HQJL9xROAkJ
-	+LfWDnWAk7epBrqI+u9Y/u1rwx5g4zpICp7EKX/fiCSYfv+E13bihxB3b1oDnhDyRPhEfT
-	GXSy0hnBcsyJfhKuW1SAjipVkMeXkdY=
+	bh=HXMJf/rtkN5D9V2wByXeXTPbkMFZmsjZxH0GM1aTCuw=;
+	b=N379rUJFVucArfOWHUxquuiZzEeEQAXGVgXfvDgpia45WOuf+alisx44C3tpAWLT+8cyo2
+	G2mpCa3+Qp0yR7zp6M11XZ0eLxj7g3RzAQHTFpcqDfh+Sxzb6Z3081ApIeKPk8mlk6Qi82
+	lwsQ/mzRY2D/BFKi032qtwZY/8HZFzs=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jb9O0ZCO;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=H1JzWXKL;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="poLI3x/t";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fV6me2Yo;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CyVqWLWZ;
+	spf=pass (imf07.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786532420;
-	b=VoBpUr9R1Y/9h3R90OW+erligloJ4n6rhWTBhKI/YxF2RRpn7iDLGEr+hHNDVgcrMUp0b5
-	xjKfuXRp67oTRQA+/vBbsrS8DnEW4/0b0Kjrjm1nzb9HL0jsvP9NtRbMnPabcK1RVlaG8q
-	ofajSU737Mj2Dp/eiKWC5sVbnRxi9Fk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0B0E860A84;
-	Wed, 12 Aug 2026 11:00:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED9CE1F000E9;
-	Wed, 12 Aug 2026 11:00:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786532419;
-	bh=8QnBF5cx9VLaWvudPLevSkmZpIlMTP6N0U12ZPxdSiY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Jb9O0ZCOJvtddTj9kfvHp3dixVdT9HaxzC/dmoAb5LK/re0HHMIRYp1/qmMD2EY0Z
-	 +zeqGzYrn2ZET0rvEZVmMBF9ilbtQlpr6pYfwFZcErhX7EiueptygVXuI3wT0W1NOm
-	 /GV111+RFOpe0A1tuyuNamWHMcvqYbxy0v1KmCqvVip9z2rvTBakEXUw2RwfFX0Pf1
-	 stpdbKDeeE2psgydDurRPsjVAY3DRVtIFJfEb9SCGK88CmniFX5a8MZEjaJH8EBr/z
-	 S5XLKfkWSdgOnhIsPzH6P5sRD9TIXX9iSD5Z7avs8td7pirGPOHzcKA+Ijh7PVKRzZ
-	 N4LWurlA8XCdA==
-Message-ID: <48790bb1-fd21-449b-858f-c6584f0af96e@kernel.org>
-Date: Wed, 12 Aug 2026 13:00:12 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	t=1786532545;
+	b=Xt/h36fp6UOzQdgBZfTdpAv9wFFl2N9D+ut+dqTOonil2JMHw2kbpAp9UcSmIo+cW5xZ8s
+	Fv4Nx3HxrUGrVU3u6BRl5SO2kcQjMc9CbfgBW+pBzjOBnXQzU07PqGgDoa2KnwdFFItY00
+	gWlYck7DD8DJgp8GD2QUfuKvpeGUZNo=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id F06518222B;
+	Wed, 12 Aug 2026 11:02:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1786532540; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HXMJf/rtkN5D9V2wByXeXTPbkMFZmsjZxH0GM1aTCuw=;
+	b=H1JzWXKL/ONpTLM08OtA0Vz7IVhqGSFS0bMs+kCcnoIWV5QrFmsVZnWZvgfEgOwiNfZeAs
+	hT4qYuPHDo+KAp/wkscibRimguZYXup9roYuWUgaeAK838YFHpiyM5oK34GsqAxQVnbgpy
+	9llJlnH70Fsl8eR0VP6ch5q8dQFMjfg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1786532540;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HXMJf/rtkN5D9V2wByXeXTPbkMFZmsjZxH0GM1aTCuw=;
+	b=poLI3x/t9XFPw2AKM8C7XATPchZBXv521jGBjNoeIEGya4U4LD3hL8+f0cGsJ9TuHQ+yDc
+	/IImpbWPzRG6O7DQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1786532535; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HXMJf/rtkN5D9V2wByXeXTPbkMFZmsjZxH0GM1aTCuw=;
+	b=fV6me2YoS46y0WhL8LHI/+xY0QanZ1MgQqj0V59lONnpH497IJubkCf3lAmQCZDqzHV/I4
+	XCB19yfstm98RAhXKv4DDbGzsuuM80o0AmaQkVu5w3egb3Sih9VKnHR+9qSxLQRiDnjbS9
+	tPn9CmFPCsarTf4c7V/iv2nVsGd3GuE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1786532535;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HXMJf/rtkN5D9V2wByXeXTPbkMFZmsjZxH0GM1aTCuw=;
+	b=CyVqWLWZDYn4xeqYqs3uOYbuvtbBROnZ5VTkM6ZE0hFPB+JBCVSYv7j6WEpBcdVrWq/Iox
+	xzLbY7n9NUCSKjAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5AD1A779B1;
+	Wed, 12 Aug 2026 11:02:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id QYzoErZSfGp1VQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 12 Aug 2026 11:02:14 +0000
+Date: Wed, 12 Aug 2026 12:02:12 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Breno Leitao <leitao@debian.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Yosry Ahmed <yosry@kernel.org>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
 Subject: Re: [PATCH 2/3] mm, swap: distinguish a malformed swap entry from a
  dying device
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Peter Xu <peterx@redhat.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>,
- Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com
+Message-ID: <anxSXZ65lveAuGib@pedro-suse>
 References: <20260810-swap-v1-0-375ef0767206@debian.org>
  <20260810-swap-v1-2-375ef0767206@debian.org>
  <da69545e-4b80-4cd0-8d70-a73023445e9f@kernel.org>
  <anxOqNmL24Cj9A7K@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <anxOqNmL24Cj9A7K@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 97mmuin8o5dz1bicdadsoocegtqwtdyy
-X-Rspamd-Queue-Id: 922BB8000E
+X-Rspamd-Action: no action
+X-Stat-Signature: z15bozb9wh4cwyyirw6xer1h57yc93qs
+X-Rspamd-Queue-Id: 47E5E4000D
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1786532420-587633
-X-HE-Meta: U2FsdGVkX198OkN5ymumibzibm1AAFCoJHNcro1dR3mCD4mKLRcFRQfylH8LJZuv937zJvSbydhID7ToWXzilGiup3Op2sZS7iTCt9ioEotbnidUjAGHidBej0lCx7szcHpERyC3n5eAghlmfEMc7auLkfMLXG5k8mp+RL23IRvtaSM3kYG6on4ndyGEvVGxQKrNK9SkWb/QCWRLxsA0Q0XrWaDF24LZNA8BTCqW5FtE1PWWetbMGygV83rlDP0oJ69yMJU+D0Xx8a6i7edKCUDahviO5TBm0n0fUqGQcTPY++6esq2UYds6DXo8/Jws8tXjdWtKQc6p36Pr8JDZ4fKqNnu8FM183/vwSZDZjxOrPqzBLuqupBqfz2wQO9j7B2qjFoLNwcgXQdhbWD0uGqdCgUXRJHYWbBJFaUk9cXuLHeZ4Mx0swqmHVSQ8eV9qtbBrzNNTKmjHYI6dzldJXtPFiXKfUr7fkStRsU+JtHFTWzcnRrvSw9qxaRZI7insgJOguJcjv3mFW7H72DhRDp81lHpmPepwZQuxUzimPwQ3T987YZXLbYJt42vnTjQ+gKchdLJSxTgdumWWDkizplB9jp2tDfMkCfLNXywIMSCHCRdlTNE0M2WKfXMNfXJAaTRpeUuPSVWv7lqGkO+SsUOKAemtGiFNbF/jHprpkI7yJywtbUBlG8tSEPzFX7p4YUpuQwUHJlucQjcG3A+hSB9qLZ6asCcJRQBkAT83LkthPnr7isCFCU7e2DP5DM5qwE2SdutelY1V8CWy+W4Q7inCCSgVU2vHmQdSQFtsPrRGNgNkh0R8+8+AxSj0Z1rgnkDfSFHWndO3u6lfKq8P7acVGFZbbn4aUY76Z/BypAQvvUli9zFsiomZYLundqGqkkUh+PonqFq1djHyfuWhLPc6CqtOPoGui5EZHNwRB5bV2ZvLdzCNjwlWti5Aq+xOf5z21nrZeOOy7gYcoiT
- +AWIz08y
- 5w9vayr0lO6hP9zAlJShN1epGzp1v6kFjyZ/F5HxegwYsc3QPcEt2DYZG5dSSjURl/31r+qFbFBOzXLSSLqKtjiP0si/JCG7JkO9mzR8wdThzBBz7VEEMY4HDOYLLrGutznk6brO+zlic6pT+kEApakSssR9xp0kAT6dtH0U+pyUhpLp3V+OQQm9I8vsGaAeWNlkDtnAHd5tq1EGhkdMXgrxq7UA9XNkD5+nfSRnJus1eLQXh4dD+ZSVofzrTFNwdosCi
+X-HE-Tag: 1786532545-289020
+X-HE-Meta: U2FsdGVkX18GilvJEzlRe6AaADVZC8OhQoKG4EgL52rdjIRtiKyaGxph0CTfW5HGY6LHpyK1EgAZ2177898ZHAuxjFKbT3a0ifVkrdqbmr2IsbVTdC4gXswDcDls/NFe+xcahBC1tJ11CO/nkQSRprlp47Vzfs98tp0ySFRbb4Dwmko0a8bg0tbY7jVx6GkJeDk8iotVwA4BczE8B3Nzu/hBaaV5mwAXZNsA653WokqNL7RDY7mgchudKUtfN6BeIjBdxU7qtAaLLBq7MwUTBxmxCDKNXq8ILNLyjmIy9qdxJOYKuiWnzFTAehJdJH7wOZ7GumCP6zqCHOIzS3oXqv2MQG7UYenVODuJIgP8RDqSAJIrW/KnkGkxy1ZkGwa12SnguJlo4zHZXroIexb3LtKtXNpyDns1ext71zozN0+t2A3B3aygNJgvj4TkOzwX2aNpzOrf2WWGusmlX83CIvNJLYYhOqIgSI1qddCNDIXMWO9UhxaTck3LWYAIGo4ODiOxE37w8lXgwBzXXdLfDFyRk8qHSm5/OvnwGoMK7huQAIVI4TjMN5CmcTegN1MBpZ7JtXvg1BPRdzJIRAyb7cLbnl5WoaPuRUAVqbiD8tWBcEwp4hBiddmg8FjugOSJSXO3M7M6vqMnQg1MWaoX+j2uagtxVS65Z5QQFQ6kUH7kpJMyEdyqWwjW5x8wriheiUfyHxXreGCWzSS4Kui/7xmt6AsvVxc4BSaaDErxoHNYCr2pHSgkB8hcFxa4aMEVgLS9/sixd0UBXKEO0zMvSqWqak8rSCE4t2oAo+8fpxGSxxYUwP1sVHsJaPCuppbQY6YZgczYYlldCeUH4NGcUtjhbh1Ib47Q9e7JmuJWpIPVZeMlDde7RSscQXJaSeoMyDoneXGqQghss6J1RnchGFsX376SqQlA9yPtfk7/GBN+jhdxn6fCo9O7SRkHnDcx+z0ogyKNOmCJG1Nf3Mh
+ Am6h/RS+
+ U6FjG8uIEauldPOtlRit9clqfCsFd6fllp1HjLLUdHqMF9iHCbMBeeKzBxoBx8sQ1r8O/3q8mPq68NhAIQDlWa8xggt9I/V3CwLIVlNe/VfXfLpRE+haHSZtb5i3PQxOZ5I82oCFGL3HSiftiWLHuW/vx4uDUQvZG4MD28aHFwAxz4h7vTt1rvj0aEuUqwEIN4A8d9Lo080iKxwrkG7EmB+ySWVThSkOEOhSivb/rMlVEi8Cx4Sn7/Lp18xf0FY9boTOU0WjWE5y+cWtQ5TUwG5K64rroaKj+gxDJ4rxv/pP2qfA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,16 +143,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/12/26 12:48, Breno Leitao wrote:
+On Wed, Aug 12, 2026 at 03:48:56AM -0700, Breno Leitao wrote:
 > Hello David,
 > 
 > On Tue, Aug 11, 2026 at 05:36:31PM +0200, David Hildenbrand (Arm) wrote:
->> On 8/10/26 18:26, Breno Leitao wrote:
->>> +	return ERR_PTR(-EINVAL);
->>>  }
->>
->> Is -EINVAL really the logical right return value? Running into bad swap entries
->> sounds more serious to me than "-EINVAL" :)
+> > On 8/10/26 18:26, Breno Leitao wrote:
+> > > +	return ERR_PTR(-EINVAL);
+> > >  }
+> >
+> > Is -EINVAL really the logical right return value? Running into bad swap entries
+> > sounds more serious to me than "-EINVAL" :)
 > 
 > Good point, maybe we need a strong drug here, what about -EIO?
 > 
@@ -183,10 +174,9 @@ On 8/12/26 12:48, Breno Leitao wrote:
 > 
 > I will return -EIO in the next version, if I don't hear any concern.
 
-Sounds definitely better.
+Perhaps -EUCLEAN would be a more fitting error. It's generally what
+filesystems use, at least (EFSCORRUPTED = EUCLEAN). 
 
 -- 
-Cheers,
-
-David
+Pedro
 
