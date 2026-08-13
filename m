@@ -4,67 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69CCEC5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 14:32:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC697C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 14:35:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D13B6B0271; Thu, 13 Aug 2026 10:32:27 -0400 (EDT)
+	id 8ABC46B0510; Thu, 13 Aug 2026 10:35:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A91C6B027B; Thu, 13 Aug 2026 10:32:27 -0400 (EDT)
+	id 85CCC6B0511; Thu, 13 Aug 2026 10:35:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E6256B0285; Thu, 13 Aug 2026 10:32:27 -0400 (EDT)
+	id 773B56B0512; Thu, 13 Aug 2026 10:35:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3804D6B0271
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:32:27 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A2A5D1201AF
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:32:26 +0000 (UTC)
-X-FDA: 85096486692.10.43EECB3
+	by kanga.kvack.org (Postfix) with ESMTP id 5852C6B0510
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:35:29 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DE6AB1201AA
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:35:28 +0000 (UTC)
+X-FDA: 85096494336.06.86631DE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id F12671C0002
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:32:24 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cIpq61fY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id 505CC40006
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:35:27 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OMcp4G0s;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786631545;
+	s=arc-20220608; t=1786631727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IG593WwPZHkjAHpEh+qnkEZ5lNUNcA7qjwLsO5uxs1Q=;
-	b=K5Yhd4E1m8UqBb2jQ5DjwPWc2Wkow1U8OefLz9/I02Ry+rEztkvtSgzzJkm717fAfoF2ic
-	9rehsIdMxjVV8XCVi5XWEcpkXoBybassBg6+5nk0UGIU6yNk5dlNxLbz43tIJZiBr2wfrt
-	6iUlXJgNxAU/50d+UaGHjoJ22MyF8yM=
+	bh=VVMlbQ46Mo6FlSx62rCWVtV5s385RB38R7F2cq3RypM=;
+	b=sfwYyQ5/3Tr5gVi4Xa9gwMOybzbtgF0HDXpRQVq3zbgWx3VIPSzqe8tEU8JnYwA3hHHgaj
+	oYCzLQwDZaeHQ8RzFXvjn+JmCb0VZCfkLSEjW6S0GbXSA66/SlAtc08aVeUMVkVk+r0cmU
+	POtI4IyXjNs7PmlUDJ0qgax0JPyChqc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cIpq61fY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OMcp4G0s;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786631545;
-	b=m4VvZK2ICNW1YQyUhwoi40udQnnSVu4yhvILGxIn0NIaJMa4h4CAuGxi/AKaELzbxfzL87
-	yQlsycdeNC7t6Az+NToHdHfFaCZQ2DF02KvGnIU1NFn3FvOpw2s2HEEmgzGZuzmtyFhlyr
-	aXhKgspaySyFk3OBCwqCe0c2RUK4vRc=
+	t=1786631727;
+	b=1lW64jBMKpnClAyByEPHNCzkCZyWxd+j8nLPP0bBaupWS6lk5Z8fyZhp5+bMaEFEPD57J/
+	yr/dNgq8QPwOzQX4bBQp1WGVZqusCq7yZDgIHO6k0DcrY2BDXxjizKfVD+ZqXyfWPgHqEG
+	mhkr2pC5vAftdM85BwhHxKGK3BzD58k=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 44E63618A8;
-	Thu, 13 Aug 2026 14:32:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 239041F000E9;
-	Thu, 13 Aug 2026 14:32:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D913D61884;
+	Thu, 13 Aug 2026 14:35:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28651F000E9;
+	Thu, 13 Aug 2026 14:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786631544;
-	bh=IG593WwPZHkjAHpEh+qnkEZ5lNUNcA7qjwLsO5uxs1Q=;
+	s=k20260515; t=1786631726;
+	bh=VVMlbQ46Mo6FlSx62rCWVtV5s385RB38R7F2cq3RypM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cIpq61fYzk1dxWEdXEUCp16LoxTYoW+i9fW+HkgxV8mPgI1kWmiKvAvbhqO7rege8
-	 D4WBjRsiJBmYFZ4x/ANT8VYdzB4jja+mx0CeeeAAZtDQK0u0gfKAmFXuj0NIl2rhjJ
-	 g1Y4G/QIsHK9yryXNKb8Xw7oc6L2te2z/OrPxkketN/hBBA2lTD996Hs+poYAD7kOa
-	 skFHZVF6659buG0et6UnjqRrB3ll7cdhZ8UMjlmrOnnlrSs34J7NkFplvnOsBuYoej
-	 ENPENjuAw4Rwwzc1rxRSRB6CA0/fmMvtIplA5k4YCuiGnWDgEqHu4qDnXDeXf+dvbU
-	 BFmcha80bjpHw==
-Date: Thu, 13 Aug 2026 15:32:03 +0100
+	b=OMcp4G0sW+HYALPi/HZ738Z2R0vjWWsr/JWwHt5jEfM1kuE5g2IHtY2dS8XlgxKEg
+	 JBTm7MCmp/6GPrCyOHqdEhT12m9Bauo3UtQW1wT7j6QEsqxCEHBX0eDSGmP2BRbMMy
+	 0pJWQm9bnFK5EKNhf9QhW8FkalkosfgrLiAR+zPN3pXf+topeiZ4EoyvqGbN8UIhBc
+	 /H+RlYm+hSdkRVAHVjT3+aKSnysHlzYCouW0VkDcLY9EduC0pu4mhEDk5ngVHwZKnt
+	 N1pNS0NInpiPG/HYzihAqxEjQ0MaWpbnzVq2+mZKfclmhcyCiuiT47EFKYDEmWYUsW
+	 7KF335klZnqGA==
+Date: Thu, 13 Aug 2026 15:35:06 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: Jinjiang Tu <tujinjiang@huawei.com>
 Cc: akpm@linux-foundation.org, david@kernel.org, xu.xin16@zte.com.cn, 
@@ -72,25 +71,21 @@ Cc: akpm@linux-foundation.org, david@kernel.org, xu.xin16@zte.com.cn,
 	surenb@google.com, mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, 
 	shr@devkernel.io, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
 	wangkefeng.wang@huawei.com, sunnanyong@huawei.com
-Subject: Re: [PATCH v2 2/2] mm/ksm: fix advisor_min_pages_to_scan description
-Message-ID: <an3RcQgDuhmcAb37@lucifer>
+Subject: Re: [PATCH v2 0/2] docs/ksm: fix advisor documentation and comment
+Message-ID: <an3VdkvUvLapWzmw@lucifer>
 References: <20260813031722.569983-1-tujinjiang@huawei.com>
- <20260813031722.569983-3-tujinjiang@huawei.com>
- <an2g39TIN9v87enG@lucifer>
- <b35d14b5-65d8-4b8e-8754-de35f03d4b2d@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b35d14b5-65d8-4b8e-8754-de35f03d4b2d@huawei.com>
+In-Reply-To: <20260813031722.569983-1-tujinjiang@huawei.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 505CC40006
+X-Stat-Signature: mqotjpxjkebz3erxfngn847uhnkfi5uh
 X-Rspam-User: 
-X-Stat-Signature: 8tyiqof1pammaym8yebawt6yiyfq8q8e
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: F12671C0002
-X-HE-Tag: 1786631544-1469
-X-HE-Meta: U2FsdGVkX18mJIPhPYlclntakmzsszo8H8AT8oE0lFbd1kxI0+Msc1xurla4D3p7sq/Hz8dPMI8gL5B2B5Y9nNimXDNJ5K1kwR+WlwbUVGqIpPOBdBdNGF/Tz7wESEeSVO+6ectAZ6T6kH+WJM4r3yjGbb1aL+GOQu2AUG0/3tPBkauoc8ExuxnT9xZHWlQHH3esM4svaq0h84+Mx0AhfJfQJRfEsD+JOIiRAuDJ+A22l5JbWqV9ndyFsMB1smkp9WqqaeGauyanUxImHqMMDnCu7sN8WTXa2oOy+dM5dJiGloiHOFCBgc9yM5VxiJwZARrracy16OYDRBdxu50tOexQ0LFP9lH1iisOwq8/DZvPHIYdk5C8ru3nC6VDvzOw61+oFkVWq5LcKir85q0PcW6c0zu+b213g8FjloPudlAzb6ITcW29/k0i6M9OFb5w/jNs0WlI3+pNBKfozD/OzByRGK1tLRzHHIjT5mCgN9S2TsRA1qlfWM4HcdtWLPaaK5j3GfPRD7t+NTTNo6fMH8jyXrdZ32Qn1St9wdbTrmYszI+hmz0Fr8y3t2MRbawf6r7pjUoXqNAgdnuvsWN9D4snawkeT3NVN7y95nMhJPFejsGPzRafJ2v9s0/PvcRzR7jTFWvC80XuS2Gg7aoOXgYvAjsekw9yClcC+X6Mey2TsS9xO6Y0WWL3RiPItbxoj9M58ziXzVXVLLAvvaH6lMDt4cosb4R1OxJC1PffDGUO5prq+Z6ykSfGbJA5Kku0Q/tK8Rv/GoguViiYKQOpycfZsjzot/xYYrpOeTBrAjxPhUg4H5AztdUCq7SU1PtbsqBrkjR6EOfj9kiaMn8jwfSzFBIsToJrv/ufuhmvdSEAD687fFB3ZnVupEJaIhkaD2Hu7xeYaJqxxgnJj3ZcYvieVzdrQCHtCT/EFuDt+9iV31tEnuStcY4w3UBSwHBKoPW9r4a2f0+vcuypJI0
- 9v7CqxNR
- J9ndvZ3fmvfKcp9TFeQXd1oE6ZZYvq45RBs5Z7PS6EIjZVXZhNGkQ695lkfkKo8NJ5Jgam8zuC7O0KvpY1VTCEcA4hsAveMNTT9/dKWvx0gPXN57RScZhIbA9w2hnKFDDAmZ6E1FApf5HEpPKPPzK57qoKNkCdbUBNKDVVqYizn+ABsHi58T077qieTbU5A6QGJci19tt0Nr8xKnVkTOqV7yzwsCdIgPsxBmNmsBOI85kYAQGok9q50DjU/mau9y4nVIbLV9QnrTbhwv+MoSph8n7Q6PidKJZM1YaUWUtun0hZ6aFtGmBcO0hLd2msCNPXyLlzh1zuo9NDrgzviIyBtw+m7OfYuM7X/wKXxazzNCKzt4Q0MOHsBm7MQ==
+X-HE-Tag: 1786631727-618150
+X-HE-Meta: U2FsdGVkX19DoSD/l/k+n1frJbeIFwzHMDfkPpA+bDZPjUcDdDUgNkGqBFsOaugD5JnMTZxVvKmtdB/YHaSntuExAjVSbVagcO9qaU9So+Kv1zpDL4npCXqJTb2fNCnyPmHtKkiZLbql50WHxrXcMIRGNzOtfNrt/X6C0qMPqm0RruWJuVeRWqJ4r+C8Fo4OJkaN8j0GLlXx3oHEI3nGZfUEi4SJKqa8ALmfC4C5Qt8AUnRU7e8lZwAcz5ZVJntVKsfdA9t+jbiGvQ/+vUs8fQeOvC2CjY8CjXDCCQ23Wch0XjcZCVrGZ0pXWc/MmCPaHY0IKXYQku0U+MSO21p/oTCJXag08DU3LaT74DyACC8N7fVv77pwueWt2LqLWSW0a/Sv6gLg4eaqgKKv9bELdR4gfUoRwvbcqciErGTB+ibGGqNydaaf4+Z0LkvSxJQL+A0SOjP1wIX/tGRv3thhpSfexzyC6KKnqnZ36rYE9BILruW7Gwk4Rt+BHP4j5dBmohUaBrnqEd9Ya72B2U3XLaODzMQxyaW1+tuR8ocqE9waiknPy90SLGsuvi9o9RuakH1MK7+AysPqtOnTPVPiR7pYwPTxzc2M9RgzftIAGOajp80UR2TSw6od/v4VXikauD61skWPEZr8MnhSgGxajIAlnwMOl+L8qrQQeqWLxM24ikdoeijUEImbRaDQt5uWxU/dM+kV8eupGEhCihVXuq+b6dkj8JFEQzRtu3DBSUJtWaNEhBkFXyrfXRKOYszVQ+0LgCAZejlv5ZHhfIt/lsIBquhjzUEk6SChGwDDP9iRJvu5e56nhGBEmbnO8SsYkHHAvYvClB5V2J+JC07nlSL/DrJr2UH4wzXZGKDVqlbTPgfwzQ5OZ2U6hKvrx5RL7qkQTLSVycZdg9u88Ca4aNjcI0ZOnpPL0fuu+gvih7I03ptBv5rXPVnOLra+ps6KAdS/eHTA0EgRe3E5vyt
+ JU5GpFAL
+ ptF7aVXWCrhEBMEFwnOCDZyrds7Rfja28af6ZGn35A00sKBo6Ft48Ch90lq0cIbKy4ZaNUKACAcesuIG5wyY2KCm+D1aVHouGcsfmNBTLe9wVvyMzRGWiFSsfFtfJoN90HpXvp4RvQJus3x8UOtdtJ1kBKHUxaVqLCiCbU7cHbjPR6g9XRYV1qWEDinOigXMu8jE5eW1i1UNeZaga4vCvkTSW0zTBXkg15gXfY0vFIkGgraYxNGasZaIAKMzBhqKrmgGs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,114 +93,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Please show me the common courtesy of responding to _all_ the review given,
-not only the one point you want to respond to.
+On Thu, Aug 13, 2026 at 11:17:20AM +0800, Jinjiang Tu wrote:
+> Fix typos and misleading description of advisor_min_pages_to_scan.
 
-I'm not happy with this patch, sorry, for the reasons stated that you chose
-to ignore.
-
-On Thu, Aug 13, 2026 at 07:17:05PM +0800, Jinjiang Tu wrote:
->
-> 在 2026/8/13 18:56, Lorenzo Stoakes (ARM) 写道:
-> > On Thu, Aug 13, 2026 at 11:17:22AM +0800, Jinjiang Tu wrote:
-> > > Both Documentation/admin-guide/mm/ksm.rst and the comment next to the
-> > > variable definition in mm/ksm.c describe advisor_min_pages_to_scan as a
-> > > lower limit of the pages_to_scan parameter, but that is not how the
-> > > scan-time advisor actually uses it. commit 4e5fa4f5eff6 ("mm/ksm: add ksm
-> > > advisor") only uses it to initialize ksm_thread_pages_to_scan when the
-> > > scan-time advisor is enabled. This will mislead the users.
-> > >
-> > > The semantics of advisor_min_pages_to_scan was updated in the v2 patchset
-> > > [1], but the documentation wasn't updated.
-> > >
-> > > Update the documentation and comment to match the semantics of
-> > > advisor_min_pages_to_scan.
-> > Umm, firstly if this were wrong you'd need to change the name of the variable
-> > too instad of documenting it as something completely distinct.
-> >
-> > But secondly AFAICT the logic in scan_time_advisor() suggests that it truly does
-> > act as a minimum bound as well as being the initial value for
-> > ksm_thread_pages_to_scan.
->
-> As the cover letter[1] said, 'The initial value and the max value for the pages_to_scan parameter can
-> be limited with:', ksm_advisor_min_pages is used as the initial value, not the min value of pages_to_scan.
-
-(Wrap your lines properly please, it's a common courtesy to learn how to
-send mail according to community conventions.)
-
-One of the part of my review you ignored:
-
-	But in any case, you are making a claim here yet have provided no
-	evidence for it. 'It is just the initial assignment' means nothing
-	- if the logic can then only increase it up to the maximum value
-	then it still acts as a minimum.
+This is a very bare cover letter...
 
 >
-> The v1 patchset[2] uses ksm_advisor_min_pages as the min value of pages_to_scan, but as David suggested, the
-> author changed the semantics of advisor_min_pages_to_scan in v2, but forgot to update the comments and variable names.
+> Changes since v1:
+>  * remove fix tags for both patches
+>  * update commit message and comment for patch2
+>  * collect Acked-by for patch1
 >
-> [2] https://lore.kernel.org/all/20231004190249.829015-1-shr@devkernel.io/
+> Jinjiang Tu (2):
+>   docs: ksm: fix typos in sysfs knob names
+>   mm/ksm: fix advisor_min_pages_to_scan description
 >
-> >
-> > So this patch just looks wrong to me.
-> >
-> > But in any case, you are making a claim here yet have provided no evidence for
-> > it. 'It is just the initial assignment' means nothing - if the logic can then
-> > only increase it up to the maximum value then it still acts as a minimum.
-> >
-> > A brief look at the logic suggests so.
-> >
-> > But in any case - the onus is on _you_ to prove that that's not happening.
-> >
-> > And even if you could do that, since it is _intended to be a lower bound_, the
-> > fix wouldn't be alterting comments or documentation, it would be to re-establish
-> > the minimum as a minimum.
-> >
-> > > Link: https://lore.kernel.org/linux-mm/20231028000945.2428830-2-shr@devkernel.io/ [1]
-> > This patch repeatedly states that it is the minimum time. You have failed to
-> > provide any analysis to suggest otherwise.
-> >
-> > > Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-> > Assisted-by: ?
-> >
-> > > ---
-> > >   Documentation/admin-guide/mm/ksm.rst | 4 ++--
-> > >   mm/ksm.c                             | 2 +-
-> > >   2 files changed, 3 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/Documentation/admin-guide/mm/ksm.rst b/Documentation/admin-guide/mm/ksm.rst
-> > > index c9f533b10f6f..c329ca747b8c 100644
-> > > --- a/Documentation/admin-guide/mm/ksm.rst
-> > > +++ b/Documentation/admin-guide/mm/ksm.rst
-> > > @@ -183,8 +183,8 @@ advisor_target_scan_time
-> > >           pages. The default value is 200 seconds.
-> > >
-> > >   advisor_min_pages_to_scan
-> > > -        specifies the lower limit of the ``pages_to_scan`` parameter of the
-> > > -        scan time advisor. The default is 500.
-> > > +        specifies the initial value of the ``pages_to_scan`` parameter of
-> > > +        the scan time advisor. The default is 500.
-> > >
-> > >   advisor_max_pages_to_scan
-> > >           specifies the upper limit of the ``pages_to_scan`` parameter of the
-> > > diff --git a/mm/ksm.c b/mm/ksm.c
-> > > index 7d5b76478f0b..4a6cf8cf5d60 100644
-> > > --- a/mm/ksm.c
-> > > +++ b/mm/ksm.c
-> > > @@ -342,7 +342,7 @@ static enum ksm_advisor_type ksm_advisor;
-> > >    * Only called through the sysfs control interface:
-> > >    */
-> > >
-> > > -/* At least scan this many pages per batch. */
-> > > +/* Initial number of pages to scan per batch. */
-> > >   static unsigned long ksm_advisor_min_pages_to_scan = 500;
-> > >
-> > >   static void set_advisor_defaults(void)
-> > > --
-> > > 2.43.0
-> > >
-> > --
-> > Cheers, Lorenzo
+>  Documentation/admin-guide/mm/ksm.rst | 8 ++++----
+>  mm/ksm.c                             | 2 +-
+>  2 files changed, 5 insertions(+), 5 deletions(-)
+>
+> --
+> 2.43.0
+>
 
 --
 Cheers, Lorenzo
