@@ -4,112 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64B74C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 12:19:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 666D8C5CFCF
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 12:26:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2456C6B04D9; Thu, 13 Aug 2026 08:18:55 -0400 (EDT)
+	id 530636B04DD; Thu, 13 Aug 2026 08:26:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C7206B04DD; Thu, 13 Aug 2026 08:18:55 -0400 (EDT)
+	id 507F36B04DE; Thu, 13 Aug 2026 08:26:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBDAE6B04DE; Thu, 13 Aug 2026 08:18:54 -0400 (EDT)
+	id 445276B04E0; Thu, 13 Aug 2026 08:26:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AE3006B04DB
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:18:54 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 32E16C0145
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:18:54 +0000 (UTC)
-X-FDA: 85096150188.23.6B4D2E2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 522A514000E
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:18:52 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hrtNxndC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 13B9B6B04DD
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:26:32 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9B39016012C
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:26:31 +0000 (UTC)
+X-FDA: 85096169382.20.0FFAF78
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B7E5AA0004
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:26:29 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SFZZDr0m;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf25.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786623532;
+	s=arc-20220608; t=1786623990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1/R1xsy5Ih7oriEyLfemGKLJaBov2UVaNlGIQ9LCxjA=;
-	b=b0A6nauYMa2Uqwva+8OOdWrIIPwB94s+heIk4zP6/rXICR9WP6Ug9km8N5dElwJS3jqQ2f
-	7IVVfF5h0QmoAsGaZgLgdQaMTaJo0u/SvIRAQk8D14sXteYa/Lb1UBAGmxGuZCCQV2g7hI
-	gWVaYIoJ5/jbVRoutI0GQayNhC1ANTQ=
+	bh=haUzX1yJaoSCQjBkM+FTLwJWwxXiI4Xbs+U7tNejh7E=;
+	b=7fqQQppfWQCuo5vFpf3Zv3W9FLb4QRKBpPpGPM2cWTazblipdVdfqsekC8edgxA8Gkz3Lp
+	BeqWwt2MdPWS29ZlT9vUplUhVTW2QvyyR9ltpSz6lptpICYNWOngOfa8UnpSoO9ePrwZl4
+	LtQhX5qT7rCMD7zCVxMaj8Xlvp6lv+I=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hrtNxndC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SFZZDr0m;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf25.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786623532;
-	b=GxqQtyHk6g2es1gCv7WDUIyCOyZCN2zRzhLAeMXjTqgbLqBieXES20Li8Rkuczh0/yc6BB
-	rZ1iaVYxLURMeqr11UoV1A9X1pHPcf20sUUJVJyXIe/7pf7JoAy87CubN+xIi9+gQokZ3A
-	gG7TqO+YEwRm/8zRmH3Hy0V4U1d745o=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D13BA600BB;
-	Thu, 13 Aug 2026 12:18:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 77870C2BCC7;
-	Thu, 13 Aug 2026 12:18:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1786623530;
-	bh=9XrYzpg+oivoj10XseiG15jvZm8eJVgkb2b/7O5gaPw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=hrtNxndCmuZW55fvrMUC5UPdgaAUBOv3gOs/i0C8JGROGgHX3YtD2evNY4Uz/c/NO
-	 3FQt52pU+4T/YDHMA09O9v/Kiiw0mxN/PgJje7NhTxzabvC3VQqBK78JGVvCaVrplr
-	 Xa63ZAWtp3e1qZ2zmH41tR8y/08XjPsBO62RROwdFCrragt1tgmz1ryEXlMIy5taof
-	 ZS7BIsHFnQrZNXxZp1/uV7z86f3J/xOdj2MhQJoYQ9vOmXHiEiahecRWghmWCkDH3p
-	 XLFiWU56oU+Ohjzu+ZIQtKsHIFy9dGieVKqMXIukRYl6Nk27pMHOaw52uZb1BUG+Um
-	 XXk7TMNp8QhHw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 58B27C5B572;
-	Thu, 13 Aug 2026 12:18:50 +0000 (UTC)
-From: Joel Granados <joel.granados@kernel.org>
-Date: Thu, 13 Aug 2026 14:18:37 +0200
-Subject: [PATCH 1/4] sysctl: Split data conversion and file position
- handling
+	t=1786623990;
+	b=ekrIzQc3+3Rt98LGlAQqQjKp/gq/LZYwCrHAYkT/Qjvcp381oUHZAuAXdjgkxM1YckMmU+
+	1j+l9+mKrrm+qScnIaAjnpCXA45FpbcRocI/1UZh0pLIF4pzJx7jFU0r2mMQ5qs28TVdf8
+	cclCB9onGUEdadgGLglLuHZzW/F173k=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8D8BF43BFC;
+	Thu, 13 Aug 2026 12:26:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 146151F000E9;
+	Thu, 13 Aug 2026 12:26:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1786623988;
+	bh=haUzX1yJaoSCQjBkM+FTLwJWwxXiI4Xbs+U7tNejh7E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=SFZZDr0msEMWKEXT06FkXlTkAMy42YabPqmsDRBoVSzmObCHAGUYaUYKe7tD8hoFx
+	 98r5DNP3Ia4i1NXfWBANfT9LkisYinUWZVDjX2cDCTrAOAZh9bAzYCUX0s8qNhSSDe
+	 MV5VqkITGp9Q73rtjNu6XjwjY0a6Vq8uRJfv2GXs=
+Date: Thu, 13 Aug 2026 21:19:47 +0900
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Hajime Tazaki <thehajime@gmail.com>
+Cc: linux-mm@kvack.org, geert@linux-m68k.org, daniel@thingy.jp,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>, linux-fsdevel@vger.kernel.org
+Subject: Re: [RFC PATCH 3/6] mm: nommu: fix an issue on map request to
+ /dev/zero
+Message-ID: <2026081355-remold-sterility-84f9@gregkh>
+References: <20260813063401.1786548-1-thehajime@gmail.com>
+ <20260813063401.1786548-4-thehajime@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260813-lklm-partial_ctlvec-v1-1-df9e51c13704@kernel.org>
-References: <20260813-lklm-partial_ctlvec-v1-0-df9e51c13704@kernel.org>
-In-Reply-To: <20260813-lklm-partial_ctlvec-v1-0-df9e51c13704@kernel.org>
-To: Kees Cook <kees@kernel.org>, Shuah Khan <shuah@kernel.org>, 
- linux-mm@kvack.org
-Cc: Jianlin Shi <shijianlin11@foxmail.com>, akpm@linux-foundation.org, 
- vbabka@kernel.org, hannes@cmpxchg.org, surenb@google.com, mhocko@suse.com, 
- jackmanb@google.com, ziy@nvidia.com, linux-kernel@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Joel Granados <joel.granados@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11680;
- i=joel.granados@kernel.org; h=from:subject:message-id;
- bh=9XrYzpg+oivoj10XseiG15jvZm8eJVgkb2b/7O5gaPw=;
- b=owJ4nAHtARL+kA0DAAoBupfNUreWQU8ByyZiAGp9tiYA9BuqtzE+LFfMYktNUKVRFQUjtN/4D
- 3x1aDTPCX4kd4kBswQAAQoAHRYhBK5HCVcl5jElzssnkLqXzVK3lkFPBQJqfbYmAAoJELqXzVK3
- lkFPb88L+wdmpsr/Y8g1Uxge6IJMsdi1/mdjTrz4Cg3ITpeEulNUM0EkregWGeArMSK1U8yoEbi
- wVr0Zp5r01O3jxrnn1efE9MxLi1bvKdLw0+Y6ob2pK+1q6DKF5cJeYjhd5ZUAMuXUQlqDyCZAcy
- nDSUnt3ZbUAbJKFypoLDIR8Bd1IovZIPKM0sk18FKPIrmdGyorXezWFZbpEKcJtmzmjOA2zCeXR
- P1JvcDVUMTKV6EW1grO2x2ot1QuUrMo85ura8M7RaeVNsJ+bMjhR8SZxKt5DSIJGgQQyx9YbJqE
- HxBCrCspLHoHb4NwU4W4QfVEzLrqwr+LHHNsp4os3D0PNpAPygIbpc89YiYcwvLWN53h6TZxV6k
- fzn7oNhT57YGuSU+dPNGQ6yAjc1yEu8aqk+vgkPNQ2uKZ7qPo2hKshbUgDituPMEA89xHaYpX70
- 2gFxq9yjSmjUH5Dzvw6W/8pgkMMVwL1XozkicAvDKKpUPcCNMNNeORDpDWcpxy1Ez0BuQP/fK/6
- TY=
-X-Developer-Key: i=joel.granados@kernel.org; a=openpgp;
- fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
-X-Endpoint-Received: by B4 Relay for joel.granados@kernel.org/default with
- auth_id=239
-X-Stat-Signature: q4qho1neex196jqpqgd6z44c3syiyxof
-X-Rspamd-Queue-Id: 522A514000E
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260813063401.1786548-4-thehajime@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1786623532-661813
-X-HE-Meta: U2FsdGVkX18t+b322zt5CFIF63Rm8cmTyQenL1wvHZWAGyBt31OC+a+iZAhwnTr72zFMKL26TUT9Lo9Dl+xhsnCxqZ+uor4k0b0ehS3TCi0XkCxXNjDiXaoo2SWuJ/NtJtv0CE/uxE9Po1DPoRwtAwW4qGgcRnTDU1YAP/YS8Lk0TWBGcX3iPjLQ+yyUj2nKfwWFL0Si2KA1MTaG4qec1rm4tSBO6DQRqB7Fdss3AdDiU+1w73yWkZneRr7cN/P919Jj9ZjDNzWCPBoAVuVKg5J3D5EFdukZgkEPGN0lxZ15BAZWOpO0tbOuN37atwTHZfN0GAZr3E1/KIAx//d5BgSWmce0nE6qB7FF+Puyg7wRjznT2LFUf7uefijc/UZAxFM66OGIQewqOCXNUakqoUBtHrd+Q5at6xyT13Y9+35I0Q3qfrH1x4Cw5M0ILUIvOGn91LuOpkkLKEp/1NExqr28xHoA/GRU1SJfKglgIGRik8us+ms5XR0t1TN2gnx4RWe/xjBsq+UaXy/hNAGxdMV885SSaxLcKZVBochHYsezjKpQwwWD24YmgGJNRIUNmY4bK6ckmDrnQQM7VHUxZPdoKyqhJBXxXYP250n9kZ7hhlqfmuq7CFUsxCg0OYbVo8Icdm4doeA2Zh4rT4N/CaJ5/dj0FwSUzuieTCUjb2Oc3XrJyhCENiLiB1ZsbA9ORgMV3itcBVQuAedOWwlSfFl7Cuh5j4NIJ8Id8ACINCuYAVmET5WLWHksGclxx2/0eQ5xF04kbCh8nhG6gtkbhh5WDquSRuVUTVypzN3k+mMazKBaVQeArr+YdQfd+m990RJu8Arx0vPF0AVwbw9UirqRA7mNIYv60aaLY1uOUmatM1VtmMPaw63MEeO7aiNDoffmEcsb28zp4WQGrPWiI1YtazwCH+oM564YhM69Bxfvanqbo5e14L6MX0VnZ+RJRJ8ydmxgnav+AwqV3vy
- 74TEbKBm
- kJc3bQV9WA7kntnS8O88zGAKivtKq1fZjeoi1xx6IhzOWLfkR1lLmeg7FK4JslQ+GVZ1PCjO3x0PkohcOTp3wQSQtyDdI1bKvReyeHT9vC6BJ4oaNeBBdx+Ws5Hd+HlVNF1mfbiNcvrp5d9nCJwD0dbXhd7v1TqLUadO+LjjQ6gY13l15rCX+FurfaPlRensGzYrzAGM67tj2eMIDv9mwkq/oqHLMYktuLU5A/gXFSJvcDwk=
+X-Rspamd-Queue-Id: B7E5AA0004
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 16q6k4i4uy8oumfxmka9uyru97damqx4
+X-HE-Tag: 1786623989-57627
+X-HE-Meta: U2FsdGVkX1+Jp0ToCpLJlQgxpPO5wyl1VG3NyODwwR03o19pKi/bBnnu9xGvyOJM7e4waJPy7zWvc6y0pdwycUC3CIObTgoyPh0QEED/l8nXUR8VfYa9XkHWCJjDrD2hDQ0mewYJU/PxPdpdqLKsg9Syj4/tdGl6R+vHAq7GUVYaMLnxZdfWHYhwrjTy7APA8PvlNT+cMLQ1hMbVjy3tQww/6jMohku2XUQ9iaRDILxDzXWmAWRG5EaQ8SbNmn8gGivl/TciJ1YL7epqtwX8fidJUSDlhBK6IWkC2jZGiX1LRmJPXpLzJcG4fgYFpIiRVEKZEz9ODKB/5JUCg92OSwJiyF/hgScq9IBEbtQTaqsu9UvqcayHqy8Cgnfx2mB9SGETPWDsiiT69glg5/vsFvIzOhmuMfMgapv5/oOj7kAmXfB4kO++i5M59g+JvJkGUQuIiE2t2qQQppCbUD1ArCQwb0F7ym5jl3poYswHhKvl12VNDAnmcqr3zzsSFU2qE3rWX28Pps4IO6Db5U62c1GX9sE1flFRqVZ46myBQ7o6LQ27G0/WC3zT/fyI57GPwqkocFU45NHcsMfBQggPMoUEAjYGWXJSdBfW0ebYBoeQSovVIrxe3MxlJ4vGv5fMqjjKQXu3mVXoSUYLl58QemGVV7IPF0rCB0gj8KGaFTX1PNWEplIxDI8tGO031e3+wZYmsX0Kzc9/M4vsR7rZlSlPXpnCmSBRkIlgEB4p6bp3ayDAaj/VwhVY5MvoMX2XYf+fWpOtWZ/ZMubCfPG9Vxvlks6R+MquKQsFARxIqzttA4B9F0zkWdCsII6IBVFXwDpdOE1vVAvPzuS9kpuCn15h4SQiWJfkRrIhKBTju/xiJI9flEI+JqDY3Z+RjntWms4foqeTdOq4XQx5H9UF8Xo8kekAGWKSWAxA3lTNjQf8p6lKyrBZZyLNkVvWBOZ1GFYjVsVjNJvwGqfFVte
+ sVkd/1Ef
+ Em8buA8/BmrlS9ya0C5P2TsHCTw3ScQF1IQbbUg+yH1zKouIoujmA0luu8K2sW4+67N9JsqgBkgAihogQF9OhuvNQP2v1NAeBzMlwJZa9vScOe5tqx+vGoqnz+IU58ObO+ZREo7Im9SbD2i4670JLDbcg9HdGDGD0xKfauespEH5axpC5bNifAXjGwB/oFWgfuCYJGVouiAiB13//tbVxc7u9DK/yjYcXRxN8dV0UavPMUhpXnM9XhRW6ul0No4REZ7LCjqRDpXnzqDNk+EmWLFpS+9gR7fWaYhAxgz+eJG8QWB3HWfYAEW1P9V9pX2oHAgtr2RoWYsd/Fr2TUIq0rdPilzcRqzMGYR+YelxKlrLiY7TXkTVVcZksoB4qADdz0CweH1B/chzrUo3Bwb7u7JiEYaWNmu8g7NbLGAsb8xAj+MXtzpAhxpoPz5FJOKhHT4WjY1xsVB/CDq6sY016YxkTKRE3ZAxiki75T7lKsFLXgkMlmaa5IIARHazHGZTa7Ip08p+gmw7ES6rafOCd7X5Zm+APtROrVZDgw2mqF7TOT+Vhly7tbKexHcKIVkYruDCZ3tIemXPWWgwNFBU/BinPaDBLEhJVFg12/hGxejVxKtajqyAiZX/DDSs7jzVmFHoZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,343 +95,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Apply the conversions to the data in a new helper function
-(apply_conv_on_vec) while file position handling and argument validation
-stay in the original function. Rename function to prov_vec (from
-do_proc_vec). This is a prep commit to isolate the logic that needs to
-change to prevent partial sysctl vector writes. No functional change
-intended
+On Thu, Aug 13, 2026 at 03:33:58PM +0900, Hajime Tazaki wrote:
+> Upon a private file mapping request to /dev/zero, it calls
+> kernel_read() in do_mmap_private(), getting a failure with the message
+> like: "kernel reads not supported for file /dev/zero", which is because
+> zero_fops defined in drivers/char/mem.c has both .read and .read_iter
+> definitions.
 
-Signed-off-by: Joel Granados <joel.granados@kernel.org>
----
- kernel/sysctl.c | 202 ++++++++++++++++++++++++++++++++------------------------
- 1 file changed, 117 insertions(+), 85 deletions(-)
+Do you actually use a no-mmu system?
 
-diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index f7b75985d5420a522a316d1fade40dc7fbe60455..ed0e5101949c2fa56e33d543c65175d0ab579fc7 100644
---- a/kernel/sysctl.c
-+++ b/kernel/sysctl.c
-@@ -595,7 +595,7 @@ static int do_proc_int_conv_minmax(bool *negp, unsigned long *u_ptr, int *k_ptr,
- static const char proc_wspace_sep[] = { ' ', '\t', '\n' };
- 
- /*
-- * Element type processed by do_proc_vec(). The tag selects the element size
-+ * Element type processed by proc_vec(). The tag selects the element size
-  * and signedness, and it selects which member of union proc_vec_conv is live.
-  */
- enum proc_vec_type {
-@@ -605,7 +605,7 @@ enum proc_vec_type {
- };
- 
- /*
-- * Converter passed to do_proc_vec(). Only the member matching the
-+ * Converter passed to proc_vec(). Only the member matching the
-  * enum proc_vec_type tag is ever read, so every dispatch stays fully typed and
-  * no void * converter pointer is needed.
-  */
-@@ -637,101 +637,133 @@ static int proc_vec_conv(enum proc_vec_type type, union proc_vec_conv conv,
- 	return -EINVAL;
- }
- 
--/*
-- * Read/write a vector of @type elements. The element size and signedness are
-- * derived from @type, so a single runtime function replaces the per-type
-- * variants. table->data is walked as raw bytes (@i) advanced by @size; the
-- * converter performs the actual typed load/store.
-+/**
-+ * apply_conv_on_vec - Apply converter function on data vector
-+ *
-+ * Element signedness is derived from @data_type. table->data is walked
-+ * as raw bytes (@data) advanced by @data_size; the converter performs
-+ * the actual typed load/store. Sets buf_left_final to the number of
-+ * bytes that where left outstanding after conversion. Can be > 0.
-+ *
-+ * Returns 0 on success. Non-zero on error.
-  */
--static int do_proc_vec(const struct ctl_table *table, int dir,
--		       void *buffer, size_t *lenp, loff_t *ppos,
--		       enum proc_vec_type type, union proc_vec_conv conv)
-+static int apply_conv_on_vec(const union proc_vec_conv conv,
-+			     const struct ctl_table *table,
-+			     const enum proc_vec_type data_type,
-+			     const size_t data_size, const int conv_dir,
-+			     const size_t buf_nbyte, void *buf,
-+			     size_t *buf_left_final)
- {
--	int vleft, first = 1, err = 0;
--	size_t left, size;
--	bool is_unsigned;
--	char *i, *p;
-+	int vec_left, first = 1, err = 0;
-+	size_t buf_left;
-+	char *data, *p;
-+	bool is_unsigned = data_type == PROC_VEC_UINT || data_type == PROC_VEC_ULONG;
- 
--	switch (type) {
--	case PROC_VEC_INT:
--		size = sizeof(int);
--		is_unsigned = false;
--		break;
--	case PROC_VEC_UINT:
--		size = sizeof(uint);
--		is_unsigned = true;
--		break;
--	case PROC_VEC_ULONG:
--		size = sizeof(ulong);
--		is_unsigned = true;
--		break;
--	default:
--		return -EINVAL;
--	}
--
--	if (!table->data || !table->maxlen || !*lenp ||
--	    (*ppos && SYSCTL_KERN_TO_USER(dir))) {
--		*lenp = 0;
--		return 0;
--	}
--
--	i = table->data;
--	vleft = table->maxlen / size;
--	left = *lenp;
--
--	/* uint arrays are not supported, *Do not* add support for them. */
--	if (type == PROC_VEC_UINT && vleft != 1)
--		return -EINVAL;
--
--	if (SYSCTL_USER_TO_KERN(dir)) {
--		if (proc_first_pos_non_zero_ignore(ppos, table))
--			goto out;
-+	data = table->data;
-+	vec_left = table->maxlen / data_size;
-+	buf_left = buf_nbyte;
- 
--		if (left > PAGE_SIZE - 1)
--			left = PAGE_SIZE - 1;
--		p = buffer;
-+	if (SYSCTL_USER_TO_KERN(conv_dir)) {
-+		if (buf_left > PAGE_SIZE - 1)
-+			buf_left = PAGE_SIZE - 1;
-+		p = buf;
- 	}
- 
--	for (; left && vleft--; i += size, first = 0) {
-+	for (; buf_left && vec_left--; data += data_size, first = 0) {
- 		unsigned long lval;
- 		bool neg = false;
- 
--		if (SYSCTL_USER_TO_KERN(dir)) {
--			proc_skip_spaces(&p, &left);
-+		if (SYSCTL_USER_TO_KERN(conv_dir)) {
-+			proc_skip_spaces(&p, &buf_left);
- 
--			if (!left)
-+			if (!buf_left)
- 				break;
--			err = proc_get_long(&p, &left, &lval, &neg,
-+			err = proc_get_long(&p, &buf_left, &lval, &neg,
- 					    proc_wspace_sep,
- 					    sizeof(proc_wspace_sep), NULL);
- 			if (!err && neg && is_unsigned)
- 				err = -EINVAL;
- 			if (err)
- 				break;
--			if (proc_vec_conv(type, conv, &neg, &lval, i, dir, table)) {
-+			if (proc_vec_conv(data_type, conv, &neg, &lval, data, conv_dir, table)) {
- 				err = -EINVAL;
- 				break;
- 			}
- 		} else {
--			if (proc_vec_conv(type, conv, &neg, &lval, i, dir, table)) {
-+			if (proc_vec_conv(data_type, conv, &neg, &lval, data, conv_dir, table)) {
- 				err = -EINVAL;
- 				break;
- 			}
- 			if (!first)
--				proc_put_char(&buffer, &left, '\t');
--			proc_put_long(&buffer, &left, lval, neg);
-+				proc_put_char(&buf, &buf_left, '\t');
-+			proc_put_long(&buf, &buf_left, lval, neg);
- 		}
- 	}
- 
--	if (SYSCTL_KERN_TO_USER(dir) && !first && left && !err)
--		proc_put_char(&buffer, &left, '\n');
--	if (SYSCTL_USER_TO_KERN(dir) && !err && left)
--		proc_skip_spaces(&p, &left);
--	if (SYSCTL_USER_TO_KERN(dir) && first)
-+	if (SYSCTL_KERN_TO_USER(conv_dir) && !first && buf_left && !err)
-+		proc_put_char(&buf, &buf_left, '\n');
-+	if (SYSCTL_USER_TO_KERN(conv_dir) && !err && buf_left)
-+		proc_skip_spaces(&p, &buf_left);
-+	if (SYSCTL_USER_TO_KERN(conv_dir) && first)
- 		return err ? : -EINVAL;
--	*lenp -= left;
-+	*buf_left_final = buf_left;
-+
-+	return err;
-+}
-+
-+/* Read/write a vector of @type elements. */
-+static int proc_vec(const struct ctl_table *table, int dir, void *buffer,
-+		    size_t *lenp, loff_t *ppos, enum proc_vec_type type,
-+		    union proc_vec_conv conv)
-+{
-+	int err = 0;
-+	size_t data_size, left_nbyte = SIZE_MAX;
-+
-+	switch (type) {
-+	case PROC_VEC_INT:
-+		data_size = sizeof(int);
-+		break;
-+	case PROC_VEC_UINT:
-+		data_size = sizeof(uint);
-+		break;
-+	case PROC_VEC_ULONG:
-+		data_size = sizeof(ulong);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	if (!table->data || !table->maxlen || !*lenp ||
-+	    (*ppos && SYSCTL_KERN_TO_USER(dir))) {
-+		*lenp = 0;
-+		return 0;
-+	}
-+
-+	/* uint arrays are not supported, *Do not* add support for them. */
-+	if (type == PROC_VEC_UINT && (table->maxlen / data_size) != 1)
-+		return -EINVAL;
-+
-+	if (SYSCTL_USER_TO_KERN(dir)) {
-+		if (proc_first_pos_non_zero_ignore(ppos, table))
-+			goto out;
-+	}
-+
-+	err = apply_conv_on_vec(conv, table, type, data_size, dir, *lenp, buffer,
-+				&left_nbyte);
-+
-+	/*
-+	 * An unchanged left_nbyte signals a write with no parsed element; which
-+	 * is an error. Using SIZE_MAX to detect this error is possible because:
-+	 * 1. lenp is bounded by KMALLOC_MAX_SIZE in proc_sys_call_handler
-+	 * 2. lenp could never be SIZE_MAX as it is a "ridiculous" (exabyte) allocation.
-+	 */
-+	if (left_nbyte == SIZE_MAX)
-+		return err;
-+
-+	*lenp -= left_nbyte;
- out:
- 	*ppos += *lenp;
-+
- 	return err;
- }
- 
-@@ -760,8 +792,8 @@ int proc_douintvec_conv(const struct ctl_table *table, int dir, void *buffer,
- 	if (!conv)
- 		conv = do_proc_uint_conv;
- 
--	return do_proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_UINT,
--			   (union proc_vec_conv){ .uint_conv = conv });
-+	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_UINT,
-+			(union proc_vec_conv){ .uint_conv = conv });
- }
- 
- /**
-@@ -820,8 +852,8 @@ int proc_dobool(const struct ctl_table *table, int dir, void *buffer,
- int proc_dointvec(const struct ctl_table *table, int dir, void *buffer,
- 		  size_t *lenp, loff_t *ppos)
- {
--	return do_proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_INT,
--			   (union proc_vec_conv){ .int_conv = do_proc_int_conv });
-+	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_INT,
-+			(union proc_vec_conv){ .int_conv = do_proc_int_conv });
- }
- 
- /**
-@@ -840,8 +872,8 @@ int proc_dointvec(const struct ctl_table *table, int dir, void *buffer,
- int proc_douintvec(const struct ctl_table *table, int dir, void *buffer,
- 		size_t *lenp, loff_t *ppos)
- {
--	return do_proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_UINT,
--			   (union proc_vec_conv){ .uint_conv = do_proc_uint_conv });
-+	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_UINT,
-+			(union proc_vec_conv){ .uint_conv = do_proc_uint_conv });
- }
- 
- /**
-@@ -864,8 +896,8 @@ int proc_douintvec(const struct ctl_table *table, int dir, void *buffer,
- int proc_dointvec_minmax(const struct ctl_table *table, int dir,
- 		  void *buffer, size_t *lenp, loff_t *ppos)
- {
--	return do_proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_INT,
--			   (union proc_vec_conv){ .int_conv = do_proc_int_conv_minmax });
-+	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_INT,
-+			(union proc_vec_conv){ .int_conv = do_proc_int_conv_minmax });
- }
- 
- /**
-@@ -891,8 +923,8 @@ int proc_dointvec_minmax(const struct ctl_table *table, int dir,
- int proc_douintvec_minmax(const struct ctl_table *table, int dir,
- 			  void *buffer, size_t *lenp, loff_t *ppos)
- {
--	return do_proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_UINT,
--			   (union proc_vec_conv){ .uint_conv = do_proc_uint_conv_minmax });
-+	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_UINT,
-+			(union proc_vec_conv){ .uint_conv = do_proc_uint_conv_minmax });
- }
- 
- /**
-@@ -935,8 +967,8 @@ int proc_dou8vec_minmax(const struct ctl_table *table, int dir,
- 		tmp.extra2 = (unsigned int *) &max;
- 
- 	val = READ_ONCE(*data);
--	res = do_proc_vec(&tmp, dir, buffer, lenp, ppos, PROC_VEC_UINT,
--			  (union proc_vec_conv){ .uint_conv = do_proc_uint_conv_minmax });
-+	res = proc_vec(&tmp, dir, buffer, lenp, ppos, PROC_VEC_UINT,
-+		       (union proc_vec_conv){ .uint_conv = do_proc_uint_conv_minmax });
- 	if (res)
- 		return res;
- 	if (SYSCTL_USER_TO_KERN(dir))
-@@ -1066,8 +1098,8 @@ int proc_doulongvec_conv(const struct ctl_table *table, int dir,
- 				int (*conv)(bool *negp, ulong *u_ptr, ulong *k_ptr,
- 					    int dir, const struct ctl_table *table))
- {
--	return do_proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_ULONG,
--			   (union proc_vec_conv){ .ulong_conv = conv });
-+	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_ULONG,
-+			(union proc_vec_conv){ .ulong_conv = conv });
- }
- 
- /**
-@@ -1087,10 +1119,10 @@ int proc_doulongvec_conv(const struct ctl_table *table, int dir,
-  * Returns: %0 on success.
-  */
- int proc_doulongvec_minmax(const struct ctl_table *table, int dir,
--			   void *buffer, size_t *lenp, loff_t *ppos)
-+		void *buffer, size_t *lenp, loff_t *ppos)
- {
--	return do_proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_ULONG,
--			   (union proc_vec_conv){ .ulong_conv = do_proc_ulong_conv });
-+	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_ULONG,
-+			(union proc_vec_conv){ .ulong_conv = do_proc_ulong_conv });
- }
- 
- /**
-@@ -1114,8 +1146,8 @@ int proc_dointvec_conv(const struct ctl_table *table, int dir, void *buffer,
- {
- 	if (!conv)
- 		conv = do_proc_int_conv;
--	return do_proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_INT,
--			   (union proc_vec_conv){ .int_conv = conv });
-+	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_INT,
-+			(union proc_vec_conv){ .int_conv = conv });
- }
- 
- /**
+> Even fixing this issue, the map request to /dev/zero works fine without
+> errors but the allocated vma isn't marked with anonymous because
+> mmap_zero_prepare() isn't called under nommu platform, resulting
+> vma_desc_set_anonymous() isn't called either.
+> 
+> This commit fixes those issues by:
+> 1) use vfs_iter_read() instead to avoid failure at kernel_read()
+> 2) calls .mmap_prepare on private mapping in do_mmap() so that required
+>    preparations are done even in private mapping.
+> 
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+> Cc: Jan Kara <jack@suse.cz>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: "Liam R. Howlett" <liam@infradead.org>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Jann Horn <jannh@google.com>
+> Cc: Pedro Falcato <pfalcato@suse.de>
+> Cc: linux-fsdevel@vger.kernel.org
+> Cc: linux-mm@kvack.org (open list:PAGE CACHE)
+> Fixes: 4d03e3cc5982 ("fs: don't allow kernel reads and writes without iter ops")
 
--- 
-2.50.1
+Given the age of this issue, I don't think anyone uses no-mmu systems
+anymore :(
 
 
+
+> Assisted-by: cubic.dev:unspecified
+> Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
+> ---
+>  drivers/char/mem.c |  5 ++-
+>  mm/filemap.c       |  6 ++--
+>  mm/nommu.c         | 84 ++++++++++++++++++++++++++++++++++++++++++++--
+>  3 files changed, 87 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/char/mem.c b/drivers/char/mem.c
+> index 63253d1de5d7..dba24d0a7b33 100644
+> --- a/drivers/char/mem.c
+> +++ b/drivers/char/mem.c
+> @@ -500,11 +500,10 @@ static ssize_t read_zero(struct file *file, char __user *buf,
+>  
+>  static int mmap_zero_prepare(struct vm_area_desc *desc)
+>  {
+> -#ifndef CONFIG_MMU
+> -	return -ENOSYS;
+> -#endif
+> +#ifdef CONFIG_MMU
+>  	if (vma_desc_test(desc, VMA_SHARED_BIT))
+>  		return shmem_zero_setup_desc(desc);
+> +#endif
+>  
+>  	/*
+>  	 * This is a highly unique situation where we mark a MAP_PRIVATE mapping
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index d721986d5f46..cf02faad86aa 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -4077,7 +4077,7 @@ int generic_file_mmap(struct file *file, struct vm_area_struct *vma)
+>  }
+>  int generic_file_mmap_prepare(struct vm_area_desc *desc)
+>  {
+> -	return -ENOSYS;
+> +	return 0;
+>  }
+>  int generic_file_readonly_mmap(struct file *file, struct vm_area_struct *vma)
+>  {
+> @@ -4085,7 +4085,9 @@ int generic_file_readonly_mmap(struct file *file, struct vm_area_struct *vma)
+>  }
+>  int generic_file_readonly_mmap_prepare(struct vm_area_desc *desc)
+>  {
+> -	return -ENOSYS;
+> +	if (is_shared_maywrite(&desc->vma_flags))
+> +		return -EINVAL;
+> +	return generic_file_mmap_prepare(desc);
+>  }
+>  #endif /* CONFIG_MMU */
+>  
+> diff --git a/mm/nommu.c b/mm/nommu.c
+> index e40990e15831..a29a53c1c80a 100644
+> --- a/mm/nommu.c
+> +++ b/mm/nommu.c
+> @@ -37,6 +37,7 @@
+>  
+>  #include <linux/uaccess.h>
+>  #include <linux/uio.h>
+> +#include <linux/major.h>
+>  #include <asm/tlb.h>
+>  #include <asm/tlbflush.h>
+>  #include <asm/mmu_context.h>
+> @@ -856,6 +857,22 @@ static int validate_mmap_request(struct file *file,
+>  	return 0;
+>  }
+>  
+> +static int is_file_anonymous(struct file *file)
+> +{
+> +	if (!file)
+> +		return 1;
+> +
+> +	if (file->f_path.dentry && file->f_path.dentry->d_inode) {
+> +		struct inode *inode = file->f_path.dentry->d_inode;
+> +		/* if the device is /dev/zero */
+> +		if (S_ISCHR(inode->i_mode) &&
+> +		    imajor(inode) == MEM_MAJOR && iminor(inode) == 5)
+> +			return 1;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  /*
+>   * we've determined that we can make the mapping, now translate what we
+>   * now know into VMA flags
+> @@ -869,7 +886,11 @@ static vm_flags_t determine_vm_flags(struct file *file,
+>  
+>  	vm_flags = calc_vm_prot_bits(prot, 0) | calc_vm_flag_bits(file, flags);
+>  
+> -	if (!file) {
+> +	/* private and file mapping will be marked anonymous later (do_mmap_private()).
+> +	 * and /dev/zero is marked by them at .mmap_prepare,
+> +	 * which should be _before_ this point.
+> +	 */
+
+Wrong coding style for the comment, which is very typical of
+LLM-generated stuff.  Always rewrite the output of these tools to
+actually be sane.
+
+thanks,
+
+greg k-h
 
