@@ -4,104 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F375EC5CFDB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 08:10:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40B73C5AC67
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 08:12:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B381E6B01F5; Thu, 13 Aug 2026 04:10:19 -0400 (EDT)
+	id 36D8F6B03F2; Thu, 13 Aug 2026 04:12:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE2696B01F9; Thu, 13 Aug 2026 04:10:19 -0400 (EDT)
+	id 3450E6B03F3; Thu, 13 Aug 2026 04:12:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D0FC6B01FB; Thu, 13 Aug 2026 04:10:19 -0400 (EDT)
+	id 281BD6B03F4; Thu, 13 Aug 2026 04:12:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CB926B01F5
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:10:19 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EF27BA057A
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:10:18 +0000 (UTC)
-X-FDA: 85095523716.08.5DFDF2F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 231A240005
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:10:17 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A+TGWDUi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0543F6B03F2
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:12:28 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DCE631A05AE
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:12:26 +0000 (UTC)
+X-FDA: 85095529092.07.7FC6814
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B2045120003
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:12:24 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=EhEZb991;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786608617;
+	s=arc-20220608; t=1786608745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JQuOOWriGxYT4oFqH8z4fbYfZZdj+iv9kKvwYZwsbbE=;
-	b=Y13o8AUjm4kWVqHPCFpr/W0eJZds4EPgDgurztZ0eNRYteNhtEONO02kQvnsumJi+M2rT7
-	Ny1GXxGwiVQGTietufD+a9W0u92izHHLQ0qEHv4+Q/iNOADZDEXGlQawhFqgnHUJS8HwEq
-	dUPIjCJfBxVIKhGTHf9btcdNEOslFjE=
+	bh=kB3DfN1MCxQMYcltpesY/usFBKfe+aUASD4/bfF/Nbs=;
+	b=2TjZDxhPtKoKKX8rnBuFrEUzyzqDPopX7jVFchjlTFWMWGGqbpWSjeLFCPExLqXWPO06jE
+	RxG7O4zJpjwE+KDJ8h5MyiztIl16we8Ioaqh59pdLCjVFy+2dtSDOfdt0QjfrhmlSUniQw
+	pAI9/C/GfxpudDf0riChfTOmVGbRvrY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A+TGWDUi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=EhEZb991;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786608617;
-	b=3vFHJGxKHi00/0A3h1DoxKaigcbJrq1KAQSx9hvfPGivoB/jB10/6OSunuqfzp4wY0UO8/
-	mNDM0PDc1h7TFB5fwCuhx8QD8DfiN7l2+IHphzmQFpiKB+3M5vR3xixV+Ylxv57qal69rp
-	i/Z+kdkbkCea2HsKOdGlmhqkJUwaF1c=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8FA476011F
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:10:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0A11F00A3D
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:10:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786608616;
-	bh=JQuOOWriGxYT4oFqH8z4fbYfZZdj+iv9kKvwYZwsbbE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=A+TGWDUih9YLCojofH42AeGmBZSJ+a+i/A8UrmYGjAIcQKJaQ/wJBeCrqUbmw/tAY
-	 QR140K2r9N0KZpX22Y0NdYUu79WiyK9DnMhQvGWzVVb4IV8EQknDhW9CW4dS05pTES
-	 I4tsih3UYlIkoMBxSIQBbzWI2Bqay5pxZ1Sf0O9R7/fn1mYeCzxloU0FPaBPIOqLvu
-	 x54puaOmR8boh6DaHfFDJ/Tjt+Cegs493qs0eqssUMxCh6RoaDeh0g1BnEAMUSvtKy
-	 Xr5NWhFzv4X/aLOkpp32wnk8Gt1hu/yio8lAbwcCkKNd6iei4taWFkWlu9QsMdqjjf
-	 cu/EAXPN+1PVg==
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8f23e851626so11082676d6.3
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:10:16 -0700 (PDT)
-X-Gm-Message-State: AOJu0YzupUbfPmWgUGfW/S097xOPYQdaZvCJ4SCrPiqwW61k41eJb6fa
-	Iq1kUadc6ld/7z4b817syT2z7wYtBUnPyi5B0bTG/M3vfc9UI5ExyfIQd8Eaj+ycfQz6uwrVay0
-	G4QKz34HoOOpD5ftCWNUwpHoFB3UqsNU=
-X-Received: by 2002:ad4:5ca3:0:b0:907:c056:d63a with SMTP id
- 6a1803df08f44-90a80bd254dmr34426166d6.20.1786608615391; Thu, 13 Aug 2026
- 01:10:15 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260812-mglru-mlock-fix-v2-1-a3fec5853c08@tencent.com>
-In-Reply-To: <20260812-mglru-mlock-fix-v2-1-a3fec5853c08@tencent.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 13 Aug 2026 16:10:03 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zSy2vXywpGbYFG=1OT2P63p570Zodf=148C2JbcH=AOw@mail.gmail.com>
-X-Gm-Features: AUfX_mw4OiA1sD8AnUz4ruNKDwzRxKB7ghQGZaXPSwX5LwLadHsvtMJkkQmCfS0
-Message-ID: <CAGsJ_4zSy2vXywpGbYFG=1OT2P63p570Zodf=148C2JbcH=AOw@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/mglru: fix and remove redundant unevictable folio handling
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Oleksandr Natalenko <oleksandr@natalenko.name>, Suleiman Souhlal <suleiman@google.com>, 
-	"Jan Alexander Steffens (heftig)" <heftig@archlinux.org>, Yu Zhao <yuzhao@google.com>, 
-	Steven Barrett <steven@liquorix.net>, Brian Geffon <bgeffon@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Kairui Song <ryncsn@gmail.com>, 
+	t=1786608745;
+	b=WRrDoY3vS/Klqlhyhpr+uu9Q7KSO7KX7CICXfaVRK1XrEad0IDqdZA6ABvL3GTS4V9smoY
+	lPK86Tx+Gv3gpFj7kUUllWtzMIou9os8Yz7TACnBMfS6sj08I2Icb4aIdR4kMVW5aMq/NE
+	nX/Weg4G9GoqxXY22Pd6criIMsUQlZw=
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4954dff6536so13248105e9.0
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:12:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1786608743; x=1787213543; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kB3DfN1MCxQMYcltpesY/usFBKfe+aUASD4/bfF/Nbs=;
+        b=EhEZb991APlMxS4jOqma1gIAPhltCCyWwin1K2nMpjRGgYyHSJS6k/KLl3we/gIo37
+         L1h4IfWhKRoXeSnSd/RD0Jp574c+8Gn4Ipemmxi07WtTylBI9hXRDSPUsRYXYpiW4ZSf
+         qM4le9ZicRDrCbI22w8do6WJCpY38M+Agq4Gzak4hlpAQstZziA26N59XCfjqrLnoxHD
+         RTD7iQH4P/l7ynGdHS3VeoZu2LlAxoEfiKs6g1QIzsx6tgGoMJpKrrqxWCAH1Wkj3gFL
+         ZEM06IYXOyxccdWlctDp7Gy6ANmVjLFyXlkDKn5j1Zq0s8N10Dln3/Eyi61am3p+PA2/
+         AjcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786608743; x=1787213543;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kB3DfN1MCxQMYcltpesY/usFBKfe+aUASD4/bfF/Nbs=;
+        b=oYLXOExF0IBTolnMWUfb+Sq0+cluqaiaQXiOy10aoNIMshZIMONykJVEXIHm8FlwCR
+         ZDFk47QVGM90acBaH8tblcgKlQd8/dtvRrCspQT14Gf90PQUcj00I4cjkpU29Ti9qL+O
+         PFy5qk62XFSr9UY51npN5I8m8CDljANjDWIkYZZPJ/ejgiQ6n9bqOAcHgNej9iKB04Zy
+         jIrH0D9eTCSWiHCvgrK9a9eaHKJeTFErZnQ9iSTHLAhWK0T/DYfZScWa+n4ZQG8rJ6Nk
+         RHSfo/3seOLOCy7sz7v0+I5gbZyrxkS9KJpD3h4d/tfOtghzIjKr7jCU0I4dJkRSkuwB
+         jNgw==
+X-Forwarded-Encrypted: i=1; AHgh+Rp7ST5edY+eHCA/cnDDHV/cjeLxeLzCvQCFfW042yxdUBiccmBYcLYfYe8cdXioPnLT9b/R23FHBQ==@kvack.org
+X-Gm-Message-State: AOJu0YyYjI7Y4Shp5Fm6O50Zm5fAbzlrlbpiOWq0L+wiFrY5+RS7cIr0
+	CPwYtIBdpIC9Wi5Ux2PTjG9t5cJ0aTGaS/k41FqtOICa5FTSxi1UDrHpTwqLZ2v7ovA=
+X-Gm-Gg: AR+sD121aEsq6xtohqDv03NdjVDZn3BnP+tO0xOdFctcNQtqDzk+Pm+yvS+r+9gRBeh
+	DpLvmb0kXiYNiTNrhTGr6NYec17ZP348Shm68h7HrPneuHs/eCTySJplvVWDHRDUgMzzQa9qo7g
+	0I+OR4SQTWzsJ7M5eUnXBHBBw/Y4lIMbcNI7dCGPQ1ZnW4z8JTHBB0/Ysueeyd2OKGBfLxa/CkU
+	bAl7HjG+iGMfE/CowmQALPsZQmhwDg+f7JxzTShG+CqUYoktAe4RLiQsRvchmUQ/xtfP7lF1UIo
+	A9T9Nu5UCnmWhZfZsTV956+4IZMYs9fgNUAmCJ3YimeUnZPmjy17hG4qZm/Iuwt8toZWm9Ty0nx
+	oCinzlY3c8FIm5C34vKC4NJjOFUyU8ZL9ackbIRtPf/JpqRXEbwA/3SwHiPIrvcQLZI7CjM61ZN
+	xbKs8QQYXywTBdVEanIICagVpH9ctAwjeyWG/E5kz/xe1ZqPFOgF6mNh4+B2XjiFXIy2hzRDc=
+X-Received: by 2002:a05:600c:358b:b0:499:60bf:c6f7 with SMTP id 5b1f17b1804b1-499821c2ffdmr44445965e9.13.1786608743142;
+        Thu, 13 Aug 2026 01:12:23 -0700 (PDT)
+Received: from localhost (109-81-29-60.rct.o2.cz. [109.81.29.60])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49981b58700sm42254295e9.9.2026.08.13.01.12.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 01:12:22 -0700 (PDT)
+Date: Thu, 13 Aug 2026 10:12:21 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Ye Liu <liuye@kylinos.cn>,
+	David Rientjes <rientjes@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 8b99tcatnyypj187fizsoif8ydk955i7
-X-Rspamd-Queue-Id: 231A240005
-X-Rspamd-Server: rspam03
+Subject: Re: [RFC PATCH] mm/oom_kill: dump top 5 memory consumers by RSS in
+ OOM report
+Message-ID: <an18ZbYWit7oiwHl@tiehlicka>
+References: <20260811062924.4123014-1-ye.liu@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260811062924.4123014-1-ye.liu@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1786608617-371677
-X-HE-Meta: U2FsdGVkX185FRk0ybq52hFadDPSgGqvMtWOvfLmNW/XW7kwPfD3pr4B+8asbY+XBiT9NP+8MfickBdvfjjwOXp3c9c5X+4Xcy2iW9cAvGxzEDrwxzLQDoV9jVjyfTs3sRMJGo+QyXnkQdmeFi0JsobEPQJ+04GLzPmCFK2SCEVXSc1n07IXmY5CVfB0wI21SD85dVPY2G1ivXgUop3w+NMiayXZDN4cdGYB4xCIlvCO6zTsFaf4iznOiIDBJDYJ78XlGfBq4Z0upg3NXr5A2I+QYwUotzoxd2L8qKg8dI8VjVHuFsek9jxyCNz3HgWBnej4K9oK00xTCDyYfSxyBN1af0s6+SjoQp4gZp7q2xvnslmd6SwcTRCs2NOEa8GtDmaG11AQsM+EZ2ygWewdzerfXMLik1fvGUiKMpYaQMJVaYqQG1Qui497zuNQuSdON2pztVLnBJ8l6dS1NekCDIApjhd6FoDoD8XOiUUnECdxBt68XOJqNEUQwh8p3ts5XFm2x6GpmoF8A8vrL9i30+ZNRMhruwi4MUskqlfjhrXgwOg/a6rWd39tgQa2bp4mg2IxOblyFPgBdeYFl0O1pyeupP0buh7p67qywLXGYBUL/LQlWDrMGM6u+q/JzU++g323TrzGBLjBovEZhmvVpT+LeZPtNrq0KhtwDP/rsP1c49vMxyCIYJAb7O+Sv7M7DnVZj9FBNQeJFHMgN17jAQgozHvz0PK3ZMJGQQ9T5tFmRQJ7dnU0QP5nlYpRAQYjGVoIP8DgmJyCodaBPeoogThEOK/6kXaaErte3WcqsTUd/VWyu9n2Ed29zoZsOX4RwcT7oiBr1nA8qrJAcrx9zUaLvJg6/LcokKXtAN1dPCrE7xNJ/pNsZqp95pqh4LnEYNyPIMw4g57/nnnqFMkDlW1zIqU0PhCLjlx+uc/U628Le+6EJ89WsnUuL6DeVug8uhpncnQVDvJysA5iqza
- v4hRB2Xm
- 0ZJKnv+xsgpRea0ldhsbNv3s6lbZHt2Dw0xZ4dJm65sqYqtaUsvdVy6AjlVPA4giD4LVDSUHY8LH9JJPa/g+wdYVu2biA8iSA5wKWR6oCInW+RfzkJ1OXgJoDcMTD4QhLPrBwUIleOXpqDmKRCtC+lOohSi34PrKfOGx3w8VAteRmzmIsuOZ9H5lLJ2Lin/B4/scIR6QuU991/ORx7MP3Kz3cKIRaoDzB1HRTM665/6qLodW+vJL9WIfCC7sEAkkrvzQnoV84F5Quyt8wJkFUvsQTAg/rRpoGJp+kqEACUvsQh+8Gg25NseZbFudMj72ewxzPQb3Ed5QL/s0=
+X-Stat-Signature: 6zns1qhrq4pi3rbadhtcpiqy9dq3t3fr
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B2045120003
+X-HE-Tag: 1786608744-4549
+X-HE-Meta: U2FsdGVkX1/rW0evPriHZG3gN0Kue4YUJZ+U8LiCxIqKbTI6r9mOCuSpHMXauo4YmGV2SLcxtxCxyIXAi4fGUGFEI1pJnKtmV2/OCjxM55/pF5J6YB6bTMwCcoiyfVrJq0JOkdgjx3vBr8vW2Qf1L+xlvpovTPx7FWlBHVbuiyZ/LuVTOXuBZOKHcCiifO1DC/FczVqyzaizdFLfTEYqhxGLEjggdZn8Bb26ulB+Q9rRWVB8Tcr548lI/n6Rnq71FqgXHvG93c4tsWAnz4wCrZgj/i/lfJ7hSOBz9M/2sgVtB0zY1SXJpedXcI80bcsEldtHbZCb1JrdihyKvUF0+RTm0dKMXZvW5+wlA/d0Qu+satPIQox7vNrZTzvoYODxUhk9vXHEnyVOePaD6Xje7SJOWnH9D6G6aYxTBrESXM8lQofrjFmXZkwoDXQwY7D9qYSJw7vA/VNgaqrqfG0wEXFB/ERLiBmdVcWPThB84y7Wu2RjyQqrr9iB6X5ZDRxQ5NwPGGZqObzfF+kLOnpwsQi+3cYCHl4XXEahcKcsPCo+Bx5mm7YpZYM2wH+4JiYsQPzqVIdy4PDKDiC3fVCSDAWo/mw/bz8ajuzGeDBYnJj07Ngej7Hh4zwiP63qkR0A+xvk9i593pH0xJHVBVDwi6zaQuPl22fK8CPAanTK1Jjwg8aqSAOgeAV1Nf9E3uFi33/CZ01u7+wN9UOZCJk4nuZMxrIBZAyC3jhHQHimMr7hWp8+7qcZTF6xr8k6ppjUnT3VEH4GETCNbKSWgEMI+Z6pzLSqDfJao6J0+VaEE0XB7Fenyk5LyvL07k14BWSbV9V5HwSGNIgNJUhm773wwx1peFR+nVAJSfGyu2tCPP6613ng4nFBE6gfoVPY7FaF9p9DKuUo6RuMSClBVS02KGVtBgVkIA70KBzARp/+OT2AW1V8sR4dMoOgyZKrKVEj/iIr1yeda+dskoqSjec
+ EGFQY6aC
+ /vtxm4j5wMfuq0tod1B0SG8RKXWg3fDSZTkTed/cemXyZ3fohWWwAN4CB72ddrA9ixdO0BliXOGOi1oQxv00AT987bnSZJs6D3fFLKSlEmRSWjpE7MoKV074WEUG+CQPaU75MQgvlPCRGFZczjfaKwK0vN4cQ/Sn8BXr6coNuChiooObbLU9wlHjp34WdeTEKp8YUSI8A9hyxNaiLf+OKGLM0nsi99NtCGIJH8sKCuNFf9FZygzh0f8nzuzdbE7RNRg12ELe3lMCez6mREuzknE1ZJ89ZlzEy3YC3vm2be7644JaqghpqmCY6q5rS5/qO+Jr9JTqj5CaVCeU82KTSlCK5a+FDkCBYXoSKf8mN3l2p/ereeNIxm1vXvmr8yK8MLl5tQR0C5CP2LsyOj9Ul0ywLfA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,46 +121,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 12, 2026 at 8:22=E2=80=AFPM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> sort_folio() has a shortcut for moving folios that are no longer
-> evictable but are still sitting on a generation list.  However, this
-> shortcut is buggy.  It does not follow the PG_lru usage convention,
-> and it has a more serious issue.
->
-> Unevictable folios are not threaded on lists[LRU_UNEVICTABLE], so that
-> folio->lru can be reused to hold folio->mlock_count (see the comment in
-> lruvec_init()).  Hence lruvec_add_folio() skips the list_add() for them,
-> and every other place that turns a folio unevictable initialises
-> mlock_count explicitly: lru_add() sets it to 0, __mlock_folio() and
-> __mlock_new_folio() set it to !!folio_test_mlocked(folio).
-> sort_folio() sets nothing, and the lru_gen_del_folio() right above it
-> may have already poisoned folio->lru via list_del(), so mlock_count
-> ends up aliasing LIST_POISON2, which reads as 0x122, i.e. 290.  The
-> result is user visible.  On munlock, __munlock_folio() decrements that
-> bogus count, finds it still non-zero and bails out before clearing
-> PG_mlocked, so the folio remains unevictable and the Mlocked
-> accounting stays inflated until the folio is freed.
->
-> The shortcut also touches the LRU flags in the wrong order.  It calls
-> lru_gen_del_folio() while PG_lru is still set, so a concurrent
-> folio_test_clear_lru() (e.g. compaction, folio_isolate_lru()) can
-> succeed on a folio that has already been taken off the generation list,
-> which may lead to unexpected behavior.
->
-> So fix it by isolating them as common folios and letting the generic
-> shrink path cull them. This matches the classical LRU behavior, and
-> there should be no visible effect on the generic eviction or isolation
-> behavior.
->
-> There is no performance concern either, such a folio goes through this
-> once, and then it is off the generation lists for good.
->
-> Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+On Tue 11-08-26 14:29:24, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
+> 
+> When the OOM killer triggers, dump_tasks() prints every task's memory
+> state but in no particular order.  On systems with hundreds of
+> processes, identifying the heaviest memory consumers requires manual
+> log post-processing.
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+Yes, but why is that a problem? It should be a pretty easy script, no?
+-- 
+Michal Hocko
+SUSE Labs
 
