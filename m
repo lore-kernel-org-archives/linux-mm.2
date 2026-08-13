@@ -4,133 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D7F9C5CFDB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 10:13:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CD98C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 10:19:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A6AB6B0260; Thu, 13 Aug 2026 06:13:56 -0400 (EDT)
+	id AB9FF6B026E; Thu, 13 Aug 2026 06:19:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57E376B026C; Thu, 13 Aug 2026 06:13:56 -0400 (EDT)
+	id A921C6B0270; Thu, 13 Aug 2026 06:19:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 493DC6B026D; Thu, 13 Aug 2026 06:13:56 -0400 (EDT)
+	id 9CE586B0271; Thu, 13 Aug 2026 06:19:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 167E36B0260
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:13:56 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 93722A0581
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:13:55 +0000 (UTC)
-X-FDA: 85095835230.23.CE33766
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B84CA1C000B
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:13:53 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XYoK9Fyf;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786616033;
-	b=xccXTOcecRaOpySJak2eDSuYxfCgkEYI4Wb4RzqqLeiYFHjQSCKXtXfPohWJ1JxD5c2EG5
-	NaQ6OUZgfxz+wtruz25ORcYyo6hExTKDWdgFX29enxRwk4yLS6mIJEjicfhxnPx+rzGvSl
-	lnZcU8YAcAt3jbKnC8e1Ac+iuYRZSiA=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XYoK9Fyf;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 703A96B026E
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:19:49 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 09C491205BC
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:19:49 +0000 (UTC)
+X-FDA: 85095850098.08.33F1155
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 612441A000D
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:19:47 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=wWHO0cgq;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf19.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786616033;
+	s=arc-20220608; t=1786616387;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ksh9JQogDItTsNV6DrebHCY8apcRoEePwnjhFJwjlWg=;
-	b=0YFtiwFIlIWJasWkOfLh8noOsvqzSGRpkw4TEU3g0vMxlj4Xy3FS2aQ6F3Yo2pJacGN5QG
-	hrW+qhAm9xebbNA001cuGrQMhHthROJpTIWGt67EL7UQ29V0KiXHKtHefsbLpHbZRbKPSd
-	gQH44WW2FzlJZRMGT9WLSaIEwq07kbc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EBCA5400F7;
-	Thu, 13 Aug 2026 10:13:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841F01F000E9;
-	Thu, 13 Aug 2026 10:13:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786616032;
-	bh=Ksh9JQogDItTsNV6DrebHCY8apcRoEePwnjhFJwjlWg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XYoK9Fyfvq2ubibGlKhU1B8GnR05AiHDXs32H5zWVbCZrCKYpsgwO99THe6YYLJBF
-	 zMIszEijfcu2yvtBR+gPORLO3yU/3fAZPJy2MjqtCr8oinGUksTr5fZndLyTDzmUU4
-	 LO9KebeviSyXTG9OSenHm5wo/ZYbkvelo/RNFZekreoLKeeUSfX/hniKUNPbxDa2g2
-	 pWzDuNltMcBDqhx5BFs8XGQG6IDmmPz3MJDnzlCwFVXEM1WPAmuUPj14npdWGeii6C
-	 ww/RDdH3Z6owFqBt2Kk9s94iZuxOy6SypUVF1I0mNketjzMsi1DQq6K5KYAK39M+3e
-	 ePrrx8Kp5V5zA==
-Message-ID: <15d1edae-b9b2-45d9-8246-8d07fbf08bd6@kernel.org>
-Date: Thu, 13 Aug 2026 12:13:48 +0200
+	bh=qdAeuLqcTg0r3BctkPvFE7yUe+SHFHuPonXE6/RBmLw=;
+	b=OlHdDe7+O/DOW5u+UDiu3RZnzrpZAg11rEKqg+Xw1cXrWLtnSZOHvFqAoxoh5u9Q9geiFT
+	y4/ZmEIyKy1KKS4CyFexRaIkyUTA7Llc6dRNhMHyofDTmlTBj5F2PN2ZOAOr2UhYfZK5/e
+	/J/CHMQfXlamIz6Xxn8hq+OocLCqqmA=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=wWHO0cgq;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf19.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786616387;
+	b=O++MGDxvIKEWJ7kjzAGKno08WyI0GqCQzWpstmk5ZDHw7OtS+jMmksQYNPoShv0PxlkOup
+	6vq5AFk7ioFFhyAitVsAJ0c33Ndl4azR1DE+B5YIHhG82rED9p/OJz9LTKhCbQNJllejJW
+	+4Fy4M30uwAcgWBiBoKUnHAr7YeStpc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=qdAeuLqcTg0r3BctkPvFE7yUe+SHFHuPonXE6/RBmLw=; b=wWHO0cgqWKxsqqTEf9XD1q7ptH
+	W0ilpGHM5+3y5MzIcVSHDLVUdi1zLN+UQFT2Q1tvKSwGvP7dSYtkYRPkH8NmAwMSx39duVmwpLU5M
+	3mo6PEPYeY2Jb1MrizS3YAgerjBQR6o/4TL+7k/Ne1OnEYQHyTFGaCDGklBCRkGG3ZNtVKDjWJfLd
+	NU0lPT3m+/kKNQrnqpkd4ic0S77aCV2KRW9nNCV8Ksf1HUxfAl73S2CzvmFZprw8Sx0lVUeR6A+1T
+	IgUifsVYwD0HO1zBMe/H4zuY353uS3RmrG/SVjDWYfKTXUoSHvma015fSllLmIn6/TQ3dDu31RF+F
+	mE5zfNjA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wuSX4-0052dW-3D;
+	Thu, 13 Aug 2026 10:19:31 +0000
+Date: Thu, 13 Aug 2026 03:19:26 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: SJ Park <sj@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-riscv@lists.infradead.org, kernel-team@meta.com, 
+	Andrew Morton <akpm@linux-foundation.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, david@kernel.org
+Subject: Re: [PATCH v2] tools/mm: add hwpoison-panic tool
+Message-ID: <an2Yr4n6ahggXKo1@gmail.com>
+References: <20260803-memory_failure_rewrite_test-v2-1-ed020ce42129@debian.org>
+ <be68a841-a326-4826-8e02-5148736dd356@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3] mm: Standardize printing for pgtable entries
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
-Cc: andriy.shevchenko@linux.intel.com, usama.arif@linux.dev,
- hughd@google.com, willy@infradead.org, ryan.roberts@arm.com,
- Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org
-References: <20260709044334.1741263-1-anshuman.khandual@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260709044334.1741263-1-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <be68a841-a326-4826-8e02-5148736dd356@huawei.com>
+X-Debian-User: leitao
+X-Stat-Signature: srcpxa1xxiqzoosw81mbwrzt6hdcdwjb
+X-Rspamd-Queue-Id: 612441A000D
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B84CA1C000B
-X-Stat-Signature: m71z4foa3hefasgwkw184jonx16kes55
-X-HE-Tag: 1786616033-554158
-X-HE-Meta: U2FsdGVkX18J9AVBGv0VE/f85uyUqJArhmDw4txjf+VMSeMaX7XwBb1PP6GR2pc/YbnSrxVT2+Aqb6rcAzwasunFw/QVX623zvKYQRkyvYnKJNBaZQsdFhYFEVVqkEULVUeF5K+w2Qfjr4GIzA2ZH3cR8Epz86R3ZNSmQKlrakaCW6ixIq794uIh/TFYkCDi9o7RoIsEhVD6I5X1lLLDPto2MkoqBhq36p5L6qtvKZfZmxXJvYJeOonItq1M8dGC8qjNG8ugus38Xf8nI2J5rTDysTmIUD4jxD2UjptItqa9xu1rfPw/X+Iilp63G5mMo/3Mo80jdP+VZTDM48r78guDfpQskpcQMaLMGxqbsjfaJBf7c/jAIFgDYOA1YKve0cpwY6UjWJNC82spZPd+zFl0Wa1syge4fakv/qp05LSUvlV7M7NWUHSmvBwnhHPsgvUayby8KyI5Yc88Cq/oTmn+QTYgbbnBHjqPsC8RJcqh5vubWLS8Fwb27/s4QFZg3p+7kszNvQklXYwxj34gvZ6t7n3kSoJBBiBNnTtJBTWquY6dt/sjYzjDMs7PsjkPsbx805Q1qL6zgWGrERg779cqPeHwROcYT/baTC0Blvh+D+vzWWW6df+6ZuYAiG+RotyTrxNr/eWSwu1d12d2yJ9Ual8KxQETsiv5fLR/8GOnEbLeXF/BZ0m7UXsQIrKTcP1PUu3Xy4ylBbU0uysNugyCxO5iq/jkclfKCW73IvhN7RsY09okVLKsZNXdBb+ShBBr9Fx8KUSUs7qAQiL8m/cy1xVy5sP7jfrXuvpuj6Bd3BnIBYtjS8+H4cg0HYUREqgW+4YORxeNHD9shvtsoSuzJCNTMF2H0UQ9FWPAfy1WQ0HNeUTrdGEyO0PMK02EuFXdan0qW8uwghOdT5kBmSOiGjohzfif9cO+hNBQWhboFdMhBuEzAhDBnqLKvNiHwDsObE55xOlu6zHM/SZ
- VzGMGHWu
- wflKYSWIeqrO2EKPL2Wk+Z3Kqtj8JrjZknyKkb6HXbl/0X44UA7lTqi8+OG5cd6yshc0pRlrxJMoHDAAO4o+EZAvofZ8CuFTIiug+HukAIf5i2N8p7WXxAEJdbVVcQxTOcG/wnESY+XvzFnsHl3FVgxm0De8kpWfcJkWcNRt+44qwI9Xk+5qKieECickKjAutCrR8awnZmE8dbAM40OeitzOoOnsv79RYEyVjOvuSXp95K0uZCNCXITadgdn/FyRBq717QdPBYnIfLXqUn4HYaOnNK5gc0LKmHv6qngCMj+4+iefE3Y3iMcZEFlLfgCYtFT9i8gvxa4TnQGNM0jVQgIfRpMgcyEapXvB/agUbEjVwEiqZAjGYLClJCcwUpHaXF4YjvZ9QOijVFejExW4C7WOs0v2pOEwNpPa8On9wI4dDdPcAyIJ6c7j6h+C7NTqZzGqRwErIWeE/po4=
+X-HE-Tag: 1786616387-455816
+X-HE-Meta: U2FsdGVkX1/qY8BbqyA3Pyobmx2ql9MWCiN33utQjHnw3un5WyKqthfTfUDNZL9fTONf3LGkLsTlPmmCSHGdJxY/qj4M97/Y3R6euWyWo36jVVryLlH+k7cO7kYV7Rk6Me4W0gBUUrOBEI/MEb+/agrOVwzMh3ZKj+1KcJ/PogDbSR158AuEYj9tuewDo8P6pIywOVB5Z3NRA8bdSv7fxGs4lFvhDx8eYibrTTJsTomuYvYWWOuW3gm5po9RRYuOECbR7ik4j/ao/GxhMXSpvj8l2orkfAc3/tVhfIPOJXntgk0krQpmthj99HOtTqAPtHcodcVB2zuIrzW/kZAkPxL55Rxwnzy7u54jbmAPPsw6HEH+idEhNbXrwFGnXsElhaQxqGn4A0zOX1/B4CkKwzzQ9rTH9LCsVqT8gXECn0kI0Vb/5x5pkd/3pM9c7w8TZYl0SdJ3mYhb+DdiTS+ZcKSdV9lQkmV7c38GbFMAhXMrswA7bVdNQr+buSdHBzWxd6uq577SNPmivvvrtbNoMrA2S/VSMqFKABC1zihtjxVqC14rnCIX4vB6u7yhKVEaPm2EEyHBUD6rXUe62yoLlt8IVwVRlETUFyAQId4H4ugmR4wZZORuprDnADUlEv39MkGr6/IKnTw7RUU5yB2j5eXXszcc3QSdtzKtdgJ9y+UP9WnkBkQ1vdUHKTFjBI+b0z3YFpio1RmDwNE3TYOpbQTzEvbJUkm+fFUsAwkGcbNgaGw9QWICxbcQi1ct9B/U6ovl4LdPFLKXkO+A92bjhTp1wU/F1PWZGw8piXU5TVTzlNsVYTvJi7JZUwcCTUw9gDJZv8H5c4b1boqU/c4Ca0m4ccqSnhWsgsk/nOJmSh4DrRtUGCseARawDT7bILLIvzXWb9k1yQzgDKp4eraNQTNdC5Lo6x57xjlnc1DcoeyZerNdBj4O3FChWQrc548BacTHmsGlPpIzA+ExTAN
+ BfVQotPI
+ MPIO9kfN2vyx64oMeO/dHyPZqpWLVPCeFXSgSQ5twYakSLSTE2WfDywTdzDyKnLHLBJNaIduoesPEQR8Uii/qt0Wee1Iw2TdtAzurIOE/LZgMPc9SoOPKkf9tWdxkEQsdLMRSx/95FxWYfr7qN/ywHZgKnA2o2kDDMuHhYNC+5qga1EjVRedAk65Djs1ztPRMtdI+w8DVcpOxkNuHlfU8EMHTkfugwU0dITcfl7zh52t1M9D0WfWORRvrJH/uZzqlx1DzH+5eBsmIs7+S0T81ujE10k78QKbLQMGdEkkwE4fY+mXxYXzxk9l60U7R1RZutwGy8bo1XHUppFU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,42 +96,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/9/26 06:43, Anshuman Khandual wrote:
-> From: "David Hildenbrand (Arm)" <david@kernel.org>
+Hello Miaohe,
+
+First of all, thanks for looking at this one.
+
+On Thu, Aug 13, 2026 at 03:32:34PM +0800, Miaohe Lin wrote:
+> On 2026/8/3 19:31, Breno Leitao wrote:
+> > +static int pick_kpageflags_phys_addr(uint64_t want, uint64_t *phys_addr)
+> > +{
+> > +	uint64_t pfn = (16UL << 20) / page_size;
 > 
-> Bad page map reporting currently stores page table entry values in an
-> unsigned long long and prints them with fixed 64-bit-oriented format
-> strings. This is inconsistent across call sites and does not work well for
-> architectures where page table entry values are not naturally represented
-> as 64-bit values, such as 32-bit or 128-bit entries.
+> Could we use SZ_16M macro here?
+
+Sure, for that I will include ../../include/linux/sizes.h in the next
+version.
+
+> > +/* hard_offline_page() injects with MF_SW_SIMULATED, so unpoison is allowed. */
+> > +static void unpoison_pfn(uint64_t pfn)
+> > +{
+> > +	char path[PATH_MAX], buf[32];
+> > +	const char *debugfs;
+> > +	int fd, len;
+> > +
+> > +	debugfs = debugfs__mount();
 > 
-> Introduce a common helper to convert raw page table entry values into a
-> fixed-width hexadecimal string based on the actual entry size. Use it for
-> bad page map reporting and for dumping the page table walk in
-> __print_bad_page_map_pgtable().
+> I might be miss something but I can't find the implementation of debugfs__mount.
+
+It is an ugly macro declared in tools/lib/api/fs/fs.h:
+
+        #define FS(name)                                \
+                const char *name##__mountpoint(void);   \
+                const char *name##__mount(void);        \
+                bool name##__configured(void);
+
+And then:
+        FS(debugfs)
+
+> > +	if (access(INJECT_PATH, W_OK))
+> > +		fatal("%s not present (no MEMORY_HOTPLUG?)\n", INJECT_PATH);
 > 
-> Pass page table entry values to the reporting path as raw bytes together
-> with their size, instead of forcing them through an unsigned long long.
-> It keeps the printed output consistent and avoids truncation or misleading
-> formatting for non-64-bit page table entries.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> Co-developed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
+> MEMORY_HOTPLUG?
 
-From the discussion I conclude that this patch is good to go now. I wrote it,
-Anshuman cleaned it up.
+lol. it should be MEMORY_FAILURE
 
-LGTM
-
-(adding my own ACK/RB is weird ;) )
-
--- 
-Cheers,
-
-David
+I will get these points fixed and respin.
+--breno
 
