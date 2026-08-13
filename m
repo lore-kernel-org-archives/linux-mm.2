@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA66FC5AC67
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 08:23:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71AA4C5AC67
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 08:24:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4F3F6B01F1; Thu, 13 Aug 2026 04:23:02 -0400 (EDT)
+	id 7F1996B03F6; Thu, 13 Aug 2026 04:24:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF8A76B01F9; Thu, 13 Aug 2026 04:23:02 -0400 (EDT)
+	id 7CAA66B03F7; Thu, 13 Aug 2026 04:24:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE6246B01FB; Thu, 13 Aug 2026 04:23:02 -0400 (EDT)
+	id 6B76E6B03F8; Thu, 13 Aug 2026 04:24:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 95C4D6B01F1
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:23:02 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 36483405F1
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:23:02 +0000 (UTC)
-X-FDA: 85095555804.20.B28AA4C
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 23302140005
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:22:59 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=GLtHXKbw;
-	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 450606B03F6
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:24:20 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D70AC405F9
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:24:19 +0000 (UTC)
+X-FDA: 85095559038.01.2F5F9C0
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C594D120004
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:24:17 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=A4JnWsF9;
+	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=mhocko@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786609380;
-	b=4WUyVGirbYX7V0psDiAg03EgZrRQzYJ/fSa40YbZpPe/ghN6OHfJDoaiouwrSV81aGvrVR
-	wP5g/hqRIY28ysD0/ESzp4epiBL+QA9z6AnjsSq7+ZacnWYft5GHjEiUzpKtfxEAHknkWl
-	LbRFw5b4B294MSbKTG8PAZDqt56m5Gg=
+	t=1786609458;
+	b=CdKpavYrafbIYvMkNb6uvZ4qK6PxrRF0ML/2P+iSxhVe4jPjM1AqkmKsrnaC/ZSzISoDMW
+	7zxuFh6pdgkiRe/SjZQKBjKq7hFPTfvUKYRfZDlXxDuby8Yb3bOHkTDWveXfstWC9dGzzv
+	0M9kri1P0ndB+x5SE2ApcWOOjExd2gU=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=GLtHXKbw;
-	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=A4JnWsF9;
+	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=mhocko@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786609380;
+	s=arc-20220608; t=1786609458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ADGYe9gSWNwrnz5xQxNpg6LlRco8vJEKHwyfHThFbis=;
-	b=X6qL0ZwmshTLk+0lJOrZ32q4ulo53UccfpZa7SES37GXoR0ZgHtSdfjP+9KG+pEYWvgaJ+
-	5bUptyDZvL/LrIXEfgDi//0cXqLOCC7sYFctXdcPZE0NRd1snETXJLc7dwTe3PbE2GcOeA
-	tRNtotdKsHJuv0d9tDRGw7Qakzfa5Ko=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-49558ce01afso14397835e9.1
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:22:59 -0700 (PDT)
+	bh=eKDZCSHjP7mlpTM3aYwOKTi5yJouVyjW3+0PVCUUuYE=;
+	b=VonVyx17CCV6oJxtby27xGpbtn4CxTfvgiv9in8MPe2wXeieQwinfV7+kF4qv3JFyCtPel
+	kHtRrPfkLetvTGUWqgLZZ00lpXuFKo/HjuPgy+1QyA87XVe1LOZAh2FM0uOaGR4j2zPtJl
+	2iVM0x/UEMFwKSHkagBShqJav1z7OlY=
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-47db714766aso383011f8f.0
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:24:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1786609379; x=1787214179; darn=kvack.org;
+        d=suse.com; s=google; t=1786609456; x=1787214256; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ADGYe9gSWNwrnz5xQxNpg6LlRco8vJEKHwyfHThFbis=;
-        b=GLtHXKbwC/BdlXVSz5QTyLecflSoFx4zHTyzfKm1uKdef2bSN+N6UfCD0QTt1AGaKY
-         sTWqY3cPbfpdh2oPNXWltjh2S4lgK1VWWTVoADLlMh67im55nd5iOfyhsutL1M8Ek3mB
-         lDluF18Ehw/FBuWrfpM5VPSnS7+KUPobcRIqcaHpy9ZqPG3wwdI5gfPg9oxhsOOlhXZp
-         zEyxgBYgeSIBmS/nz/nIqQweR7EMJA9Bxm1FurNaIN5YXAPXXD5obIV62JLNf79GqQE6
-         4zBWOQB3Cu3+HL9R1JLNR97jYn68Rpd9QWALVgJT/rCkpanLSwc0TZc4rMzYc8wgdz0U
-         rYjg==
+        bh=eKDZCSHjP7mlpTM3aYwOKTi5yJouVyjW3+0PVCUUuYE=;
+        b=A4JnWsF9DEY40hso3pKHCFdnBQSt22YfYJrAm7uK6az7QFMpId8giwLWNC2CXMVyO/
+         u28rDeAwWRSB0MagAJG2Pclk0rbZ0DaKNK1MNgi1h8sM/BxlOU/zdE929j6xxO2BwGQo
+         40u6/rR9MKYgcP+p8ilY6KHRpAhV9bx/nmrkPhT/PkTqJxBrOfNwH5V99tBNQZleAIx0
+         SubVy5XreKwis7mwVKoZ7gKvEVh9XW+HUVHYVKeEwYQzDJMe9FdjSvHj3xpr7BvOGeoP
+         MgRH6/lXeq9I92kh8YnNwEjfVhoUtObmZIeDHu+EyykGd1AR/BCbyH2XyGKRdjQR2Sii
+         xQKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786609379; x=1787214179;
+        d=1e100.net; s=20251104; t=1786609456; x=1787214256;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ADGYe9gSWNwrnz5xQxNpg6LlRco8vJEKHwyfHThFbis=;
-        b=c2hB2clReDh0gfHIDuaGVY7LqKZlxc+MQAIqOBWMBwtD4PHjHob3N7n8DJ4gNlVmCO
-         3IAY1Btjf1wrHdZHV1JcxrbPpyqDGRXeQpcAn1ju3GgdV+mGyS0oHVNwnsHIc/rpScTp
-         aNlTg3AAL+p7h6gNShqKNvqiOUveRfNu0wAFjzHQhmOAYrofUa3dxIdKfCxzrjR9AH9d
-         tGLE6n5oKg6C3MZJpO80EE8F/Piypcx8Frk1k8w/C23fHUYbZMHmfTj3vwTRP+OW6oot
-         mPTw1F4r0rRG2Vi+rXY48YEJJ1x753XXA2gdEeEAMBSo8revyUOL/QC9+4ls/3rOk3Yk
-         uI1Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rq7NBchi3t2HgDC8hr6u172JTaxz2JdM6nr7lm3DHNGvth2q57C1jxTHLQCcXIh1/Agj7etUB5jxw==@kvack.org
-X-Gm-Message-State: AOJu0Yx9q8bJaTChSSh9DboZjbUgZsNIFcMetGr1GLCwvAy4q9vUVVAg
-	KzFUrAf7PBrH9hpNfJ1JvZYx3EnLoUQx/n4v24uAdcsSt2/ttPzJs52Aw6IDewFjGYE=
-X-Gm-Gg: AR+sD11TkUeyQH1P3wWDyHWslXeialyaBMBvg5ViYGzyseuUnTiRBWS7xKHxoWVuxsi
-	CJgddTPDA/pUuKokPx8NkiNS5KTvw11zoz63S4O2ig7O5mb1149fQmf1Uz+8RYTRedIL1Iwe4EW
-	VwA/3dDYvhCF3US32ICALrI1SIysriGU6l8MlYiC8reqcqg0ebo66x+IcBOJ406BtPYCN7c0YsZ
-	QW5D77dLVkGxJ8yVxI5T7lVe16yfeZPrmMG0+zabsIIoZLh022rWkwf+DShdJIz/9eR29VvV6os
-	/DvxyTQb8P2tedojb5iP/4Dwdtk92G8YvD8ocIU4+wq+thpG6Rk8Nu2QzXPIEYVcdrRLNDl6t5u
-	kuIJ4QMSxyAmrrmHvCVAD1ZRn17QIETue8kQHa7uPY2K8e7dlcd+4g0m+vKRrCCRR8Cp0KPPeN5
-	OFc8fx5Dqu8yldFBEWKHdgyCb12fcxAfAxJawQZp96ZnmS0JQ6EP8/N0OsVD8Mr2tzZErOgG4=
-X-Received: by 2002:a05:600c:4fc5:b0:499:7f38:d77 with SMTP id 5b1f17b1804b1-49982183d4amr40750515e9.6.1786609378615;
-        Thu, 13 Aug 2026 01:22:58 -0700 (PDT)
+        bh=eKDZCSHjP7mlpTM3aYwOKTi5yJouVyjW3+0PVCUUuYE=;
+        b=CLtuEQODND1qutzuHVVRTF7Y6jIuZtbPtt8y6MOEGuDfND8mkiQbuHLuXRMVllMEIV
+         FcZhSLgJtP1gVc4XDYFkTBOj1RbU4xVAm2B9BClprH0EwuboHHmqJ7Chw0cXvzlwAzTR
+         KfHwQuCuTft6P7YtqRatcJHJW2qwG878ZKFHf5HG6N8EdmrN45GZTsP6pmp1ibgdSUAP
+         hRnGkuRqrFhiIH9C5BS5cnHNcfle5wiS6vvzmFaTr8aBuUQzhUmZpiCA+++R1b9Vh7LP
+         ubIqRGk0heivAEYl4yeG/9EkHUKLfwZRmyrPaxzgN5Enp4RCkJOLnWMq/avdfDMmmT9+
+         JY9A==
+X-Forwarded-Encrypted: i=1; AHgh+RrCibcRpM8SRnLrv1PScx6eEm4xjp8ed0Ak4EuaLiiNz2iG34l4ti/1ea/k8HP48ppFP+XcNnk5BA==@kvack.org
+X-Gm-Message-State: AOJu0YwiSP3Q8ygvfMNxqVYFqMydAeIqtNwO5RXEAoJJtFOKWNkBOr/v
+	EYNd1TwkT6dK83Dhb7TtvtruQHkkZTl26q3Zwf+Cq3QLTAfx00phpCJuwEyyZjnFj4o=
+X-Gm-Gg: AR+sD13veqtN1rVS9SaF22lVRiFBoteb6KQ9knE67cs5LobvObPCJ8nKGfzmmngQVVf
+	K3enu8RJDZxDYHUr5T1XpNABVBgBMBGq+XBvV6hkofJqe5uN7oJHAzFqPorZUxUJSomfR7CYinj
+	4oSXxbD0QThzW31DQtm4RBpuiV5sM1J0Ij/OQmlqyStXejKtiUl+Hq/Du19tD+VuVM/TqjbxSe0
+	NG4urEkIRBCK4Y0fGxMRRSzfH5f4HtxJmfq3RQgW8WkuzGmkDrChi7Rg3sGG2fPqAuSNteRn2uz
+	viDK9ChcDHgCKeurKPuGFIYkpGb2FLoiPKyoNTcmDNUMGlPX1YAW+j8ekhj/UTxlRQs/1rBq+VC
+	7+9gbyK3yP3QmOoumhZ9i3JXxB7OOpcHizTyXip/zm1QmJFsJTg4opOfAeQIIBpF6FwiZ92hWVZ
+	qaBLaohmhPkX/c45h0bN3GcUOoFXHyJNz+KJfCnjjjAWSS6ryibKagQfJeL5183FWuBC4Ua34=
+X-Received: by 2002:a05:6000:4022:b0:47f:8cd3:4bed with SMTP id ffacd0b85a97d-4815a5bbdbemr4876389f8f.5.1786609456219;
+        Thu, 13 Aug 2026 01:24:16 -0700 (PDT)
 Received: from localhost (109-81-29-60.rct.o2.cz. [109.81.29.60])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49981de6a05sm70856685e9.1.2026.08.13.01.22.58
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815a5c2842sm4349620f8f.35.2026.08.13.01.24.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 01:22:58 -0700 (PDT)
-Date: Thu, 13 Aug 2026 10:22:57 +0200
+        Thu, 13 Aug 2026 01:24:15 -0700 (PDT)
+Date: Thu, 13 Aug 2026 10:24:14 +0200
 From: Michal Hocko <mhocko@suse.com>
 To: Shakeel Butt <shakeel.butt@linux.dev>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -103,24 +103,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Qi Zheng <qi.zheng@linux.dev>, Barry Song <baohua@kernel.org>,
 	Axel Rasmussen <axelrasmussen@google.com>,
 	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com
-Subject: Re: [PATCH 1/9] memcg: make the v1 soft limit knob inert
-Message-ID: <an1-4Rgwlsfd9Hjt@tiehlicka>
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/9] memcg: remove v1 soft limit reclaim
+Message-ID: <an1_LgFQRT7oeskJ@tiehlicka>
 References: <20260811203203.3456029-1-shakeel.butt@linux.dev>
- <20260811203203.3456029-2-shakeel.butt@linux.dev>
+ <20260811203203.3456029-3-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260811203203.3456029-2-shakeel.butt@linux.dev>
+In-Reply-To: <20260811203203.3456029-3-shakeel.butt@linux.dev>
+X-Rspamd-Queue-Id: C594D120004
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 23302140005
-X-Stat-Signature: b8j5ph1tpu1bef87bxy3xwoecskjbfqs
-X-HE-Tag: 1786609379-974798
-X-HE-Meta: U2FsdGVkX1+yrbufXWoekBb7Av4AEhWMm2giluOrtuDiBZerZrwCp3jCkL73KaTh8RBD1ukFc2CPAplhBrbXqoUTuKyuCYp8PlFHTFavcdud2nmusgb6nAoUEtb+cwSanSifCwCi8MF7X+877B3cIsSrQJgnwEnQS4DixxTi1YqBaNm1nyCeyDvLaRMf8trUW07nrC6I9QpOkOu0sjQBjEmHPI5ZvgmMS6ME2jyEnFye9vl8v6sETAoIGCyJveSmgoRPymAgIAXvbx5il9c5S0FKLkUBA1QKEPRlP68v8vZpy4zlcAlBO2psXdBQx5EC/hzz9wPL30TEGUbwEwsbpXvT/9qWlWijb7E7CmMvN/o6ZVrdiTUTR9kNauH4clH5owDmTgI9OW4uhsNfCQoM/AsI7VQwoehtXWa1NhL1k447vcW7MHZ6Hfds+xdeTfiWfHe0mRoi6PEaTdaIbVDn+k7PsnspaxDoR7/hyGVDvJuDY9/FmSYHic7LAqu4yxkOQWIE2Q2kAlVj7ZMC9rc9hk8c08oieD6mLPYiKh6AymBpwr2KsbSz5GnFo8Gnfe/vRR3ANRZ6R/ZM3g3AZqA62nwJcFs1FvcESDaUQxfbcxZMqMfef7eYEbQAXaEyPDqJOqlpauI0HmdX3sAvQuOgdxNe8COEvsYXLqOuOlNbKR97qdxUY7EWS5Cz6GTpTK2JrQydp1KOPzbBux/ygExrZjY1CKTC+7wl3gkfWQSRuL1lUK0znqhMeM8nWSNLsxQxChdT6qnKITVZYrVsGzdlrq10JaykLn3pU0j/FE8+QRRdpFjfDa02uEr8cs2XjCmSHb5wyaN/RknAda0oEJL4ULdik5shyAMcDNJyyf+qxasrN3lH+b3gPj4jpVBngKLwRaAtqzbxOt/wJ2D26htGKhrle4vp4B7ElNw+EshVXPUHxT2keM3P1IflHNB85yF1V3GT3VjYcyPz0gFHM4m
- YslHH3HS
- IdZQ9IKThD4TKeobH5VGyhbP+EFnMuui1dybVzlUkqWcHfEgMoOkGA1EU3tjZklNN1nav1HUi2KnilxXUtv2yHQOCjXCHk9hzeqwC2/dYP/J7ge9C4bX6FhYC9T+d+UnfLf3YfcTMCLZ09990Aa3/Dba5cozD4XTv+5N8dzENfRk5h4zYVRYx/HbdRumbrtw6YVDifQW16pfwq1rIO7JyU9FWI9aet3viPtUWooklvo5mmav2aI86ed+O9nh5oQra0fEyB/e9/dz+RhdQRSaJDRqn520lMMdkaginqyHTkd/PMEmi1/4vRfaGuG2PAXUv6L/5VxCNvNrwonVeOsl+Gp+Ywf++Wm+QrXVvJs1C1RxO9/AXOAXYDb0WgBVUZIt2S6cyyYRN7zl+DDFULWep1whvFobvvM8H0PJfCqbzHDt1DAHINbE6bM8tk4kslNrvwKVXi//sG3e/wkmOQV99d7lpJHoiOz45mnYlE9vN5oERXssfpQLxzfrDtVTzraMGn/C/jUDNDLEqz2pPaIAReLLXqg3K5D6YQWj3hgryAL5oL3e0FHqnZC3loZ8bbBcgKbS8CPL06FhH9LJQtaP85DXEaPFLEj5rOq3h7884yj7aWXcbeYY7Ak0QhoFhc0O67H2t6n9qcvQiE+Sx5jsLpjQMmLbE24vGoWO/5sfbwu0s9neO6q09NqABSknboTapLeHRtwKZkdItnY1cpa4RYMsljQ==
+X-Stat-Signature: 7sjf5pixj8ikhmhxph5hgsqr8n7rpsp1
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786609457-713376
+X-HE-Meta: U2FsdGVkX18dnV1zHB4f8p9p3e0UdZSr5OYVoLvbVsD7Sa6nj/xzxBaSNDJOEVKsf/LQLn2SDZxXjhr0oE/Q6M8iC3Fcvh+B/xFJr01iXHAQzoXFmSeZ36OhWsuGyXxBQ+BXFU+cCt7Q6eYHRWrTn8Eu8ECD7COciVicmCRqcSSoL/bRTiqyoyuc4W88X8A/aOGD3fonlDw5REuc7s/1qYIPhCIbsxP8LbUl1zz3rVI1/visjbskog1xupPG9i+z66uoEm2jYxLQcQc6pKYFEZkb3Hw3i5TzhCmvzZXXeHbdRm3igVS0PjIXGrAjOX3/eN2ZqQKQ9n9liAFm4fnSUzcqyybjiqi0m6ZIq6eghIFo5SZ1dqRqyhbNaVYZ48TM3We5oLVastRmT1pzkKT4TtTf7sBVBldh0itV/qYh+6xIEUlvbxmZFkP/Jeby3iJUo5CZIKmDobGDMSgaC8MjrNJdHlfsxDB2lBvOy8C1lhBn62YggzcFiAXOYiJ3tFIqJFyvcGblsNUG16DZB+eMA4lJLzIEHsCo4Srn2kE6mex5fXEx3IXmHNx/qtBBvYotPFSINBL1+cypSINC8/9djO3hUJfHh/DJfMgfTOemi743vQRPq0zcIovxAHMXbaxjf7EeFhq5NvGPDFZbfF9BvaRWvuz7dDcMavAt92yHj/FcLzw+bEZ3xnnx2Oq8YZm+Qi15ZUZ2yXPA4WAjueNkye7vT3MY9L4TH8SV+9xP05KQXoBtyE+drXUuiyghspPEzMwrHpfg76mX5neeRo65sdfMey1sE3L1yyc1Ulpx4ouAUygoOhJJeZroSQQJ/3QyU3BE1K+RNJK2xNK25A/XkFmsupdmpoWCMGKUMr0z0ojs1yhXt1vf7C1KyWgylZSUhEdJwm+Wi1irFba7TCc2XKQmulGUVpO+njOfGLSfF/2qo7fhuVIgM81DYfUMcKSogkm0qENOR+46FADQ9tS
+ yITdarbF
+ sPGvzCHDnbJ5modK09eJncLQBoXfMfYc7M7Awa0lxWIHohrvxqfXkbdNUzf7zqKhVxXOU3sMG6AiW/Ba/EgYvYe561tZWISJOdyrjMl7NCfM7uM60ejMc8iCWw6+xOIjg+K+TDEQ0lHyp+K7Hir3pY5nqTx8hJ9w0RdFOXw8oAlWZ/8TcVYT01MFrzn6LpdYsnqrX/MvSpRqkTlCgrb8SSaNfAL3IS88LqbinK6j+MBhaBmXmMNjMwzxwXXu2B3821Z8TiOnBPZDK8qKI48qkh/G6Lg6JM1vadx6Bnh710xkUbp/+qWI+qdryU1qtSWvC2PuHth9+VnbKoGCdYloisgAWBX9I962BUNBHBQa98goyHzop/yetS3t8IlM3eNrIR9WyLJ1yyn6fpD3P8/ZMxGfRobykn0z9pvTB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,201 +127,330 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 11-08-26 13:31:55, Shakeel Butt wrote:
-> The v1 soft limit has been deprecated since v6.12 and nobody has
-> reported depending on it. Start the removal by decoupling the interface
-> from the implementation: keep memory.soft_limit_in_bytes, but ignore
-> writes to it and always report the maximum value on read similar to
-> what memory.kmem.limit_in_bytes already does.
+On Tue 11-08-26 13:31:56, Shakeel Butt wrote:
+> Nothing can put a cgroup on the soft limit rbtree anymore, so the tree
+> is always empty and both callers of memcg1_soft_limit_reclaim() are
+> guaranteed no-ops. Remove the reclaim pass from direct reclaim and from
+> kswapd, along with its implementation.
 > 
-> Writes are still parsed, so malformed input keeps returning -EINVAL.
-> The knob now also behaves the same everywhere: it used to return
-> -EOPNOTSUPP on PREEMPT_RT, where soft limit reclaim has always been
-> disabled.
-
-Is there any specific reason to not return EOPNOTSUPP for everybody now?
-
-> This also fixes the syzbot report linked below. Soft limit reclaim is
-> the only caller that runs shrink_lruvec() from kswapd against a
-> specific memcg, so it is the only way to reach lru_gen_shrink_lruvec()
-> and in turn set_mm_walk(), which warns when called from kswapd.
+> In shrink_zones() this leaves the global reclaim branch with a
+> last_pgdat check that is now redundant with the identical check right
+> below it, so drop it and move the explaining comment down to the check
+> that remains. That check could only ever fire once last_pgdat was set,
+> which implies first_pgdat had already been assigned, so skipping it does
+> not change which node consider_reclaim_throttle() gets.
 > 
-> Reported-by: syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/6a7a6929.b50370da.49fe0.005e.GAE@google.com/
 > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-Anyway
 Acked-by: Michal Hocko <mhocko@suse.com>
+Thanks!
 
 > ---
->  .../admin-guide/cgroup-v1/memory.rst          | 49 +++----------------
->  mm/memcontrol-v1.c                            | 43 +++++++++-------
->  2 files changed, 32 insertions(+), 60 deletions(-)
+>  include/linux/memcontrol.h |  12 ---
+>  mm/memcontrol-v1.c         | 175 -------------------------------------
+>  mm/vmscan.c                |  39 ++-------
+>  3 files changed, 6 insertions(+), 220 deletions(-)
 > 
-> diff --git a/Documentation/admin-guide/cgroup-v1/memory.rst b/Documentation/admin-guide/cgroup-v1/memory.rst
-> index 7db63c002922..7d2a44af52c9 100644
-> --- a/Documentation/admin-guide/cgroup-v1/memory.rst
-> +++ b/Documentation/admin-guide/cgroup-v1/memory.rst
-> @@ -47,7 +47,6 @@ Features:
->   - pages are linked to per-memcg LRU exclusively, and there is no global LRU.
->   - optionally, memory+swap usage can be accounted and limited.
->   - hierarchical accounting
-> - - soft limit
->   - moving (recharging) account at moving a task is selectable.
->   - usage threshold notifier
->   - memory pressure notifier
-> @@ -76,10 +75,9 @@ Brief summary of control files.
->   memory.memsw.failcnt		     show the number of memory+Swap hits limits
->   memory.max_usage_in_bytes	     show max memory usage recorded
->   memory.memsw.max_usage_in_bytes     show max memory+Swap usage recorded
-> - memory.soft_limit_in_bytes	     set/show soft limit of memory usage
-> -				     This knob is not available on CONFIG_PREEMPT_RT systems.
-> -                                     This knob is deprecated and shouldn't be
-> -                                     used.
-> + memory.soft_limit_in_bytes	     This knob is deprecated and has no effect.
-> +                                     Writes are ignored and reads always
-> +                                     return the maximum value.
->   memory.stat			     show various statistics
->   memory.use_hierarchy		     set/show hierarchical account enabled
->                                       This knob is deprecated and shouldn't be
-> @@ -340,9 +338,6 @@ memory.kmem.usage_in_bytes, or in a separate counter when it makes sense.
->  The main "kmem" counter is fed into the main counter, so kmem charges will
->  also be visible from the user counter.
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index e78bc98ab229..7b02f1b3bb88 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -1927,10 +1927,6 @@ static inline bool mem_cgroup_zswap_writeback_enabled(struct mem_cgroup *memcg)
+>  /* Cgroup v1-related declarations */
 >  
-> -Currently no soft limit is implemented for kernel memory. It is future work
-> -to trigger slab reclaim when those limits are reached.
+>  #ifdef CONFIG_MEMCG_V1
+> -unsigned long memcg1_soft_limit_reclaim(pg_data_t *pgdat, int order,
+> -					gfp_t gfp_mask,
+> -					unsigned long *total_scanned);
 > -
->  2.7.1 Current Kernel Memory resources accounted
->  -----------------------------------------------
+>  bool mem_cgroup_oom_synchronize(bool wait);
 >  
-> @@ -710,42 +705,10 @@ For compatibility reasons writing 1 to memory.use_hierarchy will always pass::
+>  static inline bool task_in_memcg_oom(struct task_struct *p)
+> @@ -1951,14 +1947,6 @@ static inline void mem_cgroup_exit_user_fault(void)
+>  }
 >  
->  THIS IS DEPRECATED!
->  
-> -Soft limits allow for greater sharing of memory. The idea behind soft limits
-> -is to allow control groups to use as much of the memory as needed, provided
+>  #else /* CONFIG_MEMCG_V1 */
+> -static inline
+> -unsigned long memcg1_soft_limit_reclaim(pg_data_t *pgdat, int order,
+> -					gfp_t gfp_mask,
+> -					unsigned long *total_scanned)
+> -{
+> -	return 0;
+> -}
 > -
-> -a. There is no memory contention
-> -b. They do not exceed their hard limit
-> -
-> -When the system detects memory contention or low memory, control groups
-> -are pushed back to their soft limits. If the soft limit of each control
-> -group is very high, they are pushed back as much as possible to make
-> -sure that one control group does not starve the others of memory.
-> -
-> -Please note that soft limits is a best-effort feature; it comes with
-> -no guarantees, but it does its best to make sure that when memory is
-> -heavily contended for, memory is allocated based on the soft limit
-> -hints/setup. Currently soft limit based reclaim is set up such that
-> -it gets invoked from balance_pgdat (kswapd).
-> -
-> -7.1 Interface
-> --------------
-> -
-> -Soft limits can be setup by using the following commands (in this example we
-> -assume a soft limit of 256 MiB)::
-> -
-> -	# echo 256M > memory.soft_limit_in_bytes
-> -
-> -If we want to change this to 1G, we can at any time use::
-> +Writing to memory.soft_limit_in_bytes has no effect and reading it will
-> +always return the maximum value.
->  
-> -	# echo 1G > memory.soft_limit_in_bytes
-> -
-> -.. note::
-> -       Soft limits take effect over a long period of time, since they involve
-> -       reclaiming memory for balancing between memory cgroups
-> -
-> -.. note::
-> -       It is recommended to set the soft limit always below the hard limit,
-> -       otherwise the hard limit will take precedence.
-> +Use memory.low and memory.min in cgroup v2 instead.
->  
->  .. _cgroup-v1-memory-move-charges:
->  
+>  static inline bool task_in_memcg_oom(struct task_struct *p)
+>  {
+>  	return false;
 > diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-> index 835fc8e51184..05ef55cae4dc 100644
+> index 05ef55cae4dc..b38b8d0f7f51 100644
 > --- a/mm/memcontrol-v1.c
 > +++ b/mm/memcontrol-v1.c
-> @@ -96,7 +96,6 @@ enum {
->  	RES_LIMIT,
->  	RES_MAX_USAGE,
->  	RES_FAILCNT,
-> -	RES_SOFT_LIMIT,
->  };
+> @@ -34,13 +34,6 @@ struct mem_cgroup_tree {
 >  
->  #ifdef CONFIG_LOCKDEP
-> @@ -1888,6 +1887,30 @@ static int mem_cgroup_hierarchy_write(struct cgroup_subsys_state *css,
->  	return -EINVAL;
+>  static struct mem_cgroup_tree soft_limit_tree __read_mostly;
+>  
+> -/*
+> - * Maximum loops in mem_cgroup_soft_reclaim(), used for soft
+> - * limit reclaim to prevent infinite loops, if they ever occur.
+> - */
+> -#define	MEM_CGROUP_MAX_RECLAIM_LOOPS		100
+> -#define	MEM_CGROUP_MAX_SOFT_LIMIT_RECLAIM_LOOPS	2
+> -
+>  /* for OOM */
+>  struct mem_cgroup_eventfd_list {
+>  	struct list_head list;
+> @@ -233,174 +226,6 @@ void memcg1_remove_from_trees(struct mem_cgroup *memcg)
+>  	}
 >  }
 >  
-> +static u64 mem_cgroup_soft_limit_read(struct cgroup_subsys_state *css,
-> +				      struct cftype *cft)
-> +{
-> +	return (u64)PAGE_COUNTER_MAX * PAGE_SIZE;
-> +}
-> +
-> +static ssize_t mem_cgroup_soft_limit_write(struct kernfs_open_file *of,
-> +					   char *buf, size_t nbytes, loff_t off)
-> +{
-> +	unsigned long nr_pages;
-> +	int ret;
-> +
-> +	ret = page_counter_memparse(strstrip(buf), "-1", &nr_pages);
-> +	if (ret)
-> +		return ret;
-> +
-> +	pr_warn_once("soft_limit_in_bytes is deprecated and will be removed. "
-> +		     "Writing any value to this file has no effect. "
-> +		     "Please report your usecase to linux-mm@kvack.org if you "
-> +		     "depend on this functionality.\n");
-> +
-> +	return nbytes;
-> +}
-> +
->  static u64 mem_cgroup_read_u64(struct cgroup_subsys_state *css,
->  			       struct cftype *cft)
->  {
-> @@ -1924,8 +1947,6 @@ static u64 mem_cgroup_read_u64(struct cgroup_subsys_state *css,
->  		return (u64)counter->watermark * PAGE_SIZE;
->  	case RES_FAILCNT:
->  		return counter->failcnt;
-> -	case RES_SOFT_LIMIT:
-> -		return (u64)READ_ONCE(memcg->soft_limit) * PAGE_SIZE;
->  	default:
->  		BUG();
->  	}
-> @@ -2020,17 +2041,6 @@ static ssize_t mem_cgroup_write(struct kernfs_open_file *of,
->  			break;
->  		}
->  		break;
-> -	case RES_SOFT_LIMIT:
-> -		if (IS_ENABLED(CONFIG_PREEMPT_RT)) {
-> -			ret = -EOPNOTSUPP;
-> -		} else {
-> -			pr_warn_once("soft_limit_in_bytes is deprecated and will be removed. "
-> -				     "Please report your usecase to linux-mm@kvack.org if you "
-> -				     "depend on this functionality.\n");
-> -			WRITE_ONCE(memcg->soft_limit, nr_pages);
-> -			ret = 0;
+> -static struct mem_cgroup_per_node *
+> -__mem_cgroup_largest_soft_limit_node(struct mem_cgroup_tree_per_node *mctz)
+> -{
+> -	struct mem_cgroup_per_node *mz;
+> -
+> -retry:
+> -	mz = NULL;
+> -	if (!mctz->rb_rightmost)
+> -		goto done;		/* Nothing to reclaim from */
+> -
+> -	mz = rb_entry(mctz->rb_rightmost,
+> -		      struct mem_cgroup_per_node, tree_node);
+> -	/*
+> -	 * Remove the node now but someone else can add it back,
+> -	 * we will to add it back at the end of reclaim to its correct
+> -	 * position in the tree.
+> -	 */
+> -	__mem_cgroup_remove_exceeded(mz, mctz);
+> -	if (!soft_limit_excess(mz->memcg) ||
+> -	    !css_tryget(&mz->memcg->css))
+> -		goto retry;
+> -done:
+> -	return mz;
+> -}
+> -
+> -static struct mem_cgroup_per_node *
+> -mem_cgroup_largest_soft_limit_node(struct mem_cgroup_tree_per_node *mctz)
+> -{
+> -	struct mem_cgroup_per_node *mz;
+> -
+> -	spin_lock_irq(&mctz->lock);
+> -	mz = __mem_cgroup_largest_soft_limit_node(mctz);
+> -	spin_unlock_irq(&mctz->lock);
+> -	return mz;
+> -}
+> -
+> -static int mem_cgroup_soft_reclaim(struct mem_cgroup *root_memcg,
+> -				   pg_data_t *pgdat,
+> -				   gfp_t gfp_mask,
+> -				   unsigned long *total_scanned)
+> -{
+> -	struct mem_cgroup *victim = NULL;
+> -	int total = 0;
+> -	int loop = 0;
+> -	unsigned long excess;
+> -	unsigned long nr_scanned;
+> -	struct mem_cgroup_reclaim_cookie reclaim = {
+> -		.pgdat = pgdat,
+> -	};
+> -
+> -	excess = soft_limit_excess(root_memcg);
+> -
+> -	while (1) {
+> -		victim = mem_cgroup_iter(root_memcg, victim, &reclaim);
+> -		if (!victim) {
+> -			loop++;
+> -			if (loop >= 2) {
+> -				/*
+> -				 * If we have not been able to reclaim
+> -				 * anything, it might because there are
+> -				 * no reclaimable pages under this hierarchy
+> -				 */
+> -				if (!total)
+> -					break;
+> -				/*
+> -				 * We want to do more targeted reclaim.
+> -				 * excess >> 2 is not to excessive so as to
+> -				 * reclaim too much, nor too less that we keep
+> -				 * coming back to reclaim from this cgroup
+> -				 */
+> -				if (total >= (excess >> 2) ||
+> -					(loop > MEM_CGROUP_MAX_RECLAIM_LOOPS))
+> -					break;
+> -			}
+> -			continue;
 > -		}
-> -		break;
->  	}
->  	return ret ?: nbytes;
->  }
-> @@ -2384,9 +2394,8 @@ struct cftype mem_cgroup_legacy_files[] = {
->  	},
->  	{
->  		.name = "soft_limit_in_bytes",
-> -		.private = MEMFILE_PRIVATE(_MEM, RES_SOFT_LIMIT),
-> -		.write = mem_cgroup_write,
-> -		.read_u64 = mem_cgroup_read_u64,
-> +		.write = mem_cgroup_soft_limit_write,
-> +		.read_u64 = mem_cgroup_soft_limit_read,
->  	},
->  	{
->  		.name = "failcnt",
+> -		total += mem_cgroup_shrink_node(victim, gfp_mask, false,
+> -					pgdat, &nr_scanned);
+> -		*total_scanned += nr_scanned;
+> -		if (!soft_limit_excess(root_memcg))
+> -			break;
+> -	}
+> -	mem_cgroup_iter_break(root_memcg, victim);
+> -	return total;
+> -}
+> -
+> -unsigned long memcg1_soft_limit_reclaim(pg_data_t *pgdat, int order,
+> -					    gfp_t gfp_mask,
+> -					    unsigned long *total_scanned)
+> -{
+> -	unsigned long nr_reclaimed = 0;
+> -	struct mem_cgroup_per_node *mz, *next_mz = NULL;
+> -	unsigned long reclaimed;
+> -	int loop = 0;
+> -	struct mem_cgroup_tree_per_node *mctz;
+> -	unsigned long excess;
+> -
+> -	if (lru_gen_enabled())
+> -		return 0;
+> -
+> -	if (order > 0)
+> -		return 0;
+> -
+> -	mctz = soft_limit_tree.rb_tree_per_node[pgdat->node_id];
+> -
+> -	/*
+> -	 * Do not even bother to check the largest node if the root
+> -	 * is empty. Do it lockless to prevent lock bouncing. Races
+> -	 * are acceptable as soft limit is best effort anyway.
+> -	 */
+> -	if (!mctz || RB_EMPTY_ROOT(&mctz->rb_root))
+> -		return 0;
+> -
+> -	/*
+> -	 * This loop can run a while, specially if mem_cgroup's continuously
+> -	 * keep exceeding their soft limit and putting the system under
+> -	 * pressure
+> -	 */
+> -	do {
+> -		if (next_mz)
+> -			mz = next_mz;
+> -		else
+> -			mz = mem_cgroup_largest_soft_limit_node(mctz);
+> -		if (!mz)
+> -			break;
+> -
+> -		reclaimed = mem_cgroup_soft_reclaim(mz->memcg, pgdat,
+> -						    gfp_mask, total_scanned);
+> -		nr_reclaimed += reclaimed;
+> -		spin_lock_irq(&mctz->lock);
+> -
+> -		/*
+> -		 * If we failed to reclaim anything from this memory cgroup
+> -		 * it is time to move on to the next cgroup
+> -		 */
+> -		next_mz = NULL;
+> -		if (!reclaimed)
+> -			next_mz = __mem_cgroup_largest_soft_limit_node(mctz);
+> -
+> -		excess = soft_limit_excess(mz->memcg);
+> -		/*
+> -		 * One school of thought says that we should not add
+> -		 * back the node to the tree if reclaim returns 0.
+> -		 * But our reclaim could return 0, simply because due
+> -		 * to priority we are exposing a smaller subset of
+> -		 * memory to reclaim from. Consider this as a longer
+> -		 * term TODO.
+> -		 */
+> -		/* If excess == 0, no tree ops */
+> -		__mem_cgroup_insert_exceeded(mz, mctz, excess);
+> -		spin_unlock_irq(&mctz->lock);
+> -		css_put(&mz->memcg->css);
+> -		loop++;
+> -		/*
+> -		 * Could not reclaim anything and there are no more
+> -		 * mem cgroups to try or we seem to be looping without
+> -		 * reclaiming anything.
+> -		 */
+> -		if (!nr_reclaimed &&
+> -			(next_mz == NULL ||
+> -			loop > MEM_CGROUP_MAX_SOFT_LIMIT_RECLAIM_LOOPS))
+> -			break;
+> -	} while (!nr_reclaimed);
+> -	if (next_mz)
+> -		css_put(&next_mz->memcg->css);
+> -	return nr_reclaimed;
+> -}
+> -
+>  static u64 mem_cgroup_move_charge_read(struct cgroup_subsys_state *css,
+>  				struct cftype *cft)
+>  {
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index be6bd26e8c57..032b14793d91 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -6429,8 +6429,6 @@ static void shrink_zones(struct zonelist *zonelist, struct scan_control *sc)
+>  {
+>  	struct zoneref *z;
+>  	struct zone *zone;
+> -	unsigned long nr_soft_reclaimed;
+> -	unsigned long nr_soft_scanned;
+>  	gfp_t orig_mask;
+>  	pg_data_t *last_pgdat = NULL;
+>  	pg_data_t *first_pgdat = NULL;
+> @@ -6472,35 +6470,17 @@ static void shrink_zones(struct zonelist *zonelist, struct scan_control *sc)
+>  				sc->compaction_ready = true;
+>  				continue;
+>  			}
+> -
+> -			/*
+> -			 * Shrink each node in the zonelist once. If the
+> -			 * zonelist is ordered by zone (not the default) then a
+> -			 * node may be shrunk multiple times but in that case
+> -			 * the user prefers lower zones being preserved.
+> -			 */
+> -			if (zone->zone_pgdat == last_pgdat)
+> -				continue;
+> -
+> -			/*
+> -			 * This steals pages from memory cgroups over softlimit
+> -			 * and returns the number of reclaimed pages and
+> -			 * scanned pages. This works for global memory pressure
+> -			 * and balancing, not for a memcg's limit.
+> -			 */
+> -			nr_soft_scanned = 0;
+> -			nr_soft_reclaimed = memcg1_soft_limit_reclaim(zone->zone_pgdat,
+> -								      sc->order, sc->gfp_mask,
+> -								      &nr_soft_scanned);
+> -			sc->nr_reclaimed += nr_soft_reclaimed;
+> -			sc->nr_scanned += nr_soft_scanned;
+> -			/* need some check for avoid more shrink_zone() */
+>  		}
+>  
+>  		if (!first_pgdat)
+>  			first_pgdat = zone->zone_pgdat;
+>  
+> -		/* See comment about same check for global reclaim above */
+> +		/*
+> +		 * Shrink each node in the zonelist once. If the zonelist is
+> +		 * ordered by zone (not the default) then a node may be shrunk
+> +		 * multiple times but in that case the user prefers lower zones
+> +		 * being preserved.
+> +		 */
+>  		if (zone->zone_pgdat == last_pgdat)
+>  			continue;
+>  		last_pgdat = zone->zone_pgdat;
+> @@ -7161,8 +7141,6 @@ clear_reclaim_active(pg_data_t *pgdat, int highest_zoneidx)
+>  static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+>  {
+>  	int i;
+> -	unsigned long nr_soft_reclaimed;
+> -	unsigned long nr_soft_scanned;
+>  	unsigned long pflags;
+>  	unsigned long nr_boost_reclaim;
+>  	unsigned long zone_boosts[MAX_NR_ZONES] = { 0, };
+> @@ -7268,12 +7246,7 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+>  		 */
+>  		kswapd_age_node(pgdat, &sc);
+>  
+> -		/* Call soft limit reclaim before calling shrink_node. */
+>  		sc.nr_scanned = 0;
+> -		nr_soft_scanned = 0;
+> -		nr_soft_reclaimed = memcg1_soft_limit_reclaim(pgdat, sc.order,
+> -							      sc.gfp_mask, &nr_soft_scanned);
+> -		sc.nr_reclaimed += nr_soft_reclaimed;
+>  
+>  		/*
+>  		 * There should be no need to raise the scanning priority if
 > -- 
 > 2.53.0-Meta
 
