@@ -4,86 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D05A6C5CFDB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 19:23:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9321C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 19:34:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43A6E6B05A6; Thu, 13 Aug 2026 15:23:06 -0400 (EDT)
+	id 2EE6F6B05A8; Thu, 13 Aug 2026 15:34:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40A446B05A7; Thu, 13 Aug 2026 15:23:06 -0400 (EDT)
+	id 2A7156B05A9; Thu, 13 Aug 2026 15:34:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32F256B05A8; Thu, 13 Aug 2026 15:23:06 -0400 (EDT)
+	id 1BE696B05AA; Thu, 13 Aug 2026 15:34:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 119DF6B05A6
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:23:06 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AABFEA21B4
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 19:23:05 +0000 (UTC)
-X-FDA: 85097219130.16.02E3F62
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E3A591C0006
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 19:23:03 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hPWI2LDB;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786648984;
-	b=CZ3TyS3/l82Shv18l6f0MU+Qkl4FSAP4wRjCyuYwq/fdJSXQLJWsrirABj4hMTbJ7BCy7B
-	E+jlseYKLkNcTpXtrdn1cA0vp2auNKacIkS+64MMRiG8nCqwYkhaAEWwJ37BgJt0wIdN7B
-	VMps9C8wkm/lQMPNp4z/uG9VdyCUWr8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hPWI2LDB;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EC43F6B05A8
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:34:40 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 85F26160157
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 19:34:40 +0000 (UTC)
+X-FDA: 85097248320.11.57F40B8
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D08D4180009
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 19:34:38 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="KLK/ernj";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf16.hostedemail.com: domain of 3TRx-agYKCNgMOL8H5AIIAF8.6IGFCHOR-GGEP46E.ILA@flex--surenb.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3TRx-agYKCNgMOL8H5AIIAF8.6IGFCHOR-GGEP46E.ILA@flex--surenb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786648984;
+	s=arc-20220608; t=1786649678;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H5Utq32nBVG5zGqWf4WSM3DsWmatGp6ZBvVtqGuut6A=;
-	b=1aJDM7fkZSxnRnmScsf2zUlMAx9c00kx180GnulDhqxPirOZHtabpH8g7+zsaCGERHfuBr
-	KQVyV8i3NvWE88MdA6jHHzjh5/7rQIJkaotOIJZpgky0BLDmOplbrJyLCpwEccGZAA3o7e
-	dS9xynqQ/kcxqYROHxarHSLsjrlimxA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 02DD340BAC;
-	Thu, 13 Aug 2026 19:23:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC561F000E9;
-	Thu, 13 Aug 2026 19:23:02 +0000 (UTC)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=myMALrPmiftJzuMGzKXuNexYM0KxETCacC1JofGVCac=;
+	b=Z8CrHrATPzpfXRbXn4ul8dmseyXEouV8OQwe+5jhlYRGZoa1nS5cvy0wURBq8J0CfUVu0a
+	3yyV0WM5JQbGkAUNlbZqGfLTriXZt058Y0Yky9AghFJjiADkdYNr66Or63Dv20hA3vN+O1
+	r/QMjwqlkKriCEoLQ8CBxZxOpCRGV6Y=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="KLK/ernj";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf16.hostedemail.com: domain of 3TRx-agYKCNgMOL8H5AIIAF8.6IGFCHOR-GGEP46E.ILA@flex--surenb.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3TRx-agYKCNgMOL8H5AIIAF8.6IGFCHOR-GGEP46E.ILA@flex--surenb.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786649678;
+	b=ckyxW7MvBD8EJHoZM2zYCH7SOGM37tSJ9skso2PXsKDQbjrNweaTApH0g7IHAXXMoIlMx+
+	N47APS7VIR3uO+JMQjqqUF648qgTRYYIx+fCcjL/lfiUGU47+aMwBIjNguXTHhos709H3s
+	DnJW7fc5EZtRl8QKOAIZL/zCfxrXaUE=
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-392cf18db8eso280023a91.3
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:34:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1786648982;
-	bh=H5Utq32nBVG5zGqWf4WSM3DsWmatGp6ZBvVtqGuut6A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=hPWI2LDBHG7D43iUCa4tpf2cpjdK9BI2oMxttDbb9DnipWXU1gT+NN423E+M8eYSY
-	 zbdQ54ACS/VpCimCXxs1iMKwOgPJ8s6Ie8WQjlZ9pfTeAYBnSRbSHjaNZahEFa7Oj9
-	 w33LzxQgelSkKbt+Ou7dONVXhs+21IGqXIFQXXXs=
-Date: Thu, 13 Aug 2026 12:23:02 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Longlong Xia <xialonglong2025@163.com>
-Cc: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- linux-mm@kvack.org, Longlong Xia <xialonglong@kylinos.cn>,
- stable@vger.kernel.org, sashiko@lists.linux.dev
-Subject: Re: [PATCH] mm/swap: publish cluster tables after full
- initialization
-Message-Id: <20260813122302.516f19c013a25968e7dae741@linux-foundation.org>
-In-Reply-To: <20260813150316.2793642-1-xialonglong2025@163.com>
-References: <20260813150316.2793642-1-xialonglong2025@163.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=google.com; s=20251104; t=1786649678; x=1787254478; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=myMALrPmiftJzuMGzKXuNexYM0KxETCacC1JofGVCac=;
+        b=KLK/ernjkzFEdGfQlVCySh5f9HF7jUnO4JaqBBs/i7jQIlTaU7dGdnPU9RagK+UQRX
+         0u8fENuS34VQsefXu3J84FbPy8qxTau8TFvp4gmgPMHmTXR02scQyq/jZW2llCRfy1QA
+         tPXLaIszB/fhhrshDDaoc/0L0c9lRWHFBkP3HY5wGOOwpOWDiKI5lltHR86+vwuBAZri
+         7TLKgZPANc9XWiaQair+jdAHHdkFDmfhLeIU4wkb0pl6MptrFkzSFsYYZTL46eUO3fTy
+         aEZiMrh4zWypxB1LpAM91cpA+iVycKSrx+vVrQsABI2aeOQjlRjZV4K9tmtF8YnkPwwZ
+         qbNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786649678; x=1787254478;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=myMALrPmiftJzuMGzKXuNexYM0KxETCacC1JofGVCac=;
+        b=Ct30DEoIOqF2iPYxgt8FuY6VEB/v0DHFtanK3rOHwATP6tA/lfhek0lZAyRv+3nVcs
+         A8rCqvhc0MG4FSjQo00RvbtLZkzLDl2jD5Y83maw1OkHLWJyt5ORD2PkvmgKLUvWRBcZ
+         AZMdwJVh2hUj7iAAcFlPv/unVt0rtc3YmLYqJa7DteYki/tz6DQphmtkn5I816Iv92Tc
+         riAvDEXzxjjMdp160BoacPAItjpsWLLzJmShVPjGu1bhWKKpfssaKieSrQ9XlFMKWBSA
+         Qn0FtBouWeMDG5whMbqKJ0ruPWXM11JNwPGTZKFuOfWRnwWBlDprhB8pM/dSDYdVYI4I
+         nSOQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpM+d8FMCzfXte4ypLPlFF6Pu6QH08jX8wzYJq//xDV4fCJcTm5OG69JSu8KFyBe/OhirOz8AFhVQ==@kvack.org
+X-Gm-Message-State: AOJu0YwMmkl7VFxH1SzbeMwGyHnGLwfj9TFyajHWyzqQLHvcXp/Qii6s
+	EFtCt/i2RW0CiVApcdpkFcam0Vz9uZsgeS1jW6Kk6N3OQ/q94EElDDk4xCfURG8uqDST1wD9lYQ
+	S+Ewfdw==
+X-Received: from dybvt10.prod.google.com ([2002:a05:7301:78ca:b0:313:d014:d248])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4b90:b0:37f:e177:f58
+ with SMTP id 98e67ed59e1d1-3933b874ba2mr305120a91.9.1786649677316; Thu, 13
+ Aug 2026 12:34:37 -0700 (PDT)
+Date: Thu, 13 Aug 2026 12:34:28 -0700
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E3A591C0006
-X-Rspamd-Server: rspam10
+X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
+Message-ID: <20260813193433.3318288-1-surenb@google.com>
+Subject: [PATCH v6 0/5] mm: Unconditional per-VMA locks and cleanups
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org, 
+	david@redhat.com, willy@infradead.org, shakeel.butt@linux.dev, 
+	vbabka@kernel.org, jannh@google.com, aliceryhl@google.com, arve@android.com, 
+	cmllamas@google.com, christian@brauner.io, tkjos@android.com, 
+	dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
+	surenb@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: b67yigapu4obn7pxfraoz6sr8898esy8
-X-HE-Tag: 1786648983-490360
-X-HE-Meta: U2FsdGVkX1+hvQJSGGw0JcEhy7V9hV34XYx+sc1cfImz5Y/WVQs+RG3NoPK+f/OTsG39OagtA4m6vZUNqKVqMB01JAV08MT21E77uJ8SvAxg1s+RzAOnhO3NyKuzDHpW/yOEZl38cTOnRktDu30K3XSVjlxRd7nNzB031c81eMUSmALlWD+xFsnxt/95qd1G8NNV+9vw8VlayG8MTO/dd6Qq6Vj27SF/1Vkkzd1EoJuLEUtIITnX+LZ5uzpEYV1QH0FLZESklhrysy9+yXYijiDK9W02D8qRTVQ+Bj4hUTvH3jWR7MACgY3EyruEngeqG0fxDEq0bMFNwUUIR8DjLhEuyq/hXWErC5+F/rFgDEXjWO8ZWHxjp412UC7KLOlXNl9sma8nP6yFt2Do2Mq4j/Dt/M9zI0miU9Y2vst/mGUs8EJt42fUhldKCtBfRKQGEvPdg97Mx5svmH1KkHkz7QVOxgBw09MLo7O+Ya7CcmEtJTdmqFCYnS26RcNwzZPlS+NIianHa5ahogaHEyMLvX4YpLr8O/qsfqXTzj4F5ykttys3G4/INngYRvle1Y+9IaHeecNt1B5tDUlf/awD2L5BK7ZkAPrYIccaunG9QfXvyLISu7xeUoBP4l7+L3IDT6dVdSI3mYm0OKd+r3zUL63C7wzyIRCgmV/KJ3xt8GMONQbBF+9Eq7HoUvfXrt6M5fW0cs/ozu0pLKET0B4NmPTN1+LnuLEVH+gKyxVvIAj88rMPslfTxq8zo+f+Bu0L4XX3Li3fPrfECZ0BJ+fmNOeiiSAlu1JL20H7bkyIw7UvYWDIzNbTDTDYmZC3b9VM+urusvtutjxYLEf3fiwLLXlx6zPk3NQf+xdlwJCBRE7sywsP56SeKmN0OIG7I3tGwOZeJSWvdJqky6qE5bRtw3fxB11+dX8gpdgHDPS/vxT9UQJ5Z3uurXfdw+gHyZsufLAmVB2pag912pTwicG
- fY2T3nYF
- 9TUmMszGgSaYG6MwFhC7E38+PV7RTez7hR9E6I1zRD70iOMw+9FNvuT4mY2dXLplV34d14Hvo95vQ5oOSkW/wXnU5hczOu99EKXb8L/TuRmW0m92o27gIrXG822rVPqjGH8n2kzWtWO7Q4xtVT9jWc07kX/Z6Q9QamqwkwLr79ZN/yn5QFhoL+KTDG0EYCcTKP8AaE7k0/TZtq2BMJkyltXj/xNKO6dXU3I0oRVAnUnYX+WfwIsJyaYnI6L2dkfljtntyaZwB/2JG5Hwsv2sT/yJXYo8DVZ2+AE4xVOubmVXtk56SWDe7XRprdzT5Kujb8kymKAAotnLsfWFgTi2tDfCrqa9LJVM8ej5V
+X-Rspamd-Queue-Id: D08D4180009
+X-Rspamd-Server: rspam07
+X-Stat-Signature: kmqu5i8qz9fbco47fiy1z116q1fc1gd6
+X-HE-Tag: 1786649678-690205
+X-HE-Meta: U2FsdGVkX19syGnabq4/cWjolZigsbprggAUl6BaFKSt6DhWK4S7bRKynnLpXzvmDwTfi+SxhnyApeqTZZqIKrBov7pLi2ovN950gyS7Wn3vUJAC4fTq2Dtsn5PLK9aGYumEeqc5fd7mamyn3p4fPwZGS7qsq8OpPbElL10mnSmKDedp8Cekt+Oa6h89TNm5Ig4SG+ZW+4CMlbq6ExOkad9Da1Lxd3GulH0v3k5bfNaMOribhDedUeZU0mFmA9W0zXtViNoG6vy9BoWwMWmfftUImHnGXsNNKyiYfZk2RWwkR4Fb5xYbxRf0RPgaXjJxt9zgkD4oWHOy77UuspgJtlxEpTWma6LPfRfKJ/9fAlp3efwSLzyoQxcFUK61P89A0QGc1Jv2XoGLK3hrZHyi6UwXqbKO5Rit3H22MsxBgUkq09C6k2XT5RiLgfn133BFA/qAkceNgWnPAw7RXw0po4bomtct5NWuoLXw2zEUGNsY/gDxYofNoDqz8qBL7EPgShhxwTt2iK4olJHYbSgC0M679jfu8ufp9QFxh4Oj+EkT93SEGUqHf8jlLPwSxMdHSMG9JlMH6yyS+MiqYZrEO8wpgY+AxvSVM6XfNgBx3/CtLIQsvytvS+IS343nbuxGvfoFew2Hez+y6IrVt7MiUZ+AKf9QBa4OhZ9HU6nfqwIVgKdGagxBmGjuACR5WmU0mHo4wRv09nuCXTYwEv3PYcI8g332r8PTb5w/McrudBLLtx+KZ+VsPcpvMULCAApBQLbWEqKXBUV6omLkDcFwGBsTs7JeF9Ryf851YoTq0kmZHPT3kp35nVO9QTpps4Pkqrzf53Xi5CTLGis2u9NaEK78/vJ69eDfUVyIwK0Dzi+NoR9Aq5ujBepUjPF4QvZHdIn0j4AysbFV//U8XQAU8b/YuCH+dJ9cPqmvgcHcRvwTDJoqzq6MzslLVaDDJ2OCJVFhjkXFXkACDH8tDsl
+ TYgy4kbW
+ 8OZwROZvENpuMoc/AS9wXWwAUIMAshXTYH0htY0NjaOGjEV79GsWebWrgPR+UbIGumJVFx1Cqn4wwOxq1K2WpfjgAKQsFwbdJGh5ZUkW+6Cvxmmvxg5Dlh4T242F/tbdsKur4XZnmJ6C7/JGqEoiE2Ghu76BNlRGuW1YGySRUIPe9e0eAH1+cWSlwWGCqqHZ2M9NQMm6uMFFprXIUVzin906pbB+1owTmvxmc0gkumxhuCfbdhXJKxD/vEAytvij7h6h4LhtYBHyPGWXPMpHaIGAOfHmWQmBr7Hd2nl851OM6W0V0L/AGdy/NdXZYxherO49r0QepEKk4d9g+kNbO+ONiktKyiJ4c3CcDpuxNiLL9I34t6N7zxNpOjZTvBHEuRH6nHHr6OEVqthYz6KtZd4qlYU1fWuyWEb3cdgDpVvT9mjjYk66zzCAXcIBR5x2xstzFbq8PEU/3bzT3CZiQACaAdc/JS2YEnOuHrSBeQztfS1qwF7Rv9Jpn0xvAxfNCYWHULgb6jtRmicBlSk9O9JK5Ff/PkNtl6/ZQ8Pfcmwni7M3io3/+j16Af/2xMaWBvBnfn/tjk7YZwHuNPKdHc19eYq+Aj9u0+nXA/7s0ehXkST71KwN0GL3uiIYW84VoizEpvDyPvr16mmpx7fcFCqlQ2RjtReOsrgijx9NVynmoUIpLk6BKuVb7cOrufElCR+W29jrgOa3pMV7KqeRSh7dc0wrA0QzUbVkZ4ADeo12mxOathu6tu1cJ/QfJm6hoLzxWAMKRXNnMkVDK5QF780GjgrOuVY71+xCrLwcZga9k3xPo7Cg1937tqX1jHWIjQSLON4oUdZ4DkiiixoKQGckTULu7iNHgfgyQkjv4DVd4qPHpgwVsL6yXuU87tMVyJ8KH8bZQ22JJw0Yt3kq9uqCplsrBN/+A8PZnfONrr4ZoNtFFxWQ7hx365haATvArOEdE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,71 +113,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 13 Aug 2026 23:03:16 +0800 Longlong Xia <xialonglong2025@163.com> wrote:
+v2 version of this patchset [1] was written by Dave Hansen and per his
+request, I'm taking over this series.
 
-> From: Longlong Xia <xialonglong@kylinos.cn>
-> 
-> swap_cluster_populate() drops the local, global, and cluster locks
-> before its sleeping allocation.  The allocation helper publishes ci->table
-> before allocating the memcg table and, on some 32-bit configurations, the
-> zero bitmap.
-> 
-> A stale per-CPU or global cluster cursor can reach the isolated cluster in
-> that window.  Since CLUSTER_FLAG_NONE and a non-NULL table make the cluster
-> appear usable, it can allocate a slot without the auxiliary state.  An
-> auxiliary allocation failure can then tear down a table which is already in
-> use.
-> 
-> Allocate the complete set of tables into a private carrier.  Install the
-> auxiliary pointers and publish the main table only while holding ci->lock;
-> the slow path does this after reacquiring all allocator locks.  Allocation
-> failures now free only unpublished resources.
+tl;dr: Make per-VMA locks available in all configs. Simplify some
+of the per-VMA lock users now that they can rely on them being
+always available.
 
-This is a complex patch, for a problem which I'm assuming nobody has
-ever encountered.
+Binder and networking folks: Your code is the target of the cleanups.
+I'm cc'ing you now on v2 because there's emerging consensus on the mm
+side that the approach here is sane. I'm not quite sure how this pile
+would get merged, but ack/review tags would be appreciated if this
+looks good to you.
 
-> Fixes: b197d41462c2 ("mm/memcg, swap: store cgroup id in cluster table directly")
+Longer version:
 
-For the eleven thousandth time (I'm not blaming you - this is endemic). 
-When fixing a bug, please fully describe the userspace-visible runtime
-effects of this bug.
+When working on some x86 shadow stack code, it was a real pain to
+avoid causing recursive locking problems with mmap_lock. One way
+to avoid those was to avoid mmap_lock and use per-VMA locks instead.
+They are great, but they are not available in all configs which
+makes them unusable in generic code, or if you want to completely
+avoid mmap_lock.
 
-If there is a report then document this.  If there is a testcase which
-triggers this then document it.  If there is neither then document
-that.
+Make per-VMA locks available in all configs. Right now, they are
+only available on select architectures when SMP and MMU are enabled.
+But all of the primitives that per-VMA locks are built on (RCU, maple
+trees, refcounts) work just fine without SMP or MMU.
 
-> Cc: stable@vger.kernel.org
+The only real downside is that making VMAs a wee bit bigger on !MMU
+and !SMP builds.
 
-Especially when proposing a backport.
+The upside is much cleaner code, lower complexity and less #ifdeffery.
 
-Think of the -stable maintainers, and of everyone downstream of them. 
-They're looking at this thing wondering "should I merge this into my
-kernel".  We're providing them no reason for doing that!  We should do
-this.  We're the swap experts, aren't we?  They depend upon us to
-explain these things.
+Clean up a binder VMA locking site now that it can rely on per-VMA
+locks.
 
-> Assisted-by: Codex:gpt-5.6-sol
+Building on top of universally-available per-VMA locks, introduce a
+new helper. Since the new API does not require callers to have a
+fallback to mmap_lock, it's much easier to use. Callers can
+potentially replace this very common kernel idiom:
 
-Doesn't have a great track record, in my drive-by experience.  Sashiko
-has found real bugs in things which gpt accepted.  And a second opinion
-is always welcome.
+	mmap_read_lock(mm);
+	vma =3D vma_lookup()
+	// fiddle with vma
+	mmap_read_unlock(mm);
 
-Sashiko review says "No regressions", but it also says "Status:
-Skipped".  I cannot figure out what this means.  Let me
-cc:sashiko@lists.linux.dev.  Folks, can you please explain?
+with:
 
-https://sashiko.dev/#/patchset/20260813150316.2793642-1-xialonglong2025@163.com
+	vma =3D vma_start_read_unlocked(mm, address);
+	// fiddle with vma
+	vma_end_read(vma);
 
-> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+Which avoids mmap_lock entirely in the fast path.
 
-Thanks.
+Use that new API for another binder site and one in the TCP code.
 
->  mm/swapfile.c | 167 +++++++++++++++++++++++++++++++++++---------------
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-mm@kvack.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
+Cc: Todd Kjos <tkjos@android.com>
+Cc: Christian Brauner <christian@brauner.io>
+Cc: Carlos Llamas <cmllamas@google.com>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: David Ahern <dsahern@kernel.org>
+Cc: netdev@vger.kernel.org
 
-I'll take a pass on this and shall await comment from the swap
-maintainers.  And please understand that it'll be a lot of work for
-them, and without that statement of "userspace-visible runtime
-effects", their motivation will not be high.
+Changes since v5 [2]:
+Patch 2:
+- Removed dead code, per  Alice Ryhl
+- Rebased over mm-unstable
 
+Applies cleanly over mm-unstable
+
+[1] https://lore.kernel.org/all/20260610230409.A44D29FA@davehans-spike.ostc=
+.intel.com/
+[2] https://lore.kernel.org/all/20260812011056.902771-1-surenb@google.com/
+
+Dave Hansen (5):
+  mm: Make per-VMA locks available universally
+  binder: Make shrinker rely solely on per-VMA lock
+  mm: Add RCU-based VMA lookup helper that waits for writers
+  binder: Remove mmap_lock fallback
+  tcp: Remove mmap_lock fallback path
+
+ arch/arm/Kconfig                       |  1 -
+ arch/arm64/Kconfig                     |  1 -
+ arch/loongarch/Kconfig                 |  1 -
+ arch/powerpc/platforms/powernv/Kconfig |  1 -
+ arch/powerpc/platforms/pseries/Kconfig |  1 -
+ arch/riscv/Kconfig                     |  1 -
+ arch/s390/Kconfig                      |  1 -
+ arch/x86/Kconfig                       |  2 -
+ drivers/android/binder/page_range.rs   | 19 +-----
+ drivers/android/binder_alloc.c         | 63 +++++++----------
+ fs/proc/internal.h                     |  2 -
+ fs/proc/task_mmu.c                     | 93 -------------------------
+ include/linux/mm.h                     | 12 ----
+ include/linux/mm_types.h               |  8 +--
+ include/linux/mmap_lock.h              | 94 +++++++++++---------------
+ kernel/bpf/stackmap.c                  | 17 ++---
+ kernel/bpf/task_iter.c                 |  2 +-
+ kernel/fork.c                          |  2 -
+ mm/Kconfig                             | 12 ----
+ mm/Kconfig.debug                       |  1 -
+ mm/debug.c                             |  4 --
+ mm/init-mm.c                           |  2 -
+ mm/memory.c                            |  2 -
+ mm/mmap_lock.c                         | 61 ++++++++++-------
+ mm/pagewalk.c                          |  2 -
+ mm/rmap.c                              |  2 -
+ mm/userfaultfd.c                       | 61 ++---------------
+ net/ipv4/tcp.c                         | 31 +++------
+ rust/kernel/mm.rs                      | 57 ++++++++++------
+ tools/testing/vma/include/dup.h        |  5 +-
+ tools/testing/vma/vma_internal.h       |  1 -
+ 31 files changed, 166 insertions(+), 396 deletions(-)
+
+
+base-commit: f9ca2fa9ef7e9b39ec79a0596929d1a1f8704c5f
+--=20
+2.55.0.691.gc56d675ccc-goog
 
 
