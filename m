@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59B33C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 04:24:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A2FCC5AC67
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 04:24:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31F9F6B0397; Thu, 13 Aug 2026 00:24:26 -0400 (EDT)
+	id 14AF36B0399; Thu, 13 Aug 2026 00:24:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F74D6B0399; Thu, 13 Aug 2026 00:24:26 -0400 (EDT)
+	id 123316B039B; Thu, 13 Aug 2026 00:24:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 20CE36B039A; Thu, 13 Aug 2026 00:24:26 -0400 (EDT)
+	id F2C186B039C; Thu, 13 Aug 2026 00:24:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E97C66B0397
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 00:24:25 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6ED771204CF
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:24:25 +0000 (UTC)
-X-FDA: 85094954490.05.4FBB968
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010022.outbound.protection.outlook.com [52.101.56.22])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 411FE40003
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:24:22 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=zAeAi6of;
-	spf=pass (imf04.hostedemail.com: domain of shivankg@amd.com designates 52.101.56.22 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C867E6B0399
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 00:24:36 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4FA60A049D
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:24:36 +0000 (UTC)
+X-FDA: 85094954952.09.120134A
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012020.outbound.protection.outlook.com [40.107.209.20])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 1D2B91C0002
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:24:32 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=NR70t14g;
+	spf=pass (imf18.hostedemail.com: domain of shivankg@amd.com designates 40.107.209.20 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amd.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786595062;
-	b=UCbO7DhnmPOFsxL2kjG3J063hRszgEOjoaXe2lJ+mGHuCL/8NuuyReLBmbI2D8gSrjflZD
-	mexmLaGevQNcOnmXv2ZzMrnqPfv2pkViQAxyy8VTIWlspRowLd2zPA39W0QZlHviL6dMNG
-	ZwzWNeXGCEkp1ohBNuYE7pGkdPcW/Jg=
+	t=1786595073;
+	b=q6OsIVW+4vED9odq5FNo5HX4xrjdgwst+CUUMjwiyOEgfV8jo/uHBlJFwIY/Ofihu1P5xI
+	SiqU7gRSUF5FNjUETp4Wye9oHxwVTgFcnhB55TI5fCpG1v/+DpG4nxJF+sHAjgOqaU4ogG
+	qiS/OBdAd4NeYYHK2TkOpmso1udszgI=
 ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=zAeAi6of;
-	spf=pass (imf04.hostedemail.com: domain of shivankg@amd.com designates 52.101.56.22 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	imf18.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=NR70t14g;
+	spf=pass (imf18.hostedemail.com: domain of shivankg@amd.com designates 40.107.209.20 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amd.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786595062;
+	s=arc-20220608; t=1786595073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GZx0Ge6ZDreH1DBnQvrfoLUwMhi3ucN8qoNiw2CdSxg=;
-	b=A/yLdS3F1d9gO5ZZsbePkZrExmTt0faK/CcSkObScFp+NG0a6/pUN1siPyWBpp9W91VmAU
-	PXYEiLoAJ1iDIVs0Ze+QJli6jrHl9QrsGqSMNuhLUa9lyi/NCAsTkE7JOd6JgYV5YVDO2x
-	azyTh7aacwWn5fl3mUrnri9/SWk2jnw=
+	bh=BykK82YDo1LySzOhloAkWorz+g6kLKF76otmIGbgpbs=;
+	b=pllv0kSngpGhLR9yZQKY9DDTJWhNm5WL11hH/kezkaSlnQDN8aJxrh9gDRjnmyQx4n+ilY
+	4MyUtWO8yaEyRltXeD6xelXbWAp5100Q2Z6Zakh9XEpInppGAzTzCCt3Vj7A8HpQQvVe3X
+	LuLWPcf/J+wi0bZHxipGpcj1m5DGYpY=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EXVMW5qEnmUHDWdNP71mDyTFXdduGf1y2WaU3i49/eTtN1MCWyUZaVQRl77Qq0c8yreW/z1HwEo/PxswfXLGaHOyOzuqWsdAJOk/XWH7IiRq2H+Pn+HrQMU5jUKTRhkiE9bUVLVeSEUET/JcfKhJpeZGm3op4IbFqFsLy4jfWLAovIWW1yzyEVaHsZC507M2BA9viDNZRAMfUPD86cmcDjq8sXfxUVxg0Wd5OigscmHGaifTqMQBhzyX9XkJ0da2xUae1JP2xmU9eMIIFg9C3IgaG/EdD77lmNVkzw4ioNzRBIElGq3Caae4BvZl4FX8pmivDh6du5YvCMdaT59U5w==
+ b=sJzBA3W7lnGFclbanKQ3eo6SD+TOMdxlFqxJy91MQ2bFgAj2bg/o4aWA21N8A//+iTqOcIdQTibSpQB5hcrl/uJ41oxNQvoweO5DHBmZkp6UnYUGcNN8bidouU9hTj0YsqjN9ax2g3dGnB8lR/VCTZARLFqF6vh8aphq4xkw8B8IkCfN8TAwrcY2+Qp7A6AMY7eH/mf4DbAVozF1khAZ9o6chB9GMFhWf/nqVKXtJClmhW5/DHHIl1kcmCG0tscOMtD74CRuAgd+HqaoAddKwA4AkiV5NPmYLR9yLl3Bp6dy+7vtVwgQMroDIMaT7HugFzH5feSxI4UP/6gjZbaq5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GZx0Ge6ZDreH1DBnQvrfoLUwMhi3ucN8qoNiw2CdSxg=;
- b=PiNGL6U45+kGxSI1PPM1uwCAwsdqgrt/ys9QtjlOs3zyqtaacaP9r357U2ZhjrPr/YyHswYcV0ROH/bZMQf3buwmRmwhZrmybiD1OLEhLkb32BIv81irVh3/VNiX0PTKxJQGhG0maiKaF3K1CoK2xuiukt2UpDoI2arX3DU558t/nHI8sGEbaCz3U+qgnAHEkka3EqQ4hoD6AWECAENxDT+sMKVfZ9XjVm+By1knYq1aNAHHEDbbKFVrUMFZs8NOZek3UVYlV1qsqGUKjSDj9tzkM1p7pqAAYeUKhwIGeaS4pMvwZcL6S/+4itgBorRkIPQj19nPKisAYfQE/RcNKw==
+ bh=BykK82YDo1LySzOhloAkWorz+g6kLKF76otmIGbgpbs=;
+ b=lBXKDlA15AUx90wA0d4/OUxyw7t8jByRFrRWbymOwGmlPSsHCosacaww0mf0MeqjqLXcIJgJO65s9KeCwG42ZfLiOb15fBXSwsMAnrkK/lETrKOXMw+nq1AupTVgUZ0W+jFdjo13SMjfse4P3WeWBtZY9LUJ1cxgaNtfwHzZvgVpCRB2vGMX13m8eze6FK5th1AEVvXbXkqfYCmOaZcR23AmmlSPRwOwpsY8Wwsw00X53qC5+ptFjuGDqP9Uw+PiiNg70AIZv3TTucnF4luPh7hDHJktW3QO095SGKFapfJZKvVSEBSJsIbhk3VxMqGDU9keV69ihIyDi46SWv9Bng==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=surriel.com smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GZx0Ge6ZDreH1DBnQvrfoLUwMhi3ucN8qoNiw2CdSxg=;
- b=zAeAi6ofm9bq8LabrTWNBcHZFx6fDby7dMbhNbiOVXUEQlh7rDeKjtZ2zQ9wG5yFbRgqLu/TSTFNIANwEC53wXw70dl6pmj0LZ25AiwGZQ5R+d8IlkPTxX3N1JmEMJ5eLoE8fLHUougUNDzMsr0d8Q+Mjg1mWKe6gh9EkiJpqgA=
-Received: from BN1PR12CA0021.namprd12.prod.outlook.com (2603:10b6:408:e1::26)
- by BL4PR12MB9536.namprd12.prod.outlook.com (2603:10b6:208:590::21) with
+ bh=BykK82YDo1LySzOhloAkWorz+g6kLKF76otmIGbgpbs=;
+ b=NR70t14g08Lo9/L1vkIlevr11JsQjE4YmpOKSNPYot92uhJBj2g8nEnSfyGHB7FLbMDH5ibhEw8N4x5wnLTmGDd0JYEA4XiWokKE9e1MLZQRoMDPDQvVTs7hS6xI3bdzvmU3JV1yzDDNji9PKsEexSSXcTcUBvZSTTm8bK4B1+g=
+Received: from BN1PR12CA0016.namprd12.prod.outlook.com (2603:10b6:408:e1::21)
+ by DM4PR12MB7527.namprd12.prod.outlook.com (2603:10b6:8:111::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.13; Thu, 13 Aug
- 2026 04:24:16 +0000
+ 2026 04:24:24 +0000
 Received: from BN3PEPF0000B36D.namprd21.prod.outlook.com
- (2603:10b6:408:e1:cafe::81) by BN1PR12CA0021.outlook.office365.com
- (2603:10b6:408:e1::26) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10b6:408:e1:cafe::9b) by BN1PR12CA0016.outlook.office365.com
+ (2603:10b6:408:e1::21) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.315.14 via Frontend Transport; Thu,
- 13 Aug 2026 04:24:16 +0000
+ 13 Aug 2026 04:24:24 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -85,18 +85,19 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from satlexmb07.amd.com (165.204.84.17) by
  BN3PEPF0000B36D.mail.protection.outlook.com (10.167.243.164) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.339.0 via Frontend Transport; Thu, 13 Aug 2026 04:24:16 +0000
+ 15.21.339.0 via Frontend Transport; Thu, 13 Aug 2026 04:24:24 +0000
 Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 12 Aug
- 2026 23:24:09 -0500
+ 2026 23:24:16 -0500
 From: Shivank Garg <shivankg@amd.com>
-Date: Thu, 13 Aug 2026 04:23:13 +0000
-Subject: [PATCH v2 2/7] mm/migrate: factor out migration PTE construction
+Date: Thu, 13 Aug 2026 04:23:14 +0000
+Subject: [PATCH v2 3/7] mm/migrate: split remove_migration_pte_hugetlb()
+ out of remove_migration_pte()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260813-migrate-rmap-batch-v2-2-3c5424c555c7@amd.com>
+Message-ID: <20260813-migrate-rmap-batch-v2-3-3c5424c555c7@amd.com>
 References: <20260813-migrate-rmap-batch-v2-0-3c5424c555c7@amd.com>
 In-Reply-To: <20260813-migrate-rmap-batch-v2-0-3c5424c555c7@amd.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
@@ -116,11 +117,11 @@ CC: Karim Manaouil <kmanaouil.dev@gmail.com>, Frank van der Linden
 	<rientjes@google.com>, Dev Jain <dev.jain@arm.com>, <linux-mm@kvack.org>,
 	<linux-kernel@vger.kernel.org>, Shivank Garg <shivankg@amd.com>
 X-Mailer: b4 0.15-dev-47d62
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786595034; l=2695;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786595034; l=4926;
  i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
- bh=gneolqKRhOLi/xmG4jUme2u1klegVcoHCUCJUJlgL98=;
- b=R/y+I6Jl1+vGPpMitwmnPsCU2+R1U3wNMIW68+2Q7iSi7GEBcH9vabuuNNMpVDVORIykNqwkI
- JnwADKqjCn5DC6d3Ad3Q2Q9x3RxlPLGg8af+7Y7g6H059bW4ZAYsyMv
+ bh=V2Csu+W5OddYNfw1PGZXsHW/zSePcDCED8EWGpg8Wb4=;
+ b=ob0iC1dS6KmO+0v44bGeBcevYeRg4ooQfD1WaJVqISFV/8ubExlf4yGL1/neik+nanQ1dT1Q9
+ bR4VUZBw9kFCEfLx9QKTECvkzXmsJnXhtt8U2xfjJmui4ivE+U7skDS
 X-Developer-Key: i=shivankg@amd.com; a=ed25519;
  pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
 X-Originating-IP: [10.180.168.240]
@@ -128,38 +129,38 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B36D:EE_|BL4PR12MB9536:EE_
-X-MS-Office365-Filtering-Correlation-Id: 360e2414-83b1-4f69-970b-08def8f2bcd3
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B36D:EE_|DM4PR12MB7527:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3988a3a8-2bac-4873-f10a-08def8f2c14e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|36860700016|23010399003|82310400026|22082099003|18002099003|56012099006|11063799006|10067099003|921020;
+	BCL:0;ARA:13230040|7416014|376014|82310400026|23010399003|1800799024|36860700016|11063799006|56012099006|10067099003|921020|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	9I/kDeKKpO+oKUL6vDJ/plY2EEvQ1wjL8ZyUvRLWXCTEyPs7NYplcAc6YenelmOAR4TXt8gADRF2LeoABSYv5b50iuoehUQtH38uXjGCmQsngaGFxUjohBDfLXWpAYEXrlovJc/UjcAz8WC/XSEqxdr57hQdYiB/I+TiTEb6rwKpR7WJIFSvBdEdk5J7pKWQI1vcssKM5+Wis7xvlF7AyLw1DAcZoZybyBBFZnJXSSXqRIHJ9zo2dAxoM/b8lCOYbElwCNicujnRE/0sGh2xdvj3uaGv5f+H0kUZxrFlKmyTYFtzy5uSVoUJ2Jd33IH6R6dMn52NnXkNuWgHMnuho8rLCMoWkkTG0nRn2NZbgqfdLoLihF9HF0hMNeZ82JTs2K0kJRYRyoMtaScRxC/BZwNzJqe8/YZ22AXaL/3pvih8+OS4V4a1Lqy9KC9k2Ti6in8H6rogGn7/9bLuwzN0geJPQExaHnLNuBWj0eTMFyZV2tspAt5AS78KtYefgLGHAsEaLJBspmLZi6yjrShFHMUqOh9jcQcjuAwmLrR0nZ3Ywa2BhnHm6UmSMt4BjKg8yFeS2M84FZqayzGzCGGcD17rphZHePHwIpAKucEYoT/3hBdBeTGeV2l+YaHmdYy/QJwL6aTTkBqHDG9omBg0usHi07C1WK36BVH6Ag6jktwvBCvnmt5qZ56wslqoPT+8J8pIYlDH9z6R0hBVnKnmjtW9aBUOt7rvdWNlCabOOwogCiVC7tVTrMOAjRF3oKfy
+	fbU5U0QAA+4w2dZN7t/E1zRw7X/DtUtM0gOZKgWZdKIbdtjdhAAnEZxoQzzvhhT4hJar8pJg1w5oAYxqJpkp5tRLrNWiQRiB196sycyVN2xTl0GHCoXRclsvlrw4qidls9xNneb8qfiOEn2oTYRf6JKecokSbXEUDJ3UKVP4k2TepZj52gy+tgLKeLwA6C1E0HbW956v/xG0fJKreA5gC3Ya0yEWRyhERKIXli/DdVl6ZyQqSuSzg6g0CCfG6GcdQFTzoLhfQWjlkW6bZ9+Hw1ksJxMOB31zyGO1Nhsb6uF5eAll1zsB3q6nID974yR8kyXwcQ2xemk+ulxrj6o3kswkhEoSHql+zgcPBhLfxIRgXmIMeCZ6j7oSqNb7oGRkbdiX90rFy/XA89I68ovbRwDVbT7ToZE0xxiJJ4D7UfXXyxDg6lvJ7MX2Irbo2fYytpNAKKQHNb5exsrcbuPnXDJUXWnhzS5KzCwejIzEP3vKi6jEJzdSCzIlk746qWTduuV1k6QE+hPhNmFMne/xaupX31z3tSGAb55pLw6qmBJP36XCrEIIqcyO+fJgpnFbXnRuNpqyatSFqtOxjBRifwwXf5briWiwPZezRkWTb281g029oBdu6sS/hwlOx/kqDukT1SDYbF6dREYOBgLNznw8rXDzaldEkfEfQtuYzYKLdhO4+M5osfOQt90j0H6BfqjTGjn6dj0vr7bQ6AFvafAuxWemqsGqJAGcIE2vQIjQyufcpAK0XkWlJN0XOg6l
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(36860700016)(23010399003)(82310400026)(22082099003)(18002099003)(56012099006)(11063799006)(10067099003)(921020);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(23010399003)(1800799024)(36860700016)(11063799006)(56012099006)(10067099003)(921020)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	imv8K8hM9M7qcVsMX+yH5EmqjMPDbAgJCcbgzwGwq5/BNJO9xcXtzHcHrgoeNvTsHhb6WTvarzlri3fpuSpa0eADNLhifkq/nVRGXtPvTTwR08V4qyc1QQAg9tP8aHeA0I3Bp3YAuZa+fK2a5Fj/U69tCjYlZXg3+Ytd8dmgqW1e255/WTtf+ZE5EVOi91SnU8MBxoS5tZ7kpG+Cw9vbGv7/P1o10EsfB3VYGMY1U3dA+mSugtUo+BPpH+OR26KcuyHzbl+Q4CIfzv9YTJ4cM80wnyWclHbGof6ALTtXOVW/tr7r/34h5eiVdsV+XgA2Mmq5xUN0u5/4cahc/5Qdz2GW1levG/sjhNSXCvRDl/WePlEmjt4SEOqu9sR6DtCU/0OAr1odo4y7FSZ8qTMomnU9zfKWkPlzZHDuG4ZoantUyXhpHXGBtEeFAifB7mfO
+	PcubKfli0gMysUIPmHrNnMJUNdUmltzW6KCvgXGCmuPElXOZlLaEh1ov96CpO3EspfWwbCnv1eTgk34DxRlP0VvKJRbIjmtJJWhGfr6EzX9++ayO5a2WPba0ojSWIWqFHBCoC5XFCdUmT405AJpghjwGIpLdx617kzQzEbX8jO30FxmL44lXcOXZwtysqubNZ1fWpDBlV2YYw9749ozVVaUz7Oh2RnxyCQb3DBCbtZts1JzsIQkrNrbQ3C5eHmBepII794d3zEI4apsA8wbd6SujzYfdZWWRsof93s9b0D4/ckqN/KpQFQLgMVuNvVtqVcSyHs6zv+JRqAJKFnUTqemSk5rps07yotrqTKWFLN89T4zTVkOsYC4ZuQXsebq1nv0mRSHEywJcR9m2Z+dL35kvXcxx9R1Eh43fWiuwXr8wgKiN8K1wkteFmU8cl76a
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2026 04:24:16.6531
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2026 04:24:24.1733
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 360e2414-83b1-4f69-970b-08def8f2bcd3
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3988a3a8-2bac-4873-f10a-08def8f2c14e
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	BN3PEPF0000B36D.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL4PR12MB9536
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7527
+X-Rspamd-Queue-Id: 1D2B91C0002
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 411FE40003
-X-Stat-Signature: kwoehmfouyxa4b9e5u569qe7gyzuyyi1
-X-HE-Tag: 1786595062-349223
-X-HE-Meta: U2FsdGVkX18tVsTttq0OpsB56PwwiQZ5JrhHoaI7+iGZR+/AF+xHQwSOMrguQZe+F4C91d3YRaXB9riUIKATVG5YgOAR9V3YTebv6ozqpT5HW4jxmpo4IkRxW224Qyd5j9LtFG9Ak+eYUiOjLaTy5l7/pYG/+wuxfq6bnZohiqd4HtZg4p94Ryhcw7mIj2XlhBONHGLFcshVeKaBZ/GZG8i/18VK6cDg2laRe8gKd8TrWvZgQo9UrgehXc1kslEZOt4cTTCQhz08SJ6iTafxdAAibiCjp0WaQ4o4cPzmdAv0rTruUVMED6vlwrCa+gKggYBC3DxBxmLBc6EtYXmHrR5Wvh2Kw7cDQLKk+SoJ2+kQhblssqGZ3HyuBwArE6ViHy/bhpGevAswvaxcAfVCK7dNcj1S1nsHT40M4PUq3kFZ83YRtVzvQmiGDasfLwjCdaAcnY/cWj/bL4j/GSyBeRPRswqf52UAJSYjZfoJNU00fmlOn0d8Cdr2lhhZxixmnszw9HWEhIZOlLegoz0i/5N1Jl6Mdvw1ddUHNz618VS1bEBtY/DQfFqHiy8a/dSZveo2rFla53uWRpCC+pTTmy2zFn9ahBJlugkPfDeFavKTDN6jHQU9ValRd5V7qQeH3p86skckyvVwEKkrmQif+BdZvd43HQRIg84w+c42ekY285bHhCMuEcW/9FKgpsokDwZ4zI8yHHTo0fJ3jxS2AkLDvcPjmYIELYES1/eTGIY20PnX7Ack7WesHQ2f3WyIIha/hgO/5TOQ3knX6zpOjel1LVlLe3crMCuSqtu4KaYmg2KhKrwY/S0CiIU27MxrxwNXZXOo5dQqSh03oJxQ79EGRSDFcs2GoG3ed8bq+aSXiREBcXs6/93p9nFLi6VH3QD31t+TQJcHPAAEMMadPH3tuKzwGiNAulVwwNJPnXIoBleQTCZ8A4sJ2Mgs2EH/nC6L5YmjDue/+hKmrce
- AKYa539/
- euoHu+n/7bldcCaYIytHjMSGTw84uDgZwVq8Nm9witetmqCZup4x+om/iwruDsZ6jhT/bwG6mpf+gJd1LdAv+CvBOJHWJWufH5+NoW3ckuTq4dSUbyuYlFbkXE8qjxQnJvYiwlsjMG0lWucRmFcX2hXhLHhvKO+BVXLXEQVCThe445Xwpk++ZmHh+1EtOLtPc0EsnbdI227L5pjZuNxYjyna+R+tL3zYd3Ad/CE4OrSvb8ABesEI7h5LLFCDwGS6ylWDZqKd4kgDpIfaWwrHfATDnFvoWlvdVptaoxoBVkYwsuWpb0SrojlUb+6/xTPMbyGiB+FQdVClIjUxxMf1OVBkCbUlPzsDs1bFRD3Jp3Y3GaOb59lbPalzMgchP8hPntUX7zaGRM053PPlQDwamGjMmcnn2kGZZ0BNIDuVE9pB44bVIreZF6zT++H/WzG0VcU+yhhULcnuihyzu5PZ2UkC2FIaPvlBvjGpkvqEQx0A6GK0Pkd0e4Wi52pHwi/D3lok0TJaNHDmpaRLuclbEuV2gw6bg4KM8rH1f
+X-Stat-Signature: ndpdagsnedb38nzdgxqpaqrjbxb9n6tp
+X-HE-Tag: 1786595072-300435
+X-HE-Meta: U2FsdGVkX19/ZY26XgDxHWIQarFtclWjjoypTauQ1Sfl785C56UWc16KTiS44MWuV+ioCmMbti/z/QtPnZqf3ZFzkfXvakiO4FFICGqRluBZX+bkZ/sJaQ1jv/qjaJW2uzusuC4+epujziqCEruhSC73aRUQpYgugzjc8h60Vh763o3MxAiZlPy5VSlLi9jvpGBUnLZs8BypltcDLKchTxQfabrXTOXYXEYY9gB3ZuapdU0uFlLAR3cA9CmImbo4KSaK33Vs1KHJ4EgIMrMdqfHCoifPi6T4YwHnrOpAtANicxanlsarr7ssMIemf7K93Ueo64D2asZNYKjVmalwNu5c128TBf5WXwb7kCcC9YJW5C9aSIzr/5IyvIKIqkhrmTnYj3qneSosdd1TSUPdKWn4pCdecvsmMN0oeOscUpuCBbejcIjgL2pAmruKibd2ljoO6Q2r2632vTz0w0IEower+K+TdUuaHck3cEVwfHXtKWJBKmkp3OP9FHcIu6sVL3FeoDv6j7hWdz3zRLO/myZKuujf5/SugVGYmFIPyvIgzvx9utLhxcwDiB9xGYhd9UmWAc+zWt7Dk1H9QP1IPRA5lnPsmTGQtkGDjdgtYkUj9vlvXyKWxeN7GOqqNM8Av2idh5aal7SWjrWhvksSZxBiuD8WsBfFOy8rOQH8sKh3V4RozRsyFvI6Tl6A9S3XCzcJOCzmzETffwvJ5BfD5l0VwGZfeJ2sAflBF+b9tX5y/bylRgsYL/+IJhppUfB4zWXMGjvcr+oWvCz6chC9N5hKFI87xWVxvEo4mcgJnSZbloUT2sgE5HN0U+CJ9uqv3KYyrBHkdmcw43PigmXt1LGuK9br3iVDgiWfqiypBC94H8bI1czEFFHSyjO0Gp0g7xMrBKVU6rN78pXi57LQhacLnmN232+9vaMgXRENXlE2vtepIAloebuJ275b1JMYTWz4OgGzI4tzraCtpRD
+ zxwbd0q1
+ dt3dhhZlnIvMok8veDNsoIPhsPUXhti+gfop/Wakz+/gxJGDIxbXw8ViZ7zoYfQGkZCbTlOQtWwz5/Iva9vuMtllIbC0Oa3wJA1jFt7imYBUMRHD3klbAr25w5kgXbOjFfLJhr0Ulokj/kAKmhujrYmZEqxNOkprcPZk63l2JNb+VkDVEsEucCghfELLEKiKQek5lUduft+P59irfYl5KiriCsnot5RVddxOyPeGAxRCie13+lAUxqZWTAN1AUOsR1FfpjTSNOgHlywBksMwytl94rRUFTHSMwqdPY24L6cmG56Xc8d3As/BiTTJcWDhG2iUiY+W9fmwOwErMrH93Fkbt7eqUFuFHdYM6zEOTeJaetG5mHOEsHveMR7Sj+8Xs1xi6EzFO7/unyIS5/lXioM8DuGtZVOHjnfrFTucBhFTEuZcGAcQ8lXpvCX8k3I8wcMlruIu1c4ngbTZNnrFAesWKOCHLu+UQw5mC+HySTu1jpB/fXxcpXNkOc4XVMEd+oECo2EdcO5bhXVbFmKvUhtRIzClOvn1eRB+FpIzG5d0aCiJP9Nc0M+7bfv69Aw1WnBK/4OdEyCYgzSV8+EZaS4yPUw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,88 +168,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-remove_migration_pte() constructs a working-PTE from a migration entry
-inline. Factor it into migration_entry_to_pte() so the logic can be
-shared when the hugetlb restore path is separated.
+remove_migration_pte() interleaves hugetlb handling with the regular
+folio path. Move it into a dedicated callback selected by
+remove_migration_ptes(), leaving the generic callback focused on regular
+folios ahead of PTE batching.
 
-No functional change intended.
+With hugetlb folios routed separately, simplify the PMD mapping check to
+a one-time warning.
 
 Signed-off-by: Shivank Garg <shivankg@amd.com>
 ---
- mm/migrate.c | 53 ++++++++++++++++++++++++++++++++---------------------
- 1 file changed, 32 insertions(+), 21 deletions(-)
+ mm/migrate.c | 97 +++++++++++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 63 insertions(+), 34 deletions(-)
 
 diff --git a/mm/migrate.c b/mm/migrate.c
-index 15b45832bcfa..a3362cc9ef66 100644
+index a3362cc9ef66..ee1b8a55a2a4 100644
 --- a/mm/migrate.c
 +++ b/mm/migrate.c
-@@ -345,6 +345,36 @@ struct rmap_walk_arg {
- 	bool map_unused_to_zeropage;
- };
+@@ -375,6 +375,57 @@ static pte_t migration_entry_to_pte(struct folio *folio, struct page *new,
+ 	return pte;
+ }
  
-+static pte_t migration_entry_to_pte(struct folio *folio, struct page *new,
-+		softleaf_t entry, pte_t old_pte, struct vm_area_struct *vma,
-+		rmap_t *rmap_flags)
++/*
++ * Restore a potential migration pte to a working pte entry for hugetlb folios.
++ */
++#ifdef CONFIG_HUGETLB_PAGE
++static bool remove_migration_pte_hugetlb(struct folio *folio,
++		struct vm_area_struct *vma, unsigned long addr, void *arg)
 +{
-+	pte_t pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
++	struct rmap_walk_arg *rmap_walk_arg = arg;
++	DEFINE_FOLIO_VMA_WALK(pvmw, rmap_walk_arg->folio, vma, addr, PVMW_SYNC | PVMW_MIGRATION);
++	struct hstate *h = hstate_vma(vma);
++	unsigned int shift = huge_page_shift(h);
++	unsigned long psize = huge_page_size(h);
++	struct page *new = folio_page(folio, 0);
++	rmap_t rmap_flags = RMAP_NONE;
++	pte_t old_pte, pte;
++	softleaf_t entry;
 +
-+	if (!softleaf_is_migration_young(entry))
-+		pte = pte_mkold(pte);
-+	if (folio_test_dirty(folio) && softleaf_is_migration_dirty(entry))
-+		pte = pte_mkdirty(pte);
-+	if (pte_swp_soft_dirty(old_pte))
-+		pte = pte_mksoft_dirty(pte);
++	/* There is only a single mapping in a VMA. */
++	if (!page_vma_mapped_walk(&pvmw))
++		return true;
++
++	old_pte = huge_ptep_get(vma->vm_mm, pvmw.address, pvmw.pte);
++	entry = softleaf_from_pte(old_pte);
++	folio_get(folio);
++	pte = migration_entry_to_pte(folio, new, entry, old_pte, vma, &rmap_flags);
++	pte = arch_make_huge_pte(pte, shift, vma->vm_flags);
++	if (folio_test_anon(folio))
++		hugetlb_add_anon_rmap(folio, vma, pvmw.address, rmap_flags);
 +	else
-+		pte = pte_clear_soft_dirty(pte);
++		hugetlb_add_file_rmap(folio);
++	set_huge_pte_at(vma->vm_mm, pvmw.address, pvmw.pte, pte, psize);
 +
-+	if (softleaf_is_migration_write(entry))
-+		pte = pte_mkwrite(pte, vma);
-+	else if (pte_swp_uffd(old_pte))
-+		pte = pte_mkuffd(pte);
++	if (READ_ONCE(vma->vm_flags) & VM_LOCKED)
++		mlock_drain_local();
 +
-+	/* See do_swap_page(): restore PAGE_NONE for RWP */
-+	if (pte_swp_uffd(old_pte) && userfaultfd_rwp(vma))
-+		pte = pte_modify(pte, PAGE_NONE);
++	trace_remove_migration_pte(pvmw.address, pte_val(pte), compound_order(new));
 +
-+	if (folio_test_anon(folio) && !softleaf_is_migration_read(entry))
-+		*rmap_flags |= RMAP_EXCLUSIVE;
++	/* No need to invalidate - it was non-present before */
++	update_mmu_cache(vma, pvmw.address, pvmw.pte);
++	page_vma_mapped_walk_done(&pvmw);
 +
-+	return pte;
++	return true;
 +}
++#else
++static bool remove_migration_pte_hugetlb(struct folio *folio,
++		struct vm_area_struct *vma, unsigned long addr, void *arg)
++{
++	return false;
++}
++#endif /* CONFIG_HUGETLB_PAGE */
 +
  /*
   * Restore a potential migration pte to a working pte entry
   */
-@@ -387,27 +417,8 @@ static bool remove_migration_pte(struct folio *folio,
- 
- 		folio_get(folio);
- 		new = folio_page(folio, idx);
--		pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
--		if (!softleaf_is_migration_young(entry))
--			pte = pte_mkold(pte);
--		if (folio_test_dirty(folio) && softleaf_is_migration_dirty(entry))
--			pte = pte_mkdirty(pte);
--		if (pte_swp_soft_dirty(old_pte))
--			pte = pte_mksoft_dirty(pte);
+@@ -395,20 +446,14 @@ static bool remove_migration_pte(struct folio *folio,
+ #ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+ 		/* PMD-mapped THP migration entry */
+ 		if (!pvmw.pte) {
+-			VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
+-					!folio_test_pmd_mappable(folio), folio);
++			VM_WARN_ON_ONCE_FOLIO(!folio_test_pmd_mappable(folio), folio);
+ 			remove_migration_pmd(&pvmw, folio);
+ 			continue;
+ 		}
+ #endif
+-		if (folio_test_hugetlb(folio))
+-			old_pte = huge_ptep_get(vma->vm_mm, pvmw.address,
+-						pvmw.pte);
 -		else
--			pte = pte_clear_soft_dirty(pte);
+-			old_pte = ptep_get(pvmw.pte);
 -
--		if (softleaf_is_migration_write(entry))
--			pte = pte_mkwrite(pte, vma);
--		else if (pte_swp_uffd(old_pte))
--			pte = pte_mkuffd(pte);
--
--		/* See do_swap_page(): restore PAGE_NONE for RWP */
--		if (pte_swp_uffd(old_pte) && userfaultfd_rwp(vma))
--			pte = pte_modify(pte, PAGE_NONE);
--
--		if (folio_test_anon(folio) && !softleaf_is_migration_read(entry))
--			rmap_flags |= RMAP_EXCLUSIVE;
-+		pte = migration_entry_to_pte(folio, new, entry, old_pte, vma,
-+					     &rmap_flags);
++		old_pte = ptep_get(pvmw.pte);
+ 		entry = softleaf_from_pte(old_pte);
+-		if (folio_test_large(folio) && !folio_test_hugetlb(folio))
++		if (folio_test_large(folio))
+ 			idx = softleaf_to_pfn(entry) - pvmw.pfn;
  
- 		if (unlikely(is_device_private_page(new))) {
- 			if (pte_write(pte))
+ 		if (rmap_walk_arg->map_unused_to_zeropage &&
+@@ -434,30 +479,12 @@ static bool remove_migration_pte(struct folio *folio,
+ 				pte = pte_swp_mkuffd(pte);
+ 		}
+ 
+-#ifdef CONFIG_HUGETLB_PAGE
+-		if (folio_test_hugetlb(folio)) {
+-			struct hstate *h = hstate_vma(vma);
+-			unsigned int shift = huge_page_shift(h);
+-			unsigned long psize = huge_page_size(h);
+-
+-			pte = arch_make_huge_pte(pte, shift, vma->vm_flags);
+-			if (folio_test_anon(folio))
+-				hugetlb_add_anon_rmap(folio, vma, pvmw.address,
+-						      rmap_flags);
+-			else
+-				hugetlb_add_file_rmap(folio);
+-			set_huge_pte_at(vma->vm_mm, pvmw.address, pvmw.pte, pte,
+-					psize);
+-		} else
+-#endif
+-		{
+-			if (folio_test_anon(folio))
+-				folio_add_anon_rmap_pte(folio, new, vma,
+-							pvmw.address, rmap_flags);
+-			else
+-				folio_add_file_rmap_pte(folio, new, vma);
+-			set_pte_at(vma->vm_mm, pvmw.address, pvmw.pte, pte);
+-		}
++		if (folio_test_anon(folio))
++			folio_add_anon_rmap_pte(folio, new, vma,
++						pvmw.address, rmap_flags);
++		else
++			folio_add_file_rmap_pte(folio, new, vma);
++		set_pte_at(vma->vm_mm, pvmw.address, pvmw.pte, pte);
+ 		if (READ_ONCE(vma->vm_flags) & VM_LOCKED)
+ 			mlock_drain_local();
+ 
+@@ -484,7 +511,9 @@ void remove_migration_ptes(struct folio *src, struct folio *dst,
+ 	};
+ 
+ 	struct rmap_walk_control rwc = {
+-		.rmap_one = remove_migration_pte,
++		.rmap_one = folio_test_hugetlb(src) ?
++				remove_migration_pte_hugetlb :
++				remove_migration_pte,
+ 		.arg = &rmap_walk_arg,
+ 	};
+ 
 
 -- 
 2.43.0
