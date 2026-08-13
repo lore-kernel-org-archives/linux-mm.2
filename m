@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CA33C5AC67
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 04:48:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51093C5CFCF
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 05:31:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20FBB6B03A6; Thu, 13 Aug 2026 00:48:08 -0400 (EDT)
+	id B57786B019A; Thu, 13 Aug 2026 01:31:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BF966B03A7; Thu, 13 Aug 2026 00:48:08 -0400 (EDT)
+	id B07C76B019B; Thu, 13 Aug 2026 01:31:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B19D6B03A8; Thu, 13 Aug 2026 00:48:08 -0400 (EDT)
+	id A1E636B01A2; Thu, 13 Aug 2026 01:31:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C8CA66B03A6
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 00:48:07 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 286C5140534
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:48:07 +0000 (UTC)
-X-FDA: 85095014214.17.3BC5A7D
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 73E56180006
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:48:04 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=aPVQTkzV;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf16.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 67E2E6B019A
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:31:00 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DA05E120517
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:30:59 +0000 (UTC)
+X-FDA: 85095122238.02.BE86265
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1A9B340004
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:30:57 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=SrKE60uI;
+	spf=pass (imf04.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786596485;
+	s=arc-20220608; t=1786599058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X47MPVqgH2j7yjBZtNKgYko3YnkfVy3n7gkaPS/96cQ=;
-	b=mqtgCbVv2xqbDbttYNxAobJKUsPiwrdtUB30NXvZHn7KSOYgBBG+s5X958GTw5rng2b+AM
-	seRYaxIFCE+PwUrQ2CZB4IlWYcHWdGWlBWlpw+AUAu94IcPU9oZ7yZjgka+SkrPH0jBdAr
-	e3MhLGUW5/ZEXiFbcksOv4E90BCOZVQ=
+	bh=TRXTmCRot5QcI6faSmaQsj0x028gIwbwjB/VBK+GoXU=;
+	b=0VuVQF5QACXRu3CePX7MderNqLK6sVdJ0HvdEXWvKVKXyDhUuiCAVQIiV3edT/+kNG1kOA
+	+U8xX3O7ryC7eesKJEcXHe+RHE0ZkgAuFeIamnNo866mTPyY4KQ1kQwtB1T321nPX+V1l7
+	BaYcA9IYCJIy4+1B1eSHN6J6V3qH/sM=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=aPVQTkzV;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf16.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=SrKE60uI;
+	spf=pass (imf04.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786596485;
-	b=skAfQ2JzL/9x5msiW2YmlwlrhYHuzUzv1zkmbVqK28B4Ouozy+5OUVT8/dWNlL5HZlQ0cx
-	5wxFo/Aw6u66IZOUgYWw4/ieHUDKcvfviJ3TxNVityYgsTf4VnLby0f6EYgE+rCrBJPpGd
-	4Q4jTTBhiqFJOlhRXQPXVBmXUOJ1xBE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=X47MPVqgH2j7yjBZtNKgYko3YnkfVy3n7gkaPS/96cQ=; b=aPVQTkzVS7E6M9/5/2lfJV4m2q
-	Gu0rh6frlDfMcSnfCfzfJxPlCvhCnRWvytHDe2MvJV7aFy+/iw78mYWkbRuj0Et2uLkVfWNPYwFjt
-	7MX4olLDVkLGSALLckY3nBCfH9OxyK7Cgp14IvTP+QFhviqU5fHrHvo4CYWuSswAiCwkQx7foVSfn
-	2M5vihwXhFVUwLWmAMHdQUkgWdxxNoRdwVhBfarGenWyUvDVeDBQc/izhD8SJBQA+ZuNSOKxmI/x2
-	GSsJ96EoPM2xk5+HFi42U+OetuCC8wjGZhsk0yXIgpTvkIFp7XNFipP1fQV5qUFfa6M5+VJvi0IYz
-	kBu/GUrg==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wuNMB-0000000HNTC-3HH2;
-	Thu, 13 Aug 2026 04:47:55 +0000
-Message-ID: <892cc7cb-20ea-4d63-80ab-043538fdd7fa@infradead.org>
-Date: Wed, 12 Aug 2026 21:47:54 -0700
+	t=1786599058;
+	b=IGM0iRIQh34frseE+h0hmUjWlSE6Ttz3S5HY8Lcgv1k5guHPQqjIHkxft5fs9p1WjLvn4w
+	tUaWCuQgCTnKD3MbxOafWK1CcTeB4Sz5y+8yzZHxkDfYt5cjMBgi9q7jrDSBiVKolNqQ6O
+	pV5jq1J5EXtVigfMw5hPUTt6dsEGsno=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1A97B14BF;
+	Wed, 12 Aug 2026 22:30:53 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4B16D3F673;
+	Wed, 12 Aug 2026 22:30:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786599057; bh=X+NKUVlHUgJ3ufurYsAc3c38TCMI9lTEYh/79PTkQxo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SrKE60uIrBnbijwn35bVkTCswfmosJsNxYIwRXmIDvDEYsUPL/XRaOQw4NTWq9+R8
+	 HTXCeA7afpFyAnPj1s0kOuibIeMGDLyy/hm/UQgt+OEqxfzPqBuw/BgmcxyZJ97m4P
+	 B3v5HjN56UBmNRhdGR3eqCOkRfuHaef7VMgKMqK0=
+Date: Thu, 13 Aug 2026 11:00:53 +0530
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, 
+	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, linux-arch@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC V2 3/6] sh/mm: Stop using pte_ERROR()
+Message-ID: <azo46amarknescr2uotz77khpt6zakwex7sb52krsvakrzfdlq@qu2t3ahd4m5t>
+References: <20260811042119.3652929-1-anshuman.khandual@arm.com>
+ <20260811042119.3652929-4-anshuman.khandual@arm.com>
+ <28c24991-590f-4980-a92e-26c89288cae7@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] docs: ksm: fix typos in sysfs knob names
-To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
- david@kernel.org, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, corbet@lwn.net,
- skhan@linuxfoundation.org, shr@devkernel.io, linux-mm@kvack.org,
- linux-doc@vger.kernel.org
-Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
-References: <20260813031722.569983-1-tujinjiang@huawei.com>
- <20260813031722.569983-2-tujinjiang@huawei.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260813031722.569983-2-tujinjiang@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <28c24991-590f-4980-a92e-26c89288cae7@kernel.org>
+X-Stat-Signature: uwz8fz3bcutm3f4uwfja96s5nitpmnkc
+X-Rspamd-Queue-Id: 1A9B340004
 X-Rspam-User: 
-X-Stat-Signature: 1f1ass6rjo5osz17cbftipdkay5axsud
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 73E56180006
-X-HE-Tag: 1786596484-567733
-X-HE-Meta: U2FsdGVkX191SxSsjyrCLRmtfqbfRS9mT/tZfU3Q1jJ9T7M6brJXpuGXrz/TeIrAiSMiB9goRaHP6XcLdvQpfHcqJAyrtYg1yW9m4emGb8kZf+1gDlhOdW6rj5+1Y07ZCG3dHGL20kBXrR7QubVwJWKeImHc79WREvOPeLAb08Tj1r5CAJMjL1mE8PV/jTU+JVB213viL/+Cx9T/WXge210sUJI8VQSkC6q6rZKrvEBFpWiz56k1EVZ+UVisovOv05i+tYgq+chp1EQP+CSxhqsM1SWI3Z7dX5l5vj3BpuOWCC9LJUf2u5pTwMBEQ1AH1WPsaHfEmPz7WEuDEb9JPdphR/g/L4xH7i8C7brenjHsN3NBwpM7OvGIcWsMIMmLXVqR4ubvO2TC3lVILDAXVTe6XsHep8Jvbtio/ktoxGC4evbwjoculav+5w27aJwCjAHzxsPJQv+CcTIJFjmZfUVGY5swiyndY6NIGV+rpSDyUK1OvkHI7PmRlJPlMCwklJIGUx0pn37AiidE0ZRrcU7N7m3A9sXMKi76Csd5WUSLEGSKy781XhOJqbd8ZtlD4tnqVqdVOYauCoaP5QglvQvWBqqb4IAB0YEVI05U083Hk5513GPeQieQWuQ9lOK6QxoB94mgwF5325+ZPsloma19ZWl5AyCoNVM4H92aVU3k3H1Y63tyy89083qLSj80+s/n1SZouske36VfnuUoWYG73tEhO2tHqevDYsbdkPqtOaQK1xtMLX/Z0jOFlKvwfzqn14I2v6/E0S16H+TYdT3u8k16m0I/iRu0cRNLxYhbb+7t3kfATJdQQ3DrwnIuqNHiynibSo9qIiQK1OZzROeSCK72CnLQRSiKuU78SFTV/+E3JRurEzY8fPBZl1e2iIoktOYkVtnwPcaIXonlOL8zd28GzJ95Jp+wilsYZtwZtlouABI5X5NvEAF/dIHwNn/fm/Ild9S20S7P9fz
- SBlOlt8q
- IdUCyWCwgq/egrFtDAhAcn6d5rX1/PqrXrZEj0sqLjdUREs2j4XxIH18sCiyefHL9CoqoMo9ERJ5IjIRSAT3mrowHqKHAWnt5QLZjIijJ8RfQd0G6ok3qxNjlMjrfRurfSjzn0+ErygWxYvNGO25l5l5p+YAvSoml/47/apnzRJ0T7/YfTNGF9ATemUJJG6t3ft0vQXkNzFQKfzx6L8LJigPq3fh/uP5w2TRU7VtVDuAzZxGkQLJpAv8OnrG1goOYaAHg2T7MIXvESk5A/xziYq9UvP0fCBCGVha/9HOKDA+146FfzdAJpExF/yqvervCrgaHVsN77dbx/O/YM67hzHThH8T/aG5r3mZzpZTxs7W+s7TkqNiHReL4pPBpGhJCuSQXGTAph6fCqxI=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786599057-627718
+X-HE-Meta: U2FsdGVkX1+++N1+I68jx7UXznyBZlVE2pnrVfdmtIvk1x4lqqPLo0njQovmJuWF4G06OLRlC1o5TMtbCxIHxNn7gZQg/aE5XxKRee7ThDJwg77KgL48jPW148hVHqIZLsiKgXpLZgRuWm0568wy+tEqi6OcpvDBsFCpqTQnXOIPXsDNTYvry2IBB8Vu24QV5HtI56INB6ckR1pSH8brGfdx3G5i0ROMYThkq4oS3KiFPdjh0mMZo+bJDYnzBcpAalG4zs4IgQ/gYKyEkX+myNU1ZmHKFWuM1zl/2CRwyEfHYt2frn3dhzUW1t0T6Ccfdwd5rDi5+S90KX5yG/hDcOGV0xPQxwNBjIFGJOrRlWGGfIB80qcu6xAfWc1//iix0HUcOeIkm4RqROdZNdNeo0WDdndhz/4V7VyVzAGnqm6phmpO+ZRTHi0Gl23Aq+DSMUVlkHjXzparCuh90N/FuTWnt0WQS+aisLuAIbEtbe0LxCZJxPmjseAXzXJxlsFDT1ytPotTQ0cwQRpvg1YI3GuWteCxd4ATT/7dSkf91x2kxtWa7BRgHBAbrX+jej0F8N8Es9yuNFV5bx8xa8ItGlpWZH1IOo307UXeuwjGUsqfueYP/M5gGS282vJ05p8fmyff8wMn1Nfa+GKxrxdj97S5mxsjPXw+YbDE0YXucfnQep0E/0GAba8pCrDjwSSOf9uksR6bsO3DxjM7x6yVbLcXOzP49oosr6T5cWy33t5keCXvPOJRX2GY/FqULvZgjdw0QDlHbux7EZmHzRGkejpGT/ouWK3/z/4E9i78DhVovxmesyfvnRdI4N26m7dqQlQUeCGuKt1/oWDZh6PecSMZIMW6O3aravObiltVd+bPspvRJEUBWYvlCFvfszgJVylxBJfQ8iJLqwaLO6pW6Kw1afrL/ktRfQ21X+uGvxqw6TJ4JjFOY9AOhh975MvXxb+dMXDp/03gE4mjlf+
+ HyFC4K+q
+ 67XU6t5fC+vrfWFPlnsr0yRhou6j7ZRGIVKMPebfUpoiEVklE9iQj2Z73C2aUqBT+r0IShAGYlWkxfL0DOcxVFZjjpbj3zXI9P85PH7Vj7gq0uxw1Q7PYqbSwjufcteBuXK7vGAqgno22TDyoyKR7WxAPHCMyvVRC0aWSNhcTC9qkvjcag9qAmY4NVc6FVjlD/ZWCNdAreQoR8KOfiIF94hjx7WcZhg7bR172mUcpny3hJwk4ukXSoJzdp9YRog/EexcicHkXl5gTmy/EdpCyC/+mCml7ygXPrXILsObQGk8oQuKlZBDSE0DJhsrj/p+HOgr7LeML3TOf60maNLk/YXAzgo74mMFb/ELHzYDFMZPkhwGQZ92OgDjkZxfldqqRQ12xJIiKS3qnZy+jkrvcjljTx1bHlxYganc68cPrELTBWNkyT0qd8XeB5PhWWJOv6Yl1gT6k8Ycn3GqhrOtCIahnVK8CGz5zlA67xo0niZxNBW12tAADcRGulcngjiudhSaAY5NUfD0Se9aCRT13m+CXVvobv/8rgNc8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,47 +98,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 8/12/26 8:17 PM, Jinjiang Tu wrote:
-> The sysfs knob names in mm/ksm.c are "advisor_max_cpu" and
-> "advisor_max_pages_to_scan", but the ksm.rst documentation spelled
-> both as "adivsor_*", fix the two typos.
+On Wed, Aug 12, 2026 at 01:28:23PM +0200, David Hildenbrand (Arm) wrote:
+> On 8/11/26 06:21, Anshuman Khandual wrote:
+> > Directly use pr_err() in set_pte_phys() and drop pte_ERROR() which helps in
+> > eventually dropping pte_ERROR() macro across the tree. In this new printing
+> > __FILE__ and __LINE__ has been dropped because they are always the same and
+> > don't really add any value.
+> > 
+> > Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> > Cc: Rich Felker <dalias@libc.org>
+> > Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> > Cc: linux-sh@vger.kernel.org
+> > Cc: linux-kernel@vger.kernel.org
+> > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> > ---
+> >  arch/sh/include/asm/pgtable_32.h |  5 -----
+> >  arch/sh/mm/init.c                | 11 ++++++++++-
+> >  2 files changed, 10 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/arch/sh/include/asm/pgtable_32.h b/arch/sh/include/asm/pgtable_32.h
+> > index 5f51af18997b..c8eb9a7a4c4c 100644
+> > --- a/arch/sh/include/asm/pgtable_32.h
+> > +++ b/arch/sh/include/asm/pgtable_32.h
+> > @@ -401,14 +401,9 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
+> >  #define pmd_page(pmd)		(virt_to_page(pmd_val(pmd)))
+> >  
+> >  #ifdef CONFIG_X2TLB
+> > -#define pte_ERROR(e) \
+> > -	printk("%s:%d: bad pte %p(%08lx%08lx).\n", __FILE__, __LINE__, \
+> > -	       &(e), (e).pte_high, (e).pte_low)
+> >  #define pgd_ERROR(e) \
+> >  	printk("%s:%d: bad pgd %016llx.\n", __FILE__, __LINE__, pgd_val(e))
+> >  #else
+> > -#define pte_ERROR(e) \
+> > -	printk("%s:%d: bad pte %08lx.\n", __FILE__, __LINE__, pte_val(e))
+> >  #define pgd_ERROR(e) \
+> >  	printk("%s:%d: bad pgd %08lx.\n", __FILE__, __LINE__, pgd_val(e))
+> >  #endif
+> > diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
+> > index 110308bdef01..b3c7fd84ceb4 100644
+> > --- a/arch/sh/mm/init.c
+> > +++ b/arch/sh/mm/init.c
+> > @@ -78,13 +78,22 @@ static pte_t *__get_pte_phys(unsigned long addr)
+> >  	return pte_offset_kernel(pmd, addr);
+> >  }
+> >  
+> > +static void print_bad_pte(pte_t pte)
+> > +{
+> > +#ifdef CONFIG_X2TLB
+> > +	printk("bad pte %p(%08lx%08lx).\n", &pte, pte.pte_high, pte.pte_low);
+> > +#else
+> > +	printk("bad pte %08lx.\n", pte_val(pte));
+> > +#endif
 > 
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Thanks.
-
-> ---
->  Documentation/admin-guide/mm/ksm.rst | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> I'd avoid that helper if possible, so we don't encourage new users.
 > 
-> diff --git a/Documentation/admin-guide/mm/ksm.rst b/Documentation/admin-guide/mm/ksm.rst
-> index ad8e7a41f3b5..c9f533b10f6f 100644
-> --- a/Documentation/admin-guide/mm/ksm.rst
-> +++ b/Documentation/admin-guide/mm/ksm.rst
-> @@ -174,7 +174,7 @@ advisor_mode
->          The section about ``advisor`` explains in detail how the scan time
->          advisor works.
->  
-> -adivsor_max_cpu
-> +advisor_max_cpu
->          specifies the upper limit of the cpu percent usage of the ksmd
->          background thread. The default is 70.
->  
-> @@ -186,7 +186,7 @@ advisor_min_pages_to_scan
->          specifies the lower limit of the ``pages_to_scan`` parameter of the
->          scan time advisor. The default is 500.
->  
-> -adivsor_max_pages_to_scan
-> +advisor_max_pages_to_scan
->          specifies the upper limit of the ``pages_to_scan`` parameter of the
->          scan time advisor. The default is 30000.
->  
+> Shouldn't we just switch to pr_err() right away?
 
--- 
-~Randy
+Yes we could move from printk() to pr_err(). The above helper
+just prevented an ugly #ifdef block inside if(!pte_none(*pte))
+conditional block, nothing more. Will just drop it then.
+
+> 
+> > +}
+> > +
+> >  static void set_pte_phys(unsigned long addr, unsigned long phys, pgprot_t prot)
+> >  {
+> >  	pte_t *pte;
+> >  
+> >  	pte = __get_pte_phys(addr);
+> >  	if (!pte_none(*pte)) {
+> > -		pte_ERROR(*pte);
+> > +		print_bad_pte(*pte);
+> 
+> Maybe similar to my reply to patch #1, actually print something more useful than
+> just "bad pte" ? And possibly also just use ptval_to_str().
+
+Probably #ifdef could be dropped here as ptval_to_str() should be able to
+handle pte with two unsiged long elements in there i.e pte_high, pte_low
+along with standard single unsiged long pte_low format.
+
+#ifdef CONFIG_X2TLB
+typedef struct { unsigned long pte_low, pte_high; } pte_t;
+#define pte_val(x) \
+        ((x).pte_low | ((unsigned long long)(x).pte_high << 32))
+#define __pte(x) \
+        ({ pte_t __pte = {(x), ((unsigned long long)(x)) >> 32}; __pte; })
+#else
+typedef struct { unsigned long pte_low; } pte_t;
+#define pte_val(x)      ((x).pte_low)
+#define __pte(x)        ((pte_t) { (x) } )
+#endif
+
+static void set_pte_phys(unsigned long addr, unsigned long phys, pgprot_t prot)
+{
+        pte_t *pte;
+
+        pte = __get_pte_phys(addr);
+        if (!pte_none(*pte)) {
+                char str[PTVAL_STR_MAX];
+
+                ptval_to_str(str, pte_val(*pte));
+                pr_err("unexpected set PTE at %lx in set_pte_phys: bad pte %p(%s).\n",
+                        addr, pte, str);
+                return;
+        }
+
+        set_pte(pte, pfn_pte(phys >> PAGE_SHIFT, prot));
+        local_flush_tlb_one(get_asid(), addr);
+
+        if (pgprot_val(prot) & _PAGE_WIRED)
+                tlb_wire_entry(NULL, addr, *pte);
+}
+
+But if this does not work revert back printing both pte formats separately
+like before.
+
+#ifdef CONFIG_X2TLB
+               pr_err("unexpected set PTE at %lx in set_pte_phys: bad pte %p(%08lx%08lx).\n",
+                       addr, pte, pte->pte_high, pte->pte_low);
+#else
+               char str[PTVAL_STR_MAX];
+
+               ptval_to_str(str, pte_val(*pte));
+               pr_err("unexpected set PTE at %lx in set_pte_phys: bad pte %s.\n", addr, str);
+#endif
+
+> 
+> -- 
+> Cheers,
+> 
+> David
 
