@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6CD0C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 19:34:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 582F1C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 19:35:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D93B6B05A9; Thu, 13 Aug 2026 15:34:52 -0400 (EDT)
+	id 0CC3E6B05AD; Thu, 13 Aug 2026 15:34:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B0F46B05AD; Thu, 13 Aug 2026 15:34:52 -0400 (EDT)
+	id 0A43C6B05AF; Thu, 13 Aug 2026 15:34:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F63A6B05A9; Thu, 13 Aug 2026 15:34:52 -0400 (EDT)
+	id E86F76B05B0; Thu, 13 Aug 2026 15:34:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F6346B05A9
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:34:49 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 32F2880285
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 19:34:47 +0000 (UTC)
-X-FDA: 85097248614.04.9BE96C9
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D4326B05AD
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:34:52 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1CE1FA0187
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 19:34:52 +0000 (UTC)
+X-FDA: 85097248824.28.6577E6E
 Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6D5B740005
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 19:34:45 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ADSpODqz;
-	spf=pass (imf17.hostedemail.com: domain of 3VBx-agYKCN8TVSFOCHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--surenb.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3VBx-agYKCN8TVSFOCHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--surenb.bounces.google.com;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 58AE7140010
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 19:34:50 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=oG9KqpL6;
+	spf=pass (imf09.hostedemail.com: domain of 3WRx-agYKCOQYaXKTHMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--surenb.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3WRx-agYKCOQYaXKTHMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--surenb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786649685;
+	s=arc-20220608; t=1786649690;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UeW9TSc03FhuP/zh7xGvN3PHX+dTDVEZw2LsdDCY5ac=;
-	b=62Qb+K69rQJZs7zDvjpufFvcwemIPRxxx/OQdB8G1rPABc6cnwW1GCwXVW5OLhgWy+pFaa
-	MxZnGRWfyFv9N0QylOnjA3nPAc5ovouT6hq+upDVZbZg0rNVEJzG1ENySJejGjs4IoCcjC
-	mRG8U/0Gwl15rvJtP1/gZIdHrjBzDeY=
+	bh=qCaRRVvjGSC4kAtkk2EEVd2d10nX9bq42OPxaiCJ5Jg=;
+	b=kkZ5kr6jVoLrLRoV8UhxNgOYswWnoC8fjXsj78l7wKgeekf0bqEjGn+2qsZEet1gIY/CWH
+	tfuighKGo5sMSn6KtatMRR31jeIRrZvkrsVUr053kAmui5H9/kaxAAxfvWDFY444XJ/vwc
+	lRRRrWxl7X+lmsrQ/OOLgO9Stgw0NVY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786649685;
-	b=3gcopCArLAOByBJUzZpVQys+FwXmbj24TyGd2MULk68eFecCjjbFnP5lHS4IxRsCCX2g2b
-	lpxr9jyGH3t8n6OXHIdYyaBWvGKsVDo19ctl+563qt80tWHFpxP88iCFD1OM1PDpdGTDKh
-	LbgR4OFHwEglqk9JO3pseJ3Zd1eWRB0=
+	t=1786649690;
+	b=XTOHBiojuFnv/uOIJmWkf2US/dDJvTy7Gkjdo89cK32nK3F+PCUpLMGxk7OnaIwB2wZgo9
+	rLD65oAD2d/m1ettFNvSQZfHl2zZJajLUPkcnC+ovW4RrnAEylK0xZopSsVwqcs2E5SWFZ
+	1EZU9XdgbKnkYt8ZEg53RGfWl7D/1r4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ADSpODqz;
-	spf=pass (imf17.hostedemail.com: domain of 3VBx-agYKCN8TVSFOCHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--surenb.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3VBx-agYKCN8TVSFOCHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--surenb.bounces.google.com;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=oG9KqpL6;
+	spf=pass (imf09.hostedemail.com: domain of 3WRx-agYKCOQYaXKTHMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--surenb.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3WRx-agYKCOQYaXKTHMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--surenb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38f97b3f853so324312a91.3
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:34:45 -0700 (PDT)
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e25e4b41cso222917a91.0
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:34:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786649684; x=1787254484; darn=kvack.org;
+        d=google.com; s=20251104; t=1786649689; x=1787254489; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=UeW9TSc03FhuP/zh7xGvN3PHX+dTDVEZw2LsdDCY5ac=;
-        b=ADSpODqzxt/dif60Ifm5pgG/tkSa72j3ETNYckmWbg6MDqr0uPALswF0tB+LDWR9ID
-         7Fhz+LSZfzH8rBQQY5YxhHw8YAiaAnZ5nxlVZfwjX2dQamoKWFM1KP2e49Ul68LxIY/J
-         xN8y3JiYkcwRWlKb7vjqNeOsInp5P1pN2v+a9+aUb8Z0sVkFSIB7HHBRl+vDHbjIYPUk
-         NxGuf4qZogmN7gM9nOjy5N4Jb2CVMeeut6O3KHLd+cTbxCVtZ2qraA0RkugdQkS8EHDm
-         9MQPK7VPLV1AX0NeStFu42Z62x+sWaHiy4mIQ4V3A0TEUyf1Ebk8WjvpiFKURs5XU4+d
-         vcOA==
+        bh=qCaRRVvjGSC4kAtkk2EEVd2d10nX9bq42OPxaiCJ5Jg=;
+        b=oG9KqpL6BJW7Y2r2qW+O0Tkah6MpYihSSs3SP4aQM+AFQNzCpltL/3VpJHnjL6r6HK
+         1crKxpqK1K/mcYVU9m5Reky0CJ+DmHKhHGxb61MNDdsiiXLYzIPzyHZJNjQagjVAmf5f
+         NF+RCMCEdxio8r4wp+QmqkmhIiCuAofALbPSxM/igcDU7U+jDemWA9Vg1x7WD3mObf8V
+         dAutIiA8B0W+YmGiTIBewDaUMUXUDTV3T/9JNLS9uo0VAQJs3a0lM4hoptiJRsOSL6k5
+         /QraEFSr5y3F+HxvCKcqJDKYpTtn8ReO9VRCECJn9sfP6yn5p/FTMXf+vHObDR9VO6+7
+         nQPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786649684; x=1787254484;
+        d=1e100.net; s=20251104; t=1786649689; x=1787254489;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=UeW9TSc03FhuP/zh7xGvN3PHX+dTDVEZw2LsdDCY5ac=;
-        b=BaehJReZKiruzqIKqZ7u2DaeE/kPO1/xdle3LbvLNn9B1Db/Gnm/IjmPecCQWCY02V
-         3J51i3dD5JIXc3yn76KZBM+Oz7x4yYDGIp6GvCly7V67cHz1U25KOtUE1LMXZPr+L7nb
-         hEtZmPE7qKP99VjaUArgm/SYjAS8JBiSQKVW57Jce9tQCndjh/MfdkWZ0wiU5aoqpHx+
-         1IJlc6x5wAK4pSbAdw4A+iUgKkGknmxRFoE0F5QL6Twixr1WxEiAgaPJR0WkMpEr+XY3
-         Fwu2chphAIjIZZ8onnPg3GXdI44jLeN2W2ZICNgB3KjbSIJWZKQ1If19FJUiwDDl6MZP
-         5uDg==
-X-Forwarded-Encrypted: i=1; AHgh+Rp8N6JCmOF7q6tNMJV6GmI/NFrrjoBHuBH0OYKWnGaIpywpnPeg3kZQq++DNif9uoJMANIBd+izfg==@kvack.org
-X-Gm-Message-State: AOJu0YxEhJYAveLo3LaxryAJumm/aZp+5UJCWm86LTE4JzyJB/oiDGoc
-	AIlyF1NwCG2bWw5L6RXABbvLC4OprRHFFzZVYATOYlRrT44K7Gt6ru5JKf2H82gvv5K1ygEPh3S
-	QCyaprA==
-X-Received: from dysw24.prod.google.com ([2002:a05:693c:8918:b0:313:c1b8:bb51])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:184b:b0:37f:eafd:3505
- with SMTP id 98e67ed59e1d1-3933b74d94dmr438744a91.6.1786649684110; Thu, 13
- Aug 2026 12:34:44 -0700 (PDT)
-Date: Thu, 13 Aug 2026 12:34:30 -0700
+        bh=qCaRRVvjGSC4kAtkk2EEVd2d10nX9bq42OPxaiCJ5Jg=;
+        b=XmlZkhhK7d3AXVl1fj40PTYnKYUkGqHk3Raod3kAJqG8I1J6kyfI6zdg49fFdRkn4g
+         DJVZL6ANMnFyoJgsd9Io/iwcwXut4NiQ86lMN60DowU/ES/cAPbwVK/8E51ya8hnpFDA
+         x/2aOOnozn6mqEKdSbehrxd4nZeLqQAsJs7tjmSP1ogIT4+9btCq40rLXxtyBpFDiTzs
+         SxXW8alxkVWHREJu8FK/iRZW5Esqf1QCtJEurN5ijybM2mknsFXyUXSxSUGCmTeslbDc
+         UemalqTVSMaQY2FBgLrI3LblbyaYq1N6WetZxHyasgIdd9YYOPQBn0vac275riPUdvEy
+         hW1Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rp/v9jUiZcG7aynPOlgAbQjwqdUIBOrFZMhtqmwBDF23UZ8tC16CPx4i6iF7/J9Edxjah8PjlPsTQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyot+i4wLGKBIE3dhiL4xAqwdHk4cRPZzvOqtPkUtLGP783gdHB
+	rZaT9m4gPT3oQB00jN+f3vW5YgJLu59tCB72opihJr/LRaTQgbv/+Y+gaSlUgqRV+3CHScJqYSv
+	OupksqQ==
+X-Received: from dlbqk7.prod.google.com ([2002:a05:7022:ec87:b0:13d:314a:1ffa])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4ac8:b0:38e:11ba:992c
+ with SMTP id 98e67ed59e1d1-3933e5d22acmr228908a91.12.1786649689046; Thu, 13
+ Aug 2026 12:34:49 -0700 (PDT)
+Date: Thu, 13 Aug 2026 12:34:32 -0700
 In-Reply-To: <20260813193433.3318288-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20260813193433.3318288-1-surenb@google.com>
 X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
-Message-ID: <20260813193433.3318288-3-surenb@google.com>
-Subject: [PATCH v6 2/5] binder: Make shrinker rely solely on per-VMA lock
+Message-ID: <20260813193433.3318288-5-surenb@google.com>
+Subject: [PATCH v6 4/5] binder: Remove mmap_lock fallback
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org, 
@@ -103,13 +103,15 @@ Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: 6quaupzk15o9w9xa5tm7nfmnw9967861
+X-Stat-Signature: fktrsds3rtjbsgfxgarux9154ksuit7k
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6D5B740005
-X-HE-Tag: 1786649685-553374
-X-HE-Meta: U2FsdGVkX1/XoyaStAbeGpYp5W8V3ZRB9oZa+zIsTgj60aKniK2PdHQOLLXdkrjSvP/OxJF8LDhdP2zdcSokuJuaJq1njtTpCd42PUoFZEndM4bvrlGtuJuyt7W7F2/jKI0eB0HqqRCp1LJBe4it+0bIbe+sxOq7ak+MrpB9JFB7i6Dwkt8NL8ULOeHYzZn7RVBEx8VgpOiTGLsgZx8SePA250GdlQgvIYqxRc/s/GdpXCeExbtqqsALsxBJ+EvdjVhq9zWX2mgoo35cSHXki+Eyifm50/HR+VxXYRWYesUu52TxtUpxspctsbpttjz1NMo42Br15OWCyoUdqYsXqS/zDF0yd7NIzRcalmN6V0WremJB1pGnLFZPbu1i8eLU/J1r9H6XMO3Y5i4DrXERPs+RQRArBnYxPVlV8yX48oz3upVxiCVYftimwSFIOTJILzzTLPDG83Y7KvmBIY7oI838SnaqlBonuinQBMRHydhvv32LVFEYZbiRGl8YAUhAwPKgQKSTdgprp3HIPLlM+4SNQ/Q2UecewUXaTy+t9Kj9Qz51AuIz7/3UpBqV0AypsB1P3AZa6OLeXLpFpGDHwtIqfg6ggC3ckmjMl0Aj1xUuQGEraOX1XzGHUVrFEsQoiPqFIQCNQqqD02AMlsKngGo0MJJmh3ETA0mWLgcajp3+O+iejmL1oWiXmo1vh4atVFy224p1YSPBLXRuNZVMBoPRphLM5WEnSrMqlngbEjrGzdD3s4M55JAxgjGjkonxND+Ku601ja2LRMovXDbpV9gMvzaCNG4ekH0dyaW1RaW1kRPxj/kiMzTDwEvB1sIAQgt5zTToZVPXqUo9Cyt+ZawME9AiHDaN9Yv2Y8lCLGA3AxcybTi5w7mqYPyMgR0B7fs9ajj48pqNZuDDIWieqrOu6OI2nBEV+J/HOXfMQNQgxzGfYMT1Knk6YsKcn4OUGtGSpbXm5Yig35ZAlM+
- jk87aBj6
- fIceUnXHfpt/FjqbMYSoAeCr8GMSJmiG10ktMOO/K3olP1ysickGIJvPLA1k+ZfIotFo1qtKSLhA73lWrxkaVcqGGAqsEjRirKtdnEoz/OSIfn9RAqrh/IR3wZMuf/asWJODXrRYBRD7OQ/AGwZUOD5vMsEvu509vD4lusqEn2abEw5le/3aBBL+f1xIKxkNEJll25q4g0NZVoJhZGRvx7nkpOU1FToE0T8Ia98qXACc40PmJN7mAtdc572ZKH/x7ULUdzirq6A+xFKyBMmWIFtyytBtgDMd/zVxBSd4aQQg43LA245eCT7l2o6fY16RoKt3JzGjqgigeEw7DaAbci9R6rDeLzfFqgATGWdumW4NPJ0vL+uIObJPe+d3f0hyC7tI4/byTou7ESa2zXU5Z2nBdKCfDDE1e+rhBkdmB7W2oLoN7v2aEnXDKIi+P7Mn4uz1bBRcPs0E0JMIYvfO7rkcq5l4xAZ+GgAjQXYXge+gZPo4qFKCRki1r2N1qARtVhJggbklhIHgukpT514LVCmVUQ8gF9LL8VWfG6haeU0Sw6q4739YCekxNcp9Rw1/a9LXm+dwABtJmXAli4RMQCxUR6SiFcuHC1PtGmX/sW2LDyrtq4UFnfRQE8wSeqwHgK2/105AoLT8uDZQBpFk70LgrQYWH/cX39o+C0pqTDAe79fXOulMfzQwXcfqNWTVLs+j6vDrQt+HiVWgeVZomZq74WXZ59pKIDuBiXFja0pUa3vuCrMSdkmA2KDWwMC6gzOiqZIn6PIUeCpamys58IFGs+10PZUgZ+yvDh2pYTV2byeOD+krnmD/zAol35KEUAlrawZ8KOC985SpmctWEgbF5Y3YRTrcCoGBiJRg4DiHixmJZeKCsbR7kJc6qetj2UqsRsFBcstn2meWajpEDbbqZxu8v/rQ0QJPwALRGf+mMj7tFv7w8udk2va5lX2S6p0wt
+X-Rspamd-Queue-Id: 58AE7140010
+X-HE-Tag: 1786649690-881079
+X-HE-Meta: U2FsdGVkX192IE1A6ptO3E+kwyU+8cY+43pZeiWOyQIsSS97wc4qWZy7a/pC+a0OzPXQ6Eap+n90y3BIEdQN/KZ2Iyq3oJoFMnnt3xPOx2dxXe7AKNuNikwi72jASBDgU3PLZTv+jJrsGh/DuX+9AbGCZzRQsLbqLMlISiVmBNrsKEsreKRXFMPWqyhpfZZPTxNET4dvTho3Q3VXpFoO679Xvk91lUUlsUIm6g6g2aUrlSdNqxzWJ45sl21IYU8y4ArN6ZLz7fM7dXG2z7/abCZXcMx48fwBp7OWgO2LEfOo3vkjhA0wZHagXlMrRtIy3Nd4jK2Cj8WvJbcfAj0FkEB59N/M/acxscNEny+JvBvOgJX2vSv4vyGJAT5elDDbar8Z9KiIqveqPz5h3wx5MWX+xwbT2KMPDRtatrY6kEvaXZlryoThmaHFyOOkJ3khNe03R2E9eYLvyKoEtXF+pPUs1XB7CTAvgFeEWicwu+gNRyUZBWq1exoZJt8CfPfj+GdGDOPHpxza+KvWRGIxAAh3X3U3+W6F1B4+6EdpWZ4GnuykYMvwcdv3BphUZlpF4/wrPUBWzRP3svV4m/EFJVZOU5GuUdeH/HAOZZ1fk45/tbMO+fOY72Fe+xneaY6a5PnSov1oldFaUUsSy2p4zPNkZ115K5hjbCHUCmPYqGNKQiYFhaP1urFWdkWKL+PrW++hQIpUDbNMAEARTOKHApDltaJAQtBZYiNpn89765D0/LrFX+xOGeAnMj6sQa3mETr75TRbv3F0mMF/5Ma9F9aL32r/oq1PBVmvp+3ayh3RQS7jeLglDJBMaktQt8pizjdKFW5XWxzUE7UX6Hm6YkJKOpvSt2dKlFIybRYcSKZOPyqp7dnrGMT5qdbhp9FFM+03vWxfzhTEDwAH+K+1mGRFV0L2UAJa4naLepRjltYrC0u1ijyc79wtQWw0g5G92doNIOMYRb9teOgl8Uq
+ rasMBb2+
+ ikwrHbWiCgQ9dVjd0qqw2VjvKIHyzyCCE6b6EbBWOIjG7XasuArXQj69mkWxubV3pKeCRul5b4LvugaGgsYQX/HCnNvlSbYcAVkLVi81Pq/zWRndldYN/sBg4NcsUWE0npf8wouO1EuvQT3VE2F/Sa4fA4kk+8apN3Wm3CONylhnRX5NN4Y54ylXC5Rm8Z+W38n4Jtst1dA9QW7lDLvLyH/zVpYi7wTVl+Boj1VTbPpJ0AdPS17twA8twdcXpjRJ+lM2p9HdkOgPgaWksVq5RJcmKTcyWkSN9so6GnxJthZ5VGWNbBuTJ6tN23hxt9IcqWep6Q5CIeH05SNOhQQKTSRAZGQ4zi9tDPRDe6HX3B6fSXSE2+vneIlQHz5qHqpU90j5F9du/PQMCEnxCdiGmP3KArTwkfPnb/W5Bf5njVhUHNe9R6xbFP42W79UI+1qmRwIWAjFMcnqHyO4gk7C3tOV6WeUuLUhTgC/h1dF5nQfC0pmQBaTdUGkSlxIX39uHXeOjpoE59KcN2S491NcMin1qjlJ7Etbp+K75PAn1ASxxhGEm7tNyLJPD1MWa6qBmEOBaoxRCnrQLoxzcdqkDKWwCK/RspuYIWAemvyXffLZo6CV8873i2FzyGF3SiUeTsGU6FccIJd3JHUmLDfY/zPvpnrHXjzGxnOAGVSFK9jC0uqGTnNl800tw+sfJwTsItgU7Bd6tikRiUFFaumyjvmCClMPlRshxN+iV9yxC+HRgUKUO+reGJj/3ChE9lsSvKnaAkCQzM9bcsUsmuZxyBJwmZnd/tIhR8NMMbkB2yeWtDUnmOZW7pwOcQ5jcfJSd+2H7wYkuDg7U1DbyOfNFZA6rWUfaHDWFN7TaGznadzy9tz2hkPY7xPDdG/oqE/03gAyWt1hZvY/erACpmvf+Q3edkLsTRdFla2L27PtAbrFFjmUH9CrBoKnjiN2lLzcz4kXxYUeKnvac73oF+DTXbl76y9Gz
+ mZq+bEGK
+ vaKpr/nRDok=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,63 +121,15 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Dave Hansen <dave.hansen@linux.intel.com>
 
-tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
-it and mmap_read_trylock().
+Previously, the per-VMA locking could fail in the face of writers
+which necessitate a fallback to mmap_lock. The new
+vma_start_read_unlocked() will wait for writers instead of failing.
 
-Long Version:
-
-=3D=3D Background =3D=3D
-
-Historically, binder used an mmap_read_trylock() in its shrinker code.
-This ensures that reclaim is not blocked on an mmap_lock. Commit
-95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
-support for the per-VMA lock, but left mmap_read_trylock() as a
-fallback.
-
-This was presumably because the per-VMA locking can fail for several
-reasons and most (all?) lock_vma_under_rcu() callers have a fallback
-to mmap_read_trylock().
-
-=3D=3D Problem =3D=3D
-
-The fallback is not worth the complexity here. lock_vma_under_rcu() is
-essentially already a non-blocking trylock. The main reason it fails
-is also the reason mmap_read_trylock() fails: something is holding
-mmap_write_lock().
-
-The only remedy for a collision with mmap_write_lock() is to wait,
-which this code can not do. So the "fallback" after
-lock_vma_under_rcu() failure is not really a fallback: it is really
-likely to just be retrying in vain. That retry in an of itself isn't
-horrible. But it adds complexity.
-
-=3D=3D Solution =3D=3D
-
-Now that per-VMA locks are universally available, lock_vma_under_rcu()
-will not persistently fail. Rely on it alone and simplify the code.
-The removal of the fallback does not affect NOMMU case because binder
-driver depends on CONFIG_MMU.
-
-While at it we also make the handling of the cases where the original
-binder VMA is gone consistent. There are two cases to consider when
-Binder VMA is gone:
-1. there is no VMA at that location anymore.
-2. there is now another unrelated VMA at that location.
-
-Before this change we handle case 1 by having the shrinker proceed to
-free the page, and just skip the zap_vma_range() call. And we handle
-case 2 by having the shrinker return LRU_SKIP. While either behavior
-is acceptable, we need to handle them in a consistent way. Handle both
-cases by freeing the page without touching the VMA (skipping the
-zap_vma_range()).
-
-Full disclosure: I originally tried to do this with
-lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
-trylock semantics. Claude caught this in a review and suggested the
-approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
-I guess.
+Use the new helper. Wait for writers. Remove the fallback to mmap_lock.
 
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
 Cc: Vlastimil Babka <vbabka@kernel.org>
@@ -190,111 +144,131 @@ Cc: Alice Ryhl <aliceryhl@google.com>
 Cc: David S. Miller <davem@davemloft.net>
 Cc: David Ahern <dsahern@kernel.org>
 Cc: netdev@vger.kernel.org
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- drivers/android/binder_alloc.c | 46 ++++++++++++++++------------------
- 1 file changed, 21 insertions(+), 25 deletions(-)
+ drivers/android/binder/page_range.rs | 19 +++----------------
+ drivers/android/binder_alloc.c       | 17 +++++------------
+ rust/kernel/mm.rs                    | 27 +++++++++++++++++++++++++++
+ 3 files changed, 35 insertions(+), 28 deletions(-)
 
+diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/=
+page_range.rs
+index e82a5523804f..f7ad88a0d806 100644
+--- a/drivers/android/binder/page_range.rs
++++ b/drivers/android/binder/page_range.rs
+@@ -439,22 +439,9 @@ unsafe fn use_page_slow(&self, i: usize) -> Result<()>=
+ {
+         // workqueue.
+         let mm =3D MmWithUser::into_mmput_async(self.mm.mmget_not_zero().o=
+k_or(ESRCH)?);
+         {
+-            let vma_read;
+-            let mmap_read;
+-            let vma =3D if let Some(ret) =3D mm.lock_vma_under_rcu(vma_add=
+r) {
+-                vma_read =3D ret;
+-                check_vma(&vma_read, self)
+-            } else {
+-                mmap_read =3D mm.mmap_read_lock();
+-                mmap_read
+-                    .vma_lookup(vma_addr)
+-                    .and_then(|vma| check_vma(vma, self))
+-            };
+-
+-            match vma {
+-                Some(vma) =3D> vma.vm_insert_page(user_page_addr, &new_pag=
+e)?,
+-                None =3D> return Err(ESRCH),
+-            }
++            let vma_read_guard =3D mm.vma_start_read_unlocked(vma_addr).ok=
+_or(ESRCH)?;
++            let vma =3D check_vma(&vma_read_guard, self).ok_or(ESRCH)?;
++            vma.vm_insert_page(user_page_addr, &new_page)?;
+         }
+=20
+         let inner =3D self.lock.lock();
 diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.=
 c
-index e4488ad86a65..fcb744088e77 100644
+index fcb744088e77..d6eae0aa7085 100644
 --- a/drivers/android/binder_alloc.c
 +++ b/drivers/android/binder_alloc.c
-@@ -1142,7 +1142,6 @@ enum lru_status binder_alloc_free_page(struct list_he=
-ad *item,
+@@ -259,21 +259,14 @@ static int binder_page_insert(struct binder_alloc *al=
+loc,
  	struct vm_area_struct *vma;
- 	struct page *page_to_free;
- 	unsigned long page_addr;
--	int mm_locked =3D 0;
- 	size_t index;
-=20
- 	if (!mmget_not_zero(mm))
-@@ -1151,27 +1150,25 @@ enum lru_status binder_alloc_free_page(struct list_=
-head *item,
- 	index =3D mdata->page_index;
- 	page_addr =3D alloc->vm_start + index * PAGE_SIZE;
+ 	int ret =3D -ESRCH;
 =20
 -	/* attempt per-vma lock first */
-+	/*
-+	 * Attempt per-vma lock. This is essentially a
-+	 * "trylock". It can fail even if the VMA exists
-+	 * for 'page_addr'.
-+	 */
- 	vma =3D lock_vma_under_rcu(mm, page_addr);
- 	if (!vma) {
--		/* fall back to mmap_lock */
--		if (!mmap_read_trylock(mm))
--			goto err_mmap_read_lock_failed;
--		mm_locked =3D 1;
--		vma =3D vma_lookup(mm, page_addr);
-+		/*
-+		 * If the vma exists, we can't continue because we cannot
-+		 * remove the page from the vma. However, if the vma was
-+		 * unmapped, it's okay to continue.
-+		 */
-+		if (binder_alloc_is_mapped(alloc))
-+			goto err_vma_lock_failed;
- 	}
-=20
- 	if (!mutex_trylock(&alloc->mutex))
- 		goto err_get_alloc_mutex_failed;
-=20
--	/*
--	 * Since a binder_alloc can only be mapped once, we ensure
--	 * the vma corresponds to this mapping by checking whether
--	 * the binder_alloc is still mapped.
--	 */
--	if (vma && !binder_alloc_is_mapped(alloc))
--		goto err_invalid_vma;
--
- 	trace_binder_unmap_kernel_start(alloc, index);
-=20
- 	page_to_free =3D alloc->pages[index];
-@@ -1182,7 +1179,12 @@ enum lru_status binder_alloc_free_page(struct list_h=
-ead *item,
- 	list_lru_isolate(lru, item);
- 	spin_unlock(&lru->lock);
-=20
+-	vma =3D lock_vma_under_rcu(mm, addr);
 -	if (vma) {
-+	/*
-+	 * Since a binder_alloc can only be mapped once, we ensure
-+	 * the vma corresponds to this mapping by checking whether
-+	 * the binder_alloc is still mapped.
-+	 */
-+	if (vma && binder_alloc_is_mapped(alloc)) {
- 		trace_binder_unmap_user_start(alloc, index);
+-		if (binder_alloc_is_mapped(alloc))
+-			ret =3D vm_insert_page(vma, addr, page);
+-		vma_end_read(vma);
++	vma =3D vma_start_read_unlocked(mm, addr);
++	if (!vma)
+ 		return ret;
+-	}
 =20
- 		zap_vma_range(vma, page_addr, PAGE_SIZE);
-@@ -1191,23 +1193,17 @@ enum lru_status binder_alloc_free_page(struct list_=
-head *item,
- 	}
+-	/* fall back to mmap_lock */
+-	mmap_read_lock(mm);
+-	vma =3D vma_lookup(mm, addr);
+-	if (vma && binder_alloc_is_mapped(alloc))
++	if (binder_alloc_is_mapped(alloc))
+ 		ret =3D vm_insert_page(vma, addr, page);
+-	mmap_read_unlock(mm);
++
++	vma_end_read(vma);
 =20
- 	mutex_unlock(&alloc->mutex);
--	if (mm_locked)
--		mmap_read_unlock(mm);
--	else
-+	if (vma)
- 		vma_end_read(vma);
- 	mmput_async(mm);
- 	binder_free_page(page_to_free);
+ 	return ret;
+ }
+diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
+index f4fa54616085..11466fb304df 100644
+--- a/rust/kernel/mm.rs
++++ b/rust/kernel/mm.rs
+@@ -186,6 +186,33 @@ pub fn lock_vma_under_rcu(&self, vma_addr: usize) -> O=
+ption<VmaReadGuard<'_>> {
+         })
+     }
 =20
- 	return LRU_REMOVED_RETRY;
-=20
--err_invalid_vma:
--	mutex_unlock(&alloc->mutex);
- err_get_alloc_mutex_failed:
--	if (mm_locked)
--		mmap_read_unlock(mm);
--	else
-+	if (vma)
- 		vma_end_read(vma);
--err_mmap_read_lock_failed:
-+err_vma_lock_failed:
- 	mmput_async(mm);
- err_mmget:
- 	return LRU_SKIP;
++    /// Find the VMA covering 'address' and read-lock it.
++    ///
++    /// The fast path does not take mmap_lock. Waits for writers to finish=
+ if the
++    /// VMA is being modified by taking mmap_lock.
++    /// Use when mmap_lock is not held, otherwise use vma_start_read_locke=
+d().
++    /// Nothing prevents VMAs being unmapped/mapped before or after the VM=
+A is
++    /// looked up, if a stronger guarantee is required, take an mmap_lock.
++    ///
++    /// Return: If a VMA exists which spans @address, return that VMA, rea=
+d-locked.
++    /// If no VMA is mapped there or, very unlikely, a reference count ove=
+rflow
++    /// occurred, return NULL.
++    #[inline]
++    pub fn vma_start_read_unlocked(&self, vma_addr: usize) -> Option<VmaRe=
+adGuard<'_>> {
++        // SAFETY: We may invoke `vma_start_read_unlocked` because we know=
+ this `mm` has non-zero
++        // `mm_users`.
++        let vma =3D unsafe { bindings::vma_start_read_unlocked(self.as_raw=
+(), vma_addr) };
++        if vma.is_null() {
++            return None;
++        }
++        Some(VmaReadGuard {
++            // SAFETY: If `vma_start_read_unlocked` returns a non-null ptr=
+, then it points at a
++            // valid vma. The vma is stable for as long as the vma read lo=
+ck is held.
++            vma: unsafe { VmaRef::from_raw(vma) },
++            _nts: NotThreadSafe,
++        })
++    }
++
+     /// Lock the mmap read lock.
+     #[inline]
+     pub fn mmap_read_lock(&self) -> MmapReadGuard<'_> {
 --=20
 2.55.0.691.gc56d675ccc-goog
 
