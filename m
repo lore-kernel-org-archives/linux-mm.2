@@ -4,135 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D103C5CFEB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 13:51:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0748C5CFEB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 13:55:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96D7B6B0278; Thu, 13 Aug 2026 09:51:55 -0400 (EDT)
+	id B49306B025B; Thu, 13 Aug 2026 09:55:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91E7B6B027C; Thu, 13 Aug 2026 09:51:55 -0400 (EDT)
+	id AF98E6B0271; Thu, 13 Aug 2026 09:55:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80FC76B027F; Thu, 13 Aug 2026 09:51:55 -0400 (EDT)
+	id A121D6B027C; Thu, 13 Aug 2026 09:55:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 558326B0278
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:51:55 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E3C0B1C0154
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:51:54 +0000 (UTC)
-X-FDA: 85096384548.27.D3ED960
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 184781C0003
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:51:51 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=thingy.jp header.s=google header.b=Jou+P0RC;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf20.hostedemail.com: domain of daniel@0x0f.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=daniel@0x0f.com;
-	dmarc=none
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786629113;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 80E686B025B
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:55:47 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 12452A017F
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:55:47 +0000 (UTC)
+X-FDA: 85096394334.25.7BA1F3A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 701AFA0009
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:55:45 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yu23tjCZ;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786629345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i/TpxUYDdMY4Q9xfy8YfqP8QfSVp9kiSqoVc/8L35II=;
-	b=BNN81Bx+/mYF5blTkeHEgMsl+udN8nhCw41dNDl6NuXl8AILwjuhqtzBGmcZJTXYvRzzgx
-	z16cnHUCCZ7WUBFjInEJsJG5NWSIKB6PfywoDXfdpQaSyiw3+8i6hiYxxPyVQyiEuE0KGy
-	2u6meOT/cz6BwKt8dMjEFYKyc2bsgzs=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=thingy.jp header.s=google header.b=Jou+P0RC;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf20.hostedemail.com: domain of daniel@0x0f.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=daniel@0x0f.com;
-	dmarc=none
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786629113;
-	b=lnrNllwTqE5pPH/P3rmE4sN6NjR0nBjuXrfd7tSwmbMVkvBDwFnZbHeabB95/gYyfAjEBy
-	OzG8vMuLHJrXA5Lf2qXdIANDNMkqMcCYJyQF1gF4QMEUGq9eaQuLIAV1HXXI5PqaRAGj7g
-	iujz0kQatueyC5W05YKbxcwOqyt8vPE=
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-ca7c1176317so617496a12.1
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:51:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786629111; cv=none;
-        d=google.com; s=arc-20260327;
-        b=lxggz5BEHwkS0fzulhi0WY2LsXFEReS9sFLMNdWuZ8shC+2l82sJfuCSLh1Kgl0jms
-         P5Lso6SpHdZWpIhfYzD3pHEI4Nnsj8hQv/fzcexkHqCy9bPTpM3jH2jm3J1S3slHBsiE
-         Y7ikP5WxoDoy1dWf2TAE+C23JKN3TWBmprmmHwe5yhQGMUFY1UeHIJSaQjR1gLlz7VLw
-         bwXcMbtx1K3m10ngdfC5NQZ8kKGbJzVf1OBvlo0HAyECxGXkg0ByKpj3sc3S08tqg24X
-         8UzGIH/AjDkKgHZllaPrZ+ADwuuWOSOt43HYm3RTm/1/QjQftOxs7E3dWG9e9B+Ev+AR
-         nxJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=i/TpxUYDdMY4Q9xfy8YfqP8QfSVp9kiSqoVc/8L35II=;
-        fh=3oNK/EYIEKivSyoNwfl6YUceSy7XwWZ1p8ry/dzrEcQ=;
-        b=izfTjVLBQh9fgmgrPMpVf9inrgWtiTFJpkxcpViNmoLjSGmBswyyFbGla6y96ICskz
-         GyqoszZ5ilzFy7EjbNSssu1/Bgj6QtzyzitPFat4eOVOnSJgFzIXod+3AxUnAiRKZI9J
-         FIMJ/oluvJIIIs5PVpVglfyxISalbmAADNSNAWE8CSeQlwdrJ9caI7Itf1PzumsMK1xg
-         XrpMifOeKSnMB5xHb5mfKFvWlOHFFHYTO1N5G3qVBgKeZIZAGp7ChjPXaehZ+ooD8v7Q
-         f2+ke3J5+7qTM5rNw8zAEe5ZgvDgva2Ci2bOrMTKY4S8OaYeJysWTiZ5bksA5XFtCqar
-         MGrg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=thingy.jp; s=google; t=1786629111; x=1787233911; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=i/TpxUYDdMY4Q9xfy8YfqP8QfSVp9kiSqoVc/8L35II=;
-        b=Jou+P0RCvLn7njxJtsaXGctQk1Dfnz/UPAL7v2JUVvMtCymKhv7SxscANLv24mIbjh
-         Nk/0dWvhYMR/yzu1wi8JCJ8c9egij6vzu9+ORTHdMIXfxUQxKYhmmgFNi9PHdhCKa2yG
-         R8U7WWJrzRbwctgIyvgK/W7hoLGqkNy5LByIM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786629111; x=1787233911;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=i/TpxUYDdMY4Q9xfy8YfqP8QfSVp9kiSqoVc/8L35II=;
-        b=A1B641bWbYXy6p8g5EFK+qK/BKreQxCCJjqOeWM1wCeTH2OKFskkmOZAdNGuQkMd1b
-         NbGRB2ufrxv9A2NBrFEaUE8PHFKydVqg3jlB7Nd+lRptkA5YpSvDDcYirPAjETubu2k4
-         PROplAUBtdPu04JL00ff0W+qpUu3hmdLWqpr5wHkyMIlMI5V/EtgsrWHUen3okJqX1uU
-         239pILxPrU5qyR9RB8s4T6VQ61VzizbDq9CtBy7dHb9q9Oc6A8f+ViIWMHO4mKduYRa8
-         0veyVzJi0++Dt6xyA3RUKz240VVOMm9KzzEKBRu6XXZnPzoixmpS4NlE8sYyGxDL8Ktr
-         t6sQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rq/kO8xhfjp9qxNW0LB5sXmLP+mX9NMA9bS77XbXq0dqaQR3gmVq3KKOe3c8qQlZKGPJk+poG324g==@kvack.org
-X-Gm-Message-State: AOJu0YyvubNARhytKRlSzmwHrJoUp0ZYzlxXe8N2C5AZJrMw/ErMuOEA
-	x4+uGOJAXca9GejHqAG4IrxRIUN3aUDdvpdME0nBq4mxmyNdBUSUxtvBC1TcZ2QayZKppWRuHEk
-	+UaEAxiDrNh6hsUp5Bxdd4OYQnfg37WefdJCdo3iPVA==
-X-Gm-Gg: AR+sD10DvEUap0Bg3OC8K4SX64bHXx9s1SJ6dR4aimBCh+cKdcaErIPlAXXz911Zov8
-	uKBKCiUGolZ5e7UHtazBUm6L40MllT2OVBWI1kxzPMLbgfJiJd5EuZ/jx1IHD4PWero3Y6Ei+Id
-	F19PlAx5ALuYDVjR3AuWk4juMg850hgmlqG9EgmrDUDQG6jGMeIsa5lxB0vdanZwQypR0SHAzH3
-	9fYW52UjP8TJsDEAVIPBV49rwDL/9mTp8KIbflSsxJUaNIsiELi3N8mu69nv9g+F5UyXCqrodIS
-	SeIHIoXxYozapbZd4lLvx2c/ZWwJ06gUZlAMI9rlIq2Harjj8Ey4C6iOZO8WINyHPj3AoN6/NQ=
-	=
-X-Received: by 2002:a05:6a21:62c7:b0:3c1:85d:fa2f with SMTP id
- adf61e73a8af0-3cc554d4f6dmr8080310637.36.1786629110629; Thu, 13 Aug 2026
- 06:51:50 -0700 (PDT)
+	bh=4O5XEeZocNetZ7qyN1aDqk/yfr0Rg6N9g8gJngopdVs=;
+	b=G3qFsXXIToO/V8PkRAPu6ljSu3h0yJw0fuSRTsXEF+4dTelK00TSHtaJBo7ojb9d1tT+IE
+	7LYq7as7MTPc1iIxKEhts5RZhsN5ZppM4z3sE/N0fZyMKin0cLO8zd4IEfZfF5c5Sp7VcC
+	bj2uH0H7MOr7lEU+Hnq9IWI9wtjmmzw=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yu23tjCZ;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786629345;
+	b=EnjWzk89mCEno66NwN2reGqtVlyhtEF6z9KoRGQ6B0AY+weZoMH222M0X4s7kjdbEsDKc9
+	cwqvCjjYTkKA5Holng7rG+gO393h/PblZRVmBYB54anZtfuDm18xULCacQPOcBwixJhgXd
+	zuh8J8vFExLUTvz4KKOFU8Hi759enkQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 418F841441;
+	Thu, 13 Aug 2026 13:55:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8ED21F000E9;
+	Thu, 13 Aug 2026 13:55:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786629344;
+	bh=4O5XEeZocNetZ7qyN1aDqk/yfr0Rg6N9g8gJngopdVs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Yu23tjCZTaClsSYTUZVBfgHQKBSOkirzVAcnaBgutxH09oGFlO3vY8s84vCwbzaXa
+	 3MsipDR3OXfZAOzTfFYI0hveMI8pfrQe3BXkS2cnK5T0nlhFL+/1f45+MvwdHV23mO
+	 FpPBVSPHVKd53yQpWkMPBVQ/Bk1LqgTdpBkwegnAgQJN8p7thuOYHKUWQE8HUnNXKP
+	 9WptMNFyWIjSThMt7zIdF7QA6EUC5lyB2X0tgNffQDjWX1V0/6toschDQ86Po6vtQz
+	 hhWsda0gXwtJO8rLG8m5BSiMDFMCGUz6w8pJZZT6rGL2AeirNzH+9rILcqIJkewFZd
+	 1cGx8HeJab9dA==
+From: SJ Park <sj@kernel.org>
+To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH 1/4] mm/damon/core: handle NULL ctx parameter in damon_call()
+Date: Thu, 13 Aug 2026 06:55:35 -0700
+Message-ID: <20260813135536.103668-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <ed32d112-2873-4e29-9d4b-d5bc72b70f52@huawei-partners.com>
+References: 
 MIME-Version: 1.0
-References: <20260813063401.1786548-1-thehajime@gmail.com> <20260813063401.1786548-4-thehajime@gmail.com>
- <2026081355-remold-sterility-84f9@gregkh> <CAFr9PX=zC8GnxwrR=wTwA4xQq89cHYpxZWooS+-=Q-WuNbjanQ@mail.gmail.com>
- <an3COKVbgQKdY52d@lucifer>
-In-Reply-To: <an3COKVbgQKdY52d@lucifer>
-From: Daniel Palmer <daniel@thingy.jp>
-Date: Thu, 13 Aug 2026 22:51:39 +0900
-X-Gm-Features: AUfX_mzxGDAqX_BvwA0fMZR4ykuQ8TryBISoFdwPrCVEwtYNSaZSFJLhnRKlb64
-Message-ID: <CAFr9PX=dkFhD5Q7JWaR+rXt_Ah5n2hxi2W3biqQsUC77dAaZgQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 3/6] mm: nommu: fix an issue on map request to /dev/zero
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Hajime Tazaki <thehajime@gmail.com>, linux-mm@kvack.org, 
-	geert@linux-m68k.org, Arnd Bergmann <arnd@arndb.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 184781C0003
-X-Stat-Signature: 8qetjmpgiqi696o3mztuf8usy3ewsn9u
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: xok75t7omnm4yba33wfyoepirgbun647
+X-Rspamd-Queue-Id: 701AFA0009
 X-Rspam-User: 
-X-HE-Tag: 1786629111-731040
-X-HE-Meta: U2FsdGVkX192ubveXXXMBnq9Fy2/NEeJIU5sV4GDdJ/cSA8L94eUj2pfMLVk8LDlQFzq0EmX9407mR81quoWnZlGjZ7v9fSozxoxM6Ei4LdD3ee3UnZ0zykqy5W8ct3fGGn8QIi0CzZonyo+cMJ1GUPoiOmOd/s38tYqdr7vAelOHAielL6xHqI10j7V1DAdXJEtWThelGiEenVs6VzlEzDpaAizn3VX1k/WhLK58lnsvpVXh9E/Dl9NG/CxP268IZ+G89U+ifTB3u+uRnruO00aijm8mneFWzAXKsHpOTPjEOs3CQZSKeDz5Fb74hbQepKxXREL6HcZzLaoVShY6UJt4+w0VbdUNAFMfczuB+H0uvFgQwtDiU7CUc9HirtwNQP+EkkZXam4xYA/MFkhx4tptjcNN0jOasMOZ7VSqYXIB/zj+63fIPhzpqemSujKtAClbKrNJa+SRdAwhiDBFqjc/6X+96RMFFm5e1nPFyr2uC5YgGw3J+2n83AgMx2yDeIi/D4Szl0Y7nk+H+wwUdmOJU9N20wOcXzSmDwfDSLMZlGxXGNQVxD5DtocmFwV3cIv8PRTJoQW5R62h8D035I4uUrzb/Bkv999Lf6tTD2az48c7G7Y7wsWDMiH7dWiHT9Oyis4dmrfVWwGTuLJjlkfPcBN5EniG0YkBlTvsVZUR0lOB7b9xsTiPZ9gxc/ownRW1qTCahCfKvSXb6gb08WERE2bn8KSdpE2kGRQF+XgwER5nDwWD0jeyq6kRuU5arBUpUBW685yS9WDIjVxzYmNK80Kr5BvXzPIfWp8jS135e+25ert14JKOnxCkNO0FTqJ1imHuFBYl//PNNlFGeiHq1Tt+O83eY9pRoulFfCvLi9W6105Uv+PtSDewNiYpKFW8Goph9I9J4I4dg/pnF9f8zBNdk52xksSOJ4HjQ46OP/mPQzwskmYA3GmVY2c/VR10rt1b8iAyUWTvhF
- WYlRkm61
- PupRWSLrUKvmG1p2Sy+tZUcYwVHP6/V7LSufi6ChnnwnxwDFHm+4kPX+4pOjn/W2l1YtNOL9ORt+DGBvOx2jAGS4d25lJvNm3EkKqUgC+adtvrziUnjFawxE/a/y+DFQ23vq2Y7tW+iUHVNd+/bws9hjeV3IRRNWBtKppt3Mnb844IKanuUNuVdKvM3tBT7GUCGNmtiXrgEHK8IMkQCsB4g+z7UucLgzky2UjQnfIApsKwcV00BAung6IT75IuLRAW24l+R6i+Dh+ShoAeiP6Zc9KcB85MhCF4BvuObDFAvh0FrDZ23D+BTQOgZgNjsFwIBrXNBQH8SCi7kaHDFn093c3d9po5u/9MjbG
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786629345-46486
+X-HE-Meta: U2FsdGVkX1+UThGRM5oJMUbH3AsieltaQXSsEg0Dxxkckb3sfKMlNLxw9eESPUgIoDwCnYFyqOejoBX+Yp83Ivd0uFC17xFvDPQxbJkBnNhQHPwud0viq104p9OY3jcV0JLq9GYuJoO+RweybVTD9ctoBN9JDrGQnq6d/YUnN3Q1eQp8FC9a8JJcVFTe5C3z6KckxA7LMjZe1oMLUwjY6bO+gTzhi2Jvg/ArAWMWTq649beUNrC2O2LkaAbeoOmsHE8FCY13nfVDQumJts7crjZRcSnQjbrTB0wjTPEowvUkRZUCl0gc+xU4UFTT0fZ1oNpAyhubb5gjYGppj9CAXDLqxqYyjO/svnj0A6s/yxmucjcbczzibrjkdwunWOjDfAJx4nQlyjjGBP4dhgqmE+1Wo/tr4Lte5r/mHfcetyepZnx0tNYT8+j1OJ/XC04JYuEgOZVB9hleIfD168xIO6xP47AT9yGH699GsRzqK+AcaN3LAGXOIh+d2pioFKhuyoDOGmXVbke+C/GBE/OzMK1oJIlod1O9gEtHMPYEH32WtcX0Bl1HZ2QO32p9370FbdwWlA5mgyOCHhHm4A+OGLt3H8veHU1MJu6OPMDj8U1X0Dgu+QCX47AEIoRAEZQRnU6Vk5u0bgdGeI3fLOpZeL/cIfDgVU2GrZQqLyjv59qZBtSvy9mF8ce1OiMp6BENczNTaSvs+vpKtnlmQZeRHLHxHziqABdjD3BgCV4t5BzqLLS+2+AX//cF2wKVLqQaJMmlKPKW/3+q4yIOliVxpfMh/NM2e0wCIiUfprTjEssAmrbBZjmSXVAmOSCr7rSl8lOK5QYeBlYLRiJO0cY4/CQURgfs0iyWD+i+6jV8UBiLCiGYYsZwf5OHSOk0Zo9mPd7CHyS+Yghhpg346TV/1T8V6PMRMIgoi/E9YYauZPgDp3Msd140umwodMiVCj/9LMcqHB1BkSYGSsLwHIa
+ LMxZmrDi
+ It9LxHOSX3bn/Jt4oEa95LTCTXZA5F48QIRjEDsYG6YyTS8Fs97Z+VHOdPV80H7xZDL+hp1ODwc2UnHhI0CYGpHubGo25kmCnEWMrt9iNLYn43mE99ajgZ0cT9EnujWka2fapf7oS86FNDNvV2+jEoZX0naH9iDJnA8nwKnHg+PtErRuXr1X06ejl0ZDEm4GJbTpQalPdri8/fii3w3BZ1hEgmxbbOwax3f3xG/stlpvR7jiu9Ngj3nGcqxFY+UVSpW+bjZX8NMWP7TcxA0tJc5ERI27WhkqVKZvUkpj2B30gpMCXzFKCP/C81r03bPHoechKWFFHQAgBTdIgb7ohWaRweQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,38 +93,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-HI Lorenzo,
+Hi Asier,
 
-On Thu, 13 Aug 2026 at 22:30, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
-> > One of the big problems for nommu seems to be that everyone is
-> > convinced it is completely unused and totally broken. :)
->
-> No, the issue is that nobody seems to do any testing or contribute any code
-> aside from at least Hajime (thanks Haijme :), and possibly others (forgive me if
-> I am missing people's names here!)
 
-> There's been situtions where nommu has been broken for a year and _nobody
-> noticed_.
->
-> And yet whenever nommu comes up people always seem to pop up and say how
-> important it is, then mention a talk etc.
+Thank you for your review!
 
-It also broke sometime around LPC 2025, I spotted it, reported it..
-and told the people in the room at LPC for the nommu talk that it was
-borken and maybe they should take a look. :)
-I think I maybe even told Tazaki-san in person that it was currently
-broken in the hall outside of the session.
+On Thu, 13 Aug 2026 11:33:01 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
 
-> Well if it's important, test it. Test the tip kernel. Report bugs. Contribute
-> code. Any or all of it :)
+> Hi SJ,
+> 
+> On 8/13/2026 6:49 AM, SJ Park wrote:
+> > When NULL damon_ctx pointer parameter is passed, damon_call() could do
+> > NULL dereference.  The caller is responsible to avoid that.  It is easy
+> > to forget, and there are many damon_call() callers.  Meanwhile,
+> > damon_call() is never meant to be performance critical.  It uses mutex
+> > and completion.  Add the NULL pointer check inside damon_call() so that
+> > callers can pass the parameter without NULL checks.
+> > 
+> > Signed-off-by: SJ Park <sj@kernel.org>
+> > ---
+> >  mm/damon/core.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> > 
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > index 92631a36d7b51..5882f9c94c47f 100644
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> > @@ -2188,6 +2188,8 @@ int damon_kdamond_pid(struct damon_ctx *ctx)
+> >   */
+> >  int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
+> >  {
+> > +	if (!ctx)
+> > +		return -EINVAL;
+> >  	if (!control->repeat)
+> >  		init_completion(&control->completion);
+> >  	control->canceled = false;
+> 
+> I know that this is a minor optimization, but how about moving INIT_LIST_HEAD(&control->list)
+> to right before list_add_tail?
+> 
+> It doesn't make sense to initialize the list before checking call_controls_obsolete.
 
-I rebase my 68000 tree on mainline regularly and make sure it still
-works. That's how I noticed and reported the above bug.
-I have a bunch of stuff that claude fable found, validated with QEMU
-and then I checked on real hardware but I'm not sure how to send that
-without it getting instantly marked as slop. :(
+I agree it might be more efficient.
 
-Cheers,
+I think my intention of the code was to to keep the call_controls_lock critical
+section minimal with access to things that really protected by the mutex.
+Moving the simple initialization should be fine.  As you mentioned, it should
+be minor change.  I'm bit concerned if it will confuse people if the list head
+is also protected by the mutex, though.  What do you think?
 
-Daniel
+> 
+> Maybe this suggestion should go in a different patch.
+
+I agree.
+
+
+Thanks,
+SJ
+
+[...]
 
