@@ -4,110 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BEC8C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 15:10:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC9F5C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 15:12:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C46F6B0299; Thu, 13 Aug 2026 11:10:10 -0400 (EDT)
+	id 011566B02A0; Thu, 13 Aug 2026 11:12:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 675586B029B; Thu, 13 Aug 2026 11:10:10 -0400 (EDT)
+	id F05436B02A1; Thu, 13 Aug 2026 11:12:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 563C46B029C; Thu, 13 Aug 2026 11:10:10 -0400 (EDT)
+	id E1AAF6B02A3; Thu, 13 Aug 2026 11:12:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 327316B0299
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:10:10 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AF03E401E1
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:10:09 +0000 (UTC)
-X-FDA: 85096581738.07.01BA61B
-Received: from cu-ua11p00im-quki08153402.ua.silu.net (cu-ua11p00im-quki08153402.ua.silu.net [123.126.78.67])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C3C3B140008
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:10:06 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=s0CEU151;
-	spf=pass (imf23.hostedemail.com: domain of bfguo@icloud.com designates 123.126.78.67 as permitted sender) smtp.mailfrom=bfguo@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C8D126B02A0
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:12:40 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5E126140180
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:12:40 +0000 (UTC)
+X-FDA: 85096588080.26.244AD0D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B6066A0002
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:12:38 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KE0pDsWi;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786633807;
+	s=arc-20220608; t=1786633958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=So0tH2fqum8SdfaChqZY2DjQ5NJqtbjj07yGoxL2G3U=;
-	b=WgExZt3av09oHomF2q1LnIg+enis/oNqrXyPntOdOCio/hznqsFt1285BNWzeKYmn64aBf
-	roltragmJc1Cz83pYSiBhWsqS4/NiofE8UnSNi9L8cneJK2dRcmf+Na0fwRuWE8hhtE95I
-	VIKAJYNPpTt+rNhRXtTU8WM/FMdkopg=
+	bh=mx0MxRllchl62Kevt41rGLqe9TQSGfKjDVe1jsUGnDA=;
+	b=I1cq+rRh2OD6crgUyfkcHVW75pFbk9XBUFy6fKTGGDVie0i3aSKa+u7w5+ifWWhyYGZlzj
+	2v8dnt3KO2YuES1kUI8dwRFYSTzfW0agw4oShnSYLaNHcgpRwm3J2zKYmfI7gyh4Xomtfw
+	+bUg5PjkmKLkUKfVn5hhynC3DZ4V1n4=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=s0CEU151;
-	spf=pass (imf23.hostedemail.com: domain of bfguo@icloud.com designates 123.126.78.67 as permitted sender) smtp.mailfrom=bfguo@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KE0pDsWi;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786633807;
-	b=dDsD6/Fgys0h6NW3nxpN5Czgc78ocO/sttiniA2VJTwBUlFMspwKycCYlhKOQzjUreRfSf
-	rOogoBcMHwDYVULOZCK1wAFegqG9pMKbgc8uN+r6z72LwQohN+p4Hb3r9I757qT28MeeYe
-	NOyNEKzwneOUZ+397GbBNZ1oZ/b9DrY=
-Received: from smtpclient.apple (ua11p00im-asmtpcmvip.ua.silu.net [112.19.242.76])
-	by ua11p00im-quki08153402.ua.silu.net (Postfix) with ESMTPSA id 6D0552FC00DD;
-	Thu, 13 Aug 2026 15:09:49 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1786633800; x=1789225800; bh=So0tH2fqum8SdfaChqZY2DjQ5NJqtbjj07yGoxL2G3U=; h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme; b=s0CEU151B42EBSaY50lHTjeqAPNvjn7DDhgN+3xIxkQDLTzrcB/pIaro000WasqgqY0BIKJND02SUqM7xpi3O9tTZetq9slFia2EOkSffXY89+4KVHSh31QDbfXgUWyLneI/vEI58qu12drP0E1GHx1Ni44SGXdeKGQaOGefSp4aTY24PhaIh/88CCud9RNBbIMsJFYsY+9puyIdHx7NJMkEETDAJlYgmjBduNdYsYWBfqXmx7D3q9tis2xMXBzyClW/Urp/Wi4KCardvzEgI/9hiVNhJCu7Mg4mIAOXOKWKUs4WfKVjW0HqujHKwJuzW5Uf49Ci56nHMYbpwdLdqw==
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH RFC 1/5] memcg: move memcg private ID refcount to objcg
-From: Bingfang Guo <bfguo@icloud.com>
-In-Reply-To: <20260813-memcgid-objcg-v1-1-83d21c685b77@tencent.com>
-Date: Thu, 13 Aug 2026 23:09:37 +0800
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Dave Chinner <david@fromorbit.com>,
- Qi Zheng <qi.zheng@linux.dev>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>,
- cgroups@vger.kernel.org,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <BAB0F796-0F4E-451A-90F8-6C5DD6D90AAA@icloud.com>
-References: <20260813-memcgid-objcg-v1-0-83d21c685b77@tencent.com>
- <20260813-memcgid-objcg-v1-1-83d21c685b77@tencent.com>
-To: BINGFANG GUO <bingfangguo@tencent.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDA3OCBTYWx0ZWRfXxxd/WxZiD1iw
- dH0g5DjMzi+QS5gBZ+u+blKNwKZeabZoXQdz7iBIQPmSnYNsQRLlbmrPRRcRZWbrINbkQnudw3Z
- cszDcIkusB6ToQN0ukZZbjiyt5Bj0qn8HnPIFPGDehl7vDGbPa03BxNHPTwrCB9+Es/5kQlOTNS
- cj/NodjVSbxfu+EMbNmnRYEDja3y1wDTV20THsYmUfSMYjz0sLUBbHj6G/ITxBYrEZPC/PY2fBE
- h6y3IDM1VoEtjKWXKmCEkwEzj+XXbt9t1ZG7v6B55AdciSy2eouR9dw5v/YcAWJCM4KF8UMt85E
- h1zwHpGHqxjTGJ8WRw/vLe2YyMuJS8LUUPFxs/N9Q==
-X-Proofpoint-GUID: tepSP286IyF9e0f7YrGHgd1SSVY3Z8ea
-X-Proofpoint-ORIG-GUID: tepSP286IyF9e0f7YrGHgd1SSVY3Z8ea
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-13_03,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- lowpriorityscore=0 clxscore=-2147483648 bulkscore=0 malwarescore=0
- mlxlogscore=999 suspectscore=0 phishscore=0 adultscore=0 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.22.0-2601150000 definitions=main-2608130078
+	t=1786633958;
+	b=ZcXg9kTw/txQvfSFoeoGvUe5ZGi1BPZz4GV1N7Cy12sMzBf7r1FOZYWWYJj1NOpO0Ct0jZ
+	hvfMW/Q5KVnjBnX6dr5fQDm62Xc+168ntWU00xF+6iiryo6Od9lqKiZobgtTHHLGCZhUbn
+	RhJJwB+MQb5rciU3QGvjJjpdQm6wqrg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3D64060A63;
+	Thu, 13 Aug 2026 15:12:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B786B1F000E9;
+	Thu, 13 Aug 2026 15:12:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786633958;
+	bh=mx0MxRllchl62Kevt41rGLqe9TQSGfKjDVe1jsUGnDA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=KE0pDsWi0VHvtpwwCUK7kkil0WqRMnS9XnkTYhjQvgpWLMtedMJrB/zdxB43FOWPV
+	 V3dUtzRGG6c6fLo/ehOpSrSce0+DsJYj10kWs3ED/K/j0eLMzTRquSkSE9B1oGxmBQ
+	 MazZC0ilcmg89Mhhe0BKDWWNIWpmC9LEdpvfjXJNionwU7VuyAgD0/e5ajOfIRfXDb
+	 zEw1iUuwbjQG8oLmBn7rODq9Md1PtoVi5ZSE464lrYjDeTcUpOkYhjpG60n5+98ojR
+	 tjaTkkX9AFthobROfM7NcJO3zXQfrao4+mlKGUUDv6Wv0jevbIy99WsLND4a9bogz+
+	 y0bdXvUQFbOiQ==
+From: SJ Park <sj@kernel.org>
+To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH 1/4] mm/damon/core: handle NULL ctx parameter in damon_call()
+Date: Thu, 13 Aug 2026 08:12:29 -0700
+Message-ID: <20260813151230.104083-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <c55a94f4-6ad2-4b60-b0ce-bf670dcc2f7b@huawei-partners.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C3C3B140008
-X-Stat-Signature: 7rnnnyfzenokheocq8kjs9oqhojmzqme
+X-Rspamd-Queue-Id: B6066A0002
+X-Stat-Signature: fydgqnu793aup4owjdjc4tr5m8hwcjq4
 X-Rspam-User: 
-X-HE-Tag: 1786633806-894704
-X-HE-Meta: U2FsdGVkX1+EkkNvb6qFnQpj21tG9UBPIW9dWDxH+A8lzoHuqep9IAPGvPnf8IepnoYA/m6n4mtLsVaOQC2bYSsQBMU4EBQ9BMK7OXcVGzLnonyxssGG0XXdjavOCXhfEGjendOMWye20EY6gYmWECmnxXku2maeUr/dBIyAUNG7ZS1OYBRH29osi2Yb7hXMEjmsRoa01ELW28Qf7MaJ91Wo4VHuOXJ7wYmYSDMpl2iRufWZhKEa+euVCU0I6/HGyviaZ5deXTxvuLGW2RXLGsuARCwzNs5FYDL5ErZoBt4MBImvUp4pcewHEOWJMQ0Oi2nvNHphREeW3lZQYmOV+oD3M9EjtZuGYCCtAf8wN/TDFWdoyNiX04iQNW7AuuBQ/tbmHZafc1T1K4NAnH0mONSVlNgm2llYRRmqc/4hReuxY77Lmo4MXG6sVmuQFRjHhiN1zH+D0zHfz2WARTbPhdCv2L66gBce3pM33H50oy/U3ZaRCF5Ys0HbmEHnvLbnX17HLUJhfkcClZVZkdx4wqM2o7yxNQwlQWEJgkgjAnwQbsDs9SnaDCTEfc3qJyZaodbKyKfPNlq650BcFZNDsrKFideAjiI/E1W1IrNiaAjMWI4UHSNVD/9ut78c1KGWIls6EJxKmCzGDUKuwj+JM5ojgbW/kbnc1ko+3QaOdYTZm3yU+SdV1ilv0aUdaD4etEObAlYclQGbLrs2b/L9FisMK2/EVw+iLTdo0Tr3my/6nIT7g8U35dvmjqsOAfattOTqHZE+JChyOEH0UhdUMIzd5LTsKIjiyHXnjlERq9ZDw9MfYs0Lda4+5aDr1JVUpAhLCbCJdP1C9REUVnoO+DhUX7WW6MJ8F6WCtHa1Lt2QJNrX8JKPwsuNCaNz6EclvlvKLCQLtQgZ1ZLGAQUjAoGHEjYKLxF00G2+MeJXuwp0Xl/Sjd5w/dAHP1lVSR6W/ZIAPx2+XKpkNPtEjTu
- sAZH7sdp
- zhOKF+Rv/jbD3ELENniFs2fbV+rqeWoj9XRNMttugz8fjBKoWX2vd161EnfWHUmBuHL4BVMiNlSyNW6bT8e5ocW49H9hkbJfqKSS+MXLuA6WVWtXwSX/zC8cSeJ35WCKNskMmxdFjn46oOmsp6dlmeF0nwuTDH7+HYjD0biYhyqU0fP/5gusJNylM4hal3FVaXWX0teVvu9wApsU5pKLs7yj+neI3dpNtSyeDrrK4vV7hrS3yQ4WbdEcagapgEQhIfnXHc+LMwjQyVwSjLU2okg+nInfjp0JRhvxM
+X-HE-Tag: 1786633958-225243
+X-HE-Meta: U2FsdGVkX1+auKKc7VbpagJ2sWqpz/UDuCH+UgOHFtaPM3OO4ePAIATO+QzYS0ZQwkXOh+lC82n1wu2l41xmwky5Rp0B4qyMx2i1vbCfgAFtQgZQ9+KvO13EK5UYdX1c9OBjGGBrZrabBf/6hj+gmDcBy2UhETJRRqAz+lAx8TLK/SFogqWlclsq3zADZ/37vy8Hgge4OoCkQXg0vB5Hj1I5vRiQSlHd19B8gsyoarfwuGVNkyTmtJ098F7bFL4U5CFqsqMkIHeFLsLQ0uzH7pvz6qUehj0nN8IChlRX6AfqenlWQXt5aKDw2FHBiJki2AC8qu2jKeIBQiJ4B9eGMlsgEVda41MdHLlyKCDIqaBmpqTg7fM8/OBeDvGEZCHSpvA28RWYcOPx1zwPrQYaTyP8XDrHCTeGLKBqXhtn5Ux2E0nORdGHDEHQPYBP9sdqkzeWvuaqPfMBffnp8NzzPgZeXUMtgS+4mtYLYBu1KkZ3xdWfHai9/gmCyEcykWKLnUUXYyIA28wCASf/R0JAJu8DY8KxhaLyhqliapba7n3zbGoU6S9L6UlLnviev5h7xQR8PVWE88fvhV+W4cNrOaDyS7x8r892FMLehIXZYiTjay17IGhDiM3eowc6KuYHQu+gbICwSHPk21EgFDqDZys8PTWU26ZIMM0fNZeboRz0Lq7nSGZh7BcUm8tnUQM/OwhseNZbmx3ai7Y2lJ6g0sfcnG4flwf54t+l4G1vO2FMI5lGFApndLUKc1B+/uoXiJKFGsIp84x4x3F9eL6K+p97cJs2gIL/w1jFvXFEOdbseYDtkwyi2BG5bSXM6il4cBv/SUuEr7ZsaVNFFwbOhwybpDfTjlCLQwduyT6O6Ad3ZgdDzdNcAqzw8F6UBkrMkAGCSmoktjhSgEipLWLH+B7jiOMXLRo5krIWXI1WStOfkYkYyCQVnVXEVALbwbF6O7+a5xAFcNrloUeuDgH
+ UZ20Aesr
+ LySRdxze72m4rPnC67LzJ9QIvy4rZzT/V8OuWwwox4BykPcBF+QOWiTbwMvxdiQFg7554fAITJ+Ahdg0Djai2VxtGmHocQMbY/Z1qX9iAQS3kSblAzhOKfZdKujigp17GOz0at2iAqBpT3f25LLgu9ae+5boP3nuW4FvHWYiPRgoXJrfnTTQYgv7duoBP0wAmWudmo46SqM5QqL/wl/WBqrCRZp+Mgp+bL50jYKwwdWCBYPpWu/4XsBkAJBy+WQyRdMAoDwFYa+6Lc8bMyk6b5uXjNL+Z57VTujC8KcUn9DAes2QIBgUY79jFT/BaNZXGa6E1JOtvwki+YL4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,363 +93,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, 13 Aug 2026 17:27:51 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+
+> 
+> 
+> On 8/13/2026 4:55 PM, SJ Park wrote:
+> > Hi Asier,
+> > 
+> > 
+> > Thank you for your review!
+> > 
+> > On Thu, 13 Aug 2026 11:33:01 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+> > 
+> >> Hi SJ,
+> >>
+> >> On 8/13/2026 6:49 AM, SJ Park wrote:
+> >>> When NULL damon_ctx pointer parameter is passed, damon_call() could do
+> >>> NULL dereference.  The caller is responsible to avoid that.  It is easy
+> >>> to forget, and there are many damon_call() callers.  Meanwhile,
+> >>> damon_call() is never meant to be performance critical.  It uses mutex
+> >>> and completion.  Add the NULL pointer check inside damon_call() so that
+> >>> callers can pass the parameter without NULL checks.
+> >>>
+> >>> Signed-off-by: SJ Park <sj@kernel.org>
+> >>> ---
+> >>>  mm/damon/core.c | 2 ++
+> >>>  1 file changed, 2 insertions(+)
+> >>>
+> >>> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> >>> index 92631a36d7b51..5882f9c94c47f 100644
+> >>> --- a/mm/damon/core.c
+> >>> +++ b/mm/damon/core.c
+> >>> @@ -2188,6 +2188,8 @@ int damon_kdamond_pid(struct damon_ctx *ctx)
+> >>>   */
+> >>>  int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
+> >>>  {
+> >>> +	if (!ctx)
+> >>> +		return -EINVAL;
+> >>>  	if (!control->repeat)
+> >>>  		init_completion(&control->completion);
+> >>>  	control->canceled = false;
+> >>
+> >> I know that this is a minor optimization, but how about moving INIT_LIST_HEAD(&control->list)
+> >> to right before list_add_tail?
+> >>
+> >> It doesn't make sense to initialize the list before checking call_controls_obsolete.
+> > 
+> > I agree it might be more efficient.
+> > 
+> > I think my intention of the code was to to keep the call_controls_lock critical
+> > section minimal with access to things that really protected by the mutex.
+> > Moving the simple initialization should be fine.  As you mentioned, it should
+> > be minor change.  I'm bit concerned if it will confuse people if the list head
+> > is also protected by the mutex, though.  What do you think?
+> Good point, I didn't think about it.
+> 
+> Given that damon_call is not called often, I believe user experience should be
+> more important than efficiency. Anyway, you have the last word.
+
+Thank you for the quick answer, Asier.  I understand you are find with keeping
+this as is.  Let's keep this as is for now.
 
 
-> 2026=E5=B9=B48=E6=9C=8813=E6=97=A5 16:52=EF=BC=8CBingfang Guo via B4 =
-Relay <devnull+bingfangguo.tencent.com@kernel.org> =E5=86=99=E9=81=93=EF=BC=
-=9A
->=20
-> From: Bingfang Guo <bingfangguo@tencent.com>
->=20
-> In the previous series by Muchun Song and Qi Zheng, folios are charged
-> to the objcg and reparented as the memcg offlines. Same can be done to
-> memcg private ID and its main user: swap entries. Make the memcgid
-> xarray hold a pointer and a reference to an objcg of the memcg, which =
-is
-> used to find the memcg (or its parent) later on. The online state now
-> pins the objcg instead of the css, so swapped out pages no longer pin
-> the dying memcg.
->=20
-> The id reference held by the online state is released in =
-css_released()
-> after reparenting instead of in css_offline(). This is the key
-> invariant the rest of the series builds on: css_offline() runs while
-> other css references may still be held, but css_released() only runs
-> once the last reference is gone, so a caller holding a memcg reference
-> can always count on the id refcount being alive. To prevent races
-> between memcgid put in css offline and memcgid get, the release is put
-> off till css_released, which could delay the release of the memcgid =
-and
-> the objcg it pins, but overall it should be fine.
->=20
-> After reparenting, the objcg points to a live ancestor, so
-> mem_cgroup_from_private_id() now returns that ancestor instead of the
-> memcg the ID originally belonged to. Callers that need the exact memcg
-> are fixed in patch 5.
->=20
-> Signed-off-by: Bingfang Guo <bingfangguo@tencent.com>
-> ---
-> include/linux/memcontrol.h | 10 +++--
-> mm/memcontrol.c            | 99 =
-++++++++++++++++++++++++++++++++--------------
-> 2 files changed, 76 insertions(+), 33 deletions(-)
->=20
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index 8170bb8066a22..c33ec7efad50b 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -191,6 +191,7 @@ struct obj_cgroup {
-> struct rcu_head rcu;
-> };
-> bool is_root;
-> + refcount_t id_ref;
-> };
->=20
-> /*
-> @@ -202,8 +203,8 @@ struct obj_cgroup {
-> struct mem_cgroup {
-> struct cgroup_subsys_state css;
->=20
-> - /* Private memcg ID. Used to ID objects that outlive the cgroup */
-> - struct mem_cgroup_private_id id;
-> + /* The objcg holding private memcg ID. */
-> + struct obj_cgroup *id_objcg;
->=20
-> /* Accounted resources */
-> struct page_counter memory; /* Both v1 & v2 */
-> @@ -270,6 +271,9 @@ struct mem_cgroup {
-> #endif
-> int kmemcg_id;
->=20
-> + /* Private memcg ID. Used to ID objects that outlive the cgroup */
-> + int id;
-> +
-> struct memcg_vmstats_percpu __percpu *vmstats_percpu;
->=20
-> #ifdef CONFIG_CGROUP_WRITEBACK
-> @@ -820,7 +824,7 @@ static inline unsigned short =
-mem_cgroup_private_id(struct mem_cgroup *memcg)
-> if (mem_cgroup_disabled())
-> return 0;
->=20
-> - return memcg->id.id;
-> + return memcg->id;
-> }
-> struct mem_cgroup *mem_cgroup_from_private_id(unsigned short id);
->=20
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 8319ad8c5c23a..5f30e76ee93d7 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -3697,7 +3697,7 @@ static void memcg_online_kmem(struct mem_cgroup =
-*memcg)
->=20
-> static_branch_enable(&memcg_kmem_online_key);
->=20
-> - memcg->kmemcg_id =3D memcg->id.id;
-> + memcg->kmemcg_id =3D memcg->id;
-> }
->=20
-> static void memcg_offline_kmem(struct mem_cgroup *memcg)
-> @@ -3956,25 +3956,40 @@ static =
-DEFINE_XARRAY_ALLOC1(mem_cgroup_private_ids);
->=20
-> static void mem_cgroup_private_id_remove(struct mem_cgroup *memcg)
-> {
-> - if (memcg->id.id > 0) {
-> - xa_erase(&mem_cgroup_private_ids, memcg->id.id);
-> - memcg->id.id =3D 0;
-> + if (memcg->id > 0) {
-> + xa_erase(&mem_cgroup_private_ids, memcg->id);
-> + memcg->id =3D 0;
-> }
-> }
->=20
-> -static inline void mem_cgroup_private_id_put(struct mem_cgroup =
-*memcg, unsigned int n)
-> +/**
-> + * @objcg: the objcg returned by mem_cgroup_private_id_objcg
-> + * @id: the corresponding memcg private id
-> + */
-> +static void __mem_cgroup_private_id_put(struct obj_cgroup *objcg,
-> + unsigned short id, unsigned int n)
-> {
-> - if (refcount_sub_and_test(n, &memcg->id.ref)) {
-> - mem_cgroup_private_id_remove(memcg);
-> + struct obj_cgroup *objcg_free;
->=20
-> - /* Memcg ID pins CSS */
-> - css_put(&memcg->css);
-> + if (refcount_sub_and_test(n, &objcg->id_ref)) {
-> + objcg_free =3D xa_erase(&mem_cgroup_private_ids, id);
-> + VM_WARN_ON(objcg_free !=3D objcg);
-> +
-> + /* Memcg ID pins the objcg */
-> + obj_cgroup_put(objcg);
-> }
-> }
->=20
-> +static inline void mem_cgroup_private_id_put(struct mem_cgroup =
-*memcg, unsigned int n)
-> +{
-> + __mem_cgroup_private_id_put(memcg->id_objcg, memcg->id, n);
-> +}
-> +
-> struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup =
-*memcg, unsigned int n)
-> {
-> - while (!refcount_add_not_zero(n, &memcg->id.ref)) {
-> + struct obj_cgroup *objcg =3D memcg->id_objcg;
-> +
-> + while (!refcount_add_not_zero(n, &objcg->id_ref)) {
-> /*
-> * The root cgroup cannot be destroyed, so it's refcount must
-> * always be >=3D 1.
-> @@ -3984,6 +3999,7 @@ struct mem_cgroup =
-*mem_cgroup_private_id_get_online(struct mem_cgroup *memcg, un
-> break;
-> }
-> memcg =3D parent_mem_cgroup(memcg);
-> + objcg =3D memcg->id_objcg;
-> }
-> return memcg;
-> }
-> @@ -3996,8 +4012,29 @@ struct mem_cgroup =
-*mem_cgroup_private_id_get_online(struct mem_cgroup *memcg, un
->  */
-> struct mem_cgroup *mem_cgroup_from_private_id(unsigned short id)
-> {
-> + struct obj_cgroup *objcg;
-> WARN_ON_ONCE(!rcu_read_lock_held());
-> - return xa_load(&mem_cgroup_private_ids, id);
-> +
-> + objcg =3D xa_load(&mem_cgroup_private_ids, id);
-> + if (!objcg)
-> + return NULL;
-> +
-> + return obj_cgroup_memcg(objcg);
-> +}
-> +
-> +static struct mem_cgroup *mem_cgroup_take_from_private_id(unsigned =
-short id, unsigned int n)
-> +{
-> + struct obj_cgroup *objcg;
-> + struct mem_cgroup *memcg;
-> +
-> + objcg =3D xa_load(&mem_cgroup_private_ids, id);
-> + if (!objcg)
-> + return NULL;
-> +
-> + memcg =3D get_mem_cgroup_from_objcg(objcg);
-> +
-> + __mem_cgroup_private_id_put(objcg, id, n);
-> + return memcg;
-> }
->=20
-> struct mem_cgroup *mem_cgroup_get_from_id(u64 id)
-> @@ -4098,7 +4135,7 @@ static struct mem_cgroup =
-*mem_cgroup_alloc(struct mem_cgroup *parent)
-> if (!memcg)
-> return ERR_PTR(-ENOMEM);
->=20
-> - error =3D xa_alloc(&mem_cgroup_private_ids, &memcg->id.id, NULL,
-> + error =3D xa_alloc(&mem_cgroup_private_ids, &memcg->id, NULL,
-> XA_LIMIT(1, MEM_CGROUP_ID_MAX), GFP_KERNEL);
-> if (error)
-> goto fail;
-> @@ -4243,9 +4280,10 @@ static int mem_cgroup_css_online(struct =
-cgroup_subsys_state *css)
->   FLUSH_TIME);
-> lru_gen_online_memcg(memcg);
->=20
-> - /* Online state pins memcg ID, memcg ID pins CSS */
-> - refcount_set(&memcg->id.ref, 1);
-> - css_get(css);
-> + /* CSS pins memcg ID, memcg ID pins obj cgroup */
-> + memcg->id_objcg =3D memcg->nodeinfo[0]->objcg;
-> + refcount_set(&memcg->id_objcg->id_ref, 1);
-> + obj_cgroup_get(memcg->id_objcg);
->=20
-> /*
-> * Ensure mem_cgroup_from_private_id() works once we're fully online.
-> @@ -4257,7 +4295,7 @@ static int mem_cgroup_css_online(struct =
-cgroup_subsys_state *css)
-> * publish it here at the end of onlining. This matches the
-> * regular ID destruction during offlining.
-> */
-> - xa_store(&mem_cgroup_private_ids, memcg->id.id, memcg, GFP_KERNEL);
-> + xa_store(&mem_cgroup_private_ids, memcg->id, objcg, GFP_KERNEL);
+Thanks,
+SJ
 
-Sashiko pointed out that objcg here is pointing to the wrong node here.
-I made a mistake here while rebasing the patch set. Also the problem =
-reported by syzbot and in
-patch 2 is also caused by this=E2=80=A6
-
-It should be like this:
-
-@@ -4257,7 +4295,7 @@ static int mem_cgroup_css_online(struct =
-cgroup_subsys_state *css)
-         * publish it here at the end of onlining. This matches the
-         * regular ID destruction during offlining.
-         */
--       xa_store(&mem_cgroup_private_ids, memcg->id.id, memcg, =
-GFP_KERNEL);
-+       xa_store(&mem_cgroup_private_ids, memcg->id, memcg->id_objcg, =
-GFP_KERNEL);
-
-But it also says that it could go wrong if node 0 is not present on =
-sparse NUMA setups, so I
-think it might be better to just use the last objcg set up above:
-
-@@ -4294,7 +4295,7 @@ static int mem_cgroup_css_online(struct =
-cgroup_subsys_state *css)
-        lru_gen_online_memcg(memcg);
-=20
-        /* CSS pins memcg ID, memcg ID pins obj cgroup */
--       memcg->id_objcg =3D memcg->nodeinfo[0]->objcg;
-+       memcg->id_objcg =3D objcg;
-        refcount_set(&memcg->id_objcg->id_ref, 1);
-        obj_cgroup_get(memcg->id_objcg);
-
->=20
-> return 0;
-> free_objcg:
-> @@ -4308,8 +4346,6 @@ static void mem_cgroup_css_offline(struct =
-cgroup_subsys_state *css)
-> lru_gen_offline_memcg(memcg);
->=20
-> drain_all_stock(memcg);
-> -
-> - mem_cgroup_private_id_put(memcg, 1);
-> }
->=20
-> static void mem_cgroup_css_released(struct cgroup_subsys_state *css)
-> @@ -4318,6 +4354,9 @@ static void mem_cgroup_css_released(struct =
-cgroup_subsys_state *css)
->=20
-> invalidate_reclaim_iterators(memcg);
-> lru_gen_release_memcg(memcg);
-> +
-> + mem_cgroup_private_id_put(memcg, 1);
-
-Sashiko says that if memcg onlining fails early, this could result in =
-null pointer dereference.
-I think we can fix it like this since mem_cgroup_private_id_put is only =
-used in css releasing:
-
-@@ -3980,9 +3980,13 @@ static void __mem_cgroup_private_id_put(struct =
-obj_cgroup *objcg,
-        }
- }
-=20
--static inline void mem_cgroup_private_id_put(struct mem_cgroup *memcg, =
-unsigned int n)
-+static inline void mem_cgroup_private_id_release(struct mem_cgroup =
-*memcg, unsigned int n)
- {
-+       if (!memcg->id_objcg)
-+               return;
-+
-        __mem_cgroup_private_id_put(memcg->id_objcg, memcg->id, n);
-+       memcg->id_objcg =3D NULL;
- }
-=20
- void mem_cgroup_private_id_get(struct mem_cgroup *memcg, unsigned int =
-n)
-@@ -4367,9 +4371,7 @@ static void mem_cgroup_css_released(struct =
-cgroup_subsys_state *css)
-=20
-        invalidate_reclaim_iterators(memcg);
-        lru_gen_release_memcg(memcg);
--
--       mem_cgroup_private_id_put(memcg, 1);
--       memcg->id_objcg =3D NULL;
-+       mem_cgroup_private_id_release(memcg, 1);
- }
-=20
- static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
-
-> + memcg->id_objcg =3D NULL;
-> }
->=20
-> static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
-> @@ -5651,19 +5690,19 @@ void __mem_cgroup_uncharge_swap(unsigned short =
-id, unsigned int nr_pages)
-> {
-> struct mem_cgroup *memcg;
->=20
-> - rcu_read_lock();
-> - memcg =3D mem_cgroup_from_private_id(id);
-> - if (memcg) {
-> - if (!mem_cgroup_is_root(memcg)) {
-> - if (do_memsw_account())
-> - page_counter_uncharge(&memcg->memsw, nr_pages);
-> - else
-> - page_counter_uncharge(&memcg->swap, nr_pages);
-> - }
-> - mod_memcg_state(memcg, MEMCG_SWAP, -nr_pages);
-> - mem_cgroup_private_id_put(memcg, nr_pages);
-> + memcg =3D mem_cgroup_take_from_private_id(id, nr_pages);
-> + if (!memcg)
-> + return;
-> +
-> + if (!mem_cgroup_is_root(memcg)) {
-> + if (do_memsw_account())
-> + page_counter_uncharge(&memcg->memsw, nr_pages);
-> + else
-> + page_counter_uncharge(&memcg->swap, nr_pages);
-> }
-> - rcu_read_unlock();
-> + mod_memcg_state(memcg, MEMCG_SWAP, -nr_pages);
-> +
-> + mem_cgroup_put(memcg);
-> }
->=20
-> long mem_cgroup_get_nr_swap_pages(struct mem_cgroup *memcg)
->=20
-> --=20
-> 2.43.7
->=20
->=20
-
+[...]
 
