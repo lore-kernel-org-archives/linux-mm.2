@@ -4,131 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0053C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 11:05:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C077EC5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 11:06:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 848526B028A; Thu, 13 Aug 2026 07:05:42 -0400 (EDT)
+	id B08976B0491; Thu, 13 Aug 2026 07:06:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8207E6B04AB; Thu, 13 Aug 2026 07:05:42 -0400 (EDT)
+	id AB9916B04AB; Thu, 13 Aug 2026 07:06:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70EDA6B04AC; Thu, 13 Aug 2026 07:05:42 -0400 (EDT)
+	id 9F69E6B04AD; Thu, 13 Aug 2026 07:06:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 561A76B028A
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:05:42 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EAAAF805A7
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:05:41 +0000 (UTC)
-X-FDA: 85095965682.07.91518C6
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf01.hostedemail.com (Postfix) with ESMTP id EF37340009
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:05:39 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="QgTKfof/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SW7399y7;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Egm2Kt59;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4gsKVIcM;
-	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BD3A6B0491
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:06:51 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 161B3C05E9
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:06:51 +0000 (UTC)
+X-FDA: 85095968622.18.5CBA8DC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8EDDB14000F
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:06:49 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V6eusabv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786619140;
+	s=arc-20220608; t=1786619209;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uibj/eRl0gzKJwNpAnrp43JZg6Px+9DiZOe91L9wuN8=;
-	b=RRmH+ZX4WdxbQNGSJWffUSMMZAyM/cDJnhCw2NVaK7GjPKakyjvzK8L/7CnHDvMb6FmbPZ
-	UexWBwbZhiClZvjdqLD2KMwNGq2R7DvdmY6LHKHIL6JOxyEhiYMJeC4t47of/O66sdTwFq
-	MKfVSgCXFcYcmoeGBYprZJ7U4WepbSA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786619140;
-	b=gX/Tri6WeOZi1Hq/DV58ToOPXTSXkBUQYegValtddQJY/Ie3QYSRskbWT7GgFnAp/a1dXE
-	y8nGgEGJzMZdLurK6JNt0mxi/8UOEVDHkKwcXNJDxBF1tkAHYujjjwZb/l4rYCSyTUAqQ8
-	A1xGhsT+tXBI/kqexUudaPGDBlsn4Zo=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=W2WE5+G5sDCD83p3y7rTlSpYQ/0YIWhOKGLGbZFH7Jg=;
+	b=G0fUS4oCEbY3LJig4ZZ9t5A3YT2Ta3/hYARrDYOCY2ivIxvNs9FE3OYHJX3aujNthSsu3b
+	PVnCNRO6BJDe/lzHO1TmDyacTZah/DcxDn6X51FrbzzM9uK0R7LG7sVZJkYB7MeE10/AGp
+	vjRNxDJfrMLNlmHA57vix30/IX/CKfQ=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="QgTKfof/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SW7399y7;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Egm2Kt59;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4gsKVIcM;
-	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5DDB43E0D;
-	Thu, 13 Aug 2026 11:05:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1786619134; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uibj/eRl0gzKJwNpAnrp43JZg6Px+9DiZOe91L9wuN8=;
-	b=QgTKfof/u5YafqZjss7nLIyoDdhbu0rWmTfUtW3X73CscD1Z/pf2BmZlJecWfka7+QROGT
-	vJJ6+U6c6v8oPs+hgtV6LREykNAnqfhQ96eBpgFfonygZvP15bq92VW0pwZZrpAYN77N3q
-	HoR/dZRxuSql2lojVdyMELhZT9kIzH0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1786619134;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uibj/eRl0gzKJwNpAnrp43JZg6Px+9DiZOe91L9wuN8=;
-	b=SW7399y7HoYBZ0WJ7OcOs1nsPwhpKY43dW3G0yIGi/XucHa8sgXHXHmdWAjoYHL7OFFtV0
-	w9HycSRwZ21CdoCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1786619130; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uibj/eRl0gzKJwNpAnrp43JZg6Px+9DiZOe91L9wuN8=;
-	b=Egm2Kt59TwMHWdUX27Fdj5GOjzex5mEMjU36hKeSVpguV9y/0B0LQXmTkcune7jXHIBqqy
-	XIb5NnFFrkSGlJaLBxAZcuWKQvYGXi7O4Uu5C/v2fvZ+CYvJ5dGs380HXiLIrfKpbZSPK/
-	3k9dy+Ar9ttljGNhG3cMm938KcwBxmY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1786619130;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uibj/eRl0gzKJwNpAnrp43JZg6Px+9DiZOe91L9wuN8=;
-	b=4gsKVIcM7P+VVUu1H36KE4YDc81I0L/28ZXTJTL7A8msOqiuxtjIaFLOBlP2IfKBlpx8vU
-	CPI6xpownYAJABCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 650CE77DAB;
-	Thu, 13 Aug 2026 11:05:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id rjM+FfmkfWp9AgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 13 Aug 2026 11:05:29 +0000
-Date: Thu, 13 Aug 2026 12:05:27 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	Christian Brauner <christian@brauner.io>, Jiaqi Yan <jiaqiyan@google.com>, 
-	"Gregory Price (Meta)" <gourry@gourry.net>
-Subject: Re: [PATCH v9 12/15] filemap: Remove checks in
- mapping_set_folio_order_range()
-Message-ID: <an2j-26QD3KxczRO@pedro-suse.lan>
-References: <20260805210557.1118966-1-willy@infradead.org>
- <20260805210557.1118966-13-willy@infradead.org>
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V6eusabv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786619209;
+	b=20lAoP3WBTecijulKpcx2YQWmP3sMo0TXfIB208Rb9LUO7EXpxTRn7EclhhetpubhrixdU
+	dMGC0Gvzh2S2+hHHUMfvXsj9avUBpLiqSY3sCGsLBT8D8C+1PNI6f/UUHj2shG4RI/T1K2
+	1dSeV19cSRyd5iwxu7g7JLxatsHfed8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 172DC601DE;
+	Thu, 13 Aug 2026 11:06:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 479C81F000E9;
+	Thu, 13 Aug 2026 11:06:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786619208;
+	bh=W2WE5+G5sDCD83p3y7rTlSpYQ/0YIWhOKGLGbZFH7Jg=;
+	h=From:To:Cc:Subject:Date;
+	b=V6eusabv8ZIAhH8MAj2WQAUS02gYzwcvx5jopw7/bWh6rRc+c1FgEiRr2KQYDKd35
+	 J5q9S0YM2dVIVPQ31rboet3QNulhVbYL1XgYRfKQzfzUtuflgq02NmUa/Vld7Naw2V
+	 gyZP8Q0qIhZ1ob2Rd95PuRXL7yE8yrQ8maHfPp1AHWuqXX7BLFuO4WDZNiqknekDOe
+	 XiDiDumVdnBQxKuGSf6b4jjekK974fkhX214h3zO0nAdwM/94KhfJE4fxXuU/jChwi
+	 iXt/xhURB7PYldvHVw7EEiGBsonK7iT44SSnthN5cv49IScx8CTnQ48Yv+sPQw0t+Q
+	 ZEIK2YkZCnt/A==
+From: Mike Rapoport <rppt@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] memblock: updates for 7.3-rc1
+Date: Thu, 13 Aug 2026 14:06:17 +0300
+Message-ID: <20260813110636.2482716-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260805210557.1118966-13-willy@infradead.org>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 1imiib4fhouaouruzcdbh94yn88d7uiy
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EF37340009
-X-HE-Tag: 1786619139-871064
-X-HE-Meta: U2FsdGVkX18Yl3aXtvMIcp1ScSGH6+lUW0e8u6zMHsdetNMofyAmjP6MA2WWIC/ZrGjU7a9Pjx8238Jv4YjVIKzhA2+brWgR1iVOCxbwAiCSSBAygfQ+42CzfeDHQ4repz79jmEg4t88cuuI2gouBeN9ox+lQjUzLuaw/YC+Izsdd9DZYYeKam+oATU8LfX7yBbvuBZLlN3QXUYYvZB6QvEaMyqEPmX1UpGPNiB34NTSViTLP2ZANmBll0IAzju14NQAa9HfUeXc6xvPZwwRCqOyQJTKx7k9A/UdlpnEg2Dpq+86Sc/kF1pPkWhxXwuj+nYHbkbJshIErySW/Z5ahX/2Blr1t8LY8OePSIOlTBYAjwwFAgjTpIqRvMAI5jxlU8JwMq050We8LCKDb+hjKTlUheLQAgeal7to6kn5NpLlXnoudxyPWsRMdhBrEK6p6CURayuD/+DTcFKEC02ErfypDdHL39nCfxIjuuBXzzDxAvvLhkIotPJnzc69+M6MGhfp8lTDWT4DB44iPnuO5AEIkNKZlAkI9Vn/kDvr2lXs+sm8DPRn8mnua50Z3zJ81Gc4dFZMKFydzFOwY+EySrwMuERVRjxmQ8RNI+Sa59t1VdL1Au7xRAzTuw2/9LTN1rvpjxgQuGfbf+sYrIXqRKC1VYUHTlrTV07x1dm4xTFK/WAczpSBmSKDCxOlpAuzqSEKGszDua4RY6bwFWWzA7AUReQ0OOQiIKyoPGB0Y0MSwweQAepl3EKpE8KqEc/VSQNfnW9vLYLkqSsOpeZ/vZoPg6uAbcnaEvG0glOn2sYipeUFJj1ucp2qhR49ZJTfzHQPA7824k31hYle/ysoze8hTguD+H5FIrQYB6+t1mi5mHPnZcSDfEfwe1EoMihmarT0by7MtupLnPyLt+2UK5vD6Oik5CAv1AsHXFFczukX0tk1R4jZwbr0d+R+rDS4g3hKzHEAzkzYagnpEzn
- N1jmOgby
- 2HkNkwPM6j/HulLD6Jg+rVq3YzWbBvJD6FCMy/OrZpVS+eyixz23D/4RVHRqQMo5Jyo4mrcxM/LQshxNjZKctl8nRx1xAaFG3J9JpjHhR00vNmRFtts0MUzg6K89e/WIgq/cBoU9vFpSB8QcIzcr6ZtD3FvFpGIwf5yYLf2TB/QGr2lc0lf1wsWolgkWmMCaW1B6b7/rdMVYL+MkrT3cRLUPZfZyRpqSZ7CT7qjdYlf4tr16lCfBno5fZ55mbwLKCdhjQzJNqnx6keDSUyOh2kTS9jTf55OwHH73bAZiL6MX2BsQpHyuzsm0QlKoM5c+/2zL71eHlWLs+10iocehRyETK43TAzCDLdB8albRTvhM8PpPnSak9lk3cRl8ThBERbkALdTU4hA9hQiOX6ChqBu6XkXFzuA8vm7UBxV2uQ6zTUV3M7w9voozoeoamoNAGDqjdbM6QuT0XnEZqSF3dSh5csq25zpJvG5c7lGp3aIkzltlZJ2mDT+fk1Ez0tCExESXXo8XO+COSHmOJbCy0dZHtCA==
+X-Stat-Signature: p441xjwjy6itnssxaom5u3skz4aou74q
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8EDDB14000F
+X-HE-Tag: 1786619209-200474
+X-HE-Meta: U2FsdGVkX19ncs6EGzvNDIsOC6gURMJIgtHMWM5qzY8MX23HL+o8Qp6t4kMlcdGP48tcObLtMXR6siyQ7Edm5Z2KInxsyiZC/vtI3zd1M8wsXCCpQxOq3lBsI+/4h6yKN6yIdy+7tbqw3BKkMao+T/LJYa70OdWeOWFxEWI3VojIypLtHqOBWyZXZOs80ai4ttdNTAzU3+CQS20IrTM2HygMPynxjrPI50f/1Zv7hg7oV2IWXD9NmeD9ZKP5SEOVeowislb2PlaZhGhA27mXkvDgSalj74VFOmawEXHm4auHGzN841B86hGAaSH3bbaRxIazwULDl5ZRDh0MiuwF9B3oqKJcSYt5kECd7j8JEZJTvCJMiATL2VHE4tGILSxT9OTNWtf8Rta684UOhhxDNcsYzTRwQyLvPq9ktcYI9UqJQ6IzqrzS++3CZADdLge+8ld6kNYSGEY3ZCnrfI5W4dDzhPTqOTmVUsR9Bh3g1jZAkZMX8+qzxLxaTHbo/z7xyQU86h0du/QzR7aUsNlgAVj2uh6wXFD+01croMlCD5hjnmtWS3QlDBIhAadczzsZUYr6mw+UYHjz2G0C5A19ljbLm/NpyCSdkIiGNcnUvt4FP8WdHQovsGOiBZm7pt3KRYvFtfQ4e8hqV4IluEV5oQEA1mlBWRNK3SknfjYDf5wQot0/0UceXZvWqtK8XnMqmYbadeasR8a2n3wiuhpd2H5Emwlo+BYaH3H/y8HvZ9EzJF1zzTarw8m1CroSi2LdelhwKuljbjsGIXzY1A7fe0XNa0NCF+OIzembUk0lWmzPfoJaujlKez5t9i/tuFDARVkhdSurBJTbkf/n3Q5A4dpjK1O5t8BrS4jekJSx9MDAzgIhTs5lIv53TJt7vonutIQ0SlBGvhkjH0LeGKQqKBSVzrnzQ50+8y5uoFJHdfBtNdyITIfCCBkEsO5J30zOOeirxNU4c9No6BI2IXy
+ 1tqIY5fj
+ hoZICnVFmjhqlOi5HDtmSouHF0uPAJFzOSiCpfj2IVuf2NxruL3uHhlZ8wiRrrl8dEpFHRYCgItSOWRA0W2pVrlEve+GB/GfI/yVkUsBAQNU5n4gafeflmqLRMK2wEFEWFXzStOIXpY8zESx4SgeYWWrjxfk6auOx2VRY133xuPcWfk16t1gTO0c/vGQ/YHC1l19SVbpunt4R0qWGAxDLkW/ZjyZL9g5FChcQnp/0I+8Vu6k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,16 +90,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 05, 2026 at 10:05:52PM +0100, Matthew Wilcox (Oracle) wrote:
-> These checks make it impossible to use mapping_set_folio_order_range()
-> in hugetlb.  They add very little value and can simply be removed.
-> 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Reviewed-by: Jane Chu <jane.chu@oracle.com>
-> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+Hi Linus,
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+The following changes since commit dc59e4fea9d83f03bad6bddf3fa2e52491777482:
 
--- 
-Pedro
+  Linux 7.2-rc1 (2026-06-28 12:01:31 -0700)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock tags/memblock-v7.3-rc1
+
+for you to fetch changes up to b3c1ec1a9ad84ec2f14d343d28c6032feaec5b79:
+
+  Merge branch 'misc' into for-next (2026-08-07 11:47:13 +0300)
+
+----------------------------------------------------------------
+memblock: updates for 7.3-rc1
+
+Non-urgent fixes:
+
+* Fix calculation of node_spanned_pages when running with kernelcore=mirror
+* Properly handle failure to allocate per_cpu_nodestats in
+  free_area_init_core_hotplug()
+* Fix deferred initialization of the memory map for configurations where
+  node's RAM end is not aligned on PAGES_PER_SECTION
+
+Cleanups:
+
+* Remove redundant pageblock_align() call in free_unused_memmap()
+* Remove unnecessary invalid range checks in users of memblock iterators.
+  Some users of for_each_mem_range() and for_each_mem_pfn_range() verify
+  that start < end for each range. This is redundant because memblock
+  iterators guarantee to never return an invalid range
+* Stop overlapping zones with kernelcore=mirror and align behaviour of
+  kernelcore=mirror with other variants of kernelcore=/movablecore=
+* Remove redundant updates of numa_nodes_parsed mask in the callers of
+  numa_add_memblk(), the latter always updates the mask anyway
+* Remove unnecessary initialization of pgdat->per_cpu_nodestats to NULL,
+  the variable is reset to the actual value a few lines below
+
+----------------------------------------------------------------
+Alexander Graf (1):
+      mm/mm_init: deferred_grow_zone(): fix out-of-range first_deferred_pfn
+
+Gregory Price (1):
+      mm/mm_init: handle alloc_percpu failure in free_area_init_core_hotplug
+
+Mike Rapoport (Microsoft) (10):
+      Merge patch series "treewide: remove unnecessary invalid range checks in memblock iteration loops"
+      mm/mm_init: don't overlap NORMAL and MOVABLE zones with kernelcore=mirror
+      mm/mm_init: drop overlap_memmap_init()
+      Merge patch series "mm/mm_init: don't overlap zones with kernelcore=mirror"
+      Merge patch series "treewide, numa_memblks: remove redundant work during NUMA init"
+      Merge branch 'fixes' into for-next
+      Merge branch 'kernelcore-mirror' into for-next
+      Merge branch 'numa_memblks-redundant-work' into for-next
+      Merge branch 'range-checks' into for-next
+      Merge branch 'misc' into for-next
+
+Sang-Heon Jeon (19):
+      arm64: mm: remove unreachable invalid range check in kasan_init_shadow()
+      LoongArch: remove unreachable invalid range check in kasan_init()
+      riscv: remove unreachable invalid range check in create_linear_mapping_page_table()
+      riscv: remove unreachable invalid range check in kasan_init()
+      ARM: remove unreachable invalid range check in kasan_init()
+      powerpc64/kasan: Remove unreachable invalid range check in kasan_init_phys_region()
+      mm: remove unnecessary empty range check in early_calculate_totalpages()
+      mm/hugetlb: remove unnecessary empty range check in hugetlb_bootmem_set_nodes()
+      mm: numa_memblks: set numa_nodes_parsed in numa_add_memblk()
+      ACPI: NUMA: remove redundant numa_nodes_parsed node_set()
+      of/numa: remove redundant numa_nodes_parsed node_set()
+      x86/numa: remove redundant numa_nodes_parsed node_set()
+      arch_numa: remove redundant numa_nodes_parsed node_set()
+      LoongArch: remove redundant numa_nodes_parsed node_set()
+      mm: numa_memblks: remove redundant numa_nodemask_from_meminfo()
+      arch_numa: remove redundant node_possible_map assignment
+      mm: numa_memblks: use numa_add_reserved_memblk() in numa_cleanup_meminfo()
+      mm/mm_init: remove redundant memset in free_area_init()
+      mm/mm_init: remove unnecessary initialization of pgdat->per_cpu_nodestats
+
+Wei Yang (1):
+      mm/mm_init: fix incorrect node_spanned_pages
+
+Zhen Ni (1):
+      mm/memblock: Remove redundant pageblock_align() in free_unused_memmap()
+
+ arch/arm/mm/kasan_init.c               |  6 ---
+ arch/arm64/mm/kasan_init.c             |  3 --
+ arch/loongarch/kernel/numa.c           |  1 -
+ arch/loongarch/mm/kasan_init.c         |  3 --
+ arch/powerpc/mm/kasan/init_book3e_64.c |  3 --
+ arch/powerpc/mm/kasan/init_book3s_64.c |  3 --
+ arch/riscv/mm/init.c                   |  2 -
+ arch/riscv/mm/kasan_init.c             |  3 --
+ arch/x86/mm/amdtopology.c              |  1 -
+ arch/x86/mm/numa.c                     |  1 -
+ drivers/acpi/numa/srat.c               |  2 -
+ drivers/base/arch_numa.c               |  4 --
+ drivers/of/of_numa.c                   |  5 +-
+ include/linux/memory_hotplug.h         |  2 +-
+ mm/hugetlb.c                           |  7 +--
+ mm/memblock.c                          |  4 +-
+ mm/memory_hotplug.c                    |  3 +-
+ mm/mm_init.c                           | 93 +++++++++-------------------------
+ mm/numa_memblks.c                      | 41 +++++++--------
+ 19 files changed, 49 insertions(+), 138 deletions(-)
 
