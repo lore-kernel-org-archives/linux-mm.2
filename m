@@ -4,122 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C4C8C5AD5A
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 02:26:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2474BC5CFCF
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 02:28:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD81E6B0368; Wed, 12 Aug 2026 22:26:14 -0400 (EDT)
+	id D75536B0190; Wed, 12 Aug 2026 22:28:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A895A6B0369; Wed, 12 Aug 2026 22:26:14 -0400 (EDT)
+	id D4C706B0191; Wed, 12 Aug 2026 22:28:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 977BE6B036A; Wed, 12 Aug 2026 22:26:14 -0400 (EDT)
+	id C89106B0194; Wed, 12 Aug 2026 22:28:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 64BDE6B0368
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 22:26:14 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EE0231C1627
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 02:26:13 +0000 (UTC)
-X-FDA: 85094656626.08.2626E42
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1F62F180009
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 02:26:11 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=dv2OTnY6;
-	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A75F96B0190
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 22:28:11 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 23492A04E0
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 02:28:11 +0000 (UTC)
+X-FDA: 85094661582.12.18C5701
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9DEAFC0003
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 02:28:06 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=pry+E9fw;
+	spf=pass (imf10.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786587972;
+	s=arc-20220608; t=1786588089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rJyuBNA61ADLE8D7qWrS7xw4VQ7YCE+rGhhYCzYs91I=;
-	b=HmIqlyfUGul3vL3Oi1kuCVp1QCTGkcimtF8fQBod7B6pxfDbaLS45YGyZG60yxZKsBGvI5
-	WE122VO+RaOvQNnhiak6ABfc2fB5T1vZSjGWgjlkxx2qehObGoUNwzrwsgQyKTk9x1fW9F
-	WwWWW46Rcw/8Xkme1YrUAk3pEM6q3yc=
+	bh=EbMrYczuLJGJ2Em3eI4fBqHwLZ3RULwhI9SXiSsO3yY=;
+	b=twvE2mcKmyl3Wwoa4I7mPWiAVp7qo+1BU+hHVkBCrRdOyoq26DYXnN4YAonFzQfFV9RvXS
+	V8ZXdgcgnr95HmKX29ZBRIRffiOTqdrZnwtUvTdKgrk8LwMwAWWGBeRZ8mTHpFz/LH7fVa
+	mNT1eSC2qzvLBIkdeo9dL/Zs/oJl2Y4=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=dv2OTnY6;
-	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf10.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=pry+E9fw;
+	spf=pass (imf10.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786587972;
-	b=yNmge25RW34weJpF6pVgdVaO3Tckoy3zkeJErt2didup2SOKhT2n/gq2aGRuPi3DXSQWZA
-	ZqqPJUEDGJu0oRVJiHP4OCuHpebJf9iVAkI7liX1un+TQ57N4fxOHNsafT0AGk/CrxA8Qp
-	Ce1bn2iqiMEH9QUPVl2SJPBJ4kTcRrU=
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-92e7632b193so115171485a.2
-        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 19:26:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1786587971; x=1787192771; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=rJyuBNA61ADLE8D7qWrS7xw4VQ7YCE+rGhhYCzYs91I=;
-        b=dv2OTnY65lh6MFBs/enjVEGr+O2V1GNrfVqLnDqKQcpvHcUziQpbeTo6CLAPcijDFr
-         MD19ah9EyU+AprxSgV44gCRCPzz9F/hU/bd0yaf9VVOEni+CDYCQDrTKkqo9yJ4bDPM8
-         o+6VjaRaO76I+FPWx7JKiEuPlzRYQ3qWviqhAXiVQ0QkXFf7Wz2emxNLQP4lyaB0x3+L
-         IQJEhgB8k7NxIDUAZk2q7hJc/l16r0hioh2QNFucK06d8ae9FMoaegzU903GI1BAm4QO
-         bLfv6KP5WLZ0BBL8yXw1Z21tmsGG2wlsU7P3gzTJTyOELV/uinB1TNFJzhzslmybPqzD
-         IHNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786587971; x=1787192771;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rJyuBNA61ADLE8D7qWrS7xw4VQ7YCE+rGhhYCzYs91I=;
-        b=BX6ECfmR7GJtLE4l5Wt1R+T49u4efRFFeao8nwUzTH3PINe0HaS2cacAWWys2RIo6/
-         zMnyG0IgPPJN4IjqlZq/u/Zf+V16RIZBsReqTmgHxISZYcOAI5a+Hg/9yrjs1tQAoeP+
-         53e7hFESyEMfSgiOOlEOUPQ2Wklg09KeP4biacqlT0lFL6qrFuEnVmY/eh12yWsmdb8W
-         n4ONjSUzQz2RVba4++oq/UGA697aqIQ3MnAMkVRzuVzoPBNvmkk15yt1zalbRbn7HJac
-         QIg87Uei/o1vlhCKyqrBMID+t/g2ZtcAzzZa6F1pCRwMRDoZx2j+l+4Jm3qsziHyOWir
-         isEw==
-X-Forwarded-Encrypted: i=1; AHgh+Rqmq9vezJ9nIO+LvoWHboJzPbOftwx3+95TwLlSkdfI9t91/NOrnltON1OezjOKmtuG3d7ivsXh0w==@kvack.org
-X-Gm-Message-State: AOJu0YxuoBlGWEA19FZUohMxLTI6bK5GzUj3S4NrfnBUElsxMIt4hoyZ
-	dAYH9WkKLxb9xt9GJ4NkYMcTWPBPtx9FrZOQLxhBwp+ozsSExWJieToXtYVf7/6kiXI=
-X-Gm-Gg: AR+sD13djHlIpN0SPGTYFB+Hw42YepZ93xLXSXRbu0v+XR/VlD9/NTxEy9rBmu2YRFu
-	Q/aS1iIpJKRd40XcHHTttVzSwdtfP2kESoyc4vavckKheGgwtueDI//H+VtgdsHSXMHmkFBGWh3
-	iSc2oZtD+5UUqvUDZFY91jxhiVNUT6kmUDVzTfSgk43n9SMwblVD7B+srUOkUu3xHKNd4B71Roa
-	9gw5+C7NBita66qbCxJWpBGOWbWHStI5+jaBy70DO9+5gMjnq43LLkPL8N9axmuWaLciRugA9YV
-	XVMBN3pIjRy0FHkRIX55zZkXtJD4qNayleauFHnE5GvF0N9kwdV8K33tNt14aCgkP82qN20lgbW
-	Yes2QUwy1iI/GXZCZGfD+NyU2oKpVU2gN7wi4xpcKsTA+Ao+XScgl4Cf5xcIHW8lS2FaEk3ppAP
-	QnM3L1BkZ78V6+DnalLckCh1gVpg0gnYsPZBEZRMjxKW7S7A==
-X-Received: by 2002:ac8:5892:0:b0:528:f72:a986 with SMTP id d75a77b69052e-52d73e973efmr27058371cf.44.1786587971243;
-        Wed, 12 Aug 2026 19:26:11 -0700 (PDT)
-Received: from fedora ([2601:19e:8500:d3c0::28fe])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52d7400299esm7355661cf.26.2026.08.12.19.26.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 19:26:10 -0700 (PDT)
-Date: Wed, 12 Aug 2026 22:26:08 -0400
-From: Gregory Price <gourry@gourry.net>
-To: SJ Park <sj@kernel.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org,
-	damon@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com, akpm@linux-foundation.org, david@kernel.org,
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev,
-	vbabka@kernel.org, jannh@google.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	ying.huang@linux.alibaba.com, apopple@nvidia.com
-Subject: Re: [PATCH 1/4] mm/damon: defensively skip zone device folios in
- damon_get_folio()
-Message-ID: <an0rQM7ZwWnB0nVD@fedora>
-References: <anS-vK1MaC8sWoMK@fedora>
- <20260807000938.79851-1-sj@kernel.org>
+	t=1786588089;
+	b=RUAnRP+YddPAYRmV7ZYxvgqs068ojBPSr55r9hKeJkk7i26GKjRX8xcAgB37188eutQ7oR
+	WR55MXO3AAqdwuK1T7M2YUwlDqKr1r3d74hxMsWRSBAU4FJSpjQFok9ZTLZspOpLfQvR01
+	6fC05uIYy1o9cGu89P7Pmuu17sWzKWk=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=EbMrYczuLJGJ2Em3eI4fBqHwLZ3RULwhI9SXiSsO3yY=;
+	b=pry+E9fwsBwv5+gfkKkrYUgbSH5DYc87VcZVRIkyCaIn5DyWdzXPuAKQLnYAOE2kMM6GZZwDw
+	v50K6iyVjwHsDt8J+pOaO32WeSCR3yl4wueowhdtTBcDxAull15C05mnMYMgrQcZH42Vm0JcyH6
+	78lcIyKjvZ5aszcG/B9FW1o=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4hL8Bn3RhLzLlTt;
+	Thu, 13 Aug 2026 10:17:21 +0800 (CST)
+Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
+	by mail.maildlp.com (Postfix) with ESMTPS id C70F04056C;
+	Thu, 13 Aug 2026 10:27:58 +0800 (CST)
+Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
+ kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Thu, 13 Aug 2026 10:27:57 +0800
+From: Xie Yuanbin <xieyuanbin1@huawei.com>
+To: <rppt@kernel.org>, <david@kernel.org>, <ljs@kernel.org>
+CC: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <bp@alien8.de>,
+	<byungchul@sk.com>, <gourry@gourry.net>, <joshua.hahnjy@gmail.com>,
+	<liam@infradead.org>, <liaohua4@huawei.com>, <lilinjie8@huawei.com>,
+	<linmiaohe@huawei.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<matthew.brost@intel.com>, <mhocko@suse.com>, <nao.horiguchi@gmail.com>,
+	<rakie.kim@sk.com>, <surenb@google.com>, <tony.luck@intel.com>,
+	<vbabka@kernel.org>, <xieyuanbin1@huawei.com>,
+	<ying.huang@linux.alibaba.com>, <ziy@nvidia.com>
+Subject: Re: [PATCH] mm/Kconfig: allow user to select MIGRATION if MEMORY_FAILURE is enabled
+Date: Thu, 13 Aug 2026 10:26:16 +0800
+Message-ID: <20260813022616.9050-1-xieyuanbin1@huawei.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <anxOypktGGq_9PZw@kernel.org>
+References: <anxOypktGGq_9PZw@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260807000938.79851-1-sj@kernel.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1F62F180009
-X-Stat-Signature: uu1wknayk71bdfm6we1h7p1wgu5brqk7
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.109.17]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemj100009.china.huawei.com (7.202.194.3)
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9DEAFC0003
+X-Stat-Signature: 1d1f3ecfmzab47yped9uq51irqwuzcjt
 X-Rspam-User: 
-X-HE-Tag: 1786587971-936298
-X-HE-Meta: U2FsdGVkX1+TZpIHV4lQuI4lZ0WkwM1r4nrYmkkcfhIgzoDFP3Cgfa7Md1eBmgSkv8apPttE/fvPzvs5E3d0J/yE3T9A4fq3KFs0ahg6qZEOeMMVyozO+Yk7wzwVwTQsfdI21j+FaZCCilda2+8AfyRP8zkur/joES5MsR6OkpN2zNDOBMJiW/AHqPurgffiQ5IQOVtYuc0/XVwLkMtrPB5FW4MihEK7Xwa3PrRKa0fuWXObIYZ6De3MkdwNlrGyfJM6p+93tI446DUdfCLn9hisdLR53cw6R60SCkv2h24sGH+xenWRV51pXfRdruKlWUgwutF0weAwGBtoU56IwOPa0/XgH458Hh9kTdwAEW0mCO00woat+KWC13SfYuLG3lkTPwSlZtLUXz0wCF3YKm7mGzU3HKd1TD1aQ10VJu9TYEv6oFuT4p3AjvqWss80MzRXIh26+m5l8gMG5/IzWLGj/MsaDw5an1u0pGg+mvslgxhz+PbxidZ0ejzZr/DIMn66Eu7F066JzU3kDX55aoOOsrqmzL5zyUGnvheiP1kPZYPe0EpD5822LrYLqBfk3yXurm1/T4J3d1mLwcQvaoYGUSuNhL9FZcOX+y+qx5IVEJNL+pth769rhMPiQ9Idxqp9Yj6HOtXMH4NYSvtIj1PXbC5gCA+ZtI+FgCk7pBMZdpyToE25tdDfxgzIut0iJNMKBIz4kemu10nMVk99C+D/Q9D06Vb/9ZoTmwAfAkG2Gz6Jc95HfN4WpRX32sElUQVjsJKIrFTW9HpSqFeqrHzcLozh261jKbusABlYTewKpp0S+4L5RRN4yD41Ln+jYwxZLJsqfGgJTAX6NcmI5Myn2m9BzXloG4bFrpOIH8BOLVATw/H5RMUEGZNWMHklofDfFxnUasUQHmM/cqjmPkqnD0t5bsF2Vqk5/WCrH3wIeEE0ci48Z8Xra452V7hKcLBLfr++9qsM3r/PfdE
- ijAXviTp
- /DEztv+BQmU2DHP9ugTDj0ISg2yONu4QhnDjF23dRtZByJAdglEXYADQpHUNwb7LhA3vpIvrnazk12df74uBbdCE9fN386CucEMCdMGyMQP1u6o1VJyXHAPor4N1dj+2ZDRJps5Fn3cO4kB/kUV1BjJKB5De09Q+hg0O6Q84YSIY+KHhrsVT2fvUgfkhFGdQJTYdvfrPVm+W3y31e2na9cKMV/fFMhcLSVrnJWHlQ3PS0/JuCo1R14O4OU2AMAwqUpQpF60l8y5JnAQlAzWAwVzIhh9/tQp4ZRXB9PXj1d3yywsIh94Y6QYVy6aSnsIOr6WiA0Ue0L/GZZ3LsiCfCR156tGxs0/uBzX4U8X+nTEVz0muDtSNqLTXj5Ra7LnYcvPvA03q9gl4RaXAA6IA2etegI7s2ehQobkMhhltyGJwVOND2cESfZwOBokeuJOv65MbsgijA0gCB1c/vZhyxasliuTo69dMVbwYd5AnepZBn8QZa22fkSBLo7g==
+X-HE-Tag: 1786588086-602198
+X-HE-Meta: U2FsdGVkX1/7hddMWoryPKiK5CmgMf+qov9C0pXiY/NCAO0a2/XyAjdQGpo7Ca74W93gsRBHGczXkOoYt1bmedslCXRgBcukI74O6e9yfTH6DizXUmIj1oi2q8bPgfn2hZBaDf1Ijg0T+x9AOOq+EMmVO5dSUCYbx+2dJ3g9TtZuXX0uRaz0TYKceptpLbvCrvSn8fFbJjTweOFHKZdbaUIQRfTXqIE7nDCRnERnW6ROxENj3ahTQoRN2JcsltyhPND88AXjUj4G1l+0bHmbEaBiJyWgwutgo1x9YzpYoSSqGDVUmpXcKQv3uVSOxw84tMxSufc9L4+p/ykF+JbaAQVvlVix52XkNBcohhYweD9XqW6vAiJg6XJhlENwppRK2r2q8iFKL2vu1hEcF9HVuezbP6BIJOUtMYvNEln/RrHIq5s7ILlPo0GM3p0DjzWH60JYJlT0d58VAZwV6ddY3VLG4a1Y2OaGrgYoZ8cwXVDikMFsCtnSW0kGnnezYmBQDfWNrsShj1wQUtU/5k/LO61f37VmvIY2RvMlUGgwNPoz1SOSkLzzXY7VjeVpDF1idwh7kdBImvHqL7DT4m93t8t1IdCRZeuCdZ3KPXXTfDyMAdAVaLueRrTe9pP+FQEViolrJ+Rsv6jEUNDWv7cpowy5nDtsQ37EQPoJxXNlXUWZ06b6XpNHXnbFymGo3za/O79ONimEoYEQUr6eCL1fH8afKQmMpOeRZUr99HWk7lx0OzcXk8OcTIEeYSSks5b77Gu40V75Q7djvV0Af8gYhKiI7EZ9FulWaTik/GeNMLuPL1B87Hub7vxS6L70+UUosecHqRS6Rb05yY04V8eXly6HcGciFpx9qxt0aMw3eV7ZlCnqAWSRN8Il19dvouo4Mh7UygtIrG3MO0tnxLaI6b2QXK2KQPgD2HAxDJkQkVKOgjxiNUdme2Ao8gtX70FB2cOYBvmcCf4GuJODZZd
+ ksvIDT3v
+ 7ICmKe6M6fZqxa7ozl8OAiU3EwSeMs1oPr3zZCjCWEwfTEfAQUnoXK4tpqcHa2isNawU/fuVuqyX9g3QaOA8idAN7nsgpKZyjv41Rl6WtvPPQbzh+yN7thuLNw3Rz6loRVY+O4GF4Yn/bskFvQNM3Ght52INgz1NAVas5IZD5vSgDFCWrd0razDj9QGZu5Ud6NuJdFd5jQGv0r4+3kaQFneAKXAzabpESaBycyBHvWuJZ7cBP11UdgCxH67D85UgJOX+/9R7RpS6aqPLGc/Ny0Jo0T9HqEk0SGSy+OIkWurrk86rAbSQO/BOnhq+nfS6Mxyz/oc8PuYyZZEjUJxgGRa0upYZX5PR6ojTOr6VDJQcvjGO2Fz3FFDJ0QeaLeMlosDsSuvzid4V+3bM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,40 +103,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 06, 2026 at 05:09:37PM -0700, SJ Park wrote:
-> On Thu, 6 Aug 2026 12:05:00 -0500 Gregory Price <gourry@gourry.net> wrote:
-> 
-> > On Thu, Aug 06, 2026 at 02:37:59PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > > On Tue, Jul 28, 2026 at 03:47:11PM -0400, Gregory Price wrote:
-> > > > All DAMON physical- and virtual-address operations obtain their folios
-> > > > through damon_get_folio(). That helper already excludes ZONE_DEVICE
-> > > > memory implicitly via pfn_to_online_page() and folio_test_lru(), but
-> > > > this is inconsistent with other callers in mm/ which test explicitly.
-> > > >
-> > > > Add an explicit folio_is_zone_device() rejection in damon_get_folio()
-> > > > so the guarantee lives in one place and covers every caller uniformly,
-> > > > consistent with other mm walkers that reject zone device folios.
-> > > >
-> > > > Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-> > > 
-> > > Thanks, nice to make it explicit!
-> > > 
-> > > Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > >
-> > 
-> > SJ Asked me to drop it,
-> 
-> I didn't asked you to drop this.  I asked your thought about revisioning this
-> for my concern.  And you replied [1] you can drop this.
+On Wed, 12 Aug 2026 13:45:30 +0300, Mike Rapoport wrote:
+> Do we want to make users decide if they need MIGRATION when MEMORY_FAILURE
+> is enabled?
 >
+> Just make MEMORY_FAILURE select MIGRATION.
 
-Sorry I didn't mean to imply you pushed for one side or another, just
-that the feedback you gave about not wanting dead code is reason enough
-to drop it.
+I agree with this solution, but I discovered another way: just like
+commit 6ebf98d71f9b509e833e ("mm: introduce CONFIG_NUMA_MIGRATION and
+simplify CONFIG_MIGRATION") done, add CONFIG_MEMORY_FAILURE_MIGRATION
+to select MIGRATION. The Modification is also very simple:
+```patch
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index a8b03e2920ba..500e54ace6c9 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1340,9 +1340,11 @@ static inline bool HWPoisonHandlable(struct page *page, unsigned long flags)
+ 	if (PageSlab(page))
+ 		return false;
 
-I will probably just go ahead and drop it unless Lorenzo thinks the
-patch is worth keeping.  In my next private node iteration, it ends up
-back in anyway - so we get a two for one without the intermediate patch.
++#ifdef CONFIG_MEMORY_FAILURE_MIGRATION
+ 	/* Soft offline could migrate movable_ops pages */
+ 	if ((flags & MF_SOFT_OFFLINE) && page_has_movable_ops(page))
+ 		return true;
++#endif
 
-~Gregory
+ 	return PageLRU(page) || is_free_buddy_page(page);
+ }
+@@ -2028,7 +2030,8 @@ static int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+ 		count_increased = true;
+ 	} else if (folio_test_hugetlb_freed(folio)) {
+ 		ret = MF_HUGETLB_FREED;
+-	} else if (folio_test_hugetlb_migratable(folio)) {
++	} else if (IS_ENABLED(CONFIG_MEMORY_FAILURE_MIGRATION) &&
++		   folio_test_hugetlb_migratable(folio)) {
+ 		if (folio_try_get(folio)) {
+ 			ret = MF_HUGETLB_IN_USED;
+ 			count_increased = true;
+@@ -2051,10 +2054,12 @@ static int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+ 	 * Clearing hugetlb_migratable for hwpoisoned hugepages to prevent them
+ 	 * from being migrated by memory hotremove.
+ 	 */
++#ifdef CONFIG_MEMORY_FAILURE_MIGRATION
+ 	if (count_increased && folio_test_hugetlb_migratable(folio)) {
+ 		folio_clear_hugetlb_migratable(folio);
+ 		*migratable_cleared = true;
+ 	}
++#endif
+
+ 	spin_unlock_irq(&hugetlb_lock);
+ 	return ret;
+@@ -2903,7 +2908,7 @@ static int soft_offline_in_use_page(struct page *page)
+ 		return 0;
+ 	}
+
+-	isolated = isolate_folio_to_list(folio, &pagelist);
++	isolated = IS_ENABLED(CONFIG_MEMORY_FAILURE_MIGRATION) && isolate_folio_to_list(folio, &pagelist);
+
+ 	/*
+ 	 * If we succeed to isolate the folio, we grabbed another refcount on
+```
+
+Would this be a better way?
 
