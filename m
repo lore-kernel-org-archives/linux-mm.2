@@ -4,98 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 649D4C5CFEB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 07:24:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D557DC5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 07:25:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 561C16B03DE; Thu, 13 Aug 2026 03:24:27 -0400 (EDT)
+	id F28186B01F2; Thu, 13 Aug 2026 03:25:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 511A86B03DF; Thu, 13 Aug 2026 03:24:27 -0400 (EDT)
+	id EFEE76B01F4; Thu, 13 Aug 2026 03:25:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4281B6B03E0; Thu, 13 Aug 2026 03:24:27 -0400 (EDT)
+	id E13D06B01F5; Thu, 13 Aug 2026 03:25:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 151D66B03DE
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:24:26 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 856A0C058E
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:24:26 +0000 (UTC)
-X-FDA: 85095408132.16.0ECB560
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5812120005
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:24:23 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=EckspUCc;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf03.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C0B846B01F2
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:25:16 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4B008120537
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:25:16 +0000 (UTC)
+X-FDA: 85095410232.06.5F5393B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 77A6340002
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:25:14 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=haCcH78Z;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786605864;
+	s=arc-20220608; t=1786605914;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R4UvSlr/e9eoGGopeqb/bapePxUt4CWhbI/u+CqxUVY=;
-	b=DQ3qRX5Jztcimhb67+tNr7JT0FE4M4JkdhXX8vfZIs5ck/UFF8G5TD70U2HqZaTHNWy8Wx
-	zy8p99Tg+wgqbNgo5SbTme5O9g4ypV8LUf32co2WIWMI2fSlBchkb249/XMr5wQ6ge6A5H
-	Upm31qmIJopiT5yWcAQ/9QfkVZvW+vA=
+	bh=wlUq6eMZ9dhHSD88qIfXndTiEbaOt83wBNm0+NgJcyE=;
+	b=eK0QCwwnj6o7TlFpWLUe6jrI7PtKjgxB4nISES1tFzRKuR2GAsfAiry/zLRMFNtdyhrXQe
+	nW1ox/1QH5iHMwKNaaodYifoVBNUfpPqHxxrbpLGjBZb1zspoRM1vbzW5j0PJ8w3Vf5PmU
+	GSlz64x6pEkrmRglZrTMiBPZJu6+85c=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=EckspUCc;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf03.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=haCcH78Z;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786605864;
-	b=FnmQZ4EnyCXczGLy88dIZCBXmlfQiBSUQkysm26+/hLfuSUM9hiImYpyMZRIy0NTxlx961
-	uM4OX1yRITBCOL9mXZC5Ph68+Rh9KOhsrMubEjfrEhr5992BE8fTojBHIJT5ieUDZtDkuV
-	4mOkI5zVB2GrBTQRxvIMqLJyBJPMEFQ=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=R4UvSlr/e9eoGGopeqb/bapePxUt4CWhbI/u+CqxUVY=;
-	b=EckspUCcfaT8u61q+vPelp66QF5qjUnLvqFqCWT6Lr3CWr8uYtqFSQbp+TsprGlLPiNvk6Pou
-	5xDlKtLQnNmQPcCzDuRXhwamHebgRXZ45GmM28qGre5vUznr4Xej/CotQFojCAiFDkx0aNRvd/K
-	3bGnC7qfLcCB93ILfnS4TDk=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4hLGmT6MvxzpSvB;
-	Thu, 13 Aug 2026 15:13:29 +0800 (CST)
-Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
-	by mail.maildlp.com (Postfix) with ESMTPS id 22A4C4057F;
-	Thu, 13 Aug 2026 15:24:15 +0800 (CST)
-Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
- kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Thu, 13 Aug 2026 15:24:14 +0800
-From: Xie Yuanbin <xieyuanbin1@huawei.com>
-To: <david@kernel.org>
-CC: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <bp@alien8.de>,
-	<byungchul@sk.com>, <gourry@gourry.net>, <joshua.hahnjy@gmail.com>,
-	<liam@infradead.org>, <liaohua4@huawei.com>, <lilinjie8@huawei.com>,
-	<linmiaohe@huawei.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<ljs@kernel.org>, <matthew.brost@intel.com>, <mhocko@suse.com>,
-	<nao.horiguchi@gmail.com>, <rakie.kim@sk.com>, <rppt@kernel.org>,
-	<surenb@google.com>, <tony.luck@intel.com>, <vbabka@kernel.org>,
-	<xieyuanbin1@huawei.com>, <ying.huang@linux.alibaba.com>, <ziy@nvidia.com>
-Subject: Re: [PATCH] mm/Kconfig: allow user to select MIGRATION if MEMORY_FAILURE is enabled
-Date: Thu, 13 Aug 2026 15:23:44 +0800
-Message-ID: <20260813072344.112797-1-xieyuanbin1@huawei.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <0dc4a8da-b2e1-4eaf-bea7-070b38d6952c@kernel.org>
-References: <0dc4a8da-b2e1-4eaf-bea7-070b38d6952c@kernel.org>
+	t=1786605914;
+	b=M/1AGlC0O6DqkDkVUVjtXOuw4XncLgXiQHJAsS1cODU8dOowElv2xowdsNe16RQbt2OJP1
+	cdh7ZFz/xP1cI2WCdr66FLCAJzTU0zjkp98enI6gAEXwxj9+TCl3OZgZUcyF7pW5GaBFgA
+	AeHfilzIzC6QZnusvtEM2Xx5LwdWgoQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AB53B4124C;
+	Thu, 13 Aug 2026 07:25:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B411F000E9;
+	Thu, 13 Aug 2026 07:25:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786605913;
+	bh=wlUq6eMZ9dhHSD88qIfXndTiEbaOt83wBNm0+NgJcyE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=haCcH78Zp/m539QhWqu+sd7oXAcejudjaL37QL9yWQGnsiobVQeble+LIE9uHZWdh
+	 wkZ3PV/mcdhwo52hfyTMQBO1Ysj6eJjhWkRnZoD5Gj75WtgLRp+3EMSQq7XpzeXB6d
+	 rOLVKpUYwo7QHTAYPQSDjffNYj2iGRmc8M8+EV/+cPHBoBlIZ7Lo8xq73w68lD7vbt
+	 KIGrqaSxgrlPxmUvFn5B6jkeAlUWlYGXajPb48a4hHaYd176H0OBNV6e+4eZQFFI22
+	 NMySX+bOPrd0h2nG01qqgGjtyb5wlJ/moLFtMivrUCLyqJsNyu8f8maiZ8gQJEAEKc
+	 fInbwEp5x7fnA==
+Message-ID: <3e609c64-a393-4667-be74-6cb2bbdcb717@kernel.org>
+Date: Thu, 13 Aug 2026 09:25:07 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.109.17]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemj100009.china.huawei.com (7.202.194.3)
-X-Rspamd-Queue-Id: 5812120005
-X-Stat-Signature: f1fx3apup4erkekp88896wtfjwo1ttup
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 06/15] kpageflags: Use is_page_hwpoison() to set
+ KPF_HWPOISON
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Jane Chu <jane.chu@oracle.com>,
+ linux-mm@kvack.org
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org, Christian Brauner <christian@brauner.io>,
+ Jiaqi Yan <jiaqiyan@google.com>, "Gregory Price (Meta)" <gourry@gourry.net>
+References: <20260805210557.1118966-1-willy@infradead.org>
+ <20260805210557.1118966-7-willy@infradead.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260805210557.1118966-7-willy@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 77A6340002
+X-Stat-Signature: umqie9bsmmr1ufhweju3g7mu1g1xrhr7
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786605863-265520
-X-HE-Meta: U2FsdGVkX18VuSHrKy/JIJHgoe586Zkr49y3K5ftJHMMnlf3TsPvH47b7eenmt/NFRP6chHX1+ydVyF8vUVh6YTXJs+gzWxHyH+ll2jYOabQ723/UOP4a4DZRc4d8mhSQUZzxuwnK5MwzDk8iQ2/Bl7iTzhZszHcoq68MH4Imk4fIFOYA/H9Mj+FA8TW56epNnsB2HRLIlvL/g/xCfqJEQNMYI7HdUwCDT7cechOlLeTsY/o0TDIJ426zBbCBE8bNp9ai+E6x6Lt4HamAzNRTXTcln28QZTXPSJVwXRS0QL0lMggXFjRZYmEy+nOkEjCRK/W0sCLV/uz7LF5FHjCPtK3fSZZtVWwImozCBV0YWBlvuN4u6bMQP171DTBxb3+dN6MlOj4D/TKL3kmS0xJYRWkJoDKa+NbOa8iUh1lTMkKqAGj7340TEwE+TPRatwxymuoUHv2R0Wk15vwAkOp7MCxvCPRVxesuPYjcUj4TJig76uo8iEeJDYhv+QWfGiUTE/4wSLg9GrpxU1c1DV/GIqA435hMv21GPnKEY4OVLMUdB/fi8l8aExl+Ltj1J2FqEDYhUYXGdR8BP1Dj8wYySditCMe3jNCNYT3/4X5TELNLkUE6dC4L/9Xj3FnZ1EvmoWmjymbGW+3gVxBOpz5ajbmIU6daYCRQtevaaRC9fPdA+iWZ+7Cur5Yp4p4A4uxzlC+N5YRGj9bqIPVz3hS/JA7bMbyHGkavnjIZ2KKvubkZ045WME9agn/E6R/mOPozieR4h94ICSZgvv22Aq6NGBjDO8iz/KDl0OuSxm7AUM26Q+qRHwv4Qb2nZzqNkwURFoh2dWJbAnSjzQc2gtPGyBnIrOClgWEjJCjS08hGuiKfjzNxxdSktcTKmIe0VyFWkqvrN9JK54fTXcE7w1dNqwHwycafg2MEBm/1dp4z1h9xUY4Xhf1UyazP1DmWEOhTKjNqf0MI8GWuaHBy4x
- 2MxG4KwL
- 1TGI/bZ2cBC2hzBiW10GcgzV57JHWdM7W+qgGpyRoZYXKfVNVd+t9X066UuGMkm7Mtlp09WGTWPXtPLvYRCxf+5hHuqFy55eF7gWt0YhdumqpjtwNss72ywXd7NMHJcywZPjjDx1mNf+POTJJ/ea2wIbM6qkctOMMnXLpXL6qBCBU/tYKeFcC6E3UfR72ghG/2/v0/Fjku2De7SdBfE8WkMpxSq6qn939I8rkKubbXKIql+DnjjyAU5vx5BVqkX8sX9GmaD4oQMhpNF+oZhTBftz7IzkPDdevTZLACOaYAill75uqnuSpWjCXRgYtHD1SNZX1ZtlpTvRK9CYpWwfeTc8HmaChj7xKQ892a3sP4EK6/YmT6Zdn+g+IubXU/0hcD0xdZZVou/8ppbQ=
+X-HE-Tag: 1786605914-339600
+X-HE-Meta: U2FsdGVkX19I2bHUgpPw5cCOFuKqtmVauLsjcbqMUQ1Pd5h8+x2XsIlSGtgnkiAK6DJKAibWzdLkAq4TlxPcAN5z1SGhBmrFqj5EttvjHsinwc9Ya10KsqLkpCxvMvr4aCgRl9Ox5Z+MVwIXZAW+e+vP/nQf+Grf1V6WEk0WEI+SHPtqWCLzRQafp8R5JojEglmcnHIcwQw0DQ86Nvr22m6FirpRE0ICyCCEWZuHvWVpUDYwr8S8MiUJJFfm/rLgBaHt0/2RhxULMokvl4dqYW3vI+j7ff6hmfsOQiqjZ3hDVAaP4xuslII1oGrZUu3W07+U98jMMfXmpqOrXevyArZF8L/5e8GaRAFqY6OQOD5h873fBpCexIorVH4LWU9FaN+/KwO/VKoIm1PtDnaD3+Yrcw6vj/lcioaJt0dKDNrpOWhWEqYC21frF2yQpHVeI4S/B2J7/wnLAx6/E1SHsN/2bG7nmfUDBfcR8CjPxPX44B5sTbelKMETupk/Q6+t0R9jzNM034Dy84kTCFzwMI0dFreuCuBhadrO5WA3fxpoy977+EmoNlcflbmi42f0I9jirvPGXtlUGrxwsr9QHY9L05kujZ4FUhXuBqP6e2pEJ0v5+GKBcDTqQlryMP9/A5+RPYXKiTBrZOgq8SDq4MfULsRRL6gSfC56ltB0MyQwHYI5obdY3dPJ9DEuEulkjWUAdPTr1HKoIkxVZJ6QXpvMg4dzwBlkQ3WeNU2qI56gWmg6U8+tZOiomT39zHuB6bwVsWZEiaaYnXj4bS3k3bZbwzjluGlWjb9NZZNqDI7xfk1M3d0VTEP7AmsXx0Dzlo9C+DElJKo7NUavo7iDok2NbmWlMuS8EiPyZt2SBh1N+bUXuTC8MBhOMtLAQIDg6DDoheDfHCjHilFf3gRp+oTIxQ+ahYHEbZxXIDLEPghg6wK576r0SwJCMG5ZyvozWmImUY4G9q8ueGCFywG
+ JQSMZtt8
+ AjMNqAG0Jh6VYPJKfPOimiqRzHWAhPFsupQZe75n+WUEjdUwHNE7ypFLGCLrkDIf6kvdSF+P4m641c5LYGZCrODHt/xv2LUgt+O6WDIYN0BfaY/HbZs0++xMyNKlA19gGc0JkTWHj7xYmLZ8w2IhGJVaC9YnoJ/JQJMJTH80evl5X8a0steRaYHow6G1EYWsZH0FrrstllrXdtvg9ehrREwuInZrsEkf5lqyTUtIx0Mj2gDyJIZm1QLhrE+fXuDUtX8qyCPnbsrIXuLGku0+x/UnRxsNWr7b0XXHY7kbTaMku59DjxCqV7j9qm148OyPZO5OcU0MfqTG+XHq5ilGD/vmbJZN/+X8etVNv4afzPD1LHE29IyoHoxSxWbEcNQAtOYZFBsIAjbwHvcKMNiEq/Ywy7FQX7vecUXE6f12WvUM6Kut6eyV8WMhu/fTDdFb99K7zL6D9H/ROIcrf8Ymmv2jMSYjgb9+CohFiP0jtn9YwfoS3cpIg7HgwOVFbHQq106PetpUSs7waA/A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,20 +144,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 13 Aug 2026 09:06:07 +0200, David Hildenbrand wrote:
-> Why add a new config option?
+On 8/5/26 23:05, Matthew Wilcox (Oracle) wrote:
+> Instead of knowing how hugetlb handles hwpoison, just ask
+> is_page_hwpoison().  This gives us the flexibility to change how hwpoison
+> is handled without updating this function in the future.
+> 
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Reviewed-by: Jane Chu <jane.chu@oracle.com>
+> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+> ---
+>  fs/proc/page.c | 8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
+> 
+> diff --git a/fs/proc/page.c b/fs/proc/page.c
+> index 7d9387143435..323e4c049f69 100644
+> --- a/fs/proc/page.c
+> +++ b/fs/proc/page.c
+> @@ -233,12 +233,8 @@ u64 stable_page_flags(const struct page *page)
+>  	u |= kpf_copy_bit(k, KPF_UNEVICTABLE,	PG_unevictable);
+>  	u |= kpf_copy_bit(k, KPF_MLOCKED,	PG_mlocked);
+>  
+> -#ifdef CONFIG_MEMORY_FAILURE
+> -	if (u & (1 << KPF_HUGE))
+> -		u |= kpf_copy_bit(k, KPF_HWPOISON,	PG_hwpoison);
+> -	else
+> -		u |= kpf_copy_bit(ps.page_snapshot.flags.f, KPF_HWPOISON, PG_hwpoison);
+> -#endif
+> +	if (is_page_hwpoison(page))
+> +		u |= 1 << KPF_HWPOISON;
 
-I think this provides more flexibility in configuration, when:
-	CONFIG_COMPACTION=n
-	CONFIG_MEMORY_HOTREMOVE=n
-	CONFIG_NUMA_MIGRATION=n
-	CONFIG_CMA=n
-	CONFIG_MEMORY_FAILURE=y
-Users can choose whether to enable migration, just like what commit
-6ebf98d71f9b509e833e ("mm: introduce CONFIG_NUMA_MIGRATION and simplify
-CONFIG_MIGRATION") done. However, it does add a new config, which may
-confuse the users...
+snapshot_page() takes a snapshot of the folio and the page. If you look at
+"page", you start going to the live version again.
 
-I think that just making MEMORY_FAILURE select MIGRATION is also a very
-good solution, and I respect the maintainers' opinion.
+-- 
+Cheers,
+
+David
 
