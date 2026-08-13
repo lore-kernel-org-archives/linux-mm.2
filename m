@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BE23C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 07:20:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B144C5CFEB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 07:21:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0784F6B01AB; Thu, 13 Aug 2026 03:20:33 -0400 (EDT)
+	id 2758D6B01AE; Thu, 13 Aug 2026 03:21:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 050236B01F1; Thu, 13 Aug 2026 03:20:33 -0400 (EDT)
+	id 225276B01F1; Thu, 13 Aug 2026 03:21:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E82EC6B01F2; Thu, 13 Aug 2026 03:20:32 -0400 (EDT)
+	id 0C61D6B01F2; Thu, 13 Aug 2026 03:21:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BBE286B01AB
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:20:32 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3E1AD120537
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:20:32 +0000 (UTC)
-X-FDA: 85095398304.09.3D8059A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 7EF7D140008
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:20:30 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PDe8Ye5p;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786605630;
-	b=m+yxgj7E3r43Fmvg0aUduKZ6LUBWtrTazXy4nj9/o5BJNY2PbI7Gl4USy4OYIhefdOcKCH
-	6eJncp++vbS8yQRTVj9WVozdIPYkFN3zx12Fu+/YbmilFMFw8nfmj/AZ2RJ3jGj2sbe3Jb
-	l6Kersari9AIt3b9hG9+MBAqL6yWJAY=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PDe8Ye5p;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CC8DD6B01AE
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:21:02 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5B83A1C1663
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:21:02 +0000 (UTC)
+X-FDA: 85095399564.24.888AC7E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8D878100004
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:21:00 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l0J1WW1N;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786605630;
+	s=arc-20220608; t=1786605660;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KGcEV6pl+wnhkUoYbI+HCVP62Cpluvw9xH8Mb9lAEKg=;
-	b=iw3B9j7I9TVRwhrAtvlhPz+BRHyLZWByAKLt/3Kb1COTQQIWJiZLOFNxmmqozLWHjImejC
-	2cha6PZui0lJ370xy7mBY7K6NtII7wnvK+zBM6xWcmOy1Wptmx4Mwm4+hI6UEV2IVE9kqU
-	qsfNImbrsvv6jUZl77hx02L9PsviTcY=
+	bh=1zx2Qgzcucr1lr0qkaSYA1QLDyvjN3OglK+Nni4fAl8=;
+	b=lq+qkm5WvIGgFitRmS7IIx5xk/hmf+NkHtpwfCb9lUTCMTudy/UdtgB9zx6H1NCsPNlW0P
+	S5Fs8lc0laLiCIwpxls7A1ocSS/mUuIebj4gK1CdoD8kzXSEdzyc/9XqwKMjje9NSrCs/M
+	oMmdPHTC0+pb0LPLKnJhsWsyhP9T310=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l0J1WW1N;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786605660;
+	b=8O85uLSuYEn14xJuYBytGiW/iClaosH8r41fP5hLslgndUaSZKo38F8/jHd0ecfpPKHsrs
+	5H32iwSKJzB/K0qdNJBDfmmpoMtv9cieCj3QZx7TLHLBgfnibf2lPrAwWK4g0iHXOL4PIn
+	bpODGZ2z+jma6SYzwl7DVXlEHsjSTYQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 03A42600AD;
-	Thu, 13 Aug 2026 07:20:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7711F000E9;
-	Thu, 13 Aug 2026 07:20:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id ADB3E416AD;
+	Thu, 13 Aug 2026 07:20:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF6DA1F000E9;
+	Thu, 13 Aug 2026 07:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786605629;
-	bh=KGcEV6pl+wnhkUoYbI+HCVP62Cpluvw9xH8Mb9lAEKg=;
+	s=k20260515; t=1786605659;
+	bh=1zx2Qgzcucr1lr0qkaSYA1QLDyvjN3OglK+Nni4fAl8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=PDe8Ye5pdrqK4Y0egAlcQN5IBirS79gYFFNr+GTbXIBDN4KKCJbtoJLxXfppWShGH
-	 AVSRxpeE7gCCc72o72x7X8+sZfDBjMagyx++40zbXbwHvCr8ZHrnAHhWZGSy0GezHk
-	 FKVaijt6X1rPBEA1aSj2nVyMD9WPvDrgDP8FT1jFgjbwsQxS2IRVm3zlSZYRD0fNTm
-	 2vDKsO5idXcA8cMiYOvTSpAoMQNKSmXSYQ297N5Py39CuS3ykVpYsa8/skKgY6G80T
-	 ARzyilT5g6dA5UltVrXyEikLX+6LibN7HwbNzC/p+IpfNPqgY7MY5eh2hbvKFZr+HL
-	 yhfpLwxBz/FqA==
-Message-ID: <7ddcbd0c-1689-43ae-bfb8-93894d2c9cc4@kernel.org>
-Date: Thu, 13 Aug 2026 09:20:24 +0200
+	b=l0J1WW1NdC8WUCI+4hObk9BmgQxnhkoM5huUcC2I9a8fgeLpyDG+w8x6XSXMb/8G5
+	 sIm5hRmA4p+smRwNrCiLU09vUZyeobDqwyLdbp8AuGN1I/9KSHfoq5n5FnYcdcXcVl
+	 vcziya8SDDOlEJC7tZlrqDsd+YvKSvEq0h+kHaFGpeL9c9GnheAcfBomKLqKJdbjIi
+	 +VBPi2jblFrzPStVsKWuqyhE0hV2ycsBtYK38gH5f4+nuRA+ES7S0XOu5wQyjT8Pzt
+	 lWHtufmEY41W/Da7nfjvrsLcVQOJSiE5GhPUijyo9kUYEXA9TxcULKh7QsON1XrPlY
+	 nrUj/W3+nFzJg==
+Message-ID: <32873b50-c900-4fe5-9dc1-cb086bba77e7@kernel.org>
+Date: Thu, 13 Aug 2026 09:20:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 03/15] mm: Rename folio_contain_hwpoison_page() to
- folio_has_hwpoison_page()
+Subject: Re: [PATCH v9 05/15] guest_memfd: Use folio_has_hwpoisoned_page()
 To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Andrew Morton <akpm@linux-foundation.org>, Jane Chu <jane.chu@oracle.com>,
  linux-mm@kvack.org
@@ -77,10 +76,10 @@ Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
  Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
  <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
  linux-fsdevel@vger.kernel.org, Christian Brauner <christian@brauner.io>,
- Jiaqi Yan <jiaqiyan@google.com>, Usama Arif <usama.arif@linux.dev>,
- Gregory Price <gourry@gourry.net>
+ Jiaqi Yan <jiaqiyan@google.com>, Sean Christopherson <seanjc@google.com>,
+ Ackerley Tng <ackerleytng@google.com>, Gregory Price <gourry@gourry.net>
 References: <20260805210557.1118966-1-willy@infradead.org>
- <20260805210557.1118966-4-willy@infradead.org>
+ <20260805210557.1118966-6-willy@infradead.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260805210557.1118966-4-willy@infradead.org>
+In-Reply-To: <20260805210557.1118966-6-willy@infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 8D878100004
+X-Stat-Signature: kxok9okh3s5fzpdu78n4iqakcqg7h39g
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7EF7D140008
-X-Stat-Signature: ny4pabs33ebctjedo631mwsi3bfh6jru
-X-HE-Tag: 1786605630-168563
-X-HE-Meta: U2FsdGVkX194DODGqvbDNA1JvBsdZOhqhm6mFiaURyEaZA7EeawoprIHJLTj5o6UEZaM6Mzesg7OLRdaXBCFPCnBR2GBqRqn9pPETQQGtBqCvukBAJaCbBDWfD/RK8fzm1iaPhJd+muD18jfVyPnhTHng4FevLuZSZP37kX80aqQqim+Jd14ObpiUY0i6bQZ19sBUUCvPETosK7l28ZgS8Dpvxgw+Kc88VBVwPLwiMdTwDrwJxL4/PgF+0H2jEsVCgmuH3ib9Fh+FpIDoq8r+g52Dbug2MHeawLHgTQVdbHmgaZQxB5SJXL/Ip7EqgvKleh+jD7XnRB0YFWCyupwnuP3/gTSlDPV69KmM3GaGQhFluICCwW7eRijRzBgF2UAdgpQcn+7gsR35fARsU1S8lCuu5gXILsCs03V/3wpmrY+LcsceceQbvtF3poo/WbBFTrj5hwh/hISJev9euUVXFEX5A0xPop0KrTdV4NcMTL16Qtm14GfO3o8CpSX6umuPKUSSp1g+LTXaGnVGHOYgILy2FJjgeUYw+VDKRHjaShLxUJKx2TWn/ks7nx0KoSMxS6mLkdPdtqUkdh7OkT3DXp1L51MUr3g0GveTkVZzHiENeULNHzlhEqbo0XnvKtIocYJd9oGF8krEEEtJ0rdKf6gpzm8Rgp6MQ8bP1rdyOc+3LB+xKpSf1GeHr4J3KKiF+g+YhFKYhzRGSQjRH5HTW6Q6pwJZmcAKtyF891PyL3OtddvdDKlJr4LHBRlAyrMiT8Fjk/SiRdJy1jFj7ivjVL7IYJcZx0620f8hKsoKbV5JlBtmNH+1tKRG+zMkwG1Lepx+19ioiD7u5fvfvbLEnbuRk3Urp4nPN53oCTl2qzCwds/R87OSOqi29PeJOgdY3v8ehuBme13wE9L+U41XZzN8xpTnVplMmzXaIbqcpH6fjhppyI6K/RoOTFzg0YSSX3ITth6j5CDDoUaQpJ
- TGCn2Mub
- R3ZfUX5jI/LiT9O3q9zSGkPEM/KQLvraohsr04cyAfOM/dNn27LZYQRvuSAsxpwo1YHzog+mBY6NeiCQyDyt2/o9zfJvLlPrCwKK1kQaYlX2/Tlmf6K3PK0uB5a9DsarA/KScEcda9nm2+8Acc/7mv16EqS2gZnYezopsdLm+YM3X+c955Bzc/93q8p9XXVz+OwqqFjLXyVY4kG8nO2wYPGPOHi9ugxhwAyeKWXkT68jpk8ZMShBK7sdP4+EgDCSNSfbdoWLEmRbpGYnEppMM34/xBKSyQzu+PIUBmVkilglJwfoAPBcTxWqsJbh3Ip5fOtA9yi4ZekGDtkAHULtL8DfvptLucgkiFm0TXdXUCV/JiHwwDZPA8tHIQYeG0VcoWFEPODbHjeeBZ4O6wmClnzasNrz+lafTpk2yeq6QuJoOolt5lAnh9M4StuOilWIc4qOFvXpY2pWexy4HUBIYW9UkFaQl5VDlfLagP7U8IfWxcY0fQLrKG4R5tMS8VnxDVC9FlLKyuqBsSTvbjauD4xYd3U5SGki9U0kSidPN8VMsUQUPZ01kJilsSH25SgKJG68B
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786605660-716468
+X-HE-Meta: U2FsdGVkX19RDIVpVk7x7iC6wDSljz9GqnXVPCVUQ779DU9EQ7HjemZH9zWDdOsH5l6MmXsqtBRPTNDraRoSq8CIjLMHaShMs/ffP2H5XnnLSoWzl7ZpYe6AeBqFC5TNf2ZtQg1SR8IUHpzLIFQK5jJEu1tJuJESs7MCZmrYEpIFOAOFRFKonqTbWQo+Wf2T5AHwMlfBbqFYgevePgG5YNix/LCyMgZ3wFgy5lEGlMyPthprsBafGongDo3T9fhe51C5Bo0VnexFJnMVHmFHnMDEztI702k1jUiWbnAvn+k69JrjT+z08VUMI4C1Pq2zMT5KQMxe4MzPUQUtdoqOUxnf6OyRjDyp5ogsQYZ6D+mPuZpiv97nb1iB6OmArq8GL5Z+tT2sWyQzuP4FugP6NeSYvtQFxqKts5bd+yJJ6YBL/+y0ERIPjkuo+TwS7+hzX6uX6VQ+QNVEH4oUxVaCB9UeQJIIA3vWxXUIBkpVMJH9U0v07f1PoBbu64to7NEsjBvtDBXglZrpSmXn4Mb/Qe/OJXKfZ1ycjFKpSUGVZlnKiJjZuOQFgUUGIMb93I/zHymn3bzWRzsEh8T66MJTNI0gRoMSvTbijKAF9U5SM9OVwvQtwFIkX1D5jpQThb70s3KdwDMqKqbR8YgbCAeqOAyJa4+BwJ3UdYGQM8/zVcgWmyACdE1FIyr9Azqxpw22knpnliJZtk78WXUUhXTk2/PVHfzf0fIetXtahHq1Sl5Ij3cmXXsA9LJVwHetOJtWX+3+hIiKGBxr0shKMhjVsjTh7Jn9cHBpQCELm2L4UmnqvvUXnFzNmOyJktl9TxR3IPSE4TwI3CLEs36iZ0V8BeOb+DzOol9OKuEpdCDKBy94YdjkA7AaLOEk/0iAZ3Q2SGpXy9VpvZM43N1HaqajyMar0DTCgKY68sQe54C56IEzPU2eZyMHbBRFfmJp7nqTlVL1ObhnHKu+mTLBO1p
+ WKELhShu
+ EWRXx5f2NTqYRwryit4hzgEdIF+EAuk37jzqijjMaC48VlMNy3Pgoh/3vDrwrAlfALeiq5eQLp0h3O1lxAvU557iup9EmKVCoU1YsOJEE2cWNOdlQSu4EU9BSYf4Q3rWvyOdbY29PZnRkGizQ7PPTAP+XLvXKldJeTPa38AhaALYKL9s0j3AwnZR2m4WyoDYbd3Q21dCFawM8Eur1c176qKOcfEuOBtwBhU84NcTgjNp0AQvuj2gVJQpDsRneM4qASoVg5QrQ/p1uHgi7ld1GX7U5OHoGPZmAQIWC4TiHlbc/vNdXZwGt4saPS+HIhuVbtTX41dyTET0Fz0D3W64WDdkibd9PwMRp3kIBL6sQtJOrDevwD7RdrR45uJMZM3nBrWgaEW1H5HkwSqBOlxuDt1DaAuzSh16OCSV65z6aJc2i9CssW5o5XtCRyLsP6HAtpPZ1wiFO2QeLorIX8FtOb6f9SCDC4N8IuRKVPWGOI8OKDPdSDjJX2mPko28yUw3B0h3aYM4GmeD0VoJCS80AR7lB21fP+v1EEfQSkIPgm78bu7IRh+YY5T2KeXDbQ9xOy3GI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,15 +145,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/5/26 23:05, Matthew Wilcox (Oracle) wrote:
-> This is a better name for this predicate.  Also make the argument const
-> to allow other callers to be made const.  No functional change.
+> folio_test_hwpoison() only works on hugetlb folios today and will give
+> the wrong answer for other large folios.  folio_has_hwpoisoned_page()
+> works on both.
 > 
 > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Acked-by: Usama Arif <usama.arif@linux.dev>
+> Acked-by: Sean Christopherson <seanjc@google.com>
+> Reviewed-by: Ackerley Tng <ackerleytng@google.com>
 > Reviewed-by: Gregory Price <gourry@gourry.net>
-> Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
 > Reviewed-by: Jane Chu <jane.chu@oracle.com>
 > ---
+>  virt/kvm/guest_memfd.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index db57c5766ab6..94eedcc7f1a9 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -774,7 +774,7 @@ static struct folio *__kvm_gmem_get_pfn(struct file *file,
+>  	if (IS_ERR(folio))
+>  		return folio;
+>  
+> -	if (folio_test_hwpoison(folio)) {
+> +	if (folio_has_hwpoisoned_page(folio)) {
+>  		folio_unlock(folio);
+>  		folio_put(folio);
+>  		return ERR_PTR(-EHWPOISON);
+
+
+guest_memfd only uses small folios, so it doesn't really matter.
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
