@@ -4,92 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93842C5CFDB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 09:31:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A5A6C5CFDB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 09:32:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B78176B0254; Thu, 13 Aug 2026 05:31:40 -0400 (EDT)
+	id 5D20F6B025C; Thu, 13 Aug 2026 05:32:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4EFB6B025B; Thu, 13 Aug 2026 05:31:40 -0400 (EDT)
+	id 583716B025D; Thu, 13 Aug 2026 05:32:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A91C76B0254; Thu, 13 Aug 2026 05:31:40 -0400 (EDT)
+	id 4C0D96B025E; Thu, 13 Aug 2026 05:32:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 891F06B0254
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:31:40 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 33BD7140577
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:31:40 +0000 (UTC)
-X-FDA: 85095728760.21.DC8A20A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A7DCD120002
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:31:38 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mt1DAUli;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C9046B025C
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:32:22 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B7F4D1C1736
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:32:21 +0000 (UTC)
+X-FDA: 85095730482.16.3887F3A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1CB94140004
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:32:19 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a3wVsJdN;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786613498;
+	s=arc-20220608; t=1786613540;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RPWRbYV6TCDAvxwAQ93r3v8jMQsGV73j+wzwL5QA0LI=;
-	b=aUebT9W+fAIIg0nlujLD0YxfMLisLnbhwC868mTdpb8jtlpQp0wzcaKepyMpTJGNMcxeze
-	o67n9JoqO6xGNTvGxoUFYbdRgSz6ZWX0kpi9HyI9WNdcgJ28Kw+qhPrfOOjBVul+gelSYO
-	uc0SWZLGhAwroWDFV52Tom0lOl08AFo=
+	bh=nAWes2BXkarxcSwrrfFt7mtosTy2189oDBYFN8w+S6Q=;
+	b=O6aYPW27UrvvJXDTPO6dJ0t8NTZ6CheQFzymrOKzr/LV+Jvc4cVpI9veKLXUMXwPIr3o65
+	Vt9oFBon7xLZbBK3/UvgQNV6lkGS9OjiD2zw9MBylfCS5KeWCDUDxUVVnRkW+CeoN/iABH
+	MsTV9gnzPJN6px/CbrcYcHs7mDfHfpw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mt1DAUli;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a3wVsJdN;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786613498;
-	b=y3RjuglQvZ1kSxU0yWU3eAAOJV06kufhWAoMibl2r5Buy23YAnY5F58Fjy5p8olffiiTvO
-	iw95/Fl/KV8gKdKfd4z5/NhirJalwrp1WB3nebi5WXyK1a0rKV23Da89y6HzuaJbQGniyZ
-	ZJxUlHWWP/RNKH7bmtNIdbq/l/rrhZ4=
+	t=1786613540;
+	b=s0UIwKJpLZFHrGhmnaRGIEeOMZksA0uKweOTijd0WeZEkFfe6O2m2u5vW13kmP9Um/Oa1x
+	ibFj8ecWtjL8Qyp/C+z7AidIqlJK0N+DbTKmGSOsQyWupNK1KhChlGAbp10a/NKzjK+sd0
+	fOPamDnZ6WTJFJnKR2BtE0Gawvnea98=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2753E600BB;
-	Thu, 13 Aug 2026 09:31:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264371F000E9;
-	Thu, 13 Aug 2026 09:31:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4E8CA423CC;
+	Thu, 13 Aug 2026 09:32:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE801F000E9;
+	Thu, 13 Aug 2026 09:32:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786613497;
-	bh=RPWRbYV6TCDAvxwAQ93r3v8jMQsGV73j+wzwL5QA0LI=;
+	s=k20260515; t=1786613539;
+	bh=nAWes2BXkarxcSwrrfFt7mtosTy2189oDBYFN8w+S6Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Mt1DAUli6E0KbctTMEUJSRtrDQt3jR7WNsGXypzFOmMb4zRkFkZrMgW/HP9bC8TWV
-	 864GweWLaUewxzREk5i/Trv07mMBnEdtKN0EOaPz7pjLJNujHFJZVnQ3H0e4JqPVKt
-	 jsWrbVwp+kL5kr+aY2a/eP4VoFqtxJBV2EG6Npi5V+iJLJC6b7Y+zxiZDecN1VHBu7
-	 Oiskh1H9493M1rkzR95i/8kYUaMsjtMZmvUrbAi18rJ5niihmnRwF7/ROMTM47lj7H
-	 Ff3mCt3CBqo7Z8WeQdP9QUhF80uN53Vl1lKZa764tP53Bs6/UCXch97fy800Uvef4j
-	 whKleZqLtk+2g==
-Date: Thu, 13 Aug 2026 10:31:15 +0100
+	b=a3wVsJdNUj7FbrNxMi7nCwOfx6FTNl8WKwtxgclhKlL3EMzkiG46MX9ojuTBuTBdK
+	 L8PFgBapyC2e/SYXTmfBU7BI/I9YIa9lCU3mCKgh1SHZd2y7Bq7Qi1RynAX3M/gqzS
+	 TjuScnbX/uZKNt7EjMUjFwjCPPKhfSdIX3Yw6RdM2U/cvpep95+r2auYc6+jnNerNz
+	 J3e98r75pAPxrEh9GKbLGY2sAJi6CFAlC3if8YmKhqqzFv5LTw82X56CgJfMxiioWI
+	 VHwTO0M01ddM2uMYVhMgRSLWH+yD4cdyPPMWhw1zhrYhm+4SF7gdoWv3OlmJL3EStj
+	 In0Gz63gtbT+g==
+Date: Thu, 13 Aug 2026 10:31:56 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Xie Yuanbin <xieyuanbin1@huawei.com>
-Cc: david@kernel.org, rppt@kernel.org, akpm@linux-foundation.org, 
-	apopple@nvidia.com, bp@alien8.de, byungchul@sk.com, gourry@gourry.net, 
-	joshua.hahnjy@gmail.com, liam@infradead.org, liaohua4@huawei.com, lilinjie8@huawei.com, 
-	linmiaohe@huawei.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	matthew.brost@intel.com, mhocko@suse.com, nao.horiguchi@gmail.com, rakie.kim@sk.com, 
-	surenb@google.com, tony.luck@intel.com, vbabka@kernel.org, 
-	ying.huang@linux.alibaba.com, ziy@nvidia.com
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Xie Yuanbin <xieyuanbin1@huawei.com>, akpm@linux-foundation.org, 
+	david@kernel.org, linmiaohe@huawei.com, ziy@nvidia.com, matthew.brost@intel.com, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, nao.horiguchi@gmail.com, liam@infradead.org, vbabka@kernel.org, 
+	surenb@google.com, mhocko@suse.com, gourry@gourry.net, tony.luck@intel.com, 
+	bp@alien8.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	liaohua4@huawei.com, lilinjie8@huawei.com
 Subject: Re: [PATCH] mm/Kconfig: allow user to select MIGRATION if
  MEMORY_FAILURE is enabled
-Message-ID: <an2Nt3Wi-WagS0xP@lucifer>
-References: <anxOOiuSIL6tjufA@lucifer>
- <20260812115529.247548-1-xieyuanbin1@huawei.com>
+Message-ID: <an2O7wR7iYtw3N31@lucifer>
+References: <20260812091644.224299-1-xieyuanbin1@huawei.com>
+ <anxOypktGGq_9PZw@kernel.org>
+ <anxQuhNh8rTUYqpN@lucifer>
+ <anx13IlH6PMxhaSL@kernel.org>
+ <an2NjwBTWoX7l_tH@lucifer>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260812115529.247548-1-xieyuanbin1@huawei.com>
-X-Rspamd-Queue-Id: A7DCD120002
-X-Stat-Signature: 4ghmwu7sndtzyczet85kktxb76p3wjra
+In-Reply-To: <an2NjwBTWoX7l_tH@lucifer>
+X-Rspamd-Queue-Id: 1CB94140004
+X-Stat-Signature: 8q7uwpdd8cw9mf5idnua1mmh94hjyuj4
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-HE-Tag: 1786613498-13893
-X-HE-Meta: U2FsdGVkX1/5sxcqt2xKlFHg+UKVyyrgyLX3qvu7XK7UVX+/qo76apYmO+jsZc8pjfG8dHxG7HR9o1rWG9TqnNlw8M9F0Mh/olr/rjL4sHCJtxnkWeQ5/+o3qQfK4fkWPgs+0dd1vzneMnbWNM7Ap6JCe5DLuQMg6UfwFZCuYUUvxHyZF9lBB743KbaSKqVykc5BZTwS2jKjja8WaIVuCEuO4gebaxOfcDzi9exZVT1gZ9PAPCJySTKaR+4ebsnYfsGebnlwYUnbTpkOgh1Nwvx8u8gdI0V3HxbE44u1lLL7zsQQDpCCh2rSGZ+RsRgowSy2xTUtOKEj2pK4FVoMuuxvbIUi+0DNvKsu9+XVP9/qNAy7VrtI1L4Nj/CcIAgjpUKHn4PrgJXC0+APJZYB0TZiip/b+xvQavEkVggNQ0Crrt9y1iEjhH9V9ofy3RZeDZEnsHwjdoJ+87hezEwVLveubAdPWft0ynUELfG/6+MsH0zMVYaNclsKDtC1jVHmQVWDNv7PXLbPYP/FSQ22TMpmUaT8tNqW7MdgqBaTfztE6SYHODygbfnTWVMuRKL2Rl8O6WPreBYsRgz67/7QvHvyBIqN2f5kVrpvpi0FWbFXs7EhP0LVzJLuJxc9nqASg49/8zprnPPAfD3ojdvB8IbQw9DY21yUv81ahpWSQXXHN1J99AMBfg1DpcT3l66iPhTju1zPvfTQjfvYGQLVXM7Pm1LZxtyhXXUJvN+R8uYUaiVsHf0SThyFjTk+2XDwbQbGAvO6dzMenFHO8qxrbo6xPkjiBMClVjZou1jXGv7CSr9UFy98+NlIdVIG3alA1TRFZ16+UJWmCR7sQ/GkDvW84q/8ofMOBzCIGuzO3PgTeMKiSd5VO1+Q30rFbvgqDcbeqMv8pjhhmkOm+9VW7D7VPtG6NlQH7mju/IXAZgiNzYAT2q7hnA8Dhv/bD5GBFyrxx0Z4YgL4zbUA8Q5
- Ux9XMCW5
- sK8A5FHbqj0hOcBZ81uwpF+8q8BtoaVzpv4xICpjt4YjzWQnGmNkxLBDWdIHvAeaeWrTtTFydpJPxhUq8687+oRRABKeOHeU2yWEf14UVAM7txpyi/7SeDNTdlBcVElpZwYF2+tfIN1GGQDIeLtYsjQuGyyuMkPzeGX+NSi27VRVB9wIvKjwqL+0RHWjEojlF3zwq05NkEg3LWOK35/0bzZXSZFt+4zZmeqpyheZYijVSucLOpjhB0agARFvqN/PC/7kJM0LKuXPe9o27r9rYI9yimIfPKjOUAtN3oMwQ+hjjMMumNpWH+101bwVDxp/fE80r8Col2TSBLZ4AfyvKjSjfkoMsTgFGauT6fRvuehRFCXnTXHavz2d7Ow==
+X-HE-Tag: 1786613539-928553
+X-HE-Meta: U2FsdGVkX1+ZgqV+66jvN0l3mm4IL6Pj3KTX+e1Z/LZgKti77Z1eEOXr0d0ML/HN37zcjnwBKcnP5k7Nt6D8Pn5uuFrxF9KB4khn3gIkwnW9k10OGeA65JkY0Mfh0oV1dUPtCUuLCn4OeKZQY9JXMGtOg8KC4TG8+kv0EcCWGWodKqJ1fdWperKKAoRZqfFiBDLPq4zniwltOD6CWfKCEMCB6SssY4S7SpGTr5KlXTHoZNNk6+YBzksEpB9Q88IcQrLJsV2dkQ7RaTRSX2ntbj1v77sh5GHrg5hwTr5vrXgXVSIZoy0CuEY6myeygfTtM1eZlLVxurJdqungIxAD/kBn9MEsgWDIWhxI8bPQvVsdXXbh6sQtG+cG5a6FuDR3jZ7STIu1nEAbo6dOJeHU271Sn/GmxwUlogBVee6OTCIO0dDK8pasbS46u70bwVwMkMoGlfbQxtGX1mkj/J7OEVyg1y86auh8cJzVB5nM1milXBG+fmPhMbYNHgqlCYuh4rY3o4oAllBWgAMGnvV4owvVg2o3zBqxJyhVjjd4RypdFgrhLyaOIgztkp2L/+KkK51nSH50y04HxbFzsuM7oaoEfTxdf8+xWBYpFOHOBBUf7qY7WC9lrv7fD68J3HF/DNYSRiqV+YJx5laEgFSLZTfk1vw+54RDseMzZhwyPzDFK5mbN57PD6GiL08SErL3JLWb/DRWz8x0etBPkEJquPogVecFe5LzzL3/XodIriyXPH6fCSdhfeTyjYEamCGza0O1A25636xIiKV01c8uUkx0lYplwnjbgk5CY9HjtaeM88uyNtdrjrt+8f5zz+CFHDdoOzbcVyEmhOmf41EZ+E+K+VqG2u9XhxT3J3Tb1uAxgpB4ySMk2vH35b9GtuDcmx/l0gIxfUeU+itWVQtvsJz4OPgvQXJffgMegKpCsqErWtWvpnc2sRMT8asAPZuOYUZ0T8aiPhWVkOSdB/5
+ SCiEqu9w
+ rlMcHQvZpQvVwPxr/jerSbrjswcOSf83TxZc8LNQgCOYJjZsHxS33NCQA15TS18CAu28Nxt/FEr+gfGuV6vCY1/MxqTDh2HJG0eB97LoqfUZV83JnkCcS+QvtPAq3cFIGR3cORddfV0OmwQC4sh+zose+ApS91OqHVwEd8Kd7GhpEjwkLQtQqY+RRdXPspyL4+m7GGATIGVbuVTpZqKWatk2Dem4yNQCwPZOwgCAW6El8dzNsmPXyzMS+bHQWDOShBVUf7Gv9oUZXw3xL2EdAqk9rLCMhADYeQIdOoUWN1iin/9goC4bYTkHaWTOq666D68zwztHPMNmnEOp0h+Mc+kx1pYNa3bQICETZCVy7qTpULhHAWjHX63uJng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,84 +100,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 12, 2026 at 07:55:29PM +0800, Xie Yuanbin wrote:
-> On Wed, 12 Aug 2026 11:53:29 +0100, Lorenzo Stoakes (ARM) wrote:
-> > But you seem to be implying the two options cannot both be enabled, that's
-> > untrue:
+On Thu, Aug 13, 2026 at 10:26:04AM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Wed, Aug 12, 2026 at 04:32:12PM +0300, Mike Rapoport wrote:
+> > On Wed, Aug 12, 2026 at 11:55:03AM +0100, Lorenzo Stoakes (ARM) wrote:
+> > > On Wed, Aug 12, 2026 at 01:45:30PM +0300, Mike Rapoport wrote:
+> > > > Hi,
+> > > >
+> > > > On Wed, Aug 12, 2026 at 05:16:44PM +0800, Xie Yuanbin wrote:
+> > > > > Currently, memory-failure can be enabled without migration. However,
+> > > > > migration cannot be selected by user when memory-failure is enabled.
+> > > > >
+> > > > > Migration is very useful for soft_offline_page(), which may be triggered
+> > > > > by correctable memory errors. Most of the anonymous or file-mapping
+> > > > > faulty pages can be migrated to other healthy pages.
+> > > > >
+> > > > > Allow user to select MIGRATION if MEMORY_FAILURE is enabled.
+> > > > > Also, select MIGRATION by default if MEMORY_FAILURE is enabled.
+> > > >
+> > > > Do we want to make users decide if they need MIGRATION when MEMORY_FAILURE
+> > > > is enabled?
+> > > >
+> > > > Just make MEMORY_FAILURE select MIGRATION.
+> > >
+> > > NO.
+> > >
+> > > Explain first why the hell one of the other options that selection migration
+> > > can't be enabled.
 > >
-> > $ grep CONFIG_MIGRATION .config
-> > CONFIG_MIGRATION=y
-> > $ grep CONFIG_MEMORY_FAILURE .config
-> > CONFIG_MEMORY_FAILURE=y
-> >
-> > Have you disabled compaction somehow?
-> >
-> > It sounds like your .config is broken and... you need to fix it yourself not
-> > edit mm/Kconfig?
-> >
-> > If not you need to spell out exactly what config it is you have where you must
-> > not have one of the things that select migration, but do want it anyway.
-> >
-> > I'm not sure we'd even support that?
-> >
-> > Right now:
-> >
-> >	CONFIG_COMPACTION (!)
-> >	CONFIG_MEMORY_HOTREMOVE
-> >	CONFIG_NUMA_MIGRATION
-> >	CONFIG_CMA
-> >
-> > All select CONFIG_MIGRATION. Why is it that you cannot select one of these?
+> > Think small systems ;-P
 >
-> As you say, currently, MEMORY_FAILURE and MIGRATION can be both
-> enabled, however, you must enable one of the following configs
-> at the same time:
-> 	CONFIG_COMPACTION
-> 	CONFIG_MEMORY_HOTREMOVE
-> 	CONFIG_NUMA_MIGRATION
-> 	CONFIG_CMA
->
-> However, for embedded devices, these configs are not always enabled, and
-> they can indeed be manually disable. This is the actual situation I am
-> currently encountering.
+> That need soft offline and migration?...
 
-Hmm really? It's a small embedded system that still needs to defragment for
-large folios?
-
-But...
+But still, he did do what I asked and reality > theory so your suggestion seems
+the least worst way.
 
 >
-> > What
-> > weird config needs CONFIG_COMPACTION disabled but does want migration just for
-> > soft offline debugging?
->
-> It is not for debugging, but a real configuration in the production environment:
-> 	CONFIG_COMPACTION=n
-> 	CONFIG_MEMORY_HOTREMOVE=n
-> 	CONFIG_NUMA=n
-> 	CONFIG_CMA=n
-> 	CONFIG_MEMORY_FAILURE=y
->
-> > Users shouldn't select this at all. And this is an absolutely horrible way of
-> > resolving whatever your real configuration issue is.
-> >
-> > I hate hate hate this. This is just completely the wrong resolution.
->
-> What abort making MEMORY_FAILURE select MIGRATION, just like what Mike
-> Rapoport said? If it's not appropriate no matter what, then let's stop
-> discussing this patch as if it was never submitted. I'm sorry about that.
-
-...reality trumps theory, so if this is really a config you need, Mike's
-approach seems the least worst way.
-
-So respin with something that just adds a select CONFIG_MIGRATION there and
-please put a description of your real world use case in the commit
-message.
-
-I doubt there are users who would find the combination problematic.
-
->
-> Thanks very much.
+> --
+> Cheers, Lorenzo
 
 --
 Cheers, Lorenzo
