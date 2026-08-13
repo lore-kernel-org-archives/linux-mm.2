@@ -4,133 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A9A6C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 15:55:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1C08C5CFCF
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 16:03:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 602B86B02A5; Thu, 13 Aug 2026 11:55:19 -0400 (EDT)
+	id A2F926B0536; Thu, 13 Aug 2026 12:03:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D9896B02A6; Thu, 13 Aug 2026 11:55:19 -0400 (EDT)
+	id 9E0116B0537; Thu, 13 Aug 2026 12:03:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C87F6B02A9; Thu, 13 Aug 2026 11:55:19 -0400 (EDT)
+	id 8F6736B0538; Thu, 13 Aug 2026 12:03:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1166E6B02A5
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:55:19 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 882C4801D0
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:55:18 +0000 (UTC)
-X-FDA: 85096695516.25.3473278
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by imf13.hostedemail.com (Postfix) with ESMTP id A2B5520008
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:55:16 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="as6eTx1/";
-	spf=pass (imf13.hostedemail.com: domain of 34uh9agYKCAczlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=34uh9agYKCAczlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CFD26B0536
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:03:26 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DB9E7120172
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:03:25 +0000 (UTC)
+X-FDA: 85096715970.20.8444A11
+Received: from mta1.migadu.com (out-2.mta1.migadu.com [95.215.58.2])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9CD8720006
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:03:23 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ALzKO3Yp;
+	spf=pass (imf03.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.2 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786637004;
+	b=6UuutBl7V0840OrLZYwEldonwxHQM502XIOJfoGxweT5D3Ek3PZlAbtkEqgjyHA15p1Yvx
+	hopQc0sPlC65TuLa6e3Hg26G9PMwAtkcl+rrAxgTq5qo/v1ud5rh4GMLbtikc/ETf5Muky
+	n0GmJdjhhwuSxpESZQhddgSJd1WhGyE=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ALzKO3Yp;
+	spf=pass (imf03.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.2 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786636516;
+	s=arc-20220608; t=1786637004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NWd+efJbNRhMQi4tFuFF6oho5IzekPVE1UiVHSpD6zk=;
-	b=M/sOsQZ58BAHu2BvrHGynk8HV9EbBg0mIYazGgorRgkT0fCBwRYqRuR4I1/7joWizmJ9Rd
-	aGxTjaP+D5oD9bWu3JIoEXss0UmVpZ1drHhr9tKXLF8UDQEpOfa6v+d6x3vPhLteS05J6A
-	JfvhN6l7fjGKfFVwZ6TGNC+bk3fuTDE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786636516;
-	b=7E4RzVXQkZD3pQ1rrjh/XBOoND1p0MJqSVsBe+OVxKjyyrMWSyVb+80PYZM192oaEWIP/y
-	kBXEi74inceliRk8F5ki75HAWXK/OH3D5U3Tzce8ZudEbPKREwGYmyfYmPCTFrYjuAeWWN
-	glkltj8eziCyHi9EtG+OzWFbV9RoScQ=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="as6eTx1/";
-	spf=pass (imf13.hostedemail.com: domain of 34uh9agYKCAczlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=34uh9agYKCAczlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-388b404eaa4so1229032a91.0
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:55:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786636515; x=1787241315; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=NWd+efJbNRhMQi4tFuFF6oho5IzekPVE1UiVHSpD6zk=;
-        b=as6eTx1/1/kD4cV+kI+hSHP13l80fSAftdnJ/ELbTzXyeHTnuRyQLhn7sOKSpgz7j6
-         2h83b/SQq5ul/kmjRSqMcoLkahWa/CYk5Ce+ZXMOiJIAEwRaRaqtMR3E6ITZJYWmiV0e
-         5DRBV+oddA4WKabpmiAilDJkQQ4PTipj871FzTApHEr4k+Jyvrw7qzV8m5mnlh6vn0oe
-         C0wp1AyEtcgP/gNfUhipx9xmuUtioCp7idZHhOV7Yd2WEUSwOxb9eMSxvASP7dnooFVz
-         U12qL2x8jCE4denu4yTl2EUrSjziHhk4gyBfsAKmQoWesZ8dHrhJgdYBElLhROn59E3x
-         hQbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786636515; x=1787241315;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NWd+efJbNRhMQi4tFuFF6oho5IzekPVE1UiVHSpD6zk=;
-        b=Mv1ame3DYPsjVCmZDkqE8lZZCrhcagBiTjDIoUUcFTGZh/ohYRUgCajB3IkODsMLoI
-         Dvs1MXBN5rlJmebE6joouvIvnrEwrVOycfuXXF2+GzuNO5DfIkVuRsEWkP4nVHVzCtJI
-         p//kRWMdiLGX/IsCWn4qkZmV4sWiQa6wCEexszBzv65QHfV+n8VKmodL/wovtmCTm2oh
-         wpJwtzllzN8RsIRy8sa6xgyly/gtgInbH65Ee4cO9exKS+/rw5Xp/Bpb25KOOtzP9fHx
-         T2ntPXKD5ntSksWtcRE3dL2bK283YxOCQgInubKmkqDk6dSn8gcRRRXt/DFk7d1tbOqc
-         EYTA==
-X-Forwarded-Encrypted: i=1; AHgh+RpO708PSkW11Z1vF2qCqsibR85DFMR+Fyo6KUFY8TgVeNblTqz7wug2wPd/f37/+HYUggIr/ic98g==@kvack.org
-X-Gm-Message-State: AOJu0YxNmUomgQHOuO9pR4rCO9WIe6RDUUHB7zBOqG3QfjWR87NW8Qs+
-	qGpJRW76vdJ9+qaVAdOS1aO2pfglTIxEVNjQaS75FfnTZAK2fBrKq7L9G/G8ICVVGLHtD6W65IX
-	2kWaKuQ==
-X-Received: from pjbmr22.prod.google.com ([2002:a17:90b:2396:b0:381:1d7f:b8db])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4a8d:b0:36a:8240:2477
- with SMTP id 98e67ed59e1d1-3931e31a6f4mr7349226a91.19.1786636514937; Thu, 13
- Aug 2026 08:55:14 -0700 (PDT)
-Date: Thu, 13 Aug 2026 08:55:14 -0700
-In-Reply-To: <1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com>
-Mime-Version: 1.0
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-12-2fc18ee6d3ba@google.com> <1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com>
-Message-ID: <an3o4h-E8mj6CUaM@google.com>
-Subject: Re: [PATCH v10 12/41] KVM: guest_memfd: Call arch make_shared
- callback for to-shared conversion
-From: Sean Christopherson <seanjc@google.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, Fuad Tabba <fuad.tabba@linux.dev>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	bh=WCiQ2PIGfe2qaMn38Q/OEHxu2Z2ztzJDsBcYH2TPtp8=;
+	b=A5B/SYABtsjZn1EZzIXCqgA3kNVgP+TwkrhZOr6q//mGY02dlYRmNCJMiFmbFRSW7q4D3j
+	/Ci+tT0mnnF0eVlymuMa0dgkgx9Chsicx6iMxcGu3YyXRIFGnyX5hrIDuZ6cWviqUvpigS
+	w3yjqqRGf35dfltn5hSKu7qi1XlAnpM=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=TfiVg463NFynci603WWT4ZTChHOhrPxJeP6Z8Zrf2Es=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786637002; v=1; x=1787241802;
+ b=ALzKO3YpoY3N1iThVZbD0TbWi+NXqxICt9DzFGr7lxwyIcM7cLGNVLA1otFyhM/m31IlbyIF
+ UO/deUUjX9b95x8Z2SPSahwSuE9elB2HSLiXoc1/qcQp5HPau3g7wgbs3XgnPvWqcRLGKCGFPAC
+ 3deVPpYXCQdKzwRCE3b3A23I=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (223.70.159.239)
+	by smtp.migadu.com with ESMTPS id 86f3e37813a2a36a;
+	Thu, 13 Aug 2026 16:03:14 +0000
+X-Migadu-Flow: FLOW_OUT
+From: George Guo <dongtai.guo@linux.dev>
+To: chenhuacai@kernel.org
+Cc: rppt@kernel.org,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	shuah@kernel.org,
+	ardb@kernel.org,
+	guodongtai@kylinos.cn,
+	kernel@xen0n.name,
+	graf@amazon.com,
+	liukexin@kylinos.cn,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-efi@vger.kernel.org
+Subject: Re: [PATCH v4 4/4] selftests/kho: add LoongArch vmtest support
+Date: Fri, 14 Aug 2026 00:03:07 +0800
+Message-ID: <20260813160307.15130-1-dongtai.guo@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <CAAhV-H7+1bv6ULPO1+SZ5R=XFxNTh+54rqnYQUAW26kF83kiMg@mail.gmail.com>
+References: <CAAhV-H7+1bv6ULPO1+SZ5R=XFxNTh+54rqnYQUAW26kF83kiMg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9CD8720006
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: mmm4fg6gzcbu7kq1y6ufa66wz7xd7k59
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A2B5520008
-X-HE-Tag: 1786636516-558875
-X-HE-Meta: U2FsdGVkX18+uwiatTMU6qeqA1PBcelGxEGx2ZgNsQyzCYBMh1UJ8XJGYpCR1wvbUTTDvPJPhR9Q1q5iRX8nKOMozAtk3KvNbHu9OVKxgc1cxpKN/4/93iwophIkUnxLAgpayFjBZRT+QgwhWStPagPYbJGjQolJqyHB0qxk5d/XCxeeasFkAJipsaiaYW9aVEpyUJrQobrpKydExaj8cUvvfkacYE7Ul6SxZX0zjFNr9BDC1NUyRtid6UuonZ2/xO8/jfoAXZCQDrpdSzJGmsaPNaGEHYCRu/XU8LjKtlOsUCpZsBcv44CoTt4n6zSb6lBi4M14z2fb35krTToT7/29cRk2Pmz0kzGY7Qn77fe3CryI2r01/DyYPtn33ijy4QIe59AMbImjqA7ASN82qa6JdeNBOY3X4J8o9fvl8bDcHeXvrT5jjpTfpo1y5WSWtfrWBPgC2KKNfh2s84HMe/IZwHP9lXKzipy3tlIQFQ+M7wcs/ob6AYjOeP2XpVkwmLNnx/FriU3QGXYJZWD7SuGtH3Q+ytvrzK81KR7/YcZIz599Wa7mwxtSmkGROJgqS99KblskmwY7+PhFatwWVpAzFqHeAyIbzqXEjDrF07FPO4UXiKR7l51JVyLdQc7z+r/6EvNAmulnopH6x3zokz0TQuo5FaoKUfO+tU/NbIGeaj50I2CpTR2g6g8lGSN9crhY/HgnmcmKilwfqijsXPyE/z6M2qLIDy5cEGelZCGKdb8l846Mriv1NFpLpEoVpI5avEOlYTT2PC1B70DIUeYoyebcFPTUqWEZB0KSAmdKPYFy0okaCwkJ6JEfJa/dfJQUli4/QG082EvRriXHIphvMEgy5TZ6l74IqBVs9qkH0XY5LTXI+eNKrbikvgX3cVBLS3miZ99jm/XlowU7y6z0WHYXIthTkEjQ57/Mbl4u3d1TsxhkC33MHN1L9jdy+rl6ZQbyfkZVqCtInqb
- SLU9pOk/
- NNyU+TvKqDylITy+8fhqVYFpya1yI+0VYRZEHBP5AucfBuz8ZeGeMFOYr82Z0NOFiiOwsteX5P1ZFSbGhplEriLMhk6Xbwd1gIWBG7r0jdOxva3Qn5kUHEVqQ9aM3h3+BRmfOd1bYr8r1XakKUhapFP76PvR5dDNHIqGj3BBPFquJw5n0ugQMC0ligX5Oj8UJFXl6LBLft2j6BgQdW4Gq9X1IuZtkPdWS/TGrt6uWi12nq4dCUWJNz/QgUV06j7iIJldcHyNfgEHhQ/wVITpm2D/Ny3xFPazrqboZuWx8yIdLN1TSHsn9auXKPxggjXlXTMpx4jddHpodbLdoLDd7Kxmqx5HOoVP0HUyhRpGf5Buo9pGczcFSiEEJ5yyNb0yYfiuHIsOqh3ImBIPpsB2o6oMmHfiCR+/NFvTd/f3HiAcHHSNQXosiYX9gSVjOVhyQEGplnmMkU2belw6c4IuGuoOfHHQVDu12sUih8+VfFhNDISc5MiHa+EnZSiFE5lPKQYHDGbr274av9mU/JdlF6ur07LoS9Su/bzxThTelNQezd19iw0l2yGSf8cJCIHwWwOdiP5flZ9HhzYERIQqT+rg4DtkZhjgr9fRCB3hwg1goyIfDd8yOXeqPEgNXfBZtpaRxTstUe4pC+ZJ5uow4z8OxDMmi8uoRrQouVL0bQlpj7/8=
+X-Stat-Signature: 9erfhc9wcnikndfnp6n87w78mahbo7ho
+X-HE-Tag: 1786637003-307094
+X-HE-Meta: U2FsdGVkX18Ihw0waU0qUSKMzqKhKy5Vron2O4GgDPBaA8taGJyJnqxnkhVZN/IdeJlLZMSvw2gFZFPGUyfE7n0aFztAm0RWAjWg5l0CwwYx3CJLbfTYjXNINC/qsWPxVVgJQ3XS4VFonuF57VdD0RIwyUaulAuViFcnVg2eMuM16TAlR5xTNuRZOvTdK7U+TstJiO+fhYkIfy9Y2maNUfe9jR/7vndfjpoQgtCiy7ovz7wIuDbr3UYGtARdGKWQGMwwAPx0Of5aAw3//ifw6AXESBnFFELkA4SZR54bJZWF7OsSvbul6bxukJMguyjaKtxThW5MWc17Xfj1k4iVXYo9ptQ0SCgSjkUkL8ZjD3T1TqDUV84iz3WOJtvkHIINvdL4WAkb0jWrh67CSQU5Phup8w5Th5iV765EwxN6wwPDr0xfBvZMEbJLjqGzyuwyzkz2e1xHPuhLJV7X6O9XeBLOk2DKFx1BxCc7o3/MozjFGxIfvDxEJIy8XvGLqVsVG9DbmqV0bZ4QtQ0aLp5NCd8xZs+dTSn0JGUgiEXaWG/+U4HQJiqn/LehApjGZ5X+qez/EPFGmA8hfW9j3WTQefDRF19VYqBDCMQkMTu+p3kBtGcc9VYkSt7mrTqHQMR4BZupUo038YFNNELW/FYPTNLMyvhs1sXc4tV+WsCIWgkPAwPBFt//gz+8su70b4Iy/g+gkB5yvKpClJeV0Xr+LWFOITs98sjHmVTcYs14Ygk+GEA/nJtn45d1ziY1sWZHl9dY0EKcb4ihSIbTgCLGBqkXwKrZoU61qIIHtjVTh+DqHkNNm0T0qbT4cMXDBu5wq2vmnD3pAGeBeEdmaA7xi4xIxTCcmx39RpyLgG3DFUFzbWZFWyo0QzF3y1cNbAaEIb6vkhvDIAujaTz6/NREKjZwNJAcEyeT5svC+7PZQOXlQqN7S7BqhtSo7hTKL+fQVcowVYHQEOnNK55oTKh
+ iE3wxm4v
+ YBqc94AjPPFmDnlF0HXEJ8G5YmmJHmbXdTYMy8RobIIZeb0HyHuuhdMYFpbBcxGhbItz/wqyjfjzP9ryGjxLFY2SiFwO3MeyXfl66q9bT04JWr7PQJFlOYaRHlBls/yTpBD7PXq9Kmn1TmNj4Y8Mvjoq7au4J6kZ1QXocVTIJdlvZp/bVF7K+OzODglXCeMpi4CO9Ni7QYzdfoIeM6ey3OWDFEvDCM642ltL6iAfdkBNFrVD91rlaRMmoaaThB0+mpfkOPOfpOcMmkj0gUdhr0nkB4guZKzD4lk+nZ3+2s2wbTcw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,84 +101,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026, Binbin Wu wrote:
-> On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
-> > +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, p=
-goff_t end)
-> > +{
-> > +	struct folio_batch fbatch;
-> > +	pgoff_t next =3D start;
-> > +	int i;
-> > +
-> > +	folio_batch_init(&fbatch);
-> > +	while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch))=
- {
-> > +		for (i =3D 0; i < folio_batch_count(&fbatch); ++i) {
-> > +			struct folio *folio =3D fbatch.folios[i];
-> > +			pgoff_t start_index, end_index;
-> > +			kvm_pfn_t start_pfn;
-> > +			kvm_pfn_t nr_pages;
-> > +
-> > +			start_index =3D max(start, folio->index);
-> > +			end_index =3D min(end, folio_next_index(folio));
-> > +			/*
-> > +			 * end_index is either in folio or points to
-> > +			 * the first page of the next folio. Hence,
-> > +			 * all pages in range [start_index, end_index)
-> > +			 * are contiguous.
-> > +			 */
-> > +			start_pfn =3D folio_file_pfn(folio, start_index);
-> > +			nr_pages =3D end_index - start_index;
-> > +
-> > +			kvm_arch_gmem_make_shared(start_pfn, nr_pages);
-> > +		}
-> > +
-> > +		folio_batch_release(&fbatch);
-> > +		cond_resched();
-> > +	}
-> > +}
-> > +#else
-> > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, p=
-goff_t end) {}
-> > +#endif
-> > +
-> >  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t star=
-t,
-> >  				     size_t nr_pages, uint64_t attrs,
-> >  				     pgoff_t *err_index)
-> > @@ -599,7 +636,12 @@ static int __kvm_gmem_set_attributes(struct inode =
-*inode, pgoff_t start,
-> > =20
-> >  	filter =3D to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
-> >  	kvm_gmem_invalidate_start(inode, start, end, filter);
-> > +
-> > +	if (!to_private)
-> > +		kvm_gmem_make_shared(inode, start, end);
->=20
-> If both KVM_AMD_SEV and KVM_INTEL_TDX are enabled, HAVE_KVM_ARCH_GMEM_CON=
-VERT
-> will be enabled and the logic in kvm_gmem_make_shared() introduces unnece=
-ssary
-> overhead for TDX.
-> Not sure about CSPs, but in a standard distribution kernel, it's very lik=
-ely
-> that both are enabled, right=EF=BC=9F
+Hi Huacai,
 
-Yep.
+On Sun, 9 Aug 2026 at 12:16, Huacai Chen <chenhuacai@kernel.org> wrote:
+> You never answer me why in your test you should disable i8042 from V1
+> until V4. In normal use we use a single kernel for both host and guest.
 
-> Should kvm_gmem_make_shared() do some optimization or the overhead is rel=
-ative
-> small in the conversion to shared path so that the optimization is not wo=
-rth it?
+I owe you an apology: I did not actually understand your question. I
+thought the commit message had already explained the reason (the
+i8042_flush() panic), so I treated it as answered and never addressed
+what you were really asking. Let me answer it directly now.
 
-I assume it's relatively small, but it's probably a good idea to gets numbe=
-rs so
-that we can make a semi-informed decision.  E.g. if processing 1GiB work of=
- 4KiB
-folios is <100 cycles, I think we generally don't care.  But if it's more l=
-ike
-tens of microseconds, then I think we do care enough to optimize the walkin=
-g for
-TDX.
+You are right that this is not just a selftest detail. i8042 is built on
+every LoongArch kernel: arch/loongarch/Kconfig selects
+ARCH_MIGHT_HAVE_PC_SERIO, and KEYBOARD_ATKBD and MOUSE_PS2 (both default
+y) select SERIO_I8042 under it. So your "single kernel for host and
+guest" point is correct -- a normal defconfig kernel has i8042 built in.
+
+On the QEMU virtual machine there is no i8042, so PNP finds nothing and
+i8042_pnp_init() falls back to probing the i8042 status and data
+registers (I8042_STATUS_REG, I8042_DATA_REG) directly. On LoongArch those
+registers are memory-mapped, and on the virtual machine they are not backed
+by any device, so i8042_flush() takes a page fault and the kernel panics
+before userspace. A normal LoongArch defconfig kernel booted as a QEMU
+guest hits the same panic -- the "# CONFIG_SERIO_I8042 is not set" in
+loongarch.conf is only a workaround to let the KHO selftest boot, not a
+fix.
+
+The real fix is separate from the KHO series: make i8042 bail out on
+LoongArch when ACPI/PNP does not describe a controller, so the direct-port
+fallback never runs. I have prepared that as a standalone patch -- the
+relevant hunk is below -- and will send the full patch separately. The
+selftest workaround can be dropped once it lands.
+
+diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1633,8 +1633,14 @@ static int __init i8042_pnp_init(void)
+ #else
+		pr_info("PNP: No PS/2 controller found.\n");
+ #if defined(__loongarch__)
+-		if (acpi_disabled == 0)
+-			return -ENODEV;
++		/*
++		 * LoongArch legacy I/O ports are memory-mapped and are not
++		 * safely probeable when no controller is present: a direct
++		 * probe faults on the QEMU virtual machine and on any FDT-based
++		 * boot.  Do not fall back to probing them directly; if ACPI/PNP
++		 * did not describe a controller, assume there is none.
++		 */
++		return -ENODEV;
+ #else
+                if (x86_platform.legacy.i8042 !=
+                                X86_LEGACY_I8042_EXPECTED_PRESENT)
+
+Thanks,
+George
 
