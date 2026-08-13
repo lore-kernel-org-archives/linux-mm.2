@@ -4,100 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB538C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 16:10:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B7D1C5CFCF
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 16:11:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A0446B053A; Thu, 13 Aug 2026 12:10:46 -0400 (EDT)
+	id 841A76B053B; Thu, 13 Aug 2026 12:11:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 930E46B053B; Thu, 13 Aug 2026 12:10:46 -0400 (EDT)
+	id 819BB6B053D; Thu, 13 Aug 2026 12:11:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F1856B053C; Thu, 13 Aug 2026 12:10:46 -0400 (EDT)
+	id 71FF06B053E; Thu, 13 Aug 2026 12:11:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 509176B053A
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:10:46 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CB4F2801A7
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:10:45 +0000 (UTC)
-X-FDA: 85096734450.21.07D07E6
-Received: from mta0.migadu.com (out-102.mta0.migadu.com [91.218.175.102])
-	by imf11.hostedemail.com (Postfix) with ESMTP id BC13640002
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:10:43 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PXJUZmtJ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.102 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 4990E6B053B
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:11:13 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C3735801F1
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:11:11 +0000 (UTC)
+X-FDA: 85096735542.17.62169B6
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9D8A680006
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:11:08 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	spf=pass (imf02.hostedemail.com: domain of pengpeng@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=pengpeng@iscas.ac.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786637444;
+	s=arc-20220608; t=1786637469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lobHVeCQHoGypxlv8jFldfFY/P6VmVVnvWmD09v0io4=;
-	b=v2G7tbthBolDzaOOfyDTURhja6kUB5aI6zOgWl7UzvvY643cS83R4aG+yJ7Hvp1DAFwU84
-	LhX3FcDNwokD6VLw4hIT+99+JJWSOcuUjXkSHmKul1SJ2hKjz+iUPIM+CQTHXESXIo6rHr
-	5By6tcwzTXB7wjz4DGZIyw103t5dU4A=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wGR5JKCwKShHHX9tSPD27Z7eEx8n7bjXJA5BAhXB5BQ=;
+	b=hFB7dTP9GCe30qBqp02+w2FQ7Gfbz+i+qEp8jA+Z/M4/RS9Q6nLZWM50tQc7L8PWrQOswM
+	kxdUL9rK6Gb38TM+iAPr7rCjaLx+kMs6x6CuZ/SpZx5weRNXf4XaXI6L1he/yP8JWQRDLJ
+	1CI2sbYgdAMeJKT2O3V/CRfcOWA6hIY=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PXJUZmtJ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.102 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+	imf02.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of pengpeng@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=pengpeng@iscas.ac.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786637444;
-	b=OYYow6c2m5CSrOm9HjQclLhEyVm2zbzOoRt28yvpQDHWV/3o/8C5Mo7+Pn1exwaSiZ2lvp
-	Oc4wQhmFu41vhzlxH7mfx3zfgveWyZ9BjOJyBWA7sECU96LreWpaMZHHy/7CyB1OQhO8G2
-	JejB1hNkWHmwoUqwl6F20IZcnVHxYCI=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=fw0pOBNF7/8wD8xBIHeT0X9Z9PJ+9rMt7Vt2Uw6EE9g=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786637442; v=1; x=1787242242;
- b=PXJUZmtJRnmTqPXYc8rpD6GhU5eqS3Qk1TsXYGr0IY8aNIhSUFrpS8tRWSigvzbumPWpDcne
- hIiJLOg3cgSQwXvb7k9NhM6nmc0Fp4nGE3Watzkif+agymK8wATy8zVFbiS90htDEUTDx9ptkNf
- mMUIuoTjxUcCj4tiCxvhyWro=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (77.97.51.77)
-	by smtp.migadu.com with ESMTPS id 487cbfbea8bd0349;
-	Thu, 13 Aug 2026 16:10:32 +0000
-X-Migadu-Flow: FLOW_OUT
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 13 Aug 2026 17:10:26 +0100
-Message-Id: <DKNY3Z1LJ90W.121VFSVFAG28G@linux.dev>
-Cc: "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
- <dave.hansen@linux.intel.com>, "Peter Zijlstra" <peterz@infradead.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
- <david@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Wei Xu"
- <weixugc@google.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Zi Yan"
- <ziy@nvidia.com>, "Lorenzo Stoakes" <ljs@kernel.org>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>, <x86@kernel.org>, "Sumit Garg"
- <sumit.garg@oss.qualcomm.com>, "Will Deacon" <will@kernel.org>,
- <rientjes@google.com>, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- <patrick.roy@linux.dev>, "Itazuri, Takahiro" <itazur@amazon.co.uk>, "Andy
- Lutomirski" <luto@kernel.org>, "David Kaplan" <david.kaplan@amd.com>,
- "Thomas Gleixner" <tglx@kernel.org>, "Yosry Ahmed" <yosry@kernel.org>,
- "Patrick Bellasi" <derkling@google.com>, "Reiji Watanabe"
- <reijiw@google.com>, "Sean Christopherson" <seanjc@google.com>
-Subject: Re: [PATCH v3 07/26] x86/mm: introduce mm-local region
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-To: "Mike Rapoport" <rppt@kernel.org>, "Brendan Jackman"
- <jackmanb@google.com>
-X-Mailer: aerc 0.21.0
-References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-7-6f5729aa9832@google.com>
- <am9v2bAyhWXgv4Dd@kernel.org>
-In-Reply-To: <am9v2bAyhWXgv4Dd@kernel.org>
+	t=1786637469;
+	b=dS+uwAP9KvIxZa8bYKjshdgL38J79ZIz+dqecbNpXkKo/3yS54SvrkFVxMl5pbs8gNnrMH
+	xhkhhKP/U179jR4iXi4htkiAwaHiJ2RLQk8RSB75ca+OlDiKuuGp1Izy+LG/2MpmgpDkF4
+	ybfxxS+oQFitDuPGqaZ3aeRbPauoBV8=
+Received: from localhost.localdomain (unknown [111.196.241.250])
+	by APP-01 (Coremail) with SMTP id qwCowAC3i++T7H1qyZF7BQ--.23471S2;
+	Fri, 14 Aug 2026 00:11:00 +0800 (CST)
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+To: Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org
+Cc: Harry Yoo <harry@kernel.org>,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>
+Subject: [PATCH v2 1/4] mm/slub: use a track count for user metadata sizing
+Date: Fri, 14 Aug 2026 00:10:59 +0800
+Message-ID: <20260813161059.73855-1-pengpeng@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260813160825.73031-1-pengpeng@iscas.ac.cn>
+References: <20260813160825.73031-1-pengpeng@iscas.ac.cn>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAC3i++T7H1qyZF7BQ--.23471S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxAryrKw4rWF18Jw47uFW3Wrg_yoW5CF18pF
+	W8K3WUAFWDJrW2gws5J397uryfArZakF47JrWIg34Fvr98t3W5XFWjy3yjyFW5Ar97u3Wf
+	AFs5t3WjvrnFyw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9I14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
+	0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
+	8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFV
+	Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
+	x4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r
+	4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIIF0xvE42xK8VAvwI8IcIk0rVWU
+	JVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJb
+	IYCTnIWIevJa73UjIFyTuYvjTRMv31DUUUU
+X-Originating-IP: [111.196.241.250]
+X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
+X-Rspamd-Queue-Id: 9D8A680006
+X-Stat-Signature: y11epxkckm9yfaof5ggbk46nhptijrox
 X-Rspam-User: 
-X-Stat-Signature: ici8ip3t5yjs7p6rq6codboc5hhio4w6
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BC13640002
-X-HE-Tag: 1786637443-455574
-X-HE-Meta: U2FsdGVkX1/IID9+fawjFmzun0q0SvvVFuyLq+hXKoyYQKFoUZIT/ruxe/mr7Frr2ogOv7WpxI6nwcVoWPEgKpQKPqupbFplGrCrPJL/Sm82ec6Ob3yXTflXtpj58kpzGpDAgrfRNfYbixDOvQO5sxnk/W8lceZ6cwqXwq+nroYv2Cy32bvbzJFVE52UHQS+rlWS0uoyRxxJqhHstnQiTwKyZmxQqiwwgOu5Mzy5HcbTcesYmUyy7rMbbcFFX9evGFtmgxbZsH+iTsBu0ZIRHCuoHOnBWunub0qnsSpT2DCUsOkpDdPUaRFRLU9PaeChP6QsheOt0ikBXqJrRaO+2wCB7jRILQRual8ymoSCA0IlXnP8QrNOtvqYpCUICLSexubb3ImuuLsVP3ROC8K0orye07bRZ8/NQtlZBicSzczIbHgUGiBwT9vVmXz2gSp8zFIboBXXJRZfr66ZqzrjgwG5j4pz/eaB02OgftHXp+hELkAC/diCCWCPcCTwc6581FBhgStG5t9BRnDoPkdgxFP2+EDn53b0qoWSNVQxyY+xkS7OXyTdCZwu1qEiSH+7Tgu6QZshs5I23Islllbd3I7AzTjuLvYngR06J/voGW6G0dtfyIiC3xqPWAN9CuIE/X388ZwUzrjqevgr7vdw2l+vg1ZERzjw3/I/qbB7d7Ceb8mg6O6bBzesaFMQEPW/89Kw8+oPA1HcS76jcCxmtPorsvnrHXohpT/a883HJk+Ebq3o+5JhY9nxKj3XdPwUXd8zGAnE7ObQz5+sC6hmjUVQ9hx9j08l7vkjUCP/EOVc7ZplFmWkV4IIOMwMoSuTSBrRWoFMxO3ULh+vu6gWXXFHEpoj+clfztI6+OeWN0B5UpkeD7upZ6ZPK9EqPVMaBAZjNzfi/25VQInOFObyOZPL3YKJUJg5sLZ1LP8+gtVEfyWODyssOdm5JbwL5nXOVLircWUaeomQ/aTX1T1
- B1Qe9/oA
- SF8jfFVW9JW7Ct4/+xXtLs5WRUwmawO1REWQkwp/2Z3hYKiB0vJOTb55ME9CwC2bHlndOnkFulaMIBAbK8H1QkfhYmuZNe/HwMEqid/Aq5gVFZ2hPKkDBXWhMUO6n5cEXhMShS2d9G2qFK6AAReQo79o1rRUkBzkuIQ/BsGvWVyTeVwEYVGoi/xNnNfsEnglZa0neztoVlbreIEKn6XBw4AQbTow/utDxABp24wBuf/byh4jThN3zIicKvkr9r5TvBhm/tJ/Ny94vz+r0mIgzAHw0/b9kSkhUuKAKT3EfRJcuH8eMzhuACHBR8g==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786637468-544796
+X-HE-Meta: U2FsdGVkX19f33bVoK0jwXv4vZV+i70MuWTgf4ScvNM51ymAXKg/k/4bOivH7zY74lT3rsJHGNM2Hf6CE0eyy6LBdGNpzXs/XPO7gucy0M4EqqavdahmHro+oCOY7tSzgszhVfiDY1aNsVgG+/FhUe5OEv4oTUgMd6hOjqAJg/kTCw2wImCqd8at9sC0FyKxA14zUEPPB/MRFRaDutomxejcWPddlWno7dqgorVQfGa8lERmRCkHRPvlQDXVCDS53Clby5hdiFvPSxTkamkXJTuUyocWkqP71VlFV1QyFDSdVqNidPQsSHVpJDSEXcDpiUyzAdKPCwpPuI2yUuwG6prA4dHwx70YJgy8+UrtJzFfRH1PkSONgZLsVRlxx886OkyjkZbELx/Ne+iyu6lbq2r6SFSnFWNG/5Iu9jxMHjcGUxGRk/NGOyrAEg3pEMG0Y3zORgSDIH0QPapAGGU3wqKCuPnQHB5HchDo2hj6UmHv/nWe6q902z75Rgv2vwUsYU+heMKqdPVRWeQERED0qdq35q5kfv52Y/771V2TYwSb6sMp0/Hnvll9sa4eGs/HalbxispdlZ44i1MDc779DAbGaoeXBTia5qXG/GF1H21sMWlq7FdQzGQ/rM7IfyYrHFgjClFuPcN/MmHXM1emjS4lOTaMd7N+0W/NudYJywCht4heq31CQ9lwbDjh759dRW3WMQUoeHis0Wh9FzotHfCDY6UdAK6leY4gm4yYB97z35ovMrS7yYgzL62NTRbL6yx7aflVxet6B//C8cDQvCBbKkY4r3kwWkTr39sXvlGIUN75+oGIrO9w9v+0O0eJ39fo+JlvZ0c1OR6gOccEEPEktJs/MdwWHJ0q7hWK+pisNEnrhhSGp+iKM+QgWgzVg5TcyPDQ/o0bp2ewos/lpRRtfrWCWrBpxMhxOCHOOqvyPyGznTawrbg4aJbZFOFZ2xdOuefpGgqVgjZkgnM
+ Fx3lsZeI
+ Y56OdGS9Ryzf3vOENC+cWaJynTNIqWLy3t51Q5i9tBW3jZHiHPHGH3YJvE3q+umD+Y1cZn1WhcBN8wAlo50Nkm2nOv6z4xs82VghcxLbnOdGxnIMsYpCGrndChaW1scL2yb0YSZ6wtt1w3pxYk+vanTA/xaHelW/yU/f9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,45 +111,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun Aug 2, 2026 at 5:27 PM BST, Mike Rapoport wrote:
-...
->> +#if defined(CONFIG_MITIGATION_PAGE_TABLE_ISOLATION) && defined(CONFIG_X=
-86_PAE)
->> +static inline pmd_t *pgd_to_pmd_walk(pgd_t *pgd, unsigned long va)
->
-> There's very similar mm_find_pmd() in mm/rmap.c and I bet a bunch of othe=
-r
-> places walk from PGD to PMD and return PMD in the end.
->
-> Can we put this function into, say, mm/pgtable-generic.c?
-> Finding all the places that do such walk and sticking it there should not
-> be a part of this set IMNHO, but having it in the generic code is a good
-> start for a future cleanup.
+SLAB_STORE_USER metadata consists of allocation and free tracks, but the
+object-layout calculations repeat the literal count at each offset site.
 
-Yeah, this is the kinda subtlety I always run into when trying to play
-with pagetable code, and I end up being timid. The thing is that
-mm_find_pmd() bails when it finds a non-present entry.
+Add TRACK_NR to the existing track-item enum and use it for metadata
+initialization, original-size placement, object-extension offsets, padding
+checks and cache sizing.  This is a behavior-preserving preparation for
+extending the tracked history.
 
-I think in this case it's fine, so yeah we could at least move
-mm_find_pmd(), change the mm arg to a pgd_t*, rename it, and call it
-from here.
+Assisted-by: Codex:gpt-5
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+---
+ mm/slub.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
->> +{
->> +	p4d_t *p4d;
->> +	pud_t *pud;
->> +
->> +	if (pgd->pgd =3D=3D 0)
->> +		return NULL;
->> +
->> +	p4d =3D p4d_offset(pgd, va);
->> +	if (p4d_none(*p4d))
->> +		return NULL;
->> +
->> +	pud =3D pud_offset(p4d, va);
->> +	if (pud_none(*pud))
->> +		return NULL;
->> +
->> +	return pmd_offset(pud, va);
->> +}
+diff --git a/mm/slub.c b/mm/slub.c
+index 0337e60db5ac..0653def0fe36 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -329,7 +329,7 @@ struct track {
+ 	unsigned long when;	/* When did the operation occur */
+ };
+ 
+-enum track_item { TRACK_ALLOC, TRACK_FREE };
++enum track_item { TRACK_ALLOC, TRACK_FREE, TRACK_NR };
+ 
+ #ifdef SLAB_SUPPORTS_SYSFS
+ static int sysfs_slab_add(struct kmem_cache *);
+@@ -753,7 +753,7 @@ static inline void set_orig_size(struct kmem_cache *s,
+ 		return;
+ 
+ 	p += get_info_end(s);
+-	p += sizeof(struct track) * 2;
++	p += sizeof(struct track) * TRACK_NR;
+ 
+ 	*(unsigned long *)p = orig_size;
+ }
+@@ -769,7 +769,7 @@ static inline unsigned long get_orig_size(struct kmem_cache *s, void *object)
+ 		return s->object_size;
+ 
+ 	p += get_info_end(s);
+-	p += sizeof(struct track) * 2;
++	p += sizeof(struct track) * TRACK_NR;
+ 
+ 	return *(unsigned long *)p;
+ }
+@@ -887,7 +887,7 @@ static unsigned int obj_exts_offset_in_object(struct kmem_cache *s)
+ 	unsigned int offset = get_info_end(s);
+ 
+ 	if (kmem_cache_debug_flags(s, SLAB_STORE_USER))
+-		offset += sizeof(struct track) * 2;
++		offset += sizeof(struct track) * TRACK_NR;
+ 
+ 	if (slub_debug_orig_size(s))
+ 		offset += sizeof(unsigned long);
+@@ -1090,7 +1090,7 @@ static void init_tracking(struct kmem_cache *s, void *object)
+ 		return;
+ 
+ 	p = get_track(s, object, TRACK_ALLOC);
+-	memset(p, 0, 2*sizeof(struct track));
++	memset(p, 0, sizeof(struct track) * TRACK_NR);
+ }
+ 
+ static void print_track(const char *s, struct track *t, unsigned long pr_time)
+@@ -1199,7 +1199,7 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
+ 	off = get_info_end(s);
+ 
+ 	if (s->flags & SLAB_STORE_USER)
+-		off += 2 * sizeof(struct track);
++		off += sizeof(struct track) * TRACK_NR;
+ 
+ 	if (slub_debug_orig_size(s))
+ 		off += sizeof(unsigned long);
+@@ -1403,7 +1403,7 @@ static int check_pad_bytes(struct kmem_cache *s, struct slab *slab, u8 *p)
+ 
+ 	if (s->flags & SLAB_STORE_USER) {
+ 		/* We also have user information there */
+-		off += 2 * sizeof(struct track);
++		off += sizeof(struct track) * TRACK_NR;
+ 
+ 		if (s->flags & SLAB_KMALLOC)
+ 			off += sizeof(unsigned long);
+@@ -7895,7 +7895,7 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
+ 		 * Need to store information about allocs and frees after
+ 		 * the object.
+ 		 */
+-		size += 2 * sizeof(struct track);
++		size += sizeof(struct track) * TRACK_NR;
+ 
+ 		/* Save the original kmalloc request size */
+ 		if (flags & SLAB_KMALLOC)
+-- 
+2.50.1 (Apple Git-155)
 
 
