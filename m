@@ -4,76 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D91D9C5CFDB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 10:03:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EEEAC5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 10:03:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBF4E6B0469; Thu, 13 Aug 2026 06:03:06 -0400 (EDT)
+	id E1CC36B046A; Thu, 13 Aug 2026 06:03:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C97646B046A; Thu, 13 Aug 2026 06:03:06 -0400 (EDT)
+	id DCFD76B046C; Thu, 13 Aug 2026 06:03:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B89096B046B; Thu, 13 Aug 2026 06:03:06 -0400 (EDT)
+	id CE4AF6B046D; Thu, 13 Aug 2026 06:03:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A6776B0469
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:03:06 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1C186A2C42
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:03:06 +0000 (UTC)
-X-FDA: 85095807972.25.7EB30E7
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DC836B046A
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:03:07 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 042271205A8
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:03:05 +0000 (UTC)
+X-FDA: 85095807972.20.F163B01
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 5073FA000A
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4521B2000D
 	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:03:04 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Uc6B1+54;
-	spf=pass (imf15.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="ay/LPQbs";
+	spf=pass (imf13.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1786615384;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y20Ns8/o42YLbUNZyUIkw/RjdW/LS6iDwOmz4RkCo2g=;
-	b=pv8oHs67XqQLQ+V5DrslMYbOOCjztCJ9GOycJjdmPAYfe6eof2dNuBw/zKjG5GvrEE8VEn
-	eHsNL6bhfvncwoBBF+nCrUYTWvWCdqWEvInBAVdGm4zqk+YRSR/qlHEF5is0qm6ke0H5wr
-	AEgt9lHfk2mbVp7aYohEEe/s0A1qSZw=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=1G3eQpvA85JuAZzs61f9HPusHslY0rOubeUY5om3sZ4=;
+	b=rnuBzXGfnRUxaUUz0K2aflreWimF7rs29qHhmfzqA+2D5K6lgr2Z16ROXz2Mw2agbsWeJ9
+	pBUq0I4xeMBPMoh71Y2zvDgmxN1/EKj5ONS3zid2kHuRdocBH3lEs2Htu2echzuKBeO45z
+	opB2E0jt/sUMS3eLpCuKVAUau9M2KhQ=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="ay/LPQbs";
+	spf=pass (imf13.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1786615384;
-	b=olvXa9fZ3myx/bI5EydsWfa2Le5+HvQUW780rH2HpY2H8+T20An9VO8X6v/H6NIdJDL4a7
-	9mCQz7OyuGiZFK7vLNEcIO35i0eDkXUJZgsuAXTMZHTpoboPic98N/ecVk7v/9WrKx9l9G
-	IFjBCCMFwm6EDOQHmYQFyn88GyZC7dM=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Uc6B1+54;
-	spf=pass (imf15.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	b=R4Sf0Zp+CNvvb8zkBbU1teipC4gsIOOzD/RmH7rDdiETnMecuEvsMRuf2UEp49XHH+plnx
+	hDUjtDb5/ApUMAcgINkd0jGTA7ni/QtB97mWOBLwoPwHMWG6yD0wQDnj53jZz0AeuBKgH0
+	yReDuPaIRIuEdjpTcJ4JwQ1Nz7XLjSU=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=Y20Ns8/o42YLbUNZyUIkw/RjdW/LS6iDwOmz4RkCo2g=; b=Uc6B1+54cds4o9pQiQUqSOQnJj
-	Iw35vhsYmab52ZbTRJti+wIUS3gZ1DdEtWR3SLfj0cuMAxcDV3yVPOhTwkruzbyXorE9qxHa+Scq7
-	62828SI3KU0CPQBuaVHqgjawHCqipuW9Brug0193uZ/1R7S7o74F/jkd8A6G8znA9Zv729ZJEKD2W
-	1Y1KZPppAE+W+g1ENvoI1jheO7/y1zD36+Y9zHZw0Yov5uhv8+SIiKQ3UE+9LPjzwt1qwhVa/M7kk
-	pVCpXJX+enUYXgM2KdsFUdCrMFi4jIFEgRdx4NBvcG6Z4gENn2/bss4cjAaL2IdPu92P7sEy2jesK
-	O+QmRN+A==;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=1G3eQpvA85JuAZzs61f9HPusHslY0rOubeUY5om3sZ4=; b=ay/LPQbsQM/RRgnxq7bAHdUMvQ
+	f8Jw5AU1r5nZdi+WwygDbYVnhSRQiTpk6KnQ1TbMbn+5sMSSr4zM2sHdw73BusaAkR9xt3kwT2rLe
+	HkRhn3grScRyWf0nAkVw8V5X+lClhsAwNr2BUSrO0rBT7xE8PCQjqsI12fSumqZouosXMnbFO37X1
+	+NCJ55dINFEnVtfnNLiyuoC1T2KagbEG3AoV4M55JYbHs2gUKQUrl4viI8XEUFeT2eRhYbyGwWOKb
+	ucpGw/XWYvEbyh6YFTBnX2rDR78EQ8CE8i6cNtmjv7bnnAa0a7q+qkPIgUiq/FulACSdMRo6QGVKL
+	+pAUd05Q==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wuSGj-00520V-2U;
-	Thu, 13 Aug 2026 10:02:38 +0000
+	id 1wuSGc-00520I-2b;
+	Thu, 13 Aug 2026 10:02:31 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Thu, 13 Aug 2026 03:02:20 -0700
-Subject: [PATCH v2 1/3] mm, swap: ratelimit bad swap entry reports
+Subject: [PATCH v2 0/3] mm, swap: don't spin or flood the console on a bad
+ swap entry
+Date: Thu, 13 Aug 2026 03:02:19 -0700
+Message-Id: <20260813-swap-v2-0-4a625ccabdae@debian.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260813-swap-v2-1-4a625ccabdae@debian.org>
-References: <20260813-swap-v2-0-4a625ccabdae@debian.org>
-In-Reply-To: <20260813-swap-v2-0-4a625ccabdae@debian.org>
+X-B4-Tracking: v=1; b=H4sIACuWfWoC/13MsQ6CMBAA0F9pbm7N9ZQWOvkfhqHAAbcAaQ1qS
+ P/dyOj6hndA5iScIagDEu+SZV0gKNIK+jkuExsZICggJIe1RZNfcTNU3QjHpq+72IBWsCUe5X0
+ 2j1YrmCU/1/Q5193+9C/YrUFz9RWP6J0ndPeBO4nLZU0TtKWUL1w1CNKZAAAA
+X-Change-ID: 20260810-swap-25420f9c8ba9
 To: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
  Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
  Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
@@ -89,31 +91,31 @@ To: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
  Breno Leitao <leitao@debian.org>
 X-Mailer: b4 0.16-dev-f8e9d
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1410; i=leitao@debian.org;
- h=from:subject:message-id; bh=tanX7f1b9c0MmsWbxVq9RS0LlQm73iyrFiiu0xCz+SY=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqfZYwUNV/hsWYVXh0g9Yl/bbnTzarJh+bZt0Dv
- YjK4FGOAhKJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCan2WMAAKCRA1o5Of/Hh3
- bbjeD/9wylsh0OoUfAP4Sfl4AOZVYZSdOyuXtSPCArhrnvA7XBNQ029lqt81WKo/905j9kEqNbh
- gr/9oo7wEt/QZpUHcyvCZ3Lw5DWzTe8DkSBDFYZb6fvnruBSA4IRXfz+0Iow7x6TKSLt5GA/czz
- LFx8trtpgKTX3AJKQj7KhrOnVjWz/RtcAnbVqMlsgDnBHg/+RkD2gbf/H3VW+J/V07wpmq1v66z
- zxx8ASEddvix+EBFJUCYByNjTeZxd2ZEWIvGPEgr+82H9gyHtdcyTTyRw36CKpAq/i3fpZvLBBx
- I1l+7X0NeVeBmGwuH3QYDJjj0XerakXaAtqfdKUo2CbDr6+eXgaDWaSHEsm03QgRS68mwiaSBfR
- /pmxoDTd7IQHZS1CcTLQky9wdI4lVkAjH7N0LGktdO4q9k4RmiheRc3E61+D32PJuJnfkUbkTbb
- QhY2HVG3D2G7EI4GQs3EgY1Od765pz/lkET+FOhkoPinOXHB8vVqP0lwdkkw8WmSBPd57QXcRVx
- Ci0W8W4qC1LNZMnisEZLeNVgBppJSmBrt5FvGIlJZ6J2et67g3iR/hkv436TvLja/b5jLbUl+Pb
- 0J1w7Cv2jQdi8U2N563YY3hx5B0KHQHUun66XWrHnSyH12PV1mjPWnCCat8lkB5Kt8Lb2BkyPEz
- KX988srXNdlhE/Q==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4056; i=leitao@debian.org;
+ h=from:subject:message-id; bh=P+JzP1CqEXHUFbZL8c3/vL+HspDOATmKqPkkB46OJ2I=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqfZYwoXTW5JqGMoaPfGNKdYcL8kANbO9Q4Ubo3
+ flR7Y+Hk+2JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCan2WMAAKCRA1o5Of/Hh3
+ bZy6D/9+FHGROjiGe5DGGfeuJczbW1nUEpKTdTwXe46MRshMrZZPN4KTb425BppzxmDgHhmbe9O
+ lMR9pGroA3tkvg8EzRTIkCwLPNf1vV/tB+MDWUriJLOQfoYFwRHGI8YhQDdm+NlzNkkLeBemZ7P
+ YUjpLqg4n4+m4z6cvyQ2EZllu3jId9C9Qr6a9BJlzLRKLWEnlhtZggto1Zkq7f2TH7A+DIQ9uyk
+ 7BDyHdg/WyQAdu6YD64uo0qh4aokah3GyE5EzYsexvSElNzUupfMo7Vu1MDQ/OHlFcMtWYC+A3C
+ Qn1IbycDeMTZCJ5MB8VdC/NQq/jcu2L5CryvQeW/2Tth+Av5IzkaKqtYbd1IY7IOgLuGMzhDJ7H
+ CpxGZ6t05Q5Vk4w5Ch34u3ctBJ7AxstISCwRVSZrJ0xP1IRykloHe5NzbmHyHAawtoXp5fcaU96
+ a7DgSfEwnEEAyfrW7CNkvbBRFPu9nX+AFBiU9lzNjUED9uFm2xj5L0hYwwfNQyxTaQBrzFEECaK
+ +Q0L8lsfDR2qGz8QoCbZ9+azG4WKeVV85ZUAQGhyHwAkUYf1AElEgHGqPGcdP73vnuBOqrnX9Vv
+ 2rt96dILyXeVFsv3Dilw+SlxPaWYpug4WKVxSPrU5Nmezt0zwwKboyZKasvJWK+yTw2mnZCtyJJ
+ M7IowvzndkEqPmQ==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
+X-Stat-Signature: de9rsgr6sufb8s7ghxf6adgeew1ncesz
+X-Rspamd-Queue-Id: 4521B2000D
 X-Rspam-User: 
-X-Stat-Signature: 75deczo7jw1yzugwcfjh4kez7ijwtqu7
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5073FA000A
-X-HE-Tag: 1786615384-787918
-X-HE-Meta: U2FsdGVkX1+cNcUbOEMCTxUEpqd/0gPGzg8LdZ1ijk0dM4ohGFPtPDH/M2UEvZCOAiy/YYzbGKbqeaMQMlw4ZnuFaZFwMH4+17fgz2jofYES0cjJvs5egF8qUlj6Nw6dik+avtnzSLhEnGursQ5BBsqhxBwzhSa7UFxjdQzp6YZtISWpwAboC4CYKDiazaRiz35ixjEhmLHiGnblCKspm7a1jeUbnbhhD/RKaoRMdD75EeX5XP7El0lphek++vqXGRjNNx/A/XnCP/xqi33EEkBkioyaqQuKIrlMfvrwRkz7SmY1+t2OVanaCI47q7NZV8S+HA6fux/XOFu0gaJ3P9Yr8kYJ6oMeNgOFXWZOyE8nvP3hXiPeq3vSqj0HMGdSeS8jwdyVYsUwG9tUVi9PcAnCM6GLZO6F635bg4JppBthV+JUL9faEvcCd1Jn2BTxy4hgLaZct3o76cWa+badysK85IRA4x7eQCILCnwMUiGWHHjaahvgYn0rNKcsL3BklwV3JT1luhZWf8GXKAGoXNutuKG8+onIz2ikmoqvNUqZkyLemXj8ksPewFJxwHHbNYbDUPdrWFn+NY1NTwFe6pi+ohoq2UFtmlFM/0iC6qf/D/cncrx6vtHIxvk6GWtWhUpj/6Q6XTLhtZexw7lHnG1LrDDhSIWjZKArVP49BCf974yHAfNnuoxRm7I8dLuPTRqJOexHH8AKMMpdzf8SKo1xjBrEt8jKLYcMe+blzYK96VKK6ErvgbCMc6cd8JgzM7Nzb10vHEsKAfAKGPUFBFYDw3+kEI1DWK5ZmoicIp2vQz5NywFc9eMvjgrW0gJWTYhaukc7/YZhT5z7zLVOJ7BLoQqXqIDLxZmnwKwlEEDOd68Qc3WQvSCNBl02avdPg9SnOcPefIiSn5WmHepMw2h3q5RzQ+oG48pTO0KgQuoW6/vH2VdY8VGNRimDTAQEitPoyKd0j2b4oy6sjvi
- sM+jq1n+
- sWSwGguud62uFp1d0h1Ltm3nMXTLZETqjGN/DqAySd7J1pAnr4hXlPVGIgRGU/uN94gS54BBEk97EMmQSgF2IJoWOybRVeSHBv/PMBLZVreeNzy6HHos9FQ4q0K+J05Zdi0a25pn/KEh/7m9g34P7FVRRCQq7WUGdxZt49Uf7qKERz3WpufhTanOHiwIjwkhAlIbQkzZobhErIdAj3RpWjpnzNzCbh3+vepZsCLzoFKnb4hlGhP/KhD25GR5GWeJ6lAUlcxzRNsNoJGQON7bo9Yh2OsysJwalAdWaggp/i3ZKFA1Ux8yveHtKIw==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786615384-107007
+X-HE-Meta: U2FsdGVkX18VP2rQ+RnnHFWYJeLvhtbq+6NuRZ6UpmXoorW9DUjIwlFeJTdrifc+IXvNOvTiy/icfwosybw2caGLPpDO09wKtS3OzaKj8HNQDX7Hy4nKIG863TnSaqnts3wDda9/Or2n9kLAGkK9BYSayCJGsW1vmgzoZlud0RUDIGz23liHAyVWJ+HCcgb8fUOwxnsd2jWCDEKLcp9joh9QBP8arWnlgKlONOG4PD3f1u7i92j6tz6osToVGtlD6mTVQwR4gCtw2/PWxl8TfEqkMAbLJotrMoHzJ63/VeCW3AREEfGbQQLMtZXuVSDWl0aQMVsqZXkUTbmQvnU7W6jl6PNeYuXdg6ujeDGLfyS9wvbdZMUjrsDX69jQU0BTD/ttGlxQ05KE6wUZ6IbQf4SC1UvQVzRjG17dqFndNUm4U6zbhLh4DtaGb4OZAvnkzBa7NWHKf93/oYjxwpQm9P8RU2PatJqW+XGhXC/cNrXL9RXpwdKQ2V1wvI6IRyXIJ6QiA+6N+ehBds+mhtHa9O6XpreIeitlxT6kpBCRWY/m45z0qUyOPLQzb15GqYK4inbwSuptUm5CmhaAB0mhTF0Xg+9DUtWHvESkX4JFENXBmQ2s7Ll98iv3egtWIy1cK3bksG8CdarIYYtF595wFp4oeIq9cqfrfwcdYEh95r9fQZlaSi0WQ32w/VVmgwU9b4bfax7Edm4NR3KpXLFqYzy/K27EMYqIDXwKAXCXG0BM10Q8+qv26WAPcKV4pzRw4+zwkclsL6uc5aeNRLAZdXXE/4d5iMuPEYls9YA9vNUym3ZZshSiQf3oaAEasGfFa0At4P+aY1uxiOsMWQSgjOpdRmkvf7CyuvOYf9jRHn8jRh8eQoHGeSi/my9ZVFdLOn9i4RFRPYbzx3NigcXKKTi72MGFR0mhtGfkEPjKuE5fxpu9Q1qkM4D0XOOA1liUkqUBMPl5ooUX2Fec7KA
+ F7q2Jbci
+ qshVRqm5f1b/dP+E6nfCtQBsBCDY7z34kGX95lqU7RbmuNIU9+GXhnCJHk+gvUXjbAenfily5zE0E6DuekwXrLz7Dbt10UvvbKcgx1Wv1R6HbwPUTvequpr0DxhgPh3AsOXGxw7/Gu5EeHANk3MJPCoqQVyUD8aHEhA/lwFFHHd21xUPPZO1UJN/B8oPseHi2tMD3s3VRXMnMtaK/uh0x61+i15QH2wG+t92Zes8Dn7cflhqvgZPkMc8POp03osnmTRS9c3v2ZMWEpkaLVmodCF2vfYINLfm4zmIkCXlSOrZPKV1Gwo5g0BddbVZ+kKuIXLKHNqdMMbgwpj7jPqvXLPCl1Tvg14CcLlGMK5BrY7vqJ/XxDClHtePQhdqsbqPKEMnPvawsEFw9i6u0bh1pNEcI60CsBYgpZ01Fsy9u6p9aH47lhGUttqCEK7lLSVBJAuPCOr39C9fFQ5JRhyTIXigIDt8Ftzo8ySQ5x3Zj5WokJzD3nsxq3Zd5XDOGqhkyoVlh/aURPN1ARiYkAsQGO8QOZC3DGaOw/kafMnCZNsEFWiS0SOkgaOAo41LVO6dKmHb+7IZRlMUGYv/4aeJoeAJ+dHuJB+kAUDOAjKFi7eCO1030sm/QTv6a0fYE59N4RgPvp8QjnHECj6TTcWAs3qk8SbP1EpWI6VjhG6NsA/UmfpukUfmOZg8tMOOCVunIu4ZsZIzi6HRhLfPDFRI8tWDM1ih6FLmZzj2B60gYLhkXUZqdP11C7bx/lS75oIavrrgBpHhJ3KurzCs/kLFAYCfgZ4ISvwHHVniViaCSNFV8ZpGUtmkxX44wvvFU4zB8RySIqfEMsaewrkAyp4x7XyuQMrLoB/7YCe2T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,50 +123,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A corrupt page table hands the same bogus entry to get_swap_device() on
-every access to the mapping, and every rejection is logged. One machine
-logged 6185620 copies of the same line in a few hours.
+I've seen some machines at Meta fleet that show the following type of
+problem:
 
-swap_dup_entry_direct() prints the same message from the fork path, once
-per call: the WARN_ON_ONCE() guarding it warns once, the pr_err() inside
-does not.
+1) It gets some weird warning:
 
-Rate limit all three prints.
+  BUG: Bad page map in process khugepaged  pte:f000eef300000017 pmd:00000067
+  addr:00007f57c0a01000 vm_flags:20200073 anon_vma:ffff88829af7c340 mapping:0000000000000000 index:7f57c0a01
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
+The corruption is most likely the collapse/PT_RECLAIM race fixed by
+commit 366a4532d96f ("mm: fix the race between collapse and PT_RECLAIM
+under per-vma lock"). But this series is not about this one.
+
+2) Then it floods all the monitoring of the fleet, sending the same
+   message in the loop, crashing the our fleet kernel monitoring
+   subsystem (which is the part that I am interested in protecting)
+
+  get_swap_device: Bad swap offset entry 3ffffffc043c5
+
+For instance, in a host today it logged 6M in a few hours, and it is still
+going forever. Two things go wrong.
+
+1) get_swap_device() prints unconditionally, unlike print_bad_pte() next
+   door which suppresses itself with is_bad_page_map_ratelimited().
+
+1) do_swap_page() returns 0 when get_swap_device() fails, so the
+   fault is retried, reads the same entry and faults again.
+   Nothing in the round trip changes the PTE.
+
+Trying to fix it in a naive way:
+
+Patch 1 is super simple, and rate limits the two prints.
+
+Patch 2 makes get_swap_device() return ERR_PTR(-EINVAL) for an entry
+that can never name a slot on any device, keeping NULL for a device
+swapoff is taking away, and converts the callers. No functional change
+expected.
+
+Patch 3 uses that to return VM_FAULT_SIGBUS instead of retrying.
+
+PS: Sashiko flagged several pre-existing issues, and get_swap_device()
+returning an error opens the door to fixing some of them.  For this
+series, I am focused in landing the basic cases first and build on top,
+if needed.
+
 ---
- mm/swapfile.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Changes in v2:
+- Rate limit swap_dup_entry_direct()'s print too (Andrew)
+- Drop "in get_swap_device()" from patch 1's subject, it now covers all
+  three prints
+- Return ERR_PTR(-EIO) rather than ERR_PTR(-EINVAL) for a malformed
+  entry; -EINVAL is too soft for a corrupt page table (David)
+- Document the malformed entry case in get_swap_device()'s kerneldoc,
+  in patch 2 instead of patch 3 (David)
+- Reword patch 2's changelog, "an entry that can never name a slot on
+  any device" was unclear (David)
+- Link to v1: https://patch.msgid.link/20260810-swap-v1-0-375ef0767206@debian.org
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 4d4e3e3059f6b..31c8a340606bb 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1899,11 +1899,11 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
- 
- 	return si;
- bad_nofile:
--	pr_err("%s: %s%08lx\n", __func__, Bad_file, entry.val);
-+	pr_err_ratelimited("%s: %s%08lx\n", __func__, Bad_file, entry.val);
- out:
- 	return NULL;
- put_out:
--	pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
-+	pr_err_ratelimited("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
- 	percpu_ref_put(&si->users);
- 	return NULL;
- }
-@@ -3876,7 +3876,7 @@ int swap_dup_entry_direct(swp_entry_t entry)
- 
- 	si = swap_entry_to_info(entry);
- 	if (WARN_ON_ONCE(!si)) {
--		pr_err("%s%08lx\n", Bad_file, entry.val);
-+		pr_err_ratelimited("%s%08lx\n", Bad_file, entry.val);
- 		return -EINVAL;
- 	}
- 
+To: Andrew Morton <akpm@linux-foundation.org>
+To: Chris Li <chrisl@kernel.org>
+To: Kairui Song <kasong@tencent.com>
+To: Kemeng Shi <shikemeng@huaweicloud.com>
+To: Nhat Pham <nphamcs@gmail.com>
+To: Baoquan He <baoquan.he@linux.dev>
+To: Barry Song <baohua@kernel.org>
+To: Youngjun Park <youngjun.park@lge.com>
+To: David Hildenbrand <david@kernel.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+To: "Liam R. Howlett" <liam@infradead.org>
+To: Vlastimil Babka <vbabka@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+To: Michal Hocko <mhocko@suse.com>
+To: Jann Horn <jannh@google.com>
+To: Pedro Falcato <pfalcato@suse.de>
+To: Hugh Dickins <hughd@google.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: Peter Xu <peterx@redhat.com>
+To: Johannes Weiner <hannes@cmpxchg.org>
+To: Yosry Ahmed <yosry@kernel.org>
+To: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
 
--- 
-2.53.0-Meta
+---
+Breno Leitao (3):
+      mm, swap: ratelimit bad swap entry reports
+      mm, swap: distinguish a malformed swap entry from a dying device
+      mm: fail the fault on a malformed swap entry instead of retrying it
+
+ mm/memory.c      |  9 +++++++--
+ mm/mincore.c     |  2 +-
+ mm/shmem.c       |  2 +-
+ mm/swap_state.c  |  4 ++--
+ mm/swapfile.c    | 20 ++++++++++++--------
+ mm/userfaultfd.c |  3 ++-
+ mm/zswap.c       |  2 +-
+ 7 files changed, 26 insertions(+), 16 deletions(-)
+---
+base-commit: 6b8c8af514d739d0335f5579b585e02babe8a727
+change-id: 20260810-swap-25420f9c8ba9
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
 
