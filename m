@@ -4,124 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19EA0C5AD5A
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 02:37:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F06BDC5AD5A
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 03:07:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A02256B036C; Wed, 12 Aug 2026 22:37:13 -0400 (EDT)
+	id 8636F6B0193; Wed, 12 Aug 2026 23:07:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DA1B6B036D; Wed, 12 Aug 2026 22:37:13 -0400 (EDT)
+	id 815DA6B0194; Wed, 12 Aug 2026 23:07:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 917806B036E; Wed, 12 Aug 2026 22:37:13 -0400 (EDT)
+	id 72D6E6B0195; Wed, 12 Aug 2026 23:07:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F7B06B036C
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 22:37:13 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EAA39A2B53
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 02:37:12 +0000 (UTC)
-X-FDA: 85094684304.09.09BE897
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2C91F80002
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 02:37:11 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=RX2asCNs;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	by kanga.kvack.org (Postfix) with ESMTP id 44CE66B0193
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:07:09 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A59EE8023B
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:07:08 +0000 (UTC)
+X-FDA: 85094759736.08.00DF6EF
+Received: from mta0.migadu.com (out-129.mta0.migadu.com [91.218.175.129])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 930FD100003
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:07:06 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hNdQ83oH;
+	spf=pass (imf05.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.129 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786588631;
+	s=arc-20220608; t=1786590427;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iAIlYFnXn3LVoMPX9IDRNtgfCfuZ8em86m2CaDU8/H0=;
-	b=MJdjxNmmafMXESzf7t1pJkc8Qia+573DFRDYPcr+KdgO0uT6lUIT+iP/ETwtUkMGtG7VvK
-	/nZzF/gdmJQ+RPsAIp19UduBLtJT8OCAY5zYGxfrcLFMPjDpndu0RgtefSUR9oDWdVJnRy
-	gOKkV4xbGoV5w61jmlAnhbYKhhpkdms=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=0/WFmAnmHcIpa8jJwJMv0V5dDB22ZDP/N9IEjE8VPcI=;
+	b=IILkU7y/NysoIk8uzYa0Eyg1NdkN40VD4RzvjJoTujIEvH598VmHwqYpeW9AEGY6r6Ux3d
+	LdHoPWEgP6mdCAmhNA2y96yXTVvkECEAhrb2TtsLIe3eLrmpSGyVuylSAe/s+lOQ9+wLBL
+	1TG4SLWnBpaeMvUap6kAYkCTbFamKDM=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=RX2asCNs;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hNdQ83oH;
+	spf=pass (imf05.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.129 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786588631;
-	b=6GOAS4UP8A5SArGp+9l/Z0GRxuuVNuUjYd9JFjSYkvEbb/ksMeez6iHngahNEmTMz3jG/e
-	IF8NxjIgRWKuKZcEHQX4ganDo8qGKrYmWuqERmeJION8Ui7n3khJzHMl3gfFt+T849+LQ9
-	X6NS91POuOM4CIU4C8hQn5qwrMmqWmY=
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-92ed19f4d60so32249485a.0
-        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 19:37:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1786588630; x=1787193430; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=iAIlYFnXn3LVoMPX9IDRNtgfCfuZ8em86m2CaDU8/H0=;
-        b=RX2asCNsJcDBgegaCdIooiD0NN/h18980CSAyTyLoR1ZygoyU0+YTtJuMkZvrjsTav
-         93twlTCF24JpZ/zey/DTFNlkaphXRbFK/DdxkbF6K5h0kYYINv/rQ6Yq43mMO8jLZUgf
-         AQYXy5cZAeKE5lqopQ7Bip1ASZiLILKlE731iX1BCsY6XC9NLOBlF3tN+Yvt0Bq6coPR
-         p3fr4SfjFbXM1qz4lua5ZAr46LvbtN9VcBWTMNbbjrXKr6JyNNH3nifNnWopZ6SB6w7C
-         7LOH3jb0Vj634EjJI/knv+A6mAQKGefcx3soxmKGXRdmWFRAW9Pl5RMMisd+6znX42QT
-         wUrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786588630; x=1787193430;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iAIlYFnXn3LVoMPX9IDRNtgfCfuZ8em86m2CaDU8/H0=;
-        b=ZCdpPEJlUZz44UrEVDKWDYayndb0RYqhaWylzF/ftAIdRy4DwUYj9G3TAQtNKcw0zW
-         uMHdNvyBwdHqHPc94T9bdU3wNdOfigTHadIqxYxPBD75hv7IaqgiyEX5uYcgEdVsdGGX
-         VsC813oiex0+7N0ESttmijuEr5RmHAlaP9PUAL2VlPhDlO9MvD12AC2lnOwZ2imUrqjm
-         3X6itPvD0YPuYG3UwK1e89J4Bm9wcefl7SQWaqMmORo4UN+X41W6hvLjzmFD5AeXSuOL
-         ZZrfL4heTZBWP03TeBkRy+NRMtInQvliQ+9wI0YE5ncxN3/H77+5UzeepSX6WWiCyY/L
-         io3A==
-X-Forwarded-Encrypted: i=1; AHgh+Ro2PTCY3CQuherIJEUDCOsSIbwivRYO1tmCYmhi22Lna+LFL3YFTEBwC2w7WAl9/qFe1Vk7naljpA==@kvack.org
-X-Gm-Message-State: AOJu0Yy3DzqndiE7NYn+FFZazimFfkue8Q8BXw4NdUD8YNxQX7usrT9v
-	iACkhWKQVA5nJ7bB+yhlalmmwZryVZ89maod5alU/PPKz9UbSv58sLNm6WyhOHVupFfgRJW/Sz+
-	BJmKybUA=
-X-Gm-Gg: AR+sD13MqsLyFm4SXtCjmLKYGIV5KSIst7VK+Fa5+xZM0HkMl24MfglbckEAQRp+xOc
-	IiZaXRRa2MFKE/TnPdIJz8kNnaAAGMc7ZCkdfl5Rp5ANfyljlODUbfxtBUuFJ+VfeJNZMWXpKWI
-	UrK7VFSersImW2rvxgbMzlQpUW39z+d1XJ7CgFNiMYXmUxM0LXurH/JK/mKGVHTh37q7ccUOo7e
-	coZlxVmmDv+AcNoQ7vt9f7c4Q5MUarDIShHJrTb1349Tt1qn+SxujOcPel8tSJXImWuWBYoeEna
-	rHHtlRCza/K0ndIpN5rd+2VllCavz1MaEbK8IkU3JWcCQPs6zRWFs3mtiv53twLBAtPXfFYwxkv
-	xUlurEowx3GzaBCfAAAO9PKyY9/oCeV19iDPFSu/oG9+1Xn16aerQPxcbIktkoYb1jYybQuapXC
-	YbNzjM2C409vB/l43s/3Cpf++eORY95hrekPXxFtm7C1+Hiw==
-X-Received: by 2002:a05:620a:2727:b0:92b:3203:ea70 with SMTP id af79cd13be357-936c0b68fa2mr178922485a.12.1786588630298;
-        Wed, 12 Aug 2026 19:37:10 -0700 (PDT)
-Received: from fedora ([2601:19e:8500:d3c0::28fe])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-936c199108csm48835385a.19.2026.08.12.19.37.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 19:37:09 -0700 (PDT)
-Date: Wed, 12 Aug 2026 22:37:06 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Rakie Kim <rakie.kim@sk.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
-	nvdimm@lists.linux.dev, ziy@nvidia.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, byungchul@sk.com,
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, david@kernel.org,
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	dave@stgolabs.net, jic23@kernel.org, dave.jiang@intel.com,
-	alison.schofield@intel.com, vishal.l.verma@intel.com,
-	ira.weiny@intel.com, harry@kernel.org, kernel_team@skhynix.com,
-	honggyu.kim@sk.com, yunjeong.mun@sk.com
-Subject: Re: [PATCH 0/4] mm/mempolicy: introduce package-aware weighted
- interleave
-Message-ID: <an0t0mP9JB8f4ILK@fedora>
-References: <20260806080936.421-1-rakie.kim@sk.com>
+	t=1786590427;
+	b=LlZGl8detIpDUAb6AVkF4B8DFEjACLjLu/V2Rug2D7c1YSe/wH1QiPukCILbwpYzISmatB
+	FD4TCjor6rcpPdw+mtIaiz9eRWNlIonb98PG1vUSNok/2f4SyWFvrR90t5VCicFCM0aGMK
+	1cEHEZstrT/Ts3ne/7sIQ76Bph8g8bk=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=ttci0L82/KRm+ruQkSVERz6ZOoHOrD4BV9vjZHSrlTA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786590425; v=1; x=1787195225;
+ b=hNdQ83oHHmH8q4zWZwRPiQaUcVuScST+MycjAYbOI3JP7Isa1+FARRR3MXw6cqh1cr7G8Njd
+ AaM8Qdgh1dI97NORutxmLICcAOLJpeBnXdYtOT/QYLhCC2wDyZvFutUy82fTYEICbeKCQGbJmP/
+ vj5bFnCkpwBvy98b3mmYoHRE=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost.localdomain (223.70.159.239)
+	by smtp.migadu.com with ESMTPS id 421e72884223c082;
+	Thu, 13 Aug 2026 03:07:05 +0000
+X-Migadu-Flow: FLOW_OUT
+From: Ye Liu <ye.liu@linux.dev>
+To: Michal Hocko <mhocko@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Ye Liu <liuye@kylinos.cn>,
+	David Rientjes <rientjes@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm/oom_kill: fix stale comment in constrained_alloc()
+Date: Thu, 13 Aug 2026 11:06:54 +0800
+Message-Id: <20260813030654.320269-1-ye.liu@linux.dev>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260806080936.421-1-rakie.kim@sk.com>
-X-Stat-Signature: 5aa1damzgrxwjdy9z5dyt7zi6p7gxi3w
-X-Rspamd-Queue-Id: 2C91F80002
-X-Rspamd-Server: rspam03
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: piduqzxtfgd8wkugroi77urxk9s9genp
+X-Rspamd-Queue-Id: 930FD100003
 X-Rspam-User: 
-X-HE-Tag: 1786588631-944528
-X-HE-Meta: U2FsdGVkX19AYTjYolbeVrk3CYmqDMzhMIuJ6MkuKSpiJxNxTuFdVO3FkgmRj5mk7s/S9wUo+5ZQCvAeDzmb3RFKhYThi+Cj6JH5JhegP4FmApTvR/3TyjnucGwBFYGQflF1PhUhjRSB7uAbsKWMyLswVd02zsmh3SSJ8CsM11oBhM0yYSlCCi6u4uxQ3nQ+U6o093VRkCo8sC9hfoyzPMQ9TrAUXoQl/ndav5Ohlfy5cH9xVr+6G7bFM6Xu9OSiOthzRrIj1heyKB0qOABZYSuDzNl+90ioQIPmA5ujz7qjecacBAwUnqTHq2gXbPuZgU+D+49enCEuHsrzqETtp+Tt2529QtnrsNH0nlmRag+RhFHyQfeMQn+BwXtYbEB9SXFJyIMVluRQbpa9X73DuIVh6iJvsHvOslaW+Drj+lYvPn0AcLZKn98cEFad/Er/O00DQiNg6PZdHjDasnkPyUg2GBY1lrw/TQ3ABoC8xpUplZw5PA4eS+hOtAmg9bPZoE45THA6ZDxlmm+n4CMnr+Mp0QONCeFSwwfIw3ple6scrMFFlipu/GI5oejvzUsLT3JjSIuZ3Nv1mtIJwEzrHpLVwT0C3toIq1PSmu3kD99fMxDyY8nmtM0qAvy8sqv6FpKmAZkaS/Vi6LKdKcbAxZzT+LnGdRm6OA1fhN/0/YvfquMFPC6OsgeFElhTmjtXzkFSeELzZCheQbIhCi8xm8IX42AgiEa6aRDQajMpN3hoe+McftWnQa+3HBZYKN91IT0QAwY0Tv1WApcbNYs7gg3ETNkKe8qd3qe6x8o92PmlVAxdPXVCy1B1tIDZw41ZRLZfTl0ZEDHbTDFpwArPpx24UcJIOFUH9TUBVXM82oHZORfKz3CVZN9HKGPZvIBRudKeCf8rynTTl9pJOmMTufBILiz6scjF/HoUH7WxDW25MmX7DVkgnD/6qXwfUrItjhtJ2QG67ED0Gnub8df
- YGRqQJf0
- d8EZQXVs92+c/rmZInDglMc9Nz0PCYEqGqWIs3pUh8uZMgJt+a5dbJpA8gD1u59DpHon73hLTi6zKjVMAabb8vI0De/ErRf1fnk4kgaJ9drZ1d7uffgF1xlLZ5OYP71Mmcvcmp9uoA128CfE5kq1aadrKB5nrktF4R0mRT1NUh6DyiwlpuSvzPog1aCW1ld68DvTsLuQBa/jo+RKRdSPg2pWcqMwbjeTXdUL3D5mIxKJWYxiiCru4suSG/UVSc7JBIAkUqmzwP0M94+m1DdTN+f1nCAB9MYcO1ez9agXe1KH0nH0cMma0BDI5bAxSVxQ0CGMmfmHK3X/8aKp1SrlWANR6rBLV5J9izQhG6lRMwoxMjb7XbuFy4NdevWIK4kw8s8W3EngWTAXG6h8W1Qi/Cl/5iA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786590426-690670
+X-HE-Meta: U2FsdGVkX1+9e0xvZTNNRgVgPlOXTuP5L+7EjsKWCkSIbYCI56xwjwOYX1I3/U8sYSAOnMD+tqJ+5drHhZMtAxVDCxCypMAyrxz0Wl+C6LHIm97Jo9MjBjLTXAPUaZ1YChe9+t1bu94g1zfK/52fDOA65pp+NJZVkvFwpcg01GvCzAsc46Zr4KzKxl0dbAV8z5vTmGM8uSKCNtFm8v8sU66Qzk+K2xW8NFb7RR01FUmGRUwcqzNxhQT8IZKfegV2UPGW6bCIKryI+cttExt/l+KXvzX28H9adEwXvuian0NIkzuA5BKjVA0Po+QbUmTpqCAAyeH90OfJ3H+KVte0JU5rgrc2nhi0JWaHuMrltHpAc1JHqjlAPFu8dRB9eU73YKuGod53TvPJgTKZXZJBVH3TwHt/wRH6waAdtt8S6L2PsWFbsFvmEfpkaVMsZ2rLwvHqkz6i7qcw/zdjHnlVeJObbNv+7IGzwVc8bdQtCDCdQ2XnDTRoomDZ2gWyRUjPjNGCe2pdn8sLUH+B52QoTq7IGf2JgCl8QTsGAb2xodA+j88vAm+ao/Y3S8VXCs+Dr+Y3RjdXMW1SOc4RCWwR8iofrXnW7ULOpJeZVbshGHj6/83QqA67tpXayHvGUkw3abCvq3DuBN+OoJaPRxNcaKHcZrwtlsQnmqNCZLihzWRXn75Y4bWqoXG5KN+sBSZGr66iv7mNqDk9zfPdUHD8t8yn8yGcySB6kACvQ405zJfHM/44YXJNG9GWfdrScRIltJJjrWiA7ZrRymJlC8ltd3R4aX16eGxelzc+9Z7wm8tu0MKiE9YDYChL532bz26SE3KT3lXQSCNLIH3ftzOdd1zBvEiOgVxzjc7XgwsWMhfYX1vXyiC5zLEPucvY8gPStEooJf6s9AfU5LGc4PJTnlywA3IwlRdc8xzNEhn+D2k4GzGrB37D6JS846I3Td4c2Y5XOfCO5RxW2sJHG2s
+ OunBMPdf
+ H6pENqbtMxsxYoUEqaP5lYN7tamYsoRrDwKTC2dQ5xptwQBr58DFpO4/Vl5pxCdU8KISQCsWwUKsWY7E/iwKffI9LErTsyPM5A6MrfYEheeQnxYmuLpophDYIjwJ0neaNErHbNqgH4lzOuqa1Wdgw7fZLfIBrgJt+nbmZKZ3QYQoCtV2Wn8XfFVvzb1nw/EJqoQFvPG4PXc54H7laems83TveBPIZ5BRTNFc1vDe0C865bf1k2gXPptzyqZCUoRf/OcRfBq8R9OBpFo59eMVrKJDasw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,29 +90,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 06, 2026 at 05:09:31PM +0900, Rakie Kim wrote:
-> Package-aware weighted interleave places a task's weighted-interleave
-> pages on the NUMA nodes of its local package, so that interleave traffic
-> does not have to cross the interconnect to another package. This keeps
-> each node's weight aligned with the bandwidth the task actually gets
-> from it, so effective bandwidth holds up on a system that has more than
-> one package. (A package is a CPU socket together with the memory
-> attached to it.)
->
+From: Ye Liu <liuye@kylinos.cn>
 
-The only major question I have before I dig into the actual patches is
-whether you actually need this on a *per-task* basis, rather than simply
-a *per-process* basis - because that's all this really buys you.
+The comment above the __GFP_THISNODE check in constrained_alloc()
+is stale and inaccurate: it references __GFP_NOFAIL (which is not
+checked here), claims the OOM killer does "random task kill" (it
+uses badness scores), and mentions CONSTRAINT_THISNODE (which was
+never added to the enum).  Replace it with a description that
+matches the actual code behavior.
 
-You can already do what is described here by simply using a combination
-of cpuset and mempolicy
+Signed-off-by: Ye Liu <liuye@kylinos.cn>
+---
+ mm/oom_kill.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-cpuset.mems = 0,2
-mempolicy = weighted interleave --all
+diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+index 5f372f6e26fa..4b5c70aaece4 100644
+--- a/mm/oom_kill.c
++++ b/mm/oom_kill.c
+@@ -268,9 +268,9 @@ static enum oom_constraint constrained_alloc(struct oom_control *oc)
+ 	if (!oc->zonelist)
+ 		return CONSTRAINT_NONE;
+ 	/*
+-	 * Reach here only when __GFP_NOFAIL is used. So, we should avoid
+-	 * to kill current.We have to random task kill in this case.
+-	 * Hopefully, CONSTRAINT_THISNODE...but no way to handle it, now.
++	 * __GFP_THISNODE means the allocation is restricted to a single node.
++	 * There is no dedicated constraint type for this case, so return
++	 * CONSTRAINT_NONE and let the normal OOM handling proceed.
+ 	 */
+ 	if (oc->gfp_mask & __GFP_THISNODE)
+ 		return CONSTRAINT_NONE;
+-- 
+2.25.1
 
-If this is actually required on a per-task basis, then I agree this
-concept is reasonable.  I just want to make we're grounded on a real
-use case before we go adding this complexity.
-
-~Gregory
 
