@@ -4,86 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56203C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 19:35:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADCADC5CFDB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 19:35:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 736646B05B3; Thu, 13 Aug 2026 15:35:41 -0400 (EDT)
+	id 959BA6B05B5; Thu, 13 Aug 2026 15:35:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E67C6B05B5; Thu, 13 Aug 2026 15:35:41 -0400 (EDT)
+	id 932996B05B6; Thu, 13 Aug 2026 15:35:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FCDB6B05B6; Thu, 13 Aug 2026 15:35:41 -0400 (EDT)
+	id 820476B05B7; Thu, 13 Aug 2026 15:35:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 302836B05B3
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:35:41 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B8D1A402B7
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 19:35:40 +0000 (UTC)
-X-FDA: 85097250840.20.1130580
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E74FD4000A
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 19:35:38 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W0JQGfhX;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 65E2C6B05B5
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:35:58 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 97674A022A
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 19:35:57 +0000 (UTC)
+X-FDA: 85097251554.28.6493657
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C6113120003
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 19:35:55 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CwgT9Ht8;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786649739;
+	s=arc-20220608; t=1786649755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KEBeBGKqcYmQquziix0FBBLpmC/A5w7ICEtCSGsPqXk=;
-	b=SQqbFWaqNNVGWU/DX9vjaR3fs7WBqldkCt52hGxb+LkmM3G29d4tnGLmQ084TwbHXhXbj9
-	xcsCPieWquWkCQwoewCNxsRpjtSFHpcYoxftbTZUWw2cRsQqZl2u2/ZQ6S6FbxBa5MVefN
-	MF4o5oCQqOvKkvtZ5nMU1ymbtcTMmBw=
+	bh=Y4uVpG3bdbrTSkcePR6X4sXWK4Bw3fjIfcWCb2VfiYM=;
+	b=CfuHdEnm2cFwmmqZzE5/RslG7453hs6+pyOiauAmH/gPmHzh5lIzDRuuI8B9RcgmFxrfwZ
+	ljEc46EDuI604wSJ24uJ6XQGVCt3y5B1CZppn7PKspb5oaQqrywWIdWDkmXXlBOqVmtsq/
+	Zae17SqV5JF1cS/1x4lvT1qyrRPrg1w=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W0JQGfhX;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CwgT9Ht8;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786649739;
-	b=sW9I3GZjG0j28oXe0ZMIy9En8yDHZs3FdpKlELWjymcoMNanqzNMkXSbBV4LcrBt33vy0z
-	5UyZAJU4Z8YXyDZuKf4eyqawrc5NOzC2Wyxwp42qNSTpHGYNUVBsgLHLdLJyT2ByV0dJaD
-	Fu2lTAHAhyVcIAuDCVRbRIFNPO/kEmQ=
+	t=1786649755;
+	b=e3zlW55jWBgDKv0kJESTob6BPgicyqIiyuvwFBKSTUcUA63Wj6lyKaTLH0+/UOnDLllVlu
+	Gu0x2QUUyxwhK4J4k3ePdQzija3Gb+yhDbykEH17piEVA6Nhwnt39XobQdAnMz/JVEKMex
+	MzGufax2ue8xlkFFBl1z1tNos4hBDj4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1782D42339;
-	Thu, 13 Aug 2026 19:35:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2CA01F00A3D;
-	Thu, 13 Aug 2026 19:35:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3048D600B0;
+	Thu, 13 Aug 2026 19:35:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DC51F000E9;
+	Thu, 13 Aug 2026 19:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786649738;
-	bh=KEBeBGKqcYmQquziix0FBBLpmC/A5w7ICEtCSGsPqXk=;
+	s=k20260515; t=1786649754;
+	bh=Y4uVpG3bdbrTSkcePR6X4sXWK4Bw3fjIfcWCb2VfiYM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=W0JQGfhXzjm90qZeu1tlAzd1Oqttsv8eo3/eFnoWp0OWvHd/X/HAEECR+rE2O+5We
-	 2RpWF3tcLkDpsWboQEDS39zCqvZS2noyaOd7hrFd2bXLKIIuW6NUDml2VVCgiTsSu8
-	 KtI87LqX6zp3HQWFgwD4lcMmBFxtTe0FpnNWhWzXU61FKACOjcXqAmGdy8zax68y8P
-	 /z6YoYEknizUYyxR9d0OcZnJ3obkFLsCGdOt0TlnJknCY7Eku7g0/8G58KlFMxKPR7
-	 zw0mDtEHp2k2fXeufcKL9ecOU2bywIypmlVwr0XoLN2dtwx8VGzGCnccEIbggjZpTv
-	 8e37wsp7x4/Rg==
-Message-ID: <a93084e1-b31a-4642-99f4-6c8c1fa8c49c@kernel.org>
-Date: Thu, 13 Aug 2026 21:35:27 +0200
+	b=CwgT9Ht8lK1bV896H5TxIIa4Uv24P73RCNDkYiVPOxMuIUFBsTCWTDBROcJyUXVtq
+	 pLw/IXLDJ7ix7hRvcFtXGewgaTSOrenm/XTeKqxxoP6pydlZgdKiHz97Z7cKMcwJt2
+	 ig4s3f8vvXRY8Gck3HZX1PpfCbqnEDXpCqXNA6QDT5yvWUFD606fJaKlJhrpvol7Mj
+	 F9LEeMe43BhiHvvs3qoIr6pIDqMnsPN7uLErhszG6cfXKEw43cQOiprF3L7O8E2jCJ
+	 hCP/+6BrtxZMziR1vRALtdz/8mwMFBE32p81ukzgEkBRwHfymvdfgT2r2vcXUYkZOd
+	 AJrGxUY78Y64Q==
+Message-ID: <6527de10-5140-47d8-9c05-4df3c9868ec0@kernel.org>
+Date: Thu, 13 Aug 2026 21:35:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/17] mm/huge_memory: clean up folio split and lift
- swapcache split limits
-To: kasong@tencent.com, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
- Shivam Kalra <shivamkalra98@zohomail.in>
-References: <20260813-swap-thp-cleanup-v2-0-d2ee48c6aa49@tencent.com>
+Subject: Re: [PATCH v2] mm/Kconfig: make MEMORY_FAILURE select MIGRATION
+To: Xie Yuanbin <xieyuanbin1@huawei.com>, akpm@linux-foundation.org,
+ linmiaohe@huawei.com, ziy@nvidia.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, nao.horiguchi@gmail.com,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, gourry@gourry.net, tony.luck@intel.com,
+ bp@alien8.de
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, liaohua4@huawei.com,
+ lilinjie8@huawei.com
+References: <20260813134916.292733-1-xieyuanbin1@huawei.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260813-swap-thp-cleanup-v2-0-d2ee48c6aa49@tencent.com>
+In-Reply-To: <20260813134916.292733-1-xieyuanbin1@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: aqj9u19qojs94xcd7twsn867o8jaz59t
-X-Rspamd-Queue-Id: E74FD4000A
-X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C6113120003
+X-Stat-Signature: 1hun6cuwhmn3b6anmhyt3op3w996eqts
 X-Rspam-User: 
-X-HE-Tag: 1786649738-275917
-X-HE-Meta: U2FsdGVkX18LO88G3XIvYwZTt9xaZE7PN3kTikFu7J5jMv0LwxNyWb3pZ76SFV5Hu9qu69ECFFylc9CYWZoDaRt9WsdnuwqTBm9TjHubMrUez+1MS4073PUlblPNiLueXI2OrbL28FmnviP/t+ugojlS8alTzcM2UxP8srSRobCuRb4RGv91hwkT6dOqfwaLFZJCYtpAOR3mRjsNpJJAp0D6SXCA8kKWPdcP06gFB0aw8+L5xo/vQdMetP+1dCtXqtxXKeCF0frcxqDP+o+97f2x1KLC2gMvZRt2df36SFaJfmjauAUFpzQVPCFJDnbN8KlrQvWXRTWuX6ujVP/tQIbFTLMOuZ/xKJoJg6SkMtric5Lj656AbsyJXZ0Gr0DGFDHCBJtl7HASE9JO+5zOO6dwua1Iu9QuY209iPI9gN7GA0p2Ua3+WaVx3cOeI/mny/TCGiqMP67v+JqX+KVxWY/TxCwurdDikbIF6V3KxqBmd810WMRlCifxmD8i11X/M7DiIbAWxNdzleDytPZVH3yjjRuha2L+a2pZOlvOr6qRI2ipy4b+QYCNjwrpnIe7i/rOAENF2sNLoVkvudoc+9JBtNUbH0Wa2maJ06sPffC7QueZW/d3JBrisUXnkt7oDTSuI/dAC5auxt4gU69gCNh1nGL7uou3SRM5ZSPc/SpdfXs58aidR4ZDqFDpM41HJ0zgQQqctcHZQP901RGrimvq7+ewzs6RGixJ9nVFe7D/dvasGTiU0Z4uANAu03HkEik4yZR33F2vq8LTlCz+tkDTNEf072ybyKd5G1fOK+kvTmEyX+kiuPFwpaUSY489lL2oepBQGSVkiCiDaWPiTE5OMU+wrI4BMjFXXaHxkZG3IXay5btK9h6A002V8/6swKpJwU9c6Q0KYgCtYd1pLj4bAIjdT+YrErZddJFuiUWzJYv0HEo31UiLEGK+rDLmeZy8ZqWpIaSp9zpgbio
- f/1wPSUF
- ka4IXggFSnrkpHFFicwitT/vUw3DwLKDfNKssWoliq+5kTbtZOOl+fWk/NF+2Jjdb9m7Va0ary5PSg3IUm/hSQXcofvHaVtW18sn7b4NAaD9780E/wt8aljVpbYh4p7p+XvUjzs1iFy6kn4Go0k1IGpo59HOs8ekIRaMbDDtoS1jyxaMpRXI4gOafaKO+AFIEOV18TGLaDkKHiJUkyF+tJQuNRy2uvTjNROkMKtjnZTG4XqEBlBHhbpvGD8S+eDDu40d6dm5X5ro0R2cISftEBUQbTM7qSBcDZoqq8dmYhOX53ty0Oy/uTwiAGJkNTgkZiNSqikgyIhy1754=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786649755-959039
+X-HE-Meta: U2FsdGVkX1/yqBqrpNCICvD+8B5z7evxmw24ZfpGHUAvTqCMW6hRb0DLbsxSsMIJNVszMmdOD3B95kd9Cpfn/0Tn+9gPlmvc7ZIyG0yc+N89rj6M8CgjIZPAISuBPSL0zMkWY6iLFEpu/ZzqJpYZLyl7qYpc9/TLqGVdChFkDfS8BPq6Y/mqv2ihHZZw3x0J8oBfnSZ/gZY4lYYER5jDp28xAN7aCBRZrRVm5hMV86IuzKSjbg3n4Ws5wttQvDf14VPcSJsD99mhWRJny2JmzhwjGxz1X1xUUTwzJrf5MpRxEqmaMqN7H7U4DBQ/PNbRm5mY6O8R5Dpn4bBL/VYlXYqIuQlf+/Bzg44dlHKROAZHkLIJZ8Ieq4p5sayiKQMkZzXVhebTh/nemQSw9j2lDcetIZfyckXF7mfklK1IvGrXYR54VtjMTbqdrhCcOGT6G0OJaR1FvpqKaoJaJXCBCFeHiogWlYN5hXW8ZAIGgdRh3NZkpTsWlwsbgZu/9Z/fOFQeFXZD3FodvzN7kzT2QMUxHG+dXB2VVYF2oDtWuIBUE6/51K+M1dNhzgMkC+yVUeiazhi5L/9erNAfNLPM7Xeyac6f1Rh940hJhfxdJGxVldq8Tcg/5BZpUzBAwMSqqXFyxKVgxe16kDZjTphVr59HXv1XvAsszrOygQXtcWNsBWxNjr7f7BTofEAaCO6BZv8J0o7ANw1Bb+nHnM/hSsbupjzYQwG3xmvEOEIZJuMTi8dpFCaaOwBbyEb0w16R+Cc41GysWxVH1NDrjxQ0KN5o8f+4RPc6TAZNp6viza8wdQKVB25YmFIjjFIEXnOlIDH3JXBJfAcnElAIDcfLuXaj/mOBCBvtfx96paltJ55bbtTeRnB+Pa0ox0299VWT332lSBEDJ0r7TRNXsQGI7f0n7YAcmB9VkaNAz7byXBFZ1SiRYAR5L+qHVOiqivx1+bEhmHUMLLMD38CrXQl
+ mDYFYD1L
+ mCI1acFd2j9sSCXTJRV//GKeEEK0ny6qto3XndUPNUHZDgGlsDZF9dUeW/F3YrGC9CAGn57bGmBG8hIKGyCPAZbjPjyAt5xiB7pqJO/t+r4+as7BXkLh2YDc2Qa9/00qZko4bUqZwtKpdY3rYLoI55q/6h2ZSowKM8vxykUaRFG4oqW6jCmn3o+0dp3pVP4x7ooJ75bAFuJ5eW8o3xO37Qlyqt1hWgJN1Mn5zhOy/z8HP7i533rYyBaBc5GUAh7kFoiiGyzmYt/LbmUKmPfhDiUkOeSPa5iLGk+YmmSSgMRAXd8QdE5irf/voNVOuQ9pIWxLSR5L5cHvSzE126j4XtbvQDvV5M6OQYObWQ1uTxoXrqMR5q+f3U/WeQtqZcvkM05WD7aAirtduHJPVTyBAGaud2PpZHf4xKIQJPVr868cYyho=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,61 +143,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/12/26 20:48, Kairui Song via B4 Relay wrote:
-> This series clean up the split code, add better swap cache split support
-> for mappingless, large order, uniform and non-uniform split.  Generic
-> performance is on par or slightly better, and stack usage is reduced.
+On 8/13/26 15:49, Xie Yuanbin wrote:
+> For embedded devices, lacking support for NUMA, memory hotplug/hotremove,
+> CMA and huge pages is a quite common scenario. In this scenario, the
+> demand for contiguous physical memory allocation is very low. To reduce
+> the kernel image size, some devices disable the compaction. However,
+> their SoCs do support DDR ECC, meaning that memory-failure may be needed.
 > 
-> The swap cache infrastructure can handle non-uniform or high order folio
-> replace, so there is no reason for either restriction from the THP side.
-> What stands in the way is the mixed anon/file folio split routine,
-> which makes lifting the restrictions hard to follow, and it already
-> carries some buggy or redundant checks.
+> Migration is very useful for soft_offline_page() in memory-failure, which
+> may be triggered by correctable memory errors. Most anonymous and
+> file-mapped faulty pages can be migrated to other healthy pages.
 > 
-> So this series cleans up the split path and separates anon and file
-> splitting into two helpers.  The file split path never sees a swap
-> cache folio, and that is now enforced up front: a folio that is both
-> in the page cache and the swap cache can only be a shmem folio, which
-> remains unsupported and is rejected early.  That helps to rule out swap
-> cache handling in that part completely.  Only the anon split path
-> handles swap cache folios, with an anon mapping or mappingless:
-> either way the splitting is similar, and non-uniform split is
-> supported as well.
+> Currently, MEMORY_FAILURE does not explicitly select MIGRATION. When
+> COMPACTION, MEMORY_HOTREMOVE, NUMA_MIGRATION and CMA are all disabled,
+> MEMORY_FAILURE can be enabled, but MIGRATION cannot be selected.
 > 
-> Order-1 is still forbidden for swap cache splitting.  In theory it is
-> doable for shmem swap cache folios, but a mappingless swap cache
-> folio cannot currently be told apart from a shmem one, so forbid it
-> for all swap cache folios for now.
+> Make MEMORY_FAILURE select MIGRATION to handle this situation.
 > 
-> Testing:
-> 
-> The in-tree split_huge_page_test selftest (uniform, non-uniform and
-> in-folio-offset splits of anon and pagecache folios) passes 62/62 on
-> the patched kernel.
-> 
-> ftrace function_graph tracing filtered on __folio_split() was used to
-> compare per-call durations between the base and the patched kernel on
-> the same x86-64 box (interleaved runs across alternating reboots;
-> mean +- stddev of the per-run averages, 135 split calls per run):
-> 
->   base:    24 runs, 69.6 +- 0.7 us per __folio_split()
->   patched: 26 runs, 68.8 +- 1.3 us per __folio_split()
-> 
-> The patched kernel is consistently ~1% faster; with this sample
-> count the difference is outside run-to-run noise.
-> 
-> On x86-64 with gcc 12 (-fstack-usage), the stack frame of
-> __folio_split() shrinks from 240 to 96 bytes, and the worst-case
-> split call chain from ~544 to ~384 (anon) or ~464 (file) bytes.
-> 
-> Bloat-o-meter shows a tiny growth of huge_memory.o:
-> before=58419 after=58446, chg +0.05% (+27 bytes).
-> 
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+> Suggested-by: Mike Rapoport <rppt@kernel.org>
+> Cc: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Cc: David Hildenbrand (Arm) <david@kernel.org>
+> Cc: Miaohe Lin <linmiaohe@huawei.com>
+> Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
 > ---
-
-I might need a bit to get to this; but the merge window is about to open either
-way so, so this is material for the one afterwards.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
