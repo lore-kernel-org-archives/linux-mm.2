@@ -4,103 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68109C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 21:59:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02F36C5CFDB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 22:08:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A4216B02CC; Thu, 13 Aug 2026 17:59:12 -0400 (EDT)
+	id AC7706B05DA; Thu, 13 Aug 2026 18:08:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0348B6B02CF; Thu, 13 Aug 2026 17:59:11 -0400 (EDT)
+	id A5E826B05DB; Thu, 13 Aug 2026 18:08:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E667A6B02D0; Thu, 13 Aug 2026 17:59:11 -0400 (EDT)
+	id 941D86B05DC; Thu, 13 Aug 2026 18:08:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BDBF56B02CC
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:59:11 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4A4A31A01C4
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:59:11 +0000 (UTC)
-X-FDA: 85097612502.08.71B6C7D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6CEE1140010
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:59:09 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=giWWTG21;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 57B626B05DA
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 18:08:53 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D2033A02E5
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 22:08:52 +0000 (UTC)
+X-FDA: 85097636904.27.CE83217
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 331BDC0006
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 22:08:51 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=S21QVYtX;
+	spf=pass (imf28.hostedemail.com: domain of 3cUB-agYKCEY0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3cUB-agYKCEY0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786658931;
+	b=F/Dpe1iztu8VbkHQUswFKVKNdlyL5KiVk3Zsd3WgsiYR14SsygWRaDDeDUrVmL0XaWoXws
+	bXIfms+jsGjWCzMrP2uK746VJf8xlkAEpAhlbAvKYlGi8c/suSXMK131AHsQkgXzi1M/fR
+	65YDHRCJ+9K4II+mayOccMA0/4uqO5s=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=S21QVYtX;
+	spf=pass (imf28.hostedemail.com: domain of 3cUB-agYKCEY0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3cUB-agYKCEY0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786658349;
+	s=arc-20220608; t=1786658931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6YAHKs2zBGdstKw7oa5V8gKeB7X3PSLZw26tL2EAoKI=;
-	b=6IBdQPKlDyGdmgU5qoz57iwzXhGnMchB9IcAk/BIxQeCb6f0A1YsF6RaFQNaZ1ohIRyWr5
-	pA9BhsaUIQ4rqBQrY67TYakOVkDG136/l5Z/cE1vI4Ov1glzuf+p8zodwk+u7Ms0w6VYAV
-	GwpiIskh44iV5a0HdAa6z8I1nAslYqM=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=giWWTG21;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786658349;
-	b=WCFAh3g8tWQkeSNIjjUhxcBtCGkocI2w3CYzYLF+MqyXVXC6bbcfjutHaZ/6dCqYptDbMl
-	zWdhxmyU9KK+uPcFzrDaDR6MyKd+U1JjKfmzUGsfDqJEsunVrpfAGSvygu+uhBb0782Vjo
-	wxuonymq7Oa3+gSSTd5OHTR12yLRGK4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 704A1600E2
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:59:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246751F00AC4
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:59:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786658348;
-	bh=6YAHKs2zBGdstKw7oa5V8gKeB7X3PSLZw26tL2EAoKI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=giWWTG21JcJyI+OaWF6tu28igcvbpYaVZ3NcZGOwP0lEnOsGI45AFIrIzYFiB0lhZ
-	 YSavTsuSVJV4L8kv8IgQnYbjGawZQurn4JWwR+jRqLbknX9h149CIgFiVkK2w3Tf/l
-	 uV2CG3W6pPu1bDKO9AyGGv1Voe1aESdg3EjP4hlUYZXbxaECIdJVZqIhBu0gnAUxiW
-	 GmHJtjS7TcXk6/0NMPp3FMaKdiFusg10UkH2sndei9Ujhb7lDYcpGq7yD0r1h0i1zQ
-	 MIA85/SMfV/GuAe1RByk9xJJVbE2Xc4Nhp5loYrH+AVqREvPL5HUmZy8BQeGa+6S8i
-	 QIqYUKDZarCYQ==
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-934974844ffso25668885a.0
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:59:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rr9Gd4silSNHUF2eARFa9mczcVgTHp0gwHfg9/va0p278BlahAH5X87klswbwXA8Jwg6ua5KuXZEQ==@kvack.org
-X-Gm-Message-State: AOJu0YwVm5kvSO69MGKDNrGYuuAv87WkcarhpsmPq38ps5v42AyShfi8
-	uYflkukDMYQq78rtzuoW221ES1O+ovkWyF2Q02lKCIwU/e2K8ztW1q/7FzoQ9keSr9SuQpbYx5s
-	oHHZXXox+5wa8u1LbYstV5iCsWgsS/do=
-X-Received: by 2002:a05:620a:2a12:b0:915:6c63:b9eb with SMTP id
- af79cd13be357-936d23d2375mr86005485a.47.1786658347490; Thu, 13 Aug 2026
- 14:59:07 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260720-batch-tlb-flush-v5-0-db943a0d0d6b@icloud.com> <20260720-batch-tlb-flush-v5-5-db943a0d0d6b@icloud.com>
-In-Reply-To: <20260720-batch-tlb-flush-v5-5-db943a0d0d6b@icloud.com>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 14 Aug 2026 05:58:54 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wrQRGjqavMzWgi2+PrRr1ztf4QRZEb6HKm02OF8nEBUQ@mail.gmail.com>
-X-Gm-Features: AUfX_myLKGGG6uT2Wxkl-00dWnpqQoadFBvFZJkATesXkrs3xgsXawD2v1-oYtw
-Message-ID: <CAGsJ_4wrQRGjqavMzWgi2+PrRr1ztf4QRZEb6HKm02OF8nEBUQ@mail.gmail.com>
-Subject: Re: [PATCH v5 5/5] mm/vmscan: flush TLB for every 31 folios evictions
-To: Zhang Peng <zippermonkey@icloud.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	bh=N/3XZWjnKAuEX+EJn/U2x2ZdOkAMPrJlBbo8McfTGik=;
+	b=HdAv/9j/Nqe5fSdpaA8Gv4o8br7sc2J3uH4I2ho2egnxUnDUP2uteTzKwwh2Ahb2aWwoL6
+	VfGZnrtA60oLkkoRrOn7ZPCJkV5KqHIzBWdzoJ92sOJsg4pLkSltoZtJ9ZUiUjn550ZKiL
+	PRPAZ4zllbHTCUCzw6QUs4QsMr9TjoY=
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cbedb8673ceso230808a12.0
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:08:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786658930; x=1787263730; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=N/3XZWjnKAuEX+EJn/U2x2ZdOkAMPrJlBbo8McfTGik=;
+        b=S21QVYtXjFA2Q5tcCfZpBSvYGVXUANCcZchaIbsQjsqa3Y/F/ZiRhvNAZN+fAQYN+V
+         oV2QBxpxUkGhiYh+o6WyOIY9bEhoGPZtfGmcnkH9myJ9J1RF7TXh5oz30wnu3CCrqOaj
+         qRK1nXjrADikW5chYZCX0k6Xzl4MM7HX1LGbG3C1ozdv1tIxLgG2NocMnxz0NRTARCXU
+         aA4rp+/Bnt/ju2G6E/yoy9xx9KgOWtPQdE0nX04WNnad5m0ajREJEbCZyPk5Bu9J5K8U
+         ZrDkRJ64CSHz+4r62a/7pnogpaIRncOsX66wuzllFmLu4l2bhvMYsre+blCQJuirbGZY
+         uqjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786658930; x=1787263730;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=N/3XZWjnKAuEX+EJn/U2x2ZdOkAMPrJlBbo8McfTGik=;
+        b=ZWnSpcna/uvTIx6PjpZs5OMyfRL64AWMij5eBenINNuK5C0HTCn7eC7nxZskcIhjTg
+         O5yzlKX6ZO6f1rR7MSalm3/nmARum/HdfbMqhXzU8Dyt+5HGDBOoq0+U5d1jO1O0Abdl
+         Z47OevVNhD84SJc1bkmg3VnGSFk4QQTFy1VAPfzk8wVCxuckqaBzf2ISasLQMj3duDoW
+         HsUglYYnHGNrKQlBhrl9TimDDKhJaL1b8c065t2/T0/ghaHu4zohX1N6ohXjYw4DvAI1
+         5AsgzqojvgZ19WkcBEF+T+S/tlNB5w2L9omdXTx0xzjGtQcsgU+dR1D0uwXogE/25gQC
+         cPjQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrPk7aQDHu1eq79UUlYutD3kOwkr6JAO1jR0rUa6JzBU8xWctL06MPkasc/kWzWeB3plvk15JGApA==@kvack.org
+X-Gm-Message-State: AOJu0YwPNfFMoSOAPoPLJRB74o7iw+UVIKcqiLLFQtWWJ9E+tI5u5pIL
+	z+ZdUtYuMXumKwE4x9hd6uMhoCrcL2+koxz7qIbNG7sA8djQCxNgLbPTsf1NG539F5KnshqxkX6
+	0BRnLlg==
+X-Received: from pgcd20.prod.google.com ([2002:a05:6a02:4c54:b0:c9e:41e5:2eec])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a21:b0:3b5:489c:7bb5
+ with SMTP id adf61e73a8af0-3cc71d1e1c7mr839682637.28.1786658929498; Thu, 13
+ Aug 2026 15:08:49 -0700 (PDT)
+Date: Thu, 13 Aug 2026 15:08:48 -0700
+In-Reply-To: <CAEvNRgGpCVCGVjc9jCt9Yr+XypF=71h6eBahkXNkrXhfrtGY+g@mail.gmail.com>
+Mime-Version: 1.0
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-12-2fc18ee6d3ba@google.com>
+ <1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com> <an3o4h-E8mj6CUaM@google.com>
+ <CAEvNRgGpCVCGVjc9jCt9Yr+XypF=71h6eBahkXNkrXhfrtGY+g@mail.gmail.com>
+Message-ID: <an5AcEG9mqDgnBYk@google.com>
+Subject: Re: [PATCH v10 12/41] KVM: guest_memfd: Call arch make_shared
+ callback for to-shared conversion
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Binbin Wu <binbin.wu@linux.intel.com>, aik@amd.com, andrew.jones@linux.dev, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
 	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	"Liam R. Howlett" <liam@infradead.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Kairui Song <kasong@tencent.com>, Zhang Peng <bruzzhang@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 6CEE1140010
-X-Stat-Signature: ecfa1o7dpqgp6ms4wgazscsqyzixfy9s
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, Fuad Tabba <fuad.tabba@linux.dev>
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786658349-937214
-X-HE-Meta: U2FsdGVkX192nEdGL9ZxCl2q8bBVVvOnqKHTAlhycEUJ7csJomLSyuLGzTGJGZpgvX4b9UelLSZHCuCGyM77yxBqA73vw4ST4lWlWYycYWBv6r6oyM9LbhUH06zsf+DENJ/61NeC0aDVNZefVhfmKJo54iId9SvlnvwjiC3YdsOIftKL7aecBBWL3xIyFuOrU9vuN+BxSwBD3Gf0zoCySuz7IdmUQ4r7R3IH39LFp1c773QoYYA9ufIATc6hg4KsSM3UbVSLq7VrhLlzs/JroGa0n1BCGGCDKLLUc7DQTSXgWcZrux1AWRgAM4CtiAq/QQE899rIRvDkXN1QYe0W5mZZCdcOcDuGrnRPBHfbzw5eVOKSUzeVnl4QPb6Ozxfpqv+8VVvnKoQzbwHG4fAVr+5hqPchSDw7EzxlIKQAnpo7VYSTZJZBb2arySSGSBFVL3Hzukn9VIu+8IJWQdNKtLHvTlNTc+lXIpUjl52lbAhVsiLU3j2ITMXHh5OpyG1vlfRUv0QJmyT7j6nyY0Iw18b0xow+SkHjUMJ4UPQLPWCulyt5tyPlywJzGzPWqztRC5AJlHQ/t5Ezml8gHaGh13MdnfS9yCGGn4CcytRCdk8vzh1Ap36gs4I2dqK9VUq/FOb3mm8mfi3zriU00821g9NyiUSM55EGspuxed2/9Ij/eWuz1bsIAJLfGBhdwToaNgqceTe3NngYGNy8bApWqg0LTfuv3JjbF6Gu9BMD7VLPg24Dy/bDj+xxnPGsIUM/Mn/wL5jsZ2nCJFzdmVeK8bR2ifbPM7+fhC0eBHeVo6Knc2s85lU3B9Z/XpvrdVio2uLiiZBfCwYENkodHbNRTk/7pY3azhUlmjc0I/U10krRIzbhgE+wY9Tucm9TfIfWwMgIdH696mz4nTENlrFspMsnQYBEWMBOBSV5Ket7oBKk5N+TeR2Trsv3TnLEhjFehLV5b6nSKm6O6JbNSzE
- Uz/rpH5w
- 9ZAYyT1n+N+9sflWfCgL9CDvnnk/lNGS2eH7LPJbrallSHpNQcT8ytQVcBSvAxisUGvto8Y95ibkQ99j5TFMN8YdqFl4UAGJE+8aw/gZYr/BubeTRWeCJy5cXSANFxHWnbfHa3w3OOVQxT6sahBe3Fn6UgxZuuaD5K0vWDedrZhIT08GDT0K7wj9V6gicMDD2fK3vPeAMM5/CdjIcXikAHpS8pcL/1q2IGZS6uOYd8AOPTLEz5cep6Rjuc5Kf38BiweWXBu42GO/6V+4Bgs9N6ckBZQnLFET8U9WmyvOfmH8iiKoIqy1Zjcn0YgdqQFlTadtJPUfisB80cqU=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 331BDC0006
+X-Stat-Signature: m1yhgwo77t5ydumg3ntrb1e8stwpamr7
+X-HE-Tag: 1786658931-352803
+X-HE-Meta: U2FsdGVkX19ty4OnCMTILPtVKip24yT/UfJSw5jEZAhKoottMY2DClA01Dh0+RwPboPiS5OpHg4LIKFslQ4FvvnYk10D3bGzDfBeIr+atQeGM5kew41ktTsBHcERDZwL+5BX3eG7lEviZe2qL+fzHqyCf/DEybQbJff9O9RaEO+nwmKJrU+VSfomP0akA68Und3w8tjkHiOL69FT7c3uJTzf5XbbRd2ZNyPr6nh+8xoDVGyCTRDSNKouSlcuV487brvexOksY8Wd8XEAw9qs15rjsdXqqeEYLWwgp1/1T+hKEQKWBDTR8akImUOtxhfK4ap3E2dmOtpVHKCgvWsrM+KPqHb+rcw9BdXzcjnqxGeuaNmRuN5F1b7mK+DtWkpZq6U8Dm/FIVWL4vBcK4BN7ZutQrbq3cx/vZiaYtW+1RnBooGr+w4VGa0NioW+nw/DAkJ+ogk+CMokSQE3/axPprGQOuxqp5vcxB+YLwUf78diUuFE+ieJyKTWzqkVZSjBVABOfbW+B/w9c8UULbWgIFgL11g0qsedBUv4xZOrGl9GmxaxGtLA9osxBv4tQxoR0cJrwCmPiRzd6L4Y8zOEKyb4pujituzz41D1iz7Us2btQeEtTbpLC3/png5ETpx0sytuFMuiALcePBa1trNSxDzd4+Xco1Mlsce3VTr8p4Duv24M3DaGbTFEDQPIto/DjqL/yL4Mo5+NVEjkIzdrbdAPW/e1lwMQSbyeEiaK8naNVQefqwj/PIjl54SqlsagbknD5MW6JekdAPDdmJ5P+7uk0gNVmxko/6IzJYKY+2z77ahVWpyvsgkojPj02Oxkn5pht8IyA7lnxG7IrvqlAPtcFmD3sCghpXhX63z5Blb7LNlT6f3HWqQMMwhLCa61fq/S/IdR2ppgQtguA3n7K8W/lkle0+iXmSqst2t2Bko2YgQ6sPmlT/7atxwGNnBLdxTNYL8r+XEKicLrP0k
+ +PvqQ119
+ 79WDO8LT63sFf7StShy0y/DumVEa8TcVxAUfMrEHDibEZ7PFM19kF5RbAkfytYRdcWwqcUZxxQT+9s58sA2DBV1dF/znXujhZtjIU46aLw8Klgr8BMJl3YPE1wKrn64gxg90bJ8FH/D89zFTBDQZR6VqPgl2JRqOrvGAgQuzy2czy6jfSPEF+kia5k6zVmldMFDz3EK2LH71fKXoLXZgQzW196OcFQ0/JxpQCg34t9PvAJLmskP+n4j+3HqKJTNeUm8rP+cyT4GtmVkFHljY/cK1bho8vBrS5iKO/yXOFfi/eDksZsyiM2pDzkWGQL8NXSYDepRlE9wowOtY+BG0Hj2ZHMI9Q6AMWhjylLRsljSLMe1iK0g8ui2qz55SCZqlV51zGzbaboYcf5IZ191GbGhldbLTIUEbu43oopAClhAtEQ6WP43F12/RZ2IlPuQxf3ioPgQMlRt1hWqcD8P3K/D1l5SuXueuARK5sUrpXu3+Z/8+GbKPy3CVa3/sj4jn6OlbRUwCF8gKreUq8T19quQWwREMouCaMuiZw6eSpzTqM6eFbV1chxlUFSfTliG5jM4ZR0S/CiNlcB78Kz+qPIbkYjulC8NvLtN7liJy+Mmt9TIz0HZvxC4JovCR8Z+zoywoKBWTAKGf/mEX49N9ud5fyvTPpRm717zZR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,37 +137,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 20, 2026 at 1:08=E2=80=AFPM Zhang Peng <zippermonkey@icloud.com=
-> wrote:
->
-> Currently we flush TLB for every dirty folio, which is a bottleneck for
-> systems with many cores as this causes heavy IPI usage.
->
-> So instead, batch the folios, and flush once for every 31 folios (one
-> folio_batch). These folios will be held in a folio_batch with their lock
-> released, then when the folio_batch is full, do the following steps:
->
->   - For each folio: trylock - recheck still evictable (writeback, mapped,
->     dma_pinned). If no longer evictable, put back via ret_folios.
->   - Flush TLB once for the whole batch.
->   - Pageout each survivor via folio_try_pageout().
->
-> The recheck step is required because dropping the folio lock between
-> shrink_folio_list() and pageout_batch() opens a window in which a
-> parallel swapin (do_swap_page) can fully complete and install a new PTE;
-> once mapped, a parallel GUP can pin the folio without taking the folio
-> lock. Folios caught by any of these checks are put back via ret_folios.
->
-> Suggested-by: Kairui Song <kasong@tencent.com>
-> Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
+On Thu, Aug 13, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> 
+> > On Thu, Aug 13, 2026, Binbin Wu wrote:
+> >> On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
+> >> > +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> >> > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end)
+> >> > +{
+> >> > +	struct folio_batch fbatch;
+> >> > +	pgoff_t next = start;
+> >> > +	int i;
+> >> > +
+> >> > +	folio_batch_init(&fbatch);
+> >> > +	while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch)) {
+> >> > +		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+> >> > +			struct folio *folio = fbatch.folios[i];
+> >> > +			pgoff_t start_index, end_index;
+> >> > +			kvm_pfn_t start_pfn;
+> >> > +			kvm_pfn_t nr_pages;
+> >> > +
+> >> > +			start_index = max(start, folio->index);
+> >> > +			end_index = min(end, folio_next_index(folio));
+> >> > +			/*
+> >> > +			 * end_index is either in folio or points to
+> >> > +			 * the first page of the next folio. Hence,
+> >> > +			 * all pages in range [start_index, end_index)
+> >> > +			 * are contiguous.
+> >> > +			 */
+> >> > +			start_pfn = folio_file_pfn(folio, start_index);
+> >> > +			nr_pages = end_index - start_index;
+> >> > +
+> >> > +			kvm_arch_gmem_make_shared(start_pfn, nr_pages);
+> >> > +		}
+> >> > +
+> >> > +		folio_batch_release(&fbatch);
+> >> > +		cond_resched();
+> >> > +	}
+> >> > +}
+> >> > +#else
+> >> > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end) {}
+> >> > +#endif
+> >> > +
+> >> >  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> >> >  				     size_t nr_pages, uint64_t attrs,
+> >> >  				     pgoff_t *err_index)
+> >> > @@ -599,7 +636,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> >> >
+> >> >  	filter = to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
+> >> >  	kvm_gmem_invalidate_start(inode, start, end, filter);
+> >> > +
+> >> > +	if (!to_private)
+> 
+> Should I make this condition
+> 
+> 	if (!to_private && kvm_x86_ops.gmem_make_shared)
+> 
+> instead?
+> 
+> Will that help?
 
-Yes, I think batching the dirty flush is a great idea. I can clearly
-see that IPIs for dirty flushes (smp_call) on x86 take up a
-significant part of the flame graph when building the kernel in a
-memcg, so I think this is something we should pursue.
-
-Could we revisit this patch after we clean up the previous ones?
-
-Best Regards
-Barry
+No, because that's bleeding x86 details into common code, which defeats the purpose
+of arch hooks.  That's why I think it's worth analyzing the cost: if it's in the
+noise, leave it alone.  If it's meaningful, figure out a not-too-gross way to skip
+the entire thing if kvm_arch_gmem_make_shared() is a glorified nop in the end.
 
