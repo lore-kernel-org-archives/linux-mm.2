@@ -4,77 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B775BC5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 07:16:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0A33C5DF64
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 07:18:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C09266B03D4; Thu, 13 Aug 2026 03:16:10 -0400 (EDT)
+	id EA6016B01B1; Thu, 13 Aug 2026 03:18:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBA176B03D5; Thu, 13 Aug 2026 03:16:10 -0400 (EDT)
+	id E7DC66B03D5; Thu, 13 Aug 2026 03:18:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA8046B03D6; Thu, 13 Aug 2026 03:16:10 -0400 (EDT)
+	id D6C6B6B03D7; Thu, 13 Aug 2026 03:18:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 830286B03D4
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:16:10 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1A53B1A0595
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:16:10 +0000 (UTC)
-X-FDA: 85095387300.17.2825426
+	by kanga.kvack.org (Postfix) with ESMTP id B20386B01B1
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:18:33 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 46D50405C9
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:18:33 +0000 (UTC)
+X-FDA: 85095393306.22.69FC260
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4CA091C0002
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:16:08 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D1BNo2nI;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6973E14000A
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:18:31 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KgSkwoV4;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786605368;
+	s=arc-20220608; t=1786605511;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O3g5nELbAhjnGJBVIqGr20ppxUR47qzdMMu2xC8LPoc=;
-	b=ENDeCty5pGzIsnKPwNIavXbXug5T4fxS9j0ZUOkHh3oNOtqw3/D+3rsnYEvArAEvNzFQ3T
-	QEYHtsLmu9cba2Ca+8Mq8wsWomvKXntd9+K2Y6J3ltamlUaG1UCdO18BREGUB1V8+cJqeu
-	y8xQ+nLD/uah91o40IbkCVNgEjerduY=
+	bh=+4Nk4hpoXdyCDEpgTJCUYHz6STV5yXnczBbKNxqEd8Y=;
+	b=rwPPTcfQWj5ujPk1BJiJNj9Ad+z/TODf59sHnUQcDxaTZ84L4lAe/2OVVoAEMvGO5i/t78
+	ahFNTNniJQLhrtWN7wKFd3KBE6ggZFlPkXs0O8cYviRGEQzjsj8TG5P/dXJpzeOSNHCX5S
+	v880jJThoOlog6zKx2x6WBhZIu6HzrM=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D1BNo2nI;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KgSkwoV4;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786605368;
-	b=QfjtY8mUgxjl95r9wNP9TB5dskzzGaYJgerv4rofQod/Aa4ig+r4QdNDVJITyjkhas/fY1
-	P7Gn8vqzMU4l9V0kU6UTsBdaOr5a4HqfbTiDVYy79fv5dXKQfwnOjPgEtBKzH9GUYbnZ4L
-	pY4kIJyLOvGHAy9DjwMG+nE908taZJ8=
+	t=1786605511;
+	b=b8CdT+0py9LBBku4rTTEYwZFHA8pRm/6r1Sgh7cr+/Ca66TXhgXpGeYOUkVm5XGHF1qFZY
+	iDMiFJ/k661OIGKU2WQu1MERv+xJqufDPbXmXiM2gRl/WGplD/wK/Xtrqiv7fcy6EDP28h
+	oEkZ2SzKYwPPHXjOZfy0q9GXXBdm4Ug=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8E77740949;
-	Thu, 13 Aug 2026 07:16:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481231F000E9;
-	Thu, 13 Aug 2026 07:16:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A2D4D4028A;
+	Thu, 13 Aug 2026 07:18:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F73D1F000E9;
+	Thu, 13 Aug 2026 07:18:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786605367;
-	bh=O3g5nELbAhjnGJBVIqGr20ppxUR47qzdMMu2xC8LPoc=;
+	s=k20260515; t=1786605510;
+	bh=+4Nk4hpoXdyCDEpgTJCUYHz6STV5yXnczBbKNxqEd8Y=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=D1BNo2nIV+HSDi6z1y8ym3dnn6NAIFXQbtLF//sD5Lmx5ndOodsV3KsA0k5L87JR2
-	 y+DNCHP8ZwUCDsoXDDMYoqo6cmCxgDFigHTtKi90Nm278m/Zca1t5iCxdbcjmvCUCk
-	 Nlw9lcmTLscvyjaE5FgiiAHSWdWjUX3SA1Kz6KUd8i/dy56Ug8R5fLqlItTX2XqNyQ
-	 ssnWPsMqJiBvJe9eiSViy79F7cWCWLN2ui9Hv737MbT4WZHd8+zGH+egsHt3E2XaZr
-	 fGuhzLZy2BZF33uVp9RViDwz18LG29hlxaxNG6qShg9uydfB4iVPIjlBibWISwE0io
-	 mvrzvlhcl3eoQ==
-Message-ID: <a47d1a57-309b-41a8-845f-7f1313229d0a@kernel.org>
-Date: Thu, 13 Aug 2026 09:16:04 +0200
+	b=KgSkwoV4K9o4VV6DTaBaMzd+EAKo55SPDBufVOr4jtdF8WGVJY9qVnPnAbI3I1B6j
+	 az8C/XSSDoXlk0EnunE7ZJ3R+6xP4/fSUta8T06VGRr3L26bEyCyEgUeHEmKkJvqJY
+	 QCn79g40aTQGCvCX4G87yiNCG8qTX/j27xasTOQDI3+ltHDG/v7cKPSGXGJ3zoNGhV
+	 2ifXr49y6ir3V6cAgvVl2jn8gM7jiebI63mAiexihe0CvGpwlzwxaRgcb8I+biJir5
+	 0d8v2Pn2zDhY20qsum4OrGqCQozh6WLpH9QUdJrmSftjGLHT2NAkoCBRW1fV21zxfN
+	 HX/j0k9hiLyeg==
+Message-ID: <f7bab5a5-76c9-4856-b314-49f19f54e229@kernel.org>
+Date: Thu, 13 Aug 2026 09:18:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: mm.git review status at 7.2-rc7
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-References: <20260811205836.59301ca91b65781c6292a439@linux-foundation.org>
- <6023e19e-32b1-4110-b9ce-5063f7976108@kernel.org>
- <4535a2ca-d145-48b7-aacb-027e9ba258c1@kernel.org>
- <an0F5e6I7OJWTCLa@casper.infradead.org>
+Subject: Re: [RFC V2 3/6] sh/mm: Stop using pte_ERROR()
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>, linux-alpha@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-um@lists.infradead.org, linux-arch@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260811042119.3652929-1-anshuman.khandual@arm.com>
+ <20260811042119.3652929-4-anshuman.khandual@arm.com>
+ <28c24991-590f-4980-a92e-26c89288cae7@kernel.org>
+ <azo46amarknescr2uotz77khpt6zakwex7sb52krsvakrzfdlq@qu2t3ahd4m5t>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +135,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <an0F5e6I7OJWTCLa@casper.infradead.org>
+In-Reply-To: <azo46amarknescr2uotz77khpt6zakwex7sb52krsvakrzfdlq@qu2t3ahd4m5t>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4CA091C0002
+X-Rspamd-Queue-Id: 6973E14000A
 X-Rspamd-Server: rspam07
-X-Stat-Signature: f8g95kpf77uqfqxe3ty8c3wzw4wce5pp
-X-HE-Tag: 1786605368-491077
-X-HE-Meta: U2FsdGVkX1/Df6guouXSdtYVOLQAYdTb/a4ukYKkUOsIpJm5MRv+sonmSZs8HwDa960zZAwRioDaYNPNEEedDgsAoThwjhy0abtgDmgUHVD0+Vzl9aziWFuupjqZwartt/m2AuFER2WfFzp8KpFAZ9AFRDCUZtZhfEmxruDtEahRONm85XsYcC/Uf84F8XNheRNywFsE3hJBIa9ZudM+aWmAXcJ/vkCGCtntdEr4VI3bIKQA/iy4NHM7F8iG58rYInfNKECpvkyV8cZoiveGjAjeDUma/8Mql+8gpvG6xKmWnB+CP1O+ExnsqX3I/PFTUxSFQUO/fOdpfsNQaVvlcV4GE362vZbpo8VSJarqF6cEE7L1NGZZlzfzJhP8ukvDO5SsJewa9jEfbnptXK2Tze8RxYENIxZ5okl1EBZ0x5UTFVBVAm/AqN6Oi6fURsprt943VVvuo/wrjENpT9tesyYCVk0aTkbvSzdPLqjbvu87p2I6GFIvrXLKBGJBSvnT53zFUbMBLm7Wf+cE2MnsQGTrt7Lv/mMM/w4G4sihszbkQrgaf1iczp4ty/P+Zb5guH4VbGy9nf4w88KPlAK1PQwvgo+Tvlogr9OQw1xShFHiA6QDPpsU0LtQ0XKK2qAu3ekrYZWECcb8WJRmdDIw2hRCvqmLyTGuGu6ecHZ+2scdYb5rR7/1TY9kgnJemzs6LG34bgZAjIz6B5R5RhS2WmqNJgwz3M/AjTVOmW4RNcQbCtEdBuAnyRkN573nvQ+1gcmszYPIv0B8mLBlpqjCwvRFRCKpp8X6WpEyME3Jpze9d3tC62m4w1BiD3xhzEbu305uX/wXLnT1JJVXT9mQ4xki0fkl6v+hfLYUkqhCyAjCrCNVWDRJcmjBDaDfLM/pas0tojRxxgqWorwpuAWj+3r3b2ybmVBLG+InpFmX+sPfOahEMtD7MsJvEf5iTP5bYOdAtw+9W9s/qtiXQ7s
- yJ7wZdzY
- iCLhVucPjquN+76zZLyYrEXgGAWmmFFZx7HHQ7UkTSzxXS0FP6cfWJOR4oJu8pu02fbrapMYlyhZZ2zrNpqY73MDk2gRNgyOLct2SpLXeu9fUvGOK+qHoX/4J8WNZsaUa5HGmS0PztuTGOTC7GUhoyvjqNx6u7tbGMj55YLarwQd5KyVD6pFYXI0D85dfu6HTnGYL3ZJgU+kF3XJvzMi1hHloj4hNafYf5YAR9oZCrVDd2wKY4bUkcv8Ay2RM2T7RytoP
+X-Stat-Signature: 8ayp1j64ezt6drq8d8gg34t335hpz9ez
+X-HE-Tag: 1786605511-689821
+X-HE-Meta: U2FsdGVkX1+Wuui5aUuH75tIU8wWEoZ+LWJEiRGvjkSkzwAcT+9xw0K9wxIwHDOtSYoOBnt2SOVe/gjZ2dV0F1SlVqDaklC2iJL/t8pF5FydmLNZmtNO209v+1NpDjyXUoFGilMYMqCR/JybF4rkWOhV+fKjFGeTcYJy20kTarZsaF7F/ta/wCrRoVlAO9Y+ogilNAMnFSd/wjk66WEjFfHuuWVHFhICovS6Y4NfhZ5RR9iG9xxLVavKlH9YmyYmOkUSPxAShnJhAgA/MOcNNPGcf3lUPkM6uB4P8i1blDq8BKXCVVtPliP1bxSgdGvmi72XmQKjFgAivmeT3hEfWuU9okPStZuH4zzt4HKqNt9h9Uwal1jkIBR3YxPDkf45TMQu86hLPgMFVpd56nEgcZGo2CXtncegwUjiFwhRC26ZmDV8GE/fqbw6sjwwL/FvqI+mi40z4ZIJRm/p7My753uWtO9N8WmzmAIWcFrkuEZFlvA/s+GexpjYbt20sd7DMWkxiVLIS0RH9oa3+wIMprNUHLFizGxf+mTadUfJrIz40LNJ+14/wxeJvBnBOYnWe5f47rLdCQ4Q4KYyRrjCu+UFEucL2Ra1q/pwKZXXMzlaBrOyqqi2BdxVR0sLwnF77D+yxfSCEhg98nxCfpwiXojtMpQ/RmO9IUhuhcIaHepwHpRUJA8ArFtzf5+8LSiBaqA6MpNBf3R/22hwvH26tRFSq4aI3F6+ChExebCD3IIpsns+eA1zHaF6ESE5JSQiLKlRW3iI3ebxtbivQE79sLT1ffM0Z0C8RYpFF34M9G/hkPmlhPj7TWJz7wWWpfpECwxACN7RKbYNgBNDDp1RtPMJrPa3r/OJY0w8rbQImRb3g0F1dZ6Rx+uF0ifsUimx4fjXQk7AHKGuPUGL/KrmPTcitEP/bVML2+4iAtS3MTw5H719foIELWbDA5PSk/AEF3+D1/8e5ChVMLSMg0d
+ ils2jOpK
+ /CcfDtSbgKTyvE8jl4rMRm50h2FrGtIEOs/BGwc9expSBkCSE10TjCTa9XdRBb/YWXFyOUDP+DU96gKVqQTuDKzOLTXZW7Yl2+QcbQAlUIoxV7c191PoJB7JpmzgxZwJLt7AVAJbgvXZvFs0uSdyBLBJRqmuCyUv+1alf97lUyiesH59tBkSQtgCDfy7yhHOAtCeiuPw5DK/tITEcV0pMmnr6/+BiW3zL0g2v0z2L33MfW3WMhWBNM9x/jfAR2Ql7vNXGcmQHhYoOQAgXh/wDgkeRbIAAoQR/GUKFE1/l/PAtGqUaAh7y5irMZLCrDTwMLqdqBvIGkBWeFzTGfdGnTwuIrSlh68qZnohBo+/SCBeJuxGy1qlwf/4ateQbht8sRALj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,24 +153,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/13/26 01:46, Matthew Wilcox wrote:
-> On Wed, Aug 12, 2026 at 10:37:13AM +0200, David Hildenbrand (Arm) wrote:
->>> We really need more maple_tree reviewers.
->>>
->>>
->>> I want to review that. I am still not convinced that we really need that right
->>> now. The fix was the important bit.
->>
->> Oh, good, we fast-tracked an unreviewed cleanup as a stable fix upstream.
->>
->> What is happening.
-> 
-> Meanwhile a well-reviewed series which includes bugfixes is apparently
-> not even being considered for this merge window because I spent a lot of
-> time figuring out what Sashiko was concerned about?
 
-The bugfixes (especially stable ones) are best sent out separately, or cherry
-picked from the series, so they can go in through hotfixes. (I prefer the latter)
+>>> +}
+>>> +
+>>>  static void set_pte_phys(unsigned long addr, unsigned long phys, pgprot_t prot)
+>>>  {
+>>>  	pte_t *pte;
+>>>  
+>>>  	pte = __get_pte_phys(addr);
+>>>  	if (!pte_none(*pte)) {
+>>> -		pte_ERROR(*pte);
+>>> +		print_bad_pte(*pte);
+>>
+>> Maybe similar to my reply to patch #1, actually print something more useful than
+>> just "bad pte" ? And possibly also just use ptval_to_str().
+> 
+> Probably #ifdef could be dropped here as ptval_to_str() should be able to
+> handle pte with two unsiged long elements in there i.e pte_high, pte_low
+> along with standard single unsiged long pte_low format.
+
+Yes, that should just work and clean this up!
 
 -- 
 Cheers,
