@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B848BC5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 21:52:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68109C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 21:59:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 886D66B02B9; Thu, 13 Aug 2026 17:52:44 -0400 (EDT)
+	id 0A4216B02CC; Thu, 13 Aug 2026 17:59:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84EE66B02BE; Thu, 13 Aug 2026 17:52:44 -0400 (EDT)
+	id 0348B6B02CF; Thu, 13 Aug 2026 17:59:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7511A6B05D6; Thu, 13 Aug 2026 17:52:44 -0400 (EDT)
+	id E667A6B02D0; Thu, 13 Aug 2026 17:59:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FFFD6B02B9
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:52:44 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C7B71802CD
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:52:43 +0000 (UTC)
-X-FDA: 85097596206.25.50FCCDC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D5A1D1C0005
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:52:41 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ShP49CXY;
-	spf=pass (imf18.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BDBF56B02CC
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:59:11 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4A4A31A01C4
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:59:11 +0000 (UTC)
+X-FDA: 85097612502.08.71B6C7D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6CEE1140010
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:59:09 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=giWWTG21;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786657961;
+	s=arc-20220608; t=1786658349;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rPWwWsg42NzkR66lz0Lb5/9qFg0dG3r/LXj+Ahvs888=;
-	b=eafZiBDglEtw65/m9LIXE3h3BtX2tOlgmsaOpGRI0sMfszaGtiEUIUdjAaLCqY01z+PIC1
-	c6MJ17ISr9gJSEQPaqtai76f6dGwK4Vgm/p6H7u2DmqI9dfQ/b4b1jtHhBGcLWUecKazhN
-	AjgRe2vs/QeAxvvCCS49BpDvQNwS5MI=
+	bh=6YAHKs2zBGdstKw7oa5V8gKeB7X3PSLZw26tL2EAoKI=;
+	b=6IBdQPKlDyGdmgU5qoz57iwzXhGnMchB9IcAk/BIxQeCb6f0A1YsF6RaFQNaZ1ohIRyWr5
+	pA9BhsaUIQ4rqBQrY67TYakOVkDG136/l5Z/cE1vI4Ov1glzuf+p8zodwk+u7Ms0w6VYAV
+	GwpiIskh44iV5a0HdAa6z8I1nAslYqM=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ShP49CXY;
-	spf=pass (imf18.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=giWWTG21;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786657961;
-	b=kBTex/DqUfEsl20AJYqeSpoZryS6gsBx4dXrYWCeVVLGTPjW181f4jNgVyKy1/bXnHJEwk
-	/1+vrJrya6T8sRH1KamrG/YDDYb1C9N6TdfldVxiuLgid+Z5aGwC2Y7CX+oDEbimpWx4G8
-	2OGgGWF+fWBjBZBgxx1eHialhq96Jlc=
+	t=1786658349;
+	b=WCFAh3g8tWQkeSNIjjUhxcBtCGkocI2w3CYzYLF+MqyXVXC6bbcfjutHaZ/6dCqYptDbMl
+	zWdhxmyU9KK+uPcFzrDaDR6MyKd+U1JjKfmzUGsfDqJEsunVrpfAGSvygu+uhBb0782Vjo
+	wxuonymq7Oa3+gSSTd5OHTR12yLRGK4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E143843B0D
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:52:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C33A81F0155A
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:52:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 704A1600E2
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:59:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246751F00AC4
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786657960;
-	bh=rPWwWsg42NzkR66lz0Lb5/9qFg0dG3r/LXj+Ahvs888=;
+	s=k20260515; t=1786658348;
+	bh=6YAHKs2zBGdstKw7oa5V8gKeB7X3PSLZw26tL2EAoKI=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=ShP49CXYLk0QxQg2Nc1k7T6JVdio9hq5raF+CP4pDp9TcRQLjV7i5iuEj4cKagSjI
-	 CJ9ljD34h256ByY9CPghLeQkTB96Mlz35t6pmJLmXbAcQ+w7ArpjONSdV1deP9yIuh
-	 c+9HCu+MBujMmXMvoun/yRBsOXh5Mtw+8FSzYMLLMWOeNSQUoe0m1NmjccI3jnnO5g
-	 R0eRMkC5Kl4fHiGQaKCzCuCEN2FGtrG/gfIxLcwMoOr6GCeYUhpsRVWKOu7KemsDaJ
-	 yGjdGek0qQMa8o8nVW3nXhw//B+f3oZy9NdtZ99fGraws/tfjXEzrhkQwO81+2qlKp
-	 O/l2YFtLeiaSA==
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8eeb4508f29so2357556d6.0
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:52:40 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rpfwx11TD9DT3dn/yVXvNqoInb9LIUavgXaOgvgCf8HBfQ3SXfnqS7EDOnNP7gPebxF+7n7VURwzg==@kvack.org
-X-Gm-Message-State: AOJu0YxouuS9ciJwZTTIAvxqtoFCnM1AzvLWYCpiklfJwD6P016qPiGz
-	7h3dzVOAvgsTschzGK8uatKCYkxEMYPd+Fekr6iC799QoiPZ5Tjgs32ylHNQoXK+qut+B7UlFyz
-	lW4D/VidHEQgctpyes4cQ8gLoH8BWsUU=
-X-Received: by 2002:ad4:5cc5:0:b0:8ce:e651:5d63 with SMTP id
- 6a1803df08f44-90a91dda541mr8189086d6.31.1786657960058; Thu, 13 Aug 2026
- 14:52:40 -0700 (PDT)
+	b=giWWTG21JcJyI+OaWF6tu28igcvbpYaVZ3NcZGOwP0lEnOsGI45AFIrIzYFiB0lhZ
+	 YSavTsuSVJV4L8kv8IgQnYbjGawZQurn4JWwR+jRqLbknX9h149CIgFiVkK2w3Tf/l
+	 uV2CG3W6pPu1bDKO9AyGGv1Voe1aESdg3EjP4hlUYZXbxaECIdJVZqIhBu0gnAUxiW
+	 GmHJtjS7TcXk6/0NMPp3FMaKdiFusg10UkH2sndei9Ujhb7lDYcpGq7yD0r1h0i1zQ
+	 MIA85/SMfV/GuAe1RByk9xJJVbE2Xc4Nhp5loYrH+AVqREvPL5HUmZy8BQeGa+6S8i
+	 QIqYUKDZarCYQ==
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-934974844ffso25668885a.0
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:59:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rr9Gd4silSNHUF2eARFa9mczcVgTHp0gwHfg9/va0p278BlahAH5X87klswbwXA8Jwg6ua5KuXZEQ==@kvack.org
+X-Gm-Message-State: AOJu0YwVm5kvSO69MGKDNrGYuuAv87WkcarhpsmPq38ps5v42AyShfi8
+	uYflkukDMYQq78rtzuoW221ES1O+ovkWyF2Q02lKCIwU/e2K8ztW1q/7FzoQ9keSr9SuQpbYx5s
+	oHHZXXox+5wa8u1LbYstV5iCsWgsS/do=
+X-Received: by 2002:a05:620a:2a12:b0:915:6c63:b9eb with SMTP id
+ af79cd13be357-936d23d2375mr86005485a.47.1786658347490; Thu, 13 Aug 2026
+ 14:59:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260720-batch-tlb-flush-v5-0-db943a0d0d6b@icloud.com> <20260720-batch-tlb-flush-v5-4-db943a0d0d6b@icloud.com>
-In-Reply-To: <20260720-batch-tlb-flush-v5-4-db943a0d0d6b@icloud.com>
+References: <20260720-batch-tlb-flush-v5-0-db943a0d0d6b@icloud.com> <20260720-batch-tlb-flush-v5-5-db943a0d0d6b@icloud.com>
+In-Reply-To: <20260720-batch-tlb-flush-v5-5-db943a0d0d6b@icloud.com>
 From: Barry Song <baohua@kernel.org>
-Date: Fri, 14 Aug 2026 05:52:28 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xYDHMF41uVAaCP1=R5xKmNxkGtCd=YvaP_3Rd2ZEpbBQ@mail.gmail.com>
-X-Gm-Features: AUfX_mz2Z5Z83_5Hl8wCOBZXplXZUT6uBoYvzxQ-sTw6Oz__9vw0Cqi3EJrW4Wo
-Message-ID: <CAGsJ_4xYDHMF41uVAaCP1=R5xKmNxkGtCd=YvaP_3Rd2ZEpbBQ@mail.gmail.com>
-Subject: Re: [PATCH v5 4/5] mm/vmscan: extract folio unmap logic into folio_try_unmap()
+Date: Fri, 14 Aug 2026 05:58:54 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wrQRGjqavMzWgi2+PrRr1ztf4QRZEb6HKm02OF8nEBUQ@mail.gmail.com>
+X-Gm-Features: AUfX_myLKGGG6uT2Wxkl-00dWnpqQoadFBvFZJkATesXkrs3xgsXawD2v1-oYtw
+Message-ID: <CAGsJ_4wrQRGjqavMzWgi2+PrRr1ztf4QRZEb6HKm02OF8nEBUQ@mail.gmail.com>
+Subject: Re: [PATCH v5 5/5] mm/vmscan: flush TLB for every 31 folios evictions
 To: Zhang Peng <zippermonkey@icloud.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
 	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
@@ -93,14 +93,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.o
 	Kairui Song <kasong@tencent.com>, Zhang Peng <bruzzhang@tencent.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D5A1D1C0005
-X-Stat-Signature: u7cw5ctwrpiqzeah4krf9uq8jai6bafy
+X-Rspamd-Queue-Id: 6CEE1140010
+X-Stat-Signature: ecfa1o7dpqgp6ms4wgazscsqyzixfy9s
 X-Rspam-User: 
-X-HE-Tag: 1786657961-34783
-X-HE-Meta: U2FsdGVkX1+P6Y9+Agq5VXGj+Uv7vCxLOEFcil3eS2OIceyUodNPIhYS7eXRETZkIUNMYvkpT3kC0/FABY3jZhlB7BTArO/dckx5AmPKRedlaBlASWBGZ2iSN4/wgsCSRZNryrjSYFmq3civu6zSOR7MHjeM7LYhsUe4LR486nrtZk6TixmQg8IO0tBrp9tPObvT9sfdkC2gtmcWHKqvIzMbYGBmmLMmp+HvmMJDLOAvpxH62xvdW51vjNzJDseHGPUZNquN/B2isCS4eDvGkSR9TPUoz+KSOnt8FXItbOIEzDu/nZ2oVDgWUVGzMU606ffaSSfqtUs24XvjpmbQl9siOKVaWkBJ8MpLEYU1B9PQKYaCZBTttsN0HrV9E7CT19ZMT/MRFb41S4x3RNRWu9mDCggtdOvHT9olMCM6SCP58UAxZuBkMMzhdc1jDl/0nfsRhmUpJmpS3K6txallXTUkGnHCo1+eC/pUroQI7slEKHppk1QHjeTqQYlEabgut5JDZCXHm35dT2VUN/0+zaETycaD0HQ7s54VmzC0rdZyDnp0UODmJ3KpfStGJrxAp0rBOviJnDwb+f51GVFVGa1C7PrWTB+owcouz3U257iiPt0XtxX8lQknsiaszsllykbu38q98mMFoyGR4otIV5cTnNE9OFNhFJ5knDv/T1wddx8DmC/EMwMBZ95OdxsoZQY+uxyIAVntVhajHhZwwP6IB8uhBSsSxUHH6JbrVfRuoOHCFNIEo8FSjw+xxOctQGP7Y50RVdN+JwIBQG5SgVbi8N0CkfC+1F0ks8aH1NL57mpaZ+giigLUHSeggblMrgUmVIOlSVmQ/VJBVKwObm7jIT3pSWX8a8mJ1uLCBLpQ7KK2zEf7QKwLWpy3Nw0eZpJ2XqM3cYozA3ZLA8iG5NCT8dqVjw4vghaQKpihFJ5b3ICIGb5firoGEyn2L1Ze+6tzUzpOFh+73vQW4X5
- 4W5Ei25X
- ejwnrR9FU/07Uii05NTZAJm7AwPwqSVNZ20bUjFpankMJIrcvAWptAwtmhSHMDQ9BdgOajlRBPqusgmjIivKaRq5OliB2EvuLjiMDo+qey6RIxHt3dsEcCrXtDatM2/MxrzJLLbv9EW8/CwEzY9z3vtjhqXL23otmByMAoZbgoCMPi0YGepc/Lf9wAdkYloLbGeIFTP/4CRekzRy+Mu+d//ghf7IxKmpK1x14f+r6eMHv9K3TBzCDJLGWFkSAhRqRuhOhXJjxCJHdBbLjPEmoa6qSjLKW2QY1SUe/b7rsMHIBiqAsxBzPtYNM6gK8TCIHRiHpZpTGszrp3Pgz5JKRBnuYI2eVPIZHSrY9dIqbUACFIMena4+lnZAZ+W7irsUZmexMv7dnHR4SwGhkCTRsD5tfSA==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786658349-937214
+X-HE-Meta: U2FsdGVkX192nEdGL9ZxCl2q8bBVVvOnqKHTAlhycEUJ7csJomLSyuLGzTGJGZpgvX4b9UelLSZHCuCGyM77yxBqA73vw4ST4lWlWYycYWBv6r6oyM9LbhUH06zsf+DENJ/61NeC0aDVNZefVhfmKJo54iId9SvlnvwjiC3YdsOIftKL7aecBBWL3xIyFuOrU9vuN+BxSwBD3Gf0zoCySuz7IdmUQ4r7R3IH39LFp1c773QoYYA9ufIATc6hg4KsSM3UbVSLq7VrhLlzs/JroGa0n1BCGGCDKLLUc7DQTSXgWcZrux1AWRgAM4CtiAq/QQE899rIRvDkXN1QYe0W5mZZCdcOcDuGrnRPBHfbzw5eVOKSUzeVnl4QPb6Ozxfpqv+8VVvnKoQzbwHG4fAVr+5hqPchSDw7EzxlIKQAnpo7VYSTZJZBb2arySSGSBFVL3Hzukn9VIu+8IJWQdNKtLHvTlNTc+lXIpUjl52lbAhVsiLU3j2ITMXHh5OpyG1vlfRUv0QJmyT7j6nyY0Iw18b0xow+SkHjUMJ4UPQLPWCulyt5tyPlywJzGzPWqztRC5AJlHQ/t5Ezml8gHaGh13MdnfS9yCGGn4CcytRCdk8vzh1Ap36gs4I2dqK9VUq/FOb3mm8mfi3zriU00821g9NyiUSM55EGspuxed2/9Ij/eWuz1bsIAJLfGBhdwToaNgqceTe3NngYGNy8bApWqg0LTfuv3JjbF6Gu9BMD7VLPg24Dy/bDj+xxnPGsIUM/Mn/wL5jsZ2nCJFzdmVeK8bR2ifbPM7+fhC0eBHeVo6Knc2s85lU3B9Z/XpvrdVio2uLiiZBfCwYENkodHbNRTk/7pY3azhUlmjc0I/U10krRIzbhgE+wY9Tucm9TfIfWwMgIdH696mz4nTENlrFspMsnQYBEWMBOBSV5Ket7oBKk5N+TeR2Trsv3TnLEhjFehLV5b6nSKm6O6JbNSzE
+ Uz/rpH5w
+ 9ZAYyT1n+N+9sflWfCgL9CDvnnk/lNGS2eH7LPJbrallSHpNQcT8ytQVcBSvAxisUGvto8Y95ibkQ99j5TFMN8YdqFl4UAGJE+8aw/gZYr/BubeTRWeCJy5cXSANFxHWnbfHa3w3OOVQxT6sahBe3Fn6UgxZuuaD5K0vWDedrZhIT08GDT0K7wj9V6gicMDD2fK3vPeAMM5/CdjIcXikAHpS8pcL/1q2IGZS6uOYd8AOPTLEz5cep6Rjuc5Kf38BiweWXBu42GO/6V+4Bgs9N6ckBZQnLFET8U9WmyvOfmH8iiKoIqy1Zjcn0YgdqQFlTadtJPUfisB80cqU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,19 +111,34 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Mon, Jul 20, 2026 at 1:08=E2=80=AFPM Zhang Peng <zippermonkey@icloud.com=
 > wrote:
 >
-> shrink_folio_list() contains a self-contained block that sets up
-> TTU flags and calls try_to_unmap(), accounting for failures via
-> reclaim_stat. Extract it into folio_try_unmap() to reduce the size
-> of shrink_folio_list() and make the unmap step independently readable.
+> Currently we flush TLB for every dirty folio, which is a bottleneck for
+> systems with many cores as this causes heavy IPI usage.
 >
-> folio_try_unmap() is only called when the folio is actually mapped;
-> the !folio_mapped() check stays in the caller, keeping the function's
-> semantics clear: it tries to unmap a mapped folio and returns whether
-> the unmap succeeded.
+> So instead, batch the folios, and flush once for every 31 folios (one
+> folio_batch). These folios will be held in a folio_batch with their lock
+> released, then when the folio_batch is full, do the following steps:
 >
-> No functional change.
+>   - For each folio: trylock - recheck still evictable (writeback, mapped,
+>     dma_pinned). If no longer evictable, put back via ret_folios.
+>   - Flush TLB once for the whole batch.
+>   - Pageout each survivor via folio_try_pageout().
 >
+> The recheck step is required because dropping the folio lock between
+> shrink_folio_list() and pageout_batch() opens a window in which a
+> parallel swapin (do_swap_page) can fully complete and install a new PTE;
+> once mapped, a parallel GUP can pin the folio without taking the folio
+> lock. Folios caught by any of these checks are put back via ret_folios.
+>
+> Suggested-by: Kairui Song <kasong@tencent.com>
 > Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+Yes, I think batching the dirty flush is a great idea. I can clearly
+see that IPIs for dirty flushes (smp_call) on x86 take up a
+significant part of the flame graph when building the kernel in a
+memcg, so I think this is something we should pursue.
+
+Could we revisit this patch after we clean up the previous ones?
+
+Best Regards
+Barry
 
