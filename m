@@ -4,141 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8868C5CFCF
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 17:05:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D803C5CFCF
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 17:07:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9D996B0552; Thu, 13 Aug 2026 13:05:21 -0400 (EDT)
+	id 639556B0553; Thu, 13 Aug 2026 13:07:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C755D6B0553; Thu, 13 Aug 2026 13:05:21 -0400 (EDT)
+	id 611926B0555; Thu, 13 Aug 2026 13:07:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B64BB6B0554; Thu, 13 Aug 2026 13:05:21 -0400 (EDT)
+	id 5278D6B0556; Thu, 13 Aug 2026 13:07:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8681C6B0552
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:05:21 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 12063801D7
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:05:21 +0000 (UTC)
-X-FDA: 85096872042.01.31433F9
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 51C1840019
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:05:17 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PzA24iLn;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786640717;
+	by kanga.kvack.org (Postfix) with ESMTP id 2CAC26B0553
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:07:49 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AF164140243
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:07:48 +0000 (UTC)
+X-FDA: 85096878216.15.F166EF7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2F4CC140005
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:07:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l6/55D1p";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786640867;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=08qe7GTxugqqWui5JnaWlv3REeL121Y5upJ6qwpGRNA=;
-	b=n2ciriP/9Mn8ouxN0Ixy5JxWMmRCcQVeb4wBSE/9tW3OW8sIEJ3RFcTnpUHkaS4P2YfPwI
-	9H7/Io0pCL9V/EcL9aLcfSv7nhU7fJ579dVDkwr/MEHeWmYNJP2D28rlUD1174OnL3J0FM
-	JHmcN+r0tcu3fhMzc+yUJQBapfkmtPg=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PzA24iLn;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786640717;
-	b=piei2NlVYv2nH25f3ZoToB7O3cApJgzBSgrKcv8QHebGutk6Diq7xX22t2NA558Go32GtL
-	fP8lR8IWYXt7yGKzEOIBWYBPpWXeOWPdqdxfCorkXLUIIGj/POqAISlqgx+lpFW25lrYh+
-	0HTXriQaqdldzden05uAPgDd6Du8Nqc=
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c15ba3a2b4bso20166166b.1
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:05:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786640716; cv=none;
-        d=google.com; s=arc-20260327;
-        b=eRRvQKylfuEnq0WW2vkNK0OHARSGibuU/CzRHWs4oKGannPVEGeZasfKM0JqYI48i9
-         7KCNEO3AGv5mZYnm45+g+SC6YOpPuoHhuc3bxKCuhVyc26C8ZcPEiHb40sQclCOgNKCX
-         pwjLshi0OonBGK46zdR6D77mUAu8nWKt1GXQTxEd5Wr+vTSmRdgL0WtuPBQ0QFBbuP9W
-         UwLJdfVXbgUSbL0DPRzyYI/hgQIGLYnGtIcMmKYB8qI/uues2obA3YqdKzoYguwH1oTH
-         Ih43DcptpR4OCeJohaKB7XNYXOdAEeN4OfZ5f+Xl1Sv1Y5UPhsM2MS96azbgzKu0upf6
-         n9GQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=08qe7GTxugqqWui5JnaWlv3REeL121Y5upJ6qwpGRNA=;
-        fh=ctMiu4LrH7HpDGA6W/13/okPxSD1uxAWh0a2WMBvIy4=;
-        b=c64QZYpf1YpzUk/nQyLKuNphn9IRJD2cNqkow6VyQ1EhFeBKE+uEjO/XlqYf3pvZTi
-         2LHHqCdXa0yHK6CPJjKf2iXIj8zlad3En5JIzTQjbN5SGWJfK1GYfjgAFcSmit1/8cUY
-         WIAaPeoOGApcjI2FbMbGOIvjUf1n7WFd4Jr7IU1xKYCszpq4iCPP1SYzgarBeg8rSFAm
-         Ebm01uCUhe7lohJqSx0Oi1cvLVz5PsuhP0V9M33ys3wZx/MqSZe0ZnvBrbVcc7BRZV7N
-         Xz9WOobAmFVgJsvmYkJR++dXai4dSUQlJzkaRF1Pa+JPwTjQarvzgjxuZPHOp5+S6vgn
-         j3ww==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786640716; x=1787245516; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=08qe7GTxugqqWui5JnaWlv3REeL121Y5upJ6qwpGRNA=;
-        b=PzA24iLnFb4sr26TkHAnKyplJ3ceCMc5yAKOpZnO5A5k5kNuXcmops60R610dKUVrP
-         jtPPpTIQYA8A+ZB/9y/eIq7WpVt4Nr+d+2PDgvC2QPrQgc+xKg3yNTNE4oeVXGzGbrJT
-         jT9HqajOcRiPxzMJsvwlmu+tG+fEalS+ShbJcgPB0jWOIHaQnCdKe+6te4wyC64aqOvm
-         b9ND0uJuxfJFxENvdM/6azCjxgd/7gD5l0awBIsUJJEUTLC/Jwx0pmVXbHkj5a/4+Est
-         SGU6MW9T7NSiysLc+LVxtjaxR8DWc3hHov2oyVKB97/H8meubSlx4wZZbty6lGsYhAVh
-         mtRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786640716; x=1787245516;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=08qe7GTxugqqWui5JnaWlv3REeL121Y5upJ6qwpGRNA=;
-        b=fKEaj/WlFmXlTn8kTuwOtGPCy8MgXTAhehlGdQXul3ukV+qD4A+AhBtbozVLPTAjTo
-         djALyJTA7O+EzKTOIhWuXYHibeVH1EDpGzi0EKVkqykh7aqF0vJi6MJ4lQZwhAy2LH8c
-         QuLk2DALSZ32PZXVkaP1yba+n+5YXSEKgA3PgO9BnFlICM/s06CgaBHJ8XkcirlMWoom
-         Pyvjds1wcB9MhUikJuVHMpMLJMMWSgZ68jqYPBMVnT2VbSL/9VtjRBoelIp/jECcG+tV
-         nmZwGCCJhONK3xZ5bfR0eKz0FGpGpqtJbjq3l68PmAe+5E25z/0rsUCJoxGy4gRg+9d3
-         2M5A==
-X-Gm-Message-State: AOJu0Yxw+SYaWSafXJLYVSC8Vrw/o1ZxdcwUsqGBFD8rALv2WP3m8Cnd
-	mcn0OUEurq5DwpeEIVDyNA+RcRtt+SU9Yi0Gzkvj1c3Jpc4PbantJKhlta/1C6hwuCPMcmp4dEq
-	yozxvIFsZUHeWNSSlobaU5F7laPO8X5M=
-X-Gm-Gg: AR+sD13OMQLZ2xx9P/BhRZK+zW1Y7EMWdruB1j+AtonakPy7QgNqVR2y23sP1dFKiLl
-	tg6lrlOEpp+JPWZrf8k8WQnsP6cA3iKHfcynCuM/r8E2sKZbneOg/gyWa/V9IDoKL+s5Mpn2Ypf
-	eHAlxiSCNQ3loYEo2mROWA586J42gbdLex9OvI3CDQ+zCUnG10zP6zDWEPIqAsZmMYgl0GrIWMo
-	YIHzBq5jMnFVovU/0IbdURjZJa2T5KLdQNXNsCaH3BT92wCBLoVofVzM8ss4oeP8sCVopCuKKmC
-	dZl3ASDYEo3Z3GyYQ8TVW5FEN0vAChCdtbvdbdOMwNQWJ/8EM+jxbfymCKlK1U/Xh5EyMLdMBsh
-	ySpk0cWoRVPoT
-X-Received: by 2002:a17:907:60d1:b0:c1c:4fce:6518 with SMTP id
- a640c23a62f3a-c21090d8161mr335006466b.24.1786640715471; Thu, 13 Aug 2026
- 10:05:15 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260813-swap-thp-cleanup-v2-0-d2ee48c6aa49@tencent.com> <20260813-swap-thp-cleanup-v2-14-d2ee48c6aa49@tencent.com>
-In-Reply-To: <20260813-swap-thp-cleanup-v2-14-d2ee48c6aa49@tencent.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 14 Aug 2026 01:04:39 +0800
-X-Gm-Features: AUfX_mzqvKyY3nuUKAGRfqpmy9U1qASPwRcydKfZpDzl6llTSISrOQQ2rICa_YU
-Message-ID: <CAMgjq7BQeiWY90+FGvw18__KQr4OxSvgg7ObtGX1K8ptLmZ5pA@mail.gmail.com>
-Subject: Re: [PATCH v2 14/17] mm/huge_memory: clean up after-split folio
- freeing in __folio_split
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>, Shivam Kalra <shivamkalra98@zohomail.in>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 51C1840019
-X-Stat-Signature: scn7jtfu9ezc9youcurx4wme5kktgpps
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=PKRAeK+XaoOSz8i+k2Leco4J4jAfWktnkTRSqbkuLKM=;
+	b=ZMmaYawckIM9pi67wSY5EuWxF3FE8kc14SxZywywKlUXF7cIziVl1q7xeCl5j6MPkzgoTV
+	aSxLw0VcDa3p6ItyMDxy2ehtvYTLwjrmOLE2ByaJneQtZmquzEQkJZ31pa2klAHJUa4X45
+	LmfCby2qqgMIuBl+j2APxNmTdN+Aug4=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l6/55D1p";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786640867;
+	b=A4cXmmaJVddNA8+xBGn7OoIFUsO2yzEKlUwJbAMgz55FbsrnMtE3QUbnfmr6a/qXHZ3RK5
+	Xh+LfXoBBsH+jCtvhAw5SWXiFMuKFjpk9kIp4Ckx1bgITSZGODBbKS5kqJioHr8BQFbz4e
+	h0JS/htLTil3i3ICsZmUnc96LES6JbE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 55582600AD;
+	Thu, 13 Aug 2026 17:07:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D464A1F000E9;
+	Thu, 13 Aug 2026 17:07:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786640866;
+	bh=PKRAeK+XaoOSz8i+k2Leco4J4jAfWktnkTRSqbkuLKM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=l6/55D1pW/RcwnNP2uahedYxgXA6SfshCx0z2EmsF/OjK7lXLkJYcVuMj32OgAtCk
+	 cyfxTg517dDPPDyBv37OY7J0Dg7H+yvt9uBSLsjahX6DCkiy861Q0UWxH3vrTipjOr
+	 z0VQcL+BxxHQ4uNYdk+pn+SRzhXykT+Rowb9iXDWol9mVH3MBnAPPT2f4iaP6WDJiY
+	 Veb4fyO4f+V0k0RVHbHdI+bEHuStwcwlDAgx/cZMRCWXHbKAVLXv0kzKb9POLlpUNB
+	 IpMV/QY2isVa888VI0683WHUztUubnxgHMP4QK3lVsvECdyF6rPzDM5jVY0yujlHZj
+	 /tF2Jc9UVdZsg==
+Date: Thu, 13 Aug 2026 07:07:45 -1000
+Message-ID: <acf9c9a19bbac2dd116869a181bb1dfe@kernel.org>
+From: Tejun Heo <tj@kernel.org>
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Hui Zhu <zhuhui@kylinos.cn>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Andrii Nakryiko <andrii@kernel.org>,
+ Martin KaFai Lau <martin.lau@linux.dev>,
+ Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, JP Kobryn <inwardvessel@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
+ davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>, KP Singh <kpsingh@kernel.org>,
+ Tao Chen <chen.dylane@linux.dev>, Mykyta Yatsenko <yatsenko@meta.com>,
+ Leon Hwang <leon.hwang@linux.dev>,
+ Anton Protopopov <a.s.protopopov@gmail.com>,
+ Amery Hung <ameryhung@gmail.com>, Tobias Klauser <tklauser@distanz.ch>,
+ Eyal Birger <eyal.birger@gmail.com>, Rong Tao <rongtao@cestc.cn>,
+ Hao Luo <haoluo@google.com>, Peter Zijlstra <peterz@infradead.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+ Kees Cook <kees@kernel.org>, Jeff Xu <jeffxu@chromium.org>,
+ mkoutny@suse.com, Jan Hendrik Farr <kernel@jfarr.cc>,
+ Christian Brauner <brauner@kernel.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Brian Gerst <brgerst@gmail.com>,
+ Masahiro Yamada <masahiroy@kernel.org>,
+ Willem de Bruijn <willemb@google.com>,
+ Jason Xing <kerneljasonxing@gmail.com>,
+ Paul Chaignon <paul.chaignon@gmail.com>,
+ Lance Yang <lance.yang@linux.dev>, Jiayuan Chen <jiayuan.chen@linux.dev>,
+ Emil Tsalapatis <emil@etsalapatis.com>,
+ Ihor Solodrai <ihor.solodrai@linux.dev>, Barry Song <baohua@kernel.org>,
+ Geliang Tang <geliang@kernel.org>, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH bpf-next 2/4] bpf: add bpf_thread_wq kthread-backed
+ workqueue with cgroup placement
+In-Reply-To: <cfb06f2626062fa60efbbd9d34089819b1a34522.1786086076.git.zhuhui@kylinos.cn>
+References: <cover.1786086076.git.zhuhui@kylinos.cn>
+ <cfb06f2626062fa60efbbd9d34089819b1a34522.1786086076.git.zhuhui@kylinos.cn>
 X-Rspam-User: 
-X-HE-Tag: 1786640717-17319
-X-HE-Meta: U2FsdGVkX1/Q59c9R4HN/aHMEWHphmrmimS7m6UvE4qNCLqSJ5vUDq1XckuxxJeKJu/AvwbWlz0aq8/LKFkjPrgk8Z1/lAIiXPrVCAECvLKdWVy51VJYgksf7Bb+Y0eCOhCLpk3umKpTPqwff0lOcrK37Q5/b2hP2/0VguUpGtmFwPcyyWJI+MVjqZNejI+chmv+bns/LoaRgCeynP5Llgqm9gkA5OzpytpOBWfZGNNYZbit68IfvrXda8rbaDcAe3JVtjgPrmB5jkGTl24aqLHa1EXU+q5CQ9u0oxnReixQdhLn15r/Enc/+VeV6u8ZgBOl6Axn2N0ohivAJeDKjz0KLg7FvEdW2TrYMBPlz4ebsKdS0BQyqIcp9/ciX4GrC7RDtQC2cq6ZqfFzbuvKQnLJGiQEbCjHcc/kLUIwVyFstTr+M9ggePJXwqwOw/E41gn+0euwagQZA7p/sqv+XxNxNY2ASNCtUmR5llaj5HR5rnCjsahX1tsLJNuUSTgxbnAN05d6yEVP8cNj117XsM+ancKaPjEuGqX2S2RghLutBsahbbUSskNb6ncpGlsbKv7E5AEv7+jjrIea/obrj9W2M47s7ipCzIvQaTnYBosPJG65P+oXRadQhuna9lfT0xOZ4hhpaYMDoZ6DNYV7P0p5p6xI7bjJ+v33W3PbQbsIIaYjdFN3G+82LBhDYaUTPQmleTBdh/Iq1xHm2X0inZ91RF0bNnUSpHFxoskAzt8o8VzqebE/vO4f1I+n3eZW6LqiV7qmlofQYMh5FnMVWT/IEmbeiKtDWwt09IIh+8uAqQNNLoSupimvXG+UeRX3Lmup4vh+5uZNblMRxQmoXGdGYZqHT+uFiCVt8ktyQYyaueKIMdFRdmtIE+WMymWZlzfh/lFhWbcBQKRb2jgMUQbtZ3CLnH2sjSgu9VZwwMUMpKgHOnrRenUGK/1m0nkBKGvrmhFfwHR9juzQJid
- BBTXQ3aY
- eMi46+1JYeGqejwaqBCxUKmdOS8q12ys/hS46sCgeu7HAweYLoP2lOtWcREjrYpqaYB38VFASQW+PfJ3k2kVtPi3Er7xZ62rxWiHkQtInRt1wZKXaFI3BZdcmL83OghmJyPfRhAcYNG/3XfyPAmNAME2Ykh+iSuRDmq6jJNXwAl2XZuslf5G2dYsb0MFgnf0mngtSey8zbV3a4VkGafgTc1iwr2GpwZ0c8owBIsDIA5YOqaZJKJJVXblU0xleVNG82J4QzJZ10Llzguja9lx6Zn9lMqrSgptg3x/e2vnjK7Y+lI8KPwFojuMbtBRrTz18/i1EGXvdrhCZD6gm/mv4UXPYI6GPJeVRDpns6zARIDAOi6a3QODfoQlVF9dqVCKwGqAftUwxRBDusniuTZQhOtLvuXGiGVuL+d6nRZdCX+sQNxFprjEJKTPqkiUrX8h0G+L3k3S0q2AmLKlM/+p+Vvi6wA==
+X-Rspamd-Queue-Id: 2F4CC140005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: epbed4q4ufsmtt4ybohizcp959a5ytpj
+X-HE-Tag: 1786640867-437268
+X-HE-Meta: U2FsdGVkX193kU9jxdQU3oKuUoU8UqwMiP8tDmWFPniJ6w0VfUGu07H5BFoJYG+p6rCsONGStVduko8TNM1Jfit70EQ+EqjVULPANgu8nXYHIF5SPljC/k70EOfVAE9Eui/a8B0/xLAK1BlsxmOZj7xQhiwHUONJxq4x1VoovkyMEjY3v6FdvQNxJQzqpYRrkALcTEIE42cjv9I7njnAnTBZpYUrL7cLOSMjqIVG2Y0jocJH6C4DdLg5u77yI+QlOtota8aUe7L592ZHlAavuTod4RnMTwP74XS/FPSJWGv4DXViq7fv96sjd+zn6+9kYclGZ2wf9pZ45jwHB4BT1S4lzRmQAg9bousOP88R06xZN48cpYlABE9Ow60nhwyOFlqJyaQoccNf+xLzLOijsvQ1ACKKYpSn1L6ZzMUzCRsa+fvxNmr96qm4WcnOIirNydlxoZqtWY2Ei94HapAOdhrdl5igu9FjVkfUGob/JeDR8/aaL9DICzjXBlUhqbkP+0K+kWP/V5PpATMX1S190e3nWHV9SKdpT8DAgFh0bc8uhaIr6eLHJi/0lkKJ64BnxyrqgRm2m5XuuCWQDiw6pEchYu8LvSLFfp6XRjLJw43Z3eKW0fL0lBaWVGa4IumTIWyhbIYQqfbsCAB08gtnrJjVsiYAdrx5D6Y/yC+nbQ53Jb6fDgNdTwnEfomIiYzFNWyrhDm93JXfvU1s9GWMRlOTOfyJb60Y/PyT/Ha1DRkZlQY4kfd6wW+DHtyohyW/P74T3Vm09/5p2Y9SPS0xOJILSVOE52TJy3qeEAy7pJSJ3IHzTHgNlnrTSuj8fQ+5XQqOn7lgZhRDqrGq30uqifbbI6R5QfqA8nqfJUVBhCbKWbHjh4qe5mXB5QGE0iEwqIFRWOhdxK4I/KtmNm0Gr1j2LeEi1AKKweKZIbxbDRfBfbG9gQn/egOHfC4PjkFUjs3HeWkneWYhdQmvREZ
+ kLzDeUVX
+ maQdP5n11tTc0G4LxU9kLizT2hgMZqFRmTIOLqHJ9VT23/ZEaH6lRDOTKqpuqRu27/QHOrXcy+iCFEzzIPLrUc0v5D5oxCW8wAQHX9IUixSI/DkZGbXcBmzaRqFw9xUurL/fjT6hZPxP9lHvCYYFEvnFkjSBbtZKIwS3wIJXw22SuXAbTcnQ6dJTm4pXFswD5eTuMTpbWehk/n4czILFxOXXA6+MWbryP4ZYanFkIQTDrD5932XxmQRGYTvreGoFpZHnTsR7wEBPX4BfOOVOAEMb+Idz82XR4gKxdrOFa+8mSb1nDgu0P0EsqAc8gkiA8lCQleAfV+Kbl1vRQXZ5bvgx3fkrkOXV3fQu4B2aT9/m9HGc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,63 +124,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sashiko reports:
+Hello, Hui.
 
---- Patch [14]: [PATCH v2 14/17] mm/huge_memory: clean up after-split
-folio freeing in __folio_split ---
-commit 30068a849a3b68568f1661083bd4c5a685ac749a
-Author: Kairui Song <kasong@tencent.com>
+On Fri, Aug 07, 2026 at 03:01:50PM +0800, Hui Zhu wrote:
+> Introduce bpf_thread_wq, a new BPF embedded map field similar to
+> bpf_wq but backed by a dedicated kthread_worker instead of a system
+> workqueue. The worker kthread can be attached to a specific cgroup at
+> init time so BPF-deferred callbacks run under the resource limits of
+> the target cgroup.
 
-mm/huge_memory: clean up after-split folio freeing in __folio_split
+I find the name bpf_thread_wq unnecessarily confusing. The kernel
+counterpart is kthread_worker, not workqueue. Maybe name it
+bpf_kthread_worker?
 
-This commit replaces free_folio_and_swap_cache() with direct calls to
-folio_free_swap() and folio_put() in the __folio_split() after-split loop.
+Thanks.
 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4343,14 +4343,16 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->   if (new_folio == page_folio(lock_at))
->   continue;
->
-> - folio_unlock(new_folio);
->   /*
->   * Subpages whose mapping has been zapped may be freed
->   * earlier, but freeing them requires taking the
-> - * lru_lock, so we defer put_page() on tail pages until
-> + * lru_lock, so we defer folio_put() on tail pages until
->   * after the split completes.
->   */
-> - free_folio_and_swap_cache(new_folio);
-> + if (is_swapcache)
-> + folio_free_swap(new_folio);
-
-Is it safe to unconditionally call folio_free_swap() here without checking
-if the subfolios are mapped?
-
-The commit message states "The sub folios are still locked and unmapped
-here", but looking at the earlier split path, __folio_split_unmap_and_freeze()
-calls remap_page() before returning to __folio_split(). This means the
-subfolios can actually be mapped in memory by the time we reach this point.
-
-Because they are remapped, calling folio_free_swap() here will unconditionally
-free the swap cache for actively mapped pages, marking them dirty and forcing
-unnecessary swap allocations and disk writebacks under memory pressure.
-
-Previously, free_folio_and_swap_cache() called free_swap_cache(), which
-explicitly checked !folio_mapped() before freeing the cache to prevent this.
-Does bypassing this check introduce a performance regression by thrashing
-the swap cache for successfully split mapped anonymous folios?
-
-> + folio_unlock(new_folio);
-> + folio_put(new_folio);
->   }
->
->  out:
-
----
-
-Right, I need to check the mapped status. It might be actually fine to
-blindly clean the swap cache, and it's always safe to do so, but let
-me keep the old behavior for now. I will update it.
+-- 
+tejun
 
