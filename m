@@ -4,104 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3CBEC5CFEB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 11:38:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA4F1C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 11:39:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B40846B028F; Thu, 13 Aug 2026 07:38:07 -0400 (EDT)
+	id BE0B66B04C4; Thu, 13 Aug 2026 07:39:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B19A16B0295; Thu, 13 Aug 2026 07:38:07 -0400 (EDT)
+	id BB9926B04C5; Thu, 13 Aug 2026 07:39:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A049E6B028F; Thu, 13 Aug 2026 07:38:07 -0400 (EDT)
+	id ACF0C6B04C6; Thu, 13 Aug 2026 07:39:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F0976B028F
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:38:07 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 914506B04C4
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:39:55 -0400 (EDT)
 Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id ED64180118
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:38:06 +0000 (UTC)
-X-FDA: 85096047372.22.2F4B921
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 01530C0009
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:38:04 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SwlA/jCU";
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786621085;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=adlJbA0oaSn+S7Y45QNhJp5OJ498lEOPjLHwxOmP7Lc=;
-	b=UyTtQk1/5Okq+/gVX5pOwWWHK+nU7tkZPn4nA0vJfEG7xc1TrKGMzKBm1VindJu65ykK5J
-	h+2BOXVIlw8YHzsI9TqZCcQMbmqex7FxmeuSXAGl9BkV6KQmsCRVrsET3y6TbbrwpFEfiV
-	Up3KJyt5/M4ioqu5HnUjpruLzf/WNQw=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SwlA/jCU";
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2EE10A0101
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:39:55 +0000 (UTC)
+X-FDA: 85096051950.22.E99BA85
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9B03BA000B
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:39:53 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gp28GzYV;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786621085;
-	b=G5NRoL1n9/KGJfONn0P0LqejWmziSn1721341FW+4ijijZ8b5xMNAnF4yathc+XkcZ/7Px
-	KSDDo8scxhyCH5+vsqgsNbft/NdJZy7yTQyjIsGgiPHFQxEUv7cc1OlHrlPgENVmv8jry4
-	sZlZzhcQlJjGTHyGHtoJIsOVK3MFKEI=
+	t=1786621193;
+	b=h7LLC62IkCfhLhqXt8t5FLF5ABqRvaHG/yG7vF2BhYfCVbseySAdYw4xmzZ7mdfFmihE2A
+	GGefydglw7i1SQBicBPCyVLMqlZuowcdz2ZGxlftuWPoc5iNb7kA78Ije+tPtYy9m68JsO
+	Wb/AS72cRxWTPvffgdpUoWVXUZQCF+k=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gp28GzYV;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786621193;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bzwlkKgAjFA4jPn5mhlQ/drv3ccUTPbHoR0B3kcJtU0=;
+	b=G3Uyal0GJsEudilU3bTfhTfG/fWkN2FeDywRjPioa8ieMqytzZCToD4gx0zTwGb19VgbhR
+	0qJC7NMbeNuIqOqZJD1mhX91zAg7gnN/fy+QqQOtvq/p/oF10UaHaRZJAo+Ndqo3pBI4Hd
+	JU9HP2FnU78zlyYaIQ86sEatM9qZjiw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 32AE743FD3
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:38:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18AF91F01558
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:38:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 32B1D600BB;
+	Thu, 13 Aug 2026 11:39:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8A31F000E9;
+	Thu, 13 Aug 2026 11:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786621084;
-	bh=adlJbA0oaSn+S7Y45QNhJp5OJ498lEOPjLHwxOmP7Lc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=SwlA/jCU2ny8YNT9aeA1qT29Qi8hmnB52WRspet2Zb52LyF3rqyT4SxXns8nkL52j
-	 MWjvyaBlXHm5/BJ7dJYoQvg0PXivZy8vSmxoerrivRACVGvQELr7sFZme0CeUzIq1G
-	 +Q0OjHTPWW3CFUT/KJ0oiBt0SZnVQI5qgr0D/tvTiAqRYvk76jaZwI4kYy7DclVz75
-	 WQwtOyH0coa3VeV0suXHNHrdypaxkCdMYraqSSpg/e8mk+FoHVupThTfLu9GZTr3k1
-	 O5DfySutwRzByBCmL/8SSK1X10qa/wr+4MpuYj2jQLCZ+0o0M6k653F3Qrl4Arz7PT
-	 PF5hC68WK/C0g==
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-8efcfdb2b43so3959356d6.3
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:38:04 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpJFC1fnkBfPxqK6u3RFmLexzho3uU5qhdIua5Iwpt7px6RajmilikkpNTGcueTYbH6aMb2StEnaA==@kvack.org
-X-Gm-Message-State: AOJu0YyaR3NU5MB/kLfEu2jfqNybwM2DfU0+8FtOfSU4uNeG1ALc7w/b
-	86eW3BZ3IbhsbyFgCxqcZW6qXkibYhJ+ipqz1fKFZgFVAbjN7w0txHj3zoa28Vn4LYN8q2aq8aG
-	Zc7cPkQ1ryld1KKbNsetMMdn4IjhgNCU=
-X-Received: by 2002:a05:6214:5413:b0:8f3:ba0f:e7b9 with SMTP id
- 6a1803df08f44-90a80bc7819mr52629926d6.18.1786621083366; Thu, 13 Aug 2026
- 04:38:03 -0700 (PDT)
+	s=k20260515; t=1786621192;
+	bh=bzwlkKgAjFA4jPn5mhlQ/drv3ccUTPbHoR0B3kcJtU0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gp28GzYV34B/sJAzyVyl+eGvrNb5UuB4gSP85z0eoWa3UUx2NSg2JThEbyxeyPix1
+	 l5G5xD3OpRrw0O7lS/pUWjvs1GloVvb+G00bRgBxHYeE5cIt9SR++oyp1mUnT6AWcR
+	 Ie/K++d2vQYE3sWy/XekaKcV2Z+wSEn1Sn4jcFj1C+ze8lVlZLeOEY6vyhhddIqC/W
+	 1V626T0m8H58D9b+4pm10o6UG8i2ojikIvc++n0r656j0p7haiFFlvTgwG4VFroSqZ
+	 rR6UbGiTwEwiUX3MQ4aUWaCE2QdmQiOQuiHR96DoHeevN8HP+YeuOdKP+UThYp3KlH
+	 PPlJOrwJ4I/ag==
+Date: Thu, 13 Aug 2026 14:39:46 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pranjal Shrivastava <praan@google.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	David Matlack <dmatlack@google.com>, kexec@lists.infradead.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/2] kho: support preserving high-order non-compound
+ pages
+Message-ID: <an2tArzOomSNpjV9@kernel.org>
+References: <20260803113944.3694290-1-praan@google.com>
+ <anr4-F-e5_vHEar8@kernel.org>
+ <2vxzv79f39za.fsf@kernel.org>
+ <anxrvA3z3NUkWvnE@google.com>
+ <2vxzecg33103.fsf@kernel.org>
 MIME-Version: 1.0
-References: <20260813110230.2124785-1-ridong.chen@linux.dev> <CAGsJ_4xBQ1r7_rzmu7fBvuy6c3eZCW0Xq=puXtoiGf=JeVnjvA@mail.gmail.com>
-In-Reply-To: <CAGsJ_4xBQ1r7_rzmu7fBvuy6c3eZCW0Xq=puXtoiGf=JeVnjvA@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 13 Aug 2026 19:37:51 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wEpmxZyDFj5eXwEDY_Rbveue552OqqiyZ2MOJw2TTrrA@mail.gmail.com>
-X-Gm-Features: AUfX_mxabC0D3mw0VEfr0gnEFCVW5M-5DcqkQmHPx7eQGVOJ-Gb1_jpPgL9GkGk
-Message-ID: <CAGsJ_4wEpmxZyDFj5eXwEDY_Rbveue552OqqiyZ2MOJw2TTrrA@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm/mglru: preserve inactive placement when enabling MGLRU
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Brian Geffon <bgeffon@google.com>, 
-	"Jan Alexander Steffens (heftig)" <heftig@archlinux.org>, Steven Barrett <steven@liquorix.net>, Yu Zhao <yuzhao@google.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Ridong Chen <chenridong@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 01530C0009
-X-Stat-Signature: mp4cq8chmuh4j1s3xn5ou97dzi1456d1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2vxzecg33103.fsf@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1786621084-14672
-X-HE-Meta: U2FsdGVkX1+ChpH3uVAy8GIC/8dbFbAmtfJJArFUTZUzVEjy1rUexfduExIK+bg5QlLiFBovB8hLmatFHCtQ7A3Bo18RWCkoolThgVn06cFmGhkJUb/mJbIdUiAI9ZBcIOAVHlRtWXmgPrAf51TiLhwvhFdm2gP1PjJkOd1j1j2M4E4FwETb2y3ozxHUCvZWrJa3Dq9KkgaUqFowJ5Id4qczWo+44P+hVrhcNXjMuubLpzE31L9VefqryCDwfTrrMrrZbksUP+BrJNlVx+V74Ta42vbHMsyKK0hSwv3MeNsmX2GSTUhQqQGzRKwRhqGEtXsaq33ro/uaGmCNhAdbiEVsnNNTKt7gqKLv9W3bp+MqsOO8FVxjyO98jozzuX49se9WSelQsI6cHFG3nWLMiD5jp7B3RmrK0OtDW+5RTn35AWZPaA8Jp3B+st98NYgiXQhqeI9Fc/f8CoTndy7TZsQhMrECsk1ZadE7qXmP2HpYBRZBboBKJyrZbHclcwza+A0Bi6cbiDxJxmAbSO+ci/5/eL9F8x3PDQ8VOTvognU5yzxcHxLYC6rkyjttnba3unuOWhi1zUzPuFpVwT0Zxg9oUpOcCcyfr5kK72kug4TphcM2JWd9+focuKvcCT8YwMVQ5+uZUE+K8j9JiWFHqc42OHTYOySkR0xaIgSbmJ0ZeiH/0IBKDkVfe25VKKL69p2FADyNhI9XGaHWf/mb+SLOMi0vG9uw/NcDpxhqIZIDEponNN4zOO73OnzfocwYiLUMTJzZkzveR+B4SDl1quifM1zlrHoMrFC09T2fS0Wkh1oR+WYKHzhvnRRDbkj/zagnWrsojgZWCSyWMU66lSoJK4gXd9/9JLqzz7nz5zoqzEVl+NVqGhE625a+OzgrCSuB8AbPSDCH/FdwCCGJlhMEe1p305zN1cTMgdP0jx23PZGjHfMe9o6sUJbhHW57Y+86JT6vg/mfEq4DuR9
- bfFbHzAL
- 38XKC/O/4ivKnwtJ09a52mQung5pGEb3hb4Iima9jr00vyMHDY3YzrjM8sXdkU48le3QgQTDjT0OrO3J0oRztgQ8/63dlatPlcZrrXfVvpkf30lOziFrhk0qhjOuoJlohtB2dn49Iq1QcI6c69HIkQbLsxco5YpHHOwFsctw4zhiLI6etGkqsughmIpSgWZRpgM8kYyCSds8vLnF9bfL+hiWl/SQKXWxCH6e13RXC/kz3iWPThrxLBGW2Ltjm2Ur2+5fXruWbnPBJLD8pWzFkyspBjOuDVD0YK3km6UUonXru8WkKGuE0oHnLKseSN/MrStDqywpKyWdCxg8=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9B03BA000B
+X-Stat-Signature: b1t6fij8dgjobuttrhhy4xrzd6i3qydi
+X-HE-Tag: 1786621193-971143
+X-HE-Meta: U2FsdGVkX1/qAps60yBzB2ZGpxpgtFSLVmfQB7qVQEieU6rRyUxl/LngRF63AcdpwEtHf/WEicQnnrLWvPurEq1qokcQRqLmrm8wepJWrshvNCiUlC6htpFeNzhOwZmQUlGdPqz+SxOWGPAUQ6oBpAHHtlKr7mylyGxw3oVmjneY4KlvqiNLj022nKrH0zEaD+jb0SgJoJvqkw072HhOj7a1qSV4wKzjRCK0jziADTO0WlbACEInot+RUKkB1n5gonsX97orbF6PNcv/iNp/QHz8xx47QkHxM8+E2HylQU54bBdE9D1iPBoQpWPtS5MuJw2cZiOELMhmlvBJ3CR0Bl0hbqsSEDloR1EvFItE9Sl1Vqpj4TXiArzdjWTmdsNc4XL3AInTpd+s40RNLi9AfDEUj99lth0Us0Qi2DQ2SddP89t2Osi0eFXDs5255RnsSbJ1UKA2rjKBR2XtqiVl9ZpzmorzdYBfunlYMg0ajdCfW6gOCVwbBsnALsZG+lgD0BJoRTWifjIbpcy0egDBlw6qEudf8b2iOpitU3LyWtZa4FL7/myGXbnclHw5ScQw3L2C1+QcuLxknDY5QhuCKfAjSo7khSia+F7lek4rzXpPb4gwmQ3W6uwTCmuMbnL+PElH5fYpeWzE8VWafxui6+Xf3/cHvclta80YmeA4HpU/v+AwmyfgJ+M2a/c9HJcWzoeQWo51eJtzMFOfJAwsiZ81go7Pvak+cMAxtcrSgVc1Z2QMQgwMC2xxmvKOYo8Xi4QVBZ7Qcarq/ufWTB+yMNz0G0MTCsOmaZr002ZGIoPCosgMvVQ1Bhi1KlsB2poH+VnEQvT7HoQGv5AMz/Vr8Q5tqMZ9iS09eieSKJ6gTa9n09+hDAX1/E4v7pXs09+VuXDXZRoINxwaNPVdeGS1pKsjQX6INmy61uG7rfx/eZdjjiT1ixdYxOvbm+8gbygCIupxWDp3gPPpkbQqpU3
+ ZrrYYkiz
+ /sW/+DC1M1nNtHZYbbmTGmpQpIezwae8Mk7CCjL2Xl0AZ2F0azpLalfxtcfIr7TtXQSPFUWa2xdVYo+hPdbRfhpfJSeCj0QvCSPS+f6r3X+C3yoq4TjdpIdaH0Y7yBtkVF8gacsIEcnWvU2WYl8J1Zc0YZJbTkeEyBcZ1W5Mwf9g64tj6NLo2yjj7yzjqwqfE0ETq+8XqIPcFFf3YVblL1+wVDkl7DnGXeI5YdkAp6tG9DmmAWn+xE/eso5yR5RrUVA7R
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,104 +99,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026 at 7:24=E2=80=AFPM Barry Song <baohua@kernel.org> wrot=
-e:
->
-> On Thu, Aug 13, 2026 at 7:02=E2=80=AFPM Ridong Chen <ridong.chen@linux.de=
-v> wrote:
+On Wed, Aug 12, 2026 at 03:46:20PM +0200, Pratyush Yadav wrote:
+> On Wed, Aug 12 2026, Pranjal Shrivastava wrote:
+> 
+> > On Wed, Aug 12, 2026 at 12:32:25PM +0200, Pratyush Yadav wrote:
+> >> On Tue, Aug 11 2026, Mike Rapoport wrote:
+> >> 
+> >> > Hi Pranjal,
+> >> >
+> >> > On Mon, Aug 03, 2026 at 11:39:41AM +0000, Pranjal Shrivastava wrote:
+> >> >> Introduction
+> >> >> ============
+> >> >> This series is required for the ongoing effort to preserve DMA allocations
+> >> >> across KHO [1]. It addresses a fundamental mismatch between the current KHO
+> >> >> restoration logic and the physical reality of high-order buddy allocations.
+> >> >
+> >> > I skimmed through the patches, they look fine to me before the in-depth
+> >> > review :)
+> >> >
+> >> > But we are really close to the merge window, so we'll anyway need to
+> >> > reiterate after v7.3-rc1.
+> >> >  
+> >> >> The Problem
+> >> >> ===========
+> >> >> The current KHO restore implementation treats all multi-page blocks as
+> >> >> split pages during restoration. Specifically, kho_restore_pages()
+> >> >> initializes every 4KB sub-page with a refcount of 1.
+> >> >> 
+> >> >> However, many kernel subsystems, most notably the DMA allocator (via
+> >> >> dma_alloc_coherent), frequently return high-order non-compound pages.
+> >> >> In this state, only the head page carries a refcount of 1, while
+> >> >> all tail pages have a refcount of 0.
+> >> >
+> >> > This hints that these patches could be a part of the DMA preservation
+> >> > series, unless you expect other users of the new API.
+> >> >
+> >> > Generally, we don't merge new APIs without the users and if DMA
+> >> > preservation is the only user, it's better to fold these two patches there.
+> >> 
+> >> Makes sense I think. We can review the patches here, but then they can
+> >> go in with the DMA series.
+> >> 
 > >
-> > From: Ridong Chen <chenridong@xiaomi.com>
-> >
-> > When the LRU is switched to MGLRU (echo y > /sys/kernel/mm/lru_gen/
-> > enabled), fill_evictable() re-inserts every folio via
-> > lru_gen_add_folio(..., false).  With reclaiming hardcoded to false, an
-> > inactive anonymous folio (no PG_active, not in the swapcache) takes the
-> > "gen =3D MIN_NR_GENS" branch in lru_gen_folio_seq() and is seeded at
-> > seq =3D max_seq - 1, which lru_gen_is_active() treats as active.  Its
-> > inactive placement is lost and NR_INACTIVE_ANON is folded into
-> > NR_ACTIVE_ANON.
-> >
-> > Pass reclaiming=3D!active so a folio from an inactive list is seeded in=
-to
-> > an older generation.  Folios from the active list carry PG_active and
-> > hit the first branch either way, so they are unchanged.
-> >
-> > Tested on x86_64, next-20260812, 2G VM + 1G swap, ~1.5G anon pushed ont=
-o
-> > the inactive list before enabling MGLRU:
-> >
-> >                          Active(anon)  Inactive(anon)
-> >   before switch (legacy)        2952         1548792   kB
-> >   after `echo y`, unpatched  1552052               0   kB
-> >   after `echo y`, patched      15144         1536636   kB
-> >
-> > Inactive file folios stay inactive either way (NR_INACTIVE_FILE is
-> > preserved).
-> >
-> > Fixes: 354ed5974429 ("mm: multi-gen LRU: kill switch")
-> > Assisted-by: Claude:claude-opus-4-8
-> > Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> > ---
-> >  mm/vmscan.c | 7 ++++++-
-> >  1 file changed, 6 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 94fc4f25e99f..2befc8d7dd3f 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -5319,7 +5319,12 @@ static bool fill_evictable(struct lruvec *lruvec=
-)
-> >                         VM_WARN_ON_ONCE_FOLIO(folio_lru_gen(folio) !=3D=
- -1, folio);
-> >
-> >                         lruvec_del_folio(lruvec, folio);
-> > -                       success =3D lru_gen_add_folio(lruvec, folio, fa=
-lse);
-> > +                       /*
-> > +                        * Keep a folio from the inactive list inactive=
-:
-> > +                        * pass reclaiming=3D!active so it is not seede=
-d as
-> > +                        * active.  See lru_gen_folio_seq().
-> > +                        */
-> > +                       success =3D lru_gen_add_folio(lruvec, folio, !a=
-ctive);
->
-> This is a very interesting use of the reclaim argument, as it is not
-> intended to serve this MGLRU switch purpose. It is really only meant
-> for `folio_rotate_reclaimable()`.
->
-> However, the change itself seems to be *partially* correct and
-> *partially* wrong.
->
-> One real issue is that inactive is always placed in the oldest
-> generation, while we have two old generations. Maybe we can ignore
-> this for now.
->
-> but somehow, are we also inverting the cold/hot ordering in the
-> inactive list?
->
-> `lru_to_folio(head)` always takes the tail, but now we are putting the
-> tail before the head folios.
->
-> Because reclaim =3D=3D true will use list_add_tail().
->
-> if (reclaiming)
-> list_add_tail(&folio->lru, &lrugen->folios[gen][type][zone]);
+> > So.. IIUC, I'll post a v5 here as a standalone series till we get
+> > consensus, and finally the reviewed patches can be folded with the DMA
+> > series?
+> 
+> That sounds good to me at least.
 
-I guess we can fix this by iterating in `fill_evictable()` from head
-to tail order.
+Yes, although when the patches will be a part of the DMA series we might
+notices something else :)
+ 
+> -- 
+> Regards,
+> Pratyush Yadav
 
-  struct list_head *pos =3D head->next;
-
-  while (pos !=3D head) {
-   struct folio *folio =3D list_entry(pos, struct folio, lru);
-    ...
- }
-
-Then the oldest generation will maintain the same folio order as the
-inactive list.
-
-Thanks
-Barry
+-- 
+Sincerely yours,
+Mike.
 
