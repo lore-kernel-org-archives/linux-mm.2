@@ -4,121 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3639DC5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 12:18:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50789C5CFCF
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 12:18:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28A366B04D2; Thu, 13 Aug 2026 08:18:13 -0400 (EDT)
+	id 3000D6B04D3; Thu, 13 Aug 2026 08:18:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 260546B04D3; Thu, 13 Aug 2026 08:18:13 -0400 (EDT)
+	id 2D71E6B04D7; Thu, 13 Aug 2026 08:18:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 176246B04D4; Thu, 13 Aug 2026 08:18:13 -0400 (EDT)
+	id 1F4456B04D3; Thu, 13 Aug 2026 08:18:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E2C406B04D2
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:18:12 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3851C40135
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:18:10 +0000 (UTC)
-X-FDA: 85096148340.25.4AD7402
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id D5B664000D
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:18:07 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C6nPRXqt;
-	spf=pass (imf04.hostedemail.com: domain of amarkuze@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=amarkuze@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EEAD16B04D3
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:18:53 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 74C4F12013D
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:18:53 +0000 (UTC)
+X-FDA: 85096150146.27.5478733
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 83CB14000F
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:18:51 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JEs2I4+Z;
+	spf=pass (imf11.hostedemail.com: domain of joel.granados@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786623488;
+	s=arc-20220608; t=1786623531;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5qUHFWUDQz/MEraJh+J1O/f5gfgcsCAk1KSe7ywJpi8=;
-	b=DVan3oZad9grX3OtXYKJm3Fyd9NE4O3ag1SSN6V9XdSgyuP9yKQ5HNGZI8Y7RX67JMm421
-	fCdz0UeKgw69SzXrNLmLDwbwcAVoCCr8TouBKpNGSfN5MKgkbbqifq+uZFPqPJxt2xcdsy
-	/blpmED1qM/qGG/OmzpOXuCEVJfcjbY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786623488;
-	b=E5qeuj7J6hRgOO6km1CNMqurvMvT4TTpmmhSV7jSc5830qKPB3gR/04jUQp8OOhphktNtH
-	DWThM9z+HItm5IlzOsW3QM0Y6KOWX7A5cCW2vKJPtGOYXXRcF3ZgPg22vGHuaLp9zC3kPa
-	vrSM+ZFQ3XnKB3TVMeNIc9HUkd3P7W8=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ofrdos4HRkDuUR+YoiUFpWkzn//vxHsatqCHEiCzJvc=;
+	b=DZ5sTHh/iFfBqMlPPDjTk7NOL4IeGiK7Esa3P4bx0tLg8pZoPTZc7haz3ly2bLOrfRdeRK
+	yd/x1l1CD66ycaIU+YiH9qZXgZz6Xe/xK4kueZoROD67MOeDJEUMP1zYSzPhAQNh6nzDEF
+	ASsERjxqqICRb9ytfCduHX5gbNedwvo=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C6nPRXqt;
-	spf=pass (imf04.hostedemail.com: domain of amarkuze@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=amarkuze@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786623487;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5qUHFWUDQz/MEraJh+J1O/f5gfgcsCAk1KSe7ywJpi8=;
-	b=C6nPRXqthNeIX6G2wjfQVKswwhhI+s3HFbmoUUEi5fUciZAusKIbXPwL409YzyMxyE6PgA
-	h/PyWiyPFUNgB37HSaIuMbNgHbwgn7akr/RIG4wrfNNUHtxDOve+MXXcGhG1FsuKv8Wbtz
-	JjDirlwNhpSUhX6Q21j9pECSGt6TWN0=
-Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
- [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-339-leEwgD7jM9G6lZVDa-CUgw-1; Thu, 13 Aug 2026 08:18:06 -0400
-X-MC-Unique: leEwgD7jM9G6lZVDa-CUgw-1
-X-Mimecast-MFC-AGG-ID: leEwgD7jM9G6lZVDa-CUgw_1786623485
-Received: by mail-vs1-f70.google.com with SMTP id ada2fe7eead31-75116a48926so1448501137.3
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:18:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786623485; x=1787228285;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5qUHFWUDQz/MEraJh+J1O/f5gfgcsCAk1KSe7ywJpi8=;
-        b=bYfbg7+joz3TiGfuL3ObYTy8CcvxkO6i2BmrgXrFdrsntKpK+/vLbu2NQWH7DgZT1c
-         l57mePEMtI25OrWGtuSU6H3XmwJ0VckAT6oGDwLchhhw7MxfWlcLuxZZzqL4+OXmTgv/
-         sSbhJ3fYcXM8/AM3nZoUNX6FlYHYJesyOQ+rGNr5PROXVy8bbqWBSrbWMjMatmDs1oq9
-         rci0yzm12PcxGCDXRR44WK05W5Tg47un8KJ1KkH31baR4N6h5CtBC/BU3L7fyZfST/Tw
-         WLvHKjlZWEshmx92c7fn5dRyJEkJnYeW/jbaGXdQCLLgOiFaQL+sqMNWgiNmRObNrxgQ
-         K+0g==
-X-Forwarded-Encrypted: i=1; AHgh+RpnCnU2dqMdW57lAdIBhkxNlRvy7XPiCC4dwjx5T7siNM9R4866x3U6vJBVNrD5aoztX3XmPI6ZhA==@kvack.org
-X-Gm-Message-State: AOJu0YxPOwD70iVmHtHdhYF17M9SUfzDqocqtgXOCgNl+cjcQjLlxEbQ
-	7pxM6GFBmz2CCTfD6jlTNofLq4YSS0QdOx/yQrzW/M6C/dZmu2J2YA7adzO9t8uT83XUnv4g+IG
-	bDsLHbTVUtk1SMhpTSpYEquILwDAaxfhJyaLEUPqck9mpRwFKTdJb7fkYt9ZpWLpZ5ALlCOnLEL
-	rmt4CCwRUQvuuZEQEwaeuBoZBXPRA=
-X-Gm-Gg: AR+sD11dRcoPzRC1fvNOF+4Bwe63Ez3vxdBJ8g8DP2kFR7rEB6x9R3r+uWHHjruMxja
-	j9or4SlBg62pJTu6YRD6puEu02LSLsywe9C5x/bBR5veK+LDmRi3fXzI84QrRSI1RsmjYXB3usL
-	XPYW1JApeJAUaelCfWc9GDOZUPtebgziOrI1ViL6kYLluHRzoyQHXke7E=
-X-Received: by 2002:a05:6102:8008:b0:76a:fc18:29c8 with SMTP id ada2fe7eead31-76db668464amr1600885137.8.1786623485457;
-        Thu, 13 Aug 2026 05:18:05 -0700 (PDT)
-X-Received: by 2002:a05:6102:8008:b0:76a:fc18:29c8 with SMTP id
- ada2fe7eead31-76db668464amr1600872137.8.1786623485092; Thu, 13 Aug 2026
- 05:18:05 -0700 (PDT)
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JEs2I4+Z;
+	spf=pass (imf11.hostedemail.com: domain of joel.granados@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786623531;
+	b=qRjOOrjyB2HcXW5QwMNxHtWp65q+V+jSmEY6A/DxGTQnHHu7KOqaC8kpwGFWgWzj6UqS3H
+	8/KNyijgRos5WfCEwuFtIpwTWoFO9ZTrIxXw+tB6CiCvv5stjbZEaemVdeHYlKqU2LZTYL
+	QJiF8qsdRRmh8jeRJpriqE9vffhBlD0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9CE3740965;
+	Thu, 13 Aug 2026 12:18:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 71520C19425;
+	Thu, 13 Aug 2026 12:18:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1786623530;
+	bh=D5sh1ZrCd0hPEkiCqVMezIB3PdvCVR/dhJ2i/eaqwyo=;
+	h=From:Subject:Date:To:Cc:From;
+	b=JEs2I4+ZY+cmQWtgDn89XMY+xVrM856WY5S0OIeEr36hTRWGQAF8A5A97fop4cojt
+	 rfewltmxIRkwVCeB2W7G8IF3mVFGYlVDsXLA7XLjXPbZaOP6qiA1MxKO+Sq8oi0gtM
+	 TQJT9fDyS8nSz+16WGJEeQhYUx8mueuLBNckBz0RozanioqjsKVq1hP+RwX+jFWzmW
+	 AUP8F61mNUfzxh+TVGWLQL26lhvfXYYKrJZyYVOQYXyMeNHwOB+SqRPpNFuMJafDQQ
+	 fSK/wD1stJy83oIKgxpSylM0z3YD81pYSHtkyN5ymBXIY3Rj0/SgWTtKkuXXi4ZFju
+	 /lv2wkvnajSXA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BD8FC5CFEB;
+	Thu, 13 Aug 2026 12:18:50 +0000 (UTC)
+From: Joel Granados <joel.granados@kernel.org>
+Subject: [PATCH 0/4] sysctl: Disallow partial updates of miss-formatted
+ sysctl vectors
+Date: Thu, 13 Aug 2026 14:18:36 +0200
+Message-Id: <20260813-lklm-partial_ctlvec-v1-0-df9e51c13704@kernel.org>
 MIME-Version: 1.0
-References: <20260810-remove-wait-on-page-writeback-v3-1-dd7531704f26@columbia.edu>
- <20260813112028.3989422-1-amarkuze@redhat.com> <709df647-3af1-4d9d-a99b-c36c9ee69ac0@columbia.edu>
-In-Reply-To: <709df647-3af1-4d9d-a99b-c36c9ee69ac0@columbia.edu>
-From: Alex Markuze <amarkuze@redhat.com>
-Date: Thu, 13 Aug 2026 15:17:53 +0300
-X-Gm-Features: AUfX_myXKkVLHvulRQVmMzyUu_qv7exV-qvoatfjLDFlQ5VLwI46XH_QXFBtWxY
-Message-ID: <CAO8a2SiJsmNxdj3E_3EhjSYvacn_XCh=RCwhNF29GF79=L5Pfw@mail.gmail.com>
-Subject: Re: [PATCH v3 00/12] ceph: convert writeback path to folios
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: idryomov@gmail.com, ceph-devel@vger.kernel.org, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: qJTKEsz69nyvjNB8yy7rgZML1PXXHSg_-stRLlvyexI_1786623485
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABy2fWoC/x3MTQqAIBBA4avIrBOsqKSrRIQ/Uw1ZiUYE4d2Tl
+ t/ivRciBsIIPXsh4E2RziOjLBiYVR0LcrLZUImqFbKsudvczr0KFyk3mcvdaLi2Urad7oRtDOT
+ SB5zp+a/DmNIH/EmjWmUAAAA=
+X-Change-ID: 20260813-lklm-partial_ctlvec-bd8867b70d5c
+To: Kees Cook <kees@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+ linux-mm@kvack.org
+Cc: Jianlin Shi <shijianlin11@foxmail.com>, akpm@linux-foundation.org, 
+ vbabka@kernel.org, hannes@cmpxchg.org, surenb@google.com, mhocko@suse.com, 
+ jackmanb@google.com, ziy@nvidia.com, linux-kernel@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Joel Granados <joel.granados@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2062;
+ i=joel.granados@kernel.org; h=from:subject:message-id;
+ bh=D5sh1ZrCd0hPEkiCqVMezIB3PdvCVR/dhJ2i/eaqwyo=;
+ b=owJ4nAHtARL+kA0DAAoBupfNUreWQU8ByyZiAGp9tiYkyITKihVvtdZSvziyOBWU4rrAKyjLo
+ 7jVUN8XrP5xcokBswQAAQoAHRYhBK5HCVcl5jElzssnkLqXzVK3lkFPBQJqfbYmAAoJELqXzVK3
+ lkFPEKQL/3p1GXmI3YjeYKDHQGH/Ku2m6Y8f5aS/ro+V1BnPyrtE1xVVz7A05MULY+5AzoACOvQ
+ YKkqXp2+tbVETWOVv+DcyYbx0SjSasHEYz5lpVdJgG7dh0sPgt3hDTXU7z96LHdyPyzR+XJ9dZv
+ rAS6Fe4UruLvBC/tPgZDsMesTcBYFYyJYzz5LrhIJ3F1dNvSGzkWFGq5UEelLvzZqY0sCQ5M5fj
+ zv8jbjskCi8TqpkYj9TeVvtI1BiR7e72H5Goo/V51fTYKX7rNIg8Nbo6e4M0Qf0vIV1MMWUG8fy
+ XTDp7QeroSVp5Pommp9R8tFCrae+ZwUqqQ75Elf/x2YH0cv6lcqJd9yvVDCKXGjywuOQuBD4xM4
+ n1YfoQuT5dhRxpFznN5mwB/uwyZeOt7FvJEg7rCULKBWk46AUL1yw2JG6fkbrKlrCdcrCBqecov
+ zMwhEJ5DMzEhF9ANzTyHuU51ahqEenLL1QY84uoHxrQrsqNN5+T+mS9/UCRBHQsCX1WRbjFvkO+
+ OM=
+X-Developer-Key: i=joel.granados@kernel.org; a=openpgp;
+ fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
+X-Endpoint-Received: by B4 Relay for joel.granados@kernel.org/default with
+ auth_id=239
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 83CB14000F
+X-Stat-Signature: db3wtmhn5hbc4z8dmjzfxqz5ph9mnsyd
 X-Rspam-User: 
-X-Stat-Signature: 7cz7reso1xn4twfxmqyabuk1yn8pksy3
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D5B664000D
-X-HE-Tag: 1786623487-390878
-X-HE-Meta: U2FsdGVkX1+Ob2birr4DkpQWYTfMjw4a/+9rKmPrx8xIZTmuyVdR+JL0C4j6zbsqLj0B4YfcSUEkM1o50+LrTnufyRn3IGTGv/1lESY0eJZc9yPQhzNsif9+NV1UkU31kF6rKo/CShVmJSfImmA9SNO/dP/INbjjMt2c7hb1CQ/Tku1fmmmJRLlhy1fLVRiEAnIYiRX4oKAxZzrKj75F8W2kaHBBo/TehWbrdLPVr9gaYXoia5v5/PFOz2YG5FrM+sYl0qRiq0wXA8hwEV52v0wzbqlrtAkfnTyRfxF5KQ2kgFh3pjQ5Ehv2/USf/ci2HSFxXZ+Jw6lTCVyMXoiT4z9M0qoy/xFY+TweXbZld1cnXXgZyHuv2NqE/M6IH4sMohw2g2wrCaGHNli7wJz8cn+XOp/LA90JrhquuGdBEtauBo/nDg9Ie3jUy43vwQRPJ20eOpye6YR+Fztlv66FrOh89BD4m8U1ezYE/HSX64IJLDla4A9kJejIF5fjVfm0G5jchRumCcz3K0iQjhIX9D/PNfTnh/filztYxxQBWC+po9i53vp7AtpYsuBRdbBgy+e7WYvE0kb9YkQJ/nnegdf1qlfIi+uxp696akOVunp3bs2DTqT6ghiLrwBw4S0N0gS7hExseZuNkXry+l+VNre+ffMhYMXuKn+kKccJJhhseKyypvo+FyL5d+y3Q0IFkKaGE7KT2Mk5tkkr+FcE1UjU6fCW5w/LxQR0F9sN3X0WymRbdlWqRc9uGDPmQBJHYk8uRzvbqi6zhU/v/s+7O5ft7XARQJCok5VazL5AXbBEF7OjdBqeuC4JvygQ89wi0Du1+PFz17+YFSJrMJgt2uu8Ae7ItBhpDK10P5TWzOeoMupOOG1DuHjtGAnLJMx1izknPAmJSPhk52THinPp7TUuI8VKVmFJlPfhuuCYqBUPDw4iI2wuPFuyWNj4Rd6doqp3bvJMrS0Czc+ZS48
- 3vhZ40FT
- 7Qw7e9GrbhPP0BX09xChn3NjwkQfIfRfHP2Y9gy+31Tlu1C2lC7dzWV8Y9mE7r6uIMrJjIQ1LEutBn802qW5Y6OdWH3ZXQwem5aI8zOF7YFOEI2jleXjL9Vx5s/DSsYGYhfVX35NRdeyZdK7UQiH3ryehhzx8fFHRDNObFgfJr+bg6x4qfkRERyoAOTv57M8Nh7hd5IDTFYbtZ0E=
+X-HE-Tag: 1786623531-748393
+X-HE-Meta: U2FsdGVkX19poNxZvbLEmS3LzPv3KYc6+0jhRK9LlTGF767xc7RZeiybJf8tL7e1Z1MJE2mvQCJABvHVdV24PkPNGYnQjWUEjkXpUUhDoPNcfVj1j6hUL3qJDB38wcCi9e8qg+k0Bk6g6MSJ4PuuV92DhYAhdaou21qlm6w2YNrvaSpmmgEYcFomZE7bH4XkKCQZRHrZ4R7V5G9BTIrQTOI+0s+m8BSsi6i8CnVWPnZpwABnJmrH9/Yt9cC0niWv1JHCjsqkt9AGR6R7wUVWWJUOqgpIHST7roKgrhu7bpIDcBjd9nOn2aqThXpHd3f/xezyxQBQwApIBA7qdlKt95KsZJz052WUAnQf/0hmp2FiF2horm4t9RWbQMRtZwT0EmUGxZl3VACoAexcV8eKiRo2dLV8lL45jiKpCbqHhBb3dUY6ns0VN1bcubwIZjMbTIq+hz7v50/FtqkBfFjvweHdutrtPNbudz4hzprwtYg/29Co3CB6QvknuwM9J/yhMJRPjnWGclkOO4Z0gNWU5g4kzGnxz4aXYRx0fEgopSwYSQOmlEUhjOfSWJG/Va0wxR+LLDyoKzTfcIajyjhoTQ7rATDTCcdDeOucD1yfl/lKmohPmdLWYLdKEn2Nn0B+m0bmuTOzDvBsPiSlXzxI8EPJFywfdghCAn78JlL61J9ezXv7To7xsUsUMb0Hl2dKS+ga5UGcHCL6ZdeVsq8/9p+oNAqkziUvwEaE5/Chz7UefURfeA0bEvB+4JN1JtN4KClj58gBvI/nO0PXF/JxOXbVrWh1Qutfvw4fXi3f1bZEp7/T+2r7MaFgBZJZBZwGvqkE2CHe14PJKQBnntJgy2o/Q4XyoMPYYzY7vjxberwrkgBLFLCw+paqgXEN34YkjoAjIRWZzH6OTy3LV9REbLStuX9ZJOvYrY3aJUJJuPu+AIZN8YMfUvPcetiEfbt/vZOCt11BXP7N/EhvcaK
+ 7t9N6Iso
+ HrqqwoYb0h7hfQEWGXreA0GUkrLdnHnuWVYbVgBY5D8jIgkrBOdkrMItEmHv09/SAPpte0hY7vaPir0bGVP1Le87fGO+JoFmViN8Glln/VL0PPpEEiyu1oXmvLffav/IyyA/nCXpiSnHhaQnBhsmupZ9L/zU8Kz6EjaVxMkcV0SmFirjIWukoeIjsdDWZ/AekmlQdNsPELsfuQ2iV3cyX5/crbFmRyflpPcCU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,56 +118,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Yes, its best to separate any mm/ work from ceph when submitting a
-ceph centric patchset.
-These fall under different maintainers' purview. The one exception is
-when a core API changes, requiring a tree-wide change that also
-updates the users. So any mm/ changes shouldnt be a subset incide a
-ceph centric patchset.
+What?
+=====
 
-On Thu, Aug 13, 2026 at 2:51=E2=80=AFPM Tal Zussman <tz2294@columbia.edu> w=
-rote:
->
-> [adding the mm maintainers back to CC]
->
-> On 8/13/26 7:20 AM, Alex Markuze wrote:
-> > Hi Tal,
-> >
-> > Patches 5 and 8 remove wait_on_page_writeback(), thp_size() and
-> > thp_order() from mm/, but those helpers are still used by f2fs,
-> > mm/filemap.c, and mm/folio-compat.c =E2=80=94 removing them would break=
- those
-> > users.
-> >
-> > Could you split this into two series? The ceph-only conversion (patches
-> > 1-4, 6-7, 9-12) can go through the ceph tree once we drop those two
-> > patches. The mm/ helper removal is a separate effort that needs to
-> > coordinate with f2fs and the mm maintainers after all other users are
-> > converted.
-> >
->
-> If this is the preferred approach, I'm happy to split it up this way, but
-> to clarify:
->
->  - This series removes the definitions and exports in mm/folio-compat.c
->  - The mm/filemap.c use of thp_order is a local variable, not a call to t=
-he
->    function
->  - And I don't see any f2fs users of any of these... it looks like f2fs
->    defines a folio-based wrapper with a similar name to
->    wait_on_page_writeback(), but doesn't actually use it directly.
->
-> Given that all users should be removed and the relevant mm maintainers ha=
-ve
-> provided Acks for the two mm patches, I think this could all go in togeth=
-er
-> safely and avoid delaying this an extra cycle.
->
-> Let me know what you prefer.
->
-> Thanks!
->
-> Tal
->
+Stage table->data when writing INT & ULONG ctl_tables. Commit staged
+data to kernel variable only when all the conversions have succeeded.
+This is applicable only to variables that represent a vector; paths
+pertaining to scalers are left unchanged. Notice that partial updates
+can still happen if less than the size of the vector are passed and
+correctly formatted.
+
+This is the behavior we are protecting against:
+
+  # echo "4 4 1 7" > /proc/sys/kernel/printk
+  # echo "1 x" > /proc/sys/kernel/printk
+  -bash: echo: write error: Invalid argument
+  # cat /proc/sys/kernel/printk
+  1 4 1 7    <- the write failed, the first element changed anyway
+
+Why?
+====
+Allowing a partial change to a vector after returning from an erroneous
+proc_handler is just plain wrong. This should be handled within sysctl
+to avoid users having to do it for themselves [1]. 
+
+Behavioral Changes
+==================
+1. A failed write will not update the vector
+2. Vector writes can now fail with -ENOMEM
+
+Testing
+=======
+This went through regular sysctl kunit and self test. Also is posted to
+0-day.
+
+I always find it difficult to know who wants to receive this. Please let
+me know if you want to be removed from the Cc/To.
+
+Best
+
+[1] https://lore.kernel.org/all/tencent_A860C873956A52E26AD8D309A308A241BA08@qq.com/
+
+Signed-off-by: Joel Granados <joel.granados@kernel.org>
+---
+Joel Granados (4):
+      sysctl: Split data conversion and file position handling
+      sysctl: Reject uint arrays before calling the general proc_vec
+      sysctl: Disallow partial updates for erroneous sysctl vectors
+      sysctl: Add 0013 to test partially updated vectors
+
+ kernel/sysctl.c                          | 228 ++++++++++++++++++++-----------
+ tools/testing/selftests/sysctl/sysctl.sh |  57 ++++++++
+ 2 files changed, 205 insertions(+), 80 deletions(-)
+---
+base-commit: 4c12287001da60f3c022bb25932aa7a5590fc0b1
+change-id: 20260813-lklm-partial_ctlvec-bd8867b70d5c
+
+Best regards,
+-- 
+Joel Granados <joel.granados@kernel.org>
+
 
 
