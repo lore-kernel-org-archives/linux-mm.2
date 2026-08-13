@@ -4,88 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E82FDC5AD5A
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 01:09:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27B16C5AD5A
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 01:18:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AAA2E6B0352; Wed, 12 Aug 2026 21:09:56 -0400 (EDT)
+	id 958386B0353; Wed, 12 Aug 2026 21:18:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5AE66B0353; Wed, 12 Aug 2026 21:09:56 -0400 (EDT)
+	id 92FF86B0355; Wed, 12 Aug 2026 21:18:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 949ED6B0354; Wed, 12 Aug 2026 21:09:56 -0400 (EDT)
+	id 86CB66B0356; Wed, 12 Aug 2026 21:18:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FBC96B0352
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:09:56 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BA55C804C0
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:09:55 +0000 (UTC)
-X-FDA: 85094464350.22.679B831
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf22.hostedemail.com (Postfix) with ESMTP id AB98BC0002
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:09:51 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Bcgyc8o5;
-	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786583393;
-	b=5uqu35q+EUp+Fw+DWmt05dz7AyiY3Ay62GjseGsoykX3KHYAS6gERwI/OKP3KXM0s2Poom
-	FnILn2uK3qBAo+C2BaHrnm0uU81NvzocCCPs2BB4fz8sLaQpTRlbko3/EWF5mF0NPdVUrQ
-	fuu3Ifi9qQTTBlhK+jqtrkjO6lFP2m0=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Bcgyc8o5;
-	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 53D4E6B0353
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:18:05 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A9D9C140500
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:18:04 +0000 (UTC)
+X-FDA: 85094484888.01.8CEBCE7
+Received: from mta1.migadu.com (out-88.mta1.migadu.com [95.215.58.88])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 39420140003
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:18:02 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=D0VtnKEY;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.88 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786583393;
+	s=arc-20220608; t=1786583882;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D08FG0YMubGacUihkTtMKOMY/B6yl/scK6bQ5SPlW8Y=;
-	b=YOzmWvlO0fTdBbLRvWArtdnjc3M8gBSa7QfyRqySnidTlJ6tZIwFDjwnGR/jPsvpA5WaG9
-	RqzCWBFh1LcE/H5jhXAga8t9Z4AYWxi5jJgi2nuHC5h5CueUJF0Y7BCLzya/LulRImcry2
-	UdKBwnJnIwT7HvtVhXMeEYCP3ltXxgg=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1786583388; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=D08FG0YMubGacUihkTtMKOMY/B6yl/scK6bQ5SPlW8Y=;
-	b=Bcgyc8o5PQNW4fgoOo0V590Wh1chfxI2/LkMIv7AhZ5oSZ1bPkIPCe5CFVP7LG8hYviIl8Ynn8A/j3EVBltc57E3RtMjha+xTb+W4eqjOLwqDixY6G6Glh6rjsETtwVfvuBVbS8yYIRcyHkP+FVUYNUtvxeosvBasDzIb0yFahI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R351e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X8sfaKi_1786583386;
-Received: from 30.74.144.111(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X8sfaKi_1786583386 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 13 Aug 2026 09:09:47 +0800
-Message-ID: <37015686-6776-4e67-95ef-a26ac61a3b44@linux.alibaba.com>
-Date: Thu, 13 Aug 2026 09:09:46 +0800
+	bh=uGLfcut/pIlDidETqIC1Fx//WvsRgAR2gYHdHaIf9ng=;
+	b=q7eAlX9b644f4Y9jGdKkIX4W45GUcvGD5EHFSfqAWYki+own+ZIVHpg1+5jvsJR8H3UZRA
+	YcmW1W7OAkmIFKqpyqurtCa5S/uO4uMyvMqwaBKDkZ5NEcLO5t8Kf5HucJYRWsS0WXCwbh
+	g6sZQ0WMsGQbTHwV6zE+wrUGaSGTExs=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=D0VtnKEY;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.88 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786583882;
+	b=GadeRknH/ShvdMm3j9hDiHE0qEzxFZAO1KR/Qxyp7vhU+nqCzzbBqwRcInocUs1bkltl7Y
+	AGkAy0u2EazrU54N5NUzvyP+c05REW11J7IXU/qerrngyXznsy9zdJSj8RsncWWXqp1kA4
+	OmsJrFitk6gSmoKEQ5SczGxx1gbAp3U=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=nE/1oNd9kQaDsPO46DtCOMIjA5Lwh9TsvckbW8AW0ow=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786583880; v=1; x=1787188680;
+ b=D0VtnKEY8fLKdnfPKdllHQJyVbtvO2QxM2CmpqeL41MIGdCYsahM+fb31dMsR2aeI5qb0VO9
+ 9CQEmsDsXT3fxn9h9c/xUUcgxjzBulATYajSOkzsX7fY72s8dGUWWpexHdSfTfVqOLiuRBOIwgh
+ Er/CoYq5IwIsHRQ50OIX0KVc=
+X-Envelope-To: linux-mm@kvack.org
+Received: from [10.63.123.245] (14.29.108.90)
+	by smtp.migadu.com with ESMTPS id d068e9a28b48e2fd;
+	Thu, 13 Aug 2026 01:18:00 +0000
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <5f0e3361-b4e8-4979-9309-2d85e6a9dd54@linux.dev>
+Date: Thu, 13 Aug 2026 09:17:52 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mglru: Fix young counter undercount for large folios
-To: Barry Song <baohua@kernel.org>
-Cc: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
- Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
-References: <20260812065933.103627-1-hui.zhu@linux.dev>
- <d18ed09c-52b7-40ac-95e8-c1530246e2af@linux.alibaba.com>
- <CAGsJ_4wE7E2G8H4ugwSWbQMF+5ecx+mrYQxXa1U6HY3utuQz0w@mail.gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <CAGsJ_4wE7E2G8H4ugwSWbQMF+5ecx+mrYQxXa1U6HY3utuQz0w@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] mm, memcg: fix memory.peak reset clobbering other
+ fds' watermark
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, cgroups@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cui.tao@linux.dev,
+ Ridong Chen <chenridong@xiaomi.com>
+References: <20260807090000.1532495-1-ridong.chen@linux.dev>
+ <20260807090000.1532495-3-ridong.chen@linux.dev>
+ <anyj4GGPnuU-q2AP@cmpxchg.org>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <anyj4GGPnuU-q2AP@cmpxchg.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ryxncefurrjtk1bw3mohkgutaro3go6p
+X-Rspamd-Queue-Id: 39420140003
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AB98BC0002
-X-Stat-Signature: cp1izkqncpta74h5x76ud131j9kfebdf
-X-HE-Tag: 1786583391-386977
-X-HE-Meta: U2FsdGVkX1/O22+koCQGS/yiiyWDfgfmu0k5S5eKSgkFfjo1a0od20ioSCUEaq7VaAitWKUd3dB0mnOmOR798xzFV9o8Cs8CFOoShoHWVEXW5tteCjf3XLKr1ayEzGlW+wFnnN1xG9juHRv1ZQQyLlni5QeQYUw4c/wdSLC2ka884fr19NESUiOouwvBRBAJT+h7qAbr9plBSdTXaKsmFsgnxfyTlYQ777GzT2iz/GEXDv0An75F015UqjkU9cyKvXqKbe1jtFVSBfMPwA3aO61870ppApkWlDibUf+PO3XuOkOj9I2xVG0zhujU/wEFWe+uAtYymM6AMmgiH5cKQmk4RskRb0oKpyGrg/83kZkekQfsi+At0vMKK6R7EaN8B86tKEs8qIQCThjR7kbHOh5p+wKa1k1kdpQWKQS6joUZapmOBIYO3sc5fliqUjZu9HR6Ide9ioo6P7U78hpxWdW41IfRTlwToKVBFzV7sc50ABs3ktU4fr0fXWk3ab4gc2RrRFuu1D7ZodM35Yyle6CX/60e8ZXPijBLtifhqpzbEGMMDg3LezBP4zmbfp5FTwFyfoNIoCbjiEzRvleIo97BRH/o+jHJpKz1GyVjUWu3zX3AIQxJezmRWHqjO0HCd/rK/2jIOeGfeYYr3X0Z9OkkbryfTnasTUBYc9dvxOwQu3HGp2tt5w0MGe7W2mUGXL2fHsOM83y+ZPjZC5gyPV56s169TySEnIBdUdwngVKCxcO6mzDwrPU1XSVyJHrEiS74Y55hkVv1rjz6UDl4FYvRnIP/MpILM/HLFyGY14wXPSUtueCqIo+xkxVs4KyJKZ3C6HufHTwkeZSAPtJr4pz9vws8/ccHfHxINklkXk0IjmWcQzwEsH8xLYhkGUsp+l6z+t/tELb3wQD1GfKy19opRXKejElxtKg5xhQcLkq7LmrZb2Oj00wS1Z4K1tKRwWhmD4HoRTBDmKadl7Q
- 4yC/vaIU
- zToKdONgoRWLKwO+DvszReYLjE6ncJ/Ie67cUwhaP/Jg/er+TsGLeT7AdTZ/U+5uJrYIGo6pXjk9KVZd6XcByUNVcQhDpuBHqQrKbRhdI2e7lz3yZ1lAPGl7uUzfp6HSPHQQ8YJ1Wixd/bDswTv+mH+fYYVaDHWskEtSlF2PcxZS41lOjpqC2EpWi9m1M0iKs/Yxkm8t5OBnMkKUEbaYZ9LzIa0YGVi7YaOYg+DXfT1r5fT+wXF3VO7gNxKN5gI2y2P29wA95kr/Tt8iFr7ap/OVnSj8Dme/dDP5InDT1kq6CpBzQr4LnVywxC4lI+1aE5UwLbeJV4aKHL0yN5s35nSDOT9HcjCq+uHRKzN6CBOmvDgQ=
+X-HE-Tag: 1786583882-37069
+X-HE-Meta: U2FsdGVkX19frIW+KGR/YHRC0cYzO4CbZDx7KzPOBt62Di3692I+4I1plo+0FK3NYN2k6E/1mDXPPP2b5pOheFqyiW5vrN4SkTsKFVeouwxb1kCGebiar7khiafBfgPvv0G/Ey+2HfHPuvuxIAVEMfqbIqzJBgBoV/B7HNA7NbLHIlfdwmG0Ina8u8k4TBxX80nUWqElgR+UjzErsvwaPuTlqqRVvodbkDLAB7gMe+y9xRm903YZ4BpThzCo79KGUh9mjZb6xT2TRhZVkvYPYRzkDQcFbCEEdJBZE0Y4dIwRdl2l1f4/N65N8XNhmCkplDFi83AWA20fwjE9YgxugTdGV0ssq1o+QjpWzE0YnIkIiBwZyCO4SphYNhWTrlbvLE0Gi3S5LiMn1blZtBmstgNXuEd0+vk4r9CIjiiP32PtU9oW3pFeOiSkAJNbg1ASaZ9IUPNEMHBGefMO0pY0q+h5VxgnNdw9B8KnkPSeJ0Nr066njwRi6PBBC/ouhwG1TYbmOMlfmGfcEHtknFVZn2bsdWIvO1L27d3XIrYJ0TnYB6LrzkzwDIQK0s/dcVeLTCLtW8sbkjeDGY+o7QkH+0ZpBP/1SsdaF1VJ5Zj2SS+sTFRk+NH1Bp14P4Qm9c9khcUDMdf+PHYYLljqvqROh4BBEz3B6RPinEfmiVeZdFnyTB5ZbDxD/8HooBEht+IntADVy0h7K6avJ+rbU+tKCG43caPG6IEViZwtsetVqJGb7/ujl5bTteeSHmOxVLvkdPEii7h/tMayr5Kw8HOG5U0Da8+jBRk2qF+LpBVUbTKngf5pnjuRjDOyTOk9R1qJ0OB9Ec5zNRwzQ2aH6n2X8p875C5e6YvUB3dG9Kj6x26ZkqQb55u4JV/mucGfzTgfwuMMizxohQkQ3mBcKgsyrRTnv0cqv4ZAmRGXTLK8RMlHNH11DhDhUmnFfeA3jQ4w2ORzcAv9Htz400OwSPu
+ 79TmCfJ0
+ v5UQgMEFO/Pd9fKfC0elLLhYhZ2bL3QuGHFUA7TRBeRWgj0J93rdSp7yTBdvWzbZF414bj6G9YX0FrR7cqrOEwflPlPwaSeIcPJb7bi2nEOEIEWDvYzxfOWZCMJLkoHuKNIzvi2xsIHn9+OUVIeutTIXlPjLthzZi7F0PJ0OT7iwOiQyPtiN051zekv4/6HKo5aNeKtbBMBJVtqNGeDFDc0vmidsh/P5614H4qomaCjYej+nVU6x7cHkzft2d+UGWOIFkyDZkX0vX8vTk5jxvVLVIKUuEMHRdtpn7+rrhLFH+qo+7LGK/qVpzpue6PaKL+Eg4S4+gwb02HGj6WfxQlnx0TB14Tp/W0EWUdELW1DAajC8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,113 +101,74 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 8/13/26 8:53 AM, Barry Song wrote:
-> On Wed, Aug 12, 2026 at 6:17 PM Baolin Wang
-> <baolin.wang@linux.alibaba.com> wrote:
+On 8/13/2026 12:48 AM, Johannes Weiner wrote:
+> On Fri, Aug 07, 2026 at 05:00:00PM +0800, Ridong wrote:
+>> From: Ridong Chen <chenridong@xiaomi.com>
 >>
+>> Writing to memory.peak resets the peak for that fd only. Each fd is a
+>> watcher and reads back max(its own value, the shared local_watermark).
 >>
+>> peak_write() resets by lowering local_watermark to the current usage.
+>> To keep the other watchers' peaks it then walks the watcher list, but it
+>> stores the current usage into them instead of the old watermark. So once
+>> usage has dropped from a peak, a reset on one fd wrongly drags every
+>> other fd's peak down too, even fds that never reset.
 >>
->> On 8/12/26 2:59 PM, Hui Zhu wrote:
->>> From: Hui Zhu <zhuhui@kylinos.cn>
->>>
->>> In lru_gen_look_around(), the young counter tracks the number of young
->>> PTEs.  The original folio's contribution is represented by the initial
->>> value of young: test_and_clear_young_ptes_notify() is called on it at
->>> function entry, and the function returns early if it is not young.  In
->>> the subsequent loop, the original folio is skipped (its accessed bits
->>> were already cleared), so it is not double-counted.
->>>
->>> However, young is initialized to 1 regardless of the folio size.  When
->>> the original folio is a large folio with nr PTEs, its young count is
->>> underestimated by nr - 1.  This inconsistency can cause
->>> suitable_to_scan() to return false, preventing the PMD from being added
->>> to the bloom filter and reducing aging accuracy for mTHP workloads.
->>>
->>> Initialize young to nr so the original folio is accounted the same way
->>> as other young folios in the loop (young += nr).
->>>
->>> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
->>> ---
+>> Reproduced on 7.2.0-rc5-next under QEMU, two fds A and B on one cgroup:
+>> B sees the peak (410624 KB), usage drops, then A resets -- and B's peak
+>> collapses to 1060 KB although B never reset. With this patch B keeps
+>> reading 410624 KB.
 >>
->> Good catch. Please also add the Fixes tag:
+>> Fix: save the old watermark before lowering it and use that to floor the
+>> other watchers, so a reset only affects the fd that issued it.
 >>
->> Fixes: 56e5b60b2114 ("mm: support batched checking of the young flag for
->> MGLRU")
+>> Fixes: c6f53ed8f213 ("mm, memcg: cg2 memory{.swap,}.peak write handlers")
+>> Assisted-by: Claude:claude-opus-4-8
+>> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+>> ---
+>>   mm/memcontrol.c | 7 ++++---
+>>   1 file changed, 4 insertions(+), 3 deletions(-)
 >>
->> With that,
->> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>> index 2da55b778ae3..28577beeb3d0 100644
+>> --- a/mm/memcontrol.c
+>> +++ b/mm/memcontrol.c
+>> @@ -4746,7 +4746,7 @@ static ssize_t peak_write(struct kernfs_open_file *of, char *buf, size_t nbytes,
+>>   			  loff_t off, struct page_counter *pc,
+>>   			  struct list_head *watchers)
+>>   {
+>> -	unsigned long usage;
+>> +	unsigned long usage, peer_watermark;
+>>   	struct cgroup_of_peak *peer_ctx;
+>>   	struct mem_cgroup *memcg = mem_cgroup_from_css(of_css(of));
+>>   	struct cgroup_of_peak *ofp = of_peak(of);
+>> @@ -4754,11 +4754,12 @@ static ssize_t peak_write(struct kernfs_open_file *of, char *buf, size_t nbytes,
+>>   	spin_lock(&memcg->peaks_lock);
+>>   
+>>   	usage = page_counter_read(pc);
+>> +	peer_watermark = max(usage, READ_ONCE(pc->local_watermark));
+>>   	WRITE_ONCE(pc->local_watermark, usage);
+>>   
+>>   	list_for_each_entry(peer_ctx, watchers, list)
+>> -		if (usage > peer_ctx->value)
+>> -			WRITE_ONCE(peer_ctx->value, usage);
+>> +		if (peer_ctx != ofp && peer_watermark > peer_ctx->value)
+>> +			WRITE_ONCE(peer_ctx->value, peer_watermark);
 > 
-> Hi Baolin, Hui,
+> Sorry for letting your previous reply sit unanswered. You made a good
+> point on the peer_watermark = max(usage, local_watermark) being
+> pointless because that's how local_watermark moves to begin with.
 > 
-> I am not convinced this is the correct patch. test_and_clear_young_ptes_notify()
-> only indicates that there is at least one young PTE among the nr PTEs;
-> it does not mean that all of the PTEs are young.
+> So what you had before was indeed better. It was just me missing that
+> detail. Could you please go back to your original? Feel free to
+> include:
 > 
-> Am I missing something?
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
-You are right. But I explained why this is done in my original commit 
-56e5b60b2114:
+Sure, thank you for your review.
 
-"
-Note that we also update the 'young' counter and 
-'mm_stats[MM_LEAF_YOUNG]' counter with the batched count in the 
-lru_gen_look_around() and walk_pte_range().  However, the batched 
-operations may inflate these two counters, because in a large folio not 
-all PTEs may have been accessed. (Additionally, tracking how many PTEs 
-have been accessed within a large folio is not very meaningful, since 
-the mm core actually tracks access/dirty on a per-folio basis, not per 
-page).  The impact analysis is as follows:
-
-1. The 'mm_stats[MM_LEAF_YOUNG]' counter has no functional impact and is 
-mainly for debugging.
-
-2. The 'young' counter is used to decide whether to place the current 
-PMD entry into the bloom filters by suitable_to_scan() (so that next 
-time we can check whether it has been accessed again), which may set the 
-hash bit in the bloom filters for a PMD entry that hasn't seen much 
-access.  However, bloom filters inherently allow some error, so this 
-effect appears negligible.
-"
-
-Based on this, I think changing it to 'nr' is reasonable. For an 
-accessed large folio, it's better to have the bloom filter rescan the 
-PMD and keep it in memory instead of reclaiming it incorrectly.
-
-> bool contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
->                  unsigned long addr, pte_t *ptep, unsigned int nr)
-> {
->          ...
->          unsigned long end = addr + nr * PAGE_SIZE;
->          bool young = false;
-> 
->          ptep = contpte_align_addr_ptep(&addr, &end, ptep, nr);
->          for (; addr != end; ptep++, addr += PAGE_SIZE)
->                  young |= __ptep_test_and_clear_young(vma, addr, ptep);
-> 
->          return young;
-> }
-> EXPORT_SYMBOL_GPL(contpte_test_and_clear_young_ptes);
-> 
->>
->>>    mm/vmscan.c | 2 +-
->>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/mm/vmscan.c b/mm/vmscan.c
->>> index bc324e37c5f1..264017850a55 100644
->>> --- a/mm/vmscan.c
->>> +++ b/mm/vmscan.c
->>> @@ -4192,7 +4192,7 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
->>>        unsigned long end;
->>>        struct lru_gen_mm_walk *walk;
->>>        struct folio *last = NULL;
->>> -     int young = 1;
->>> +     int young = nr;
->>>        pte_t *pte = pvmw->pte;
->>>        unsigned long addr = pvmw->address;
->>>        struct vm_area_struct *vma = pvmw->vma;
->>
-> 
-> Thanks
-> Barry
+-- 
+Best regards
+Ridong
 
 
