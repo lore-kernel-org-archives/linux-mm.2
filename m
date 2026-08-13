@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EFE4C5CFDB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 10:20:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 756F7C5CFDB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 10:21:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 479F26B0270; Thu, 13 Aug 2026 06:20:26 -0400 (EDT)
+	id 650306B0275; Thu, 13 Aug 2026 06:21:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 450E46B0273; Thu, 13 Aug 2026 06:20:26 -0400 (EDT)
+	id 628496B0277; Thu, 13 Aug 2026 06:21:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 319AF6B0274; Thu, 13 Aug 2026 06:20:26 -0400 (EDT)
+	id 51BF16B0275; Thu, 13 Aug 2026 06:21:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D0796B0270
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:20:26 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7A49B1205B6
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:20:25 +0000 (UTC)
-X-FDA: 85095851610.12.87746EE
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F0A76B0275
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:21:13 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8BFE1C05DB
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:21:12 +0000 (UTC)
+X-FDA: 85095853584.22.CBB17D2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id AAEA8C0004
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:20:23 +0000 (UTC)
+	by imf10.hostedemail.com (Postfix) with ESMTP id B7AD8C0003
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:21:10 +0000 (UTC)
 Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n4RBpKPN;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MAS9ggXE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786616423;
+	s=arc-20220608; t=1786616470;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JZFg0X5QTE36RTVxRqV5PSlcb1r9Wz3Xu3XHGjbwW6w=;
-	b=SUIDrcz0/I2Gu3mdtUzPmjfgfsqnMO96eoQ+ATIjSYJbLewOlrXN9BPfntGQNYFne4f1L/
-	9d3Ee4ist298wf3WJs8HCjJAbYaRPYAITosb59VpD3SfthFoC8xWXa2eLFdf7Xo6s5WLRe
-	b0VuvObVF8akDHOLOp87H6ZS05hLXrU=
+	bh=SbuxHmqDbr/TDoLiKVstYcqIhkRii7nKMWvnVw3gtYk=;
+	b=WsE4zY33zmnY9hu2Syp8tlO5QRhf+mVkP6ePmDQa3ldGf56tp1KMpd2E7HlcWklp0+3tFd
+	hd9UWqyIoIjiRxYmfgEFQZVIKD56xyK6htj09OzatrTVnn653gneAyuM+hwypcnllKeo/I
+	Ley7C4m5J6PPeTSuv3p8PxPm6p3TwhE=
 ARC-Authentication-Results: i=1;
 	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n4RBpKPN;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MAS9ggXE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786616423;
-	b=TDJmxvhFcCwGMgqJOMKLgHLp36O9dSX7sLfDRi3HMEKnGm59GqG1GlbmqvM13K5S9WYNqm
-	5myEf92nfDxukFNCM4iyW6vYJkw/O7Fk8q1BcmHh2MGnJikr4x14Ovqivs8f0lsEKmBoKQ
-	vD+Ni1WDdQJiRCzgxl8hQHsOUmYLo2c=
+	t=1786616470;
+	b=zHI5rBMHwGyzTjulXS5l7nJTBZHWHzwbKI3BTLvWmef8mcobmfQNWfDMsJbS/RbB1eLAnM
+	YNUE2QH9Q1by0c0eAAN/NKeLYk/lw8d/2tvZ2BlwXgtxZIEa9OfK2wQVvnVF22s8hyq95D
+	CDgv/ggvp9QoAWtXZuHDamffTohrfm0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DDC0642E0A;
-	Thu, 13 Aug 2026 10:20:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311C01F000E9;
-	Thu, 13 Aug 2026 10:20:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 030B7404A6;
+	Thu, 13 Aug 2026 10:21:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669481F000E9;
+	Thu, 13 Aug 2026 10:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786616422;
-	bh=JZFg0X5QTE36RTVxRqV5PSlcb1r9Wz3Xu3XHGjbwW6w=;
+	s=k20260515; t=1786616469;
+	bh=SbuxHmqDbr/TDoLiKVstYcqIhkRii7nKMWvnVw3gtYk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=n4RBpKPNCW3JkuoYqz7pTFdDfpTENI6prlNyJjbqkM6u9uYgmWoQLFiYArEfkGdq3
-	 goolmqOWct5YlYcW92DydtjTmeAqdTEA40uhEwMNQi8RfSFT18sngD5iiZzFXSYNYD
-	 eHaBvSSwMAdKdqdBmEa+ypzES/X/UY4S4VTxshc2nGSBwcqm40WOt9N9g0CaR/MCaH
-	 q8/kf3+Ip8rn5pxt5oXOpvu64Q83qhu9VfclnnOJ9nGsFk9pWKvKEy6z20ma67MS70
-	 Fdy3Ro2mcXqiEArpx4ZEXR7iaBGopaXXLboqg1v8TmlrGOnf121pVsV8SpCxtq9SJX
-	 842lPv9pVRgAA==
-Message-ID: <82530a53-b4c8-4671-b55a-c7ef95e06dda@kernel.org>
-Date: Thu, 13 Aug 2026 12:20:15 +0200
+	b=MAS9ggXEUpw/Dqk1MOhvGtPckZ0uZJR5ZZ78AaYcCnRZuxCBshpraw9TKluwbOkhz
+	 FsX5ZSPNzGP9TK9jC5R78hb8VhPfK9+16hVNKHV0AJfLjdve1teJvZNi4pgRWl+rHd
+	 CzDREZT6t7dEMDDj/945tHNmQetmIBFRsJaH+5TAf1PlOw4wqia4ci2fU0LtvEHB8j
+	 Mq/dxut0XI36GEVu3ZQMKCshK3k105UF73M1Il1DzHbVLedPsdhhD4t3AERFjxajNy
+	 C+B7634Zmvcok95MdsJF6rANEdD94ykeb4RFG4JU/kiOHrVJFAGI6A5WRcEQ2ub7hK
+	 TfeAyJ+BKT+WQ==
+Message-ID: <6b7ccd6d-c332-40fe-a1c1-65ca11a4faf3@kernel.org>
+Date: Thu, 13 Aug 2026 12:21:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/5] selftests/mm: skip COW tmpfile cases when
- fallocate() is unsupported
+Subject: Re: [PATCH v3 2/5] selftests/mm: skip guard hole-punch test if
+ MADV_REMOVE is unsupported
 To: Muhammad Usama Anjum <usama.anjum@arm.com>,
  Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
@@ -84,7 +84,7 @@ To: Muhammad Usama Anjum <usama.anjum@arm.com>,
  linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc: Sarthak Sharma <sarthak.sharma@arm.com>
 References: <20260727095225.372655-1-usama.anjum@arm.com>
- <20260727095225.372655-2-usama.anjum@arm.com>
+ <20260727095225.372655-3-usama.anjum@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260727095225.372655-2-usama.anjum@arm.com>
+In-Reply-To: <20260727095225.372655-3-usama.anjum@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AAEA8C0004
-X-Stat-Signature: c8bnunf76ar6j7mctbuo5snzht76yaug
+X-Rspamd-Queue-Id: B7AD8C0003
+X-Stat-Signature: zqitpe7kssj3jokjst7bsywtkycdy6mr
 X-Rspam-User: 
-X-HE-Tag: 1786616423-679851
-X-HE-Meta: U2FsdGVkX1+MCS54qiAi6h7uDByF61Gbo0rQ+i8R4K5WuM8BwsGCcimcpIXrGJYKdetZdyAaTHwiA6k4WFUOh5IT/AMeu2casfxaA/mlQHutNZSnLai8nXdhZbRgjWRlI2+qr/ip5cpBK4Ay6WzV8aU/aXnE//QAZikIGdw7Pvr5fRAQ0OpY5qaILC+20a8YfWeEvMzlQ8H/yYro5uy8JXDO2CCwD5nYtHLmmdUVCsy3bic7EpcAsvPefUWKQJ7sa7k5yTzINODblK1sGMZLpTfNE7I4X8Zj0yCHb0CMIkwfsxViSEYHjju/Pt1YMruebgPoeMZsHqdzyhEazXkxy1TcLBiH5SCLfXZQKePa2++C5i1YIjfoNHIsjisOiGr2m3I4oD7fO6/qhmKOMkswrspa0rF7RRjh7GglFtCG59oVQo6x6iRXzZt2lcHLQcprGHT6abXhFFL6rDEiIyfmTc7HQxNOELDo7/5TNcyQgjMmMLtBGQaYt9by3QAR7lklm6WA/WbVCfsnSdJJvBI0yPXNKUihX4GtZmdU1kHZCGg+kw7BGshY9l0S+dhgL25pm2cCoqadguBn6mYdeHiJSAl6Rbeexh6pOsHlgcekh/2TCBqs96FL2B7qTmiA3lR1CiO8v0jyVe6ZQzcOlnhNfc07xIzYLbbdyPkAZosJeLRSHB9IqOJW8YIZR0yyjke3JtDK56HG7iBSwG0xUyH/R7sqtw7wKEoudxeVTpQJKOLkfNMMf/xGcYW4g3YxQcoDLRj+Jx9IsvRk/jdYSdwqChEXS8IanHKDofrGTgcnWEv4FOs5WmDv1uJ3vwyboeMTenb8H4XfErJfuMcxZVMEtjM6B686PSCmD2HgqSH2R/a84WQcGs/pO97NELD5XsKE0/D++Km8P4dQWL8pMOJSKzWuPVLWMICGYEKEdMA5v+3dMZUGK32YY7438uAuynRFjUHoGVW2+wWRO20+Eao
- KaEZO/LP
- 5f5qnCRYbOTR0Izg1oaM2tiqKg7L+8j+91uRhquDMNzJ+01LpgyA5+vW+pkzUJ5pxvSLo0j4IZZhFE14lHAy5yA4K+n4hssfGSq/cZLPHvFNo5mdzWFWngbujzbpJXLFmMCT42tob4f+7WVojS4cLzWUjYt86bGHZhf2KimPfqqtEOakQJGbNlP5ZlPfrxudcVw6Bz38RR+Pay8l2djLYYO0dDFxWFM3Y8LRxnbICrr8p2ftlVR5UMHUnR3IOeSQvLihTk08gkhpmxWnzdmVb8Nj5XXAK1nybIzWqO9qUWJV5dnGRk9WcmBNpf9jFiLqd0mIm0OMINVIP/M+jUPrZgLbmwRAii90YsMmHQElK958diTHwjBWzJt9nDEZe8Hp8j2z4xyhIYX9hZi517z0Rh8MW8FNX0Q/Ez6/k
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786616470-801228
+X-HE-Meta: U2FsdGVkX1+bqWzdf/Su86GIh4Eh3ya5Y0gVr3JAACf6oNuceJouE358UoOs2tbaR/zHjHPWQr9N2IClufIeE+QmHDepOu+52JSxq6zqOEVP8UAO988ThvtBmp81TgZSg7BWsRRiV0yYGvJffMRBHbt7g35JmetqJQclNT8q4TEApSUV5mqOh97kwQzPf0sOyvMeRpw16AAvDdiBTtHMN1NnljLl7au+2bp8BH29GE+XeEKhm4KpIc89bG+tXoKh11WJZZ0vLfqHcm2kfd6Rz2OA19F/Btrh26Yi4//rsWnjLR1kLACunyAtotVB3r6aQi6knVZHmDxnWNjHVbAq7A1jMjiidfLkJQO514u/f/1r6mOUJ0xFpSKU7fPSxMsBTO2wT/Xa6s9EFiiuxyxVo87nkY6HdEoXb+KlNjTAIjp5JJMuvp616RAUIw1RhwHiF3sNkOKMB97Sn/SUQjILCPgjMfgnqcA25EfRziIdS+qqpWCRCXcJGYRkV8SIJhjRYiNrSDB1QDynUYUTYcrdvTqXVBnDyxAtJDqWQPq8QrsJG3YWbzJLHTa8++80bwRmvJ7F5hCYnvp3KgSlSFSv4ajOJq7rj1taRr0/7ApeokQs42rZsrGJvOg0efFRMpMkrAwHi/Ve3B6bjuYGrWEJmYWLs53HKayss+BjPZnHCtJLiPL+Ou0y3HBzxgHcxuNGnntziqqWIwszbrB6N1c+G4hTfT7oQtjvu69Sb2b10k7PPH0xIxSihZ4D9MQar0RnflDudPyuTkwObVRtoqm8N9TwpKjiVjts7sfyxN5OeUP/Lcpr3kpYQqAof1oXLooq9i12X/flKqt98makkPJPh1eRz1kvSqak89GhTLDLdO1SY00PKaDtJSkCLo0R8XQZAtMBHA3KVYBkoDU3FWqbDAy6vFNc6PaQ0TH82e9KmrbqWkjb0tkyEW21phYqTHZiH0PzNYGEebpTP/L7Mza
+ fr64gh7N
+ ZyADRKJIdOvt/c6ygbQa6tDdom5o9wfSbNI0O1wiOQ3urVNm62miQMcrrMaIOtLJLAIBkvzHq13eIjL8zL9fARi5alDkHhbGYj5/VhNV+7KgLVMSZzhnZjzP8c5l3O2xrIENZFy/+RhRKM7ftYCwl8Sg0U0d21QxTYzEzQHY0g3UII8/hjRxJ0EkWK2+2u5QcG4nYmNkzHDbevXmnieQYrO11oxKmnE4hE/KFtyum8Npz7ZifAARd2+aN/Xh6uMAWro6v09Fqy7HTMcwTjF5I7rLyPo4vz92givdRm1RVVuWIWjXK2x4EgRG7SwOMqndYFn0kc0rY7dbx5Jv+tJZmU/ZbV0hPM/Q996oxKVwLUfXVoWNmlK/zB896o0NDcrerOM0Jc4g2DahlCxcAD1hmKLnhPltfEzyYpbe+5nitZbNerkajh/hBykv0sRitZ9wXWTcM05J2VMtZC9++GWRQW2hgwA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,24 +150,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/27/26 11:52, Muhammad Usama Anjum wrote:
-> The tmpfile-backed COW cases allocate a one-page file with fallocate()
-> before exercising private and shared mappings.  When the filesystem
-> backing tmpfile() does not implement fallocate(), setup fails with
-> EOPNOTSUPP and no COW behavior is exercised.
+> The hole_punch case verifies that guard regions survive MADV_REMOVE and
+> that the backing range is punched out.  MADV_REMOVE delegates the hole
+> punch to the backing filesystem, which may reject the operation with
+> EOPNOTSUPP.
 > 
-> This occurs when the temporary directory resides on a filesystem with
-> limited allocation support, such as NFSv3.  Reporting a failure adds
-> noise because the test prerequisite is absent rather than the COW
-> implementation being broken.
+> That result means the test cannot establish the state whose guard
+> semantics it intends to validate.  Treating the missing filesystem
+> capability as a guard-region failure creates a false regression.
 > 
-> Report EOPNOTSUPP as a skip.  Continue treating every other fallocate()
-> error as a failure so unexpected setup regressions remain visible.
+> Unmap the range and skip only when MADV_REMOVE fails with EOPNOTSUPP.
+> Preserve the assertion for all other errors so failures on supported
+> configurations remain visible.
 > 
 > Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
 > Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 > ---
-
-Worth a Fixes: ? I think so.
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
