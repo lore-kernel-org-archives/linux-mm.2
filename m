@@ -4,133 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB2DAC5CFCF
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 12:43:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70EE0C5CFEB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 12:48:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA4D86B04E0; Thu, 13 Aug 2026 08:43:55 -0400 (EDT)
+	id 8B1246B0253; Thu, 13 Aug 2026 08:48:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A55BD6B04E1; Thu, 13 Aug 2026 08:43:55 -0400 (EDT)
+	id 862586B0285; Thu, 13 Aug 2026 08:48:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 945246B04E2; Thu, 13 Aug 2026 08:43:55 -0400 (EDT)
+	id 7A09C6B0287; Thu, 13 Aug 2026 08:48:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 65BED6B04E0
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:43:55 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E4D2C1A00E8
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:43:54 +0000 (UTC)
-X-FDA: 85096213188.30.BD5169C
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0D5F1140004
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:43:51 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DA166B0253
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:48:30 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A3991A0102
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:47:53 +0000 (UTC)
+X-FDA: 85096223226.01.15B5A9F
+Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [118.143.206.90])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 070FC14000F
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:47:49 +0000 (UTC)
 Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=thingy.jp header.s=google header.b=WXCVJarf;
-	spf=pass (imf09.hostedemail.com: domain of daniel@0x0f.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=daniel@0x0f.com;
-	dmarc=none;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786625033;
-	b=htYNBQinS84/EKclMWWx1fUDttqNZIb4t1zpfciRVWpOBP4mK8Lr1i5OdiynIeo1NelNfx
-	xYiCu4tqQgEpXD1cPJwBz1hpWhu3EfLM5XeFpxcgPMyVIDUvDN/XpMr8odSfIBDGtH12mq
-	y4yfhyCGRKM4B8zstGMwFBTIMIyWfe4=
-ARC-Authentication-Results: i=2;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
+	spf=pass (imf09.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 118.143.206.90 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786625271;
+	b=U2rDaz8x4+Dcz6zCUWAS6jNT53u5RAXCbV+7IRnrOsz/Ec4Ge+kSaUd9jBwRs4cF4DG9i1
+	/ZwWWfUGVaW7vRa3zqsk7FV99QUxOfn9PldZiJW/8rm07uA91nzckQ3CAAJzSrWyFxk8LV
+	32rEy5lo1dQhaaxBrLVHc3aAx25ylQo=
+ARC-Authentication-Results: i=1;
 	imf09.hostedemail.com;
-	dkim=pass header.d=thingy.jp header.s=google header.b=WXCVJarf;
-	spf=pass (imf09.hostedemail.com: domain of daniel@0x0f.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=daniel@0x0f.com;
-	dmarc=none;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786625033;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
+	spf=pass (imf09.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 118.143.206.90 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786625271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8MzUWj3rgn1GnbdJfRHSG5hyWrOQ49fk1AOnT9UoUDs=;
-	b=5wzBVPd/vxcu58p8eviZfR5hit64jsTegA7ESZjY7Y9z8nawEmQDJJ6oCDpoLQo+kr52lW
-	QXQFxwNJzo4BQCHou88qpfcxhDbS6HsfG33hK6XsZqto/wZ0oBCTYV3+fFUXn7leWv6lV0
-	KLhDg2Vmuklvrj/Y8kTcc/IP4d3/fEE=
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-7ff05e5d009so22590957b3.1
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:43:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786625031; cv=none;
-        d=google.com; s=arc-20260327;
-        b=MwRDepgyF0LS1K8eZ4MtICc94YCDNI+US+XYGcPiD3fkobYApcMLDqlJJ2i68q9DbI
-         RbyOvwgBpvyulbgwJr8r27ZCy235E67HcbDsaxMQiH4pZtXLSqElR4cnpKc+5qHB5aIF
-         ahhc/G/w74koIWC7eF9B8jV2UD4B02ikObUWi+u9OwZZcWKkveVBNW1pQxh93CvUO87L
-         k2XtCETkcLq6YARzKQ/wePmGL7W/LJ3hDTqDV6eJxXkfIC0NKYrSwAc1JBjMEn6uxj9V
-         DEyRCSBjXyQ1K7ZPvTy++hMPDQbb1eiDzcSOYxZTogYPNZZQm2azBRMABFfaw2rxoc+I
-         Lk2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=8MzUWj3rgn1GnbdJfRHSG5hyWrOQ49fk1AOnT9UoUDs=;
-        fh=6Q0QR2lX/DT0AZAreoqsNFtWchLeoyVt2dGHWtUVn9o=;
-        b=auYyEQBg5ZLZ9maSwUkThTfnZ/b7rorrriZJkkPtP8igXWDPqTMsAj3g4rOw89JVeJ
-         nr0WpH86QOLgpYEscC85HCQOGf2ElvgQ85D1jg8gQQrw/ziiSiiW+F9k8oiPA2EQWLxx
-         M6Z83cPfqx+pQkpG7v9RX3iX6CO2JG3nOVNweRzNIQIh2pAyO40WBu3YhfSaP1XBVf+y
-         gkuMXgaTiNRfe9PDSxJkEVU9W1SJdzF+P3ZLbp4m6un+Lw/OfnsDkZ/RVjaxy7CeB/ss
-         Dct/244e1Jw0km1baqUHcab7wParo6NMWiy6MQcZ+FaX8VlTTr4+emDidWLk8Cz8r6/W
-         zNJw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=thingy.jp; s=google; t=1786625031; x=1787229831; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8MzUWj3rgn1GnbdJfRHSG5hyWrOQ49fk1AOnT9UoUDs=;
-        b=WXCVJarfjvV9asFV1a/2rRGDP6aQ14h7PHx+rv/8zNMN08SjhxQ/kDrIjrnTVpsaR8
-         D3G8LfOEQuz9fRdrU7q4lvFZFqg0O+I1xUdK7lqsKfbn8WIAkH6iKToEZiJRydkyN6iB
-         NGX5TguBtmvgd84zaZ+tLgYuQlzQSzKrbJ8uY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786625031; x=1787229831;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=8MzUWj3rgn1GnbdJfRHSG5hyWrOQ49fk1AOnT9UoUDs=;
-        b=LgS2Ea0d+XIk/M+gpXf18t7G/s62vv08gy2lKAQcK/Wyrz97UlZv4+IlKdJPUVux2o
-         z7Tbbgvqk9X8IuvcEQeQtYOMErJweNe5oywf9mJL3fGmOnJskN0mrJNvSuRUuJ+0niMA
-         OkOi+8kqZUP35Exth2vlXDpLNtz5lcJnjGIIOUYVpWuQUqDhBG8+5I6ZCoVZsoZAl8Tq
-         mKv9JIYRop7fx1+X1kir3QanE/+KH1s98uCxi3VN8usgx85CaTy8s66/6q7cUg6n3pbd
-         e2y8Vy9AJkNCX4IHDVcn51viPSM3ZYkA6xBr8Gf+E+8j2ux9eLEfvg5o4MOSVdc9bXyd
-         e57A==
-X-Forwarded-Encrypted: i=1; AHgh+RqfhjZIFUbK4NFkxUu3L7QcO51MCwmTtywRuWi4KLWeVwmK9moxbpnwNIaprT3/oNMg02BBABjIig==@kvack.org
-X-Gm-Message-State: AOJu0YyKrkm0ESredOoGFj9O5GdDvwtgWAjDtHmgCZ1Fu7DGvKKXrrV5
-	mhhA0cDhpJm9cPnEFN5zgIs3morRvfEr9IInFnVEHZmv2RMyoHe0V4kkEjCd9jlpKLLEx0DVlOm
-	sB+230tLAzoEdZ22CNrDXX7ir5105c4/QvX7GIZWYrA==
-X-Gm-Gg: AR+sD13dMA1h/4WNiOwcBPonh5B+AZs7V4zUaLKoBIXwcdYK3mlRGWo9SX6PI7K9QlH
-	Nkx5KJu/QtwYItXDCIuTGqAbBvPtqllsrVzHsTaPtLyBGc0vWeDa3isPUY7HCrLh/s983D2buKI
-	T3fPmGXZanqIsZIAQDBSXmmgr71xUXgxGLepvGsGAiJ1CaFlLIETlqTaBCuzzYJ85/hygkbVCK3
-	iQvZ95/+MMG7ootKsPq6AQDtHZ6NBLLLx+sJDLW7v6epbqg+5nomAHOAjs3W5DrW+xrOtcVTcPI
-	9w5lEI35AcM5OQKuLGwf4zouQ3zTFyJpjT91+1gCpAwmybVkvzyNAcCU9yHgAO3Sc+4RYPKlD0n
-	d8Q==
-X-Received: by 2002:a05:690c:6604:b0:80c:3848:bde6 with SMTP id
- 00721157ae682-8347604ac58mr25851337b3.30.1786625030082; Thu, 13 Aug 2026
- 05:43:50 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references;
+	bh=pBl4fnEad2veb9GwA+Oq2e1FTTCRDdbhX8m/rSQrPv0=;
+	b=ObmnCMxKLcQtZlDrhXXGHsXwaZnkUqUNG0DhvoGVwMtJyrt66LIeAIOso7RGScRJUeiOYa
+	PeEjH5aAdQD3q2YKS/wO8nmTu2XvQCO9C8+YNyj74fzJGgogx/m0mUaLA1jGbELMHCo/4j
+	8Nt0Pblg68C++/TZ/Q65p3QJYIBLvaQ=
+X-CSE-ConnectionGUID: c5621pPWRM6wYrLjDcR13g==
+X-CSE-MsgGUID: Na/adh9sRPqCsXDWisqs8w==
+X-IronPort-AV: E=Sophos;i="6.25,221,1779120000"; 
+   d="scan'208,217";a="159198204"
+From: =?gb2312?B?uN/P6A==?= <gaoxiang17@xiaomi.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+CC: Xiang Gao <gxxa03070307@gmail.com>, Masami Hiramatsu
+	<mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lorenzo Stoakes <ljs@kernel.org>, gao xu <gaoxu2@honor.com>,
+	=?gb2312?B?06G0sw==?= <yinchuang1@xiaomi.com>,
+	"linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>
+Subject: =?gb2312?B?tPC4tDogW0V4dGVybmFsIE1haWxdUmU6IFtSRkNdIHRyYWNpbmc6IGFnZ3Jl?=
+ =?gb2312?Q?gate_ring-buffer_usage_statistics?=
+Thread-Topic: [External Mail]Re: [RFC] tracing: aggregate ring-buffer usage
+ statistics
+Thread-Index: AQHdKZr3AIp7eq0PuUyEknsvZXxszLaaZZoy//+kuACAAeZA1w==
+Date: Thu, 13 Aug 2026 12:47:44 +0000
+Message-ID: <d5bb28119dbb4ff1ab1059bb2564ad29@xiaomi.com>
+References: <20260811114818.1449933-1-gaoxiang17@xiaomi.com>
+	<20260811100830.7976bbe8@gandalf.local.home>
+	<cd441eb194d54265b1bf9ab659716c45@xiaomi.com>,<20260812114704.2f61bc5a@gandalf.local.home>
+In-Reply-To: <20260812114704.2f61bc5a@gandalf.local.home>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.237.88.13]
+Content-Type: multipart/alternative;
+	boundary="_000_d5bb28119dbb4ff1ab1059bb2564ad29xiaomicom_"
 MIME-Version: 1.0
-References: <20260813063401.1786548-1-thehajime@gmail.com> <20260813063401.1786548-4-thehajime@gmail.com>
- <2026081355-remold-sterility-84f9@gregkh>
-In-Reply-To: <2026081355-remold-sterility-84f9@gregkh>
-From: Daniel Palmer <daniel@thingy.jp>
-Date: Thu, 13 Aug 2026 21:43:37 +0900
-X-Gm-Features: AUfX_mxLK2-tTZ4HbMKH826rkOgcLTFpV3jXv1YZv32aeraWoqNHTweMz1gVfTY
-Message-ID: <CAFr9PX=zC8GnxwrR=wTwA4xQq89cHYpxZWooS+-=Q-WuNbjanQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 3/6] mm: nommu: fix an issue on map request to /dev/zero
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Hajime Tazaki <thehajime@gmail.com>, linux-mm@kvack.org, geert@linux-m68k.org, 
-	Arnd Bergmann <arnd@arndb.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 070FC14000F
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0D5F1140004
-X-Stat-Signature: 4rec9yz9urrpb5r3j1joxym4f1ewzrp7
-X-HE-Tag: 1786625031-192589
-X-HE-Meta: U2FsdGVkX1+aWIljkNrv8hxwpAw83TxTlKxLo0SzF5foYcWpZmGKyOAxLkW5WNt04yGYe7xCovHUT8KPyRV1Dg/VKPyS08PyKhV8iMsHL53PCBihgmQNlKPlj13NDjdz71fVvslodXiQdN6r2E9e3JgHUuJ20eHHskjdbQiBPxso6E3u5qGbGxKyeW0XQOyEw2dJ0Frjs3O/lvXgThmz84L1rHeSuT5EnemMbXXXFUx2QrHhmzigfj8YFFuTbSTMjn8fz2rE1KwC+66Jz56RXMgTlPkqeFtQ05WMXAwpY+YfImhnYMW8P1soikhUhfk7dAbu8IpZsvW6i18jTC8ABJ0yJ3kD0yegH6+jqCgL/73JYr1dNdRczBqCMNq+MU65YaaAGCxkKx5PYQFiAe2RgZPVWJo8irTEVE1jEneBPKW1X4QQKUdvN3WF0eyJGmXB8KdV6XWj7PEGe0MafhYzpLX3iiQYE5AlKpLxVvJAiwU2O4ln4K7VpAlgaoUNrL4HoIrL4/ZDxb4CjWxCv+zjTKMqprxE30B3o51VxXrrnMEWDGvTq0cHMGZazpwsIKrcwJ9TeicKwY5dQxX8/DIzj7VKiOOdFTIBZ7A6Ucxg2juDy5CnHPc1B6k/X/EeBw/2qsDlLCtqj+p7cbjx9Fq+F99ldbGlm4+KALdsljzf/nH4+xlGUehRS1Ll3IDby9hq6prMNel9CQdImZxIw0SF8Gf9uosebX+6j3pX8V0aQ80ms6YaQrH15oA7KdArxftxTcXPv6URpoOZM/UUQvZ3nG9nOiXEUq1bB25yY/WMnCnn53LvaQVb3F33LiD3pn3BjcO12wcQzHO6j2ji+WhLE/W0SYu36+m1eQzssE65YKY2nXW4CQ0+KW0FJ7jJUX5NqTzJd6hzws4FLenTsGgHInFBPYiZLSybF8tiB30DBo08NKEUaP7BP6orm8WaNCM+gZgsfp84iXWxcAAJ7Te
- c2y3Xla7
- W2clvpTHJqLOJm/eTutjtyCNrcNKJSe4giDd8PQSOohJ8t3wT/Ig3AIBs/nIr9MTUN8W7Znp3u7R6/+hnjB9FGOO1f/FmG2c+C6lQZzoj6vujkUJUJHsYcXdXx9F+uBVhqSWFD8dfDmKAoDw/pyN9H4tov16iNBczSaJlMTi0ZBu8AHOPUtFqtp+ma5fnVXj5aBAVO1HD9aq5MYLHly2317U+0Twhv431SiN75dew+ORsQifVGWFEFM2/h0AhdlYVwBoZJryKTxeVZAttxpR+PpDIYH5xAgdz9QWV4PS9XyafxoXB7JlvZ3gv95DN8af1Uszw/ddPf60WEL/Q97CWSnlv8SmR+aisAOfku07lEd5FOxO7K33olj1G2S3/ofN+8UaYMgP4quOpLsSCwZJbv7No6nElQqA6jqiS
+X-Stat-Signature: q4y74reqke6uokmd4rinze3pxj94ywt9
+X-HE-Tag: 1786625269-562263
+X-HE-Meta: U2FsdGVkX19JQDNOK8Fmpyv3ctThx8yTcHN1qWr2ZaM6IQjlaIAFSV4np4D2OUntKwa7WhkN1EgXYRydhlEPBaPFQ8JyD2wQ0+1wU2cOqt8/t23Sj2WX2ypDgYU6SkVYlOGoM8lWlNU1IYqSkjqOYhOrYubsNLxVVRNOiXZSt/AcV/nissEaCn6NjhmUpw9WK/iNUgg8mIFCrzOGqxjLsbuJJvOqAJ6QbD0lUnLo7xNCruximgL7nlzNWex3IMkHC90U1BXobE961NUvfOngndEIbmobtJgL/n+N1Baesa8vls1JCji4cPV9XxEtN+hAdPU+K8vETdMKptDKaR+SMJNMpKnGm7R3G7VVBzzyWlkkUCrSFYQ15yja0ORjzP8yS/xBVJqkC9/89lFThfWLF+lrU6mZ6Eo2HSwcHdIlqgCR8IEcf/s8wSIX6QOXIS5LE321NL1m8F6AWnSaIM5+ZdDgaB9XEGbKJd5JNArCXy8Y9LS+EFUIrOU1sNMuI3kbxF2Qwv7K891XwCONtD0JW0J9aOUwtZi1Wfs2GDF4lTKnWiUZ7WDmT5HCMepcl388WgoIwIYPxvw3c1MqOhlqdHUpDsXY70usA2SMmQ145r6Y8VAera7x9sKDj3z3HxPM7vBn35uy7coDhSD8bHh8g4E43a2+jj3Pht+NIez6EcEDLgo22S8zWsriFnERJ6iHyBUJpXraY51koBV7Gbd6/LAGgSEvvSWQQkBfL6rjvbtvY8rwB9eD7kysSKeydJ4Dqio9jfMJl496Od8oSsvUkdgAflTa0joLzUew9TW+yN3lo40QWaYGQg4QLzVwUS+BjkjcCrQQjo0Bnt09KhXYyGm5PNRbUI4XRV1BVk6bEYyNF1j/AvwiRzDipAMSACq+OtDU1rQMoceDJ/UL9XCWHRBlWNZJWmPpgirRAsprIcQtYqQ9iehBNBZISGu+8bJfWgKvrH4m9UNb14tOS/W
+ uav6by+O
+ tGaeOhxTgt07J4CIzURBATaJienjwfMwBm5rEFEDJJgc+NH0j922scttr1d5JdLwt4Q6edTRMBrSwNfjh3oIeE0aup4xSWwpmHFlfCSQRAecQCHpaW7dx5xat0orYPbLsBqdDv8HO33p3WoCqR2Q+N/yyiJFDg5sJHC98LyvA07FnxwlV2VjkuXfqCq0rt+yK4Rq1wm603NDQfUfkHywryLER1hIZZi5qUUfm49G/WftyJ/qxrHHfdPsS312ZLx0qyhsKrnmb7M4mkUV2mcMjJYoaOEYIHxSzcLbqVMsquGwnCSt8oGHZuwZA8z5YvHUC3yzvEgcVO6niBNdPlIFGTSTpSgewM7zDXk+kiJp0ri2A2CXpn3vFjbxYxnX0uBAutDdjgrAYGUWFnTlVmt18fnTc0T1u9vC7XKICG8sAn6X5UI9ayjmwOVzFQmy3QZO0RTY8h2Wgt3a8EJ1BZTpki1giOXD8bBrNOfEStXth5nLFzdbOFfVpX80+Vr+koKrZ93OYpt1gUJXs9V4tzhEsini3pAsMnJxYQPgj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,28 +95,225 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Greg,
+--_000_d5bb28119dbb4ff1ab1059bb2564ad29xiaomicom_
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 
-On Thu, 13 Aug 2026 at 21:26, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+VGhhbmtzLCBTdGV2ZS4NCg0KVW5kZXJzdG9vZC4NCg0KSSB3aWxsIGFkZDoNCg0KICAvc3lzL2tl
+cm5lbC90cmFjaW5nL3RyYWNlX3N0YXRzL3RvdGFsX21lbW9yeV9rYg0KDQpUaGUgZmlsZSB3aWxs
+IHJlcG9ydDoNCg0KICB0b3RhbDoNCiAgYnVmZmVyc19tZW06DQogIHNuYXBzaG90X2J1ZmZlcnNf
+bWVtOg0KDQpUaGUgdmFsdWVzIHdpbGwgY292ZXIgdGhlIG1haW4gYW5kIHNuYXBzaG90IGJ1ZmZl
+cnMgb2YgdGhlIGdsb2JhbCB0cmFjZQ0KYXJyYXkgYW5kIGFsbCB0cmFjaW5nIGluc3RhbmNlcyBh
+Y3Jvc3MgYWxsIHRyYWNpbmcgQ1BVcy4NCg0KRm9yIHRoZSBwZXItQ1BVIHZpZXcsIEkgd2lsbCBm
+b2xsb3cgdGhlIGV4aXN0aW5nIHRyYWNlZnMgbGF5b3V0IGFuZCBhZGQ6DQoNCiAgL3N5cy9rZXJu
+ZWwvdHJhY2luZy90cmFjZV9zdGF0cy9wZXJfY3B1L2NwdU4vdG90YWxfbWVtb3J5X2tiDQoNCkVh
+Y2ggcGVyLUNQVSBmaWxlIHdpbGwgcmVwb3J0IG9ubHkgdGhlIGNvcnJlc3BvbmRpbmcgQ1BVJ3Mg
+YnVmZmVycw0KYWNyb3NzIHRoZSBnbG9iYWwgdHJhY2UgYXJyYXkgYW5kIGFsbCB0cmFjaW5nIGlu
+c3RhbmNlcy4NCg0KVGhhbmtzLA0KWGlhbmcNCg0KDQoNCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fDQq3orz+yMs6IFN0ZXZlbiBSb3N0ZWR0IDxyb3N0ZWR0QGdvb2RtaXMub3JnPg0K
+t6LLzcqxvOQ6IDIwMjbE6jjUwjEyyNUgMjM6NDc6MDQNCsrVvP7IyzoguN/P6A0Ks63LzTogWGlh
+bmcgR2FvOyBNYXNhbWkgSGlyYW1hdHN1OyBNYXRoaWV1IERlc25veWVyczsgTG9yZW56byBTdG9h
+a2VzOyBnYW8geHU7INOhtLM7IGxpbnV4LXRyYWNlLWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IGxp
+bnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LW1tQGt2YWNrLm9yZw0K1vfM4jogUmU6
+IFtFeHRlcm5hbCBNYWlsXVJlOiBbUkZDXSB0cmFjaW5nOiBhZ2dyZWdhdGUgcmluZy1idWZmZXIg
+dXNhZ2Ugc3RhdGlzdGljcw0KDQpbzeKyv9PKvP5dILTL08q8/sC01LTT2tChw9e5q8u+zeKyv6Os
+x+u998n3tKbA7aGjyPS21NPKvP6wssir0NS05tLJo6zH672r08q8/teqt6K4+G1pc2VjQHhpYW9t
+aS5jb229+NDQt7TAoQ0KDQpPbiBXZWQsIDEyIEF1ZyAyMDI2IDEzOjIxOjI5ICswMDAwDQq438/o
+IDxnYW94aWFuZzE3QHhpYW9taS5jb20+IHdyb3RlOg0KDQo+IFRoYW5rcywgU3RldmUuDQo+DQo+
+IEZvciB0aGUgaW5pdGlhbCBpbXBsZW1lbnRhdGlvbiwgSSBwbGFuIHRvIGFkZDoNCj4NCj4gICAv
+c3lzL2tlcm5lbC90cmFjaW5nL3RyYWNlX3N0YXRzL3RvdGFsX21lbW9yeV9rYg0KPg0KPiBUaGUg
+ZmlsZSB3b3VsZCB1c2UgYW4gZXh0ZW5zaWJsZSBrZXkvdmFsdWUgZm9ybWF0LiBJbml0aWFsbHkg
+aXQgd291bGQNCj4gcmVwb3J0IHRoZSByaW5nLWJ1ZmZlciBkYXRhIGNhcGFjaXR5Og0KPg0KPiAg
+IHRvdGFsOiAgICAgICAgICAgICAgICAgICAzOTU2NjQNCj4gICByaW5nX2J1ZmZlcjogICAgICAg
+ICAgICAgMzk1NjY0DQo+ICAgcmluZ19idWZmZXJfbGl2ZTogICAgICAgIDM5NTU0NA0KPiAgIHJp
+bmdfYnVmZmVyX3NuYXBzaG90OiAgICAgICAxMjANCg0KWW91IGNhbiByZW5hbWUgdGhlIGFib3Zl
+IHRvOg0KDQogICB0b3RhbDoNCiAgIGJ1ZmZlcnNfbWVtOg0KICAgc25hcHNob3RfYnVmZmVyc19t
+ZW06DQoNCk5vIG5lZWQgdG8gdXNlICJyaW5nIiBhbmQgaXQga2VlcHMgY29uc2lzdGVudCB3aXRo
+ICJidWZmZXJfc2l6ZV9rYiIuDQoNCkkgYWRkZWQgdGhlICJtZW0iIHBhcnQgdG8gZGlzdGluZ3Vp
+c2ggdGhlIGRpZmZlcmVuY2UgYmV0d2VlbiB0aGVzZSBudW1iZXJzDQphbmQgdGhlIGJ1ZmZlcl9z
+aXplX2tiLCBhcyB0aGVzZSBudW1iZXJzIGFyZSBhYm91dCB0b3RhbCBtZW1vcnkgd2hlcmVhcw0K
+dGhlICJidWZmZXJfc2l6ZV9rYiIgaXMgYWJvdXQgdXNhYmxlIG1lbW9yeS4NCg0KVGhlcmUncyBh
+bHJlYWR5IGEgdG90YWwgZm9yIGFsbCBtZW1vcnkgbGlzdGVkLiBXZSBkb24ndCBuZWVkIHRvIGhh
+dmUgYQ0KdG90YWwgZm9yIHRoZSAibGl2ZSIgYW5kICJzbmFwc2hvdCIuDQoNCj4NCj4gSGVyZSwg
+cmluZ19idWZmZXIgaXMgdGhlIHN1bSBvZiByaW5nX2J1ZmZlcl9saXZlIGFuZA0KPiByaW5nX2J1
+ZmZlcl9zbmFwc2hvdC4gVGhlIHZhbHVlcyBjb3ZlciB0aGUgZ2xvYmFsIHRyYWNlIGFycmF5IGFu
+ZCBhbGwNCj4gdHJhY2luZyBpbnN0YW5jZXMgYWNyb3NzIGFsbCB0cmFjaW5nIENQVXMuDQo+DQo+
+IEFkZGl0aW9uYWwgYWNjb3VudGVkIGNhdGVnb3JpZXMsIHN1Y2ggYXMgZXZlbnQgbWVtb3J5LCBj
+b3VsZCBiZSBhcHBlbmRlZA0KPiBsYXRlciBhbmQgaW5jbHVkZWQgaW4gdG90YWwuIFBlci1DUFUg
+c3RhdGlzdGljcyBjb3VsZCBiZSBleHBvc2VkDQo+IHNlcGFyYXRlbHkgdW5kZXIgdHJhY2Vfc3Rh
+dHMvcGVyX2NwdS9jcHVOLyB0byBhdm9pZCBtaXhpbmcgYWdncmVnYXRlIGFuZA0KPiBwZXItQ1BV
+IHZhbHVlcyBpbiBvbmUgZmlsZS4NCg0KQWdyZWVkLCB0aGlzIGZpbGUgc2hvdWxkIGV4aXN0IGlu
+IHRoZSBjcHVOLyBkaXJlY3RvcmllcyBhbmQgYmUgb25seSBmb3INCnRob3NlIGluc3RhbmNlcy4N
+Cg0KPg0KPiBVc2Vyc3BhY2Ugd291bGQgcGFyc2UgZmllbGRzIGJ5IG5hbWUgYW5kIGlnbm9yZSB1
+bmtub3duIGZpZWxkcywgc28gbmV3DQo+IGNhdGVnb3JpZXMgY2FuIGJlIGFkZGVkIHdpdGhvdXQg
+Y2hhbmdpbmcgdGhlIGV4aXN0aW5nIGZvcm1hdC4NCg0KUmlnaHQuIEkgd291bGQgZXhwZWN0IGFk
+ZGl0aW9uYWwgaXRlbXMgdG8gYmUgYWRkZWQgaGVyZS4NCg0KPg0KPiBEb2VzIHRoaXMgaW5pdGlh
+bCBmb3JtYXQgbG9vayByZWFzb25hYmxlPw0KPg0KDQpZZXMsIHRoYW5rcyBmb3IgZG9pbmcgdGhp
+cy4NCg0KLS0gU3RldmUNCg==
 
-> Given the age of this issue, I don't think anyone uses no-mmu systems
-> anymore :(
+--_000_d5bb28119dbb4ff1ab1059bb2564ad29xiaomicom_
+Content-Type: text/html; charset="gb2312"
+Content-Transfer-Encoding: quoted-printable
 
-There are a few of us using it for hobby stuff[0][1] and there are
-apparently people using it for actual commercial stuff.
-There was a session about this at LPC 2025...
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dgb2312">
+<meta name=3D"Generator" content=3D"Microsoft Exchange Server">
+<!-- converted from text --><style><!-- .EmailQuote { margin-left: 1pt; pad=
+ding-left: 4pt; border-left: #800000 2px solid; } --></style>
+</head>
+<body>
+<meta content=3D"text/html; charset=3DUTF-8">
+<style type=3D"text/css" style=3D"">
+<!--
+p
+	{margin-top:0;
+	margin-bottom:0}
+-->
+</style>
+<div dir=3D"ltr">
+<div id=3D"x_divtagdefaultwrapper" dir=3D"ltr" style=3D"font-size:12pt; col=
+or:#000000; font-family:Calibri,Helvetica,sans-serif">
+<p></p>
+<div>Thanks, Steve.</div>
+<div><br>
+</div>
+<div>Understood.</div>
+<div><br>
+</div>
+<div>I will add:</div>
+<div><br>
+</div>
+<div>&nbsp; /sys/kernel/tracing/trace_stats/total_memory_kb</div>
+<div><br>
+</div>
+<div>The file will report:</div>
+<div><br>
+</div>
+<div>&nbsp; total:</div>
+<div>&nbsp; buffers_mem:</div>
+<div>&nbsp; snapshot_buffers_mem:</div>
+<div><br>
+</div>
+<div>The values will cover the main and snapshot buffers of the global trac=
+e</div>
+<div>array and all tracing instances across all tracing CPUs.</div>
+<div><br>
+</div>
+<div>For the per-CPU view, I will follow the existing tracefs layout and ad=
+d:</div>
+<div><br>
+</div>
+<div>&nbsp; /sys/kernel/tracing/trace_stats/per_cpu/cpuN/total_memory_kb</d=
+iv>
+<div><br>
+</div>
+<div>Each per-CPU file will report only the corresponding CPU's buffers</di=
+v>
+<div>across the global trace array and all tracing instances.</div>
+<div><br>
+</div>
+<div>Thanks,</div>
+<div>Xiang</div>
+<div><br>
+</div>
+<br>
+<p></p>
+</div>
+<hr tabindex=3D"-1" style=3D"display:inline-block; width:98%">
+<div id=3D"x_divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" =
+color=3D"#000000" style=3D"font-size:11pt"><b>=B7=A2=BC=FE=C8=CB:</b> Steve=
+n Rostedt &lt;rostedt@goodmis.org&gt;<br>
+<b>=B7=A2=CB=CD=CA=B1=BC=E4:</b> 2026=C4=EA8=D4=C212=C8=D5 23:47:04<br>
+<b>=CA=D5=BC=FE=C8=CB:</b> =B8=DF=CF=E8<br>
+<b>=B3=AD=CB=CD:</b> Xiang Gao; Masami Hiramatsu; Mathieu Desnoyers; Lorenz=
+o Stoakes; gao xu; =D3=A1=B4=B3; linux-trace-kernel@vger.kernel.org; linux-=
+kernel@vger.kernel.org; linux-mm@kvack.org<br>
+<b>=D6=F7=CC=E2:</b> Re: [External Mail]Re: [RFC] tracing: aggregate ring-b=
+uffer usage statistics</font>
+<div>&nbsp;</div>
+</div>
+</div>
+<font size=3D"2"><span style=3D"font-size:10pt;">
+<div class=3D"PlainText">[=CD=E2=B2=BF=D3=CA=BC=FE] =B4=CB=D3=CA=BC=FE=C0=
+=B4=D4=B4=D3=DA=D0=A1=C3=D7=B9=AB=CB=BE=CD=E2=B2=BF=A3=AC=C7=EB=BD=F7=C9=F7=
+=B4=A6=C0=ED=A1=A3=C8=F4=B6=D4=D3=CA=BC=FE=B0=B2=C8=AB=D0=D4=B4=E6=D2=C9=A3=
+=AC=C7=EB=BD=AB=D3=CA=BC=FE=D7=AA=B7=A2=B8=F8misec@xiaomi.com=BD=F8=D0=D0=
+=B7=B4=C0=A1<br>
+<br>
+On Wed, 12 Aug 2026 13:21:29 &#43;0000<br>
+=B8=DF=CF=E8 &lt;gaoxiang17@xiaomi.com&gt; wrote:<br>
+<br>
+&gt; Thanks, Steve.<br>
+&gt;<br>
+&gt; For the initial implementation, I plan to add:<br>
+&gt;<br>
+&gt;&nbsp;&nbsp; /sys/kernel/tracing/trace_stats/total_memory_kb<br>
+&gt;<br>
+&gt; The file would use an extensible key/value format. Initially it would<=
+br>
+&gt; report the ring-buffer data capacity:<br>
+&gt;<br>
+&gt;&nbsp;&nbsp; total:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 395664<br>
+&gt;&nbsp;&nbsp; ring_buffer:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; 395664<br>
+&gt;&nbsp;&nbsp; ring_buffer_live:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+; 395544<br>
+&gt;&nbsp;&nbsp; ring_buffer_snapshot:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+120<br>
+<br>
+You can rename the above to:<br>
+<br>
+&nbsp;&nbsp; total:<br>
+&nbsp;&nbsp; buffers_mem:<br>
+&nbsp;&nbsp; snapshot_buffers_mem:<br>
+<br>
+No need to use &quot;ring&quot; and it keeps consistent with &quot;buffer_s=
+ize_kb&quot;.<br>
+<br>
+I added the &quot;mem&quot; part to distinguish the difference between thes=
+e numbers<br>
+and the buffer_size_kb, as these numbers are about total memory whereas<br>
+the &quot;buffer_size_kb&quot; is about usable memory.<br>
+<br>
+There's already a total for all memory listed. We don't need to have a<br>
+total for the &quot;live&quot; and &quot;snapshot&quot;.<br>
+<br>
+&gt;<br>
+&gt; Here, ring_buffer is the sum of ring_buffer_live and<br>
+&gt; ring_buffer_snapshot. The values cover the global trace array and all<=
+br>
+&gt; tracing instances across all tracing CPUs.<br>
+&gt;<br>
+&gt; Additional accounted categories, such as event memory, could be append=
+ed<br>
+&gt; later and included in total. Per-CPU statistics could be exposed<br>
+&gt; separately under trace_stats/per_cpu/cpuN/ to avoid mixing aggregate a=
+nd<br>
+&gt; per-CPU values in one file.<br>
+<br>
+Agreed, this file should exist in the cpuN/ directories and be only for<br>
+those instances.<br>
+<br>
+&gt;<br>
+&gt; Userspace would parse fields by name and ignore unknown fields, so new=
+<br>
+&gt; categories can be added without changing the existing format.<br>
+<br>
+Right. I would expect additional items to be added here.<br>
+<br>
+&gt;<br>
+&gt; Does this initial format look reasonable?<br>
+&gt;<br>
+<br>
+Yes, thanks for doing this.<br>
+<br>
+-- Steve<br>
+</div>
+</span></font>
+</body>
+</html>
 
-One of the big problems for nommu seems to be that everyone is
-convinced it is completely unused and totally broken. :)
-
-Cheers,
-
-Daniel
-
-0 - Really good example(s) of the 68000 port
-https://github.com/crmaykish/mackerel-68k
-1 - https://github.com/LinuxMD/linuxmd my version of the 68000 code
-with devicetree like those fancy ARM things running on a sega
-megadrive.
+--_000_d5bb28119dbb4ff1ab1059bb2564ad29xiaomicom_--
 
