@@ -4,110 +4,177 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72814C5CFDB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 18:43:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A106DC5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 18:51:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88ACB6B02AF; Thu, 13 Aug 2026 14:43:42 -0400 (EDT)
+	id 738796B02B6; Thu, 13 Aug 2026 14:51:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83ADE6B02D6; Thu, 13 Aug 2026 14:43:42 -0400 (EDT)
+	id 6F0456B059E; Thu, 13 Aug 2026 14:51:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 777836B02D7; Thu, 13 Aug 2026 14:43:42 -0400 (EDT)
+	id 5D8426B059F; Thu, 13 Aug 2026 14:51:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 492A46B02AF
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:43:42 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 90160C028A
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 18:43:41 +0000 (UTC)
-X-FDA: 85097119842.18.3827259
-Received: from mta0.migadu.com (out-58.mta0.migadu.com [91.218.175.58])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 15DE920007
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 18:43:38 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nqgK9xQB;
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.58 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786646619;
-	b=f5dTIeH/YkfQ7QTif3el12GEe/l7fwrt6vadI7Fzi3hspwjt0gR50bcp3dL6n+oxOOJQCz
-	f341Cb1wCzIg+yQ6FApWkbzIrfN1PeCzcpSUnolTnxp/RcsLzu/P5IaHO7W5U5YOszJ19+
-	sylvcmHiVSg5W0dforf1KMN7NpUaaDI=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nqgK9xQB;
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.58 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786646619;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 245D66B02B6
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:51:41 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A7984160292
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 18:51:41 +0000 (UTC)
+X-FDA: 85097140002.04.8CE3A28
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf31.hostedemail.com (Postfix) with ESMTP id AB3A220004
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 18:51:39 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CN6YDwmW;
+	spf=pass (imf31.hostedemail.com: domain of ackerleytng@google.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786647099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ANl767K+FflPkVzxkq0TC0Xwm4jgcFSGEbqysNVgnG0=;
-	b=FHHyt0qqky68i0eKbcoDeehRLCKFvJoUQkVaF7POH2sLAvlOIIdi/nY1Q+mvwB3vBkQZd+
-	E9Zno0k1INRlGaxmySnNlxZ8dkYr3or2C5T08gsAV1yUa7EV0SV3ITD6kzuqrAhYCk1oQZ
-	vr9kZrPCwA0X7JPpLH0eBiV0hAzCJb0=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=jDzUtJv+bm4xBlAKD9OaG1FnQWn+8Dk7PeYCuphZl9o=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786646617; v=1; x=1787251417;
- b=nqgK9xQBc9H+Wbtrk8KubpIsAnbL6hx7Ny4rgnmTT1+MjQEbD4ZnqqQDl1R1/N339zLasSEM
- o0TghcMprqu9KQ7jvJia/2qrVaTRr+3g1ZVr74s/YnzEzwuFJj1qzakFmLQHVJR5J9wyALkmkBm
- Upseygc9JGRMbys8qkj9fEKY=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2a03:2880:10ff:b::)
-	by smtp.migadu.com with ESMTPS id f89b51daf9b6a4b4;
-	Thu, 13 Aug 2026 18:43:36 +0000
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 13 Aug 2026 11:43:31 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
-	Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, 
-	Jiri Olsa <jolsa@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, JP Kobryn <inwardvessel@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, davem@davemloft.net, 
-	Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	Stanislav Fomichev <sdf@fomichev.me>, KP Singh <kpsingh@kernel.org>, Tao Chen <chen.dylane@linux.dev>, 
-	Mykyta Yatsenko <yatsenko@meta.com>, Leon Hwang <leon.hwang@linux.dev>, 
-	Anton Protopopov <a.s.protopopov@gmail.com>, Amery Hung <ameryhung@gmail.com>, 
-	Tobias Klauser <tklauser@distanz.ch>, Eyal Birger <eyal.birger@gmail.com>, Rong Tao <rongtao@cestc.cn>, 
-	Hao Luo <haoluo@google.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Kees Cook <kees@kernel.org>, Tejun Heo <tj@kernel.org>, Jeff Xu <jeffxu@chromium.org>, 
-	mkoutny@suse.com, Jan Hendrik Farr <kernel@jfarr.cc>, 
-	Christian Brauner <brauner@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Brian Gerst <brgerst@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, Jason Xing <kerneljasonxing@gmail.com>, 
-	Paul Chaignon <paul.chaignon@gmail.com>, Lance Yang <lance.yang@linux.dev>, 
-	Jiayuan Chen <jiayuan.chen@linux.dev>, Emil Tsalapatis <emil@etsalapatis.com>, 
-	Ihor Solodrai <ihor.solodrai@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Geliang Tang <geliang@kernel.org>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
-Subject: Re: [PATCH bpf-next 1/4] mm/bpf: Add
- bpf_try_to_free_mem_cgroup_pages kfunc
-Message-ID: <an4GCBl_c4ub5Iit@linux.dev>
-References: <cover.1786086076.git.zhuhui@kylinos.cn>
- <5cd3efa9a4c614ba0b03cf4a3bd459dea67a9f61.1786086076.git.zhuhui@kylinos.cn>
+	bh=EePxyuxj/ORuNvnRcTqvK7WSqyTYRaPWHyS7fmka0Cc=;
+	b=4XXdUQ6mjhXLt5ZOAHPkrMaYu+TX5K9H/G+ejOBeiSF/8zOppZ/kFA14LFjsneDSQC7uyR
+	84b1iCWNO/usGeqd0ZEwrz3zv2ZT1Iq2jBbEqLXNrP0oYpzTfR2A548A/PjMLi+R1pJ73s
+	dwJQWjZ1msTd8eqH/1BdLeliPZqHnGE=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786647099;
+	b=DCb2OAhHoiRNIPKebwGZVxYjkr/LduMvRhW8pCiYn+fLRZzZiyhwF2hMSXjM9UwXJ5d2jT
+	2lfV02my/BrabH5G+wufqM6XzPO4Asw7toqE173sYgkYOkHYhJjFeGby0Zq6QqCaujcmbT
+	wPZaf82E2qnPUMaNkLkAPPUB7BBrKvM=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CN6YDwmW;
+	spf=pass (imf31.hostedemail.com: domain of ackerleytng@google.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38dd55ad76cso103558a91.1
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:51:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786647098; cv=none;
+        d=google.com; s=arc-20260327;
+        b=EoSspTq4cXINDgM8WRUi8mW1liCwzriB8m+pPsdvqbqAblKMADAg4PebtZH5IRJXhe
+         CD3LTPUDrZUpzl7azgdYhGIQksrCglN9bGU692U851aDVev1n9yrr5iKBOnH1vTmO1Ev
+         WKGDmJQWCkM81BIaWkBNwktG9ImNvpPi8F+RP7LlxxiVnT0m+/2dpxZCVecDoAt214uN
+         jH/Wgf0oUIoB3QqRl3M5ozzM5IDSt/BFFcqr/SB3cJn/QwX02bNrGopZ6pcASh3SuHTv
+         LnTE6sFuIEwv9NjNuQvwo36KgCTzqzoLYeov+H3L/yeQGrvHuMIDPznQAnICgOCE6jdP
+         vRrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=EePxyuxj/ORuNvnRcTqvK7WSqyTYRaPWHyS7fmka0Cc=;
+        fh=0vLt2hfrB9PTIwV1Kh669wmJd8K06ll5PSS3NvzlBoc=;
+        b=E+T3RMiBjuG8ArhMsVJZCRpjDo+UCNRPWNi9rKUWKGrkaBYkuXi6nyrNwd/JUruS/t
+         XrbNaSMNG13IT1FTwhtsXe05rfzyLyJ5f1OTScDsbYdmHG6xhI/DB8AbN2UfkEFJDdTw
+         kJEJjyZiGMRjlZpw2AtYq4lnvgNU5vePNQ/4nZcpVYQWH2QF+IwSySdplhNMxntveV4a
+         gQdZ/V8FZMi6FT+/Naxg6BxYmWp6ODf4eQvUnnIkO5esf0JX9Js9YJUrbrT/nW+L6962
+         eH5I/OgzY8uLu2sITB1aWCOfzr4i41gz0kcwzdSlpObtCxHPKr7uxEYK3em5E2m7k8D8
+         3F9g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786647098; x=1787251898; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EePxyuxj/ORuNvnRcTqvK7WSqyTYRaPWHyS7fmka0Cc=;
+        b=CN6YDwmWckThBN5Y6Z1vwY2nJwE+Q+MKKF6uuJlkm1ktGASfhMJauW1NwibnMW7e1I
+         zztrwbdKFYtsvoRUD0RKjSAVcicqO6pjpCvILGCKh+iGhXvXg88UKkCB2aDyQOaEpx0b
+         y5eh1ZW/eXkV7j/ksWIoz295dGSfUh4MtFl4P0clMjCVb42vec2q2NC517tNURVu/9f4
+         /LW+OLGZ00qS9Mu/gZH9CkC8xb3r+QEsv1hIf2a7p4YwDjKWKAST2u3i0bCjDnfdb3KN
+         eqF07aGC6YbsXK1tCLhQonwYeNBGUo4snWtzYVRlTSgKne/tcRq40A60jXmDR9zqhMV6
+         oqxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786647098; x=1787251898;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=EePxyuxj/ORuNvnRcTqvK7WSqyTYRaPWHyS7fmka0Cc=;
+        b=IOZ/9ZPNRlG02uFyyoc4hHX4qTAQmmWkwmDU+LNGZ89LFdbYpkn4jkAUxTZkFaI1D2
+         eYxFVzTWvM/qnXMCaMVKPwPP2YBgMZ0728zRXTMTsE2RAA+Xsj1HNa8xW6GZO+vHKjdK
+         vfAX15flr32JkQD0NHwn1rDOsdByBUmpLhZyG0lcrWqJMdTwgXJmpG29gNVzlKyOdfea
+         7AF+62kHyXt5V4vMPe693r2GShOO6aLeZXLisQURhrM5rg0/6R4+7VGhhsSxrCT4/Q2g
+         Q4qqmAQmGT2aXutO8W5tGixwygXc0i8HZ/CjS6qM6S0N/Z1OElcFmYkHoiZZBgzB/0xm
+         C0Yw==
+X-Forwarded-Encrypted: i=1; AHgh+RoVOQmtQLuWdPBbNHNB5FwEPqU29ZTriEoxLlwEvWFUwXWV2Hk0O0Som/6CZGcYEf5G+jY8YV0CqA==@kvack.org
+X-Gm-Message-State: AOJu0Yw5TmNXOD3UZtWTi0hpKVmhbb9a943FLxgbVjIyJp2THwRB9d27
+	C0oCho5asb7f0UENZ9eGtzzdHhmz6dwJql9MQwNwqQqhzUuebA34KeJRXGJjAvfZAhlo5D1TeZ+
+	Ag9Fg9TVVZ9stYMEzJqazefxk//VRSQAaP3sA2ssX
+X-Gm-Gg: AR+sD10qtHg+ERm8gLdzCy+A5sU8v0zjjZsy9HbjjidqN6QuCcX1y/mfrrZCYXGfuzN
+	r5QNNWJj0kr0L8f9Iva3KvU/BfAjEQktNzf2vMrW7YTGQMElH3Ty7GkvA9SlCaPB6h0rt6kc4tf
+	i5peBLO4lvtkr/ei8oAoZg7agy1cxi/Gs6b0BHS+S0PbBYcXOtbacBHU56kTvTdftETiNEWmQNz
+	nz4yfmeL7TuS3E8vC+ieLRgWvdo5OZb/iVCfFI3AEEdOAMITkKT/s38ARysV4ARFkdYK22OLe8H
+	wghhC4Zu7YiGA/od4ddcR38xG0yukECqGNmxX5hH0KIG3DnqiBclMCZi9fsXdEFt2JKQKEJmyUz
+	jx/oNTg0wVVUP8wqDhCLiHNMX+UkqBIg=
+X-Received: by 2002:a17:90b:288f:b0:380:86d8:8162 with SMTP id
+ 98e67ed59e1d1-3931f5f5fffmr4564862a91.18.1786647097635; Thu, 13 Aug 2026
+ 11:51:37 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 13 Aug 2026 11:51:36 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 13 Aug 2026 11:51:36 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <a71d4fccdffd1f6a12332ddd18fa812542ea2118.camel@intel.com>
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-11-2fc18ee6d3ba@google.com>
+ <anZ4W9o5pTWIEgMY@yzhao56-desk.sh.intel.com> <anj2bPrGqzZgZWMF@yzhao56-desk.sh.intel.com>
+ <CAEvNRgFzRj_=GVy8T4P8ehhQjYomYxkngzwtKBF0iEL0Cv6fuQ@mail.gmail.com>
+ <anp1I64K0KeyQuyo@yzhao56-desk.sh.intel.com> <CAEvNRgFWcndQKJE_q+ZATFZEMYd=6uRLygozLvg7L77bPX0cEQ@mail.gmail.com>
+ <anqqKH6kuwpvuwp9@yzhao56-desk.sh.intel.com> <CAEvNRgGWDY_fxbyBM-5sMdYMevMe0HzVP9kbC1cCGLE_dV=_Gw@mail.gmail.com>
+ <a71d4fccdffd1f6a12332ddd18fa812542ea2118.camel@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5cd3efa9a4c614ba0b03cf4a3bd459dea67a9f61.1786086076.git.zhuhui@kylinos.cn>
-X-Rspamd-Queue-Id: 15DE920007
+Date: Thu, 13 Aug 2026 11:51:36 -0700
+X-Gm-Features: AUfX_myWEmd6jjOfyL-08bj4iJ8X-_1fqONSad0Pn1FbAvMHKm6jyQidagK1AHQ
+Message-ID: <CAEvNRgHxda6XK_XqWaqqVnA7oW=Fhp_C5gF4vNcL+-HfwfXMqQ@mail.gmail.com>
+Subject: Re: [PATCH v10 11/41] KVM: guest_memfd: Ensure pages are not in use
+ before conversion
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "Zhao, Yan Y" <yan.y.zhao@intel.com>
+Cc: "david@kernel.org" <david@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"steven.price@arm.com" <steven.price@arm.com>, "peterx@redhat.com" <peterx@redhat.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "tabba@google.com" <tabba@google.com>, 
+	"linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "forkloop@google.com" <forkloop@google.com>, 
+	"Annapurve, Vishal" <vannapurve@google.com>, "willy@infradead.org" <willy@infradead.org>, 
+	"tglx@kernel.org" <tglx@kernel.org>, "wyihan@google.com" <wyihan@google.com>, 
+	"pratyush@kernel.org" <pratyush@kernel.org>, "aik@amd.com" <aik@amd.com>, 
+	"jmattson@google.com" <jmattson@google.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "rientjes@google.com" <rientjes@google.com>, 
+	"andrew.jones@linux.dev" <andrew.jones@linux.dev>, "chrisl@kernel.org" <chrisl@kernel.org>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, 
+	"shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
+	"mathieu.desnoyers@efficios.com" <mathieu.desnoyers@efficios.com>, 
+	"tarunsahu@google.com" <tarunsahu@google.com>, "mhiramat@kernel.org" <mhiramat@kernel.org>, 
+	"baohua@kernel.org" <baohua@kernel.org>, "oupton@kernel.org" <oupton@kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
+	"jthoughton@google.com" <jthoughton@google.com>, "yuanchu@google.com" <yuanchu@google.com>, 
+	"jgg@ziepe.ca" <jgg@ziepe.ca>, "shikemeng@huaweicloud.com" <shikemeng@huaweicloud.com>, 
+	"nphamcs@gmail.com" <nphamcs@gmail.com>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "shivankg@amd.com" <shivankg@amd.com>, 
+	"shuah@kernel.org" <shuah@kernel.org>, "youngjun.park@lge.com" <youngjun.park@lge.com>, 
+	"kasong@tencent.com" <kasong@tencent.com>, "pankaj.gupta@amd.com" <pankaj.gupta@amd.com>, 
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
+	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"vbabka@kernel.org" <vbabka@kernel.org>, "weixugc@google.com" <weixugc@google.com>, 
+	"michael.roth@amd.com" <michael.roth@amd.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "qperret@google.com" <qperret@google.com>, 
+	"brauner@kernel.org" <brauner@kernel.org>, "bp@alien8.de" <bp@alien8.de>, "corbet@lwn.net" <corbet@lwn.net>, 
+	"baoquan.he@linux.dev" <baoquan.he@linux.dev>, "liam@infradead.org" <liam@infradead.org>, 
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, 
+	"axelrasmussen@google.com" <axelrasmussen@google.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"qi.zheng@linux.dev" <qi.zheng@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"seanjc@google.com" <seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Stat-Signature: wp49khp5yei7p5ufxngwksryckxbnixd
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786646618-187581
-X-HE-Meta: U2FsdGVkX1/ohxYf/jv+Lg0pxEAKDJkmO9zXjE6V8w7udcWfB9gLj+Zm12qkQA/soG8dChbQnOsVGioBI/X2mGfE0SeJYYnBIiz3YrsdW75mNc1SHiH3+rd3MYuU36ZGpqTbQXmeucpWkdSFQT3mQSwY2jJnPQhea5QkhhNPdvFjmHg8QWrkYQr4PQWdl0pXFZ52QueDXx9HuaEysc/QK53Yo1rBkbFmIGF+Fje2XzcklgJblTxAdJ0lsVSkX79Mdjc7Iw28U2Mcv0KMLIQyZy6ZZex+IVarEldGefTdTT5znMU/Py9L3iNKvo93oUcWVm6ALdkPdcgTDvhJmAD1tQK8OgjyDZDbCBc/J7rujomMvtmDgHCejpRBArgrLZDP4KisHWRuW1PUnfNaLMhse0bxCVJEhEPeHLtZIU5EfHwypsiaYCqxPjfwgM2kwqmFdjwfC9510e/qHGwOhZl4pxEP22OVChx8wheamCTQNULgxifqLkkUsq8pUwwno1y4ZGDlH7/2qmCBwnnKSlX+lD7ADYM5uQoDDYvVIzZEuftQFROVWaUagOx8uP1FS8lIlDN3n0NV/GlDAXFtPufv0pCKIL5LYzzMVtkzzjavsjdc5Hkk9cwy1K6i+oU59srj4KUZks8o7H/hXG7OePAkD7HxfPrqhj0Ro34D7JCVFxXYuE/7Hha+A34MdOk9CpKK4EI9g2yT7LxujTm0tNP7a19dLnoqNWPaJ+Mq7G/yF4mVSQs3NmryR9ofOHTYCnaOyCi2aJJ55nJuXD3gxAikKIiczmX04ma4KLz3ZxT1LYNOg8qemat0M6K4iWEnYTYfSYuK8cstt3m6m9toL265dP4zmpFJ1OLFJ/2LGCCAgLyU7PK0UXe2ZPMcBWAwkE8+YMo4QLnUuwZMzs4xCk/kVy6r/aGEX2/yQTSkNghJvjlEWnethd1lCm0fDwqNxhPHM6QOTUOYbvfTIIhHLiH
- AfZBr7Xr
- WyAStQlqMKotkpnvyFXBXogz1N3q6q/MUIu/a/KbGJfD/A2D2ddNHJJFUSqG0q2/rslbYQOhjeIy3D324oR7tAlGN/k0g4J9Q+Htl9wF6oTA16p6+Kya+wb1yYFyS4AQGRLwi6gFKzcHha4VU/gT74EnctGiV6lXs6guAVm00XRjOmoVpkwtW4nBNb2cg+34Phk7rBbGPid+8rigJePXB9aL3u/lm3VBL7sbHQOEpZIVUhgua09dJYuBshx0WAlto9huomgn/cBr8h8IDij8YL6nt0rK54O5L7YAG4aD7zMn3VlNgBStAvM2S7mRvmM37biPsxjhxxJb7iBR+JMXHZ1AxpFpAwbbNo6X4qBfxfuO2L7XvmyiamtsOQ3VyitokQuDL7PvLtSpZ0qvYyFmu51hTtLRmVRKr0V1mz0UhXZtQDPunTeyYdLd8qLEEb9MqS0m1
+X-Stat-Signature: so1yh343hrb131j5izgrxitykph3arax
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AB3A220004
+X-HE-Tag: 1786647099-206892
+X-HE-Meta: U2FsdGVkX18ZXHGQ5Ulg6JopPGksdvXdDqtUVxZgJqzQrY6p7zoauGxmDOQzfNDU/ZD5GVf48FnLd91YYU0tA9WXwTePRd/7ROmAYuy5RZ9NxDCluMFvuykD8oQtCmF9goEK5h5bdg9UjdENYIwtpmq/sMNNvoVkmpUC/2TLlmLGw0mJgOiGZ++17LZe6/0AIDuYkWoVSk/jEKY68Tl/JR3jabKAjR2+pOOu3kGRhK1ScBUHfG5+sAoZjriz4nL02oO/HSxqCinl7MJr9i24DAIaNvD0wxV1oVWjPYuKztbeVp4KTiN5YedfVQM9gwzPqY+yWj3MkhI4a8Ae6P/WiKkN3++yKaSAVQ2SKXhdMDZmKJ1XtybfAWa/0qUHtx+PbOtrUPej3DQwERrgq+4rqRNWp7z4t8XIK6Sq3etA9+beVjDuyfHFb1WxtRRVZgp7GsRAnGei5M+/lJeYVXJMONUkYVPrw/TfdC91p0h9meWnKKH0gNXTAlq1l/sP8vgSWDFPm9RamIjlVC4747gBO7kX2D540uENkpVWgFFsJafmHMLfGSSa9500ebJ5zb3mwAgH26Jb38HNVL4eGrZyB3qZE15WwiPS8nL1rJIczMcAbstaedNOdcJDMybYRD90DylhaO9LRwJzMlnf4hNDK9vPG726SJRmHbP/6UeTnSsaEs0iHDbu0CusZpsZdnhwom5VG5/voWZxLnOvitD58cwOZo6jpyAcs8E0XJVkb+aKA80UF+Kni3NJFG7JIAxafgypGISYdPdWT02oS97DMdjwlyjKFidqfORiuqQ0gqmh9jGc/b12OvPtFTb8ILaPoGXNkymnvLwcHhl/MekrNXls1ZHp/oNUVt3Md8/ivHFr7WY/JP1u2HNq1JZQI+3SvDvTxWTsOSUOwmAfruEYkcoicQBo2P4OZj5RURqDd8GNRn6VkW4J6HjRaSz1Q88PcU57d1kANjlgvDxKRAm
+ l9v0yxMc
+ HAMbTjj2ZGV/wjUmA/tkHYHg1ZWWh8JQeL4HEDVGp2FTUyvrTmmzVbtPjPhI3kqvJ/8gXpfdmSwvg3AO0aIvmVYDu9NecgNV8MbgTXBrQiC6HwBT7+34kat9QqzfoQrTQQYxKS5y5ZLsAKLlI1FqwIlS1Q+lJlMKc2mkF8rdwFdspwvSxzmaT+yz9WQmTDRAhmxtYZ9osUuHO8I3Obr07HS4+Kvzr1IvTircUWG2/9femLWaL+PHiDVI4hzfkIn+106eM5/fgMvMSsWL8sdMNTvU9tHf5S58F4xMBA2Ykw1DNqDBxBBBJXbGj5/g8iHGpHl7Tn3yvP0LoR3YDoa97pewDrEX9ALYr9o1DEnsPy8F6yjnkdNxnH37w/e+o92ZNL7WrU12KeQUOKJQz2rtd2Ybp4fk4lx5giVX8o1YWS5M14CN8TRbxeaYXx57Xm+myjMdkdQynNmahbvo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,99 +182,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Hui,
+"Edgecombe, Rick P" <rick.p.edgecombe@intel.com> writes:
 
-Please narrow down your CC list, I would suggest to CC only memcg and bpf
-folks.
+> On Tue, 2026-08-11 at 10:35 -0700, Ackerley Tng wrote:
+>> > > Would like to see what Sean thinks of this. Either way, is it okay to
+>> > > follow up after conversions lands?
+>> > Let's see what Sean thinks of this :)
+>> > I raised this because the issue was encountered by one TDX's stress
+>> > selftest.
+>>
+>> Which stress selftest is this? I can try running this on my side too.
+>
+> We have some selftests that are built on the basic TDX selftests. One just
+> hammers the MMU stuff with a bunch of zaps and also weird stuff from the guest.
+> It was eventually too much work to try to keep the internal enhancements rebased
 
-On Fri, Aug 07, 2026 at 03:01:49PM +0800, Hui Zhu wrote:
-> From: Hui Zhu <zhuhui@kylinos.cn>
+Would like all the comments we can get on TDX selftests v14 [1]!
 
-[...]
+> nicely so we actually just run an old branch's TDX selftests against newer
+> kernels. So the branch is a bit of a pile, and not really suitable for sharing.
+> We plan to clean it and upstream it when the path clears. So it would really
+> help to get those basic ones upstream. We remain happy to help, so please let us
+> know.
 
-First of all, good decision to decouple this series from the struct_ops for
-memcg as the struct_ops for cgroup series is still in flux and I have different
-plans on how memcg struct_ops should look like. We can discuss and collaborate
-on how that should look like which satisfies the real use-cases we have instead
-of arbitrary or imaginery use-cases.
+I guess at this point I'm hoping y'all and Sean are okay that this
+conversions series merges, and we let this stress test failure be
+handled later. I'll be around to fix things :)
 
-Others are already discussing the bpf side of things, so let me focus on the
-memcg side.
+I'd say the line of sight to fixing this would be when the KVM MMU only
+gets PFNs (and no pages at all) from guest_memfd.
 
-> 
-> +/**
-> + * bpf_try_to_free_mem_cgroup_pages - attempt to reclaim pages from
-> + *                                    a memory cgroup
-> + * @memcg:           the target memory cgroup to reclaim from
-> + * @nr_pages:        the number of pages to reclaim
-> + * @gfp_mask:        GFP flags controlling the reclaim behavior
-> + * @reclaim_options: bitmask of MEMCG_RECLAIM_* flags to tune
-> + *                   reclaim strategy
-> + * @swappiness:      swappiness override value, or a sentinel to use
-> + *                   the default
-> + *
-> + * BPF-facing wrapper around try_to_free_mem_cgroup_pages() that
-> + * validates and translates the @swappiness argument before
-> + * delegating to the core reclaim path.
-> + *
-> + * The @swappiness parameter follows these semantics:
-> + *   - Values in [MIN_SWAPPINESS, SWAPPINESS_ANON_ONLY] are passed
-> + *     through as an explicit swappiness override.
-> + *   - Values below MIN_SWAPPINESS are treated as "use the system
-> + *     default"; the override pointer is set to NULL and the cgroup's
-> + *     own swappiness setting takes effect.
-> + *   - Values above SWAPPINESS_ANON_ONLY are rejected as invalid.
-> + *   - If @reclaim_options does not include MEMCG_RECLAIM_PROACTIVE,
-> + *     the @swappiness override is ignored entirely by the core
-> + *     reclaim path and the system default is used regardless.
-> + *
-> + * Swap usage during reclaim is gated on @reclaim_options: swap is
-> + * considered only when MEMCG_RECLAIM_MAY_SWAP is set.  Without this
-> + * flag, reclaim is restricted to file-backed pages regardless of the
-> + * @swappiness value or the cgroup's swappiness setting.
-> + *
-> + * Return:
-> + *   The number of pages actually reclaimed on success, or 0
-> + *   if @swappiness exceeds SWAPPINESS_ANON_ONLY.
-> + */
-> +__bpf_kfunc unsigned long
-> +bpf_try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
-> +				 unsigned long nr_pages,
-> +				 gfp_t gfp_mask,
-> +				 unsigned int reclaim_options,
-> +				 int swappiness)
-> +{
-> +	int *swapiness_ptr;
-> +
-> +	if (swappiness > SWAPPINESS_ANON_ONLY)
-> +		return 0;
-> +	else if (swappiness < MIN_SWAPPINESS)
-> +		swapiness_ptr = NULL;
-> +	else
-> +		swapiness_ptr = &swappiness;
-> +
-> +	return try_to_free_mem_cgroup_pages(memcg, nr_pages, gfp_mask,
-> +					    reclaim_options, swapiness_ptr);
-> +}
-
-This is just a wrapper on try_to_free_mem_cgroup_pages. We don't want that. At
-the moment try_to_free_mem_cgroup_pages is used by limit reclaims (memory and
-memsw, high) and proactive reclaim and has become a weird looking interface. We
-should not expose it as is to the bpf programs.
-
-Let's go back to the use-case for which you want to expose this interface. Your
-cover letter says proactive reclaim. Let's focus on (existing) proactive reclaim
-use-case (in future we may want more functionality). Proactive reclaim is done
-on a given memcg, amount of memory to reclaim and swappiness.
-
-Let's start with just:
-unsigned long bpf_proactive_reclaim(memcg, size);
-
-And if we clearly have a swappiness use-case then let's add one more kfunc:
-unsigned long bpf_proactive_reclaim_swappiness(memcg, size, swappiness);
-
-So, my main point is let's drive the kfuncs from the real use-cases.
-
-thanks,
-Shakeel
+[1] https://lore.kernel.org/all/20260722-tdx-selftests-v14-0-15ad654a50db@google.com/
 
