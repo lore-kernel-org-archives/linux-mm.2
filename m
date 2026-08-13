@@ -4,87 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80128C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 05:44:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53664C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 05:44:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 098C96B0191; Thu, 13 Aug 2026 01:44:46 -0400 (EDT)
+	id 41BE26B03AC; Thu, 13 Aug 2026 01:44:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 022056B03AC; Thu, 13 Aug 2026 01:44:45 -0400 (EDT)
+	id 3F2B36B03AD; Thu, 13 Aug 2026 01:44:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E79F06B03AD; Thu, 13 Aug 2026 01:44:45 -0400 (EDT)
+	id 2E18F6B03AF; Thu, 13 Aug 2026 01:44:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C17E76B0191
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 04EFD6B03AD
 	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:44:45 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 64D82A2AE9
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 54B65120513
 	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:44:45 +0000 (UTC)
-X-FDA: 85095156930.10.6B4DB9F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C984140002
+X-FDA: 85095156930.02.90207CA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id D2661160003
 	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:44:43 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n0wAvhD2;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786599883;
-	b=1/YnGzTB+i6MIkzXdQSPH+zKCNXfJvB3UWN9TX0savBl/iDVGXQrbC8OcbsKdZ93A43gNv
-	7iQ+s9sQORkmWRs5XzXTEzqf/BjNynr/N3aDdDQkK1K/8mORHhgZSa4g/0gfkzu2L2QeTj
-	I/L9bE8Us/ZrlrDGTMs5g9S+aE/OUxI=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n0wAvhD2;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dbqrgx6Z;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1786599883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4SsJPfKsekeE5VptqHXgsGnvsq0lAUhbBGf4TqY9ku8=;
-	b=u3Tvh/UNhl9qow3j26H3qaXCAM61tQWVLgL3vVa8h0kagu5es45AV8DlAuFgUsmSMW1Uzv
-	7WB2WL8BvvYdes9FOaDbKLmZEWiYts6v+VJJRr26lXC1EUCNpzm72bDopxuTjRh0wp5wKa
-	gJPaMGjt3Hdt8hK0eV/aD9sc5Xjv6Jc=
+	 in-reply-to:references:dkim-signature;
+	bh=GWrqvTQp5gX0iQ380NMQ1BcygYRwK8eMayqbx8OVISw=;
+	b=qeVQ+km9TtXX47cBQVvkcwsfagQbFa2VbinuJcGhQ4i6dvfeHCNTXZHLFM9gW543tArgPn
+	rhgfGjI53acuQyTZiDJBKcjTH7L+msvW5Wzhjhf1AzKRizXHRHT4Gjrugi9i/dxZSxSN1k
+	yT83wm3dxcv3ZXntoPK5S9dUxfRqhlg=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dbqrgx6Z;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786599883;
+	b=kLLxy1N1k5R3LWhmqJnJMcUc0Q0MBPRNW1a098rytI6LDZFXC6TYvF6MYiYIXXTO1w2XWl
+	kKeRTLUtiHMSCcDCxm4DFMRRDJYT1ssbyv4muLYi4rTmSOfDBWcLv4teFccUjuTgk4uPLp
+	6fMwXHwjeS/AtCp1KnrPSebtGqWQTe4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2DCCC43CD9
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:44:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57AD1F00A3F;
+	by tor.source.kernel.org (Postfix) with ESMTP id 0B6C9600AF;
 	Thu, 13 Aug 2026 05:44:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4CA1F000E9;
+	Thu, 13 Aug 2026 05:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786599883;
-	bh=4SsJPfKsekeE5VptqHXgsGnvsq0lAUhbBGf4TqY9ku8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n0wAvhD2+L6konNr9qCBUej2g8rzvAzHBd+qRn+PbrtFg4Wu1TUMr4xqr1qP/mvCK
-	 mKYzllSCsR5bxeCz3Ptd2hFxfB7pxhbXVhzmXZIBpgnj6oYG1c59NeV1srNnsRP1LI
-	 7NYe8Aj0PvjgqK2NAYCKvKN6AN8nGz9Ok2uraob5AZ7/7YdVrlix0Fi5LbJMGMsiN3
-	 2ptE/rpll7lRuXJ9LCvNE2vkBAr2vTbPa0Qsg5jGxv7zbl+I8bI8XovmpSz/Ypniqr
-	 zKSGqgx9/WgXQX2CJBYpQwyH3NTH8e8+kAzeGNTqRR0qZ+7PbuegewHNdt3CL/0gm6
-	 cjddfudU9hQaA==
+	s=k20260515; t=1786599881;
+	bh=GWrqvTQp5gX0iQ380NMQ1BcygYRwK8eMayqbx8OVISw=;
+	h=From:To:Cc:Subject:Date;
+	b=dbqrgx6ZkdUXnevKHGzSwRe9qhb6DGHB46sDKOee/I9+8JI0DwJmlzqyLUtJgfmTY
+	 3lGr3tDPSfzbGQDlicPe2TtMzmSniCoBBsetipySKsdPdiRN2qIv+IX9G4pz8nQbjz
+	 HuHUT0Bok71wNIJhlUGqVESGz4Zz+TzHkO34GfN8vYEaoF7zJfrboJ9hYjuQDryN9a
+	 DGTOubeaAQXCQYa0JmiNYF+Qle+S9AQEpyCyz1HPewwijXthOPewNwEhVTLRsW4m9w
+	 Oa0UZ8dVJDu6Bxaqa78BSC00tG21ci2uqBiWKnwDE9ebXlsPph0qR8vcOQRURGAYZA
+	 /gdVG8YK3bAcQ==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 3/3] Revert "samples/damon/mtier: error out for zero quota goal target values"
-Date: Wed, 12 Aug 2026 22:44:30 -0700
-Message-ID: <20260813054432.101197-4-sj@kernel.org>
+Subject: [RFC PATCH 0/3] mm/damon: move zero damos quota target_value handling to the core layer
+Date: Wed, 12 Aug 2026 22:44:27 -0700
+Message-ID: <20260813054432.101197-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260813054432.101197-1-sj@kernel.org>
-References: <20260813054432.101197-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C984140002
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D2661160003
+X-Stat-Signature: ty7o5oa174bfaoob5rxf4kuay7amywmz
 X-Rspam-User: 
-X-Stat-Signature: it4dhatosteku3w18rb1mpez3qq77hyc
-X-HE-Tag: 1786599883-571722
-X-HE-Meta: U2FsdGVkX19SdS1WmIBXvqSbuOu82h2IgrXQTWoOTGk8HwRCsOIXHPxxIo7TGAowkQztsEh8Xf2J9LUuTodaDY95mND4FL5cv3SygqKdhgaS3+c/0jEN0zUioWS4Nz6ndSVfleWftPt9kxZ/JHuBqKdMCr0whBRPy+37N+gQgRNBBmIdoqsWwRa3jCoXnv0tz2xAjkV53e2yxbSJhh2/1nuzMBF37VmF3HcKYImBu/wUr/WnjKwmv+Et3zMxwTnO1tTe80wW9e24nyw4aYbzZYFUZTTcpPuJEfMXd014JTQ1aXzFOEa+Ec/GQ+nCiiBZ4cAbVx0jHSJgCQu4ZqtrtJ4/c9v0Ii3KUs1lsq9hWQwtsYs6ca68P8+KbHDSGGbmt4GN6fydBnrJXZ+3FyD6/tEzSjjVWVQBiJUiTT2NEoH7ykRuZ3NYl7ub4ADosgdnCRd5SFwt3tO1zc4PbrkJESHn0H9SV0oUKYZOMiJPYEenmVQPha4MQjZ/o4yrdJlw+2t0nNPBpvqMVJjQCNr02+fOr0Q5TXQDHPi/hhJXyerrJ6rBoxEqgdZUqnJwmE86E2vpG+TTjflVUWOO+n3mCuyuVMUbeGo6hlm/Ns72KpaXqQdSgsh5Tusyexoo7vMR4MOAS2wneB+vUHCA2RNUXhoDU3C5jbWmTJo4/14yQ6y3RrwyP7NkS/a1l/YFp9HtUgpfsCRtPTizMoyZ2MnyNNYyQbV5LQyO22yhq93LNypqs7+YXGvNC+GIKJ0/4BipCZMy7y17lKdEQYBzOEKqBPFohnYY0nkA326zJn4C9A3mjuodvxqhwfxgvfELDG7k9MrQj71wdz0yKVNKGxucklzlbLcp/dHKols/KnrfahoBj4A3D81TUrjh+wDqnIwuzbHHu9AH+4VATbWHVmSXrD5tvtkGPYLs6IuhJG9MOUgpWEprfPCdAvnYa3WI9xS2UPASzx9J2kKyXc9tlbt
- 4gHJhDUA
- ARW8hGOf4Ez7OIEnJoLPkg3B6BmMcmIUezWrhOJ15beq1SOqVt/zayQTla3HsyU8MV/jIyfFpzVueeQxQYFXhnJiii4JE5zzDZ35shyHLvNU6oQBJLFMncKbPhdLZGLDN4KedkymHPATqJX+YpKolXlco1TJtoaN8GDNKVuI3EqQ+/ElGOMCcpg8GWsQYpdREFzbUbyq2lqfNXcBYaJVKhr2EkUPWwfkxshVxoLMi4IlHkvzg6BhBRkTn3m/P3LFSvXdcEpPgJ3gl6ay6KFjSZG/48xIqkGaKWOZ4xR7c38I/Zqo=
+X-HE-Tag: 1786599883-343308
+X-HE-Meta: U2FsdGVkX18HRcBzVxksAz2v9NfQc8TRCWHrVLVfG2G9PwkmNl/46L3ehH8WbVW9lQYcYQAGYjZFrNY8IrsdylhnyIQm39ybE31XXgKCpmeEUkPPXu0LXG+krn5t5Gd+oP5BQ4EkiWyExQKWikjVMnLpPVs7lujT5h3ahqzUwLSJwTRqRBv2JSyYx/N5iFm3MglfWbQHLRmwCJMDMnMt9xIaTFT6tSxZorMrPiKzteg9c9IQGDCLJxLLnVSmaMyFylzLtQi0QZdUufQ2h6r8B3Y31qa86YE/WhdR4Kt3/Kh5ueRj/6do91Xr14qSgW5yxjGykqwsSWdKkyZpTqOhJraGESw/S0R4D3YhjOvTq7ffGHq1Aeb218S/bMEB/DDxECq+8dAWIfprxHHg1NiYofzeIjdIFIAwJPY7Vx2Q+dzGRGpULRa0D23cPrv7TT3k65K4irwfIQM94EmfozZfcE/Phk2MaKqcR1Qw2ShCHmcsh2KCT8hTXkpckEPa/Zy3Esr3lBRD9Cu5fyMjIk0YyP3IMzqYIGXhvq49bqpMHPxTlKaqRqdk+hwyCKCUuXWzDd42w7CSTLZDhyvHacTgYbdpd76zRt+iU86RW1q7ETyDx7g6vlplZ7m958pti8T+qr5HpvGkXJYygB8rIdDbbDt84XQOc9P6YMp3EWYIyXCiwcMDUW5CRMlB4ZB9qsCTw0lWR4zV/Cq5kZNDBtwr8/9go90OFce7NSpc9YgsU/YVEhtNMuNsDlFVFLOsFGijmV7UKjGKsL/wMvwX8NeglpP1A1kxePh14QpaVeyAYyqoXMhfJFxzp0H+R3tJbouL0Q2eYeRMPR20PRhsiEQCRQf82XRZ6yNuzkktoWLsDFNQHVx6mNaMNXlUooPQAdrLflgFIxeBVlnSXBYaXZNZyodldTkv/aVfeBwJjWJ9tuFKNjpJQy2YioIaisLTBIywr1Neh/ujLYR8ZBzf9nb
+ 9PI0vvfQ
+ 3gqwXG8Q+kNs4sJrvhwXYRY10zxNxR5JI0eKJ4bXObGqsaEUjomNZB3pSoBwknPsGWjGbBADky2r+xL5VB5R3O/3UO3DwhwYHSd80uc50GHl/4E0lHOY+clU3dotewbMVv0KP1UadXCLNOeoMPXNnR9mobBOM/5b+Yr7dHbJTis4Ex2qVPSl/86qn7GUMLIhO4KrApkFJem6AQsBo5mcBFojXE7OuevKhlQHpieODxs8liTaRI5ONrwaHgND/8vm/Dpp787Ic3U56zk5dP4xKO/7BeBozWYHCxt/kgk3i+ixCsFs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,33 +91,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This reverts commit a16fd3ad9d89b05475864da97327870464611736.
+Having zero DAMOS quota target value can cause division by zero.  DAMON
+API callers are checking the target value parameters to avoid that.  It
+is easy to make mistakes in some of the multiple API callers.  Move that
+to the core layer.
 
-The commit was made to avoid zero damos quota goal target value, because
-it can trigger division-by-zero.  Now the core layer handles the corner
-case.  It returns an error for any attempt setting the aero
-target_value.  The corner case handling in DAMON_SAMPLE_MTIER is hence
-no more needed.  Remove it.
+Patch 1 adds the corner case handling into the core layer DAMON
+parameters validation logic.  Patches 2 and 3 remove no more needed
+DAMON API callers side handling of the corner case in DAMON_LRU_SORT and
+DMON_SAMPLIE_MTIER, respectively.
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- samples/damon/mtier.c | 3 ---
- 1 file changed, 3 deletions(-)
+SJ Park (3):
+  mm/damon/core: error damos_commit_quota_goal() for zero target_value
+  Revert "mm/damon/lru_sort: error out for >10000 active_mem_bp"
+  Revert "samples/damon/mtier: error out for zero quota goal target
+    values"
 
-diff --git a/samples/damon/mtier.c b/samples/damon/mtier.c
-index bea45c87cc9be..27dc88bdf7a0e 100644
---- a/samples/damon/mtier.c
-+++ b/samples/damon/mtier.c
-@@ -161,9 +161,6 @@ static struct damon_ctx *damon_sample_mtier_build_ctx(bool promote)
- 	if (!scheme)
- 		goto free_out;
- 	damon_set_schemes(ctx, &scheme, 1);
--	/* zero target value causes division by zero in damos_quota_store() */
--	if (!node0_mem_used_bp || !node0_mem_free_bp)
--		goto free_out;
- 	quota_goal = damos_new_quota_goal(
- 			promote ? DAMOS_QUOTA_NODE_MEM_USED_BP :
- 			DAMOS_QUOTA_NODE_MEM_FREE_BP,
+ mm/damon/core.c       | 22 ++++++++++++++++------
+ mm/damon/lru_sort.c   |  2 --
+ samples/damon/mtier.c |  3 ---
+ 3 files changed, 16 insertions(+), 11 deletions(-)
+
+
+base-commit: bb9dee2c45b87e872d6b1d5f812ebafaa952b7c5
 -- 
 2.47.3
 
