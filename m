@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 856CFC5CFDB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 08:25:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1547EC5CFDB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 08:27:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77F516B03FB; Thu, 13 Aug 2026 04:25:52 -0400 (EDT)
+	id 2EC876B01FB; Thu, 13 Aug 2026 04:27:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72FB46B03FD; Thu, 13 Aug 2026 04:25:52 -0400 (EDT)
+	id 29C8A6B01FE; Thu, 13 Aug 2026 04:27:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 645F16B03FE; Thu, 13 Aug 2026 04:25:52 -0400 (EDT)
+	id 1B2A86B0200; Thu, 13 Aug 2026 04:27:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AB576B03FB
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:25:52 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 95209A056B
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:25:51 +0000 (UTC)
-X-FDA: 85095562902.22.36CD153
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B7AB240003
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:25:49 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=D5I5Fsdw;
-	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	by kanga.kvack.org (Postfix) with ESMTP id E949E6B01FB
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:27:00 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7FDA2A0259
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:27:00 +0000 (UTC)
+X-FDA: 85095565800.26.54AC28E
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A41E0140004
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:26:58 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=WSi2JICs;
+	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786609549;
+	s=arc-20220608; t=1786609618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d7EWP/UZyzHoakqvLZkpxTo9WbVTelGn+MRpEEiULPo=;
-	b=5uoTKSrzhpUwO3Wub0n76GlH8Ixp6AeKQWNf2wBsjHygsUt4cPCnFsuyT83klzVy64HkYQ
-	3l/4EhWJdRHXMlDBRCVwWjeoK/a2LR825/3b3E7MqbZV4ASpllkySrg9+SWjYVGKhnZ86p
-	h3LfaDM4nb2or9+JXxEhjan2h3PbTW8=
+	bh=jb3x2xS6aF9vNzoM2pzTwYtYyaatYjz82383HVr+7k0=;
+	b=aE4C63fA7hmtCeevfQrKJw3muAp+Ifm0hN3S9AAIEeaogUIH7oubk2X1uXkqUROtkNkleT
+	+vO9/TfDHHXZYssQOfSlbbgpaVDJdhiUXyjhCAtSOfJnh8rwahaFhZ0dUAdpHH1hedagIQ
+	oYtxMYuVCEwBGh5CQXJ4F0aUuu/zf1s=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=D5I5Fsdw;
-	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=WSi2JICs;
+	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786609549;
-	b=AOAhdDBYGfUq2SWVFVPFbTxQ3UgbY3iEDr+k7evdg7n5E4baJkibDpvGFvWCBg3cA6JmID
-	v2hX6vsBaO2I7sZ2P71NWdlXgzsfMNS9K6Kbc+kSk9Zyz+hgdwSkklm4C8yZ10rACSiyie
-	TkwxVvfcvrQxGg3V4KQfTZys4cu2AkY=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-49954b88fffso4761785e9.0
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:25:49 -0700 (PDT)
+	t=1786609618;
+	b=A3Y1UbC1oRxdca9n2b2urs05Rlr4H4nKc3pBKah3cxEVZ6uE3sd7bv+mQdRo+IkKiD62ut
+	rr6rxWqXPBP0gJSkUYLSHxip0SjHGogNXW+E4np1c6L3gR7tWEdiKW1Bz4AFZ5Bgltm+va
+	bBtLkhk88aJ3AzGeSp70WWGiWAENRZI=
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-472326ca506so1119884f8f.2
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:26:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1786609548; x=1787214348; darn=kvack.org;
+        d=suse.com; s=google; t=1786609617; x=1787214417; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=d7EWP/UZyzHoakqvLZkpxTo9WbVTelGn+MRpEEiULPo=;
-        b=D5I5Fsdwp+WMZBpLgrUV6IiBwCjnl6YJ3cI2xvjg2EuuVMbjV08jaUnQQrPJHNe0eO
-         0Jpftb+MEtTEWkdxnYrqxVrwq7LRFnEXwwxDs2FNEbroXfMIBquciLVGSZU/7vGu08P8
-         FqFiSdyXLQ4RS7/Uw0rNfeSBSSG2PDOfuj21+AMOR7BFkSFLXB5YIB9ZonvyMoJOSonG
-         wApmo8zPzJj0LKdnYEJc1iwY/uWzt4L63TTnBZ0z8JpA6+nyqmMFGHTqEP33h7DUJXst
-         EoCPWoM8CvvsT5Y0XGXoUbvfYDq1gQBWNzgK7P22rTWtXHHLvW0mDrY8JE+sVL0oy0QL
-         tndA==
+        bh=jb3x2xS6aF9vNzoM2pzTwYtYyaatYjz82383HVr+7k0=;
+        b=WSi2JICsNTcW9PGNSZu5FKp6GppgUsJhfWwvRbCXp16QBLgZruORt5NRhDNC5SsqFI
+         cvplgkB++MDJBxa/rSZVQr41OoYxZhBUpxykHKZ/vQJYUsfhQdYwV+O9bBb95W/HD86u
+         LGfBaz20Zzesk+PH3Tom1d/+ENP2EX38czawkQmjbfUMPfMCFsXwZAH55OaPffiR3hyZ
+         tI9blymG/BNtgfeN65o6EZEap4X91uhqJLB4JSz0Bxc4sdVoyaPYz8Y5oCbxsu5Ubeuw
+         nXVWY/XgqIUyPMurxjT4/a/9aOa04L+wHa6HE01WDFhEI57z12Fp73CFp+X5mv88zR8v
+         vq2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786609548; x=1787214348;
+        d=1e100.net; s=20251104; t=1786609617; x=1787214417;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=d7EWP/UZyzHoakqvLZkpxTo9WbVTelGn+MRpEEiULPo=;
-        b=cizuzr3+Mwofn7jGjz20kHQnlxjNCfn6xdgl3lGWN9Y2gzUVDCjs9BQlb5M21sRzKs
-         spctarm53l9Lp26BO0sBz5WR6wx/7DeMWVUKtRP9mqY+7Gm3XXqVKY+sMHoqi1NWk4eR
-         lDe0uUwour5QpquCojjulXbo98WA9zHO0z948Wz/7YyM8YDgNeirFhJZ0q2Ey6rOfVSr
-         fUTzz+f9nmIRUuVqdDC2ZbB3UwIVE6+POijW1N9ycd7cuivu8suGjJzlMs9iq1gOC1N2
-         U78w5/LHkjmDAB/8RCc0sn43cfCI+hYk4IgUXYQR5m4++QRi8u6zsp5frJe98R7Ifvgq
-         y0bg==
-X-Forwarded-Encrypted: i=1; AHgh+Rp5bKZyKw2Y6kaJxvJn409s0ZH800PM994t9QAPZ9uoQ+G5JHylUp1Mr232b6H/A7SUcGrfAQ0Aew==@kvack.org
-X-Gm-Message-State: AOJu0Yx3J7jroMu4UaJqkYVcEswq/Eg2gfdnKNaDnxUBK91Vcz6fmObY
-	x2m2U9Cm1GhXEfNo/8t6IrAkO47UllRn/EC9BzPnWA8K4r34QwW7VicFjDR/tTe1zjM=
-X-Gm-Gg: AR+sD12v8GcF6/B05/h8eLefBpLPXx63u9w10DlfWiyw9k81MMNMP3h6zhQZ+I30JeP
-	HZo9b6YJo1ZXmn74jJ7+KA3HDQJbmu3k576O63dQw3fv+fCT23g3YJtGm8csrjKNoEDfIML5PzJ
-	mapmwRIa3YVLEWl7Z15cU13LnXN7nu/XqLHnPbD9ErzyhOgbkXhlXdkr2Gm2c1Mb9UvWnIL0CQZ
-	sBdnz2Umqi4NIel4Nh77WbSD0B8VJdeJspvwrhbOSDx3xdxN6TL9SlOZpO2k1a07pJTPz2UQklj
-	1+cOg1A6ib4Kj07s/Azdc25P4JxkgYG5j5uZfCE8J8y3WHzIui63dw0kSZo+Nqvs/InLai/Z3iC
-	nvW5KBi1STvOfjUrn9sr3HuoJTmkWSXVKTfllcmE6s9RIWeIsgR4FWnYqsCCemGdUx+keb3YVwQ
-	x/XfgmhGMMKKasy9axAGhcdeCwZPmSwD+hC3bPtje8rCOqjoxxljW2idhpmpou3xhtRvvQeww=
-X-Received: by 2002:a05:600c:e489:20b0:499:8467:3f2d with SMTP id 5b1f17b1804b1-49984673f49mr6182385e9.19.1786609548419;
-        Thu, 13 Aug 2026 01:25:48 -0700 (PDT)
+        bh=jb3x2xS6aF9vNzoM2pzTwYtYyaatYjz82383HVr+7k0=;
+        b=GKzy+a1x0vXIf408enRuEaeUN4mkzos9tKtSpnuS9GXrG+NcRzoXpr5DJEuLt7nQN1
+         7iRJDoxK9kCNodbeMxcqxgW9z+Q7jxZwPs+yfCH2SLoQ+okr6lw+ITTaxFMxI7lHRJTs
+         4K3aSuBWoqEUH4TNbh6yRk8O2TYyUeTG9Q+ECzIUOtpYaUMGTDi4unTpbJVIXmaEw2nV
+         oqOVCH7UiBg8Zv4jYTT++WqUNk8z7eyEmqBt/R+4y99gCjfo8pNp8o4iZ9bUzN2LGVVT
+         TT8mZtSAaCc86fCJBhaz3o3CsDIkkjtgPS+NjNylbkT4xljp9FdULVvHrWljXRmQ/rfF
+         Jwkg==
+X-Forwarded-Encrypted: i=1; AHgh+RpEdbgpwBocSxbsYDSNMRdZnovdj7qF/QukxClIFLgDHD/1gL+HmrtXCbejLLhD6J6fKEZM1aTolQ==@kvack.org
+X-Gm-Message-State: AOJu0YyPUhqVRe8UPapntD11OtV/QqLB7KC73prIAZnX894vKYj25dbA
+	L8kZvvGpE7sgQxPOTHn9ebtYpE62sfcqXc9ktPJDiNBA7V6sT04Ahn3/jhg1AjZnaPI=
+X-Gm-Gg: AR+sD126m9pm8qFK+kf7b+14Ta1/EBTSz3UxbwFqqC8nMeiLmm2Xcx70rBUNVT4/C8G
+	c20GvBUzucRVhyBuw4U/A1f/HDjbcGYgJSpee0hArtjqZwmh3afg6ckrkgc7CjTWgD3FUG0b87t
+	5wOyyAoZbW+YeNmZOhBVhu5F/5sRWO3QN33QPaKZ/47cUEYXjeAX/I1G+uK2jb4D7UM3Wxq7rkO
+	zMzmuLQUGL0y+zQ86HB88GYi/uo57Uxdz4JuNz6xGJweeKKUBJ+GD3WnteXSd0QWMLp67QcNLTI
+	mixyur+FizBei43bpBCdbfL6tD8T5H0d0OuVvzPIf1Sjigo7ZyM+jWCELIBf09hwIQQqC3hlGAi
+	iiHD5ybBwPqufdht8STCQmIjY7ut4bNE3Ug5+2643y9dT2qtzzTuIq1dQxDo5ebq0mReMXYW8Kg
+	XKe2j+A1/pXZFob84lOzU0znHXJxgUb3NG08yE6NKFC2uPpWmas1KWFOGqMiGyEXYdp1zm7C0=
+X-Received: by 2002:adf:f74d:0:b0:47f:cb30:8616 with SMTP id ffacd0b85a97d-4815a00e362mr140464f8f.27.1786609617172;
+        Thu, 13 Aug 2026 01:26:57 -0700 (PDT)
 Received: from localhost (109-81-29-60.rct.o2.cz. [109.81.29.60])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499820f5d26sm32668385e9.1.2026.08.13.01.25.47
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815a56133csm4400191f8f.7.2026.08.13.01.26.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 01:25:48 -0700 (PDT)
-Date: Thu, 13 Aug 2026 10:25:47 +0200
+        Thu, 13 Aug 2026 01:26:56 -0700 (PDT)
+Date: Thu, 13 Aug 2026 10:26:55 +0200
 From: Michal Hocko <mhocko@suse.com>
 To: Shakeel Butt <shakeel.butt@linux.dev>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -104,22 +104,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Axel Rasmussen <axelrasmussen@google.com>,
 	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
 	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/9] memcg: remove the soft limit rbtree
-Message-ID: <an1_i8BeRtUA01xs@tiehlicka>
+Subject: Re: [PATCH 6/9] memcg: remove lru_gen_soft_reclaim()
+Message-ID: <an1_z6V5l7CNaCSb@tiehlicka>
 References: <20260811203203.3456029-1-shakeel.butt@linux.dev>
- <20260811203203.3456029-6-shakeel.butt@linux.dev>
+ <20260811203203.3456029-7-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260811203203.3456029-6-shakeel.butt@linux.dev>
+In-Reply-To: <20260811203203.3456029-7-shakeel.butt@linux.dev>
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B7AB240003
-X-Stat-Signature: 4t4g93off7yabwgjuqs59yzrj4dxerk9
+X-Rspamd-Queue-Id: A41E0140004
+X-Stat-Signature: 8aeuph4nxc3yew5ww4a1xnh6uwbk1qcp
 X-Rspam-User: 
-X-HE-Tag: 1786609549-694585
-X-HE-Meta: U2FsdGVkX1/PtdGF7nOq8imWIbZvJqHOhXu5RzqkZn68QnbIzXbfl2B7pnhsZKr17tbTJeImKTgD6EiF4i+M6ACUinbxlyygyG2YRpuZA6l5cxOuURjhRn6d4NHPlpI+PF7skhrETVgDt1u7LlwPPqQaISYqX5NsJgAlBv95JpaawxoNeJR9WDRl9S0kDj/nNQdUgaJVUSgVTGalQtAnJs03JIwQiMIFoSRV0NprFNjSWqJJhy2ddEG79TcrDbBQKVmIV4sHQnEKerVxt6AWO6PScmR9TdPCfwejA+/8D5uSVLiLwL9oNb8MayyLkc4YH7miq4QbWT5M9K/DrqFr2N3H/PuJ1luMHY3ao3p2xlzDkk+AgkQfWgx2UjiJNIv4k2FHd/Gw816BVIsiioFK3ehhge+o1tDQgsTNpI3yOFhE/J7CX85gxdPKDD+0muwTjMj/NWDHY1D/MD5Ddto8OBs1CCkxkGcCHita++zv6dVQiW5uti7W3vrEci+kqTQIBo4JhWjt/Mv8AX/USRy2DdFXAJKbGg2JjYs4z5yf3ftR6xISZopJs49ypnCc3ijfTXSXnZa6SHLPRUbXx1JJ8rtRPn/zWkYazltUPqqorkMxIkKcBAnOlbXuNHhymRuBYKLBb2PZGruyZl7uqJGhy9ZsBd63Em5ankSZyDV5GVlJtqP1Bg/p7ScDMACcZccpdxizqDqJYWROEcj146bzO1IH/l98By//ckafbuKzJK9MrrNKtYQvfguRxCB5o3CjlOXucEXh53kxL3DhWskjXdTv/6W+4E+NwbfbPhVpCoztN4gr0WewGb5usOO4CW3vELHDFi+hpBTHclGFliWtoBWjwSWvm9dnd//aAM+HrgbSwoJVbxu0YQLTvccOhXZ/ASnIKvwO1QrtvRhbeOhqQyePsoOt6im74XUpEFLMoLs7NsT5GvSAuP/Ie+YOlsRMrGA5nTsLqwLhTSSS/96
- KCYZdzOH
- oUShqZ0IOf5hBSniT232P5n/lxjzclk0b42RnFmHDFxkmTkej4624kOJwaYCNAj91/k/Qk8lYBHNXih6rQR01RhMTzaUDVNV4rAAsqytZHyScTJuOWg/HEs1Yh4v8t6qvcJrHRmz9lmPp2QSmoervV05kM+h2GO9XfmseKMK2kzVzl2Dkq5gm0lUHoYmrEDb3uIyKZ/jnrQDEpN17vovVIXhGy73yFlLC3WDBgh9vF3uIggng5dsqn8RBmelZlfhIjj2qLPOd1zPWIuuLUoxKA8mYD38eYdDMWcbWzUzYtpNc8c5o5eZpy7YAtqN9jsszgxTWxn7DMUTFiO0nMPa5VhH3wbn3Ff+Rspmjd0KBv7ofLTS0NWhKKT486TGnOQQzXpUhJzuMg2VSXIo9Tc0hP4j+JW3YDqBoOglj
+X-HE-Tag: 1786609618-229958
+X-HE-Meta: U2FsdGVkX19RPVCeGzA3cuTkufXsl2B/0PoomEsANHGTMdS07VjEP30HG9awIjIeMrA79wtoJsOBfzzp+bYT82Pk0Byxd4Rdnyc1SER/HtMc0o0Q/EJXvXJ8bSF0nzYMlqJLL2i5jhyVYuArsheVs+ye5wD6t1X2iHMQSgseMrNfbP8Nugvxs1hpQZEZvN0P5rRJi8nGZ63nH12nRJv3wUynB47lWe43Y0f98SwwvUm1UBbPxb2YIqGsQLaylc/EMTnQLteUgIc3Zq31pifoc+LOLS2M+ouVb0o+EF+mq6HyLSO1tdRfUQ8ZQP8oHzYEzhc15KgZp5VnHH90KEF4d5YNFmNOW4jPIWKMbd2LNgltnug/Ra30DRWt10QFiu2FKfAjNpe3BdOu0imtpHOOC2N9MBSS/PyhlyiRflcs3t5iw2VbED7KOvnMLujwHYs7g1soYA00Rfv3lT4QMjoGKriU1sn1WGB++2uH2NHppe5xj4iZ5jKD/BGQbq7qFmHs8Rwjl55u8tKtr4wkvQ4cI62VOgIy+AhndudcvqUQkgHYgkoFReDOpx9eqczE5A1+anGjxS/xaTKCk001wsMhBxUKfdVZrCJEacYtqs1+Ti7to3yU1sSvYWNxW+rMmEpSLihW1R1m0WfZa8T/dO95FeVERaGsLRX/zhpjZnbxAWYtO61n+YW89F6l5kETAuPomCQ2ceCG9hzXq5mmOnWySIwUarXoElPMj4zJBFo2WNQo/6az++tcojY28ThKj/4TbZiRI5ZEkWMzWepQldvzP1mBbnP6R20nFWo8SeeFn5w4XgQLYleOPZPzFxBEY/6YbAAjBd0SwywOmSQMvKHfNgaSO041Vj/cjsDGJRlkDGwRIYV2SQjdROweNkrfFO110/3ZPnX5w7Xi0NXImT97WdmBNBKtB0XCzOEP17V1BmhdVrEmljXxY2FP7xfI3u3O51UDPxWoWdHJHRCoRuO
+ UVXKKRcF
+ +vM+Njgs380mzqOgRz68ExJKNyfoCMVx0Dq37Oi5QXM0iDKZrQK4oUDN45f6kcOPnMZ5UHgLVay3cnwTYw0T2MVEj2ssYBlMb9VTkSy8F6iXqNCFeQqziT6amf63cXTfS+pxxTQ3Iqk4DNhlcF5SvR+d4FwD0er81T/Vqx0k9RM+5yKFYDcFTCp67axGakEzEt/CyD0b9xRJkS/Jy+235P2+1DDZYhSiwByHSjjiyXUe49M8e5ytRawA7+K4l9L96MWUdTvgxRYn8bd8TMhSfQUXHWL0/G8ugw4kZ+J4GE90fVa8rc1R+p0/DcNeX4Z3IE439p1/M1uaj+9/RRRBFMCQJFVB3/weaQUroL+C2GzxNEhG/vd9xrcakJ7bTk6nLZ82fFa8O+mrVWo6OIsbnE1jJBQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,269 +127,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 11-08-26 13:31:59, Shakeel Butt wrote:
-> With soft limit reclaim gone, the per-node rbtree of cgroups in excess
-> has no readers left. Remove the tree, the helpers maintaining it, and
-> the subsys_initcall that existed only to allocate it. memcg1_check_events()
-> no longer needs to feed it, which also drops the last caller of
-> lru_gen_soft_reclaim().
+On Tue 11-08-26 13:32:00, Shakeel Butt wrote:
+> The soft limit rbtree was the only caller. Dropping it leaves
+> MEMCG_LRU_HEAD unreachable, since nothing else ever rotates a memcg with
+> that op, so remove the op too and update the memcg LRU comment.
 > 
 > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-Acked-by: Michal Hocko <mhocko@suse.com>
-Thanks!
+I am not deeply familiar with MGLRU to give my ack but from a quick look
+this looks right.
 
 > ---
->  mm/memcontrol-v1.c | 176 +--------------------------------------------
->  mm/memcontrol-v1.h |   2 -
->  mm/memcontrol.c    |   1 -
->  3 files changed, 2 insertions(+), 177 deletions(-)
+>  include/linux/mmzone.h | 30 +++++++++++-------------------
+>  mm/vmscan.c            | 16 ++--------------
+>  2 files changed, 13 insertions(+), 33 deletions(-)
 > 
-> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-> index b38b8d0f7f51..475f998b7643 100644
-> --- a/mm/memcontrol-v1.c
-> +++ b/mm/memcontrol-v1.c
-> @@ -17,23 +17,6 @@
->  #include "swap_table.h"
->  #include "memcontrol-v1.h"
->  
-> -/*
-> - * Cgroups above their limits are maintained in a RB-Tree, independent of
-> - * their hierarchy representation
-> - */
-> -
-> -struct mem_cgroup_tree_per_node {
-> -	struct rb_root rb_root;
-> -	struct rb_node *rb_rightmost;
-> -	spinlock_t lock;
-> -};
-> -
-> -struct mem_cgroup_tree {
-> -	struct mem_cgroup_tree_per_node *rb_tree_per_node[MAX_NUMNODES];
-> -};
-> -
-> -static struct mem_cgroup_tree soft_limit_tree __read_mostly;
-> -
->  /* for OOM */
->  struct mem_cgroup_eventfd_list {
->  	struct list_head list;
-> @@ -99,133 +82,6 @@ static struct lockdep_map memcg_oom_lock_dep_map = {
->  
->  DEFINE_SPINLOCK(memcg_oom_lock);
->  
-> -static void __mem_cgroup_insert_exceeded(struct mem_cgroup_per_node *mz,
-> -					 struct mem_cgroup_tree_per_node *mctz,
-> -					 unsigned long new_usage_in_excess)
-> -{
-> -	struct rb_node **p = &mctz->rb_root.rb_node;
-> -	struct rb_node *parent = NULL;
-> -	struct mem_cgroup_per_node *mz_node;
-> -	bool rightmost = true;
-> -
-> -	if (mz->on_tree)
-> -		return;
-> -
-> -	mz->usage_in_excess = new_usage_in_excess;
-> -	if (!mz->usage_in_excess)
-> -		return;
-> -	while (*p) {
-> -		parent = *p;
-> -		mz_node = rb_entry(parent, struct mem_cgroup_per_node,
-> -					tree_node);
-> -		if (mz->usage_in_excess < mz_node->usage_in_excess) {
-> -			p = &(*p)->rb_left;
-> -			rightmost = false;
-> -		} else {
-> -			p = &(*p)->rb_right;
-> -		}
-> -	}
-> -
-> -	if (rightmost)
-> -		mctz->rb_rightmost = &mz->tree_node;
-> -
-> -	rb_link_node(&mz->tree_node, parent, p);
-> -	rb_insert_color(&mz->tree_node, &mctz->rb_root);
-> -	mz->on_tree = true;
-> -}
-> -
-> -static void __mem_cgroup_remove_exceeded(struct mem_cgroup_per_node *mz,
-> -					 struct mem_cgroup_tree_per_node *mctz)
-> -{
-> -	if (!mz->on_tree)
-> -		return;
-> -
-> -	if (&mz->tree_node == mctz->rb_rightmost)
-> -		mctz->rb_rightmost = rb_prev(&mz->tree_node);
-> -
-> -	rb_erase(&mz->tree_node, &mctz->rb_root);
-> -	mz->on_tree = false;
-> -}
-> -
-> -static void mem_cgroup_remove_exceeded(struct mem_cgroup_per_node *mz,
-> -				       struct mem_cgroup_tree_per_node *mctz)
-> -{
-> -	unsigned long flags;
-> -
-> -	spin_lock_irqsave(&mctz->lock, flags);
-> -	__mem_cgroup_remove_exceeded(mz, mctz);
-> -	spin_unlock_irqrestore(&mctz->lock, flags);
-> -}
-> -
-> -static unsigned long soft_limit_excess(struct mem_cgroup *memcg)
-> -{
-> -	unsigned long nr_pages = page_counter_read(&memcg->memory);
-> -	unsigned long soft_limit = READ_ONCE(memcg->soft_limit);
-> -	unsigned long excess = 0;
-> -
-> -	if (nr_pages > soft_limit)
-> -		excess = nr_pages - soft_limit;
-> -
-> -	return excess;
-> -}
-> -
-> -static void memcg1_update_tree(struct mem_cgroup *memcg, int nid)
-> -{
-> -	unsigned long excess;
-> -	struct mem_cgroup_per_node *mz;
-> -	struct mem_cgroup_tree_per_node *mctz;
-> -
-> -	if (lru_gen_enabled()) {
-> -		if (soft_limit_excess(memcg))
-> -			lru_gen_soft_reclaim(memcg, nid);
-> -		return;
-> -	}
-> -
-> -	mctz = soft_limit_tree.rb_tree_per_node[nid];
-> -	if (!mctz)
-> -		return;
-> -	/*
-> -	 * Necessary to update all ancestors when hierarchy is used.
-> -	 * because their event counter is not touched.
-> -	 */
-> -	for (; memcg; memcg = parent_mem_cgroup(memcg)) {
-> -		mz = memcg->nodeinfo[nid];
-> -		excess = soft_limit_excess(memcg);
-> -		/*
-> -		 * We have to update the tree if mz is on RB-tree or
-> -		 * mem is over its softlimit.
-> -		 */
-> -		if (excess || mz->on_tree) {
-> -			unsigned long flags;
-> -
-> -			spin_lock_irqsave(&mctz->lock, flags);
-> -			/* if on-tree, remove it */
-> -			if (mz->on_tree)
-> -				__mem_cgroup_remove_exceeded(mz, mctz);
-> -			/*
-> -			 * Insert again. mz->usage_in_excess will be updated.
-> -			 * If excess is 0, no tree ops.
-> -			 */
-> -			__mem_cgroup_insert_exceeded(mz, mctz, excess);
-> -			spin_unlock_irqrestore(&mctz->lock, flags);
-> -		}
-> -	}
-> -}
-> -
-> -void memcg1_remove_from_trees(struct mem_cgroup *memcg)
-> -{
-> -	struct mem_cgroup_tree_per_node *mctz;
-> -	struct mem_cgroup_per_node *mz;
-> -	int nid;
-> -
-> -	for_each_node(nid) {
-> -		mz = memcg->nodeinfo[nid];
-> -		mctz = soft_limit_tree.rb_tree_per_node[nid];
-> -		if (mctz)
-> -			mem_cgroup_remove_exceeded(mz, mctz);
-> -	}
-> -}
-> -
->  static u64 mem_cgroup_move_charge_read(struct cgroup_subsys_state *css,
->  				struct cftype *cft)
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 94f9c3ff5416..01fabd0ece0d 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -635,35 +635,32 @@ struct lru_gen_mm_walk {
+>   * For each node, memcgs are divided into two generations: the old and the
+>   * young. For each generation, memcgs are randomly sharded into multiple bins
+>   * to improve scalability. For each bin, the hlist_nulls is virtually divided
+> - * into three segments: the head, the tail and the default.
+> + * into two segments: the tail and the default.
+>   *
+>   * An onlining memcg is added to the tail of a random bin in the old generation.
+>   * The eviction starts at the head of a random bin in the old generation. The
+>   * per-node memcg generation counter, whose reminder (mod MEMCG_NR_GENS) indexes
+>   * the old generation, is incremented when all its bins become empty.
+>   *
+> - * There are four operations:
+> - * 1. MEMCG_LRU_HEAD, which moves a memcg to the head of a random bin in its
+> - *    current generation (old or young) and updates its "seg" to "head";
+> - * 2. MEMCG_LRU_TAIL, which moves a memcg to the tail of a random bin in its
+> + * There are three operations:
+> + * 1. MEMCG_LRU_TAIL, which moves a memcg to the tail of a random bin in its
+>   *    current generation (old or young) and updates its "seg" to "tail";
+> - * 3. MEMCG_LRU_OLD, which moves a memcg to the head of a random bin in the old
+> + * 2. MEMCG_LRU_OLD, which moves a memcg to the head of a random bin in the old
+>   *    generation, updates its "gen" to "old" and resets its "seg" to "default";
+> - * 4. MEMCG_LRU_YOUNG, which moves a memcg to the tail of a random bin in the
+> + * 3. MEMCG_LRU_YOUNG, which moves a memcg to the tail of a random bin in the
+>   *    young generation, updates its "gen" to "young" and resets its "seg" to
+>   *    "default".
+>   *
+>   * The events that trigger the above operations are:
+> - * 1. Exceeding the soft limit, which triggers MEMCG_LRU_HEAD;
+> - * 2. The first attempt to reclaim a memcg below low, which triggers
+> + * 1. The first attempt to reclaim a memcg below low, which triggers
+>   *    MEMCG_LRU_TAIL;
+> - * 3. The first attempt to reclaim a memcg offlined or below reclaimable size
+> + * 2. The first attempt to reclaim a memcg offlined or below reclaimable size
+>   *    threshold, which triggers MEMCG_LRU_TAIL;
+> - * 4. The second attempt to reclaim a memcg offlined or below reclaimable size
+> + * 3. The second attempt to reclaim a memcg offlined or below reclaimable size
+>   *    threshold, which triggers MEMCG_LRU_YOUNG;
+> - * 5. Attempting to reclaim a memcg below min, which triggers MEMCG_LRU_YOUNG;
+> - * 6. Finishing the aging on the eviction path, which triggers MEMCG_LRU_YOUNG;
+> - * 7. Offlining a memcg, which triggers MEMCG_LRU_OLD.
+> + * 4. Attempting to reclaim a memcg below min, which triggers MEMCG_LRU_YOUNG;
+> + * 5. Finishing the aging on the eviction path, which triggers MEMCG_LRU_YOUNG;
+> + * 6. Offlining a memcg, which triggers MEMCG_LRU_OLD.
+>   *
+>   * Notes:
+>   * 1. Memcg LRU only applies to global reclaim, and the round-robin incrementing
+> @@ -696,7 +693,6 @@ void lru_gen_exit_memcg(struct mem_cgroup *memcg);
+>  void lru_gen_online_memcg(struct mem_cgroup *memcg);
+>  void lru_gen_offline_memcg(struct mem_cgroup *memcg);
+>  void lru_gen_release_memcg(struct mem_cgroup *memcg);
+> -void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid);
+>  void max_lru_gen_memcg(struct mem_cgroup *memcg, int nid);
+>  bool recheck_lru_gen_max_memcg(struct mem_cgroup *memcg, int nid);
+>  void lru_gen_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent, int nid);
+> @@ -737,10 +733,6 @@ static inline void lru_gen_release_memcg(struct mem_cgroup *memcg)
 >  {
-> @@ -336,7 +192,7 @@ static void mem_cgroup_threshold(struct mem_cgroup *memcg)
+>  }
+>  
+> -static inline void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid)
+> -{
+> -}
+> -
+>  static inline void max_lru_gen_memcg(struct mem_cgroup *memcg, int nid)
+>  {
+>  }
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 790b50c78a2e..71244cf33d59 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4373,7 +4373,6 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+>  /* see the comment on MEMCG_NR_GENS */
+>  enum {
+>  	MEMCG_LRU_NOP,
+> -	MEMCG_LRU_HEAD,
+>  	MEMCG_LRU_TAIL,
+>  	MEMCG_LRU_OLD,
+>  	MEMCG_LRU_YOUNG,
+> @@ -4395,9 +4394,7 @@ static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
+>  	new = old = lruvec->lrugen.gen;
+>  
+>  	/* see the comment on MEMCG_NR_GENS */
+> -	if (op == MEMCG_LRU_HEAD)
+> -		seg = MEMCG_LRU_HEAD;
+> -	else if (op == MEMCG_LRU_TAIL)
+> +	if (op == MEMCG_LRU_TAIL)
+>  		seg = MEMCG_LRU_TAIL;
+>  	else if (op == MEMCG_LRU_OLD)
+>  		new = get_memcg_gen(pgdat->memcg_lru.seq);
+> @@ -4411,7 +4408,7 @@ static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
+>  
+>  	hlist_nulls_del_rcu(&lruvec->lrugen.list);
+>  
+> -	if (op == MEMCG_LRU_HEAD || op == MEMCG_LRU_OLD)
+> +	if (op == MEMCG_LRU_OLD)
+>  		hlist_nulls_add_head_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
+>  	else
+>  		hlist_nulls_add_tail_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
+> @@ -4489,15 +4486,6 @@ void lru_gen_release_memcg(struct mem_cgroup *memcg)
 >  	}
 >  }
 >  
-> -/* Cgroup1: threshold notifications & softlimit tree updates */
-> +/* Cgroup1: threshold notifications */
->  
->  /*
->   * Per memcg event counter is incremented at every pagein/pageout. With THP,
-> @@ -405,17 +261,8 @@ static void memcg1_check_events(struct mem_cgroup *memcg, int nid)
->  	if (IS_ENABLED(CONFIG_PREEMPT_RT))
->  		return;
->  
-> -	/* threshold event is triggered in finer grain than soft limit */
-> -	if (unlikely(memcg1_event_ratelimit(memcg,
-> -						MEM_CGROUP_TARGET_THRESH))) {
-> -		bool do_softlimit;
-> -
-> -		do_softlimit = memcg1_event_ratelimit(memcg,
-> -						MEM_CGROUP_TARGET_SOFTLIMIT);
-> +	if (unlikely(memcg1_event_ratelimit(memcg, MEM_CGROUP_TARGET_THRESH)))
->  		mem_cgroup_threshold(memcg);
-> -		if (unlikely(do_softlimit))
-> -			memcg1_update_tree(memcg, nid);
-> -	}
->  }
->  
->  void memcg1_commit_charge(struct folio *folio, struct mem_cgroup *memcg)
-> @@ -2391,22 +2238,3 @@ void memcg1_free_events(struct mem_cgroup *memcg)
->  {
->  	free_percpu(memcg->events_percpu);
->  }
-> -
-> -static int __init memcg1_init(void)
+> -void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid)
 > -{
-> -	int node;
+> -	struct lruvec *lruvec = get_lruvec(memcg, nid);
 > -
-> -	for_each_node(node) {
-> -		struct mem_cgroup_tree_per_node *rtpn;
-> -
-> -		rtpn = kzalloc_node(sizeof(*rtpn), GFP_KERNEL, node);
-> -
-> -		rtpn->rb_root = RB_ROOT;
-> -		rtpn->rb_rightmost = NULL;
-> -		spin_lock_init(&rtpn->lock);
-> -		soft_limit_tree.rb_tree_per_node[node] = rtpn;
-> -	}
-> -
-> -	return 0;
+> -	/* see the comment on MEMCG_NR_GENS */
+> -	if (READ_ONCE(lruvec->lrugen.seg) != MEMCG_LRU_HEAD)
+> -		lru_gen_rotate_memcg(lruvec, MEMCG_LRU_HEAD);
 > -}
-> -subsys_initcall(memcg1_init);
-> diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
-> index 1e394269c613..fd611e66859a 100644
-> --- a/mm/memcontrol-v1.h
-> +++ b/mm/memcontrol-v1.h
-> @@ -41,7 +41,6 @@ bool memcg1_alloc_events(struct mem_cgroup *memcg);
->  void memcg1_free_events(struct mem_cgroup *memcg);
->  
->  void memcg1_memcg_init(struct mem_cgroup *memcg);
-> -void memcg1_remove_from_trees(struct mem_cgroup *memcg);
->  
->  static inline void memcg1_soft_limit_reset(struct mem_cgroup *memcg)
+> -
+>  bool recheck_lru_gen_max_memcg(struct mem_cgroup *memcg, int nid)
 >  {
-> @@ -98,7 +97,6 @@ static inline bool memcg1_alloc_events(struct mem_cgroup *memcg) { return true;
->  static inline void memcg1_free_events(struct mem_cgroup *memcg) {}
->  
->  static inline void memcg1_memcg_init(struct mem_cgroup *memcg) {}
-> -static inline void memcg1_remove_from_trees(struct mem_cgroup *memcg) {}
->  static inline void memcg1_soft_limit_reset(struct mem_cgroup *memcg) {}
->  static inline void memcg1_css_offline(struct mem_cgroup *memcg) {}
->  
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 1d3339520809..b68f1f16ae54 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -4394,7 +4394,6 @@ static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
->  
->  	vmpressure_cleanup(&memcg->vmpressure);
->  	cancel_work_sync(&memcg->high_work);
-> -	memcg1_remove_from_trees(memcg);
->  	free_shrinker_info(memcg);
->  	mem_cgroup_free(memcg);
->  }
+>  	struct lruvec *lruvec = get_lruvec(memcg, nid);
 > -- 
 > 2.53.0-Meta
 
