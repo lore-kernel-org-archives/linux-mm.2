@@ -4,87 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49A26C5CFEB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 15:03:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38383C5CFEB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 15:03:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 113796B0285; Thu, 13 Aug 2026 11:03:40 -0400 (EDT)
+	id E30886B0515; Thu, 13 Aug 2026 11:03:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EC186B0514; Thu, 13 Aug 2026 11:03:40 -0400 (EDT)
+	id DE50A6B0516; Thu, 13 Aug 2026 11:03:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 002DA6B0515; Thu, 13 Aug 2026 11:03:39 -0400 (EDT)
+	id CFA176B0517; Thu, 13 Aug 2026 11:03:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B84106B0285
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:03:39 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4F040A1C4E
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:03:39 +0000 (UTC)
-X-FDA: 85096565358.15.C02AE69
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 55963120015
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:03:35 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=R5QtYXBS;
-	spf=pass (imf29.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EF536B0515
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:03:46 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 175A216018F
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:03:46 +0000 (UTC)
+X-FDA: 85096565652.26.AD03F97
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 62B1F14000E
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:03:44 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EPsbo6tI;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786633417;
+	s=arc-20220608; t=1786633424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=yluVcWye/s/7XdOwmqnjfFXhTdJaDPji+Tuj86y5Lk8=;
-	b=GpJpBSJsVoAVfyWFmURtWlPU4BDV/ZHmR9lamxGEgGayUCch3YQDZV6WcyOEeP42TC0Cpr
-	IPpkLMeg0r7+xdjOehSWrEMrokkdgrWl0gxjMnhBJdAbwqkDdocJzR5+SwVqFhqYAtDtgz
-	69JCaOfyZDeqZVWaXR0j7BqzqA30DVg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786633417;
-	b=73K8YoZzVbj+YFtmIRo4VJvEcL11J7BG1gwAx+UmqB7kPP120nPNei4H4Kz3+wW38pMOXC
-	L7V/B4oEvzrDXSpIwS/e6T7bYdORlwWSGFQQt/cslAeSptIAgf6z5NX6uKkHgRKKlloqUZ
-	+2gnhRvhw8a4jGJG7WyaD0HZ7xCR+Z4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=B9mjz28DJjf5IdgDz36zYYN/GhLK0GgAYHY7eTWpXMQ=;
+	b=OlKzKCwShPjrliO+/ANhZ1ucp46IGGQ2BjFX8IoZw4Cp5a1AdUQaiT0aElUh6D5viGDpZ9
+	4XIH/mBGgyqVDkFgpVSRnL8r3oT4Korvm8MmYgRS1GiyMiz9gIEP9u3jMGicN0TVU+BMcN
+	076ag7gAO6oJLAsqTbUlZU4a0XlJ2gc=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=R5QtYXBS;
-	spf=pass (imf29.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=yl
-	uVcWye/s/7XdOwmqnjfFXhTdJaDPji+Tuj86y5Lk8=; b=R5QtYXBSF32IgsnuOg
-	6PZ43Fi8F/jaVCwdxzeDppe40g7UVr2SF4Jn/abGEbhpWYzf+8NXCXFLcXuFbwe9
-	4rEKbaPh3do/AKMCODKOh3t2MeZScsSS+K1K9oimbBW/6J7d/Lv3r9YrRieCs0jw
-	adSjiXzmXEJONMQH6UzqgvXBU=
-Received: from XLL-9950X.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wDnN2y33H1qz03vOg--.16715S2;
-	Thu, 13 Aug 2026 23:03:20 +0800 (CST)
-From: Longlong Xia <xialonglong2025@163.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	linux-mm@kvack.org,
-	Longlong Xia <xialonglong@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/swap: publish cluster tables after full initialization
-Date: Thu, 13 Aug 2026 23:03:16 +0800
-Message-ID: <20260813150316.2793642-1-xialonglong2025@163.com>
-X-Mailer: git-send-email 2.43.0
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EPsbo6tI;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786633424;
+	b=KwsbVKR1TRozzFQ1pGv7isb8ey0nrFm9g8O54qXNuCFc1Mj2Tiwf1DAUai4kIb48G68wa5
+	PKNQZmnmPrisN9Gl1ZpdM4j3EJvwWKwS57qETRC35Blw1ReiB4MBdxdA2sgpVTpPAw54z3
+	AHslaG+wKAQuRSdejsBibCaoSRwR/1w=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C800061882;
+	Thu, 13 Aug 2026 15:03:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD661F00A3A;
+	Thu, 13 Aug 2026 15:03:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786633423;
+	bh=B9mjz28DJjf5IdgDz36zYYN/GhLK0GgAYHY7eTWpXMQ=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=EPsbo6tIF7dBPYwKkM2aXPv+v+2K4/ex5ijZ50LyFQVUvEPJWbIpmCFBoMJ7CLgh5
+	 klf/sTHwBL95we9BVDtWR5/KhuoerfAjIH745M1jtC1HrdLiIoTehrEzZW2Ix0isdy
+	 o0Z1My6PhRrocoJWBOg8NnoJnSqThYMQHPL8KaUK+SHNrSVHef6yJiEZ0b7aFgFUR/
+	 ruk09dkfzrNQi0wErGmvVZRg9tWxsglt8VZ+/lmS4zBMxkV76t6AZO4ljC1LDfiyKy
+	 RAoh2ax6KbWnl1wcs1jQiYJ8AgXW3Nsj4caH+BtDsrgqC920XjSWjYOo9JZfnG+LTT
+	 bL9C0Yk14tO7A==
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnN2y33H1qz03vOg--.16715S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3GFWfCF18KryftrWxZrW5ZFb_yoW3CF43pF
-	4fK3s8Kr4fXrnxWrsxAw4ktFyrCw40gryDGFyxGw1a93ZxXr48Wa97AFyavF97CF1kJwnx
-	Kr15Kw17uF48AwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jnhL8UUUUU=
-X-Originating-IP: [240e:46d:1800:11e5:571f:2236:29c7:b85f]
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC9xhfWGp93LgaqQAA3o
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3 01/18] selftests/mm: raise the khugepaged test-case
+ cap
+From: Mike Rapoport <rppt@kernel.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+ nico.pache@linux.dev, baolin.wang@linux.alibaba.com, baohua@kernel.org, 
+ dev.jain@arm.com, hughd@google.com, lance.yang@linux.dev, 
+ liam@infradead.org, mhocko@suse.com, rppt@kernel.org, ryan.roberts@arm.com, 
+ shuah@kernel.org, surenb@google.com, usama.arif@linux.dev, 
+ vbabka@kernel.org, ziy@nvidia.com, usama.anjum@arm.com, 
+ agordeev@linux.ibm.com, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kas@kernel.org
+In-Reply-To: <20260812132304.199287-2-kirill@shutemov.name>
+References: <20260812132304.199287-1-kirill@shutemov.name>
+ <20260812132304.199287-2-kirill@shutemov.name>
+Date: Thu, 13 Aug 2026 18:03:34 +0300
+Message-Id: <178663341429.2230969.5576178581449703816.b4-review@b4>
+X-Mailer: b4 0.17-dev
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 62B1F14000E
+X-Stat-Signature: 3ea6ct9w1hfqhoexu49iumcdt8jfxb8a
 X-Rspam-User: 
-X-Stat-Signature: 9so7uum7ktqu75jr3pizugwyfepide7n
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 55963120015
-X-HE-Tag: 1786633415-168190
-X-HE-Meta: U2FsdGVkX19SfawgLACcBDms1z6r5T4AQG5Y6ZHKrIPq/9Hy1rMi2FsI/dDzga6IqnmvdMzLCPOjB26bfpAXgYNeIGFcGwwSrmAPo7diHyco/9KPH6MXjYCOKqfsi1wmbtBjufiUlHXAGTNi3oEA+XSUoadakJDVzUeLMB5RYS/TAowJCxReMUU1eSbWgTiAe7EyM6DAvU5Hmgm1khLtt03qXprwc4jlrHVfXBhhSP22bjL+CIaW5GBnylhQTacd4S6fFHKc5jyFneYIKHWQwYa3yx9axu6damDehWBrwUVlx9k0bgLKiW7Qn+9HFsdyNv/ZneBxHeTxNmYSQwHDyLvAhMuHG072Plkxu6wqk2Sh/6FhfHoyL2qNI1aiyYAG8vRLFSrYnkyqLFbaWMea+QscuwHFN0vYyFtzeCySTjOoCy/B2iIfxsPb0I93i2UvcZ4oMrgLLt79o4p9g5b9AhrABWPOxtFDueSmdqZmU/Vf/uNFJ9Hnb2a/wLDkWqg9RwyVRDk/sCCxIms2pO36aZtq9awvDIsOu2jkhjUJDD0LbpRllfMIVZAkRiGcLpMNu4osbz2/jNYzhqYjpOZ4eFR78x/NII+Uzb3tb9rPeKCOO5apH8q2X8ix3WqxhimEioKNgu6JfEmY+DyogJ9+SSESm/m3wSFhgGfvIf3KoKcUbIFKfpoozpUcSsT+i24xv7peJglUo9sZUh92R46NXzr4tqN91vsoyYuQWI4JqdqBqaAqhXxXTpkcfu+Xt05QYMOB+TW+SdqvNRdyQlQFSmNIn1zQLoTrfmghnaceOA89xeVAgA1XlPF8cAaaFDq2JqTJ+vaR6C2UIA7Zb7PTOJ0TVH+pxBpBHrNK9PpDu6k/Kx2p3H07ZN8bx3/5iYNjXE68No9KDpMqseBdHhqf7HH2AE8znhjKFTwsXOphyLqEp3yhJjiOAQA0E3AnVs9j6tVrAqyb0sPuqpby0UX
- kqdjOmeJ
- QDjVbUeu+Ons9gD3q++WVjwdw73pkvIq4Niy9wANRQcYeRaZQLoRSvtmMRSg65P85GGW/kAqXQrBzPUbaMXTnm+FNazR0G9HbydZoLTUrbUL1nVX8cdAJg0jRu9mD8aYbHxUyOpOZA7xDFDPB6GGbBT4l5dyWl5K/0ChakhvCddAoYysZh5JNy1luu583XJv7s1PKAEQbo9BLLShSiMYxSF4p1GJ8mgntRY3R31IOOCKlcMosiz6QyHXMGUWgPZb8DxbsEhuyMj9QDth72/oN6LDRLPeXSZ9w3W37GuXAoHHK4L0JSoJ5DRTFbH+hNUUfGdB/ZAQG35cNXINJxkRWuNfJ1g==
+X-HE-Tag: 1786633424-246479
+X-HE-Meta: U2FsdGVkX1+IXvbzjYzBVIxHbqjFh+Qk+eNGym60890ej+pZyly/nruSw1nI7wRsGX2ABtyr9XOqeXAv3rShLYRj5On7wjfEVzWggBe7nl0qlgNlczWPl6K/sQwLwqRWcrYqqKZHxAQR53mkfTZ7ATkDQXAIjl1tJ+OTyG0EunWFMl3fJjdi8TCZcMM5JBpOmxhjIVYlivlTHtHYDB0iYy9gJ4HIWruOspjgqGNgCa4/CGG8L6GJKxgFNNdaM9KydtrR1Zg0qxa42rXPpNEhUvgq1FniF0ovGzDd+ZWZ/XczwMgpXJGTbx9Nf7YTZVqJVcjKkh6PAWyuE0RP0RdDGokBrbP8yam17ZG8ZqGjmz/4fvwCiienjMM40TLfg+5JSDe4BfzvfzuhPuM1uncBnZcEFjkJtCd8tv5NTiL/C4D/yTIzGYl5LWTK54BKvDKWM1WgaDPVwhH++yRqQB+/iVCfKmt6rGftTNyBg74yq/EOpJnsVgonvEKUh7udquTwGARKZ+QuweK2ymuG/DLRkHn3AlIaz8DkJmMLhtMD4Nue/hw+MJ/H87A5VuZMNHwUW+J9Q6xbhmJm/R3PCV+rC6Y6sfqaaxpLBvCYUDsIsGb8ESererlwPImkhFdTEvfEs/aRain8m9s1bCxTDqpKbaAKlM77xUvsqvRWFVF6wfTReTSldtfvT2hZFq2pD1+2294or9NHEPo/B/O+iULs2BsiSiodxLHe0Z+kKo4SUobhpZ1LkfHEcj12sCDHGLtPRZiZPUEUXyvRs1Yji5UYtZRqB6dezPClqkoWxtfOG8XYUc4S/+DDD9dbPceqwLGiwRqj2EfVqc40LB77bn6DIFwr60fR8GJA8Xv3q5SP0peNJn8Y4U34MHrLlGjEo10F949tKnnQLHtRrlJTJpRBu2cg8ehzqUzfSUuJmQ3z0qw5lnGvNW/SPf2YQW3q0y8xlpcylt6fqDi5E2rhW/Y
+ 7mF4Vvzh
+ 4cs/hb+rE8t+cSHrNWxt8G3QtvbqtUqQeDVTgqKC7Ljn47u7xuC787JF/Mrdd1THfVLleJ/C7PKIfZqQl/ETAsyXZaiZestzKVgNy1Ems1p9H+y/aMQyrNDcxM+K3PH1yWdak5RK4TjFIFEqkwdH31DpDR1u/1l4TkbU4zWfKbxCn+I5cvzDdSSr61T2aZvx88cA8pKBBrtOonWSCEHe4OBauEPNnUlItJtmGq3eL8W8rgyARrbHquUvdoQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,267 +100,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Longlong Xia <xialonglong@kylinos.cn>
+On Wed, 12 Aug 2026 14:22:47 +0100, Kiryl Shutsemau <kirill@shutemov.name> wrote:
+> TEST() ends the run with "MAX_TEST_CASES is too small" when the table
+> fills, and the table holds 64.  A full invocation -- every context crossed
+> with every memory type, which needs a directory for the file and shmem ones
+> -- already registers 63, so the next case added anywhere aborts the whole
+> suite before a single test runs.
+> 
+> Raise it to 256.  The table is a static array of small structs, so the room
+> costs nothing worth counting, and the cases added after this have somewhere
+> to go.
+> 
+> [...]
 
-swap_cluster_populate() drops the local, global, and cluster locks
-before its sleeping allocation.  The allocation helper publishes ci->table
-before allocating the memcg table and, on some 32-bit configurations, the
-zero bitmap.
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-A stale per-CPU or global cluster cursor can reach the isolated cluster in
-that window.  Since CLUSTER_FLAG_NONE and a non-NULL table make the cluster
-appear usable, it can allocate a slot without the auxiliary state.  An
-auxiliary allocation failure can then tear down a table which is already in
-use.
-
-Allocate the complete set of tables into a private carrier.  Install the
-auxiliary pointers and publish the main table only while holding ci->lock;
-the slow path does this after reacquiring all allocator locks.  Allocation
-failures now free only unpublished resources.
-
-Fixes: b197d41462c2 ("mm/memcg, swap: store cgroup id in cluster table directly")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5.6-sol
-Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
----
- mm/swapfile.c | 167 +++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 117 insertions(+), 50 deletions(-)
-
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 78b49b0658ad..2ca947c540e9 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -410,6 +410,99 @@ static inline unsigned int cluster_offset(struct swap_info_struct *si,
- 	return cluster_index(si, ci) * SWAPFILE_CLUSTER;
- }
- 
-+struct swap_cluster_tables {
-+	struct swap_table *table;
-+#ifdef CONFIG_MEMCG
-+	struct swap_memcg_table *memcg_table;
-+#endif
-+#if !SWAP_TABLE_HAS_ZEROFLAG
-+	unsigned long *zero_bitmap;
-+#endif
-+};
-+
-+static void swap_cluster_tables_free(struct swap_cluster_tables *tables)
-+{
-+#ifdef CONFIG_MEMCG
-+	kfree(tables->memcg_table);
-+	tables->memcg_table = NULL;
-+#endif
-+
-+#if !SWAP_TABLE_HAS_ZEROFLAG
-+	kfree(tables->zero_bitmap);
-+	tables->zero_bitmap = NULL;
-+#endif
-+
-+	if (!tables->table)
-+		return;
-+
-+	if (SWP_TABLE_USE_PAGE)
-+		folio_put(virt_to_folio(tables->table));
-+	else
-+		kmem_cache_free(swap_table_cachep, tables->table);
-+	tables->table = NULL;
-+}
-+
-+static int swap_cluster_tables_alloc(struct swap_cluster_tables *tables,
-+				     gfp_t gfp)
-+{
-+	struct folio *folio;
-+
-+	if (SWP_TABLE_USE_PAGE) {
-+		folio = folio_alloc(gfp | __GFP_ZERO, 0);
-+		if (folio)
-+			tables->table = folio_address(folio);
-+	} else {
-+		tables->table = kmem_cache_zalloc(swap_table_cachep, gfp);
-+	}
-+	if (!tables->table)
-+		return -ENOMEM;
-+
-+#ifdef CONFIG_MEMCG
-+	if (!mem_cgroup_disabled()) {
-+		tables->memcg_table = kzalloc_obj(*tables->memcg_table, gfp);
-+		if (!tables->memcg_table)
-+			goto free_tables;
-+	}
-+#endif
-+
-+#if !SWAP_TABLE_HAS_ZEROFLAG
-+	tables->zero_bitmap = bitmap_zalloc(SWAPFILE_CLUSTER, gfp);
-+	if (!tables->zero_bitmap)
-+		goto free_tables;
-+#endif
-+
-+	return 0;
-+
-+#if defined(CONFIG_MEMCG) || !SWAP_TABLE_HAS_ZEROFLAG
-+free_tables:
-+	swap_cluster_tables_free(tables);
-+	return -ENOMEM;
-+#endif
-+}
-+
-+static void swap_cluster_tables_install(struct swap_cluster_info *ci,
-+					struct swap_cluster_tables *tables)
-+{
-+	lockdep_assert_held(&ci->lock);
-+	VM_WARN_ON_ONCE(ci->flags || !cluster_is_empty(ci));
-+	VM_WARN_ON_ONCE(rcu_access_pointer(ci->table));
-+
-+#ifdef CONFIG_MEMCG
-+	VM_WARN_ON_ONCE(ci->memcg_table);
-+	ci->memcg_table = tables->memcg_table;
-+	tables->memcg_table = NULL;
-+#endif
-+
-+#if !SWAP_TABLE_HAS_ZEROFLAG
-+	VM_WARN_ON_ONCE(ci->zero_bitmap);
-+	ci->zero_bitmap = tables->zero_bitmap;
-+	tables->zero_bitmap = NULL;
-+#endif
-+
-+	rcu_assign_pointer(ci->table, tables->table);
-+	tables->table = NULL;
-+}
-+
- static void swap_cluster_free_table_folio_rcu_cb(struct rcu_head *head)
- {
- 	struct folio *folio;
-@@ -446,50 +539,6 @@ static void swap_cluster_free_table(struct swap_cluster_info *ci)
- 		 swap_cluster_free_table_folio_rcu_cb);
- }
- 
--static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
--{
--	struct swap_table *table = NULL;
--	struct folio *folio;
--
--	/* The cluster must be empty and not on any list during allocation. */
--	VM_WARN_ON_ONCE(ci->flags || !cluster_is_empty(ci));
--	if (rcu_access_pointer(ci->table))
--		return 0;
--
--	if (SWP_TABLE_USE_PAGE) {
--		folio = folio_alloc(gfp | __GFP_ZERO, 0);
--		if (folio)
--			table = folio_address(folio);
--	} else {
--		table = kmem_cache_zalloc(swap_table_cachep, gfp);
--	}
--	if (!table)
--		return -ENOMEM;
--
--	rcu_assign_pointer(ci->table, table);
--
--#ifdef CONFIG_MEMCG
--	if (!mem_cgroup_disabled()) {
--		VM_WARN_ON_ONCE(ci->memcg_table);
--		ci->memcg_table = kzalloc_obj(*ci->memcg_table, gfp);
--		if (!ci->memcg_table) {
--			swap_cluster_free_table(ci);
--			return -ENOMEM;
--		}
--	}
--#endif
--
--#if !SWAP_TABLE_HAS_ZEROFLAG
--	VM_WARN_ON_ONCE(ci->zero_bitmap);
--	ci->zero_bitmap = bitmap_zalloc(SWAPFILE_CLUSTER, gfp);
--	if (!ci->zero_bitmap) {
--		swap_cluster_free_table(ci);
--		return -ENOMEM;
--	}
--#endif
--	return 0;
--}
--
- /*
-  * Sanity check to ensure nothing leaked, and the specified range is empty.
-  * One special case is that bad slots can't be freed, so check the number of
-@@ -527,6 +576,7 @@ static struct swap_cluster_info *
- swap_cluster_populate(struct swap_info_struct *si,
- 			 struct swap_cluster_info *ci)
- {
-+	struct swap_cluster_tables tables = {};
- 	int ret;
- 
- 	/*
-@@ -538,9 +588,12 @@ swap_cluster_populate(struct swap_info_struct *si,
- 		lockdep_assert_held(&si->global_cluster_lock);
- 	lockdep_assert_held(&ci->lock);
- 
--	if (!swap_cluster_alloc_table(ci, __GFP_HIGH | __GFP_NOMEMALLOC |
--					  __GFP_NOWARN))
-+	ret = swap_cluster_tables_alloc(&tables, __GFP_HIGH | __GFP_NOMEMALLOC |
-+					       __GFP_NOWARN);
-+	if (!ret) {
-+		swap_cluster_tables_install(ci, &tables);
- 		return ci;
-+	}
- 
- 	/*
- 	 * Try a sleep allocation. Each isolated free cluster may cause
-@@ -552,8 +605,8 @@ swap_cluster_populate(struct swap_info_struct *si,
- 		spin_unlock(&si->global_cluster_lock);
- 	local_unlock(&percpu_swap_cluster.lock);
- 
--	ret = swap_cluster_alloc_table(ci, __GFP_HIGH | __GFP_NOMEMALLOC |
--					   GFP_KERNEL);
-+	ret = swap_cluster_tables_alloc(&tables, __GFP_HIGH | __GFP_NOMEMALLOC |
-+						GFP_KERNEL);
- 
- 	/*
- 	 * Back to atomic context. We might have migrated to a new CPU with a
-@@ -568,11 +621,19 @@ swap_cluster_populate(struct swap_info_struct *si,
- 		spin_lock(&si->global_cluster_lock);
- 	spin_lock(&ci->lock);
- 
-+	/* Nothing except this helper should populate an isolated cluster. */
-+	if (WARN_ON_ONCE(cluster_table_is_alloced(ci))) {
-+		swap_cluster_tables_free(&tables);
-+		return ci;
-+	}
-+
- 	if (ret) {
- 		move_cluster(si, ci, &si->free_clusters, CLUSTER_FLAG_FREE);
- 		spin_unlock(&ci->lock);
- 		return NULL;
- 	}
-+
-+	swap_cluster_tables_install(ci, &tables);
- 	return ci;
- }
- 
-@@ -788,6 +849,7 @@ static int swap_cluster_setup_bad_slot(struct swap_info_struct *si,
- 				       struct swap_cluster_info *cluster_info,
- 				       unsigned int offset, bool mask)
- {
-+	struct swap_cluster_tables tables = {};
- 	unsigned int ci_off = offset % SWAPFILE_CLUSTER;
- 	unsigned long idx = offset / SWAPFILE_CLUSTER;
- 	struct swap_cluster_info *ci;
-@@ -812,9 +874,14 @@ static int swap_cluster_setup_bad_slot(struct swap_info_struct *si,
- 
- 	ci = cluster_info + idx;
- 	/* Need to allocate swap table first for initial bad slot marking. */
--	if (!ci->count && swap_cluster_alloc_table(ci, GFP_KERNEL))
--		return -ENOMEM;
-+	if (!ci->count) {
-+		ret = swap_cluster_tables_alloc(&tables, GFP_KERNEL);
-+		if (ret)
-+			return ret;
-+	}
- 	spin_lock(&ci->lock);
-+	if (tables.table)
-+		swap_cluster_tables_install(ci, &tables);
- 	/* Check for duplicated bad swap slots. */
- 	if (__swap_table_xchg(ci, ci_off, SWP_TB_BAD) != SWP_TB_NULL) {
- 		pr_warn("Duplicated bad slot offset %d\n", offset);
 -- 
-2.43.0
+Sincerely yours,
+Mike.
 
 
