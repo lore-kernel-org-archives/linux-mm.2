@@ -4,94 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97CF9C5AC67
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 08:28:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A967C5CFDB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 08:28:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 894B36B0204; Thu, 13 Aug 2026 04:28:46 -0400 (EDT)
+	id 7D1FE6B0205; Thu, 13 Aug 2026 04:28:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8455F6B0205; Thu, 13 Aug 2026 04:28:46 -0400 (EDT)
+	id 7830C6B0207; Thu, 13 Aug 2026 04:28:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 784B86B0207; Thu, 13 Aug 2026 04:28:46 -0400 (EDT)
+	id 697B96B020A; Thu, 13 Aug 2026 04:28:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 50CEC6B0204
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:28:46 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 40B016B0205
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:28:58 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AF82B1C16A1
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:28:45 +0000 (UTC)
-X-FDA: 85095570210.27.3F78408
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1E3F740004
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:28:43 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bMs9RZNC;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CAFD8A2C0A
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:28:57 +0000 (UTC)
+X-FDA: 85095570714.27.006BC97
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0028E18000C
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:28:55 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Y5HzERcS;
+	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786609724;
+	s=arc-20220608; t=1786609736;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uIuTH63rkuXcFm6et2f7wSWkhuN5eE2vt+vtDQrJL4s=;
-	b=piIGEhOxDZZhPdBVFGaM6DQSyUP45bZmdnXEpGWKxECrQV3ZcexIA8kvh6QcG0u3E/I1CL
-	5pCCrQs/5sAz3YiR18GpH9giNqaZtsZlu99WFllgJgUDZMknoAg1FqTgm8qmPluaBdwL7y
-	8mjLs0amyV49qkF2WfB39TYS/aAEyeA=
+	bh=fgiJKTttCwuzu5gzwlJpsUc5acP5ulEuNQCsjjnCulg=;
+	b=odgkUyHMuBrYFn5sYEg8m3tbgf0BOeMmQp8O/vgTTspcfi6LFait50HrprqxpcbEwl9sPJ
+	u0LXo1xe2nGCl3hUZ1x/o9Cessp7skZyX/E3GQMsGgf++PIbmHeBDoe/Pnd6MIUtnpDB1H
+	5VfhN/Wb/uogpa8oiIkox1ZVoHDEkYI=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bMs9RZNC;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Y5HzERcS;
+	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786609724;
-	b=s34KBlw0PTE9RRmw2pvDvrpXah9fAai5ZcDzQHTqqKppokyHg2SR/zW51vEyTXxhaQuItT
-	qdDmPB79UgTk1vPbhf7kpX3oJkse1ZhtPwB+yWtmO0O51Iz/Y79BHGE+GdwE6QMMo7LaiS
-	IXfY6FHdMUfhk8WndnW82Ot511CQNIs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8D51B431FF;
-	Thu, 13 Aug 2026 08:28:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B34981F000E9;
-	Thu, 13 Aug 2026 08:28:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786609722;
-	bh=uIuTH63rkuXcFm6et2f7wSWkhuN5eE2vt+vtDQrJL4s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bMs9RZNCuFCGpxMnuN/GlcJjkXynXrV0LclIUQD6JvPK5QrSyTBQJTqUF7+TVW6FO
-	 1K6z3hMAOA099qVd5GR6tSZjx8FS/X+8lBZ0/AKAYK7ucrziX4+PuEoE80THntxuv/
-	 TWHocyxmoUw4hOODVAZGbvUGeKk/JYZgzhdD45h8/FyxUgYRW7m/BKkgL54bPfKj6u
-	 EfPE8kCQlMS8f7unbRmZMB3/eGv1hSRzv8p2/iyQRpRNe+A6xO/ZBBBYt2GyLBO/dI
-	 GaO558pnhFY4zgrgplFktxr/jxQNTn7H5CDgLwqFJuRiUyz6PEVLR6PTunViHie0Jm
-	 KQGFkf8cvD1DA==
-Date: Thu, 13 Aug 2026 09:28:19 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: SJ Park <sj@kernel.org>, linux-mm@kvack.org, damon@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, akpm@linux-foundation.org, 
-	david@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev, vbabka@kernel.org, 
-	jannh@google.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
-	apopple@nvidia.com
-Subject: Re: [PATCH 1/4] mm/damon: defensively skip zone device folios in
- damon_get_folio()
-Message-ID: <an2AEAE8gXAHPY19@lucifer>
-References: <anS-vK1MaC8sWoMK@fedora>
- <20260807000938.79851-1-sj@kernel.org>
- <an0rQM7ZwWnB0nVD@fedora>
+	t=1786609736;
+	b=5gwDOY6qQHJuJuezlvJKWhW80m/eoRjYb0QWZTSrZljrtoTHKdrEJsDe/tupm8ucqQ+X9s
+	5pRxrtH8i3OxCtFnH8NCWXWn+ZLlZkaWOSeKxmfyWHbcuaREzhT4epQJuJVsu0o5oC69hD
+	qMeK3iCk+Cecd0SKvrGnypjUxAnuOHU=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49954b88fffso4796915e9.0
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:28:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1786609734; x=1787214534; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fgiJKTttCwuzu5gzwlJpsUc5acP5ulEuNQCsjjnCulg=;
+        b=Y5HzERcSbk1DYEeABuOCt0kP0KngjxhXq+pqBQwUayAFqtJdtjCmDQ3r2N8g8ggxQc
+         lBZcleBnOoIcN/e39kXXnQiig8OXCC8AcrKafRAGR32erQNy+94n87kp5MRX/PsNpwcP
+         4OLqnpw4AnWOkiFRTtMSacU4Wu/7SnGlXygKlbPKVkTJnpjyVnMFpjLaFtdMPpUEB3yl
+         NNQBIVsjxuabqe2dd/mr9RKpAk9EtT8NUfjQxmGtSDARSLMp1pBm9yEco7rtkBcET2yU
+         XAY+4D115Mw7OSCTGvk0Q9HTPzoR2uHzXc/rPgslFdTNOr9m/uyVvqOvlSTPobKOTydW
+         XcJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786609734; x=1787214534;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fgiJKTttCwuzu5gzwlJpsUc5acP5ulEuNQCsjjnCulg=;
+        b=MFNdaXOE+f2abSwlyZOKd825nq2nIMO+UTNpFc1F01yeMI1KXdhgBowSpD5W7qJciq
+         IkVsyk2LkYYS0JEwUuXClVTWIIzzMBJ1s3yxxCYppYbVDo8pvOTnZM4Q8fe1mCfK2VPZ
+         WqEFL6CK0iK5hv3b3wKyhacESk2BuHKEGrUVo6zAA8LRn94DIz2VPWupeX59TEFJ/ruH
+         ve/YOG/0BNQmaxmSU1LiH6cttUc6WnmFQ3cga0Q159bORy9CHOKnsGwVhbz0aHNvqtPh
+         QlPM9gru3IEXUztTSNsq5K50uBOKdmkH9qkXrrVASnQ49kmVcyuOFnb3BoWvNbvTebes
+         SFug==
+X-Forwarded-Encrypted: i=1; AHgh+RqfkPIJnj98FAxwg6/bCugf2l4xj+7RmCMqDZQbhCyAC0V//Ai67Y9YkYmogG/NXggnU1LKAA+/fg==@kvack.org
+X-Gm-Message-State: AOJu0YxcIzxNG8DcBUqQdyKWIA/2wgijfk9RC/LGjMd9YOwduySZs2M1
+	P620XdZRxZwysNBSYAybBeMybL6aXHPUfY9YR2f3aSRhX7FOgZi/exUgrt3kp/2zhFk=
+X-Gm-Gg: AR+sD1241MTqn7NvSTZ/R3WCwdtPe/CWmuqvRVZwLCkB39hfalp2ahE/M/d4HHUCMI3
+	kZ2/RMMWc4ib38te+x+C+VhGaKRkqRsluJr7+evE48K7kh5XJm/jwYim4ci5/wA8+7FmRQhHE0B
+	aDHY6Tic2gDw+jutWQHqMdEzdfH5cVM9nE2qA6TPlU9hvlNMeaeeTqSq+CtA0KxfoNEkOG6EYU4
+	mjWZhquUKNsQCybS5rX+JxjcgcLA6TKBG/cPmD3JZbuH4e/aFNPXZQgbP7Jd5BlcQJHZFEodybO
+	aBWL6t1t46asLw1N1mTyJesjsufsErvJGmjYS348do0zEOUiG7woEgcyFr9pl/ND0SHW0yTKJXw
+	CJX8JD8kY6RaUhKxGpLD0m9WZ7VycmU0EzyOnfzmrL2jHaMa0+TuiXUwDI3C218KLaUOURyGcw1
+	L2EaH71BD2TeLSUQ1bECrDHS4jgqyZPtyskd8nvcpUJBkwdblpo0Ar7vt1qldIsrnGsJ4ArcM=
+X-Received: by 2002:a05:600c:3143:b0:499:795a:c5fc with SMTP id 5b1f17b1804b1-499821c5aeemr42857285e9.7.1786609734405;
+        Thu, 13 Aug 2026 01:28:54 -0700 (PDT)
+Received: from localhost (109-81-29-60.rct.o2.cz. [109.81.29.60])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815a5af191sm4559176f8f.19.2026.08.13.01.28.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 01:28:53 -0700 (PDT)
+Date: Thu, 13 Aug 2026 10:28:52 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>, Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 9/9] memcg: simplify v1 event ratelimiting
+Message-ID: <an2ARNynd2QQU6eJ@tiehlicka>
+References: <20260811203203.3456029-1-shakeel.butt@linux.dev>
+ <20260811203203.3456029-10-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <an0rQM7ZwWnB0nVD@fedora>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1E3F740004
-X-Stat-Signature: mwxkiszaajgxempj9grce5qxzyhod5ha
+In-Reply-To: <20260811203203.3456029-10-shakeel.butt@linux.dev>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0028E18000C
+X-Stat-Signature: 4qsstugh7y37iboh4sguk5gqu9jgtud9
 X-Rspam-User: 
-X-HE-Tag: 1786609723-728172
-X-HE-Meta: U2FsdGVkX1+gDL6pNs42DESs4Smm83FLGCyMwiGwLdFp16ho83cnOLTeqFeTW/1JmZf+EDBkDC9DXuM9GJnAru+SXv8YSn0hnd7wsCU3G0JpCIAQf6kvVSHv2SIiozNL6oCXE+x8uK4tjyt4AK12U6Z9/I6tQLzax61a0tGdd8gWI9UJG+D9NMh+dCHKUFM+osDJQ1HhWyk6PkB/FElQXG9QTcxY/lh1Tf8ohqUCwFQWlF5gHANPYBLWLQNaqDPN+rINpi6OxNXAP6QfHAUIi2U4OEDtHWdltrwnVZYrXLsKi3bl+oRRBAQVlWF+3J7AZMHjBvYRBIvJXr7vJPMEhxbaH/+HNzgOV4ySrvIxm5EN9f3yph6Q/SCMxkFvJMKJlTVOaipHSxuEwoLbPlQCRR/TT5M9m7fMU0jcS4oaZxfPnoG4fF4pS1uhBvMqrHFg131khGcoFDeMbvLq2AmPRB7zQRZQ4tJXAAgqALj0Jb8y33at5zNBrQeRfUmhrm7j1eP/BocJh1f3HEsHGKmkXM8DmKSVzNKtxCnMxxlBO6E31eYHOF9tA+5QyjCQndD7cDh8+GGQeJhyHLlqnqWOc5TDJHzgI+M2FJLWKY7zK8Tl6dlHDGoR/o2WQIdQt/DI02iDxCrSk5RU53pMzPgJa/8eJznLXq1SAGM/D4v2UAHvYj0BfDbJlrDGPQn99I9ad9txY1QDwLfkjZXhXeOIw5q4qGZwrg3B5ftyMxXoigLs/uRMw7LsOEFGrYF3i0jiaC8MBlWDwUj9bBtxP5RtqzAU3jk6ANKQ+MLSpQHL6B7/cGfzS+uB+uX6u5v5lwMON9tLCt1uPMRHqTHAObC7/kZdAEKHFiPJSBSLTeJc/Hu/+4qQsu8z61KHUfpyHYl//A3xr1fyve2qElQ9WgKFkR+XWS9Z7tUulNdRQ3sAot2bAeW5+Jic1vhXtR+J5lquYMkz9/svHDSMSWdp8xC
- oeWW9709
- FBqW+zXRE7zpa7NYLkFc+hRBZj/ikpgCOoZzSoLGepKGHeb5a5wY6X6Jct+WdbmqV0QUuEEozK/KtuFa3wXhOipcgyh4GnTVcARZOldUj82oD8zgWewjch8mpPjWPoG9t/+4lUVPlJHZrd6IPZo2x1hyoYNm2bEFk0xAtfSabY5aErk1TdTkEh58KBno7QohUlBehaLSLZxzFfL1XVdWRl3WJ/cDf/ROA54XQzE0ejaK93U2D/62mWt8jK560+mHSh3ZERLGDPNCscgpzPAWiTk+3urJ3xn0TBCnMK0mqdCuf9i6b3E0dxji+VOBLadBrk3ObiRFo+b+orWfcO7zMYgMMKVQK1PQlgeHuT2ga6895NgvARxU/HAXafUiNqKPevLDyFswUf0xC74z6D/zvZGcpWnWaEq6neZsoPnDIj4Hlf/RRlGD6ODFjKzM3iO81Q5DfUe6JAuL0kno=
+X-HE-Tag: 1786609735-469175
+X-HE-Meta: U2FsdGVkX1/iw713TrWff/mEv+6ywu8SqHGMhk7ne0y+K9CUCdG8W6ir//79zrXtFcll1jPOhYso6Zyq4oHFcnC6MH3qBNiV3pTgJDo2pzfoiFnZg5W095jWP0qKgdLVycgiepo0QJb4e8Ol7IJsyd6HcHAJOW/nn7TchqwaXpVFMO9AfpF3hMzmeciQ433Yzomg04pBzoOh+iIYjjAP5axZp7xxNz1gDUgcqn/sURPJnxV3vxkvVs6RFRvFyaToR+/Mg8TiuUjKSdTEQcODVXrLXeutvHjl0ZypQHWTp6cjceqcDzOgVT74IM8Tk2MP8ArQhVbwH8YqnnYQWo/UAIOeDkuUDhzgeFC1tqmgJlkPh+ZCBcdA04oojiFyBQmbwEx5NTYBD4Kl57oBp9dSbxxknFJvLqPH27w4nVteqOxRSkl1FGW9xSV88klk5chunbi2fh7ZUW5YMSu1Uss4Mb/TuO9wjimmp2hnQc5nQa4elzON6Y+f7krMQFBsK6pI/CmK9zu0nVQg8e+6FYCogd9K15O36PRvDA3k7lbVZAMWfGuVyw3th4aRR0M4EB2hpQVtrdleWef+96YORf1hfFYcL4ZIwT3PO3dkIDmq7U3kE2tsz4CURlW5VXDXDn5NhQDBD9x/lC/sorwEYUKvqbv2tdIFolzIWZnKV0gCEn13Eb4BUkmbU+dBzQPevhJBOHT4k7hq0d8nTFe+uwhe1/9BzZYknyYH/FMrBOiT3HUlwIh0FUojLJfVFGbuzl7lWsTNjDIzf87V5hq0e0FDXflpBU/QHZJDvCjgM1i02Ht2i2JBujMt0+yxV4hVbi0haI0rVBcCB8BuQ+C0ws6+sP5nZwnugp8+fArayyg+vtuCTglm8GC/79wi31yxuGGLPUHlT0g3HzDtQPmlfRtGO/7QDHL+oCzhR0OWDkNSIVhl+8t0v2bA00vYKmo30GzowigqzqIgda3pDdL4hq8
+ VhWV+2jv
+ T36do8ADHyejmyiEDSfLTBH/DK/Z+f50URMU5PisVIT0lH8Z5x2qadhj0NGb7Dfci+8QqiL0uVzSXXif6ZDZkXhTZbpNKBIy/eFUNUJY4tCgsE5iTrg/6VyUqu17LAGBPMyJwGRvTbg4oAAPYe0l29GOmTwPgtpxiKJQph8nrq/j84iLh0Ik91rbpVyms4lhdVMDsfni04ktzzVMBk90Ppyrw5VEagnVNhw5N0aFpIFrmoyxoqRDhKss7bE5gMUZnoCsaNJLsOVhbZs7/WmzwKjVCVVoIKJkLoHE5n2nyh28BcGR/fI4AXJeZ4v6KUCeDrkERpTsHHmj805QGXtCz1E9axWukma+D9ZlqdXwT1QRafALmXFg0hzEteJyHvE0k8KZ1fc13BPQfSyMVJKPy9GMGcl4FJsjSv4xL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,48 +127,187 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 12, 2026 at 10:26:08PM -0400, Gregory Price wrote:
-> On Thu, Aug 06, 2026 at 05:09:37PM -0700, SJ Park wrote:
-> > On Thu, 6 Aug 2026 12:05:00 -0500 Gregory Price <gourry@gourry.net> wrote:
-> >
-> > > On Thu, Aug 06, 2026 at 02:37:59PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > > > On Tue, Jul 28, 2026 at 03:47:11PM -0400, Gregory Price wrote:
-> > > > > All DAMON physical- and virtual-address operations obtain their folios
-> > > > > through damon_get_folio(). That helper already excludes ZONE_DEVICE
-> > > > > memory implicitly via pfn_to_online_page() and folio_test_lru(), but
-> > > > > this is inconsistent with other callers in mm/ which test explicitly.
-> > > > >
-> > > > > Add an explicit folio_is_zone_device() rejection in damon_get_folio()
-> > > > > so the guarantee lives in one place and covers every caller uniformly,
-> > > > > consistent with other mm walkers that reject zone device folios.
-> > > > >
-> > > > > Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-> > > >
-> > > > Thanks, nice to make it explicit!
-> > > >
-> > > > Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > > >
-> > >
-> > > SJ Asked me to drop it,
-> >
-> > I didn't asked you to drop this.  I asked your thought about revisioning this
-> > for my concern.  And you replied [1] you can drop this.
-> >
->
-> Sorry I didn't mean to imply you pushed for one side or another, just
-> that the feedback you gave about not wanting dead code is reason enough
-> to drop it.
->
-> I will probably just go ahead and drop it unless Lorenzo thinks the
-> patch is worth keeping.  In my next private node iteration, it ends up
-> back in anyway - so we get a two for one without the intermediate patch.
+On Tue 11-08-26 13:32:03, Shakeel Butt wrote:
+> Thresholds are the only periodic v1 event left, so the target enum, the
+> per-cpu target array and the switch in memcg1_event_ratelimit() all
+> collapse to a single counter.
+> 
+> memcg1_check_events() no longer needs a node id either, which lets
+> memcg1_uncharge_batch() drop its nid argument and struct
+> uncharge_gather drop the field feeding it.
+> 
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-Yeah it's damon code so if SJ isn't happy let's drop it for now and we can
-revisit later!
+Acked-by: Michal Hocko <mhocko@suse.com>
+Thanks!
 
->
-> ~Gregory
+> ---
+>  mm/memcontrol-v1.c | 43 +++++++++++--------------------------------
+>  mm/memcontrol-v1.h |  4 ++--
+>  mm/memcontrol.c    |  4 +---
+>  3 files changed, 14 insertions(+), 37 deletions(-)
+> 
+> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+> index 475f998b7643..bf2c7d53b01b 100644
+> --- a/mm/memcontrol-v1.c
+> +++ b/mm/memcontrol-v1.c
+> @@ -200,15 +200,9 @@ static void mem_cgroup_threshold(struct mem_cgroup *memcg)
+>   * to trigger some periodic events. This is straightforward and better
+>   * than using jiffies etc. to handle periodic memcg event.
+>   */
+> -enum mem_cgroup_events_target {
+> -	MEM_CGROUP_TARGET_THRESH,
+> -	MEM_CGROUP_TARGET_SOFTLIMIT,
+> -	MEM_CGROUP_NTARGETS,
+> -};
+> -
+>  struct memcg1_events_percpu {
+>  	unsigned long nr_page_events;
+> -	unsigned long targets[MEM_CGROUP_NTARGETS];
+> +	unsigned long threshold_target;
+>  };
+>  
+>  static void memcg1_charge_statistics(struct mem_cgroup *memcg, int nr_pages)
+> @@ -225,43 +219,28 @@ static void memcg1_charge_statistics(struct mem_cgroup *memcg, int nr_pages)
+>  }
+>  
+>  #define THRESHOLDS_EVENTS_TARGET 128
+> -#define SOFTLIMIT_EVENTS_TARGET 1024
+>  
+> -static bool memcg1_event_ratelimit(struct mem_cgroup *memcg,
+> -				enum mem_cgroup_events_target target)
+> +static bool memcg1_event_ratelimit(struct mem_cgroup *memcg)
+>  {
+>  	unsigned long val, next;
+>  
+>  	val = __this_cpu_read(memcg->events_percpu->nr_page_events);
+> -	next = __this_cpu_read(memcg->events_percpu->targets[target]);
+> +	next = __this_cpu_read(memcg->events_percpu->threshold_target);
+>  	/* from time_after() in jiffies.h */
+>  	if ((long)(next - val) < 0) {
+> -		switch (target) {
+> -		case MEM_CGROUP_TARGET_THRESH:
+> -			next = val + THRESHOLDS_EVENTS_TARGET;
+> -			break;
+> -		case MEM_CGROUP_TARGET_SOFTLIMIT:
+> -			next = val + SOFTLIMIT_EVENTS_TARGET;
+> -			break;
+> -		default:
+> -			break;
+> -		}
+> -		__this_cpu_write(memcg->events_percpu->targets[target], next);
+> +		__this_cpu_write(memcg->events_percpu->threshold_target,
+> +				 val + THRESHOLDS_EVENTS_TARGET);
+>  		return true;
+>  	}
+>  	return false;
+>  }
+>  
+> -/*
+> - * Check events in order.
+> - *
+> - */
+> -static void memcg1_check_events(struct mem_cgroup *memcg, int nid)
+> +static void memcg1_check_events(struct mem_cgroup *memcg)
+>  {
+>  	if (IS_ENABLED(CONFIG_PREEMPT_RT))
+>  		return;
+>  
+> -	if (unlikely(memcg1_event_ratelimit(memcg, MEM_CGROUP_TARGET_THRESH)))
+> +	if (unlikely(memcg1_event_ratelimit(memcg)))
+>  		mem_cgroup_threshold(memcg);
+>  }
+>  
+> @@ -271,7 +250,7 @@ void memcg1_commit_charge(struct folio *folio, struct mem_cgroup *memcg)
+>  
+>  	local_irq_save(flags);
+>  	memcg1_charge_statistics(memcg, folio_nr_pages(folio));
+> -	memcg1_check_events(memcg, folio_nid(folio));
+> +	memcg1_check_events(memcg);
+>  	local_irq_restore(flags);
+>  }
+>  
+> @@ -344,7 +323,7 @@ void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci)
+>  	VM_WARN_ON_IRQS_ENABLED();
+>  	memcg1_charge_statistics(memcg, -folio_nr_pages(folio));
+>  	preempt_enable_nested();
+> -	memcg1_check_events(memcg, folio_nid(folio));
+> +	memcg1_check_events(memcg);
+>  
+>  	rcu_read_unlock();
+>  	obj_cgroup_put(objcg);
+> @@ -398,14 +377,14 @@ void memcg1_swapin(struct folio *folio)
+>  #endif
+>  
+>  void memcg1_uncharge_batch(struct mem_cgroup *memcg, unsigned long pgpgout,
+> -			   unsigned long nr_memory, int nid)
+> +			   unsigned long nr_memory)
+>  {
+>  	unsigned long flags;
+>  
+>  	local_irq_save(flags);
+>  	count_memcg_events(memcg, PGPGOUT, pgpgout);
+>  	__this_cpu_add(memcg->events_percpu->nr_page_events, nr_memory);
+> -	memcg1_check_events(memcg, nid);
+> +	memcg1_check_events(memcg);
+>  	local_irq_restore(flags);
+>  }
+>  
+> diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
+> index f48d0e22e615..b9a21f0fd2c3 100644
+> --- a/mm/memcontrol-v1.h
+> +++ b/mm/memcontrol-v1.h
+> @@ -59,7 +59,7 @@ void memcg1_oom_recover(struct mem_cgroup *memcg);
+>  
+>  void memcg1_commit_charge(struct folio *folio, struct mem_cgroup *memcg);
+>  void memcg1_uncharge_batch(struct mem_cgroup *memcg, unsigned long pgpgout,
+> -			   unsigned long nr_memory, int nid);
+> +			   unsigned long nr_memory);
+>  
+>  void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf *s);
+>  void reparent_memcg1_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent);
+> @@ -107,7 +107,7 @@ static inline void memcg1_commit_charge(struct folio *folio,
+>  
+>  static inline void memcg1_uncharge_batch(struct mem_cgroup *memcg,
+>  					 unsigned long pgpgout,
+> -					 unsigned long nr_memory, int nid) {}
+> +					 unsigned long nr_memory) {}
+>  
+>  static inline void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf *s) {}
+>  
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index ba3ef821553d..44ef376d657b 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -5293,7 +5293,6 @@ struct uncharge_gather {
+>  	unsigned long nr_memory;
+>  	unsigned long pgpgout;
+>  	unsigned long nr_kmem;
+> -	int nid;
+>  };
+>  
+>  static inline void uncharge_gather_clear(struct uncharge_gather *ug)
+> @@ -5316,7 +5315,7 @@ static void uncharge_batch(const struct uncharge_gather *ug)
+>  		memcg1_oom_recover(memcg);
+>  	}
+>  
+> -	memcg1_uncharge_batch(memcg, ug->pgpgout, ug->nr_memory, ug->nid);
+> +	memcg1_uncharge_batch(memcg, ug->pgpgout, ug->nr_memory);
+>  	rcu_read_unlock();
+>  
+>  	/* drop reference from uncharge_folio */
+> @@ -5345,7 +5344,6 @@ static void uncharge_folio(struct folio *folio, struct uncharge_gather *ug)
+>  			uncharge_gather_clear(ug);
+>  		}
+>  		ug->objcg = objcg;
+> -		ug->nid = folio_nid(folio);
+>  
+>  		/* pairs with obj_cgroup_put in uncharge_batch */
+>  		obj_cgroup_get(objcg);
+> -- 
+> 2.53.0-Meta
 
---
-Cheers, Lorenzo
+-- 
+Michal Hocko
+SUSE Labs
 
