@@ -4,163 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8B2AC5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 21:24:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28BA6C5CFDB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 21:40:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0F2F6B02C4; Thu, 13 Aug 2026 17:24:06 -0400 (EDT)
+	id BA5526B02BA; Thu, 13 Aug 2026 17:40:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC63E6B02CC; Thu, 13 Aug 2026 17:24:06 -0400 (EDT)
+	id B0FFC6B05D2; Thu, 13 Aug 2026 17:40:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BAE356B02CD; Thu, 13 Aug 2026 17:24:06 -0400 (EDT)
+	id 9F8286B05D3; Thu, 13 Aug 2026 17:40:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 75B5B6B02C4
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:24:06 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E6ED7140144
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:24:05 +0000 (UTC)
-X-FDA: 85097524050.30.4E5C372
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E8D4C18000F
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:24:03 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=XWA8agqW;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf24.hostedemail.com: domain of ackerleytng@google.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786656243;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BFFF6B02BA
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:40:30 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D0B0AC0135
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:40:29 +0000 (UTC)
+X-FDA: 85097565378.18.2BE14C9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E4C261A0006
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:40:27 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A7bH+wu5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786657228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FJck1umI1gERxZKqi/mE4jPaeCUw7jHUSxZxlUOvdoM=;
-	b=uRTrGCaOyUA+FBkgUZrhtuV3kkV3lmfMwA0c+tVoPTK4jS+0R/RWZOaT2+rknchfFaelye
-	POgtro3DVBNYSR/pxIpd0m7RP35h4MPw83/fm82mGSjikrcZ2F6hk2Got9IwXzd8E4VmAm
-	Z4EzJ/k5E3yM4oSf4SxF7e/tP7IbxfE=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=XWA8agqW;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf24.hostedemail.com: domain of ackerleytng@google.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786656243;
-	b=z8zJRF0a2ah+h+ov08Gv4fXKT+jbU65OuFoE7xxQygBYkWwvN3K1B6Mrnyk77rpAFxR6Ps
-	goF+WJzv3KMl+VdFK3RdQNao0cnjUhjUhlriuMO5MCrhqf6H2zT76gohz6PAMhVmiH6FII
-	QxL8CjvN5uCzEIEHklwRwPMZrLvSsVk=
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-84830c774a0so235712b3a.1
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:24:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786656243; cv=none;
-        d=google.com; s=arc-20260327;
-        b=TkDPK6khxlwvTUE3uQL/9LuIGp5C20m90tUbLDrGISafLRH4DcWzg7jYGBMpNgqWWz
-         JkryvthruPHBDzWGzxRNoLkmVESUglbZzbxl+eLReSvLOEMMUVvl8voDvl5DOcmEdsxa
-         SiX7q4Oekf+Y5b/qyhImiAIyZeoc8CQIFKJhkD4Ob+6eDW+fC0+XC4hhwL9lbnWQJh3M
-         T3RPUv/CqFEcS+hJiviOTyO1DW87jHR4NhcZRvcDP+vzW4aP7x+0kJWWDDt7ND94fmD/
-         6HJ65JVyYUCRizOakZBNNeRguECXi/+KzRxrLG2c7ZKIjQgPLQVos24HrrBnHxIJTiyh
-         TGwg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=FJck1umI1gERxZKqi/mE4jPaeCUw7jHUSxZxlUOvdoM=;
-        fh=aVNZ4khhAEHr0aK1IPL6ajKx0lCgmTIsn7PEOwlIPTY=;
-        b=LL7/siXcwsXS6MK/5qMQdEDXzDaLyAtrh6BqmAYe6cLz44ripL4cVsP6rtegvzIHlL
-         XVlFxhltcCVuMprcgppt3COnzB+PLDTPoIaoxFjMMwd0YtojE1IC4VZjpkwlyJ0S+ZgH
-         FUS9BDAl2L6/VyECx96aBi4GPZlpTzlpeOLfc6jw80RAwvfl7pNDHyqsBP3wlzHpk2o9
-         wXMsOAWKa1YjRUljow9yl8US6xQZEnm+ZXl+hZ9BY2Cmzoy1cUV7IAFprS1WhQcgQuPl
-         0ZDN+zKoVz0mUJuChtJiJWc560KjfQV4mr92JajLqh66iqrpDl6kCx4LdHftvTCVby21
-         M3/w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786656243; x=1787261043; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FJck1umI1gERxZKqi/mE4jPaeCUw7jHUSxZxlUOvdoM=;
-        b=XWA8agqWNER8okFdEH7h5fPmNSQzYXxi5VmX79nSvRplwEKtIDwf5I5Q3NvfxfYR4W
-         GC+FylGXSHveqLpXCbMIh4Tgt7+IkERqFjrvDHd+xKWpaTHzekw/55Fkt/FHSlBkFH3v
-         SqeYZvVT1Cq0YPuzWXglphNW3wAlL3blv9UBMefZixJLD0i2/6yNlpZ4eU4u8BwjRQx1
-         4o+lDgovWteVZRMez/enIZabYlFWT4r9zALEhqQX+8d0DUeOZsZHdSoTrZSTacdCfFvk
-         r4LhF8tNrmjwDHuPEdqR1kpq5QR0JjWJ7FO1jA04NFKtFr3yMC3eETLQnfEU9w3ZwByi
-         r/dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786656243; x=1787261043;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=FJck1umI1gERxZKqi/mE4jPaeCUw7jHUSxZxlUOvdoM=;
-        b=jWFZ+5YfH5R2ojuQym6mO/bBvH94CTwk8sjeGLQUucuQQPFDvEsdDFHSNpCmDNkkS3
-         OQIbiVKJstKpv2BqHQ09Q9TcnnxyFG+9r+6vCrpkapkqdFYuJvVTT1ppCgsqTdUDSIj9
-         f+7orcU75vGeU3d6ZG5gi9UrOyteq7n8fKw2OK1ih0WeUILVqx/9xink6FifhVikoFkc
-         7Yj+xWmbWdAnP4clIsfogWOV6MbfQ+m52D1HfT0bXScbiQL4HvYjF8D4bqgi1nn7SUls
-         8VQv7GSZdV4JYGlPY4HFszawExy4tBXKv2eoeJajh1GN49Ajt7qRSRftCaXnbeOlubvm
-         8iUQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpjdZ5VK52LCbhXLkrMulS24gs3oGnrNFpPjpKA/dybMRTqeY5n07uqS84RKCU3Dihs60ZNVo1S4w==@kvack.org
-X-Gm-Message-State: AOJu0Yxf9bsAgBA4l5EZNi4gmz4KqQyAiTLz4irpXMUg1CNLdGaKJWip
-	HYeLOX4iLVKswRnd7BSnoe9G08CFvbPHbo4Fc3Amab0CrTyzQzkxmuAhfbDbughR6fGstIVgwFn
-	semmTWhAvLFlBMLt1wzKozygn64MGs9nG8HxdvHh4
-X-Gm-Gg: AR+sD11exBrMpk4NYprps0P4Ua8c9Fk8F3tq3PPuLI7WBSNWHTHYvYQ8tQ6r1wRpknT
-	SizxClsbRhC5c1pP57chONKGcVHYh7PP4ighW0nEBAqg0Zf/kihuEaUoFvBrSxIT/93BDydkNzE
-	kKwgbuzKkfVZiLmNtCvYGKL0yfhwYnwvlnuBo+F7pbICTm6imuvHPSFbeWgHX3iksNE3eWER1Uh
-	D+X+SXCK7FOdLDsDiIRh/Xbb743VvL+nXtUVLPitT5ggIXcVwv7UWsQYXvCWAu/aHUK6AmnlWl2
-	HGAFiFfQdo5eI5Z5uB/cfHy0DZ/9PGbqIdkb81SsuL4H82bJMIZSKY4obtAYJaM0J8xwxoCi+Ke
-	urqwbZyo17mpA5eLsYwiuHkXg0qRQqQ==
-X-Received: by 2002:a05:6a21:a4a:b0:3cb:d156:d362 with SMTP id
- adf61e73a8af0-3cc7196e785mr831997637.3.1786656241969; Thu, 13 Aug 2026
- 14:24:01 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 13 Aug 2026 14:23:59 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 13 Aug 2026 14:23:59 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <82ded1ea-e0f6-48d9-8bcb-38a6bc5e9176@kernel.org>
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-20-2fc18ee6d3ba@google.com> <82ded1ea-e0f6-48d9-8bcb-38a6bc5e9176@kernel.org>
+	bh=fweVNNDp4X+C0oZdrdmosRiPjw0MChkGQ23odeO0QmY=;
+	b=CVyGtSEB0DtfOx8coxDC4yOZvcWFDCUYwnIz9H+stk5wh9DqnHTbRmLeHFFWyqtE2TXDAn
+	v6naFzEk59cnEGdybVht+mVQACuLXMPX9D8CurDErpLVD3jBi+5IfUToXgv8JYQTOI+RGh
+	DT6sHX4sWM84B/y5EVOn0+SD/sK/ZII=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A7bH+wu5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786657228;
+	b=SrpikRckMR2IGSCsB/F02Qp86x3+AC28IotNz8FbxCJSpbUBp0X2aolcatwjcboUceefRT
+	cgz1waHlKGDOAUTm/HCiU1dzT0vxvq8z7ppOIn/O1MYVJ/NNiLV0q8SmZAnMWOdJCr/ghv
+	1TxEvGGl4m+hTz2sV91K+7KKqMdjXzM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 06C90439A7
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:40:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D69811F01558
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:40:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786657226;
+	bh=fweVNNDp4X+C0oZdrdmosRiPjw0MChkGQ23odeO0QmY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=A7bH+wu517r+/stDsIeXkofwJUiV60iWRu76LZLHM0h2x27TSbpaEWS1hDJ0+VaDa
+	 3JP3VzsvT1vvKxshG3UNCyuDFUGiLhOYrQaUh/7OD8otp24IkllJ1hEytnIXmydqHT
+	 NsqoigWt22qj1Am4rgz05BpvGOuUNNzEbUuM3Th4lF5+FJYSaEnZIMOA7snipPRvbH
+	 T0odf0RQcD+VS/L2G2E3BHuTiFvgWX0Zb9KV2kn6ADfWFZ5MvIWtIuB0tjlyJOxOR7
+	 TDZv/MlwgA4IyQ73i5cHQVoZl9UTBqUQpLFb7blWvYs7ovjzm547IWjIUIfBaZ5Ti9
+	 utt56ihwb07VQ==
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-9063b380982so3658156d6.0
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:40:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rq/vZK224kN3lfGbvy0y118ltv1dcQVyjHPRyNulPjZY8grSg4M7h+iQo770FmxP8QGJVAt7RIKLg==@kvack.org
+X-Gm-Message-State: AOJu0YyPlysNzeF+66JoH38iC55RsB0NADYxKeFQazbcsFYkFciOvmxZ
+	3O8HjrfOKUvoHN4ntZ34kIXfGzGk8XwRBehzlmf0kbHjuFmNaqDZa2+or+0xwv3bkGs/1J0XkN4
+	jbB/bNjN3C5JfTqBNjTDBaMCgAM0AA6o=
+X-Received: by 2002:a05:6214:29c8:b0:907:88cb:2ac7 with SMTP id
+ 6a1803df08f44-90a91e313bamr8939706d6.24.1786657226174; Thu, 13 Aug 2026
+ 14:40:26 -0700 (PDT)
 MIME-Version: 1.0
-Date: Thu, 13 Aug 2026 14:23:59 -0700
-X-Gm-Features: AUfX_mzbri1ixV_zlf2Jna8d8Me5Qvc_rxP8xrcIgsSaQjjAlnxnniHAuo3sYt0
-Message-ID: <CAEvNRgHpy52iynKfXeEkyCixhhu0_Hnu5jSNT8i+BNxvEoG7Cg@mail.gmail.com>
-Subject: Re: [PATCH v10 20/41] KVM: Let userspace disable per-VM mem
- attributes, enable per-gmem attributes
-To: "David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+References: <20260720-batch-tlb-flush-v5-0-db943a0d0d6b@icloud.com> <20260720-batch-tlb-flush-v5-2-db943a0d0d6b@icloud.com>
+In-Reply-To: <20260720-batch-tlb-flush-v5-2-db943a0d0d6b@icloud.com>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 14 Aug 2026 05:40:14 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4ykbJKVqEv6uGNKZaQhtV1UxxV-MWt7D1jx6SpdMN+cqA@mail.gmail.com>
+X-Gm-Features: AUfX_mxuYjoATT6-XLf6NdmGhS9u7tr2ixSFmLUu64tLRgxRG_LgHV2x0MHHf68
+Message-ID: <CAGsJ_4ykbJKVqEv6uGNKZaQhtV1UxxV-MWt7D1jx6SpdMN+cqA@mail.gmail.com>
+Subject: Re: [PATCH v5 2/5] mm/vmscan: extract folio_free() from shrink_folio_list()
+To: Zhang Peng <zippermonkey@icloud.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
 	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
+	Wei Xu <weixugc@google.com>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	"Liam R. Howlett" <liam@infradead.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Kairui Song <kasong@tencent.com>, Zhang Peng <bruzzhang@tencent.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E8D4C18000F
-X-Stat-Signature: bp8pnbw9ubuemj45jbrommz9uzcui6kj
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1786656243-496471
-X-HE-Meta: U2FsdGVkX18U/1wz3SP7e8lyVQYHhemlsHg3H1mw+0PAjevrPNHpjGL2jX6CXkttbZJQjW0EeSRndlJd4WX+0cKWDDJVXkbfjodAyFrV3YWGuU3mG0Qrs3cJ0bHjDdBG8dP2cZXV1r6pdcJpqXEtgfLnH8FOuTop+PtslAock3puyM8honzXDkScuhqw4imhidZBO1kt04yNbkbPf0llIKVUG8bJI4bpEGigpgE9KjlekSi1EO0JAwa4IAaRP3vJWV7t1Uk415Ia6Cvom3u9JZJisUMEhUQRih0zI+AsbfbG2lOO1FLVRTxmcWljGMEYtH6kRxHW1zXHtz3cgLG55jcXyuIYF+Wd4g0RksbxQtvBozF+xngj3rMzGG7L0kJGBDtCfGnife164oLFYiRTRObak0lVtH2BfyUPAg8M0XjvDyveeYwldUGgbA+4IP6lnZymmcmrrWSa75oy73VMXUglZluKyakMNOqwW7T3Ptagmru+AA6MBYkZkDhVeXD2rjniRCClYpmJP07gzS5utans0hqYBeyUOV0m9Q4nrYywy8Upy4gh1mJrbMihbple4PXJe6XHN1GGbbQkixGHzXJ7qegwlEf2w1F1BnYTTYoWHDM4TOqpqp3GS5UeRGRsqzInExcXiZA4BTya2p5EjnBfERazQeXz77c7wNplc7ZnWhIuSpmCsdLN/3+SAIzhiOtCChwJNegY1OddQJBMWEDtY7MI5dx8T0KA/axjXGe8VjgxY7i9r5NCseWfKWBnMte8g1nQjEUn4hgRExK+B2UQ6DvcyVDRqu/lkl9oiasYz9ePXqJjpTLpqck/EliZvgOh6tg0L6XZ+J+wQKYgC9cDhEZSmSW22coljIC7LwvZAq0Hs8bX7cxl/vcLTsXU6u4X/f4PkJolwPDvTQaiQlj3WfPAOAg2hW8VDXI/KPimz+KHGj1Q6ePC+jD9ridmRRYs9wh+KHn7hkHMA9S
- iWXalOLJ
- lPqW46xWfp0/VhmEwjtU+GZSTfCx3WwymrmGYOaF0HXMKpZgiyTbUIMPbZ2Wp2yl3pqCCSXNOO6oL/FmQeM+t0jsNiAa9NnFWwPcyTdP3yBF9XkUlIzHWmuLgyF5Tm3DNt8ouzM3ZmmjPgmYXQpttE2F34NZVCi5WEEGNT22F4cNp4Hvl6wTDA0W6oMBP5CsMPRBD61PTR7hhrqyAz2Za0XfsRoMryeVRHAMrXEhvZWU66KDBB91DIu7/OFc/f5CQ14VkvF6gbgqGR+A/4j9xA299oujbaDnLcKqEU8Ov/OpTPurxWSh6/cOjEAq8yaCecUBOgCInPG4MnN+9lUGjzcOKMRb2+G706PXJ
+X-Rspamd-Queue-Id: E4C261A0006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: s69rmkqhrpmm5h7tkfo543ydk3i49d8a
+X-HE-Tag: 1786657227-807734
+X-HE-Meta: U2FsdGVkX1+ZayfTW6Fq4gmuvQdtdipZ6bLaeaw5OgGGKuZQ1cHI0on0dsxiE/as3iNrtc887d9LFZQ/ZvgFoKrt8646S00bvYxbjYqeyT1nvCOqWHxfCYnOSVo++YYUuEKbQwszfaYP2IqWiNA5u8AY9F42prbup3fASzxtjaPbQmL7kdVBNPPGoWsmRRPZ8X5sgw0Hln/fcQaLs283JI/2Md9g2fhZLTefoLB6tfgageuQQTkmjoE3EkgKaRDS5t34vfm4P4JiyhdKWkXAglY4x5mw3jhSrp644LOqCssVhkzBOf+GX+i3TeSOFW39fngrXWiYnNZxyTorX7UCWt6k0MsrtoRh1iYM9FirVZFi0QVZ3pZoi1zx3RwuPCYWivaYpZmdyXMEYdC6E+97elVajeqadGbCcdf6qzEvRzvUjCFDY8ovp2y1TDaur2cz+UH3kFBDOxz9/9KwW6x1xZYjgxLvTIZQwCD+p3SXnUGWVqEiRvUXG8aNxho/W6zsPHk0FH6a9naQIsHsKuswsCwSwCVBu5GUQXwUp9kGVvsdu9E3XpjY8BM+FkMGHID713u57q36yK2WcRebUoUhcapa5MAzlrdKCc3shbQ0wB7VNMcuJKtI6PAasHz/D2hfod727FZUxJjcc8D9WU7EzB8RhGWVMYstOnQ5+SeFDyjnCYXyiAXyPFAIHkeU7bVuysZQXfK5JJ7c5OM6SLNN1KJ4JQvN+F/3GtQMmrJe/DJ/vDQXRgusz2FgrO4zonw3Pf1zjMEotsrMdDtWP2fu5QRZYNS6pr3TqFdfY651NYxlkF9zH01BJ11jA2n/7hzJGIRoKcZb6rxcW3oUuYW6gWuQHRGvVOYsAteMJ2flPkq12iSJdo7arWwa/0JfSYSwJhdIgwxj4Nm9KvZ0pHbnH8UGqxYiF6KU6MJTJZXUsngexzIZSBI1Jr/i8nhg6Bxs+tG8d+xOfIELITUnqfo
+ mfaVFwvR
+ 5DkIPLoNl66jUTehnwAlGBsGTIsD2KCEgaznwE9oKjkDZzI+9svZZpWp3PMbWB9HoKZfkpW7Ods+muC7+VIZSMpmuqZ00ttQpH9zGO/fepMKBHliZ7dT6Quq26nsnnG4srx/U8uFxuooUHL9ViZhHdmM4EJAYC+v5IKxRsdUdLCcjzQhmI/C5lYH5QBYI/QZ2uWOSmG4IxvB99CjCMeqf9G+wtm38Bzp2cgp2C8aPKSAI1iJRzUT2dphg+AE5+1DATINTW8IGAD7S2o+LQPXkjoQ8a5wcXFUm6inyQ7ymbMj6J75aJtHSIi+HFhvtPFxS4kaE11o2emzhEdn5fFKqWGM81mUPGd3mKL5KfoILmDcmRnCFo4mMNVdGNFkMAbJ4ABxD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,61 +108,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"David Hildenbrand (Arm)" <david@kernel.org> writes:
-
-> On 8/7/26 23:52, Ackerley Tng via B4 Relay wrote:
->> From: Ackerley Tng <ackerleytng@google.com>
->>
->>
->> [...snip...]
->>
->> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
->> index abb108886733a..2c3c22aeafa54 100644
->> --- a/arch/x86/kvm/Kconfig
->> +++ b/arch/x86/kvm/Kconfig
->> @@ -81,13 +81,21 @@ config KVM_WERROR
->>  	  If in doubt, say "N".
->>
->>  config KVM_VM_MEMORY_ATTRIBUTES
->> -	bool
->> +	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
->> +	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
->> +	help
->> +	  Enable support for tracking PRIVATE vs. SHARED memory using per-VM
->> +	  memory attributes.  Using per-VM attributes is deprecated in favor of
->> +	  tracking PRIVATE state in guest_memfd.  Select this if you need to run
->> +	  CoCo VMs using a VMM that doesn't support guest_memfd memory
->> +	  attributes.
->> +
->> +	  If unsure, say N.
+On Mon, Jul 20, 2026 at 1:08=E2=80=AFPM Zhang Peng <zippermonkey@icloud.com=
+> wrote:
 >
-> Hm, does that imply that a distribution that must support both, cannot ship a
-> single kernel?
+> shrink_folio_list() contains a self-contained folio-freeing section:
+> buffer release, lazyfree, __remove_mapping, and folio_batch drain.
+> Extract it into folio_free() to reduce the size of shrink_folio_list()
+> and make the freeing step independently readable.
 >
-
-Did you mean this as a documentation comment? Should the above read:
-
-	help
-	  Enable support for tracking PRIVATE vs. SHARED memory using per-VM
-	  memory attributes.  Using per-VM attributes is deprecated in favor of
-	  tracking PRIVATE state in guest_memfd.  Select this if you need to run
-	  CoCo VMs using a VMM that doesn't support guest_memfd memory
--	  attributes.
-+	  attributes. Select this to defer selection of where PRIVATE vs. SHARED
-+	  attributes are tracked to KVM module load time, where
-+	  gmem_in_place_conversion can be specified as a module parameter.
-
-	  If unsure, say N.
-
-I think we should do _without_ the above clarification since using VM
-memory attributes for shared/private status is intended to be
-deprecated.
-
-Is it fair to say distributions should not support both, and if they
-_must_ support both, they need to read code to figure this out?
-
-> --
-> Cheers,
+> No functional change.
 >
-> David
+> Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
+> ---
+>  mm/vmscan.c | 164 +++++++++++++++++++++++++++++++++---------------------=
+------
+>  1 file changed, 89 insertions(+), 75 deletions(-)
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 5ba880dce21e..a0807dd01c5a 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -1076,6 +1076,93 @@ static void folio_activate_locked(struct folio *fo=
+lio,
+>         }
+>  }
+>
+> +static bool folio_try_reclaim_free(struct folio *folio,
+> +               struct folio_batch *free_folios,
+> +               struct scan_control *sc, struct reclaim_stat *stat,
+> +               unsigned int *nr_reclaimed)
+> +{
+> +       const unsigned int nr_pages =3D folio_nr_pages(folio);
+> +       struct address_space *mapping =3D folio_mapping(folio);
+> +
+> +       /*
+> +        * If the folio has buffers, try to free the buffer mappings
+> +        * associated with this folio. If we succeed we try to free
+> +        * the folio as well.
+> +        *
+> +        * We do this even if the folio is dirty.
+> +        * filemap_release_folio() does not perform I/O, but it is
+> +        * possible for a folio to have the dirty flag set, but it
+> +        * is actually clean (all its buffers are clean).  This
+> +        * happens if the buffers were written out directly, with
+> +        * submit_bh(). ext3 will do this, as well as the blockdev
+> +        * mapping.  filemap_release_folio() will discover that
+> +        * cleanness and will drop the buffers and mark the folio
+> +        * clean - it can be freed.
+> +        *
+> +        * Rarely, folios can have buffers and no ->mapping.  These
+> +        * are the folios which were not successfully invalidated in
+> +        * truncate_cleanup_folio().  We try to drop those buffers
+> +        * here and if that worked, and the folio is no longer
+> +        * mapped into process address space (refcount =3D=3D 1) it can
+> +        * be freed.  Otherwise, leave the folio on the LRU so it is
+> +        * swappable.
+> +        */
+> +       if (folio_needs_release(folio)) {
+> +               if (!filemap_release_folio(folio, sc->gfp_mask)) {
+> +                       folio_activate_locked(folio, stat);
+
+Could we avoid hiding the activate semantics inside
+folio_try_reclaim_free()? It makes the logic harder to read and
+can be confusing.
+
+Could we pull this out so that the three possible outcomes are
+explicit?
+
+1. activate
+2. keep
+3. free
+
+[...]
+
+> -               } else if (!mapping || !__remove_mapping(mapping, folio, =
+true,
+> -                                                        sc->target_mem_c=
+group))
+> +               if (!folio_try_reclaim_free(folio, &free_folios, sc, stat=
+,
+> +                                          &nr_reclaimed))
+>                         goto keep_locked;
+
+I mean, this is confusing because an activated folio ends up in the
+"keep" path. Can we make the activation semantics explicit at the
+outer level?
+
+Best Regards
+Barry
 
