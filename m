@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CA46C5CFDB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 09:34:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95A2DC5CFDB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 09:34:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90A316B0453; Thu, 13 Aug 2026 05:34:15 -0400 (EDT)
+	id 8BC4E6B0455; Thu, 13 Aug 2026 05:34:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BAD96B0455; Thu, 13 Aug 2026 05:34:15 -0400 (EDT)
+	id 86C946B0457; Thu, 13 Aug 2026 05:34:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75B926B0456; Thu, 13 Aug 2026 05:34:15 -0400 (EDT)
+	id 70DD26B0458; Thu, 13 Aug 2026 05:34:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AE596B0453
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:34:15 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DCD95A053B
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:34:14 +0000 (UTC)
-X-FDA: 85095735228.18.41399B1
-Received: from mta1.migadu.com (out-89.mta1.migadu.com [95.215.58.89])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E874440009
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:34:12 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZxW9+DB6;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.89 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4324C6B0455
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:34:19 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A129912054A
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:34:18 +0000 (UTC)
+X-FDA: 85095735396.16.2736A9C
+Received: from mta1.migadu.com (out-91.mta1.migadu.com [95.215.58.91])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C23CDC0004
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:34:16 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Ve/BuX7Y";
+	spf=pass (imf10.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.91 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786613653;
+	s=arc-20220608; t=1786613656;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TF8K63WeM6z6403hSZtDfDJXM9m2uLOv/bAAEqx+2S0=;
-	b=u3+nQTw0ZiRc2A6SmsalMXbdA0IOKUMsyAL02+SGw503X5cSI0AnGyAdKzxBjxzoRpSaSf
-	1cKlsVIsUzkmQwzNEocdyLxxN/mzbEkoIIGbbncsOrpcM8Em5Ch8w1V35qapSv0zjNOiOQ
-	Is6vssR3UhaGIerUO9Lf1GjpXjpuwJs=
+	bh=Zyjkd+cvn/7XeIzSsbDCrHYD58chJDf4uurPgDEzVNY=;
+	b=sxhQcpNglLCWHPjC1UolX3B76R2BlftStR7ygC3OhfN+xKfePFf8Kk/4XP5xIuNXoZshUN
+	eIU3+oSPWScTuU6KsNbshsZ0lx1zvOiSeGBjSZJq3HKm57fTU2/hPAv+JAzOJyKs413hGD
+	5/HRnj4EFPLI+wbuSefcrHBlzK8iMF0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZxW9+DB6;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.89 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Ve/BuX7Y";
+	spf=pass (imf10.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.91 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786613653;
-	b=CmIKAzTOuU9PhmfAbI5zUaOPGYq7k9wJR5yn0Gr+RxgBgHY59DRVkIAKUqNERrHW253kAL
-	v5kFFWsZ30A41RHF8l/ef2tm/1Jc8Db2S8FoJ5myRDfQgJ2G0fHUE5JT/ikvZJaSR3aDxR
-	64ktz/iFZcLsRIOrWpOlvRiTz6Zcn14=
+	t=1786613656;
+	b=W06WkMRWU0UXlPWvnCeem1SNjaZj5/44gaAxvhVEoJ8FGulMZbYpp9lLssRpYG8KSvSOGo
+	b7tnm22fdnzjCj16Xwe0Nncio/8fEdI4iN1KaD/ENlrQiP1s9qIasypdgEL+HakfomsST7
+	Eq6LNfoIIxOnzrJ8at93dErZwdvF8LA=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=p4TFMUd9q6GnbcN5ey2myrD4Zw8jApQ5r7UvSVGLQQM=;
+DKIM-Signature: a=rsa-sha256; bh=hPN6+ldNa92yVfg5JXt1vgfrSMYfaiItc5ke6iFo9is=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786613651; v=1; x=1787218451;
- b=ZxW9+DB6bwXRqzZq8to0yNNVzyfWCIMwxMxlc5JgvV4rHQ3KWecsC7XHr0G4Xeh/h48qWaS2
- qhMBoC3VqyRvFWWskbpQ4+TzVE/tiN2FlUJkrm8zTkkI6Vb7gX65e7MM9s7C2+TSjmfuYNBgg2X
- HP2JVkv+W56xc2ybPj/dKZDU=
+ t=1786613655; v=1; x=1787218455;
+ b=Ve/BuX7YWVqBo/ABZYgyXwpdHXANW8oh1K46WtEot5WlWwmlYaJrvYjXQhvPqtcxqNv57CDf
+ J3fVIefYJeNAyVzqJeKfPvoOncCJ+do2gCvzPN3p5/YS+zYWDfd1LnSSeOla5eG+PQtsyl95qRp
+ iuKV9mdSoApubKNnmXlRU5JM=
 X-Envelope-To: linux-mm@kvack.org
 Received: from localhost.localdomain (116.128.244.169)
-	by smtp.migadu.com with ESMTPS id f70264e86958a884;
-	Thu, 13 Aug 2026 09:34:11 +0000
+	by smtp.migadu.com with ESMTPS id 20da645f262052b9;
+	Thu, 13 Aug 2026 09:34:15 +0000
 X-Migadu-Flow: FLOW_OUT
 From: Hao Ge <hao.ge@linux.dev>
 To: Suren Baghdasaryan <surenb@google.com>,
@@ -73,22 +73,22 @@ Cc: linux-modules@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Hao Ge <hao.ge@linux.dev>
-Subject: [RFC PATCH 2/3] module: move codetag section placement decision to layout_sections()
-Date: Thu, 13 Aug 2026 17:34:20 +0800
-Message-Id: <20260813093421.135230-3-hao.ge@linux.dev>
+Subject: [RFC PATCH 3/3] alloc_tag: remove /proc/allocinfo outside of mod_lock
+Date: Thu, 13 Aug 2026 17:34:21 +0800
+Message-Id: <20260813093421.135230-4-hao.ge@linux.dev>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260813093421.135230-1-hao.ge@linux.dev>
 References: <20260813093421.135230-1-hao.ge@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: csxaiiowz74n889sfhd6dhridhcmnrpy
+X-Rspamd-Queue-Id: C23CDC0004
 X-Rspam-User: 
-X-Stat-Signature: ogzpjmuj5xmykh1p9soxarfkkij7xuyi
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E874440009
-X-HE-Tag: 1786613652-203158
-X-HE-Meta: U2FsdGVkX19f7FVFcUYwf6pk3gNTF7H6kXREjm6x5PJwkE9J9Y76toRJ7/Yai+v9Zygqm7PdieR8qOlXlivYwGPn6NKWy1Fvq2UDKYlA8hSoel+ku1pyLkC1NOORC7AHWpL95Z1BqXE+lRJmyRPxUF5Na6mXFhxEap1naeJUTgThXDaMMy3Yw8K5nLq3l/ZOki348uPnk4qP6YI4PEamBDch6DoQzGtuO5pafyELtutNNB0GTiY3+CNCgs/QzUBO0anKyDo3Vh35uT9/ZpGKTP7Og29DlTT+iXEMm5w0JSfvec9ANgwaLXIByDyNIBZ6kLuOSKgPrMeEwZm7icKvAOclYUX0p1gNuoy+CQnPxmIV3PoPl0UvHywoIYAScv1Z/zSJwJoJY3SOpXCPQ6nBRvqBV5DeZIB8IcNTmdX3qll2m5MksmH/qYEfbZBY1opEui4KUgf6kSEH6uK0o0Y0h+livR3fQbtYfda1J7dGEKz8DBfQJMy3QCM1O+yVUN6xP6WcstqUuSxqTfsJ4eY49RUyFAjU4wSfRar4KqknKwct0wkqcnQT6K+GoLdXWMaRz+aT+b/umhOaDlLXecEIXsf9plgEf72Rd74kzqJNu8JwrFwpFdeZHz8W0saMrWaS2vXWOoicG+z7xaKgyKXH4mrA2Z3lXAudBQFqPW4DuEDAC8sOITBTxHzYVtgvag3zXQGqnzlr3kC7D1FKtu5KfN59v/aurJg5qCFrbSTcXuMC80aia+B7e3hQvqiZC77F5kV3St079utbX94azYyIOKHb50zlCPrJRGOpHoRsGh5To8PTBUvRXpvZlzu5OaVexWw1PaPvAF0kI4q76fm38/WB5VJU52kpGkkau61gimMSX8yMxhqM9LFfoK2lTCFcV21onSbI7QvQqCfVxIrvxjkAaxBWtTXy9zU75eJap9Ay7XuQJDo3UdTFYp91yuFMo/lWrg+6lXbaodCJIbh
- 9K5znixI
- gwqZ9Kch653lQTCVFfTVpXtsz8LHN1Y93aSdH9zUgSL8IS8Xa6coSjdjigB3KDNbtTKSqYWkFKvMm9kXr/ghW3KLBbU0LKzL5+OSHxhpZcqe+C+sSQDmpATRMOKDk5aNVoQUIlOPELccElV2cTC5yqZkuLP63OBynaGZC6RRClpSmXp/+np3uOt5yX4TzG61uYPMAkMkBKBXcDgbMegAEllIA/qFhEHyhlsPQrGQu5nWUOQ/bkx46gH3DpZvKVF8KmWhzrAd/QfB4lAM4436eQ3sihg==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786613656-67706
+X-HE-Meta: U2FsdGVkX180bvkpX49U3AuoTrhcqhwQy6AWaRVpQPlPPpktZFCKW1PMuir2uos1aWcMKIocJKPtE+ACbqtAGDzAEsz/RxmshXdc+HOnZsSEXBWT/Oj45TBYijx52+6WnZKelB2EBYJTBRrPmffCwMgicpLubjMNI4Oxz5La+qmZr2/Mn0i2TS1EYjPEEmuZTowKxQxQwyiK+hAwrGHNokLrMDZ4WQ2sH22c/EW7d1C4MdGj6EK5aQLsAoG7rA7NfCFqLPQKuv4FVXNdI0hqinksVSwPZzvuLAAXuTy1YNi6EwAM/WByrWk18sFakc6lJAfi97MyuQh7GyPUsc6S6yE3+fkWnaPa5/WLs4jgYiPVkKzCFO6fHv2ZciA3CxbYZTA9H57IfHpzGsFoEetMTaoBuK/8ViZEU/60EShXc6t1z6s15Y8lXFXGJFFJw01OGLHxEXenWIYTYgTvNt62QlZ667zYQJNComzT/jPO8FpPCNqjUhuQmIUi3DT0UJfci0LXC4OoeCf6GtfH+70/ysggaDjuoEephTgbzvgthCTrnHTiSA0ar3yohLXYjRvZUG6jM9FWmca4srPA+ph/bSPoLAp2WpcDObGcPG13m/0OJyC+Lv1RDQTgczVeni2LS+t64rENZlYRhwrM67+qbLQiRYnfEtibarwadET6JYiI4GwXb2pvV4ORakJxOaoeVaIEosz7++YNb8LJdMzw+I1/Jhq2IJMAOAjZN2ZNRjCKU9oSBJtzIdtCeSjv9mbJbOXmO/u1psmzuETX281ojBEw+nRzT+6a6O69j1Pdi4lATRhtwbr1/tiZi19YocSEN0wpxOw63+BZ64GooUyx8sB+Z66CSL0ykKsddu7I9OPXCs+CIXMw2A1Y5Jfn3KSWm61UCi+N4lvomuQ76cJHlvhNqd98Fp6ojKgU/uIMjwyNocUnE8DeHSZ9ARAyy7FWLT7JvRT7xgB14vTlXVd
+ eVjS0HTX
+ 7WeCHg8TX7LJtb2M0eXQF85JyU5rNcg8xg4598piGTmtbq4r0wdEtuufBs/S8qsRseOmHa63urTqK400vGaQxquTwJe2sNKqfgWrq8IZOcGTcKmvL59A+eXtb30YWV/d74rPLw3PtlWIWIG7HlqxMUfH+83rbdjMD6yUCffSwgU2bzD0Q+oxaxvUTekvwz3gKpLeAhGhSKZT72upbZogbtvOMuc+mf6BXwWkY8X9TiN2Oam4tbbvj9jyBWfxJzogiey71LpmcPh19UDIXqXNYq+QwLw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,124 +96,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-codetag_needs_module_section() is called twice per codetag section, once
-in layout_sections() and once in move_module(), and both depend on
-mem_profiling_support, which changes without a lock. If profiling is
-disabled between the two calls, layout excludes the section (offset 0)
-while move copies it as normal memory to offset 0:
+shutdown_mem_profiling() calls remove_proc_entry() from
+reserve_module_tags(), which runs under mod_lock held for write.
+remove_proc_entry() waits for readers, and a reader takes mod_lock for
+read in allocinfo_start():
 
-  CPU0 (insmod A)                    CPU1 (insmod B)
-  ----------------                   ----------------
-  layout_sections()
-    needs_section_mem() == true
-    sh_entsize: type, offset = 0
-                                     reserve_module_tags() overflows
-                                       shutdown_mem_profiling()
-                                       mem_profiling_support = false
-  move_module()
-    needs_section_mem() == false
-    offset = sh_entsize & MASK = 0
-    memcpy(mod->mem[type].base + 0, ...)
-       -> overwrites the first section there
+  CPU0 (insmod)                      CPU1 (read /proc/allocinfo)
+  ----------------                   ----------------------------
+  reserve_module_tags()
+    down_write(&mod_lock)  [held]
+                                     use_pde()            [in_use++]
+                                     allocinfo_start()
+                                       down_read(&mod_lock)  <- blocks
+    shutdown_mem_profiling()
+      remove_proc_entry()
+        wait for in_use == 0         <- blocks
 
-Record the decision in layout_sections() in sh_entsize using a
-MOD_MEM_CODETAG type, and have move_module() use that instead of asking
-again.
-
-reserve_module_tags() returns -EAGAIN if profiling was disabled after
-layout, so the loader retries and places the section as normal memory.
+Move remove_proc_entry() to a workqueue.
 
 Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
 Signed-off-by: Hao Ge <hao.ge@linux.dev>
 ---
- include/linux/module.h | 11 +++++++++++
- kernel/module/main.c   | 17 ++++++-----------
- mm/alloc_tag.c         |  8 ++++++++
- 3 files changed, 25 insertions(+), 11 deletions(-)
+ mm/alloc_tag.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/module.h b/include/linux/module.h
-index 7566815fabbe..a02016528e1d 100644
---- a/include/linux/module.h
-+++ b/include/linux/module.h
-@@ -328,6 +328,17 @@ enum mod_mem_type {
- 	MOD_INVALID = -1,
- };
- 
-+/*
-+ * If CONFIG_CODE_TAGGING is on, modules get a .codetag section.
-+ * codetag_needs_module_section() says where it goes: the usual
-+ * mod->mem[], or off to the codetag region.
-+ *
-+ * Mark the codetag-region ones with MOD_MEM_NUM_TYPES.
-+ * It's just past the real types, so it doesn't index into mod->mem[]
-+ * and for_each_mod_mem_type() skips it.
-+ */
-+#define MOD_MEM_CODETAG	MOD_MEM_NUM_TYPES
-+
- #define mod_mem_type_is_init(type)	\
- 	((type) == MOD_INIT_TEXT ||	\
- 	 (type) == MOD_INIT_DATA ||	\
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index ed26f167be84..2337bf604f58 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -1728,11 +1728,8 @@ static void __layout_sections(struct module *mod, struct load_info *info, bool i
- 			 * preallocated contiguous memory.
- 			 */
- 			if (codetag_needs_module_section(mod, sname, s->sh_size)) {
--				/*
--				 * s->sh_entsize won't be used but populate the
--				 * type field to avoid confusion.
--				 */
--				s->sh_entsize = ((unsigned long)(type) & SH_ENTSIZE_TYPE_MASK)
-+				s->sh_entsize = ((unsigned long)MOD_MEM_CODETAG
-+						 & SH_ENTSIZE_TYPE_MASK)
- 						<< SH_ENTSIZE_TYPE_SHIFT;
- 				continue;
- 			}
-@@ -2815,11 +2812,10 @@ static int move_module(struct module *mod, struct load_info *info)
- 			continue;
- 
- 		sname = info->secstrings + shdr->sh_name;
--		/*
--		 * Load codetag sections separately as they might still be used
--		 * after module unload.
--		 */
--		if (codetag_needs_module_section(mod, sname, shdr->sh_size)) {
-+
-+		enum mod_mem_type type = shdr->sh_entsize >> SH_ENTSIZE_TYPE_SHIFT;
-+
-+		if (type == MOD_MEM_CODETAG) {
- 			dest = codetag_alloc_module_section(mod, sname, shdr->sh_size,
- 					arch_mod_section_prepend(mod, i), shdr->sh_addralign);
- 			if (WARN_ON(!dest)) {
-@@ -2832,7 +2828,6 @@ static int move_module(struct module *mod, struct load_info *info)
- 			}
- 			codetag_section_found = true;
- 		} else {
--			enum mod_mem_type type = shdr->sh_entsize >> SH_ENTSIZE_TYPE_SHIFT;
- 			unsigned long offset = shdr->sh_entsize & SH_ENTSIZE_OFFSET_MASK;
- 
- 			dest = mod->mem[type].base + offset;
 diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-index 461fa87fbb0b..7481180dadd2 100644
+index 7481180dadd2..b80f5a151f28 100644
 --- a/mm/alloc_tag.c
 +++ b/mm/alloc_tag.c
-@@ -893,6 +893,14 @@ static void *reserve_module_tags(struct module *mod, unsigned long size,
- 	if (size < sizeof(struct alloc_tag))
- 		return ERR_PTR(-EINVAL);
+@@ -591,6 +591,13 @@ void pgalloc_tag_swap(struct folio *new, struct folio *old)
+ 	put_page_tag_ref(handle_new);
+ }
  
-+	/*
-+	 * Profiling may have been disabled by a concurrent module load.
-+	 * Return -EAGAIN so the loader retries with profiling off, laying
-+	 * the section out as ordinary module memory.
-+	 */
-+	if (!mem_profiling_support)
-+		return ERR_PTR(-EAGAIN);
++static void remove_allocinfo_file(struct work_struct *work)
++{
++	remove_proc_entry(ALLOCINFO_FILE_NAME, NULL);
++}
 +
- 	/*
- 	 * align is always power of 2, so we can use IS_ALIGNED and ALIGN.
- 	 * align 0 or 1 means no alignment, to simplify set to 1.
++static DECLARE_WORK(remove_allocinfo_work, remove_allocinfo_file);
++
+ static void shutdown_mem_profiling(bool remove_file)
+ {
+ 	if (mem_alloc_profiling_enabled())
+@@ -600,7 +607,7 @@ static void shutdown_mem_profiling(bool remove_file)
+ 		return;
+ 
+ 	if (remove_file)
+-		remove_proc_entry(ALLOCINFO_FILE_NAME, NULL);
++		schedule_work(&remove_allocinfo_work);
+ 	mem_profiling_support = false;
+ }
+ 
 -- 
 2.25.1
 
