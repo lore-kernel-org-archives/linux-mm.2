@@ -4,80 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F047BC5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 03:50:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 320FCC5AC67
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 03:50:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46F016B01A1; Wed, 12 Aug 2026 23:50:22 -0400 (EDT)
+	id D45366B01A3; Wed, 12 Aug 2026 23:50:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41C1A6B01A2; Wed, 12 Aug 2026 23:50:22 -0400 (EDT)
+	id CA7226B01A4; Wed, 12 Aug 2026 23:50:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3595F6B01A3; Wed, 12 Aug 2026 23:50:22 -0400 (EDT)
+	id BE5A46B01A5; Wed, 12 Aug 2026 23:50:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0740C6B01A1
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:50:21 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7EC2FC0519
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:50:21 +0000 (UTC)
-X-FDA: 85094868642.19.5E6F42D
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4D9D1140004
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:50:19 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=mavick.dev header.s=MBO0001 header.b=T6xoeJin;
-	dmarc=pass (policy=quarantine) header.from=mavick.dev;
-	spf=pass (imf09.hostedemail.com: domain of m@mavick.dev designates 80.241.56.171 as permitted sender) smtp.mailfrom=m@mavick.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 838F46B01A3
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:50:30 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 082A01204E8
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:50:30 +0000 (UTC)
+X-FDA: 85094869020.12.5CE4724
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 37C4DA0009
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:50:28 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=mavick.dev header.s=MBO0001 header.b=xHgBGCEm;
+	spf=pass (imf15.hostedemail.com: domain of m@mavick.dev designates 80.241.56.152 as permitted sender) smtp.mailfrom=m@mavick.dev;
+	dmarc=pass (policy=quarantine) header.from=mavick.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786593019;
+	s=arc-20220608; t=1786593028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=BcFrn3fh6XowM0CfCDLPqJ3XCi/Ke60FiRueM8hTud4=;
-	b=sDSvl3313uictj99iB6/+Hhfknf4G7T7rOah2Yp6Ke/Zdva2ie5AM/azYfQeUZBfLnY2OU
-	Xnm/JY5/ZMCyJpRHW4ZCKGwWUE6NLOTyFqBv7Rl1zQ3Hr0n5mXCj9EeTT/HoGjzWxFXef9
-	ZJ7y2nSRjY781txwS/l0QZLC6mPeBUQ=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bEXWfsEWtFFEp+0efKsBCvQdDR44+02Pu5SRRh4WvD8=;
+	b=vTBvsWlLRlo+uTr0bRd6b7t35REfP+judMkl/3aCvQ/C3t8OG3GEnbMRKdRbNeSjUzfsAe
+	8iUsOE9J7QDAKTzU2fsohb+m2OYkv8KiThghSDYw18DgCZMmW3v7U7/Xrj2QU0ZIecOuY0
+	h5i63zQv/FO6xnoNfpIvckyRT5+gFA0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=mavick.dev header.s=MBO0001 header.b=T6xoeJin;
-	dmarc=pass (policy=quarantine) header.from=mavick.dev;
-	spf=pass (imf09.hostedemail.com: domain of m@mavick.dev designates 80.241.56.171 as permitted sender) smtp.mailfrom=m@mavick.dev
+	imf15.hostedemail.com;
+	dkim=pass header.d=mavick.dev header.s=MBO0001 header.b=xHgBGCEm;
+	spf=pass (imf15.hostedemail.com: domain of m@mavick.dev designates 80.241.56.152 as permitted sender) smtp.mailfrom=m@mavick.dev;
+	dmarc=pass (policy=quarantine) header.from=mavick.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786593019;
-	b=cd74egfhkVQs41oEcMlfHZ+xQbNNpOqfKrzyPUebKqxCknRGzc3kan6kMasbCHvOvm4wF8
-	z978EO0Ug/eJwaJpaTNK00kzyJ/liAEDdnp2C83DAcPfpP2nFFuhUarZsGzN+/fb1cHFvm
-	l6QDfHcU46VpLF6g6F1huUCK6B9iJUE=
+	t=1786593028;
+	b=dpPIhviR6UGmPhoHOeCmTSgA4ImfZ/LCZ/rdvOb3gXm0uqTalzXyTnR1n5AfLGtMQ2fThS
+	Ngf7+6QJzcQPlgWpuNU6h0iD+ZKLla8NV99w+hLzadLruVszy3uoT2TdwV4G2qptbSlMvY
+	rvur00visr+Lsgl4vnPlsYLiFXe2aRg=
 Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4hLBFy2hGgzMlMX;
-	Thu, 13 Aug 2026 05:50:14 +0200 (CEST)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4hLBG92N6QzKw1y;
+	Thu, 13 Aug 2026 05:50:25 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mavick.dev; s=MBO0001;
-	t=1786593014;
+	t=1786593025;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=BcFrn3fh6XowM0CfCDLPqJ3XCi/Ke60FiRueM8hTud4=;
-	b=T6xoeJinvOqEL/fGUMLk4gZ5L2Y6BKn7KsQ+6g8Xdi924M7WLIBvTlv9tj1Y+qCEpzKuR5
-	O3OWoHeNLAoP5U2aSRkl+wV3199W9B/sSsIKVa/3YH7XmoBfHtZu6aKX/1dBmbzgwaWa4I
-	TH1yftRwSq+qw9UiNjlmgy2/j4kJAt2AINzX1oxAZqmsNriC34cqfIkOi2YDhhZTuq93F/
-	k4k0vi1DEfdDDznl8XVabs3bnJUq+AvXM2jVfMaZEsTtyK4KhvK+7ctdJdwBc6C7doQzHM
-	lOoSiyoRGtlV4MyqjqQO7wAXAXPAHuPJOalvxYatWYVD7HXbHN0i5G+Th8I22A==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bEXWfsEWtFFEp+0efKsBCvQdDR44+02Pu5SRRh4WvD8=;
+	b=xHgBGCEm+3b1/xWePC0fKvD2X+/AktKduhbs5J/5JXXpF4UF5K0KM4vKDypjx3SNJqUMEi
+	3i1lzTbnGNvLvW/7YTNM3TgYF08OSnvSew8OTOdxenB6arH4tzF/tR5uBe/ITZ6iIftFUU
+	6Bj181XPQeoFyxwaNDO3sVN4KGxWNAjI694DaD8CZQY5/NcLdvl8eOC0M3jzqUxcdAZeAr
+	F26NLiE321S3EGYlq82BDro0jhkZtOwCvmr4DcGWj3C55ZdZ5z7/OO8OetIGrUvp6SaKlS
+	8tNTuhqnDI8FLqI5IbXgkNQdjbkUKR6a0QiDO56RByl5dNasyYahRzTX8C3yjA==
 From: Eugene Mavick <m@mavick.dev>
-Subject: [PATCH v5 0/5] tracing: add refcount_final_put tracing
-Date: Thu, 13 Aug 2026 11:49:06 +0800
-Message-Id: <20260813-refcount-final-put-trace-v5-0-6e8bf8a38b31@mavick.dev>
+Date: Thu, 13 Aug 2026 11:49:07 +0800
+Subject: [PATCH v5 1/5] tracing: add refcount_final_put tracepoint
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIALI+fWoC/53QzWrDMAwH8FcpPs9D/nZ62nuMHRxLXs22pDip2
- Sh59zndYB2DDHoR/IX0E+jMJiqZJrbfnVmhmqc8Di2Yux2LhzA8E8/YMpMgLVipeaEUx9Mw85S
- H8MqPp5nPJUTiuuvRRdWqCaytH9tkfr/Qj08tH/I0j+XjcqmKtfuFOthAq+DAe+2dthhEku7hL
- dQcX+6R6nrkWzD/CBERQGgrbehuE4IWqBICeXujAIE6ZQl7Z+BaWH9T1dU/hNiQVJOs09EnUNi
- l7o+kfyQPW5JukiTjrWtWSvhLWpblExWAr5obAgAA
-X-Change-ID: 20260624-refcount-final-put-trace-49bd7c39bd5a
+Message-Id: <20260813-refcount-final-put-trace-v5-1-6e8bf8a38b31@mavick.dev>
+References: <20260813-refcount-final-put-trace-v5-0-6e8bf8a38b31@mavick.dev>
+In-Reply-To: <20260813-refcount-final-put-trace-v5-0-6e8bf8a38b31@mavick.dev>
 To: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
  Boqun Feng <boqun@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
  Gary Guo <gary@garyguo.net>, Steven Rostedt <rostedt@goodmis.org>, 
@@ -91,22 +89,22 @@ To: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
 Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
  linux-mm@kvack.org, kasan-dev@googlegroups.com, 
  Eugene Mavick <m@mavick.dev>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4929; i=m@mavick.dev;
- h=from:subject:message-id; bh=Ns/xH6GcCBmS1i+tcQhV2JbxQS4nqkIivlI8t64dovo=;
- b=owGbwMvMwCU2V/5U3e1aE3/G02pJDFm1dgfFDP+9OHUi1U3cYVNreeq8vFypKwuS/NbvOne6m
- svhpdr/jlIWBjEuBlkxRZaarAT3jJWzEo2PTuqBmcPKBDKEgYtTACZSdZuR4SnD3kvXXkpc5lds
- fvDnUTX/XKV9ZfMSd33jXS5pa+8Rbc7wP5hz8rvFewoLeA/ePNV6W9MtccvjBrbZm96/rb3d+oi
- NjR8A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5562; i=m@mavick.dev;
+ h=from:subject:message-id; bh=/DyJ/Pt5HgNY+1AYXZ1YsFD8V1gs37HPB1lvRPBQOWM=;
+ b=owGbwMvMwCU2V/5U3e1aE3/G02pJDFm1dgen8J9b9fMDq5pp/aWjMaqSlwrVjvyJExR7IlwSw
+ x+7edvUjlIWBjEuBlkxRZaarAT3jJWzEo2PTuqBmcPKBDKEgYtTACYyk4Hhf85WLaft4Zf2337d
+ 8+ov+3LnJ8W3rkutXaDnWt3yw/GXgjnD/6j9k78unJKeydLcfe7ijGt/JdQTJC3jXd43MvmsrXe
+ I5gMA
 X-Developer-Key: i=m@mavick.dev; a=openpgp;
  fpr=7C6A604768A99A6133C5928C9D1FCA7EDB7D344F
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 37C4DA0009
+X-Stat-Signature: kdxakdnqun1a86bq1wpukr17m5g3rqkh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4D9D1140004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 91dpmmffgux8myfwosyuqjwn76otgcnp
-X-HE-Tag: 1786593019-954231
-X-HE-Meta: U2FsdGVkX19e2/Blfi+47bl7rRPOVgvpuPRiucicxKOlpDIE+WS5tkuWY7sXhDmhdyqyX17ijnWEr0a2GtPXgzb0C5i1dbe6TeNu0DT4hAFHBQ5ZIbZb+4HHmDSfbXFZN6LmkkAxQ90rtgvbqV2DFTNU0IOO3zWEqml+K+FMONiRBuEEAMPRZKd5TLZ+GKOWUmg/A9ORrjDDsLyvIXrix5x/K7fSWZ74aaYSgNljVximjGxTeWoEVPq79Lq0E0p707BP2AeyP3LQGIzqZpx/5YrjHhD+/x8Aduh6T0oXrX+W++I1fgYnwwYCNULCKtgSVradATGY6hfOKRGmbg+cqJAsw0GsHaH7JZkPzZ4mGWb4b2YSE4r9t0gmNd9Q40r7HSogE0Goo0aB3QChtmrTt1GiBkwELNuVWzudaKlBpDhg90ccpcVEDia5g+zY1rXortAovFYc8Ko24DFXPH3xRgn0oiTIHMvRbfxYJ3VCJ/TjWNmdk8iy8SBOxDjU2X4OT2jOD9+0wPTr5t0lIJmH1aJaNgCJhUBPWWc6hRniNyiHOwUKlUdxRqJAc8wwoKeYqgyr7mSUyDDPuFGlvC9j1kJj6cwsvPbpOeIK1YgvZfMtdJ05M8lNLifZLI7D/lDeVn84IItSq9qF7oLPX+MYlUyHET7gW8wh2qseYQX2bAhLMxsnu6w4vMR2bhc/907/5a0PX6/xZPZlyfZEKE6fm90IL0fUnb4ZIfiQFyJXXhCW2H2QeJuYWHh4jK92YeCGt8nRZ/CXJNlDzWrOQHJWP5NKuN88VvgoxF2jgdeph1+PEBtxcVbPMvRZdQpIDmFOTv7sngwLC5evpDDUvBXdVaMVpYhymTueHcBGxWSD9JQBo2vLWiW/khj6Diljc8eiCDnT3Ks6e8PZwJBTOv9hp9j88oOpA3UOpsEP+j8LYk0VrJorepZCBVqQfPuKcZta5c2Fgh8NDDEpD31Eyyi
- EhQ2s3ij
- 4m/0ByolbIRtQLC+mZk8Tp5pSlW83gOndI+HjA1yOHZ6usU+u30IGq3XVdJ+S23DoYxVihQCQHaYn96uoStdD0ZArAjnSiZZyGFO2wtC1/apTtePzj3e0SkRG5bemuaWzkJAKSXxL3O9wK0AAdfRqtLK8HuI7Yt12eV6LULBy1svCpNEgneYAvvtkpImNgvXsfWWbAT7xRBNmby5jtyIcymZMwBDpZ1omMj7/JKVth3d9uhXTRewV0YpSt3+vu5KhC+z9niVep2hYLHQiUCxpe4K5JjNSsFLWHz54refOp9Rf/0+/Ier2FOZ/hYpmcS/k6G0qfsNGCX7mw3fur1dpvg9uf4hdPI4VxzuxxLeyng0hLqQDHa3VnDj1bMyCGQshXFxMPv4bHJB4bRWbBl4SQ6WVLwln6Sj3G/eWrSQmuVr+DQfFVSIZosxujGe6Ix1LrPxY
+X-HE-Tag: 1786593028-196070
+X-HE-Meta: U2FsdGVkX1+kAVR/skKJbequsdtc51Sq/14c6atr6Q9KSkXWUvrBKpexr0HddDGCyOxiAf/FU3P/TDofQJtvwze8G+Wh4VASzSlSZQV5sIqWebJhpsJm1d5JxjQe4aXB6f9fvK9zLQwgp4acprPINCTDM+zfn+9pCu5AYcYp/TR8n7r4LCV2w3p2qY8opFjslntRjrqb1XEI8OV5hQ+SgBt9SAci5srNh7AyWT27DyT99qW4LnfnjBalj39mBSMOudbang4Q93SpZndiGZURmN/mN4sVMKEGRa3FJTeEy35OM4RS8WW8CN83t5rh/lywFxpr6m3cirOeHcFfcPH45OTP948jpgQZTEj5nkq6i2dBrZjRtP0mFDEeN4JM7LkUHSMXCV9N/Zmza0+LXokMPL5MwPFWiX3e7nC6VvjCFqhIuvRX88oUh75qqqvAc7215lW8bBoKkYxK7kNC/Ku3afxji13ONDri6kAR2jvEFCjjDvWNqIvvCLGBlt6dOjR30F2+QG5HUthnBJWHibBt0LGFg/YZcoqyp40bPRBa4YN3KN+IKe4Lxu4d7I+k3/Llqm4dRuGACsIwdEJ5saZRnm65kcqNHjFu4VovTBXoD9qiSNe1QLlaoK3SKTJQry+JtOXevpVb1G8EEm/suOcBw9Qvun91vXyikkzbA/6EI6ikmZ+CzLQ5Ws7WBa3x3thY0YbzJfUiMIUOOuHZqvh4bhL7TZnSM1R4zEm9C1OrvJoo5Jt+n0udt5N9Leu0xmV8fM1XffSEAUDIjpA8fVgK3ylgKMZSnA143UGnhx+99oYeLpUS0pj+DiW+kzI0X6GY+vz79sp7FQFsKaT9rvKE+x5tvQ/N6GvKO/et4ptZoXHTptOk1CTiff2py1noZ8mvVrkLr950SOK2i2J1kLSGSaN4foq2mTfWtoW1G4wO88VnBPDOJIE+t98r80ZERogEC4wLfOLF77KUls3NB5/
+ 70nVWUBT
+ 9JzIX1Vif7UhjXSOas9mJUiM03YPekwUTIQiwWY+/EKwUvK94fEcLM57DZcgtmzQQfpE1TisPEKBYDowfZ5TKJ8rI2s9ZHjqJ9HMSGyVZDN0im636salq2EIMehnx219I1WkXSu2yeyv4voUC2JOIPuQYXMHp3v1YI9YF7eMwvRDk3ej1heVrpAv5gHkfX+Mk8gnYHmeNJcoqihVMjELsSozMaHMJk6y+77XvW/TIG1jzJAcE6Tj37j74dtOT5xfYxXQ9WvlDpED9jFf+J3Nhu7tMneIXnfWlvg5yifprsS/6j1j9MZa2U2QWIvJlIwPFQOXD1z2ALIWZQ42qd/qdDRkKYStLEJnl0m/44fNK6GEGoYQPOkpMd0g4F3KiM6W2fPsDaclAA7T6ZZt4dxRuW2o2H80KDV7ij/u3wJeDkL2W6Xg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,126 +112,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When debugging use-after-free(UAF) bugs, knowing when the object reaches
-0 references and enters final release(final put) can significantly aid the
-debugging process.
-
-This patch series adds a tracepoint, refcount_final_put, with
-compilation toggleable with CONFIG_REFCOUNT_TRACE_FINAL_PUT.
+Add refcount_final_put tracepoint and related core infrastructure
 
 refcount_final_put fires when a reference
 count reaches zero and the object enters its final release path.
 
-refcount_final_put records three fields:
+The tracepoint records three fields:
 - caller: function that called the refcounting
   function(refcount_sub_and_test, percpu_ref_put_many)
 - ip: return address of trace wrapper macro call
 - obj: refcount object(struct percpu_ref, refcount_t)
 
-bloat-o-meter stats:
-
-CONFIG_REFCOUNT_TRACE_FINAL_PUT=n :
-Total: Before=24703933, After=24703933, chg +0.00%
-
-CONFIG_REFCOUNT_TRACE_FINAL_PUT=y :
-Total: Before=24703933, After=24764816, chg +0.25%
-
-Alternatives to obtain this information require live reproduction, and
-incur a significant performance cost, making them impractical to have
-enabled on fuzzers like syzbot.
-
-refcount functions performing final-puts are also inlined, further
-complicating alternative dynamic tracing possibilities.
-
-Debugging UAFs without final-put knowledge is possible but is often
-significantly harder and requires broad code reading and mapping,
-whereas knowing the final-put allows narrowing the scope, thus
-decreasing time and effort required.
-
-Local live reproduction and alternative tracing are time, hardware
-resource, and manual effort exhaustive. Time-sensitive UAFs which
-require many iterations to reproduce further worsen these requirements.
-
-Remote-fuzzer report based UAF debugging is an incredibly frequent
-occurence.
-
 Signed-off-by: Eugene Mavick <m@mavick.dev>
 ---
-Changes in v5:
--rename ref_trace to refcount
--add CONFIG_REFCOUNT_TRACE_FINAL_PUT Kconfig option, due to high footprint
--improve cover letter, add bloat-o-meter statistics
-v4: https://lore.kernel.org/r/20260801-refcount-final-put-trace-v4-0-2e58678f0ffd@mavick.dev
+ include/linux/refcount_trace.h  | 33 +++++++++++++++++++++++++
+ include/trace/events/refcount.h | 55 +++++++++++++++++++++++++++++++++++++++++
+ lib/Kconfig                     |  8 ++++++
+ lib/Makefile                    |  2 ++
+ lib/refcount_trace.c            | 14 +++++++++++
+ 5 files changed, 112 insertions(+)
 
-Changes in v4:
-ref-trace:
--remove fn
--add ip variable
--change trace wrapper macro respectively, _THIS_IP_ is used for ip variable
--change relevant code respect to fn removal and ip addition
--fix style issues in include/linux/ref_trace.h
--add new macro do_trace_ref_final_put_cond that only calls tracepoint if cond is
- true
-lib/refcount.c:
--change from do_trace_ref_final_put to *_cond
--remove if statement above since _cond already performs the check
-KUnit:
--change relevant code respect to fn removal and ip addition
--check if caller and ip are valid addresses
--change timeout from 10 jiffies to 10 seconds
--move didn't timeout assertion from before to after probe
- unregistration, to prevent it from impacting next test
+diff --git a/include/linux/refcount_trace.h b/include/linux/refcount_trace.h
+new file mode 100644
+index 000000000000..6f8d0ba910f0
+--- /dev/null
++++ b/include/linux/refcount_trace.h
+@@ -0,0 +1,33 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_REFCOUNT_TRACE_H
++#define _LINUX_REFCOUNT_TRACE_H
++
++#include <linux/tracepoint-defs.h>
++#include <linux/instruction_pointer.h>
++
++#ifdef CONFIG_REFCOUNT_TRACE_FINAL_PUT
++/* Declare the tracepoint so tracepoint_enabled() can be used */
++DECLARE_TRACEPOINT(refcount_final_put);
++
++/* Wrapper function implemented in lib/ref_trace.c */
++extern void do_refcount_trace_final_put(unsigned long caller, unsigned long ip, const void *obj);
++
++#define do_trace_refcount_final_put(obj)					\
++	do {									\
++		if (tracepoint_enabled(refcount_final_put))			\
++			do_refcount_trace_final_put(_RET_IP_, _THIS_IP_, obj);	\
++	} while (0)
++
++#define do_trace_refcount_final_put_cond(cond, obj)				\
++	do {									\
++		if (tracepoint_enabled(refcount_final_put) && cond)		\
++			do_refcount_trace_final_put(_RET_IP_, _THIS_IP_, obj);	\
++	} while (0)
++
++#else /* !CONFIG_REFCOUNT_TRACE_FINAL_PUT */
++extern void do_refcount_trace_final_put(unsigned long caller, unsigned long ip, const void *obj);
++#define do_trace_refcount_final_put(obj) do { } while (0)
++#define do_trace_refcount_final_put_cond(cond, obj) do { } while (0)
++#endif
++
++#endif /* _LINUX_REFCOUNT_TRACE_H */
+diff --git a/include/trace/events/refcount.h b/include/trace/events/refcount.h
+new file mode 100644
+index 000000000000..a4dc23aff93b
+--- /dev/null
++++ b/include/trace/events/refcount.h
+@@ -0,0 +1,55 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#undef TRACE_SYSTEM
++#define TRACE_SYSTEM refcount
++
++#if !defined(_TRACE_REFCOUNT_H) || defined(TRACE_HEADER_MULTI_READ)
++#define _TRACE_REFCOUNT_H
++
++#include <linux/tracepoint.h>
++
++#ifdef CONFIG_REFCOUNT_TRACE_FINAL_PUT
++
++/**
++ * refcount_final_put - trace when a reference count reaches zero
++ * @caller: return address of refcount
++ * function(refcount_sub_and_test, percpu_ref_put_many)
++ * @ip: return address of trace wrapper macro call,
++ * inlining may cause it to be something else tho
++ * @obj: refcount object(struct percpu_ref, refcount_t)
++ *
++ * Tracepoint instrumentation can be added using the do_refcount_trace_final_put
++ * macro defined in include/linux/refcount_trace.h
++ * which uses _RET_IP_ and _THIS_IP_ for caller and ip arguments respectively,
++ * thus only requiring obj arg to be supplied
++ */
++TRACE_EVENT(refcount_final_put,
++
++	TP_PROTO(unsigned long caller, unsigned long ip, const void *obj),
++
++	TP_ARGS(caller, ip, obj),
++
++	TP_STRUCT__entry(
++		__field(	unsigned long,		caller	)
++		__field(	unsigned long,		ip	)
++		__field(	const void *,		obj	)
++	),
++
++	TP_fast_assign(
++		__entry->caller = caller;
++		__entry->ip = ip;
++		__entry->obj = obj;
++	),
++
++	TP_printk("caller=%pS ip=%pS obj=%p",
++		  (void *)__entry->caller,
++		  (void *)__entry->ip,
++		  __entry->obj
++	)
++);
++
++#endif /* CONFIG_REFCOUNT_TRACE_FINAL_PUT */
++
++#endif /* _TRACE_REFCOUNT_H */
++
++/* This part must be outside protection */
++#include <trace/define_trace.h>
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 00a9509636c1..12bc59515a3e 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -52,6 +52,14 @@ config PACKING_KUNIT_TEST
+ 
+ 	  When in doubt, say N.
+ 
++config REFCOUNT_TRACE_FINAL_PUT
++	bool "Trace final puts on multiple refcount implementations"
++	depends on TRACEPOINTS && DEBUG_KERNEL
++	help
++	  Trace when a refcount implementation considers refcounted object dead.
++
++	  If unsure, say N.
++
+ config BITREVERSE
+ 	tristate
+ 
+diff --git a/lib/Makefile b/lib/Makefile
+index f33a24bf1c19..e75e88f0c870 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -335,3 +335,5 @@ CONTEXT_ANALYSIS_test_context-analysis.o := y
+ obj-$(CONFIG_CONTEXT_ANALYSIS_TEST) += test_context-analysis.o
+ 
+ subdir-$(CONFIG_FORTIFY_SOURCE) += test_fortify
++
++obj-$(CONFIG_REFCOUNT_TRACE_FINAL_PUT) += refcount_trace.o
+diff --git a/lib/refcount_trace.c b/lib/refcount_trace.c
+new file mode 100644
+index 000000000000..2476bb5f2f60
+--- /dev/null
++++ b/lib/refcount_trace.c
+@@ -0,0 +1,14 @@
++// SPDX-License-Identifier: GPL-2.0
++#define CREATE_TRACE_POINTS
++#include <trace/events/refcount.h>
++#include <linux/refcount_trace.h>
++
++//Wrapper function for functions defined entirely in header files
++void do_refcount_trace_final_put(unsigned long caller,
++				 unsigned long ip,
++				 const void *obj)
++{
++	trace_call__refcount_final_put(caller, ip, obj);
++}
++EXPORT_SYMBOL_GPL(do_refcount_trace_final_put);
++EXPORT_TRACEPOINT_SYMBOL_GPL(refcount_final_put);
 
-Changes in v3:
-include/trace/events/ref_trace.h kernel doc comments:
--caller of refcount function -> return address of refcount function
--ref_trace_final_put->do_ref_trace_final_put
-lib/ref_trace.c: add include trace/events/ref_trace.h
-kunit:
--change Kconfig depends from FTRACE->TRACEPOINTS
--EXPECT_FALSE->ASSERT_FALSE for calling percpu_ref_init
--add tracepoint_synchronise_unregister to test_exit macro
--added timeout to capture.count waiting
--remove noinline and __always_inline from function attributes
- (added for testing, but accidentally submitted)
--add period to the end of Kconfig help text
-v2 link:
-https://lore.kernel.org/all/20260710-refcount-final-put-trace-v2-0-557cfce860a2@mavick.dev/
-
-Changes in v2:
--include/linux/ref_trace.h: change macro name, use direct tracepoint
- call in macro to avoid double check
--add tracepoint to refcount_dec_if_one
--kunit: make significant improvements to design, fix critical bug, add test case for
- refcount_dec_if_one()
--Link to v1: https://lore.kernel.org/r/20260705-refcount-final-put-trace-v1-0-0ae936edb750@mavick.dev
-
----
-Eugene Mavick (5):
-      tracing: add refcount_final_put tracepoint
-      refcount: add refcount_final_put tracepoint
-      percpu-refcount: add refcount_final_put tracepoint
-      kunit: add test for refcount_final_put
-      MAINTAINERS: add entries for refcount_final_put trace
-
- MAINTAINERS                      |   3 +
- include/linux/percpu-refcount.h  |   5 +-
- include/linux/refcount.h         |   2 +
- include/linux/refcount_trace.h   |  33 +++++++++
- include/trace/events/refcount.h  |  55 +++++++++++++++
- lib/Kconfig                      |  18 +++++
- lib/Makefile                     |   2 +
- lib/refcount.c                   |   6 +-
- lib/refcount_trace.c             |  14 ++++
- lib/tests/Makefile               |   1 +
- lib/tests/refcount_trace_kunit.c | 141 +++++++++++++++++++++++++++++++++++++++
- 11 files changed, 278 insertions(+), 2 deletions(-)
----
-base-commit: df685633c3dbc67441cc86f1c3fee58de4652ba2
-change-id: 20260624-refcount-final-put-trace-49bd7c39bd5a
-
-Best regards,
 -- 
-Eugene Mavick <m@mavick.dev>
+2.51.2
 
 
