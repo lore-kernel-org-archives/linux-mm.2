@@ -4,100 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DA0BC5CFEB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 15:08:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BEC8C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 15:10:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8951E6B0522; Thu, 13 Aug 2026 11:08:05 -0400 (EDT)
+	id 6C46F6B0299; Thu, 13 Aug 2026 11:10:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 845F46B0523; Thu, 13 Aug 2026 11:08:05 -0400 (EDT)
+	id 675586B029B; Thu, 13 Aug 2026 11:10:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75C4E6B0524; Thu, 13 Aug 2026 11:08:05 -0400 (EDT)
+	id 563C46B029C; Thu, 13 Aug 2026 11:10:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B64D6B0522
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:08:05 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BEAF31401B6
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:08:04 +0000 (UTC)
-X-FDA: 85096576488.22.2D0EC06
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1F1B4180008
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:08:02 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OvQcKO32;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786633683;
-	b=7hfQy8R0fg+GeUWjUtU4cDdKieKTx4jBvTOQFKYgsWibvFK75+f4SdIioMNykKosXXyPdm
-	JKgTWgFYRyxqWkA45lZkWeDJpCvPTCdi4uoLJAl0jtPD3CJ0efNufpFkPVrXVnIWcC9Q/i
-	1WHJf0IHkSDd1Y3jgVvn+/A63SAU+VQ=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OvQcKO32;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 327316B0299
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:10:10 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AF03E401E1
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:10:09 +0000 (UTC)
+X-FDA: 85096581738.07.01BA61B
+Received: from cu-ua11p00im-quki08153402.ua.silu.net (cu-ua11p00im-quki08153402.ua.silu.net [123.126.78.67])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C3C3B140008
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:10:06 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=s0CEU151;
+	spf=pass (imf23.hostedemail.com: domain of bfguo@icloud.com designates 123.126.78.67 as permitted sender) smtp.mailfrom=bfguo@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786633683;
+	s=arc-20220608; t=1786633807;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gK6DwwQyRxxtNH/mIa8gsX3rT0/0H+8bKrZeyn+zATw=;
-	b=JtooY2JTgJtxpERHhpxBJYcEZhgZlo8cu6DUHXzdVBf53GakjoEBPo3ld54QoYS9G5yu6H
-	9oCjpaYJPQHrRX9o3kEhos9GZGWxPR+183Ch9Io7ljzsxTE5hm9JUgnftZiPkH1+xUbRLW
-	nJ5VdanJWgsPb4FP0KPo7HUmpCFXyN0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A501160A5D;
-	Thu, 13 Aug 2026 15:08:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F34D1F000E9;
-	Thu, 13 Aug 2026 15:07:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786633682;
-	bh=gK6DwwQyRxxtNH/mIa8gsX3rT0/0H+8bKrZeyn+zATw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OvQcKO32Z34EbBDZ7Fmm6iJqwa8JrzLpYamuED4Ikir1Pw7RlZVOSfq5IJkOI5ECk
-	 tKv7ErghU4m6GMZ4UEv5wSWNr1ZNIEbrPMhPR1f1OADutH9q0SJqOvcGQgRKTZzuM8
-	 gsH4RDVb+EQ2ANGYB6x6VTeAshDoGy0D3cwKNcs4hdkILLULAZeao7G6JpR2tVilK5
-	 tYCAWTaaq+91ijjcI4C/aN2jrl56giBrfuRwbfCGxRyiZej+PMPI/elszx5ggQhNzW
-	 J4mMAYl7T2drPQwR0MHquB6X3kMk7e+A+9YxmEtPY4y2ilpSbN03ebo4QT2Q712dES
-	 SYi8olOhLB1Og==
-Date: Thu, 13 Aug 2026 16:07:38 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Nikunj A. Dadhania" <nikunj@amd.com>
-Cc: Mike Rapoport <rppt@kernel.org>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>, 
-	David CARLIER <devnexen@gmail.com>, David Hildenbrand <david@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Jiri Slaby <jirislaby@kernel.org>, Juergen Gross <jgross@suse.com>, 
-	Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>, 
-	Pedro Falcato <pfalcato@suse.de>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Steffen Dirkwinkel <lists@steffen.cc>, Suren Baghdasaryan <surenb@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Toshi Kani <toshi.kani@hpe.com>, 
-	Vishal Moola <vishal.moola@gmail.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Will Deacon <will@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, stable@vger.kernel.org, syzbot@syzkaller.appspotmail.com, 
-	x86@kernel.org
-Subject: Re: [PATCH v2 0/5] x86/mm/pat: CPA fixes
-Message-ID: <an3dkOKWdajK09KN@lucifer>
-References: <20260813-cpa-fixes-v2-0-39b4ff90f91d@kernel.org>
- <9cfaa5d1-83b4-4b88-bf3a-05d2e074cadf@amd.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9cfaa5d1-83b4-4b88-bf3a-05d2e074cadf@amd.com>
-X-Rspamd-Queue-Id: 1F1B4180008
+	bh=So0tH2fqum8SdfaChqZY2DjQ5NJqtbjj07yGoxL2G3U=;
+	b=WgExZt3av09oHomF2q1LnIg+enis/oNqrXyPntOdOCio/hznqsFt1285BNWzeKYmn64aBf
+	roltragmJc1Cz83pYSiBhWsqS4/NiofE8UnSNi9L8cneJK2dRcmf+Na0fwRuWE8hhtE95I
+	VIKAJYNPpTt+rNhRXtTU8WM/FMdkopg=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=s0CEU151;
+	spf=pass (imf23.hostedemail.com: domain of bfguo@icloud.com designates 123.126.78.67 as permitted sender) smtp.mailfrom=bfguo@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786633807;
+	b=dDsD6/Fgys0h6NW3nxpN5Czgc78ocO/sttiniA2VJTwBUlFMspwKycCYlhKOQzjUreRfSf
+	rOogoBcMHwDYVULOZCK1wAFegqG9pMKbgc8uN+r6z72LwQohN+p4Hb3r9I757qT28MeeYe
+	NOyNEKzwneOUZ+397GbBNZ1oZ/b9DrY=
+Received: from smtpclient.apple (ua11p00im-asmtpcmvip.ua.silu.net [112.19.242.76])
+	by ua11p00im-quki08153402.ua.silu.net (Postfix) with ESMTPSA id 6D0552FC00DD;
+	Thu, 13 Aug 2026 15:09:49 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1786633800; x=1789225800; bh=So0tH2fqum8SdfaChqZY2DjQ5NJqtbjj07yGoxL2G3U=; h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme; b=s0CEU151B42EBSaY50lHTjeqAPNvjn7DDhgN+3xIxkQDLTzrcB/pIaro000WasqgqY0BIKJND02SUqM7xpi3O9tTZetq9slFia2EOkSffXY89+4KVHSh31QDbfXgUWyLneI/vEI58qu12drP0E1GHx1Ni44SGXdeKGQaOGefSp4aTY24PhaIh/88CCud9RNBbIMsJFYsY+9puyIdHx7NJMkEETDAJlYgmjBduNdYsYWBfqXmx7D3q9tis2xMXBzyClW/Urp/Wi4KCardvzEgI/9hiVNhJCu7Mg4mIAOXOKWKUs4WfKVjW0HqujHKwJuzW5Uf49Ci56nHMYbpwdLdqw==
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH RFC 1/5] memcg: move memcg private ID refcount to objcg
+From: Bingfang Guo <bfguo@icloud.com>
+In-Reply-To: <20260813-memcgid-objcg-v1-1-83d21c685b77@tencent.com>
+Date: Thu, 13 Aug 2026 23:09:37 +0800
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Dave Chinner <david@fromorbit.com>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>,
+ cgroups@vger.kernel.org,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <BAB0F796-0F4E-451A-90F8-6C5DD6D90AAA@icloud.com>
+References: <20260813-memcgid-objcg-v1-0-83d21c685b77@tencent.com>
+ <20260813-memcgid-objcg-v1-1-83d21c685b77@tencent.com>
+To: BINGFANG GUO <bingfangguo@tencent.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDA3OCBTYWx0ZWRfXxxd/WxZiD1iw
+ dH0g5DjMzi+QS5gBZ+u+blKNwKZeabZoXQdz7iBIQPmSnYNsQRLlbmrPRRcRZWbrINbkQnudw3Z
+ cszDcIkusB6ToQN0ukZZbjiyt5Bj0qn8HnPIFPGDehl7vDGbPa03BxNHPTwrCB9+Es/5kQlOTNS
+ cj/NodjVSbxfu+EMbNmnRYEDja3y1wDTV20THsYmUfSMYjz0sLUBbHj6G/ITxBYrEZPC/PY2fBE
+ h6y3IDM1VoEtjKWXKmCEkwEzj+XXbt9t1ZG7v6B55AdciSy2eouR9dw5v/YcAWJCM4KF8UMt85E
+ h1zwHpGHqxjTGJ8WRw/vLe2YyMuJS8LUUPFxs/N9Q==
+X-Proofpoint-GUID: tepSP286IyF9e0f7YrGHgd1SSVY3Z8ea
+X-Proofpoint-ORIG-GUID: tepSP286IyF9e0f7YrGHgd1SSVY3Z8ea
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-13_03,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
+ lowpriorityscore=0 clxscore=-2147483648 bulkscore=0 malwarescore=0
+ mlxlogscore=999 suspectscore=0 phishscore=0 adultscore=0 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.22.0-2601150000 definitions=main-2608130078
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C3C3B140008
+X-Stat-Signature: 7rnnnyfzenokheocq8kjs9oqhojmzqme
 X-Rspam-User: 
-X-Stat-Signature: k6og641gqy53wytw6efzujz8xb13h5jx
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786633682-399332
-X-HE-Meta: U2FsdGVkX1/N7fIFNNangk72RoUCyJef0ymoXv9npu14RzGQW9B6+4ShSW0y4mYHkX5R9AMMHZn962NSWLgj9v+DOdCHnHqI+hejYegxYY8c3TdQbBZPMuil6FKPiXeslSYL1lFtFqCaYk5OytRRf6vBpI0s/hMZYRlzUvkdYP/JqbIZd//SyNME8vE5YHEb1QebKpE1zvP0/vUOffEqp2PZXwk+r7uHF/bGUs3ri+qs23DqoX/+E9dRg/W5F9RqWsJFUcl5WvDR1yM77BN7HFMpOX2hm7gsafTLHmITpXV/iJlsQ1QpLAa0PI6JzWUQ8hmWRbXZsIHeU2bDnwiBuohbewqMqOJ7L6E+ksbVfmcoDMrPOljn5wMnAfndsLFGeZzV/+Xum+RR5SdOpiFLHfW/BCnu630oPJoZm6fXGs9Y08Xf+Vu2I60Zvs8B0ncLaYRMV4IgUnQccDeZbUfmx0/L/mMylgacV57kbgvA+2DF84p2zhFBUOlKFgc/bCYhTOqPcjQ1c3UFt9Eb13KfzJvq25LTSb2bZo2XXgYMss9X/oc8uydwfurWyrqgY5UGx2P+yxZ1LgF9CPh/sfiy1UnCKmg26wXPeuwe1hEp/MZyZrfO7BzenAsTKLpoH2YE/gLMOxz9SYhKPsoNA94VTFJo2WY4WWr/bNOb7/tVizhnaqN08gMrL2CYXKBQrHjJFw9KK2RZBxQ1fsuSJsVFd4AhIvDlSdXVS4zGra7nTVXfuVfL/S06exmv9KX+zOxejeqAWbO+AoCCQNwEzjcvDnUIYWY+FhpqUwL7Gn6Ob1IbupguHYQj3j8yTWN9axQr49By+pPffcRH8cF3KrLkBzgopK4W/P7c5SR2Iwttre7YlccV274/bFAHQScf+RjJGi2rEOJvuoaxL29TTZaDcdEmthohaRD92ubKA5t136zjLZr4Laa27ThvESBMngxHI1xnpsdWLeDJdHjURux
- 14TaHogd
- CNJaCYEeQ35vbXoaNjQPoXPfY2fxVFC69+IyreSTgkH2soZGCbXXmQqgFfYQfC3m/3ra/MQQUo0TXkk009IXJxrHQ6SdaGiph6B1s08mi1s3Q9akZAJLL2v5E0rs0tFI2TWetFvf3GbUG0BGqm9M1laLE6eof7Dh6kFjXc1Mwiu0yBdpv2OURiHeFw43g3xMg567WQaypDWNmpnVZxDLLLSD67EGE+5Wg+JM3MvFB6s/txNTUbUZqfW6AvOoztENOgFUBFvs6YbocKrjEqQ9AE+R4mjOwE/IcGJIw2DjgwdFp9+dIkB13Xr2fjd4DTxzjSJl6FjKKy2f3c3sQr5IvCMWaDSQ+Gm6R1lj0kpKF8esUad4IGteedhKbtQyjNm86zYtF3K2Sz05brKCUd8OpbV6jbCsL+IvddIkvh0nOFMaJKrDRF7/pvUzpLUqkGTvcfzl1QhQSmmRS+xM=
+X-HE-Tag: 1786633806-894704
+X-HE-Meta: U2FsdGVkX1+EkkNvb6qFnQpj21tG9UBPIW9dWDxH+A8lzoHuqep9IAPGvPnf8IepnoYA/m6n4mtLsVaOQC2bYSsQBMU4EBQ9BMK7OXcVGzLnonyxssGG0XXdjavOCXhfEGjendOMWye20EY6gYmWECmnxXku2maeUr/dBIyAUNG7ZS1OYBRH29osi2Yb7hXMEjmsRoa01ELW28Qf7MaJ91Wo4VHuOXJ7wYmYSDMpl2iRufWZhKEa+euVCU0I6/HGyviaZ5deXTxvuLGW2RXLGsuARCwzNs5FYDL5ErZoBt4MBImvUp4pcewHEOWJMQ0Oi2nvNHphREeW3lZQYmOV+oD3M9EjtZuGYCCtAf8wN/TDFWdoyNiX04iQNW7AuuBQ/tbmHZafc1T1K4NAnH0mONSVlNgm2llYRRmqc/4hReuxY77Lmo4MXG6sVmuQFRjHhiN1zH+D0zHfz2WARTbPhdCv2L66gBce3pM33H50oy/U3ZaRCF5Ys0HbmEHnvLbnX17HLUJhfkcClZVZkdx4wqM2o7yxNQwlQWEJgkgjAnwQbsDs9SnaDCTEfc3qJyZaodbKyKfPNlq650BcFZNDsrKFideAjiI/E1W1IrNiaAjMWI4UHSNVD/9ut78c1KGWIls6EJxKmCzGDUKuwj+JM5ojgbW/kbnc1ko+3QaOdYTZm3yU+SdV1ilv0aUdaD4etEObAlYclQGbLrs2b/L9FisMK2/EVw+iLTdo0Tr3my/6nIT7g8U35dvmjqsOAfattOTqHZE+JChyOEH0UhdUMIzd5LTsKIjiyHXnjlERq9ZDw9MfYs0Lda4+5aDr1JVUpAhLCbCJdP1C9REUVnoO+DhUX7WW6MJ8F6WCtHa1Lt2QJNrX8JKPwsuNCaNz6EclvlvKLCQLtQgZ1ZLGAQUjAoGHEjYKLxF00G2+MeJXuwp0Xl/Sjd5w/dAHP1lVSR6W/ZIAPx2+XKpkNPtEjTu
+ sAZH7sdp
+ zhOKF+Rv/jbD3ELENniFs2fbV+rqeWoj9XRNMttugz8fjBKoWX2vd161EnfWHUmBuHL4BVMiNlSyNW6bT8e5ocW49H9hkbJfqKSS+MXLuA6WVWtXwSX/zC8cSeJ35WCKNskMmxdFjn46oOmsp6dlmeF0nwuTDH7+HYjD0biYhyqU0fP/5gusJNylM4hal3FVaXWX0teVvu9wApsU5pKLs7yj+neI3dpNtSyeDrrK4vV7hrS3yQ4WbdEcagapgEQhIfnXHc+LMwjQyVwSjLU2okg+nInfjp0JRhvxM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,52 +115,363 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026 at 08:35:21PM +0530, Nikunj A. Dadhania wrote:
->
-> Tested v2 on a 512-guest concurrent boot harness across 200 iterations
-> with no splats. Both crash signatures reported in [1] are no longer seen.
->
-> Tested-by: Nikunj A Dadhania <nikunj@amd.com>
 
-Thanks so much for the testing!
 
-And all credit to Pedro for reporting and contributing the key commit that
-resolves this issue :)
+> 2026=E5=B9=B48=E6=9C=8813=E6=97=A5 16:52=EF=BC=8CBingfang Guo via B4 =
+Relay <devnull+bingfangguo.tencent.com@kernel.org> =E5=86=99=E9=81=93=EF=BC=
+=9A
+>=20
+> From: Bingfang Guo <bingfangguo@tencent.com>
+>=20
+> In the previous series by Muchun Song and Qi Zheng, folios are charged
+> to the objcg and reparented as the memcg offlines. Same can be done to
+> memcg private ID and its main user: swap entries. Make the memcgid
+> xarray hold a pointer and a reference to an objcg of the memcg, which =
+is
+> used to find the memcg (or its parent) later on. The online state now
+> pins the objcg instead of the css, so swapped out pages no longer pin
+> the dying memcg.
+>=20
+> The id reference held by the online state is released in =
+css_released()
+> after reparenting instead of in css_offline(). This is the key
+> invariant the rest of the series builds on: css_offline() runs while
+> other css references may still be held, but css_released() only runs
+> once the last reference is gone, so a caller holding a memcg reference
+> can always count on the id refcount being alive. To prevent races
+> between memcgid put in css offline and memcgid get, the release is put
+> off till css_released, which could delay the release of the memcgid =
+and
+> the objcg it pins, but overall it should be fine.
+>=20
+> After reparenting, the objcg points to a live ancestor, so
+> mem_cgroup_from_private_id() now returns that ancestor instead of the
+> memcg the ID originally belonged to. Callers that need the exact memcg
+> are fixed in patch 5.
+>=20
+> Signed-off-by: Bingfang Guo <bingfangguo@tencent.com>
+> ---
+> include/linux/memcontrol.h | 10 +++--
+> mm/memcontrol.c            | 99 =
+++++++++++++++++++++++++++++++++--------------
+> 2 files changed, 76 insertions(+), 33 deletions(-)
+>=20
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index 8170bb8066a22..c33ec7efad50b 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -191,6 +191,7 @@ struct obj_cgroup {
+> struct rcu_head rcu;
+> };
+> bool is_root;
+> + refcount_t id_ref;
+> };
+>=20
+> /*
+> @@ -202,8 +203,8 @@ struct obj_cgroup {
+> struct mem_cgroup {
+> struct cgroup_subsys_state css;
+>=20
+> - /* Private memcg ID. Used to ID objects that outlive the cgroup */
+> - struct mem_cgroup_private_id id;
+> + /* The objcg holding private memcg ID. */
+> + struct obj_cgroup *id_objcg;
+>=20
+> /* Accounted resources */
+> struct page_counter memory; /* Both v1 & v2 */
+> @@ -270,6 +271,9 @@ struct mem_cgroup {
+> #endif
+> int kmemcg_id;
+>=20
+> + /* Private memcg ID. Used to ID objects that outlive the cgroup */
+> + int id;
+> +
+> struct memcg_vmstats_percpu __percpu *vmstats_percpu;
+>=20
+> #ifdef CONFIG_CGROUP_WRITEBACK
+> @@ -820,7 +824,7 @@ static inline unsigned short =
+mem_cgroup_private_id(struct mem_cgroup *memcg)
+> if (mem_cgroup_disabled())
+> return 0;
+>=20
+> - return memcg->id.id;
+> + return memcg->id;
+> }
+> struct mem_cgroup *mem_cgroup_from_private_id(unsigned short id);
+>=20
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 8319ad8c5c23a..5f30e76ee93d7 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -3697,7 +3697,7 @@ static void memcg_online_kmem(struct mem_cgroup =
+*memcg)
+>=20
+> static_branch_enable(&memcg_kmem_online_key);
+>=20
+> - memcg->kmemcg_id =3D memcg->id.id;
+> + memcg->kmemcg_id =3D memcg->id;
+> }
+>=20
+> static void memcg_offline_kmem(struct mem_cgroup *memcg)
+> @@ -3956,25 +3956,40 @@ static =
+DEFINE_XARRAY_ALLOC1(mem_cgroup_private_ids);
+>=20
+> static void mem_cgroup_private_id_remove(struct mem_cgroup *memcg)
+> {
+> - if (memcg->id.id > 0) {
+> - xa_erase(&mem_cgroup_private_ids, memcg->id.id);
+> - memcg->id.id =3D 0;
+> + if (memcg->id > 0) {
+> + xa_erase(&mem_cgroup_private_ids, memcg->id);
+> + memcg->id =3D 0;
+> }
+> }
+>=20
+> -static inline void mem_cgroup_private_id_put(struct mem_cgroup =
+*memcg, unsigned int n)
+> +/**
+> + * @objcg: the objcg returned by mem_cgroup_private_id_objcg
+> + * @id: the corresponding memcg private id
+> + */
+> +static void __mem_cgroup_private_id_put(struct obj_cgroup *objcg,
+> + unsigned short id, unsigned int n)
+> {
+> - if (refcount_sub_and_test(n, &memcg->id.ref)) {
+> - mem_cgroup_private_id_remove(memcg);
+> + struct obj_cgroup *objcg_free;
+>=20
+> - /* Memcg ID pins CSS */
+> - css_put(&memcg->css);
+> + if (refcount_sub_and_test(n, &objcg->id_ref)) {
+> + objcg_free =3D xa_erase(&mem_cgroup_private_ids, id);
+> + VM_WARN_ON(objcg_free !=3D objcg);
+> +
+> + /* Memcg ID pins the objcg */
+> + obj_cgroup_put(objcg);
+> }
+> }
+>=20
+> +static inline void mem_cgroup_private_id_put(struct mem_cgroup =
+*memcg, unsigned int n)
+> +{
+> + __mem_cgroup_private_id_put(memcg->id_objcg, memcg->id, n);
+> +}
+> +
+> struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup =
+*memcg, unsigned int n)
+> {
+> - while (!refcount_add_not_zero(n, &memcg->id.ref)) {
+> + struct obj_cgroup *objcg =3D memcg->id_objcg;
+> +
+> + while (!refcount_add_not_zero(n, &objcg->id_ref)) {
+> /*
+> * The root cgroup cannot be destroyed, so it's refcount must
+> * always be >=3D 1.
+> @@ -3984,6 +3999,7 @@ struct mem_cgroup =
+*mem_cgroup_private_id_get_online(struct mem_cgroup *memcg, un
+> break;
+> }
+> memcg =3D parent_mem_cgroup(memcg);
+> + objcg =3D memcg->id_objcg;
+> }
+> return memcg;
+> }
+> @@ -3996,8 +4012,29 @@ struct mem_cgroup =
+*mem_cgroup_private_id_get_online(struct mem_cgroup *memcg, un
+>  */
+> struct mem_cgroup *mem_cgroup_from_private_id(unsigned short id)
+> {
+> + struct obj_cgroup *objcg;
+> WARN_ON_ONCE(!rcu_read_lock_held());
+> - return xa_load(&mem_cgroup_private_ids, id);
+> +
+> + objcg =3D xa_load(&mem_cgroup_private_ids, id);
+> + if (!objcg)
+> + return NULL;
+> +
+> + return obj_cgroup_memcg(objcg);
+> +}
+> +
+> +static struct mem_cgroup *mem_cgroup_take_from_private_id(unsigned =
+short id, unsigned int n)
+> +{
+> + struct obj_cgroup *objcg;
+> + struct mem_cgroup *memcg;
+> +
+> + objcg =3D xa_load(&mem_cgroup_private_ids, id);
+> + if (!objcg)
+> + return NULL;
+> +
+> + memcg =3D get_mem_cgroup_from_objcg(objcg);
+> +
+> + __mem_cgroup_private_id_put(objcg, id, n);
+> + return memcg;
+> }
+>=20
+> struct mem_cgroup *mem_cgroup_get_from_id(u64 id)
+> @@ -4098,7 +4135,7 @@ static struct mem_cgroup =
+*mem_cgroup_alloc(struct mem_cgroup *parent)
+> if (!memcg)
+> return ERR_PTR(-ENOMEM);
+>=20
+> - error =3D xa_alloc(&mem_cgroup_private_ids, &memcg->id.id, NULL,
+> + error =3D xa_alloc(&mem_cgroup_private_ids, &memcg->id, NULL,
+> XA_LIMIT(1, MEM_CGROUP_ID_MAX), GFP_KERNEL);
+> if (error)
+> goto fail;
+> @@ -4243,9 +4280,10 @@ static int mem_cgroup_css_online(struct =
+cgroup_subsys_state *css)
+>   FLUSH_TIME);
+> lru_gen_online_memcg(memcg);
+>=20
+> - /* Online state pins memcg ID, memcg ID pins CSS */
+> - refcount_set(&memcg->id.ref, 1);
+> - css_get(css);
+> + /* CSS pins memcg ID, memcg ID pins obj cgroup */
+> + memcg->id_objcg =3D memcg->nodeinfo[0]->objcg;
+> + refcount_set(&memcg->id_objcg->id_ref, 1);
+> + obj_cgroup_get(memcg->id_objcg);
+>=20
+> /*
+> * Ensure mem_cgroup_from_private_id() works once we're fully online.
+> @@ -4257,7 +4295,7 @@ static int mem_cgroup_css_online(struct =
+cgroup_subsys_state *css)
+> * publish it here at the end of onlining. This matches the
+> * regular ID destruction during offlining.
+> */
+> - xa_store(&mem_cgroup_private_ids, memcg->id.id, memcg, GFP_KERNEL);
+> + xa_store(&mem_cgroup_private_ids, memcg->id, objcg, GFP_KERNEL);
 
->
-> Regards,
-> Nikunj
->
-> [1] https://lore.kernel.org/all/20260812063316.21371-1-nikunj@amd.com/
->
-> > v1: https://patch.msgid.link/20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org
-> >
-> > ---
-> > Lorenzo Stoakes (ARM) (3):
-> >       x86/mm/pat: acquire init_mm write lock on collapse to avoid UAF
-> >       x86/mm/pat: acquire init_mm read lock on attribute change to avoid UAF
-> >       x86/mm/pat: allocate split page tables as kernel page tables
-> >
-> > Mike Rapoport (Microsoft) (1):
-> >       x86/mm/pat: fix effective RW computation in lookup_address_in_pgd_attr()
-> >
-> > Pedro Falcato (1):
-> >       x86/alternative: exclude text poking against change_page_attr()
-> >
-> >  arch/x86/kernel/alternative.c | 39 ++++++++++++++++++++++++---
-> >  arch/x86/mm/pat/set_memory.c  | 61 +++++++++++++++++++++++++++++++------------
-> >  include/linux/mmap_lock.h     |  2 ++
-> >  3 files changed, 83 insertions(+), 19 deletions(-)
-> > ---
-> > base-commit: 7da514d819a0afb148634aac92b3d190f34947c3
-> > change-id: 20260727-cpa-fixes-d3c73c075672
-> >
-> > --
-> > Sincerely yours,
-> > Mike.
-> >
->
+Sashiko pointed out that objcg here is pointing to the wrong node here.
+I made a mistake here while rebasing the patch set. Also the problem =
+reported by syzbot and in
+patch 2 is also caused by this=E2=80=A6
 
---
-Cheers, Lorenzo
+It should be like this:
+
+@@ -4257,7 +4295,7 @@ static int mem_cgroup_css_online(struct =
+cgroup_subsys_state *css)
+         * publish it here at the end of onlining. This matches the
+         * regular ID destruction during offlining.
+         */
+-       xa_store(&mem_cgroup_private_ids, memcg->id.id, memcg, =
+GFP_KERNEL);
++       xa_store(&mem_cgroup_private_ids, memcg->id, memcg->id_objcg, =
+GFP_KERNEL);
+
+But it also says that it could go wrong if node 0 is not present on =
+sparse NUMA setups, so I
+think it might be better to just use the last objcg set up above:
+
+@@ -4294,7 +4295,7 @@ static int mem_cgroup_css_online(struct =
+cgroup_subsys_state *css)
+        lru_gen_online_memcg(memcg);
+=20
+        /* CSS pins memcg ID, memcg ID pins obj cgroup */
+-       memcg->id_objcg =3D memcg->nodeinfo[0]->objcg;
++       memcg->id_objcg =3D objcg;
+        refcount_set(&memcg->id_objcg->id_ref, 1);
+        obj_cgroup_get(memcg->id_objcg);
+
+>=20
+> return 0;
+> free_objcg:
+> @@ -4308,8 +4346,6 @@ static void mem_cgroup_css_offline(struct =
+cgroup_subsys_state *css)
+> lru_gen_offline_memcg(memcg);
+>=20
+> drain_all_stock(memcg);
+> -
+> - mem_cgroup_private_id_put(memcg, 1);
+> }
+>=20
+> static void mem_cgroup_css_released(struct cgroup_subsys_state *css)
+> @@ -4318,6 +4354,9 @@ static void mem_cgroup_css_released(struct =
+cgroup_subsys_state *css)
+>=20
+> invalidate_reclaim_iterators(memcg);
+> lru_gen_release_memcg(memcg);
+> +
+> + mem_cgroup_private_id_put(memcg, 1);
+
+Sashiko says that if memcg onlining fails early, this could result in =
+null pointer dereference.
+I think we can fix it like this since mem_cgroup_private_id_put is only =
+used in css releasing:
+
+@@ -3980,9 +3980,13 @@ static void __mem_cgroup_private_id_put(struct =
+obj_cgroup *objcg,
+        }
+ }
+=20
+-static inline void mem_cgroup_private_id_put(struct mem_cgroup *memcg, =
+unsigned int n)
++static inline void mem_cgroup_private_id_release(struct mem_cgroup =
+*memcg, unsigned int n)
+ {
++       if (!memcg->id_objcg)
++               return;
++
+        __mem_cgroup_private_id_put(memcg->id_objcg, memcg->id, n);
++       memcg->id_objcg =3D NULL;
+ }
+=20
+ void mem_cgroup_private_id_get(struct mem_cgroup *memcg, unsigned int =
+n)
+@@ -4367,9 +4371,7 @@ static void mem_cgroup_css_released(struct =
+cgroup_subsys_state *css)
+=20
+        invalidate_reclaim_iterators(memcg);
+        lru_gen_release_memcg(memcg);
+-
+-       mem_cgroup_private_id_put(memcg, 1);
+-       memcg->id_objcg =3D NULL;
++       mem_cgroup_private_id_release(memcg, 1);
+ }
+=20
+ static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
+
+> + memcg->id_objcg =3D NULL;
+> }
+>=20
+> static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
+> @@ -5651,19 +5690,19 @@ void __mem_cgroup_uncharge_swap(unsigned short =
+id, unsigned int nr_pages)
+> {
+> struct mem_cgroup *memcg;
+>=20
+> - rcu_read_lock();
+> - memcg =3D mem_cgroup_from_private_id(id);
+> - if (memcg) {
+> - if (!mem_cgroup_is_root(memcg)) {
+> - if (do_memsw_account())
+> - page_counter_uncharge(&memcg->memsw, nr_pages);
+> - else
+> - page_counter_uncharge(&memcg->swap, nr_pages);
+> - }
+> - mod_memcg_state(memcg, MEMCG_SWAP, -nr_pages);
+> - mem_cgroup_private_id_put(memcg, nr_pages);
+> + memcg =3D mem_cgroup_take_from_private_id(id, nr_pages);
+> + if (!memcg)
+> + return;
+> +
+> + if (!mem_cgroup_is_root(memcg)) {
+> + if (do_memsw_account())
+> + page_counter_uncharge(&memcg->memsw, nr_pages);
+> + else
+> + page_counter_uncharge(&memcg->swap, nr_pages);
+> }
+> - rcu_read_unlock();
+> + mod_memcg_state(memcg, MEMCG_SWAP, -nr_pages);
+> +
+> + mem_cgroup_put(memcg);
+> }
+>=20
+> long mem_cgroup_get_nr_swap_pages(struct mem_cgroup *memcg)
+>=20
+> --=20
+> 2.43.7
+>=20
+>=20
+
 
