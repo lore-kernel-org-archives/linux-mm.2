@@ -4,103 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CB6BC5CFCF
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 15:32:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4C61C5CFCF
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 15:43:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27CD56B052C; Thu, 13 Aug 2026 11:32:15 -0400 (EDT)
+	id A80366B02A3; Thu, 13 Aug 2026 11:43:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22E016B052D; Thu, 13 Aug 2026 11:32:15 -0400 (EDT)
+	id A31C06B02A5; Thu, 13 Aug 2026 11:43:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16B676B052E; Thu, 13 Aug 2026 11:32:15 -0400 (EDT)
+	id 947156B02A6; Thu, 13 Aug 2026 11:43:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DD6B86B052C
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:32:14 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 73B4B1C0A21
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:32:14 +0000 (UTC)
-X-FDA: 85096637388.27.F8FF4B2
-Received: from mta0.migadu.com (out-9.mta0.migadu.com [91.218.175.9])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 815F7A000C
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:32:10 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=I3wRhpkU;
-	spf=pass (imf25.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.9 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 60B376B02A3
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:43:01 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D13AEC01E6
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:43:00 +0000 (UTC)
+X-FDA: 85096664520.06.30ED3E7
+Received: from mta1.migadu.com (out-231.mta1.migadu.com [95.215.58.231])
+	by imf18.hostedemail.com (Postfix) with ESMTP id AFEC81C0006
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:42:58 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=l97aQlE3;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.231 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786635132;
+	s=arc-20220608; t=1786635779;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=10gMp1YaRW9PuC9piHPqFMk2DiRElJ4cgwclKG+ptB4=;
-	b=Ip3LxOlsuWMsWFAWXCMU74sOpxcDJ3k+Ddv22amur7oK1rVWFoNZCsGng+rMBb6tnLOg4x
-	PcmUMgKIVFzuC3T0M5zCHLThe52bPxDYDt0/f62mhKpk6wp+x5mJRSmcQCSHSfPEU9WSt+
-	2gBs4XYkK37D/rfg9Pp0XcOvOLXUqVo=
+	bh=iIS4vRt/pL7IIIsf1tDrksqUUmj1B3USv+cZFtaDwO0=;
+	b=bReYUI+CCIFLsMc4n/Baej4j5vHEvBNXs4UZa/ewdNoRHsrBJRq/S7Mnqks4hKmY3z/0wi
+	a6Wh7Dw5hiac6IXnathD2C6SJudZfARXXx1+DuRIzb9QS5SuxoLGc66Xrb6IEe0oQ5ovP5
+	LH/Ui8aUY/m8djdG8grAQSuoq1CW/eE=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=I3wRhpkU;
-	spf=pass (imf25.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.9 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=l97aQlE3;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.231 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786635132;
-	b=TDgUR7W8x5T5IOIJHH47oINS9d7pd0EFVfzO74kGNUbL50laQopx7LV4o9CvZ81v7fP38M
-	Q0QE/sTjkjfy9bLpHmroXYKp8iYU3KZAMp5pJM+nP29j3orSrildSILf3FHamI/k3BediY
-	nh5rQPvb2KERynnqAPFL7LDjKkExLlg=
+	t=1786635779;
+	b=tLt86db2NzYZYTQd17iq0q5u/XPhK8/nvVrD1NOpMJCGdXy4+r+9iHF7WX+eO4jZrhsS0H
+	7qMnmYWxYQTlZLoPTHtRqbkimXW5oxyMxEG0vgM+9736VcqVoy8p5o/KdxUrvdpAi6Vx9s
+	3MYzvwVI/JpWB0IBS4yjpTvHfP4v1sk=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=21CxL64E5wvwVmKuUEtjeFpitv04JpKOndGL+tFRCGk=;
+DKIM-Signature: a=rsa-sha256; bh=ZrlSwz1sH+GuY7Ux1ESHXiK4jxEOJCDxesFdDcryT9Y=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786635126; v=1; x=1787239926;
- b=I3wRhpkUPfBjO+pyhU2vatPE1Rr6QhTmjnk//ALSs1mDLEGUP1VH8MpC2+XRFFbLVOuY4db4
- GvMhPcoFbJUpewvl1+7JXJG0O62lQWcoplb8Iz59qrLJJWqNNhlNa/m8ppeQ0xJVA0v/wmcHqEd
- N7ipwOCQ7hs+4MNkAIfq8/3U=
+ t=1786635777; v=1; x=1787240577;
+ b=l97aQlE3ZvWWcPXuKH5FOf1di96Aysd+BgcEYHRPJr4BVzo0BpLnfbxX2/j6sjpb6C5O/orS
+ +MZhejkxX3ityYvW+VTaq0pDyJOS04XmkJ3i677oUT/Pl7qEsELFoPgYkJanNQ7UcHMs403MMc0
+ nAgIxL+YrXr77qBf3MD9wZSk=
 X-Envelope-To: linux-mm@kvack.org
 Received: from localhost (77.97.51.77)
-	by smtp.migadu.com with ESMTPS id 9cd5fe5c07c2ba09;
-	Thu, 13 Aug 2026 15:32:06 +0000
+	by smtp.migadu.com with ESMTPS id aae37bbb31fee682;
+	Thu, 13 Aug 2026 15:42:56 +0000
 X-Migadu-Flow: FLOW_OUT
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 13 Aug 2026 16:32:04 +0100
-Message-Id: <DKNXALH7DITL.349JD9B5RM4EH@linux.dev>
-Cc: "Brendan Jackman" <jackmanb@google.com>, "Borislav Petkov"
- <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>, "Peter
- Zijlstra" <peterz@infradead.org>, "Andrew Morton"
- <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>,
- "Vlastimil Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>,
- "Wei Xu" <weixugc@google.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Zi
- Yan" <ziy@nvidia.com>, "Lorenzo Stoakes" <ljs@kernel.org>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
- "Sumit Garg" <sumit.garg@oss.qualcomm.com>, "Will Deacon"
- <will@kernel.org>, <rientjes@google.com>, <patrick.roy@linux.dev>,
- "Itazuri, Takahiro" <itazur@amazon.co.uk>, "Andy Lutomirski"
- <luto@kernel.org>, "David Kaplan" <david.kaplan@amd.com>, "Thomas Gleixner"
- <tglx@kernel.org>, "Patrick Bellasi" <derkling@google.com>, "Reiji
- Watanabe" <reijiw@google.com>, "Sean Christopherson" <seanjc@google.com>,
- "Nikita Kalyazin" <nikita.kalyazin@linux.dev>, "Ackerley Tng"
- <ackerleytng@google.com>
-Subject: Re: [PATCH v3 03/26] mm: introduce AS_NO_DIRECT_MAP
+Date: Thu, 13 Aug 2026 16:42:55 +0100
+Message-Id: <DKNXIWKP5KIO.1YT877KQJN0IF@linux.dev>
+Cc: "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
+ <dave.hansen@linux.intel.com>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
+ <david@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike Rapoport"
+ <rppt@kernel.org>, "Wei Xu" <weixugc@google.com>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Lorenzo Stoakes"
+ <ljs@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <x86@kernel.org>, "Sumit Garg" <sumit.garg@oss.qualcomm.com>, "Will Deacon"
+ <will@kernel.org>, <rientjes@google.com>, "Kalyazin, Nikita"
+ <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, "Itazuri, Takahiro"
+ <itazur@amazon.co.uk>, "Andy Lutomirski" <luto@kernel.org>, "David Kaplan"
+ <david.kaplan@amd.com>, "Thomas Gleixner" <tglx@kernel.org>, "Patrick
+ Bellasi" <derkling@google.com>, "Reiji Watanabe" <reijiw@google.com>, "Sean
+ Christopherson" <seanjc@google.com>
+Subject: Re: [PATCH v3 04/26] x86/mm: split out preallocate_sub_pgd()
 From: "Brendan Jackman" <brendan.jackman@linux.dev>
 To: "Yosry Ahmed" <yosry@kernel.org>, "Brendan Jackman"
- <brendan.jackman@linux.dev>
+ <jackmanb@google.com>
 X-Mailer: aerc 0.21.0
 References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-3-6f5729aa9832@google.com>
- <amu5v-e39GKpgFG4@google.com> <DKCQZ9JTKRIO.1K61106YF38GW@linux.dev>
- <amz0jzVPZo_eBeRV@google.com>
-In-Reply-To: <amz0jzVPZo_eBeRV@google.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 815F7A000C
-X-Stat-Signature: dzphtz6n8stuf93je8kag9guxuwmnz9g
+ <20260726-page_alloc-unmapped-v3-4-6f5729aa9832@google.com>
+ <am0aplxsh1b16Rch@google.com>
+In-Reply-To: <am0aplxsh1b16Rch@google.com>
+X-Rspamd-Queue-Id: AFEC81C0006
+X-Stat-Signature: sohsnbd7zunk8attoba31qzck9uohf8p
 X-Rspam-User: 
-X-HE-Tag: 1786635130-648445
-X-HE-Meta: U2FsdGVkX1+EWiZCXMJ+KwqshVsVGvmKR6y50VAPwFljZm88XpRNEOyS+ar1LtfVeunDKpa6wjRR9Hl3BPIRGwlUkhjzMZw8G6gcmW0WRYVyN0LNqTms72/xhtTzOon1pem/xqXxbDXAXV2alEWUEOTfm1N3XMjpQ+2l4EiBlOOGkZxeDxPHxcILN1hdBzik2jM1InwsO6d2eElLYGQ74WkTCkCHGDxCyEWywrZibnKxyge5a7yRnQtQ2ddjL8yHbZceaVD51vUt9DS5O2jQgciqBuC2RrMueetZXXiDglqY9hM+pSF6b1Sw8Q8iPJu1HPB4MkFTkv5cYe9uA0dU19sMul5DAJ/gv1Yyf/keGLFCd8dDy3m70EoCtyOIgQh4HyL34dngNoJiCqxCz63k4BsJC0XSGK2oxBYSI8tZL5egxlAAOoInWI07F/wqKi7ihjxez6LD5hOndZIaLpBH4HP6sVIUXjG15BvgQqhf/goiO2gCJzvQcoeqGNkdJKGYaF29wwwMoPF9pp/sIvUiBHcpxpS5C2N4ObBdkxX03Yg/kZzC0dmKSYqMGz77lZbLoD5X1QZ4u7E7l2gu6bcqYYNw76BgHOI/2XWSxrhhPwFeHYbXSKSDCzoP3T5yyD8pSnx9FYQ+DFGkfXpazP+3NoHqYth3X7kVfxeioB/ts1yMhs5lLnuf0jNLSYfm6vHBO1j/AgQa7iU+pfcn4D1grRojw12zqxH0fpw5+3YrNntrDQ3YOcCPkz8gUaQkZjw5meaZlTdYXMJZRRas26IBgRQ1ybkfa87fejFPmGDlnWNRy1u8maIf4ZpzxEOMTUXP7I4mGGHhQFjuyGdTjgNhUE2vwuvc+9/+6KNTtjsyzm2Bzume7Wf8yu06kPcoWC5TQemkmtBMNYnXFbWMtP0RpklUx4aw1JV8N+p4JsKUu7Tm9EU/dw7TKYQvQ6H4Z2bvwz75YOIqs7E6idRHfRg
- 4ch8gYRi
- M1KYua65JEPnjbCweZjMTrIWXrrWI2oKgsYtejWbGa1VdE1h32rQZ1Uo8+2ieT+XlzwQ6FqYereSzKgQntJkITWsUiwjNxkAHNChSNgB/uTXawDYaSZzl3IaHesyj1SInrbbHsFvWGHJwPbh7qNHtX//2UDAdFCGAP7+OPEKDwb6kd7MnmQAV2/Pxh6E3WtXlSQ0TAdZxeEwSUJb1VklFf8YAgV4CA3FGZo8w+GcpIQP5Q+bFhgD+YFKPT0uC6CKyphJTD/BEXq5fPlctWfjK4nIkhZLxUgXUjkgifXkPfC6EdMlHbp/PPLEQNY9Mc3PU8pd5oyemuZIXXN4Ae2WwOzq6WNdb9nlQIeKM86TwF7fAxHE=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786635778-787110
+X-HE-Meta: U2FsdGVkX19y9226TqM4u3Elfr3uHFYxyqVy9f6Mld/Gl9oWHoE2BVSMKlBWnRDIpVgx6/NwrF+JhhkRvxJktgsfDo2vkJa6zdUsX0YINoeOOriWls0ehOlMrgQsRFwTfCbU9svv+VIGhVHXFdi4pTRxtg/2Q+MLlHxwRKLxLtv/dUg9W4LjCqI2tSaWI0qAq6RuWJu36AcxXXl75l06yWGWmX3lKtqDUEjnnif0Wr04Bt8h7M0+cKW77bbWefAlyNb8Gv9XDnTQIO0ZdTw0oRpRXCNE05INziCI9D8tdGgJZbK6ixq2zvkpmSMrZWNOr1Htjbjtg13kOHIiuZ5u/0NxdLMgA/hE5yNI/FYQa7gaWP4KpkelcMvw0FhyFj9bAkTwOzfU4L6uZX+GWa4AZJ8v9TMmpMos3L0eTJjgR50ugIKQOrlpDxa3Swemp+cRxIv8AIcp4FSQ0ExfCGIhPfcnS0eujAPEFvBIAqFotAdVRioP+KbFuxW5vC0VxtGZ7OFUoTPj4OmgJV+w8CJsrGZoDFVHaZBluFFlsFRE0Tg9b8g1a2mEVq2vMoBQwZx1JHWkWufrSVAMWB8v31fiZKBT0Kdt7wJX0zBcw/AGah36J0X9m4LtaMm4DFjx16BI+NBvd+XL2mK1R+uX1ZidTCidYdbgSKxc0DwCn+6HvYuLuvK2OzM65sM6A+Q9l5D59QcPhinE7D3yo1Wr27gVBaUJ6xt0K6EZvhO8xUYtjFyIu5kTJZckz7z+lXEpL67iJZt2GJCX6y+vXLvQ7iU7GNertiQEQ8Q5kmyIgI+fi972fceS4Bfkt0DPKYsqFHWG/R2vOX3aC9ZW45hfHGtt8WoIicniZF8yKRbq8ZSffpTGnInNN6QxphdiJ5g5UxHd3x4BG459NopgnyLoVgyFWArYyHrl0E35Iihtigp6pgILMrH4MyDXgOzQxut8G4Bno+VsiJoOhO7dPEmgWGt
+ l+oNynGZ
+ g0+4/yzOW16LC15+R8xVkGAD+ynMcqsI8FvlEoH0GLuTEC+vkNp/lcd9rhb16cBm+5oJIIlEgc7KW9g8urUGNi5Z7fifLM2Y0OAHr/7kZJvpfw0zYySYjqTcrxeR4xLlbonAYdzKJOHq3taPdYdjNakCwWriOB6Rxr1wjxg4m/0zRT1N5wBx70FFVurvdLlxHotA/oPWdiELHbgcOZdfJfgfjKDWa2MRgX6vj1jgM8xgu0wW29ZR+LeFfTpx9KLwQlHJ+nN+2Sv2NEsHUElS058MCkUBeTbW8pl+WrMEPWzi2otX7Img8QR43fmkz8hYXpS8tpC4KYCNNjhQE/MoZIHp8XcLWN7PvHQyulF2TJOELG7M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,188 +105,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Right, attempting this again now I've fixed my mail setup.
-
-I've no idea how that other "butt-dial" mail got sent, I was not able to
-sent mail _deliberately_ during that period but I guess somewhere in my
-setup I still had a copy of the password somewhere!
-
-On Fri Jul 31, 2026 at 8:28 PM BST, Yosry Ahmed wrote:
->> > [..]
-
->> >>  		return -EFAULT;
->> >> =20
->> >>  	if (write) {
->> >> @@ -2731,7 +2730,7 @@ EXPORT_SYMBOL(get_user_pages_unlocked);
->> >>   * This call assumes the caller has pinned the folio, that the lowes=
-t page table
->> >>   * level still points to this folio, and that interrupts have been d=
-isabled.
->> >>   *
->> >> - * GUP-fast must reject all secretmem folios.
->> >> + * GUP-fast must reject all folios without direct map entries (such =
-as secretmem).
->> >>   *
->> >>   * Writing to pinned file-backed dirty tracked folios is inherently =
-problematic
->> >>   * (see comment describing the writable_file_mapping_allowed() funct=
-ion). We
->> >> @@ -2769,7 +2768,7 @@ static bool gup_fast_folio_allowed(struct folio=
- *folio, unsigned int flags)
->> >>  	if (WARN_ON_ONCE(folio_test_slab(folio)))
->> >>  		return false;
->> >> =20
->> >> -	/* hugetlb neither requires dirty-tracking nor can be secretmem. */
->> >> +	/* hugetlb neither requires dirty-tracking nor can be without direc=
-t map. */
+On Fri Jul 31, 2026 at 11:10 PM BST, Yosry Ahmed wrote:
+...
+>> +extern int preallocate_sub_pgd(struct mm_struct *mm, unsigned long addr=
+);
+>> +
 >
-> Is this necessarily true? I know there were discussions/proposals about
-> using some of the hugetlb infrastructure for guest_memfd. I am not sure
-> if those folios would remain hugetlb folios though.
+> Do we need extern here?
+
+Nope=20
+
+>> -		if (!pud)
+>> -			goto failed;
+>> +		if (preallocate_sub_pgd(&init_mm, addr)) {
+>> +			/*
+>> +			 * The pages have to be there now or they will be
+>> +			 * missing in process page-tables later.
+>> +			 */
+>> +			panic("Failed to pre-allocate pagetables for vmalloc area\n");
+>> +		}
 >
-> Adding Ackerley here.
-
-I think Google might have a bunch of patches for this, afraid I know
-very little about it though.
-
->> >>  	if (folio_test_hugetlb(folio))
->> >>  		return true;
->> >> =20
->> >> @@ -2812,7 +2811,7 @@ static bool gup_fast_folio_allowed(struct folio=
- *folio, unsigned int flags)
->> >>  	 * At this point, we know the mapping is non-null and points to an
->> >>  	 * address_space object.
->> >>  	 */
->> >> -	if (check_secretmem && secretmem_mapping(mapping))
->> >> +	if (mapping_no_direct_map(mapping))
->> >>  		return false;
->> >>  	/* The only remaining allowed file system is shmem. */
->> >>  	return !reject_file_backed || shmem_mapping(mapping);
->> >> diff --git a/mm/mlock.c b/mm/mlock.c
->> >> index efa6716e4dfbd..045b6779440b1 100644
->> >> --- a/mm/mlock.c
->> >> +++ b/mm/mlock.c
->> >> @@ -474,7 +474,7 @@ static int mlock_fixup(struct vma_iterator *vmi, =
-struct vm_area_struct *vma,
->> >>  	int ret =3D 0;
->> >> =20
->> >>  	if (vma_flags_same_pair(&old_vma_flags, new_vma_flags) ||
->> >> -	    vma_is_secretmem(vma) || !vma_supports_mlock(vma)) {
->> >> +	    vma_has_no_direct_map(vma) || !vma_supports_mlock(vma)) {
->> >
->> > I don't think this one is correct. From commit 1507f51255c9 ("mm:
->> > introduce memfd_secret system call to create "secret" memory areas"):
->> >
->> >   Since the secretmem mappings are locked in memory they cannot exceed
->> >   RLIMIT_MEMLOCK.  Since these mappings are already locked independent=
-ly
->> >   from mlock(), an attempt to mlock()/munlock() secretmem range would
->> >   fail and mlockall()/munlockall() will ignore secretmem mappings.
->> >
->> > Seems like secretmem pages are just mlock()'d by default, hence the
->> > check here. Maybe this also works for guest_memfd, but I don't think
->> > it's a generalization that any pages without a direct mapping should
->> > receive the same treatment here.
->>=20
->> Ack, yeah this sounds correct to me.
->>=20
->> I guess you could argue something like "the reason secretmem is
->> implicitly mlocked is that it can't be reclaimed, because there's no
->> direct map". But that doesn't generalise IMO, you could imagine letting
->> the user say "remove this memory from the direct map, but I trust my
->> swap system, you can swap it" and then use the mermap to implement
->> reclaim.
+> Nit: We can probably move this comment above the if block, and drop the
+> curly braces:
 >
-> Exactly, I don't think no direct mapping implicitly means unreclaimable.
-> I don't think you actually need a direct mapping to read/write from
-> disk to memory?
-
-Oh. I never thought about that! I suppose the DMA is gonna happen via
-some other address space, either it's via an IOMMU or it works directly
-on physical RAM.  So the kernel's direct map is irrelevant... Is that
-universal though? There must be cases where the CPU's mappings still
-matter...  Umm... needs more research!
-
-(Don't think this blocks anything in this series though, let me know if
-you disagree...)
-
->>=20
->> >>  		/*
->> >>  		 * Don't set VMA_LOCKED_BIT or VMA_LOCKONFAULT_BIT and don't
->> >>  		 * count.  For secretmem, don't allow the memory to be unlocked.
->> >> diff --git a/mm/secretmem.c b/mm/secretmem.c
->> >> index 4a4934769f8ba..c043c53687d95 100644
->> >> --- a/mm/secretmem.c
->> >> +++ b/mm/secretmem.c
->> >> @@ -52,49 +52,20 @@ static vm_fault_t secretmem_fault(struct vm_fault=
- *vmf)
->> >>  	struct address_space *mapping =3D vmf->vma->vm_file->f_mapping;
->> >>  	struct inode *inode =3D file_inode(vmf->vma->vm_file);
->> >>  	pgoff_t offset =3D vmf->pgoff;
->> >> -	gfp_t gfp =3D vmf->gfp_mask;
->> >>  	struct folio *folio;
->> >>  	vm_fault_t ret;
->> >> -	int err;
->> >> =20
->> >>  	if (((loff_t)vmf->pgoff << PAGE_SHIFT) >=3D i_size_read(inode))
->> >>  		return vmf_error(-EINVAL);
->> >> =20
->> >>  	filemap_invalidate_lock_shared(mapping);
->> >> =20
->> >> -retry:
->> >> -	folio =3D filemap_lock_folio(mapping, offset);
->> >> +	folio =3D filemap_grab_folio(mapping, offset);
->> >>  	if (IS_ERR(folio)) {
->> >> -		folio =3D folio_alloc(gfp | __GFP_ZERO, 0);
->> >> -		if (!folio) {
->> >> -			ret =3D VM_FAULT_OOM;
->> >> -			goto out;
->> >> -		}
->> >> -
->> >> -		err =3D folio_zap_direct_map(folio);
->> >> -		if (err) {
->> >> -			folio_put(folio);
->> >> -			ret =3D vmf_error(err);
->> >> -			goto out;
->> >> -		}
->> >> -
->> >> -		__folio_mark_uptodate(folio);
->> >> -		err =3D filemap_add_folio(mapping, folio, offset, gfp);
->> >> -		if (unlikely(err)) {
->> >> -			/*
->> >> -			 * If a split of large page was required, it
->> >> -			 * already happened when we marked the page invalid
->> >> -			 * which guarantees that this call won't fail
->> >> -			 */
->> >> -			folio_restore_direct_map(folio);
->> >> -			folio_put(folio);
->> >> -			if (err =3D=3D -EEXIST)
->> >> -				goto retry;
->> >> -
->> >> -			ret =3D vmf_error(err);
->> >> -			goto out;
->> >> -		}
->> >> +		ret =3D vmf_error(PTR_ERR(folio));
->> >> +		goto out;
->> >>  	}
->> >> +	folio_mark_uptodate(folio);
->> >
->> > This chunk seems like pure refactoring that should be done separately?
->>=20
->> This is the adoption of AS_NO_DIRECT_MAP, i.e. the removal of the
->> explicit folio_zap_direct_map() call. We could certainly separate out
->> "create AS_NO_DIRECT_MAP" from "adopt it in secretmem" but the previous
->> version of this patchset was on v12 and it hadn't split them so I assume
->> nobody was calling for this split.
+> 		/*
+> 		 * The pages have to be there now or they will be missing in
+> 		 * process page-tables later.
+> 		 */
+> 		 if (preallocate_sub_pgd(&init_mm, addr))
+> 		 	panic("Failed to pre-allocate pagetables for vmalloc area\n");
 >
-> Oh sorry I wasn't clear. I meant switching from folio_lock_folio() and
-> the rest of the logic to folio_grab_folio(). There are some subtle
-> differences AFAICT so this conversion shouldn't really be part of this
-> patch.
->
-> I think maybe just drop the
-> folio_zap_direct_map()/folio_restore_direct_map() calls for this patch?
 
-Oh I see what you mean, yeah just dropping the zap/restore makes sense,
-then switch APIs as a followup.
+Ack, thanks.
+
+>>  	}
+>> -
+>> -	return;
+>> -
+>> -failed:
+>> -
+>> -	/*
+>> -	 * The pages have to be there now or they will be missing in
+>> -	 * process page-tables later.
+>> -	 */
+>> -	panic("Failed to pre-allocate %s pages for vmalloc area\n", lvl);
+>>  }
+>> =20
+>>  void __init arch_mm_preinit(void)
+>> diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+>> index f32facdb30354..fdd3709509946 100644
+>> --- a/arch/x86/mm/pgtable.c
+>> +++ b/arch/x86/mm/pgtable.c
+>> @@ -833,3 +833,41 @@ void arch_check_zapped_pud(struct vm_area_struct *v=
+ma, pud_t pud)
+>>  	/* See note in arch_check_zapped_pte() */
+>>  	VM_WARN_ON_ONCE(!(vma->vm_flags & VM_SHADOW_STACK) && pud_shstk(pud));
+>>  }
+>> +
+>> +#if CONFIG_PGTABLE_LEVELS > 3
+>> +/*
+>> + * Allocate all possibly required hardware page tables pointed to ths
+>
+> 								     ^the
+>
+>> + * top hardware level. In other words, allocate a p4d on 5-level or a
+>
+>    					  allocate p4ds?
+>> + * pud on 4-level.
+>
+>       puds?
+>
+>> + */
+>> +int preallocate_sub_pgd(struct mm_struct *mm, unsigned long addr)
+>> +{
+>> +	const char *lvl;
+>
+> Nit:
+>
+> 	const char *lvl =3D "p4d";
+>
+> or:
+>
+> 	const char *lvl =3D pgtable_l5_enabled() ? "p4d" : "pud";
+
+This is just maintaining the old way preallocate_vmalloc_pages() was
+written.
+
+> But I am wondering how important this information is here?
+>
+> We should be able to tell whether 5-level paging is enabled based on
+> kernel config and command line. If the information is generally not easy
+> to get, maybe logging it during boot would generally be useful?
+
+Yeah I don't think this is very important, I'm just trying to avoid
+changing log messages unnecessarily, keepign it aligned with the old
+preallocate_vmalloc_pages().
+
+For both questions, not strong feelings from me either way, happy to
+change it or try to keep it the same.
+
+> Anyway, if we drop lvl here we can drop the gotos, which would be nice.
+>
+>> +	p4d_t *p4d;
+>> +	pud_t *pud;
+>> +
+>> +	lvl =3D "p4d";
+>> +	p4d =3D p4d_alloc(mm, pgd_offset_pgd(mm->pgd, addr), addr);
+>> +	if (!p4d)
+>> +		goto failed;
+>> +
+>> +	if (pgtable_l5_enabled())
+>> +		return 0;
+>> +
+>> +	/*
+>> +	 * On 4-level systems, the P4D layer is folded away and
+>> +	 * the above code does no preallocation.  Below, go down
+>> +	 * to the pud _software_ level to ensure the second
+>> +	 * hardware level is allocated on 4-level systems too.
+>> +	 */
+>> +	lvl =3D "pud";
+>> +	pud =3D pud_alloc(mm, p4d, addr);
+>> +	if (!pud)
+>> +		goto failed;
+>> +	return 0;
+>> +
+>> +failed:
+>> +	pr_warn_ratelimited("Failed to preallocate %s\n", lvl);
+>
+> Can this possibly fire more than once? IIUC we will panic right after
+> returning.
+
+In the immediate usecase no, but once it's used for
+mm_local_map_to_user() we do actually handle failure.
 
