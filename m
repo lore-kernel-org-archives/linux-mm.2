@@ -4,78 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EEEAC5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 10:03:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB2D6C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 10:03:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1CC36B046A; Thu, 13 Aug 2026 06:03:07 -0400 (EDT)
+	id 5B9CB6B046C; Thu, 13 Aug 2026 06:03:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCFD76B046C; Thu, 13 Aug 2026 06:03:07 -0400 (EDT)
+	id 592256B046E; Thu, 13 Aug 2026 06:03:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE4AF6B046D; Thu, 13 Aug 2026 06:03:07 -0400 (EDT)
+	id 432D36B046F; Thu, 13 Aug 2026 06:03:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DC836B046A
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:03:07 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 042271205A8
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:03:05 +0000 (UTC)
-X-FDA: 85095807972.20.F163B01
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CA176B046C
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:03:08 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6EF9716054D
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:03:07 +0000 (UTC)
+X-FDA: 85095808014.17.CFB82D6
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4521B2000D
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:03:04 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="ay/LPQbs";
-	spf=pass (imf13.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 924FB1C0003
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:03:05 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=jTcssKBz;
+	spf=pass (imf21.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786615384;
+	s=arc-20220608; t=1786615385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=1G3eQpvA85JuAZzs61f9HPusHslY0rOubeUY5om3sZ4=;
-	b=rnuBzXGfnRUxaUUz0K2aflreWimF7rs29qHhmfzqA+2D5K6lgr2Z16ROXz2Mw2agbsWeJ9
-	pBUq0I4xeMBPMoh71Y2zvDgmxN1/EKj5ONS3zid2kHuRdocBH3lEs2Htu2echzuKBeO45z
-	opB2E0jt/sUMS3eLpCuKVAUau9M2KhQ=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hLVa+zjcHZ3q89ZlAQukI32EVVr5AUEVuCmPcq6Ui6I=;
+	b=cWSwIbM5EAXNjtsmRa9L3G/DBuKLT2BnbaCXQ4CHXDoU6/C2wvOoFmvnjpHqPnVJ/ZlGOV
+	Xs4LGWt1Y3zUuNfSsoTESOhm4qagJf1uRn75MJFD4B5XVdAA0Yuj7IOAKgN27WoBuwtTqU
+	O8TTzjs7c1vCGZvgVHKNJquBMVYVPik=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="ay/LPQbs";
-	spf=pass (imf13.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=jTcssKBz;
+	spf=pass (imf21.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786615384;
-	b=R4Sf0Zp+CNvvb8zkBbU1teipC4gsIOOzD/RmH7rDdiETnMecuEvsMRuf2UEp49XHH+plnx
-	hDUjtDb5/ApUMAcgINkd0jGTA7ni/QtB97mWOBLwoPwHMWG6yD0wQDnj53jZz0AeuBKgH0
-	yReDuPaIRIuEdjpTcJ4JwQ1Nz7XLjSU=
+	t=1786615385;
+	b=X8q3zkeCY0vQ+EbYokknOmX+VPT3QWe5p69be0PQ0n7uZrvtf2w/GWA+fYmfW+IsJYYog1
+	aHVPDjat8MVArv1MUF8nQa4boyZ17EPENf/XQVV3BasQf2W70uRIoJiUyMcLEhwD5UOpKP
+	PWAdM94AvcOu0fZfzXEqm5vuMzejl2Q=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=1G3eQpvA85JuAZzs61f9HPusHslY0rOubeUY5om3sZ4=; b=ay/LPQbsQM/RRgnxq7bAHdUMvQ
-	f8Jw5AU1r5nZdi+WwygDbYVnhSRQiTpk6KnQ1TbMbn+5sMSSr4zM2sHdw73BusaAkR9xt3kwT2rLe
-	HkRhn3grScRyWf0nAkVw8V5X+lClhsAwNr2BUSrO0rBT7xE8PCQjqsI12fSumqZouosXMnbFO37X1
-	+NCJ55dINFEnVtfnNLiyuoC1T2KagbEG3AoV4M55JYbHs2gUKQUrl4viI8XEUFeT2eRhYbyGwWOKb
-	ucpGw/XWYvEbyh6YFTBnX2rDR78EQ8CE8i6cNtmjv7bnnAa0a7q+qkPIgUiq/FulACSdMRo6QGVKL
-	+pAUd05Q==;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description;
+	bh=hLVa+zjcHZ3q89ZlAQukI32EVVr5AUEVuCmPcq6Ui6I=; b=jTcssKBz7dr2qg6m1N2so6N7BO
+	q+nPfb1dlbVYlKRSKu278fmNllB8oizjDynyYTea4w/doHRjyyXoc01tCXBbzMNzkh1JL4dvigoq0
+	wn9U2D9nX1DLlpojcc42pkcjK8uC7zUBZKdBDy6H+OVisKC7JoxPpivwFy1w43r3Fk+lACgIvKg7E
+	m3ECEyRimVWkUTSTq+O4c9spEhe2aBFtGDlmwH1hdhDB4kzZdgVCNM9kcRk9jdvnUSoyyMNfJsNak
+	tSVQZ8+RiYbWt+OpJnF5RVl3Jj2POahrdBK1QLsj+OqgtPFSwUJWJrT7mfV7iUqwSodyCfTnm0rnd
+	LUAj5VuQ==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wuSGc-00520I-2b;
-	Thu, 13 Aug 2026 10:02:31 +0000
+	id 1wuSGv-00520o-3D;
+	Thu, 13 Aug 2026 10:02:50 +0000
 From: Breno Leitao <leitao@debian.org>
-Subject: [PATCH v2 0/3] mm, swap: don't spin or flood the console on a bad
- swap entry
-Date: Thu, 13 Aug 2026 03:02:19 -0700
-Message-Id: <20260813-swap-v2-0-4a625ccabdae@debian.org>
+Date: Thu, 13 Aug 2026 03:02:22 -0700
+Subject: [PATCH v2 3/3] mm: fail the fault on a malformed swap entry
+ instead of retrying it
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIACuWfWoC/13MsQ6CMBAA0F9pbm7N9ZQWOvkfhqHAAbcAaQ1qS
- P/dyOj6hndA5iScIagDEu+SZV0gKNIK+jkuExsZICggJIe1RZNfcTNU3QjHpq+72IBWsCUe5X0
- 2j1YrmCU/1/Q5193+9C/YrUFz9RWP6J0ndPeBO4nLZU0TtKWUL1w1CNKZAAAA
-X-Change-ID: 20260810-swap-25420f9c8ba9
+Message-Id: <20260813-swap-v2-3-4a625ccabdae@debian.org>
+References: <20260813-swap-v2-0-4a625ccabdae@debian.org>
+In-Reply-To: <20260813-swap-v2-0-4a625ccabdae@debian.org>
 To: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
  Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
  Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
@@ -91,31 +90,31 @@ To: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
  Breno Leitao <leitao@debian.org>
 X-Mailer: b4 0.16-dev-f8e9d
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4056; i=leitao@debian.org;
- h=from:subject:message-id; bh=P+JzP1CqEXHUFbZL8c3/vL+HspDOATmKqPkkB46OJ2I=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqfZYwoXTW5JqGMoaPfGNKdYcL8kANbO9Q4Ubo3
- flR7Y+Hk+2JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCan2WMAAKCRA1o5Of/Hh3
- bZy6D/9+FHGROjiGe5DGGfeuJczbW1nUEpKTdTwXe46MRshMrZZPN4KTb425BppzxmDgHhmbe9O
- lMR9pGroA3tkvg8EzRTIkCwLPNf1vV/tB+MDWUriJLOQfoYFwRHGI8YhQDdm+NlzNkkLeBemZ7P
- YUjpLqg4n4+m4z6cvyQ2EZllu3jId9C9Qr6a9BJlzLRKLWEnlhtZggto1Zkq7f2TH7A+DIQ9uyk
- 7BDyHdg/WyQAdu6YD64uo0qh4aokah3GyE5EzYsexvSElNzUupfMo7Vu1MDQ/OHlFcMtWYC+A3C
- Qn1IbycDeMTZCJ5MB8VdC/NQq/jcu2L5CryvQeW/2Tth+Av5IzkaKqtYbd1IY7IOgLuGMzhDJ7H
- CpxGZ6t05Q5Vk4w5Ch34u3ctBJ7AxstISCwRVSZrJ0xP1IRykloHe5NzbmHyHAawtoXp5fcaU96
- a7DgSfEwnEEAyfrW7CNkvbBRFPu9nX+AFBiU9lzNjUED9uFm2xj5L0hYwwfNQyxTaQBrzFEECaK
- +Q0L8lsfDR2qGz8QoCbZ9+azG4WKeVV85ZUAQGhyHwAkUYf1AElEgHGqPGcdP73vnuBOqrnX9Vv
- 2rt96dILyXeVFsv3Dilw+SlxPaWYpug4WKVxSPrU5Nmezt0zwwKboyZKasvJWK+yTw2mnZCtyJJ
- M7IowvzndkEqPmQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=951; i=leitao@debian.org;
+ h=from:subject:message-id; bh=SmrcYFoWWX0gEHdUAwCRGijyGvjB/SH6IwdV5jR8akM=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqfZYw9iNKkPP+i+19qL3SClZWK1+Fa9721SNcr
+ UBC7tBWG3uJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCan2WMAAKCRA1o5Of/Hh3
+ bad1EACgMQM2KbtrxWEgwHNbB7QPz+gCJwzh4OW8BQ7Wj+BguF4gu28JGQl1Qy5o9MOFuhNjA4k
+ 7SoINP180rTa9PmSoDVXIflJ+UJbZigq1nsXuJCutdNPOOWM3lPbvAtmhBLOua15cSbKZwRmQsM
+ qf2yCRJwA2nSTAoSWlG86gv4q99tPro36mUr+P/0YWpydC4jXp03XFoExMBal3N/PcAlzUgTpNX
+ EAjZUYc6eBXFOHCYw4A3pf8Bx1MU+0m4b1Yg17k6I3sp2Zi3s7An054zKYiJxzSRmpjgiwAS3m0
+ YlW4aQd8Zrno/YGyanJjm+1tgNG9KoA4ZHd9gICzh4JvZWsw87FRzlLukpgG+cT/teIEuLRRYIB
+ QrGNs0aaHkuTIihG2ll+ClCEPOCvmmP03po5iAhNuff7YpHYumm25pLw6MU5ZggAWyVYZkwFXqe
+ zmPiUL81D6EGsRC7TVQuXdKChdXupd+5JVn8QNKLuskCdDI1vz8M1Ky/LMd60ryIVTBav/ou1pa
+ 4OIErsleCnefOj0fJqGD0OmnN1v46fePOyhg3qGxJWXTRhEPTcgFXmOWI/yEbjdIG909TFjpebH
+ wdD8R8MdHsJK3jaUakVsRZf7FQGylfaAxTijrZmn//T49hT88BVfT/hYD9al0ZOJZ3teBRYUnwf
+ po/eNDPaRnDsDgA==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
-X-Stat-Signature: de9rsgr6sufb8s7ghxf6adgeew1ncesz
-X-Rspamd-Queue-Id: 4521B2000D
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 924FB1C0003
+X-Stat-Signature: 15939d7ihrdmqxz75kjcw8k7pki7zthe
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786615384-107007
-X-HE-Meta: U2FsdGVkX18VP2rQ+RnnHFWYJeLvhtbq+6NuRZ6UpmXoorW9DUjIwlFeJTdrifc+IXvNOvTiy/icfwosybw2caGLPpDO09wKtS3OzaKj8HNQDX7Hy4nKIG863TnSaqnts3wDda9/Or2n9kLAGkK9BYSayCJGsW1vmgzoZlud0RUDIGz23liHAyVWJ+HCcgb8fUOwxnsd2jWCDEKLcp9joh9QBP8arWnlgKlONOG4PD3f1u7i92j6tz6osToVGtlD6mTVQwR4gCtw2/PWxl8TfEqkMAbLJotrMoHzJ63/VeCW3AREEfGbQQLMtZXuVSDWl0aQMVsqZXkUTbmQvnU7W6jl6PNeYuXdg6ujeDGLfyS9wvbdZMUjrsDX69jQU0BTD/ttGlxQ05KE6wUZ6IbQf4SC1UvQVzRjG17dqFndNUm4U6zbhLh4DtaGb4OZAvnkzBa7NWHKf93/oYjxwpQm9P8RU2PatJqW+XGhXC/cNrXL9RXpwdKQ2V1wvI6IRyXIJ6QiA+6N+ehBds+mhtHa9O6XpreIeitlxT6kpBCRWY/m45z0qUyOPLQzb15GqYK4inbwSuptUm5CmhaAB0mhTF0Xg+9DUtWHvESkX4JFENXBmQ2s7Ll98iv3egtWIy1cK3bksG8CdarIYYtF595wFp4oeIq9cqfrfwcdYEh95r9fQZlaSi0WQ32w/VVmgwU9b4bfax7Edm4NR3KpXLFqYzy/K27EMYqIDXwKAXCXG0BM10Q8+qv26WAPcKV4pzRw4+zwkclsL6uc5aeNRLAZdXXE/4d5iMuPEYls9YA9vNUym3ZZshSiQf3oaAEasGfFa0At4P+aY1uxiOsMWQSgjOpdRmkvf7CyuvOYf9jRHn8jRh8eQoHGeSi/my9ZVFdLOn9i4RFRPYbzx3NigcXKKTi72MGFR0mhtGfkEPjKuE5fxpu9Q1qkM4D0XOOA1liUkqUBMPl5ooUX2Fec7KA
- F7q2Jbci
- qshVRqm5f1b/dP+E6nfCtQBsBCDY7z34kGX95lqU7RbmuNIU9+GXhnCJHk+gvUXjbAenfily5zE0E6DuekwXrLz7Dbt10UvvbKcgx1Wv1R6HbwPUTvequpr0DxhgPh3AsOXGxw7/Gu5EeHANk3MJPCoqQVyUD8aHEhA/lwFFHHd21xUPPZO1UJN/B8oPseHi2tMD3s3VRXMnMtaK/uh0x61+i15QH2wG+t92Zes8Dn7cflhqvgZPkMc8POp03osnmTRS9c3v2ZMWEpkaLVmodCF2vfYINLfm4zmIkCXlSOrZPKV1Gwo5g0BddbVZ+kKuIXLKHNqdMMbgwpj7jPqvXLPCl1Tvg14CcLlGMK5BrY7vqJ/XxDClHtePQhdqsbqPKEMnPvawsEFw9i6u0bh1pNEcI60CsBYgpZ01Fsy9u6p9aH47lhGUttqCEK7lLSVBJAuPCOr39C9fFQ5JRhyTIXigIDt8Ftzo8ySQ5x3Zj5WokJzD3nsxq3Zd5XDOGqhkyoVlh/aURPN1ARiYkAsQGO8QOZC3DGaOw/kafMnCZNsEFWiS0SOkgaOAo41LVO6dKmHb+7IZRlMUGYv/4aeJoeAJ+dHuJB+kAUDOAjKFi7eCO1030sm/QTv6a0fYE59N4RgPvp8QjnHECj6TTcWAs3qk8SbP1EpWI6VjhG6NsA/UmfpukUfmOZg8tMOOCVunIu4ZsZIzi6HRhLfPDFRI8tWDM1ih6FLmZzj2B60gYLhkXUZqdP11C7bx/lS75oIavrrgBpHhJ3KurzCs/kLFAYCfgZ4ISvwHHVniViaCSNFV8ZpGUtmkxX44wvvFU4zB8RySIqfEMsaewrkAyp4x7XyuQMrLoB/7YCe2T
+X-HE-Tag: 1786615385-364202
+X-HE-Meta: U2FsdGVkX18BsEI/u85e0xkocqCePEt2tPtqOVgVadcvHChh8PbNKQwK62Dx8Hbj9LZ5UM1Ge3L41tWn1Zjcek5lfz27K1BPT2N50nsPfjD1J65dEDEItCG/0sl/jqoa3xNlIbHMsUtPK5nsIoGE2Xa98yZmf0XymRerjxXz1Zwa0nUqtqYb0zNymeulFb2I92Jevtyi1ZUJiPu/ItNoSeMkq7Uphvdxbc6Jlvj0IojPG063z99gMhnbIx3XeDeqRX7VzDoNquvCIvFJOT34lBYlU5choJtNupXS577/S1qQzj7QL1TZ0IaLyU+4HMU0TopCH5e7lFWR6FfUvGXfE+ZjXlMEGouod9I4ooPIor2dPc/hsi6Nk6ykfZxXoH0Efafh93wCsPxWc2GDnPlxUtHoDQ2WIar8l0azmPbJMYmqRiR7KGgJHkD+QcR488UsmzPLDU6E9RUchZqhytK51FCIeY5pgyx31buV78KFxzWpXgRN/k/Le+A4Z4hZflmyebDOuFSb2qXh45/fduTVZGJDmASDjBl1mUbegnXDxCfdgcaLREl75t3BXDKIycnzq5F74sfNwEeP88thjvtgKneEydrfrbwTrxhygWwXoTZE3115wGnj2JWDTv1dIecbfCqMJbZFryC13U1m3lbLSJ79i/nrz5dXyySj1z0snQjfmh9QHjBZ6FKaAvnv6wPFED+Hc2tPf4r5APMsEvaAEkbfVN470puNvB5gfuaM0O8DBW4nPWddUQK5B3C9eeYddO9M0bVKxR9CTFCktgnnD+BM0tBeN1rhsGIhwImSQp5p7XvJQxsoBcLBWUFntxhZxalJI2aFdv4+pDB2uhXdl0SdyWk9GjZuIQILQLiQyl5ghIGvdKJT6dVA3nlUBp2V6dTHfao+sGNvNfk5LwfAHueiz6u6zGsHqdrucJQqBaa7CvtCevoDQInM17LBEiNgs65Z8H2YA4XchmFcae0
+ fkL4p1fV
+ LEuWx9IzIzR/iE2Xq8nY8gqJORALoeM9CUSmE4Ed2+RbqSo5a+pqpICsPjZLWXe5mIKXHC7RKgOvnt5MF8YpoZt3/xhxjnKmDqWj+fI/WDc6D5akD44N0H1HI4qVewf6zU2ZHXHeSDcHAtFTwrmjb32wFzKdiYGX63YsAf+e4LbcASj0PsXiXyhWDh7dNyqBXv4+/TTmuUtdMgQIsbVaAABtQ1GTy0AZ00m+va6fDh78bqhPzjCBuDN+KqmHjWT6ThrDmudOoUGz/s2bH8nVn0cljzh/W/xS8TlIn/C9ncTGd9iRE31nhXRjlBA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,109 +122,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I've seen some machines at Meta fleet that show the following type of
-problem:
+do_swap_page() returns 0 when get_swap_device() fails, which the fault
+handler reads as "handled". For an entry that can never become valid
+the retry takes the same fault again, so the thread spins forever,
+retrying on the same fault.
 
-1) It gets some weird warning:
+Return VM_FAULT_SIGBUS (Bad access) for a malformed entry (pr_err() was
+called at get_swap_device()).
 
-  BUG: Bad page map in process khugepaged  pte:f000eef300000017 pmd:00000067
-  addr:00007f57c0a01000 vm_flags:20200073 anon_vma:ffff88829af7c340 mapping:0000000000000000 index:7f57c0a01
-
-The corruption is most likely the collapse/PT_RECLAIM race fixed by
-commit 366a4532d96f ("mm: fix the race between collapse and PT_RECLAIM
-under per-vma lock"). But this series is not about this one.
-
-2) Then it floods all the monitoring of the fleet, sending the same
-   message in the loop, crashing the our fleet kernel monitoring
-   subsystem (which is the part that I am interested in protecting)
-
-  get_swap_device: Bad swap offset entry 3ffffffc043c5
-
-For instance, in a host today it logged 6M in a few hours, and it is still
-going forever. Two things go wrong.
-
-1) get_swap_device() prints unconditionally, unlike print_bad_pte() next
-   door which suppresses itself with is_bad_page_map_ratelimited().
-
-1) do_swap_page() returns 0 when get_swap_device() fails, so the
-   fault is retried, reads the same entry and faults again.
-   Nothing in the round trip changes the PTE.
-
-Trying to fix it in a naive way:
-
-Patch 1 is super simple, and rate limits the two prints.
-
-Patch 2 makes get_swap_device() return ERR_PTR(-EINVAL) for an entry
-that can never name a slot on any device, keeping NULL for a device
-swapoff is taking away, and converts the callers. No functional change
-expected.
-
-Patch 3 uses that to return VM_FAULT_SIGBUS instead of retrying.
-
-PS: Sashiko flagged several pre-existing issues, and get_swap_device()
-returning an error opens the door to fixing some of them.  For this
-series, I am focused in landing the basic cases first and build on top,
-if needed.
-
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
-Changes in v2:
-- Rate limit swap_dup_entry_direct()'s print too (Andrew)
-- Drop "in get_swap_device()" from patch 1's subject, it now covers all
-  three prints
-- Return ERR_PTR(-EIO) rather than ERR_PTR(-EINVAL) for a malformed
-  entry; -EINVAL is too soft for a corrupt page table (David)
-- Document the malformed entry case in get_swap_device()'s kerneldoc,
-  in patch 2 instead of patch 3 (David)
-- Reword patch 2's changelog, "an entry that can never name a slot on
-  any device" was unclear (David)
-- Link to v1: https://patch.msgid.link/20260810-swap-v1-0-375ef0767206@debian.org
+ mm/memory.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-To: Andrew Morton <akpm@linux-foundation.org>
-To: Chris Li <chrisl@kernel.org>
-To: Kairui Song <kasong@tencent.com>
-To: Kemeng Shi <shikemeng@huaweicloud.com>
-To: Nhat Pham <nphamcs@gmail.com>
-To: Baoquan He <baoquan.he@linux.dev>
-To: Barry Song <baohua@kernel.org>
-To: Youngjun Park <youngjun.park@lge.com>
-To: David Hildenbrand <david@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-To: "Liam R. Howlett" <liam@infradead.org>
-To: Vlastimil Babka <vbabka@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-To: Michal Hocko <mhocko@suse.com>
-To: Jann Horn <jannh@google.com>
-To: Pedro Falcato <pfalcato@suse.de>
-To: Hugh Dickins <hughd@google.com>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: Peter Xu <peterx@redhat.com>
-To: Johannes Weiner <hannes@cmpxchg.org>
-To: Yosry Ahmed <yosry@kernel.org>
-To: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
+diff --git a/mm/memory.c b/mm/memory.c
+index 7201e848129a7..fa2b3d2ad3202 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4957,6 +4957,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	/* Prevent swapoff from happening to us, and reject a bad entry. */
+ 	si = get_swap_device(entry);
+ 	if (IS_ERR_OR_NULL(si)) {
++		/* A malformed entry never becomes valid, so don't retry it. */
++		if (IS_ERR(si))
++			ret = VM_FAULT_SIGBUS;
+ 		si = NULL;
+ 		goto out;
+ 	}
 
----
-Breno Leitao (3):
-      mm, swap: ratelimit bad swap entry reports
-      mm, swap: distinguish a malformed swap entry from a dying device
-      mm: fail the fault on a malformed swap entry instead of retrying it
-
- mm/memory.c      |  9 +++++++--
- mm/mincore.c     |  2 +-
- mm/shmem.c       |  2 +-
- mm/swap_state.c  |  4 ++--
- mm/swapfile.c    | 20 ++++++++++++--------
- mm/userfaultfd.c |  3 ++-
- mm/zswap.c       |  2 +-
- 7 files changed, 26 insertions(+), 16 deletions(-)
----
-base-commit: 6b8c8af514d739d0335f5579b585e02babe8a727
-change-id: 20260810-swap-25420f9c8ba9
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
+-- 
+2.53.0-Meta
 
 
