@@ -4,116 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78E3AC5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 11:29:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA0FBC5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 11:30:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AF556B04BC; Thu, 13 Aug 2026 07:29:40 -0400 (EDT)
+	id 7131F6B04BD; Thu, 13 Aug 2026 07:30:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7607D6B04BD; Thu, 13 Aug 2026 07:29:40 -0400 (EDT)
+	id 6C4A36B04BF; Thu, 13 Aug 2026 07:30:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64EB76B04BE; Thu, 13 Aug 2026 07:29:40 -0400 (EDT)
+	id 600ED6B04C0; Thu, 13 Aug 2026 07:30:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 401236B04BC
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:29:40 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CEEECA014B
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:29:39 +0000 (UTC)
-X-FDA: 85096026078.17.BCE8FA3
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E60F340008
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:29:37 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=FuKCUCf9;
-	spf=pass (imf07.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F3836B04BD
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:30:15 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2EC98A0101
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:30:14 +0000 (UTC)
+X-FDA: 85096027548.25.05A89EB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7305480008
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:30:12 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bIIYvDgu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786620578;
+	s=arc-20220608; t=1786620612;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=suWflRf8BDwu3SlHTCcacUX0f/oCtM4GLGeZ1g/af2A=;
-	b=Y47YfPhcxxBZ2RC7TO/YMYA9r+Ch3/eVORI+RXkJMfseX62EAA6c1YgbVv4GnXk5o8Kols
-	5NQIhSDLdqXPrHSGbCN1WqFmfr7oDbWpwuhGxO1RADyNLlPDROqehNwlYCtY8EMA2PsiK1
-	5olDrHrrrLumKWIeFVLFsvsGA1M+Bw8=
+	bh=l9aopBS7WCREPco4Au3BJaWnHNfNUNrAPzSVqlHVLHo=;
+	b=vvskiqY9CRW+xOYnHSkIhc/Ls9cRbAedh3MPKphqHDlkg6XdJ+5Esf4oMf2X3nbzYbIHl0
+	ucE+u551vrONvcB7o62Bi+Pc/E91JTzOksWWt1fzSY6AMUXqj6dPvJ+hkpxm7pUVvT8hIn
+	Kl+ET3fnPIVxaoHNkbLQ0tzWS7cl4kg=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=FuKCUCf9;
-	spf=pass (imf07.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bIIYvDgu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786620578;
-	b=0gSJGb8TS0f/mw6q05W031AacR3uXdRiqVwGc23LhzMVwmew1CnanuJ/yI1h2CYI0odUE9
-	YUcGvi9kqSfXPXkvzMdm6ZUX1o/M2RWdQ2+RI3ryOFUBy86a+I9y7TNmfrtuEHa5VDkeqA
-	YdzCoO9XWhRISIApL2HoTKzSyps9Sm0=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-495757ccbc1so5253005e9.2
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:29:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1786620576; x=1787225376; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=suWflRf8BDwu3SlHTCcacUX0f/oCtM4GLGeZ1g/af2A=;
-        b=FuKCUCf9ZNI8/Rs95lOg0OrN2H7U1r4FjDIiTQG1k8pmovMc/obbxMAb9RLd3Xk5Er
-         6LHsAnBWtpU0UR5ZRrdNGErxjyKg650xGq+EeYsXbqlo0ZbCPCX2QtTRwv6wKzwauYje
-         FwEsYsHPt7nGgse0tJOJgrf3gREIYrS7C+d6rQzVkqcDc3lufq/eBIfHEN7N8SUizSR9
-         RWa882ipY5u6gZwN9WkMTQbtOmPGRQ25rtc+ZkXVwJsP+8Th7uL2ooAEd8CdKwPwYYQN
-         zBmrfiCZtVSmmV9knx35o2aOXKxjTiKv9nrufhZDE6oRdhFF92GBNdsN8eW8y4rAaQ/u
-         0qXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786620576; x=1787225376;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=suWflRf8BDwu3SlHTCcacUX0f/oCtM4GLGeZ1g/af2A=;
-        b=RScEXR0vWxb3uru4/phx23t85W4UR7riy2o4AR65LfzwfqiQ2qRgJAIWUXw5l8olmS
-         P2truTR1vrEOzvZngtbBv3a0zFpohjvHc41S4nRZ/sCRBginbVPyEDQhHhJvW1dJsabE
-         ZsQmU0QrjW8r16H64Ba79h7EK9QxeZjw2KvlDCcPatWaN2jR52slSfY1RE8Huc+BJyZ/
-         P7Y5eh6Zkes6W+2LdTI4X8A6Uh5Xs2H+vmAWSjB4siKAu1AKdEeuiqBK8MsKYJtHzFbG
-         osAM4NmyMQr0m78MTQbjMgSaMOuZOMGU42raDcQVIFYBo1L3NrH7HuNdcm4xN6amQyAJ
-         h2pA==
-X-Forwarded-Encrypted: i=1; AHgh+RqfOJv6RMyKqGqdFdmH9V2pY0yFsEUQVF4/8vZ3sWZQfR6a729IRK/2nyeAE3Xp14H+Wqy6mWBxKA==@kvack.org
-X-Gm-Message-State: AOJu0YyHL6+cfW2L4AkrrQzUmV0tHvZmFNyvehsylJaDnOdXlG9EE+5T
-	AN7IfRBb+icdnPf0caJQub0feilS5Nv2vLSE4o9woNz5TQJN9NDBMiOehZT84JWoq5Q=
-X-Gm-Gg: AR+sD11vywooPBBEZ2whLpnr72XOO/E6vIRpd7PXmhNphScqjDXhginHI5HJhnmRtHG
-	2t7M9Yl6omz14z+JrXF+Gobqxiy15QzVFmUVLtiHQXx4nivmR5GbTUQDtRaxj5LtCWiHDUhM8E7
-	7vVrGhexMbX4jV3TVr2zAhKD1ocSBMhYGQsbkkeWvMJjOZzCpWq1gGwC0hfvDr1eGBP/X8u1nus
-	4Y9Ro7HLAwU+gPrd3yvpvvgyNf9uGS0fDhRrLVdmXqso3BMiXN8hQzIXlVSeKvjEWCKCyXIFQnb
-	je4l0b24cvHCea7PwW9RN5+Cq4Btn937jPhgt58iKkz5LpHbBdanoUqSxGHtf9q+gMZngOanu3k
-	yiGXXYH4vjepP8fKZkdkW2ecASPH+3sPKsYsk4JP3Nmg7+uXxEFRXCKH0VyvWmu48Ij3bf6v6pO
-	kxQiSFnYsZ/O6VuRho5Nlxey84gS114jnbTu9Q2UVjmyGYhr2cxVGFwbkIJ/sbbpyG8LHS4Xc=
-X-Received: by 2002:a05:600c:1988:b0:493:c47f:3c55 with SMTP id 5b1f17b1804b1-4998215e5f2mr62599095e9.5.1786620576357;
-        Thu, 13 Aug 2026 04:29:36 -0700 (PDT)
-Received: from localhost (109-81-29-60.rct.o2.cz. [109.81.29.60])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49981b03e70sm68907325e9.3.2026.08.13.04.29.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 04:29:36 -0700 (PDT)
-Date: Thu, 13 Aug 2026 13:29:35 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Ye Liu <liuye@kylinos.cn>,
-	David Rientjes <rientjes@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/oom_kill: remove unreachable __GFP_THISNODE check
- in constrained_alloc()
-Message-ID: <an2qn_0n9CcU9sJx@tiehlicka>
-References: <20260813093810.573302-1-ye.liu@linux.dev>
+	t=1786620612;
+	b=bpr0ql+zi1IbwEYdpND4bqY0NDSn2/ZRq/2nf85JG1/g9oFvYvJRd4jAiCtfORPt3gVgAn
+	OLi+o5kWwRTZuNZsOqGvF6qY5JB6zOwSAr65jfdTgD4dHavdQ5AyC6K6+vHoOZ7fxwIc7l
+	WAPM8XBThBWChjoUWi7MWEXcC9A8Soc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D1DD343CC3;
+	Thu, 13 Aug 2026 11:30:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515911F000E9;
+	Thu, 13 Aug 2026 11:30:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786620610;
+	bh=l9aopBS7WCREPco4Au3BJaWnHNfNUNrAPzSVqlHVLHo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bIIYvDgubqyEPdnlOWTu+Ja15dC+1f7Tr2+yhC4Y5fv7Nej555T05u/p0Wyfm9C43
+	 GM3rOb8V+MA094qoew/BBBOo0wyXDOc3DKe3Y+yV28mZ1L1Anv8grTI7pGOfMrpDPG
+	 zE15h/BoP7UPMsxQGHg7KNO596rp+ufNqFnKkFGu75mTM1gO38FneofbDbyWoM5Zby
+	 x2EB1SxvmPhDdae9aXThdHuADsUzEHeYzNaZEgJK+G+x59zQL4YmHMoj0kyai1Ej1B
+	 I2aDuWT5tOB8uf+cEf6hDBVNqApz/4QtYzmJkzqRC9pxpnGItt4uJu+UREOF1tVUUH
+	 UkTdVZT0+d62A==
+Date: Thu, 13 Aug 2026 12:29:50 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm: replace custom bad page map ratelimiting logic
+Message-ID: <an2juJMHR8r09q5u@lucifer>
+References: <20260811172156.356053-1-pfalcato@suse.de>
+ <20260811172156.356053-2-pfalcato@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260813093810.573302-1-ye.liu@linux.dev>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E60F340008
-X-Stat-Signature: q3axffxkzryarifkg8ezbidage9btisi
+In-Reply-To: <20260811172156.356053-2-pfalcato@suse.de>
 X-Rspam-User: 
-X-HE-Tag: 1786620577-522674
-X-HE-Meta: U2FsdGVkX191uCjlFqdVSkE65bhOtclHboc2ZbAeYYPoRRLZfWkY4nOkdcVs3ATIsg6YyDiBVY5daF381hcmUN6ygh0N3R/jRben67Dh2yF7mbQWBun6nZ5pTOOH9sejCeVkUIPpWXrE7hlEo7bADwj4ijeoFaYx2CM9ygUdWLjLByxKAPrJ3eQZTdi5MJrLfqc00xMTrHNOEO+sDZMyfBipxNxAuIa/393VFjd17ZScmE9uTfF1cdQwWc7eGp++ysMPN2qOFul8qN2hsNkX9QDXs69CikLi6Y17y3usmtjkrRgHAY+MYQgzaxZQ2mEbHZzdbqNfOYn00JhaYapMO4OKJUHXwwyVK1QW5+Al0LwzImK9zzLwk2pliZmtRvCE/sKni2OUiiQQhflUCOrIBIYaWQ1UC5tAUybKTxv0JqeGYmDh9P6sPcXjKSSsH06/2wASF0z5O3Vw54xe8aNDf2ysAMY5s5DJ+8gMHPo7DNv9FQAhbRtILocFp1hpDTpdG3mDyTErUgxjxg5XPl4CAY7XQlhcjwwAHOpC8XW0q8zsn6CTEp+58I9O9erURsy6uZoT/UuKeO/jooEORo4SHOKyd99moikL7QHyALIQdPeW0F6/fntI1joK/OTgckzKGFyF3S8mempgs87Bfy7T5nUGSDsTffgX0qEbeQ6inEO3mycSLdzoirbb0eA2gTyVctNgvFj84Ewk+zdzb/egq5iG9jef71oNzEjZf69pOBXRXLs9Y8XNXWWOC7GKBH7Wr4y8pf3gFcY5uyTtEgJg6TkmzZSr8YH2gCDLCutDZKmcaMJw3v/tQ8c23Zcx4KaFMrpwdrkIvSFVIsWyB0Oxcx6H3b6LXR6jMzaBFlpT004E2KIncud6Sbm744ZU37Pet1ktKlm1lFd3d3rH2PLQOzqf0K594quDT3BklbwxaamlvS4DcF1P7TM0GmOTUdhYdA4tudXriCY8MovDlSK
- P7jHRVJm
- 2/V5bJtWYWcH7nF+T4LyCVom+qIvO1Bi9gseO1ti2EJUzqwJbDwfKTQHg26onudm5rS/k23zvh0PvJZCuddM7/dnQW7iVWTDZ4nC/hvRgpcklx4tu5wKNbqgyXyazeUjJCPz/qftQJ1kYNiviyajxSifTl25SepZ+JIrQvA4k0ZfHKzf+31bv+1IKc4ZAbcMAkNVscTfZ6n5bKO3Ir+vfgEUajVpbaal9ORhhg8n7x7sxOmk04yHKp7EbnFrwIpP4CZ1vy10aZe24CFc41NnV87cq3gD6TIERO5RtqQWc/w8krq0wNLHnpRPdgCnqGyAyKh3sDumqCkUToIaG5qw+jAiMnGsUP9RX5JAvAsVXeEEuUXv+byjmUwSB7DKCXGwD13uVcM2KBTbvAIlcyCYEAKoaIKdLJsMvSmVbYtXRskFJBfxkEkziztb417FlcY3eP5U2aecemXE2XMExuUf/lcQWEq+8KdWtsEC4y6PabIZjnGg=
+X-Stat-Signature: tbi41wagsez1ijft1rjk6k365i5qhz6x
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7305480008
+X-HE-Tag: 1786620612-679243
+X-HE-Meta: U2FsdGVkX1+t4uBAUGU+Q446XVOA8Iu3lzC2fqy9/4ft2LlyPipPhWWtO9/YZaaQAmo+BAAHRglTNykbFYxVw+cjvZRfXf/CLY9RshbyyNB0EJ/++EMjCNzf+MvT06DgthtL6PzvfiXllgvQTvRTL4U/HUcSz/YZpefculhin+qTT3uYPryZnEPSaIR+/lMVuH5NWYJpTbeVqf3glbrByU/xTutY9WxPT3NRMH/UoMKrIpHAkq58b1LHddEHQ2P/2VH20MhHFGLgiTYSTMqwm/tOpnBxbmJSg8uQv6vpQ99C3Uinh7QF0IqeEZXEgVV6VnaJxDWqJHk6XVEVeE1RhU996xMaPH1BfKoZMPse2Eo7I3j81LCEVRO68J1oY3MICU7KSdG/WNM2y7xOQB0B2psOOHh75E7QQziZL4S05v6jQOJz/Dj7ZltnSNz5I4N2HvMQWWIfeHdQlVF427UDwXqJZyYuEGKIxJvnO1W06iAd6ZloEbxU978vEqbP7Fx5DUjoBXR5qDlvRysl5CxpNOBZDw5c64S1Tg7HdPunnfJW6Y2MXvZHp2prll/chrgUEFyX6L+tv13sLKt+ZGne+97/dWyH1Qv6ZV20x/bTWfE9JILsbDXXTWhFz+zZLcov2OXgSu/gpkI5mUziGsrJ7Q7vqXG4P1NWg1W0jUpD5kQ+MCdVv3vhyiUGVsWtPhOVMP5bltehugRn/VyEsou1aUbHBWhtmFynemJ6LOWESQwI1+rQMJMoxythlK1RuP1Dw/YubFZ3cVBmcijBBlYTrMaJVOBGzaO3VMis7iazk0sM+7o5YxeyvTyDdGsiBYMwdZWPWVDVO3wAG0QDQtxTp+CMrdBVOBh+embry8vxF1q9Gq92X72rstTYqzRilE+MNYgBUV5VFnCHxgQJO+L0rIiILvbYVwq4be40TIm2xk7t9bu98sgtglrMu6AUFqq+oGt2dNt5nzb/uT3hUz2
+ FzvKww3P
+ qGtiuY3ZzK+gQwZ51FYcGxxUGPHaHD9poeqtmkPOfnH4vEd+E5ZDIKAj603XsHSM3NIQfEIXF+NGNWpCzTuGnIBh5CwQfiHpLTxuJGY/4g6puEjfFolSwsV5zGugyNe9J+4A5nF9mYFIL0gHNUcJ40QgfwEQWrrYb5esit5wkyC7yeA0gPsiAYJXnAodidbvzrgteGhWUyb9esFDDybzZMFgsLwQipaF0p7vzJLJmNNBkLggSTyM1HOGmMs2BemPwxROPI8gw7fT30qaGLQ4eS1fEmA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,59 +95,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 13-08-26 17:38:09, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
-> 
-> The __GFP_THISNODE check in constrained_alloc() is dead code: global
-> OOM is never triggered with __GFP_THISNODE (blocked in
-> __alloc_pages_may_oom before out_of_memory() is called), and memcg OOM
-> returns CONSTRAINT_MEMCG at the top of the function before reaching
-> this point. Remove the check, its stale comment, and update the
-> following comment that referenced __GFP_THISNODE.
-> 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+On Tue, Aug 11, 2026 at 06:21:55PM +0100, Pedro Falcato wrote:
+> The current logic (allow up to $BURST prints per minute) can be entirely
+> replaced by the generic version in lib/ratelimit.c, used around the kernel.
+>
+> Do so. The only functional difference should be that the new logs will
+> read something like:
+>
+> KERN_WARNING "print_bad_page_map: %d callbacks suppressed\n", ...
+>
+> But that should be fine enough.
+>
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 
-Acked-by: Michal Hocko <mhocko@suse.com>
-Thanks!
+Oh I love this :) seems __ratelimited() uses a try-lock on a spinlock internally
+but I don't think that's an issue, a spurious not-rate-limted output on any
+contention isn't really a big problem.
+
+So LGTM and:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 > ---
-> v2:
->  - Remove the dead code directly.
->  - Link: https://lore.kernel.org/all/20260813030654.320269-1-ye.liu@linux.dev/
-> 
->  mm/oom_kill.c | 13 +++----------
->  1 file changed, 3 insertions(+), 10 deletions(-)
-> 
-> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> index 5f372f6e26fa..fd3c476846a3 100644
-> --- a/mm/oom_kill.c
-> +++ b/mm/oom_kill.c
-> @@ -267,18 +267,11 @@ static enum oom_constraint constrained_alloc(struct oom_control *oc)
->  
->  	if (!oc->zonelist)
->  		return CONSTRAINT_NONE;
+>  mm/memory.c | 30 +++---------------------------
+>  1 file changed, 3 insertions(+), 27 deletions(-)
+>
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 4134ac607ee0..b4be57b590ce 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -492,32 +492,8 @@ static inline void add_mm_rss_vec(struct mm_struct *mm, int *rss)
+>  			add_mm_counter(mm, i, rss[i]);
+>  }
+>
+> -static bool is_bad_page_map_ratelimited(void)
+> -{
+> -	static unsigned long resume;
+> -	static unsigned long nr_shown;
+> -	static unsigned long nr_unshown;
+> -
 > -	/*
-> -	 * Reach here only when __GFP_NOFAIL is used. So, we should avoid
-> -	 * to kill current.We have to random task kill in this case.
-> -	 * Hopefully, CONSTRAINT_THISNODE...but no way to handle it, now.
+> -	 * Allow a burst of 60 reports, then keep quiet for that minute;
+> -	 * or allow a steady drip of one report per second.
 > -	 */
-> -	if (oc->gfp_mask & __GFP_THISNODE)
-> -		return CONSTRAINT_NONE;
->  
->  	/*
-> -	 * This is not a __GFP_THISNODE allocation, so a truncated nodemask in
-> -	 * the page allocator means a mempolicy is in effect.  Cpuset policy
-> -	 * is enforced in get_page_from_freelist().
-> +	 * A truncated nodemask in the page allocator means a mempolicy
-> +	 * is in effect.  Cpuset policy is enforced in
-> +	 * get_page_from_freelist().
->  	 */
->  	if (oc->nodemask &&
->  	    !nodes_subset(node_states[N_MEMORY], *oc->nodemask)) {
-> -- 
-> 2.25.1
+> -	if (nr_shown == 60) {
+> -		if (time_before(jiffies, resume)) {
+> -			nr_unshown++;
+> -			return true;
+> -		}
+> -		if (nr_unshown) {
+> -			pr_alert("BUG: Bad page map: %lu messages suppressed\n",
+> -				 nr_unshown);
+> -			nr_unshown = 0;
+> -		}
+> -		nr_shown = 0;
+> -	}
+> -	if (nr_shown++ == 0)
+> -		resume = jiffies + 60 * HZ;
+> -	return false;
+> -}
+> +/* Allow a burst of 60 bad page map reports per minute. */
+> +static DEFINE_RATELIMIT_STATE(bad_page_map_ratelimit, 60 * HZ, 60);
+>
+>  static void ptval_bytes_to_hex_str(char *buf, size_t buf_size, const void *entry, size_t entry_size)
+>  {
+> @@ -633,7 +609,7 @@ static void print_bad_page_map(struct vm_area_struct *vma,
+>  	char entry_str[PTVAL_STR_MAX];
+>  	pgoff_t index, anon_index;
+>
+> -	if (is_bad_page_map_ratelimited())
+> +	if (!__ratelimit(&bad_page_map_ratelimit))
+>  		return;
+>
+>  	mapping = vma->vm_file ? vma->vm_file->f_mapping : NULL;
+> --
+> 2.55.0
+>
 
--- 
-Michal Hocko
-SUSE Labs
+--
+Cheers, Lorenzo
 
