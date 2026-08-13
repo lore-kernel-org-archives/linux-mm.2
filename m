@@ -4,95 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AAEBC5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 20:35:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90B10C5CFDB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 20:44:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC5F96B05BE; Thu, 13 Aug 2026 16:35:01 -0400 (EDT)
+	id 6F5546B05BF; Thu, 13 Aug 2026 16:44:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B77756B05BF; Thu, 13 Aug 2026 16:35:01 -0400 (EDT)
+	id 6D5E86B05C0; Thu, 13 Aug 2026 16:44:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A66216B05C0; Thu, 13 Aug 2026 16:35:01 -0400 (EDT)
+	id 60A4A6B05C1; Thu, 13 Aug 2026 16:44:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 819A46B05BE
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:35:01 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 029111601FA
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 20:35:00 +0000 (UTC)
-X-FDA: 85097400402.05.A7E29E8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id AA54340006
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 20:34:58 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zG+Mz8wA;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E6C46B05BF
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:44:07 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BC0314019A
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 20:44:06 +0000 (UTC)
+X-FDA: 85097423292.25.B0B0884
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id ADA2E160006
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 20:44:04 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tLm+lc4V;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786653299;
+	s=arc-20220608; t=1786653845;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S6cmsqG8l1zHA7G2eW50R84mRNDy78OB/Hf6CViIuCI=;
-	b=ToKiBvHlnUgfMtvR0bEgP8vnlj9dGoiXu9WBH9NZOfPzMGmR5kGFIUJJnXh0eyO8WVrTMI
-	MxdL0X29uRnled8H17F3PhYKbdSZ1+S1T9wThDZGIal5vvYfma546JRlVQEhEnnUsYIUkj
-	8QFezMZf4piLhdmQWnZwOb3OkBMQUuA=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zG+Mz8wA;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	bh=fdWp8ueXb6s+udO8FKONy4G9LfKlB2Cu4K/pOBUgXWU=;
+	b=i94krV51bb7pwJv1T4gMG82aDntaz7hs8XYZ7esB84o3DXfteoXkjNkMPQXvh8T4dB+9FB
+	5/1tMnmmo+mNj3J4JuqOTUofL9MGGgPZrI1HRupgoqSdtKUchalSrTza+an/NpTVu7KePD
+	Fd9sY9BYjoG9/bBGITMrjIlYJ9RvdTc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786653299;
-	b=S9HOLdKMhEqKs9pzZGq9u13te41HnwEyGDtbNtIq7zwjvOZ/fjROHF/Y8GDZ+Npp21xcOE
-	jjMd1BIXDiQBftT8gU6rk2sza45ZeXwQoEyVsaKfy+cWu4zgR29rLbIXrcWzuxuS0If6o1
-	umhhWGSuT3U/Uia43OA9/ZhUlwAVcII=
+	t=1786653845;
+	b=I49daivbftfa1u/DNse6j6LPm+DeoU4GzQM731LFWa+kH0QKIao4V6/t0BoS9T+yon4mYw
+	f2FVEGahXWsYyDVduPV7wZnwWDH5D1ElZVPQ6wyXjsAUdvNZrKKpBxDRtCapMYp4UvEn26
+	ZIrBcq5rjRN1J+ZUcRlInYafwm5uZVk=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tLm+lc4V;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4A85B600AF;
-	Thu, 13 Aug 2026 20:34:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392BC1F000E9;
-	Thu, 13 Aug 2026 20:34:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1315141286;
+	Thu, 13 Aug 2026 20:44:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 562421F000E9;
+	Thu, 13 Aug 2026 20:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1786653297;
-	bh=S6cmsqG8l1zHA7G2eW50R84mRNDy78OB/Hf6CViIuCI=;
+	d=linux-foundation.org; s=korg; t=1786653843;
+	bh=fdWp8ueXb6s+udO8FKONy4G9LfKlB2Cu4K/pOBUgXWU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=zG+Mz8wAESaFgbRTNpUhV5gDm1QDClFyEh8Ovhvu0WoDTePb2+EvDHSn2FKcngIFO
-	 /LnfoOA25EiRjyARMHAT9ior6KhjydG7NBn4AsaTh5TVr/nVSDXdRRuTRpSYVMSH7C
-	 CZ/umvUuoFSCA4o+YF4WQPd7dsNJAnSldnbng/zQ=
-Date: Thu, 13 Aug 2026 13:34:55 -0700
+	b=tLm+lc4VMjulDbH3IDfdYTiLafdXv9KILpJPabAUWZJZVA8g25lUIoxGD0Kmhx4+7
+	 p1OBHCB+Ri3CblTvUY6PUxsfXxdBNA2u4XtPy+C56SeMZfObAnyKd9/JmEp1B5aK5m
+	 9TJMEYD3C02tSJpsr8oJgCBOI2C3ptY1DsqUC5bg=
+Date: Thu, 13 Aug 2026 13:44:01 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng
- Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
- <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, Youngjun Park
- <youngjun.park@lge.com>, David Hildenbrand <david@kernel.org>, Lorenzo
- Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil
- Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn
- <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Hugh Dickins
- <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Peter Xu
- <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed
- <yosry@kernel.org>, Chengming Zhou <chengming.zhou@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v2 0/3] mm, swap: don't spin or flood the console on a
- bad swap entry
-Message-Id: <20260813133455.3fe770eadcbe640e6f6c46cb@linux-foundation.org>
-In-Reply-To: <20260813-swap-v2-0-4a625ccabdae@debian.org>
-References: <20260813-swap-v2-0-4a625ccabdae@debian.org>
+To: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, zhaonanzhe@xiaomi.com, baohua@kernel.org,
+ hannes@cmpxchg.org, ryncsn@gmail.com, youngjun.park@lge.com,
+ baolin.wang@linux.alibaba.com, hughd@google.com, chrisl@kernel.org,
+ shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
+ mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+ muchun.song@linux.dev, david@kernel.org, ljs@kernel.org
+Subject: Re: [PATCH v6 0/4] mm: avoid large folio splits when swap is
+ unavailable
+Message-Id: <20260813134401.a1fb632936fa3b91e454c82d@linux-foundation.org>
+In-Reply-To: <20260813075025.1406585-1-xueyuan.chen21@gmail.com>
+References: <20260813075025.1406585-1-xueyuan.chen21@gmail.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: itjs6ydtdjain7dmqd1fr3fpatfsogka
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AA54340006
-X-HE-Tag: 1786653298-951455
-X-HE-Meta: U2FsdGVkX19iH4A4Ykme42343QxMTWuu4uO0pHr2IH7FYnEXFUg3EU4JM2n6x1IAK/eVuwTsoovhu7NVmmZgtGpmvLZj4MpH5huVJNvFsqIpjuB5oUpiAd4qVBNCaISVNiZdz0xjxxGhZcPCqv67e7np4dPqkL3+JtsnrISC2YMxm31dIuRHUNMBnUf/TgA7+p7/3I2lcQjxOl7LXj50K1725Af59hBgkQGnEjy3EnJXtlnxo8PzzdD5L26SfEt5I3/QcM+ufVKCfLJJJTNgKS0hV9ZEY3KkLM//vjzdhQKhUR6QWUR9/Ib0s8FUNDNNXABeXlyW+1oI1KkoKlL/VHNSsAeu8v5TkDkg5eGEWP5l9fK92sokmFCBEm8tkSCd7TO4NhdW1JNYRNsxbXAG9OY9/GT+Pb1T29Vox6FGHxcrx3lv1wTgjHZ50Jn/zizYnKABXHeLGVZVks09AYpHXrACVNoSB8gN0uWIshAFVTf2OFsd0a9MC5SJE1QAF+Tey1nHs06oyrZdUh3oFqUq29p3SwiPIKTMvjKJQ3naDZe5CvwVLUALGNhEPvt0lXPgjsXelNO1jxLAOgW1JIdtqZbRSwB1dhNJhzyuDuzUDN5zt0yJ+7xbaj8PGDUg4ql57nhIXnUNK3lWEqB2peezS1lENMJJBjwbqzkfCbAUJAB27m9ezzi9NdtRa6gZyar31wsjdqFY70MdiBcdNDa/7KfKHEeISUsVg3eOCaMvlA84M+qSFu32ci622PUeEMrNIa6quM+q14yVTGmG+OlnnVXCHXDdg3X0A7CNdVKNjU9Hx8BvnIRRnpLICSPg0QkuYChAEpy5i6UlL0ZOAyvfYvHXkgHMasO5kww9z4c4zlYBf+rivQ8kMgtCvWtkNJjSAf4J/f3EMNNNq8toO8EjxmnqnuQZebrB4krXRXeFWgpyBuBI2psPAdRwQ2LEueH15gEQfGSXYHxGyBcBgFR
- acRepk6S
- ehci/DhLctDY74PHaQvKSN88n2sTXPYdNPn+0eqjz91LEedImYxrBy+AnBEMgYpGRTGRZVM39vDlnzPJV1nC2ssXVFA8lHCpxZf2UB8wesq/Aikr1nfB7HxzX/GBlAlWEoNfhgLf8nzbHx87XAl4kE8T9begYhOIWkrwl8tYvSKEu6a+hUgUbfRB907c1ySczVNnxkV7LNWjCDEwP/fQnHTsGhKG/nsMNCm1wFOmpBTTmoskLUqT2n8fsWFxe9QJIPyKm8A9PIl81/TkeYNgq/xNvtbg2OLltafcSRojbMvaX/dw6IX0pVOm2ZnuQGvWYDtEAEOyRjrF0YICXsJ4CgauKxg==
+X-Stat-Signature: d3rt6r1cyth3tudsarhaifmmush851ga
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: ADA2E160006
+X-HE-Tag: 1786653844-212170
+X-HE-Meta: U2FsdGVkX1+E2+rq2i4bxP3HIRsF+edBfeniDRsT+K0EcMNSFrfLu64fnn7iftwxBe3YLDAkYoJXbd85BMNCyRP0g1CTK1T5ikYHuULX7uBqNsDyjA4cX2U+WnWoPERvceRm05Tf8e2LjkGjRlTMp5mi3f2yj+jcVToTBXBn1I4v05ATsoQkCaTwkU1dMlghCOs92jiO/NAV7b1caxKEZ0qZulAsoUBzjtE571crOD5l1lDks77cvkTdgSz7TGjm/NU3GS+R5ha9a7GaEsOILNqMaVQWE1PXE3ncS5diKr1Y4I6dAEsUCVnBmLETCrxa4egHhaATbQijLrRB3U5p2e5dLy/Sd7pM1kJMIH41foLgai7np23ummfUFO5docxqdLt4LlvrXVTSkNoOgkVPtUb6YCU1/BclzQaFcMhgFGxobr4r/FMx6N9xLSWTd+2oJn64AL0iar7XxFQgFLD/NxR2Wdd3lWK94KHq+wmx313FPH86XvZQKFT3s1g/WRxr+zBcifSAgOI3+7p8Bnh8pQKsTXpcRji0PAeZ9EZLB4QCFmDCVnTXVOXHKb1fyz81LD0bSgSurLuk2x4vo47EcrGx+nAon202Gt7wCjW3BWBrkj3EU6lgoZ5stFmp6UM/oZ3dPS3QM2E9bCGUlajQ6hinksbo5IhXU9Qpg3ILbxfqrcnlLMok4/trxYKBlbpDJf21H3pyMJOB6o2a9ABNsWmRpSisM2wxxtHuRrtlHKLzGMmZjv5ZQV8wtrKKOz+tEN0DtG0O9U4QZ6Af4tnOnPRzFvGrXeq37P/7RALVeY/7fZcHXrc3YYMVLKF4hZWATJ0QmaC/iDRdGPQ+2IAYVc2nK8ET0z1rx+2X6CtVO2DceSCvCR2K2SooNdLL2DSUER5TcHAyjyisq/XvEeS4vwB5UBgR72ER66DyN4atoJ8bu4GcuJMsBn4M6JSDrhkDvjcqjrMLrY4ccKLN+MC
+ Jq0fQGHb
+ Dg98/YmB9DjD1Njy1/ZOHejL8JG6Re59eVBXoV+qDsM0HWFsmss/ypNbaQXSLGfX9c3D/bpZlYHTGS0uS8T2i3f02naBm37WUQY3M7/Hz4J7isJzr6JYQ/ULg4Gnguf+a45ii2c55X95jia96JfAYf+ws+MW5kifipG4b8b9tXVCk9aczKlEUrmNP8fqdmHHfNSBHv3VmVqb/7M3h6BCm6T1teexUXmTzznhAJpgBeM7IlNWDHAaKS/LziCjraKld4uDRcWhIi9HXGUxzIBlkFHNm3jDkhJtmbMfPEw2OAguxwloSdZzrjivJ1Qkms8Pz81LqL3AnCpTWwTUj8jtD7vcchwzCSVP9WOOM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,85 +95,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 13 Aug 2026 03:02:19 -0700 Breno Leitao <leitao@debian.org> wrote:
+On Thu, 13 Aug 2026 15:50:21 +0800 Xueyuan Chen <xueyuan.chen21@gmail.com> wrote:
 
-> I've seen some machines at Meta fleet that show the following type of
-> problem:
-> 
-> 1) It gets some weird warning:
-> 
->   BUG: Bad page map in process khugepaged  pte:f000eef300000017 pmd:00000067
->   addr:00007f57c0a01000 vm_flags:20200073 anon_vma:ffff88829af7c340 mapping:0000000000000000 index:7f57c0a01
-> 
-> The corruption is most likely the collapse/PT_RECLAIM race fixed by
-> commit 366a4532d96f ("mm: fix the race between collapse and PT_RECLAIM
-> under per-vma lock"). But this series is not about this one.
-> 
-> 2) Then it floods all the monitoring of the fleet, sending the same
->    message in the loop, crashing the our fleet kernel monitoring
->    subsystem (which is the part that I am interested in protecting)
-> 
->   get_swap_device: Bad swap offset entry 3ffffffc043c5
-> 
-> For instance, in a host today it logged 6M in a few hours, and it is still
-> going forever. Two things go wrong.
-> 
-> 1) get_swap_device() prints unconditionally, unlike print_bad_pte() next
->    door which suppresses itself with is_bad_page_map_ratelimited().
-> 
-> 1) do_swap_page() returns 0 when get_swap_device() fails, so the
->    fault is retried, reads the same entry and faults again.
->    Nothing in the round trip changes the PTE.
-> 
-> Trying to fix it in a naive way:
+> This is v6 of Barry's original RFC patch, "mm: Avoiding split large
+> folios if swap has no space":
 
-Cool.
+Thanks.  It looks like a nice patchset and it comes well-reviewed.
 
-These behaviors sound pretty obnoxious.  And the patches are quite
-simple so hopefully the swap maintainers will make quick work of them.
+However it's super late in the cycle so I'd prefer to defer this until
+after 7.3-rc1.
 
-I'm assuming that users of earlier kernels will want these things fixed
-so please let's work on identifying suitable Fixes: targets and
-deciding which of them should get a cc:stable.
-
-
-
-In a spirit of experimentation I asked Gemini to identify suitable Fixes:
-targets and it said
-
-[1/3]: Fixes: 122e201211e4 ("mm, swap: get_swap_device() to get reference count of swap_info_struct")
-
-[2/3]: Fixes: 122e201211e4 ("mm, swap: get_swap_device() to get reference count of swap_info_struct")
-	(and it complained that this patch doesn't fix anything)
-
-[3/3] Fixes: 122e201211e4 ("mm, swap: get_swap_device() to get reference count of swap_info_struct")
-
-And I cannot find such a commit anywhere, so wtf.
-
-chatgpt didn't give me anything useful.
-
-
-
-[2/3] is "no functional change" so ideally it simply wouldn't be
-present in the series - we should aim for minimal changes when fixing
-bugs, then leave the cleanups for later.
-
-
-> PS: Sashiko flagged several pre-existing issues, and get_swap_device()
-> returning an error opens the door to fixing some of them.  For this
-> series, I am focused in landing the basic cases first and build on top,
-> if needed.
-
-Yeah. probably these are the same issues:
-	https://sashiko.dev/#/patchset/20260813-swap-v2-0-4a625ccabdae@debian.org
-
-
-As usual, they're all mishandled error-path things.  It's axiomatic,
-really - nobody hits error-path bugs, so they never get reported so
-they never get fixed.
-
-otoh, now that these bugs are out there and known about, it's possible
-that a Black Hat can find a way of exploiting them, which increases the
-pressure to get these bugs addressed.
+The changelogs aren't very clear on the overall benefit to our users
+(please address this), but I'm thinking "minor".  If I'm wrong then
+lets consider -stable backports and suitable Fixes: targets.
 
 
