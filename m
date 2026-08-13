@@ -4,100 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 352DBC5CFCF
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 16:23:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 732DCC5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 16:33:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34F576B029D; Thu, 13 Aug 2026 12:23:56 -0400 (EDT)
+	id 66EA86B029C; Thu, 13 Aug 2026 12:33:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 329196B02A7; Thu, 13 Aug 2026 12:23:56 -0400 (EDT)
+	id 646FE6B029F; Thu, 13 Aug 2026 12:33:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 264306B0543; Thu, 13 Aug 2026 12:23:56 -0400 (EDT)
+	id 55D1D6B02A6; Thu, 13 Aug 2026 12:33:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 07D806B029D
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:23:55 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8107E1C0974
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:23:55 +0000 (UTC)
-X-FDA: 85096767630.20.DFB502A
-Received: from mta1.migadu.com (out-25.mta1.migadu.com [95.215.58.25])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 563CAA0003
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:23:53 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xD3qSirc;
-	spf=pass (imf25.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.25 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 382A36B029C
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:33:09 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99AE6C0216
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:33:08 +0000 (UTC)
+X-FDA: 85096790856.29.607D319
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 64CADA000E
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:33:06 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=XoqBic57;
+	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786638787;
+	b=jKOZb5Bsg7Tw/HE9N/ALf5i24MwQu3wwg2Wqh5OUjYzCUJxp+1FzzHFvBdrrlDhciYVzwa
+	3+1P6sG59OgSbl5YbU+18BLiCbN2c4NMHFy/A2RQF+ncGCfCgZ3wzSpOa+5PI8+gqLYyI9
+	6cE1VL5Ax48Gm50HhlR75BcWDKoXvs0=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=XoqBic57;
+	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786638233;
+	s=arc-20220608; t=1786638787;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ig2gtwEZ7YEv18caEyN0/dCFh+D4Oeu5ya2HHQfIC7E=;
-	b=QrDfDmcpEzn827zvtSoeNgbBm/Q/sMAVs7dUyV/M2N5j4nSnRFuS/zwnG5qFQj4bNBCNjn
-	foDtFzhmTlnfdUdSvF01RQ/K/URbkldj50A+cZOYLm7wVl8NieG/tQBJSqGPg78oF7iIGK
-	vw6Ff7e4PPaiVkPS2NJ0MSve8OrCXfs=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xD3qSirc;
-	spf=pass (imf25.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.25 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786638233;
-	b=HAO1cErPKiGOtNXfsheaXxNDEUVxlordXZlWTwDJq9rJswI86/MslpUKTfmYSNm6+Geega
-	bhc356tJOO9wJOzykHiVX3lxH9uBhomHhzglPHSOWY1CZ2h+EUaL8pOAL120a69xnzUoot
-	KgZw1GEgl2v9WKmuvOH17GMgip3oVhk=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=b8g8o1EPbroInUM8DUJk/BET1LeblPQuGgrDZpp4Q4k=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786638231; v=1; x=1787243031;
- b=xD3qSircX7iV4urAj/Q6jf8IcQBOyniKXqSSGVVtNhVQQBmXLTpjOWNFPrsFjcjjir4/wTLz
- YRlKZDY1oJOHgUsVdYXsMJks0e4hyTYqPb656Srao30SlXOl5kxUgUVDmZrzyrgkCMSgeDemJ0B
- 5ZBIKgY1l4esz8tsEIOb1ZsE=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (77.97.51.77)
-	by smtp.migadu.com with ESMTPS id 394f813be1b9a82f;
-	Thu, 13 Aug 2026 16:23:51 +0000
-X-Migadu-Flow: FLOW_OUT
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 13 Aug 2026 17:23:46 +0100
-Message-Id: <DKNYE6DOGOPF.34MEA11Q7ACZR@linux.dev>
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-To: "Yosry Ahmed" <yosry@kernel.org>, "Brendan Jackman"
- <jackmanb@google.com>
-Cc: "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
- <dave.hansen@linux.intel.com>, "Peter Zijlstra" <peterz@infradead.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
- <david@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike Rapoport"
- <rppt@kernel.org>, "Wei Xu" <weixugc@google.com>, "Johannes Weiner"
- <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Lorenzo Stoakes"
- <ljs@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <x86@kernel.org>, "Sumit Garg" <sumit.garg@oss.qualcomm.com>, "Will Deacon"
- <will@kernel.org>, <rientjes@google.com>, "Kalyazin, Nikita"
- <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, "Itazuri, Takahiro"
- <itazur@amazon.co.uk>, "Andy Lutomirski" <luto@kernel.org>, "David Kaplan"
- <david.kaplan@amd.com>, "Thomas Gleixner" <tglx@kernel.org>, "Patrick
- Bellasi" <derkling@google.com>, "Reiji Watanabe" <reijiw@google.com>, "Sean
- Christopherson" <seanjc@google.com>
-Subject: Re: [PATCH v3 07/26] x86/mm: introduce mm-local region
-X-Mailer: aerc 0.21.0
-References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-7-6f5729aa9832@google.com>
- <anES7O7T_PN2bV0v@google.com>
-In-Reply-To: <anES7O7T_PN2bV0v@google.com>
-X-Stat-Signature: kn5zmhnpcfp7y34bxqpmckstkw937yqf
-X-Rspamd-Queue-Id: 563CAA0003
+	bh=f88pVlznjU4eedBUyobQ8mnUcw0dBsZ7WpYkkmcfPr8=;
+	b=F2OPPOqq+G9PRsa8OqcdrK6+b59NqnOd0tZ1pqpssvczeaD0cYqcG4cPB5DpfZs9em6CfD
+	piubN7BY6LphrIVHHboshIckDkojnw2ut6jT7ViCSYkxOGfM/EFFe99XF2cGZHM1Ycnl9W
+	xTz22+LQ5VRXSheoHzCaBMem6yhueT8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=f88pVlznjU4eedBUyobQ8mnUcw0dBsZ7WpYkkmcfPr8=; b=XoqBic576JQC205dwdswzqlh1C
+	BycP0xBQ8Ku3miNJdlvx4wDw0BzkIMcEhfDtqrCjhWQjp/2CpMnmmxhLUBcMBledxDQ5YxfOzQHWY
+	PEl1UtWWOaJa3VCF55Kj6c5iSVHgw50jZZrjnQmdUKKKDy+DE2/MyLRUajBXjORWjCL1XBbOU0XGy
+	e7wQ5KM/EpgYypZjp/Rvs/siS96FzH66oKnNawl+HY/03B86zQYjV6pag0zhtmtURumXMyPXWePYd
+	5DOx/nyaL3DiM3H85WK3nXcJ3GhJ85JXCIRPUlFhN7uYq9SHX9MDDYSAMmqqBwn20Of7VPm8ZWOay
+	fkwJzHfQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wuYMZ-00000003rfO-2GnM;
+	Thu, 13 Aug 2026 16:33:03 +0000
+Date: Thu, 13 Aug 2026 17:33:03 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>,
+	Jiaqi Yan <jiaqiyan@google.com>
+Subject: Re: [PATCH v9 11/15] filemap: Add hwpoison handling to filemap_read()
+Message-ID: <an3xv6Hae6g3aHCh@casper.infradead.org>
+References: <20260805210557.1118966-1-willy@infradead.org>
+ <20260805210557.1118966-12-willy@infradead.org>
+ <an2e1j3C_4DA5KXK@pedro-suse.lan>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <an2e1j3C_4DA5KXK@pedro-suse.lan>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786638233-223610
-X-HE-Meta: U2FsdGVkX1+DSZ/lwqaNJhdoIqmUThnlMpBcxVy9CX4iPQJSRxMnkXZqGuDPlyY2I5MjQKqSg2HzamQ7HXHVnwtgTNcQC3nCpQRc9694fbCWjNKZC419z9MuFhzNyME9X88ugkNQfTIgxUlzP/ELMC8P1XCNLR7HG46uRtCV2mmjBX+jP6Toe13q2xz/hxZ15ZMhiHtJPWdTv8VOVSQcdNCTSKv0mlcDOWFqkL8fbA4GZGsgVY+tx0Xyp+leHFMsuaq8m6RiPbhPNQV+pCUd+KCaj9vOkCyipX2cz+CcmNtziBabvyF2KuHXu1b1SguU0T296m0MhC+mHwuNG8atd4kx1g1vUSQFpo1rOi50pnl+J/3HTUURG6G9zB65D6bKShxEnqPRtO6KCXsdjeVmRVp1StwarRHMClUV/AZOqhz7sjG5/9MUmyL2aV+4n6g0gwDGvmUfO6VFl1vXO3ki6tEV5g9m212oyzv1V9bZlqb0LRpF9WeaCNMhiuOgYHOKxGANt8VJxh8/UTEF5sBvkRsgwRDusCVlzMyoHbnoiRO2KgmVOIA15aVyhUMALpK8MriHLXCXufQXGz2zVYZ10Ljsz9zg4VNTWA2OZOgOwrNA2ojRAElycpxG18GyrVz+bhGtz2e9dGk6hLskWWKdYWzQR3rDLeFEyQusTZ87QsPLjtwqsH9oxwiBsVSgTD4t8trC1DkyyAEc6xgbpW6S8qJpMLyuuBu+vXU3jIRnUNY2M8OtL5lCs5L6DJXkiRiCgZulKKna83eXS01tuKplahb6YbQC/EooGpivP3gcjQc4eTAG3yafGoSvA8016+Io/UtbpLri0AcyJTClAfpod5mJ/wmq4FZYQaNk0IAZVWnES9AQ8lzRiVghR4jCYoKSCr1evBFBm9d+euOmd5ztnEbisZivw8Jy9purdu7z1Ifg4JRlf2lcBS/oVPiNIo+eCYifWd9bz+607BiqVmT
- RmqaADzh
- n03CPTpvG/da5YSYEresLy7gm2DJeCumvva+tMtY72euAi+ypscrRndF+0/zGNr9sXgk3FooRejAyQwHbZPQDEfc1G1sbi8Xl3UBk/J4Ywvorh9GzT56ti9lTV5aNjELzibRtExccRcnht6SkVW/756yVQXgWMmo6EadmVxwQtFrQD+1Adqzh+Vm0C6lpykwScRRtirXirpN5ysGNx0EUSa/C3gwtfq6E7MVXCehK2YN1RgKkwf7bc67SLhENHwcUwJ75gewuNZQ5nY2abiZOqu5tLjp2AA1y3rBr/lUs4EUuHncuf9EdDe/B9g==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 64CADA000E
+X-Stat-Signature: 7e4hpgaudiihjhnhyies7jqg164ey4f3
+X-HE-Tag: 1786638786-519558
+X-HE-Meta: U2FsdGVkX18+0McuAs1uBKjuQj3xKyDKdLITkwQ+br/kr9pq6eeI+rgYZugFYM43OBv9HYj9EoE0z/da5m7Pv3N9ciVq50SmwpgPF0ahfNndoJSCQv/cLujg5fNK2H6erFCxWqoU0mpZ/G54f4W7sQ2+IevnLmVOYht0A5c2DtVmw+vygd1374vZV9uSJWKxH27LmzO8afBgAY4qOC/XfsxF+qgjq46ol5o0qyvOAc2KMz97rw1+H3FRdzHFQx7iz4p6mm535Vs4OwPhZ7+tQmhHdDn11I8lWmZry/Wt1d945Q0K9Glp9fxTaIApjWepc/nbMP/jZCMspG+ZGHGtB8gqarKe6JMNUZra2YuosQH/u6RlRKf+tiy0C+/Mxwxwn9+u5EHpgJL4lMVPSkx8kkVsfuJY2nfCthbDGDzw6EmD9YN7a4eqrhAznNO2Fhpg1Ce4T4C48fitT4toTVJj1oPCuigk+CakwnQx42yelVit5FIqhgY0jxJfvctQgvA7lhh3nMxpgTmNIzWi+cxszXSQ35KGwH2vXqw0BCrEq8cjds3I9JpRkCJTusuu29z+VQGeAh4xwvj4ojXPkPfoHMy6EfnqqUFKKxFQ/AVTu/2u6lZJ7RqfbnRnHHeT7Z6PHcDyNlNRV3yioN+nE3iX3d8ZFtT6+zrx0z2nqx03H8d+r/J5e7G4WV04YnC/30+XrkId3e9zzbX7gb15eXjLD2OXvMznQlEbUnb9OT4fZF/lN5WakHLPLvrp3qcnrMo+tZ2+5SdO0pr9oxQ0ko8eb1eGKGrcZzMHgCg09B+/tq2FZYmjeoExilZ1QqooVx59RB+KcEP4uKxGuaPq6CW9dZHvMWcd2JOwxss+ghK/BU0MtI/NjWRs3GI6pbDFRVeDA1XFmks4+xbeKnCiwzKoAEVGrMbOPRlWsrwSfTIYj47m80nKdnTusg0pImfcWf8pkl6i5p34dItKmr/3Bac
+ n+2xdvyl
+ HVvvYza1M3pHE2bXyBMFdwtREDUjAVMtYO3NOHZmMpw6T9DeoS+iBkvivGuV9itIIrexv3SkOt7IcrX3/8bRyLhBTySHDKBD3Gc9ol4EZiq0jWwRfEC4F3lml9U3XjwOyVl2XlaY/OFuzhlK5xRwS1yLMlt/nYc5pDmCryQCP/uR0OYnQrDBLF1vB3KKpF7vxw8YSCa3xL1u1AdbkQxskvCUuIaDe5xrF1SpssTp3IOCsEDwu0nM1dq0LVXtp1ah/04K+Zoyh0VeEby2az1X5TuPNQTpqQtpTCuHfbN8CaYclUk6KTufWrd7LfQZvguzVuQJ6ZOZ0bzAbSTZBxQAGWNfntF588eUxst4aeLbMtAkqw46kq39qAZZ7vRWTx8yQi+dVDzePw9npSno=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,172 +98,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon Aug 3, 2026 at 11:29 PM BST, Yosry Ahmed wrote:
-...
->> +#ifdef CONFIG_MM_LOCAL_REGION
->> +static inline void mm_local_region_free(struct mm_struct *mm)
->> +{
->> +	if (!mm_local_region_used(mm))
->> +		return;
->> +
->> +	struct mmu_gather tlb;
->> +	unsigned long start =3D MM_LOCAL_BASE_ADDR;
->> +	unsigned long end =3D MM_LOCAL_END_ADDR;
->
-> These declarations should probably go at the beginning of the function.
+On Thu, Aug 13, 2026 at 11:55:44AM +0100, Pedro Falcato wrote:
+> > +static size_t adjust_range_hwpoison(const struct folio *folio, size_t offset,
+> > +		size_t bytes)
+> > +{
+> > +	const struct page *page = folio_page(folio, offset / PAGE_SIZE);
+> > +	size_t safe_bytes;
+> 						    offset >> PAGE_SHIFT would probably be more idiomatic
 
-Oops, ack.
+$ git grep '/ PAGE_SIZE' mm fs |wc -l
+116
+$ git grep '>> PAGE_SHIFT' mm fs |wc -l
+656
 
->> +
->> +	/*
->> +	 * Although free_pgd_range() is intended for freeing user
->> +	 * page-tables, it also works out for kernel mappings on x86.
->> +	 * Use tlb_gather_mmu_fullmm() to avoid confusing the
->> +	 * range-tracking logic in __tlb_adjust_range().
->> +	 */
->> +	tlb_gather_mmu_fullmm(&tlb, mm);
->> +	free_pgd_range(&tlb, start, end, start, end);
->> +	tlb_finish_mmu(&tlb);
->> +
->> +	mm_flags_clear(MMF_LOCAL_REGION_USED, mm);
->> +}
->> +
->> +#if defined(CONFIG_MITIGATION_PAGE_TABLE_ISOLATION) && defined(CONFIG_X=
-86_PAE)
->
-> Would it be clearer to have nested #ifdefs instead?
->
-> #ifdef CONFIG_MITIGATION_PAGE_TABLE_ISOLATION
->
-> #ifdef CONFIG_X86_PAE
-> ...
-> #else /* CONFIG_X86_PAE */
-> ...
-> #endif /* CONFIG_X86_PAE */
->
-> #else /* CONFIG_MITIGATION_PAGE_TABLE_ISOLATION */
->
-> #endif /* CONFIG_MITIGATION_PAGE_TABLE_ISOLATION */
->
-> Maybe not, just thinking out loud.
+it seems relatively common.  Personally I find / easier to understand
+because I sometimes get confused between left and right shifts.  I
+don't think I've ever been confused between multiply and divide ;-)
 
-Hm, I wrote it out in the editor and no I don't think it's clearer. I
-think as the reader it just means you basically have to reconstruct the
-&&/elif in your head since you need to see this as a "three-headed if"
-for it to make any sense.
+> > +	/* Safe to read the remaining bytes in this page. */
+> > +	safe_bytes = PAGE_SIZE - (offset % PAGE_SIZE);
+> 			similarly, offset_in_page(offset)
 
-...
->> +#elif defined(CONFIG_MITIGATION_PAGE_TABLE_ISOLATION)
->> +static inline int mm_local_map_to_user(struct mm_struct *mm)
->> +{
->> +	pgd_t *pgd;
->> +	int err;
->> +
->> +	err =3D preallocate_sub_pgd(mm, MM_LOCAL_BASE_ADDR);
->> +	if (err)
->> +		return err;
->> +
->> +	pgd =3D pgd_offset(mm, MM_LOCAL_BASE_ADDR);
->> +	set_pgd(kernel_to_user_pgdp(pgd), *pgd);
->> +	return 0;
->> +}
->
-> The code above bears a lot of similarity to the LDT code removed in
-> patch 8, and reviewing them separately is annoying. I realize that they
-> were a single patch in the previous version and Dave complained that it
-> was too large.
->
-> What if we go a different way:
-> 1. Move the LDT functions that will be repurposed to mmu_context.h.
-> 2. Rename the functions to the mm_local_* domain where needed.
-> 3. Actually perform the switch for LDT to use mm local region.
->
-> Maybe (2) and (3) should be combined, depending on what the git diff
-> looks like.
->
-> I think this will make the diffs much clearer, for example
-> mm_local_map_to_user() mainly differ from map_ldt_struct_to_user() in
-> preallocation.
+yes, that's easier to read.
 
-Sounds fine to me, let's try it out and I'll come back here if it turns
-out to be messy.
+> (yes, no codegen difference in both cases, but there could be a difference
+> if the ARM dynamic page size stuff ever moves forward)
 
->> +#else
->> +static inline int mm_local_map_to_user(struct mm_struct *mm)
->> +{
->> +	WARN_ONCE(1, "mm_local_map_to_user() not implemented");
->> +	return -EINVAL;
->> +}
->> +#endif
-> [..]
->> diff --git a/arch/x86/include/asm/pgtable_32_areas.h b/arch/x86/include/=
-asm/pgtable_32_areas.h
->> index 921148b429676..7fccb887f8b33 100644
->> --- a/arch/x86/include/asm/pgtable_32_areas.h
->> +++ b/arch/x86/include/asm/pgtable_32_areas.h
->> @@ -30,9 +30,14 @@ extern bool __vmalloc_start_set; /* set once high_mem=
-ory is set */
->>  #define CPU_ENTRY_AREA_BASE	\
->>  	((FIXADDR_TOT_START - PAGE_SIZE*(CPU_ENTRY_AREA_PAGES+1)) & PMD_MASK)
->> =20
->> -#define LDT_BASE_ADDR		\
->> -	((CPU_ENTRY_AREA_BASE - PAGE_SIZE) & PMD_MASK)
->> +/*
->> + * On 32-bit the mm-local region is currently completely consumed by th=
-e LDT
->> + * remap.
->> + */
->> +#define MM_LOCAL_BASE_ADDR	((CPU_ENTRY_AREA_BASE - PAGE_SIZE) & PMD_MAS=
-K)
->> +#define MM_LOCAL_END_ADDR	(MM_LOCAL_BASE_ADDR + PMD_SIZE)
->> =20
->> +#define LDT_BASE_ADDR		MM_LOCAL_BASE_ADDR
->>  #define LDT_END_ADDR		(LDT_BASE_ADDR + PMD_SIZE)
->> =20
->>  #define PKMAP_BASE		\
->> diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/=
-asm/pgtable_64_types.h
->> index 7eb61ef6a185f..1181565966405 100644
->> --- a/arch/x86/include/asm/pgtable_64_types.h
->> +++ b/arch/x86/include/asm/pgtable_64_types.h
->> @@ -5,8 +5,11 @@
->>  #include <asm/sparsemem.h>
->> =20
->>  #ifndef __ASSEMBLER__
->> +#include <linux/build_bug.h>
->>  #include <linux/types.h>
->>  #include <asm/kaslr.h>
->> +#include <asm/page_types.h>
->> +#include <uapi/asm/ldt.h>
->> =20
->>  /*
->>   * These are used to make use of C type-checking..
->> @@ -100,9 +103,12 @@ extern unsigned int ptrs_per_p4d;
->>  #define GUARD_HOLE_BASE_ADDR	(GUARD_HOLE_PGD_ENTRY << PGDIR_SHIFT)
->>  #define GUARD_HOLE_END_ADDR	(GUARD_HOLE_BASE_ADDR + GUARD_HOLE_SIZE)
->> =20
->> -#define LDT_PGD_ENTRY		-240UL
->> -#define LDT_BASE_ADDR		(LDT_PGD_ENTRY << PGDIR_SHIFT)
->> -#define LDT_END_ADDR		(LDT_BASE_ADDR + PGDIR_SIZE)
->> +#define MM_LOCAL_PGD_ENTRY	-240UL
->> +#define MM_LOCAL_BASE_ADDR	(MM_LOCAL_PGD_ENTRY << PGDIR_SHIFT)
->> +#define MM_LOCAL_END_ADDR	((MM_LOCAL_PGD_ENTRY + 1) << PGDIR_SHIFT)
->
-> Any reason not keep the current formula (i.e. MM_LOCAL_BASE_ADDR +
-> PGDIR_SIZE)?
+I rather hope it doesn't ... but I do hope it manages to strength-reduce
+if it does.
 
-Er no I don't see any good reason I changed this.
+> > +	page++;
+> > +
+> > +	/* Check each remaining page as long as we are not done yet. */
+> > +	for (; safe_bytes < bytes; safe_bytes += PAGE_SIZE, page++)
+> > +		if (is_ref_page_hwpoison(folio, page))
+> > +			break;
+> > +
+> > +	return min(safe_bytes, bytes);
+> > +}
+> 
+> Wouldn't this whole logic fit better in copy_folio_to_iter? shmem for
+> instance also handrolls its own hwpoison read_iter logic with
+> per-page-copies, etc; not amazing.
 
->> +
->> +#define LDT_BASE_ADDR		MM_LOCAL_BASE_ADDR
->> +#define LDT_END_ADDR		(LDT_BASE_ADDR + PMD_SIZE)
->
-> Looks like the LDT area was silently changed to PMD_SIZE here. I assume
-> this is to give the rest of the pgd-mapped address space to the mermap,
-> but maybe we should call this out explicitly, or do it when the mermap
-> is introduced (or separately)?
+I did wonder wbout doing that.  We don't currently have the folio in
+copy_page_to_iter(), and copy_folio_to_iter() decays to
+copy_page_to_iter() immediately.  So it'd be a larger change.
 
-Right. This might be a bug  that causes us to leak pagetables on some
-platforms. Haven't checked as it gets fixed in the next commit
-regardless, but let's just do what you suggested.
+> >  
+> > -			copied = copy_folio_to_iter(folio, offset, bytes, iter);
+> > +			copied = adjust_range_hwpoison(folio, offset, bytes);
+> > +			if (copied < bytes)
+> > +				error = -EIO;
+> 
+> I don't love reusing copied here, but I guess there isn't much better
+> (in order to detect hwpoison-derived truncation)
+
+I thought this was neater than using a separate variable.
+
 
