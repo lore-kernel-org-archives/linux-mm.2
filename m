@@ -4,29 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5519AC5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 03:50:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF3B8C5AC67
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 03:50:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA3896B019C; Wed, 12 Aug 2026 23:50:12 -0400 (EDT)
+	id 26F496B019F; Wed, 12 Aug 2026 23:50:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E54C96B019F; Wed, 12 Aug 2026 23:50:12 -0400 (EDT)
+	id 21FCD6B01A0; Wed, 12 Aug 2026 23:50:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6AEF6B01A0; Wed, 12 Aug 2026 23:50:12 -0400 (EDT)
+	id 15CDC6B01A1; Wed, 12 Aug 2026 23:50:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B04AE6B019C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E60266B01A0
 	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:50:12 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3F3951A052D
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6A4A9C050F
 	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:50:12 +0000 (UTC)
-X-FDA: 85094868264.13.BA7F7E4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A8A03100007
+X-FDA: 85094868264.17.50F1FED
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D0F8740004
 	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:50:10 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="d6KR54/r";
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H3FcusnP;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786593010;
+	b=UmRxNiM1UAM1fnNTJESeMrtUbXacT3ff3HDcjDFxDx8nfNA/CEKK9uYBTth29F7hJ1JoGf
+	dWxOT+umXDSjaD5I2bbqU1CDEpZEFbBnYzasnn+Q2bydWllHOr3lHdKrQnhFUK8grX5qpa
+	WSlTYFQm7R6g03dmNkEg+VdjvVW1MxA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H3FcusnP;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1786593010;
@@ -34,35 +44,25 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a+KFNc38yAs5cF8y2PPkR2gfi2v/4V0wSG+v466VkTs=;
-	b=AzTFPVdEbHjrWfXSsa7fNrIJ45A8jP5CoU4sEDk+4sO+MT0b2+ilgZuLr4q77+Umvih13d
-	YycLP/SiI/J6DHz5w4zJflASCPYGL8XGLHtHWjSXPUa4rcb6chGuHboFFhurdwq6LJ9m7d
-	6hHu4CdShctSQ3Axfi3tKW81SdYdamI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786593010;
-	b=RNJGF3d7CVZZtb6W2AAyup7NfmYigVfbgRNLoxFxwvQDzAT03zEzfTD/ab1z90s0w0qzgP
-	agKFJSXBto8aaK/JynvB/0AgPFxB6mGzrp1BaDML1SbFiL6rvbYaJmbDf6nqum8J9TB+FH
-	i4s0sNZye7wegw48qVfmHzh6BzITXgw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="d6KR54/r";
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=AIpHwpSSS3esAV2BDnJ9BAffq+YFA4gOCk++VRGi3uY=;
+	b=eeth/bltOzI2uGAnR+Da8bW3jZQNzITMnvYyu3II9hx8GyVw5QEiXAksd5I0c+DeZJztel
+	quAa37o4jLGYmIaU8OLVLkMNrs1LSl6B8QRHhfkVUlJWlsyt/YIbd6l7LpLBY7OVpxdHc4
+	GbwKph7on2oTWJ8v/pn//qgBeQ4luTE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 09A12439F6;
-	Thu, 13 Aug 2026 03:50:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7E21F00A3F;
+	by tor.source.kernel.org (Postfix) with ESMTP id 8B959600BB;
+	Thu, 13 Aug 2026 03:50:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19D4A1F00A3A;
 	Thu, 13 Aug 2026 03:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1786593009;
-	bh=a+KFNc38yAs5cF8y2PPkR2gfi2v/4V0wSG+v466VkTs=;
+	bh=AIpHwpSSS3esAV2BDnJ9BAffq+YFA4gOCk++VRGi3uY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=d6KR54/rLJ6ePQb83TqoNr8jusNymXRiNaj14b1zv8TRr3k3J+ryDyr8d+rkhKygi
-	 U5fDBygBfVu0bhTdsz8bB7ZbWwyHPexkewIv2J+VKov83KofK4K59jFtdBY7PLpGzO
-	 um5jy0k/35nTdRW0wblktzbuZZ6qAoNe4cjdyMyrvtAiGNNsxDMCZg9rk8mDiu5Nyg
-	 orXJhay8agEVn6stcxkWGnoR+cnU1isxlDgl3uo+7xddVNIfJUqlVH+cDMo65LXzas
-	 ZLzRUvAr16bExumbamKbgV7i9en9Wb0VrlFc71DF9occwI+Dkz9q6Ki9S6wzaMa4A1
-	 o1aVT6ZpO8Kqw==
+	b=H3FcusnPSKD7eR3+hfvXu3GeDcUbm4gEBBey02p7UEbMUK8JxSmPyxQ3dGc+w2QaZ
+	 cte+MAnkoXvhiDbEXJjXUnEk9/Fy1NjaOzEqwHbCB3kouVGJIJrfdLBxnWtKVG9dks
+	 rsblvXbYZkHeHuqoZQ8sgz43sSUPnuJipKzBiRFEkPFfs9IBMXxMH1VHeDWJ/NwR1C
+	 bRUF6UHU4GNXneoDX+kDjGI5le4gJu+lTfNUmLYFSKHWoCweehU2zj/AK0yF67uV1J
+	 FDQ/mbmNjXRSR6wz2F41lTL02PLhwFguE9mPamMVlXP1+VJ2mxxPn2IXUKE1e9iv/A
+	 l6eIobiGU0wDA==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 4/4] mm/damon/lru_sort: remove unnecessary damon_call() param validation
-Date: Wed, 12 Aug 2026 20:49:59 -0700
-Message-ID: <20260813035001.97364-5-sj@kernel.org>
+Subject: [RFC PATCH 2/4] mm/damon/core: set ctx->call_controls_obsolete in damon_new_ctx()
+Date: Wed, 12 Aug 2026 20:49:57 -0700
+Message-ID: <20260813035001.97364-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260813035001.97364-1-sj@kernel.org>
 References: <20260813035001.97364-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D0F8740004
 X-Rspam-User: 
-X-Stat-Signature: qrfezx1wroxinsrygaerjhgchrm8w1n3
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A8A03100007
-X-HE-Tag: 1786593010-600759
-X-HE-Meta: U2FsdGVkX19LRTSYGPaytIhOjcKGsVb1I82dsni7JSDy6QsL4XcOKv6hTkz87ddW/uqEyYcCfxvFa7MoYY4h56pOxlNeWuMm5FyVdZVIiqB0/75Y67CXxuoZK0CT/x1NmJgAuRgsLPLpHZIhIdPocB6p87+zOwTAcKa5xRZYpT1s1Zh2EvvndadVA53cBL4j9bU/0hUM572JkfX481l7m6ihSKz5BcT4oV0/mcaDhCSCES7zOQNPaSWUMjgmmSeiezbYD91B8nZAv8+SR3QeazmKqpIVpqw1LG4Q5dkzXyxGhcCLTkC611115qmTU8bcajpmbX+VvFjPH5p/rQ7V6+SzmL89g4dzYzII6aRdFRFd3kjm5w7Tahyp0MSrcsnTBP2FBF3ZAq/5oLCR5dOB+/7eqqc/4w7zeJKrmIqo4+PuQEptJ1PtQDpS5y8mDWCMWBXQKSrclezQKh8zcJbl+R15azYx3BfjuGQucQHnQJBzlygP97koRMi1JiAM8aronJYAdME3TUsFsw3964nXDtYxnLXX1YRfHZvWTThAxrwKGnU4/fe/fiByKdhGUv68Dya1wHWQ8tesxx0EvFefzss/2JylJ8qqKnEc2ZopnBSEwUKhnAnUpAQUdKN7ofGjoEizU1tkhNJuc3ek5pccwsMXafST2v3pZr2XNhkK1ZOjH28cDChePpikohft5wKEAa1MaL46yivpgjr3/x7Li+gboZXF31To46mEZ7Ayo0t8xKq6ELRk5KHL8t0ZiSyU42eSOdpjr6oZNlsvnrVCoJXc5WyQH+TRdc9dMbDB+7w7VVhkZ5n2IWNM4ZaYJJD5ogO+tloU5jYVZjg8nXlnE66YkuqPfbft3Nj6B1uh/97YRU1uQs+Q8GzjcfeTFvOuLw/neXt/zOmUA99+3DAlA7GzNPcVDuXHgO7MPGujhe4XpCl5p6UY1hu+VJubMee9BBewYvlpB7fPkbckVMz
- MmJwoOt6
- NHPOUnEWR97k5c7C84y7Tij7TaQWvuVd8h6NKYJUBY4Z4ZDb8g9FPqd+S0RVSf/iE37v6Kh+RdqNycZ/HHQjwYXQfodCpuM0p8952pPc4iI1YOejX75XSZsyKnUrHffvsW5984dpP0NCjxfqtoWpX+IVaSXp79+LnAaYLIXw4dQ38HTJG6d4CyKWlm4LUKNmOlKozRveRSYzFyIaxuhgpnrIfIJ9cLtpp3strLa9/DSVgQPkI/l1/bAbx0zOkBNayfIuN75wMP4gGx2pGrtFgVuaymg==
+X-Stat-Signature: e6177m1bppo95uz8dzsbmkfrbty3u3ia
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786593010-391696
+X-HE-Meta: U2FsdGVkX1/uvvRCkhVR8WhrktU0mR5nD68Fdkz7ikj2ATUPvw56Fvt/40SUA7RX5Gzb/JCToSznLsU1jdFq9KTnyxWLmAfdn5aPifsw6+jaJcAlqQNtOSGtw7ZVYnuypHMIwS8Fw/6iwtIcVpFeV9fLY+PKGnwXalwTGI4CGkt9vxbejJu9U5UeoX950vmsuNW1ZX43hlFy/GdcjuRiCpU9QkOWu60iPWqwynjjlpL5nQwtxLny0Vrr6Szbp2ggNFh/XM71EBgAgq4ltfO7N9ELJ7vz7pKHbGlJ/fEDaZH5rhYonxVAgykmqoim+OyTnkJuhdU5RwthU68DIoIg0bqlVMLw4CH1J8I95buV6/O9nl6gfOEvUROrJk4t9ggMhuzLmbbATXCObS+7CmVMUg7yVMlQAMBOi5UHs1Gx91L4Nl2o/H3bw+Hur39+2ewzxEEm87rhh1YJTEiDvPht3wVjaR/IImsbsmK1VORj67xd8gNkxpklq2lKsg9G1viMcEnPz9FdDkO42Jklnwds7N6SudHmO4uaqaA7pYOeXvqcKlDFNXvCsZ+5gOd22LOhRqXTS+lGD9noIpY6xzqyH/alPXADe0hTt/Jrk7cRpURYul+Ba932JP/r3Dwvy8g25iZpCUlOtV49vBIxJdqBSK8mtOAIdYd/qUEWzE6bRPEB2EJUVCYvsjY/kOUklFx1hS+Ah24k5+egm81UcrUw18rEFYLUCYmXIszLuYZkTpTECSYUlqDgguyUVSMvbXDS0K0gaXoM4Nocxqx/DybNf47yoLjiJHAFNCGfBmU4pKsE3wKIzYpUEicRWePG7MR6SIqWrYh2cQoZQA5rZ/3XqTvDDdD1V5sLxwJUUwCpx19tPnGhJ5W1pBuJsHYQmy5LmIb7wYEINldGLQSOhN3tE8Qe+0TmoworZIsixIKo5RtdR2A8IVNqe1yrlqytvqmgwHLuWOygdzCMxvV3NPi
+ SWaWfPO6
+ AMpdmeBjMU8+2Ut0p8+amB1T2WFz+42tM6UgozIXQbxRna9KHe38UBdit72QX3PBX2+0yzypXgSldqHsITOGFMCqQZwRjKz+Is0w5BebsfnuHDTbr54QoZs97NgiPgT3eO1AmZLPPpjMaoBpQT8M2y+8mjPMRcyc7fVVrNQGSKxrG5OYnKNzCcfr1NEbSp70XB+kkJ7G1KSPj+gnr/NN3yyKtv1N3Pxzt2jpNm7AaFwj4h5A06kq7L2YG1hnPDqnIraQ4SHCgeXfY4U/NXFRg9LCa3w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,49 +93,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON_LRU_SORT avoids passing NULL or unstarted damon_ctx to
-damon_call() with its own validation.  The validation is no longer
-needed, because the DAMON core layer now handles the corner cases
-itself.  Remove the unnecessary check.
+damon_ctx->call_controls_obsolete is used to disallow damon_call()
+requests when the request cannot be served.  The field is unset and set
+when the context execution is started and terminated, respectively.  The
+intention is to allow damon_call() requests only while the context is
+actively being executed.
+
+damon_ctx constructor, damon_new_ctx() unsets the field, though.  As a
+result, passing the damon_ctx parameter that never successfully
+damon_start()-ed to damon_call() can indefinitely hang.  The callers
+should ensure to avoid the case.  Such parameter validation is not
+always simple.  Actually such bugs in DAMON_RECLAIM and DAMON_LRU_SORT
+have been found and fixed [1].
+
+Set the field in damon_new_ctx(), so that DAMON API callers can pass the
+context parameter to damon_call() without the additional check.
+
+[1] https://lore.kernel.org/20260803134646.16640-1-sj@kernel.org
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/lru_sort.c | 8 --------
- 1 file changed, 8 deletions(-)
+ mm/damon/core.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-index bd847829a9907..f25ee7326e87c 100644
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -346,8 +346,6 @@ static int damon_lru_sort_commit_inputs_fn(void *arg)
- 	return damon_lru_sort_apply_parameters();
- }
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 5882f9c94c47f..5a92e4fac6d92 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -920,6 +920,7 @@ struct damon_ctx *damon_new_ctx(void)
+ 	INIT_LIST_HEAD(&ctx->adaptive_targets);
+ 	INIT_LIST_HEAD(&ctx->schemes);
  
--static bool damon_lru_sort_damon_has_started;
--
- static int damon_lru_sort_commit_inputs_store(const char *val,
- 					      const struct kernel_param *kp)
- {
-@@ -368,10 +366,6 @@ static int damon_lru_sort_commit_inputs_store(const char *val,
- 	if (!commit_inputs_request)
- 		return 0;
++	ctx->call_controls_obsolete = true;
+ 	prandom_seed_state(&ctx->rnd_state, get_random_u64());
  
--	/* Skip damon_call() if ctx has not successfully started. */
--	if (!damon_lru_sort_damon_has_started)
--		return -EINVAL;
--
- 	err = damon_call(ctx, &control);
- 
- 	return err ? err : control.return_code;
-@@ -422,8 +416,6 @@ static int damon_lru_sort_turn(bool on)
- 	err = damon_start(&ctx, 1, true);
- 	if (err)
- 		return err;
--	if (!damon_lru_sort_damon_has_started)
--		damon_lru_sort_damon_has_started = true;
- 	return damon_call(ctx, &call_control);
- }
- 
+ 	return ctx;
+@@ -2178,10 +2179,6 @@ int damon_kdamond_pid(struct damon_ctx *ctx)
+  * synchronization.  The return value of the function will be saved in
+  * &damon_call_control->return_code.
+  *
+- * Note that this function should be called only after damon_start() with the
+- * @ctx has succeeded.  Otherwise, this function could fall into an indefinite
+- * wait.
+- *
+  * When this function is failed, the @ctx is guaranteed to be stopped.
+  *
+  * Return: 0 on success, negative error code otherwise.
 -- 
 2.47.3
 
