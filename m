@@ -4,141 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49297C5CFCF
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 16:54:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 843E1C5CFCF
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 17:01:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C176F6B027B; Thu, 13 Aug 2026 12:54:55 -0400 (EDT)
+	id 719A86B0550; Thu, 13 Aug 2026 13:01:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEDA06B054E; Thu, 13 Aug 2026 12:54:55 -0400 (EDT)
+	id 6A21D6B0551; Thu, 13 Aug 2026 13:01:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB69C6B054F; Thu, 13 Aug 2026 12:54:55 -0400 (EDT)
+	id 56A1F6B0552; Thu, 13 Aug 2026 13:01:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AA776B027B
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:54:55 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E49B71A0207
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:54:54 +0000 (UTC)
-X-FDA: 85096845708.25.5BFCEE4
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1959380002
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:54:52 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FHeiJupv;
-	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786640093;
-	b=mXj0rMojZkEC9WBZ4wJ5hmBXpTZlILqUPMCihcTXGLlicNhqhrzSB8oXUjFs+KHM148QM1
-	oHzUfY6hi1Z2bH9OfWbPLfILmjcUsUkjyD/6c/uZ1rJ+lfcHDufR2mDEn4QwpSrJ0IdW+8
-	Xbignzgs0xvm7pPE3Ra5SLIU/qiQBZ8=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FHeiJupv;
-	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786640093;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2ADCD6B0550
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:01:32 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0FC4D140237
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:01:29 +0000 (UTC)
+X-FDA: 85096862298.02.EF0CD24
+Received: from mta1.migadu.com (out-91.mta1.migadu.com [95.215.58.91])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 31547C001A
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:01:24 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aEqHfNzo;
+	spf=pass (imf28.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.91 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786640487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YZF8aKVZrYVCh7+k16WJltKqPpEr/CkIHv01ANgxJqc=;
-	b=gfV8c0Z5A1C9jMWYNgu6QiHOZZ4V0xUXzNPOTgHwl9zGX61JVZ4ulzD/DMMZBH8B+17Y+M
-	N6uls4NUVnTSEe9lj4hsDg7kOoNsjyjeMgrhjfocTEMAMQh3iPTCU0/sDkaJqCSSgohh+d
-	ct1LWxjAp717fSDKxNHVnuE9DAzya6c=
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c1671ec8692so22292466b.0
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:54:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786640091; cv=none;
-        d=google.com; s=arc-20260327;
-        b=GF2KDLn3/1PghGMrxAwus/fQQqCKQ9WNtKmoAEx9SlcGcrSEHoiZ2pcZdtU3+QYj9O
-         hUa5MY0dMsx6he7I2pFbFgqyIaTZpF2nYy//pgaLLAZJdx41z7nFyRVy8y1Q3s9pPrjv
-         f5tVs64Gw49qkw/mNuPb3IgEjO6GAVqYOeCIvM1X0r7jTWCBswU4jmBniLhTqglsC/Go
-         xh3S1+TkVtRL0pw3zTBvvHGOgx/2+JSTLc1lPyuGhKZ6ID1d2Q46S5Cu+MLoSnuQWFpQ
-         rwd4dPxdYs8lARkG/SsAxq9WDAUUMBsGaPNzU7JRZfIlwIbzBLPi3oNG+dS8yITvOnG7
-         UZpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=YZF8aKVZrYVCh7+k16WJltKqPpEr/CkIHv01ANgxJqc=;
-        fh=ctMiu4LrH7HpDGA6W/13/okPxSD1uxAWh0a2WMBvIy4=;
-        b=fWY1UjSNN8nBtz51esZ/vNXKEi1+Qm69DQVmRcstMxCOjUSdNU+qmDXipCWF6HMf4M
-         KtOIvYLYSafcSeOEsjt7FbFinlSbTnfZFjnFm2cn0B7+zjOe4x+waooEtSCgGpenrXvQ
-         ssfm6iP+JARrChVjCkajK+Ud0Pshn37jQ3Ami9c4ziQcdh6xDI5xn9v9K3++EgXKiDuN
-         CjUr9tOx8NsQniZ+daA9tC2pyC/PXOHogx7ruFgLVubmPKCcKfVfZEV8YQ/YoBNJN7sl
-         VQj7weKjnol9fPdwRv4UnRrOHZrvlgJA6lpkEJQ/ka1M8+HIYf9M/P+SKUiz/a0EvXWv
-         Z5rA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786640091; x=1787244891; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YZF8aKVZrYVCh7+k16WJltKqPpEr/CkIHv01ANgxJqc=;
-        b=FHeiJupvD9LGe4lIQ5foKmJne5r+DWnBdwuPZ1T02O7ynFsDg9Fva2C3RawRR/qJ6l
-         n/PFfNKvKC7JL+xUgwSTu9t+T2f6uLp9C2FobBnOsofGlU46BpQaN4d0iOZJKMbBPBsP
-         0oIDOxw9efVqjnCZCG7/Pzjd8vY6/bEQHs87SgixX6WwcyT7UcMX3RtfS9Z1oq+JHKoy
-         8BzqpKIua1JJPT9zu3R/rYMkFZcaA2gHCB0JAXvVItHEpo5m1GX3BWBqIuoKe+MksaMD
-         pe30IUJaMRW0UxfS75tBluMx4Jt73c9NU9k9yk1c9N1mLWkMrcI4rim+2SKhRgcSABVV
-         3TTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786640091; x=1787244891;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=YZF8aKVZrYVCh7+k16WJltKqPpEr/CkIHv01ANgxJqc=;
-        b=f4Bs5fft7eRBZfdCpQWtjwANCrtus8/Tw9CGv072Gui0atN2DlybtlmbgLi6KPCeQT
-         94Q7nKZqdp4W8Cy5z1AIaMOGJpK44owVM27ofIOpeR/P5i5BT8XM0yKp924QhE/6aQLr
-         /d9NJcEGZFRQ4wF8Xiih411G7RVb41KVxKEmVY0qqD2w8r15hrbSkcxYTE4XLPr9QrCa
-         jtrgZCjCLT4C8vt0KMPuGoeF6uxlce8nVhb0Ce9YYRI2gHlgsTxCbi9pW8rf4sEkwHV9
-         oJb+pskKFQnArj2i8HfxeHdch4dyqQXjoB9oW4UfHMc6yEcQRkM7MudAd3ZYIJZRBVFk
-         lPRA==
-X-Gm-Message-State: AOJu0YyM+4CkVQm5oiUNRiZZqIFSiiw2K44yrJYW0jsoQ3kKGKm89bDt
-	7a3wP5xliI0QlIGzYpTpzF99GtZH0YKFSYStLxXh3bGlJFzf23Bib0j/sjLF+SXcanTbpwRR9aJ
-	5JKFda5mfi64ii5kzrvUl7bXb85BzntA=
-X-Gm-Gg: AR+sD12h1AR56Gk3tYQhgKWbvPCUoF/yW1CLE8E9vcgAyMKgcT132EFETUzKiquR46A
-	EHmSSA3ixg4DM2vSR8Ws5G/Nt5uTge287qHfhuCVKKkZV4ZCcJz497jMDW2oyU/zZZV2bAEtXZ8
-	Oy+yfg9Cj7hYz+PhBRORD2ZUBfbDqYEJJEFS6Q+AfxBVa0i/vbvLrysO+F87XzMlfUe+IE0tf0z
-	K6+dMewCqdIVbQw1CAsO/oPuwuakEzBd/GxAe5dTHqRBYVCeHiLRqtCChSJFwSRu/rEY9HMeWFL
-	Znmm8W0Vo8e8Vmn9cuUY0q3+UdrM3tZ4RfOm9lSvNU8BJ8BzYu9ECtrPCZ+nww3JwgM+s4kidox
-	Jlw==
-X-Received: by 2002:a17:906:7947:b0:c12:631c:67c6 with SMTP id
- a640c23a62f3a-c2108ee3e29mr325611966b.1.1786640091317; Thu, 13 Aug 2026
- 09:54:51 -0700 (PDT)
+	bh=KU+CKGrQ53mm0dGwujJU6921+mu5bMMOKfvhSUNRTzs=;
+	b=wXhnLGWfx75uoBp/zGeo8LcQ78UVTFwH1SYIlZYu7591NGwZvV9pvKYPYKrYJdnAiTJXP2
+	6nz8/mMLnLGkFEuVhoUfutF8qX1eFG2W0D5fb7gTYIEIkPg4Tvb0Tk/hTUW3a2WC4RO2GX
+	FlAa5ykpnl4QM0pRbF8bEIvnjIMIZJ0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786640487;
+	b=w3fmWTxrnoVgyzmyJR6iqnuk4VqNkhcZhVegfDG3ZNF6tJWIMeHXkFr0feUp/6oTCRPf+R
+	0Md6lgpU1jBoR3+ZER5BB0Y1s0DGVC9V/tW9vtS1lf/RUbVNooApEzbFqZJqTe4+DlslYn
+	3/6r6zYaHvpgXVJ/nwgVxM1LUJ963fU=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aEqHfNzo;
+	spf=pass (imf28.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.91 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=IC8q4K8Uk8A6ZcbO1N8MmnhqRx/RYea67hNdi4ByC2M=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786640482; v=1; x=1787245282;
+ b=aEqHfNzoIvCDfrWkqYihGXCwGeugeiLoRs6zokTUSwl/EhRs7jkms7OF91Nz1nZ0rK6bxVhw
+ IEKDH5Q/OSwY44D625i1yd+TsPwpE+E14omR5Chvrep8JuvHlV/xpn7r9R6d6z6f3OMIjxsIDLb
+ ZzrFAC9CwazpCqL0KcyRTdVw=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (2a03:2880:10ff:42::)
+	by smtp.migadu.com with ESMTPS id ac65b9794b46e62b;
+	Thu, 13 Aug 2026 17:01:22 +0000
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 13 Aug 2026 10:01:19 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: kernel test robot <yi1.lai@intel.com>
+Cc: Usama Arif <usama.arif@linux.dev>, oe-lkp@lists.linux.dev, 
+	lkp@intel.com, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Suren Baghdasaryan <surenb@google.com>, 
+	Tejun Heo <tj@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org
+Subject: Re: [linux-next:master] [mm/vmpressure]  ea928e9e18:
+ stress-ng.mremap.ops_per_sec 36.2% regression
+Message-ID: <an34C2N-yqfok2Nn@linux.dev>
+References: <202608131743.c6a7dda4-lkp@intel.com>
 MIME-Version: 1.0
-References: <20260813-swap-thp-cleanup-v2-0-d2ee48c6aa49@tencent.com> <20260813-swap-thp-cleanup-v2-2-d2ee48c6aa49@tencent.com>
-In-Reply-To: <20260813-swap-thp-cleanup-v2-2-d2ee48c6aa49@tencent.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 14 Aug 2026 00:54:14 +0800
-X-Gm-Features: AUfX_mwH8tDMiLjXi-Bmpa6vH5hndTs5qrgc8m85VxWXOLxwtPN0GXklvgSZjAg
-Message-ID: <CAMgjq7AG4BLuDwJut4rTPyi1_T=CbhjxM0xZFaKjddQu=ZHwkQ@mail.gmail.com>
-Subject: Re: [PATCH v2 02/17] mm/huge_memory: fix rejection of swap cache
- folios with a mapping
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>, Shivam Kalra <shivamkalra98@zohomail.in>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202608131743.c6a7dda4-lkp@intel.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1959380002
-X-Stat-Signature: q3q6n4snhdrpq7k6mwekos56qik13tbk
-X-HE-Tag: 1786640092-516778
-X-HE-Meta: U2FsdGVkX1/K2gK1OBtrnJwSOURjhswDhzr+K6YKA+hnjbdyAagsD01zpHYPF9U+groI4gs467pE24KPoC47F3Dt5/BINz2oxaJOpOjqXcB+/nXpPcTLcJxxR4ccobu/t5LwZvVYwDc+nZmhVv7DW0/RWhtXuwKaLQWobJDb2uITckb0tgXyCSRAXajj7EvtRaTsxNYwKU/nmnH5Pp+hYUJyqyzeVEFj2OeXn/uXsH0LuoL0GFT1+jr2bmj4wipmNvWxLVCK92xJPIZkf0a6epE6l6+MIACPxkjyAxBS+8DQU2isuPRY7R5TDMTUXWnDntEoY4Z0pkSHdSNMdfkGnyLPU9a+viX42KVsMj2fAB3Y2OTCgu7ez9+wo1AHy+L8eNGOGViFvGjYOgOhrhBOTDEBnwtlb4G1c9w/USliAXnSDHeq3x+zic+KCHtzUogHsHuY0X9p4FzK+Vw1ACoXeM12uHGThWwb1YSRxaHiDLxdN1EgmCwyWWd/OCGOseqpqIw5q4lVUENQr3FxqeOibctV451kiN6FkN6VhK+sDUe5CMdPPnHwwsKQwQE0Homns3PUwdB7ci7o5Um1xX0QsTxxZ7xX5BMqH/YZS8C8A6oyqCkyP+5qilS+0av4vD7LJK+LzH5ytapzlodlBgfbiDnSC5jLkSeMoe88XCehKCKj+y543NgpMdWdtqBk5C1/lIXbybT3MCnlXhAUD4CDncUpw47yXpxM7G0SyukTBSZmJ7FPLJALPwjBqHFdxjmcYHj+taL4Y2/9/rI/mtAiiHD8ISfmTZd6c7iqKcFw/8M8W4RYidu3Pd97nHAr1nXuzzBb20jhmcK35jvsVZ+M8NzrbYwmpw31OI8u5SNVSxUj+kPaWg4fw1SjGKzEwD8uOVXnhPnRCCdcDMg9zsGa+XZ2oO7Avgzz8JiZAzmCxm/0RJYSnu99sCg2HWhn8QZUX6bBtTRd8jydyETMuTJ
- gs21k6Nk
- eSq+q5LJClcTqu6j+dTQrLKW/VLbLuYYlOlPyQd07O6BkF4ltzJ1VzffqhNGRoUktTXwuYg7dxFHLVIbzJq8rZnymEyEaTizH2wwdmk6FvOnLAHL2rlQ77ji1kCWiJXKHWZSQ/KJgDOfyVJWoXO39nj3ambIaOD2JJhGZElhWTj6Cd3wnjtypHRf1JhbhCD8G4FXRpiwsshGuLfK5opKP6rdSf9b2WMA0hI5CIGnzXt6gk7TR2EW8O81VjkC1TcsOEPfwwHmYFb/3nOYRss4lYcMk0cv6cpQAXLlGmanr/IASjy7KwVDHjCgop37diL3+grFZfabp+rUvCpQW2toXRTUl9lz0Ecy/6M5+5ddS4d/XgQO0W5CF2kpII4SErpxDiXpx5XQNGGPEii0EyapsbgDy2KXA4l7UTKQIaiWBrlcciUfUjev+QDYrHZypj5fkZRhhcLwt63zs3aZnNLYAljACSJbTF/VeI4/n
+X-Stat-Signature: 1pgk446xzetde5zkc1qjke4abnswta1s
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 31547C001A
+X-HE-Tag: 1786640484-985920
+X-HE-Meta: U2FsdGVkX1+nGXrR2MzOZy8tkrHVe2t2h3ZkMOLtVTFL/HXRoFXzFJ+Sii3N2ahYNO5sRw2oVl/PUFhVyfuHKHNuhK2IQSf4rzA9emxdsh8vfS6UmqJMZzVqd35UhV+pk6EAYLuE1d0XIFARDTabTHOb6a8PSwFWATQyEALIKC6sEUS6nKLSe6rb1t+UVWqDkql69qMw9l9MxYoksU82YN7cUCLoQy7L7V9LeBCuVFYZhYOdb/ZcX0w5HV+gVCmxG5gy4+IrpmYAUysy6+sOl0IDNjOEon/5PYE5ydvJJ7RRcWLNNgD0lFHN0YTVJLUvIVkDS8G2el0J1Hy2aFTLK5L1ubM+lvzkqalAL826JFVZLVw/UzFTKDHhbygLlLPbYHfw4L/A0tNY2LaUVeg6UeNFnFKEnETY9uaFk0pKjsEX+kaOQB7YHOrKBV+kACMNOwox6OtWSuV6mejgyy0KZMk4V4F9muXVux5T342gG4N7hqpD+0+rfiu7gNqsxTRifA3MgoD6a3hdkaro/1jaQu+DGcjEf0jFuQSVZVYZI8tykn4X0I7CXlR577RzGTa9Hrb2VACICha/1xpBd4sn+VF02XOMWovkHO1HpKgFMZ1XaoyJ4GeOUpJkqjD8/LE9lxqmbCRKPPX7XUJngSv/pSJOb7mFFKm7upWq1hvO+xgUBRK4JTfy3W5yQvbnks2fR/12LJ0wSq0YTFJvUVDOUyDH5HXWci5Or52HH2kGam4DfQYf8oQ5fEf8yjuXhWfoab1S6JEhHLJfHfhYi85UuMjbxgx0qoF2z5lmaHIw8cDHZAkFHdZCGXXAKAyRr/evq+Oz7xP0RiyxfJpkPB+nsI+pjykdA06Y+R6k/42CeXNhegpGww7ZNhbpph0sM4PvMFDscsoITLTHq7NHIk6cem7viUMCZ5plcthxk0IWSv+K4sDfuf95NXmUO9TqzeaXw7C8mW8xeXas9DDcmG9
+ VZMwYQTu
+ mAVC9KWKYoo7vDyHz0VKjn+DxJ1sYuybR2D+s770iDt+Z00QKGUZfY39b7YU9VZmki23GYFt6sYl4w9M5Z8yepOgv4y5Hw96GtLVRxA4HFeBSGcCpHN/r6PZppqIzQloBfjlblNjs6ViPWB5FuOK8+40q4S8tZK8J6TObNoZXa8UMsTpArfvsGwgcvI4/rnI/bR6SFzbBDEOUq92b+c8cDOp+JQkJOWXk7OoOpGHYv6/zXN/LNpUnklUbuIz5EKWAC/2c5VAis4+qx7vxQXdWsSIVaFQc53JOM14znuRhPyQLUEviUoEmW7Y7g6VLGFhjz4j/HSrViclJWJuasG4nSBubrS1A7JacdIx8E03o5N2Ltmso2PhdSwaFxhI1TdQXEHWFnBbmlYw06v8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,72 +95,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-So sashiko reports (TLDR: false positive)
+On Thu, Aug 13, 2026 at 09:16:22PM +0800, kernel test robot wrote:
+> 
+> 
+> Hello,
+> 
+> kernel test robot noticed a 36.2% regression of stress-ng.mremap.ops_per_sec on:
+> 
+> commit: ea928e9e18da682e9a5bc40aa862bff7ce5ae42e ("mm/vmpressure: move v1 userspace eventfd code into memcontrol-v1.c") https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
+> 
+> in testcase: stress-ng
+> version: stress-ng-x86_64-29ce10a2c-1_20260712
+> with following parameters:
+> 
+> 	nr_threads: 100%
+> 	testtime: 60s
+> 	test: mremap
+> 	cpufreq_governor: performance
+> 
+> 
+> 
+> config: x86_64-rhel-9.4 (CONFIG_MEMCG=y and CONFIG_MEMCG_V1 is not set)
+> compiler: gcc-14
+> test machine: 256 threads 4 sockets INTEL(R) XEON(R) PLATINUM 8592+ (Emerald Rapids) with 256G memory
+> 
+> (please refer to attached dmesg/kmsg for entire log/backtrace)
+> 
 
---- Patch [2]: [PATCH v2 02/17] mm/huge_memory: fix rejection of swap
-cache folios with a mapping ---
-commit de15de8c8cd6208f74b7fc4e795437aa367a9b26
-Author: Kairui Song <kasong@tencent.com>
+Hi there,
 
-mm/huge_memory: fix rejection of swap cache folios with a mapping
+Can you please test the following patch and see if it fixes the regression?
 
-A folio in the swap cache cannot be split if it has a mapping (shmem). The
-split code currently does a defensive check for this after the folio ref
-has been frozen, leaving it frozen on failure. This patch moves the check
-up front to folio_check_splittable to reject the split before modifying
-any state.
 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index ced400f72d43a..a6759a14e057f 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
+From 84c0b05b3bc5cf73ee66ead75aafb1ad684462c3 Mon Sep 17 00:00:00 2001
+From: Shakeel Butt <shakeel.butt@linux.dev>
+Date: Thu, 13 Aug 2026 09:38:28 -0700
+Subject: [PATCH] memcg: keep vmstats_percpu off the memory_events[] cacheline
 
-[ ... ]
-
-> @@ -3983,14 +3994,8 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
->   }
->   }
->
-> - if (folio_test_swapcache(folio)) {
-> - if (mapping) {
-> - VM_WARN_ON_ONCE_FOLIO(mapping, folio);
-> - return -EINVAL;
-> - }
-> -
-> + if (folio_test_swapcache(folio))
->   ci = swap_cluster_get_and_lock(folio);
-
-This is a pre-existing issue, but does acquiring spinlocks here while
-hardware interrupts are disabled cause a sleeping-in-atomic-context BUG
-on PREEMPT_RT?
-
-Looking at __folio_split_unmap_and_freeze(), it explicitly disables
-hardware interrupts earlier in the function:
-
-local_irq_disable();
-
-and then proceeds to acquire multiple spinlocks, such as in
-swap_cluster_get_and_lock() and folio_lruvec_lock():
-
-if (folio_test_swapcache(folio))
-ci = swap_cluster_get_and_lock(folio);
-
-if (do_lru)
-lruvec = folio_lruvec_lock(folio);
-
-On PREEMPT_RT kernels, spinlocks are mapped to sleepable rt_mutexes.
-Attempting to acquire them after local_irq_disable() attempts to sleep
-in atomic context, which can lead to system crashes or deadlocks when
-large folios are split.
-
->   /* lock lru list/PageCompound, ref frozen by page_ref_freeze */
->   if (do_lru)
-
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
+ include/linux/memcontrol.h | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-It's pre-exsiting, and THP is not supported on RT yet, so no problem,
-and that is exactly a good reason for the following patch to swtich
-from local_irq_disable + spin_lock to spin_lock_irq. So we are in the
-right direction :), and we can extend that further based on this
-series.
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index e78bc98ab229..e25d5b9a1db8 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -246,8 +246,13 @@ struct mem_cgroup {
+ 	/* handle for "memory.swap.events" */
+ 	struct cgroup_file swap_events_file;
+ 
+-	/* memory.stat */
++	/* Read-mostly. */
+ 	struct memcg_vmstats	*vmstats;
++	struct memcg_vmstats_percpu __percpu *vmstats_percpu;
++	int			kmemcg_id;
++
++	/* Write-hot from here on; do not let it share with the above. */
++	CACHELINE_PADDING(_pad_);
+ 
+ 	/* memory.events */
+ 	atomic_long_t		memory_events[MEMCG_NR_MEMORY_EVENTS];
+@@ -266,9 +271,6 @@ struct mem_cgroup {
+ #if BITS_PER_LONG < 64
+ 	seqlock_t		socket_pressure_seqlock;
+ #endif
+-	int kmemcg_id;
+-
+-	struct memcg_vmstats_percpu __percpu *vmstats_percpu;
+ 
+ #ifdef CONFIG_CGROUP_WRITEBACK
+ 	struct list_head cgwb_list;
+-- 
+2.53.0-Meta
+
+
 
