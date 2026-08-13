@@ -4,93 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38113C5CFCF
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 16:18:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 352DBC5CFCF
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 16:23:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25A7F6B0541; Thu, 13 Aug 2026 12:18:09 -0400 (EDT)
+	id 34F576B029D; Thu, 13 Aug 2026 12:23:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 231E16B0543; Thu, 13 Aug 2026 12:18:09 -0400 (EDT)
+	id 329196B02A7; Thu, 13 Aug 2026 12:23:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 149436B0544; Thu, 13 Aug 2026 12:18:09 -0400 (EDT)
+	id 264306B0543; Thu, 13 Aug 2026 12:23:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E38566B0541
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:18:08 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 773241C0886
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:18:08 +0000 (UTC)
-X-FDA: 85096753056.10.FB68498
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1182D1C0002
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:18:05 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MK0lkLk3;
-	spf=pass (imf21.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786637886;
-	b=Qpro2wO46lQ8hoymTkNM+90MVZGXpHdTpTAq+7yN/dPf4hdSapDBdw9LWimo5WfJxekTx0
-	+sw1s0RD3XNF+X9qDU3MAs9RF9WeRz2cPcCGGITK1x6iwfnX7H1zCTL1Vlk5WiasZKdeE1
-	e3YJA47L56qJ+LIgJV35/TAe5qmL3rI=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MK0lkLk3;
-	spf=pass (imf21.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 07D806B029D
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:23:55 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8107E1C0974
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:23:55 +0000 (UTC)
+X-FDA: 85096767630.20.DFB502A
+Received: from mta1.migadu.com (out-25.mta1.migadu.com [95.215.58.25])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 563CAA0003
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:23:53 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xD3qSirc;
+	spf=pass (imf25.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.25 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786637886;
+	s=arc-20220608; t=1786638233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QBKBRWns2I2cZRLW3DKc1q9hrHpjdI3rex/KjtzmnSk=;
-	b=BknhatX9W6N6PhBL0x2CKIXMFWYthAjH6TS3nNnhNxwwl5AJzSTiP0AXkSuiw1BTqWeEBf
-	csx3DQXIMuREXWuDpA8a3C4NZvNUzyyvaranzispKkVq+dFnmFNj3mC7MyU6UAe8vIg8lq
-	dKCP7dpDeXdNvYdpOUMfKqr/akid6TQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=QBKBRWns2I2cZRLW3DKc1q9hrHpjdI3rex/KjtzmnSk=; b=MK0lkLk3mBVXCwQ4Kr6pnmLA+3
-	m4ku36pLiZN19oIORavpXHrZw6RCPNUUdFfzU13itqoeelQX0FrD96mvJ3LBSss+wirjoah6O0ldp
-	lbuBgDMRBiX09yjj+K+b7d6KaoEzXQTxFN0Z8ylK4vf9Pxv02o0VLtACgSQI4crpeU2n93xFLjCiw
-	wReKD8SXfSevlwzRFHpShAzQCA2J2HbAtW6IxswHrLuplWN9ZriPrCqOuurKM18efU6zz1mzc1r7o
-	NkII4tY9Y7kNehs4HD1Ov/pzaqfzSiXerGszA8TMzUjD5IPiPL/BDi/vgM7XT+5f/3vqaLJnOu/vV
-	z1kmv3Ag==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wuY80-00000003qNm-0YWE;
-	Thu, 13 Aug 2026 16:18:00 +0000
-Date: Thu, 13 Aug 2026 17:17:59 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>,
-	"Gregory Price (Meta)" <gourry@gourry.net>
-Subject: Re: [PATCH v9 08/15] hugetlb: Use the has_hwpoisoned flag
-Message-ID: <an3uN4TAAZ2miXhe@casper.infradead.org>
-References: <20260805210557.1118966-1-willy@infradead.org>
- <20260805210557.1118966-9-willy@infradead.org>
- <a51a6236-8881-4479-8f04-39676e0e1f14@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a51a6236-8881-4479-8f04-39676e0e1f14@kernel.org>
+	bh=Ig2gtwEZ7YEv18caEyN0/dCFh+D4Oeu5ya2HHQfIC7E=;
+	b=QrDfDmcpEzn827zvtSoeNgbBm/Q/sMAVs7dUyV/M2N5j4nSnRFuS/zwnG5qFQj4bNBCNjn
+	foDtFzhmTlnfdUdSvF01RQ/K/URbkldj50A+cZOYLm7wVl8NieG/tQBJSqGPg78oF7iIGK
+	vw6Ff7e4PPaiVkPS2NJ0MSve8OrCXfs=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xD3qSirc;
+	spf=pass (imf25.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.25 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786638233;
+	b=HAO1cErPKiGOtNXfsheaXxNDEUVxlordXZlWTwDJq9rJswI86/MslpUKTfmYSNm6+Geega
+	bhc356tJOO9wJOzykHiVX3lxH9uBhomHhzglPHSOWY1CZ2h+EUaL8pOAL120a69xnzUoot
+	KgZw1GEgl2v9WKmuvOH17GMgip3oVhk=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=b8g8o1EPbroInUM8DUJk/BET1LeblPQuGgrDZpp4Q4k=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786638231; v=1; x=1787243031;
+ b=xD3qSircX7iV4urAj/Q6jf8IcQBOyniKXqSSGVVtNhVQQBmXLTpjOWNFPrsFjcjjir4/wTLz
+ YRlKZDY1oJOHgUsVdYXsMJks0e4hyTYqPb656Srao30SlXOl5kxUgUVDmZrzyrgkCMSgeDemJ0B
+ 5ZBIKgY1l4esz8tsEIOb1ZsE=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (77.97.51.77)
+	by smtp.migadu.com with ESMTPS id 394f813be1b9a82f;
+	Thu, 13 Aug 2026 16:23:51 +0000
+X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 13 Aug 2026 17:23:46 +0100
+Message-Id: <DKNYE6DOGOPF.34MEA11Q7ACZR@linux.dev>
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+To: "Yosry Ahmed" <yosry@kernel.org>, "Brendan Jackman"
+ <jackmanb@google.com>
+Cc: "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
+ <dave.hansen@linux.intel.com>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
+ <david@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike Rapoport"
+ <rppt@kernel.org>, "Wei Xu" <weixugc@google.com>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Lorenzo Stoakes"
+ <ljs@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <x86@kernel.org>, "Sumit Garg" <sumit.garg@oss.qualcomm.com>, "Will Deacon"
+ <will@kernel.org>, <rientjes@google.com>, "Kalyazin, Nikita"
+ <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, "Itazuri, Takahiro"
+ <itazur@amazon.co.uk>, "Andy Lutomirski" <luto@kernel.org>, "David Kaplan"
+ <david.kaplan@amd.com>, "Thomas Gleixner" <tglx@kernel.org>, "Patrick
+ Bellasi" <derkling@google.com>, "Reiji Watanabe" <reijiw@google.com>, "Sean
+ Christopherson" <seanjc@google.com>
+Subject: Re: [PATCH v3 07/26] x86/mm: introduce mm-local region
+X-Mailer: aerc 0.21.0
+References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
+ <20260726-page_alloc-unmapped-v3-7-6f5729aa9832@google.com>
+ <anES7O7T_PN2bV0v@google.com>
+In-Reply-To: <anES7O7T_PN2bV0v@google.com>
+X-Stat-Signature: kn5zmhnpcfp7y34bxqpmckstkw937yqf
+X-Rspamd-Queue-Id: 563CAA0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1182D1C0002
-X-Stat-Signature: mphuo65weyk8u41m47bxj6xgmz9dbr5w
-X-HE-Tag: 1786637885-764541
-X-HE-Meta: U2FsdGVkX18pHgR+bGYCCFZBCc7npdERKaHJcmjz6txy2Oo/gT5Af5o/XJz8X7rYrh8VRx86VZYTuDIy0r6NDmIdePqct07xmtXK4FlGYO032OOLKDg4TwOIaVI4c68gyutNdVyEEDlhh4tsTPEhOpuQ1r8RTAggpKIEZB9XHm8GctNhjP4/H06ovxqBDDRHXkdAI+KRNpWe9p4muGwm6JLhwGGVq8KaEQetsffcd6hzTHqibL4QkX0xAn227pMdw2JM28QQkUfypNlW9rXxo3/pFT3WuBWozrjOScloIL+Ccnfv1cQdkMkyDl79gXp6WmWV054EYExe21Ix5eywO5ZaqVKtjWx1aX0Vu92nhP0Apxr3LCVYNsOHQIu7kH7cYGo0/B38b/tAgFXyl88Edjy5007dhwJEi+ytMCIw3L/5OQILhIBgJfWXmrVK1WpGnVDAdomaU6HuPqJlNNni7UEC7yQN1/MejN75YZq/NzXFdXCy+JgRqBwMT4Tk1O8e3+crukVsdwhFOHHTEovTQ9XZrRn8r32H+KqEujE3viOIRvXDtv1diuz9pc5zExl2Homnd5nvQffcPzyKvXMkMrPoSzxe2LK89so9rzDmlNjM7RlSQv1Flf3j42+Pz3wm069XkDnvazhxSbYki23vix1+sz6663Jao84i1+CSlXnJgsP74VDv/lZMrq9E+SSgtx0Uy3i/G6CxYy2GIIs89cI7IppQzH0LVMD1NI6pa/vbPkG9H1c1AP6bTDU5LRNL7jcHkuO8X3pg9jIIoAD6f2WHmWPalFLualLUKKq+oz7hi5CExkLr+Fa1/7ozYU0Tv3XIH2zoyVhKJ6UhZzOt45ZAyKy9hGoSD4RZdzrxQ5Y6vB9fRdASSBqUFQSgBesQG4HVj446YJOR/yHH46BvrOlR4RhGxFmBAHwK9TPrPyRnhKHyoVZoBqqkB5kozogY0/US2xH1KAt3Ri872/t
- minnFG1v
- Qyzdg3plhZcGQUkOUnh2ejKeyIv92mNXN5bNELCLW7Pi8T9B23HBNuT/NiYJmXCqzqct4v69Dkn3DLT77GHgEiSYN6dS331rvVCRXl7hPvOpnnyDmFL01zrEfDazTnr3qTZKwoefw538/BzmjGtAK23d8CYBfHGcVkF/VRMgKz4krurmuIeUYyOTP6moS9WApxsfDQaolpXKeiwJmZZLIpSNnSEoyCigVHgWdmeXVTypl1Ei07rA6QWhtkDvizl35+Wkf2J0lSkhwsFJGmTXW1y4CUBM+57N22JisofKfNXHzQ18HFU81tzX/UjBFfpoBZ7inKqwekncm8sXBEf3jmQRQjzCilp81CLW98dVIsBwjhihA1QRlBhEDcQ==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786638233-223610
+X-HE-Meta: U2FsdGVkX1+DSZ/lwqaNJhdoIqmUThnlMpBcxVy9CX4iPQJSRxMnkXZqGuDPlyY2I5MjQKqSg2HzamQ7HXHVnwtgTNcQC3nCpQRc9694fbCWjNKZC419z9MuFhzNyME9X88ugkNQfTIgxUlzP/ELMC8P1XCNLR7HG46uRtCV2mmjBX+jP6Toe13q2xz/hxZ15ZMhiHtJPWdTv8VOVSQcdNCTSKv0mlcDOWFqkL8fbA4GZGsgVY+tx0Xyp+leHFMsuaq8m6RiPbhPNQV+pCUd+KCaj9vOkCyipX2cz+CcmNtziBabvyF2KuHXu1b1SguU0T296m0MhC+mHwuNG8atd4kx1g1vUSQFpo1rOi50pnl+J/3HTUURG6G9zB65D6bKShxEnqPRtO6KCXsdjeVmRVp1StwarRHMClUV/AZOqhz7sjG5/9MUmyL2aV+4n6g0gwDGvmUfO6VFl1vXO3ki6tEV5g9m212oyzv1V9bZlqb0LRpF9WeaCNMhiuOgYHOKxGANt8VJxh8/UTEF5sBvkRsgwRDusCVlzMyoHbnoiRO2KgmVOIA15aVyhUMALpK8MriHLXCXufQXGz2zVYZ10Ljsz9zg4VNTWA2OZOgOwrNA2ojRAElycpxG18GyrVz+bhGtz2e9dGk6hLskWWKdYWzQR3rDLeFEyQusTZ87QsPLjtwqsH9oxwiBsVSgTD4t8trC1DkyyAEc6xgbpW6S8qJpMLyuuBu+vXU3jIRnUNY2M8OtL5lCs5L6DJXkiRiCgZulKKna83eXS01tuKplahb6YbQC/EooGpivP3gcjQc4eTAG3yafGoSvA8016+Io/UtbpLri0AcyJTClAfpod5mJ/wmq4FZYQaNk0IAZVWnES9AQ8lzRiVghR4jCYoKSCr1evBFBm9d+euOmd5ztnEbisZivw8Jy9purdu7z1Ifg4JRlf2lcBS/oVPiNIo+eCYifWd9bz+607BiqVmT
+ RmqaADzh
+ n03CPTpvG/da5YSYEresLy7gm2DJeCumvva+tMtY72euAi+ypscrRndF+0/zGNr9sXgk3FooRejAyQwHbZPQDEfc1G1sbi8Xl3UBk/J4Ywvorh9GzT56ti9lTV5aNjELzibRtExccRcnht6SkVW/756yVQXgWMmo6EadmVxwQtFrQD+1Adqzh+Vm0C6lpykwScRRtirXirpN5ysGNx0EUSa/C3gwtfq6E7MVXCehK2YN1RgKkwf7bc67SLhENHwcUwJ75gewuNZQ5nY2abiZOqu5tLjp2AA1y3rBr/lUs4EUuHncuf9EdDe/B9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,137 +105,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026 at 10:29:20AM +0200, David Hildenbrand (Arm) wrote:
-> On 8/5/26 23:05, Matthew Wilcox (Oracle) wrote:
-> > Other large folios use the has_hwpoisoned flag.  Convert hugetlb to match.
-> > This will help us use the per-page hwpoison flag in the future.
-> 
-> Currently, the first thing we do in hugetlb_update_hwpoison() is:
-> 
-> 	int ret = folio_test_set_hwpoison(folio);
-> 
-> So a hugetlb folio *always* has folio_test_hwpoison() set.
-> 
-> So we can locklessly check whether a hugetlb folios has the flag set simply by
-> ... checking whether it's a hugetlb folio and has the flag set.
+On Mon Aug 3, 2026 at 11:29 PM BST, Yosry Ahmed wrote:
+...
+>> +#ifdef CONFIG_MM_LOCAL_REGION
+>> +static inline void mm_local_region_free(struct mm_struct *mm)
+>> +{
+>> +	if (!mm_local_region_used(mm))
+>> +		return;
+>> +
+>> +	struct mmu_gather tlb;
+>> +	unsigned long start =3D MM_LOCAL_BASE_ADDR;
+>> +	unsigned long end =3D MM_LOCAL_END_ADDR;
+>
+> These declarations should probably go at the beginning of the function.
 
-You make it sound so easy ;-)
+Oops, ack.
 
-If we don't hold a reference on the folio, then the folio (whether it's
-hugetlb or not) can be split.  And then folio_test_hwpoison() can hit
-the assertion that it's now a tail page.
+>> +
+>> +	/*
+>> +	 * Although free_pgd_range() is intended for freeing user
+>> +	 * page-tables, it also works out for kernel mappings on x86.
+>> +	 * Use tlb_gather_mmu_fullmm() to avoid confusing the
+>> +	 * range-tracking logic in __tlb_adjust_range().
+>> +	 */
+>> +	tlb_gather_mmu_fullmm(&tlb, mm);
+>> +	free_pgd_range(&tlb, start, end, start, end);
+>> +	tlb_finish_mmu(&tlb);
+>> +
+>> +	mm_flags_clear(MMF_LOCAL_REGION_USED, mm);
+>> +}
+>> +
+>> +#if defined(CONFIG_MITIGATION_PAGE_TABLE_ISOLATION) && defined(CONFIG_X=
+86_PAE)
+>
+> Would it be clearer to have nested #ifdefs instead?
+>
+> #ifdef CONFIG_MITIGATION_PAGE_TABLE_ISOLATION
+>
+> #ifdef CONFIG_X86_PAE
+> ...
+> #else /* CONFIG_X86_PAE */
+> ...
+> #endif /* CONFIG_X86_PAE */
+>
+> #else /* CONFIG_MITIGATION_PAGE_TABLE_ISOLATION */
+>
+> #endif /* CONFIG_MITIGATION_PAGE_TABLE_ISOLATION */
+>
+> Maybe not, just thinking out loud.
 
-> Then you write:
-> 
-> "This closes a gap where a page in a previously-poisoned hugetlb folio
-> could be observed to not have the hwpoison bit set."
-> 
-> When does the race you describe become relevant? When freeing the hugetlb folio
-> or when demoting it? in both cases, we should be holding the hugetlb lock that
-> nasty hwpoison code could sync with (if it doesn't already do that).
+Hm, I wrote it out in the editor and no I don't think it's clearer. I
+think as the reader it just means you basically have to reconstruct the
+&&/elif in your head since you need to see this as a "three-headed if"
+for it to make any sense.
 
-Before this patch series, we don't always hold the hugetlb lock when
-splitting a hugetlb folio that contains hwpoison.  And we don't want
-to have to grab the hugetlb lock if we can avoid it -- unprivileged
-userspace can hammer these paths hard, and I don't want to see this
-lock be contended.
+...
+>> +#elif defined(CONFIG_MITIGATION_PAGE_TABLE_ISOLATION)
+>> +static inline int mm_local_map_to_user(struct mm_struct *mm)
+>> +{
+>> +	pgd_t *pgd;
+>> +	int err;
+>> +
+>> +	err =3D preallocate_sub_pgd(mm, MM_LOCAL_BASE_ADDR);
+>> +	if (err)
+>> +		return err;
+>> +
+>> +	pgd =3D pgd_offset(mm, MM_LOCAL_BASE_ADDR);
+>> +	set_pgd(kernel_to_user_pgdp(pgd), *pgd);
+>> +	return 0;
+>> +}
+>
+> The code above bears a lot of similarity to the LDT code removed in
+> patch 8, and reviewing them separately is annoying. I realize that they
+> were a single patch in the previous version and Dave complained that it
+> was too large.
+>
+> What if we go a different way:
+> 1. Move the LDT functions that will be repurposed to mmu_context.h.
+> 2. Rename the functions to the mm_local_* domain where needed.
+> 3. Actually perform the switch for LDT to use mm local region.
+>
+> Maybe (2) and (3) should be combined, depending on what the git diff
+> looks like.
+>
+> I think this will make the diffs much clearer, for example
+> mm_local_map_to_user() mainly differ from map_ldt_struct_to_user() in
+> preallocation.
 
-> I can understand that we want something that covers both scenarios: an
-> indication whether any large folio has any hwpoisoned page. Such a unification
-> would be good.
+Sounds fine to me, let's try it out and I'll come back here if it turns
+out to be messy.
 
-Right, and after this patch, we now have that.  Any unknowing part of
-the kernel can test folio_has_hwpoisoned_page() (assuming it has a
-refcount on the folio).
+>> +#else
+>> +static inline int mm_local_map_to_user(struct mm_struct *mm)
+>> +{
+>> +	WARN_ONCE(1, "mm_local_map_to_user() not implemented");
+>> +	return -EINVAL;
+>> +}
+>> +#endif
+> [..]
+>> diff --git a/arch/x86/include/asm/pgtable_32_areas.h b/arch/x86/include/=
+asm/pgtable_32_areas.h
+>> index 921148b429676..7fccb887f8b33 100644
+>> --- a/arch/x86/include/asm/pgtable_32_areas.h
+>> +++ b/arch/x86/include/asm/pgtable_32_areas.h
+>> @@ -30,9 +30,14 @@ extern bool __vmalloc_start_set; /* set once high_mem=
+ory is set */
+>>  #define CPU_ENTRY_AREA_BASE	\
+>>  	((FIXADDR_TOT_START - PAGE_SIZE*(CPU_ENTRY_AREA_PAGES+1)) & PMD_MASK)
+>> =20
+>> -#define LDT_BASE_ADDR		\
+>> -	((CPU_ENTRY_AREA_BASE - PAGE_SIZE) & PMD_MASK)
+>> +/*
+>> + * On 32-bit the mm-local region is currently completely consumed by th=
+e LDT
+>> + * remap.
+>> + */
+>> +#define MM_LOCAL_BASE_ADDR	((CPU_ENTRY_AREA_BASE - PAGE_SIZE) & PMD_MAS=
+K)
+>> +#define MM_LOCAL_END_ADDR	(MM_LOCAL_BASE_ADDR + PMD_SIZE)
+>> =20
+>> +#define LDT_BASE_ADDR		MM_LOCAL_BASE_ADDR
+>>  #define LDT_END_ADDR		(LDT_BASE_ADDR + PMD_SIZE)
+>> =20
+>>  #define PKMAP_BASE		\
+>> diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/=
+asm/pgtable_64_types.h
+>> index 7eb61ef6a185f..1181565966405 100644
+>> --- a/arch/x86/include/asm/pgtable_64_types.h
+>> +++ b/arch/x86/include/asm/pgtable_64_types.h
+>> @@ -5,8 +5,11 @@
+>>  #include <asm/sparsemem.h>
+>> =20
+>>  #ifndef __ASSEMBLER__
+>> +#include <linux/build_bug.h>
+>>  #include <linux/types.h>
+>>  #include <asm/kaslr.h>
+>> +#include <asm/page_types.h>
+>> +#include <uapi/asm/ldt.h>
+>> =20
+>>  /*
+>>   * These are used to make use of C type-checking..
+>> @@ -100,9 +103,12 @@ extern unsigned int ptrs_per_p4d;
+>>  #define GUARD_HOLE_BASE_ADDR	(GUARD_HOLE_PGD_ENTRY << PGDIR_SHIFT)
+>>  #define GUARD_HOLE_END_ADDR	(GUARD_HOLE_BASE_ADDR + GUARD_HOLE_SIZE)
+>> =20
+>> -#define LDT_PGD_ENTRY		-240UL
+>> -#define LDT_BASE_ADDR		(LDT_PGD_ENTRY << PGDIR_SHIFT)
+>> -#define LDT_END_ADDR		(LDT_BASE_ADDR + PGDIR_SIZE)
+>> +#define MM_LOCAL_PGD_ENTRY	-240UL
+>> +#define MM_LOCAL_BASE_ADDR	(MM_LOCAL_PGD_ENTRY << PGDIR_SHIFT)
+>> +#define MM_LOCAL_END_ADDR	((MM_LOCAL_PGD_ENTRY + 1) << PGDIR_SHIFT)
+>
+> Any reason not keep the current formula (i.e. MM_LOCAL_BASE_ADDR +
+> PGDIR_SIZE)?
 
-> But then, special-casing hugetlb *again* through folio_test_huge_poison(),
-> that's rather odd, no?
+Er no I don't see any good reason I changed this.
 
-Oh, I'm not happy about it.  But we need an atomic way to determine if
-a page belongs to a hugetlb folio with hwpoison detected.  Short of a
-complete rearchitecture of how we handle hwpoison, this is the best I've
-come up with.
+>> +
+>> +#define LDT_BASE_ADDR		MM_LOCAL_BASE_ADDR
+>> +#define LDT_END_ADDR		(LDT_BASE_ADDR + PMD_SIZE)
+>
+> Looks like the LDT area was silently changed to PMD_SIZE here. I assume
+> this is to give the rest of the pgd-mapped address space to the mermap,
+> but maybe we should call this out explicitly, or do it when the mermap
+> is introduced (or separately)?
 
-> (what on earth is "huge_poison" is this supposed to be "hugetlb_poison" ? Why
-> "poison" and not "hwpoison"? Really odd)
-
-We're inconsistent in our naming on both of these things.  It doesn't
-help that somebody decided to reuse the term "poison" to mean
-"uninitialised struct page".
-
-> I'd expect that we actually get rid of folio_test_hwpoison entirely and
-> exclusively work on per-page state and has_hwpoison. But IIUC, now it's some
-> mixture of folio checks, page checks, folio_has, mixed with some hugetlb oddity.
-
-If we could get rid of HVO, we could do it entirely on struct page.
-Or, as above, entirely rearchitecture hwpoison handling to not be based
-around pages or folios any more.
-
-> I am not quite clear whether the change you propose here is actually required
-> for the remainder of this series?
-> 
-> 	[PATCH v9 00/15] Use generic_file_read_iter() in hugetlbfs
-> 
-> IOW, do we really need all this hugetlb hwpoison handling just to accomplish
-> that, or could some of that (bigger hwpoison rework) be done separately?
-
-Blame Sashiko!  I'm going to ignore it in future, but it's really good
-at nerd-sniping "hey all of this is already broken and you could fix it
-as part of this series".
-
-> 
-> > +/*
-> > + * Since we cannot split a hugetlb folio, we want to insert a poison
-> > + * entry into the page table for the whole folio even if only one page
-> > + * is poisoned.  Otherwise, we've split down to the PTE level and we only
-> > + * want to poison the precise page
-> > + */
-> > +static bool ttu_create_hwpoison(const struct folio *folio,
-> > +		const struct page *page, enum ttu_flags flags)
-> > +{
-> > +	if (!(flags & TTU_HWPOISON))
-> > +		return false;
-> 
-> Why not keep the flag in the caller? Really looks weird given that we have two
-> users and one of them doesn't even need the check and must fake it.
-
-try_to_unmap_one() is already 200 lines and contains some tricky code flow.
-I'm trying to at least make the problem not-worse.  I think we should
-pull out even more code into helpers, but not in this patch series.
-
-> I also don't quite enjoy the function name, and it's likely the reason why we
-> need 4 lines of doc for a simple internal helper that checks whether the thing
-> (page table entry) we are unmapping/migarting is hwpoisoned. This function is
-> not involved at all in any kind of splitting.
-
-I think I was trying to pull out even more code into this function,
-which was when I named it, and then I found it tricky to do so.  And
-I didn't go back and change the function name.
-
-> Some of that code is getting reworked by Dev to better separate out all the
-> hugetlb oddities. At least for the try_to_unmap() path that helper will not be
-> required. Staring at the abomination we call try_to_migrate_one(), I assume
-> we'll do something similar.
-> 
-> I'd just call this "ttu_page_is_hwpoisoned()", and add a short
-> 
-> /*
->  * hugetlb folios are always entirely mapped, so any
->  * hwpoisoned page is problematic.
->  */
-
-I can rename it, no problem.  I think the more verbose description is
-justified though; we need to explain why we care about any page in
-the folio for hugetlb, but only about the precise page for non-hugetlb.
-
-> > @@ -2423,7 +2436,6 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
-> >  	struct mmu_notifier_range range;
-> >  	enum ttu_flags flags = (enum ttu_flags)(long)arg;
-> >  	unsigned long pfn;
-> > -	unsigned long hsz = 0;
-> 
-> While these size changes are reasonable, they make this patch harder to review
-> and are not even described in the patch desription.
-
-I suppose.  Do you want me to take them out?
+Right. This might be a bug  that causes us to leak pagetables on some
+platforms. Haven't checked as it gets fixed in the next commit
+regardless, but let's just do what you suggested.
 
