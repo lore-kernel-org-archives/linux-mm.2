@@ -4,131 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ADB6C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 11:12:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A990C5CFDB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 11:17:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F32D46B0291; Thu, 13 Aug 2026 07:12:44 -0400 (EDT)
+	id 242B26B0293; Thu, 13 Aug 2026 07:17:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0AF06B04B5; Thu, 13 Aug 2026 07:12:44 -0400 (EDT)
+	id 21AAD6B04B9; Thu, 13 Aug 2026 07:17:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFBFB6B04B7; Thu, 13 Aug 2026 07:12:44 -0400 (EDT)
+	id 1306A6B04BA; Thu, 13 Aug 2026 07:17:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B24F56B0291
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:12:44 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4100F40637
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:12:44 +0000 (UTC)
-X-FDA: 85095983448.03.AE3DC1B
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 208C014000A
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:12:41 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=kY2wbE5r;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Ira5jC9D;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=v2v3Y4um;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=HbbWXBnS;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E0CD56B0293
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:17:20 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 750F71C129E
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:17:20 +0000 (UTC)
+X-FDA: 85095995040.08.A1D7D31
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+	by imf11.hostedemail.com (Postfix) with ESMTP id BCA9C40005
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:17:16 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="y7c/dPz2";
+	spf=pass (imf11.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786619562;
+	s=arc-20220608; t=1786619838;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aa5PQgPbsqDszH92WC8ete6hlLLGfSpkDZEGTbMUJQU=;
-	b=a/ZQ5wWBHjPfds/KghwtCe4kDWsAGqFSfXN0DWfPU36U8uyJ3ol2T9b4eV82OhSTJSYogR
-	70WRSkUUQyVXUHzlwlRl3cqD3F0GqW4+YX2xFrPjwauWDW+faUrTFhg1WDjMo3pVXVWqXV
-	n/KTGngr3EYnOBKIb8Mz1zXteLBqUTU=
+	bh=uqDmY3x99GeRYdiCETTV3FiXwwCqkvOTnz+GthI0fBM=;
+	b=GDGBJxmJ2HmJ7Fi0mgkg0IcIZyM8VC0FpjHmXAMTyYiPqG8OiVBXALoLLbNRPBzrqxcgfE
+	hcfRL/9NlaxVf0q4RioqRiql3iJJYJzXD2rCOKZFzwdxvwLlhUsHwL6obOoK8ejVQm/Sig
+	KKSgnsm4FB1r+ixnhdnGZHI7PgkqbUI=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=kY2wbE5r;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Ira5jC9D;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=v2v3Y4um;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=HbbWXBnS;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	imf11.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="y7c/dPz2";
+	spf=pass (imf11.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786619562;
-	b=MIlFReDsnJi2gMPSiKdkptreK7N2SlGVrJYrwweWOJgXG6DR9gIsZSRecp10cOgRnxX31Z
-	WYfZzAO4Cr+Wc8rcAPCjaPCiJgLJbMd53Vkl+R6lr0vNM3ENo7OZfnNI4mMkJIUGMUOCj+
-	U+hL0nRdVYy/vh8EkKhUnwGl6BpvOZs=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A39FB82830;
-	Thu, 13 Aug 2026 11:12:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1786619556; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aa5PQgPbsqDszH92WC8ete6hlLLGfSpkDZEGTbMUJQU=;
-	b=kY2wbE5r6cXe0EoMl0im0qrCP+AWhn41XgI5gPf+3V1JKAj3sQijqf/WaY3diUJaywT57k
-	XUai3bMxApx/+EN/MJPpx+2IA1glnWMNjHLMP2TWLJketr0R21OEqBbWDHvyOKGJ6THA6r
-	CtAII6A2yZGliaEyS2DpDilkv9KPDhE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1786619556;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aa5PQgPbsqDszH92WC8ete6hlLLGfSpkDZEGTbMUJQU=;
-	b=Ira5jC9Dvm6/shLPPo+mCN3mXLTgX4KAuoT9AhXa9m8PI6i1Jcy8sL/uVs66eXEw2uPxsw
-	gRNxR1zBR1FxVMAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1786619552; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aa5PQgPbsqDszH92WC8ete6hlLLGfSpkDZEGTbMUJQU=;
-	b=v2v3Y4umHePZxuEqj+Vl7Or2jsmfXsPQEuJXVPQSgiS45ELzFwDNxXUH41ei85yIt0jDMQ
-	gNx4eLnaRH5/F1/DhfPwVsIH2eqy78rwFkQeo3GAJgYFqhi8pCJeG+16uxYims+199Klrh
-	6OdKH24cAOFlUCX9i5NMBjWxfnFrki0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1786619552;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aa5PQgPbsqDszH92WC8ete6hlLLGfSpkDZEGTbMUJQU=;
-	b=HbbWXBnS2zCjw2vuOLJyoNv0k/KWIE/HCHGaVgzox/FbbPpyBneHy7LRKzzj/Ghq/g/dm1
-	UObDVcKWVfTFUyDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B8FCA77DB2;
-	Thu, 13 Aug 2026 11:12:31 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id QWXbKZ+mfWrWCAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 13 Aug 2026 11:12:31 +0000
-Date: Thu, 13 Aug 2026 12:12:30 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	Christian Brauner <christian@brauner.io>, Jiaqi Yan <jiaqiyan@google.com>, 
-	"Gregory Price (Meta)" <gourry@gourry.net>
-Subject: Re: [PATCH v9 08/15] hugetlb: Use the has_hwpoisoned flag
-Message-ID: <an2mYe_lClK3co6l@pedro-suse.lan>
-References: <20260805210557.1118966-1-willy@infradead.org>
- <20260805210557.1118966-9-willy@infradead.org>
+	t=1786619838;
+	b=uOaqPmuX4e45oX0IyJMIba493DngZ3pXNyOizY1BekZJ0VpqgIOlmoHwZaeJY46OA7LdDg
+	P3qjVz62NHZSdQW4vAmWMBnasImBvnuARdTwSv0RjniIUcv0hxuo1EumCzWtA5Vb9m9BBy
+	BYBoxsmiHkYBOKUEse1q8vpizrRM4bk=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=uqDmY3x99GeRYdiCETTV3FiXwwCqkvOTnz+GthI0fBM=;
+	b=y7c/dPz28ro3q31Gy+FjZHizteeThz0eP6V+Pu85s5S5LTOXmPnJVa0Xz9tRSJxNnIPDfTI3T
+	RfZ7WjSVbaso1xw6KhBu88DZtJoAE8PWe3oi32Bqi5BauBWeLzqPS1vacRhTjKIF390H0fjW7ps
+	XFBdV7Nmp0Kv9tgqS3HBUWk=
+Received: from mail.maildlp.com (unknown [172.19.163.0])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4hLMxb1RCdz12LDV;
+	Thu, 13 Aug 2026 19:06:43 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id ABD3640537;
+	Thu, 13 Aug 2026 19:17:07 +0800 (CST)
+Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
+ (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 13 Aug
+ 2026 19:17:06 +0800
+Message-ID: <b35d14b5-65d8-4b8e-8754-de35f03d4b2d@huawei.com>
+Date: Thu, 13 Aug 2026 19:17:05 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260805210557.1118966-9-willy@infradead.org>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 208C014000A
-X-Stat-Signature: b5mnbp96w84xicnzegniw7dqnrainze6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] mm/ksm: fix advisor_min_pages_to_scan description
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+CC: <akpm@linux-foundation.org>, <david@kernel.org>, <xu.xin16@zte.com.cn>,
+	<chengming.zhou@linux.dev>, <liam@infradead.org>, <vbabka@kernel.org>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>, <corbet@lwn.net>,
+	<skhan@linuxfoundation.org>, <shr@devkernel.io>, <linux-mm@kvack.org>,
+	<linux-doc@vger.kernel.org>, <wangkefeng.wang@huawei.com>,
+	<sunnanyong@huawei.com>
+References: <20260813031722.569983-1-tujinjiang@huawei.com>
+ <20260813031722.569983-3-tujinjiang@huawei.com> <an2g39TIN9v87enG@lucifer>
+From: Jinjiang Tu <tujinjiang@huawei.com>
+In-Reply-To: <an2g39TIN9v87enG@lucifer>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.178.9]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Stat-Signature: h8ehq8stro6fuzq9ytemz6i8okded686
+X-Rspamd-Queue-Id: BCA9C40005
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786619561-284225
-X-HE-Meta: U2FsdGVkX19OF3RTPc4OMn8qvAhz/bTVX/A3UYfXIABcPtSjO3YNf/IP+F7v/nwz7SCbmAM8vwnFTleGcT5iVTDC+l5JbW42VD0+Yj1zwvjdU16r1rXfj+uSHbyk9jArOLO/th9LtX8h4XmCGRqdYOpqG8w67AtKmAg/1asRndIFXGfbYJqFN2r1lCrn4bajSN4fW7QiZxp2roRxp+66zRwMZ58VjsMjR5Gznfy27oBqfZlyvQ9ieVWM1lrL/8dGMIg/2nGpUSPYB+9GZtUsoTaK9Xw31ROHITXXtM/E1jtX4UN1b9XrLPVJOl5WSo6ThNPQYN0/RTO4bHln9mdKByld0ExMBT4SbY7t2Mre0hemZADKGPyE6LcC7H6JKlzZ57ttZPMvwlRwLcT237v5xJBFKDlaF7dL4DNO5nJZB7aCJ9NKxpGoVJCSd6qVruHrHdj8PVomT2OGSErWXxezgQYl0ZCLWNdRA5jT7RILvzOJH9LkBYfX+CWBiBM6GETdwoTwErF0XWv+tIb2YGwRFLK8csfqkfwuVfPhW2Hc5DNj8klKuilvi0fm3vo1QqcHP/5at4UFKzR4CwMwryToX5CFlgSEsTrmUrA0ZclbPS5iWPyWwoGILK2DmEle0KxMSMBNsgSaY7kXdY5FIFC6sCYGfV7w+vJu9DHHENA6Wh4Fh/xiJOEVYIdv6RW2ydD35WaiRaxFTipbp1vJWh5lOg6Xo7l8vNkL0/AZ7rMw74E2m05jdXHvgY9doYvF9Luyj//ClaGQYKSaM2z9ynQJKmxywLzCGYPiITNdZmrJ1/3rllvvFcseellhXjw+HvXfaME0yZT5SiUspvmgG300Xbw0wyBMPS9IaAIMJra1mXXx81n5iDgntq8rcVRK7b6zOu0zfdf39wgI+RF/khd40WmeycHUgJPSxOeE+rsHkbvnIDgKKJBl+uzQGCUc7X99p5v9FRILw5IMD8wNKWU
- fYtF5D5x
- BWMROjAIdc606UxCgXoKKTOe0OyNTF4/ye///FJoVVUJYR/FQBDdrQy8SlpVuKn1i03htirCWKRW5FnXxGfPFIksobmtV8xU8hqn33//pHLXlpnEPM1qgVKw21OaD2BA0uRHz5KVloFxAyQG7UPGjORnbxTT05l2donMmdJZVtcq1wQiIR0LzTzL7dRLh05h542Wv10ky+bbyCrp/qq5xU/lHkKyLgsXZ4BgGjSOpl0q3vNT5ozo56aj34S7uQ8S5WX64K0fqmU94ACBJgmBs38hjuif1XZyn+/8O0qb7ShZLCZYGf4/aBBoj5Ba7038Xp1vxt82N4QsmOuf0XumP7462K1W5afRFfJnyHyTrm+AurE4qPo1PAGdfD+UTqLVd6PmoW+gBi5Lm9gv5lJV7Wn7L4RP8GJ4uRyxkRRSmOYiYjAzwiMNiFm7we0CIGqdErMHos6h2Y8s99iCcokeO8y6ZIKIjxSWfj20+7B0m38YbyL4FZ4AfpbkrmtKBPL5nVkYuLq34oRCndpziHHvKzCqGqw==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786619836-209594
+X-HE-Meta: U2FsdGVkX1+NO9v9e5SDA/uVs0ixqdGngWs5xwOAgVdtlPPFcGrjO/ywXNlue1h5wXYNzD16z6owJEPDQUucxouijCDEJGkA1a2zoRf7zZZuAR5/HnZ6KT3gL3n+H3EvX8Y6eKJMoCnYdJSooOUkKJtaGNh4Abnt+dUwhxwOBmR2gnMBiQ4Dar5/mlLMJ1ZrJTYjnC6xHpzxN6E8qNd6VKPVFG7d8Ch16WJpjro5LMfip/l83MIDNS5tMOopwKw6m/8A3R4hgK/XCBdxqSPDyYrJnLgFvlBprOM0YglsbMZgTOcujErfdmTaj6z5IggLGzC8eN3wkKV7n892h1QRAHdZYVfThhkeORouJlUthaVdx+FvlFy9QiohVp00/X1TbOcSW5iA0bkvGHwMasKT6D6QEtsUP/upVdcVZFLoB5f0x4C/V6lCuUCSOkN1NXb767ol01NN5SrbSRfB7EjCtolSmvY+6bvnD0o3E/c8ASZh3BpOjCBlo2ypwcPZ/LooIuAPvdVMrzuSJ4Pwtipj7wjKj2r/lap0bue/jTB2h8HRbkrWJQyoBXtWCH3YXnpW2N58F+LU1FMTPMwUVZnjiej6anlaIHFgd3WE11uHFdGdGvlm6kFtDhhMtdAN+dXGg35ATqgK2UTSm0ulAKjIx7dI8GLITC2HYR4yLybdUFPo/8e8nINuSaOXNHPwgu8G+oMkEqgz6JyUoJF81UmlTTesQfQ0yMZUyB1Zdm7EZUZzzNAxTrFWWsLxmj83crzSaMX8dk88XC9GA8e4crdwL82sxmZmJUB4bvwqxLo4SxVI9pveKCb04eCLk7Q8NBBYk4rRgJHpgWVgKHQCOt4/Bn+xugGofsPeYhNBlo3Fp5ZhxdPrAlfxk/YmoNawvlSlWlNumtwLMc3T222+hTlB/QYizwjns+pkagkt7mHYDEM7xfAANGdvFjjKr9IP5k+hp5UNvcgv0uu8vXe+Jfm
+ b1FL0CCK
+ D443C1JVvlLDIN+BMMZIscTtKsZDnOgXG5nuiX6QRb8wv3J0VTkJoyRXT+i3qQxQ1giuvOFEtV9GuYBLZM1FmkYWBoDRdwfsuzkIGZIa5+li0rpKk+jYsVhAOsDZlkYstpWDxI4T4nTuRvwvQ0DRvFiAbmg7KT3dXbsZMb2sP5in0RBTfQoD6KcZh4lT3h9f76bD9+uMfWF+bTJbYa1XQZkh0ycVe+GDctf+ZWWtNDYMPA8mTo0+5t0PBptKbC5VgOxD5QMmfJj9uBfCXd2R6SB1r4l3LKW5062WCOFlNx/doAnzoD0wFkly5NAZlWq1PWhjtpLFcMvBb5Phydf1i7UtA66+sb3h0EjY2sLbYQpovB8EiZ1ZypZh+HoiaP7O2VofSsE/wMfJ5L2BYBO2T/9nmkJ3syi1GRfBjz68eNdlN7/DEltLjFOlkdQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,37 +102,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 05, 2026 at 10:05:48PM +0100, Matthew Wilcox (Oracle) wrote:
-> Other large folios use the has_hwpoisoned flag.  Convert hugetlb to match.
-> This will help us use the per-page hwpoison flag in the future.
-> 
-> Also introduce a folio_test_huge_poison().  This has exactly the same
-> meaning as folio_test_has_hwpoisoned() but can be used when we don't have
-> a reference to the folio containing the page.  folio_test_has_hwpoisoned()
-> can race with folio splitting / reallocation and trip the assertions
-> in const_folio_flags().
-> 
-> This closes a gap where a page in a previously-poisoned hugetlb folio
-> could be observed to not have the hwpoison bit set.
-> 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Reviewed-by: Jane Chu <jane.chu@oracle.com>
-> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
-> ---  
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 9e0ca4824905..e666dd14ca0c 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -843,11 +843,15 @@ config PERSISTENT_HUGE_ZERO_FOLIO
->  config MM_ID
->  	def_bool n
->  
-> +config LARGE_FOLIO
-> +	def_bool n
 
-random nit: def_bool n means the same as just bool
+在 2026/8/13 18:56, Lorenzo Stoakes (ARM) 写道:
+> On Thu, Aug 13, 2026 at 11:17:22AM +0800, Jinjiang Tu wrote:
+>> Both Documentation/admin-guide/mm/ksm.rst and the comment next to the
+>> variable definition in mm/ksm.c describe advisor_min_pages_to_scan as a
+>> lower limit of the pages_to_scan parameter, but that is not how the
+>> scan-time advisor actually uses it. commit 4e5fa4f5eff6 ("mm/ksm: add ksm
+>> advisor") only uses it to initialize ksm_thread_pages_to_scan when the
+>> scan-time advisor is enabled. This will mislead the users.
+>>
+>> The semantics of advisor_min_pages_to_scan was updated in the v2 patchset
+>> [1], but the documentation wasn't updated.
+>>
+>> Update the documentation and comment to match the semantics of
+>> advisor_min_pages_to_scan.
+> Umm, firstly if this were wrong you'd need to change the name of the variable
+> too instad of documenting it as something completely distinct.
+>
+> But secondly AFAICT the logic in scan_time_advisor() suggests that it truly does
+> act as a minimum bound as well as being the initial value for
+> ksm_thread_pages_to_scan.
 
-I can't comment on hwpoison stuff, sorry :)
--- 
-Pedro
+As the cover letter[1] said, 'The initial value and the max value for the pages_to_scan parameter can
+be limited with:', ksm_advisor_min_pages is used as the initial value, not the min value of pages_to_scan.
+
+The v1 patchset[2] uses ksm_advisor_min_pages as the min value of pages_to_scan, but as David suggested, the
+author changed the semantics of advisor_min_pages_to_scan in v2, but forgot to update the comments and variable names.
+
+[2] https://lore.kernel.org/all/20231004190249.829015-1-shr@devkernel.io/
+
+>
+> So this patch just looks wrong to me.
+>
+> But in any case, you are making a claim here yet have provided no evidence for
+> it. 'It is just the initial assignment' means nothing - if the logic can then
+> only increase it up to the maximum value then it still acts as a minimum.
+>
+> A brief look at the logic suggests so.
+>
+> But in any case - the onus is on _you_ to prove that that's not happening.
+>
+> And even if you could do that, since it is _intended to be a lower bound_, the
+> fix wouldn't be alterting comments or documentation, it would be to re-establish
+> the minimum as a minimum.
+>
+>> Link: https://lore.kernel.org/linux-mm/20231028000945.2428830-2-shr@devkernel.io/ [1]
+> This patch repeatedly states that it is the minimum time. You have failed to
+> provide any analysis to suggest otherwise.
+>
+>> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+> Assisted-by: ?
+>
+>> ---
+>>   Documentation/admin-guide/mm/ksm.rst | 4 ++--
+>>   mm/ksm.c                             | 2 +-
+>>   2 files changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/Documentation/admin-guide/mm/ksm.rst b/Documentation/admin-guide/mm/ksm.rst
+>> index c9f533b10f6f..c329ca747b8c 100644
+>> --- a/Documentation/admin-guide/mm/ksm.rst
+>> +++ b/Documentation/admin-guide/mm/ksm.rst
+>> @@ -183,8 +183,8 @@ advisor_target_scan_time
+>>           pages. The default value is 200 seconds.
+>>
+>>   advisor_min_pages_to_scan
+>> -        specifies the lower limit of the ``pages_to_scan`` parameter of the
+>> -        scan time advisor. The default is 500.
+>> +        specifies the initial value of the ``pages_to_scan`` parameter of
+>> +        the scan time advisor. The default is 500.
+>>
+>>   advisor_max_pages_to_scan
+>>           specifies the upper limit of the ``pages_to_scan`` parameter of the
+>> diff --git a/mm/ksm.c b/mm/ksm.c
+>> index 7d5b76478f0b..4a6cf8cf5d60 100644
+>> --- a/mm/ksm.c
+>> +++ b/mm/ksm.c
+>> @@ -342,7 +342,7 @@ static enum ksm_advisor_type ksm_advisor;
+>>    * Only called through the sysfs control interface:
+>>    */
+>>
+>> -/* At least scan this many pages per batch. */
+>> +/* Initial number of pages to scan per batch. */
+>>   static unsigned long ksm_advisor_min_pages_to_scan = 500;
+>>
+>>   static void set_advisor_defaults(void)
+>> --
+>> 2.43.0
+>>
+> --
+> Cheers, Lorenzo
 
