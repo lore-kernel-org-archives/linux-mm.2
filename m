@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D346C5CFEB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 15:03:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39E23C5CFEB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 15:04:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 162C06B0516; Thu, 13 Aug 2026 11:03:53 -0400 (EDT)
+	id 0032C6B0519; Thu, 13 Aug 2026 11:03:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 139F26B0517; Thu, 13 Aug 2026 11:03:53 -0400 (EDT)
+	id F1D2D6B051A; Thu, 13 Aug 2026 11:03:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 077236B0518; Thu, 13 Aug 2026 11:03:53 -0400 (EDT)
+	id E329A6B051B; Thu, 13 Aug 2026 11:03:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CAF036B0516
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:03:52 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 47443C01C2
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:03:52 +0000 (UTC)
-X-FDA: 85096565904.12.7FD1639
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B53DE6B0519
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:03:58 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 33D8AA0188
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:03:58 +0000 (UTC)
+X-FDA: 85096566156.17.212FF0E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 8E27BA0008
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:03:50 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="GmCJqe/W";
+	by imf09.hostedemail.com (Postfix) with ESMTP id 65FE314000D
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:03:56 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kwjSEXg/";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786633430;
+	s=arc-20220608; t=1786633436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=195pJpJg9JhscZJnJd0magMDqpiCbW2vvWLEm7sAFO4=;
-	b=xnBQk3pWzEx09XMMYid+T7ZN53LhSNT8Xfw2I9F2QBpQUzPYwC0LwuKJR3dvz3JYrilFNS
-	GKxogKBQSqGU/VpliwqxhjBK6WKBkfgDscIdGX1Vnh3UopHVVMUkOMYKz+KNX6qGIW8VR3
-	9RUE1SYgCK6Le6/rXUJogEmOYF5g0LM=
+	bh=lG3zV3twxP6cvWSTtTMCxPV2icRp16EvfrWsqb8CIS0=;
+	b=tRDFw9acKPPVQb2SxkPjNJhzwsUNBCrllOWU+wjwZmov47BewzTlozK9hFa24K42FCHvSQ
+	41Qdd2Qwd6M9CtMbWyshlkiuQibpEF4/J9TE9YlW6uoqu3ru4dgStSNoPgqiZ0UsVtbWFh
+	uB7KqvCi+eqiYxBPydWJP7gdPZa1UQ0=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="GmCJqe/W";
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kwjSEXg/";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786633430;
-	b=ScRPQ3jT4xFa7XgiI7Kp2TTEjogUCiCyAjXFDdvsBkMYptLB1+3NbYrOugxcVBhzpMwQAs
-	NTngCQNUIEFcZrH0UACPZ1vrXmjKMEwSjrAmn0IRcl9xRr5KrNovLUB8IkcR0DFEGdlOsS
-	mZw7+HWWlRyTK9RQHsocuqJao+wXpB8=
+	t=1786633436;
+	b=MRdGzQJ0qHasigtuCci2FKTHT+D6dl48LuDjMIRx1zXZj/D3viKfE2qucntLmWtTs2fBvO
+	WcsXqYSrlnRuTOnmshDUG+M/1xT3K5T8T0ms1BJEdBZbCNAONlmC/Vdv5OFFzh6VpFhSyF
+	SPEOG0HonLj155gEgyp4rDhY0mYgnVM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9E99A43A32;
+	by sea.source.kernel.org (Postfix) with ESMTP id 901A940AB6;
+	Thu, 13 Aug 2026 15:03:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CE91F00A3A;
 	Thu, 13 Aug 2026 15:03:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097DD1F000E9;
-	Thu, 13 Aug 2026 15:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786633429;
-	bh=195pJpJg9JhscZJnJd0magMDqpiCbW2vvWLEm7sAFO4=;
+	s=k20260515; t=1786633435;
+	bh=lG3zV3twxP6cvWSTtTMCxPV2icRp16EvfrWsqb8CIS0=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=GmCJqe/WLP6qsb0jrkR6huKEgxPo+cT/yHXHgYAVzEZb9n1YJcfKTckYuHqQxuGF5
-	 fWCKbV9ej1kNlOg0bJe5uoCbOnB3Hvy9Outs3KRIDyY6wtpIjZLDIfxv1mdsxnI8tA
-	 z9lBZ2Qr8TLDIbNef9C4kPUymwYXlqxuvIutiUIKeMVOPmij+7gRC2oBxB0SkN8CCq
-	 yKrRi2/U1Co42evg927kH9E7+V7KpkdhARxYwAVr3Zqzcq1qcRSlFsz6amOUqM1zYq
-	 v5ybn7OOccsIhjUzsk0SW9QVdJostmRsWpZyM2DU8JqKiK55wFYXrErz5ech7+4U37
-	 IRbPTRriI09pA==
+	b=kwjSEXg/X7sDQC7OSUH1Ll19xo/z0ISD7nwzmG3Zmb57M2KzTPKmNd+XmIRZYTKuj
+	 anvGPML9EN5xmdQVniMrvI4+xQIrNDv0uIGPEkcTE1iRTbOc9OBMgRwytgGQ3X7lMk
+	 wv3sb+mLUrsYv3SBuvRbLiOqhF2MlUaiglgdfyOkpJg+J89YxhyPp6Be/hqYLjNE+w
+	 C5ux39OVWqcdatrmunlw9D60/hvzb0jJdx/60jzrZPsrGOn6CTHUVmd+AlXR2JQHbu
+	 dqRQOuyqyJegjG8ZLf2cb4QzuXgeGB4VTsrwJRQyoc8CPYiuG9n4015cKPGnl+PgLx
+	 A6CCG93oxtNJA==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 02/18] selftests/mm: skip collapse_compound_extreme
- where the PMD is too large
+Subject: Re: [PATCH v3 03/18] selftests/mm: scale khugepaged's collapse
+ wait with the PMD size
 From: Mike Rapoport <rppt@kernel.org>
 To: Kiryl Shutsemau <kirill@shutemov.name>
 Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
@@ -79,20 +79,20 @@ Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
  vbabka@kernel.org, ziy@nvidia.com, usama.anjum@arm.com, 
  agordeev@linux.ibm.com, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
  linux-kernel@vger.kernel.org, kas@kernel.org
-In-Reply-To: <20260812132304.199287-3-kirill@shutemov.name>
+In-Reply-To: <20260812132304.199287-4-kirill@shutemov.name>
 References: <20260812132304.199287-1-kirill@shutemov.name>
- <20260812132304.199287-3-kirill@shutemov.name>
+ <20260812132304.199287-4-kirill@shutemov.name>
 Date: Thu, 13 Aug 2026 18:03:34 +0300
-Message-Id: <178663341429.2230969.2263069830914903834.b4-review@b4>
+Message-Id: <178663341429.2230969.16814293811889477740.b4-review@b4>
 X-Mailer: b4 0.17-dev
-X-Rspamd-Queue-Id: 8E27BA0008
-X-Stat-Signature: tdhb4hmbh7sgk3cem65hcchcbhmkwfzb
+X-Rspamd-Queue-Id: 65FE314000D
+X-Stat-Signature: xqrinei3fbwpx1masxba8nxircpikgbs
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-HE-Tag: 1786633430-429408
-X-HE-Meta: U2FsdGVkX1+IxC2DU984Jp9IKQ+PD3JqrI8KHpzhKdWEvje2MzUc36WwkufYxz92MCUktyvwsokMH8COMxBmCQRo1c6N/zy+z2fPVslhYyuWAJqjyZ0aWLpTI5plkx4a2BG3ipFjNnxhLjkvz4A5Lr8TCjdGXDck6RDlf+vwtfw+o713i6Rd+jeygd5+Db6z5ZHl5ZCPhF2FZJkEhLq+BoE2uWv/HSsfaPxv+0FIRHdUS5KvMm5pPCz+VaGSrmzr3FV8RbpUEIb6+Wval8Sit7CHO9DnGtEhsYXdKJlxvovi/3RMp9lX7j9F8IMu3bOo7C+otLNnfD6+hCffDTasXQSFBadt7hAkB3/foUJZjNIiix0SzqxP76dZEmWsNrMeTenHiMsqod4n4Li5QHT82ggZBXRQTv+bNsDHLMuZtw1DQqhhO/20lKshGAmsape7fcFMVSY9ZZ93inyFr+n4f7UnzLPvwh0K+LkAFzAic2f/MmT4GnfvoyvklqWF3qP2rfqWs/eGsH085RiFco+1rxXrZQWPcrSVF3Nm4J1+2Cx1IhNFZZ5ykPSW6H53S69+AVAeHQ/sPRNq6K9eWbRnWH8TxhJGi8DebIgya9WI7zUlcqIA5pchBN6JBmlolSqwB4NMtci+IF7kCsEozVmIPjp/7yOTb8bu78aOCQRkTbSkuXNYkq0Gs5ouL3WcqtuoHn1FQbtH/KU2fU/QPkSiPVNuOZjWpCZz0saYNUJtORS/BFGYfKAZyMSnfpI2GkPFWO/7FW6dXOeIrTL8L+omZssFd4AF7f8M2HNkyNw5p0djsu6YkLurlwdTBTXvV2J1Mj8w0ReStzI9t2JK31ylGF3R2/e6pyYgoX0bh6axH6kG0cQNly4zaKCdFVGvSVIR2Gx1qvzGVF7x6B127sxxuyACZdF2uLUcb5LjkHfWIH2IUg61RCX0Znutoo18O28i7rjs1MkjLCPWPQ1GfEA
- ZidPNcR3
- 9VeDSZZRU9/xWuvdb2F2txkP4pH+q5FANOvsP2HXPr7b7hrDAPF36eIi1/K62TJIFy3TNZ/Tt4WiTV+XhktKuQ2SioKOXX+U+m7xasQxJw3IOkeRXx+avJF0KCipH5gMpBYCjALWa3E/5CFRqhno6ze3Hh2vm84tv6cMmhlGcXfHWq3xkHWL7no7Q3YuwJXXQwAOJANKXXyhBO3s9UTLDcdMCNgCc8WV8YjXKBc3Lgnil2s8XZfQ7j6OtJmZrhnl+YUcMAasn4Gk5wczfpbKfQzgEPUxAWpqoa9R/2wTEWU9ymCYK+TTK0MV7Jn0ZvOdQXhN1MGxVACQqCZDMZhZvVfinxQOsluzQJd/y
+X-HE-Tag: 1786633436-383644
+X-HE-Meta: U2FsdGVkX19DSS6CVKwEGVtej1tQjO2GhnsgxHce3+w/gFBp/LTV/k2bMnRl5Y3776d1uFLKQU8vzQPgZtbdScccdHlk3dCD5q6tZ8XFgTauUWJGgvBn3Ky5uGO0AQv2JBUPpTg0p3+pq57JGxGBh+rC3cgG2QJXzZldQM7vWfg/XjsEjsDcelc/KEydvtVmprIKw6B/MA5el46ZMOc5e9kHWXcxJpkuznxMGDXqlwUDRSQBergUArh8DhWFUnYHSRx73n45byjmNpiZXxFrcMKeDkP7rrs9CKZPiqziGCzpIT7U4u5hbLytrOFj6J5mothVdrClINMtIRFulQMjqt7PpLNd1JoSYkz0mXp/KclJQXzkkd5z9x9PLwEvLreBoefdrWcQPxLmbHMNcXkvb+vmigZXh46lvjjspdkib0igGkuKS5Fj5wmD4yYUaBbPHivWRxUHRstjBLQnKZSXgkg78Ivd3ZvYKelb49LuDyoOpdlCxYjV1d6ZzZdCwoLyjRxGCiDGQOwL2gaigari+CTK+pdYwx7W1oqZj1O2scMfCh48/8Pc/wUyINmBynK3nXxSPLU7aLw18pvrswhwKhnUlx5zX2GzfiZlEDI6rLEgirEwZpCr0MiASmPRY/+fquLXxDM6jMjCAbB195P8Oxk32C6DHWUVBekVEN3WSni/5BEw3gUnHzduqmVh9FTvHMMauHTbR6DECeeZBpLdVKlSnP36hOWUdUqKWyz7vhMO8FB7eizGHDFvys9SHWmbf/VNVcsB6whu+3Pn64G3zmuylEvmJnM3dqN69/QcUw3Vpidd0bMbCas6MhwZqjBP8vAeP2k4YmaZ/osc8kNpYmrPVhMlWAlfHbcx5jk6ayzuNvZPzhMT961ndN2D9ycjECkhgPqh2G6e4KPOlX5accqcB0aa5jVr44VR8YJPAHUGm0BVqB9+YGdatrb8I8+Ss4C8QbwTd2M1qhVG3C5
+ 7btMJtOb
+ BHZiErMDPTXOToaEslzxOqobPrFJIWULOmviJfGOsLZN5o57uZB7h7ShuzNTZP6qrdRKxJMFM025QOVbCrEEf065nwWgZ+diqF5rPJOjLuB8YQuxaNBQk96aT1qPxeD/wvrF4z6q8UX0uNYInvLuh5mfkv5N+P+0U80/Ne9bIUl9DEg68a/uMo1FM6m/EljwxsM55yYUnOK7xBuCgYUVhjSQuGJDEs8ayDP6I1g7vLpCX6jdPdGGuaTRMBKo/gfyp+o8TFWJtPRP7ZqTh+mcO6+XcQzvvFQ9GvaVLV69pMEtjoIXYnJdNSJJkoA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,48 +100,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> collapse_compound_extreme builds a PTE table full of distinct PTE-mapped
+> wait_for_scan() gives every case the same three seconds, whatever the huge
+> page costs to build.  collapse_full asks for four of them: 8M at a 2M PMD,
 
-Nit: we usually add brakets to function names :)
+collapse_full() please
 
-> compound pages by cycling hpage_pmd_nr fault-time THPs through mremap.  It
-> therefore needs hpage_pmd_nr PMD-order allocations in a row.  That is fine
-> at a 2M PMD (4K base pages) or a 32M one (16K), but a 512M PMD -- arm64
-> with 64K base pages -- makes each of those an order-13 allocation, which
-> the allocator cannot reliably hand out even once, let alone 8192 times.
+> but 2G at a 512M PMD -- arm64 with 64K base pages.
 > 
-> The failure is not a quiet one: the case calls ksft_exit_fail_msg(), so the
-> whole binary stops and every case after it is lost.
+> Three seconds is thin at that size rather than generous.  Across 80 runs of
+> collapse_full on arm64 with 64K pages the wait was half a second in 73 of
+> them, with a tail to two seconds, and the case has timed out in a full
+> matrix run, reporting a failure for a collapse that was still going.
 > 
-> Skip the case where the PMD is larger than 32M.  The MADV_COLLAPSE cases
-> still cover PMD-order collapse on those configurations, and 4K and 16K
-> PMDs are unaffected.
+> Keep three seconds as the floor and add a second per 128M to collapse.  A
+> 2M PMD is unchanged.  A 512M PMD gets 19 seconds, which is headroom over
+> the observed tail rather than a measured requirement.  The budget bounds
+> how long a real failure takes to report, not how long a passing case
+> waits: wait_for_scan() returns as soon as the collapse turns up.
+> 
+> arm64/64K: khugepaged all:anon 21 pass/1 fail -> 22 pass/0 fail.  x86-64 is
+> unchanged.
 > 
 > Assisted-by: Claude-Code:claude-opus-5
 > Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 >
 > diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-> index 018b0698229c..48eb74c255f6 100644
+> index 48eb74c255f6..a5ada78d90ee 100644
 > --- a/tools/testing/selftests/mm/khugepaged.c
 > +++ b/tools/testing/selftests/mm/khugepaged.c
-> @@ -974,6 +974,16 @@ static void collapse_compound_extreme(struct collapse_context *c, struct mem_ops
->  	void *p;
->  	int i;
+> @@ -583,8 +583,10 @@ static bool wait_for_scan(const char *msg, char *p, size_t len,
+>  		int nr_hpages, int collap_order, struct mem_ops *ops)
+>  {
+>  	unsigned long hpage_size = page_size << collap_order;
+> +	/* Three seconds as a floor, plus a second per 128M to collapse */
+> +	const unsigned long bytes = (unsigned long)nr_hpages * hpage_size;
+> +	int timeout = 6 + 2 * (bytes / (128UL << 20));
+>  	int full_scans;
+> -	int timeout = 6; /* 3 seconds */
+
+It's a pity we lost the comment explainging that timeout is seconds x2
+
 >  
-> +	/*
-> +	 * The test needs hpage_pmd_nr PMD-order allocations, which is likely to
-> +	 * fail for large PMD sizes.  Skip if the PMD size is over 32M.
-> +	 */
-> +	if (hpage_pmd_size > (32UL << 20)) {
-> +		ksft_test_result_skip("%s: PMD too large for fault-time THP construction\n",
-> +				      __func__);
-> +		return;
-> +	}
-> +
->  	p = ops->setup_area(1);
->  	ksft_print_msg("Construct PTE page table full of different PTE-mapped compound pages\n");
->  	for (i = 0; i < hpage_pmd_nr; i++) {
+>  	/* Sanity check */
+>  	if (!ops->check_huge(p, len, 0, hpage_size))
 
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
