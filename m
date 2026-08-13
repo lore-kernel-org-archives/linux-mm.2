@@ -4,107 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21829C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 12:14:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3639DC5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 12:18:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0A006B028B; Thu, 13 Aug 2026 08:14:41 -0400 (EDT)
+	id 28A366B04D2; Thu, 13 Aug 2026 08:18:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE1F46B04D0; Thu, 13 Aug 2026 08:14:41 -0400 (EDT)
+	id 260546B04D3; Thu, 13 Aug 2026 08:18:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C24D46B04D1; Thu, 13 Aug 2026 08:14:41 -0400 (EDT)
+	id 176246B04D4; Thu, 13 Aug 2026 08:18:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A29B06B028B
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:14:41 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 30EA41C0054
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:14:41 +0000 (UTC)
-X-FDA: 85096139562.01.BC6BF6E
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 051D840002
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:14:38 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=LmsUJYyr;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf17.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E2C406B04D2
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:18:12 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3851C40135
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:18:10 +0000 (UTC)
+X-FDA: 85096148340.25.4AD7402
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id D5B664000D
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:18:07 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C6nPRXqt;
+	spf=pass (imf04.hostedemail.com: domain of amarkuze@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=amarkuze@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786623279;
+	s=arc-20220608; t=1786623488;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5mar/IZUE5TjogPRooZ5SINIofEJGtSownXYdjfo6Ro=;
-	b=gbMJu8WiHzR5y9zxswl4WtWgbZv6sOtsPDk1lPllcCgNBsGTr68JKfxTmo/Fpt9tPbLrV7
-	jS6Fxim5lhG2uC8S3NR9oe3LUp6/PvswfzAKHVKvqJqpISO0TxXeoXEeLmAvRmZJJ77Dhv
-	+gNo6s9XJU/0ctGNdAIA+mWX331pmII=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=LmsUJYyr;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf17.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+	bh=5qUHFWUDQz/MEraJh+J1O/f5gfgcsCAk1KSe7ywJpi8=;
+	b=DVan3oZad9grX3OtXYKJm3Fyd9NE4O3ag1SSN6V9XdSgyuP9yKQ5HNGZI8Y7RX67JMm421
+	fCdz0UeKgw69SzXrNLmLDwbwcAVoCCr8TouBKpNGSfN5MKgkbbqifq+uZFPqPJxt2xcdsy
+	/blpmED1qM/qGG/OmzpOXuCEVJfcjbY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786623279;
-	b=UObIWUFG8uFgdJn4gYTTbBIsGB1Wg7+hyoR0i3WBiEjnGy4E+e4ELcknGcATEXrZs6Y/oc
-	SlsRS1XvB7itVTfn/KxmxMn1eo0Bjr5b4YF2fRgS94F6mUoaQat5H9pFg3BtTbDNRpFXeW
-	zj7UB/QE7Pymgv5z+5kAnkil1CnY2MU=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=5mar/IZUE5TjogPRooZ5SINIofEJGtSownXYdjfo6Ro=;
-	b=LmsUJYyrGitcmIsyyXrtGOdPNNJuOobKfjvVIu4aXV3JGdz05w4E/VKfaK8NQlEkF40+Eelmf
-	LQ8PPhbTs5OlFT6GjvECzNFSGU3fYheCDOx94qL5EejepG+S94T44Vma5oAeimmBqhy5tIMSK4E
-	W6SMdxYZsHnyHwDaQCA1hZs=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4hLPCd75WPzRhR0;
-	Thu, 13 Aug 2026 20:03:57 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id EA8E54056D;
-	Thu, 13 Aug 2026 20:14:33 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 13 Aug 2026 20:14:33 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 13 Aug 2026 20:14:32 +0800
-Subject: Re: [PATCH] mm/Kconfig: allow user to select MIGRATION if
- MEMORY_FAILURE is enabled
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Xie Yuanbin
-	<xieyuanbin1@huawei.com>, "David Hildenbrand (Red Hat)" <david@kernel.org>
-CC: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <bp@alien8.de>,
-	<byungchul@sk.com>, <gourry@gourry.net>, <joshua.hahnjy@gmail.com>,
-	<liam@infradead.org>, <liaohua4@huawei.com>, <lilinjie8@huawei.com>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<matthew.brost@intel.com>, <mhocko@suse.com>, <nao.horiguchi@gmail.com>,
-	<rakie.kim@sk.com>, <rppt@kernel.org>, <surenb@google.com>,
-	<tony.luck@intel.com>, <vbabka@kernel.org>, <ying.huang@linux.alibaba.com>,
-	<ziy@nvidia.com>
-References: <837c2e83-ad5f-42f5-afef-5132e02fc19a@kernel.org>
- <20260813092343.214324-1-xieyuanbin1@huawei.com> <an2PGVZuYruQhzel@lucifer>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <83554fb5-d105-56da-dbe4-68fde533199a@huawei.com>
-Date: Thu, 13 Aug 2026 20:14:31 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	t=1786623488;
+	b=E5qeuj7J6hRgOO6km1CNMqurvMvT4TTpmmhSV7jSc5830qKPB3gR/04jUQp8OOhphktNtH
+	DWThM9z+HItm5IlzOsW3QM0Y6KOWX7A5cCW2vKJPtGOYXXRcF3ZgPg22vGHuaLp9zC3kPa
+	vrSM+ZFQ3XnKB3TVMeNIc9HUkd3P7W8=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C6nPRXqt;
+	spf=pass (imf04.hostedemail.com: domain of amarkuze@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=amarkuze@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786623487;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5qUHFWUDQz/MEraJh+J1O/f5gfgcsCAk1KSe7ywJpi8=;
+	b=C6nPRXqthNeIX6G2wjfQVKswwhhI+s3HFbmoUUEi5fUciZAusKIbXPwL409YzyMxyE6PgA
+	h/PyWiyPFUNgB37HSaIuMbNgHbwgn7akr/RIG4wrfNNUHtxDOve+MXXcGhG1FsuKv8Wbtz
+	JjDirlwNhpSUhX6Q21j9pECSGt6TWN0=
+Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
+ [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-339-leEwgD7jM9G6lZVDa-CUgw-1; Thu, 13 Aug 2026 08:18:06 -0400
+X-MC-Unique: leEwgD7jM9G6lZVDa-CUgw-1
+X-Mimecast-MFC-AGG-ID: leEwgD7jM9G6lZVDa-CUgw_1786623485
+Received: by mail-vs1-f70.google.com with SMTP id ada2fe7eead31-75116a48926so1448501137.3
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:18:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786623485; x=1787228285;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5qUHFWUDQz/MEraJh+J1O/f5gfgcsCAk1KSe7ywJpi8=;
+        b=bYfbg7+joz3TiGfuL3ObYTy8CcvxkO6i2BmrgXrFdrsntKpK+/vLbu2NQWH7DgZT1c
+         l57mePEMtI25OrWGtuSU6H3XmwJ0VckAT6oGDwLchhhw7MxfWlcLuxZZzqL4+OXmTgv/
+         sSbhJ3fYcXM8/AM3nZoUNX6FlYHYJesyOQ+rGNr5PROXVy8bbqWBSrbWMjMatmDs1oq9
+         rci0yzm12PcxGCDXRR44WK05W5Tg47un8KJ1KkH31baR4N6h5CtBC/BU3L7fyZfST/Tw
+         WLvHKjlZWEshmx92c7fn5dRyJEkJnYeW/jbaGXdQCLLgOiFaQL+sqMNWgiNmRObNrxgQ
+         K+0g==
+X-Forwarded-Encrypted: i=1; AHgh+RpnCnU2dqMdW57lAdIBhkxNlRvy7XPiCC4dwjx5T7siNM9R4866x3U6vJBVNrD5aoztX3XmPI6ZhA==@kvack.org
+X-Gm-Message-State: AOJu0YxPOwD70iVmHtHdhYF17M9SUfzDqocqtgXOCgNl+cjcQjLlxEbQ
+	7pxM6GFBmz2CCTfD6jlTNofLq4YSS0QdOx/yQrzW/M6C/dZmu2J2YA7adzO9t8uT83XUnv4g+IG
+	bDsLHbTVUtk1SMhpTSpYEquILwDAaxfhJyaLEUPqck9mpRwFKTdJb7fkYt9ZpWLpZ5ALlCOnLEL
+	rmt4CCwRUQvuuZEQEwaeuBoZBXPRA=
+X-Gm-Gg: AR+sD11dRcoPzRC1fvNOF+4Bwe63Ez3vxdBJ8g8DP2kFR7rEB6x9R3r+uWHHjruMxja
+	j9or4SlBg62pJTu6YRD6puEu02LSLsywe9C5x/bBR5veK+LDmRi3fXzI84QrRSI1RsmjYXB3usL
+	XPYW1JApeJAUaelCfWc9GDOZUPtebgziOrI1ViL6kYLluHRzoyQHXke7E=
+X-Received: by 2002:a05:6102:8008:b0:76a:fc18:29c8 with SMTP id ada2fe7eead31-76db668464amr1600885137.8.1786623485457;
+        Thu, 13 Aug 2026 05:18:05 -0700 (PDT)
+X-Received: by 2002:a05:6102:8008:b0:76a:fc18:29c8 with SMTP id
+ ada2fe7eead31-76db668464amr1600872137.8.1786623485092; Thu, 13 Aug 2026
+ 05:18:05 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <an2PGVZuYruQhzel@lucifer>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemq500010.china.huawei.com (7.202.194.235)
+References: <20260810-remove-wait-on-page-writeback-v3-1-dd7531704f26@columbia.edu>
+ <20260813112028.3989422-1-amarkuze@redhat.com> <709df647-3af1-4d9d-a99b-c36c9ee69ac0@columbia.edu>
+In-Reply-To: <709df647-3af1-4d9d-a99b-c36c9ee69ac0@columbia.edu>
+From: Alex Markuze <amarkuze@redhat.com>
+Date: Thu, 13 Aug 2026 15:17:53 +0300
+X-Gm-Features: AUfX_myXKkVLHvulRQVmMzyUu_qv7exV-qvoatfjLDFlQ5VLwI46XH_QXFBtWxY
+Message-ID: <CAO8a2SiJsmNxdj3E_3EhjSYvacn_XCh=RCwhNF29GF79=L5Pfw@mail.gmail.com>
+Subject: Re: [PATCH v3 00/12] ceph: convert writeback path to folios
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: idryomov@gmail.com, ceph-devel@vger.kernel.org, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: qJTKEsz69nyvjNB8yy7rgZML1PXXHSg_-stRLlvyexI_1786623485
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: tgw1mmh83qo61yrhym8mhb64qu93h84d
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 051D840002
-X-HE-Tag: 1786623278-357597
-X-HE-Meta: U2FsdGVkX1/Kqc45MprFdbm+mL3mZqTUsMW2KuhYL2D/tLM/ywSjfiVjY+Hy/dGsX7D2wUoaHBWt6wXVzTqA5pLy4pJahyXXOLnferMjy66rWRU+Hh3TD2+KOfpiSuEOfK1iAdQ2rB6VMHYKxyruvhoRbqelqE7bOzsJiVFhhp2L+/lFeulV4eySkjLb6+m/K7ZcgLPi6mNs4FTLc40zPSh5qp37dR1cUy3+8+vyOIzU1vYrI04NnkMPO9o+vrs9XfJng01f4Dc9H1hTmj8skgdampJwgQpRi4Te/JLE++iqKnDA5+ok2/Aesq14iM8+EQ9Pj8KErwy6cdnuObbnIiuWFio6qNVfbO9bRzGVomGQLSGDeL9cqWt/ZxtCi3Yy85iKEd+0ujZgZC6G2c8SzCZkCvmeJNCmH8MWrJ7Ln+wZkKAQBd3SaEeVrLVDGBVGKDf1bYDJYAAL9lr/CQBps2nmezfF5qqls2f81KzHUlJa4vm5fs5K7hvvUHkGNKfFV30K3RXl+0Q5TUvpjDafZ//16EQIW/5mvTHpQESYrljZ+awbHWswXOsWdVz6XDgvIFzeMV1XeLGeT9tcVvms7YWucB6gCll0ZlP7NQ2uIpsEvQeQ98JRwdEQVb7688uyvLEiJkgtYSEwxC0xFEiZnCJFzz8QgSrpHUModWi0aN3aGWf1dUgSJ7JhuEMZd0xeErn5Z5ojxEg8akfta99v9nL6CTzZCQybJQmjWMazZIBV4r1WvdZQhNVEJZs0s0PV+T3dQHi6HcemHG2s2R5JOBMcrhzz0xM9wZBVgQ/6tAf8qQjA8bTe+j/fMGVUG28PJCUzXfBCk9XzzdsbexBfJWHg7zu39ecJyO8kp8e2ehCatNV4/WwyOVaXMiGTRSWJjxuv4pjsOXmAjcfWsGir1XdWMKAGQOIT6txWAAaCOl34tnaYG7r4gz2OV6k25HP0AGP/p6pa5r1D9YDjY2W
- hD4+SesO
- Tal/t4Nqer62b32taJolXGPm5V8eHruLfJaZ19HgdoHTtm+o3zkAPe0vVPlBQFGjAYzzybXhj4hMuCocwR7Zej5B1sM8BPcqRPPfOkBDwSXwZBxH7wf4K7gx3Cg33m03K4rDTcleOA4M0jz1OTNXphTY9JyweGVhJcCtUfZpgmeNNSgL9LSenVf8wIWcWxeIPmMEdelNDJSSGzGbwyVH1W0eY6qui6vxOuMY5QfT0UUPucCDO+ilR/A5odAC76WAchm+biI5p2dT9aX4B/uDl6jmzWikOf9q5Kg5moiIB3CgUSkd4ogHMgFJpLQLQ/o4jutnYhqHTxQby5iMfgK3VwZWZ9xaJKZmsrNNgc4QTvcgBaD+BslQ0IdFv5XjNXb4E6A+BEci5PatWfPZlU9eEi8O+iA==
+X-Stat-Signature: 7cz7reso1xn4twfxmqyabuk1yn8pksy3
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D5B664000D
+X-HE-Tag: 1786623487-390878
+X-HE-Meta: U2FsdGVkX1+Ob2birr4DkpQWYTfMjw4a/+9rKmPrx8xIZTmuyVdR+JL0C4j6zbsqLj0B4YfcSUEkM1o50+LrTnufyRn3IGTGv/1lESY0eJZc9yPQhzNsif9+NV1UkU31kF6rKo/CShVmJSfImmA9SNO/dP/INbjjMt2c7hb1CQ/Tku1fmmmJRLlhy1fLVRiEAnIYiRX4oKAxZzrKj75F8W2kaHBBo/TehWbrdLPVr9gaYXoia5v5/PFOz2YG5FrM+sYl0qRiq0wXA8hwEV52v0wzbqlrtAkfnTyRfxF5KQ2kgFh3pjQ5Ehv2/USf/ci2HSFxXZ+Jw6lTCVyMXoiT4z9M0qoy/xFY+TweXbZld1cnXXgZyHuv2NqE/M6IH4sMohw2g2wrCaGHNli7wJz8cn+XOp/LA90JrhquuGdBEtauBo/nDg9Ie3jUy43vwQRPJ20eOpye6YR+Fztlv66FrOh89BD4m8U1ezYE/HSX64IJLDla4A9kJejIF5fjVfm0G5jchRumCcz3K0iQjhIX9D/PNfTnh/filztYxxQBWC+po9i53vp7AtpYsuBRdbBgy+e7WYvE0kb9YkQJ/nnegdf1qlfIi+uxp696akOVunp3bs2DTqT6ghiLrwBw4S0N0gS7hExseZuNkXry+l+VNre+ffMhYMXuKn+kKccJJhhseKyypvo+FyL5d+y3Q0IFkKaGE7KT2Mk5tkkr+FcE1UjU6fCW5w/LxQR0F9sN3X0WymRbdlWqRc9uGDPmQBJHYk8uRzvbqi6zhU/v/s+7O5ft7XARQJCok5VazL5AXbBEF7OjdBqeuC4JvygQ89wi0Du1+PFz17+YFSJrMJgt2uu8Ae7ItBhpDK10P5TWzOeoMupOOG1DuHjtGAnLJMx1izknPAmJSPhk52THinPp7TUuI8VKVmFJlPfhuuCYqBUPDw4iI2wuPFuyWNj4Rd6doqp3bvJMrS0Czc+ZS48
+ 3vhZ40FT
+ 7Qw7e9GrbhPP0BX09xChn3NjwkQfIfRfHP2Y9gy+31Tlu1C2lC7dzWV8Y9mE7r6uIMrJjIQ1LEutBn802qW5Y6OdWH3ZXQwem5aI8zOF7YFOEI2jleXjL9Vx5s/DSsYGYhfVX35NRdeyZdK7UQiH3ryehhzx8fFHRDNObFgfJr+bg6x4qfkRERyoAOTv57M8Nh7hd5IDTFYbtZ0E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,43 +126,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/8/13 17:32, Lorenzo Stoakes (ARM) wrote:
-> On Thu, Aug 13, 2026 at 05:23:43PM +0800, Xie Yuanbin wrote:
->> Thanks for replying.
->>
->> On Thu, 13 Aug 2026 11:11:11 +0200, David Hildenbrand wrote:
->>> On 8/13/26 09:23, Xie Yuanbin wrote:
->>>> I think that just making MEMORY_FAILURE select MIGRATION is also a very
->>>> good solution, and I respect the maintainers' opinion.
->>>
->>> There must be a good reason to do something fine grained like
->>> MEMORY_FAILURE_MIGRATON, really.
->>>
->>> So if there is a use case out there that absolutely doesn't want
->>> CONFIG_MIGRATION but does want CONFIG_MEMORY_FAILURE, we could discuss it.
->>
->> At least so far, I haven't encountered such a use case.
->>
->>> As really only softdirty needs page migration (IIRC), we could also just put
->>> that under a separate config that implies CONFIG_MIGRATION, like
->>> CONFIG_MEMORY_FAILURE_SOFT_OFFLINE. But I'd rather avoid that unless really
->>> required.
->>
->> Okay, I understand it now. Making MEMORY_FAILURE select MIGRATION should
->> be enough.
-> 
-> Agreed with all that David says, and yes that seems the best way.
+Yes, its best to separate any mm/ work from ceph when submitting a
+ceph centric patchset.
+These fall under different maintainers' purview. The one exception is
+when a core API changes, requiring a tree-wide change that also
+updates the users. So any mm/ changes shouldnt be a subset incide a
+ceph centric patchset.
 
-+1.
-
-Thanks all.
-.
-
-> 
-> 
-> --
-> Cheers, Lorenzo
-> .
-> 
+On Thu, Aug 13, 2026 at 2:51=E2=80=AFPM Tal Zussman <tz2294@columbia.edu> w=
+rote:
+>
+> [adding the mm maintainers back to CC]
+>
+> On 8/13/26 7:20 AM, Alex Markuze wrote:
+> > Hi Tal,
+> >
+> > Patches 5 and 8 remove wait_on_page_writeback(), thp_size() and
+> > thp_order() from mm/, but those helpers are still used by f2fs,
+> > mm/filemap.c, and mm/folio-compat.c =E2=80=94 removing them would break=
+ those
+> > users.
+> >
+> > Could you split this into two series? The ceph-only conversion (patches
+> > 1-4, 6-7, 9-12) can go through the ceph tree once we drop those two
+> > patches. The mm/ helper removal is a separate effort that needs to
+> > coordinate with f2fs and the mm maintainers after all other users are
+> > converted.
+> >
+>
+> If this is the preferred approach, I'm happy to split it up this way, but
+> to clarify:
+>
+>  - This series removes the definitions and exports in mm/folio-compat.c
+>  - The mm/filemap.c use of thp_order is a local variable, not a call to t=
+he
+>    function
+>  - And I don't see any f2fs users of any of these... it looks like f2fs
+>    defines a folio-based wrapper with a similar name to
+>    wait_on_page_writeback(), but doesn't actually use it directly.
+>
+> Given that all users should be removed and the relevant mm maintainers ha=
+ve
+> provided Acks for the two mm patches, I think this could all go in togeth=
+er
+> safely and avoid delaying this an extra cycle.
+>
+> Let me know what you prefer.
+>
+> Thanks!
+>
+> Tal
+>
 
 
