@@ -4,126 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8E03C5CFEB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 06:34:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E768C5CFEB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 06:34:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EFAE6B03C1; Thu, 13 Aug 2026 02:34:14 -0400 (EDT)
+	id D474F6B03C3; Thu, 13 Aug 2026 02:34:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A1456B03C3; Thu, 13 Aug 2026 02:34:14 -0400 (EDT)
+	id CF83E6B03C5; Thu, 13 Aug 2026 02:34:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 641F96B03C4; Thu, 13 Aug 2026 02:34:14 -0400 (EDT)
+	id C0E686B03C6; Thu, 13 Aug 2026 02:34:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C8986B03C1
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 02:34:14 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E6C76B03C3
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 02:34:15 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A3315A053C
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2649E80549
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:34:15 +0000 (UTC)
+X-FDA: 85095281670.20.176887F
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 64723C0002
 	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:34:13 +0000 (UTC)
-X-FDA: 85095281586.20.9AF8D69
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf01.hostedemail.com (Postfix) with ESMTP id DE6BB40007
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:34:11 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=J1CpVwiS;
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lNMFObuh;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of thehajime@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+	spf=pass (imf22.hostedemail.com: domain of thehajime@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=thehajime@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786602851;
+	s=arc-20220608; t=1786602853;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7VydE882aeZh4C0XeyZVTmtWlDmuPadzLk+Mgv6C7/A=;
-	b=c/8HJyZnfHBCv5OXIw21TCNXtPK1D4ecqnPVtoC0zMolni/VKwoqsTDqF5SB4vgA6XL/zY
-	F45XPoPkRB8XbHsqJAQ9wf7Qeu3+beBSDNyKCpW39mw73HwKh1OTNjQGKmQuHMi61DXZ/E
-	JPubUd2Htdj69wvh5iigwtj/QU5WvSw=
+	bh=Rl6igOnyCyLcIUIdrNjrR0vSvz5V+iB+/lHA2MvB5zU=;
+	b=276iTH2GCNATr2NNivdeVqSmyNott/gZ0sF6crkd85AupktCeEGBqJWeLTE2GutYkL0VNk
+	UHqEYlSkz8yArLhatUgQQszBWHdr/HO6LlY8fgFtMpUOgSqGGa4KiBU9995Uo7F/L0bbwv
+	0DIWGGCoRzoHqOpapX4ANH790p1QG/M=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=J1CpVwiS;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lNMFObuh;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of thehajime@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+	spf=pass (imf22.hostedemail.com: domain of thehajime@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=thehajime@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786602851;
-	b=tdeBxrFQ+sRHjdBhwVr3sbymSeZVe52rJHx3Bsw/pUQckckk+1oAJuihOnD8jivkIj3WpC
-	vZ9GritfksRJut63JZUxIv0feqOJ0zddDjAxSMqKe2oZqiexSIr1EeQtAPuLN0WwSBP8ie
-	67z1wd1CAFcnOlU4P2EhtDnZqaGnqBc=
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-382ef647e20so433066a91.1
-        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:34:11 -0700 (PDT)
+	t=1786602853;
+	b=y8gAs1cerX3fxyuPYevx63tAbDVZ5+KRr+vaGl6OE+4tHe1G/hLNFHcQBn1xGd7H43iFXt
+	N1BtMQLrdkD+BjA2OCizFK3kgq3ctZWbz2fdugrqtg183r8LO7w3EJuAI7jfK3NI4i47DC
+	4a3/cN7W/rcAgNSbG5LeCwOeoi6UgDw=
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so1919983a91.2
+        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:34:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786602851; x=1787207651; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1786602852; x=1787207652; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=7VydE882aeZh4C0XeyZVTmtWlDmuPadzLk+Mgv6C7/A=;
-        b=J1CpVwiSeUCCRzNfUSXBY+sy+9Lf9p2T7YCMwH2FFrSEofEayu04Shk9aF17zWF5TN
-         eN9R6zNpMTKyimtwiWnAH/gRVTf6ras4lXLlISSHdzQl1Z87evGvpSIiryGhHPh+Cwu4
-         4cLWo2JBTAFxH8pKvL/0BokdEPhzXdAUuuOhOdMU9VFfG7nWTa52DONMCcoShpozcfMt
-         IlEcVSppTu4JYT3vL0LeVhvLvYXLEgW/cPYhHa77Eef4R/RRo6YN578FZmTdieLhOGY7
-         0cTmf36XTjaVYQR4rx9jnTB+Vxp2oq/qptSol2/bTbU7/9FG0AsXOhoVkCAwRY+bdyFc
-         pqsw==
+        bh=Rl6igOnyCyLcIUIdrNjrR0vSvz5V+iB+/lHA2MvB5zU=;
+        b=lNMFObuhIxc9bi7rM+cYiUm4hDH+JqJaajiwYg4Y6dMmjXyoZtBsx+ubTo6ADn8/LI
+         a9+IntP64kDY2e2cU1RZhaCX2Zij4UUK7eZYAV1EXQ/VIftFzrL9Ax+hQmEZXNXsdlpK
+         0a/mUHbUusJyyO5M14CXfM1oJdypZ7J0vi8zDhY3693n8vpPGkthKkYNNDvhB7YoGdKv
+         yi8tCq7bXcrV9duuSx9ZQfm39eSXXYEuX/Z5Kpk3dKmZFk4KALaxGMchvG5tDvFVgfc9
+         vBdPwFSkOAkWKQJ5l0M7BeQoVCZs6uAWSmfOsTpbesvdBUOTc2SLfKvXrirvwFjc+ecf
+         YurQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786602851; x=1787207651;
+        d=1e100.net; s=20251104; t=1786602852; x=1787207652;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7VydE882aeZh4C0XeyZVTmtWlDmuPadzLk+Mgv6C7/A=;
-        b=ef/zAS+P06ipWUySbpw0RV2q2zHv0c6dxtDquHNLwgJjrBw7VLMQv4IrarvwC1wAy9
-         jHlXyQKHgKqzPsotMOi9nNf6VJ8CEYB62zMJHgYgnclEqlz6aYDakpzlgt2+FEAiBX6W
-         4tNAq/8pP5lqxXdlmC25yJXyzX/+TZxmJRa7eIgVJMx/CwBfrgt5fjUffEsqD8Tz/0BM
-         H0el9kWaXBeEAPuHscNdLRWO3SmW1r8GA3qRbyxNzbHwpOSYSLKCoGlfGrpq2/Y1ap+R
-         s14wX6dL24LZ0SE4y83JAVBk6w0KqLGKd/hiEr03bad/AcHkNueVNjflKOXFn1Pyqgm1
-         IdwQ==
-X-Gm-Message-State: AOJu0YxTp94rL1PqwGKBxezBrNEoh/mH6OUR6OuIOE284F/lD/rXLcE+
-	qAviYUnbxbW0sDyqdmQtJCpAeVsaXxE5FC52frDbNHG45Rd6mJyYGkWB
-X-Gm-Gg: AR+sD13zmKGhL8HOYr3Py3l1pHZvxYrYiPAgtWSDrHYK4zXlsvb8zOcmI6Bv/JT7Owu
-	slbPl5Ia5PURUi8UQ+Mkw/AyGPgMPmUUuerxsfm93GJcxzFsCn22IJ7rRV+gJgMXI9TbLNw1EKQ
-	BeOxYwBF9pJNhq73iOC0jkIzNiq88MVWWF+y/KW+xOwSZIKxjUM4RGTxOFAs+D+kVWMUoJnzXz1
-	+cw9yTrW7UN8V3apvz3oVXqhOV+BC/6Li8EJ18uoBxSDI9vYu3I4MzJRezo6gQumkskf0OXMk1b
-	jvyYDW+p53B591R+UJKwdf9KW5JjF2Mp5VFtXIaHrTCiQSCtDmpnpXyxQPpcKGhQuqoCm50Pml4
-	GSXtWh/TqA6SBhx5NSZMYgFa1OjT+SPQv8qxWCu2WHRUWca7HL+Yk+xcNXeaDc3NDF9mV+cvUUt
-	Av+cilGvb9iPQNZftGxXhINoam+JhD1NYtxpGA3RTsp+9JGMhpJzaCKwP6Neu8/MZXe70NQbYM7
-	sQ/b+6aPrs9+5cPwBi5W17IURPyp2V9HkbLcFxiCmcfd2DcRfwN9ZtT88wl+JnxgZFLfQP5+hMh
-X-Received: by 2002:a17:90b:3c8d:b0:38f:de97:b06 with SMTP id 98e67ed59e1d1-3931e05c56dmr4216541a91.5.1786602850753;
-        Wed, 12 Aug 2026 23:34:10 -0700 (PDT)
+        bh=Rl6igOnyCyLcIUIdrNjrR0vSvz5V+iB+/lHA2MvB5zU=;
+        b=fnAhvj4QMhvpKHMgTw4LNEfLU/P/1HlB1O7Z/UtgkHACXAL4Kq1FG33lm9EcbG7nR0
+         mPE8+24wK5HcnwXNKl2JrpQY9TV2PFNotGY31VzzbERhNFDqfbwnsplkkGqckN/kZ8b4
+         9lpMHplzGlHn6yVpYKFTCaulRODX+9ocLIBJNDJzexCv6aS7JOYBdBzQn6k4bZTigqos
+         CZPq2DYGDGoWLKD4MEjNPFmtyV4kI45NJnEH7H053ip+1ms9Wju1NXQBXZfkk1PEevLF
+         zHiR8N54la45M7cCpob5e3EvnPnQ2C6q+FrLAHz7GwyUCKsqt5SlQyvCrZdNEHS5ziaq
+         FXQQ==
+X-Gm-Message-State: AOJu0YwuLxHd0SNEdFmOq/g2AuV7OdL42aquOnsmSrp9rggCqoOanAV3
+	+22xdgLmpUCB79zHImRUnDFgZqBSt547PH8WFazk+u7DLCUmR0eKx00o
+X-Gm-Gg: AR+sD12QaT9GNKmzNHvN4WQHtlor2gSvX0kUBsSy6YXr5kgQCSJP0kFTtxOmqrLtn4j
+	fNyjyrVWBv3agfrkBYfEc+QPrT/9aoiIwhnUYjBf4JK2Um+uhuFgIz1ScMVqMZmHbWrp98IHiGw
+	iibK1Hkk5oJY3fgwig9ZMDgy7cFwDY4qmNicfsFkO4SCg1p8TzrzL6M5XAM/cKLKOYkp0kI7dYW
+	ZY4OX3YYprpSZr3yrs42MYQAFuEupqhgatYnL0tFX76V8Iw62fskXNdhYVtM15aTKwM+gNMSoSF
+	avHETnvDoVqs9qFS12XsEnYXyT6ZKVit9CWZTD7WP5E++1252Y9hjl8pFbfHkwR4fjKiYpB2k7n
+	nduMlZZxjByRglV9E4Yojacggp9keqh47XW6vIaHiycS0hvGz7a9AuYoH+jxwAb/BEC1IbFIhnY
+	gwDafxZ+iOL9eAu03Y9fuWp3o227yXKGt1g8wnbp3rh2ZrPUvWvxa2bxYYTfmqJp0EkzMjwIKnV
+	ov63+IYOsb/RGINV65UZmGuVrmIpD+i89yRkQWQ+0UaE4F40A4Nm4puzwHbvQwG9Q==
+X-Received: by 2002:a17:90b:52cf:b0:380:21b7:e727 with SMTP id 98e67ed59e1d1-3931e29780bmr3917272a91.14.1786602852144;
+        Wed, 12 Aug 2026 23:34:12 -0700 (PDT)
 Received: from ikb-h07-29-noble.in.iijlab.net ([202.214.97.5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3931f41cd2fsm1576275a91.12.2026.08.12.23.34.09
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3931f44dcbbsm1650400a91.16.2026.08.12.23.34.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 23:34:10 -0700 (PDT)
+        Wed, 12 Aug 2026 23:34:11 -0700 (PDT)
 Received: by ikb-h07-29-noble.in.iijlab.net (Postfix, from userid 1010)
-	id E79AA15B042F; Thu, 13 Aug 2026 15:34:08 +0900 (JST)
+	id A203E15B0431; Thu, 13 Aug 2026 15:34:10 +0900 (JST)
 From: Hajime Tazaki <thehajime@gmail.com>
 To: linux-mm@kvack.org
 Cc: geert@linux-m68k.org,
 	daniel@thingy.jp,
 	Hajime Tazaki <thehajime@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
+	Shuah Khan <shuah@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	linux-fsdevel@vger.kernel.org
-Subject: [RFC PATCH 3/6] mm: nommu: fix an issue on map request to /dev/zero
-Date: Thu, 13 Aug 2026 15:33:58 +0900
-Message-ID: <20260813063401.1786548-4-thehajime@gmail.com>
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-kselftest@vger.kernel.org,
+	linux-um@lists.infradead.org
+Subject: [RFC PATCH 4/6] selftests: fix build errors on alpine linux
+Date: Thu, 13 Aug 2026 15:33:59 +0900
+Message-ID: <20260813063401.1786548-5-thehajime@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260813063401.1786548-1-thehajime@gmail.com>
 References: <20260813063401.1786548-1-thehajime@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DE6BB40007
-X-Stat-Signature: mxg87p8yfaa3m9q5jpg4frwrfjsiwfky
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786602851-98221
-X-HE-Meta: U2FsdGVkX1/u5hQugNoGQ3vqZ0wCRY1TYM/gLZrOsyVlFOi5kt2WrBvNBAISI6xuIdUZ1uIFJJvl9vRlyb0GRt8JbherrQ9UPUukT0LGXM8SGPsA3qoI5/HiRrDm1PKEIj1JEKBgeO8rPGPsm5PMbt1z3kgPRJ3LMronqzjeIw1LKvOQmdv/4/NtwNwn2LPtBqlwFbOyFIaU3fqxfrc7ktuqtPfkVwZFLDEFka/HOuMe7C5f5UvH4Xu/jGM+p5ZDe4y9ngB+fvQZAufOejvluxWLmFS4dpdgGg40HH3tPAw54AJ4SAHIsB2HF/JS0rn3unL9OFSCUvbcOi311cKXXb7fZ0qc4m6P9rFN7tfwsQGtz1SnicmyLD3T9+aw71vnwrMkdRPrTuRbLoRziuH2K5/R3kFEH5McU9U8uZAPEeKU3XzdsOsRqM4FLO9KtsKjuC/e8GxM8nILP7Klryldy7AsmeIfKeaIE6ZZQI0k8po3oovlpAJL9l8bBtMs6PWr0HQjdK5OacBr6CKgAOHuqndyMLb4qUvT0PLv64H1P8MbdJaBnPi3k0rNZdsdyRVDP64hvteiwMob8Ep89yIKqWONtRxvJ80tx7vvO4X9+9Zo322xMKN4pLr2t+NSL0Tw18pDG8zKsxpJBonOYk9zGTtCPwMxOL28ifdqPsjH9W7sjMCUGUtVFsTGfWDK4mdkOY8apTo1JKdoNbzTCJAQ96y85Ea3ai54zM6+U3yY2n+G2dFipZuUr+K7PwShpNe+7vytNtgW9YjMtdtIdwzkP5hR22s3vCKWsakY1EUwZ8qFH1V+jjl674iECnlMZV9VGtjUuG5ZdouVicO8ILVamjZa/wdSliPZv7vTXO6QpiutBqPOGY9clsspCpKd9CodGfNTUDx537ALZmYJGwFcnw33z1txKpq7vxxXsC/SY/Aae54A3xGJJpYAZ4svIcFCA0dsMsuKiEdPFvr100Z
- lPB9L1V0
- ZLsq7mmOYDpplKIkOXzenGCHtJhshPsQnbG/pqk7W3vJYO7ol2Q/HlvY4WeZbZgdjjhJerEb78UWvTG3wUYJNSvke8XfjozAOYc568ugNXx5Q5BtR+drerE+S0hg2k62zbvak9HMkPs2Vg+Nkcq8jz1Fvehibbi3oJVBcEnx0LAu2ERSbEqr+Nh96o+9FZFBjfNHvb+m9Z8L40Hw7Lfe87hdiQ3nnXkvG9Sd/mfNUbKIhCuk+B6jbbrKWgr+e69OSURnEKauKVULqNx9aIQFIPzV1N+GyN0BYVd8SWq5Yq6Y2vr0dh7CA7bOfS/USq7VvG05zO/62WgDBF4kgwKHa3+sMgtW30wG/tjPe/MH3BAqJ9FsPpW0hZeIYTzpwVk+ykBjsS860IV6U/He+QEv/hrxWfWAoEMzy10MHB3ehkOTUr41vz2sUgIkdrUG7Y4dBHg2zAk/4uIiyshlm+dyBdoDG4Odd2DQ1lg6B/lQPshGn3dARjby+m1KusxDvcn8btdI4MwF3A2PWl7iVa/w1A3C4mnX5evsA5VYtSl+dxWVdaGq5FIJakSpr+Ax5vcNiu1xc4U0Kmarkpi/mBFsxlmCDLcQhR9eToMAkXpRZZ4wtJEHRQdy6uUuhSQcNmItuLmnF6CY+1Luo9hf2Ps77M0/prQZxYaF+rjADU+TU/e6MmPWHyFO91LS7KzSFmVPBedmh
+X-Rspamd-Queue-Id: 64723C0002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 64niwhtxzyoyc467zmhhio9isujitqi4
+X-HE-Tag: 1786602853-954654
+X-HE-Meta: U2FsdGVkX19tmNLZiTN/Rivi4/xwFpRnQXdZ6rEfR5QwORffw8ZIsdVmrBMcQjcuRrfOgg6gdCozupnJbNM4rRjy6tPOPe0Ty8qCMBUiSXFy39d2DqxaRyMgLScYOcSo4j3cz24LBbIojlsO/gzF2sbm+YOoyHc1R2b03q8PyKfxWXsRyNOsUJ80tHHETM1OSnJCMu5+q7P4Eg/gtVxD/PLxjAC6ABbYkCWEodedXc7Nf3IK4yBVFgiMBCiBmm8yPAhmjjH1W7+hCgSpcbdFTnOTLYEGk0tYTKIwWosw6MeEq5G/qX2txKxf+U93kmT7d0AnRr1giG9gCiv56U0wPLhR0lfMKvO3idtgsXe7agi5SPuKo2wnhRNuA+oBv5nU5Nddw1Vdb96bPjtQ2gHKgxF7QPxBkJVsaam3fPjxK4cUc8SCzuKgABn728HhtcfsG8f6haXfuNaQFANBbolgAF1VlJGBElldvHzkUqwf82QESW5ixtybJZJWZ9TL0ZpJT6+2pYdVR8dZ+gpSoyV6OUcHTctOQLElTdBEgrTGtf/BtFkq+m++HoEzo2q6C0rfpsp8p/FPmeB1Q8DsVmMNnKEAsClA/jPOi2r/Z+p3MEwveMs9NqTJ+qwVvjFBBODK/1p6ecrUf4lxz+BBC9+29SqM1f9S5aUi2uynqEVo+AW8nLN71ZBRSciZ7PZTY0nQX12n3TJUCN4uzj0as5S6N35OAa5V6uAdtjC9iEC+v6pTfu2dygAJWQO+nL2/TPN/fyP/UgQuMDD3waIE2eVFBakpfKkraPFCr99TXFDJ5Kclaul07tKmDf2jr4Lmf8/riWgF0AspCEZfXzjcvAHGPntj0ulvMegUjf18QLDPuBYmZ4S1H91zQD4xwNhFkbcWkmF8W/n3gueI7IcM3TcsWWoLkzdbW2kGkvPjMSRbUsZrVjEATy2vOFmxBfIBucuHtMXo0x030viGZ6Vemkp
+ WyB+4p1O
+ qdrsu14F3MJtAE4GNzzOCUA5HTSewEuAu9zVqMkTcrMcd3jqQtdDpwNhbKVW4z9rv3fBcwtGnA8OPzCf/CJl0TrHv89CA80EkL1Ah96YuXCSBcHAISXzUJQNcm0VctgQBOlTBbzXIHcCUWtqXztF6Hh3a9C8SnC+nU4vhtJDJwOGfLlPJP5m9NC9BCHckq7/Tf7wH7g2DiipeJyY8VsF0mzHyfkmwgr26RowCLnw7a2vduIjn50hIWvsh7w+MS0tu84jzlDHDN5QDs/7d94CKd0CPhvcFTot82uUrSpoTIIKKDLquggbzqPLGqKPCXj+zSIRyhbzv3VxCkO8/wVZbGhy0DXTS1cXxQZqZNijx203AQDhHhDabc66xCqCUP4kJqz2QbHuO9n0VlEokIXptYQ7Eo6baXIKgL4/MO15OcBKa3tsiP0cR3S121Df4gJL4JNRar7pioc8l2m0QvFQElNUW0Vca8bCd779/a/0XZPKOcIv3iIPfPZhZYP+bSPlfupVuqhd7s2hQ/e3e9fGhCxDOHnK0n48xi4cAWaZRQch/nwjIV9s8rXE9uGYpt4NwriLUAu6wDfsxe8ViGJ+NHZMsLFDUz3YnjpZhvZJGxB5E9OEvgW/jBff1zYbTl6CMGznuEoIzD839na3Z4DnRtZhMv89CMndUYh5CyiXpXwV3JqkrfmFX8I2SZlnydby2oZ60
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,229 +131,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Upon a private file mapping request to /dev/zero, it calls
-kernel_read() in do_mmap_private(), getting a failure with the message
-like: "kernel reads not supported for file /dev/zero", which is because
-zero_fops defined in drivers/char/mem.c has both .read and .read_iter
-definitions.
+Some nommu architectures only work on Alpine Linux, which doesn't use
+glibc for the standard library.  It uses musl-libc and is implemented in
+a different way as glibc, resulting build failures.
 
-Even fixing this issue, the map request to /dev/zero works fine without
-errors but the allocated vma isn't marked with anonymous because
-mmap_zero_prepare() isn't called under nommu platform, resulting
-vma_desc_set_anonymous() isn't called either.
+This commit fixes this issue by adding missing definitions. The fixes
+are now only covered to TARGETS=mm which was tested for the moment;
+future contributions are needed to fully build/execute tests on nommu
+platforms.
 
-This commit fixes those issues by:
-1) use vfs_iter_read() instead to avoid failure at kernel_read()
-2) calls .mmap_prepare on private mapping in do_mmap() so that required
-   preparations are done even in private mapping.
-
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Jan Kara <jack@suse.cz>
+Cc: Shuah Khan <shuah@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>
+Cc: David Hildenbrand <david@kernel.org>
 Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>
 Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Jann Horn <jannh@google.com>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Cc: linux-fsdevel@vger.kernel.org
-Cc: linux-mm@kvack.org (open list:PAGE CACHE)
-Fixes: 4d03e3cc5982 ("fs: don't allow kernel reads and writes without iter ops")
-Assisted-by: cubic.dev:unspecified
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: linux-kselftest@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-um@lists.infradead.org
 Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
 ---
- drivers/char/mem.c |  5 ++-
- mm/filemap.c       |  6 ++--
- mm/nommu.c         | 84 ++++++++++++++++++++++++++++++++++++++++++++--
- 3 files changed, 87 insertions(+), 8 deletions(-)
+ tools/testing/selftests/kselftest.h      | 43 ++++++++++++++++++++++++
+ tools/testing/selftests/lib.mk           |  2 +-
+ tools/testing/selftests/mm/hugetlb_dio.c |  8 ++---
+ tools/testing/selftests/mm/mdwe_test.c   |  4 +--
+ 4 files changed, 50 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/char/mem.c b/drivers/char/mem.c
-index 63253d1de5d7..dba24d0a7b33 100644
---- a/drivers/char/mem.c
-+++ b/drivers/char/mem.c
-@@ -500,11 +500,10 @@ static ssize_t read_zero(struct file *file, char __user *buf,
+diff --git a/tools/testing/selftests/kselftest.h b/tools/testing/selftests/kselftest.h
+index ae18c491ae53..ac21bf3d802e 100644
+--- a/tools/testing/selftests/kselftest.h
++++ b/tools/testing/selftests/kselftest.h
+@@ -58,6 +58,7 @@
+ #include <string.h>
+ #include <stdio.h>
+ #include <sys/utsname.h>
++#include <stdint.h>
+ #endif
  
- static int mmap_zero_prepare(struct vm_area_desc *desc)
- {
--#ifndef CONFIG_MMU
--	return -ENOSYS;
--#endif
-+#ifdef CONFIG_MMU
- 	if (vma_desc_test(desc, VMA_SHARED_BIT))
- 		return shmem_zero_setup_desc(desc);
+ #ifndef ARRAY_SIZE
+@@ -81,6 +82,48 @@
+ #endif
+ #endif /* end arch */
+ 
++#if !defined(NOLIBC) && !defined(__GLIBC__)
++#ifdef __LP64__
++typedef int64_t __fsword_t;
++#else
++typedef int32_t __fsword_t;
 +#endif
++
++/*
++ * for a workaround to avoid struct conflict under
++ * musl-libc (<sys/prctl.h> v.s. <linux/prctl.h>)
++ */
++#include <sys/prctl.h>
++#ifndef _LINUX_PRCTL_H
++#define _LINUX_PRCTL_H
++#endif
++
++#ifndef PR_SET_MDWE
++#define PR_SET_MDWE 65
++#endif
++
++#ifndef PR_MDWE_REFUSE_EXEC_GAIN
++#define PR_MDWE_REFUSE_EXEC_GAIN (1UL << 0)
++#endif
++
++#ifndef PR_MDWE_NO_INHERIT
++#define PR_MDWE_NO_INHERIT (1UL << 1)
++#endif
++
++#ifndef PR_GET_MDWE
++#define PR_GET_MDWE 66
++#endif
++
++#ifndef PR_SET_MEMORY_MERGE
++#define PR_SET_MEMORY_MERGE 67
++#endif
++
++#ifndef PR_GET_MEMORY_MERGE
++#define PR_GET_MEMORY_MERGE 68
++#endif
++
++#endif
++
+ /* define kselftest exit codes */
+ #define KSFT_PASS  0
+ #define KSFT_FAIL  1
+diff --git a/tools/testing/selftests/lib.mk b/tools/testing/selftests/lib.mk
+index f02cc8a2e4ae..2cc819006424 100644
+--- a/tools/testing/selftests/lib.mk
++++ b/tools/testing/selftests/lib.mk
+@@ -197,7 +197,7 @@ clean: $(if $(TEST_GEN_MODS_DIR),clean_mods_dir)
+ 	$(CLEAN)
  
- 	/*
- 	 * This is a highly unique situation where we mark a MAP_PRIVATE mapping
-diff --git a/mm/filemap.c b/mm/filemap.c
-index d721986d5f46..cf02faad86aa 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -4077,7 +4077,7 @@ int generic_file_mmap(struct file *file, struct vm_area_struct *vma)
- }
- int generic_file_mmap_prepare(struct vm_area_desc *desc)
+ # Build with _GNU_SOURCE by default
+-CFLAGS += -D_GNU_SOURCE=
++CFLAGS += -D_GNU_SOURCE= -D_LARGEFILE64_SOURCE
+ 
+ # Additional include paths needed by kselftest.h and local headers
+ CFLAGS += -I${top_srcdir}/tools/testing/selftests
+diff --git a/tools/testing/selftests/mm/hugetlb_dio.c b/tools/testing/selftests/mm/hugetlb_dio.c
+index fb4600570e13..aee6be530ccb 100644
+--- a/tools/testing/selftests/mm/hugetlb_dio.c
++++ b/tools/testing/selftests/mm/hugetlb_dio.c
+@@ -22,12 +22,9 @@
+ #include "kselftest.h"
+ #include "hugepage_settings.h"
+ 
+-#ifndef STATX_DIOALIGN
+-#define STATX_DIOALIGN		0x00002000U
+-#endif
+-
+ static int get_dio_alignment(int fd)
  {
--	return -ENOSYS;
-+	return 0;
- }
- int generic_file_readonly_mmap(struct file *file, struct vm_area_struct *vma)
- {
-@@ -4085,7 +4085,9 @@ int generic_file_readonly_mmap(struct file *file, struct vm_area_struct *vma)
- }
- int generic_file_readonly_mmap_prepare(struct vm_area_desc *desc)
- {
--	return -ENOSYS;
-+	if (is_shared_maywrite(&desc->vma_flags))
-+		return -EINVAL;
-+	return generic_file_mmap_prepare(desc);
- }
- #endif /* CONFIG_MMU */
++#ifdef STATX_DIOALIGN
+ 	struct statx stx;
+ 	int ret;
  
-diff --git a/mm/nommu.c b/mm/nommu.c
-index e40990e15831..a29a53c1c80a 100644
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -37,6 +37,7 @@
+@@ -43,6 +40,9 @@ static int get_dio_alignment(int fd)
+ 		return 1;
  
- #include <linux/uaccess.h>
- #include <linux/uio.h>
-+#include <linux/major.h>
- #include <asm/tlb.h>
- #include <asm/tlbflush.h>
- #include <asm/mmu_context.h>
-@@ -856,6 +857,22 @@ static int validate_mmap_request(struct file *file,
- 	return 0;
+ 	return stx.stx_dio_offset_align;
++#else
++	return -1;
++#endif
  }
  
-+static int is_file_anonymous(struct file *file)
-+{
-+	if (!file)
-+		return 1;
-+
-+	if (file->f_path.dentry && file->f_path.dentry->d_inode) {
-+		struct inode *inode = file->f_path.dentry->d_inode;
-+		/* if the device is /dev/zero */
-+		if (S_ISCHR(inode->i_mode) &&
-+		    imajor(inode) == MEM_MAJOR && iminor(inode) == 5)
-+			return 1;
-+	}
-+
-+	return 0;
-+}
-+
- /*
-  * we've determined that we can make the mapping, now translate what we
-  * now know into VMA flags
-@@ -869,7 +886,11 @@ static vm_flags_t determine_vm_flags(struct file *file,
+ static bool check_dio_alignment(unsigned int start_off,
+diff --git a/tools/testing/selftests/mm/mdwe_test.c b/tools/testing/selftests/mm/mdwe_test.c
+index 647779653da0..031c79ed067e 100644
+--- a/tools/testing/selftests/mm/mdwe_test.c
++++ b/tools/testing/selftests/mm/mdwe_test.c
+@@ -1,5 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
  
- 	vm_flags = calc_vm_prot_bits(prot, 0) | calc_vm_flag_bits(file, flags);
++#include "kselftest_harness.h"
++
+ #ifdef __aarch64__
+ #include <asm/hwcap.h>
+ #endif
+@@ -14,8 +16,6 @@
+ #include <sys/wait.h>
+ #include <unistd.h>
  
--	if (!file) {
-+	/* private and file mapping will be marked anonymous later (do_mmap_private()).
-+	 * and /dev/zero is marked by them at .mmap_prepare,
-+	 * which should be _before_ this point.
-+	 */
-+	if (is_file_anonymous(file)) {
- 		/*
- 		 * MAP_ANONYMOUS. MAP_SHARED is mapped to MAP_PRIVATE, because
- 		 * there is no fork().
-@@ -923,6 +944,29 @@ static int do_mmap_shared_file(struct vm_area_struct *vma)
- 	return -ENODEV;
- }
- 
-+static ssize_t nommu_read_iter(struct file *file, void *buf,
-+			       size_t count, loff_t *pos)
-+{
-+	struct iov_iter iter;
-+	ssize_t ret;
-+	size_t done = 0;
-+
-+	while (done < count) {
-+		struct kvec iov = {
-+			.iov_base = buf + done,
-+			.iov_len = min_t(size_t, count - done, MAX_RW_COUNT),
-+		};
-+
-+		iov_iter_kvec(&iter, ITER_DEST, &iov, 1, iov.iov_len);
-+		ret = vfs_iter_read(file, &iter, pos, 0);
-+		if (ret <= 0)
-+			return done ? done : ret;
-+		done += ret;
-+	}
-+
-+	return done;
-+}
-+
- /*
-  * set up a private mapping or an anonymous shared mapping
-  */
-@@ -993,7 +1037,7 @@ static int do_mmap_private(struct vm_area_struct *vma,
- 		fpos = vma->vm_pgoff;
- 		fpos <<= PAGE_SHIFT;
- 
--		ret = kernel_read(vma->vm_file, base, len, &fpos);
-+		ret = nommu_read_iter(vma->vm_file, base, len, &fpos);
- 		if (ret < 0)
- 			goto error_free;
- 
-@@ -1080,6 +1124,28 @@ unsigned long do_mmap(struct file *file,
- 		vma->vm_file = get_file(file);
- 	}
- 
-+	/* call mmap_prepare function if any */
-+	if (!(flags & MAP_SHARED) && !(capabilities & NOMMU_MAP_DIRECT) &&
-+	    (vma->vm_file && vma->vm_file->f_op->mmap_prepare)) {
-+		struct vm_area_desc desc;
-+
-+		vma->vm_start = addr;
-+		vma->vm_end = addr + len;
-+
-+		compat_set_desc_from_vma(&desc, vma->vm_file, vma);
-+		ret = vma->vm_file->f_op->mmap_prepare(&desc);
-+		/* private ramfs/romfs mappings fails with -ENOSYS so,
-+		 * fall back to copied mapping.
-+		 */
-+		if (ret && ret != -ENOSYS)
-+			goto error_mmap_prepare;
-+
-+		ret = __compat_vma_mmap(&desc, vma);
-+		if (ret)
-+			goto error_mmap_prepare;
-+	}
-+
-+
- 	down_write(&nommu_region_sem);
- 
- 	/* if we want to share, we need to check for regions created by other
-@@ -1196,7 +1262,7 @@ unsigned long do_mmap(struct file *file,
- 	add_nommu_region(region);
- 
- 	/* clear anonymous mappings that don't ask for uninitialized data */
--	if (vma_is_anonymous(vma) &&
-+	if (is_file_anonymous(vma->vm_file) &&
- 	    (!IS_ENABLED(CONFIG_MMAP_ALLOW_UNINITIALIZED) ||
- 	     !(flags & MAP_UNINITIALIZED)))
- 		memset((void *)region->vm_start, 0,
-@@ -1247,6 +1313,18 @@ unsigned long do_mmap(struct file *file,
- 	ret = -EINVAL;
- 	goto error;
- 
-+error_mmap_prepare:
-+	if (region->vm_file)
-+		fput(region->vm_file);
-+	kmem_cache_free(vm_region_jar, region);
-+	if (vma->vm_file)
-+		fput(vma->vm_file);
-+	vm_area_free(vma);
-+
-+	pr_warn("mmap_prepare failed for %lu byte allocation from process %d\n",
-+			len, current->pid);
-+	return ret;
-+
- error_getting_vma:
- 	kmem_cache_free(vm_region_jar, region);
- 	pr_warn("Allocation of vma for %lu byte allocation from process %d failed\n",
+-#include "kselftest_harness.h"
+-
+ #ifndef __aarch64__
+ # define PROT_BTI	0
+ #endif
 -- 
 2.43.0
 
