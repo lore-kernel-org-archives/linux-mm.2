@@ -4,94 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27B16C5AD5A
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 01:18:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01AA4C5CFCF
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 01:20:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 958386B0353; Wed, 12 Aug 2026 21:18:05 -0400 (EDT)
+	id 9A9876B0189; Wed, 12 Aug 2026 21:20:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92FF86B0355; Wed, 12 Aug 2026 21:18:05 -0400 (EDT)
+	id 9811A6B018A; Wed, 12 Aug 2026 21:20:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86CB66B0356; Wed, 12 Aug 2026 21:18:05 -0400 (EDT)
+	id 8BFA56B018B; Wed, 12 Aug 2026 21:20:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 53D4E6B0353
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:18:05 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A9D9C140500
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:18:04 +0000 (UTC)
-X-FDA: 85094484888.01.8CEBCE7
-Received: from mta1.migadu.com (out-88.mta1.migadu.com [95.215.58.88])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 39420140003
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:18:02 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=D0VtnKEY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.88 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 534976B0189
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:20:12 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8694E4055D
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:20:11 +0000 (UTC)
+X-FDA: 85094490222.26.BE89609
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 92D7D180003
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:20:08 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GB6v6XB0;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786583882;
+	s=arc-20220608; t=1786584009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uGLfcut/pIlDidETqIC1Fx//WvsRgAR2gYHdHaIf9ng=;
-	b=q7eAlX9b644f4Y9jGdKkIX4W45GUcvGD5EHFSfqAWYki+own+ZIVHpg1+5jvsJR8H3UZRA
-	YcmW1W7OAkmIFKqpyqurtCa5S/uO4uMyvMqwaBKDkZ5NEcLO5t8Kf5HucJYRWsS0WXCwbh
-	g6sZQ0WMsGQbTHwV6zE+wrUGaSGTExs=
+	bh=ED8Tp9lm2QOcPjmMOrBKPEMtsi7PWnnaCdiDcnQCvuw=;
+	b=il7SWdvKJ9QAuxz/+zTqMEBRYgdFT8Fcy2lLn0lL8pY3gqHnRMB+coYK9VgH+zYWrR+gsM
+	v1mCSVP2culz8NXWB6WEyBsJajwU9urKqdnOOAcNbqW7v1lyULHsXHeurbJcP+8fTr6/8J
+	7dpzbugUyCmAKGpeOJkh855rDwWiYuI=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=D0VtnKEY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.88 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GB6v6XB0;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786583882;
-	b=GadeRknH/ShvdMm3j9hDiHE0qEzxFZAO1KR/Qxyp7vhU+nqCzzbBqwRcInocUs1bkltl7Y
-	AGkAy0u2EazrU54N5NUzvyP+c05REW11J7IXU/qerrngyXznsy9zdJSj8RsncWWXqp1kA4
-	OmsJrFitk6gSmoKEQ5SczGxx1gbAp3U=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=nE/1oNd9kQaDsPO46DtCOMIjA5Lwh9TsvckbW8AW0ow=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786583880; v=1; x=1787188680;
- b=D0VtnKEY8fLKdnfPKdllHQJyVbtvO2QxM2CmpqeL41MIGdCYsahM+fb31dMsR2aeI5qb0VO9
- 9CQEmsDsXT3fxn9h9c/xUUcgxjzBulATYajSOkzsX7fY72s8dGUWWpexHdSfTfVqOLiuRBOIwgh
- Er/CoYq5IwIsHRQ50OIX0KVc=
-X-Envelope-To: linux-mm@kvack.org
-Received: from [10.63.123.245] (14.29.108.90)
-	by smtp.migadu.com with ESMTPS id d068e9a28b48e2fd;
-	Thu, 13 Aug 2026 01:18:00 +0000
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <5f0e3361-b4e8-4979-9309-2d85e6a9dd54@linux.dev>
-Date: Thu, 13 Aug 2026 09:17:52 +0800
+	t=1786584009;
+	b=WCFrr5fUjwlKXTQB/K3cxnGTFmSVbMAoXyMvQhlQnAH8+a/oPoufTG2xuvvCEXnjpcE4aa
+	Tml7Bmvh5yH7EX8UIo775fazoyfITVh+7TrE52kV6BVOfrBSYc9tpcwHuDA5SbP0V+yAi8
+	hPtN4Y2IyNsfBR231rl+4ihFfP3r/v0=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1786584005; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=ED8Tp9lm2QOcPjmMOrBKPEMtsi7PWnnaCdiDcnQCvuw=;
+	b=GB6v6XB0EZ2QWMagQIuue/Stn1GDeaXnh4T/zitrXAGkwnYbbTVZJnDPgMvudeGYBgWHPB/eriflbkPoOfscDqNixZXaQf7hlQ6o14KXB1u5TUzy0XMzClawuYwR2WesL3jsKs3S7SI+1ZhhA55nkQEfhV0aX+tr42Qfvw6G/0g=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0X8skQm4_1786584001;
+Received: from 30.74.144.111(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X8skQm4_1786584001 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 13 Aug 2026 09:20:01 +0800
+Message-ID: <ab9cf918-862e-42b5-9435-b46f37d71928@linux.alibaba.com>
+Date: Thu, 13 Aug 2026 09:20:00 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] mm, memcg: fix memory.peak reset clobbering other
- fds' watermark
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>,
- =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cui.tao@linux.dev,
- Ridong Chen <chenridong@xiaomi.com>
-References: <20260807090000.1532495-1-ridong.chen@linux.dev>
- <20260807090000.1532495-3-ridong.chen@linux.dev>
- <anyj4GGPnuU-q2AP@cmpxchg.org>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <anyj4GGPnuU-q2AP@cmpxchg.org>
+Subject: Re: [PATCH v2] mm/mglru: fix and remove redundant unevictable folio
+ handling
+To: kasong@tencent.com, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
+ Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Oleksandr Natalenko <oleksandr@natalenko.name>,
+ Suleiman Souhlal <suleiman@google.com>,
+ "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>,
+ Yu Zhao <yuzhao@google.com>, Steven Barrett <steven@liquorix.net>,
+ Brian Geffon <bgeffon@google.com>, Kairui Song <ryncsn@gmail.com>,
+ linux-kernel@vger.kernel.org
+References: <20260812-mglru-mlock-fix-v2-1-a3fec5853c08@tencent.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260812-mglru-mlock-fix-v2-1-a3fec5853c08@tencent.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ryxncefurrjtk1bw3mohkgutaro3go6p
-X-Rspamd-Queue-Id: 39420140003
+X-Stat-Signature: xzhh1sicz9ng3fexmad93msi5wkah9cu
+X-Rspamd-Queue-Id: 92D7D180003
 X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1786583882-37069
-X-HE-Meta: U2FsdGVkX19frIW+KGR/YHRC0cYzO4CbZDx7KzPOBt62Di3692I+4I1plo+0FK3NYN2k6E/1mDXPPP2b5pOheFqyiW5vrN4SkTsKFVeouwxb1kCGebiar7khiafBfgPvv0G/Ey+2HfHPuvuxIAVEMfqbIqzJBgBoV/B7HNA7NbLHIlfdwmG0Ina8u8k4TBxX80nUWqElgR+UjzErsvwaPuTlqqRVvodbkDLAB7gMe+y9xRm903YZ4BpThzCo79KGUh9mjZb6xT2TRhZVkvYPYRzkDQcFbCEEdJBZE0Y4dIwRdl2l1f4/N65N8XNhmCkplDFi83AWA20fwjE9YgxugTdGV0ssq1o+QjpWzE0YnIkIiBwZyCO4SphYNhWTrlbvLE0Gi3S5LiMn1blZtBmstgNXuEd0+vk4r9CIjiiP32PtU9oW3pFeOiSkAJNbg1ASaZ9IUPNEMHBGefMO0pY0q+h5VxgnNdw9B8KnkPSeJ0Nr066njwRi6PBBC/ouhwG1TYbmOMlfmGfcEHtknFVZn2bsdWIvO1L27d3XIrYJ0TnYB6LrzkzwDIQK0s/dcVeLTCLtW8sbkjeDGY+o7QkH+0ZpBP/1SsdaF1VJ5Zj2SS+sTFRk+NH1Bp14P4Qm9c9khcUDMdf+PHYYLljqvqROh4BBEz3B6RPinEfmiVeZdFnyTB5ZbDxD/8HooBEht+IntADVy0h7K6avJ+rbU+tKCG43caPG6IEViZwtsetVqJGb7/ujl5bTteeSHmOxVLvkdPEii7h/tMayr5Kw8HOG5U0Da8+jBRk2qF+LpBVUbTKngf5pnjuRjDOyTOk9R1qJ0OB9Ec5zNRwzQ2aH6n2X8p875C5e6YvUB3dG9Kj6x26ZkqQb55u4JV/mucGfzTgfwuMMizxohQkQ3mBcKgsyrRTnv0cqv4ZAmRGXTLK8RMlHNH11DhDhUmnFfeA3jQ4w2ORzcAv9Htz400OwSPu
- 79TmCfJ0
- v5UQgMEFO/Pd9fKfC0elLLhYhZ2bL3QuGHFUA7TRBeRWgj0J93rdSp7yTBdvWzbZF414bj6G9YX0FrR7cqrOEwflPlPwaSeIcPJb7bi2nEOEIEWDvYzxfOWZCMJLkoHuKNIzvi2xsIHn9+OUVIeutTIXlPjLthzZi7F0PJ0OT7iwOiQyPtiN051zekv4/6HKo5aNeKtbBMBJVtqNGeDFDc0vmidsh/P5614H4qomaCjYej+nVU6x7cHkzft2d+UGWOIFkyDZkX0vX8vTk5jxvVLVIKUuEMHRdtpn7+rrhLFH+qo+7LGK/qVpzpue6PaKL+Eg4S4+gwb02HGj6WfxQlnx0TB14Tp/W0EWUdELW1DAajC8=
+X-HE-Tag: 1786584008-411391
+X-HE-Meta: U2FsdGVkX1/rZvmB6gMmnzkMhS1sa6pMIKav3to5qvbIohx1KtDabAsPlBXSD8zc/wbR/i3vJTygBSICUoSysokXtNW3pKdNYsQn2AapOwHUPLvEx9cJbaVXDrqDDp7lY2pRUapUivnD236qiO1/1dJvxCDqxe6+0RWwPzgXTd5IBXzsPpzwK1a0vUMIBA2Cf97yRh8YDMFMMYMt5gejEwjXcQkX7HZvtawE4+lIeTjLizAHnMfiTMyiFntPvYLEO9lWhOToJyOv75qKr9eBqoII5B7VrboE2yo8/TDg17AbpvzjXpLJaO+SIChSvlrtNLYpClX5wzBUvnj6sDdtmx4lQ/4tZfvq2Z4ReLufrIfqdxgT665lk/fOcR0Iaj2BCmqneLWDF0WrfPfovxF6SBnRisPdcDTMbkGAFSpXosIopxWnK+EvQ6Pe6EpqnJ4d/LHWRzrzmpH98sR0q5ZU6qe05SGzTBb5X7UHBWf3Sj9tvQ+iBF8OQAODmTi6b3Rm4tFtnXXS6bxPC6tGDTJ+euTeUNf0mT0One33U2u+1WHkA19kOu0kzAH0Gkf3hY6CA+50ZUhWaxZu3MhoNQvCYoPfGLahzRwE1UyMmhbmrKx39MdfiiX3Yx+oMMjgPyAw+OuPtT4JoctY+tiBz5+SUOSwL53NGDLvXaJgxqv9sZpeD9VjYpbBcO8HEqgbI/ZHx52GncXySciQNzRjDGuvQgFMi/vqLHY/FE54fWDHlHQGdi98z3Zkb56wQbmZ1v3PNrhBudKJ3YgA9FBEWu93ghwNSp+S4955s/NCTvxrILFlmO6a0zedr4NVPWDl1XleLJTxnxFUEfL0zKXn5rSVUyoP3SPWuGID4Tv1waip5Ue0IqkPOV9LRk3/mczHB4nAP/ztZtstgIch06xh/h/hlyNXemd4l77h5nLywmlEHUQFp/1Rz8FrTS0+8maXJ85umrTPimK7iebxQpDyvFd
+ DIpCHJTf
+ 0ZUx691LH/CX1HL0cF4KH+gJVrKDs8TC+vFHhuQiApbO1cSnJeHwoUj1Gzs81xO/ZQhuWZR4U5HjZTvGBH4PJrecb7MzBJYgHB7iyGXreI8xS2r+/1ERdr66ol/2Htk+TVFusaYP/KpRr53nRZCD+CgypYMx8vUzb3IQ3SXwDd8fQBT0g4P8JjJQONTeTwspgySLlmYuybn9qzieREVOOgUoGsEof9KyI2Ap5KQLKJvMEO2D0txIP8TuAmrkNR4x08QtU0LhNmBUFm6oBA91fGordnO6/jAqri8hC21chvu48vRNAX82xwRtRcElOdITJs19KHY3ZFdf+iBk71DEXvXPMqww2Fs/8m0mNLngIaR5hKjMWdFJd9pLQXWObXqfVR4DGRdq5eKzlAf+532X8UdGCOdnFRolxOEht
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,74 +99,100 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 8/13/2026 12:48 AM, Johannes Weiner wrote:
-> On Fri, Aug 07, 2026 at 05:00:00PM +0800, Ridong wrote:
->> From: Ridong Chen <chenridong@xiaomi.com>
->>
->> Writing to memory.peak resets the peak for that fd only. Each fd is a
->> watcher and reads back max(its own value, the shared local_watermark).
->>
->> peak_write() resets by lowering local_watermark to the current usage.
->> To keep the other watchers' peaks it then walks the watcher list, but it
->> stores the current usage into them instead of the old watermark. So once
->> usage has dropped from a peak, a reset on one fd wrongly drags every
->> other fd's peak down too, even fds that never reset.
->>
->> Reproduced on 7.2.0-rc5-next under QEMU, two fds A and B on one cgroup:
->> B sees the peak (410624 KB), usage drops, then A resets -- and B's peak
->> collapses to 1060 KB although B never reset. With this patch B keeps
->> reading 410624 KB.
->>
->> Fix: save the old watermark before lowering it and use that to floor the
->> other watchers, so a reset only affects the fd that issued it.
->>
->> Fixes: c6f53ed8f213 ("mm, memcg: cg2 memory{.swap,}.peak write handlers")
->> Assisted-by: Claude:claude-opus-4-8
->> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
->> ---
->>   mm/memcontrol.c | 7 ++++---
->>   1 file changed, 4 insertions(+), 3 deletions(-)
->>
->> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->> index 2da55b778ae3..28577beeb3d0 100644
->> --- a/mm/memcontrol.c
->> +++ b/mm/memcontrol.c
->> @@ -4746,7 +4746,7 @@ static ssize_t peak_write(struct kernfs_open_file *of, char *buf, size_t nbytes,
->>   			  loff_t off, struct page_counter *pc,
->>   			  struct list_head *watchers)
->>   {
->> -	unsigned long usage;
->> +	unsigned long usage, peer_watermark;
->>   	struct cgroup_of_peak *peer_ctx;
->>   	struct mem_cgroup *memcg = mem_cgroup_from_css(of_css(of));
->>   	struct cgroup_of_peak *ofp = of_peak(of);
->> @@ -4754,11 +4754,12 @@ static ssize_t peak_write(struct kernfs_open_file *of, char *buf, size_t nbytes,
->>   	spin_lock(&memcg->peaks_lock);
->>   
->>   	usage = page_counter_read(pc);
->> +	peer_watermark = max(usage, READ_ONCE(pc->local_watermark));
->>   	WRITE_ONCE(pc->local_watermark, usage);
->>   
->>   	list_for_each_entry(peer_ctx, watchers, list)
->> -		if (usage > peer_ctx->value)
->> -			WRITE_ONCE(peer_ctx->value, usage);
->> +		if (peer_ctx != ofp && peer_watermark > peer_ctx->value)
->> +			WRITE_ONCE(peer_ctx->value, peer_watermark);
+On 8/12/26 8:22 PM, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
-> Sorry for letting your previous reply sit unanswered. You made a good
-> point on the peer_watermark = max(usage, local_watermark) being
-> pointless because that's how local_watermark moves to begin with.
+> sort_folio() has a shortcut for moving folios that are no longer
+> evictable but are still sitting on a generation list.  However, this
+> shortcut is buggy.  It does not follow the PG_lru usage convention,
+> and it has a more serious issue.
 > 
-> So what you had before was indeed better. It was just me missing that
-> detail. Could you please go back to your original? Feel free to
-> include:
+> Unevictable folios are not threaded on lists[LRU_UNEVICTABLE], so that
+> folio->lru can be reused to hold folio->mlock_count (see the comment in
+> lruvec_init()).  Hence lruvec_add_folio() skips the list_add() for them,
+> and every other place that turns a folio unevictable initialises
+> mlock_count explicitly: lru_add() sets it to 0, __mlock_folio() and
+> __mlock_new_folio() set it to !!folio_test_mlocked(folio).
+> sort_folio() sets nothing, and the lru_gen_del_folio() right above it
+> may have already poisoned folio->lru via list_del(), so mlock_count
+> ends up aliasing LIST_POISON2, which reads as 0x122, i.e. 290.  The
+> result is user visible.  On munlock, __munlock_folio() decrements that
+> bogus count, finds it still non-zero and bails out before clearing
+> PG_mlocked, so the folio remains unevictable and the Mlocked
+> accounting stays inflated until the folio is freed.
 > 
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> The shortcut also touches the LRU flags in the wrong order.  It calls
+> lru_gen_del_folio() while PG_lru is still set, so a concurrent
+> folio_test_clear_lru() (e.g. compaction, folio_isolate_lru()) can
+> succeed on a folio that has already been taken off the generation list,
+> which may lead to unexpected behavior.
+> 
+> So fix it by isolating them as common folios and letting the generic
+> shrink path cull them. This matches the classical LRU behavior, and
+> there should be no visible effect on the generic eviction or isolation
+> behavior.
+> 
+> There is no performance concern either, such a folio goes through this
+> once, and then it is off the generation lists for good.
+> 
+> Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+> Changes in v2:
+> - Proactively bypass MGLRU pid protection and lazy promotion to avoid
+>    hot unevcitable folios staying on list for a long time.
+> - Link to v1: https://patch.msgid.link/20260811-mglru-mlock-fix-v1-1-8b2321d0e1d3@tencent.com
+> ---
+>   mm/vmscan.c | 19 +++++--------------
+>   1 file changed, 5 insertions(+), 14 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 3194da7dcc79..ca2b926520ea 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4648,7 +4648,6 @@ void lru_gen_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent,
+>   static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_control *sc,
+>   		       int tier_idx)
+>   {
+> -	bool success;
+>   	int gen = folio_lru_gen(folio);
+>   	int type = folio_is_file_lru(folio);
+>   	int zone = folio_zonenum(folio);
+> @@ -4660,15 +4659,9 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
+>   
+>   	VM_WARN_ON_ONCE_FOLIO(gen >= MAX_NR_GENS, folio);
+>   
+> -	/* unevictable */
+> -	if (!folio_evictable(folio)) {
+> -		success = lru_gen_del_folio(lruvec, folio, true);
+> -		VM_WARN_ON_ONCE_FOLIO(!success, folio);
+> -		folio_set_unevictable(folio);
+> -		lruvec_add_folio(lruvec, folio);
+> -		__count_vm_events(UNEVICTABLE_PGCULLED, delta);
+> -		return true;
+> -	}
+> +	/* unevictable: let it through and the generic path will cull it */
+> +	if (!folio_evictable(folio))
+> +		return false;
 
-Sure, thank you for your review.
+OK, returning false early in sort_folio() is better. Although I think 
+mlocked folios won't stay in the LRU list for long, and 
+shrink_folio_list() will also reject them anyway.
 
--- 
-Best regards
-Ridong
+>   	/* promoted */
+>   	if (gen != lru_gen_from_seq(lrugen->min_seq[type])) {
+> @@ -4921,11 +4914,9 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>   	list_for_each_entry_safe_reverse(folio, next, &list, lru) {
+>   		DEFINE_MIN_SEQ(lruvec);
+>   
+> -		if (!folio_evictable(folio)) {
+> -			list_del(&folio->lru);
+> -			folio_putback_lru(folio);
+> +		/* move_folios_to_lru() culls unevictable folios via folio_putback_lru() */
+> +		if (!folio_evictable(folio))
+>   			continue;
 
+Yes. Still look good to me. So feel free to add:
+
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
