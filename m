@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 374D5C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 04:25:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9863FC5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 04:25:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20EFE6B039F; Thu, 13 Aug 2026 00:25:00 -0400 (EDT)
+	id 67B676B03A1; Thu, 13 Aug 2026 00:25:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E6BD6B03A1; Thu, 13 Aug 2026 00:25:00 -0400 (EDT)
+	id 6533A6B03A3; Thu, 13 Aug 2026 00:25:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FD4E6B03A2; Thu, 13 Aug 2026 00:25:00 -0400 (EDT)
+	id 541FB6B03A4; Thu, 13 Aug 2026 00:25:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DCC696B039F
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 00:24:59 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 717FFC0528
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:24:59 +0000 (UTC)
-X-FDA: 85094955918.08.5D4BD2C
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010038.outbound.protection.outlook.com [52.101.201.38])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 210E3A0004
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:24:55 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="K/QNjs+E";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of shivankg@amd.com designates 52.101.201.38 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EDD86B03A1
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 00:25:11 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AC62FA01C0
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:25:10 +0000 (UTC)
+X-FDA: 85094956380.15.6DC0370
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012059.outbound.protection.outlook.com [40.93.195.59])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 789FF1A0003
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:25:07 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=x3fd42jB;
+	spf=pass (imf19.hostedemail.com: domain of shivankg@amd.com designates 40.93.195.59 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786595096;
+	s=arc-20220608; t=1786595107;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cLhtG+vvZYDJbT9CsAbPScGVywpiDLa6N6jkmr1n5ro=;
-	b=YzUHvY8/Yg0tFpl1UlVEsLRst05IImoAy2I+T60fGEFLBk3onM8oUhNrgASI9hfD7PA/12
-	AQ36edDyKmjjDfMHf+Uj8DjNpV68c7a0e4fVHpVBsRALcVitjDL32BgVhsFpkAp0cDShv9
-	OJWUc5W6xdThQiQnjLA6mkVSkmnzJHI=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="K/QNjs+E";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of shivankg@amd.com designates 52.101.201.38 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
+	bh=xJmcLgRoaeaouSkf3yJv6TF6RMZzz0FrmGos9xFDxFc=;
+	b=1ktuCrEn0Df92L2uphVeR0XzRu1cV9lba10qtQoAJZ8esP4cQkyaqE69gEs4yQjXJLpoLM
+	AQa9tEYMzx3ge9j0dWuSSBrBaMQRjhn3QO6TSTSlzjATOZ3WXqbfgXVQcfG9222PLRRkv/
+	uCUjtQuWXBT4T18rP3K+KJ+CbVNP2RU=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786595096;
-	b=SV9KI59YorgQs7N874K3R1vzb2MMowo00nWcgnUnbDjwwX0J7Wh1z69YQnhXcyuuMttA88
-	3HgzEsWc7yV9ZgCeo1/HXzn1EI8Dtb/pFeoT6ptFAbpefQJ8qnTpPVIVLYP77j87sb2bV2
-	WGjlJ97h9yQtkPRI0x/pLdUEYnXSfmg=
+	t=1786595107;
+	b=7fgccIM+XdJLw1QxHcHbZVdO0YyHHzRPgKQ8dy/bXSMT3u0JJHRNb/zXmN+yyxYvYkZ0tI
+	p0gzQlfKmcaylKWpn6SgUNXhn39giw/RwP6olJVsKerpAj+QpEtExT4+pxxgMxvdJNWniK
+	1jqLvRzbOAkoE8yI7RNydm8ZuUhjsrE=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=x3fd42jB;
+	spf=pass (imf19.hostedemail.com: domain of shivankg@amd.com designates 40.93.195.59 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=X7tqCpyH3x0F5Mfk7FKP0m2E/1A1LkcBualBJrUXBPgjizJYkvxytl65OYEU8Ug8zEAMdsZqFycmUpaED10WEtjVLAqR0yabR6xhdoclXAQjKS4lEFv9r/CFaAMLvKammqghPFLW+ia6I3u4fLnlm/N7RDkTQdu/8vWDj29dR2ZW8423Pifu5bVsEEOCC3wvKr81YwhtL93fKmnn63BAc915Qnf62JHaIb2l6ACq/adqt2IN7ap/Qp+2O0MnystYQI0/tagZPrlM0rA4J2C9P6tUAXrLOr7Dl0aJElwhWXtzYHoKowvWcxlvk8QyBVnpBduZgGHBJ3ANBSiQcYfneA==
+ b=Ns+WIQmp0dLl/WQQgCyX8jeGpRqzoiI4rWTRBxLCG6vD4MxExKKukgp7LsY0v6UPZpA0M6mg2zBpjKA6g6NfjLvBOOKXY94J5i00rmtk9JtnSVfNm1bv3iwMELg4uumof11louGVtZi8LLLqBzWo0/h2UD17Ss5wTmTqQtqP9DFNUKsqhrTGogVYRYgmiSnc7Q1KVtJc4kd14HxctCIBEtRKLmELPfufFasm0FkOucFTBdzLYc2/g+nprnYgMnZBfQmjFb3o8/HBfoHAAgp8lXVkeLez41k3rGsibLmfybO9xC3+xY+uyLvszLLl2uGe2YzTfQsMdOnRw18RROzJOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cLhtG+vvZYDJbT9CsAbPScGVywpiDLa6N6jkmr1n5ro=;
- b=hC7LtduiFsoxkyj/R/snstraATyi0ORWS5BiybUhexHBMaNLC6s79X06OxRkGoAVGpc2gHm8PNqtom6B8hOo1MIYf20n8fMga7uceLGz8c+B2aMtuE8CcQwspkb/TXEtDMpms9P75E9iwrO8IVpMctjA5zzj+EijJzKyKXQykB4lWEHoU9QYR8ROlyedDs9S9H9xwreDBkLbKt8hTVVT2bNk9HBkfROLpDRS5KgyrwxiQyX6dRRXDm88xCuHH9Qu6gvxQwPcZSFX+rMdkXZCyn8uGoeZ1vX7Cngc5JtOTLgfTgf8/imj/w/Ll6UpeiSmclS/0iXCkeHJCwoK/Nh5pQ==
+ bh=xJmcLgRoaeaouSkf3yJv6TF6RMZzz0FrmGos9xFDxFc=;
+ b=G1z5TVFWiSdqVPC2L+8xgbJlHtnUAXYacTleZQuoHfRsFoI3s12UY4VFoZr3bfg6UyYj/8ww2px0CcPXANSdKUtKuiRoK5GVlHnyFtMyOHuRCDWHCwLS665NrMNE0L8xeVFg7levicNaneXLRwtYkL9QonNgnMK73rzfMbhkOHxeYEyxST0M7Bsuw9EocyeUT/sfW4I6Djt1kQQiHtUxJMJf/x0ZnHXXbC+85tgOJbPCCPDRirkFVu7hX7V5M/rZnICe1h9SkVQDXGY5ovd8RcpSSrhcMo1tU2EBdY1n4nQ2z1XMUirdEcqsXZA4bXlGYCQV+v1g2Jc5njJWEdC3mg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=surriel.com smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cLhtG+vvZYDJbT9CsAbPScGVywpiDLa6N6jkmr1n5ro=;
- b=K/QNjs+EQf429aCH00cYTALsEPDkVnwA+dNAkDQIKiOiD44Y+T87ox7yCQ2UIkOi9b1N7umkBAlvaEn2/3HnPqO3uzH9gWbMm4Tk2lU0VG9yS2EVwziFm968/ESAhd0G0tc3IPDHw5acAlNBW3Nt0maE4TW3ZO9TWM3w9HyCRPw=
-Received: from BLAPR03CA0027.namprd03.prod.outlook.com (2603:10b6:208:32b::32)
- by DM4PR12MB5793.namprd12.prod.outlook.com (2603:10b6:8:60::13) with
+ bh=xJmcLgRoaeaouSkf3yJv6TF6RMZzz0FrmGos9xFDxFc=;
+ b=x3fd42jBBoFApQ9qSgNFVts1TnhSLPEclP2/38dK7NQs25ObQ++rcPwWGU34hW4xJsNCJrEYAftEvl14c/NiQMZA4UZiTGzyyypRk5FTw3A0V2u0pgqdIayMPeL5UziHaop4eYeKwBDkWprunjyd02hDRt3ACn8TMga/PnogaVo=
+Received: from BLAPR05CA0005.namprd05.prod.outlook.com (2603:10b6:208:36e::14)
+ by CY1PR12MB9601.namprd12.prod.outlook.com (2603:10b6:930:107::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Thu, 13 Aug
- 2026 04:24:46 +0000
-Received: from BN3PEPF0000B36F.namprd21.prod.outlook.com
- (2603:10b6:208:32b:cafe::3a) by BLAPR03CA0027.outlook.office365.com
- (2603:10b6:208:32b::32) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.315.13 via Frontend Transport; Thu,
- 13 Aug 2026 04:24:46 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.14; Thu, 13 Aug
+ 2026 04:24:55 +0000
+Received: from BN3PEPF0000B371.namprd21.prod.outlook.com
+ (2603:10b6:208:36e:cafe::91) by BLAPR05CA0005.outlook.office365.com
+ (2603:10b6:208:36e::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.3 via Frontend Transport; Thu, 13
+ Aug 2026 04:24:54 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -83,21 +83,21 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN3PEPF0000B36F.mail.protection.outlook.com (10.167.243.166) with Microsoft
+ BN3PEPF0000B371.mail.protection.outlook.com (10.167.243.168) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.339.0 via Frontend Transport; Thu, 13 Aug 2026 04:24:46 +0000
+ 15.21.339.0 via Frontend Transport; Thu, 13 Aug 2026 04:24:54 +0000
 Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 12 Aug
- 2026 23:24:38 -0500
+ 2026 23:24:46 -0500
 From: Shivank Garg <shivankg@amd.com>
-Date: Thu, 13 Aug 2026 04:23:17 +0000
-Subject: [PATCH v2 6/7] mm/rmap: split try_to_migrate_hugetlb_one() out of
+Date: Thu, 13 Aug 2026 04:23:18 +0000
+Subject: [PATCH v2 7/7] mm/rmap: batch the unmap of large folios in
  try_to_migrate_one()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260813-migrate-rmap-batch-v2-6-3c5424c555c7@amd.com>
+Message-ID: <20260813-migrate-rmap-batch-v2-7-3c5424c555c7@amd.com>
 References: <20260813-migrate-rmap-batch-v2-0-3c5424c555c7@amd.com>
 In-Reply-To: <20260813-migrate-rmap-batch-v2-0-3c5424c555c7@amd.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
@@ -117,11 +117,11 @@ CC: Karim Manaouil <kmanaouil.dev@gmail.com>, Frank van der Linden
 	<rientjes@google.com>, Dev Jain <dev.jain@arm.com>, <linux-mm@kvack.org>,
 	<linux-kernel@vger.kernel.org>, Shivank Garg <shivankg@amd.com>
 X-Mailer: b4 0.15-dev-47d62
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786595034; l=12600;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786595034; l=7623;
  i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
- bh=m9fxe8wNgOIOvVrgEOQTh0iQGBrzrGsGDvtG1c3clfU=;
- b=p3GireR7fAOwvnRrM4DGa/qYHpMuykBdEo/ivlYvvzohzomDceknvYqKSUj8yKBwOz0DgoaA/
- P2nI34rQEtNCHPta3YEkDQFKUWeb4PyoYVJdvdDibwtWzCWyxILZeiG
+ bh=N04qQs6ab3QOp2plxNgK76AdZ7rwOslb9VXB2PbRwNk=;
+ b=LZGQQRKQxxrd5UfHQJW67iLHdSc9AzHrsMjwBxSj4DBrm7sUVRZomdXWG4/fFq8Ad7t5c3mfj
+ QO6Jw4nyR60B9R/9He0xlAFU9Xhjd2luoGU9D8S/uaTvVXUJTmcUDUM
 X-Developer-Key: i=shivankg@amd.com; a=ed25519;
  pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
 X-Originating-IP: [10.180.168.240]
@@ -129,38 +129,38 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B36F:EE_|DM4PR12MB5793:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5e72defc-749b-4998-35c4-08def8f2ce52
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B371:EE_|CY1PR12MB9601:EE_
+X-MS-Office365-Filtering-Correlation-Id: d9cb8934-ae4a-4355-c3a4-08def8f2d336
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|23010399003|36860700016|376014|1800799024|82310400026|921020|10067099003|56012099006|11063799006|22082099003|18002099003;
+	BCL:0;ARA:13230040|23010399003|376014|7416014|36860700016|82310400026|1800799024|921020|56012099006|10067099003|11063799006|5023799004|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	T+HwzmffNXQ+ganm2tF3sjOUVSe02OW3tR1lcqU9rSLBdpXp66ysY09qfIk89LlYYRo6haWmTeCKgAdLC+jFzaAmkLNScTxoCB0hrJrXxzDHw/zj9xL/cwyAGWIvAgjXfFM9DTKGsqbOORjfJTvj7nOn4VTr4zYURbQklLKbiOxjLFlKJWngKShyKoKUugUemtSXhYui/4n5hhc3r1Zv+xWcdK9xOleu3yxK8Tfy3CUjaPULdA7T+AlKuC/huGgQVcflPqk9izeDCdOhEe3idBdOn/qeUCvJEbbpoKYqxx4bwDBBjEanIw5LqmylyZaPhsE21r7tKrIezqUnRHSweFt+eiIokLvRv4ZDsrslSMflT/cJQV+NTpqUyjxWTg9MoNdt/N8rlE3H/SEfQYLQdTQpJLeSdTE5uKUllepshEVdIo602VZMwwu1GKaJ0S/prS3Ieh3XQ0T0Y/UfNu7k2txl95ryD3Wylkk9dSnaVNgXZ8HKSVN1F2urfNehFa0rsySGX/gH23mmgMLR/nDWaPBzRuQC7Ws5MQHOGP1tRgdHBR/Fg2zeFZx7xzYCq+2UBcY1UBe0a2rLpaqTZF+IDxq/Qauj08XWeskg9UI6YdE4XwGa5Q2nT5xE7dHMGMmrF28Y3bVdHuxeVoctmRbKbAYX6Q38T85Hr//EsiNEjqRF+LlbI7fMWkEvb1b8A69zwrpmzGosLYVBHSOCvThijdj7pzCTtdMoP8UuOLRpdvqeFsOXAUMzWYAWQ+1WvI/q
+	slDoFa0XVeCXamLiOKfcrYlDMUSkk+6/44H2Hljoj0sEsNrdyG8GC9Q40zhGT5pVSij1vGxGom9suOY3tT3lLLfDbPiCoNSWVKlWTOly08wRjIyJlpMHsiEt/L1C0ediR9z66IghQCLzMl6GAMp6PpBfe9anwXd77Ogi2tj/lOVG+SoJJ8jxy3pH++cM5sAHjg0pKVjo+up5MTiPJT5xFx23Is27xpE2FbhopqrRF+Eep3R2HMilYAD3CdPIHhUcnY7lN+tIyo/nt92DELZq8uCz1ME2I1kkx6bEb8mR10hwcEIiry6aEHuWoiTTPNi7laTfal8rk7HCRM73JiMaLr7tKAiwRxsTgWxnUhCHeckhgV5CJlXi08oZZFNH14N7LDFJMcKyINBwWPcDhqE0VaztIcfkaicDMpdsgnGlwcms1OBe4SsgFhxHmkotOgr/A59OnitmNvjEINK0T5a9HL4HdIEgaLDXDtnJn6GbJ+c56ySi23/+uU/+uXwchKICqV2SXKp8NFeEWQ2Zr2bZ9MpoAIK+dvUrfAptyTerAv+HQUWirTKA6GdzE1UkTbenW+VbafEOpEyuwBxpOBWQQVFf/FHWMJMf0gQZ00wlRcoS+N1E7fdGQb6Tp/KEd9vVK8NN3L+5zpoB15wKX4l2UlflNFcQib8O/Qmx3/Rm+m+gCEkwmM4bpfvv+WW1IVy2a2HqOF92Kumi+Tvx/6P5dr5BBwBsljpCip2/8J97W21dTNWGT52jThalMRRul5ln
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(36860700016)(376014)(1800799024)(82310400026)(921020)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(36860700016)(82310400026)(1800799024)(921020)(56012099006)(10067099003)(11063799006)(5023799004)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	4KZ1dK74jyOyg7+ZCk90PHmDXdGvH2vTfhX/4EqTBJ34/Fvil9mWBbL4oXOXbjBkF079bNn/0eFqJN2Ry3BmA06pi/8mDUm19w6AekkABTElL3irL/PUG/hfHwg0OAoRQKnsxUqlrLXU/n1EYXfbeswcnTzq258QGBGJZk8ec28rLSbPr6wd3v7j/apCkap68UgJy4uQm78R6l3DC0u23Jh7bBbGhz1ubfLGK2UN8NlbdEAVJouxWtyJ9cr2DzOURcEGLUewDjctDlrwKIUKoDQ+1Z+BTV8wnL4wSaW9fe/ETHVSEvmyBSAWS+mQROWKdJ7ox4i0CWXbyB9ZY1/fNeDhR+f79frav0t+9xwV4RZvTv8+kQECaCii15uIuHXI9ICgst2QBUA3Gj8BNsNj7yzrVGkGqdcsiAkWA3W0R31YMHakYZL91N1XL/77UZDw
+	8Hmd0TyVHivaYeSWowyOE5RXs+Vt/crDQk32hQG97Mlws36m/5I7CipAGBWrJyl2aa7gyGCBrM6ztDTFmpWZRJtlqKld0e4qs855DRybmNt7rUlIojUKPgx9gU7lHR/AgVCsvFdiFUxQu66lvdyHdjow4hG7fT/csGPuWpWCYS0Lzi2ongPw3e+5lNojTfAPuyOulkVwEoDIvMm8beQYALNV4UO323UEe0xtps70X2cNh5eyK5JnRhcCrJCC69msgRY0kKcN6sIUHZwqBbcTN00aCzSQM3QWVJAsq9SiojamBpuHK9KOiQoaaoihyaPF8rQlwX8buVL8plavSub/6AQUZOF85L6+oj07OBWFuZ+dUf3anzyhHKb3C/Xbh4Wim0RGWOx75TVbBtL+mDJSb2aDadWd5MReLHx9A5eozxhXqTRNHHyaG4XFAefiUQZg
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2026 04:24:46.0031
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2026 04:24:54.2139
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e72defc-749b-4998-35c4-08def8f2ce52
+X-MS-Exchange-CrossTenant-Network-Message-Id: d9cb8934-ae4a-4355-c3a4-08def8f2d336
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B36F.namprd21.prod.outlook.com
+	BN3PEPF0000B371.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5793
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 210E3A0004
-X-Stat-Signature: h5zxxh1ok4erwz5si38ptjtyxoca6row
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR12MB9601
 X-Rspam-User: 
-X-HE-Tag: 1786595095-729187
-X-HE-Meta: U2FsdGVkX1/idBI84do/29vLcew8L/tA+zkq3CcYUHQhuYQoUv+f7XJ6aTQ9mb9m3xRljUII8B8kPmLmLJuN2iZsYgKkJGcFWDXFaly5JZcyMwJmuUpMAWO6hD2xA4WRxlRROcwYEm8XOrW7bfqju8DHibOLXXTrcmkJQS8ZdRniDwp974lp1Nd3Z8Y8f7xvcEWQLf0rAgC/ZUGJh5AKDRyguh5p5cnacoq2vM9QJceWbsR+ThUk9bJu7vHR4YL38Bvu0iWqfCUJ82RXViismzhVPCA9C4GZZ6wMSbm4LtoPaXXP7LlmaTvl8BWIgEX6PM/FMg6pJf0K5UL9GKu6v5dKmBXgyv3DEJHK2+QMTLeaTm8HryIhCHOOwnOB9lDdRwxL/P9GS8jNHgLybhnxczMjdCodFt5fruQ25RdEPGLoLOtCe/1bsXOesz+Kb6D1MjeXmTtMVSNprES6qFETBmV9d/d6MsPBXShLGqf+LAWkgFX9LPlHpXd8Hh9JcKaF3qiZ+U1wq89qPDqeuRNObg5CDwse8/zNigFamdLRoez6iwDA8TYliaCDGtx4Canc1vflrHbZZtDA3FAD3QaZ9cFJTTKG5fPjgIJ0alijYbt2fQSKyaLZWpQ+i7O3z1CaDfWHUIokjdk3Se1KSnpYiXjOgTPlbHzFnF2oqSKIK4a0KcNa/hpUOtH5RTTnu9XdtkqKEpGWo6MmFlQxFnXTapNa5qoS+EBVg4gw5TZHXlurSBm8fxJCCEAF2nth4hyEsi8WKGH6vlAQ39c3gIcYXmwMav+DyfPYqUwLji69dOWUEAJi1fvwBpH+803LB4g/Jl5Kh9RhVNq5bPjbcDyY9xXxZL9oNfjoZumfZSWJBsYHV3RmClOU1t1zOxBcrUOrQS/NzEvU9JTVLSBl/2f6XlcvnaCQMwPcp3bC9cMXgw8faJ5XpwOXmGlsmZCMcH5Qfg+DKr27M5Qg6qYtKP6
- U26Vkpq4
- 0K1c5R0Rvs29nDYlil1KpLuuN5dnDdThGo/HZu33b3f6UuuLMyXKkeKmtIJHNLBdnAPZAuU5aNH0CEK5zTnnFM5St25h893QWLd8NpV1FRcwQuFH+rxpvzgUcF03Gqw+3XSYMvACZ+X3JYBxeSNzCfVtkQs3mAZ29qpZIx5Zq6QQ67krzmb5EprfElRazw8L8kry12Htt4V48+j5xGlO9Nw3j02vRIj28/Ne9llVqeuaoq7Bp2lVkVJoJmZKWF+4c3Lp7QqHZZwLM03/X9F+m+e/W1mlwR+s3KWY+56bEGNXy4qWxGIfCtTM3kMERJGx0eFZTf2ZbHYw7AQH+xkwRV/P5xrLAFz/HmHQrjSdrx4K4vzBA7Hnll9BJj6DLEvhLS5D9l20KrrjQNlDogIGfIv4B2A56g3gPKm91AUjTnOsrblBZ36+L6iAsdWwQHLr2YSYB1kNCbOm6A0LQfagK+26wmVKfcxiWMD1gf2EI8b2slOxIhHSqQn1tpxuasCncTypz5EbJ8fukw4J2qqtD3/vHHVDl8sEaPDrcAGuDubuh1DUurRmjQs9lYGo3ZDMpntW2wKO1SOjTR7Hleivyq44fGA==
+X-Stat-Signature: wirga8ym448k9gwgys9uaupn6y5woh9s
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 789FF1A0003
+X-HE-Tag: 1786595107-143017
+X-HE-Meta: U2FsdGVkX18JbycovjN1z8RHsutXvT9kRVCg3mt4gAj0F3ptatTiStyEi9Qz1ddMuObAagEza6yNDBPsoJOrEiCPgcyy14cQXxq6iGQxhMI8zEnF8mboiuf9mx7qt1jpIhWhLnyahRcyKe3c2xwQSXAwCutZR5QTSr4n5mW3P1K1grIgpnSfGS6M5gj/4EqozQdG0tPbw1sugN9c/AIeYRPKd3WC48mSfBBbEm2pyX8JGpo6NOssJ6PKFIouLyiw0YhIE10HPONAlcbzwtqQ+AQ78hVJ8YCqsSEmV8okiCBUaDjOwfXAnyf6iItGWEoXNhu/0vDAMDx4FOeveDMIDL7HMuwdSKumsyxRh5I0m5rTw7cUAwXNqEvvsMyLojbxnLp/k11B2llSfQ1MNZkO61tsj86zRtAY0NIPwQkC7++y9yqtc07T4KAcfQ2X1Rbdwzn+Di6gCHb3WYhkhZRovc7Kii5pi2nkztk5AF158WUjv4x+JoFFPpm9fHHwt8WOeFeOX0bhF2li5AyLZz8qT99Zx0dSbxnuhC3ai0JOlLo1L+W/vJZUVTc44HWc423MF36xfszdPif8L+KBO4r1UuBMHFitcABO0viPiGgK7eqtIpfGvg2qmIjJpCxkcse/WWESac6J+/D7dcjAOCz20rieVCwtU2+bo39hX8J+c6SD850yvRRGsTsr7nnEAP7k6O39J4yNCMmF6D307mHBrqOZ1BkbrogyoJmp1bkKn9hDJbGGRdqbgxFl7yfYk64CsSU4KWg9mxddIib6fJDo7gtRLcZlbEqVH2sQTU1Hl0wOO1hOVE3CRobj8nGVh0qowm9Cu+DXpnF4XgCfpY/eHKTddggSE/1GEDVptODvU3CuybzkApjCEhqkiPh9jDgOI3E8w24MWaNTWMnVxq/erLETRUCQ4TR6DHX7EW8nTxB0FwCfU4VaWGlPT5hnsCalknbH3TkEnX7XPAZJOEa
+ 2n7lSJ7n
+ tJY+qrkwIwtqhQz297TY7Wd6aBKNf+J8arXWx9wBCsSlOkFmGgx8I/Uszwf6zbQ4vPCg1m6tAHXx5dVmdh/8DVQ/JsZ3GTIVdxZa88aXmnQAtz9OKUumYfboCgsb/kr5n+MU8GGVK22RNIP5aK+BtvEnt4NgyNCSmUIR9pPk3PxwNeWiNe/RQYM5Ett8ToC4tTtCT43g+NsmPgDbUyqnKE6PTg68lwvsG1ekQplD+7PL5evuIJB8ujuDIfj6VgCyrfsNUKT0fG4CMYIolLEsXE+HHisXXMql9vvL2HXppfu4AIjoB3mD8ngZ/z1ccs2mpA6DKdjV88gbruS5DlfIIjGGK8Xh9RinMpxUVgbqH6o82ipW3PqWP0iznfN3z1LhYCk6LbTdFXoXJ7Et1Ile/zSBXYedosOwjEQ18lzTtONhomDFk0M8WhkYFMnufUqLOUuthwcmiy+8VMfP9Xlua0VLywPxU+9ucQmH59VBmNWaTt82rhMgQ+1wLnc0o4FLr9zeK16Pu0eVpF6mp9Dr2cIgW6/3UpBq0AzqoRozmqmJKVf5Sl6mbUJrI20UwzhudoUu+rzPkhNfbG0cUuWuco+tWKQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,366 +168,217 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-try_to_migrate_one() interleaves hugetlb special handling through the
-regular PTE/PMD migration path with folio_test_hugetlb() checks
-scattered across the walk. Simplify this by moving hugetlb handling
-into its own rmap_one callback, try_to_migrate_hugetlb_one().
+try_to_migrate_one() converts present PTEs to migration entries one at a
+time. For a PTE-mapped large folio, this repeat calls to ptep clear+flush,
+the migration entry build and set, folio_remove_rmap_pte() and folio_put(),
+each re-entering page_vma_mapped_walk() once per base page (256 times for
+1M folio).
 
-Few minor changes:
-- Since hugetlb uses separate counters, update_hiwater_rss() is not
-needed for hugetlb path. Also, use huge_pte_dirty instead of pte_dirty
-- No PVMW_SYNC flag is needed for hugetlb
-- hugetlb folio has single mapping per VMA, so no loop is needed.
-- Convert VM_BUG_ON to VM_WARN_ON_ONCE and not use irrelevant WARN check.
+Mirror try_to_unmap_one() to introduce folio_migrate_pte_batch() to detect
+eligible batch for PTEs mapping conseuctive subpages of a large folios,
+and convert the whole batch in one shot using the batched helpers.
+
+A side-effect of this change is trace_set_migration_pte() will record
+one event per batched run instead of earlier behavior of one per base page.
 
 Signed-off-by: Shivank Garg <shivankg@amd.com>
 ---
- mm/rmap.c | 251 +++++++++++++++++++++++++++++++++++---------------------------
- 1 file changed, 144 insertions(+), 107 deletions(-)
+ mm/rmap.c | 115 ++++++++++++++++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 86 insertions(+), 29 deletions(-)
 
 diff --git a/mm/rmap.c b/mm/rmap.c
-index 8b89e32ae489..35752a70f3a0 100644
+index 35752a70f3a0..63b885c0b7ef 100644
 --- a/mm/rmap.c
 +++ b/mm/rmap.c
-@@ -2543,6 +2543,138 @@ static pte_t make_migration_pte(struct page *page, pte_t pteval,
- 	return swp_pte;
+@@ -2675,6 +2675,44 @@ static bool try_to_migrate_hugetlb_one(struct folio *folio,
+ 	return ret;
  }
  
-+/*
-+ * Replace the hugetlb page table mapping for folio with migration entries.
-+ *
-+ * @arg: enum ttu_flags will be passed to this argument.
-+ */
-+static bool try_to_migrate_hugetlb_one(struct folio *folio,
-+		struct vm_area_struct *vma, unsigned long address, void *arg)
++static inline unsigned int folio_migrate_pte_batch(struct folio *folio,
++		struct page_vma_mapped_walk *pvmw, pte_t pte,
++		struct page *subpage, bool anon_exclusive)
 +{
-+	const unsigned long hsz = huge_page_size(hstate_vma(vma));
-+	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
-+	enum ttu_flags flags = (enum ttu_flags)(long)arg;
-+	bool anon_exclusive, writable, ret = true;
-+	bool anon = folio_test_anon(folio);
-+	struct mm_struct *mm = vma->vm_mm;
-+	struct mmu_notifier_range range;
-+	unsigned long pfn;
-+	struct page *page;
-+	pte_t pteval;
++	unsigned long end_addr, addr = pvmw->address;
++	struct vm_area_struct *vma = pvmw->vma;
++	unsigned int max_nr, nr;
 +
-+	range.end = vma_address_end(&pvmw);
-+	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
-+				address, range.end);
-+	/* If sharing is possible, start and end will be adjusted accordingly. */
-+	adjust_range_if_pmd_sharing_possible(vma, &range.start, &range.end);
-+	mmu_notifier_invalidate_range_start(&range);
++#ifdef __HAVE_ARCH_UNMAP_ONE
++	/* Cannot batch unmap if arch_unmap_one() is defined. */
++	return 1;
++#endif
 +
-+	/* There is only a single mapping in a VMA. */
-+	if (!page_vma_mapped_walk(&pvmw))
-+		goto range_end;
++	if (!folio_test_large(folio))
++		return 1;
++	if (folio_is_zone_device(folio) || folio_test_has_hwpoisoned(folio))
++		return 1;
++	if (pte_unused(pte))
++		return 1;
 +
-+	address = pvmw.address;
-+	pteval = huge_ptep_get(mm, address, pvmw.pte);
-+	if (likely(pte_present(pteval)))
-+		pfn = pte_pfn(pteval);
-+	else
-+		pfn = softleaf_to_pfn(softleaf_from_pte(pteval));
-+
-+	page = folio_page(folio, pfn - folio_pfn(folio));
-+	anon_exclusive = anon && PageAnonExclusive(page);
-+
++	/* We may only batch within a single VMA and a single page table. */
++	end_addr = pmd_addr_end(addr, vma->vm_end);
++	max_nr = (end_addr - addr) >> PAGE_SHIFT;
 +	/*
-+	 * huge_pmd_unshare may unmap an entire PMD page. There is no way of
-+	 * knowing exactly which PMDs may be cached for this mm, so we must flush
-+	 * them all. start/end were already adjusted above to cover this range.
++	 * If unmap fails, we need to restore the ptes. To avoid accidentally
++	 * upgrading write permissions for ptes that were not originally writable,
++	 * and to avoid losing the soft-dirty bit, use the appropriate FPB flags.
 +	 */
-+	flush_cache_range(vma, range.start, range.end);
++	nr = folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_nr,
++				   FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
 +
-+	/*
-+	 * To call huge_pmd_unshare, i_mmap_rwsem must be held in write mode.
-+	 * Caller needs to explicitly do this outside rmap routines. We also must
-+	 * hold hugetlb vma_lock in write mode. Lock order dictates acquiring
-+	 * vma_lock BEFORE i_mmap_rwsem. We can only try lock here and fail if
-+	 * unsuccessful.
-+	 */
-+	if (!anon) {
-+		struct mmu_gather tlb;
++	/* Limit possible batch count to a uniform PageAnonExclusive value */
++	if (folio_test_anon(folio))
++		nr = page_anon_exclusive_batch(0, nr, subpage, anon_exclusive);
 +
-+		VM_WARN_ON_ONCE(!(flags & TTU_RMAP_LOCKED));
-+		if (!hugetlb_vma_trylock_write(vma)) {
-+			ret = false;
-+			goto walk_done;
-+		}
-+
-+		tlb_gather_mmu_vma(&tlb, vma);
-+		if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
-+			hugetlb_vma_unlock_write(vma);
-+			huge_pmd_unshare_flush(&tlb, vma);
-+			tlb_finish_mmu(&tlb);
-+			/*
-+			 * The PMD table was unmapped,
-+			 * consequently unmapping the folio.
-+			 */
-+			goto walk_done;
-+		}
-+		hugetlb_vma_unlock_write(vma);
-+		tlb_finish_mmu(&tlb);
-+	}
-+
-+	/* Nuke the hugetlb page table entry */
-+	pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
-+	if (huge_pte_dirty(pteval))
-+		folio_mark_dirty(folio);
-+	writable = pte_write(pteval);
-+
-+	VM_WARN_ON_FOLIO(writable && anon && !anon_exclusive, folio);
-+
-+	if (PageHWPoison(page)) {
-+		pteval = swp_entry_to_pte(make_hwpoison_entry(page));
-+		hugetlb_count_sub(folio_nr_pages(folio), mm);
-+		set_huge_pte_at(mm, address, pvmw.pte, pteval, hsz);
-+	} else {
-+		pte_t swp_pte;
-+
-+		/*
-+		 * arch_unmap_one() is expected to be a NOP on architectures
-+		 * where we could have PFN swap PTEs, so we'll not check/care.
-+		 */
-+		if (arch_unmap_one(mm, vma, address, pteval) < 0) {
-+			set_huge_pte_at(mm, address, pvmw.pte, pteval, hsz);
-+			ret = false;
-+			goto walk_done;
-+		}
-+
-+		/* See folio_try_share_anon_rmap_pte(): clear PTE first. */
-+		if (anon_exclusive && hugetlb_try_share_anon_rmap(folio)) {
-+			set_huge_pte_at(mm, address, pvmw.pte, pteval, hsz);
-+			ret = false;
-+			goto walk_done;
-+		}
-+
-+		/*
-+		 * Store the pfn of the page in a special migration pte. A
-+		 * hugetlb fault waits for migration to complete before retrying.
-+		 */
-+		swp_pte = make_migration_pte(page, pteval, writable, anon_exclusive);
-+		set_huge_pte_at(mm, address, pvmw.pte, swp_pte, hsz);
-+		trace_set_migration_pte(address, pte_val(swp_pte),
-+					folio_order(folio));
-+	}
-+
-+	hugetlb_remove_rmap(folio);
-+	if (vma->vm_flags & VM_LOCKED)
-+		mlock_drain_local();
-+	folio_put(folio);
-+walk_done:
-+	page_vma_mapped_walk_done(&pvmw);
-+range_end:
-+	mmu_notifier_invalidate_range_end(&range);
-+
-+	return ret;
++	return nr;
 +}
 +
  /*
   * @arg: enum ttu_flags will be passed to this argument.
   *
-@@ -2560,7 +2692,6 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+@@ -2686,12 +2724,12 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
+-	bool anon_exclusive, writable, ret = true;
++	bool anon_exclusive, hwpoison, writable, ret = true;
+ 	pte_t pteval;
+ 	struct page *subpage;
  	struct mmu_notifier_range range;
  	enum ttu_flags flags = (enum ttu_flags)(long)arg;
- 	unsigned long pfn;
--	unsigned long hsz = 0;
+-	unsigned long pfn;
++	unsigned long pfn, end_addr, nr_pages;
  
  	/*
  	 * When racing against e.g. zap_pte_range() on another cpu,
-@@ -2573,26 +2704,13 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+@@ -2744,11 +2782,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+ 			VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
+ 					!folio_test_pmd_mappable(folio), folio);
  
- 	/*
- 	 * For THP, we have to assume the worse case ie pmd for invalidation.
--	 * For hugetlb, it could be much worse if we need to do pud
--	 * invalidation in the case of pmd sharing.
- 	 *
- 	 * Note that the page can not be free in this function as call of
--	 * try_to_unmap() must hold a reference on the page.
-+	 * try_to_migrate() must hold a reference on the page.
- 	 */
- 	range.end = vma_address_end(&pvmw);
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
- 				address, range.end);
--	if (folio_test_hugetlb(folio)) {
--		/*
--		 * If sharing is possible, start and end will be adjusted
--		 * accordingly.
--		 */
--		adjust_range_if_pmd_sharing_possible(vma, &range.start,
--						     &range.end);
--
--		/* We need the huge page size for set_huge_pte_at() */
--		hsz = huge_page_size(hstate_vma(vma));
--	}
- 	mmu_notifier_invalidate_range_start(&range);
- 
- 	while (page_vma_mapped_walk(&pvmw)) {
-@@ -2639,10 +2757,7 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 		VM_BUG_ON_FOLIO(!pvmw.pte, folio);
- 
- 		address = pvmw.address;
--		if (folio_test_hugetlb(folio))
--			pteval = huge_ptep_get(mm, address, pvmw.pte);
--		else
--			pteval = ptep_get(pvmw.pte);
-+		pteval = ptep_get(pvmw.pte);
- 		if (likely(pte_present(pteval))) {
- 			pfn = pte_pfn(pteval);
- 		} else {
-@@ -2653,66 +2768,13 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 			const softleaf_t entry = softleaf_from_pte(pteval);
- 
- 			pfn = softleaf_to_pfn(entry);
--			VM_WARN_ON_FOLIO(folio_test_hugetlb(folio), folio);
+-			if (set_pmd_migration_entry(&pvmw, subpage)) {
+-				ret = false;
+-				page_vma_mapped_walk_done(&pvmw);
+-				break;
+-			}
++			if (set_pmd_migration_entry(&pvmw, subpage))
++				goto walk_abort;
+ 			continue;
+ #endif
  		}
- 
+@@ -2773,10 +2808,25 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
  		subpage = folio_page(folio, pfn - folio_pfn(folio));
  		anon_exclusive = folio_test_anon(folio) &&
  				 PageAnonExclusive(subpage);
++		/*
++		 * memory_failure() can set PageHWPoison concurrently without holding
++		 * the folio lock. Snapshot the flag here to decide whether to batch
++		 * PTEs or install hwpoison entry.
++		 */
++		hwpoison = PageHWPoison(subpage);
  
--		if (folio_test_hugetlb(folio)) {
--			bool anon = folio_test_anon(folio);
--
--			/*
--			 * huge_pmd_unshare may unmap an entire PMD page.
--			 * There is no way of knowing exactly which PMDs may
--			 * be cached for this mm, so we must flush them all.
--			 * start/end were already adjusted above to cover this
--			 * range.
--			 */
--			flush_cache_range(vma, range.start, range.end);
--
--			/*
--			 * To call huge_pmd_unshare, i_mmap_rwsem must be
--			 * held in write mode.  Caller needs to explicitly
--			 * do this outside rmap routines.
--			 *
--			 * We also must hold hugetlb vma_lock in write mode.
--			 * Lock order dictates acquiring vma_lock BEFORE
--			 * i_mmap_rwsem.  We can only try lock here and
--			 * fail if unsuccessful.
--			 */
--			if (!anon) {
--				struct mmu_gather tlb;
--
--				VM_BUG_ON(!(flags & TTU_RMAP_LOCKED));
--				if (!hugetlb_vma_trylock_write(vma)) {
--					page_vma_mapped_walk_done(&pvmw);
--					ret = false;
--					break;
--				}
--
--				tlb_gather_mmu_vma(&tlb, vma);
--				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
--					hugetlb_vma_unlock_write(vma);
--					huge_pmd_unshare_flush(&tlb, vma);
--					tlb_finish_mmu(&tlb);
--					/*
--					 * The PMD table was unmapped,
--					 * consequently unmapping the folio.
--					 */
--					page_vma_mapped_walk_done(&pvmw);
--					break;
--				}
--				hugetlb_vma_unlock_write(vma);
--				tlb_finish_mmu(&tlb);
--			}
--			/* Nuke the hugetlb page table entry */
--			pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
--			if (pte_dirty(pteval))
--				folio_mark_dirty(folio);
--			writable = pte_write(pteval);
--		} else if (likely(pte_present(pteval))) {
-+		if (likely(pte_present(pteval))) {
- 			flush_cache_page(vma, address, pfn);
- 			/* Nuke the page table entry. */
++		nr_pages = 1;
+ 		if (likely(pte_present(pteval))) {
+-			flush_cache_page(vma, address, pfn);
+-			/* Nuke the page table entry. */
++			if (!hwpoison)
++				nr_pages = folio_migrate_pte_batch(folio, &pvmw,
++								   pteval, subpage,
++								   anon_exclusive);
++
++			end_addr = address + nr_pages * PAGE_SIZE;
++			flush_cache_range(vma, address, end_addr);
++
++			/* Nuke the page table entries. */
++			pteval = get_and_clear_ptes(mm, address, pvmw.pte, nr_pages);
  			if (should_defer_flush(mm, flags)) {
-@@ -2751,14 +2813,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+ 				/*
+ 				 * We clear the PTE but do not flush so potentially
+@@ -2786,11 +2836,9 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+ 				 * transition on a cached TLB entry is written through
+ 				 * and traps if the PTE is unmapped.
+ 				 */
+-				pteval = ptep_get_and_clear(mm, address, pvmw.pte);
+-
+-				set_tlb_ubc_flush_pending(mm, pteval, address, address + PAGE_SIZE);
++				set_tlb_ubc_flush_pending(mm, pteval, address, end_addr);
+ 			} else {
+-				pteval = ptep_clear_flush(vma, address, pvmw.pte);
++				flush_tlb_range(vma, address, end_addr);
+ 			}
+ 			if (pte_dirty(pteval))
+ 				folio_mark_dirty(folio);
+@@ -2809,7 +2857,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+ 		/* Update high watermark before we lower rss */
+ 		update_hiwater_rss(mm);
+ 
+-		if (PageHWPoison(subpage)) {
++		if (hwpoison) {
++			VM_WARN_ON_ONCE(nr_pages != 1);
  			VM_WARN_ON_FOLIO(folio_is_device_private(folio), folio);
  
  			pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
--			if (folio_test_hugetlb(folio)) {
--				hugetlb_count_sub(folio_nr_pages(folio), mm);
--				set_huge_pte_at(mm, address, pvmw.pte, pteval,
--						hsz);
--			} else {
--				dec_mm_counter(mm, mm_counter(folio));
--				set_pte_at(mm, address, pvmw.pte, pteval);
--			}
-+			dec_mm_counter(mm, mm_counter(folio));
-+			set_pte_at(mm, address, pvmw.pte, pteval);
- 		} else if (likely(pte_present(pteval)) && pte_unused(pteval) &&
- 			   !userfaultfd_armed(vma)) {
- 			/*
-@@ -2781,28 +2837,15 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+@@ -2837,19 +2886,15 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
  			 * so we'll not check/care.
  			 */
  			if (arch_unmap_one(mm, vma, address, pteval) < 0) {
--				if (folio_test_hugetlb(folio))
--					set_huge_pte_at(mm, address, pvmw.pte,
--							pteval, hsz);
--				else
--					set_pte_at(mm, address, pvmw.pte, pteval);
-+				set_pte_at(mm, address, pvmw.pte, pteval);
- 				ret = false;
- 				page_vma_mapped_walk_done(&pvmw);
- 				break;
+-				set_pte_at(mm, address, pvmw.pte, pteval);
+-				ret = false;
+-				page_vma_mapped_walk_done(&pvmw);
+-				break;
++				set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
++				goto walk_abort;
  			}
  
- 			/* See folio_try_share_anon_rmap_pte(): clear PTE first. */
--			if (folio_test_hugetlb(folio)) {
--				if (anon_exclusive &&
--				    hugetlb_try_share_anon_rmap(folio)) {
--					set_huge_pte_at(mm, address, pvmw.pte,
--							pteval, hsz);
--					ret = false;
--					page_vma_mapped_walk_done(&pvmw);
--					break;
--				}
--			} else if (anon_exclusive &&
--				   folio_try_share_anon_rmap_pte(folio, subpage)) {
-+			if (anon_exclusive &&
-+			    folio_try_share_anon_rmap_pte(folio, subpage)) {
- 				set_pte_at(mm, address, pvmw.pte, pteval);
- 				ret = false;
- 				page_vma_mapped_walk_done(&pvmw);
-@@ -2816,11 +2859,7 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+-			/* See folio_try_share_anon_rmap_pte(): clear PTE first. */
++			/* See folio_try_share_anon_rmap_ptes(): clear PTE first. */
+ 			if (anon_exclusive &&
+-			    folio_try_share_anon_rmap_pte(folio, subpage)) {
+-				set_pte_at(mm, address, pvmw.pte, pteval);
+-				ret = false;
+-				page_vma_mapped_walk_done(&pvmw);
+-				break;
++			    folio_try_share_anon_rmap_ptes(folio, subpage, nr_pages)) {
++				set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
++				goto walk_abort;
+ 			}
+ 
+ 			/*
+@@ -2859,19 +2904,31 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
  			 */
  			swp_pte = make_migration_pte(subpage, pteval,
  						     writable, anon_exclusive);
--			if (folio_test_hugetlb(folio))
--				set_huge_pte_at(mm, address, pvmw.pte, swp_pte,
--						hsz);
--			else
--				set_pte_at(mm, address, pvmw.pte, swp_pte);
-+			set_pte_at(mm, address, pvmw.pte, swp_pte);
+-			set_pte_at(mm, address, pvmw.pte, swp_pte);
  			trace_set_migration_pte(address, pte_val(swp_pte),
  						folio_order(folio));
++
++			/* Set nr_pages migration entries, advancing the PFN. */
++			set_softleaf_ptes(mm, address, pvmw.pte, swp_pte, nr_pages);
  			/*
-@@ -2829,10 +2868,7 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+ 			 * No need to invalidate here it will synchronize on
+ 			 * against the special swap migration pte.
  			 */
  		}
  
--		if (unlikely(folio_test_hugetlb(folio)))
--			hugetlb_remove_rmap(folio);
--		else
--			folio_remove_rmap_pte(folio, subpage, vma);
-+		folio_remove_rmap_pte(folio, subpage, vma);
- 		if (vma->vm_flags & VM_LOCKED)
- 			mlock_drain_local();
- 		folio_put(folio);
-@@ -2854,7 +2890,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- void try_to_migrate(struct folio *folio, enum ttu_flags flags)
- {
- 	struct rmap_walk_control rwc = {
--		.rmap_one = try_to_migrate_one,
-+		.rmap_one = folio_test_hugetlb(folio) ?
-+				try_to_migrate_hugetlb_one : try_to_migrate_one,
- 		.arg = (void *)flags,
- 		.done = folio_not_mapped,
- 		.anon_lock = folio_lock_anon_vma_read,
+-		folio_remove_rmap_pte(folio, subpage, vma);
+-		if (vma->vm_flags & VM_LOCKED)
+-			mlock_drain_local();
+-		folio_put(folio);
++		finish_folio_unmap(vma, folio, subpage, nr_pages);
++
++		/*
++		 * If we batched the entire folio, there is nothing left to
++		 * walk; stop right here.
++		 */
++		if (nr_pages == folio_nr_pages(folio))
++			goto walk_done;
++		continue;
++walk_abort:
++		ret = false;
++walk_done:
++		page_vma_mapped_walk_done(&pvmw);
++		break;
+ 	}
+ 
+ 	mmu_notifier_invalidate_range_end(&range);
 
 -- 
 2.43.0
