@@ -4,107 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B9FAC5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 22:38:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BC84C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 22:53:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F17FE6B02CD; Thu, 13 Aug 2026 18:38:12 -0400 (EDT)
+	id E996A6B05DE; Thu, 13 Aug 2026 18:53:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA9D36B02CF; Thu, 13 Aug 2026 18:38:12 -0400 (EDT)
+	id E2AA76B05DF; Thu, 13 Aug 2026 18:53:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D713D6B02D0; Thu, 13 Aug 2026 18:38:12 -0400 (EDT)
+	id D128C6B05E0; Thu, 13 Aug 2026 18:53:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AA8676B02CD
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 18:38:12 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 29B4F802DC
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 22:38:12 +0000 (UTC)
-X-FDA: 85097710824.13.0B98E57
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 3EF7D1C0007
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 22:38:10 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kp/dh28N";
-	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 94B1A6B05DE
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 18:53:47 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 59DEE1C1038
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 22:53:45 +0000 (UTC)
+X-FDA: 85097750010.23.A01CAEA
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9F9F810000D
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 22:53:43 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pNG1PS9P;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of 4ncienth@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=4ncienth@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786660690;
+	s=arc-20220608; t=1786661623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/LqEmxpPwrLgwTd9RsN6GwpBP97Mg4t06WVKzlbFZTk=;
-	b=7FOc0A0jzi8p9sLKzO0pfL8l7caBtMOBh6cOOaouoeH1biuGL8J6hDOAHFnEXR8TLrH4NL
-	1epUj5SGxVfobK4xoJ/10aBBixmJXGn0jswQUvFDRpgJ6vB5TNhrvjddNR4tY/tGbfktfb
-	KrrPLPR1qhhDznpUd2fyzZq839RFM8Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786660690;
-	b=5t4AQ2R1nNUxUQsJKXIl0K1f6FDMb8Zb6VBW0+c9yEK2DK302nernBwag0qxJHqrQKgdhp
-	4DjAwYsSD8iKtmrSz5uXUVsKu4so+FVqbAuagLYeLoYv1GnEb2jW0aw0Qy5Z8rHemCTso9
-	R0Tup9jcX9CNao6v3rjKpU9lIZAeo8Y=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=QcZaXKSZ+vl5BQB5E9TRFwg6GdaSdB6v8ybUxPjYbic=;
+	b=fpEfzMBPfx/s1NN7GNZd/g6vniDdwBePEXCcWqovoNrY/avmoHrjMXT8FKmxu/JqogntN+
+	TfLeOvpj1UCILCQlCTWZFxQeZ7x40wr8amL9Tdef91F/RhYYd3jbYYXW6+VGG6R8/ekA/a
+	oscuqc6xrf4OCuU1mA3rguEuXiyc5s8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kp/dh28N";
-	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6941C43CE5
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 22:38:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5F11F00ADE
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 22:38:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786660689;
-	bh=/LqEmxpPwrLgwTd9RsN6GwpBP97Mg4t06WVKzlbFZTk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=kp/dh28NxoPeZsol81qGOsY7xIOi5bgfN04MdH1Om6axJHrhI54QoHihGzegd03kA
-	 Zb2NfOLwp15iWgoAbh2Q1s+cyB4TwpjdfJ3CGj7FAEECgRPETDGTpQWC1AL9fR6Lz1
-	 0MBMl47jfE0/Tgv0BzdmO7btrC94OMwPIg8uwpQY9SBLhWh19ZW/scvnLOp7ea4DPR
-	 KHU4M3/RGRVAqUnaeSLCsTcduXgLYNLTP51LM7LH2x847vs8XZZCPHvdoBzpgtUtjb
-	 i5OaVg4Ys4ErcvaKwd6BG/vf4TR9Bp6zUzpRRs7SjGSfO5gjAtlMWSsDRPoLyAMkvG
-	 2RV4AukM7wceQ==
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-907ae240ac3so2188916d6.0
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:38:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rqgyla8LUAdgrOm46GIwBOKUqCG/ahY/OJlCAKWXZO24Ji1tASv0T5IMfH+DlrpQ2yKZTWdlAmjWg==@kvack.org
-X-Gm-Message-State: AOJu0YwW9nMuMz0jD+hDtcFLmPjUJNDWlXHXmHMNe+AyUlT7S59CuJL+
-	/oZxVaIpzoPVs2YALx/WC1fI69nwkAnzg5RUB/H62gPr2e9BxMrE7342YbAle9smsx/Q7tnpvJE
-	oCPQL+qk70NteJ67ezGDIUvx+Bee1pBU=
-X-Received: by 2002:ad4:5d61:0:b0:8ee:cf22:88f1 with SMTP id
- 6a1803df08f44-90a91d650camr13069416d6.17.1786660688345; Thu, 13 Aug 2026
- 15:38:08 -0700 (PDT)
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pNG1PS9P;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of 4ncienth@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=4ncienth@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786661623;
+	b=SscSOJHQuOiRMIaeCzWRkaeE4JpN2y++mqUYVg0qfzfjcyscmxmQyC01dYrWrCUUJCNTf9
+	MvdLgXfurlvUaVaDn98z+LHRsGqMJCI//P+tyNCBuUoqGtPbX+U9jPFydhgdbd0fpwPCR5
+	SYXMsgsGHnyjV3prsFDuzKu2ChMJN1w=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2cca0c5799eso4389115ad.0
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:53:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786661622; x=1787266422; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QcZaXKSZ+vl5BQB5E9TRFwg6GdaSdB6v8ybUxPjYbic=;
+        b=pNG1PS9P3ioPVKABsG1w7bp8betzMj6kTAcL8pYj8HTX+xQBm3QHRJB16yR99Lq52R
+         APOwEvefBDkFYzLI1jUGoNeVaMSuRAkxXq0dgU12f7MO5CDdcso3ot/QpwzWFqQ8CX2G
+         CeOva+NXlK/oesk71nW5avfdA9qRk2R3d1zFSD70pqvAyuVi++KbduhojkKFp2hmoCBd
+         UFUaelVs+T7Ek7gI6yxHFOp/IegqeROjF7YCbAa4ROu8xO4OPtlYWKkjBmi57r8ZPNpN
+         t8d2OJl6z3khdCN2c9LKBRXGT/vwWY8RoLhXNbsRl7xRlJfTLLG/q+myRk57sbhvVrWM
+         s7hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786661622; x=1787266422;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QcZaXKSZ+vl5BQB5E9TRFwg6GdaSdB6v8ybUxPjYbic=;
+        b=OaG2vlRMG8j8l6quEUku8/h/HiQa97E9OdgFLtgJX+2v/7zqjwgehnRJA3nrpPPnVr
+         3UTuJLebUWPaSWiXZBPfyy3UiZ8qTZNcXxt5bb7ut3TGNOjMFxAgknknLFanRxC09j7Q
+         mJ1+ApWoeIiEuwPN/RT+OnVKyEmf3EK3POdIFeo6eQxYd6z0Qz7xr4hqx74ArmPIVX+F
+         JIIzPuDesAY2GuUbvGqbsaubSzAfOjC3X8P/VHHjSEVfcLi4JcwV8bchYBx7UeBr7Gra
+         R532LVcPyiBOdPxCE7sqPlSRxDA6K2wDqFxru3/LC1YLQgOlUsYJNXBMwtZJXHocRBXQ
+         tX2Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpqajbKd82Jaf4Hf0dDA2V3c7IuXoE5p+t3lCsPeOAi9K7Rj0+0PUIhraDSW6itwA9Vsj4hDdngrA==@kvack.org
+X-Gm-Message-State: AOJu0YwFhzcxW9q3HkLm4w8fNqIW+MpjCRatkUTGuBN2L02s9daGi1g5
+	3e80BLpn2+u3ULU3+Gmem5Ez39ZELepTgkEFWyNr75fHfyjoySojGznm
+X-Gm-Gg: AR+sD11/Ozc6hhWvcJx7C2iRW6xeH74t2Vxs4F/+Uqgb1SSOVapgPFOo/MbQLUmr6ZV
+	KcG92BoCS/xBTr3L4R7GQYSvElE7H5gNgdBkEUXM18Qdf1+2HQdjs0hJ3fvFk/xOQLpZexkLI2l
+	cCtzyI/zS3pISNNw6/MwvR3fZN5ojenM6iCOoUxkZSjfJH0ra/2RjVaglVPHPndwvlumIFOMd7f
+	V2EsGwvMa2C7p/NsDgXzEU1+LoiFHX5sCZe4gcEB68XClfdOmqGEeHLkPb9akJgpvve+JT3iYaX
+	uC8hTgTmqvsTIBzom1pOjkhHtAPexxcdvcYzhIPQ17yFIQrNYre1A+1RX7UbaaFm+qvXRnR5nMe
+	xmH9gVQVpnhTuX45VS4o987t6Gjp4BnfTHQWxMpNujgy8r1ZlDUfgxjqhEl8eQ7joqczSs70o3m
+	Xo97yLju73I0Tm9W6rBEGP5lT95TDchFkefdzzFfRx0e9uAviLfZuV1lm9AfjjhPgt2R/dA6YU
+X-Received: by 2002:a17:903:9cf:b0:2bf:27b2:4b80 with SMTP id d9443c01a7336-2d3b0d1302amr15512025ad.14.1786661622331;
+        Thu, 13 Aug 2026 15:53:42 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d3ae804b32sm2657265ad.35.2026.08.13.15.53.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 15:53:40 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	linux-mm@kvack.org
+Cc: David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Daehyeon Ko <4ncienth@gmail.com>
+Subject: [PATCH] mm/secretmem: prevent uncharged mremap expansion after fork
+Date: Fri, 14 Aug 2026 07:53:28 +0900
+Message-ID: <20260813225328.2010303-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-References: <20260723045718.2052070-1-ridong.chen@linux.dev>
- <20260723171842.137e45eb36b21b3b45245da0@linux-foundation.org>
- <8336e48a-ab3a-4db9-a7f9-5bb6af2b22c3@linux.dev> <CAGsJ_4xPw24afGLZH6Qh5rxOts37SCpmBVeB3gGntk1QQuSCow@mail.gmail.com>
- <24b9f213-96e8-4eda-a20f-8746d7c399b7@linux.dev>
-In-Reply-To: <24b9f213-96e8-4eda-a20f-8746d7c399b7@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 14 Aug 2026 06:37:56 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xCi1TzV0sg=8ZFhfAq7v=k=Q6a10DNDouYOrjcJL-5=A@mail.gmail.com>
-X-Gm-Features: AUfX_mzxj7IwBhL5GPyEcNHh14T7Jijh6fXojasM9ALS-3KIXNrDdRYdwoo8O1g
-Message-ID: <CAGsJ_4xCi1TzV0sg=8ZFhfAq7v=k=Q6a10DNDouYOrjcJL-5=A@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] mm/vmscan: fix swappiness=max and clean up
- per-node proactive reclaim
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Zhongkun He <hezhongkun.hzk@bytedance.com>, Muchun Song <muchun.song@linux.dev>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 9yfhc3yqtb9k4jgydhynzh4wfbmnpche
+X-Rspamd-Queue-Id: 9F9F810000D
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: trn6auniieztjbwtb5e3t7o9uwo7zfdu
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3EF7D1C0007
-X-HE-Tag: 1786660690-795960
-X-HE-Meta: U2FsdGVkX18vbAyKBQs5uZYyAEGuWVMGByllTok3hYXdl/6yR+o0egLgkgq6msM/lBA5tuPYuTsqlZgrXeriFNhMio84g/kL9sT78li2wV/qUPd9ZPMtwQmHc/DgPkdpc8GajIRAFEobacpilX/QbdPWqlOaUeCCaJ6hu1kTVkm1mHebZeEytgK9f+jeBkZ/SC7CDVNlCGbvfLuBuo591U5A0oYOXveobxoq0h/IDIGRnDmINFiuu1/atGvCXrMtQ3AgwMVxXYK2bawb+VX6pAVWTWA41qW4wsyWGJudx8VhuYzDMYpmctgSgKb0taKsJSKkrs0LPAhUZRyl28oLRgy0YMBdFX2OxU5XEZEjMWMn60eX3W6ZV4EvXI7Rnmkt7oCsliNgNlQXMpDtgbnxfY4vCtgIAY1rP7MIzO0We9HVRy+ZHx5FmrF55feitTq2js4d1+Whkm8hnd0nuRVe7wKtjzEG0+8VkGTW6aWPY8mX2CLI3oo5j2AKUOvbXgQ7OqOwx0ry8pchWX8xcpzEGyyf8BPWDPCWsAZZf0PaY7DltXXveiznnerWXPH41YZCAmBOyHH6ub5gXPLDl3dA4Y/WbEbp5Uc+7XIYorL35bSpBcX75R9a2tL2rCytY3zx4bEB1lrL19ljGeZNYAr+RSGq/QfuBWF0iGB2oIqh9/RTtbtU9PVBsBVW1+qYII8jJ8BcZuC7hxMDO2p8KafCleAHNNM5FY7v0osK/BCK88JgL9/0YAzcyxTylY4do8KaZ34tQWiYaDCiUADqWHhserQiXErQzstYPvdU1bxvGoxoJCx5bs+sh2zS6Ee5JEdMhV7GO636XUdmpPGEyt4qqbg/aklKpbIZI+iREsbvnuq8EshH9MtuLAekLwFgqf90f7Xm1Zg3rhtszU5XOmPOM3JJD/v/Djy7wuLCXhEPVVKq9Idj/AkWw+yWmDMR5lgxmwNc3YB/NmdnAVCodGm
- apwWx5oE
- FoDF454QvD37VOp83aOaTKg38iJdN5MqrZt5AWTWZuCpI2/Nn+/pLJMZ/M80puDB+Ili4PLi7muzxLanwBkMebwIFZvYB6nP98tYFiCQifdfB2kb59hjHxKBtYBR5GmUl/wHjJB9tGmlESC7u6+l2h39D9VRPICKFhXjoIojjhXMfKSkiIpzKwF5ZA24n6BUT/i7K80mJImuuyDh+/7rWN98ocCMI8VrsoWQGXHHbG+bzs3LDg49sZPgP0K8O5U5nkyyuufArCe03adqmGvzDSgv9DoC0ujbhWdJRP2rnSVnNGT6ZpeMrWcboBFs+6ZtY1f+OR4Cxo6h+rENPSlIoaQ5YYA==
+X-HE-Tag: 1786661623-534485
+X-HE-Meta: U2FsdGVkX1/hhj9auanpnmx2KFNtpKzNSfy083TgGh3ZILmZGculUjNwIZ+6foBifN5ZqpFv44/Pw58JKCRwvaubIAJZdcush158f9Zr88wdlm5eYq/qWoMv0hKon3t9mvESLLrnSIUYpoFImtw6bU17SGuiVNPRunDnIZ8zGIBXC9AAAiYNqNMUR6c2nKRa23PsLlNSCHFC6wH0lEl0OO2KtNzYdcTKu0sMM8h1kNqcBuXlUcTgitcY6y8603rfFOAR5huT+JS9JVCWKkIuu/trVoDScba5Sas1a/oNoBo55Cgf+nAT5b+uxyy5MMzxfV6h4Pg2/+RGMeNdnvd1Bo/B7OWeowwvbNk0PVxuOBuNnwSIMXvuMANDY75Q8UOs+ER8nWpDt1uDFFfY2O4QXoOdBWL/yc3bkOUf1DNAkxvmgfrbLsu23eYi9VlsfvWbtxPizdurU5P5elw6qbBts+TKqMnzZz+Xa22HCvLi7M1Azw28O3616ffJRRVkBDYgF2t293TYzGi0H8zFvTcXiBoMurSfB+HuhbbwfDf3mcXgkn1zqC0IvLt4GS16Tx+Gjhnm9kJjzmxA6Z4zsJpm2aKmIGNqCgyGCvD0H3aQj9EYYz7sd3tIJZ6tAQUNuODh+VfQsErwXZ1JtK0nxJKGzcT7iXqFlYWPCePDsZiiWNlMNIbZ4Nebk0gaZOQs7M2xvdwDA8ZHDFogMZwhFQjJwFKZKrmb9M/2q0/rI2ssnaymvWpgnVeUJMkE5Ni1f1jZ4+xmJzdSLSERbDqb4Vww5wJK7I++Bq3dCQsjXvggzCBukZJguzNQqQy2kqtazaEVOwOiGd52ZZBOdThXZH9rmmRgnCPxR1dY11mReAXdUhHwyufK0eJbdd6WlHEttlde0JUTZb2HZbRuIHFWUAc71pREXdnc1v/Lbx4+i1VpIauGoyXLvUI8e5kBHPKLrgnlB6agzs6K0OvsOI7ay6x
+ 301eSrxj
+ zXUTx+cHp3PvL6R4/RA5TN0JdBXGte+ZUHscqjqAwdLvjzb3KUfIQy20q4J3fCpaV+AQUIloU0UfK0o+oP+CR/qRUFFK0d1jt8nRbNPFe/E7JeRUoEuVXvyeAwLA+DgwP+l8qhppO3GM3qHvfPuYv3hLyOYCnwOqolNhDH2fcvyv9UEWMz86NWB1O/6/DtrHZ2WZO1NRyg5uocGiURx1VT8sN23zjekYELWa88NgNE4gn8/qKXfbleJko+Z7tXfZGqj3mcooTYNyZqbD+c9uVlnnRxfQenlQqyDZFsTw+nY7P61nJSMjjSxVfUDD6np4r9tw4V8BcS0+MjjPZA2xtW5kHyAyNb5KDlq/jao76rvNib3PVopXWBNDwLQf9aU2z4ITVvOQK5mmvwCyWGNW8gojpV2Qac7quwZPULGKCpi3T1srEZHKSaXuaFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,144 +124,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 4:34=E2=80=AFPM Ridong Chen <ridong.chen@linux.dev>=
- wrote:
->
->
->
-> On 7/24/2026 7:12 PM, Barry Song wrote:
-> > On Fri, Jul 24, 2026 at 10:43=E2=80=AFAM Ridong Chen <ridong.chen@linux=
-.dev> wrote:
-> >>
-> >>
-> >>
-> >> On 7/24/2026 8:18 AM, Andrew Morton wrote:
-> >>> On Thu, 23 Jul 2026 12:57:14 +0800 Ridong <ridong.chen@linux.dev> wro=
-te:
-> >>>
-> >>>> Fixes and one cleanup.
-> >>>>
-> >>>> Patch 1 fixes "swappiness=3Dmax": the anon-only test in get_scan_cou=
-nt()
-> >>>> sat after the "cannot reclaim anon" check, so when no anon was
-> >>>> reclaimable the request fell back to SCAN_FILE and evicted page cach=
-e
-> >>>> instead.
-> >>>>
-> >>>> Patch 2 fixes reclaim_store() collapsing every error into -EAGAIN, s=
-o
-> >>>> callers can no longer tell an invalid argument from a busy interface=
-;
-> >>>> propagate the real error code, matching the memcg path.
-> >>>>
-> >>>> Patch 3 drops the now-unused gfp_mask parameter from __node_reclaim(=
-).
-> >>>>
-> >>>> Patch 4 fixes the same "swappiness=3Dmax" issue for MGLRU.
-> >>>
-> >>> Thanks.  AI review might have found several pre-existing issues which
-> >>> might interest the maintainers.  Also a suggestion against your [4/4]=
-:
-> >>>
-> >>>        https://sashiko.dev/#/patchset/20260723045718.2052070-1-ridong=
-.chen@linux.dev
-> >>
-> >> Hi all, sashiko review:
-> >>
-> >>     This is a pre-existing issue, but I noticed that per-node proactiv=
-e reclaim
-> >>     fails to reclaim memory if the node's unmapped file or slab pages =
-are below
-> >>     minimum thresholds, completely ignoring anonymous memory.
-> >>     In mm/vmscan.c:__node_reclaim():
-> >>          if (node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_p=
-ages ||
-> >>              node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) >
-> >> pgdat->min_slab_pages) {
-> >>     Does this condition incorrectly block proactive reclaim of anonymo=
-us memory
-> >>     by applying legacy zone-reclaim thresholds?
-> >>     It seems to bypass shrink_node() entirely if file/slab pages are l=
-ow, even
-> >>     when sc->proactive is set, which could falsely return -EAGAIN to u=
-serspace
-> >>     for anon-heavy workloads.
-> >>
-> >> Should we add:
-> >>
-> >> if (sc->proactive ||
-> >>       node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_pages ||
-> >>       node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) > pgdat->min=
-_slab_pages) {
-> >
->
-> Hi Barry, sorry for the late reply.
->
-> > Nop.
-> > I assume reclaiming file cache and slab becomes problematic when their
-> > amounts are already very limited, so we should still honor these two
-> > checks.
-> >
-> > Maybe we could relax them only when swappiness =3D=3D 201
-> > (SWAPPINESS_ANON_ONLY)?
-> >
-> > BTW, for global proactive reclaim, when setting swappiness to 201, does
-> > it prevent slab shrinking? If not, it seems problematic when
-> > node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) <
-> > pgdat->min_slab_pages.
-> >
->
-> in __node_reclaim, we will shrink the node when
-> node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_pages, even if
-> node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) <=3D pgdat->min_slab_=
-pages.
-> This means slab shrinking can still occur even when below the limit (sinc=
-e
-> shrink_slab is called unconditionally after shrink_lruvec). This is not a=
-n issue
-> only for global proactive reclaim.
->
->
-> > Your recent patchset prevents all file reclamation when swappiness is
-> > set to 201, so we only need to check whether there could be a slab issu=
-e
-> > before allowing shrink_node() to continue in this case.
-> >
->
-> So can we add just like?
->
-> if ((sc->proactive && node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B)=
- >
-> pgdat->min_slab_pages) ||
->         node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_pages ||
->         node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) > pgdat->min_=
-slab_pages) {
+Secretmem mappings are charged against RLIMIT_MEMLOCK and marked
+VM_LOCKED because their pages are unevictable and removed from the direct
+map.
 
-I feel both pgdat->min_unmapped_pages and
-pgdat->min_slab_pages are quite broken in mainline.
+dup_mmap() clears VM_LOCKED on the child copy, but mremap() uses that
+flag to decide whether an expansion needs a memlock limit check and
+accounting. An unprivileged child can therefore expand an inherited
+secretmem VMA past its limit and populate the added range.
 
-For example, even when the page cache is below
-min_unmapped_pages, it may still be reclaimed. Similarly, slab may
-still be reclaimed even when it is below min_slab_pages.
+Add a VMA open callback that marks secretmem copies without VM_LOCKED as
+VM_DONTEXPAND. dup_mmap() invokes the callback after clearing VM_LOCKED,
+while the original charged mapping retains its existing ability to grow
+within the limit.
 
-Also, when both the page cache and slab are below their respective
-thresholds, node_reclaim() may reclaim nothing even if we have
-plenty of anon folios available.
+Add a selftest that verifies expansion of an inherited secretmem VMA is
+rejected.
 
-        if (node_pagecache_reclaimable(pgdat) <=3D pgdat->min_unmapped_page=
-s &&
-            node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) <=3D
-            pgdat->min_slab_pages)
-                return 0;
+Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+Cc: stable@vger.kernel.org
+Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+---
+ mm/secretmem.c                            | 11 +++++
+ tools/testing/selftests/mm/memfd_secret.c | 58 ++++++++++++++++++++++-
+ 2 files changed, 68 insertions(+), 1 deletion(-)
 
-For example, if slab > min_slab_pages but the page cache is below
-min_unmapped_pages, we still reclaim file pages, even though the
-comment says we should not.
+diff --git a/mm/secretmem.c b/mm/secretmem.c
+index 4877c262cb1f6f..e5878ce91c768c 100644
+--- a/mm/secretmem.c
++++ b/mm/secretmem.c
+@@ -108,7 +108,18 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+ 	return ret;
+ }
+ 
++static void secretmem_open(struct vm_area_struct *vma)
++{
++	/*
++	 * dup_mmap() clears VM_LOCKED before calling ->open().  Prevent an
++	 * inherited, uncharged mapping from being expanded by mremap().
++	 */
++	if (!vma_test(vma, VMA_LOCKED_BIT))
++		vma_set_flags(vma, VMA_DONTEXPAND_BIT);
++}
++
+ static const struct vm_operations_struct secretmem_vm_ops = {
++	.open = secretmem_open,
+ 	.fault = secretmem_fault,
+ };
+ 
+diff --git a/tools/testing/selftests/mm/memfd_secret.c b/tools/testing/selftests/mm/memfd_secret.c
+index aac4f795c327bd..3d33487eaaccf3 100644
+--- a/tools/testing/selftests/mm/memfd_secret.c
++++ b/tools/testing/selftests/mm/memfd_secret.c
+@@ -84,6 +84,61 @@ static void test_mlock_limit(int fd)
+ 	pass("mlock limit is respected\n");
+ }
+ 
++static void test_mremap_after_fork(void)
++{
++	void *mem, *remapped;
++	pid_t pid, waited;
++	int fd, status;
++
++	fd = memfd_secret(0);
++	if (fd < 0) {
++		fail("memfd_secret failed: %s\n", strerror(errno));
++		return;
++	}
++
++	if (ftruncate(fd, page_size * 2)) {
++		fail("ftruncate failed: %s\n", strerror(errno));
++		goto close_fd;
++	}
++
++	mem = mmap(NULL, page_size, prot, mode, fd, 0);
++	if (mem == MAP_FAILED) {
++		fail("unable to mmap secret memory: %s\n", strerror(errno));
++		goto close_fd;
++	}
++
++	pid = fork();
++	if (pid < 0) {
++		fail("fork failed: %s\n", strerror(errno));
++		goto unmap;
++	}
++
++	if (pid == 0) {
++		remapped = mremap(mem, page_size, page_size * 2,
++				  MREMAP_MAYMOVE);
++		if (remapped != MAP_FAILED) {
++			munmap(remapped, page_size * 2);
++			_exit(KSFT_FAIL);
++		}
++		_exit(errno == EFAULT ? KSFT_PASS : KSFT_FAIL);
++	}
++
++	do {
++		waited = waitpid(pid, &status, 0);
++	} while (waited < 0 && errno == EINTR);
++
++	if (waited == pid && WIFEXITED(status) &&
++	    WEXITSTATUS(status) == KSFT_PASS)
++		pass("mremap expansion after fork is blocked\n");
++	else
++		fail("mremap expansion after fork was not blocked\n");
++
++unmap:
++	munmap(mem, page_size);
++close_fd:
++	close(fd);
++}
++
+ static void test_vmsplice(int fd, const char *desc)
+ {
+ 	ssize_t transferred;
+@@ -297,7 +352,7 @@ static void prepare(void)
+ 				   strerror(errno));
+ }
+ 
+-#define NUM_TESTS 6
++#define NUM_TESTS 7
+ 
+ int main(int argc, char *argv[])
+ {
+@@ -320,6 +375,7 @@ int main(int argc, char *argv[])
+ 		ksft_exit_fail_msg("ftruncate failed: %s\n", strerror(errno));
+ 
+ 	test_mlock_limit(fd);
++	test_mremap_after_fork();
+ 	test_file_apis(fd);
+ 	/*
+ 	 * We have to run the first vmsplice test before any secretmem page was
+-- 
+2.54.0
 
-So we are not going to introduce another broken mechanism.
-Maybe we should start by fixing the existing broken protection
-against reclaiming slab and page cache?
-
-Best Regards
-Barry
 
