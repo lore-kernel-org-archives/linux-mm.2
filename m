@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4C41C5AC67
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 03:50:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD7F7C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 03:50:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 863A36B01A5; Wed, 12 Aug 2026 23:50:40 -0400 (EDT)
+	id 99BD16B01A8; Wed, 12 Aug 2026 23:50:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C6546B01A6; Wed, 12 Aug 2026 23:50:40 -0400 (EDT)
+	id 925A56B01A9; Wed, 12 Aug 2026 23:50:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68E436B01A7; Wed, 12 Aug 2026 23:50:40 -0400 (EDT)
+	id 814886B01AA; Wed, 12 Aug 2026 23:50:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 38B7E6B01A5
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:50:40 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BC4241604EA
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:50:39 +0000 (UTC)
-X-FDA: 85094869398.08.9AC5737
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 00199C0007
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:50:37 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=mavick.dev header.s=MBO0001 header.b=TZqm343h;
-	spf=pass (imf28.hostedemail.com: domain of m@mavick.dev designates 80.241.56.161 as permitted sender) smtp.mailfrom=m@mavick.dev;
-	dmarc=pass (policy=quarantine) header.from=mavick.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786593038;
-	b=U812fYQC86nBMW9abBIdyMn9MRdrMyQCNz+jRU83C7wvVa4eoB7Ibxa6bCbpDyX3mxYNre
-	YIjPB2ucJ3xozHjiNtFZyOnkcE3l7qr0LQFCBmuKf5r4eoCAycsgsl2R9hln6oVQjYHciD
-	9Ea9+I4pKWlF0em0C2O6X7SljR/tqgw=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=mavick.dev header.s=MBO0001 header.b=TZqm343h;
-	spf=pass (imf28.hostedemail.com: domain of m@mavick.dev designates 80.241.56.161 as permitted sender) smtp.mailfrom=m@mavick.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5495A6B01A8
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:50:50 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D033640588
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:50:49 +0000 (UTC)
+X-FDA: 85094869818.26.20175C4
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1E6E3180005
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:50:47 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=mavick.dev header.s=MBO0001 header.b=dYmKnJeS;
+	spf=pass (imf16.hostedemail.com: domain of m@mavick.dev designates 80.241.56.151 as permitted sender) smtp.mailfrom=m@mavick.dev;
 	dmarc=pass (policy=quarantine) header.from=mavick.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786593038;
+	s=arc-20220608; t=1786593048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p2aTAtzaBo15r45rnzIKt1YFOff3C6zZQXKjs0RwoRE=;
-	b=rUHx9qwU/irwekvt6apejl3OEAhc86egMB3U2O8lImKdptZWLHFRXFTx9H6kZzQ9RCvLZv
-	0I3Dh7vq5PoPVQ3AuJWHEt2k02ARWhuqnxK7B4xcfYw+QddrY9bcqTCoRniq/gfDGrw332
-	V8UxrjvwZsTm8gfE5rOUhN58OflU0eg=
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	bh=d2nbvdvUXZ2bcKFVdCqAMhlt7dahLAQjc/Eewymj1aE=;
+	b=PU7z7QnMl5UgNxSOkudZvFWg0WRpEp9aYeikuwL37KP461ZDruBGjWBbkZaChQKtAhdtW/
+	Q6iwK0YIqaUosGnmDkiQwrliKUwf62bb9K5/MR6ius81xCjatymUs7i9jYETHbcg/miESG
+	P+WweRiF3EPOX5St3enAHD1yK0H6zEQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786593048;
+	b=OWkIpgYtSLe8oanGed6jYL42vhial2oQQA9rm7TXKtPevTa6lHKz6WT319O4UdA2f+NvuX
+	XgEK1Ec/JsGjbiE0GY1j0Z3B1O4/hfNkj6dyXP0vdzbIco2Zh+n8vK0kjdy0juebjZ9umk
+	TbCuoRcrOnRL63XhvI+Ks6IZuld44MQ=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=mavick.dev header.s=MBO0001 header.b=dYmKnJeS;
+	spf=pass (imf16.hostedemail.com: domain of m@mavick.dev designates 80.241.56.151 as permitted sender) smtp.mailfrom=m@mavick.dev;
+	dmarc=pass (policy=quarantine) header.from=mavick.dev
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4hLBGM4VzszKnY1;
-	Thu, 13 Aug 2026 05:50:35 +0200 (CEST)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4hLBGY1Xvfz8txG;
+	Thu, 13 Aug 2026 05:50:45 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mavick.dev; s=MBO0001;
-	t=1786593035;
+	t=1786593045;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p2aTAtzaBo15r45rnzIKt1YFOff3C6zZQXKjs0RwoRE=;
-	b=TZqm343hlculBz0/mBe/XsJsfy+PMuEIL3W+5wlpU8uIMlx0O46lcF619P32GunYbacwFs
-	TeeUeDLDtFPaezUjj5SBiSJimQy8ZIhi2XdulZ1eImEiZrA/GpMiFSOTRVHNWeyC6QCdx6
-	QbO9bt6qfKrjYqUzUjEfz2RRG4Gzs3aOUrHjmMcAdkGiZ0dDFTxTypaf3BSAXcbM6fzCa6
-	wR/lbVUE1UkljwahXAQXZGQj/7iSoUEjraQqXJsiEC5i9VsqKAlsmcRscgAvXEqPJmLP+0
-	4Nwwba/54kF+8tfVB36DF60kN2PoPSJeGQVkoJQkv3oXfbgifeMzXllaBNrv3w==
+	bh=d2nbvdvUXZ2bcKFVdCqAMhlt7dahLAQjc/Eewymj1aE=;
+	b=dYmKnJeSbmhsSN8xaUg5TWfGokwgTCmkfyDM1gUK/Mlp6FKTXRupNI3oQLiPnsbQiII28y
+	0LOfBc4MCfXuNf2NjXQWo+2cAj7BbqUi+2yzVLQjJJx3YmrhHtylOmmFIb0fi0ckWD8rxJ
+	YfV/tTSNIF53624kluAI0Cu3XLw3pVvA0NR4wSdPK/ZY7JcIUnCWeWm3HDv4egOKhmAD7Z
+	y15aJY30icZtAFMoqiRChRwSSJnFQNDcmN9RlIq1hwytqzBtuBpnHlw1SnPAjB8+wTzRtc
+	Mnp+5T2qi2pgt641Qz4OUqwdzl2JpRW1C41rnfTjFlgb21YIJHdhmpZWR7iUvQ==
 From: Eugene Mavick <m@mavick.dev>
-Date: Thu, 13 Aug 2026 11:49:08 +0800
-Subject: [PATCH v5 2/5] refcount: add refcount_final_put tracepoint
+Date: Thu, 13 Aug 2026 11:49:09 +0800
+Subject: [PATCH v5 3/5] percpu-refcount: add refcount_final_put tracepoint
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260813-refcount-final-put-trace-v5-2-6e8bf8a38b31@mavick.dev>
+Message-Id: <20260813-refcount-final-put-trace-v5-3-6e8bf8a38b31@mavick.dev>
 References: <20260813-refcount-final-put-trace-v5-0-6e8bf8a38b31@mavick.dev>
 In-Reply-To: <20260813-refcount-final-put-trace-v5-0-6e8bf8a38b31@mavick.dev>
 To: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
@@ -89,22 +89,22 @@ To: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
 Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
  linux-mm@kvack.org, kasan-dev@googlegroups.com, 
  Eugene Mavick <m@mavick.dev>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1864; i=m@mavick.dev;
- h=from:subject:message-id; bh=d7MkGq8H8zm5dfWimycwfqvz6dfqxiscpXO2Kan5j58=;
- b=owGbwMvMwCU2V/5U3e1aE3/G02pJDFm1dgdz7yiFsoXdCuBP27WwbKaA23lGK6eAT2uWZLFe2
- 6Esz7C5o5SFQYyLQVZMkaUmK8E9Y+WsROOjk3pg5rAygQxh4OIUgImk32VkOOZ8vPf03WBZ4UPP
- ZI918QdanD+88ExExZbmxdV3eO8v2cjI8Fl23sdTzSbrHypN7AvnWfM46qyDoZEu1+MnfrGJ253
- 28QMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1460; i=m@mavick.dev;
+ h=from:subject:message-id; bh=h9+L+Ie+ahOzZJ0p77dLgmKslR+819Hu82i3Gm1bQ7c=;
+ b=owGbwMvMwCU2V/5U3e1aE3/G02pJDFm1dgcNpzLPPVhwRDyp4oLsy4zFJmqF/dfzGa5vcz+T9
+ 7j5WFp8RykLgxgXg6yYIktNVoJ7xspZicZHJ/XAzGFlAhnCwMUpABOZ+ZrhD8ddnQoj44suWa43
+ Qt885Hoct+bWshvFt/xddTbxXrD2MWD4Z+yjdXqtQDmfUx3/vT1/kntFjk8Ntq4x23Gynjlk2r/
+ rHAA=
 X-Developer-Key: i=m@mavick.dev; a=openpgp;
  fpr=7C6A604768A99A6133C5928C9D1FCA7EDB7D344F
-X-Rspamd-Queue-Id: 00199C0007
 X-Rspam-User: 
-X-Stat-Signature: ayysk4ehec4kz3617giakdfmwz4kuw4f
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786593037-243347
-X-HE-Meta: U2FsdGVkX18f0OcPnbHdzZsHQMrY9qfOJZB1VOLZLmv7r7cyAILAd2Tl7dQZ3LU+2RQaAUdSzwMvio/bIsEvKg1l/s7slJjsF2jIO7JX6QFagSzCghrUzuZwQIHgkzhPHicX/tlMcS0qP/fKcl0xHtWIVcRZTJ5l37gAfntkXV9zGzB5OWJi/Rqag4CJBbKrAqtRzLyO1Adw3/tAooPbuHuO0D42RarGMaw/hwT45Jr1XhcMbUKkc68RNBI0GtPDvKTNhfcm7Eg2kYPwSP2XyprmGJaLB5d8q8U4USRUWdMOJ3UVRYkuOVxScM5GBzGEUWaz+3ZWiRkPCPYAB/r1ONKSSKk4CCPr3IrozPLUYVY9h76aXQ6iZ1rwnwvu3L5gYxTo9xxHCheaRbdQQqw4wKqR+if6Us1bufzpu+2EAXFZd04WrPkDoUsE158y+or0aqF6UEC2seHxNAMe/qBYthPwQwS0RUkvamnaEFyDyGfNYtbzcrORisya4qmqZSobgKllW7tkEX9PaRBXVbcpkq66Mr+kcgGMVfiuBj4WlRfu9YDgujPbnpMo5yplMjp0TVwFyXb61AeQbu2rQu2IG705hiP2E7oo/KUL7PVI/oZqkZcvFA2LBV1oPkH8ntAmFwCOfDv9fuR5S4dzBpz9DfUce6wZbOXZNTJdA/4wChUUSH4e+2Q9phAckGoIVWAVCE/cn1EZ5s2xSkf3r50k/XopTluVq2H44WZSmLdDpnyNOrNuOBiQDRyZPYrWk8qfv3EW6jdtXyxEXVO+pTzCrgiZJDlVIeOK6CN/prOGEej+zO99UCxPgu3xbVYFmb7MjIMV9V1fX776FiOkv4Ye1j1Pw15b2+ZYL0cTLPeiTMbiKMTfCoud0fcAuPkOrG+q0qvDHGJvJK/tRmffaLObUhd5rbApVnAzEZ9kTFiL3I8EWQ8FBoyZHU6H7yiY0CXGkSSrX98W0SBmUk2Z1dd
- gC6Dda7/
- CmreMeHgDXF0QB1JUHLOXbh76DxHJMLQXkwqwEw5fJkk0UbPn1mpAC/iL55UZAz/8AZDIsTck79om68sm9nLNgvbqEj/LDQR25tcnUfRe8XMyUpmwoaAG5hZy4oZos0ESlHuDRvFJqA6DNT+ntykmRb6bf46fFwqZN8/v7yxCJ5TSJZDYeSL+bDt8VBCrDHrqmES93D+Oqs8aO5UpR7tQDg49vLQ007xUeUfWUjozjNerwgopdT3mKB4Deb8i1Z6BWFPLXdPwOQga0mKAx9DxuQUtLjmjd2go1p1D0CB9x8kmzjH9iNY9n5MetkyBJfxu+iPyQbjzD7P9axtUgrZ7qJadf38Txxnta8XgC8L6e78Jh1w3x85x8TPiyB/eU78JgCBTDsVPMrGKZBiBPUDcBaoRGaQ206SwNC7KYyCxiw9Y7Rc=
+X-Stat-Signature: r4dros1hkyo3ugg65te4chqyejoq8fa4
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1E6E3180005
+X-HE-Tag: 1786593047-15287
+X-HE-Meta: U2FsdGVkX1/B7ffgkZ1LTkFf+irreEYRCfy/YRe2hQ+bKFwIM+BPaWYMdrGjjneO5nucI+eLTmd2+wnnZyuV2yalQUMu53mNftGVo6lvHT3yZWqEV28Sd+7epoB4uL3Iys4CSTOc1766UGoj9sa2W2931SmoPTE2/hlnQPIaajDnJbDmmW0ZNdVQhaS0GtpL4iI/2KMUiVQp18mdsXsl8kieDnoU0mA5xmNKxzbGkN2QdoZh9flbm85eqmwdJDJ/bhWMAOS2+oBsgCIVTtDaEZHlSFjnCmR50ctIukuwyu+PfK47LSxeYYoNzX++Y3yXKtI8lWyk6Z6JNDk0/HrBhjDlkX0Oe905idQdqEtttmx+EAT71nNA8PiZff3He7BXsqJpzqaswa6nWVHo1+Pb2MQ37GBKy4vWtzb0gcwvT2BHKKQ07kjRebdnZBIKjqPa13ppAtl8HcEt+b250MG3+htCUS0Tp3+KL1plYJYAl0R4+Hcp/pbbtdc6KV0+MlI2C3/6KaZPmmhvIiViEFHoVLveeP19CejO2U+5XDYQyRBueMkNvO1IYzS5SDFZwFYcxdKeTFb1G24bq6Yum+BGFuNtwAHQDV5caWUS6k5z66RaODXzp6m+9RxGV3WtLIQmFApXyfLaJjiK+kO3SYH9XALC04KqChmM8FOY5sOzMxqRwkCHlb0VBMdajr9cUYdvKZTSzIrDzHZZPMCChF/a5MstS/+/Yn7tzca8VXpks2As4bu7XhwVLX7M0CEEzBtjn6iMnDZdWG/Vd1dbfLu/+VRHY6sOToNTRHA+wvZVXVIKILISkyBXrzml9S/dQzbqEfMwgfNcDD543k8I1TsCjnkEDoBAWLDEL+gPqX7ziLY1ub25ScE7+e4kKl7nAql6udbkZcOyikjNHtH3k1ytFK1RxyPaIaNcB6qQkF7QL1XvIXuPRFHfHiwoWd308XjWBbJDpOoJRH0SlyIS1qH
+ 8kKH6Uhh
+ 0jZ9XSTlhyq/BPQQL9cN4HBpoXGr1VAhP7OA+prhPEFXt2msv+JxphYrjfSer+c6j9aubZ2MaJIuXhI2x+SkItkIweUdjbmTk3gDsK1IcM4hHtqIrexWjHBtK+SyoBIGi+heqUW6RZp8wIUbD8kou+Htk3Y0vvUv+/LOYLWHi6YhiOJee1MSJ3T5gcKBn0PfBHZGDT3a8f2R82D7BSCmeux5imUTSRkKvouDXn0bV/dus5qko0aWaCCmstesKn+f8juzwnaSHQIXWy0kxMZOpjMYPZtjT3Ux0o6P0JqdE6nc3AAd36jQYs9Ri8jJAAsJINQyCG1ARFxJig7MX74rABtb0aTz0e9VGwuIQ4IixRn2+NSj5/+EL7pnVZQkVaLQ+9ZWY0Jq/s54NzKtqKapks2uZiw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,11 +112,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the refcount_final_put tracepoint to __refcount_sub_and_test()
-and refcount_dec_if_one()
-
-refcount_final_put fires when a reference
-count reaches zero and the object enters its final release path.
+Add the refcount_final_put tracepoint to percpu_ref_put_many().
+The tracepoint fires when the atomic counter reaches zero in the
+atomic fallback path (after percpu_ref_kill() has been called).
 
 refcount_final_put records three fields:
 - caller: function that called the refcounting
@@ -126,54 +124,33 @@ refcount_final_put records three fields:
 
 Signed-off-by: Eugene Mavick <m@mavick.dev>
 ---
- include/linux/refcount.h | 2 ++
- lib/refcount.c           | 6 +++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ include/linux/percpu-refcount.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/refcount.h b/include/linux/refcount.h
-index ba7657ced281..23291a31d1be 100644
---- a/include/linux/refcount.h
-+++ b/include/linux/refcount.h
-@@ -107,6 +107,7 @@
- #include <linux/limits.h>
- #include <linux/refcount_types.h>
- #include <linux/spinlock_types.h>
+diff --git a/include/linux/percpu-refcount.h b/include/linux/percpu-refcount.h
+index d73a1c08c3e3..244992b2f746 100644
+--- a/include/linux/percpu-refcount.h
++++ b/include/linux/percpu-refcount.h
+@@ -55,6 +55,7 @@
+ #include <linux/rcupdate.h>
+ #include <linux/types.h>
+ #include <linux/gfp.h>
 +#include <linux/refcount_trace.h>
  
- struct mutex;
+ struct percpu_ref;
+ typedef void (percpu_ref_func_t)(struct percpu_ref *);
+@@ -331,8 +332,10 @@ static inline void percpu_ref_put_many(struct percpu_ref *ref, unsigned long nr)
  
-@@ -393,6 +394,7 @@ bool __refcount_sub_and_test(int i, refcount_t *r, int *oldp)
+ 	if (__ref_is_percpu(ref, &percpu_count))
+ 		this_cpu_sub(*percpu_count, nr);
+-	else if (unlikely(atomic_long_sub_and_test(nr, &ref->data->count)))
++	else if (unlikely(atomic_long_sub_and_test(nr, &ref->data->count))) {
++		do_trace_refcount_final_put(ref);
+ 		ref->data->release(ref);
++	}
  
- 	if (old > 0 && old == i) {
- 		smp_acquire__after_ctrl_dep();
-+		do_trace_refcount_final_put(r);
- 		return true;
- 	}
- 
-diff --git a/lib/refcount.c b/lib/refcount.c
-index a207a8f22b3c..8b148b576503 100644
---- a/lib/refcount.c
-+++ b/lib/refcount.c
-@@ -7,6 +7,7 @@
- #include <linux/refcount.h>
- #include <linux/spinlock.h>
- #include <linux/bug.h>
-+#include <linux/refcount_trace.h>
- 
- #define REFCOUNT_WARN(str)	WARN_ONCE(1, "refcount_t: " str ".\n")
- 
-@@ -56,7 +57,10 @@ bool refcount_dec_if_one(refcount_t *r)
- {
- 	int val = 1;
- 
--	return atomic_try_cmpxchg_release(&r->refs, &val, 0);
-+	bool ret = atomic_try_cmpxchg_release(&r->refs, &val, 0);
-+
-+	do_trace_refcount_final_put_cond(ret, r);
-+	return ret;
+ 	rcu_read_unlock();
  }
- EXPORT_SYMBOL(refcount_dec_if_one);
- 
 
 -- 
 2.51.2
