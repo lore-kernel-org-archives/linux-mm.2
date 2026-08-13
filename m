@@ -4,88 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6D20C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 07:13:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B775BC5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 07:16:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8EC76B01AA; Thu, 13 Aug 2026 03:13:13 -0400 (EDT)
+	id C09266B03D4; Thu, 13 Aug 2026 03:16:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B679A6B01AB; Thu, 13 Aug 2026 03:13:13 -0400 (EDT)
+	id BBA176B03D5; Thu, 13 Aug 2026 03:16:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7CA76B01AE; Thu, 13 Aug 2026 03:13:13 -0400 (EDT)
+	id AA8046B03D6; Thu, 13 Aug 2026 03:16:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 804B16B01AA
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:13:13 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7D472A2C10
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:13:11 +0000 (UTC)
-X-FDA: 85095379782.02.D5400CD
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 830286B03D4
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:16:10 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1A53B1A0595
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:16:10 +0000 (UTC)
+X-FDA: 85095387300.17.2825426
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A22688000C
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:13:09 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YaH3wzyy;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 4CA091C0002
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:16:08 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D1BNo2nI;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786605189;
+	s=arc-20220608; t=1786605368;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ljZR619xg+IXw5LIW+/SpuAVOzKILECXTZKiydlMDrw=;
-	b=34/YKphlbiT6qvYwc2VJBAV00rKnpBwuZ6IaB5dAK2qLlD+bk01JyQii+VIMHx8EoJ8POs
-	LEnORe5OYydRdJdo0cZ8I+rVJ+SDHRamtopTRQT7KseLTBIZX6YPOEqFdG5JyA3MrCVXCi
-	GfJIzK+fn9EK0CzhQKUcMRt5YXaebuc=
+	bh=O3g5nELbAhjnGJBVIqGr20ppxUR47qzdMMu2xC8LPoc=;
+	b=ENDeCty5pGzIsnKPwNIavXbXug5T4fxS9j0ZUOkHh3oNOtqw3/D+3rsnYEvArAEvNzFQ3T
+	QEYHtsLmu9cba2Ca+8Mq8wsWomvKXntd9+K2Y6J3ltamlUaG1UCdO18BREGUB1V8+cJqeu
+	y8xQ+nLD/uah91o40IbkCVNgEjerduY=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YaH3wzyy;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D1BNo2nI;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786605189;
-	b=0eH6CjR0/nR3Pzp2QB0GLUbvShe1XA6NKBrL7C6megfwotxz/YSteiYMYl54CfqejoMzyL
-	lr2TtmO6qfrhRPgENGN8lVGT8ffwrcMifSAbOuAcvlCV0GulR/qWGWhyl4QV5A08lKbUT+
-	o6DOwvJEWxscpYCIE1WXFVm7MZ4VOJc=
+	t=1786605368;
+	b=QfjtY8mUgxjl95r9wNP9TB5dskzzGaYJgerv4rofQod/Aa4ig+r4QdNDVJITyjkhas/fY1
+	P7Gn8vqzMU4l9V0kU6UTsBdaOr5a4HqfbTiDVYy79fv5dXKQfwnOjPgEtBKzH9GUYbnZ4L
+	pY4kIJyLOvGHAy9DjwMG+nE908taZJ8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9CB644037B;
-	Thu, 13 Aug 2026 07:13:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21551F000E9;
-	Thu, 13 Aug 2026 07:13:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8E77740949;
+	Thu, 13 Aug 2026 07:16:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481231F000E9;
+	Thu, 13 Aug 2026 07:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786605188;
-	bh=ljZR619xg+IXw5LIW+/SpuAVOzKILECXTZKiydlMDrw=;
+	s=k20260515; t=1786605367;
+	bh=O3g5nELbAhjnGJBVIqGr20ppxUR47qzdMMu2xC8LPoc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YaH3wzyygs1VGyF3sOYA2UaFAQ3B0Vla5iInKG9FE3ZDZPkQvi3cyQmQNeXFR1XHc
-	 dhPW7kRsGOKKOGz+Xd3UChuCft253Iw7vXf6s4VvED7WhgGiXZQBo6wdPJxNDSxhmZ
-	 UVAvuHO2YzanXeSk4psp7bhqgOAeHB0DeCnjl51ucWJk/Kp35u2ByRJpBk60aKkDgv
-	 6Zsxe+bohU3dUeu87O9rX8DEgxaZ+eY2vENmhbuaHbvp1aLhS4Ln1lja8SjO86Ug0W
-	 JoIU8Wr7C00avKW17GoYKml/WW/CK3iw86U13XpOclb5nzQldXBZ7fLwYbR5COdfh2
-	 qVx1QxoXDGd4w==
-Message-ID: <6bfa6c93-4eb5-46c6-9524-7b59297f3601@kernel.org>
-Date: Thu, 13 Aug 2026 09:13:02 +0200
+	b=D1BNo2nIV+HSDi6z1y8ym3dnn6NAIFXQbtLF//sD5Lmx5ndOodsV3KsA0k5L87JR2
+	 y+DNCHP8ZwUCDsoXDDMYoqo6cmCxgDFigHTtKi90Nm278m/Zca1t5iCxdbcjmvCUCk
+	 Nlw9lcmTLscvyjaE5FgiiAHSWdWjUX3SA1Kz6KUd8i/dy56Ug8R5fLqlItTX2XqNyQ
+	 ssnWPsMqJiBvJe9eiSViy79F7cWCWLN2ui9Hv737MbT4WZHd8+zGH+egsHt3E2XaZr
+	 fGuhzLZy2BZF33uVp9RViDwz18LG29hlxaxNG6qShg9uydfB4iVPIjlBibWISwE0io
+	 mvrzvlhcl3eoQ==
+Message-ID: <a47d1a57-309b-41a8-845f-7f1313229d0a@kernel.org>
+Date: Thu, 13 Aug 2026 09:16:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 5/7] mm/khugepaged: Refactor the PTE state checks into
- a helper
-To: Zi Yan <ziy@nvidia.com>, "Nico Pache (Red Hat)" <nico.pache@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20260811-khugepaged_pte_refactor-v4-0-ddac39d61c4a@linux.dev>
- <20260811-khugepaged_pte_refactor-v4-5-ddac39d61c4a@linux.dev>
- <f1371b4d-6e98-4699-8c1b-7612f6d70f02@kernel.org>
- <753cb38f-66b4-4bd0-8b53-7480efe30ec3@kernel.org>
- <DKNGC4X9V83D.268DMWU0WIILG@nvidia.com>
+Subject: Re: mm.git review status at 7.2-rc7
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+References: <20260811205836.59301ca91b65781c6292a439@linux-foundation.org>
+ <6023e19e-32b1-4110-b9ce-5063f7976108@kernel.org>
+ <4535a2ca-d145-48b7-aacb-027e9ba258c1@kernel.org>
+ <an0F5e6I7OJWTCLa@casper.infradead.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <DKNGC4X9V83D.268DMWU0WIILG@nvidia.com>
+In-Reply-To: <an0F5e6I7OJWTCLa@casper.infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: xzwjcoj4z4f448ekpd47gwk8wuiu8a57
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A22688000C
-X-HE-Tag: 1786605189-944305
-X-HE-Meta: U2FsdGVkX19I9f5RpeWA4tyPcGsencgXA1/oMEce7Aw9Z5ZHXWYlO1ijhQqkts9N889bMQG6q/8XL7LPkkuBwW3jFy7a3OkmEBq7vWNdlpS3ENpcLYvZ9/69UHOJji0pB2WbJOEw8c6GJfVVNFKR/RAGqF9kTSv2BFcBy5iV1WmU6Qm1nk/mObk5wph2QaAS/BnRRJrUre2Q/oVVP9jR7jv7RImsqVJgmjHJkVEKUplRIm8DvSMeZIv8pgIIs5Op3O81dbwIsH728htXVr3bjsomnzwrRFIICvbHbYu9g7H+GjxEYMR5dkRahJho/69gH1EihtGmXzbM23MomjzZsde+diHyC0c9Jb5bP6DIHZ7Z+UGAeirwHfflMRhWrXaup6Hvveivyy6Mz8IM3Hryq2hFaImwRItq94dVundVcYX+TdUQuxY38dQdK+It7j8SMCV/yLHuOEhmsyZ4tgd82JE1QQVE6i+pcm53Fieqv9fGkCgGYRGJsH1tu7RpXWpqQhp1mGA/MjsmQkFdfRAAbjDgaFwu1/zIigfg/zJ43lWKxnNZuKRIjHwG02z1nZh9GC1EDBMauK6mjQRwICIyxocujIxiyAJ0w0BFSgYtlcwxfmdriNllF9hdjESURNuZ0g5C7zUJ84KSn7iUjcSoutjdX7PpNlmPtN8WsgMEKEWfoprDvZ8u0oFFvPGM8Jwcprdqnw/O5MVDbAJKb1M45czk37IyHa2Lsj6rC1H3KTraOeaRuTInlfGGvSkc2wJPU/As7d31KtE3+5ILw9zja101vnbJqZMFDXXx7hjlC+Gm2KNRoqNV7Jw8xSL7kCxj+LYYp2qDjk+qYt8pIfujam4U2Kq4XfY+jLFy/Hi2WD3nq8g2D9jbaHYoJts3apFgtxl57pS81Oq6v+Qi9YAIFR5bInzQ+l7zbxXBu3QTrAnQ2ICrygCfx6CpRjm1F9gjhCFolbnxSB+zTWmAIFQ
- XnYSFTk0
- qqAf6t+Z4aN38+X7DB4XEF/nFhNpZwmosnPypHAefthTSFNE8KJylKZMFZra4XTt4XofTF7M2eFC2Hk6BfuRjD2Vu5rRMF3qa4vR57STLGIH+V76l/EtO48QlZinYdwzErL2xKNTufjDMJA59thDgKTgHz7GEvXLEYprnV66aUuxAYHJ3sqqZr6oiUHbfUNV7nWq8dtKIleQd/GVDyGtffwM2qXZRV+xmLd3/6AH7MLbkfzKTX+nVs5uz9ePVMVvWPQ4U
+X-Rspamd-Queue-Id: 4CA091C0002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: f8g95kpf77uqfqxe3ty8c3wzw4wce5pp
+X-HE-Tag: 1786605368-491077
+X-HE-Meta: U2FsdGVkX1/Df6guouXSdtYVOLQAYdTb/a4ukYKkUOsIpJm5MRv+sonmSZs8HwDa960zZAwRioDaYNPNEEedDgsAoThwjhy0abtgDmgUHVD0+Vzl9aziWFuupjqZwartt/m2AuFER2WfFzp8KpFAZ9AFRDCUZtZhfEmxruDtEahRONm85XsYcC/Uf84F8XNheRNywFsE3hJBIa9ZudM+aWmAXcJ/vkCGCtntdEr4VI3bIKQA/iy4NHM7F8iG58rYInfNKECpvkyV8cZoiveGjAjeDUma/8Mql+8gpvG6xKmWnB+CP1O+ExnsqX3I/PFTUxSFQUO/fOdpfsNQaVvlcV4GE362vZbpo8VSJarqF6cEE7L1NGZZlzfzJhP8ukvDO5SsJewa9jEfbnptXK2Tze8RxYENIxZ5okl1EBZ0x5UTFVBVAm/AqN6Oi6fURsprt943VVvuo/wrjENpT9tesyYCVk0aTkbvSzdPLqjbvu87p2I6GFIvrXLKBGJBSvnT53zFUbMBLm7Wf+cE2MnsQGTrt7Lv/mMM/w4G4sihszbkQrgaf1iczp4ty/P+Zb5guH4VbGy9nf4w88KPlAK1PQwvgo+Tvlogr9OQw1xShFHiA6QDPpsU0LtQ0XKK2qAu3ekrYZWECcb8WJRmdDIw2hRCvqmLyTGuGu6ecHZ+2scdYb5rR7/1TY9kgnJemzs6LG34bgZAjIz6B5R5RhS2WmqNJgwz3M/AjTVOmW4RNcQbCtEdBuAnyRkN573nvQ+1gcmszYPIv0B8mLBlpqjCwvRFRCKpp8X6WpEyME3Jpze9d3tC62m4w1BiD3xhzEbu305uX/wXLnT1JJVXT9mQ4xki0fkl6v+hfLYUkqhCyAjCrCNVWDRJcmjBDaDfLM/pas0tojRxxgqWorwpuAWj+3r3b2ybmVBLG+InpFmX+sPfOahEMtD7MsJvEf5iTP5bYOdAtw+9W9s/qtiXQ7s
+ yJ7wZdzY
+ iCLhVucPjquN+76zZLyYrEXgGAWmmFFZx7HHQ7UkTSzxXS0FP6cfWJOR4oJu8pu02fbrapMYlyhZZ2zrNpqY73MDk2gRNgyOLct2SpLXeu9fUvGOK+qHoX/4J8WNZsaUa5HGmS0PztuTGOTC7GUhoyvjqNx6u7tbGMj55YLarwQd5KyVD6pFYXI0D85dfu6HTnGYL3ZJgU+kF3XJvzMi1hHloj4hNafYf5YAR9oZCrVDd2wKY4bUkcv8Ay2RM2T7RytoP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,35 +139,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->> +	if (!pte_present(pteval)) {
->> +		if (ctx->max_ptes_swap < 0)
->> +			return SCAN_PTE_NON_PRESENT;
->> +		if (++ctx->nonpresent_ptes > ctx->max_ptes_swap) {
+On 8/13/26 01:46, Matthew Wilcox wrote:
+> On Wed, Aug 12, 2026 at 10:37:13AM +0200, David Hildenbrand (Arm) wrote:
+>>> We really need more maple_tree reviewers.
+>>>
+>>>
+>>> I want to review that. I am still not convinced that we really need that right
+>>> now. The fix was the important bit.
+>>
+>> Oh, good, we fast-tracked an unreviewed cleanup as a stable fix upstream.
+>>
+>> What is happening.
 > 
-> So max_ptes_swap is actually max_ptes_nonpresent. But due to
-> khugepaged's max_ptes_swap config name, we just keep the variable and
-> related function names that way?
+> Meanwhile a well-reviewed series which includes bugfixes is apparently
+> not even being considered for this merge window because I spent a lot of
+> time figuring out what Sashiko was concerned about?
 
-Yes, that's how we handle it today, unfortunately, for historical reasons.
-Mistakes were made.
-
-I think we might be able to convert this code to actually only count swap
-entries, and simply reject any other ones (migration, hwpoison, ...), but that's
-something for another patch.
-
-[...]
-
-> 
-> SCAN_SUCCEED + folio != NULL means to proceed with the pte, while
-> SCAN_SUCCEED + folio == NULL means to skip the pte.
-> 
-> collapse_anon_pte_check() probably needs to document this?
-
-Not really, as you say it's straight forward if you look at it from what's
-actually happening:
-
-SCAN_SUCCEED + folio != NULL: check folio
-SCAN_SUCCEED + folio == NULL: don't check folio (no folio to check?)
+The bugfixes (especially stable ones) are best sent out separately, or cherry
+picked from the series, so they can go in through hotfixes. (I prefer the latter)
 
 -- 
 Cheers,
