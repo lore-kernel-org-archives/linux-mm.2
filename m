@@ -4,93 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E7E9C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 06:13:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3822FC5CFEB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 06:24:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5834E6B01A2; Thu, 13 Aug 2026 02:12:59 -0400 (EDT)
+	id 1297E6B01A6; Thu, 13 Aug 2026 02:24:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50D446B01A6; Thu, 13 Aug 2026 02:12:59 -0400 (EDT)
+	id 100FC6B01A7; Thu, 13 Aug 2026 02:24:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FC176B01A7; Thu, 13 Aug 2026 02:12:59 -0400 (EDT)
+	id 016326B01A9; Thu, 13 Aug 2026 02:24:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 18B8C6B01A2
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 02:12:59 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4D0DF405BD
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:03:30 +0000 (UTC)
-X-FDA: 85095204180.28.38300E2
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 515AAC0002
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:03:28 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=FCmrH71a;
-	spf=pass (imf10.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CA2936B01A6
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 02:24:00 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5AE85C0561
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:24:00 +0000 (UTC)
+X-FDA: 85095255840.29.809EA54
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A8D3520002
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:23:57 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=sk.com;
+	spf=pass (imf03.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786601008;
+	s=arc-20220608; t=1786602238;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ns4GoDNqcj/9AON25YCP9GahdV/I2v0GEJ5Utg1AonY=;
-	b=i8NcaUqjTp4BzT2fG0/fEph+IYTmt51KXRye4HeX7Wnpi9MgXlYiBJE2iOoHiwANDpKz/+
-	9AL3+eVPF1igY2Xm9uxFFoibM1D45HslkNuTyMJHsOKbI0APVp3o8C7+XJrLhggzH+IyLX
-	ukjensQtd1Jkp5CSi06REtGqpC1FYuE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5wLDHgab615CSLj+ydzHGATGTZuO83cjL6IjYwS35Oo=;
+	b=r/ZXLj4oxgDdzXfRNsO5bQVIvvWTbMeLVFpjJzvfHQMaSbTuF5DoE87lci10r46VZ3lJIs
+	pQ6DfEf0oZDxRNolyFCxl0kTshreJeOQ9DAH8RZoJdYJBwvcM8olWUMAG2mioqYL1VirgD
+	VjZGMQ9PyJQ97trVHVFpUIKDN7lqx+o=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=FCmrH71a;
-	spf=pass (imf10.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf03.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=sk.com;
+	spf=pass (imf03.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786601008;
-	b=stuvlJ2TexHlG722UyrpU6CcoPZAIYibIrAEmGV+SoZgIUQEMUtC4wThFQfLYh2eAs0mbQ
-	7AhyElE86aWytFDdHeXqmfRUw4ihQx4bjx82olEdZXc5hdtS5O1pvVAQNSFRK5zVl4adEP
-	SLnuahKo8qbzB9SypnM0hm8B8iCTjBQ=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 27767153B;
-	Wed, 12 Aug 2026 23:03:23 -0700 (PDT)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5B05F3F632;
-	Wed, 12 Aug 2026 23:03:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786601007; bh=urvzQP14xjouAFJaMxm1KkmF2FK+YkPxtlg+0tmM3dk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FCmrH71a8GibDaT/4TzLpR5i+19TJkV8Y7yUEveP9J/tnpZ41lNWsq0jvpmBepdWh
-	 3M9emmtusN3STsiD2oIUPfk8jrriw7cyAgWrBFzUsYOHmzUnSzzBNBDES9ShVkwlc0
-	 +Kv5zwJCzOVfLHIcWwsl8hCWFk4UC3OStKBDaUuE=
-Date: Thu, 13 Aug 2026 11:33:23 +0530
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, linux-arch@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC V2 6/6] mm: Drop pxd_ERROR()
-Message-ID: <2ys7apbnfuj3ugfoqgbptgej3jjcyfpmdgbv6qbxupmwg6mefc@h5p33ua2nzlu>
-References: <20260811042119.3652929-1-anshuman.khandual@arm.com>
- <20260811042119.3652929-7-anshuman.khandual@arm.com>
- <1fb9ed88-67d0-4ac1-878d-0dc8e1135d19@kernel.org>
+	t=1786602238;
+	b=nQtDii41tP0Bdw51a5DJ1bqDbPyACddXb4RCqE2dZHB7vrNS3c5m/c44baJe2kWaH7bYrS
+	mSR8oInfkbAOxa1iqKSpujBx/Mj8cT4fg74eVbeVBVC+xgu000iT7NLupswWIaohkwF7sL
+	2XrMNJJQsrj35b1kCdkJBuBxzL+BuqI=
+X-AuditID: a67dfc5b-c2dff70000001609-ad-6a7d62f9452f
+From: Rakie Kim <rakie.kim@sk.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	nvdimm@lists.linux.dev,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	byungchul@sk.com,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	dave@stgolabs.net,
+	jic23@kernel.org,
+	dave.jiang@intel.com,
+	alison.schofield@intel.com,
+	vishal.l.verma@intel.com,
+	ira.weiny@intel.com,
+	harry@kernel.org,
+	kernel_team@skhynix.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com,
+	Rakie Kim <rakie.kim@sk.com>
+Subject: Re: [PATCH 0/4] mm/mempolicy: introduce package-aware weighted interleave
+Date: Thu, 13 Aug 2026 15:23:48 +0900
+Message-ID: <20260813062351.1856-1-rakie.kim@sk.com>
+X-Mailer: git-send-email 2.52.0.windows.1
+In-Reply-To: <an0t0mP9JB8f4ILK@fedora>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1fb9ed88-67d0-4ac1-878d-0dc8e1135d19@kernel.org>
-X-Stat-Signature: heanafrn4htws3ak7j4m7pcd751nxc8y
-X-Rspamd-Queue-Id: 515AAC0002
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrFIsWRmVeSWpSXmKPExsXC9ZZnoe6vpNosg3n9bBZz1q9hs7j7+AKb
+	xa4bIRYnbjayWay+uYbR4vnWX4wWP+8eZ7e4fmslo8X+p89ZLB40rWKyOL51HrvFulOH2CzO
+	zzrFYnF51xw2i3tr/rNavHnsZvGtT9rifp+Dxcoff1gtjqzfzmQx+dICNouOl/dZLG5NOMZk
+	sXpNhsXso/fYHSQ9ds66y+6xYFOpR3fbZXaPzSu0PBbvecnksWlVJ5vHpk+T2D1OzPjN4rHz
+	oaXHi80zGT16m9+xeUydXe+xfstVFo/Pm+QC+KK4bFJSczLLUov07RK4Mg5ezC+4IV/R9PkB
+	SwPjE4kuRg4OCQETif5LJl2MnGDm+oa7rCBhNgEliWN7Y0BMEQFVibYr7iAVzALbWCVuXdQE
+	sYUFgiS6pj9nBLFZgErWPp3LBGLzAk3ZsKmJDWKipsS6jbdYQGxOATWJrn8QNUICPBKvNuxn
+	hKgXlDg58wkLxHx5ieats5m7GLmAej+yS5xYcYQJYpCkxMEVN1gmMPLPQtIzC0nPAkamVYxC
+	mXlluYmZOSZ6GZV5mRV6yfm5mxiBMbqs9k/0DsZPF4IPMQpwMCrx8GY012QJsSaWFVfmHmKU
+	4GBWEuGtXlWVJcSbklhZlVqUH19UmpNafIhRmoNFSZzX6Ft5ipBAemJJanZqakFqEUyWiYNT
+	qoHRKHdT8Zr9rAVME2yOhHoHX1/Zwb542v6LL+4WvFpnwxHUtI+h8+AJWaN0/f8aYisCM4LP
+	e36OrLmRb3rqFfPuvxH/N+s8+m4mnKz4RX3z/Nh1K+z3lC+eWOCf57F3QVW+2clF2+Z92Hfx
+	nqG09JV7T1T2TVz1s+T4xp0GeY6fyjY03Km4Lfy5QomlOCPRUIu5qDgRAOp90W3NAgAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrFIsWRmVeSWpSXmKPExsXCNUM9RvdnUm2WwcH1BhZz1q9hs7j7+AKb
+	xa4bIRbnpsxmszhxs5HNYvXNNYwWz7f+YrT4efc4u8X1WysZLT4/e81ssf/pcxaLB02rmCyO
+	b53HbnF47klWi3WnDrFZnJ91isXi8q45bBb31vxntXjz2M3iW5+0xf0+B4uVP/6wWhy69pzV
+	4sj67UwWky8tYLPoeHmfxeLWhGNMFqvXZFj83raCzWL20XvsDnIeO2fdZfdYsKnUo7vtMrvH
+	5hVaHov3vGTy2LSqk81j06dJ7B4nZvxm8dj50NLjxeaZjB69ze/YPL7d9vBY/OIDk8fU2fUe
+	67dcZfH4vEkuQCCKyyYlNSezLLVI3y6BK+PgxfyCG/IVTZ8fsDQwPpHoYuTkkBAwkVjfcJe1
+	i5GDg01ASeLY3hgQU0RAVaLtijtIBbPANlaJWxc1QWxhgSCJrunPGUFsFqCStU/nMoHYvEBT
+	NmxqYoOYqCmxbuMtFhCbU0BNousfRI2QAI/Eqw37GSHqBSVOznzCAjFfXqJ562zmCYw8s5Ck
+	ZiFJLWBkWsUokplXlpuYmWOqV5ydUZmXWaGXnJ+7iREYo8tq/0zcwfjlsvshRgEORiUe3ozm
+	miwh1sSy4srcQ4wSHMxKIrzVq6qyhHhTEiurUovy44tKc1KLDzFKc7AoifN6hacmCAmkJ5ak
+	ZqemFqQWwWSZODilGhinT3rebX9+cXDdo8Nu/jMcpDMlz39/clMud6LFTZ2N/fu21W1W3hvh
+	n7aqwfOtZ3HWrxP/t05M3CjyTsHmkKmtkWqWqlML04RVb22rLk4NF970+Y3m1K7VTXdNrmlf
+	XrDkvY+L8wHzNXy/H8h0RN5J7Pvxxm1PiMO530f5zBdbrr3ZaKvLX52jxFKckWioxVxUnAgA
+	4pG6rs0CAAA=
+X-CFilter-Loop: Reflected
+X-Stat-Signature: uzt7gik8obq97hnwtgx7baannbgqnytu
+X-Rspamd-Queue-Id: A8D3520002
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1786601008-915481
-X-HE-Meta: U2FsdGVkX18geC1AYwhsdEVc4QmjaCkSl4LeHBBWcqzDohsFom+Un7tCIoRU/N7imvNRb17aY2sgVBWPLRASBlD4uSHTvcP/6tweERdIMFYyQCaspM+rh4lUUliDDsbo3l+5gBkJIAZ5cBa2kJjclBnA9eWFmuhJNAJmNAFMAgFZmCJEVAMaadmx7uFO7rFua821AYvT3cVxug1GDDIP2Mzl/rwk2YbQgrLNm8BNki47UFpw+V7QH3Aku+euLVcUT3lWjCMO8wrUAuadLYEM9V1cZg47Yv9SaVpAIFmglZF7ZrR3Pq1Wd1SQ3E5FLe9Z6IMGouruBk7DqUoxk6usrFFgJPwYZ8LaN7JpCIYgSTiK6cH9bg34g+/J0hiTiCmsImk+YJ0X2BcQ8mxa0/HHwjs1MLS5wEa/SD8X12VYymi9DZqOpDdbgN61qdVPJCpz+7qASFwiG7hbW4c1BWBQO7Lzw8HNBdg7rQZi0C4E7RH1uvjZv1l4mE4r6fL0SVP+0Sdxb4cXGgxCeK3UGk4dzPq2Bk1ytUmNmOjsNEkmfkuG8OlpT5BqmCUEkddy/qkzP78d3uunnDR+yZEgxsO/3cqCqKTxgwd45QCxclwIp4shp1z3HW2fVF1JaYyKW8PYlHH6DnuWAvj37Mlpd/q9oCJ01f/k7w2vYrY1l+42yA5Sq+CBiVAQddVoACd9xr1S922VO4ZzxoF9xe5xnYCxBLLqeWDSzhaOhm2lok2pYcEAzQ3jAAF27Cpi4QOZU9ds/G9jUdJAkBcp/EKfRKcvSbjZYGeWOzf/tSmbciU+wEO9k/cYjpm/Ziskhar59InmSErmpdeX8eHOA1VzLJCPmjkxsMWguE9YRWZCFbBiPl/8nEl0BGuSpQTkDYOrYgJqiKSWfSJtAw6eZtSoEE2M5M+ghY4YhFzdxlVBMlfcrsM4yWcUOTiTRILqCKgwxMczU1UlvWY76fFe3n79FwJ
- NcwvrlcU
- +7ShWqbD7ghHBAUyGIzfPiLa9I5Qmq9h44ktp7CBzibkAPPFuGefIBobAtxnpp8jw1F14yXiwda0fLR/fT8yVEZ6K7wUJGjSZGG8nVAkOZfAJg0absrGsuUtvOhywXTVYBphxdF3q0yqvOnFsS/AKapLnrk3Q3eN87YBSjmiM11iHRoMnwf0E5+U2HzZAJU40A2qYarwp26Eat0M3hNLlOwJA8xUO0lEeZw9Eg15QiyXJw8o2KDr6E2PIfxVES7nDFwPAUnzjHYUFBZFkJZ6tnhF/hPyQKvVv6qZ/dBfrKnO1M/9AsD8DNB9+44+k5IWZqKDWY0aoV1NPZjpbIAPIrde5njA6c6JZaF44lZhtcRXhnQb3cD9erKQJZxnD6NCRw0AeuKGzNWzjDlAULVcw0svOXQ==
+X-HE-Tag: 1786602237-999693
+X-HE-Meta: U2FsdGVkX19unEIgUgIfuonXE6lptaE4tHcOjy4xWq1LTyk3gT0/ezsdkPF6VebBrrlNYdEOyBnRNABPSQZUPtdBHa7icusrrYoVibbVZBT4jN+hFg+hRys1gjXPOevl0nwFlj0E9P2jmo8qKMHPPnzhUGwPObVK8wO5d7KtPqOTr7tK9wxbuJFJbugJip8Qzu4KpIQ/66hvkBMm95e9awYgoADLTialkoNXYCjAEP8Zz++jU5Kq5/pRtbJqZ7QUrNM1d132NvdR1sn3Ejic0SUrsp3w37JLny6Y9oHdihYz3UmQF9RUtb8iKLRsEcY7sXPjjz3olRiC3Ad2mOq3Ta0suWY/1dGXILat5d410/0/r/O2LPspLbM/BguHavjvCrsK1A8umoQoCuSvkpZ+swQc1L5Hlt/KF6xT6AP+1h81d/EXjKR41MfdSXU5j5MaJJ/CdbzVsPB6sOBicLxqHWRU+4FirviR4f1o6dHfLcBE01Ckqjx2DZKpYmqOufaC0k9BOVgzLl91haG9NFUG/UiVSK7tG+r+TCdc6CaURHq7ViIc40JspwC6Fcq+3L2d/URPNh+Sjbv4bvIz97qklRjVAkfgq0he6rSxb6i/Muc079WecGVLTyv0OHF2uEeSAVV7PQ5T8WPM/TziGPGwJfdCjGUwApgLpEMl6VjHefMESrABtSmhRFuHALe/BneG4lR8nfU/UX5vKjF5bHLFQySuQPNiUOuJ7JxZSssTEEFiRo3gnsgP6J9k3Ugq2uy0Wayr3gadLHHylpL61R3/ei/19czmf1W9X7tXg3gloZNApegjGG4LobjFol0KbXAvGftfmkLmn8OPF+OeQTzZHyKiVuLYogw3LIAYXeKLGngYEWkikKRrrUX3XweEHWiR8W+lwIBZ2OE/IDgEgq9Hm4uFibcYOQxQ05y6Rx1LDZ30D35MKaFCbGNrmuNciQaklvnjbwOmbudFmtX+tEt
+ Cs+rMF1p
+ Sin2SaHUHuFIQtWcoRgqlD27z8ySbtfZEZLP93OBYNkqPX2vYGyjLqg1oTQi8p+CxOlevJ1lUkzbvkLM4jij5LWIzVPH5wC7Ys9CB6O0JhaghCZfkIuiycCcuC0iGAFdHqQWA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,70 +131,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 12, 2026 at 01:33:14PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/11/26 06:21, Anshuman Khandual wrote:
-> > pxd_ERROR() has been used in generic mm just to print the page table entry
-> > in pxd_clear_bad() before clearing those out with pxd_clear() later. These
-> > pxd_ERROR() macros have been provided by all platforms which basically did
-> > the same thing.
-> > 
-> > Make pxd_clear_bad() use recently added ptval_to_str() instead for printing
-> > page table entries thus completely dropping dependency on platform provided
-> > pxd_ERROR() macros which can then be dropped off. First move all required
-> > helpers in core MM into a header file which could then be used else where.
-> > 
-> 
-> It might make sense to split this patch further up to ease review:
-> 
-> Patch 1) provide ptval_to_str() a header.
-> 
-> Patch 2) Stop using pxd_ERROR() and friends in common code, converting to
-> pteval_to_str()
-> 
-> Patch 3) Remove now unused pxd_ERROR() and friends from arch code.
+On Wed, 12 Aug 2026 22:37:06 -0400 Gregory Price <gourry@gourry.net> wrote:
+> On Thu, Aug 06, 2026 at 05:09:31PM +0900, Rakie Kim wrote:
+> > Package-aware weighted interleave places a task's weighted-interleave
+> > pages on the NUMA nodes of its local package, so that interleave traffic
+> > does not have to cross the interconnect to another package. This keeps
+> > each node's weight aligned with the bandwidth the task actually gets
+> > from it, so effective bandwidth holds up on a system that has more than
+> > one package. (A package is a CPU socket together with the memory
+> > attached to it.)
+> >
+>
+> The only major question I have before I dig into the actual patches is
+> whether you actually need this on a *per-task* basis, rather than simply
+> a *per-process* basis - because that's all this really buys you.
+>
+> You can already do what is described here by simply using a combination
+> of cpuset and mempolicy
+>
+> cpuset.mems = 0,2
+> mempolicy = weighted interleave --all
+>
+> If this is actually required on a per-task basis, then I agree this
+> concept is reasonable.  I just want to make we're grounded on a real
+> use case before we go adding this complexity.
+>
+> ~Gregory
 
-Sure but the intiial platform changes which now use ptval_to_str() as well
-will probably come after the Patch (2) but before the Patch (3).
+Hello Gregory,
 
-> 
-> ...
-> > +static inline void
-> > +ptval_bytes_to_hex_str(char *buf, size_t buf_size, const void *entry, size_t entry_size)
-> > +{
-> > +	if (WARN_ON_ONCE(buf_size < entry_size * 2 + 1)) {
-> > +		snprintf(buf, buf_size, "overflow");
-> > +		return;
-> > +	}
-> > +
-> > +	switch (entry_size) {
-> > +	case sizeof(u32):
-> > +		snprintf(buf, buf_size, "%08x", *(const u32 *)entry);
-> > +		break;
-> > +	case sizeof(u64):
-> > +		snprintf(buf, buf_size, "%016llx", *(const u64 *)entry);
-> > +		break;
-> > +#if defined(__SIZEOF_INT128__)
-> > +	case sizeof(u128):
-> > +		snprintf(buf, buf_size, "%016llx%016llx",
-> > +			 (unsigned long long)(*(const u128 *)entry >> 64),
-> > +			 (unsigned long long)*(const u128 *)entry);
-> > +		break;
-> > +#endif
-> > +	default:
-> > +		snprintf(buf, buf_size, "unsupported");
-> > +		break;
-> > +	}
-> > +}
-> 
-> Why not leave ptval_bytes_to_hex_str() in the C file for less churn for now?
+Thank you for reviewing this series. My description was not precise
+enough, and it seems to have confused several people. Let me go over
+the example again.
 
-Agreed - will change.
+I labelled the rows "from CPU 0" and "from CPU 1", which reads as two
+separate tasks, each pinned to one place. What the rows were meant to
+show is which package the allocation is requested from:
 
-> 
-> -- 
-> Cheers,
-> 
-> David
+                  node0  node1  node2  node3
+from package 0:     2      0      1      0
+from package 1:     0      2      0      1
 
-Thanks for the review.
+Both rows come from one policy at the same time. Which row applies is
+decided per allocation, by the package the requesting CPU is in.
+
+The cpuset.mems = 0,2 you describe is the node set of package 0, so
+the tasks in that cgroup use node0 and node2 wherever they run.
+
+The feature I am proposing does not fix a package that way. It uses
+the nodes of the package the request comes from.
+
+To build the feature I am proposing with cpuset, I think you would
+need a cgroup per package and would have to place each thread in the
+one matching the package its CPU is in.
+
+cpuset.mems does not follow the CPU, so unless cpuset.cpus is set
+alongside it, a thread running on a CPU of package 1 would use node0
+and node2. For a program with tens or hundreds of threads, keeping
+that placement right does not look easy.
+
+To put it plainly, what this series aims for is that when a process
+with many threads runs across several packages, each thread's
+allocations are weighted-interleaved within the nodes of the package
+that thread is on.
+
+There is one process and one policy, but the nodes actually used
+differ with where each thread sits. That is why I think this has to be
+per task rather than per process.
+
+The workloads I had in mind are memory-intensive server workloads:
+vector databases as used in AI applications, or in-memory key-value
+caching services that sit in front of large services and keep their
+data in memory.
+
+They run with a great many threads, spread across several packages and
+running at the same time, and they want as much memory bandwidth as
+they can get.
+
+That is also why the numbers were measured with MLC. It produces high
+bandwidth from many threads, much like those workloads, while still
+giving a quantitative result.
+
+The runs used "numactl -w all mlc" with no CPU binding, so the threads
+were spread over both packages, and in that configuration the
+bandwidth was higher than with the existing weighted interleave.
+
+That is the reasoning behind my thinking that this belongs at the task
+level. In the next version I will strengthen the documentation,
+including why this feature is needed.
+
+Thank you for taking the time to review this and for the question. It
+made it much clearer to me what the cover letter still needs to
+explain.
+
+Rakie Kim
 
