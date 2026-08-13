@@ -4,126 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3822FC5CFEB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 06:24:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6303C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 06:34:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1297E6B01A6; Thu, 13 Aug 2026 02:24:01 -0400 (EDT)
+	id 000A26B01A7; Thu, 13 Aug 2026 02:34:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 100FC6B01A7; Thu, 13 Aug 2026 02:24:01 -0400 (EDT)
+	id EF4C66B03BD; Thu, 13 Aug 2026 02:34:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 016326B01A9; Thu, 13 Aug 2026 02:24:00 -0400 (EDT)
+	id E0A1C6B03BE; Thu, 13 Aug 2026 02:34:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CA2936B01A6
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 02:24:00 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ABC866B01A7
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 02:34:09 -0400 (EDT)
 Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5AE85C0561
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:24:00 +0000 (UTC)
-X-FDA: 85095255840.29.809EA54
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A8D3520002
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:23:57 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=sk.com;
-	spf=pass (imf03.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1E3A380540
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:34:09 +0000 (UTC)
+X-FDA: 85095281418.29.A0976AE
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6D96E20005
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:34:07 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=o2gEZ9CK;
+	spf=pass (imf13.hostedemail.com: domain of thehajime@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786602238;
+	s=arc-20220608; t=1786602847;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5wLDHgab615CSLj+ydzHGATGTZuO83cjL6IjYwS35Oo=;
-	b=r/ZXLj4oxgDdzXfRNsO5bQVIvvWTbMeLVFpjJzvfHQMaSbTuF5DoE87lci10r46VZ3lJIs
-	pQ6DfEf0oZDxRNolyFCxl0kTshreJeOQ9DAH8RZoJdYJBwvcM8olWUMAG2mioqYL1VirgD
-	VjZGMQ9PyJQ97trVHVFpUIKDN7lqx+o=
+	 in-reply-to:references:dkim-signature;
+	bh=AmYjsyIQlmoZpHbLOHvgwFOqIOXRzjPASuNcF55zpJ4=;
+	b=pRRDfCdwS0PtCjDN43B2kwzXU3pzErgxowVnvs5U3c2XCtuyOixNJBJTUGk8liuFzjaKeC
+	uleaQrIQ8G3RYNbMc2K2ivPGKnrDRL6sZ0uoD/eUd9ZDG5tKB/RjsMpLUrnmJnl+z4UgTs
+	boFNd1aaXZVEZaq6pt3imTIUoyk40eQ=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=sk.com;
-	spf=pass (imf03.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=o2gEZ9CK;
+	spf=pass (imf13.hostedemail.com: domain of thehajime@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786602238;
-	b=nQtDii41tP0Bdw51a5DJ1bqDbPyACddXb4RCqE2dZHB7vrNS3c5m/c44baJe2kWaH7bYrS
-	mSR8oInfkbAOxa1iqKSpujBx/Mj8cT4fg74eVbeVBVC+xgu000iT7NLupswWIaohkwF7sL
-	2XrMNJJQsrj35b1kCdkJBuBxzL+BuqI=
-X-AuditID: a67dfc5b-c2dff70000001609-ad-6a7d62f9452f
-From: Rakie Kim <rakie.kim@sk.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	nvdimm@lists.linux.dev,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	byungchul@sk.com,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	dave@stgolabs.net,
-	jic23@kernel.org,
-	dave.jiang@intel.com,
-	alison.schofield@intel.com,
-	vishal.l.verma@intel.com,
-	ira.weiny@intel.com,
-	harry@kernel.org,
-	kernel_team@skhynix.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com,
-	Rakie Kim <rakie.kim@sk.com>
-Subject: Re: [PATCH 0/4] mm/mempolicy: introduce package-aware weighted interleave
-Date: Thu, 13 Aug 2026 15:23:48 +0900
-Message-ID: <20260813062351.1856-1-rakie.kim@sk.com>
-X-Mailer: git-send-email 2.52.0.windows.1
-In-Reply-To: <an0t0mP9JB8f4ILK@fedora>
-References: 
+	t=1786602847;
+	b=frg0SUG3oqot92itmnd9TaFmZ8CypJ7GVQRa0z022WnaF6cAIUxPEZ8xXbTAHIN5c/EX2q
+	TInZUipvQ9oH78pPCzSSnu/3f2L66KBorBs2uSnhvou5ODNVbvqiNHW/D9n0cF3Ykyr0Zf
+	fyLX0o0YXCoBTJfVFr/Swe0jem9+GRA=
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cbe827e3cb4so1886796a12.3
+        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:34:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786602846; x=1787207646; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=AmYjsyIQlmoZpHbLOHvgwFOqIOXRzjPASuNcF55zpJ4=;
+        b=o2gEZ9CKvNJKJl3lbw3hAsuJlt/SD/F0dGGSyFC7BKlAY3lRjeir70IReOaJlw7aaa
+         wL7kwuXWy7qrLiaLxofhaJMw/DT3bL8/t1oCWtjJnlQsRhV+ziIP9aR04A5auc2J64OQ
+         WVlIEUdtrGPneU6n3NmW2fcFf1zTU7bkBg4t0iywgF5GBIWUGR5lztiUJyYy0DsXTXRT
+         Im3ustraQGK0NIOx0eM+tFO0uv0pwapNVJwt6WiFhR6wBMZ53wgpR9sxcRXelcYYyoa8
+         71/UguY+7e4TeKrueYDRgm0d5wAqtwMqvxWZUBqp1MQ3UFy0TJ1AzAmPixvQyGPfddrY
+         OfSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786602846; x=1787207646;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AmYjsyIQlmoZpHbLOHvgwFOqIOXRzjPASuNcF55zpJ4=;
+        b=N1WGlHhuwpuqgr2IsvL27KAmtafP/V1uIAkQvZecsIWnSVrLydi48Wc5KlIOQzA2d2
+         qW+RcSUniKRVDtRwkRF/AbDpWO9Yw7tc1c33heyXY3QoD5CXcebZ/w/Ic/C1ix1KJc28
+         pW73FH05gY5Iq5Y8M4BGcA1Gw3qXM3MwS6uRCdCrKnyggHTImV69zXjRwPRp9MGd9VP9
+         a6FWe3JVmZg8o6jeprs0lQEn1d1sxCJMGtOFJngdkdN4JsqWaInmBM+Uk6uACyFQzbmh
+         oJ6w3aJRRfTvuh5sWT25urYCN6vgNwU+wXaN8kBWhRnOZLmE1B4yEWT3Q+ZiyygcyBcl
+         OdMg==
+X-Gm-Message-State: AOJu0Yxadj03TQ31jVS0P6lWjgKfhDdWAmiBN0YzyIRZJnz/p33fnCF/
+	oG4+QuOgqrHEfFAgaE80GHCJi5qWE2r20hbIj8iKuIx2qODmPMCFGucH
+X-Gm-Gg: AR+sD12jTlTGFy7W539aHOpa8E4I41rnX+UnYc0MFBce0HvHe45T6enzU9Xuekb5rSj
+	QTuwlpQ9GrfHovE3dFkxO+DBX2mdGEObbQ2v5K/zQSqp8PkF/XLVb8U2r7KuTCoQ/NPmXRdfvYy
+	5CI4O6Exo63H3AKG5khpiTjG7Cm474fjJM90Pd1IAWJ25TzXjV9T8ONpJlvsJW4ZGEv2nNcO5sk
+	8QiNjMaiTP6rclTWlEV+6mudZVtbUBx7XZE6bbn1VJXpo34ohS7f4pthPbS5FiHeIrl73AF24NT
+	EjB11h4Qox9e7ppaBdaeYfRDBOO9fI284IJOF0TT4VbZOEx9nnQqWTWuZJiLWVKb8H2af/AH5pY
+	eG0t7+q2rEYpYdKrcJyzeuJzjxrAvL1dRhXyRBJvkpUl1/5/KjvJOL2WhgGoWPPaQhy0CsYJBnJ
+	Yw4cm4xucRNLrNUiPseRdGnJuk1X+e4/i+ewDxzqccTVyF4wiIpiAFA9ManuIU3Vy8nFgRwwIcD
+	qoGLxA5U6Kzr2qt9FAiYffX0prxlW3nmkcobuPWoYZ3p2bfpOHF4DZAaE3+hBQNLA==
+X-Received: by 2002:a05:6a21:6f01:b0:3c3:cc3e:a9 with SMTP id adf61e73a8af0-3cc54f4b5e8mr5183423637.4.1786602845946;
+        Wed, 12 Aug 2026 23:34:05 -0700 (PDT)
+Received: from ikb-h07-29-noble.in.iijlab.net ([202.214.97.5])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbef6a59d80sm550610a12.11.2026.08.12.23.34.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Aug 2026 23:34:05 -0700 (PDT)
+Received: by ikb-h07-29-noble.in.iijlab.net (Postfix, from userid 1010)
+	id 3182115B0429; Thu, 13 Aug 2026 15:34:03 +0900 (JST)
+From: Hajime Tazaki <thehajime@gmail.com>
+To: linux-mm@kvack.org
+Cc: geert@linux-m68k.org,
+	daniel@thingy.jp,
+	Hajime Tazaki <thehajime@gmail.com>
+Subject: [RFC PATCH 0/6] fix nommu mmap and add nommu kselftests
+Date: Thu, 13 Aug 2026 15:33:55 +0900
+Message-ID: <20260813063401.1786548-1-thehajime@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrFIsWRmVeSWpSXmKPExsXC9ZZnoe6vpNosg3n9bBZz1q9hs7j7+AKb
-	xa4bIRYnbjayWay+uYbR4vnWX4wWP+8eZ7e4fmslo8X+p89ZLB40rWKyOL51HrvFulOH2CzO
-	zzrFYnF51xw2i3tr/rNavHnsZvGtT9rifp+Dxcoff1gtjqzfzmQx+dICNouOl/dZLG5NOMZk
-	sXpNhsXso/fYHSQ9ds66y+6xYFOpR3fbZXaPzSu0PBbvecnksWlVJ5vHpk+T2D1OzPjN4rHz
-	oaXHi80zGT16m9+xeUydXe+xfstVFo/Pm+QC+KK4bFJSczLLUov07RK4Mg5ezC+4IV/R9PkB
-	SwPjE4kuRg4OCQETif5LJl2MnGDm+oa7rCBhNgEliWN7Y0BMEQFVibYr7iAVzALbWCVuXdQE
-	sYUFgiS6pj9nBLFZgErWPp3LBGLzAk3ZsKmJDWKipsS6jbdYQGxOATWJrn8QNUICPBKvNuxn
-	hKgXlDg58wkLxHx5ieats5m7GLmAej+yS5xYcYQJYpCkxMEVN1gmMPLPQtIzC0nPAkamVYxC
-	mXlluYmZOSZ6GZV5mRV6yfm5mxiBMbqs9k/0DsZPF4IPMQpwMCrx8GY012QJsSaWFVfmHmKU
-	4GBWEuGtXlWVJcSbklhZlVqUH19UmpNafIhRmoNFSZzX6Ft5ipBAemJJanZqakFqEUyWiYNT
-	qoHRKHdT8Zr9rAVME2yOhHoHX1/Zwb542v6LL+4WvFpnwxHUtI+h8+AJWaN0/f8aYisCM4LP
-	e36OrLmRb3rqFfPuvxH/N+s8+m4mnKz4RX3z/Nh1K+z3lC+eWOCf57F3QVW+2clF2+Z92Hfx
-	nqG09JV7T1T2TVz1s+T4xp0GeY6fyjY03Km4Lfy5QomlOCPRUIu5qDgRAOp90W3NAgAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrFIsWRmVeSWpSXmKPExsXCNUM9RvdnUm2WwcH1BhZz1q9hs7j7+AKb
-	xa4bIRbnpsxmszhxs5HNYvXNNYwWz7f+YrT4efc4u8X1WysZLT4/e81ssf/pcxaLB02rmCyO
-	b53HbnF47klWi3WnDrFZnJ91isXi8q45bBb31vxntXjz2M3iW5+0xf0+B4uVP/6wWhy69pzV
-	4sj67UwWky8tYLPoeHmfxeLWhGNMFqvXZFj83raCzWL20XvsDnIeO2fdZfdYsKnUo7vtMrvH
-	5hVaHov3vGTy2LSqk81j06dJ7B4nZvxm8dj50NLjxeaZjB69ze/YPL7d9vBY/OIDk8fU2fUe
-	67dcZfH4vEkuQCCKyyYlNSezLLVI3y6BK+PgxfyCG/IVTZ8fsDQwPpHoYuTkkBAwkVjfcJe1
-	i5GDg01ASeLY3hgQU0RAVaLtijtIBbPANlaJWxc1QWxhgSCJrunPGUFsFqCStU/nMoHYvEBT
-	NmxqYoOYqCmxbuMtFhCbU0BNousfRI2QAI/Eqw37GSHqBSVOznzCAjFfXqJ562zmCYw8s5Ck
-	ZiFJLWBkWsUokplXlpuYmWOqV5ydUZmXWaGXnJ+7iREYo8tq/0zcwfjlsvshRgEORiUe3ozm
-	miwh1sSy4srcQ4wSHMxKIrzVq6qyhHhTEiurUovy44tKc1KLDzFKc7AoifN6hacmCAmkJ5ak
-	ZqemFqQWwWSZODilGhinT3rebX9+cXDdo8Nu/jMcpDMlz39/clMud6LFTZ2N/fu21W1W3hvh
-	n7aqwfOtZ3HWrxP/t05M3CjyTsHmkKmtkWqWqlML04RVb22rLk4NF970+Y3m1K7VTXdNrmlf
-	XrDkvY+L8wHzNXy/H8h0RN5J7Pvxxm1PiMO530f5zBdbrr3ZaKvLX52jxFKckWioxVxUnAgA
-	4pG6rs0CAAA=
-X-CFilter-Loop: Reflected
-X-Stat-Signature: uzt7gik8obq97hnwtgx7baannbgqnytu
-X-Rspamd-Queue-Id: A8D3520002
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6D96E20005
+X-Stat-Signature: bpayw411kdaam39r9jqt417iahmtsphp
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786602237-999693
-X-HE-Meta: U2FsdGVkX19unEIgUgIfuonXE6lptaE4tHcOjy4xWq1LTyk3gT0/ezsdkPF6VebBrrlNYdEOyBnRNABPSQZUPtdBHa7icusrrYoVibbVZBT4jN+hFg+hRys1gjXPOevl0nwFlj0E9P2jmo8qKMHPPnzhUGwPObVK8wO5d7KtPqOTr7tK9wxbuJFJbugJip8Qzu4KpIQ/66hvkBMm95e9awYgoADLTialkoNXYCjAEP8Zz++jU5Kq5/pRtbJqZ7QUrNM1d132NvdR1sn3Ejic0SUrsp3w37JLny6Y9oHdihYz3UmQF9RUtb8iKLRsEcY7sXPjjz3olRiC3Ad2mOq3Ta0suWY/1dGXILat5d410/0/r/O2LPspLbM/BguHavjvCrsK1A8umoQoCuSvkpZ+swQc1L5Hlt/KF6xT6AP+1h81d/EXjKR41MfdSXU5j5MaJJ/CdbzVsPB6sOBicLxqHWRU+4FirviR4f1o6dHfLcBE01Ckqjx2DZKpYmqOufaC0k9BOVgzLl91haG9NFUG/UiVSK7tG+r+TCdc6CaURHq7ViIc40JspwC6Fcq+3L2d/URPNh+Sjbv4bvIz97qklRjVAkfgq0he6rSxb6i/Muc079WecGVLTyv0OHF2uEeSAVV7PQ5T8WPM/TziGPGwJfdCjGUwApgLpEMl6VjHefMESrABtSmhRFuHALe/BneG4lR8nfU/UX5vKjF5bHLFQySuQPNiUOuJ7JxZSssTEEFiRo3gnsgP6J9k3Ugq2uy0Wayr3gadLHHylpL61R3/ei/19czmf1W9X7tXg3gloZNApegjGG4LobjFol0KbXAvGftfmkLmn8OPF+OeQTzZHyKiVuLYogw3LIAYXeKLGngYEWkikKRrrUX3XweEHWiR8W+lwIBZ2OE/IDgEgq9Hm4uFibcYOQxQ05y6Rx1LDZ30D35MKaFCbGNrmuNciQaklvnjbwOmbudFmtX+tEt
- Cs+rMF1p
- Sin2SaHUHuFIQtWcoRgqlD27z8ySbtfZEZLP93OBYNkqPX2vYGyjLqg1oTQi8p+CxOlevJ1lUkzbvkLM4jij5LWIzVPH5wC7Ys9CB6O0JhaghCZfkIuiycCcuC0iGAFdHqQWA
+X-HE-Tag: 1786602847-270518
+X-HE-Meta: U2FsdGVkX19ym4no6NFuOdpFJZVCDuESgF53kQWLWPv0c/I58L0Vd+qe1tAEv/lfrS5FDcjFFRkm44uwgZX6peN7J+28/a6oWUS+YTt8VXCnPWEeUByiYElF29aeVFxTq+agOA0nt4Ca1q2V0W+/9gQouS1xZxzsgPAkXcmaV0ivDXENtduN9s4CoOTe+a2YzNoP4kMmghn3iccCVd5x/0LHMtUsFZ79ng8VuaKdpZ7J4/X7h0cKZxy8jQAKYGL0wCziLVcGXd6dUYoglvOnQSnifz7ZbbptNuM10rpO6UBlsSWDchsR92y652WY1CikZ11/f8tSwKcNj6UbAq55HjVL9+ef4HAF/t9Axhat1bFH3tWOCUQvNuTJHJLSS3OPR344qqEPgGY9R55f89noLwE9iaZErwylBBc/eARH7IZ2yn/LSHy9h5ZDN/EKwy7jFVAy9Bn3sH7nuFRiXLgg6gFA4dF66tTYl0tkrM+f2nxpnOd9XN6uAJEW1CeTxpnz1v5emUa2P0q8Ta1Q+orlaBpM+xiUoHwUFMN3eDnDvHnX7geeSarX8l+GYJR4vwBrjUOOYzwP4mc64tpxtg61n9lqPMywNeihVQol0fJgoXffR+DTLcTPISSLmqzO+ZICzQy/mzKFymfyEBccnRhp1eSzCV2LkodU35etrZfo1bshGpbKEta8V+x6t3aIf5QaRuxzx8KOSFImxSzebtwnn4t0bRIGEbgs+yzBq2y1SE1bR1PuZ/qlOmNfeqMdeHjAAH0C6DGIYlC5ufBpgCrqMI5p0nsxpZGkcmVA8leSTW3LxGmdZmcdHKt+pnljO6jETxfOoPO59uRerzw/Y/DzPRssm2eC05vzaoGRPgF0NcdG3UllzD8nKl4Jp6/l3g22uqXBB5B07QwBAjXT7Xkaqm/qGtmGIW3cnfBrQYzE45AGR1aXh3jbmo8+gUQ/TILqjQEk4+QareOnTjobULR
+ XwgOk6B3
+ wRut95bXaK60yRhyFFRW7yn3WXht2aSOei45Rk1KrEguGFMtaj1FNKilJP0YqlVGGz/1QL1rjJzpNR34QgFZ3t6KRKTch9cCXCmReGJCaMo9i9x22wLXvrn4Qy5JyaLukfVjL8mDWUWg0ah3doD1/O8RkfP94Yn8XzWotKcQuG3MwIQg6YwAx2//ulAJRMQWyefzPCIKKt+A+9Q/EeUuzwPGd7K8bzpNXfajL+6E35Di/VXsNVH9uoct4hKRWIKADxFara3zX13QFEn/l/HOP9fzm5UT83aRAHkQdZalvfHblTYmGU5A1QUyqL6zucCk6FgkffDf/61flUsC9+/658O/JKmnv+mY27vbaKiJLTYgy4EclUKVqYXNGDq4jZueXcOBjU/AfnilGU58=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,98 +117,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 12 Aug 2026 22:37:06 -0400 Gregory Price <gourry@gourry.net> wrote:
-> On Thu, Aug 06, 2026 at 05:09:31PM +0900, Rakie Kim wrote:
-> > Package-aware weighted interleave places a task's weighted-interleave
-> > pages on the NUMA nodes of its local package, so that interleave traffic
-> > does not have to cross the interconnect to another package. This keeps
-> > each node's weight aligned with the bandwidth the task actually gets
-> > from it, so effective bandwidth holds up on a system that has more than
-> > one package. (A package is a CPU socket together with the memory
-> > attached to it.)
-> >
->
-> The only major question I have before I dig into the actual patches is
-> whether you actually need this on a *per-task* basis, rather than simply
-> a *per-process* basis - because that's all this really buys you.
->
-> You can already do what is described here by simply using a combination
-> of cpuset and mempolicy
->
-> cpuset.mems = 0,2
-> mempolicy = weighted interleave --all
->
-> If this is actually required on a per-task basis, then I agree this
-> concept is reasonable.  I just want to make we're grounded on a real
-> use case before we go adding this complexity.
->
-> ~Gregory
+This patchset fixes several issues on nommu mmap, munmap, and mremap
+syscalls and add test cases on kselftests framework, which currently not
+runnable on nommu platform.
 
-Hello Gregory,
+Fixes for nommu is to correctly handle error cases when vma shrink
+happens, and add calling .mmap_prepare callback on private mapping
+requests to fix the issue which we cannot MAP_PRIVATE /dev/zero file.
 
-Thank you for reviewing this series. My description was not precise
-enough, and it seems to have confused several people. Let me go over
-the example again.
+One thing that I'd like to broadly ask you (thus this marks as RFC) is:
+this fix contains a dirty check of /dev/zero using device type number.
+Since mmap_zero_prepare() should be called before actual mapping, but
+some of the .mmap_prepare handler should be called _after_
+determine_vm_flags() as the .mmap_prepare handler checks the shared
+flags, we cannot use vma_is_anonymous() in determine_vm_flags() to
+check the file is /dev/zero or not.  So we introduced
+is_file_anonymous() for that purpose, which I'd like to ask your inputs.
 
-I labelled the rows "from CPU 0" and "from CPU 1", which reads as two
-separate tasks, each pinned to one place. What the rows were meant to
-show is which package the allocation is requested from:
+And we add test cases to introduce kselftest for nommu platforms.
 
-                  node0  node1  node2  node3
-from package 0:     2      0      1      0
-from package 1:     0      2      0      1
+Currently there are several issues if we wish to run kselftests on nommu
+targets:
 
-Both rows come from one policy at the same time. Which row applies is
-decided per allocation, by the package the requesting CPU is in.
+- it cannot compile/build test binaries because the current files mainly
+  assume to build with glibc,
+- some of the tests are not able to run on nommu targets as there are no
+  fork(2) syscall.
 
-The cpuset.mems = 0,2 you describe is the node set of package 0, so
-the tasks in that cgroup use node0 and node2 wherever they run.
+The first issue can be avoided if we can build static PIE binaries (if
+targets support it), but in our case (build on ubuntu/glibc and run on
+alpine/musl-libc), it fails to invoke due to lack of the GNU ifunc
+mechanism.  Thus, we need to cross-compile with musl toolchain, which
+needs to be solved the first issue.
 
-The feature I am proposing does not fix a package that way. It uses
-the nodes of the package the request comes from.
+The second issue can be simply avoided, at a glance, by globally
+replacing the symbol `fork` with `vfork`, which is available on nommu
+targets.  Especially the test harness helper (kselftest_harness.h) uses
+fork(2).  But the issue is not simple: for instance, in vfork(2) case
+parent process has to wait until children has done jobs, parent and
+children share the memory and children may corrupt parent memory which
+is never happened with fork(2) syscall.  `timeout` command used in
+`runner.sh` never works for nommu platform as it uses fork(2).
 
-To build the feature I am proposing with cpuset, I think you would
-need a cgroup per package and would have to place each thread in the
-one matching the package its CPU is in.
+Additionally, the lack of test cases for nommu environment will (or
+already) become serious issues to maintain the codebase in the future.
+The test cases is implemented based on the document
+(Documentation/admin-guide/mm/nommu-mmap.rst).  The test programs is
+implemented with the assist of LLM.
 
-cpuset.mems does not follow the CPU, so unless cpuset.cpus is set
-alongside it, a thread running on a CPU of package 1 would use node0
-and node2. For a program with tens or hundreds of threads, keeping
-that placement right does not look easy.
+So, for the first step, nommu targets only support low-level API of
+kselftests (kselftest.h), and not supporting the harness tests since it
+uses fork(2) syscall.  This partially address the second issue; in the
+future we can refactor the harness test framework to be able to run with
+vfork(2) syscall but this is not the part of this patchset.
 
-To put it plainly, what this series aims for is that when a process
-with many threads runs across several packages, each thread's
-allocations are weighted-interleaved within the nodes of the package
-that thread is on.
+Hajime Tazaki (6):
+  mm: nommu: fix do_mremap() to correctly update internal states
+  mm: nommu: use vma_is_anonymous() to check if vmas are anonymous
+  mm: nommu: fix an issue on map request to /dev/zero
+  selftests: fix build errors on alpine linux
+  selftests: run tests on nommu architecture
+  selftests/mm: add nommu mmap and mremap behavior tests
 
-There is one process and one policy, but the nodes actually used
-differ with where each thread sits. That is why I think this has to be
-per task rather than per process.
+ Documentation/dev-tools/kselftest.rst         |  12 +
+ drivers/char/mem.c                            |   5 +-
+ mm/filemap.c                                  |   6 +-
+ mm/nommu.c                                    | 235 ++++++-
+ tools/testing/selftests/kselftest.h           |  43 ++
+ tools/testing/selftests/kselftest/runner.sh   |   9 +-
+ tools/testing/selftests/kselftest_harness.h   |   4 +
+ tools/testing/selftests/lib.mk                |  10 +-
+ tools/testing/selftests/mm/Makefile           |   3 +
+ tools/testing/selftests/mm/hugetlb_dio.c      |   8 +-
+ tools/testing/selftests/mm/mdwe_test.c        |   4 +-
+ tools/testing/selftests/mm/nommu_mmap_test.c  | 294 +++++++++
+ .../testing/selftests/mm/nommu_mremap_test.c  | 583 ++++++++++++++++++
+ 13 files changed, 1174 insertions(+), 42 deletions(-)
+ create mode 100644 tools/testing/selftests/mm/nommu_mmap_test.c
+ create mode 100644 tools/testing/selftests/mm/nommu_mremap_test.c
 
-The workloads I had in mind are memory-intensive server workloads:
-vector databases as used in AI applications, or in-memory key-value
-caching services that sit in front of large services and keep their
-data in memory.
+-- 
+2.43.0
 
-They run with a great many threads, spread across several packages and
-running at the same time, and they want as much memory bandwidth as
-they can get.
-
-That is also why the numbers were measured with MLC. It produces high
-bandwidth from many threads, much like those workloads, while still
-giving a quantitative result.
-
-The runs used "numactl -w all mlc" with no CPU binding, so the threads
-were spread over both packages, and in that configuration the
-bandwidth was higher than with the existing weighted interleave.
-
-That is the reasoning behind my thinking that this belongs at the task
-level. In the next version I will strengthen the documentation,
-including why this feature is needed.
-
-Thank you for taking the time to review this and for the question. It
-made it much clearer to me what the cover letter still needs to
-explain.
-
-Rakie Kim
 
