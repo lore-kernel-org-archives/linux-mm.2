@@ -4,138 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADCADC5CFDB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 19:35:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 676BDC5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 19:37:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 959BA6B05B5; Thu, 13 Aug 2026 15:35:58 -0400 (EDT)
+	id 4A0FF6B02C8; Thu, 13 Aug 2026 15:37:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 932996B05B6; Thu, 13 Aug 2026 15:35:58 -0400 (EDT)
+	id 478876B02CC; Thu, 13 Aug 2026 15:37:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 820476B05B7; Thu, 13 Aug 2026 15:35:58 -0400 (EDT)
+	id 369876B02CD; Thu, 13 Aug 2026 15:37:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 65E2C6B05B5
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:35:58 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 97674A022A
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 19:35:57 +0000 (UTC)
-X-FDA: 85097251554.28.6493657
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C6113120003
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 19:35:55 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CwgT9Ht8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EB7E6B02C8
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:37:25 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 93BE8402BC
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 19:37:24 +0000 (UTC)
+X-FDA: 85097255208.21.6B26F47
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf25.hostedemail.com (Postfix) with ESMTP id BB271A0006
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 19:37:22 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=nVeZwwdl;
+	spf=pass (imf25.hostedemail.com: domain of cmllamas@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=cmllamas@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786649842;
+	b=rfIlTB41dQyczqE0B40eCu9rhfvahV/HsNqTx07SWjNhTYwVX6nLEtjrAxFCMDEzCSmPl1
+	QIzl390EzdPy/e1pPhZNnpQAO2EZo5uPhPyhX/FKRzoNYCk0GPW3103zaGcaYfgUkC9s9s
+	hNOXXK60Dy3s5GZ5o7dOr9t76Ne1y7g=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=nVeZwwdl;
+	spf=pass (imf25.hostedemail.com: domain of cmllamas@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=cmllamas@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786649755;
+	s=arc-20220608; t=1786649842;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y4uVpG3bdbrTSkcePR6X4sXWK4Bw3fjIfcWCb2VfiYM=;
-	b=CfuHdEnm2cFwmmqZzE5/RslG7453hs6+pyOiauAmH/gPmHzh5lIzDRuuI8B9RcgmFxrfwZ
-	ljEc46EDuI604wSJ24uJ6XQGVCt3y5B1CZppn7PKspb5oaQqrywWIdWDkmXXlBOqVmtsq/
-	Zae17SqV5JF1cS/1x4lvT1qyrRPrg1w=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CwgT9Ht8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786649755;
-	b=e3zlW55jWBgDKv0kJESTob6BPgicyqIiyuvwFBKSTUcUA63Wj6lyKaTLH0+/UOnDLllVlu
-	Gu0x2QUUyxwhK4J4k3ePdQzija3Gb+yhDbykEH17piEVA6Nhwnt39XobQdAnMz/JVEKMex
-	MzGufax2ue8xlkFFBl1z1tNos4hBDj4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3048D600B0;
-	Thu, 13 Aug 2026 19:35:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DC51F000E9;
-	Thu, 13 Aug 2026 19:35:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786649754;
-	bh=Y4uVpG3bdbrTSkcePR6X4sXWK4Bw3fjIfcWCb2VfiYM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CwgT9Ht8lK1bV896H5TxIIa4Uv24P73RCNDkYiVPOxMuIUFBsTCWTDBROcJyUXVtq
-	 pLw/IXLDJ7ix7hRvcFtXGewgaTSOrenm/XTeKqxxoP6pydlZgdKiHz97Z7cKMcwJt2
-	 ig4s3f8vvXRY8Gck3HZX1PpfCbqnEDXpCqXNA6QDT5yvWUFD606fJaKlJhrpvol7Mj
-	 F9LEeMe43BhiHvvs3qoIr6pIDqMnsPN7uLErhszG6cfXKEw43cQOiprF3L7O8E2jCJ
-	 hCP/+6BrtxZMziR1vRALtdz/8mwMFBE32p81ukzgEkBRwHfymvdfgT2r2vcXUYkZOd
-	 AJrGxUY78Y64Q==
-Message-ID: <6527de10-5140-47d8-9c05-4df3c9868ec0@kernel.org>
-Date: Thu, 13 Aug 2026 21:35:45 +0200
+	bh=7h40fDSJ6LxR0LhSx+FP2dYCuXb3wJxS0vazqn2AKzg=;
+	b=oe81n1zNMou8Rjq1WjnNh6oHme7DUQ6TR5iYCMAakD9oq6wu3y8UseQcdptIwQ+JJ88X+b
+	T0+oMulPJ2P8ENW8mz0tUTlIvvY60dcq4JA6GDLxj3CEq0Y6d/7p8khpkBiA8VVOhTO9Uj
+	fABnFYXbmCjrUFd69zmfvc2k4P0Oijs=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2ccdf36f63dso34015ad.0
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:37:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786649841; x=1787254641; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7h40fDSJ6LxR0LhSx+FP2dYCuXb3wJxS0vazqn2AKzg=;
+        b=nVeZwwdljWZm7rRPpvT7nn7+Gdc+CNqyGh4sw5wpJym/nmeX4AxHmJUVC8vz11DfKr
+         ZomWxxmbxif/enPd7izSynl4tRDRQe0ioGPnQeTUDbvnF+sCPHWJyChAGvnNvKTNHMGS
+         zK2G1IwAFtO+IJG9xf20M0dCky3zVi6ijqh945FzL65h/e0OTzUOnriaUpgd3nAUbpR9
+         qz6xVrX+JZNfYv/urY3uj2OwJzSgUXGBBjUaQzK0fHLsJmFtOOEC/ud1VWYKVHCh473g
+         ESCHp85j+d8/nDcNSw+xB3GLZjkhnagCSD9FFOEsMWEdLolVt4F5Rh/jcqTKTqYO5FgJ
+         NqvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786649841; x=1787254641;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=7h40fDSJ6LxR0LhSx+FP2dYCuXb3wJxS0vazqn2AKzg=;
+        b=MUKvJX+XZrj4PWelEP2MJelCSxixoaAd5qEOWfTjFysNdMDLSV26oCzSbtDbelWA+O
+         xrHXArauAOM3/sHWmBeZiCzDGkzwYuFF/fNFlO0T8dIOrf//QfbywiYCQLI/cXkWmcHb
+         +CRHak1g/tCw//+AvZ9KeC1YuWtmGhs+WiXzrCGqeOn54yyXEVGz257fPhyzCObSmrMx
+         oTLhzQz1JHG4/CGhaiTQC2eLyQ1jz3XNofHbI1nsRR4jBXUK22a8snForVv7KcyOrNmg
+         f73eGppEdhruyTkE+OKPtrvRwj5lkUnTUJkl5G6W6zdEEaFFL43Eq0cgLmgYKkFttsLG
+         8WOQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr7sng95MmPMmVcZxcgReRci5jEgaXtcaBiOJIjfl9ROyeRT7wlaiVOH1BEdAwO+9RYmqLWeGkdZw==@kvack.org
+X-Gm-Message-State: AOJu0YwIJYs2DYr64JA0SFmKk9rWZFErN9YXElqTAGy5q4tdrrsowSFD
+	2TR6vb54/38jHFqZKPjZIAHrNzIzG+5BoafxS5g82iqJu/MORyBcFI1uKlfYatK50g==
+X-Gm-Gg: AR+sD12sUty+2OtBKtArN15x+tRQZvdVi1rVEyD0TkwQCVvzV3pTbX52WgLEKCEtb7k
+	nJr8LWl6QKPdfpAXC76eFPTLctPDvOBuG2mRdggBE21LzzdBlVEd4J40xqu4ezR/28wK6YYXeAr
+	/uUgoSJs7lMcNM6kg5dMGG7+4261l/77ScMPTHWV+TgFiLUwohWT6D6o89EGDGbIrpi1Q0G9Cil
+	96J+/10AHg0/JoMqfib5gCgHrTGZ7il9cJE4r8vN3FCPBnZD82cDcvjhGMsZ39fEhUhIuRoQrjt
+	raAlEY+PT7Q5XnH0nvigxnjrPkM5O9jonA7ot9NvOr9Q8Q1zLfmjc0QUquIQfh2vnz+hwj4v8lH
+	2+IOzNUohviy41Mos/B+1GV5pzvZBKHHAfxX5gyxNcONQ0Cj1O38v8WCuXiQuvVHyaPcP42/QK5
+	TPpOTWNhot0Vw3mqrIaidwWfYqUsxUuNA3aITfFBBBzqGlJIvP+X3hJzGf3D45xDT1mgvn9P7g8
+	PkP+XCN8CIqA2n+F0jA6Zc8z5xhfUi/diO4ffjVJdsgbrni2iwVACJDEMpjxRwMWoahVB9XvXpE
+	0mKIKxj2
+X-Received: by 2002:a17:903:3c44:b0:2c9:b404:b55 with SMTP id d9443c01a7336-2d3af24f3a9mr2081355ad.6.1786649840834;
+        Thu, 13 Aug 2026 12:37:20 -0700 (PDT)
+Received: from google.com (193.67.125.34.bc.googleusercontent.com. [34.125.67.193])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3933b649975sm80193a91.2.2026.08.13.12.37.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 12:37:20 -0700 (PDT)
+Date: Thu, 13 Aug 2026 19:37:15 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com,
+	Liam.Howlett@oracle.com, ljs@kernel.org, david@redhat.com,
+	willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org,
+	jannh@google.com, aliceryhl@google.com, arve@android.com,
+	christian@brauner.io, tkjos@android.com, dsahern@kernel.org,
+	davem@davemloft.net, gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v6 2/5] binder: Make shrinker rely solely on per-VMA lock
+Message-ID: <an4c64xukV16uN_U@google.com>
+References: <20260813193433.3318288-1-surenb@google.com>
+ <20260813193433.3318288-3-surenb@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/Kconfig: make MEMORY_FAILURE select MIGRATION
-To: Xie Yuanbin <xieyuanbin1@huawei.com>, akpm@linux-foundation.org,
- linmiaohe@huawei.com, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, nao.horiguchi@gmail.com,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, gourry@gourry.net, tony.luck@intel.com,
- bp@alien8.de
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, liaohua4@huawei.com,
- lilinjie8@huawei.com
-References: <20260813134916.292733-1-xieyuanbin1@huawei.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260813134916.292733-1-xieyuanbin1@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C6113120003
-X-Stat-Signature: 1hun6cuwhmn3b6anmhyt3op3w996eqts
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260813193433.3318288-3-surenb@google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786649755-959039
-X-HE-Meta: U2FsdGVkX1/yqBqrpNCICvD+8B5z7evxmw24ZfpGHUAvTqCMW6hRb0DLbsxSsMIJNVszMmdOD3B95kd9Cpfn/0Tn+9gPlmvc7ZIyG0yc+N89rj6M8CgjIZPAISuBPSL0zMkWY6iLFEpu/ZzqJpYZLyl7qYpc9/TLqGVdChFkDfS8BPq6Y/mqv2ihHZZw3x0J8oBfnSZ/gZY4lYYER5jDp28xAN7aCBRZrRVm5hMV86IuzKSjbg3n4Ws5wttQvDf14VPcSJsD99mhWRJny2JmzhwjGxz1X1xUUTwzJrf5MpRxEqmaMqN7H7U4DBQ/PNbRm5mY6O8R5Dpn4bBL/VYlXYqIuQlf+/Bzg44dlHKROAZHkLIJZ8Ieq4p5sayiKQMkZzXVhebTh/nemQSw9j2lDcetIZfyckXF7mfklK1IvGrXYR54VtjMTbqdrhCcOGT6G0OJaR1FvpqKaoJaJXCBCFeHiogWlYN5hXW8ZAIGgdRh3NZkpTsWlwsbgZu/9Z/fOFQeFXZD3FodvzN7kzT2QMUxHG+dXB2VVYF2oDtWuIBUE6/51K+M1dNhzgMkC+yVUeiazhi5L/9erNAfNLPM7Xeyac6f1Rh940hJhfxdJGxVldq8Tcg/5BZpUzBAwMSqqXFyxKVgxe16kDZjTphVr59HXv1XvAsszrOygQXtcWNsBWxNjr7f7BTofEAaCO6BZv8J0o7ANw1Bb+nHnM/hSsbupjzYQwG3xmvEOEIZJuMTi8dpFCaaOwBbyEb0w16R+Cc41GysWxVH1NDrjxQ0KN5o8f+4RPc6TAZNp6viza8wdQKVB25YmFIjjFIEXnOlIDH3JXBJfAcnElAIDcfLuXaj/mOBCBvtfx96paltJ55bbtTeRnB+Pa0ox0299VWT332lSBEDJ0r7TRNXsQGI7f0n7YAcmB9VkaNAz7byXBFZ1SiRYAR5L+qHVOiqivx1+bEhmHUMLLMD38CrXQl
- mDYFYD1L
- mCI1acFd2j9sSCXTJRV//GKeEEK0ny6qto3XndUPNUHZDgGlsDZF9dUeW/F3YrGC9CAGn57bGmBG8hIKGyCPAZbjPjyAt5xiB7pqJO/t+r4+as7BXkLh2YDc2Qa9/00qZko4bUqZwtKpdY3rYLoI55q/6h2ZSowKM8vxykUaRFG4oqW6jCmn3o+0dp3pVP4x7ooJ75bAFuJ5eW8o3xO37Qlyqt1hWgJN1Mn5zhOy/z8HP7i533rYyBaBc5GUAh7kFoiiGyzmYt/LbmUKmPfhDiUkOeSPa5iLGk+YmmSSgMRAXd8QdE5irf/voNVOuQ9pIWxLSR5L5cHvSzE126j4XtbvQDvV5M6OQYObWQ1uTxoXrqMR5q+f3U/WeQtqZcvkM05WD7aAirtduHJPVTyBAGaud2PpZHf4xKIQJPVr868cYyho=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BB271A0006
+X-Stat-Signature: syjc51qkpbqgssypytfy38miksz3mw9w
+X-HE-Tag: 1786649842-356067
+X-HE-Meta: U2FsdGVkX18v25znOundn1xpOUpcRTaUmaEk4ktsfZ7DSSFLhdIFuLHm4TsicnfcP3321jDsNNNk6qfimbWLIJbyMG4g6crARZREvENIx1nuQpRM7klWLZzkUs0VvCh69zC52/qmi2SnaSgXJPMGkELXt0RdQbJCRIR9AYlFKZC5Gvy9RmyVCSZ5l0Boja8i9ma55lhc1FJCZwK82CVSRJ6EOxnQi3DBXXwvjaygQs4beAO0M+SQknIBtu0jz4Mx66lNe/tYnO5DgLvA+e1fJPLtygMo0rTS+oB6lGFADWkkT6NEqG+V0ICR6Dw79D5jz4IjvA7YJpGu+ROMYf2sLu1Qs76aM2pAKNoROzgL/e4GyrvFRh1TzpT/hO4V7JOvmM5D6HSvZgiq10GXLADx9sQkYG/Y202MOcirdOxX59mwwjUDKnzvnv90vGqEuAQ20XV962AgyJ6mmvyjd0hNOuSHwvhV/GHthv0KclPfQdpqCuq06WstysoiUVUSTgfjrat63Ozyi4yinxk33Aw2bv4UU1cBSC3anil/cs7XYilXns5pw06QW9GAKSIEN1+CoetffLIm1hQ1eSzBF4VPBr4/2YYmf6Qb/aS4OYxbJgSGMPxJ6jb2txzcICdVN6fi2SYCVWJQPFk2dThyES3e2OCmnysLjF7PCH5N9Yg3/C2hMaDqP41zjKLdSGuZtuyjE+hE/hbWLEOEm67XNx66Ky6pAKXTMeEA+nw53Rq87IVG/B0RZfFerfZVOMGMw9T+juCL2MmJRMMYoxlclpRM44cdaWs6CCv1ZqE4X4r9c+VXmdNcU43IYKxTFlIxCwbJcRDlweqA/I9lT2ot6xA7HCqSQYuP0EE/CjVMuil7MyAKZOdLFsyXeXzvCJJsc7mZ+TVqg6bhtFVT5hEWsj344VyLiJ7cXP/EZiXusVsu52HQPwhCcZzxAIcKwLbgtUeZMYELFgIar/qaRIYHDYe
+ 6WujOC5O
+ 27HwIzESUyiMWjtJOmWt3VzMwM87X9f2i14MfLiDsoFyKUlKIHx14HfX2EXp4rgd+BEUr//JLVQR8dzE5Zmz3xKjXOmtv0ueZXNoc4pADcSMvaB/vhouZmOPLM86pycepaH4iQIuw3l75IQ5densne6IAXGVwIPlxX/Zk4rsoP+GnkJdjuZvfvVyJME/Rdd+hOHiapD9ySlVDhQ5Tsi24T+gW+riWqOdl/EbyzgifE5VHHpaQ7+g/kvntWBVsOKrHY7iCm2kK1HpqP9176b0JZjNiEYuni0KldN/Z/3GIXuFNshYxdepXtk6MiCzJG5otf8xRSAfXD8l4Pw8269cknQ6W/l8GUsjj49BD2Ej86HWoNr2S38RcTrvEk3HK/B43DYnFYoLthMBlbQ7T+Ec1X+Nq0R9557A1idoDQs1s75YQ5qfipdo5uqPmsxwsOlmyZ5gjb0xtZaY07kxzoF+hSIMGttJX1MfSpgvI7G3ArrtkFVHwvp/izw3RqzgeLmLyPcpRebcOtnvqu6DZOF2JWN8BwAaV/UBOZaLXTBc4QoRJ0BHmN1eVde9nbJu+/H09EWNGD7NsxYKf8iIIK6PRi18KlHi2LifWFgJv60IBMCYYdFVd9+aarH/pOuJEB8KHvvNyT0i53emq7BPQonxV2pWBzqsj7/AYgcJkbCwJKPEbKcScbQViY5uXtIJkewjLl4YijwoAbvNLDabmZEGkYokAICAbo9h/fA7fmJPM1b3S+hEchuwZZnRE+cSKzsUFNZHtxJoWPzYaDW8KcPiQVyVZLA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,33 +129,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/13/26 15:49, Xie Yuanbin wrote:
-> For embedded devices, lacking support for NUMA, memory hotplug/hotremove,
-> CMA and huge pages is a quite common scenario. In this scenario, the
-> demand for contiguous physical memory allocation is very low. To reduce
-> the kernel image size, some devices disable the compaction. However,
-> their SoCs do support DDR ECC, meaning that memory-failure may be needed.
+On Thu, Aug 13, 2026 at 12:34:30PM -0700, Suren Baghdasaryan wrote:
+> From: Dave Hansen <dave.hansen@linux.intel.com>
 > 
-> Migration is very useful for soft_offline_page() in memory-failure, which
-> may be triggered by correctable memory errors. Most anonymous and
-> file-mapped faulty pages can be migrated to other healthy pages.
+> tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
+> it and mmap_read_trylock().
 > 
-> Currently, MEMORY_FAILURE does not explicitly select MIGRATION. When
-> COMPACTION, MEMORY_HOTREMOVE, NUMA_MIGRATION and CMA are all disabled,
-> MEMORY_FAILURE can be enabled, but MIGRATION cannot be selected.
+> Long Version:
 > 
-> Make MEMORY_FAILURE select MIGRATION to handle this situation.
+> == Background ==
 > 
-> Suggested-by: Mike Rapoport <rppt@kernel.org>
-> Cc: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Cc: David Hildenbrand (Arm) <david@kernel.org>
-> Cc: Miaohe Lin <linmiaohe@huawei.com>
-> Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+> Historically, binder used an mmap_read_trylock() in its shrinker code.
+> This ensures that reclaim is not blocked on an mmap_lock. Commit
+> 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
+> support for the per-VMA lock, but left mmap_read_trylock() as a
+> fallback.
+> 
+> This was presumably because the per-VMA locking can fail for several
+> reasons and most (all?) lock_vma_under_rcu() callers have a fallback
+> to mmap_read_trylock().
+> 
+> == Problem ==
+> 
+> The fallback is not worth the complexity here. lock_vma_under_rcu() is
+> essentially already a non-blocking trylock. The main reason it fails
+> is also the reason mmap_read_trylock() fails: something is holding
+> mmap_write_lock().
+> 
+> The only remedy for a collision with mmap_write_lock() is to wait,
+> which this code can not do. So the "fallback" after
+> lock_vma_under_rcu() failure is not really a fallback: it is really
+> likely to just be retrying in vain. That retry in an of itself isn't
+> horrible. But it adds complexity.
+> 
+> == Solution ==
+> 
+> Now that per-VMA locks are universally available, lock_vma_under_rcu()
+> will not persistently fail. Rely on it alone and simplify the code.
+> The removal of the fallback does not affect NOMMU case because binder
+> driver depends on CONFIG_MMU.
+> 
+> While at it we also make the handling of the cases where the original
+> binder VMA is gone consistent. There are two cases to consider when
+> Binder VMA is gone:
+> 1. there is no VMA at that location anymore.
+> 2. there is now another unrelated VMA at that location.
+> 
+> Before this change we handle case 1 by having the shrinker proceed to
+> free the page, and just skip the zap_vma_range() call. And we handle
+> case 2 by having the shrinker return LRU_SKIP. While either behavior
+> is acceptable, we need to handle them in a consistent way. Handle both
+> cases by freeing the page without touching the VMA (skipping the
+> zap_vma_range()).
+> 
+> Full disclosure: I originally tried to do this with
+> lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
+> trylock semantics. Claude caught this in a review and suggested the
+> approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
+> I guess.
+> 
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: linux-mm@kvack.org
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Arve Hjønnevåg <arve@android.com>
+> Cc: Todd Kjos <tkjos@android.com>
+> Cc: Christian Brauner <christian@brauner.io>
+> Cc: Carlos Llamas <cmllamas@google.com>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: David S. Miller <davem@davemloft.net>
+> Cc: David Ahern <dsahern@kernel.org>
+> Cc: netdev@vger.kernel.org
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 > ---
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
--- 
-Cheers,
-
-David
+Thanks,
+Acked-by: Carlos Llamas <cmllamas@google.com>
 
