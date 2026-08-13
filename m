@@ -4,132 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18707C5DF69
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 18:53:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA41DC5CFDB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 18:55:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E4636B02D4; Thu, 13 Aug 2026 14:53:54 -0400 (EDT)
+	id BD1BF6B02B7; Thu, 13 Aug 2026 14:55:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19C936B05A0; Thu, 13 Aug 2026 14:53:54 -0400 (EDT)
+	id BB16F6B02B9; Thu, 13 Aug 2026 14:55:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 084586B05A1; Thu, 13 Aug 2026 14:53:54 -0400 (EDT)
+	id AC7526B02BA; Thu, 13 Aug 2026 14:55:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C6C376B02D4
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:53:53 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 613AD80294
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 18:53:53 +0000 (UTC)
-X-FDA: 85097145546.07.CFB560B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 95C41100003
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 18:53:51 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wnXpzrcr;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786647231;
-	b=p2tbo4YgKyJ4L50D0quGzjBtSAnPogQzU4crAyAQFOsEMROtIKvXWyJd4hnn7UCjQmg55+
-	MZ7OK17lsQI+TfDoZ21uPUrjfz7byVp+iRtOLn7p2tkYGjlom7L1pd2kxV3NxL7OOKOeLJ
-	fVg59c+V4zN2Mqt5N6MiOjwNPb39FC8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wnXpzrcr;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786647231;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 896716B02B7
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:55:02 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 32D3A160187
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 18:55:02 +0000 (UTC)
+X-FDA: 85097148444.08.FCF280B
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 479A140003
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 18:55:00 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QcEEWDWb;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf11.hostedemail.com: domain of shijujose2008@gmail.com designates 209.85.167.181 as permitted sender) smtp.mailfrom=shijujose2008@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786647300;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ASPFIHOYv4kPq+fjPATiGtO6LZnVw52py5QygU3F5TE=;
-	b=AhyaAfSD7RLp21Eb18hh0W4biqkR2sSAfeVCaMVcFk7nEcaS1ZuZAzolYTal7ogHIpci71
-	Cv4dA9wpSY3qyM+7y9KPAzHx9J7XAFaOqFovCdD7XHDhASpj3TIsdoGZwRjjhP9oRlacf6
-	UCx/YXiUesBmrkekACFO2xwShBQpAHs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3F4B1600BB;
-	Thu, 13 Aug 2026 18:53:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C1F1F000E9;
-	Thu, 13 Aug 2026 18:53:47 +0000 (UTC)
+	bh=4D8xAVPVQumphtAB0QLf5r82YP3dFNVcG1VBTYgExPI=;
+	b=xX4S7bFlNpluXETBEVmTEPUmZOBE1qjUVdSzhRkQH1e7aOTiqRE+CNfOE55CDGNVxHhtot
+	skxDA+Wa6NWXe/CBeNaV4JAwEaKm46fT0MV5M0wFUtnvJuydJIS/vUBWh4qspo3kjHR+MX
+	KKcg+EQNLKkp8N/KMpSkGtygOLKOJhQ=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QcEEWDWb;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf11.hostedemail.com: domain of shijujose2008@gmail.com designates 209.85.167.181 as permitted sender) smtp.mailfrom=shijujose2008@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786647300;
+	b=rNKCD5zZg8MwUNoc1uaIEUG2tPGrDu6IDLS7TorK+88IFy703BcUKCW+BPjTpPuWfA0Ymm
+	BrRKpF/E0RzyC4PdALu8H3mLR6Ag0KOBY74v1Afp1lhJBrH4Q+Ct1WEwHKpaSMCw24UE+k
+	0FQp0nXqs5bYVELOFgZUNqE7stPxIqs=
+Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-49fa951b2c6so83346b6e.1
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:55:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786647299; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Z2fXJQPKFyxAuv8v3128D7MY29SqzSz6hXTQD7Ismuzhl4yITw2qeDgoQXsYwBiCNW
+         awrg6ytZIUuiqIwq5J7S0psmofQHxIxsMsAn5ynWNKaRcpGxINkKL70BNFp+b2KlHzFA
+         9G42M5Fyl7/8IM6x9jYs+9jYF1H4ooqr4XgnxjGLRljYmRHVoPJmvaHi+GK9ov8fYp//
+         Vjy/bKvkar6wao6kIEtyhX9vxB2iqSNBnIX07EIZeoFPwml4SSA6unExuZfVdmeyaCRG
+         66PuY+3HS/fkwbf6OmIDrDTWPb7VgNVSOVfGA3MEZVZPPRamlJ0Dd+zt49Yk5iPp7sBO
+         bDuw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4D8xAVPVQumphtAB0QLf5r82YP3dFNVcG1VBTYgExPI=;
+        fh=hjUyEdERBGZnKKgRTr5BSavyoy87mtVDlHErtJqI3UY=;
+        b=GjXKOJjdOQNBlFu8qQVuDO0y0Ktm8Vk9BRUG2w5MGbGqmaO6+5VVHesOEQNf3bQ1mq
+         VnuAdvfowojAULh3cV0OntCu5Ke4axPbEJCinhCJNNDVU4+1RKA+pclqyzMqOinTeH9y
+         cYVXReujfBA7SM2kgo+SwyayB9bruqH62mpG9/M6jOHpg7Uv5D+PQa3MGt40ka5jEexb
+         0UIpYEtrUiu5hcjjAftyy4/qlbVS3lKqW6K6fgOyXDrx+vRzMIjFeWb3vOyQgMH8Vnby
+         WYmKa+h7CnpSedzH98aoUjWkst8+Ptkm0SXW0SwncVufus4TPMO/LR58Zqf2ww2MmSc5
+         QKsw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1786647230;
-	bh=ASPFIHOYv4kPq+fjPATiGtO6LZnVw52py5QygU3F5TE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=wnXpzrcrikedp0SfWF39QJ5r8iLB1KBdiWswf4VbnJ5qOAuvlzbKrKSdgRPhOX6pk
-	 TFxliHzt3nt6Kba0FcLL/pDXQLhkKftI6vVQfaXHg0qdArA9QGptZ3+YeCocOZqRQU
-	 EMotp0MujU4LLk2hvsJE2MxQMvtrjw/KKUfa1QKE=
-Date: Thu, 13 Aug 2026 11:53:46 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato
- <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan
- Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo
- <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>, Kees Cook
- <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, Ryan
- Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>, Matthew Brost
- <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
- <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
- <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
- Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin
- <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Arnd
- Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank
- <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer
- <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily
- Gorbik <gor@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Alex
- Deucher <alexander.deucher@amd.com>, Christian =?ISO-8859-1?Q?K=F6nig?=
- <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
- <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann
- <tzimmermann@suse.de>, Boris Brezillon <boris.brezillon@collabora.com>,
- Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
- Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
- Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Masami Hiramatsu
- <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra
- <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de
- Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Mark Rutland
- <mark.rutland@arm.com>, Alexander Shishkin
- <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian
- Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, James
- Clark <james.clark@linaro.org>, Jason Gunthorpe <jgg@ziepe.ca>, John
- Hubbard <jhubbard@nvidia.com>, Muchun Song <muchun.song@linux.dev>, Oscar
- Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>, Kairui Song
- <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
- <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Youngjun Park
- <youngjun.park@lge.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kvm@vger.kernel.org, linux-s390@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, syzbot@syzkaller.appspotmail.com
-Subject: Re: [PATCH v5 00/16] mm/rmap: index MAP_PRIVATE file-backed folios
- by anonymous pgoff
-Message-Id: <20260813115346.2aaad419a351341a4f5f3ae0@linux-foundation.org>
-In-Reply-To: <20260813-b4-scalable-cow-virt-pgoff-v5-0-c21581c0c3c8@kernel.org>
-References: <20260813-b4-scalable-cow-virt-pgoff-v5-0-c21581c0c3c8@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 95C41100003
-X-Rspamd-Server: rspam10
+        d=gmail.com; s=20251104; t=1786647299; x=1787252099; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4D8xAVPVQumphtAB0QLf5r82YP3dFNVcG1VBTYgExPI=;
+        b=QcEEWDWbDId4nEVFxEe0rgEVHypp0sL/M+7EAK1LPFJnyitNaRzaWXSXZYbT560g/o
+         3yHt70RM8Kj0UdriSXC+N3v/jEuPVJMUuQDIlvNQs7q4rF8E5x3RiGDA01y5rl23ghCK
+         nkONlr7VedGMalJyDEzwfPQs7sUjVZsJKrVPcUx3tcv3gN7LEwDGVFY7d3VOY8x2QSRP
+         Bhw0sXyCtbba1E6TZdoaOAzKWk7zXFE/zuV+vxoZQ4mnLEy/i9h7OppU75OPRPn6N5iw
+         dLnCMvqAoONkeC+J3ti9zLQPSiMSzLRerlK9M6u47eiJGMaR8BacK7sUTQQo6I5cnply
+         SBlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786647299; x=1787252099;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4D8xAVPVQumphtAB0QLf5r82YP3dFNVcG1VBTYgExPI=;
+        b=KS/5vgbJkWoEsPMPzUYGpexi+TM/newzjHe7SDouXee029ea8jRXqIGJ2MUUYiWe8S
+         rc9e8LijZX8nIXqWnSrxWdnnYBNvcywjmeGm4EmVjIoCKqYsSSlh2PL/QvEr97XZeNHB
+         QfPxvxYpLiM5mOEZu1Y14C0KCj9Q2VmUiu/awihw/kMb3E2c1U3ve2+OPzK7KGbAWY7s
+         qGgKlv7kkfG8pRPukuT6/9JjnqnLr4I8ABmJfET3o0KLzxQ81U5tFuvSAjlAMl85YBbj
+         UuiVhffkB2z8psKJg3D3TqAqqn3UoQRGSaa1CdPBw2X7M+sEiExH29IgfAk9a6qYQER1
+         NfSw==
+X-Forwarded-Encrypted: i=1; AHgh+Rq/lJB5G2lRJDLi0coiE0jCmEgrHolEgJFHvFVQ9/Q43QFYUzrjurPao3o85KDvlBSl1RuIOIzw1g==@kvack.org
+X-Gm-Message-State: AOJu0YyiuhN7TFEvSMvL2FopwqqRSuCgTWbJ0thIzd5Dzap4uQXfzPA3
+	x3bsQQi6x4Mkyw3K3uadGw+bALPrPre4M/q2bZ69u87kMDeQaf/JPLTO+F1+wlwwnknqDo/EbHv
+	Pz97Ek2MECAzhH5gaRZCbsGRzA+vqb7qgzgs6yZQBtQ==
+X-Gm-Gg: AR+sD13zAemoGTkqixepsn+/YbH0/48Wbz53mO5MEvJO4AR3v97lFcn/wSRSnaEcsPN
+	7ak962CEnNq5nzgyeNcBSHPadckTESVFJ6z/L1Ulxq0ioStcQ1cVg5s0N4U8OCNL9Au7vHojhZb
+	k0gvwosREoaepxjQwaNAKVNMb6msA+jGWaLvCaq+LwFBCM8K61g2PA+/k6lDfR26WHjqRSEt2oo
+	IHAz8DD4JnAB/mjb+8mFo1bMLcbRnNGu4D8mlIc9gGIYBcELU6zmzFK/NjwDyJ1BWsNz0r8xLnP
+	eNmuXa2CBJ5SeehIi+5gAxeMa0LKulUnXF/zRyO9cDzq
+X-Received: by 2002:a05:6808:1456:b0:4b2:3e72:bab1 with SMTP id
+ 5614622812f47-4b2413e7cd2mr156530b6e.6.1786647299226; Thu, 13 Aug 2026
+ 11:54:59 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260726212812.89266-1-shijujose2008@gmail.com>
+ <20260726212812.89266-2-shijujose2008@gmail.com> <anvRn4g9Ihn5eyVq@hu-ashoraj-lv.qualcomm.com>
+In-Reply-To: <anvRn4g9Ihn5eyVq@hu-ashoraj-lv.qualcomm.com>
+From: Shiju Jose <shijujose2008@gmail.com>
+Date: Thu, 13 Aug 2026 19:54:48 +0100
+X-Gm-Features: AUfX_mzK2KYq66enN11TTUyY_bgBfEgK88jDGTBrTGSa-gkPWcIl2Tm-4YHdY2Q
+Message-ID: <CAG4KcRJR9+KMsoWjUWjaMveTteqMUrFukTcRgb0SZ593Zqj=tQ@mail.gmail.com>
+Subject: Re: [PATCH v23 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature table
+To: Ashok Raj <ashok.raj@oss.qualcomm.com>
+Cc: rafael@kernel.org, bp@alien8.de, akpm@linux-foundation.org, 
+	rppt@kernel.org, dferguson@amperecomputing.com, linux-edac@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	tony.luck@intel.com, lenb@kernel.org, Yazen.Ghannam@amd.com, 
+	mchehab@kernel.org, jic23@kernel.org, linuxarm@huawei.com, 
+	rientjes@google.com, jiaqiyan@google.com, Jon.Grimm@amd.com, 
+	dave.hansen@linux.intel.com, naoya.horiguchi@nec.com, james.morse@arm.com, 
+	jthoughton@google.com, somasundaram.a@hpe.com, erdemaktas@google.com, 
+	pgonda@google.com, duenwen@google.com, gthelen@google.com, 
+	wschwartz@amperecomputing.com, wbs@os.amperecomputing.com, 
+	nifan.cxl@gmail.com, tanxiaofei@huawei.com, prime.zeng@hisilicon.com, 
+	roberto.sassu@huawei.com, kangkang.shen@futurewei.com, 
+	wanghuiqiang@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: p9qxctsd7957tmf5dzyyc93fnrn48e7i
+X-Rspamd-Queue-Id: 479A140003
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: rjmziyyjek38g1rps8egeiwwfmwwrzjp
-X-HE-Tag: 1786647231-414487
-X-HE-Meta: U2FsdGVkX1+AdBx+gK5BSLBkAwuXN9L07NQVGsw/Sxiz+SFmB/EksjDVPfcEYGoAlFcEJEvQiUsZWlEvDgJcjyrwFy2yEoPIsmFDhCTpsIosejDYL8i98dRbfm67MRbfFOxsazM3G2Tq3e+/RHZHysnj+jLATZpIUMdR1ia6+PkmURju6riNOqv869/BXGU6VhKGuks78OJxpKb7XQj8EwDBdCK6Zc+ZLD+SbX7YShCqQ2O7uyWKQtpkJgYUixx+Z3XUnnDRgvAg/FMW9StGPb85xQXcvgEEuC0M5MPJPSMVbkm01hcxa7Rgv8S2E7qdIrK8jqQr0OhhKCwAkLWVoGJBhwk8lSKpDrKbr0ozt/azNSSwVPINUugHJwHSFJ0dfNj8HHvVbymxTtVUtfZa6lsWIJnOyYi/L7KhxmLR5F8UVw2VU2enPpxFAKsnVIR5eJPAUTKTtmlTL/vA2Alvm95v6VT/yKCFsU7nM48KRFouUWVbcCPYkhS8P0PIo4qPhHoMoHhrzEGGzJK3oKJtOIAloYjq0l5sf9/WWbffx53DRxDEcKK6fQWCpqSEZanihdIwHm3M2ufXAneOJkqQd0f65FwqTWrf1Vo4NPl/1q7kOz7F8k5LDhuEzoH/xwUwQYhBhpLMjK/w3l1oElnE8e66O5UxPB6T9GZy6D01ZLzZMnsoNZD5Eot161F+r4i0MMJdj/IMV2GWqfjTvzSha299ypXZKAweGh1Cml6163l4Yzz4nWfm/oFUrAKbFDQ4FFAusUtRqa7050T+4lhgKr72tx98o0UhFaiWnqTWjaLieyvWCq/n2NxqE2d9pxf6pn/8VHpB34Rb/510E+XUU2LI5pTU+mutwBfLV7Iqy/HHo9BDwirSNDx1/uiSmUOlptn6RH8YAnzOCIXi67X1cwUaNPWpWuUyDMp540Zd6bap3Zpnw3aLnuwMResoIG/TOkhgwNcMwhfrZOhXUEO
- 8QjrgIh0
- hq/Re/iM+zoUrPHabpIKAz+TajlEXpB3SJvENyTMebDsByZyl8xGlZ7ejUpD25M3PGHlAZfMAMGR7J5XHoIS4k2UiH6OzeKhHR1SaADbd/MqAQKw55ylE3twDzlbGa2jUX6XZmoWvSNpVERjjOwBmZ3z3VPMmZiALXxU/BzJANZdTYlUuJ+HunUhE1H3uCZjo8wM6APbKQ50vytPFh7FS7CfJcs7qYINvXdF+n2ZiqpM9OrdEA3bl2KLGitVvvo7ZotYaD3Kv9hu8zz4akeByF9f9KQn/5UiOEI/UB2LY9f30NRuZRjhpIql4uHLXNHh20UnBDvaUY9B39vl2xAvSvoRUGh69B9H4KtnUE80Sda2aMEeDF3soiA3ikimJ8zVJcC48EF5t4Rx0nS8=
+X-HE-Tag: 1786647300-267806
+X-HE-Meta: U2FsdGVkX19vC1GzAwqFn19x69bGLx+wgLXhxbHSAV161FprP7HR14bal6RtzD3nNCfBjeCWeRjheETqBS6b/PA5ZRONuNt7Y+B0C/yIA8HOLXX+PsRWt/1HbhgkRRdPqiI4xvq1EwpaZ9JrxC1v8e9cJD4x8uwCGOV3rzMce6E5UB8rK3mXuP02J2WBSlbc1vAQRCkFIC8q1N/HQGtplAqr6I6WCuws/bX0gHuxrub4Cyp4cN5F6FdT5ZQrAzNmYpsTXl0RZzw5U7Mb1Y/DiIAbnesaKFyCis8sS2m0Zzl0JwMP2HI19qj4/+faqFvNb+mYkSRHmga3N4VUMhq7wyGRhPJPLovlSTSCSm+KDPHPbHjIDkt2lAMTvqeAtLWxeDzp03ETry928tMEjKP6LNTc0IhojwnU7YhGAZLdOhE3hXQFM9ZP7Op7vlkfVEzwr6Sb95XlW3PqcqiObHtt9yqwZRha5nL6K2CRoxkJR/kglAcYIRlU+lD0ncasGZeauS/XmyQ5MYVGBU1GGDYLwqt9mXuOHLt0OQ0a3pxX5kejUe9zixmlMwrfM24Y5jW+ON0HJABUgS4xfe0+umkUa/3GEl4hq48zgZT+V1YIHOxwTgWCmQQkInZuQkby7VXpjZZ051VrbURSQYmMqQ/ghrkcaDf9TTvv19h+JS8D4R/u4UAFoumF0TKUJnsQEPe7YrKbKpj4jYRrsMXQTeWyNylPcyfDKxt+q66e9xStqNStg2sWHZWpstC4ZBgRIFGeNVHEzhcUv45cQnKpFizKTRpv5YYRS65xRI3JHRitsTkGiFVsvtlZL/3H0il3u/GEbIod2NK3tbyop0mfShaPbb8FIpoGQ2/SgmVZo4oos4NwHe5a8LUALGLpjeZdLvzyDKrWzh5yYQYGfz+b2EkJxHuWM2FImW2Jcx151EvQ59gjV2hxjbpeqc7AKVyGfiw/kQq/WH/GVmYXHWUFTK+
+ ANgykWuj
+ 848LBUP1g2r0EYu7FeNfZBWTGXqHX8hycmiTbwV9eS+la9SuAnUNLeDcgIKOEKQNmK0aGKXwGFgz5h3V3s5wcoIM5qxFP9E/iFaI9ZzAkHKfZQLDkhwa5tqwW3jc7AhHPmdEREjs6uqcMGbSZSuwZ8IAp9ZCX8BCKvGx/FmBeqF0UUOmJKFJcNXGXzG/3bHHC3NoRcUcYruGDJRvu28ITf4z3g9YSCaCI17CNPBPomyQnCTbuC9/o3wSGAYLE2am5p9NdvZYgODof+62NcWClOHqSHKN1II1qyKZCw8cZUsG134PN0IYwPeUczmWypO9lOy6Iwlu95c5NaHxDQsg79MHxSfoMnI3lBWyxnndJIXGU2HMaAzvaHerVzadZkwTnydS7M00ylWu/EUDlzswSD6+Xxbz4AOa1AoBr+zFnYZNmRg+ecULC0+yL+OSBeojz5s88l/nftHyDss9jJAtraatwbCrk8dTuQDceGc3Hd9PEIHh+WYc2pBoLwdnJiMwi809Tre3HLZJ316DP4+fWjp23GZiCXf5jvV70mOHDUVLVXvrr3JbeOOO59tTr1yR37myMmFF51MDOQ/7zqm6OovmfhQTpqxedc4nE+I5AZqbiCzpESjB2yIBJvrfSYwd1E7mI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,600 +151,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 13 Aug 2026 18:32:17 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+On Wed, Aug 12, 2026 at 2:51=E2=80=AFAM Ashok Raj <ashok.raj@oss.qualcomm.c=
+om> wrote:
+>
+> Hi Shiju
+>
+> On Sun, Jul 26, 2026 at 10:28:11PM +0100, shijujose2008@gmail.com wrote:
+> > From: Shiju Jose <shijujose2008@gmail.com>
+> >
+> > ACPI 6.5 Specification, section 5.2.21, defined RAS2 feature table (RAS=
+2).
+> > Driver adds support for RAS2 feature table, which provides interfaces f=
+or
+> > platform RAS features, e.g., for HW-based memory scrubbing, and logical=
+ to
+> > PA translation service. RAS2 uses PCC channel subspace for communicatin=
+g
+> > with the ACPI compliant HW platform.
+> >
+> > Co-developed-by: A Somasundaram <somasundaram.a@hpe.com>
+> > Signed-off-by: A Somasundaram <somasundaram.a@hpe.com>
+> > Co-developed-by: Jonathan Cameron <jic23@kernel.org>
+> > Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+> > Tested-by: Daniel Ferguson <danielf@os.amperecomputing.com>
+> > Reviewed-by: Ashok Raj <ashok.raj@oss.qualcomm.com>
+> > Signed-off-by: Shiju Jose <shijujose2008@gmail.com>
+> > ---
+> >  drivers/acpi/Kconfig  |  11 +
+> >  drivers/acpi/Makefile |   1 +
+> >  drivers/acpi/bus.c    |   3 +
+> >  drivers/acpi/ras2.c   | 509 ++++++++++++++++++++++++++++++++++++++++++
+> >  include/acpi/ras2.h   |  57 +++++
+> >  5 files changed, 581 insertions(+)
+> >  create mode 100644 drivers/acpi/ras2.c
+> >  create mode 100644 include/acpi/ras2.h
+> >
+> > diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+>
+> [snip]
+>
+> > +int ras2_send_pcc_cmd(struct ras2_mem_ctx *ras2_ctx, u16 cmd)
+> > +{
+> > +     struct acpi_ras2_shmem __iomem *gen_comm_base;
+> > +     struct mbox_chan *pcc_channel;
+> > +     struct ras2_sspcc *sspcc;
+> > +     s64 time_delta;
+> > +     u16 val;
+> > +     int rc;
+> > +
+>
+> [snip]
+>
+> > +
+> > +     /* Ring doorbell */
+> > +     rc =3D mbox_send_message(pcc_channel, &cmd);
+> > +     /*
+> > +      * mbox_send_message() returns a non-negative integer for success=
+ful submission
+> > +      * and a negative value on failure.
+> > +      */
+> > +     if (rc < 0) {
+> > +             dev_warn(ras2_ctx->dev,
+> > +                      "Error sending PCC mbox message command: 0x%x, r=
+c:%d\n", cmd, rc);
+> > +             /* Restore CMD COMPLETE bit on error */
+> > +             val =3D ioread16(&gen_comm_base->status);
+> > +             val |=3D PCC_STATUS_CMD_COMPLETE;
+> > +             iowrite16(val, &gen_comm_base->status);
+> > +             return rc;
+> > +     } else {
+> > +             rc =3D 0;
+> > +     }
+>
+> Minor:
+>
+> Sorry, I missed in prior review.
+>
+> Can the else after return be removed?
+> just set rc =3D 0 should be sufficient.
 
-> In memory management we've managed to manufacture a great deal of confusion
-> around the concept of anonymous memory. We have:
-> 
-> 1. 'Pure anon' memory - anonymous VMAs whose folios are anonymous and
->    swap-backed (thus for reclaim purposes, treated as anonymous). These are
->    simple enough.
-> 
-> 2. shmem - file-backed VMAs, file-backed folios (from rmap perspective) so
->    present in the page cache and mapped by an address_space object, but
->    whose folios are also swap-backed (thus treated as anonymous for reclaim
->    purposes).
-> 
-> 3. MAP_PRIVATE-mapped /dev/zero - a strange beast whose VMAs have
->    vma->vm_file set, but which clears vma->vm_ops to satisfy
->    vma_is_anonymous(), resulting in VMAs that were mmap()'d referencing a
->    file, but are in every other sense anonymous, including the folios.
-> 
-> 4. Other MAP_PRIVATE-file backed mappings - These possess file-backed VMAs
->    and have file-backed folios until CoW'd, at which point those CoW'd
->    folios are anonymous.
-> 
-> This series fixes issue 3.
+Hi Ashok,
 
-Thanks.  I've updated mm.git's mm-unstable branch to this version. 
-Looking good for the second week of the upcoming merge window.
+Thanks for the feedback.
+I will make this change if another version is needed.
 
+Thanks,
+Shiju
 
-You'll be mortified to hear that Sashiko wasn't able to find anything
-to which to apply this.
-
-Sashiko can be guided with a base-commit: tag but I'm not sure how to
-tell it what tree/branch to try, or even if that's necessary.  Perhaps
-someone can figure this out sometime.
-
-maybe
-
-hp2:/usr/src/linux-next> git log --oneline | grep "mm/vma: introduce VMA anon page offset field and add helpers"
-249646a587dc mm/vma: introduce VMA anon page offset field and add helpers
-
-base-commit: 249646a587dc^
-
-But that requires that Sashiko be able to poke around in linux-next
-from previous days.
-
-> v5:
-> * Accumulated tags (thanks everybody!)
-> * Removed the final 4 patches to be handled later as there are nuances with
->   the /dev/zero stuff we need to figure out, as discussed with David.
-> * Updated the cover letter to reflect this.
-> * Added comments to vma_flags_is_cow_mapping(),
->   vma_[desc_]is_cow_mapping() as per Suren.
-> * Correct typo as per Suren.
-> * Reworded test comment in patch 16 from 'fault in' to 'trigger a CoW
->   fault' as per David.
-> * Fix -> 75 char limit in patch 12's commit msg.
-
-Here's how v5 altered mm.git.  It's rather substantial, but mainly
-selftests:
-
-
- drivers/char/mem.c                                     |    8 
- include/linux/mm.h                                     |   18 -
- include/linux/pagemap.h                                |    3 
- mm/internal.h                                          |   17 -
- mm/vma.c                                               |   52 ----
- mm/vma.h                                               |    3 
- mm/vma_internal.h                                      |    1 
- tools/testing/selftests/mm/merge.c                     |  106 ----------
- tools/testing/selftests/proc/proc-self-map-files-001.c |    2 
- tools/testing/selftests/proc/proc-self-map-files-002.c |    2 
- tools/testing/vma/include/dup.h                        |   40 ---
- tools/testing/vma/tests/mmap.c                         |   50 ----
- 12 files changed, 40 insertions(+), 262 deletions(-)
-
---- a/drivers/char/mem.c~b
-+++ a/drivers/char/mem.c
-@@ -506,7 +506,11 @@ static int mmap_zero_prepare(struct vm_a
- 	if (vma_desc_test(desc, VMA_SHARED_BIT))
- 		return shmem_zero_setup_desc(desc);
- 
--	/* MAP_PRIVATE semantics are taken care for us by core mm. */
-+	/*
-+	 * This is a highly unique situation where we mark a MAP_PRIVATE mapping
-+	 * of /dev/zero anonymous, despite it not being.
-+	 */
-+	vma_desc_set_anonymous(desc);
- 	return 0;
- }
- 
-@@ -694,7 +698,7 @@ static const struct memdev {
- #ifdef CONFIG_DEVPORT
- 	[4] = { "port", &port_fops, 0, 0 },
- #endif
--	[DEVZERO_MINOR] = { "zero", &zero_fops, FMODE_NOWAIT, 0666 },
-+	[5] = { "zero", &zero_fops, FMODE_NOWAIT, 0666 },
- 	[7] = { "full", &full_fops, 0, 0666 },
- 	[8] = { "random", &random_fops, FMODE_NOWAIT, 0666 },
- 	[9] = { "urandom", &urandom_fops, FMODE_NOWAIT, 0666 },
---- a/include/linux/mm.h~b
-+++ a/include/linux/mm.h
-@@ -740,9 +740,6 @@ static inline bool fault_flag_allow_retr
- 	{ FAULT_FLAG_INTERRUPTIBLE,	"INTERRUPTIBLE" }, \
- 	{ FAULT_FLAG_VMA_LOCK,		"VMA_LOCK" }
- 
--/* /dev/zero minor device number. Special due to MAP_PRIVATE semantics. */
--#define DEVZERO_MINOR	5
--
- /*
-  * vm_fault is filled by the pagefault handler and passed to the vma's
-  * ->fault function. The vma's ->fault is responsible for returning a bitmask
-@@ -1554,6 +1551,11 @@ static inline void vma_set_anonymous(str
- 	vma->vm_ops = NULL;
- }
- 
-+static inline void vma_desc_set_anonymous(struct vm_area_desc *desc)
-+{
-+	desc->vm_ops = NULL;
-+}
-+
- static inline bool vma_is_anonymous(const struct vm_area_struct *vma)
- {
- 	return !vma->vm_ops;
-@@ -2279,8 +2281,7 @@ void unpin_folios(struct folio **folios,
-  * All mappings backed by anonymous folios (all anonymous mappings and most
-  * MAP_PRIVATE-file backed ranges) are CoW mappings.
-  *
-- * All other mappings (including all writable MAP_SHARED mappings) are
-- * non-CoW.
-+ * All other mappings (including all MAP_SHARED mappings) are non-CoW.
-  *
-  * The criteria are !VMA_SHARED_BIT, VMA_MAYWRITE_BIT.
-  *
-@@ -2317,7 +2318,7 @@ static inline bool vma_flags_is_cow_mapp
- 
- /**
-  * vma_is_cow_mapping() - Is this VMA a CoW mapping?
-- * @vma: The VMA to check.
-+ * @desc: The VMA to check.
-  *
-  * See vma_flags_is_cow_mapping() for details.
-  *
-@@ -4407,8 +4408,9 @@ static inline unsigned long vma_pages(co
-  * If @vma is a MAP_PRIVATE file-backed mapping, then this returns the
-  * page offset within the file.
-  *
-- * Edge cases: nommu does not abide by these and CoW MAP_PRIVATE-pfnmap regions
-- * have their page offset set to the first PFN in the range.
-+ * Edge cases: nommu does not abide by these, MAP_PRIVATE-/dev/zero satisfies
-+ * vma_is_anonymous() but has file-backed page offset, and MAP_PRIVATE-pfnmap
-+ * regions have their page offset set to the first PFN in the range.
-  *
-  * Returns: The page offset of the start of @vma.
-  */
---- a/include/linux/pagemap.h~b
-+++ a/include/linux/pagemap.h
-@@ -1128,7 +1128,8 @@ static inline pgoff_t linear_anon_page_i
- 	const pgoff_t pgoff = __linear_anon_page_index(vma, address);
- 
- 	VM_WARN_ON_ONCE(!vma_is_cow_mapping(vma));
--	if (vma_is_anonymous(vma))
-+	/* Account for MAP_PRIVATE-/dev/zero which is only semi-anonymous. */
-+	if (vma_is_anonymous(vma) && !vma->vm_file)
- 		VM_WARN_ON_ONCE(pgoff != linear_page_index(vma, address));
- 
- 	return pgoff;
---- a/mm/internal.h~b
-+++ a/mm/internal.h
-@@ -240,18 +240,15 @@ static inline int mmap_file(struct file
- {
- 	int err = vfs_mmap(file, vma);
- 
-+	if (likely(!err))
-+		return 0;
-+
- 	/*
--	 * Either we tried to call the file hook for mmap() and an error arose
--	 * or a driver set vma->vm_ops = NULL intending there to be no VMA
--	 * operations.
--	 *
--	 * In the former case the VMA is in an inconsistent state and we mustn't
--	 * invoke any further hooks on it, in the latter case the hook actually
--	 * wanted no further hooks to be invoked, so fix both by setting dummy
--	 * VMA ops.
-+	 * OK, we tried to call the file hook for mmap(), but an error
-+	 * arose. The mapping is in an inconsistent state and we must not invoke
-+	 * any further hooks on it.
- 	 */
--	if (unlikely(err || !vma->vm_ops))
--		vma->vm_ops = &vma_dummy_vm_ops;
-+	vma->vm_ops = &vma_dummy_vm_ops;
- 
- 	return err;
- }
---- a/mm/vma.c~b
-+++ a/mm/vma.c
-@@ -2621,36 +2621,6 @@ static int __mmap_new_file_vma(struct mm
- 	return 0;
- }
- 
--static bool map_is_dev_zero(const struct mmap_state *map)
--{
--	const struct file *file = map->file;
--	struct inode *inode;
--
--	if (!file)
--		return false;
--	inode = file_inode(file);
--	if (!S_ISCHR(inode->i_mode))
--		return false;
--	return imajor(inode) == MEM_MAJOR && iminor(inode) == DEVZERO_MINOR;
--}
--
--static void map_set_anon(struct mmap_state *map)
--{
--	map->file = NULL;
--	map->vm_ops = NULL;
--	map->pgoff = map->addr >> PAGE_SHIFT;
--}
--
--static bool map_is_private(const struct mmap_state *map)
--{
--	return !vma_flags_test(&map->vma_flags, VMA_SHARED_BIT);
--}
--
--static bool map_is_anon(const struct mmap_state *map)
--{
--	return map_is_private(map) && !map->file;
--}
--
- /*
-  * __mmap_new_vma() - Allocate a new VMA for the region, as merging was not
-  * possible.
-@@ -2664,7 +2634,8 @@ static bool map_is_anon(const struct mma
- static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
- 	struct mmap_action *action)
- {
--	const bool is_anon = map_is_anon(map);
-+	const bool is_anon = !map->file &&
-+		!vma_flags_test(&map->vma_flags, VMA_SHARED_BIT);
- 	struct vma_iterator *vmi = map->vmi;
- 	int error = 0;
- 	struct vm_area_struct *vma;
-@@ -2806,10 +2777,6 @@ static int call_mmap_prepare(struct mmap
- 	if (err)
- 		return err;
- 
--	/* Hooks cannot mark themselves anonymous. */
--	if (!desc->vm_ops)
--		return -EINVAL;
--
- 	err = call_action_prepare(map, desc);
- 	if (err)
- 		return err;
-@@ -2826,21 +2793,16 @@ static int call_mmap_prepare(struct mmap
- 	map->vm_ops = desc->vm_ops;
- 	map->vm_private_data = desc->private_data;
- 
--	/*
--	 * MAP_PRIVATE-/dev/zero mappings are an ancient way of getting
--	 * anonymous mappings. Rather than allowing these mappings to be odd
--	 * outliers, simply make them truly anonymous.
--	 */
--	if (map_is_private(map) && map_is_dev_zero(map))
--		map_set_anon(map);
--
- 	return 0;
- }
- 
- static void set_vma_user_defined_fields(struct vm_area_struct *vma,
- 		struct mmap_state *map)
- {
--	vma->vm_ops = map->vm_ops;
-+	if (map->vm_ops)
-+		vma->vm_ops = map->vm_ops;
-+	else	/* Only /dev/zero should do this. */
-+		vma_set_anonymous(vma);
- 	vma->vm_private_data = map->vm_private_data;
- }
- 
-@@ -2920,7 +2882,7 @@ static unsigned long __mmap_region(struc
- 		allocated_new = true;
- 	}
- 
--	if (have_mmap_prepare && !map_is_anon(&map))
-+	if (have_mmap_prepare)
- 		set_vma_user_defined_fields(vma, &map);
- 
- 	__mmap_complete(&map, vma);
---- a/mm/vma.h~b
-+++ a/mm/vma.h
-@@ -267,6 +267,9 @@ static inline void assert_sane_pgoff(str
- 	 */
- 	if (!vma_is_anonymous(vma))
- 		return;
-+	/* MAP_PRIVATE-/dev/zero is anon, non-NULL vm_file, but has file pgoff. */
-+	if (vma->vm_file)
-+		return;
- 	/* If faulted in, could have been remapped. */
- 	if (vma->anon_vma)
- 		return;
---- a/mm/vma_internal.h~b
-+++ a/mm/vma_internal.h
-@@ -23,7 +23,6 @@
- #include <linux/ksm.h>
- #include <linux/khugepaged.h>
- #include <linux/list.h>
--#include <linux/major.h>
- #include <linux/maple_tree.h>
- #include <linux/mempolicy.h>
- #include <linux/mm.h>
---- a/tools/testing/selftests/mm/merge.c~b
-+++ a/tools/testing/selftests/mm/merge.c
-@@ -1324,7 +1324,7 @@ TEST_F(merge, anon_and_page_offset_misma
- 	ASSERT_NE(ptr, MAP_FAILED);
- 
- 	/*
--	 * Map another separately and trigger a CoW fault, at page offset 5:
-+	 * Map another separately and trigger a CoW fault at page offset 5:
- 	 *
- 	 * |-----------|           |---------|
- 	 * | unfaulted |           | faulted |
-@@ -1362,110 +1362,6 @@ TEST_F(merge, anon_and_page_offset_misma
- 	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 5 * page_size);
- }
- 
--TEST_F(merge, merge_map_private_dev_zero_unfaulted)
--{
--	struct procmap_fd *procmap = &self->procmap;
--	unsigned int page_size = self->page_size;
--	char *carveout = self->carveout;
--	char *ptr, *ptr2;
--	int fd_zero;
--
--	if (access("/dev/zero", F_OK))
--		SKIP(return, "No /dev/zero.");
--	fd_zero = open("/dev/zero", O_RDWR);
--	ASSERT_NE(fd_zero, -1);
--
--	/*
--	 * Map two MAP_PRIVATE-/dev/zero VMAs next to one another with offset 0
--	 * each.
--	 *
--	 * With these being made truly anonymous upon mapping, they will
--	 * merge. If they were file-backed VMAs the page offsets would prevent
--	 * merge:
--	 *
--	 * |-----||------|    |-------------|
--	 * | ptr || ptr2 | -> |     ptr     |
--	 * |-----||------|    |-------------|
--	 */
--	ptr = mmap(carveout, 5 * page_size, PROT_READ | PROT_WRITE,
--		   MAP_FIXED | MAP_PRIVATE, fd_zero, 0);
--	if (ptr == MAP_FAILED) {
--		close(fd_zero);
--		ASSERT_TRUE(false);
--	}
--	ptr2 = mmap(&carveout[5 * page_size], 5 * page_size,
--		   PROT_READ | PROT_WRITE, MAP_FIXED | MAP_PRIVATE, fd_zero, 0);
--	if (ptr2 == MAP_FAILED) {
--		close(fd_zero);
--		ASSERT_TRUE(false);
--	}
--	close(fd_zero);
--
--	/* Assert that they merged. */
--	ASSERT_TRUE(find_vma_procmap(procmap, ptr));
--	ASSERT_EQ(procmap->query.vma_start, (unsigned long)ptr);
--	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 10 * page_size);
--}
--
--TEST_F(merge, merge_map_private_dev_zero_faulted_unfaulted)
--{
--	struct procmap_fd *procmap = &self->procmap;
--	unsigned int page_size = self->page_size;
--	char *carveout = self->carveout;
--	char *ptr, *ptr2;
--	int fd_zero;
--
--	if (access("/dev/zero", F_OK))
--		SKIP(return, "No /dev/zero.");
--	fd_zero = open("/dev/zero", O_RDWR);
--	ASSERT_NE(fd_zero, -1);
--
--	/*
--	 * Map a MAP_PRIVATE mapping of /dev/zero with page offset 0, then fault
--	 * it in:
--	 *
--	 * |-------------------------------|
--	 * |           faulted             |
--	 * |-------------------------------|
--	 */
--	ptr = mmap(carveout, 15 * page_size, PROT_READ | PROT_WRITE,
--		   MAP_FIXED | MAP_PRIVATE, fd_zero, 0);
--	if (ptr == MAP_FAILED) {
--		close(fd_zero);
--		ASSERT_TRUE(false);
--	}
--	memset(ptr, 'x', 15 * page_size);
--
--	/*
--	 * Unmap the middle:
--	 *
--	 * |---------|           |---------|
--	 * | faulted |           | faulted |
--	 * |---------|           |---------|
--	 */
--	ASSERT_EQ(munmap(&ptr[5 * page_size], 5 * page_size), 0);
--
--	/*
--	 * Map in a new unfaulted mapping in the middle with page offset 0 -
--	 * this should merge and would not if it were treated as a file rather
--	 * than pure anon:
--	 *
--	 * |---------|-----------|---------|
--	 * | faulted | unfaulted | faulted |
--	 * |---------|-----------|---------|
--	 */
--	ptr2 = mmap(&carveout[5 * page_size], 5 * page_size,
--		    PROT_READ | PROT_WRITE, MAP_FIXED | MAP_PRIVATE,
--		    fd_zero, 0);
--	close(fd_zero);
--	ASSERT_NE(ptr2, MAP_FAILED);
--
--	/* Assert that they merged. */
--	ASSERT_TRUE(find_vma_procmap(procmap, ptr));
--	ASSERT_EQ(procmap->query.vma_start, (unsigned long)ptr);
--	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 15 * page_size);
--}
--
- TEST_F(merge_with_fork, mremap_faulted_to_unfaulted_prev)
- {
- 	struct procmap_fd *procmap = &self->procmap;
---- a/tools/testing/selftests/proc/proc-self-map-files-001.c~b
-+++ a/tools/testing/selftests/proc/proc-self-map-files-001.c
-@@ -51,7 +51,7 @@ int main(void)
- 	int fd;
- 	unsigned long a, b;
- 
--	fd = open("/proc/self/exe", O_RDONLY);
-+	fd = open("/dev/zero", O_RDONLY);
- 	if (fd == -1)
- 		return 1;
- 
---- a/tools/testing/selftests/proc/proc-self-map-files-002.c~b
-+++ a/tools/testing/selftests/proc/proc-self-map-files-002.c
-@@ -57,7 +57,7 @@ int main(void)
- 	int fd;
- 	unsigned long a, b;
- 
--	fd = open("/proc/self/exe", O_RDONLY);
-+	fd = open("/dev/zero", O_RDONLY);
- 	if (fd == -1)
- 		return 1;
- 
---- a/tools/testing/vma/include/dup.h~b
-+++ a/tools/testing/vma/include/dup.h
-@@ -15,21 +15,6 @@ struct task_struct *get_current(void);
- #define MMF_HAS_MDWE	28
- #define current get_current()
- 
--#define MINORBITS	20
--#define MINORMASK	((1U << MINORBITS) - 1)
--
--#define MAJOR(dev)	((unsigned int) ((dev) >> MINORBITS))
--#define MINOR(dev)	((unsigned int) ((dev) & MINORMASK))
--#define MKDEV(ma, mi)	(((ma) << MINORBITS) | (mi))
--
--#define S_IFMT  00170000
--#define S_IFCHR  0020000
--
--#define S_ISCHR(m)	(((m) & S_IFMT) == S_IFCHR)
--
--#define MEM_MAJOR		1
--#define DEVZERO_MINOR	5
--
- /*
-  * Define the task command name length as enum, then it can be visible to
-  * BPF programs.
-@@ -38,8 +23,6 @@ enum {
- 	TASK_COMM_LEN = 16,
- };
- 
--typedef unsigned short		umode_t;
--
- /* PARTIALLY implemented types. */
- struct mm_struct {
- 	struct maple_tree mm_mt;
-@@ -62,10 +45,6 @@ struct address_space {
- 	unsigned long		flags;
- 	atomic_t		i_mmap_writable;
- };
--struct inode {
--	umode_t			i_mode;
--	dev_t			i_rdev;
--};
- struct file_operations {
- 	int (*mmap)(struct file *, struct vm_area_struct *);
- 	int (*mmap_prepare)(struct vm_area_desc *);
-@@ -73,7 +52,6 @@ struct file_operations {
- struct file {
- 	struct address_space	*f_mapping;
- 	const struct file_operations	*f_op;
--	struct inode			*f_inode;
- };
- struct anon_vma_chain {
- 	struct anon_vma *anon_vma;
-@@ -1660,23 +1638,9 @@ static inline pgoff_t linear_anon_page_i
- 	const pgoff_t pgoff = __linear_anon_page_index(vma, address);
- 
- 	VM_WARN_ON_ONCE(!vma_is_cow_mapping(vma));
--	if (vma_is_anonymous(vma))
-+	/* Account for MAP_PRIVATE-/dev/zero which is only semi-anonymous. */
-+	if (vma_is_anonymous(vma) && !vma->vm_file)
- 		VM_WARN_ON_ONCE(pgoff != linear_page_index(vma, address));
- 
- 	return pgoff;
- }
--
--static inline struct inode *file_inode(const struct file *f)
--{
--	return f->f_inode;
--}
--
--static inline unsigned iminor(const struct inode *inode)
--{
--	return MINOR(inode->i_rdev);
--}
--
--static inline unsigned imajor(const struct inode *inode)
--{
--	return MAJOR(inode->i_rdev);
--}
---- a/tools/testing/vma/tests/mmap.c~b
-+++ a/tools/testing/vma/tests/mmap.c
-@@ -45,57 +45,7 @@ static bool test_mmap_region_basic(void)
- 	return true;
- }
- 
--static int dummy_mmap_prepare(struct vm_area_desc *desc)
--{
--	return 0;
--}
--
--static bool test_pure_anon_dev_zero(void)
--{
--	const vma_flags_t vma_flags = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
--			VMA_MAYREAD_BIT, VMA_MAYWRITE_BIT);
--	const struct file_operations f_op = {
--		.mmap_prepare = dummy_mmap_prepare,
--	};
--	struct inode inode = {
--		.i_mode = S_IFCHR,
--		.i_rdev = MKDEV(MEM_MAJOR, DEVZERO_MINOR),
--	};
--	struct file file = {
--		.f_inode = &inode,
--		.f_op = &f_op,
--	};
--	struct mm_struct mm = {};
--	struct vm_area_struct *vma;
--	unsigned long addr;
--	VMA_ITERATOR(vmi, &mm, 0);
--
--	current->mm = &mm;
--
--	/*
--	 * Map a MAP_PRIVATE-/dev/zero mapping at address 0x300000 with a page
--	 * offset of 0x10, which we expect to be reset to the anonymous page
--	 * offset.
--	 */
--	addr = __mmap_region(&file, 0x300000, 0x3000, vma_flags, 0x10, NULL);
--	ASSERT_EQ(addr, 0x300000);
--
--	/* Assert that it truly is an anonymous mapping. */
--	vma = vma_lookup(&mm, addr);
--	ASSERT_NE(vma, NULL);
--	ASSERT_TRUE(vma_is_anonymous(vma));
--	ASSERT_EQ(vma->vm_file, NULL);
--	ASSERT_EQ(vma->vm_private_data, NULL);
--	/* Expect anonymous page offsets. */
--	ASSERT_EQ(vma->vm_pgoff, 0x300);
--	ASSERT_EQ(vma_start_anon_pgoff(vma), 0x300);
--
--	cleanup_mm(&mm, &vmi);
--	return true;
--}
--
- static void run_mmap_tests(int *num_tests, int *num_fail)
- {
- 	TEST(mmap_region_basic);
--	TEST(pure_anon_dev_zero);
- }
-_
-
+>
+> Cheers,
+> Ashok
 
