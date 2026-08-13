@@ -4,90 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90B10C5CFDB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 20:44:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3217C5CFDB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 20:49:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F5546B05BF; Thu, 13 Aug 2026 16:44:07 -0400 (EDT)
+	id D69006B05C2; Thu, 13 Aug 2026 16:49:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D5E86B05C0; Thu, 13 Aug 2026 16:44:07 -0400 (EDT)
+	id CFA0F6B05C3; Thu, 13 Aug 2026 16:49:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60A4A6B05C1; Thu, 13 Aug 2026 16:44:07 -0400 (EDT)
+	id BE1306B05C4; Thu, 13 Aug 2026 16:49:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E6C46B05BF
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:44:07 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BC0314019A
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 20:44:06 +0000 (UTC)
-X-FDA: 85097423292.25.B0B0884
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id ADA2E160006
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 20:44:04 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tLm+lc4V;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 969526B05C2
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:49:39 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 337341602A0
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 20:49:39 +0000 (UTC)
+X-FDA: 85097437278.27.42BEFE9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 808CA180007
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 20:49:36 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pd+eHJfw;
+	spf=pass (imf16.hostedemail.com: domain of sandeen@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=sandeen@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786654176;
+	b=k3V6bOVU35fyG2HziPRes9ebbUSj3mvdN/E9PUnfZrImQ73R6V4tHHq3Ti5IYEUM8oIAg2
+	G52PA/ze41ZkTfXJxTvfqZQaCkBcJlLE16oZKX33xvFIBJ074UOVWVmqLrvsYUhv/ICBXK
+	3r/QkBu1lRDJ6h5Xn456VDUqFSdZmQE=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pd+eHJfw;
+	spf=pass (imf16.hostedemail.com: domain of sandeen@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=sandeen@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786653845;
+	s=arc-20220608; t=1786654176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fdWp8ueXb6s+udO8FKONy4G9LfKlB2Cu4K/pOBUgXWU=;
-	b=i94krV51bb7pwJv1T4gMG82aDntaz7hs8XYZ7esB84o3DXfteoXkjNkMPQXvh8T4dB+9FB
-	5/1tMnmmo+mNj3J4JuqOTUofL9MGGgPZrI1HRupgoqSdtKUchalSrTza+an/NpTVu7KePD
-	Fd9sY9BYjoG9/bBGITMrjIlYJ9RvdTc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786653845;
-	b=I49daivbftfa1u/DNse6j6LPm+DeoU4GzQM731LFWa+kH0QKIao4V6/t0BoS9T+yon4mYw
-	f2FVEGahXWsYyDVduPV7wZnwWDH5D1ElZVPQ6wyXjsAUdvNZrKKpBxDRtCapMYp4UvEn26
-	ZIrBcq5rjRN1J+ZUcRlInYafwm5uZVk=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tLm+lc4V;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1315141286;
-	Thu, 13 Aug 2026 20:44:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 562421F000E9;
-	Thu, 13 Aug 2026 20:44:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1786653843;
-	bh=fdWp8ueXb6s+udO8FKONy4G9LfKlB2Cu4K/pOBUgXWU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=tLm+lc4VMjulDbH3IDfdYTiLafdXv9KILpJPabAUWZJZVA8g25lUIoxGD0Kmhx4+7
-	 p1OBHCB+Ri3CblTvUY6PUxsfXxdBNA2u4XtPy+C56SeMZfObAnyKd9/JmEp1B5aK5m
-	 9TJMEYD3C02tSJpsr8oJgCBOI2C3ptY1DsqUC5bg=
-Date: Thu, 13 Aug 2026 13:44:01 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, zhaonanzhe@xiaomi.com, baohua@kernel.org,
- hannes@cmpxchg.org, ryncsn@gmail.com, youngjun.park@lge.com,
- baolin.wang@linux.alibaba.com, hughd@google.com, chrisl@kernel.org,
- shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
- mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- muchun.song@linux.dev, david@kernel.org, ljs@kernel.org
-Subject: Re: [PATCH v6 0/4] mm: avoid large folio splits when swap is
- unavailable
-Message-Id: <20260813134401.a1fb632936fa3b91e454c82d@linux-foundation.org>
-In-Reply-To: <20260813075025.1406585-1-xueyuan.chen21@gmail.com>
-References: <20260813075025.1406585-1-xueyuan.chen21@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	bh=aONRfqKHiXc4KQKv9HOJe1ML1WHA3J2x2iZH/V6rhN8=;
+	b=DI4Oyh/SDOUuMg1AI3vp3bLhLcCQ8JciPDC+zt84iBTjQoR5IksvOUkcSnPaO1DHaHAYP7
+	er2jkhNzAjE44lAVfzZlmj5tpTq8+D/Ycis7rTTePpkLw/b3BcJTpPh52lW/K4DK5VGFtV
+	TukBUqTPpLjdy2C++XkYtv36duSsNcI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786654176;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aONRfqKHiXc4KQKv9HOJe1ML1WHA3J2x2iZH/V6rhN8=;
+	b=Pd+eHJfws6m+R1zfCRCNYyBHprV0d04JrFhdcMZWFPVClorpGpJxZYgRZm3bZs+jiwvpq8
+	grkgotxsX2jrZOiDztx2yzWKw1km1nRNGeymJ3RBmKcWf8W1RZzgERpDoK8lfQS6+Eq0Ys
+	mUVTBhUBRN39u3RunH4dKjnhUAtNJ1Q=
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
+ [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-660-RKPb7qHuO_6KGdgUaEpakQ-1; Thu, 13 Aug 2026 16:49:34 -0400
+X-MC-Unique: RKPb7qHuO_6KGdgUaEpakQ-1
+X-Mimecast-MFC-AGG-ID: RKPb7qHuO_6KGdgUaEpakQ_1786654174
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4ab8b4887d4so118492b6e.1
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:49:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786654174; x=1787258974;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aONRfqKHiXc4KQKv9HOJe1ML1WHA3J2x2iZH/V6rhN8=;
+        b=HtumTvQWHdZ42FRhPHwYnLLp+LuX4QGRjtmY46OlGaUT6GRwyLeJ6INZDzYEFsv19Z
+         jxtMnx6zU4F3zQJMdilzBUsTwEO8zIcJnfSETNgn1+acaBRaALUIIcE0McXYMSbUC3tx
+         B92RilCdl4To0/PQXCvoK1ftTK25byc8q4W8BGXeg41L7qaGT13rg2Ypwe30omETg3GS
+         rzN9og+FZwxYPjW8z1aacIYPNckNspf0bpaQ2IRMBC97lmGhDw2ANj9iTDr5AK/cY5IL
+         StEAToBkvNOm7hVJc/c5ePv+SY+T1XI+aD8ZeZZdrsZ69kLjdE97hdPezsHYoygNWzeY
+         1Y2g==
+X-Gm-Message-State: AOJu0YwWcyE8/rMylJbOESI8ixUUpd69mtllddFd2sVMC/+uH0nTjua2
+	0C4XSRmdDTobyEAIon4o2gNp0UwlBCGrxV1DH8CCwjJzKTqbJjuEu0rSI24YYi7DlQpHhW6sFRG
+	KUizMTIB29GwFLtEW5xsiqsfG8ahUKsPhPIHEmTSWzBKVES+zT+YA
+X-Gm-Gg: AR+sD12ec3aGu5ZS8b4orUqvHr+Gz7NPjicHerDn8611n2zBDU3GQfP78gOpsl+Qwz8
+	I9n/Z85vuhOIqB/ckimVDCysNb7ksUe7RbwiWbXVfW3VU33KmukQDXCeSKA3Kr9opcizDUCUVnB
+	XQd1HG/xI1jfrBAN6TnWBFjILqwItZLxxZAMFAYI67xt23DNndMwQlp49WSuPqxjUuK3DNqn9be
+	hp4rcFR7M/0VocoJfvjRdHeXHHCEYjCODUZgpbkiu+4ORhEXeBST+MHo7rTOGtETU/AzS4h5xqL
+	AfM4nzpEoTQE6N8z1npUiwUsscQfAv1bVWvlZxQfd4IzhcJkaFrsIBfn9sBU3xigJjnebrEvm19
+	Lpb1qz+K3lXY8UgSkpjhqGo8lXDyvoEXvnnfrA57Sp1s=
+X-Received: by 2002:a05:6808:191d:b0:4a3:d333:2258 with SMTP id 5614622812f47-4b241cf3d20mr715191b6e.14.1786654173942;
+        Thu, 13 Aug 2026 13:49:33 -0700 (PDT)
+X-Received: by 2002:a05:6808:191d:b0:4a3:d333:2258 with SMTP id 5614622812f47-4b241cf3d20mr715166b6e.14.1786654173544;
+        Thu, 13 Aug 2026 13:49:33 -0700 (PDT)
+Received: from big24.xxmyappdomainxx.com (97-127-68-83.mpls.qwest.net. [97.127.68.83])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4b22d004c3csm2555958b6e.18.2026.08.13.13.49.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 13:49:33 -0700 (PDT)
+From: Eric Sandeen <sandeen@redhat.com>
+To: linux-xfs@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	Eric Sandeen <sandeen@redhat.com>
+Subject: [PATCH 1/2] xfs: mark kmalloc'd xfs_buf items as __GFP_RECLAIMABLE
+Date: Thu, 13 Aug 2026 15:40:52 -0500
+Message-ID: <20260813204929.2253988-2-sandeen@redhat.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260813204929.2253988-1-sandeen@redhat.com>
+References: <20260813204929.2253988-1-sandeen@redhat.com>
+MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: VkCYMbx_Eap4roNNc4E9lZO_nLJuy787c8Aj3eFbU5I_1786654174
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Queue-Id: 808CA180007
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: d3rt6r1cyth3tudsarhaifmmush851ga
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: ADA2E160006
-X-HE-Tag: 1786653844-212170
-X-HE-Meta: U2FsdGVkX1+E2+rq2i4bxP3HIRsF+edBfeniDRsT+K0EcMNSFrfLu64fnn7iftwxBe3YLDAkYoJXbd85BMNCyRP0g1CTK1T5ikYHuULX7uBqNsDyjA4cX2U+WnWoPERvceRm05Tf8e2LjkGjRlTMp5mi3f2yj+jcVToTBXBn1I4v05ATsoQkCaTwkU1dMlghCOs92jiO/NAV7b1caxKEZ0qZulAsoUBzjtE571crOD5l1lDks77cvkTdgSz7TGjm/NU3GS+R5ha9a7GaEsOILNqMaVQWE1PXE3ncS5diKr1Y4I6dAEsUCVnBmLETCrxa4egHhaATbQijLrRB3U5p2e5dLy/Sd7pM1kJMIH41foLgai7np23ummfUFO5docxqdLt4LlvrXVTSkNoOgkVPtUb6YCU1/BclzQaFcMhgFGxobr4r/FMx6N9xLSWTd+2oJn64AL0iar7XxFQgFLD/NxR2Wdd3lWK94KHq+wmx313FPH86XvZQKFT3s1g/WRxr+zBcifSAgOI3+7p8Bnh8pQKsTXpcRji0PAeZ9EZLB4QCFmDCVnTXVOXHKb1fyz81LD0bSgSurLuk2x4vo47EcrGx+nAon202Gt7wCjW3BWBrkj3EU6lgoZ5stFmp6UM/oZ3dPS3QM2E9bCGUlajQ6hinksbo5IhXU9Qpg3ILbxfqrcnlLMok4/trxYKBlbpDJf21H3pyMJOB6o2a9ABNsWmRpSisM2wxxtHuRrtlHKLzGMmZjv5ZQV8wtrKKOz+tEN0DtG0O9U4QZ6Af4tnOnPRzFvGrXeq37P/7RALVeY/7fZcHXrc3YYMVLKF4hZWATJ0QmaC/iDRdGPQ+2IAYVc2nK8ET0z1rx+2X6CtVO2DceSCvCR2K2SooNdLL2DSUER5TcHAyjyisq/XvEeS4vwB5UBgR72ER66DyN4atoJ8bu4GcuJMsBn4M6JSDrhkDvjcqjrMLrY4ccKLN+MC
- Jq0fQGHb
- Dg98/YmB9DjD1Njy1/ZOHejL8JG6Re59eVBXoV+qDsM0HWFsmss/ypNbaQXSLGfX9c3D/bpZlYHTGS0uS8T2i3f02naBm37WUQY3M7/Hz4J7isJzr6JYQ/ULg4Gnguf+a45ii2c55X95jia96JfAYf+ws+MW5kifipG4b8b9tXVCk9aczKlEUrmNP8fqdmHHfNSBHv3VmVqb/7M3h6BCm6T1teexUXmTzznhAJpgBeM7IlNWDHAaKS/LziCjraKld4uDRcWhIi9HXGUxzIBlkFHNm3jDkhJtmbMfPEw2OAguxwloSdZzrjivJ1Qkms8Pz81LqL3AnCpTWwTUj8jtD7vcchwzCSVP9WOOM
+X-Stat-Signature: jm5inft63dn388eqgchde6yy54dscwu7
+X-HE-Tag: 1786654176-564694
+X-HE-Meta: U2FsdGVkX1+d1qUTwjW+K5Rhdd3meHtP+kWzDxEpz2hkQQYOOQU9SYMnAilvJxxkWCZR2qaBZEIQoM3W4QnneQfB9DlmZ9o47f1pSWdgC4HpM8CCvskexuP2mwSR5e9WsVU8K+m4UCXmP+7kaG006V63r1CGrDQnGXc2cOH/wYLdcawgk8MpbGyeYNbu4+urHbbqdSeYVOEQJwji6OcryNVDgmZZ6q+GbOkTbzrZ1x+OlPQtzuqzcge0COZToZIBSkKL+QKnNGVKF0quhQhp9a1BoW2RePdAOYM6grlwXdi3yZmbe23c/zxv3OwJI0EBSZsKuaBTa8UQ8r/NtNAeKap1ZtuAF0XRjGObskA/awALt85tK91dRm0sfgWs997FFIO70e0xVXBBbeY5RfceJoHQi2CoQ703eHDL7NLGmKo55SpMtf53TOLBz9KTgI0eiYnQWmjwnbIw9W0Xce3LihOADni27J+aSRAvReer9gEVx1d2QKk1rbf47Df7YhN/3OoHFIobADHMR7km1OfOkZJrkuatENdVMRjrVHEXVwxD6EUEF/HtvNimsr1r8S+6i3uEkgyLfCs+01ityRzd2+CCcEBLLbuTX4l/cNWNuTje8ZT/ibSrKu8XSaivRDN5YCSO/wY9U/59QVucudkxWn2IIWtstlML5mlZOxugXeNLw42jjct5iUrAoQCGAxDkEA8PlPHioaDxUhqsNCG304eYdKw1cMDEtsxQ1pOUqS0yUwQTbzHEr6TZa4eh1wfKSGn7mgc+W9289h2GSqYydUg4BdtkR6JbH2SVlbN8Nlsf9MT4jJ5e+hVK7xnDNsEurvwEd73gBsv5mZfjc0a8jYWI3fNKzUlpf4bhTsEEf9tuM+bJ6fp8OES3sdWJ4igAjTJFxZvu6phrKsSesHG1mA315Q7/R/OyOJfSChhooriZRggnWf0yv7UJdcmGVXWx77jmOZjVfhkrmFnEGlB
+ ntbB0zXI
+ ATxJzEt0Re3BYOfegR6XiDRcS2h05vinPBpk8Xu9sYa0BujZdr/hyPQ4i9hVI99D48EDp+jKfbJR9FbWZNaZP9Rxf0/Wx8zKwwsGq/N9lWUhiIUyg79NXVjQSK9gjKZ6Ae7GM3Hh5Kn6bi6NXNRWmYebua+p0IbjrLZMZN5yx/8kymgd9vuLvA7rLCsnFRRXfYyQRMiKozsI+XZs75he22zjQsrFN+NbCFaareA0HVMFSQdwLY5/gatxJPC+xDKiv10dj+K3fH65jaPRWG70SP3cTCeC9aIAX/7/ApDAV4D9+Put/y2wRjGtlA5UqtQ9Oq0wvxwQOtJ+LzMQDmFL7o2GDG/ZA2Wmsv8p/av+9HW3jWCqI3MOmDKRU8g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,18 +127,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 13 Aug 2026 15:50:21 +0800 Xueyuan Chen <xueyuan.chen21@gmail.com> wrote:
+xfs_bufs have a shrinker and are therefore reclaimable; mark
+them as such in the kmalloc path, so that they are accounted
+for in this way.
 
-> This is v6 of Barry's original RFC patch, "mm: Avoiding split large
-> folios if swap has no space":
+Signed-off-by: Eric Sandeen <sandeen@redhat.com>
+---
+ fs/xfs/xfs_buf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks.  It looks like a nice patchset and it comes well-reviewed.
-
-However it's super late in the cycle so I'd prefer to defer this until
-after 7.3-rc1.
-
-The changelogs aren't very clear on the overall benefit to our users
-(please address this), but I'm thinking "minor".  If I'm wrong then
-lets consider -stable backports and suitable Fixes: targets.
+diff --git a/fs/xfs/xfs_buf.c b/fs/xfs/xfs_buf.c
+index 48d7dfd3e15f..2e00a33ebb62 100644
+--- a/fs/xfs/xfs_buf.c
++++ b/fs/xfs/xfs_buf.c
+@@ -145,7 +145,7 @@ xfs_buf_alloc_kmem(
+ 	ASSERT(is_power_of_2(size));
+ 	ASSERT(size < PAGE_SIZE);
+ 
+-	bp->b_addr = kmalloc(size, gfp_mask);
++	bp->b_addr = kmalloc(size, gfp_mask | __GFP_RECLAIMABLE);
+ 	if (!bp->b_addr)
+ 		return -ENOMEM;
+ 
+-- 
+2.55.0
 
 
