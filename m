@@ -4,117 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3292C5CFDB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 08:49:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35B32C5AC67
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 08:51:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D57016B0207; Thu, 13 Aug 2026 04:49:38 -0400 (EDT)
+	id 144B66B020E; Thu, 13 Aug 2026 04:51:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFFFE6B0413; Thu, 13 Aug 2026 04:49:38 -0400 (EDT)
+	id 0F51E6B020F; Thu, 13 Aug 2026 04:51:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF1DC6B0415; Thu, 13 Aug 2026 04:49:38 -0400 (EDT)
+	id F29536B0213; Thu, 13 Aug 2026 04:51:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 936166B0207
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:49:38 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 28F561A054F
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:49:38 +0000 (UTC)
-X-FDA: 85095622836.26.F478356
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 363E81C0008
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:49:36 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=WNA730LO;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf20.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D07C16B020E
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 04:51:17 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 34B4CA0573
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:51:17 +0000 (UTC)
+X-FDA: 85095626994.04.C64C2DB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8801C120007
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:51:15 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="nWPYIb/p";
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786611075;
+	b=AGobDWw6jeP2AVOPWnXauDMI4gjQDWe32mN+f9iOhwdl2B4llS5BNYEX2NN5U1H9Nr1H5A
+	PtwtYLVMS+ni/8OyI7Q14/KJtfCjGBNxgKaJokSXTXEHz2UHXAbPZzKhO/jCgUFX1N3z6w
+	xX0nAd9OI/CAPv6mCygNN62BJObpDXU=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="nWPYIb/p";
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786610976;
+	s=arc-20220608; t=1786611075;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ud3PerIKkxv+VQSOh8f05M4PIN0Du2TXNILy0NYD9Lo=;
-	b=P7Brwyv2HfSK63Qb3UoLSCUBj8kyU07fY82c13SekdtEUeLFJF46328jDG9Q4xmtCy6dEE
-	gsoVGVrokXaDHSaJmvCV7yNiSmx26QO7Rph/RQaiXxpraJAaORhc5H/iqdLdoJIgMDUktV
-	s9Uo4XZg7Lq7RkM7uUij5MQbaRcj9ds=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=WNA730LO;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf20.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786610976;
-	b=j/Sizr8S9nxRJ6G6PsT79Dga2Gyu/XAbxoMPffJK8nDvuU3ypU4xleNKi6SfV8XKw9sRNZ
-	4cPdK7g0j/2HEN9Oc47UrCWKwv1EY3Heg3UpvhjnZXYOZ7yTVleYLFYKez4HoGH8zGtPuX
-	Zr0wTrTDwHSDLzBexowasqko7ooOQuo=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-49558ce01afso14617715e9.1
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:49:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1786610975; x=1787215775; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ud3PerIKkxv+VQSOh8f05M4PIN0Du2TXNILy0NYD9Lo=;
-        b=WNA730LOEPVPCcQduB2+TpK0OPa76aXmpQUWKCan88euDFUoNCcmBOeqwlC6WfmGmH
-         2bmCeGXWbSA3OHj5baD3VMAek32+69Z7/7lUDnm+heqIJig/gz/sQeN5PUiR4+x95Xd+
-         38zDtqg/PL+HOVgpLk1w9VZ3oJbGI3Dcm3N2sgwtMkP8fx++T6wRSq3YQAAJVYhO7mFZ
-         QQiqVxWAucgHaEk3Xkw2QJ7LPsgdQL975xC9Le3J6I5FoJEGWgskYDHj6ph+v3n50Xm9
-         TRxNptfF31KFcTNBi0uJDFwLRlYn/7duVYu66ELiz672aGRu0p1Zlku/aSyCttWDed77
-         X1Dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786610975; x=1787215775;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ud3PerIKkxv+VQSOh8f05M4PIN0Du2TXNILy0NYD9Lo=;
-        b=pgRtAzGJ1zRwyO25xE0C8OpH9vGGN7vNhV5A+5iPyMlpc8JRM0pxav9KALaED0g2i3
-         YmDULsXceOTJhA+J2u7uS/icxrrA0/NfNVocckoFPtaZpS0E8wVZOKKdq9vaKOG5AMdF
-         o83JfThQevBWNeDiu/jmdaAiQZwtUtgfdXNkLhhJFgTUaF6PLErMboTryFQSpLxbA7Mz
-         Lxu0vC1m+b27pq4hialx4W+sUVKqcEDVPC442Ji7l82l1hC6vgeH7LEHsIQmZ7+bx2sx
-         qAjD01gTGcOqdX71ryLIJD9azqwZbNAvFPZE6HcMwVIGNneOmAeyMD9yTM5Hp4yzoGfI
-         Hf2w==
-X-Forwarded-Encrypted: i=1; AHgh+RqK4FKQg6DHmc2j8t3WKO7pXvm8NjGpEYe+0Kh3goq0ZB4F+ROfE1hVOFDMS8xO+zZfGnXRKX5Oew==@kvack.org
-X-Gm-Message-State: AOJu0Yzvfv3kzv2hIVkbLIh/W2p7h7d/pPsWwDsn75Jbi5ojEg5swmtB
-	6GBuKgjEgZMbWaK6btJgpBSgosJO71izKW30GkSNoZJ+4GZ1uuGoqok25pcDaz6zdotNa63myu7
-	eS8SSP5k=
-X-Gm-Gg: AR+sD13kvPcvDpAHORoxsnvK/bfigsc09LO1u17sMpYgBbHj9T9rK0jrJDQn9D6S8MT
-	1nrGU4CpslGAI5OGohShHxTUK0VJXY1izbGUaR9DwB2Klp5TlctmR66pN7VMl3wAzpSlYbGslS6
-	zYiLpXpENaYm61bNz4hMVrUZGqyxRMMja1qaXGPZcKI/YT8qwt79M4M3eL7j9MSulTRRNJ3iUaw
-	FYN7BzqvLEJSs+WWAucFR7HIKjuBq+3zuULCEAViXvzUPoAM/ZVbfy5G6vBQMS+kSbmL7952wH+
-	HcfMs0gtcb2f7jNRU9jHBzFwCFNxLsFNlJTzBc97YosZir9amciquuyugITOHurl0hScsbHFe68
-	zAx4V3eDG4sljvcAG0lmX6DOk0TK1maRCs8eCaRiOTw4B8MhEHain0iBenrbsmt/EiX0/35ML6m
-	Ec+OcgQ29Xp/zHgKyiEqc2IkFIf0+V30EAy7TlWZJktCOEGffCnogQnkxnvhp6kjaIMlXS86A=
-X-Received: by 2002:a05:600c:4e87:b0:495:4859:8f9b with SMTP id 5b1f17b1804b1-499821add3amr43510945e9.9.1786610974833;
-        Thu, 13 Aug 2026 01:49:34 -0700 (PDT)
-Received: from localhost (109-81-29-60.rct.o2.cz. [109.81.29.60])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49981abd6desm54463045e9.0.2026.08.13.01.49.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 01:49:34 -0700 (PDT)
-Date: Thu, 13 Aug 2026 10:49:32 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Ye Liu <liuye@kylinos.cn>,
-	David Rientjes <rientjes@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/oom_kill: simplify remaining RCU sections with
- guard(rcu)
-Message-ID: <an2FHDjYy2IFEKsr@tiehlicka>
-References: <20260813032634.344946-1-ye.liu@linux.dev>
+	bh=s15YMfOwxWEvAnRRd4hU5g+v53XbUCKXoccrAXlR3Xc=;
+	b=OYwJU98Bo+DCSYmpsrSR95hCdQf1NHIHiOAriuZenYc/KmoeFRkzn61wlGx7xfjzcTtp7M
+	jk1afJm7pDNE4y96Os+ZSGNhzaU+1rbz07ogoaUmrnB6NPkEhAbfdwZNNsiudXpSBDv6Th
+	lU0OqKdRfmoOalzEXUwFOFnTKCAK528=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AA23E43B65;
+	Thu, 13 Aug 2026 08:51:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6A31F000E9;
+	Thu, 13 Aug 2026 08:51:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786611074;
+	bh=s15YMfOwxWEvAnRRd4hU5g+v53XbUCKXoccrAXlR3Xc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nWPYIb/pH6H6oqPWsIPtUjNPbp07s6id5XEc1hMPQDMdeKAuZOc9j8PNXJxfz33n6
+	 G5IxTmlmRhScRf8Rtc8d+7pqOLpyuMN6lUMOhfbf5lTZefaXpD7B6E3/5v9m1xTNDp
+	 m+i2jwmBGB+jr7V/SNZYlKjYsTuYkARctVNycKJoDlAUIXVy5KJ41TZo8kC+RuWTco
+	 vSV1Z6V0YTo37RIgaBT+JA47S9pvA5P8NoFDBjXkG5xW+1Ddj3Teg0/cbcV7yJ5tKj
+	 LOuXPzmtuHuqAqKA4GyOzCA7qcxeXCTdSVdbHMX+vPJboJijElcEOPP7vokRjodtrn
+	 NPX5Z2P3YnCig==
+Date: Thu, 13 Aug 2026 11:51:00 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Nikunj A Dadhania <nikunj@amd.com>
+Cc: ljs@kernel.org, akpm@linux-foundation.org, baolu.lu@linux.intel.com,
+	bp@alien8.de, dave.hansen@linux.intel.com, david@kernel.org,
+	den@openvz.org, devnexen@gmail.com, hpa@zytor.com,
+	iommu@lists.linux.dev, jgg@ziepe.ca, jgross@suse.com,
+	jirislaby@kernel.org, kas@kernel.org, kevin.tian@intel.com,
+	liam@infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, lists@steffen.cc, luto@kernel.org,
+	mingo@redhat.com, peterz@infradead.org, pfalcato@suse.de,
+	shakeel.butt@linux.dev, stable@vger.kernel.org, surenb@google.com,
+	syzbot@syzkaller.appspotmail.com, tglx@kernel.org,
+	toshi.kani@hpe.com, vbabka@kernel.org, vishal.moola@gmail.com,
+	will@kernel.org, x86@kernel.org, bharata@amd.com,
+	Ananth.Narayan@amd.com
+Subject: Re: [PATCH 0/5] x86/mm/pat: CPA fixes
+Message-ID: <an2FdPPOWT50lLD4@kernel.org>
+References: <anXvODEvV4f_Taj7@lucifer>
+ <20260813055544.25567-1-nikunj@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260813032634.344946-1-ye.liu@linux.dev>
+In-Reply-To: <20260813055544.25567-1-nikunj@amd.com>
+X-Rspamd-Queue-Id: 8801C120007
 X-Rspam-User: 
-X-Stat-Signature: usb1n33wmqe6tuf8irnhf5sf7b3cib6y
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 363E81C0008
-X-HE-Tag: 1786610976-653852
-X-HE-Meta: U2FsdGVkX1+ty9bSeoaW3/21BBJ0IlQEYE391URBXQwHZh8Obsw41N5u0af2TTE1r5InqaniMIfUpZ2o77XHPj2VnYcu5i5Bp4oDTww57iUBoZLGi3jnexQdUZFq35wiGHOw5qvlK5PQUFFS8GBoKv0xm7ZSCazV0WunLv7yY5Wv/2bsMHR/eGIUvOnH/VRdbA6N/eZBtPywtKed/9ym7fkqmjQOmj4N53rWYghFI8PnpthiJeUehp65PPD6nKbF9/3d+Glp70LxbeoQZQcdE81tkTE7bfvsHikej9BsbDB1jpUJe95nOGJ/qP4g6+kO8pBV5NcUyEb0muVs3FYuvydvDAMDHhjchrp867pAHwnEw5mVQljNnQmbVnCYURgcHtsmvzHL/1mwrHz2jpizM3gdHWvZJyeg8fmstBrAn+AAnb/Mb18oeli+2MqGxAKN6cc9yVR1XcXp6fPFB/hdsFmT0eOxHinbH2rz65TXQGJFT4HKlN8uYrfyurhsSXEl6XRoyl1SiFzWI5RV9rg8tMloaY/cGt6qRqsy5aIQ1Qp1LWahqbTwtuz5r1/EBEuE5EwZUIo5Z5XG9Zvqq33sLRFVcAXJ5+arQy85/RQy4LjkQ+Qnl/7h4pEpF+Qq4EIAF4KHmrPWn4ALecYeWWrkM50jo6kd/UVswAnx/G2dD+SBo8+ajy7+krQyOv7/v4ujwqa12+SD9nJpcDpuW/mVeXObXeEt3mjiCf0J2POHY2RYlsjaP4uNc+A37dxLOVUVt5nuIlRdL2ju5cZXY5C7gxylUIk3dpBqbn8kjSuRcYU4LDvRxBLCSUkDxcoEs8UD+DEpDV5zoDoGhVVnXhh49aRETT90Nptq9tYuZKZRulcewc+4tHjVX4TXf3qr76tIACvn36We7PA0N65YnndjExN1z57cbrPwSWolFPwBN3QzbKWpNEk8D6u3QiHoSayX+8eHJkfVu1poOfWbUCm
- dgCIqtBO
- D2zD7R6HZRIWck2HPlJs5mx1FEZCdZbb6i9R2yhGjoHQqAf3URraCoNLY5ME8wI+NWnEpgSNpqz2ILqg0/btMAyXIWdZDCKYZdEpDWSK/8UtnFwZv4z7hST/LUSH8xhDVHE15+pe4jzXugMeM2VYP/c8lRSTJEsFmTdITwxsTnDUHWk3ztT7wtcIrx2I6OTqxmzEr4EF9k06Li0GqRDWBCsifof8XYPHMP6UI1JVH2Zd56QjrY0kUDomjNMTS9K8ais08JuYiCi/Fj74wXA3RJdu267kNG7MxVpHM/2kpTpZ29Sh9vJwNOv9kMJmLIB3bZcsOzQr9S19vPMrakFh6J/nCkDfzKIWlSRB7dIgrU5qaxYvFTkTK4ZKl89m0mZbmfBj9LEE6kcBw76yODgmkY383Rg==
+X-Stat-Signature: iuqsdfhpyf9i5cugxai3iumfn6b7u916
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786611075-247358
+X-HE-Meta: U2FsdGVkX1+Lv2mvkQqcWqGIRAd0hDl6hZYE4Z4c37vHbdRU7UWwoxxcCqcBASzOlafDxDbQu9zQiZAx8P32os6Pqj6TbN1Z5HENgY/Gm2OOcYjn8QeKcySdEpnHw9B4+zGddXF0BbRXUozXWUSGaTGynVfv3Eo1eeNSmdHsPZ+SrvEJbmH1lCUiHhDGPg5juPAcj4AUJsnJjINQ7ckqj3BpmkdMcgpbxnpWo/BOOYxonj6YbRPGwPta31HfXy8zVwODg6IhS4vk5UyZTu/0BV9sIa5RgWMiSnbkSk1jA3BfLHWhMp+UiXk+kOj2AaM/LmPuk1k8nDa1K8XbVjkbKrzZte301FHlEh7oD/RhvPebwy5kWhhYirBZNBo6T25ZBq+NT4fJaT9NgMVZDMGjRdgmI3gjetxe2G8aK2QnjzNwS9TK2PRZmxuTSeUx3HX4vHKw+8BDfh3ozaobtwcdC5tfivFxcWX6+GberIsVIv0uBRj9xd+RXJhB3CwA9+dku12PYUycA16c/Az9NT9dplyX/38DxnHV1Q6cqTYbhZDx8UEmgRdc4tWIWntDK311DTc0WxHD7/wW9Ks+mi/uZuzB1JVteOfFNr9hzgXIzTySZO+dF4twCEYcGYD8KTbjC46uhXZurQaex0AVCY7Y+8iu7/pMxuDAAnY1cU5MfWGU9ylBiCiin2r4YGTyjhZUMldIfLuxO5y0gsoDsEXG8TlZPdb5lDcCXWF1zFRGV1WMnxbyl1YH3CsneLkZ+ES1KEqpHOJIHi1+FJnUcvNdwsdENbTnu8l21kc2HXqlXfstKUPl/Sd9CkSaQJBmke8wtL9p8q7HAN25Y4aRViHgG/2fREY6oimYXJxjCzN00QrOMx8cyJyo67dLtDA2cJ5K8A9RjLca1hPilUBDeE0JvC6A7KKPG10TmHbEW/kAcKKCPGEhMYCX1DA/cKdzo8Dqleqekz0d9LqWFxDd9FC
+ QhA9Snc6
+ 4CZ3MjZCedWJ9h+eNJALhv1BFVZ2R7c7uv7qdaE9mWM9cyA8HZiZrBWcmKQZgahBQVeNsoPZSsuLLghC8VUIHLiDkODVGePifVoFofWMj4uxcqCTUfACh/YjAcJCO1cVUFcXxWmS9cw0HKABoDyejNRReCxfgazc2Gain6P3/wqFqivZqIgjtbRLw28w4jJascDhXroIhbSxbdRFRb1fge0zA64Pz15nNiddM/dKIVtHqxkCqw58rlB7CsidvBFndXDFFST+o3+3sFgYdPGU+CJv1T0iu9eQylAcDdphbKMVIn2mWb6B0QCtZ+fFrQUXcXrFuuKyswj905WqNxwnx2yf+0yEmuAHjm5CiSRvBpR7CL5bcI1U6WKDEfA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,112 +102,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 13-08-26 11:26:33, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
+On Thu, Aug 13, 2026 at 05:55:44AM +0000, Nikunj A Dadhania wrote:
+> On Fri, Aug 07, 2026 at 04:36:08PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > +static void poke_vmalloc_pages_safe(struct page **pages, void *addr,
+> > +				    bool cross_page_boundary)
+> > +{
+> > +	guard(mmap_read_lock)(&init_mm);
+> > +	poke_vmalloc_pages(pages, addr, cross_page_boundary);
+> > +}
 > 
-> Replace the remaining manual rcu_read_lock()/rcu_read_unlock() pairs
-> in oom_cpuset_eligible(), select_bad_process(), dump_tasks(),
-> task_will_free_mem(), and __oom_kill_process() with guard(rcu)() for
-> consistency and simpler control flow.
+> Tested just the proposed patch from this email (without the rest of the
+> CPA fixes series) on the 512-guest concurrent boot harness (details in
 
-Could you use scoped_guard instead? While all these functions do not
-perform anything pas the for loop this might change in the future and I
-find it more obvious what the actual scope for the RCU is rather than
-the full function one.
+For this fix to actually fix anything, the patches that add locking of
+mmap_lock to CPA are needed still.
+
+> [1]) and still see the memcmp BUG, I havent hit the first BUG though:
 > 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> ---
->  mm/oom_kill.c | 15 +++++----------
->  1 file changed, 5 insertions(+), 10 deletions(-)
+>   kernel BUG at arch/x86/kernel/alternative.c:2727!
+>   Oops: invalid opcode: 0000 [#1] SMP NOPTI
+>   CPU: 1 UID: 0 PID: 485 Comm: (udev-worker) Not tainted 7.2.0-rc5-pokesafe+ #42 PREEMPT(full)
+>   RIP: 0010:__text_poke.cold+0xdb/0x2af
 > 
-> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> index 4b5c70aaece4..8bbb5ca00bb6 100644
-> --- a/mm/oom_kill.c
-> +++ b/mm/oom_kill.c
-> @@ -94,7 +94,7 @@ static bool oom_cpuset_eligible(struct task_struct *start,
->  	bool ret = false;
->  	const nodemask_t *mask = oc->nodemask;
->  
-> -	rcu_read_lock();
-> +	guard(rcu)();
->  	for_each_thread(start, tsk) {
->  		if (mask) {
->  			/*
-> @@ -114,7 +114,6 @@ static bool oom_cpuset_eligible(struct task_struct *start,
->  		if (ret)
->  			break;
->  	}
-> -	rcu_read_unlock();
->  
->  	return ret;
->  }
-> @@ -368,11 +367,10 @@ static void select_bad_process(struct oom_control *oc)
->  	else {
->  		struct task_struct *p;
->  
-> -		rcu_read_lock();
-> +		guard(rcu)();
->  		for_each_process(p)
->  			if (oom_evaluate_task(p, oc))
->  				break;
-> -		rcu_read_unlock();
->  	}
->  }
->  
-> @@ -430,14 +428,13 @@ static void dump_tasks(struct oom_control *oc)
->  		struct task_struct *p;
->  		int i = 0;
->  
-> -		rcu_read_lock();
-> +		guard(rcu)();
->  		for_each_process(p) {
->  			/* Avoid potential softlockup warning */
->  			if ((++i & 1023) == 0)
->  				touch_softlockup_watchdog();
->  			dump_task(p, oc);
->  		}
-> -		rcu_read_unlock();
->  	}
->  }
->  
-> @@ -894,7 +891,7 @@ static bool task_will_free_mem(struct task_struct *task)
->  	 * are dying as well to make sure that a) nobody pins its mm and
->  	 * b) the task is also reapable by the oom reaper.
->  	 */
-> -	rcu_read_lock();
-> +	guard(rcu)();
->  	for_each_process(p) {
->  		if (!process_shares_mm(p, mm))
->  			continue;
-> @@ -904,7 +901,6 @@ static bool task_will_free_mem(struct task_struct *task)
->  		if (!ret)
->  			break;
->  	}
-> -	rcu_read_unlock();
->  
->  	return ret;
->  }
-> @@ -960,7 +956,7 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
->  	 * That thread will now get access to memory reserves since it has a
->  	 * pending fatal signal.
->  	 */
-> -	rcu_read_lock();
-> +	guard(rcu)();
->  	for_each_process(p) {
->  		if (!process_shares_mm(p, mm))
->  			continue;
-> @@ -982,7 +978,6 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
->  			continue;
->  		do_send_sig_info(SIGKILL, SEND_SIG_PRIV, p, PIDTYPE_TGID);
->  	}
-> -	rcu_read_unlock();
->  
->  	if (can_oom_reap)
->  		queue_oom_reaper(victim);
-> -- 
-> 2.25.1
+> The instrumentation captured the following before the memcmp BUG:
+> 
+>   SMP alternatives: __text_poke: memcmp failed at addr=ffffffffc06ce1bb len=4
+>   SMP alternatives: __text_poke: expected (src): 2e 2e 31 c0
+>   SMP alternatives: __text_poke: found    (dst): f9 b8 9b d3
+>   SMP alternatives: __text_poke: pfn at poke time (vmalloc_to_page): 8ece
+>   SMP alternatives: __text_poke: pfn at readback time (vmalloc_to_page): c6ce
+>   SMP alternatives: __text_poke: page table dump for addr:
+>     PGD 2f042067  P4D 2f043067  PUD 2f045067  PMD c6001a1
+> 
+> pfn acquired at the start of __text_poke() (0x8ece) differs from pfn
+> at readback time (0xc6ce) in the instrumentaion.
+> 
+> [1] https://lore.kernel.org/all/20260812063316.21371-1-nikunj@amd.com/
+> 
+> Regards,
+> Nikunj
 
 -- 
-Michal Hocko
-SUSE Labs
+Sincerely yours,
+Mike.
 
