@@ -4,91 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CD98C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 10:19:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EFE4C5CFDB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 10:20:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB9FF6B026E; Thu, 13 Aug 2026 06:19:49 -0400 (EDT)
+	id 479F26B0270; Thu, 13 Aug 2026 06:20:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A921C6B0270; Thu, 13 Aug 2026 06:19:49 -0400 (EDT)
+	id 450E46B0273; Thu, 13 Aug 2026 06:20:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CE586B0271; Thu, 13 Aug 2026 06:19:49 -0400 (EDT)
+	id 319AF6B0274; Thu, 13 Aug 2026 06:20:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 703A96B026E
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:19:49 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 09C491205BC
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:19:49 +0000 (UTC)
-X-FDA: 85095850098.08.33F1155
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 612441A000D
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:19:47 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=wWHO0cgq;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf19.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+	by kanga.kvack.org (Postfix) with ESMTP id 0D0796B0270
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:20:26 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7A49B1205B6
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:20:25 +0000 (UTC)
+X-FDA: 85095851610.12.87746EE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id AAEA8C0004
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:20:23 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n4RBpKPN;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786616387;
+	s=arc-20220608; t=1786616423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qdAeuLqcTg0r3BctkPvFE7yUe+SHFHuPonXE6/RBmLw=;
-	b=OlHdDe7+O/DOW5u+UDiu3RZnzrpZAg11rEKqg+Xw1cXrWLtnSZOHvFqAoxoh5u9Q9geiFT
-	y4/ZmEIyKy1KKS4CyFexRaIkyUTA7Llc6dRNhMHyofDTmlTBj5F2PN2ZOAOr2UhYfZK5/e
-	/J/CHMQfXlamIz6Xxn8hq+OocLCqqmA=
+	bh=JZFg0X5QTE36RTVxRqV5PSlcb1r9Wz3Xu3XHGjbwW6w=;
+	b=SUIDrcz0/I2Gu3mdtUzPmjfgfsqnMO96eoQ+ATIjSYJbLewOlrXN9BPfntGQNYFne4f1L/
+	9d3Ee4ist298wf3WJs8HCjJAbYaRPYAITosb59VpD3SfthFoC8xWXa2eLFdf7Xo6s5WLRe
+	b0VuvObVF8akDHOLOp87H6ZS05hLXrU=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=wWHO0cgq;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf19.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n4RBpKPN;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786616387;
-	b=O++MGDxvIKEWJ7kjzAGKno08WyI0GqCQzWpstmk5ZDHw7OtS+jMmksQYNPoShv0PxlkOup
-	6vq5AFk7ioFFhyAitVsAJ0c33Ndl4azR1DE+B5YIHhG82rED9p/OJz9LTKhCbQNJllejJW
-	+4Fy4M30uwAcgWBiBoKUnHAr7YeStpc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=qdAeuLqcTg0r3BctkPvFE7yUe+SHFHuPonXE6/RBmLw=; b=wWHO0cgqWKxsqqTEf9XD1q7ptH
-	W0ilpGHM5+3y5MzIcVSHDLVUdi1zLN+UQFT2Q1tvKSwGvP7dSYtkYRPkH8NmAwMSx39duVmwpLU5M
-	3mo6PEPYeY2Jb1MrizS3YAgerjBQR6o/4TL+7k/Ne1OnEYQHyTFGaCDGklBCRkGG3ZNtVKDjWJfLd
-	NU0lPT3m+/kKNQrnqpkd4ic0S77aCV2KRW9nNCV8Ksf1HUxfAl73S2CzvmFZprw8Sx0lVUeR6A+1T
-	IgUifsVYwD0HO1zBMe/H4zuY353uS3RmrG/SVjDWYfKTXUoSHvma015fSllLmIn6/TQ3dDu31RF+F
-	mE5zfNjA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wuSX4-0052dW-3D;
-	Thu, 13 Aug 2026 10:19:31 +0000
-Date: Thu, 13 Aug 2026 03:19:26 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Miaohe Lin <linmiaohe@huawei.com>
-Cc: SJ Park <sj@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-riscv@lists.infradead.org, kernel-team@meta.com, 
-	Andrew Morton <akpm@linux-foundation.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, david@kernel.org
-Subject: Re: [PATCH v2] tools/mm: add hwpoison-panic tool
-Message-ID: <an2Yr4n6ahggXKo1@gmail.com>
-References: <20260803-memory_failure_rewrite_test-v2-1-ed020ce42129@debian.org>
- <be68a841-a326-4826-8e02-5148736dd356@huawei.com>
+	t=1786616423;
+	b=TDJmxvhFcCwGMgqJOMKLgHLp36O9dSX7sLfDRi3HMEKnGm59GqG1GlbmqvM13K5S9WYNqm
+	5myEf92nfDxukFNCM4iyW6vYJkw/O7Fk8q1BcmHh2MGnJikr4x14Ovqivs8f0lsEKmBoKQ
+	vD+Ni1WDdQJiRCzgxl8hQHsOUmYLo2c=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id DDC0642E0A;
+	Thu, 13 Aug 2026 10:20:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311C01F000E9;
+	Thu, 13 Aug 2026 10:20:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786616422;
+	bh=JZFg0X5QTE36RTVxRqV5PSlcb1r9Wz3Xu3XHGjbwW6w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=n4RBpKPNCW3JkuoYqz7pTFdDfpTENI6prlNyJjbqkM6u9uYgmWoQLFiYArEfkGdq3
+	 goolmqOWct5YlYcW92DydtjTmeAqdTEA40uhEwMNQi8RfSFT18sngD5iiZzFXSYNYD
+	 eHaBvSSwMAdKdqdBmEa+ypzES/X/UY4S4VTxshc2nGSBwcqm40WOt9N9g0CaR/MCaH
+	 q8/kf3+Ip8rn5pxt5oXOpvu64Q83qhu9VfclnnOJ9nGsFk9pWKvKEy6z20ma67MS70
+	 Fdy3Ro2mcXqiEArpx4ZEXR7iaBGopaXXLboqg1v8TmlrGOnf121pVsV8SpCxtq9SJX
+	 842lPv9pVRgAA==
+Message-ID: <82530a53-b4c8-4671-b55a-c7ef95e06dda@kernel.org>
+Date: Thu, 13 Aug 2026 12:20:15 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <be68a841-a326-4826-8e02-5148736dd356@huawei.com>
-X-Debian-User: leitao
-X-Stat-Signature: srcpxa1xxiqzoosw81mbwrzt6hdcdwjb
-X-Rspamd-Queue-Id: 612441A000D
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/5] selftests/mm: skip COW tmpfile cases when
+ fallocate() is unsupported
+To: Muhammad Usama Anjum <usama.anjum@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Sarthak Sharma <sarthak.sharma@arm.com>
+References: <20260727095225.372655-1-usama.anjum@arm.com>
+ <20260727095225.372655-2-usama.anjum@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260727095225.372655-2-usama.anjum@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AAEA8C0004
+X-Stat-Signature: c8bnunf76ar6j7mctbuo5snzht76yaug
 X-Rspam-User: 
-X-HE-Tag: 1786616387-455816
-X-HE-Meta: U2FsdGVkX1/qY8BbqyA3Pyobmx2ql9MWCiN33utQjHnw3un5WyKqthfTfUDNZL9fTONf3LGkLsTlPmmCSHGdJxY/qj4M97/Y3R6euWyWo36jVVryLlH+k7cO7kYV7Rk6Me4W0gBUUrOBEI/MEb+/agrOVwzMh3ZKj+1KcJ/PogDbSR158AuEYj9tuewDo8P6pIywOVB5Z3NRA8bdSv7fxGs4lFvhDx8eYibrTTJsTomuYvYWWOuW3gm5po9RRYuOECbR7ik4j/ao/GxhMXSpvj8l2orkfAc3/tVhfIPOJXntgk0krQpmthj99HOtTqAPtHcodcVB2zuIrzW/kZAkPxL55Rxwnzy7u54jbmAPPsw6HEH+idEhNbXrwFGnXsElhaQxqGn4A0zOX1/B4CkKwzzQ9rTH9LCsVqT8gXECn0kI0Vb/5x5pkd/3pM9c7w8TZYl0SdJ3mYhb+DdiTS+ZcKSdV9lQkmV7c38GbFMAhXMrswA7bVdNQr+buSdHBzWxd6uq577SNPmivvvrtbNoMrA2S/VSMqFKABC1zihtjxVqC14rnCIX4vB6u7yhKVEaPm2EEyHBUD6rXUe62yoLlt8IVwVRlETUFyAQId4H4ugmR4wZZORuprDnADUlEv39MkGr6/IKnTw7RUU5yB2j5eXXszcc3QSdtzKtdgJ9y+UP9WnkBkQ1vdUHKTFjBI+b0z3YFpio1RmDwNE3TYOpbQTzEvbJUkm+fFUsAwkGcbNgaGw9QWICxbcQi1ct9B/U6ovl4LdPFLKXkO+A92bjhTp1wU/F1PWZGw8piXU5TVTzlNsVYTvJi7JZUwcCTUw9gDJZv8H5c4b1boqU/c4Ca0m4ccqSnhWsgsk/nOJmSh4DrRtUGCseARawDT7bILLIvzXWb9k1yQzgDKp4eraNQTNdC5Lo6x57xjlnc1DcoeyZerNdBj4O3FChWQrc548BacTHmsGlPpIzA+ExTAN
- BfVQotPI
- MPIO9kfN2vyx64oMeO/dHyPZqpWLVPCeFXSgSQ5twYakSLSTE2WfDywTdzDyKnLHLBJNaIduoesPEQR8Uii/qt0Wee1Iw2TdtAzurIOE/LZgMPc9SoOPKkf9tWdxkEQsdLMRSx/95FxWYfr7qN/ywHZgKnA2o2kDDMuHhYNC+5qga1EjVRedAk65Djs1ztPRMtdI+w8DVcpOxkNuHlfU8EMHTkfugwU0dITcfl7zh52t1M9D0WfWORRvrJH/uZzqlx1DzH+5eBsmIs7+S0T81ujE10k78QKbLQMGdEkkwE4fY+mXxYXzxk9l60U7R1RZutwGy8bo1XHUppFU=
+X-HE-Tag: 1786616423-679851
+X-HE-Meta: U2FsdGVkX1+MCS54qiAi6h7uDByF61Gbo0rQ+i8R4K5WuM8BwsGCcimcpIXrGJYKdetZdyAaTHwiA6k4WFUOh5IT/AMeu2casfxaA/mlQHutNZSnLai8nXdhZbRgjWRlI2+qr/ip5cpBK4Ay6WzV8aU/aXnE//QAZikIGdw7Pvr5fRAQ0OpY5qaILC+20a8YfWeEvMzlQ8H/yYro5uy8JXDO2CCwD5nYtHLmmdUVCsy3bic7EpcAsvPefUWKQJ7sa7k5yTzINODblK1sGMZLpTfNE7I4X8Zj0yCHb0CMIkwfsxViSEYHjju/Pt1YMruebgPoeMZsHqdzyhEazXkxy1TcLBiH5SCLfXZQKePa2++C5i1YIjfoNHIsjisOiGr2m3I4oD7fO6/qhmKOMkswrspa0rF7RRjh7GglFtCG59oVQo6x6iRXzZt2lcHLQcprGHT6abXhFFL6rDEiIyfmTc7HQxNOELDo7/5TNcyQgjMmMLtBGQaYt9by3QAR7lklm6WA/WbVCfsnSdJJvBI0yPXNKUihX4GtZmdU1kHZCGg+kw7BGshY9l0S+dhgL25pm2cCoqadguBn6mYdeHiJSAl6Rbeexh6pOsHlgcekh/2TCBqs96FL2B7qTmiA3lR1CiO8v0jyVe6ZQzcOlnhNfc07xIzYLbbdyPkAZosJeLRSHB9IqOJW8YIZR0yyjke3JtDK56HG7iBSwG0xUyH/R7sqtw7wKEoudxeVTpQJKOLkfNMMf/xGcYW4g3YxQcoDLRj+Jx9IsvRk/jdYSdwqChEXS8IanHKDofrGTgcnWEv4FOs5WmDv1uJ3vwyboeMTenb8H4XfErJfuMcxZVMEtjM6B686PSCmD2HgqSH2R/a84WQcGs/pO97NELD5XsKE0/D++Km8P4dQWL8pMOJSKzWuPVLWMICGYEKEdMA5v+3dMZUGK32YY7438uAuynRFjUHoGVW2+wWRO20+Eao
+ KaEZO/LP
+ 5f5qnCRYbOTR0Izg1oaM2tiqKg7L+8j+91uRhquDMNzJ+01LpgyA5+vW+pkzUJ5pxvSLo0j4IZZhFE14lHAy5yA4K+n4hssfGSq/cZLPHvFNo5mdzWFWngbujzbpJXLFmMCT42tob4f+7WVojS4cLzWUjYt86bGHZhf2KimPfqqtEOakQJGbNlP5ZlPfrxudcVw6Bz38RR+Pay8l2djLYYO0dDFxWFM3Y8LRxnbICrr8p2ftlVR5UMHUnR3IOeSQvLihTk08gkhpmxWnzdmVb8Nj5XXAK1nybIzWqO9qUWJV5dnGRk9WcmBNpf9jFiLqd0mIm0OMINVIP/M+jUPrZgLbmwRAii90YsMmHQElK958diTHwjBWzJt9nDEZe8Hp8j2z4xyhIYX9hZi517z0Rh8MW8FNX0Q/Ez6/k
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,49 +149,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Miaohe,
-
-First of all, thanks for looking at this one.
-
-On Thu, Aug 13, 2026 at 03:32:34PM +0800, Miaohe Lin wrote:
-> On 2026/8/3 19:31, Breno Leitao wrote:
-> > +static int pick_kpageflags_phys_addr(uint64_t want, uint64_t *phys_addr)
-> > +{
-> > +	uint64_t pfn = (16UL << 20) / page_size;
+On 7/27/26 11:52, Muhammad Usama Anjum wrote:
+> The tmpfile-backed COW cases allocate a one-page file with fallocate()
+> before exercising private and shared mappings.  When the filesystem
+> backing tmpfile() does not implement fallocate(), setup fails with
+> EOPNOTSUPP and no COW behavior is exercised.
 > 
-> Could we use SZ_16M macro here?
-
-Sure, for that I will include ../../include/linux/sizes.h in the next
-version.
-
-> > +/* hard_offline_page() injects with MF_SW_SIMULATED, so unpoison is allowed. */
-> > +static void unpoison_pfn(uint64_t pfn)
-> > +{
-> > +	char path[PATH_MAX], buf[32];
-> > +	const char *debugfs;
-> > +	int fd, len;
-> > +
-> > +	debugfs = debugfs__mount();
+> This occurs when the temporary directory resides on a filesystem with
+> limited allocation support, such as NFSv3.  Reporting a failure adds
+> noise because the test prerequisite is absent rather than the COW
+> implementation being broken.
 > 
-> I might be miss something but I can't find the implementation of debugfs__mount.
-
-It is an ugly macro declared in tools/lib/api/fs/fs.h:
-
-        #define FS(name)                                \
-                const char *name##__mountpoint(void);   \
-                const char *name##__mount(void);        \
-                bool name##__configured(void);
-
-And then:
-        FS(debugfs)
-
-> > +	if (access(INJECT_PATH, W_OK))
-> > +		fatal("%s not present (no MEMORY_HOTPLUG?)\n", INJECT_PATH);
+> Report EOPNOTSUPP as a skip.  Continue treating every other fallocate()
+> error as a failure so unexpected setup regressions remain visible.
 > 
-> MEMORY_HOTPLUG?
+> Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> ---
 
-lol. it should be MEMORY_FAILURE
+Worth a Fixes: ? I think so.
 
-I will get these points fixed and respin.
---breno
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+-- 
+Cheers,
+
+David
 
