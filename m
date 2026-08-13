@@ -4,151 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27EFDC5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 17:58:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4F15C5CFCF
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 18:02:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D84E6B02C6; Thu, 13 Aug 2026 13:57:59 -0400 (EDT)
+	id DF03E6B0578; Thu, 13 Aug 2026 14:02:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 189F26B0576; Thu, 13 Aug 2026 13:57:59 -0400 (EDT)
+	id DC6396B0579; Thu, 13 Aug 2026 14:02:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 052866B0577; Thu, 13 Aug 2026 13:57:58 -0400 (EDT)
+	id CDCFA6B057A; Thu, 13 Aug 2026 14:02:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C34D86B02C6
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:57:58 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 56550120250
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:38:11 +0000 (UTC)
-X-FDA: 85096954782.24.22FF11D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 76F8940002
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:38:09 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HgWtg/iw";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786642689;
+	by kanga.kvack.org (Postfix) with ESMTP id 7B49F6B0578
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:02:43 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C980E120261
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 18:02:42 +0000 (UTC)
+X-FDA: 85097016564.02.BD2100C
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D6FD5C0004
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 18:02:40 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LGFsGfkL;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf10.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786644160;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ecVSw+SFDAYeoiVDEKAfjYEP3TnSRWs7gN9D15vLI6g=;
-	b=CXhqzSstO3eq3F4UmKx+AobBaguxVgN17XsMDi3g/Wo5nulKraeVffEdoFjdBh+gF0iGqR
-	to5kNRAZD7dfNDBeb3QnWIrD3/FOV9am/vCbZs3cE033W9tGfdOYc8ag3Uir3agC2Kawo9
-	SOOIZBfQhgO42z3/igRieqli9doPz8k=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HgWtg/iw";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786642689;
-	b=LscX4Svtf3GHY2GK65btdSarvAacUq5+WDy64b29hoRJv2OYcnZEFZUiojeIJ90pjeUNIg
-	o+pBjsZV4ZxsAtAqH27C4J9+Va3kNnRybcZT5Irnj6yT8ul7O1YE6cWVHzzdNtxI1XPdIq
-	9HVUlnMKA60sWFU9hvXxxh9D2fyDpUU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AFA7F416BC;
-	Thu, 13 Aug 2026 17:38:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB74E1F000E9;
-	Thu, 13 Aug 2026 17:37:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786642688;
-	bh=ecVSw+SFDAYeoiVDEKAfjYEP3TnSRWs7gN9D15vLI6g=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=HgWtg/iwsgFGuYlOl4ZcPwgqvhzFf9rOpPcS5i3CrS3IVlakxeVhKQM9yCdSaI2oA
-	 lwUxxFk+4oWVSSzb45Nv/7rXUHdxSzEScO3TKmT+ibLp1H1Px0UmPVP2pkixCsVSQ+
-	 JM1UNEYjcH743rNGDXJfYcJ9YvbSl6fyC/dOmD9hOMcfjvdBbPWLdBcBjDqxX9zg/I
-	 FhnabeQbsFJWmUISWiKjF+INQb3ScKnqrv8mdv4QYqLmCtOKwcEe7nys81C8TLuOZ6
-	 CXmeGk284l/pSIcRw+rY1Bj3qZ5zCxCK+ntxhmEBVZgeDKEztxG+woWpcaFxWywHWu
-	 Au91bfHax7Dhw==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Thu, 13 Aug 2026 18:32:32 +0100
-Subject: [PATCH v5 15/16] tools/testing/vma: expand VMA merge tests to
- assert anon pgoff
+	bh=24oLlMBWuGFM4ixL+3IRhzcxntuQ/KdbTbGmhUOjPx4=;
+	b=llR3MdCUwLBfNzWhHWAWsL40iyqdlUzdCqwo24VD+F3w8Z/FtwdWXbbYG+LhGS6L5Y5wla
+	wzZ2frWVuw1T9uO6z8aJo4xcE8kZcFGESB1VANWOJizL6QarjUgOmoUg8ShBY5Kw7MX83T
+	LKfsE6CvK80x3VM11s298AAPgG1dOr4=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LGFsGfkL;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf10.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786644160;
+	b=CVfMOKtNPW0EewjtZ8vuKqmUc8HjD34UAjLbjKjkk5PRryLs0joi0yoBKDmMN/evvKb+fo
+	S+QDhFkjiUuM62yb/KP1Wo2oBhgQcZ9IdeD1YollBbLk9e6lRg+2y6C9QBTxoOM15APql1
+	HRYYVPKBSFsIbUBMpuRPai+bQNHPzww=
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6983d3dae7aso2028803a12.0
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:02:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786644159; cv=none;
+        d=google.com; s=arc-20260327;
+        b=klW92LfT50/eEsGT63mSZrQrZbcOSl0EMAvSKXPAzvNdN0G3aRd4xZfix+w6+ynAYE
+         M7r6dkL5WWe03Fi/VlFbEmj9JHxm4ywNB+OjsqjyemzLLlWk11Rwn3GRqLB0k/DP/W7T
+         F+utkSYq1nbLj4mnQINwa7UTQR348SMcb/H5sSiZUBhm/rFknnv/TFELbrlhD42b6htu
+         B/IgsCSlJSUHcC7P3+CI3dPife5DwDooL8HyR2XrXQ9sy8bAUybDYG+6z4k7fgHORlPI
+         g9hZ0oRVR6+sBrWmsUgVeJHjNiyZP94FGE7Xror5KKfx1md6hW4fVLG5CBB2ME/gJbEv
+         0Vgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=24oLlMBWuGFM4ixL+3IRhzcxntuQ/KdbTbGmhUOjPx4=;
+        fh=ctMiu4LrH7HpDGA6W/13/okPxSD1uxAWh0a2WMBvIy4=;
+        b=rR0SkBk8f5EskGg1ZKiSS7yTLNj6maq6XmzuzKGCjKNS8zzm50oLB8tlNt35bOhne3
+         sVRNLl7aE79AvAIFQf2gpjwDObhAqgtkI0Q48bZsJnFxn5RW0eznPU4G98ivpJtiKnWw
+         nRcNscyIlrBERnT7u6AwRnqWsZNbrjjh30NojTXpoQ8pO+/db/6JW1hpbFmgqyK4nANA
+         moiHQt+Q18nPfSD69H968WdmdzFX/5jWXod7QvUW0wtSGFCLKiP+YwjOqS/UArmKXEYq
+         Rk045XymZfT2sQ9mcnAf5VGm6NvQBCGPsNYqQmKP+NlSmcFH64lYxT19ewkh/monO6fP
+         sAfA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786644159; x=1787248959; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=24oLlMBWuGFM4ixL+3IRhzcxntuQ/KdbTbGmhUOjPx4=;
+        b=LGFsGfkLvjAxeYzeMCe73BsPeow8q7S65kFx7tKLiDaGX5E+r9I1Xw9Y29wvyDfG/F
+         hf2PdGlGmlHwXT0L2SrUUHAUtG22lwj5na4sGNTaSf9KmVIpa2nroFV59jbrL4AOb4gO
+         x6DOwu9b6WiYwgH6+RhaUrvUGSujYjC+bicCv1if+z/ruZ9GCORozB6UkqgLKwr9xShU
+         ZK5jvhGUdWIBepZGcK1OUQSkA7YRLWSf5g0iecH4NJ5M46/KeruSY2eE57/0TcgrJm9a
+         LjYClpAHy88Gkg//O3NEXLva8I4JlOf4eIx7e1TkNjxJrwoxh6aL1P85tPVDbSyrxxji
+         WhjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786644159; x=1787248959;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=24oLlMBWuGFM4ixL+3IRhzcxntuQ/KdbTbGmhUOjPx4=;
+        b=KyoyCoMKt3s/eUn0KX4Ckqd4vN976lQWbD83Eo1rx+e3cB/u7gpit1CFOwaJYWpJC3
+         6a7SNbMsiSTjdCwHxXykWebvln8ku0OsCuJx6fHqjXgDcszmENY48Js1wPDumpBCspdg
+         qmdYjI5rwQMCSen25bvB4holRcDb2Qv3EG6QHNzDAgbod4PSfbyUV9200IBGDD9nBFhN
+         Cf0dIEenybQBC/548xaPvqGXDLyUthJGn+GmyjX7vhYFKqcibrCcM9kqNKDWaiCoUhne
+         JT5HrEc4IBN9YVZ2lrHZG5EkwyNMRM9atJJWR8YHBO6SaGRHkue7GOTVETbMG2cOgmBu
+         mAjw==
+X-Gm-Message-State: AOJu0YycQ15IX0wCsVyur0UsOxS1o0KR0K6TIaIjsFIvMfnTe2fw8eeV
+	GtiTdyn5Lb+TgdlsmdGuEA1KsXgRUt+Mr4fS1hhbMTbXRA58tqye38CvaKH+bx2yiOhz3Hh6nQk
+	4IT2Wc+9SMBe4LCp6d8VTmnKdoA03gmA=
+X-Gm-Gg: AR+sD13QIx90qPnmdgD++RO9iEzDExjyXF/wAkYrT1TKj23GcvgEBAy/bsq7pZlhHwm
+	2tT0EUW2UNMGJI3xMO8v2PPHaxdkyipKU6cGbzGgEejfkRX2XG86B0hxsd7+7psjx03naXjZxFR
+	h6WAn7zZuBpLWUPIOh+VhUTMp29YfRfy1xurPzSuPCMxz4sySzIf4+7LLOGlOIjJEYtsJqmBuU9
+	43Agh5NW0EPFyhKiUmv4m1Dzj8nvcKgqD3X8HZf6X0iuVA477YRO0r3Lp5Unvd63SA46hMTFpZS
+	MuNfnGr6L/GA/73ICl3ALbaU+qbHYZkavNno+HlD4K+RN7YqMqJaEqXtbGjRfYQMmr0pXOczt4r
+	dig==
+X-Received: by 2002:a17:907:d15:b0:c1f:2cb2:c448 with SMTP id
+ a640c23a62f3a-c210a0c8c9fmr345156866b.7.1786644158985; Thu, 13 Aug 2026
+ 11:02:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260813-b4-scalable-cow-virt-pgoff-v5-15-c21581c0c3c8@kernel.org>
-References: <20260813-b4-scalable-cow-virt-pgoff-v5-0-c21581c0c3c8@kernel.org>
-In-Reply-To: <20260813-b4-scalable-cow-virt-pgoff-v5-0-c21581c0c3c8@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Miaohe Lin <linmiaohe@huawei.com>, 
- Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, 
- Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
- Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>, 
- Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, 
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
- Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Janosch Frank <frankja@linux.ibm.com>, 
- Claudio Imbrenda <imbrenda@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>, 
- Alex Deucher <alexander.deucher@amd.com>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- Boris Brezillon <boris.brezillon@collabora.com>, 
- Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>, 
- Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>, 
- =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
- Rodrigo Vivi <rodrigo.vivi@intel.com>, 
- Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
- Arnaldo Carvalho de Melo <acme@kernel.org>, 
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
- Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
- Adrian Hunter <adrian.hunter@intel.com>, 
- James Clark <james.clark@linaro.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
- John Hubbard <jhubbard@nvidia.com>, Muchun Song <muchun.song@linux.dev>, 
- Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>, 
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
- Youngjun Park <youngjun.park@lge.com>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
- linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
- dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
- linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=10115; i=ljs@kernel.org;
- h=from:subject:message-id; bh=HHjostKOppt8OOF7vuuqCIn8DUKnlUowdatCvDzIb/8=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJq/6+pyGpg3bRYqlPzq8Kl7U/11ObaKjgJlqVxzP63P
- NX26OH4jlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAEzkyVGG/1H3vwa8O7Bi6Ut5
- M6Uvkr0bIk/5PbJjy5gkdvqMSXX+txkM/4OOtdY9edjce8us8NhSE3MtFt3XKa875jg7bOvLqzt
- nzQcA
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Queue-Id: 76F8940002
-X-Stat-Signature: 5gtq71ts7hk6mdd65z89zo3jy9b6az9s
+References: <20260813-swap-thp-cleanup-v2-0-d2ee48c6aa49@tencent.com> <20260813-swap-thp-cleanup-v2-13-d2ee48c6aa49@tencent.com>
+In-Reply-To: <20260813-swap-thp-cleanup-v2-13-d2ee48c6aa49@tencent.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 14 Aug 2026 02:02:01 +0800
+X-Gm-Features: AUfX_mx5rE4kRZY2BHjr6RIup6iVQNV4t5AIt9HejRwTKNhQjT0SV7K0UNeiZrg
+Message-ID: <CAMgjq7D_xFxDX4ck9LMHY_TCdSuJTCkpKv023_a7tW3khmRDBg@mail.gmail.com>
+Subject: Re: [PATCH v2 13/17] mm/huge_memory: drop the unused do_lru argument
+ of the file split helper
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Youngjun Park <youngjun.park@lge.com>, Shivam Kalra <shivamkalra98@zohomail.in>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D6FD5C0004
+X-Stat-Signature: cd47iruhrbpmuoof5rmaahz54enx3i4w
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786642689-554459
-X-HE-Meta: U2FsdGVkX1/3BmWf3MmBVL8ZK3HGIR2pEQtA36J9c2xyt7UDUKPA8msRIU9MeEwirLpTIW4elPDwOiaYItS7z1vDoW1WTqw4sIfFHW2sbaF+VTeo2oKCRQzcNbTDvQLaeyJvH5FaUaigYSUBa3od/zCZdR/HdEgG/eJGAKrlKFKwgTdzOZ0x4svNjsfYaXxZCCpy1TbAvmoUbhJrZyB2SSm+PSvKfDB+VsjC0xjcczVMMgEQ8tMMT4ZjXFsysRoExt8nGnUZ+wqhrC/nLs1NNfK7B3QJl4/NQ171a7BHF9ry33Icq0FwfxoOdXAWZwuoTHPBOcEBD6dxVlwCtNnjmQHkleaqjG6arAiv/kPY+7cci5w5tcYk1iyrnQGA+XUazxERz3iaOxddgVwTtqONlkJjZO7qKaYDa9tS69vLrd9qaOPpOwP0OLBoiOWphLi1ghdht8ZEI3bBkgqfVbF/6RF0Li8GwXVLh6X9efDXzDuE+6NocNutjXsqe0eocGH7U6kbnQD71JV7wvoBrhiNDuwwotmXH7N4xFwHqvJuV6LO+Jc3Fh+XdZQsu+bBuH8SZa07S3e5W632aghMXyFRBmWkWL2aK/Xzt7D+f/9sVsMzX7tkYA76Bhmy65TbWdIhzoJtTmwCtzdKZGxcDBvmbbKxP1OHpVoW7znIsgUcFfK1aCgYU3LjJe6MRgtvTC5c8hsEvRk0kIhGSW2ntLiXdQTsSEukBT5uK+JidZr7J8e1rbUd6zDuVJmY4ai2wXXzaKVzt9ikFUFm/2zlGP7Xws0ipSmMedxNNMbTlwCSGiAwSDNi34N7fc1s1HRynnMicjPCTJTv5Rw5Qg5UadVhPfMllH8qRfmo0psIK9tg8/LDPU4+M1wqMMbbJ7mS/hwm6gTAt3lr6IusMYE94ttfvOvMqNY/HFvwGD3ne+aDdVkE2roseGM0gC98bdukIgXse4teG36wj0ZaGbIPK2B
- c777re/z
- j/bFbe7zAb512YE6J2pGdxG1BuREmzZOE0l9UzuuP7pO+YKS7PxRkRAESWDQoaEVbyCHXVdM23SGD6a5fAp3baTbvqhUHou6cFiE+/3Y7mzUz8FT2OYqs6VEykAbG5v5pjL+x2Zu1wQEUgwlU1pnD6rw6z1V1e+UNe4KA+l/ylyZyZMuKIaD0kI0ru7YuikbaZV0Fer1T4tBPatxs/mbnsvS722PCwo90o2YzZatHH9XtyVUrK/kco+2GD66Yseh7rPn1L6zuZwAVSzCp6PUhoJhANoqvEY2leyO6VVxdHw+msfhcqDd6vBziL9HsibAWx832
+X-HE-Tag: 1786644160-317951
+X-HE-Meta: U2FsdGVkX1/B6+uKrQ8TTvSVkw+WWFITy8/HhUDM1V2nJ0LKfpbxlM21MT+36HNWtgWuB7pjv3fn44T4Q7R/Hnoe5xVqs5N8B7DXzENW7zUx8rhtcsk37aV+irRBgvHz5iuAtOgGbOs2gIbw0zyJFZmB4tXZOZfjb0AKBbZGjE+Wg/XqhJO2m51KbccNJQn9z4U7z5ai1Ze2P46+A1p8hqODv3QKnbMZqg5JQ5KWNf/2UPWl5+k/i3zJkysdAHxQG/FcNF+l/wbv5GccFcmUrUF1i77gch9ppBhiXJjkJ1UhbJrTv9f9GBfk3DI8z0pf7VxdHDeVnBQEkGyP/d2no/Y9MEqgX8dKgryi5mO8hZoM85hYphr43334QyRqM7Rx7XnZ/0IBnXK5PZksefFpmG0WdlF3yYy7zAfSNrM+xRgPt7pxLhl1+x2adougksmGrwDJf8I9xgHLKd7oazFmute4PMPutjXoXmM2C6BgHcwW1sFcQDRRCLJes/0kNyt0YCqWPzbWCQO/0leIs8xX8EXMycZLDlrKDKjCA8G4/lWXe6gjWhTDNmqkTsWS9jMfV0c/cSbRsHiN5bNqoklARqkPWytjc722oqbHKeW088A3MzRRYIHxKZkV25KmOzXhMjCEu9rZ6yHpwsUXuTB83dEHqTVenvnvRuelefG7qgDFfNIkxXUCC2CnEAlctZWcRYxHETtx31HioB0KeCR1/iPHSUcH4InysE/D7IuD+0M9OYoYqfGW7C/zvw3rzBtXfRyW/NAYMYSzuE+VJqntPTBd/c4Wtg7zhK/5JhzvUOIyk73hMADVo68P466UBLzTW6pEbUx3AxreoIZM120hYTbixpEfwYN6yg7aSxOLYLa1vY0tZPDKKF5P7D3FyUru3IoCEWjU5vF/a0Xvm45JJqmL8uaROAY4vwx9kJTeDUadVXreDHvBkghxKXh4vST6K8Ahv1rhtU8zquYD5Sr
+ JX8Wccmb
+ Lxt1c5GmpIDVMochOUfC21X7TBZ72y1Rn+P5BWPIQANfr/1rEhUTrGQp9Q3p6JR+8qLKE1FmECJrF0fTgMFenhIMXrD5FJrwcanBCw5s3PFbhqH/C2YMWgwFKpzY3vhsBKijXahgt2SZI7OAnIAv7sRWCYXOahLSTXiHBGUMqrPV9uEkcbnJAzgCXol/k8FL+fW0sjNDXZHjn4ZXjPFqytyX1LbLNiImYgUiQqT3OTaGiAnxkQqmhJnVI15n0krYfX4PmE9APYqOjnHKPYwE6AXMlGMxoEOCDLJQx5CBRpKIE1tqdZxWFeHKVB1s8/pOzF191ISaLNrCP2gc7MoSVYSeQqqyG2VTXo+f3IsPXhMpZq2zz9DbIaEGVKAZN3LFtKK5VsubpI3sNbdBF+aJ8Ph/aQXkAAP4gaDccl/HqM1XvjC5pVM/Wazj0nZ5gZJoeZu5tbZDWG7gWRO7hF3y37l7Gs4BF/7Byftr3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,252 +146,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now we have introduced the VMA anonymous page offset attribute and update
-it when VMAs are manipulated, update VMA merge tests to assert that the
-anonymous page offset is as expected.
+Sashiko reports (TLDR: false positives):
 
-Also update instances where we could use vma_start_pgoff() to do so.
+--- Patch [13]: [PATCH v2 13/17] mm/huge_memory: drop the unused
+do_lru argument of the file split helper ---
+commit 56c82d4146d59b581770011278661a173c988702
+Author: Kairui Song <kasong@tencent.com>
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+mm/huge_memory: drop the unused do_lru argument of the file split helper
+
+The only caller of __folio_split_unmap_and_freeze_file() always passes
+do_lru as true, so the argument and the branches gated on it are dead
+code.  Drop it.
+
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index ce02608b37f43..72e7d24139e6f 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+
+[ ... ]
+
+> @@ -4206,9 +4204,7 @@ static int __folio_split_unmap_and_freeze_file(struct folio *folio, unsigned int
+>   }
+>
+>   /* lock lru list/PageCompound, ref frozen by page_ref_freeze */
+> - if (do_lru)
+> - lruvec = folio_lruvec_lock(folio);
+> -
+> + lruvec = folio_lruvec_lock(folio);
+>   ret = __split_frozen_folio(folio, new_order, split_at, &xas,
+>     mapping, split_type);
+
+This is a pre-existing issue, but does this code permanently leak NR_FILE_THPS
+or NR_SHMEM_THPS stats if __split_frozen_folio() fails?
+
+Right before this lock acquisition in __folio_split_unmap_and_freeze_file(),
+the stats are eagerly decremented. If __split_frozen_folio() returns an error
+(like -ENOMEM from xas_try_split() during a non-uniform split), the error
+path fails to restore these stats.
+
+Since the split failed, the folio remains pmd_mappable(). When the folio
+is later evicted or freed, filemap_unaccount_folio() will observe it is still
+pmd_mappable() and decrement the stats again, causing a double-decrement
+underflow.
+
+[ ... ]
+
+> @@ -4226,8 +4222,7 @@ static int __folio_split_unmap_and_freeze_file(struct folio *folio, unsigned int
+>   folio_ref_unfreeze(new_folio,
+>     folio_cache_ref_count(new_folio) + 1);
+>
+> - if (do_lru)
+> - lru_add_split_folio(folio, new_folio, lruvec, list);
+> + lru_add_split_folio(folio, new_folio, lruvec, list);
+>
+>   /* Add the new folio to the page cache. */
+>   if (new_folio->index < end) {
+
+This is a pre-existing issue, but does calling __xa_store() here inside
+the page cache insertion loop leak memory and cause latency spikes?
+
+__folio_split_unmap_and_freeze_file() correctly sets up a local XA_STATE
+with mapping_set_update(&xas, mapping). However, the page cache insertion
+loop (just below this snippet) uses __xa_store(), which creates a fresh local
+XA_STATE that lacks the workingset_update_node callback.
+
+Without this callback, xa_nodes are not added to their memcg's list_lru,
+leaking nodes under memory pressure.
+
+Additionally, because __xa_store() bypasses the advanced XA_STATE and
+restarts from the root for every sub-folio, it turns an O(1) advancement
+into an O(log N) tree walk for each slot while holding the xas_lock_irq
+spinlock, which can cause severe latency.
+
 ---
- tools/testing/vma/tests/merge.c | 45 ++++++++++++++++++++++++++++++++---------
- 1 file changed, 36 insertions(+), 9 deletions(-)
 
-diff --git a/tools/testing/vma/tests/merge.c b/tools/testing/vma/tests/merge.c
-index 48418b82b01d..acaab282939c 100644
---- a/tools/testing/vma/tests/merge.c
-+++ b/tools/testing/vma/tests/merge.c
-@@ -121,6 +121,7 @@ static bool test_simple_merge(void)
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x3000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma), 0);
- 	ASSERT_FLAGS_SAME_MASK(&vma->flags, vma_flags);
- 
- 	detach_free_vma(vma);
-@@ -153,6 +154,7 @@ static bool test_simple_modify(void)
- 	ASSERT_EQ(vma->vm_start, 0x1000);
- 	ASSERT_EQ(vma->vm_end, 0x2000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 1);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma), 1);
- 
- 	/*
- 	 * Now walk through the three split VMAs and make sure they are as
-@@ -165,6 +167,7 @@ static bool test_simple_modify(void)
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x1000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma), 0);
- 
- 	detach_free_vma(vma);
- 	vma_iter_clear(&vmi);
-@@ -174,6 +177,7 @@ static bool test_simple_modify(void)
- 	ASSERT_EQ(vma->vm_start, 0x1000);
- 	ASSERT_EQ(vma->vm_end, 0x2000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 1);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma), 1);
- 
- 	detach_free_vma(vma);
- 	vma_iter_clear(&vmi);
-@@ -183,6 +187,7 @@ static bool test_simple_modify(void)
- 	ASSERT_EQ(vma->vm_start, 0x2000);
- 	ASSERT_EQ(vma->vm_end, 0x3000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 2);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma), 2);
- 
- 	detach_free_vma(vma);
- 	mtree_destroy(&mm.mm_mt);
-@@ -212,6 +217,7 @@ static bool test_simple_expand(void)
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x3000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma), 0);
- 
- 	detach_free_vma(vma);
- 	mtree_destroy(&mm.mm_mt);
-@@ -234,6 +240,7 @@ static bool test_simple_shrink(void)
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x1000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma), 0);
- 
- 	detach_free_vma(vma);
- 	mtree_destroy(&mm.mm_mt);
-@@ -346,6 +353,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x5000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma), 0);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 3);
-@@ -367,6 +375,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_EQ(vma->vm_start, 0x6000);
- 	ASSERT_EQ(vma->vm_end, 0x9000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 6);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma), 6);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 3);
-@@ -387,6 +396,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x9000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma), 0);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -407,6 +417,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_EQ(vma->vm_start, 0xa000);
- 	ASSERT_EQ(vma->vm_end, 0xc000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0xa);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma), 0xa);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -426,6 +437,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0xc000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma), 0);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 1);
-@@ -446,6 +458,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 		ASSERT_EQ(vma->vm_start, 0);
- 		ASSERT_EQ(vma->vm_end, 0xc000);
- 		ASSERT_EQ(vma_start_pgoff(vma), 0);
-+		ASSERT_EQ(vma_start_anon_pgoff(vma), 0);
- 		ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 
- 		detach_free_vma(vma);
-@@ -642,7 +655,8 @@ static bool test_vma_merge_with_close(void)
- 	ASSERT_EQ(vmg.state, VMA_MERGE_SUCCESS);
- 	ASSERT_EQ(vma_prev->vm_start, 0);
- 	ASSERT_EQ(vma_prev->vm_end, 0x5000);
--	ASSERT_EQ(vma_prev->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma_prev), 0);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma_prev), 0);
- 
- 	ASSERT_EQ(cleanup_mm(&mm, &vmi), 2);
- 
-@@ -753,7 +767,8 @@ static bool test_vma_merge_with_close(void)
- 	ASSERT_EQ(vmg.state, VMA_MERGE_SUCCESS);
- 	ASSERT_EQ(vma_prev->vm_start, 0);
- 	ASSERT_EQ(vma_prev->vm_end, 0x5000);
--	ASSERT_EQ(vma_prev->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma_prev), 0);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma_prev), 0);
- 
- 	ASSERT_EQ(cleanup_mm(&mm, &vmi), 2);
- 
-@@ -808,6 +823,7 @@ static bool test_vma_merge_new_with_close(void)
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x5000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma), 0);
- 	ASSERT_EQ(vma->vm_ops, &vm_ops);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -863,11 +879,13 @@ static bool __test_merge_existing(bool prev_is_sticky, bool middle_is_sticky, bo
- 	ASSERT_EQ(vmg.state, VMA_MERGE_SUCCESS);
- 	ASSERT_EQ(vma_next->vm_start, 0x3000);
- 	ASSERT_EQ(vma_next->vm_end, 0x9000);
--	ASSERT_EQ(vma_next->vm_pgoff, 3);
-+	ASSERT_EQ(vma_start_pgoff(vma_next), 3);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma_next), 3);
- 	ASSERT_EQ(vma_next->anon_vma, &dummy_anon_vma);
- 	ASSERT_EQ(vma->vm_start, 0x2000);
- 	ASSERT_EQ(vma->vm_end, 0x3000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 2);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma), 2);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_TRUE(vma_write_started(vma_next));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -897,7 +915,8 @@ static bool __test_merge_existing(bool prev_is_sticky, bool middle_is_sticky, bo
- 	ASSERT_EQ(vmg.state, VMA_MERGE_SUCCESS);
- 	ASSERT_EQ(vma_next->vm_start, 0x2000);
- 	ASSERT_EQ(vma_next->vm_end, 0x9000);
--	ASSERT_EQ(vma_next->vm_pgoff, 2);
-+	ASSERT_EQ(vma_start_pgoff(vma_next), 2);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma_next), 2);
- 	ASSERT_EQ(vma_next->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma_next));
- 	ASSERT_EQ(mm.map_count, 1);
-@@ -929,11 +948,13 @@ static bool __test_merge_existing(bool prev_is_sticky, bool middle_is_sticky, bo
- 	ASSERT_EQ(vmg.state, VMA_MERGE_SUCCESS);
- 	ASSERT_EQ(vma_prev->vm_start, 0);
- 	ASSERT_EQ(vma_prev->vm_end, 0x6000);
--	ASSERT_EQ(vma_prev->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma_prev), 0);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma_prev), 0);
- 	ASSERT_EQ(vma_prev->anon_vma, &dummy_anon_vma);
- 	ASSERT_EQ(vma->vm_start, 0x6000);
- 	ASSERT_EQ(vma->vm_end, 0x7000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 6);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma), 6);
- 	ASSERT_TRUE(vma_write_started(vma_prev));
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -964,7 +985,8 @@ static bool __test_merge_existing(bool prev_is_sticky, bool middle_is_sticky, bo
- 	ASSERT_EQ(vmg.state, VMA_MERGE_SUCCESS);
- 	ASSERT_EQ(vma_prev->vm_start, 0);
- 	ASSERT_EQ(vma_prev->vm_end, 0x7000);
--	ASSERT_EQ(vma_prev->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma_prev), 0);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma_prev), 0);
- 	ASSERT_EQ(vma_prev->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma_prev));
- 	ASSERT_EQ(mm.map_count, 1);
-@@ -996,7 +1018,8 @@ static bool __test_merge_existing(bool prev_is_sticky, bool middle_is_sticky, bo
- 	ASSERT_EQ(vmg.state, VMA_MERGE_SUCCESS);
- 	ASSERT_EQ(vma_prev->vm_start, 0);
- 	ASSERT_EQ(vma_prev->vm_end, 0x9000);
--	ASSERT_EQ(vma_prev->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma_prev), 0);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma_prev), 0);
- 	ASSERT_EQ(vma_prev->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma_prev));
- 	ASSERT_EQ(mm.map_count, 1);
-@@ -1126,7 +1149,8 @@ static bool test_anon_vma_non_mergeable(void)
- 	ASSERT_EQ(vmg.state, VMA_MERGE_SUCCESS);
- 	ASSERT_EQ(vma_prev->vm_start, 0);
- 	ASSERT_EQ(vma_prev->vm_end, 0x7000);
--	ASSERT_EQ(vma_prev->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma_prev), 0);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma_prev), 0);
- 	ASSERT_TRUE(vma_write_started(vma_prev));
- 	ASSERT_FALSE(vma_write_started(vma_next));
- 
-@@ -1157,7 +1181,8 @@ static bool test_anon_vma_non_mergeable(void)
- 	ASSERT_EQ(vmg.state, VMA_MERGE_SUCCESS);
- 	ASSERT_EQ(vma_prev->vm_start, 0);
- 	ASSERT_EQ(vma_prev->vm_end, 0x7000);
--	ASSERT_EQ(vma_prev->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma_prev), 0);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma_prev), 0);
- 	ASSERT_TRUE(vma_write_started(vma_prev));
- 	ASSERT_FALSE(vma_write_started(vma_next));
- 
-@@ -1419,6 +1444,7 @@ static bool test_merge_extend(void)
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x4000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma), 0);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 1);
- 
-@@ -1459,6 +1485,7 @@ static bool test_expand_only_mode(void)
- 	ASSERT_EQ(vma->vm_start, 0x3000);
- 	ASSERT_EQ(vma->vm_end, 0x9000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 3);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma), 3);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(vma_iter_addr(&vmi), 0x3000);
- 	vma_assert_attached(vma);
+For the stats question: the decrement is done up front, but no restore is
+needed on the error path.  The uniform path preallocates all the xarray
+nodes and checks for errors before the stats are touched, so it cannot
+fail there.  The non-uniform path can fail - xas_try_split() does one
+GFP_NOWAIT allocation when reducing the order-6 chunk - but by then the
+folio has already been split below PMD order, so a failed split can only
+leave behind an order-6 remnant, which is not pmd sized.
 
--- 
-2.55.0
-
+For the __xa_store() one: it doesn't need to allocate nodes,
+every slot it writes already exists after xas_split()/xas_try_split().
+Nodes the split creates are tracked through
+workingset_update_node() (mapping_set_update() is set on the xas), so
+nothing leaks.  The fresh root walk per sub-folio is real, not a bug,
+It may be worth optimizing later.
 
