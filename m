@@ -4,119 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D803C5CFCF
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 17:07:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9CDBC5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 17:08:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 639556B0553; Thu, 13 Aug 2026 13:07:49 -0400 (EDT)
+	id ACFD46B02AB; Thu, 13 Aug 2026 13:08:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 611926B0555; Thu, 13 Aug 2026 13:07:49 -0400 (EDT)
+	id AA82D6B02AC; Thu, 13 Aug 2026 13:08:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5278D6B0556; Thu, 13 Aug 2026 13:07:49 -0400 (EDT)
+	id 9BD576B02AD; Thu, 13 Aug 2026 13:08:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CAC26B0553
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:07:49 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AF164140243
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:07:48 +0000 (UTC)
-X-FDA: 85096878216.15.F166EF7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 2F4CC140005
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:07:47 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l6/55D1p";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 60F046B02AB
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:08:43 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CDA8640246
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:08:42 +0000 (UTC)
+X-FDA: 85096880484.13.6C178D5
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	by imf15.hostedemail.com (Postfix) with ESMTP id ED360A0019
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:08:40 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=osandov-com.20251104.gappssmtp.com header.s=20251104 header.b=CcB7ZX3q
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786640867;
+	s=arc-20220608; t=1786640921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=PKRAeK+XaoOSz8i+k2Leco4J4jAfWktnkTRSqbkuLKM=;
-	b=ZMmaYawckIM9pi67wSY5EuWxF3FE8kc14SxZywywKlUXF7cIziVl1q7xeCl5j6MPkzgoTV
-	aSxLw0VcDa3p6ItyMDxy2ehtvYTLwjrmOLE2ByaJneQtZmquzEQkJZ31pa2klAHJUa4X45
-	LmfCby2qqgMIuBl+j2APxNmTdN+Aug4=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eYHtd96lDOI7CnVEXFbNgDWMaZC6MCbdvBlqoNmSQ9g=;
+	b=lTKEQOcIrTmC6sRbbTN8CSHZZMv+qnp9CBR/0cpcfHjruS3W5l0GS5qM2TUamwucmbgGOY
+	PDegGx0t2yw/1Bf6ZOVuryi85nj7U7Qf+DP4yvLdWkkostKeVK6L0X8cCh2EzG/EMIyL/i
+	/t3V+wN7uKjWeSmiAP2YqT3+usJD0bY=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l6/55D1p";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=osandov-com.20251104.gappssmtp.com header.s=20251104 header.b=CcB7ZX3q;
+	dmarc=none;
+	spf=none (imf15.hostedemail.com: domain of osandov@osandov.com has no SPF policy when checking 209.85.210.170) smtp.mailfrom=osandov@osandov.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786640867;
-	b=A4cXmmaJVddNA8+xBGn7OoIFUsO2yzEKlUwJbAMgz55FbsrnMtE3QUbnfmr6a/qXHZ3RK5
-	Xh+LfXoBBsH+jCtvhAw5SWXiFMuKFjpk9kIp4Ckx1bgITSZGODBbKS5kqJioHr8BQFbz4e
-	h0JS/htLTil3i3ICsZmUnc96LES6JbE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 55582600AD;
-	Thu, 13 Aug 2026 17:07:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D464A1F000E9;
-	Thu, 13 Aug 2026 17:07:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786640866;
-	bh=PKRAeK+XaoOSz8i+k2Leco4J4jAfWktnkTRSqbkuLKM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=l6/55D1pW/RcwnNP2uahedYxgXA6SfshCx0z2EmsF/OjK7lXLkJYcVuMj32OgAtCk
-	 cyfxTg517dDPPDyBv37OY7J0Dg7H+yvt9uBSLsjahX6DCkiy861Q0UWxH3vrTipjOr
-	 z0VQcL+BxxHQ4uNYdk+pn+SRzhXykT+Rowb9iXDWol9mVH3MBnAPPT2f4iaP6WDJiY
-	 Veb4fyO4f+V0k0RVHbHdI+bEHuStwcwlDAgx/cZMRCWXHbKAVLXv0kzKb9POLlpUNB
-	 IpMV/QY2isVa888VI0683WHUztUubnxgHMP4QK3lVsvECdyF6rPzDM5jVY0yujlHZj
-	 /tF2Jc9UVdZsg==
-Date: Thu, 13 Aug 2026 07:07:45 -1000
-Message-ID: <acf9c9a19bbac2dd116869a181bb1dfe@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Hui Zhu <zhuhui@kylinos.cn>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>,
- Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>,
- Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, JP Kobryn <inwardvessel@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
- davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, KP Singh <kpsingh@kernel.org>,
- Tao Chen <chen.dylane@linux.dev>, Mykyta Yatsenko <yatsenko@meta.com>,
- Leon Hwang <leon.hwang@linux.dev>,
- Anton Protopopov <a.s.protopopov@gmail.com>,
- Amery Hung <ameryhung@gmail.com>, Tobias Klauser <tklauser@distanz.ch>,
- Eyal Birger <eyal.birger@gmail.com>, Rong Tao <rongtao@cestc.cn>,
- Hao Luo <haoluo@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Kees Cook <kees@kernel.org>, Jeff Xu <jeffxu@chromium.org>,
- mkoutny@suse.com, Jan Hendrik Farr <kernel@jfarr.cc>,
- Christian Brauner <brauner@kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>, Brian Gerst <brgerst@gmail.com>,
- Masahiro Yamada <masahiroy@kernel.org>,
- Willem de Bruijn <willemb@google.com>,
- Jason Xing <kerneljasonxing@gmail.com>,
- Paul Chaignon <paul.chaignon@gmail.com>,
- Lance Yang <lance.yang@linux.dev>, Jiayuan Chen <jiayuan.chen@linux.dev>,
- Emil Tsalapatis <emil@etsalapatis.com>,
- Ihor Solodrai <ihor.solodrai@linux.dev>, Barry Song <baohua@kernel.org>,
- Geliang Tang <geliang@kernel.org>, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH bpf-next 2/4] bpf: add bpf_thread_wq kthread-backed
- workqueue with cgroup placement
-In-Reply-To: <cfb06f2626062fa60efbbd9d34089819b1a34522.1786086076.git.zhuhui@kylinos.cn>
-References: <cover.1786086076.git.zhuhui@kylinos.cn>
- <cfb06f2626062fa60efbbd9d34089819b1a34522.1786086076.git.zhuhui@kylinos.cn>
+	t=1786640921;
+	b=vr18Mno3MFMOtXMviOTeoAoMO3t+PEwTSrFJGQQvTfpUVaw5hvnCTvlAf7GMjIlU4cpfvG
+	Ay7o2DzQJzTdePeAspjEaTc9jH0czdKWc7jVrXlrujPD4tSQDQCCyJS1qdef92mXHVMp1b
+	wQ9EkMBftkx8kV341/vDVmcWre+/gEI=
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-84e4e98d2cfso186261b3a.0
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:08:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=osandov-com.20251104.gappssmtp.com; s=20251104; t=1786640920; x=1787245720; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eYHtd96lDOI7CnVEXFbNgDWMaZC6MCbdvBlqoNmSQ9g=;
+        b=CcB7ZX3qmSUXYUWlnxhHrsZzlBGvHieb2+AXHofzYywSyc8eqail1lQTB0Wo0q7yzr
+         tuWRiozEiMKHVTOKOq5Qg58qLoxngTIQGS2bw3zjPeYDGj8JDTson08OuI0KPA4rtwWO
+         1+It2+Bt86wXd+FEDSKyujFAUnFAog1jby4pK65dNTb420MzkvH6vZ1dOMw/IXY4F9YX
+         Hbhvr6XYcWfyUa7eSrwCQU1DKIvwrvPZgNeiWCT452mZnFVqUs1PnpsYLEsDA3gpD2gT
+         YOAEkManRXLAiNM7eXfMNDG2qZcoF5PrrfdguyDzn5iW34N7ARngXPCMz/HaWvtlFrDA
+         6Y7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786640920; x=1787245720;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eYHtd96lDOI7CnVEXFbNgDWMaZC6MCbdvBlqoNmSQ9g=;
+        b=hce5WJVoUcbzIsn7+cLGE3054OHN9IGNEBS9PQn2wF5t3peU1d7o1kCl8VrrukNNfK
+         TMzpFZl8kIe7jXZqw/+8zoO/6EBeB4I6ZeEnQPHVg9XIPM483aueJXy2SAGoNY1Azh3a
+         rJLzq6sML+ksy0U4DV42h3h4vvem2TquXKuYO7CvJT5nhDtKu2CfwmOFT2EmMjIQXmgu
+         LNA3DN00F6Lb9VH3MPdwvPQdOvxtMmWa2pndzf2Qc71CZ7GaToE1hLkcgYF0SZ57RdGa
+         kdnLz5HgOLw/Yhc9YI1E6QN+aUUtJOIB9yE8AuKTT2hCdja/rI+5wu0B4wr7kkRfWO1V
+         1HSQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqI0cbwsWTTrDxauq4g05MP+tfhc5V+ShAHCZWZEOc38p9NdTq+B+5rGrt2nDkRVZyD0PMkRNKJuQ==@kvack.org
+X-Gm-Message-State: AOJu0YxWOjNpKlqiOSZk1D8GltKxtGqswGKfErTIwlePEN+woB5AF/p3
+	seW2jzylDgzNMADcNKyqtx29ZZd/b8msIEBe/tDuRkNNHFcjsiKR+DHQaSHGWjEZalY=
+X-Gm-Gg: AR+sD10xzalbPryR4O5JBNLphZDmlKH8j5/GfjBtGTZL+Uw3xr658wMv4V0H7JYoaKG
+	uMjJDhT8LU4tBUC6K7doGdvUo0o4G+tlwNrKLza+gIxMdMBYFlcyzbJVDZKrLMnqzaxM0OnyKSP
+	gy9WrltygUSXaZOcynQMOz02J6JMV6rZaqV8GviafDeWaqBfvKSqPPXCTS3MKN7Eyt8Rp5yzuWm
+	/OHrHThCocT7/PSSbZOLjPiGNYvasVm7ClIaGhJmKkQVnfL605GGm2v2STjD7WciwZMQNUlUTQR
+	GB9tgwlZtnuPC8/+NLqXPZX1cNS01v8aPtcU2mR55LRUdXCA2yQFVXqHbh6i6uQvv2Y4TS1EnbF
+	68JnRspVWVgidsevYAV64lPJX7m5hb8Scg5fRKv86sQx0oviWlcT575xP1NCfEbdaF8TAWvXq8N
+	wxT2eHecOqKGQzk2faTq59A3mHg0IMF1HeVpuWaTbIScuGPaH1vXrhYJ4ONzXj5np7b8EYYeFIF
+	4Kz1vl2ChWlZ+oM3R7noMda28WA/ZxK+yN92XLlGHyITFgmgUGrB+rN
+X-Received: by 2002:a05:6a00:7115:b0:848:4d4f:d481 with SMTP id d2e1a72fcca58-84fc75d543amr4090389b3a.2.1786640919729;
+        Thu, 13 Aug 2026 10:08:39 -0700 (PDT)
+Received: from telecaster (c-67-185-21-237.hsd1.wa.comcast.net. [67.185.21.237])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84fc4565c6bsm1232055b3a.3.2026.08.13.10.08.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 10:08:38 -0700 (PDT)
+Date: Thu, 13 Aug 2026 10:08:36 -0700
+From: Omar Sandoval <osandov@osandov.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jacob Lalonde <jalalonde@meta.com>, Josef Bacik <josef@toxicpanda.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jacob Lalonde <jalalonde@fb.com>,
+	Shuah Khan <shuah@kernel.org>, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 00/11] coredump: allow to create sparse coredumps on the
+ coredump socket
+Message-ID: <an36FFL9ALwCPhEe@telecaster>
+References: <20260811-work-coredump-sparse-v1-0-cd3e8b1e356d@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260811-work-coredump-sparse-v1-0-cd3e8b1e356d@kernel.org>
+X-Stat-Signature: gg1hu8g33s4twckgsush4kgk9np7bsji
+X-Rspamd-Queue-Id: ED360A0019
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2F4CC140005
-X-Rspamd-Server: rspam07
-X-Stat-Signature: epbed4q4ufsmtt4ybohizcp959a5ytpj
-X-HE-Tag: 1786640867-437268
-X-HE-Meta: U2FsdGVkX193kU9jxdQU3oKuUoU8UqwMiP8tDmWFPniJ6w0VfUGu07H5BFoJYG+p6rCsONGStVduko8TNM1Jfit70EQ+EqjVULPANgu8nXYHIF5SPljC/k70EOfVAE9Eui/a8B0/xLAK1BlsxmOZj7xQhiwHUONJxq4x1VoovkyMEjY3v6FdvQNxJQzqpYRrkALcTEIE42cjv9I7njnAnTBZpYUrL7cLOSMjqIVG2Y0jocJH6C4DdLg5u77yI+QlOtota8aUe7L592ZHlAavuTod4RnMTwP74XS/FPSJWGv4DXViq7fv96sjd+zn6+9kYclGZ2wf9pZ45jwHB4BT1S4lzRmQAg9bousOP88R06xZN48cpYlABE9Ow60nhwyOFlqJyaQoccNf+xLzLOijsvQ1ACKKYpSn1L6ZzMUzCRsa+fvxNmr96qm4WcnOIirNydlxoZqtWY2Ei94HapAOdhrdl5igu9FjVkfUGob/JeDR8/aaL9DICzjXBlUhqbkP+0K+kWP/V5PpATMX1S190e3nWHV9SKdpT8DAgFh0bc8uhaIr6eLHJi/0lkKJ64BnxyrqgRm2m5XuuCWQDiw6pEchYu8LvSLFfp6XRjLJw43Z3eKW0fL0lBaWVGa4IumTIWyhbIYQqfbsCAB08gtnrJjVsiYAdrx5D6Y/yC+nbQ53Jb6fDgNdTwnEfomIiYzFNWyrhDm93JXfvU1s9GWMRlOTOfyJb60Y/PyT/Ha1DRkZlQY4kfd6wW+DHtyohyW/P74T3Vm09/5p2Y9SPS0xOJILSVOE52TJy3qeEAy7pJSJ3IHzTHgNlnrTSuj8fQ+5XQqOn7lgZhRDqrGq30uqifbbI6R5QfqA8nqfJUVBhCbKWbHjh4qe5mXB5QGE0iEwqIFRWOhdxK4I/KtmNm0Gr1j2LeEi1AKKweKZIbxbDRfBfbG9gQn/egOHfC4PjkFUjs3HeWkneWYhdQmvREZ
- kLzDeUVX
- maQdP5n11tTc0G4LxU9kLizT2hgMZqFRmTIOLqHJ9VT23/ZEaH6lRDOTKqpuqRu27/QHOrXcy+iCFEzzIPLrUc0v5D5oxCW8wAQHX9IUixSI/DkZGbXcBmzaRqFw9xUurL/fjT6hZPxP9lHvCYYFEvnFkjSBbtZKIwS3wIJXw22SuXAbTcnQ6dJTm4pXFswD5eTuMTpbWehk/n4czILFxOXXA6+MWbryP4ZYanFkIQTDrD5932XxmQRGYTvreGoFpZHnTsR7wEBPX4BfOOVOAEMb+Idz82XR4gKxdrOFa+8mSb1nDgu0P0EsqAc8gkiA8lCQleAfV+Kbl1vRQXZ5bvgx3fkrkOXV3fQu4B2aT9/m9HGc=
+X-HE-Tag: 1786640920-89843
+X-HE-Meta: U2FsdGVkX18SWoBbCQrAWb69bsgfpLOv+IXV1mb0Uwj2jEqJePVj7KSUGFmXKMQmDw3NFgOgoZ6zJXK0bmON1qAH0+qp7Rc0vKBw8MpJ5trFwRr/71MPn3cn9r4r3/UBYIQPkKyB607fu/VG/bIL4VOZ10xi9t3a7HjLn/Oh6DAM9gpZevTNtR6qBACIaXVpAGGtD4r0pFeZxYHxeDJ6m3BEOR6uT3F3EIfUicEdq9VWCjXUv2KkyxgHAJkEEyYoslVEIn1+bve9WF1NEIHQYCGaHZzCentNaT77zrjZ1g/bICMy5t8myR69wEuX7TV6cM7boQ7Tk5EFitpSH3FeL8RxuIPpSEfW3le+FYBj2XYptWlmiDqLaFdbSXmbBdzaBmHV5d+3UNknRehToldwpO9U7e0Xas7NWON2oK1xSeHfCt1hSIZfiC3oZMrFZv8PqD7kxk3c9QmfosAVbZCzG17QMF+cE8T/Voxa5ul7A5IjozcprPRZhoF4E7r0fbklcsKl97HUAabURoNvAlhSVXGJrszRDUEl98a4bOTmnKPk93ssM8P6vu5ZTSftpAGYQlBoWGYHzUHx858I7KJyzJaTmVDQ8Ydc10qbyXBP5XrBOHVsuRrmAMRbyZUt9iLdqyMBhIezuOJLo215OkbSvusyrWx+oHLtEoyWG/FhXPPou5ROyTZAEUH46CR6ix0AcU8b5xF+Q+gjoq9HwRs1mLPtumDo8cffVXRh3SmZcgC5wGsTRLoEvCn2DDsA4q/yn4BzBcQpVWa7q1yQR1oi453hKy6Z5swAxMvNiHouLwKvVO238C0R2G0y6DY39VConL9Y0Tg3cH+wMm2EK1jo2DjMEBj/lfDD5SGY36UgYZUxfChsUY/nodH618tOOWFrkni/lnENmDDZ+z6kfiyJpUDGiMginTwZ4ciwWh+FJMI2iQs0cVa0NAjg1WsgVdvOGLF+n/6r6m04V12wj71
+ c//s4pNs
+ 7Igv+C+1QtAK/EUwOx6Ek7wuE6jmGZDDhexoVi7QUwrrBfyYdFUjSLEXAnEo5ig/v6w5Ox5zIuZQ7fmYQC03huacNFWbKtglfJXfgFOiUimgfenJ0ox8d/lBcwiyiko6bGXPjuQw5Lw7FcKqBBxZpyMkLSiacD7vhu+03PTjvdB3WLfPNdNZ8cb0oopoUYa9s+8EcGKnEj8H9cW3+huSwHdwvUcSracwtpkKKZz9yL5TaY//RP+WNLYYLMZmethWN7nehVXAWtYnnkwAxtdLEeFQTDrJB9qZOzhncxX+j5ZX0+7G33xlabwPIrS4Ii8qYRLiNHMZzJ20ZgEI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,21 +129,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello, Hui.
+On Tue, Aug 11, 2026 at 05:27:21PM +0200, Christian Brauner wrote:
+> A coredump generated via the coredump socket ends up transferring
+> zeroed data when a mapping contains holes. For a large process that
+> maps a bunch of data that's wasting a ton of work.
+> 
+> Jacob ran into this and Josef has bitched^wcomplained about this to me
+> before. I dislike the coredump_filter bit solution in [1] which stops
+> each PT_LOAD at the last populated page.
+> 
+> The problem is real though. I don't think coredump_filter is where we
+> need to solve this. That mask says which kinds of memory to include and
+> it propagates across fork and exec, whereas what is being selected here
+> is an encoding mechanism.
+> 
+> I also think that the usermodehelper - may it swiftly die - isn't really
+> salvagable for this and it's not the future anyway. The coredump socket
+> already has a handshake for stuff like this.
+> 
+> I always had an idea how this would look like but punted on it back
+> then. So here it is.
+> 
+> A server that raises COREDUMP_HEADER in coredump_ack->mask doesn't get
+> the coredump as a plain byte stream but as a sequence of frames. Each
+> one a struct coredump_frame_header followed by what it describes. A data
+> frame carries its bytes. If a server also raises COREDUMP_SPARSE, zero
+> frames are sent for unpopulated mappings. They only indicate how many
+> zero bytes need to be written and to not include data. Reassembling the
+> frames gives back the same coredump. A debugger and everything else
+> still see an ordinary core file and nothing outside the coredump server
+> has to learn anything.
 
-On Fri, Aug 07, 2026 at 03:01:50PM +0800, Hui Zhu wrote:
-> Introduce bpf_thread_wq, a new BPF embedded map field similar to
-> bpf_wq but backed by a dedicated kthread_worker instead of a system
-> workqueue. The worker kthread can be attached to a specific cgroup at
-> init time so BPF-deferred callbacks run under the resource limits of
-> the target cgroup.
+Hey, Christian,
 
-I find the name bpf_thread_wq unnecessarily confusing. The kernel
-counterpart is kthread_worker, not workqueue. Maybe name it
-bpf_kthread_worker?
+I proposed pretty much this exact solution to Jacob, so thank you for
+writing it :)
 
-Thanks.
+There are a couple of reasons we still wanted to explore the
+coredump_filter solution:
 
--- 
-tejun
+1. Our core dumper application is not really prepared to run as a daemon
+   that listens on a socket, having been written to be a transient
+   usermode helper. But thinking about it more, maybe that's something
+   we could paper over with systemd socket activation?
+2. More importantly, we sometimes write core dumps to disk and sometimes
+   upload them to blob storage. For the former, this approach of sending
+   holes over the socket is great. For the latter, we'd now need to wrap
+   the dump in some sort of container supporting sparseness that all
+   consumers then need to reassemble. The coredump_filter approach
+   doesn't require any changes in that pipeline.
+
+To be transparent, I still prefer the sparse socket approach, but Jacob
+has different contraints that I'd love to have addressed: it's a
+trade-off of more work on the core dump server side and all of its
+consumers vs. in the debug tooling side, which is mostly already there.
+
+Thanks,
+Omar
 
