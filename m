@@ -4,88 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44BC4C5AC67
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 05:44:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80128C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 05:44:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7F826B03AA; Thu, 13 Aug 2026 01:44:45 -0400 (EDT)
+	id 098C96B0191; Thu, 13 Aug 2026 01:44:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5EB56B03AC; Thu, 13 Aug 2026 01:44:45 -0400 (EDT)
+	id 022056B03AC; Thu, 13 Aug 2026 01:44:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6D486B03AB; Thu, 13 Aug 2026 01:44:45 -0400 (EDT)
+	id E79F06B03AD; Thu, 13 Aug 2026 01:44:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 930EC6B0191
+	by kanga.kvack.org (Postfix) with ESMTP id C17E76B0191
 	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:44:45 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E6FFBA2AAF
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:44:44 +0000 (UTC)
-X-FDA: 85095156888.23.5A510B4
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 64D82A2AE9
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:44:45 +0000 (UTC)
+X-FDA: 85095156930.10.6B4DB9F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 56C4420005
+	by imf11.hostedemail.com (Postfix) with ESMTP id C984140002
 	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:44:43 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nvZ4nl92;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n0wAvhD2;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786599883;
+	b=1/YnGzTB+i6MIkzXdQSPH+zKCNXfJvB3UWN9TX0savBl/iDVGXQrbC8OcbsKdZ93A43gNv
+	7iQ+s9sQORkmWRs5XzXTEzqf/BjNynr/N3aDdDQkK1K/8mORHhgZSa4g/0gfkzu2L2QeTj
+	I/L9bE8Us/ZrlrDGTMs5g9S+aE/OUxI=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n0wAvhD2;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1786599883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fXLkVAHbgjaWy56zhYvF1vnHi1V0hiXRFOM3tY/zcKk=;
-	b=ST95JzrNe1Y3IXL5jmsFsIdMsgkDjAEbwoBjK+CDakwo/Sq+vydOB9CrrKobsOKk7a65XS
-	WduRLoLe/J3TX6mGXQrxAMhc2qgPwkern8zfwo0eS3uHVaQWKy/yU7BRhHxSSPpi8Bkd3Y
-	DLZh86L2+zkjghu+IF4j8udRA36CrYU=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nvZ4nl92;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786599883;
-	b=1dfNoVVRAvtCeLOkZDl56qqwd2da8rbu4SxPxEAyMPJi8BeodgvDFgpUllz5G2w0MWGzyf
-	yMS+/kG9Z5g9xRv+R67hPtubRBY17VHuhAUXcMBJsjgw05gub2pnwgAVWK+u4pk0R+edD9
-	aguhoIGbqDk2nA8DwitlNcfyg74AjXo=
+	bh=4SsJPfKsekeE5VptqHXgsGnvsq0lAUhbBGf4TqY9ku8=;
+	b=u3Tvh/UNhl9qow3j26H3qaXCAM61tQWVLgL3vVa8h0kagu5es45AV8DlAuFgUsmSMW1Uzv
+	7WB2WL8BvvYdes9FOaDbKLmZEWiYts6v+VJJRr26lXC1EUCNpzm72bDopxuTjRh0wp5wKa
+	gJPaMGjt3Hdt8hK0eV/aD9sc5Xjv6Jc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 52C1043312;
+	by sea.source.kernel.org (Postfix) with ESMTP id 2DCCC43CD9
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:44:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57AD1F00A3F;
 	Thu, 13 Aug 2026 05:44:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C141F00A3A;
-	Thu, 13 Aug 2026 05:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786599882;
-	bh=fXLkVAHbgjaWy56zhYvF1vnHi1V0hiXRFOM3tY/zcKk=;
+	s=k20260515; t=1786599883;
+	bh=4SsJPfKsekeE5VptqHXgsGnvsq0lAUhbBGf4TqY9ku8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nvZ4nl92JoDuDADgB+BpCGre4XpGPaT+GvKTadtgGwJmhVp055oVE4Q6/YPCaeON1
-	 EcNwwIKapv2jGvsBMANiDwhPdbUznOMpJhbrbEcJQUKoSSIbm8ZAlljPm9u4/miSD3
-	 J3BGXWa5sz9cIYQCmRfF9wwQcZ64GANcp70Yz92DRahvDwaH+SswDKfHBX2JhyiPDc
-	 x60IDkf7P2XQS04sG0HD09gFIVkZFxteITGAlVkQUOmNMOYgQujVlENXlF8XLXdV6f
-	 u+aP7olg/Vv+o1DTWruYlk7q7V96NWvk1UZfp/GwUCOJbg7cSfzjAbuNVwvfPj4wSN
-	 03yY6NmvtWysQ==
+	b=n0wAvhD2+L6konNr9qCBUej2g8rzvAzHBd+qRn+PbrtFg4Wu1TUMr4xqr1qP/mvCK
+	 mKYzllSCsR5bxeCz3Ptd2hFxfB7pxhbXVhzmXZIBpgnj6oYG1c59NeV1srNnsRP1LI
+	 7NYe8Aj0PvjgqK2NAYCKvKN6AN8nGz9Ok2uraob5AZ7/7YdVrlix0Fi5LbJMGMsiN3
+	 2ptE/rpll7lRuXJ9LCvNE2vkBAr2vTbPa0Qsg5jGxv7zbl+I8bI8XovmpSz/Ypniqr
+	 zKSGqgx9/WgXQX2CJBYpQwyH3NTH8e8+kAzeGNTqRR0qZ+7PbuegewHNdt3CL/0gm6
+	 cjddfudU9hQaA==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 1/3] mm/damon/core: error damos_commit_quota_goal() for zero target_value
-Date: Wed, 12 Aug 2026 22:44:28 -0700
-Message-ID: <20260813054432.101197-2-sj@kernel.org>
+Subject: [RFC PATCH 3/3] Revert "samples/damon/mtier: error out for zero quota goal target values"
+Date: Wed, 12 Aug 2026 22:44:30 -0700
+Message-ID: <20260813054432.101197-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260813054432.101197-1-sj@kernel.org>
 References: <20260813054432.101197-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C984140002
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 56C4420005
-X-Rspamd-Server: rspam07
-X-Stat-Signature: z4hssc4b83yfrrtexhf6k4j46krmcpk6
-X-HE-Tag: 1786599883-411931
-X-HE-Meta: U2FsdGVkX1+HGCQYxiaqKemq2MGKJuzGOTAYLOJjTWQUHlEPPU+awv/YkW9z7Dho2NuFQy7owv1gZo/6mCU4RW8/CiBKKiN3QnLAUjYq40Wxf5OMae9lnpHrOjnzLFbEvJZqB3IOTxZJPGEzm5JH7+zNUCts2Iye3hu4lSH7s94MA/uybXLjGFF35VTqfAuWQErZvgEp1qtk9rUXAe7cKJlRwjaUEGzt0jlXZURyxxO/HRbsNmHg2NS0wssB9UuIfK7lcUmhDiFNarbhqVfDgWqVqpJbwq//SnlkfapiXv9c9s608exHQ0Jbsv3GT6VEJmt4LOMFdtxCswxQAEd/ckWpc2IPX66SLbBQEEbq5HaCBm5E0iosUFyFEka9P8QPx7/Xm2n4XoZYG8+4eF2ot06jcUJd2wqgNxlvJDYt6RAOgJ16Ktot6f7hqJxT8t/dyKmULA1mcJPsgnBO93uosCWKiIBuzXkivLPA7p6jnGe96UPN8XX9fpkoMnAe/rbLsZHiHO39SDKQfYgIC0LGNlTQCVeZMG9bX7Y67FH2KNvtdiELkUrdXrywZO8sd8yPet5wOJc/gWKVxMc+FZkMdRF+EgLcxAK0YH2AGbdITU9XRHHMIlPUjhQVGuPGzUCnT+c37f5vnNhQDn0eLC8n2xzeTh38szqmUsKtnTU00+wyf+xoIet5Z1v5zBv4OWImQEURlgXAC+bo2LPY4LvB22HSH8htfuKD5pniKfrniOmOEsuOep515lTS7fa283l+1qlDLj54xS6nx30tC9b2m5aRPdHRdX9SOP4KR0u9jqUQZncX4lrULQdRY+x/ebU72vX+4Qtv/lpFpvZxb6g/Ok0ZNpCIyLmsvIyNsBQKnRYq1QTN/x8Zg52qgSmCUlBQ2scGOrobU6a+FR89bvqY7eOVndayDL1r/MncygS47FCnB8TOUxTUvoRnxNHYIbKxtiw23uJKzqxTMbcAkbf
- bpXNzI/o
- Zjy4sH9bIB+az2MdVmD9wrSY+Ynz3KvjY0A+LyeO6d6nvI71OEuFtwR44wJvoN3khJWL4EY4IEC1OwyR3GXKnP/XT/81Acbnwu9rq0KQCr+WITOnixkk3/hwnkJEX/Y+N8Dd2CHboGxg7MtBjelJwi3zFLkJqoQTamZYGT+neYnC+fFx0K/bmjjtvQCllx6mNxqUNozqjYdw9R8nyhTxAhwa0kBMoHihFr+im4ThVriJuYB/sauM+P7OJIC1niSEO4BSYsRwgwcSjT84q9hCHpf5HkDVWGz5g14q8ICwdH4euptm+OWwJDv0rVQ==
+X-Stat-Signature: it4dhatosteku3w18rb1mpez3qq77hyc
+X-HE-Tag: 1786599883-571722
+X-HE-Meta: U2FsdGVkX19SdS1WmIBXvqSbuOu82h2IgrXQTWoOTGk8HwRCsOIXHPxxIo7TGAowkQztsEh8Xf2J9LUuTodaDY95mND4FL5cv3SygqKdhgaS3+c/0jEN0zUioWS4Nz6ndSVfleWftPt9kxZ/JHuBqKdMCr0whBRPy+37N+gQgRNBBmIdoqsWwRa3jCoXnv0tz2xAjkV53e2yxbSJhh2/1nuzMBF37VmF3HcKYImBu/wUr/WnjKwmv+Et3zMxwTnO1tTe80wW9e24nyw4aYbzZYFUZTTcpPuJEfMXd014JTQ1aXzFOEa+Ec/GQ+nCiiBZ4cAbVx0jHSJgCQu4ZqtrtJ4/c9v0Ii3KUs1lsq9hWQwtsYs6ca68P8+KbHDSGGbmt4GN6fydBnrJXZ+3FyD6/tEzSjjVWVQBiJUiTT2NEoH7ykRuZ3NYl7ub4ADosgdnCRd5SFwt3tO1zc4PbrkJESHn0H9SV0oUKYZOMiJPYEenmVQPha4MQjZ/o4yrdJlw+2t0nNPBpvqMVJjQCNr02+fOr0Q5TXQDHPi/hhJXyerrJ6rBoxEqgdZUqnJwmE86E2vpG+TTjflVUWOO+n3mCuyuVMUbeGo6hlm/Ns72KpaXqQdSgsh5Tusyexoo7vMR4MOAS2wneB+vUHCA2RNUXhoDU3C5jbWmTJo4/14yQ6y3RrwyP7NkS/a1l/YFp9HtUgpfsCRtPTizMoyZ2MnyNNYyQbV5LQyO22yhq93LNypqs7+YXGvNC+GIKJ0/4BipCZMy7y17lKdEQYBzOEKqBPFohnYY0nkA326zJn4C9A3mjuodvxqhwfxgvfELDG7k9MrQj71wdz0yKVNKGxucklzlbLcp/dHKols/KnrfahoBj4A3D81TUrjh+wDqnIwuzbHHu9AH+4VATbWHVmSXrD5tvtkGPYLs6IuhJG9MOUgpWEprfPCdAvnYa3WI9xS2UPASzx9J2kKyXc9tlbt
+ 4gHJhDUA
+ ARW8hGOf4Ez7OIEnJoLPkg3B6BmMcmIUezWrhOJ15beq1SOqVt/zayQTla3HsyU8MV/jIyfFpzVueeQxQYFXhnJiii4JE5zzDZ35shyHLvNU6oQBJLFMncKbPhdLZGLDN4KedkymHPATqJX+YpKolXlco1TJtoaN8GDNKVuI3EqQ+/ElGOMCcpg8GWsQYpdREFzbUbyq2lqfNXcBYaJVKhr2EkUPWwfkxshVxoLMi4IlHkvzg6BhBRkTn3m/P3LFSvXdcEpPgJ3gl6ay6KFjSZG/48xIqkGaKWOZ4xR7c38I/Zqo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,90 +92,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If a DAMOS scheme has a damos_quota_goal of zero target_value,
-damos_quota_goal() could trigger division-by-zero error.  Hence each
-DAMON API callers should do the zero target_value validation.  It is
-easy to make mistakes.  Actually such bugs in DAMON_LRU_SORT and
-DAMON_SAMPLE_MTIER were found and fixed [1].
+This reverts commit a16fd3ad9d89b05475864da97327870464611736.
 
-It is better to handle the corner case only once in the core layer,
-instead of multiple places in all DAMON API callers.  One
-straightforward option is using an alternative denominator for the
-corner case in the damos_quota_goal().  However, the zero target_value
-is meaningless.  In this case, the quota goal is always evaluated as
-achieved or over-achieved.  The quota will only keep being reduced.
-
-Simply avoid using zero target_value by adding a check in the core layer
-DAMOS quota goal parameters validation/commit path,
-damos_commit_quota_goal().  Update it to return an error in the case.
-Also update its caller to propagate the error.
-
-[1] https://lore.kernel.org/20260803134034.15217-1-sj@kernel.org
+The commit was made to avoid zero damos quota goal target value, because
+it can trigger division-by-zero.  Now the core layer handles the corner
+case.  It returns an error for any attempt setting the aero
+target_value.  The corner case handling in DAMON_SAMPLE_MTIER is hence
+no more needed.  Remove it.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/core.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ samples/damon/mtier.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 5a92e4fac6d92..183d505c08e4e 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1193,15 +1193,18 @@ static void damos_commit_quota_goal_union(
- 	}
- }
- 
--static void damos_commit_quota_goal(
-+static int damos_commit_quota_goal(
- 		struct damos_quota_goal *dst, struct damos_quota_goal *src)
- {
-+	if (!src->target_value)
-+		return  -EINVAL;
- 	dst->metric = src->metric;
- 	dst->target_value = src->target_value;
- 	if (dst->metric == DAMOS_QUOTA_USER_INPUT)
- 		dst->current_value = src->current_value;
- 	/* keep last_psi_total as is, since it will be updated in next cycle */
- 	damos_commit_quota_goal_union(dst, src);
-+	return 0;
- }
- 
- /**
-@@ -1219,14 +1222,17 @@ static void damos_commit_quota_goal(
- int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src)
- {
- 	struct damos_quota_goal *dst_goal, *next, *src_goal, *new_goal;
--	int i = 0, j = 0;
-+	int i = 0, j = 0, err;
- 
- 	damos_for_each_quota_goal_safe(dst_goal, next, dst) {
- 		src_goal = damos_nth_quota_goal(i++, src);
--		if (src_goal)
--			damos_commit_quota_goal(dst_goal, src_goal);
--		else
-+		if (src_goal) {
-+			err = damos_commit_quota_goal(dst_goal, src_goal);
-+			if (err)
-+				return err;
-+		} else {
- 			damos_destroy_quota_goal(dst_goal);
-+		}
- 	}
- 	damos_for_each_quota_goal_safe(src_goal, next, src) {
- 		if (j++ < i)
-@@ -1235,7 +1241,11 @@ int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src)
- 				src_goal->metric, src_goal->target_value);
- 		if (!new_goal)
- 			return -ENOMEM;
--		damos_commit_quota_goal(new_goal, src_goal);
-+		err = damos_commit_quota_goal(new_goal, src_goal);
-+		if (err) {
-+			damos_free_quota_goal(new_goal);
-+			return err;
-+		}
- 		damos_add_quota_goal(dst, new_goal);
- 	}
- 	return 0;
+diff --git a/samples/damon/mtier.c b/samples/damon/mtier.c
+index bea45c87cc9be..27dc88bdf7a0e 100644
+--- a/samples/damon/mtier.c
++++ b/samples/damon/mtier.c
+@@ -161,9 +161,6 @@ static struct damon_ctx *damon_sample_mtier_build_ctx(bool promote)
+ 	if (!scheme)
+ 		goto free_out;
+ 	damon_set_schemes(ctx, &scheme, 1);
+-	/* zero target value causes division by zero in damos_quota_store() */
+-	if (!node0_mem_used_bp || !node0_mem_free_bp)
+-		goto free_out;
+ 	quota_goal = damos_new_quota_goal(
+ 			promote ? DAMOS_QUOTA_NODE_MEM_USED_BP :
+ 			DAMOS_QUOTA_NODE_MEM_FREE_BP,
 -- 
 2.47.3
 
