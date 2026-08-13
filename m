@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4377AC5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 17:54:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67C69C5CFCF
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 17:54:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37FF16B02C5; Thu, 13 Aug 2026 13:54:26 -0400 (EDT)
+	id 5CA396B02CB; Thu, 13 Aug 2026 13:54:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 330436B02C6; Thu, 13 Aug 2026 13:54:26 -0400 (EDT)
+	id 552CB6B02CC; Thu, 13 Aug 2026 13:54:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D12A6B02C8; Thu, 13 Aug 2026 13:54:26 -0400 (EDT)
+	id 3F3E96B02CD; Thu, 13 Aug 2026 13:54:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CAA3D6B02C5
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:54:25 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A7FCC140249
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:38:31 +0000 (UTC)
-X-FDA: 85096955622.23.55E4E4D
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 090A46B02CB
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:54:38 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id ED53BC023D
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:37:50 +0000 (UTC)
+X-FDA: 85096953900.08.AF2F123
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D35FB160003
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:38:29 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=flX92SuR;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0F15140003
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:37:48 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EjDtfCZw;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786642669;
+	b=nUQB4omTPwWUUUiL55inOGDcUpZvDNB/1gseq8WgnZ7VgifJds3vScPUu+B3/JMXONOfCg
+	n8V42PaSSLum1tiUYHoImfvjbVEDE8t+C7PUG1PQRRVKsVWg3YyZTB/2dDICe1psnHL7eu
+	dFvh3dUn7FvvOPWRpGTUNWbAT19lK9k=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EjDtfCZw;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786642709;
+	s=arc-20220608; t=1786642669;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hMo1I5EICsnpWK2NyeWJQT5c5+lum9qWOStjoHG+C7w=;
-	b=tnmal/QVxs2G/ebuYKATXCzmWd58AnP81Er9pM4pxb8gB3Q5GXzq79Mbd0ET/dFtux2fBq
-	EiJG9PYJuQv+gTv3nlqnGguaUz4DNEybpuo/hUCWHaLI4fJdrpyyBa8bklSFVJ6YKTe8R8
-	a24DSV6ipoxq9qJbbK8NOtL8CFWIEdA=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=flX92SuR;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786642709;
-	b=yr5A4tNnn/nJrPVhZkRLOPEVx+aje3x3kO7NiCn+GYCJcVl4eYQd+FPk5f4R8Ol/figgcE
-	zCq4VXeDgWOKPCuRUzLqIjYX3b34kU2Lb1H8aldUhLwQnWrTLPAAhsHRcm0h2HvKpViNgY
-	Tcuso1Qa+wueibyMu4kIoVCs7Nv8Cmk=
+	bh=k7V3KbJWuqhI1wrXEM1lc4hRJ9fsgJc7Eafz5Ed8bps=;
+	b=lSgaNRJ9MCQDepC6fXMFkPKRyizGtTsHVhB+pB6qf+Sz8lE25lr5J0bgx9U3rz8pcB/ZUR
+	gWc1nmVnqDxZyHv3HuKHlLjW44qP4pCr/N/BwHfyanRWxMZdIqP9EOWNaO1F4Fo6jqWZyc
+	B/fMmXu8li3ISRB87DLLGRgG6/CPfeU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0E46240F30;
-	Thu, 13 Aug 2026 17:38:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA651F00A3A;
-	Thu, 13 Aug 2026 17:38:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5AE8143730;
+	Thu, 13 Aug 2026 17:37:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6983A1F00A3A;
+	Thu, 13 Aug 2026 17:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786642708;
-	bh=hMo1I5EICsnpWK2NyeWJQT5c5+lum9qWOStjoHG+C7w=;
+	s=k20260515; t=1786642668;
+	bh=k7V3KbJWuqhI1wrXEM1lc4hRJ9fsgJc7Eafz5Ed8bps=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=flX92SuR9DTMANg5HOpHnyNYcgOcMymFbvVD3clXUl0rT1qSy6jmD+PyCw3AOEdZ0
-	 AF94M4rwAMN3kBcOk8UPefw8GBepiPJCWLemuuu7ghdebqrDPLyCqT0+i3qXb3g5Cr
-	 MZmnse0QjJA/thOdojIs56h10ZQvCMfm/hOG7lfytW4p/iANjZ4ed1ZYj5cH7aAk/d
-	 ZxUVtkGz7fw7aaehO7Rai1OqFhiDrzI+tAKXH5xfTUFcYFO8vNgB+Evua53OFQ+zdK
-	 5p67yd44WTqiBbNyd5q3qQDlb7mQt+MATFFu27DJ1Gw51kr3Rm4BJ6WNGb2VK511p4
-	 4uFoGeeLj72QQ==
+	b=EjDtfCZwSgC5n/poUhpAkUiu22SB+fza++HAtn/5Tnu+tDvuPXsEU2S4fdHF0gHbq
+	 dyCUERBZ4xjE0SOp5SN0GKrNzUpVJhagbUkMiTLZLohzCfA4D8QK9DxzRWPD8QUsUJ
+	 oxtF6c06T61iML2LjWvQZgD/tf6ZyDGmQfBNpreQHZpackHxoWN9zXiRxnDMLv+yOF
+	 TMc12Xwi2HKHOMI82+SuOvcbCyKKJTgpOcNPZ/ur2fHPYJkzh294+nzl8epupHWFZu
+	 emR3UOI9M1eSf8M6V42YUbUmJ16JKUeHmt9lIfxBhIwtoLI1XxvwZ6VXELg8in9k8I
+	 FDW5X9LgkCv1g==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Thu, 13 Aug 2026 18:32:33 +0100
-Subject: [PATCH v5 16/16] tools/testing/selftests/mm: test anonymous page
- offset merge behaviour
+Date: Thu, 13 Aug 2026 18:32:31 +0100
+Subject: [PATCH v5 14/16] mm/rmap: use anon pgoff to track MAP_PRIVATE
+ file-backed anon folios
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260813-b4-scalable-cow-virt-pgoff-v5-16-c21581c0c3c8@kernel.org>
+Message-Id: <20260813-b4-scalable-cow-virt-pgoff-v5-14-c21581c0c3c8@kernel.org>
 References: <20260813-b4-scalable-cow-virt-pgoff-v5-0-c21581c0c3c8@kernel.org>
 In-Reply-To: <20260813-b4-scalable-cow-virt-pgoff-v5-0-c21581c0c3c8@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -133,22 +133,22 @@ Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org,
  dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
  linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3038; i=ljs@kernel.org;
- h=from:subject:message-id; bh=mYrfVGgyI30/pbLGvSPI/0MARQQYwT9E9OZ2ujBLXv8=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJq/6/5OCPtm43YsWzDl1uy+WO2RH0/Pfn8bK7pemKNN
- 6NSxeaodpSyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTCBDGLg4BWAimx8xMmy8djfnZS3D8vdn
- XsRrCJmdsXyxpuzQ0he3LmvP3q419fgJhv8RjKlaMtPnTY5dtPdhqX9izFflLRwv/hg1/9v/Sn/
- /3Fo2AA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=14135; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=21X8tD3ymqApiXmdDvrPodzuRSm0jreU8242LYwalmY=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJq/6/ZWzo/1POEjZHw5SLNL3+PRXSLJZ+6p2Z1pURjj
+ sSHrOWyHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZgIiwjDf9/ljS7xdr6qjx8v
+ OzHlnFsud/S5at3D2kzT/u4/f9JYQoCRYU1x/cL2vAlOHB8+5P44M+Hlwh1yZ7bNi+WrX12WePJ
+ oJBMA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D35FB160003
-X-Stat-Signature: 3o3yd4174i6oz17hrj9o81eiwxt3jt4i
 X-Rspam-User: 
-X-HE-Tag: 1786642709-751307
-X-HE-Meta: U2FsdGVkX1+3DIMLTDDJrYK3BI5dfEbIuoFL3XNt++RmdQ3tuJDj5v/klJvE+QTVGmb9kwe6ur2cMQ8TpXAvV6xksnM8fr+aFx9JHDUev00GBxWTNVNvCVq2MUn2Mun6GpW2E8hHECNqWpggnYJ+zqQ1Ij4NvUTGHtyF9tJL0babVFq2b+6p+QiE9p/hb42sODA/CwSUQ8BivJ/LLa5zou5hYGh2xGPcqBHn/vdMwCDTDqB+B6p9YnoD5/cjyywM8r9iiM6RE49frdXLB4Psp2fiES8ZrExSP6seRwO/KTS7SiijMhYkr9OkIUr2oBLmjDUwQp1CFGc6Mwa5S3SF4JtgZZcmTlZP/JTBSJ49Mg3UVW0vd1cdTahorbAVYRDVORmulVom7gpS1KkV+hmF/qA97ElmJDvUQ8DPdSQ0lxMkWkPFEjvNdbhuC9f2sSUZCxYUX/SavUwdUywCZp6pCcQ5GTKcTqleiXwrAfpyEmNmZBDpjkbyXmprVqAb27Pf+0U+sJxQaSCJ9W9sJxkpgyevni9ajfDi17Rnju1h8jYCQe/Z6fwHuTb76vWrefc1yGJiQEt/Sy4k4R6cppviDdgDd+Mmo2JJIhYlaJaQh70aPaJ5sVyknn8hWKXOJLth1yY/pmnceP3hgTgZD89cVr9mYo081PUu2mHJwZFQjl+9Vh2MJSgJOe1j7arrL8IlD9HTNdxKMEvU/CZkl4kdJwGR36Q6jmaIGuRGX0hyJt9GCAqzD8Yo0qzWG6hCYg0vYVWZ5tQL/EXk5e5kGwOuqWggBY6GZ9L3/qpYU4+r3BG6xytqmqsxErkjcdoZ+XZVEOlEOtSSLWUpmJRZHTuc3aPFfhZ4ygWFFmuSpdjhUesqfjaC7lDi+BQpERU+Anz1AcLZTUw95TR8lCao9mLDYIt09/r8tl/xVree9km8xMoBVL6j9fVbMCpvXZRY02QbgztT2olQ8EDMUQc4iXP
- 96aQdPMN
- uUw0FLZMg8ymjNeg3K4UPv1ElpP3MxRjLgA0Q8ectsL3ibG7/hhHx2GHWcfZC8b+UHcKk4JnHh6tt7Dx2xjtYMH6dTAhrzAlfoZ0hr1uMAS0/M50oCGmWXXGeVt9WQ7NHkve1UrHpEd7PY00fKQa9OVjN2WqVEDwaoV+AOTy5/+uCJXNAP6JBwSzepkiYNJT7qWW99UfR0YS87EvEwKsoc1m/JipBZlmg9tnGx9oXypCmsyvecasjcoA8TbGkcjFZM13tW49qLNEibsFg8FRAUt840woAU13WO603tp+AXMSkYH7wQBt8bn2auPM4zPZpkyMQ
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0F15140003
+X-Stat-Signature: 58ppct6qo34d5jk4jkhmfset77zjrxpi
+X-HE-Tag: 1786642668-747624
+X-HE-Meta: U2FsdGVkX19P147sW6f8j5xHMJKqE0zvZoFzPXCPZ9Id/qbuQh7zlfLg+4SXSEF+NpU9XNMFZHH7yBrQFl6LYR1LSDe+eIOsyzbzErLFg+FpsDiQXz2ctkBbS1NXP3/k6UjHYBwd7XZkjUs8Ev5iQik18c7VPnyq7/SXlBREW//UBwQwNYQhaTFt4pmws55g/eyDqhWqs4F5VCZbDZhuj1NWfk6QAoaEjs1boFJKFPpP9cBUsLIwEfWrYgjQf8K4It8EskgWddp6BsirreX1WHXnCvHEKfMDrpxnBLhZi4/2pWaXr1mDPkVw/EJGBVZi3sXZjwsiiLzSraexntM0g/Zvn4umm4D7XTFvNVLnMcaLKiHG2ggqo/YAKsPrm1AMOB8gUZufZYWvccFcm/VBlS0LWq0LSzom3kHWgJ6eXZRKfM5ooG9HDPMSzOaZpAdLO+Hbh/72BVKn33JPcxg4OH6GOKGwgip+JkA+0zu03x62I/l1lxuUt1PZ+8y/OPiDty7Bw8S5v5nSFthO8o4s5J8nb1GhqLmPnhY0qvXkd8IiC7RCV0YEVhn7xIMaZJ95Mo6krLw4VetfThoStZKRJi32nry5rL2cAHayAal6kHgJkE26b+wLm6YeqEBnPAMCbpeCs7H7MPNvSU6Gznoe9etthsOXZU8dfj13R1LPyMtFRu1MLlhxrA4ltzWvMzbwbhHsVtWf+F0vQktUsVy2FOkSUjEhNf15iMvqzzLAl8bKO35x31oOeiNkI9+rM6KUvV35JLRboFQfwEq1wOwAm3okKzln1G6a9KuzOxkeMdWnodi4ZLevCmOZUO0eP/zEMHdUqtRPnZIKi0/6I7CY3EJerknW34SkdgjynMJkHNz2bsw956fRy99tQSf2hWt/lVWamjsWPAa5A0vxU1q1IJdznjb4D0k7cZrHLGdW8xZwJJuzjlvgPXszVMjUno+RKtvnnCLueGKwSo7cVbo
+ fYWsg1Nl
+ 1gekcWfZTx8VnhtGyrnBdQOEXWmjLOorPSFfUEkejZrSxCQpvn5KF5DUk8biawMr2N/fXZxbqBzE4YUY7v6lYhGzx5ncgTroqj62zr31t+gXWWLIYxlnvoAviIkMqM+oQGQMZNY29CHwH2Sv4NfH5V+n9gtDjq511Ua0s47qZRaSyB20ds6mOzOGnLrwpSYkA5e03/gHD8/4n3ROxCclJn6DOxp684MSAUzesacXwpbCeu9iD19ZLAVqTwIPjo159dFf+WLqAxVrCM8qUrVEcQF7ax/qJnCPMxCw6l3RBz0L6Dfzcru8iRBgNBahS8LX1oeYVhwGvCaruT82J9wJZXenr9xXfk7AnkrZjotwQdvH/jJBo5uJgfZ63uQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,88 +156,354 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-While maintaining anonymous page offsets for VMAs has no impact for most
-merge cases, it does impact MAP_PRIVATE-mapped file-backed mappings which
-happen to have matching page offset but not matching anonymous page offset.
+Currently anonymous folios belonging to CoW'd MAP_PRIVATE file-backed
+mappings are indexed by their page offset within the file in which they
+were originally mapped.
 
-Assert this behaviour by attempting to map an unfaulted MAP_PRIVATE-memfd
-region with a faulted one with compatible file page offsets but
-incompatible anonymous page offsets.
+This differs from anonymous folios belonging to pure anon mappings which
+are indexed by their anonymous page offset (the address at which they'd
+belong in the VMA when first faulted).
+
+This change fixes this inconsistency, always indexing anonymous folios by
+their anonymous page offset regardless of the VMA to which they belong.
+
+The foundations have been laid such that we need only switch this
+functionality on such by:
+
+* Using linear_anon_page_index() in __folio_set_anon() to assign the
+  folio's index to the anonymous linear index rather than the file-backed
+  one.
+
+* Otherwise using linear_anon_page_index() in all instances where
+  anonymous folios are being referenced or manipulated.
+
+* Replacing vma_address() with vma_filebacked_address() or
+  vma_anon_address() as appropriate.
+
+* Updating the merging logic to check that anonymous page offsets are
+  aligned as well as filebacked ones for MAP_PRIVATE file-backed VMAs,
+  introducing needs_adjacent_anon_pgoff() to figure out when this is
+  required.
+
+* Updating linear_folio_page_index() to invoke linear_anon_page_index()
+  if the folio is anonymous.
+
+* Updating vma_address_end() to use the VMA's anonymous page offset when
+  pvmw->pgoff is anonymous.
+
+* Correcting folio_within_range() to use anonymous page offset for
+  anonymous folios.
+
+This will have no impact on merging of anonymous VMAs, whose page offset
+and anonymous page offset are identical, nor will it impact shared
+file-backed VMAs, which will continue to be merged based on the file-backed
+page offset.
+
+However, MAP_PRIVATE file-backed mappings must now be aligned on anonymous
+page offset as well.
+
+In most instances this should have no impact on merging of file-backed
+mappings, which are usually not merged all that often, let alone
+MAP_PRIVATE mapped ones, and rarely remapped and faulted before being moved
+back in place (the case in which a merge may now fail).
+
+One subtle impact of this change is in NUMA interleaving - since commit
+88c91dc58582 ("mempolicy: migration attempt to match interleave nodes"),
+migration heuristically tries to maintain interleaving behaviour matching
+the policy using folio indices.
+
+When doing migration of CoW'd MAP_PRIVATE-file backed ranges, the 'base'
+upon which the interleaving behaviour is performed will vary for these
+ranges. However the commit notes that ranges spanning multiple VMAs will
+already cause varying bases, and that this is an acceptable approximation.
+
+It is very unlikely real world use-cases will be impacted by
+this (MAP_PRIVATE file-backed mappings are already an edge case), and all
+that will happen is that such ranges will cause interleaving to be rotated
+over the CoW'd range, with little to no impact.
+
+This commit lays the foundations for future scalable CoW work which needs
+to track some remaps, meaning that most remap tracking can be avoided, and
+in nearly all cases the anonymous page offset will be able to be used to
+quickly find the VMA in an mm.
+
+Note that the need_rmap_locks check doesn't need to be updated, as any
+remapping will offset both the anonymous and file-backed page offset, so it
+suffices to check only one.
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- tools/testing/selftests/mm/merge.c | 57 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 57 insertions(+)
+ mm/huge_memory.c     |  2 +-
+ mm/internal.h        | 27 ++++++++-------------------
+ mm/interval_tree.c   |  4 ++--
+ mm/ksm.c             |  6 +++---
+ mm/page_vma_mapped.c |  2 +-
+ mm/rmap.c            | 12 ++++++------
+ mm/userfaultfd.c     |  4 ++--
+ mm/vma.c             | 32 +++++++++++++++++++++++++++++++-
+ 8 files changed, 54 insertions(+), 35 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/merge.c b/tools/testing/selftests/mm/merge.c
-index 519e5ac02db7..52b8727b6628 100644
---- a/tools/testing/selftests/mm/merge.c
-+++ b/tools/testing/selftests/mm/merge.c
-@@ -1305,6 +1305,63 @@ TEST_F(merge, merge_vmas_with_mseal)
- 	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 2 * page_size);
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 47c9c6e32eba..e46b3a4750ee 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2887,7 +2887,7 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
+ 		}
+ 
+ 		folio_move_anon_rmap(src_folio, dst_vma);
+-		src_folio->index = linear_page_index(dst_vma, dst_addr);
++		src_folio->index = linear_anon_page_index(dst_vma, dst_addr);
+ 
+ 		_dst_pmd = folio_mk_pmd(src_folio, dst_vma->vm_page_prot);
+ 		/* Follow mremap() behavior and treat the entry dirty after the move */
+diff --git a/mm/internal.h b/mm/internal.h
+index 98b067472ceb..5892b7453b54 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -933,7 +933,8 @@ folio_within_range(struct folio *folio, struct vm_area_struct *vma,
+ 		return false;
+ 
+ 	pgoff_folio = folio_pgoff(folio);
+-	pgoff_vma_start = vma_start_pgoff(vma);
++	pgoff_vma_start = folio_test_anon(folio) ?
++		vma_start_anon_pgoff(vma) : vma_start_pgoff(vma);
+ 
+ 	if (start < vma->vm_start)
+ 		start = vma->vm_start;
+@@ -1044,23 +1045,8 @@ static inline unsigned long vma_filebacked_address(const struct vm_area_struct *
  }
  
-+TEST_F(merge, anon_and_page_offset_mismatch_memfd)
+ /**
+- * vma_address - Find the virtual address a page range is mapped at.
+- * @vma: The vma which maps this object.
+- * @pgoff: The page offset within its object.
+- * @nr_pages: The number of pages to consider.
+- *
+- * If any page in this range is mapped by this VMA, return the first address
+- * where any of these pages appear.  Otherwise, return -EFAULT.
+- */
+-static inline unsigned long vma_address(const struct vm_area_struct *vma,
+-		pgoff_t pgoff, unsigned long nr_pages)
+-{
+-	return __vma_address(vma, pgoff, vma_start_pgoff(vma), nr_pages);
+-}
+-
+-/**
+- * vma_anon_address - Find the address an anonymous folio with index @pgoff_anon
+- * is mapped at.
++ * vma_anon_address - Find the virtual address an anonymous page range is mapped
++ * at.
+  * @vma: The vma which maps this object.
+  * @pgoff_anon: The anonymous page index belonging to the folio.
+  * @nr_pages: The number of pages to consider.
+@@ -1093,7 +1079,10 @@ static inline unsigned long vma_address_end(struct page_vma_mapped_walk *pvmw)
+ 	if (pvmw->nr_pages == 1)
+ 		return pvmw->address + PAGE_SIZE;
+ 
+-	pgoff_vma_start = vma_start_pgoff(vma);
++	if (pvmw->pgoff_is_anon)
++		pgoff_vma_start = vma_start_anon_pgoff(vma);
++	else
++		pgoff_vma_start = vma_start_pgoff(vma);
+ 
+ 	address = vma->vm_start +
+ 		((pgoff_end - pgoff_vma_start) << PAGE_SHIFT);
+diff --git a/mm/interval_tree.c b/mm/interval_tree.c
+index 3ae9e106d3af..7bbbf15cfbf0 100644
+--- a/mm/interval_tree.c
++++ b/mm/interval_tree.c
+@@ -83,12 +83,12 @@ mapping_rmap_tree_iter_next(struct vm_area_struct *vma,
+ 
+ static pgoff_t avc_start_pgoff(struct anon_vma_chain *avc)
+ {
+-	return vma_start_pgoff(avc->vma);
++	return vma_start_anon_pgoff(avc->vma);
+ }
+ 
+ static pgoff_t avc_last_pgoff(struct anon_vma_chain *avc)
+ {
+-	return vma_last_pgoff(avc->vma);
++	return vma_last_anon_pgoff(avc->vma);
+ }
+ 
+ INTERVAL_TREE_DEFINE(struct anon_vma_chain, rb, pgoff_t, rb_subtree_last,
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 47006f494fcb..99738a213243 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -1625,7 +1625,7 @@ static int try_to_merge_with_ksm_page(struct ksm_rmap_item *rmap_item,
+ 	 * stable_tree, break_cow() will clean it up.
+ 	 */
+ 	rmap_item->anon_vma = vma->anon_vma;
+-	rmap_item->linear_page_index = linear_page_index(vma, rmap_item->address);
++	rmap_item->linear_page_index = linear_anon_page_index(vma, rmap_item->address);
+ 	get_anon_vma(vma->anon_vma);
+ out:
+ 	mmap_read_unlock(mm);
+@@ -3152,7 +3152,7 @@ struct folio *ksm_might_need_to_copy(struct folio *folio,
+ 			return folio;	/* no need to copy it */
+ 	} else if (!anon_vma) {
+ 		return folio;		/* no need to copy it */
+-	} else if (folio->index == linear_page_index(vma, addr) &&
++	} else if (folio->index == linear_anon_page_index(vma, addr) &&
+ 			anon_vma->root == vma->anon_vma->root) {
+ 		return folio;		/* still no need to copy it */
+ 	}
+@@ -3222,7 +3222,7 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+ 		/*
+ 		 * Currently, KSM folios are always small folios, so it's
+ 		 * sufficient to search for a single page. We can simply use
+-		 * the linear_page_index of the original de-duplicate
++		 * the linear_anon_page_index of the original de-duplicate
+ 		 * anonymous page that we remembered in the rmap_item while
+ 		 * de-duplicating. Note that mremap() always de-duplicates KSM
+ 		 * folios: so if there was mremap() in our parent or our child,
+diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+index 081e483cc7bf..4e964545e5e8 100644
+--- a/mm/page_vma_mapped.c
++++ b/mm/page_vma_mapped.c
+@@ -365,7 +365,7 @@ unsigned long page_mapped_in_vma(const struct page *page,
+ 	};
+ 
+ 	if (folio_test_anon(folio))
+-		pvmw.address = vma_address(vma, pgoff, 1);
++		pvmw.address = vma_anon_address(vma, pgoff, 1);
+ 	else
+ 		pvmw.address = vma_filebacked_address(vma, pgoff, 1);
+ 	if (pvmw.address == -EFAULT)
+diff --git a/mm/rmap.c b/mm/rmap.c
+index ab3f879454de..2a9ae25ae72d 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -866,7 +866,7 @@ unsigned long page_address_in_vma(const struct folio *folio,
+ 		    vma->anon_vma->root != anon_vma->root)
+ 			return -EFAULT;
+ 		/* KSM folios don't reach here because of the !anon_vma check */
+-		return vma_address(vma, page_pgoff(folio, page), 1);
++		return vma_anon_address(vma, page_pgoff(folio, page), 1);
+ 	} else if (!vma->vm_file) {
+ 		return -EFAULT;
+ 	} else if (vma->vm_file->f_mapping != folio->mapping) {
+@@ -1485,7 +1485,7 @@ static void __folio_set_anon(struct folio *folio, struct vm_area_struct *vma,
+ 	 */
+ 	anon_vma = (void *) anon_vma + FOLIO_MAPPING_ANON;
+ 	WRITE_ONCE(folio->mapping, (struct address_space *) anon_vma);
+-	folio->index = linear_page_index(vma, address);
++	folio->index = linear_anon_page_index(vma, address);
+ }
+ 
+ /**
+@@ -1512,8 +1512,8 @@ static void __page_check_anon_rmap(const struct folio *folio,
+ 	 */
+ 	VM_BUG_ON_FOLIO(folio_anon_vma(folio)->root != vma->anon_vma->root,
+ 			folio);
+-	VM_BUG_ON_PAGE(page_pgoff(folio, page) != linear_page_index(vma, address),
+-		       page);
++	VM_BUG_ON_PAGE(page_pgoff(folio, page) !=
++		       linear_anon_page_index(vma, address), page);
+ }
+ 
+ static __always_inline void __folio_add_anon_rmap(struct folio *folio,
+@@ -3040,10 +3040,10 @@ static void rmap_walk_anon(struct folio *folio,
+ 	pgoff_end = pgoff_start + folio_nr_pages(folio) - 1;
+ 	anon_rmap_tree_foreach(avc, anon_vma, pgoff_start, pgoff_end) {
+ 		struct vm_area_struct *vma = avc->vma;
+-		unsigned long address = vma_address(vma, pgoff_start,
++		const unsigned long address = vma_anon_address(vma, pgoff_start,
+ 				folio_nr_pages(folio));
+ 
+-		VM_BUG_ON_VMA(address == -EFAULT, vma);
++		VM_WARN_ON_ONCE_VMA(address == -EFAULT, vma);
+ 		cond_resched();
+ 
+ 		if (rwc->invalid_vma && rwc->invalid_vma(vma, rwc->arg))
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 8fd24c8b428e..24a4d92ffa3c 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1352,7 +1352,7 @@ static long move_present_ptes(struct mm_struct *mm,
+ 		}
+ 
+ 		folio_move_anon_rmap(src_folio, dst_vma);
+-		src_folio->index = linear_page_index(dst_vma, dst_addr);
++		src_folio->index = linear_anon_page_index(dst_vma, dst_addr);
+ 
+ 		orig_dst_pte = folio_mk_pte(src_folio, dst_vma->vm_page_prot);
+ 		/* Set soft dirty bit so userspace can notice the pte was moved */
+@@ -1428,7 +1428,7 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
+ 	 */
+ 	if (src_folio) {
+ 		folio_move_anon_rmap(src_folio, dst_vma);
+-		src_folio->index = linear_page_index(dst_vma, dst_addr);
++		src_folio->index = linear_anon_page_index(dst_vma, dst_addr);
+ 	} else {
+ 		/*
+ 		 * Check if the swap entry is cached after acquiring the src_pte
+diff --git a/mm/vma.c b/mm/vma.c
+index b55015952f0d..117ca94fc907 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -204,6 +204,25 @@ static void init_multi_vma_prep(struct vma_prepare *vp,
+ 		vp->skip_vma_uprobe = true;
+ }
+ 
++/*
++ * Does this merge require that adjacent VMAs must have adjacent anonymous page
++ * offsets in addition to having adjacent vma->vm_pgoff?
++ *
++ * This is only required for MAP_PRIVATE-file backed mappings as the page offset
++ * for pure anonymous VMAs is equal to the anonymous page offset.
++ *
++ * Read-only shared mappings (with VMA_SHARED_BIT cleared) are always unfaulted
++ * so automatically have correct anonymous page offset (as it is always updated
++ * on remap).
++ *
++ * 'Special' mappings in the sense of VDSO, VVAR etc. have !file but would in
++ * any case not be candidates for merge nor be mergeable.
++ */
++static bool needs_adjacent_anon_pgoff(const struct vma_merge_struct *vmg)
 +{
-+	struct procmap_fd *procmap = &self->procmap;
-+	unsigned int page_size = self->page_size;
-+	char *carveout = self->carveout;
-+	char *ptr, *ptr2;
-+	int fd;
-+
-+	/* Create a 10 page memfd descriptor. */
-+	fd = memfd_create("anon_page_offset_test", MFD_CLOEXEC);
-+	ASSERT_NE(fd, -1);
-+	ASSERT_EQ(ftruncate(fd, 10 * page_size), 0);
-+
-+	/* Map a region using the memfd at page offset 0. */
-+	ptr = mmap(carveout, 5 * page_size, PROT_READ | PROT_WRITE,
-+		   MAP_FIXED | MAP_PRIVATE, fd, 0);
-+	ASSERT_NE(ptr, MAP_FAILED);
-+
-+	/*
-+	 * Map another separately and trigger a CoW fault at page offset 5:
-+	 *
-+	 * |-----------|           |---------|
-+	 * | unfaulted |           | faulted |
-+	 * |-----------|           |---------|
-+	 */
-+	ptr2 = mmap(&carveout[10 * page_size], 5 * page_size,
-+		    PROT_READ | PROT_WRITE, MAP_FIXED | MAP_PRIVATE,
-+		    fd, 5 * page_size);
-+	ASSERT_NE(ptr2, MAP_FAILED);
-+	ptr2[0] = 'x';
-+
-+	/*
-+	 * Now move it in place:
-+	 *
-+	 *                   |----------|
-+	 *                   |          |
-+	 *                   v          |
-+	 * |-----------|           |---------|
-+	 * | unfaulted |           | faulted |
-+	 * |-----------|           |---------|
-+	 *
-+	 * Because the anonymous page offset of the faulted region is now
-+	 * &carveout[10 * page_size], despite the two regions being mergeable
-+	 * due to file page offset, they are NOT mergeable due to anonymous
-+	 * page offset.
-+	 */
-+	ptr2 = sys_mremap(ptr2, 5 * page_size, 5 * page_size,
-+			  MREMAP_MAYMOVE | MREMAP_FIXED,
-+			  &carveout[5 * page_size]);
-+	ASSERT_NE(ptr2, MAP_FAILED);
-+
-+	/* Assert that they did not merge. */
-+	ASSERT_TRUE(find_vma_procmap(procmap, ptr));
-+	ASSERT_EQ(procmap->query.vma_start, (unsigned long)ptr);
-+	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 5 * page_size);
++	return vmg->file && vma_flags_is_cow_mapping(&vmg->vma_flags);
 +}
 +
- TEST_F(merge_with_fork, mremap_faulted_to_unfaulted_prev)
- {
- 	struct procmap_fd *procmap = &self->procmap;
+ /*
+  * Return true if we can merge this (vma_flags,anon_vma,file,vm_pgoff)
+  * in front of (at a lower virtual address and file offset than) the vma.
+@@ -225,6 +244,9 @@ static bool can_vma_merge_before(struct vma_merge_struct *vmg)
+ 		return false;
+ 	if (vmg_end_pgoff(vmg) != vma_start_pgoff(vmg->next))
+ 		return false;
++	if (needs_adjacent_anon_pgoff(vmg) &&
++	    vmg_end_anon_pgoff(vmg) != vma_start_anon_pgoff(vmg->next))
++		return false;
+ 	return true;
+ }
+ 
+@@ -245,6 +267,9 @@ static bool can_vma_merge_after(struct vma_merge_struct *vmg)
+ 		return false;
+ 	if (vma_end_pgoff(vmg->prev) != vmg_start_pgoff(vmg))
+ 		return false;
++	if (needs_adjacent_anon_pgoff(vmg) &&
++	    vma_end_anon_pgoff(vmg->prev) != vmg_start_anon_pgoff(vmg))
++		return false;
+ 	return true;
+ }
+ 
+@@ -2048,7 +2073,12 @@ static int anon_vma_compatible(struct vm_area_struct *a, struct vm_area_struct *
+ 	if (!vma_flags_empty(&diff))
+ 		return false;
+ 	/* Page offset must align. */
+-	return vma_end_pgoff(a) == vma_start_pgoff(b);
++	if (vma_end_pgoff(a) != vma_start_pgoff(b))
++		return false;
++	/* Only reached from anon path, so either MAP_PRIVATE file or anon. */
++	if (vma_end_anon_pgoff(a) != vma_start_anon_pgoff(b))
++		return false;
++	return true;
+ }
+ 
+ /*
 
 -- 
 2.55.0
