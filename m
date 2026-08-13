@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89230C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 09:34:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 361E8C5DF66
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 09:37:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86EC86B0457; Thu, 13 Aug 2026 05:34:40 -0400 (EDT)
+	id 517636B0266; Thu, 13 Aug 2026 05:37:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 847166B0459; Thu, 13 Aug 2026 05:34:40 -0400 (EDT)
+	id 4EF356B0269; Thu, 13 Aug 2026 05:37:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 735BE6B045A; Thu, 13 Aug 2026 05:34:40 -0400 (EDT)
+	id 3DEC36B026A; Thu, 13 Aug 2026 05:37:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 33E1B6B0457
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:34:40 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A8F121A0166
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:34:39 +0000 (UTC)
-X-FDA: 85095736278.29.CBF0D84
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1C43540007
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:34:37 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bUE5dJPA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 203586B0266
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:37:00 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B16FC1A0575
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:36:59 +0000 (UTC)
+X-FDA: 85095742158.22.5DD62A0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 039D8C0006
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:36:57 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lz1Duy5E;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786613818;
+	b=sI6PehmnvRzQH5pr5oImmq4c9OeUgcyj87dnNZHHg3p22aVvnBnZE+ZmaKm53HoBrxKXB9
+	AIT/LK5DDqf6ZeMi1Q8XRWBzUMWryrN/EdstJPBlbJL+fSqUmuTDko4T+05BuGdfTOmmbR
+	iW5vvYoXYHpSrrDS3kY2tmpyBh6rMag=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lz1Duy5E;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786613678;
+	s=arc-20220608; t=1786613818;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8GGJeMXZjenStr/KzvJ5bvXYBWbaVtnV9BN6Q25mvnc=;
-	b=dApCoGhsRXeKmrvWnMvVviS5Wdc5U8x0h0mq1+b/gppw3haMn3idYMZNw2KLOZgsFi7eVW
-	Y/uvfpiGfWY5Qzv0yBnjGujAFvfZ/h4caSZVIeCzdYJpJhT62gpDE0iN5sDuWgFTKWytJl
-	u1DEvq9xIMKyecTOohQHc1BgTY4cAEo=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bUE5dJPA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786613678;
-	b=dYFgJiqjOAhEUibjO16yhNy28NIlXR6ntSjzsjW/26les0ptlNedg/U0gIUKNlqb7VZ5/o
-	ZL954zHHb+FhkgswG+TfFO/lK52ILVK/lai1ySPNSjIJz7MJ3oC/7zW4AcuxL+lHLnQm7J
-	dZeBuzUpD3b+Xw4r+XODhQoNtwfKpKU=
+	bh=JSSZgUjMMjodUF2jdlWEV6On7VUDzA3+jCqusZy+uHI=;
+	b=YOBb9WPZkoKmZaMUV3w3nkFUF3n5lkPi9xJ7hiZTMP++AqIF+NAivoqR2Q+QvwcWUPIN9Z
+	hOi5jxJE57/G+7sS+BbxeHLqoKkjEdX3Zebe+pHyrEvxmUa4ZdMOhCVtSPvJqT2WwbNUaO
+	Iac9m1eqBLHjdSaNnB4v5CoTPU4p7uw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8DEC76011F;
-	Thu, 13 Aug 2026 09:34:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E2C21F00A3A;
-	Thu, 13 Aug 2026 09:34:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2C1684050A;
+	Thu, 13 Aug 2026 09:36:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49AAC1F000E9;
+	Thu, 13 Aug 2026 09:36:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786613677;
-	bh=8GGJeMXZjenStr/KzvJ5bvXYBWbaVtnV9BN6Q25mvnc=;
+	s=k20260515; t=1786613817;
+	bh=JSSZgUjMMjodUF2jdlWEV6On7VUDzA3+jCqusZy+uHI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bUE5dJPAlkV0e3vT0h7pYlLJU5zXJxR2LXxBNspnyo1VD4QhHtGs98mt311XJsBdW
-	 NwB8Nq4PllboYzEJBi81NS4Znt7rwrq4KgMryMSE0C43kPgg4JZBe4YaD73IDj3Qhc
-	 hkISD3HoCeXW5N5BR+POiDBs1yZqmn+EUOSooN1tXl82a26xMjeWiPMpVvfYRQfG/x
-	 ZMtuu9DxIOMyxMhsNgoWAd1PzcOu+EcD2NUsikKPG7Mr3cJCZt6UfUjHm2RYLp+0Px
-	 1/SSm+fTyu/vmq45+SrPqFDYNWi/Yibqy+QbWRYX2IwQzUF1p8qhv0/ihpFi9UoHkc
-	 0QX0gdddlS7+w==
-Date: Thu, 13 Aug 2026 10:34:00 +0100
+	b=lz1Duy5EEJcZhdAXU+VSGCAzjzSl7Kl+2x9ncpE/plgruGPWrJSXsgJ2lIhi0rQyx
+	 sliVkI2Aefju0S0hgJvweLoT7d2v+tO16QpN39qrZ7iGGNqly0nKRius6h1q/JnSK7
+	 cP4vdq5tefx9H6GW3cP5Mn1Ld3Jhb5QI/aIP4GAl8HTzo20BPS0/yzFBY79XYrBsGv
+	 Z4czr0gSiplSdNc2NweADG0o5ddfvy2HXXlZ4RX+bbv/PrwXw1EbqM8ipXjCI1yPJI
+	 xohYc83bYTwoK1dRJ0h+9ReF+fALWELNLpnn0/uGJKajxIsac9e4uOKPC0dRxQL8Gx
+	 4yBEag3xPb5mw==
+Date: Thu, 13 Aug 2026 10:36:20 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -107,24 +107,28 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
 	intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org, 
 	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 18/20] mm/vma: make MAP_PRIVATE-mapped /dev/zero
- mappings truly anonymous
-Message-ID: <an2PQD_pT-ZpSCvP@lucifer>
+Subject: Re: [PATCH v4 17/20] mm/vma: only permit MAP_PRIVATE /dev/zero to be
+ mapped anonymous
+Message-ID: <an2PqxrAAJaEC4u2@lucifer>
 References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
- <20260806-b4-scalable-cow-virt-pgoff-v4-18-ab318a350404@kernel.org>
- <517ea018-d6a9-4c78-b0a6-4f002b3b72ca@kernel.org>
+ <20260806-b4-scalable-cow-virt-pgoff-v4-17-ab318a350404@kernel.org>
+ <c7930f14-5978-4709-bac2-54950c988883@kernel.org>
+ <ant1xwiG3djtoXoe@lucifer>
+ <14a06774-4157-4629-8327-b1a6bae24ab7@kernel.org>
+ <anyst_4LGm6bpWdq@lucifer>
+ <ea3c2889-343b-4eba-9758-cf56c75da4fc@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <517ea018-d6a9-4c78-b0a6-4f002b3b72ca@kernel.org>
+In-Reply-To: <ea3c2889-343b-4eba-9758-cf56c75da4fc@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1C43540007
-X-Rspamd-Server: rspam07
-X-Stat-Signature: uwhuzn4npn94sji94i3j1ynjd3bdpow3
-X-HE-Tag: 1786613677-35757
-X-HE-Meta: U2FsdGVkX19FS//wLh9M4uQ+YVAKm5BgLId5VrR87toaY9AOG3UlDsCrtS++8vmC6r4PsynJmQL2tfR9hXEv5hVOwEfclkVLlj8IFABsoZUlShu8QkWbeo6fD+uly6b6XyO51KtWnBkPBprLJ6p3pgfvlMmDce+XlKSu5EC22J7SW1uRqL7u4y4hEww9xAdGFql1ltL2Rf01wyGIzQZ2cI1dKnDR+agPdyMNB0uYZy+yW5XdyMWUbT2LALGYt/e8uNTobM/33BkqsDur6mqCtUvRUQc8R/BdSA44nI4OYr8/brj76nHMn9hpVyaCGXnDUEBpjAe6Fgrn6sNcGz3rXyakH13+u2U6X6M9YXyRZQMP4Yq/UIwBlIPZ8YOtdXR4mCFmqYQL1VKG7dBz1hKQXSBSvu0chhwBH++Jc12EZ8Vha09MluiAnRduTZBuS3qEI1OqMXBh5y7vCAs08CmrO8BCgD/wFoawBn4leEnu8lcnYFWWuUOvJGilFuOeM3qLai4qXPSZoNkxdEqlOPCITfmdxb97eRLjUUEpS9WNa4yIPnUgbnCryKlotaJs7yzwi0Jnl5EQB82qKrP+ZleParWTFt0MRK+hnR+DzhuNAoCdzbN7O3BltTUHD0rH27N4NzJrhQ5hk3Nj07+ilPw9DNbMucnTtNNQcy81UsQH3tGuJ0XUHfmtAyjLS/RtTnkQev/HG/tNuQRu5LJIVRHbkCQKIGMsEtxhIP8YJne/Leb57cXX+sdUeBBr0GwP3sfQoPTuzrfPh3PkeyLliW/No3uZwUOVPPsKAH+bBViHZ7TxFH8FQbqFsM3WIczoa6SjR9L9jBLr6ggOAUyFS9ECVk7rA2mACRLrpEhNTJCkDtQswfkW65iqZ18T26iiQTHtfzGX/nsF7mJnlV36lhrXy3AtkhX0cI9qynHwCYT622vXwFw97qaa85Zl9Soc2ti4Ly/aATYSP+TkCnTCdZu
- ffXu02s1
- ae5sknWHN8ya+QL4YKTXj8uUsi8CfqwWbFsBe0FiW8UQ+ymUN3gHQA11PNGfZbQwaKRg2nRunWYQ0w9kwiM6ULsi8PmV8xroQtGZSPOutsxc/toZFSXCRVSR6hHIK+F70KhtAV0sc0oVolldCDL1ettHq+V37fKmtH3W4p4QXp742PxCtC3Xz27sZsUw9uYgTcqliKxkMyVNBsi0Rv2YqSX1uxtrI3Z+9mXxEbeOPOb5IOqC0pLOY32c4LVVR3/nEu7Ri8pkkbFSQXxxq7ovUGgVOtOJeoVyS57MwreYnrzEkYIB1goZIWWRw8LW5/aicpdBUq2G229jHh7vBYcj6iSvTr4T2n5hN8j7pujiaaov0VVESiQnQNSM1kA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 039D8C0006
+X-Stat-Signature: j198xsipqfzwg15mkm6q3y4h6swiczdx
+X-HE-Tag: 1786613817-989426
+X-HE-Meta: U2FsdGVkX18BzThmPLYlLEKZnkmFnf/9mhCbkaIA3B1Z6UdEO9FZonpR/aBzsrvdWuXPFEKrJHpK2t+pSO07gRbRVMjT/H/ZJNjvCJvH7SBn4Jvzp57vmiX5qbat48vMTJqhSKueHknvbXrTKwIrYG/XY3mE30LgcdwldXcwNBjhywhHKGHhFCRA74izw6CkZmLiSrjjmnLM5yrsMIOBr/FqBIY4bPTM9O+iaoMSFNolUgC9eFxZHsecdaRASxLNGWrJxzo8FLAzTPaha7FQnc0zAIfLTUvk2hDvUzElRL2HZxAQMred42SzmgTqLWiHSsABbQa3NpNC4GfXr1h6d4f09+o2quk7UVHVpBRQ1F5D/NXi27I6n8A7wBEKi3/ATvd6Br1p+J+pV/N5d19V1xcncO49VlOOLx30aHJK/hNsALkuxsHXoYZ3LswMUDlBSHh+BtJXdQ3OeFof38ajSBVwvUSaSNPrX2v0nhPZD/Oq8+syPKkJOxfZsoREEXXCt9ZrftVG3sMYo9e8xi3vQWqtJxPTX3Ro8cgwAnNM5rAW/fS6JlU8hVSeAdJua6gloqO/xssX6ZzBjWtuRFogJ+RkmgFSJkAxYg8JV0k9mnFBsDQ2bdzbnZK4hIkUiA/vOv8Eoe/sLAV2uDfba0Zj8tri14Z968EQatS1J68tokEvXe+4+Q9UKrk9+qAxbVgRWTOfHjfPEcNKqiSfJjRIpHRcKUYy053Zso+VSbyjQlYoayQYRGvifHwuPIvYSp7Q2kabuIMgnfcTQxSt++5TtogYleJsO8c1Tv4CkGvuLm8EtQ97y5QCwicX57LNj0oLAzCozz02p4LZo8vXJcza0VzK8bXPuEV5TnDMth9gU/Z+eFltUPug7qr+/nT8+6OwtPX3Tv8gADvPc845NQCbXw/5jWxbhthCyyorU1gfzQ1lmyfO5EfTadCOcD63jMf3aWZp0qaRoZ7OTMsUULJ
+ wU7M26ou
+ XsBcS1JA1sX3IsRScZqA4kedZ8SQazMpRHlghLBrY4FFEjH4cKC684C7gOacKCzXvnaQq+FMDz3qpg5uF68AtNjavABs6zPRhpVgkUfB0HinXS5bKo+Aa3sCLXWdgZrm31sLyQbHFE5c4ghmhhSiPyj/NIGe2Tg2NW+VfEJQXsetJAFAULIfRcgyOsRSVyvaxxDOizKdxshXxcSXizuaZkVdn0u3D9/oDvUtSC+N4P+T99+8c/FYGhmnACO93EOe8PK2PmDjHL34NphKDQA6d7njouim3hJsQ4hXDcpFpUxmxIjZXvt8PGqbigtk/TMFTuRJ3mhceX+KsTpBZnQI0I84ANL7Jc8PyWn5Wb9sejens3mg2FuJnONm/qw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,58 +136,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026 at 11:29:43AM +0200, David Hildenbrand (Arm) wrote:
-> On 8/6/26 22:21, Lorenzo Stoakes (ARM) wrote:
-> > When mapping /dev/zero with MAP_PRIVATE, one ends up with strange VMAs
-> > originating from Linux's distant past.
+On Thu, Aug 13, 2026 at 11:18:13AM +0200, David Hildenbrand (Arm) wrote:
+> On 8/12/26 20:05, Lorenzo Stoakes (ARM) wrote:
+> > TL;DR - either we need to find a way to uniquely identify it (keep my approach
+> > or move it to core mm) or we should drop this patch.
 > >
-> > These have vma->vm_file set but NULL vma->vm_ops, meaning they satisfy
-> > vma_is_anonymous() but otherwise resemble a file-backed VMA.
-> >
-> > The introduction of anonymous page offsets and their subsequent use as
-> > indexes for MAP_PRIVATE-file-backed mappings mean the rmap does the right
-> > thing with these but we are left with inconsistencies.
-> >
-> > The vma_start_pgoff(vma) == vma_start_anon_pgoff(vma) invariant is true for
-> > all other anonymous VMAs, but not these.
-> >
-> > These VMAs are also observable as files in /proc/<pid>/[maps, smaps,
-> > map_files] but otherwise behave like anonymous mappings.
-> >
-> > Therefore let's make these VMAs actually anonymous at mapping time which
-> > will activate the anonymous code path for mappings.
-> >
-> > This means we no longer have to account for this discrepancy anywhere and
-> > no longer have to think about these at all.
-> >
-> > This is user-observable, as MAP_PRIVATE-/dev/zero will no longer appear in
-> > procfs as a file-backed mapping, but the impact of this change should be
-> > low as likely nobody is relying upon this.
+> > Given we're late in the cycle + you stringly objective to my approach I think
+> > maybe best to drop it and respin?
 >
-> As discussed off-list, it's best to discuss the impact with the wider community.
-> I'm afraid not many people made it to patch #18 in this series. :)
->
-> I don't expect this to actually break something, but we should be clear that
-> doing a mmap("/dev/zero") will no longer indicate that as a file mapping in /proc/.
->
-> You could mention that e.g., criu checks for "/dev/zero" mappings explicitly,
-> but will just keep doing the right thing once this is a proper anon mapping; we
-> expect similar use cases to do exactly that, and rather check for "/dev/zero"
-> only to conclude themselves "this is just an anon mapping".
->
-> Doing some digging, AI raised that there is the potential of some workload
-> explicitly using "/dev/zero" to get an entry in map_files. I think that's
-> essentially what our selftests do that you have to modify. I cannot thing of a
-> good reason why someone would do that in their workload, and at least AI wasn't
-> able to easily identify any such users.
+> Yes, let's handle that separately.
 
-I already fixed the self tests and yeah it's not very likely.
+Agreed. Will respin with these bits lopped off!
 
-But as discussed off-list, let's defer the /dev/zero stuff to the next cycle and
-get the core of this series in first. It's clear there's more discussion to be
-had there :)
+>
+> >
+> > Can do a follow up to add unique identification later, somehow.
+> >
+> > The key change of 'make anon-assigned file-backed MAP_PRIVATE mappings not
+> > special snowflakes' will still be achieved in the other patches (but have to
+> > rework them a little obviously).
+> >
+> > On Wed, Aug 12, 2026 at 07:15:05PM +0200, David Hildenbrand (Arm) wrote:
+> >>>
+> >>> We don't assign vm_ops for a MAP_PRIVATE-/dev/zero mapping. So that won't work.
+> >>>
+> >>> We could expose zero->f_ops but then it's literally in drivers/char/ and that's
+> >>> just weird to expose in mm.h or whatever.
+> >>
+> >> Thinking out loud: could we use a dummy (empty) vm_ops?
+> >>
+> >> We'd place it in mm.h (zero_vm_ops) and just use it in drivers/char/.
+> >
+> > The entire purpose of this patch is to _uniquely identify_ MAP_PRIVATE-mapped
+> > /dev/zero and only permit this to make a mapping anonymous.
+> >
+> > As per the commit message: 'mm/vma: only permit MAP_PRIVATE /dev/zero to be
+> > mapped anonymous'
+> >
+> > MAP_PRIVATE-/dev/zero to anon is a historical abberation. This is why it is a
+> > unique case where semantics don't make sense.
+> >
+> > Doing things by semantics makes sense if the semantics are a _class_ of
+> > thing. This is not a class of thing it is a one of one.
+> >
+> > Yes the method used is ugly, but the alternatives (I can think of) are:
+> >
+> > 1. (your proposal) allow any in-tree non-module mmap_prepare() driver to map
+> >    anonymous pages, creating an entirely new semantic for memory mapping.
+> >
+> >    (this is currently something that is possible, unfortunately).
+> >
+> >    To be safe we would have to implement then a series of checks to prevent true
+> >    insanities, because doing that would permit broken madness like a PFN map
+> >    being treated as anon.
+> >
+> >    Once this stuff is out there as an API, even in-tree, even non-module, people
+> >    will abuse it because it'll go through some random tree and we'll have to
+> >    support it.
+> >
+> >    I mean we may as well just not make a change in this case other than maybe
+> >    preventing .mmap from being able to do this.
+>
+> As discussed off-list, we could have in in mm/ and special-case
+> drivers/char/mem.c to include a mm header like fs/exec.c similarly does.
+>
+> drivers/char/mem.c really belongs to core-mm.
 
-Will respin with the /dev/zero stuff peeled off!
+Yeah, there's no approach that won't involve something gross but it's a case of
+least-worst.
+
+As per my MAINTAINERS change putting drivers/char/mem.c in mm sections also
+(first step at least :) I agree very much that it's a core mm thing or at least
+large chunks of it.
+
+>
+> >
+> > 2. My solution - ugly but uniquely identifies the single permitted situation
+> >    where this behaviour is desired.
+> >
+> > 3. Export something from drivers/char/mem.c to mm - horrific for multiple
+> >    reasons, violates separation of concerns etc. etc.
+>
+> Jup.
+>
+> >
+> > 4. Move the driver code just for /dev/zero to mm - I thought a pretty horrible
+> >    idea, but maybe we could have some mm/ bit and some driver/char bit like
+> >    hugetlbfs or uffd? But I'm not sure there is a not-ugly way of doing this.
+> >    MAP_SHARED /dev/zero does shmem stuff so maybe could live there.
+>
+> Given that I think drivers/char/mem.c really is core-mm material, something
+> along these lines also make sense.
+
+Yeah, the devil's in the details but the /dev/zero stuff can be dealt with next
+cycle.
+
+Respin incoming!
 
 >
 > --
