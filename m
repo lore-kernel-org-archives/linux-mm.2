@@ -4,177 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BA3BC5CFCF
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 02:14:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 402F9C5CFCF
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 02:21:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F31D86B018B; Wed, 12 Aug 2026 22:14:56 -0400 (EDT)
+	id A0D126B0192; Wed, 12 Aug 2026 22:21:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0A6B6B0364; Wed, 12 Aug 2026 22:14:56 -0400 (EDT)
+	id 9E5666B0193; Wed, 12 Aug 2026 22:21:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF8866B0365; Wed, 12 Aug 2026 22:14:56 -0400 (EDT)
+	id 9218F6B0194; Wed, 12 Aug 2026 22:21:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A92986B018B
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 22:14:56 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ACD05A2A0D
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 02:14:55 +0000 (UTC)
-X-FDA: 85094628150.23.D3A0ED0
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013030.outbound.protection.outlook.com [40.107.201.30])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BB333180008
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 02:14:52 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=bA7Fb6g4;
-	spf=pass (imf24.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.30 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786587293;
+	by kanga.kvack.org (Postfix) with ESMTP id 6912D6B0192
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 22:21:33 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BBE4B1404C9
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 02:21:32 +0000 (UTC)
+X-FDA: 85094644824.26.767137F
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	by imf09.hostedemail.com (Postfix) with ESMTP id DBD50140008
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 02:21:30 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Ow35OFsM;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786587690;
+	b=7/JLNyxKLwO4wq4i7XCDrw3BGgHPb1K9F6Z+fpCPKfUpv+8Do9caqXdWyKOJ4dbiDWyt6u
+	DzpO3/3S7JAZ9ZvRRpM5fqTLdW+pnyzszXwsjZqebd7QO7k454aoGXJLookT7lwDFn+eoP
+	a+CRILKKYqVqtzE2WDB2JyCj/6y+IH4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Ow35OFsM;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786587690;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9PyQB4wCg5aCi5g77Qi+BZ314qUF0gDklMTrqzEnfZU=;
-	b=ZI/v6q7RDfOGqaTKp4nuO6gibzI4GiQ79wGHl34aqdjt55LHl8bK2LLPNaO/D43qSX1KND
-	Wt4k1ss7Ieigbs6RU6NgbKzHjIAgAeZCYcC+irz5JJ+z6j/B7hvl7EwjSY28fyp/1VFuSY
-	LO/zZezF8rYABGs1TxtKm7Do1dYdPEo=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786587293;
-	b=tEW/zDogbwxROXGuXbBBOIPLskbyn9iPj11U9k6xwn8SdPsOqoAvipryg0y7TFGcEtSnBQ
-	iR78btCywwm86fxFK4EcPZt34ppcTeKoTdZTvK9CIpbzPksY9F+ELmnYHei6CZZWeLhU9X
-	uNkqC1ZQ/F3qScliW51vV7crTUFhdC4=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=bA7Fb6g4;
-	spf=pass (imf24.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.30 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NtY0Sa5BOr/WkJtixQVQpK/LFodxVCZQ5bKhhfygPUe5Mxf4/dCRwP1e/kUwoouVWbjpknXIA7qdT8Uvbbx4HWrhKiiyrtuyx4/pl77NqcS+PapHEwIW9UjxvCUybSzCpoKuXWymdTJB9Ob6X9NrQcdzuOjA+UE/24jUzIfyj7mm3CXX4k9F8jNsiEOMrugyMTrX7/YzXH1tMnml0+LAlYYTCZZKSb08dS9IDdzQjvdyoJGLEDE7dLHfUg9MD5F13G2yJ8VuW2Vh/L2Np8dKhrCeIeXMqI97nIuXoNyjNPVe+ixi/RANCfgc/U8j0T/EWWUCbsIr9gmmwZkYBiU7cg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9PyQB4wCg5aCi5g77Qi+BZ314qUF0gDklMTrqzEnfZU=;
- b=cCqxyOH3k7vpoU08Yd3ewFcBpVeoj7Vwbdq6XW35mCOkTD5vc820idPJkUOftunmbgrB7AQ2rgemLD0gjC/1uHWmXcm7mep9hKRNJUk0hVC3DseeN5CE/Kuv14scFg9ujcCsa74BHVp3qcX/mD5TUhg2KGMNOAzud3g73LDgFlKxAZRe1+6qZFAnoG6fTvWPnAC4mgIDN33Fmhim8/TUtyCEuQmPJkQqbQjRHRMAXBMo5qQJVwiEVXXxde9YwBprNPt6fKXDuSRTT9LEMCS3bVmExosG5m68BmgUmWfPwCnO4HALgrB/mignMJkVv1sLMXHvkUW4e2Obg9lCnQxOqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9PyQB4wCg5aCi5g77Qi+BZ314qUF0gDklMTrqzEnfZU=;
- b=bA7Fb6g49bTblcxc5mGfFu13P1Plwi/gUjAHutOTENiuIB3FVxDyI0RUYKmUYkJbbX6z3pbEgcJIkzhRRa3RwGFyim+dU2tiyCmhHRXFuAfvdLDqVTleiM2Hv6id9jhMQWFTi5y+YZCQtkjm1hZproXG2qkcPlcJ50CjQRQvJWWxnHKOFnWaNddJJQgXZCCRZnBBwy5W/QcbazZ1ADysJXIjniiUsrPLBS4nf8afkjYjPYT2LAryyqsmrnsBEpcCIy2tjHShAAbyAXV7v6yJCemFKvrnQ5iuY8myR0taVAvgOn+HDN0IY3sUyt9qz/tXAwXUXyy05mwhfjS4lolC/w==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by IA1PR12MB6210.namprd12.prod.outlook.com (2603:10b6:208:3e6::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.12; Thu, 13 Aug
- 2026 02:14:47 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0315.014; Thu, 13 Aug 2026
- 02:14:47 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 12 Aug 2026 22:14:46 -0400
-Message-Id: <DKNGC4X9V83D.268DMWU0WIILG@nvidia.com>
-Subject: Re: [PATCH v4 5/7] mm/khugepaged: Refactor the PTE state checks
- into a helper
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Lorenzo Stoakes"
- <ljs@kernel.org>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Liam R.
- Howlett" <liam@infradead.org>, "Ryan Roberts" <ryan.roberts@arm.com>, "Dev
- Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance Yang"
- <lance.yang@linux.dev>, "Usama Arif" <usama.arif@linux.dev>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>,
- "Jonathan Corbet" <corbet@lwn.net>, "Shuah Khan"
- <skhan@linuxfoundation.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, "Nico Pache (Red Hat)"
- <nico.pache@linux.dev>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>
-From: "Zi Yan" <ziy@nvidia.com>
-X-Mailer: aerc 0.21.0
-References: <20260811-khugepaged_pte_refactor-v4-0-ddac39d61c4a@linux.dev>
- <20260811-khugepaged_pte_refactor-v4-5-ddac39d61c4a@linux.dev>
- <f1371b4d-6e98-4699-8c1b-7612f6d70f02@kernel.org>
- <753cb38f-66b4-4bd0-8b53-7480efe30ec3@kernel.org>
-In-Reply-To: <753cb38f-66b4-4bd0-8b53-7480efe30ec3@kernel.org>
-X-ClientProxiedBy: MN2PR20CA0060.namprd20.prod.outlook.com
- (2603:10b6:208:235::29) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=Lmq76BWyH9k4izhQxstGYjoZH3LaJ0p93Xt9P+A1osw=;
+	b=zU26sQyHU5il9OSs47Ej0c783Q3NTdt+dEG7uuzll0lJ2JNmVKPzdQloJV3OoUwDx8s8U7
+	fYoVBzwhOSvfjmc/Do8q9Ok3M/XPmdarximabPDHS7MGO026ZuHOYOcj1a9FpMB8GdMrS6
+	yJxZ7WnGMR9GXA4TsEzZBrcXQmuJVpg=
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-92e55b62640so8345585a.0
+        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 19:21:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1786587690; x=1787192490; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Lmq76BWyH9k4izhQxstGYjoZH3LaJ0p93Xt9P+A1osw=;
+        b=Ow35OFsMU9ONZAp6QvlNS8O+JwTzfNeP23i9RLdZbaDrBf/FmtOPL7bEp33ZqfV4/Q
+         6/yg2w3AVo7V8el00SWw+s0KHDrDN41ykW+k8Sa150Dge65qxFf/GFHZE6rbsjZ0AgY1
+         FevuuQzaeSMPpouewWiT6H4PR3wYtIMQpgZsL3UgP4AZD12G2SUnY+zJUcAkGicwv8of
+         a5CAKQTO0w6tKeoXMFd163+zfPQLU1vFEP6q268SSJcZCbGD6gSB19Wd1JeIm7gpr2SY
+         iEMaGTU8DiRVs9P9EbGEFd9tNw6o4uEPQLo/a5tXChdhPGvJkPB2WNUZEmqnOJj72p1y
+         3pVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786587690; x=1787192490;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Lmq76BWyH9k4izhQxstGYjoZH3LaJ0p93Xt9P+A1osw=;
+        b=RR+4NHHOnKuSJqRwR+G5n2HuFTDbJzfDMrAHe50LsvV9XdXTwzViBaIG0bg195v1Bf
+         M8ghSFYcgQpFeADqTWgkhHriN3YJHE722bT5UdocjHcTuWGxmtWzqWa7ivSjWZoYARvI
+         Zpm5UI9AW/GsdzLnyKj6D3USOKYuVmBzTvGzEzHeCqv8UW8pOwRwQV8Syxl3sH4ljbNb
+         XiLH33ViBBaIBMSqHTKvoSwGKrU1UDkgRLHK8JsH4iMpFEfaR1Q9QgZ1N5PtbRS660iC
+         QyFB271/cGmg9S69H3WbgjLIondxoR9GZIfugaPjGnmD2etFKB4chlZKmWAFgdt9Z7m6
+         iRAA==
+X-Forwarded-Encrypted: i=1; AHgh+RoRj8Hh9I+V2i9TwwjfmR3jbmhFUCaM7eRHuo6QKfdz+frU55DJvELPCkZ509bHo50mCmeEs+UjXg==@kvack.org
+X-Gm-Message-State: AOJu0YyGZJiknQ1YAz+UMc5fjAJZ3kiMg+uh59K7eyuf4q2k4krkirUN
+	tP7mGEUVU8H686rvTvyQHymjtiUruCOBcXknOXeS/8bd2Q3ZP0KsekrOEoVZGslCO/g=
+X-Gm-Gg: AR+sD13Hq9GmQSPRDGkNJFK0hmS8fONxaUk8EAF+g4YIvVTU+QK90XXIGcmQFObLS9j
+	Ds1e/vs5/CkC4m5FOmOCbj8l4dpYUcsSS4LxaIPSbguXz5scvUDY5Q1uYEkapXEC04AAdMp3P8Y
+	2tcdywihkk4+svp70HT1z5XdQAWnWyMOF+dPbRMd9gCUS9Pj0R6I/lO5EW4+cy3/IwIAW3hZ23q
+	G7cJ1pakVB/9UpsN2QdUkwU24HMUNhbUPtpPlMB6GUbz7z/tc2SvddPSRVWXfGPNTKmU08lSBYN
+	rEjOnz3oFPsfYP9hrpkdqu5o7gZk9O8HgU5bZnuIG+8lJ+i0Rfuu518BiTg7WFAWS6WKZevWryP
+	owUxgywA2+h0fc4P8fEoYJhHYXw4VQhW/f6wA+rQAesWsqiV9Ky6bhPPNRuXknGBVYy8LdNvO7b
+	1xffaV7Q6xT/4CFitL4eM6GhSO8XkQIHJ62SM=
+X-Received: by 2002:a05:620a:2059:b0:92e:e3eb:de54 with SMTP id af79cd13be357-936bf90138bmr201611585a.11.1786587689928;
+        Wed, 12 Aug 2026 19:21:29 -0700 (PDT)
+Received: from fedora ([2601:19e:8500:d3c0::28fe])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-936c1b1234fsm45066485a.27.2026.08.12.19.21.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Aug 2026 19:21:29 -0700 (PDT)
+Date: Wed, 12 Aug 2026 22:21:26 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Yongting Lin <linyongting@bytedance.com>, Jonathan.Cameron@huawei.com,
+	akpm@linux-foundation.org, alok.rathore@samsung.com,
+	balbirs@nvidia.com, bharata@amd.com, byungchul@sk.com,
+	dave.hansen@intel.com, dave@stgolabs.net, david@kernel.org,
+	donettom@linux.ibm.com, joshua.hahnjy@gmail.com,
+	kinseyho@google.com, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, mgorman@techsingularity.net, mingo@redhat.com,
+	nifan.cxl@gmail.com, peterz@infradead.org, raghavendra.kt@amd.com,
+	riel@surriel.com, rientjes@google.com, shivankg@amd.com,
+	sj@kernel.org, weixugc@google.com, xuezhengchu@huawei.com,
+	yiannis@zptcorp.com, ying.huang@linux.alibaba.com,
+	yuanchu@google.com, ziy@nvidia.com
+Subject: Re: [PATCH v8 0/8] mm: Hot page tracking and promotion infrastructure
+Message-ID: <an0qJpFYBPL7V-CR@fedora>
+References: <amjz7kIDuZH6gBx9@casper.infradead.org>
+ <20260810033814.83951-1-linyongting@bytedance.com>
+ <anlQp9LQw471t3YU@casper.infradead.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|IA1PR12MB6210:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf5022a7-6f18-46e1-2a08-08def8e0a5f2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|18002099003|22082099003|56012099006|4143699003|11063799006|6133799003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	JpZQQuMIspgtaJj65geJAc2VMcQGr2QPR2Rzfnl6+OKgUA6zQxjgNebuLjVOgXGK+JlwiaB9y+wjKPOL4vIiKUmi/jgG7Nvl/ISTB4oeRDYb3mh/92Hbf93HFS9FYx54azJnmBiFRBxuGDA46C8aKBa2zeqE6hNr7IVgm+FKbXjNFW7/efkdwTGDOQBiu1ZZK/KkeMXJMWmKhFzLqc4ojJCklSWmXmiowsOqAuW0rTG5R5pcW4ggrN8E3KaqbYkMWojK5einopSi6hzHYUBiXdYoihN3y5c4MVsKfszuyqNo4DM4lcIT8Ptf2JLGq7F/ggF2r4VAbkvCENqTTeZSzJvk9OeBHOvP1DtFq+I057iLT0pOrxgVlppEKJesYrKOE1C2c9DX4PhIVCdM2+3p0X2EHIVi3qQFylTAJVr8AUdSwT34k0zK5ngy6Mnf3D/zU+HCGHxkvy1ZlwDyGj+O1ZUuSp2lS+N/fFb8XRXXquXoWf8IFT7pubCpeKTzWYWudgpdfcU7iqh8R8Vlh1cr/DrOhVOdefQBHVCCOPg69ujKto/jV8oampo5p471BvebyKlPIoADbO13JJkKVafaBwDKFZOUalsZyBzkbAX2lUA5Jn//jXDyTQjdp4pyMWLwkOyAy+lei1cJl01WQXblwzQBpWcXyQ6txOIXU2DtaXM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006)(6133799003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?clhvVG1VNDgwZXkvTHcwbExvUzJrTjh3MDlITnRHSlloQjZ0TG9JWHkzWkRF?=
- =?utf-8?B?Wm05bklMdStYcnA3WWJ5UFovaEk3RWhUZGlDa1FTUmYvR2dFR1RxN1R3U1Zi?=
- =?utf-8?B?RzByN3FKWjBlOVYxZUZwQ0haSC9iNnRlN3pEdWFyNGx1Qy8rZU80VGFOODN0?=
- =?utf-8?B?S1FiczNXdDFpT1o1OEVFSVZwSkJoU2pXa2hlZmZYcjBJN0diZ2E2Y0tiNFRW?=
- =?utf-8?B?MkZaY1VYMmR3ZzlWR3YzY0NzaWdOMHZIZ3NLN1RCclBhbS90TTlWaWJaWUFW?=
- =?utf-8?B?Tlc3WWdYTFBaM3FOZTJ2SkdsdlBCZzhLUlFyTjRDTXprV2hXY1ZPL0RvZmhQ?=
- =?utf-8?B?SHhXNEo1c3V6eWJFWmRENTZ6cGtrdkJpRGJyQzFPckoyRG44VGNma256Ymdw?=
- =?utf-8?B?S0xnMFdaWmcrcnY2UGJ5NDNPbGF1a3dXMmFJVnp0M0lod0pSdE4zck9XUFRL?=
- =?utf-8?B?NDZoY0hrNHBZVU1hcHovaG5uNzZGd3h6c2liM04vSGhEcFNmdkRCQkhBcUhZ?=
- =?utf-8?B?Vy92dENFWmxoVGp1aEQxckx0Qy9FMHZSandFNTM1NHQ4SlAwWUdOQ0p6Z1F6?=
- =?utf-8?B?c21rUWZWRHNHS3M2SmduTmVmSWgrdStGWUVtT1JlQkRjZ2JXTUo1dk5tTnFF?=
- =?utf-8?B?em9QY1BiZm1FVDgyTEM2V0g0WTdsUEQ5ZzlvVWxHQzdBZENiRllJbS9xRVlN?=
- =?utf-8?B?ZExGSVBVbkRVaVFvZGpGci9OYjQ1RGZpQWwra2M0NDQ0RElUNTBKNXhQMGlQ?=
- =?utf-8?B?ZCtJZHlzMmJTc2RBbENTQTY2dkJ4cCtUSHBVRVFuVEdnM2podnhqK0dKR3o2?=
- =?utf-8?B?N3Rhcy9FNDk4YmxGOHU2ZXBNTVlKclpTd2RvSnYrVXhHMGVtQ0JXYlJrNkVF?=
- =?utf-8?B?emlvYmdXMnZNOG1rdVBtQXg4eUxDWFhpRXQ3OGFUdHp6UHNMaDB4RVVBN3Zr?=
- =?utf-8?B?a3FxWWpGNmsyaEtnQXlwZkhKM3VteWZLOWJqSUd3TWpwOXlzb1VzUzNJRVNT?=
- =?utf-8?B?bVhzMjVFU01BQVJCNC80MENsVXJzVlV5UGRkT0svNG5OM0VBdGYxSUZEUDFW?=
- =?utf-8?B?cEcxM05UTWNyYzgzNVBTT2dVT2hma1R0K0MyN1VucWJQY3Y3dWtidDU5OTZ2?=
- =?utf-8?B?YUFtdHFYMlZNdkVJdzBvdXl3Q1RnRHR1WlNyRzVhUkZhTWJGQzJRUnpVVlZF?=
- =?utf-8?B?WlF3YnNub0wrcGY2UE9meDdMQWhjbHVNMm1hSnRSeFRTajhMeCtCU3VRTXFp?=
- =?utf-8?B?M0NwbktuZGZlNTBqOGx3aTRwd1pqK1QvenB1dUdEYXYrUFpYVlhDamtkL25Z?=
- =?utf-8?B?ZDlNYkg4QVY5SHZTbDE2cTFGSFJLM3ZXZWNmVG5HZFV2Ymc2MVIzL0RFYVJ0?=
- =?utf-8?B?aGhQQitqb2hPSFI0VjJhbXI3V2JqRUovZHNqR0UrM2R1eHZRVjVIUHZzeUpM?=
- =?utf-8?B?T21CSk93UjhPTW4wZjFjV2NVTk1seEFoQmZGNFlkM3FLdmdWVUwxT2FjNVl6?=
- =?utf-8?B?cnlBeUI0RC9CZGZPN05xdm1sblpUL3lobW8wWFdCRlEzRjlsSUlmbFJEd2M1?=
- =?utf-8?B?QTZtNWRSUlY0dnRSRDZLVERZUkl3cXFOc25ZcUluREVQZmFkSk5HNG81RlJS?=
- =?utf-8?B?dVRzbUM3U245ZXEzK3VIS2VGRHlPbkU1cmRXU0QrdUJlM09kTVAzRk1hd01x?=
- =?utf-8?B?ZjdYY3ltWEFWVGpKMC9pajcrMC9IblJEWlZud2cycW8xM3FxK3U0VWx2azJH?=
- =?utf-8?B?UW8vd0dQVHhlcXZ6T3NJRjVNVGYxRm5QemI3OGtGeEFKcGNOZ1JzNFlZRTdC?=
- =?utf-8?B?UHNUdytia1VtOUxmdDJLNXpuRGZQeEJDZ3VPWE5HUVFxSS9UR1JDbzdGakRP?=
- =?utf-8?B?NXVNWHpGREJaa3J4ci9HMy9pcVZXVTRkODdhRGNoU3hESUt4R0oxL0dtNzRK?=
- =?utf-8?B?eUM0WlRiVmVnUXltUGJQL3VhdndkVHZkNDJub1ZWMU1Jcmw5KzZJbXJTaWZj?=
- =?utf-8?B?SnB3ekRVMGVId3ZjdGhZWXc1WnJ2VjFFYTY5elJWdDZ3SStoeHhOSmxaWGox?=
- =?utf-8?B?SWVlZk13azlIQzRuTlJVaHFiekR5cndBWHBHREVuZENqaCszekhld3NnTlVR?=
- =?utf-8?B?VzdtckZkNmRnN1Q4SGtKSlU1VWljVUJsaGJ1MDBGbWRKT2NZTExoSmpaNU4v?=
- =?utf-8?B?VEpzWmZLVWpHRWEvRUYvNzBKVVFIT2w0NktIb0o1T3BKN1c1U0FwQkpRbEll?=
- =?utf-8?B?NDNkNkl6TWNGMGJUaTk2dkpSNTJxcDQ2Z0p6d2dYV3pTSDFLQi9kY0s0Sndu?=
- =?utf-8?Q?86JBDZR9AKzS5B9P0W?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf5022a7-6f18-46e1-2a08-08def8e0a5f2
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2026 02:14:47.5243
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9GLLQvi4mGlgb8WvYRpNaQvuAkRvsaJ95It/gQArYf4ER/RbI6gnLRKsN/KbYn7M
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6210
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <anlQp9LQw471t3YU@casper.infradead.org>
+X-Rspamd-Queue-Id: DBD50140008
 X-Rspam-User: 
-X-Stat-Signature: h99wu74qdzbop39arob3sdu9r7basbds
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: BB333180008
-X-HE-Tag: 1786587292-721110
-X-HE-Meta: U2FsdGVkX19JOxezZAjQCAIs17GxeZDTHwPL86utexedT8kreuqa9/Qk/tYyouQjIklxSaU85N+BlZG05Bagvj24UdcugMBMorQTc8zvfoXlUrUvGgaKdqNBrKw5ieVgKjmniG0PND/KXhg5Njb1CmxUPQyhjQvbLolmGDgl4hHbycfo+kUXXHA72LOILWUrcOimghVwEJpIJ27LeIuoFAkOh3rFfkwJrA8GVi0NXLnWHl58fTTqYcMEPzhQ3cZ/jCyXZIK1J7XAvpfRIcmMzuxoSjbCmEU2/SBtUqdL6w1PZW2lYgX0ZZJnMM54ewO1mQd9Y8ljh0Zoflic94mLZERyZc0z/kR0z0Kx6Kdf+5MlE5k9jbw2iESBya0ykgGUHWIaODi0s0p5eJPT0HHeBciCUurNo9AHP7d9+Oylq6ML0+P2xE1k6PX26Fqt/4op7NzmuBbxfRcGF4GnDzt8Es3Cue9oQDdBIuajMjNQ4vhwoKAIwfrSBR7rxp8AQjyAFLn0+UIh2XbD86s+OB7jXqduha2s65EyRRqWdZmJ6jQIWTBQOFLTr73aHobEN1nL8HoncEjR4JmbC+eDOI5mWof8Kb1jb6YMPQlO/QI0OdyaK/qFZCvRuCqOypn/hLeUD5/szIoD7Q9OfL3QRJb2zmw9oVgX0My+nPeGbQ2M6KSBNcCrdlnU1nPElrlv7R2wEb/ehnWVOhHqaOV0CWOK7dZHMXz/C18VEc27pkpZQ/2G9j/8gQckAwlFPsVpknaMQybe7FqQ/fTNH5oGjpo4IxoFdo71LYt7u3AAeuQyYyKz5WMVrvvfADuHuK94QVrpJlGZ2S/gPPRddWT/exzL1Np97FzgIz/3qzqRzDanOEzTvxA0jxUvC18GrVxczf6PmE9i5EUVuK4hxWubGP1ZtMJ4GDZmJhFG/7m9cmds6noSa9hplsiX3OaikC5Js4xdho1yrAnRDvRA83OU3LC
- GNITiL7l
- tYnzPeYcEsEVqJg6m5Xwh1OPJ05qG9VhrkHsLhVUArDyIrgVZo2tUqhbox8S3MBjgJlQ6FM6Kwz4aE2QJaogsOMaG3Eox9N6faTkHd+F/SKu0V1LqtlDhSL95GvQjkbZQF18xFuWAGCCQKgGnfySlmXl+3klPC/6jnG91beUBKjEXSWP+Pxlg1Rn4Oo+ULWy7Kkx94NcE7amcOjuyIXjUVyXinpm5AbSPqyd9rCsR8g0xOmEdpueCv3aKML99yCI16v2wRqppzxWCLrRybxfPMld92qiqjLRfX+x2/Z9Q0b/ewYh+SS/kLoHzkJxGEkfSK+O3EJ6i1MWRkSNulVYCyY+eG/dCwpacl+wOuWO7GgeAVLvHycL1hTQUjw==
+X-Stat-Signature: mckok9aq43j9ckqi6hkxcbgcg8sbw1mo
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786587690-374244
+X-HE-Meta: U2FsdGVkX1/53Myyv87CrsBipWTw09IHgbAkkcKpQrx6m0e1J/xSOi10TSudTiC5q0MXheklG5/1oLjVovsMA6toWYbFR+wYsX9ZGvBT4oluqBmMGHw5mGVFHdTV74L3hW6hun1A3GUm0BGTLA2BYXQmowP5lQoV6UYBiTUFlWYEKdTmZxf+L5qvh5EgWn05v56oI8hQ4Li1HDQSwpaf2Rok6KjXLoCIIHXyQTvy0aS0I63ydG3DM8hG5zx86fy3JB2Hh+odU7hUZg4R0Leuu1S4VGtcIh17PFJHCoREnqVY3y+i3wy/WV2BKz5M4iZ0/ftKjs5gIZ6L3YB2R1+O1aOJXcHH/hUQJZFmZVXeEhZSkK/boqcKpEsHVIa5up4xWkG59lV6hUTjaDjMkHnF+xgnZlcAJtg6xF27FQ5CyoLJUDXY2g2rzZXTpCQyIMMxctjzBaGJ1QNrKYw3f1wZWTlZ/SqFCXHf711ZUiWyNVCVx/vGkwLYW/az/b4l33mlveJf6EfPKmAUoOvsTvaSpAND2R+ScytM5Yi24sf6Mag+OkAepmGRw2XTT/fc26xMTn2BhGunKZBfj/Hoe+6B3auIQZS9J9b7yreii18iGYAxPkltcIjgSboI2RlXxHmFsLnnSJa5bIQLofD295fHJ1bU0w/csljMijGiA+uXAcmQALwnvsJAaSwLQiznGxYJ7eNQbUjvgoRtMl10viRJD5uM9tfJY/8G9dfM3q11/d8QA/u97lLH2IbVviQVh+ZuC5x8iaq109met/24zeQMRLBj5ntH45MgQbtODiD32bARoIEkqzWRrhaKx2PfsPQ4rkWf7OzYiH2Bk2wzu3dJ1SuRmH/O8xy3MIreEfSPTgkRdFwuFbQGSw6s5sXuxgO28XjntAY6uDWb9vdht32KTwHh361kEj79K5pLM5FvM6UB250UNheMgpEndNMpPIjo93D8y5qh7lSWZ2vHLNR
+ s0Y9EBUa
+ IIWxReBHfV8zswB3ak7JGhBZxzGdh68QqaXnHzO6wUAS6aqu+LCoMrhxwmqj9ek4tBDcXvRgB8NZHnvQSm7piYuiSDnTSSMJ6D06WZkRG0/E0w3Mjp9DhDRlxRcEyNjsrYi185P1sXpYyIIPczgMVcjoYmrHd+zHIQAK763lYrSvcd4TteJdufH8oPcbNxUT5qoCUMyKDD5A9UWdBHZD56do2D8y2VlovPFrTqIoBbjo5Vik6ctRT/urIvim3o3oRGaAEXiomFaTyeS+2i3c78BtlUOyWGBrqv9F+urmAs50hyp75eOH03Ep8bWsgAQB2w+RdPFOphdsdW6HkMwtF30zYB10isAepJuKzIuO7t5Hbs57fpjVRPahK9DhcYn0AcCmwEWYatSX/rlolNvLNrs3LYHUxQg/JcgaPt9K5xY2QvvpsNyev617uaiD+sqC1YrCbt2SlUsGPsUs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -182,158 +130,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Aug 12, 2026 at 5:51 AM EDT, David Hildenbrand (Arm) wrote:
->> Huh, that looks odd.
->>=20
->> That should just be a VM_WARN_ON_FOLIO(true, ..) or sth like that.
->>=20
->> But in collapse_scan_pmd() that warning never existed? So this raises ey=
-ebrows.
->>=20
->> [...]
->>=20
->> I'll play with it to see if we can do better and will reply here later.
->
->
-> Okay, I think below is what we should do.
->
-> There is one behavioral change: we now longer trace the last folio, which=
- is the right
-> thing to do IMHO.
->
-> And I think there is one fix we should pull out and evaluate first: A zer=
-opage with a
-> uffd-wp marker is not checked properly, IIUC.
->
->
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 5a06e3942e889..8a223659fce2d 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -119,6 +119,18 @@ struct collapse_control {
->  	DECLARE_BITMAP(mthp_present_ptes, MAX_PTRS_PER_PTE);
->  };
-> =20
-> +struct collapse_anon_pte_check_ctx {
-> +	struct collapse_control *cc;
-> +	struct vm_area_struct *vma;
-> +	unsigned int order;
-> +	int none_or_zero_ptes;
-> +	int nonpresent_ptes;
-> +	int shared_ptes;
-> +	unsigned int max_ptes_none;
-> +	int max_ptes_swap;
-> +	unsigned int max_ptes_shared;
-> +};
-> +
->  /**
->   * struct khugepaged_scan - cursor for scanning
->   * @mm_head: the head of the mm list to scan
-> @@ -696,74 +708,104 @@ static void count_collapse_event(unsigned int orde=
-r, enum vm_event_item vm_event
->  	count_mthp_stat(order, mthp_event);
->  }
-> =20
-> +static enum scan_result collapse_anon_pte_check(pte_t pteval,
-> +		unsigned long addr, struct collapse_anon_pte_check_ctx *ctx,
-> +		struct folio **foliop)
-> +{
-> +	*foliop =3D NULL;
-> +
-> +	/*
-> +	 * Don't collapse if any of the small PTEs are armed with uffd
-> +	 * write protection. Marking the new huge pmd as write protected
-> +	 * could bring userfault messages that fall outside of the
-> +	 * registered range.
-> +	 */
-> +	if ((pte_present(pteval) && pte_uffd(pteval)) ||
-> +	    (!pte_present(pteval) && pte_swp_uffd_any(pteval)))
-> +		return SCAN_PTE_UFFD;
-> +
-> +	if (pte_none_or_zero(pteval)) {
-> +		if (++ctx->none_or_zero_ptes > ctx->max_ptes_none) {
-> +			count_collapse_event(ctx->order, THP_SCAN_EXCEED_NONE_PTE,
-> +					     MTHP_STAT_COLLAPSE_EXCEED_NONE);
-> +			return SCAN_EXCEED_NONE_PTE;
-> +		}
-> +		return SCAN_SUCCEED;
-> +	}
-> +	if (!pte_present(pteval)) {
-> +		if (ctx->max_ptes_swap < 0)
-> +			return SCAN_PTE_NON_PRESENT;
-> +		if (++ctx->nonpresent_ptes > ctx->max_ptes_swap) {
+On Mon, Aug 10, 2026 at 05:16:39AM +0100, Matthew Wilcox wrote:
+> On Mon, Aug 10, 2026 at 11:38:14AM +0800, Yongting Lin wrote:
+> > On Tue, Jul 28, 2026 at 07:24:46PM +0100, Matthew Wilcox wrote:
+> > 
+> > From our perspective, this is not merely a hypothetical use case. We
+> > are actively developing and evaluating CXL tiered-memory systems, and
+> > expect promoting CXL-resident pages that become hot back to DRAM to be
+> > a practical requirement.
+> 
+> But what *is* your use case?  Truly hot data ends up in L1/L2/L3 no
+> matter whether it came across the ridiculously high latency CXL link or
+> from regular DRAM.  So we're talking about "warm" data that's presumably
+> measured in gigabytes (since current server CPUs have about half a
+> gigabyte of LLC)
+> 
 
-So max_ptes_swap is actually max_ptes_nonpresent. But due to
-khugepaged's max_ptes_swap config name, we just keep the variable and
-related function names that way?
+Speaking for myself (not Yongting Lin) - our use case is pretty straight
+forward and deployed at scale today, with plans to expand on it in
+future generations.
 
+We have systems with 1TB+ of memory, with a 768GB/256GB DRAM/CXL split.
 
-> +			count_collapse_event(ctx->order, THP_SCAN_EXCEED_SWAP_PTE,
-> +					     MTHP_STAT_COLLAPSE_EXCEED_SWAP);
-> +			return SCAN_EXCEED_SWAP_PTE;
-> +		}
-> +		return SCAN_SUCCEED;
-> +	}
-> +
-> +	*foliop =3D vm_normal_folio(ctx->vma, addr, pteval);
-> +	if (unlikely(!*foliop) || unlikely(folio_is_zone_device(*foliop)))
-> +		return SCAN_PAGE_NULL;
-> +
-> +	/*
-> +	 * If the vma has the VM_DROPPABLE flag, the collapse will
-> +	 * preserve the lazyfree property without needing to skip.
-> +	 */
-> +	if (ctx->cc->is_khugepaged && !(ctx->vma->vm_flags & VM_DROPPABLE) &&
-> +	    folio_test_lazyfree(*foliop) && !pte_dirty(pteval))
-> +		return SCAN_PAGE_LAZYFREE;
-> +
-> +	if (!folio_test_anon(*foliop))
-> +		return SCAN_PAGE_ANON;
-> +
-> +	if (folio_maybe_mapped_shared(*foliop)) {
-> +		/*
-> +		 * TODO: Support shared pages without leading to further
-> +		 * mTHP collapses. Currently bringing in new pages via
-> +		 * shared may cause a future higher order collapse on a
-> +		 * rescan of the same range.
-> +		 */
-> +		if (++ctx->shared_ptes > ctx->max_ptes_shared) {
-> +			count_collapse_event(ctx->order, THP_SCAN_EXCEED_SHARED_PTE,
-> +					     MTHP_STAT_COLLAPSE_EXCEED_SHARED);
-> +			return SCAN_EXCEED_SHARED_PTE;
-> +		}
-> +	}
-> +
-> +	return SCAN_SUCCEED;
-> +}
-> +
->  static enum scan_result __collapse_huge_page_isolate(struct vm_area_stru=
-ct *vma,
->  		unsigned long start_addr, pte_t *pte, struct collapse_control *cc,
->  		unsigned int order, struct list_head *compound_pagelist)
->  {
+We're expecting these numbers to grow, along with density of work.
 
-<snip>
+On these systems we use both scaled and stacked workloads (single and
+multi-container) where we do have a decent amount of warm data landing
+on CXL. In fact, we're looking to make that a more explicit scenario
+to reduce per-workload variance (higher floors, lower ceilings).
 
-> +		result =3D collapse_anon_pte_check(pteval, addr, &ctx, &folio);
-> +		if (result !=3D SCAN_SUCCEED) {
-> +			VM_WARN_ON_ONCE(result =3D=3D SCAN_PAGE_ANON);
->  			goto out;
->  		}
-> +		if (!folio)
-> +			continue;
+See Joshua's Tiered Memcg Limits work [0]
+[0] https://lore.kernel.org/all/20260807202059.2620949-1-joshua.hahnjy@gmail.com/
 
-SCAN_SUCCEED + folio !=3D NULL means to proceed with the pte, while
-SCAN_SUCCEED + folio =3D=3D NULL means to skip the pte.
+Right now this works when mixing workloads which largely use mapped
+memory, but for workloads using unmapped pagecache, they end up
+permanently demoted to CXL because NUMA Balancing can't promote page
+cache (but reclaim can demote it, and the page allocator can fallback
+to CXL).
 
-collapse_anon_pte_check() probably needs to document this? Yes, it is
-straightforward at the call sites, since without a folio the following
-code cannot be executed. Or you think that is self-documented.
+PGHot at least gives us the *full* solution that NUMA balancing does not.
 
+> I see the basis for saying "this task is low priority, it gets its memory
+> allocated on CXL" and "this task is high priority, it gets its memory
+> allocated on DRAM".  I don't see the use case where we're trying to figure
+> out that region A of this task is sufficiently warmer than region B, and so
+> we want to demote region B back to CXL and promote region A back to DRAM.
+> 
 
+We find the vast, vast majority of "low priority" work ends up pushed
+out to swap / fully invalidated anyway, and not even taking up much of
+any memory in the first place.  This work is not the problem - it's
+usually things like system updates or monitors etc.
 
---=20
-Best Regards,
-Yan, Zi
+Actual user work wanting X-GB of memory is almost never willing to
+take the latency hit of 100% CXL - and even if you did that, you
+actually cause bandwidth issues for the rest of the system due to
+limited bandwidth compared to local DRAM.
 
+Something to remember: Demotion does not respect cpusets or mempolicy,
+and page cache is owned by the first-toucher, so cpuset limitations
+break for page cache in general.  (This is one of many reasons I've
+been exploring the private nodes series).
+
+===
+
+For actual tangible problems: 
+
+We've found fallback allocations landing on CXL is preferable to forcing
+reclaim to run and demote to CXL before a new DRAM allocation can be
+made. e.g. zone_reclaim_mode=0x0 is better than 0xf.  ZRM induced stalls
+are just always worse than eating a CXL page and moving it later.
+
+This directly results in hot memory (in fact many gbs of it) on CXL.
+
+This is especially prevelent when workloads spinup after the top tier
+is already / near full.  The tier-aware memcg stuff should help with
+this, but it still requires both demotion and promotion to level out
+the usage between tiers to an acceptable ratio.
+
+I'm not looking for a system that can predict the future and maximize
+performance.  At best I'd like a system that nudges placement in the
+right direction over a long period for better workload consistency.
+
+> I particularly don't see a case for trying to do it on single-page
+> granularity.  There's just too much damn information to track.  Maybe at
+> a 2MB or 1GB boundary, but not per page.
+
+I largely agree with you here.  If you look at the other work my
+colleagues have been doing - it's been heavily focused on making
+THPs more reliable and even pushing towards 1GB THPs.  We're getting
+to a point where 4kb just doesn't make sense anymore for many things.
+
+~Gregory
 
