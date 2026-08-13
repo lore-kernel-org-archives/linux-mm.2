@@ -4,91 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6873C5DF65
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 07:18:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BE23C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 07:20:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B985E6B03D7; Thu, 13 Aug 2026 03:18:55 -0400 (EDT)
+	id 0784F6B01AB; Thu, 13 Aug 2026 03:20:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B703E6B03D8; Thu, 13 Aug 2026 03:18:55 -0400 (EDT)
+	id 050236B01F1; Thu, 13 Aug 2026 03:20:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A60B96B03D9; Thu, 13 Aug 2026 03:18:55 -0400 (EDT)
+	id E82EC6B01F2; Thu, 13 Aug 2026 03:20:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 81E876B03D7
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:18:55 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 08E4A12056E
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:18:55 +0000 (UTC)
-X-FDA: 85095394230.06.20B6820
+	by kanga.kvack.org (Postfix) with ESMTP id BBE286B01AB
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:20:32 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3E1AD120537
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:20:32 +0000 (UTC)
+X-FDA: 85095398304.09.3D8059A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 443F7120003
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:18:53 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LQoW8GUU;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7EF7D140008
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:20:30 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PDe8Ye5p;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786605630;
+	b=m+yxgj7E3r43Fmvg0aUduKZ6LUBWtrTazXy4nj9/o5BJNY2PbI7Gl4USy4OYIhefdOcKCH
+	6eJncp++vbS8yQRTVj9WVozdIPYkFN3zx12Fu+/YbmilFMFw8nfmj/AZ2RJ3jGj2sbe3Jb
+	l6Kersari9AIt3b9hG9+MBAqL6yWJAY=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PDe8Ye5p;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786605533;
+	s=arc-20220608; t=1786605630;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FRu9n4mjHkdLoh1auc0+F0uq9mi4uQgSH6ITAa/iuvU=;
-	b=a45ibDYILKyz33h402YR8EPZ1rlifncA1wYjc2dcTRh9gLlJ0vlIaqiDjexE0ksZxmiH9Q
-	YnuR/nDEKhMSEmo98XllcVE9bKId90UcSfmoxJJJh8uQGRLsZdp4k+ROYZRfmzX9T59kVb
-	mIs+XeAsRWbOX/TmL12lqr0o36zZ01s=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LQoW8GUU;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786605533;
-	b=TslFh+6ccf5jhK8ShKtl7kZIr6c5w/x6ylXczSzM9oSmcdxp7dJSF1NNNmij7Sbdz8y6/V
-	ebPWsWrEoJ+3MaaZZaSLqkuSbZL2ldPA/SOu9hImDgwA4fbWf3+3ALpXp4LEE3vfAScM7y
-	+bGEEZmw/wbTp30jzsx3zDyqEQwuces=
+	bh=KGcEV6pl+wnhkUoYbI+HCVP62Cpluvw9xH8Mb9lAEKg=;
+	b=iw3B9j7I9TVRwhrAtvlhPz+BRHyLZWByAKLt/3Kb1COTQQIWJiZLOFNxmmqozLWHjImejC
+	2cha6PZui0lJ370xy7mBY7K6NtII7wnvK+zBM6xWcmOy1Wptmx4Mwm4+hI6UEV2IVE9kqU
+	qsfNImbrsvv6jUZl77hx02L9PsviTcY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6A282600AD;
-	Thu, 13 Aug 2026 07:18:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF6D91F00A3D;
-	Thu, 13 Aug 2026 07:18:45 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 03A42600AD;
+	Thu, 13 Aug 2026 07:20:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7711F000E9;
+	Thu, 13 Aug 2026 07:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786605532;
-	bh=FRu9n4mjHkdLoh1auc0+F0uq9mi4uQgSH6ITAa/iuvU=;
+	s=k20260515; t=1786605629;
+	bh=KGcEV6pl+wnhkUoYbI+HCVP62Cpluvw9xH8Mb9lAEKg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LQoW8GUUyQqsjsyMSCymikLCl0K/PpYaTCtOqE8smOcqa2DMyAwkHJlcjWeM1J3S+
-	 p7F7YTHDWjjGCL63HV5xpWRhAdsFHo0ku3RZp+dd7ECs9spcYVoBm+vyaaylpUF+PD
-	 H22qTcfvj4D5oNy89mJR0hbJjegsfONgrwhHmtzF+bBi+aGhDM9oGd0P2xzEDI2kou
-	 1E0HF2+DNVjJvv6cBBocYB1eb2SJm99VpExDuZUltvNNZREs8uFacDqc0tyd8Vhkzr
-	 RtyNl40a3quN8bMMpCL9V3232v/KWwZovejB57bX78GVNpy/nQciclUW97AqYJJX/W
-	 0jrUTV5cHJu/Q==
-Message-ID: <fc404670-7194-4ae9-8646-b543869738f3@kernel.org>
-Date: Thu, 13 Aug 2026 09:18:43 +0200
+	b=PDe8Ye5pdrqK4Y0egAlcQN5IBirS79gYFFNr+GTbXIBDN4KKCJbtoJLxXfppWShGH
+	 AVSRxpeE7gCCc72o72x7X8+sZfDBjMagyx++40zbXbwHvCr8ZHrnAHhWZGSy0GezHk
+	 FKVaijt6X1rPBEA1aSj2nVyMD9WPvDrgDP8FT1jFgjbwsQxS2IRVm3zlSZYRD0fNTm
+	 2vDKsO5idXcA8cMiYOvTSpAoMQNKSmXSYQ297N5Py39CuS3ykVpYsa8/skKgY6G80T
+	 ARzyilT5g6dA5UltVrXyEikLX+6LibN7HwbNzC/p+IpfNPqgY7MY5eh2hbvKFZr+HL
+	 yhfpLwxBz/FqA==
+Message-ID: <7ddcbd0c-1689-43ae-bfb8-93894d2c9cc4@kernel.org>
+Date: Thu, 13 Aug 2026 09:20:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V2 6/6] mm: Drop pxd_ERROR()
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>, linux-alpha@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
- loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-um@lists.infradead.org, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260811042119.3652929-1-anshuman.khandual@arm.com>
- <20260811042119.3652929-7-anshuman.khandual@arm.com>
- <1fb9ed88-67d0-4ac1-878d-0dc8e1135d19@kernel.org>
- <2ys7apbnfuj3ugfoqgbptgej3jjcyfpmdgbv6qbxupmwg6mefc@h5p33ua2nzlu>
+Subject: Re: [PATCH v9 03/15] mm: Rename folio_contain_hwpoison_page() to
+ folio_has_hwpoison_page()
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Jane Chu <jane.chu@oracle.com>,
+ linux-mm@kvack.org
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org, Christian Brauner <christian@brauner.io>,
+ Jiaqi Yan <jiaqiyan@google.com>, Usama Arif <usama.arif@linux.dev>,
+ Gregory Price <gourry@gourry.net>
+References: <20260805210557.1118966-1-willy@infradead.org>
+ <20260805210557.1118966-4-willy@infradead.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -135,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <2ys7apbnfuj3ugfoqgbptgej3jjcyfpmdgbv6qbxupmwg6mefc@h5p33ua2nzlu>
+In-Reply-To: <20260805210557.1118966-4-willy@infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 443F7120003
-X-Stat-Signature: q68ow9nwzqrsfoxshqc9efzmfwxnmfg8
 X-Rspam-User: 
-X-HE-Tag: 1786605533-52822
-X-HE-Meta: U2FsdGVkX19HFUMHl/nBKvlryxi6JNbJDGakaeuCZtpkHiCWdh0QAI89ODFYX5iDKFrWR5mUbmwm98rgGr14UIukQMTr/hExPKdy1iHIUQ45uSUVVOdswrxgjKUjMyxdR9DKc1PJ2zfwDPrauEYpY7qeF9Im0M4tq/COtfbb1vf64ufC/LcJdVgRJXM4iCzT76+gRv5FbRZpKGqYv58EBXM+XwvXLMSc/28E6Upz37M2QVIPEQxnHKle9A+5Gu2WDcjnvTlw2kViaVk/hjVgLa4Ebaz6F4VDnRmQafxeAb1GW4qwUfUcYhnPekdgluIaTHDYbRVJIuwxT4JoI0ozHFGU0DGcXimkdKXxvTBTYP3YZb6wG2bmXUNC8hUKpy3mkyTDY2ThRufystPHAQ5KqHszwxKUxVSkIYl+yj+X0iM7azZUdA+sA2VMzOcXK+HeWUSbB4WDevKx8jEhR8V75UXI/5tU34FqpGF8A9yT93RIkbF11aVTah6/ZxZkumf8IWRDr163y0KunPNBzBYidvXqDsT3X5QqkCAOfPzyZ8ksY2rjVBZjBbHtOn+ax+dvDZmb84NRi0SWBCsWUQ5Y08px2vuIW1+4vVHLPv9minvC6VrPt6cvbqo5rQcs94en3kMFagOblZ5C/6+NQPinqvlREHXj8HK5oUHFH8KgUkKHz21BgRBpyw2bal5x+1BtTqmR7c3mML4GGiQw/xmgoPgTSORZ4niyWZ6BrbgcpM263VEoBvuolSbLpOYXr3g2jLP2NDlPeSLvHbiLWPkyO65NM0LmYMwyfdw/0aABuOW7xm93uFXOn1oMr/geeel9uieqxqt8F0XXbtWjaXjUJ0KWlYORu8/h2OK7/YtLNsD/F2cezVRsxQlPUsd+TiuWyZ6oBMdCJ2S4NzBAlQ7NZdmXr6jBVfEm4tXdJu9wcygn9UKk8P7kvYcShcAnk2uQy17g83DH0/hlWsM/QHM
- i/eQOC/4
- 4yxaRt0ZbXLC9eOGz+hbUAgl4RvAWnJJaU61mnhMpgnlViqrWc24iSB/JyWYn/4eZSSioPrxpw+66totX1L6VRgNfNn8TrM/R3sLdVPeZxdPkIbkzzFtOBy7IkZi4CgCk8SnD7IOsHqSVjbgj+xOuTkaeXNYvqu+Gt1EqM1uYpEQ6GbVbAkqkdvCDBQa6RwM8x4R575r+7QLKv/BynjduCfdNNetvh5Mvy+GMKcTQSwinBzHltGk7kPwlkdnoXWyNl4gSX98jQMlI4B5WNb3DA4tgx7DyqfTe2o6mwnsIzLfSHQOHiZ5oqsuronLpR4vYm6GYb6o6TuLPKJsaiYCYTCk9RFazB0X7jkpZb+UrmwSJtYL7Q2krZymrg7aoUw4RQpbM
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7EF7D140008
+X-Stat-Signature: ny4pabs33ebctjedo631mwsi3bfh6jru
+X-HE-Tag: 1786605630-168563
+X-HE-Meta: U2FsdGVkX194DODGqvbDNA1JvBsdZOhqhm6mFiaURyEaZA7EeawoprIHJLTj5o6UEZaM6Mzesg7OLRdaXBCFPCnBR2GBqRqn9pPETQQGtBqCvukBAJaCbBDWfD/RK8fzm1iaPhJd+muD18jfVyPnhTHng4FevLuZSZP37kX80aqQqim+Jd14ObpiUY0i6bQZ19sBUUCvPETosK7l28ZgS8Dpvxgw+Kc88VBVwPLwiMdTwDrwJxL4/PgF+0H2jEsVCgmuH3ib9Fh+FpIDoq8r+g52Dbug2MHeawLHgTQVdbHmgaZQxB5SJXL/Ip7EqgvKleh+jD7XnRB0YFWCyupwnuP3/gTSlDPV69KmM3GaGQhFluICCwW7eRijRzBgF2UAdgpQcn+7gsR35fARsU1S8lCuu5gXILsCs03V/3wpmrY+LcsceceQbvtF3poo/WbBFTrj5hwh/hISJev9euUVXFEX5A0xPop0KrTdV4NcMTL16Qtm14GfO3o8CpSX6umuPKUSSp1g+LTXaGnVGHOYgILy2FJjgeUYw+VDKRHjaShLxUJKx2TWn/ks7nx0KoSMxS6mLkdPdtqUkdh7OkT3DXp1L51MUr3g0GveTkVZzHiENeULNHzlhEqbo0XnvKtIocYJd9oGF8krEEEtJ0rdKf6gpzm8Rgp6MQ8bP1rdyOc+3LB+xKpSf1GeHr4J3KKiF+g+YhFKYhzRGSQjRH5HTW6Q6pwJZmcAKtyF891PyL3OtddvdDKlJr4LHBRlAyrMiT8Fjk/SiRdJy1jFj7ivjVL7IYJcZx0620f8hKsoKbV5JlBtmNH+1tKRG+zMkwG1Lepx+19ioiD7u5fvfvbLEnbuRk3Urp4nPN53oCTl2qzCwds/R87OSOqi29PeJOgdY3v8ehuBme13wE9L+U41XZzN8xpTnVplMmzXaIbqcpH6fjhppyI6K/RoOTFzg0YSSX3ITth6j5CDDoUaQpJ
+ TGCn2Mub
+ R3ZfUX5jI/LiT9O3q9zSGkPEM/KQLvraohsr04cyAfOM/dNn27LZYQRvuSAsxpwo1YHzog+mBY6NeiCQyDyt2/o9zfJvLlPrCwKK1kQaYlX2/Tlmf6K3PK0uB5a9DsarA/KScEcda9nm2+8Acc/7mv16EqS2gZnYezopsdLm+YM3X+c955Bzc/93q8p9XXVz+OwqqFjLXyVY4kG8nO2wYPGPOHi9ugxhwAyeKWXkT68jpk8ZMShBK7sdP4+EgDCSNSfbdoWLEmRbpGYnEppMM34/xBKSyQzu+PIUBmVkilglJwfoAPBcTxWqsJbh3Ip5fOtA9yi4ZekGDtkAHULtL8DfvptLucgkiFm0TXdXUCV/JiHwwDZPA8tHIQYeG0VcoWFEPODbHjeeBZ4O6wmClnzasNrz+lafTpk2yeq6QuJoOolt5lAnh9M4StuOilWIc4qOFvXpY2pWexy4HUBIYW9UkFaQl5VDlfLagP7U8IfWxcY0fQLrKG4R5tMS8VnxDVC9FlLKyuqBsSTvbjauD4xYd3U5SGki9U0kSidPN8VMsUQUPZ01kJilsSH25SgKJG68B
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,33 +145,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/13/26 08:03, Anshuman Khandual wrote:
-> On Wed, Aug 12, 2026 at 01:33:14PM +0200, David Hildenbrand (Arm) wrote:
->> On 8/11/26 06:21, Anshuman Khandual wrote:
->>> pxd_ERROR() has been used in generic mm just to print the page table entry
->>> in pxd_clear_bad() before clearing those out with pxd_clear() later. These
->>> pxd_ERROR() macros have been provided by all platforms which basically did
->>> the same thing.
->>>
->>> Make pxd_clear_bad() use recently added ptval_to_str() instead for printing
->>> page table entries thus completely dropping dependency on platform provided
->>> pxd_ERROR() macros which can then be dropped off. First move all required
->>> helpers in core MM into a header file which could then be used else where.
->>>
->>
->> It might make sense to split this patch further up to ease review:
->>
->> Patch 1) provide ptval_to_str() a header.
->>
->> Patch 2) Stop using pxd_ERROR() and friends in common code, converting to
->> pteval_to_str()
->>
->> Patch 3) Remove now unused pxd_ERROR() and friends from arch code.
+On 8/5/26 23:05, Matthew Wilcox (Oracle) wrote:
+> This is a better name for this predicate.  Also make the argument const
+> to allow other callers to be made const.  No functional change.
 > 
-> Sure but the intiial platform changes which now use ptval_to_str() as well
-> will probably come after the Patch (2) but before the Patch (3).
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Acked-by: Usama Arif <usama.arif@linux.dev>
+> Reviewed-by: Gregory Price <gourry@gourry.net>
+> Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+> Reviewed-by: Jane Chu <jane.chu@oracle.com>
+> ---
 
-Exactly :)
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
