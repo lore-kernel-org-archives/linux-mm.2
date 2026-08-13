@@ -4,94 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74811C5DF65
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 06:10:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E7E9C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 06:13:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1AF806B03B6; Thu, 13 Aug 2026 02:10:42 -0400 (EDT)
+	id 5834E6B01A2; Thu, 13 Aug 2026 02:12:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1605C6B03B7; Thu, 13 Aug 2026 02:10:42 -0400 (EDT)
+	id 50D446B01A6; Thu, 13 Aug 2026 02:12:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04FF06B03B8; Thu, 13 Aug 2026 02:10:42 -0400 (EDT)
+	id 3FC176B01A7; Thu, 13 Aug 2026 02:12:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D76316B03B6
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 02:10:41 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 67A9080515
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:10:41 +0000 (UTC)
-X-FDA: 85095222282.27.32959C4
-Received: from mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E4A7A80005
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:10:37 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UTydLeYN;
-	spf=pass (imf02.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 18B8C6B01A2
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 02:12:59 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4D0DF405BD
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:03:30 +0000 (UTC)
+X-FDA: 85095204180.28.38300E2
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 515AAC0002
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:03:28 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=FCmrH71a;
+	spf=pass (imf10.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786601439;
+	s=arc-20220608; t=1786601008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=CTT/eiRnnlerkP1sc4dEYlOnt1LK4ry+ImAkaWBPED0=;
-	b=ion9D6CzHd+ERQO4peyQ+BseT0Y1Xb+SexktQyOB09S0ImmQnQOOEKG0hvb+VE9lCVjHpe
-	ObYYrFIMghVVYIRi1M86+ZHHavyFvjR6zvxhGF7GZLm8vvb13feQLKP8+BYtGBl29dkhDk
-	ghDqrVGvT6lTLCqRR+I+MCj13+gvuyc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786601439;
-	b=apm1Gvlg/FvQ7on9Y8cj30BGHM7+biITQx8HGtAxWqHXHOpV129geVoZCviVZRy77OQG3F
-	pZybNj86kQ9GZ+gnE+Pnk8fye9faJRStIFocqruQh/0cDyMTnyGpOSoBi41UZZHdRDQypq
-	IsE1PZ0I6mYybypuF6lLQivCcK3JGRY=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Ns4GoDNqcj/9AON25YCP9GahdV/I2v0GEJ5Utg1AonY=;
+	b=i8NcaUqjTp4BzT2fG0/fEph+IYTmt51KXRye4HeX7Wnpi9MgXlYiBJE2iOoHiwANDpKz/+
+	9AL3+eVPF1igY2Xm9uxFFoibM1D45HslkNuTyMJHsOKbI0APVp3o8C7+XJrLhggzH+IyLX
+	ukjensQtd1Jkp5CSi06REtGqpC1FYuE=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UTydLeYN;
-	spf=pass (imf02.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=oGQy5myqwnPvsP3ZcmnRlv/Q66YHeU9GZFGDRa6no+Y=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786601436; v=1; x=1787206236;
- b=UTydLeYNcpkm67CWRmAteNLBEYLf6lKXxV8NsSMo0vUux24smCagWJBnzdbC9St6CHUSlq3f
- ih1F7cwTtJE89KU9IS+FTIcrNN4q+wSUiSogHVq0shyALQANr10WI1iLdYYVxpBQ4bEY9AW/tkm
- ub94iirH+aWJ3gzCr7E5bYlY=
-X-Envelope-To: linux-mm@kvack.org
-Received: from teawater-KVM-Virtual-Machine (39.156.73.13)
-	by smtp.migadu.com with ESMTPS id cfdb8185b516303f;
-	Thu, 13 Aug 2026 06:10:36 +0000
-X-Migadu-Flow: FLOW_OUT
-From: "Hui Zhu" <hui.zhu@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	linux-mm@kvack.org,
+	imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=FCmrH71a;
+	spf=pass (imf10.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786601008;
+	b=stuvlJ2TexHlG722UyrpU6CcoPZAIYibIrAEmGV+SoZgIUQEMUtC4wThFQfLYh2eAs0mbQ
+	7AhyElE86aWytFDdHeXqmfRUw4ihQx4bjx82olEdZXc5hdtS5O1pvVAQNSFRK5zVl4adEP
+	SLnuahKo8qbzB9SypnM0hm8B8iCTjBQ=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 27767153B;
+	Wed, 12 Aug 2026 23:03:23 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5B05F3F632;
+	Wed, 12 Aug 2026 23:03:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786601007; bh=urvzQP14xjouAFJaMxm1KkmF2FK+YkPxtlg+0tmM3dk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FCmrH71a8GibDaT/4TzLpR5i+19TJkV8Y7yUEveP9J/tnpZ41lNWsq0jvpmBepdWh
+	 3M9emmtusN3STsiD2oIUPfk8jrriw7cyAgWrBFzUsYOHmzUnSzzBNBDES9ShVkwlc0
+	 +Kv5zwJCzOVfLHIcWwsl8hCWFk4UC3OStKBDaUuE=
+Date: Thu, 13 Aug 2026 11:33:23 +0530
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, 
+	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, linux-arch@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: [PATCH v2] mm/mglru: Fix young counter undercount for large folios
-Date: Thu, 13 Aug 2026 14:10:19 +0800
-Message-ID: <20260813061019.49806-1-hui.zhu@linux.dev>
-X-Mailer: git-send-email 2.53.0
+Subject: Re: [RFC V2 6/6] mm: Drop pxd_ERROR()
+Message-ID: <2ys7apbnfuj3ugfoqgbptgej3jjcyfpmdgbv6qbxupmwg6mefc@h5p33ua2nzlu>
+References: <20260811042119.3652929-1-anshuman.khandual@arm.com>
+ <20260811042119.3652929-7-anshuman.khandual@arm.com>
+ <1fb9ed88-67d0-4ac1-878d-0dc8e1135d19@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1fb9ed88-67d0-4ac1-878d-0dc8e1135d19@kernel.org>
+X-Stat-Signature: heanafrn4htws3ak7j4m7pcd751nxc8y
+X-Rspamd-Queue-Id: 515AAC0002
 X-Rspam-User: 
-X-Stat-Signature: 5euxsotq1nx6wn6y81xrfs6eumg8rttj
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E4A7A80005
-X-HE-Tag: 1786601437-417787
-X-HE-Meta: U2FsdGVkX1+Ap1OeUMCaRYJhOe+Y2A52u3D8Tj/ExCgiZY2A1FexSr50OenhoDofb7C55dyXassDZx8Go9zpUuetNMWC42tMGJpCuCjPDMHyP+VE2xmvERLJPQ4+dSxAL3zKsFw6fPWvPdsXDbbExPGz5R8fSht3w7ZBR1pjUwcqY/gXkoYRUEVVIx6Qp7w4fR9LEma8ebtio1FICkv0XvLted0SaWPVyM31D+BLrdUBnp+TU4KjHOjYMnlVxkvXWFsAZnTJUti3vXRPTwuUj1tg/wIQhjE9uTZM9PTLrSnlOtLOLQj3NZ0Tl3s39MZMs0c/0126p8sDei4PBxSd/3DV/+Bkx+fuGrpnU3m0z/ae7FxrrrMkehE4JOiS0pdnYWbWBfrqb1aZb2ATXhdCjPlTTSF94xXjO7zK90wuKIMNBBJDNpwvZBymbPN6B78lbrdroan+KJMhCQm9TssY3Z1K6mlf+UteB/uX8LqgqNgUYNF0A6XSzMeeA+vf3NzYZlvcj/ZEpGU5fUHFV1U0sP5CIcB/l9EeUiL2yTI4HRhsK0rD437amlq7VCQla2/Dxp8M5k7dFPaI4m9Je7Cqzl15dApGiCLqhju++wbV9I1OLPiMxSs4XBmS7ClvPPNSgu6retrpX4B4PzP3Mus1Adb80SIH/nGWwzHHWXpWRfbmgroWefLOokzkYcYhc44n4CMk6N884n5tf3jk54tWJc9/jdNWWBfC2rOHJBZMcZ9zj7uPuTARSmVb6p3jXEZZoqE4+a/pEgsIDdE/BV6h1RywBJVXEC7TpR5/Axjjgf9DbRlp0XwkCpb04ZMbABhapVwPRfb6JGBoecSGAL03NOhBixZFEnYDq9zSwufoG1c2qN+UvoteqmVBiekpF3Y7fUznYM+YytyB3rAi9WB12bf7+329u2PN+i/u7/mq67MXRBUMMClp8NmsM9JqbTfD74abOzEjPfQbb3IUJJ7
- MRPV8Wm1
- oR5obNFUfbBS/oKFV5MyIfrnxTGXb5UrCIiMG9gJhUxGaS9xAjhtrNrMuwgKg80VOw8asQsLYD62+byM7fzQqsGZBnuNHIHrUeLujiszhUbX7/55turRhOm+W4AL5H3glqWyTn6EGxBAAFnZVWhC8tRicoVrdmKeA+htAe1gCMTwCFVuSd+WavCtGqXJ5RljboEEuA/Cnhn9z+USkB6UKE702YemOQWxYeHoyiIiw4g/OKYfXKlUqoBU5WcZu+ZWVYt97
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786601008-915481
+X-HE-Meta: U2FsdGVkX18geC1AYwhsdEVc4QmjaCkSl4LeHBBWcqzDohsFom+Un7tCIoRU/N7imvNRb17aY2sgVBWPLRASBlD4uSHTvcP/6tweERdIMFYyQCaspM+rh4lUUliDDsbo3l+5gBkJIAZ5cBa2kJjclBnA9eWFmuhJNAJmNAFMAgFZmCJEVAMaadmx7uFO7rFua821AYvT3cVxug1GDDIP2Mzl/rwk2YbQgrLNm8BNki47UFpw+V7QH3Aku+euLVcUT3lWjCMO8wrUAuadLYEM9V1cZg47Yv9SaVpAIFmglZF7ZrR3Pq1Wd1SQ3E5FLe9Z6IMGouruBk7DqUoxk6usrFFgJPwYZ8LaN7JpCIYgSTiK6cH9bg34g+/J0hiTiCmsImk+YJ0X2BcQ8mxa0/HHwjs1MLS5wEa/SD8X12VYymi9DZqOpDdbgN61qdVPJCpz+7qASFwiG7hbW4c1BWBQO7Lzw8HNBdg7rQZi0C4E7RH1uvjZv1l4mE4r6fL0SVP+0Sdxb4cXGgxCeK3UGk4dzPq2Bk1ytUmNmOjsNEkmfkuG8OlpT5BqmCUEkddy/qkzP78d3uunnDR+yZEgxsO/3cqCqKTxgwd45QCxclwIp4shp1z3HW2fVF1JaYyKW8PYlHH6DnuWAvj37Mlpd/q9oCJ01f/k7w2vYrY1l+42yA5Sq+CBiVAQddVoACd9xr1S922VO4ZzxoF9xe5xnYCxBLLqeWDSzhaOhm2lok2pYcEAzQ3jAAF27Cpi4QOZU9ds/G9jUdJAkBcp/EKfRKcvSbjZYGeWOzf/tSmbciU+wEO9k/cYjpm/Ziskhar59InmSErmpdeX8eHOA1VzLJCPmjkxsMWguE9YRWZCFbBiPl/8nEl0BGuSpQTkDYOrYgJqiKSWfSJtAw6eZtSoEE2M5M+ghY4YhFzdxlVBMlfcrsM4yWcUOTiTRILqCKgwxMczU1UlvWY76fFe3n79FwJ
+ NcwvrlcU
+ +7ShWqbD7ghHBAUyGIzfPiLa9I5Qmq9h44ktp7CBzibkAPPFuGefIBobAtxnpp8jw1F14yXiwda0fLR/fT8yVEZ6K7wUJGjSZGG8nVAkOZfAJg0absrGsuUtvOhywXTVYBphxdF3q0yqvOnFsS/AKapLnrk3Q3eN87YBSjmiM11iHRoMnwf0E5+U2HzZAJU40A2qYarwp26Eat0M3hNLlOwJA8xUO0lEeZw9Eg15QiyXJw8o2KDr6E2PIfxVES7nDFwPAUnzjHYUFBZFkJZ6tnhF/hPyQKvVv6qZ/dBfrKnO1M/9AsD8DNB9+44+k5IWZqKDWY0aoV1NPZjpbIAPIrde5njA6c6JZaF44lZhtcRXhnQb3cD9erKQJZxnD6NCRw0AeuKGzNWzjDlAULVcw0svOXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,64 +98,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+On Wed, Aug 12, 2026 at 01:33:14PM +0200, David Hildenbrand (Arm) wrote:
+> On 8/11/26 06:21, Anshuman Khandual wrote:
+> > pxd_ERROR() has been used in generic mm just to print the page table entry
+> > in pxd_clear_bad() before clearing those out with pxd_clear() later. These
+> > pxd_ERROR() macros have been provided by all platforms which basically did
+> > the same thing.
+> > 
+> > Make pxd_clear_bad() use recently added ptval_to_str() instead for printing
+> > page table entries thus completely dropping dependency on platform provided
+> > pxd_ERROR() macros which can then be dropped off. First move all required
+> > helpers in core MM into a header file which could then be used else where.
+> > 
+> 
+> It might make sense to split this patch further up to ease review:
+> 
+> Patch 1) provide ptval_to_str() a header.
+> 
+> Patch 2) Stop using pxd_ERROR() and friends in common code, converting to
+> pteval_to_str()
+> 
+> Patch 3) Remove now unused pxd_ERROR() and friends from arch code.
 
-lru_gen_look_around() feeds its local 'young' counter into
-suitable_to_scan(), which decides whether the current PMD is added to
-the bloom filter and checked again on the next aging round.
+Sure but the intiial platform changes which now use ptval_to_str() as well
+will probably come after the Patch (2) but before the Patch (3).
 
-The folio triggering the look-around is processed at function entry:
-test_and_clear_young_ptes_notify() clears the accessed bits of the nr
-PTEs it maps, and the function bails out if none of them is young.  The
-loop that follows therefore never recounts this folio, since its
-accessed bits are already cleared.  Every other young folio the loop
-finds is accounted as a batch (young += nr), where nr is the number of
-consecutive PTEs it maps.  The triggering folio, however, still
-contributes a fixed young = 1 regardless of its size -- a leftover from
-before PTE batching.  A large triggering folio is thus accounted
-inconsistently with the rest of the window.
+> 
+> ...
+> > +static inline void
+> > +ptval_bytes_to_hex_str(char *buf, size_t buf_size, const void *entry, size_t entry_size)
+> > +{
+> > +	if (WARN_ON_ONCE(buf_size < entry_size * 2 + 1)) {
+> > +		snprintf(buf, buf_size, "overflow");
+> > +		return;
+> > +	}
+> > +
+> > +	switch (entry_size) {
+> > +	case sizeof(u32):
+> > +		snprintf(buf, buf_size, "%08x", *(const u32 *)entry);
+> > +		break;
+> > +	case sizeof(u64):
+> > +		snprintf(buf, buf_size, "%016llx", *(const u64 *)entry);
+> > +		break;
+> > +#if defined(__SIZEOF_INT128__)
+> > +	case sizeof(u128):
+> > +		snprintf(buf, buf_size, "%016llx%016llx",
+> > +			 (unsigned long long)(*(const u128 *)entry >> 64),
+> > +			 (unsigned long long)*(const u128 *)entry);
+> > +		break;
+> > +#endif
+> > +	default:
+> > +		snprintf(buf, buf_size, "unsupported");
+> > +		break;
+> > +	}
+> > +}
+> 
+> Why not leave ptval_bytes_to_hex_str() in the C file for less churn for now?
 
-Initialize young to nr so the triggering folio is accounted the same way
-as any other young folio batch in the loop.
+Agreed - will change.
 
-Note this is a deliberate overestimate, not a measured value.  The
-test-and-clear helper only reports whether any of the nr PTEs is young,
-not how many were accessed, so the true number of accessed PTEs in a
-large folio is unknown and can be smaller than nr.  Counting the full
-batch is intentional: the mm core tracks accessed/dirty state per folio,
-not per page, so a per-page count is neither obtainable nor meaningful.
-The only consumer is suitable_to_scan(), and the bloom filter it feeds
-tolerates error.  Overestimating is also the safe direction: at worst a
-PMD that saw little access is rescanned, whereas underestimating could
-skip rescanning a PMD whose folios are still hot and reclaim them
-incorrectly.  (nr here is the PTE batch size, not necessarily
-folio_nr_pages().)
+> 
+> -- 
+> Cheers,
+> 
+> David
 
-Fixes: 56e5b60b2114 ("mm: support batched checking of the young flag for MGLRU")
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
-Changelog:
-v2:
-According to the comments of Baolin and Barry, update git commit log.
-
- mm/vmscan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index bc324e37c5f1..264017850a55 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4192,7 +4192,7 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
- 	unsigned long end;
- 	struct lru_gen_mm_walk *walk;
- 	struct folio *last = NULL;
--	int young = 1;
-+	int young = nr;
- 	pte_t *pte = pvmw->pte;
- 	unsigned long addr = pvmw->address;
- 	struct vm_area_struct *vma = pvmw->vma;
--- 
-2.53.0
-
+Thanks for the review.
 
