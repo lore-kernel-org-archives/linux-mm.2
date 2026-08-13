@@ -4,117 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF724C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 20:49:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F03EC5CFDB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 20:54:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 922606B05C4; Thu, 13 Aug 2026 16:49:43 -0400 (EDT)
+	id 226866B05C8; Thu, 13 Aug 2026 16:54:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AC806B05C5; Thu, 13 Aug 2026 16:49:43 -0400 (EDT)
+	id 1DE856B05C9; Thu, 13 Aug 2026 16:54:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 773F56B05C6; Thu, 13 Aug 2026 16:49:43 -0400 (EDT)
+	id 0F43B6B05CA; Thu, 13 Aug 2026 16:54:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AD2B6B05C4
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:49:43 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C2EB1C0239
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 20:49:42 +0000 (UTC)
-X-FDA: 85097437404.23.30B01B3
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 80FCD1C0002
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 20:49:40 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JFEcIGok;
-	spf=pass (imf18.hostedemail.com: domain of sandeen@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=sandeen@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786654180;
-	b=5sbmcSbbU9hsQtyObAEjB+Ih/oMoKs3YFIssFwTKsgsCw+y5P2bUEgTF3hT4aHOTjln3Ia
-	rjRdv6nfhV8CHleCAVlTkgHAnsXqXTSKQCVYZXCydDf/JN8VOvGCVUzzfkgIzJHT491NgY
-	BmqN3f/co91t4IzT3vcq+zVjwhLH9AQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JFEcIGok;
-	spf=pass (imf18.hostedemail.com: domain of sandeen@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=sandeen@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DB2406B05C8
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:54:02 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5FD2D1A02D4
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 20:54:02 +0000 (UTC)
+X-FDA: 85097448324.27.29A109D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id AA6D7140008
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 20:54:00 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=GwKLM8Ah;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786654180;
+	s=arc-20220608; t=1786654440;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=8ee/7/7LFhDMIG88sH2aB7kMuWCpyP7z/i5rm3JMrEk=;
-	b=nRccJVHpoi/c8ovqTuazFrhswi6TAaUSuzJzlexEwge3pwVr1g6cARUTN/ULoPy0yUxEcv
-	FmCAAk3BW/E4bE29eMxoL47suHJUfGcqcefyy4O0eAu8BmLkQREKohhluGrHvF1xw/v5xy
-	iUZBCZdTRsiR8c3YJb+vb9ho0p84VrQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786654179;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=8ee/7/7LFhDMIG88sH2aB7kMuWCpyP7z/i5rm3JMrEk=;
-	b=JFEcIGokf83niZnZ3vBTLlBQ7wzmGZUBKZjc4m+V/1qSLkqIgZfyXp5AXCtVzX5BJd3PmU
-	In1/kmZzCOeSVJrkWzIZonT7usbU7poyJ0k7/IkaY+QsLgFzt5l0wp3FLAXoskE0K2HHYw
-	Ltjk6L0XRIBW76+C82Hxw6LcsWk1y8o=
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
- [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-XfB2LLYYNOqg3scMNsBZhA-1; Thu, 13 Aug 2026 16:49:33 -0400
-X-MC-Unique: XfB2LLYYNOqg3scMNsBZhA-1
-X-Mimecast-MFC-AGG-ID: XfB2LLYYNOqg3scMNsBZhA_1786654173
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-49f3a97f1caso153684b6e.0
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:49:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786654173; x=1787258973;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8ee/7/7LFhDMIG88sH2aB7kMuWCpyP7z/i5rm3JMrEk=;
-        b=jXeI0K1FSfVNAi6DfwxnA3IlPDYeN1Y/fdA1kVO27wRIV/Nu+8buFFDG0838/iGGLv
-         0a7b+q4O1pew6+PqdlkwJGVVSHG/jW2ecOL8KWlXsb3lBnliYpZO3csNf81qT4alDelw
-         TR2TaFfNU6AuuTVD7787eScqtvC4j+AvEh8sqDJvTi3/AkTU12GwZ9TIIXdp4CQ38Fn/
-         wZySD/GQUA/R2tcyUDT5+V43Npd9T+HvslyTc9VJWRvrJacqlYIaxc22rxgubWu3/PQh
-         hYr6qqr8SF5eUGiJI822cwWUB64PpJKmlZ7wZWCgcmCntK4HRWKoiufErjzjsJv3q+Kk
-         CitA==
-X-Gm-Message-State: AOJu0Yz4hy2Lzv7J89be27/Uq3M0CGfDAEt6MYrgzIjixCGvrclvfxE5
-	ka4UQabrPsFut/hPOhVoY/1odp6FSy7jJEv7OFVmJ4KTNfu6cS77Di22S8U4HoLWGs2VpA8YRMs
-	QLZOuf6KYMF9kdGJ+BzoM7ebSHqJvAZE68Sn8TBIzuRchiOjtTAS/
-X-Gm-Gg: AR+sD12oWmigkcmK7Ta4qXsbs+SGjMjjWKMP9OUgAPm8bvj4GbhKxII4ccJ/l3Wtl7C
-	0qKT41Frt2oeJG2ufn1lTE2G4aELcEkdlBx1H8DTz5K/xpOB6OEswyyiMRvxPT6On87d9VyrW7T
-	DxD8InWXQ2Skk6Cc1oKcrf8BqwMd0CQpOBhyDFe8PqkXy//0clHlcnPXfbc1iASh8HA925ZTOF2
-	6xavezZ/Yuql6EXKAg30iQcPCeVjtqvPZGDy55Kg6OfZjYtXg9+GuZAL32av75Kb8uQkTsmZDNb
-	S2bDXr0if44LyTSuhsQMosDMGBo4gPPQlZRfvCqEhKGNKEzqxW5xbOtqQjJseYMEXRUx6hfw0/k
-	fVQrszyrPKp8i+9tDu7lgnuQbMg+IX0qKvFvydQ/0+Fg=
-X-Received: by 2002:a05:6808:538d:b0:49b:33c8:4b75 with SMTP id 5614622812f47-4b2412c1b14mr769291b6e.5.1786654172934;
-        Thu, 13 Aug 2026 13:49:32 -0700 (PDT)
-X-Received: by 2002:a05:6808:538d:b0:49b:33c8:4b75 with SMTP id 5614622812f47-4b2412c1b14mr769258b6e.5.1786654172451;
-        Thu, 13 Aug 2026 13:49:32 -0700 (PDT)
-Received: from big24.xxmyappdomainxx.com (97-127-68-83.mpls.qwest.net. [97.127.68.83])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4b22d004c3csm2555958b6e.18.2026.08.13.13.49.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 13:49:32 -0700 (PDT)
-From: Eric Sandeen <sandeen@redhat.com>
-To: linux-xfs@vger.kernel.org
-Cc: linux-mm@kvack.org
-Subject: xfs: properly account xfs_buf items as reclaimable
-Date: Thu, 13 Aug 2026 15:40:51 -0500
-Message-ID: <20260813204929.2253988-1-sandeen@redhat.com>
-X-Mailer: git-send-email 2.55.0
-MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: bykcP-0J73zWu7dxrOfVDnXKQYkXKha9YceASiiRtFQ_1786654173
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Kv+D0N5s4pcZMvVyMfXVvuezcVPbWcTi4pVO4nUOFyw=;
+	b=Dsaj5pCsbTcdCvCb7ro3ZRUlZdE52UG9iKK7AgtM2KZRzzZKFf1rmhekzGIR7qBJ9MptOU
+	wwyf2v/NpBeZQbgIyjg1Qr0B9ki/o5zrJ/B3KWS8mKYCydKp41WeCYvRZQNrOSmoDhcv93
+	KbHkJ/dtk0ZhSkwch45GCZKvbZdQ0DE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786654440;
+	b=7mNxz8LPv4TFQ6m6vQPnXmsHGCow7Di4TYAE2WPseAm2LxdkVsaaKaH6K4nnKf7yXZ/VMT
+	fjSUZykma8UOfm4g0/NZXmns+RCh7jmWNYT2InAUCPHDcyR1qsDt9CLvs5mapoZekQ9xEi
+	SiccG15PcXWRPYtULqdSgzhZQMdW4LM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=GwKLM8Ah;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 18159600DA;
+	Thu, 13 Aug 2026 20:54:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371391F000E9;
+	Thu, 13 Aug 2026 20:53:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1786654439;
+	bh=Kv+D0N5s4pcZMvVyMfXVvuezcVPbWcTi4pVO4nUOFyw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=GwKLM8Ahu9/jbn7Mg/CQfv4UCp2ocuusNZqw+AsW1lNmNRtwW5sS9VzYhIB3gWXjz
+	 v+bDy4Vi/jF+CmeUQQW3tEJ1GS3U3xyHiNwmNQgop5YeN5w90nQOFh7mhkyUWAMKcz
+	 ydlqNtgfHQHDsa851VQZcqDyOeHQLLXV78K0NmG8=
+Date: Thu, 13 Aug 2026 13:53:58 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, Lorenzo Stoakes
+ <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry
+ Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
+ <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>
+Subject: Re: [PATCH v4 5/7] mm/khugepaged: Refactor the PTE state checks
+ into a helper
+Message-Id: <20260813135358.89ae1bddf29e5e380b5a61dc@linux-foundation.org>
+In-Reply-To: <2666af48-1e95-4f68-8978-90dc3f4832db@linux.dev>
+References: <20260811-khugepaged_pte_refactor-v4-0-ddac39d61c4a@linux.dev>
+	<20260811-khugepaged_pte_refactor-v4-5-ddac39d61c4a@linux.dev>
+	<f1371b4d-6e98-4699-8c1b-7612f6d70f02@kernel.org>
+	<20260812123959.d4e31d68e8db85b9fd3981eb@linux-foundation.org>
+	<3dd59ad8-2f00-4332-91f8-7871e8d60b02@kernel.org>
+	<2666af48-1e95-4f68-8978-90dc3f4832db@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 80FCD1C0002
-X-Stat-Signature: zcdqzirfbzs4txhdyzqxkek6s8pgzh44
-X-HE-Tag: 1786654180-452835
-X-HE-Meta: U2FsdGVkX18vvCluwAyfUjwitapzHzCuxwjgeVbiuF/Pu8FZdLfkj6Q6tpooIcaE07dvcs6O92i02h94tY+SDJ8hVWUfVxlois2JJXRFe0MyDc07ZGcYgPP6Po/vW6QfCzjIsw38uzcK1V/AX+poguKZyqzEl7anZa9f7rv8RNXS9Lcx9obhKDJParD+8trF4DHk3LuF3YCvdX8CRi4Lvo8iLQzCqAoaB0y274rjEBJn1N1goLW1DfXdjIXmRjhOZyVXOaobW4WkIA8ohnQ2uMtnecj4WTqRNFQb44v2byMRFTz6A56SIewRE94WxAQ39CvJcj67HG9O/ZguOjTrj3vuGX+PdG+C1BPMIcUWt8lo87CbL9LSyaYb9WlgIS07aaDQ4C5Ro30MeuHl5p9x5js+pJ1H5XNnt4W1q7jgdbU8Lx5LNMqpzSVB2pyy/fg3cUiKpGcJzKKXIJdYVxYUVSBGxGy8e3ZqW+K30XQ7nUGa6mg20Yabpz3MBH9xb3LN6o56Y9+H5LCThl+4g18YZC1J3wfrTXQLBc56GTYJT0yO6e/KLbBsB8VsYQ3F72M7tNvXvXPWEly90Uw/hkK33NkAi3W4Vu7Ry4PVWMEgnXDuAghAdwPINgTTTj7wlRw56SIOXrFnzxfblaeal9GmhEkl/wjsNvvf7X9CXdBMNZC6j+pN57jnRprbIgc+sujl1DcxCQb6yfDAuW0dPv6VB1A8FDUc4llgA8f0VqIS9kY1lPw+jFOVcHazpYgqfAG4KL757DzC1KvaJ2M7TaK9Z+lMdcgNj6zrOcsEhMsSvmmRz8bL2q/oWUcFeV/sLcAR+oLwODDbqUrW3ej7/+SDEirrmGvINBU7f9xUT9lCMg82jMvqwucqq6cUVvHq33yuO44eBxx1Umk9OHD0iDHZCPeT8gcZvmxoB4WHePTMuhd4hjvPtvYYdV0mk0pvNoKjcyqLcIEBfqkmeuwY9Xy
- t6dM5N05
- CRz1rSdG3IEDfJvMgT63b8QJNAONHZQn50wdsv4nc4o/ipI5fSdEeHkT5XhLQFAT2tvKP4ja6c52DIYTweT6mCaW7gWBZrbkMnXDBd7PlmorkZ/nYp1qHU/Oga2lLWS6r9efnBZCXCgqDrDCBwEgjQhSpHaUVF8BGoOGgjdhZZrxDzCm18sMwyfKKHR88z3dLvfi+Fzl5ZzuIcYEEyON6abs22x2VqsFkZ33SmDspJisL8SPUJ04GJuQbP1gKFZplekCqd8H6621tDUHwyA18Pa+aevXFQPJxhUXRksMm4bO8Pe00B1I4KUcDEMpE/2XdUDgGc0JqI3tdl++ryj/BjuRROg==
+X-Stat-Signature: hyarctemb3psaf53oujdrhsegqau6hqs
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: AA6D7140008
+X-HE-Tag: 1786654440-440726
+X-HE-Meta: U2FsdGVkX1+X3NnQn5EChbxfGtH5ONR+pCdrbZEfC+xHnztel2PmIPSvxz6uW7UILS0ZNIYIaMzzdvQxVXI8+ln1+32GEQYwlsjf8r7EKzNnR34g/8Yao4gYaAQ60YGee4EKbvVbr5+lmbdnmSLuUFVEWAT0jSBKwdbGPmTZ0NtoAv5bYr9zVWUm6iUnFJz6iGAe5APv0C5rgAMnSPukYbTjjK2/9xSyot32zeuPBoFqBnsNvYZxB420mTpawL9t4WfFUkMKx4e68rwT2z0PhyOCZxs5lTLUfcB4HouzRE+P73sNMyTvBA7S9Nxukn5EF6MSKv3nVN+JTkAp/TjQ1qH55DH0Q2aVt4+xIYaS0sDeQCvZJIm4GWlSbJrZdO37+7F3p+CfPpApRQlp7ZtAchWpe+fi9Lg4lZgSLVvit6nSEu7AGYzwsJmicNy0hMGdoheDY6atBU8JtiFKer/MfIzFVmk4xfkFBUM5Flz6S3u9sxVYvLqRxEXJKOjeKH6serxFbRVXpu+Y2Gvgae8KUpqy4xZJnzpayPRzxs2SbW2RUbdyEhDlWep17ZW/anyzffK1KSJ/21JaGD5keA/dFXAI4Y10F3lhIOTOiSs1g1VGNl7pv+givt4K+5L1Nf6Feh+j3Thk0Wxh640dV7Mp8gfduVq4qGw/e5Z258lmKKleNSp63Gc4XuJ3D7c4JiKG/JD1ZSRrFBU6mvPz53AOGyJJLrYAd0rDEN+nHpLD5bNf7NI4E0FYR+4Dre4Qd0CPrxNk7SOGYHthXNbElUAGSzxRfBXU0bk0Ew6bc3OXYlKHSmI56/EqPdayiJ3IoAoQ2qQQF0S5fyMzGfeMCk/IezrhOTx3CFeX04jE69a4NWeb7p23G5jCInLdrHPcAaOkRs80Y0qJEbEWDAylVEogEPyruhX5N1hVigOg8yHeexJ9H4nN1TX0fJ+DCqj3i/nH2HA7Ps3zRRA7Fnl802S
+ HJjV4+RZ
+ c/TSD7ooJbBomab45dt0Hte4pNWSmJtTCbL0j3pBH9qMy306WdGXOl1CguMbt16V/ZPAGmiO2tKOADmAR1UcaFZKVG89EtRd7efCEtzWszsYCDYth28WC/dDobzv/X7TvpWHammXPI7Ifjmb1vej5Cs8BqM+PSlnrJlDwv3DM4S4svyNBrUP+eKqHO4OKaCFBlon3CXg2Cd/N2bGi1LvqS5kweWvP01hAmxdQnb/l5RbyGiN4fY5WwRwShvnOmPxVXg85
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,23 +103,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-It was reported that xfs_buf items are not accounted for as
-reclaimable, and therefore various statistics in /proc/meminfo
-and /proc/vmstat do not reflect their reclaimable nature as
-other slab-allocated items with shrinkers would do, which in
-turn affects the accuracy of stats such as MemAvailable.
+On Wed, 12 Aug 2026 20:12:56 -0600 "Nico Pache (Red Hat)" <nico.pache@linux.dev> wrote:
 
-2 patches here to add accounting for xfs_bufs allocated via
-xfs_buf_alloc_kmem() and via xfs_buf_alloc_folio().
+> >> This has been floating around since July 6, so it's never been
+> >> fast-tracked!
+> > 
+> > That's not what I mean. Stuff must be reviewed. Review capacity is limited. Some
+> > stuff gets de-prioritized and reviewed later.
+> > 
+> > I managed to review it now, but concluded that it needs more work.
+> > 
+> > Instead of reworking the patch now to squeeze it in just before the merge
+> > window, better to resend this single patch for the next cycle.
+> 
+> I would be ok with pushing the 6 patches that are ready and leave this one for
+> the next cycle!
+> 
+> @Andrew,
+> 
+> Can you please just drop this patch from the series. I will resubmit once i
+> handle the feedback provided here.
 
-I was not sure how to handle xfs_buf_alloc_vmalloc but I think
-that's a relatively rare path, and the above two will capture
-the majority of xfs_buf allocations.
-
-I've cc:d linux-mm just because i think this is the first
-user of NR_KERNEL_MISC_RECLAIMABLE in the tree?
-
-Thanks,
--Eric
-
+Gone.
 
