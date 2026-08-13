@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7F02C5CFEB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 15:04:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC78FC5CFEB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 15:04:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D98756B051A; Thu, 13 Aug 2026 11:04:04 -0400 (EDT)
+	id EA9836B051C; Thu, 13 Aug 2026 11:04:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6F426B051C; Thu, 13 Aug 2026 11:04:04 -0400 (EDT)
+	id E80E86B051E; Thu, 13 Aug 2026 11:04:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5E046B051D; Thu, 13 Aug 2026 11:04:04 -0400 (EDT)
+	id D96C96B051F; Thu, 13 Aug 2026 11:04:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DC2B6B051A
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:04:04 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 183ADA1BA8
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:04:04 +0000 (UTC)
-X-FDA: 85096566408.16.10D3360
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 666B110000F
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:04:02 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CJJA+LTJ;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id AAE756B051C
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:04:10 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 26536801B5
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:04:10 +0000 (UTC)
+X-FDA: 85096566660.24.CE1F9D7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7C9791C000E
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:04:08 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i+aUHZOz;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786633448;
+	b=rTKRuRSzBgyZ+TXfSPelmgqgAGmaminZi+H/wrInH2d8c3utIOQ78LgL31npLgc7GVZTgP
+	FQZyJKGRLeFSKss/DWnX2yGf81dReQ5tQ5poTZQxnOoIjCGifNAWWRETPlun5hNHLzxkOl
+	MmFs4GcvwtLcCO0peBkFOkJ5NCCohzU=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i+aUHZOz;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786633442;
+	s=arc-20220608; t=1786633448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EUx/HV/mY8GPcWaJmj2Bcf36M6F/pfZ1KaSoB4Gw+0s=;
-	b=NrE/hgmu7qfNk81ToEhsrAFZyFAex4ncQOE/u+RtJPXUw/3NTCGs5Q9n7nM3y6MvX9aa7a
-	dwQP580bmbSsvZKNEnBK3wjtvJsR8xQAOcxbkxhwzi3q7rGM85gDFSasF3Q1vDFPNDY2FT
-	CrOIpp2waG6H/q2tdCmzcKrfhPTOSW4=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CJJA+LTJ;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786633442;
-	b=FSRzjUdImnBJS6I4pWZzhXjYZcGE8YGPy+76zYdqVte0jodN2GoOqDlyH+kjap5h+EDYQ/
-	s1TOTLCc76Qjwww7oOzuDhejtAQw+VRFZJ3JPlYoE3wEyXdo4ZC2vzw3SHuRLuHAdjoL/6
-	kHQsmPebDuPLnWYwZ0rJGfetFREDCh0=
+	bh=P+IcpL4FUK+slbgv+e2vr2PmdccWWDUBCgZJ5jExmbo=;
+	b=bEee+xtR7qGTnChVXFT9csuNCAjPMi2bOxUk+9K8yEtJXcdLAS9FrzX9TLGmm8me6mDgGa
+	E7fAqZQFiveyD/XtHg9x31BvMTgQByKkGHWoVXK0EYky6PxyBzZJNCBIPXMwm69AeCPy8p
+	F3XdTF/uYVA4t/YECKoq5kQN+8fB3d4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EFD3F61878;
+	by sea.source.kernel.org (Postfix) with ESMTP id BC8B140D8E;
+	Thu, 13 Aug 2026 15:04:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB621F000E9;
 	Thu, 13 Aug 2026 15:04:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F03711F00A3D;
-	Thu, 13 Aug 2026 15:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786633441;
-	bh=EUx/HV/mY8GPcWaJmj2Bcf36M6F/pfZ1KaSoB4Gw+0s=;
+	s=k20260515; t=1786633447;
+	bh=P+IcpL4FUK+slbgv+e2vr2PmdccWWDUBCgZJ5jExmbo=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=CJJA+LTJ3eAHgzpkzyBDL+mVKOec2R+daIBEuQr8Ehs+16/Col/yJJlFgxht0s8OG
-	 gWWlf/fQO3uPbvdQrjnLlQmFqr/mDVFpITKc0RwBvjO8cWRplq8DyJDcaEDHIuf/ga
-	 iEXFojuiMwCqQ723FcoMyJQOO6fyQq10klyp6X44APsq73+AY2BClzbui7Gu/M6pM4
-	 CJzdMSpark1r1+BYhw7Bg7S309jvBlxdhhIxzSmQ2rCA2aanzG2k9ExxMDkGGTStGP
-	 dAsigcIpHCVvcHTOUoBWp+AM1wtPAwQMd+bMbKFjPdkqJv0RoXZ08pKKi3T1SGyWCT
-	 +Aa8Gf2BA+u7w==
+	b=i+aUHZOz005VYfYTHNALqNr/DML/dBtDhHeQjUmy3WC1EMYA6Ksjn7p24+hutdig3
+	 j3gmjbNZqncq6TxIt0b+sDlWVsCwFHjQBmGB7EKQ7tzYLz/VhAgejZDFoWP5tk3rbc
+	 PcgcfetZwWpKpPosRnPQBhREE31MTZa5Dzoa57w7/GXYs+oPEkeQv43h9RiByUW5Zc
+	 w688xdLD6hRTl7uSABowBp1rteG6FnvAXS+RzozSOPI8jq+EPp+UdRW7DE8640OBlC
+	 2/9WF2HGQ3ZGlR3V9fTfWMb+RTshdLVM94b52RqEgGwKBydTbfMU2r21GZwHtrdEAm
+	 stqnjYghWpHuw==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 04/18] selftests/mm: skip khugepaged page cache
- cases without a PMD folio
+Subject: Re: [PATCH v3 05/18] selftests/mm: keep khugepaged out of the
+ swapout the swap cases set up
 From: Mike Rapoport <rppt@kernel.org>
 To: Kiryl Shutsemau <kirill@shutemov.name>
 Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
@@ -79,20 +79,20 @@ Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
  vbabka@kernel.org, ziy@nvidia.com, usama.anjum@arm.com, 
  agordeev@linux.ibm.com, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
  linux-kernel@vger.kernel.org, kas@kernel.org
-In-Reply-To: <20260812132304.199287-5-kirill@shutemov.name>
+In-Reply-To: <20260812132304.199287-6-kirill@shutemov.name>
 References: <20260812132304.199287-1-kirill@shutemov.name>
- <20260812132304.199287-5-kirill@shutemov.name>
+ <20260812132304.199287-6-kirill@shutemov.name>
 Date: Thu, 13 Aug 2026 18:03:34 +0300
-Message-Id: <178663341429.2230969.14030646208213550752.b4-review@b4>
+Message-Id: <178663341429.2230969.913958776768961527.b4-review@b4>
 X-Mailer: b4 0.17-dev
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 666B110000F
-X-Stat-Signature: g74nf3pk6jssus64my6499mphgpkjr4u
+X-Rspamd-Queue-Id: 7C9791C000E
 X-Rspam-User: 
-X-HE-Tag: 1786633442-573177
-X-HE-Meta: U2FsdGVkX1/xM+C34TpmFEkhpFxHSQWue4fKGr2g54q/mqRQEnnlqXafBvaXhAASZ9+Szccb533m4ziulhBK/TMAP+ernRAcqRTQisWkD7PYL6DJXtp0H+XjYyRVGi4GYb0NUS0R9tyE0S47uLPOrvhSJET38u/PAVUKBvzvEztLXzZMJkkDH0INex7u7xZ8czIQyDaRVEK8IwnfasqSJ0isYOATDTOkJKWqmns87pDh207zipSvNnmdBeod7B4p9qVMzEO0rM6htvBVqduml/WF8MOJsaj22yuf5RAF+ZlFcD4yw00nZ4Nd8wRpn2ENpDncn/WBKESKeKYlE6gSHlJ86iguBqBQnDde+g/DjIrls3OBeNhh4D6phe98aQNDLoc11HCbVAuCC/igmDNy65kRJJdPeDNf0o9scX1OMngJIk45UV+OEcZZ8rydf9L1G7xHEqC7KJcj1oN/JgkZx3cv8+Cnyw5icHgPiAIFx0W6af+KFlrIQ0/CmDrjfEUhVKoZflQgmVmjpr715JOQez4EhIAxY6cVTiWjIzoZInZv99/ttXnRhk8QowD/cR4Djm4BgoQuiSAoRQFFbZglJSDbQcbwUm+WnaueNRAbVqexZ88UHHyTQsCEDR+5WORJxcEZV/R+OCReXXtkM380ymuySptFkPa6WxViN1E5bfXHxOaUv3R9uA7feeUE+ZTHYMGzJ+31DneJYddpMECFCP8l8Y+pYywRaTQ+8ieLnkkUtEdhU0xWaySYh9BQyNbEVapis5au2oyducHWecAqaN5CYjZCxiNMwlBN8orkP5DvO37/Z2r2nIR2mOVys7o2VZXRwGD5UovcbOXBYUUswz+doZ5vksNRmL4v4liEWb+SM9DqyUJ3kDo8V29wJpw2H6jFVER1rp7++Pe8WBj9CnvekMlErjuKoymcWaZcrkXkfzq9xVb33gGOP6r2JY2p6if7q/OyD4PrmNkqwS1
- ImboZ+Zc
- jLidCHa22djUBXJmRER6LuFwPuTMKicqPfIr662kquSFD06L0liWAs4DqmVCbiPy/DY78IFHeGoajwWIC29V1sRpAR+7pglBZFVVt0g1uG0bcvSaC4E1j9qqqzh5tHqzAxpm1hZ0tcyz1rMaRhJwhVYRRKtAlpqOUjIrH0rojbMcUA3jybJ/7PmLGxRHTI+GC9Tp8kETXmm6g/eQ3GmDM9+QiQg==
+X-Stat-Signature: uogfdkgmm5ujpw99jfzdftdyo8jm5zy3
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786633448-440548
+X-HE-Meta: U2FsdGVkX19lsjQauaBFoUdbQsqCPFM7kctwnX6pvPbuj9KcjFNjbru6HFYueCtT7yR+IGE+CGDOD4ZQ5QifbenVjkwtMehQGSpe3bncgdgsPS1CZCaA5y5JMQKIqqX6Z1j3BNJvZLSIIFfv16ce7exu6hfhkAtVZVjyYkOYa6wIRmPc7B1bCGUHrIv/Ws25Z34e6WKNDi4ri8kpx8/A+HB4dxyplyv0C9Ewy0ld+S00oF3ji1pZH7I7Nf4jG7hla64AL+uigPJie5/tCdw77eBMbATayCdNbV0EIcuy59xfuDALr6P6G7CPcKTRWc4xnLBjOlzo7Ymvl27a8KI5E8vYbgCf1Lrjbq1/D+8aeHVFr58SvwgTUL+DZUTqdSI2uUlM9f83OwPgp/N3KIImvncQSvkJQa4fNrNrR9Ee6xTH1qMIiSxIuAroAUyt+p1P5063wn4myjiYVGiMkAMohZmaZnSvV/eCKZ9QEbvAcVUXAQetQP6mR2oXa8H57y3dIHegjbND1Q2WVdzDnaoGkYFyN/MNFXyKlkgGsPtUlIrmqFxXgpzSnXmanDeAsqivAyc7iXBXFhua/y1mHq2iNuxHsEfZkiXsiYGlz5r4Kyv8KxJokg6EPIGrY7fLwvFHWmCP+azy7Ox8d6Y4aUaY5pJUseKC486Ufuv5rrOwJw8WQMkU9zYc4HTKmNIBxwUGx29iKCY9kAGdNSIO5EZDvWkyCC5WWLgrWe6Q74zY450+QqrFG4McV3JpMDbPnxziyb+YnqeH2WCodj/BEa4tkxsyQYBxzjRuRelpDtz9FBNRRU1OyhN3nJdMbRuoXAuCe9L7Oc17YvrstfIIPplSHnU77SzlHV1rEZBTSRPJzgkr+vdtgJQhKFeXhztE8u8Z3HuwtqYlFJkaTCphQ536ormWYX9Vqon/lg5xMpx4rxg4WbQkDt+T0kRPx4Dk8uWbuI7zX613YhW/h/IwZUM
+ uGUoKDjN
+ kuWKW9joc3ifh7fM0oXnfG2gQCEPSldi01k1jgI/WdYpNVlZooJPm3tEqHho/Mm3LJ/cDi9fw1CdndXgRwjZcXJKzsJbE3osbD9AoAUX/0oLyH/370tYjh95mDYGM2FmRm7WJJvg+2KiCZvArfhIrT0xHKxBZaCoOlOcgo7hzfDXgVO+pOfVOWPcVwm/rf8HrzVUWWkc+SsBCyj3jaRVvVLRJW/L31Oqwmqyo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,31 +100,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> The page cache caps folio order at MAX_PAGECACHE_ORDER, which sits below
-> the PMD order where a PMD is 512M -- arm64 with 64K base pages.  A
+> selftests/mm: keep khugepaged out of the swapout the swap cases set up                                                                                           
 
-"which is smaller than PMD order on arm64 with 64K pages" reads less
-ornately ;-)
+Huh?
 
-> PMD-sized page cache folio is then impossible, so MADV_COLLAPSE answers
-> -EINVAL and khugepaged passes over the range.  The shmem cases ask for one
-> anyway, so four of them fail and the run bails out in the middle.
+> collapse_swapin_single_pte() and collapse_max_ptes_swap() page a range out
 
-shmem asks for one who? 
+Maybe "page out a range"? or even swap out?
 
-> The cap is one global, so it rules out every file mapping, not just shmem:
-> shmem_huge_global_enabled() drops the PMD order from what it allows, and
-> file_thp_enabled() refuses a regular file whose mapping cannot hold a PMD
-> folio.
+> and then require smaps to report exactly the count they asked for.  Two
+> things keep it from arriving.  MADV_PAGEOUT is best effort, so the count
+> often turns up a moment late.  And wait_for_scan() leaves MADV_HUGEPAGE
+> behind, so khugepaged is still working on the range: collapsing one with up
+> to max_ptes_swap pages swapped out means reading them back in, and the
+> daemon empties the swap as fast as the case fills it.  On arm64 with 64K
+> pages, where max_ptes_swap is 1024 pages, that is 64M a step and the case
+> loses:
 
-I had hard time parsing it beyound "the cap is global".
+Splitting to paragraphs would help I think. And maybe rewriting by hand
+rather then instructing claude.
 
-> Skip both mem types when the PMD order has no per-order
-> shmem_enabled control, which is the readable form of the cap: that control
-> is created for the orders in THP_ORDERS_ALL_FILE_DEFAULT.  A run left with
-> nothing to collapse into skips outright.
+>   # Swapout 1024 of 8192 pages... Fail
+>   not ok 10 collapse_max_ptes_swap
+> 
+> Ask again for up to two seconds, with the range held out of the daemon's
+> reach while asking.  The collapse each case runs next puts MADV_HUGEPAGE
+> back, so only the setup is affected.
+> 
+> If the pages still will not go, skip.  is_swap_enabled() covers a machine
+> with no swap; what is left -- swap too small, full, capped by a memcg, busy
+> with writeback -- is not the kernel under test refusing.  An error from
+> madvise() itself still ends the run.
 
-This should be a paragraph on its own IMHO.
+This commit message broke me, I'm going to skip the remaining patches
+for now.
 
 -- 
 Sincerely yours,
