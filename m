@@ -4,90 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 843E1C5CFCF
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 17:01:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8868C5CFCF
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 17:05:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 719A86B0550; Thu, 13 Aug 2026 13:01:32 -0400 (EDT)
+	id C9D996B0552; Thu, 13 Aug 2026 13:05:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A21D6B0551; Thu, 13 Aug 2026 13:01:32 -0400 (EDT)
+	id C755D6B0553; Thu, 13 Aug 2026 13:05:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56A1F6B0552; Thu, 13 Aug 2026 13:01:32 -0400 (EDT)
+	id B64BB6B0554; Thu, 13 Aug 2026 13:05:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2ADCD6B0550
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:01:32 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0FC4D140237
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:01:29 +0000 (UTC)
-X-FDA: 85096862298.02.EF0CD24
-Received: from mta1.migadu.com (out-91.mta1.migadu.com [95.215.58.91])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 31547C001A
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:01:24 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aEqHfNzo;
-	spf=pass (imf28.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.91 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786640487;
+	by kanga.kvack.org (Postfix) with ESMTP id 8681C6B0552
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:05:21 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 12063801D7
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:05:21 +0000 (UTC)
+X-FDA: 85096872042.01.31433F9
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 51C1840019
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:05:17 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PzA24iLn;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786640717;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KU+CKGrQ53mm0dGwujJU6921+mu5bMMOKfvhSUNRTzs=;
-	b=wXhnLGWfx75uoBp/zGeo8LcQ78UVTFwH1SYIlZYu7591NGwZvV9pvKYPYKrYJdnAiTJXP2
-	6nz8/mMLnLGkFEuVhoUfutF8qX1eFG2W0D5fb7gTYIEIkPg4Tvb0Tk/hTUW3a2WC4RO2GX
-	FlAa5ykpnl4QM0pRbF8bEIvnjIMIZJ0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786640487;
-	b=w3fmWTxrnoVgyzmyJR6iqnuk4VqNkhcZhVegfDG3ZNF6tJWIMeHXkFr0feUp/6oTCRPf+R
-	0Md6lgpU1jBoR3+ZER5BB0Y1s0DGVC9V/tW9vtS1lf/RUbVNooApEzbFqZJqTe4+DlslYn
-	3/6r6zYaHvpgXVJ/nwgVxM1LUJ963fU=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aEqHfNzo;
-	spf=pass (imf28.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.91 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=IC8q4K8Uk8A6ZcbO1N8MmnhqRx/RYea67hNdi4ByC2M=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786640482; v=1; x=1787245282;
- b=aEqHfNzoIvCDfrWkqYihGXCwGeugeiLoRs6zokTUSwl/EhRs7jkms7OF91Nz1nZ0rK6bxVhw
- IEKDH5Q/OSwY44D625i1yd+TsPwpE+E14omR5Chvrep8JuvHlV/xpn7r9R6d6z6f3OMIjxsIDLb
- ZzrFAC9CwazpCqL0KcyRTdVw=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2a03:2880:10ff:42::)
-	by smtp.migadu.com with ESMTPS id ac65b9794b46e62b;
-	Thu, 13 Aug 2026 17:01:22 +0000
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 13 Aug 2026 10:01:19 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: kernel test robot <yi1.lai@intel.com>
-Cc: Usama Arif <usama.arif@linux.dev>, oe-lkp@lists.linux.dev, 
-	lkp@intel.com, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Suren Baghdasaryan <surenb@google.com>, 
-	Tejun Heo <tj@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org
-Subject: Re: [linux-next:master] [mm/vmpressure]  ea928e9e18:
- stress-ng.mremap.ops_per_sec 36.2% regression
-Message-ID: <an34C2N-yqfok2Nn@linux.dev>
-References: <202608131743.c6a7dda4-lkp@intel.com>
+	bh=08qe7GTxugqqWui5JnaWlv3REeL121Y5upJ6qwpGRNA=;
+	b=n2ciriP/9Mn8ouxN0Ixy5JxWMmRCcQVeb4wBSE/9tW3OW8sIEJ3RFcTnpUHkaS4P2YfPwI
+	9H7/Io0pCL9V/EcL9aLcfSv7nhU7fJ579dVDkwr/MEHeWmYNJP2D28rlUD1174OnL3J0FM
+	JHmcN+r0tcu3fhMzc+yUJQBapfkmtPg=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PzA24iLn;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786640717;
+	b=piei2NlVYv2nH25f3ZoToB7O3cApJgzBSgrKcv8QHebGutk6Diq7xX22t2NA558Go32GtL
+	fP8lR8IWYXt7yGKzEOIBWYBPpWXeOWPdqdxfCorkXLUIIGj/POqAISlqgx+lpFW25lrYh+
+	0HTXriQaqdldzden05uAPgDd6Du8Nqc=
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c15ba3a2b4bso20166166b.1
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:05:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786640716; cv=none;
+        d=google.com; s=arc-20260327;
+        b=eRRvQKylfuEnq0WW2vkNK0OHARSGibuU/CzRHWs4oKGannPVEGeZasfKM0JqYI48i9
+         7KCNEO3AGv5mZYnm45+g+SC6YOpPuoHhuc3bxKCuhVyc26C8ZcPEiHb40sQclCOgNKCX
+         pwjLshi0OonBGK46zdR6D77mUAu8nWKt1GXQTxEd5Wr+vTSmRdgL0WtuPBQ0QFBbuP9W
+         UwLJdfVXbgUSbL0DPRzyYI/hgQIGLYnGtIcMmKYB8qI/uues2obA3YqdKzoYguwH1oTH
+         Ih43DcptpR4OCeJohaKB7XNYXOdAEeN4OfZ5f+Xl1Sv1Y5UPhsM2MS96azbgzKu0upf6
+         n9GQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=08qe7GTxugqqWui5JnaWlv3REeL121Y5upJ6qwpGRNA=;
+        fh=ctMiu4LrH7HpDGA6W/13/okPxSD1uxAWh0a2WMBvIy4=;
+        b=c64QZYpf1YpzUk/nQyLKuNphn9IRJD2cNqkow6VyQ1EhFeBKE+uEjO/XlqYf3pvZTi
+         2LHHqCdXa0yHK6CPJjKf2iXIj8zlad3En5JIzTQjbN5SGWJfK1GYfjgAFcSmit1/8cUY
+         WIAaPeoOGApcjI2FbMbGOIvjUf1n7WFd4Jr7IU1xKYCszpq4iCPP1SYzgarBeg8rSFAm
+         Ebm01uCUhe7lohJqSx0Oi1cvLVz5PsuhP0V9M33ys3wZx/MqSZe0ZnvBrbVcc7BRZV7N
+         Xz9WOobAmFVgJsvmYkJR++dXai4dSUQlJzkaRF1Pa+JPwTjQarvzgjxuZPHOp5+S6vgn
+         j3ww==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786640716; x=1787245516; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=08qe7GTxugqqWui5JnaWlv3REeL121Y5upJ6qwpGRNA=;
+        b=PzA24iLnFb4sr26TkHAnKyplJ3ceCMc5yAKOpZnO5A5k5kNuXcmops60R610dKUVrP
+         jtPPpTIQYA8A+ZB/9y/eIq7WpVt4Nr+d+2PDgvC2QPrQgc+xKg3yNTNE4oeVXGzGbrJT
+         jT9HqajOcRiPxzMJsvwlmu+tG+fEalS+ShbJcgPB0jWOIHaQnCdKe+6te4wyC64aqOvm
+         b9ND0uJuxfJFxENvdM/6azCjxgd/7gD5l0awBIsUJJEUTLC/Jwx0pmVXbHkj5a/4+Est
+         SGU6MW9T7NSiysLc+LVxtjaxR8DWc3hHov2oyVKB97/H8meubSlx4wZZbty6lGsYhAVh
+         mtRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786640716; x=1787245516;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=08qe7GTxugqqWui5JnaWlv3REeL121Y5upJ6qwpGRNA=;
+        b=fKEaj/WlFmXlTn8kTuwOtGPCy8MgXTAhehlGdQXul3ukV+qD4A+AhBtbozVLPTAjTo
+         djALyJTA7O+EzKTOIhWuXYHibeVH1EDpGzi0EKVkqykh7aqF0vJi6MJ4lQZwhAy2LH8c
+         QuLk2DALSZ32PZXVkaP1yba+n+5YXSEKgA3PgO9BnFlICM/s06CgaBHJ8XkcirlMWoom
+         Pyvjds1wcB9MhUikJuVHMpMLJMMWSgZ68jqYPBMVnT2VbSL/9VtjRBoelIp/jECcG+tV
+         nmZwGCCJhONK3xZ5bfR0eKz0FGpGpqtJbjq3l68PmAe+5E25z/0rsUCJoxGy4gRg+9d3
+         2M5A==
+X-Gm-Message-State: AOJu0Yxw+SYaWSafXJLYVSC8Vrw/o1ZxdcwUsqGBFD8rALv2WP3m8Cnd
+	mcn0OUEurq5DwpeEIVDyNA+RcRtt+SU9Yi0Gzkvj1c3Jpc4PbantJKhlta/1C6hwuCPMcmp4dEq
+	yozxvIFsZUHeWNSSlobaU5F7laPO8X5M=
+X-Gm-Gg: AR+sD13OMQLZ2xx9P/BhRZK+zW1Y7EMWdruB1j+AtonakPy7QgNqVR2y23sP1dFKiLl
+	tg6lrlOEpp+JPWZrf8k8WQnsP6cA3iKHfcynCuM/r8E2sKZbneOg/gyWa/V9IDoKL+s5Mpn2Ypf
+	eHAlxiSCNQ3loYEo2mROWA586J42gbdLex9OvI3CDQ+zCUnG10zP6zDWEPIqAsZmMYgl0GrIWMo
+	YIHzBq5jMnFVovU/0IbdURjZJa2T5KLdQNXNsCaH3BT92wCBLoVofVzM8ss4oeP8sCVopCuKKmC
+	dZl3ASDYEo3Z3GyYQ8TVW5FEN0vAChCdtbvdbdOMwNQWJ/8EM+jxbfymCKlK1U/Xh5EyMLdMBsh
+	ySpk0cWoRVPoT
+X-Received: by 2002:a17:907:60d1:b0:c1c:4fce:6518 with SMTP id
+ a640c23a62f3a-c21090d8161mr335006466b.24.1786640715471; Thu, 13 Aug 2026
+ 10:05:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202608131743.c6a7dda4-lkp@intel.com>
+References: <20260813-swap-thp-cleanup-v2-0-d2ee48c6aa49@tencent.com> <20260813-swap-thp-cleanup-v2-14-d2ee48c6aa49@tencent.com>
+In-Reply-To: <20260813-swap-thp-cleanup-v2-14-d2ee48c6aa49@tencent.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 14 Aug 2026 01:04:39 +0800
+X-Gm-Features: AUfX_mzqvKyY3nuUKAGRfqpmy9U1qASPwRcydKfZpDzl6llTSISrOQQ2rICa_YU
+Message-ID: <CAMgjq7BQeiWY90+FGvw18__KQr4OxSvgg7ObtGX1K8ptLmZ5pA@mail.gmail.com>
+Subject: Re: [PATCH v2 14/17] mm/huge_memory: clean up after-split folio
+ freeing in __folio_split
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Youngjun Park <youngjun.park@lge.com>, Shivam Kalra <shivamkalra98@zohomail.in>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 51C1840019
+X-Stat-Signature: scn7jtfu9ezc9youcurx4wme5kktgpps
 X-Rspam-User: 
-X-Stat-Signature: 1pgk446xzetde5zkc1qjke4abnswta1s
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 31547C001A
-X-HE-Tag: 1786640484-985920
-X-HE-Meta: U2FsdGVkX1+nGXrR2MzOZy8tkrHVe2t2h3ZkMOLtVTFL/HXRoFXzFJ+Sii3N2ahYNO5sRw2oVl/PUFhVyfuHKHNuhK2IQSf4rzA9emxdsh8vfS6UmqJMZzVqd35UhV+pk6EAYLuE1d0XIFARDTabTHOb6a8PSwFWATQyEALIKC6sEUS6nKLSe6rb1t+UVWqDkql69qMw9l9MxYoksU82YN7cUCLoQy7L7V9LeBCuVFYZhYOdb/ZcX0w5HV+gVCmxG5gy4+IrpmYAUysy6+sOl0IDNjOEon/5PYE5ydvJJ7RRcWLNNgD0lFHN0YTVJLUvIVkDS8G2el0J1Hy2aFTLK5L1ubM+lvzkqalAL826JFVZLVw/UzFTKDHhbygLlLPbYHfw4L/A0tNY2LaUVeg6UeNFnFKEnETY9uaFk0pKjsEX+kaOQB7YHOrKBV+kACMNOwox6OtWSuV6mejgyy0KZMk4V4F9muXVux5T342gG4N7hqpD+0+rfiu7gNqsxTRifA3MgoD6a3hdkaro/1jaQu+DGcjEf0jFuQSVZVYZI8tykn4X0I7CXlR577RzGTa9Hrb2VACICha/1xpBd4sn+VF02XOMWovkHO1HpKgFMZ1XaoyJ4GeOUpJkqjD8/LE9lxqmbCRKPPX7XUJngSv/pSJOb7mFFKm7upWq1hvO+xgUBRK4JTfy3W5yQvbnks2fR/12LJ0wSq0YTFJvUVDOUyDH5HXWci5Or52HH2kGam4DfQYf8oQ5fEf8yjuXhWfoab1S6JEhHLJfHfhYi85UuMjbxgx0qoF2z5lmaHIw8cDHZAkFHdZCGXXAKAyRr/evq+Oz7xP0RiyxfJpkPB+nsI+pjykdA06Y+R6k/42CeXNhegpGww7ZNhbpph0sM4PvMFDscsoITLTHq7NHIk6cem7viUMCZ5plcthxk0IWSv+K4sDfuf95NXmUO9TqzeaXw7C8mW8xeXas9DDcmG9
- VZMwYQTu
- mAVC9KWKYoo7vDyHz0VKjn+DxJ1sYuybR2D+s770iDt+Z00QKGUZfY39b7YU9VZmki23GYFt6sYl4w9M5Z8yepOgv4y5Hw96GtLVRxA4HFeBSGcCpHN/r6PZppqIzQloBfjlblNjs6ViPWB5FuOK8+40q4S8tZK8J6TObNoZXa8UMsTpArfvsGwgcvI4/rnI/bR6SFzbBDEOUq92b+c8cDOp+JQkJOWXk7OoOpGHYv6/zXN/LNpUnklUbuIz5EKWAC/2c5VAis4+qx7vxQXdWsSIVaFQc53JOM14znuRhPyQLUEviUoEmW7Y7g6VLGFhjz4j/HSrViclJWJuasG4nSBubrS1A7JacdIx8E03o5N2Ltmso2PhdSwaFxhI1TdQXEHWFnBbmlYw06v8=
+X-HE-Tag: 1786640717-17319
+X-HE-Meta: U2FsdGVkX1/Q59c9R4HN/aHMEWHphmrmimS7m6UvE4qNCLqSJ5vUDq1XckuxxJeKJu/AvwbWlz0aq8/LKFkjPrgk8Z1/lAIiXPrVCAECvLKdWVy51VJYgksf7Bb+Y0eCOhCLpk3umKpTPqwff0lOcrK37Q5/b2hP2/0VguUpGtmFwPcyyWJI+MVjqZNejI+chmv+bns/LoaRgCeynP5Llgqm9gkA5OzpytpOBWfZGNNYZbit68IfvrXda8rbaDcAe3JVtjgPrmB5jkGTl24aqLHa1EXU+q5CQ9u0oxnReixQdhLn15r/Enc/+VeV6u8ZgBOl6Axn2N0ohivAJeDKjz0KLg7FvEdW2TrYMBPlz4ebsKdS0BQyqIcp9/ciX4GrC7RDtQC2cq6ZqfFzbuvKQnLJGiQEbCjHcc/kLUIwVyFstTr+M9ggePJXwqwOw/E41gn+0euwagQZA7p/sqv+XxNxNY2ASNCtUmR5llaj5HR5rnCjsahX1tsLJNuUSTgxbnAN05d6yEVP8cNj117XsM+ancKaPjEuGqX2S2RghLutBsahbbUSskNb6ncpGlsbKv7E5AEv7+jjrIea/obrj9W2M47s7ipCzIvQaTnYBosPJG65P+oXRadQhuna9lfT0xOZ4hhpaYMDoZ6DNYV7P0p5p6xI7bjJ+v33W3PbQbsIIaYjdFN3G+82LBhDYaUTPQmleTBdh/Iq1xHm2X0inZ91RF0bNnUSpHFxoskAzt8o8VzqebE/vO4f1I+n3eZW6LqiV7qmlofQYMh5FnMVWT/IEmbeiKtDWwt09IIh+8uAqQNNLoSupimvXG+UeRX3Lmup4vh+5uZNblMRxQmoXGdGYZqHT+uFiCVt8ktyQYyaueKIMdFRdmtIE+WMymWZlzfh/lFhWbcBQKRb2jgMUQbtZ3CLnH2sjSgu9VZwwMUMpKgHOnrRenUGK/1m0nkBKGvrmhFfwHR9juzQJid
+ BBTXQ3aY
+ eMi46+1JYeGqejwaqBCxUKmdOS8q12ys/hS46sCgeu7HAweYLoP2lOtWcREjrYpqaYB38VFASQW+PfJ3k2kVtPi3Er7xZ62rxWiHkQtInRt1wZKXaFI3BZdcmL83OghmJyPfRhAcYNG/3XfyPAmNAME2Ykh+iSuRDmq6jJNXwAl2XZuslf5G2dYsb0MFgnf0mngtSey8zbV3a4VkGafgTc1iwr2GpwZ0c8owBIsDIA5YOqaZJKJJVXblU0xleVNG82J4QzJZ10Llzguja9lx6Zn9lMqrSgptg3x/e2vnjK7Y+lI8KPwFojuMbtBRrTz18/i1EGXvdrhCZD6gm/mv4UXPYI6GPJeVRDpns6zARIDAOi6a3QODfoQlVF9dqVCKwGqAftUwxRBDusniuTZQhOtLvuXGiGVuL+d6nRZdCX+sQNxFprjEJKTPqkiUrX8h0G+L3k3S0q2AmLKlM/+p+Vvi6wA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,79 +146,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026 at 09:16:22PM +0800, kernel test robot wrote:
-> 
-> 
-> Hello,
-> 
-> kernel test robot noticed a 36.2% regression of stress-ng.mremap.ops_per_sec on:
-> 
-> commit: ea928e9e18da682e9a5bc40aa862bff7ce5ae42e ("mm/vmpressure: move v1 userspace eventfd code into memcontrol-v1.c") https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
-> 
-> in testcase: stress-ng
-> version: stress-ng-x86_64-29ce10a2c-1_20260712
-> with following parameters:
-> 
-> 	nr_threads: 100%
-> 	testtime: 60s
-> 	test: mremap
-> 	cpufreq_governor: performance
-> 
-> 
-> 
-> config: x86_64-rhel-9.4 (CONFIG_MEMCG=y and CONFIG_MEMCG_V1 is not set)
-> compiler: gcc-14
-> test machine: 256 threads 4 sockets INTEL(R) XEON(R) PLATINUM 8592+ (Emerald Rapids) with 256G memory
-> 
-> (please refer to attached dmesg/kmsg for entire log/backtrace)
-> 
+Sashiko reports:
 
-Hi there,
+--- Patch [14]: [PATCH v2 14/17] mm/huge_memory: clean up after-split
+folio freeing in __folio_split ---
+commit 30068a849a3b68568f1661083bd4c5a685ac749a
+Author: Kairui Song <kasong@tencent.com>
 
-Can you please test the following patch and see if it fixes the regression?
+mm/huge_memory: clean up after-split folio freeing in __folio_split
 
+This commit replaces free_folio_and_swap_cache() with direct calls to
+folio_free_swap() and folio_put() in the __folio_split() after-split loop.
 
-From 84c0b05b3bc5cf73ee66ead75aafb1ad684462c3 Mon Sep 17 00:00:00 2001
-From: Shakeel Butt <shakeel.butt@linux.dev>
-Date: Thu, 13 Aug 2026 09:38:28 -0700
-Subject: [PATCH] memcg: keep vmstats_percpu off the memory_events[] cacheline
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -4343,14 +4343,16 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+>   if (new_folio == page_folio(lock_at))
+>   continue;
+>
+> - folio_unlock(new_folio);
+>   /*
+>   * Subpages whose mapping has been zapped may be freed
+>   * earlier, but freeing them requires taking the
+> - * lru_lock, so we defer put_page() on tail pages until
+> + * lru_lock, so we defer folio_put() on tail pages until
+>   * after the split completes.
+>   */
+> - free_folio_and_swap_cache(new_folio);
+> + if (is_swapcache)
+> + folio_free_swap(new_folio);
 
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Is it safe to unconditionally call folio_free_swap() here without checking
+if the subfolios are mapped?
+
+The commit message states "The sub folios are still locked and unmapped
+here", but looking at the earlier split path, __folio_split_unmap_and_freeze()
+calls remap_page() before returning to __folio_split(). This means the
+subfolios can actually be mapped in memory by the time we reach this point.
+
+Because they are remapped, calling folio_free_swap() here will unconditionally
+free the swap cache for actively mapped pages, marking them dirty and forcing
+unnecessary swap allocations and disk writebacks under memory pressure.
+
+Previously, free_folio_and_swap_cache() called free_swap_cache(), which
+explicitly checked !folio_mapped() before freeing the cache to prevent this.
+Does bypassing this check introduce a performance regression by thrashing
+the swap cache for successfully split mapped anonymous folios?
+
+> + folio_unlock(new_folio);
+> + folio_put(new_folio);
+>   }
+>
+>  out:
+
 ---
- include/linux/memcontrol.h | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index e78bc98ab229..e25d5b9a1db8 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -246,8 +246,13 @@ struct mem_cgroup {
- 	/* handle for "memory.swap.events" */
- 	struct cgroup_file swap_events_file;
- 
--	/* memory.stat */
-+	/* Read-mostly. */
- 	struct memcg_vmstats	*vmstats;
-+	struct memcg_vmstats_percpu __percpu *vmstats_percpu;
-+	int			kmemcg_id;
-+
-+	/* Write-hot from here on; do not let it share with the above. */
-+	CACHELINE_PADDING(_pad_);
- 
- 	/* memory.events */
- 	atomic_long_t		memory_events[MEMCG_NR_MEMORY_EVENTS];
-@@ -266,9 +271,6 @@ struct mem_cgroup {
- #if BITS_PER_LONG < 64
- 	seqlock_t		socket_pressure_seqlock;
- #endif
--	int kmemcg_id;
--
--	struct memcg_vmstats_percpu __percpu *vmstats_percpu;
- 
- #ifdef CONFIG_CGROUP_WRITEBACK
- 	struct list_head cgwb_list;
--- 
-2.53.0-Meta
-
-
+Right, I need to check the mapped status. It might be actually fine to
+blindly clean the swap cache, and it's always safe to do so, but let
+me keep the old behavior for now. I will update it.
 
