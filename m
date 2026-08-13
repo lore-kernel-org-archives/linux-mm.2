@@ -4,108 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6611DC5CFDB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 18:14:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7669C5CFDB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 18:25:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A4A76B0591; Thu, 13 Aug 2026 14:14:15 -0400 (EDT)
+	id 670D26B0594; Thu, 13 Aug 2026 14:25:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17B416B0593; Thu, 13 Aug 2026 14:14:15 -0400 (EDT)
+	id 621BB6B0595; Thu, 13 Aug 2026 14:25:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 091CE6B0594; Thu, 13 Aug 2026 14:14:15 -0400 (EDT)
+	id 4C1816B0596; Thu, 13 Aug 2026 14:25:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D45446B0591
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:14:14 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6C2A8C024D
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 18:14:14 +0000 (UTC)
-X-FDA: 85097045628.15.765D1B6
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B540A40004
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 18:14:12 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=jJrVZnor;
-	spf=pass (imf27.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 10CE06B0594
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:25:30 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6D7C41C0D3F
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 18:25:29 +0000 (UTC)
+X-FDA: 85097073978.27.AC45937
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 889D02000E
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 18:25:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GOnXhkjO;
+	spf=pass (imf13.hostedemail.com: domain of vdonnefort@google.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=vdonnefort@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786645527;
+	b=TjXls97XlXbE7QAmcagLZS5+89ZEQTkUnr58YvNswz6fgEkQB7lBthEDfpFTVAcU8LAggj
+	enEC+Qe5VR0NUa195M9Fm//Iv9rkLe/W9JV83y5+JTjViljmnHYDF5t5Sm/fdO/KxVAtXr
+	uN2ItAZlAWsyOMnVbUdc7uLwJwh2hVM=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GOnXhkjO;
+	spf=pass (imf13.hostedemail.com: domain of vdonnefort@google.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=vdonnefort@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786644852;
+	s=arc-20220608; t=1786645527;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vqGkoN/YW9MjCTFUPW3/G/UGJ2M/cltegtrg6/WKbh4=;
-	b=FdNYBTMlY2h4iDbYXt93rmjlci6DecVr5SRq23HhzXNdsoQgWFB68otSGD5yc0Q6HzprmN
-	3qgcKn+6+dFsHiwJdtZc5pTSSUw5x8dIL41CMdVjlXeTKYxk9MheuwqrxYuNW6nY92pn5Z
-	STfy+38veKXIGEUQYJKq8VxzqWZuLyk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786644852;
-	b=RQHLUqpE1LloqFUFCVlMszQBZVz7nRZSKTnwpOvzyA320GXi9lc931G9e/3Fl5/gfJlurc
-	LQgrTci/+uCnMkk0hKgmznF/0wR/MU3jJqhlcPDpSFTlPyJupErIx7ahS3BEtB963Nzuhm
-	BxwPrdCuI4mVt9NrkDMccVgEP2Zu008=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=jJrVZnor;
-	spf=pass (imf27.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 09CDE1AC1;
-	Thu, 13 Aug 2026 11:14:08 -0700 (PDT)
-Received: from a081061.arm.com (unknown [10.163.171.218])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0C2773F66F;
-	Thu, 13 Aug 2026 11:14:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786644852; bh=n+ixg0gEj//vEve/eI8OzR4nRqMJ7Zk3ybRGgHQdE7k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jJrVZnorjSUcZxYwmrwz3LukTsVym4B5KakTFsxeWc20gf8VMfL7WoJyz08YnzGIF
-	 RH2XI5OU1XdNRG593ijuC6xT7TiDxiyrT2J8KmSNs63OCKEM8VvlW/8qyvXATBI3+z
-	 jsAd7l/rnhvfOBZhmxweTIkmhNUVa3+uxUPkYPSA=
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
+	bh=/3QCok6wGHqCtWOkYs90vXBSCXq1KFbORE0c8e+6Hp8=;
+	b=Vibxe15ndn3V9gPJmPoco39FYP7iEBAS+ToHSClXzvfDXj/eRPN0tZ1X6yBIyjSwXSa413
+	HOT01mm+n95Rven5HzNIEkygnP6+lujxCkCgwvmLytnSmQkyDifSrRgtWUvEg7udwgxFk/
+	//RIGI/E/Z75REpfICwhLMEyI8Ki+G8=
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-495437bb891so737725e9.1
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:25:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786645526; x=1787250326; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/3QCok6wGHqCtWOkYs90vXBSCXq1KFbORE0c8e+6Hp8=;
+        b=GOnXhkjOueXxRE8mwroeglz4o4+gU48R4WkdkYN/oyQpAYm5Osc7kEHxH6eOqA+vE6
+         efqSIUMaZcSi60U0evddKm7zylrCjF1Vy/lRYet5TIp1sHmi28brH9UsePi3hdQbnyYL
+         jNhTt5qpHExh/b0RvAmLm9G8abyI28JF3x21LDTfugr9W7r/Od9PkZGBgOhUNvXCju9b
+         mc3O9e3Rab+2cIryNr/jCRUaoFBPx6c0ECplu+Z0MQuodviaapSk/QrDrMW7kWKpxV7j
+         Ph0bpTMBGisSkKQmXOyS5yemBeGlblzT3xj3RDLSGsG2matvK4ihwBTE7PCGfFexYP8D
+         k/ZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786645526; x=1787250326;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/3QCok6wGHqCtWOkYs90vXBSCXq1KFbORE0c8e+6Hp8=;
+        b=X1FPqhANFj7US8KKsY9moEXVw5vxI6Ll4T6nQadDlwpElTHCE7hTYzALYHBZaPj2Dn
+         b17ev05gllS03IxEp47vEJ0nT7HbvaMEHJhoHE1ij3IcXJ31wM+m1RMRjg8bRU3atlkv
+         8UqU37TVoLYJ/2ZgrX6nTIGzmynkbbZ1l15o5X+HP3HAtxsnTVBeZl7PwoeU+oPeJ57t
+         ZHESLj70qv37MV3IOVmHUSC4kRejBcSqkeVy3e+NVY4OPUytlY6YtnvkJBUPRYbrIGRJ
+         YpqD4YNWG3E2loWYGDGUtvNgs3ZAwn/OU6idhzQo0s3d4ifr9GqrnuezL8XGwTX8DjEX
+         MCZw==
+X-Forwarded-Encrypted: i=1; AHgh+Rqu94O4Bnx6eldOx0irhFFbBWgSBShJ5n42fEu+GylYhnPTGvo8/Va5Dqv2oOUG4VmyCHCEqSxZbA==@kvack.org
+X-Gm-Message-State: AOJu0Yz8EZNIjTBeOtBIq1WIlQoZcGmhu6o0HSlfvFK8fmIx7g6L4Bez
+	XWLY+463SuDLqqaNAhqvlEtR/GETtIoESFJMeCPaZLmriUs1Qa6nUZOTDWo6cB2dwg==
+X-Gm-Gg: AR+sD13ln5Zv0kLxUcCm4Zbvid6XNm5npH++2g4AszQVX/VM8fE2uvdksZOtYCTapgy
+	PCAo0/us/3wTLLXEsn4v5ukBEHw+APL6vL1KsicooQIAnlFD4KXmn2vSTmVP2QVMbYVteJIMF1F
+	3R8Tt/DmnsF2wzMCMLB9LK4TA/M8ceBCb60MCkyXVqMtnclZ+Hl2YTs/j2/OTzrX6XwB0b1VtlT
+	JZ2cP9pLTIXh7rXyGtDRx4DHPgzdt/Uou9fd2iwjiDGoE6FJLaoIcJhMF+IVbqtypxzPiH3cXyL
+	rUnbl5ysQ70Ju1LXI4Gc1q3CApJJGJtJLPDAKfGlng34ghv1KsYhkJwKjx3l/Z5BnmG9c5X01RQ
+	meFis6HK/6SW7n99VRsNy995wqw2gOUblDsp/dl1ZQ5t9oLYEs0H1TX46fsAY+nQUdwdvvhFxrZ
+	3iVRLF/ZUV3/bEzJgbuCPOrkaUhrUkOwMdX0TmT4tRxad4cQhPl/Cud4oD1NWyDcGzdZte9aj05
+	1V7N1inE/Lpwf2DbVhzzZ/f5FruQUX0
+X-Received: by 2002:a05:600c:a185:b0:498:1577:e11a with SMTP id 5b1f17b1804b1-4998219a05amr83397985e9.5.1786645525168;
+        Thu, 13 Aug 2026 11:25:25 -0700 (PDT)
+Received: from google.com (135.91.155.104.bc.googleusercontent.com. [104.155.91.135])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f2b13c3sm923032f8f.19.2026.08.13.11.25.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 11:25:24 -0700 (PDT)
+Date: Thu, 13 Aug 2026 19:25:20 +0100
+From: Vincent Donnefort <vdonnefort@google.com>
+To: Thierry Reding <thierry.reding@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Sowjanya Komatineni <skomatineni@nvidia.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Russell King <linux@armlinux.org.uk>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Mark Brown <broonie@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: [PATCH v7 6/6] selftests/mm: add a GUP selftest
-Date: Thu, 13 Aug 2026 23:42:30 +0530
-Message-ID: <20260813181230.483746-7-sarthak.sharma@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260813181230.483746-1-sarthak.sharma@arm.com>
-References: <20260813181230.483746-1-sarthak.sharma@arm.com>
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Brian Starkey <Brian.Starkey@arm.com>,
+	John Stultz <jstultz@google.com>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Chun Ng <chunn@nvidia.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	devicetree@vger.kernel.org, linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-mm@kvack.org,
+	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org,
+	linux-trace-kernel@vger.kernel.org,
+	Thierry Reding <treding@nvidia.com>, pavan.kondeti@oss.qualcomm.com
+Subject: Re: [PATCH v4 07/10] dma-buf: heaps: Add support for Tegra VPR
+Message-ID: <an4MEI7lkc2p3nKI@google.com>
+References: <20260807-tegra-vpr-v4-0-5510d16af89e@nvidia.com>
+ <20260807-tegra-vpr-v4-7-5510d16af89e@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260807-tegra-vpr-v4-7-5510d16af89e@nvidia.com>
 X-Rspam-User: 
-X-Stat-Signature: get8f3mxggr34sxiyrkgoysso9z4nd8c
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B540A40004
-X-HE-Tag: 1786644852-841181
-X-HE-Meta: U2FsdGVkX18dK3nysGm814VsCFjEXVTs7VANB/y9R+B1J+UDpClugJSQbu9N3BAai7n+q16yT1iF9/c4TihQpwcSrdWfYg3zsTB3xEzBRoW9REejo5rYfbuch704wQA4PBTdGmTKBglabzYuPQnZD0qmSM2vOyg75XtT1UUyLN4sTlAzs98goRKsmogsYpGn8xEsFr8dsGxMPtnlUM3H124N998dbygpmR7iZtqZA767a8ue7WMm5a9nfdU1cdT2ubBOaXL4yKGVPhYs0eoRpHLCHDrgZDM0nSRtZCyh3Vh2Cd6jIJ1TICIm6J+a/1mIWMaPbtgqW94YqWwQFpkUA8FoB3gjtAnY419nFlLJMA1C1OiW3PXDGD7qeByzJQKh8sVD4S6wk768FVvAwATKlQHWPy/l1xH5CtchElQ0TzkqnBS2t8z6Om3gsLCjglYSkuXImyULuoNKyqK5HnxeWxdNi2iTOvFP7rEqfvO4ePFCAdYsDALzXwurMQ2liOl9TmZb2Ik0W+fCjZlxj2tTDndeSor68QoWLhjjqu18j9hrwg2RnRD3QII5GQStrWam/acGQ2XCiZBgNOHwMRBGQtPweNE8jmtxonKsuKF5V2cv1sRQsjWv5kM611LP22Upie17guwgC8TLIixsNdX9v/YjRxc4Hf2d0YpNeqxBYxeuk4oGU4Xn4EFxLT1zYycVP7dz0IMtKTMJEkMJvAtacq13hNnfjs+xvyc1P3UsPjxF2TNF7iXUY2Yo28lPEiEBtsPwxse+YNpFr+DAexwxtBwiO5kjvpAke6LdZp45tQkaMGERTLt0P2nDi66RbWF/yd8NTQkSWIu5HACc8W6uQJBFBx9+BBMbFgTJZpYw44sIUBJLeOsiVknpzj30aIn1w3LaWg04d+WsA+hH9R14jYCEQyb9E3tNdSNe9UCqVSY0IXi2CLboZSgRJFEDzEWNBsAUL6NjQNzJ5xzpwB2
- mx8+HO3h
- dcPxle25IxwNtEExs3bDAcqdvcdIfE742xSzz+1oSqV9NVeDnwoxvC9UBJDleO6XDQLlpvcQ61fJ74EAW8rL4QAFvXYpob8UGE5gRL3CAhBDopYXNILhqKHSR/BZzbBS2H9thWLoJKf1oXgKUlV2+UZqEwTPYblXlyzDjteUhYPguzLK5kBc+t4Jw39a/p8ihwsOgvtdCvOGWLWsu3jNEiD/yX6P1gLuJ0AdjhHFdBofBT//VvzDfbuK+sgMSyqSeYFscVBxqhy1Ve5g=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 889D02000E
+X-Stat-Signature: 7uei7bhey91mghahxyrqmnmzputuiaqe
+X-HE-Tag: 1786645527-53843
+X-HE-Meta: U2FsdGVkX199J+fCbJ+0u99GGGsTkaFtaWq/e7+j+R97/dxZgHXNK/Y5C3A+EsWjgM5gQDdEkonK5RaZwRRqTtv+UykeqXgHLbfXEr4GR9yDH9d2+Sg1ewc8pr44jChEerSYdwG8PGLl1AH81+UNSYj93HcGVskpdTLm3hJjhf5h1eRmCImjREgvYcWKno7G+Sr1kYoT+PqmbZQtQNzZd1Bvtmzo47Z/xvf7OtKzbA1jX4tZRtYoPYSYnVl1fW3rmUItjBqmT0/w+rKkvRwrPxNw2/q9/5nW5BQb5DSze7oMX8uXM5oty4L2fPBl3v+QMU1/06mSVRmJjFjcHxv8h2tdSaLZZGrTFp9w0F9j4lRcuPGJCCyAnOs0gK21CbD9vy5GGPjM8deK05nxmUSYMOtb9t+hNOBKGGQ0jBYjxx0hIu/+HXe/71+0v+IGUCNEwvqezhbEy5fugtfCAvzGu6149jbRHtVnTJAUC6QzNpQqL8yy8Hn6lwLUj+qdRk/fn71U4mDuaUqE5rYfjcV8g9MHOJYCbyVSGj/e4Pe7TR5x/mGW1Sj+bLkFl4ggtlfvO1teLr8fvKkmBgOL1vVjIxh8f7L33U6cdAHQ6Do7A6h5Jy/tj94TzhiLje9wZHGdBeWtWX6F4W1GMYH2yABic5aSfs6fRlzTBL+CIYCzFsKhFpnL23Yo4wZmVxnVZA0qWwCTtUldfkrERBQNaT+6dvOz7Gau23afOKLDXyf6p7j0P3jQYGsWWXSrFtjbsjv4EEDzRharJDdH8j2Bcqg9iqjwUN+lY6WDTNMUjUTxYZ5KqTdlK3g4TXOTLY7EzJzNBGaCT3rz8f1UeBfL+L+ZQT2+2Z3RryApe5XhXeOCDZi8k/zJictnrTx6usylUNvCe6Th6NCJ2i8ME5RLdBZREZ9ROX9y2UhiwW5oQ1PWturjDgor+nDHTvGQ14pyx4d5LYnK0ZpVwCzfJjEwxLS
+ TIURNra0
+ +2yBaixUJUBxQFyGP+uQ4+usxjo0sXoSqTqdlLFcrH2l08qWrdv9pBB9iC1U/QEc7etfMm46wY9h6tVDmV3DxV5niKIun4jukLNhP9sLdiizq1pr3k04Q4qEKRjv6BZgxWWN6jjzACH7brD6oXH/+eogRL6GOe/4uWX/1ZNvDA5SvVS50DYddiksJGSIK1/A71SRMZcv6FlqilRasdwKGRwbwtj/9FSgr/JSRiL3h7ss2kkrdcI2PoKTVwlxJNyIafXhH2V7Gct+RPlxAQlRwfA6/YkhjsVH4pb57ue1g0cQgduTz7wWUwishG4p2VL3gs2AZFj3k2WoGNfXxO6vui2/M+rVPAILKyrfuMBgXSe3iq1ebeCcXDptt3qNW2Rhaz1s/vMd6VZid6e/0Y1avhIVAk+5w0uvtos12CTa2G9wGWu9fHjPay1v4TFrI1p2YWxMuVDhgg0oQblClazx8nJv7aiQwtlfZGgrwIbDZ+XTtIliRCExZ6956Lg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,441 +166,1573 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a new GUP selftest which uses kselftest_harness.h. Cover
-12 mapping configurations: THP enabled, THP disabled and
-HugeTLB, each across private/shared mappings and with/without
-FOLL_WRITE. Run 7 test cases for every variant: get_user_pages,
-get_user_pages_fast, pin_user_pages, pin_user_pages_fast,
-pin_user_pages_longterm, and DUMP_USER_PAGES_TEST using both
-get and pin.
+On Fri, Aug 07, 2026 at 05:54:27PM +0200, Thierry Reding wrote:
+> From: Thierry Reding <treding@nvidia.com>
+> 
+> NVIDIA Tegra SoCs commonly define a Video-Protection-Region, which is a
+> region of memory dedicated to content-protected video decode and
+> playback. This memory cannot be accessed by the CPU and only certain
+> hardware devices have access to it.
+> 
+> Expose the VPR as a DMA heap so that applications and drivers can
+> allocate buffers from this region for use-cases that require this kind
+> of protected memory.
+> 
+> VPR has a few very critical peculiarities. First, it must be a single
+> contiguous region of memory (there is a single pair of registers that
+> set the base address and size of the region), which is configured by
+> calling back into the secure monitor. The memory region also needs to
+> quite large for some use-cases because it needs to fit multiple video
+> frames (8K video should be supported), so VPR sizes of ~2 GiB are
+> expected. However, some devices cannot afford to reserve this amount
+> of memory for a particular use-case, and therefore the VPR must be
+> resizable.
+> 
+> Unfortunately, resizing the VPR is slightly tricky because the GPU found
+> on Tegra SoCs must be in reset during the VPR resize operation. This is
+> currently implemented by freezing all userspace processes and calling
+> invoking the GPU's freeze() implementation, resizing and the thawing the
+> GPU and userspace processes. This is quite heavy-handed, so eventually
+> it might be better to implement thawing/freezing in the GPU driver in
+> such a way that they block accesses to the GPU so that the VPR resize
+> operation can happen without suspending all userspace.
+> 
+> In order to balance the memory usage versus the amount of resizing that
+> needs to happen, the VPR is divided into multiple chunks. Each chunk is
+> implemented as a CMA area that is completely allocated on first use to
+> guarantee the contiguity of the VPR. Once all buffers from a chunk have
+> been freed, the CMA area is deallocated and the memory returned to the
+> system.
 
-Set up 128 default-sized HugeTLB pages once for the HugeTLB variants
-and derive their mapping size from the default huge-page size.
+Hi,
 
-Sweep four nr_pages_per_call values for each test: 1, 512, 123 and
-all pages. This preserves the coverage previously provided by
-run_gup_matrix(): 12 mapping combinations x 5 GUP/PUP operations x 4
-batch sizes, for 240 ioctl calls. The two dump modes add another 96
-calls.
+I believe we (the Android team) are trying to solve similar issue to yours: Arm
+CPUs can still speculatively read memory after it has been transitioned to the
+Secure state, as long as they retain a cacheable mapping to it.
 
-Preserve the previous sparse dump coverage with a standalone test for
-pages 0, 19 and 0x1000. In total the selftest reports 85 TAP
-cases and issues 337 ioctls.
+As modifying the direct mapping is difficult, the workaround ended up in the
+hypervisor which unmaps the pages from the host stage-2 on intercepted FF-A Lend
+invocations.
 
-Add the new gup binary to the selftests/mm build, run_vmtests.sh and
-MAINTAINERS. Update Documentation/core-api/pin_user_pages.rst for the
-new test.
+If convenient, this is nonetheless the wrong place to do it. Scattering the host
+stage-2 is really terrible for performance and we would like to move it where it
+should be, directly into the kernel...
 
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
----
- Documentation/core-api/pin_user_pages.rst |  14 +-
- MAINTAINERS                               |   1 +
- tools/testing/selftests/mm/Makefile       |   1 +
- tools/testing/selftests/mm/gup.c          | 329 ++++++++++++++++++++++
- tools/testing/selftests/mm/run_vmtests.sh |   1 +
- 5 files changed, 342 insertions(+), 4 deletions(-)
- create mode 100644 tools/testing/selftests/mm/gup.c
+This is what I thought was the attempt in v3, but I am now a bit confused
+because I see you are using set_direct_map_invalid_noflush()
+set_direct_map_default_noflush(), but I am not sure that works if rodata=full is
+not set? So does the memory for the NVIDIA IP still need to be unmapped?
 
-diff --git a/Documentation/core-api/pin_user_pages.rst b/Documentation/core-api/pin_user_pages.rst
-index c16ca163b55e..1564b16994ad 100644
---- a/Documentation/core-api/pin_user_pages.rst
-+++ b/Documentation/core-api/pin_user_pages.rst
-@@ -228,12 +228,18 @@ Unit testing
- ============
- This file::
- 
-- tools/testing/selftests/mm/gup_test.c
-+ tools/testing/selftests/mm/gup.c
- 
--has the following new calls to exercise the new pin*() wrapper functions:
-+contains the following test cases to exercise pin_user_pages*():
- 
--* PIN_FAST_BENCHMARK (./gup_test -a)
--* PIN_BASIC_TEST (./gup_test -b)
-+* pin_user_pages via PIN_BASIC_TEST
-+* pin_user_pages_fast via PIN_FAST_BENCHMARK
-+* pin_user_pages_longterm via PIN_LONGTERM_BENCHMARK
-+
-+Run with::
-+
-+  make -C tools/testing/selftests/mm
-+  ./tools/testing/selftests/mm/gup
- 
- You can monitor how many total dma-pinned pages have been acquired and released
- since the system was booted, via two new /proc/vmstat entries: ::
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ed9a8549ae31..861504fa2e31 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17032,6 +17032,7 @@ F:	mm/gup.c
- F:	mm/gup_test.c
- F:	mm/gup_test.h
- F:	tools/mm/gup_bench.c
-+F:	tools/testing/selftests/mm/gup.c
- F:	tools/testing/selftests/mm/gup_longterm.c
- 
- MEMORY MANAGEMENT - KSM (Kernel Samepage Merging)
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index 11ca9b11fef1..9c03624fd293 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -58,6 +58,7 @@ endif
- 
- TEST_GEN_FILES = cow
- TEST_GEN_FILES += compaction_test
-+TEST_GEN_FILES += gup
- TEST_GEN_FILES += gup_longterm
- TEST_GEN_FILES += hmm-tests
- TEST_GEN_FILES += hugetlb-madvise
-diff --git a/tools/testing/selftests/mm/gup.c b/tools/testing/selftests/mm/gup.c
-new file mode 100644
-index 000000000000..4c9e14dbb434
---- /dev/null
-+++ b/tools/testing/selftests/mm/gup.c
-@@ -0,0 +1,329 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define __SANE_USERSPACE_TYPES__ // Use ll64
-+#include <fcntl.h>
-+#include <errno.h>
-+#include <stdbool.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <dirent.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <mm/gup_test.h>
-+#include "vm_util.h"
-+#include "kselftest_harness.h"
-+
-+#define MB (1UL << 20)
-+
-+/* Just the flags we need, copied from the kernel internals. */
-+#define FOLL_WRITE	0x01	/* check pte is writable */
-+
-+/* Page counts exercising single, THP-batch, partial, and full-mapping GUP. */
-+static const int nr_pages_list[] = { 1, 512, 123, -1 };
-+
-+#define GUP_TEST_FILE "/sys/kernel/debug/gup_test"
-+#define NR_HUGE_PAGES 128
-+
-+HUGETLB_SETUP_DEFAULT_PAGES(NR_HUGE_PAGES)
-+
-+FIXTURE(gup_test)
-+{
-+	int gup_fd;
-+	char *addr;
-+	unsigned long size;
-+};
-+
-+FIXTURE_VARIANT(gup_test)
-+{
-+	bool thp;
-+	bool hugetlb;
-+	bool write;
-+	bool shared;
-+};
-+
-+FIXTURE_VARIANT_ADD(gup_test, private_write)
-+{
-+	.thp = false,
-+	.hugetlb = false,
-+	.write = true,
-+	.shared = false,
-+};
-+
-+FIXTURE_VARIANT_ADD(gup_test, private_read)
-+{
-+	.thp = false,
-+	.hugetlb = false,
-+	.write = false,
-+	.shared = false,
-+};
-+
-+FIXTURE_VARIANT_ADD(gup_test, private_write_thp)
-+{
-+	.thp = true,
-+	.hugetlb = false,
-+	.write = true,
-+	.shared = false,
-+};
-+
-+FIXTURE_VARIANT_ADD(gup_test, private_read_thp)
-+{
-+	.thp = true,
-+	.hugetlb = false,
-+	.write = false,
-+	.shared = false,
-+};
-+
-+FIXTURE_VARIANT_ADD(gup_test, private_write_hugetlb)
-+{
-+	.thp = false,
-+	.hugetlb = true,
-+	.write = true,
-+	.shared = false,
-+};
-+
-+FIXTURE_VARIANT_ADD(gup_test, private_read_hugetlb)
-+{
-+	.thp = false,
-+	.hugetlb = true,
-+	.write = false,
-+	.shared = false,
-+};
-+
-+FIXTURE_VARIANT_ADD(gup_test, shared_write)
-+{
-+	.thp = false,
-+	.hugetlb = false,
-+	.write = true,
-+	.shared = true,
-+};
-+
-+FIXTURE_VARIANT_ADD(gup_test, shared_read)
-+{
-+	.thp = false,
-+	.hugetlb = false,
-+	.write = false,
-+	.shared = true,
-+};
-+
-+FIXTURE_VARIANT_ADD(gup_test, shared_write_thp)
-+{
-+	.thp = true,
-+	.hugetlb = false,
-+	.write = true,
-+	.shared = true,
-+};
-+
-+FIXTURE_VARIANT_ADD(gup_test, shared_read_thp)
-+{
-+	.thp = true,
-+	.hugetlb = false,
-+	.write = false,
-+	.shared = true,
-+};
-+
-+FIXTURE_VARIANT_ADD(gup_test, shared_write_hugetlb)
-+{
-+	.thp = false,
-+	.hugetlb = true,
-+	.write = true,
-+	.shared = true,
-+};
-+
-+FIXTURE_VARIANT_ADD(gup_test, shared_read_hugetlb)
-+{
-+	.thp = false,
-+	.hugetlb = true,
-+	.write = false,
-+	.shared = true,
-+};
-+
-+FIXTURE_SETUP(gup_test)
-+{
-+	int mmap_flags = MAP_PRIVATE;
-+	int zero_fd;
-+	char *p;
-+
-+	self->size = 128 * MB;
-+
-+	if (variant->hugetlb) {
-+		unsigned long hp_size = default_huge_page_size();
-+
-+		if (!hp_size)
-+			SKIP(return, "HugeTLB not available\n");
-+
-+		if (hugetlb_free_default_pages() < NR_HUGE_PAGES)
-+			SKIP(return, "Not enough huge pages\n");
-+
-+		self->size = NR_HUGE_PAGES * hp_size;
-+		mmap_flags |= (MAP_HUGETLB | MAP_ANONYMOUS);
-+	}
-+
-+	if (variant->shared)
-+		mmap_flags = (mmap_flags & ~MAP_PRIVATE) | MAP_SHARED;
-+
-+	/* zero_fd has to be >= 0. Already checked in main() */
-+	zero_fd = open("/dev/zero", O_RDWR);
-+	ASSERT_GE(zero_fd, 0);
-+
-+	/* gup_fd has to be >= 0. Already checked in main() */
-+	self->gup_fd = open(GUP_TEST_FILE, O_RDWR);
-+	ASSERT_GE(self->gup_fd, 0);
-+
-+	self->addr = mmap(NULL, self->size, PROT_READ | PROT_WRITE,
-+			  mmap_flags, zero_fd, 0);
-+
-+	ASSERT_NE(self->addr, MAP_FAILED) {
-+		int err = errno;
-+
-+		close(zero_fd);
-+		close(self->gup_fd);
-+		TH_LOG("mmap failed: %s", strerror(err));
-+	}
-+	close(zero_fd);
-+
-+	if (variant->thp)
-+		madvise(self->addr, self->size, MADV_HUGEPAGE);
-+	else if (!variant->hugetlb)
-+		madvise(self->addr, self->size, MADV_NOHUGEPAGE);
-+
-+	for (p = self->addr; (unsigned long)p < (unsigned long)self->addr
-+			+ self->size; p += psize())
-+		p[0] = 0;
-+}
-+
-+FIXTURE_TEARDOWN(gup_test)
-+{
-+	munmap(self->addr, self->size);
-+	close(self->gup_fd);
-+}
-+
-+static void run_gup_cmd(struct __test_metadata *_metadata,
-+			 FIXTURE_DATA(gup_test) *self,
-+			 const FIXTURE_VARIANT(gup_test) *variant,
-+			 unsigned long command,
-+			 unsigned int test_flags,
-+			 unsigned int which_page)
-+{
-+	int i;
-+
-+	for (i = 0; i < (int)ARRAY_SIZE(nr_pages_list); i++) {
-+		struct gup_test gup = {
-+			.addr = (unsigned long)self->addr,
-+			.size = self->size,
-+			.nr_pages_per_call = nr_pages_list[i] < 0 ?
-+				self->size / psize() : nr_pages_list[i],
-+			.gup_flags = variant->write ? FOLL_WRITE : 0,
-+			.test_flags = test_flags,
-+			.which_pages = { which_page },
-+		};
-+
-+		TH_LOG("nr_pages_per_call=%u", gup.nr_pages_per_call);
-+		ASSERT_EQ(ioctl(self->gup_fd, command, &gup), 0);
-+	}
-+}
-+
-+TEST_F(gup_test, get_user_pages)
-+{
-+	run_gup_cmd(_metadata, self, variant, GUP_BASIC_TEST, 0, 0);
-+}
-+
-+TEST_F(gup_test, pin_user_pages)
-+{
-+	run_gup_cmd(_metadata, self, variant, PIN_BASIC_TEST, 0, 0);
-+}
-+
-+TEST_F(gup_test, dump_user_pages_with_get)
-+{
-+	run_gup_cmd(_metadata, self, variant, DUMP_USER_PAGES_TEST, 0, 1);
-+}
-+
-+TEST_F(gup_test, dump_user_pages_with_pin)
-+{
-+	run_gup_cmd(_metadata, self, variant, DUMP_USER_PAGES_TEST,
-+		    GUP_TEST_FLAG_DUMP_PAGES_USE_PIN, 1);
-+}
-+
-+TEST_F(gup_test, get_user_pages_fast)
-+{
-+	run_gup_cmd(_metadata, self, variant, GUP_FAST_BENCHMARK, 0, 0);
-+}
-+
-+TEST_F(gup_test, pin_user_pages_fast)
-+{
-+	run_gup_cmd(_metadata, self, variant, PIN_FAST_BENCHMARK, 0, 0);
-+}
-+
-+TEST_F(gup_test, pin_user_pages_longterm)
-+{
-+	run_gup_cmd(_metadata, self, variant, PIN_LONGTERM_BENCHMARK, 0, 0);
-+}
-+
-+TEST(dump_user_pages_sparse_indices)
-+{
-+	struct gup_test gup = { 0 };
-+	unsigned long size = 128 * MB;
-+	int zero_fd, gup_fd;
-+	char *addr, *p;
-+
-+	zero_fd = open("/dev/zero", O_RDWR);
-+	ASSERT_GE(zero_fd, 0);
-+
-+	gup_fd = open(GUP_TEST_FILE, O_RDWR);
-+	ASSERT_GE(gup_fd, 0);
-+
-+	addr = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE, zero_fd, 0);
-+	close(zero_fd);
-+	ASSERT_NE(addr, MAP_FAILED);
-+
-+	madvise(addr, size, MADV_HUGEPAGE);
-+
-+	for (p = addr; (unsigned long)p < (unsigned long)addr + size;
-+	     p += psize())
-+		p[0] = 0;
-+
-+	gup.addr = (unsigned long)addr;
-+	gup.size = size;
-+	gup.nr_pages_per_call = size / psize();
-+	gup.gup_flags = FOLL_WRITE;
-+	gup.which_pages[0] = 1;
-+	gup.which_pages[1] = 20;
-+	gup.which_pages[2] = 0x1001;
-+
-+	ASSERT_EQ(ioctl(gup_fd, DUMP_USER_PAGES_TEST, &gup), 0);
-+
-+	munmap(addr, size);
-+	close(gup_fd);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	int fd;
-+	char *file = "/dev/zero";
-+
-+	fd = open(file, O_RDWR);
-+	if (fd < 0) {
-+		ksft_print_header();
-+		ksft_exit_fail_msg("Unable to open %s: %s\n", file, strerror(errno));
-+	}
-+	close(fd);
-+
-+	fd = open(GUP_TEST_FILE, O_RDWR);
-+	if (fd == -1) {
-+		ksft_print_header();
-+		if (errno == EACCES)
-+			ksft_exit_skip("Please run this test as root\n");
-+		if (errno == ENOENT) {
-+			DIR *debugfs = opendir("/sys/kernel/debug");
-+
-+			if (!debugfs) {
-+				ksft_exit_skip("Mount debugfs at /sys/kernel/debug\n");
-+			} else {
-+				closedir(debugfs);
-+				ksft_exit_skip("Check CONFIG_GUP_TEST in kernel config\n");
-+			}
-+		}
-+		ksft_exit_fail_msg("Failed to open %s: %s\n", GUP_TEST_FILE, strerror(errno));
-+	}
-+	close(fd);
-+
-+	return test_harness_run(argc, argv);
-+}
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index 8f1e828e4f39..ae0ab5efabae 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -251,6 +251,7 @@ fi
- 
- CATEGORY="mmap" run_test ./map_fixed_noreplace
- 
-+CATEGORY="gup_test" run_test ./gup
- CATEGORY="gup_test" run_test ./gup_longterm
- 
- CATEGORY="userfaultfd" run_test ./uffd-unit-tests
+If so, how about having an option where the CMA allocation is backed by a direct
+map with the same page granularity, or at least a smaller and aligned granule?
+
+With that, we know that for whatever CMA allocation we do, we can safely unmap
+from the direct map without risking splitting blocks. On CMA free, we can safely
+remap into the direct map as I do not believe we coalesce yet.
+
+(This alignment is not necessary for upcoming systems with BBML3)
+
+However, to implement this, we'd need to split memblocks and I believe the only
+way at the moment is temporarily mark it as "nomap" which didn't seem very
+popular in the comments on v3.
+
+But if you think that is interesting I'm happy to share RFC patches.
+
+> 
+> Signed-off-by: Thierry Reding <treding@nvidia.com>
+> ---
+> Changes in v4:
+> - address Sashiko and checkpatch comments
+> - fully remove from linear map while chunks are allocated
+> - improve error handling
+> - remove freezer support
+> 
+> Changes in v3:
+> - use set_memory_device() and set_memory_normal() helpers
+> - use kzalloc_obj() instead of kzalloc() with sizeof()
+> 
+> Changes in v2:
+> - cluster allocations to reduce the number of resize operations
+> - support cross-chunk allocation
+> ---
+>  drivers/dma-buf/heaps/Kconfig     |   12 +
+>  drivers/dma-buf/heaps/Makefile    |    1 +
+>  drivers/dma-buf/heaps/tegra-vpr.c | 1368 +++++++++++++++++++++++++++++++++++++
+>  include/trace/events/tegra_vpr.h  |   57 ++
+>  4 files changed, 1438 insertions(+)
+> 
+> diff --git a/drivers/dma-buf/heaps/Kconfig b/drivers/dma-buf/heaps/Kconfig
+> index bb729e91545c..8909330bfaa2 100644
+> --- a/drivers/dma-buf/heaps/Kconfig
+> +++ b/drivers/dma-buf/heaps/Kconfig
+> @@ -20,3 +20,15 @@ config DMABUF_HEAPS_CMA
+>  	  Choose this option to enable dma-buf CMA heap. This heap is backed
+>  	  by the Contiguous Memory Allocator (CMA). If your system has these
+>  	  regions, you should say Y here.
+> +
+> +config DMABUF_HEAPS_TEGRA_VPR
+> +	bool "NVIDIA Tegra Video-Protected-Region DMA-BUF Heap"
+> +	depends on DMABUF_HEAPS && DMA_CMA
+> +	help
+> +	  Choose this option to enable Video-Protected-Region (VPR) support on
+> +	  a range of NVIDIA Tegra devices. Access to VPR memory is limited to
+> +	  a subset of hardware engines and specifically disallowed from the
+> +	  CPU. The region can be fixed, in which case no linear mapping exists
+> +	  for the memory, or it can be resizable on systems that want to reuse
+> +	  the memory for other uses when content-protected video is not played
+> +	  back.
+> diff --git a/drivers/dma-buf/heaps/Makefile b/drivers/dma-buf/heaps/Makefile
+> index 974467791032..265b77a7b889 100644
+> --- a/drivers/dma-buf/heaps/Makefile
+> +++ b/drivers/dma-buf/heaps/Makefile
+> @@ -1,3 +1,4 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  obj-$(CONFIG_DMABUF_HEAPS_SYSTEM)	+= system_heap.o
+>  obj-$(CONFIG_DMABUF_HEAPS_CMA)		+= cma_heap.o
+> +obj-$(CONFIG_DMABUF_HEAPS_TEGRA_VPR)	+= tegra-vpr.o
+> diff --git a/drivers/dma-buf/heaps/tegra-vpr.c b/drivers/dma-buf/heaps/tegra-vpr.c
+> new file mode 100644
+> index 000000000000..b56dfa5c7a0a
+> --- /dev/null
+> +++ b/drivers/dma-buf/heaps/tegra-vpr.c
+> @@ -0,0 +1,1368 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * DMA-BUF restricted heap exporter for NVIDIA Video-Protection-Region (VPR)
+> + *
+> + * Copyright (C) 2024-2026 NVIDIA Corporation
+> + */
+> +
+> +#define pr_fmt(fmt) "tegra-vpr: " fmt
+> +
+> +#include <linux/arm-smccc.h>
+> +#include <linux/cma.h>
+> +#include <linux/debugfs.h>
+> +#include <linux/dma-buf.h>
+> +#include <linux/dma-heap.h>
+> +#include <linux/find.h>
+> +#include <linux/memory.h>
+> +#include <linux/of_reserved_mem.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/pm_runtime.h>
+> +#include <linux/reset.h>
+> +#include <linux/set_memory.h>
+> +
+> +#define CREATE_TRACE_POINTS
+> +#include <trace/events/tegra_vpr.h>
+> +
+> +#define TEGRA_VPR_MAX_CHUNKS 64
+> +
+> +struct tegra_vpr;
+> +
+> +struct tegra_vpr_device {
+> +	struct list_head node;
+> +	struct device *dev;
+> +};
+> +
+> +struct tegra_vpr_chunk {
+> +	phys_addr_t start;
+> +	phys_addr_t limit;
+> +	size_t size;
+> +
+> +	struct tegra_vpr *vpr;
+> +	struct cma *cma;
+> +	bool invalid;
+> +	bool active;
+> +
+> +	struct page *start_page;
+> +	unsigned int offset;
+> +	unsigned long virt;
+> +	pgoff_t num_pages;
+> +
+> +	unsigned int num_buffers;
+> +};
+> +
+> +struct tegra_vpr {
+> +	struct device_node *dev_node;
+> +	unsigned long align;
+> +	phys_addr_t base;
+> +	phys_addr_t size;
+> +	int nid;
+> +
+> +	struct list_head buffers;
+> +	unsigned long *bitmap;
+> +	pgoff_t num_pages;
+> +
+> +	/* resizable VPR */
+> +	DECLARE_BITMAP(active, TEGRA_VPR_MAX_CHUNKS);
+> +	struct tegra_vpr_chunk *chunks;
+> +	unsigned int num_chunks;
+> +	struct page *start_page;
+> +	bool resizable;
+> +
+> +	unsigned int first;
+> +	unsigned int last;
+> +
+> +	struct list_head devices;
+> +
+> +	/**
+> +	 * @lock: Protects concurrent access to the allocation bitmap, as well
+> +	 * as the buffers and devices lists.
+> +	 */
+> +	struct mutex lock;
+> +};
+> +
+> +struct tegra_vpr_buffer {
+> +	struct list_head attachments;
+> +	struct tegra_vpr *vpr;
+> +	struct list_head list;
+> +
+> +	/**
+> +	 * @lock: Protects concurrent access to the list of attachments.
+> +	 */
+> +	struct mutex lock;
+> +
+> +	struct page **pages;
+> +	pgoff_t num_pages;
+> +	phys_addr_t start;
+> +	phys_addr_t limit;
+> +	size_t size;
+> +	int pageno;
+> +	int order;
+> +
+> +	DECLARE_BITMAP(chunks, TEGRA_VPR_MAX_CHUNKS);
+> +};
+> +
+> +struct tegra_vpr_attachment {
+> +	struct device *dev;
+> +	struct sg_table sgt;
+> +	struct list_head list;
+> +};
+> +
+> +#define ARM_SMCCC_TE_FUNC_PROGRAM_VPR 0x3
+> +
+> +#define ARM_SMCCC_VENDOR_SIP_TE_PROGRAM_VPR_FUNC_ID		\
+> +	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,			\
+> +			   ARM_SMCCC_SMC_32,			\
+> +			   ARM_SMCCC_OWNER_SIP,			\
+> +			   ARM_SMCCC_TE_FUNC_PROGRAM_VPR)
+> +
+> +static int tegra_vpr_set(phys_addr_t base, phys_addr_t size)
+> +{
+> +	struct arm_smccc_res res;
+> +
+> +	arm_smccc_smc(ARM_SMCCC_VENDOR_SIP_TE_PROGRAM_VPR_FUNC_ID, base, size,
+> +		      0, 0, 0, 0, 0, &res);
+> +
+> +	return res.a0;
+> +}
+> +
+> +static int tegra_vpr_get_extents(struct tegra_vpr *vpr, phys_addr_t *base,
+> +				 phys_addr_t *size)
+> +{
+> +	phys_addr_t start = ~0, limit = 0;
+> +	unsigned int i;
+> +
+> +	for (i = 0; i < vpr->num_chunks; i++) {
+> +		struct tegra_vpr_chunk *chunk = &vpr->chunks[i];
+> +
+> +		if (chunk->active) {
+> +			if (chunk->start < start)
+> +				start = chunk->start;
+> +
+> +			if (chunk->limit > limit)
+> +				limit = chunk->limit;
+> +		}
+> +	}
+> +
+> +	if (limit > start) {
+> +		*size = limit - start;
+> +		*base = start;
+> +	} else {
+> +		*base = *size = 0;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int tegra_vpr_resize(struct tegra_vpr *vpr)
+> +{
+> +	struct tegra_vpr_device *node;
+> +	phys_addr_t base, size;
+> +	int err, status = 0;
+> +
+> +	err = tegra_vpr_get_extents(vpr, &base, &size);
+> +	if (err < 0) {
+> +		pr_err("%s(): failed to get VPR extents: %d\n", __func__, err);
+> +		return err;
+> +	}
+> +
+> +	list_for_each_entry(node, &vpr->devices, node) {
+> +		err = pm_generic_freeze(node->dev);
+> +		if (err < 0) {
+> +			pr_err("failed to freeze %s: %d\n",
+> +			       dev_name(node->dev), err);
+> +			status = err;
+> +			goto thaw;
+> +		}
+> +	}
+> +
+> +	trace_tegra_vpr_set(base, size);
+> +
+> +	err = tegra_vpr_set(base, size);
+> +	if (err < 0) {
+> +		pr_err("failed to secure VPR: %d\n", err);
+> +		status = err;
+> +	}
+> +
+> +thaw:
+> +	list_for_each_entry_continue_reverse(node, &vpr->devices, node) {
+> +		err = pm_generic_thaw(node->dev);
+> +		if (err < 0) {
+> +			pr_err("failed to thaw %s: %d\n",
+> +			       dev_name(node->dev), err);
+> +			continue;
+> +		}
+> +	}
+> +
+> +	return status;
+> +}
+> +
+> +static int tegra_vpr_chunk_init(struct tegra_vpr *vpr,
+> +				struct tegra_vpr_chunk *chunk,
+> +				phys_addr_t start, size_t size,
+> +				unsigned int order, const char *name)
+> +{
+> +	chunk->start = start;
+> +	chunk->limit = start + size;
+> +	chunk->size = size;
+> +	chunk->vpr = vpr;
+> +
+> +	chunk->cma = cma_create(start, size, order, name);
+> +	if (IS_ERR(chunk->cma)) {
+> +		pr_err("cma_create() failed: %ld\n", PTR_ERR(chunk->cma));
+> +		return PTR_ERR(chunk->cma);
+> +	}
+> +
+> +	chunk->offset = (start - vpr->base) >> PAGE_SHIFT;
+> +	chunk->num_pages = size >> PAGE_SHIFT;
+> +	chunk->num_buffers = 0;
+> +
+> +	/* CMA area is not reserved yet */
+> +	chunk->start_page = NULL;
+> +	chunk->virt = 0;
+> +
+> +	return 0;
+> +}
+> +
+> +static void tegra_vpr_chunk_free(struct tegra_vpr_chunk *chunk)
+> +{
+> +	cma_free(chunk->cma);
+> +}
+> +
+> +static inline bool tegra_vpr_chunk_is_last(const struct tegra_vpr_chunk *chunk)
+> +{
+> +	phys_addr_t limit = chunk->vpr->base + chunk->vpr->size;
+> +
+> +	return chunk->limit == limit;
+> +}
+> +
+> +static inline bool tegra_vpr_chunk_is_leaf(const struct tegra_vpr_chunk *chunk)
+> +{
+> +	const struct tegra_vpr_chunk *next = chunk + 1;
+> +
+> +	if (tegra_vpr_chunk_is_last(chunk))
+> +		return true;
+> +
+> +	return !next->active;
+> +}
+> +
+> +static int tegra_vpr_chunk_alloc(struct tegra_vpr_chunk *chunk)
+> +{
+> +	unsigned long align = get_order(chunk->vpr->align);
+> +
+> +	chunk->start_page = cma_alloc(chunk->cma, chunk->num_pages, align,
+> +				      false);
+> +	if (!chunk->start_page)
+> +		return -ENOMEM;
+> +
+> +	chunk->virt = (unsigned long)page_to_virt(chunk->start_page);
+> +
+> +	return 0;
+> +}
+> +
+> +static int tegra_vpr_chunk_activate(struct tegra_vpr_chunk *chunk)
+> +{
+> +	unsigned int num_errors = 0;
+> +	int err, status = 0;
+> +	pgoff_t i;
+> +
+> +	trace_tegra_vpr_chunk_activate(chunk->start, chunk->limit);
+> +
+> +	for (i = 0; i < chunk->num_pages; i++) {
+> +		err = set_direct_map_invalid_noflush(chunk->start_page + i);
+> +		if (err)
+> +			goto restore;
+> +	}
+> +
+> +	flush_tlb_kernel_range(chunk->virt, chunk->virt + chunk->size);
+> +	chunk->invalid = false;
+> +	chunk->active = true;
+> +
+> +	return 0;
+> +
+> +restore:
+> +	status = err;
+> +
+> +	while (i--) {
+> +		err = set_direct_map_default_noflush(chunk->start_page + i);
+> +		if (err)
+> +			num_errors++;
+> +	}
+> +
+> +	flush_tlb_kernel_range(chunk->virt, chunk->virt + chunk->size);
+> +	chunk->invalid = num_errors > 0;
+> +
+> +	return status;
+> +}
+> +
+> +static int tegra_vpr_chunk_deactivate(struct tegra_vpr_chunk *chunk)
+> +{
+> +	unsigned int num_errors = 0;
+> +	int err, status = 0;
+> +	pgoff_t i;
+> +
+> +	if (!chunk->active)
+> +		return 0;
+> +
+> +	/* do not deactivate if there are buffers left in this chunk */
+> +	if (WARN_ON(chunk->num_buffers > 0))
+> +		return -EBUSY;
+> +
+> +	trace_tegra_vpr_chunk_deactivate(chunk->start, chunk->limit);
+> +
+> +	for (i = 0; i < chunk->num_pages; i++) {
+> +		err = set_direct_map_default_noflush(chunk->start_page + i);
+> +		if (err)
+> +			goto restore;
+> +	}
+> +
+> +	flush_tlb_kernel_range(chunk->virt, chunk->virt + chunk->size);
+> +	chunk->invalid = false;
+> +	chunk->active = false;
+> +
+> +	return 0;
+> +
+> +restore:
+> +	status = err;
+> +
+> +	while (i--) {
+> +		err = set_direct_map_invalid_noflush(chunk->start_page + i);
+> +		if (err)
+> +			num_errors++;
+> +	}
+> +
+> +	flush_tlb_kernel_range(chunk->virt, chunk->virt + chunk->size);
+> +	chunk->invalid = num_errors > 0;
+> +
+> +	return status;
+> +}
+> +
+> +static void tegra_vpr_chunk_release(struct tegra_vpr_chunk *chunk)
+> +{
+> +	if (!WARN_ON(chunk->active || chunk->invalid)) {
+> +		cma_release(chunk->cma, chunk->start_page, chunk->num_pages);
+> +		chunk->start_page = NULL;
+> +		chunk->virt = 0;
+> +	}
+> +}
+> +
+> +static bool tegra_vpr_chunk_overlaps(struct tegra_vpr_chunk *chunk,
+> +				     unsigned int start, unsigned int limit)
+> +{
+> +	unsigned int first = chunk->offset;
+> +	unsigned int last = chunk->offset + chunk->num_pages - 1;
+> +
+> +	if (last < start || first >= limit)
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+> +static int tegra_vpr_activate_chunks(struct tegra_vpr *vpr,
+> +				     struct tegra_vpr_buffer *buffer)
+> +{
+> +	DECLARE_BITMAP(dirty, vpr->num_chunks);
+> +	unsigned int i, bottom, top;
+> +	int err = 0, ret;
+> +
+> +	bitmap_zero(dirty, vpr->num_chunks);
+> +
+> +	/* activate any inactive chunks that overlap this buffer */
+> +	for_each_set_bit(i, buffer->chunks, vpr->num_chunks) {
+> +		struct tegra_vpr_chunk *chunk = &vpr->chunks[i];
+> +
+> +		if (chunk->active)
+> +			continue;
+> +
+> +		err = tegra_vpr_chunk_alloc(chunk);
+> +		if (err < 0)
+> +			goto deactivate;
+> +
+> +		err = tegra_vpr_chunk_activate(chunk);
+> +		if (err < 0) {
+> +			tegra_vpr_chunk_release(chunk);
+> +			goto deactivate;
+> +		}
+> +
+> +		set_bit(i, vpr->active);
+> +		set_bit(i, dirty);
+> +	}
+> +
+> +	/*
+> +	 * Activating chunks above may have created holes, but since the VPR
+> +	 * can only ever be a single contiguous region, make sure to activate
+> +	 * any missing chunks.
+> +	 */
+> +	for_each_clear_bitrange(bottom, top, vpr->active, vpr->num_chunks) {
+> +		/* inactive chunks at the bottom or the top are harmless */
+> +		if (bottom == 0 || top == vpr->num_chunks)
+> +			continue;
+> +
+> +		for (i = bottom; i < top; i++) {
+> +			struct tegra_vpr_chunk *chunk = &vpr->chunks[i];
+> +
+> +			err = tegra_vpr_chunk_alloc(chunk);
+> +			if (err < 0)
+> +				goto deactivate;
+> +
+> +			err = tegra_vpr_chunk_activate(chunk);
+> +			if (err < 0) {
+> +				tegra_vpr_chunk_release(chunk);
+> +				goto deactivate;
+> +			}
+> +
+> +			set_bit(i, vpr->active);
+> +			set_bit(i, dirty);
+> +		}
+> +	}
+> +
+> +	/* if any chunks have been activated, VPR needs to be resized */
+> +	if (!bitmap_empty(dirty, vpr->num_chunks)) {
+> +		err = tegra_vpr_resize(vpr);
+> +		if (err < 0) {
+> +			pr_err("failed to grow VPR: %d\n", err);
+> +			goto deactivate;
+> +		}
+> +	}
+> +
+> +	/* increment buffer count for each chunk */
+> +	for_each_set_bit(i, buffer->chunks, vpr->num_chunks)
+> +		vpr->chunks[i].num_buffers++;
+> +
+> +	return 0;
+> +
+> +deactivate:
+> +	/* deactivate any of the previously inactive chunks on failure */
+> +	for_each_set_bit(i, dirty, vpr->num_chunks) {
+> +		struct tegra_vpr_chunk *chunk = &vpr->chunks[i];
+> +
+> +		ret = tegra_vpr_chunk_deactivate(chunk);
+> +		if (WARN_ON(ret < 0)) {
+> +			pr_err("failed to deactivate chunk #%u: %d\n", i, ret);
+> +		} else {
+> +			tegra_vpr_chunk_release(chunk);
+> +			clear_bit(i, vpr->active);
+> +		}
+> +	}
+> +
+> +	return err;
+> +}
+> +
+> +/*
+> + * Retrieve the range of pages within the activate region of the VPR.
+> + */
+> +static bool tegra_vpr_get_active_range(struct tegra_vpr *vpr,
+> +				       unsigned int *first,
+> +				       unsigned int *last)
+> +{
+> +	unsigned long i, j;
+> +
+> +	i = find_first_bit(vpr->active, vpr->num_chunks);
+> +	if (i >= vpr->num_chunks)
+> +		return false;
+> +
+> +	j = find_last_bit(vpr->active, vpr->num_chunks);
+> +	if (j >= vpr->num_chunks)
+> +		return false;
+> +
+> +	*first = vpr->chunks[i].offset;
+> +	*last = vpr->chunks[j].offset + vpr->chunks[j].num_pages;
+> +
+> +	return true;
+> +}
+> +
+> +/*
+> + * Try to find and allocate a free region within a specific page range.
+> + * Returns the page number if successful, -ENOSPC otherwise.
+> + *
+> + * This function mimics bitmap_find_free_region() but restricts the search
+> + * to a specific range to enable allocation within individual chunks.
+> + */
+> +static int tegra_vpr_find_free_region_in_range(struct tegra_vpr *vpr,
+> +					       unsigned int start_page,
+> +					       unsigned int end_page,
+> +					       unsigned int num_pages,
+> +					       unsigned int align)
+> +{
+> +	unsigned int pos, next = ALIGN(start_page, align);
+> +
+> +	/* Scan through aligned positions, trying to allocate at each one */
+> +	for (pos = next; pos + num_pages <= end_page; pos = next) {
+> +		next = find_next_bit(vpr->bitmap, pos + num_pages, pos);
+> +
+> +		if (next >= pos + num_pages) {
+> +			bitmap_set(vpr->bitmap, pos, num_pages);
+> +			return pos;
+> +		}
+> +
+> +		next = find_next_zero_bit(vpr->bitmap, vpr->num_pages, next);
+> +		next = ALIGN(next, align);
+> +	}
+> +
+> +	return -ENOSPC;
+> +}
+> +
+> +static int tegra_vpr_find_free_region(struct tegra_vpr *vpr,
+> +				      unsigned int num_pages,
+> +				      unsigned long align)
+> +{
+> +	return tegra_vpr_find_free_region_in_range(vpr, 0, vpr->num_pages - 1,
+> +						   num_pages, align);
+> +}
+> +
+> +static int tegra_vpr_find_free_region_clustered(struct tegra_vpr *vpr,
+> +						unsigned int num_pages,
+> +						unsigned int align)
+> +{
+> +	unsigned int target, first, last;
+> +	int pageno;
+> +
+> +	/*
+> +	 * If there are no allocations, abort the clustered allocation scheme
+> +	 * and use the generic allocation scheme instead.
+> +	 */
+> +	if (vpr->first > vpr->last)
+> +		return -ENOSPC;
+> +
+> +	/*
+> +	 * First, try to allocate within the currently allocated region. This
+> +	 * keeps allocations tightly packed and minimizes the VPR size needed.
+> +	 */
+> +	pageno = tegra_vpr_find_free_region_in_range(vpr, vpr->first,
+> +						     vpr->last + 1, num_pages,
+> +						     align);
+> +	if (pageno >= 0)
+> +		return pageno;
+> +
+> +	/*
+> +	 * If not enough free space exists within the currently allocated
+> +	 * region, check to see if the allocation fits anywhere within the
+> +	 * active region, avoiding the need to resize the VPR.
+> +	 */
+> +	if (tegra_vpr_get_active_range(vpr, &first, &last)) {
+> +		pageno = tegra_vpr_find_free_region_in_range(vpr, first, last,
+> +							     num_pages, align);
+> +		if (pageno >= 0)
+> +			return pageno;
+> +	}
+> +
+> +	/*
+> +	 * If not enough free space exists within the currently active region,
+> +	 * try to allocate adjacent to it to grow it contiguously and ensure
+> +	 * optimal packing.
+> +	 */
+> +
+> +	/*
+> +	 * Calculate where the allocation should start to end right at the
+> +	 * first allocated page, with proper alignment.
+> +	 */
+> +	if (vpr->first >= num_pages) {
+> +		target = ALIGN_DOWN(vpr->first - num_pages, align);
+> +
+> +		if (!bitmap_allocate(vpr->bitmap, target, num_pages))
+> +			return target;
+> +	}
+> +
+> +	/* Try after the last allocation */
+> +	target = ALIGN(vpr->last + 1, align);
+> +
+> +	if (target + num_pages <= vpr->num_pages &&
+> +	    !bitmap_allocate(vpr->bitmap, target, num_pages))
+> +		return target;
+> +
+> +	/*
+> +	 * Couldn't allocate at the ideal adjacent position, search for any
+> +	 * available space before the first allocated page.
+> +	 */
+> +	pageno = tegra_vpr_find_free_region_in_range(vpr, 0, vpr->first,
+> +						     num_pages, align);
+> +	if (pageno >= 0)
+> +		return pageno;
+> +
+> +	/*
+> +	 * Couldn't allocate at the ideal adjacent position, search
+> +	 * for any available space after the last allocated page.
+> +	 */
+> +	pageno = tegra_vpr_find_free_region_in_range(vpr, vpr->last + 1,
+> +						     vpr->num_pages, num_pages,
+> +						     align);
+> +	if (pageno >= 0)
+> +		return pageno;
+> +
+> +	return -ENOSPC;
+> +}
+> +
+> +/*
+> + * Find a free region, preferring locations near existing allocations to
+> + * minimize VPR fragmentation. The allocation strategy is to first allocate
+> + * within or adjacent to the existing region to keep allocations clustered.
+> + * Otherwise fall back to a generic allocation using the first available
+> + * space.
+> + *
+> + * This approach focuses on page-level allocation first, then the chunk
+> + * system determines which chunks need to be activated based on where the
+> + * pages ended up.
+> + */
+> +static int tegra_vpr_allocate_region(struct tegra_vpr *vpr,
+> +				     unsigned int num_pages,
+> +				     unsigned int align)
+> +{
+> +	int pageno;
+> +
+> +	/*
+> +	 * For non-resizable VPR (no chunks), use simple first-fit allocation.
+> +	 * Clustering optimization is only beneficial for resizable VPR where
+> +	 * keeping allocations together minimizes the active VPR size.
+> +	 */
+> +	if (!vpr->resizable)
+> +		return tegra_vpr_find_free_region(vpr, num_pages, align);
+> +
+> +	/*
+> +	 * Check if there are any existing allocations in the bitmap. If so,
+> +	 * try to allocate near them to minimize fragmentation.
+> +	 */
+> +	pageno = tegra_vpr_find_free_region_clustered(vpr, num_pages, align);
+> +	if (pageno >= 0)
+> +		return pageno;
+> +
+> +	/*
+> +	 * If there are no existing allocations, or no space adjacent to them,
+> +	 * fall back to the first available space anywhere in the VPR.
+> +	 */
+> +	pageno = tegra_vpr_find_free_region(vpr, num_pages, align);
+> +	if (pageno >= 0)
+> +		return pageno;
+> +
+> +	return -ENOSPC;
+> +}
+> +
+> +static struct tegra_vpr_buffer *
+> +tegra_vpr_buffer_allocate(struct tegra_vpr *vpr, size_t size)
+> +{
+> +	unsigned int num_pages = size >> PAGE_SHIFT;
+> +	unsigned int order = get_order(size);
+> +	struct tegra_vpr_buffer *buffer;
+> +	unsigned long first, last;
+> +	int pageno, err;
+> +
+> +	/*
+> +	 * Quick sanity check that we're not trying to allocate a buffer that
+> +	 * has no chance of fitting into the VPR.
+> +	 */
+> +	if (size > vpr->size)
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	/*
+> +	 * "order" defines the alignment and size, so this may result in
+> +	 * fragmented memory depending on the allocation patterns. However,
+> +	 * since this is used primarily for video frames, it is expected that
+> +	 * a number of buffers of the same size will be allocated, so
+> +	 * fragmentation should be negligible.
+> +	 */
+> +	pageno = tegra_vpr_allocate_region(vpr, num_pages, 1);
+> +	if (pageno < 0)
+> +		return ERR_PTR(pageno);
+> +
+> +	first = find_first_bit(vpr->bitmap, vpr->num_pages);
+> +	last = find_last_bit(vpr->bitmap, vpr->num_pages);
+> +
+> +	buffer = kzalloc_obj(*buffer, GFP_KERNEL);
+> +	if (!buffer) {
+> +		err = -ENOMEM;
+> +		goto release;
+> +	}
+> +
+> +	INIT_LIST_HEAD(&buffer->attachments);
+> +	INIT_LIST_HEAD(&buffer->list);
+> +	mutex_init(&buffer->lock);
+> +	buffer->start = vpr->base + (pageno << PAGE_SHIFT);
+> +	buffer->limit = buffer->start + size;
+> +	buffer->size = size;
+> +	buffer->num_pages = num_pages;
+> +	buffer->pageno = pageno;
+> +	buffer->order = order;
+> +
+> +	/* track which chunks this buffer overlaps */
+> +	if (vpr->resizable) {
+> +		unsigned int limit = buffer->pageno + buffer->num_pages;
+> +		pgoff_t i;
+> +
+> +		/*
+> +		 * Memory is backed by struct page, so track which ones we
+> +		 * use.
+> +		 */
+> +		buffer->pages = kvmalloc_array(buffer->num_pages,
+> +					       sizeof(*buffer->pages),
+> +					       GFP_KERNEL);
+> +		if (!buffer->pages) {
+> +			err = -ENOMEM;
+> +			goto free;
+> +		}
+> +
+> +		for (i = 0; i < buffer->num_pages; i++)
+> +			buffer->pages[i] = &vpr->start_page[pageno + i];
+> +
+> +		for (i = 0; i < vpr->num_chunks; i++) {
+> +			struct tegra_vpr_chunk *chunk = &vpr->chunks[i];
+> +
+> +			if (tegra_vpr_chunk_overlaps(chunk, pageno, limit))
+> +				set_bit(i, buffer->chunks);
+> +		}
+> +
+> +		/* activate chunks if necessary */
+> +		err = tegra_vpr_activate_chunks(vpr, buffer);
+> +		if (err < 0) {
+> +			kfree(buffer->pages);
+> +			goto free;
+> +		}
+> +
+> +		/* track first and last allocated pages */
+> +		if (buffer->pageno < vpr->first)
+> +			vpr->first = buffer->pageno;
+> +
+> +		if (limit - 1 > vpr->last)
+> +			vpr->last = limit - 1;
+> +	}
+> +
+> +	return buffer;
+> +
+> +free:
+> +	kfree(buffer);
+> +release:
+> +	bitmap_clear(vpr->bitmap, pageno, num_pages);
+> +	return ERR_PTR(err);
+> +}
+> +
+> +static void tegra_vpr_buffer_release(struct tegra_vpr_buffer *buffer)
+> +{
+> +	struct tegra_vpr *vpr = buffer->vpr;
+> +	struct tegra_vpr_buffer *entry;
+> +	unsigned long first, last;
+> +	unsigned int i;
+> +
+> +	/*
+> +	 * Decrement buffer count for each overlapping chunk. Note that chunks
+> +	 * are not deactivated here yet, that's done in tegra_vpr_recycle()
+> +	 * instead.
+> +	 */
+> +	for_each_set_bit(i, buffer->chunks, vpr->num_chunks) {
+> +		if (!WARN_ON(vpr->chunks[i].num_buffers == 0))
+> +			vpr->chunks[i].num_buffers--;
+> +	}
+> +
+> +	/* track first and last allocated pages */
+> +	if (list_is_first(&buffer->list, &vpr->buffers) &&
+> +	    list_is_last(&buffer->list, &vpr->buffers)) {
+> +		/* if there are no remaining buffers after this, reset */
+> +		vpr->first = ~0U;
+> +		vpr->last = 0U;
+> +	} else if (list_is_first(&buffer->list, &vpr->buffers)) {
+> +		entry = list_next_entry(buffer, list);
+> +		vpr->first = entry->pageno;
+> +	} else if (list_is_last(&buffer->list, &vpr->buffers)) {
+> +		entry = list_prev_entry(buffer, list);
+> +		vpr->last = entry->pageno + entry->num_pages - 1;
+> +	}
+> +
+> +	bitmap_clear(vpr->bitmap, buffer->pageno, buffer->num_pages);
+> +	list_del(&buffer->list);
+> +	kfree(buffer->pages);
+> +	kfree(buffer);
+> +
+> +	first = find_first_bit(vpr->bitmap, vpr->num_pages);
+> +	last = find_last_bit(vpr->bitmap, vpr->num_pages);
+> +}
+> +
+> +static int tegra_vpr_attach(struct dma_buf *buf,
+> +			    struct dma_buf_attachment *attachment)
+> +{
+> +	struct tegra_vpr_buffer *buffer = buf->priv;
+> +	struct tegra_vpr_attachment *attach;
+> +	int err;
+> +
+> +	attach = kzalloc_obj(*attach, GFP_KERNEL);
+> +	if (!attach)
+> +		return -ENOMEM;
+> +
+> +	/*
+> +	 * For resizable VPR, the memory is backed by struct page, so we can
+> +	 * use the convenient helper to create the SG table.
+> +	 */
+> +	if (buffer->pages) {
+> +		err = sg_alloc_table_from_pages(&attach->sgt, buffer->pages,
+> +						buffer->num_pages, 0,
+> +						buffer->size, GFP_KERNEL);
+> +		if (err < 0)
+> +			goto free;
+> +	} else {
+> +		if (sg_alloc_table(&attach->sgt, 1, GFP_KERNEL)) {
+> +			err = -ENOMEM;
+> +			goto free;
+> +		}
+> +
+> +		sg_set_page(attach->sgt.sgl, NULL, buffer->size, 0);
+> +		sg_dma_address(attach->sgt.sgl) = buffer->start;
+> +		sg_dma_len(attach->sgt.sgl) = buffer->size;
+> +	}
+> +
+> +	attach->dev = attachment->dev;
+> +	INIT_LIST_HEAD(&attach->list);
+> +	attachment->priv = attach;
+> +
+> +	mutex_lock(&buffer->lock);
+> +	list_add(&attach->list, &buffer->attachments);
+> +	mutex_unlock(&buffer->lock);
+> +
+> +	return 0;
+> +
+> +free:
+> +	kfree(attach);
+> +	return err;
+> +}
+> +
+> +static void tegra_vpr_detach(struct dma_buf *buf,
+> +			     struct dma_buf_attachment *attachment)
+> +{
+> +	struct tegra_vpr_buffer *buffer = buf->priv;
+> +	struct tegra_vpr_attachment *attach = attachment->priv;
+> +
+> +	mutex_lock(&buffer->lock);
+> +	list_del(&attach->list);
+> +	mutex_unlock(&buffer->lock);
+> +
+> +	sg_free_table(&attach->sgt);
+> +	kfree(attach);
+> +}
+> +
+> +static struct sg_table *
+> +tegra_vpr_map_dma_buf(struct dma_buf_attachment *attachment,
+> +		      enum dma_data_direction direction)
+> +{
+> +	struct tegra_vpr_attachment *attach = attachment->priv;
+> +	struct sg_table *sgt = &attach->sgt;
+> +	int err;
+> +
+> +	err = dma_map_sgtable(attachment->dev, sgt, direction,
+> +			      DMA_ATTR_SKIP_CPU_SYNC);
+> +	if (err < 0)
+> +		return ERR_PTR(err);
+> +
+> +	return sgt;
+> +}
+> +
+> +static void tegra_vpr_unmap_dma_buf(struct dma_buf_attachment *attachment,
+> +				    struct sg_table *sgt,
+> +				    enum dma_data_direction direction)
+> +{
+> +	dma_unmap_sgtable(attachment->dev, sgt, direction,
+> +			  DMA_ATTR_SKIP_CPU_SYNC);
+> +}
+> +
+> +static void tegra_vpr_recycle(struct tegra_vpr *vpr)
+> +{
+> +	DECLARE_BITMAP(dirty, vpr->num_chunks);
+> +	unsigned int i;
+> +	int err;
+> +
+> +	if (!vpr->resizable)
+> +		return;
+> +
+> +	bitmap_zero(dirty, vpr->num_chunks);
+> +
+> +	/*
+> +	 * Deactivate any unused chunks from the bottom...
+> +	 */
+> +	for (i = 0; i < vpr->num_chunks; i++) {
+> +		struct tegra_vpr_chunk *chunk = &vpr->chunks[i];
+> +
+> +		if (!chunk->active)
+> +			continue;
+> +
+> +		if (chunk->num_buffers > 0)
+> +			break;
+> +
+> +		err = tegra_vpr_chunk_deactivate(chunk);
+> +		if (err < 0) {
+> +			pr_err("failed to deactivate chunk #%u: %d\n", i, err);
+> +			goto activate;
+> +		} else {
+> +			clear_bit(i, vpr->active);
+> +			set_bit(i, dirty);
+> +		}
+> +	}
+> +
+> +	/*
+> +	 * ... and the top.
+> +	 */
+> +	for (i = 0; i < vpr->num_chunks; i++) {
+> +		unsigned int index = vpr->num_chunks - i - 1;
+> +		struct tegra_vpr_chunk *chunk = &vpr->chunks[index];
+> +
+> +		if (!chunk->active)
+> +			continue;
+> +
+> +		if (chunk->num_buffers > 0)
+> +			break;
+> +
+> +		err = tegra_vpr_chunk_deactivate(chunk);
+> +		if (err < 0) {
+> +			pr_err("failed to deactivate chunk #%u: %d\n", index,
+> +			       err);
+> +			goto activate;
+> +		} else {
+> +			clear_bit(index, vpr->active);
+> +			set_bit(index, dirty);
+> +		}
+> +	}
+> +
+> +	if (!bitmap_empty(dirty, vpr->num_chunks)) {
+> +		err = tegra_vpr_resize(vpr);
+> +		if (err < 0) {
+> +			pr_err("failed to shrink VPR: %d\n", err);
+> +			goto activate;
+> +		}
+> +	}
+> +
+> +	/* release the CMA memory associated with deactivated chunks */
+> +	for_each_set_bit(i, dirty, vpr->num_chunks)
+> +		tegra_vpr_chunk_release(&vpr->chunks[i]);
+> +
+> +	return;
+> +
+> +activate:
+> +	for_each_set_bit(i, dirty, vpr->num_chunks) {
+> +		err = tegra_vpr_chunk_activate(&vpr->chunks[i]);
+> +		if (WARN_ON(err < 0))
+> +			pr_err("failed to activate chunk #%u: %d\n", i, err);
+> +
+> +		/*
+> +		 * This may not be fully activated at this point, but we need
+> +		 * to keep track of it anyway to make sure the CMA region can
+> +		 * eventually be released. The WARN_ON above tells us when it
+> +		 * happens: here be dragons.
+> +		 */
+> +		set_bit(i, vpr->active);
+> +	}
+> +}
+> +
+> +static void tegra_vpr_release(struct dma_buf *buf)
+> +{
+> +	struct tegra_vpr_buffer *buffer = buf->priv;
+> +	struct tegra_vpr *vpr = buffer->vpr;
+> +
+> +	mutex_lock(&vpr->lock);
+> +
+> +	tegra_vpr_buffer_release(buffer);
+> +	tegra_vpr_recycle(vpr);
+> +
+> +	mutex_unlock(&vpr->lock);
+> +}
+> +
+> +/*
+> + * Prohibit userspace mapping because the CPU cannot access this memory
+> + * anyway.
+> + */
+> +static int tegra_vpr_begin_cpu_access(struct dma_buf *buf,
+> +				      enum dma_data_direction direction)
+> +{
+> +	return -EPERM;
+> +}
+> +
+> +static int tegra_vpr_end_cpu_access(struct dma_buf *buf,
+> +				    enum dma_data_direction direction)
+> +{
+> +	return -EPERM;
+> +}
+> +
+> +static int tegra_vpr_mmap(struct dma_buf *buf, struct vm_area_struct *vma)
+> +{
+> +	return -EPERM;
+> +}
+> +
+> +static const struct dma_buf_ops tegra_vpr_buf_ops = {
+> +	.attach = tegra_vpr_attach,
+> +	.detach = tegra_vpr_detach,
+> +	.map_dma_buf = tegra_vpr_map_dma_buf,
+> +	.unmap_dma_buf = tegra_vpr_unmap_dma_buf,
+> +	.release = tegra_vpr_release,
+> +	.begin_cpu_access = tegra_vpr_begin_cpu_access,
+> +	.end_cpu_access = tegra_vpr_end_cpu_access,
+> +	.mmap = tegra_vpr_mmap,
+> +};
+> +
+> +static struct dma_buf *tegra_vpr_allocate(struct dma_heap *heap,
+> +					  unsigned long len, u32 fd_flags,
+> +					  u64 heap_flags)
+> +{
+> +	struct tegra_vpr *vpr = dma_heap_get_drvdata(heap);
+> +	struct tegra_vpr_buffer *buffer, *entry;
+> +	size_t size = ALIGN(len, vpr->align);
+> +	DEFINE_DMA_BUF_EXPORT_INFO(export);
+> +	struct dma_buf *buf;
+> +
+> +	mutex_lock(&vpr->lock);
+> +
+> +	buffer = tegra_vpr_buffer_allocate(vpr, size);
+> +	if (IS_ERR(buffer)) {
+> +		mutex_unlock(&vpr->lock);
+> +		return ERR_CAST(buffer);
+> +	}
+> +
+> +	/* insert in the correct order */
+> +	if (!list_empty(&vpr->buffers)) {
+> +		list_for_each_entry(entry, &vpr->buffers, list) {
+> +			if (buffer->pageno < entry->pageno) {
+> +				list_add_tail(&buffer->list, &entry->list);
+> +				break;
+> +			}
+> +		}
+> +	}
+> +
+> +	if (list_empty(&buffer->list))
+> +		list_add_tail(&buffer->list, &vpr->buffers);
+> +
+> +	buffer->vpr = vpr;
+> +
+> +	/*
+> +	 * If a valid buffer was allocated, wrap it in a dma_buf
+> +	 * and return it.
+> +	 */
+> +	export.exp_name = dma_heap_get_name(heap);
+> +	export.ops = &tegra_vpr_buf_ops;
+> +	export.size = buffer->size;
+> +	export.flags = fd_flags;
+> +	export.priv = buffer;
+> +
+> +	buf = dma_buf_export(&export);
+> +	if (IS_ERR(buf)) {
+> +		tegra_vpr_buffer_release(buffer);
+> +		tegra_vpr_recycle(vpr);
+> +	}
+> +
+> +	mutex_unlock(&vpr->lock);
+> +	return buf;
+> +}
+> +
+> +static void tegra_vpr_debugfs_show_buffers(struct tegra_vpr *vpr,
+> +					   struct seq_file *s)
+> +{
+> +	struct tegra_vpr_buffer *buffer;
+> +	char buf[16];
+> +
+> +	mutex_lock(&vpr->lock);
+> +
+> +	list_for_each_entry(buffer, &vpr->buffers, list) {
+> +		string_get_size(buffer->size, 1, STRING_UNITS_2, buf,
+> +				sizeof(buf));
+> +		seq_printf(s, "  %pap-%pap (%s)\n", &buffer->start,
+> +			   &buffer->limit, buf);
+> +	}
+> +
+> +	mutex_unlock(&vpr->lock);
+> +}
+> +
+> +static void tegra_vpr_debugfs_show_chunks(struct tegra_vpr *vpr,
+> +					  struct seq_file *s)
+> +{
+> +	struct tegra_vpr_buffer *buffer;
+> +	unsigned int i;
+> +	char buf[16];
+> +
+> +	for (i = 0; i < vpr->num_chunks; i++) {
+> +		const struct tegra_vpr_chunk *chunk = &vpr->chunks[i];
+> +
+> +		string_get_size(chunk->size, 1, STRING_UNITS_2, buf,
+> +				sizeof(buf));
+> +		seq_printf(s, "  %pap-%pap (%s) (%s, %u buffers)\n",
+> +			   &chunk->start, &chunk->limit, buf,
+> +			   chunk->active ? "active" : "inactive",
+> +			   chunk->num_buffers);
+> +	}
+> +
+> +	list_for_each_entry(buffer, &vpr->buffers, list) {
+> +		string_get_size(buffer->size, 1, STRING_UNITS_2, buf,
+> +				sizeof(buf));
+> +		seq_printf(s, "%pap-%pap (%s, chunks: %*pbl)\n",
+> +			   &buffer->start, &buffer->limit, buf,
+> +			   vpr->num_chunks, buffer->chunks);
+> +	}
+> +}
+> +
+> +static int tegra_vpr_debugfs_show(struct seq_file *s, struct dma_heap *heap)
+> +{
+> +	struct tegra_vpr *vpr = dma_heap_get_drvdata(heap);
+> +	phys_addr_t limit = vpr->base + vpr->size;
+> +	char buf[16];
+> +
+> +	string_get_size(vpr->size, 1, STRING_UNITS_2, buf, sizeof(buf));
+> +	seq_printf(s, "%pap-%pap (%s)\n", &vpr->base, &limit, buf);
+> +
+> +	if (!vpr->resizable)
+> +		tegra_vpr_debugfs_show_buffers(vpr, s);
+> +	else
+> +		tegra_vpr_debugfs_show_chunks(vpr, s);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct dma_heap_ops tegra_vpr_heap_ops = {
+> +	.allocate = tegra_vpr_allocate,
+> +	.show = tegra_vpr_debugfs_show,
+> +};
+> +
+> +static int tegra_vpr_setup_chunks(struct tegra_vpr *vpr, const char *name)
+> +{
+> +	phys_addr_t start, limit;
+> +	unsigned int order, i;
+> +	size_t max_size;
+> +	int err;
+> +
+> +	/* Memory is backed by struct page, so track the first one. */
+> +	vpr->start_page = phys_to_page(vpr->base);
+> +
+> +	/* This seems a reasonable value, so hard-code it for now. */
+> +	vpr->num_chunks = 4;
+> +
+> +	vpr->chunks = kcalloc(vpr->num_chunks, sizeof(*vpr->chunks),
+> +			      GFP_KERNEL);
+> +	if (!vpr->chunks)
+> +		return -ENOMEM;
+> +
+> +	max_size = PAGE_SIZE << (get_order(vpr->size) - ilog2(vpr->num_chunks));
+> +	order = get_order(vpr->align);
+> +
+> +	/*
+> +	 * Allocate CMA areas for VPR. All areas will be roughtly the same
+> +	 * size, with the last area taking up the rest.
+> +	 */
+> +	start = vpr->base;
+> +	limit = vpr->base + vpr->size;
+> +
+> +	pr_debug("VPR: %pap-%pap (%lu pages, %u chunks, %lu MiB)\n", &start,
+> +		 &limit, vpr->num_pages, vpr->num_chunks,
+> +		 (unsigned long)vpr->size / 1024 / 1024);
+> +
+> +	for (i = 0; i < vpr->num_chunks; i++) {
+> +		size_t size = limit - start;
+> +		phys_addr_t end;
+> +
+> +		size = min_t(size_t, size, max_size);
+> +		end = start + size - 1;
+> +
+> +		err = tegra_vpr_chunk_init(vpr, &vpr->chunks[i], start, size,
+> +					   order, name);
+> +		if (err < 0) {
+> +			pr_err("failed to create VPR chunk: %d\n", err);
+> +			goto free;
+> +		}
+> +
+> +		pr_debug("  %2u: %pap-%pap (%lu MiB)\n", i, &start, &end,
+> +			 size / 1024 / 1024);
+> +		start += size;
+> +	}
+> +
+> +	vpr->first = ~0U;
+> +	vpr->last = 0U;
+> +
+> +	return 0;
+> +
+> +free:
+> +	while (i--)
+> +		tegra_vpr_chunk_free(&vpr->chunks[i]);
+> +
+> +	kfree(vpr->chunks);
+> +	return err;
+> +}
+> +
+> +static void tegra_vpr_free_chunks(struct tegra_vpr *vpr)
+> +{
+> +	unsigned int i;
+> +
+> +	for (i = 0; i < vpr->num_chunks; i++)
+> +		tegra_vpr_chunk_free(&vpr->chunks[i]);
+> +
+> +	kfree(vpr->chunks);
+> +}
+> +
+> +static int tegra_vpr_setup_static(struct tegra_vpr *vpr)
+> +{
+> +	phys_addr_t start, limit;
+> +
+> +	start = vpr->base;
+> +	limit = vpr->base + vpr->size;
+> +
+> +	pr_debug("VPR: %pap-%pap (%lu pages, %lu MiB)\n", &start, &limit,
+> +		 vpr->num_pages, (unsigned long)vpr->size / 1024 / 1024);
+> +
+> +	return 0;
+> +}
+> +
+> +static int tegra_vpr_add_heap(struct reserved_mem *rmem,
+> +			      struct device_node *np)
+> +{
+> +	struct dma_heap_export_info info = {};
+> +	unsigned long first, last;
+> +	struct dma_heap *heap;
+> +	struct tegra_vpr *vpr;
+> +	int err;
+> +
+> +	vpr = kzalloc_obj(*vpr, GFP_KERNEL);
+> +	if (!vpr)
+> +		return -ENOMEM;
+> +
+> +	INIT_LIST_HEAD(&vpr->buffers);
+> +	INIT_LIST_HEAD(&vpr->devices);
+> +	mutex_init(&vpr->lock);
+> +
+> +	vpr->resizable = !of_property_read_bool(np, "no-map");
+> +	vpr->dev_node = of_node_get(np);
+> +	vpr->align = PAGE_SIZE;
+> +	vpr->base = rmem->base;
+> +	vpr->size = rmem->size;
+> +	vpr->num_pages = vpr->size >> PAGE_SHIFT;
+> +	vpr->nid = of_node_to_nid(np);
+> +
+> +	vpr->bitmap = bitmap_zalloc(vpr->num_pages, GFP_KERNEL);
+> +	if (!vpr->bitmap) {
+> +		err = -ENOMEM;
+> +		goto free;
+> +	}
+> +
+> +	first = find_first_bit(vpr->bitmap, vpr->num_pages);
+> +	last = find_last_bit(vpr->bitmap, vpr->num_pages);
+> +
+> +	if (vpr->resizable)
+> +		err = tegra_vpr_setup_chunks(vpr, rmem->name);
+> +	else
+> +		err = tegra_vpr_setup_static(vpr);
+> +
+> +	if (err < 0)
+> +		goto free;
+> +
+> +	info.name = vpr->dev_node->name;
+> +	info.ops = &tegra_vpr_heap_ops;
+> +	info.priv = vpr;
+> +
+> +	heap = dma_heap_add(&info);
+> +	if (IS_ERR(heap)) {
+> +		err = PTR_ERR(heap);
+> +		goto cleanup;
+> +	}
+> +
+> +	rmem->priv = heap;
+> +
+> +	return 0;
+> +
+> +cleanup:
+> +	if (vpr->resizable)
+> +		tegra_vpr_free_chunks(vpr);
+> +free:
+> +	bitmap_free(vpr->bitmap);
+> +	kfree(vpr);
+> +	return err;
+> +}
+> +
+> +static int tegra_vpr_init(void)
+> +{
+> +	const char *compatible = "nvidia,tegra-video-protection-region";
+> +	struct device_node *parent;
+> +	struct reserved_mem *rmem;
+> +	int err;
+> +
+> +	parent = of_find_node_by_path("/reserved-memory");
+> +	if (!parent)
+> +		return 0;
+> +
+> +	for_each_child_of_node_scoped(parent, child) {
+> +		if (!of_device_is_compatible(child, compatible))
+> +			continue;
+> +
+> +		rmem = of_reserved_mem_lookup(child);
+> +		if (!rmem)
+> +			continue;
+> +
+> +		err = tegra_vpr_add_heap(rmem, child);
+> +		if (err < 0)
+> +			pr_err("failed to add VPR heap for %pOF: %d\n", child,
+> +			       err);
+> +
+> +		/* only a single VPR heap is supported */
+> +		break;
+> +	}
+> +
+> +	of_node_put(parent);
+> +	return 0;
+> +}
+> +module_init(tegra_vpr_init);
+> +
+> +static int tegra_vpr_node_init(unsigned long offset, struct reserved_mem *rmem)
+> +{
+> +	if (!IS_ALIGNED(rmem->base, SZ_1M)) {
+> +		pr_err("%s: base is not aligned to 1 MiB\n", rmem->name);
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (!IS_ALIGNED(rmem->size, SZ_1M)) {
+> +		pr_err("%s: size is not aligned to 1 MiB\n", rmem->name);
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int tegra_vpr_device_init(struct reserved_mem *rmem, struct device *dev)
+> +{
+> +	struct dma_heap *heap = rmem->priv;
+> +	struct tegra_vpr *vpr = dma_heap_get_drvdata(heap);
+> +	const struct dev_pm_ops *pm = dev->driver->pm;
+> +	struct tegra_vpr_device *node;
+> +
+> +	if (!rmem->priv)
+> +		return -EPROBE_DEFER;
+> +
+> +	if (!pm || !pm->freeze || !pm->thaw)
+> +		return -EINVAL;
+> +
+> +	node = kzalloc_obj(*node, GFP_KERNEL);
+> +	if (!node)
+> +		return -ENOMEM;
+> +
+> +	INIT_LIST_HEAD(&node->node);
+> +	node->dev = dev;
+> +
+> +	mutex_lock(&vpr->lock);
+> +	list_add_tail(&node->node, &vpr->devices);
+> +	mutex_unlock(&vpr->lock);
+> +
+> +	return 0;
+> +}
+> +
+> +static void tegra_vpr_device_release(struct reserved_mem *rmem,
+> +				     struct device *dev)
+> +{
+> +	struct dma_heap *heap = rmem->priv;
+> +	struct tegra_vpr *vpr = dma_heap_get_drvdata(heap);
+> +	struct tegra_vpr_device *node, *tmp;
+> +
+> +	mutex_lock(&vpr->lock);
+> +
+> +	list_for_each_entry_safe(node, tmp, &vpr->devices, node) {
+> +		if (node->dev == dev) {
+> +			list_del(&node->node);
+> +			kfree(node);
+> +		}
+> +	}
+> +
+> +	mutex_unlock(&vpr->lock);
+> +}
+> +
+> +static const struct reserved_mem_ops tegra_vpr_rmem_ops = {
+> +	.node_init = tegra_vpr_node_init,
+> +	.device_init = tegra_vpr_device_init,
+> +	.device_release = tegra_vpr_device_release,
+> +};
+> +
+> +RESERVEDMEM_OF_DECLARE(tegra_vpr, "nvidia,tegra-video-protection-region",
+> +		       &tegra_vpr_rmem_ops);
+> +
+> +MODULE_DESCRIPTION("NVIDIA Tegra Video-Protection-Region DMA-BUF heap driver");
+> +MODULE_LICENSE("GPL");
+> diff --git a/include/trace/events/tegra_vpr.h b/include/trace/events/tegra_vpr.h
+> new file mode 100644
+> index 000000000000..f8ceb17679fe
+> --- /dev/null
+> +++ b/include/trace/events/tegra_vpr.h
+> @@ -0,0 +1,57 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +
+> +#if !defined(_TRACE_TEGRA_VPR_H) || defined(TRACE_HEADER_MULTI_READ)
+> +#define _TRACE_TEGRA_VPR_H
+> +
+> +#undef TRACE_SYSTEM
+> +#define TRACE_SYSTEM tegra_vpr
+> +
+> +#include <linux/tracepoint.h>
+> +
+> +TRACE_EVENT(tegra_vpr_chunk_activate,
+> +	TP_PROTO(phys_addr_t start, phys_addr_t limit),
+> +	TP_ARGS(start, limit),
+> +	TP_STRUCT__entry(
+> +		__field(phys_addr_t, start)
+> +		__field(phys_addr_t, limit)
+> +	),
+> +	TP_fast_assign(
+> +		__entry->start = start;
+> +		__entry->limit = limit;
+> +	),
+> +	TP_printk("%pap-%pap", &__entry->start,
+> +		  &__entry->limit)
+> +);
+> +
+> +TRACE_EVENT(tegra_vpr_chunk_deactivate,
+> +	TP_PROTO(phys_addr_t start, phys_addr_t limit),
+> +	TP_ARGS(start, limit),
+> +	TP_STRUCT__entry(
+> +		__field(phys_addr_t, start)
+> +		__field(phys_addr_t, limit)
+> +	),
+> +	TP_fast_assign(
+> +		__entry->start = start;
+> +		__entry->limit = limit;
+> +	),
+> +	TP_printk("%pap-%pap", &__entry->start,
+> +		  &__entry->limit)
+> +);
+> +
+> +TRACE_EVENT(tegra_vpr_set,
+> +	TP_PROTO(phys_addr_t base, phys_addr_t size),
+> +	TP_ARGS(base, size),
+> +	TP_STRUCT__entry(
+> +		__field(phys_addr_t, start)
+> +		__field(phys_addr_t, limit)
+> +	),
+> +	TP_fast_assign(
+> +		__entry->start = base;
+> +		__entry->limit = base + size;
+> +	),
+> +	TP_printk("%pap-%pap", &__entry->start, &__entry->limit)
+> +);
+> +
+> +#endif /* _TRACE_TEGRA_VPR_H */
+> +
+> +#include <trace/define_trace.h>
+> 
+> -- 
+> 2.54.0
+> 
+> 
+
 -- 
-2.39.5
-
+Vincent
 
