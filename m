@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3839AC5CFCF
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 17:52:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D7C6C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 17:52:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE0D66B02AD; Thu, 13 Aug 2026 13:52:48 -0400 (EDT)
+	id E2A776B02AC; Thu, 13 Aug 2026 13:52:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B91D46B02B1; Thu, 13 Aug 2026 13:52:48 -0400 (EDT)
+	id DDBDA6B02B0; Thu, 13 Aug 2026 13:52:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 995EF6B02B0; Thu, 13 Aug 2026 13:52:48 -0400 (EDT)
+	id BDF6C6B02AC; Thu, 13 Aug 2026 13:52:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D2916B02AD
+	by kanga.kvack.org (Postfix) with ESMTP id 7F4D16B02AC
 	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:52:48 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 46BA0A0241
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:37:10 +0000 (UTC)
-X-FDA: 85096952220.29.1CFFEB1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 7E16B1C0005
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:37:08 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ixA7p747;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0ED16A0245
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:35:08 +0000 (UTC)
+X-FDA: 85096947096.12.F9A4463
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5115F140004
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 17:35:06 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OtSqY/H9";
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786642628;
+	s=arc-20220608; t=1786642506;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vaw3s6T/GSWhGIBxH9c44M6soIaJSA08keLAt3jySb4=;
-	b=a11Y4y6XJAm5fE9da4qQsjU5pEItgZfDqa1x1kcE4e9UlTGjmjYTYLArLUZ4MlGGOD86NZ
-	9jF1Z024j4b5YiKgFpT5zhxA3XLa4Dsi1DNz/u7N6eCHwTkesn7u+Gb2Np5krgT4OjtImd
-	h5/kHmswo5wUMuUnulG26z3ftDdXwyQ=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ixA7p747;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=jHeRoJJr2O8/TaKftY2r1DUlL3KME6EykG7g/IHvkjk=;
+	b=KUQfMpO3lVY3bhuBl800EliSyc2hhl5P5mf+BmBeut/PM7df/bBld4aP8KveZtqkarZs3C
+	iaRaJ2nWVQddoEHZ/rh/OboAejX9ocWfJavaRq4UPUMpmNyP5Lp2PItcLEV7aENPuf/EYI
+	8lo4rb2ChPyLDAnr7gi0nTE2Wa+cx9k=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786642628;
-	b=VX1kph0B/bkwsKdRoJxgQHbowhIY4WQ+hY7kkOFHFQJHYOin+6n7Eie5I00vpbyhq2nOtr
-	/LthKR2VHEcd0ZREokGB6x3Oc/hYV2FFkjZI0YS/Cbz42mvwKeybpVQ7h9FxXT1y07JiNn
-	jDDOCdxff2e3fBYpTv+OMxCr2iNNme8=
+	t=1786642506;
+	b=Vkt2k97FBKi4zYhJ3GMEg1W/EJHmutjjPgd1K8ZIbXTBRZXIyQcS4HR6xVCVuGldL4pzSx
+	lm4gzfcmfdzLQtWOaStqUriUJ4tZb/ACz4H3wIvoA92UuVkyKECHwuYBqQnTJBWg7RWxS7
+	M7wQDWGKO8Fi/t2uqWLgeeraf2PrRyY=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OtSqY/H9";
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AACBE4178A;
-	Thu, 13 Aug 2026 17:37:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A411F00A3E;
-	Thu, 13 Aug 2026 17:36:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D9FB2600B0;
+	Thu, 13 Aug 2026 17:35:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8889F1F000E9;
+	Thu, 13 Aug 2026 17:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786642627;
-	bh=vaw3s6T/GSWhGIBxH9c44M6soIaJSA08keLAt3jySb4=;
+	s=k20260515; t=1786642505;
+	bh=jHeRoJJr2O8/TaKftY2r1DUlL3KME6EykG7g/IHvkjk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ixA7p747hccwgImJ59EcIdFEdSb9rc3LOw5kVbJpKoEo+0MrDfKmMlBaTs4ef7wRp
-	 Y09zqNUCXL/Q1nXEnswtP39scxNB9QBcvSpkUWXqiJes3uks/0pES6sNqGYVl9zfIH
-	 q1UdbZqJfKD2AjguBvWW/DtZR+cJY2l/Oa3RXrVhsaKxiZXggZapMoIY6l1WbpapBK
-	 soW+xVWeTSY/FLuyemB/fTPfHP/6sgSHr5/1/K6gAGYMJccN3jC4vFXgCNgBT8mAwc
-	 TAhftfuvaFfkEVyxyj0At3cGYA9N/gt8Q0gNTrFfMACpD2FzWDj1uimQe82B7+ml91
-	 7mrNMhuTrg+7w==
+	b=OtSqY/H9sqJEAHUIMd6G0CbKd8RO2TgYWZL9dRMCbGMnxyxtrTZ04YIhDmmPnZyIL
+	 dnCdS7meG7AfAt7cLXD3GxZEn2WAtW+YfBj+PQxek5U7GYVd1tFylkXiMKk9h41H7z
+	 uCLFDAsS3nGgEjWs13IqMvGiqlx5syYnHtUwxZKa3t16U0wX6QtP4TfnBu/Y/6O7zy
+	 HU4BlORDw5SdeJ67S+cNDuC9Ls6tRrs9gcd78uXLdG1DP83NeG02vLznkJkgdka12a
+	 GMhsfDn3hS4W0UXSMb/G8QLz6iVo5jISGfrVbGsRKzp/Gc+W5CS/92+ObTJ1J2xv/d
+	 SjUsZsi6nh6aQ==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Thu, 13 Aug 2026 18:32:29 +0100
-Subject: [PATCH v5 12/16] mm/huge_memory: update remove_migration_pmd() to
- accept a folio
+Date: Thu, 13 Aug 2026 18:32:23 +0100
+Subject: [PATCH v5 06/16] mm: introduce and use vma_filebacked_address()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260813-b4-scalable-cow-virt-pgoff-v5-12-c21581c0c3c8@kernel.org>
+Message-Id: <20260813-b4-scalable-cow-virt-pgoff-v5-6-c21581c0c3c8@kernel.org>
 References: <20260813-b4-scalable-cow-virt-pgoff-v5-0-c21581c0c3c8@kernel.org>
 In-Reply-To: <20260813-b4-scalable-cow-virt-pgoff-v5-0-c21581c0c3c8@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -131,24 +130,25 @@ Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org,
  linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
  linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
  dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
- linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+ linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+ syzbot@syzkaller.appspotmail.com
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3818; i=ljs@kernel.org;
- h=from:subject:message-id; bh=q0oMVyXXBC+siqfel45AxXFQKXhgvOdgu44yz/skNq4=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJq/6/5F1G55rl8yiLzKSurYtcednm68v2b5LfO17iun
- E6r5tWz6ShlYRDjYpAVU2R5/kV8f5BI2LzOC/5uMHNYmUCGMHBxCsBESq4x/E959/lG4ZRWo3vN
- /Px/yn09V2vV3/rQ2563THRvA/eG/t8Mf8VmWS7u+1xZK/v/296rxqzNa68cNXc6UXH325RilYd
- 3s7kB
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4971; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=p77ev8vuIe2NzptTm2ieSg/F7FGTlLmZaKMePPxwgJc=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJq/6/eIlF58FHJ3ilGt/2fyeoEGh1/4X/wOcPUA13zX
+ 982fyUr31HKwiDGxSArpsjy/Iv4/iCRsHmdF/zdYOawMoEMYeDiFICJmN5jZLgr3nP/0lvxFM1u
+ Lk+hijXPjXq0/brua4Y/XOLMuiBKrpvhf1HgrzWhx+6Z7u+w6692iE7o/v/gyv0fBbm1TcJ9iis
+ +MwAA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7E16B1C0005
-X-Rspamd-Server: rspam07
-X-Stat-Signature: eybnycn47qr8thwtnpispts8th3k1i3o
-X-HE-Tag: 1786642628-131396
-X-HE-Meta: U2FsdGVkX1/zX+n7SgZbNPINzW5Ny1h9E+sJOz10cyHMCCQwSUMdco+UjMzHCboTAt9W2Oc2P/RCZqnG+9qtXIbY/CWRSUdPUcP3NWmHeOgYb2GbjRhMIOOcFNmhanJPabg6QjpSIz7FsQVmplBbcLoOmU8R9Di8E2UhZfBVdz010qc6D1XlLSBGnB//nk4OdZsRP5qOzemMLZUY8/uXF58T0JQQlkidx7h4jiqrpzLoGwBFifNCgWc7YAu4Dy2G/pkD1gVOgS0Q+2NSZPkmTU8T3D3VAX2nFpMpQfa6QPKm5Go+i/H1+eS4IrdTJk+qfMg1wLzXi8InhJIDtUKJG6I6D6yWxuSbvkW8qc+Av3pwwa36EtLXJrSGmxE0LbHFVDYevDFaAd7CbrwGR+1VVsf6uPiHJhSa93pe2z5I5ADcxW8cqMDFqzdPK+fNaMGJGymY0dj9/w7akdrjOIzqSEntlv7ULLGSdSJLtpmrTT/rYP0pcLf4HFuobQ+YCFOhjogD/z2ug2Q8S8tswebsW06k5lGrTdHk1WrROJybmjarWvTuze05zHKkXbmUvKkzRGNrXmQHvUjxwAflnsHRJNAOhUh5rcbR+ARmOTp+ywVYBGlRRUACd4pex+TKZIWhfp46zEp2j7By+kFVaQldeMJH9GuIgaS+JONLXMwx3tP2O9unuuUSx5TgsWVOTIskWFfpN28nxDaY2td4TLrA054f81UinAgKJW2bQZB7SfJ+gT/WdYRGcFEJus1qqyNjTbMHEA1F7lPtLEjlQ/dAjyHIG1qzhqhf+c/mmJ7UxeNl1DQx3Q/wuwV477crFFB5Uczf4SNfPxCX7+YMGPcFqe09DJTm132mWom4i1wW2hX1Rsxup88Hpme75L4fEGo9o38eBrzOlan2xwTDj0QWsCqW4U5QnO9i/rf3nPwqequ3LvjlIOlWW7+Q3tT6sZ1hN22XX9oORsXYse650DX
- 0KSNqaN3
- pjLOtaG5tvhOp6t/8ZaVqWNp3YFQn1xg4AcP7giaJGsLw1enlY6rE+LzAEYnCaGEMBqA/Gr6Ycas5KjwN2p1+7EoqidQpgwRr3izZET3cEiyB7Kr7OlG5Xd7+pVwSVycmJcvopIiYmdT7r3Ja3fWqeYxuyiHPqEaWppwA0Q8zwFaHQZ93aSZ3JZVbg8of4NFGhth5DVqNJ91PJE8pL2JSZF13E/ep1YmsfG9AIyhsOmHXUNr+l+aDMihywOohKZLO+nG5IhoPNG5SgnpUi+xjf7t9vSRGMNcF6fR4GcGGJdp6/4eGrDPhlpA4P4ZtA/Hhh40n23f3mARcDwKjoUT5/XwtBNyDGL+cFsTl1tiDHzt9zmUj2BEuiovYLA==
+X-Stat-Signature: f8jarghykj73cafwh6b5see6qsi49g5x
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5115F140004
+X-HE-Tag: 1786642506-27470
+X-HE-Meta: U2FsdGVkX1/BR1etjGTiV/+rXBF5F6c8yNbsHaQY0AvBFT7AWwZOQqnz5H14Qlgu+hcREKkZcam3K/PvMGRXwwO7aQMvBkfgKx/Qmr6g2OE4JJF5yITglWL1LJLBUfznWaf3hNEX9RHrWSxpVzVcMQJlSQPzd388aSGnp0a3X5GCNOcoiYMzMyDaquCAXLCY0yGAQR9k9Azbg8uRFx1l1Das8k+wCmRtRgfy2CMfdsbvqfK2NAleaeGt4MEVeqvju4ivvEED81nbeCzvOqLqvILiJ9b5OqCZojh9B5wzeYY5rpUEJwLfVGE0DZWQSu97mX32Jufe5YCCEo2GDIA0Uk77C0nJbG0BoIjnd8cvep87Yueqd4tQ9CzRg+asDtXB9igSTIPfLD+bvm6fsuH2IATUXq0pFCgLKX4zvxEtWMbnOAhM3RJxlkv1o/kPJEohOZZ8IE7gC2m5M5LoHYV4VLsxsA13tVY2xP2QraIen4Iyw5pUGr+Pd/QDcVbZWst9SfpqhQPEwc1W6mE8CkQq8RamjMyjR0kR1Ov9ZzuhXy8lqUK9XfwcUo9QaRRd9JwQS02xX+Dx5JZWGeFCkJHGPVad+OUUAA1AVMvUfL3F6u4FmhJQPNByXrC9HWL2f6HWcUPz1y0dQL4J+a9gRgRQKSeTAmCi0aVhG9RCWWYD1VVbM5RskGJTNO7spNN/wqaAOLmxTkY207mM2155IsXSPkXWCkFgYL8ctovF7+ASlhjhUe4474WHNzmtxFcwjvLPcxvJylMm/15Fx8/4uzHjF7APiHfJZKeu7c2mC6Y+ApcmI9HPkNjJoHyajXYjM+XJjuS+7t8UvRraQCAta+9O3Cc0EwPy0CxD+aZsLzN19GkRrFG/oKv7YmEarCLie9slDgQ12pF63M4Wat907a463di4pl08OXBShn4mtfpjbz7SUR864oxfwkH552Btk6peJcsDVU5puUCRtGd6kb4
+ RhUNoRxc
+ nIbMlwzYhRkjZYIrw21smzydDDO7Pt4V9JeCAfbsmeYnZC0ONjIdeWGZyaqVaJH0nVHqn1I0OHlfknlcBTGBGKyEz3FR7RF1uQtjs6sAWBPaj6sWvHteAW8sqWQisTNTkjv0NOlB/DEwAAeg5lExazwKN6CqAEkazieX/3OMCpxHngpefxuS3/6x4zovTmhlpdxQKJ98KG2oohS2+958piE1LWovemaBwbuBtZGuniZvYRZcN1jT1M4iKix0kvCsESCunl59obcaiLESDHXHFzJAOjKuZaRAkPrk3dDLEf4XZAie+vuQ0wBOJieEioJJZKMLTL2YWgiR2KuUyzmxS8e3TcKBUQW2vn5ek3C4PIERt3LFa3nNl3MgYrT7Dk+J/0jWJATx0U3AVdBb1v9iEqiudo0fzZccbkxyUaGdSl0L0KiWoHx/290LDYaqojMEK3p9ALR0kLVGfNiyMj12KyIgdcsx+1JHmMlRAOpbxmn0ov31cJMiBMfG7AD1UyLEgAqc8xz5wo/Y1Aq7rTPQxUC0TEVZPF6oeOflR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,107 +156,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This function does not need to accept a page and requiring it to is
-unnecessary and misleading.
+In cases where we know that the VMA is file-backed, use
+vma_filebacked_address() rather than vma_address().
 
-make_[writable, readable]_device_private_entry() must be passed a
-PMD-aligned PFN as they immediately used to obtain a softleaf PMD entry and
-the same argument applies to folio_add_[anon, file]_rmap_pmd().
+This lays the foundation for using the anonymous page offset via
+vma_anon_address().
 
-While we are here, update a VM_BUG_ON() to a VM_WARN_ON_ONCE().
+Also add an assert to ensure that the VMA whose address is required is not
+anonymous.
 
 No functional change intended.
 
+Tested-by: syzbot@syzkaller.appspotmail.com
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- include/linux/swapops.h |  6 +++---
- mm/huge_memory.c        | 16 +++++++---------
- mm/migrate.c            |  2 +-
- 3 files changed, 11 insertions(+), 13 deletions(-)
+ mm/internal.h        | 18 ++++++++++++++++++
+ mm/memory-failure.c  |  4 ++--
+ mm/page_vma_mapped.c |  6 +++++-
+ mm/rmap.c            | 10 ++++++----
+ 4 files changed, 31 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/swapops.h b/include/linux/swapops.h
-index c956bc445ee0..1f3ff3b93e16 100644
---- a/include/linux/swapops.h
-+++ b/include/linux/swapops.h
-@@ -325,8 +325,8 @@ struct page_vma_mapped_walk;
- extern int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
- 		struct page *page);
- 
--extern void remove_migration_pmd(struct page_vma_mapped_walk *pvmw,
--		struct page *new);
-+void remove_migration_pmd(struct page_vma_mapped_walk *pvmw,
-+		struct folio *folio);
- 
- extern void pmd_migration_entry_wait(struct mm_struct *mm, pmd_t *pmd);
- 
-@@ -346,7 +346,7 @@ static inline int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
+diff --git a/mm/internal.h b/mm/internal.h
+index 10b6662be8ed..03145b8d0d56 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1025,6 +1025,24 @@ static inline unsigned long __vma_address(const struct vm_area_struct *vma,
+ 	return address;
  }
  
- static inline void remove_migration_pmd(struct page_vma_mapped_walk *pvmw,
--		struct page *new)
-+		struct folio *folio)
++/**
++ * vma_filebacked_address - Find the virtual address a file-backed page range is
++ * mapped at.
++ * @vma: The vma which maps this object.
++ * @pgoff: The page offset within its object.
++ * @nr_pages: The number of pages to consider.
++ *
++ * Returns: If any page in this range is mapped by this VMA, return the first
++ * address where any of these pages appear.  Otherwise, return -EFAULT.
++ */
++static inline unsigned long vma_filebacked_address(const struct vm_area_struct *vma,
++		pgoff_t pgoff, unsigned long nr_pages)
++{
++	VM_WARN_ON_ONCE(vma_is_anonymous(vma));
++
++	return __vma_address(vma, pgoff, vma_start_pgoff(vma), nr_pages);
++}
++
+ /**
+  * vma_address - Find the virtual address a page range is mapped at.
+  * @vma: The vma which maps this object.
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index aaf14608b30e..a8b03e2920ba 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -620,7 +620,7 @@ static void add_to_kill_fsdax(struct task_struct *tsk, const struct page *p,
+ 			      struct vm_area_struct *vma,
+ 			      struct list_head *to_kill, pgoff_t pgoff)
  {
- 	BUILD_BUG();
- }
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 6b0cabd45b2d..47c9c6e32eba 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -5020,9 +5020,8 @@ int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
- 	return 0;
+-	unsigned long addr = vma_address(vma, pgoff, 1);
++	unsigned long addr = vma_filebacked_address(vma, pgoff, 1);
+ 	__add_to_kill(tsk, p, vma, to_kill, addr);
  }
  
--void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
-+void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct folio *folio)
- {
--	struct folio *folio = page_folio(new);
- 	struct vm_area_struct *vma = pvmw->vma;
- 	struct mm_struct *mm = vma->vm_mm;
- 	unsigned long address = pvmw->address;
-@@ -5058,11 +5057,9 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
- 		swp_entry_t entry;
- 
- 		if (pmd_write(pmde))
--			entry = make_writable_device_private_entry(
--							page_to_pfn(new));
-+			entry = make_writable_device_private_entry(folio_pfn(folio));
- 		else
--			entry = make_readable_device_private_entry(
--							page_to_pfn(new));
-+			entry = make_readable_device_private_entry(folio_pfn(folio));
- 		pmde = softleaf_to_pmd(entry);
- 
- 		if (pmd_swp_soft_dirty(*pvmw->pmd))
-@@ -5077,11 +5074,12 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
- 		if (!softleaf_is_migration_read(entry))
- 			rmap_flags |= RMAP_EXCLUSIVE;
- 
--		folio_add_anon_rmap_pmd(folio, new, vma, haddr, rmap_flags);
-+		folio_add_anon_rmap_pmd(folio, &folio->page, vma, haddr, rmap_flags);
- 	} else {
--		folio_add_file_rmap_pmd(folio, new, vma);
-+		folio_add_file_rmap_pmd(folio, &folio->page, vma);
+@@ -2265,7 +2265,7 @@ static void add_to_kill_pgoff(struct task_struct *tsk,
  	}
--	VM_BUG_ON(pmd_write(pmde) && folio_test_anon(folio) && !PageAnonExclusive(new));
-+	VM_WARN_ON_ONCE(pmd_write(pmde) && folio_test_anon(folio) &&
-+			!PageAnonExclusive(&folio->page));
- 	set_pmd_at(mm, haddr, pvmw->pmd, pmde);
  
- 	/* No need to invalidate - it was non-present before */
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 222c8c15f782..d08eff028483 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -372,7 +372,7 @@ static bool remove_migration_pte(struct folio *folio,
- 		if (!pvmw.pte) {
- 			VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
- 					!folio_test_pmd_mappable(folio), folio);
--			remove_migration_pmd(&pvmw, new);
-+			remove_migration_pmd(&pvmw, folio);
- 			continue;
- 		}
- #endif
+ 	/* Check for pgoff not backed by struct page */
+-	tk->addr = vma_address(vma, pgoff, 1);
++	tk->addr = vma_filebacked_address(vma, pgoff, 1);
+ 	tk->size_shift = PAGE_SHIFT;
+ 
+ 	if (tk->addr == -EFAULT)
+diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+index d7670ba4147b..081e483cc7bf 100644
+--- a/mm/page_vma_mapped.c
++++ b/mm/page_vma_mapped.c
+@@ -356,6 +356,7 @@ unsigned long page_mapped_in_vma(const struct page *page,
+ 		struct vm_area_struct *vma)
+ {
+ 	const struct folio *folio = page_folio(page);
++	const pgoff_t pgoff = page_pgoff(folio, page);
+ 	struct page_vma_mapped_walk pvmw = {
+ 		.pfn = page_to_pfn(page),
+ 		.nr_pages = 1,
+@@ -363,7 +364,10 @@ unsigned long page_mapped_in_vma(const struct page *page,
+ 		.flags = PVMW_SYNC,
+ 	};
+ 
+-	pvmw.address = vma_address(vma, page_pgoff(folio, page), 1);
++	if (folio_test_anon(folio))
++		pvmw.address = vma_address(vma, pgoff, 1);
++	else
++		pvmw.address = vma_filebacked_address(vma, pgoff, 1);
+ 	if (pvmw.address == -EFAULT)
+ 		goto out;
+ 	if (!page_vma_mapped_walk(&pvmw))
+diff --git a/mm/rmap.c b/mm/rmap.c
+index ad820fe86f7d..5798427d007f 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -865,14 +865,15 @@ unsigned long page_address_in_vma(const struct folio *folio,
+ 		if (!vma->anon_vma || !anon_vma ||
+ 		    vma->anon_vma->root != anon_vma->root)
+ 			return -EFAULT;
++		/* KSM folios don't reach here because of the !anon_vma check */
++		return vma_address(vma, page_pgoff(folio, page), 1);
+ 	} else if (!vma->vm_file) {
+ 		return -EFAULT;
+ 	} else if (vma->vm_file->f_mapping != folio->mapping) {
+ 		return -EFAULT;
+ 	}
+ 
+-	/* KSM folios don't reach here because of the !anon_vma check */
+-	return vma_address(vma, page_pgoff(folio, page), 1);
++	return vma_filebacked_address(vma, page_pgoff(folio, page), 1);
+ }
+ 
+ /*
+@@ -1321,7 +1322,7 @@ int pfn_mkclean_range(unsigned long pfn, unsigned long nr_pages, pgoff_t pgoff,
+ 	if (invalid_mkclean_vma(vma, NULL))
+ 		return 0;
+ 
+-	pvmw.address = vma_address(vma, pgoff, nr_pages);
++	pvmw.address = vma_filebacked_address(vma, pgoff, nr_pages);
+ 	VM_BUG_ON_VMA(pvmw.address == -EFAULT, vma);
+ 
+ 	return page_vma_mkclean_one(&pvmw);
+@@ -3100,7 +3101,8 @@ static void __rmap_walk_file(struct folio *folio, struct address_space *mapping,
+ 	}
+ lookup:
+ 	mapping_rmap_tree_foreach(vma, mapping, pgoff_start, pgoff_end) {
+-		unsigned long address = vma_address(vma, pgoff_start, nr_pages);
++		unsigned long address = vma_filebacked_address(vma, pgoff_start,
++							       nr_pages);
+ 
+ 		VM_BUG_ON_VMA(address == -EFAULT, vma);
+ 		cond_resched();
 
 -- 
 2.55.0
