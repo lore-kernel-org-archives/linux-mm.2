@@ -4,88 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2956C5CFCF
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 12:08:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21829C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 12:14:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D26DD6B025A; Thu, 13 Aug 2026 08:08:45 -0400 (EDT)
+	id D0A006B028B; Thu, 13 Aug 2026 08:14:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD7436B025B; Thu, 13 Aug 2026 08:08:45 -0400 (EDT)
+	id CE1F46B04D0; Thu, 13 Aug 2026 08:14:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEEF76B025D; Thu, 13 Aug 2026 08:08:45 -0400 (EDT)
+	id C24D46B04D1; Thu, 13 Aug 2026 08:14:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C7F86B025A
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:08:45 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B84E080126
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:08:12 +0000 (UTC)
-X-FDA: 85096123224.10.86442E0
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 236ACC0003
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:08:07 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Y6nFriUl;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A29B06B028B
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:14:41 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 30EA41C0054
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:14:41 +0000 (UTC)
+X-FDA: 85096139562.01.BC6BF6E
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 051D840002
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:14:38 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=LmsUJYyr;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf10.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+	spf=pass (imf17.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786622890;
+	s=arc-20220608; t=1786623279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p1IaZrga3tw+zONAd1nRt5CILnuvdDUAsSC4l66metY=;
-	b=fytUrOSh4VfvNOOBGNvxrQ+g87og0YjMpHkLe3wf39ANiNK28XuacjDts/SnZfUeurOvqV
-	5Kl5D5eml/guOAAhppEnCOWgtyc+Er/h8hsBsZQKYkjhrAzTK3B0n18QQ9WW0dvYCdSJ8W
-	xoMyH2WpR18WHYMt7AZavYlzEWmpi88=
+	bh=5mar/IZUE5TjogPRooZ5SINIofEJGtSownXYdjfo6Ro=;
+	b=gbMJu8WiHzR5y9zxswl4WtWgbZv6sOtsPDk1lPllcCgNBsGTr68JKfxTmo/Fpt9tPbLrV7
+	jS6Fxim5lhG2uC8S3NR9oe3LUp6/PvswfzAKHVKvqJqpISO0TxXeoXEeLmAvRmZJJ77Dhv
+	+gNo6s9XJU/0ctGNdAIA+mWX331pmII=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Y6nFriUl;
+	imf17.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=LmsUJYyr;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf10.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+	spf=pass (imf17.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786622890;
-	b=ArWSrr/9Us/uXsMlPdwI5IuqjvBXkLX5ornLkv8U5umfOZuNxhyOtgS0WZezaQdBQzcB+l
-	4nZU7sdQaLyfY0YTLS17uPq8t7OdKpNoAkctVFz09f+zdx0ys1fog2LGPYSrCUo1WB+AIp
-	K15I36aWTUazZYCAtj06iWlXRC8pcOU=
+	t=1786623279;
+	b=UObIWUFG8uFgdJn4gYTTbBIsGB1Wg7+hyoR0i3WBiEjnGy4E+e4ELcknGcATEXrZs6Y/oc
+	SlsRS1XvB7itVTfn/KxmxMn1eo0Bjr5b4YF2fRgS94F6mUoaQat5H9pFg3BtTbDNRpFXeW
+	zj7UB/QE7Pymgv5z+5kAnkil1CnY2MU=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=p1IaZrga3tw+zONAd1nRt5CILnuvdDUAsSC4l66metY=;
-	b=Y6nFriUl7iEGi1LAFfjTAi2eUReE2M7/qodq2/k1YBqphUx+JMJ4DlhFiM9BMn+6WJfx6rX7N
-	Bep3szryKzEhE9r6v83MExjQxeWQs3CXa/ne1tYK+hvudbwT5DZFTseB8vDVdLqPhJRktZhYV/b
-	6j3BiGtSIxOmFRlbX83fSzc=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4hLP4Y5tqbzcb0T;
-	Thu, 13 Aug 2026 19:57:49 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1830340561;
-	Thu, 13 Aug 2026 20:07:59 +0800 (CST)
+	bh=5mar/IZUE5TjogPRooZ5SINIofEJGtSownXYdjfo6Ro=;
+	b=LmsUJYyrGitcmIsyyXrtGOdPNNJuOobKfjvVIu4aXV3JGdz05w4E/VKfaK8NQlEkF40+Eelmf
+	LQ8PPhbTs5OlFT6GjvECzNFSGU3fYheCDOx94qL5EejepG+S94T44Vma5oAeimmBqhy5tIMSK4E
+	W6SMdxYZsHnyHwDaQCA1hZs=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4hLPCd75WPzRhR0;
+	Thu, 13 Aug 2026 20:03:57 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id EA8E54056D;
+	Thu, 13 Aug 2026 20:14:33 +0800 (CST)
 Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 13 Aug 2026 20:07:58 +0800
+ 15.2.1544.11; Thu, 13 Aug 2026 20:14:33 +0800
 Received: from [10.173.124.160] (10.173.124.160) by
  kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 13 Aug 2026 20:07:57 +0800
-Subject: Re: [PATCH v3] tools/mm: add hwpoison-panic tool
-To: Breno Leitao <leitao@debian.org>
-CC: SJ Park <sj@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-riscv@lists.infradead.org>,
-	<kernel-team@meta.com>, Andrew Morton <akpm@linux-foundation.org>, "Naoya
- Horiguchi" <nao.horiguchi@gmail.com>, Paul Walmsley <pjw@kernel.org>, "Palmer
- Dabbelt" <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, "Alexandre
- Ghiti" <alex@ghiti.fr>, <david@kernel.org>
-References: <20260813-memory_failure_rewrite_test-v3-1-f9fb6542cbff@debian.org>
+ 15.2.1544.11; Thu, 13 Aug 2026 20:14:32 +0800
+Subject: Re: [PATCH] mm/Kconfig: allow user to select MIGRATION if
+ MEMORY_FAILURE is enabled
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Xie Yuanbin
+	<xieyuanbin1@huawei.com>, "David Hildenbrand (Red Hat)" <david@kernel.org>
+CC: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <bp@alien8.de>,
+	<byungchul@sk.com>, <gourry@gourry.net>, <joshua.hahnjy@gmail.com>,
+	<liam@infradead.org>, <liaohua4@huawei.com>, <lilinjie8@huawei.com>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<matthew.brost@intel.com>, <mhocko@suse.com>, <nao.horiguchi@gmail.com>,
+	<rakie.kim@sk.com>, <rppt@kernel.org>, <surenb@google.com>,
+	<tony.luck@intel.com>, <vbabka@kernel.org>, <ying.huang@linux.alibaba.com>,
+	<ziy@nvidia.com>
+References: <837c2e83-ad5f-42f5-afef-5132e02fc19a@kernel.org>
+ <20260813092343.214324-1-xieyuanbin1@huawei.com> <an2PGVZuYruQhzel@lucifer>
 From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <2641f4d4-c08b-e9b2-1e8a-c91ce1f41d58@huawei.com>
-Date: Thu, 13 Aug 2026 20:07:57 +0800
+Message-ID: <83554fb5-d105-56da-dbe4-68fde533199a@huawei.com>
+Date: Thu, 13 Aug 2026 20:14:31 +0800
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.6.0
 MIME-Version: 1.0
-In-Reply-To: <20260813-memory_failure_rewrite_test-v3-1-f9fb6542cbff@debian.org>
+In-Reply-To: <an2PGVZuYruQhzel@lucifer>
 Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -93,13 +98,13 @@ X-Originating-IP: [10.173.124.160]
 X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
  kwepemq500010.china.huawei.com (7.202.194.235)
 X-Rspam-User: 
-X-Stat-Signature: 8szegmkqmnpkb345rp71qub44rh6g83b
+X-Stat-Signature: tgw1mmh83qo61yrhym8mhb64qu93h84d
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 236ACC0003
-X-HE-Tag: 1786622887-441492
-X-HE-Meta: U2FsdGVkX1/R4Z2xPKcchLd9e2pJ8W6e3H92XJu+5GtWT8sQmRnKZtkhitYJnJSMs4VqONxslolQP9BUDi2hW/JxmiVLWwkAyMTznkr+j9Bx2BMN9V2mtanSbYF9vkcQIttVCjT7nRujdNHFyAazaOnrsx0y00T9Ap0clx127ICqI+sat65c8UOqihysLyp1WAsFJ2tGeHAnGhowj3OF2XWKk8LuS3vD+aSwqt45RyPRdxQpWnuj38rR7hUpYiAukxM82Qf2iBPKXuIaI5T2yVvDK0RvdS4jgMl6bKXUFjaJEXORK4eLqCYHkxPZRkxlEhRW/LHXvQHdEkOk02k39OZ78DUcV3AMQzrjBFn8t7bQJFMQ51PVBsklCYnmOAEC7QsNG2voofKtaf8MFb2GY9aHW/KiOQKY8V71URCruk8zfdIUbMPyn5tpCLJJsUBqw9+B5AY8vYiVhETC1AlVvbbRZxov6E8VTGTpwh4maaWKW+QsSx1Dq2mQpFqIdgfkCH1E6btcNnShoAEJjoOagYiXcrj4cT488ofrnsxyNCMvSdcmQEblfw2pANCf4tH5Saptp2pYEUG0ha/48DVrgtpoSk1k//7taYrD1hcnTacdg82qPG5Jjji1RpEsqDat/UVGGkzBhvIubnuzgTWJ1MqRYVqssv7Gi7OWYmmA//+ljJqxy6FwKvqOqY6aC9AC6L7RbQ1CEIXdk5keXk881NNJf6Ft0EQkXJPwLxoIxGEUXsYlCColluM4NC43EvvaR4GDutcl1Rmo1rk3eKyl2a+2ZjXbBSF4iYCPz3jz8AEMp0UbN7dkyY1AedE9ca6EWL2D3HwTl9gUPcBwU/sJy8PBw29c39j4Ode6AB3cOVxtUkYoNcOgdm7BngrWpTCnew4L8Jv/HTCE5GH3z2COKEuOfJdwO8vELRhOjhd7Ilc4vFYB10mwe7uoC8QrPyGlnKtsG+hDGzs1cj2xvB0
- e1Ib0cLb
- kI1VYetMi4WSLOLAPzCdla+QE/cn7XeUWzuhnfdTB0VLl6t7YiYhcmhblo2O8lL08dAl7M+EZQBWjhBCLXzQ4nb/5f/WYlXAkBWBrlcVTOVuHCDfC9crwG3avj6llCxm07uHod9MjLyfU7D7QAZPDzkjOHqChUv/upKh7UCGlhBjdOjNGCDMh51o8PPpz1oFmPyJELzpBLn3VuGnCTA0FyJ4MuZahi5b+zEM1HZsOi4uPx82fbjnbEp9dm+h3On+9Tvme+wQhmiQKCs8/OAhZ9pdjANh2ssejpK3cxEG3LREGUiws5434+dAPiB2uWo430jWp5KTZ5LPSo0F9otdlbzLczaYy9cF8HDP+xRwg5ty0haun/Oc+gTCdx0jC6lMM+kOkE1wrRJmTvu2RDj+esRLNng==
+X-Rspamd-Queue-Id: 051D840002
+X-HE-Tag: 1786623278-357597
+X-HE-Meta: U2FsdGVkX1/Kqc45MprFdbm+mL3mZqTUsMW2KuhYL2D/tLM/ywSjfiVjY+Hy/dGsX7D2wUoaHBWt6wXVzTqA5pLy4pJahyXXOLnferMjy66rWRU+Hh3TD2+KOfpiSuEOfK1iAdQ2rB6VMHYKxyruvhoRbqelqE7bOzsJiVFhhp2L+/lFeulV4eySkjLb6+m/K7ZcgLPi6mNs4FTLc40zPSh5qp37dR1cUy3+8+vyOIzU1vYrI04NnkMPO9o+vrs9XfJng01f4Dc9H1hTmj8skgdampJwgQpRi4Te/JLE++iqKnDA5+ok2/Aesq14iM8+EQ9Pj8KErwy6cdnuObbnIiuWFio6qNVfbO9bRzGVomGQLSGDeL9cqWt/ZxtCi3Yy85iKEd+0ujZgZC6G2c8SzCZkCvmeJNCmH8MWrJ7Ln+wZkKAQBd3SaEeVrLVDGBVGKDf1bYDJYAAL9lr/CQBps2nmezfF5qqls2f81KzHUlJa4vm5fs5K7hvvUHkGNKfFV30K3RXl+0Q5TUvpjDafZ//16EQIW/5mvTHpQESYrljZ+awbHWswXOsWdVz6XDgvIFzeMV1XeLGeT9tcVvms7YWucB6gCll0ZlP7NQ2uIpsEvQeQ98JRwdEQVb7688uyvLEiJkgtYSEwxC0xFEiZnCJFzz8QgSrpHUModWi0aN3aGWf1dUgSJ7JhuEMZd0xeErn5Z5ojxEg8akfta99v9nL6CTzZCQybJQmjWMazZIBV4r1WvdZQhNVEJZs0s0PV+T3dQHi6HcemHG2s2R5JOBMcrhzz0xM9wZBVgQ/6tAf8qQjA8bTe+j/fMGVUG28PJCUzXfBCk9XzzdsbexBfJWHg7zu39ecJyO8kp8e2ehCatNV4/WwyOVaXMiGTRSWJjxuv4pjsOXmAjcfWsGir1XdWMKAGQOIT6txWAAaCOl34tnaYG7r4gz2OV6k25HP0AGP/p6pa5r1D9YDjY2W
+ hD4+SesO
+ Tal/t4Nqer62b32taJolXGPm5V8eHruLfJaZ19HgdoHTtm+o3zkAPe0vVPlBQFGjAYzzybXhj4hMuCocwR7Zej5B1sM8BPcqRPPfOkBDwSXwZBxH7wf4K7gx3Cg33m03K4rDTcleOA4M0jz1OTNXphTY9JyweGVhJcCtUfZpgmeNNSgL9LSenVf8wIWcWxeIPmMEdelNDJSSGzGbwyVH1W0eY6qui6vxOuMY5QfT0UUPucCDO+ilR/A5odAC76WAchm+biI5p2dT9aX4B/uDl6jmzWikOf9q5Kg5moiIB3CgUSkd4ogHMgFJpLQLQ/o4jutnYhqHTxQby5iMfgK3VwZWZ9xaJKZmsrNNgc4QTvcgBaD+BslQ0IdFv5XjNXb4E6A+BEci5PatWfPZlU9eEi8O+iA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,36 +112,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/8/13 19:45, Breno Leitao wrote:
-> Add a tool that enables the vm.panic_on_unrecoverable_memory_failure
-> sysctl, picks a kernel-owned PFN and writes its physical address to
-> hard_offline_page.  Three page kinds are selectable with -k: rodata
-> (default), slab or pgtable. In all cases the host should panic.
+On 2026/8/13 17:32, Lorenzo Stoakes (ARM) wrote:
+> On Thu, Aug 13, 2026 at 05:23:43PM +0800, Xie Yuanbin wrote:
+>> Thanks for replying.
+>>
+>> On Thu, 13 Aug 2026 11:11:11 +0200, David Hildenbrand wrote:
+>>> On 8/13/26 09:23, Xie Yuanbin wrote:
+>>>> I think that just making MEMORY_FAILURE select MIGRATION is also a very
+>>>> good solution, and I respect the maintainers' opinion.
+>>>
+>>> There must be a good reason to do something fine grained like
+>>> MEMORY_FAILURE_MIGRATON, really.
+>>>
+>>> So if there is a use case out there that absolutely doesn't want
+>>> CONFIG_MIGRATION but does want CONFIG_MEMORY_FAILURE, we could discuss it.
+>>
+>> At least so far, I haven't encountered such a use case.
+>>
+>>> As really only softdirty needs page migration (IIRC), we could also just put
+>>> that under a separate config that implies CONFIG_MIGRATION, like
+>>> CONFIG_MEMORY_FAILURE_SOFT_OFFLINE. But I'd rather avoid that unless really
+>>> required.
+>>
+>> Okay, I understand it now. Making MEMORY_FAILURE select MIGRATION should
+>> be enough.
 > 
-> Example:
-> 
->         # ./hwpoison-panic -k slab --yes-panic-my-kernel
->         injecting hwpoison at phys 0x100032000 (pfn 0x100032, kind=slab)
->         expecting kernel panic: 'Memory failure: <pfn>: unrecoverable page'
-> 
-> In dmesg, you will see:
-> 
->         Memory failure: 0x100032: unhandlable page.
->         Memory failure: 0x100032: recovery action for reserved kernel page: Ignored
->         Kernel panic - not syncing: Memory failure: 0x100032: unrecoverable page
-> 
-> This lives in tools/mm rather than selftests/mm because every successful
-> run crashes the machine, which is not something to run from CI.
-> 
-> The --yes-panic-my-kernel argument is required so an accidental
-> invocation does not take the box down.
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+> Agreed with all that David says, and yes that seems the best way.
 
-Thanks for your update. LGTM.
++1.
 
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
-
-Thanks.
+Thanks all.
 .
+
+> 
+> 
+> --
+> Cheers, Lorenzo
+> .
+> 
+
 
