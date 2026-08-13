@@ -4,101 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9EFDC5CFCF
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 15:49:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A9A6C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 15:55:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADA856B02A1; Thu, 13 Aug 2026 11:49:46 -0400 (EDT)
+	id 602B86B02A5; Thu, 13 Aug 2026 11:55:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A639D6B02A5; Thu, 13 Aug 2026 11:49:46 -0400 (EDT)
+	id 5D9896B02A6; Thu, 13 Aug 2026 11:55:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92CAE6B02A7; Thu, 13 Aug 2026 11:49:46 -0400 (EDT)
+	id 4C87F6B02A9; Thu, 13 Aug 2026 11:55:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 64FCB6B02A1
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:49:46 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CB3C5C01DD
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:49:45 +0000 (UTC)
-X-FDA: 85096681530.08.B0E0FBB
-Received: from mta1.migadu.com (out-58.mta1.migadu.com [95.215.58.58])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C41EFC0008
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:49:43 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xKKbj0tK;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.58 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1166E6B02A5
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:55:19 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 882C4801D0
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:55:18 +0000 (UTC)
+X-FDA: 85096695516.25.3473278
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A2B5520008
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 15:55:16 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="as6eTx1/";
+	spf=pass (imf13.hostedemail.com: domain of 34uh9agYKCAczlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=34uh9agYKCAczlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786636184;
+	s=arc-20220608; t=1786636516;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0WogPwlsGGMGx2Gt7+5tyMs7D0F2LPMr0ubWwJmXylk=;
-	b=mhPxQcjmoXMQH4BD3n86Ll6VDnKE4JVhxD6t3cPGwAnM/nzj9yAWvC4f+ZjmeU3de2IUdk
-	Id+AcDSFZg27KULDYK5nD5pt7bFU1FpzLdNpNROfyTOSJ3FdjJKgHngk2IkP0sBC0koIa+
-	XHuyuj7y1QJ86J0wpBH+Yxbx0KrLJUU=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xKKbj0tK;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.58 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+	bh=NWd+efJbNRhMQi4tFuFF6oho5IzekPVE1UiVHSpD6zk=;
+	b=M/sOsQZ58BAHu2BvrHGynk8HV9EbBg0mIYazGgorRgkT0fCBwRYqRuR4I1/7joWizmJ9Rd
+	aGxTjaP+D5oD9bWu3JIoEXss0UmVpZ1drHhr9tKXLF8UDQEpOfa6v+d6x3vPhLteS05J6A
+	JfvhN6l7fjGKfFVwZ6TGNC+bk3fuTDE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786636184;
-	b=hplQaSheBeNb7vTDcT6MhjqnAh+8sN0pCihtU5gVCF/dx42sn5IFW0KkBIKIUado72nXM0
-	KZUkDYNktEHzGsqCbk/ql0Rgeh7yemSoI4OdC18baLaXWjAQZlPy8siW3LBST2X3uL2u/u
-	dIpXmUj+2MlMFeN0h2BGP8vcn4yyCok=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=44TR69x5ZAwBqBOOwd22fnYBam5ymuntq7grA3Sn4D0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786636182; v=1; x=1787240982;
- b=xKKbj0tKLi0NSB6TAgaoQicyHfgBNzS3hxfGkPf7DNOsPu/l/MUGY32z8wHoKYkYkhr/iYkk
- tfKSReXZNkWsSD3Q06H5ImqVk449AEmV2Cmo/B24X5jFaDbgxdzIogkaPL/Xgsh4KC5ND7GILEj
- t0YzHznab2TmQnH6rrtqEhEg=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (77.97.51.77)
-	by smtp.migadu.com with ESMTPS id 1965510105143205;
-	Thu, 13 Aug 2026 15:49:42 +0000
-X-Migadu-Flow: FLOW_OUT
+	t=1786636516;
+	b=7E4RzVXQkZD3pQ1rrjh/XBOoND1p0MJqSVsBe+OVxKjyyrMWSyVb+80PYZM192oaEWIP/y
+	kBXEi74inceliRk8F5ki75HAWXK/OH3D5U3Tzce8ZudEbPKREwGYmyfYmPCTFrYjuAeWWN
+	glkltj8eziCyHi9EtG+OzWFbV9RoScQ=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="as6eTx1/";
+	spf=pass (imf13.hostedemail.com: domain of 34uh9agYKCAczlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=34uh9agYKCAczlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-388b404eaa4so1229032a91.0
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 08:55:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786636515; x=1787241315; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=NWd+efJbNRhMQi4tFuFF6oho5IzekPVE1UiVHSpD6zk=;
+        b=as6eTx1/1/kD4cV+kI+hSHP13l80fSAftdnJ/ELbTzXyeHTnuRyQLhn7sOKSpgz7j6
+         2h83b/SQq5ul/kmjRSqMcoLkahWa/CYk5Ce+ZXMOiJIAEwRaRaqtMR3E6ITZJYWmiV0e
+         5DRBV+oddA4WKabpmiAilDJkQQ4PTipj871FzTApHEr4k+Jyvrw7qzV8m5mnlh6vn0oe
+         C0wp1AyEtcgP/gNfUhipx9xmuUtioCp7idZHhOV7Yd2WEUSwOxb9eMSxvASP7dnooFVz
+         U12qL2x8jCE4denu4yTl2EUrSjziHhk4gyBfsAKmQoWesZ8dHrhJgdYBElLhROn59E3x
+         hQbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786636515; x=1787241315;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NWd+efJbNRhMQi4tFuFF6oho5IzekPVE1UiVHSpD6zk=;
+        b=Mv1ame3DYPsjVCmZDkqE8lZZCrhcagBiTjDIoUUcFTGZh/ohYRUgCajB3IkODsMLoI
+         Dvs1MXBN5rlJmebE6joouvIvnrEwrVOycfuXXF2+GzuNO5DfIkVuRsEWkP4nVHVzCtJI
+         p//kRWMdiLGX/IsCWn4qkZmV4sWiQa6wCEexszBzv65QHfV+n8VKmodL/wovtmCTm2oh
+         wpJwtzllzN8RsIRy8sa6xgyly/gtgInbH65Ee4cO9exKS+/rw5Xp/Bpb25KOOtzP9fHx
+         T2ntPXKD5ntSksWtcRE3dL2bK283YxOCQgInubKmkqDk6dSn8gcRRRXt/DFk7d1tbOqc
+         EYTA==
+X-Forwarded-Encrypted: i=1; AHgh+RpO708PSkW11Z1vF2qCqsibR85DFMR+Fyo6KUFY8TgVeNblTqz7wug2wPd/f37/+HYUggIr/ic98g==@kvack.org
+X-Gm-Message-State: AOJu0YxNmUomgQHOuO9pR4rCO9WIe6RDUUHB7zBOqG3QfjWR87NW8Qs+
+	qGpJRW76vdJ9+qaVAdOS1aO2pfglTIxEVNjQaS75FfnTZAK2fBrKq7L9G/G8ICVVGLHtD6W65IX
+	2kWaKuQ==
+X-Received: from pjbmr22.prod.google.com ([2002:a17:90b:2396:b0:381:1d7f:b8db])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4a8d:b0:36a:8240:2477
+ with SMTP id 98e67ed59e1d1-3931e31a6f4mr7349226a91.19.1786636514937; Thu, 13
+ Aug 2026 08:55:14 -0700 (PDT)
+Date: Thu, 13 Aug 2026 08:55:14 -0700
+In-Reply-To: <1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com>
 Mime-Version: 1.0
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-12-2fc18ee6d3ba@google.com> <1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com>
+Message-ID: <an3o4h-E8mj6CUaM@google.com>
+Subject: Re: [PATCH v10 12/41] KVM: guest_memfd: Call arch make_shared
+ callback for to-shared conversion
+From: Sean Christopherson <seanjc@google.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, Fuad Tabba <fuad.tabba@linux.dev>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 13 Aug 2026 16:49:40 +0100
-Message-Id: <DKNXO2ODV6AN.C0CFRAHJJUA4@linux.dev>
-Cc: "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
- <dave.hansen@linux.intel.com>, "Peter Zijlstra" <peterz@infradead.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
- <david@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike Rapoport"
- <rppt@kernel.org>, "Wei Xu" <weixugc@google.com>, "Johannes Weiner"
- <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Lorenzo Stoakes"
- <ljs@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <x86@kernel.org>, "Sumit Garg" <sumit.garg@oss.qualcomm.com>, "Will Deacon"
- <will@kernel.org>, <rientjes@google.com>, "Kalyazin, Nikita"
- <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, "Itazuri, Takahiro"
- <itazur@amazon.co.uk>, "Andy Lutomirski" <luto@kernel.org>, "David Kaplan"
- <david.kaplan@amd.com>, "Thomas Gleixner" <tglx@kernel.org>, "Patrick
- Bellasi" <derkling@google.com>, "Reiji Watanabe" <reijiw@google.com>, "Sean
- Christopherson" <seanjc@google.com>
-Subject: Re: [PATCH v3 05/26] x86: move PAE PMD preallocation defines to
- header
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-To: "Yosry Ahmed" <yosry@kernel.org>, "Brendan Jackman"
- <jackmanb@google.com>
-X-Mailer: aerc 0.21.0
-References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-5-6f5729aa9832@google.com>
- <am02PmF4-lPErIVd@google.com>
-In-Reply-To: <am02PmF4-lPErIVd@google.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C41EFC0008
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 436m9q13p7hot469erwj6e98s5nted95
-X-HE-Tag: 1786636183-679936
-X-HE-Meta: U2FsdGVkX18B0P+KZ2Zyfp8b2wp2s6rFXY8CHGI968ekaOBB284McZ8V410CTCFj2FqhN6sfECqphPrSJgYdFE6XrCcHtR/igGHKsEZdTcKgxqC5ikSQniSw25c4w7uwv/bbzwnIKREv9Zyd5sBW/x5JqfeHsUxkB2Tuts+Uuo1DjgqS4jc/uMmSTfdmGJ3LaWGBDwoPEG0zV/upRyj44xoeE6UG5QFOupjLUF8l/hVN8fHDsIGZU9ljsDc3mODhWtI9O5k7Irgc5THeKblwxLINApGLXMzCid3zUta7YroK1yax3VUyTHZTd/zcUG6vrAiLrZLpY/a1KgNd0vJ4WOhe084frYmB+MC7UYG7HrU248I9Eqdnv6A6WJRq16d/AYNEMvuLCXkIYISIDcxi2maMxc9wJnTpNCm0KJnAo+Biy+wjYstPvCvnGEkPvMuzBBcZg9sBqGhe3++2a1A7xwarb+7czu1dA9dssifYJeiJXgpkptYBUlCqLgesclDVHzhYAskrwVYnO2ITbWvISQ9VhkymxX6CUiqarXcTETrkLG1rNibsrDX5NwipfqsSys62FK8sFWk7xJUSxOGUfb9wLfPfGq3PbjnwAx4e+/vt06Pqbzzn0DOZstcTrnZm4CbXFuT+J6j553TlaFK6g9nh4khie9IbMsTBEHJNvYUzDsQlpOI6tQ9/wm75JndkdUFLLiYhG+X7F81+qgRm3u56REudj1jdzWYr8nv054Ba69A2Ij5i3uKTu1OFmvB2q/9e6wc3YBODCrlXsnTjqNqoO8WJGMvq/X3A1Sio/CK30i0MDnnbNVt6HXawZCL91JLdtVJN5OebscZ0ZHLiyVmwlWvodcsT6OCdY1bXLXIjHodZIHoTNMTXFzLIszyPZL/8/HBrzZ3JnBVk2HKAWqgweZIX7LEq03L/9B+KylVTC80myOXnpEv2fXz6T02I5/MvUXma6pe7U9CixCD
- nxSL4tXa
- 9WzP2PemAxogAkWmyJIieEZwhSuJafJyQJ+0ClameRxdPJanBqR90/VS6D8ZQmaG6pWBbrJpbW+pPW+ynHV3CtRTSMgiNa2oxZQ36XI2vLLtOYjYoOE07+hyBsUyKSlOsyjPAzEuAiPrEvZzcjVzTyoDL/Zed6zY904gHLnu7Fdxxf9uR8+zF9t89LvdO2UcLt7cC9pl6o6HC+pD71Lm6FWcXuIe5E9vMx+vduBRUWeoBSYkzStQ4eh6LRlrRJIjLKuI16HrBlOS5dg0bY+doek+9edJDas4u3/hP/qEQiN+eY/NzAO3wuWPI1oc+vtK95yCdeE+LkUzh2WY=
+X-Stat-Signature: mmm4fg6gzcbu7kq1y6ufa66wz7xd7k59
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A2B5520008
+X-HE-Tag: 1786636516-558875
+X-HE-Meta: U2FsdGVkX18+uwiatTMU6qeqA1PBcelGxEGx2ZgNsQyzCYBMh1UJ8XJGYpCR1wvbUTTDvPJPhR9Q1q5iRX8nKOMozAtk3KvNbHu9OVKxgc1cxpKN/4/93iwophIkUnxLAgpayFjBZRT+QgwhWStPagPYbJGjQolJqyHB0qxk5d/XCxeeasFkAJipsaiaYW9aVEpyUJrQobrpKydExaj8cUvvfkacYE7Ul6SxZX0zjFNr9BDC1NUyRtid6UuonZ2/xO8/jfoAXZCQDrpdSzJGmsaPNaGEHYCRu/XU8LjKtlOsUCpZsBcv44CoTt4n6zSb6lBi4M14z2fb35krTToT7/29cRk2Pmz0kzGY7Qn77fe3CryI2r01/DyYPtn33ijy4QIe59AMbImjqA7ASN82qa6JdeNBOY3X4J8o9fvl8bDcHeXvrT5jjpTfpo1y5WSWtfrWBPgC2KKNfh2s84HMe/IZwHP9lXKzipy3tlIQFQ+M7wcs/ob6AYjOeP2XpVkwmLNnx/FriU3QGXYJZWD7SuGtH3Q+ytvrzK81KR7/YcZIz599Wa7mwxtSmkGROJgqS99KblskmwY7+PhFatwWVpAzFqHeAyIbzqXEjDrF07FPO4UXiKR7l51JVyLdQc7z+r/6EvNAmulnopH6x3zokz0TQuo5FaoKUfO+tU/NbIGeaj50I2CpTR2g6g8lGSN9crhY/HgnmcmKilwfqijsXPyE/z6M2qLIDy5cEGelZCGKdb8l846Mriv1NFpLpEoVpI5avEOlYTT2PC1B70DIUeYoyebcFPTUqWEZB0KSAmdKPYFy0okaCwkJ6JEfJa/dfJQUli4/QG082EvRriXHIphvMEgy5TZ6l74IqBVs9qkH0XY5LTXI+eNKrbikvgX3cVBLS3miZ99jm/XlowU7y6z0WHYXIthTkEjQ57/Mbl4u3d1TsxhkC33MHN1L9jdy+rl6ZQbyfkZVqCtInqb
+ SLU9pOk/
+ NNyU+TvKqDylITy+8fhqVYFpya1yI+0VYRZEHBP5AucfBuz8ZeGeMFOYr82Z0NOFiiOwsteX5P1ZFSbGhplEriLMhk6Xbwd1gIWBG7r0jdOxva3Qn5kUHEVqQ9aM3h3+BRmfOd1bYr8r1XakKUhapFP76PvR5dDNHIqGj3BBPFquJw5n0ugQMC0ligX5Oj8UJFXl6LBLft2j6BgQdW4Gq9X1IuZtkPdWS/TGrt6uWi12nq4dCUWJNz/QgUV06j7iIJldcHyNfgEHhQ/wVITpm2D/Ny3xFPazrqboZuWx8yIdLN1TSHsn9auXKPxggjXlXTMpx4jddHpodbLdoLDd7Kxmqx5HOoVP0HUyhRpGf5Buo9pGczcFSiEEJ5yyNb0yYfiuHIsOqh3ImBIPpsB2o6oMmHfiCR+/NFvTd/f3HiAcHHSNQXosiYX9gSVjOVhyQEGplnmMkU2belw6c4IuGuoOfHHQVDu12sUih8+VfFhNDISc5MiHa+EnZSiFE5lPKQYHDGbr274av9mU/JdlF6ur07LoS9Su/bzxThTelNQezd19iw0l2yGSf8cJCIHwWwOdiP5flZ9HhzYERIQqT+rg4DtkZhjgr9fRCB3hwg1goyIfDd8yOXeqPEgNXfBZtpaRxTstUe4pC+ZJ5uow4z8OxDMmi8uoRrQouVL0bQlpj7/8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,52 +138,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat Aug 1, 2026 at 12:59 AM BST, Yosry Ahmed wrote:
-> On Sun, Jul 26, 2026 at 10:22:38PM +0000, Brendan Jackman wrote:
->> In a subsequent patch these defines will need to be referenced from a ne=
-w
->> file, move them as a separate patch for easy review.
->>=20
->> The comments have style violations (personal pronouns etc), do not fix
->> them as this is just code movement.
->>=20
->> No functional change intended.
->>=20
->> Signed-off-by: Brendan Jackman <jackmanb@google.com>
->
-> AFAICT, this is only needed to expose PREALLOCATED_PMDS for
-> mm_local_map_to_user() in patch #7. The only usage is a BUILD_BUG_ON().
->
-> I wonder if it would be more preferrable to keep the definitions in
-> pgtable.c and add a runtime check instead in mm_local_map_to_user(),
-> something like:
->
-> diff --git a/arch/x86/include/asm/mmu_context.h b/arch/x86/include/asm/mm=
-u_context.h
-> index 09b8d8e6a56ea..15055cb80092c 100644
-> --- a/arch/x86/include/asm/mmu_context.h
-> +++ b/arch/x86/include/asm/mmu_context.h
-> @@ -268,7 +268,6 @@ static inline pmd_t *pgd_to_pmd_walk(pgd_t *pgd, unsi=
-gned long va)
->
->  static inline int mm_local_map_to_user(struct mm_struct *mm)
->  {
-> -       BUILD_BUG_ON(!PREALLOCATED_PMDS);
->         pgd_t *k_pgd =3D pgd_offset(mm, MM_LOCAL_BASE_ADDR);
->         pgd_t *u_pgd =3D kernel_to_user_pgdp(k_pgd);
->         pmd_t *k_pmd, *u_pmd;
-> @@ -277,6 +276,9 @@ static inline int mm_local_map_to_user(struct mm_stru=
-ct *mm)
->         k_pmd =3D pgd_to_pmd_walk(k_pgd, MM_LOCAL_BASE_ADDR);
->         u_pmd =3D pgd_to_pmd_walk(u_pgd, MM_LOCAL_BASE_ADDR);
->
-> +       if (WARN_ON_ONCE(!k_pmd || !u_pmd))
-> +               return -EINVAL;
-> +
->         BUILD_BUG_ON(MM_LOCAL_END_ADDR - MM_LOCAL_BASE_ADDR > PMD_SIZE);
->
->         /* Preallocate the PTE table so it can be shared. */
+On Thu, Aug 13, 2026, Binbin Wu wrote:
+> On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
+> > +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, p=
+goff_t end)
+> > +{
+> > +	struct folio_batch fbatch;
+> > +	pgoff_t next =3D start;
+> > +	int i;
+> > +
+> > +	folio_batch_init(&fbatch);
+> > +	while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch))=
+ {
+> > +		for (i =3D 0; i < folio_batch_count(&fbatch); ++i) {
+> > +			struct folio *folio =3D fbatch.folios[i];
+> > +			pgoff_t start_index, end_index;
+> > +			kvm_pfn_t start_pfn;
+> > +			kvm_pfn_t nr_pages;
+> > +
+> > +			start_index =3D max(start, folio->index);
+> > +			end_index =3D min(end, folio_next_index(folio));
+> > +			/*
+> > +			 * end_index is either in folio or points to
+> > +			 * the first page of the next folio. Hence,
+> > +			 * all pages in range [start_index, end_index)
+> > +			 * are contiguous.
+> > +			 */
+> > +			start_pfn =3D folio_file_pfn(folio, start_index);
+> > +			nr_pages =3D end_index - start_index;
+> > +
+> > +			kvm_arch_gmem_make_shared(start_pfn, nr_pages);
+> > +		}
+> > +
+> > +		folio_batch_release(&fbatch);
+> > +		cond_resched();
+> > +	}
+> > +}
+> > +#else
+> > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, p=
+goff_t end) {}
+> > +#endif
+> > +
+> >  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t star=
+t,
+> >  				     size_t nr_pages, uint64_t attrs,
+> >  				     pgoff_t *err_index)
+> > @@ -599,7 +636,12 @@ static int __kvm_gmem_set_attributes(struct inode =
+*inode, pgoff_t start,
+> > =20
+> >  	filter =3D to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
+> >  	kvm_gmem_invalidate_start(inode, start, end, filter);
+> > +
+> > +	if (!to_private)
+> > +		kvm_gmem_make_shared(inode, start, end);
+>=20
+> If both KVM_AMD_SEV and KVM_INTEL_TDX are enabled, HAVE_KVM_ARCH_GMEM_CON=
+VERT
+> will be enabled and the logic in kvm_gmem_make_shared() introduces unnece=
+ssary
+> overhead for TDX.
+> Not sure about CSPs, but in a standard distribution kernel, it's very lik=
+ely
+> that both are enabled, right=EF=BC=9F
 
-Yeah, I'd say that's fine. Will get back to you if I find another reason
-why I thought the move was necessary...
+Yep.
+
+> Should kvm_gmem_make_shared() do some optimization or the overhead is rel=
+ative
+> small in the conversion to shared path so that the optimization is not wo=
+rth it?
+
+I assume it's relatively small, but it's probably a good idea to gets numbe=
+rs so
+that we can make a semi-informed decision.  E.g. if processing 1GiB work of=
+ 4KiB
+folios is <100 cycles, I think we generally don't care.  But if it's more l=
+ike
+tens of microseconds, then I think we do care enough to optimize the walkin=
+g for
+TDX.
 
