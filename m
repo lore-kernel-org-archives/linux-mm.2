@@ -4,85 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F06BDC5AD5A
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 03:07:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1B0BC5AD5A
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 03:15:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8636F6B0193; Wed, 12 Aug 2026 23:07:09 -0400 (EDT)
+	id 4545B6B0370; Wed, 12 Aug 2026 23:15:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 815DA6B0194; Wed, 12 Aug 2026 23:07:09 -0400 (EDT)
+	id 3DDF66B0371; Wed, 12 Aug 2026 23:15:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72D6E6B0195; Wed, 12 Aug 2026 23:07:09 -0400 (EDT)
+	id 2CD346B0372; Wed, 12 Aug 2026 23:15:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 44CE66B0193
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:07:09 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A59EE8023B
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:07:08 +0000 (UTC)
-X-FDA: 85094759736.08.00DF6EF
-Received: from mta0.migadu.com (out-129.mta0.migadu.com [91.218.175.129])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 930FD100003
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:07:06 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hNdQ83oH;
-	spf=pass (imf05.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.129 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 01EED6B0370
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:15:43 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E63501A02E8
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:15:41 +0000 (UTC)
+X-FDA: 85094781282.28.55BBF18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E479240004
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:15:39 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=iyBAx803;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf07.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786590427;
+	s=arc-20220608; t=1786590940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=0/WFmAnmHcIpa8jJwJMv0V5dDB22ZDP/N9IEjE8VPcI=;
-	b=IILkU7y/NysoIk8uzYa0Eyg1NdkN40VD4RzvjJoTujIEvH598VmHwqYpeW9AEGY6r6Ux3d
-	LdHoPWEgP6mdCAmhNA2y96yXTVvkECEAhrb2TtsLIe3eLrmpSGyVuylSAe/s+lOQ9+wLBL
-	1TG4SLWnBpaeMvUap6kAYkCTbFamKDM=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Ztxgd/JYqFNMa+5W28UF9FOvIRk8UwQbnQU61yY7A5A=;
+	b=6wzumCkmLmc5efciGCYdhxOtzcJhcWWoNlpTpQLXdyUYV64Jfk81EBscPSAcf1RCeUnwUx
+	iPfhuXSn/Kt+aLJ7JBE3d+SMBC1ePPX/p4+cBmGkGT036cZrQIMAkRxtUN7xYcIt/dMCVU
+	azDmI0VF19M7TBac5QjxU5Eb/t/G1WY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hNdQ83oH;
-	spf=pass (imf05.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.129 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=iyBAx803;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf07.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786590427;
-	b=LlZGl8detIpDUAb6AVkF4B8DFEjACLjLu/V2Rug2D7c1YSe/wH1QiPukCILbwpYzISmatB
-	FD4TCjor6rcpPdw+mtIaiz9eRWNlIonb98PG1vUSNok/2f4SyWFvrR90t5VCicFCM0aGMK
-	1cEHEZstrT/Ts3ne/7sIQ76Bph8g8bk=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ttci0L82/KRm+ruQkSVERz6ZOoHOrD4BV9vjZHSrlTA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786590425; v=1; x=1787195225;
- b=hNdQ83oHHmH8q4zWZwRPiQaUcVuScST+MycjAYbOI3JP7Isa1+FARRR3MXw6cqh1cr7G8Njd
- AaM8Qdgh1dI97NORutxmLICcAOLJpeBnXdYtOT/QYLhCC2wDyZvFutUy82fTYEICbeKCQGbJmP/
- vj5bFnCkpwBvy98b3mmYoHRE=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost.localdomain (223.70.159.239)
-	by smtp.migadu.com with ESMTPS id 421e72884223c082;
-	Thu, 13 Aug 2026 03:07:05 +0000
-X-Migadu-Flow: FLOW_OUT
-From: Ye Liu <ye.liu@linux.dev>
-To: Michal Hocko <mhocko@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Ye Liu <liuye@kylinos.cn>,
-	David Rientjes <rientjes@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/oom_kill: fix stale comment in constrained_alloc()
-Date: Thu, 13 Aug 2026 11:06:54 +0800
-Message-Id: <20260813030654.320269-1-ye.liu@linux.dev>
-X-Mailer: git-send-email 2.25.1
+	t=1786590940;
+	b=sjfToW/c0zOqyCcUbxVTsno9oyJiGMuaQ9dTBd27WGtzSXms4CNeLWhPBSiM+HoMizjhP3
+	OzQD9GBAkRnjHD55VmGoPIIrLWEdfJHLTw/+spZ/GH563s+oZh8tS5fe6aAHJyvn1kSwAo
+	BxWTxmEhliBODvH9ApWm0t1/RqVZG3s=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A94AA153B;
+	Wed, 12 Aug 2026 20:15:34 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D75943F673;
+	Wed, 12 Aug 2026 20:15:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786590938; bh=EPioq+6upU6QiPqKEQkAHRgMXpoHtJwKxdu3sdn4bqM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iyBAx803FWI38pNmQcpii0O1xj89IwX+KybHOVmKCDSWD4HEE+k3+6RVtqqVhRSfG
+	 1yWW7v4Bgvro9Kg6CcQG/tIEd0Vrlg5oUjtoGWUBsjTZIoX3i5AYGotsQzsdjY+z/i
+	 yD9rJiYl8VW34NdVCPFMrH/Jnil9Fu1AYZKTVf/U=
+Date: Thu, 13 Aug 2026 08:45:35 +0530
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: add drivers/char/mem.c to mm misc, memory
+ mapping sections
+Message-ID: <dv43i55pge7zamnk55y3xtvejvnipmeejkcnt5nx3lmx2gqtnt@d6yl7meezqth>
+References: <20260812-add-drivers-mem-to-mm-maintainers-v1-1-6218b861f4c8@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: piduqzxtfgd8wkugroi77urxk9s9genp
-X-Rspamd-Queue-Id: 930FD100003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260812-add-drivers-mem-to-mm-maintainers-v1-1-6218b861f4c8@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786590426-690670
-X-HE-Meta: U2FsdGVkX1+9e0xvZTNNRgVgPlOXTuP5L+7EjsKWCkSIbYCI56xwjwOYX1I3/U8sYSAOnMD+tqJ+5drHhZMtAxVDCxCypMAyrxz0Wl+C6LHIm97Jo9MjBjLTXAPUaZ1YChe9+t1bu94g1zfK/52fDOA65pp+NJZVkvFwpcg01GvCzAsc46Zr4KzKxl0dbAV8z5vTmGM8uSKCNtFm8v8sU66Qzk+K2xW8NFb7RR01FUmGRUwcqzNxhQT8IZKfegV2UPGW6bCIKryI+cttExt/l+KXvzX28H9adEwXvuian0NIkzuA5BKjVA0Po+QbUmTpqCAAyeH90OfJ3H+KVte0JU5rgrc2nhi0JWaHuMrltHpAc1JHqjlAPFu8dRB9eU73YKuGod53TvPJgTKZXZJBVH3TwHt/wRH6waAdtt8S6L2PsWFbsFvmEfpkaVMsZ2rLwvHqkz6i7qcw/zdjHnlVeJObbNv+7IGzwVc8bdQtCDCdQ2XnDTRoomDZ2gWyRUjPjNGCe2pdn8sLUH+B52QoTq7IGf2JgCl8QTsGAb2xodA+j88vAm+ao/Y3S8VXCs+Dr+Y3RjdXMW1SOc4RCWwR8iofrXnW7ULOpJeZVbshGHj6/83QqA67tpXayHvGUkw3abCvq3DuBN+OoJaPRxNcaKHcZrwtlsQnmqNCZLihzWRXn75Y4bWqoXG5KN+sBSZGr66iv7mNqDk9zfPdUHD8t8yn8yGcySB6kACvQ405zJfHM/44YXJNG9GWfdrScRIltJJjrWiA7ZrRymJlC8ltd3R4aX16eGxelzc+9Z7wm8tu0MKiE9YDYChL532bz26SE3KT3lXQSCNLIH3ftzOdd1zBvEiOgVxzjc7XgwsWMhfYX1vXyiC5zLEPucvY8gPStEooJf6s9AfU5LGc4PJTnlywA3IwlRdc8xzNEhn+D2k4GzGrB37D6JS846I3Td4c2Y5XOfCO5RxW2sJHG2s
- OunBMPdf
- H6pENqbtMxsxYoUEqaP5lYN7tamYsoRrDwKTC2dQ5xptwQBr58DFpO4/Vl5pxCdU8KISQCsWwUKsWY7E/iwKffI9LErTsyPM5A6MrfYEheeQnxYmuLpophDYIjwJ0neaNErHbNqgH4lzOuqa1Wdgw7fZLfIBrgJt+nbmZKZ3QYQoCtV2Wn8XfFVvzb1nw/EJqoQFvPG4PXc54H7laems83TveBPIZ5BRTNFc1vDe0C865bf1k2gXPptzyqZCUoRf/OcRfBq8R9OBpFo59eMVrKJDasw==
+X-Rspamd-Queue-Id: E479240004
+X-Rspamd-Server: rspam07
+X-Stat-Signature: j7tfewpkam5ahjgiitn4abf5h3xpft8p
+X-HE-Tag: 1786590939-713650
+X-HE-Meta: U2FsdGVkX19H8+hS8SsnlBaPi3HcbkYAwmls4g5MKNO+pIzAUhU/VqPz3r95dRvySA8GZnZHxlx62IlfTjNC2RnfY8EE0bA+3Hfh+b7ASxK5CqPic/6IaB7ycEy83egVklEXLT3EiWNDeJYxKO7P81ubN7P6ApF+XxGq/rrHZcZ0+oH4bwIIfYw4OHJdqo5eI0ZgGECnEbk29rVTpTwDXkQ1q/u6hrr6bODdSeSqLsoegDYzpuVAjiFK+VnoFvhYFIJyagakTWsnn/Q/vgVyPc/3OKhsRNvmFgIcgPtbxS50SvBjnE2ajNXx1LffrHy7RcMAWMZC62CXgIEQtusrIbnt+q+1wEBp+VfrwxZSTWkDZ3f9xcVPHGXpVeIF4B2c+/xMQ/OwEqBBi1x7L2Ps+k3ZLceqNtkYABGNwz95f2YUT57/pKCTQarfhvcuvMWPWe/BbbmnQ+ql/ocxuCwmeq8EliUrrEsrfipoFM15MH/LOLL8ivl0Hv89BI5ovnthqudKPebaocq9CQop6u/CwiafPekXTs3/z+jQEWFg9Dar+kZTKjNZAcWI7q0Hj6A8NEY1BqwwNWImzBIlVJqW4zo0oVMNipDE6c2mZw48iCIUZZOrv4h3Pr3kStQ+d7L36SruoFIHoRG2W/fRYN0U1BbTbLZAyajdoeEXLTqz4PhJgqpStCLc0HROo3+gStoHLNIfghL1EmbyA5SN6LaOAA0onfvKkeFyzFRZaCGjSrsh3pPmYC2duIvG6+Wo/GGQBshViA9z7R3wwQLKNl0hOVoEGpIo3Ckd6TV8wT+Di42YZ3mAGcHlH6JbIpxNyBme1wtDyoVDNiv/7nJE+wDo+Lb/2camsYW35dLufPWouwoRV5+/DAz1ZSJ/VUpdtm1mLVfQNAh+Qnr+P0LYNMxrbEnolT56THmqnVQBfjHQzx+O62ftUM9F/Vn+FLK3LNTujvZJFtg52xo4VxwY3mv
+ L/VRXaj/
+ L0mlFS6tYbrqhPYgBtyJoaVq/lISJl86SgOdBE7jSN45BDoAweW7urGKUQaa+8hCiWh2EDyF/Cg+mlWbaNxvC+ZwfAmT1UhRnCZJzXTLIlSj/UpCLrO3oj5kev1R/+dnT3Z6IaHjyFsOYMzhgxXeKmrCYh481Pg5Ui+I+tT+Mk+us9bzi/i1pZu8pEAqDkWWM51QNz7ZGNOK2hsa4AMCDfnCBCW4y73hGc5pm0v9hKhBgrkAgz76eVTdLGqoOlaMJJS87c1beYdsfEP56H2esncve1XI3QAiDKAHa1xlUMX5BYhqKdmq2hPfP/2dMHoMy4v24m+Zq41KQNxXqAk43FJH/wkMWStlSnIrNWK5eByaJx2S5rdjlqmeZpNg8P7PW/BRKl6EXTNbNHh469nCRVwgfKThJ5fWlxpkH5gh/qt8Ashl5XjE1y1PUJ40/HJu1DlhV2/9LcrH9QBDCZ8iF7AE9wTWtMPWJS1yn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,38 +92,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ye Liu <liuye@kylinos.cn>
+On Wed, Aug 12, 2026 at 08:43:31AM +0100, Lorenzo Stoakes (ARM) wrote:
+> This file is a 'special' driver that implements /dev/zero and /dev/mem
+> among other things.
+> 
+> As such it makes sense for mm to be cc'd on mails and to have some say in
+> how things are changed there, so add it to the mm misc section.
+> 
+> Uniquely, it provides the 'old way' of obtaining an anonymous mapping -
+> MAP_PRIVATE of /dev/zero - so is directly tied to memory mapping, therefore
+> also add it to the memory mapping section.
+> 
+> scripts/get_maintainer.pl copes perfectly fine with files in multiple
+> sections so everything should work correctly.
+> 
 
-The comment above the __GFP_THISNODE check in constrained_alloc()
-is stale and inaccurate: it references __GFP_NOFAIL (which is not
-checked here), claims the OOM killer does "random task kill" (it
-uses badness scores), and mentions CONSTRAINT_THISNODE (which was
-never added to the enum).  Replace it with a description that
-matches the actual code behavior.
+LGTM
 
-Signed-off-by: Ye Liu <liuye@kylinos.cn>
----
- mm/oom_kill.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-index 5f372f6e26fa..4b5c70aaece4 100644
---- a/mm/oom_kill.c
-+++ b/mm/oom_kill.c
-@@ -268,9 +268,9 @@ static enum oom_constraint constrained_alloc(struct oom_control *oc)
- 	if (!oc->zonelist)
- 		return CONSTRAINT_NONE;
- 	/*
--	 * Reach here only when __GFP_NOFAIL is used. So, we should avoid
--	 * to kill current.We have to random task kill in this case.
--	 * Hopefully, CONSTRAINT_THISNODE...but no way to handle it, now.
-+	 * __GFP_THISNODE means the allocation is restricted to a single node.
-+	 * There is no dedicated constraint type for this case, so return
-+	 * CONSTRAINT_NONE and let the normal OOM handling proceed.
- 	 */
- 	if (oc->gfp_mask & __GFP_THISNODE)
- 		return CONSTRAINT_NONE;
--- 
-2.25.1
+FWIW
 
+Reviewed-by: Anshuman Khandual<anshuman.khandual@arm.com>
+
+> ---
+>  MAINTAINERS | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 8014b9f8253e..27160fbe21dc 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -17109,6 +17109,7 @@ F:	Documentation/ABI/testing/sysfs-kernel-mm-memory-tiers
+>  F:	Documentation/ABI/testing/sysfs-kernel-mm-numa
+>  F:	Documentation/admin-guide/mm/
+>  F:	Documentation/mm/
+> +F:	drivers/char/mem.c
+>  F:	include/linux/cma.h
+>  F:	include/linux/dmapool.h
+>  F:	include/linux/ioremap.h
+> @@ -17311,6 +17312,7 @@ L:	linux-mm@kvack.org
+>  S:	Maintained
+>  W:	http://www.linux-mm.org
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> +F:	drivers/char/mem.c
+>  F:	include/trace/events/mmap.h
+>  F:	fs/proc/task_mmu.c
+>  F:	fs/proc/task_nommu.c
+> 
+> ---
+> base-commit: f5bbbfec59b4e2fb7520a91de3df8a6174325d6a
+> change-id: 20260812-add-drivers-mem-to-mm-maintainers-f3864dc8ca19
+> 
+> Cheers,
+> -- 
+> Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> 
+> 
 
