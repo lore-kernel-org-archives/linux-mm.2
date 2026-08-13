@@ -4,83 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D32D0C5CFDB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 09:11:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2C1CC5CFDB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 09:18:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C64866B0438; Thu, 13 Aug 2026 05:11:23 -0400 (EDT)
+	id DAA4E6B0252; Thu, 13 Aug 2026 05:18:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3C8C6B0439; Thu, 13 Aug 2026 05:11:23 -0400 (EDT)
+	id D5ADE6B043A; Thu, 13 Aug 2026 05:18:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B547D6B043A; Thu, 13 Aug 2026 05:11:23 -0400 (EDT)
+	id C229C6B043B; Thu, 13 Aug 2026 05:18:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 89CF66B0438
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:11:23 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1B04714043B
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:11:23 +0000 (UTC)
-X-FDA: 85095677646.17.06D56B5
+	by kanga.kvack.org (Postfix) with ESMTP id 8C0D06B0252
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:18:45 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0333980537
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:18:44 +0000 (UTC)
+X-FDA: 85095696210.12.93851DE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 60F101C0004
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:11:21 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cGk46W7C;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id 49D62C0006
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:18:43 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bWIcRYVo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786612281;
+	s=arc-20220608; t=1786612723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NhXWTtJUsDomL6egy5QoaaI7sPJon5+7fAgN83W6CcE=;
-	b=yqa9pqbUnhYat9DSIpC7hJuuRFfw4TzgAB4AurVBE2nC52HVcFqiPrcrCAwcZr0yBR/mty
-	GfUhurlFKop9ZuXKkcEzlFKPV08CeIOG6u+ON7kMYuhcYoDoF558jVQbjQKdk7AcDWr+ax
-	R2ZBVrY4JCi8gwX53/x2hlxMxHNTMCo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786612281;
-	b=Sq+JmLGgDigmE4zkLxCLw5e9vl7ZBqoLKzUQ8gnBYZdbhKsfLlXeTsDBOJ+xuWgfH8IGWZ
-	3oAISMCmtG0W9ioB+JcrFp/KBlRAfJj37umCf6x88VVkZ5al7i0ZjzggOOhHuEfR1NHxFA
-	JrnqujezKNcjuG9U0PwzvIWGSXdegq4=
+	bh=GetBiy0Zn1Zt+WVhmIztIBXSgbwgf2K+rHp84uzlz2E=;
+	b=PbsPC1TAdJozN8l0dhGN7Q2Dtazu0uCoCOUwJ3lIeRTVmWdHq8iSFjjK81TIEImvcTfrkS
+	6l25LggJW6W1Y+hcyV6494nGifnyAtlmmxh5zKHKtzalzBX+npU643N88ekPm45c2Vxc4m
+	3pnUYCkDN7uQlisCgbcfp/gSW6072Kw=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cGk46W7C;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bWIcRYVo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786612723;
+	b=KEvVg5xRXxNjoLZ30REjr8AGQp67upz/hl+Rd6AnhJiHOhEIGm8S5DQuPior4ZVkF8dPgC
+	FYruSKjCiz9D0YNY5RFiaAEZt9RzbomubVwsYwoPRTHvminzKxWMnn4166Aazao9hs6p66
+	ze1WhMSr9GJxLd7qZ1fQZ22z9pxAjR0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A116D600BB;
-	Thu, 13 Aug 2026 09:11:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 261431F000E9;
-	Thu, 13 Aug 2026 09:11:13 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B1C64600AD;
+	Thu, 13 Aug 2026 09:18:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F781F000E9;
+	Thu, 13 Aug 2026 09:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786612280;
-	bh=NhXWTtJUsDomL6egy5QoaaI7sPJon5+7fAgN83W6CcE=;
+	s=k20260515; t=1786612722;
+	bh=GetBiy0Zn1Zt+WVhmIztIBXSgbwgf2K+rHp84uzlz2E=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=cGk46W7CzHl87LeGZ183G7a45BrctM3x0Us+3/mOn9K7e9MS+E6OEnH64n9FUszCk
-	 txrylxrL3gzurCwA1wyu9o329GqI1EmjsYo4h42Sl4fvy4DsaVntIWIvLRBdYK+xDV
-	 BXGcaDm/ZYJNUhmFFPMhApu3xPhHQHk0z/2Ohy8DCJrcMXFuz44RYJWRVcTFF+32G2
-	 y/NAueKR9EOHCtqPX6VKJ17/+GtZyVBn/QJfD1Hkk9ssqTXe/BM+TqaT7W4jX8H0jW
-	 YPXNtsUZTQwJHiy2vGdrjHxb7NAgM+hvL7xGzb6IyEZVIWNNLYst/7d1Z3xHddlR7R
-	 wJk2+bKmzKqdQ==
-Message-ID: <837c2e83-ad5f-42f5-afef-5132e02fc19a@kernel.org>
-Date: Thu, 13 Aug 2026 11:11:11 +0200
+	b=bWIcRYVoSsY+NP8RDYGqeCKfdNSxxjBsO0HFtspwgEIcp4mxv6MIb+2TtjGjCRLw9
+	 hIFNHL3xy64xAuU96ONyJA6lJgCdNyALdgyI+DydU5l+v+zFz/J5b/Y1Kd30ZurMF5
+	 LX4SUYoWQFIjEvpb0hBaybB0GmnOwdsg4e3tYQF94wvU9f1NxWbA9ptSNnR6vuNgF9
+	 /pBx8beROUiTVDlXLjY9uCUrg/A3FYGguRxxKdoiDYMZa0ZmOsA30p8M+qmovrM09i
+	 ++Q2dp3raik6cTHMydkCPT3cK/35vli7LyQG8Ow9StXI6zByuJcR/6Mea1EDO0Ksop
+	 xQtWNqBuv2IBQ==
+Message-ID: <ea3c2889-343b-4eba-9758-cf56c75da4fc@kernel.org>
+Date: Thu, 13 Aug 2026 11:18:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/Kconfig: allow user to select MIGRATION if
- MEMORY_FAILURE is enabled
-To: Xie Yuanbin <xieyuanbin1@huawei.com>
-Cc: akpm@linux-foundation.org, apopple@nvidia.com, bp@alien8.de,
- byungchul@sk.com, gourry@gourry.net, joshua.hahnjy@gmail.com,
- liam@infradead.org, liaohua4@huawei.com, lilinjie8@huawei.com,
- linmiaohe@huawei.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- ljs@kernel.org, matthew.brost@intel.com, mhocko@suse.com,
- nao.horiguchi@gmail.com, rakie.kim@sk.com, rppt@kernel.org,
- surenb@google.com, tony.luck@intel.com, vbabka@kernel.org,
- ying.huang@linux.alibaba.com, ziy@nvidia.com
-References: <0dc4a8da-b2e1-4eaf-bea7-070b38d6952c@kernel.org>
- <20260813072344.112797-1-xieyuanbin1@huawei.com>
+Subject: Re: [PATCH v4 17/20] mm/vma: only permit MAP_PRIVATE /dev/zero to be
+ mapped anonymous
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Alex Deucher
+ <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
+ Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, James Clark
+ <james.clark@linaro.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
+ linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
+ <20260806-b4-scalable-cow-virt-pgoff-v4-17-ab318a350404@kernel.org>
+ <c7930f14-5978-4709-bac2-54950c988883@kernel.org> <ant1xwiG3djtoXoe@lucifer>
+ <14a06774-4157-4629-8327-b1a6bae24ab7@kernel.org> <anyst_4LGm6bpWdq@lucifer>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +177,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260813072344.112797-1-xieyuanbin1@huawei.com>
+In-Reply-To: <anyst_4LGm6bpWdq@lucifer>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 19m43nr79r3q7rbw1txkjc8uwr918e6c
+X-Rspamd-Queue-Id: 49D62C0006
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: jfsab8n75r4xthi1tb7d17tj7abgbfur
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 60F101C0004
-X-HE-Tag: 1786612281-886857
-X-HE-Meta: U2FsdGVkX18GfjOOctAa8AG1Tal8rKAz3PDAz1JpXwLEy1885dWFmLHxqme9Joh3miIcokZIBEOjhr9/jP6S6WRdNPsO+kBiLybRX5P7ttOKqHPmyE6OSVceFOzGCa2fAmoI/2mW0st4p34bIW8g+v+6HI9iszZD0b3XQO5utVIzJMtwSVHRHfLsd6he3loKlj0i8XgQN0zZRWztqbDszzfg7DPhM0ywh+1vFGL5BdbzUiqC0sbhUHi9vV71Kz668z7TdO1wOCt9iH1XtZpiGsfymU/K++VsOllMMNt7K8YNVViThBS6gUQD32RFCOLzveWK9VUjO/IVOpQOXW3nFG1b/jZB7MpsuGXEMRsBVtggM5iNiNAUya6MoI2CYq5LZhuNcYfBNObXewcoT4DqQU2Eupbc+u2ZfGdFNfHShm20dSLtskLfFDM00SB+62dZRLBOBS9PH5bAxEzKcCZmi51rmzU9mVU+fZ+UqmEp71ZrDH9nHQ71ibUdOYvVTCxqKbZLTjfvOf9Gv3kM9trAUV5Ybbg9P4eNyjYDP2GmNgwOWml7G0VV+VEYdSPA03e9KLNraOKJFvITof44BMMJJlmomsROTgJbbF0BhQ9NRAUWmKyIizSRpjO4GMZVJ/CPPHpl3jJjFUg6XWF+kL8vVp9tYFXfMuq4uZx4pAHWpdcX3jRL9KDZz7stGdaYz2nF8FOz5zABcWeK+89q0EmFo6iL9ysYfrRY9uD95PnBz12JSqGXvE4JmIMxTMV/Id4XnS6CSxMpGh7zjOXo/zpZ8+60PPYEtNL+ITA5MrkVHUTJe055wX/aztIL5K7uRnMQ+sw8tFCD2bGup1u1mpkEDVZV+LnRzg9DB0BegHmhS3QlkriYClHsxW//xnV4erzrYFz6y6lJ4L2/6XvQPMVYMZbQe16dQqLZh9x+q4OgxKhExqGn7EPvyyS1R3PqFcv63b2dfl8y8dBcydVtcO4
- o2WTNeTm
- Y7BgyH0FtAVYEqLGiMPAIHoiFSTLzeVuqtPbfJLfuRoJAwTf6s5HtM5gxG8KLMKgkvF2URegmveF5b3+AcijN/+JPnYGqhR/xc1VtfG4h75w4hgnzqK+5ybWGQ0CWwjQQqneQOPlLX1fc6YEq7Mn+jXzsaSo0xv0e6oTmn/NI09Vresf5ggAKXXWOXUMYMeXGc3YyQYYR4yDbfUHOIAVqfDpVxgXClILjIRJvkLAQGa39zrIN4JfYx8uNHgVh474NT89k4NXjbVv9ZXLg63/9xBy/140GWDb7piPOizFqPTC3lWY9VWQuPW0SJxxrQA5S1TrLvu+xrnO8AklqTD09q18aWlNi87BFudBW5KNaTQI211z2XOFzKblxpT50SR/zfOAH
+X-HE-Tag: 1786612723-977623
+X-HE-Meta: U2FsdGVkX1/XqKnNCDu2L+XdziuOubbe+0LK7olbhIHD44dB6IhxG4H54z1CNdKYDLX5pRa6Gdi8Rm0ock/EJQTy1xnl51uv+4p11GVX0HAdSAZjjQ7hhoh3jSCg50qqQFWRSUAgvXadnPXZesGMzCD1ZFarvgeFnv4KQj41BwM7u2GSmkK+R8s/1VAov7RokA2wM3cAsZ12nrvRmVscNKp9uId+FPcaUB8WBvFIKRhkr+KkvoSNiVi+1t+N8bTxYz64snmydN66sY+iRLBdSxusUki6dRO2I0ajvtsQ6Oeg+wnhKeciPTEwayMbfkl1NiWl6ZyKrmWL8AnTnsPuv/SX7h6famMRVnsGALZE8dxeE4Fx9Qs7KwMdiAHFWJaeWT7JnbpMs28P7Zd08WaEV2fENOj3F/X2RwCMqf7tVBsOL0U4wnfSska28yKmyHDJT8G06XnOBwd/XXsrI/BjECDZCLy18ytlNHkj5mu53mvtSAuahi06HlXDsRPvaVeu4InBG31sJb5SHo9HqeTnKbZEcFmFV3hbu+/F7DxC1N7sg5sCYEmoWYt/9RK0I84ludxaEzQT4jSI8GBRwKylxXwQAeJUWhU8Avo7OEF/23O4BVDCKQJ1FBBVAz5C1jmjTxq1TzP65R1Fn2A4Lof9E9+QFWWvifQ1dTk2rXFm+TVKhkziNOL2h1YIP8LjquvIdhF+ybYEhU5IPcwM/+gSlV1qpVsfBmjzq1LtCaPZV4yMn+KJu9AfxWDX+SEAGbcy7sLRn1fIGFcCmLQkX9LCg7Y+EhiJUSSzB2Iwq66WZTdRE1OiGy7EESqZJIilfWFVLhrw16fsqTMIp57/VqeoLsMVouED/1de1aJIIjG2KoYs6e7MbKTc/AP87ob+tqCTRsaloxcYS1DUZrtL7U80zl4bn9SAhWajoMPv1buPC8QgOJTP+MtmJ7aRi25bJkUjZq3EPVC48DYu6OEDhgU
+ PwK0W8BN
+ SbNbkX4xs/k+hg550rWpFsoFIzVBlxylh9YJg9aSXp3Z9Beb3++KCygmqsLpb92Kf7A3XclsdPe9Q+PKfHsFnvZE01yHw8sENJfux8OiU/qYjNJjV8pwEgQmCAyrq7fiA06jOIhgFUrrqo/JNMT1XgnYWX/FEZUMLf96jOVrH7H9Av/ttFHBJfhJ1i0vadLtteftDtr4HO1OV56zX2cVCm8hGA6AIik7T5T+DriZVw6U0QMsPkUzNT594Svu5GRuVwIVh6htQmtPbMbxlFlaz59HXjsEBct47OxX5L0E0ptA2QyNdGjUqV72LqdB3abvSvi+dwKFtNuhypaD87aWbjzzyb4wmUzrA3Rl4hHIQERsvjsWdY2hilY32AolTz5qV7w0D
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,34 +195,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/13/26 09:23, Xie Yuanbin wrote:
-> On Thu, 13 Aug 2026 09:06:07 +0200, David Hildenbrand wrote:
->> Why add a new config option?
+On 8/12/26 20:05, Lorenzo Stoakes (ARM) wrote:
+> TL;DR - either we need to find a way to uniquely identify it (keep my approach
+> or move it to core mm) or we should drop this patch.
 > 
-> I think this provides more flexibility in configuration, when:
-> 	CONFIG_COMPACTION=n
-> 	CONFIG_MEMORY_HOTREMOVE=n
-> 	CONFIG_NUMA_MIGRATION=n
-> 	CONFIG_CMA=n
-> 	CONFIG_MEMORY_FAILURE=y
-> Users can choose whether to enable migration, just like what commit
-> 6ebf98d71f9b509e833e ("mm: introduce CONFIG_NUMA_MIGRATION and simplify
-> CONFIG_MIGRATION") done. However, it does add a new config, which may
-> confuse the users...
+> Given we're late in the cycle + you stringly objective to my approach I think
+> maybe best to drop it and respin?
+
+Yes, let's handle that separately.
+
 > 
-> I think that just making MEMORY_FAILURE select MIGRATION is also a very
-> good solution, and I respect the maintainers' opinion.
+> Can do a follow up to add unique identification later, somehow.
+> 
+> The key change of 'make anon-assigned file-backed MAP_PRIVATE mappings not
+> special snowflakes' will still be achieved in the other patches (but have to
+> rework them a little obviously).
+> 
+> On Wed, Aug 12, 2026 at 07:15:05PM +0200, David Hildenbrand (Arm) wrote:
+>>>
+>>> We don't assign vm_ops for a MAP_PRIVATE-/dev/zero mapping. So that won't work.
+>>>
+>>> We could expose zero->f_ops but then it's literally in drivers/char/ and that's
+>>> just weird to expose in mm.h or whatever.
+>>
+>> Thinking out loud: could we use a dummy (empty) vm_ops?
+>>
+>> We'd place it in mm.h (zero_vm_ops) and just use it in drivers/char/.
+> 
+> The entire purpose of this patch is to _uniquely identify_ MAP_PRIVATE-mapped
+> /dev/zero and only permit this to make a mapping anonymous.
+> 
+> As per the commit message: 'mm/vma: only permit MAP_PRIVATE /dev/zero to be
+> mapped anonymous'
+> 
+> MAP_PRIVATE-/dev/zero to anon is a historical abberation. This is why it is a
+> unique case where semantics don't make sense.
+> 
+> Doing things by semantics makes sense if the semantics are a _class_ of
+> thing. This is not a class of thing it is a one of one.
+> 
+> Yes the method used is ugly, but the alternatives (I can think of) are:
+> 
+> 1. (your proposal) allow any in-tree non-module mmap_prepare() driver to map
+>    anonymous pages, creating an entirely new semantic for memory mapping.
+> 
+>    (this is currently something that is possible, unfortunately).
+> 
+>    To be safe we would have to implement then a series of checks to prevent true
+>    insanities, because doing that would permit broken madness like a PFN map
+>    being treated as anon.
+> 
+>    Once this stuff is out there as an API, even in-tree, even non-module, people
+>    will abuse it because it'll go through some random tree and we'll have to
+>    support it.
+> 
+>    I mean we may as well just not make a change in this case other than maybe
+>    preventing .mmap from being able to do this.
 
-There must be a good reason to do something fine grained like
-MEMORY_FAILURE_MIGRATON, really.
+As discussed off-list, we could have in in mm/ and special-case
+drivers/char/mem.c to include a mm header like fs/exec.c similarly does.
 
-So if there is a use case out there that absolutely doesn't want
-CONFIG_MIGRATION but does want CONFIG_MEMORY_FAILURE, we could discuss it.
+drivers/char/mem.c really belongs to core-mm.
 
-As really only softdirty needs page migration (IIRC), we could also just put
-that under a separate config that implies CONFIG_MIGRATION, like
-CONFIG_MEMORY_FAILURE_SOFT_OFFLINE. But I'd rather avoid that unless really
-required.
+> 
+> 2. My solution - ugly but uniquely identifies the single permitted situation
+>    where this behaviour is desired.
+> 
+> 3. Export something from drivers/char/mem.c to mm - horrific for multiple
+>    reasons, violates separation of concerns etc. etc.
+
+Jup.
+
+> 
+> 4. Move the driver code just for /dev/zero to mm - I thought a pretty horrible
+>    idea, but maybe we could have some mm/ bit and some driver/char bit like
+>    hugetlbfs or uffd? But I'm not sure there is a not-ugly way of doing this.
+>    MAP_SHARED /dev/zero does shmem stuff so maybe could live there.
+
+Given that I think drivers/char/mem.c really is core-mm material, something
+along these lines also make sense.
 
 -- 
 Cheers,
