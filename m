@@ -4,92 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01AA4C5CFCF
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 01:20:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53458C5AD5A
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 01:20:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A9876B0189; Wed, 12 Aug 2026 21:20:12 -0400 (EDT)
+	id 258B76B018A; Wed, 12 Aug 2026 21:20:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9811A6B018A; Wed, 12 Aug 2026 21:20:12 -0400 (EDT)
+	id 22F2A6B018B; Wed, 12 Aug 2026 21:20:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BFA56B018B; Wed, 12 Aug 2026 21:20:12 -0400 (EDT)
+	id 149246B018D; Wed, 12 Aug 2026 21:20:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 534976B0189
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:20:12 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8694E4055D
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:20:11 +0000 (UTC)
-X-FDA: 85094490222.26.BE89609
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 92D7D180003
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:20:08 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GB6v6XB0;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DF8CF6B018A
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:20:40 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5C1EFC04EF
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:20:40 +0000 (UTC)
+X-FDA: 85094491440.09.C3756EE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 8BFBF160005
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:20:38 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hfm3BuzY;
+	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786584009;
+	s=arc-20220608; t=1786584038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ED8Tp9lm2QOcPjmMOrBKPEMtsi7PWnnaCdiDcnQCvuw=;
-	b=il7SWdvKJ9QAuxz/+zTqMEBRYgdFT8Fcy2lLn0lL8pY3gqHnRMB+coYK9VgH+zYWrR+gsM
-	v1mCSVP2culz8NXWB6WEyBsJajwU9urKqdnOOAcNbqW7v1lyULHsXHeurbJcP+8fTr6/8J
-	7dpzbugUyCmAKGpeOJkh855rDwWiYuI=
+	bh=r5v95wtq1BLZEEyEFG0/i1jcAuSYZVvTrSaBmqKanVw=;
+	b=h6hQwm7G7anngGQ+IG0U8BlHQuov3bkGNwbjvmn35luQ32rY6OG+s5IPcpzRdAYsdw9prp
+	dAKZdksOMDPIpSn7drM9FP559oHG6hghc/GLkyceHX55pvB7TmyQWSAa3ECIjuNzV5VQNP
+	IHJasX1xkvbaxyziATi4t34sIKEIZV8=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GB6v6XB0;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hfm3BuzY;
+	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786584009;
-	b=WCFrr5fUjwlKXTQB/K3cxnGTFmSVbMAoXyMvQhlQnAH8+a/oPoufTG2xuvvCEXnjpcE4aa
-	Tml7Bmvh5yH7EX8UIo775fazoyfITVh+7TrE52kV6BVOfrBSYc9tpcwHuDA5SbP0V+yAi8
-	hPtN4Y2IyNsfBR231rl+4ihFfP3r/v0=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1786584005; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=ED8Tp9lm2QOcPjmMOrBKPEMtsi7PWnnaCdiDcnQCvuw=;
-	b=GB6v6XB0EZ2QWMagQIuue/Stn1GDeaXnh4T/zitrXAGkwnYbbTVZJnDPgMvudeGYBgWHPB/eriflbkPoOfscDqNixZXaQf7hlQ6o14KXB1u5TUzy0XMzClawuYwR2WesL3jsKs3S7SI+1ZhhA55nkQEfhV0aX+tr42Qfvw6G/0g=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0X8skQm4_1786584001;
-Received: from 30.74.144.111(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X8skQm4_1786584001 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 13 Aug 2026 09:20:01 +0800
-Message-ID: <ab9cf918-862e-42b5-9435-b46f37d71928@linux.alibaba.com>
-Date: Thu, 13 Aug 2026 09:20:00 +0800
+	t=1786584038;
+	b=6yMmsp2viiivcDA226ihNdEatrrg8L36TUtkfrpxGXo4PH4RK1f0iBzOSUBxUhxUwGQo34
+	N58TYIE5EfgT23x+CFMuI+qeo+iRLVUKRGkQ45T/GekR70607l6hEr1ww43IZdtYlSxnak
+	Q8iTCelHmooTgKwKhQnfsjLor+HPjCI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 203126011F
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:20:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46871F00ADB
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:20:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786584036;
+	bh=r5v95wtq1BLZEEyEFG0/i1jcAuSYZVvTrSaBmqKanVw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=hfm3BuzY7+sWZt7Z9zy/p7BmM7fa0dRTqBKhLi1sO5v/GquZ1vFEKKTCYqeUKFpkf
+	 Y/uLtzy0e3d8evPLNsRRfgC5I6rQUngbgaCgHFPBB9wBxW/uFfksiWmfYhD4BadGts
+	 YaZ7gReuAmB5odMh1W+XRrU8QDuWsMV7JND8lhxEj3NLrCpsvJxMivHkukZXFcwZYw
+	 +tIfuffmfu5UAlEYAMoFd4D4dpS0/osC9Y0eld0dZw0wbGyJhBZhljK4FRQxcJG9oV
+	 VbZGAEK21TzIwDCzt8E2+fNqudgLuDEhUerTthDqioSCmYY0wBRRUxlP8QrHoJNpPh
+	 Scj6RMbyml9YQ==
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8eeb4508f29so1587546d6.0
+        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 18:20:36 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpOzVCYWWVc7HHm5IK6B/qVbBnwygG0Js4aFoU8KmkdDOhi6qFwgGavBQtqUfXU8GmSew8/MIBKUA==@kvack.org
+X-Gm-Message-State: AOJu0Yx2zPM+OBkVTqoD1dfCJcMXqTJouyeT4ZKoaYrD53ASoK/ssChe
+	ZWoJCreEaV8ST7dMArBm50CSlLaiVngp1ME/9AoM3Q0VLLXXSfRb9bslJxWBV3/v6OKMireqn1f
+	tXLVXo6Bwk+g1165d9M8puciE5/QD024=
+X-Received: by 2002:a05:6214:194f:b0:908:965f:55c3 with SMTP id
+ 6a1803df08f44-90a80b276bemr20907746d6.10.1786584036123; Wed, 12 Aug 2026
+ 18:20:36 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/mglru: fix and remove redundant unevictable folio
- handling
-To: kasong@tencent.com, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
- Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Oleksandr Natalenko <oleksandr@natalenko.name>,
- Suleiman Souhlal <suleiman@google.com>,
- "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>,
- Yu Zhao <yuzhao@google.com>, Steven Barrett <steven@liquorix.net>,
- Brian Geffon <bgeffon@google.com>, Kairui Song <ryncsn@gmail.com>,
- linux-kernel@vger.kernel.org
-References: <20260812-mglru-mlock-fix-v2-1-a3fec5853c08@tencent.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260812-mglru-mlock-fix-v2-1-a3fec5853c08@tencent.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xzhh1sicz9ng3fexmad93msi5wkah9cu
-X-Rspamd-Queue-Id: 92D7D180003
-X-Rspamd-Server: rspam03
+References: <20260812065933.103627-1-hui.zhu@linux.dev> <d18ed09c-52b7-40ac-95e8-c1530246e2af@linux.alibaba.com>
+ <CAGsJ_4wE7E2G8H4ugwSWbQMF+5ecx+mrYQxXa1U6HY3utuQz0w@mail.gmail.com> <37015686-6776-4e67-95ef-a26ac61a3b44@linux.alibaba.com>
+In-Reply-To: <37015686-6776-4e67-95ef-a26ac61a3b44@linux.alibaba.com>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 13 Aug 2026 09:20:23 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4z-nfbeL7VxZyiWgJ1Ut3D5P+AfMXfqqmndwqMxmmsRJg@mail.gmail.com>
+X-Gm-Features: AUfX_mx7bgfxS6l0IFxFtM2MLFiIwSFNHjUFPvv2yGnyvUchjbj1-_2nkD4Clq8
+Message-ID: <CAGsJ_4z-nfbeL7VxZyiWgJ1Ut3D5P+AfMXfqqmndwqMxmmsRJg@mail.gmail.com>
+Subject: Re: [PATCH] mm/mglru: Fix young counter undercount for large folios
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Hui Zhu <zhuhui@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8BFBF160005
+X-Stat-Signature: jwtd8yqua1onr37e8mnswb1xss1px775
 X-Rspam-User: 
-X-HE-Tag: 1786584008-411391
-X-HE-Meta: U2FsdGVkX1/rZvmB6gMmnzkMhS1sa6pMIKav3to5qvbIohx1KtDabAsPlBXSD8zc/wbR/i3vJTygBSICUoSysokXtNW3pKdNYsQn2AapOwHUPLvEx9cJbaVXDrqDDp7lY2pRUapUivnD236qiO1/1dJvxCDqxe6+0RWwPzgXTd5IBXzsPpzwK1a0vUMIBA2Cf97yRh8YDMFMMYMt5gejEwjXcQkX7HZvtawE4+lIeTjLizAHnMfiTMyiFntPvYLEO9lWhOToJyOv75qKr9eBqoII5B7VrboE2yo8/TDg17AbpvzjXpLJaO+SIChSvlrtNLYpClX5wzBUvnj6sDdtmx4lQ/4tZfvq2Z4ReLufrIfqdxgT665lk/fOcR0Iaj2BCmqneLWDF0WrfPfovxF6SBnRisPdcDTMbkGAFSpXosIopxWnK+EvQ6Pe6EpqnJ4d/LHWRzrzmpH98sR0q5ZU6qe05SGzTBb5X7UHBWf3Sj9tvQ+iBF8OQAODmTi6b3Rm4tFtnXXS6bxPC6tGDTJ+euTeUNf0mT0One33U2u+1WHkA19kOu0kzAH0Gkf3hY6CA+50ZUhWaxZu3MhoNQvCYoPfGLahzRwE1UyMmhbmrKx39MdfiiX3Yx+oMMjgPyAw+OuPtT4JoctY+tiBz5+SUOSwL53NGDLvXaJgxqv9sZpeD9VjYpbBcO8HEqgbI/ZHx52GncXySciQNzRjDGuvQgFMi/vqLHY/FE54fWDHlHQGdi98z3Zkb56wQbmZ1v3PNrhBudKJ3YgA9FBEWu93ghwNSp+S4955s/NCTvxrILFlmO6a0zedr4NVPWDl1XleLJTxnxFUEfL0zKXn5rSVUyoP3SPWuGID4Tv1waip5Ue0IqkPOV9LRk3/mczHB4nAP/ztZtstgIch06xh/h/hlyNXemd4l77h5nLywmlEHUQFp/1Rz8FrTS0+8maXJ85umrTPimK7iebxQpDyvFd
- DIpCHJTf
- 0ZUx691LH/CX1HL0cF4KH+gJVrKDs8TC+vFHhuQiApbO1cSnJeHwoUj1Gzs81xO/ZQhuWZR4U5HjZTvGBH4PJrecb7MzBJYgHB7iyGXreI8xS2r+/1ERdr66ol/2Htk+TVFusaYP/KpRr53nRZCD+CgypYMx8vUzb3IQ3SXwDd8fQBT0g4P8JjJQONTeTwspgySLlmYuybn9qzieREVOOgUoGsEof9KyI2Ap5KQLKJvMEO2D0txIP8TuAmrkNR4x08QtU0LhNmBUFm6oBA91fGordnO6/jAqri8hC21chvu48vRNAX82xwRtRcElOdITJs19KHY3ZFdf+iBk71DEXvXPMqww2Fs/8m0mNLngIaR5hKjMWdFJd9pLQXWObXqfVR4DGRdq5eKzlAf+532X8UdGCOdnFRolxOEht
+X-HE-Tag: 1786584038-495515
+X-HE-Meta: U2FsdGVkX18GjhvPp68fkATKZFaBN7WkmauXTEmpU6dXLJqkog17QqOQbIeHUGxzSsmWQs3czGgSLoYp3lswS48PdSljkGjTeJOvBarni236+H+pxRH1FlO7HdRczrF5qQ2ih3ieRbBkuFLMx5RDJik+zoKj526QgrI8x4VsCUxR9v+YpBN1wwybOWEWRaJ4309Wmy3bcI1bAcnIAhMqZM6+3KXATbG9CMEiIvC6/XkW0Kc4tWlCf5wyp0fZg/3dYKiGoiiAKePc+uArQYI5lqlZXMviyKubC5qTWyTzPdlnYfdLotCHxluwLi70qPYjdvpVBvbJY/MQD0x2aLTS4kSJFZ47IQsNKSNmdM6RDK4W38EzYBRSDi/FCHO/m+1hVnnzaOCa9I+aB60EQsdz8lBUegg6CmoHcjAslQyInoUOr/qovqd3hU9Zzbg6FyGkKe6YTvJNKFfj3tKyH0luAl5FEwj5nUeyOJsj/9aMW6jjDlNwr5DEwpKf9Ku2TAZqSHpT1l6ilMhyvK9tykI0iLa2T98REVYwCzFWi+yuy8yzRIE6sUUdBWqDG0JT3MnT5ftX39GZkLP4hQ5wm6EgVHLfUM/aggnCcF5Gcb4x+/MYQmY29aw65E+DSx4PEDCSeR93zjpi7gwn6Hy+flaxqLpEND8jYmf09DCipOWOJZzNi2Mr+tVE5qcsLTmFiNfMyuVPD023hmxbkpFdKvItEn8hcIwG9EiSYI+cS1XnQaVuHqNUxg8LhinU4/2e9laOcwr7/cqBOVpC2OIN1djItlndZSWNkL0kxkXQ/fYbi32gW5YWBBXuqL5PIs0XG8pFOVXq4uAAV/YRwcupA6O8JGBq2KPd7vdOZFN+n3W7QXiR36GL0E5Q0e0idReTAOT2K5AQ6nq3Be17Jumh8umO5QW7mqW7IMP7bMuE4QOIbSEJ+wR8uhwE60GWIukadgn30YuBstmXFko9SeIyKPz
+ vFGThNMg
+ ftGO14b7U0jxp7p7USYaTM/m+fwS4Ov8iUAPpkR5N+8d5IA1wtt3HtNFNYWQM43GiVRuEKSe2oqzc+Te9Nid1Q5EadgvFDE9pA4yATummgUpzVv78Rzr+eoekdM/X++wAJf0dfsI0m25VmN467LH7XCC8u6NPwEZMIwL7lKqHfYVguXM9qmk/zmz+TUp92yaiCqlIroieyODx92WaXfDMo8HEFqo9uaJlCaXXPqJeWKgxRdktA/CG+0I0EXJqj0XJ3Ye6f8CJvMCgoX5fKIluKje6govw3BmsCK6DYXaGZ5udkD6Gi1rrzrkrDjWShyI0bpqNaba8msp8jRLg4hIwwAydCQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,102 +108,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Aug 13, 2026 at 9:09=E2=80=AFAM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+>
+>
+>
+> On 8/13/26 8:53 AM, Barry Song wrote:
+> > On Wed, Aug 12, 2026 at 6:17=E2=80=AFPM Baolin Wang
+> > <baolin.wang@linux.alibaba.com> wrote:
+> >>
+> >>
+> >>
+> >> On 8/12/26 2:59 PM, Hui Zhu wrote:
+> >>> From: Hui Zhu <zhuhui@kylinos.cn>
+> >>>
+> >>> In lru_gen_look_around(), the young counter tracks the number of youn=
+g
+> >>> PTEs.  The original folio's contribution is represented by the initia=
+l
+> >>> value of young: test_and_clear_young_ptes_notify() is called on it at
+> >>> function entry, and the function returns early if it is not young.  I=
+n
+> >>> the subsequent loop, the original folio is skipped (its accessed bits
+> >>> were already cleared), so it is not double-counted.
+> >>>
+> >>> However, young is initialized to 1 regardless of the folio size.  Whe=
+n
+> >>> the original folio is a large folio with nr PTEs, its young count is
+> >>> underestimated by nr - 1.  This inconsistency can cause
+> >>> suitable_to_scan() to return false, preventing the PMD from being add=
+ed
+> >>> to the bloom filter and reducing aging accuracy for mTHP workloads.
+> >>>
+> >>> Initialize young to nr so the original folio is accounted the same wa=
+y
+> >>> as other young folios in the loop (young +=3D nr).
+> >>>
+> >>> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> >>> ---
+> >>
+> >> Good catch. Please also add the Fixes tag:
+> >>
+> >> Fixes: 56e5b60b2114 ("mm: support batched checking of the young flag f=
+or
+> >> MGLRU")
+> >>
+> >> With that,
+> >> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> >
+> > Hi Baolin, Hui,
+> >
+> > I am not convinced this is the correct patch. test_and_clear_young_ptes=
+_notify()
+> > only indicates that there is at least one young PTE among the nr PTEs;
+> > it does not mean that all of the PTEs are young.
+> >
+> > Am I missing something?
+>
+> You are right. But I explained why this is done in my original commit
+> 56e5b60b2114:
+>
+> "
+> Note that we also update the 'young' counter and
+> 'mm_stats[MM_LEAF_YOUNG]' counter with the batched count in the
+> lru_gen_look_around() and walk_pte_range().  However, the batched
+> operations may inflate these two counters, because in a large folio not
+> all PTEs may have been accessed. (Additionally, tracking how many PTEs
+> have been accessed within a large folio is not very meaningful, since
+> the mm core actually tracks access/dirty on a per-folio basis, not per
+> page).  The impact analysis is as follows:
+>
+> 1. The 'mm_stats[MM_LEAF_YOUNG]' counter has no functional impact and is
+> mainly for debugging.
+>
+> 2. The 'young' counter is used to decide whether to place the current
+> PMD entry into the bloom filters by suitable_to_scan() (so that next
+> time we can check whether it has been accessed again), which may set the
+> hash bit in the bloom filters for a PMD entry that hasn't seen much
+> access.  However, bloom filters inherently allow some error, so this
+> effect appears negligible.
+> "
+>
+> Based on this, I think changing it to 'nr' is reasonable. For an
+> accessed large folio, it's better to have the bloom filter rescan the
+> PMD and keep it in memory instead of reclaiming it incorrectly.
+>
 
+I am not sure if this is the best policy, but we don't seem to have
+a practical way to get the exact number of accessed PTEs, so this may
+be acceptable. However, could we at least update the changelog to
+clarify that this is intentional?
 
-On 8/12/26 8:22 PM, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> sort_folio() has a shortcut for moving folios that are no longer
-> evictable but are still sitting on a generation list.  However, this
-> shortcut is buggy.  It does not follow the PG_lru usage convention,
-> and it has a more serious issue.
-> 
-> Unevictable folios are not threaded on lists[LRU_UNEVICTABLE], so that
-> folio->lru can be reused to hold folio->mlock_count (see the comment in
-> lruvec_init()).  Hence lruvec_add_folio() skips the list_add() for them,
-> and every other place that turns a folio unevictable initialises
-> mlock_count explicitly: lru_add() sets it to 0, __mlock_folio() and
-> __mlock_new_folio() set it to !!folio_test_mlocked(folio).
-> sort_folio() sets nothing, and the lru_gen_del_folio() right above it
-> may have already poisoned folio->lru via list_del(), so mlock_count
-> ends up aliasing LIST_POISON2, which reads as 0x122, i.e. 290.  The
-> result is user visible.  On munlock, __munlock_folio() decrements that
-> bogus count, finds it still non-zero and bails out before clearing
-> PG_mlocked, so the folio remains unevictable and the Mlocked
-> accounting stays inflated until the folio is freed.
-> 
-> The shortcut also touches the LRU flags in the wrong order.  It calls
-> lru_gen_del_folio() while PG_lru is still set, so a concurrent
-> folio_test_clear_lru() (e.g. compaction, folio_isolate_lru()) can
-> succeed on a folio that has already been taken off the generation list,
-> which may lead to unexpected behavior.
-> 
-> So fix it by isolating them as common folios and letting the generic
-> shrink path cull them. This matches the classical LRU behavior, and
-> there should be no visible effect on the generic eviction or isolation
-> behavior.
-> 
-> There is no performance concern either, such a folio goes through this
-> once, and then it is off the generation lists for good.
-> 
-> Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
-> Changes in v2:
-> - Proactively bypass MGLRU pid protection and lazy promotion to avoid
->    hot unevcitable folios staying on list for a long time.
-> - Link to v1: https://patch.msgid.link/20260811-mglru-mlock-fix-v1-1-8b2321d0e1d3@tencent.com
-> ---
->   mm/vmscan.c | 19 +++++--------------
->   1 file changed, 5 insertions(+), 14 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 3194da7dcc79..ca2b926520ea 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4648,7 +4648,6 @@ void lru_gen_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent,
->   static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_control *sc,
->   		       int tier_idx)
->   {
-> -	bool success;
->   	int gen = folio_lru_gen(folio);
->   	int type = folio_is_file_lru(folio);
->   	int zone = folio_zonenum(folio);
-> @@ -4660,15 +4659,9 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
->   
->   	VM_WARN_ON_ONCE_FOLIO(gen >= MAX_NR_GENS, folio);
->   
-> -	/* unevictable */
-> -	if (!folio_evictable(folio)) {
-> -		success = lru_gen_del_folio(lruvec, folio, true);
-> -		VM_WARN_ON_ONCE_FOLIO(!success, folio);
-> -		folio_set_unevictable(folio);
-> -		lruvec_add_folio(lruvec, folio);
-> -		__count_vm_events(UNEVICTABLE_PGCULLED, delta);
-> -		return true;
-> -	}
-> +	/* unevictable: let it through and the generic path will cull it */
-> +	if (!folio_evictable(folio))
-> +		return false;
+" However, young is initialized to 1 regardless of the folio size.  When
+ the original folio is a large folio with nr PTEs, its young count is
+ underestimated by nr - 1.  This inconsistency can cause
+ suitable_to_scan() to return false, preventing the PMD from being added"
 
-OK, returning false early in sort_folio() is better. Although I think 
-mlocked folios won't stay in the LRU list for long, and 
-shrink_folio_list() will also reject them anyway.
-
->   	/* promoted */
->   	if (gen != lru_gen_from_seq(lrugen->min_seq[type])) {
-> @@ -4921,11 +4914,9 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->   	list_for_each_entry_safe_reverse(folio, next, &list, lru) {
->   		DEFINE_MIN_SEQ(lruvec);
->   
-> -		if (!folio_evictable(folio)) {
-> -			list_del(&folio->lru);
-> -			folio_putback_lru(folio);
-> +		/* move_folios_to_lru() culls unevictable folios via folio_putback_lru() */
-> +		if (!folio_evictable(folio))
->   			continue;
-
-Yes. Still look good to me. So feel free to add:
-
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Its young count is not underestimated; we are intentionally
+overestimating it. Also, nr does not necessarily equal
+folio_nr_pages(), does it?
 
