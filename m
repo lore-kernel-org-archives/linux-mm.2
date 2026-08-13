@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B531FC5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 16:15:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F84AC5CFCF
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 16:18:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7CDD6B0540; Thu, 13 Aug 2026 12:15:03 -0400 (EDT)
+	id 3B9DB6B0539; Thu, 13 Aug 2026 12:18:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2D166B0541; Thu, 13 Aug 2026 12:15:03 -0400 (EDT)
+	id 390DA6B0541; Thu, 13 Aug 2026 12:18:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1BFE6B0542; Thu, 13 Aug 2026 12:15:03 -0400 (EDT)
+	id 27FF06B0543; Thu, 13 Aug 2026 12:18:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 786CA6B0540
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:15:03 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0ABD61C0A48
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:15:03 +0000 (UTC)
-X-FDA: 85096745286.29.2BA9265
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 085FC6B0539
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 12:18:01 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9116BC01EF
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:18:00 +0000 (UTC)
+X-FDA: 85096752720.12.EA479FC
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	by imf01.hostedemail.com (Postfix) with ESMTP id DF7D940005
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:14:59 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	spf=pass (imf01.hostedemail.com: domain of pengpeng@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=pengpeng@iscas.ac.cn
+	by imf26.hostedemail.com (Postfix) with ESMTP id B4574140008
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 16:17:57 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	spf=pass (imf26.hostedemail.com: domain of pengpeng@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=pengpeng@iscas.ac.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786637701;
+	s=arc-20220608; t=1786637878;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Tii058bH7KR2mz3ZS5Use52uM0pO6iBDFjRMtMgNxJs=;
-	b=UhIikCH6NbgPUf7CWON/RUYer2RI6mJ1edJYNvuedxA7i/490M1zw2Xtr1y1pn7fNQoy+c
-	aTyvJq1/TADgDDMIQ9SoxIluZ3hIg9XgtF3cSQf1jw3eiSVkk19YPYY28dv2OEdyWA7pYg
-	MsrhAgetR4Pc6VragU3PPYX3xFoVoJw=
+	bh=Icyie6iqKeeeM/yHnGjppFziBJm96uBgX62zqkHxlaY=;
+	b=R7Zzj4tzC8kkgu1AsBBRq098ezZHHMqv1ZGtCqthk3uoLJlBpkvC9AzgvYqUDZxfF+JL6V
+	iDhFAMcGpNd7Zyqbr9UybGbE8NuxnFNOfMH2lWbhor93HsOLchXtA3zA2r6j8WqWB7rJNq
+	doQ2VTg73x+ssIFBC7zC6776FCm7DcE=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
+	imf26.hostedemail.com;
 	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of pengpeng@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=pengpeng@iscas.ac.cn;
-	dmarc=none
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of pengpeng@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=pengpeng@iscas.ac.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786637701;
-	b=o9XIyKrowTNPm73JxciahYIv/UzPRmcIQFuaEBASIIhZGZOYwvnClDV+NDBuuMarRhthdo
-	6qlg+f+IWg6cTZOAQXrvViMXurhgWloSB5cpKw73/kVGTNcvj4i2zhATX90hHD1sbwSR6g
-	mVLxtvxaGWoiqtMTp1xFtgUO8KHVBOo=
+	t=1786637878;
+	b=o5BqyTTbj5Mc7xBlCWF+vKZyBgPi5PQg/xfVs8scgD/w3CjCh328zXkiohOUqZ5KWmlyh0
+	gXpAwLKvBAdikL4KgcNveoU7mLoNGeypQ6PdJ0BQvDcdv0X5kVCiDiQHnxLXrc/P9E7eFq
+	S8Mgq9n+tJ4+8zXeDVveLMfkiqs6nYc=
 Received: from localhost.localdomain (unknown [111.196.241.250])
-	by APP-01 (Coremail) with SMTP id qwCowACHWe187X1qrr17BQ--.55428S2;
-	Fri, 14 Aug 2026 00:14:52 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowAAHofQt7n1qad57BQ--.20463S2;
+	Fri, 14 Aug 2026 00:17:50 +0800 (CST)
 From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 To: Vlastimil Babka <vbabka@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -69,18 +69,18 @@ Cc: Harry Yoo <harry@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Pengpeng Hou <pengpeng@iscas.ac.cn>
-Subject: [PATCH v2 3/4] mm/slub: test previous lifetime tracking
-Date: Fri, 14 Aug 2026 00:14:52 +0800
-Message-ID: <20260813161452.75035-1-pengpeng@iscas.ac.cn>
+Subject: [PATCH v2 4/4] Documentation/mm: describe SLUB previous lifetime tracking
+Date: Fri, 14 Aug 2026 00:17:48 +0800
+Message-ID: <20260813161748.76447-1-pengpeng@iscas.ac.cn>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260813160825.73031-1-pengpeng@iscas.ac.cn>
 References: <20260813160825.73031-1-pengpeng@iscas.ac.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowACHWe187X1qrr17BQ--.55428S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJFy7Xw47Xw4kKr1fCrWxWFg_yoWrWw13pF
-	ZakF15Kr4UXF17XrZxCFn2kr1SvF4ktw17ArW2qrWkZr4Yqw1kAF4vkryjqFs7urWkua1a
-	vasrt3WfGr4UZF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:qwCowAAHofQt7n1qad57BQ--.20463S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7WryfuFW5tr1ktw4xuFy8Krg_yoW8ur15pa
+	9rGw1xta4UGrn2kr95Ar1rKF1Sqan5uay3CF4UKr48uwn8JwnFyF4Fkrn8ZFn5AFWkCaya
+	vrWvv3Wayw1qyrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUU9S14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
 	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
@@ -96,14 +96,14 @@ X-Coremail-Antispam: 1UD129KBjvJXoWxJFy7Xw47Xw4kKr1fCrWxWFg_yoWrWw13pF
 	1UYxBIdaVFxhVjvjDU0xZFpf9x0pRLIDwUUUUU=
 X-Originating-IP: [111.196.241.250]
 X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DF7D940005
-X-Stat-Signature: g71netoyqx74wwoggwadbr6cyhbbgy5r
+X-Rspamd-Queue-Id: B4574140008
+X-Stat-Signature: fu7h3yaws93z9xn3a3tpp1oy1sjtidyz
 X-Rspam-User: 
-X-HE-Tag: 1786637699-300583
-X-HE-Meta: U2FsdGVkX1/6FV8C8suO3pw16U3QAM+D9FtWjzwFpBYF6LCeqDPf76lLS0f/uhAY0ynaxJxmvJX7dNOk8svfKwV5ZoZwqCdOsIdNv8fjXGPo7VTBQ+HI3yjWiMFMHa/5UDICeSU/ABbjqyUjqT6ZMIkw0aTbdXyoyRp/YUSAavymYVs8hehU4L2t6pJ0YmijM2/lwLSI3x5LFSnFS7DYBMijIJo+EtAyyLSY5Jq+7zygHVrmxFfpXuXOJqKFEQxTCaJuyi38yCCf3Kt047B5kIGHecmndjrrQseq/TGHe4MP0srW/ul6vZ9DJo1t7VixNzQ1xPSHYHelcykImRR+lYutWVRnh4W0C/EOG7tebiRutkmvmG1PqQwMTC92Go63vsazrUii/YBmC64vs3fidWN2aoRNhRMhpyJRgSJje3DFbNMnVVRJEdFgwYqhVyA75wX7Gj0Z+IwdAJe9hLqE0m9qWaA6PDn/591N2T8U4ZcOBNZLUk5jFDNz1/PUb4o4fW5CSFWISoUiLb403Oi19Yr+5snzxrpS+73KPQ95o6HAVqmjFHI1eId1cbz9JwBl1UGqoZNtpOXR7kqld0EKhU/6Paq3L9YLRGIPVTwRauLzDFiyucF9qwopOLrr0a1oCRRnvQ1xR3EThNzd9axki2mU/8ho4qiY0oYqzBVCrCp027Qq+P50dc+j8xTkYqJ5J5dH6U5IlTa1rXGmdv7LxeHfphgyxUtU4y4/tsoxOvEjzdgv9p4fMiKch87eCBj1qdF6gsHpx649egOjjxz2C5qo8h5gxfXfo3/TmY8DkC/9SJbSq1nHyZsCs9nkQRkZw+YryTjL1QsSMRg2Oml3/RSWKh/EpKeV+duMO5tJTXDZ0XShD4d2eLyVXwHvVO6itNjUAuswRMmjp9EIJFparrp4pEQfPH94yPWRrlhGwzLekT7hkT4JxqZrE7ViP2zckSomEgxRYogMWQbzzcZ
- bFsOe1F/
- aMPihprvohwNdQ9DS92jExVBStHyAfzcMB4jIoP5yQmpVb/CSVUvd8XlpAzdkPgT8Oy0gL0VsbujaM465yUkQJ525xCe1vzcY7VeOOhdBmDEJSMY1BA158kxNod3XN8g1mFnGMhi7+51hlcOvcKGqAj/dVRP+Cfhzhedk
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786637877-338028
+X-HE-Meta: U2FsdGVkX18dGMGTsP3zOqoIuADcpn6+ko2XqfPZS5L8SX0TxNMf1HrbMd551aJ4DzxbRA7rEqF1TRq8PgJ6TyXpW5Xb0wcge06uJTXW3rjoEeio4/Q1sjdTmctbZjss02JIlyI8ISqqxIGzCNogbWxkf1Y7Rdle0hPCz8X+xSZbJGJFXLX4GNot+SCWv14vOJnG5JDAl9dJq9jk+Lfh3MejOLkrE3ehZAp4b2MKFaADGM9HALa1SZ9ypjBmXIEjnAZ09M9jtqH+X8Ac59TBrsymToSFOVNTnrff3XJ6HDZMezYkhnnmqs0nhYw3PP+KCXEPjFqD5aIdLnBzsnz8lwoKoUi4JHqPaO0pax27ViBk6v5JrkJVx6ojqD20UFDIYZYBuVTWNwjnvf7+e/KbmTqqzBRmSRfgaDF+QoxMqwOya1w4aVd7OmBWy3bH1ytgpoUmGAS5U5xe1RKIzfqT7bDmlLQ375oGwE5TNrvqf/HmDv4cA65iNHjqanTkbl5sLgWyuCsEpclLdDT++pftp6uHREMhAdC47DXbPxm1G5MI31Xosa0rWkaiPvgUCkM0cVqZe6whMPYF2QE46e5VOhSreh0bCIYiHwkUpD4D+gakigvOpg/fAVtCjmDkcAdItYDg+7H4/5jpWE+t2tSNGjRdywcmYiCn6EWbJDh+BQmZ0lGy1RKwoIAQIavFwxWinK+nGkNs69TbUrkhcdrGSEy8HsrmCiaFfoIK4KZ7+SrpwS++DCavNlbkA1PPLuC8n0czUgqSl6QFtRw7GbJJeS0lZNyYutJI3+bgUrFkGe3bhzoG+AE4Crkfgya40wL7dyvlD6TOlKgTZb44ZBkGl24B4SGVL1CG5HskG3kiQP2IMlqzIg9G9J5xpxIMTwdmM/LJUSm3y9AdrElZifoYB/VmOB8VuIGw1FzL7YFCRNOCuYuYsJabbRk8wYQRnmPsnnkkc9A3f/PpPJIFgtb
+ Ugi3hCQ6
+ WMe0Cd8q96mKtEOii4qKUdCgu+7ffYITuHvtFERC60bNbRQRxraChR23ebqfU6rOGKEmIc7lcCCcnFiIshmqRxjxfjZN9fVvdgGCl/xSr5NWv7S9tfEMYH9RU3s60zAGokqeYLytNB14n2UHGKXtawvc5U9IvSPLKpXNg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,129 +111,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add KUnit coverage for the SLAB_STORE_USER reuse transition.  The test
-creates a non-mergeable cache, pins the task against migration, verifies
-that a fresh object has no previous lifetime, then frees and immediately
-reallocates the object and verifies that the completed pair was retained.
-
-Exclude KASAN configurations because quarantine can intentionally prevent
-immediate reuse.
+Document that SLAB_STORE_USER now retains one previous completed
+allocation/free pair, show the additional report section, and state that
+address history is diagnostic evidence rather than semantic ownership
+attribution.
 
 Assisted-by: Codex:gpt-5
 Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
 ---
- lib/tests/slub_kunit.c | 35 +++++++++++++++++++++++++++++++++++
- mm/slab.h              |  4 ++++
- mm/slub.c              | 10 ++++++++++
- 3 files changed, 49 insertions(+)
+ Documentation/admin-guide/mm/slab.rst | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
-index fa6d31dbca16..62d0f5e64268 100644
---- a/lib/tests/slub_kunit.c
-+++ b/lib/tests/slub_kunit.c
-@@ -6,6 +6,7 @@
- #include <linux/module.h>
- #include <linux/kernel.h>
- #include <linux/rcupdate.h>
-+#include <linux/sched.h>
- #include <linux/delay.h>
- #include <linux/perf_event.h>
- #include "../mm/slab.h"
-@@ -106,6 +107,38 @@ static void test_first_word(struct kunit *test)
- 	kmem_cache_destroy(s);
- }
+diff --git a/Documentation/admin-guide/mm/slab.rst b/Documentation/admin-guide/mm/slab.rst
+index 14429ab90611..5f60904b1e0b 100644
+--- a/Documentation/admin-guide/mm/slab.rst
++++ b/Documentation/admin-guide/mm/slab.rst
+@@ -49,7 +49,8 @@ Possible debug options are::
+ 			Sorry SLAB legacy issues)
+ 	Z		Red zoning
+ 	P		Poisoning (object and padding)
+-	U		User tracking (free and alloc)
++	U		User tracking (free and alloc, plus one previous
++			completed object lifetime)
+ 	T		Trace (please only use on single slabs)
+ 	A		Enable failslab filter mark for the cache
+ 	O		Switch debugging off for caches that would have
+@@ -245,10 +246,20 @@ into the syslog:
+ 	cpu> pid=<pid of the process>
+      INFO: Freed in <kernel function> age=<jiffies since free> cpu=<freed by cpu>
+ 	pid=<pid of the process>
++     INFO: Previous object lifetime:
++     INFO: Allocated in <kernel function> age=<jiffies since alloc> cpu=<allocated by
++	cpu> pid=<pid of the process>
++     INFO: Freed in <kernel function> age=<jiffies since free> cpu=<freed by cpu>
++	pid=<pid of the process>
  
-+static void test_store_user_previous_lifetime(struct kunit *test)
-+{
-+	struct kmem_cache *s;
-+	void *p;
-+	void *q;
-+
-+	s = test_kmem_cache_create("TestSlub_prev_lifetime", 64,
-+				   SLAB_STORE_USER | SLAB_NO_MERGE);
-+	migrate_disable();
-+	p = kmem_cache_alloc(s, GFP_KERNEL);
-+	if (!p) {
-+		KUNIT_FAIL(test, "failed to allocate the first object");
-+		goto out_enable;
-+	}
-+	KUNIT_EXPECT_FALSE(test, slab_test_has_previous_lifetime(s, p));
-+
-+	kmem_cache_free(s, p);
-+	q = kmem_cache_alloc(s, GFP_KERNEL);
-+	if (q != p) {
-+		KUNIT_FAIL(test, "freed object was not immediately reused");
-+		if (q)
-+			kmem_cache_free(s, q);
-+		goto out_enable;
-+	}
-+	KUNIT_EXPECT_TRUE(test, slab_test_has_previous_lifetime(s, q));
-+
-+	kmem_cache_free(s, q);
-+out_enable:
-+	migrate_enable();
-+	kmem_cache_destroy(s);
-+}
-+
- static void test_clobber_50th_byte(struct kunit *test)
- {
- 	struct kmem_cache *s = test_kmem_cache_create("TestSlub_50th_word_free",
-@@ -395,6 +428,7 @@ static struct kunit_case test_cases[] = {
- #ifndef CONFIG_KASAN
- 	KUNIT_CASE(test_next_pointer),
- 	KUNIT_CASE(test_first_word),
-+	KUNIT_CASE(test_store_user_previous_lifetime),
- 	KUNIT_CASE(test_clobber_50th_byte),
- #endif
+    (Object allocation / free information is only available if SLAB_STORE_USER is
+    set for the slab. slab_debug sets that option)
  
-@@ -419,3 +453,4 @@ kunit_test_suite(test_suite);
- 
- MODULE_DESCRIPTION("Kunit tests for slub allocator");
- MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS("EXPORTED_FOR_KUNIT_TESTING");
-diff --git a/mm/slab.h b/mm/slab.h
-index f5e336b6b6b0..15634d9603f8 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -518,6 +518,10 @@ bool slab_in_kunit_test(void);
- static inline bool slab_in_kunit_test(void) { return false; }
- #endif
- 
-+#if IS_ENABLED(CONFIG_SLUB_KUNIT_TEST)
-+bool slab_test_has_previous_lifetime(struct kmem_cache *s, void *object);
-+#endif
++   If an object with a completed allocation/free pair is reused, user tracking
++   also retains that pair as the previous object lifetime. This address history
++   can help diagnose stale references after reuse, but it does not establish
++   semantic ownership or identify a use-after-free root cause by itself.
 +
- /*
-  * slub is about to manipulate internal object metadata.  This memory lies
-  * outside the range of the allocated object, so accessing it would normally
-diff --git a/mm/slub.c b/mm/slub.c
-index 355fbffb981f..d6b7487fb300 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -46,6 +46,7 @@
- #include <linux/prandom.h>
- #include <kunit/test.h>
- #include <kunit/test-bug.h>
-+#include <kunit/visibility.h>
- #include <linux/sort.h>
- #include <linux/irq_work.h>
- #include <linux/kprobes.h>
-@@ -1148,6 +1149,15 @@ void print_tracking(struct kmem_cache *s, void *object)
- 	print_track("Freed", get_track(s, object, TRACK_PREV_FREE), pr_time);
- }
+ 2. The object contents if an object was involved.
  
-+#if IS_ENABLED(CONFIG_SLUB_KUNIT_TEST)
-+bool slab_test_has_previous_lifetime(struct kmem_cache *s, void *object)
-+{
-+	return get_track(s, object, TRACK_PREV_ALLOC)->addr &&
-+	       get_track(s, object, TRACK_PREV_FREE)->addr;
-+}
-+EXPORT_SYMBOL_IF_KUNIT(slab_test_has_previous_lifetime);
-+#endif
-+
- static void print_slab_info(const struct slab *slab)
- {
- 	pr_err("Slab 0x%p objects=%u used=%u fp=0x%p flags=%pGp\n",
+    Various types of lines can follow the BUG SLUB line:
 -- 
 2.50.1 (Apple Git-155)
 
