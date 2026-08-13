@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC0B8C5CFEB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 14:01:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4975BC5CFEB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 14:03:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDAD76B025D; Thu, 13 Aug 2026 10:01:37 -0400 (EDT)
+	id 2F3446B027F; Thu, 13 Aug 2026 10:03:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB1F36B027B; Thu, 13 Aug 2026 10:01:37 -0400 (EDT)
+	id 2A4FB6B0285; Thu, 13 Aug 2026 10:03:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC7766B04F5; Thu, 13 Aug 2026 10:01:37 -0400 (EDT)
+	id 1BAFF6B0287; Thu, 13 Aug 2026 10:03:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A258C6B025D
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:01:37 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 147011C0473
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:01:37 +0000 (UTC)
-X-FDA: 85096409034.20.9626904
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B388AA000F
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:01:34 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b5pyqJYf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DC3E26B027F
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:03:56 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 66831401A5
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:03:56 +0000 (UTC)
+X-FDA: 85096414872.14.6DB4742
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 21E0740012
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 14:03:53 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hzWZX15B;
+	spf=pass (imf04.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786629834;
+	b=2aFHmQmFptOYv5bEj98aZfCB7RSb5QnKubhOieCSfb3FqDSjClZg7cocnCO+RZ6G2+Y9fK
+	axn+5G8IgaTU+rO5EEgNtnDAPqU4UQXCzVVWNf0kp8TS791TaBn4G4eV9oqs0Q/AH8q2TU
+	LqTba94o7L111bEUYlnjY6+322T4v/U=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hzWZX15B;
+	spf=pass (imf04.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786629694;
+	s=arc-20220608; t=1786629834;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QkIqkMTKmkFkOVJjNZ4y+l5KuM1u+wDEcZU7VVL0jWk=;
-	b=aJ8ap7JshkrgXjBhX7JTK/Rz9JtRN/+rwJHO4EXX6xrUuYgMtb2h01FB1Ura/m3HTJfmnL
-	67J58JYKTxeOuTMKHa8L/jMAvWczCd041I7CZQqUuw7dTqMFkWlE3SmdhOZcsyzrFQcui9
-	OvblcgMdahCwda0r+zTOZUnxMkiyb5w=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b5pyqJYf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786629694;
-	b=oh1QVTCR5y1ztRoBEsaYJ6yxynOKL42YmCSzkfqYy4cVvjXufCm4ZYR9gzKKvMqi8+SvoW
-	WejPHTVa9j28LY13qcWmVsreeH87ReFWIFdNtmMXl95xc7ge1aJJ9JQbpjEdkdr1LOrMcW
-	d5LjDnC/aWqIhAsfXXCc9MFg4nayPHU=
+	bh=GRXjly27287JPwSqMXmTIq8mszAlDFNhT/jjwcIFZaU=;
+	b=Y/b//Ngtjzvnv+LRJ5jepzCfp8aDrkYog55ojFNOKvyc/92rUx808zxjuT2KbTaj9VqBb4
+	CD9wG4tHNCRsEYOE5N1WgtS5hJvcFOd+JSEtrHkL7CkpdM1ynIxxO8nHCh3D7m/2hnnT+1
+	ZaqwFcDQxyTH8jWAjLxe2gcPlS6r0Ns=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E2BE244E79;
-	Thu, 13 Aug 2026 14:01:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0AC41F00A3A;
-	Thu, 13 Aug 2026 14:01:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786629693;
-	bh=QkIqkMTKmkFkOVJjNZ4y+l5KuM1u+wDEcZU7VVL0jWk=;
+	by tor.source.kernel.org (Postfix) with ESMTP id 4A5E46187F;
+	Thu, 13 Aug 2026 14:03:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE361F000E9;
+	Thu, 13 Aug 2026 14:03:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1786629833;
+	bh=GRXjly27287JPwSqMXmTIq8mszAlDFNhT/jjwcIFZaU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=b5pyqJYfyrjA8JeWy0+LAbakSmadU1JZ6YkaMIVF9pvzBsCU50kUUiGHT+MMTJL2X
-	 CR6JVa8MmXk0Ts8uITDGupmcikB0MwBvhyU1PzKcJYuyFKXEdQF4HTRl3nfwiLBQu8
-	 hP/HVoKeoj2WL9KNqEdc/GqgvS19ni7gqqCaSRHOwJkORnVrSjTKNssOPPMCzJ0N4d
-	 fcw/pyvVFPh5AUddcwuooDnnTRHFYLnKqdguwlWXC2R/nAY1v/mZ5OWrzRC1omVnOo
-	 PXCrVjUk6KWO3gN+wtlhL1vEXh2fCc8i0v2JbZNRONlWJLmAEEBDYoGWdM4R6iIEXe
-	 KmGdQpO+YrsFw==
-Date: Thu, 13 Aug 2026 15:01:14 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] mm/page_alloc: replace custom bad page ratelimiting
- logic
-Message-ID: <an3OI_aflDc0ZxO7@lucifer>
-References: <20260811172156.356053-1-pfalcato@suse.de>
- <20260811172156.356053-3-pfalcato@suse.de>
+	b=hzWZX15BHKu15HreRJydCFoxS659Jk4h2R+GVJCKF+kt5n8RXqN2CLf2+gl2NhsRX
+	 RO+2G0Qg6ee9mjb8GlIlYFNwHRmSkw2cykHp4cSHANPBxYGnN1fRNg45zJUSEfk8L5
+	 EJVvD6xlIH4JIpc+VqinT0pZtar8kx0FhIUwajtA=
+Date: Thu, 13 Aug 2026 23:02:18 +0900
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Daniel Palmer <daniel@thingy.jp>
+Cc: Hajime Tazaki <thehajime@gmail.com>, linux-mm@kvack.org,
+	geert@linux-m68k.org, Arnd Bergmann <arnd@arndb.de>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>, linux-fsdevel@vger.kernel.org
+Subject: Re: [RFC PATCH 3/6] mm: nommu: fix an issue on map request to
+ /dev/zero
+Message-ID: <2026081308-amigo-paragraph-3afd@gregkh>
+References: <20260813063401.1786548-1-thehajime@gmail.com>
+ <20260813063401.1786548-4-thehajime@gmail.com>
+ <2026081355-remold-sterility-84f9@gregkh>
+ <CAFr9PX=zC8GnxwrR=wTwA4xQq89cHYpxZWooS+-=Q-WuNbjanQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260811172156.356053-3-pfalcato@suse.de>
+In-Reply-To: <CAFr9PX=zC8GnxwrR=wTwA4xQq89cHYpxZWooS+-=Q-WuNbjanQ@mail.gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: b3i3uxqjc5w3mcy4uwfp4nwfkg3qsahb
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B388AA000F
-X-HE-Tag: 1786629694-844478
-X-HE-Meta: U2FsdGVkX18rIBspTfFj33vAQjz5g4pLMa53IreFonFZLWaSMALnQI/IeoKFEno3Vj2Md2s4au3KOncT/Ggiy8NCzMWmNPFRiH+Hco0YGiknfLEKS6V2ieXg196CYAquzuofcx3YOwwJXdu8ICluSywT7wkvPwQzSp+abkokX6lMGn9OSDpRkKedKu/8oGvD3d69wrFgpTxHUIqZ3+r06Qocj0nVlEF36e6+9vpmj8zewKVJPXwnTrBnKL3IMQqNQ9+FEXBW32Ee9j0l869d/Pmqpj3FCf56md1RX5kQ2pf2XbtaZbxm+qdd4NOCIaGumzHVZQQwhfk4vLygphQGEITB6baKmFPEowthnIrrV+GAyepDqsUhnz7vn35xmrmegJLLy/PUXeKM8b6afXQXZceLSP5c6QmzePib17L8/ERtrmFKJW2qw2eVcYgcUbAnolHs6MwnjspwJ1PA6f98PM4RrIH57ThEihQBs0r07xsWyUM4wBvihGwnCLOfeiVosnME1wdh6E0NXOcgjdoq4+vgGt8WVmhh2D4QBnflEqKN2yajlh2sqKJ3cyyPjvItSnhTcApP1Ygwp/oC+zK/zBa9fRKo+jGlWT31vQrvGr1Dki4FwyzG2ybKnevLh8EQdyu3gzb+Mn40gBWoUgkyGs2YmGxGbfaM8BRPc/ZZ77M6Xjh1fFLyAQ1tUp61QOPmiW6tvsgKr6/HDgnpiKjNzYeNYQfjn9e1ORLF3GsDwzvtghq1Ud6FTAOHjnottkR7jBD5hQKQ4KgHGJsqWmVaGU6oFdugVDUUoV/C3+AF1x6TUTbHj3sz0QK8JLh1iJi+zQBTQNKTjdea08oKpIO8AHvFBYDsctn5YM1CjoK1EH4mHdFKDs8HlVLqdxZQBkmJGKpgtNxG4p0nSdOdTBgfvE3Fl9z/ca+awgmKWG5pHvkr77kbLYv9CoDdi5Oq6psrZgOVHO0sfqsf4up4ZgP
- b807hlno
- O9WNJIXG97UHJZ31l7etnhhaW37qVbDJqTMqMdlZYSaCpe7iPqg7aoQvcwdYfFiU9dBfylzokff2Orxq1RWh/VXli2Q8upJ357tXl/pAMqLHC+K447Js8w6soF0vm2ur9BzwpGUngJ/D6N0FeHzWDlDFfS4sdjdKJUzhxoJLUUZdmHSyhJGjrDrM4Cs8tM7FHynd246kbkCIm/N/3n0sgriQilyU3Z7rzgh8HtYSR/WzZ290p1SNxc7hzJg1WJfIbfjHHBmJJxsbJHZ2L+UkKj/V2lpFKTs7wm02G+IEZkQJDSCJU9pjUVCCL7gvgPissBF5j
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 21E0740012
+X-Stat-Signature: idhzrpkqbcy8n89zcrj1eb53o4ptj9st
+X-HE-Tag: 1786629833-159358
+X-HE-Meta: U2FsdGVkX19t8CGkiPG9Vz5MUjW/jq9unNSgXVwor3tS7YNDE8NacSWODFF5CpzCN3T/J/DtO+fM4WPuMzIAkBcCK1NifgnPq9NhDM+zzSzQ5sVD/GXxhioB1ld/hq1TYBnSi8fs2TxikafpTCtpnqcexZOYQKILGzEiKWHEvgecen36ypQ5bGkt4fzsYvj2mJqgMna6PGFkX5YupdjHvKrfc8YNrMpf7212H6NYI8wbmRyr27SkbhkZVUuJz1Oi9W+qgASeqxZ8vYIK3NXDf31eHvfYtoMZ+di4X8dvvOb/ycrIE81EYvW1KbD5jpQOr9lasNPgukYMdI4oDcIP1X4Mkat3kuHGkTgCTdkUHLh024+hxyWfinFhXgXF2ACBzD7V1F41F9E1UC2lbvYS34D7W+hBAqEch5cQ9EkFgkRDB3u3TFBzbZeli27D8wdVWvM4GQsEAJe72t7htmhggauE2jjszuSu06vJwwfRok685F5ZyM5z9yMOLeiLZwDtPnhAtmXmYqdKvEjsA32tgtlc3snGpNDEfPlEjtfU5Id5YrTzKNkLZXPLS8/xFDv2Mc01vixJYtVmZ5REY+vDqCApQAeBjO4M7I5Klh7QHAhyKiv01pLoQR5N/L+cxdJSe7qoFqhGNg4Nv0WUeOrpkrlGwEdyQdEZ+hJixwMUZVgrKFw2dYwsq6mUXlPsTIOmBhye976Scwjf7yS5LxAHy8wNdsmxToSkmHX/xNPa75oikisl19Y17s4aZ2vPlNmjoka7LyMmqoQg3QoLqR2FklJebosrWdg65gC+lDQHfv3IR1nRlpWTRZw3ADKrX4hUtxs4ZqgLTMqSJDE8FTEOf/0hSxB31RyTsMj6u9ATytSU4jDdRT6W1LSLtUsRmMd8G9xr+yJ+nU2IhqsysPh9foiocr6VnWSO1K1rzCnsjYRfkGHwgtshf1pvK5uvLZpwXj62kF5GB9EWqxhHVA1
+ siBABf+w
+ CrFh/NcIv7mYrVDjzvBcY/SACeZGcvdvZdUt+NviaTORBU7ox95rq3noQiGj/ODe3TR6TBJUiTFvgznuzrQ+WnMKwinsPwFPM2rnAh4fHgLBs3aGSplO1rRcZaX8wEr7YO0McFw54Xu3qxCIuWn6yruAJvgz63AQEhZ7K9jfaE9c8gvrLSw4qfHUv4R4ESIZ3MtvkwPwayvXYGEVjfMu1gLGSfJPOIjzKK44BjaWYmFYDmPQ11I64x/6noEqsgjJekxkdcuKO9hGQ88jExlFnmOFYwV5a7DAgTdQ1QyoKVDlToWS6txlw5OHcuH+qD1w5gvuHfj6E6rGZUOVlHhuACIKH9GLEEt9tbe00aeuC78zdMmcSPs+zK/ksa5ubZRZmAJdf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,72 +97,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 06:21:56PM +0100, Pedro Falcato wrote:
-> The current logic (allow up to $BURST prints per minute) can be entirely
-> replaced by the generic version in lib/ratelimit.c, used around the kernel.
->
-> Do so. The only functional difference should be that the new logs will
-> read something like:
->
-> KERN_WARNING "bad_page: %d callbacks suppressed\n", ...
->
-> But that should be fine enough.
->
-> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+On Thu, Aug 13, 2026 at 09:43:37PM +0900, Daniel Palmer wrote:
+> Hi Greg,
+> 
+> On Thu, 13 Aug 2026 at 21:26, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> 
+> > Given the age of this issue, I don't think anyone uses no-mmu systems
+> > anymore :(
+> 
+> There are a few of us using it for hobby stuff[0][1] and there are
+> apparently people using it for actual commercial stuff.
+> There was a session about this at LPC 2025...
 
-LGTM so:
+This patch is fixing a very obvious issue that showed up in the 5.10
+kernel, which was released in December 2020.
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+So I think the fact that no one has reported it before now means that no
+one is actually using it :)
 
-> ---
->  mm/page_alloc.c | 28 +++++-----------------------
->  1 file changed, 5 insertions(+), 23 deletions(-)
->
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 12fac9084c48..9ccfd87bc273 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -613,31 +613,13 @@ static inline bool __maybe_unused bad_range(struct zone *zone, struct page *page
->  }
->  #endif
->
-> +/* Allow a burst of 60 reports per minute */
-> +static DEFINE_RATELIMIT_STATE(bad_page_ratelimit, 60 * HZ, 60);
-> +
->  static void bad_page(struct page *page, const char *reason)
->  {
-> -	static unsigned long resume;
-> -	static unsigned long nr_shown;
-> -	static unsigned long nr_unshown;
-> -
-> -	/*
-> -	 * Allow a burst of 60 reports, then keep quiet for that minute;
-> -	 * or allow a steady drip of one report per second.
-> -	 */
-> -	if (nr_shown == 60) {
-> -		if (time_before(jiffies, resume)) {
-> -			nr_unshown++;
-> -			goto out;
-> -		}
-> -		if (nr_unshown) {
-> -			pr_alert(
-> -			      "BUG: Bad page state: %lu messages suppressed\n",
-> -				nr_unshown);
-> -			nr_unshown = 0;
-> -		}
-> -		nr_shown = 0;
-> -	}
-> -	if (nr_shown++ == 0)
-> -		resume = jiffies + 60 * HZ;
-> +	if (!__ratelimit(&bad_page_ratelimit))
-> +		goto out;
->
->  	pr_alert("BUG: Bad page state in process %s  pfn:%05lx\n",
->  		current->comm, page_to_pfn(page));
-> --
-> 2.55.0
->
+thanks,
 
---
-Cheers, Lorenzo
+greg k-h
 
