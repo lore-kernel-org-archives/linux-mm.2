@@ -4,95 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3F1DC5CFDB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 10:46:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7618AC5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 10:49:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE2466B026C; Thu, 13 Aug 2026 06:46:01 -0400 (EDT)
+	id 370766B0251; Thu, 13 Aug 2026 06:49:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C91E46B0274; Thu, 13 Aug 2026 06:46:01 -0400 (EDT)
+	id 3480E6B0486; Thu, 13 Aug 2026 06:49:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD06F6B0276; Thu, 13 Aug 2026 06:46:01 -0400 (EDT)
+	id 2854B6B0487; Thu, 13 Aug 2026 06:49:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9176E6B026C
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:46:01 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 16D291405C9
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:46:01 +0000 (UTC)
-X-FDA: 85095916122.16.1FE979D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6233A140006
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:45:59 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VSsOJMIn;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 05D376B0251
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:49:07 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 92E3A12052B
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:49:07 +0000 (UTC)
+X-FDA: 85095923934.26.86CC5AE
+Received: from mta1.migadu.com (out-81.mta1.migadu.com [95.215.58.81])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6F745160006
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:49:05 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	spf=pass (imf08.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.81 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786617959;
+	s=arc-20220608; t=1786618146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k3ZT8E7hO3bd7VzvapxR7vDSSiOWry1NDeNwNsSPfs8=;
-	b=BEJSUfgVVPNyiBfXMNbuULBvM8DQynb3lfZeQ2IG7tVuS/zrrcKS0dsrTxVvCJSeDWqe+v
-	/oL/zov1LbkRHzZ/oo+GHDKvRc9aRWdQNnwwJwL/QidTsmnvhuufhc0xs/4VkUllXNjThH
-	8JxizfceG4fKT/MNWdk6UghoX0snHgg=
+	 content-type:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=RJH+i2BxsbLS2UywASM/dlDbnueH9NbHRCgNQLtHw5c=;
+	b=hybWy7qyevBjXWmeW5w/2hoos99Dkobn9x9XRrxV/lvv76HtA94bbKKPblme2x4SWANCHH
+	ZnPC4TqJ/oXTVNFRUouMFyoaJpN+G+V+7e0eazSD9uWy0XNV5XhXcgfAqWTnzlDZ1eyQm2
+	cZn8hGC+Uu3FdDmhhnYZeRPP9c6c5IQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VSsOJMIn;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf08.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.81 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786617959;
-	b=K7DLuWXj0uVYnsFnBTNK4tl1RGQODcFg3MBPSxaFac6S9iqGSu/gkD2wlt+ZB2zBj3OdBu
-	SjAyddJjOOksXMGNufbvLgieCgPIz/L87HDVoC+KVkQ5/lEZWwcF9RoBAd0inmmA1tRwOA
-	dVjzJLMSAL8nX7Z6GXN2uffXn1tdxGw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 86C5D4078C;
-	Thu, 13 Aug 2026 10:45:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE3F1F000E9;
-	Thu, 13 Aug 2026 10:45:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786617958;
-	bh=k3ZT8E7hO3bd7VzvapxR7vDSSiOWry1NDeNwNsSPfs8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VSsOJMInFBGIFRG0LXurwe7jOywCBja5t41egKLBUhAp7aS2DLGX+oPmHUrzbJBl4
-	 PbcUTFASInRFlRz77x+CHY5UvMReAnil2f9aHwRdHdzgH0UiV5yng1vw1mQ7vWY8iE
-	 jfhaGGQxQDjWnJg0NXqGn0araFADV+vqS8/Za6mMPcJiTMaiX7mKFpOjsBGDlOCGXa
-	 CJLnHvhe+n1swRrmVDRgbccdZpPJngOSSHv03+UARVfh1qTdZPmF4DAN1nrDlAMQvW
-	 hhl4LgQewSVgW5tLmnReIf3VlLmGq4Mn0VcNOGKTPvVQKDB7OccB652enQ0hX2nlVm
-	 jX0hcadxrAuqA==
-Date: Thu, 13 Aug 2026 11:45:34 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	akpm@linux-foundation.org, baolin.wang@linux.alibaba.com, liam@infradead.org, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, muchun.song@linux.dev, osalvador@suse.de, chrisl@kernel.org, 
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
-	baoquan.he@linux.dev, youngjun.park@lge.com, peterx@redhat.com, usama.arif@linux.dev, 
-	willy@infradead.org, vbabka@kernel.org, surenb@google.com, mhocko@suse.com, 
-	jackmanb@google.com, hannes@cmpxchg.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [RFC PATCH 0/8] Introducte Reserved THP
-Message-ID: <an2ddJCknXARt3ej@lucifer>
-References: <cover.1782538002.git.zhengqi.arch@bytedance.com>
- <e2bd33d5-4de5-49cd-970f-9e80eec91a3b@kernel.org>
- <DJMS84Y4KYDY.26GNQPOZ6G4L7@nvidia.com>
- <89837004-b5c9-4b59-b795-3b79005379af@kernel.org>
+	t=1786618146;
+	b=GK9U5XabMHNc+DPuIJdFXpAIVnMUwrHloLGXW4sKLwtOyFtFVKWsubfnzSq/BrYlNd9bgt
+	0qquLLCh5qhebvvRfMOH+KTVVCxaGlD63u0UB7cKtNgSak66Kd621jjdfQBFa8J34ELymX
+	no1D8M9IOU7PSx9LbzI4Q6JcJq2Mut0=
+X-Envelope-To: linux-mm@kvack.org
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (3.112.29.171)
+	by mta11.migadu.com with ESMTPS id 5e9b508ab49f9b79;
+	Thu, 13 Aug 2026 10:49:03 +0000
+X-Migadu-Flow: FLOW_OUT
+From: Baoquan He <hebaoquan@kylinos.cn>
+To: linux-mm@kvack.org
+Cc: chrisl@kernel.org,
+	nphamcs@gmail.com,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	youngjun.park@lge.com,
+	hannes@cmpxchg.org,
+	yosry@kernel.org,
+	shikemeng@huaweicloud.com,
+	chengming.zhou@linux.dev,
+	baoquan.he@linux.dev,
+	linux-kernel@vger.kernel.org,
+	Baoquan He <hebaoquan@kylinos.cn>
+Subject: [RFC v3 00/15] xswap: extendable (virtual) swap device backed by zswap
+Date: Thu, 13 Aug 2026 18:48:39 +0800
+Message-ID: <20260813104857.3450386-1-hebaoquan@kylinos.cn>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <89837004-b5c9-4b59-b795-3b79005379af@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6233A140006
-X-Stat-Signature: be4qaw1eiccika3atbedoqmsmokg7q1s
+Content-Type: text/plain; charset=UTF-8
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1786617959-557844
-X-HE-Meta: U2FsdGVkX1/ej0xq1pi6Zjd0S26F6NRtK5UavncMe/sYffeKu2UAc1UWoWPQulFGSHA0Ykl19RDa2zemMlKEyYHq23853mzBHhgZrFrkA7+T0dpGGUp+5uS7kCPfySZltDVqexz+4yhyJWy5oecvzhTCCKSLN60IvUcsn+yaLPfIaCx9vASt2MKbyOD/ks4qJGl4AAGgL9cqZlQzrCCj7jVo/Nmo0wwv3Y7v1C2+qQjIAZgp+LToLdwBJ/81L6FN4PQafs1n68gbRZi0YhYQzLTbQ7dqFNyvYsSZ4sj0HtHME4m+kgA72N+L2fTH8qVwaw5halyLHrQa+QtDWiFxz9waGqdsO6ERjf6oiOk1mAVgNunxd4MNMzSGDMOm5cKyvkZyDL6Ymap7lHGh1PvzUe+vMXlT56S2uMU5UHiAVU+GLr5qTXDEmnkYLPOS767KgFSwdO7qpurO9sITLdncj0NkyzYkBmKlxXUQOHMESk9Ra7LfhNQfzAPQPXdTY7OxZX5AVdudAB+ZF6b3O6r6WxZ3HVsVzMxuvDSN1jhCX9gaSuqh+PWUj9NCkDVPva6W9o5/bo0kOs4j9CU325pL4n8XUMzO1vZdpqkrdQApnYG/os259j1BFt/JVIDfiUEVcPqXMMcT2Rnh4gigJqtvvISAwRK0lg1z1CdCM8c6Q7AtgRtESkycdpnktIKfkVivWdk+IeifOY0obNG/GRnxZwQZomqmlxgvHR/LbpLgkE4MBOTAmPuzPpIXMIxGkL8/EKPRhJO/xZaYx8Mxpe2E2YqKAH1OUzvMl8DIezCl9JoNe961vfFQHZ7Bak8nEfftguQgHX7P4KPhBtOUADj1EkhdgwMlwSjdNFpFz0RwIlbuDnhW1ExJhok/Lyqd5hGMc2BQ+Bxa609c7/bvvsXK97JVY5SP8YZHyLuMNW37+p6wu32xXdup+1EGwt7iqynO+yWzesugGhaZTBM5IrU
- sJ85mYHB
- evaMzTuFFS+i5fPw3UJNQVx43qEYO+6WsSoNdq7EoHYJVx4SkrLmMNj8NS8dns4mGrktP+H2ssyyb07ucT96aO9n+OBGJeVVVyKSwh9pKlF/DXsPAmIwq8V2Eu2ThN2+bpO6E9QIaBkkOF6igK1YhDxWvW5cavhXYjmjaiPPflWyVMDyifSuJ9RhzlhvZ6bRTphClxpFXPC5Cdx3p8qCiVzVPxokeXYM6E7yOuf04fEeXZ3DUXQ9z2yDFvaN0TBopjTbP
+X-Stat-Signature: ti8uksydhc8j3iagqsryyy8hut4x5ptk
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6F745160006
+X-HE-Tag: 1786618145-932043
+X-HE-Meta: U2FsdGVkX19V9mzNucoeqc0Q+Lcv046127SOQRdgVKagaZO9QQO5klizh6fnlKAbCcfzIl1qHovsNRPvpJ+J+xlrUN1Pg2CEpcWUpbQMez+8tgjmP2AaEr+uAIzvYi0PWgBXvVruK9I3nfKMPKEbQMBMcp1ouje4qpF4OECIwdaIBN8D96UgaE+wEgED/B2290S+pliAgHoHpSBoK5EYcHkN3scvmXyBpOaNXY85sO0H1wmW0uK1G5wo7FLINQuzPZAknO68XJ5Jq72fYAOuPPK1HIeWzaeQRZDn96KiuNWbX7U9LS5NNkmoe2jZ00nqN86YBSlIji7DStkS148UfVk+n3MrLU4PdnZZLF47CaPKiOxsTZja2dbwrX3Z4ERRwFer8x8lLXE+u6tT+mEur70Agj/YSXYh7RbQCJ/wMxM1m8PlC/MMU2JHFpavwq6qqqqYmmPO9GHM+B76oXs/Mn9FgoEdJnmy1PNACqvhxvW1MDTauRgySr45qFM0BuarkE+wI6wcaLea4d+DT/BGSNHvwTj6TSs380ftzY5R0Zbsj5S4zM9rckyK7XvNuNpKanCQvTrpcSyz1JL4UiQP94iBtf9Q8oR1ZgCcgsiof63qPQzzmKNc5Efe1vi3y4p771zRlzf8bUQD/Q3f6jdOhcyjw/0pSrSlxMBH9w7iMkglkauORyR6LMs39z0JBKLk0cRADFd1p/RFRQI72mbSuFvtnm9/XHA7Em/1Cq2I9iV31pIYDdg7v2osr8b6x2fxy5lSpTDNtEtHbKsDKs3fVnT808iuKx1oSI+fZetxSRbnDOzLFBW3opDmlNxdSfQuQWcAJ2mcDO8ArZ+yw6ZMwivDNykec7pko48cW50bj6WQ5AmHe7TeoyTGjhMX78xYKQ+XAzE/zDgx1spubSN3p/we2TBmxcXL6CsTkZGqj/qBLzRMncOBNIxeWL+IemDcRiy6xZ+gLlpqn+81z6P
+ rlZeqUyZ
+ FwnLylS6NmNgwOGaNyoNknONTG7wqnjZR0jVC6PX873eccQQ29o4CSASDb2DzDkce9TlNZNYPx8iGtncVrEFusXemzWByPsDXvOT24yYSedL01tw15/QrvaPZ2+rQn2JjpT6wCX8SOhBmr5+Ke80CaDvSvkjpkLpoEfUi18S8TI2tJaCUShSrxHIgt2GjGAUzBCRPlJ6MYZyRuq72GgpFQuteKtPu4eV6OurgKApEdcTeDMu9H9MZcvq9LqEwOsMjNvsqGc01MMZRKGCzIk9k9KKWQBivudSPpRnScAw6G858DGrHc/733G9q51T2jpSfXm9fKMJNHidEr51dWkSn3gyk+QDJOPhIh0N62Ai5oLym0RnUmV91s6cp7uiS2C15Fz6ajknQZJUd4eFueHmV2xIcTucwJe30j+rh1O8sTG5cUH6yyzKlR1oEeZmHogvFzhQ0zEORuzWrd64=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,109 +89,174 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026 at 12:00:30PM +0200, David Hildenbrand (Arm) wrote:
-> ... digging through old mail.
->
-> >
-> > You mean the reservation should be done via some file handle, like
-> > memfd, so that it is easy to apply memory policies to determine where
-> > reserved memory locates?
-> >
-> > For existing hugetlb reservation, there is no fine control, like NUMA,
-> > or cgroup, of the reserved free memory.
-> >
-> > Is that what you mean above?
->
-> I guess, it's all tricky. hugetlb reservation is a mess. We better not make
-> similar mistakes with THPs.
->
-> [...]
->
-> >>> 3.6 Remove Hugetlb
-> >>> ------------------
-> >>>
-> >>> Once reserved THP can completely replace the existing functions of hugetlb, we
-> >>> can gradually remove Hugetlb, leaving only one huge page management system in
-> >>> the kernel.
-> >>
-> >> I'm sorry, but no way this will work in any reasonable timeframe unless you
-> >> mimic the exact user facing ABI -- and I don't think we'll gain a lot that way.
-> >>
-> >> I know, we all like to dream, but this just isn't feasible.
-> >
-> > Based on my understanding, the key takeway is that we want to have more
-> > control over reserved memory, where to get the free memory, who gets how
-> > much of the reserved memory, and more.
->
-> yes, it's all very complicated. Slapping on some MADV_RESERVED_THP is just
-> entirely the wrong way to tackle this.
+xswap is an extendable swap device with no backing storage.
+Swapped-out pages live only in zswap, so the device wastes no disk space
+and its size is independent of any physical device.
 
-I agree with David that this series is a no-go, and there are many levels of
-complexity here:
+xswap decouples PTE swap entries from physical backing storage.  The
+cluster_info array is backed by a sparse vmalloc (VM_SPARSE) area that is
+grown and shrunk on demand:
 
-- What does reservation really mean in a context where any process can indicate
-  desire for THP huge pages through MADV_HUGEPAGE or more big-hammer-ly
-  MADV_COLLAPSE? Let alone mapping in THP-aligning file system's files or edge
-  cases like DAX or soon, huge pfn mappings once I do that series.
+- Grow: when cluster allocation runs out of free clusters and the device
+  is below its ceiling, more physical pages are mapped into the VM_SPARSE
+  area and their clusters are added to the free list.
 
-- There's no sense of ownership, and as David says NUMA makes everything more
-  complicated. And that's before we even get on to memcg.
+- Shrink: when contiguous free clusters accumulate at the tail of the
+  mapped range (tracked in O(1) via nr_free_tail), they are unmapped and
+  the backing pages freed.  Shrink is deferred to a workqueue to avoid
+  lock recursion.
 
-- We have a flaming trashpile of a codebase that needs improving. There are
-  (thankfully) efforts afoot on this front, but big new shiny features are as
-  far as I am concerned on pause until technical debt is paid down _anyway_.
+A per-device ceiling (nr_clusters) bounds growth and is adjustable at
+runtime via debugfs.
 
-- We have a flaming trashpile of an API which we must keep intact despite it
-  having many contradictions, edge cases and points of confusion.
+Interface:
 
-I mean the list goes on.
+  /sys/kernel/mm/xswap/create           write a percent of RAM (0 for
+                                        the default) to create a device
+  /sys/kernel/mm/xswap/destroy          write a swap type to tear down
+                                        a device
+  /sys/kernel/debug/xswap/type<N>_cluster_limit
+                                        read/write the per-device
+                                        cluster ceiling
 
-Also it feels like reservation is almost throwing up our arms and giving up on
-improving compaction which is part of the problem here - stalls have been seen
-in real world use cases with even /sys/kernel/mm/transparent_hugepage/defrag set
-to madvise let alone anything else - and I feel are part of why people want ways
-around things.
+Since xswap has no backing, swapped-out pages are stored compressed in
+zswap: physical writeout is skipped, and zswap writeback is disabled when
+every swapfile in the system is an xswap device.  xswap requires zswap, so
+device creation is refused when zswap is unavailable.
 
-I also think the idea of reserved memory flies in the face of THP on principle -
-the 'T' stands for transparent :) but in general, as David says, hugetlb is a
-horror show and a terrible maintenance headache (look at the recent hugetlb hw
-poison stuff for an example of this), and mimicing anything it does is already a
-dangerous road to take.
+Naming:
+======
+I'm going with "xswap" (the "x" for extendable/extension) rather than "vswap".
+Chris suggested this name, and this aligns with the "VFS-like swap layers"
+direction Chris Li described in the first swap abstraction LPC talk
+(co-hosted with Yosry) — the swap ops and the xswap extension interfaces in
+this series are moving toward exactly that. I don't have a strong preference
+between xswap and vswap, so if reviewers object to the name, please comment.
 
-As usual we keep coming back to the same broader points:
+Note:
+=====
+Most of the added lines come from the switch to a sysfs-based create/destroy
+interface. v2 created an xswap device by handing swapon() a "header-only"
+swap file (mkswap followed by dd of just the first  4K), and teardown reused
+the normal swapoff path. v3 makes xswap truly file-less:
+/sys/kernel/mm/xswap/{create,destroy} replace that file dance.
 
-- How to control the resource that is large folios in a sensible way that allows
-  some semblence of control over this.
+This patchset only build the base. On top of this, I believe Nhat's core code
+of xswap writeback, rmap etc can be implemented simpler. E.g, we only need add
+one field in struct swap_cluster_info to let xs_table point to physical swap
+entry, or zswap entry etc. No need to introduce struct swap_cluster_info_dynamic.
 
-- Do we want to give more control or be more automatic? How do we achieve a
-  balance and what metrics should we use?
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -57,6 +57,9 @@ struct swap_cluster_info {
+        u8 order;
+        atomic_long_t __rcu *table;     /* Swap table entries, see mm/swap_table.h */
+        unsigned int *extend_table;     /* For large swap count, protected by ci->lock */
++#ifdef CONFIG_XSWAP
++       unsigned long *xs_table;
++#endif
 
-- How do we even accurately measure all of this?
 
-- and let's improve compaction/migration :)
+Testing:
+========
+1. enable zswap
+# echo 1 > /sys/module/zswap/parameters/enabled
 
-These are all bikeshed-able, lead to endless discussions and I think are
-fruitless at this stage - right now we have a mess, firstly let's improve that
-mess and establish some foundations to build on iteratively.
+2. create xswap device
+~# echo 0 > /sys/kernel/mm/xswap/create
+~# swapon
+NAME   TYPE  SIZE USED PRIO
+xswap0 xswap 1.2G   0B   -1
+~# echo 80 > /sys/kernel/mm/xswap/create 
+~# swapon
+NAME   TYPE  SIZE USED PRIO
+xswap0 xswap 1.2G   0B   -1
+xswap1 xswap 3.1G   0B   -1
 
-I am really rather against big concept stuff in THP to be honest and more in
-favour of small, incremental _improvements_ to what we already have.
+3. tune the zswap size
+~# cat /sys/kernel/debug/xswap/type0_cluster_limit 
+1179
+~# cat /sys/kernel/debug/xswap/type1_cluster_limit 
+3145
+~# echo 2048 > /sys/kernel/debug/xswap/type0_cluster_limit
+~# echo 2048 > /sys/kernel/debug/xswap/type1_cluster_limit
+~# swapon
+NAME   TYPE  SIZE   USED PRIO
+xswap0 xswap   2G 377.9M   -1
+xswap1 xswap   2G 376.2M   -1
 
-And feature-wise, 1 GiB THP is on the horizon and as David says figuring that
-out sensibly should be instructive.
+4. add memory pressure
+stress-ng --vm 1 --vm-bytes 4G --vm-keep --timeout 120s &
 
-But notice that Usama has been providing various foundational series (like the
-huge swap stuff) to establish this.
+create/destroy and grow/shrink xswap device casually, all passed.
 
-So Tl;DR - let's be incremental, cautious, and improve this damn codebase before
-we even think of larger changes.
 
->
-> --
-> Cheers,
->
-> David
+Changelog
+=========
+v2->v3:
+- Replace the "header-only swap file + swapon" creation hack with a
+  proper file-less device created and destroyed via sysfs
+  (/sys/kernel/mm/xswap/{create,destroy}).  This required the
+  __swapoff() refactor and the free_swap_cluster_info() signature
+  change (patches 4, 6, 14).
 
---
-Cheers, Lorenzo
+- Require zswap: refuse to create an xswap device when zswap is
+  unavailable (patch 15).
+
+- Split the unrelated zswap -ENOENT fix out of the series into a
+  standalone patch (patch 1).
+
+- Fix nr_free_tail over-counting on concurrent grow, shrink leaking
+  detached clusters on early bail-out, a re-init race on cluster
+  spinlocks in xswap_map_clusters(), the nr_clusters_mapped update
+  ordering, and swapoff accessing the shrinker-unmapped cluster tail.
+
+- Minor cleanups (checkpatch, /proc/swaps alignment, commit messages).
+
+v1->v2:
+- Added __GFP_HIGH | __GFP_NOMEMALLOC to alloc_page() and kmalloc_array()
+  in the grow path, plus memalloc_noreclaim_save/restore() wrapping,
+  to prevent the grow path from consuming emergency memory reserves
+  or recursing into swap under PF_MEMALLOC. This is folded into patch 3.
+  This was pointed out by Nhat.
+
+- Folded the mutex serialization fix into the cluster grow patch (patch
+  3). This is suggested by Nhat.
+
+- Fixed coding style issues: corrected indentation of declarations in
+  xswap_unmap_clusters(), removed unnecessary block scope around the
+  err variable in xswap_map_clusters().
+
+- Rebased onto mm-unstable
+
+Baoquan He (14):
+  mm: zswap: return -ENOENT when the swap device is gone
+  mm, swap: add CONFIG_XSWAP and xswap fields to swap_info_struct
+  mm, swap: refactor free_swap_cluster_info to take swap_info_struct
+  mm, swap: add xswap cluster grow via VM_SPARSE vmalloc
+  mm, swap: add sysfs create interface for xswap
+  mm, swap: add xswap grow trigger on cluster allocation
+  mm, swap: add xswap_try_shrink and shrink trigger on cluster free
+  mm, swap: free backing pages in xswap_unmap_clusters
+  mm, swap: add nr_free_tail for O(1) xswap shrink detection
+  mm, swap: add adjustable runtime ceiling (nr_clusters) for xswap
+  mm, swap: add debugfs knob for xswap per-device cluster limit
+  mm, swap: defer xswap shrink to workqueue to avoid lock recursion
+  mm, swap: refactor swapoff + add xswap_destroy
+  mm, swap: require zswap for xswap devices
+
+Chris Li (1):
+  mm: xswap support for zswap
+
+ include/linux/swap.h |   12 +
+ mm/Kconfig           |    9 +
+ mm/page_io.c         |   16 +
+ mm/swap_state.c      |    7 +
+ mm/swapfile.c        | 1012 ++++++++++++++++++++++++++++++++++++++----
+ mm/zswap.c           |    9 +-
+ 6 files changed, 979 insertions(+), 86 deletions(-)
+
+-- 
+2.54.0
+
 
