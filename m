@@ -4,103 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53458C5AD5A
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 01:20:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E3C5C5CFCF
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 01:21:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 258B76B018A; Wed, 12 Aug 2026 21:20:41 -0400 (EDT)
+	id 391666B018D; Wed, 12 Aug 2026 21:21:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22F2A6B018B; Wed, 12 Aug 2026 21:20:41 -0400 (EDT)
+	id 369776B018E; Wed, 12 Aug 2026 21:21:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 149246B018D; Wed, 12 Aug 2026 21:20:41 -0400 (EDT)
+	id 27F2D6B018F; Wed, 12 Aug 2026 21:21:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DF8CF6B018A
-	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:20:40 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5C1EFC04EF
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:20:40 +0000 (UTC)
-X-FDA: 85094491440.09.C3756EE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 8BFBF160005
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:20:38 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hfm3BuzY;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E17E06B018D
+	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 21:21:14 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 54968A04BF
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:21:14 +0000 (UTC)
+X-FDA: 85094492868.05.1E12C1F
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 87FCCC0002
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:21:12 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=GMK7Dhj5;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786584038;
+	s=arc-20220608; t=1786584072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r5v95wtq1BLZEEyEFG0/i1jcAuSYZVvTrSaBmqKanVw=;
-	b=h6hQwm7G7anngGQ+IG0U8BlHQuov3bkGNwbjvmn35luQ32rY6OG+s5IPcpzRdAYsdw9prp
-	dAKZdksOMDPIpSn7drM9FP559oHG6hghc/GLkyceHX55pvB7TmyQWSAa3ECIjuNzV5VQNP
-	IHJasX1xkvbaxyziATi4t34sIKEIZV8=
+	bh=ZGIPGO62vUWJJtnlWOV7HnIzQD6+wbjwlpycp53S1ew=;
+	b=5sRcKfoIW8u0R7rEWrp0inPc3sPcpYegA+/Ge9DavSTsyI6Lz+kVeeLhunt65jg+mOTKeH
+	K3dfQvDEkecNO6GlcI3Ge9rYqvMGvss0ajrH7Wi1+S9IWOf7eweRu96cx8zrqxTZhC1h+P
+	MQ3/D4DhoTkrbGz38nLEZy0Y5l6mzqI=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hfm3BuzY;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=GMK7Dhj5;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786584038;
-	b=6yMmsp2viiivcDA226ihNdEatrrg8L36TUtkfrpxGXo4PH4RK1f0iBzOSUBxUhxUwGQo34
-	N58TYIE5EfgT23x+CFMuI+qeo+iRLVUKRGkQ45T/GekR70607l6hEr1ww43IZdtYlSxnak
-	Q8iTCelHmooTgKwKhQnfsjLor+HPjCI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 203126011F
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:20:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46871F00ADB
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:20:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786584036;
-	bh=r5v95wtq1BLZEEyEFG0/i1jcAuSYZVvTrSaBmqKanVw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=hfm3BuzY7+sWZt7Z9zy/p7BmM7fa0dRTqBKhLi1sO5v/GquZ1vFEKKTCYqeUKFpkf
-	 Y/uLtzy0e3d8evPLNsRRfgC5I6rQUngbgaCgHFPBB9wBxW/uFfksiWmfYhD4BadGts
-	 YaZ7gReuAmB5odMh1W+XRrU8QDuWsMV7JND8lhxEj3NLrCpsvJxMivHkukZXFcwZYw
-	 +tIfuffmfu5UAlEYAMoFd4D4dpS0/osC9Y0eld0dZw0wbGyJhBZhljK4FRQxcJG9oV
-	 VbZGAEK21TzIwDCzt8E2+fNqudgLuDEhUerTthDqioSCmYY0wBRRUxlP8QrHoJNpPh
-	 Scj6RMbyml9YQ==
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8eeb4508f29so1587546d6.0
-        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 18:20:36 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpOzVCYWWVc7HHm5IK6B/qVbBnwygG0Js4aFoU8KmkdDOhi6qFwgGavBQtqUfXU8GmSew8/MIBKUA==@kvack.org
-X-Gm-Message-State: AOJu0Yx2zPM+OBkVTqoD1dfCJcMXqTJouyeT4ZKoaYrD53ASoK/ssChe
-	ZWoJCreEaV8ST7dMArBm50CSlLaiVngp1ME/9AoM3Q0VLLXXSfRb9bslJxWBV3/v6OKMireqn1f
-	tXLVXo6Bwk+g1165d9M8puciE5/QD024=
-X-Received: by 2002:a05:6214:194f:b0:908:965f:55c3 with SMTP id
- 6a1803df08f44-90a80b276bemr20907746d6.10.1786584036123; Wed, 12 Aug 2026
- 18:20:36 -0700 (PDT)
+	t=1786584072;
+	b=Vk3gmR3t557hVyWYPUoOkzM5zY1AhFkOn6fhykYt/pymWsgD9rAmT3/8dljPIUeBOJf0Aq
+	w4pIabtWeNFYOwucFBloVu6bzWCiD9S6IhgUf4VZ/E+pFBxgOy+MVrkRJq2bEF27WHKwYK
+	l1/9X7BR+ZkQW8CREYcScPYcmCx7xgI=
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8fcc43c48f7so2142826d6.2
+        for <linux-mm@kvack.org>; Wed, 12 Aug 2026 18:21:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1786584071; x=1787188871; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZGIPGO62vUWJJtnlWOV7HnIzQD6+wbjwlpycp53S1ew=;
+        b=GMK7Dhj5vqItHIw3gebZBOT6rszIqEhU1oS+WA6mwMJ5qrM7tfxU7i/jwcPijSb5t3
+         vuaJaYRVAD9UoKbxtEhuX5vyPR/NsMtxzYkvII/7KJSy8T7kB4KWf0GZbg2Cb4oSifBY
+         TwYC733RA3tQc9PMinNQrKwx9TGWuFkz+dCehFt/o2lhOxq1Eb3R3oIWCajNcWWTWrje
+         qcaCIwQMPKVHVPlxUA3E+dvoXWaGZxGDMjNhm63G0JVIyRtYn+P/dpnW1AC3RoOOPpWr
+         3vsOWhQqEJRh54ek764h8BTh0BuHNjuVT/e/2hCUzyxN1p5zakiRhHIprjp7VBcPmvaw
+         6HTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786584071; x=1787188871;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZGIPGO62vUWJJtnlWOV7HnIzQD6+wbjwlpycp53S1ew=;
+        b=XFfvN6dVlgaDhuaWtphbuE+moyrefZXiXTXtN8n9lAtjyHVDQCFQlQMF+eSbVeJGjS
+         Iba6/FDkW+ZnuKRgmN4jwPOCaa9c+7caOGy44DNWbGRRZNZA+NHc+o/hsZ77QhU8pO9V
+         IVghgLzgQz9RWZDReJxCm60BsniAXFKUwxmmCbcpLOsiZ06TQYX9um2FhK8+KS+ZPphm
+         5x8G2GBf8rHvMfTZCGr9bVSeL3qexUd5JO9fx/Vc+3iudnrxA7k+p74nzGs3Q+GE0UVu
+         gIOj6PEkRjOS7eD3nx8ztdB1PCJWfcL0ioTNgbVWRc3lUSw4ZGbnZ9vsAsAKiy9alapg
+         wE0g==
+X-Gm-Message-State: AOJu0Yzddb53mj/0x8GqVu76/WodCtkvYkTcmOISNeLNU5Ds6TRC895L
+	LEwdwaZ9uGT5ZqKKsbYFTR0hiG/9HTyioIoMptOLlnwdfUyN5eh9lEiUbZJ5LnsyS0Y=
+X-Gm-Gg: AR+sD11WIKn+fxDwUIrdYSQSs5pw/jR/wnYPfK1Kjr4lTWYRl323DMoPcybiNGYyAG4
+	O/rbglCuEkHkN2bazXoYcA+RAgPudc99RZnATa33KqYmT/g0tKLlUVtdkLyAMQAni8EWy6nOnVX
+	Z5ybvJt61dmHeFytRK6oFfEhJ6pTr5V0Zsouy50g6cP28bd+w5P8k1mbX0AYA0ids1iNIvv3XUN
+	DlivjyVJG2nx/v9Q0/MgZtN6N547ZZ0R278T3261YtoeOIRRUbBD419QVOGgTS0UCU60ut7niAX
+	WZSR9+7c94MLQ+EN3zjnPhMTyumoxqqPqLa4qGhLT0PYbWnrdvF0nTEV4ENk5yReyLwLUVbbvi9
+	907gL1hJF6WH1ubBabWdsjTVVR50BLFVL3Gy3D0hfOaPl2IlyZ6LOT6Ou1Ip7VWldgevp3EUrj1
+	XPt01Y+rVBb071kL8vEBnOCtLDWuoMYoRWNGj8pYQIsVsmzbg=
+X-Received: by 2002:a05:6214:500b:b0:8f0:d710:26ba with SMTP id 6a1803df08f44-90a80bb0b74mr17793966d6.31.1786584071577;
+        Wed, 12 Aug 2026 18:21:11 -0700 (PDT)
+Received: from fedora ([2601:19e:8500:d3c0::28fe])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90a8179e350sm4119856d6.6.2026.08.12.18.21.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Aug 2026 18:21:10 -0700 (PDT)
+Date: Wed, 12 Aug 2026 21:21:04 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+Cc: linux-mm@kvack.org, Zhigang.Luo@amd.com, arun.george@samsung.com,
+	balbirs@nvidia.com, brendan.jackman@linux.dev, yuzenghui@huawei.com,
+	apopple@nvidia.com, alucerop@amd.com, matthew.brost@intel.com,
+	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, corbet@lwn.net,
+	skhan@linuxfoundation.org, gregkh@linuxfoundation.org,
+	rafael@kernel.org, dakr@kernel.org, djbw@kernel.org,
+	vishal.l.verma@intel.com, dave.jiang@intel.com,
+	alison.schofield@intel.com, osandov@osandov.com, jannh@google.com,
+	pfalcato@suse.de, jackmanb@google.com, hannes@cmpxchg.org,
+	ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+	ying.huang@linux.alibaba.com, kasong@tencent.com,
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	yury.norov@gmail.com, linux@rasmusvillemoes.dk, longman@redhat.com,
+	ridong.chen@linux.dev, tj@kernel.org, mkoutny@suse.com,
+	sj@kernel.org, jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com,
+	baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev,
+	usama.arif@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
+	roman.gushchin@linux.dev, muchun.song@linux.dev,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	driver-core@lists.linux.dev, nvdimm@lists.linux.dev,
+	linux-cxl@vger.kernel.org, linux-debuggers@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org,
+	cgroups@vger.kernel.org, damon@lists.linux.dev,
+	linux-kselftest@vger.kernel.org, kernel-team@meta.com,
+	"Gupta, Pankaj" <pankaj.gupta@amd.com>
+Subject: Re: [PATCH v5 00/36] Private Memory NUMA Nodes
+Message-ID: <an0cAMh_m8ZhGIm2@fedora>
+References: <20260720193431.3841992-1-gourry@gourry.net>
+ <CAM9Jb+jpJ-Ui4qDHxsp2WiERiv8gmrQfKQ8Z0BmabefeQ6pg4A@mail.gmail.com>
 MIME-Version: 1.0
-References: <20260812065933.103627-1-hui.zhu@linux.dev> <d18ed09c-52b7-40ac-95e8-c1530246e2af@linux.alibaba.com>
- <CAGsJ_4wE7E2G8H4ugwSWbQMF+5ecx+mrYQxXa1U6HY3utuQz0w@mail.gmail.com> <37015686-6776-4e67-95ef-a26ac61a3b44@linux.alibaba.com>
-In-Reply-To: <37015686-6776-4e67-95ef-a26ac61a3b44@linux.alibaba.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 13 Aug 2026 09:20:23 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4z-nfbeL7VxZyiWgJ1Ut3D5P+AfMXfqqmndwqMxmmsRJg@mail.gmail.com>
-X-Gm-Features: AUfX_mx7bgfxS6l0IFxFtM2MLFiIwSFNHjUFPvv2yGnyvUchjbj1-_2nkD4Clq8
-Message-ID: <CAGsJ_4z-nfbeL7VxZyiWgJ1Ut3D5P+AfMXfqqmndwqMxmmsRJg@mail.gmail.com>
-Subject: Re: [PATCH] mm/mglru: Fix young counter undercount for large folios
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Hui Zhu <zhuhui@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8BFBF160005
-X-Stat-Signature: jwtd8yqua1onr37e8mnswb1xss1px775
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAM9Jb+jpJ-Ui4qDHxsp2WiERiv8gmrQfKQ8Z0BmabefeQ6pg4A@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1786584038-495515
-X-HE-Meta: U2FsdGVkX18GjhvPp68fkATKZFaBN7WkmauXTEmpU6dXLJqkog17QqOQbIeHUGxzSsmWQs3czGgSLoYp3lswS48PdSljkGjTeJOvBarni236+H+pxRH1FlO7HdRczrF5qQ2ih3ieRbBkuFLMx5RDJik+zoKj526QgrI8x4VsCUxR9v+YpBN1wwybOWEWRaJ4309Wmy3bcI1bAcnIAhMqZM6+3KXATbG9CMEiIvC6/XkW0Kc4tWlCf5wyp0fZg/3dYKiGoiiAKePc+uArQYI5lqlZXMviyKubC5qTWyTzPdlnYfdLotCHxluwLi70qPYjdvpVBvbJY/MQD0x2aLTS4kSJFZ47IQsNKSNmdM6RDK4W38EzYBRSDi/FCHO/m+1hVnnzaOCa9I+aB60EQsdz8lBUegg6CmoHcjAslQyInoUOr/qovqd3hU9Zzbg6FyGkKe6YTvJNKFfj3tKyH0luAl5FEwj5nUeyOJsj/9aMW6jjDlNwr5DEwpKf9Ku2TAZqSHpT1l6ilMhyvK9tykI0iLa2T98REVYwCzFWi+yuy8yzRIE6sUUdBWqDG0JT3MnT5ftX39GZkLP4hQ5wm6EgVHLfUM/aggnCcF5Gcb4x+/MYQmY29aw65E+DSx4PEDCSeR93zjpi7gwn6Hy+flaxqLpEND8jYmf09DCipOWOJZzNi2Mr+tVE5qcsLTmFiNfMyuVPD023hmxbkpFdKvItEn8hcIwG9EiSYI+cS1XnQaVuHqNUxg8LhinU4/2e9laOcwr7/cqBOVpC2OIN1djItlndZSWNkL0kxkXQ/fYbi32gW5YWBBXuqL5PIs0XG8pFOVXq4uAAV/YRwcupA6O8JGBq2KPd7vdOZFN+n3W7QXiR36GL0E5Q0e0idReTAOT2K5AQ6nq3Be17Jumh8umO5QW7mqW7IMP7bMuE4QOIbSEJ+wR8uhwE60GWIukadgn30YuBstmXFko9SeIyKPz
- vFGThNMg
- ftGO14b7U0jxp7p7USYaTM/m+fwS4Ov8iUAPpkR5N+8d5IA1wtt3HtNFNYWQM43GiVRuEKSe2oqzc+Te9Nid1Q5EadgvFDE9pA4yATummgUpzVv78Rzr+eoekdM/X++wAJf0dfsI0m25VmN467LH7XCC8u6NPwEZMIwL7lKqHfYVguXM9qmk/zmz+TUp92yaiCqlIroieyODx92WaXfDMo8HEFqo9uaJlCaXXPqJeWKgxRdktA/CG+0I0EXJqj0XJ3Ye6f8CJvMCgoX5fKIluKje6govw3BmsCK6DYXaGZ5udkD6Gi1rrzrkrDjWShyI0bpqNaba8msp8jRLg4hIwwAydCQ==
+X-Rspamd-Queue-Id: 87FCCC0002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: i51t3o3ohr3x1ig39bbju3fsooycd5zq
+X-HE-Tag: 1786584072-151178
+X-HE-Meta: U2FsdGVkX1+fEDOoiyvwnMw1pgjzerjdm2Gfi39vtGvSbfapNEAxYl4FXCl30C9gzVUEaqPo4ptvNt6HQZfDt+p8PJpLCbZaguGGxKNi4L3HBtN+jLOHfE7ZjZjx8Q9mzkmd2qi6xmjjXpavC069BKtmyIQqMQjFzkinm7G6Cz2sjhQbAjLe2r4jciYU6dp+olwa9zsOkSsTT/7+3E14I+Ky/hwzabwGLCOymqJ/411saD70rzViMBpOJe+rmNJikOeeEuq5YFOfsebJdstKqG6xvYjjcCYmwtpb5g4ng0U1t0M4QgP6ycErITUZ6EPabY6DFPRYIEs+Zil6Q8L5WGMlszNYmnTLTaRJ9jq4vNDB3j3H42hkN9tM7kTJmeWMGPnHzbKcAdbhl0zVrncf0WxvfdsB6/ikDF8sOxX5tFDHBfSS5Qk3RSi+q7N516lHEWI2UwfVaqoB4DoPAUu38zcoDMaWAsHAHzIONg+z23L2rifzDNcASplAJ6EiMxpTM/oWQ6ZtzW5k8FLRvPdhz6k5gSkSGbq0iqmpW3oeFtAfb5FREplxjOhwE3IMAVaX5Vcddmv61uCaVu6gEdhxFgsEXtA6nubvPdX8FcsaKv9hNojkEWkHjBgq79BZEjggeQ3+7KipUeSTOtVU9Xo0mrxgyRMMDiCUN/bZYbETR1SrQddaGbtqd7FJ2Q9fYx4RaFonFwiZ1KclF64eE1otQpcmqbB9e2ljH/E1zWirbC3boC+0UleZXv1jNmDDTdojNlso2Q85pTyQVhZ1gLqjbBe9ka64Z89MRAaB3ljHFrX3BSSQp+IifazMeyc+55FiOdyhB1AOH853q6znDT3JtkOm/jyhd4Gr0ScSxOULhP0+pdXtX1+7ES6PEfIJeyopz6B1Tiz1Okq+0GNF+PIavOaZfOmmXTtlFLEvnppMXZXUORKTGhhb9qgSalAjT/iUl15OQJwA/jdyxfuPPdN
+ Rv8vcRn7
+ YAUHUyBCfdj2rzkhFINRiZOSiIoIBoUjnSHsfQ9QHTdTBmIaJhWvGpePVHeex4ykmJEQWzRnDNejfqN2C3BeOe4DEizkT+MB+V6MpsQfvukods3vKShvApVLC230afpyO7wIVp9KRf2B9CQJlqP1qkergb9XBcVPmRwDz3ve6gpn8msDSGqmmZsZTbKg0Nc5i9IBYloLXeDtFSyY2TCAISFdM+A2nAwdoAQuCwMkY/xSs4VzbU+EXQlhzbY8qqU3oXcuho+/IUL+KUrxV5OQOs89Tbm2cusG6eQhEhY0im4unNWobuoL4YmJ/At9yvblsYc1WONag3GxNMKDbJK80CjGv7Ntr1wg0W18yb4+w5l7YAXn6gZdnPCKaI2hCvGzvLzBgGeykLs3z8jQV7boWab4fAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,103 +146,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026 at 9:09=E2=80=AFAM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
->
->
->
-> On 8/13/26 8:53 AM, Barry Song wrote:
-> > On Wed, Aug 12, 2026 at 6:17=E2=80=AFPM Baolin Wang
-> > <baolin.wang@linux.alibaba.com> wrote:
-> >>
-> >>
-> >>
-> >> On 8/12/26 2:59 PM, Hui Zhu wrote:
-> >>> From: Hui Zhu <zhuhui@kylinos.cn>
-> >>>
-> >>> In lru_gen_look_around(), the young counter tracks the number of youn=
-g
-> >>> PTEs.  The original folio's contribution is represented by the initia=
-l
-> >>> value of young: test_and_clear_young_ptes_notify() is called on it at
-> >>> function entry, and the function returns early if it is not young.  I=
-n
-> >>> the subsequent loop, the original folio is skipped (its accessed bits
-> >>> were already cleared), so it is not double-counted.
-> >>>
-> >>> However, young is initialized to 1 regardless of the folio size.  Whe=
-n
-> >>> the original folio is a large folio with nr PTEs, its young count is
-> >>> underestimated by nr - 1.  This inconsistency can cause
-> >>> suitable_to_scan() to return false, preventing the PMD from being add=
-ed
-> >>> to the bloom filter and reducing aging accuracy for mTHP workloads.
-> >>>
-> >>> Initialize young to nr so the original folio is accounted the same wa=
-y
-> >>> as other young folios in the loop (young +=3D nr).
-> >>>
-> >>> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> >>> ---
-> >>
-> >> Good catch. Please also add the Fixes tag:
-> >>
-> >> Fixes: 56e5b60b2114 ("mm: support batched checking of the young flag f=
-or
-> >> MGLRU")
-> >>
-> >> With that,
-> >> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+On Wed, Aug 12, 2026 at 02:01:12PM +0200, Pankaj Gupta wrote:
 > >
-> > Hi Baolin, Hui,
-> >
-> > I am not convinced this is the correct patch. test_and_clear_young_ptes=
-_notify()
-> > only indicates that there is at least one young PTE among the nr PTEs;
-> > it does not mean that all of the PTEs are young.
-> >
-> > Am I missing something?
->
-> You are right. But I explained why this is done in my original commit
-> 56e5b60b2114:
->
-> "
-> Note that we also update the 'young' counter and
-> 'mm_stats[MM_LEAF_YOUNG]' counter with the batched count in the
-> lru_gen_look_around() and walk_pte_range().  However, the batched
-> operations may inflate these two counters, because in a large folio not
-> all PTEs may have been accessed. (Additionally, tracking how many PTEs
-> have been accessed within a large folio is not very meaningful, since
-> the mm core actually tracks access/dirty on a per-folio basis, not per
-> page).  The impact analysis is as follows:
->
-> 1. The 'mm_stats[MM_LEAF_YOUNG]' counter has no functional impact and is
-> mainly for debugging.
->
-> 2. The 'young' counter is used to decide whether to place the current
-> PMD entry into the bloom filters by suitable_to_scan() (so that next
-> time we can check whether it has been accessed again), which may set the
-> hash bit in the bloom filters for a PMD entry that hasn't seen much
-> access.  However, bloom filters inherently allow some error, so this
-> effect appears negligible.
-> "
->
-> Based on this, I think changing it to 'nr' is reasonable. For an
-> accessed large folio, it's better to have the bloom filter rescan the
-> PMD and keep it in memory instead of reclaiming it incorrectly.
->
+> > Bonus Configuration: HBM device memory tiering
+> > ==============================================
+> > echo 1 > dax0.0/private       # make the node private
+> > echo 0 > dax0.0/adistance     # highest tier
+> > echo 1 > dax0.0/reclaim       # reclaim active
+> > echo 1 > dax0.0/demotion      # may demote from the node
+> > echo 1 > dax0.0/user_numa     # mbind()
+> > echo online_movable > dax0.0/state
+> > echo 1 > numa/demotion_enabled
+> 
+> I am bit confused by the HBM device example being discovered as a DAX
+> device. Is it to
+> only to showcase the use-case? Or we see HBM device is actually
+> expected to be discovered as
+> DAX device with N_MEMORY_PRIVATE?
+> 
 
-I am not sure if this is the best policy, but we don't seem to have
-a practical way to get the exact number of accessed PTEs, so this may
-be acceptable. However, could we at least update the changelog to
-clarify that this is intentional?
+"actually expected to be" -> no.  there's no requirement HBM be
+discovered and boudn to DAX, DAX is simply a convenient intermediary
+to memory-hotplug.  This is at best a demonstration.
 
-" However, young is initialized to 1 regardless of the folio size.  When
- the original folio is a large folio with nr PTEs, its young count is
- underestimated by nr - 1.  This inconsistency can cause
- suitable_to_scan() to return false, preventing the PMD from being added"
+A device driver could very well just call memory-hotplug directly,
+or its memory could be brought up as a private node via a boot
+paremeter (which I have sculpted for v7).  The former is preferred,
+but there's a bit of a chicken/egg scenario for bootstrapping.
 
-Its young count is not underestimated; we are intentionally
-overestimating it. Also, nr does not necessarily equal
-folio_nr_pages(), does it?
+Most of these UAPI extensions are going to be consolidated into a
+debugfs interface for testing purposes only in v7.  I've been working
+on aggressive Linux Test Project test expansion to ensure there is no
+UAPI regressions.
+
+~Gregory
 
