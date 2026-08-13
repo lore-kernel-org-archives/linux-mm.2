@@ -4,100 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5470C5CFDB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 09:46:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1F0AC5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 09:49:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC8EB6B045E; Thu, 13 Aug 2026 05:46:15 -0400 (EDT)
+	id 860D36B0258; Thu, 13 Aug 2026 05:49:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA0746B045F; Thu, 13 Aug 2026 05:46:15 -0400 (EDT)
+	id 811736B0261; Thu, 13 Aug 2026 05:49:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB6E66B0460; Thu, 13 Aug 2026 05:46:15 -0400 (EDT)
+	id 74F3F6B0269; Thu, 13 Aug 2026 05:49:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 999416B045E
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:46:15 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3720A405B8
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:46:15 +0000 (UTC)
-X-FDA: 85095765510.04.D4C62CD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A0E751C0006
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:46:13 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DKnQd5xl;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BEA86B0258
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:49:02 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C164516054D
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:49:01 +0000 (UTC)
+X-FDA: 85095772482.25.2D9DEBF
+Received: from mta0.migadu.com (out-36.mta0.migadu.com [91.218.175.36])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 50B8F20002
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:48:59 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Mp+250lm;
+	spf=pass (imf13.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.36 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786614540;
+	b=MGC5VDGK3v+a+M4ASetbzpzWUBS0eOgwb3Ht/vhqnK4oFWSun+kJcgf/USicrZYtct8eI5
+	Y+rTpE2zFMDWoM8jxw8wsOYVGiKs+y3wXFiq/4cVguac02V7wkHa/Oe74M3r+w0PMO8OUn
+	mnt3+LAV/ETuO6M1s98LMJizOib5gf0=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Mp+250lm;
+	spf=pass (imf13.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.36 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786614373;
+	s=arc-20220608; t=1786614540;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+x2tiBGgnfXYaaYiZV+xganvGkJiR/qvbRK36a01nqA=;
-	b=XzlZiyKMt1fczTq47Aku+UKA5d5rcmSY9iYNIArod5xE0cveNUob4B4zRxla0rC7Yn6Jhn
-	96Jyda2StCgfHgeM9XXspVN7Q2Jm4lb2NDVCRrwWKohcOoOV3dd1ifgN1BFQGxsYoxoK5w
-	MxFTXRzE+i05I3go5Ywz0IxHJTGIJ7U=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786614373;
-	b=AovNu0yngils0T8PE1PCeZLsdH3EZdkJoYtte3jnlnPa8vcPMKliBRgc8RJfXbb/UJw/f4
-	gJnvAy5ZwmRsNt638m967GuOt4gaDNVhCdv2Td84JSwPW/TseeNpIpgB8cQL2dRMQuc/P4
-	spITbnsUbbL//n/os5kGr6aOs6K8Jfw=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DKnQd5xl;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 22C2E6011F;
-	Thu, 13 Aug 2026 09:46:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D021F00A3A;
-	Thu, 13 Aug 2026 09:46:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786614372;
-	bh=+x2tiBGgnfXYaaYiZV+xganvGkJiR/qvbRK36a01nqA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DKnQd5xlGQw8aHszKjwfbFCCC8y3Y7nwaZ0WSBdqVQgD7c4L39ViTScf20Tx2H0Tc
-	 qSF5ay3tU4XMK8P3l9UG03o2FhYZZGlQK3EmSVggbqr6RVQV5wTpZQQSMBgqoVpnHY
-	 /auQxWhMNLIDXnBsrBUjwNIgBOb0koxdy77mBXjQWwZRY+scOqG7bbIFoehCaqw8CT
-	 +zLSgJUul/UYABxCySVnf8x2W0XiJA+JayL1r34pqVMZTLIOj6OKxlqkvUTqRv4LrR
-	 /ZHKqBbBbam8hdsA/SdaE0v/ew0RIVcBt2IA+buPMpHBD4Opr6/oxZiQAcquf3MPAT
-	 S178E9QyFkVAg==
-Date: Thu, 13 Aug 2026 10:45:48 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, David CARLIER <devnexen@gmail.com>, 
-	David Hildenbrand <david@kernel.org>, Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Jiri Slaby <jirislaby@kernel.org>, Juergen Gross <jgross@suse.com>, 
-	Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>, 
-	Nikunj A Dadhania <nikunj@amd.com>, Pedro Falcato <pfalcato@suse.de>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Steffen Dirkwinkel <lists@steffen.cc>, 
-	Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Toshi Kani <toshi.kani@hpe.com>, Vishal Moola <vishal.moola@gmail.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org, 
-	syzbot@syzkaller.appspotmail.com, x86@kernel.org
-Subject: Re: [PATCH v2 5/5] x86/mm/pat: fix effective RW computation in
- lookup_address_in_pgd_attr()
-Message-ID: <an2Q8Blco1diidCy@lucifer>
-References: <20260813-cpa-fixes-v2-0-39b4ff90f91d@kernel.org>
- <20260813-cpa-fixes-v2-5-39b4ff90f91d@kernel.org>
+	bh=3yc4BCEkZRAyryb8BFWaybJrU5gdNe80jdgx7sIohbQ=;
+	b=mZEfp+gMz1X3Brjx2lzdysqaJBkbgmmKkO9HxJXdi0HKRJth1ZIDMKn11wTcPJA3KPXVmd
+	LkoIn150kfvFSvxRQmzfZ6FxmzH5w0ahtDO2oY4ARkufTJeykjteSbTYE9YRGlja38IiuZ
+	Jg6qCxghlDRq6ClA6AFuWAX9UXTnJy0=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=hxLyvAskyFXFCyh/Dk/6vFUKFMNRflI/0UakJG9IzIs=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786614537; v=1; x=1787219337;
+ b=Mp+250lmQszn0CyYwKcybd5b7y8ogjPGVVZOjPBAvgEdNJ3q2K4pKqqUTJ7vWQZ4udN1e0XY
+ iauHdNbxdZIA3E1Ddhp/uslDpfAgum133X1iAE2dxb2k1P559m+3TtzjL94GewDoGsXmnDmQRqG
+ o04zR96lIiwW21yhjQukqdCY=
+X-Envelope-To: linux-mm@kvack.org
+Received: from [192.168.111.29] (223.70.159.239)
+	by smtp.migadu.com with ESMTPS id 9e4ce1ce2358bf45;
+	Thu, 13 Aug 2026 09:48:57 +0000
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <58bf1590-25ee-4543-b07d-75465cf13546@linux.dev>
+Date: Thu, 13 Aug 2026 17:48:53 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260813-cpa-fixes-v2-5-39b4ff90f91d@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] mm/oom_kill: dump top 5 memory consumers by RSS in
+ OOM report
+To: Michal Hocko <mhocko@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Ye Liu <liuye@kylinos.cn>,
+ David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260811062924.4123014-1-ye.liu@linux.dev>
+ <an18ZbYWit7oiwHl@tiehlicka>
+Content-Language: en-US
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <an18ZbYWit7oiwHl@tiehlicka>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 50B8F20002
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: 7fmasj96qyrg3sp3g3ean6xxdw9d6kuu
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A0E751C0006
-X-HE-Tag: 1786614373-365506
-X-HE-Meta: U2FsdGVkX1+6Wx5Lu3rfoO6MOOGfD7gFSICNr+wt0JiHAuGQLWQmQFudRo3L6gOAI0P5ZZ8i69gryIWSO5H8Lwrzo0bsVKU/6LVJhXjP/kyUCfuAQhYz1xWdp4uwKz3WhdSYE0+pNaUWaqA5yqDOZfSBqNI8Qy/5q5KidcBCOq+tJzx17mPt+uVye12UlmxxmaT2JS85eOW1eCUS/owoqqJI3CFSiF4E8kXeb7sYZyH3jaGSgGhb6wRcv5iqCvxQ/UDQ//VLNcIrznd+c8N7xM39iBV6j2efADRrCAJf3W7z4Mg1K1FSegeEb1CyrIiIpesCxQm7FhdHf7XUEW4frRnQF0uWxRzZqlDX4XditAqJOMzasgAimV2Gy3brUKgctffjxLVZ8LILFOPzuNMiO0IP/I3Ok34uMYAKWZTsCF2ZtaW3CUgfafOdopvikcZYKInIMeHTnuc4QkraN6eDgI0hDW50h940J+0nHrKA3njpf6KiN897+stboeIV15W5h9amvnQl8VBGfLSv9Maqq1MpBOSw3TCt2RK5/ojUmOeSIaFqyb4wkdbPh/dxQ9jsO5wPZTunJOL+w+hH77fQuna2zRIOpCCNAdqcGs74SgCpuD8UaP7ngAPcUvW/OH6E1JZVXJbj2EEQZ9oWQUh9g4hadmNw+DYB2ARDJ1Sti4XRDTfZCQtrLnANT5mr/97O1k5Qp+BK8RYlUBqZDI/xooK8qJXYHOQdnhbqxd5H+AV9ITlGR2k1A29ZvHMKWChkbg6jKYRjaeqfHG/0l/Nx4Z+AHwylsDKF8uFAdo0aS1UJnFWKlHHWZjByNP1HEhbq9NsU+U8gS/BIJVx2mMFlsDocD5F9BirNYg1nRvYTCLAWAZGsbNAHjf8qDg7z63SU27WmHuBv2ygXZBqN1OP7edYNjS8fwjzq6QP6MUAE0ODZKM+4jfR1x6nOEZ6HACa1OerCry6bbErwMPVXJ1G
- fy14iy2k
- rE0T5RrTDkpscv2xV0gBcvL9WJ7gGegtzDAmVAaGHWbT1lStiLcltvbSUqkq7Zi5vhH9TpyealFzhpuQ6IaRbQqMrhIlcGVTK8jTPn3tPzI4niMZM0mVkCnZB8tvmiUdTifgg/zO4hTyoRr8oKmjzk7ZbWiLZtlDU2j72Kv3TKa0uDQgdseFp4c5Q6PIiBa5kGa9RFAbUW3FNyiwbkgXtyJIKdaqOJNNAKSbLWTq5r3vhhvs7BMRQ96WQEbyJswyDayBFm6FOypAivcpEG/z22OIoEGR4+wUh188GAGW5jnrcKDzwHardxKG/Qx9Ckf4g+6HiijT+Fa9fP79xMBohjO/CetlZYcHcN1VJ1hfBlzERLneoCEDIYJnO0I9C20xl2qj55t2cmmsMoiv/H5rwh+zmegRtbsIf3w2xBMzo8knLDNgH2LLcqbdLolb43fGF891GePDWN3Cc7ycOxQVFBuurEJI3dSmPP5B+Kox5gP6N4F9DaSq26alY/GDi77G4qpgUbqxPZzj3RWw=
+X-Stat-Signature: z19ts7zfp5x43eh3qfoxo6qctn1dt6ck
+X-HE-Tag: 1786614539-55611
+X-HE-Meta: U2FsdGVkX18LFPmYO/gdsSa4eB1E2z5anBDm5sOuFTpEGRijyCGKEVFP/rxWXnRTNsLx/uGQlh3E+/AcvDTm6NiH6C6x10BfoR3HPLrJc6joZrYP86pni1Oild8I/qaqc0tEzzi4o6f/xSz8VtfpAYVzaQgLw/xHv+IkwhhraYPcUL5lM8N3zPSBsMEDxHpeUaETbAs0naNFfgN7AFNurbCnb4FjPug74UhEPyVk3H5VHEsBT9qsM1AOLOeFH37yDGcx49kL9PbT6ARxAQW6euqtmJPpWYM/7fjdoOfeTZIOOfXTuo27Ru9sqTdZt6cA/n1ySmGBWhn6y0LggFaouU0tw5iBeRA5FBRk08j4r1H0NKmawkIVIiodqpfhj6vX5SfmJm64NAo+rFYdu70j13t9+496lavHbz5jg+YGf1zW5c3gK2lowNctE9arQTAGfCYXXcpKIok5c5a/n9X7GtsOfZtw61xDWezt4EqhLbhRv/mPZd7Y9lZWVHApgE8ynJmuwfUJg55XnVcKCUhoTRV3MlXPOVetA6JLVBXhqJub3GhiXffkimBSa54YMmXSiYw/UgtdhQ5VJAiBS+aBODBBmRArzKmqqkoGWtCkPO+LPJulxA3xVv8I3ey0Ta5VjlhOLIaauZ8lpUZX/+qT3XkjxBYHLLcSXPF4OAxIHzbGDiZKtMWPl4A7dew0yP/2wBCMFU0gVMjfAir7SceVzG+oBy0vwhcDOD2Q4cE6DBcR3R2v5Yn/0Q71IlOIP4GFWndEIPcK5RItyGTf7NV5NMOJt+DYjsZm2kzZWkkBDc3dIYwYyJNNlBwsfhLZ5+SrVk50B8Fv01ZAp8JDH0WGw29A/ecpgTwfJ2noodVK0gYcG7JtHXwTA3No8du5O2pr9/d0inZ2BAtC9+I5m9Ac086A+dx32u/NWUm1SkGy7kg84ruAfdtF4boJkqzlM+Bj4LFpcudbLysHa40RepT
+ nwlZR7rJ
+ a7uMJPpK35KfASOEmpOf2aYTji0R7YXDBqz4os771gvqfwAeqYtIFJuNWRdNo7dVEhpaVbTnPMl98QeGCmkiZ+7ZyKZ3jevWdad0ypCXX/SgW2HaLEe6EH2/iSAheoLwn0pbwnDbxR40nvGxl0pcqRGV/SNFIKj9ZIwruuFAzqkXeWXJxNOj6sXZ0x9YaJhKUtOIpy+RXrXlhhXvMAuWH0Qi8WSPl3R/P09Vbk+MBdEZdTtw6iQqOUVbrYgei2lNPmh+dMQu8z674/0fLloXx3ihGmzCnrBCF7UXFobkUFGnixhxS6gb+r/36ldWbUvWlvgY1Z1WSNFrzHzwSUouZMRsQCzD0cVJt65pJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,92 +94,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026 at 12:01:28PM +0300, Mike Rapoport (Microsoft) wrote:
-> lookup_address_in_pgd_attr() accumulates the effective NX and RW bits of
-> the walked page table levels so that verify_rwx() can detect mappings that
-> are both writable and executable.
->
-> The RW bits are folded into a bool with
->
-> 	rw &= pXd_flags(*pXd) & _PAGE_RW;
->
-> but _PAGE_RW is 0x2. So consider the accumulation line:
->
->         rw &= pXd_flags(*pXd) & _PAGE_RW;
->
-> where rw=0x1 and the right side evaluates down to 0x2. It'll end up doing:
->
->         rw = 0x1 & 0x2
->
-> and rw always ends up 0.
->
-> This way rw becomes false at the first level walked, regardless of the
-> actual permissions, and verify_rwx() treats every mapping as non-writable
-> and never reports a W^X violation.
->
-> Add double negation to the right side to normalize the _PAGE_RW flag to
-> 0 or 1.
->
-> Fixes: ceb647b4b529 ("x86/pat: Introduce lookup_address_in_pgd_attr()")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Copilot:claude-opus-4.8
-> Reviewed-by: Juergen Gross <jgross@suse.com>
-> Tested-by: syzbot@syzkaller.appspotmail.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Yikes, good find! LGTM so:
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+在 2026/8/13 16:12, Michal Hocko 写道:
+> On Tue 11-08-26 14:29:24, Ye Liu wrote:
+>> From: Ye Liu <liuye@kylinos.cn>
+>>
+>> When the OOM killer triggers, dump_tasks() prints every task's memory
+>> state but in no particular order.  On systems with hundreds of
+>> processes, identifying the heaviest memory consumers requires manual
+>> log post-processing.
+> 
+> Yes, but why is that a problem? It should be a pretty easy script, no?
 
-> ---
->  arch/x86/mm/pat/set_memory.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-> index fbc418dfc597..430d0b448371 100644
-> --- a/arch/x86/mm/pat/set_memory.c
-> +++ b/arch/x86/mm/pat/set_memory.c
-> @@ -754,7 +754,7 @@ pte_t *lookup_address_in_pgd_attr(pgd_t *pgd, unsigned long address,
->
->  	*level = PG_LEVEL_512G;
->  	*nx |= pgd_flags(*pgd) & _PAGE_NX;
-> -	*rw &= pgd_flags(*pgd) & _PAGE_RW;
-> +	*rw &= !!(pgd_flags(*pgd) & _PAGE_RW);
->
->  	p4d = p4d_offset(pgd, address);
->  	if (p4d_none(*p4d))
-> @@ -765,7 +765,7 @@ pte_t *lookup_address_in_pgd_attr(pgd_t *pgd, unsigned long address,
->
->  	*level = PG_LEVEL_1G;
->  	*nx |= p4d_flags(*p4d) & _PAGE_NX;
-> -	*rw &= p4d_flags(*p4d) & _PAGE_RW;
-> +	*rw &= !!(p4d_flags(*p4d) & _PAGE_RW);
->
->  	pud = pud_offset(p4d, address);
->  	if (pud_none(*pud))
-> @@ -776,7 +776,7 @@ pte_t *lookup_address_in_pgd_attr(pgd_t *pgd, unsigned long address,
->
->  	*level = PG_LEVEL_2M;
->  	*nx |= pud_flags(*pud) & _PAGE_NX;
-> -	*rw &= pud_flags(*pud) & _PAGE_RW;
-> +	*rw &= !!(pud_flags(*pud) & _PAGE_RW);
->
->  	pmd = pmd_offset(pud, address);
->  	if (pmd_none(*pmd))
-> @@ -787,7 +787,7 @@ pte_t *lookup_address_in_pgd_attr(pgd_t *pgd, unsigned long address,
->
->  	*level = PG_LEVEL_4K;
->  	*nx |= pmd_flags(*pmd) & _PAGE_NX;
-> -	*rw &= pmd_flags(*pmd) & _PAGE_RW;
-> +	*rw &= !!(pmd_flags(*pmd) & _PAGE_RW);
->
->  	return pte_offset_kernel(pmd, address);
->  }
->
-> --
-> 2.53.0
->
+I think I've realized that problems that can be solved in user space 
+shouldn't burden the kernel. Thank you.
 
---
-Cheers, Lorenzo
+-- 
+Thanks,
+Ye Liu
+
 
