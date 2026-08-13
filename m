@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F4C5C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 09:02:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A71A9C5CFDB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 09:02:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54F5C6B041F; Thu, 13 Aug 2026 05:02:16 -0400 (EDT)
+	id 7254B6B024D; Thu, 13 Aug 2026 05:02:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 500636B0430; Thu, 13 Aug 2026 05:02:16 -0400 (EDT)
+	id 6FC806B0431; Thu, 13 Aug 2026 05:02:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43EFB6B0431; Thu, 13 Aug 2026 05:02:16 -0400 (EDT)
+	id 5ECA96B0432; Thu, 13 Aug 2026 05:02:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 03B796B041F
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:02:15 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 55C99C0568
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:02:15 +0000 (UTC)
-X-FDA: 85095654630.28.E88C4F0
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DC196B024D
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:02:24 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 88FF1140561
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:02:23 +0000 (UTC)
+X-FDA: 85095654966.11.29A5550
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8F7E640003
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:02:13 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cTHjlUqt;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf22.hostedemail.com (Postfix) with ESMTP id 983CFC0002
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:02:21 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Cq9h/biY";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786611733;
+	s=arc-20220608; t=1786611741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X5zSwpgxBZvb+myrFl6S3DxQdJeWuTT7rdxmIVQZYGg=;
-	b=1554YldrOabiYqWHlrQVp8nO0Pd/MkoEsHuXMsjHQZ823yI0jEpVCx1zMmxkE9ECEQH11T
-	+pUfJ4ucR3yoFKLL3XQpZmjwtjVqhNhKw3+EOglZg6h2KbSSFYg8GsOyUgTnwmWEOHIMrX
-	4Lbtq5W7NaCrDbqSIH0lBSKGChkJrq8=
+	bh=itFc+ei9wQ2AisPFkcdPDGQXQgvzV1zw/qg30HEZpkg=;
+	b=lB3bpNVaP4gEjk39uGCsQsr4tzZb5UnVd45VVOyi9AJmAYpfIllKI+IpfYFzzK0an5wTnH
+	VhEj3lSAadmq9prowQZAlBWDwDADFuMpgEsA+bL4oozuxYS3aa4DHEcbJDKTKcpKd1rqIT
+	WwkWgrIMxgFC4YsPbl9Qrile6tBOEf0=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cTHjlUqt;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Cq9h/biY";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786611733;
-	b=yCv29BL5IK4MrcVdf50YBwERwqbH+cebcFRrKa2LojswrsHXxUXTPHUPo0lED6yjFFDtx0
-	8MPk7y5CD9GYXS9scxsuqqHXBDC1ExemAUZ4IDHNywUuE6WFgEGP4gp6VDvFeacacBtEAm
-	ee96/1G0QLso2QMBtbnqQ8iHR+rQ2Rs=
+	t=1786611741;
+	b=PgMQr25ABC9ZLbQXDgRwP9BYY/38HCISz4rTjBaXp6HhFMUp+DvLH5An1qDS0m8wYYnZsZ
+	xbELW4ipVSRxBh9zyTIIDDHTbwywYRcC6f7e+nbH1FZDhOeHPZdF+IHujjBRuWjPSVzGUh
+	NvIYHgqk9MS75L2UeBZCR5UwIYZl6ZU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DC70740C46;
-	Thu, 13 Aug 2026 09:02:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450831F00A3D;
-	Thu, 13 Aug 2026 09:02:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E25B443BA9;
+	Thu, 13 Aug 2026 09:02:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B3E31F00A3A;
+	Thu, 13 Aug 2026 09:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786611732;
-	bh=X5zSwpgxBZvb+myrFl6S3DxQdJeWuTT7rdxmIVQZYGg=;
+	s=k20260515; t=1786611740;
+	bh=itFc+ei9wQ2AisPFkcdPDGQXQgvzV1zw/qg30HEZpkg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=cTHjlUqtkSdbH+1I9do/NPyiH+MMWzDRET3NOH61eOVwd1VJxTrpsVOqpwVdcd3o3
-	 1a+P8AZvdG4dTwAhdsVlXsHIPTE4Wk30hWvVnuTVs0j7UE9FzV4XjCqDWN6Dq1M2W4
-	 YdIw8U7uzuXowdqqbZpsvhuOLRLJcugSJ8Xvi8+QDSzeE4i89uXTdfi8i5gcV3z+SE
-	 mkyJvWT6Uvehy3Nzzc4qwCLqdFIT3iHGNXe/SlE/07853x12BnoUN1Tmnss5+9MbS+
-	 BmiNToCMRCiMdxRSmec7BspR3mYd1XzZelKof57VO9NVgp2H32tQfDvp7tfgGDMpvJ
-	 3XNuJzUVXQKyQ==
-From: Mike Rapoport <rppt@kernel.org>
-Date: Thu, 13 Aug 2026 12:01:27 +0300
-Subject: [PATCH v2 4/5] x86/mm/pat: allocate split page tables as kernel
- page tables
+	b=Cq9h/biYez7ZDggx1XDAyzOQtOqE3YYHzs46iGAd2rMJH+kJ6f4CsQzyDIQEKlHLL
+	 qqxDLE7ZdCbpGYdokBQR6rehGnNDLU/HD1bmmhBJ17QiPWej9urwhBlftexAsFFhNP
+	 PxXyIg49vQ57AlcYJtxGOs8kCJt53ADPmY/AJJpdxs3R2tElKhI2feDZARQdhtIplK
+	 AYOxBo7dxrdwdhdm8Ro90htp3Ie1zkYOjil7DSKlZ4RVfOKZOPNFIQPSft63kM5oMz
+	 7kpA6swRbGH4Z7d8HV8uBp67PYWfhkhbp5LPncNJO09xCKi6mIJNbMm6VDrVcuHja6
+	 QWXfeu4J7BtBg==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Date: Thu, 13 Aug 2026 12:01:28 +0300
+Subject: [PATCH v2 5/5] x86/mm/pat: fix effective RW computation in
+ lookup_address_in_pgd_attr()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260813-cpa-fixes-v2-4-39b4ff90f91d@kernel.org>
+Message-Id: <20260813-cpa-fixes-v2-5-39b4ff90f91d@kernel.org>
 References: <20260813-cpa-fixes-v2-0-39b4ff90f91d@kernel.org>
 In-Reply-To: <20260813-cpa-fixes-v2-0-39b4ff90f91d@kernel.org>
 To: Dave Hansen <dave.hansen@linux.intel.com>
@@ -93,14 +93,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  iommu@lists.linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  stable@vger.kernel.org, syzbot@syzkaller.appspotmail.com, x86@kernel.org
 X-Mailer: b4 0.17-dev
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8F7E640003
-X-Stat-Signature: ehukx5hpneg6493nijtrccxgpyp8jgnw
 X-Rspam-User: 
-X-HE-Tag: 1786611733-908107
-X-HE-Meta: U2FsdGVkX18dBeel3N6yXpUwl1T+AL62+95NG0/hjZbH+NbpsmCvAkbKSOuGL4Mvky13aAmV/RKCkf3xPeUn9UGOqV2ieOMy1+soLt0CJK+xUjDUkFm184428X2i9/92b7F9vNzmbExe9bwqKwdUJGVWGv1T5aVkzL2nXpHWC6WQT0yUOOSyRUf1GkC+FRKiENWFhaH3PCwamsnq09JT26YdOzQf41clne1kZFhtAdwLYHK8RAHr6BoqueY8e9rFlsaFSH2nWq61VQszzti/yrLr/k3ER10i6CEsH7lVNun5UKKYrXiE7q3a8IOGLeIVOmjgY54Od7ixIY/504Q19AxctYD+nBqEqmMFYPGFT69tvPWa2+nfzLhmO9xKaC9aKJU7DeeWSYPXBD5yQWDhPPbauXBmEaQsTf8AMbWJqPp3kgDkeDsCs1zs4WX1J2tAdZkmvuJivv1/A3KpKX2N7KZl9ZvWH2ChMXt/giCjOnx3gtN+jHfElOppPq847F1ptErNyj6rD/UJ040ENKErkSQGgrY47BJ6PsesjSqva90OBN7u4wtHWHCYwuBJCyHAO8vYQtkRgaWKVfUEYGxc205arjqGpewJy6TollFZjDv8Zpa6xN6QVVvoEZJ8p0GKwMSO9QVRUoyvkdGZvlc/a74XZs7SZrL+QzLFs6C4xJXSoJXXWHHSze2ZDsCFa+TsEUTu66Wdo313idDoUC5jSXbbPYeYqCP51M859DA+f/y1gwAKGikLzZwAIrBu2AGwrpBV5Qyqxxskgajkm9MS1SgC4Kkp9+aGDqq0VCd+MST91oCVMSDtl9xuNYWPqkj2wGHuvcASdwcdExHl0OWH7fbEWM0EYNBzWgSufItj9au4/FdeNODNKdsXWffXjRzmW618nlEZZ9mNxq+IL45aK6Mbsto/YjVc8iXmK+0wWwI/Rqn5qcDlgEdhArZB/53czKCzGLmSKi3BFtfwTKq
- F2R/gB2o
- tq/ck8JSfCRu7AD7R28+ESXXcg/JA2b//I+QYE2ZEdXQVo/Wy9wdXhJjQJIKpIzZ6pzwfcB/sLbiuEDcbFR4Iza6CCOYNODw4rKdJz9guMHj3hCVznTao8EM0LRncb+8MMcthNMt1cEEG8tIpTpjrt0rOpiQbi8yTiwrhEMCQO/O7xelfmwRF2SxF7L/gV10/umwi+pDR/BPepHm1QNc+sLW/pzqZLYlPgMSPRpz6B/t9C9xZH86zVCZy1N82sD9HNOP6uNh/pcr3seAsM+DmIHJYM1DxAJCCxFmNtACAGvV8jlc6hCB/4X3/0/9JBXUuvx9jd0b2DKk+T8uptzKODjP7JQ==
+X-Stat-Signature: kp7fsehmynb6e397spjsmrnpw7c59s88
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 983CFC0002
+X-HE-Tag: 1786611741-42687
+X-HE-Meta: U2FsdGVkX1/Sc7VzMHdD5qh4kE6SpBWXIDp9F0Qt4+Fet1ZvyMEGT8t/T3e/lm5yCc7ZI37ORab2MUvZTLAJolfruP6A6Fb2yCWnso7eqKbsSe4II4Ypv4xLlkwqavt7RGElzOK1xgLleBwlmNTOzsZDBlEYjUhqGm43J91wg85MdKDW7ILov2G8odKi4dkFlBIeLfDbEkbuiS8oaNGYyV1SC0WkqrMsmFyvneEDhdC2EPtctEbnCtAWGmZ+b/0Rm/xZf7jO2M8rgw1Px+q7/aI6EB90on/O87jAaV+CYfT+yzvgAW3Ykh7kD4kwgzw4rSLjcGUiBT3SNRrUyLvF5wKR4V1ry+a8YBB/Ilb2iamaBD7Rm2TVE/skCPX436XQAPPVrqPKWa9f9hdkAqD9Vzkk/teecpd6d05lOaTjachk4GFMyZYSw/mb/hL0SMn4S4k6tZIWQ+DWrgY9HTe1o4b3FpxM8N4vBQWCgd3efWIpbdiefvuvokWn4DNWyQVDhuAvdCQAzlAh4R+myGc4e8l70Ie7X4wvKgcrLxrdWEEjf1RVwXmpqkPOjZXc513a/1AooTj8P5polrGl2nRHW80P5EChvfwgBE+n8wlSpIMGR1VX+mLLXr711s7/3Y8llcwF1Tf1MHbtkPf67rHxt3ls6ZNXUPZG0BRdkkJeHkUN7MqHAdSr89rEhyblYmWQt1m1/2Qv61JJzMY9Sa/M3a0rj1V3dgR9aAbDpwec9WDApq2n4RxXWt9wHFJr2GhSOez4m80fY/S/7efpabk3Mig9yB4uIiMaHqwETDbygItfC5+SQnmlTNx66dDCd9Gx1+2sZXztBkQqZwLUVk8LG40SlO3x/SwADeLWfaMeOFwQdVijm7dBjfqADTyz4qnPuFTkJihNfZ+fyLjF2lN1P+w3xbzPp9O/mciwykXk1skxqWjEQqpdhOiYNveS5zrhlx60KNGpt+ZKFXW3zaV
+ pRp+q9wt
+ 2+K7AkgXqdfLKW1xfjlo4TMIA7ytfCDW9icmyGPQnu6kjNOI68l46eUELZPzVYK1D7OtOe/IW2bFn2qk7+VRE4LU9qiZOZwQhJYNc+7NXbgGfUlB9W+JqkYz05tm1F+Je5qtcUb+FE7C6tvAf4UTyrWUNyiw6Y9Y7NVOvJbRSgGgI4yxL4QApsV1nM1KUd3nKc5M3XBKw745VmIwScPd7vZdtzlVZ38iMLTRLlLBmWyykZfFMoMMnOLT5NFop6ZFgPkfgFRJTrnCqBmmWdzp70WJlmJGl10bY0EGOHfaqucyGCD1F3KQr8fIKgd7OG9h6qPo5umcLfDCx1nOeGhiVRlyzK+oPTcHuK7glThko96zmLvs1ALvktOjCF4B1bxL+TjNM/zsWN3RyRrsMkYoVYDLPoGVlML7+2Gk8Xmy9ysl+fFjhh+WaFzwDYZHxleArhcm4rZXQ9+mmvz0UfbFpYX7YoqiHGgfVSAMA8PcafjWaTuY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,123 +108,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+lookup_address_in_pgd_attr() accumulates the effective NX and RW bits of
+the walked page table levels so that verify_rwx() can detect mappings that
+are both writable and executable.
 
-When splitting a large page in CPA in __split_large_page() we allocate a
-PTE directly without going through the standard page table allocation
-routines such as pte_alloc_one_kernel().
+The RW bits are folded into a bool with
 
-This means the page table constructor is never called nor is the page table
-marked as a kernel page table.
+	rw &= pXd_flags(*pXd) & _PAGE_RW;
 
-The former results in the folio associated with the page table not being
-marked as a page table (__pagetable_ctor() is never called thus neither is
-__folio_set_pgtable()) nor are statistics updated to reflect
-it (lruvec_stat_add_folio() is never called).
+but _PAGE_RW is 0x2. So consider the accumulation line:
 
-The latter issue of failing to mark the page table as a kernel page
-table (ptdesc_set_kernel() is never called) is far more problematic.
+        rw &= pXd_flags(*pXd) & _PAGE_RW;
 
-Since commit 5ba2f0a15564 ("mm: introduce deferred freeing for kernel page
-tables") kernel page table freeing has been batched and since the
-subsequent commit e37d5a2d60a3 ("iommu/sva: invalidate stale IOTLB entries
-for kernel address space") IOTLB cache entries for kernel page tables have
-been invalidated upon being freed.
+where rw=0x1 and the right side evaluates down to 0x2. It'll end up doing:
 
-Since split page tables are freed without this invalidation, the IOTLB can
-contain stale entries for them.
+        rw = 0x1 & 0x2
 
-Resolve the issue by using the ordinary PTE allocation API at split time.
+and rw always ends up 0.
 
-This results in these kernel page tables invoking a page table constructor,
-and thus requires a page table destructor.
+This way rw becomes false at the first level walked, regardless of the
+actual permissions, and verify_rwx() treats every mapping as non-writable
+and never reports a W^X violation.
 
-Since we cannot assume one is always present (early allocated direct map
-page tables are not marked as such), we conditionally call
-pagetable_dtor_free() if the PG_table folio flag for the ptdesc is set,
-otherwise we free the page table via pagetable_free().
+Add double negation to the right side to normalize the _PAGE_RW flag to
+0 or 1.
 
-Regardless of which path is taken page tables marked as kernel page tables,
-which now includes split page tables, take the correct route through
-pagetable_free_kernel().
-
-There is a user-visible side effect in that split page tables will appear
-in nr_page_table_pages in /proc/vmstat (as do other kernel page tables
-allocated after early boot), however this is a positive change.
-
-This issue started being markedly problematic after commit
-5ba2f0a15564 ("mm: introduce deferred freeing for kernel page tables") so
-choose this as the Fixes target.
-
-Fixes: 5ba2f0a15564 ("mm: introduce deferred freeing for kernel page tables")
+Fixes: ceb647b4b529 ("x86/pat: Introduce lookup_address_in_pgd_attr()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Acked-by: Vishal Moola <vishal.moola@gmail.com>
+Assisted-by: Copilot:claude-opus-4.8
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Tested-by: syzbot@syzkaller.appspotmail.com
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/x86/mm/pat/set_memory.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ arch/x86/mm/pat/set_memory.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 2d04a4bf34aa..fbc418dfc597 100644
+index fbc418dfc597..430d0b448371 100644
 --- a/arch/x86/mm/pat/set_memory.c
 +++ b/arch/x86/mm/pat/set_memory.c
-@@ -441,7 +441,15 @@ static void __cpa_collapse_large_pages(struct cpa_data *cpa)
+@@ -754,7 +754,7 @@ pte_t *lookup_address_in_pgd_attr(pgd_t *pgd, unsigned long address,
  
- 	list_for_each_entry_safe(ptdesc, tmp, &pgtables, pt_list) {
- 		list_del(&ptdesc->pt_list);
--		pagetable_free(ptdesc);
-+		/*
-+		 * Only early alloc'd direct map should not be flagged PG_table
-+		 * here and those shouldn't be collapsed. However be abundantly
-+		 * cautious and handle the !PG_table case too.
-+		 */
-+		if (PageTable((ptdesc_page(ptdesc))))
-+			pagetable_dtor_free(ptdesc);
-+		else
-+			pagetable_free(ptdesc);
- 	}
- }
+ 	*level = PG_LEVEL_512G;
+ 	*nx |= pgd_flags(*pgd) & _PAGE_NX;
+-	*rw &= pgd_flags(*pgd) & _PAGE_RW;
++	*rw &= !!(pgd_flags(*pgd) & _PAGE_RW);
  
-@@ -1134,11 +1142,10 @@ static void split_set_pte(struct cpa_data *cpa, pte_t *pte, unsigned long pfn,
+ 	p4d = p4d_offset(pgd, address);
+ 	if (p4d_none(*p4d))
+@@ -765,7 +765,7 @@ pte_t *lookup_address_in_pgd_attr(pgd_t *pgd, unsigned long address,
  
- static int
- __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
--		   struct ptdesc *ptdesc)
-+		   pte_t *pbase)
- {
- 	unsigned long lpaddr, lpinc, ref_pfn, pfn, pfninc = 1;
--	struct page *base = ptdesc_page(ptdesc);
--	pte_t *pbase = (pte_t *)page_address(base);
-+	struct page *base = virt_to_page(pbase);
- 	unsigned int i, level;
- 	pgprot_t ref_prot;
- 	bool nx, rw;
-@@ -1238,20 +1245,20 @@ __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
- static int split_large_page(struct cpa_data *cpa, pte_t *kpte,
- 			    unsigned long address)
- {
--	struct ptdesc *ptdesc;
-+	pte_t *pte;
+ 	*level = PG_LEVEL_1G;
+ 	*nx |= p4d_flags(*p4d) & _PAGE_NX;
+-	*rw &= p4d_flags(*p4d) & _PAGE_RW;
++	*rw &= !!(p4d_flags(*p4d) & _PAGE_RW);
  
- 	spin_unlock(&cpa_lock);
- 	if (cpa->init_mm_read_locked)
- 		mmap_read_unlock(&init_mm);
--	ptdesc = pagetable_alloc(GFP_KERNEL, 0);
-+	pte = pte_alloc_one_kernel(&init_mm);
- 	if (cpa->init_mm_read_locked)
- 		mmap_read_lock(&init_mm);
- 	spin_lock(&cpa_lock);
--	if (!ptdesc)
-+	if (!pte)
- 		return -ENOMEM;
+ 	pud = pud_offset(p4d, address);
+ 	if (pud_none(*pud))
+@@ -776,7 +776,7 @@ pte_t *lookup_address_in_pgd_attr(pgd_t *pgd, unsigned long address,
  
--	if (__split_large_page(cpa, kpte, address, ptdesc))
--		pagetable_free(ptdesc);
-+	if (__split_large_page(cpa, kpte, address, pte))
-+		pte_free_kernel(&init_mm, pte);
+ 	*level = PG_LEVEL_2M;
+ 	*nx |= pud_flags(*pud) & _PAGE_NX;
+-	*rw &= pud_flags(*pud) & _PAGE_RW;
++	*rw &= !!(pud_flags(*pud) & _PAGE_RW);
  
- 	return 0;
+ 	pmd = pmd_offset(pud, address);
+ 	if (pmd_none(*pmd))
+@@ -787,7 +787,7 @@ pte_t *lookup_address_in_pgd_attr(pgd_t *pgd, unsigned long address,
+ 
+ 	*level = PG_LEVEL_4K;
+ 	*nx |= pmd_flags(*pmd) & _PAGE_NX;
+-	*rw &= pmd_flags(*pmd) & _PAGE_RW;
++	*rw &= !!(pmd_flags(*pmd) & _PAGE_RW);
+ 
+ 	return pte_offset_kernel(pmd, address);
  }
 
 -- 
