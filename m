@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 756F7C5CFDB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 10:21:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AF90C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 10:26:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 650306B0275; Thu, 13 Aug 2026 06:21:13 -0400 (EDT)
+	id 484756B026D; Thu, 13 Aug 2026 06:26:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 628496B0277; Thu, 13 Aug 2026 06:21:13 -0400 (EDT)
+	id 45C4E6B026F; Thu, 13 Aug 2026 06:26:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51BF16B0275; Thu, 13 Aug 2026 06:21:13 -0400 (EDT)
+	id 34A2A6B0273; Thu, 13 Aug 2026 06:26:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F0A76B0275
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:21:13 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8BFE1C05DB
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:21:12 +0000 (UTC)
-X-FDA: 85095853584.22.CBB17D2
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 08E586B026D
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 06:26:32 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8B74E80592
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:26:32 +0000 (UTC)
+X-FDA: 85095867024.20.C710F4D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B7AD8C0003
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:21:10 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MAS9ggXE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id CC76C180003
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 10:26:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=co3Dplmu;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786616470;
+	s=arc-20220608; t=1786616790;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SbuxHmqDbr/TDoLiKVstYcqIhkRii7nKMWvnVw3gtYk=;
-	b=WsE4zY33zmnY9hu2Syp8tlO5QRhf+mVkP6ePmDQa3ldGf56tp1KMpd2E7HlcWklp0+3tFd
-	hd9UWqyIoIjiRxYmfgEFQZVIKD56xyK6htj09OzatrTVnn653gneAyuM+hwypcnllKeo/I
-	Ley7C4m5J6PPeTSuv3p8PxPm6p3TwhE=
+	bh=63X3AIgj8JfsQGRG7V0b/K2oGLZA2KXTTSoU5TCUlQI=;
+	b=2QBVyypcLFsgBE4l0oovdjSdXf2Q1v4iD/1droXjaFayKdehMIB4N7mCIVh6sd2W89lIm9
+	FvV1k2yisWZkoDksDKZR4A8hccIYtFxGjzvb5VndZfluv3teNHJWczACTSutv7VjfLcZhv
+	x1nYsHv9bxWgBOrS6iNR2BdETp72Ckk=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MAS9ggXE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=co3Dplmu;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786616470;
-	b=zHI5rBMHwGyzTjulXS5l7nJTBZHWHzwbKI3BTLvWmef8mcobmfQNWfDMsJbS/RbB1eLAnM
-	YNUE2QH9Q1by0c0eAAN/NKeLYk/lw8d/2tvZ2BlwXgtxZIEa9OfK2wQVvnVF22s8hyq95D
-	CDgv/ggvp9QoAWtXZuHDamffTohrfm0=
+	t=1786616790;
+	b=jr8k+IlTHhYhT+KZMmQHpGyh3YkpKtu+SaERvjj6Fo4flTGeeGJ7VjiNfAqkmAEpDzpqXo
+	mcsrH9ZG1lose82HzL25Kb7Yb1A2MKBzI/spOfDzGb3WRiJ5+Mhzb4+qMT8ws3iS1O66K4
+	V/IR6AXSseuBIM61o7+s75dIOQUzZ7A=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 030B7404A6;
-	Thu, 13 Aug 2026 10:21:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669481F000E9;
-	Thu, 13 Aug 2026 10:21:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C60C940654;
+	Thu, 13 Aug 2026 10:26:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C67591F000E9;
+	Thu, 13 Aug 2026 10:26:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786616469;
-	bh=SbuxHmqDbr/TDoLiKVstYcqIhkRii7nKMWvnVw3gtYk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=MAS9ggXEUpw/Dqk1MOhvGtPckZ0uZJR5ZZ78AaYcCnRZuxCBshpraw9TKluwbOkhz
-	 FsX5ZSPNzGP9TK9jC5R78hb8VhPfK9+16hVNKHV0AJfLjdve1teJvZNi4pgRWl+rHd
-	 CzDREZT6t7dEMDDj/945tHNmQetmIBFRsJaH+5TAf1PlOw4wqia4ci2fU0LtvEHB8j
-	 Mq/dxut0XI36GEVu3ZQMKCshK3k105UF73M1Il1DzHbVLedPsdhhD4t3AERFjxajNy
-	 C+B7634Zmvcok95MdsJF6rANEdD94ykeb4RFG4JU/kiOHrVJFAGI6A5WRcEQ2ub7hK
-	 TfeAyJ+BKT+WQ==
-Message-ID: <6b7ccd6d-c332-40fe-a1c1-65ca11a4faf3@kernel.org>
-Date: Thu, 13 Aug 2026 12:21:02 +0200
+	s=k20260515; t=1786616789;
+	bh=63X3AIgj8JfsQGRG7V0b/K2oGLZA2KXTTSoU5TCUlQI=;
+	h=Date:Subject:To:References:From:In-Reply-To;
+	b=co3DplmuaRys2xtTZIEKEfc0GJMr8C8nVg1x4NKVUUTK+N7gBxkjAfqzR66N+NQRs
+	 jkC+bJug7TAzMdGPWu1UidDM9zqzdcLXxBynRZUjhKUqLVTVOkuiwTjLNBHnmbpMfK
+	 5pz7qvVJGJ2Y/JBy+w4qh9cYekzjneCZ3koLz1lYBfZzw1xzQzTDkIjjSIkVPWhAgW
+	 ol0kLRz9uf+2Hwjz0LUCr1jclUYG2sd4fNT9w7rnL1blBdGW8alSXQ0x7bnk6+Y/d9
+	 SuRNmIITngVHYwsSJMInZ5y8XRcao3PS+iZOx3MJSjG2Rts1hD9vbd4LjJ/iuJPfz7
+	 RFr5M4UwCtWZQ==
+Message-ID: <e372f10c-f964-4cd0-9a48-c31702968153@kernel.org>
+Date: Thu, 13 Aug 2026 12:26:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/5] selftests/mm: skip guard hole-punch test if
- MADV_REMOVE is unsupported
+Subject: Re: [PATCH v3 3/5] selftests/mm: skip khugepaged swap tests without
+ swap
 To: Muhammad Usama Anjum <usama.anjum@arm.com>,
  Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
@@ -81,10 +81,10 @@ To: Muhammad Usama Anjum <usama.anjum@arm.com>,
  Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
  Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
  <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Sarthak Sharma <sarthak.sharma@arm.com>
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Kiryl Shutsemau <kas@kernel.org>
 References: <20260727095225.372655-1-usama.anjum@arm.com>
- <20260727095225.372655-3-usama.anjum@arm.com>
+ <20260727095225.372655-4-usama.anjum@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260727095225.372655-3-usama.anjum@arm.com>
+In-Reply-To: <20260727095225.372655-4-usama.anjum@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B7AD8C0003
-X-Stat-Signature: zqitpe7kssj3jokjst7bsywtkycdy6mr
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CC76C180003
+X-Stat-Signature: k5skqx8rrdjueajtg4ex8htiz9c5p3dg
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786616470-801228
-X-HE-Meta: U2FsdGVkX1+bqWzdf/Su86GIh4Eh3ya5Y0gVr3JAACf6oNuceJouE358UoOs2tbaR/zHjHPWQr9N2IClufIeE+QmHDepOu+52JSxq6zqOEVP8UAO988ThvtBmp81TgZSg7BWsRRiV0yYGvJffMRBHbt7g35JmetqJQclNT8q4TEApSUV5mqOh97kwQzPf0sOyvMeRpw16AAvDdiBTtHMN1NnljLl7au+2bp8BH29GE+XeEKhm4KpIc89bG+tXoKh11WJZZ0vLfqHcm2kfd6Rz2OA19F/Btrh26Yi4//rsWnjLR1kLACunyAtotVB3r6aQi6knVZHmDxnWNjHVbAq7A1jMjiidfLkJQO514u/f/1r6mOUJ0xFpSKU7fPSxMsBTO2wT/Xa6s9EFiiuxyxVo87nkY6HdEoXb+KlNjTAIjp5JJMuvp616RAUIw1RhwHiF3sNkOKMB97Sn/SUQjILCPgjMfgnqcA25EfRziIdS+qqpWCRCXcJGYRkV8SIJhjRYiNrSDB1QDynUYUTYcrdvTqXVBnDyxAtJDqWQPq8QrsJG3YWbzJLHTa8++80bwRmvJ7F5hCYnvp3KgSlSFSv4ajOJq7rj1taRr0/7ApeokQs42rZsrGJvOg0efFRMpMkrAwHi/Ve3B6bjuYGrWEJmYWLs53HKayss+BjPZnHCtJLiPL+Ou0y3HBzxgHcxuNGnntziqqWIwszbrB6N1c+G4hTfT7oQtjvu69Sb2b10k7PPH0xIxSihZ4D9MQar0RnflDudPyuTkwObVRtoqm8N9TwpKjiVjts7sfyxN5OeUP/Lcpr3kpYQqAof1oXLooq9i12X/flKqt98makkPJPh1eRz1kvSqak89GhTLDLdO1SY00PKaDtJSkCLo0R8XQZAtMBHA3KVYBkoDU3FWqbDAy6vFNc6PaQ0TH82e9KmrbqWkjb0tkyEW21phYqTHZiH0PzNYGEebpTP/L7Mza
- fr64gh7N
- ZyADRKJIdOvt/c6ygbQa6tDdom5o9wfSbNI0O1wiOQ3urVNm62miQMcrrMaIOtLJLAIBkvzHq13eIjL8zL9fARi5alDkHhbGYj5/VhNV+7KgLVMSZzhnZjzP8c5l3O2xrIENZFy/+RhRKM7ftYCwl8Sg0U0d21QxTYzEzQHY0g3UII8/hjRxJ0EkWK2+2u5QcG4nYmNkzHDbevXmnieQYrO11oxKmnE4hE/KFtyum8Npz7ZifAARd2+aN/Xh6uMAWro6v09Fqy7HTMcwTjF5I7rLyPo4vz92givdRm1RVVuWIWjXK2x4EgRG7SwOMqndYFn0kc0rY7dbx5Jv+tJZmU/ZbV0hPM/Q996oxKVwLUfXVoWNmlK/zB896o0NDcrerOM0Jc4g2DahlCxcAD1hmKLnhPltfEzyYpbe+5nitZbNerkajh/hBykv0sRitZ9wXWTcM05J2VMtZC9++GWRQW2hgwA==
+X-HE-Tag: 1786616790-486167
+X-HE-Meta: U2FsdGVkX1/OhxLo3sePr7nSSjTy+Dj//LrjYPS3ojEb/3XYkyb4zUoX12m+y6AQl9jby7+/XPROdirQBvwhmJgyXe9Pv7qvcVX3OHULzLrMpVNgmoV9gSekl5wzv5ksLxmz6BH6lx5NttRtx8HgNKyWtjRJC7VDhPK62eAx6PowULmhtnOgJ+OeEaTUumNkJbFz8EwqtOLja6ZI2bvQFtePme+oOjqxk4x6BnMtd88FKGz/oYwUts75YoYaoxTX1ez88yLgFHWF1lOP5IeV48P/YbdNmmS0eBN6E776qC9001QFUzjLin3Ql/F1bJTP1lFXaVuA/b79vng96nWlpBGdLPsg3X6bq1k0jACdqiqrDVP0lbEfyOEhACtA11ym9rVlf75m/XfU+wz4MxssJkcVrINf8SLMqDoZCtz6WH35gHqGyAJDc4fUwTSJ7sfWua+tA2zpH3qoALgN/28AZXAhhDIS10zy+vRnG+MQXz8yQ8Uuz6BAtJtJNlC1Aqp1vflCklSy5eZ0OoEOnpAOGdGjVcvLHxmJbxX4uFjEqPZVcAQ+MRHwwloynP1MKWe1kZ57A9Pu/S575wdCI/8rLtKjmf0/OK0buZ48K9OBwfdco77DMSdzj5/42TJn1Dc9Ypu4jQoxJmBAt64kJeAiDgGLZCdvJDUFLEOINLyoXL3/1rJIg3iRihypMLF1SYe6eQOWOmS6O5SZCr7IEI4PG4ptqPzmyMvHzb1IybRTzfGtgVZxOIwwP7HKnEc/6VOeQ8YPQ7Kf4FsKzk9bJcLyUJ8GbM4RnSP+tjMIcjljh5Nhmolcy5fnADGAGR1HK6Qa7dcQaJyHH2IoUWdeD6bCFfRCG4UNEJCBXsJW0IoX+AgNLJOsp2EsFVPL1SLW6fX5GEQkB/dRMWOB3mydUuXjirgZrY0Yy0I4Rw2AnIqqfO3p5wvYCkpEBKxYf66oCou4D9RKCnKZP3MC2Kn3N5X
+ bFmrCg52
+ SM8x9lWpfx9zLm1q4COeVzPSj4qACrvmXX+J/TcappnLO6rqpxGMOx3o2A8VHqbml5VOiBdTWliuQ6WTF0DDbEdnWEICoGzWNx9zVmPak5KhDC37Vtk1bhWYj85lc5F11KhcR37l7rhkPEU042y86quG4XaExjBkYe4ReOC/SI0YmfjdrbQG2RR5Uok1BIAKE/meWfyx0myTSiqrqUnxWhDCe4oEkPtiGfoCiwirWuRe7uI9XR3YxIU/jMulXvyk+/b8G7FbbjQP0U1pTg+EekIqLYcK6XAkP6AnBr0FxDqZsE4NY2ym1xomngvxvqeMbcv/vZWCLHydG1Qeb29UuLYQ9dNLla1DKJM93HBIID1WjLuMLcaceHsuWqgRLFQzyVUAvi4mlB7CvysROkYx59BfDUZZuth7UyG7Gj8z9aqPdZQ3GR5lkkT/aAkhmhyiI8HKK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,24 +150,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/27/26 11:52, Muhammad Usama Anjum wrote:
-> The hole_punch case verifies that guard regions survive MADV_REMOVE and
-> that the backing range is punched out.  MADV_REMOVE delegates the hole
-> punch to the backing filesystem, which may reject the operation with
-> EOPNOTSUPP.
+> collapse_swapin_single_pte and collapse_max_ptes_swap require
+> MADV_PAGEOUT to replace anonymous pages with swap entries. On swapless
+> systems there is no backing store with which to create those entries,
+> so check_swap() reports missing setup rather than broken khugepaged
+> behavior.
 > 
-> That result means the test cannot establish the state whose guard
-> semantics it intends to validate.  Treating the missing filesystem
-> capability as a guard-region failure creates a false regression.
+> Swapless configurations are common on Android and other constrained
+> test devices. Failing these cases obscures actionable results from the
+> rest of the khugepaged suite.
 > 
-> Unmap the range and skip only when MADV_REMOVE fails with EOPNOTSUPP.
-> Preserve the assertion for all other errors so failures on supported
-> configurations remain visible.
+> Check /proc/swaps before either swap-dependent case and skip when no
+> active swap area exists. With swap present, retain the existing
+> MADV_PAGEOUT and swap-entry assertions unchanged.
 > 
-> Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> Print each existing swapout diagnostic before the prerequisite check
+> so skip() completes a KTAP diagnostic line instead of emitting an
+> unprefixed message.
+> 
 > Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 > ---
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Didn't I reject a similar patch recently? :)
+
+Ah, yes, actually two similar ones:
+
+https://lore.kernel.org/all/9d0d98ea-05bd-43c0-bb36-68aea62cbde8@kernel.org/
+https://lore.kernel.org/all/20260715133418.170386-1-jaeyeon.lee.dev@gmail.com/
+
+And I think what Kiryl proposes is actually the right thing to do:
+
+https://lore.kernel.org/all/20260812132304.199287-6-kirill@shutemov.name/
+
+So let's drop this patch.
 
 -- 
 Cheers,
