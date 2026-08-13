@@ -4,93 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51093C5CFCF
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 05:31:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44BC4C5AC67
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 05:44:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B57786B019A; Thu, 13 Aug 2026 01:31:00 -0400 (EDT)
+	id C7F826B03AA; Thu, 13 Aug 2026 01:44:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B07C76B019B; Thu, 13 Aug 2026 01:31:00 -0400 (EDT)
+	id C5EB56B03AC; Thu, 13 Aug 2026 01:44:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1E636B01A2; Thu, 13 Aug 2026 01:31:00 -0400 (EDT)
+	id B6D486B03AB; Thu, 13 Aug 2026 01:44:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 67E2E6B019A
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:31:00 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DA05E120517
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:30:59 +0000 (UTC)
-X-FDA: 85095122238.02.BE86265
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1A9B340004
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:30:57 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=SrKE60uI;
-	spf=pass (imf04.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 930EC6B0191
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 01:44:45 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E6FFBA2AAF
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:44:44 +0000 (UTC)
+X-FDA: 85095156888.23.5A510B4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 56C4420005
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:44:43 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nvZ4nl92;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786599058;
+	s=arc-20220608; t=1786599883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TRXTmCRot5QcI6faSmaQsj0x028gIwbwjB/VBK+GoXU=;
-	b=0VuVQF5QACXRu3CePX7MderNqLK6sVdJ0HvdEXWvKVKXyDhUuiCAVQIiV3edT/+kNG1kOA
-	+U8xX3O7ryC7eesKJEcXHe+RHE0ZkgAuFeIamnNo866mTPyY4KQ1kQwtB1T321nPX+V1l7
-	BaYcA9IYCJIy4+1B1eSHN6J6V3qH/sM=
+	bh=fXLkVAHbgjaWy56zhYvF1vnHi1V0hiXRFOM3tY/zcKk=;
+	b=ST95JzrNe1Y3IXL5jmsFsIdMsgkDjAEbwoBjK+CDakwo/Sq+vydOB9CrrKobsOKk7a65XS
+	WduRLoLe/J3TX6mGXQrxAMhc2qgPwkern8zfwo0eS3uHVaQWKy/yU7BRhHxSSPpi8Bkd3Y
+	DLZh86L2+zkjghu+IF4j8udRA36CrYU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=SrKE60uI;
-	spf=pass (imf04.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nvZ4nl92;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786599058;
-	b=IGM0iRIQh34frseE+h0hmUjWlSE6Ttz3S5HY8Lcgv1k5guHPQqjIHkxft5fs9p1WjLvn4w
-	tUaWCuQgCTnKD3MbxOafWK1CcTeB4Sz5y+8yzZHxkDfYt5cjMBgi9q7jrDSBiVKolNqQ6O
-	pV5jq1J5EXtVigfMw5hPUTt6dsEGsno=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1A97B14BF;
-	Wed, 12 Aug 2026 22:30:53 -0700 (PDT)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4B16D3F673;
-	Wed, 12 Aug 2026 22:30:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786599057; bh=X+NKUVlHUgJ3ufurYsAc3c38TCMI9lTEYh/79PTkQxo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SrKE60uIrBnbijwn35bVkTCswfmosJsNxYIwRXmIDvDEYsUPL/XRaOQw4NTWq9+R8
-	 HTXCeA7afpFyAnPj1s0kOuibIeMGDLyy/hm/UQgt+OEqxfzPqBuw/BgmcxyZJ97m4P
-	 B3v5HjN56UBmNRhdGR3eqCOkRfuHaef7VMgKMqK0=
-Date: Thu, 13 Aug 2026 11:00:53 +0530
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, linux-arch@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC V2 3/6] sh/mm: Stop using pte_ERROR()
-Message-ID: <azo46amarknescr2uotz77khpt6zakwex7sb52krsvakrzfdlq@qu2t3ahd4m5t>
-References: <20260811042119.3652929-1-anshuman.khandual@arm.com>
- <20260811042119.3652929-4-anshuman.khandual@arm.com>
- <28c24991-590f-4980-a92e-26c89288cae7@kernel.org>
+	t=1786599883;
+	b=1dfNoVVRAvtCeLOkZDl56qqwd2da8rbu4SxPxEAyMPJi8BeodgvDFgpUllz5G2w0MWGzyf
+	yMS+/kG9Z5g9xRv+R67hPtubRBY17VHuhAUXcMBJsjgw05gub2pnwgAVWK+u4pk0R+edD9
+	aguhoIGbqDk2nA8DwitlNcfyg74AjXo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 52C1043312;
+	Thu, 13 Aug 2026 05:44:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C141F00A3A;
+	Thu, 13 Aug 2026 05:44:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786599882;
+	bh=fXLkVAHbgjaWy56zhYvF1vnHi1V0hiXRFOM3tY/zcKk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=nvZ4nl92JoDuDADgB+BpCGre4XpGPaT+GvKTadtgGwJmhVp055oVE4Q6/YPCaeON1
+	 EcNwwIKapv2jGvsBMANiDwhPdbUznOMpJhbrbEcJQUKoSSIbm8ZAlljPm9u4/miSD3
+	 J3BGXWa5sz9cIYQCmRfF9wwQcZ64GANcp70Yz92DRahvDwaH+SswDKfHBX2JhyiPDc
+	 x60IDkf7P2XQS04sG0HD09gFIVkZFxteITGAlVkQUOmNMOYgQujVlENXlF8XLXdV6f
+	 u+aP7olg/Vv+o1DTWruYlk7q7V96NWvk1UZfp/GwUCOJbg7cSfzjAbuNVwvfPj4wSN
+	 03yY6NmvtWysQ==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 1/3] mm/damon/core: error damos_commit_quota_goal() for zero target_value
+Date: Wed, 12 Aug 2026 22:44:28 -0700
+Message-ID: <20260813054432.101197-2-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260813054432.101197-1-sj@kernel.org>
+References: <20260813054432.101197-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <28c24991-590f-4980-a92e-26c89288cae7@kernel.org>
-X-Stat-Signature: uwz8fz3bcutm3f4uwfja96s5nitpmnkc
-X-Rspamd-Queue-Id: 1A9B340004
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786599057-627718
-X-HE-Meta: U2FsdGVkX1+++N1+I68jx7UXznyBZlVE2pnrVfdmtIvk1x4lqqPLo0njQovmJuWF4G06OLRlC1o5TMtbCxIHxNn7gZQg/aE5XxKRee7ThDJwg77KgL48jPW148hVHqIZLsiKgXpLZgRuWm0568wy+tEqi6OcpvDBsFCpqTQnXOIPXsDNTYvry2IBB8Vu24QV5HtI56INB6ckR1pSH8brGfdx3G5i0ROMYThkq4oS3KiFPdjh0mMZo+bJDYnzBcpAalG4zs4IgQ/gYKyEkX+myNU1ZmHKFWuM1zl/2CRwyEfHYt2frn3dhzUW1t0T6Ccfdwd5rDi5+S90KX5yG/hDcOGV0xPQxwNBjIFGJOrRlWGGfIB80qcu6xAfWc1//iix0HUcOeIkm4RqROdZNdNeo0WDdndhz/4V7VyVzAGnqm6phmpO+ZRTHi0Gl23Aq+DSMUVlkHjXzparCuh90N/FuTWnt0WQS+aisLuAIbEtbe0LxCZJxPmjseAXzXJxlsFDT1ytPotTQ0cwQRpvg1YI3GuWteCxd4ATT/7dSkf91x2kxtWa7BRgHBAbrX+jej0F8N8Es9yuNFV5bx8xa8ItGlpWZH1IOo307UXeuwjGUsqfueYP/M5gGS282vJ05p8fmyff8wMn1Nfa+GKxrxdj97S5mxsjPXw+YbDE0YXucfnQep0E/0GAba8pCrDjwSSOf9uksR6bsO3DxjM7x6yVbLcXOzP49oosr6T5cWy33t5keCXvPOJRX2GY/FqULvZgjdw0QDlHbux7EZmHzRGkejpGT/ouWK3/z/4E9i78DhVovxmesyfvnRdI4N26m7dqQlQUeCGuKt1/oWDZh6PecSMZIMW6O3aravObiltVd+bPspvRJEUBWYvlCFvfszgJVylxBJfQ8iJLqwaLO6pW6Kw1afrL/ktRfQ21X+uGvxqw6TJ4JjFOY9AOhh975MvXxb+dMXDp/03gE4mjlf+
- HyFC4K+q
- 67XU6t5fC+vrfWFPlnsr0yRhou6j7ZRGIVKMPebfUpoiEVklE9iQj2Z73C2aUqBT+r0IShAGYlWkxfL0DOcxVFZjjpbj3zXI9P85PH7Vj7gq0uxw1Q7PYqbSwjufcteBuXK7vGAqgno22TDyoyKR7WxAPHCMyvVRC0aWSNhcTC9qkvjcag9qAmY4NVc6FVjlD/ZWCNdAreQoR8KOfiIF94hjx7WcZhg7bR172mUcpny3hJwk4ukXSoJzdp9YRog/EexcicHkXl5gTmy/EdpCyC/+mCml7ygXPrXILsObQGk8oQuKlZBDSE0DJhsrj/p+HOgr7LeML3TOf60maNLk/YXAzgo74mMFb/ELHzYDFMZPkhwGQZ92OgDjkZxfldqqRQ12xJIiKS3qnZy+jkrvcjljTx1bHlxYganc68cPrELTBWNkyT0qd8XeB5PhWWJOv6Yl1gT6k8Ycn3GqhrOtCIahnVK8CGz5zlA67xo0niZxNBW12tAADcRGulcngjiudhSaAY5NUfD0Se9aCRT13m+CXVvobv/8rgNc8
+X-Rspamd-Queue-Id: 56C4420005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: z4hssc4b83yfrrtexhf6k4j46krmcpk6
+X-HE-Tag: 1786599883-411931
+X-HE-Meta: U2FsdGVkX1+HGCQYxiaqKemq2MGKJuzGOTAYLOJjTWQUHlEPPU+awv/YkW9z7Dho2NuFQy7owv1gZo/6mCU4RW8/CiBKKiN3QnLAUjYq40Wxf5OMae9lnpHrOjnzLFbEvJZqB3IOTxZJPGEzm5JH7+zNUCts2Iye3hu4lSH7s94MA/uybXLjGFF35VTqfAuWQErZvgEp1qtk9rUXAe7cKJlRwjaUEGzt0jlXZURyxxO/HRbsNmHg2NS0wssB9UuIfK7lcUmhDiFNarbhqVfDgWqVqpJbwq//SnlkfapiXv9c9s608exHQ0Jbsv3GT6VEJmt4LOMFdtxCswxQAEd/ckWpc2IPX66SLbBQEEbq5HaCBm5E0iosUFyFEka9P8QPx7/Xm2n4XoZYG8+4eF2ot06jcUJd2wqgNxlvJDYt6RAOgJ16Ktot6f7hqJxT8t/dyKmULA1mcJPsgnBO93uosCWKiIBuzXkivLPA7p6jnGe96UPN8XX9fpkoMnAe/rbLsZHiHO39SDKQfYgIC0LGNlTQCVeZMG9bX7Y67FH2KNvtdiELkUrdXrywZO8sd8yPet5wOJc/gWKVxMc+FZkMdRF+EgLcxAK0YH2AGbdITU9XRHHMIlPUjhQVGuPGzUCnT+c37f5vnNhQDn0eLC8n2xzeTh38szqmUsKtnTU00+wyf+xoIet5Z1v5zBv4OWImQEURlgXAC+bo2LPY4LvB22HSH8htfuKD5pniKfrniOmOEsuOep515lTS7fa283l+1qlDLj54xS6nx30tC9b2m5aRPdHRdX9SOP4KR0u9jqUQZncX4lrULQdRY+x/ebU72vX+4Qtv/lpFpvZxb6g/Ok0ZNpCIyLmsvIyNsBQKnRYq1QTN/x8Zg52qgSmCUlBQ2scGOrobU6a+FR89bvqY7eOVndayDL1r/MncygS47FCnB8TOUxTUvoRnxNHYIbKxtiw23uJKzqxTMbcAkbf
+ bpXNzI/o
+ Zjy4sH9bIB+az2MdVmD9wrSY+Ynz3KvjY0A+LyeO6d6nvI71OEuFtwR44wJvoN3khJWL4EY4IEC1OwyR3GXKnP/XT/81Acbnwu9rq0KQCr+WITOnixkk3/hwnkJEX/Y+N8Dd2CHboGxg7MtBjelJwi3zFLkJqoQTamZYGT+neYnC+fFx0K/bmjjtvQCllx6mNxqUNozqjYdw9R8nyhTxAhwa0kBMoHihFr+im4ThVriJuYB/sauM+P7OJIC1niSEO4BSYsRwgwcSjT84q9hCHpf5HkDVWGz5g14q8ICwdH4euptm+OWwJDv0rVQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,135 +93,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 12, 2026 at 01:28:23PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/11/26 06:21, Anshuman Khandual wrote:
-> > Directly use pr_err() in set_pte_phys() and drop pte_ERROR() which helps in
-> > eventually dropping pte_ERROR() macro across the tree. In this new printing
-> > __FILE__ and __LINE__ has been dropped because they are always the same and
-> > don't really add any value.
-> > 
-> > Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> > Cc: Rich Felker <dalias@libc.org>
-> > Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> > Cc: linux-sh@vger.kernel.org
-> > Cc: linux-kernel@vger.kernel.org
-> > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> > ---
-> >  arch/sh/include/asm/pgtable_32.h |  5 -----
-> >  arch/sh/mm/init.c                | 11 ++++++++++-
-> >  2 files changed, 10 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/arch/sh/include/asm/pgtable_32.h b/arch/sh/include/asm/pgtable_32.h
-> > index 5f51af18997b..c8eb9a7a4c4c 100644
-> > --- a/arch/sh/include/asm/pgtable_32.h
-> > +++ b/arch/sh/include/asm/pgtable_32.h
-> > @@ -401,14 +401,9 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
-> >  #define pmd_page(pmd)		(virt_to_page(pmd_val(pmd)))
-> >  
-> >  #ifdef CONFIG_X2TLB
-> > -#define pte_ERROR(e) \
-> > -	printk("%s:%d: bad pte %p(%08lx%08lx).\n", __FILE__, __LINE__, \
-> > -	       &(e), (e).pte_high, (e).pte_low)
-> >  #define pgd_ERROR(e) \
-> >  	printk("%s:%d: bad pgd %016llx.\n", __FILE__, __LINE__, pgd_val(e))
-> >  #else
-> > -#define pte_ERROR(e) \
-> > -	printk("%s:%d: bad pte %08lx.\n", __FILE__, __LINE__, pte_val(e))
-> >  #define pgd_ERROR(e) \
-> >  	printk("%s:%d: bad pgd %08lx.\n", __FILE__, __LINE__, pgd_val(e))
-> >  #endif
-> > diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-> > index 110308bdef01..b3c7fd84ceb4 100644
-> > --- a/arch/sh/mm/init.c
-> > +++ b/arch/sh/mm/init.c
-> > @@ -78,13 +78,22 @@ static pte_t *__get_pte_phys(unsigned long addr)
-> >  	return pte_offset_kernel(pmd, addr);
-> >  }
-> >  
-> > +static void print_bad_pte(pte_t pte)
-> > +{
-> > +#ifdef CONFIG_X2TLB
-> > +	printk("bad pte %p(%08lx%08lx).\n", &pte, pte.pte_high, pte.pte_low);
-> > +#else
-> > +	printk("bad pte %08lx.\n", pte_val(pte));
-> > +#endif
-> 
-> I'd avoid that helper if possible, so we don't encourage new users.
-> 
-> Shouldn't we just switch to pr_err() right away?
+If a DAMOS scheme has a damos_quota_goal of zero target_value,
+damos_quota_goal() could trigger division-by-zero error.  Hence each
+DAMON API callers should do the zero target_value validation.  It is
+easy to make mistakes.  Actually such bugs in DAMON_LRU_SORT and
+DAMON_SAMPLE_MTIER were found and fixed [1].
 
-Yes we could move from printk() to pr_err(). The above helper
-just prevented an ugly #ifdef block inside if(!pte_none(*pte))
-conditional block, nothing more. Will just drop it then.
+It is better to handle the corner case only once in the core layer,
+instead of multiple places in all DAMON API callers.  One
+straightforward option is using an alternative denominator for the
+corner case in the damos_quota_goal().  However, the zero target_value
+is meaningless.  In this case, the quota goal is always evaluated as
+achieved or over-achieved.  The quota will only keep being reduced.
 
-> 
-> > +}
-> > +
-> >  static void set_pte_phys(unsigned long addr, unsigned long phys, pgprot_t prot)
-> >  {
-> >  	pte_t *pte;
-> >  
-> >  	pte = __get_pte_phys(addr);
-> >  	if (!pte_none(*pte)) {
-> > -		pte_ERROR(*pte);
-> > +		print_bad_pte(*pte);
-> 
-> Maybe similar to my reply to patch #1, actually print something more useful than
-> just "bad pte" ? And possibly also just use ptval_to_str().
+Simply avoid using zero target_value by adding a check in the core layer
+DAMOS quota goal parameters validation/commit path,
+damos_commit_quota_goal().  Update it to return an error in the case.
+Also update its caller to propagate the error.
 
-Probably #ifdef could be dropped here as ptval_to_str() should be able to
-handle pte with two unsiged long elements in there i.e pte_high, pte_low
-along with standard single unsiged long pte_low format.
+[1] https://lore.kernel.org/20260803134034.15217-1-sj@kernel.org
 
-#ifdef CONFIG_X2TLB
-typedef struct { unsigned long pte_low, pte_high; } pte_t;
-#define pte_val(x) \
-        ((x).pte_low | ((unsigned long long)(x).pte_high << 32))
-#define __pte(x) \
-        ({ pte_t __pte = {(x), ((unsigned long long)(x)) >> 32}; __pte; })
-#else
-typedef struct { unsigned long pte_low; } pte_t;
-#define pte_val(x)      ((x).pte_low)
-#define __pte(x)        ((pte_t) { (x) } )
-#endif
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/core.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-static void set_pte_phys(unsigned long addr, unsigned long phys, pgprot_t prot)
-{
-        pte_t *pte;
-
-        pte = __get_pte_phys(addr);
-        if (!pte_none(*pte)) {
-                char str[PTVAL_STR_MAX];
-
-                ptval_to_str(str, pte_val(*pte));
-                pr_err("unexpected set PTE at %lx in set_pte_phys: bad pte %p(%s).\n",
-                        addr, pte, str);
-                return;
-        }
-
-        set_pte(pte, pfn_pte(phys >> PAGE_SHIFT, prot));
-        local_flush_tlb_one(get_asid(), addr);
-
-        if (pgprot_val(prot) & _PAGE_WIRED)
-                tlb_wire_entry(NULL, addr, *pte);
-}
-
-But if this does not work revert back printing both pte formats separately
-like before.
-
-#ifdef CONFIG_X2TLB
-               pr_err("unexpected set PTE at %lx in set_pte_phys: bad pte %p(%08lx%08lx).\n",
-                       addr, pte, pte->pte_high, pte->pte_low);
-#else
-               char str[PTVAL_STR_MAX];
-
-               ptval_to_str(str, pte_val(*pte));
-               pr_err("unexpected set PTE at %lx in set_pte_phys: bad pte %s.\n", addr, str);
-#endif
-
-> 
-> -- 
-> Cheers,
-> 
-> David
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 5a92e4fac6d92..183d505c08e4e 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1193,15 +1193,18 @@ static void damos_commit_quota_goal_union(
+ 	}
+ }
+ 
+-static void damos_commit_quota_goal(
++static int damos_commit_quota_goal(
+ 		struct damos_quota_goal *dst, struct damos_quota_goal *src)
+ {
++	if (!src->target_value)
++		return  -EINVAL;
+ 	dst->metric = src->metric;
+ 	dst->target_value = src->target_value;
+ 	if (dst->metric == DAMOS_QUOTA_USER_INPUT)
+ 		dst->current_value = src->current_value;
+ 	/* keep last_psi_total as is, since it will be updated in next cycle */
+ 	damos_commit_quota_goal_union(dst, src);
++	return 0;
+ }
+ 
+ /**
+@@ -1219,14 +1222,17 @@ static void damos_commit_quota_goal(
+ int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src)
+ {
+ 	struct damos_quota_goal *dst_goal, *next, *src_goal, *new_goal;
+-	int i = 0, j = 0;
++	int i = 0, j = 0, err;
+ 
+ 	damos_for_each_quota_goal_safe(dst_goal, next, dst) {
+ 		src_goal = damos_nth_quota_goal(i++, src);
+-		if (src_goal)
+-			damos_commit_quota_goal(dst_goal, src_goal);
+-		else
++		if (src_goal) {
++			err = damos_commit_quota_goal(dst_goal, src_goal);
++			if (err)
++				return err;
++		} else {
+ 			damos_destroy_quota_goal(dst_goal);
++		}
+ 	}
+ 	damos_for_each_quota_goal_safe(src_goal, next, src) {
+ 		if (j++ < i)
+@@ -1235,7 +1241,11 @@ int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src)
+ 				src_goal->metric, src_goal->target_value);
+ 		if (!new_goal)
+ 			return -ENOMEM;
+-		damos_commit_quota_goal(new_goal, src_goal);
++		err = damos_commit_quota_goal(new_goal, src_goal);
++		if (err) {
++			damos_free_quota_goal(new_goal);
++			return err;
++		}
+ 		damos_add_quota_goal(dst, new_goal);
+ 	}
+ 	return 0;
+-- 
+2.47.3
 
