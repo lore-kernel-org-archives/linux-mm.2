@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD03FC5CFDB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 09:32:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCEE1C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 09:34:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC68B6B025F; Thu, 13 Aug 2026 05:32:45 -0400 (EDT)
+	id C1A1C6B0450; Thu, 13 Aug 2026 05:34:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9DC26B0260; Thu, 13 Aug 2026 05:32:45 -0400 (EDT)
+	id BF0D96B0451; Thu, 13 Aug 2026 05:34:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB4B16B0261; Thu, 13 Aug 2026 05:32:45 -0400 (EDT)
+	id B2E776B0452; Thu, 13 Aug 2026 05:34:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D0A66B025F
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:32:45 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1B406405C8
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:32:45 +0000 (UTC)
-X-FDA: 85095731490.16.C49F8DF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6E4BB140009
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:32:43 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XA7R+IT+;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E5D86B0450
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 05:34:06 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 28BB8A2C04
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:34:06 +0000 (UTC)
+X-FDA: 85095734892.02.6421D14
+Received: from mta1.migadu.com (out-83.mta1.migadu.com [95.215.58.83])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 490E3160005
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:34:03 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ns2Gado5;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.83 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786613563;
+	s=arc-20220608; t=1786613644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bJJD2SOsBAimCJQo+R1MuHYdNWNJ35S207Lx1jtpiF0=;
-	b=0bhwW0skWXXYdsddvyCbv/if3BGPZR1orlzYtUWWr3rXlKgBDD3tvRuf+JjKaGi24/PYoI
-	QL3dq5JDSP8AqMUK4Cd2wSePTrJFy5C+10+Q6o33e4+8swSuF2FJQUxepQcTYeN41P/+y1
-	B+vgUiaf/s/YKMv6CN1dCVnElFFD+Xk=
+	bh=M/q2nt5ne3wYM8VYUkacVDVWttc5LT6ul37PUNNGyJ4=;
+	b=3uQihGS53c3gFaDrP35ct+NIQFlPOEwQorbWfBuXyr5cZ6kmPtK0Zj5t4hhYnAb44Wl0eK
+	Ss5v8A373lWnyCxpktD6/DOn1DlHpRO/j35yt/2Gv4zb4bB7dt6jXINL48hys8PVr0hq0t
+	2FuQS8uBaejS/tg7uJsrE6tAk59Kxkg=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XA7R+IT+;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ns2Gado5;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.83 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786613563;
-	b=uHSBwb3MEyn3pojaf3LMwlH9XHQZlIBWUtJEDHPDsjfhqEgLojsQ+YAznl1N9fAjmNrcu0
-	O96mw2rfAbYzETnesaGv+74DNUp2Rz/QSu/KyWKKWJjz540q+MxHi+YifZkwD/UKToZgZE
-	tyn0MH6dRc7rvHlgMQoEEyUXI9iSZoA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AFAFB40904;
-	Thu, 13 Aug 2026 09:32:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B51B1F000E9;
-	Thu, 13 Aug 2026 09:32:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786613562;
-	bh=bJJD2SOsBAimCJQo+R1MuHYdNWNJ35S207Lx1jtpiF0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XA7R+IT+BDnNyGoiXzA1g4neAaMxXphARUKE8DBl4gDky1oOitRkv6qRZYAktbfhp
-	 sxD785kZo8xjlMHMzcP/0Wsx5Q2jcBAcyDB6OHTGf0LOUteB9cj6Jb+kPogiHKrzlA
-	 K9FbYk1Z5FgPer6sWWuaYlRm4+6FitZol8SgkoNnNr0TFCmr1wF2P8QmqGArG1e84H
-	 ud5PvB9N2d7ZMZYUx1BS+OrsF39fx2XJfAGdlXxaLFMods1IYEQfy5J0hj4VpBsucp
-	 Hf6lJ2RAmkLg20j2VXfZ/BLN0F4zauMVkxh2nMqaqkkhE4dVqOLWKzzIBNGWV8NPyb
-	 Yt7j0nWZ5lgBw==
-Date: Thu, 13 Aug 2026 10:32:20 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Xie Yuanbin <xieyuanbin1@huawei.com>
-Cc: david@kernel.org, akpm@linux-foundation.org, apopple@nvidia.com, 
-	bp@alien8.de, byungchul@sk.com, gourry@gourry.net, joshua.hahnjy@gmail.com, 
-	liam@infradead.org, liaohua4@huawei.com, lilinjie8@huawei.com, linmiaohe@huawei.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, matthew.brost@intel.com, mhocko@suse.com, 
-	nao.horiguchi@gmail.com, rakie.kim@sk.com, rppt@kernel.org, surenb@google.com, 
-	tony.luck@intel.com, vbabka@kernel.org, ying.huang@linux.alibaba.com, ziy@nvidia.com
-Subject: Re: [PATCH] mm/Kconfig: allow user to select MIGRATION if
- MEMORY_FAILURE is enabled
-Message-ID: <an2PGVZuYruQhzel@lucifer>
-References: <837c2e83-ad5f-42f5-afef-5132e02fc19a@kernel.org>
- <20260813092343.214324-1-xieyuanbin1@huawei.com>
+	t=1786613644;
+	b=EOKu+GxBOFW8YYzUhw6WCYqRFBMf6S9XPjHC57bcurB9tpZEyFYu1+HXgiqFoGOWVYNXdn
+	Axpld8U60ZLC/jSOmqwIWdVYLvOLUly+2ZCTAleHwWO79LIqYRULEc/jjcBSXdb9Xd3DTg
+	kTl7ejohAGZ+Fk4kS+LjHO6QYMFhQM0=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=tn8UuuKtkL7oFhh/U1B37Ptewe1hVf6VZJL600BRXaI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786613643; v=1; x=1787218443;
+ b=ns2Gado5My663OsOlq6xH4Q/bnQS1hmgLKSrdDPs8vx+UeedXhTT7Z0gxpKI9yKmAXOGbsyA
+ uIGKipHZfUJxhP85ftIQR51fkDMgWLpoDR8aMYRDnemhSegKfH/5aeto5uMYjvBeekVqzl6OPB8
+ 7mfJQgGJ8O4OxlxSlVIeuX98=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost.localdomain (116.128.244.169)
+	by smtp.migadu.com with ESMTPS id 7cdc111fd4b862bb;
+	Thu, 13 Aug 2026 09:34:02 +0000
+X-Migadu-Flow: FLOW_OUT
+From: Hao Ge <hao.ge@linux.dev>
+To: Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Aaron Tomlin <atomlin@atomlin.com>
+Cc: linux-modules@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Hao Ge <hao.ge@linux.dev>
+Subject: [RFC PATCH 1/3] alloc_tag: skip percpu counter allocation when profiling is disabled
+Date: Thu, 13 Aug 2026 17:34:19 +0800
+Message-Id: <20260813093421.135230-2-hao.ge@linux.dev>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260813093421.135230-1-hao.ge@linux.dev>
+References: <20260813093421.135230-1-hao.ge@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260813092343.214324-1-xieyuanbin1@huawei.com>
-X-Stat-Signature: iw9pppmw3tsnmxy899hqanohc5bxqp7u
-X-Rspamd-Queue-Id: 6E4BB140009
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786613563-984009
-X-HE-Meta: U2FsdGVkX19O0tzgW8p1sC4OzRPqUbCjSbJ6LPaYeX6uFLscyYRkuLO2cLEa4H7/RW7PIdNEhuXDWcq96vXfBq9j6AaUcZMxrWpUf7E1zdM4rUX1JyNw+Jy/NHyEq6ysbbwBRs7bjDbkLrEqutqaYU9wnUUNYLa2aLjlyXwaobuBeu0qisdsg1KS6sTepNVwdlm33oGW75Gaenaz919yYJ+kCTGICYHY4fWurCcLtjrRr9xDAPO+KhILaoxbXoIZr4HgwY9iXIPpvwTlLnhVnRioaVMp22hzMLL3Medtto+GclUZp+BfHLCh1y6n9HOfStdG5G6etAoHf7SNYRLvfTSJXEFMSeT24a2zzmDglcVF18wMjtxfobCB4Fn3l9xxielokTjV7ca9Qgyov1IBAirnghG8PaXSm22nVC2KlylSHgg4XgemktzidA2XFW2Al0vjHTZVNk01+1rRuzQ4b/vB5ywSH3ujeN6cBeFz5jz1MvJaYWcCBTa0bA/pPERNroAQUJeniGspo3JqObtq/UJtzASKFM9riU+igdMSVbn5WQSv8GQqmWLDWQQ/OlhGDn9FMS82wvnJsXVPeqgpdjGmQ/kGXLLkL+/X2XoajKCgbK+k6p+t4/m/xenapGBVteNFnh/C/zWy3vpEI9a3SDqZ0JTucB3hiofd+TNlAb2MFdPOa2BxE1U4qmASc6p3uatj/IUkA7+2FXIcinERsy7uTDKeHdgdXr2XqkvU02edUcImm/Lgy1ri6wSFBimwJoin+oskDPwK/JvKChD8qe9GlPm8WmFGC8Ykjl6KFCIwAeitPrCOif6jp2Qda1ieOIGEmpBAxwfvl1XDrNoC/wZR1mFG5kjOZnoSfWCA8LHLhSWzb1QuQyAD8x7KvAFlUBB83pq26RYd0s6dQFBHFaFslxa9ilYfEY/pthcOJueUpR8KZgxyy9HOz44awTa8boTfB9ivn7ldpIMY9Wk
- DVxoGjOE
- ka3OgMOVszk7PIbcuTZtzmDIhPhCdECyoIPm8u9Q2eZEuBY81gIy6EkNuxMgQmw8GptKwXDW1o/ChJPVTB6lEiYeFj1Nm5EPd1uZq5KD0XVQdp5X3dpHDC1mrvaqqTmKgFjO1S3WZuc8ek0spCp+KeH787GogfJSnB5RLP10QTYcEWLF/ztWCynsYwf9SBjpm39OPSW+3nrk3buTqglZTJkv5BfhQ8qtrcNka4nWW5D+L8nSt8rxtKepXkOVVrATawJzsFvySw0YdchVZLzc80WUqj22KYROy8UcYl11jXFuPZm+T0ak4rijfk6OqOhIP2r2nHlfaMCCqoa/iKuLsKE6J3EgoRIYUYsjJYuMQSv8Ii3G52KrPBYuRQQ==
+X-Stat-Signature: 8b3xwg7amtokq5f3g8uhepsjpf9qmz3s
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 490E3160005
+X-HE-Tag: 1786613643-118540
+X-HE-Meta: U2FsdGVkX19jBKLriY0wi54uCrpOZlhPmlVWrEYBRM7DzqodPg5V8tK6sa6pVznYSt6+zhiBcQlZx1gfnG998rT/NlAfUkxs4NzWIR/n//mLIvF7nurZUYprATl6wCmbwQr3FjKKaA+5VxTellynkaUcM12lnc0nroeaMA8Gh0rgrqd6dZxOCE7ZPDthJi/i2a20efrhPg/jGWqwsR3vz1A7Kb3imgx832H6RZhcSJ5GbThrQqebXLFJOpAtKcMgu4M2NQk22PTmZYwa2jTs1oQKzzWPOfRQFTMBx4dylYyX+U9dlkTxuSVc+pv09KLjAETUBMBFiuTolwcLEjyTUnBL35evm5xX3S+WKUx1+vGPk5MWbPH4TasvubY6x86oF1/BoKmCpMBq3rj0qy0EV3QvLYWQNtnx9GSLZnO65YYH/0PwqRm9V28/rkE4j/SpQtYozic1bz41RZ6Dx6j6zo677XKBFff5g6bmtie4LztEsdZNq4jydHjxzCJgThz2s5aEADF9WvbXWXMUlcjYzU0XnL3JBrmmR8izqXJW3k2UUPUILYbHYAV2HgL70TEZfoZL4mIWK5i+ERBQvASzuVIJ0LvgDB8RpBQwQE+khHaaEsFX9OFZ1hCmTi2ItIGlJn14uCjCu8yhffbcrw0N50x2EaqO8Vh9p6yCODzI66OMW2kxg9ib0VTh+pxJouPw7Me5DFVJV8f+aTpqbqY5HGBNodKZYMGS9aXi5lc7UaRLKj5S6pUYuzMeoX4wZl2gwKAAhAqaYlc2He0NpZ6mnQIo7CRba8++G3BghIuAZ907PzfYWTxoVSxKscSD1bwzdikJpF3smmApNuwuzW9RPIWxzjmlAiejBvBw5CfdbBjKKlp8UsYW96QNB2Oav52rPYGnj+x7wrmBfiYoCuYdrenwfGZ7uALJJ/ANlw4MVsPYBhoorkXpxd7ext5P6+O4rDNh3MXJoIfU42K/IFx
+ mHkhu1z7
+ hFJqdf6NmZc/wPP4DlzwfE10tbGG4Fxh33gXSELO6aOHQCuOzmcnG8P5FtfaFwiAwe1K3aWApH5URegGVTfFHEKDbU2Pw4bdHyO3+lQD3GSPseWd6aVZtHKAGBMZkiRqM63hzph0uOZanyXjD/CMR+1fue7aItHQ5JzO0irzfkaAK5OuXDEdZwLQQgkHM2Oa5AWhHzSHPcSqNqLn2AM0uN0LVnoFHuwJOPNcB5djTnxEWjqSpB5Gf56PTWpJiuE0dYcS7VYeHH3/NPXeRI9rHpgGnBA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,33 +96,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026 at 05:23:43PM +0800, Xie Yuanbin wrote:
-> Thanks for replying.
->
-> On Thu, 13 Aug 2026 11:11:11 +0200, David Hildenbrand wrote:
-> > On 8/13/26 09:23, Xie Yuanbin wrote:
-> >> I think that just making MEMORY_FAILURE select MIGRATION is also a very
-> >> good solution, and I respect the maintainers' opinion.
-> >
-> > There must be a good reason to do something fine grained like
-> > MEMORY_FAILURE_MIGRATON, really.
-> >
-> > So if there is a use case out there that absolutely doesn't want
-> > CONFIG_MIGRATION but does want CONFIG_MEMORY_FAILURE, we could discuss it.
->
-> At least so far, I haven't encountered such a use case.
->
-> > As really only softdirty needs page migration (IIRC), we could also just put
-> > that under a separate config that implies CONFIG_MIGRATION, like
-> > CONFIG_MEMORY_FAILURE_SOFT_OFFLINE. But I'd rather avoid that unless really
-> > required.
->
-> Okay, I understand it now. Making MEMORY_FAILURE select MIGRATION should
-> be enough.
+After shutdown_mem_profiling() clears mem_profiling_support,
+needs_section_mem() returns false, so later modules have their codetag
+section placed as regular data and never enter the alloc_tag maple tree.
+codetag_load_module() still called load_module(), which allocated a percpu
+counter for every tag; release_module_tags() could not find these modules
+on unload, so the counters leaked.
 
-Agreed with all that David says, and yes that seems the best way.
+Return CODETAG_MODULE_EXCLUDED from load_module() when profiling is off:
+codetag_module_init() drops the module's cmod and no counters are
+allocated. codetag_unload_module() now always calls free_section_mem(),
+since an excluded module may still hold a reserved section.
 
+Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
+---
+ include/linux/codetag.h | 4 ++++
+ lib/codetag.c           | 8 +++++---
+ mm/alloc_tag.c          | 8 ++++++--
+ 3 files changed, 15 insertions(+), 5 deletions(-)
 
---
-Cheers, Lorenzo
+diff --git a/include/linux/codetag.h b/include/linux/codetag.h
+index a25a085c2df1..88081c618673 100644
+--- a/include/linux/codetag.h
++++ b/include/linux/codetag.h
+@@ -52,6 +52,10 @@ struct codetag_type_desc {
+ #endif
+ };
+ 
++/* module_load() return values */
++#define CODETAG_MODULE_LOAD	0	/* module loads with its tags */
++#define CODETAG_MODULE_EXCLUDED	1	/* module loads without its tags */
++
+ struct codetag_iterator {
+ 	struct codetag_type *cttype;
+ 	struct codetag_module *cmod;
+diff --git a/lib/codetag.c b/lib/codetag.c
+index a9cda4c962a3..8506ecab9ea7 100644
+--- a/lib/codetag.c
++++ b/lib/codetag.c
+@@ -238,9 +238,10 @@ static int codetag_module_init(struct codetag_type *cttype, struct module *mod)
+ 	}
+ 	up_write(&cttype->mod_lock);
+ 
+-	if (err < 0) {
++	if (err) {
++		/* Error or excluded: cmod is dropped, free it. */
+ 		kfree(cmod);
+-		return err;
++		return err < 0 ? err : 0;
+ 	}
+ 
+ 	return 0;
+@@ -388,7 +389,8 @@ void codetag_unload_module(struct module *mod)
+ 			++cttype->content_id;
+ 		}
+ 		up_write(&cttype->mod_lock);
+-		if (found && cttype->desc.free_section_mem)
++		/* an excluded module may still hold section memory */
++		if (cttype->desc.free_section_mem)
+ 			cttype->desc.free_section_mem(mod, true);
+ 	}
+ 	mutex_unlock(&codetag_lock);
+diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+index 0a7b657fe2de..461fa87fbb0b 100644
+--- a/mm/alloc_tag.c
++++ b/mm/alloc_tag.c
+@@ -977,9 +977,13 @@ static int load_module(struct module *mod, struct codetag *start, struct codetag
+ 	struct alloc_tag *stop_tag;
+ 	struct alloc_tag *tag;
+ 
++	/* Profiling disabled: load the module but exclude its tags. */
++	if (!mem_profiling_support)
++		return CODETAG_MODULE_EXCLUDED;
++
+ 	/* percpu counters for core allocations are already statically allocated */
+ 	if (!mod)
+-		return 0;
++		return CODETAG_MODULE_LOAD;
+ 
+ 	start_tag = ct_to_alloc_tag(start);
+ 	stop_tag = ct_to_alloc_tag(stop);
+@@ -1002,7 +1006,7 @@ static int load_module(struct module *mod, struct codetag *start, struct codetag
+ 		 */
+ 		kmemleak_ignore_percpu(tag->counters);
+ 	}
+-	return 0;
++	return CODETAG_MODULE_LOAD;
+ }
+ 
+ static void replace_module(struct module *mod, struct module *new_mod)
+-- 
+2.25.1
+
 
