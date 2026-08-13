@@ -4,105 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6769AC5CFEB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 13:16:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68BF4C5CFEB
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 13:22:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33CC26B04E4; Thu, 13 Aug 2026 09:16:35 -0400 (EDT)
+	id EB7756B04E6; Thu, 13 Aug 2026 09:22:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2ECFF6B04E5; Thu, 13 Aug 2026 09:16:35 -0400 (EDT)
+	id E41ED6B04E7; Thu, 13 Aug 2026 09:22:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DC766B04E6; Thu, 13 Aug 2026 09:16:35 -0400 (EDT)
+	id D30DD6B04E8; Thu, 13 Aug 2026 09:22:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ED6216B04E4
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:16:34 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 82F691C0223
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:16:34 +0000 (UTC)
-X-FDA: 85096295508.05.E0AEE01
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf23.hostedemail.com (Postfix) with ESMTP id AEABF140003
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:16:31 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BwkKHIEC;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf23.hostedemail.com: domain of yi1.lai@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=yi1.lai@intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A7FE86B04E6
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 09:22:11 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 93B3712014C
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:22:09 +0000 (UTC)
+X-FDA: 85096309578.17.0AF9E55
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8942E180007
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 13:22:07 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=IsnC7J96;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf16.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786626992;
+	s=arc-20220608; t=1786627328;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=7szPNde4Qo9DXChUbMMX+VaPs38RPJ7eiVjqjPd0OK0=;
-	b=fcapZWxNPWu1wx754hnut0/Io7wU3M2fsIeY0PLkv7p+bylL6NtDEk//gOa4pdeI7v3loh
-	9L/DgzdGa4M6+vpby8DMKKbTO7j9sFwnyc55kYIOIcE5XwRaKgZUGvE+uuqrJnzFh7rgwN
-	S7p/C5VkpqOtl2XPHx4Hfw2kgNRT7NY=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Q2tEWWdzV+7J9x88mIAGKHx9J/CXctHydpXer80NAgU=;
+	b=ypzeQh/K+VtT1Ucq8VUZ8sEzu1JU+hLWTDkwGyicDlvVrjNZYY5s/qGvfXZ0ooFKMebL0l
+	fDzbVjqVp96VuBDC+qzbwyD9iroTKG9q/1hdqaMqRWyKw0WBhGteaZZt5h47o4UZyMPOiw
+	n/+ipVAl68IyQ0d64HcqqB00wJ0/TB4=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BwkKHIEC;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf23.hostedemail.com: domain of yi1.lai@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=yi1.lai@intel.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=IsnC7J96;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf16.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786626992;
-	b=zxktbv4G3h511TlLZhv9y+MhHu7yv5d5Ch9J5e5NlvScTzpfeZme/JCqxypQscPutYo+dO
-	AohHhIkvlZwm40yuvqATHFM7iFWNdNVXxIw8HLGy+bATzXxRlKzPJmfhaUnG3/kqm9IsUK
-	YZkJtYOVs531DkVtgX1iQ5E2UgbAYfM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786626991; x=1818162991;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=Lf9SZ0pwZEYsjvNWHi7qkXhT5ob7kt+GLztd/lIRdy4=;
-  b=BwkKHIECLRI0tiSg6/ovzJQJLjHlZm680rYluRUwe4D59s3KYiJXKwH4
-   0hwkdZI60hJQNE5BgjTRyYHYwT2aJGwJnFAXtudkJp3ym+kRCcaO8gZ6W
-   yuk1JXn4KaGbF+0PL+COfQraChS2Ym2P4g1y0/hw1VxgyASv06lLLfe+K
-   peKRI0A65SJKC82IKUQDyIWbAsybNak7zaUr2o+UQsWw4ICl4u98NDNCS
-   7uDlJ+FlOFoul/91ZGk/WPBVGTnLMC7vRw3N7ksYV/02+py1zQjf+atft
-   EBi62F4Si/6mBqQN/JdstUtkqtzI/3vZV0Qsz7AOeOKsgZL8wpwBOrHHj
-   g==;
-X-CSE-ConnectionGUID: I2txO8TgRuma2rKI5PkxtA==
-X-CSE-MsgGUID: Np2fJbJPTeqQJ5bVdyH0CA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="87221291"
-X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; 
-   d="scan'208";a="87221291"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 06:16:29 -0700
-X-CSE-ConnectionGUID: Je51M1g8RjO4yb82bTtaMg==
-X-CSE-MsgGUID: a8tbCZAETQO+2o7tS8Y+JQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; 
-   d="scan'208";a="267454311"
-Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 06:16:26 -0700
-Date: Thu, 13 Aug 2026 21:16:22 +0800
-From: kernel test robot <yi1.lai@intel.com>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com,
+	t=1786627328;
+	b=VGsfhoGPi6Nag9HxOA0WbG5qg3kCi8Etu1DsAsLOhpTas9MFawcimGCmL0aJZy8XTrVhjs
+	bOZc2Z7WFGlUNy0R2whwbcgDlx9LiyjiZE0/x+hS94awx1v/WDAUFnvakrxtf6jHHqQU7q
+	ciyQ5xNqPRe++oWghMDc7upXmltgu6s=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Q2tEWWdzV+7J9x88mIAGKHx9J/CXctHydpXer80NAgU=; b=IsnC7J96+5xO9KPnzngYlGsl/H
+	iNgvGdcnDcmFKIG2lc+J8i/HgTeFhid3FS1KzmzgpQUXW09LazRt05BTIlBYLpZYNA3NCqq2zqbpr
+	R7W7AQcQOu6CKU4DgPPoAuWEir5LQC5ecRW3J1z6JYHAeWy+K16KbtBrfPDHnaesw1TVo2rgabb9T
+	BtwWAz5OdaOMH99i+yFmBGJdNpawFUlpd9fZsC5aH8GAqhV8+ruzxhOEhl+80xyetdSZy56TkfWsi
+	RnQXcMg1h0y8GSqAg9F/nUxStw5uwxthrBiqkjxzt11/MqSzS14qg7QYybzcR4FvAMerl4b1uNdQE
+	Lw/uXskQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wuVNk-00000003dnP-0Ndm;
+	Thu, 13 Aug 2026 13:22:04 +0000
+Date: Thu, 13 Aug 2026 14:22:03 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Hajime Tazaki <thehajime@gmail.com>, linux-mm@kvack.org,
+	geert@linux-m68k.org, daniel@thingy.jp,
+	Arnd Bergmann <arnd@arndb.de>, Jan Kara <jack@suse.cz>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
 	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, yi1.lai@intel.com
-Subject: [linux-next:master] [mm/vmpressure]  ea928e9e18:
- stress-ng.mremap.ops_per_sec 36.2% regression
-Message-ID: <202608131743.c6a7dda4-lkp@intel.com>
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>, linux-fsdevel@vger.kernel.org
+Subject: Re: [RFC PATCH 3/6] mm: nommu: fix an issue on map request to
+ /dev/zero
+Message-ID: <an3E-5BuWLgwzrd-@casper.infradead.org>
+References: <20260813063401.1786548-1-thehajime@gmail.com>
+ <20260813063401.1786548-4-thehajime@gmail.com>
+ <2026081355-remold-sterility-84f9@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <2026081355-remold-sterility-84f9@gregkh>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AEABF140003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: bz535w9i1o14bju75tdqjeiyembhkadd
-X-HE-Tag: 1786626991-938738
-X-HE-Meta: U2FsdGVkX19BlWjsaXQaEfCxwcN5QTwc4K3/TPon/xTNIg7QEQqTLTHF9YFhsMuiiZEEQ+7F6BfQ9d0Y4nwJaD81/bKpX1K4CKucQyT5TVijWCUZPmxv6UeWH3/zDrSEnoTZxsuK9MHLwumJQChVONYte5YIBjjqbjHN/YQfpXIrWLt+dcfwKddUoNprUEWXa6gFBs8S1x6wrXYkSsp2tzNEEuENeRBv2UGcGqauVNSK+4U/mvC9YgItLPM30gNQVaKmL8pZtzu0NfduLLQFnkiJp/EGAA3iuHIjntHhBKxSSjtXtzoJEp08xtJvA+sNjUFoI1/vZof0PHidjNg5/eQszMMewPs0+BGx87KeXTS9pa6Nzgr+USmBysUyqEWXrEh2br0H0IpRgfG0kAE1IDsNDwqtKqTEs4CdgnZb3vsWyME3vpBndHVW12fM9sp+hu2aNd1keBKFVJgj8EwU1WDRBMHcVWUm3SyzW5HJeV5cYFSyVbHURn8UcGDREnrlBBwnexEq6qV0TCeop938eq7jt6OF0rynvRndr0yhac6nT0+8kVywrST2YPG45UoBHOL/oBhhmasbuT0SBl+NORKOpMgGJQcex7l/BEeaBQ1ggM8u/moeGORnx3V+SFwAp3+vQd/HotBDSKN6ivPQ4AuXrjXVlnuWURVuZADzimACf899hv9iMDIXxhM007ky+ex5Z9Aw0ghu8g1W9Y+2zL5k2qXjoz8obudoQdPYpnqz66W3bJfrCa2+otm5x536xLTP52BqvCcDf2BmXzIsPvqsjnQHVMSIHhZJe5c0REnYHyE9nEEXw/SykBZmkf891bAHYNgwjthiG40JgzS5CPqWrsmvhBKE2JMmCw0myqSrOff34wRTfe/vbWwws2xldjm4vOiYPqnJxTrAsiObI3Ui2ZbwJkACUQhQUXbt31Eviuc1giUvO3c8nppC0djLaTWirVKzKAG2xe7Maui
- pQ5nhoPg
- NN7eAZW8u/Ss//nIP+lq6lgcs4xQ68I+0PsjjMnlArM0SiZ6HCr12JiI452cDWDUDFzCgtfH0AOL6AYncZVWHdtVkaaSeZf//IWJA5jLZpIHg4QV2hPr7CxqhYp7RYER0+YGicZI7UM3lc62YUR9pT83QjHUvdL/5gn6UpAPJH73E963WQ4iEU9wJ1Q1o/Z2GqWgwpsVbKA9i+E4QgEx/P1sxI05FTGFEE4ZJyMPFF6O74WpKtaPfmnZgSY40cubfxpeQIae845N1rGGw+WmKtyYKR4Kg6jQWt0EqVF0donoHH/44pWNwyoNjT+IhEmZORAnHG9UghZIaV1XQdqXtnT+WN7a4RDXm0eQHNVW7EmL/fGKXw111ZRffYA==
+X-Stat-Signature: 9ukp7g669quf7z89z3zuojnixjwaqqzr
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8942E180007
+X-HE-Tag: 1786627327-970627
+X-HE-Meta: U2FsdGVkX1+9LsDS+ND06ymotXusOScvqQa7RTzjk8jmIqBJNkpxQjLTOGtwBVS+g6O9cPC+BhXpO0GZmW+3UXfuQYIyHUMkM298JQnpWLrTd9ggPOOUrqIV8CwM3ALoVw3v26aFCMOLHPeVM4Mw5YPRRD0EI3oxk7ce8yK+fY3TmecH9if/hsTsmrDcJpkQRJxxTKBXGtBKGHSakpUzfNPjyyZbdkf46ol2RMytdYL3kVJIV3pVkDrY3S2Y92Xg7dl4H+mGMv+xXfJWMm/vyfPUL1UjlsAgQJaXrhCorFGNNs4kPw6DGXIgC+PvX8VA7HR+VZPekVS9HII9l1aXBcL2uX1jcKNqjGiKfwNFDigVrkUhREu7xQKu0frUbjQP+E7QlEd++IZ0ZqPBkyTEVbKI8EjaMn7EcYOCY+Zy6u6imBqZwW19T85+R34Gomt+i0aMDyP2RH0IWxuHNoZTrcchothNNibpREHjop5bQxUuCyoOlHaLybOGI5XcWjrFh1TzmVtZGje+uGNYG3xw6LpMlEk+igJYm+XHfJveGNPXprwhHOfI952OPn86zsJsDcgv0XgVnhKGjJ3GBGidKzUU6KO6IsKh5ax2j0xDXLcYcirvhJ7uSwetiRiyNJSo5jCRcn2xqieaGQY4Q0V+vzoeL8FngaoTO13NNO0/DqzB6q6JKCG3d2cOHbtplC9Y7ZOoNUNwBvuVAwaR6CEVvO8Xprh8x0YPEcauRZh7BT8LFawJ7U6c6w4vARnUEJ/Ha7aCV3jAr48iaewvFEO/R811c5gpudBpIU4Wct43x5sL6oxXcE0NTRWHcnzpXbJ1zH2A9/MZ37YYXKwbBnEp6rKSlgQhQjXpKmKmIMDNd52w0RTCJqPPm/ifjQAXwAU33kEG3ZxQTTNl44TSL6qFJWaCuE4c+405txkMt0HFI/JjhnMnh5EBA56IJpWwhaCxaQdok7hyjHUub8W+gNt
+ jc6elKne
+ wUPV9GQ1Um6oFlNUGo80YKPa5UJPD0n9w6oO2QHnevxPZuZfQsC5DGZdcAD1Qho/sqF02ZSb+wAj767U7feoulTx2fHz4Ktcbn/8iiIjkLe//ZtQvxTIXIKXe1xb6JFE7uYjrlXqZ2mgp+Uj9xVtB9LYIF5sjKhYvtRtJa0jniwibv09G1keGR4YgzG0tRCeNWbFk4I3z4RjF4Wz+ibN4X/C7Y0jhQLgmwCpK07we+mofF+QcYz2NtfsCWYls0jE5mZT/NnO+/QcjnKgvuUnmJ4APXaS3en8y3Sv0fMtvUriJZgg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,71 +97,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Aug 13, 2026 at 09:19:47PM +0900, Greg Kroah-Hartman wrote:
+> On Thu, Aug 13, 2026 at 03:33:58PM +0900, Hajime Tazaki wrote:
+> > Upon a private file mapping request to /dev/zero, it calls
+> > kernel_read() in do_mmap_private(), getting a failure with the message
+> > like: "kernel reads not supported for file /dev/zero", which is because
+> > zero_fops defined in drivers/char/mem.c has both .read and .read_iter
+> > definitions.
+> 
+> Do you actually use a no-mmu system?
 
+If you look at Hajime's contributions, you'll see they're far from an AI
+slopper.
 
-Hello,
+https://lore.kernel.org/linux-mm/?q=hajime+tazaki
 
-kernel test robot noticed a 36.2% regression of stress-ng.mremap.ops_per_sec on:
+> > @@ -869,7 +886,11 @@ static vm_flags_t determine_vm_flags(struct file *file,
+> >  
+> >  	vm_flags = calc_vm_prot_bits(prot, 0) | calc_vm_flag_bits(file, flags);
+> >  
+> > -	if (!file) {
+> > +	/* private and file mapping will be marked anonymous later (do_mmap_private()).
+> > +	 * and /dev/zero is marked by them at .mmap_prepare,
+> > +	 * which should be _before_ this point.
+> > +	 */
+> 
+> Wrong coding style for the comment, which is very typical of
+> LLM-generated stuff.  Always rewrite the output of these tools to
+> actually be sane.
 
-commit: ea928e9e18da682e9a5bc40aa862bff7ce5ae42e ("mm/vmpressure: move v1 userspace eventfd code into memcontrol-v1.c") https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
-
-in testcase: stress-ng
-version: stress-ng-x86_64-29ce10a2c-1_20260712
-with following parameters:
-
-	nr_threads: 100%
-	testtime: 60s
-	test: mremap
-	cpufreq_governor: performance
-
-
-
-config: x86_64-rhel-9.4 (CONFIG_MEMCG=y and CONFIG_MEMCG_V1 is not set)
-compiler: gcc-14
-test machine: 256 threads 4 sockets INTEL(R) XEON(R) PLATINUM 8592+ (Emerald Rapids) with 256G memory
-
-(please refer to attached dmesg/kmsg for entire log/backtrace)
-
-
-
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <yi1.lai@intel.com>
-| Closes: https://lore.kernel.org/oe-lkp/202608131743.c6a7dda4-lkp@intel.com
-
-
-2026-08-11 09:13:23 sysctl -w kernel.sched_autogroup_enabled=0 kernel.sched_autogroup_enabled = 0
-2026-08-11 09:13:23 stress-ng --timeout 60 --times --verify --metrics --no-rand-seed --mremap 256
-stress-ng: info:  [10886] setting to a 1 min run per stressor
-stress-ng: info:  [10886] dispatching hogs: 256 mremap
-stress-ng: info:  [11033] mremap: using 1MB per stressor instance (total 256MB of 243.06GB available memory)
-stress-ng: metrc: [10886] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s CPU used per       RSS Max
-stress-ng: metrc: [10886]                           (secs)    (secs)    (secs)   (real time) (usr+sys time) instance (%)          (KB)
-stress-ng: metrc: [10886] mremap          2212529     59.96    209.34  15014.92     36901.22         145.33        99.19          6684
-stress-ng: metrc: [10886] miscellaneous metrics:
-stress-ng: metrc: [10886] mremap            151372.07 nanosecs per mremap call (harmonic mean of 256 instances)
-stress-ng: info:  [10886] for a 60.01s run time:
-stress-ng: info:  [10886]   15363.58s available CPU time
-stress-ng: info:  [10886]     209.34s user time   (  1.36%)
-stress-ng: info:  [10886]   15015.19s system time ( 97.73%)
-stress-ng: info:  [10886]   15224.53s total time  ( 99.09%)
-stress-ng: info:  [10886] load average: 163.54 47.28 16.30
-stress-ng: info:  [10886] skipped: 0
-stress-ng: info:  [10886] passed: 256: mremap (256)
-stress-ng: info:  [10886] failed: 0
-stress-ng: info:  [10886] metrics untrustworthy: 0
-stress-ng: info:  [10886] successful run completed in 1 min
-
-
-
-The kernel config and materials to reproduce are available at:
-https://download.01.org/0day-ci/archive/20260813/202608131743.c6a7dda4-lkp@intel.com
-
-
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+A lot of humans write comments like this too.  Indeed, it used to be
+the preferred style for net/
 
