@@ -4,88 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ED81C5CFEB
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 11:08:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04EB6C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 11:10:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B1126B0289; Thu, 13 Aug 2026 07:08:30 -0400 (EDT)
+	id 174826B04B2; Thu, 13 Aug 2026 07:10:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7615A6B028B; Thu, 13 Aug 2026 07:08:30 -0400 (EDT)
+	id 123BA6B04B3; Thu, 13 Aug 2026 07:10:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6785E6B028D; Thu, 13 Aug 2026 07:08:30 -0400 (EDT)
+	id 012D66B04B4; Thu, 13 Aug 2026 07:10:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 380C26B0289
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:08:30 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B01E6A058C
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:08:29 +0000 (UTC)
-X-FDA: 85095972738.08.8731E71
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3B455C0002
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:08:28 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dzq+bPer;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CDF5C6B04B2
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 07:10:53 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B22BC160595
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:10:24 +0000 (UTC)
+X-FDA: 85095977568.17.97BC301
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf30.hostedemail.com (Postfix) with ESMTP id AA03780002
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 11:10:22 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="A/Q04QC6";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=z+nSFKCb;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pOKY66lt;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=poqy2DMY;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786619308;
+	s=arc-20220608; t=1786619422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Ulz4BpJ4Po8Y2MvKJhJDY4PM6VLgEsQ3nOUNgt5Cf+I=;
-	b=nqtXIvHYnrh4hAo9LV1VSIPDzNQWOZqBGoHrjTVK2cq0bIT3ViGWn01fGq3ZyfVtvHvXs+
-	Xnxff9Usa9e0psgh2mVaYiRL4IMCbMrCx93YYsBPZ8Nj55YjquszSbVuHlwOSf+uQc9MoJ
-	1sBhvg6iIfBjk3GzK8XAjfv0Q+xg7Ec=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kgl9jHe0ZGbfMuJ3FN/ReGeH6xmJZZNK66A/fkMJmts=;
+	b=mZl0S6NxZCD09VoWDgfFv0XpD1rTpuhxL+no8uZQ42b3raf673T0NgQKS0YXWVVkU0W+3f
+	6VmvXI9DyL8oPXcdNoviLMJWLk0/ZZ5f7BAGmdCNwADD5Dsgvadmgv7yq9BoSyQTNiD2Qd
+	DBATQo6AannfYRfuNp8oLsvGP7EXERQ=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dzq+bPer;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="A/Q04QC6";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=z+nSFKCb;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pOKY66lt;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=poqy2DMY;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786619308;
-	b=s+1qId83z4A4cst7CGFJiJDO+FdqdYmpe2FI0kZoLe2WOYEYij+VTZd5YpRF8bwbqspwDR
-	6ZfjhlmOGX79I2+nvkMCdKq3rwP/Hzc9NyUPNcn3ZCdLMUo/CERqBUsrMGpgL8G8DrCeLg
-	r26FDjr6yOV/n1W5JLb/hCBgTkfcyYo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A955E600AF;
-	Thu, 13 Aug 2026 11:08:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEF51F000E9;
-	Thu, 13 Aug 2026 11:08:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786619307;
-	bh=Ulz4BpJ4Po8Y2MvKJhJDY4PM6VLgEsQ3nOUNgt5Cf+I=;
-	h=From:To:Cc:Subject:Date;
-	b=dzq+bPerkF7lMVFj9GsGylafib9JKca3FD3MtAAbv8cZJEhXOxuu3PCeQyBekJWSm
-	 3ph+ZaFZppFTzZkEdTNEeDy3yOw6Wcs8hla2XgZcRyGr/BjoQcEE8pqTsd0BPiT8P9
-	 F2Z+74rhgfFFnGlJh4v+NhDOI4f44CvZD9uRC/RN0cWS0DNGXF+2a3vQ54r2DUSWCv
-	 S09utsRR4rZcNgX+j9rI3rbPa/Tnfi8V1Q/1gl+9VNM/C1t43eiInV8e4sdoCeNMMA
-	 T4wVVK1Oauq2K70ZRMSfiLiGaFqXQo4UqKI6oxuVIvhGKv1q52xx8thNmUNFpbCczm
-	 gqP111Wb+Tiow==
-From: Mike Rapoport <rppt@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] liveupdate: updates for 7.3-rc1
-Date: Thu, 13 Aug 2026 14:07:58 +0300
-Message-ID: <20260813110815.2482807-1-rppt@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	t=1786619422;
+	b=mRdZdeLrcvgHB8eG5zEqJ1OSyzKV8XB5f3e/dgkpy3L87SAdboX/utrakYjALh0PIJdH3F
+	kXCcCGFT32zOibuYX+VuhBVnM562Iu2zyYyPd1P7vEYaWa37p+6zC7AE3B3zKpopZC/NGE
+	M+WUICVVyMe7rMtvmbgU+/clgNlVpXM=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4AA363E62;
+	Thu, 13 Aug 2026 11:10:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1786619417; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kgl9jHe0ZGbfMuJ3FN/ReGeH6xmJZZNK66A/fkMJmts=;
+	b=A/Q04QC6/4Sqpc8DhTPBNqln1rI0fV+o6xu3pY39oKZQ/BqbJQnmbhFTKNYRZ3rrh1wZ/D
+	mARXB+zLnRADM8Z7yvmbvlJqzSFMWzz+d56J8Q+zA9G09nNzb1N3ZNzW2VZkFPaAPvUqpK
+	CeIs/vMaYvjXvUCJ1fRwfQoadXHhXnI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1786619417;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kgl9jHe0ZGbfMuJ3FN/ReGeH6xmJZZNK66A/fkMJmts=;
+	b=z+nSFKCbiZVjYphWTnMzCKRBWMZfg54LrgK0g+EnPU7Aev6qGqVRwAAg9izgr0OEVSBubN
+	q3gGF90fPci0T9CA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1786619413; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kgl9jHe0ZGbfMuJ3FN/ReGeH6xmJZZNK66A/fkMJmts=;
+	b=pOKY66ltwNa8NX4f/trwpTqkPwdj/VysdaQNCkuIV1Gutt38Oe5Zc9Aehmm2LdQZVrq/pg
+	oLzH8BDe2yBA02fHGihrFw2a98ZUDgHdgmb9GQvwwJ8MXAMKzF3qcCP2Tk+CjcicklnKzq
+	3NQz1eNlY3e2LFzpWE+7mijnkI4zWaY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1786619413;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kgl9jHe0ZGbfMuJ3FN/ReGeH6xmJZZNK66A/fkMJmts=;
+	b=poqy2DMYGfUSGvCindxYJBLwzIma5ewXbma6SgkYVuzYO4cBOb5jPJAbU/WSzUJWQAPOhf
+	UEcSHGGWGq4/W4Cg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6676B77DAE;
+	Thu, 13 Aug 2026 11:10:12 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 9RiRFRSmfWozBwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 13 Aug 2026 11:10:12 +0000
+Date: Thu, 13 Aug 2026 12:10:10 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	Christian Brauner <christian@brauner.io>, Jiaqi Yan <jiaqiyan@google.com>
+Subject: Re: [PATCH v9 14/15] filemap: Add support for authoritative mappings
+Message-ID: <an2l7MPFFcXH_By5@pedro-suse.lan>
+References: <20260805210557.1118966-1-willy@infradead.org>
+ <20260805210557.1118966-15-willy@infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3B455C0002
-X-Stat-Signature: qrk3tgebcw97idttz4i8g87iz3sywri7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260805210557.1118966-15-willy@infradead.org>
+X-Rspamd-Action: no action
+X-Stat-Signature: oufuq7ab1urpwqe3779ch8qii91j7zwq
+X-Rspamd-Queue-Id: AA03780002
 X-Rspam-User: 
-X-HE-Tag: 1786619308-54316
-X-HE-Meta: U2FsdGVkX19hCla/s03HfIBxvdjwifi7iBVT3G7skAIndyPSCXywJ2yBD1H+R5SEwvAhDEOBBma47l9krBtVjtmskNTYa+C/QiDKKCFARndcSAWYLZb1li+g44r71lElPfYwPLS27hCNBuQRVQ3vmonYf05S72YkraDY9rVqipUNocVA0gxmrfPyXAmFct3lg8qEwscXZGtD6iJNAV0hONVtfb9vKW+6HC9cm1ZcMiKmjbx3tlM8DxOboN4hQgRzzSFtPgGS3WrwvE/fd6wPmCWEoxKkOEtG1l8TfdvvqM6JCpvS3DMV3uyvhzvgH6zLvpWwYFqEBhrKvNoI50fiKrgp4P3PgVJcuZE9bItRmukig73JB9OVx34wTgCekKjChyv1Y8dhE8l3dZhbYU8nXNH17MYXr7bw53hXQ/ntGYwQ0xn35SZWyE/WZFi3/zm95BMKVKLdV31W3t6ORGutO4y2zdUs8bCzttFSi9s6UwsZ1FgEIHLmNWYpdTGY2hxqhAatpwI35kcmSBc1ddan9OCRNQxA8VTWcvPy+pajG27uASzU3xoLhhz+RT/cZ4TFOIpPxfxYrboEBbslUGqFLplQa2m4GIn5D1damgEBkuOvh9cpgnDGIQ5AMezB7FoCeVFreyGA9tuaSdJL+uK7ni1GyKT6EhFJOxe+AkxLpMOFsxDV1GL0XVXJdbpGoSnPqAjxawhlU9bisizyJmS21SKDg1rbgUfYQWugC0830sVHnJHLucHNReQAo+s+O3lqXhg4nABXBbSnlzUy1Gg9sQ4FSBjs+o4d8NcjQMb/BAFmX3wztAVKl1sSBN1cZWhJRO2DNqUtuw5uI1rBADbJxVokFR4M3x0XBJg5tJIhjPWQt0/WlslkiL4bac0/LR8m/+RgZUX4nXiLMRNxhzqnrRoCchSPkcZqSH7/H4DHKOv6oXrjFBdR/6/7GotxPBTSI//jCnWvEs1AlLDReV+
- pf5Z34h3
- GHoCnsDFix9Vnbe1BBmfE0oPCtgCeoLBHwc2XQt6KJl4V1u8HK6++DwcLPgln7V4FGsyoMTr7hVCHRkjb/+eEMlLAMikBUV4EI8nZud6W3g4ToXDZbzxoQNRaNLX91LMTBSGXTfLiHD/LUKij1vclrZPD8nyl0DQQczxHcl7juTNX3ASV9Mx9W8oRGuigZC1XZL1GyfleDt1uSH9vhZRBR52PI3Bd/yjSOh7VNHqD+QpRc9k=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786619422-535653
+X-HE-Meta: U2FsdGVkX19OiXpOpLDollfmi2dPSZx9k7FUAyxT2P7ju1klDUeznlaNWx64zmpjYIwL01Lcuvxr+FC9nehislKmoUA9H3LW5QY9w6YxelRnB8mJDZw3WpcR53PRmTkgScJW5C9Bcm8Jl6MCnF4W9fHsPNTq6XTupXIwyHqZ8KWQhkc+C8OH3W4w54/vMNbLZg6irxQ63a2iFGTY2dCqpYrB5SNRaFm2qfIh0JR9w9quYYTBhZEZ/VtpDXE4ca+S4vg7mrzLamqCDswmH1CsQIkRvOjgeBkVcsDoSMYO2dEU1NWPawNCSQZyfwUPUOW3NSiZjWmqdyf0+LvKQUU9SWY4L90dpJAOi+owSQBmBncsuh5qN0eV26Qs1hvce8ewScN+T6hyZQOneFSpNa2Lw5w2gYh/WoV/F7YIDM5x9LgYvdJC5hs/+pLN79dDijoxYszAb5xTjxGbV9VkNs48h7tJSHQ4dMqDSb1GBaHNbXlqsHgLILFFbAvxf6DZmVlqVZ2HTA0WrnUz2oE+Hj1l2V/Tp2xFrkC+zDrp8c3HWn2tFRFnC6wce04s6AR2kKhw1jDs9OAMabDXapXyKNLlBr45InNxsHLu5KLP5YDoQ3hgJIompAsmOGpzDuf2krT9uYS7SyAWOdNLZrp1RHt9gG6GyW3a5js4rI5RmWhGTaktOYv4k2nYT/Z4abOf4FkOt0avNWddjak4ZwCzE37S9GqtZbSAD2/erP4AZW6eAiutKZHAVByVtBoDHKs8zpN7hHcJxHcJse8RGRalgJcCuwatbB30dzrEeXcUPyZSkBEByrUMH/rsvOdls+fsyMta1nBawIPUXQo6EF8mkf+73BgNcgFkAdfQ/KXO07ZXF0/AiTnsuTvk5IXaH+51Dx1bWzdTTUr5ZuhrnOzaYdyUGR1KlIQZrzO6kDdAY2fOBblAcs5ps61rGFfbtCbNZRa6XBYdJ5uGqX/P3pnka3P
+ SpdT6lP3
+ lT0VBzxrNFEMpy7CtYrw/idBIm+JMYnAVXypUt4bt/WYKbOZxRmONtpxARYu4vs8t3YDoMCH/2W946uMmOgB75W0BIie2bEYDPwuMkxrvcp800rgfxdF4Zw7nFgRKbzvfsCLR+V23XVgi21nv7gTJUs8T+6hZpOblVNuaJPXLbS9a2dWEiY6PnViv2w96nUX6SQVxhs3UDyMfT70imVyDoBbqQNT3aB5DlL+7fHuZroVAcT666ZviAlCQnTNY3Wpc5c1EWOVxraG1tTrMAXpbgrteUJWSe9glFzmjo6bZatfzQOiPSchVrUmGcr1Ci+4hrvcODa20lVl3hVvep+nr+jXWgK/xeMChWmAlgHFICP599Vu/a4KwfpU9TpcYLXkSZqdWzoV1AMu012+IQX8EgiAUkNSwRS13n/MGQF+2I6+Gejs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,96 +135,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Linus,
+On Wed, Aug 05, 2026 at 10:05:54PM +0100, Matthew Wilcox (Oracle) wrote:
+> An authoritative mapping knows about all the folios in the mapping.
+> If read() finds a missing folio, there's no reason to allocate one and
+> try to read it because we know it's a zero region of the file.  We can
+> just call iov_iter_zero() instead.
+> 
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Reviewed-by: Jane Chu <jane.chu@oracle.com>
+> ---
+>  include/linux/pagemap.h | 11 +++++++++++
+>  mm/filemap.c            | 18 ++++++++++++++++++
+>  2 files changed, 29 insertions(+)
+> 
+> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> index 968b791cfd14..22d48935ffda 100644
+> --- a/include/linux/pagemap.h
+> +++ b/include/linux/pagemap.h
+> @@ -210,6 +210,7 @@ enum mapping_flags {
+>  	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
+>  	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
+>  				   account usage to user cgroups */
+> +	AS_AUTHORITATIVE = 11,	/* If we miss in the page cache, it's a hole */
+>  	/* Bits 16-25 are used for FOLIO_ORDER */
+>  	AS_FOLIO_ORDER_BITS = 5,
+>  	AS_FOLIO_ORDER_MIN = 16,
+> @@ -345,6 +346,16 @@ static inline bool mapping_writeback_may_deadlock_on_reclaim(const struct addres
+>  	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
+>  }
+>  
+> +static inline void mapping_set_authoritative(struct address_space *mapping)
+> +{
+> +	set_bit(AS_AUTHORITATIVE, &mapping->flags);
+> +}
+> +
+> +static inline bool mapping_is_authoritative(const struct address_space *mapping)
+> +{
+> +	return test_bit(AS_AUTHORITATIVE, &mapping->flags);
+> +}
+> +
+>  static inline gfp_t mapping_gfp_mask(const struct address_space *mapping)
+>  {
+>  	return mapping->gfp_mask;
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 26a5f18121f9..5a8cc20e624e 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -2697,6 +2697,8 @@ static int filemap_get_pages(struct kiocb *iocb, size_t count,
+>  	if (!folio_batch_count(fbatch)) {
+>  		DEFINE_READAHEAD(ractl, filp, &filp->f_ra, mapping, index);
+>  
+> +		if (mapping_is_authoritative(mapping))
+> +			return 0;
+>  		if (iocb->ki_flags & IOCB_NOIO)
+>  			return -EAGAIN;
+>  		if (iocb->ki_flags & IOCB_NOWAIT)
+> @@ -2853,6 +2855,22 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
+>  			goto put_folios;
+>  		end_offset = min_t(loff_t, isize, iocb->ki_pos + iter->count);
+>  
+> +		if (!folio_batch_count(&fbatch)) {
+> +			size_t fsize = mapping_min_folio_nrbytes(mapping);
+> +			size_t offset = iocb->ki_pos & (fsize - 1);
+> +			size_t bytes = min_t(loff_t, end_offset - iocb->ki_pos,
+> +					     fsize - offset);
+> +			size_t copied = iov_iter_zero(bytes, iter);
+> +
+> +			already_read += copied;
+> +			iocb->ki_pos += copied;
+> +			last_pos = iocb->ki_pos;
+> +
+> +			if (copied < bytes)
+> +				error = -EFAULT;
+> +			continue;
+> +		}
+> +
 
-The following changes since commit 797fe91e50d6927f90f0c3b4444277c2c7c8b42b:
+I was wondering whether this could interact weirdly with EOF, but it doesn't
+seem so.
 
-  kho: align kho_scratch to MAX_ORDER_NR_PAGES pages (2026-07-25 15:26:30 +0300)
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git tags/liveupdate-v7.3-rc1
-
-for you to fetch changes up to bcf2a0b55e322a663c9602c9e773770b87d3e629:
-
-  Merge branch 'selftests-lib' into next (2026-08-04 10:52:22 +0300)
-
-----------------------------------------------------------------
-liveupdate: updates for v7.3-rc1
-
-KHO:
-* Fix size calculation in kho_preserved_memory_reserve() for preservations
-  larger than 2 GiB
-
-LUO:
-  * move liveupdate selftest utilities into a library so that selftests of
-    subsystems participating in liveupdate, e.g. PCI and VFIO, can use them and
-    drop direct ioctl calls from the tests
-  * add end to end liveupdate test infrastructure that allows running the
-    tests across a kexec in QEMU
-  * remove redundant INIT_LIST_HEAD in luo_session_alloc()
-  * remember the error status of an FLB retrieve() and return it on subsequent
-    attempts rather than retrying retrieve() with an FLB in an unexpected
-    state
-  * reference count the outgoing FLB so that it cannot be freed while a caller
-    is using it, the same way it's done for the incoming FLB
-  * reject nonzero reserved field in LIVEUPDATE_SESSION_FINISH so that it can
-    be reused by a future extension
-
-----------------------------------------------------------------
-David Matlack (2):
-      liveupdate: Reference count outgoing FLB data
-      liveupdate: Remember FLB retrieve() status
-
-Hongfu Li (1):
-      liveupdate: Remove redundant INIT_LIST_HEAD in luo_session_alloc
-
-Jackie Liu (1):
-      liveupdate: reject nonzero reserved value for SESSION_FINISH
-
-Mike Rapoport (Microsoft) (4):
-      Merge patch series "Make liveupdate selftests library"
-      Merge branch 'fixes' into next
-      Merge branch 'misc' into next
-      Merge branch 'selftests-lib' into next
-
-Pasha Tatashin (1):
-      selftests/liveupdate: add end to end test infrastructure and scripts
-
-Pratyush Yadav (Google) (1):
-      kho: fix size calculation in kho_preserved_memory_reserve()
-
-Vipin Sharma (2):
-      selftests/liveupdate: Use luo_test_utils.c for liveupdate ioctl APIs
-      selftests/liveupdate: Move luo_test_utils.* into a reusable library
-
- include/linux/liveupdate.h                         |  11 +-
- kernel/liveupdate/kexec_handover.c                 |   2 +-
- kernel/liveupdate/luo_flb.c                        |  20 +-
- kernel/liveupdate/luo_session.c                    |   7 +-
- tools/testing/selftests/liveupdate/.gitignore      |   2 +
- tools/testing/selftests/liveupdate/Makefile        |  14 +-
- tools/testing/selftests/liveupdate/config          |   1 +
- tools/testing/selftests/liveupdate/config.aarch64  |   2 +
- tools/testing/selftests/liveupdate/config.x86_64   |   2 +
- tools/testing/selftests/liveupdate/init.c          | 179 ++++++++++++++
- .../include/libliveupdate.h}                       |  11 +-
- .../selftests/liveupdate/lib/libliveupdate.mk      |  20 ++
- .../{luo_test_utils.c => lib/lu_utils.c}           |  78 ++++--
- tools/testing/selftests/liveupdate/liveupdate.c    | 106 +++------
- .../selftests/liveupdate/luo_kexec_simple.c        |   2 +-
- .../selftests/liveupdate/luo_multi_session.c       |   2 +-
- .../selftests/liveupdate/luo_stress_files.c        |   3 +-
- .../selftests/liveupdate/luo_stress_sessions.c     |   3 +-
- tools/testing/selftests/liveupdate/run-vmtests.sh  |  97 ++++++++
- tools/testing/selftests/liveupdate/vmtest.sh       | 263 +++++++++++++++++++++
- 20 files changed, 700 insertions(+), 125 deletions(-)
- create mode 100644 tools/testing/selftests/liveupdate/config.aarch64
- create mode 100644 tools/testing/selftests/liveupdate/config.x86_64
- create mode 100644 tools/testing/selftests/liveupdate/init.c
- rename tools/testing/selftests/liveupdate/{luo_test_utils.h => lib/include/libliveupdate.h} (77%)
- create mode 100644 tools/testing/selftests/liveupdate/lib/libliveupdate.mk
- rename tools/testing/selftests/liveupdate/{luo_test_utils.c => lib/lu_utils.c} (80%)
- create mode 100755 tools/testing/selftests/liveupdate/run-vmtests.sh
- create mode 100755 tools/testing/selftests/liveupdate/vmtest.sh
+-- 
+Pedro
 
