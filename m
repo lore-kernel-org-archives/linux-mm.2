@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FF5FC5AC67
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 03:50:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36B04C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Aug 2026 03:50:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99C376B019D; Wed, 12 Aug 2026 23:50:12 -0400 (EDT)
+	id C33086B019E; Wed, 12 Aug 2026 23:50:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 925606B019F; Wed, 12 Aug 2026 23:50:12 -0400 (EDT)
+	id BE4806B01A0; Wed, 12 Aug 2026 23:50:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 813806B019E; Wed, 12 Aug 2026 23:50:12 -0400 (EDT)
+	id AF9A56B019F; Wed, 12 Aug 2026 23:50:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 608AD6B019C
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 87A6A6B019C
 	for <linux-mm@kvack.org>; Wed, 12 Aug 2026 23:50:12 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D40A31604EB
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 02439C0519
 	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:50:11 +0000 (UTC)
-X-FDA: 85094868222.30.2773C9F
+X-FDA: 85094868264.01.D0B9A10
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 43F8B40002
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6B936C0002
 	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 03:50:10 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iJoGGSdG;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786593010;
-	b=fvAyWeulCglUpqfRABI4EnRK2bboJyYv/9T178SVUpQoGgY+RPnhK+42k5s75kO0RbD80x
-	7fxh95Sg5/jOXGaYQnL7RJLQUwyQQ6MTUUeorXRtr6lu2Ek98u7DKYgCLyNWIzHVdfT9C2
-	lqc6dQrgVcALvKEt+zgQaYqMJ9juQVQ=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iJoGGSdG;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZOj3dCJ/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1786593010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c9oXf7EAMULfNbhY5cYkXmrBshcuP/mpp00wWMiTWfA=;
-	b=35Hn4BiD2YqIpE7NlaMj5+1wQ0KXLc9FrPhILSW7l80ogz3SHJFueRYj6oWSDY5Befhe7F
-	oq3D+c82DMnM6nB2dqBs0fucPiEamtgCTaCUo3PO75j80ZzI33BT2NBHjNZGpPoS6hm8wJ
-	e6aPcXphEY4INnexHy/Xs3idab+gaiY=
+	bh=bFqUVYf2n04Uixau/NkzvcP/6puf0JnXDQxViDXP7BQ=;
+	b=VGk138aRiVerKDDvBqhGqhscU2Ypz48a4FMnf6HtA5V91fCO2lp4WId9M3t7k9h6nr3s+C
+	qgBWaDDoZocRDkfeSD1TVYvq0JRX/K+dMbmBot9+SedL8z3WAK9peeqHz7dm3NA4pTjP6u
+	qIJBBc8bPV0A2VTNJhXhhlKva78hc5M=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZOj3dCJ/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786593010;
+	b=muPE1UDi6StiFa6BOe4J9a6xuYyl9UWJe4gqgydEqkwuaotu+l4/nnQ5H7YOX4GvO4pMI9
+	Yj+roX6iizMMJGZ5E2CXJJPTVwkn8X+XrZdEwmWVoWl00cvR+XCuGx/uW5Y0IE1APeuZ09
+	5j9YsAFcDbsKBNt8ooBkVRY/9zNn4kE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 120CD43836;
+	by sea.source.kernel.org (Postfix) with ESMTP id B1FBF43ADA;
 	Thu, 13 Aug 2026 03:50:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05661F00A3D;
-	Thu, 13 Aug 2026 03:50:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9CF1F00A3E;
+	Thu, 13 Aug 2026 03:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786593008;
-	bh=c9oXf7EAMULfNbhY5cYkXmrBshcuP/mpp00wWMiTWfA=;
+	s=k20260515; t=1786593009;
+	bh=bFqUVYf2n04Uixau/NkzvcP/6puf0JnXDQxViDXP7BQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iJoGGSdGaEjb4GhhyfrN/DoXc4RJ8drILlJO9rtj/6VSiBf5E350SajVv0HD7Dsn/
-	 kivaaLfRnNabpYQPi1uHU6nMutuuSvoqzhK3UieLdJb2v4whSYLf1pHgqRbXfa93mv
-	 rgpFFMK25+A76cfUDRiOlFBnP+eL42WhFwclzR6QhI2VcA0Su7ANfIzoNn60XU2M9s
-	 xNQ+I+bJWMBVoky87N81qfDWJ1hV4tdhdX2Dn/XyaY79wNvlioBm1tQllB643agRp1
-	 EuQS5htblur55P9VnQEqKfOdOvJ8T3cKDxlboiZfngUq+6msFNHcPF5zbsVniw3rNi
-	 uh0OLA851Hvjw==
+	b=ZOj3dCJ/1d3ON081pPcVJreuyCmWBp+g9lWZeT672RpxyAgNE0u/xEa0VbttpZVSB
+	 RXQi/h/A/XyUh6lqJXEMCowjcMLF9EvJsIFKiUx0o+LFheHNXSrZ4Jr5aTOUdnmEOw
+	 0966Xms2D6m+ziu5O+Z75zFAdTnDlx0BybIKL6n0gJWTFRVK94enFhCM+1o1HJyHGO
+	 Weo4J041qAte4Gawte5oeZ2B298hmFP0Dg9/IB8mowtQHU+w+550V3OWS3vBqp4Zo8
+	 282vrVqncGxGDbyZtUGyenSjZQwvewRbSRsW+qT3+0MgNgerYhRkYk0RfspjGKVS+X
+	 jtrvCMexIeW3g==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 1/4] mm/damon/core: handle NULL ctx parameter in damon_call()
-Date: Wed, 12 Aug 2026 20:49:56 -0700
-Message-ID: <20260813035001.97364-2-sj@kernel.org>
+Subject: [RFC PATCH 3/4] mm/damon/reclaim: remove unnecessary damon_call() param validation
+Date: Wed, 12 Aug 2026 20:49:58 -0700
+Message-ID: <20260813035001.97364-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260813035001.97364-1-sj@kernel.org>
 References: <20260813035001.97364-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: fp83q6qnmperuk13qc8ax3q4r4i3cj1t
+X-Rspamd-Queue-Id: 6B936C0002
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 43F8B40002
-X-Stat-Signature: 39rjofks755pdhkpam3spmkbwsrmwwky
-X-HE-Tag: 1786593010-353978
-X-HE-Meta: U2FsdGVkX1+/qOCRW2sSz8Qw6tpLi2JABLaXGZmMUcxx5v2Cp6m34OlaPCO4QL23BlKXTw0WGJ4j0IUG+q+zcrI4PJjGWRpWFzDX2rFo73HmxBpB/I4h1ASF4/yYZm4P+IdZaGCcCM1dV4h23IeUMg/jefE/Gug64BrIYffGgnrUu8/AfWUaRCvFxT+FaOGFh4fCtjiBTLxBBMcG5WaqEDj1E+McVee8O2/P5Lzy+Uj++Y9svcEA9WncVQyU1Rvu+rypVVnzWNM6NdZ33Cx322W/CdIShE9ODKQUi35aYtYMAerzer/pZrb71Pt6kGS2z7NtfODqAbVE2Lr1eIw6dNpRCx1VD6R80ADZJeOeJIwVc1pGdh/siDD1muiUO17XRUrCO6lJqY1LoeRp9f1h8SNjEjEu0TENkrGWh8U9ew7aonWOKbth1ukmqk/usaPNdYJ2tveSdRSMah+bVXDtZOBIGXodDddC50LV/9DskNO2J5dVhWyGsj6Jt7pQOib8BHyHwe9wQMmunyyv/4Dwvd3TC4qTUV+f0LdT3CRAb0FSKOicXENJLXGyThSa8lnGMwJlp97YwNTCAJO3Q4iPKb+oqGzgMrBQj9FtT1VjhWNP0LZ77BmZnKDggHVHWLqQHOQUiUfFhM2MTDb/UaPEg7X81k+kkg7T9x6k4f3RJNChWj2LjgZWYbqxIU9GZnW8p/O4R5gBx8RekdnPawD1onkNV+S7HXo0GKMWQkdZ84q177HKAsFZLY3Emt8xVOx12MRr57MRXICm728SLHcL1W1PA6UbgGebzs8sKiBS/bhphVvyRUIqNihTF3xux3F/KP/uJ1AuGfnDrSy4LcC6Jmvbm3XSRwKZBZtjybdOQnad++Tl/nR2mK/1CrV4PZTITtvdFUp5CyEGTiVAxV+IPUiWQI9fPPHuwWUBCKTpaG/+MQYlPthYgPiDYmZZcj0EG/x+DqzfWEFDqd4xAde
- vWHHbSv0
- lGTqTifHddnTXyvlAePTMVXpQnFq4r5aooNWjR/MteZ+GvwVQFVKmRydwlKvtmTv2cxbsZAu/DPcsS5MfIrze4NiDAHgjLw1lkXAj7EKFpAH8OaKxqD/rrwB/7scMYtdAom+oMfUe7rRndPJw80GkkGE1Y/rUTkPP8PQyY4b7YglwLOfDZWecEswa/zw5YTL+4FRSLGmnR9s4MhkPDn7TZLpyG7UmyrRLUrG4mvjmaGYUIG+Ya0IX3TaTjcTJxZc7MFbosREEwDsWAD7Nr9QTZAyzcQt0Bpb3pKFgSPv41RW54ig=
+X-HE-Tag: 1786593010-465876
+X-HE-Meta: U2FsdGVkX19ce3sfaOMtDKEDNYaNb2GwlWyxqSzJyv2dmpb0xWNWfUFEMxoB4v7QPuuThsjwUWNJ8eWPv2WvRygdY7+mMkab7WDkjE5EJVtQF/cy07W150ptWWd2F1DZW+DiTlp5/l6+8zNLl6xJqZywEqEvPMnZO9e2g9P6vjZSRpJ4vR2L13t/hYq5wyc6Jglr3O0kdcGfbv1BjNI8F6oS0u1gQV1Df2jrPNuksoC/juQZrGEN/M4xXIDwa+erMrjewzM6OIPhE+mY5T3cWolqTNktuxfMbB6ptJU30N7ekJzorBjovH0d9YH5CpMG2ypiSZdsqdqHXWesY5F5g4OJbfruIaq8kKars4kE6m7ol5WmfsPgCaaOJny1VgUJ0+82L1XRvzzv7Ny5Zc2zcccJQidJMJNgzH3vNWevQiyqe4RxhAacKjXGcESjZAItAY/5o4xtey5A8j7LhgL2pOR7c6JQ9v9p0Ly749yIeYshPCI7G4XOZq5XAn5wbP6NYN+ewiAQb9ZgxO8WQx9aelBwGjc3Ml89UD2l/torjt5gg6xkiM4K1pAo/Ob/s0czQ35fSir4oEJ9BTsTxb5bh69CumwGSC5eNMPlSVwj9DGyD+OHkZuqPILVEOzbx6q23216D2+oYt7QcmtlIVEJW4doQb4ORmweQuOaJkOp5EnG087ReVpXwo7FNfQqmiIVkk0zIYUBfP1zpIcsqkpcNpGkseLE1ExeKh9lrAkPG3TITCoipzdaAf9CJUT0HdYbQ89mE/z4m2+8FntSLb2aU1gBZHEBnfLI1EcntxS3m27UOtogxMqwcw3IMUKwpnpJNea4dK5pUA7v+5aK2LmxwO1S61wrR57piEmfD1nfqEssyuCcABOlY6GDvk54o3Qb+BvhxG5QVJ0mbmD+U4oUeTtNc5nx4ADqbuL1hKRcjDN+d3oQXFKvclfT/NZLfkYpXFfkVdFVqHg6C5noJFW
+ Aj20rCbT
+ uSZ7dXLM7IzO8ZUbVJ4cn1VIAZZXQKTnN5tBiF1/XEf/q7c9RD3205KtPzzgZjGnNSgjZ4H95xaYPcqgpOExKFw+roC72ZLsOzv34RttRNbJwyhdMvvgp0ifpt97EIDUXfRsnJfiLO8Dhv342rtVeWZayrvmdZr4cxFWUcG47TP3aZv/ssXv9mBXpDXnGrwgk+HquDJV9DBogV7JQ6XaiGEwBnyHylYjuVYUlaW0Gokj6Rx7H70KyIBUp9cNBn05/f3WBgSut3D/JEvd6b/5foBropg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,31 +93,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When NULL damon_ctx pointer parameter is passed, damon_call() could do
-NULL dereference.  The caller is responsible to avoid that.  It is easy
-to forget, and there are many damon_call() callers.  Meanwhile,
-damon_call() is never meant to be performance critical.  It uses mutex
-and completion.  Add the NULL pointer check inside damon_call() so that
-callers can pass the parameter without NULL checks.
+DAMON_RECLAIM avoids passing NULL or unstarted damon_ctx to damon_call()
+with its own validation.  The validation is no longer needed, because
+the DAMON core layer now handles the corner cases itself.  Remove the
+unnecessary check.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/damon/reclaim.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 92631a36d7b51..5882f9c94c47f 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2188,6 +2188,8 @@ int damon_kdamond_pid(struct damon_ctx *ctx)
-  */
- int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
+diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+index 45d5557cc575a..42a2c9cb13431 100644
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -271,8 +271,6 @@ static int damon_reclaim_commit_inputs_fn(void *arg)
+ 	return damon_reclaim_apply_parameters();
+ }
+ 
+-static bool damon_reclaim_damon_has_started;
+-
+ static int damon_reclaim_commit_inputs_store(const char *val,
+ 					     const struct kernel_param *kp)
  {
-+	if (!ctx)
-+		return -EINVAL;
- 	if (!control->repeat)
- 		init_completion(&control->completion);
- 	control->canceled = false;
+@@ -293,10 +291,6 @@ static int damon_reclaim_commit_inputs_store(const char *val,
+ 	if (!commit_inputs_request)
+ 		return 0;
+ 
+-	/* Skip damon_call() if ctx has not successfully started. */
+-	if (!damon_reclaim_damon_has_started)
+-		return -EINVAL;
+-
+ 	err = damon_call(ctx, &control);
+ 
+ 	return err ? err : control.return_code;
+@@ -343,8 +337,6 @@ static int damon_reclaim_turn(bool on)
+ 	err = damon_start(&ctx, 1, true);
+ 	if (err)
+ 		return err;
+-	if (!damon_reclaim_damon_has_started)
+-		damon_reclaim_damon_has_started = true;
+ 	return damon_call(ctx, &call_control);
+ }
+ 
 -- 
 2.47.3
 
