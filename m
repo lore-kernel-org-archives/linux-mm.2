@@ -4,89 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12AF7C5CFC1
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 12:51:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 725D2C5DF69
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 12:56:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F28676B06A5; Fri, 14 Aug 2026 08:51:11 -0400 (EDT)
+	id 5943A6B06AD; Fri, 14 Aug 2026 08:56:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F007D6B06A9; Fri, 14 Aug 2026 08:51:11 -0400 (EDT)
+	id 525D96B06AE; Fri, 14 Aug 2026 08:56:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E17246B06AC; Fri, 14 Aug 2026 08:51:11 -0400 (EDT)
+	id 40D046B06AF; Fri, 14 Aug 2026 08:56:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B96456B06A5
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:51:11 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 47D0A1603F7
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:51:11 +0000 (UTC)
-X-FDA: 85099860342.26.A263CD3
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1258F6B06AD
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:56:11 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 95DB9120431
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:56:10 +0000 (UTC)
+X-FDA: 85099872900.23.BDD8591
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id AF4D81A0006
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:51:09 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SRUKVShK;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 074EF180003
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:56:08 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="e977F/nZ";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786711869;
+	s=arc-20220608; t=1786712169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yp8F8xjPNWmB+RDW4xJTkvaQ+IS/CNpnMALNCGQ+iGw=;
-	b=dCCb+1pFgOn0JXn+UyiHb9TgtBXVKxiOFMrOAQt0nTa1+MYmmXs1ox/SWDYadd6rhwmJq+
-	5cimm3Vojor9BNdbaCegIOZ0xDNKZBa3VP1g299butj8OyeyahOlFPFnM6+wYVZSOp/R9X
-	V8VCGnL/F10JlVy5oLhlX1dPoiOfBU0=
+	bh=cX+72s9o2pIYhrhjJqMobcQWIikVZ9nl0Ljsw77hPx4=;
+	b=ouIzyztFR/ZvT9spN584TmtpxTLWfhEtdc5m/PaM2vgESyHG3VY8alLrVraU3sj7aAqlN4
+	c90jO1zkX4JLw/8IKIvI1dTT5TYOo6h+9jYX1w4c/naqiTpXU/ru2vB9G+s1qQUbHOYdD7
+	Xlpy0YuAidIb1NntvfdkQGvrbiEgDUc=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SRUKVShK;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="e977F/nZ";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786711869;
-	b=2Oo9Uyf+2uloRIsJohZbFqPbPLZi1a0tP5zlZdd9J6ZKA+3pIxYtzw+3zLz9i2WSclP2MR
-	DfyTIExapVySegNV+pduEkcWx3u+98uDRNjJyW/tU8FTxBMm6kLAQSqe89GuZn79IbDvBu
-	f7EGqOGKjaUEBaWIANQ2ONTMza/w9Sc=
+	t=1786712169;
+	b=vjZ1iv7uBqWUQbVBhBgj4V+IRP2qhmajnxPv/4WAzRYFWXFuc3ewOyJsZn54Ys3el1P68k
+	tADeGNHMrG5LWXTp0F/VPIlzLCDCgtNLARlnjDkDoT8OhDC2QwdXRf0qB7WPbgsKUoue3T
+	ehczfERkQq+6L7a37sMC/UDVlxBnOh4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4507A60120;
-	Fri, 14 Aug 2026 12:51:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F271F000E9;
-	Fri, 14 Aug 2026 12:51:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 581C560120;
+	Fri, 14 Aug 2026 12:56:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54BE81F000E9;
+	Fri, 14 Aug 2026 12:56:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786711869;
-	bh=Yp8F8xjPNWmB+RDW4xJTkvaQ+IS/CNpnMALNCGQ+iGw=;
+	s=k20260515; t=1786712168;
+	bh=cX+72s9o2pIYhrhjJqMobcQWIikVZ9nl0Ljsw77hPx4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SRUKVShK72r41Ws8g4FF6a9lZMwbBJEIk0HbBDqZ0N+STbG4WW2td6mK2zyOx+ZqJ
-	 Mw4+Bw7svi7x4saObAoGV+T1A1eOyOzz4ItVk6Pxox+vyGuLwO6R/MKN0TZke5UUuj
-	 OJfMai0xJ4YKMTOwwhg8/vCqnk5yMPAB10U5IibX7bXDcZAtU86RXSU/6vsZBy+c/a
-	 na3v406UmuTXQzQt08BjZkitTPYP2X2lKoC/Z6y35BmGL68aGNnN424sAHWB9gMsZ8
-	 GQUgaMLvNK+b55nEUzFjwjOsnHuv3fr5UZtblxsxIl5tblc20bQJg7RzIDCo2L7YKW
-	 YRcsLTygUrLLg==
-Date: Fri, 14 Aug 2026 13:50:50 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Hajime Tazaki <thehajime@gmail.com>
-Cc: linux-mm@kvack.org, geert@linux-m68k.org, daniel@thingy.jp, 
-	Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Andy Lutomirski <luto@amacapital.net>, Will Drewry <wad@chromium.org>, Mark Brown <broonie@kernel.org>, 
-	Brendan Jackman <jackmanb@google.com>, Hangbin Liu <liuhangbin@gmail.com>, 
-	"Ricardo B. Marliere" <rbm@suse.com>, linux-kselftest@vger.kernel.org, linux-um@lists.infradead.org
-Subject: Re: [RFC PATCH 5/6] selftests: run tests on nommu architecture
-Message-ID: <an8MlE22U3586R42@lucifer>
-References: <20260813063401.1786548-1-thehajime@gmail.com>
- <20260813063401.1786548-6-thehajime@gmail.com>
+	b=e977F/nZkZ3+kWqrRqgIfVJd/aBqAfJBoJ0g2Jj+dswl1Yg8oI6tRpw4WyEGE1+X5
+	 ugqpy7w+0PGPzYIzyhQ49UE79ycBGLH814wt5t6VCwpq/fsYz5+oV6IV4OYn2PPgAn
+	 fv3+Ey1E7u2WkT/SQL0uxiu065pQDQk0viXx9tFYyrgo8quEfA5xgasEuIKFLpRfW4
+	 9LtheyIuV7FSxZqP0wPnWpQNgWraqQlCpz1CQlD8dVJ3450cieekXQzAVhaDRThuU6
+	 /K81KqNxEY9a5Z6oTmwsp7EawXpN2CYk+7qgYfB/RCh2d6ibc/4AAJKcUkji02OGAJ
+	 P+ZrWGMhbtoHQ==
+Date: Fri, 14 Aug 2026 14:56:05 +0200
+From: Thierry Reding <thierry.reding@kernel.org>
+To: Vincent Donnefort <vdonnefort@google.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Sowjanya Komatineni <skomatineni@nvidia.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Mikko Perttunen <mperttunen@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Russell King <linux@armlinux.org.uk>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
+	Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
+	"T.J. Mercier" <tjmercier@google.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Chun Ng <chunn@nvidia.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
+	linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>, 
+	pavan.kondeti@oss.qualcomm.com
+Subject: Re: [PATCH v4 07/10] dma-buf: heaps: Add support for Tegra VPR
+Message-ID: <an8K2gb1pIqbDj6-@orome>
+References: <20260807-tegra-vpr-v4-0-5510d16af89e@nvidia.com>
+ <20260807-tegra-vpr-v4-7-5510d16af89e@nvidia.com>
+ <an4MEI7lkc2p3nKI@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="wsqkte2vdducxgiq"
 Content-Disposition: inline
-In-Reply-To: <20260813063401.1786548-6-thehajime@gmail.com>
+In-Reply-To: <an4MEI7lkc2p3nKI@google.com>
+X-Rspamd-Queue-Id: 074EF180003
+X-Stat-Signature: 57cr4h9yg3p9934rgk7bapkzzgskf8w8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AF4D81A0006
-X-Rspamd-Server: rspam07
-X-Stat-Signature: e16ktmwr8bhdhqipfms4woknicct3jew
-X-HE-Tag: 1786711869-230487
-X-HE-Meta: U2FsdGVkX185M23qSYMi3b30chGQCK04CMtxvhxczrwzUKtxr1zp7b4wCtg0t9dqBg5+TsFXXp73YfwAXAELbRHjqpzzs3B2rhznZReRaNSJwStpjjbeW72vobu/67GdL7BwWnhlj/Wx5fa0yZydAU04kJGiL9brpk6h1OeCFZ2ZoXB2umBho6ikrSyhIsp+3nyhLW6LQTCZZVRA4Qae8L2US/Ln0KJFKVrVZbTmkLfBxMrCPKw3npjGbCa2Sp40+7xB1m5SiwdIvzDX+ss2HnpP0/We+yLqWjDwEkKGl6BdMb5b3xl9bRN1dgmoCwMWlTbRML04ptixlYMw9ZN8pT38qgl3SR30Z0Til4dPY/OrxD+SMoEHyKmbeAruFvGCv2Uldts8w/rP4dTrn+jD31bUeHt26nnerizl+05+dmK4KPCRl6vf0Xg3O2+c8/i4smnkeVWLcwYN2x55QAk+IkhOn2PxiXDEgSHLQ9SQywxiZx3Ph4tZZ6YwR03anUlvNMlXAEyaqsXVh0ViyAgbp40/CtP7Vq2WhTR9peR0/iIRvLEgfEvtKR3w6uTgXRtgqwzhE1mgN9q+JZe0S7pKfv1cwGfFvqhmvkh9Lk4bZEBDpvLplEAY34oJXYBp7fYIdFWjSX8lb+SNkEG2ehHFpiU7zKKKTOIbDOMfdMSCiABU/CEyCx9ZWXA3LNTjjtptXi7SOTXEKnqH4S+1fmgxoF7lg7EuS9lyPRc7+cVLMoQNBtaewlaMgHHqSLdd6ychYpP+lkHxrAdjg1u/CVcT+fqwzxMs1oip/bvwWOsdAao3vheLr49UlYxkjKTLlFn+v8cktKkgf4SxogM1nX5mmyyYGaXiXJYZVOcHmbgTLMz+oxsmPsj3W2UJHBZ68tr6IZZLTaKseWU4xNE9tokblc+ghcUB4hzMbyw6pK8V2if8JZ715MPP7IUydhLHJUfxwqBGZ/vCbmkG+7xEPL8
- obG5m9eP
- HhRAsf9wtWphetx8H8E79EJ+X2WOqNvv3ZiMOU55LbSfVfQH8YdZXMLKexozxamHcrayOxk/RixtcRK1+OjDpqXo6gpE5zPWSQFpJ9797aVCW1svHamZuWpMZ/+wV8i5SJJ3Aln3w9k6GcnMFrFSlaCecPdTnNMhuWOcWiYc2SP9pQ0ls+3ZYvVFl223f6gNn3qjK3TOxUDPPgzg4dSU7gvUu+nnCBZEfOwg/24fHwXWke7C2zEYeN3fANEd6tPuLgygSXVLJBCM05wjSpodGwbuxWWY25jqaTfiGC+sqM1tjlQ5SIrWyINBVzZvQDHWFRqahY3ULpO3drlU3zq/oJNKckXl3/0Q+WC5mr4jFRLP1h8lGBRiykjAzZ6dA6etCHve2RtLIxpDW0Hi/5PIh+Ud6OmToam1/gPe2s5r/0W9ATCcsKPM5ub1FU6SU6tzpEJTakgtwQCmPsUQBbf/B8npOh+4c7kdIESOUDmu747FoJZN9EqyfW1qPuUKddy+1UDalA1pgUzxMfbK1vldxUteKoExeNDfqdf8/VrdoZB7lDooI/CcteDokhhk7O6ZCDai5dNgzjOODiwAZbEn++5+lA33sbXRKJ0P0
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786712168-671022
+X-HE-Meta: U2FsdGVkX1/BOepGXn04FG0TgbRKom2A/cs93lNefjsB31UqlHh7fYvMXLcXNlu5mIejkAW1Qsb92p6TggvEugmAY6vkWWWmp10BlewpcWlp2RejYhiLvC5/JsT5C//e9EBrT8imNDndzzIOthiU7svlijrLl4NLzGgYH0XueRr+ujRB1pIFpe8ZplHDA4o1rWk0h8yR1Rr0910pO5j2RLmZ4H4fayuOP8RFtI8K7HsAGbUGzvu7ZJjArkFVzDA//qEPB55Mj8RV2joJaleLCvUppeaX6bqq0iPWXP2FZdMdfjIutJekkMYg8Ra6A4Y97btSlYJwgvfasp6mhFElo7SrGLiFBDN7i6dQ2iFXfRACGAest282LLInQ6JM/HKcq1Nm20gPDKXc4MpOGHyiGr6Pr3F5lEYGk+Se7iVzEov3EScEaS6fYSsSSJOeke+GoTV+Z5oqHjZITl9fIza45EEns8jc0U1R05nr3DtraJ2l2ax+akyG7wcjSnX9mH9b8F+w98ExG1XZQrq0ce2/EqH9NRwbhr59cwdaYeKagKeOqAdu8XOLN4/3VOWhqkkFhmHHywZcmFJKmLxh69njKHIV0352kUXai0jhflqsqDcfP0kwZdCW9HrF5ct8sHx10ZbwMlseYo6+SSbsMStZiHmUrXiqAycQkazs6ELDO9CWtRBBPNhjcBJaGFUztICQ4j0+kKe2cOP4TZADuhb9qZ0N73C5N52aq1hdedSxBKVNiCVE4t61H71QdeZtktnkOJOsRbJj7YGeF+Z17SijAuUucQwyDgtsSlweTzhJLyIv5zLgWXiVVW8rtOBj1Mtv1RwG4BaMXWDopg4sogOznjPxunodY68zwgFM/Z+yFTDmruTfZbtPzmIP3CMNDa6yDzo2IW4PMc/LbM0T3wIF867UK3lmD/lQw+q1/HBPEONctrW7Ag0aoc5LYIBFV2MHziyWNuBQAVKwYsBCJq1
+ 4wbNEFei
+ 0Jl3R6qGZvF9dmOPIxC54pL0hLAdw7nGaByNUth/lErSOQQOmlbxmGEBrSadk5bOtSeC5j/o1t6SSsESlZnSRRoFTXOsCgTxVzc5qm/mCUdeXYBqamd98KUwIEbObz7kkCtFpwooiZ/5CRXm/mHwqB0oqgNYB3lHSj+gMZbsfqLWG23+NZJdMBu3fFCfCBERfO/+akbu93T0OFUtUCacTzvExDVhcYIu6byaG2KNYVZbg/SGZfHjAKjUMAOjypPpvv+pqg2731jtcWmC/6bGY1eGnVHvE6RZChD/pB8P8mJ41DMtzUdI2EaaQW16bJUF0vI46wby+xB6dyXcD0W0TYYlOIURN3A3BAD0/kmaXpP84wUwHPNV47f5pK2VRwQUeYDVdoNwjFTdmfM0e6Uk3YSx5kvGS11V/Der4IqsoO7diqVtl3pj+hdA+fhB2i4/nbDTAKRHZTiK3psxcbv2vWqVYh8BlT3Epv0cEqemuXtHfA8Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,188 +119,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026 at 03:34:00PM +0900, Hajime Tazaki wrote:
-> Architectures lacks MMU doesn't support fork(2) syscall and only
-> vfork(2) is available with limitations.  Thus, we cannot run kselftest
-> on nommu architecture as is.
->
-> This commit addresses this issue with the following changes:
->
-> - on build stage, add -DCONFIG_NOMMU to CFLAGS when NOMMU=1 variable
->   added to the build/make argument.
-> - on test run stage, avoid calling timeout command when NOMMU=1 variable
->   added to environmental variable, since timeout command uses fork
->   syscall which nommu platform doesn't support.
-> - kselftest_harness.h warns if the file is include when building for
->   NOMMU platform, as there is no fork(2) syscall.
-> - replace "cd -" use as it is not available a shell supported on nommu
->   (e.g., busybox hush), use cd "$OLDDIR" instead.
-> - describe the difference of nommu tests in the document.
->
-> So command line to build/execute tests for nommu should be like below:
->
->  $ make ARCH=um NOMMU=1 O=build kselftest
->  $ make ARCH=um NOMMU=1 -C tools/testing/selftests/mm run_tests
->  $ NOMMU=1 /tmp/kselftest_install/run_kselftest.sh -s -c mm
->
-> Cc: Shuah Khan <shuah@kernel.org>
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: Andy Lutomirski <luto@amacapital.net>
-> Cc: Will Drewry <wad@chromium.org>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Brendan Jackman <jackmanb@google.com>
-> Cc: Hangbin Liu <liuhangbin@gmail.com>
-> Cc: "Ricardo B. Marliere" <rbm@suse.com>
-> Cc: linux-kselftest@vger.kernel.org
-> Cc: linux-um@lists.infradead.org
-> Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
 
-Not really loving this as mentioned on the cover letter.
+--wsqkte2vdducxgiq
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v4 07/10] dma-buf: heaps: Add support for Tegra VPR
+MIME-Version: 1.0
 
-I'm sympathetic to making things work if it's not invasive, but now you've
-essentially asking new test authors be aware of this to some degree.
+On Thu, Aug 13, 2026 at 07:25:20PM +0100, Vincent Donnefort wrote:
+> On Fri, Aug 07, 2026 at 05:54:27PM +0200, Thierry Reding wrote:
+> > From: Thierry Reding <treding@nvidia.com>
+> >=20
+> > NVIDIA Tegra SoCs commonly define a Video-Protection-Region, which is a
+> > region of memory dedicated to content-protected video decode and
+> > playback. This memory cannot be accessed by the CPU and only certain
+> > hardware devices have access to it.
+> >=20
+> > Expose the VPR as a DMA heap so that applications and drivers can
+> > allocate buffers from this region for use-cases that require this kind
+> > of protected memory.
+> >=20
+> > VPR has a few very critical peculiarities. First, it must be a single
+> > contiguous region of memory (there is a single pair of registers that
+> > set the base address and size of the region), which is configured by
+> > calling back into the secure monitor. The memory region also needs to
+> > quite large for some use-cases because it needs to fit multiple video
+> > frames (8K video should be supported), so VPR sizes of ~2 GiB are
+> > expected. However, some devices cannot afford to reserve this amount
+> > of memory for a particular use-case, and therefore the VPR must be
+> > resizable.
+> >=20
+> > Unfortunately, resizing the VPR is slightly tricky because the GPU found
+> > on Tegra SoCs must be in reset during the VPR resize operation. This is
+> > currently implemented by freezing all userspace processes and calling
+> > invoking the GPU's freeze() implementation, resizing and the thawing the
+> > GPU and userspace processes. This is quite heavy-handed, so eventually
+> > it might be better to implement thawing/freezing in the GPU driver in
+> > such a way that they block accesses to the GPU so that the VPR resize
+> > operation can happen without suspending all userspace.
+> >=20
+> > In order to balance the memory usage versus the amount of resizing that
+> > needs to happen, the VPR is divided into multiple chunks. Each chunk is
+> > implemented as a CMA area that is completely allocated on first use to
+> > guarantee the contiguity of the VPR. Once all buffers from a chunk have
+> > been freed, the CMA area is deallocated and the memory returned to the
+> > system.
+>=20
+> Hi,
+>=20
+> I believe we (the Android team) are trying to solve similar issue to your=
+s: Arm
+> CPUs can still speculatively read memory after it has been transitioned t=
+o the
+> Secure state, as long as they retain a cacheable mapping to it.
+>=20
+> As modifying the direct mapping is difficult, the workaround ended up in =
+the
+> hypervisor which unmaps the pages from the host stage-2 on intercepted FF=
+-A Lend
+> invocations.
+>=20
+> If convenient, this is nonetheless the wrong place to do it. Scattering t=
+he host
+> stage-2 is really terrible for performance and we would like to move it w=
+here it
+> should be, directly into the kernel...
+>=20
+> This is what I thought was the attempt in v3, but I am now a bit confused
+> because I see you are using set_direct_map_invalid_noflush()
+> set_direct_map_default_noflush(), but I am not sure that works if rodata=
+=3Dfull is
+> not set? So does the memory for the NVIDIA IP still need to be unmapped?
 
-And making the harness - which is the defacto way of writing tests - now
-simply not work there is a bit crazy.
+Yeah, this currently relies on the circumstances being such that
+can_set_direct_map() returns true, and in the case where we want to use
+the resizable VPR functionality, we're going to have page-granular
+mappings anyway.
 
-I'd ideally like to see _all_ tests use the harness.
+> If so, how about having an option where the CMA allocation is backed by a=
+ direct
+> map with the same page granularity, or at least a smaller and aligned gra=
+nule?
+>=20
+> With that, we know that for whatever CMA allocation we do, we can safely =
+unmap
+> from the direct map without risking splitting blocks. On CMA free, we can=
+ safely
+> remap into the direct map as I do not believe we coalesce yet.
 
-Also a bunch of the tests already do forking as part of the testing:
+This sounds intriguing. For VPR we could possibly make the size a
+multiple of the memblock size (or whatever might be appropriate). If we
+can create a page-granular linear mapping specifically for that region,
+that'd be ideal. I don't know if the linear mapping can be subdivided in
+this fashion, though.
 
-$ cd tools/testing/selftests/mm
-$ rg -l "fork\(" | wc -l
-17
+> (This alignment is not necessary for upcoming systems with BBML3)
+>=20
+> However, to implement this, we'd need to split memblocks and I believe th=
+e only
+> way at the moment is temporarily mark it as "nomap" which didn't seem very
+> popular in the comments on v3.
 
-So at this point you're not really running much of the selftests at all,
-and are only happening to run those that don't do the very basic stuff
-nommu can't deal with.
+Could this be simplified if this type of allocation is always memblock
+aligned?
 
-I think an audit of existing tests to figure out what works with nommu vs
-what doesn't is really unreasonable again, given nobody tests or seemingly
-uses these arches.
+Looking at map_mem(), it seems like we could add some sort of special-
+casing in the for_each_mem_range() block to check if the memory is VPR
+(or generic, page-granular carveout, or whatever we want to call it) and
+set NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS in that case.
 
-So this patch might beget more nommu carve outs and exceptions and
-therefore nommu workload and maintenance, which isn't really sustainable.
+If that works, set_direct_map_*() could be enhanced to detect such cases
+and always work. Or perhaps a more specific API could be introduced.
 
-I know I complain about lack of testing on nommu, but at the same time I
-don't think running arbitrary tests that happen to work on it and who knows
-if they are valid asserts anyway really fixes things.
+Thierry
 
-And given nobody really is doing testing, it's not really a great RoI
-here...
+--wsqkte2vdducxgiq
+Content-Type: application/pgp-signature; name="signature.asc"
 
-...OTOH I suppose it's a minimal change we can largely ignore as long as
-this doesn't lead to additional work/auditing from anybody but nommu
-enthusiasts.
+-----BEGIN PGP SIGNATURE-----
 
-But I'm just not sure that will be the case :(
+iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmp/EGIACgkQ3SOs138+
+s6FIfA/7BDMg2roMkVSyRLt06etjxYFBWHpNzxj/SvOzYROjoeOaUOJR15Xodk18
+HI650LP1luxhtmIKPHRjGxZK30ROvHB6QTsl0lYM0cQZ4tVrv5WTMcL9uCui0WzA
+LkF9SVH4YiJdbE4tCnWc9eJSxxedpCsS8d5cHLfDyI2cKvjAxgTxll8INqCMafAU
+wehMyhd65emp5OYmvSuftsNzYf/uM0Oke8Rf64zZjOyZzpBi7AZG2CdROlrN/v1V
+xODXrjdPaZvdq6HkzFVW0GYsouBaWb2rqzw/IsgO5RbT6vg/oOwo+4z50ZDefimA
+x2mLXvg+gzqjY20hfJ82Bar0sCQ8nNlO6rLPpxwXMn9ICDpFV5aaiGvbaZ9ibDxR
+yScvx4k0i/k6NPFoyuKJFSqNn9s4WGqU6p0j+un2K97HMEPtJ3onKs3Pjj63E38i
+EkVAJZkrbt+PNYGiILRWWnU7dTqd5/CreBR7F0zFvVz0+JYjgfmlWcTdLKPAazag
+PpRU7SZKUfHRd+LnsS54706H2dOP1rq5NXx+AGSdRJcwgw30XbIhZ3CmqYBVjbdN
+Nh/5Y19dBDV5UhRx4o3Cqcb1BV/cuu2w0TpGyxoyIUUTFxgDp59uBi2Qi6nY/8kY
+KdeMys4RVWucUUwpbtpKJamulwDRGtlLjyLEIqVeYZY/FOBiaKU=
+=ERUC
+-----END PGP SIGNATURE-----
 
-(I'm amazed we support a mode in linux that can't fork() in 2026 :)
-
-
-> ---
->  Documentation/dev-tools/kselftest.rst       | 12 ++++++++++++
->  tools/testing/selftests/kselftest/runner.sh |  9 +++++++--
->  tools/testing/selftests/kselftest_harness.h |  4 ++++
->  tools/testing/selftests/lib.mk              |  8 ++++++++
->  4 files changed, 31 insertions(+), 2 deletions(-)
->
-> diff --git a/Documentation/dev-tools/kselftest.rst b/Documentation/dev-tools/kselftest.rst
-> index 64c0ec7428a2..800b2b688aff 100644
-> --- a/Documentation/dev-tools/kselftest.rst
-> +++ b/Documentation/dev-tools/kselftest.rst
-> @@ -230,6 +230,18 @@ section::
->
->  .. _tar's auto-compress: https://www.gnu.org/software/tar/manual/html_node/gzip.html#auto_002dcompress
->
-> +Build and test on nommu target
-> +==============================
-> +
-> +If you (cross-)build kselftests for nommu targets, or run tests on nommu targets, use
-> +``NOMMU=1`` as a make variable/environment setting to tell build system to do the additional
-> +checks.  These nommu targets may differ in several ways, such as not supporting fork(2) or
-> +using musl or another libc.  Set this variable to apply the necessary build and test adjustments.
-> +
-> +  $ make ARCH=um NOMMU=1 O=build kselftest
-> +  $ make ARCH=um NOMMU=1 -C tools/testing/selftests/mm run_tests
-> +  $ NOMMU=1 /tmp/kselftest_install/run_kselftest.sh -s -c mm
-> +
->  Contributing new tests
->  ======================
->
-> diff --git a/tools/testing/selftests/kselftest/runner.sh b/tools/testing/selftests/kselftest/runner.sh
-> index 311811dc55a0..7287d8290b6c 100644
-> --- a/tools/testing/selftests/kselftest/runner.sh
-> +++ b/tools/testing/selftests/kselftest/runner.sh
-> @@ -38,8 +38,12 @@ tap_prefix()
->
->  tap_timeout()
->  {
-> +	# nommu doesn't support timeout command (missing fork(2))
-> +	if [ "$NOMMU" = "1" ] ; then
-> +		echo "timeout isn't supported for nommu"
-> +		$1
->  	# Make sure tests will time out if utility is available.
-> -	if [ -x /usr/bin/timeout ] ; then
-> +	elif [ -x /usr/bin/timeout ] ; then
->  		/usr/bin/timeout --foreground "$kselftest_timeout" \
->  			/usr/bin/timeout "$kselftest_timeout" $1
->  	else
-> @@ -130,6 +134,7 @@ run_one()
->  				return $KSFT_FAIL
->  			fi
->  		fi
-> +		OLDDIR=$(pwd)
->  		cd `dirname $TEST` > /dev/null
->  		(((( tap_timeout "$cmd" 2>&1; echo $? >&3) |
->  			tap_prefix >&4) 3>&1) |
-> @@ -147,7 +152,7 @@ run_one()
->  		*)
->  			ktap_test_fail "$TEST_HDR_MSG # exit=$rc";;
->  		esac
-> -		cd - >/dev/null
-> +		cd "$OLDDIR" >/dev/null
->  	fi
->
->  	return $rc
-> diff --git a/tools/testing/selftests/kselftest_harness.h b/tools/testing/selftests/kselftest_harness.h
-> index 261e4df94d9d..8eee7b14f824 100644
-> --- a/tools/testing/selftests/kselftest_harness.h
-> +++ b/tools/testing/selftests/kselftest_harness.h
-> @@ -1274,6 +1274,10 @@ static int test_harness_run(int argc, char **argv)
->  	unsigned int count = 0;
->  	unsigned int pass_count = 0;
->
-> +#ifdef CONFIG_NOMMU
-> +	ksft_print_msg("harness test doesn't support on NOMMU architecture (no fork(2)).\n");
-> +	return KSFT_SKIP;
-> +#endif /* CONFIG_NOMMU */
->  	ret = test_harness_argv_check(argc, argv);
->  	if (ret != KSFT_PASS)
->  		return ret;
-> diff --git a/tools/testing/selftests/lib.mk b/tools/testing/selftests/lib.mk
-> index 2cc819006424..4734b5ce613f 100644
-> --- a/tools/testing/selftests/lib.mk
-> +++ b/tools/testing/selftests/lib.mk
-> @@ -97,6 +97,14 @@ TEST_GEN_PROGS := $(patsubst %,$(OUTPUT)/%,$(TEST_GEN_PROGS))
->  TEST_GEN_PROGS_EXTENDED := $(patsubst %,$(OUTPUT)/%,$(TEST_GEN_PROGS_EXTENDED))
->  TEST_GEN_FILES := $(patsubst %,$(OUTPUT)/%,$(TEST_GEN_FILES))
->
-> +# detect if users request NOMMU build or not
-> +# User can set NOMMU to 1 to build/test for NOMMU platforms
-> +NOMMU ?= 0
-> +ifeq ($(NOMMU),1)
-> +CFLAGS += -DCONFIG_NOMMU
-> +export NOMMU
-> +endif
-> +
->  all: $(TEST_GEN_PROGS) $(TEST_GEN_PROGS_EXTENDED) $(TEST_GEN_FILES) \
->  	$(if $(TEST_GEN_MODS_DIR),gen_mods_dir)
->
-> --
-> 2.43.0
->
-
---
-Cheers, Lorenzo
+--wsqkte2vdducxgiq--
 
