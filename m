@@ -4,84 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9797C5B572
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 07:30:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 406A8C5CFC1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 07:48:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA7DD6B0639; Fri, 14 Aug 2026 03:30:18 -0400 (EDT)
+	id CCC4C6B02EC; Fri, 14 Aug 2026 03:48:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7E756B063B; Fri, 14 Aug 2026 03:30:18 -0400 (EDT)
+	id CAD926B02F1; Fri, 14 Aug 2026 03:48:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D94C26B063C; Fri, 14 Aug 2026 03:30:18 -0400 (EDT)
+	id BE0C66B02F2; Fri, 14 Aug 2026 03:48:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BC7CF6B0639
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 03:30:18 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4FF9CA03EA
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 07:30:18 +0000 (UTC)
-X-FDA: 85099051716.15.F28B659
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B1D8C2000A
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 07:30:16 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8871A6B02EC
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 03:48:14 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 751B41403D1
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 07:48:12 +0000 (UTC)
+X-FDA: 85099096824.17.C2895A0
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 73DA020002
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 07:48:08 +0000 (UTC)
 Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Va+k8oGv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org
+	dkim=pass header.d=163.com header.s=s110527 header.b=YRZOO0yd;
+	spf=pass (imf13.hostedemail.com: domain of mambaxin@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=mambaxin@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786692616;
+	s=arc-20220608; t=1786693690;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aQBSsh75OLcrl354x/64LYAkiDCqavFHyytqP9ZvYPc=;
-	b=QScvIT4VmAAqOeOnLjRnVRXNrh/6JdBu0X1hM6XpnJTN2ik0UfKfd5pzv00qqg+2hpxKkv
-	L4zEZ1ajMB2E1RE8foTfFdF5mYT57R0fxtOXOko7KIYpQvsS49iMj9H9ea+Fnv9LTuV9sQ
-	sS+CSEMLhkmNpV0UKTJl03AsFOVxRYQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=FIECsLjOcFQ4t6j1nI62wLXm7hufJJ5ekbHLc3/zpck=;
+	b=b26SSYQDH1IEageyLScmqHDV40HdFeixAqBdGeNPoXU4oB+upQVbbx5WL+6bbK3bs3qdo4
+	iA6rOsh3p7B0bA0TShODRXQzBvVFd5+V0BI6AWGxpzMcHE5TTG+3Ji6eHUaPsxYa1niUhW
+	x4BxTGznAhVmTUjW6CbyXVpZwfv7D9w=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786693690;
+	b=CQbvS2I3uWecNmPXo/42Hm29qHp3o4513RUBZUiLUcUFtbOTYPayeuNZkG6Vs8opvhfVYI
+	ci/kR1KdGWXm4ZdCwHSI9iEXqJplX/3/q/M9egufhYzlHQ5jmyd89ZHErWU23QcoPzezSn
+	bQDTioj+KDKDF/4V4P5u6MzgxgNwTRs=
 ARC-Authentication-Results: i=1;
 	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Va+k8oGv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786692616;
-	b=VKIgXo+NSzgz27zXpH9noPEzM0mMFmaiqZhOUMsX4z6URrLcptTzVOiSz0ex2iXs3vkSMn
-	iU8EIr70U+f24UUjRopH8egNzbnziScAmQb9GKX74OcL01lTc/WR/t1DtCPF3NGf74iT9v
-	F7KEiZspl43B8Hd/s0tl31MfBsXut88=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D2EC4407AE;
-	Fri, 14 Aug 2026 07:30:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58521F00A3A;
-	Fri, 14 Aug 2026 07:30:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786692615;
-	bh=aQBSsh75OLcrl354x/64LYAkiDCqavFHyytqP9ZvYPc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Va+k8oGvs2PQFjlESywwxNn/dL+w56yfXXWQaCX53AyulvIjzIT+kJgG9lhzBiK25
-	 Ca/JSJRMz0Cbm+UuWl8MbawSdAzAyGoSbdH84wjkTVlD2opT9yOzJFwe2ARXb/4d8H
-	 3/kumAUzshKDtjo+aqdFwkEIbeSU9yaaQvGv7ULtIdc+4LLY6ta5TL0pEgaurodr9P
-	 IKRf/MVJgaVfUHxLPxgzS/rZ6mYAh4sMdGEKpgXq/4dEtRzcCOT08MAmgtxoLCmOih
-	 v4BTIdW/GbED5JsL23jf4l/YFenCkPOzG+v17tjWZ39rHPoGV4K3auTmv9t7ZN4hWf
-	 +lSQzJ0yE4tbg==
-Date: Fri, 14 Aug 2026 17:30:07 +1000
-From: Dave Chinner <dgc@kernel.org>
-To: Eric Sandeen <sandeen@redhat.com>
-Cc: linux-xfs@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: xfs: properly account xfs_buf items as reclaimable
-Message-ID: <an7D_9YRVDG-0Qjq@dread>
-References: <20260813204929.2253988-1-sandeen@redhat.com>
+	dkim=pass header.d=163.com header.s=s110527 header.b=YRZOO0yd;
+	spf=pass (imf13.hostedemail.com: domain of mambaxin@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=mambaxin@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=FI
+	ECsLjOcFQ4t6j1nI62wLXm7hufJJ5ekbHLc3/zpck=; b=YRZOO0ydDBW69njRGY
+	i72odduzj/kBXY3UjVmE12Y/HVkUzkv6i0HbItjmIN9nNpy8Zq88417ZmcgzFySx
+	k32Oys9K8tYfL0uLw4tgWee5YWaOgtLi75uR3eVWoT0CKSNKZ5P1KE2biH46dA7a
+	E1YDqEUmmfRCbnl1AkArUP8+I=
+Received: from localhost (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDX5yYOyH5qLnA+Ng--.54207S3;
+	Fri, 14 Aug 2026 15:47:29 +0800 (CST)
+From: mambaxin@163.com
+To: hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeelb@google.com,
+	muchun.song@linux.dev,
+	akpm@linux-foundation.org,
+	david@redhat.com,
+	v-songbaohua@oppo.com,
+	hughd@google.com,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	jose.fernandez@linux.dev,
+	stable@vger.kernel.org,
+	syzbot+e12bd9ca48157add237a@syzkaller.appspotmail.com,
+	Barry Song <baohua@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Kairui Song <ryncsn@gmail.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Sasha Levin <sashal@kernel.org>,
+	chenxin <chenxinxin@xiaomi.com>
+Subject: [PATCH] mm: swap_cgroup: fix NULL deref in lookup_swap_cgroup_id on swapless host
+Date: Fri, 14 Aug 2026 15:47:06 +0800
+Message-ID: <20260814074705.939721-2-mambaxin@163.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260813204929.2253988-1-sandeen@redhat.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDX5yYOyH5qLnA+Ng--.54207S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZFy3JF4rGr17Cw1fAr17trb_yoW5ur45pF
+	95WFnIgryUGr97Kw40ya40ga48ua1rWr47JrWvk3WY9a13Jr15WryI9F1UWryqvanI9Fyj
+	qFnIyw1xKw1jvFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jShFxUUUUU=
+X-Originating-IP: [153.3.251.220]
+X-CM-SenderInfo: xpdputx0lqqiywtou0bp/xtbCwhFwemp+yBGO2AAA3C
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B1D8C2000A
-X-Rspamd-Server: rspam07
-X-Stat-Signature: fh3no51qpanch49ehw695ye71giwdrq4
-X-HE-Tag: 1786692616-35412
-X-HE-Meta: U2FsdGVkX18Ck3STfl4rXB5cUqs4u8RAoW/6mXva9wuOHNa2fQ9L7Bt0BjKu7yPtPUIsKj3nhAO+DyN33Ivw4wC/U+49PGK88Pw55tW6nCfN4A8yzO4Uc9fW9TvnQJBAZGkY43UxlPfJPHoLtAUvuTTbqM2sndOB0Mjg3eSZ9FMHwk0E1v0ithZwPvxSTdzUJspkx3q+dbvL2XTegPAdVJszTAa8tj+aoG7eEecjgXvTjdakpCX6JOp+o12AWoG/wxA0fM3+dCbDQPOmIo0N9n+IL0KPMEoM8ZCwiJWQ5YUsE39iNU1YcUTpYlB4wGDIQ/62x4T3AFdFX5WH9Ku7qmQnNypONCWwfvxefJV69VWn+MvbvKgAlpCGF1syXhUc4TfFaeaB0VP0JHNXTjtLPWii/CpXokuizboVAJWHLwtHctkBKlT6V65oYril8Xsh2BX6/q7frYPVIBfh5iElnrZgVjbd+sQ25B5KXOWxW+jB/10cGHup6Vxy9eUDzw4mQdUma0qXrDpo1ENiKZI3e+reoQYZeYs/guBRMwoW3Z90OwEeVgimm0feguvFJTM5qaJcStev2l4ETQ3jI7Mq+JdnJc6HqXpQizAdMShtXT5sGsuTk+WMX0KeyBemZiEexT7X2cAnu9hPiLTYrmPId+BAQDaW6SNYAnzOlIK1U7EOVc9vVjIEXY7S0W7WgEwK9LsfbyRTN8+ZNfJFLoOtiCVQ96RM64hGlWOZzb7ZFN6Zo2kBjGFTP/dFY+rduZdyHG0SJdc5IIGXYsDeETEgD1BLAUbDu5BN/RQwSpRZfLdUEGX4abjkLfQk7ymd7hMqxm5/E6A2v3VJB6q9doWRmW5ek2DZsavtO3Pm9Ot7xt7En0dbSD6TpdByLz1DM48viptp8h1LOW92XCzmNkFbOMyMXTG0aTRM6RWGn1ZeAsp/u7bQDg6brdPmTel8wWP/sfS00Hlrsb6XJYgwIBy
- 0e+4g8W4
- iO6pOhJ5yXfUfcd1w2md20u/7WTjX9CWkpDQ2/iAWF06Y3jyRaQ4O0nadwl+dg+EKP4O76m1ULtMKh0LLssROhP8jlOr7FIdZsBaSjXmTFf208TrYRrtxvMYenTI/dDCkWiE2E21oe4hqPmteQMxKHHa40j6dts980OXwa06XrhoaCnmfc4u19aKrg7toSlFc1ECVMqzlinOqihw/2A9QVb4GFl3JG+D1uL2RhV7qeLpEff64maROTkGZVPD8dvyCoV+l2/MfcwvzrXizaQ+PrxpIFA5wmXT3xAkQ0vnaLpXLhMYCgrt4krQxsS13W0APQ0N3
+X-Stat-Signature: e8rmuoaxtbu51sfke6ufihneq7rhqcyj
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 73DA020002
+X-HE-Tag: 1786693688-897429
+X-HE-Meta: U2FsdGVkX1+yG37Ti7aqpYc4LLCY9IheXKElLLhU5p6+Zp9HTh6xFdOqDv8gYCCzcLyNqd44seESdSaSK5jmty+3l5q0Hh5Z/qphkG4o5rts7o+yLnWrkWQbZuVUmbmjNtjavdD4JOpj28pBmNEhlUk3bBeHJtE2PI2/8TjcTGMa3+ZsgUBFAW8XoH8E8l3tCK2fYzqa/X97q5KAN9GIMLnBxqprKnwYX5ZCaX5Yn8K8qtvUiZFnt3eE2p+/37Nv9Vf3NW2Lw8d3IdcRfu3aXoBRj3EeWt152yNi2gfiqfLTIGTsjZ36l1SS1XgEmpQb0ZLoGzTMrYOukglADB3biR7MofD7cdwQtTyGUmweOjqFhRK752O3K4r+H48eUrcsC4aG5Xi3CGd9zRs2Lm8n6gKvpaK7wwYRLIVZ1aJZ15u/mul4eCL2ELlapa2STaj+YroH1pQXN5ointdX7sM0BDWr0I6NeG1FLpVL+LfKC0wdHwd+zk/BO+16+aMEpjR+K++XQvNzYfOZ2kfE2bjqIRSuCsmJr4cyMz4+OzOL1aVqTiKKn8x8plpJ6ia7yFQGRJqlbpnLRxnQzBcPsPKyuD1ITj/wp3i+8y821GBJg310o4v96Q9wCTRNGCvwO1DEcGUhHP53nf5QLL/VoQ6Dpgt21p2WaTc+voYp0hmpBKSgshOl/S/WCGzujxdoysBGtMk9Zg133bsF/0MNcFxnX/8yDVTmiAmC1zxeW4bgCE5mAgUZV67i2QSPAeooaLtNg0cB/ft+7fwHGJaGt0vY1gv3ZpG4h5Z5zHFngmsXY3RdS4nQKFheVhoj5lHTCIJ/Ypxjhn+hIR9ygV3BWHTSjMIbgHjGQBFcNlO0lVOjjNEucEQskjDEENIVSLCNx1r6ZgKETJM0VodfcS3aFZVpp1ImJhWa2jSTxD6UD6gFiD744sQJfbFHW+RwLCJbSr5qB6usgaGSoH+lVM8cR+x
+ MiOb9F/m
+ zs9dOr8u6g+vtbFuNrD2g6w3VovWvQA4bz4YYFsLGBGV+3XjFsdx0cIabi/4Sofoj/cZgt8FnMWyJzyvQQv1sMJJ/OPA17c9SKyHzj48v3785PvzweIwWZgq6jgCdX3NUBK9u7HOloID5w05C+EB0iDJHgU+hmkFVOldTK3CX/DUqL/StUHp7GiHV3xPDYaOfQmWCzLDG0wPkxhPFt1MwtCMC3H1MTb+hob+v51exAOaRKNvagBGPAUK1jyQcpLYUuOvLmTDk+7e47u7YhU/jXvsBa1CawsSpiWRtNWryIQBTXaNpk9baWrgJ/BrusDAik3KfMLLxgy+WHHrg9ARerI0y/zjPPDohV7SP+DKGTplDbEjWMkay8sizZ0KCKTGC8+00FgXASAQJ/JA/qcpqJ2KErOUW1ffj+MYwDbu32ZgegVgkmPQ28AbbLWJp1poEAkV6rNtyMtduEKP8pczCDvFqe+dEhr404PikWllZ/pFL4RtMcKBkREzb7GEvcHVZ3enCspnmRGIu8C4kl305rIqS8Tni8LnTFmCGBmiutRU4Cnfwp1FDwnB212OSqlGjmktK/mFgi1v7xPsf10naYZOx8LezdqlqgKHm4jFeakC7b99TU868SDFFhPWi6hvuJEDoquPCusmFpf83C2JMKkxsLA97FbgDd+GA3ZWauszk+K19bm85PQG1U/zJ7yZMupvBs+YYAowW7rzI5jajQ/U9Hq5W5nNOwg0sTwSiyJWwAK7anyw5s7sMVBNrrGbN0CjIGqESZwtO55SvttnogJM98FuBoYSjwpnZ3g5SaSoGaWJ/SEOmElm0v8ttEYOLAPg6L6mGtWyKX2E4OQUNoRvKoa0LRKKhU0tUdtjOOIUyWxrtkLvMaPRCrP6NWNEsPzpDGcA51NV5+3E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,62 +108,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026 at 03:40:51PM -0500, Eric Sandeen wrote:
-> It was reported that xfs_buf items are not accounted for as
-> reclaimable,
+From: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
 
-Actually, they are:
+[ Upstream commit 63b02a9409cb5180398491b093e48bcb5315f5fb ]
 
-        xfs_buf_cache = kmem_cache_create("xfs_buf", sizeof(struct xfs_buf), 0,
-                                         SLAB_HWCACHE_ALIGN |
->>>>>>                                   SLAB_RECLAIM_ACCOUNT,
-                                         NULL);
+lookup_swap_cgroup_id() passes swap_cgroup_ctrl[type].map to
+__swap_cgroup_id_lookup() without checking that the type was ever
+registered via swap_cgroup_swapon().  On a swapless host every ctrl->map
+is NULL, so __swap_cgroup_id_lookup() dereferences NULL + a scaled
+swp_offset().
 
-So the xfs_buf items themselves are accounted as reclaimable slab
-objects, and these are what the xfs_buf shrinker itself acts on.
+Since commit bea67dcc5eea ("mm: attempt to batch free swap entries for
+zap_pte_range()"), zap_pte_range() -> swap_pte_batch() calls
+lookup_swap_cgroup_id() on any non-present, non-none PTE that decodes as a
+real swap entry, without first validating it against swap_info[].  A
+single PTE corrupted into a type-0 swap entry takes the host down at
+process exit.
 
-> and therefore various statistics in /proc/meminfo
-> and /proc/vmstat do not reflect their reclaimable nature as
-> other slab-allocated items with shrinkers would do, which in
-> turn affects the accuracy of stats such as MemAvailable.
-> 
-> 2 patches here to add accounting for xfs_bufs allocated via
-> xfs_buf_alloc_kmem() and via xfs_buf_alloc_folio().
+We hit this in production on a swapless 6.12.58 host: ~1s of
+"get_swap_device: Bad swap file entry 3f800204222bb" (do_swap_page() being
+correctly defensive about the same entry) followed by
 
-That's accounting for the memory attached to the xfs_buf, not the
-xfs_buf itself. We don't use the size of that memory for reclaim
-purposes, hence we haven't ever tracked it. It is, however, fed back
-into shrinker based memory reclaim via mm_account_reclaimed_pages()
-in xfs_buf_free() and hence memory reclaim correctly tracks how much
-memory was released by the xfs_buf shrinker scan, even if the user
-visible stats don't show it.
+  BUG: unable to handle page fault for address: 000003f800204220
+  RIP: 0010:lookup_swap_cgroup_id+0x2b/0x60
+  Call Trace:
+   swap_pte_batch+0xbf/0x230
+   zap_pte_range+0x4c8/0x780
+   unmap_page_range+0x190/0x3e0
+   exit_mmap+0xd9/0x3c0
+   do_exit+0x20c/0x4b0
 
-> I was not sure how to handle xfs_buf_alloc_vmalloc but I think
-> that's a relatively rare path, and the above two will capture
-> the majority of xfs_buf allocations.
+syzbot has reported the identical stack.
 
-I think both folio and vmalloc should be accounted in the same
-manner - as a number of pages based on the size of the buffer (i.e.
-same as mm_account_reclaimed_pages() does already). It doesn't
-matter if it is vmalloc or a high order folio, the amount of memory
-is the same.  If it gets accounted to the node of the first folio,
-then it will at least always be consistently accounted, if not
-always 100% accurate for the vmalloc case.
+The source of the PTE corruption is a separate bug; this change makes the
+teardown path as robust as the fault path already is.  Every other caller
+of lookup_swap_cgroup_id() is downstream of a get_swap_device() that has
+already validated the entry, so the new branch is cold.
 
-> I've cc:d linux-mm just because i think this is the first
-> user of NR_KERNEL_MISC_RECLAIMABLE in the tree?
+Link: https://lore.kernel.org/20260504-swap-cgroup-fix-7-0-v1-1-f53ff41ee553@linux.dev
+Fixes: bea67dcc5eea ("mm: attempt to batch free swap entries for zap_pte_range()")
+Signed-off-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
+Reported-by: syzbot+e12bd9ca48157add237a@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/r/69859728.050a0220.3b3015.0033.GAE@google.com
+Assisted-by: Claude:unspecified
+Cc: Barry Song <baohua@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Kairui Song <ryncsn@gmail.com>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: chenxin <chenxinxin@xiaomi.com>
+---
+ mm/swap_cgroup.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-These are fs buffers - shouldn't they be accounted as something that
-reports as "cached" or "buffers" in /proc/meminfo? I mean, if you're
-going to do this to make meminfo/vmstat report the memory usage,
-shouldn't we make the effort to classify the memory usage correctly
-for the user?
-
-Cheers,
-
-Dave.
-
+diff --git a/mm/swap_cgroup.c b/mm/swap_cgroup.c
+index db6c4a26cf59..2d0425f4a6b9 100644
+--- a/mm/swap_cgroup.c
++++ b/mm/swap_cgroup.c
+@@ -161,6 +161,11 @@ unsigned short swap_cgroup_record(swp_entry_t ent, unsigned short id,
+  */
+ unsigned short lookup_swap_cgroup_id(swp_entry_t ent)
+ {
++	struct swap_cgroup_ctrl *ctrl;
++
++	ctrl = &swap_cgroup_ctrl[swp_type(ent)];
++	if (unlikely(!ctrl->map))
++		return 0;
+ 	return lookup_swap_cgroup(ent, NULL)->id;
+ }
+ 
 -- 
-Dave Chinner
-dgc@kernel.org
+2.50.1
+
 
