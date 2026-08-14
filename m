@@ -4,99 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA601C5CFC1
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 12:31:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3520C5CFDB
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 12:38:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73D576B0303; Fri, 14 Aug 2026 08:31:29 -0400 (EDT)
+	id E267B6B069E; Fri, 14 Aug 2026 08:38:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F6176B069E; Fri, 14 Aug 2026 08:31:29 -0400 (EDT)
+	id DD7516B06A1; Fri, 14 Aug 2026 08:38:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6039C6B069F; Fri, 14 Aug 2026 08:31:29 -0400 (EDT)
+	id CC5FC6B06A2; Fri, 14 Aug 2026 08:38:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 35C8F6B0303
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:31:29 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 996D71602DB
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:31:28 +0000 (UTC)
-X-FDA: 85099810656.02.18AFDA6
-Received: from mta0.migadu.com (out-161.mta0.migadu.com [91.218.175.161])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 22DEE18000E
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:31:25 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="W/w2rW4p";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.161 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A44DF6B069E
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:38:00 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 278D540437
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:38:00 +0000 (UTC)
+X-FDA: 85099827120.21.9D6AE57
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 650FE40009
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:37:58 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dr7Yrv+8;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786711078;
+	b=w79aGzAtfeLiY/BkebrjbBfafxI87Dfn/hrtY+NoiFp/mfrpasdVeuIEYEXZI9cCQOnjWp
+	T2wCW7zu5AdeYE0VmcEDzvqQiBGINCvXI9oAMeO0/jP+pHOMH6NXA1wVXX6NnUkCOUyeXC
+	LhnPD7sOTtOs4LfEwIeYhQA4RfOJ14I=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dr7Yrv+8;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786710686;
+	s=arc-20220608; t=1786711078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eXOgeYwzbGgYvPyAG/0+VXSIgnH8IMwccTWvuqpNc9Q=;
-	b=ToBiDS+Tknktdr3v8LjNEcxKQVj/BhmhHM43cLWezQjmvNrlpwIYqFvgsOS6IvoI17bULS
-	9gbLrEQ8NkoPPlC0OzMl6VGqgd/F0t9XKrjdJvZFJwuWyNbz5RS/dJ133AV0w5cYdbVako
-	FGaeakPqLdkNt95xeVwbeLMs6+F+UUA=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="W/w2rW4p";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.161 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786710686;
-	b=lrP0EPwN8GvzsOc9woD+cIKxyEGlxH2Kr5B38PofJ0mqGRtZFFhAjapvrj3gmEqUfwK6dB
-	yax/3Z7F2hcEr5aR7sBZwVQkGT/ht2nhBaRh8AoEXAMPLeLrLH9K/sAaeI+OybKZcbaQpN
-	W8NJt9N9e8JtO15h3mJQaKUM6CtSmUA=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=rnrRWzbRgf3HtNAFJ/URJsD3/yE/SVL7fKG74rTrmYI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786710684; v=1; x=1787315484;
- b=W/w2rW4pK+yhwf1OJ0fpPek7hAde0PT4vxsE0sn+F12DPepk1a4tiVo6jxoTOcRd15MXqXLx
- d7lYxISGXVgq+1uAFN7ji+wL5bXlcPtxeBU/rb1VP7cueM8dsM2SRk/hsBQfYanI2YU+7ZbXXzu
- tihy96H3mTr8Cl78zP05Rs+U=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (77.97.51.77)
-	by smtp.migadu.com with ESMTPS id 2309f6b155db51af;
-	Fri, 14 Aug 2026 12:31:24 +0000
-X-Migadu-Flow: FLOW_OUT
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 14 Aug 2026 13:31:23 +0100
-Message-Id: <DKOO2SP5DOCP.1H09TE8XC0D5G@linux.dev>
-To: "Yosry Ahmed" <yosry@kernel.org>
-Cc: "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
- <dave.hansen@linux.intel.com>, "Peter Zijlstra" <peterz@infradead.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
- <david@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike Rapoport"
- <rppt@kernel.org>, "Wei Xu" <weixugc@google.com>, "Johannes Weiner"
- <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Lorenzo Stoakes"
- <ljs@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <x86@kernel.org>, "Sumit Garg" <sumit.garg@oss.qualcomm.com>, "Will Deacon"
- <will@kernel.org>, <rientjes@google.com>, <patrick.roy@linux.dev>,
- "Itazuri, Takahiro" <itazur@amazon.co.uk>, "Andy Lutomirski"
- <luto@kernel.org>, "David Kaplan" <david.kaplan@amd.com>, "Thomas Gleixner"
- <tglx@kernel.org>, "Patrick Bellasi" <derkling@google.com>, "Reiji
- Watanabe" <reijiw@google.com>, "Sean Christopherson" <seanjc@google.com>
-Subject: Re: [PATCH v3 21/26] mm/page_alloc: implement FREETYPE_UNMAPPED
- allocations
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-X-Mailer: aerc 0.21.0
-References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-21-6f5729aa9832@google.com>
- <anJylMTl6GeM8OHx@google.com>
-In-Reply-To: <anJylMTl6GeM8OHx@google.com>
+	bh=Ok+ILBQSUeIltN5l1xpDpnDyA3k7f++vYkrD24qAu/I=;
+	b=tyLv6oqREO4uhJS0fFUjHmdBNK9+NIQYynK7HF2EO/nAxV7ZUJBjfL7M8Gwv370W4lNlwj
+	HB/r7zZTXPlJuPXnXLO5Vk47TB3n0qJJFm0Sk2qZgege9Ab9nDthjfE/bFSkQBmVra48Vf
+	y3h4v08JRwA0sTikwtKl7RVCWOLnmZo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E33C942A1A;
+	Fri, 14 Aug 2026 12:37:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511671F000E9;
+	Fri, 14 Aug 2026 12:37:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786711076;
+	bh=Ok+ILBQSUeIltN5l1xpDpnDyA3k7f++vYkrD24qAu/I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dr7Yrv+8EXF7hMDL8QCQvfMzmtcOJaPzVR65QidqD8LC7nWWkWS14eMOZqf5cUpz5
+	 nbqRb3RjQ8gAIyz8raAfucAtMihNh7Q6JfLVTM3XKb8kGGHLxVDlGN+vhK/nrovupd
+	 7KsHKtCHWM8yXwZVs5QI2VLijf6GKNid2K0CKcFBxVqqSJIXCF42qAA40NTSsLL0HE
+	 1sqc/Zz7fLCrzmZ5MN8t562VAa6/SHC4qzayspqOplFyNqJ+M3k9QiQ5OBrLzlsx0L
+	 ajrlJ8IC1Pe8xhlQgrJGBIRVDVssxRjTcnmkZiOM0DQm2BwsM8L/1gnX2uyL0bDYHZ
+	 IgMHPhZtXDb5Q==
+Date: Fri, 14 Aug 2026 13:37:38 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Hajime Tazaki <thehajime@gmail.com>
+Cc: linux-mm@kvack.org, geert@linux-m68k.org, daniel@thingy.jp, 
+	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [RFC PATCH 3/6] mm: nommu: fix an issue on map request to
+ /dev/zero
+Message-ID: <an8BlTgk7sc5vFJ1@lucifer>
+References: <20260813063401.1786548-1-thehajime@gmail.com>
+ <20260813063401.1786548-4-thehajime@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260813063401.1786548-4-thehajime@gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: x8zpa5yzmqnpo56s4jxxgxeg54a9io17
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 22DEE18000E
-X-HE-Tag: 1786710685-127730
-X-HE-Meta: U2FsdGVkX196Vd5HegN5Pr996mcfi4AUu+UK6/9L75SvFxxjGy9EDToO3CS9uNtiR24UuLGYlmAQU4l0PeRh1h+FN4ccKPU0fMWWd6rFV9eHmoytKQw733ggvyBxwoHJRpDPoqLVJUDv2jdEUsGRySM7Ia1nqrXp2d2ARXyHvdMXCcy41liKQrAN/+CBXZrO/XIWPlNruuuPatFCYIXBlJ/sZrNWEQ8tu6vgquI2JYtIq5QNLMnerLbNv/A5YiI/Qbg4lWPQJhqjgj9fvRVKVuIicvLlnta9+nrLrqZ18jOXNThHq/iBGhEuVKDZwRI9yE2LFavDLhCEDgtFX96d9ohephptY8wlu7NlATH98301QHo68ya6GuORqsdakTyli03I0fMIZPU8fljgDlyl5YRJeZo0Tb1ihhoAdlxXqAK8YYSgyd3bZBwf6sDhqh/J1CTyq/FR/Ld5defYtTB0zSWvWaKQMJdCbMKUjd/VseOyZ8MzKBRiIqyZnX0laqTqjGxVvjAciFSFTQgN3H0L9lB5Nu//Wt+uchnaBGnwBRyyQv4yWqktLYjaDiJxaxPXQED9xxdg+lpDR60Y16MlsGiulaVIDkNU/kTqdS1LpScsSBFFPDpSlI1CtSjPF39UxVbR6YjHXL4ecXd+RJqHZAfs2IMmKKaErInH9ntfIFYCAzyF6tbK7VUh4nS7vrutbZy8lEisf2Kzzlds3JEIqmuKGwOFnz3ZIN6PykMXyKzcW8dqD7Q4CFNJ9sEeJ1zQMcnnBR3Lnn1S3l9ALyb5dmyPfDyn+bppJak/ISyGolGNrwvUPvG2iDftuX3cdClF236cbeMYskhz3r4cUO9byODZ7R8gCZ/sQd+tpazg2RX4TN1ElaxZjeOVIIQafkwfBUsOwuELy6Bdb+XVr+XFsOqztsWpK1VaE8EEdyhip83OnQ+f8d00D0Ckt1l+xMBnPCBKbZ0R6BzbTDuAJS4
- ZXvsJJFo
- MZ7sfHeGAuiQwSidq2OQ5rPoGJaxytvydP7gtFBQDvAMEGfmu5dM3ii9WRRgwl2629X3YXZ9GiR7gafeCqo6DiSdOgHZfz31SsQ4A5lIjbw5N4JI9YYr/7aHyCxSQBMPOtCvMMhWLAPHNO/rKa82yEIaaMmrt2ZjqVj/gkhU4l+T5PWDNhhH++4EUth+rva/f2ozGypGQMJ4dHiAFpZ2hAGQbQs/Szjynyq3VNnqPdLxLbThs5uDL3/WrAABafHaWjYMPOSC5FPpxUJNe5TxKeg12McVLDLRAuTnezvC4e2h4hI2T0eGRbxi5EPfYAZCPHd7xVGetZPb6iSgRJW/hkb5BXJ9ohgCPbzyPYrUFORd2sIh9rmuW8M9Nh1XLtPcaGJBj
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 650FE40009
+X-Stat-Signature: qu5ockbr4gw5qgr59zwidc13tt5w1wmn
+X-HE-Tag: 1786711078-477688
+X-HE-Meta: U2FsdGVkX1+4BCaxvDlf63btXtM1/rLjRi3rSZ+JOTxTdB6rr8VxCGrfL/F0vIgbUstzrfcJW6+uSHFv9+lWqihUK4XCfxA7Cr+xY92ZTS9rVKi0zDMThKCAhNyVU89OTNaLU6tLMP+r0b2TKOVA2LCbNfFkCexbom22R/hldzu9fkBHjyirpeXwL031K4IGr1GwZc7lvvUX5WkSgbl0hQeuPqJm4qDMc5d9T41XHFbspyCdtCEzXRxZFid1iO+ZH0pQUQjayVoIo767oJXYDSlPGPhfSDxh0DjQn2WVBYDbCkk5yD7savQLDTIFwXzW78RZshxfpi588fxfuMQARH0S1Vvz13/tnco2lbK3tJRCcRV4Jd/7ivi6Es1ROx8mXot7Fi8hLwOFx7eWdHZAsGVDK10iHFZHBAWvFQMiC3oK/h0HG6LmB/D9wrCGIF42qRGDmtWrmY00SL2WOEl8CF+P5vXdbSPibNmFQQgg1dCMh3ClBQHNl8bczEoO+LQYMIw0CbRneDBTUiotnJXVs0Twdyy1wuZlwDzrDKNr8v0xdHWjMnjr5SxeVxsZ20+fYSBb0BDq4rQf6y2fcBTc/lsKKOFiFbgeqI0W+Szv4rz0VIJQG6LHfvAiMTk2+tUNNtlLhdYWtzFm5Bduc3To8WWiOcb8NqWCtuvm2a3BrwsoeytbnbPm0OR4Oywce4shUU8iJdKwxqdvcrDsDP12/tOCQxERo6+aNZRy8+EHPxqoNXsls1K7qNJ0lutA/quSLnQf7cb6rCQBFOpz3ALe1tbEJZshUvQG22i5OkHQ1/Z5SjeaRD9FJf14zmPR55Wd6YwCh+dG0QpEUz1dFPE5V5xtKnicDqtyen3gOBo+Nzra6AX9Uzfc/ICKTT3jPCs0o9LW3Wp96ccVgvt82foMeW7XD0mYxD0JsufFIPa6dUo6MYW/2rBLnvWkUz4DiaOFl9M/dGHf3YFxfs2YnEJ
+ fraqvTjB
+ dYb7ktDkXgPvPApItBaiYCmoQ9NJqefOvulcN9FQirFWvpNRpl30PPwYm+jDZCQ4b7WcFFso3gnPX7YkvgHC2xCprYbvRZKqAZ92bD8kjJKg8f4yB2oyGwaPD4PNvqn+DUcYmcVnIJmj52TwxYidAdo7WCVqk+ESyiE1mp3JI7+wvzUT/VuYKEYxNYNPa9XQ1WUx46TWLg1A12Le7ntmY64z5gdBoCW96naVd4JxAOJeKBa8CpdJ9p9CZsxvsGGJMYzIgz3m+J5tr3xjWITx6UbeF3gsQfGHu5yNEJ/SjVlqId9QbRjItrcn3IyyAL6XMSDYEs3B7f3Y7FqOion3Jf5RgwWVGre6U5dsVUddNVTmN3N7rSZBu7UNiE7PU489Pc8RXwx5EmD7xhR/rEvBldHw9O1aItGiSexQBVWBST0y0Z1oCJ5XFHMHQ7XRr0zGjgcgtoMgQzgwP5qUQf/e7K8Un0B2zM4ukLFzvf4LS8NCvWapnGzmStXNodwhS2K5F11S9Ojeh+OQZIo4SesdGdWP4Ea+q03TfinExbsaySqAUCu4S2xh/HZGiCg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,367 +96,374 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Aug 5, 2026 at 12:41 AM BST, Yosry Ahmed wrote:
-> On Sun, Jul 26, 2026 at 10:22:54PM +0000, Brendan Jackman wrote:
->> Currently FREETYPE_UNMAPPED allocs will always fail because, although th=
-e
->> lists exist to hold them, there is no way to actually create an unmapped
->> page block. This commit adds one, and also the logic to map it back
->> again when that's needed.
->>=20
->> Doing this at pageblock granularity ensures that the pageblock flags can
->> be used to infer which freetype a page belongs to. It also provides nice
->> batching of TLB flushes, and also avoids creating too much unnecessary
->> TLB fragmentation in the physmap.
->>=20
->> There are some functional requirements for flipping a block:
->>=20
->>  - Unmapping requires a TLB shootdown, meaning IRQs must be enabled.
->>=20
->>  - Updating the pagetables might require allocating a pagetable to break
->>    down a huge page. This would deadlock if the zone lock was held.
+The subject isn't great - before you're not allowed to mmap /dev/zero _at
+all_ on nommu, here you try to allow it.
+
+I'm kinda against it to be honest, nommu has been functioning... I'll not
+say perfectly fine, given it's broken in many ways that nobody ever
+reports, but I'd say instead 'the same as it was' with no issue.
+
+And you're not really explaining why you need this.
+
+You're not correctly supporting MAP_SHARED-/dev/zero AFAICT at all, it'll
+just... actually I don't know what it'll do
+
+
+On Thu, Aug 13, 2026 at 03:33:58PM +0900, Hajime Tazaki wrote:
+> Upon a private file mapping request to /dev/zero, it calls
+> kernel_read() in do_mmap_private(), getting a failure with the message
+> like: "kernel reads not supported for file /dev/zero", which is because
+> zero_fops defined in drivers/char/mem.c has both .read and .read_iter
+> definitions.
+
+Can this be broken out into its own separate fix please.
+
+It's not about /dev/zero at all but rather being able to MAP_PRIVATE-map
+literally anything with .read and .read_iter.
+
 >
-> We also need to zero unmapped/sensitive pages before mapping them again,
-> but seems like the current approach is to differ this to the caller,
-> which makes sense. The only annoying part is that
-> want_init_on_{free/alloc}() now silently skip the zeroing for those
-> pages.
+> Even fixing this issue, the map request to /dev/zero works fine without
+> errors but the allocated vma isn't marked with anonymous because
+> mmap_zero_prepare() isn't called under nommu platform, resulting
+> vma_desc_set_anonymous() isn't called either.
 
-This does look annoying but I think it's actually all fine and correct.
+"Resulting _in_ vma_desc_set_anonymous() _not being_ called either" is clearer.
 
-- It's forbidden to allocate with ALLOC_UNMAPPED and __GFP_ZERO, so the
-  __GFP_ZERO part of want_init_on_alloc() is still correct under
-  ALLOC_UNMAPPED.
-
-- I think init_on_alloc's job is kernel hardening, i.e. it's a roadbump
-  for kernel exploit authors. If you have a bug that lets you read some
-  uninitialised memory via the kernel then init_on_alloc means you see
-  zeroes. But those vulns are automatically mitigated by ALLOC_UNMAPPED
-  anyway so this is fine.
-
-- There is a very strong ambient rule that you must ensure memory is
-  zeroed before mapping it into userspace/VMs, but this is totally
-  separate from init_on_alloc. And it's fine for filesystems or whatever
-  to implement this however they want, __GFP_ZERO is just one way they
-  can do it.
-
-  This rule is totally separate from init_on_alloc, if you break it you
-  are immediately creating a vulnerability instead of just a second-
-  order weakness.
-
-> We should document somewhere that the users of ALLOC_UNMAPPED are
-> responsible for zeroing memory before freeing it?
-
-So, no I don't think we need to document that, we just need to make sure
-that the __GFP_ZERO restriction is clear.
-
-> The current users currently always zero the pages on allocation as well,
-> I am not sure if this should also be a general requirement, or perhaps
-> only if want_init_on_alloc() is set?
-
->> This makes allocations that need to change sensitivity _somewhat_
 >
-> s/sensitivity/direct mapping status (or sth)?
+> This commit fixes those issues by:
 
-Oops thanks.
+Already 'issues' suggests >1 patch would be a better idea :)
 
->> similar to those that need to fallback to a different migratetype. But,
->> the locking requirements mean that this can't just be squashed into the
->> existing "fallback" allocator logic, instead a new allocator path just
->> for this purpose is needed.
->>=20
->> The new path is assumed to be much cheaper than the really heavyweight
->> stuff like compaction and reclaim. But at present it is treated as less
->> desirable than the mobility-related "fallback" and "stealing" logic.
->> This might turn out to need revision (in particular, maybe it's a
->> problem that __rmqueue_steal(), which causes fragmentation, happens
->> before __rmqueue_direct_map()), but that should be treated as a subseque=
-nt
->> optimisation project.
->>=20
->> Adding alloc_flags to gfp_freetype() requires moving it to
->> mm/page_alloc.h so it can refer to ALLOC_UNMAPPED. It was already only
->> used in internal mm code.
->>=20
->> Now that unmapped pageblocks actually exist, exclude them from
->> migration. Migrating unmapped pages via the mermap should be possible
->> but that's something to be added later when needed.
->>=20
->> Signed-off-by: Brendan Jackman <jackmanb@google.com>
-> [..]
->> @@ -3400,6 +3426,127 @@ static inline void zone_statistics(struct zone *=
-preferred_zone, struct zone *z,
->>  #endif
->>  }
->> =20
->> +#ifdef CONFIG_PAGE_ALLOC_UNMAPPED
->> +/* Try to allocate a page by mapping/unmapping a block from the direct =
-map. */
->> +static inline struct page *
->> +__rmqueue_direct_map(struct zone *zone, unsigned int request_order,
->> +		     unsigned int alloc_flags, freetype_t freetype)
->> +{
->> +	unsigned int ft_flags_other =3D freetype_flags(freetype) ^ FREETYPE_UN=
-MAPPED;
->> +	freetype_t ft_other =3D migrate_to_freetype(free_to_migratetype(freety=
-pe),
->> +						  ft_flags_other);
->> +	bool want_mapped =3D !(freetype_flags(freetype) & FREETYPE_UNMAPPED);
->> +	enum rmqueue_mode rmqm =3D RMQUEUE_NORMAL;
->> +	unsigned long irq_flags;
->> +	int nr_pageblocks, nr_freed;
->> +	struct page *page;
->> +	int alloc_order;
->> +	int err;
->> +
->> +	if (freetype_idx(ft_other) < 0)
->> +		return NULL;
->> +
->> +	/*
->> +	 * Might need a TLB shootdown. Even if IRQs are on this isn't
->> +	 * safe if the caller holds a lock (in case the other CPUs need that
->> +	 * lock to handle the shootdown IPI).
->> +	 */
->> +	if (alloc_flags & ALLOC_NOBLOCK)
->> +		return NULL;
+> 1) use vfs_iter_read() instead to avoid failure at kernel_read()
+> 2) calls .mmap_prepare on private mapping in do_mmap() so that required
+>    preparations are done even in private mapping.
 >
-> Should we only check this if !want_mapped? IIUC we only need a TLB
-> shootdown when unmapping.
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+> Cc: Jan Kara <jack@suse.cz>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: "Liam R. Howlett" <liam@infradead.org>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Jann Horn <jannh@google.com>
+> Cc: Pedro Falcato <pfalcato@suse.de>
+> Cc: linux-fsdevel@vger.kernel.org
+> Cc: linux-mm@kvack.org (open list:PAGE CACHE)
+> Fixes: 4d03e3cc5982 ("fs: don't allow kernel reads and writes without iter ops")
 
-Hm, I don't think we wanna zero a pageblock with IRQs off. The comment
-should reflect that though.
+Yeah as Greg says, it really suggests nobody is using mainline nommu in any
+serious way given this is from 5.10 and would require avoiding /dev/zero in
+a way that seems kinda unlikely.
 
->> +
->> +	if (!can_set_direct_map() || alloc_flags & ALLOC_NOLOCK)
->> +		return NULL;
->> +
->> +	lockdep_assert(!irqs_disabled() || unlikely(early_boot_irqs_disabled))=
-;
->> +
->> +	/*
->> +	 * Need to [un]map a whole pageblock (otherwise it might require
->> +	 * allocating pagetables). First allocate it.
->> +	 */
->> +	alloc_order =3D max(request_order, pageblock_order);
->> +	nr_pageblocks =3D 1 << (alloc_order - pageblock_order);
->> +	spin_lock_irqsave(&zone->lock, irq_flags);
->> +	/* First try a block that already has the right migratetype. */
->> +	page =3D __rmqueue(zone, alloc_order, ft_other, alloc_flags, &rmqm);
+Should be Cc: stable also but not as a combined patch, the mmap_prepare
+bits only came in recently.
+
+> Assisted-by: cubic.dev:unspecified
+
+Unspecified? :)
+
+Really the best approach nowadays is:
+
+Assisted-by: LLM # it wrote the whole thing
+
+or:
+
+Assisted-by: LLM # it merely complimented my dress sense
+
+Or whatever :)
+
+> Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
+
+In general this is opening up whole new areas of code to nommu and given
+nobody seems to be testing anything I'm not sure I'm ok with it.
+
+Since forever /dev/zero's been disabled for mmap in nommu. So I don't
+really see the point in making it work at quite a lot of risk here +
+necessitating doing some more nommu stuff in unrelated areas.
+
+In any case, it's probably worth waiting for me to do my follow up series
+on /dev/zero next cycle, which will inform how it will look for real
+arches.
+
+It's worth breaking the read_iter fixup out of it though probably, and the
+mmap_prepare support.
+
+> ---
+>  drivers/char/mem.c |  5 ++-
+>  mm/filemap.c       |  6 ++--
+>  mm/nommu.c         | 84 ++++++++++++++++++++++++++++++++++++++++++++--
+>  3 files changed, 87 insertions(+), 8 deletions(-)
 >
-> IIUC, this is called after __rmqueue() will have already failed in the
-> caller with request_order (a potentially smaller order), so why are we
-> trying this again here?
-
-The __rmqueue() that failed was with the opposite value of
-FREETYPE_UNMAPPED.
-
->> +	if (!page) {
->> +		/* Fallback to changing a block's migratetype. */
->> +		rmqm =3D RMQUEUE_CLAIM;
->> +		page =3D __rmqueue(zone, alloc_order, ft_other, alloc_flags, &rmqm);
->> +	}
->> +	spin_unlock_irqrestore(&zone->lock, irq_flags);
->> +	if (!page)
->> +		return NULL;
->> +
->> +	/*
->> +	 * Now that IRQs are on it's safe to do a TLB shootdown, and now that =
-we
->> +	 * released the zone lock it's possible to allocate a pagetable if
->> +	 * needed to split up a huge page.
->> +	 *
->> +	 * Note that modifying the direct map may need to allocate pagetables.
->> +	 * What about unbounded recursion? Here are the assumptions that make =
-it
->> +	 * safe:
->> +	 *
->> +	 * - The direct map starts out fully mapped at boot. (This is not real=
-ly
->> +	 *   an "assumption" as it's in direct control of page_alloc.c).
->> +	 *
->> +	 * - Once pages in the direct map are broken down, they are not
->> +	 *   re-aggregated into larger pages again.
->> +	 *
->> +	 * - Pagetables are never allocated with ALLOC_UNMAPPED.
->> +	 *
->> +	 * Under these assumptions, a pagetable might need to be allocated whi=
-le
->> +	 * _unmapping_ stuff from the direct map during an ALLOC_UNMAPPED
->> +	 * allocation. But, the allocation of that pagetable never requires
->> +	 * allocating a further pagetable.
->> +	 */
->> +	err =3D set_direct_map_valid_noflush(page,
->> +				nr_pageblocks << pageblock_order, want_mapped);
->> +	if (err =3D=3D -ENOMEM || WARN_ONCE(err, "err=3D%d\n", err)) {
->> +		set_direct_map_valid_noflush(page,
->> +				nr_pageblocks << pageblock_order, !want_mapped);
->> +		spin_lock_irqsave(&zone->lock, irq_flags);
->> +		/* Important: free using _old_ freetype. */
->> +		__free_one_page(page, page_to_pfn(page), zone,
->> +				alloc_order, ft_other, FPI_SKIP_REPORT_NOTIFY);
->> +		spin_unlock_irqrestore(&zone->lock, irq_flags);
->> +		return NULL;
->> +	}
->> +
->> +	if (want_mapped) {
->> +		/* Exposing formerly-protected data; scrub it. */
->> +		clear_highpages_kasan_tagged(page, nr_pageblocks << pageblock_order);
+> diff --git a/drivers/char/mem.c b/drivers/char/mem.c
+> index 63253d1de5d7..dba24d0a7b33 100644
+> --- a/drivers/char/mem.c
+> +++ b/drivers/char/mem.c
+> @@ -500,11 +500,10 @@ static ssize_t read_zero(struct file *file, char __user *buf,
 >
-> Shouldn't all unmapped memory be zeroed on free? If we solidify this
-> assumption we can probably drop this here (and maybe replace it with an
-> assertion)?
+>  static int mmap_zero_prepare(struct vm_area_desc *desc)
+>  {
+> -#ifndef CONFIG_MMU
+> -	return -ENOSYS;
+> -#endif
 
-Hm, that's true. I guess just a question of whether we do indeed want to
-make that a hard rule for ALLOC_UNMAPPED. I'm not too sure about that, I
-only really added that unconditional zeroing because I wanted to keep
-the prior behaviour of secretmem/GUEST_MEMFD_FLAG_NO_DIRECT_MAP, but
-maybe it's undesirable to place such a big burden on ALLOC_UNMAPPED? It
-would be nice to be able to easily expand this into more
-direct-map-killing behaviour...
+> +#ifdef CONFIG_MMU
+>  	if (vma_desc_test(desc, VMA_SHARED_BIT))
+>  		return shmem_zero_setup_desc(desc);
+> +#endif
 
->> +	} else {
->> +		unsigned long start =3D (unsigned long)page_address(page);
->> +		unsigned long end =3D start + (nr_pageblocks << (pageblock_order + PA=
-GE_SHIFT));
->> +
->> +		flush_tlb_kernel_range(start, end);
->> +	}
->> +
->> +	for (int i =3D 0; i < nr_pageblocks; i++) {
->> +		struct page *block_page =3D page + (pageblock_nr_pages * i);
->> +
->> +		set_pageblock_freetype_flags(block_page, freetype_flags(freetype));
->> +	}
->> +
->> +	if (request_order >=3D alloc_order)
->> +		return page;
->> +
->> +	/* Free any remaining pages in the block. */
->> +	spin_lock_irqsave(&zone->lock, irq_flags);
->> +	nr_freed =3D expand(zone, page, request_order, alloc_order, freetype);
->> +	account_freepages(zone, nr_freed, free_to_migratetype(freetype));
->> +	spin_unlock_irqrestore(&zone->lock, irq_flags);
->> +
->> +	return page;
->> +}
->> +#else /* CONFIG_PAGE_ALLOC_UNMAPPED */
->> +static inline struct page *__rmqueue_direct_map(struct zone *zone, unsi=
-gned int request_order,
->> +				unsigned int alloc_flags, freetype_t freetype)
->> +{
->> +	return NULL;
->> +}
->> +#endif /* CONFIG_PAGE_ALLOC_UNMAPPED */
->> +
->>  static __always_inline
->>  struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zo=
-ne,
->>  			   unsigned int order, unsigned int alloc_flags,
->> @@ -3433,13 +3580,15 @@ struct page *rmqueue_buddy(struct zone *preferre=
-d_zone, struct zone *zone,
->>  			 */
->>  			if (!page && (alloc_flags & (ALLOC_OOM|ALLOC_HARDER)))
->>  				page =3D __rmqueue_smallest(zone, order, ft_high);
->> -
->> -			if (!page) {
->> -				spin_unlock_irqrestore(&zone->lock, flags);
->> -				return NULL;
->> -			}
->>  		}
->>  		spin_unlock_irqrestore(&zone->lock, flags);
->> +
->> +		/* Try changing direct map, now we've released the zone lock */
->> +		if (!page)
->> +			page =3D __rmqueue_direct_map(zone, order, alloc_flags, freetype);
->> +		if (!page)
->> +			return NULL;
->> +
->>  	} while (check_new_pages(page, order));
->> =20
->>  	/*
->> @@ -3660,6 +3809,8 @@ static void reserve_highatomic_pageblock(struct pa=
-ge *page, int order,
->>  		return;
->> =20
->>  	ft_high =3D freetype_with_migrate(ft, MIGRATE_HIGHATOMIC);
->> +	if (freetype_idx(ft_high) < 0)
->> +		return;
+This is pretty horrible already :(
+
+You're also letting VMA_SHARED_BIT be a return 0 noop, that
+seems... unwise?
+
+You can use IS_ENABLED(CONFIG_MMU) to make things vastly less terrible,
+e.g.:
+
+	static int mmap_zero_prepare(struct vm_area_desc *desc)
+	{
+		if (!vma_desc_is_cow_mapping(desc)) {
+			if (!IS_ENABLED(CONFIG_MMU))
+				return -ENOSYS;
+			return shmem_zero_setup_desc(desc);
+		}
+		...
+	}
+
+But again, I don't really feel that nommu should be enabling this and I'm
+changing the /dev/zero stuff anyway.
+
 >
-> Does this belong in "mm/page_alloc: add support for freetypes with no
-> freelist"?
->
->>  	if (order < pageblock_order) {
->>  		if (move_freepages_block(zone, page, ft, ft_high) =3D=3D -1)
->>  			return;
->> @@ -3975,13 +4126,15 @@ alloc_flags_nofragment(struct zone *zone, gfp_t =
-gfp_mask)
->>  }
->> =20
->>  /* Must be called after current_gfp_context() which can change gfp_mask=
- */
->> -static inline unsigned int alloc_flags_cma(gfp_t gfp_mask)
->> +static inline unsigned int alloc_flags_cma(gfp_t gfp_mask, unsigned int=
- alloc_flags)
->>  {
->>  #ifdef CONFIG_CMA
->> -	if (free_to_migratetype(gfp_freetype(gfp_mask)) =3D=3D MIGRATE_MOVABLE=
-)
->> -		return ALLOC_CMA;
->> +	if (free_to_migratetype(gfp_freetype(gfp_mask, alloc_flags)) =3D=3D MI=
-GRATE_MOVABLE)
->> +		alloc_flags |=3D ALLOC_CMA;
->>  #endif
->> -	return ALLOC_DEFAULT;
->> +	alloc_flags |=3D ALLOC_DEFAULT;
->> +
->> +	return alloc_flags;
->>  }
->> =20
->>  /*
->> @@ -4770,7 +4923,7 @@ alloc_flags_slowpath(gfp_t gfp_mask, unsigned int =
-order)
->>  	} else if (unlikely(rt_or_dl_task(current)) && in_task())
->>  		alloc_flags |=3D ALLOC_MIN_RESERVE;
->> =20
->> -	alloc_flags |=3D alloc_flags_cma(gfp_mask);
->> +	alloc_flags =3D alloc_flags_cma(gfp_mask, alloc_flags);
->> =20
->>  	if (defrag_mode)
->>  		alloc_flags |=3D ALLOC_NOFRAGMENT;
->> @@ -5085,7 +5238,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned in=
-t order,
->> =20
->>  	reserve_flags =3D __gfp_pfmemalloc_flags(gfp_mask);
->>  	if (reserve_flags)
->> -		alloc_flags =3D alloc_flags_cma(gfp_mask) | reserve_flags |
->> +		alloc_flags =3D alloc_flags_cma(gfp_mask, alloc_flags) | reserve_flag=
-s |
->>  				ac->alloc_flags | (alloc_flags & ALLOC_KSWAPD);
->
-> Should we pass in ac->alloc_flags here to maintain equivalent
-> functionality, maybe this:
->
-> 		alloc_flags =3D alloc_flags_cma(gfp_mask, ac->alloc_flags) |
-> 				reserve_flags | (alloc_flags & ALLOC_KSWAPD);
+>  	/*
+>  	 * This is a highly unique situation where we mark a MAP_PRIVATE mapping
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index d721986d5f46..cf02faad86aa 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -4077,7 +4077,7 @@ int generic_file_mmap(struct file *file, struct vm_area_struct *vma)
+>  }
+>  int generic_file_mmap_prepare(struct vm_area_desc *desc)
+>  {
+> -	return -ENOSYS;
+> +	return 0;
 
-Um, what's the difference?
+Err, no, making this a noop breaks it?
 
->> =20
->>  	/*
->> @@ -5307,7 +5460,11 @@ static inline bool prepare_alloc_pages(gfp_t gfp_=
-mask, unsigned int order,
->>  	ac->highest_zoneidx =3D gfp_zone(gfp_mask);
->>  	ac->zonelist =3D node_zonelist(preferred_nid, gfp_mask);
->>  	ac->nodemask =3D nodemask;
->> -	ac->freetype =3D gfp_freetype(gfp_mask);
->> +	ac->freetype =3D gfp_freetype(gfp_mask, *alloc_flags);
->> +
->> +	/* Not implemented yet. */
->> +	if (freetype_flags(ac->freetype) & FREETYPE_UNMAPPED && gfp_mask & __G=
-FP_ZERO)
+I'm not really hugely fine with you making this be the same as CONFIG_MMU
+either as I am not confident in the change being correctly audited given
+the until-recently total lack of testing of nommu, and now very limited, as
+well intentioned as it might be testing.
+
+I would prefer anything that currently doesn't function with nommu to
+remain so.
+
+>  }
+>  int generic_file_readonly_mmap(struct file *file, struct vm_area_struct *vma)
+>  {
+> @@ -4085,7 +4085,9 @@ int generic_file_readonly_mmap(struct file *file, struct vm_area_struct *vma)
+>  }
+>  int generic_file_readonly_mmap_prepare(struct vm_area_desc *desc)
+>  {
+> -	return -ENOSYS;
+> +	if (is_shared_maywrite(&desc->vma_flags))
+> +		return -EINVAL;
+> +	return generic_file_mmap_prepare(desc);
+
+Again same objections as above re: doing real-arch stuff in nommu.
+
+>  }
+>  #endif /* CONFIG_MMU */
 >
-> Nit: Add more parentheses for readability?
+> diff --git a/mm/nommu.c b/mm/nommu.c
+> index e40990e15831..a29a53c1c80a 100644
+> --- a/mm/nommu.c
+> +++ b/mm/nommu.c
+> @@ -37,6 +37,7 @@
+>
+>  #include <linux/uaccess.h>
+>  #include <linux/uio.h>
+> +#include <linux/major.h>
+>  #include <asm/tlb.h>
+>  #include <asm/tlbflush.h>
+>  #include <asm/mmu_context.h>
+> @@ -856,6 +857,22 @@ static int validate_mmap_request(struct file *file,
+>  	return 0;
+>  }
+>
+> +static int is_file_anonymous(struct file *file)
+> +{
 
-Yup sounds good.
+As stated on the cover, I don't adore this and that's all changing soon
+anyway.
 
+
+> +	if (!file)
+> +		return 1;
+
+It's 2026 use a bool please.
+
+> +
+> +	if (file->f_path.dentry && file->f_path.dentry->d_inode) {
+> +		struct inode *inode = file->f_path.dentry->d_inode;
+> +		/* if the device is /dev/zero */
+> +		if (S_ISCHR(inode->i_mode) &&
+> +		    imajor(inode) == MEM_MAJOR && iminor(inode) == 5)
+> +			return 1;
+
+This is horrible really. The /dev/zero stuff I'm doing kinda had to do
+_something_ this this (in a roundabout way) - well I thought so - anyway :)
+
+But yeah again wait for me to do /dev/zero follow up.
+
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  /*
+>   * we've determined that we can make the mapping, now translate what we
+>   * now know into VMA flags
+> @@ -869,7 +886,11 @@ static vm_flags_t determine_vm_flags(struct file *file,
+>
+>  	vm_flags = calc_vm_prot_bits(prot, 0) | calc_vm_flag_bits(file, flags);
+>
+> -	if (!file) {
+> +	/* private and file mapping will be marked anonymous later (do_mmap_private()).
+> +	 * and /dev/zero is marked by them at .mmap_prepare,
+> +	 * which should be _before_ this point.
+> +	 */
+> +	if (is_file_anonymous(file)) {
+
+You're kinda throwing in a bunch of random stuff in 1 patch you really need
+to break things out more.
+
+>  		/*
+>  		 * MAP_ANONYMOUS. MAP_SHARED is mapped to MAP_PRIVATE, because
+>  		 * there is no fork().
+> @@ -923,6 +944,29 @@ static int do_mmap_shared_file(struct vm_area_struct *vma)
+>  	return -ENODEV;
+>  }
+>
+> +static ssize_t nommu_read_iter(struct file *file, void *buf,
+> +			       size_t count, loff_t *pos)
+> +{
+> +	struct iov_iter iter;
+> +	ssize_t ret;
+> +	size_t done = 0;
+> +
+> +	while (done < count) {
+> +		struct kvec iov = {
+> +			.iov_base = buf + done,
+> +			.iov_len = min_t(size_t, count - done, MAX_RW_COUNT),
+> +		};
+> +
+> +		iov_iter_kvec(&iter, ITER_DEST, &iov, 1, iov.iov_len);
+> +		ret = vfs_iter_read(file, &iter, pos, 0);
+> +		if (ret <= 0)
+> +			return done ? done : ret;
+> +		done += ret;
+> +	}
+> +
+> +	return done;
+> +}
+> +
+>  /*
+>   * set up a private mapping or an anonymous shared mapping
+>   */
+> @@ -993,7 +1037,7 @@ static int do_mmap_private(struct vm_area_struct *vma,
+>  		fpos = vma->vm_pgoff;
+>  		fpos <<= PAGE_SHIFT;
+>
+> -		ret = kernel_read(vma->vm_file, base, len, &fpos);
+> +		ret = nommu_read_iter(vma->vm_file, base, len, &fpos);
+
+Hmm so now you just assume there's always a .read_iter and error out if
+there isn't one?
+
+Seems questionable.
+
+>  		if (ret < 0)
+>  			goto error_free;
+>
+> @@ -1080,6 +1124,28 @@ unsigned long do_mmap(struct file *file,
+>  		vma->vm_file = get_file(file);
+>  	}
+>
+> +	/* call mmap_prepare function if any */
+> +	if (!(flags & MAP_SHARED) && !(capabilities & NOMMU_MAP_DIRECT) &&
+> +	    (vma->vm_file && vma->vm_file->f_op->mmap_prepare)) {
+
+> +		struct vm_area_desc desc;
+> +
+> +		vma->vm_start = addr;
+> +		vma->vm_end = addr + len;
+> +
+> +		compat_set_desc_from_vma(&desc, vma->vm_file, vma);
+> +		ret = vma->vm_file->f_op->mmap_prepare(&desc);
+> +		/* private ramfs/romfs mappings fails with -ENOSYS so,
+> +		 * fall back to copied mapping.
+> +		 */
+> +		if (ret && ret != -ENOSYS)
+> +			goto error_mmap_prepare;
+> +
+> +		ret = __compat_vma_mmap(&desc, vma);
+> +		if (ret)
+> +			goto error_mmap_prepare;
+> +	}
+
+Again break out code into separate functions please!
+
+I invented this compat mmap_prepare stuff to handle stacked file system
+mounts, and I intend to remove it once the mmap_prepare conversion is
+complete.
+
+But I suppose... maybe stuff could be migrated to nommu.c at that point as
+a local fixup just for it.
+
+Probably worth breaking this out as a separate patch too then so
+mmap_prepare is properly supported in nommu otherwise stuff will break
+there, eventually (with X year lag possibly inf on reporting of course ;)
+
+> +
+> +
+>  	down_write(&nommu_region_sem);
+>
+>  	/* if we want to share, we need to check for regions created by other
+> @@ -1196,7 +1262,7 @@ unsigned long do_mmap(struct file *file,
+>  	add_nommu_region(region);
+>
+>  	/* clear anonymous mappings that don't ask for uninitialized data */
+> -	if (vma_is_anonymous(vma) &&
+> +	if (is_file_anonymous(vma->vm_file) &&
+
+As above re: this function.
+
+>  	    (!IS_ENABLED(CONFIG_MMAP_ALLOW_UNINITIALIZED) ||
+>  	     !(flags & MAP_UNINITIALIZED)))
+>  		memset((void *)region->vm_start, 0,
+> @@ -1247,6 +1313,18 @@ unsigned long do_mmap(struct file *file,
+>  	ret = -EINVAL;
+>  	goto error;
+>
+> +error_mmap_prepare:
+> +	if (region->vm_file)
+> +		fput(region->vm_file);
+> +	kmem_cache_free(vm_region_jar, region);
+> +	if (vma->vm_file)
+> +		fput(vma->vm_file);
+> +	vm_area_free(vma);
+> +
+> +	pr_warn("mmap_prepare failed for %lu byte allocation from process %d\n",
+> +			len, current->pid);
+> +	return ret;
+> +
+>  error_getting_vma:
+>  	kmem_cache_free(vm_region_jar, region);
+>  	pr_warn("Allocation of vma for %lu byte allocation from process %d failed\n",
+> --
+> 2.43.0
+>
+
+--
+Cheers, Lorenzo
 
