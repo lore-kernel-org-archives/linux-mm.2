@@ -4,103 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 406A8C5CFC1
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 07:48:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F9DEC5B572
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 07:50:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCC4C6B02EC; Fri, 14 Aug 2026 03:48:14 -0400 (EDT)
+	id 4455A6B02ED; Fri, 14 Aug 2026 03:50:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAD926B02F1; Fri, 14 Aug 2026 03:48:14 -0400 (EDT)
+	id 4242B6B02F2; Fri, 14 Aug 2026 03:50:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE0C66B02F2; Fri, 14 Aug 2026 03:48:14 -0400 (EDT)
+	id 359D86B02F4; Fri, 14 Aug 2026 03:50:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8871A6B02EC
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 03:48:14 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 751B41403D1
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 07:48:12 +0000 (UTC)
-X-FDA: 85099096824.17.C2895A0
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 73DA020002
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 07:48:08 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=YRZOO0yd;
-	spf=pass (imf13.hostedemail.com: domain of mambaxin@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=mambaxin@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 05D616B02ED
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 03:50:20 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E67D6403B8
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 07:50:18 +0000 (UTC)
+X-FDA: 85099102116.11.A02B388
+Received: from va-2-18.ptr.blmpb.com (va-2-18.ptr.blmpb.com [209.127.231.18])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0DE0E1C0002
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 07:50:15 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=fnnas-com.20200927.dkim.feishu.cn header.s=s1 header.b=tMicTUuO;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of yukuai@fnnas.com designates 209.127.231.18 as permitted sender) smtp.mailfrom=yukuai@fnnas.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786693690;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1786693817;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=FIECsLjOcFQ4t6j1nI62wLXm7hufJJ5ekbHLc3/zpck=;
-	b=b26SSYQDH1IEageyLScmqHDV40HdFeixAqBdGeNPoXU4oB+upQVbbx5WL+6bbK3bs3qdo4
-	iA6rOsh3p7B0bA0TShODRXQzBvVFd5+V0BI6AWGxpzMcHE5TTG+3Ji6eHUaPsxYa1niUhW
-	x4BxTGznAhVmTUjW6CbyXVpZwfv7D9w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786693690;
-	b=CQbvS2I3uWecNmPXo/42Hm29qHp3o4513RUBZUiLUcUFtbOTYPayeuNZkG6Vs8opvhfVYI
-	ci/kR1KdGWXm4ZdCwHSI9iEXqJplX/3/q/M9egufhYzlHQ5jmyd89ZHErWU23QcoPzezSn
-	bQDTioj+KDKDF/4V4P5u6MzgxgNwTRs=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JbnLgklqOUcOfZtgfE8qoZAa4WQi1t4pHM8VNSJ95PY=;
+	b=AXY7mjAvCEFasOfdPpZxmTGyz1UJJsQPRd9frFRW9hbOqLcPyyBNJ4B0/E4Q3N6posqhS6
+	qRbQ3/t7uz1Rhgyyy4uR4AtgKA4ArQQ1AoJbBlEj6ddZaOfYMb4qT2BfGmdMETFWBaev8v
+	aNQnzi4kU+rOBTTULWSAz005C25+YuA=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=YRZOO0yd;
-	spf=pass (imf13.hostedemail.com: domain of mambaxin@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=mambaxin@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=FI
-	ECsLjOcFQ4t6j1nI62wLXm7hufJJ5ekbHLc3/zpck=; b=YRZOO0ydDBW69njRGY
-	i72odduzj/kBXY3UjVmE12Y/HVkUzkv6i0HbItjmIN9nNpy8Zq88417ZmcgzFySx
-	k32Oys9K8tYfL0uLw4tgWee5YWaOgtLi75uR3eVWoT0CKSNKZ5P1KE2biH46dA7a
-	E1YDqEUmmfRCbnl1AkArUP8+I=
-Received: from localhost (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDX5yYOyH5qLnA+Ng--.54207S3;
-	Fri, 14 Aug 2026 15:47:29 +0800 (CST)
-From: mambaxin@163.com
-To: hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeelb@google.com,
-	muchun.song@linux.dev,
-	akpm@linux-foundation.org,
-	david@redhat.com,
-	v-songbaohua@oppo.com,
-	hughd@google.com,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	jose.fernandez@linux.dev,
-	stable@vger.kernel.org,
-	syzbot+e12bd9ca48157add237a@syzkaller.appspotmail.com,
-	Barry Song <baohua@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Kairui Song <ryncsn@gmail.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Sasha Levin <sashal@kernel.org>,
-	chenxin <chenxinxin@xiaomi.com>
-Subject: [PATCH] mm: swap_cgroup: fix NULL deref in lookup_swap_cgroup_id on swapless host
-Date: Fri, 14 Aug 2026 15:47:06 +0800
-Message-ID: <20260814074705.939721-2-mambaxin@163.com>
-X-Mailer: git-send-email 2.50.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDX5yYOyH5qLnA+Ng--.54207S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZFy3JF4rGr17Cw1fAr17trb_yoW5ur45pF
-	95WFnIgryUGr97Kw40ya40ga48ua1rWr47JrWvk3WY9a13Jr15WryI9F1UWryqvanI9Fyj
-	qFnIyw1xKw1jvFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jShFxUUUUU=
-X-Originating-IP: [153.3.251.220]
-X-CM-SenderInfo: xpdputx0lqqiywtou0bp/xtbCwhFwemp+yBGO2AAA3C
+	imf21.hostedemail.com;
+	dkim=pass header.d=fnnas-com.20200927.dkim.feishu.cn header.s=s1 header.b=tMicTUuO;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of yukuai@fnnas.com designates 209.127.231.18 as permitted sender) smtp.mailfrom=yukuai@fnnas.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786693817;
+	b=xHeS2m+YGCsf91gNtHmKY8cFomeHrgGwoCI2NnzNdP+tgzyra2jSKBVG8ZdVb3xZ0Ov7AU
+	Y/mv0CgYp3c3lpQv9bMVNpI4/nyDOKNhvkKvqHYcaHMJ2WvZTphdYcuk5S1Bwu35EP+c3Z
+	ZxMSU4kIsb1HlWgQOg2USvBZ3AQ1bTA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=fnnas-com.20200927.dkim.feishu.cn; t=1786693810;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=JbnLgklqOUcOfZtgfE8qoZAa4WQi1t4pHM8VNSJ95PY=;
+ b=tMicTUuOiAnfACj5gsLu2EuwligrANMVk06bL6KP2qysffPuym9ME8OeJa9s1ryfyvmDGz
+ VbmjVCDrQ3uRh27kSYaMU44CusVoENs9K6NgPFUy0AAcxcdVvfbsDixLuOKbWeqT16/Usg
+ hRg+WK8ne+oUiKyVqHULQ154YZzQIemikjiv2PLp2dA3Btk0BiOAGf9/YwxOfqE1dbCD4Z
+ 4PCVF+zpQPVGPIU+I+rd6ImD0UtsTq9NQvK+7YGbloS6RExH3e0ZiynKp60W3taB97+b1L
+ h0PAPy9+eZKu/lQbLDZ6dya3I6HsoA9pRMSZFbH43aHO2A24LWWgj/XSp2BKLQ==
+Content-Transfer-Encoding: quoted-printable
+From: "Yu Kuai" <yukuai@fnnas.com>
+User-Agent: Mozilla Thunderbird
+In-Reply-To: <20260814071232.GA9784@lst.de>
+References: <20260811064744.1139446-1-yukuai@kernel.org> <20260811064744.1139446-3-yukuai@kernel.org> <20260814071232.GA9784@lst.de>
+Content-Type: text/plain; charset=UTF-8
+To: "Christoph Hellwig" <hch@lst.de>, "yu kuai" <yukuai@fygo.io>
+Subject: Re: [RFC PATCH v2 2/4] blk-cgroup: use a request_queue rhashtable for blkg lookup
+X-Original-From: Yu Kuai <yukuai@fnnas.com>
+X-Lms-Return-Path: <lba+26a7ec8b1+a57c7e+kvack.org+yukuai@fnnas.com>
+Reply-To: yukuai@fygo.io
+Date: Fri, 14 Aug 2026 15:50:04 +0800
+Mime-Version: 1.0
+Cc: "Jens Axboe" <axboe@kernel.dk>, "Tejun Heo" <tj@kernel.org>, 
+	"Josef Bacik" <josef@toxicpanda.com>, 
+	"Johannes Weiner" <hannes@cmpxchg.org>, 
+	=?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	"Yu Kuai" <yukuai@fygo.io>, "Tao Cui" <cui.tao@linux.dev>, 
+	"Jan Kara" <jack@suse.cz>, "Ming Lei" <ming.lei@redhat.com>, 
+	"Jonathan Corbet" <corbet@lwn.net>, 
+	"Shuah Khan" <skhan@linuxfoundation.org>, "Coly Li" <colyli@fygo.io>, 
+	"Kent Overstreet" <kent.overstreet@linux.dev>, 
+	"Alasdair Kergon" <agk@redhat.com>, "Mike Snitzer" <snitzer@kernel.org>, 
+	"Mikulas Patocka" <mpatocka@redhat.com>, 
+	"Benjamin Marzinski" <bmarzins@redhat.com>, "Song Liu" <song@kernel.org>, 
+	"Li Nan" <magiclinan@didiglobal.com>, "Xiao Ni" <xiao@kernel.org>, 
+	"Pankaj Gupta" <pankaj.gupta.linux@gmail.com>, 
+	"Dan Williams" <djbw@kernel.org>, 
+	"Vishal Verma" <vishal.l.verma@intel.com>, 
+	"Dave Jiang" <dave.jiang@intel.com>, 
+	"Alison Schofield" <alison.schofield@intel.com>, 
+	"Ira Weiny" <iweiny@kernel.org>, 
+	"Andreas Gruenbacher" <agruenba@redhat.com>, 
+	"Matthew Wilcox" <willy@infradead.org>, 
+	"Andrew Morton" <akpm@linux-foundation.org>, 
+	"Chris Li" <chrisl@kernel.org>, "Kairui Song" <kasong@tencent.com>, 
+	"Kemeng Shi" <shikemeng@huaweicloud.com>, 
+	"Nhat Pham" <nphamcs@gmail.com>, "Baoquan He" <baoquan.he@linux.dev>, 
+	"Barry Song" <baohua@kernel.org>, 
+	"Youngjun Park" <youngjun.park@lge.com>, <cgroups@vger.kernel.org>, 
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-block@vger.kernel.org>, <linux-bcache@vger.kernel.org>, 
+	<dm-devel@lists.linux.dev>, <linux-raid@vger.kernel.org>, 
+	<nvdimm@lists.linux.dev>, <virtualization@lists.linux.dev>, 
+	<gfs2@lists.linux.dev>, <linux-fsdevel@vger.kernel.org>, 
+	<linux-mm@kvack.org>
+Message-Id: <f7350050-062a-4ced-9396-05ac33ac3e60@fnnas.com>
+Received: from [192.168.1.104] ([39.182.0.156]) by smtp.feishu.cn with ESMTPS; Fri, 14 Aug 2026 15:50:07 +0800
 X-Rspam-User: 
-X-Stat-Signature: e8rmuoaxtbu51sfke6ufihneq7rhqcyj
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 73DA020002
-X-HE-Tag: 1786693688-897429
-X-HE-Meta: U2FsdGVkX1+yG37Ti7aqpYc4LLCY9IheXKElLLhU5p6+Zp9HTh6xFdOqDv8gYCCzcLyNqd44seESdSaSK5jmty+3l5q0Hh5Z/qphkG4o5rts7o+yLnWrkWQbZuVUmbmjNtjavdD4JOpj28pBmNEhlUk3bBeHJtE2PI2/8TjcTGMa3+ZsgUBFAW8XoH8E8l3tCK2fYzqa/X97q5KAN9GIMLnBxqprKnwYX5ZCaX5Yn8K8qtvUiZFnt3eE2p+/37Nv9Vf3NW2Lw8d3IdcRfu3aXoBRj3EeWt152yNi2gfiqfLTIGTsjZ36l1SS1XgEmpQb0ZLoGzTMrYOukglADB3biR7MofD7cdwQtTyGUmweOjqFhRK752O3K4r+H48eUrcsC4aG5Xi3CGd9zRs2Lm8n6gKvpaK7wwYRLIVZ1aJZ15u/mul4eCL2ELlapa2STaj+YroH1pQXN5ointdX7sM0BDWr0I6NeG1FLpVL+LfKC0wdHwd+zk/BO+16+aMEpjR+K++XQvNzYfOZ2kfE2bjqIRSuCsmJr4cyMz4+OzOL1aVqTiKKn8x8plpJ6ia7yFQGRJqlbpnLRxnQzBcPsPKyuD1ITj/wp3i+8y821GBJg310o4v96Q9wCTRNGCvwO1DEcGUhHP53nf5QLL/VoQ6Dpgt21p2WaTc+voYp0hmpBKSgshOl/S/WCGzujxdoysBGtMk9Zg133bsF/0MNcFxnX/8yDVTmiAmC1zxeW4bgCE5mAgUZV67i2QSPAeooaLtNg0cB/ft+7fwHGJaGt0vY1gv3ZpG4h5Z5zHFngmsXY3RdS4nQKFheVhoj5lHTCIJ/Ypxjhn+hIR9ygV3BWHTSjMIbgHjGQBFcNlO0lVOjjNEucEQskjDEENIVSLCNx1r6ZgKETJM0VodfcS3aFZVpp1ImJhWa2jSTxD6UD6gFiD744sQJfbFHW+RwLCJbSr5qB6usgaGSoH+lVM8cR+x
- MiOb9F/m
- zs9dOr8u6g+vtbFuNrD2g6w3VovWvQA4bz4YYFsLGBGV+3XjFsdx0cIabi/4Sofoj/cZgt8FnMWyJzyvQQv1sMJJ/OPA17c9SKyHzj48v3785PvzweIwWZgq6jgCdX3NUBK9u7HOloID5w05C+EB0iDJHgU+hmkFVOldTK3CX/DUqL/StUHp7GiHV3xPDYaOfQmWCzLDG0wPkxhPFt1MwtCMC3H1MTb+hob+v51exAOaRKNvagBGPAUK1jyQcpLYUuOvLmTDk+7e47u7YhU/jXvsBa1CawsSpiWRtNWryIQBTXaNpk9baWrgJ/BrusDAik3KfMLLxgy+WHHrg9ARerI0y/zjPPDohV7SP+DKGTplDbEjWMkay8sizZ0KCKTGC8+00FgXASAQJ/JA/qcpqJ2KErOUW1ffj+MYwDbu32ZgegVgkmPQ28AbbLWJp1poEAkV6rNtyMtduEKP8pczCDvFqe+dEhr404PikWllZ/pFL4RtMcKBkREzb7GEvcHVZ3enCspnmRGIu8C4kl305rIqS8Tni8LnTFmCGBmiutRU4Cnfwp1FDwnB212OSqlGjmktK/mFgi1v7xPsf10naYZOx8LezdqlqgKHm4jFeakC7b99TU868SDFFhPWi6hvuJEDoquPCusmFpf83C2JMKkxsLA97FbgDd+GA3ZWauszk+K19bm85PQG1U/zJ7yZMupvBs+YYAowW7rzI5jajQ/U9Hq5W5nNOwg0sTwSiyJWwAK7anyw5s7sMVBNrrGbN0CjIGqESZwtO55SvttnogJM98FuBoYSjwpnZ3g5SaSoGaWJ/SEOmElm0v8ttEYOLAPg6L6mGtWyKX2E4OQUNoRvKoa0LRKKhU0tUdtjOOIUyWxrtkLvMaPRCrP6NWNEsPzpDGcA51NV5+3E=
+X-Stat-Signature: tjm83wao5dwz1hosmn7eeinmiya1brhm
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0DE0E1C0002
+X-HE-Tag: 1786693815-966643
+X-HE-Meta: U2FsdGVkX1+7I776kIYFU7pwO7oyrC4spooH7cvTlZpXBD5J53O22oUGtlZ1fszmlBAZbYhYYHTl2a1/xnasQpoYT661JTGbfr5LxTxUrEZwN4wkTFFN2L2/h2rcNWAn5mfz31/DO4JbYBQuMB500Ewog2AULwsf5Xu9LX2EGaz7lO/9EdArooumrCA0LVCoVOWjudq+7WWq0wgU66+V2d+lMsVwpeoOnuJaZHMp+kx5mhTB2wYwE3kc9HwxHieRGVwVWr96GtPW3ZFfQ0+pMTrPO/EFWAAKo2EaWuZGMBHng52zjrKJ8UEJaMRS4l7je5TIUurjhnPAeBGa8+ZWT8GqTFnXywJO/l3FBMsYLy19A9lBcjvKVDmirMaBOTqPGcg1ScM4nHPneMl/tfFLkXNObJgmiVIiWd8/kybFP6PZKeBO14x3GQOD/KxnrOajk0Qb8/a9YRFx26GKhLxAfkOtxnGvlD05ty5aulSl7ac/Vj6ZQoKNnBzAcLUEco1s0i3mXC1f2gN8VOpqvA3P00CiTlwoxKE3AmPO99+6l5zH/2BNtNWbpm6IskNp6n2JROwHW4Rqja6I9s2Wkw1fr9xILZ8vSX/JXpbVBigps54m9knKNwKEPl3naVYzMlpvrMottROnGswgGiuO6TdoCThjfmYtO3DmrSFuBOZlBJdX1jKu5GoFZZwqbb/+sKYf9ALWFzM3SLQbq+g7WsjOiM0TVf7wallyeHLhXWCXZbDuSAySqaT806sk4MPG2ZZERYrfiDmbLYMn2MKx/G+2MIZO4WrQG74TjzXvuDzfw2d7qJt/07MJYl0boNBHSmNqR+Wm8PXNwjkcQn1TVYG110YZYtij6RC6EfYUG30jd1TtQq+hUATrovs9eqkAW+tjziRJb4SCT4/oXdU5Su/JkO9kmVryqEwN4PFqgV0prgVUKnYSxizryB0cazy5PsdYnqcQnrs/Oblmhf0k/YW
+ GldOfor+
+ 6MacpdSOzKRJJhdGhZ0G1tBWc570t2D/7QR3D6sOQm2lAb0EqITXoCe6EWvw8oG1ApxFBC6DmOn5KBfRFM21jErowZfC2vpx+jH4FgtQqcm5R6EDSyMSHddRm/zwipDEVoCubw+brwekB4bnO2I76k3qILr0k3x5HTeOrNxLR3HMtjor6aKpep/biSa53FAlTKHGshnFtMk+u5HapeLr1xLZUBMS1t80iaFwQsl4Uy/Nx6hxA/2pB8yZPcjnKNW2uiBMc68htsx1tipQdNu8ITuftqFwODJcvjtE6HzkXvIw9FXQnNi1lCNwphyOY6IqO7ywF/JfTBFXMX/Th0bRzJtzLQp+Nq0rr2WDPc5PLCLANp17sWP6Q4TACSrpgpF5o4KdGB6vA4B419YfpKNxjrKZ8V6XhoyffW1mGG4dBGQYFuWV9lZiguilR9bn/piveERa9RtSS+KxNWgL/6XfGCGTGyNjLR5FgaPVHpZO/nczfGhDZf8Sf/dCwBYpzOMalleR/PhOlEE28S8w9oGQBonx38/5e+U6nm/ExVYng14T/Ho1SpXiMRTIpDRkKq7IZ13wgAwGd8X7HyX/9geRFNNsJrnGm3WaLF+QsfIR9RcLB2EFZbw0vAdCX8bCa2kVF9N80HDDMCTY7MNjfYlOfGaonjLbPegz9P9OcppVnxFQdIMX13x3m1moUA5CjbZTyicFbP6uwAUJbaXdse06kBg7S+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,84 +122,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
+Hi=EF=BC=8C
 
-[ Upstream commit 63b02a9409cb5180398491b093e48bcb5315f5fb ]
+=E5=9C=A8 2026/8/14 15:12, Christoph Hellwig =E5=86=99=E9=81=93:
+> On Tue, Aug 11, 2026 at 02:47:42PM +0800, Yu Kuai wrote:
+>> Keep q->blkg_list for ordered policy and scheduler walks. Initialize and
+>> destroy the hash with request_queue, and remove the radix-tree preload
+>> paths which are no longer needed.
+> Are these fast path operations?  Otherwise we can walk all rhashtable
+> entries without an extra list, but it might be slower.
 
-lookup_swap_cgroup_id() passes swap_cgroup_ctrl[type].map to
-__swap_cgroup_id_lookup() without checking that the type was ever
-registered via swap_cgroup_swapon().  On a swapless host every ctrl->map
-is NULL, so __swap_cgroup_id_lookup() dereferences NULL + a scaled
-swp_offset().
+All users are from sysfs/cgroupfs API, I think they can be considered slow =
+path,
+however currently spinlock is held in these procedures, I think it's better=
+ to
+convert them to blkg_lookup based iterate after spinlock is converted to th=
+e
+blkcg_mutex.
 
-Since commit bea67dcc5eea ("mm: attempt to batch free swap entries for
-zap_pte_range()"), zap_pte_range() -> swap_pte_batch() calls
-lookup_swap_cgroup_id() on any non-present, non-none PTE that decodes as a
-real swap entry, without first validating it against swap_info[].  A
-single PTE corrupted into a type-0 swap entry takes the host down at
-process exit.
+>
+>> @@ -191,10 +198,15 @@ static void blkg_release(struct percpu_ref *ref)
+>>   {
+>>   	struct blkcg_gq *blkg =3D container_of(ref, struct blkcg_gq, refcnt);
+>>   	struct blkcg *blkcg =3D blkg->blkcg;
+>>   	int cpu;
+>>  =20
+>> +	if (!list_empty(&blkg->q_node))
+>> +		WARN_ON_ONCE(rhashtable_remove_fast(&blkg->q->blkg_hash,
+>> +						    &blkg->q_hash_node,
+>> +						    blkg_hash_params));
+>> +
+> The list_empty case is for initialization failure?  Or can we end up
+> with that by other means?
 
-We hit this in production on a swapless 6.12.58 host: ~1s of
-"get_swap_device: Bad swap file entry 3f800204222bb" (do_swap_page() being
-correctly defensive about the same entry) followed by
+Yes, this is for initialization failure, blkg_alloc() failure after percpu_=
+ref_init(),
+or blkg_create() failure before rhashtable_insert succeed.
 
-  BUG: unable to handle page fault for address: 000003f800204220
-  RIP: 0010:lookup_swap_cgroup_id+0x2b/0x60
-  Call Trace:
-   swap_pte_batch+0xbf/0x230
-   zap_pte_range+0x4c8/0x780
-   unmap_page_range+0x190/0x3e0
-   exit_mmap+0xd9/0x3c0
-   do_exit+0x20c/0x4b0
+>
+>> + * Lookup a blkg for the @blkcg - @q pair, whether it is online or dyin=
+g.
+>> + *
+>> + * Must be called in a RCU critical section.
+>> + */
+> Please add must_hold and/or lockdep annotations for this instead of just
+> a comment.
+>
+> Also maybe mention that this does not acquire a reference and the caller
+> must already hold one?
 
-syzbot has reported the identical stack.
+Perhaps it's more accurate that the blkg is pinned by IO or caller already
+hold one?
 
-The source of the PTE corruption is a separate bug; this change makes the
-teardown path as robust as the fault path already is.  Every other caller
-of lookup_swap_cgroup_id() is downstream of a get_swap_device() that has
-already validated the entry, so the new branch is cold.
-
-Link: https://lore.kernel.org/20260504-swap-cgroup-fix-7-0-v1-1-f53ff41ee553@linux.dev
-Fixes: bea67dcc5eea ("mm: attempt to batch free swap entries for zap_pte_range()")
-Signed-off-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
-Reported-by: syzbot+e12bd9ca48157add237a@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/r/69859728.050a0220.3b3015.0033.GAE@google.com
-Assisted-by: Claude:unspecified
-Cc: Barry Song <baohua@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kairui Song <ryncsn@gmail.com>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: chenxin <chenxinxin@xiaomi.com>
----
- mm/swap_cgroup.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/mm/swap_cgroup.c b/mm/swap_cgroup.c
-index db6c4a26cf59..2d0425f4a6b9 100644
---- a/mm/swap_cgroup.c
-+++ b/mm/swap_cgroup.c
-@@ -161,6 +161,11 @@ unsigned short swap_cgroup_record(swp_entry_t ent, unsigned short id,
-  */
- unsigned short lookup_swap_cgroup_id(swp_entry_t ent)
- {
-+	struct swap_cgroup_ctrl *ctrl;
-+
-+	ctrl = &swap_cgroup_ctrl[swp_type(ent)];
-+	if (unlikely(!ctrl->map))
-+		return 0;
- 	return lookup_swap_cgroup(ent, NULL)->id;
- }
- 
--- 
-2.50.1
-
+>
+>
+--=20
+Thanks,
+Kuai
 
