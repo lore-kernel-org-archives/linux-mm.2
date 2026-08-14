@@ -4,87 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6327C5CFC1
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 07:20:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8FEDC5B572
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 07:20:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B116A6B02EF; Fri, 14 Aug 2026 03:20:02 -0400 (EDT)
+	id DAB286B02F0; Fri, 14 Aug 2026 03:20:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA3A26B02F0; Fri, 14 Aug 2026 03:20:02 -0400 (EDT)
+	id C96ED6B02F1; Fri, 14 Aug 2026 03:20:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B22E6B02F1; Fri, 14 Aug 2026 03:20:02 -0400 (EDT)
+	id B866F6B02F2; Fri, 14 Aug 2026 03:20:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 674AF6B02EF
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 03:20:02 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B6E388035E
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 972F26B02F0
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 03:20:03 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2E57A403C0
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 07:20:03 +0000 (UTC)
+X-FDA: 85099025886.07.5C24811
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 710A4180006
 	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 07:20:00 +0000 (UTC)
-X-FDA: 85099025760.03.54C66CA
-Received: from mta0.migadu.com (out-133.mta0.migadu.com [91.218.175.133])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 91B9A40004
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 07:19:58 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cGre6VNr;
-	spf=pass (imf04.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.133 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=mx3x1Bdx;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf16.hostedemail.com: domain of BATV+b45d4071d3315f6a5e0d+8391+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+b45d4071d3315f6a5e0d+8391+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786691999;
+	s=arc-20220608; t=1786692001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Q/ebTZtZlPHyV5ZVFzuqrC1xwMs/FIhVtVpj15zvEaY=;
-	b=VyYNihXZ4Wm+61I6uCqAmfYAAbryEy1K3cnc4/lra2fQYI7wMdNHHR7jPRVpEBm1EFkww4
-	BGZfTLjC3twuNr/d/bBTQw44ZHnaDBeJWOzOT8+/0sskfFOdbl4HaCKWl3+8KjOLKawAnT
-	XdCnah7I6YXGV2Cs9kinoTn4SgjxYr0=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=WDsOUE0aOsyxSGZTsNq85XQVIx3SPPkmz2zt0ytNL/0=;
+	b=j31NWVXTEkZnP+t9nsArR8cU0rvCzDJarWJVwe403sjF4YWDsJX2tpHH12egay4Ms4TgMt
+	/dATVNUqfqDWZ8WIJGY99iArlX9egX064uO0Ac8MhIxiOB3Lf4R6oQjU/Yr9mzQZK6ICok
+	YJScTKzjBV4jD5sHK6L/0ze7XtAZNcc=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cGre6VNr;
-	spf=pass (imf04.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.133 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=mx3x1Bdx;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf16.hostedemail.com: domain of BATV+b45d4071d3315f6a5e0d+8391+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+b45d4071d3315f6a5e0d+8391+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786691999;
-	b=DpAb1yjyubuC+KLlxvUTt3eq0KLG9OemPvHo25tc2TOUOsfEMrcDMD0T4zmRYCU+fi/3PJ
-	GMY5imiWjmt5vvR3+EmFkpgpGC+7rklxeqKjUC6kJzk0golppBSkX2kdtMFmUU0D/pCyiZ
-	1uYeMuS39OVeG8r/6oSsNoHQhNVv5LY=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Yim1rnFlhKn0JrfDkSX23QrIkjgmN+sXncpkYFXeayE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786691997; v=1; x=1787296797;
- b=cGre6VNrH3EKTPuAViJDGJ2RFDgNo2p9aSNsAVysdI/I2Wq7zaGCseGXpOQD3a9JKE133ViD
- IqvdJBAGce/r7WCl2UeGTwsv5/6SDAvAVoEQ9NoXEt9Qkke6FIbqfn0msxRAamI92R5s/qY6wgK
- sayjLLr4KyRJoIDbdj0cTWgU=
-X-Envelope-To: linux-mm@kvack.org
-Received: from fedora (117.129.78.49)
-	by smtp.migadu.com with ESMTPS id 6e94c7a62b05b88a;
-	Fri, 14 Aug 2026 07:19:46 +0000
-X-Migadu-Flow: FLOW_OUT
-From: Hao Li <hao.li@linux.dev>
-To: vbabka@kernel.org,
-	harry@kernel.org
-Cc: akpm@linux-foundation.org,
-	cl@gentwo.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Hao Li <hao.li@linux.dev>
-Subject: [PATCH] mm/slub: unify slub stat definitions to simplify metric additions
-Date: Fri, 14 Aug 2026 15:17:02 +0800
-Message-ID: <20260814071848.46922-1-hao.li@linux.dev>
-X-Mailer: git-send-email 2.54.0
+	t=1786692001;
+	b=P1pD/G9t20hiY8yVLhXHdEgKNYus4JVQMKiKoKj3W3joLfgIPPr59HxPE7QpcMNI58nNNn
+	fd0JYRIvMpaTOvXsIBQJR0Uxgc/yC1rPo+e41OEtTTI7JH1X087SumMXPo4hA7KTV+1Tt/
+	Gh6B5cDU4ZjYeT9Qs8R7rFIWDBiurFY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=WDsOUE0aOsyxSGZTsNq85XQVIx3SPPkmz2zt0ytNL/0=; b=mx3x1BdxtWyZYN2Ux5uY6M6hGU
+	WSzDhrwWk5KFc6HrPVqExajrFCp6LO+jnHo3vEdTbpIskUMANnaf1mXqhazC3igfglBzliDC6SOLY
+	cVU5LwnzH16NGktAjSAzn/nlI9vgJp+t64q6zFAxJ+AEv+s/ia2GrNhMiC2HBwWIcw20ZCq/ozDCU
+	z94/GTKoIlLHp62IBbW3G9lsZmCRt6MIACxD4Xfi0ldKjRzxIr9IF5h+I/voCtS8QecDwaajdfXVO
+	k62C/6lP3Rkeu1yljn7Nt2eoq/+W1n4iS/YDiUxVSaY9NsuJLzQ9x82ZAgmpgXC0tTmIAfY6eZYQS
+	TNIgJAvw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wumCt-000000026hn-0TtS;
+	Fri, 14 Aug 2026 07:19:59 +0000
+Date: Fri, 14 Aug 2026 00:19:59 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Eric Sandeen <sandeen@redhat.com>
+Cc: linux-xfs@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 1/2] xfs: mark kmalloc'd xfs_buf items as
+ __GFP_RECLAIMABLE
+Message-ID: <an7Bn1ZNvQyOUWqc@infradead.org>
+References: <20260813204929.2253988-1-sandeen@redhat.com>
+ <20260813204929.2253988-2-sandeen@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 91B9A40004
-X-Stat-Signature: 9w3kbdrwmhzid3yw9whrcmud4j4jshhn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260813204929.2253988-2-sandeen@redhat.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-HE-Tag: 1786691998-56064
-X-HE-Meta: U2FsdGVkX1+MbBdcYElafB5eait3Jl9I+izSGKh/EDIbROcmGzCOJCNuFqbUh53UyNX0pu/kA7SmbvUQScFb2cQ2C13RXy3Qj36n/cmBVUw2asdk0yXL/v/c+jXgU2FQnOhOpZKVTrN7lTRNkKVzftmlyGoy3njw4Obp2H5Sf8jZVWNPlnHZ6c2PJxxaE+waNA9861/I81dOOti4H45SCnELtGPM0sHAGzYXkF9UugtfTOKbv7H3pXWrhGJgXOYPEzWhlWVH0MByZSg34U5j42m0Bgpy9sBAed/grkl47X2/nZPt/khz8BgmuCY3XwdRvMVNNZiqBcN4RXtcv1FyPpVp+US0Xq7h2A0Q3nPqC0DPHUafXHrMRVP/33buIePDVmr3nnlGZZupCynGu4dWSYbQnL7QKteZryt+ImShlKabhkxMzPg+XUdJ6esDkicMD2Wuav4gFgsme/ws5SnIY8Jmd9xKGRnYLvo+ZYzBXQvPTXrzPZiZkLwSqxTLA8AaH3zPEIHmGoA9o7vZD8Jm9WsBBgbyRixlORHuI6QGhL1QdsaE1iGb1pVEfSx3pAK0TLJnTGMLpqC62jRb13hIRhTlEoTSG7QoI3mdQGIu3dfpyoQChvpGi2KsSfB4KdXT9z6DtMWhnX6R7N+1g9GlHtvj2UswFit5rM3DtBdovwqjw0rs9TN0bo1uzCfkW4pjQ7ehuibNkwvz2u9vRogN85Zc03hVXUjMtMng8cWJ1OJ91L/l1B89yXzxMpbWTv4bt7479NTxciBgtnT6Eq6ipT/JfchvXJcwDU8yV7OmhKvb632IXFN88JqZOXZji7cMYH1vHLHQn+KBtL1l/XWsRZBvIVKNto1TzZWvh/nwzNYPD3YNbKmGXAXKm9Ar+GwxU9dd5/0IiJ3bIF9fgnJ4V+oluOOEZvZeFISjwvkVa4C6tkNvFVI2wojRM9iR/J31HOM+N2ssYs9c4wlE9cb
- LfNy+w8o
- 624cz/cIrlvkJVRhnEd1cYZPiaOmXDGBXhNcnRCeeWhA6RbgnWN1oCgmk2Z4YZmg2Ag3OuhPYnI4JwWyrjj/UA2gu/ZhxY6F8IW2HK9v43Nqb/WAKzVL2ZPSbJDrZUKqHPotSHHDaEGNy4j9bb3GLLK5qZqEQnkRvUCqQIKuD16mT7/O1ziRMV1UZa2KC8XqEbyauayjhJ+1j2Qvt3+ZCSHUUSYclaM0Fs9ud
+X-Stat-Signature: pp7hknx3ssixgnm3cm4d7jkmaoki8i3s
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 710A4180006
+X-HE-Tag: 1786692000-347956
+X-HE-Meta: U2FsdGVkX19cE8UV79DPDJkWcqo6DQrZxyW0+VUX833EX/8SOp2Dj37QAsHsOoxl31ZRDKkY7Su7YZTlS/ChVUtSUR0Vvxt3UIOLAQOWH6bhsvsNT4x6yn2goIdZ9AVGYy4GX5QUGwLfXRJt9dlBtm3AVvlz/jO5VDhOOW/H+CsefC21YFuwzLfYliWYQWdZrzDWzAocostM9SZ/8oKWRDoHqnHFVs0+zjzbCBjwcYKghJG5+/RLeLvLIC38K8GJuwt6xTqqw5V3aeAnOHUe1boRhNyAW0Hrmp2rjm0CuEQj41+fuB8vzrpwuFfTU2uPJ073VHwKDwpt6MzsBCIScUU9OHkTSeWN+Yq5Y6EeSxDiLkJCePIVxvhkOvOHvgFmAFr1GnOGO9tQfvzH1EQx9VH8LDiELQKJCpQHv+lhDz6JAhdcFypSmhK7pksZrETVK3GbDjiHh4d9FUbPiBAW6B0H5U7zuN9v80JUecmJuEktfgAdW2sl1M5MJ5F4zXibLDbySroFrPUTW33WP07hEY6RCRV4aGevKWpIgnsN8ZtNQ/zBqgIqOsmFeoq3gTv4WCwiGy20IH/ygLz2r8LhRsf2f3Af9N9YiPUAKzrxQJDLcFYS9f8sHjykbzCKY3IYu+ZaSFSbzbDHy/WiokGCCVnvnHLEAlMAxwgm+h9lz76lGQLug/e+EY9gZrOYidzCJw/yyHKoM+r9Uac+yKhO2BIv1LGcsQ3Z696Gm9+AkkOWXMSI2eAQO7WXZwnDmpwFPjvRmvf5SYq9c569vO5blTg2ueXdfPHBYOfYoJCz/Mo/nxJVC2SECzGQ3C6ua1bHuUzbK6Q2gqVqXb/aB2KMwcigSRmHteFCLpoqQf77jNqqy4JsEPsUxuHXb6wPrFtmIM4MWKfekLM97hFniL1Rh0Vh+A2dNNbHlmgrm+XIBLSRsofrg9mS+h0pSX4cplkysrg4c/orng+ZSePkuQY
+ Biw83UsU
+ N5YsuzmerzQpo1cRtFE6enCAHmmtw9mrHe0r9yVY9MiuTAkIaXq/LOdFjZVuP/iaTZodW9g1uKUu7qxyDwqrXzrJUqSe5r/jg+pW//U9wf4lWqRcGPC40FXm0c3Ttpr7JscWai3yI81PBRAz7xkSiGGnkPTsxWWATM7pnC6H40+REMXU9k/ofxCG38xmKCtTAedjCQUMrNy0Jw1KmhbweIAQ8zfka7pb4Lc684/LPvTsVuWjvZnTRwphHFXK1Y0qzT5fm9LyxMnU/FZlU4SDoVe7kLzWUryoSsRwY5cYhodT9BgPJSCmw6Bg3OSy4KT20Q2gI/sRcDTfbsNBDksDaays/R2Ks9ToXnccmE+Xg7NQ6P5JOL1TfuFDLjC8DA/0Ug+BW0s51O4Mm9tN99x/50ihyTwqZwHn0pKnp3HgEp4zBhWqP3R58yUcvEhNrdTRZDmkUZIhIrlY8Eabb0wDe9dW81hvqWf+4VCPDCaAEd8Mq/e6Gmnnsk42j32s72TTlzEji+pNLyDiTmZkyclld7Gl1w/4uubUBmOmpA5FE5N/sYpsS8PFkk9KnzzSwGCVUgdBk9Vfayimhtb/H4aH0mHOSew3mT8ozJA0r1oSceTo6ajo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,196 +90,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, adding a new slub stat requires modifying three separate
-locations: stat_item, STAT_ATTR, and slab_attrs. This is inconvenient,
-especially when temporarily adding metrics for debugging during
-development.
+On Thu, Aug 13, 2026 at 03:40:52PM -0500, Eric Sandeen wrote:
+> xfs_bufs have a shrinker and are therefore reclaimable; mark
+> them as such in the kmalloc path, so that they are accounted
+> for in this way.
 
-This patch borrows the approach from SCHED_FEAT by introducing an ITEM_EXP
-X-macro, which is then temporarily defined as different operations at the
-three locations (stat_item, STAT_ATTR, and slab_attrs) to perform distinct
-macro expansions.
+You can use up all 73 characters for your commit log :)
 
-Going forward, adding a new metric only requires adding a single line:
-ITEM_EXP(XXX, xxx)
+Otherwise looks fine:
 
-Signed-off-by: Hao Li <hao.li@linux.dev>
----
- mm/slub.c | 144 ++++++++++++++++++++++++------------------------------
- 1 file changed, 65 insertions(+), 79 deletions(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index b0cd0572e2f2..8dd25032fba4 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -359,33 +359,64 @@ enum add_mode {
- 	ADD_TO_TAIL,
- };
- 
-+#define STAT_ITEMS							\
-+	/* Allocation from percpu sheaves */				\
-+	ITEM_EXP(ALLOC_FASTPATH, alloc_fastpath)			\
-+	/* Allocation from partial or new slab */			\
-+	ITEM_EXP(ALLOC_SLOWPATH, alloc_slowpath)			\
-+	/* Free to rcu_free sheaf */					\
-+	ITEM_EXP(FREE_RCU_SHEAF, free_rcu_sheaf)			\
-+	/* Failed to free to a rcu_free sheaf */			\
-+	ITEM_EXP(FREE_RCU_SHEAF_FAIL, free_rcu_sheaf_fail)		\
-+	/* Free to percpu sheaves */					\
-+	ITEM_EXP(FREE_FASTPATH, free_fastpath)				\
-+	/* Free to a slab */						\
-+	ITEM_EXP(FREE_SLOWPATH, free_slowpath)				\
-+	/* Freeing moves slab to partial list */			\
-+	ITEM_EXP(FREE_ADD_PARTIAL, free_add_partial)			\
-+	/* Freeing removes last object */				\
-+	ITEM_EXP(FREE_REMOVE_PARTIAL, free_remove_partial)		\
-+	/* New slab acquired from page allocator */			\
-+	ITEM_EXP(ALLOC_SLAB, alloc_slab)				\
-+	/* Requested node different from cpu sheaf */			\
-+	ITEM_EXP(ALLOC_NODE_MISMATCH, alloc_node_mismatch)		\
-+	/* Slab freed to the page allocator */				\
-+	ITEM_EXP(FREE_SLAB, free_slab)					\
-+	/* Number of times fallback was necessary */			\
-+	ITEM_EXP(ORDER_FALLBACK, order_fallback)			\
-+	/* Failures of slab freelist update */				\
-+	ITEM_EXP(CMPXCHG_DOUBLE_FAIL, cmpxchg_double_fail)		\
-+	/* Objects flushed from a sheaf */				\
-+	ITEM_EXP(SHEAF_FLUSH, sheaf_flush)				\
-+	/* Objects refilled to a sheaf */				\
-+	ITEM_EXP(SHEAF_REFILL, sheaf_refill)				\
-+	/* Allocation of an empty sheaf including oversized ones */	\
-+	ITEM_EXP(SHEAF_ALLOC, sheaf_alloc)				\
-+	/* Freeing of an empty sheaf including oversized ones */	\
-+	ITEM_EXP(SHEAF_FREE, sheaf_free)				\
-+	/* Got full sheaf from barn */					\
-+	ITEM_EXP(BARN_GET, barn_get)					\
-+	/* Failed to get full sheaf from barn */			\
-+	ITEM_EXP(BARN_GET_FAIL, barn_get_fail)				\
-+	/* Put full sheaf to barn */					\
-+	ITEM_EXP(BARN_PUT, barn_put)					\
-+	/* Failed to put full sheaf to barn */				\
-+	ITEM_EXP(BARN_PUT_FAIL, barn_put_fail)				\
-+	/* Sheaf prefill grabbed the spare sheaf */			\
-+	ITEM_EXP(SHEAF_PREFILL_FAST, sheaf_prefill_fast)		\
-+	/* Sheaf prefill found no spare sheaf */			\
-+	ITEM_EXP(SHEAF_PREFILL_SLOW, sheaf_prefill_slow)		\
-+	/* Allocation of oversize sheaf for prefill */			\
-+	ITEM_EXP(SHEAF_PREFILL_OVERSIZE, sheaf_prefill_oversize)	\
-+	/* Sheaf return reattached spare sheaf */			\
-+	ITEM_EXP(SHEAF_RETURN_FAST, sheaf_return_fast)			\
-+	/* Sheaf return could not reattach spare */			\
-+	ITEM_EXP(SHEAF_RETURN_SLOW, sheaf_return_slow)
-+
- enum stat_item {
--	ALLOC_FASTPATH,		/* Allocation from percpu sheaves */
--	ALLOC_SLOWPATH,		/* Allocation from partial or new slab */
--	FREE_RCU_SHEAF,		/* Free to rcu_free sheaf */
--	FREE_RCU_SHEAF_FAIL,	/* Failed to free to a rcu_free sheaf */
--	FREE_FASTPATH,		/* Free to percpu sheaves */
--	FREE_SLOWPATH,		/* Free to a slab */
--	FREE_ADD_PARTIAL,	/* Freeing moves slab to partial list */
--	FREE_REMOVE_PARTIAL,	/* Freeing removes last object */
--	ALLOC_SLAB,		/* New slab acquired from page allocator */
--	ALLOC_NODE_MISMATCH,	/* Requested node different from cpu sheaf */
--	FREE_SLAB,		/* Slab freed to the page allocator */
--	ORDER_FALLBACK,		/* Number of times fallback was necessary */
--	CMPXCHG_DOUBLE_FAIL,	/* Failures of slab freelist update */
--	SHEAF_FLUSH,		/* Objects flushed from a sheaf */
--	SHEAF_REFILL,		/* Objects refilled to a sheaf */
--	SHEAF_ALLOC,		/* Allocation of an empty sheaf including oversized ones */
--	SHEAF_FREE,		/* Freeing of an empty sheaf including oversized ones */
--	BARN_GET,		/* Got full sheaf from barn */
--	BARN_GET_FAIL,		/* Failed to get full sheaf from barn */
--	BARN_PUT,		/* Put full sheaf to barn */
--	BARN_PUT_FAIL,		/* Failed to put full sheaf to barn */
--	SHEAF_PREFILL_FAST,	/* Sheaf prefill grabbed the spare sheaf */
--	SHEAF_PREFILL_SLOW,	/* Sheaf prefill found no spare sheaf */
--	SHEAF_PREFILL_OVERSIZE,	/* Allocation of oversize sheaf for prefill */
--	SHEAF_RETURN_FAST,	/* Sheaf return reattached spare sheaf */
--	SHEAF_RETURN_SLOW,	/* Sheaf return could not reattach spare */
-+#define ITEM_EXP(name, unused) name,
-+	STAT_ITEMS
-+#undef ITEM_EXP
- 	NR_SLUB_STAT_ITEMS
- };
- 
-@@ -9512,34 +9543,12 @@ static ssize_t text##_store(struct kmem_cache *s,		\
- 	clear_stat(s, si);					\
- 	return length;						\
- }								\
--SLAB_ATTR(text);						\
-+SLAB_ATTR(text);
-+
-+#define ITEM_EXP(name, text) STAT_ATTR(name, text)
-+STAT_ITEMS
-+#undef ITEM_EXP
- 
--STAT_ATTR(ALLOC_FASTPATH, alloc_fastpath);
--STAT_ATTR(ALLOC_SLOWPATH, alloc_slowpath);
--STAT_ATTR(FREE_RCU_SHEAF, free_rcu_sheaf);
--STAT_ATTR(FREE_RCU_SHEAF_FAIL, free_rcu_sheaf_fail);
--STAT_ATTR(FREE_FASTPATH, free_fastpath);
--STAT_ATTR(FREE_SLOWPATH, free_slowpath);
--STAT_ATTR(FREE_ADD_PARTIAL, free_add_partial);
--STAT_ATTR(FREE_REMOVE_PARTIAL, free_remove_partial);
--STAT_ATTR(ALLOC_SLAB, alloc_slab);
--STAT_ATTR(ALLOC_NODE_MISMATCH, alloc_node_mismatch);
--STAT_ATTR(FREE_SLAB, free_slab);
--STAT_ATTR(ORDER_FALLBACK, order_fallback);
--STAT_ATTR(CMPXCHG_DOUBLE_FAIL, cmpxchg_double_fail);
--STAT_ATTR(SHEAF_FLUSH, sheaf_flush);
--STAT_ATTR(SHEAF_REFILL, sheaf_refill);
--STAT_ATTR(SHEAF_ALLOC, sheaf_alloc);
--STAT_ATTR(SHEAF_FREE, sheaf_free);
--STAT_ATTR(BARN_GET, barn_get);
--STAT_ATTR(BARN_GET_FAIL, barn_get_fail);
--STAT_ATTR(BARN_PUT, barn_put);
--STAT_ATTR(BARN_PUT_FAIL, barn_put_fail);
--STAT_ATTR(SHEAF_PREFILL_FAST, sheaf_prefill_fast);
--STAT_ATTR(SHEAF_PREFILL_SLOW, sheaf_prefill_slow);
--STAT_ATTR(SHEAF_PREFILL_OVERSIZE, sheaf_prefill_oversize);
--STAT_ATTR(SHEAF_RETURN_FAST, sheaf_return_fast);
--STAT_ATTR(SHEAF_RETURN_SLOW, sheaf_return_slow);
- #endif	/* CONFIG_SLUB_STATS */
- 
- #ifdef CONFIG_KFENCE
-@@ -9602,32 +9611,9 @@ static const struct attribute *const slab_attrs[] = {
- 	&remote_node_defrag_ratio_attr.attr,
- #endif
- #ifdef CONFIG_SLUB_STATS
--	&alloc_fastpath_attr.attr,
--	&alloc_slowpath_attr.attr,
--	&free_rcu_sheaf_attr.attr,
--	&free_rcu_sheaf_fail_attr.attr,
--	&free_fastpath_attr.attr,
--	&free_slowpath_attr.attr,
--	&free_add_partial_attr.attr,
--	&free_remove_partial_attr.attr,
--	&alloc_slab_attr.attr,
--	&alloc_node_mismatch_attr.attr,
--	&free_slab_attr.attr,
--	&order_fallback_attr.attr,
--	&cmpxchg_double_fail_attr.attr,
--	&sheaf_flush_attr.attr,
--	&sheaf_refill_attr.attr,
--	&sheaf_alloc_attr.attr,
--	&sheaf_free_attr.attr,
--	&barn_get_attr.attr,
--	&barn_get_fail_attr.attr,
--	&barn_put_attr.attr,
--	&barn_put_fail_attr.attr,
--	&sheaf_prefill_fast_attr.attr,
--	&sheaf_prefill_slow_attr.attr,
--	&sheaf_prefill_oversize_attr.attr,
--	&sheaf_return_fast_attr.attr,
--	&sheaf_return_slow_attr.attr,
-+#define ITEM_EXP(unused, text) &text##_attr.attr,
-+	STAT_ITEMS
-+#undef ITEM_EXP
- #endif
- #ifdef CONFIG_FAILSLAB
- 	&failslab_attr.attr,
--- 
-2.54.0
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 
 
