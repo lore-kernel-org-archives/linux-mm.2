@@ -4,71 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41069C5CFC1
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 10:48:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56BF0C5CFC1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 11:23:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 122CA6B0308; Fri, 14 Aug 2026 06:48:33 -0400 (EDT)
+	id 1B2336B068C; Fri, 14 Aug 2026 07:23:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D3D56B0309; Fri, 14 Aug 2026 06:48:33 -0400 (EDT)
+	id 16AF46B068D; Fri, 14 Aug 2026 07:23:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2BA16B030A; Fri, 14 Aug 2026 06:48:32 -0400 (EDT)
+	id 0799B6B068E; Fri, 14 Aug 2026 07:23:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D22776B0308
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 06:48:32 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 73EF914041E
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 10:48:32 +0000 (UTC)
-X-FDA: 85099551264.22.43C0C68
-Received: from mta0.migadu.com (out-68.mta0.migadu.com [91.218.175.68])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3E100160003
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 10:48:30 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=a2xK+vrl;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CFA566B068C
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 07:23:05 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 74C56C041B
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 11:23:05 +0000 (UTC)
+X-FDA: 85099638330.21.91CEA3F
+Received: from mta0.migadu.com (out-44.mta0.migadu.com [91.218.175.44])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 68649120005
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 11:23:03 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=K0D51rqp;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.68 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+	spf=pass (imf29.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.44 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786704510;
+	s=arc-20220608; t=1786706583;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eoVCbZGbuMiZ+tCeIPIM66YHmSmt2qbD4ur8OmOKPcw=;
-	b=hzD54qdmioOXb/Jkjb2xtSXbl1gpgeJOD0SV9GO1KbHyjZuExoYRHwNqIkg+bCKHB2/JKe
-	9tqfx4MWevKdJ2TXrmqgz/NN2TYy5tMCsDZ+7NX7KAijfVo7Rkzwy/ubG9Falfiy9tJ7pL
-	VFXH0ouT1iOb44vZHowP2V1hF8IQrOo=
+	bh=rtQggKNcI0Eo0yIs/H/WCBODzvmQh9HJyiGq6xeZKR8=;
+	b=roBWbsFQA8CH3PEIQJ6jnKfqcktzCpsKa0VhprVG7mDPwcuX3DJrMbtjO3cN1/IZtoe+fH
+	1uVaaSGgvH2V/6RgCf7uRh5qGKklTh6bUtoyxp6nTZPj+0wzZM99kkXoAdCA/m36U+BcAq
+	7pvRQtf2PVgGuhUKm9GsgcS7fb6uA3M=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=a2xK+vrl;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=K0D51rqp;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.68 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+	spf=pass (imf29.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.44 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786704510;
-	b=zmk5Iob+7D5wOuzzxj85IUXYG7opAFnX3oNSL3ojHOFT7eOzfPNd/Fe4vHkqYE6ypMyC3p
-	KePa93fxotDARP+35qxGpWvmO+PlizGTtb7mCUnToIcE4nlGCTFxBN/9tUInF0qfOo+UI5
-	H8RCeEHLvF+CTQj2BYPTyMZBVGUxQS0=
+	t=1786706583;
+	b=SC6lu9hCAXKAv0KA7Bd/+u/1ljaMAeYMZvWFRHh/d75lfFAYeNvZGIcER5NBqZx15g5BIU
+	b5Yj/8ImwSystP/qDxSXm8+3+GF7JZV2R1xzvmuhD6yD2tUPbqU9PqdfUeLlmTUg2pG5GJ
+	XBtqMoviF6AUT0Lp5myDVf5jjb2N/8Q=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=1HqmXyGIYCOs3rLYM6mQfaT9V9V/gD99mJ6fGYBQcYY=;
+DKIM-Signature: a=rsa-sha256; bh=DviyH3BtVAYDhX5SLXkzdx0JgQCnoJdEeju32uvP3Y4=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786704508; v=1; x=1787309308;
- b=a2xK+vrliUD3IQLW6W0fAhb/OGvaRiQe4OHYb6qyig0CniH6D9ltEZ4JH1/BkutctC8zSzje
- Ig4CvKuoGPvB/nLTqxwmyioC/imY5QZlc4haDOtrMGYfwzpPwXfOoBXnRKxNvOQ+Grohyfz23LW
- MrzBYOvMkkY6//nYzIaikEts=
+ t=1786706582; v=1; x=1787311382;
+ b=K0D51rqp455cXsxukZsP8zt+dFhP7OlD0BdU95+eCiElu/yXmBK+Ix9HbdKUUfusTiNHrQio
+ wKXq2VlzeSGCXAQ7+FdFkyHHryeDOkXEaO5l8HImo+IAc2d0+wyQuUEU7ylylrJ09alb3tEmWPL
+ +UFD0+Mrz013Pmi9g/TjZRzk=
 X-Envelope-To: linux-mm@kvack.org
 Received: from localhost (77.97.51.77)
-	by smtp.migadu.com with ESMTPS id a74bc2444d3c3b30;
-	Fri, 14 Aug 2026 10:48:28 +0000
+	by smtp.migadu.com with ESMTPS id e64bb87d811e3f35;
+	Fri, 14 Aug 2026 11:22:52 +0000
 X-Migadu-Flow: FLOW_OUT
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 14 Aug 2026 11:48:26 +0100
-Message-Id: <DKOLVZ1JCVHL.1Q3926NV045GD@linux.dev>
-To: "Yosry Ahmed" <yosry@kernel.org>, "Brendan Jackman"
- <jackmanb@google.com>
+Date: Fri, 14 Aug 2026 12:22:46 +0100
+Message-Id: <DKOMM9BKEYZ7.3IYH2D57L3NSE@linux.dev>
 Cc: "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
  <dave.hansen@linux.intel.com>, "Peter Zijlstra" <peterz@infradead.org>,
  "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
@@ -77,26 +73,32 @@ Cc: "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
  <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Lorenzo Stoakes"
  <ljs@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
  <x86@kernel.org>, "Sumit Garg" <sumit.garg@oss.qualcomm.com>, "Will Deacon"
- <will@kernel.org>, <rientjes@google.com>, <patrick.roy@linux.dev>,
- "Itazuri, Takahiro" <itazur@amazon.co.uk>, "Andy Lutomirski"
- <luto@kernel.org>, "David Kaplan" <david.kaplan@amd.com>, "Thomas Gleixner"
- <tglx@kernel.org>, "Patrick Bellasi" <derkling@google.com>, "Reiji
- Watanabe" <reijiw@google.com>, "Sean Christopherson" <seanjc@google.com>
-Subject: Re: [PATCH v3 13/26] mm: introduce freetype_t
+ <will@kernel.org>, <rientjes@google.com>, "Kalyazin, Nikita"
+ <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, "Itazuri, Takahiro"
+ <itazur@amazon.co.uk>, "Andy Lutomirski" <luto@kernel.org>, "David Kaplan"
+ <david.kaplan@amd.com>, "Thomas Gleixner" <tglx@kernel.org>, "Patrick
+ Bellasi" <derkling@google.com>, "Reiji Watanabe" <reijiw@google.com>, "Sean
+ Christopherson" <seanjc@google.com>
+Subject: Re: [PATCH v3 16/26] mm: add definitions for allocating unmapped
+ pages
 From: "Brendan Jackman" <brendan.jackman@linux.dev>
+To: "Yosry Ahmed" <yosry@kernel.org>, "Brendan Jackman"
+ <jackmanb@google.com>
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
 X-Mailer: aerc 0.21.0
 References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-13-6f5729aa9832@google.com>
- <anJvFVPmdpURs2B9@google.com>
-In-Reply-To: <anJvFVPmdpURs2B9@google.com>
+ <20260726-page_alloc-unmapped-v3-16-6f5729aa9832@google.com>
+ <anJB2jaBWwE1mSWN@google.com>
+In-Reply-To: <anJB2jaBWwE1mSWN@google.com>
 X-Rspam-User: 
-X-Stat-Signature: 6cr1bnuqnkfpc38pmpsj35tdhytgs8ha
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3E100160003
-X-HE-Tag: 1786704510-710306
-X-HE-Meta: U2FsdGVkX188Bet5jlQF6Cgv6ZoGt8ETzD3TOnfaa4gDsmok4a5f3gxzLgofoe32KqcVAxSwPFL09XSVe8bu6gbuuqSnwP1KKCv4mxXdrKkSyz7fksRPf96+khMAp0kD683Xs6GgmpEEM2DwZa29lSjGrJNl+akoZvmxiAFoMeEGUn3M9LZVbvUQb+rhl7MZhgTAIdG22UVKkkhyNdH8hRc1LT+8LJAcay1PY9DQl3crkft9NV1kflZ3PJnvoOaTwb8beEjKI5rc/zRrDP+Ol7ItawucXWF16p1Da5gcXMyVd24RvKm7FRulyyP408+0DAXtZtvmDq5LknAPWiJVwVXrTBVgLwwqDIf0YEz3Czb52lt6qED/FX8elzhE9UnNOTEPD0yeS5G7f3XSX/VbUsbi+7gv2FtZWo9+46z45vtHLdxeDO3MzOvCNFUmtMWXsR0r3uPnwTjyEMbuU93hvPBrHUBGGe8Qq5kdFKCHbvufNT8WCPHvx8zc9gC6ywNmfkc5g7qr13fodFf28AS8H7+qrvF8IQH0pjHtpTuH38RqLxowakJFqld4fNUdom08CAFGbCubDZ6uEz8c2Rqk1hC9/Z16Q+6NuTde+32Jk+SW/2FykqTqzWw4zjiaRyeyDIxULerLWMEzOc882ds2bguasEbM1fTBLxdGmgdQJRFPLNyYzXhf8nq/sIwnzJIg2RcVdBAFzWy2YW5plOiS0UppTKfJhbExyGn9f9MVAVgNzQB+j9w2lUrwQE07ICb+mTEg9PX5HtGkLg+S7i32wGTMXRBTTYL7u5imwJjIKPHYg3fkornbTZHWFfw8Cx/k8Q969Wj2xWpudfeqJjSNigfBRhqbYbVoO7g2Dkf7MAYki5SFHxOfJJ/PhSfJtl7DYuH5jrMHlO+iHF3I6ZRI9mcWpgZJ6KAz5xMJd/iNNyiocGUVA2RxixBqPSHxRGZWg2tO6OqQD3gahY3TRW9
- LAmtPRkE
- BAj9Zu9bf73No9TXnyzQz+Ue5LVx9rGPtEiUpHqzrT7NDTuXDzK4MIReUtfxXutJ+CbhNFwOed/Qwu48ehayfDARKJTkXXjuDCyenyBZCTnrZ11cQrUoONRySQs0x4kwr/vAjsbx9HADI7u8ePOZa9RUu26zvTOsi5uM19AcR6Aje8Uo98JZKwcVf+zZalJKYZHCiS3WNLWRBsfRz1Yo0dMH/WLpSjnyEA8PQUcdfKVZu6rliH051+U4FKfzx3RngK+3DkdhKSPR2LAUdDvMG1bsvuWwEhSzeD6AOVZ0ZmUX4I/aMCLavsFE/3gCZU1x9Vh//+FCSmzVunpGuJlzSugAzXKP4pDTxxB63POEJGWqVW6c=
+X-Rspamd-Queue-Id: 68649120005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: q58yxxk713uk5darizsctm9sx4wbyg13
+X-HE-Tag: 1786706583-24195
+X-HE-Meta: U2FsdGVkX19rRxmBbUA4TwlkQMiSv1TDYNffWGnwJIVOYSsBaTrYswnfmMGR4N+FRM1dADt6wkSwZkR9ZxHkBN2/wvw3OQ4BkxVCI9utHfAjtxq510aoDueisMH5UFHPgOQhhu2kDHMODtkgu+UfYmZVt9YoS5YoECFMI4ZiOK+eF2RmYK9ovETG+DfH//XAzq7lY3MZPVi2p/9l8lRxXahriBs2jUBo7fEiUZ6gfI0oyeKAleEtNdNVoqqXKvjclapanpAIyBGPG5m2+QCFxZW6Pbsn0E4qvx8bAy32keTfj3iFv8r8NcA5QfEjt2lJQPP+FVYwihp3zgPHSj+AAlETYFHMLYHG4rTB1AqHTxVyhOBmRDYKoeLti9haUN/6Ta4xaLJAE1+MHbjPjRoVvA5TM914l+2BWuWJlNze4i6T3SaPFmm8yPxwnfuhDRxJxpelvk0A6dK0oiBMB2awvenlu1zX/LJQ0sxVTduu+xZel7/oiat1TmNpQeegxz48swP9FYvI0dexN+uioFNv+VYEfi4fA4oG6t8iEg9MUeT1LjDxuxUhAoFWszjE3r2BWm1dYZlbq667dOF9aM4msnwEKM3uhxeawna5GV6xjcx0qUxtcA3ONeI7dAlsb3BDvq17XFeNLG2kwnRhc6c/LRPytWKnAQd3iIcn/R9K8dot1l1DIHykTx8Iv8szzJuLZ2PQgv9JAHL3SxJdDTQxgkJMpBBF2JfG6mQFfC2KyZ/2wrEVNhS2SsN8dXRGksLme0JH8JkbwZg2lWktz2EWzcZ7soNzkqGqaaEK4nfuKTn6MqAkAz+uMvcSl83UUF+xwu2ThitM1ugERX8F2xAty5/CmN0AvvfjTWEL9Sp0vbJ9pMJCiiXz9dwOK44zAZ1MxsBA6xpHmhr2DGPK5lGayJTFxvcFpuIXy/hYPq0GiiFH7nSmamnJU3+CIchd5L+/HKNcHf5KkVaAII7oYbA
+ wElLliXV
+ k9rwqKbmeN8hM8AkK9YnriiDXXVB+0bgBnebELRJB+7I49jAVqosJZ9pvmRihJ3pj06fu63YiYvjftOYGqqI+Uvc4avS2/ibWYfgQxSww37wD2pU/jx62fmsLTn9SL3GxdhjohTssmSPHPfJ28gMKqTccP3hG5Fl8LdKLxc+MagMEZAwcwZDdfExEruxyjFkn5KKoMlfb1Ktgq2pTKwqmJ5cS6JuimmG1L6dANwfbnmTw2A4rUQEtjRScVWXz6E7fxATO5+pj80f/Xv9vce1fD4awe49/rO8kKZS2y8dL0cJxAGzzbzusoemIE//L9P68m1Co93VVpXhkcng4rW/d6Cti2YWbCcmTs9OfThQw/nQYWUQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,79 +106,185 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Aug 5, 2026 at 12:02 AM BST, Yosry Ahmed wrote:
->> @@ -3190,9 +3272,9 @@ EXPORT_SYMBOL_GPL(split_page);
->>  int __isolate_free_page(struct page *page, unsigned int order)
->>  {
->>  	struct zone *zone =3D page_zone(page);
->> -	int mt =3D get_pageblock_migratetype(page);
->> +	freetype_t ft =3D get_pageblock_freetype(page);
+On Tue Aug 4, 2026 at 8:53 PM BST, Yosry Ahmed wrote:
+> On Sun, Jul 26, 2026 at 10:22:49PM +0000, Brendan Jackman wrote:
+>> Create ALLOC_UNMAPPED, which requests pages that are not present in the
+>> direct map. Since this feature has a cost (e.g. more freelists), it's
+>> behind a kconfig. Unlike other conditionally-defined alloc flags, it
+>> doesn't fall back to being 0. This prevents building code that uses
+>> ALLOC_UNMAPPED but doesn't depend on the necessary kconfig, since that
+>> would lead to invisible security issues.
+>>=20
+>> Create a freetype flag to record that pages on the freelists with this
+>> flag are unmapped. This is currently only needed for MIGRATE_UNMOVABLE
+>> pages, so the freetype encoding remains trivial.
+>>=20
+>> Also create the corresponding pageblock flag to record the same thing.
+>>=20
+>> To keep patches from being too overwhelming, the actual implementation
+>> is added separately, this is just types, Kconfig boilerplate, etc.
+>>=20
+>> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+>> ---
+>>  include/linux/freetype.h | 70 ++++++++++++++++++++++++++++++++++++++++-=
+-------
+>>  mm/Kconfig               |  3 +++
+>>  mm/page_alloc.h          | 18 +++++++++++++
+>>  3 files changed, 80 insertions(+), 11 deletions(-)
+>>=20
+>> diff --git a/include/linux/freetype.h b/include/linux/freetype.h
+>> index 3b0d44023b6a1..37e88dcccdecc 100644
+>> --- a/include/linux/freetype.h
+>> +++ b/include/linux/freetype.h
+>> @@ -2,6 +2,7 @@
+>>  #ifndef _LINUX_FREETYPE_H
+>>  #define _LINUX_FREETYPE_H
 >> =20
->> -	if (!is_migrate_isolate(mt)) {
->> +	if (!is_migrate_isolate(free_to_migratetype(ft))) {
->>  		unsigned long watermark;
->>  		/*
->>  		 * Obey watermarks as if the page was being allocated. We can
->> @@ -3205,7 +3287,7 @@ int __isolate_free_page(struct page *page, unsigne=
-d int order)
->>  			return 0;
->>  	}
+>> +#include <linux/log2.h>
+>>  #include <linux/types.h>
+>>  #include <linux/mmdebug.h>
 >> =20
->> -	del_page_from_free_list(page, zone, order, mt);
->> +	del_page_from_free_list(page, zone, order, ft);
+>> @@ -64,20 +65,47 @@ static inline bool migratetype_is_mergeable(int mt)
+>>  	return mt < MIGRATE_PCPTYPES;
+>>  }
 >> =20
->>  	/*
->>  	 * Set the pageblock if the isolated page is at least half of a
->> @@ -3214,14 +3296,16 @@ int __isolate_free_page(struct page *page, unsig=
-ned int order)
->>  	if (order >=3D pageblock_order - 1) {
->>  		struct page *endpage =3D page + (1 << order) - 1;
->>  		for (; page < endpage; page +=3D pageblock_nr_pages) {
->> -			int mt =3D get_pageblock_migratetype(page);
->> +			freetype_t old_ft =3D get_pageblock_freetype(page);
->> +			freetype_t new_ft =3D freetype_with_migrate(old_ft,
->> +				MIGRATE_MOVABLE);
+>> +enum {
+>> +	/* Defined unconditionally as a hack to avoid a zero-width bitfield. *=
+/
+>> +	FREETYPE_UNMAPPED_BIT,
+>> +	NUM_FREETYPE_FLAGS,
+>> +};
 >> +
->>  			/*
->>  			 * Only change normal pageblocks (i.e., they can merge
->>  			 * with others)
->>  			 */
->> -			if (migratetype_is_mergeable(mt))
->> -				move_freepages_block(zone, page, mt,
->> -						     MIGRATE_MOVABLE);
->> +			if (migratetype_is_mergeable(free_to_migratetype(ft)))
->> +				move_freepages_block(zone, page, old_ft, new_ft);
+>>  /*
+>>   * A freetype is the identifier for a page freelist. This consists of a
+>>   * migratetype, and other bits which encode orthogonal properties of me=
+mory.
+>>   */
+>>  typedef struct {
+>> -	int migratetype;
+>> +	unsigned int migratetype : order_base_2(MIGRATE_TYPES);
+>> +	unsigned int flags : NUM_FREETYPE_FLAGS;
+>>  } freetype_t;
+>> =20
+>> +#ifdef CONFIG_PAGE_ALLOC_UNMAPPED
+>> +#define FREETYPE_UNMAPPED			BIT(FREETYPE_UNMAPPED_BIT)
+>> +#define NUM_UNMAPPED_FREETYPES			1
+>> +#else
+>> +#define FREETYPE_UNMAPPED			0
+>> +#define NUM_UNMAPPED_FREETYPES			0
+>> +#endif
+>> +
+>> +#define FREETYPE_FLAGS_MASK FREETYPE_UNMAPPED
+>> +
+>>  /*
+>>   * Return a dense linear index for freetypes that have lists in the fre=
+e area.
+>>   * Return -1 for other freetypes.
+>>   */
+>>  static inline int freetype_idx(freetype_t freetype)
+>>  {
+>> +	/* For FREETYPE_UNMAPPED, only MIGRATE_UNMOVABLE has an index. */
+>> +	if (freetype.flags & FREETYPE_UNMAPPED) {
+>> +		VM_WARN_ON_ONCE(freetype.flags & ~FREETYPE_UNMAPPED);
 >
-> While poking at the code with AI, it pointed out that new_ft here may be
-> an invalid freetype (e.g. unmapped movable). I don't think anything in
-> move_freepages_block() or its callees checks against this. There may not
-> be an actual code path that would lead to this,=20
+> If we move this to the beginning of the function we can drop the
+> VM_WARN_ON_ONCE() below, right?
 
-Yeah I think the bug is impossible in practice because of the
-freetype-flags(a) =3D=3D freetype_flags(b) in can_merge_freetypes()...
+This one says "assert no flags are set that are incompatible with
+FREETYPE_UNMAPPED", the one below says "assert no completely invalid
+freetype flags are set". Right now those are the same thing so we
+_could_ combine them, but just happenstance.
 
-> but it's very subtle.
-
-... but yeah. Also there will be other bugs in this form (failure to
-handle a no-freelist freetype), I have had several of them already while
-developing these patches. I have specifically asked AI to look for them
-and it didn't find this one. (Well, it's actually also quite likely
-it did but I didn't read it properly or something).
-
-> We can add a check to can_merge_freetypes() (introduced in later
-> patches) to check for invalid types.
+>> +		if (freetype.migratetype !=3D MIGRATE_UNMOVABLE)
+>> +			return -1;
+>> +		return MIGRATE_TYPES;
+>> +	}
+>> +	/* No other flags are supported. */
+>> +	VM_WARN_ON_ONCE(freetype.flags);
+>> +
+>>  	return freetype.migratetype;
+>>  }
+>> =20
+>> @@ -85,33 +113,53 @@ static inline freetype_t freetype_from_idx(unsigned=
+ int idx)
+>>  {
+>>  	freetype_t freetype;
+>> =20
+>> -	freetype.migratetype =3D idx;
 >
-> But I think we may actually want a check in prep_move_freepages_block(),
-> which is called by move_freepages_block() and others before moving a
-> pageblock. WDYT?
+> Do we need a comment here? Something like this maybe:
+>
+> 	/*
+> 	 * There is one freetype per migratetype, as well as one extra
+> 	 * free type for unmovable unmapped pages.
+> 	 */
+>
+>> +	if (idx =3D=3D MIGRATE_TYPES) {
 
-Yeah I think that's the answer, we just have to put those checks in the
-right places.=20
+Well we have basically that exact comment on the definition of
+NR_FREETYPE_IDXS. Do you think we should move it here?
 
-FWIW my original nerd instinct here was to create some freelist
-abstraction that makes the problem go away by making "no freelist of
-that type" look just like an empty freelist. But aside from being more
-galaxy-brained code to review, that doesn't work here at all:
-move_to_free_list() targeting a nonexistent freetype is inherently a
-bug.
+>
+>> +		freetype.flags =3D FREETYPE_UNMAPPED;
+>> +		freetype.migratetype =3D MIGRATE_UNMOVABLE;
+>> +	} else {
+>> +		VM_WARN_ON_ONCE(idx < 0 || idx > MIGRATE_TYPES);
+>> +		freetype.flags =3D 0;
+>> +		freetype.migratetype =3D idx;
+>> +	}
+>>  	return freetype;
+>>  }
+> [..]
+>> diff --git a/mm/page_alloc.h b/mm/page_alloc.h
+>> index 9928aa9012588..fac8e5304bb03 100644
+>> --- a/mm/page_alloc.h
+>> +++ b/mm/page_alloc.h
+>> @@ -56,6 +56,24 @@
+>>   * alloc_tag_sub_check().
+>>   */
+>>  #define ALLOC_NO_CODETAG       0x1000
+>> +#ifdef CONFIG_PAGE_ALLOC_UNMAPPED
+>> +/*
+>> + * Allocate pages that aren't present in the direct map. If the caller =
+changes
+>> + * direct map presence, it must be restored to the previous state befor=
+e freeing
+>> + * the page. (This is true regardless of ALLOC_UNMAPPED).
+>> + *
+>> + * This uses the mermap (when __GFP_ZERO), so it's only valid to alloca=
+te with
+>> + * this flag where that's valid, namely from process context after the =
+mermap
+>> + * has been initialised for that process. This also means that the allo=
+cator
+>> + * leaves behind stale TLB entries in the mermap region. The caller is
+>> + * responsible for ensuring they are flushed as needed.
+>
+> I think this is no longer true as the allocator does not use the mermap
+> with __GFP_ZERO anymore?
+
+Oops, yep thanks.
+
+>> + *
+>> + * This is currently incompatible with __GFP_MOVABLE and __GFP_RECLAIMA=
+BLE, but
+>> + * only because of allocator implementation details, if a usecase arise=
+s this
+>> + * restriction could be dropped.
+>
+> It would help to explain why it's incompatible with __GFP_MOVABLE and
+> __GFP_RECLAIMABLE, here or in the changelog. I assume mainly because we
+> only have one freetype for unmapped unmovable, but there are also some
+> more interesting details like compaction needing to support copying
+> unmapped pages (e.g. via the mermap)?
+
+Yeah the latter is the reason I had in mind (also not just copying them
+when they're unmapped but also being aware of when it needs to "promote"
+a compaction to generate an entire block).=20
+
+And yeah it makes sense to have that in a comment. This is a kinda "API
+comment" so spiritually it doesn't really belong here but I'd probably
+put it here anyway in parans just coz that's where it will actually be
+seen...
 
