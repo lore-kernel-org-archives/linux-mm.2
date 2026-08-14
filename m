@@ -4,95 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 446D2C5DF66
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 01:30:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F167BC5DF66
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 01:46:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79EBA6B02DB; Thu, 13 Aug 2026 21:30:00 -0400 (EDT)
+	id 413AD6B02D9; Thu, 13 Aug 2026 21:46:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 729166B02DC; Thu, 13 Aug 2026 21:30:00 -0400 (EDT)
+	id 3A5016B05F0; Thu, 13 Aug 2026 21:46:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5548F6B02DD; Thu, 13 Aug 2026 21:30:00 -0400 (EDT)
+	id 267B76B05F1; Thu, 13 Aug 2026 21:46:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B2826B02DB
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:30:00 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9A688A0168
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:29:59 +0000 (UTC)
-X-FDA: 85098143718.24.546E485
-Received: from mta0.migadu.com (out-175.mta0.migadu.com [91.218.175.175])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6AA2B140008
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:29:57 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DY1hXoZ6;
-	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.175 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E54246B02D9
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:46:47 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 556FE1602DD
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:46:47 +0000 (UTC)
+X-FDA: 85098186054.05.64529DB
+Received: from lgeamrelo11.lge.com (lgeamrelo11.lge.com [156.147.23.51])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1A30440004
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:46:43 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.51 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786670998;
+	s=arc-20220608; t=1786672005;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EkRV9cT8eTIGpK9Mjpl/pEyiUXlLpQy8HBJVP7Kwx8w=;
-	b=sAg9ejqlj4kv5lkqpLmCYHnxvfpaVCPp7ofLWj4aRc6P6v22eJtLbO0Jr1cVShy/5RYfMT
-	/taU+PmjckweNqk30IEwtg7yV/qF87lMt2sNHyRvNES9IkDsPoi+neICTVXd+sWsvQaMUB
-	PE6MOepGr1NgYP5WsTmlQMViToUUIIE=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XDgS3ttL+IOQjEU5bZLeRMszZ892fR3c5yALzn6nddU=;
+	b=VJ9srM/6WyIjGMNSvVhjrf9zMoVaCH3gZ/jjVXeFb6LzX7ecpwtUjcewE6lk6JxWIFEJcl
+	+EAVg4d9jOxYpk7uYDXGSoWaE7zfXmu5Le3hBwndaaFCapMbUML0UKwE/lewbOl5NNGNzt
+	RqPdVQwMSrQbS2EIbV167pq74Lo9m40=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DY1hXoZ6;
-	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.175 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.51 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786670998;
-	b=wLzdt02nkO5GdFltgx2J+XjfPde3G2WV0qfg2Sx3R8ewHhp/KX+cCqq8r0TmZZaQhkFaRB
-	X6quVYoSfljSx4usJDUf695Lymb3+GPwzrVmHwyHZMRpCXV67WWasVw7/ez8a97Cz86zKI
-	c9tD95z8VQNrMWBPfu2j4jQHQQFzfp0=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=mJVpl+4xZO80M/OyNFMbUx08bRvBm8AGaGXAAVqZKA8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786670996; v=1; x=1787275796;
- b=DY1hXoZ6vTmcsBXsYod4ZqC5V+KXAxrFf57kesxFOQRMAENF5GuaCE468aJspN4VQLLlo+Ap
- Jr55opKuLFMIdV0AsWfgBLpWHaQjZ8ZecWNZs2GpwEy5+/20NvtaFm7xValiZLcPgy6Y/+9RJuV
- GtsLoq8sF0YTHVmmZx+SwOzg=
-X-Envelope-To: linux-mm@kvack.org
-Received: from mi-ThinkCentre-M760t.mioffice.cn (14.29.108.92)
-	by smtp.migadu.com with ESMTPS id b69033f2e9e602e1;
-	Fri, 14 Aug 2026 01:29:56 +0000
-X-Migadu-Flow: FLOW_OUT
-From: Ridong Chen <ridong.chen@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	Tejun Heo <tj@kernel.org>,
-	David Finkel <davidf@vimeo.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	cgroups@vger.kernel.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
-	linux-mm@kvack.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
-	linux-kernel@vger.kernel.org,
-	Tao Cui <cuitao@kylinos.cn>,
-	Ridong Chen <ridong.chen@linux.dev>,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH v3 2/2] mm, memcg: fix memory.peak reset clobbering other fds' watermark
-Date: Fri, 14 Aug 2026 09:29:24 +0800
-Message-Id: <20260814012924.2388613-3-ridong.chen@linux.dev>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260814012924.2388613-1-ridong.chen@linux.dev>
-References: <20260814012924.2388613-1-ridong.chen@linux.dev>
+	t=1786672005;
+	b=SxYbls6dkwjNXsFZ2atpeCpLadm3EHvYoWntOpJutrYZG/bzm23wKiOroJ8ajRP9i380QP
+	pMK7OLe8kzmTeCz7EbGLB+UclSeYMY3ETVYxLwsR101eLBZB8W5KqdM5zxpQmdMf+sbvFH
+	/x2f7q6+Az0bUBODVyqRzggAxq1fAvk=
+Received: from unknown (HELO lgeamrelo02.lge.com) (156.147.1.126)
+	by 156.147.23.51 with ESMTP; 14 Aug 2026 10:46:40 +0900
+X-Original-SENDERIP: 156.147.1.126
+X-Original-MAILFROM: youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.1.126 with ESMTP; 14 Aug 2026 10:46:40 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Fri, 14 Aug 2026 10:46:40 +0900
+From: Youngjun Park <youngjun.park@lge.com>
+To: Longlong Xia <xialonglong2025@163.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Longlong Xia <xialonglong@kylinos.cn>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/swap: publish cluster tables after full initialization
+Message-ID: <an5zgOC0HpxZEzI3@yjaykim-PowerEdge-T330>
+References: <20260813150316.2793642-1-xialonglong2025@163.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6AA2B140008
-X-Stat-Signature: wwj6cm6654r8eq4d58ekzu7myd63tmym
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260813150316.2793642-1-xialonglong2025@163.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1A30440004
+X-Stat-Signature: ewo9df1dw8idjzft5yc3gqwgaarufgqg
 X-Rspam-User: 
-X-HE-Tag: 1786670997-355280
-X-HE-Meta: U2FsdGVkX19scD/Tmx2iaItcB1zFAqnTPpRVMxmQu8vh6csLgs6PyeInU31BXDERlvgC4qTgPU13J4/3a5YIUhHxRZnzB5vZ7yncwYJkb0p6ORdk1vAANHHiDjkN2RZamP36Lx6I59MWwRT0gcmxB/z50jLhVvD5llDNYvGCDH7nrMaiGqMAh8U235xQDcXsPMQpVJm5yxdlx2WcK87RJhAyjfWUy5nJefR2kWQd2djaXwrDXLvvA/oFHeT0/ZlipVhnr0gtKkQPKeoD/9NodFDTXWoYVtDFNG0jxS+FnLd+znjXO1wNTFgYy6uDg60L6pUWvS1/TiLBlnWE1lCbRss3lK9346uY/7vn3ZyS2DRjWPgq4OlEmQNxdh2wSd4Ywisg2V7uwFvoVsbZ5cmaQekoo41IBV9SVd3QkFnWE6yhfnJ0pj80nTZsddtMLNB9Pqf40AKwmgQH+RqSW+7jKRacePoAR/XQXAU6KeJ/TOWmEpzKj4GlwlMW5ghxYx8mJKdRO1Gt+HStOaO2zIvS4IJ62gu0ej1n2y7Wg8d4pfeeDTLSIMyYlAlZC0g69yxxQ+h592Vz0Zz5hUWGu6KGm1zCtX+lAyFMcBYQ0IxcM+3Ga54cqt3zIKO4ev5wTaaGXxMNhK9nZDF4+67M9BVnX9hiIDZauDhitlJH28FFDPlFEFM70BlsMox91D1DxPgy7VmHR53gF+FKCVext0mmLf2vdTmIoof48QnzqPRZjHEyESCVmG8lkuHswoucmS0YgfTVEqQWOV0Y+B5PnjnVGMRVdTKgIzi2JU1nrvXVZk0KWm9dX10sj85WKp93Vb3xKtxlfQVCdWWhXnqOEKVTsPBHAClK7JGm21BnTBIyNg64s4hR7CEmxECFAdkTtPI1TeQjtFpw4R6lxocFMCqZiRXotuwNgHsSpYcb7PpTxg6RN7aW2nJ+W+fibp+uaPaFbTGUIqZm8+MdCWOUhqE
- Ej0XdEZv
- i7pTtNbsS+fhTl/jNpEkewV8e9p9ecp/jItVTfDC6X3IfhzmILnwyGt8aI5O+Lp70B0Y3NcjbBXt9gJReQeAf7HJgWAJT1qUnrGsMG3nL/9esfNIcY1fZTO/ZLtPg1PBdg7uSPUl6vrohPvJ1EoexHKASjpqJu0ZX48n4hDsumQnY4QSCHFWJNiR0E6VomlNrsnQR630lpZIE0/ED5mfQEEvP3s2gCHyZ6bm4V2AeubUWk7HEekp4JJlLJBWFD4jSIJjZH5+kepGtMRDyLInO9rh10hFdOa6NIGgh2Fjv27GSbR3u+luff9IQN+wonMJA72nagYLEVEnAZiPgPRppyyI7FhOEUNuyiOVSAA+noFP9rRTayfe+oPws7yFUQpZSydSsfW2qmVaepbLvEAF2fgmv4YksC4BWYH90wcMC7RuPoOQgsgKalMLUc7qgvVBSV2ulxQRPJljsBtymbp5H3A17f43qK/htqP40tmbxKYVwIFjL161kQdjHEwBpi+8Zecq+e+bvN8y6I/TvY9gr6u7cdhjtSi+ZMYvR9mdxuwmSdp7zVMPAUdMV4GvpKrwkvmC7Z7ay/T1pKc+z9tNe/lSP+xK21TuQsTHZx54ejw1IEK19Rvr+2TyGhm4bNJsMB/Gb4BJ73/PgGr58GzlZJd0suWf26cYpZrCUJJM7eBXHBNq3etkeA8yFpw==
+X-HE-Tag: 1786672003-214579
+X-HE-Meta: U2FsdGVkX1/j4KahUbkkNkN3QuSsjlNcANXIH/llw36CTyi4antWZWK7G8Xuus6JulPp5tpmr/JPw+x6iv9o/ErkV0eYyJr2hX+W4WZlJ/tVZL3Ywo9kb7pDarHYKEQbX6BlWnW6b2H4Dae4yikBj7MIPlMPrtvyp9OqP/I7mUNZ/dN/1zxKeFpZoLQq/4gQNwVsnjcmJ7Rix3jv1O4TCpwTcfFK2cY4TwjWVBuuuKl8cCBJqBp+zxP4adbQFml9KZZ8AnZ7NThM/3k9g5jylJo7q5g6DLSMjSKW2J3iYYqJYi6ON5TxNlb1+KBJOlQXIzvA4Qr+jsakPEVQtqDsKOW563Gcldhovg9hhh1jdtPytlnfBBOBDqdoCYyZnVpLd338l5x7+1pKLIuVEdLZMRZmRoA7bv0AfliV6ay1R7Oq2fdFcuqnVysnWliAfXQq2XpeDpEDFaytY55drZwDIJQEHKVYGdTEkQOPA95T/fR6e2TCFPdU/cD3J101rPob6nORCaUOCouiRqMfVOiwfDr+x/FeoeEkpguc/PIFtpAIJUhXhmcvsUsX2UcSvbJVDpwHtUwg+1x60mTjgtoYj1oPZ1gtWsDHVoKaMR6BzboOLoR1QWjcIH1glTsQYbPxvR3J4mfU5IrI443VQyFRwVI2fw75+ToGJm74SBmFiIhlmGZd6IfCum6shF0mYv6FUH/qIWmliNrgGw6PqOkKNE7pcGiNOK0TmP+IJD9RVnFyKWHwz9jdWxHDrTge3MgDyrs2PyALYTNGM3dnwUdBWRFAz1AAyt9FTGseRnGjSxX4+Y3Vo8teuKqxOJrR62rBama3naHp5wWtiGeC+Gart7rNtZJ/w4v4zy42Vs9r+UlSOU5xTqGep2yVBNAtYPNR9zRqKju0gsA/yM9/h7QAJgJHstjHBc7w6l2MYXwg4qzzsYcmz9+vnAu1DszDb6qamNv7I7a+If586bM49xh
+ 5yefcsCF
+ Z75eumxD+GhjOWOtYjYCEZxze7fh/Lx2AJl330uqdoFqeu66T/tA/R9ie+0C1bePN2Z5Nb7r4YJL4guKvsQL++pjJ81bLx+fpFto9gzNh1fg3zo8GR2XurvckyBFyjZozQt+JMhOOGWB2qcGBiXqHv7GhgPXR31TdDdScbQ79I4DTnaMxGJC4N2GaECu9T6T0x0A4mbrs3IfAZUL6xlceo58MgwGHoGLYnBkbNSJlGfKyX50=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,64 +85,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ridong Chen <chenridong@xiaomi.com>
+On Thu, Aug 13, 2026 at 11:03:16PM +0800, Longlong Xia wrote:
 
-Writing to memory.peak resets the peak for that fd only. Each fd is a
-watcher and reads back max(its own value, the shared local_watermark).
++Cc: Kemeng Shi <shikemeng@huaweicloud.com>
 
-peak_write() resets by lowering local_watermark to the current usage.
-To keep the other watchers' peaks it then walks the watcher list, but it
-stores the current usage into them instead of the old watermark. So once
-usage has dropped from a peak, a reset on one fd wrongly drags every
-other fd's peak down too, even fds that never reset.
+Hello Longlong Xia
 
-Reproduced on 7.2.0-rc5-next under QEMU, two fds A and B on one cgroup:
-B sees the peak (410624 KB), usage drops, then A resets -- and B's peak
-collapses to 1060 KB although B never reset. With this patch B keeps
-reading 410624 KB.
+> From: Longlong Xia <xialonglong@kylinos.cn>
+> 
+> swap_cluster_populate() drops the local, global, and cluster locks
+> before its sleeping allocation.  The allocation helper publishes ci->table
+> before allocating the memcg table and, on some 32-bit configurations, the
+> zero bitmap.
+> 
+> A stale per-CPU or global cluster cursor can reach the isolated cluster in
+> that window.  Since CLUSTER_FLAG_NONE and a non-NULL table make the cluster
+> appear usable, it can allocate a slot without the auxiliary state.  An
+> auxiliary allocation failure can then tear down a table which is already in
+> use.
 
-Fix: save the old watermark before lowering it and use that to floor the
-other watchers, so a reset only affects the fd that issued it.
+I think this issue is addressed in Kemeng Shi's patch, which provides a
+detailed reproduce scenario.
+https://lore.kernel.org/linux-mm/20260720071342.50742-2-shikemeng@huaweicloud.com/
 
-Fixes: c6f53ed8f213 ("mm, memcg: cg2 memory{.swap,}.peak write handlers")
-Closes: https://sashiko.dev/#/patchset/20260807090000.1532495-1-ridong.chen@linux.dev
-Assisted-by: Claude:claude-opus-4-8
-Acked-by: Tao Cui <cuitao@kylinos.cn>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
----
- mm/memcontrol.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+In short, referencing the table while auxiliary table allocation fails can
+lead to a panic or something due to a NULL pointer dereference. That patch only fixed
+the populate code rather than the entire allocation path.
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 6dd8756870ff..5e5edc988119 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -4748,7 +4748,7 @@ static ssize_t peak_write(struct kernfs_open_file *of, char *buf, size_t nbytes,
- 			  loff_t off, struct page_counter *pc,
- 			  struct list_head *watchers)
- {
--	unsigned long usage;
-+	unsigned long usage, old_watermark;
- 	struct cgroup_of_peak *peer_ctx;
- 	struct mem_cgroup *memcg = mem_cgroup_from_css(of_css(of));
- 	struct cgroup_of_peak *ofp = of_peak(of);
-@@ -4756,11 +4756,12 @@ static ssize_t peak_write(struct kernfs_open_file *of, char *buf, size_t nbytes,
- 	spin_lock(&memcg->peaks_lock);
- 
- 	usage = page_counter_read(pc);
-+	old_watermark = READ_ONCE(pc->local_watermark);
- 	WRITE_ONCE(pc->local_watermark, usage);
- 
- 	list_for_each_entry(peer_ctx, watchers, list)
--		if (usage > peer_ctx->value)
--			WRITE_ONCE(peer_ctx->value, usage);
-+		if (peer_ctx != ofp && old_watermark > peer_ctx->value)
-+			WRITE_ONCE(peer_ctx->value, old_watermark);
- 
- 	/* initial write, register watcher */
- 	if (ofp->value == OFP_PEAK_UNSET)
--- 
-2.34.1
+However, as I mentioned in my previous review.
+https://lore.kernel.org/linux-mm/al7WTNXanPVSELAH@yjaykim-PowerEdge-T330/
+I suggested making it visible only when the ci->table installation succeeds,
+even in the CLUSTER_FLAG_NONE case. If we do this, seeing the table in the
+CLUSTER_FLAG_NONE case would not trigger the auxiliary allocation teardown
+mentioned in the problem description.
 
+> Allocate the complete set of tables into a private carrier.  Install the
+> auxiliary pointers and publish the main table only while holding ci->lock;
+> the slow path does this after reacquiring all allocator locks.  Allocation
+> failures now free only unpublished resources.
+> 
+> Fixes: b197d41462c2 ("mm/memcg, swap: store cgroup id in cluster table directly")
+> Cc: stable@vger.kernel.org
+
+I see this commit is included in v7.2-rc1:
+$ git describe --contains b197d41462c2
+v7.2-rc1\~94^2\~147
+
+Since it's in v7.2-rc1, is `Cc: stable@vger.kernel.org` necessary?
+
+> @@ -788,6 +849,7 @@ static int swap_cluster_setup_bad_slot(struct swap_info_struct *si,
+>  				       struct swap_cluster_info *cluster_info,
+>  				       unsigned int offset, bool mask)
+>  {
+> +	struct swap_cluster_tables tables = {};
+>  	unsigned int ci_off = offset % SWAPFILE_CLUSTER;
+>  	unsigned long idx = offset / SWAPFILE_CLUSTER;
+>  	struct swap_cluster_info *ci;
+> @@ -812,9 +874,14 @@ static int swap_cluster_setup_bad_slot(struct swap_info_struct *si,
+>  
+>  	ci = cluster_info + idx;
+>  	/* Need to allocate swap table first for initial bad slot marking. */
+> -	if (!ci->count && swap_cluster_alloc_table(ci, GFP_KERNEL))
+> -		return -ENOMEM;
+> +	if (!ci->count) {
+> +		ret = swap_cluster_tables_alloc(&tables, GFP_KERNEL);
+> +		if (ret)
+> +			return ret;
+> +	}
+>  	spin_lock(&ci->lock);
+> +	if (tables.table)
+> +		swap_cluster_tables_install(ci, &tables);
+>  	/* Check for duplicated bad swap slots. */
+>  	if (__swap_table_xchg(ci, ci_off, SWP_TB_BAD) != SWP_TB_NULL) {
+
+As discussed before, this routine is set up before the swap device becomes
+visible, so it doesn't actually benefit from this fix (although it inevitably
+needs to be modified to align with the current direction).
+
+Overall, I prefer the direction I suggested in my previous review. (If my assumtion is right)
+https://lore.kernel.org/linux-mm/al7WTNXanPVSELAH@yjaykim-PowerEdge-T330/
+or Kemeng's current suggestion.
+
+(+ Also, if this needs to go into the 7.2 hotfix, Kemeng Shi or Longlong Xia
+can submit it. Also, I can help to submit it based on my reviewed direction 
+with both of your tags included.)
+
+Thanks
+Youngjun
 
