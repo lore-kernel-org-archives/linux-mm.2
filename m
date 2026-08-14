@@ -4,130 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D506C5CFCF
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 02:30:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BA11C5DF66
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 02:32:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 858976B02E2; Thu, 13 Aug 2026 22:30:41 -0400 (EDT)
+	id 59BBD6B02E4; Thu, 13 Aug 2026 22:32:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 809AB6B02E3; Thu, 13 Aug 2026 22:30:41 -0400 (EDT)
+	id 573E06B02E5; Thu, 13 Aug 2026 22:32:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F8B56B02E4; Thu, 13 Aug 2026 22:30:41 -0400 (EDT)
+	id 4B06E6B02E6; Thu, 13 Aug 2026 22:32:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F0D06B02E2
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 22:30:41 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CFE4A1C10B9
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 02:30:40 +0000 (UTC)
-X-FDA: 85098296640.21.211B376
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by imf31.hostedemail.com (Postfix) with ESMTP id BA36C20004
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 02:30:37 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=IzmhRSxC;
-	spf=pass (imf31.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786674638;
-	b=n5LjcSlhILcq8Hrauyd4sn6QuT2E5s7Mzi1ZOF3D619U0K4APVbEBqicHzXTErqo0yYxJ8
-	647rNzYss3c6n9PzhDJp+4iOB94DwAt5zUYcH+Xr87powG4zDzjps2NLMiWayPRPZoRFjH
-	JwljZZInBUK3KOgCkXKgoypBykEmN60=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=IzmhRSxC;
-	spf=pass (imf31.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 249916B02E4
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 22:32:07 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A6BD516018E
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 02:32:06 +0000 (UTC)
+X-FDA: 85098300252.28.5868652
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C1B77C0002
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 02:32:04 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ga09yGZS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786674638;
+	s=arc-20220608; t=1786674724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uXz4/9GbKlHmtZw2HyECZY/KxZcYNRtyiGUv0Q21gLw=;
-	b=Dy8gaNIy3NXxyl1RwyCiC/qKhBHY8MezFctn3Fu0TOLrMuv8k1TH1X+cSuh+gMPzt5iLmC
-	zAJ3RWX3F1cvhn3FyQPxt5/bJRWtd+1754h+NbUv65E4n3WWi3wd1z6TIOieGUyPNvaLnt
-	xvQJqJeR7oA8U48chL4d/bQpZ13HEUc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786674637; x=1818210637;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=e6EdqofycO1KcQ0vu4NOsmDsKE9B5d3of8XgzYF9JMw=;
-  b=IzmhRSxChW6QHiKpcjNiT3D69yyuNn6FQ0NklhlUxDE9e1H8eiOz0X8U
-   gIU/vHaXbwLxQk9jvyTePu3m2UyveBEV/qv+dfqJHxfjnl8NYskUbGQ+q
-   Vhof2AfTFJIgsodV+txteGYXwQnpSc/2X+x1lS5SOMS0DPkzimyYEFWuI
-   oJ4ervAx0KrAs8akArf8gDLvyHh3dznXYHv5ude/FX3E6FanTAjVeiWjZ
-   MuHqQOMYT8zQxRBeh3rztH1xj4f9Uq0s3D1m/G0aef3LQDlkn3AkPWUKY
-   WaQ0mlzKrveSfLj6MWqUSHuc3MkKfUhXLvtw61tJTE5IRhMnfoYI01cC2
-   Q==;
-X-CSE-ConnectionGUID: hA6K4aCMRMiPJy1jEJTmVg==
-X-CSE-MsgGUID: rjXMM0c+T6GxoX7OvZ86Bw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11874"; a="104788816"
-X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
-   d="scan'208";a="104788816"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 19:30:36 -0700
-X-CSE-ConnectionGUID: nQfL49GxQ+C30MTsQCAqig==
-X-CSE-MsgGUID: niK+s9aWSOSxaolKC/QZPA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
-   d="scan'208";a="264700152"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 19:30:24 -0700
-Message-ID: <4862dd36-2f9a-4a7e-b9c8-e08e51e80b0a@linux.intel.com>
-Date: Fri, 14 Aug 2026 10:30:21 +0800
+	bh=etbRcxU/qvTHRE2R0RP8Ds1Evnri04IdXsj0mMe/6KA=;
+	b=FE6Vjyn0XdEhaI0Vo6IZ46eTyMqcUumSi1W063IK927fsR7x5hTRe0lpOYfP/CbOGuxxmJ
+	ZUsjhbBdYCyq7hT/QvdE6wbiKViirNJi6bLFh2G8gMM/V71e+7A0wFXoZHZijmL+kZm3c1
+	cxK4JUDXfEkQtySpW4CjgWFt7jhz2oo=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ga09yGZS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786674724;
+	b=N6lryZAFVscy022v6o4fA3vmr8rC4e23GNRSvOG6MalneJiPC67esCOGV5mlf7fmFfXq9g
+	IGfQy5z6fskDlLaEH683sby4DJz3zqsppP4gv/kC3TeUebuX3KW3f4oyyLRsD1MSSjzr1M
+	jmkBdMBjxyVJdJrgPkEJM/AQSXyJ/QE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7E168600E2
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 02:32:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27BE91F0155A
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 02:32:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786674723;
+	bh=etbRcxU/qvTHRE2R0RP8Ds1Evnri04IdXsj0mMe/6KA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=ga09yGZSf1u73IHbvuK8mHtvgQ2Duw/+bhTpPE6T4CUoJ6r6xZQiTjJ6RJdk22q8R
+	 eZRJlRhIPflQrbAn30TYu119RGh3AB2LpGyNxH/OETx/HcmouasvANG0n5YNPl69ZH
+	 AmVGFwQA3LC+oD1GdOjSjpENI6SR5Fdxw237/5YTtCyBXpqOyFcyLJAzyuQJBbqtQF
+	 BHfJzMjpBof5Oz1c0kWmY+0mlkCV/xUqDgr14742MMd+HVVq5orox0Abf0+5QgYRxU
+	 DPJ5b5q8mMUwc8nTeTP50N3r9ke0lr9GouP7olhOPMdZA0aRHCq2VscTV55J1JmY7D
+	 w4+fus/AAY7Wg==
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-52d37b65926so3074501cf.2
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 19:32:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrFA9KSlAmKq1RWBejA27s6nKYLwXX8EquYoIKbO/G8sTTcyxs3QNP69aRQamoThRbMbeHXStR7YA==@kvack.org
+X-Gm-Message-State: AOJu0YyxgO+BDffrRfnfakQiuW1lwmCs9Lu7C6FI6ulcWaDfHb/YR4X+
+	7ozUJ+eQvXhvluaXFW0DngfBUx6Du9U7LzGSYvpnbUoTvJz4Vj660Km+O5nL3l9mTfuAiU4aAiW
+	qVGsBsLPZbi812a7U0Ht9WqiGHsY6ZFE=
+X-Received: by 2002:a05:622a:308:b0:519:e020:6087 with SMTP id
+ d75a77b69052e-52d853d8638mr29594561cf.11.1786674722390; Thu, 13 Aug 2026
+ 19:32:02 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 13/41] KVM: guest_memfd: Return early if range already
- has requested attributes
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-coco@lists.linux.dev
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-13-2fc18ee6d3ba@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-13-2fc18ee6d3ba@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260813110230.2124785-1-ridong.chen@linux.dev>
+ <CAGsJ_4xBQ1r7_rzmu7fBvuy6c3eZCW0Xq=puXtoiGf=JeVnjvA@mail.gmail.com>
+ <CAGsJ_4wEpmxZyDFj5eXwEDY_Rbveue552OqqiyZ2MOJw2TTrrA@mail.gmail.com> <c10dd51b-b439-4415-acfb-83a4024346cb@linux.dev>
+In-Reply-To: <c10dd51b-b439-4415-acfb-83a4024346cb@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 14 Aug 2026 10:31:51 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wEojLabqJZRNRH5CVoEoXPRvcw5hbrGSQ6=8ShrCifGw@mail.gmail.com>
+X-Gm-Features: AUfX_mxNXmlaK_9ljPaBoFzpERXmiDOKUKgXodVtH9bFCFdaPDvVAHGQw13bD2M
+Message-ID: <CAGsJ_4wEojLabqJZRNRH5CVoEoXPRvcw5hbrGSQ6=8ShrCifGw@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm/mglru: preserve inactive placement when enabling MGLRU
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Brian Geffon <bgeffon@google.com>, 
+	"Jan Alexander Steffens (heftig)" <heftig@archlinux.org>, Steven Barrett <steven@liquorix.net>, Yu Zhao <yuzhao@google.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Ridong Chen <chenridong@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BA36C20004
-X-Stat-Signature: fogjejscadszsijqmmuahybhbdt1ipix
-X-HE-Tag: 1786674637-864761
-X-HE-Meta: U2FsdGVkX18zppWKyWcdFGdyoldiYR7toR68NdM04efRqhXQN3/wIEy7U54yUd1oP4b5O1tGVH7rPrfM7jEBrzuY7BeCN9S4I/89ylzDvNiI4SpUO2MG65qrm1WoBNR4MhxxEoPTiDwjqiHITO2za5FuUzeg2d0qQL0opq4G6LoGrv5HVfEd99C/0OtHo5RpGnRgQl+3Rnv/d6M+lDFco67JlH3aW3d7GH4n8WbXukAXmgxqUH0QuPPgrwLvs6jDgZVtPqB0BufR6P9umY1G5Qc2rO1Ko2E6CWa7DDcuryMQokIhQkqVTZ6m+miPzqv1pnpBQV/ih4tZ4DRUpkzZdfaeOjzwa1YSEUwygCZ9iq7tjGPk0qiEU/e1/h+ewv7o7M12PBzZHVnfDKYiLeX8ViJ9EwP7sRQB25FVzQy0cfkZCNkDlrPKOr2Mo5eysLET5s5An4v0uAKn3cAkyZ5tO4BI6cI91ynOFWmpr4RnpVrH5gvbN2CTcU8/638HOhX2ToWhNIGe+7O+2y5m8aUGkHLy79h8PqsAOo02zX+8eSSjOX3jzjejR8IaxFPh2yCKgOmp/ghv+aLtLDbqmdKuChyxfmdqhKTFhfcD3ZUyvojRNDiedN/IovaScUtKwfxtO2d1uOujaNQjBDEvulf6wWF1aPul4w9fw/NIMd0PYjKxTVYdsy8LcUurbBXDh2UI7DlGe8IsUvfPe/hh13dSwXqlKBF2SO6nIX6paHk5qZfBWTxBY3DGYQ1Kb3Zb0/EjAw/6KMu4rZABcTzn0Fe2ckfm3VDionK43SO9yH3cKSadbn+uAKx7AVrUmTiWPzteN3nhEmb5eBQkUV21WCjlgzbS7lnV453OU1khe+uKIu7W0v2ERJFIKkcGo4zI12vQ0ADsNImvpHJkjdlRXVzapwjXhWc/MxD3kajn4gCJopLMpiDig9zMlu31E2VyHzES8maV7YKq6opRa6eeJBF
- H53wKv+I
- UPjU27kjxzbZVfTKF8QYIDz0rgsRLrfRc2Jb/uUTUpZDJ/oxJnEU94U5t4PXmt0vYf3Dd9nnDhZ5q94YVm6+VxPrCcYUgdG7chfMbvkVAPY8QL+EnmKWslzvAAbKNwQbee7KTKA62tp2tqVkF1Vd/1wcNkPUF8KYYRFHT6cTmgkj1f1f9MCRyC6CCwrJ7acRrEoeN2CVg6wmg3DBny/mx/5pN913QHKfjk9eEKuVTYGIfOfYM1Y7Aq9HH9AtF6f/R0djWwu7omFBafS1IngNu69nWY1XwYu9zQwmY3Gf0buErTi4mQY26ol/Xxg+W2jjaZ75bsO8FQs8qyss/7nz7BO+uxIAOeFtRnChP
+X-Stat-Signature: u77ypng4r4g9tm3ruic539xbxasiprte
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C1B77C0002
+X-HE-Tag: 1786674724-643674
+X-HE-Meta: U2FsdGVkX19d+T+bEVn8WxFtj9azKpWN3CEdIm6a5rQOZpUiDrCMMySuboF0BbKkv04nfwoEHYyQ5jYp+J6hN81rGm/ms/fC4RW6MiDl18nG62t5SYz0AwSqPzvN0h5aOnFILFQO20a6awNcmbKRHDe8eZikWg7tqX29s8O/KeseWAmivLuj8dO/+ZRYu+rrklnsfS9DvQJKGH8kUHEiY7a4TOzPUUicHLL75EGMbvb23Cqjnp1waJBfBgd9ghTPXQaZlkLYiPhnC1K9XLhDzXsDG3Wbw8tJG3ABvqxTECWvgXKULGkXIqRlMPZfjhoTG7+NuuMgiAvD2GQUGMo36MQ0uSv6rzHSDLJoHVSnfTC7Jz7ALjqtvvs+crPYj2yHloETACkgn+l+rQrJgcxQ4F0DZYbU1Jv+zJAn+wX0NWH8APBWiy46Gp3DjT1SER9KmFC3pqtmWMB4Ioe63epKTTNBHM/C1xp1QqVazdv0bfw6bkrhOTS27sQ7gQAr5Nn4WeSNjodk0BIYKyuztbB57Tz7tyiPpGW6SK9+r4U3/pZ+LKdq3czimtvyawAhgf3TBp4e3KyAA2eUpCJpDG3xcFsjbitLl+wZbm7Js8WwhsetfH84MBs5LcbcKxrMqWEAnGIoOI28OKxu+pGMvJ6nt/JyVjaUjwdodlwIkaenK50eug4SrD6jZML7deVTDCiKWuQChpQsigAaMBWH8FcYxBccbZ0ltEdnpsc2YHvAFrm4qedGmF5OKDfSFp5UJx8ew7S5lg3O3xkN++0uoyrXdPxj7ru7djPYzP9MxefDv+5C1/SER9Xx13iEtRkYe2qHjthUwSCt70H7e3NvSdl7eVC0hXvLvM4zZS6Ls+2XqfodR3gdtNpiDKudP8sDdKNkmFbezkc8ygmDZ4zWE9qLm9NVX6qXviJSGDy4fRZoMTgFYAUplp6QDOZK0lB/fViqXLeI9UsV1CTkN83qtm8
+ FUVv6tkN
+ H7xnSbUuqfevjQJxWk7hrY5Wla3uCLk4nEFvdCIA9J17mJqCuKnGvBagD8uDHNVBmy4SA5VDM6VaRJ4x6R3jbBBrzoyBwqf9lgnMh1Ks1yRoZfT5PbRks/9tpQHWOz6uFaDYvdxfxTakOTxjhbjoUxMAHBuU8QcnMP43Ii7Kv0zOQBiVHzIJznzMm+f08QoNo5NDwI2zdmzU6+2wKBJ6LeXXrd2xHNLMmlPBFMfat9MrmTpNk4e6iWkS7EZGHgcT4GNA2gPsmpa0EFMvAkjzf8YYrXkUdIDlgqoiyGgohjU95iw4/ZiyIlCQmikQvJAcgrEKPgt6IfimALxc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,21 +111,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> Provide function to check that a range has given attributes.
-> 
-> Optimize setting memory attributes by returning early if all pages in the
-> requested range already has the requested attributes.
+On Fri, Aug 14, 2026 at 10:22=E2=80=AFAM Ridong Chen <ridong.chen@linux.dev=
+> wrote:
+>
+>
+>
+> On 8/13/2026 7:37 PM, Barry Song wrote:
+> > On Thu, Aug 13, 2026 at 7:24=E2=80=AFPM Barry Song <baohua@kernel.org> =
+wrote:
+> >>
+> >> On Thu, Aug 13, 2026 at 7:02=E2=80=AFPM Ridong Chen <ridong.chen@linux=
+.dev> wrote:
+> >>>
+> >>> From: Ridong Chen <chenridong@xiaomi.com>
+> >>>
+> >>> When the LRU is switched to MGLRU (echo y > /sys/kernel/mm/lru_gen/
+> >>> enabled), fill_evictable() re-inserts every folio via
+> >>> lru_gen_add_folio(..., false).  With reclaiming hardcoded to false, a=
+n
+> >>> inactive anonymous folio (no PG_active, not in the swapcache) takes t=
+he
+> >>> "gen =3D MIN_NR_GENS" branch in lru_gen_folio_seq() and is seeded at
+> >>> seq =3D max_seq - 1, which lru_gen_is_active() treats as active.  Its
+> >>> inactive placement is lost and NR_INACTIVE_ANON is folded into
+> >>> NR_ACTIVE_ANON.
+> >>>
+> >>> Pass reclaiming=3D!active so a folio from an inactive list is seeded =
+into
+> >>> an older generation.  Folios from the active list carry PG_active and
+> >>> hit the first branch either way, so they are unchanged.
+> >>>
+> >>> Tested on x86_64, next-20260812, 2G VM + 1G swap, ~1.5G anon pushed o=
+nto
+> >>> the inactive list before enabling MGLRU:
+> >>>
+> >>>                           Active(anon)  Inactive(anon)
+> >>>    before switch (legacy)        2952         1548792   kB
+> >>>    after `echo y`, unpatched  1552052               0   kB
+> >>>    after `echo y`, patched      15144         1536636   kB
+> >>>
+> >>> Inactive file folios stay inactive either way (NR_INACTIVE_FILE is
+> >>> preserved).
+> >>>
+> >>> Fixes: 354ed5974429 ("mm: multi-gen LRU: kill switch")
+> >>> Assisted-by: Claude:claude-opus-4-8
+> >>> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> >>> ---
+> >>>   mm/vmscan.c | 7 ++++++-
+> >>>   1 file changed, 6 insertions(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> >>> index 94fc4f25e99f..2befc8d7dd3f 100644
+> >>> --- a/mm/vmscan.c
+> >>> +++ b/mm/vmscan.c
+> >>> @@ -5319,7 +5319,12 @@ static bool fill_evictable(struct lruvec *lruv=
+ec)
+> >>>                          VM_WARN_ON_ONCE_FOLIO(folio_lru_gen(folio) !=
+=3D -1, folio);
+> >>>
+> >>>                          lruvec_del_folio(lruvec, folio);
+> >>> -                       success =3D lru_gen_add_folio(lruvec, folio, =
+false);
+> >>> +                       /*
+> >>> +                        * Keep a folio from the inactive list inacti=
+ve:
+> >>> +                        * pass reclaiming=3D!active so it is not see=
+ded as
+> >>> +                        * active.  See lru_gen_folio_seq().
+> >>> +                        */
+> >>> +                       success =3D lru_gen_add_folio(lruvec, folio, =
+!active);
+> >>
+>
+> Hi Barry, Thank you for your reply.
+>
+> >> This is a very interesting use of the reclaim argument, as it is not
+> >> intended to serve this MGLRU switch purpose. It is really only meant
+> >> for `folio_rotate_reclaimable()`.
+> >>
+>
+> Yeah, I realize tying the reclaim argument to the MGLRU switch is a bit o=
+f a
+> hack, since it was really only designed for folio_rotate_reclaimable(). T=
+hat
+> said, I'm not blind to it, I just posted an RFC patch to get the discussi=
+on
+> rolling and see what people think.
 
-Nit:  has -> have
+I think it=E2=80=99s fine. Just update the comment there and mention that i=
+t
+can serve another purpose as well.
 
-> 
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Tested-by: Shivank Garg <shivankg@amd.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+[...]
+> > Then the oldest generation will maintain the same folio order as the
+> > inactive list.
+> >
+> Thanks for the suggestion. Traversing head to tail does fix the inversion=
+, but
+> we need to distinguish active from inactive during iteration, because the=
+y are
+> inserted differently: list_add_tail() when reclaiming, and list_add() oth=
+erwise.
+> That said, the reclaim argument usage still feels off to me=E2=80=94I'd l=
+ike to hear if
+> others have a better idea before we proceed with further changes.
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+We can change reclaim to a tristate integer, or simply make the
+following change and add a comment explaining why?
 
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 9e52f49114e7..5e624d0316bc 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -5403,7 +5403,8 @@ static bool fill_evictable(struct lruvec *lruvec)
+
+                while (!list_empty(head)) {
+                        bool success;
+-                       struct folio *folio =3D lru_to_folio(head);
++                       struct folio *folio =3D active ? lru_to_folio(head)=
+ :
++                               list_entry((head)->next, struct folio, lru)=
+;
+
+Or you could even move the entire inactive list to the oldest gen
+instead of moving the folios one by one. Then you can avoid dealing
+with the reclaim argument entirely.
+
+Best Regards
+Barry
 
