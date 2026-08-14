@@ -4,83 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F2F9C5CFDB
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 17:21:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B40BC5CFC1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 17:57:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 524826B06F7; Fri, 14 Aug 2026 13:21:16 -0400 (EDT)
+	id 2AD486B066A; Fri, 14 Aug 2026 13:57:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DC206B06F9; Fri, 14 Aug 2026 13:21:16 -0400 (EDT)
+	id 23E9D6B06FB; Fri, 14 Aug 2026 13:57:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39C4F6B06FA; Fri, 14 Aug 2026 13:21:16 -0400 (EDT)
+	id 125F36B06FC; Fri, 14 Aug 2026 13:57:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 08C236B06F7
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 13:21:15 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 87DC0C01C9
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 17:21:15 +0000 (UTC)
-X-FDA: 85100540910.11.9B20793
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id D969B40004
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 17:21:13 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gtgY7SnU;
-	spf=pass (imf07.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786728074;
-	b=R/NuWXzvv1Psv6gQ+MYnyAbDpELuKH+am+A1rs8hlXk2hEnB0gxw54mXi+V21Z5gpNl0HU
-	FsmuLcxbhuzyzIabEWAKtS4Ec+Be2UakPJt6QPURJg5KoUvmlt9y+tfvxFAefJX1Ly3f1H
-	wVGGEIxFcch9ZDvQQc4gn0sGm3bfI38=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gtgY7SnU;
-	spf=pass (imf07.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E92266B066A
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 13:57:50 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 84A351A01E9
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 17:57:50 +0000 (UTC)
+X-FDA: 85100633100.02.AC09052
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by imf04.hostedemail.com (Postfix) with ESMTP id D120340002
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 17:57:48 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=K400RLQt;
+	spf=pass (imf04.hostedemail.com: domain of 3G1d_agYKCCIQC8LHAEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--seanjc.bounces.google.com designates 209.85.214.200 as permitted sender) smtp.mailfrom=3G1d_agYKCCIQC8LHAEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786728074;
+	s=arc-20220608; t=1786730268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BRL/PSO1BC0vvlDljyLXfI9OVmFFb4IneOZPFgBEPj8=;
-	b=f0xk+vKpZZHx/TAdgX6XY6Se6oShQmnPQT2m/cyUBMKozm5b3MHc/t8LgLhgkwyoirjcI5
-	S3lzP6lDi8K1ffY+10tF+/c6H/fM/zzRoNPOgRJ6/RcDYJVBTA+hMALDS+wlJ9bmHmb1BX
-	ORxufAYtgf+FRMCqf6AyT0afY+h0hjQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1926F413DC;
-	Fri, 14 Aug 2026 17:21:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756A61F00A3A;
-	Fri, 14 Aug 2026 17:21:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786728073;
-	bh=BRL/PSO1BC0vvlDljyLXfI9OVmFFb4IneOZPFgBEPj8=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=gtgY7SnUZh0xl3EBMF0kIXyX21CWe9oYi8qA4wg9vGLe21bsaqy7Dy98bmfH4z/TF
-	 G2S0FzURzQsIovd6I5gLbqZbHuw9V3P8+6og2bofp5MTNeJz6k1Sp+vGTL9SX4e/OJ
-	 wrx8J00UBCamLm+toy8zCmMG0OMWZrBB9+o+NgdAtGndUqxXY6Q7wjwob9n5kxf7AK
-	 3IEdsN3PDJlfGHXQEk7M/qFDaRwW9KHEn2A8/CN59GNaHRb3VarIzswPmDvqEZ0A6r
-	 4qLoSAYiGF8TJXaQzNjrEov+EUlZALlqOCZ5yIkCGRn5+W6O5SKe58KL7eZ69eNqs6
-	 wvZ4f7KlVgsIg==
-Content-Type: multipart/mixed; boundary="===============7566751797017694167=="
-MIME-Version: 1.0
-Message-Id: <cb7504a8500fe771ca5abeb9eeedb194e4cf5d4859a031caa27e2ddeeba6964c@mail.kernel.org>
-In-Reply-To: <20260814075054.507089-3-ziyang.meme@gmail.com>
-References: <20260814075054.507089-3-ziyang.meme@gmail.com>
-Subject: Re: [PATCH v3 2/4] selftests/cgroup: add memcg_stat_cross_cpu correctness test for flush
-From: bot+bpf-ci@kernel.org
-To: ziyang.meme@gmail.com,shuah@kernel.org,tj@kernel.org,hannes@cmpxchg.org,mkoutny@suse.com,jikos@kernel.org,bentiss@kernel.org,void@manifault.com,eddyz87@gmail.com
-Cc: vmalik@redhat.com,arighi@nvidia.com,changwoo@igalia.com,mhocko@kernel.org,roman.gushchin@linux.dev,shakeel.butt@linux.dev,muchun.song@linux.dev,akpm@linux-foundation.org,inwardvessel@gmail.com,mykolal@meta.com,nathan@kernel.org,ziyang.meme@gmail.com,kernel-team@meta.com,linux-kselftest@vger.kernel.org,cgroups@vger.kernel.org,linux-input@vger.kernel.org,sched-ext@lists.linux.dev,linux-mm@kvack.org,bpf@vger.kernel.org,llvm@lists.linux.dev,linux-kernel@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Fri, 14 Aug 2026 17:21:11 +0000 (UTC)
-X-Rspamd-Queue-Id: D969B40004
-X-Rspamd-Server: rspam10
+	bh=FTRpQbBcuIQQHhR/UQMYNM1PA+jfAXsDHcYqcmWTXOk=;
+	b=o9H/GCvdk9GWoXtvFzmD1miFLPhSUtKkc2rJK09IeN7UAt36AzMpASSThzdO32/XS3KZfQ
+	pHW3KvOJM7iUtEmHbDwRukjKn8hVjiINcShcaeOeV+PSV1ddcTkGldmTzVY/VQOb0pqv3I
+	WnRMTZd9RE8cUwVjFR2VRMxohA3OTZc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786730268;
+	b=KIoDKQSYeiHY2J6vRtBUHsJ2iFmJfuwe41RisNbvdXBG1NGDZbY6gQJQ6MsPYv61MXFUBF
+	1XLkUZz9G2PLJMA09Q+rQ949pt5KrOCSd+JdnGer6AL+hBJ2MNVaEg8Tks/kimblkAOAa8
+	e4th1523D7bOfTSSBZw8+yLB4PAcNic=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=K400RLQt;
+	spf=pass (imf04.hostedemail.com: domain of 3G1d_agYKCCIQC8LHAEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--seanjc.bounces.google.com designates 209.85.214.200 as permitted sender) smtp.mailfrom=3G1d_agYKCCIQC8LHAEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cca3673560so19687895ad.1
+        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 10:57:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786730268; x=1787335068; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FTRpQbBcuIQQHhR/UQMYNM1PA+jfAXsDHcYqcmWTXOk=;
+        b=K400RLQtGUmD39wwFJm8pP01CJgZwOFspzfKt02k2wLdcDJiOCYrPkgankUdkpaogf
+         YoqEOO7LTNPvXlKg0xuQCaRpQMR2Txz0GadMNDeKutGJwXH3rqa8FXBujO+snKfkMe5P
+         wNIVUDXzS5w6sh2xQkwOcXXr78eQdX2vW/c71fmh8T6WXkFTapJQ7D/k/jaXS3DBQ/0p
+         V0rDnt1cm294oVZlZmGM11nfPEEieQb+S/XT4LqIEH7kxb88MhoE43vhxthxO8rHLMOD
+         rcXfnyufPxIrTy+DV3B7tsOdzxXthwPjGYdVXH32uEGSbXhtsTAXge8ZiaQV0KlQEpcB
+         6FFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786730268; x=1787335068;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=FTRpQbBcuIQQHhR/UQMYNM1PA+jfAXsDHcYqcmWTXOk=;
+        b=Vy32xWh/iL6YPdz20OoHKzp4i32jE7frWsdvye13dYSXQnkhdoBy34FImQWXAoZU1l
+         Ods1lpVMxL3Lfo4iy7hJ79FAlAbfGjqMiaPyugW0B/emdZlXqRvU+nAukYjJGAsXMHZl
+         ORjT9TFXoKtzo24EFwxEosPv6F0AsL//ZOwDtdlw+DH6TGHG7IUrb5XmLcjv5gWbZn9r
+         y0jgd3GIBKU1ETvO98rQmy3QMqg8LV+iGKPfU/O9ibCfPrbvF34VyguKjp9U9yfA4RSm
+         ky3p+at9y4W8oUd3LtIZipth23EIBuC8PfebgidPHDrQg3aGE5yAhbykFOlnEOymowJl
+         sLRw==
+X-Forwarded-Encrypted: i=1; AHgh+RqF4ruhvUFI+zzFs7+xb61aJmTq/kTrvLIq//76XkwKhYIT5cjxwZ9tr96B5Se9p2bHoRIORgqU6Q==@kvack.org
+X-Gm-Message-State: AOJu0Yw8JE/H9fggF4GQoz9b9QUAKGT4SSa70hUwXGXNpus1TxfvnfzI
+	RHU9S1Bycrb4IfEimFUkUzbwD+G2P8RqQl7YRXD+SJqmgN6Kxw9B0K0Iu1AVhQwYqEnl1Op5894
+	XVGkmPg==
+X-Received: from plbmt15.prod.google.com ([2002:a17:903:b0f:b0:2ca:5dc9:51d3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:22c6:b0:2c0:db23:4c4
+ with SMTP id d9443c01a7336-2d3b0c8852emr91417425ad.16.1786730267363; Fri, 14
+ Aug 2026 10:57:47 -0700 (PDT)
+Date: Fri, 14 Aug 2026 10:57:46 -0700
+In-Reply-To: <36baf0ec-0b7c-4ffd-9a1e-dfe9617e057d@linux.intel.com>
+Mime-Version: 1.0
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-18-2fc18ee6d3ba@google.com> <36baf0ec-0b7c-4ffd-9a1e-dfe9617e057d@linux.intel.com>
+Message-ID: <an9XGrcPw3h-ExA9@google.com>
+Subject: Re: [PATCH v10 18/41] KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
+From: Sean Christopherson <seanjc@google.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User: 
-X-Stat-Signature: w7f8ahq58x8hareb3sfo83zjmxpu438x
-X-HE-Tag: 1786728073-846258
-X-HE-Meta: U2FsdGVkX1/jo3vZmK3NhDGn32IVa39zar6UTduptilVCiK6J89falbXCoWCQF2m+AY/cTc+R7fYDCw7lu3DqkZLzfJilq+zcxUhVDsS7il1tW7AjwnPKwWjReo9cD8X9f12dN932JFDRlz5D5AedD6yaccPtCNKgmj1VoONleIJpAJ5xQTWABlzAFBUI4D28epju1PWkiPQlVdxmC51mW8UIQUKRbYmeSqHj8c0o51YRTcL3s7KrH9p4rWLnXPipNhn3vOWGXuLEC/MG7NseunVb/I88KjmyvCx58qptUkeW/2w4E1WJAGjV6o3PzMXMTxZqbKqyhfyldbplFoRTH22Z+WHx3ZZu5wBKFGL4P6Dei/tKoTmhGv9BgrTst3LUgA0hPNNM6uwD65d1U91fIHhrL3qOY/LLhpzGraX8ZFaFqctSlM6ZkuiJpi/3CxZJh2umw301lZxwCXCAozenq3BCpOlpH9Fi6v4ZIV9PK5CgF8/1aK7zQ1glFLZybwgvyO+f80sMBeKDTmSyfxkIue8/i9hiicIUy1uDSVRHdu/52o3ttK4aeFIBCtNDwDT+p6ixnwUnWfjrIuKcZSsdNv6qrpDDWLPOES9e7tf+Zr+XBM0HI1Lj8GuShdwq21UibqLicsQLQBsAkryzFVubp7/AyorAG3HKCUAi9j5BK3PGrbHWFjH6rPv2SpGREJK1VbYeXl8f+fv6usrbOxSqwM6D/kmfg4HNAd/0SMdb1yYSqKSZVilbgnn+vujAKsoxBDXNtYV3CVXHYvsv9L5TJ/aAGHaaObADOlbVYubhG5wia6opqN1m1uToY7efXAxmPOCyfRBXt8vR4CvqE2qzZGe2eVSybGJlwi/Q9XVL113UAQn2gZ8Byfy7Ew3WVb5x3CiRduwVy7mXneCTD9TDIBqjIeXCJyYo1jcei5MNrz47Bn1MMin6HWRkjbxNvI8OaV8UIoXT/29MadOis8
- sKdnedO7
- Ff6zAvwvmKv38oQLkq886WQyNdYoQqrVvZowOyxXS+wNBDcJXuNPHiQ91xKKKATOslyNSpnO8PRHBL16JfhFkWhUSzWXLrZj2xhsetFaul/AewNfSxlNloNZFgy5T4UV1BzhMLbRBi+1s7qTOENbXNOwKziWZt4F7t0y0BibChL//X073USSDi4yjl7mwYDqxRMk1qIjbKe7qM6Qxawp5dAcSGrPc/d2ov95PlAdQTDTeRd0Hk8U8wRzro2xz0+EDrn1UdU3DGUkKgczdpruSc1ctpz0FdpboAC4FyKTfd2v+1X9WNZaIzIzh3CLF7iRI4AiXiq3q2MLHnu1uEOW5LXSkXbB56mYIgkGe0jXCUwrFu8vXmkz2lAMhntKWSXNBvAm0vWT/BtkM0pyjM/0V2Ppex5F6szFIV4t+MLcyKoCJqbLPWBe2PrhQWgejhTqFIOBrBVtdaMY9BiesnUa2oBzNHF7ciGgL3nzpBl3+avkrpVUR+9lL3JwQlAVjt3zmOfoFQdXfeQ57++DU4MSUEHtO2pylY1407n63
+X-Stat-Signature: utnr976jq4n7sypwohakm6joyhfxd7xz
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D120340002
+X-HE-Tag: 1786730268-97391
+X-HE-Meta: U2FsdGVkX1/THGfxLPlKt5qa31X5FTgzYWeTa5dvyq3/sDzygYKJyHUs21t8HO23FXNWY872WT4tjjwwouqppbvDY4VqhE4CXt/DZ02QEOYay3CBX2aMIYyHJDPyu0L0Wzzq8zpBdnDoOBmRvMAlxwYztKhu0997p3vxNLV2NYV9cSPbYn4+kNtImbaGoineEZ2+Rm5HkoEJOqambLKvuMJYgSrrR1JOA0nIAqxV4LVRCWWyO14TflAS3LDnV72v2NxC1YKxOERQXtz4+41XPwsLoomShx/DBKdzwHkv7RnZleUi5KGzxoSQEu0Y1BW+YESuiofp9uHEfnbVHzLokpmL2KcGvvk4RL0Yww9Z0C3MolEWGcQVwTHidvlEutpm3UrsY0YYJnGEA1zYqPZn1bThwM98tHwi0thbNL5qCPOD9na9Q06Iu8oUXX/1R/lNDkNL1MnAcKsC2JPsevcTMon5LwM/W5QOXY49wE6BBnY3u4eoazF7/S7/va9Ur9Eu9ph5aHUTSRgxTaaM983NZ+F73umG8GKFfGSeVotSn5qSHNfHit4QUbtJepLQdWNiql29tfJZkdLpGZ1n39YUPwLiECJEArY5xmJ1W1NhDBetflc2s++3bBeSbj3Z4nO76nodJVB1mewJsO7OXyHrGcUD9Ds7osJa5Jb0Co+y0pt92jAgNX1dWdNNLQuk7TCvep3WE0ZPPTQ+q5X64tXYzQaGOUx/XM1YjCDDMq6PAIlJ1neKF8n9Rtla/bGUviD3tVX1QF0pjIZg4wJZ11eBKhZ4reqfNrs4F+BIULo8Hic8+n1xJn7XT0l2E0nejDWlewwJur5jWeGaEQ8KtiSWcq+AReH/SdDUNfcn4hw8kuChGGFcwfCJxA9aQlgEl90yb1CiLuqwF/YZ3NVgaBM441Kt6SiSQuQNyjKt/2p/GCw2ul0y4PdG9Y6YT/M4evy9D4C0OHd+94i/6SlShRv
+ K3G4/Z1i
+ 4vnE4SS+R2RyMsysutFKGJoJElS1+ks0ogyKMPgfnQ9jMgILSPXAfjolaSYSMhVQHM17+8vrIWfg43cMdnr++KBAwEDkcfwDC4u7Z7pBBPChOwLH6gCjNcWlAxz2ZLwiuL9W0UjbgOx2cDtoFCS4aaKDmzkztV57TuD4rSByBmpn2GURgVeZmIw65E/xsK4zn++NtS7iZoimL7nrp7TKFkQmG/7O/4fFL7AtJtcBXCIrp2tyckMxYdAnFIulRntQTlP1efnmZpokZcqk0skNwXSbNAXN6YSjSG/Bw2ZMPRg7EMuLaM0rr8bRAedQEDLBB7e7Ym7bZ2LA1hHQHQ1IKdcGEdZrXSp5GV0Q68M9I8fD2NTuxsL65G1vdo0bAf1vQafB7a7dRsmU933WesZyi5a5jJG7c0vD5JJsAASvZtsmRXRmj618ElUOd0JsyQJRh85xgV3BC1btDKyMwIpYAgTIa2wwgtMdNnEdZfMOqVaob6CxejG2FDdgH4JBLOY8FJBEPKsaEns06B53tn+84GN29zgx/RajbZGVVI2aL9beiYiFP2Uc+4Wc5fipWK6KB24TVe1GeTtPsbeaNx5RYgG52waiXOTaMiSw7V8Ih6MdH3vONGFfnasZ1EzbZreFste3ndxatu3HR6XkYoaeG7wQ/M8wz6OOyvxfA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,335 +134,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============7566751797017694167==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Fri, Aug 14, 2026, Binbin Wu wrote:
+> On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
+> > From: Ackerley Tng <ackerleytng@google.com>
+> > 
+> > Update tdx_gmem_post_populate() to handle cases where userspace requests
+> > "no source page". To handle "no source page", populate (perform
+> > TDH.MEM.PAGE.ADD) using memory in-place at the target PFN.
+> > 
+> > Allow "no source page" only when gmem_in_place_conversion is enabled,
+> > because retroactively adding support for out-of-place conversion would mean
+> > requiring a userspace update for a feature that's being deprecated.
+> > 
+> > Also, KVM supporting "no source page" without in-place conversion would
+> > effectively be an obscure zero-page optimization that relies on the page
+> > being zeroed when it is allocated by guest_memfd.
+> > 
+> > Rejecting "no source page" without in-place conversion scenario is valuable
+> > for KVM developers since it helps newcomers understand what exactly is and
+> > isn't possible.
+> > 
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> 
+> Nit:
+> Is Sean's SoB intentional here?
 
-> diff --git a/tools/testing/selftests/cgroup/config b/tools/testing/selftests/cgroup/config
-> index 39f979690dd3..356b6a533d88 100644
-> --- a/tools/testing/selftests/cgroup/config
-> +++ b/tools/testing/selftests/cgroup/config
-> @@ -4,3 +4,8 @@ CONFIG_CGROUP_FREEZER=y
->  CONFIG_CGROUP_SCHED=y
->  CONFIG_MEMCG=y
->  CONFIG_PAGE_COUNTER=y
-> +CONFIG_BPF=y
-> +CONFIG_BPF_SYSCALL=y
-> +CONFIG_DEBUG_INFO=y
-> +CONFIG_DEBUG_INFO_BTF=y
-> +CONFIG_DEBUG_INFO_DWARF4=y
-
-A subsystem pattern flags this as potentially concerning: CONFIG_BPF_EVENTS=y
-is missing. The new program is SEC("iter.s/cgroup"), which is
-BPF_PROG_TYPE_TRACING, and that program type is only registered inside
-'#ifdef CONFIG_BPF_EVENTS' in include/linux/bpf_types.h:38. Without it
-find_prog_type() returns -EINVAL and the skeleton load fails at runtime
-even though the build succeeded.
-
-CONFIG_BPF_EVENTS is 'default y' but has 'depends on (KPROBE_EVENTS ||
-UPROBE_EVENTS) && PERF_EVENTS' (kernel/trace/Kconfig:853), so a kselftest
-kernel configured only from the merged fragments can easily end up without
-it. tools/testing/selftests/bpf/config:5 sets CONFIG_BPF_EVENTS=y
-explicitly for exactly this reason.
-
-Note also that CONFIG_DEBUG_INFO is not promptable (it is selected by the
-DEBUG_INFO_* choice), so that line is a no-op.
-
-> diff --git a/tools/testing/selftests/cgroup/Makefile b/tools/testing/selftests/cgroup/Makefile
-> index e01584c2189a..01927511c059 100644
-> --- a/tools/testing/selftests/cgroup/Makefile
-> +++ b/tools/testing/selftests/cgroup/Makefile
-
-[ ... ]
-
-> @@ -33,3 +75,13 @@ $(OUTPUT)/test_kmem: $(LIBCGROUP_O)
->  $(OUTPUT)/test_memcontrol: $(LIBCGROUP_O)
->  $(OUTPUT)/test_pids: $(LIBCGROUP_O)
->  $(OUTPUT)/test_zswap: $(LIBCGROUP_O)
-> +
-> +ifneq ($(HAVE_BPF),)
-> +# Links cgroup_util and the skeleton against the libbpf lib.bpf.mk built.  The
-> +# uapi include is private to this binary: the other tests here must keep
-> +# resolving <linux/*.h> against the system headers.
-> +$(OUTPUT)/test_memcg_stat_cross_cpu: private CFLAGS += -I$(top_srcdir)/tools/include/uapi
-> +$(OUTPUT)/test_memcg_stat_cross_cpu: test_memcg_stat_cross_cpu.c \
-> +					$(BPF_SKELS) $(LIBCGROUP_O) $(BPFOBJ)
-> +	$(call bpf_link,$@,$< $(LIBCGROUP_O))
-> +endif
-
-A subsystem pattern flags this as potentially concerning:
-memcg_stat_cross_cpu.h is not listed as a prerequisite of the userspace
-binary, and BPF_EXTRA_HDRS (documented by the new
-tools/testing/selftests/lib.bpf.mk as 'more headers needed by the BPF
-objects') is left unset, so the BPF object does not depend on it either.
-
-That header defines struct memcg_stat_snapshot, which is the wire format
-shared between the BPF program and the test binary. Editing it therefore
-rebuilds neither side, and an incremental build can silently produce a
-binary whose struct layout disagrees with the loaded skeleton.
-
-The sibling conversion commit ef5ceab9d440 (selftests/hid) does set
-BPF_EXTRA_HDRS for its shared header, so the mechanism was available.
-LOCAL_HDRS would cover the C side.
-
-> diff --git a/tools/testing/selftests/cgroup/memcg_stat_cross_cpu.bpf.c b/tools/testing/selftests/cgroup/memcg_stat_cross_cpu.bpf.c
-> new file mode 100644
-> index 000000000000..3c2acd49c16b
-> --- /dev/null
-> +++ b/tools/testing/selftests/cgroup/memcg_stat_cross_cpu.bpf.c
-
-[ ... ]
-
-> +/*
-> + * Flush once at the subtree root, then read each cgroup through the kfuncs.
-> + * iter.s because the flush kfunc may sleep.
-> + */
-> +SEC("iter.s/cgroup")
-> +int cgroup_memcg_stat_cross_cpu(struct bpf_iter__cgroup *ctx)
-> +{
-> +	struct cgroup *cgrp = ctx->cgroup;
-> +	struct memcg_stat_snapshot snap = {};
-> +	struct cgroup_subsys_state *css;
-> +	struct mem_cgroup *memcg;
-> +	int idx_anon, idx_file, idx_shmem, idx_fmapped, idx_pgfault;
-> +	__u64 cg_id;
-> +
-> +	/* The walk ends with a NULL element; return 0 so it runs to the end. */
-> +	if (!cgrp)
-> +		return 0;
-
-A subsystem pattern flags this as potentially concerning: the comment
-misstates the mechanism and will mislead the next reader. The NULL element
-is the epilogue: cgroup_iter_seq_stop() invokes
-__cgroup_iter_seq_show(seq, NULL, true) only after cgroup_unlock() and
-only once the walk has already finished, and it sets p->visited_all = true
-immediately afterwards.
-
-__cgroup_iter_seq_show() converts a non-zero return into p->terminate =
-true, but nothing reads p->terminate after that point, so returning 0
-rather than non-zero for the NULL element has no effect on how far the
-walk gets. The pre-existing comparable program
-tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c returns 1 for the
-NULL element. The code is functionally correct; only the stated rationale
-is wrong.
-
-> diff --git a/tools/testing/selftests/cgroup/test_memcg_stat_cross_cpu.c b/tools/testing/selftests/cgroup/test_memcg_stat_cross_cpu.c
-> new file mode 100644
-> index 000000000000..9946c41c7a90
-> --- /dev/null
-> +++ b/tools/testing/selftests/cgroup/test_memcg_stat_cross_cpu.c
-
-[ ... ]
-
-> +static size_t leaf_charge(size_t want, int k)
-> +{
-> +	long online = sysconf(_SC_NPROCESSORS_ONLN);
-> +	size_t floor;
-> +
-> +	floor = (size_t)FLUSH_MARGIN * MEMCG_CHARGE_BATCH * online *
-> +		page_size / n_leaves;
-> +	if (want < floor)
-> +		want = floor;
-> +	if (want < (size_t)k * page_size)
-> +		want = (size_t)k * page_size;
-> +
-> +	return (want + page_size - 1) / page_size * page_size;
-> +}
-
-Does this handle the sysconf(_SC_NPROCESSORS_ONLN) failure case correctly?
-The return value is not checked, and the expression it feeds is unsigned.
-Because of the leading (size_t) cast, online is converted to size_t, so a
--1 return makes floor ~= (2^64 - 1048576)/n_leaves instead of a small byte
-count.
-
-want is then clamped up to that value and returned, and start_chargers()
-passes it to charge_leaf(), where malloc(ca->bytes) fails, the charger
-exits, and the test reports the misleading "%s never reached its charge"
-failure. The same file already guards the analogous call: main() does
-'page_size = sysconf(_SC_PAGESIZE); if (page_size <= 0) page_size =
-BUF_SIZE;' (lines 947-949), and this is the only unchecked sysconf() in
-the whole cgroup selftest directory.
-
-> +static int start_chargers(int k, size_t bytes)
-> +{
-> +	struct charge_args ca = { .bytes = bytes, .k = k };
-> +	long prev, cur;
-> +	int i, retries;
-> +
-> +	for (i = 0; i < n_nodes; i++) {
-> +		if (!nodes[i].is_leaf)
-> +			continue;
-> +		if (cg_run_nowait(nodes[i].path, charge_leaf, &ca) < 0) {
-> +			ksft_print_msg("cannot start a charger on %s\n",
-> +				       nodes[i].path);
-> +			return -1;
-> +		}
-> +		ca.base += k;
-> +	}
-
-Can the per-leaf charge sizing in leaf_charge() cause memory pressure? The
-per-leaf charge is raised to at least k * page_size, and run_case() sets k
-= n_cpu for the 'cross_cpu' cases, so the total anon the test pins is
-n_leaves * n_cpu * page_size with no ceiling. For the two large-tree cases
-(fanout 10, depth 3) n_leaves is 1000, which is 1000 * n_cpu * 4K: 256 MB
-on a 64-CPU host, 1 GB at 256 CPUs, 4 GB at 1024 CPUs, held simultaneously
-by 1000 live processes.
-
-The file's own header comment states the requirement this violates: "The
-comparison is exact, which needs the subtree quiesced ... Global reclaim
-would move the numbers and the test would report a mismatch", and
-check_tree() runs with STAT_TOLERANCE_PCT 0, so any reclaim during the run
-turns into a hard KSFT_FAIL rather than a skip. Nothing in the test
-compares the computed footprint against MemAvailable or caps it.
-
-The same sizing also feeds the charge-completion deadline in
-start_chargers(): CHARGE_WAIT_RETRIES (100) * DEFAULT_WAIT_INTERVAL_US/10
-(10 ms) gives each leaf only ~1 s to both reach bytes and read the same
-memory.current twice in a row, while up to 1000 chargers are concurrently
-performing k sched_setaffinity() migrations each.
-
-> +	for (i = 0; i < n_nodes; i++) {
-> +		if (!nodes[i].is_leaf)
-> +			continue;
-> +		/*
-> +		 * Wait for the charge to both cover the region and stop
-> +		 * moving.
-> +		 */
-> +		prev = -1;
-> +		for (retries = CHARGE_WAIT_RETRIES; retries; retries--) {
-> +			cur = cg_read_long(nodes[i].path, "memory.current");
-> +			if (cur >= (long)bytes && cur == prev)
-> +				break;
-> +			prev = cur;
-> +			usleep(DEFAULT_WAIT_INTERVAL_US / 10);
-> +		}
-> +		if (!retries) {
-> +			ksft_print_msg("%s never reached its charge\n",
-> +				       nodes[i].path);
-> +			return -1;
-> +		}
-> +	}
-> +	return 0;
-> +}
-
-A subsystem pattern flags this as potentially concerning: start_chargers()
-open-codes a retry/poll loop over a cgroup control file instead of using
-(or extending) the cgroup selftest library's polling helpers.
-
-lib/include/cgroup_util.h already exports cg_read_key_long_poll(cgroup,
-control, key, expected, retries, wait_interval_us),
-cg_wait_for()/cg_prepare_for_wait() and cg_wait_for_proc_count(), and this
-loop also silently treats cg_read_long()'s -1 error return as "not charged
-yet" and burns a retry on it, which the shared helper does not do (it
-returns the error).
-
-The existing helper is not a drop-in substitute: cg_read_key_long_poll()
-polls a memory.stat key for exact equality against expected and returns on
-the first read error, whereas this loop needs 'memory.current >= bytes AND
-unchanged across two reads' on a different file. So the semantics genuinely
-differ and a bespoke loop is defensible; the guide's underlying point still
-applies in that this series already extends the shared library
-(cg_get_id/cg_touch_pages/cg_alloc_anon), so a 'wait until >= X and stable'
-helper could live there too and pick up the missing error handling for
-free.
-
-> +/*
-> + * Collect what the kfuncs report.  The program flushes at the first cgroup it
-> + * sees, the subtree root in DESCENDANTS_PRE order.
-> + */
-> +static int read_bpf(int root_fd)
-> +{
-> +	DECLARE_LIBBPF_OPTS(bpf_iter_attach_opts, opts);
-> +	struct memcg_stat_cross_cpu *skel = NULL;
-> +	union bpf_iter_link_info linfo = {};
-> +	struct bpf_link *link = NULL;
-> +	int ret = -1, i, mfd, fd;
-> +	char buf[4096];
-> +	ssize_t r;
-> +
-> +	skel = memcg_stat_cross_cpu__open();
-> +	if (!skel) {
-> +		ksft_print_msg("skel open failed\n");
-> +		return -1;
-> +	}
-> +	if (bpf_map__set_max_entries(skel->maps.results, n_nodes + 8)) {
-> +		ksft_print_msg("set max_entries failed\n");
-> +		goto out;
-> +	}
-> +	if (memcg_stat_cross_cpu__load(skel)) {
-> +		ksft_print_msg("skel load failed\n");
-> +		goto out;
-> +	}
-> +
-> +	linfo.cgroup.cgroup_fd = root_fd;
-> +	linfo.cgroup.order = BPF_CGROUP_ITER_DESCENDANTS_PRE;
-> +	opts.link_info = &linfo;
-> +	opts.link_info_len = sizeof(linfo);
-> +
-> +	link = bpf_program__attach_iter(skel->progs.cgroup_memcg_stat_cross_cpu,
-> +					&opts);
-> +	if (!link) {
-> +		ksft_print_msg("attach iter failed\n");
-> +		goto out;
-> +	}
-> +
-> +	fd = bpf_iter_create(bpf_link__fd(link));
-> +	if (fd < 0) {
-> +		ksft_print_msg("bpf_iter_create failed\n");
-> +		goto out;
-> +	}
-> +	while ((r = read(fd, buf, sizeof(buf))) > 0)
-> +		;
-> +	close(fd);
-> +	if (r) {
-> +		ksft_print_msg("bpf walk failed\n");
-> +		goto out;
-> +	}
-
-A subsystem pattern flags this as potentially concerning: every BPF
-capability shortfall in read_bpf() is reported as a test FAILURE rather
-than a SKIP.
-
-The feature gate is narrow. memcg_kfuncs_available() (line 907) probes
-exactly one symbol:
-
-  ok = btf__find_by_name_kind(btf, "bpf_get_mem_cgroup", BTF_KIND_FUNC) > 0;
-
-but memcg_stat_cross_cpu.bpf.c additionally requires bpf_put_mem_cgroup,
-bpf_mem_cgroup_flush_stats, bpf_mem_cgroup_page_state and
-bpf_mem_cgroup_vm_events, plus kernel support for a sleepable cgroup
-iterator (SEC("iter.s/cgroup")). On a kernel that exports
-bpf_get_mem_cgroup but not the rest of the set (a partial backport, or a
-future kernel that renames/retires one of them),
-memcg_stat_cross_cpu__load() fails with a capability-absent errno (-ENOENT
-for an unresolvable __ksym kfunc, -EOPNOTSUPP/-EINVAL for an unsupported
-sleepable iter). The same applies to bpf_program__attach_iter() and
-bpf_iter_create(), which also fail with -EOPNOTSUPP/-EPERM when the
-capability or privilege is absent.
-
-All three paths take 'goto out' and return -1. run_case() initialises 'ret
-= KSFT_FAIL' and only ever upgrades it to KSFT_PASS, so it has no
-KSFT_SKIP or ksft_test_result_skip() path at all. The result is a hard
-"not ok" in the TAP output for a machine that simply lacks the
-prerequisite. The diagnostics also make this indistinguishable from a
-genuine failure: none of the four messages ("skel load failed", "attach
-iter failed", "bpf_iter_create failed", "bpf walk failed") carry errno or
-strerror(errno), so a CI operator cannot tell a missing-capability
-environment from a real flush regression.
-
-> diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-> index 0ebf796f3cff..15ba46879504 100644
-> --- a/tools/testing/selftests/cgroup/test_memcontrol.c
-> +++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-
-[ ... ]
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/31820214629
---===============7566751797017694167==--
+Kinda sorta?  I handed commits to Ackerley after rebasing them locally at one
+point, which is how my SoB got here.  I think it makes sense to just drop them
+from the patches where I'm not listed as the author or Co-developed-by.  In the
+end, I expect to apply this series and so my SoB will get added backon anyways.
 
