@@ -4,130 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0539C5CFC1
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 03:26:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 054B9C5CFC1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 03:30:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7F2D6B0609; Thu, 13 Aug 2026 23:26:08 -0400 (EDT)
+	id 19B9E6B060C; Thu, 13 Aug 2026 23:30:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4E1B6B060B; Thu, 13 Aug 2026 23:26:08 -0400 (EDT)
+	id 1541F6B060D; Thu, 13 Aug 2026 23:30:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1EE46B060C; Thu, 13 Aug 2026 23:26:08 -0400 (EDT)
+	id 063186B060E; Thu, 13 Aug 2026 23:30:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 775466B0609
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 23:26:08 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6E70340292
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 03:26:06 +0000 (UTC)
-X-FDA: 85098436332.11.AC847FC
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 61472100005
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 03:26:03 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=eMj3o8k6;
-	spf=pass (imf14.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786677964;
-	b=jgrprfDm7e0ctQ/RnWjGucd+rU29CmHxdJBXcBOkUpA6i3oDmsICm62TsEJYkY+6m627rj
-	lsX6rFxbdqsW5Fn7lcp+9GrxW19BENQuLesznBBlWP9fjxxmEhhx49+9tSvDvA9hDY9yAZ
-	X5OI0Z9s2xsw9SOBFPCunyGGB9EUsaA=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=eMj3o8k6;
-	spf=pass (imf14.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D426D6B060C
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 23:30:26 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4D2C78030A
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 03:30:26 +0000 (UTC)
+X-FDA: 85098447252.13.B697AB1
+Received: from mta0.migadu.com (out-126.mta0.migadu.com [91.218.175.126])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5283D20002
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 03:30:24 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oAPfvslq;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.126 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786677964;
+	s=arc-20220608; t=1786678224;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xEzzDZ8RSQ4GEvpOieKsYgMrbUPq9hvMZZpCwDZd+As=;
-	b=48vun/w8Oh3Vxo6eMY/Uc8Nok49+d8YRhnn1d1oIKQjfRxH/vwrLYOyrEJLB+tme+zgb0T
-	7BJrqdSFI6Xx+OHAboLuz8nyDnX3S3WFUBPojJ/rqcKEqZ3IvutyQcW3RWQpWJzapyvJ0d
-	Z/RLd6T706PW7SpPxOB00Ci5cWEWqHE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786677963; x=1818213963;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=PMW+3tSZuBZ77kt9zO5BRfNKhdxheMBPxWzy74mRfwk=;
-  b=eMj3o8k6PmGHc0TNTSfWPSGFK8UL8nbFtIPJ3sZO8iZxAltJnIwrEbc0
-   UGDs25+h/DCuX8SQyGgcnD0q1yPZIb843y6Bk2iOBRY8KFG9ykaqmRq+g
-   QyM4w8xikZTFcdAGLf5oikgXDqZfLb9TSc4QiK5Fj5Q4VUpUR/+bK5K7O
-   JTOo8dud66wZ7rfZM48abXXwa+bizjR4VEF2TimNtVg8yIT0L0ZvlMe8J
-   AdVil0nW4t2+l1qo215WTa0r0RPnQbLnrwWIpJ6/eaTT/LIsA/DEOa6xQ
-   H2VtpEd/AuF000JwEngAwBTmxe/RrJt05F06pgvAox9jXphkKDc29j2UK
-   w==;
-X-CSE-ConnectionGUID: Q8fIHLxaR5ab1Nx7Xz44qw==
-X-CSE-MsgGUID: so/DSd8VR66tStiGHaeDIA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11874"; a="112801644"
-X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
-   d="scan'208";a="112801644"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 20:26:01 -0700
-X-CSE-ConnectionGUID: OK2WNfvaROqJl2omPhlcUA==
-X-CSE-MsgGUID: cGwfy+bMRAqA7Rf+rV3Kow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
-   d="scan'208";a="267971704"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 20:25:48 -0700
-Message-ID: <beecf36b-b0eb-4691-918f-fd39f46d5d8f@linux.intel.com>
-Date: Fri, 14 Aug 2026 11:25:46 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=SsQKvqqv9lwxQmy8bH/1T7isVoCT/trRlni0IzeSIvM=;
+	b=JCKBjVmZgVimSYv25m/y2oeAyxXR+Ic+s3y1JhkyyUSs0cD1QKSCGZNMykvHoY/1b8Tx2m
+	Rmq0DRvrMq/4TKav+XggH0IKCzUunAJTiafawlKAirrmWONdZFhtgo2XdegDn0SyPRlizD
+	IKwHpbYFrIsQPhYauFNpVwuR2IpyLFc=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oAPfvslq;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.126 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786678224;
+	b=QXS9rPqUw3gM3xRFo/QQymiJEol4Lxs550OYhUYp3sSbqNiiUWwSaql0+DFrn5iwQY4q/3
+	ql+/eEh7XMpyN+ZSltG88W7pX7mUMNej8hZ9dxcJwvhPNTkW96U+4nMtyDXUO1pBLnQD6y
+	fSJfYLcHZ7h+jHOAftDUr1a13+FUsFk=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=BcGgUmgJ5bToxf4lyEoXBY/SvuxrW/zu7KIJo4jPTnU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786678222; v=1; x=1787283022;
+ b=oAPfvslqk7lsFKqUtuWMXuZ3cDcQPOnHWUXVRVg9sGTEbh8rKM++3vcLQvCN4wCbvnKmnj7L
+ 6drCx29caTeFSs+vCHjMHbl4u/XM9aJlb8JPHf+OQatlZDrwUfeD8PYHGSqfw30PdnzcmpCGY/u
+ h0a2M3nouaVf2FztValnqbcE=
+X-Envelope-To: linux-mm@kvack.org
+Received: from mi-ThinkCentre-M760t.mioffice.cn (14.29.108.92)
+	by smtp.migadu.com with ESMTPS id bae11645a998b6aa;
+	Fri, 14 Aug 2026 03:30:22 +0000
+X-Migadu-Flow: FLOW_OUT
+From: Ridong Chen <ridong.chen@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	David Finkel <davidf@vimeo.com>,
+	Tejun Heo <tj@kernel.org>,
+	cgroups@vger.kernel.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
+	linux-mm@kvack.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
+	linux-kernel@vger.kernel.org,
+	Tao Cui <cuitao@kylinos.cn>,
+	Ridong Chen <ridong.chen@linux.dev>,
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: [PATCH v4 0/2] mm, memcg: fix memory.peak reset clobbering other fds' watermark
+Date: Fri, 14 Aug 2026 11:30:03 +0800
+Message-Id: <20260814033005.2481920-1-ridong.chen@linux.dev>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 15/41] KVM: guest_memfd: Handle lru_add fbatch
- refcounts during conversion safety check
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-coco@lists.linux.dev
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-15-2fc18ee6d3ba@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-15-2fc18ee6d3ba@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 61472100005
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: k9guxgqtm5hohb8xdrm49yyx1jrhae71
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786677963-589637
-X-HE-Meta: U2FsdGVkX1+ZBxLWe63VMrlPXM80EtS5QdSsbRihXUHY611GUDEaYaNJyag9eJMrbhFkwEqQgnli3UnxISaMWykcfx12EoB7mOGPaiIAwmmCZLfcGd4KlpNPi/PhOosmqzGkGinICTCqmgfC5/m8HuzP5myK0L+JqoxOdwLZqoEHx4foJSy2uxtO8DpyZYITtkyoSJPyU3zHLh7tbxlXReomZF9we8S6dX35Jaj5BRWfWxuY38WqmVrTIt4dV4scQ6DIpl2pr2DN/Xdo1YgdECd2Pmu1/+Amp0CmxNz5SSS2tg+P6fLH27oD/FCa7isqxFYV2VMPpBmooj4EnVkxnOImwJhOqd6ixx/bFnDjw7TblWUX6v0Vx4V76myHNyMAzRDv4dNPlHtBh2NW+92DnpBs0gM3sKfqyvfnMwPQ7XYvEApNa7GgaB1rfWNzUp2OVWuIPa5/+rDerdC8I52P4W/xWNLSlWQfkzD1j6STFmzL/r2jqojP3VO01grABAvqovVGPQB9e7dLUO13q7kcgLmK0+vV9tGoyncUt2l9AizuTHjK+1YVEO62iC87SYt2cpBx5JYLpISK6BNzRpjytswKQDDIwA1G2szS+9B3Euzqz6Di0ZJycYKdMw6E6CS80GCfnSyBQnqzG8fgpNlJY6lvIIANF1dV4cLQR/7zEFzI9KCUTu3lNY7jXjnHjuMTm7F9yl+Qr+DOgTOaHLYgiliaCfNIn6yEWyliJbFDn87LKEMscYBQScVW/kqpbMsDYN3ghf/FNocWZe3seJo0az/lopupTPntchvcQitms6+qLfNpUHrpONKR6X/P8fT7ji0MyIwvzezI3pGe41EFk+Ebng+ujQng1Km0/CNRZIDxMga2Rjd22dpt9fFbw54+/dmgxQol9J8qiFC68C62QqZ+jU5zO2Z6Z7twa/lrMGNuYE6E7rxYA6DeRo8LMQ98mz95sid6Y3TsyyGEG7f
- c+040+q0
- g60MLMWj5WkuTP8wf5Xv6n5CYPcA321wMq0PWT9YUD1nQ/IDyU5Ci3o1AgnbePL6BVnYDxjh3BwjmBTbXQGV44TGB2/gewmurczWEQvTke9NkXFWr+gyH6zCnmcsm9qPG7LcV9802hvJGZ/clp/pLBg3p44FcicvVL4NoQRo2d5BL/vcv3hxxAUgNxcKlg+RR1zQYctosFPS0tjXWksTJ7M4o6Yaj3ylEVa4ZRtHS/7H6g9wN4sHnvCuWGWMmNUdf9L/19B4s1g1th41zQEFDUlFj4MhT+YczLPSpn0fkYUyu8LEyobIlsLX51x9ljXXxREZS
+X-Stat-Signature: enxe6ypomkpmt539mdyqaoypbz8e1z36
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5283D20002
+X-HE-Tag: 1786678224-990960
+X-HE-Meta: U2FsdGVkX1+0HXqnkhWRP7R6McqQ4hPNmZulAwpNKwaaYI5dZc1pETyHqh7sXMW1FmCFj5DfFLcMdazFgn1OrVPqMMFNd+XK71IFz6gtaHN62OsJn83zc5F1+RPOzxfelazJCR7W6F1dG62KrsIeQCK6KLDGMPpMy6ep+mzMYhd+lh7TAR490zXeXOhEo7QPGDd2WZSiVpv23otKAwDeFKEyRHe5uWq51Xu4aq5Yq7YYIjyh27edFzG+w56OF0SsoRe0AaFO2mR+WafoI2nqZpLcItnk6gtkNgMpRky9YQP4x1My7BniIygWs+MbDQj8xOI8nsi+5j9WbAp7cRKaD6/Q1Hx+zhM4W2AFjnLpWdDWBb4JlS4E3Th/Nw0wi8la9DzsbGrT8b5faImtXqK5zST6hA5sEBVPJFcPlYib1an22yNACZ8uatpGroMyGeEFCAjGC2/NUMvZK+R5M7h4pzxY4LWtUpyATDb7UTKP/ZXhuQo2SJFJHX6RU8nWDLfPuvEllKvLltKkL02O5YZhMTMiwUiP2SRpaZn3tMtVoXVPGuGxD5uZykS/pKZ9SCWYSM75xWXNOAUCCsck1ajSuOAFHsbVTK2QPgCPhSayL5vzCzarVANoq7p7sKtmpmpr7EodzB8mmq+M0equ+okm6DHdJN53o90241njO087kceh2KqOX1gyacCz+/BigqaRLNMMX+/VS284e5TMAkGSBfQu2VlyFClHfPgA7YT0eWjICmIIZbNEIg6b//TuSvalpig3V5qoCI2e57e9pTSjEEAU8yC0vQTgsw5IuGXdZUBv9r+BEN75+BKlIlJBrEkl0uwH6zKNpEFE9zZFgYGQwM42eS0PReO+zXmO1aCyQ/cDcbdZZcuJ9Ev6+B4Yv+DrWg+1/3uHuhCczL4Jdmbi35KNJbXQBP5/jeB7h+e96UDs9edbbr67BlWqBjTOfjSAlHQtfj9O/1wCBu8Vh7O
+ kzAWJ4ml
+ ePnW7qEW+XBXNxQ3HrkIZed3n3tovIKPx5W4zL23Ysg7RdtMDPJMRiVrWpR1vLVWZgAXLt297uzoG+00P0IvvkkYuO8KmgqCOcq+RNjsHA52Zd8j126iB4b+y9x5rjOzI2S2jrfgop4r7FOOM3dODHAACoq2Waplsilc4RszUZrF4nL9NhlaKhJcRBBHc3qzyvgO6wsnDX225DLg8BcXjBo3sd82jXvUNzKjpDk3n0MiH8e/Ul9koCpgbSUHsqibPZi0Bw5PxvbkIqB46ByCaCfs7iQuNxgs8mRusm36+kXcF1hfOi9VbfMhdvOBQmK79AO1DuWHoOOUyGUY4vpMApgilCxXubRcKnIthlkblmm+z0UUxoKFElh6/bIKCLbnQvd8tFpVjLzPgVE5+4o2J8FVEVZQ+MHxDUwAU8xq49IUog/rrTEA5c0dNbG0Z3FR3gmB2gTzYpSiCaMKBEnIw7dzwPBOnEzqEaY3KtqRWWQ8hfOyVjYaEjiokZIZdAQ3ItzPf26si8PaTeaS/SIiecGp70pFYj6a4TXmvc7PwK//NLtP+ESu0m/rOFdDspr53V2peHDrvOvdgi06lVZqVXTGNvHlyl59DgPEPwfVxqYnIb+sjBOjq+SVtGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,90 +97,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> A guest_memfd folio is safe for conversion if guest_memfd holds the last
-> references on it. Any other references on the folio may indicate another
-> user, and guest_memfd cannot convert it to private if there may be an
-> existing host user.
-> 
-> A folio will have extra refcounts if it is present in a per-CPU lru_add
-> fbatch. guest_memfd does not actually participate in LRU, but
-> freshly-allocated folios are still added to the lru_add fbatch for batch
-> LRU statistics processing.
-> 
-> This one known "usage" of the folio is handled by draining the lru_add
-> fbatch. After draining, if the refcount is still elevated, then there's
-> truly some other user of this page, and the page is not safe for
-> conversion.
-> 
-> If the page may be dma pinned, DMA is obviously using it and hence not safe
-> for conversions. If the page is still mapped after guest_memfd tried to
-> unmap it earlier in the conversion process, it is also obviously not safe
-> for conversion. Exit early to avoid unnecessary draining in these 2 cases.
-> 
-> Provide a drain status to only drain once ever while processing a batch of
-> folios.
-> 
-> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+From: Ridong Chen <chenridong@xiaomi.com>
 
-With the updated version of change log,
+The memory.peak / memory.swap.peak per-fd watermark tracking has two
+issues. Each open fd is a watcher and reads back max(its own value, the
+shared local_watermark); both bugs live in that scheme.
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Worst case for both is the same and is userspace-visible: a reader of
+memory.peak (or memory.swap.peak) gets a value lower than the true peak,
+so a tool that sizes or bills a cgroup by its peak usage under-reports it.
 
-One nit below.
+Patch 1 (read side) fixes the race Sashiko pointed out in the v1 review
+[1]: peak_show() inspects local_watermark and the per-fd values without
+holding peaks_lock, so a reader that races an unrelated peak_write()
+reset briefly observes the lowered value. Transient. It takes peaks_lock
+in the show path.
 
-[...]
+Patch 2 (write side) fixes peak_write(): on a reset it stores the
+current usage into the other watchers instead of the old watermark, so
+once usage has dropped from a peak a reset on one fd drags every other
+fd's peak down too, even fds that never reset.
 
-> +static bool __folio_safe_for_conversion(struct folio *folio,
-> +					enum lru_cache_drained *drained)
-> +{
-> +	const int filemap_get_folios_refcount = 1;
-> +
+---
+Changes since v3:
+- Switch to guard(spinlock) in the peak readers, suggested by Muchun.
 
-Nit:
-After adding the helper, the use of filemap_get_folios_refcount seems
-less obvious. It introduces unnecessary tight coupling with the caller,
-though it has only one caller currently.
+Changes since v2:
+- Spell out the worst-case userspace-visible effect, per Andrew's
+  Go back to v1 [2].
 
-Is it better to pass the value as extra_refs, similar to what
-lru_cache_drain_for_folio() does? 
+Changes since v1:
+ - New patch 1: hold peaks_lock in the peak readers (Sashiko).
+ - Patch 2: floor the peers with max(usage, local_watermark), mirroring
+   peak_show(), and skip the writing fd (Johannes Weiner).
 
+[1] https://sashiko.dev/#/patchset/20260730115314.1069089-1-ridong.chen@linux.dev?part=1
+[2] https://lore.kernel.org/all/20260730115314.1069089-1-ridong.chen@linux.dev/
 
-> +	if (folio_maybe_dma_pinned(folio) || folio_mapped(folio))
-> +		return false;
-> +
-> +	lru_cache_drain_for_folio(folio, filemap_get_folios_refcount,
-> +				  drained);
-> +
-> +	return folio_ref_count(folio) ==
-> +	       folio_nr_pages(folio) + filemap_get_folios_refcount;
-> +}
-> +
->  static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
->  					    size_t nr_pages, pgoff_t *err_index)
->  {
-> +	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
->  	struct address_space *mapping = inode->i_mapping;
-> -	const int filemap_get_folios_refcount = 1;
->  	pgoff_t last = start + nr_pages - 1;
->  	struct folio_batch fbatch;
->  	bool safe = true;
-> @@ -560,9 +576,8 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
->  		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
->  			struct folio *folio = fbatch.folios[i];
->  
-> -			if (folio_ref_count(folio) !=
-> -			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
-> -				safe = false;
-> +			safe = __folio_safe_for_conversion(folio, &drained);
-> +			if (!safe) {
->  				*err_index = max(start, folio->index);
->  				break;
->  			}
-> 
+Ridong Chen (2):
+  memcg: acquire peaks_lock when reading memory.peak
+  mm, memcg: fix memory.peak reset clobbering other fds' watermark
+
+ mm/memcontrol.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+-- 
+2.34.1
 
 
