@@ -4,139 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1490BC5CFCF
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 15:30:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00F01C5CFC1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 15:49:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B722E6B06E2; Fri, 14 Aug 2026 11:30:03 -0400 (EDT)
+	id E0A516B06E4; Fri, 14 Aug 2026 11:49:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4B3B6B06E3; Fri, 14 Aug 2026 11:30:03 -0400 (EDT)
+	id D9B5A6B06E5; Fri, 14 Aug 2026 11:49:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A67C46B06E4; Fri, 14 Aug 2026 11:30:03 -0400 (EDT)
+	id CAA3D6B06E6; Fri, 14 Aug 2026 11:49:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A1466B06E2
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 11:30:03 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D911440192
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 15:30:02 +0000 (UTC)
-X-FDA: 85100260644.05.D151717
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 21D0018000C
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 15:30:00 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A55286B06E4
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 11:49:30 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 46FE3160187
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 15:49:30 +0000 (UTC)
+X-FDA: 85100309700.22.95FEF58
+Received: from lgeamrelo12.lge.com (lgeamrelo12.lge.com [156.147.23.52])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 73D7C180008
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 15:49:25 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dyLKd7df;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf24.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786721401;
+	s=arc-20220608; t=1786722568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uaLT8Pt+Su2uzISlW009doIM0VJ15n6/6fL5974J+dg=;
-	b=v+slNykMrG0+vDafYn9F1HI61HErpjRfkMu/gOe99/YS3SL78lJNSYo+Ayvbijx1HpYcWs
-	BNdjclcY2n9unnkkEEEdwC1ze43C2SyBBn0F1MNW2t6apxydGX7YOvFMI+s2djVT3Qyazu
-	E1LZ+igNzdavSU/yDYfi2tUH4DmhHKY=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FQjBX9+Ci1rWGKNyOuvQWcWs3yIxwDdBlR3IHagsrWw=;
+	b=sisuPDNZ+GEvtPZ53BAiSs0tVRK/zUUnypwCTzXj1Gk7Cz+gIVZTTdtNVFUSQJ6MaiKM0U
+	m9Y0BpbI2tWOflQjFwMyCcbf+eL7mMVF3BfWVt97lboULvpFHtuGhaymdb6rFaCho7sF1D
+	6yVOJzo6ZIEOHHO92Ie9W4EL+m6UQpE=
 ARC-Authentication-Results: i=1;
 	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dyLKd7df;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf24.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786721401;
-	b=i80+ULHnzWA9I0yW+M1wyZ8vvvNYev4pqUiJh+5OaYHpZxGoKtj/D7ZM7ktwGUTaQATCAU
-	uKdza5lbsuwJ/Wy//zK/JWXZYMKIaTrGfwOGoc+dIQkUUe7Lu8viK2FBQMrhsteahZl75o
-	b4lTXu16yho1Rk7jArm2YzX97rh1MCM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AC40460A73;
-	Fri, 14 Aug 2026 15:30:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A70961F000E9;
-	Fri, 14 Aug 2026 15:29:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786721400;
-	bh=uaLT8Pt+Su2uzISlW009doIM0VJ15n6/6fL5974J+dg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=dyLKd7dfiBNnwmTsFUCJeuYgeUh8Ew4Yy3vfvAWnGGsbpXhsuQXVd8XQ9w2HaM6Zu
-	 QgBFaTPJEssOx024yYFYiy0ikk8y+yf6M2aqF58IXU4qyJA374I2BXJ7LsBV6pl8DT
-	 5Xj+P2HKB2Pvpmjt6zEYOI340apfB0nAFJ7XkX9fme6Uj6Sja0Sl4FcAYaZnu8TMkU
-	 guyQVkgOZfVNqwCLYiPXu0ohVQDFkAnBDc0rCPHMOOb+6qmvJLpRHkLxEJw7lW+vos
-	 Ntys2s5CLDmS3/R8vkRNfeJVwr6Ss0RjKsCRj38cipYc0tgAJxcOXlAUDB4Z8VRD4s
-	 iGqg8t0wrurrw==
-From: Thierry Reding <thierry.reding@kernel.org>
-Date: Fri, 14 Aug 2026 17:29:18 +0200
-Subject: [PATCH v5 10/10] arm64: tegra: Add VPR placeholder node on
- Tegra264
+	t=1786722568;
+	b=jAKIetdfOKlvDr5ZxG1UUiEc0NXKn19f/acg1eAncOL7UnI2YBiB3FotQDDXW85FMOyX4j
+	Bl0aDKH/Dc8lfFKUg/XFMSlDFYEnWMVpjXO5UgsdRx3xneeK9zpNcXNPGoNzbU9DBEReT3
+	qeLxocA35scSRV+E0tyekfekzpA+2Ck=
+Received: from unknown (HELO lgemrelse6q.lge.com) (156.147.1.121)
+	by 156.147.23.52 with ESMTP; 15 Aug 2026 00:49:20 +0900
+X-Original-SENDERIP: 156.147.1.121
+X-Original-MAILFROM: youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.1.121 with ESMTP; 15 Aug 2026 00:49:20 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Sat, 15 Aug 2026 00:49:20 +0900
+From: Youngjun Park <youngjun.park@lge.com>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
+	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev, yosry@kernel.org, david@kernel.org,
+	muchun.song@linux.dev, shikemeng@huaweicloud.com,
+	baoquan.he@linux.dev, baohua@kernel.org, chengming.zhou@linux.dev,
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+	rppt@kernel.org, surenb@google.com, qi.zheng@linux.dev,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	riel@surriel.com, gourry@gourry.net, haowenchao22@gmail.com,
+	corbet@lwn.net, kernel-team@meta.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	cgroups@vger.kernel.org
+Subject: Re: [PATCH v3 02/11] mm, swap: support zswap and zeroswap as vswap
+ backends
+Message-ID: <an85AJ8auvXQ3+nk@yjaykim-PowerEdge-T330>
+References: <20260806184254.3790858-1-nphamcs@gmail.com>
+ <20260806184254.3790858-3-nphamcs@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260814-tegra-vpr-v5-10-71832b5d0246@nvidia.com>
-References: <20260814-tegra-vpr-v5-0-71832b5d0246@nvidia.com>
-In-Reply-To: <20260814-tegra-vpr-v5-0-71832b5d0246@nvidia.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Thierry Reding <thierry.reding@kernel.org>, 
- Jonathan Hunter <jonathanh@nvidia.com>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- Sowjanya Komatineni <skomatineni@nvidia.com>, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>, 
- Mikko Perttunen <mperttunen@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
- Russell King <linux@armlinux.org.uk>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
- Robin Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
- Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
- Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
- "T.J. Mercier" <tjmercier@google.com>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Chun Ng <chunn@nvidia.com>
-Cc: Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org, 
- linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, 
- linux-mm@kvack.org, iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
- linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2208; i=treding@nvidia.com;
- h=from:subject:message-id; bh=db5pktqTEHmL7nm7eEWg8RTfTXMm0eSnWFgz4562xI4=;
- b=owEBbQKS/ZANAwAKAd0jrNd/PrOhAcsmYgBqfzRZRCHM4P+QZFcsZdjlqbbApnEWVTk6Wm7E+
- KnIdEu0AYmJAjMEAAEKAB0WIQSI6sMIAUnM98CNyJ/dI6zXfz6zoQUCan80WQAKCRDdI6zXfz6z
- oSXAD/9osIn6vKwbtFrpb26y/g3b9z+UjI1W3E3npab2OW3Xl4zfKOoluxB7F9krSl7aDrrKhw9
- uI7kMIHw32NFU50O6kjYGE1Zi6s89gv4UeeYqNiIPtYqyU3dVS6/wt2AN2eoQgD6y5y7lgsX+a2
- b+TaC+idL5S+NJxjlha1/Ax3mH0kmL/NYjMVT2F+OWOfJDFbmYtwCkXa/bnlAJaExbFvVow52w3
- lKV4KUg+Q1zuwcv9wWrrkcEOElranQ1b5jO/E27+zvhIle3MhK/RkJOKCiRlFR7g1/oAIVHCYVx
- vLgtY9ifFDRxVuTQrWHpCJcq9q+YtSAZUiM4WjJutFgVF0fejgX7YDv23ar7NkoI7I+eiHqKv7r
- KznaE0HyuGIGpGExgj3QeEEMVqz7I4xibixSV+MPk2EVlm16ZcqShTUu9ZaIadCxfAS1rcRqSz1
- Cz/etrRh+A2EV+V+tgDcNBE5kmN6YvTZE826o1yVVtSAVlrf7S4s/rOnwfRHTxTH7Ek3OWUkdpR
- kuXJlxiZ+xIKx4VQ9y03bVyg+FeLRphkOO952z6VQq5Gk13e02mBOUG2liVGPh70aWOmkoXVhtN
- b268m+4V1J8PieinrHxibQ6o225G8PrDeNOSGlbNKkQf6afUzpcG51yPU2vS4//Wl7rnKmgE8qO
- nrj9H5tdo/9uipA==
-X-Developer-Key: i=treding@nvidia.com; a=openpgp;
- fpr=88EAC3080149CCF7C08DC89FDD23ACD77F3EB3A1
-X-Rspamd-Queue-Id: 21D0018000C
-X-Stat-Signature: hxjaxkknobqtf5sjzcya9scdoe6pm9o5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260806184254.3790858-3-nphamcs@gmail.com>
+X-Stat-Signature: khrdyib1fi7ctpp38tdn39igarj6pu3n
+X-Rspamd-Queue-Id: 73D7C180008
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786721400-748402
-X-HE-Meta: U2FsdGVkX193Bu99LMx2MW3x4hjOpRCzxO2NIPqZ4Ilwgf+mVwgb0y3oxz0/cReA+84TW+doB0ohtnHnZ4MlqC2DlKCeuv87pVtYgrrtAVldEK1mdULOcCJ7/EXD/S6kJfiWhtBo8JOegj7DuYmOPpwmNj/VYPBLwsyH+KhE1MtfTx/by1WhIAOmunpV4aR0aq3iQ2UBSe3xnlxCEgXv9gH03dOrBogovoMhbQalBk95b1RWOjmuPAY+5ENBrlMWMSN5EkaE419zbortld2bQ6Kbas2dD2bGIcQIz3pI5P53WaXL89MMJlLccpm/sTQ9GcTEZz+ftF0tI0WHp/ZTiga9ks2t4hIuFzb9K67hdsh3GOnBTfaRQGCKzQK4jJhILr51XnOjoTZ9Snl8pZtoVQYSP4DP4V6fLmjgoAtTijmZLMpkw4iypFBPoBhahYFAxI1i0XV9ez5gSibGzwzG60M5pFssM8eslVZM6RJrBdDQ0UpF7ukwByACevsm54HW4l2HgqILFHnDv1cGVsLuVFzjeK3OqC7Lzcihev7sNpip4Gv838SW1L9LPSQrZxS9sSRsi/XmJKPr/6uaQLssCAAEzrqxvoTKJ2g+oLJqFxGVmH8IiYamkFRjXyol+hK/5vV2hMrVl+J1oHtpungTcl7UArDcEr/T//LynT6BXy80xcyxZHOlRB1ef6YbilE7Afg3vlPAxQ9K/nFbIDxd4YOZUxfpyXwDOrQZGaE5ncIMq3m+qatS2wQ57dFfNiGKl13ye56dyyeNI+0ysaY87EUVTuuKghRp/6cLgHdN3XaQOOaNLyzfzRVKKlXpbvuk20GUdP1zt+GhFRYkdJ4rH4s8/T3ho4sM/Q/66ciHNJnTnyRmkjkutRlZfvv7l7bSKLi+B6i6qFkof1IyWsFaD/mO/6aMKPosHCN4I/9oGps7IhuVaFi/7flYK4Gy/zlw0i4U7Y1bvWgBxrCWO42
- lMMQr8tc
- hYGJsgbr5BICr3P8hE9CRCMNZbT2M3Fr9XbsB+xxB2CTQW2QtKugJonES/5FLtEnvnlSktduXF+77//JEnrAfddQgaWrTYgosPTblAse5pk5dcCNm8bGFCF24BSWwfKH0dB+6NQ3WmdlyA4li8ffcdm1as8vzxp6nXLySEoq73uCN9PYkPZ7ATyQbvnw76juPhc5W0Agg/dSF5fWiB+sA3sSloDt9kYIi/vGPIOagKDS7yJPac3ySE01ItooPZMMezXzkis22x2lNuo6zYU1M3ozhDpEsII+Sj8sYCEkXezUF5cfsmr4sd17Q1K2snZEVIYI9KSj8N0muBjE9xFQQzZ49Rcy/teMDpmzPtgBYTjSl+3MAmRNVDMGc6Mhu3XDNcuPLINESeNCEauQE3yl2aklK7ZWZd5lo6HdQRMlC6zt9ixlne0mD+KaHGc9B+asHc2UrnzRpkdlr1OxQESKmzpkG7w==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786722565-798972
+X-HE-Meta: U2FsdGVkX18NXppsh4z9d3KS3aYXmzrY1NnsW2nj9teyE5DZCR6NX7jfz+pwbEp1TN0oCL2gZcqFOlUCOwHguIHQ0soaS7yyGY3sblSQOLlI46js+W+7fyspwyIcdH/ptdcPX4VADI1Xig7Gq5sjQjbPvBkKOnpIe5ndmX9E3Lokd37OHwWR6/eWs9khFF3D2IuS7voB6fk+OjhnBM+vyeiXPgLjhI9f1pMdprj/rW2gRLNuEba8kE9OOyi7aX/GsHa3GIKIGwZmgDUisPpUO7vWjC1afqNqn8r9uJPDPgiNBq75B04yTnY1gAdhC6LzT/BIZJmvPnDbcVy1BCfzJ56IpY14+elKvOODW4Qy0NFPgF1KvamsMWDr6ADNFE2iVgfQ1s32wVhWW8/v/H7Hsq/EAC7jLb2DtjqJRzkIHkqjy+jTur93QXwcZArvbzOAWeraAQdInTVs8426kxvWR8VMLLznPB9nUXrrqxxSdWBCuL4OS0K/hki414+r47jtI6d2BuYta13tyeZLk+lv+HcohAksYCCz+J2U0piTuKqi9fpdwqCxexL7m7hz0EpF1jbsjSLxb4NQSXcufzQTVwCrySzZSg6cbLSQ+seuJdeD2zpm7shh4ECzM3BOVAEzHFnWzPvST77OknVvh7v64FOwUsf3OR1e4CNH9B0+sj2LKbL9AH1U0d0G+4RL+Z6L51e3EIKzxRIoTTeX+Mp02hAhVnjIt/RiHbxxlsxdmV3DEgJ8V7Gtsp7It8MbN4XqYz40/DKFiZ01qMmqeMNs22F5sLasx4tSzLHaMm+EO6bsdW2AMbRxA19AF4XnuQrNb1Xq1tlXY3SyMXl/bTqPr3X8Q6rHYYEZuV1XZoGNvXimqdVryFsltrRupOeggDxTeE8/Sss2C44wHXUqCzVWjsuuOwidliOawigKfz/Uvg7dfE8Tt6S8TiZBwXKcD6s18IxU4h7l+Oi3olHc7zB
+ wbCqk7Nt
+ odHbWwQjWiYooMcMuQuvB40j1C6ThdW4fivbO2YIMZAqpn7swzd6JuXa1WFJ3YgkqLO07d2bKNccU8t4T6t1TRCBIiy3QUZ84RkW2WR1qDnk4ZMxR1KG7pT3w8d4uSl/PzpLs+0DypwvHbjKdbrhdi7PgtnDoT2CYw3NrdJFfm/JWffKZot61gGv04A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,74 +95,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Thierry Reding <treding@nvidia.com>
-
-This node contains two sets of properties, one for the case where the
-VPR is resizable (in which case the VPR region will be dynamically
-allocated at boot time) and another case where the VPR is fixed in size
-and initialized by early firmware.
-
-The firmware running on the device is responsible for updating the node
-with the real physical address for the fixed VPR case and remove the
-properties needed only for resizable VPR. Similarly, if the VPR is
-resizable, the firmware should remove the "reg" property since it is no
-longer needed.
-
-Signed-off-by: Thierry Reding <treding@nvidia.com>
----
-Changes in v3:
-- comment out fixed VPR properties, assume resizable by default
-- rename node to "protected"
----
- arch/arm64/boot/dts/nvidia/tegra264.dtsi | 33 ++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/nvidia/tegra264.dtsi b/arch/arm64/boot/dts/nvidia/tegra264.dtsi
-index 31bd29df8e46..b3a8ea64aa37 100644
---- a/arch/arm64/boot/dts/nvidia/tegra264.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra264.dtsi
-@@ -24,6 +24,39 @@ shmem_bpmp: shmem@86070000 {
- 			reg = <0x0 0x86070000 0x0 0x2000>;
- 			no-map;
- 		};
-+
-+		vpr: protected {
-+			compatible = "nvidia,tegra-video-protection-region";
-+			status = "disabled";
-+
-+			/*
-+			 * Two variants exist for this. For fixed VPR, the
-+			 * firmware is supposed to update the "reg" property
-+			 * with the fixed memory region configured as VPR.
-+			 *
-+			 * For resizable VPR we don't care about the exact
-+			 * address and instead want a reserved region to be
-+			 * allocated with a certain size and alignment at
-+			 * boot time.
-+			 *
-+			 * The below assumes resizable VPR by default. If the
-+			 * firmwares sets up fixed VPR, it is responsible for
-+			 * adding the missing "reg" property, removing any of
-+			 * the unused properties, as well as adding a unit-
-+			 * address matching the "reg" property.
-+			 */
-+
-+			/* fixed VPR */
-+			/*
-+			reg = <0x0 0x0 0x0 0x0>;
-+			no-map;
-+			*/
-+
-+			/* resizable VPR */
-+			size = <0x0 0x70000000>;
-+			alignment = <0x0 0x100000>;
-+			reusable;
-+		};
- 	};
+On Thu, Aug 06, 2026 at 11:42:45AM -0700, Nhat Pham wrote:
  
- 	/* SYSTEM MMIO */
 
--- 
-2.55.0
+> @@ -537,7 +562,12 @@ swap_cluster_populate(struct swap_info_struct *si,
+>  	 * Only cluster isolation from the allocator does table allocation.
+>  	 * Swap allocator uses percpu clusters and holds the local lock.
+>  	 */
+> -	lockdep_assert_held(&this_cpu_ptr(&percpu_swap_cluster)->lock);
+> +#ifdef CONFIG_VSWAP
+> +	if (swap_is_vswap(si))
+> +		lockdep_assert_held(&this_cpu_ptr(&percpu_vswap_cluster)->lock);
+> +#endif
+> +	if (!swap_is_vswap(si))
+Hello Nhat
 
+Does vswap actually come in at populate time?
+For free clusters (dynamic ci), 
+isn't the cluster freed immediately rather than going through this path?
+
+If it is right, then just validation seems good enough. (assure vswap does not come in)
+
+Thanks
+Youngjun
 
