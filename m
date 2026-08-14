@@ -4,126 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C4FAC5CFC1
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 12:42:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDDA5C5CFC1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 12:43:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79F336B06A6; Fri, 14 Aug 2026 08:42:34 -0400 (EDT)
+	id CF6FE6B0306; Fri, 14 Aug 2026 08:43:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7573B6B06A7; Fri, 14 Aug 2026 08:42:34 -0400 (EDT)
+	id CA8246B06A9; Fri, 14 Aug 2026 08:43:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63E416B06A8; Fri, 14 Aug 2026 08:42:34 -0400 (EDT)
+	id BBE236B06AA; Fri, 14 Aug 2026 08:43:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 35A646B06A6
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:42:34 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BC0991601B5
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:42:33 +0000 (UTC)
-X-FDA: 85099838586.17.C9BDA19
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 08FB11C0008
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:42:31 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nUuDRU+f;
-	spf=pass (imf21.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 94A846B0306
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:43:04 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2F0931C0F79
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:43:04 +0000 (UTC)
+X-FDA: 85099839888.23.5D9D345
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 5A67518000B
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:43:02 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PHatWBBq;
+	spf=pass (imf16.hostedemail.com: domain of thehajime@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786711382;
+	b=amkELAKh3AzkWivgOVB6odWe5DCDdg8WB+UvKGSm9i3T4+9QO+Q5Xl8umYiMH0igcC1oZ2
+	A41XMNuWW4UTnLpQYrWNgO9Mbtco0eyVhdsfxpENJOiYbawWXu5+gce2HOiwQaN1NrtfSu
+	SQFfSXliO5rAl8iZjVLXnjU2XhiypYc=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PHatWBBq;
+	spf=pass (imf16.hostedemail.com: domain of thehajime@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786711352;
+	s=arc-20220608; t=1786711382;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1xE0YTQHVZ9zp3EgVOxgxpvZ7rS85ifpjNXTOUloYGM=;
-	b=6dJgnmv/Ye1VDLDRFneyDvwIqOHDxkp+si6/wB7I6hvOWtGrZarXsYEX70KSxViHRv3MFN
-	OOWdOO8au0DYMovVo5Ns2Q1ZFnzgZRgAR4PmojJ7mLED8IKW8Ms91DktMTAQYcwG3kbYbI
-	Ejiztj3VaeuLC8seVpkYpj7N2wgXnQY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786711352;
-	b=hZhp4vGQpRJWldFuvs9ecWwq6eJwbXQ897X/tOYMoSze/im7LoGmshDAH37X+BRDtgTBbt
-	9WMTMwzgaDHARZkQBNbTuBaQhVsfByQufQP8K381R4WuY4ov+Yw3TbzKH31VEHlFr+sFCw
-	wEeuh+/EVwV+GYmz/pWlptftMlWUJpo=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nUuDRU+f;
-	spf=pass (imf21.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cacf197759so15015305ad.2
-        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 05:42:31 -0700 (PDT)
+	bh=GROTtVEhO+sxIkIUN+C4wkQjV/TpVr5EltjZRDElHMY=;
+	b=rcCE1/mYqBBJq4xYNwIu8RsHRMnVziGvsVkvPDHlW2yOqCxIeS5X3s9590cQUg0Ij6WCnr
+	xhYvPJ8UL+mNjCGIOw66QZTiX9WjAC1k32reS3/qkbq9KViJSMk9bRr7SYrRvGL+CttdwY
+	IVIh/n5umOn+ae1q3cJp2iWBKnmLeO0=
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38ea87caafeso791974a91.3
+        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 05:43:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786711351; x=1787316151; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1786711381; x=1787316181; darn=kvack.org;
         h=content-type:mime-version:user-agent:references:in-reply-to:subject
          :cc:to:from:message-id:date:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=1xE0YTQHVZ9zp3EgVOxgxpvZ7rS85ifpjNXTOUloYGM=;
-        b=nUuDRU+fxFpruc3v8NhTTvHX1he22VKhOa6e6tLDCVWc9EE3cqyh4DNjAYFEOWMXn8
-         IpcmVKD0zefEMmox9emm+bUSqn9q37eFnjiTEzQIRz8ijkKFjoEEnk1C2JGiVUK6S9Pe
-         8AjymhImfOH1rOUBTDrMILZ4M1juMDqDKgvuJPNycNhwGnA64QbVL/8dSEdUAIgUw1wC
-         U6XitpEvfvtcN6ClTP/CLJaDBYNLoRUu2PjDJaQwifmN4g5WJ49aYcbK5OfMlWaY3+Iq
-         8U1HibiWoUbp9AEBL21Fvmi1cnPmT6RgJCLiXDapFOAYa8cQXUAmU/0raYNAW9hy3E2C
-         OH/A==
+        bh=GROTtVEhO+sxIkIUN+C4wkQjV/TpVr5EltjZRDElHMY=;
+        b=PHatWBBqj/tiRt/KbhBWSvZzss8ipWBU1ycSw8f382c/Wpy837es0UdcIZBQ0MLsoU
+         NTeuL++ngwXUkcBhcQFghtvJK7Yfz+PrlKYhPh+GjDr42ULWMFVewgLrteGPGc7kRqvn
+         7k1CSHzLPRKkq/94TPMAa9rIbtUuZFhIvFfF24VTELBLrysza/N92OzNYr8Ve0uSNuXV
+         bsBbQxiaQqTyhSlfknnhJnCRCmMgPkgIfR+tajc0TPQcNgdWlr0cM4nnjQNswNCZqUp1
+         MZPSlXATKEhFdSo3i0PA9dJnZByFOIeplgN1dhBlphe74op9g4LnePPNaclYcmRBZE2U
+         dz6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786711351; x=1787316151;
+        d=1e100.net; s=20251104; t=1786711381; x=1787316181;
         h=content-type:mime-version:user-agent:references:in-reply-to:subject
          :cc:to:from:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=1xE0YTQHVZ9zp3EgVOxgxpvZ7rS85ifpjNXTOUloYGM=;
-        b=pMj/4RPRJyytxFX4fwauES/2nuw93C3fJ47qASK7TrFUatWFz4saZ2P7CWya06mqVK
-         /iyB6Qk3gUXhOHou1PoJUlohi1LGer9raNxUmOsdPL0E5ZqQv2NfMD+Nsaoz9d1H5F82
-         4hSSb/MCyovQ12IHkEpJ7FtpTgCkuG2eXgnWJiHX3A2+DlAv/ePVrVdtCqSNpYT+Whra
-         c2anF7PF2ITFCPMZnmTHk8DqcQ5/9xNuxvefAfZdSixGwsDafMh+shQH5ugdThRZ3wcm
-         D+Ddw43q4Ib+RDzlpGVXRNafjldh2MCcRee9fgRhyF3vHhjy3GelMR6efD+WGOJJWePr
-         ipJQ==
-X-Gm-Message-State: AOJu0Yx9VBDv4NMukG3oG7bezUx+Uezdu9LKcD562W24YIhwzYB2TJlo
-	IPv+B87POlO86OHXhcx+mG2aa+FN2ae7EIwtKX17RJ+1uHe+z87ODBOd
-X-Gm-Gg: AR+sD12N0e8DLbgExfE7DynQhJA0RlaIyk1pCDxutKPsP400JGInrwxbXyV2VYpjNUk
-	zyjxKNkhZIrz6mslP5+mNDTQLJBkZIz4yO/cVvxlLgufb2XdBJyWyxzWcPZe0lgb9T2rREI1TqW
-	ZZ5CiZSoaZB8u3IhrFOPCJzbCBe8nLoFSuzlxV20M2rkwfXIcwmx6bJLoUcNZEp9px1FL4FZONx
-	nOgw6ppQOgQ4gEHgCJSFuuBdE3tzKQ/ndobiPIh1zmQgsbL1JhBt+uD2Pqocv7VcFXqt56k2CJ0
-	v/322V3uZfeLh5tIsGVFsQ2K9nlhdPVOmKVJR6GkGv3zMzNvcyvq2PAQXtP57y9i2qbxnH1Zky3
-	SgESLVP37WCZ2rte9uomFRv91ny7GE1obZsB3mzI2pHGZ1K0ZVqGJRTJ1ojSx0Ii8RRHDCDj9KT
-	RdU5Y2M1uGDdbqBSic0hQ0JLY9xBIIkVxY9DoF9vta8BDt8/v/Pjt6N3nUDuBkAwN9AdnvboBD+
-	U30Qg6pHOso4B2hrw5UCPzib1PpLaChfhon20nZi2+P0AnALmkkP8nUCzQMEzV+2NvJOXqdKk/+
-	g7BHqrz6jmRp/18RAgXeNg==
-X-Received: by 2002:a17:903:98b:b0:2d3:14c6:2372 with SMTP id d9443c01a7336-2d3b080bf23mr71252825ad.1.1786711350587;
-        Fri, 14 Aug 2026 05:42:30 -0700 (PDT)
+        bh=GROTtVEhO+sxIkIUN+C4wkQjV/TpVr5EltjZRDElHMY=;
+        b=RxyGaQnJ6m/CVKUTnLKyRFQsX2gmJTn+DyU2w0qNWNagTU4mLYdUy7rIKNQ1sLEgAw
+         TRXOLkKWOCMFNdXt5P5vKllCyWrIq1hSWidzASmJjPgmdIVkY9cLLvPJbOiGYh7TzVQB
+         4otAmTJugGPCcPPnE4EVtlf9054lxrLkmeMlSZJ8puRUCCCZQBDj/QSHP+LPu8/6PsKn
+         mrgJbpKsKfVNdspmCGfkX/Fhs4hZZIgaVd8qBrk7f8bZ/cm1kS1LreWBIFL7UqoHX946
+         VVNQ3CPLeaCJsEs1PMfXT7YFfNocz4DxdO6BICrF7i7QeF2Bg14RmBjPJdml8pprolBv
+         se2Q==
+X-Forwarded-Encrypted: i=1; AHgh+RoZO0J/oR4+qmQTHzx2e3xdzPuljyV+Jww35QHe7l02U7518T2wiw3Pmw7TU3ySdf+ZAuBPVgyGbQ==@kvack.org
+X-Gm-Message-State: AOJu0YxTTacL8I17W4UQuknnGJjPqr6kE0kzW9GU4O7gz0WR4wdq+aiB
+	OKFraO61DhaGwPTPaW+muDbDN2VzatOyGO1DBtURRTa0QCbgD1o+S0Om
+X-Gm-Gg: AR+sD12pBAtlSxA+SALM+Pv7DU35tTt+mRMtR9hRggnJJBa8PYTJiIU0qP/XEm47qlP
+	wIPaQl1UmkoaEOsgU7P7UIxbWYABFXo4Q8vXr86rt7YnmUGVRUm1nS316NNN1jBrExF9CmyEyre
+	KMRX13E77dEpy6Drpv/uHfOXs5g32wMWb2PzjAfYypyBGMB0f2iGmJVn4hVyYxxAX+75Vz2BBP7
+	vDkaxF+yljqyJ7bs9gBUZzzPbbdHEh89CtpDFIkrVtrpWFAFz12TYExR8cTJ91ldnGYRORdVcHV
+	pu7KbspAyrF1WTbZCSDfGfLaeNCawEXyNSTCDKxxVhXEMOcf7U+v83SL0wpa9HVRtP1ZMUFmxQg
+	NfVDeRMwfHPOBXWws+umWc4IFcgZPjprIqfPuhfyMFhNFHBMDLk5XXmErK/xY2lP2bgdTh7t+CE
+	Qp5RlEeSZeu2eGdfgROFWstISLdONJnPRzvoeQcMc7a3EJVoEzbR/3/VS5hayqg/B7NkuD4qftO
+	kgtvKX+yOCj3KcOWY2MzeYTp/Z6yxmFQgO44eIrPFlYovQKIFdIcZcGtN/rjY5977LXnRCsSSxg
+	WI2VcA==
+X-Received: by 2002:a17:90b:3842:b0:38e:524:8797 with SMTP id 98e67ed59e1d1-3933b89a285mr4743746a91.13.1786711380964;
+        Fri, 14 Aug 2026 05:43:00 -0700 (PDT)
 Received: from mars.local.gmail.com (221x241x217x81.ap221.ftth.ucom.ne.jp. [221.241.217.81])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d3aeb27e40sm9037135ad.41.2026.08.14.05.42.27
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-394eb7539d3sm2774290a91.15.2026.08.14.05.42.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 05:42:30 -0700 (PDT)
-Date: Fri, 14 Aug 2026 21:42:26 +0900
-Message-ID: <m27blsrhzh.wl-thehajime@gmail.com>
+        Fri, 14 Aug 2026 05:43:00 -0700 (PDT)
+Date: Fri, 14 Aug 2026 21:42:57 +0900
+Message-ID: <m25x1crhym.wl-thehajime@gmail.com>
 From: Hajime Tazaki <thehajime@gmail.com>
-To: gregkh@linuxfoundation.org
-Cc: linux-mm@kvack.org,
+To: ljs@kernel.org
+Cc: daniel@thingy.jp,
+	gregkh@linuxfoundation.org,
+	linux-mm@kvack.org,
 	geert@linux-m68k.org,
-	daniel@thingy.jp,
 	arnd@arndb.de,
 	willy@infradead.org,
 	jack@suse.cz,
 	akpm@linux-foundation.org,
 	liam@infradead.org,
-	ljs@kernel.org,
 	vbabka@kernel.org,
 	jannh@google.com,
 	pfalcato@suse.de,
 	linux-fsdevel@vger.kernel.org
 Subject: Re: [RFC PATCH 3/6] mm: nommu: fix an issue on map request to /dev/zero
-In-Reply-To: <2026081355-remold-sterility-84f9@gregkh>
+In-Reply-To: <an3COKVbgQKdY52d@lucifer>
 References: <20260813063401.1786548-1-thehajime@gmail.com>
 	<20260813063401.1786548-4-thehajime@gmail.com>
 	<2026081355-remold-sterility-84f9@gregkh>
+	<CAFr9PX=zC8GnxwrR=wTwA4xQq89cHYpxZWooS+-=Q-WuNbjanQ@mail.gmail.com>
+	<an3COKVbgQKdY52d@lucifer>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
 Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: 5A67518000B
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: u8y1hbwouh3xktdmqxzs5ktt7xo5u44j
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 08FB11C0008
-X-HE-Tag: 1786711351-945063
-X-HE-Meta: U2FsdGVkX1/onB4GJfHheYMV+LRJd5YyVKcvlKO78m4wI91/UM8M4a/ma0sWX//SPfQKcClF8wMxX9Ud9mDXw/nHfpzl5LAAVI+TAJm4YfxMRRvok8MdBq/KWfxNppjmOmGa+qLObVlSD6g0tUXSQ6AzlO5GHii4IwyTfsoyBnaBnKdodCtgqoZTat+hfUZ/1DIqUxLl0CyeeaN92pYpACwH9Tos0oQYzqSek2zX3gWyQOC2SqCKOOdUXvBIPc0gCD8Yt9gdVeju3X2wGTuiFij3xJpH2Gvj0n0EgV8fiZ+LvzZqhqzY8SPmM2HQcONonCtDKEg50y8zv7paql3z+4UbxkLYfgczqBo38e2K7ZFUU6yblSYZyHGn3kGqYy8Pw9qJQ85tc1B00U44SzekTMZl3UKaH8TYGXA4V1eNNN9SCkF5lu5F34KEGc5z4g9/mcyKsRWwBhhMqcOq/nWmxDlvyPv5w/5bPtMBThPT0HbZ5k2TunWbPtzchLzJkkmj0iaeGvMpwb9wKrSvBWt5b6UXbluza1LirWb16gwwBuVRK6fg5CkB+FGAGr+KJWoaKt0yx6PoZaYZ8ihlMP1i+r230gQY1MGcif1xYJJSnaPrsFCJjiSNRqOB44EGrkdKRh09bhM7cWYzWxybfnoi7W9XYC9X2XLt0K+glqUCX3ItRPrn3de/UrEGRb+juUXwMEAPIeUUSMa46YlhImVGVVi9QurqOCtV3fnRObcJoDNNsllN0o7JXRpQlGNc7FcAFbrUZh0Hw6RhFnkw+90EaguNg4AvNcjRoo+Qb1stkBP9zKoErbkkao2PS1jREjy8rGsqPA1ZdbgsLBCMiczEi1+6SnwjXBk1XBn/uCSuis6KmHPfqDmG67qHcQfl3Y90kMs0L0UGYE8Jjo9y6gmg0NjjCG68QbHFXkZz3VeSWbp2a+IF+lx+p64fmt3MhxtRmp/VKJGgkP1c9g2J/vA
- BskdaVDs
- aF58KCkIlgVdFkLj084s02xU75APij8Gypdzd4yOW9LjhoJlDh2jC5c7Q2fRqlBDCY1RUmW88nU/4jcQNn9J5xeeV1ikKsYfyaP+1KJeriU/GVdIUnYgSLIJZ18wJKjcPloirg1kfC9ar2PJvShFYqeX7OTvsr9+dJQWtZVy0TB/kVwikYzJ/qMV90gugvVyBtdhInLyZAlHdRRyCFUbwpE20GpVOfSaQLX/nwmj8niwSrcZzUKAbSMU3obC3hf+iqnyQRCSPdzEmy5WjJ37slULkaR/8iqbnCZYJLvRs33a3K+bYT3EdiWSHrwDVyBmknUTGSdioCb090OTxypOKoKGs87NAmukV91uH9i0TaQ2UDeEsx3EEEaIKcm5S5aDKEZu9JuXkrOfw55ZMRXakA8Jp+pT4OAuIi6PDEThboM22HwFNj4Iky3PKjFqnkDKH5nB4loIq33BArZOWcJx2QdKFQ2isrMJh8ti/Yx3D/QuyZCDYSbsWgpp4/AL8ZkgHhC4IZ5uT/VgNqhA9J0VD0UryCwx6lJNIDR0pHQuJKMR8w4Esoilve0+Ta+ezsXGpf41/gZQhsvbJtpZHWyQsDA0liOvOLUTNGBm2QKe8pLh45ZWWMD2k89O3Zx1zLSneEPDaFuGT6pozBq2dttC/mrlnV9osFJka54Y9cnYiPkC7ot/dCy2BeViPuL7eCI1gMfcQXorbTi3jtWTJqos2gtEX3dwXrwdh32aDAtDk7s6XR5Uf3KLceppNquOAR1mqQDoU4T1jwYUgTYZDdzMLH8AlXV8+JSctUfyRIb44+FhIIY2JnHQfJ+BeDkjBtrIQ8Iv/6JVJ3xBRPXA2bQIJbHb/deA/akc7Fphm/qNTkIo9w8wNwc43/Djglw2cB4E9EIiuq4A6niXsX3ZHK5yXWGDHEcApNyiYldAt
+X-Stat-Signature: wouss5brqfqpfknq77hukfdozkfat6mp
+X-HE-Tag: 1786711382-114309
+X-HE-Meta: U2FsdGVkX1/AhC6tOSNHKbYpGa5e9rR/zJQ7R9bEJrdNgAp9gXk568SVitJ2PROS+z/JmDsE/7aoEtIT7tWUo/cCS7BlMOZKvZV3+fqF0/0zfrYD9AIvJbGA9sIX4xpq56efyaXLwXr71ryP+sV7mHPV5Z4kcFVMgpHQcfG9caJrEnwam4E8hEczB9wBwTLO6etEyXrd/8FFER51EECcqpldjrbu5PXltU4PB6qKOq6R2mAauEn9PpXlMnCt7UbWrznKU3DvTqXKED/MkNncJj082LjqwMM3mF6sVosN6VyIJNQ6xF4st6VA8HAHvbzf1+TV7NfeMNZNgaeCJK5qlT6m4DffEXokDHHzMOFC6Bf2LzPvclmcGHBHHTxq0e4i9Lsiyr0nkDoV4NHBmcFt6AuKWWKz3sDX6PYQ9A5B1ihj7uk4IMWUNguROSLl2PL3w9Y6ROoFFjO3pBSgMxvV6T15YFaTEwP+6Y4MfLDdpOUPHrIwVLw5ZUyiv+97xiyZCy5RCWwyLNJTdhYAPWadMJTOi0sJr4054QFFuvw82wsST9nD2HEdYd2hVaYqD9u6KTim8wJoRjWWsD9Xf0HWuUfQOWjFnTxa4kFqCAfnhAb+8bvwU/CjWWsOrTwF7sBfpQx9Q2jRnc2trR7rf2GUAQ/TyNYh2p3ayuyU6ROKW/n1ZMUOa8RDJb8Ix3sB/UL5OuEdFaGPBWYwKE+2aW6aL8RjX7Nms1vGfLqOFzmGCIoXx09PbTmm51Nyju9/E2fLdd9Ghnbs/bm7b2okX9Q9gyXAHcYW/LVpfK6PTnabl7/zNAHhkAHpVYkhQ4B//Ed4d2RwGHUFrP5/QHUJ73pixtFjGc0edHkwzD/JdnE8Z1a6dXNlssAhqyV9EGPpL8QPb/p1xmR9FRFhLo12HQzNsnofjTsH2dSjixcTY/PYLW/dWE8yep7Flv3GxybUjXMG/0r2kjrrk0QF5r3JlMU
+ kFiDzrwu
+ 1JUenvC8sD+RdYYybBq2oG1UpswLcGzKQzAiePyP93pVxNllrnf2Lja4E3DIYg+Xv6GG1T8MgjNMmbqrOcZeAkBsa6cadZl86u1MJVolX8Lfegzi5iJMmjAfjWYQZCY7BXao96IiHTr3NFgmUjrtpD7mCsDA4j78mN6Jq5L31Zg2rjQ/d3mzwFK4P5ftp4VuslElnjBflWrdPCDZl9bjawnenoRht0c1neIEcqm4SjiaAuDPL29ydkMjoOSflm76/iQS6OCWwxIy+lgzTom5TKSghCahQKvVvopwVXaoCtc+q9BZ55mYvY0od8i1+9O75GhbciogC5SiR0FX4fuLW5ulPBzrrnrCKPq90hs6I4Z95roTTkn/AyWHWQ7A9ZCoTvA3TgU22vVnWbAp+YIY5jAu2nP3T57fRs14tMO9CfR/l0bc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,109 +135,75 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-Hello Greg,
+Hello Lorenzo,
 
-thank you for your time to look at this patch.
-
-On Thu, 13 Aug 2026 21:19:47 +0900,
-Greg Kroah-Hartman wrote:
+On Thu, 13 Aug 2026 22:29:38 +0900,
+Lorenzo Stoakes (ARM) wrote:
 > 
-> On Thu, Aug 13, 2026 at 03:33:58PM +0900, Hajime Tazaki wrote:
-> > Upon a private file mapping request to /dev/zero, it calls
-> > kernel_read() in do_mmap_private(), getting a failure with the message
-> > like: "kernel reads not supported for file /dev/zero", which is because
-> > zero_fops defined in drivers/char/mem.c has both .read and .read_iter
-> > definitions.
+> On Thu, Aug 13, 2026 at 09:43:37PM +0900, Daniel Palmer wrote:
+> > Hi Greg,
+> >
+> > On Thu, 13 Aug 2026 at 21:26, Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> >
+> > > Given the age of this issue, I don't think anyone uses no-mmu systems
+> > > anymore :(
+> >
+> > There are a few of us using it for hobby stuff[0][1] and there are
+> > apparently people using it for actual commercial stuff.
+> > There was a session about this at LPC 2025...
+> >
+> > One of the big problems for nommu seems to be that everyone is
+> > convinced it is completely unused and totally broken. :)
 > 
-> Do you actually use a no-mmu system?
-
-yes, and wish to use in future.
-
-I'm going to make a long story short;
-
-nommu kernel is originally for embedded devices but I wish to use for
-virtualization.
-
-I gave a talk to explain this motivation below (which you also had a
-keynote remotely).  I'm not make a summary for this talk in this
-email, but am happy to explain again if needed.
-
-https://www.netdevconf.info/0x1A/sessions/talk/improving-debuggability-of-nommu-code-with-uml.html
-https://speakerdeck.com/thehajime/nommu-uml-netdev-0x1a/
-
-> > Even fixing this issue, the map request to /dev/zero works fine without
-> > errors but the allocated vma isn't marked with anonymous because
-> > mmap_zero_prepare() isn't called under nommu platform, resulting
-> > vma_desc_set_anonymous() isn't called either.
-> > 
-> > This commit fixes those issues by:
-> > 1) use vfs_iter_read() instead to avoid failure at kernel_read()
-> > 2) calls .mmap_prepare on private mapping in do_mmap() so that required
-> >    preparations are done even in private mapping.
-> > 
-> > Cc: Arnd Bergmann <arnd@arndb.de>
-> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-> > Cc: Jan Kara <jack@suse.cz>
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: "Liam R. Howlett" <liam@infradead.org>
-> > Cc: Lorenzo Stoakes <ljs@kernel.org>
-> > Cc: Vlastimil Babka <vbabka@kernel.org>
-> > Cc: Jann Horn <jannh@google.com>
-> > Cc: Pedro Falcato <pfalcato@suse.de>
-> > Cc: linux-fsdevel@vger.kernel.org
-> > Cc: linux-mm@kvack.org (open list:PAGE CACHE)
-> > Fixes: 4d03e3cc5982 ("fs: don't allow kernel reads and writes without iter ops")
+> No, the issue is that nobody seems to do any testing or contribute any code
+> aside from at least Hajime (thanks Haijme :), and possibly others (forgive me if
+> I am missing people's names here!)
 > 
-> Given the age of this issue, I don't think anyone uses no-mmu systems
-> anymore :(
-
-I tend to agree; nommu systems does have less users than others.
-but I believe this doesn't mean there are no users.
-
-I should also explain more, but I found this issue via a Sashiko
-review, which pointed me as a different comment, but when I tried to
-reproduce that case pointed by the review, which is about the use of
-check `vma->vm_file` v.s., `vma_is_anonymous(vma)`, I found that
-/dev/zero is not able to map on nommu kernel.
-
-https://sashiko.dev/#/patchset/20260710054648.924005-1-thehajime%40gmail.com
-https://sashiko.dev/#/message/m2cxwvti7z.wl-thehajime%40gmail.com
-
-The alternate path of open()=>read() of /dev/zero works fine as it
-doesn't use kernel_read().
-
-
-I also understand what you feel from the age of this issue (almost 6
-years old), and that is exactly why I start implementing test cases in
-kselftest, which is currently not able to run (even build) for nommu
-platforms.  This series also includes the extension to kselftest
-([4,5,6/6] patches are for that).
-
-
-> > -	if (!file) {
-> > +	/* private and file mapping will be marked anonymous later (do_mmap_private()).
-> > +	 * and /dev/zero is marked by them at .mmap_prepare,
-> > +	 * which should be _before_ this point.
-> > +	 */
+> There's been situtions where nommu has been broken for a year and _nobody
+> noticed_.
 > 
-> Wrong coding style for the comment, which is very typical of
-> LLM-generated stuff.  Always rewrite the output of these tools to
-> actually be sane.
+> And yet whenever nommu comes up people always seem to pop up and say how
+> important it is, then mention a talk etc.
+> 
+> Well if it's important, test it. Test the tip kernel. Report bugs. Contribute
+> code. Any or all of it :)
+> 
+> Meanwhile we in mm have to _constantly_ fix stuff up in nommu because it's a
+> total mess and has real maintenance overhead.
+> 
+> Having to account for legacy systems that make no sense in 2026 when you're
+> trying to make improvements to systems people use, or not being able to do
+> certain things, really grates after a while.
+> 
+> I mean if you don't believe me git log mm/nommu.c. This overhead reason is why I
+> now co-maintain it.
 
-this is my fault.
+after spending more times to look at code, fixing issues, finding
+other flaws, etc, now I become to understand what you meant in past
+emails, when you're saying a more maintainable way of implementation
+of nommu.c.
 
-As I mentioned in the Assisted-by tag, I indeed used an AI review
-system (which is cubic.dev), but I wrote this comment by my hand.
+Since I wish to use nommu.c in future with the latest kernel, I'd like
+to contribute it for, let's say, refactoring the nommu component which
+mm subsystem currently has.
 
-Because I thought this part is not easy to follow and felt that I need
-additional explanation rather than just showing diff.
+but for the moment, I wish to start with introducing test cases from
+very basic checks (which is in the [6/6] patch of this series).
+Without such a base, we may not have any chances to improve this nasty
+situation of nommu component in mm subsystem.
 
-since checkpatch.pl doesn't complain this, I didn't carefully look at
-the style of this comment block.
+# this motivation also applies to LTP (linux test project) which
+  currently doesn't support running tests on nommu platforms (I've
+  already started).
 
-I will update this (as well as bunch of comments from Sashiko).
+And also as I mentioned before, ideally the code should be maintained
+by people who use it.  And if I claimed that I used/use/will use
+nommu.c, I wish to maintain this, or at least wish to help to decrease
+the overhead of maintainers.  This series is a very fist step toward
+this.
 
-thanks,
+I hope it clarifies a bit for your concerns,
 -- Hajime
+
 
