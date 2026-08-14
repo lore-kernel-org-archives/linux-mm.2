@@ -4,111 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D54DC5B572
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 10:41:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41069C5CFC1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 10:48:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D25EC6B0302; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
+	id 122CA6B0308; Fri, 14 Aug 2026 06:48:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFB7F6B0303; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
+	id 0D3D56B0309; Fri, 14 Aug 2026 06:48:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B55696B0304; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
+	id F2BA16B030A; Fri, 14 Aug 2026 06:48:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 826C66B0305
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F40BE140409
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 10:41:26 +0000 (UTC)
-X-FDA: 85099533372.05.185397E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 02540A0003
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 10:41:24 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a36d0zwY;
-	spf=pass (imf25.hostedemail.com: domain of joel.granados@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id D22776B0308
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 06:48:32 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 73EF914041E
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 10:48:32 +0000 (UTC)
+X-FDA: 85099551264.22.43C0C68
+Received: from mta0.migadu.com (out-68.mta0.migadu.com [91.218.175.68])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3E100160003
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 10:48:30 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=a2xK+vrl;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.68 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786704085;
+	s=arc-20220608; t=1786704510;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dh4qwfF4YlLi2OoWPAsnix0OMoionI9oLcQ6gSwubnM=;
-	b=h5wVNaIgNDv4CjVIknzA428gXN0gCVYS1RWy0ZCy7UTvt9MBIt1yb5nG8JMZLpIUmf/ez0
-	xJIlS1UyCE0Vpq3y9CHRVuvTcSaT+Z1t5hK+LlpBME5bs2IfA4Csz0J3PAiU+YZbkxMkze
-	yDjbbOFbcRfYqr6j3n9IhMCs+5ujlcA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786704085;
-	b=g8RKnyIyuiWBSGUbgbmiiIw2B5RZPVnsiOvGeLd4ziYJty9yadvsUJdxPwruzPxLL91O8I
-	lPblhrth24kbD8EUx4Gs1n3zTtaUD9ajpEo3/u+zNp4e56PB3vh+EjaY49bXQlFQ7EupwC
-	TqqRD19x9QwzIf5BxMaaDeMjTU2lEho=
+	bh=eoVCbZGbuMiZ+tCeIPIM66YHmSmt2qbD4ur8OmOKPcw=;
+	b=hzD54qdmioOXb/Jkjb2xtSXbl1gpgeJOD0SV9GO1KbHyjZuExoYRHwNqIkg+bCKHB2/JKe
+	9tqfx4MWevKdJ2TXrmqgz/NN2TYy5tMCsDZ+7NX7KAijfVo7Rkzwy/ubG9Falfiy9tJ7pL
+	VFXH0ouT1iOb44vZHowP2V1hF8IQrOo=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a36d0zwY;
-	spf=pass (imf25.hostedemail.com: domain of joel.granados@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 01A7F4401B;
-	Fri, 14 Aug 2026 10:41:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B705CC4AF09;
-	Fri, 14 Aug 2026 10:41:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1786704083;
-	bh=ACmHDzg0bdqhRKtZiggZe9yyDKsjLpeE7LXC/BUIylE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=a36d0zwY52gz/cdEaRmS3cDOVCWTSZxFJ9ECsn9afWIL7bpOeKRzCS2m0MayPvOO8
-	 VbiHHEJbLBMyxASNIUNwFlXpv25dFmldauNkqmyqnai/mMGMA6PGrdmcFJjOf2ANza
-	 USfRD9/8INS7JurPTEVmyNwa3IBudfK3BVqaC8G4qFyKYh3x3Iaj8nKKa6/7sCxgQw
-	 Lu7aYoIdEizHAphuamXXC2qIwmgRaT9UMZ8pZeRIFx7DeE/gb7FufC3GK1qUJH0Aje
-	 urh6gyVKOm6lItITCY1xHOUPGp+zsCvNEq0SIyUceSnWHZKtZwcZe5KxBZI+m1CM8m
-	 SVmZijnojIRMw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 96FFDC5CFC1;
-	Fri, 14 Aug 2026 10:41:23 +0000 (UTC)
-From: Joel Granados <joel.granados@kernel.org>
-Date: Fri, 14 Aug 2026 12:41:13 +0200
-Subject: [PATCH v2 2/4] sysctl: Reject uint arrays before calling the
- general proc_vec
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260814-lklm-partial_ctlvec-v2-2-9df50d26e477@kernel.org>
-References: <20260814-lklm-partial_ctlvec-v2-0-9df50d26e477@kernel.org>
-In-Reply-To: <20260814-lklm-partial_ctlvec-v2-0-9df50d26e477@kernel.org>
-To: Kees Cook <kees@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc: Jianlin Shi <shijianlin11@foxmail.com>, akpm@linux-foundation.org, 
- vbabka@kernel.org, hannes@cmpxchg.org, surenb@google.com, mhocko@suse.com, 
- jackmanb@google.com, ziy@nvidia.com, linux-kernel@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-mm@kvack.org, Joel Granados <joel.granados@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2851;
- i=joel.granados@kernel.org; h=from:subject:message-id;
- bh=ACmHDzg0bdqhRKtZiggZe9yyDKsjLpeE7LXC/BUIylE=;
- b=owJ4nAHtARL+kA0DAAoBupfNUreWQU8ByyZiAGp+8NDu6mELinrd4Zbsp71ht/npxGd5//lUz
- p/ms+oZ3YkI2okBswQAAQoAHRYhBK5HCVcl5jElzssnkLqXzVK3lkFPBQJqfvDQAAoJELqXzVK3
- lkFPOlcL/A582yimDhlcHkvz9SG0STpA5Qs3yhtyNi7XgDJdTE3l5T8et6PDFryntBnyzN/h2Kb
- NQ8Bm1TNmZLmNrZj/NQxdhp9obZAgFaePZAb6h6SKmZjZls60bDttBqmoufK+lz/qhD2tFpDYgV
- yM5RWJxWi3BZLDP9Fkxhw8ApM4bs+B9BC2DshT1jveym+shgHuts1D+sBhnH4RdWucKgvFl6Q7u
- mrbpywg0cl1GHRhe6ZwasXkLgrwUJs5oRw0cVCop4SqzLWipln452fskR6/WpF1p8YsmPT2s9ZN
- 0jIS9/MI/aMXGFbfTo7wYZ5V7J6jj6Rg58gxXnKf2g7S/Q+Fi6deXQy0/izZ46RO2Qc9PC/bUWT
- KWz8Ysec+jRY7bSr8F5GZnSRVO5bZuOJW7YJtIMLiKU2rGq2ZTaK6TnMg17q0N3Kc//OJzGADvf
- pgMhe6EVetnBHd2ffgh9b3c6rM4wkI3X1GJAmzv1BsNxbsPWo5YTXWC6NSogE++M/IHTarsIUi9
- ak=
-X-Developer-Key: i=joel.granados@kernel.org; a=openpgp;
- fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
-X-Endpoint-Received: by B4 Relay for joel.granados@kernel.org/default with
- auth_id=239
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=a2xK+vrl;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.68 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786704510;
+	b=zmk5Iob+7D5wOuzzxj85IUXYG7opAFnX3oNSL3ojHOFT7eOzfPNd/Fe4vHkqYE6ypMyC3p
+	KePa93fxotDARP+35qxGpWvmO+PlizGTtb7mCUnToIcE4nlGCTFxBN/9tUInF0qfOo+UI5
+	H8RCeEHLvF+CTQj2BYPTyMZBVGUxQS0=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=1HqmXyGIYCOs3rLYM6mQfaT9V9V/gD99mJ6fGYBQcYY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786704508; v=1; x=1787309308;
+ b=a2xK+vrliUD3IQLW6W0fAhb/OGvaRiQe4OHYb6qyig0CniH6D9ltEZ4JH1/BkutctC8zSzje
+ Ig4CvKuoGPvB/nLTqxwmyioC/imY5QZlc4haDOtrMGYfwzpPwXfOoBXnRKxNvOQ+Grohyfz23LW
+ MrzBYOvMkkY6//nYzIaikEts=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (77.97.51.77)
+	by smtp.migadu.com with ESMTPS id a74bc2444d3c3b30;
+	Fri, 14 Aug 2026 10:48:28 +0000
+X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 14 Aug 2026 11:48:26 +0100
+Message-Id: <DKOLVZ1JCVHL.1Q3926NV045GD@linux.dev>
+To: "Yosry Ahmed" <yosry@kernel.org>, "Brendan Jackman"
+ <jackmanb@google.com>
+Cc: "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
+ <dave.hansen@linux.intel.com>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
+ <david@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike Rapoport"
+ <rppt@kernel.org>, "Wei Xu" <weixugc@google.com>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Lorenzo Stoakes"
+ <ljs@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <x86@kernel.org>, "Sumit Garg" <sumit.garg@oss.qualcomm.com>, "Will Deacon"
+ <will@kernel.org>, <rientjes@google.com>, <patrick.roy@linux.dev>,
+ "Itazuri, Takahiro" <itazur@amazon.co.uk>, "Andy Lutomirski"
+ <luto@kernel.org>, "David Kaplan" <david.kaplan@amd.com>, "Thomas Gleixner"
+ <tglx@kernel.org>, "Patrick Bellasi" <derkling@google.com>, "Reiji
+ Watanabe" <reijiw@google.com>, "Sean Christopherson" <seanjc@google.com>
+Subject: Re: [PATCH v3 13/26] mm: introduce freetype_t
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+X-Mailer: aerc 0.21.0
+References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
+ <20260726-page_alloc-unmapped-v3-13-6f5729aa9832@google.com>
+ <anJvFVPmdpURs2B9@google.com>
+In-Reply-To: <anJvFVPmdpURs2B9@google.com>
 X-Rspam-User: 
-X-Stat-Signature: bskgmrru47ctrqf7c7irkpeiku1t9dpp
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 02540A0003
-X-HE-Tag: 1786704084-185512
-X-HE-Meta: U2FsdGVkX19m7ZJPKeolwdX4XX1nEdPT0EjjKOcYJaRwQvQk/WKkrSDN7DLIC0Ramv+Pa2ce+EDPo1wpM8OE6Ohn50MXYeyBdjCyJrfEmZGBkN5y1HT9Q5WwoSfG/8CVUru8s5k9uzsIlAQO9NpDaBOi+/px4n56nIx+lpjneqxWcxMT4xdw3lm3gEpwxpM3IB5dpEe1tz9jkh4IpndorPF7GHQOyKSWVHgdUVjiMueSG6vGVi3hHwGjuhtrzIBJQjizhFMHz/26WBNmgkFf2AFzidkSAJjXLjIVoTgKMVR7uoYER4i6CE/DPgLobL9wDieO1AsUmr1m4/aM1795JvhBzvFUQenZOhB/BtghFTRP9I0oXqn47IZSkfpjt8Jm0f4tBDR+Gd16iubWRNXHS8YbNx0EzlluVqK1jF4AcTCC4srldMWyuG3K/rjZt9T19EnbxrepV3B6xcWdiiatCwfI4n9V0WwCk98k5yf6L7QvcWdoi4fKLwRrCRyZPpQk6b24aBK38heAW+x6qEQE9bKVMGdmAUT4WWdASrcVgd3gpkRJjwGgcz8Tt4W4WmZ1OoToD3AR9qnXU4fZ9BvuIkl3u+PMngGzOv3EjmVbYys0jEIqQfTOlU9WiomwXb8vzZds3FCHYCY8lqCbuee1ADeRORfs2N5/l4V1i0maKVjFfCIA7j9FUPhwvdua5uG4Gomhx898JZ0BPL0ADPuJAdystHyDCTMkHyBq735SgT8SyDzzj4ze4ZlkJHJuF3AsshQP+5C+jqXLaz0etMR5UfMrXkaNeBhWqU4gxLMuSbBlL8uoZjCosB6hkeJ7E7XC1dSmR4hFWt4qryx6Hz44+3Jj8RjGuN7lDodIwfJtZ/rNoSCW8a9wL1fRt/FzPRTwmqrX75MRhBeadWP/UBtRst1DjdPZSxTTGBp7ZZpNUsbb7bjAhy1+w47pX/7/Nb9YJDpQkZlPBSBBXZQJjYB
- /K1kMrIB
- 3mZuGRHWhtqW4Uw38PiMDF4emN0pHn3crrNW2Ty4gAj9NjSRn1GeAYaY5LdNaTIkh8fgXgTGRkW7wOGOPeAVcfLydsQOvRRAIfw4grrvxOwqXle7L88LjZ/xutHWygILF4B5CU10AxxQAqGTVmXhX+xT3A9CfbTgJN6za4azXlLXk2Q4+GZWnbhsvsRIJI/ntL8mcu6hEk5o9iDRekuW2xm4Cc1CCQiakz5WQt5YRQcakPzF843C86jattH5PYodjUf1o
+X-Stat-Signature: 6cr1bnuqnkfpc38pmpsj35tdhytgs8ha
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3E100160003
+X-HE-Tag: 1786704510-710306
+X-HE-Meta: U2FsdGVkX188Bet5jlQF6Cgv6ZoGt8ETzD3TOnfaa4gDsmok4a5f3gxzLgofoe32KqcVAxSwPFL09XSVe8bu6gbuuqSnwP1KKCv4mxXdrKkSyz7fksRPf96+khMAp0kD683Xs6GgmpEEM2DwZa29lSjGrJNl+akoZvmxiAFoMeEGUn3M9LZVbvUQb+rhl7MZhgTAIdG22UVKkkhyNdH8hRc1LT+8LJAcay1PY9DQl3crkft9NV1kflZ3PJnvoOaTwb8beEjKI5rc/zRrDP+Ol7ItawucXWF16p1Da5gcXMyVd24RvKm7FRulyyP408+0DAXtZtvmDq5LknAPWiJVwVXrTBVgLwwqDIf0YEz3Czb52lt6qED/FX8elzhE9UnNOTEPD0yeS5G7f3XSX/VbUsbi+7gv2FtZWo9+46z45vtHLdxeDO3MzOvCNFUmtMWXsR0r3uPnwTjyEMbuU93hvPBrHUBGGe8Qq5kdFKCHbvufNT8WCPHvx8zc9gC6ywNmfkc5g7qr13fodFf28AS8H7+qrvF8IQH0pjHtpTuH38RqLxowakJFqld4fNUdom08CAFGbCubDZ6uEz8c2Rqk1hC9/Z16Q+6NuTde+32Jk+SW/2FykqTqzWw4zjiaRyeyDIxULerLWMEzOc882ds2bguasEbM1fTBLxdGmgdQJRFPLNyYzXhf8nq/sIwnzJIg2RcVdBAFzWy2YW5plOiS0UppTKfJhbExyGn9f9MVAVgNzQB+j9w2lUrwQE07ICb+mTEg9PX5HtGkLg+S7i32wGTMXRBTTYL7u5imwJjIKPHYg3fkornbTZHWFfw8Cx/k8Q969Wj2xWpudfeqJjSNigfBRhqbYbVoO7g2Dkf7MAYki5SFHxOfJJ/PhSfJtl7DYuH5jrMHlO+iHF3I6ZRI9mcWpgZJ6KAz5xMJd/iNNyiocGUVA2RxixBqPSHxRGZWg2tO6OqQD3gahY3TRW9
+ LAmtPRkE
+ BAj9Zu9bf73No9TXnyzQz+Ue5LVx9rGPtEiUpHqzrT7NDTuXDzK4MIReUtfxXutJ+CbhNFwOed/Qwu48ehayfDARKJTkXXjuDCyenyBZCTnrZ11cQrUoONRySQs0x4kwr/vAjsbx9HADI7u8ePOZa9RUu26zvTOsi5uM19AcR6Aje8Uo98JZKwcVf+zZalJKYZHCiS3WNLWRBsfRz1Yo0dMH/WLpSjnyEA8PQUcdfKVZu6rliH051+U4FKfzx3RngK+3DkdhKSPR2LAUdDvMG1bsvuWwEhSzeD6AOVZ0ZmUX4I/aMCLavsFE/3gCZU1x9Vh//+FCSmzVunpGuJlzSugAzXKP4pDTxxB63POEJGWqVW6c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,78 +104,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move the UINT vector size check to proc_douintvec_conv; the function
-that routes UINT types only. Route all the UINT calls (including
-proc_dou8vec_minmax) through proc_douintvec_conv.
+On Wed Aug 5, 2026 at 12:02 AM BST, Yosry Ahmed wrote:
+>> @@ -3190,9 +3272,9 @@ EXPORT_SYMBOL_GPL(split_page);
+>>  int __isolate_free_page(struct page *page, unsigned int order)
+>>  {
+>>  	struct zone *zone =3D page_zone(page);
+>> -	int mt =3D get_pageblock_migratetype(page);
+>> +	freetype_t ft =3D get_pageblock_freetype(page);
+>> =20
+>> -	if (!is_migrate_isolate(mt)) {
+>> +	if (!is_migrate_isolate(free_to_migratetype(ft))) {
+>>  		unsigned long watermark;
+>>  		/*
+>>  		 * Obey watermarks as if the page was being allocated. We can
+>> @@ -3205,7 +3287,7 @@ int __isolate_free_page(struct page *page, unsigne=
+d int order)
+>>  			return 0;
+>>  	}
+>> =20
+>> -	del_page_from_free_list(page, zone, order, mt);
+>> +	del_page_from_free_list(page, zone, order, ft);
+>> =20
+>>  	/*
+>>  	 * Set the pageblock if the isolated page is at least half of a
+>> @@ -3214,14 +3296,16 @@ int __isolate_free_page(struct page *page, unsig=
+ned int order)
+>>  	if (order >=3D pageblock_order - 1) {
+>>  		struct page *endpage =3D page + (1 << order) - 1;
+>>  		for (; page < endpage; page +=3D pageblock_nr_pages) {
+>> -			int mt =3D get_pageblock_migratetype(page);
+>> +			freetype_t old_ft =3D get_pageblock_freetype(page);
+>> +			freetype_t new_ft =3D freetype_with_migrate(old_ft,
+>> +				MIGRATE_MOVABLE);
+>> +
+>>  			/*
+>>  			 * Only change normal pageblocks (i.e., they can merge
+>>  			 * with others)
+>>  			 */
+>> -			if (migratetype_is_mergeable(mt))
+>> -				move_freepages_block(zone, page, mt,
+>> -						     MIGRATE_MOVABLE);
+>> +			if (migratetype_is_mergeable(free_to_migratetype(ft)))
+>> +				move_freepages_block(zone, page, old_ft, new_ft);
+>
+> While poking at the code with AI, it pointed out that new_ft here may be
+> an invalid freetype (e.g. unmapped movable). I don't think anything in
+> move_freepages_block() or its callees checks against this. There may not
+> be an actual code path that would lead to this,=20
 
-UINT proc handlers that incorrectly define maxlen will now return
--EINVAL instead of 0 in the cases where data is missing, lenp is 0 or
-ppos is 0. Note that maxlen == 0 is not considered as miss-defined.
+Yeah I think the bug is impossible in practice because of the
+freetype-flags(a) =3D=3D freetype_flags(b) in can_merge_freetypes()...
 
-Signed-off-by: Joel Granados <joel.granados@kernel.org>
----
- kernel/sysctl.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+> but it's very subtle.
 
-diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index 47a92cbbcb69cd361a18dba6606ae6ae8f86b5e2..7e9024899be6d5971752dd5639ab4b806a899081 100644
---- a/kernel/sysctl.c
-+++ b/kernel/sysctl.c
-@@ -748,10 +748,6 @@ static int proc_vec(const struct ctl_table *table, int dir, void *buffer,
- 		return 0;
- 	}
- 
--	/* uint arrays are not supported, *Do not* add support for them. */
--	if (type == PROC_VEC_UINT && (table->maxlen / data_size) != 1)
--		return -EINVAL;
--
- 	if (SYSCTL_USER_TO_KERN(dir)) {
- 		if (proc_first_pos_non_zero_ignore(ppos, table))
- 			goto out;
-@@ -797,6 +793,9 @@ int proc_douintvec_conv(const struct ctl_table *table, int dir, void *buffer,
- 			int (*conv)(bool *negp, ulong *u_ptr, uint *k_ptr,
- 				    int dir, const struct ctl_table *table))
- {
-+	/* uint arrays are not supported, *Do not* add support for them. */
-+	if (table->maxlen && (table->maxlen / sizeof(uint)) != 1)
-+		return -EINVAL;
- 
- 	if (!conv)
- 		conv = do_proc_uint_conv;
-@@ -881,8 +880,7 @@ int proc_dointvec(const struct ctl_table *table, int dir, void *buffer,
- int proc_douintvec(const struct ctl_table *table, int dir, void *buffer,
- 		size_t *lenp, loff_t *ppos)
- {
--	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_UINT,
--			(union proc_vec_conv){ .uint_conv = do_proc_uint_conv });
-+	return proc_douintvec_conv(table, dir, buffer, lenp, ppos, do_proc_uint_conv);
- }
- 
- /**
-@@ -932,8 +930,8 @@ int proc_dointvec_minmax(const struct ctl_table *table, int dir,
- int proc_douintvec_minmax(const struct ctl_table *table, int dir,
- 			  void *buffer, size_t *lenp, loff_t *ppos)
- {
--	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_UINT,
--			(union proc_vec_conv){ .uint_conv = do_proc_uint_conv_minmax });
-+	return proc_douintvec_conv(table, dir, buffer, lenp, ppos,
-+				   do_proc_uint_conv_minmax);
- }
- 
- /**
-@@ -976,8 +974,7 @@ int proc_dou8vec_minmax(const struct ctl_table *table, int dir,
- 		tmp.extra2 = (unsigned int *) &max;
- 
- 	val = READ_ONCE(*data);
--	res = proc_vec(&tmp, dir, buffer, lenp, ppos, PROC_VEC_UINT,
--		       (union proc_vec_conv){ .uint_conv = do_proc_uint_conv_minmax });
-+	res = proc_douintvec_minmax(&tmp, dir, buffer, lenp, ppos);
- 	if (res)
- 		return res;
- 	if (SYSCTL_USER_TO_KERN(dir))
+... but yeah. Also there will be other bugs in this form (failure to
+handle a no-freelist freetype), I have had several of them already while
+developing these patches. I have specifically asked AI to look for them
+and it didn't find this one. (Well, it's actually also quite likely
+it did but I didn't read it properly or something).
 
--- 
-2.50.1
+> We can add a check to can_merge_freetypes() (introduced in later
+> patches) to check for invalid types.
+>
+> But I think we may actually want a check in prep_move_freepages_block(),
+> which is called by move_freepages_block() and others before moving a
+> pageblock. WDYT?
 
+Yeah I think that's the answer, we just have to put those checks in the
+right places.=20
 
+FWIW my original nerd instinct here was to create some freelist
+abstraction that makes the problem go away by making "no freelist of
+that type" look just like an empty freelist. But aside from being more
+galaxy-brained code to review, that doesn't work here at all:
+move_to_free_list() targeting a nonexistent freetype is inherently a
+bug.
 
