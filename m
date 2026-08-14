@@ -4,39 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B2F7C5B572
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 10:41:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A64DAC5B572
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 10:41:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 731FC6B02FE; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
+	id 890BB6B0301; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E1966B0301; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
+	id 819BC6B0304; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55AD06B0303; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
+	id 66D616B0302; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 255876B0300
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 31FE56B02FE
 	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9EF571C150D
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B98FFA0423
 	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 10:41:26 +0000 (UTC)
-X-FDA: 85099533372.24.2612B16
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A359840005
+X-FDA: 85099533372.26.4CB363D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id ECE1680004
 	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 10:41:24 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dQHUmCJQ;
-	spf=pass (imf01.hostedemail.com: domain of joel.granados@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786704084;
-	b=gwj5RYZE0pCtSpFeuvRWuJH1zqIDFx7sMP4S5h8Dy0c4UEjEph1pUgbXMM8IQRWEX3qsv1
-	KvGih1Npsl20HUs9YpX0apuAVqKuybF+zdHSt/cBcn68CUonmPCrJ2CY6KQgCdHZdDAAUZ
-	WenJDRmb4VxKDMpaxIgAc/5/3fRLWqc=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dQHUmCJQ;
-	spf=pass (imf01.hostedemail.com: domain of joel.granados@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eKK7b8HQ;
+	spf=pass (imf30.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1786704084;
@@ -45,36 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ETfka9dqRURMa5xFoea1PMU0P/5QPArWw+vQFL/Gwa0=;
-	b=hZZGPKgQJVPaOcWvRYSMmt5x7egtAQScGfgwM26cZevk1DIxKdiUE6+6rlC/oe+iK9Agb3
-	P4JztfGTR9gaCRymF7a0hKN9GU0XvtF9N2tzPduVUEZDcojzIpLQxbaje9nGR9aN+xYlgM
-	sZtPY4JQwZlvMPA7KEMHsU+K+NVlTow=
+	bh=HYIzYjfC8zO2G0fNU5Y+z1PQUJW9A5aF7NuyKF6BFlI=;
+	b=TnLhR62ZVqtbUJFKhhx3Opws5vsML5aoya9tgSXlGF9IU50lDaufX4SLzueFSsbeKLF/GX
+	zQWyMaaOKYVG6bZuqsWJyGBfDMft4delSscdWLQZLLeICLW0tsyiHOYz1nd26DTGTXeO2e
+	D5wiwNlBXhggzy5sOn0SvTX8oGKT5vk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786704084;
+	b=PuKdSYTvX/ey4DSVAeau9eSa/5E9pd/AIQyvENDEPHsKTzk256cGZj270jCJi0OCjiojjk
+	tqT3wBcoyhfvJnury36/AtzZjl7Pts8AOfJ14OYjvS+7TVD+OCoaYO26l5t3vUoLB287c7
+	E4jFEX0Ma5c47Cq8NeDuEQEMdsgP+xI=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eKK7b8HQ;
+	spf=pass (imf30.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D27DA43F1B;
-	Fri, 14 Aug 2026 10:41:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A9444C2BCB9;
+	by tor.source.kernel.org (Postfix) with ESMTP id 22347601E0;
+	Fri, 14 Aug 2026 10:41:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BC9EBC2BCF7;
 	Fri, 14 Aug 2026 10:41:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1786704083;
-	bh=wc51Ar1jilhnjUGqKXjw2tY4+e0678L6LjQxN5ZQWOY=;
+	bh=CJlMe8eckMtRbFMo6OjTUfLXAWdcwp7d+38BdYAigIE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=dQHUmCJQbHpjKnszykCVG2CXecJtAI1vFAeTZz+5JJU2z9FGb+3OXBQ/bCdNSHiL5
-	 2BzxxnDlk8zvKNQKQTN/ZuzEFCzHtZbpqT1NJFU3iQLEIq70SotgLWtuIDjRitnMuE
-	 N0dRUrKmmswfRgW1DAlN8g/CkvxXImDojG4hVVrTFOVi2RPvvDWfTe6l988H44BkeE
-	 ExNQVoZ08YfZ1nNrgFW1gdMiwIYytZNqvTu5heMOc1TnLEkaVl4txKhJF2AQvqtyNH
-	 1K4iar9cDdS8YFn9FLl83jw9nbk5m3o8r2xdUoqY6Ldvgri/oaF/QB4J6GpzO9aHlg
-	 PLByPtR7Qzhdg==
+	b=eKK7b8HQktyx7HHxZzmr9+dwYq8G83AG+MtacqM6wPAyyvVlvZ50/BTv1ASYdCBgc
+	 M4pdva1YgaBnVbRkuI+nBkfipPy9wJKzTaS7OmWzd1+FQTpWqbOjoZQW/rnyVZEe0J
+	 bnjZC8VHcm9IAJbtxBfLzT4wtEcf449pr5CmNo1KpZKkREQUcSg9r91atpIBL6lRDc
+	 rwb5zFOcLEsgNJFLT5yGynBMvYMwc3kFo5RIFPsiIiJ3PSVC3TpUo2TbdxH3tIHZfM
+	 Yl59Ff1n6D/oFNcosGzKX7dV50UqzPAC6zfHN+L+P4knGnnxWGgJJL2CePLyjPbVbR
+	 fyZqVEIkog3Zg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8792DC5B572;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A7F22C5DF6A;
 	Fri, 14 Aug 2026 10:41:23 +0000 (UTC)
 From: Joel Granados <joel.granados@kernel.org>
-Date: Fri, 14 Aug 2026 12:41:12 +0200
-Subject: [PATCH v2 1/4] sysctl: Split data conversion and file position
- handling
+Date: Fri, 14 Aug 2026 12:41:14 +0200
+Subject: [PATCH v2 3/4] sysctl: Disallow partial updates for erroneous
+ sysctl vectors
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260814-lklm-partial_ctlvec-v2-1-9df50d26e477@kernel.org>
+Message-Id: <20260814-lklm-partial_ctlvec-v2-3-9df50d26e477@kernel.org>
 References: <20260814-lklm-partial_ctlvec-v2-0-9df50d26e477@kernel.org>
 In-Reply-To: <20260814-lklm-partial_ctlvec-v2-0-9df50d26e477@kernel.org>
 To: Kees Cook <kees@kernel.org>, Shuah Khan <shuah@kernel.org>
@@ -84,31 +84,31 @@ Cc: Jianlin Shi <shijianlin11@foxmail.com>, akpm@linux-foundation.org,
  linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
  linux-mm@kvack.org, Joel Granados <joel.granados@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12066;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4178;
  i=joel.granados@kernel.org; h=from:subject:message-id;
- bh=wc51Ar1jilhnjUGqKXjw2tY4+e0678L6LjQxN5ZQWOY=;
- b=owJ4nAHtARL+kA0DAAoBupfNUreWQU8ByyZiAGp+8M8vr+lEf7V6BRsfLebGaWNXeMT1k+ohr
- RnFxBUiAJih0YkBswQAAQoAHRYhBK5HCVcl5jElzssnkLqXzVK3lkFPBQJqfvDPAAoJELqXzVK3
- lkFPMfEL/0TFDnPZxzlhtXUe9sCMJNET1aPiqy5DcZpclEhrldW8L1wXDZr8CQcQcCghr2pqD1R
- 0lnclMJMoJL+CnnpGkKKnpGIfNJlaEIsGxWP9gZtKY0H++d5VKmcZBiVJW+Eh3eOQSBslAwiZOQ
- Pie6ryhgU9ey1vQfJcuZ7fPgjrkU6IrBEMgSlKL3JuToGg2ZKx6m9q50HvR6CNAS/WfyTQi13G1
- APpUpKdLdYZD8A6WgS/MbMJioHFOvyHNHW2aKOvb/Q6C927bPNb/n9kM30BOE6//f1Dj+bPn9Ia
- EAdTLDB6Zcgc3DfEeASQ3U19FmWqGUFI9+SKbyv6PBi8TEzXq0PtFaBTH9F4LYFt86LGlsAqT8o
- tim5ER91NcIV8h9Z6ERaa+AQgKyI/oexSGdGA1JxcVLGpSau4y2l1v+gqPLjSok21K/9VBRKZWZ
- vROgkt1ttZ11Ku4CXJiQ58HYK2Rvz3Bm0nfODk+OJ9mGkrZJaYQ7e/7gsZRTPBWMbqGQWaLsuL4
- OU=
+ bh=CJlMe8eckMtRbFMo6OjTUfLXAWdcwp7d+38BdYAigIE=;
+ b=owJ4nAHtARL+kA0DAAoBupfNUreWQU8ByyZiAGp+8NHUjrC7/UY5qTi0oMM3LIpSbQYbXCUtz
+ uIVIOsjNamHHIkBswQAAQoAHRYhBK5HCVcl5jElzssnkLqXzVK3lkFPBQJqfvDRAAoJELqXzVK3
+ lkFPMgUL/1+0vc9a7WaBT4uQrdf6jczPCFm0E/iBcZQPHgbAfV+CEAmg0uJf2GHtzgs9xmRKM6E
+ HxBTtxcUx5A/LhJWwVQberzSHPAf1BaKBa5ymaidcfZNBCG0TEn5hVChTZqPHT8m5frNEYt4JQu
+ Ao5xgFF2wgHM4ExTr5rB1xccWG8AF+FRZI+YcR747VuBx2BUd70cOmQeTrxSyoITjkOVzL9Ad6Y
+ 0owmDRcqrx3GJRa8xcK0CCuw9nLGB53pQfkAJhBTkD+B9OKgf6CmgHLLJsUqreQzPsRJsxR7f2k
+ PKXfYS7UZTBKMrKouFiXKAjAiX49LXafoFkwGzwrsFIfBeliqQPkw+YFHmxfbJnHvCawt37SPdM
+ x1qVyHmVRqzyp73hHuxn3IGLUBsjURiyVRGNdAHyRMnwm+pnL1NoZI/vNGRUg3qVXKOo5C4Xcn7
+ EOPhbwbV3bTl7u+SWBFdqsthVkyw0VGeOE2sGm6a/4+oG/3YeolYydFWmyZnrtKnghQE32o11K4
+ 2M=
 X-Developer-Key: i=joel.granados@kernel.org; a=openpgp;
  fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
 X-Endpoint-Received: by B4 Relay for joel.granados@kernel.org/default with
  auth_id=239
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A359840005
-X-Stat-Signature: b6p156papuemwyrizeoafg95e9q98ubo
-X-HE-Tag: 1786704084-202193
-X-HE-Meta: U2FsdGVkX19Kv6dKfCIyVcMJ6Kj0n/A7XF13AS9Mu8ptdY0poOhoFfVyOXrihV0BA1QPwDmm9yiUTooUihJMpqjhujKkfCD1DBtHa6IEiVEW6C84tYiIh5E/gpRqHHFqPERncSeQSq4Uls4z4gc8ZLKYRDcqJ3sPaL8+cmLm1cmG2QbH5xzTAfmsOudDEf0VinJ+OkcCS9s7qdUri3QNiK/UsMa9BTGRvwLydRA/xxlrVr5KYoq9YLXsc60FugcWe9+1Cu92wMaQPSSxQaWTgNIRpDT1Crq7ZGusCRb3DyL6uQAaIhLDybLWvPuOaJb3USYwvyjyCNXBGMnfJkPa+aMmlvhN3CTTaF64U1GDX73s+pvoPJdLycKM0cTMLbpzv+BZAg9k+t8ay7g2qL+3VS73mWFykYkQH5mop7qm9zfJ9TeAtb8Tv9VGhL9e1Rq1vHzJMyUHQ7mmYOnFqUyq4oNEUEeSSuExnDL/R06GTdG0Ob/sTiZ+VArFMR/nnaotAnbaA+dxiUppDwC4/uMrjCdvyfcbBORI2Tn07i7oYIVh9FPEqpoIHey7UIrKj9Xf3mN+8T+mx8FqFL0hsTdCUZHiwbe73OtXODQITh/D03Aa5RGnoTvvJkFOr/0aAKBuw5ay2YhIkIYSD5Hn0d5nZkGaJlepVnc/aVJ1AFL7GZ7ZH0+sk8b6ymobHotUir9ETlFSFyu8vGfBMONrkbD6GTUHLn+eUyrZPTvdSlwmGbxgdHYxMwZci7S8g6Is/ewkRYxNjKE3LOFCzQBrwvarnpITQ6MegdRcH8nwwQrJyhV2rFFZt4ouwUdCvvIw14DCdyduK1xaUEA/YJhy/iuY7FG3S+DyrsHM/ySWNdUmYflgaTrOEwbhZPDIRyauuel4NjxCK1BEQfEykPSa2PJEi+jV1hrzY8r01utl9Fb17vgi4emUMsx1p/VPAxj8A2iowAlD7BE2AmCLreqytCm
- h+AEVUB6
- JhjZoe+cw8BAuLEjKQsoJGmHGdcM5NcIb7ZWEA6EHDVQy0PhTN6SJ3yxi0QanDAZnthDD94I+DGemYLdteEQJQg9GfHfKoOSjJSysBM9L2NV/p87faUqQAtMVVTqwQSvHvJ/2ZG8pVfB+vQ2PGzjoRlgUu5fa9nCQ5uCzXYL4licLHw6/H1+yAVh6k80uuOK7bL3lLG2EFUrb80m7EDZnQ9EJvAvyCnCVK3RPH0OdoFOMr6U=
+X-Stat-Signature: fmy8hag5emat8pr38xfq45s434a6xpdf
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: ECE1680004
+X-HE-Tag: 1786704084-260709
+X-HE-Meta: U2FsdGVkX18JWPkq8pPrhYDhRJKc0GsJMqmXUz3qcQIE9/O0AJ6O0ufReXHmtBD6XVPB6pd0Tokylbf0sWe9ztSL5YBts1MDdg82Yxm80QoJAbLrN21hMxXlUVUfApy2AyuMMNqKhofekKpqZ4RqWs2WAydAI7cF4W1Tv1Q1CfTijRHt0kBbGE15lLLN9wTQ0Tlge8b5uqHuCjZ3LEEY1gq3/zG/eDEQ8QmtBQdWpSFh5vsuOaD4RY235e6ArPB5b8J0gvBSiyVl3QP+4zzpJ7uayD76qyEeltExJflWNu/c3AzZ7qYqrTGm0yT5Y+fbAf59mIsrwTCh3eA0zwaWha5NwWpcCc5FkRXI9BqA65UbmTAaFPTTtopQ3kvk3/MjAUk8Xa6e/SDSvmfiqNiLF4Olm10ciW5HXI+cNCwtWglpDxS/q/4fE7ftMuzrORUXcK1PBTyhJun8SviWcUA5rdJyoG4KdAySfznke7JN5ftHHzpD3ScsWEIM1e4fIENtPne/5//oC+8cIphdXvIv1/6DY1Y7lGkLuuK2m2vzCmdbbVp3unSwGylYWWZOhXjfUYf0QYKjTp2qM4HoHmlxnk7QvBxl5PBrAFzXub0OjbImNzbvj9rQKLhTatiNIzox+8ew6M/6la+3oOC0SDqSOBnRnaGOTlWBhC44QZEUdrdbDJDVc6/f6L2PyQZcmk7wxiqk3RY5gqiX9TNjjPzzUbV/pizrx35bPuBCN6nVb31jp2RW9uRjjw+1XextyAtllLVGMs2AZaLspkMjZ54iswbIpH4r5+x9nFBGKqvihf/Xuai0cT49ywj/8DPjsht5nwdmwSOFIYjx3Tkepw0ClbJowHkvgHsCLck34nuPFnswdpBcXt9N4tXVODNW/eweTgmLWDuEPhEIS3EDH0MaTYYyT38di270eMU4l7dEIfVbTljhU6lF9QCsemClbDULQ96blQLw7aGXHOESxgv
+ uDJnzf1C
+ EJKhrx76addyfknDqv3yXYvLgyytuOdX3rveeQ9GP+GezSp9r41wkrqsZLEPVuJBsqprb96vCr+NUOeFi59JOjHeY+k07j9FjBV05hdE8foQTGkoW+qhz7h0v61M3tbx8AbawVNuZuy4qr28Y1GJVjWw0P3rAv4q4mWJHBGIxi+31OZPntNTYq35UTwKepzpFFye4C1fuONw9B7nMz6CxMPKt/ONfw0uQMhhT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,349 +116,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Apply the conversions to the data in a new helper function
-(apply_conv_on_vec) while file position handling and argument validation
-stay in the original function. Rename function to prov_vec (from
-do_proc_vec). This is a prep commit to isolate the logic that needs to
-change to prevent partial sysctl vector writes. No functional change
-intended
+When updating the kernel sysctl vectors there is a chance that not all
+vector elements are updated due to erroneous input. Use a staging
+variable that holds a copy of the vector and commits to the actual
+table->data only when all input is successfully updated.
 
+The staging is only for vectors; cases where table->data points to a
+variable should not be staged as they will not be updated on input
+error. PROC_VEC_UINT is not included because UINT arrays are not
+allowed.
+
+Replace first with nr_conv, incremented where first was cleared. first
+is exactly nr_conv == 0, and the counter doubles as the number of
+elements to publish.
+
+Example of behavior that is being prevented:
+
+  # echo "4 4 1 7" > /proc/sys/kernel/printk
+  # echo "1 x" > /proc/sys/kernel/printk
+  -bash: echo: write error: Invalid argument
+  # cat /proc/sys/kernel/printk
+  1 4 1 7 <- incorrect
+
+It should be unchanged ("4 4 1 7") on error.
+
+Link: https://lore.kernel.org/all/tencent_A860C873956A52E26AD8D309A308A241BA08@qq.com/
 Signed-off-by: Joel Granados <joel.granados@kernel.org>
 ---
- kernel/sysctl.c | 211 +++++++++++++++++++++++++++++++++-----------------------
- 1 file changed, 126 insertions(+), 85 deletions(-)
+ kernel/sysctl.c | 65 +++++++++++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 52 insertions(+), 13 deletions(-)
 
 diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index f7b75985d5420a522a316d1fade40dc7fbe60455..47a92cbbcb69cd361a18dba6606ae6ae8f86b5e2 100644
+index 7e9024899be6d5971752dd5639ab4b806a899081..25577ffc2801267cc69df60a1064ada9efd4b97d 100644
 --- a/kernel/sysctl.c
 +++ b/kernel/sysctl.c
-@@ -595,7 +595,7 @@ static int do_proc_int_conv_minmax(bool *negp, unsigned long *u_ptr, int *k_ptr,
- static const char proc_wspace_sep[] = { ' ', '\t', '\n' };
- 
- /*
-- * Element type processed by do_proc_vec(). The tag selects the element size
-+ * Element type processed by proc_vec(). The tag selects the element size
-  * and signedness, and it selects which member of union proc_vec_conv is live.
-  */
- enum proc_vec_type {
-@@ -605,7 +605,7 @@ enum proc_vec_type {
- };
- 
- /*
-- * Converter passed to do_proc_vec(). Only the member matching the
-+ * Converter passed to proc_vec(). Only the member matching the
-  * enum proc_vec_type tag is ever read, so every dispatch stays fully typed and
-  * no void * converter pointer is needed.
-  */
-@@ -637,101 +637,142 @@ static int proc_vec_conv(enum proc_vec_type type, union proc_vec_conv conv,
+@@ -637,6 +637,26 @@ static int proc_vec_conv(enum proc_vec_type type, union proc_vec_conv conv,
  	return -EINVAL;
  }
  
--/*
-- * Read/write a vector of @type elements. The element size and signedness are
-- * derived from @type, so a single runtime function replaces the per-type
-- * variants. table->data is walked as raw bytes (@i) advanced by @size; the
-- * converter performs the actual typed load/store.
-+/**
-+ * apply_conv_on_vec - Apply converter function on data vector
-+ *
-+ * @conv: The converter to be applied
-+ * @table: The sysctl table
-+ * @data_type: Type used in converter appliation (INT, UINT or ULONG)
-+ * @data_size: Number of data elements.
-+ * @conv_dir: %TRUE if this is a write to the sysctl file
-+ * @buf_nbyte: Number of bytes for buf
-+ * @buf: The user buffer
-+ * @buf_left_final: Number of outstanding (non converted) bytes.
-+ *
-+ * Element signedness is derived from @data_type. table->data is walked
-+ * as raw bytes (@data) advanced by @data_size; the converter performs
-+ * the actual typed load/store. Sets buf_left_final to the number of
-+ * bytes that where left outstanding after conversion. Can be > 0.
-+ *
-+ * Returns: %0 on success. Non-zero on error.
-  */
--static int do_proc_vec(const struct ctl_table *table, int dir,
--		       void *buffer, size_t *lenp, loff_t *ppos,
--		       enum proc_vec_type type, union proc_vec_conv conv)
-+static int apply_conv_on_vec(const union proc_vec_conv conv,
-+			     const struct ctl_table *table,
-+			     const enum proc_vec_type data_type,
-+			     const size_t data_size, const int conv_dir,
-+			     const size_t buf_nbyte, void *buf,
-+			     size_t *buf_left_final)
- {
--	int vleft, first = 1, err = 0;
--	size_t left, size;
--	bool is_unsigned;
--	char *i, *p;
-+	int vec_left, first = 1, err = 0;
-+	size_t buf_left;
-+	char *data, *p;
-+	bool is_unsigned = data_type == PROC_VEC_UINT || data_type == PROC_VEC_ULONG;
- 
--	switch (type) {
--	case PROC_VEC_INT:
--		size = sizeof(int);
--		is_unsigned = false;
--		break;
--	case PROC_VEC_UINT:
--		size = sizeof(uint);
--		is_unsigned = true;
--		break;
--	case PROC_VEC_ULONG:
--		size = sizeof(ulong);
--		is_unsigned = true;
--		break;
--	default:
--		return -EINVAL;
--	}
--
--	if (!table->data || !table->maxlen || !*lenp ||
--	    (*ppos && SYSCTL_KERN_TO_USER(dir))) {
--		*lenp = 0;
--		return 0;
--	}
--
--	i = table->data;
--	vleft = table->maxlen / size;
--	left = *lenp;
--
--	/* uint arrays are not supported, *Do not* add support for them. */
--	if (type == PROC_VEC_UINT && vleft != 1)
--		return -EINVAL;
--
--	if (SYSCTL_USER_TO_KERN(dir)) {
--		if (proc_first_pos_non_zero_ignore(ppos, table))
--			goto out;
-+	data = table->data;
-+	vec_left = table->maxlen / data_size;
-+	buf_left = buf_nbyte;
- 
--		if (left > PAGE_SIZE - 1)
--			left = PAGE_SIZE - 1;
--		p = buffer;
-+	if (SYSCTL_USER_TO_KERN(conv_dir)) {
-+		if (buf_left > PAGE_SIZE - 1)
-+			buf_left = PAGE_SIZE - 1;
-+		p = buf;
- 	}
- 
--	for (; left && vleft--; i += size, first = 0) {
-+	for (; buf_left && vec_left--; data += data_size, first = 0) {
- 		unsigned long lval;
- 		bool neg = false;
- 
--		if (SYSCTL_USER_TO_KERN(dir)) {
--			proc_skip_spaces(&p, &left);
-+		if (SYSCTL_USER_TO_KERN(conv_dir)) {
-+			proc_skip_spaces(&p, &buf_left);
- 
--			if (!left)
-+			if (!buf_left)
- 				break;
--			err = proc_get_long(&p, &left, &lval, &neg,
-+			err = proc_get_long(&p, &buf_left, &lval, &neg,
- 					    proc_wspace_sep,
- 					    sizeof(proc_wspace_sep), NULL);
- 			if (!err && neg && is_unsigned)
- 				err = -EINVAL;
- 			if (err)
- 				break;
--			if (proc_vec_conv(type, conv, &neg, &lval, i, dir, table)) {
-+			if (proc_vec_conv(data_type, conv, &neg, &lval, data, conv_dir, table)) {
- 				err = -EINVAL;
- 				break;
- 			}
- 		} else {
--			if (proc_vec_conv(type, conv, &neg, &lval, i, dir, table)) {
-+			if (proc_vec_conv(data_type, conv, &neg, &lval, data, conv_dir, table)) {
- 				err = -EINVAL;
- 				break;
- 			}
- 			if (!first)
--				proc_put_char(&buffer, &left, '\t');
--			proc_put_long(&buffer, &left, lval, neg);
-+				proc_put_char(&buf, &buf_left, '\t');
-+			proc_put_long(&buf, &buf_left, lval, neg);
- 		}
- 	}
- 
--	if (SYSCTL_KERN_TO_USER(dir) && !first && left && !err)
--		proc_put_char(&buffer, &left, '\n');
--	if (SYSCTL_USER_TO_KERN(dir) && !err && left)
--		proc_skip_spaces(&p, &left);
--	if (SYSCTL_USER_TO_KERN(dir) && first)
-+	if (SYSCTL_KERN_TO_USER(conv_dir) && !first && buf_left && !err)
-+		proc_put_char(&buf, &buf_left, '\n');
-+	if (SYSCTL_USER_TO_KERN(conv_dir) && !err && buf_left)
-+		proc_skip_spaces(&p, &buf_left);
-+	if (SYSCTL_USER_TO_KERN(conv_dir) && first)
- 		return err ? : -EINVAL;
--	*lenp -= left;
-+	*buf_left_final = buf_left;
-+
-+	return err;
-+}
-+
-+/* Read/write a vector of @type elements. */
-+static int proc_vec(const struct ctl_table *table, int dir, void *buffer,
-+		    size_t *lenp, loff_t *ppos, enum proc_vec_type type,
-+		    union proc_vec_conv conv)
++static int commit_conv_vec(const enum proc_vec_type data_type, void *dst,
++			    const void *src, size_t nr)
 +{
-+	int err = 0;
-+	size_t data_size, left_nbyte = SIZE_MAX;
++	size_t i;
 +
-+	switch (type) {
++	switch (data_type) {
 +	case PROC_VEC_INT:
-+		data_size = sizeof(int);
-+		break;
-+	case PROC_VEC_UINT:
-+		data_size = sizeof(uint);
-+		break;
++		for (i = 0; i < nr; i++)
++			WRITE_ONCE(((int *)dst)[i], ((const int *)src)[i]);
++		return 0;
++
 +	case PROC_VEC_ULONG:
-+		data_size = sizeof(ulong);
-+		break;
++		for (i = 0; i < nr; i++)
++			WRITE_ONCE(((ulong *)dst)[i], ((const ulong *)src)[i]);
++		return 0;
 +	default:
 +		return -EINVAL;
 +	}
++}
 +
-+	if (!table->data || !table->maxlen || !*lenp ||
-+	    (*ppos && SYSCTL_KERN_TO_USER(dir))) {
-+		*lenp = 0;
-+		return 0;
-+	}
+ /**
+  * apply_conv_on_vec - Apply converter function on data vector
+  *
+@@ -663,22 +683,31 @@ static int apply_conv_on_vec(const union proc_vec_conv conv,
+ 			     const size_t buf_nbyte, void *buf,
+ 			     size_t *buf_left_final)
+ {
+-	int vec_left, first = 1, err = 0;
+-	size_t buf_left;
+-	char *data, *p;
++	int vec_left, err = 0;
++	size_t buf_left, nr_conv = 0;
++	char *data, *data_stage = NULL, *p;
+ 	bool is_unsigned = data_type == PROC_VEC_UINT || data_type == PROC_VEC_ULONG;
+ 
+-	data = table->data;
+-	vec_left = table->maxlen / data_size;
+ 	buf_left = buf_nbyte;
+ 
++	data = table->data;
+ 	if (SYSCTL_USER_TO_KERN(conv_dir)) {
+ 		if (buf_left > PAGE_SIZE - 1)
+ 			buf_left = PAGE_SIZE - 1;
+ 		p = buf;
 +
-+	/* uint arrays are not supported, *Do not* add support for them. */
-+	if (type == PROC_VEC_UINT && (table->maxlen / data_size) != 1)
-+		return -EINVAL;
-+
-+	if (SYSCTL_USER_TO_KERN(dir)) {
-+		if (proc_first_pos_non_zero_ignore(ppos, table))
++		if (table->maxlen > data_size) {
++			data_stage = kmemdup(table->data, table->maxlen, GFP_KERNEL);
++			if (!data_stage) {
++				err = -ENOMEM;
++				goto out;
++			}
++			data = data_stage;
++		}
+ 	}
+ 
+-	for (; buf_left && vec_left--; data += data_size, first = 0) {
++	vec_left = table->maxlen / data_size;
++	for (; buf_left && vec_left--; data += data_size, nr_conv++) {
+ 		unsigned long lval;
+ 		bool neg = false;
+ 
+@@ -703,20 +732,30 @@ static int apply_conv_on_vec(const union proc_vec_conv conv,
+ 				err = -EINVAL;
+ 				break;
+ 			}
+-			if (!first)
++			if (nr_conv)
+ 				proc_put_char(&buf, &buf_left, '\t');
+ 			proc_put_long(&buf, &buf_left, lval, neg);
+ 		}
+ 	}
+ 
+-	if (SYSCTL_KERN_TO_USER(conv_dir) && !first && buf_left && !err)
+-		proc_put_char(&buf, &buf_left, '\n');
+-	if (SYSCTL_USER_TO_KERN(conv_dir) && !err && buf_left)
+-		proc_skip_spaces(&p, &buf_left);
+-	if (SYSCTL_USER_TO_KERN(conv_dir) && first)
+-		return err ? : -EINVAL;
++	if (SYSCTL_USER_TO_KERN(conv_dir)) {
++		if (!err && buf_left)
++			proc_skip_spaces(&p, &buf_left);
++		if (!nr_conv) {
++			err = err ? : -EINVAL;
 +			goto out;
++		}
++		if (!err && data_stage)
++			err = commit_conv_vec(data_type, table->data, data_stage, nr_conv);
++	} else {
++		if (nr_conv && buf_left && !err)
++			proc_put_char(&buf, &buf_left, '\n');
 +	}
 +
-+	err = apply_conv_on_vec(conv, table, type, data_size, dir, *lenp, buffer,
-+				&left_nbyte);
-+
-+	/*
-+	 * An unchanged left_nbyte signals a write with no parsed element; which
-+	 * is an error. Using SIZE_MAX to detect this error is possible because:
-+	 * 1. lenp is bounded by KMALLOC_MAX_SIZE in proc_sys_call_handler
-+	 * 2. lenp could never be SIZE_MAX as it is a "ridiculous" (exabyte) allocation.
-+	 */
-+	if (left_nbyte == SIZE_MAX)
-+		return err;
-+
-+	*lenp -= left_nbyte;
- out:
- 	*ppos += *lenp;
-+
+ 	*buf_left_final = buf_left;
+ 
++out:
++	kfree(data_stage);
  	return err;
  }
  
-@@ -760,8 +801,8 @@ int proc_douintvec_conv(const struct ctl_table *table, int dir, void *buffer,
- 	if (!conv)
- 		conv = do_proc_uint_conv;
- 
--	return do_proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_UINT,
--			   (union proc_vec_conv){ .uint_conv = conv });
-+	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_UINT,
-+			(union proc_vec_conv){ .uint_conv = conv });
- }
- 
- /**
-@@ -820,8 +861,8 @@ int proc_dobool(const struct ctl_table *table, int dir, void *buffer,
- int proc_dointvec(const struct ctl_table *table, int dir, void *buffer,
- 		  size_t *lenp, loff_t *ppos)
- {
--	return do_proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_INT,
--			   (union proc_vec_conv){ .int_conv = do_proc_int_conv });
-+	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_INT,
-+			(union proc_vec_conv){ .int_conv = do_proc_int_conv });
- }
- 
- /**
-@@ -840,8 +881,8 @@ int proc_dointvec(const struct ctl_table *table, int dir, void *buffer,
- int proc_douintvec(const struct ctl_table *table, int dir, void *buffer,
- 		size_t *lenp, loff_t *ppos)
- {
--	return do_proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_UINT,
--			   (union proc_vec_conv){ .uint_conv = do_proc_uint_conv });
-+	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_UINT,
-+			(union proc_vec_conv){ .uint_conv = do_proc_uint_conv });
- }
- 
- /**
-@@ -864,8 +905,8 @@ int proc_douintvec(const struct ctl_table *table, int dir, void *buffer,
- int proc_dointvec_minmax(const struct ctl_table *table, int dir,
- 		  void *buffer, size_t *lenp, loff_t *ppos)
- {
--	return do_proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_INT,
--			   (union proc_vec_conv){ .int_conv = do_proc_int_conv_minmax });
-+	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_INT,
-+			(union proc_vec_conv){ .int_conv = do_proc_int_conv_minmax });
- }
- 
- /**
-@@ -891,8 +932,8 @@ int proc_dointvec_minmax(const struct ctl_table *table, int dir,
- int proc_douintvec_minmax(const struct ctl_table *table, int dir,
- 			  void *buffer, size_t *lenp, loff_t *ppos)
- {
--	return do_proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_UINT,
--			   (union proc_vec_conv){ .uint_conv = do_proc_uint_conv_minmax });
-+	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_UINT,
-+			(union proc_vec_conv){ .uint_conv = do_proc_uint_conv_minmax });
- }
- 
- /**
-@@ -935,8 +976,8 @@ int proc_dou8vec_minmax(const struct ctl_table *table, int dir,
- 		tmp.extra2 = (unsigned int *) &max;
- 
- 	val = READ_ONCE(*data);
--	res = do_proc_vec(&tmp, dir, buffer, lenp, ppos, PROC_VEC_UINT,
--			  (union proc_vec_conv){ .uint_conv = do_proc_uint_conv_minmax });
-+	res = proc_vec(&tmp, dir, buffer, lenp, ppos, PROC_VEC_UINT,
-+		       (union proc_vec_conv){ .uint_conv = do_proc_uint_conv_minmax });
- 	if (res)
- 		return res;
- 	if (SYSCTL_USER_TO_KERN(dir))
-@@ -1066,8 +1107,8 @@ int proc_doulongvec_conv(const struct ctl_table *table, int dir,
- 				int (*conv)(bool *negp, ulong *u_ptr, ulong *k_ptr,
- 					    int dir, const struct ctl_table *table))
- {
--	return do_proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_ULONG,
--			   (union proc_vec_conv){ .ulong_conv = conv });
-+	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_ULONG,
-+			(union proc_vec_conv){ .ulong_conv = conv });
- }
- 
- /**
-@@ -1087,10 +1128,10 @@ int proc_doulongvec_conv(const struct ctl_table *table, int dir,
-  * Returns: %0 on success.
-  */
- int proc_doulongvec_minmax(const struct ctl_table *table, int dir,
--			   void *buffer, size_t *lenp, loff_t *ppos)
-+		void *buffer, size_t *lenp, loff_t *ppos)
- {
--	return do_proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_ULONG,
--			   (union proc_vec_conv){ .ulong_conv = do_proc_ulong_conv });
-+	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_ULONG,
-+			(union proc_vec_conv){ .ulong_conv = do_proc_ulong_conv });
- }
- 
- /**
-@@ -1114,8 +1155,8 @@ int proc_dointvec_conv(const struct ctl_table *table, int dir, void *buffer,
- {
- 	if (!conv)
- 		conv = do_proc_int_conv;
--	return do_proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_INT,
--			   (union proc_vec_conv){ .int_conv = conv });
-+	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_INT,
-+			(union proc_vec_conv){ .int_conv = conv });
- }
- 
- /**
 
 -- 
 2.50.1
