@@ -4,117 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C188FC5CFC1
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 07:54:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEFBAC5B572
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 07:58:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C891E6B02EE; Fri, 14 Aug 2026 03:54:02 -0400 (EDT)
+	id D7C136B064A; Fri, 14 Aug 2026 03:58:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C68C86B02F4; Fri, 14 Aug 2026 03:54:02 -0400 (EDT)
+	id D33FE6B064B; Fri, 14 Aug 2026 03:58:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B50866B02F5; Fri, 14 Aug 2026 03:54:02 -0400 (EDT)
+	id C1B5E6B064C; Fri, 14 Aug 2026 03:58:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CDAA6B02EE
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 03:54:02 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 05B20A29CD
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 07:54:02 +0000 (UTC)
-X-FDA: 85099111524.08.4438EDD
-Received: from va-2-42.ptr.blmpb.com (va-2-42.ptr.blmpb.com [209.127.231.42])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8F742100004
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 07:53:59 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=fygo-io.20200929.dkim.larksuite.com header.s=s1 header.b=C+kIyFuY;
-	spf=pass (imf14.hostedemail.com: domain of yukuai@fygo.io designates 209.127.231.42 as permitted sender) smtp.mailfrom=yukuai@fygo.io;
-	dmarc=pass (policy=quarantine) header.from=fygo.io
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786694040;
-	b=5Jq2xBTjJhBizwq8dvT7Xv2X+BTunY2jsz+lA9w/TNtFnLm+NbvHgAbXZ30Egx1gFun1Hv
-	jzjIXIHPvUIGUoF4QktAGBmmz+5B+SDXowk/St4QorTYB3h1iTvk3qKy85CwMwEi38F+ly
-	O08cKUkg7k93zgWi3zEdrqTYPdP+kr8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=fygo-io.20200929.dkim.larksuite.com header.s=s1 header.b=C+kIyFuY;
-	spf=pass (imf14.hostedemail.com: domain of yukuai@fygo.io designates 209.127.231.42 as permitted sender) smtp.mailfrom=yukuai@fygo.io;
-	dmarc=pass (policy=quarantine) header.from=fygo.io
+	by kanga.kvack.org (Postfix) with ESMTP id 8FE3D6B064A
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 03:58:41 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 22CDAA2A9F
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 07:58:41 +0000 (UTC)
+X-FDA: 85099123242.03.D39A857
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 722341A0006
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 07:58:39 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Xvzkt9N/";
+	spf=pass (imf19.hostedemail.com: domain of ziyang.meme@gmail.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=ziyang.meme@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786694040;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1786694319;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d5X4CvU+1L3LRx9eYxrJOuZyHPoADtah9tMj/5sRYWk=;
-	b=CzhfPViGDL/ImLHbLQe+clUuO4Q38ltfKe+rb9c+5XGGyn6Ls/Jf6QD44hBlEmqNKVm3dc
-	WsvyJOMpq465KhSturvq9yM52Ndjv1W2HHN3s5iwt7SnCGs483MrxCsdzmDF2nGtNEpEaL
-	fCFvY+EGjvNYuNTYXpe2hW61cHD+Sbg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=fygo-io.20200929.dkim.larksuite.com; t=1786694034;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=d5X4CvU+1L3LRx9eYxrJOuZyHPoADtah9tMj/5sRYWk=;
- b=C+kIyFuY5Y/bvPNvTJ+xbcMYIkxz55i1ZKwol98/UpscSvJuvFaVOSKqHv6Bnold2SAj7X
- wEvEvfW0Hs+HAvFSWDsyJXULpaid0K9t7Ln9ef3ZjBshUJGFAVdonZa07Wsx4zqeG0ngSv
- xwJ2FuAdRcwP1MzmFBS/6kIxqx2QTVsZie8qipkEwVP2cy1qFIPjWfcNphITqAX8+2jExW
- FU9IrXGFjOYNQYAu71ij7jqcgFhtWP/vFDy7Izw9T6fEfMLKcg06WmxvfqdLVbw4jNeukq
- lTbMvfW4AQWdp5XD5KwG4wqN1MG7GV8FUb4rUe9QTYJlo4oPqZIZQ219AXkxsg==
-Message-Id: <d1d47b32-b746-42d1-a391-5e37d4e373fb@fygo.io>
-User-Agent: Mozilla Thunderbird
-Reply-To: yukuai@fygo.io
-To: "Christoph Hellwig" <hch@lst.de>, "yu kuai" <yukuai@fygo.io>
-Cc: "Jens Axboe" <axboe@kernel.dk>, "Tejun Heo" <tj@kernel.org>, 
-	"Josef Bacik" <josef@toxicpanda.com>, 
-	"Johannes Weiner" <hannes@cmpxchg.org>, 
-	=?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	"Yu Kuai" <yukuai@fygo.io>, "Tao Cui" <cui.tao@linux.dev>, 
-	"Jan Kara" <jack@suse.cz>, "Ming Lei" <ming.lei@redhat.com>, 
-	"Jonathan Corbet" <corbet@lwn.net>, 
-	"Shuah Khan" <skhan@linuxfoundation.org>, "Coly Li" <colyli@fygo.io>, 
-	"Kent Overstreet" <kent.overstreet@linux.dev>, 
-	"Alasdair Kergon" <agk@redhat.com>, "Mike Snitzer" <snitzer@kernel.org>, 
-	"Mikulas Patocka" <mpatocka@redhat.com>, 
-	"Benjamin Marzinski" <bmarzins@redhat.com>, "Song Liu" <song@kernel.org>, 
-	"Li Nan" <magiclinan@didiglobal.com>, "Xiao Ni" <xiao@kernel.org>, 
-	"Pankaj Gupta" <pankaj.gupta.linux@gmail.com>, 
-	"Dan Williams" <djbw@kernel.org>, 
-	"Vishal Verma" <vishal.l.verma@intel.com>, 
-	"Dave Jiang" <dave.jiang@intel.com>, 
-	"Alison Schofield" <alison.schofield@intel.com>, 
-	"Ira Weiny" <iweiny@kernel.org>, 
-	"Andreas Gruenbacher" <agruenba@redhat.com>, 
-	"Matthew Wilcox" <willy@infradead.org>, 
-	"Andrew Morton" <akpm@linux-foundation.org>, 
-	"Chris Li" <chrisl@kernel.org>, "Kairui Song" <kasong@tencent.com>, 
-	"Kemeng Shi" <shikemeng@huaweicloud.com>, 
-	"Nhat Pham" <nphamcs@gmail.com>, "Baoquan He" <baoquan.he@linux.dev>, 
-	"Barry Song" <baohua@kernel.org>, 
-	"Youngjun Park" <youngjun.park@lge.com>, <cgroups@vger.kernel.org>, 
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-block@vger.kernel.org>, <linux-bcache@vger.kernel.org>, 
-	<dm-devel@lists.linux.dev>, <linux-raid@vger.kernel.org>, 
-	<nvdimm@lists.linux.dev>, <virtualization@lists.linux.dev>, 
-	<gfs2@lists.linux.dev>, <linux-fsdevel@vger.kernel.org>, 
-	<linux-mm@kvack.org>
-In-Reply-To: <20260814064537.GA9355@lst.de>
-Date: Fri, 14 Aug 2026 15:53:44 +0800
-X-Lms-Return-Path: <lba+26a7ec991+e92d19+kvack.org+yukuai@fygo.io>
-X-Original-From: yu kuai <yukuai@fygo.io>
-From: "yu kuai" <yukuai@fygo.io>
-Mime-Version: 1.0
-Received: from [192.168.1.104] ([39.182.0.156]) by smtp.larksuite.com with ESMTPS; Fri, 14 Aug 2026 07:53:53 +0000
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [RFC PATCH v2 0/4] blk-cgroup: store blkcg in bio before blkcg_mutex conversion
-Content-Type: text/plain; charset=UTF-8
-References: <20260811064744.1139446-1-yukuai@kernel.org> <20260814064537.GA9355@lst.de>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=P7NJF3oq4Hw+2dLyF07fyfL2A6PD1tYu7/+/ryOQgrk=;
+	b=3/NXUCahXkCRw+c3CaXrMP7u5ywBSYKBYjC469j+klwsuly9JXGJlBUEf5jwvruVie70jy
+	egI93Kwl91V/gkqK6xg5C1mFFsM9L1Xkd2cPlvGztMAn52QmUv/c963oPFGMvAHxdqWt7L
+	anspbvIqpHFBbrAKpuE8Rf8+4Ea+cbw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786694319;
+	b=4gNTOmjCSXFPDAvmfl5NwUmgd1SIctrNRsByR6jheR64h2hNayKRRyJvNVHDTZujrZ57Io
+	HLUUEANGdHm3N7UMMQlgDVu/NQbFzP9TqD+LsjAdWlkvSub8t851I3Qoc4G9WUK2aIEWyh
+	nQCjrlBXL/0aByKFvGsF27/hvOM7JSs=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Xvzkt9N/";
+	spf=pass (imf19.hostedemail.com: domain of ziyang.meme@gmail.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=ziyang.meme@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-66b35d2c4edso1001573d50.2
+        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 00:58:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786694318; x=1787299118; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=P7NJF3oq4Hw+2dLyF07fyfL2A6PD1tYu7/+/ryOQgrk=;
+        b=Xvzkt9N/OJSixjWz71n2aepojF67wDHnOH0AH8uZj4DrA2IDUcvMwLWG24EtfYH3nl
+         WcCDTNh9IxQU8XLkGH2r6xToC9MPFpBSnaWh0dBrgGhRgQaF5YRHiSwkfPzQPyFZpxVI
+         YiyHqLF4pzBOkp2d70DZ/BEcripNRbjEWgmrWAy3uvGa2VBEfLtzK0H2YpLDsPr/9dP6
+         dFo+sXvdM8roJdbYn3zo7vEYBnWXS9HHi+dY6h0F5Vzapg9ff9cAM7Kl44RLFQF8lkv+
+         jKr2E8W1/saoDadqaJdXrxcPnhv1UB2ZyQbPpt9Oc+9YJQS4VXKv79SC7ASzr0zg1YGz
+         9TsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786694318; x=1787299118;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=P7NJF3oq4Hw+2dLyF07fyfL2A6PD1tYu7/+/ryOQgrk=;
+        b=OBU5CkvTIrZihcelQN90a9hi9xD7WDZZHGIJYeRlFpxJeruGiBNLG7qJiLEJ8sx9zg
+         ya18dnDdpgQMjUPqOk4xDfyNpFbsi/M+IsZvzcdFn+rDJ/rHNzGIvPQFRoFj+enVuqOw
+         fzWAHiUcadLyH9xliBU6C+CuKcJXkjFfzfog6wEwAK9g/EAQqItmqwNlEWx0wmUEVdQ3
+         3PhlDOrdpBXUbK2BkdgFY9L04njDOl4ZeDlyfAyin+D1dLZP1sFoidTO2lGqur1UUulu
+         uvElGERmd6irexy5TfEwNK6ovW/yLgbJZ2YBOQBlXPYt4wgDJi4LBD39rV6B6mEo4tDF
+         Up2Q==
+X-Forwarded-Encrypted: i=1; AHgh+Ro7kCxo43hLHzTCy+opCmtN0BUE56BGP+1l9AXYACMXSVicAfgjZ30P9ArTwRU8n4W99cah3E/bzw==@kvack.org
+X-Gm-Message-State: AOJu0YzPi9Zo8ozffy1rFpucngHRG28AIjkxITZW/OjD3ZOZbwFk7c03
+	gX86bOOS3BHfHhbYQeo0yBoUaqn82KuTI2sOOeMBXEyuM48XSo+7GLG3k4jT6GbX
+X-Gm-Gg: AR+sD13OihRQ4GzuE7ZMg3V5kZPf4paf+t39UBabQRe16aNXJAyeraLa+GBJH9UobWN
+	JUOYsle4xBz8R74P03F14hha+MVqImFzUaAlz8Mgna50hzC5Tj01TwaTmHmQGd25Uvg2wVumrTB
+	hO+G6PEtwGzH5qWk5+qOVzTSgE5RiZByNcFU+FZ01iK5GWaqegYenGhe7+J2EQ2rW7j6Zf3D8P/
+	1FaLEgLRVYBvsoRgUAK2VDUeSj3Ro7OyNYdFRCIPxr+Bw9lkNJrAMiT0URyMuqNFz9vFHQ/KYGb
+	/pYuXDAgPZ5muEQWeB1LNxYur6VGH8BMgggU6wcY2WQ4IG4VRNgZgBANJlSBo/Mu8dUEOwl9V1B
+	mZD1AJN7FYcNQ/tA8+rRaKHVHb4GvQRArncAeH1tqv7c4it0Babz5ogCspT85EgMZCmtuplI1i3
+	5QKb1m1hz6cKkEOMke05ZtCN1GXoZJ1PUMNdxGDBY8GuDqrq58AO25+nQ=
+X-Received: by 2002:a05:6a20:748a:b0:3c3:a9e1:a819 with SMTP id adf61e73a8af0-3cc71fb5781mr4100219637.24.1786693870755;
+        Fri, 14 Aug 2026 00:51:10 -0700 (PDT)
+Received: from localhost ([2a03:2880:9ff:68::])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-141387c6f95sm9201342c88.6.2026.08.14.00.51.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 00:51:10 -0700 (PDT)
+From: Ziyang Men <ziyang.meme@gmail.com>
+To: Shuah Khan <shuah@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	David Vernet <void@manifault.com>,
+	Eduard Zingerman <eddyz87@gmail.com>
+Cc: Viktor Malik <vmalik@redhat.com>,
+	Andrea Righi <arighi@nvidia.com>,
+	Changwoo Min <changwoo@igalia.com>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	JP Kobryn <inwardvessel@gmail.com>,
+	Mykola Lysenko <mykolal@meta.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Ziyang Men <ziyang.meme@gmail.com>,
+	kernel-team@meta.com,
+	linux-kselftest@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	linux-input@vger.kernel.org,
+	sched-ext@lists.linux.dev,
+	linux-mm@kvack.org,
+	bpf@vger.kernel.org,
+	llvm@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/4] selftests: shared lib.bpf.mk for building BPF progs and skeletons
+Date: Fri, 14 Aug 2026 00:50:50 -0700
+Message-ID: <20260814075054.507089-1-ziyang.meme@gmail.com>
+X-Mailer: git-send-email 2.53.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8F742100004
-X-Stat-Signature: er3z7mynuepxd4n6qdj1fuymbhw9e38z
-X-HE-Tag: 1786694039-324276
-X-HE-Meta: U2FsdGVkX19OmcEnhW370Otrgh0pHvoWAfBA1K2YQjWRTNMiVKiQUuGrlFrE7AZGCVTT8sjQzKXNaAv0J8bRj8CgR6tat+t234DxWfQe6yCufy44sviKQPTNRkuNG2lFlYEmaSwGOr39/XR2rX6k8/lwxqnbsfv4f6ObQ9p/ckifFHF8eAcZHZLZGEek25KG0oGGOBGgWtPE2CWvfrcS/9U8PC+TIGqZi5qf89eBzBBA/wnfawvaX5un+75UgBIDcJddW9Gia/cC8a9jkOfDJSbmDMljWbtwlblyNgv3WuAOpEL6xyxVIhm4YHSCUQ54IHvUsHxFUHyaqqEWTUQBdt1/hGxda5JP53hFL1UR95JlZ/MeBPAD+GjVg1TCtvuMcSp+bkEgZGQmuOSp4GPfzGNTlPV34AAI8ED2GSnHq06nK2qw+E75m9ooQjCgwVIs7Ds8sHVmOPEmDuia7aDOVR6aWJJBhnWbatGz+mB/JD76k9Vwk+hTyjlcmrgochMMCwF/bLVuNSGqxZucqYW/8K+csd9iOBEdTen+aWlKXW4hallHr5POgx9Y/5caoQeZQARcTYi3hO4/cWtQnKUWuvl5RODs+T/0+So3ZnhYuJ2WvnpDoM45Kq+WLweZFleY8ByTHNDAAxuHBnZnUibeJ27XcluwJtsl2OorCRMTbuGdsh4PiRnpkqudAHwxg2Wxx1ElQxpIW63zFlFNiNJuCYmmJByUsM8mqcEGcyB+qAfcAQCI8X1DCXauq6/JuplngS/cn73Ar3KC5Z1CoJY34r/jijUxXBv9pg4Y8K/gDKuQX4K6oEd7IjmnDtoeKO/HDVshgVoMj4t+WDAUkLZtrAAugZYvjhQcagSrlINZwwHTi+e8xkDUf+mXcy6KH6oXXwVXDqD4wwOXK+F2pq/uWCNw/BSUPjWdm3h3XJg3sXNw8IiCyLQ/knNo3DR3MtFH0+2kFAii7RZSt72PrxQ
- bvLvDxkb
- T70C2XcwFeExh6SX/kjJuRiI0vQiqunLS7Rj3HBXEJ3oO/+TIw/CvX6I6MbbUB0qITG/dh85hOfKC0Sv9g/HdebRW4+FDNWxmfLcY+BxKoHQq9Y4BqkE1ue14HYHCiSgpKJOFNqWPaEPDj7of0GGC/qHWe+eUODdpwCOz7eJLtLZRR2DetpAp2q2jb1Nyf7lb1MNZlnT3XrUNUIrkEu6fvL5pZNAHmdjQo3cTTvEaIU/9FhVkiVB+pW/LqH/5ehVy5SsRjMVOz9gCm8y9hgjGFcaQTk0FNzJ23u4s8MybOO/XLmOzJzlpq1qhxooZiPSIxYTsS0CjHWbhwGN31aEiuTtUfov1vFSa7tnlegzqFt8X58k/PIV1kz5fDErxi8+Wd1gZYa81GGDAV/KVH9h3BSsSnjh93wfrTEW9uQJO46xtIaz6tQO6c3zCpCny8j3FX+VA0gqhCTi0yW5uS7KUcgsbeGzcWO38zlVKLZWhywzWTwn4sdcKH7LOmzA2uXNnsbYw0Nlgt+ElM1RLN+cHPWPIKGtOm2wrTDt7KDdxfCfSrn/IMwMLLrREcIkyKfnxdPF28/fY61sk/4XCJxz+UUdTP4r5Ta8nu1uy1sRZNKWLwnwQEZFsKkvv0yJeCGdp5fvf1hzPkRSbjcf/8bumzij6pnMiS0p0VRZtb7GuTGBgbiDwJJn43R5ghpSCkkAt8VQOyOF1pMRriqNrnWYjifym2AFTwai6qCLU
+X-Stat-Signature: k51559am87o5ojt7um5pukg6spw54f8m
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 722341A0006
+X-HE-Tag: 1786694319-434778
+X-HE-Meta: U2FsdGVkX1+xk5PsU084qw/SEWyoyEwqO+P5KXNMlhTr3UiTAF0BDmjI4bABZOLh6Jmnmv2UcnULPaXYYc/rogJC4JrIcQCbgPtnUPJrgbmm2SF/3s8tLJpeqvYsZi24OUi51ZOEEM/DdLQxf8b0vClN3YrRoa3DQQ6ORvIEaW3B6zi8Hp21sWWuRSTiMAZKm+e6D/h1F0prSak2S3rO4AuXGUB8atkUEFY9+jlDWx4ubINLp76A4HqhU/4XFIV1MkOt69VWzA65kr1Sa1LcfDsfcqWJVpf4sxrd6ra5ZVIhsNoGS1VlNbGFKRXsPuSw+O+A6bD0GzTslx1SPkhMMiHxaINGwTrn5+W6MbOL5awopel9tGESeSG34+I5CsZ87YsYxzLR02gTSX0BwTK65/m5PEb0RfQ/wdx1kWmhrEHqt6orariJJGuiBvuj6t/rym6ufj+IzxopEmJzz60EAUFiKWtEX2vWbXy3KP0c9cNDvi+UPBquLPyJmM+ex6PymEZjCuEttCuf7f0QmLJbqddMTOCRi7rYcI46gle8Qjt8xixKJEco8gNHmpFdgXGiT3As+uvR4QVtLxUS9d3MNCQcYdsFWPo33LCa78QxEbc0d+WleNL/FZvUrKhiB9xjbFbDxMEUGlBZ1pZzzQRwQ4lg7HNexSdWpxu4FVXIZPnpHNbx5YplZ6gyJBtUWX4RLnAsasVG3fPS0dGnqhkirDsG57YvSrzRfiM8JY3rrFiqhlpJpQG/emN4qBwnkyLW1WemX7/1FeEpZVz73Ez0cx0aY9pNXWb/EF+PxMKNaSDb6YFcTBgFCsqbGhn0iAttV/TZqsx5Ec5rzWEr8h1DHfk/BMKqBB1DYQmYeclyPbJLsWSQoGw8xF7ATE2sgGnnSxVqUQ0IGrAANvdZvaf1tyaWbKSv41x2h2dDBcQl5jtUWlNvnGEsb3cASCOC54XCfJWU22O9V5iR+b8UjD6
+ M2fz7YZj
+ TEO96YsbCnhSeuMBWavXgj2vtySQQUAY3mPpYQfHxRCslMunKCwZprN0tL/dQVz/QYCG2VtZYsucxAoFpvogn0e+Y5KYJEfOk+w5VNMekAV/D4Hk9yQsN4PnhVi8J2wCm70zlOPxC9PlGO1rYZG/N0DRA+PmLlElxeY8VT2RQ/mCb019zj/xjY90iD3jbOZlV6PmS8vPdSK9qiyfZvzXEd1O7eEUJfy7TSG/JV6nA7KKGvCj+4h4S9kcMNpV2OGY5d2Ih0f7CZigoRfHgHc5J0PL/adQJbzTsP+PkyJ/gh8rTaALsfxznmW4t9MASkh1AVIo5q55rw6BRrm44iUxgqLwKIa4uoGggFhBBmUZcjvwhKRTEpjBCoU3mmN9xhGHDBddUWUfFTkeHsFW7nuzyGe6zwTFTt4vNUrL8cdE9vogGOjGZOZ2t5r0RVtEJxnnYeCTgGvMSwQH7QgcDV685uCPEDpZeuRhierdw9BBoTzzcJIuJnGnKjusv9ncF25VqrXbryMdrAUKlp19/OM73JUw0eExL3+1+sqVE+VsOGBzkw6GYm83Vjth9VA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,152 +140,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+This series re-factors the bpf-related toolchain for selftests, which
+currently duplicated across selftests/{bpf,sched_ext,hid}/. Unify them
+into a single includable fragment, the tools/testing/selftests/lib.bpf.mk,
+and wires up three consumers. We believe this will simplify the work for
+configuring selftests with the bpf, for both the existing and future ones.
 
-=E5=9C=A8 2026/8/14 14:45, Christoph Hellwig =E5=86=99=E9=81=93:
-> What tree does this apply to?  I get failures both for Jens'
-> for-7.3/block and for-next trees in bfq-cgroups.c and bio.c
+Patch 1 adds lib.bpf.mk mentioned above.
 
-Oh, just realize this set is cooked based on Jens' initial for-7.3/block
-branch. With the other set that is already applied:
+Patch 2 adds a new selftest, selftests/cgroup/test_memcg_stat_cross_cpu,
+which checks the cgroup flush happens correctly by comparing the bpf
+read value matches the file reading. Existing test
+bpf/cgroup_iter_memcg only ensures whether the number is non-zero, which
+is trivial in some cases.
 
-30d0c34b72f8 (HEAD -> block-7.3-blkg_list-rhashtable) blk-cgroup: move asyn=
-c bio punt state to blkcg
-1aa13cdcc027 blk-cgroup: store blkcg in bio instead of blkg
-058ff5f9c8ac blk-cgroup: use a request_queue rhashtable for blkg lookup
-fefb6604e496 blk-cgroup: wait for old blkgs to leave queue before disk rebi=
-nd
-f2690679ecf3 (for-7.3/block) blk-cgroup: factor policy pd teardown loop int=
-o helper
-ed3105cce735 blk-cgroup: skip dying blkg in blkcg_activate_policy()
-415bd622f1a3 blk-cgroup: fix race between policy activation and blkg destru=
-ction
-4cc0299aea5d blk-cgroup: protect q->blkg_list iteration in blkg_destroy_all=
-() with blkcg_mutex
-f5098b6bae76 (tag: v7.2-rc5, block-7.2) Linux 7.2-rc5
+Patches 3 and 4 replace the duplicated parts in selftests/{hid,
+sched_ext} with the lib.bpf.mk
 
-I'll rebase to the latest for-7.3/block branch in the next version.
+===
+Changes since v2:
+For shared Makefile:
+- The lib.bpf.mk now use the USERCFLAGS (and USERLDFLAGS) to extend the
+  CFLAGS and LDFLAGS. 
+- OPT_FLAGS/RELEASE and EXTRA_CFLAGS now reach the libbpf and bpftool
+  sub-makes as well.
+- One rule per BPF source instead of a vpath, which is global and also
+  applied to the caller's own %.c rules.
+- HOSTCC/HOSTLD come from lib.mk instead of including Makefile.include,
+  which also rewrote the caller's AR, LD and CFLAGS.
+- A missing vmlinux is reported by the recipe rather than at parse time,
+  so "make clean" still works without BTF.
 
->
-> On Tue, Aug 11, 2026 at 02:47:40PM +0800, Yu Kuai wrote:
->> From: Yu Kuai <yukuai@fygo.io>
->>
->> This RFC remains a preparatory series for the blkcg_mutex conversion
->> proposed in the related blkcg_mutex RFC v2 series [1].  That conversion
->> moves queue-local blkg topology synchronization from q->queue_lock to
->> q->blkcg_mutex, which is awkward while bios directly store queue-local
->> blkg references.
->>
->> v1 made the stored bio association queue-independent by replacing bi_blk=
-g
->> with bi_blkcg, but a bio-owned blkg reference still had to be recovered =
-by
->> looking up the bio's blkcg and current request_queue.  Tao Cui reported =
-that
->> cgroup removal deletes a dying blkg from the per-blkcg radix tree before=
- a
->> throttled bio drops its reference.  A later lookup for that pinned blkg =
-then
->> fails, triggers the warning in bio_pinned_blkg(), and leaks the referenc=
-e.
->>
->> v2 makes request_queue the authoritative lookup owner before converting =
-the
->> bio association.  A queue-owned rhashtable, keyed by the blkcg CSS ID, k=
-eeps
->> dying blkgs discoverable until their references drain while q->blkg_list
->> remains available for ordered walks.  The bio conversion then stores and
->> pins the blkcg CSS, lazily creates a blkg only for users which need one,=
- and
->> uses lookup-only access for completion and accounting paths which alread=
-y
->> own a blkg reference.  Async bio punt state is finally moved from blkg t=
-o
->> blkcg so punting alone does not instantiate a queue-local blkg.
->>
->> Changes since v1:
->>
->>    - Add patch 1 to wait for every old blkg to leave q->blkg_list before=
- a
->>      shared request_queue is rebound, instead of treating root_blkg =3D=
-=3D NULL
->>      as completion of asynchronous blkg teardown.
->>    - Add patch 2 to replace the per-blkcg radix tree and lookup hint wit=
-h a
->>      request_queue rhashtable keyed by blkcg->css.id, as suggested by
->>      Christoph Hellwig.  Keep dying pinned blkgs in the hash until
->>      blkg_release() so bio-owned references remain discoverable.
->>    - Fold the v1 helper-only patch into patch 3, as suggested by Jan Kar=
-a and
->>      Christoph Hellwig, and make bio_blkcg() naturally return NULL for a=
-n
->>      unassociated bio.
->>    - Rework patch 3 so blkg_lookup_create() acquires the bio-owned refer=
-ence,
->>      falls back to a live parent when creation or tryget fails, and upda=
-tes
->>      bi_blkcg when the returned blkg belongs to an ancestor.
->>    - Make bio_blkg_lookup() lookup-only: it returns NULL unless BIO_BLKG=
-_REF
->>      is already set.  Use bio_blkg() in the BFQ and IOCOST merge paths w=
-hich
->>      may need to create a blkg, while keeping blk_cgroup_bio_start() and
->>      completion paths lookup-only.
->>    - Move CSS online-reference handling into
->>      bio_associate_blkcg_from_css(), including fallback to the root blkc=
-g, so
->>      bio_associate_blkcg() does not take a redundant reference.
->>    - Keep the v1 async bio punt conversion as patch 4 and document that
->>      async_bio_lock protects async_bios.
->>
->> Previous versions:
->>    v1: https://lore.kernel.org/r/20260804065313.2092022-1-yukuai@kernel.=
-org
->>
->> Related series:
->>    [1] RFC v2 blk-cgroup: protect blkgs with blkcg_mutex
->>        https://lore.kernel.org/r/20260724123037.3004560-1-yukuai@kernel.=
-org
->>
->> Yu Kuai (4):
->>    blk-cgroup: wait for old blkgs to leave queue before disk rebind
->>    blk-cgroup: use a request_queue rhashtable for blkg lookup
->>    blk-cgroup: store blkcg in bio instead of blkg
->>    blk-cgroup: move async bio punt state to blkcg
->>
->>   Documentation/admin-guide/cgroup-v2.rst |   2 +-
->>   block/bfq-cgroup.c                      |  16 +-
->>   block/bfq-iosched.c                     |  19 +-
->>   block/bio.c                             |  22 +-
->>   block/blk-cgroup-fc-appid.c             |  10 +-
->>   block/blk-cgroup.c                      | 348 ++++++++++++++----------
->>   block/blk-cgroup.h                      |  82 ++++--
->>   block/blk-core.c                        |   9 +-
->>   block/blk-crypto-fallback.c             |   2 +-
->>   block/blk-iocost.c                      |  12 +-
->>   block/blk-iolatency.c                   |  11 +-
->>   block/blk-ioprio.c                      |   2 +-
->>   block/blk-throttle.c                    |   2 +-
->>   block/blk-throttle.h                    |   2 +-
->>   drivers/md/bcache/request.c             |   2 +-
->>   drivers/md/dm.c                         |   2 +-
->>   drivers/md/md.c                         |   2 +-
->>   drivers/nvdimm/nd_virtio.c              |   2 +-
->>   fs/gfs2/lops.c                          |   3 +-
->>   include/linux/bio.h                     |  26 +-
->>   include/linux/blk_types.h               |   9 +-
->>   include/linux/blkdev.h                  |   2 +
->>   include/linux/writeback.h               |   2 +-
->>   mm/page_io.c                            |  13 +-
->>   24 files changed, 357 insertions(+), 245 deletions(-)
->>
->>
->> base-commit: f2690679ecf3a3151688ebef766dd2512ff95854
->> --=20
->> 2.51.0
-> ---end quoted text---
->
---=20
-Thanks,
-Kuai
+For cgroup selftest:
+- Only one cgroup tree is created, one flush is performed, follows by
+  bpf read and file read. 
+- More common cgroup functions e.g., cg_read_key_long() and
+  value_close(), are used in the selftests.
+- Use cpu_set_t rather than manually allocated cpu lists.
+- Use test_memcontrol.c's anon allocator and moving it into cgroup_util.
+- Other suggestion from the review.
+
+Others:
+- Bot reviews are fixed.
+
+===
+Changes since v1:
+  - Generalized lib.bpf.mk (source layout/suffix, extra hdrs/cflags,
+    skeleton suffix, subskeletons, configurable output dirs) so it can
+    serve hid and sched_ext, not just cgroup.
+  - Added patch 3 (hid) and patch 4 (sched_ext), converting those folders
+    to the shared fragment.
+
+Ziyang Men (4):
+  selftests: add shared lib.bpf.mk to build BPF progs and skeletons
+  selftests/cgroup: add memcg_stat_cross_cpu correctness test for flush
+  selftests/hid: build the BPF program via the shared lib.bpf.mk
+  selftests/sched_ext: build BPF schedulers via the shared lib.bpf.mk
+
+ tools/testing/selftests/cgroup/.gitignore     |   8 +
+ tools/testing/selftests/cgroup/Makefile       |  52 ++
+ tools/testing/selftests/cgroup/config         |   5 +
+ .../selftests/cgroup/lib/cgroup_util.c        |  83 +++
+ .../cgroup/lib/include/cgroup_util.h          |   3 +
+ .../cgroup/memcg_stat_cross_cpu.bpf.c         |  86 +++
+ .../selftests/cgroup/memcg_stat_cross_cpu.h   |  21 +
+ .../cgroup/test_memcg_stat_cross_cpu.c        | 596 ++++++++++++++++++
+ .../selftests/cgroup/test_memcontrol.c        |  29 +-
+ tools/testing/selftests/hid/.gitignore        |   1 +
+ tools/testing/selftests/hid/Makefile          | 180 +-----
+ tools/testing/selftests/lib.bpf.mk            | 296 +++++++++
+ tools/testing/selftests/sched_ext/Makefile    | 146 +----
+ 13 files changed, 1204 insertions(+), 302 deletions(-)
+ create mode 100644 tools/testing/selftests/cgroup/memcg_stat_cross_cpu.bpf.c
+ create mode 100644 tools/testing/selftests/cgroup/memcg_stat_cross_cpu.h
+ create mode 100644 tools/testing/selftests/cgroup/test_memcg_stat_cross_cpu.c
+ create mode 100644 tools/testing/selftests/lib.bpf.mk
+
+-- 
+2.53.0-Meta
+
 
