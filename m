@@ -4,96 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D6DDC5CFCF
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 03:18:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0539C5CFC1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 03:26:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F3726B0608; Thu, 13 Aug 2026 23:18:31 -0400 (EDT)
+	id B7F2D6B0609; Thu, 13 Aug 2026 23:26:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 584A26B0609; Thu, 13 Aug 2026 23:18:31 -0400 (EDT)
+	id B4E1B6B060B; Thu, 13 Aug 2026 23:26:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46E5C6B060A; Thu, 13 Aug 2026 23:18:31 -0400 (EDT)
+	id A1EE46B060C; Thu, 13 Aug 2026 23:26:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C5B16B0608
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 23:18:31 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C3FBCA0353
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 03:18:16 +0000 (UTC)
-X-FDA: 85098416592.19.6063DC4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 36E7B80003
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 03:18:15 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TJz9evUq;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 775466B0609
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 23:26:08 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6E70340292
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 03:26:06 +0000 (UTC)
+X-FDA: 85098436332.11.AC847FC
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 61472100005
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 03:26:03 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=eMj3o8k6;
+	spf=pass (imf14.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786677964;
+	b=jgrprfDm7e0ctQ/RnWjGucd+rU29CmHxdJBXcBOkUpA6i3oDmsICm62TsEJYkY+6m627rj
+	lsX6rFxbdqsW5Fn7lcp+9GrxW19BENQuLesznBBlWP9fjxxmEhhx49+9tSvDvA9hDY9yAZ
+	X5OI0Z9s2xsw9SOBFPCunyGGB9EUsaA=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=eMj3o8k6;
+	spf=pass (imf14.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786677495;
+	s=arc-20220608; t=1786677964;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LsgWn8sG7KwPcJHSK2CgogemlhdZd4bBu7Jx3POkoZA=;
-	b=vFJsRoI3Vja8lRFSfncK7ZzUOdpCWWqq2dCh9sgIfh17mzfLmYnrS96JqQkbHTLfu3eldi
-	FCMRbqfYDsNUesq5orAzJQo/E3KFOdunUYtOBtQx55jc5pp3x3E92tiXsNy99NGyUKijsm
-	2EVou+fAHck+XpySdAAGiU788wDKWdo=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TJz9evUq;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786677495;
-	b=DPOKAy1urBLVKyOAm/9I0Sw0Wv4PtS5X60hh2kezLo9MVL2GGJoYgqVlJIfjTZG3HqCYCZ
-	8HrkEhYW9RS0EteLcTy4t9ohpPBhtgYpGn5ckzWldOUBuXVnei+SlElrBIL/5ItdStqCe9
-	NToYHy2SKUvQSIItGh2M1XYVHF+WULY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BE3F8600AD;
-	Fri, 14 Aug 2026 03:18:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C261F000E9;
-	Fri, 14 Aug 2026 03:18:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786677494;
-	bh=LsgWn8sG7KwPcJHSK2CgogemlhdZd4bBu7Jx3POkoZA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TJz9evUqTStazAS2hs+GEFRo2dO95zacLioKESOh/64Gdo1mZOppeX26Vfv9cBonO
-	 UrB99vNLxkWx2+On3R8N/AL3lsEZq16lOoF+N/JJL4okKtYbmrQ0QsVpDh+wCWdWFt
-	 1Q5CSmAwU1Ebq180oD0vSnTH5Q3hnQ5/jEYmZY89pF+PRiAfkXRw5B81IAo7XkT3HX
-	 S40aWVevme9sUAlMQ8D5KJtAOGRdFr7TONuUt/URwsnA8VnjjKMn3KNOU7Fc1PNghw
-	 GYt72oh7Kr+c1QikCWm8I6JsO8pRU11XHtRITb5MkIYPTGfJ79sYZwoglCJGL7rNnw
-	 MCM3mIEl6zLyA==
-From: SJ Park <sj@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	david@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v3] tools/mm: add hwpoison-panic tool
-Date: Thu, 13 Aug 2026 20:18:10 -0700
-Message-ID: <20260814031810.88417-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260813-memory_failure_rewrite_test-v3-1-f9fb6542cbff@debian.org>
-References: 
+	bh=xEzzDZ8RSQ4GEvpOieKsYgMrbUPq9hvMZZpCwDZd+As=;
+	b=48vun/w8Oh3Vxo6eMY/Uc8Nok49+d8YRhnn1d1oIKQjfRxH/vwrLYOyrEJLB+tme+zgb0T
+	7BJrqdSFI6Xx+OHAboLuz8nyDnX3S3WFUBPojJ/rqcKEqZ3IvutyQcW3RWQpWJzapyvJ0d
+	Z/RLd6T706PW7SpPxOB00Ci5cWEWqHE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786677963; x=1818213963;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=PMW+3tSZuBZ77kt9zO5BRfNKhdxheMBPxWzy74mRfwk=;
+  b=eMj3o8k6PmGHc0TNTSfWPSGFK8UL8nbFtIPJ3sZO8iZxAltJnIwrEbc0
+   UGDs25+h/DCuX8SQyGgcnD0q1yPZIb843y6Bk2iOBRY8KFG9ykaqmRq+g
+   QyM4w8xikZTFcdAGLf5oikgXDqZfLb9TSc4QiK5Fj5Q4VUpUR/+bK5K7O
+   JTOo8dud66wZ7rfZM48abXXwa+bizjR4VEF2TimNtVg8yIT0L0ZvlMe8J
+   AdVil0nW4t2+l1qo215WTa0r0RPnQbLnrwWIpJ6/eaTT/LIsA/DEOa6xQ
+   H2VtpEd/AuF000JwEngAwBTmxe/RrJt05F06pgvAox9jXphkKDc29j2UK
+   w==;
+X-CSE-ConnectionGUID: Q8fIHLxaR5ab1Nx7Xz44qw==
+X-CSE-MsgGUID: so/DSd8VR66tStiGHaeDIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11874"; a="112801644"
+X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
+   d="scan'208";a="112801644"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 20:26:01 -0700
+X-CSE-ConnectionGUID: OK2WNfvaROqJl2omPhlcUA==
+X-CSE-MsgGUID: cGwfy+bMRAqA7Rf+rV3Kow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
+   d="scan'208";a="267971704"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 20:25:48 -0700
+Message-ID: <beecf36b-b0eb-4691-918f-fd39f46d5d8f@linux.intel.com>
+Date: Fri, 14 Aug 2026 11:25:46 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 36E7B80003
-X-Stat-Signature: fh84wfk58q1uhn6pan5g8a3hwh9si98q
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 15/41] KVM: guest_memfd: Handle lru_add fbatch
+ refcounts during conversion safety check
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
+ Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, linux-coco@lists.linux.dev
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-15-2fc18ee6d3ba@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-15-2fc18ee6d3ba@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 61472100005
 X-Rspam-User: 
-X-HE-Tag: 1786677495-168794
-X-HE-Meta: U2FsdGVkX19Khds2Inptz1jv8c78MrmtSWe9WYeCyrV1sjzVWdPMYsiVUeLxHpNaNUmjLBO3HhMeslfwt3UvAodA5S5OYjuPBG4s2I1PNuhcGJWjr0AYbcG6PzgwpbTkNWa6QVuZbRcwt/T6C9CC7YppIW5baxGQ4oHivkZjT90wHwSI/neb9lYquLnJ4PlttDoERtkttUzeTAaG0Hec3ZOn3avHi+asLQrXJit3vWzdP0/q1pLF0ynK2bAAXCB/fYdWOm9TWQ+lhVrt8qB4WdRhVC4Aa9ZjzHHq1SOgKrcLyiDpr/YyM/olHFzu1nM6fhoGKpkYvpcuEQt2hfxnzVvzSuXu6UaiNq18klNLrjFyav+YapkKJLMvFE12rpp0eNLxfDM61XEokTBAYErnvhY7pyASwWonNfWw1zs7MQSGJq6No6jbNv2YjCfdF8VaIVWu3v1bV8nGLmmAss2gTA4AJYRlPgY8DhM7K6601VHNvGhk3O4rtpjYrYpD1zSZyNKwiEskg/O9ci+Gr7pplWK8/kzuhb4bs4CgA417i4KNmOryrXqEAiV6r+C2yxfZE58obomirTVgJhXmLTMounjYcHtjDxWH8fvepbPPg0wqn123nyNymgsqVF6PG6ImsmN+ESlO1hMA46hH336XaWMIWnak8a9qVVJnk6wCFJaFLWIPYG3D1oZ4/e1dQEbQQbMc+JdYtZZJVIOjCAtESlU9MU+yicosIzEDufWdavBeh8QVWencObv2PTH1OXQrjCL6AUK0BXBh/YnVuRKKMZIjpOa22ngnAEMoc5xHagJ1WjKKhb34aulHz7Emmx9qs+nSAVQdPz70qeM5mZpvp941SzpRefpV2RLNNIBeJ85KxEVciIIwnbu2cNEOrMGurSJ+RlNcX5MSw1xE+fSNQsTBAiRL96RAQTWFkr032DgF5B17lmTI8nNrbhdL3YN7UeR5F2tqVCZC30QSOp3
- aCBRECgN
- BII1B7zidTOMreALSXG0G46kk9/oAKDsoYbgBSo8EhLu4UrEF9UUdU7uJzzfmXYvWXfbwg0e4kkRKK0dmO1SPu//DHEBEzQ2T5EXjWgtm7sm8Xpqj9ea48gb6lsT7SOYDhNer/dOeFF4DtMrIA3RY86Pz04XWumCJfRRlarH/VLHT4tOvK8MV4PdxZgcrHlC8pB1VC+vPFlX2LJIMphX7Nbrp9ocaZLFG52NBFEudQSTC/eiVaknlWyMEuEh8wK5a7VdtdfOpnYVBaU9d3tLHK+lW2O/czs3aWhvQAimzW26Cj1Pa30NgN6qewVaKiT4A1ybxJC7NOLtfXB8=
+X-Stat-Signature: k9guxgqtm5hohb8xdrm49yyx1jrhae71
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786677963-589637
+X-HE-Meta: U2FsdGVkX1+ZBxLWe63VMrlPXM80EtS5QdSsbRihXUHY611GUDEaYaNJyag9eJMrbhFkwEqQgnli3UnxISaMWykcfx12EoB7mOGPaiIAwmmCZLfcGd4KlpNPi/PhOosmqzGkGinICTCqmgfC5/m8HuzP5myK0L+JqoxOdwLZqoEHx4foJSy2uxtO8DpyZYITtkyoSJPyU3zHLh7tbxlXReomZF9we8S6dX35Jaj5BRWfWxuY38WqmVrTIt4dV4scQ6DIpl2pr2DN/Xdo1YgdECd2Pmu1/+Amp0CmxNz5SSS2tg+P6fLH27oD/FCa7isqxFYV2VMPpBmooj4EnVkxnOImwJhOqd6ixx/bFnDjw7TblWUX6v0Vx4V76myHNyMAzRDv4dNPlHtBh2NW+92DnpBs0gM3sKfqyvfnMwPQ7XYvEApNa7GgaB1rfWNzUp2OVWuIPa5/+rDerdC8I52P4W/xWNLSlWQfkzD1j6STFmzL/r2jqojP3VO01grABAvqovVGPQB9e7dLUO13q7kcgLmK0+vV9tGoyncUt2l9AizuTHjK+1YVEO62iC87SYt2cpBx5JYLpISK6BNzRpjytswKQDDIwA1G2szS+9B3Euzqz6Di0ZJycYKdMw6E6CS80GCfnSyBQnqzG8fgpNlJY6lvIIANF1dV4cLQR/7zEFzI9KCUTu3lNY7jXjnHjuMTm7F9yl+Qr+DOgTOaHLYgiliaCfNIn6yEWyliJbFDn87LKEMscYBQScVW/kqpbMsDYN3ghf/FNocWZe3seJo0az/lopupTPntchvcQitms6+qLfNpUHrpONKR6X/P8fT7ji0MyIwvzezI3pGe41EFk+Ebng+ujQng1Km0/CNRZIDxMga2Rjd22dpt9fFbw54+/dmgxQol9J8qiFC68C62QqZ+jU5zO2Z6Z7twa/lrMGNuYE6E7rxYA6DeRo8LMQ98mz95sid6Y3TsyyGEG7f
+ c+040+q0
+ g60MLMWj5WkuTP8wf5Xv6n5CYPcA321wMq0PWT9YUD1nQ/IDyU5Ci3o1AgnbePL6BVnYDxjh3BwjmBTbXQGV44TGB2/gewmurczWEQvTke9NkXFWr+gyH6zCnmcsm9qPG7LcV9802hvJGZ/clp/pLBg3p44FcicvVL4NoQRo2d5BL/vcv3hxxAUgNxcKlg+RR1zQYctosFPS0tjXWksTJ7M4o6Yaj3ylEVa4ZRtHS/7H6g9wN4sHnvCuWGWMmNUdf9L/19B4s1g1th41zQEFDUlFj4MhT+YczLPSpn0fkYUyu8LEyobIlsLX51x9ljXXxREZS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,68 +135,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 13 Aug 2026 04:45:15 -0700 Breno Leitao <leitao@debian.org> wrote:
+On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
+> From: Ackerley Tng <ackerleytng@google.com>
+> 
+> A guest_memfd folio is safe for conversion if guest_memfd holds the last
+> references on it. Any other references on the folio may indicate another
+> user, and guest_memfd cannot convert it to private if there may be an
+> existing host user.
+> 
+> A folio will have extra refcounts if it is present in a per-CPU lru_add
+> fbatch. guest_memfd does not actually participate in LRU, but
+> freshly-allocated folios are still added to the lru_add fbatch for batch
+> LRU statistics processing.
+> 
+> This one known "usage" of the folio is handled by draining the lru_add
+> fbatch. After draining, if the refcount is still elevated, then there's
+> truly some other user of this page, and the page is not safe for
+> conversion.
+> 
+> If the page may be dma pinned, DMA is obviously using it and hence not safe
+> for conversions. If the page is still mapped after guest_memfd tried to
+> unmap it earlier in the conversion process, it is also obviously not safe
+> for conversion. Exit early to avoid unnecessary draining in these 2 cases.
+> 
+> Provide a drain status to only drain once ever while processing a batch of
+> folios.
+> 
+> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-> Add a tool that enables the vm.panic_on_unrecoverable_memory_failure
-> sysctl, picks a kernel-owned PFN and writes its physical address to
-> hard_offline_page.  Three page kinds are selectable with -k: rodata
-> (default), slab or pgtable. In all cases the host should panic.
-> 
-> Example:
-> 
->         # ./hwpoison-panic -k slab --yes-panic-my-kernel
->         injecting hwpoison at phys 0x100032000 (pfn 0x100032, kind=slab)
->         expecting kernel panic: 'Memory failure: <pfn>: unrecoverable page'
+With the updated version of change log,
 
-Too trivial nit, but I couldn't resist.  Why print '<pfn>' instead of the real
-pfn value, while we know it?
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-> 
-> In dmesg, you will see:
-> 
->         Memory failure: 0x100032: unhandlable page.
->         Memory failure: 0x100032: recovery action for reserved kernel page: Ignored
->         Kernel panic - not syncing: Memory failure: 0x100032: unrecoverable page
-> 
-> This lives in tools/mm rather than selftests/mm because every successful
-> run crashes the machine, which is not something to run from CI.
-> 
-> The --yes-panic-my-kernel argument is required so an accidental
-> invocation does not take the box down.
-
-Looks useful to me, thank you!
-
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-
-Reviewed-by: SJ Park <sj@kernel.org>
+One nit below.
 
 [...]
-> +static const char *inject_hwpoison(const struct page_kind *kind,
-> +				   uint64_t phys_addr, uint64_t pfn)
+
+> +static bool __folio_safe_for_conversion(struct folio *folio,
+> +					enum lru_cache_drained *drained)
 > +{
-> +	char buf[32];
-> +	int fd, len;
-> +	ssize_t ret;
+> +	const int filemap_get_folios_refcount = 1;
 > +
-> +	printf("injecting hwpoison at phys 0x%llx (pfn 0x%llx, kind=%s)\n",
-> +	       (unsigned long long)phys_addr, (unsigned long long)pfn,
-> +	       kind->name);
-> +	printf("expecting kernel panic: 'Memory failure: <pfn>: unrecoverable page'\n");
-> +	fflush(stdout);
+
+Nit:
+After adding the helper, the use of filemap_get_folios_refcount seems
+less obvious. It introduces unnecessary tight coupling with the caller,
+though it has only one caller currently.
+
+Is it better to pass the value as extra_refs, similar to what
+lru_cache_drain_for_folio() does? 
+
+
+> +	if (folio_maybe_dma_pinned(folio) || folio_mapped(folio))
+> +		return false;
 > +
-> +	fd = open(INJECT_PATH, O_WRONLY);
-> +	if (fd < 0)
-> +		return "cannot open " INJECT_PATH;
+> +	lru_cache_drain_for_folio(folio, filemap_get_folios_refcount,
+> +				  drained);
 > +
-> +	len = snprintf(buf, sizeof(buf), "0x%llx", (unsigned long long)phys_addr);
+> +	return folio_ref_count(folio) ==
+> +	       folio_nr_pages(folio) + filemap_get_folios_refcount;
+> +}
+> +
+>  static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
+>  					    size_t nr_pages, pgoff_t *err_index)
+>  {
+> +	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
+>  	struct address_space *mapping = inode->i_mapping;
+> -	const int filemap_get_folios_refcount = 1;
+>  	pgoff_t last = start + nr_pages - 1;
+>  	struct folio_batch fbatch;
+>  	bool safe = true;
+> @@ -560,9 +576,8 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
+>  		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+>  			struct folio *folio = fbatch.folios[i];
+>  
+> -			if (folio_ref_count(folio) !=
+> -			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
+> -				safe = false;
+> +			safe = __folio_safe_for_conversion(folio, &drained);
+> +			if (!safe) {
+>  				*err_index = max(start, folio->index);
+>  				break;
+>  			}
+> 
 
-Yet another trivial comment.  I'm not a big fan of >80 columns lines, but I
-understand there are various tastes :)
-
-
-Thanks,
-SJ
-
-[...]
 
