@@ -4,101 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FA9AC5CFCF
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 02:38:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C01EFC5CFCF
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 02:55:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 161AE6B02DF; Thu, 13 Aug 2026 22:38:03 -0400 (EDT)
+	id 8119B6B02E3; Thu, 13 Aug 2026 22:55:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 141D86B02E1; Thu, 13 Aug 2026 22:38:03 -0400 (EDT)
+	id 7CA836B02E5; Thu, 13 Aug 2026 22:55:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0769F6B02E5; Thu, 13 Aug 2026 22:38:03 -0400 (EDT)
+	id 693E86B02E6; Thu, 13 Aug 2026 22:55:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DAFE46B02DF
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 22:38:02 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 53E98801CF
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 02:38:02 +0000 (UTC)
-X-FDA: 85098315204.08.434DD18
-Received: from mta0.migadu.com (out-244.mta0.migadu.com [91.218.175.244])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BAB3240006
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 02:37:59 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ox2Zf4ld;
-	spf=pass (imf01.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.244 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 34B706B02E3
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 22:55:32 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 821AB1401C8
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 02:55:31 +0000 (UTC)
+X-FDA: 85098359262.27.B3AC11E
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D77E7A0002
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 02:55:28 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=PC1yFBTJ;
+	spf=pass (imf25.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786675080;
+	s=arc-20220608; t=1786676129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=inN7P3TfsUsGRNKFOr6MP4ieyFCPAJ+egT8wRxXb8kk=;
-	b=UATS+OcHs2cr5Ly8ROto9//ACyEcFKpWWGHXfgAQ0YIErF9YtZuqtsJa2sIvTDCDpmEDX8
-	ST3lf4ExFsmJaRfpYqpUIKFYLmNBIyhwptbQ2wJvDAVjcysQvoEigp70Wzs8QJkj89Wrs+
-	kDwKb3z4tmJDjQuWpR2F4P5oKLsgxmw=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ox2Zf4ld;
-	spf=pass (imf01.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.244 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=5QOcvwE+F6mgiRV6cDZvj6pc+a7dUoPydsJAnpmxLoo=;
+	b=B6Z/jXZRaKPEV/uplPBIxhq1d/igkVdxkijOy1xh9o844o/7pCBXLvNydH1wdphv0G17O2
+	pJvT74ndZ8sUYoq7PvqlPspQ62OjTWdWfIUjjKd/bQubpdk6aEGe9VTS3YHk4+/kPI52Cd
+	O1kJ2O4NDZZVAyDECKDzQmTCvUhnmLE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786675080;
-	b=4S4qUDwIHVTE4v6yHtWJClykt7m5focESg/CC+n72iywuAOc6OMQu5eGL+4iUBMFx9RK5z
-	k5Q53GccH3J6erAoNMNTGLhoSAVKrrwn+9IAme2dc7cv+zNfrz/FrBm8JpzoMa7wOXEi+o
-	apjQ5LFZJhnRJ8j8XnrJsvLf6dz4JDg=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=kI0iu1iUjPc4aD0Lcu79SEz4UUJgr3m4G2Ca9n8R5YU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786675078; v=1; x=1787279878;
- b=ox2Zf4ldjELrXnxfyFMDsK2AxhlfMPKYwI78NM7GO+NcP11fVN+eWr3FMVucqONVYCoUuSxn
- AXFKivAj+7w2paUQlVAAJimnHCFA5sMOnvlfayVck0dVGd161ay4Adi6h0VWgdP74vIy1lrCWuI
- 0eV964gxwyI5Sd2Nz6FOhRjQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: from [10.63.123.245] (14.29.108.90)
-	by smtp.migadu.com with ESMTPS id f6b06a7b15b52476;
-	Fri, 14 Aug 2026 02:37:58 +0000
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <76dd9011-84e3-45ac-a9a9-a772e5a15b1c@linux.dev>
-Date: Fri, 14 Aug 2026 10:37:51 +0800
+	t=1786676129;
+	b=8ZKjLYD+SpPkponNTH+d2FvRjJJMTOClSni4lyIzmwgGZHhdr7iENs0mWT0GtqGdQtZwhV
+	Fki0VOYhFY1QbU7o1OtjJEN9M58yJlycEx+L/C/VN0DOOyNC5BboFnMQ05E6FzroB5AvPS
+	E4fV0C83n8CG1qrORqVc7TB/zH+flZs=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=PC1yFBTJ;
+	spf=pass (imf25.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=5QOcvwE+F6mgiRV6cDZvj6pc+a7dUoPydsJAnpmxLoo=;
+	b=PC1yFBTJjAPQc1grgzibGOFxINjHq1tMwF4EvTBCLj5+xu18NIhP6o0+VYwOSA
+	R7nZg9Cjt84ItLBGzzgU1cIsvrEsuTac6GfcuQFRsd2jHVHMqj4Z0++6ThfucRuz
+	07paMOh8YpCphdlXRzQXt9txaq7vCE+4Wzzk49L3+3MAU=
+Received: from [198.18.0.1] (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgD3vwqMg35q7GDfMw--.16540S2;
+	Fri, 14 Aug 2026 10:55:10 +0800 (CST)
+Message-ID: <44eb0883-c49a-4d02-b330-914cd167840c@163.com>
+Date: Fri, 14 Aug 2026 10:55:09 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/4] mm/vmscan: fix swappiness=max and clean up
- per-node proactive reclaim
-To: Barry Song <baohua@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
- Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Zhongkun He <hezhongkun.hzk@bytedance.com>,
- Muchun Song <muchun.song@linux.dev>, Davidlohr Bueso <dave@stgolabs.net>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-References: <20260723045718.2052070-1-ridong.chen@linux.dev>
- <20260723171842.137e45eb36b21b3b45245da0@linux-foundation.org>
- <8336e48a-ab3a-4db9-a7f9-5bb6af2b22c3@linux.dev>
- <CAGsJ_4xPw24afGLZH6Qh5rxOts37SCpmBVeB3gGntk1QQuSCow@mail.gmail.com>
- <24b9f213-96e8-4eda-a20f-8746d7c399b7@linux.dev>
- <CAGsJ_4xCi1TzV0sg=8ZFhfAq7v=k=Q6a10DNDouYOrjcJL-5=A@mail.gmail.com>
- <f42dd57c-29fe-441c-ac5d-d4f990b7f6ee@linux.dev>
- <CAGsJ_4zSEutDjM0rwfDZrzDUzJvPSFsU8Pcr2kBJiOmG81CY7w@mail.gmail.com>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <CAGsJ_4zSEutDjM0rwfDZrzDUzJvPSFsU8Pcr2kBJiOmG81CY7w@mail.gmail.com>
+Subject: Re: [PATCH] mm/swap: publish cluster tables after full initialization
+To: Kairui Song <ryncsn@gmail.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Youngjun Park <youngjun.park@lge.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
+ Longlong Xia <xialonglong@kylinos.cn>, stable@vger.kernel.org
+References: <20260813150316.2793642-1-xialonglong2025@163.com>
+ <an3xnGPBCASWuS1w@KASONG-MC4>
+From: Longlong Xia <xialonglong2025@163.com>
+In-Reply-To: <an3xnGPBCASWuS1w@KASONG-MC4>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BAB3240006
-X-Stat-Signature: 6ywfxcydmcyru7y5tbjicdff7zhbpo34
+X-CM-TRANSID:PigvCgD3vwqMg35q7GDfMw--.16540S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3JF4DKF47CrW8GryxGFWruFg_yoW7Zw1rpF
+	WrGas8KF4SqrnrWrsxJw4DtFyrJ3y8Gr1DGr1xt3Wa93Z8Zr1fGayktry3uF9rCF1DJwn0
+	vr15Kwnrur4Fy37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UO2-5UUUUU=
+X-Originating-IP: [240e:46d:1800:11e5:a033:614b:75d3:82d7]
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC9w8+N2p+g4+5ZgAA32
 X-Rspam-User: 
-X-HE-Tag: 1786675079-706902
-X-HE-Meta: U2FsdGVkX1/wr0+g/O0ZNI0MimB1GgOSjf90xRT5Ym9GVWWyAFjt3tYsF7ly8G3I3P8fB8rxPHxHjFZAtii/LXS+a5FVDagQSEPeMf+HxDIDb/xXSBkt9cbmG8iZalv+0oPkbeFWeWmRI45ENWqycE+aczkBJ76qGecC0Oiz12iLVeIycr33VblhHWz32it+5+u7cHBbXFvXtpTEykyIyQgibOsGZbs30BIRPsYoFTdYZ0RSCIv0Nqq1kr9yNAQyiPHU/LgJmx6yAoMGqoKjZJe8mOj1+vR2RKI2TP0kTTDMtpxpP6eDghXbcAHEwE2m8ORIB9NVHk3tcnv9jAjLEkUwGrCfict73YLL2hZHN8Kp/0ZewOBtDMXNq7ChEmXU9Rv3DolNxJnU2vp25fHSGhVQrvyvA0jfkj4PcEgkYx3OQ4Y3kYfa/pFhFe77vDDncZDPm20cLI1Zbj8MReyVFtSUw1o7brZt9m+cCSKtJuTTh5FkgwxNSpYln1LMzcz2PLsBJwWKFAyocab2o+E4TcttaNgMgrzIlFYd5vwOTRYANl0K7KNvk2Eh5lV9rYdxzctgiboiBWxAbAEMYl5Ou3SvKuWT10umsFDWxYWMWu0Z/52cPk4MVzsCXUEUMSBe4Hkz/lzY4FNeu8ZOeRbOV9e1JpL5oUBh6zXVpNQCr/cT6dP+6MO6wPn3smp+2AlKAdwIPsKrCLL+YNo+0VET6W5tCIsJbvDjKWWkod1z0Xt5e4lDy7tAQHfpWrtwxOzF8+r8mXnq5JdAW9ny8+xbTsA0CPO+CIh3e2jc0Lcp6GyEUigJipZiag+8MTHlX8V9WgXXuZTb56lidhtC8s8bHutuIofqsVElKwTypQMEX/UceK5Q6wByjggo0XCyGcZ+5Il+mqFhbBIgraaoL5sFVqfIbQ6uJlRSufbhoMFb7z3qEU/0eE/wPiW+YqG8MecenxaRFxy7E5Q75/pHZ6d
- CwmLzmtm
- 8UZRS+0lrC7oZonSKOkMOpZ4o/YWCF/dJBljyz5Fn6mpXeh8CdlD6oifC3HNkJT5mEEXaAwKXw3BJxdJHGC0I669NAsxstKGx9Z9DxP0kzaOGAY/0dF+NsAggPFpSt88yin4XnEu1vnhqTBQO+yRtVxaJ2KYVmVH4JqAnUuSPP4bv261nC33Bp677Mm7oBJwWmBiok71GTh7pnu2+h9QTkejYGx/I1ynoMuAr3t0hpfvTkPdW7++m6oCsNMscBB/dV5oPK9wd8vPp0P/0R782bezyFt0PrXJMptv3HlIRxvkvQ012sH2JXrLK8w==
+X-Stat-Signature: d88sz4yz3qsfqr94ukmxkytkz8o6pdx8
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D77E7A0002
+X-HE-Tag: 1786676128-758073
+X-HE-Meta: U2FsdGVkX19FXQ473D8GPrXSgvg9jU0B0ybI90mw93dMJYfLTXj7tNAkiDlavYHpYzjhdROYGU3ICv2QK6x5m8dYEZuxvYhDw6MUrn3epUEp2+VCtnTKHeNwpPgdXntFRLUdg9+I4+0OychZ7isohy6LNX2T4gu0154Og1LK8WG7I20pbzHg05AYcgJqM3eE7kXMQFBNrX89wljmFmRXgZP0l6/4NtJDG2E6ZDw0QuyBCnGTLsRaadQM/SYV9Rh1mQp0LRKA2d707B+r7OSO13ZwrmR8Ux1aPvdM459BTJ2aVAvNUSnK6pq7259/spEuRD1cYFvhsWcjs10E/WGLExuUTH2jvcZVaSVNKY0GV/qkK5JxNQwUlzk83pDOviLm9asnGwPv3+wrLdLpagGHayQnXpkxSR4DLbCI2CMjEWA/HY8H90pJhMCKEDwkXMzoOYZCMvtBG18WsbiVRXsQhfxvSdYI21/2endihGGPX5E/+oXs2TF0aLSpgvAvd06gZPFfVZkhKZ/wUCFxVSw2E1UoyrPxqjYQdnIWsitGwcZbRrjwtfvfkZHPbEO+ih/4t1tiQpyQ9x4O1gutDikwKgf2NJFQ3tUdC7zIwuA5bcHD08KAQuBI4IowCB7pQ23RclYzWtrebR3hxJL4jH9oyGIUk9Zw+KW1Ie8Bn6/l6HZZ7RyeHOYEEStztNEAqcdaYzt3GQgFeb4IQfu0S5vm6hcZiP+6+z3NZxusCGVkqsOeqA01d4zETRePU2F2goFSSHvoBvOeAbSTCR01nYG5gIx0tDEKlRKaEem1bnaki/vS9sRG08gQGKzRuRIxoCpwEy2K3DnvI/qR9DbA7/cUv9ztuOqwv6n2L9H7aAtFAP27uvJw0W+tTYHrQ5sZLtZcDGl4iiPVrMavdgjvBvbTn71THsPtN9mtFS0QvSsI4yoryxjIYRCXAJQqkgOOAK/m61DIz25HyHagxe1qdZT
+ 5SL9WppR
+ TBdB/9/9u2HZ/FSl2J6NSV/TjpTvkbkgHqp/V4SCkv7ErPRqlA85Pma1SqeIEuxk0LRkjc2rA/I4dwBYQ88HqSkAW4vAlBlRv1IP2j6Q+metdLDryjfKbj6Gl+CH7iisL72oO42kZFPTM6DTz+RYnX9ByWsatkAXfNR2P1OS1g+jmhQzXzEb2RfOwIhG5WVDRXX9E2w1U3TzWVTVNSb/QXk/FKYfXlhNibLSgRyhkY5pvBQtRcgyA721g9IrKvObgEJ6anITaPz63+w4a9t4eKz6/Qcy91TnUwIs3auZPEcNb3ltIByr2QXHgaE5NniqFMPTcU8OZ+yKaipGWtTFEgzGmpRUTwzTUkeMShsFxfaCVOluvED7cI+uTBX1vp93Ff4TqInYkgzeyMVz+Lcrh07RNu0iKZsXv46KHzdUmBKKlsZ40xFzL1pFUjw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,82 +96,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Kairui, Youngjun, Kemeng,
+
+Thanks for the comments.
+
+I missed Kemeng's earlier patch and the follow-up discussion. Sorry for the
+noise and for the incomplete Cc list.
+
+Since this issue is already being discussed there, I will step back and let
+Kemeng continue with the updated version.
+
+Thanks,
+Longlong
 
 
-On 8/14/2026 10:23 AM, Barry Song wrote:
-> On Fri, Aug 14, 2026 at 10:03 AM Ridong Chen <ridong.chen@linux.dev> wrote:
+在 2026/8/14 10:35, Kairui Song 写道:
+> On Thu, Aug 13, 2026 at 11:03:16PM +0800, Longlong Xia wrote:
+>> From: Longlong Xia <xialonglong@kylinos.cn>
 >>
+>> swap_cluster_populate() drops the local, global, and cluster locks
+>> before its sleeping allocation.  The allocation helper publishes ci->table
+>> before allocating the memcg table and, on some 32-bit configurations, the
+>> zero bitmap.
 >>
+>> A stale per-CPU or global cluster cursor can reach the isolated cluster in
+>> that window.  Since CLUSTER_FLAG_NONE and a non-NULL table make the cluster
+>> appear usable, it can allocate a slot without the auxiliary state.  An
+>> auxiliary allocation failure can then tear down a table which is already in
+>> use.
 >>
->> On 8/14/2026 6:37 AM, Barry Song wrote:
->>> On Tue, Jul 28, 2026 at 4:34 PM Ridong Chen <ridong.chen@linux.dev> wrote:
->>>>
->>>>
->>>>
->>>> On 7/24/2026 7:12 PM, Barry Song wrote:
->>>>> On Fri, Jul 24, 2026 at 10:43 AM Ridong Chen <ridong.chen@linux.dev> wrote:
->>>>>>
->>>>>>
->>>>>>
->>>>>> On 7/24/2026 8:18 AM, Andrew Morton wrote:
-> [...]
->>>>
->>>> So can we add just like?
->>>>
->>>> if ((sc->proactive && node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) >
->>>> pgdat->min_slab_pages) ||
->>>>           node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_pages ||
->>>>           node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) > pgdat->min_slab_pages) {
->>>
->>> I feel both pgdat->min_unmapped_pages and
->>> pgdat->min_slab_pages are quite broken in mainline.
->>>
->>> For example, even when the page cache is below
->>> min_unmapped_pages, it may still be reclaimed. Similarly, slab may
->>> still be reclaimed even when it is below min_slab_pages.
->>>
->>> Also, when both the page cache and slab are below their respective
->>> thresholds, node_reclaim() may reclaim nothing even if we have
->>> plenty of anon folios available.
->>>
->>>           if (node_pagecache_reclaimable(pgdat) <= pgdat->min_unmapped_pages &&
->>>               node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) <=
->>>               pgdat->min_slab_pages)
->>>                   return 0;
->>>
->>> For example, if slab > min_slab_pages but the page cache is below
->>> min_unmapped_pages, we still reclaim file pages, even though the
->>> comment says we should not.
->>>
->>> So we are not going to introduce another broken mechanism.
->>> Maybe we should start by fixing the existing broken protection
->>> against reclaiming slab and page cache?
->>>
->> For example, Maybe we can skip shrink_slab when node_page_state_pages(pgdat,
->> NR_SLAB_RECLAIMABLE_B) <= pgdat->min_slab_pages?
+>> Allocate the complete set of tables into a private carrier.  Install the
+>> auxiliary pointers and publish the main table only while holding ci->lock;
+>> the slow path does this after reacquiring all allocator locks.  Allocation
+>> failures now free only unpublished resources.
 >>
->> And similarly, in get_scan_count, we could avoid reclaiming file page cache if
->> node_pagecache_reclaimable(pgdat) <= pgdat->min_unmapped_pages.
-> 
-> Yes, probably something along the lines of what you're saying. Also,
-> get_type_to_scan() in MGLRU.
-> 
-> It's a bit surprising that nobody has ever reported a bug related to
-> this. It may have caused performance problems that we simply haven't
-> realized were related to this broken protection against the
-> min_unmapped_pages and min_slab_pages thresholds.
-> 
-> I guess this fix could improve performance as well. For example, when
-> the inode and dentry caches are already extremely low, we shouldn't
-> keep struggling to reclaim them and waste time there. People have
-> already complained that shrink_slab() is slow and suggested having
-> an asynchronous shrinker for it.
-> Maybe it's related to something going wrong here.
-> 
-Yeah, good point. I'll give it a try and run some tests to see if it actually helps.
-
--- 
-Best regards
-Ridong
+>> Fixes: b197d41462c2 ("mm/memcg, swap: store cgroup id in cluster table directly")
+>> Cc: stable@vger.kernel.org
+>> Assisted-by: Codex:gpt-5.6-sol
+>> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+>> ---
+>>   mm/swapfile.c | 167 +++++++++++++++++++++++++++++++++++---------------
+>>   1 file changed, 117 insertions(+), 50 deletions(-)
+>>
+> Hi Longlong, thanks for the patch and report.
+>
+>> diff --git a/mm/swapfile.c b/mm/swapfile.c
+>> index 78b49b0658ad..2ca947c540e9 100644
+>> --- a/mm/swapfile.c
+>> +++ b/mm/swapfile.c
+>> @@ -410,6 +410,99 @@ static inline unsigned int cluster_offset(struct swap_info_struct *si,
+>>   	return cluster_index(si, ci) * SWAPFILE_CLUSTER;
+>>   }
+>>   
+>> +struct swap_cluster_tables {
+>> +	struct swap_table *table;
+>> +#ifdef CONFIG_MEMCG
+>> +	struct swap_memcg_table *memcg_table;
+>> +#endif
+>> +#if !SWAP_TABLE_HAS_ZEROFLAG
+>> +	unsigned long *zero_bitmap;
+>> +#endif
+>> +};
+>> +
+>> +static void swap_cluster_tables_free(struct swap_cluster_tables *tables)
+>> +{
+>> +#ifdef CONFIG_MEMCG
+>> +	kfree(tables->memcg_table);
+>> +	tables->memcg_table = NULL;
+>> +#endif
+>> +
+>> +#if !SWAP_TABLE_HAS_ZEROFLAG
+>> +	kfree(tables->zero_bitmap);
+>> +	tables->zero_bitmap = NULL;
+>> +#endif
+>> +
+>> +	if (!tables->table)
+>> +		return;
+>> +
+>> +	if (SWP_TABLE_USE_PAGE)
+>> +		folio_put(virt_to_folio(tables->table));
+>> +	else
+>> +		kmem_cache_free(swap_table_cachep, tables->table);
+>> +	tables->table = NULL;
+>> +}
+>> +
+>> +static int swap_cluster_tables_alloc(struct swap_cluster_tables *tables,
+>> +				     gfp_t gfp)
+>> +{
+>> +	struct folio *folio;
+>> +
+>> +	if (SWP_TABLE_USE_PAGE) {
+>> +		folio = folio_alloc(gfp | __GFP_ZERO, 0);
+>> +		if (folio)
+>> +			tables->table = folio_address(folio);
+>> +	} else {
+>> +		tables->table = kmem_cache_zalloc(swap_table_cachep, gfp);
+>> +	}
+>> +	if (!tables->table)
+>> +		return -ENOMEM;
+>> +
+>> +#ifdef CONFIG_MEMCG
+>> +	if (!mem_cgroup_disabled()) {
+>> +		tables->memcg_table = kzalloc_obj(*tables->memcg_table, gfp);
+>> +		if (!tables->memcg_table)
+>> +			goto free_tables;
+>> +	}
+>> +#endif
+>> +
+>> +#if !SWAP_TABLE_HAS_ZEROFLAG
+>> +	tables->zero_bitmap = bitmap_zalloc(SWAPFILE_CLUSTER, gfp);
+>> +	if (!tables->zero_bitmap)
+>> +		goto free_tables;
+>> +#endif
+>> +
+>> +	return 0;
+>> +
+>> +#if defined(CONFIG_MEMCG) || !SWAP_TABLE_HAS_ZEROFLAG
+>> +free_tables:
+>> +	swap_cluster_tables_free(tables);
+>> +	return -ENOMEM;
+>> +#endif
+>> +}
+>> +
+>> +static void swap_cluster_tables_install(struct swap_cluster_info *ci,
+>> +					struct swap_cluster_tables *tables)
+>> +{
+>> +	lockdep_assert_held(&ci->lock);
+>> +	VM_WARN_ON_ONCE(ci->flags || !cluster_is_empty(ci));
+>> +	VM_WARN_ON_ONCE(rcu_access_pointer(ci->table));
+>> +
+>> +#ifdef CONFIG_MEMCG
+>> +	VM_WARN_ON_ONCE(ci->memcg_table);
+>> +	ci->memcg_table = tables->memcg_table;
+>> +	tables->memcg_table = NULL;
+>> +#endif
+>> +
+>> +#if !SWAP_TABLE_HAS_ZEROFLAG
+>> +	VM_WARN_ON_ONCE(ci->zero_bitmap);
+>> +	ci->zero_bitmap = tables->zero_bitmap;
+>> +	tables->zero_bitmap = NULL;
+>> +#endif
+>> +
+>> +	rcu_assign_pointer(ci->table, tables->table);
+>> +	tables->table = NULL;
+>> +}
+>> +
+> You don't need to shuffle all the code for a simple bug fix, you can use
+> forward declaration if some functions are needed earlier.
+>
+> ...
+>
+>>   	/*
+>>   	 * Back to atomic context. We might have migrated to a new CPU with a
+>> @@ -568,11 +621,19 @@ swap_cluster_populate(struct swap_info_struct *si,
+>>   		spin_lock(&si->global_cluster_lock);
+>>   	spin_lock(&ci->lock);
+>>   
+>> +	/* Nothing except this helper should populate an isolated cluster. */
+>> +	if (WARN_ON_ONCE(cluster_table_is_alloced(ci))) {
+>> +		swap_cluster_tables_free(&tables);
+>> +		return ci;
+>> +	}
+>> +
+>>   	if (ret) {
+>>   		move_cluster(si, ci, &si->free_clusters, CLUSTER_FLAG_FREE);
+>>   		spin_unlock(&ci->lock);
+>>   		return NULL;
+>>   	}
+>> +
+>> +	swap_cluster_tables_install(ci, &tables);
+> It seems the same fix with Kemeng's patch? Youngjun have notice this too.
+> https://lore.kernel.org/linux-mm/20260720071342.50742-2-shikemeng@huaweicloud.com/
+>
+> And I think you missed some Cc, maybe you can try tools like b4 which
+> automatically generate the Cc list for you.
+>
+> Hello Kemeng, can you help check and see if an updated can be sent?
 
 
