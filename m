@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56F74C5B572
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 08:15:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1F88C5CFC1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 08:16:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2516B6B02F6; Fri, 14 Aug 2026 04:15:43 -0400 (EDT)
+	id 0A3866B0653; Fri, 14 Aug 2026 04:16:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E2116B02F8; Fri, 14 Aug 2026 04:15:43 -0400 (EDT)
+	id 05BFE6B0654; Fri, 14 Aug 2026 04:16:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A21D6B02F9; Fri, 14 Aug 2026 04:15:43 -0400 (EDT)
+	id E5EA36B0655; Fri, 14 Aug 2026 04:16:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D8A686B02F6
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 04:15:42 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6B71D1A03CF
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:15:42 +0000 (UTC)
-X-FDA: 85099166124.18.7E6B22A
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C00976B0653
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 04:16:11 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5AF641603D2
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:16:11 +0000 (UTC)
+X-FDA: 85099167342.01.3141B0C
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B62A020006
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:15:40 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
+	by imf30.hostedemail.com (Postfix) with ESMTP id AA8E080002
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:16:09 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf13.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786695340;
-	b=KVp58pDjs8F4jhZnwNU5db8HETAsbI5e8dDwEbTkV0kaOlJJULn4teK+RkfdCqedrR+O7C
-	IoZ2RBbvK/pZsqSIhr18QKZFJklgBofxbCZqf+1sQlelLJ809yoOouj/00BDGf6i8AsKxZ
-	UGDwf04OzATaorWEf4p6JWxruKBlfrY=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf13.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	spf=pass (imf30.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786695340;
+	s=arc-20220608; t=1786695369;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=D+WQ4ckGHfGCONk1SGK3euQRm25rVmYQjqqQidri3Vw=;
-	b=YYZ+Hszb2+U553jivn90s+9MydU/0dWkryiSwEgFW2O0xMhml62/a8HKV4vuLVQ6MNsO1s
-	httrNgsSMDn+VDTz/r0ZaPw1KVISEutIihQIjw6PBM690/4JAIxsGXpKGP2fdMPswbaKcN
-	URubGqAJq9spaHII3LV//NEyU+ZZY8U=
+	bh=wBnpdnWFKbMPDExaAanijJY4JVJrT8GIOKA7W6meRK8=;
+	b=nuMkPuBS6cgYV4Ri4BzLKTEqqG0rov4RHPSPJsK4xycI3pnQzp+vQnENxAkwHWe2y4ZZxp
+	8kH6rqA9T7FIvSZOglPOB42/xwBh2MpbRlGVvrx4LqryJ2wqgscRQ/uDJHFTOE2NWA2j+k
+	dLltN3N6yaCM4W2pqiwWDk6nOZIRJ4c=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf30.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786695369;
+	b=OhbHtDsTwMI188L6IbK2o+VAThY+fUAwvNNO8QdUrw+u9O2nhW/3N6d8ZxaPMdIsIL6BFT
+	Ix4yihx0QEMskiqhicKYt9sMcCul8yW95Zj4DyylpkqrgUHzmEE/yyhBoACpzR7/rs94Zg
+	0qbSZ9FmorvRC9nGFNDjE6zOPrFqY9c=
 Received: by verein.lst.de (Postfix, from userid 2407)
-	id CDE7568B05; Fri, 14 Aug 2026 10:15:31 +0200 (CEST)
-Date: Fri, 14 Aug 2026 10:15:31 +0200
+	id 63B2B68B05; Fri, 14 Aug 2026 10:16:06 +0200 (CEST)
+Date: Fri, 14 Aug 2026 10:16:06 +0200
 From: Christoph Hellwig <hch@lst.de>
-To: yukuai@fygo.io
+To: yu kuai <yukuai@fygo.io>
 Cc: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
 	Tejun Heo <tj@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
 	Johannes Weiner <hannes@cmpxchg.org>,
@@ -86,23 +86,23 @@ Cc: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
 	nvdimm@lists.linux.dev, virtualization@lists.linux.dev,
 	gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 2/4] blk-cgroup: use a request_queue rhashtable
- for blkg lookup
-Message-ID: <20260814081531.GA13546@lst.de>
-References: <20260811064744.1139446-1-yukuai@kernel.org> <20260811064744.1139446-3-yukuai@kernel.org> <20260814071232.GA9784@lst.de> <f7350050-062a-4ced-9396-05ac33ac3e60@fnnas.com>
+Subject: Re: [RFC PATCH v2 0/4] blk-cgroup: store blkcg in bio before
+ blkcg_mutex conversion
+Message-ID: <20260814081606.GB13546@lst.de>
+References: <20260811064744.1139446-1-yukuai@kernel.org> <20260814064537.GA9355@lst.de> <d1d47b32-b746-42d1-a391-5e37d4e373fb@fygo.io>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f7350050-062a-4ced-9396-05ac33ac3e60@fnnas.com>
+In-Reply-To: <d1d47b32-b746-42d1-a391-5e37d4e373fb@fygo.io>
 User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Queue-Id: B62A020006
+X-Stat-Signature: 3txybmua8yuog9umdcz67xkaukod6pby
+X-Rspamd-Queue-Id: AA8E080002
 X-Rspam-User: 
-X-Stat-Signature: jezxmpiuf56t1n6rzwu39bh6qf1mq7cb
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786695340-643075
-X-HE-Meta: U2FsdGVkX1/1/HnQrwjh4QfsaeR0LHVlMqD5k60mkcEEmCFS+lncRCZ1qCk+4HbvtYW0MAJmH1SS72E06q17i8id56JGxR4Xr1tMVFVxGV9IOSQsi/xtWl1/sFqElNUf7ZnTQVY/e9r70vJhEQqtxaNIJkWPlrotE050bFk4Q2L+y/br9+lcqfuCFsiev192mKiNOKq0bM91Duiwj9m9tGGiaSXC5yghigjHUioiGN/k8CTSupjD0Um+Ft6GKrmZQkccpXjkZYPHZH35ewTohfyHqPkVIiYandMD2dwXjfihaRQM6aeSaqfwTCyAsD1pluYB4glcT4OhVjeUS/8m7kJ5JOwZKEpj2fuMq8uXMjSDX+B01b1v9CD+Be3zDJf55MRSlSqiNMcY68opKZN4McimhhNfff/6EfyK+WXVjLBNtWB0NuKMf0MKDwGbW9wmT399B4ZuFNhLa/KezIyiEyl6zN2MS/30DVJdqdkN3AGWN+E0FG3FIW8V7wxfuTXgChZiwSogerI4AsWhgyOVbcclcha2s/oWRsyZjW3dQVUHSXMQzlcQzPurql+JlLtBrBKEwzElXcrFa6/VDV3bvTGvR1kKDTFgwyr+/K+RvvsK07gwUtP7v7Y6SFkYvSaP/fDfwCWsjrMbBzCoDXCY9OsHONmOf9TaBISIhl5kHjF27lqPfIH/7zOPk78tfCGeA6gSc27ugBqHo+9e4coRMgQKx37hqK3Kr4xId35gdNbGDkqmDTXL1OItkHNyYDkJKwm33YjWJJUouD2eoKmf1/jps1XmVTNtxp1fnwT2uUQKpwVW2L0Dde8wobjzVkYeRgwxyLhNZuDHVSdoqxsphpn820LsZf54YSPIysWWIew3u/7D3pfbzC6XkedvNeHDn1WqeMotSWbCjNo44G6FcZfDNf57EBqDplnkZrL/h6O/l5JNwohY041kg77ZlWJ4kMaRFgl0YYxdQG8kryt
- 73p7lxka
- Zi5KX8PZyoJJg4YXuS2dBNWzYbcJdMcXtZs36xkxpAJhUt8V6L+ctiT3vih8QM/kIKxWK9M3AeES9lvjJweJ2a/xujpWnU2vBpZWkCl65Khy9ZgM/owOmjPDKbt5sGAAR0GWxlRcmk1LHRStRuvB1ihUZIGK3xLdALj3t07UkY/7sS25PKALru09Su2V8Cf9VUjfb9j/KK7XoinHQfEMRsnZelk1mKu5K6qHyMnXUhEDJPwnBtXLImn9riQ==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786695369-462602
+X-HE-Meta: U2FsdGVkX1+IzgGb7BiAWtIqhxTug25Li1M1rNQKVvcV2KNPzkDuIbpMD1DwfTVVDmP73KR6boKF8nU4XpXAjtJ9xOKnTqyitcM12b4j6+gVLRh0zxBaYQaXfAESMJRjBZq/zowOUNh7V0MVmxpaGGk/CciSwYvFQzzyvFpDAdPEVJYbCGYDKsiCIhkgnb2YdgJMkxfo9TZtHjFG9efjp224OU+mYHxacvDbwJZ38alrMcKG4x/D9NQVhfcGXxWeRpmwVVBT8l3fG4wj0Vu/0A2ow7IvUYfrf16B18CO96M0bjCi4XilI4u0okdyLyzYsr0JJNAfSj6q3uUf/teNDH/+nNI+yQCE6Sit1LaXfS8jQxMjn15zMTNJIeEnGfL/JwVbpRXPWIPZ0oMJ+Ky4hwMsNuRkkTkzR+o/8DOnKFPugDapALSM9E8atwngIy0ATsQrlX/QImpkqmz54PEOJkpSLY6X13RWwJYcLUf6CGGUWKd6TDe/uE8NIcTQeFeyHTiBEwN3AC+E1/dwHf9ZC6lT6Iz/8RDxSG/zNU2W2LBUuddWYPN5cUlHje7UQwiE/QkJYOkmrcn15G7vDLng8/mz/YK57Uvnuay5Ym4ric9YTh/wshDI+uLTajr+MDFjjgzhpZXt+A+8TarJBV4mJ3cCJ+TrEMDVRcoHh00vG3Y5CUY/nIgmMCQr7GBD17JBQCrxg/VWzy1b3x0Ofl1CnzFC/neqs8AB6g0+AuCkj8DA3UOlxGvzgjZIx5oMTesBYxWho+juORkcXmaXgdwbClZohAyyYZZa0htorl8XSLsmYmkLyD6U7kWxTLndpOpxgkxDjI3wLEDc5TT5M1VA/dXHWOvCpYOvIl5wDRdUyiJ+CwAmuzotmF4Bx1+Dwp6rQAnEWq5sWPMsvlE6IyQyDMeZLdt/hqX4hym1WSiBBRC+h9igX/BwJIfL9/jM8WWfF78SsFflpkJpqPUVp+U
+ vTBd7/Zs
+ pCsnire2QyAAvihF5DyNLafRqtC+FO8ezDhkDx05IDQtErYmILQqH/xajIxiCix8LQvehc+cv4tYCj5hoDcf/0Qvw5+m/p9dnyAZN2hTWq6naE+1/IrHLmCh+E1liV+ZyNY7BN9u0d+XWo+Yv118JiSDoy5Qx1bTW4pbuPbZgN+c6HRYtECTCrmR+3l7z6MRFi1stdue7RDVDslm2quMdSKgGjQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,26 +110,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 14, 2026 at 03:50:04PM +0800, Yu Kuai wrote:
-> > Are these fast path operations?  Otherwise we can walk all rhashtable
-> > entries without an extra list, but it might be slower.
-> 
-> All users are from sysfs/cgroupfs API, I think they can be considered slow path,
-> however currently spinlock is held in these procedures, I think it's better to
-> convert them to blkg_lookup based iterate after spinlock is converted to the
-> blkcg_mutex.
+On Fri, Aug 14, 2026 at 03:53:44PM +0800, yu kuai wrote:
+> I'll rebase to the latest for-7.3/block branch in the next version.
 
-Sounds good.  Maybe put that into the commit log?
-
-> > Please add must_hold and/or lockdep annotations for this instead of just
-> > a comment.
-> >
-> > Also maybe mention that this does not acquire a reference and the caller
-> > must already hold one?
-> 
-> Perhaps it's more accurate that the blkg is pinned by IO or caller already
-> hold one?
-
-Sounds good.
+Thanks.  For anything complicated a link to the git branch can also
+be helpful.
 
 
