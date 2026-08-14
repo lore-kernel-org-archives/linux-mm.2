@@ -4,86 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DEDAC5B572
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 06:34:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB355C5CFC1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 06:36:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69E4F6B0623; Fri, 14 Aug 2026 02:34:55 -0400 (EDT)
+	id E42A96B02EA; Fri, 14 Aug 2026 02:36:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67DB86B0625; Fri, 14 Aug 2026 02:34:55 -0400 (EDT)
+	id E226B6B02EB; Fri, 14 Aug 2026 02:36:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58D216B0626; Fri, 14 Aug 2026 02:34:55 -0400 (EDT)
+	id D30866B02EC; Fri, 14 Aug 2026 02:36:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C6F16B0623
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 02:34:55 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B6AE780361
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 06:34:54 +0000 (UTC)
-X-FDA: 85098912108.18.3C705BE
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 78065C000C
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 06:34:51 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=JkHnwos3;
-	spf=none (imf22.hostedemail.com: domain of BATV+b45d4071d3315f6a5e0d+8391+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+b45d4071d3315f6a5e0d+8391+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B449A6B02EA
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 02:36:33 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3650840369
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 06:36:33 +0000 (UTC)
+X-FDA: 85098916266.16.9AB4B88
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7683F40005
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 06:36:30 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QlnVsyVr;
+	spf=pass (imf11.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786689292;
+	s=arc-20220608; t=1786689390;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bt47sakA4MA7BnrCOsH2O/sVu5imfuvE7ni9rmvb6RY=;
-	b=zueLAhuVYD4FKhq5AhIzLTG9OO7Q2+hOiYZqI2lqLEf6G389cgOOgQzTyBmtbHXpTQvzK4
-	8cVHAVQgS+A6+sJTRHh5niaKO2RqrXlyBZsJimikp2nBgh9LHMwFboHZiHGeYKyBYtDdFf
-	a3LZF6ytaqg5ZUc/8pc3EgfwUbeYNBY=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=JkHnwos3;
-	spf=none (imf22.hostedemail.com: domain of BATV+b45d4071d3315f6a5e0d+8391+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+b45d4071d3315f6a5e0d+8391+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	bh=ic1sZk/lxqNab3ejhnUvaE2nDlNbsvE4zChV7Vo5n9Q=;
+	b=MIZge+VkqlfJRTRXkHtJPbLI8ACKkjrbq0X3eZA9AdJleBm5StJ9Dkjm3x3xeMqd6yIFNT
+	di7IO3hJu7rSQDGZnhbOwBxu9D+AdvZkr3YB3zbNzzvbVFX/nsmht7MygPTmh+i8vFFbje
+	oPhdao9xQlWPen/Y4eD+Snnepm2Eye4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786689292;
-	b=hgF8L74ehoJ94FkgFoBqC0Pgbxs7VZArn2JR3gUTbWJDeOfL1u5bKb/ymjMvoTIyuCqo6Q
-	U7xRv3XN2wAU9Vk7CZtqPyx6PwDNf0C0cHMo9bfeCSnp3rw4Wi4AF/yHyeS0kM/qQlCd4F
-	YSDmTg5scSp+654qsgdCIfwYmu78qUg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Bt47sakA4MA7BnrCOsH2O/sVu5imfuvE7ni9rmvb6RY=; b=JkHnwos3lryoDJpMC78oYcTR0w
-	caGnLUmWtBj5thAvGwG1uF7ssuzhry6LHNtrk3m8lowhgdTIAeIEie7INyLBZ/7v0qrkxanXIRtqp
-	n/LQ88PS4L1GWuf3tU3GXYJ6Y8tccJUCTtzrBR+veuf+1qMn0rTfVI/FjROZm4VVIqihZRRARyl7x
-	NxtDYWSa9Yra4VArbUYLHwleBRsstMnWC7eG/TmMV71O1MXZsd0qS6cvzGh2wj2KmksyEFr/xOyeV
-	NBNYMLQmD2Cf3PZ1900LsVDsgorTI5U4CWn1hXiKPpx3Wo4Q7lcHvBLi7E15iQLdbpxybks1JlX/V
-	/vQCa2WQ==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wulVB-000000022lH-2KKR;
-	Fri, 14 Aug 2026 06:34:49 +0000
-Date: Thu, 13 Aug 2026 23:34:49 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-block@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Christoph Hellwig <hch@infradead.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] blk-crypto-fallback: Fix deadlock when encrypting
- large bio in dm layer
-Message-ID: <an63CV2_cS3VqPE-@infradead.org>
-References: <20260811220318.58331-1-ebiggers@kernel.org>
+	t=1786689390;
+	b=ZSDwKC6k4HFaPv9OIF28DONT17sbypslinzj6gotOljD383GvKqjRy39FLSPO0ORNYz0R6
+	hfzKYZdCgSnbBVg7Th20tCjd4HgYfcTfGRrtDUKPvaG8XdXw52FuShvkEW8bPLpezHNgqv
+	MG18gpURH4hqkwRUFYpq0AjTu83398g=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QlnVsyVr;
+	spf=pass (imf11.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786689391; x=1818225391;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=QS50L3Ej/o3Eh9pAbeQ2YK77qR7pbIzS03/vLRtWg60=;
+  b=QlnVsyVr9bmKksiopEmi6NsGZOgYzWLZsP2GCcERRlivxcWsUB0upBYf
+   Ib/Hsr8yTiLtJTPBPQE5Vnu8N6lJqxjd0CStDl0VfeVJcYwaOQ3o+o87N
+   wSAG3ZV45qP1EOPGd0xLbdJ9/0Q4c4M1kxhWk4D/0ybhMRKnY8jWfpZy0
+   GZj05N3POW13c4FYFhNNY4oMyIQ9aqyP2fopPX9ufQSZsoWXE1oUkOc+/
+   lUufUky4YPZOFJ+xqtmNImIC9bubzvLS0nGQQBQTLPCyr7IvFDCYwEqiV
+   STNZPOII9ewKPDrRtyRCTapB+q56iqD0GUiwapM/dBsa9F3I2DgfiN2Wx
+   w==;
+X-CSE-ConnectionGUID: Ix8tiMPKQfmFqiHPnGi1/w==
+X-CSE-MsgGUID: 8zCjWpfCTByPYdtGf25TTw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11874"; a="97859377"
+X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
+   d="scan'208";a="97859377"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 23:36:29 -0700
+X-CSE-ConnectionGUID: GUn57tdyTJmSCwMdue8GsA==
+X-CSE-MsgGUID: wgv+28R0Spi44YdDQh7WUQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
+   d="scan'208";a="288935132"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 23:36:15 -0700
+Message-ID: <658c8441-972a-4298-a4b2-8ec4f2ca338a@linux.intel.com>
+Date: Fri, 14 Aug 2026 14:36:13 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260811220318.58331-1-ebiggers@kernel.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 78065C000C
-X-Stat-Signature: hyr18o9w7gof4x7x3n6kok74i8wp8krc
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 21/41] KVM: guest_memfd: Enable INIT_SHARED on
+ guest_memfd for x86 Coco VMs
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
+ Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, linux-coco@lists.linux.dev,
+ Xiaoyao Li <xiaoyao.li@intel.com>
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-21-2fc18ee6d3ba@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-21-2fc18ee6d3ba@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1786689291-170043
-X-HE-Meta: U2FsdGVkX19gXu/jAzUaF2W9Y6n7So0n/OzrWD1Dq/ZhT4i+5/HcMaWsPOzT0SdvwWNMe6NTj5kNLxDQSs7XzoXz1L34ZAm9r/v5vhtA93dtxpNW9Pa+ksGLssZ/ujUaCnyvobizQ1x8B20Ip/28ioo/5IKf95EXF5bxqvhUMkRg0CFg/qL/x7hnipPx3pmQ7eUB5F5WNbC5vR3UduvCeeOsTU/rldtkCWdijiRGZ0jAxCqrQ1o59seQTRp4UEULZEvW9bi5dnJ4El+uNFU8CdugAs95pvkfJh5/1c1t2yyDdVn3TfgnLqJ06jciM7DktdzXsPiAAqqLmJ3ZUusIWIo/ynVNLzs+lwEyEibkc7JDJ48jTE1k93LhpwMehw4kvSRcw1q5m6ei56xlOnEtsUcmqN1srH68TqlUdOu01ZU3Zl1KO1kH08Gj4jZmgW77eCbnITttFHTWtJDp/U3M6IYtu6S2b/Kgk/h6Cxr5joef5t/dOgha+5h8FH2Pl4ag96GyqKYHp62J5VjKR+gfl0iw7X+QqtiOjSgcof4J5w/v7kerQk0rXd9U8LX9yBHIEA5Ng8TF7xXy5OcfywF1g4tyzVTmc6H0Fu4nNDjI6MFT1ucTVmWMcbe4q6oBkXOcJaW8ZOhfoWTMjarTLE/ejR6/qXo3KyzrKchpEZv6E4crbFY6FZIxqYLsj7hGGnvHA3x2aUsUYNxRO2dtiKFvMLrsNWWSbfEReSXhTFSTcfjet0gwERLRhvn4sEyGIjhbr+ivdbJ86BP3/gPyDFsfCSGNjseVAU9U4ofqOzrLuu/gB22gRPiZrZvwUx7iwb37i88R83y336iXCok/Zn7TPWPrAynC2GQ/RL52gTmT2dJA0kCCjNV7uA6XBSHLkKb/XUiu9Qj7nSBygnza8HMc4zgHdjUedxMD/bgid7X+R9P3l3hn2snwj92dKzbUKCMTD5MYgCx8+213GxhLVre
- ezAAnpJ2
- qqDdVb4MEr1tCsWb2dCdfFKHSGSUWPnuFs8igz5DkkRndaWsqcu44P7e4PHMVbSjMr733sAVjQm5cHEHEUfNdJRUNk31EIiyLIqB2kPr51Bg9ibxPwmX3yjeXeWq9rRutolNKkpMsIalHEKYLzzugYS1jg4ai0e1ueB4ghoVBcCN3FM1idqqk7c7creYOT/IGofcYiDFzF+c3/jyjZcogsNj0Md+Eet/8fGp+/c+80qvPH7qK+Foxn6RGVHfUS7fGe0qtsSmtf2asSa58RTG0t+bqz9c27No4iq2VrVTnLAAYlwQ/4PIPcsTCRC0stAFWYaluxJcEVJen7BuJwkeyx9At0574MfQU6C7FdEfS9xnneP3+iPCRrNZmdpZAQTmRHpzKbkUzfejYpWFu/VS1opWBsUql/5uiU546aN76N9DPYN0/e9P6P6GcnFtnwigunkUeiZInyyT+kSjN8Kxk5+v1YN+DdiVjljvvEijSPW1rSAP48q3rsiupIFEWT9/btRxk8J9HniAPSbqulDJDnyjBOewnHFV3FjsRDeHp/a+zo6iG3Wty4kev+A==
+X-Stat-Signature: prykt5b5epbdjpmcziczhbc5n7z16rw1
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7683F40005
+X-HE-Tag: 1786689390-669379
+X-HE-Meta: U2FsdGVkX19c/AME8+cWX95A2lbsmlfTQvVBgEVxnA4qwCCxE0YPw2fR4A7MABL/vgwoG7/BzdHr60fcQW6GRJBxZlRWb4Q6xegx12hqk10Hggh3+0GhNgDo/NV5nsiNpUxF2GU6gy3+VNh7i+3wXNxQJyJzYJWcCl0FhNw13m4LwfiViYaUsD30ft4PjqLLlaQDcRJgkCMI/bSQ9SdtwHNkNuhrNz+ddD25c3sdOT+cm+I7eIM9jQcM7JysjElmx4iV8PJH13TzMABHY5/dNUa0YTiI2dPY5mNUAWqpRHCpe+ZM8vJuH+G1puaUIA7QKNwNyT0uHZN2G7HYv6jwSG+o2J/fOAjEcs3mt+myyWXNjuhiC12wNScLvAJbM4DXUhMrNMMChW3HfJpLYvD9vB7iI6YZB8SykY4X5itmOHpvjtSm6HR3avnKh/zYpxJmI07B/EgBw/IGyzNFVAou1+qXS7riO/3Yzj9yN5aGPj02eLrT74iPVKjTUQrPREnvUgo/NKC1FQgG2XYQP+TcEZ0WK/2ZG0k8Z8rpvTldqZpiRierQ//rvGTeQurBx3VGt7Ug7csO+JmboHpwKf/j65u3Y9OpLg7Pz01D3Id58rmsgpTaMlM9eQtzriCzQqC0a3mFI1rsEE7WgYMuYu/8d7AckL34+LM9BByfzKEe1xSQf6RVrVjMJtpEQq0hcCGFtesu4drG/hVA1LCmDE9hrgGc8ob+lREzUUsHLcv/qU/TtSpfrDh5Slvo/XFSYH/dQB2PMkYalxOOcdjSbtY/b3y7tSZJhhXvjExLItEJF86HEfcwDwpoR1U5xbKlG9IcqOz3b/pP7njeWRKhMav0CWkLwDLyCBkd1FBEzQFs2hB7D1C03P5otLp2QCmTCJ0jV6B4Gsjx2VGP9vZOMmioWY8NCB2veJMQdJ5XOLKvc+RGwcO17Hzf9QrkZeRgFPugQpKPvM10fq659K9Nlv9
+ dQJ8Akyt
+ sBQVPqlfGDDWisN+JgGqtfcLh7P5M1lqUIMw56lhU4Jx69FHZ9EoPSEl+95SF88t/GI/p9WgtEIzsac84kMg7BBGurbVw4gKu5nSo7NOivbwZU+I/qWONxmtfW5Qyb6XJTwalFbm4gMZXd/cU38v6xcoFjbhMPc0sURTTXkGjPzKMFSUpv7bQEeczYoefEPYLREc8DMKdeYaF3YFMtLPB4i+LCQX1q4HN1hFcqZTiWJiznD1GApOSvHGb4ZZL4oDckVFg0jsy3sZgLN/9azwbBZC3t0Aev0Y8+ynlEJVufgq8McQG9c+I2IUGxuDP2zsCEei8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,39 +136,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 03:03:18PM -0700, Eric Biggers wrote:
-> Encrypting a large bio with more than BIO_MAX_VECS pages can still
-> deadlock, even after it was attempted to be fixed by
-> commit b37fbce460ad ("blk-crypto: optimize bio splitting in
-> blk_crypto_fallback_encrypt_bio") and commit 3d939695e682 ("blk-crypto:
-> use mempool_alloc_bulk for encrypted bio page allocation").
+On 8/8/2026 5:53 AM, Ackerley Tng via B4 Relay wrote:
+> From: Sean Christopherson <seanjc@google.com>
 > 
-> This is because __blk_crypto_fallback_encrypt_bio() assumes that the
-> bounce bios that it submits will eventually complete, unblocking it from
-> allocating additional bounce bios and pages.  However, dm-inlinecrypt.c
-> calls __blk_crypto_submit_bio() from within submit_bio() itself.  In
-> this case, the recursive submit_bio() simply adds the bounce bio to
-> current->bio_list without actually submitting it yet.  That breaks the
-> guarantee that forward progress is being made.
+> Now that guest_memfd supports tracking private vs. shared within gmem
+> itself, allow userspace to specify INIT_SHARED on a guest_memfd instance
+> for x86 Confidential Computing (CoCo) VMs, so long as in-place conversion
+> is enabled, i.e. when it's actually possible for a guest_memfd instance to
+> contain shared memory.
 > 
-> To fix this, allocate the bio and bounce pages with GFP_NOWAIT if
-> current->bio_list is set.  If it fails, punt the encryption of the
-> remaining part of the bio to a kworker.
-> 
-> Fixes: 488f6682c832 ("block: blk-crypto-fallback for Inline Encryption")
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Reviewed-by: Fuad Tabba <tabba@google.com>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Tested-by: Shivank Garg <shivankg@amd.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-No, it dos not fix that commit.  I "fixes" the misguided attempt to use
-this from inside stackable drivers.  Let's drop the dm-inlinecrypt
-target instead as this just shows up one more reason why that is a
-broken idea.
-
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-> ---
-> 
-> Changed in v2:
-> - Switched to the less efficient approach preferred by Christoph
-
-This is in no way the approach I prefer or even advocated for.
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
 
