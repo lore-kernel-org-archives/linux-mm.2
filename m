@@ -4,116 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DEE6C5CFC1
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 12:01:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7256EC5CFDB
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 12:09:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F11B6B0699; Fri, 14 Aug 2026 08:01:55 -0400 (EDT)
+	id 652636B0307; Fri, 14 Aug 2026 08:09:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A8D86B069A; Fri, 14 Aug 2026 08:01:55 -0400 (EDT)
+	id 6298E6B0309; Fri, 14 Aug 2026 08:09:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B7B36B069B; Fri, 14 Aug 2026 08:01:55 -0400 (EDT)
+	id 5667A6B030A; Fri, 14 Aug 2026 08:09:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A0A76B0699
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:01:55 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AF1AE1A0462
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:01:54 +0000 (UTC)
-X-FDA: 85099736148.06.57A840A
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	by imf24.hostedemail.com (Postfix) with ESMTP id DD678180018
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:01:52 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ICOEpCdL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of imv4bel@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=imv4bel@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 301896B0307
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:09:54 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 41B3B4043B
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:09:52 +0000 (UTC)
+X-FDA: 85099756224.04.3CE2E36
+Received: from mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 11386100003
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:09:49 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ptHTw+YS;
+	spf=pass (imf05.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786708912;
+	s=arc-20220608; t=1786709390;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o9s8AN57wB7Vi/36kIlm/41aiy/3Kyf8X3cTuSCNC9g=;
-	b=RXFYENTsdCU6cfvI+tPTh7+LzhDnB/qH/5YWOVzPbYkMsj8xQTc0puvQT0dmyVKnZgHKn3
-	WmA78Sh0208wBOdI2xbPfNsgI6VRuMDUzWS7TYjHlO1t5PBToq+SEot1byHSfu5pH8+0Qg
-	Q5XfKKPSSXaSPeKEQaGEYvKfj/UNwFY=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ICOEpCdL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of imv4bel@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=imv4bel@gmail.com
+	bh=76UPMa7baaJ7P+aXXdYGiDzJRHi1+SMVoe264fro9N8=;
+	b=ouH6f6rKYBPzU1ozKjyIEcqNgbXfuaoLp1AwKimTP5CX9wAA3nWMRDkD41YPcGuqLiMh/7
+	p/ITf1YOGxaJF2dUUzKVhGRgR9x1pPMVBysMzMFjSndXShRITmVchDYCGV8UWjT05pHD/B
+	dF7M7h7KvvWAj/C0B9deOhZHKwCyLwk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786708912;
-	b=dRNTfPIKcu3Ds+OezjFjiLqjqUsopn88k+MuWdKhScm9huRy88U02S1CcQGYdXlyZMMRk7
-	1BFyZH1GgzG1GOELBJ3phlvR7vUHntd4fcUnQyeY3aDT6xJ+FwT8V1pdrYkq518lae9frf
-	KGStPt+oZFE2imoGbm45edrctsn2B5E=
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-84f3ab8750cso621607b3a.0
-        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 05:01:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786708912; x=1787313712; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=o9s8AN57wB7Vi/36kIlm/41aiy/3Kyf8X3cTuSCNC9g=;
-        b=ICOEpCdL/sE/E2v1mINNLXaLnwYUrI4zdJfIuXYbIfxrt+4h/73Zpfp4WnGcpQzyAE
-         AaKSrqxN+A9lZiAyi08nULdbPqMd7BT4LpnYX1X5rz1HIGMCnwmMFFnHvvWYhhrPevrb
-         FVXGqEdnOKPjzX+h1VUplf3Kz5OO1olxjWeaIm24I8yDkihwzqJpHSkiGmpLHESQQm/s
-         0uQ/yzO6hiSXxtjY0C6ZyPOpQJtl+PdBSJ+NAD4PaJY2QCcW1YeNFDrAEAOIKVFYYJuH
-         pL5ESSSQnn3TA9EEGE2sImEPXzE7sXWtPq6y6Tv3MFqajhR6rEsAtQlD1KEjjhT82p1L
-         OkoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786708912; x=1787313712;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=o9s8AN57wB7Vi/36kIlm/41aiy/3Kyf8X3cTuSCNC9g=;
-        b=PS8T41AQDKxN6JiT38VVzFe05mZSpM3sKQ6wtLihdoPj3ZG9CzWaNrvR3WDnJBzmq5
-         lUxpNMqz40wixWzWftpWFP6NhMrWAlnUcERe77VvvoktBWlPPSsttzx07jXQfxUHucYq
-         XnrfyTORXUk7MRB2q59/XzJqNd41Gpcwifm7QRutmU5uoXYFfw4zvooKt0EhNdvBlyS1
-         cL/FDfQTFIdN1Fb4P4E6Wg2lFWuxUtdzJ8DKKYkPqzdYHm8MQLKStgRyfOOGPd+mckRm
-         YmqMCqwvKONGylWk4/JJvcq4lzhBhJH2M9kAtwRoXPhA/M11mMq81bB6OVaZkvb9JEYl
-         1d7g==
-X-Forwarded-Encrypted: i=1; AHgh+RqbpJ9WxBxhCpw9qK9EpFTnofLqUjn9spKf03/Q/nJ8AJvAfRBYOrfTsHM4b9DH+WByI3v0zrRa6A==@kvack.org
-X-Gm-Message-State: AOJu0YzhLQQbgG9keTZWAOnR8/40o4UY73WDjuoMyCwKWrDWOABbJaTQ
-	tuWZe42hM0oCfVZEc2s+62ZWABdiz2TJr/2F0LmssA3CEYIoEgrpvR/v
-X-Gm-Gg: AR+sD10y6tyvRYKG7bgmV6g5cVXBi0c8ZiFb8KyDda0v4Yc0AQGrFYXcBm+x/0dRtFS
-	B7w4MVuItn/Z7pRFJ/kXPQDQA6AbUoZn0C9/MbBLUiqpB1OQDwZuo7iWzWyxmtmyISi86w7/Q4b
-	oF6TVkbVUO9pHyNzpGd0ERt/PbWGCBAsdJ5YvjPg0PT+crpeYtnOCIalJnKVqxZeN12QCmEE+l7
-	ZGE8nre7vpQHvsMpzsiDZB2J+VDT6wxHaY1OCL9blTklHkAYdrT5Qj7V7suuW9zKadGQJTRAisT
-	7dZqWNSNHlcqMtOZ5pS8/ef6g3GHajXW9DmGfBz64fGeNT+xzSQefPt2ywfQpG9Yl6eMzGcbQ0G
-	IWGBf3/UiObgqELpPEPe2eIWuVD/V5yqmiYn3xGovKYTSBe/HKOdzmcHSNlrbmyGK81kQiiTGBc
-	JmOatW4OpUBY7GsCZQF84BEWjAI1cDN8eJUXcM0wGvyiaqQdfo74R7L9dNBubRHwbkuYvx/2Ru1
-	uRSQFjs
-X-Received: by 2002:a05:6a00:9a0:b0:84e:e741:174f with SMTP id d2e1a72fcca58-84fddf87594mr5396442b3a.7.1786708911472;
-        Fri, 14 Aug 2026 05:01:51 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8517d01c2e7sm384922b3a.13.2026.08.14.05.01.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 05:01:50 -0700 (PDT)
-Date: Fri, 14 Aug 2026 21:01:47 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: viro@zeniv.linux.org.uk, brauner@kernel.org, tglx@kernel.org,
-	ebiederm@xmission.com
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, imv4bel@gmail.com
-Subject: Re: [PATCH] posix-cpu-timers: Dequeue per-thread timers before
- exchange_tids()
-Message-ID: <an8Dq_XUMobC395V@v4bel>
-References: <anfgrsPlUdwBhdrp@v4bel>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anfgrsPlUdwBhdrp@v4bel>
-X-Stat-Signature: ckseqnewormusyidkzpk3yxt8krmpk41
-X-Rspamd-Queue-Id: DD678180018
-X-Rspamd-Server: rspam03
+	t=1786709390;
+	b=EsVSPHBtoR80kXdReKEJ2ONv8xYBZmUqV1qgrIgm+YP5X4gGFxn8WNyfJyB5vQbn51S6Xo
+	1KUQkCfsvCPg6l+ZaYpqrYHvcRed5kSRsXkBkhh4pjo8HSdSFrBTzPYm3BHb8oZOVFZBCm
+	X3szC4k1nRodtPH0/nA425uz9OVqlPE=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ptHTw+YS;
+	spf=pass (imf05.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=hjVyQXbDj5Sk0+7EhKmuSQsftrJICNy87t57EcrUebA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786709388; v=1; x=1787314188;
+ b=ptHTw+YS+g8wqyK+eLjVm/DgqjvGjtVkC8UvMMSfhy/kNfIuFB+G/yU3n3PwbFflmqLga7xO
+ I569fvo9LdpsZqohURqB1EjtaHdatmVbdNar7qVXYs7iI+LRSnrSi3XC7YMq31HRYNQBwJQQm9/
+ lZoc1I9+DGMrAfKywjp/xXfI=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (77.97.51.77)
+	by smtp.migadu.com with ESMTPS id 1cf48439c3244aa3;
+	Fri, 14 Aug 2026 12:09:38 +0000
+X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 14 Aug 2026 13:09:32 +0100
+Message-Id: <DKONM2LHEP8I.1PW06S1B3CDC7@linux.dev>
+Cc: "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
+ <dave.hansen@linux.intel.com>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
+ <david@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Wei Xu"
+ <weixugc@google.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Zi Yan"
+ <ziy@nvidia.com>, "Lorenzo Stoakes" <ljs@kernel.org>, <linux-mm@kvack.org>,
+ <linux-kernel@vger.kernel.org>, <x86@kernel.org>, "Sumit Garg"
+ <sumit.garg@oss.qualcomm.com>, "Will Deacon" <will@kernel.org>,
+ <rientjes@google.com>, <patrick.roy@linux.dev>, "Itazuri, Takahiro"
+ <itazur@amazon.co.uk>, "Andy Lutomirski" <luto@kernel.org>, "David Kaplan"
+ <david.kaplan@amd.com>, "Thomas Gleixner" <tglx@kernel.org>, "Patrick
+ Bellasi" <derkling@google.com>, "Reiji Watanabe" <reijiw@google.com>, "Sean
+ Christopherson" <seanjc@google.com>
+Subject: Re: [PATCH v3 19/26] mm/page_alloc: rename ALLOC_NON_BLOCK back to
+ _HARDER
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+To: "Yosry Ahmed" <yosry@kernel.org>, "Vlastimil Babka (SUSE)"
+ <vbabka@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
+ <20260726-page_alloc-unmapped-v3-19-6f5729aa9832@google.com>
+ <ee8df643-91dc-4a38-a676-486a0d52c919@kernel.org>
+ <anJc8Ansf-QWFfFo@google.com>
+In-Reply-To: <anJc8Ansf-QWFfFo@google.com>
 X-Rspam-User: 
-X-HE-Tag: 1786708912-297690
-X-HE-Meta: U2FsdGVkX1+ii/XGrk/sYnM3H/gM9KvLMKRWMOiWE/xapB4eCEc8ldzBD/PXvMMN/s9WeDyP/A0amGxFfksZVN0GhzsZtkw8DWaH7GCGjRBclr7jB8yuDDAYI+HgmNqcUwoPXOheDL2LIcw2Uoh8OEceGQg2NqJXh1Z1j5rz/k4hoUSaS/GODY8wkeymkkMhvDw9Vq6kLItqVN2pD8boumW8/QByKV7bb1C52Cudr4qrIl3ePFer9pFc0F7Q+fARFMQja1u6qNfKDkkgOPM6eaf+ow04T61um44iDeUujGTg1avhUQAoxynn/6t4PHZEyXhGUwgrTtdZ2tVl7vXtgtZmwV9+QML6i/f3fIgOHRz89lxzW1utBNYhtP/LfGnaW4xYbWuWIZzQZrwqdhi07n1KmfMiuAjskNVgs77LYFLaccE8bPrCqyNAg/z1iA7CXlGce4310New9EjAd8ovjcFJ4/oTRpEZ+DJkXP14RGx5tI2MHYZay8XkFLBqc4xHajY4MtNKedO9+gIaK+HXgMeKlEeIj/o2AhCNu2w9TrXggj4u1PPUDwk4pR0bemEHUyC7QpI9b0kCG4Wfm9DO5lDgCNYVK4z+NAAEXSjhUBfclfIer3+cQh0g7aJTbm/WmyyJHzw+jlM3Ee6KUkfefcUYUUb8MF//fWWJXn/VsAe2HBRWorrMVNRpdox8DAQnabNQoCUXFnTkCI50dHjQl9zEwbgCEE4jeiqoa93m1pmEQh/5uUBEAQT98lW0SRof3LFKj/mO47xz0zlZw0V3azUdc+NlApOWUamuuQqGzdX9+MHnGjdZdAhgQBVAbNZsOxP+11egDoQJaJuHkmPFjBbiElypsFzGKKNleIM3vbI8VgzduWzbVKLr5hHTaO4mG5KfU0AXJvm+r/xhJrwYb8uu/tBwu266UwTfLIjya7+xdI/6JEo97sHzKv0IA3aQMxtINQ6KC4AyI+ksA9d
- BlfdFvQ3
- YMVCnYpQRzTAiVbnzCVmYdAFxgpH+56gn7mrxTzjcHKrXJQXZzvKqxIXpDd6Yi/CLOVXTTfQDohPIF0BalzaCRY9Rl+wxa9dZVDyrhwgqINbHc9bKFX6HJU+++NlB78SgU4iJKdPbkbcL4em9lFFltqq/24EqI+kaTjKTXXsAu3n0fQpVjanQG4z+alX3eOmpnCQR63ZhqAmt2RasODz4ILYN4mzKc6lMOKNNfdW1J6FJHNtBm7ESPlEcmqCqicVSLjq9Bf/C6CWXGhRowtOTEfs5hixEC4fr7REzFtII2igxU9GT9jZaQ6gc29jvDl7uABdLhHwjjQrVm26gcQp7AalyQnFPLClLCYK7dYliK+NoDV/GTRyprt7sEDPbllNCfneHH2P0HBE6W4vyFqD/EGoMLaL3UJEM6mNGorAOpJJ1FQPYLmiMBJ7yk7rBgniPLgI6bCi5E2nqZPk1/wIfNnggAKmfdLsSLsDl8na+KkUGR5yFxodBnoEKEe46ZaY/ca08i30DqKGD/9C2wGmqBC3qnr1SwJRDjxQbx9/3chsa1sw=
+X-Stat-Signature: srn73g35z6w6xwraoo84qh1xmkm9xs6z
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 11386100003
+X-HE-Tag: 1786709389-798298
+X-HE-Meta: U2FsdGVkX1+iIBhvpNYeyriWwVFHSjGR/Tez7tqRJ3YmKcxYvOWmuodRZrAUJwaSSxNazZiWX48kn8iDla4rz8jhf2703w/sZHx/hTeTcTGJv2QEAah1/OkERdBby/zaAhstaHhuM6GVLYFjOH3L/9Qz6aQzQpDiDwBPwxz6at8fHDvUm2AxYjF1z0gzjMAXY15vm5ofAV/eRrx4hceRd0alPehslHLXq7UuFN7CViA3HnZDqfVVyzUYER9xbraQs0QtrSd9ILoj8z6jepe0EG/86m4tzfYP5CT+cNjLGjBU+cX7p83UUGXYKrBa5X8dDNHjG/x+HH87WxFtQCszKvK1yipQyfayq5Toy/TslDF7xAOT08o1mQUoSkveAy1MOsyCnz2bSQX2dFCd4xhRHiEdYMgY4t7t6DqMHN25p9Uc4MY3KnegKutU5Vr7X24fk5JnobJkfC4QHfnQpHeB80hxA8yATdAEPJiSKcOTidjS+Z5O4SyXh2sYxLraBHgKyD+X+fHwEACHnU/TJO672rQJrPpmTFjQi2AO+gPD5XiFjuF/rMfVG61nHrv29JIekRqqu1bLtYnYh2fsMeLAwENvuwy1qFFr8S+rMhBY3OUakWAo1W8+Cn4OwNwFD4IP1ghVnsW3xP5UAKwH8on6YUYGecpofQ7o6y/eweaXgxtAHamEfaMir0HfYJ0br1qWup/9MSxv5G7UcNBwWymuR7o83vF/KXRCbwMQvvU+dgNITvKw2rJPIBu5KSU9ad5ooOkghyHADUFtzncOfFq4t1diKbdn4T1B9bGKUhxYk6ZXqDmyx6OlY0JP41MyR2P4rQj8uQuoL2VkYK+kt4IDettfW4TDVXnyzlHZOILyz+PX4sETaXKNVJazZNYDXKYBRJpVFsdE2/BIfF14NMTF5ZqKGlfKxkdbFP9VUbAT2qk/KPANlwTt0+NFPvQk255grEqboduFAFz+VomsHh8
+ 7174t2M7
+ hYOY61jC5tWLuYe15y5p/TmhosVhdizrOXuAy5CYIbB2H+0h2jUanSGBQyXv1/af6gjlsyl8jTCjUsYD1TLOUqbwL+v+X9ZH+/Oi2zTNOqEW10F3wSSUYTFOx+s4XLUKKxzCSH1VvCOyRVIs4PwK2KwMkElqXlWejYec+FzUEbQqPaT1eZ+JDQiZr0MMM6VD3cno2IYjSIPhmkB+Cg3w7AmpndveDjm8THAjOq3tNcQgKncK67sKtV8p1/KNtadZZBDo3iLapxRVyhsCXS6e0gMfyIl2meTiHJiks+acKfDLN4XAxW+keGcjIMf+vccVW6uHyKELnfGLjJ2603cTKaoY7Slg5IHBdy+vzfkZ0aGbMjs7hNs6TDYgp1gwXkxzi7G0C
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,77 +106,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 09, 2026 at 11:06:38AM +0900, Hyunwoo Kim wrote:
-> A per-thread CPU timer holds a reference to the PID of the thread it is
-> attached to and, while it is armed, its node is queued in that thread's
-> posix_cputimers. The task is looked up by that PID.
-> 
-> When a non-leader thread exec()s, de_thread() changes which task owns
-> that PID:
-> 
->   de_thread(tsk)
->     exchange_tids(tsk, leader);		// tsk's PID now belongs to leader
->     ...
->     release_task(leader)
->       __exit_signal(leader)
->         posix_cpu_timers_exit(leader);	// cleans leader's queue, not tsk's
->         __unhash_process(leader)	// that PID has no task anymore
-> 
-> pid_task(timer->it.cpu.pid, PIDTYPE_PID) then returns NULL, but the node
-> is still queued on tsk, which is alive. timer_lock_sighand() takes a
-> failed lookup to mean that the node is already dequeued, so it has
-> nothing to undo.
-> 
-> begin_new_exec() calls posix_cpu_timers_exit(me) right after
-> exec_task_namespaces() and that removes the leftover node, so the state
-> normally stays invisible. But bprm->point_of_no_return is set before
-> de_thread(), so if unshare_files(), set_mm_exe_file(), exec_mmap() or
-> exec_task_namespaces() fails, the task dies before it gets there.
-> exit_itimers() then frees the k_itimer while its node is still queued,
-> and reaping tsk later erases that freed node from the rbtree.
-> 
-> Dequeue the per-thread CPU timers of tsk before the PID changes hands, so
-> that a failed lookup again implies a dequeued node. Process-wide timers
-> are looked up with PIDTYPE_TGID and transfer_pid() moves that link to
-> tsk, so they are left alone.
-> 
-> Fixes: 55e8c8eb2c7b ("posix-cpu-timers: Store a reference to a pid not a task")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> ---
->  fs/exec.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/fs/exec.c b/fs/exec.c
-> index c7b8f2d6366c44..f80f70e1c26de4 100644
-> --- a/fs/exec.c
-> +++ b/fs/exec.c
-> @@ -1000,6 +1000,18 @@ static int de_thread(struct task_struct *tsk)
->  		 * the former thread group leader:
->  		 */
->  
-> +#ifdef CONFIG_POSIX_TIMERS
-> +		/*
-> +		 * exchange_tids() hands this thread's PID to the old leader,
-> +		 * which is reaped right after. The PID lookup in
-> +		 * timer_lock_sighand() then fails while the per thread CPU
-> +		 * timers are still queued here, so dequeue them first.
-> +		 */
-> +		spin_lock(lock);
-> +		posix_cpu_timers_exit(tsk);
-> +		spin_unlock(lock);
-> +#endif
-> +
->  		/* Become a process group leader with the old leader's pid.
->  		 * The old leader becomes a thread of the this thread group.
->  		 */
-> -- 
-> 2.43.0
-> 
+On Tue Aug 4, 2026 at 10:50 PM BST, Yosry Ahmed wrote:
+> On Fri, Jul 31, 2026 at 04:52:59PM +0200, Vlastimil Babka (SUSE) wrote:
+>> On 7/27/26 00:22, Brendan Jackman wrote:
+>> > Commit 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH
+>> > non-blocking allocations accesses reserves") renamed ALLOC_HARDER to
+>> > ALLOC_NON_BLOCK because the former is "a vague description".
+>> >=20
+>> > However, vagueness is accurate here, this is a vague flag. It is not s=
+et
+>> > for __GFP_NOMEMALLOC. It doesn't really mean "allocate without blockin=
+g"
+>> > but rather "allow dipping into atomic reserves, _because_ of the need
+>> > not to block".
+>> >=20
+>> > A later commit will need an alloc flag that really means "don't block
+>> > here", so go back to the flag's old name and update the commentary
+>> > to try and give it a slightly clearer meaning.
+>> >=20
+>> > Signed-off-by: Brendan Jackman <jackmanb@google.com>
 
-Gentle ping. Any feedback on this patch would be appreciated.
+Writing this to get it clear in my head, so I'll also dump it in the
+mail in case it helps get us on the same page...=20
 
+What we actually want here is a flag that tells us when we can do a TLB
+shootdown. That means (on x86) that IRQs must be on and we mustn't be
+holding some random spinlock (most spinlocks would actually be fine but
+I think it's simpler to assume we can't hold any).=20
 
-Best regards,
-Hyunwoo Kim
+It must never be over-permissive i.e. tell us we can do a TLB flush
+when we can't. It's fine to _sometimes_ be over-restrictive i.e. tell us
+we can't do a TLB flush when we can, but if it always forbids flushing
+while GFP_BOOT_MASK is in effect then we'll fail critical allocations
+and crash.
+
+>> I wonder if we need to do this, and instead we could repurpose
+>> ALLOC_NON_BLOCK directly. AFAIU it's about removing the side-effect of
+>> gfp_allowed_mask in the next patch. But what would happen if we did that
+>> using the existing ALLOC_NON_BLOCK (or maybe just renamed to ALLOC_NOBLO=
+CK?).
+>>
+>> - in __zone_watermark_ok(), ALLOC_NON_BLOCK could now be *not* set in
+>> situations where previously it was set due to gfp_allowed_mask masking o=
+ut
+>> __GFP_DIRECT_RECLAIM.=20
+
+Hm, I can't follow this. The first paragraph sounds like you're
+proposing that we set ALLOC_NON_BLOCk regardless of gfp_allowed_mask. I
+think that would be fine. But then the second paragraph is saying
+ALLOC_NON_BLOCK would now be unset in places where it's formerly set,
+whereas I think the proposal means it gets set in places it was formerly
+unset.
+
+>> But it only has an effect on top of __GFP_HIGH (thus
+>> ALLOC_MIN_RESERVE... which seems contradicting the ALLOC_NON_BLOCK
+>> description comment btw). Also __GFP_DIRECT_RECLAIM is only masked out b=
+y
+>> GFP_BOOT_MASK when all memory is free, so it's kinda moot?
+
+... but yes, I do think making the existing ALLOC_NON_BLOCK ignore
+gfp_allowed_mask would probably work.
+
+Aside from gfp_allowed_mask the other thing about ALLOC_NON_BLOCK is
+that it gets disabled if __GFP_NOMEMALLOC is set. That is fine for the
+current usecase, but it's pretty confusing...
+
+>> - in rmqueue_buddy() we allow access to highatomic reserves since
+>> 281dd25c1a018. That commit describes GFP_ATOMIC so we could have been
+>> checking ALLOC_MIN_RESERVE. But we can also leave this alone because it
+>> doesn't actually matter when GFP_BOOT_MASK is set, as above.
+>
+> IIUC we are trying to find out if the callers either has interrupts
+> disabled or is holding a lock, and using __GFP_DIRECT_RECLAIM as an
+> indicator. As you mention, it seems like __GFP_DIRECT_RECLAIM is only
+> masked during boot, presumably before we can allocate any unmapped
+> memory (should always be user memory?).
+
+Exactly.
+
+> So maybe we should just use gfpflags_allow_blocking()?
+
+Oh yeah, it definitely should. This doesn't change any of the plumbing
+challenges though since we've lost the GFP flags by the time we get to
+__rmqueue_direct_map().
+
+> I also wonder if restricing to callers __GFP_DIRECT_RECLAIM is too
+> restrictive,=20
+
+It is overly restrictive, but I dont' know of anything better, and if it
+existed I think it would be in gfpflags_allow_blocking().
+
+> we can probably key off __GFP_ATOMIC as I assume any
+> callers with IRQs disabled or wiht a lock have to set it.
+
+There's no such thing as __GFP_ATOMIC. (I think there used to be?)
+
+> Maybe we can also use preemptible(), but that creates a dependency on
+> CONFIG_PREEMPT_COUNT as far as I can tell.
+
+Yeah. Which...  maybe is fine nowadays? Since commit 7dadeaa6e851
+("sched: Further restrict the preemption modes") you can only set
+PREEMPT_NONE on alpha/hexagon/m68k. And this restriction only actually
+matters on x86 anyway...
 
