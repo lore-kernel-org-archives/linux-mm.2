@@ -4,139 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93988C5CFCF
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 01:03:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27402C5CFCF
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 01:29:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B68066B02D0; Thu, 13 Aug 2026 21:03:11 -0400 (EDT)
+	id 94D176B02D7; Thu, 13 Aug 2026 21:29:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B21936B02D7; Thu, 13 Aug 2026 21:03:11 -0400 (EDT)
+	id 8DE646B02D8; Thu, 13 Aug 2026 21:29:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E8936B02D8; Thu, 13 Aug 2026 21:03:11 -0400 (EDT)
+	id 7C8A46B02D9; Thu, 13 Aug 2026 21:29:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 715BA6B02D0
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:03:11 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D64E5802EF
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:03:10 +0000 (UTC)
-X-FDA: 85098076140.14.275AAFE
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf22.hostedemail.com (Postfix) with ESMTP id F28CEC000E
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:03:08 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eOWMxCyT;
-	spf=pass (imf22.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786669388;
+	by kanga.kvack.org (Postfix) with ESMTP id 46C706B02D7
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:29:53 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ACE00140205
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:29:52 +0000 (UTC)
+X-FDA: 85098143424.05.B7C7B6C
+Received: from mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5BBC0180005
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:29:50 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="umpg/rpQ";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786670991;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eKtuG6jGikRVQqJP0ZyZYZl79OB5GjG68NlKzeTaNwU=;
-	b=nVFnedTL/qiNAtHNTFNlx18u680RZ5r7meZb975nvrnBB5WWXxUqO6QiUmT5nOAQHDEhd1
-	FQ4GtrWab8cie6Y6vTygeLjsBwGk/BJpoZDgKzpbu7zf0VSMEVUjapBwHP555RPQpIuTTO
-	oEwqJ3qjd6H2o1YNRJHt0NI09QQTJDw=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786669389;
-	b=ZSIze+GNQ33AmRDQqXqLjSGDH7Eg48n5CN0WCDQdpVCecvaHzYgCsqaG/eUXkCyHj4x22z
-	+nvRJWqKLxnOF0ufWuEQgBX1CWvNNaikhgWChPHRqtoFUMKG+yxNSiqE3wlG69sGQ840or
-	/XhiZbm4f+TAuMBCazc4vN2aOccMLyI=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eOWMxCyT;
-	spf=pass (imf22.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4996c452e95so520065e9.0
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 18:03:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786669387; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RgjAr0wup1bkO36ja4KOr9nt45thaF6jihlUqtTcyFO70s9sfvaKf14fd+Mvdt/pmk
-         0v6OPclRO54a2I1E+eUAoGOhVOlwE2YnzyLDxi1PNzmm7OXryYYgeB36I0CtOVHc/Z1C
-         /as8UTbXHg0bRoJQ0yFj46U4Uv2f2sOCuwnjMhAvA8Qb+QQMRu1QZOAI4ViRSEsagMsc
-         ShnL06zolUdy19HkeXpur7veEfunrspg/U9h/rTd1gn8yHyKs7Q7YO8K7Q7f/AzxOSFx
-         wszundQlrs5R6dBiv11t+qfEVJd42ht+DmaIZswTXOYllIdExnZtoK2e6m6BF88gdhYe
-         5tvg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=eKtuG6jGikRVQqJP0ZyZYZl79OB5GjG68NlKzeTaNwU=;
-        fh=b2CN+ZP/E8D6TdzlpeicwUyAUTqBm59NGfpo11vhwJU=;
-        b=XkNW0E33kyHp+1j61nNgagui+0CqCApZ+sfGn1RdT6EJrNXuD2WTY+0dahIlaZUT9W
-         FIpIljg7z4cAWaVRMjVgEXmo6tgzsOBop6A4OZCihlx6mDU+KfKWFYWBlwuekJpkJdR+
-         vJl6HGfa4jI3IusHlZCcCcJ7rZWgbljTMGyyluXFRQ+7kqofweMwj6XI42wuLVQEmq2f
-         uVjU8RIPFZoCmDnhGd2Lfvrp4wZo7GJcKJi3Ebvt8qN7fV6c2gQMZED41n0uOkkSnvCv
-         q1uyQh3SrGHNPM5yaY8SNhdv617fkzahxK7FjYLOkqMDvl5VhpDtzFz97SCI7XPqE8dL
-         /wnw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786669387; x=1787274187; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=eKtuG6jGikRVQqJP0ZyZYZl79OB5GjG68NlKzeTaNwU=;
-        b=eOWMxCyTcCIkS7fSWc6hTMcEHTnjpyc1MjTNVUb0hDNPWV5of+0tDdNebcBxPrYdMv
-         KtSqcY6u4Q72UCggb34Dli2octH4u3Pz3JX+gG3mAACq83lJFzmj/zcVxN41HhNYpN/O
-         YgrKGRa5BVYYUvqMBDWGs5wjf7exmrRFA8Q/iTu2p5az2/8Qi7Hu2UhTWFJskViaMphO
-         bB8GE7asr3T983bd4Iq645yhlQOQeKMEX3wzzFLsY9tMfdsOoeoaQFKwwgkdKk+N5pwZ
-         cp1ihKzoN5EOn5UHBzBl1FEXebk5W54PdDS9keV/3et4f/QqDghM14UpBetgmLg4KOpU
-         3I5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786669387; x=1787274187;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eKtuG6jGikRVQqJP0ZyZYZl79OB5GjG68NlKzeTaNwU=;
-        b=N8lHNHflonJhFVVMyDhLNnXbbkTc3KAmyqKPSNXVavPHz8zL4gRyRUROMH0iy/64CO
-         hJEXjX+TKXz7E2At8U1mpNrOiAsYVnB+81cYYaLblDhdZ2eTJhcK9fkpUOh1sxS/SOFg
-         Fiuho1CdXtnWKI9sFUX9ZLdu8KQjJo+JgyckESprgxS4LtjRnCOuAPHKRI+JeNpoNxJr
-         h+ufH5UDSJpXRdxVJVbAayFPpgJrmxZy093m0i6JKs57BA6YqcxYpyWRL1fEwcv33vBw
-         UL65QYR8M/pa5WboNBBdaioRacVRbyLstG6WAVXp1lP4dZrigBLsFKulpVWbLWCwBy/0
-         zX0A==
-X-Gm-Message-State: AOJu0YxzX1QlGwQSiDcHtQxnN3HM4uR1pnfO2r+3cpb1gMJv+BpRk3ho
-	xWzznMwQNyoRH/gP9xej94GEGuih8ME0xgjnkTwsgCIM36cqhmwXNDSSmApc2htGKpvzDO9nJiC
-	h26phKNsMu8II2mtX8wT/VJg9l+Z1WoA=
-X-Gm-Gg: AR+sD12yuep8ceRJCvsCbz/oUqdyk6POYnV21lPevjKLA3PZeGfS7qiOfas9/LD0jJ+
-	G+LJhSKpo4loy2N4UibKZcCVA9Lmd4cKqSKGL2iM3ZoYHG86/Bc1zKhp1kFbZK7MX+cbcOfM6dZ
-	Lvi9ni/ClW62r+AtyMz24atQ85vtmP7Kx+M2WydrQRYHMDJhuc4PBMX4KocWNV4plhnf8ULCvWe
-	LhLQampjYYXGgbvxdHnXdvTA5KdM2NBJgYzPtoopYpU0iWilJVtfkgsneiGVKDh3sDK4vDMH//M
-	0nUrtnahZ2utGwABz854cyQevyOmXh9EV6G/7ANN0S5+oPpXJqs4Zzt6i+iy1wdAUkHnxVlSK0o
-	vkCc4S1VpP5sKKo1ZCiAwrnhpuqOzeS8=
-X-Received: by 2002:a05:600c:6206:b0:495:4126:1e55 with SMTP id
- 5b1f17b1804b1-499879543c7mr12992215e9.2.1786669387186; Thu, 13 Aug 2026
- 18:03:07 -0700 (PDT)
+	bh=RjXPVx6zmgC3YAZ+F/JHoSJB/1vbFfNmmY3pKy6lJIY=;
+	b=Ym4g1WPBb/DuutTR592o5tKp90w0pEeqIf347vnI+6PGLlvfkvWQocxLszyPfkptjpLPvL
+	tieeaB8jKTySnsl+dHXP7eUeNQ61JQTBUQxy4uNVmUo/gLmSIqXiTafOpDQ2eipoOGVg5M
+	rnWWSyq5+yVMSAaPC5BQz+y0/JKY0lo=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="umpg/rpQ";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786670991;
+	b=ffw4v9qnHIWUiZRW8ahn6fKJ9tvoE+HEdvNvd6WT7w/SdhHAx3d4AwVDWZ+pxM5tzrKbT/
+	Qci6+3Hpc5X92K/DD2+rNXdVdVvlxAorEC+7j85pfFmNm3fUfFuRjGbOxrYK5rZMEhVXND
+	t+CJZI5Ryu4UgTZzbRKEIXbVUBDc4sk=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=YRIK/awmx71exiVOjlgX7attdFmpDuckcomywEMtZlw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786670988; v=1; x=1787275788;
+ b=umpg/rpQ0RnezST5AyWEhNrlGcp9Ihpe2PksMoQcWQDlXU4R8wBA/WB1e+ajFOSZkEjI3oPW
+ 7Iww2O7O1qIoVY0nTOABHu0X/YM44axR0fC36fO1MBpC7acU3Zg1tf04P8K2+vl/bpDcI6fm+AI
+ Sx8Mh1hddQEV5PGthp5Dx/oo=
+X-Envelope-To: linux-mm@kvack.org
+Received: from mi-ThinkCentre-M760t.mioffice.cn (14.29.108.92)
+	by smtp.migadu.com with ESMTPS id bbd37d40f1c9974b;
+	Fri, 14 Aug 2026 01:29:48 +0000
+X-Migadu-Flow: FLOW_OUT
+From: Ridong Chen <ridong.chen@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	Tejun Heo <tj@kernel.org>,
+	David Finkel <davidf@vimeo.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	cgroups@vger.kernel.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
+	linux-mm@kvack.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
+	linux-kernel@vger.kernel.org,
+	Tao Cui <cuitao@kylinos.cn>,
+	Ridong Chen <ridong.chen@linux.dev>,
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: [PATCH v3 1/2] memcg: acquire peaks_lock when reading memory.peak
+Date: Fri, 14 Aug 2026 09:29:23 +0800
+Message-Id: <20260814012924.2388613-2-ridong.chen@linux.dev>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260814012924.2388613-1-ridong.chen@linux.dev>
+References: <20260814012924.2388613-1-ridong.chen@linux.dev>
 MIME-Version: 1.0
-References: <20260813075025.1406585-1-xueyuan.chen21@gmail.com> <20260813134401.a1fb632936fa3b91e454c82d@linux-foundation.org>
-In-Reply-To: <20260813134401.a1fb632936fa3b91e454c82d@linux-foundation.org>
-From: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Date: Fri, 14 Aug 2026 09:02:55 +0800
-X-Gm-Features: AUfX_mylOzV5S1BtiT-kri0MP_i865uLQASBKaj342mBheeet48cW-Q-PIEvuho
-Message-ID: <CA+qSx6xnAKa+Wa214tbBqXx2onA9QyUANUuzEcceEyvvsoHmng@mail.gmail.com>
-Subject: Re: [PATCH v6 0/4] mm: avoid large folio splits when swap is unavailable
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	zhaonanzhe@xiaomi.com, baohua@kernel.org, hannes@cmpxchg.org, 
-	ryncsn@gmail.com, youngjun.park@lge.com, baolin.wang@linux.alibaba.com, 
-	hughd@google.com, chrisl@kernel.org, shikemeng@huaweicloud.com, 
-	nphamcs@gmail.com, baoquan.he@linux.dev, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
-	david@kernel.org, ljs@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 5padwenz31h39tqd4ewg6emtfz7zqa3k
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: F28CEC000E
-X-HE-Tag: 1786669388-913382
-X-HE-Meta: U2FsdGVkX1+vSrxuYSx007IIVV3bCACviaclz4RoqDNlKAGVmTxY+KUEEBHft2et/X/HWpYoCY4abVXn2jlrxE5PeFYvldumayWVTHIyveza1J+1MkPlxm7W81fmLfdzmNnJfYHKw5ZBLNOTmdj50wdfk8Qz4qEDY1Jo962hqiNnEG53HXqCtW4Kq1gYpe351n+csEBVUm7nCYDkEQpz+7BOJ3THQT7GbnhUbbo/8t7DicnKfYnY2pF3xh801wh3yIYkhUputTMvBAVdS69IvNIqIvCqTFAtTDufMGzDYOUq6bihNOTe1ZgSRe2iYsiptC/X4WWw+VYXNHv3wxLJLsaqzm7qRm/tDmVOiI+l3khfBmc2myOAU0nBRIbKqLMH/3vhlXh3X5BBN7HyUaYlFA0PzqIeEYQorY7U1zSoVq1HUIW5VBjLg/8k1g8l5P2m00xVORnhrJiAvkqf5Yc/lclLnCGtvuKorHKYAuwL34RTKsVDdKD5JhsjKPXBGvXU2Nej68UI+oMzMsf2Pf0yMynNp8O7vDyHaZR3Mgt9gSdjcT2rzklslff4M31bBnSVIdX1YVQbaRIg2meh+Qav+YnlODY91eFPTpwaWEhssVAbzTRSabsdDcfLzMFRztf7H7FHYXfAB6TD5Wiu6DihLj080SApacxZ4i0yJZMWkCBnu/PhjbK0OwCCuIkj73CQ99g//jvF79SrYyeVnkdrQM1RfKP2Do6j7dCF31HcMHHPwLp3+oA60hrjU7xT5GOwsuD6spbL3UgXY4UIX9dXIXJADGTPFgdknIDFee64L3A8s4OtKu750SrhpxnU1t7rT6/GSlA2wJUFpq/cbfyWgEtXctIztxF/knaBCo9qtcTK+GRtU1HmhN4NfhmWfZsvFmDNCkXN9d7YYTevIdUvBeMwTysdmLVrZTa8wgAQDUtTMLSyikAF+Qo76cUirjwKpDVtCQ9npx1iWjtYp5o
- s1SO/Lz5
- U4AV8QgX8CzCZiEG90hHNAmSQ/jb2NiMAuOa8C38i8JGiOu2qIZTegfgJS1CCY2Z0tP31DkYwf48RsXlFnCcMBxd6DZjHElJdIma4JQjHDzD4fJvG2UrHyPFTS4kfu9AnRJwZPO/i5tzEPCn80Pldz4O7P1IyjhAu3VVtpgIZvPIBTKI9IlOE1x+XKbHOCy43BG1x4rwkd/2+whtaZfWwmhHUjI/cRWwzN5gcfv6DSS0hUKRDcMiM5X08Itt9dshRnh64fveRoV4WUUSQYoeA/TcTXX5uNW2gXjvoedIICcQbjBtiwFVu74W9EXTdpN5jnCaApEs6hdNIV6mRsKv2bUH1fEh9judnGOObBGPKG5teDJhRGcbDZ6tFNhZgT2DLBUlUUcF7RXNUvZAl7/SXg+x7CS0D66uLdHLzkXfBj5PAtBf/HkX4I71NssG2hmcCfNoGvc5c7+hamFvGF7NgfsKHoh9RnrKO3jLIDcSQZg0DilBTy9W1LRmKV7Jm4mPTZcy/oOs0rhe3gIA=
+X-Stat-Signature: a691bwpw78ccuwsohu54f14fuf4n3pjf
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5BBC0180005
+X-HE-Tag: 1786670990-104773
+X-HE-Meta: U2FsdGVkX18fFr4VWHDxVKlDwyMg/WryHJP5HwJPyCRz6A75Xay3FUgPE0e0f4+3V/Nc20mVSMighGElbpFI2JY0qS4xa0xcBIvTh+C5NGmou9+bYbFEsNPHri/gj1VJytRmnQOpo7fyyfnkKm+rA3OUrns5YYuqEiTr8bvwukxuQpKTTqY4j4kr5VSVKjuFMp9oWF9m4cfkR0IyIF+Yr1vXQcSOpO60wRLIAM/5OyfAN0qqb/sOr+clnfmSt9KiNjGav5yOMQHNhCeJrF+ElQ82YNZkYtr1Ib3/M8y51D4OGdsBVBqPO92Q8Q0IlzEKXdFkMr3kCSF7ueQNVJbtAJzTstpAER4y6RDlfDIhDCXUQ/KrvQWrUpL3cTWE6s613WMd1JVBMiBU4npbiQMzKxMrkN178PmVxNFUSY8K2KkM9sALhxZNcVTF4deMRZsJLbeWWEKRmQefwj/diI3anntFJrVxbGh1j3WBJ5ZgM6aQZx4N61SBerd+45m0+ou1QbIAu1NaQrCosSdHM2WNfDP3D7rPajwmEKHhOhwxU1pY7D8lNkuO56FPyYcB0KJXrdVOkXhcb9W4E5gBcCtm5JzXUHC4/uWN7JU2dsOKGjF5plCOsryx9BBWLnj5WKAMPaWb9H/VJlJgs8ESw6zkHR1AiTzWSkxDSV257KlWL/TO3c4SeHSM9qJnXcIokTL8zjiEjRKLLLt0TTn3h7minJbbSei+eaa40uDTYwUQb2v70I0xahAYI0M4FYMh6GQC/qcPYRHag/QFts4oNEEL4Ey/utLd0+jd1kAuM5cZ7dWFvAnUtvnjtXlhsmkpKI+6Uq5yjdLuDgSyFi7Ow1ObDFtUDM9IWtyWrmYJCsmyduMblUWBHGv03Z7rzaEb8JodlGMnP++aNtXdqENddF5QX+fmwwSHz0RBi9/Hf21asi6f4fhLO15PeU8mXS9/1aZQFLQMCrjHag66LQ6x4W6
+ S1yUjqv0
+ MThKvSwSieOSl40iZhIYz7R1p5Yo5qiEJCP4ERiPUEniZum6g0FFls0sQmtyCEDUlCiw/iKchr1+DxW9+8v9XQ2ZBjQKyAqozbjjRi6Occ9vPhy2AA7lx8mb9icLi8qB9XT1JTwWfrW38v07RrCRIizLL3xTGDYiQGexBj3kyD56ZUbb/yCHs8M4aNZ8f4O+hCgQ47j09ochfw7exuEHxlv4/tViIGvYVRt3uko1vXPTZJ1JPv2i1PNbm3rHGOiDftEBQdjWqD1SUTOJNHwS1e9FnGg20RhhlczFM1YblagTBbLEfGQxg73uDNp5b8a/SvW74LFPXuVo19vmx59985gSsTjQbQrr7O+Y6cb3k3PVa/MV9ukqnlWmaoAwzf6jqIROvRQNie94jxgZpV1zrYFYcBsW0w4+jg+jTjIAZjkmAGeJfUm292Tu/tFidPn8fFiW/qVrJ3YEzHEGJa1SpqrWyrMFcCWQx30q6DY38Ijuu6dBbLtyAAsBpfCEhvyKKZ93U+yVWU1qzuBG3WnlVqPnZKumv3bQJ9yZC1jZfK3h2Kln4pa3ZTUW65K6Ak/zy/UtZyVZLNsNnaX7yew7LpOOOO512DpKIDzEzhz1ydvZJ0zFnuYK665ZFqL0bl94hVcMxdYMXoHOMKRfby7iuDCnOwuBBLz713J7EIDovMPBUIasNCUECMGkEl1+2RtR4AUZkSdwmvtIyUmjbhobqxEXW7XvYQQOsqFzn9H8OcQCbE+g846FtnJLSYKbiY9o2FoC/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,28 +100,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 14, 2026 at 4:44=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Thu, 13 Aug 2026 15:50:21 +0800 Xueyuan Chen <xueyuan.chen21@gmail.com=
-> wrote:
->
-> > This is v6 of Barry's original RFC patch, "mm: Avoiding split large
-> > folios if swap has no space":
->
-> Thanks.  It looks like a nice patchset and it comes well-reviewed.
->
-> However it's super late in the cycle so I'd prefer to defer this until
-> after 7.3-rc1.
->
-> The changelogs aren't very clear on the overall benefit to our users
-> (please address this), but I'm thinking "minor".  If I'm wrong then
-> lets consider -stable backports and suitable Fixes: targets.
->
+From: Ridong Chen <chenridong@xiaomi.com>
 
-I'll improve the changelogs and run some tests to quantify
-the impact.  If it turns out more than minor, I'll add a
-Fixes: tag.
+Sashiko reported that a reader can transiently observe a lower peak
+within a race window [1]. peak_show() returns
+max(local_watermark, ofp->value), but peak_write() updates those two
+under peaks_lock while the reader takes no lock. The interleaving is:
 
-Thanks.
+  writer (reset on fd A)                 reader (fd B)
+  ----------------------                 -------------
+  usage = page_counter_read(pc)
+  WRITE_ONCE(local_watermark, usage)
+  // watermark lowered to usage
+                                         lw  = READ_ONCE(local_watermark)
+                                         // sees the lowered usage
+                                         val = READ_ONCE(ofp->value)
+                                         // B's value not updated yet
+                                         return max(lw, val)
+                                         // both low -> low peak
+  WRITE_ONCE(peer_ctx->value, usage)
+  // B updated, but too late
+
+Fix it by acquiring peaks_lock when reading the peak, so the reader sees
+a consistent snapshot of local_watermark and the per-fd values. The same
+race applies to memory.swap.peak, which shares peaks_lock and the
+peak_write() path, so take the lock there as well.
+
+[1] https://sashiko.dev/#/patchset/20260730115314.1069089-1-ridong.chen@linux.dev?part=1
+Fixes: c6f53ed8f213 ("mm, memcg: cg2 memory{.swap,}.peak write handlers")
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+---
+ mm/memcontrol.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 17da1f43b7d3..6dd8756870ff 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4713,8 +4713,13 @@ static int peak_show(struct seq_file *sf, void *v, struct page_counter *pc)
+ static int memory_peak_show(struct seq_file *sf, void *v)
+ {
+ 	struct mem_cgroup *memcg = mem_cgroup_from_css(seq_css(sf));
++	int ret;
+ 
+-	return peak_show(sf, v, &memcg->memory);
++	spin_lock(&memcg->peaks_lock);
++	ret = peak_show(sf, v, &memcg->memory);
++	spin_unlock(&memcg->peaks_lock);
++
++	return ret;
+ }
+ 
+ static int peak_open(struct kernfs_open_file *of)
+@@ -5858,8 +5863,13 @@ static u64 swap_current_read(struct cgroup_subsys_state *css,
+ static int swap_peak_show(struct seq_file *sf, void *v)
+ {
+ 	struct mem_cgroup *memcg = mem_cgroup_from_css(seq_css(sf));
++	int ret;
+ 
+-	return peak_show(sf, v, &memcg->swap);
++	spin_lock(&memcg->peaks_lock);
++	ret = peak_show(sf, v, &memcg->swap);
++	spin_unlock(&memcg->peaks_lock);
++
++	return ret;
+ }
+ 
+ static ssize_t swap_peak_write(struct kernfs_open_file *of, char *buf,
+-- 
+2.34.1
+
 
