@@ -4,111 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33239C5B572
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 08:47:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCA4CC5CFC1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 08:55:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D87E6B065B; Fri, 14 Aug 2026 04:47:05 -0400 (EDT)
+	id 9ED906B065D; Fri, 14 Aug 2026 04:55:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 291716B065D; Fri, 14 Aug 2026 04:47:05 -0400 (EDT)
+	id 9CD836B065F; Fri, 14 Aug 2026 04:55:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1786D6B065E; Fri, 14 Aug 2026 04:47:05 -0400 (EDT)
+	id 8B5416B0660; Fri, 14 Aug 2026 04:55:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D81DC6B065B
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 04:47:04 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 50541A2A46
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:47:04 +0000 (UTC)
-X-FDA: 85099245168.13.E038F59
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 93FF61C0008
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:47:02 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pIRbJ5tG;
-	spf=pass (imf20.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786697222;
-	b=8G3MNu1Lx8SWr8/7wxm5QEFf35OIxOJ1gzL+a/VrXtQIfNilJmyo72IKviqAYjnLTWY12Z
-	KB7ZfYLRsZmIzGPuaZPYQqawq8j1y8lY0KVDhQGP/KpkzulQmydjakgrYPzy35TK6jipgw
-	KGyxtJBsqbfqcay5prW1H5Bg/fzLW1E=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pIRbJ5tG;
-	spf=pass (imf20.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 599126B065D
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 04:55:20 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4C525A0396
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:55:18 +0000 (UTC)
+X-FDA: 85099265916.22.ECA29B5
+Received: from mail-wr2-f0.google.com (mail-wr2-f0.google.com [74.125.225.64])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 7FEC940008
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:55:16 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ghHDyNWy;
+	spf=pass (imf12.hostedemail.com: domain of zhanghongru06@gmail.com designates 74.125.225.64 as permitted sender) smtp.mailfrom=zhanghongru06@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786697222;
+	s=arc-20220608; t=1786697716;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=iDqjoiUvHjoApvKi+JnXgMQwtgW5BY8TIp93JdyJukM=;
-	b=QuSzHJVM0XCmhzooDW+4A4G7VG7XHXRkjyW8mBdSbcKxJlSPTg1lsWqEROLj54z64fLEru
-	rfY+svpaHatuQeaz6kSV4ROS4+6/JX0gVsNsNygvT8iwL5MC4Z1PcV5cpn6R82gMSs2faY
-	aS6s43U3/jTjFpDo/Bh5oVGpqhE0Ujw=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cacf197759so12693805ad.2
-        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:47:02 -0700 (PDT)
+	bh=M7Pbg3qHy9dUvw/2GBMFVLtK9eJ8QsOBHb0QGZCzF6E=;
+	b=rbqUYDVLFW2FWngzr0cssu5IMVv5AAghxZTeF89oj7RajfgLRFtvUiu30kkQydsBwzamq8
+	V0LjZXY3ISTYla78z7uKp03ZOCqz1j6Hi0+DV0xLZnDnoENXWn6FgFHQbfFZovrpR8nlOR
+	/9bdfN0K9E10gVvOBgvqILLdph4Fn7k=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786697716;
+	b=1c0L8kpYY4qVewNNsJXNqaHyVX2fX9PhH0fQPrKhloziRWOlkt/Ho4XsBsfbEGC7k+INRV
+	Qk/qHqM5436NBsxbZgwJ+5Vx4FMS3AOYM8476w8m/ZFz1k0U2H7m/iL+yBSt9mgdYKpzzf
+	yDVZi+YbSbaCelerd8DqW3j3C4cbWVk=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ghHDyNWy;
+	spf=pass (imf12.hostedemail.com: domain of zhanghongru06@gmail.com designates 74.125.225.64 as permitted sender) smtp.mailfrom=zhanghongru06@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr2-f0.google.com with SMTP id ffacd0b85a97d-4744516a312so45428f8f.1
+        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:55:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786697221; x=1787302021; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1786697715; x=1787302515; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=iDqjoiUvHjoApvKi+JnXgMQwtgW5BY8TIp93JdyJukM=;
-        b=pIRbJ5tGsdIZzAfVLWbbIYRmIgmUE7jrvQXhtLKQBXtUQTwEnslxC5TH89ohPqY6q6
-         VgRP49ArAbF4PnzESKs6KLQKa+42yr6iYLsMnnszg1P6gf1OKSAcbEZKIMh6QoMWeZIN
-         GPKgMxw0P9rXamPFAGAYdZ1irh3yyEPSWt5sVW7f1javs/XvIkVqC1Qw7fEZMaVvJUVP
-         535if4vowl1FccWQBlyQs0WjLd4IgDJ69VuyBUZKTHVS/93+uhMgDLkVjK6UuKinKFoF
-         7vNVJV1iKajv/Op7meIe2PQeUtVHJSixDpEpBzOnrf1vAxfvcM2QZ+tipc5OCE/M8xQo
-         YTnA==
+        bh=M7Pbg3qHy9dUvw/2GBMFVLtK9eJ8QsOBHb0QGZCzF6E=;
+        b=ghHDyNWyUyzFs4ZLgqZtcM204cvO0HvjN7VKTxvaNnz43UwUkbHlUwJjYeUlBapyRz
+         CPGAUZGedCgFnUEZNaDiOEwHADz09xKHvpqUSjDepbBdpLhqI3wB60wfav10CMO9gazW
+         +AiFRgViJY3aXKMmU5gQZkWDeEUA+cX+KecuT11UhQl3ZKrCO9SP945pJHH74U44a9P/
+         qMaO9OeMd3sfm2xmZQ0arnxeS6BH/K16to2bi8ewssPK+JC0e/YTdxYvKxAR3ogkJQuP
+         anXzKSjSZGE5W+/h50aP7g2XaZWW496QjHDoUiknt1vvbqEnvan+hM86JIVqr10MCaFJ
+         REkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786697221; x=1787302021;
+        d=1e100.net; s=20251104; t=1786697715; x=1787302515;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=iDqjoiUvHjoApvKi+JnXgMQwtgW5BY8TIp93JdyJukM=;
-        b=ILI0FOtmVU522vT7BOEffVCATmIO46dUzyjSsX2TzWbfm0ZEbJfD+QOK3c7pDXN6Y/
-         FNZz08P/NBetCAvY63TQG9YQ3IvQHdMhtZGWJNnNnw7vEoz0x7OiXtbl2p+swNt6OAZr
-         rlK2Egdc5HOnU8aDvjNWXvJanpBsOmtGZ86QpKl/F0MntLA09MwYlbamTg4siTeqAJbR
-         w/Z/yKjrkcc7OVQaySk5aBFPX+Uqx2rz2LZ5cKjeGvcHaVR6nH+Yh7VZOXcdVtOyKw9n
-         ghgmrESB+ZBrKZG9L/TLbNk70PXlzu9H0PyEt+6CCbc7j2ShOhnrmNO8/kgYe8oZ8/13
-         hx5A==
-X-Forwarded-Encrypted: i=1; AHgh+Rrgyru0u2nTqX4F9McY0IJwmoX+3Wy2/oWN0z1oi/VXTY67lLa+IkrOR9BDywZQqbOgd8SvMU2DLA==@kvack.org
-X-Gm-Message-State: AOJu0Yx6NAC58BIfbpfzTYgQ2dP5UKdn4Zl9BpEA83dtGktzujAbjbwc
-	wOxZiAeiuRsO7iSQsT+8X4jEWSkViCSCzd3M9mmn8YQ/SxJQo3sYdfq6
-X-Gm-Gg: AR+sD10ZsOT33DIZgaw4gYvLXqo0G8eTLSuG48eGkCP2reDiwCX6xC0iW86SRyj0aLr
-	78DEkSRl0a95OzQ1E1w64MTJQCte+8Jc4cnGC8uPbaBlPcZ6bpLJ68CCkEVgIXr75bYzsYvw5fF
-	b5s2FUfTrrC3tAc11sXH7pFqw5JSoAnOWxh5VeJ7UgUqXWapQ6ehYx0lL+uc4+dq6qAmMYsXTl0
-	znEy+n9n2ED6v3D4Vg5bvsmcTLom8S2h1W2aiw282u6P1fhGgDC6SrqUMutII0UwpBDLpuqiTLi
-	Apurr3p/nBNu99ZKu+3/j7aSfG3Dy/2mkhn9inY4QUolFcqy+1ud93gauISnHD/qO+kE+fxiWkC
-	gubPBLuxJaFHmBSYZqCXDmHolEfb/Z8COnmeHotvwPqVk2rW2cI/tX8yoC01TI0bt67dzJqNfG0
-	gN/znXR6Vm9dktC5PrKiSfr+ZSk55vzJnTAw9qY4cHCzCa/ZyLb/AZzj8IQVzMFO73Ng3PU+0FK
-	2jaCcHwpDM1GKUp
-X-Received: by 2002:a05:6a21:3384:b0:3c3:64cb:9b99 with SMTP id adf61e73a8af0-3cc719c78e4mr5591931637.6.1786697221422;
-        Fri, 14 Aug 2026 01:47:01 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:85a:5c46:85a5:ec7:8aa8:72be])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-320ea2fe8f1sm2058373eec.23.2026.08.14.01.46.59
+        bh=M7Pbg3qHy9dUvw/2GBMFVLtK9eJ8QsOBHb0QGZCzF6E=;
+        b=Gtn7sy8fW2YRxeVF8QRt4mSrtQFtcGoJGIKzz/P078yqasKzIlLu2N+d9W4Yf0J6DW
+         qXHx5a5lxEKHBxdjbSrvF7y7Ty8yI/OixFaIelI+PZhe8odTINQZJ3LVedg9qF+desIw
+         jncrg3XfCchikpwhMcDNL3PC/00GBr5wArRBggm1mhZaNrBZT4JCg5pXHdrpKYsA08ks
+         i0Zwp1gJkXXQRgeN/5Sq9XJXMXBuMEY6fmLanAy+XwCP6VoqJGK0YERfNQpxlmkcpPlu
+         JfhCAR+YQN8pYaGoRbY6T+Ez06J/ruxNI8hSU3akBx64ihiwtTLGDZFBxVGo9ngIGLdG
+         cQZg==
+X-Forwarded-Encrypted: i=1; AHgh+Rret7YDJpQfvEvysur3P65YpXkwseueGzWWiUe/9P+ueTQNuv+YlSu/LUr54pO8z24aNskhLb68uA==@kvack.org
+X-Gm-Message-State: AOJu0YzQoM2XqXTeSLIj45JWBUXuOboQkjCMzDJdKQx13ezbKV87ND4T
+	znpikqfCGnVpUXebPLmX4M3BjFGaWcCOnaRwfEEsZ39uQv8+SoCLPG3t
+X-Gm-Gg: AR+sD13Fbzt/HPNlASYD0r5FGpWIRctjIB0Bld14QmXUBiR5MQwI5MjxFaMZVoxDiA7
+	EEW1NOOBb0rPIp1NahQlzpzTArVLn8Fduav5fXpPV5jlFqzVtbyifIO9LwnOsnMaswHLmnBsk6m
+	RHSYNc8pZrXKymJfo/zJvjdj7frSfCWBgLfXfDftTbBg69N61VsbSBX/hle7EIKZ9NoWrF0kNVn
+	9Ul7rk7tfNa7MeNkf3HYfG1H/kIEQ2ZLHEb9vxGP9EhsPlqaq8kesPUEqJg197rvY9n3+n3GnT9
+	j36oZCIkuwoXcDAg9Msb1LLcx35ct8S6Se8H2YYk8eV4vWFivURWh/Ra2SiCyp/uXhrXLFGleMB
+	pCKEdXtVfl0PfRj7vfc6GsPohgnf0Nbrp2g/88kjxIn73TmPPWbPT2QT6tiW1Gj2zLQ7CO0YEdH
+	sjmoSvR1MuMluYRUwMDc4ig8uqIvzn9/V/rslTs7I6e4XYMzAojl1DxdI7omSHAlXVEY0dMC03w
+	o4+lFs3z0pkBI4=
+X-Received: by 2002:a05:600c:4e14:b0:495:3bc6:d381 with SMTP id 5b1f17b1804b1-49987a4f03bmr50711495e9.2.1786697714519;
+        Fri, 14 Aug 2026 01:55:14 -0700 (PDT)
+Received: from zhr-ThinkStation-K.mioffice.cn ([2408:8607:1b00:8:10f3:285:31cf:47aa])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4998777d428sm28760795e9.0.2026.08.14.01.55.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 01:47:01 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: Gutierrez Asier <gutierrez.asier@huawei-partners.com>,
-	damon@lists.linux.dev,
+        Fri, 14 Aug 2026 01:55:12 -0700 (PDT)
+From: Hongru Zhang <zhanghongru06@gmail.com>
+X-Google-Original-From: Hongru Zhang <zhanghongru@xiaomi.com>
+To: akpm@linux-foundation.org,
 	linux-mm@kvack.org
-Subject: [RFC/Discussion] mm/damon: Helping with alternative for watermarks
-Date: Fri, 14 Aug 2026 16:47:10 +0800
-Message-ID: <20260814084710.39955-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.55.0
+Cc: david@kernel.org,
+	liam@infradead.org,
+	linux-kernel@vger.kernel.org,
+	ljs@kernel.org,
+	baohua@kernel.org,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	shakeel.butt@linux.dev,
+	surenb@google.com,
+	vbabka@kernel.org,
+	willy@infradead.org,
+	zhanghongru@xiaomi.com
+Subject: [RFC PATCH v5] mm: retry page faults once under the per-VMA lock
+Date: Fri, 14 Aug 2026 16:53:00 +0800
+Message-ID: <20260814085300.399107-1-zhanghongru@xiaomi.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 93FF61C0008
-X-Stat-Signature: qdich4kq787hrjnnnhom6wky19yeox6z
-X-HE-Tag: 1786697222-895572
-X-HE-Meta: U2FsdGVkX18+T4+NgF8I5mXwSaduESx67UUR7d+5Fg7xf78ONgaPuGgizHyYoPdnffPNdPqMH2QiiKV/wtZMvaqoxdQzmxZIrZbHuy4vYjAbOjtLO6kZyStBRRI40me0szruSUEpG1WNFnm1M/QLV2SWF+zC1lQrwTjDrq/uGLhmFB09Li25/Sbhxz/zFuxS+6tzZmR/b+Q5KDy9nf9SGu5zeT2tzLCmaiO+70S2ls6tDZJQFZhA96wWItghW4Ozg+7n4MbIrK0UiN6uQZEu2e2iODPBRh81v29jBtrxi7DJAcoJ6Rp846slVMeyMJqylvS7FQq8IvVDgwxE3+lcHjknp0n7E7MDmmObbNkCP+acEPKRaShLmyI8L2kX/zBb/ZYEZIKi3b2qwO1jfMX3NeyYREp/sysA0ljxyRN8DAcf7sxPvlx1kq0KVA31nBFTFuIatEYHHrQOr8PSoFCMJ4GSuWMy5+P7S9Dzk8SlboJnazkhqdkFIcb6gii6VZymQiD9WkmKasHCctrfFt8qpH5cR4KpxVBkAUC88fGaKlbzMk4NMbs0a81zBpcFQA9+2U4AJPUgHC7jZfCq6UtG4bfeG5viaxT8UhhmGv+04YGnKYVF46y2AtBHMQjnY6TTV6E954n5JcD9f/AlcQFE7nkZgIbroMwU0AXQYLap1KxIDtYrrvwEz0EA7dfcyRH3bpRoVMlekuy1slt0Qm77YC0SDjbvvNt1vTIAqZnZ/f3pfACrDuSDxVGQyQjZlSOWfT9L49Ne6iFJhd8PasKp2KB9iCg8sq4swx4i37FLxsKOqrupaR1CsZsICB191eD8M3hxUBWWQs6CgINZkn7SopVBSkbVFcT1JpZwhkw+d7h0pJ5tpmfrb8YaSQhVeqNkp6opQt6OpKtPIvJbitGE+7oANv1Is9ZWCP/H7VQKMdA1VIypx61YoMs7BneQOMSZRZ1Rm6rOF0r1qHkd0Pb
- cu/Gr85G
- qx2fkV9nNwLJk/i37jONsV2lojnfsppuZ3YohczWBvW23jteFcEKvH4VVmGGkG3wMxepMpiLnl5hhaE3lhHxPE3PTMg5rInLgWvQ9dgfyhEbonXBRufE003EzgR1YuVPl6m2vk8eMqFk1ylPhQtfqlxUlaJKfer4SmnF1+IfV0/qOn7yFz9LfsumCo9FCB6Tch779z0rYuUQ82krYUmehr3NvWvDw5GWqGt4NiqsMDeMHTkLN3poyxg2u9HACwZMb7RaN5MXJT0uAmGJvDKnx36Hfrody6knGCx2VAdegF2rSAciYmmyNnI2u8tgLrg736tIwy416xiJdfXxB5axJY5pJkRS0WZcPeKGRHLYqRp88YJ6scW2yy50ZGS6qh8v90ImoEfq+ygI/nLFE8a5i4yqY+HTfu07A8fK+LhrWqPsfet/OpIcFxRvg5keM9CjjIT4pTbhvU6c5wFA=
+X-Stat-Signature: 41649r7zrfwcko4b9drdbn4h9w89k9ff
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7FEC940008
+X-HE-Tag: 1786697716-824402
+X-HE-Meta: U2FsdGVkX1+0iQen7qb57FceTPHjL9B+R1yIIrVd5e0F048inRX479AaxX99xZ5UWiRnFr1GEtIyoIaYId5jUpY5E72lmI2duhWGOVnx/CG+rD1vAomRNdjeivVAHMBgfsk9fEmOQx3SqGJt3NYDGfUTr3VWz35JSeAk6mIlpyc/6hL6SF8vlX18U6H00uP4y58aqTEharf6u4ZKgVX8d6OTR/FJindKFTBjuoxJuwUgigS2zHjo2uVhen8iERa+JLX4TPBRMMhspX/wqg0yPUd/xzlbKevzvcDSSpwKZr5bKyfrlSx4jOxHDCDO485WMOSRKEiuL04tV0Bxe/Zorp+f82EozOVWvyZaa2Xd1FeP+h2TU7WsxIjcShExwRaKh1tnx/FMU67wjjdX2FHwN9wEtjah+yJn1rw/P0C9yXQhHaaN7IvmcdO+BoAIN9G7RQwctQAsV8vhyZRppjg9CX3FpD6nqtXe/1zfF5L1VbdwiY7Qkmgw2AZ157GikMYDN+mvVy4SztXjs/VXktsSVvm+A3a2Xnq7lP+rWsWFGTe5qahPSF4rCd2xrDOoeM3lCamWgoU0wei2ybHvq0sCSb0QFicsgxo7O907XSk6aTaLSFw/YjuB8jQVEUioXp7WiQ0ueLwEaqSmS6cOD3EbWGPIYKiety1yKW/8bgSGM+fJKjxTI3Y08JWhOLjFqagNhwxjsYgQckDpvu3ZIV4tZ4Eo+GU9+yfxnHir8+r4rfDzItE7uVv4uqX/xZYVTdYvcqukfNyDsGr0drJuEZRvvLhwIGDjgDo4inAyIdBP9opeqSOZjt81Hla7B0Ez5e3H4CQWCOGnYEO3idgxYTFbNFRGmhyky26t1ibfJKuwqE4XqFCJp/zTkV2Cdswp/RhE9Gs3+RSJYvSpN5RI/kXMVRTyhZTctW3R3cAXmaZfdo7qzBYQ0MTKChbPGr8ru9sWPb2LNS8pvxsoAeBg2IC
+ PJAqBuvj
+ KRoXc2Yg9TmQW0COu0cUUh11fKuW+Rf344xJop52c14vwluCQwvfR2yHkSTVXus0EAVW8/FbgH8qKJacH9Gy/6tYgrMm0BakYtuz2y1cq3VNfMp1LLIXbNb8Mm+Udz9TmJvewSvWvBpRMf2L9T6ddNcBDoAFNMnf8U599dGeC9sMBfGOnUlf1L7HyfV+3mp1gOej846oLeb5sSlbhv9VJVcG2+z+LjZOiHJChDPiooEqi6gNZ7u4eNgTLSYB90IezwrY21ZNpuAuoqGu5i9hhxbLQz5gRYQcSoF2nqbz2Pqnop34YahMUMeVfW+fuD9Biyq9dmqfeCcLkDOCb+qxNZNptMXj18/fzyH0uZRDgufwrOOhS9N2jC96YjKNKXF14AU9BaW1BDIfzNK/TepcKBvdUZ8shUMHBucBkO4yRygxDfVpfSyzU9lz24g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,58 +127,356 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+From: Hongru Zhang <zhanghongru@xiaomi.com>
 
-Regarding the alternative superior feature to replace watermarks [1], I
-am very interested in helping you design and/or implement it.
+The per-VMA lock fault path falls back to mmap_lock on VM_FAULT_RETRY.
+When mmap_lock is write-contended, the fallback can reduce page-fault
+throughput.
 
-To share my context: I am primarily using DAMON_RECLAIM on my personal
-laptop.  During my usage, I found that using the free memory rate
-(MemFree) as the default watermark metric is highly problematic for
-modern Linux environments, because the kernel aggressively uses free
-memory for page cache.  Therefore, I compiled a custom kernel that
-supports monitoring the available memory rate (MemAvailable).  Since I
-understand that the current watermark mechanism is not planned for
-long-term extension, I refrained from proposing improvements to it, and
-instead focused on understanding why that direction is limited.
+Add a single retry under the per-VMA lock in the arch fault handler
+instead of adding a new VM_FAULT_* flag. This avoids overloading
+vm_fault_t with retry policy and leaves the lower-level fault handlers
+unchanged. It lets faults that can make progress on an immediate retry
+stay on the per-VMA lock path, avoiding waits on mmap_lock when it is
+write-contended and thereby improving page-fault throughput. Some faults
+may retry unnecessarily, for example in the __vmf_anon_prepare() path or
+device-private fault handling, but these cases are expected to be
+infrequent and only add one cheap per-VMA lock attempt. If the second
+attempt still returns VM_FAULT_RETRY, the fault continues through the
+existing mmap_lock path.
 
-I am very interested in understanding the design constraints behind
-deprecating watermarks.  From my current perspective, watermarks have
-these drawbacks as a run/stop mechanism:
+Based on the stress model from Kunwu Chan and Wang Lian in RFC v2, we
+adapted a benchmark [1] to a 20-core Intel i7-12700 desktop by reducing
+the thread count and adjusting the memcg limits. The benchmark uses
+concurrent page faults under memcg pressure with parallel munmap to
+amplify mmap_lock read-write contention.
 
-- Mismatch between local monitoring and global triggers: When monitoring
-  a specific target (e.g., via VADDR), the scheme's run/stop decision is
-  currently tied to global system watermarks.  It is impossible to
-  determine whether to run/stop the scheme based solely on that specific
-  target's memory usage.  Therefore, the new mechanism might need to
-  allow user-space to pause/resume schemes based on custom, target-aware
-  metrics.
+Filemap Throughput (higher is better):
++---------+------------+---------------------+
+| Threads |  Vanilla   |       Patched       |
++---------+------------+---------------------+
+|   40    | 1069.34 /s | 1400.13 /s (+30.9%) |
++---------+------------+---------------------+
+|   60    | 1038.12 /s | 1683.37 /s (+62.2%) |
++---------+------------+---------------------+
+|   80    | 1042.62 /s | 1767.83 /s (+69.6%) |
++---------+------------+---------------------+
 
-- Lack of diverse metrics: Watermarks currently lack support for metrics
-  like PSI or inactive/active memory ratio, even though such metrics
-  might be better suited for DAMOS auto-tuning goals.
+mmap_lock contention count (lower is better):
++---------+-----------+---------+-----------+
+| Threads |  Vanilla  | Patched | Reduction |
++---------+-----------+---------+-----------+
+|   40    | 3,187,336 |  52,086 |  -98.4%   |
++---------+-----------+---------+-----------+
+|   60    | 4,385,154 |  65,079 |  -98.5%   |
++---------+-----------+---------+-----------+
+|   80    | 5,337,890 |  69,708 |  -98.7%   |
++---------+-----------+---------+-----------+
 
-However, I realize these features could probably be achieved by simply
-improving the current watermarks.  Most of the drawbacks I can think of
-are basically about "not enough metrics/customizability".
+These results show that retrying once under the per-VMA lock keeps more
+file-backed faults on the fast path, improving throughput and reducing
+mmap_lock contention.
 
-I assume there is a deeper architectural reason why you consider this
-direction unsuitable for long-term evolution.  If you could share a bit
-about those constraints, I would be able to think about the new
-mechanism in the right direction, rather than approaching it from my own
-assumptions.
+Using benchmark [2], we tested this on a 20-core Intel i7-12700 desktop
+with a 2GB swapfile. The benchmark uses one pressure thread under memcg
+limits to keep a 128MB non-zero anonymous mapping under swap pressure,
+12 reader threads to fault it back in, and optional mmap writer threads
+to amplify mmap_lock read-write contention. Each test ran for 60 seconds
+and reported completed reader rounds per second under swap pressure.
 
-My need for a more accurate trigger metric (like MemAvailable) and
-always-on monitoring is exactly why I want to help build the new
-mechanism.  I prefer to invest my time in the future architecture rather
-than adding features to a mechanism that is about to be deprecated.
+Swap Throughput (higher is better):
++--------------+-------------+---------------------------+
+| mmap writers |   Vanilla   |          Patched          |
++--------------+-------------+---------------------------+
+|      0       | 17303.09 /s | 17899.48 /s       (+3.4%) |
++--------------+-------------+---------------------------+
+|      4       | 12596.23 /s | 16095.20 /s      (+27.8%) |
++--------------+-------------+---------------------------+
+|      8       |     0.58 /s | 15420.57 /s (+2658619.0%) |
++--------------+-------------+---------------------------+
 
-If you are open to this, I would be happy to start by reviewing the
-design direction you have in mind, and then help with implementation or
-testing where it is feasible for me to contribute meaningfully.
+With increasing mmap_lock write pressure, Vanilla degrades sharply and
+drops to near zero at eight writers. Patched kernel holds up much better.
 
-[1] https://lore.kernel.org/damon/20260808000739.1308-1-sj@kernel.org
+[1] https://gist.github.com/zhr250/c36c2c54d9351df37e12fd072d4926ef
+[2] https://gist.github.com/zhr250/218ffe693f842346b56434483127422c
 
-Best regards,
-Rui Yan
+Signed-off-by: Hongru Zhang <zhanghongru@xiaomi.com>
+Suggested-by: Barry Song <baohua@kernel.org>
+Suggested-by: Suren Baghdasaryan <surenb@google.com>
+Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+Changes since RFC v4:
+- Drop `VM_FAULT_MAY_USE_VMA_LOCK` and always retry once under the
+  per-VMA lock, based on feedback from Lorenzo and Barry. Thanks!
+
+Changes since RFC v3:
+- Keep VM_FAULT_RETRY unchanged and add VM_FAULT_MAY_USE_VMA_LOCK as an advisory bit
+- Bound VMA-lock retries with FAULT_FLAG_TRIED
+- Opt in filemap_fault() and do_swap_page() to VM_FAULT_MAY_USE_VMA_LOCK
+- Rebased on mm-unstable
+
+Changes since RFC v2:
+- Redesigned as a single blacklist-based patch (v2 was 5 per-path patches)
+- Added retry_vma loop to all architectures (not just x86)
+- Rebased on mm-unstable
+
+Changes since RFC v1:
+- collect tags from Pedro, Kunwu and Lian, thanks!
+- handle case (2), for uptodate folios, don't retry PF
+
+Link to RFC v4:
+https://lore.kernel.org/lkml/20260804095135.45897-1-zhanghongru@xiaomi.com/
+
+Link to RFC v3:
+https://lore.kernel.org/all/20260626075019.1833065-1-zhanghongru@xiaomi.com/
+
+Link to RFC v2:
+https://lore.kernel.org/all/20260430040427.4672-1-baohua@kernel.org/
+
+Link to RFC v1:
+https://lore.kernel.org/all/20251127011438.6918-1-21cnbao@gmail.com/
+
+ arch/arm/mm/fault.c       | 8 ++++++++
+ arch/arm64/mm/fault.c     | 8 ++++++++
+ arch/loongarch/mm/fault.c | 8 ++++++++
+ arch/powerpc/mm/fault.c   | 7 +++++++
+ arch/riscv/mm/fault.c     | 8 ++++++++
+ arch/s390/mm/fault.c      | 6 ++++++
+ arch/x86/mm/fault.c       | 8 ++++++++
+ 7 files changed, 53 insertions(+)
+
+diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
+index e62cc4be5adf..319fd89c4263 100644
+--- a/arch/arm/mm/fault.c
++++ b/arch/arm/mm/fault.c
+@@ -340,6 +340,7 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ 	vm_fault_t fault;
+ 	unsigned int flags = FAULT_FLAG_DEFAULT;
+ 	vm_flags_t vm_flags = VM_ACCESS_FLAGS;
++	bool vma_lock_retried = false;
+ 
+ 	if (kprobe_page_fault(regs, fsr))
+ 		return 0;
+@@ -391,6 +392,7 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ 	if (!(flags & FAULT_FLAG_USER))
+ 		goto lock_mmap;
+ 
++lock_vma:
+ 	vma = lock_vma_under_rcu(mm, addr);
+ 	if (!vma)
+ 		goto lock_mmap;
+@@ -420,6 +422,12 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ 			goto no_context;
+ 		return 0;
+ 	}
++
++	if (!vma_lock_retried) {
++		vma_lock_retried = true;
++		goto lock_vma;
++	}
++
+ lock_mmap:
+ 
+ retry:
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index 0b52557652be..b8633863380e 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -610,6 +610,7 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+ 	struct vm_area_struct *vma;
+ 	int si_code;
+ 	int pkey = -1;
++	bool vma_lock_retried = false;
+ 
+ 	if (kprobe_page_fault(regs, esr))
+ 		return 0;
+@@ -678,6 +679,7 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+ 	if (!(mm_flags & FAULT_FLAG_USER))
+ 		goto lock_mmap;
+ 
++lock_vma:
+ 	vma = lock_vma_under_rcu(mm, addr);
+ 	if (!vma)
+ 		goto lock_mmap;
+@@ -724,6 +726,12 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+ 			goto no_context;
+ 		return 0;
+ 	}
++
++	if (!vma_lock_retried) {
++		vma_lock_retried = true;
++		goto lock_vma;
++	}
++
+ lock_mmap:
+ 
+ retry:
+diff --git a/arch/loongarch/mm/fault.c b/arch/loongarch/mm/fault.c
+index 2c93d33356e5..ef6ea847b1e0 100644
+--- a/arch/loongarch/mm/fault.c
++++ b/arch/loongarch/mm/fault.c
+@@ -181,6 +181,7 @@ static void __kprobes __do_page_fault(struct pt_regs *regs,
+ 	struct mm_struct *mm = tsk->mm;
+ 	struct vm_area_struct *vma = NULL;
+ 	vm_fault_t fault;
++	bool vma_lock_retried = false;
+ 
+ 	if (kprobe_page_fault(regs, current->thread.trap_nr))
+ 		return;
+@@ -219,6 +220,7 @@ static void __kprobes __do_page_fault(struct pt_regs *regs,
+ 	if (!(flags & FAULT_FLAG_USER))
+ 		goto lock_mmap;
+ 
++lock_vma:
+ 	vma = lock_vma_under_rcu(mm, address);
+ 	if (!vma)
+ 		goto lock_mmap;
+@@ -265,6 +267,12 @@ static void __kprobes __do_page_fault(struct pt_regs *regs,
+ 			no_context(regs, write, address);
+ 		return;
+ 	}
++
++	if (!vma_lock_retried) {
++		vma_lock_retried = true;
++		goto lock_vma;
++	}
++
+ lock_mmap:
+ 
+ retry:
+diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+index 806c74e0d5ab..06018b6d7086 100644
+--- a/arch/powerpc/mm/fault.c
++++ b/arch/powerpc/mm/fault.c
+@@ -422,6 +422,7 @@ static int ___do_page_fault(struct pt_regs *regs, unsigned long address,
+ 	int is_write = page_fault_is_write(error_code);
+ 	vm_fault_t fault, major = 0;
+ 	bool kprobe_fault = kprobe_page_fault(regs, 11);
++	bool vma_lock_retried = false;
+ 
+ 	if (unlikely(debugger_fault_handler(regs) || kprobe_fault))
+ 		return 0;
+@@ -487,6 +488,7 @@ static int ___do_page_fault(struct pt_regs *regs, unsigned long address,
+ 	if (!(flags & FAULT_FLAG_USER))
+ 		goto lock_mmap;
+ 
++lock_vma:
+ 	vma = lock_vma_under_rcu(mm, address);
+ 	if (!vma)
+ 		goto lock_mmap;
+@@ -517,6 +519,11 @@ static int ___do_page_fault(struct pt_regs *regs, unsigned long address,
+ 	if (fault_signal_pending(fault, regs))
+ 		return user_mode(regs) ? 0 : SIGBUS;
+ 
++	if (!vma_lock_retried) {
++		vma_lock_retried = true;
++		goto lock_vma;
++	}
++
+ lock_mmap:
+ 
+ 	/* When running in the kernel we expect faults to occur only to
+diff --git a/arch/riscv/mm/fault.c b/arch/riscv/mm/fault.c
+index 04ed6f8acae4..ff861793dba9 100644
+--- a/arch/riscv/mm/fault.c
++++ b/arch/riscv/mm/fault.c
+@@ -284,6 +284,7 @@ void handle_page_fault(struct pt_regs *regs)
+ 	unsigned int flags = FAULT_FLAG_DEFAULT;
+ 	int code = SEGV_MAPERR;
+ 	vm_fault_t fault;
++	bool vma_lock_retried = false;
+ 
+ 	cause = regs->cause;
+ 	addr = regs->badaddr;
+@@ -347,6 +348,7 @@ void handle_page_fault(struct pt_regs *regs)
+ 	if (!(flags & FAULT_FLAG_USER))
+ 		goto lock_mmap;
+ 
++lock_vma:
+ 	vma = lock_vma_under_rcu(mm, addr);
+ 	if (!vma)
+ 		goto lock_mmap;
+@@ -376,6 +378,12 @@ void handle_page_fault(struct pt_regs *regs)
+ 			no_context(regs, addr);
+ 		return;
+ 	}
++
++	if (!vma_lock_retried) {
++		vma_lock_retried = true;
++		goto lock_vma;
++	}
++
+ lock_mmap:
+ 
+ retry:
+diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
+index 028aeb9c48d6..faae0e91b90b 100644
+--- a/arch/s390/mm/fault.c
++++ b/arch/s390/mm/fault.c
+@@ -271,6 +271,7 @@ static void do_exception(struct pt_regs *regs, int access)
+ 	unsigned int flags;
+ 	vm_fault_t fault;
+ 	bool is_write;
++	bool vma_lock_retried = false;
+ 
+ 	/*
+ 	 * The instruction that caused the program check has
+@@ -294,6 +295,7 @@ static void do_exception(struct pt_regs *regs, int access)
+ 		flags |= FAULT_FLAG_WRITE;
+ 	if (!(flags & FAULT_FLAG_USER))
+ 		goto lock_mmap;
++lock_vma:
+ 	vma = lock_vma_under_rcu(mm, address);
+ 	if (!vma)
+ 		goto lock_mmap;
+@@ -318,6 +320,10 @@ static void do_exception(struct pt_regs *regs, int access)
+ 			handle_fault_error_nolock(regs, 0);
+ 		return;
+ 	}
++	if (!vma_lock_retried) {
++		vma_lock_retried = true;
++		goto lock_vma;
++	}
+ lock_mmap:
+ retry:
+ 	vma = lock_mm_and_find_vma(mm, address, regs);
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index 45b99c3b1442..c3ab30d32a15 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -1222,6 +1222,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	struct mm_struct *mm;
+ 	vm_fault_t fault;
+ 	unsigned int flags = FAULT_FLAG_DEFAULT;
++	bool vma_lock_retried = false;
+ 
+ 	tsk = current;
+ 	mm = tsk->mm;
+@@ -1331,6 +1332,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	if (!(flags & FAULT_FLAG_USER))
+ 		goto lock_mmap;
+ 
++lock_vma:
+ 	vma = lock_vma_under_rcu(mm, address);
+ 	if (!vma)
+ 		goto lock_mmap;
+@@ -1360,6 +1362,12 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 						 ARCH_DEFAULT_PKEY);
+ 		return;
+ 	}
++
++	if (!vma_lock_retried) {
++		vma_lock_retried = true;
++		goto lock_vma;
++	}
++
+ lock_mmap:
+ 
+ retry:
+
+base-commit: e737cebb8de0d38e8f64584a8bbfbcf9176c7537
+-- 
+2.43.0
+
 
