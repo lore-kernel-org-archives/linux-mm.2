@@ -4,114 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 725D2C5DF69
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 12:56:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E47B6C5CFDB
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 13:02:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5943A6B06AD; Fri, 14 Aug 2026 08:56:11 -0400 (EDT)
+	id D22D46B06AC; Fri, 14 Aug 2026 09:02:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 525D96B06AE; Fri, 14 Aug 2026 08:56:11 -0400 (EDT)
+	id CF2666B06AE; Fri, 14 Aug 2026 09:02:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40D046B06AF; Fri, 14 Aug 2026 08:56:11 -0400 (EDT)
+	id C2F326B06B0; Fri, 14 Aug 2026 09:02:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1258F6B06AD
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:56:11 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 95DB9120431
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:56:10 +0000 (UTC)
-X-FDA: 85099872900.23.BDD8591
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 074EF180003
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:56:08 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="e977F/nZ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 955786B06AC
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 09:02:43 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 25F7480417
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 13:02:43 +0000 (UTC)
+X-FDA: 85099889406.08.45630C5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 56E9214000E
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 13:02:41 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WRwhsrIp;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786712169;
+	s=arc-20220608; t=1786712561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cX+72s9o2pIYhrhjJqMobcQWIikVZ9nl0Ljsw77hPx4=;
-	b=ouIzyztFR/ZvT9spN584TmtpxTLWfhEtdc5m/PaM2vgESyHG3VY8alLrVraU3sj7aAqlN4
-	c90jO1zkX4JLw/8IKIvI1dTT5TYOo6h+9jYX1w4c/naqiTpXU/ru2vB9G+s1qQUbHOYdD7
-	Xlpy0YuAidIb1NntvfdkQGvrbiEgDUc=
+	bh=9u1rGVG6agDFZWdG40l3zEmJc1IeDbuPGBZf6iWuaOo=;
+	b=3MVZMeMrG/dQFT/H/NMAV5CNTvgvuStRWQIDl2H7K85T1xmWV/N6FvNrYhA8YOiOWlpSzD
+	mUuUHfsqXdlX0szsxdRhZYkr+I7nbfLPC4WMtpCWClWpeSxFI+pZ3nkKNHNPMARzk7N4BQ
+	mAmr9z/tGX+zyEIKKIB1RlIcx3a6ix4=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="e977F/nZ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WRwhsrIp;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786712169;
-	b=vjZ1iv7uBqWUQbVBhBgj4V+IRP2qhmajnxPv/4WAzRYFWXFuc3ewOyJsZn54Ys3el1P68k
-	tADeGNHMrG5LWXTp0F/VPIlzLCDCgtNLARlnjDkDoT8OhDC2QwdXRf0qB7WPbgsKUoue3T
-	ehczfERkQq+6L7a37sMC/UDVlxBnOh4=
+	t=1786712561;
+	b=CS0aOUaUCJj4QAGwV9eoHUZXmc+xH1GOO6PThKoi39wXM+m+Wp5GN4metEsuoGcTQeTVUo
+	ek4u2PjljaaZ9xeo2i5yL/qV1kAFgMDKIgPUsRCdETIqP+ubGb5Q34UU5bH+Lg+ABUMI8b
+	Gb/z6XyybTuwBdhFB1/IeaJk09xheCI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 581C560120;
-	Fri, 14 Aug 2026 12:56:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54BE81F000E9;
-	Fri, 14 Aug 2026 12:56:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6AE7E43441;
+	Fri, 14 Aug 2026 13:02:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC841F000E9;
+	Fri, 14 Aug 2026 13:02:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786712168;
-	bh=cX+72s9o2pIYhrhjJqMobcQWIikVZ9nl0Ljsw77hPx4=;
+	s=k20260515; t=1786712560;
+	bh=9u1rGVG6agDFZWdG40l3zEmJc1IeDbuPGBZf6iWuaOo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=e977F/nZkZ3+kWqrRqgIfVJd/aBqAfJBoJ0g2Jj+dswl1Yg8oI6tRpw4WyEGE1+X5
-	 ugqpy7w+0PGPzYIzyhQ49UE79ycBGLH814wt5t6VCwpq/fsYz5+oV6IV4OYn2PPgAn
-	 fv3+Ey1E7u2WkT/SQL0uxiu065pQDQk0viXx9tFYyrgo8quEfA5xgasEuIKFLpRfW4
-	 9LtheyIuV7FSxZqP0wPnWpQNgWraqQlCpz1CQlD8dVJ3450cieekXQzAVhaDRThuU6
-	 /K81KqNxEY9a5Z6oTmwsp7EawXpN2CYk+7qgYfB/RCh2d6ibc/4AAJKcUkji02OGAJ
-	 P+ZrWGMhbtoHQ==
-Date: Fri, 14 Aug 2026 14:56:05 +0200
-From: Thierry Reding <thierry.reding@kernel.org>
-To: Vincent Donnefort <vdonnefort@google.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Sowjanya Komatineni <skomatineni@nvidia.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Russell King <linux@armlinux.org.uk>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
-	Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
-	"T.J. Mercier" <tjmercier@google.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Chun Ng <chunn@nvidia.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
-	linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>, 
-	pavan.kondeti@oss.qualcomm.com
-Subject: Re: [PATCH v4 07/10] dma-buf: heaps: Add support for Tegra VPR
-Message-ID: <an8K2gb1pIqbDj6-@orome>
-References: <20260807-tegra-vpr-v4-0-5510d16af89e@nvidia.com>
- <20260807-tegra-vpr-v4-7-5510d16af89e@nvidia.com>
- <an4MEI7lkc2p3nKI@google.com>
+	b=WRwhsrIpWrAeXQ6+P5BbK653mIKbVuP3KoJuEhKi7AYB2Cy4IwT2135T3HzhsQn3z
+	 pAz+xiSbm2blljK4UjJ1Uyl/H2qnJ8/qxqgINpoU4b3IhCVSVEOYQ81GjtNIsE3VXh
+	 NO+eBPFpJYwfl57ePvXhg5q04txgqXy5lW6XmgTnUQ8RPzyg1UXbKcuZdfWM8NlC8P
+	 bGEnViqmf1FTXg4JskvS8iA+UMoX0mcTHM5VyDDP7pdUJVqRqRxcjKOFfXSYIbaI+d
+	 t+JJrebOkmosntcpdRtPblcAI3spk1A78mewlJ7fp5lRojtQB0uHk1BLwNQTkXV5kP
+	 ymsFTF5pCkAgA==
+Date: Fri, 14 Aug 2026 14:02:21 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Hajime Tazaki <thehajime@gmail.com>
+Cc: daniel@thingy.jp, gregkh@linuxfoundation.org, linux-mm@kvack.org, 
+	geert@linux-m68k.org, arnd@arndb.de, willy@infradead.org, jack@suse.cz, 
+	akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, jannh@google.com, 
+	pfalcato@suse.de, linux-fsdevel@vger.kernel.org
+Subject: Re: [RFC PATCH 3/6] mm: nommu: fix an issue on map request to
+ /dev/zero
+Message-ID: <an8PTKUAuZh3BtJm@lucifer>
+References: <20260813063401.1786548-1-thehajime@gmail.com>
+ <20260813063401.1786548-4-thehajime@gmail.com>
+ <2026081355-remold-sterility-84f9@gregkh>
+ <CAFr9PX=zC8GnxwrR=wTwA4xQq89cHYpxZWooS+-=Q-WuNbjanQ@mail.gmail.com>
+ <an3COKVbgQKdY52d@lucifer>
+ <m25x1crhym.wl-thehajime@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="wsqkte2vdducxgiq"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <an4MEI7lkc2p3nKI@google.com>
-X-Rspamd-Queue-Id: 074EF180003
-X-Stat-Signature: 57cr4h9yg3p9934rgk7bapkzzgskf8w8
+In-Reply-To: <m25x1crhym.wl-thehajime@gmail.com>
+X-Stat-Signature: rqmf866a1stfzpxq41h5tctf4og56wzh
+X-Rspamd-Queue-Id: 56E9214000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786712168-671022
-X-HE-Meta: U2FsdGVkX1/BOepGXn04FG0TgbRKom2A/cs93lNefjsB31UqlHh7fYvMXLcXNlu5mIejkAW1Qsb92p6TggvEugmAY6vkWWWmp10BlewpcWlp2RejYhiLvC5/JsT5C//e9EBrT8imNDndzzIOthiU7svlijrLl4NLzGgYH0XueRr+ujRB1pIFpe8ZplHDA4o1rWk0h8yR1Rr0910pO5j2RLmZ4H4fayuOP8RFtI8K7HsAGbUGzvu7ZJjArkFVzDA//qEPB55Mj8RV2joJaleLCvUppeaX6bqq0iPWXP2FZdMdfjIutJekkMYg8Ra6A4Y97btSlYJwgvfasp6mhFElo7SrGLiFBDN7i6dQ2iFXfRACGAest282LLInQ6JM/HKcq1Nm20gPDKXc4MpOGHyiGr6Pr3F5lEYGk+Se7iVzEov3EScEaS6fYSsSSJOeke+GoTV+Z5oqHjZITl9fIza45EEns8jc0U1R05nr3DtraJ2l2ax+akyG7wcjSnX9mH9b8F+w98ExG1XZQrq0ce2/EqH9NRwbhr59cwdaYeKagKeOqAdu8XOLN4/3VOWhqkkFhmHHywZcmFJKmLxh69njKHIV0352kUXai0jhflqsqDcfP0kwZdCW9HrF5ct8sHx10ZbwMlseYo6+SSbsMStZiHmUrXiqAycQkazs6ELDO9CWtRBBPNhjcBJaGFUztICQ4j0+kKe2cOP4TZADuhb9qZ0N73C5N52aq1hdedSxBKVNiCVE4t61H71QdeZtktnkOJOsRbJj7YGeF+Z17SijAuUucQwyDgtsSlweTzhJLyIv5zLgWXiVVW8rtOBj1Mtv1RwG4BaMXWDopg4sogOznjPxunodY68zwgFM/Z+yFTDmruTfZbtPzmIP3CMNDa6yDzo2IW4PMc/LbM0T3wIF867UK3lmD/lQw+q1/HBPEONctrW7Ag0aoc5LYIBFV2MHziyWNuBQAVKwYsBCJq1
- 4wbNEFei
- 0Jl3R6qGZvF9dmOPIxC54pL0hLAdw7nGaByNUth/lErSOQQOmlbxmGEBrSadk5bOtSeC5j/o1t6SSsESlZnSRRoFTXOsCgTxVzc5qm/mCUdeXYBqamd98KUwIEbObz7kkCtFpwooiZ/5CRXm/mHwqB0oqgNYB3lHSj+gMZbsfqLWG23+NZJdMBu3fFCfCBERfO/+akbu93T0OFUtUCacTzvExDVhcYIu6byaG2KNYVZbg/SGZfHjAKjUMAOjypPpvv+pqg2731jtcWmC/6bGY1eGnVHvE6RZChD/pB8P8mJ41DMtzUdI2EaaQW16bJUF0vI46wby+xB6dyXcD0W0TYYlOIURN3A3BAD0/kmaXpP84wUwHPNV47f5pK2VRwQUeYDVdoNwjFTdmfM0e6Uk3YSx5kvGS11V/Der4IqsoO7diqVtl3pj+hdA+fhB2i4/nbDTAKRHZTiK3psxcbv2vWqVYh8BlT3Epv0cEqemuXtHfA8Q=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786712561-724273
+X-HE-Meta: U2FsdGVkX1+AcWV7xWzUcIDsbgwi4rEt5dlBcYMk5qQ0O58K0hOAIzpG9HLvo8jwQ5NpkNJhKkuf2SmnVNwJx7YSucZtWkX/inciuBy4ylmF9HXQHWSP5M6RhC1/rK2yXlhi0EWj4/Y7MdcWIrDPxI55rLfJMdh7QR2AVg0aGEDyPJm9CuhNwKA5ONSjKW920cmQfbvsb+VN6xUVPpcbCL6zSgu5aWox1oWhd7LDrDZb9YlWeS7abgFaXuS+Fh0qRQvb/BIfMSlqeX7LNbPcKbwkJKPVK1aSrUwcB34WDZ/UVFh+mW8HN0T7q8WP0IkYh5xv+R3B/BYSopJ2XHSG3WO8QE6Y/2vSXi26jxkR4rDkX4fXE/AGrK6yswvKrd7kRa8mdpbUze/FSEv17MWC4PPPBHS/TsTj9aKZhBgTaoXj3pllr4cM5IPvIxD5dz30IscaIx1WtM+rxehfvYmHQxlqd+IRgxmr+DthOjWGS75/f5Tm9dsjuf/2N5NVIwWCb2Oyr4QbFci5IMwmECkN0MLDJ/B6cxG96G3XafWomMjzdBXpaG6zJQ1oqhICp4ZrUcl0XFPN/KaBcEmlJ9kfAvnazFk366u7haPDzBC84vu+1JejQMA0YcrhcTUXFLA9oSoAe8lnmcf99oRkysYRf3bXi8JOFXGIA5RtIIB3y1U5S8oCiuhoDWboaL4W98Ic/JTVcaOjrLLmC/M08APdOLHXX8hYFZmxF9PyW7/8/kciuyVtAiKhqYSCX2curogjCgWDJgtStXyqiQysyo8F55T8Frw2M+9fOk1DM6NsPD/9y3qa6xtWofVsV+rQHS+wfsYcaYaQrojxux2ZC5xH6bkHkTjbhhhaeHT2lwO25KutmfqJ9Aeb1dcR+8dITY+8k2ORHE9CA0nrMFPw70wg3StsE+9SE/ptzGqtJfZzmW0Xu+AOqhlyGCn0Vvg5A8OOuksResy4AWdGcRsrnc3
+ yudpwd+N
+ Vj5kRduFG6Ebl2lWT5VHMTDSzmiVlZNKzvekiIUItLcgojIVx9pm3YRPj6kbv2uGkOdi3mXUkh1spUMjPGWKLq9vBOv4YtxmYqzvtPUIoPAsEgVudb1udd4I4ks/6vPvF+fxpvXjN+icl/wITswt+8NqV040keP9atdT3nY+4oXPNHMbhCVcFJphigWhQRzm1cKiY42cSJar8F2FMn/URQumrn7dr6Uraw48GOk/8wr/z8+tAbGUAWkHfIqn3cm10cyezNn9pcvoOQVwl6mDXY0w/KLesbAn0hoq8YA7pJakkmWu0LLHYUSmm9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,140 +98,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Aug 14, 2026 at 09:42:57PM +0900, Hajime Tazaki wrote:
+>
+> Hello Lorenzo,
+>
+> On Thu, 13 Aug 2026 22:29:38 +0900,
+> Lorenzo Stoakes (ARM) wrote:
+> >
+> > On Thu, Aug 13, 2026 at 09:43:37PM +0900, Daniel Palmer wrote:
+> > > Hi Greg,
+> > >
+> > > On Thu, 13 Aug 2026 at 21:26, Greg Kroah-Hartman
+> > > <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > > Given the age of this issue, I don't think anyone uses no-mmu systems
+> > > > anymore :(
+> > >
+> > > There are a few of us using it for hobby stuff[0][1] and there are
+> > > apparently people using it for actual commercial stuff.
+> > > There was a session about this at LPC 2025...
+> > >
+> > > One of the big problems for nommu seems to be that everyone is
+> > > convinced it is completely unused and totally broken. :)
+> >
+> > No, the issue is that nobody seems to do any testing or contribute any code
+> > aside from at least Hajime (thanks Haijme :), and possibly others (forgive me if
+> > I am missing people's names here!)
+> >
+> > There's been situtions where nommu has been broken for a year and _nobody
+> > noticed_.
+> >
+> > And yet whenever nommu comes up people always seem to pop up and say how
+> > important it is, then mention a talk etc.
+> >
+> > Well if it's important, test it. Test the tip kernel. Report bugs. Contribute
+> > code. Any or all of it :)
+> >
+> > Meanwhile we in mm have to _constantly_ fix stuff up in nommu because it's a
+> > total mess and has real maintenance overhead.
+> >
+> > Having to account for legacy systems that make no sense in 2026 when you're
+> > trying to make improvements to systems people use, or not being able to do
+> > certain things, really grates after a while.
+> >
+> > I mean if you don't believe me git log mm/nommu.c. This overhead reason is why I
+> > now co-maintain it.
+>
+> after spending more times to look at code, fixing issues, finding
+> other flaws, etc, now I become to understand what you meant in past
+> emails, when you're saying a more maintainable way of implementation
+> of nommu.c.
 
---wsqkte2vdducxgiq
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v4 07/10] dma-buf: heaps: Add support for Tegra VPR
-MIME-Version: 1.0
+Yes :)
 
-On Thu, Aug 13, 2026 at 07:25:20PM +0100, Vincent Donnefort wrote:
-> On Fri, Aug 07, 2026 at 05:54:27PM +0200, Thierry Reding wrote:
-> > From: Thierry Reding <treding@nvidia.com>
-> >=20
-> > NVIDIA Tegra SoCs commonly define a Video-Protection-Region, which is a
-> > region of memory dedicated to content-protected video decode and
-> > playback. This memory cannot be accessed by the CPU and only certain
-> > hardware devices have access to it.
-> >=20
-> > Expose the VPR as a DMA heap so that applications and drivers can
-> > allocate buffers from this region for use-cases that require this kind
-> > of protected memory.
-> >=20
-> > VPR has a few very critical peculiarities. First, it must be a single
-> > contiguous region of memory (there is a single pair of registers that
-> > set the base address and size of the region), which is configured by
-> > calling back into the secure monitor. The memory region also needs to
-> > quite large for some use-cases because it needs to fit multiple video
-> > frames (8K video should be supported), so VPR sizes of ~2 GiB are
-> > expected. However, some devices cannot afford to reserve this amount
-> > of memory for a particular use-case, and therefore the VPR must be
-> > resizable.
-> >=20
-> > Unfortunately, resizing the VPR is slightly tricky because the GPU found
-> > on Tegra SoCs must be in reset during the VPR resize operation. This is
-> > currently implemented by freezing all userspace processes and calling
-> > invoking the GPU's freeze() implementation, resizing and the thawing the
-> > GPU and userspace processes. This is quite heavy-handed, so eventually
-> > it might be better to implement thawing/freezing in the GPU driver in
-> > such a way that they block accesses to the GPU so that the VPR resize
-> > operation can happen without suspending all userspace.
-> >=20
-> > In order to balance the memory usage versus the amount of resizing that
-> > needs to happen, the VPR is divided into multiple chunks. Each chunk is
-> > implemented as a CMA area that is completely allocated on first use to
-> > guarantee the contiguity of the VPR. Once all buffers from a chunk have
-> > been freed, the CMA area is deallocated and the memory returned to the
-> > system.
->=20
-> Hi,
->=20
-> I believe we (the Android team) are trying to solve similar issue to your=
-s: Arm
-> CPUs can still speculatively read memory after it has been transitioned t=
-o the
-> Secure state, as long as they retain a cacheable mapping to it.
->=20
-> As modifying the direct mapping is difficult, the workaround ended up in =
-the
-> hypervisor which unmaps the pages from the host stage-2 on intercepted FF=
--A Lend
-> invocations.
->=20
-> If convenient, this is nonetheless the wrong place to do it. Scattering t=
-he host
-> stage-2 is really terrible for performance and we would like to move it w=
-here it
-> should be, directly into the kernel...
->=20
-> This is what I thought was the attempt in v3, but I am now a bit confused
-> because I see you are using set_direct_map_invalid_noflush()
-> set_direct_map_default_noflush(), but I am not sure that works if rodata=
-=3Dfull is
-> not set? So does the memory for the NVIDIA IP still need to be unmapped?
+Thanks for having some empathy about this :) It seems a lot of the nommu
+advocates simply assume it's little or no overhead and is 'working
+code'. No and no.
 
-Yeah, this currently relies on the circumstances being such that
-can_set_direct_map() returns true, and in the case where we want to use
-the resizable VPR functionality, we're going to have page-granular
-mappings anyway.
+I know Liam had to do a _lot_ of work on maple tree to make things work
+there, for instance.
 
-> If so, how about having an option where the CMA allocation is backed by a=
- direct
-> map with the same page granularity, or at least a smaller and aligned gra=
-nule?
->=20
-> With that, we know that for whatever CMA allocation we do, we can safely =
-unmap
-> from the direct map without risking splitting blocks. On CMA free, we can=
- safely
-> remap into the direct map as I do not believe we coalesce yet.
+And the recent VMA flags changes have had to be heavily updated to account
+for nommu.
 
-This sounds intriguing. For VPR we could possibly make the size a
-multiple of the memblock size (or whatever might be appropriate). If we
-can create a page-granular linear mapping specifically for that region,
-that'd be ideal. I don't know if the linear mapping can be subdivided in
-this fashion, though.
+And the list goes on. New features have to touch it all the time to avoid
+build failures even, and etc. etc.
 
-> (This alignment is not necessary for upcoming systems with BBML3)
->=20
-> However, to implement this, we'd need to split memblocks and I believe th=
-e only
-> way at the moment is temporarily mark it as "nomap" which didn't seem very
-> popular in the comments on v3.
+It's a really absurd situation to be honest and the RoI isn't there at all.
 
-Could this be simplified if this type of allocation is always memblock
-aligned?
+There's a reason I keep going on about this :)
 
-Looking at map_mem(), it seems like we could add some sort of special-
-casing in the for_each_mem_range() block to check if the memory is VPR
-(or generic, page-granular carveout, or whatever we want to call it) and
-set NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS in that case.
+>
+> Since I wish to use nommu.c in future with the latest kernel, I'd like
+> to contribute it for, let's say, refactoring the nommu component which
+> mm subsystem currently has.
+>
+> but for the moment, I wish to start with introducing test cases from
+> very basic checks (which is in the [6/6] patch of this series).
+> Without such a base, we may not have any chances to improve this nasty
+> situation of nommu component in mm subsystem.
+>
+> # this motivation also applies to LTP (linux test project) which
+>   currently doesn't support running tests on nommu platforms (I've
+>   already started).
+>
+> And also as I mentioned before, ideally the code should be maintained
+> by people who use it.  And if I claimed that I used/use/will use
+> nommu.c, I wish to maintain this, or at least wish to help to decrease
+> the overhead of maintainers.  This series is a very fist step toward
+> this.
+>
+> I hope it clarifies a bit for your concerns,
 
-If that works, set_direct_map_*() could be enhanced to detect such cases
-and always work. Or perhaps a more specific API could be introduced.
+Thanks, and I appreciate that you're actually doing work here, but I'm not
+sure a single person suffices for this, as well intentioned as you are.
 
-Thierry
+And as reviewed, these changes seem to be adding _more_ maintainership
+overhead rather than less, I fear.
 
---wsqkte2vdducxgiq
-Content-Type: application/pgp-signature; name="signature.asc"
+I believe nommu is pretty broken across many domains (it's fun to set
+claude on it for instance).
 
------BEGIN PGP SIGNATURE-----
+And we've already spoken about broken things that have sat around for
+a long time.
 
-iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmp/EGIACgkQ3SOs138+
-s6FIfA/7BDMg2roMkVSyRLt06etjxYFBWHpNzxj/SvOzYROjoeOaUOJR15Xodk18
-HI650LP1luxhtmIKPHRjGxZK30ROvHB6QTsl0lYM0cQZ4tVrv5WTMcL9uCui0WzA
-LkF9SVH4YiJdbE4tCnWc9eJSxxedpCsS8d5cHLfDyI2cKvjAxgTxll8INqCMafAU
-wehMyhd65emp5OYmvSuftsNzYf/uM0Oke8Rf64zZjOyZzpBi7AZG2CdROlrN/v1V
-xODXrjdPaZvdq6HkzFVW0GYsouBaWb2rqzw/IsgO5RbT6vg/oOwo+4z50ZDefimA
-x2mLXvg+gzqjY20hfJ82Bar0sCQ8nNlO6rLPpxwXMn9ICDpFV5aaiGvbaZ9ibDxR
-yScvx4k0i/k6NPFoyuKJFSqNn9s4WGqU6p0j+un2K97HMEPtJ3onKs3Pjj63E38i
-EkVAJZkrbt+PNYGiILRWWnU7dTqd5/CreBR7F0zFvVz0+JYjgfmlWcTdLKPAazag
-PpRU7SZKUfHRd+LnsS54706H2dOP1rq5NXx+AGSdRJcwgw30XbIhZ3CmqYBVjbdN
-Nh/5Y19dBDV5UhRx4o3Cqcb1BV/cuu2w0TpGyxoyIUUTFxgDp59uBi2Qi6nY/8kY
-KdeMys4RVWucUUwpbtpKJamulwDRGtlLjyLEIqVeYZY/FOBiaKU=
-=ERUC
------END PGP SIGNATURE-----
+The way it's implemented now is just horrendous in any case, if we were
+forced to keep it in the upstream kernel then the correct solution would be
+something that somehow 'emulates' an mmu system.
 
---wsqkte2vdducxgiq--
+But I'm not sure that's even workable, and likely implies heavy
+maintainership headaches.
+
+> -- Hajime
+>
+
+--
+Cheers, Lorenzo
 
