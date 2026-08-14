@@ -4,97 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B32E5C5CFCF
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 21:46:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2544C5CFC1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 22:54:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20E846B031C; Fri, 14 Aug 2026 17:46:18 -0400 (EDT)
+	id E47EF6B0326; Fri, 14 Aug 2026 18:54:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C70B6B0712; Fri, 14 Aug 2026 17:46:18 -0400 (EDT)
+	id DD0746B0327; Fri, 14 Aug 2026 18:54:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D52C6B0713; Fri, 14 Aug 2026 17:46:18 -0400 (EDT)
+	id C98536B0329; Fri, 14 Aug 2026 18:54:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D847E6B031C
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 17:46:17 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2C493C0247
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 21:46:17 +0000 (UTC)
-X-FDA: 85101208794.05.82495E4
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 694A080004
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 21:46:14 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=YjkafyDc;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7073F6B0326
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 18:54:38 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9D61FC0252
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 22:35:33 +0000 (UTC)
+X-FDA: 85101332946.19.2DDE821
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E002C8000A
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 22:35:31 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fKf74bXB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of thehajime@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=thehajime@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786743975;
+	s=arc-20220608; t=1786746931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=5L12eV9sQY1vCwwbVMaL1n8bI5rbmJS0JImUkrhvXMw=;
-	b=ylQMSU/aXy1T6a4eGUvMuht7Iwyh5qxiZRrPFxlre5Bq3hAL3y465UI9EWmoMLlGabcQSh
-	0iiCphEBw8+YpUDIDzl+ep55N142i6pkwanHjvrj/vM2GBTOsMGCmt/kT0DEI6k0CKrUEh
-	8UekCo7K1hRZbehn2yscbYapJWNVehY=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=n2EAblvWDRelmfnXh27a45O70JHPB4giXZ+AN2NzhtQ=;
+	b=JQKDuruxtqL1scayCXGDtNBpXOFiCmoDR26iGtLf3WUfve7NVkaP66BjvzVIXsEQL2wYm2
+	qgOTq5qp6k2ZQsHDSilg2txNuewXeYhDDXnKZvS2J4UT4tFygwOt5MVW9KPPt2fRarvul2
+	4W0/do4gBP/31x7YzgXYGH62e3F2R0c=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=YjkafyDc;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fKf74bXB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of thehajime@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=thehajime@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786743975;
-	b=GLfxAlwRBm5vdh9DQa12kIs53aZBaO6VHj289uL8H2hwDky98pmnDNC9hpVKJMsEM3vCj0
-	zgKAFlhi9eltSgKyvLmgBIQqwwB72/iOdwRuxsKfQGTsGFji+kot1Ing9hhO7CfMjGTIwR
-	Dsd2cnuJrg8byHKB/8eH4euh2Ao//DM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786743974; x=1818279974;
-  h=date:from:to:cc:subject:message-id;
-  bh=5icbQX2VJlEt+gAZ3GH5ApZAlYrfxqHnTWTlpRn0QWs=;
-  b=YjkafyDcMi4lPlxeqSExYwX8XMcOAThhR4P51fxrJkMPRUZkhYdvBOIo
-   fYAYjnvpKULzq0KF2IOWkPP4qcSjCcz9cGEHmCrKfK/3vpvvbBITwMJrm
-   14BHm6Jc/Skid9vtzMuZXRx+WoenIwLwgO1XZ8376NUsDhreFx+A86A9F
-   RTb3wZ8qyeVXj9exsAYdX2LwfMPMcxPAjqmcJB5u60o4pMBp98JcWIJY6
-   orc2X6uz/7kvrpLLuNUABFORY4cX5F98E50HngaAfSFjEfzwArSyTuqhr
-   fGDVvhd2KgbdZUgdc3Q2xY3gVdVCCIF9oEKEw97bJNRTfRy1mIecK9RJI
-   w==;
-X-CSE-ConnectionGUID: 8cPKi9FlSb2fEGXI96x34g==
-X-CSE-MsgGUID: vqk046kjRk6vy6eAtDjNhQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11875"; a="86287677"
-X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
-   d="scan'208";a="86287677"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2026 14:46:12 -0700
-X-CSE-ConnectionGUID: XRPJ+L0RSb6Yc3rFAESRMw==
-X-CSE-MsgGUID: Brw3EAkeStumoDoyW/MbXA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
-   d="scan'208";a="260091269"
-Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 14 Aug 2026 14:46:11 -0700
-Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wuzj6-00000000aIH-2usI;
-	Fri, 14 Aug 2026 21:46:08 +0000
-Date: Sat, 15 Aug 2026 05:45:37 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org
-Subject: [akpm-mm:mm-new] BUILD SUCCESS
- 6c2cdf00fe5205942b5f29e16905603a1717b931
-Message-ID: <202608150524.CchPIr2M-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	t=1786746931;
+	b=UGa5D7JDpD3lXPUCV2KMc6wirI5zoNN5df+o/Xhpp0e2MsgdeLQvGRfjykNtKwanwFOWdw
+	NqbNdoP75mgjUbRJVaNcn1sobibxGnHqKWq/hnaDXrUf6Fgvbc3lsJVXJR2xL7dia+G1sf
+	7l78i/7h23gODQBgVACESJAMRNxE/lg=
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38ea87caafeso1390467a91.3
+        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 15:35:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786746931; x=1787351731; darn=kvack.org;
+        h=content-type:mime-version:user-agent:references:in-reply-to:subject
+         :cc:to:from:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=n2EAblvWDRelmfnXh27a45O70JHPB4giXZ+AN2NzhtQ=;
+        b=fKf74bXBM2QLfLozgx9z5jCBjHUFe6D5mUJbOn628ci+AAJDu7lBgB58ysPZgMBICC
+         HmnTXjMXBwsEJ1xhFsG0RcUB/I/Hjx5ooa0H9MFBc9kcd1u34OpOSwXECBhSih6u/IBm
+         Ng7rCNxgKlYBUFKeXufTqJ/tzXctONxwIt2BCfhNBhtnI5zLVOAMx6jRFIWqYFmSg5Rw
+         BEE5upb8abz+FVyUUrXNqunNyuPOZx6YLugiRSGiMJeRjowS3QYin2Hg20mrcB25q2lI
+         jJtsj1PG4SttsZwMS1QxIZwodeNKlQKuaQxYa2vX2/HCMldB1PcDvLnJSILvRAqdQQhN
+         CtPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786746931; x=1787351731;
+        h=content-type:mime-version:user-agent:references:in-reply-to:subject
+         :cc:to:from:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=n2EAblvWDRelmfnXh27a45O70JHPB4giXZ+AN2NzhtQ=;
+        b=bSeRwg4H8zUBUUukzHmY7HJUVrYunombd1oNuPm7ZC7+EFVkarWWFG1nDmLZ8xkXeb
+         2DZvIAjLdjaO3QfQ5qlBKVLvVnI3GtMVM/5RnP7Dg8SFCcxLDOi2JTK09OnehuHTDDK0
+         7kr0+ho7SM8J/ph+BwHz+2+CAVFT9len4ogedzQnbLjfcLaTolQU4VIEkwI79RBMw5s6
+         wI/yZUxALbFk7qIwpkkrxz48ebAIpSqPOzfY1snPuumA8MLXPXuem6LN15CuLR1ru4Zq
+         rAGJqLZm38CZgKhMi7+CNbpY3gNOaCN34TIXIyNLn0/5F4XvW3+w5VfXg5k9QN1hgfos
+         A3QA==
+X-Gm-Message-State: AOJu0Yzl4m+3CacrHbFMXbY5x8PRXtddBiRi/eMGRtrYKdQB0OYydKoZ
+	EyBue76r6fx6eCuR7BKskrx8ydno84Feb831wWYFVmMz0giRecJ43VFb
+X-Gm-Gg: AR+sD10T4IVhxTgo5VCwvJqgE3jaQga1GDa8nCW7WsICD01XzDboeio3MglnwiB0ANu
+	AvtVd3H3jntaNldqBRI0tUzB7ZgIMasVPfKBJCuLvhY/uFh1sWtEQjkpfYnZ7XRuNGs3LeIaA53
+	LVTFWNGH+zaK1XqCMl2xOx3xbldtZC7JwB6ozg4z5jtOgG6EG8MIQn/pQPmBYHHHS7U8A/a6aDI
+	j/j94FasU5J/bXTqpXvrGPYuqEOzVSNsxZckbJJR3kWJeI3UB15SpLwr3zYiqyZUxkeotiOMfN6
+	uTDnGqgzG0vglzeXMMzkWrY4gL2wpGtu94l1af51pHC7OuHpwL/fNbzMnH5k+zFtTCAimA9KTs1
+	oUBXt6vf6m4H/To3rkkP5jPpSvmCejzhPX0IzibAFRIcKp6RwG1xpx/knXFWyd8KF4ELKSCCgVi
+	7tsRqBcgTDyQD3ZgbS92BCMMGh8iIT2gwwkxqe1dAw672Tkm2MORWBFFbDnda8WMLrUAVUkRQis
+	159T+PLcyAo59hMI7GN1cfAb36TVz1rPXCqOq6+ErCgXdC9TWGDh3zma1XZFsEBZf1ETJHSVDvH
+	TkHB6w==
+X-Received: by 2002:a17:90b:3c91:b0:380:f85c:94b4 with SMTP id 98e67ed59e1d1-3933b78e3c2mr11247940a91.7.1786746930611;
+        Fri, 14 Aug 2026 15:35:30 -0700 (PDT)
+Received: from mars.local.gmail.com (221x241x217x81.ap221.ftth.ucom.ne.jp. [221.241.217.81])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3933b699e47sm2074781a91.4.2026.08.14.15.35.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 15:35:29 -0700 (PDT)
+Date: Sat, 15 Aug 2026 07:35:26 +0900
+Message-ID: <m2wltspbyp.wl-thehajime@gmail.com>
+From: Hajime Tazaki <thehajime@gmail.com>
+To: ljs@kernel.org
+Cc: linux-mm@kvack.org,
+	geert@linux-m68k.org,
+	daniel@thingy.jp,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-um@lists.infradead.org
+Subject: Re: [RFC PATCH 6/6] selftests/mm: add nommu mmap and mremap behavior tests
+In-Reply-To: <an8SvW3jv3JuAFc8@lucifer>
+References: <20260813063401.1786548-1-thehajime@gmail.com>
+	<20260813063401.1786548-7-thehajime@gmail.com>
+	<an8SvW3jv3JuAFc8@lucifer>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 694A080004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: cixmrtdt9ch55fr3yn93tu9gb6agioxh
-X-HE-Tag: 1786743974-59409
-X-HE-Meta: U2FsdGVkX1/dhf3Rzo3cc71Z0AKnnak8W8cTLqkDGb5X31EnQPjP9YDER5zngiEuAlOvhUGarAoZfEo31tPm4S7Reg41lzJDfVZWbv6AsP9oqgvBsXr6Egk1JK7q7AoMNoR2UbjloQR6mbzfOuhyiOGTWjpf4IwP9DAUrZ/wc1dmZ9kkX6/zUfUTDncjArVknkY2mTu/cQi4+9/irTVmEbe/wDZUtBN9vF8zXMNWMHqmy18U8+Wuor2N2O/0ngGrjravY08hiIUm9qUilMZl1RgypFTLegiB8iWQcXpoD7BkDKcrWobsed7domACV4YwNb7n81DrDw+NKjzapa0GQ9sUQyICVnnYZIRbqmzge+8rX/fslC5AaT9bU6hA4gEuueLwGt2ECqSEctEY4c5Kzx17B9QeitRH5RA/U5fk7SCafRGGT/sMwDb9xmX0L1NRKnH8zgHP/n/y2+oHoOcFi8VCUDtJBtnRC+zEYPGzEcuX+I2qj/y5W7OYzVVX5Uxt4IdOFdX67vA6dNwINCrZkE07RX/0N7MKvYsBysDi5eBnK6UcaSuB/PHoq5RcRtm0vlhqDZWh3l5knxrOLjdXjyuXBg6vOe05Z6IJ/Wxu8FzOPKTQTJvISFKRkLC9c6uipCgS9ZaHodWyzYx9ruq/gL+S1GUA8T4tIeRQXQsRjZ+lzdeGF3YPrGk1OAAau7k8ahRH4WU5Omq0BvvSC8CS9ANW9cURn9ph91RUO114TU2BXQ0x+3nUOsnSMBpYva8wuXqGDtjwJFQXXm5uK4HGeKUM6wSVwbt+zMw/U+jAu0FBjalI/RAnrW+uAI3fzb3ichJ9cE6A5ImewF99LAgssmemXWI5rCvSLPWaqxtdUINGcEZMBEXo8xlIVsiwEnJMePMA94qWbb7cRs/kPgTj4U0mu+RQWML8y2rr8OHgt+b6Aq32fNjYrV+4mWUIdM+ZAl4zTJdc6mglcxX6N4L
- en+8MYTl
- nCqlXQ6PcR2RmAjgbYqyaDtP8zM+lNDziKuLh86RQTd+/JhB12bvMhXnmIsDllwc8C7COGDCPZd47E1v2Sy9zO65sPrGDMGdT6XSvea1CzsI2eWz7/wQF4wXAvSvspzq1lTTkuVsvWIHjRp/8LhkqTqMP+NdMYpHCdXmvDpD9ml6ZgdfeH3D06K/wmFQdHgZHvyCzi9zSVGPvU0Y=
+X-Stat-Signature: i6boows8j8gx4g43ymnmyeugnqbksghk
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E002C8000A
+X-HE-Tag: 1786746931-402374
+X-HE-Meta: U2FsdGVkX1/DzqfJR8oxVI9h3Hh1VfcyGbXkVejzRxOnhI0oAPotxkgKxCCl9exJT6QArbDkLObGgKIim2ZMvRK0SBiaql5H4Jdfe+8DKb98ok/DzrRfPa2DyMZGrPtX4KqfNMTfNqxrhhQVHcYyexykAXdQ+7xWZdGJb9devdOhv5/jIWsH7ui8jTQfjGowzT2evfxeXCeoqOyLDe1Ol1K/xO99lE0pGy0rqPMiAaG4kEuPkXXZKcQfb+tl9ejO+VBZDAGKvmejvgjrxQeI6FA3JWa+KCB/IoSzwaDK1xvqiQtPRXONLbOeOapTxA1N+nVU/3CoAZgHqM2ol5Hf7EDW8G19el3dfbo4huK8VRSZemCj56FfOHAJuJq94TX4l6PG2JcRsh68ecYrt+oqLHNsKNQ0y/l74ffjDeB731q7a7Dvlhr6Dl4SwgK5vXf/Am0FX4edram+z/1Dyd7eXJl23/BqrhpikRQY+o0j2Nw8hNwqqkSFUv2Xy/GHmeeS5gMDC+QrMNhU7u830iY5BVLzfnCx7KBVWYJhwltGXPcvmsNA+uvFwJCeWeRO3ocotigdrrp98kMp9EBCrqqf6iyQpoXgUibhel6etITXpUi2FeMXF0EOqkQJWWQ/jBnQUKaX42r8g+3LlkTTOI+UxTCkC+KUa54Wdhk+OGCQgpVlljbIv2K414nGIumo3RrKqDN5VKKjkRZ+hL71ygpnTjyp9AYLs2BZVtNUsJBRzjzZ6pMnefrwz/QwNsoWJxegPbUvNzTZ4vptjyotBhwCKTt2R/leMKf+u63d1hqJEtUnVS7wEMD1R1HdJzBIXBr4I1aeOKCb85NDZDGLq8yXRWpCCd6QHWaiwAacHz55OHuUehhtR20iiYBbuK9q/Xn812RrWxNQzu1ZHSFfxGw79R1oveNJJu1F72jkXAk5KxxXvTvlwjBQvZ187aCkPawLT/Qf6cGYGK2JmGPWOUJ
+ zm7hOapX
+ P4cOYnCW5Zh+R8cxggOkrd5uETzRqoX1lN7ONDK5uIlGv9tgP5SKtAV0KeeQai6BERKK5mIvf3k1c2SjFfLUlI+6JR5rVXzljJ5ZZKNY+9f3Ln+c1EimE/jveJNZ7dLjk/8T8K3ZA1go/F9+/sq58QQiFFF7DZ47+TipB58yoWaL4XQIPUC2xYCIMge7/FWnZjXet9I9O78bQnsq8SV6Rx8heD0ROIQF6AyNUwnmDmJ4I91LJshBmc61Ub/6P047hkFVGXS9S9uFsKxzzFCFGhqkh8tJ6n+R37vJFI5SRELlb4yHj1HGNbEkCWKHV9vq24mxlvo9ziZDS7pnQe9t4vP9OL3yc0+WEUI6h942VLEHflx4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,117 +131,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-branch HEAD: 6c2cdf00fe5205942b5f29e16905603a1717b931  mm/swap, PM: hibernate: atomically replace hibernation pin
 
-elapsed time: 794m
+On Fri, 14 Aug 2026 22:28:53 +0900,
+Lorenzo Stoakes (ARM) wrote:
+> 
+> On Thu, Aug 13, 2026 at 03:34:01PM +0900, Hajime Tazaki wrote:
+> > Introduce a kselftest utility to validate memory mapping capabilities
+> > under nommu kernels, aligned with
+> > Documentation/admin-guide/mm/nommu-mmap.rst.
+> >
+> > The test implements basic checks into a generic architecture-agnostic
+> > test matrix applicable across nommu targets. It evaluates:
+> >
+> > 1. MAP_FIXED allocation rejections.
+> > 2. Standard MAP_PRIVATE and MAP_ANONYMOUS allocation resilience.
+> > 3. MAP_UNINITIALIZED allocations via optional kernel configurations.
+> > 4. Regular file mappings via standard filesystem storage.
+> > 5. Memory-backed file mapping with /dev/zero
+> > 6. Block device subsystem mappings (gracefully skipping if node is
+> >    missing).
+> > 7. Shared vs Private backing discrepancies under nommu conditions.
+> > 8. mremap limits, ensuring non-expandable restrictions behave properly.
+> 
+> Thanks for adding these.
+> 
+> It's horrible to not have the kselftest harness for these, but as established,
+> fork() doesn't work for nommu (!)
+> 
+> A lot of these tests seem to relate to functionality I'm not really happy with
+> in the rest of the series so let's see how things pan out with the series
+> overall I guess!
 
-configs tested: 97
-configs skipped: 0
+(snip)
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+> > diff --git a/tools/testing/selftests/mm/nommu_mremap_test.c b/tools/testing/selftests/mm/nommu_mremap_test.c
+> > new file mode 100644
+> > index 000000000000..b1b8a4e64b55
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/mm/nommu_mremap_test.c
+> > @@ -0,0 +1,583 @@
+(snip)
+> > +
+> > +static int get_shared_writable_file_expected_error(const char *path)
+> > +{
+> > +	if (get_fs_type(path) == RAMFS_MAGIC)
+> > +		return EPERM; /* ramfs failed */
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int pre_conf_trim_page(void)
+> > +{
+> > +	return set_nr_trim_pages("0\n");
+> > +}
+> > +
+> > +static int post_conf_trim_page(int value)
+> > +{
+> > +	char buf[32];
+> > +
+> > +	if (snprintf(buf, sizeof(buf), "%d\n", value) < 0)
+> > +		return -EIO;
+> > +
+> > +	return set_nr_trim_pages(buf);
+> > +}
+> > +
+> > +struct mremap_case_t {
+> > +	const char *name;
+> > +	const char *pathname;
+> > +	int open_flags;
+> > +	int mmap_prot;
+> > +	int mmap_flags;
+> > +	int exp_err;
+> > +	int (*resolve_exp_err)(const char *path);
+> > +	unsigned int old_pages;
+> > +	unsigned int new_pages;
+> > +	int (*pre_hook)(void);
+> > +	int (*post_hook)(int value);
+> > +};
+> > +
+> > +static struct mremap_case_t mremap_cases[] = {
+> > +	{
+> > +		.name = "anonymous shrink (r--)",
+> > +		.pathname = NULL,
+> > +		.open_flags = O_CREAT | O_RDWR | O_EXCL,
+> > +		.mmap_prot = PROT_READ,
+> > +		.mmap_flags = MAP_ANONYMOUS | MAP_PRIVATE,
+> > +		.exp_err = 0,
+> > +		.resolve_exp_err = 0,
+> > +	},
+> > +	{
+> > +		.name = "shared file shrink (r--)",
+> > +		.pathname = "/tmp/ksft.nommu-remap-XXXXXX",
+> > +		.open_flags = O_CREAT | O_RDWR | O_EXCL,
+> > +		.mmap_prot = PROT_READ,
+> > +		.mmap_flags = MAP_SHARED,
+> > +		.exp_err = 0,
+> > +#ifdef CONFIG_NOMMU
+> > +		.resolve_exp_err = get_shared_writable_file_expected_error,
+> > +#else
+> 
+> Hmm aren't these all nommu tests anyway?
 
-tested configs:
-alpha                            allnoconfig    gcc-16.1.0
-alpha                           allyesconfig    gcc-16.1.0
-alpha                              defconfig    gcc-16.1.0
-arc                             allmodconfig    gcc-16.1.0
-arc                             allyesconfig    gcc-16.1.0
-arc                  randconfig-001-20260814    gcc-10.5.0
-arc                  randconfig-002-20260814    gcc-12.5.0
-arm                  randconfig-001-20260814    gcc-16.1.0
-arm                  randconfig-002-20260814    gcc-10.5.0
-arm                  randconfig-003-20260814    gcc-16.1.0
-arm                  randconfig-004-20260814    clang-17
-arm64                randconfig-001-20260814    gcc-10.5.0
-arm64                randconfig-002-20260814    clang-24
-arm64                randconfig-003-20260814    clang-19
-arm64                randconfig-004-20260814    clang-17
-csky                            allmodconfig    gcc-16.1.0
-csky                 randconfig-001-20260814    gcc-16.1.0
-csky                 randconfig-002-20260814    gcc-10.5.0
-hexagon              randconfig-001-20260814    clang-17
-hexagon              randconfig-002-20260814    clang-19
-i386                            allmodconfig    gcc-14
-i386       buildonly-randconfig-001-20260814    clang-22
-i386       buildonly-randconfig-002-20260814    gcc-13
-i386       buildonly-randconfig-003-20260814    clang-22
-i386       buildonly-randconfig-004-20260814    clang-22
-i386       buildonly-randconfig-005-20260814    gcc-13
-i386       buildonly-randconfig-006-20260814    gcc-14
-i386                 randconfig-001-20260814    clang-22
-i386                 randconfig-002-20260814    gcc-14
-i386                 randconfig-003-20260814    gcc-14
-i386                 randconfig-004-20260814    clang-22
-i386                 randconfig-005-20260814    clang-22
-i386                 randconfig-006-20260814    clang-22
-i386                 randconfig-007-20260814    clang-22
-i386                 randconfig-011-20260814    gcc-14
-i386                 randconfig-012-20260814    gcc-12
-i386                 randconfig-013-20260814    gcc-12
-i386                 randconfig-014-20260814    gcc-14
-i386                 randconfig-015-20260814    gcc-12
-i386                 randconfig-016-20260814    gcc-14
-i386                 randconfig-017-20260814    gcc-14
-loongarch                          defconfig    clang-24
-loongarch            randconfig-001-20260814    gcc-16.1.0
-loongarch            randconfig-002-20260814    clang-24
-nios2                           allmodconfig    gcc-11.5.0
-nios2                            allnoconfig    gcc-11.5.0
-nios2                randconfig-001-20260814    gcc-11.5.0
-nios2                randconfig-002-20260814    gcc-11.5.0
-parisc                          allmodconfig    gcc-16.1.0
-parisc                          allyesconfig    gcc-16.1.0
-parisc                             defconfig    gcc-16.1.0
-parisc               randconfig-001-20260814    gcc-15.2.0
-parisc               randconfig-002-20260814    gcc-9.5.0
-powerpc              randconfig-001-20260814    gcc-8.5.0
-powerpc              randconfig-002-20260814    clang-18
-powerpc                    tqm5200_defconfig    gcc-16.1.0
-powerpc64            randconfig-001-20260814    gcc-14.3.0
-powerpc64            randconfig-002-20260814    gcc-8.5.0
-riscv                randconfig-001-20260814    gcc-14.3.0
-riscv                randconfig-002-20260814    clang-24
-s390                 randconfig-001-20260814    gcc-11.5.0
-s390                 randconfig-002-20260814    gcc-13.4.0
-sh                                 defconfig    gcc-16.1.0
-sh                   randconfig-001-20260814    gcc-16.1.0
-sh                   randconfig-002-20260814    gcc-16.1.0
-sparc                randconfig-001-20260814    gcc-16.1.0
-sparc                randconfig-002-20260814    gcc-15.2.0
-sparc64              randconfig-001-20260814    gcc-8.5.0
-sparc64              randconfig-002-20260814    clang-24
-um                   randconfig-001-20260814    gcc-14
-um                   randconfig-002-20260814    clang-22
-x86_64     buildonly-randconfig-001-20260814    clang-22
-x86_64     buildonly-randconfig-002-20260814    clang-22
-x86_64     buildonly-randconfig-003-20260814    clang-22
-x86_64     buildonly-randconfig-004-20260814    clang-22
-x86_64     buildonly-randconfig-005-20260814    clang-22
-x86_64     buildonly-randconfig-006-20260814    gcc-14
-x86_64               randconfig-001-20260814    gcc-14
-x86_64               randconfig-002-20260814    clang-22
-x86_64               randconfig-003-20260814    clang-22
-x86_64               randconfig-004-20260814    clang-22
-x86_64               randconfig-005-20260814    gcc-14
-x86_64               randconfig-006-20260814    gcc-14
-x86_64               randconfig-011-20260814    clang-22
-x86_64               randconfig-012-20260814    gcc-13
-x86_64               randconfig-013-20260814    clang-22
-x86_64               randconfig-014-20260814    gcc-14
-x86_64               randconfig-015-20260814    gcc-14
-x86_64               randconfig-016-20260814    clang-22
-x86_64               randconfig-071-20260814    gcc-14
-x86_64               randconfig-072-20260814    clang-22
-x86_64               randconfig-073-20260814    clang-22
-x86_64               randconfig-074-20260814    gcc-13
-x86_64               randconfig-075-20260814    gcc-14
-x86_64               randconfig-076-20260814    clang-22
-xtensa               randconfig-001-20260814    gcc-9.5.0
-xtensa               randconfig-002-20260814    gcc-15.2.0
+those tests are indeed for nommu but also compare with mmu systems.
+actually I was trying to implement test behaviors which are described
+in Documentation/admin-guide/mm/nommu-mmap.rst.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+this particular case ("shared file shrink (r--)") is not described in
+the doc, but test with a conditional error on nommu, and expects
+success on mmu kernel, which is interesting (at least for nommu folks)
+to validate future regressions.
+
+I think now if I split into several series of this patchset, I would
+drop this particular chunk which is needed for other series, and keep
+only basic tests for nommu kernel which is described in the doc.
+
+-- Hajime
 
