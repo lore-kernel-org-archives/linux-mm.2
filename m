@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 188FEC5CFC1
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 10:41:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D54DC5B572
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 10:41:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8CE66B0300; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
+	id D25EC6B0302; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3DD26B0302; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
+	id CFB7F6B0303; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95B3C6B0303; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
+	id B55696B0304; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FDA66B0300
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 826C66B0305
 	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EAA41403BC
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F40BE140409
 	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 10:41:26 +0000 (UTC)
-X-FDA: 85099533372.04.1D32C05
+X-FDA: 85099533372.05.185397E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1611540008
+	by imf25.hostedemail.com (Postfix) with ESMTP id 02540A0003
 	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 10:41:24 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gvZR6r2s;
-	spf=pass (imf07.hostedemail.com: domain of joel.granados@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a36d0zwY;
+	spf=pass (imf25.hostedemail.com: domain of joel.granados@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1786704085;
@@ -35,45 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T8mxcnvDvKnoRI71UmDt8cTgQ8NQ7Nk1pqrLjzhBekY=;
-	b=Yd3xDJGF2VYax27zz3VFOoNPqXJO3MfLJP0YX/qH++dWrDGKxVWntECK9CVf1CXDtS8BN0
-	f4TrL07zW9bv6eRvPfxcMqr9KU8CIq8hymGq9rV/MI/hmtY7lQdvVl/AgfwckgGxhYn9lU
-	N/2BiCaX8cFPNKDTzkB+l/P1PgljwUE=
+	bh=dh4qwfF4YlLi2OoWPAsnix0OMoionI9oLcQ6gSwubnM=;
+	b=h5wVNaIgNDv4CjVIknzA428gXN0gCVYS1RWy0ZCy7UTvt9MBIt1yb5nG8JMZLpIUmf/ez0
+	xJIlS1UyCE0Vpq3y9CHRVuvTcSaT+Z1t5hK+LlpBME5bs2IfA4Csz0J3PAiU+YZbkxMkze
+	yDjbbOFbcRfYqr6j3n9IhMCs+5ujlcA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1786704085;
-	b=cpfBFLYTM7U2TONeWhCsq4fuWy9HoLEqZln8QHVJt0nsXpvzyBihPGvZT0FYErR4sCbZMS
-	LgNacH1DxI3yTAaTmzjyLNBmJbUT8vk4z7IumzZEi0Vw17Lg1TMsGEX+ya6cUvP49oWxK3
-	XvsTswZdEI2fADf7Lk8u2o7PzRJkOd4=
+	b=g8RKnyIyuiWBSGUbgbmiiIw2B5RZPVnsiOvGeLd4ziYJty9yadvsUJdxPwruzPxLL91O8I
+	lPblhrth24kbD8EUx4Gs1n3zTtaUD9ajpEo3/u+zNp4e56PB3vh+EjaY49bXQlFQ7EupwC
+	TqqRD19x9QwzIf5BxMaaDeMjTU2lEho=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gvZR6r2s;
-	spf=pass (imf07.hostedemail.com: domain of joel.granados@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a36d0zwY;
+	spf=pass (imf25.hostedemail.com: domain of joel.granados@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 12CA044F3E;
+	by sea.source.kernel.org (Postfix) with ESMTP id 01A7F4401B;
 	Fri, 14 Aug 2026 10:41:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CEE67C2BD00;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B705CC4AF09;
 	Fri, 14 Aug 2026 10:41:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1786704083;
-	bh=YHI3VBORAsd9SqfY5aar0OvGzZqdtGpSqI6smTfSLXY=;
+	bh=ACmHDzg0bdqhRKtZiggZe9yyDKsjLpeE7LXC/BUIylE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=gvZR6r2sAk+83hGeBZm5n2MK5vP+Q1JS+FYof1FPUtkEr8K1hckh+rQfCr+iMnC0/
-	 7OGsT0A727GWC48yIcVuyfkDCvsjvwhaUPykcg4Qozpy6ktL/k4i2ddt6T3ldiCSw9
-	 xPc3tY2fdCn9UqUOuXAPIOnJ5ZZD5XsWsEdTFG+7bk027mB1uu+/HqmR+YdzbfLfp/
-	 K+jmx6X/yCeCtwwoAWXVcD4oqC/4ey9tCvYTm6cXAM3TBAqo8suNZpTuTPJ5vq/UfU
-	 aQ2wh3gix4NxPEg1Kchd/gu2uhXS9hoO4vCNuzZnvHNiR24secduk/o9oNxB5xWfv4
-	 FFxvEb4AgApEg==
+	b=a36d0zwY52gz/cdEaRmS3cDOVCWTSZxFJ9ECsn9afWIL7bpOeKRzCS2m0MayPvOO8
+	 VbiHHEJbLBMyxASNIUNwFlXpv25dFmldauNkqmyqnai/mMGMA6PGrdmcFJjOf2ANza
+	 USfRD9/8INS7JurPTEVmyNwa3IBudfK3BVqaC8G4qFyKYh3x3Iaj8nKKa6/7sCxgQw
+	 Lu7aYoIdEizHAphuamXXC2qIwmgRaT9UMZ8pZeRIFx7DeE/gb7FufC3GK1qUJH0Aje
+	 urh6gyVKOm6lItITCY1xHOUPGp+zsCvNEq0SIyUceSnWHZKtZwcZe5KxBZI+m1CM8m
+	 SVmZijnojIRMw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B5602C5DF67;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96FFDC5CFC1;
 	Fri, 14 Aug 2026 10:41:23 +0000 (UTC)
 From: Joel Granados <joel.granados@kernel.org>
-Date: Fri, 14 Aug 2026 12:41:15 +0200
-Subject: [PATCH v2 4/4] sysctl: Add 0013 to test partially updated vectors
+Date: Fri, 14 Aug 2026 12:41:13 +0200
+Subject: [PATCH v2 2/4] sysctl: Reject uint arrays before calling the
+ general proc_vec
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260814-lklm-partial_ctlvec-v2-4-9df50d26e477@kernel.org>
+Message-Id: <20260814-lklm-partial_ctlvec-v2-2-9df50d26e477@kernel.org>
 References: <20260814-lklm-partial_ctlvec-v2-0-9df50d26e477@kernel.org>
 In-Reply-To: <20260814-lklm-partial_ctlvec-v2-0-9df50d26e477@kernel.org>
 To: Kees Cook <kees@kernel.org>, Shuah Khan <shuah@kernel.org>
@@ -83,31 +84,31 @@ Cc: Jianlin Shi <shijianlin11@foxmail.com>, akpm@linux-foundation.org,
  linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
  linux-mm@kvack.org, Joel Granados <joel.granados@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3356;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2851;
  i=joel.granados@kernel.org; h=from:subject:message-id;
- bh=YHI3VBORAsd9SqfY5aar0OvGzZqdtGpSqI6smTfSLXY=;
- b=owJ4nAHtARL+kA0DAAoBupfNUreWQU8ByyZiAGp+8NEZx7DhoWX+VVmoWYcszozrHrTSVyWWi
- NensKkTznzrsIkBswQAAQoAHRYhBK5HCVcl5jElzssnkLqXzVK3lkFPBQJqfvDRAAoJELqXzVK3
- lkFP5nkL+gOLrefeg7tdLifVFAOWe9dtn+spU/1WLrN/o+x2sYe9+IVhJQKAT8S1ikOZr0D1eNa
- ASVm4Sz9LPGPHEAUuF9EtwF6qqrWg/3ZNGYZ+X05idINQ3jROzIMrcxRglhxOCE+8MYZ5lwAume
- VeSpQStAWQcO4TqMHUs9CiJrvxHSS4AEnddKvwFH+AhN+5nahkgwpXHAvtvN4CXFpYpZlCeUE/Y
- gCRVJQ3ikhBtkDn5YOhXbPoiKRtqTnPiSEfG87ibN8hILuti4JAeuNrY9pzJuH4D3Clicp3hxsg
- LV3YL3CXAYi3oNKW9vq4SI+YGEoSOQUMEwfAI9fEDSI9XNEgNc3ENL7IfDDiWayX9crn7X/HD8C
- ILHDSwaMPOP/+pwf8GUE73GS6ow2R/Z0geldHXgpe/IHZopgMiwlcL3VzouyJm67V1bq7dSwLFf
- +d6DLLGQUDuYHBQk8Ds/ZZjVtQjNL4h8nRc26WCMiblkgBQzLFSAwZHjwBkT7ysaMoM8kGxwi95
- 08=
+ bh=ACmHDzg0bdqhRKtZiggZe9yyDKsjLpeE7LXC/BUIylE=;
+ b=owJ4nAHtARL+kA0DAAoBupfNUreWQU8ByyZiAGp+8NDu6mELinrd4Zbsp71ht/npxGd5//lUz
+ p/ms+oZ3YkI2okBswQAAQoAHRYhBK5HCVcl5jElzssnkLqXzVK3lkFPBQJqfvDQAAoJELqXzVK3
+ lkFPOlcL/A582yimDhlcHkvz9SG0STpA5Qs3yhtyNi7XgDJdTE3l5T8et6PDFryntBnyzN/h2Kb
+ NQ8Bm1TNmZLmNrZj/NQxdhp9obZAgFaePZAb6h6SKmZjZls60bDttBqmoufK+lz/qhD2tFpDYgV
+ yM5RWJxWi3BZLDP9Fkxhw8ApM4bs+B9BC2DshT1jveym+shgHuts1D+sBhnH4RdWucKgvFl6Q7u
+ mrbpywg0cl1GHRhe6ZwasXkLgrwUJs5oRw0cVCop4SqzLWipln452fskR6/WpF1p8YsmPT2s9ZN
+ 0jIS9/MI/aMXGFbfTo7wYZ5V7J6jj6Rg58gxXnKf2g7S/Q+Fi6deXQy0/izZ46RO2Qc9PC/bUWT
+ KWz8Ysec+jRY7bSr8F5GZnSRVO5bZuOJW7YJtIMLiKU2rGq2ZTaK6TnMg17q0N3Kc//OJzGADvf
+ pgMhe6EVetnBHd2ffgh9b3c6rM4wkI3X1GJAmzv1BsNxbsPWo5YTXWC6NSogE++M/IHTarsIUi9
+ ak=
 X-Developer-Key: i=joel.granados@kernel.org; a=openpgp;
  fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
 X-Endpoint-Received: by B4 Relay for joel.granados@kernel.org/default with
  auth_id=239
 X-Rspam-User: 
-X-Stat-Signature: enpf6qchcaomgdstz3mgksnn3pqck6yf
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 1611540008
-X-HE-Tag: 1786704084-833234
-X-HE-Meta: U2FsdGVkX18k4auhejYtTGMASaNgwotcG11wom+FmgsEb1mhUvMigARYi/Otozs5gXKGz6TBarFgKEZcN63gDRRtU/9FeeXxpv7A/SJJYR134AgiKN+EYs+7POr6Zk640qP4AyhFSOHiqAo+ZY/uMrX3fuEl8v2QD3bUvFl6QOimRfXWRo208wESFtTgKdj583qz7+KRTEjK6awt559CA4b1iMIw0hmAXEmDU2FWONNwi3P+bGJWmA2VjmAhQwjBuSSwh8L+fdzK1NPu5LNd1dNeMvPTPwqZuB0KV52Y4nYMdqZNv3I6dxH8cjSa0mdt+y7INU1eTitE8xNgXyRMFv/5+ns9ou/pPavtDb90uoHmLRf7tRCvfK8oSPT1H9KmaphFqFqxi2r0JXpSjQqZmCSLM6mJM+usw3c32i9UczuCJAgLp9RGedFyVPEVBuGANlZSnlczlh06onMyULiNZgy3tYJNIkANLg25zOBl1STwmS5UoxQMJWrsuwwPFmz7AhDQZbdWKm5165c5b7pZsjDYSF9c7Gs68b8FUPZqWoWz4ZzTEjyPICkQuAd8sWSMDmSQ0lPBr5BWoUM5i5jE8BpU5e3tfrjfphZyCu6krRv4SkP66m6OssFJCr+I1nVcXcs0ViRWkiGXo5cAOghZRBUVaxj2pvw75KL4iD/kvqVWncapMf7xFChlfcglLIDmDQBGCG7RIbm6YGn6Y7AIhnNiOCS2lijxmPiMrNfGBMj18/dQwe74zYDDRacsx6dWpJPO61AnVbdMIccO6hRLDaKqpisUApx+kbcWu7v/Pusy9zlD2IrrdjBz4/ej7Tr3WT+NFeyXe9xQz7oMpvy1YHZK9xpXdqmdReTUmc1ykVlZJWS+9+wFzgIkNBI/Hnn7ByBdlzcPUlm/PILyhL4SiOsx62OyNLNYTT4LCQXpJyJu/jwYA7nxalBXTof7taKMpsf/l8w5Q1Cph5OMJXk
- bUmjPat2
- B+waNDQPnQIrI4ljHUoJThqZdcNtTUHU/SSogzxqDUlpKPBoqZijeHla6V+zXHXaUSWrc5Y+6AGk33IU+2C22bXJToN3AEp2f5AMrAnd1hgo3HyqMhup5nDC/1wS9b9g3iwl7LfgOcrdOJDV/UzXZYCUNhBO+sXsHEsEjI4DUdtwZzTVjIhtodIs8GQifv00o79eL6cQaxyN6ryY=
+X-Stat-Signature: bskgmrru47ctrqf7c7irkpeiku1t9dpp
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 02540A0003
+X-HE-Tag: 1786704084-185512
+X-HE-Meta: U2FsdGVkX19m7ZJPKeolwdX4XX1nEdPT0EjjKOcYJaRwQvQk/WKkrSDN7DLIC0Ramv+Pa2ce+EDPo1wpM8OE6Ohn50MXYeyBdjCyJrfEmZGBkN5y1HT9Q5WwoSfG/8CVUru8s5k9uzsIlAQO9NpDaBOi+/px4n56nIx+lpjneqxWcxMT4xdw3lm3gEpwxpM3IB5dpEe1tz9jkh4IpndorPF7GHQOyKSWVHgdUVjiMueSG6vGVi3hHwGjuhtrzIBJQjizhFMHz/26WBNmgkFf2AFzidkSAJjXLjIVoTgKMVR7uoYER4i6CE/DPgLobL9wDieO1AsUmr1m4/aM1795JvhBzvFUQenZOhB/BtghFTRP9I0oXqn47IZSkfpjt8Jm0f4tBDR+Gd16iubWRNXHS8YbNx0EzlluVqK1jF4AcTCC4srldMWyuG3K/rjZt9T19EnbxrepV3B6xcWdiiatCwfI4n9V0WwCk98k5yf6L7QvcWdoi4fKLwRrCRyZPpQk6b24aBK38heAW+x6qEQE9bKVMGdmAUT4WWdASrcVgd3gpkRJjwGgcz8Tt4W4WmZ1OoToD3AR9qnXU4fZ9BvuIkl3u+PMngGzOv3EjmVbYys0jEIqQfTOlU9WiomwXb8vzZds3FCHYCY8lqCbuee1ADeRORfs2N5/l4V1i0maKVjFfCIA7j9FUPhwvdua5uG4Gomhx898JZ0BPL0ADPuJAdystHyDCTMkHyBq735SgT8SyDzzj4ze4ZlkJHJuF3AsshQP+5C+jqXLaz0etMR5UfMrXkaNeBhWqU4gxLMuSbBlL8uoZjCosB6hkeJ7E7XC1dSmR4hFWt4qryx6Hz44+3Jj8RjGuN7lDodIwfJtZ/rNoSCW8a9wL1fRt/FzPRTwmqrX75MRhBeadWP/UBtRst1DjdPZSxTTGBp7ZZpNUsbb7bjAhy1+w47pX/7/Nb9YJDpQkZlPBSBBXZQJjYB
+ /K1kMrIB
+ 3mZuGRHWhtqW4Uw38PiMDF4emN0pHn3crrNW2Ty4gAj9NjSRn1GeAYaY5LdNaTIkh8fgXgTGRkW7wOGOPeAVcfLydsQOvRRAIfw4grrvxOwqXle7L88LjZ/xutHWygILF4B5CU10AxxQAqGTVmXhX+xT3A9CfbTgJN6za4azXlLXk2Q4+GZWnbhsvsRIJI/ntL8mcu6hEk5o9iDRekuW2xm4Cc1CCQiakz5WQt5YRQcakPzF843C86jattH5PYodjUf1o
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,128 +116,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add coverage for partially updated sysctl vectors with test 0013. It
-makes sure that the sysctl vector is unchanged when one of the elements
-is not valid.
+Move the UINT vector size check to proc_douintvec_conv; the function
+that routes UINT types only. Route all the UINT calls (including
+proc_dou8vec_minmax) through proc_douintvec_conv.
+
+UINT proc handlers that incorrectly define maxlen will now return
+-EINVAL instead of 0 in the cases where data is missing, lenp is 0 or
+ppos is 0. Note that maxlen == 0 is not considered as miss-defined.
 
 Signed-off-by: Joel Granados <joel.granados@kernel.org>
 ---
- tools/testing/selftests/sysctl/sysctl.sh | 60 ++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+ kernel/sysctl.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/tools/testing/selftests/sysctl/sysctl.sh b/tools/testing/selftests/sysctl/sysctl.sh
-index b2d8bd9026a721e96c26be20069f7f87b06a5cf7..dc8674455284612dfe898944b886d856fb8ab3fe 100755
---- a/tools/testing/selftests/sysctl/sysctl.sh
-+++ b/tools/testing/selftests/sysctl/sysctl.sh
-@@ -4,6 +4,7 @@
+diff --git a/kernel/sysctl.c b/kernel/sysctl.c
+index 47a92cbbcb69cd361a18dba6606ae6ae8f86b5e2..7e9024899be6d5971752dd5639ab4b806a899081 100644
+--- a/kernel/sysctl.c
++++ b/kernel/sysctl.c
+@@ -748,10 +748,6 @@ static int proc_vec(const struct ctl_table *table, int dir, void *buffer,
+ 		return 0;
+ 	}
  
- # This performs a series tests against the proc sysctl interface.
- 
-+# shellcheck disable=SC2317
- # Kselftest framework requirement - SKIP code is 4.
- ksft_skip=4
- 
-@@ -12,6 +13,9 @@ TEST_DRIVER="test_${TEST_NAME}"
- TEST_DIR=$(dirname $0)
- TEST_FILE=$(mktemp)
- 
-+# initialize for individual tests
-+rc=0
-+
- # This represents
- #
- # TEST_ID:TEST_COUNT:ENABLED:TARGET:SKIP_NO_TARGET
-@@ -37,6 +41,7 @@ ALL_TESTS="$ALL_TESTS 0009:1:1:unregister_error:0"
- ALL_TESTS="$ALL_TESTS 0010:1:1:mnt/mnt_error:0"
- ALL_TESTS="$ALL_TESTS 0011:1:1:empty_add:0"
- ALL_TESTS="$ALL_TESTS 0012:1:1:u8_valid:0"
-+ALL_TESTS="$ALL_TESTS 0013:1:1:int_0003:1"
- 
- function allow_user_defaults()
+-	/* uint arrays are not supported, *Do not* add support for them. */
+-	if (type == PROC_VEC_UINT && (table->maxlen / data_size) != 1)
+-		return -EINVAL;
+-
+ 	if (SYSCTL_USER_TO_KERN(dir)) {
+ 		if (proc_first_pos_non_zero_ignore(ppos, table))
+ 			goto out;
+@@ -797,6 +793,9 @@ int proc_douintvec_conv(const struct ctl_table *table, int dir, void *buffer,
+ 			int (*conv)(bool *negp, ulong *u_ptr, uint *k_ptr,
+ 				    int dir, const struct ctl_table *table))
  {
-@@ -196,6 +201,18 @@ verify_diff_w()
- 	return $?
++	/* uint arrays are not supported, *Do not* add support for them. */
++	if (table->maxlen && (table->maxlen / sizeof(uint)) != 1)
++		return -EINVAL;
+ 
+ 	if (!conv)
+ 		conv = do_proc_uint_conv;
+@@ -881,8 +880,7 @@ int proc_dointvec(const struct ctl_table *table, int dir, void *buffer,
+ int proc_douintvec(const struct ctl_table *table, int dir, void *buffer,
+ 		size_t *lenp, loff_t *ppos)
+ {
+-	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_UINT,
+-			(union proc_vec_conv){ .uint_conv = do_proc_uint_conv });
++	return proc_douintvec_conv(table, dir, buffer, lenp, ppos, do_proc_uint_conv);
  }
  
-+# Verify that an erroneous ($2) update fails and does not change TARGET
-+verify_no_partial_update()
-+{
-+	TEST_STR="$1"
-+	echo -n "$TEST_STR" > "$TARGET"
-+
-+	if echo -n "$2" > "$TARGET" 2> /dev/null; then
-+		return 1
-+	fi
-+	verify_diff_w "${TARGET}"
-+}
-+
- test_rc()
+ /**
+@@ -932,8 +930,8 @@ int proc_dointvec_minmax(const struct ctl_table *table, int dir,
+ int proc_douintvec_minmax(const struct ctl_table *table, int dir,
+ 			  void *buffer, size_t *lenp, loff_t *ppos)
  {
- 	if [[ $rc != 0 ]]; then
-@@ -501,6 +518,40 @@ run_limit_digit_int_array()
- 	test_rc
+-	return proc_vec(table, dir, buffer, lenp, ppos, PROC_VEC_UINT,
+-			(union proc_vec_conv){ .uint_conv = do_proc_uint_conv_minmax });
++	return proc_douintvec_conv(table, dir, buffer, lenp, ppos,
++				   do_proc_uint_conv_minmax);
  }
  
-+# You used an int array and one of the elements is not acceptable
-+run_int_array_no_partial_update()
-+{
-+	echo -n "Testing invalid array element does not partially update ... "
-+        # Expect failure because of 3rd element (abc).
-+	if ! verify_no_partial_update "1 2 3 4" "10 20 abc 40"; then
-+		echo "FAIL" >&2
-+		rc=1
-+	else
-+		echo "OK"
-+	fi
-+	test_rc
-+
-+	echo -n "Testing out of range array element does not partially update ... "
-+        # Expect failure because of 3rd element (greater than int)
-+	if ! verify_no_partial_update "1 2 3 4" "10 20 $((INT_MAX + 1)) 40"; then
-+		echo "FAIL" >&2
-+		rc=1
-+	else
-+		echo "OK"
-+	fi
-+	test_rc
-+
-+	echo -n "Testing invalid first array element does not update ... "
-+        # Expect failure of 1st element
-+	if ! verify_no_partial_update "1 2 3 4" "abc 20 30 40"; then
-+		echo "FAIL" >&2
-+		rc=1
-+	else
-+		echo "OK"
-+	fi
-+	test_rc
-+}
-+
- # You are using an unsigned int
- run_limit_digit_uint()
- {
-@@ -880,6 +931,14 @@ sysctl_test_0012()
- 	return 0
- }
+ /**
+@@ -976,8 +974,7 @@ int proc_dou8vec_minmax(const struct ctl_table *table, int dir,
+ 		tmp.extra2 = (unsigned int *) &max;
  
-+sysctl_test_0013()
-+{
-+	TARGET="${SYSCTL}/$(get_test_target 0013)"
-+	reset_vals
-+
-+	run_int_array_no_partial_update
-+}
-+
- list_tests()
- {
- 	echo "Test ID list:"
-@@ -900,6 +959,7 @@ list_tests()
- 	echo "0010 x $(get_test_count 0010) - tests sysct mount point"
- 	echo "0011 x $(get_test_count 0011) - tests empty directories"
- 	echo "0012 x $(get_test_count 0012) - tests range check for u8 proc_handler"
-+	echo "0013 x $(get_test_count 0013) - tests partially update vectors on error"
- }
- 
- usage()
+ 	val = READ_ONCE(*data);
+-	res = proc_vec(&tmp, dir, buffer, lenp, ppos, PROC_VEC_UINT,
+-		       (union proc_vec_conv){ .uint_conv = do_proc_uint_conv_minmax });
++	res = proc_douintvec_minmax(&tmp, dir, buffer, lenp, ppos);
+ 	if (res)
+ 		return res;
+ 	if (SYSCTL_USER_TO_KERN(dir))
 
 -- 
 2.50.1
