@@ -4,91 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 353DEC5CFC1
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 16:45:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 610B3C5CFC1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 16:48:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8DBA6B06EC; Fri, 14 Aug 2026 12:45:14 -0400 (EDT)
+	id 272116B0318; Fri, 14 Aug 2026 12:48:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D20556B06ED; Fri, 14 Aug 2026 12:45:14 -0400 (EDT)
+	id 22A336B0319; Fri, 14 Aug 2026 12:48:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2DB46B06EE; Fri, 14 Aug 2026 12:45:14 -0400 (EDT)
+	id 0EA1E6B031A; Fri, 14 Aug 2026 12:48:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 991136B06EC
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:45:14 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2E733120187
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 16:45:14 +0000 (UTC)
-X-FDA: 85100450148.17.0189365
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 73B60160005
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 16:45:12 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i0hSnIgz;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D46816B0318
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:48:28 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 51C5E1601C0
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 16:48:28 +0000 (UTC)
+X-FDA: 85100458296.01.36EC58B
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 7EB4818000C
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 16:48:26 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hk1d9+Qc;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of praan@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=praan@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786725912;
+	s=arc-20220608; t=1786726106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CJm0B5AioEhSF+ctzUWfmzPpAYDyCiCnhoBthc1Au8U=;
-	b=Ya2Tb4BI/Qi/fC34M5lqapdG/+YCcuzGzF9cOGe8bIo4n6K9oHiSQ/+0MrKzA2GfqOOgG3
-	z20V6eWHdb89/MZkOa2jOCH3F9sQaj2Fu9QyiJxZOMoUqncdgIsyxKe8LJu65R+8ovIL3w
-	QWQGWiWKeCU4+/uWotfVZ6aasDa4k4E=
+	bh=mG1kOJ+Tut2DmZVpOA/Iv9r39LYIA7qLrHZhoVN2dxo=;
+	b=4Y+zw330WlT4PxGX44c5GekOgtRE3JvE3vDZv+mVAYwjNt8a8rSY5z4dlrWxG5EqDZP3Wd
+	1m9oVyew1lq1GCCxUpUu8g/Jg/7acCP3598qyHAQy+nBz8pGD6QJBeS3VlYYZwPwIbg46w
+	KEo+yaTcFKIhvNYsavY+qGVGbPJAL+8=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i0hSnIgz;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hk1d9+Qc;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of praan@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=praan@google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786725912;
-	b=26eTK4wb2wmj5khAo9smbptThuyzaM4u2iNoXxPLHSziZSrnVGcKxjJECMTvMiPiW4GGC3
-	APMOcj2mU1qiJGArBw6cvMueSpFpPrIU3zmrjJYnCBMUs9xuWTzGfNe2LSi1FTe+uZB/0O
-	nW/5zOtOMcaERkLYQU4HZ+2/BfwuZ/A=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7908C600C3;
-	Fri, 14 Aug 2026 16:45:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D9C1F000E9;
-	Fri, 14 Aug 2026 16:45:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786725911;
-	bh=CJm0B5AioEhSF+ctzUWfmzPpAYDyCiCnhoBthc1Au8U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=i0hSnIgzyNGPLsNxdfAq/LKMyj0vxSr/aSDp8Aynw4bPBv0slzfs3cOI4TB8FEw2I
-	 LVHygeeFYB3SCQzTyph4FHL9udZKx3al49q8VH+IjlazbKVPC0+eX7wSQcR/MO42uJ
-	 ejOB67hg91GXvjbqU0a51jw+Tuz7vkbMYNXHrZ1d+u1eBxdoJrYd1K8LtzC3CLRG/h
-	 B3j2xC1l3MN3zDhnCFIlUC56bVsytFqwN1JvobJH/jwqEvtr7Ecp9s12Eh2Jf+OPTf
-	 L9K13WCCvfsmVr5n+F1daxzZQ8wIvGY8xSIlCHgWUZtr5AakMltuqEjpENVLPV6y4T
-	 fYlMpPPO4J/4A==
-Date: Fri, 14 Aug 2026 17:44:52 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Matthew Brost <matthew.brost@intel.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: fixing sashiko failure to apply (was Re: [PATCH v5 00/16]
- mm/rmap: index MAP_PRIVATE file-backed folios by anonymous pgoff)
-Message-ID: <an9FhK3wSJHkEi3j@lucifer>
-References: <an7ewWbMwN20xklN@lucifer>
- <F700B4F3-2068-4DFD-975A-6324DAAB384F@linux.dev>
+	t=1786726106;
+	b=B9K3yO50mIVhy2F7l9mDXR2NeP1Z7qoA3ud6DYef2T30OgS5WyOcOuOjceLwZev2EiumaL
+	b3/LC6gYZtyZmyf0MhJVQrr1ZRqmTTWplBrQUYgqtfekpmjNmGtVt4nOvpRQMbR//fOhNj
+	3OzB+Anebz/hGZmR2zZ+rsKlVELFRoc=
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ccdf36f63dso134725ad.0
+        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 09:48:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786726105; x=1787330905; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mG1kOJ+Tut2DmZVpOA/Iv9r39LYIA7qLrHZhoVN2dxo=;
+        b=hk1d9+QcoiEYtAGX6AxyobciKmWewe3QYHL7e34qPiKh9KU88PAfh4fLhE/To7ktM5
+         1lmyAoqulUgw52taTq2IePwIoeSE6dLZqXXraWd4svIrmt8FxuL1bp5oTluSupxJEt3O
+         IsLtYPOqqSbC7i0EAlbt7V52RzOobo/UcwT6s4oPAupz4KwEpLzICVFGmhwvG9UH6gL1
+         RPoih6ixYDQiRgEW/6NukO2ZW39i1ju1GBMgqLvCTJiPlta4X+26YzENKStO2OpWuNGn
+         EwMiVwORJQkgvto4jz1xyRRss7tZjn0m2WBsfr7Sy6+QQMgRKaZi4YqTVQ+8hJG6MhQd
+         j/0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786726105; x=1787330905;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mG1kOJ+Tut2DmZVpOA/Iv9r39LYIA7qLrHZhoVN2dxo=;
+        b=JQH7TeeNvOQX834cNX4XrQd4J1lq0iFlp1Aye4/gQ6nr2GZwPWg6cINs8yiD5gipYp
+         OWc8Fu8FksN8FJtxmGUnVT7STtby9HnMkuu16lrgTb4hcU1tiMhOX6azKPsljBEVSVqy
+         kCG5y2xONNN2jwQMDCov2hY9RIQlh7dwJ+wIDxMJihBEpJ0EuStSQ/b+pos6OADs84xA
+         lpvHc9xvw/NEzXe64ceOmA9HFsi+uCJ/8hMefmuk3UJTzTMIDJMyvCH9sue05StMqFQm
+         sqvmOgCMtmvH+JtVa1Dnolri1GGJErdeYBRlXkBdkoMkL4YQ1JCPEFi+olOeeELaFjOL
+         IwSA==
+X-Forwarded-Encrypted: i=1; AHgh+RqfOtyNQnyuQ01mRLmkVlt36P/192vDSmStjcHaaux/If8wvffowY/3nZ8iG//vlHhFV73ZgYmqYg==@kvack.org
+X-Gm-Message-State: AOJu0YwG0uEYjTMjn9HVaIWdIEOCW6ptFHydDm3IGMRgWkaQFzvbCdID
+	f1vdo1oryI+Y3g9p8H5aJ/mytztdPlSzNId82HeNSfOItjjl6oWUk+78yYsaCdYI3g==
+X-Gm-Gg: AR+sD11pERwjoUQN6QMUq/g9xES3ShEgPWUVJ/qSCL//I93aS6+TYagAXdoezdlkjhI
+	iaZfIFxF+fKCRMOZvMBpvpUJKOSYzeOpOUcuVF9N93L9L266FPtVKCTRyIFJLRnOB/j3NeoBkXI
+	aTZwumWt7V8bQTaof/T6E0nSzM+zMyXVdth31oa/9hSyHQMPax7tio5SWgHw5IzJufFoVzDxK4g
+	pkvKVGzy0UqbGR4tDCQ6KI/PoL0IMyOjLQJdUeJF/0tiHptLQ2e93zcjtU8MC2rRz8cI0p712CY
+	gNv/YC2ywe761Vy9Gk4hNBhl0SOuXZWzKddg0SB7s/u0ZnYQ1/neNbGDPwCqmHdWEumr7f6MiNE
+	JjAsOTeVTSX4oqXZCBlyXFmferv4OMxAX6k0D2EoGYObVxifdQJHBZXe3a6mMbDG4olyOoDJ+Vz
+	9Aa7xRPYsjGSmSSpq2CKEqr3n9atGMidQ0HJUnwIWmZF3I3ODY+YaBHOvlbwGsfp7hFm/sv4qGL
+	GqzPdQV3yrbgIjXTRoSH9s=
+X-Received: by 2002:a17:902:f78d:b0:2c7:b1e7:501e with SMTP id d9443c01a7336-2d3b48aa5f2mr7298295ad.3.1786726103643;
+        Fri, 14 Aug 2026 09:48:23 -0700 (PDT)
+Received: from google.com (21.168.124.34.bc.googleusercontent.com. [34.124.168.21])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc095a490c1sm935638a12.29.2026.08.14.09.48.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 09:48:23 -0700 (PDT)
+Date: Fri, 14 Aug 2026 16:48:17 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	David Matlack <dmatlack@google.com>, kexec@lists.infradead.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/2] kho: support preserving high-order non-compound
+ pages
+Message-ID: <an9G0Y3ZNIA2NfjP@google.com>
+References: <20260803113944.3694290-1-praan@google.com>
+ <anr4-F-e5_vHEar8@kernel.org>
+ <2vxzv79f39za.fsf@kernel.org>
+ <anxrvA3z3NUkWvnE@google.com>
+ <2vxzecg33103.fsf@kernel.org>
+ <an2tArzOomSNpjV9@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <F700B4F3-2068-4DFD-975A-6324DAAB384F@linux.dev>
-X-Stat-Signature: dyc7xi3nec4g8hck97qppqcs37hoq6p4
-X-Rspamd-Queue-Id: 73B60160005
+In-Reply-To: <an2tArzOomSNpjV9@kernel.org>
+X-Rspamd-Queue-Id: 7EB4818000C
+X-Stat-Signature: 5mtotnzccqhej1df9gq7ia8jt5sxy8st
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786725912-359918
-X-HE-Meta: U2FsdGVkX1+oHkx5jwAilxjfnJeJhTs1Je/YldZ1FTMjJQb8SUymyBLYeKl0UCjmnbAn3HLA8wzOqChDn5W8NUwBXmmMGxbcow6m6o3A0yvxwgGS8IRlWgHHOpDTti5yyVzPUPlMec0OzXfWkSK8L1ChjMB0wkuiJj1QZ5NCMkS6iDCX11rvKR0FKu15sJZBVuaZU9mAqHx49AfU4M6bTX9IpgQy9bXa6DzEYM2uJWyriHP1Z0l244EhEOuLn5qEg5ejcLFSqdUxTm21QRzCy9Stz4QxB7IfO3izpiOVpLExOxzFzOXUneOil0XZB92ZtSJlaJgDHdt7dNRdapIgYRww0dVKTJ/IQVRq53pls5bh2TvaTZ0lMcTgRnPQSSCLG0eOMQwZnN0YNjN15WjxyW8c7hToyVsc/QkcR4LgTO8086aVZNm7tZTu46GXtVunPXPg67/99TJQXZhWDZsimq4bk28jmQwRVvKKwmlPWcEfk/iTs3gYkJMBaRi8RvjogJYtQaPkaXCsVc+K/Ml2EFYm4GZPPJBFwx3SXPbz5HsSssGJKtMSzLGzUSMJgDch+v4GsimspbVlVqtIPu+25W6BCMWE4Wv+Gby+taHW40xUMOH8pOfggqxSQiOnZESWT6bWdFfmMb02ZkSKvOTaG5hVBJydcMNFChngBZ0mx5PxPoqCmOlslhZRP869p5aOnenfz32g3LJxtjZpTlfjhkf2yoL6rohWafZAjpolhUQudnKCN2gkZZiQWRcdw+daZz4/fQZM4PC+6BUrNxOC/RXWzMJu7EbHZEjuNl5K0HvjtbpS0cNE6JpTvDheDLuQ1E834X+zZvPmdbzQ3SqHZdPLKTn0I5wH4eGXAhi/TRe44E7m7alJf65gJVQNis3WJ40B7LfCN6s+629/ldo8QVWHL92JQVNLgFIuWEEviT0dVyLxUlGBMwGQNQCy3qhCOsurrIeROrW/Jm5Rr2x
- gpzbNQ+V
- PE0l6Z54cX/7YUmXa69DXvggthBGLHXrZN0ZYPcM4WNYo98IwXVOU+FZO9O4KydFRig79RiNLGB/z3EExJ4Wqg9PkEU+he6pi4jiIauC5ez56HMp85BtVVkdovmACeGQG9u1k47cz/QDzqjF4SyoqEI8nG9mZB+QXtSnjzZDT41wMkmybIg1eYvooG1+k8Ytjpcu0rMnlPlhetA6WEDzP/E1zGGqH5unKJh1CGY3Lc4lC83zSpM5VO+3cfjjf1gdQ21U83VTqbULldFMZ0G9bAikv5nz8fQoWig2CS6lWM/dSuDHo3Tw5fZzgLnCafur7Cn+r
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786726106-1068
+X-HE-Meta: U2FsdGVkX19FFW29IaDBhHWZpXRE2P0lOT3oRB9LxVNFGO7CyjKjYvvAd16U611vS2LTVWMeHipOPkicPqpGGD1FRNdx7EJJm39V/k3qlZ2U9r5CWPi1UGxdto29t+tAGVYF2SDy7R2FjUs0oX/MBf87l3aHqUNYvJZdLVnBzEnUO0Pcd0vnmh5fIwzeexSqx9te6BOX6TQwP+3gpT5e1y26ZHUt4/AgCAVMZCDKC+OQwiRuBEyhiIK4EdE5j0fQEz4wmUd8gzgrzLStThNQUyRSJmmuWp44d+7B2YuyWnKUjNQRXJzjuMvp/1RK2Jmz9A40376/UJdY7IxnSjYHHz4L6Zq23OgzWKmOnjPsfuclBG7Lpaals9CZ/k3NtwcLyHqyQ3QgJRqXM1Aix7afLoD1gslk6mUWiRA60hui1rhuWYgN9pJd82rhJRgDZu9ofFO090516Dc4AhTJOTvT5jv1lfbCtn3WmHYsn3Z/pNR82yznVMtr4WTvqn9YElNTtwNIialh+e07foso7rknGOPUE7kFu8ed9HR6s8TslNZK4nI8GMIFIP8oS0l7cHr7t/tkFuZW7yC9pcFD/gaj0BWpDxACig99hp4ZVda3wjl6gem15Ezu40Emq1GYLr4hHBN3VjcKM8A3BMi9P2oNvR0bbG+gBPU/lTjE2+JI+c11wzmJRVxvwmRoeC9h7uQwPfDS2qsf9PKvm9F8d/fj+ZO3NUmlZvBz5eQAiE1zTMFSyIxP04NIwq2rAvgLjJ2hjlZYLb+Ied5kAXoL4/naZSBkaRyfx13TIaXtq8OA2jyZZV51DMMaup2Ec1pyO+K2hcUFcsvj1Ab5P+ROKYZ6rQppMWyz68qKbOzyzLWAlZOl2uEFCr4DaXk4CC7XeOeq/wW3m3jFLruwOKtH7+IrLg/D649ufDw2OYX9QbKYBOsVX8IuW4S9Xqt6/KzsBukbpud8n4+Yw/POBv9T79q
+ FyhECS9H
+ /BnBl/b6X24pm/NJKdX2P9zJY7pQP0K5rc45QRlsBXJL9M0H+6HB+QoVadEeOOAXoxqDGghYkSOZ02lySrIxNT/xognauNKzHJGkohbiUxfDDOgkFbO/+374PK15xmu8iEhgvdc4MB047bH/xq/JdX4qq8D6tXdG0rJO9lzss5N49SJj5jkMki0JP+/HJP9vd1Q4YRYq9lFY86tX9LhzH4dxq/bU/y5hfevHTQDZt3JMSfX58UXT+E33kc/b0TzcHoMDMIglS+DGHENbdDAJ6lmJGnQPEUGM26gMZxFVGemU+GccrQN9X/HVWIsmLklIB5dx6lqlV8J0aZNj9IA5qEBj38wcKdULKxRbIWTgcFyw8Rw8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,102 +129,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 14, 2026 at 03:53:36PM +0200, Roman Gushchin wrote:
-> >> On Fri, Aug 14, 2026 at 02:13:51AM -0700, Matthew Brost wrote:
-> >>> On Fri, Aug 14, 2026 at 10:01:19AM +0100, Lorenzo Stoakes (ARM) wrote:
-> >>> On Thu, Aug 13, 2026 at 11:53:46AM -0700, Andrew Morton wrote:
-> >>>> You'll be mortified to hear that Sashiko wasn't able to find anything
-> >>>> to which to apply this.
-> >>>
-> >>> :))
-> >>>
-> >>> Well, when it's right it's useful, when it's wrong or suggesting unrelated
-> >>> what-nots it's less useful :>)
-> >>>
-> >>
-> >> Questioning your assumptions is useful, even when they turn out to be wrong.
-> >> Show more lines
-> >>
-> >>> I do locally put things through claude + Chris Mason's prompts a lot, I
-> >>> don't always invoke local sashiko as it's very slow and token-heavy or has
-> >>> been so far, but am planning to do that more also in future.
-> >>>
-> >>
-> >> Yes, it's kind of odd that Sashiko burns more tokens than a full day of
-> >> breakfast, lunch, and dinner service. Running Sashiko is a bottleneck in
-> >> my workflow, so I'll defer to others on this list.
-> >
-> > Yup, not sure if there are recommended configs for something saner :)
-> >
-> > Maybe Roman has some advice on that?
->
-> Sorry, no magic way to save tokens without hurting the quality. But I am curious what are your numbers?
-> Can be model-dependent too. In prod on average it burns 3-4M tokens per patch with Gemini 3.1 Pro,
-> but maybe mm patches are more complex than average, Idk.
->
-> One option is to run only some discovery stages (—stages), but this unlikely will save you that much.
-> I’d say use a cheaper and faster model for the development, but it has it’s downsides too.
->
-> If you have an example of a patch(set) which is particularly token-hungry, I can take a look.
+On Thu, Aug 13, 2026 at 02:39:46PM +0300, Mike Rapoport wrote:
+> On Wed, Aug 12, 2026 at 03:46:20PM +0200, Pratyush Yadav wrote:
+> > On Wed, Aug 12 2026, Pranjal Shrivastava wrote:
+> > 
+> > > On Wed, Aug 12, 2026 at 12:32:25PM +0200, Pratyush Yadav wrote:
+> > >> On Tue, Aug 11 2026, Mike Rapoport wrote:
+> > >> 
+> > >> > Hi Pranjal,
+> > >> >
+> > >> > On Mon, Aug 03, 2026 at 11:39:41AM +0000, Pranjal Shrivastava wrote:
+> > >> >> Introduction
+> > >> >> ============
+> > >> >> This series is required for the ongoing effort to preserve DMA allocations
+> > >> >> across KHO [1]. It addresses a fundamental mismatch between the current KHO
+> > >> >> restoration logic and the physical reality of high-order buddy allocations.
+> > >> >
+> > >> > I skimmed through the patches, they look fine to me before the in-depth
+> > >> > review :)
+> > >> >
+> > >> > But we are really close to the merge window, so we'll anyway need to
+> > >> > reiterate after v7.3-rc1.
+> > >> >  
+> > >> >> The Problem
+> > >> >> ===========
+> > >> >> The current KHO restore implementation treats all multi-page blocks as
+> > >> >> split pages during restoration. Specifically, kho_restore_pages()
+> > >> >> initializes every 4KB sub-page with a refcount of 1.
+> > >> >> 
+> > >> >> However, many kernel subsystems, most notably the DMA allocator (via
+> > >> >> dma_alloc_coherent), frequently return high-order non-compound pages.
+> > >> >> In this state, only the head page carries a refcount of 1, while
+> > >> >> all tail pages have a refcount of 0.
+> > >> >
+> > >> > This hints that these patches could be a part of the DMA preservation
+> > >> > series, unless you expect other users of the new API.
+> > >> >
+> > >> > Generally, we don't merge new APIs without the users and if DMA
+> > >> > preservation is the only user, it's better to fold these two patches there.
+> > >> 
+> > >> Makes sense I think. We can review the patches here, but then they can
+> > >> go in with the DMA series.
+> > >> 
+> > >
+> > > So.. IIUC, I'll post a v5 here as a standalone series till we get
+> > > consensus, and finally the reviewed patches can be folded with the DMA
+> > > series?
+> > 
+> > That sounds good to me at least.
+> 
+> Yes, although when the patches will be a part of the DMA series we might
+> notices something else :)
+>  
 
-Oh well damn, no 3-4M per patch sounds about right actually. I guess that just
-is what it is then!
+Ohh yes, definitely! Just asking to know what to follow for the next version :)
 
-> >
-> >>
-> >>>>
-> >>>> Sashiko can be guided with a base-commit: tag but I'm not sure how to
-> >>>> tell it what tree/branch to try, or even if that's necessary.  Perhaps
-> >>>> someone can figure this out sometime.
-> >>>
-> >>> b4 gives a base commit, but I think because the trees are rebased it ends
-> >>> up being the incorrect one.
-> >>>
-> >>> Not sure what the solution is!
-> >>>
-> >>
-> >> We have seen this on the Xe list (our list is based on drm-tip),
-> >> typically with cross-subsystem patches. Some cross-subsystem patches
-> >> apply and run correctly, while others do not but public CI flows run
-> >> based on drm-tip. I do not have a bisect or a clear understanding of
-> >> what works and what doesn't, but I think it would be very useful if the
-> >> community could better understand the root cause.
-> >
-> > As Mike said, mm-unstable/mm-new is heavily rebased and also carries the old
-> > version of the series before the new one is applied, so it's super unclear what
-> > the base commit should be there.
-> >
-> > But in general, I wonder if it's possible that we could tell sashiko
-> > after-the-fact what base commit to look at once the series is in, or re-trigger
-> > it somehow once it's in-tree?
-> >
-> > Roman - any suggestions on what we could do to help sashiko find things?
-> >
-> > (Once mm-next is in place everything with change again, but can address that
-> > then :)
->
-> I can implement any reasonable logic here, the problem is that my understanding is
-> the current mm process is a bit vague here. Which likely will be also an issue for the mm ci.
-> I’ll merge a support for b4-like dependencies specification soon.
+> > -- 
+> > Regards,
+> > Pratyush Yadav
+> 
+> -- 
+> Sincerely yours,
+> Mike.
 
-Yeah I suspect things might be tricky with mm given the rebases honestly.
-
->
-> Re re-starting with manual selection it’s on my todo list, but maybe a bit lfurther away, as it requires
-> an authorization, etc.
-
-Yeah that's the fly in the ointment I guess for many things like giving instant
-feedback on accuracy, well you want to make sure the person giving it is who you
-think they are :)
-
-Probably an email -> author with magic link or something but thinking through
-how to avoid abuse/spam/rate limiting everything etc. is surely all a pain :)
-
-Good to hear it's the TODO list though!
-
->
-> Thanks
-
---
-Cheers, Lorenzo
+Thanks,
+Praan
 
