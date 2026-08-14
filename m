@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6136C5B572
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 23:28:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4E79C5CFC1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 23:37:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 744906B0721; Fri, 14 Aug 2026 19:28:44 -0400 (EDT)
+	id A3CA76B032B; Fri, 14 Aug 2026 19:37:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F5806B0723; Fri, 14 Aug 2026 19:28:44 -0400 (EDT)
+	id A15356B032C; Fri, 14 Aug 2026 19:37:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E3AE6B0724; Fri, 14 Aug 2026 19:28:44 -0400 (EDT)
+	id 92A556B032D; Fri, 14 Aug 2026 19:37:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 077F86B0721
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 19:28:43 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 74C611A02AC
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 23:28:43 +0000 (UTC)
-X-FDA: 85101466926.03.9D2BC76
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 886F040003
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 23:28:41 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zw9dTzSL;
-	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7437C6B032B
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 19:37:05 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0BB1DA0287
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 23:37:05 +0000 (UTC)
+X-FDA: 85101488010.14.ADF13BE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 3EEBE100009
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 23:37:03 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e6JZBt8V;
+	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786750623;
+	b=zo7yg6Z9wam1dFp1ihfcCxFXNdTHwAeZd9xD4QM5jzV29sKMU8UT0hWlXPXpQPJOoCtlaM
+	UbD3F9WbcfFUC55dvuO8BOaFZ5+RImuHyB/3IUce/zgsvR89uiKjIWz6DuXiadOixaDtEg
+	xQ9h9eUSdI5+vopMTlDUhJYOxKMc9Jw=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e6JZBt8V;
+	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786750121;
+	s=arc-20220608; t=1786750623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eR4S2R/3oS5YObv7yGePjWbnUk9MHYzmwJK1zpSKt00=;
-	b=zxECeUxUgKraKHe8DWHh2ypelclYLPjMu5S7uBUbU/K1Xqit0FVknp/0/BsOqvYgWeVtR/
-	/pc/MUM81FtiiSTXNMsY7wLXyK6awCY+U1+0CNCvcm0637fypIVayEIQLRh3alPmxA/lgz
-	JZ+Yc05drDqxrvLbr8ej0KPxvEbMg+o=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786750121;
-	b=n198p0bgGveDbnIuakG5uLRLbvK/FOGdtmd2NfxoyBTLWeTu2vZI8O0DL7T+asXumnU+Py
-	bzoia4y3Ay3wvSs34pxHFfmd+sHBD985cyEMUx6w0OHPVHYJhDjoqAzqKP/6/XH2NsH9eT
-	nhaP+hVhzg0g7FnyY9zCMppz3KQnPlc=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zw9dTzSL;
-	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=IvbZtELhzDK1WfzEMAqobLP+yTEElm+FVF4XGfAW4Uc=;
+	b=mPuDPd4Zu0gv0ERDcmQ+pF5EO0ISCAJ7qkWAqc8QKXWHvwWMLYgJWnZsbwLI+C5pDBZA9g
+	r4JLV+/+8K3q7dIzQyJcwfrAD7YWsSnAzMcUxZ0BP5nGaMrv7khqK/kjbLQMCzlF6k8oiK
+	kJTwrVMmkW7C/uEyx6Jbz90rnqhAjSk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3F35A4081D
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 23:28:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23BF91F000E9
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 23:28:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AAF94600E2
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 23:37:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601051F00A3F
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 23:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786750120;
-	bh=eR4S2R/3oS5YObv7yGePjWbnUk9MHYzmwJK1zpSKt00=;
+	s=k20260515; t=1786750622;
+	bh=IvbZtELhzDK1WfzEMAqobLP+yTEElm+FVF4XGfAW4Uc=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Zw9dTzSLUxQpDIw/lVAvqAB0YYnGVDU7raeqpaZV+Yq37HD5BpFIo9wP2ZTDLTV1e
-	 sTGsulZynnetyPaJ6bkANREye0Izy4trpPDE0T5+J/7PgnKQZoerdYqu4IjDmKFKg0
-	 Hz5/81WijEdvom9NhOH9XJ8wfiRxT+j79kv5tZPiTXotLfd43FbdFNO3kFwpzAr5gb
-	 4voOitjZTyRf4lbghgfE2ESpzwvSBhxExQkc0W9kcP3ru7S/PPA2DM3bM6bNCrCSjv
-	 TGD24Wxa0kTTHj8PnqV79/+Uzi1usL2382YQeNQwPSKauNTNwAXTLJzrbGqG6vdpNg
-	 ewT5Wob0UFAiQ==
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-930c0f9c1b1so91290585a.1
-        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 16:28:40 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yz3vLbFoDnL6sR346od+oCJeQL9k5lPuEsX8vR3t+8REdK03/9V
-	JEM9gMbSTp1xdSUq3wKYE2ddguH775XzH8mlKoN5qNlSgF0EBRQhp/3hQuexkB5++koGNmOzt5B
-	kUSKORwYu22CLoYtGKinpxPncknNfFDw=
-X-Received: by 2002:a05:620a:25d0:b0:934:9639:3a4 with SMTP id
- af79cd13be357-936d2382c37mr824631685a.41.1786750119522; Fri, 14 Aug 2026
- 16:28:39 -0700 (PDT)
+	b=e6JZBt8Vpl5iRmjsWB2Zq5fu0la+ujO+B3ijGzlWsc9gQs+sK7fpoN7AB55Fv9x8F
+	 52xnpEXqlCZcM1NC0M+0l4Y0U4ozBY/zHKxR++7foJIs2tn2Bbmi+ooCt/xhwUrLHM
+	 6Z5FUUPvQQGVD8cjY0MOhBF4UxRYzFopkIy7NE9N+L8jkJLMKdfAkUnbfs2zP7JvVO
+	 LpnTwnvseYw47nCWsm/DBBnBynDxvnVqB9XkwTIXrNjhoVdHEMvZ5zBStv+E9IjKVq
+	 arMlKcwXYr43btIyyPeTe6jrOzAbQkFd6SAOJ32/+3XO046sxkSa4DrdAaifUOIwjP
+	 iK451pWU/qyig==
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-9349ad9c857so167018685a.1
+        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 16:37:02 -0700 (PDT)
+X-Gm-Message-State: AOJu0YywvMZCfh0gMuTQw7eiAdNK5rX+nVHnWt7geFHCjL0MaJzk6cY2
+	eA0RIVQUWfSqkvsLJRSqWdYi4ie1Xp397eAEl6t36KF87coq41/bDAjBbzsQXt2f0oluAop6BUK
+	+5ruoFSbf19RLfN5yr4DNm2mgyE27BKU=
+X-Received: by 2002:a05:620a:a805:b0:936:8c1e:b531 with SMTP id
+ af79cd13be357-936d1fe3cefmr990381585a.10.1786750621764; Fri, 14 Aug 2026
+ 16:37:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260806103003.3924438-1-baoquan.he@linux.dev> <20260806103003.3924438-4-baoquan.he@linux.dev>
-In-Reply-To: <20260806103003.3924438-4-baoquan.he@linux.dev>
+References: <20260806103003.3924438-1-baoquan.he@linux.dev> <20260806103003.3924438-5-baoquan.he@linux.dev>
+In-Reply-To: <20260806103003.3924438-5-baoquan.he@linux.dev>
 From: Barry Song <baohua@kernel.org>
-Date: Sat, 15 Aug 2026 07:28:28 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yF=NN896RqhGWGtkhQPFr2ZSsFC2izhA456J_fnRv78A@mail.gmail.com>
-X-Gm-Features: AUfX_myxINIUemzjxm2Fs1iOU7eYFEcSBQKTnvR7Z1OroZSJvdTxXyQnPcddykA
-Message-ID: <CAGsJ_4yF=NN896RqhGWGtkhQPFr2ZSsFC2izhA456J_fnRv78A@mail.gmail.com>
-Subject: Re: [RFC PATCH 3/6] mm/mglru: skip empty PUD subtrees during aging
+Date: Sat, 15 Aug 2026 07:36:50 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xrJhFrmG+Gr7ukPUS0NeKTgYT9VViN_niq8tHejp36cg@mail.gmail.com>
+X-Gm-Features: AUfX_myx7hqVi3ex4DPqIMnJ4c3WF7mxdZVcMjdV1Salb4RvW4FWhGgeyZZ5Y2Q
+Message-ID: <CAGsJ_4xrJhFrmG+Gr7ukPUS0NeKTgYT9VViN_niq8tHejp36cg@mail.gmail.com>
+Subject: Re: [RFC PATCH 4/6] mm/mglru: report hot PUDs from the rmap feedback path
 To: Baoquan He <baoquan.he@linux.dev>
 Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com, 
 	qi.zheng@linux.dev, shakeel.butt@linux.dev, axelrasmussen@google.com, 
@@ -88,13 +88,13 @@ Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: kmt6bcu9pmyx4c5usbeux5hwzesxx9fm
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 886F040003
-X-HE-Tag: 1786750121-374657
-X-HE-Meta: U2FsdGVkX1+lf7ELFXZbNAdXG4eBt9bCmlMpqHNXy+66Xyt0uOdcnbwRRZISmZalURDwEyH212FMjlGheb7cF8o1sLNVyY8emX+EtgZVyZbQMggCdMDmSUuISXrRYGsIr/4lF33+W+92d3Nx5C8WXWjIRoDOnHTNcVVEezY486kGmNRNV2IAoGl1iFxQX+S6P9lpbbcyY0rcG8x2nLDctQ6bO+TFxv/XIl+JJyVefiFtrCi7xnl1gip8U8GQ/+8sYQzf22mnx6NHP4atFSpmcNYTKkl0r+e5oY4qKt8VjMmD6aiGBCtW1s1yOYEW0loLN1K16ZtQQcCEUaP0TSRnAFGSC1Xi3MeCLa3BO6I4Pc8wyTcmiweEllsYNpgCZBBI9DZqmmPREnhvxF3raAPCOjT+ATdno76TXp+dCn8Dm0eyTBCcfpOXz3j1zHLaijnCnSs4TLfUSlcVC/SRxW+yTTuXOptps3N1yMLSwOzHLUdziJihA+MrOwup9YYH64MPOOs+Kz/dNm7aogDp4lGxQT86FVkSB8wOF9ThyoRpg9sj/5YKJgEErf1JwrNiXFKV2mXj/R0rru+aEjCF63K5w5YRBodgcN9AC/2k541hYhqxgkPLaETdJAc4HLz2pfvsy5R2yfhiuZ3Btgu9e0uamN2W6SDH+57igiE+Y2hd6pWLQpuCKgnc/BbLKB0BmmXcDApPDQp2Jairyu66ohxyqoFVWd0pxAjlbZogMreuJsCOCwKDcGpKFD+XwZHD/CsLztmDu2pw7xvCum0mpLhyWjtCAKZHPbNxKe89JbaO1+YWTE61BEZbceRCMQnWvlbAy7swQf72PPzwSJTcxSiC4Dqytts10x9muBsDyouDYlE9ydL+RrGBHIIamc/uz/trzMy/tkQBAdlEX5jFRZQ3olV4eI7MKIg9S8WbXZsdXPahfBCAcR8c2Qc6YNccs2jQBt2MwsqlgoOT+scTM5G
- Zv3dMwW+
- v1DNR8dhSHcVfwFuPlew9rDQZh867QbjXoUI12DlfyOgUFn4mo9iiWutuF1PW/rkkl71+g/BXWIk16ST7YFFCkqXUzMbg52b0WctDNb0k8HXel3pKtoSybd6/RXJFBaXrJCaHJXZddxQ/8lwts6uJl9LP+Vk35by8vtZiaySGCa11A246dyZSTTJA+LfSaYt8cH+ZAb1JP9XVUVavPxlTx3nahQYd47UTcTRBBX2YKlYdSGkKvwx8OCAlNIyaIucN6LyrsPmjZmH7bJbUrTlz0M1U6usZ6B85VjJy
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3EEBE100009
+X-Stat-Signature: ep5efh6hzxx5pht7asgmjsz3azh3ykde
+X-HE-Tag: 1786750623-83401
+X-HE-Meta: U2FsdGVkX1/DhSaIhoBAnJgUK7dtbAKFqQYKNTs+0m1mqDD8HzFIFGZcqbrJyGigVbcSB9yM73+zkhm/kv8U0TyNwLOeOohT0cWNlpHD1gaQuNpjFE/Y3h03cezNK2tCaOjepus/HMRx6Df65kVa7HeMWkwNV9nwI9oVAjdxgvYX8Uhx3WQPBT2Y8SigcMQ9B5dfNcib9+TLoZemjGrix9GmDXUkjZq9bhgd2XOgiQ8/VxFxy5ubypX8CCbqdiQ2GRfraeHtfBRDd+UlV18LFhsowNBb3ul3/L/UzGOe9fPgMxbJIwsaMyMhEUWFdvg3vdZMEZR8H93UgHRARdRhHYJorsvP89KfFvPBmoSCWfCtB1+Htb9fLeAecco0tZLzvip594dVYGHtwHlurQaqWSPY3GJWWJfOyF2ehnQBwpAHJpaTmRDALgN9eMEd3DWEzB5YOP9YadmiyZSTPPnt2XB6Y2v5F5in9Ny6KL2Cuku+i1QKFekWNNqucS99yTO5EQSJKSvSoWJCCDlhZkeh8QdQxAjQBaUJ982SrMOx4nM+Gq+B4A22j+3pOH6JwnfR7YJddngj+gUjGf6nMmMV6BpXrg6ASZut8TWrCmxJiSqGQtN9RkClL1DN6O295YFqR/LJ4bukse0CfDK9N9qmmjf7eUVBd3XKOmO50V2OYX88vAMEBHJGVnx1M7AFPtiBChBRqjhB29BBws8HLilulAhC7Oxufommq/i2pYqG0twYjAXYMxnN0SKFfp0Ilx+5O+l/r4ZjzwMSIhPyRccEDeoiH+xIqeeTecn2e0ZB0Y+BmlIJCJ7k8fR+LpnAAv3qnQ5YxGWhM/J+WSKFHkjgOTp364R1cNQA5ttz5OEKsZFbeqQQF76dcC9BWE7Pp5XfQLbU0HUDz98M7Zr+XgDovldInGXSZmAoCSVH2wrb/G+mnimE6k/IaxxZcgdIajES29393Hggz3XDTSRhyqQ
+ GpVZZvoz
+ J/C4bLAojFVMKFAYwllh+EUyt7RtpOo5Sgih+MCi843byS2E5dSP3G0+cZByIAsNMfRQoupgd5o+woOccclnUaZT2WIUDNrRLLoabGZPgkyAWVENlP9oaGp0MrzorMxtHI/eo+Hs9Atp4NPHcdUatDzu5WzDLOpYFzFKwOGSCoVWymCM5EmJp+2vwGqB5pd+pzay+oguUW3KqcynqsEtY5c7SX+ViDcDiUtH+K51aVApV4onmEqRFJev8Md1EAUWoScXXUIxZRU/lgVKxcHENAecQRA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,194 +105,55 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Thu, Aug 6, 2026 at 6:30=E2=80=AFPM Baoquan He <baoquan.he@linux.dev> wr=
 ote:
 >
-> The aging walk descends every present PUD and iterates all 512 of its
-> PMDs, testing the PMD-level Bloom filter on each. For a process whose
-> memory lives only on other NUMA nodes, every PUD of this lruvec fails
-> the PMD test, so the whole PMD iteration is pure waste - and on
-> multi-socket systems these cross-node walks are common because
-> lru_gen_use_mm() marks an mm for all nodes at every context switch.
+> lru_gen_look_around() marks the PMD of a young PTE found during the
+> eviction rmap walk, feeding hot regions back to the aging walker.
+> With the PUD-level filter in place, that PMD marking alone is not
+> enough: the next aging walk would test the containing PUD first and
+> skip the whole 1GB subtree if the PUD is unmarked, never reaching the
+> PMD. Mark the covering PUD as well, so regions whose hotness is only
+> observed by eviction keep getting re-scanned by aging.
 >
-> Add a PUD-level Bloom filter (pud_filters) one level up. walk_pmd_range()
-> now reports whether it found any young leaf entries; walk_pud_range()
-> records that in the PUD filter and, on subsequent generations, skips the
-> whole 1GB subtree when the filter says it had none last generation.
-> The double-buffered filter flips with each new iteration, and the
-> existing eviction feedback (lru_gen_look_around()) keeps hot regions
-> marked, so newly hot or migrated-in pages are re-examined promptly
-> rather than suppressed indefinitely.
->
-> force_scan walks bypass the PUD test, so manual aging and newly added
-> mm's always rescan and re-populate the filter.
+> The PUD entry is re-derived from the mm page tables via pgd_offset()/
+> p4d_offset()/pud_offset(); it is only hashed, never dereferenced, and
+> the mmap lock held by the rmap walk keeps the table chain valid.
 >
 > Signed-off-by: Baoquan He <baoquan.he@linux.dev>
 > ---
->  mm/vmscan.c | 50 +++++++++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 47 insertions(+), 3 deletions(-)
+>  mm/vmscan.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
 >
 > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index a397c62b2e5d..74edfe2a747d 100644
+> index 74edfe2a747d..ca0f06641adc 100644
 > --- a/mm/vmscan.c
 > +++ b/mm/vmscan.c
-> @@ -2816,6 +2816,13 @@ static bool __maybe_unused seq_is_valid(struct lru=
-vec *lruvec)
->   * walk_pmd_range(); the eviction also report them when walking the rmap
->   * in lru_gen_look_around().
->   *
-> + * A second, coarser pair of filters (pud_filters) sits one level up. It
-> + * remembers which 1GB PUD subtrees had young leaf entries, so walk_pud_=
-range()
-> + * can skip whole subtrees whose 512 PMDs would all fail the PMD-level t=
-est =E2=80=94
-> + * e.g. the page tables of a process whose memory lives only on other NU=
-MA
-> + * nodes (cross-node empty walks). It mirrors the PMD-level filters: pop=
-ulated
-> + * by walk_pmd_range()/lru_gen_look_around(), flipped by reset_pud_bloom=
-_filter().
-> + *
->   * For future optimizations:
->   * 1. It's not necessary to keep both filters all the time. The spare on=
-e can be
->   *    freed after the RCU grace period and reallocated if needed again.
-> @@ -2907,6 +2914,23 @@ static void reset_bloom_filter(struct lru_gen_mm_s=
-tate *mm_state, unsigned long
->         __reset_bloom_filter(mm_state->filters, seq);
->  }
+> @@ -4416,8 +4416,14 @@ bool lru_gen_look_around(struct page_vma_mapped_wa=
+lk *pvmw, unsigned int nr)
+>         lazy_mmu_mode_disable();
 >
-> +static bool test_pud_bloom_filter(struct lru_gen_mm_state *mm_state, uns=
-igned long seq,
-> +                                 void *item)
-> +{
-> +       return __test_bloom_filter(mm_state->pud_filters, seq, item);
-> +}
+>         /* feedback from rmap walkers to page table walkers */
+> -       if (mm_state && suitable_to_scan(i, young))
+> +       if (mm_state && suitable_to_scan(i, young)) {
+> +               /* the PUD entry covering the young PTEs scanned above */
+> +               pud_t *pud_p =3D pud_offset(p4d_offset(pgd_offset(vma->vm=
+_mm, pvmw->address),
+> +                                                    pvmw->address), pvmw=
+->address);
 > +
-> +static void update_pud_bloom_filter(struct lru_gen_mm_state *mm_state, u=
-nsigned long seq,
-> +                                   void *item)
-> +{
-> +       __update_bloom_filter(mm_state->pud_filters, seq, item);
-> +}
-> +
-> +static void reset_pud_bloom_filter(struct lru_gen_mm_state *mm_state, un=
-signed long seq)
-> +{
-> +       __reset_bloom_filter(mm_state->pud_filters, seq);
-> +}
+>                 update_bloom_filter(mm_state, max_seq, pvmw->pmd);
+> +               update_pud_bloom_filter(mm_state, max_seq, pud_p);
 
-I'd rather have symmetric names such as update_pmd_bloom_filter()
-and update_pud_bloom_filter(), rather than
-update_bloom_filter() and update_pud_bloom_filter().
-it could also be:
+Is there a case where all PMDs return suitable_to_scan() =3D=3D false,
+but the PUD is still worth updating? Or, if only one PMD returns
+suitable_to_scan() =3D=3D true while the other 511 return false, is the
+PUD still worth updating?
+It seems we can keep it simple. I was just thinking through some
+extreme cases =E2=80=94 maybe I'm overthinking it.
 
-update_bloom_filter(mm_state, seq, pmd + i, PMD);
-update_bloom_filter(mm_state, seq, pud + i, PUD);
-
-I think either approach would make the intent clearer than the current
-naming.
-
-
-> +
->  /***********************************************************************=
-*******
->   *                          mm_struct list
->   ***********************************************************************=
-*******/
-> @@ -3146,8 +3170,10 @@ static bool iterate_mm_list(struct lru_gen_mm_walk=
- *walk, struct mm_struct **ite
->
->         spin_unlock(&mm_list->lock);
->
-> -       if (mm && first)
-> +       if (mm && first) {
->                 reset_bloom_filter(mm_state, walk->seq + 1);
-> +               reset_pud_bloom_filter(mm_state, walk->seq + 1);
 > +       }
 >
->         if (*iter)
->                 mmdrop(*iter);
-> @@ -3728,10 +3754,11 @@ static void walk_pmd_range_locked(pud_t *pud, uns=
-igned long addr, struct vm_area
->         *first =3D -1;
->  }
+>         mem_cgroup_put(memcg);
 >
-> -static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned lon=
-g end,
-> +static bool walk_pmd_range(pud_t *pud, unsigned long start, unsigned lon=
-g end,
->                            struct mm_walk *args)
->  {
->         int i;
-> +       bool young =3D false;
->         pmd_t *pmd;
->         unsigned long next;
->         unsigned long addr;
-> @@ -3790,6 +3817,7 @@ static void walk_pmd_range(pud_t *pud, unsigned lon=
-g start, unsigned long end,
->                         continue;
->
->                 walk->mm_stats[MM_NONLEAF_ADDED]++;
-> +               young =3D true;
->
->                 /* carry over to the next generation */
->                 update_bloom_filter(mm_state, walk->seq + 1, pmd + i);
-> @@ -3799,6 +3827,8 @@ static void walk_pmd_range(pud_t *pud, unsigned lon=
-g start, unsigned long end,
->
->         if (i < PTRS_PER_PMD && get_next_vma(PUD_MASK, PMD_SIZE, args, &s=
-tart, &end))
->                 goto restart;
-> +
-> +       return young;
->  }
->
->  static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long=
- end,
-> @@ -3809,6 +3839,7 @@ static int walk_pud_range(p4d_t *p4d, unsigned long=
- start, unsigned long end,
->         unsigned long addr;
->         unsigned long next;
->         struct lru_gen_mm_walk *walk =3D args->private;
-> +       struct lru_gen_mm_state *mm_state =3D get_mm_state(walk->lruvec);
->
->         VM_WARN_ON_ONCE(p4d_leaf(*p4d));
->
-> @@ -3822,7 +3853,20 @@ static int walk_pud_range(p4d_t *p4d, unsigned lon=
-g start, unsigned long end,
->                 if (!pud_present(val) || WARN_ON_ONCE(pud_leaf(val)))
->                         continue;
->
-> -               walk_pmd_range(&val, addr, next, args);
-> +               /*
-> +                * Cross-node empty walk suppression. A 1GB PUD subtree w=
-hose
-> +                * 512 PMDs all failed the PMD-level Bloom filter last ge=
-neration
-> +                * found no young leaf entries for this lruvec, so skip t=
-he whole
-> +                * PMD iteration instead of re-checking every entry. This=
- mirrors
-> +                * the PMD-level filter one level up and mainly cuts the =
-cost of
-> +                * walking page tables of processes whose memory lives on=
-ly on
-> +                * other NUMA nodes.
-> +                */
 
-Is this a common case? It seems a bit odd to me that NUMA balancing
-doesn't keep the process and its memory on the same NUMA node.
-Or is it because users don't pin processes and memory properly?
-
-> +               if (!walk->force_scan && !test_pud_bloom_filter(mm_state,=
- walk->seq, pud + i))
-> +                       continue;
-> +
-> +               if (walk_pmd_range(&val, addr, next, args))
-> +                       update_pud_bloom_filter(mm_state, walk->seq + 1, =
-pud + i);
->
->                 if (need_resched() || walk->batched >=3D MAX_LRU_BATCH) {
->                         end =3D (addr | ~PUD_MASK) + 1;
-
-Thanks
+Best Regards
 Barry
 
