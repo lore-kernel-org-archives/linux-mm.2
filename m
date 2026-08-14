@@ -4,116 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EFDAC5DF66
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 02:35:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FA9AC5CFCF
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 02:38:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30A8B6B0600; Thu, 13 Aug 2026 22:35:57 -0400 (EDT)
+	id 161AE6B02DF; Thu, 13 Aug 2026 22:38:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BB9B6B0601; Thu, 13 Aug 2026 22:35:57 -0400 (EDT)
+	id 141D86B02E1; Thu, 13 Aug 2026 22:38:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D1B46B0602; Thu, 13 Aug 2026 22:35:57 -0400 (EDT)
+	id 0769F6B02E5; Thu, 13 Aug 2026 22:38:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D08136B0600
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 22:35:56 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CD2F9A2983
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 02:35:54 +0000 (UTC)
-X-FDA: 85098309828.12.B9E3A6F
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1027680004
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 02:35:52 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DsqPbJzA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id DAFE46B02DF
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 22:38:02 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 53E98801CF
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 02:38:02 +0000 (UTC)
+X-FDA: 85098315204.08.434DD18
+Received: from mta0.migadu.com (out-244.mta0.migadu.com [91.218.175.244])
+	by imf01.hostedemail.com (Postfix) with ESMTP id BAB3240006
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 02:37:59 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ox2Zf4ld;
+	spf=pass (imf01.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.244 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786674953;
+	s=arc-20220608; t=1786675080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/z6n/EFmVELJj8nSYAWQTolcj1izWhLKb3PuxI7peBQ=;
-	b=acHqa3qbiq9L+dOvrFrtBBpEKJiR3W4IF+m/3dIhl1h37rNjMq9Bo2FD9vDmOeZla7Jyf8
-	G3PWOp7iP5yWkxzf7aVPf99PgHNJkWWi7v0XTnR3IzuxQMprY/NtGPJBzC9bkWg/GW6uTf
-	SN8T34ZHYvIleMGxCRWkx5wzwfCjplg=
+	bh=inN7P3TfsUsGRNKFOr6MP4ieyFCPAJ+egT8wRxXb8kk=;
+	b=UATS+OcHs2cr5Ly8ROto9//ACyEcFKpWWGHXfgAQ0YIErF9YtZuqtsJa2sIvTDCDpmEDX8
+	ST3lf4ExFsmJaRfpYqpUIKFYLmNBIyhwptbQ2wJvDAVjcysQvoEigp70Wzs8QJkj89Wrs+
+	kDwKb3z4tmJDjQuWpR2F4P5oKLsgxmw=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DsqPbJzA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ox2Zf4ld;
+	spf=pass (imf01.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.244 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786674953;
-	b=Kf/wURkqnJg8tBos0jauSKcczoB2KVqhhDa10nvxRhT/PDIDdVETWH0Sm07EIlOsopcX7q
-	KFa/jpXXG0cOdQI200I7wVEqErloDhlA57iwCOsIdIQ1tjLr+g+iYmV9gSgN5Ubq3wFlhi
-	7uNVDqlhUntoZONewjCKzZ9a+4anVsI=
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cbe6295f05bso1229300a12.1
-        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 19:35:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786674952; x=1787279752; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/z6n/EFmVELJj8nSYAWQTolcj1izWhLKb3PuxI7peBQ=;
-        b=DsqPbJzAquTzrGRX4iw4fdPfe9s/5Lqo2GWqcFe2JV7kbGCNUGTJ8vEancV3MQO0Lo
-         MirAdI92/DdxQrQrRiCGFFGmRl3EQF50SnGAhKT4cgIFOKkpjoPjOwN/8HBpq8KsIF8v
-         /98aJvk9h5JhzXjKsFQd0fQEgRZsjioCzwu6nLaMx/J24nKQwDqciHpSc890LgXj5HBw
-         LzeDBY46/gdv40fgsoE1mhUf3TuaCG4JrARccLSG4/6KhSTbO/nQYtPHv+My4BK5Jn09
-         rRIWdoTF9YsEQBi1j0dhoUMfONPuL9sL/kQJO7AYkJtzdLxm1UpeDdiIPsHEbnJvm4Cu
-         Jakg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786674952; x=1787279752;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/z6n/EFmVELJj8nSYAWQTolcj1izWhLKb3PuxI7peBQ=;
-        b=ScUAPRAvwFi0B7b/nV3DWl5nK+ve1f6fYPerXFcaM3OxOTAzr1TWinrB2QGQ4XnSHI
-         ocKX2gGijoIog+ROTH5UOrinVe2zKdleZIAvyHjJ7QVNrRSHXYsdtJbQmanxGpL3m9cF
-         nqmOMVsQhBiYutKUuppq3pSf64ULOdNfYcqs9LLTcxyLKC1iPbzxc/tIvJ7jeiZzB2q9
-         L5aZ73nBWGBP8AXD87Nf978tGUBI12KrZqUShe15rYOtU+Snrc+e6C3ukpvkvC22kJAN
-         CMpZ3CKG4ZHpm8LdkavQ/0QraZKSrWONq/zpVpTG3tmEykIjAXgCj50UNiVnrVQq+1EX
-         +xDw==
-X-Forwarded-Encrypted: i=1; AHgh+RrC3SPpepk1ZKS4ZrWVqlTZgSVj0a7VmNpdlmS4aeLognx4df/flfIzaIZBpXOooBRUq6XLeWy0Ug==@kvack.org
-X-Gm-Message-State: AOJu0YxaSOGwus2YDWWnVSoQc2TIsC9//Wlm5f9YHE8Bbiu+oowYCV5U
-	pHBOyuf2P4NcLcY1V2UHOv/KMmfXmbwx41BwUJ0Umn59nxUx/mW9KRO1
-X-Gm-Gg: AR+sD11MOb/y5pcRK+5AsjkoR9baZ4cnnlNoeK5SnomQjObCTl9t94IRBhAT1O8kPuz
-	TjknLiyVXKHxHksbAHVfyXrhc914QAqG1ePzGvS2FfwD7dSQKqbe9HEJyhNsaXeHm+/+QWvTbJA
-	DgH7wb4zc4GTkcAf3lt9ZRPh5O+xR9cqKX/cuyAV3RBcoo5wT4bnWytjPr02JpBwZb71a3fl980
-	D9XYrCgSH5FdFM6wQY7EMQkEqhIWXlBJQceSJgvLJxYJhbjmOxLCtWEZrhva0p9k3ctvdKlkBre
-	CsJLB+fKCy7zIGNv8vLgumamu3UugV+DsaPKlnoCPsF9NqQEq5ARd4R71LhLnHX44/2pOu/SdFc
-	fVPwkK+Hj1vk6G70Thudh9NL2ifKq+t68RD5Q4viM48FHGZlbMc1N8YBw+ui59XSnvKxMxmje+Z
-	2nQ07TsD+H3pqcIo7lTYYBpfnBl7L7PJEUZyIAFbievpMT5kqOxKG6llmYZhp8du20t5NnaeGuI
-	rP363UvXQ+ijy3CBx0OmUeIfBMkbIej71k=
-X-Received: by 2002:a17:90b:1dcb:b0:38e:5ce1:ae30 with SMTP id 98e67ed59e1d1-3933b0d37ebmr1977769a91.14.1786674951776;
-        Thu, 13 Aug 2026 19:35:51 -0700 (PDT)
-Received: from KASONG-MC4 ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-394ebc08871sm442866a91.16.2026.08.13.19.35.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 19:35:50 -0700 (PDT)
-Date: Fri, 14 Aug 2026 10:35:46 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Longlong Xia <xialonglong2025@163.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Youngjun Park <youngjun.park@lge.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	linux-mm@kvack.org, Longlong Xia <xialonglong@kylinos.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/swap: publish cluster tables after full initialization
-Message-ID: <an3xnGPBCASWuS1w@KASONG-MC4>
-References: <20260813150316.2793642-1-xialonglong2025@163.com>
+	t=1786675080;
+	b=4S4qUDwIHVTE4v6yHtWJClykt7m5focESg/CC+n72iywuAOc6OMQu5eGL+4iUBMFx9RK5z
+	k5Q53GccH3J6erAoNMNTGLhoSAVKrrwn+9IAme2dc7cv+zNfrz/FrBm8JpzoMa7wOXEi+o
+	apjQ5LFZJhnRJ8j8XnrJsvLf6dz4JDg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=kI0iu1iUjPc4aD0Lcu79SEz4UUJgr3m4G2Ca9n8R5YU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786675078; v=1; x=1787279878;
+ b=ox2Zf4ldjELrXnxfyFMDsK2AxhlfMPKYwI78NM7GO+NcP11fVN+eWr3FMVucqONVYCoUuSxn
+ AXFKivAj+7w2paUQlVAAJimnHCFA5sMOnvlfayVck0dVGd161ay4Adi6h0VWgdP74vIy1lrCWuI
+ 0eV964gxwyI5Sd2Nz6FOhRjQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: from [10.63.123.245] (14.29.108.90)
+	by smtp.migadu.com with ESMTPS id f6b06a7b15b52476;
+	Fri, 14 Aug 2026 02:37:58 +0000
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <76dd9011-84e3-45ac-a9a9-a772e5a15b1c@linux.dev>
+Date: Fri, 14 Aug 2026 10:37:51 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260813150316.2793642-1-xialonglong2025@163.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] mm/vmscan: fix swappiness=max and clean up
+ per-node proactive reclaim
+To: Barry Song <baohua@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
+ Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Zhongkun He <hezhongkun.hzk@bytedance.com>,
+ Muchun Song <muchun.song@linux.dev>, Davidlohr Bueso <dave@stgolabs.net>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+References: <20260723045718.2052070-1-ridong.chen@linux.dev>
+ <20260723171842.137e45eb36b21b3b45245da0@linux-foundation.org>
+ <8336e48a-ab3a-4db9-a7f9-5bb6af2b22c3@linux.dev>
+ <CAGsJ_4xPw24afGLZH6Qh5rxOts37SCpmBVeB3gGntk1QQuSCow@mail.gmail.com>
+ <24b9f213-96e8-4eda-a20f-8746d7c399b7@linux.dev>
+ <CAGsJ_4xCi1TzV0sg=8ZFhfAq7v=k=Q6a10DNDouYOrjcJL-5=A@mail.gmail.com>
+ <f42dd57c-29fe-441c-ac5d-d4f990b7f6ee@linux.dev>
+ <CAGsJ_4zSEutDjM0rwfDZrzDUzJvPSFsU8Pcr2kBJiOmG81CY7w@mail.gmail.com>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <CAGsJ_4zSEutDjM0rwfDZrzDUzJvPSFsU8Pcr2kBJiOmG81CY7w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BAB3240006
+X-Stat-Signature: 6ywfxcydmcyru7y5tbjicdff7zhbpo34
 X-Rspam-User: 
-X-Stat-Signature: yxs3wi87rh5snrmh1eb1ynw4zutpmr1g
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1027680004
-X-HE-Tag: 1786674952-572717
-X-HE-Meta: U2FsdGVkX18HAfJoUZF14IyPwM5+Anwiwq0JYJ+qhUxtBqNPxo/gj9TgjBgWnnkB8Y/0M5RCsiG/7bd4V9jWWsnIjd+sODUlhrkrXtoykxZd8/WCmBbJkr4muY2DJuoYnU/MH2YaJOFFP9sR1nzRPeEiJz62S8qDmlwojKqxVcg30Lq27KJH56LHPAyXSa4t4V7S5cjTpjVken9lc7XRcWYm5SndAa/ClaJ++UgZyoAGlfeUhAnW+McgPG3qBNPJLJVYr/Td4yTWqjfD/LLVkazQRJQtNs9aWbCctePua1ae5U2k17dO1MyICYed5eXyg+cGlUm+D8S+i0i+PID7C7RzCQ0sJGgTuxOKw4/I2wDFi+E93VdyKMXZRFnlhwljT91FbynGorbNdDUyzbHeVYRimG/jlu6HY2+TFLNgo/fryEvzssKvTX/JHnnf9CfZe2c5bN/l3hxsmmXURTKnw3ozU9LwNWw1deQ6k98u7HjVepioijsfjV6Wh4FVLIQ3ck/rQvG7soDblyGJ+0Lfz7n6nTS5aW4j6xu0hFEBbGKSbI62l0UVBWaCcdf/JLW4OgjIUMgU8QxkHKVTxrKEjVSxaFhGaPkVzmOPBJ18vcHPElat4FDdoAxvj0K0Cfgosxgr0XdeKArGZH6AWnQkfERrLeZvpsMyf1dWPDjdwKbFg/HE2r/sZ+KQ4utlTC6Me5o+ZNuZWwUIuv39ZJLefvK4ledEBOOt2cH79Ol1fNAqEq8OpLWsnVKgJXbki0nlcUKaWXVANl516jrzKzda4P4Hy1+cdPiLGceoxGzml+DPPP7z5ZxMzhRs5OWg0WPzgwdAa1yNLc7dBrtX2e872E1nXr+YPelQ57UqkviP+nZavuRSII4EAVoVi0W6TvFofKRQ1jK/fQhzf88wbzqmucjSlKTWNNo+f7oMM2McWCU9zONCjwnmjollgoyQkEj3NHclsvrug1P8M0F6VmI
- gxHCEoSp
- pzVf7mE3Z0ehmSTVuAs5ko48TiRy9xbWO7Oht5XWVhQw4sR15rcdB0Hin3d1ako0jH6KnoNnoWhLVNNIr0gv6u0XGx4YpxvgyNOECdSmrpiwbk0GsjSHRvtNZUQhkqZ6NSEXRFB80UFdSfb21hm7WELusjszOeEsNnWUhdWUgHpXTI/Rqbdt5OxQR9l3J0tXXd52hK2XFnMEhPgC6U6SGMGg7SyCi1eE5QSAl0zVukGEUSFR10zT+eUg2ZCDtMVtzYpJbw0rgQFhHPmCmorRBVyRV3KGjgoSb5IWycthW4cG/eR8RMzdNZO+ia+RdpKhQ4xFPTUu0TnERMxw0hsLdFOpStFbXSw8AEnvB5f2KJcNa0xiJy5xzGpRVVtVgiF5isg80yRSlDMh3oRzlfGZqjMwSeFuLi5h4Fsn1/8YozpNKuOrwq0eKIBv56fE9Kj94c+AcPbKRvx7eEDw24fVgmXB2rs3pTohIISX22jlf1ksleVPsR8m7fVtiqdeWF9AALWo3skh4kG+QXOED0AsCo0lUEgk4uUnA5fmNUIF3IzdUO0gaOE/VRDluz9OaYKxEtg0O
+X-HE-Tag: 1786675079-706902
+X-HE-Meta: U2FsdGVkX1/wr0+g/O0ZNI0MimB1GgOSjf90xRT5Ym9GVWWyAFjt3tYsF7ly8G3I3P8fB8rxPHxHjFZAtii/LXS+a5FVDagQSEPeMf+HxDIDb/xXSBkt9cbmG8iZalv+0oPkbeFWeWmRI45ENWqycE+aczkBJ76qGecC0Oiz12iLVeIycr33VblhHWz32it+5+u7cHBbXFvXtpTEykyIyQgibOsGZbs30BIRPsYoFTdYZ0RSCIv0Nqq1kr9yNAQyiPHU/LgJmx6yAoMGqoKjZJe8mOj1+vR2RKI2TP0kTTDMtpxpP6eDghXbcAHEwE2m8ORIB9NVHk3tcnv9jAjLEkUwGrCfict73YLL2hZHN8Kp/0ZewOBtDMXNq7ChEmXU9Rv3DolNxJnU2vp25fHSGhVQrvyvA0jfkj4PcEgkYx3OQ4Y3kYfa/pFhFe77vDDncZDPm20cLI1Zbj8MReyVFtSUw1o7brZt9m+cCSKtJuTTh5FkgwxNSpYln1LMzcz2PLsBJwWKFAyocab2o+E4TcttaNgMgrzIlFYd5vwOTRYANl0K7KNvk2Eh5lV9rYdxzctgiboiBWxAbAEMYl5Ou3SvKuWT10umsFDWxYWMWu0Z/52cPk4MVzsCXUEUMSBe4Hkz/lzY4FNeu8ZOeRbOV9e1JpL5oUBh6zXVpNQCr/cT6dP+6MO6wPn3smp+2AlKAdwIPsKrCLL+YNo+0VET6W5tCIsJbvDjKWWkod1z0Xt5e4lDy7tAQHfpWrtwxOzF8+r8mXnq5JdAW9ny8+xbTsA0CPO+CIh3e2jc0Lcp6GyEUigJipZiag+8MTHlX8V9WgXXuZTb56lidhtC8s8bHutuIofqsVElKwTypQMEX/UceK5Q6wByjggo0XCyGcZ+5Il+mqFhbBIgraaoL5sFVqfIbQ6uJlRSufbhoMFb7z3qEU/0eE/wPiW+YqG8MecenxaRFxy7E5Q75/pHZ6d
+ CwmLzmtm
+ 8UZRS+0lrC7oZonSKOkMOpZ4o/YWCF/dJBljyz5Fn6mpXeh8CdlD6oifC3HNkJT5mEEXaAwKXw3BJxdJHGC0I669NAsxstKGx9Z9DxP0kzaOGAY/0dF+NsAggPFpSt88yin4XnEu1vnhqTBQO+yRtVxaJ2KYVmVH4JqAnUuSPP4bv261nC33Bp677Mm7oBJwWmBiok71GTh7pnu2+h9QTkejYGx/I1ynoMuAr3t0hpfvTkPdW7++m6oCsNMscBB/dV5oPK9wd8vPp0P/0R782bezyFt0PrXJMptv3HlIRxvkvQ012sH2JXrLK8w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,168 +106,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026 at 11:03:16PM +0800, Longlong Xia wrote:
-> From: Longlong Xia <xialonglong@kylinos.cn>
+
+
+On 8/14/2026 10:23 AM, Barry Song wrote:
+> On Fri, Aug 14, 2026 at 10:03 AM Ridong Chen <ridong.chen@linux.dev> wrote:
+>>
+>>
+>>
+>> On 8/14/2026 6:37 AM, Barry Song wrote:
+>>> On Tue, Jul 28, 2026 at 4:34 PM Ridong Chen <ridong.chen@linux.dev> wrote:
+>>>>
+>>>>
+>>>>
+>>>> On 7/24/2026 7:12 PM, Barry Song wrote:
+>>>>> On Fri, Jul 24, 2026 at 10:43 AM Ridong Chen <ridong.chen@linux.dev> wrote:
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>> On 7/24/2026 8:18 AM, Andrew Morton wrote:
+> [...]
+>>>>
+>>>> So can we add just like?
+>>>>
+>>>> if ((sc->proactive && node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) >
+>>>> pgdat->min_slab_pages) ||
+>>>>           node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_pages ||
+>>>>           node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) > pgdat->min_slab_pages) {
+>>>
+>>> I feel both pgdat->min_unmapped_pages and
+>>> pgdat->min_slab_pages are quite broken in mainline.
+>>>
+>>> For example, even when the page cache is below
+>>> min_unmapped_pages, it may still be reclaimed. Similarly, slab may
+>>> still be reclaimed even when it is below min_slab_pages.
+>>>
+>>> Also, when both the page cache and slab are below their respective
+>>> thresholds, node_reclaim() may reclaim nothing even if we have
+>>> plenty of anon folios available.
+>>>
+>>>           if (node_pagecache_reclaimable(pgdat) <= pgdat->min_unmapped_pages &&
+>>>               node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) <=
+>>>               pgdat->min_slab_pages)
+>>>                   return 0;
+>>>
+>>> For example, if slab > min_slab_pages but the page cache is below
+>>> min_unmapped_pages, we still reclaim file pages, even though the
+>>> comment says we should not.
+>>>
+>>> So we are not going to introduce another broken mechanism.
+>>> Maybe we should start by fixing the existing broken protection
+>>> against reclaiming slab and page cache?
+>>>
+>> For example, Maybe we can skip shrink_slab when node_page_state_pages(pgdat,
+>> NR_SLAB_RECLAIMABLE_B) <= pgdat->min_slab_pages?
+>>
+>> And similarly, in get_scan_count, we could avoid reclaiming file page cache if
+>> node_pagecache_reclaimable(pgdat) <= pgdat->min_unmapped_pages.
 > 
-> swap_cluster_populate() drops the local, global, and cluster locks
-> before its sleeping allocation.  The allocation helper publishes ci->table
-> before allocating the memcg table and, on some 32-bit configurations, the
-> zero bitmap.
+> Yes, probably something along the lines of what you're saying. Also,
+> get_type_to_scan() in MGLRU.
 > 
-> A stale per-CPU or global cluster cursor can reach the isolated cluster in
-> that window.  Since CLUSTER_FLAG_NONE and a non-NULL table make the cluster
-> appear usable, it can allocate a slot without the auxiliary state.  An
-> auxiliary allocation failure can then tear down a table which is already in
-> use.
+> It's a bit surprising that nobody has ever reported a bug related to
+> this. It may have caused performance problems that we simply haven't
+> realized were related to this broken protection against the
+> min_unmapped_pages and min_slab_pages thresholds.
 > 
-> Allocate the complete set of tables into a private carrier.  Install the
-> auxiliary pointers and publish the main table only while holding ci->lock;
-> the slow path does this after reacquiring all allocator locks.  Allocation
-> failures now free only unpublished resources.
+> I guess this fix could improve performance as well. For example, when
+> the inode and dentry caches are already extremely low, we shouldn't
+> keep struggling to reclaim them and waste time there. People have
+> already complained that shrink_slab() is slow and suggested having
+> an asynchronous shrinker for it.
+> Maybe it's related to something going wrong here.
 > 
-> Fixes: b197d41462c2 ("mm/memcg, swap: store cgroup id in cluster table directly")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Codex:gpt-5.6-sol
-> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
-> ---
->  mm/swapfile.c | 167 +++++++++++++++++++++++++++++++++++---------------
->  1 file changed, 117 insertions(+), 50 deletions(-)
-> 
+Yeah, good point. I'll give it a try and run some tests to see if it actually helps.
 
-Hi Longlong, thanks for the patch and report.
+-- 
+Best regards
+Ridong
 
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 78b49b0658ad..2ca947c540e9 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -410,6 +410,99 @@ static inline unsigned int cluster_offset(struct swap_info_struct *si,
->  	return cluster_index(si, ci) * SWAPFILE_CLUSTER;
->  }
->  
-> +struct swap_cluster_tables {
-> +	struct swap_table *table;
-> +#ifdef CONFIG_MEMCG
-> +	struct swap_memcg_table *memcg_table;
-> +#endif
-> +#if !SWAP_TABLE_HAS_ZEROFLAG
-> +	unsigned long *zero_bitmap;
-> +#endif
-> +};
-> +
-> +static void swap_cluster_tables_free(struct swap_cluster_tables *tables)
-> +{
-> +#ifdef CONFIG_MEMCG
-> +	kfree(tables->memcg_table);
-> +	tables->memcg_table = NULL;
-> +#endif
-> +
-> +#if !SWAP_TABLE_HAS_ZEROFLAG
-> +	kfree(tables->zero_bitmap);
-> +	tables->zero_bitmap = NULL;
-> +#endif
-> +
-> +	if (!tables->table)
-> +		return;
-> +
-> +	if (SWP_TABLE_USE_PAGE)
-> +		folio_put(virt_to_folio(tables->table));
-> +	else
-> +		kmem_cache_free(swap_table_cachep, tables->table);
-> +	tables->table = NULL;
-> +}
-> +
-> +static int swap_cluster_tables_alloc(struct swap_cluster_tables *tables,
-> +				     gfp_t gfp)
-> +{
-> +	struct folio *folio;
-> +
-> +	if (SWP_TABLE_USE_PAGE) {
-> +		folio = folio_alloc(gfp | __GFP_ZERO, 0);
-> +		if (folio)
-> +			tables->table = folio_address(folio);
-> +	} else {
-> +		tables->table = kmem_cache_zalloc(swap_table_cachep, gfp);
-> +	}
-> +	if (!tables->table)
-> +		return -ENOMEM;
-> +
-> +#ifdef CONFIG_MEMCG
-> +	if (!mem_cgroup_disabled()) {
-> +		tables->memcg_table = kzalloc_obj(*tables->memcg_table, gfp);
-> +		if (!tables->memcg_table)
-> +			goto free_tables;
-> +	}
-> +#endif
-> +
-> +#if !SWAP_TABLE_HAS_ZEROFLAG
-> +	tables->zero_bitmap = bitmap_zalloc(SWAPFILE_CLUSTER, gfp);
-> +	if (!tables->zero_bitmap)
-> +		goto free_tables;
-> +#endif
-> +
-> +	return 0;
-> +
-> +#if defined(CONFIG_MEMCG) || !SWAP_TABLE_HAS_ZEROFLAG
-> +free_tables:
-> +	swap_cluster_tables_free(tables);
-> +	return -ENOMEM;
-> +#endif
-> +}
-> +
-> +static void swap_cluster_tables_install(struct swap_cluster_info *ci,
-> +					struct swap_cluster_tables *tables)
-> +{
-> +	lockdep_assert_held(&ci->lock);
-> +	VM_WARN_ON_ONCE(ci->flags || !cluster_is_empty(ci));
-> +	VM_WARN_ON_ONCE(rcu_access_pointer(ci->table));
-> +
-> +#ifdef CONFIG_MEMCG
-> +	VM_WARN_ON_ONCE(ci->memcg_table);
-> +	ci->memcg_table = tables->memcg_table;
-> +	tables->memcg_table = NULL;
-> +#endif
-> +
-> +#if !SWAP_TABLE_HAS_ZEROFLAG
-> +	VM_WARN_ON_ONCE(ci->zero_bitmap);
-> +	ci->zero_bitmap = tables->zero_bitmap;
-> +	tables->zero_bitmap = NULL;
-> +#endif
-> +
-> +	rcu_assign_pointer(ci->table, tables->table);
-> +	tables->table = NULL;
-> +}
-> +
-
-You don't need to shuffle all the code for a simple bug fix, you can use
-forward declaration if some functions are needed earlier.
-
-...
-
->  	/*
->  	 * Back to atomic context. We might have migrated to a new CPU with a
-> @@ -568,11 +621,19 @@ swap_cluster_populate(struct swap_info_struct *si,
->  		spin_lock(&si->global_cluster_lock);
->  	spin_lock(&ci->lock);
->  
-> +	/* Nothing except this helper should populate an isolated cluster. */
-> +	if (WARN_ON_ONCE(cluster_table_is_alloced(ci))) {
-> +		swap_cluster_tables_free(&tables);
-> +		return ci;
-> +	}
-> +
->  	if (ret) {
->  		move_cluster(si, ci, &si->free_clusters, CLUSTER_FLAG_FREE);
->  		spin_unlock(&ci->lock);
->  		return NULL;
->  	}
-> +
-> +	swap_cluster_tables_install(ci, &tables);
-
-It seems the same fix with Kemeng's patch? Youngjun have notice this too.
-https://lore.kernel.org/linux-mm/20260720071342.50742-2-shikemeng@huaweicloud.com/
-
-And I think you missed some Cc, maybe you can try tools like b4 which
-automatically generate the Cc list for you.
-
-Hello Kemeng, can you help check and see if an updated can be sent?
 
