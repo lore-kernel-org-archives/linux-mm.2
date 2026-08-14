@@ -4,89 +4,167 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB9C0C5CFC1
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 13:53:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A220C5CFC1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 13:58:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF3616B030C; Fri, 14 Aug 2026 09:53:55 -0400 (EDT)
+	id 4AACC6B0312; Fri, 14 Aug 2026 09:58:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD31B6B0310; Fri, 14 Aug 2026 09:53:55 -0400 (EDT)
+	id 488ED6B06BF; Fri, 14 Aug 2026 09:58:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B08BD6B0312; Fri, 14 Aug 2026 09:53:55 -0400 (EDT)
+	id 396A36B06C0; Fri, 14 Aug 2026 09:58:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E7726B030C
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 09:53:55 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 38E7180141
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 13:53:55 +0000 (UTC)
-X-FDA: 85100018430.26.0BBCA30
-Received: from mta0.migadu.com (out-51.mta0.migadu.com [91.218.175.51])
-	by imf20.hostedemail.com (Postfix) with ESMTP id CA9071C0007
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 13:53:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pwsFu35l;
-	spf=pass (imf20.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.51 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786715633;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 18DCF6B0312
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 09:58:33 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A187D1C002E
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 13:58:32 +0000 (UTC)
+X-FDA: 85100030064.27.65112AD
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010012.outbound.protection.outlook.com [52.101.46.12])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B634E140008
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 13:58:29 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=rtubynNQ;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf09.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.12 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786715909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O4jKen4WafWoGDgs6IIGZ5zpt/U3zpVz4Ds4B8aHHMU=;
-	b=nMssG/QzsSx5qJwThxw9fHtJrhde7ctftO6//wNmizr0e6Q4T10Bp1XflZCKFecfCEsbrX
-	SEnS3emISOwM4RjtVT2TODXcGH8aL1WUnM6yLlKLwRe+RPnMr1x5hibyEJok2l0RYm/PMv
-	dvcm4eqcIHZ4vhn94fTG4g37ewFQYxU=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pwsFu35l;
-	spf=pass (imf20.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.51 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786715633;
-	b=k94n9YbkCJHyj6RghDGlPs39e8Tukz6fjzCBLWkptIrat7ZntWxdPMiO18UadUbNh5SM6W
-	eelKnF7WoDvqubpycuIcBapX/Xo7erFC/jTeyE1ceIUWKxMlTMkI5fKTFZXAqaaGzKPTT/
-	MpnRd9SQk6GPSSP5VwTlu9lpHKybU8U=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Uw1XdTbk5Kq6ysdI0CcZpaMs4SveoGhVuvQt1IuZqOA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786715627; v=1; x=1787320427;
- b=pwsFu35lPdxFtMIR130cYdi0nGYRa2f0xCi/ferJg3JEKtWF20jvRgP+ZVVVuA3Rtxxz5pua
- duq+UpUqEmG4kyBstCm3AgvBxqYir4LzYAFZvVPrcGChxz8OLchn7nf/HUlRvfFYGhQrQa8r7sY
- 28uXXdcdahgRXQM6zy/w/OBk=
-X-Envelope-To: linux-mm@kvack.org
-Received: from smtpclient.apple (37.66.176.2)
-	by mta10.migadu.com with ESMTPS id d654dc1ab1e3ac93;
-	Fri, 14 Aug 2026 13:53:47 +0000
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Mime-Version: 1.0 (1.0)
-Subject: Re: fixing sashiko failure to apply (was Re: [PATCH v5 00/16] mm/rmap: index MAP_PRIVATE file-backed folios by anonymous pgoff)
-From: Roman Gushchin <roman.gushchin@linux.dev>
-In-Reply-To: <an7ewWbMwN20xklN@lucifer>
-Date: Fri, 14 Aug 2026 15:53:36 +0200
-Cc: Matthew Brost <matthew.brost@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
+	bh=Dfgc23Jq3kEUY8mOtV5zozCdABRbWfmGJk+iLYzdkdo=;
+	b=AKsDzQQtcgyQ9d1NRgoN0nMqRBvZUObn1kh6x435ZL3p0gK15MgBUzrj/UIi8TQPxmxRMc
+	EDPkkRPlDDkgCIGXBeRSgYE9ciYJzBy2OvwSJo0DvCCWC4X19PPokzJxcmSBcB2fxwXzgv
+	0MfB9QdfHXlf5V7PE80hT6oyDUMr0Fs=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=rtubynNQ;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf09.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.12 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786715909;
+	b=5+h1IJV84yEMvqUGuYJFbR6haKzJNzJzaTwI5oJsML/YamgWI28v+NWUkcjzpzerDWZHLM
+	2k6VGsXelagZaqTY288xQFtbNV2PEI4kDdP58AoUIxX009z1h+q+93kQB6jBUb1/qfATmZ
+	zGEFAhYWcZu/vQIQTSt4ofz6E72RmwQ=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RKps4SGMVjEf2SAtPNabRpYj4BB6OrDc4Kdl2E/7QbsSRSl0uDgjx9mCuB3T1BMsYiBtFBDOU0S2ZugDxHBrx9t+PZxWmnr262dfq2FM5ET3n3je63cy78OSxRalDAe4BjLE+c64VxXK5c3WsJmS1/P9KWIILuh3KuBr4D1kQLtaw3n/7VJYDVvFrLXmNsq3GTaGhZ36iZv4IHN33LAgOyy3R5H2aUNyWBTgdIuoYTBsPTcAeNPNmfDIfWhd3K7U7s8xALnWDLEgEkTAC5gkSLAzKTgPOqJt98sbNOYjnLnjklwq6HRNEtQp/PagNDiSTyXaTwj1sxR+G+ilaxLg+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Dfgc23Jq3kEUY8mOtV5zozCdABRbWfmGJk+iLYzdkdo=;
+ b=IuAPJDlyj7+4xBw/ICYhyPV8QHgFS8DV4zfmra/xWdgSmtHbFN0JmvP49SQr8RGZFz+QoCrAuEmBFrCJ5XGaHl9czOvivo4OgtSu4e3zc9kz5hqFf8UA79q27PG6ZkwNx53kCQXs8fqlOK3rIhxqLkq41TkgTi6biHqRoIC+cdLO4z8bJ47mzGvJT8UCEpPorCXp13jAKLbj2eCngQbxBX8gEj55oZT4ZIBVOTuLMkFHAoNBeUu2SfjTWkxGmxy4EY8uF8GOol/Usi7nKJXBcNMcr+LI72d8/q0bmqshNc8ZoDRLtazue4vsusFgN1rAh/pa/MahFSS1qKRzK7+IXA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Dfgc23Jq3kEUY8mOtV5zozCdABRbWfmGJk+iLYzdkdo=;
+ b=rtubynNQyCs0DpEftkyqzxshye5Mi8mrscHt6Eb9suu/khEqW+fpHIPcCuW47ghgYB2a3ikGJYuyD3oqGV/p9k3WTK9ZcrRHjZLfy23+uzuvC8abyNmw4Twk+Uh6yf+tkiJpBz+mNuZW5q0IDF4aCzC0fP36dUM2P62oDZF3PMhQZxGqkbd0b0E4k/IBWwI8De7Qe6naHsdA7RZk2kQvoMu1MEYuqeVPRH3SYVNrjy2Nz25+ZeOMfgk/wVMZfaarak1tlcRgKZdwPQK5cX7VYlogKR3bM1UuS4Lzltt2E762+qVvgqULZAgGMPbqIE4EqodFFgV93GctEC/rZ+REuw==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by SN7PR12MB6789.namprd12.prod.outlook.com (2603:10b6:806:26b::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.12; Fri, 14 Aug
+ 2026 13:58:22 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0315.014; Fri, 14 Aug 2026
+ 13:58:22 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Nico Pache (Red Hat)" <nico.pache@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Message-Id: <F700B4F3-2068-4DFD-975A-6324DAAB384F@linux.dev>
-References: <an7ewWbMwN20xklN@lucifer>
-To: Lorenzo Stoakes <ljs@kernel.org>
-X-Mailer: iPad Mail (23G71)
-X-Stat-Signature: 588ptkso77gb96s1szimud9y3t1cfkfp
-X-Rspamd-Queue-Id: CA9071C0007
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
+Subject: Re: [PATCH v4 5/7] mm/khugepaged: Refactor the PTE state checks into
+ a helper
+Date: Fri, 14 Aug 2026 09:58:20 -0400
+X-Mailer: MailMate (3.0r7024)
+Message-ID: <0774EB62-61DC-40CC-B841-8E7487805B91@nvidia.com>
+In-Reply-To: <6bfa6c93-4eb5-46c6-9524-7b59297f3601@kernel.org>
+References: <20260811-khugepaged_pte_refactor-v4-0-ddac39d61c4a@linux.dev>
+ <20260811-khugepaged_pte_refactor-v4-5-ddac39d61c4a@linux.dev>
+ <f1371b4d-6e98-4699-8c1b-7612f6d70f02@kernel.org>
+ <753cb38f-66b4-4bd0-8b53-7480efe30ec3@kernel.org>
+ <DKNGC4X9V83D.268DMWU0WIILG@nvidia.com>
+ <6bfa6c93-4eb5-46c6-9524-7b59297f3601@kernel.org>
+Content-Type: text/plain
+X-MS-Reactions: disallow
+X-ClientProxiedBy: MN2PR14CA0017.namprd14.prod.outlook.com
+ (2603:10b6:208:23e::22) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SN7PR12MB6789:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7328f22d-01cf-4f79-45b4-08defa0c1a63
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|366016|7416014|376014|4143699003|11063799006|10067099003|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	1rHsab7IdoFTpO2uP8qYbXVqfkjqAHj3Yr4U1/eZAYy0oEyCgtNU+SRDuZ82IMMWKxij8sWISzqDb14Bq4Etrr0o6zV1JlB4/MQuNjyxAK3ek/aRgBU0+QgOwchuvVIj+GLC53mbYel+hlgPkw01orxxEw2AhsnCAOc0/aIu6cXXekEyEcF9SbXJWfnlMDMeaZjKGyyoQeS/nJzORvHBVBgzCQBPFGdpPKgrnbH79MiFpPO8/y4z8UNFc2dTGeoJZIZTpaJMttdGbG4EBiBMlc88Um08+yPOfU7dvKWGkz7CyQzVzodE5wTaZrHDearVkrs8PvvDhJOW6XAHKFdb/hfQ6PBrAJN+iLcVMrt2EmApqURkJ0YxBBoZrKsscA0HTva3G9M0RkNdWv+xwBeP3fjqdoTvR/iaTxHsBuFpXHg/Zw01Xv6+DwPZizi7Hz70zjZaKXReElmPl6XRxjir0miw9tGUE5ywuRfEeYn8JALE5tdNGE82XBiNvTqiJzzDf4Z6mNZzEuurH2A+sjvuj60EMvH7KQHMBNf6rHGufI0pGz6vSPVl4R1ByoXh6RJjeAxNuAZXjsizFYHZpCQO37BzXGC76+V+rm/PADL7lufXKOxmhbWFwMLPXzoGV7iO9jXTUWoqsIwB1tqbNz58OZYwS1KnAUUC+dlDvHDskvE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(7416014)(376014)(4143699003)(11063799006)(10067099003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?pbtYiQaAnrZwOsD2sLcVlLbGb810thI1Jbka/CRs4/idGUBLeT5iMeK3cRnl?=
+ =?us-ascii?Q?S+SRcPKcyWh1qKI4GZW33yQtRjDK4CKH7zlXr0paE7LSDFxxtAderkxf33So?=
+ =?us-ascii?Q?/CzxmBwFXlJbeCMaTW+QDawdxbumtdkvwXHQuJD8IikclOnW7u7YCNC6tgUz?=
+ =?us-ascii?Q?3Xlek8Mh+hPHk2UZoqKU+aa9cxwJlrqqMDxgW4WiGTQr63+NoQ+kXs/ZwF7N?=
+ =?us-ascii?Q?6w7t8NQXiVhe8FIXXX9YwfYtCQp+4K6BBnk5iZ2a3J+9fyQwg9EFcDRGya2q?=
+ =?us-ascii?Q?bFyWXcAzfV2/upzPpvSiKjGoi7MWhFcgxRetJbbNznjC27aNd/tusHthUcWS?=
+ =?us-ascii?Q?M70rjtV/D/PwqLAjwvlJCVWtyoRbApuXpxWrANGx60K719q/PbyYnsi9JZdh?=
+ =?us-ascii?Q?WmlMCa+O91E7hPetYV4k9mnTkhbB4qCbHHMotkGi89k+Otz1MlBWUQ6R0Ub3?=
+ =?us-ascii?Q?OmmQNmZyTdo4FfNU8AV0d0xHTonmmV9VRt3mq8HylHuknUT0pR5fqpsaazAY?=
+ =?us-ascii?Q?NHO5aTKwPLIzxFwW+OWXUGaxPqMyckV6WeMq1W8zT+wJ4+QvHQXCkfsaqQdd?=
+ =?us-ascii?Q?YmikgS7bX+sMAxKd2B6YLXkJ1WnS1DjaU5NzXFjGdkqGjtdSz/z6Es60zH18?=
+ =?us-ascii?Q?UITcJqJhpsHCr2xVC5p+59BvO8rYzIWW4fMOR9tgZBrfgV1qnRMQTV9RkRzf?=
+ =?us-ascii?Q?/YU1BTsbmP87QzOhjtb6DKYRdoM3Hj5RfvewpRREpCcRgI2PirGAVrSmKKb0?=
+ =?us-ascii?Q?eDHvd8JupoCYIosDZBXjnRjelbydVXA1jBArnMuBTv+YKWTUdCvVodsFq7km?=
+ =?us-ascii?Q?/ky0TRVT3H738csIuNFB79eW6DlDE28qsCdRwnjRKHfzIK9dfcASuaBeOhpZ?=
+ =?us-ascii?Q?Bt4AZ/IR/dDsFfXv6HF516OX2F/fmBB8cHBnbYTcLr2my6F36z1dtdWHSkAn?=
+ =?us-ascii?Q?sPifwa/nzSId8zkDfhziM7Yf7M4pHzSPCLdzyqlbJhpOTDarOX9ByS/1g/m5?=
+ =?us-ascii?Q?FDsSONx1XF9KdQ+aIBiy0/gVLZP/HvEe3yE5uzUSGyCFG8rxMKVdybC8iYPq?=
+ =?us-ascii?Q?J3ynEQabU7o8Yiw4pQBAXbZ5qSd1+CVB5LIqkkvI2pl+u42GxQIHeLN5Qkew?=
+ =?us-ascii?Q?AxPkl5f0tAw+eh/54nLYA3Zefcl3uAGzHolCfKeBs98ZTjiNUWpxU60BRqX2?=
+ =?us-ascii?Q?bRl7eZy3miedhwU0YdpbCUQ+Zaxxyc1n1LuzOPAWeUIBhGFRWHaiPDlrFrCS?=
+ =?us-ascii?Q?A+dY4iuT68uqK32iasESBCDXbYjJgomeCF9H1puySOtb4/P1VsagkBzcfJmQ?=
+ =?us-ascii?Q?cLzOb0Gp6Ji2JwNGUP9/5LN/xu6qA74MTRv+hpf6le09dNa7MECDFBEjtfYB?=
+ =?us-ascii?Q?Cwuyeda86UN99Vfy9HicPenU8UtMb0lluQkphgdija/C+iQDqrKnzys002i+?=
+ =?us-ascii?Q?I3HKuxzlzZguFuN+7riRrws9dFvwiXmehz+Fy6iHEu+pS1I5Ux/TSjWPCq+P?=
+ =?us-ascii?Q?uhRIIx5+eG0sBODWy9eU9kNTlQQvQAd6yWD0HulV5ner5f0YZQ1G1NCwEgst?=
+ =?us-ascii?Q?yvTZBwL95fmFqng402qdSjXOJzrhEBp7/1G0oo6N6FBuEL4bihBAla0m51bu?=
+ =?us-ascii?Q?OPfjYlHEJdc0DwADhJsIPiOaaaHENGERfGLiD6xF/u9A1LbfinOdUu0hVlmO?=
+ =?us-ascii?Q?AgbMRGKryAXPMGcRiiXQEsPZT8Ct2B4BCTZbz2FqUgwaaQFR?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7328f22d-01cf-4f79-45b4-08defa0c1a63
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2026 13:58:22.3698
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cBTm8WFCeq5K77L5C4YgDZ4jVfZtGZz+8nK4+ZhT6GKms2filDdiwmvryXiI6FLl
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6789
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B634E140008
+X-Stat-Signature: wam4r3nzfofm4eetq3xsezcnsrcifzkg
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786715630-957085
-X-HE-Meta: U2FsdGVkX1/KuamkKkLbtbKRswdRcBAcJ28ku2g9ZlYkCdQ1++EECuwT1VlbCkOEPXrdlSzQ+WqE9VC+vtMDth3z/KG5hZPIWY6MlLta+UsCUUNtOvRdasAOF98AJQ22veb1A4uXoAeTU+ufWVnhUuCqd4Ntc7FG1SQrKcCCceboiYMrt9AlXRYlVehyT4wdj4gOFN2JxUon6zlz7HNrrY9jEGWDPA0qm3qJL5Cs3ke5oGp8t7if5Bg5qofJxJ3N8csxgehi+NSbHgnUUz180O/jpOj47GhLnLib2Djs/ndRGGzOGDIaPzTVsaBCUd5X/AxHqBIEKC2yh97GMSKMcj9sV/NT2jQlIVdA5fbj296oT4g1wgdx658kmS4KwfRxgQjUauEeYByLy9vcjod2m5NfB2V2EUjhazHUbH8t8lRL5yZerTcCSzJnpSEtuJRbzfUjWcL928v/au9LbcvsNL/J7M7ncJc1NU/MDZNXt/2Uk8MGfQO46G16bjJ9NfYKJJbRp+E/Kkems1XNOxCPIwyqMojuG5dv3bSOTTJ+L1ZuFSWgnWPVMuxKWG+dAhn4SlrnHZLskROrKjLlx3U9VYdzqxOwE3R395DfqjNiGm257L0mF6o2JEtZ5kF7LsXx47bVTLyoPmCovNZ1EOl+gmECURwFAhvs5RRYgMWD/8OyaCycpZmWLQFblOsUi0taSVByhvf3qI9v1M0yuZeWez8qFAqLiTuOt+MzNTdwNHZvAwRAOLkaZ6QJY+fl+KOcPci97EXqiC/TUgiLj4JQIBeNNlUS5jVVutWWvKyie/Ji0MysL2WW2Nufus6tDxwSJpxL+fdeV3d7+MLaAeJK8l9gtOcGjb6+li1yzJM9raJ3NQyk/CLYGQq1X8/T9jvLljGcRY/e2Pl/5qFUC4u66v0ni2aGB+REFfwch9MvPJyJGcl9QbYKWCaXvd1ehBcXrF6H18pZie9DcfGBMMa
- HjLCKhad
- RRlwLGyv/co7gZnnKKMHRDMzhqjjwzcW1jsOmZgSAsKQRbE3jyD6O7Qf2uYH18ao8OmuLP/h7/zSIfAX8dXuD9fjNRrG2q22ilHGznVsn3E5T+AuR3tCR5CDpIro7aB1VT9ddYK6bh5PliHw94nwJhbAXZUGsofBr9A9ghaExTDFiXHanXR3yRtxoI+6buVJHmEj11jmIGW4kuwvsHIsq8suNPFv+DSP8nFLIrdcVHk8KvLfjSefHOAzOc72FS+IClrYHVotQdE9aeRyzO7dmXm9xmcFnopMmYZLbg0KUt3iRJcTKv/QmK05yr/nT36Y1OzkLag5/dbbC4xQDjQOsJSDphtPQzhTVAHp5
+X-HE-Tag: 1786715909-440320
+X-HE-Meta: U2FsdGVkX1/yX8WUN2njZQx8IuYH3oWcj5+NpDPx1/d5zxFh3MdT8j1Q4V2XjI9w+zTOq+5JCQF0Vjyxi03vw4aS+KzkBxxaFnIF6NwoOqwYl8cgqK4uVlJHunuayA6r6LfI8c0qAB3r4PWVPfjnGUSUWy5PnC1Ofw+Jp9NCMt0vtbZcPjjGr21M9j0nVp/KG43lWvhHwc2120hbDKFXGSD3+57V2dm2x5jhT26B62FkoheLru1QoEF59em/daRaXXKpoupLUxAkj4kM38H59T9fXCjXlDLDSrxrVY7/ynYhuMIXXNRxhNBFSmKf3Thu2AUPKGX0urJFdAO6kcEW0LdVr2wtqcKLXyMETM5GsAQ9Ezp8qsZK/yTg4MjKZLNGCrTbSLakXv68z2u+OyiPfEnfLf2zcQolFbrqt5/w5gvoqL9L1eeq3v2MBkW5ZbJSeUT6vU60q/117ddkf2HrVKKpab4nJQaoLE+CGkgqfrVQYtdUEhTc4fMcFDerMTm6rFFWnCk2UMQWOt4LadALuK9GVCbU6QCuWppOJFgM/noKYFIJas0oWX48WayyaAWf1Y29AZHo7Pw3t6aPrnSlKJ/Bs2mSZPSWOGXE/kvsqj46JmxFB3+x4hkENNgE/8gA+xvP0cTqBk/7VpdO3lcl7/ztKNTOM6UnXlY5ToZmZ1v5qruJOYDaBn9DCPVwRhMMr+l1sTD9FXsWm2H/1d6jhME1KFCnUUl1Gk6a9TJhHkbrEa8rhr0GN19aKrRW5emMQ4vSjadTd8ukf3VaLGW3xw+w7P3tKP+412N5v6pSQX0opI801mc04QfC0B04s+OWhlwhdQk5UPX325FFeLb/YCozu2ye6qwBIrQWFWRs08cxZCtzmufgrWKRSDOoHgoUlTaDEUpkNC3QZcztYoWrBfNO/zbkJgwugBXzWa1qHIu3wf6/k+lZIdhHfQxkkSDivQwrtubqa8Kmf/pEXuR
+ RBoa4jbi
+ i9W2g2AOy4mjA8g7MxnxvoBoWy5+ZXXvKR76gJ+o2ORwIdXpFZPp0mzWTpgq6Ep6ZgY3vDTYBxm+cAYDBB+C00azkXA218XX520fRLLmPB+/OB+HdLjEFO2Hfuy1niAX9yivD3rLhJWG6q0ND8v/3s8TGHrQkI6HSC/DICzu3uL0hshL6ZxNYjR3TMZ9hn2uEvVQKRIFgvny3BV+55+SPtYNM56avhNXrgkHneH3javBvjTrEz8h7l3EGaf2CRNZgdHA/ZPdhpmLwo9R6Hx6Al8mGYYpFtuwLA0P6ctoKv/4ikBzhkbTuQBN6q8uC2jaABpgSqlTIqXmKApJJJuYPem06Tzs6T2RMcJZ1WSaQWhB1hnWi6oh7kJwcV80l3ElJltNGt/8f3s0VqjI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,106 +172,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 13 Aug 2026, at 3:13, David Hildenbrand (Arm) wrote:
 
+>>> +	if (!pte_present(pteval)) {
+>>> +		if (ctx->max_ptes_swap < 0)
+>>> +			return SCAN_PTE_NON_PRESENT;
+>>> +		if (++ctx->nonpresent_ptes > ctx->max_ptes_swap) {
+>>
+>> So max_ptes_swap is actually max_ptes_nonpresent. But due to
+>> khugepaged's max_ptes_swap config name, we just keep the variable and
+>> related function names that way?
+>
+> Yes, that's how we handle it today, unfortunately, for historical reasons.
+> Mistakes were made.
+>
+> I think we might be able to convert this code to actually only count swap
+> entries, and simply reject any other ones (migration, hwpoison, ...), but that's
+> something for another patch.
 
-> On Aug 14, 2026, at 11:30=E2=80=AFAM, Lorenzo Stoakes (ARM) <ljs@kernel.or=
-g> wrote:
->=20
-> =EF=BB=BF[ trim cc list ]
->=20
-> +cc Roman
->=20
->> On Fri, Aug 14, 2026 at 02:13:51AM -0700, Matthew Brost wrote:
->>> On Fri, Aug 14, 2026 at 10:01:19AM +0100, Lorenzo Stoakes (ARM) wrote:
->>> On Thu, Aug 13, 2026 at 11:53:46AM -0700, Andrew Morton wrote:
->>>> You'll be mortified to hear that Sashiko wasn't able to find anything
->>>> to which to apply this.
->>>=20
->>> :))
->>>=20
->>> Well, when it's right it's useful, when it's wrong or suggesting unrelat=
-ed
->>> what-nots it's less useful :>)
->>>=20
->>=20
->> Questioning your assumptions is useful, even when they turn out to be wro=
-ng.
->> Show more lines
->>=20
->>> I do locally put things through claude + Chris Mason's prompts a lot, I
->>> don't always invoke local sashiko as it's very slow and token-heavy or h=
-as
->>> been so far, but am planning to do that more also in future.
->>>=20
->>=20
->> Yes, it's kind of odd that Sashiko burns more tokens than a full day of
->> breakfast, lunch, and dinner service. Running Sashiko is a bottleneck in
->> my workflow, so I'll defer to others on this list.
->=20
-> Yup, not sure if there are recommended configs for something saner :)
->=20
-> Maybe Roman has some advice on that?
+I agree. pte_none covers not faulted in PTEs (zero covers read-only anon)
+and swap covers swapped out PTEs. Other non-present cases could be
+1. transient (like migration) and they can wait until they are stable or
+2. never considered (like hwpoison).
 
-Sorry, no magic way to save tokens without hurting the quality. But I am cur=
-ious what are your numbers?
-Can be model-dependent too. In prod on average it burns 3-4M tokens per patc=
-h with Gemini 3.1 Pro,=20
-but maybe mm patches are more complex than average, Idk.
+>
+> [...]
+>
+>>
+>> SCAN_SUCCEED + folio != NULL means to proceed with the pte, while
+>> SCAN_SUCCEED + folio == NULL means to skip the pte.
+>>
+>> collapse_anon_pte_check() probably needs to document this?
+>
+> Not really, as you say it's straight forward if you look at it from what's
+> actually happening:
+>
+> SCAN_SUCCEED + folio != NULL: check folio
+> SCAN_SUCCEED + folio == NULL: don't check folio (no folio to check?)
+>
 
-One option is to run only some discovery stages (=E2=80=94stages), but this u=
-nlikely will save you that much.
-I=E2=80=99d say use a cheaper and faster model for the development, but it h=
-as it=E2=80=99s downsides too.
+Sounds good.
 
-If you have an example of a patch(set) which is particularly token-hungry, I=
- can take a look.
->=20
->>=20
->>>>=20
->>>> Sashiko can be guided with a base-commit: tag but I'm not sure how to
->>>> tell it what tree/branch to try, or even if that's necessary.  Perhaps
->>>> someone can figure this out sometime.
->>>=20
->>> b4 gives a base commit, but I think because the trees are rebased it end=
-s
->>> up being the incorrect one.
->>>=20
->>> Not sure what the solution is!
->>>=20
->>=20
->> We have seen this on the Xe list (our list is based on drm-tip),
->> typically with cross-subsystem patches. Some cross-subsystem patches
->> apply and run correctly, while others do not but public CI flows run
->> based on drm-tip. I do not have a bisect or a clear understanding of
->> what works and what doesn't, but I think it would be very useful if the
->> community could better understand the root cause.
->=20
-> As Mike said, mm-unstable/mm-new is heavily rebased and also carries the o=
-ld
-> version of the series before the new one is applied, so it's super unclear=
- what
-> the base commit should be there.
->=20
-> But in general, I wonder if it's possible that we could tell sashiko
-> after-the-fact what base commit to look at once the series is in, or re-tr=
-igger
-> it somehow once it's in-tree?
->=20
-> Roman - any suggestions on what we could do to help sashiko find things?
->=20
-> (Once mm-next is in place everything with change again, but can address th=
-at
-> then :)
+For this patch, feel free to add
 
-I can implement any reasonable logic here, the problem is that my understand=
-ing is
-the current mm process is a bit vague here. Which likely will be also an iss=
-ue for the mm ci.
-I=E2=80=99ll merge a support for b4-like dependencies specification soon.
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 
-Re re-starting with manual selection it=E2=80=99s on my todo list, but maybe=
- a bit lfurther away, as it requires
-an authorization, etc.
-
-Thanks=
+Best Regards,
+Yan, Zi
 
