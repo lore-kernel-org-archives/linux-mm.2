@@ -4,80 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F167BC5DF66
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 01:46:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E376C5DF66
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 02:03:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 413AD6B02D9; Thu, 13 Aug 2026 21:46:48 -0400 (EDT)
+	id E69F66B05F2; Thu, 13 Aug 2026 22:03:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A5016B05F0; Thu, 13 Aug 2026 21:46:48 -0400 (EDT)
+	id E236E6B05F3; Thu, 13 Aug 2026 22:03:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 267B76B05F1; Thu, 13 Aug 2026 21:46:48 -0400 (EDT)
+	id CE2DF6B05F4; Thu, 13 Aug 2026 22:03:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E54246B02D9
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:46:47 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 556FE1602DD
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:46:47 +0000 (UTC)
-X-FDA: 85098186054.05.64529DB
-Received: from lgeamrelo11.lge.com (lgeamrelo11.lge.com [156.147.23.51])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1A30440004
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:46:43 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.51 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DED76B05F2
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 22:03:40 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 22D0CA0109
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 02:03:40 +0000 (UTC)
+X-FDA: 85098228600.06.6625ACA
+Received: from mta0.migadu.com (out-3.mta0.migadu.com [91.218.175.3])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 094D7160006
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 02:03:37 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vp8cxxFF;
+	spf=pass (imf08.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.3 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786673018;
+	b=Pl55z3cL2z+FAjnYXq/SO0bP+JoPOXDFFKsEY6YRtkBI1D6+zCqEX8mVjOEGXJbk6F01cl
+	hOi0qK+mrpF1/6EUCgmF1uNWMmjuN6EqoS2iCfP+dxlI6XFZwUVcSpeYCiIYaEuJ+H2FMu
+	ti0TqMwSdEA7NHokK7mchifKGncEuV4=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vp8cxxFF;
+	spf=pass (imf08.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.3 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786672005;
+	s=arc-20220608; t=1786673018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XDgS3ttL+IOQjEU5bZLeRMszZ892fR3c5yALzn6nddU=;
-	b=VJ9srM/6WyIjGMNSvVhjrf9zMoVaCH3gZ/jjVXeFb6LzX7ecpwtUjcewE6lk6JxWIFEJcl
-	+EAVg4d9jOxYpk7uYDXGSoWaE7zfXmu5Le3hBwndaaFCapMbUML0UKwE/lewbOl5NNGNzt
-	RqPdVQwMSrQbS2EIbV167pq74Lo9m40=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.51 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786672005;
-	b=SxYbls6dkwjNXsFZ2atpeCpLadm3EHvYoWntOpJutrYZG/bzm23wKiOroJ8ajRP9i380QP
-	pMK7OLe8kzmTeCz7EbGLB+UclSeYMY3ETVYxLwsR101eLBZB8W5KqdM5zxpQmdMf+sbvFH
-	/x2f7q6+Az0bUBODVyqRzggAxq1fAvk=
-Received: from unknown (HELO lgeamrelo02.lge.com) (156.147.1.126)
-	by 156.147.23.51 with ESMTP; 14 Aug 2026 10:46:40 +0900
-X-Original-SENDERIP: 156.147.1.126
-X-Original-MAILFROM: youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.1.126 with ESMTP; 14 Aug 2026 10:46:40 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Fri, 14 Aug 2026 10:46:40 +0900
-From: Youngjun Park <youngjun.park@lge.com>
-To: Longlong Xia <xialonglong2025@163.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Longlong Xia <xialonglong@kylinos.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/swap: publish cluster tables after full initialization
-Message-ID: <an5zgOC0HpxZEzI3@yjaykim-PowerEdge-T330>
-References: <20260813150316.2793642-1-xialonglong2025@163.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=X3gEMHb5DGgjRHDTMqwtUuArcBJYU+RDmksBN2tQZK0=;
+	b=h2KWMxC1zN+WPPiA88Us3BnvSP1UBvJDukVz6t4y+20mTsO3xT/NyauGRQ81gbL11m0y9l
+	Bunc0zfKaE/9gJeCszIBxsa3hF/ZJBY8sebnbAYqPdgwFmfNlJ424vp90uDK3lsUwdF0Jz
+	9zxOJl5z532GbOBP+mD7le1JVhfFw8s=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=FDTPR1K3i1romvlfONK2csdHyjQzry+zjKN1gNuyHmY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786673016; v=1; x=1787277816;
+ b=vp8cxxFF+RhutuJN2RgsXA49IDkpuvSJpR2oMdJuyjM/paKpx+TBhRxgutMc7LRcK+vtEXOB
+ rLJNEDmuzD5mz87igQa8uhUsVjFFjIneLzeWuQ+oKjeJhyzRImsWTvrtefUuF+KVD0yLObo+DGn
+ 3SGrcFpAyVNmnHwoaHUezSjM=
+X-Envelope-To: linux-mm@kvack.org
+Received: from [10.63.123.245] (14.29.108.90)
+	by smtp.migadu.com with ESMTPS id 394907fbe8eec464;
+	Fri, 14 Aug 2026 02:03:25 +0000
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <f42dd57c-29fe-441c-ac5d-d4f990b7f6ee@linux.dev>
+Date: Fri, 14 Aug 2026 10:03:18 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260813150316.2793642-1-xialonglong2025@163.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1A30440004
-X-Stat-Signature: ewo9df1dw8idjzft5yc3gqwgaarufgqg
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] mm/vmscan: fix swappiness=max and clean up
+ per-node proactive reclaim
+To: Barry Song <baohua@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
+ Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Zhongkun He <hezhongkun.hzk@bytedance.com>,
+ Muchun Song <muchun.song@linux.dev>, Davidlohr Bueso <dave@stgolabs.net>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+References: <20260723045718.2052070-1-ridong.chen@linux.dev>
+ <20260723171842.137e45eb36b21b3b45245da0@linux-foundation.org>
+ <8336e48a-ab3a-4db9-a7f9-5bb6af2b22c3@linux.dev>
+ <CAGsJ_4xPw24afGLZH6Qh5rxOts37SCpmBVeB3gGntk1QQuSCow@mail.gmail.com>
+ <24b9f213-96e8-4eda-a20f-8746d7c399b7@linux.dev>
+ <CAGsJ_4xCi1TzV0sg=8ZFhfAq7v=k=Q6a10DNDouYOrjcJL-5=A@mail.gmail.com>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <CAGsJ_4xCi1TzV0sg=8ZFhfAq7v=k=Q6a10DNDouYOrjcJL-5=A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 094D7160006
 X-Rspam-User: 
-X-HE-Tag: 1786672003-214579
-X-HE-Meta: U2FsdGVkX1/j4KahUbkkNkN3QuSsjlNcANXIH/llw36CTyi4antWZWK7G8Xuus6JulPp5tpmr/JPw+x6iv9o/ErkV0eYyJr2hX+W4WZlJ/tVZL3Ywo9kb7pDarHYKEQbX6BlWnW6b2H4Dae4yikBj7MIPlMPrtvyp9OqP/I7mUNZ/dN/1zxKeFpZoLQq/4gQNwVsnjcmJ7Rix3jv1O4TCpwTcfFK2cY4TwjWVBuuuKl8cCBJqBp+zxP4adbQFml9KZZ8AnZ7NThM/3k9g5jylJo7q5g6DLSMjSKW2J3iYYqJYi6ON5TxNlb1+KBJOlQXIzvA4Qr+jsakPEVQtqDsKOW563Gcldhovg9hhh1jdtPytlnfBBOBDqdoCYyZnVpLd338l5x7+1pKLIuVEdLZMRZmRoA7bv0AfliV6ay1R7Oq2fdFcuqnVysnWliAfXQq2XpeDpEDFaytY55drZwDIJQEHKVYGdTEkQOPA95T/fR6e2TCFPdU/cD3J101rPob6nORCaUOCouiRqMfVOiwfDr+x/FeoeEkpguc/PIFtpAIJUhXhmcvsUsX2UcSvbJVDpwHtUwg+1x60mTjgtoYj1oPZ1gtWsDHVoKaMR6BzboOLoR1QWjcIH1glTsQYbPxvR3J4mfU5IrI443VQyFRwVI2fw75+ToGJm74SBmFiIhlmGZd6IfCum6shF0mYv6FUH/qIWmliNrgGw6PqOkKNE7pcGiNOK0TmP+IJD9RVnFyKWHwz9jdWxHDrTge3MgDyrs2PyALYTNGM3dnwUdBWRFAz1AAyt9FTGseRnGjSxX4+Y3Vo8teuKqxOJrR62rBama3naHp5wWtiGeC+Gart7rNtZJ/w4v4zy42Vs9r+UlSOU5xTqGep2yVBNAtYPNR9zRqKju0gsA/yM9/h7QAJgJHstjHBc7w6l2MYXwg4qzzsYcmz9+vnAu1DszDb6qamNv7I7a+If586bM49xh
- 5yefcsCF
- Z75eumxD+GhjOWOtYjYCEZxze7fh/Lx2AJl330uqdoFqeu66T/tA/R9ie+0C1bePN2Z5Nb7r4YJL4guKvsQL++pjJ81bLx+fpFto9gzNh1fg3zo8GR2XurvckyBFyjZozQt+JMhOOGWB2qcGBiXqHv7GhgPXR31TdDdScbQ79I4DTnaMxGJC4N2GaECu9T6T0x0A4mbrs3IfAZUL6xlceo58MgwGHoGLYnBkbNSJlGfKyX50=
+X-Stat-Signature: gwuega5rcd6juqg15kcan78pitqp4nof
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786673017-920616
+X-HE-Meta: U2FsdGVkX19cTLVG4YvCV+tmPYUOMNqd0hThcVMa4H4UJ3Aos0gpqXZY1qkIzGHg+0tuZvjpNKCeo0taZfGW82TLSmcVwzZQaXrKtuzkm3mM7Q5PaVWlvPWn8zq1CNSua5UuqalNimlHw14pnUZSDYndLE+jr/mWYuYaUQzC0S+smNPIGv6o+ZFCpA/IA/SWFNwuIPCTfIEdlOoRdCvFD+D3ykE6bovyRNm4qPdck0OpbyarEA1osoT+J28RXQPSNewlD4kZBhOcbj+0+rYvXZDoOtkyCmKD//CmE6WD2PVRIcbAfOPrnM3mPHkq1AxR6NY4BLa+S0HB2l5rMOjsontYBuLlOU95LCMD4+dXdERpqoruFU9xOuWkWFpa5XzfDU8oQPP3oWac3ucWCRk2SRMpyFCdSiVBbSTIFI3alpYWb1gwdz060Wfh2NrFj1XrvHnr9MjPbYmzj4ud4nx7O+uIXhi5xNjInKgZlcK5fDm9lANOZFEA9BYJ4XB0YLvPtZPvRXhQV/i2ucMZqvmkQIpL6ME1JOtncKpTU+UvpASkP6gAnc/Z+2I4M/p5xmVDNj+EA+Ocs/PtRAxU99t4Et6msBvh9x1I5e2c1fri65HJjiyMe1nTKcXcb8aMzomhO9M/5IUl/4S5DW9MOHHBO4q14ZeQWXsTTpNT9R6l6QsO5yOj0AiWomkej7qI+ZbB2B/ghekohg+qqchhflN4wi465BjWQyktMgIkhbe0sFydVQ+UQqRH+6KqVAnZ/s4YBEIlUpYhun8zQOY6CskS14IL/1eqMdHqvgMVEY2QyjtfARjCmoN3I13LzCkWnzmWRgEsyrBfbEFTYliG60INWSQ4ldUKbH/FXsyeHcw90oaM2/jlT/GgYnhpm8sXOObMatUjIVqOZ6AsdkscrgNIcepeARJXUGW/ObMmldwDwBlmvouZP/Ff2Qg5Zqfk/pEpp+0YwZlmByqlT0LpMcP
+ DZAby4pc
+ 1JJOXbNnyvut1pHaWPGqJK3tC01yJ7o3Q0IMi6moQHZVXkVC4hS+7lhrZ7tacpWNDBPLibAHz7ZXaJkBnJpzWLn08NuPXNfRSyGOPs4BoSWO8stxnZAsv7a7s/1MSVgBZHInH7nDoIOJfUMHW5AXDhsRLGP6oNkrwNFPMoBKdr3ydz3jKysnTYPD20pPdr2r26yXoah02i2O/qHxk2FEWU53ul4VZSyxsPWEbHDjRWZMphlwqLjj40Y6UZUMV6dRF7z3QmelxoYyQuEtCBrTJF8oN3paNEZfZOh5hczdS+nKhRTJ35SSwQ07W5wBpS2HcGMuoTb1G/r7eeW6pabcbGcqCcutoMYRlAWFlzObVM+MijN4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -85,91 +104,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026 at 11:03:16PM +0800, Longlong Xia wrote:
 
-+Cc: Kemeng Shi <shikemeng@huaweicloud.com>
 
-Hello Longlong Xia
-
-> From: Longlong Xia <xialonglong@kylinos.cn>
+On 8/14/2026 6:37 AM, Barry Song wrote:
+> On Tue, Jul 28, 2026 at 4:34 PM Ridong Chen <ridong.chen@linux.dev> wrote:
+>>
+>>
+>>
+>> On 7/24/2026 7:12 PM, Barry Song wrote:
+>>> On Fri, Jul 24, 2026 at 10:43 AM Ridong Chen <ridong.chen@linux.dev> wrote:
+>>>>
+>>>>
+>>>>
+>>>> On 7/24/2026 8:18 AM, Andrew Morton wrote:
+>>>>> On Thu, 23 Jul 2026 12:57:14 +0800 Ridong <ridong.chen@linux.dev> wrote:
+>>>>>
+>>>>>> Fixes and one cleanup.
+>>>>>>
+>>>>>> Patch 1 fixes "swappiness=max": the anon-only test in get_scan_count()
+>>>>>> sat after the "cannot reclaim anon" check, so when no anon was
+>>>>>> reclaimable the request fell back to SCAN_FILE and evicted page cache
+>>>>>> instead.
+>>>>>>
+>>>>>> Patch 2 fixes reclaim_store() collapsing every error into -EAGAIN, so
+>>>>>> callers can no longer tell an invalid argument from a busy interface;
+>>>>>> propagate the real error code, matching the memcg path.
+>>>>>>
+>>>>>> Patch 3 drops the now-unused gfp_mask parameter from __node_reclaim().
+>>>>>>
+>>>>>> Patch 4 fixes the same "swappiness=max" issue for MGLRU.
+>>>>>
+>>>>> Thanks.  AI review might have found several pre-existing issues which
+>>>>> might interest the maintainers.  Also a suggestion against your [4/4]:
+>>>>>
+>>>>>         https://sashiko.dev/#/patchset/20260723045718.2052070-1-ridong.chen@linux.dev
+>>>>
+>>>> Hi all, sashiko review:
+>>>>
+>>>>      This is a pre-existing issue, but I noticed that per-node proactive reclaim
+>>>>      fails to reclaim memory if the node's unmapped file or slab pages are below
+>>>>      minimum thresholds, completely ignoring anonymous memory.
+>>>>      In mm/vmscan.c:__node_reclaim():
+>>>>           if (node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_pages ||
+>>>>               node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) >
+>>>> pgdat->min_slab_pages) {
+>>>>      Does this condition incorrectly block proactive reclaim of anonymous memory
+>>>>      by applying legacy zone-reclaim thresholds?
+>>>>      It seems to bypass shrink_node() entirely if file/slab pages are low, even
+>>>>      when sc->proactive is set, which could falsely return -EAGAIN to userspace
+>>>>      for anon-heavy workloads.
+>>>>
+>>>> Should we add:
+>>>>
+>>>> if (sc->proactive ||
+>>>>        node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_pages ||
+>>>>        node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) > pgdat->min_slab_pages) {
+>>>
+>>
+>> Hi Barry, sorry for the late reply.
+>>
+>>> Nop.
+>>> I assume reclaiming file cache and slab becomes problematic when their
+>>> amounts are already very limited, so we should still honor these two
+>>> checks.
+>>>
+>>> Maybe we could relax them only when swappiness == 201
+>>> (SWAPPINESS_ANON_ONLY)?
+>>>
+>>> BTW, for global proactive reclaim, when setting swappiness to 201, does
+>>> it prevent slab shrinking? If not, it seems problematic when
+>>> node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) <
+>>> pgdat->min_slab_pages.
+>>>
+>>
+>> in __node_reclaim, we will shrink the node when
+>> node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_pages, even if
+>> node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) <= pgdat->min_slab_pages.
+>> This means slab shrinking can still occur even when below the limit (since
+>> shrink_slab is called unconditionally after shrink_lruvec). This is not an issue
+>> only for global proactive reclaim.
+>>
+>>
+>>> Your recent patchset prevents all file reclamation when swappiness is
+>>> set to 201, so we only need to check whether there could be a slab issue
+>>> before allowing shrink_node() to continue in this case.
+>>>
+>>
+>> So can we add just like?
+>>
+>> if ((sc->proactive && node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) >
+>> pgdat->min_slab_pages) ||
+>>          node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_pages ||
+>>          node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) > pgdat->min_slab_pages) {
 > 
-> swap_cluster_populate() drops the local, global, and cluster locks
-> before its sleeping allocation.  The allocation helper publishes ci->table
-> before allocating the memcg table and, on some 32-bit configurations, the
-> zero bitmap.
+> I feel both pgdat->min_unmapped_pages and
+> pgdat->min_slab_pages are quite broken in mainline.
 > 
-> A stale per-CPU or global cluster cursor can reach the isolated cluster in
-> that window.  Since CLUSTER_FLAG_NONE and a non-NULL table make the cluster
-> appear usable, it can allocate a slot without the auxiliary state.  An
-> auxiliary allocation failure can then tear down a table which is already in
-> use.
-
-I think this issue is addressed in Kemeng Shi's patch, which provides a
-detailed reproduce scenario.
-https://lore.kernel.org/linux-mm/20260720071342.50742-2-shikemeng@huaweicloud.com/
-
-In short, referencing the table while auxiliary table allocation fails can
-lead to a panic or something due to a NULL pointer dereference. That patch only fixed
-the populate code rather than the entire allocation path.
-
-However, as I mentioned in my previous review.
-https://lore.kernel.org/linux-mm/al7WTNXanPVSELAH@yjaykim-PowerEdge-T330/
-I suggested making it visible only when the ci->table installation succeeds,
-even in the CLUSTER_FLAG_NONE case. If we do this, seeing the table in the
-CLUSTER_FLAG_NONE case would not trigger the auxiliary allocation teardown
-mentioned in the problem description.
-
-> Allocate the complete set of tables into a private carrier.  Install the
-> auxiliary pointers and publish the main table only while holding ci->lock;
-> the slow path does this after reacquiring all allocator locks.  Allocation
-> failures now free only unpublished resources.
+> For example, even when the page cache is below
+> min_unmapped_pages, it may still be reclaimed. Similarly, slab may
+> still be reclaimed even when it is below min_slab_pages.
 > 
-> Fixes: b197d41462c2 ("mm/memcg, swap: store cgroup id in cluster table directly")
-> Cc: stable@vger.kernel.org
+> Also, when both the page cache and slab are below their respective
+> thresholds, node_reclaim() may reclaim nothing even if we have
+> plenty of anon folios available.
+> 
+>          if (node_pagecache_reclaimable(pgdat) <= pgdat->min_unmapped_pages &&
+>              node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) <=
+>              pgdat->min_slab_pages)
+>                  return 0;
+> 
+> For example, if slab > min_slab_pages but the page cache is below
+> min_unmapped_pages, we still reclaim file pages, even though the
+> comment says we should not.
+> 
+> So we are not going to introduce another broken mechanism.
+> Maybe we should start by fixing the existing broken protection
+> against reclaiming slab and page cache?
+> 
+For example, Maybe we can skip shrink_slab when node_page_state_pages(pgdat, 
+NR_SLAB_RECLAIMABLE_B) <= pgdat->min_slab_pages?
 
-I see this commit is included in v7.2-rc1:
-$ git describe --contains b197d41462c2
-v7.2-rc1\~94^2\~147
+And similarly, in get_scan_count, we could avoid reclaiming file page cache if 
+node_pagecache_reclaimable(pgdat) <= pgdat->min_unmapped_pages.
 
-Since it's in v7.2-rc1, is `Cc: stable@vger.kernel.org` necessary?
+-- 
+Best regards
+Ridong
 
-> @@ -788,6 +849,7 @@ static int swap_cluster_setup_bad_slot(struct swap_info_struct *si,
->  				       struct swap_cluster_info *cluster_info,
->  				       unsigned int offset, bool mask)
->  {
-> +	struct swap_cluster_tables tables = {};
->  	unsigned int ci_off = offset % SWAPFILE_CLUSTER;
->  	unsigned long idx = offset / SWAPFILE_CLUSTER;
->  	struct swap_cluster_info *ci;
-> @@ -812,9 +874,14 @@ static int swap_cluster_setup_bad_slot(struct swap_info_struct *si,
->  
->  	ci = cluster_info + idx;
->  	/* Need to allocate swap table first for initial bad slot marking. */
-> -	if (!ci->count && swap_cluster_alloc_table(ci, GFP_KERNEL))
-> -		return -ENOMEM;
-> +	if (!ci->count) {
-> +		ret = swap_cluster_tables_alloc(&tables, GFP_KERNEL);
-> +		if (ret)
-> +			return ret;
-> +	}
->  	spin_lock(&ci->lock);
-> +	if (tables.table)
-> +		swap_cluster_tables_install(ci, &tables);
->  	/* Check for duplicated bad swap slots. */
->  	if (__swap_table_xchg(ci, ci_off, SWP_TB_BAD) != SWP_TB_NULL) {
-
-As discussed before, this routine is set up before the swap device becomes
-visible, so it doesn't actually benefit from this fix (although it inevitably
-needs to be modified to align with the current direction).
-
-Overall, I prefer the direction I suggested in my previous review. (If my assumtion is right)
-https://lore.kernel.org/linux-mm/al7WTNXanPVSELAH@yjaykim-PowerEdge-T330/
-or Kemeng's current suggestion.
-
-(+ Also, if this needs to go into the 7.2 hotfix, Kemeng Shi or Longlong Xia
-can submit it. Also, I can help to submit it based on my reviewed direction 
-with both of your tags included.)
-
-Thanks
-Youngjun
 
