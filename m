@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75CCCC5B572
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 23:52:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B35DFC5CFC1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 23:52:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48E576B0727; Fri, 14 Aug 2026 19:52:26 -0400 (EDT)
+	id BE0D76B0729; Fri, 14 Aug 2026 19:52:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 465966B0729; Fri, 14 Aug 2026 19:52:26 -0400 (EDT)
+	id B92526B072B; Fri, 14 Aug 2026 19:52:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CED66B072A; Fri, 14 Aug 2026 19:52:26 -0400 (EDT)
+	id ACF4F6B072C; Fri, 14 Aug 2026 19:52:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DB0EF6B0727
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 19:52:25 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5B31914028A
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 23:52:25 +0000 (UTC)
-X-FDA: 85101526650.12.B1E50EB
-Received: from mta0.migadu.com (out-112.mta0.migadu.com [91.218.175.112])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8DD74A0007
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 23:52:23 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hzjUZGZP;
-	spf=pass (imf25.hostedemail.com: domain of ihor.solodrai@linux.dev designates 91.218.175.112 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786751543;
-	b=U23+pg8rMIgMBpiDWgX0TJJ31dLZYJbvNIkQqOaF0IYy6nhRaIdqbBepoVaRnrmALdLz0Y
-	/ikAYqrmt01U8uyqtQLGR1+/dUqtvUANtZEKtdhOgI0FG13KXoiXgfxWIBxFJBl/KaaJr0
-	gaAF5UhmWimbEj9TNEg1bxxURxoNVoQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hzjUZGZP;
-	spf=pass (imf25.hostedemail.com: domain of ihor.solodrai@linux.dev designates 91.218.175.112 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D70A6B0729
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 19:52:32 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 05354A02CA
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 23:52:32 +0000 (UTC)
+X-FDA: 85101526944.05.59E1C09
+Received: from mta0.migadu.com (out-115.mta0.migadu.com [91.218.175.115])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 03CC540004
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 23:52:29 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lXV7KOmz;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of ihor.solodrai@linux.dev designates 91.218.175.115 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786751543;
+	s=arc-20220608; t=1786751550;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=i7fjINI4wc6xnUuD3hs+PTYaqN/R0nnAWp1yQnMF40Q=;
-	b=Xrh0zXbhuAmGD//OrqM1VlZH0DQN0c8/M6s44sXO07JsBfEMvxHK2Lk8KPCysxKA1uppUx
-	Cems1L8ClsFqQy3JtZ8RzEqLTk8Y5Z7N9rfxiU1plrHkjPnT3l3dLd/h7XSWo4xrrndOoG
-	/uoCel2KHLGH1o5x1hoN1J0zrjYCBRM=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+99t1LBPWwoGXwe+1R1sUgaiMoADZSJjatmbR2Xr3YY=;
+	b=NOVNzY7edG1of7Wv0AUj1aNYab9IccRkUeTDHRqMRBFl3cbB85Wp17ecIT73jVHe/L8XUP
+	fcVatdG5znxVHuUlGuo1eKOdwhGoAEPj90vjLN7U9/e7M5F/aoD87l9j3WbLdOLCI8CdS2
+	WDZXyxppYKA8RWZEHGNSjY83wQ4BE6o=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lXV7KOmz;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of ihor.solodrai@linux.dev designates 91.218.175.115 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786751550;
+	b=FqKFfH7V1KsM8ctFHY9R+PoOm6omiMFQF3ePNbai6ZeIX10HO32EtffNmQE0TSpGHjLUg3
+	ibAu2loClktCgkxrxjs0e4lEvouE4mPzuVOJ94n3FN7tpLieXzb8SvCXxh4UFGbB3qn72o
+	rGXV5xeAYVviumK1fkHQS3cs+DALQcg=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=yq/CIHMCUVnry977n31c6YewS1Nzi92h3o7DFyzp5zk=;
+DKIM-Signature: a=rsa-sha256; bh=3SbJTWKQRPJhm3xT71jRLeUekhnVMPArD1wBhzIMjeA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786751542; v=1; x=1787356342;
- b=hzjUZGZPgTDAYqCRp3nH7iE9jPdsDl3QlhgEDD9Wd+JdiOWbR5A520JOlrob9OcTPgNKNZC0
- 6WH+vVIiBYo6u5ZmluHObwcQoJwU0glpCxkQNmr0UMr9lmtDYbOYZ92IFVfhG7Z5mVs2IdMowvW
- 2MXvzMML6LkJBwx7esyHjIhI=
+ t=1786751548; v=1; x=1787356348;
+ b=lXV7KOmzqR8iGl6VoV5rXX+OFnis7m4KHdy+5IWTA86+ds9jZWZ6CUWjcz/mn/sN3AffirvW
+ OwUszsqFGuOTT2g8RbkhiAGahro2O1LmQyfjdJsvVTPB+CVvBX2Chfo1JTfaEhgfNtu5SyEKC9b
+ fXkG8B6whRtYKo2wHkNc5rEk=
 X-Envelope-To: linux-mm@kvack.org
 Received: from isolodrai-fedora-MJ0FVMD1.thefacebook.com (2620:10d:c090:500::4:b8fe)
-	by mta10.migadu.com with ESMTPS id dd5d91714fb7a918;
-	Fri, 14 Aug 2026 23:52:12 +0000
+	by mta10.migadu.com with ESMTPS id 781dcae87522a580;
+	Fri, 14 Aug 2026 23:52:28 +0000
 X-Migadu-Flow: FLOW_OUT
 From: Ihor Solodrai <ihor.solodrai@linux.dev>
 To: Borislav Petkov <bp@alien8.de>,
@@ -78,20 +78,22 @@ Cc: Alexei Starovoitov <ast@kernel.org>,
 	kasan-dev@googlegroups.com,
 	linux-mm@kvack.org,
 	kernel-team@meta.com
-Subject: [PATCH v2 0/5] x86/cpu: Refactor identify_cpu()
-Date: Fri, 14 Aug 2026 16:51:29 -0700
-Message-ID: <20260814235134.3461435-1-ihor.solodrai@linux.dev>
+Subject: [PATCH v2 2/5] x86/cpu: Initialize boot CPU cpuinfo defaults early
+Date: Fri, 14 Aug 2026 16:51:31 -0700
+Message-ID: <20260814235134.3461435-3-ihor.solodrai@linux.dev>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260814235134.3461435-1-ihor.solodrai@linux.dev>
+References: <20260814235134.3461435-1-ihor.solodrai@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8DD74A0007
+X-Rspamd-Queue-Id: 03CC540004
+X-Stat-Signature: wpdqm4t3exb6uwhkfz1yfnrjrp76zqcm
 X-Rspam-User: 
-X-Stat-Signature: p94dyrx95p7soe95ya3nc13kgh3yynsz
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786751543-306718
-X-HE-Meta: U2FsdGVkX18Fej8dYhZeaxLE1w+wPDwtgpOYofE/XCgh++dBvJt0tiwgtqzG+TkWJ5cOx+31O/mp0Cd8vrzLmuOpqCY3yFVyM4BcOiJsZiN/0YfS/86NcaPiGfHYvfazIKMt3vzfnrkCeJXBQzP7Osyt36pEKJ6oMYgOLxyZ2OIlmv/bQtM3/ZtxnBoGVOHtM5OBZg1ON3yY7HaHg5uNcFFBS2hQSUOpYe3htUmeOvjbLkBctq/Yg/lr4rysapQmLpsIjcJS2kXdvHrek7I9p+6QKAAfIyH+KKv/PWGfoxRRpsO194TAQ7f/3LIU6TsRrW+u83oo0bjUUKQ1X0dRUs4Xl15aGS86bPUSxSh87icXLKqT4fasqsucylnqSJ/ICAVZYahasV1RFcHW+pFsx2Xoek11IK1tKMFzIs7hgOUi0feEsS0LYryOt+9XJX9r6s6lAO/SSSRSIt79r+CDW9aMN27v2Uf+ftIvaqh8qdNt5ENT7sK9NBTyb/vDjkLqFCqmJDOt8acSdGY2So2wx7fejRhjr5MvZwfYZFysd+ps03vsJvqG0z7MgpHb+JV7oJ/GwqU2IwiMpjQuK2RvdTsEveh9a/DiwZUguCvIHT+vzY8lf6erCFnb5slUpFF5a3f5JWkVNiLMBDijrtVjpHjVMGIxyId+/1saebW6jxShzAvp6H6tRVNeA7DR+U/bq4t/UI9EQTteY4T1iZ8s9T2Rl/lcyjAasQCRhioHt1IBC5jrqTsZXMZBq6u+vrhrnd5fLkMpzjeK8mH9LPFuvBw3/JZcWXb/CYseHYepAxrYZexkVErrAJwc9K/qxqZqJ8FZJ2xTLmE1V5geskKrUY/HA6GMH66nWUIu0tdKIe62elyWMX7ug++iKijFawrToRCy98nrCmMnpO/gNScY03850w2ot0ddmvzngTPt3qUWRA7Y8hY4Ap/9W14X5HKv8CJ72d9ps7wglSNEJjY
- jiILyAWH
- KIYU3UqNs7kGBMLcKhc/54kyxIzQcGtVAxPSV1yG+FT9cdjSvcSxHBLlyFwF5QAtztKxn1StsHK6EKUu+oKl9EP+tEcJSaqlNFDJQetkJdn6SQG3E1e0Yo9k4UpSu21gcmjiEp1lCN7EvFVHKWDp4RiBiN9Lr4NMstb/FPSsdaeZuO7XveMYiarnIafaf9jMHoGcRraU+4gdyalcXs5QlEksP5tQtAjmxlURdpduYiQgKUXARTfXIWmY2i/LRPWUFD1x30+NjdRqLq3NWbxonvYdBpHTqrppSDT0XYUjjNrs2Fy/ZC1FlLIY0cCq35jDHx0CgIr3LTAM0Bn77iQRkXmP8s6+k0xx/wJvTe41m0TWdJOD2tlLhVC35aA==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786751549-861771
+X-HE-Meta: U2FsdGVkX19ifBNv8zhN0RZpDXDmBFKtoWlfdZDar2oC5kf/A03SThuawA9Ua8ZhN/h3iYar9L6YI9c1C2/nmB3fOtYX8PUIpgia08j2iTpBHXNvBEhYslXmqP1TDNYCJQkmtz6PCkyaPG7JiOATFajWwRECLHs3lDbWJe+5E0wTnL4Gq2o6AcOAPX+cXcNa0bU3vaYq6vI4wjsTGK9zTFxstKWcaTyloy1VUU8QBX+2u1pVU82Rfj+HHdHmllXUL9uGaWxSsTEsLuaDf0hDcNdkCK3LxosqYyKbaJdgEwgTvxHhPB1IJ2zq5ZqVB/p/Cx6jWlELa1yGxHHv1YL8NYcGFedQL4AsFQETuQeGMYxrNaXP6qOGiuRo05AG00MFcML3rXyWrjtxYDykjP0SMuHCKNLgEZ3JJPKRqeA4byI0mL7eWk+TUHk1InzrwCADjUD/SxilXYUOd9iM+qENE6vTmsVUd+AGa5i9R66xIqbXRbEc5NbcQizKCOCx7ligU7+mgJHqsuf+0i14SKVavaH1W0rK6m7b5HifiLXEuki2cZ4IHtNTqL/P1laDN1eLoSiPcOC6pZpCHVxGaXgz9kmyTyoAHjCe5bmP/zZ6ANInVDIMQg7l5E4g4BXAg967CZO/xPZc2cVRd8sXOEVs7olU77PQbIeKnKPvNsU67UjQH4pv//MrhFCMufd2F8nUTEbr8eTmx58U3YgmcfmNrRexPvTo8utLElPNQnXiZLY9tpchSqVFxxgP2viceRqmgXDEReCLusYTiySa7W1qTvte64yTEi6zK0wtbIH17DzkY+kSXTUtVPOk1hdIktZ3hlJ1NNriB/tBSXA3EG1ldnE2BoafUIA98tuDYVCzk5y483wP6sFZFlgebKAyUqrh3ljj6cvC9dXYGe8Lh7LmCqpmok/LHJ9Icm6q6GraTmt/9rJ8FaSht1d1c/ldu0tc5tnV6yvxeIMDNrnjHht
+ OsdTmVoG
+ MhrAT+qxY3GL+UYRzl0yTyP8oyl8OEJFAwFxKNd0j0IHKSw4dou2pFP6+Lsi9HySjg6xuDBNZen/zp5FQoM5SD5ozva+6X1Ff64aPZPNPzctTKv460a7V50hTdpSGX5oPmRrARB41GxvrviXKk4mgCFXZYCAO4o12RsCmij3uWkWimH04yRbXX1Uv2LaGdfQfa1pqQT/QXMyntdKPj6X1/C7TOXyVGeLR+uwMBfppHj7p7LJYMhDtFK5k+iAYypvADrzQcf+c+CXGwAJfzOuYHMrT2wq9SHbC3jtpZFUkKw4QMOO9gPPmPwwGyw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,40 +101,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series refactors identify_cpu() machinery on x86 and then
-implements a fix for a bug when cpu capabilities are temporarily
-cleared within an interruptable window. For more details and
-discussion see the relevant bug report [1] and patch #5.
+early_identify_cpu() clears the capability array, the CPUID table and
+extended_cpuid_level, but the architectural defaults for the rest of
+struct cpuinfo_x86 are set only later, in identify_cpu().
 
-Suggested-by: Borislav Petkov <bp@alien8.de>
+On x86_64 x86_clflush_size defaults to 64. Until that default is
+applied it reads as zero, which get_cpu_address_sizes() interprets as
+"not enumerated" and replaces with 32. So on a CPU which does not
+enumerate CLFLUSH the boot CPU runs with an x86_clflush_size and an
+x86_cache_alignment of 32 until identify_cpu() resets them to 64.
+
+Use the same defaults from the start, so that the boot CPU does not
+depend on a later reset to end up with the right ones.
+
+The values the boot CPU ends up with do not change. Early users of
+cache_line_size() on a CPU which does not enumerate CLFLUSH now see the
+architectural 64 instead of the 32 fallback, which is what they should
+have been seeing all along.
+
+This change comes before the last patch because that one removes the
+reset: without the defaults established here the boot CPU would be
+left at 32 instead of 64 on an x86_64 CPU which does not enumerate
+CLFLUSH.
+
 Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
-
-[1] https://lore.kernel.org/bpf/20260610175651.647515-1-ihor.solodrai@linux.dev/
-
 ---
+ arch/x86/kernel/cpu/common.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-v1->v2:
-  * Rewrite commit messages to fit more conventional structure (Boris)
-  * Drop identify_cpu_32() helper, it's unnecessary (Boris)
-  * New patch (#2): now early_identify_cpu() resets boot_cpu_data
-    through init_cpu_info() as well
-  * The boot CPU reset is now skipped on 32-bit too (sashiko)
-
-v1: https://lore.kernel.org/bpf/20260704002046.3859585-1-ihor.solodrai@linux.dev/
-
----
-
-Ihor Solodrai (5):
-  x86/cpu: Factor init_cpu_info() out of identify_cpu()
-  x86/cpu: Initialize boot CPU cpuinfo defaults early
-  x86/cpu: Inline generic_identify() into identify_cpu()
-  x86/cpu: Move 32-bit SEP setup into identify_cpu()
-  x86/cpu: Don't transiently clear the boot CPU's capabilities
-
- arch/x86/kernel/cpu/common.c | 92 +++++++++++++++++-------------------
- 1 file changed, 44 insertions(+), 48 deletions(-)
-
-base-commit: db2ddb87143519e20a95aa36c60b36107b736a58
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index bb4525523222..f43584c8aeab 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1802,16 +1802,15 @@ static void init_cpu_info(struct cpuinfo_x86 *c)
+  * Do minimum CPU detection early.
+  * Fields really needed: vendor, cpuid_level, family, model, mask,
+  * cache alignment.
+- * The others are not touched to avoid unwanted side effects.
++ * The others are reset to their defaults here and only filled in later,
++ * by identify_cpu().
+  *
+  * WARNING: this function is only called on the boot CPU.  Don't add code
+  * here that is supposed to run on all CPUs.
+  */
+ static void __init early_identify_cpu(struct cpuinfo_x86 *c)
+ {
+-	memset(&c->x86_capability, 0, sizeof(c->x86_capability));
+-	memset(&c->cpuid, 0, sizeof(c->cpuid));
+-	c->extended_cpuid_level = 0;
++	init_cpu_info(c);
+ 
+ 	if (!cpuid_feature())
+ 		identify_cpu_without_cpuid(c);
 -- 
 2.55.0
 
