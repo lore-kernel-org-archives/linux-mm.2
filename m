@@ -4,89 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66086C5B572
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 08:22:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B9C7C5B572
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 08:26:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 606E16B0651; Fri, 14 Aug 2026 04:22:22 -0400 (EDT)
+	id DFD2D6B02F4; Fri, 14 Aug 2026 04:26:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DDAE6B0654; Fri, 14 Aug 2026 04:22:22 -0400 (EDT)
+	id DAE0B6B02F5; Fri, 14 Aug 2026 04:26:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51B1A6B0656; Fri, 14 Aug 2026 04:22:22 -0400 (EDT)
+	id C9D0A6B02F8; Fri, 14 Aug 2026 04:26:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AC026B0651
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 04:22:22 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AA3111203B5
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:22:21 +0000 (UTC)
-X-FDA: 85099182882.10.6D6649E
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FF956B02F4
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 04:26:39 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7E4461403E9
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:26:19 +0000 (UTC)
+X-FDA: 85099192878.12.054B080
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D2B9F1C0007
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:22:19 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GGdB8HlR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 7EC6E40005
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:26:17 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SMgOxtmN;
+	spf=pass (imf12.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786695977;
+	b=qFoO3/9CITPtMN3yIQBFbC+5KymFuRD3mgpP0SbEGbtxHWXdfhEXlQs1KbPNDfvLqFv3Wf
+	A+FSuO14KrjKpSRM4GgzhyGgwDA3lxU2zTDwxTUBYqnh5peAJE5Dq0b6b6Y5jGkHEptL5I
+	I7IARxfA6kZd7DxqNaJgm3LRqM6g6fo=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SMgOxtmN;
+	spf=pass (imf12.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786695739;
+	s=arc-20220608; t=1786695977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EIsk+Wf4F0dnluT9f5h0Biozt4hmYjxe7upSyC3uPSI=;
-	b=oXpNODeMj6rFJVnQik67Gs7lJSvz3cSfpgXhH60bm6ZzFm3G2OOLFXQMb9HxLDOKDb8iCQ
-	+y+BcXPgFqsqIYwmLWb133buEt4GsjkRWqFI15qRDz5/zXLnpt6Y6Bgi0d/8+Xkh08MgEU
-	xYrkmvH26Wf7AorRyXMy/M3+sijo/k8=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GGdB8HlR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786695739;
-	b=rERS1yl0iByhuwtb8hS3PRVcTnT4MPykgyaiKYcCUq9hCH3nBA9X2llX5vD4pGo+nIECRk
-	rRf0hPjgpLHSEhYltQo4vcaeM8cuH0e5psnJok1vigHK6a+sa1my62BUIhJMVlPZP8AJnp
-	whVxFHOCY5pzzMe1VlfoZky/mZpS3fA=
+	bh=+WNFzfxSWW15fOIdnEaHeTYbpQjdQsx6jTbj9dE4ksY=;
+	b=3cvQ+fomxlBZSwAHn/uAaR70g1cvQifOwmY9SJYO9mhgj27nnPB27SaJ1opiOH/soK2OVp
+	OeHnkF9H52N4dmCtk+dM4azAnBt2BLeNEdSb2GXz8PQ5hgRMSbvCREvzShVyhleqOGYY/x
+	TPxknJuPTQDy3i5DfBhIfSrfeqZzxGg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 27B1B4018E;
-	Fri, 14 Aug 2026 08:22:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D746D1F000E9;
-	Fri, 14 Aug 2026 08:22:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 90D6143F2B
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:26:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F191F00ADE
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786695738;
-	bh=EIsk+Wf4F0dnluT9f5h0Biozt4hmYjxe7upSyC3uPSI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GGdB8HlRdNCLAI/kFaUg6q6hJdlaxu4wqup44Jfwh7ulG3dL4V+hKR2FQeEi4IhoZ
-	 aM6+r4s8zYekwBX0+DQlFpQpIbYVJFRhfapJ9Bj63/1pEGSNKhi6liFAdm3Z5q9uM7
-	 Y2bnBDJ0EV0k/tKGpsXFNZdsAX9iWoKdmjZWy3nWP6/UmVuejmROjAjj74ocXWYIvc
-	 W3QmWkHq6qFWC34U2v64st0h9CWFGP7xx2t1/42JebrcEgsTi2OB5F2Mawkry60k2U
-	 /exyBR6Ia9TlU2D5XBkOX9sSIAxkfMMVrRGwuKIze16rjcUQBrGO8kSKa+gFbY+alb
-	 5W18TnBeDEpYA==
-Date: Fri, 14 Aug 2026 09:21:59 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Daehyeon Ko <4ncienth@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org, David Hildenbrand <david@kernel.org>, 
-	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/secretmem: prevent uncharged mremap expansion after
- fork
-Message-ID: <an7Emqen9f7W801p@lucifer>
-References: <20260813225328.2010303-1-4ncienth@gmail.com>
+	s=k20260515; t=1786695976;
+	bh=+WNFzfxSWW15fOIdnEaHeTYbpQjdQsx6jTbj9dE4ksY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=SMgOxtmN8Vf5EkQdQSMB+lyU6zdP5E/rVzeaMaT5tG37DvvceG22rBwtS4b3YBjJP
+	 LHtiprxppMxk76P3Tqs4D2P3wkaJoyHFi9y3e8+bupmb/8bQHh0OKCECOJLmpMa6ES
+	 X2ZxouX3gnn7Ahe/4T/D86o/e9/V4HlxSBV8rGnm8XQQxx/9GgKKxaVF97SzsJNfUj
+	 gs8dlFaRo7VPgUqJWmlibmGcv1jTfIVtSk6ZmDdMsIfFszF5GC+uTcdNJ/OHcED9f/
+	 m/dz0wP+llgLEZCa7RYZ8APKi76J7sFVFVR+Z31p4fgNuL0bbNFOjkMSjwOq5MBuEq
+	 DGiLti1auW0Dg==
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6a386a34603so1436630a12.1
+        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:26:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpO0TmcjXnxQm9roa5obO58IIx1Phv4i8Qw4xDruyqJ6sC7pE1XoZ+U3sZQeTj8pBqg6XKiGqkK4A==@kvack.org
+X-Gm-Message-State: AOJu0YwHRIKvJqOyT74f2nfa5voxzWEeB55ZoomAzd/JPkRG9LD1ztQ9
+	NTVVxdgBA/Y978HtanFvOmQwM1/b3sNLgwQDoA0wfezICz9axLdQ9JFPsS8KwbB970cFzHEcM4J
+	6U39awORzQhzlLSWxiRE+yQOw/3uH9Ms=
+X-Received: by 2002:a05:6402:324d:b0:6a1:332a:83c1 with SMTP id
+ 4fb4d7f45d1cf-6a38aedabdamr1544094a12.6.1786695974968; Fri, 14 Aug 2026
+ 01:26:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260813225328.2010303-1-4ncienth@gmail.com>
-X-Rspamd-Queue-Id: D2B9F1C0007
-X-Stat-Signature: ryg97m48rereddn8i6dphof9bgkuuf79
+References: <CAAhV-H7+1bv6ULPO1+SZ5R=XFxNTh+54rqnYQUAW26kF83kiMg@mail.gmail.com>
+ <20260813160307.15130-1-dongtai.guo@linux.dev>
+In-Reply-To: <20260813160307.15130-1-dongtai.guo@linux.dev>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Fri, 14 Aug 2026 16:26:41 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7XKFj93fSPcKAR9AR6Z4O28pC9va243hVccvPNOxH3qg@mail.gmail.com>
+X-Gm-Features: AUfX_mxWy0zifyMkCT_MNsH5vELQu4FCKCmOeWL2rt6IE_4N76SZIZUTr8aX0ys
+Message-ID: <CAAhV-H7XKFj93fSPcKAR9AR6Z4O28pC9va243hVccvPNOxH3qg@mail.gmail.com>
+Subject: Re: [PATCH v4 4/4] selftests/kho: add LoongArch vmtest support
+To: George Guo <dongtai.guo@linux.dev>
+Cc: rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, 
+	shuah@kernel.org, ardb@kernel.org, guodongtai@kylinos.cn, kernel@xen0n.name, 
+	graf@amazon.com, liukexin@kylinos.cn, loongarch@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 7EC6E40005
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786695739-687371
-X-HE-Meta: U2FsdGVkX181E3fGPWyn7pL8GvpwlEOdaDQjqHrOhap02gLg3iT1SxMNYUHWIUB85p26A0cPxZlhQ9XerQHyOCbclMxgEASK2UmJkYRhC+kI0ZWPSI7hXrxUIBvqWDcm//sx+xzYkk3ohy4oH1JshVtp5VkzxY01V1E1lVRUVjw0BaNpGY841gE6iYLoSKieVNHmLcXYLVzg+5YKoV0ST6LSANta14uYPPnV1RqbDQgoibj57TGBiQmf4UHku3weIyifSnKxqkQYcSJ2SlF+dI2WByaFrO8XryQCIiTig3ELZ/IX6SZuJdw4zmqQJwvy7/a0Id5+yKMnN8LAnCT+8V5vr8qgZzD/iPwIXH5sAwG4pryHr3p2AE/0moOAdVgqCFBqRoX9P3m4EGLcYirEhxjSlv6WKpUYu5x+VQCgZIAc5rASgrqjnSxc1cnL79+ViP8vEd6vK6BE/xqoUzpwCkhcPxHYATI4ogKroHkc5awGPbFgf+NtZQJ9uOCZUJopgOdQ32W/qD+wt5wrzXfoUeBwEF8sSKSlty//FnI1V6wx2K7hRJKbyehG3qAJVvhfKf5gtECFZovTvB19RhjuZbrzzoLSYfygpCjuA7G388vFFuBReWEMDqTtyAmiOgVanamcaYpSkdpgd/erU/4WN6/zBh2YZer8itc3KIXONvQcYMRoA43XAbt3iIXx+rgur4Bbc+Oa0HXt6HH+Cihk+NK5RuLP8PG9dJsNsFoV+xBQEpWrv8fLlD2KZ6Ysn23kDHX6/1zb2eWCQwJYON+rOQIygp4aJcpAi7GGvYbx34EcXddjI00681jhcqOmtJBmGN5sHlJrdUmpInXU2eU2K3MGkBuIUjxoaN6sNkz1TVn+CesFrqXJYxx7bfjxgw8OVHpozM4vfZnvaJC+k9y+0OgM3Mk7Wt4AqPbwP0rGqUvoTpGvz4WUVoRIrZABh851wLGAigxQXq0N/p9dzIh
- /ao5gUjB
- ndScVkM4Osfvd+k5QikW5/HfyMPbCQy4on418pdMYNoFb4/X/8cGlzeDNk3NabggLTgp1AIIzp+itB4Uox/PIDzDzZRa9TMDxKfcW1vMIOuf11erDtUGFFTPs+kAlUiWBi35XSiViYcsUDBzyWUYLqQ9jeJOizTR7k5rdcGwr9N6g+c8I+4Ngcqejoo0XE/VkCWjFUcsz0nlEu9EurQhQ8cldYodIPJSlzMv+T6ZXLR06JPVmk+bVBPGMSKDF7of0hY5mwOp4HBjngDCjM/fHKbFIda44sq7HNtnDkjzj630lBxttaAH1rU3RfA1R+L4cX+MV1BXM/C98F0c=
+X-Stat-Signature: wtgz3bgnbzifeqkg63xt1utztbh1u7t1
+X-HE-Tag: 1786695977-739310
+X-HE-Meta: U2FsdGVkX1/+192CVvZom5RSfIH7Mwp1T3cLYhaCbvP51MVayA/QrlPOYKOKs11yy35l06XgoSWOL/eSU5VFPGs7W8UA2yYYGsA/pPObcY0fqcA/U0qZ6AH7MG1Rnvon8Vr6lhhBDq4Fb4wEYXKdDp6MRhirVgSlaydB1VkOnS4TjPH6WCfuYLlS/ggCBaVBYwK+I97FOJBWJMTih5z0ANe4B0my1Z97Wh9NQmVnbTtE1lSsvGg6R45T0oyxejM9LhNKXLx1LXuYotsS0bRZ3WWuc5d4pci+LD00mJnp4gN0m3vZ0XqZFCsDPfAyl3DOg+ZhfS2BGDrF6PCG5Rch74AOYb95bb4z0xQFh/1N3KPEA0PliRwB9pkZadAxOL3BkJUfIxhURkONbkG2ixxjkeuvPYSliImSTL/clcYBPL0Hvrit+WqV+SJgBXVGavAyA618ZLwVmSHDtRHexcK8p+Tj5TR9zYf7cKebJ1c2fmAvm5KEZAhC3z0enOonyUjXshKnCLHFg4eeHogwf+rCEd7FKIne+mNtr2MAymTgVPrtrnbrAdXI6KKLEo1Wau1IGmWomiPJl4RxMuCF2Q6vBeQPeMGROplALJqHwrb5Y3n0mXUmBEh2ZPz/715C7Qu8c70F9m95RtGySZM+DoDBAjC2f3nO/HG2ZUJc9amQehJcunVJZgLI7KBndsL0EIKGvGKDpH5YjVg6Xfh+SU1Y7tV6o8vpgF2ynR1WzrmL1CA89slZh7um5Ej3kpZJ0hV0YfwiJ7nxievpNBj59V9hYUHRrGg5qCZ30gjb3TXFqagIs/z6qNjfLTNb41DCw2kEyAVrp6rMKXiRBRYcNOu/0424IX6DP3D44LYcYY8xyoHRn54WisA14p7cdDDXj2/wc4eQJxmiwQ6Ks+bLgdXtKT1wNOvCfzrgbgvgqJDDS1yTbXypp8WF1F78ZT+Ba6sIMGOxG0Q8i9RBJ7XijFQ
+ V1emmvqC
+ UcZjrOYfDCgVvtFE36hDytYtAhkFPw3w1Js2M+nyIB5Sk1LiSeC1g/3Gs8sNnrK+IZ+MrDYX2wcBzrSrjqKYYN4noZTdilK7sm/n3cAHztgsZwArVTZ3/DurtcojV1OByijAAab/NRNWILnShcW8aAiCP5JAyrHQ/RLIaUEptHWOy47BPnFjeCdtOJOrK1rXSSJdU02ieIr8Q5atkEdVgvHeloz60JEaeAGYQj9NNYKw0fBVkJMahRTE/y6l2SK3HGF8oEJBhzdkjmT8BUvqMJGlGHuqK+z+7BCpYxxQbB5VuQaRdwv7EYYmYdA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,229 +106,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-(I'm going to make an emacs macro to paste this now I think :)
+On Fri, Aug 14, 2026 at 12:03=E2=80=AFAM George Guo <dongtai.guo@linux.dev>=
+ wrote:
+>
+> Hi Huacai,
+>
+> On Sun, 9 Aug 2026 at 12:16, Huacai Chen <chenhuacai@kernel.org> wrote:
+> > You never answer me why in your test you should disable i8042 from V1
+> > until V4. In normal use we use a single kernel for both host and guest.
+>
+> I owe you an apology: I did not actually understand your question. I
+> thought the commit message had already explained the reason (the
+> i8042_flush() panic), so I treated it as answered and never addressed
+> what you were really asking. Let me answer it directly now.
+>
+> You are right that this is not just a selftest detail. i8042 is built on
+> every LoongArch kernel: arch/loongarch/Kconfig selects
+> ARCH_MIGHT_HAVE_PC_SERIO, and KEYBOARD_ATKBD and MOUSE_PS2 (both default
+> y) select SERIO_I8042 under it. So your "single kernel for host and
+> guest" point is correct -- a normal defconfig kernel has i8042 built in.
+>
+> On the QEMU virtual machine there is no i8042, so PNP finds nothing and
+> i8042_pnp_init() falls back to probing the i8042 status and data
+> registers (I8042_STATUS_REG, I8042_DATA_REG) directly. On LoongArch those
+> registers are memory-mapped, and on the virtual machine they are not back=
+ed
+> by any device, so i8042_flush() takes a page fault and the kernel panics
+> before userspace. A normal LoongArch defconfig kernel booted as a QEMU
+> guest hits the same panic -- the "# CONFIG_SERIO_I8042 is not set" in
+> loongarch.conf is only a workaround to let the KHO selftest boot, not a
+> fix.
+>
+> The real fix is separate from the KHO series: make i8042 bail out on
+> LoongArch when ACPI/PNP does not describe a controller, so the direct-por=
+t
+> fallback never runs. I have prepared that as a standalone patch -- the
+> relevant hunk is below -- and will send the full patch separately. The
+> selftest workaround can be dropped once it lands.
+You nearly answered nothing.
 
-Given it's 2026, you're a [relative?] newcomer to mm, and you've proposed a
-patch for a very specific part of AI I have to ask - is this AI-generated?
-If so please add an Assisted-by tag as per kernel procedure.
-See https://docs.kernel.org/process/coding-assistants.html
+Does your employer use different kernels for host and guest in KylinOS?
 
-On Fri, Aug 14, 2026 at 07:53:28AM +0900, Daehyeon Ko wrote:
-> Secretmem mappings are charged against RLIMIT_MEMLOCK and marked
-> VM_LOCKED because their pages are unevictable and removed from the direct
-> map.
-
-secretmem is weird in that it does mapping_set_unevictable() and _then_
-marks things with VMA_LOCKED_BIT.
-
-The description though is woefully incomplete - that should be called out.
-
-I'm not really confident you understand this however.
-
-Though 'charged' isn't really the right term here I'd say.
+Huacai
 
 >
-> dup_mmap() clears VM_LOCKED on the child copy, but mremap() uses that
-> flag to decide whether an expansion needs a memlock limit check and
-> accounting. An unprivileged child can therefore expand an inherited
-> secretmem VMA past its limit and populate the added range.
-
-'Unprivileged'? I mean where does privilege come into this? I don't see
-capacity checks or needing escalated privileges anywhere.
-
-And forking from a parent process can only be done by err, the parent
-process?
-
-And what does 'past its limit' mean? You mean the size of the file?
-
-Well, already:
-
-	if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
-		return vmf_error(-EINVAL);
-
-Again you are lacking clarity and detail which speaks to a lack of
-understanding.
-
-You can already map a secretmem mapping of any size you like, but you'll
-just end up the part of the range as invalid.
-
-What I think you mean is only RLIMIT_LOCKED, and the fact that secretmem
-seeds its folios as unevictable and uses this as its only limit aside from
-memcg memory usage limits?
-
+> diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/=
+i8042-acpipnpio.h
+> --- a/drivers/input/serio/i8042-acpipnpio.h
+> +++ b/drivers/input/serio/i8042-acpipnpio.h
+> @@ -1633,8 +1633,14 @@ static int __init i8042_pnp_init(void)
+>  #else
+>                 pr_info("PNP: No PS/2 controller found.\n");
+>  #if defined(__loongarch__)
+> -               if (acpi_disabled =3D=3D 0)
+> -                       return -ENODEV;
+> +               /*
+> +                * LoongArch legacy I/O ports are memory-mapped and are n=
+ot
+> +                * safely probeable when no controller is present: a dire=
+ct
+> +                * probe faults on the QEMU virtual machine and on any FD=
+T-based
+> +                * boot.  Do not fall back to probing them directly; if A=
+CPI/PNP
+> +                * did not describe a controller, assume there is none.
+> +                */
+> +               return -ENODEV;
+>  #else
+>                 if (x86_platform.legacy.i8042 !=3D
+>                                 X86_LEGACY_I8042_EXPECTED_PRESENT)
 >
-> Add a VMA open callback that marks secretmem copies without VM_LOCKED as
-> VM_DONTEXPAND. dup_mmap() invokes the callback after clearing VM_LOCKED,
-> while the original charged mapping retains its existing ability to grow
-> within the limit.
-
-Absolutely no to this. A complete abuse of the hook and an illegal
-operation.
-
->
-> Add a selftest that verifies expansion of an inherited secretmem VMA is
-> rejected.
->
-> Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
-
-This solution is a horrible hack that doesn't really make any sense at all.
-
-You can expand something here on mremap, but I don't see what that would
-get you.
-
-The range not part of the inode's size and accesses outside its range would
-SIGBUS.
-
-I think what the real problem here is:
-
-- Parent process gets some secretmem memory up to RLIMIT_LOCKED.
-- Fork -> child.
-- Parent exits.
-- Child now has 0 VmLocked pages, can grab more secretmem memory past that limit.
-- Rinse and repeat - can ignore RLIMIT_LOCKED for secretmem.
-
-The real charging, i.e. memcg, all still remains correct.
-
-Your patch doesn't fix this at all.
-
-To address this would require some specific core mm logic to actually
-ensure the range gets accounted by RLIMIT_LOCKED in the child, also.
-
-I'll go think about that a bit.
-
-
-> ---
->  mm/secretmem.c                            | 11 +++++
->  tools/testing/selftests/mm/memfd_secret.c | 58 ++++++++++++++++++++++-
->  2 files changed, 68 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/secretmem.c b/mm/secretmem.c
-> index 4877c262cb1f6f..e5878ce91c768c 100644
-> --- a/mm/secretmem.c
-> +++ b/mm/secretmem.c
-> @@ -108,7 +108,18 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
->  	return ret;
->  }
->
-> +static void secretmem_open(struct vm_area_struct *vma)
-> +{
-> +	/*
-> +	 * dup_mmap() clears VM_LOCKED before calling ->open().  Prevent an
-> +	 * inherited, uncharged mapping from being expanded by mremap().
-> +	 */
-> +	if (!vma_test(vma, VMA_LOCKED_BIT))
-> +		vma_set_flags(vma, VMA_DONTEXPAND_BIT);
-
-This is a completely illegal operation.
-
-You do not change a VMA from being functionally one thing to functionally
-another on fork, especially something that makes a VMA have 'special'
-properties like this.
-
-And yet again I am reminded what a terrible idea it is to _ever_ pass a VMA
-pointer to a hook anywhere.
-
-> +}
-> +
->  static const struct vm_operations_struct secretmem_vm_ops = {
-> +	.open = secretmem_open,
->  	.fault = secretmem_fault,
->  };
->
-> diff --git a/tools/testing/selftests/mm/memfd_secret.c b/tools/testing/selftests/mm/memfd_secret.c
-
-For future reference - keep test patches to another commit.
-
-
-
-> index aac4f795c327bd..3d33487eaaccf3 100644
-> --- a/tools/testing/selftests/mm/memfd_secret.c
-> +++ b/tools/testing/selftests/mm/memfd_secret.c
-> @@ -84,6 +84,61 @@ static void test_mlock_limit(int fd)
->  	pass("mlock limit is respected\n");
->  }
->
-> +static void test_mremap_after_fork(void)
-> +{
-> +	void *mem, *remapped;
-> +	pid_t pid, waited;
-> +	int fd, status;
-> +
-> +	fd = memfd_secret(0);
-> +	if (fd < 0) {
-> +		fail("memfd_secret failed: %s\n", strerror(errno));
-> +		return;
-> +	}
-> +
-> +	if (ftruncate(fd, page_size * 2)) {
-> +		fail("ftruncate failed: %s\n", strerror(errno));
-> +		goto close_fd;
-> +	}
-> +
-> +	mem = mmap(NULL, page_size, prot, mode, fd, 0);
-> +	if (mem == MAP_FAILED) {
-> +		fail("unable to mmap secret memory: %s\n", strerror(errno));
-> +		goto close_fd;
-> +	}
-> +
-> +	pid = fork();
-> +	if (pid < 0) {
-> +		fail("fork failed: %s\n", strerror(errno));
-> +		goto unmap;
-> +	}
-> +
-> +	if (pid == 0) {
-> +		remapped = mremap(mem, page_size, page_size * 2,
-> +				  MREMAP_MAYMOVE);
-> +		if (remapped != MAP_FAILED) {
-> +			munmap(remapped, page_size * 2);
-> +			_exit(KSFT_FAIL);
-> +		}
-> +		_exit(errno == EFAULT ? KSFT_PASS : KSFT_FAIL);
-> +	}
-> +
-> +	do {
-> +		waited = waitpid(pid, &status, 0);
-> +	} while (waited < 0 && errno == EINTR);
-> +
-> +	if (waited == pid && WIFEXITED(status) &&
-> +	    WEXITSTATUS(status) == KSFT_PASS)
-> +		pass("mremap expansion after fork is blocked\n");
-> +	else
-> +		fail("mremap expansion after fork was not blocked\n");
-> +
-> +unmap:
-> +	munmap(mem, page_size);
-> +close_fd:
-> +	close(fd);
-> +}
-> +
->  static void test_vmsplice(int fd, const char *desc)
->  {
->  	ssize_t transferred;
-> @@ -297,7 +352,7 @@ static void prepare(void)
->  				   strerror(errno));
->  }
->
-> -#define NUM_TESTS 6
-> +#define NUM_TESTS 7
->
->  int main(int argc, char *argv[])
->  {
-> @@ -320,6 +375,7 @@ int main(int argc, char *argv[])
->  		ksft_exit_fail_msg("ftruncate failed: %s\n", strerror(errno));
->
->  	test_mlock_limit(fd);
-> +	test_mremap_after_fork();
->  	test_file_apis(fd);
->  	/*
->  	 * We have to run the first vmsplice test before any secretmem page was
-> --
-> 2.54.0
->
-
---
-Cheers, Lorenzo
+> Thanks,
+> George
 
