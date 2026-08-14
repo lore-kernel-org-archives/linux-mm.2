@@ -4,130 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D897C5CFCF
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 16:03:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE782C5CFCF
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 16:07:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B4686B031E; Fri, 14 Aug 2026 12:03:01 -0400 (EDT)
+	id CA89B6B06E8; Fri, 14 Aug 2026 12:07:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28BA06B031F; Fri, 14 Aug 2026 12:03:01 -0400 (EDT)
+	id C39DC6B06E9; Fri, 14 Aug 2026 12:07:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A1946B0320; Fri, 14 Aug 2026 12:03:01 -0400 (EDT)
+	id B20486B06EA; Fri, 14 Aug 2026 12:07:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EFA6C6B031E
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:03:00 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E01EC12014F
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 16:02:58 +0000 (UTC)
-X-FDA: 85100343636.29.8C540FC
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 859766B06E8
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 12:07:49 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 139911C01C5
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 16:07:49 +0000 (UTC)
+X-FDA: 85100355858.22.3D6AAAE
 Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B6E8BC0004
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 16:02:56 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=sandeen.net header.s=fm3 header.b=M546g2yL;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="W uuhVAH";
-	spf=pass (imf28.hostedemail.com: domain of sandeen@sandeen.net designates 103.168.172.154 as permitted sender) smtp.mailfrom=sandeen@sandeen.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786723376;
-	b=jYmSmeNaleEJQSQ2FjPHGkvpN2ZeUPvRajSPdKtnxsalPjSElS2kv5JSSN7oJbBPvD4Yf4
-	oLtKczcdA6GAzNcS/S87w560SmFkOdF9vT6cWYxYujN/157OAojIm+r3pzO/F4yb4GBfVd
-	hd9Iusktchso1Kw/zXZeigyfbl+kvls=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=sandeen.net header.s=fm3 header.b=M546g2yL;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="W uuhVAH";
-	spf=pass (imf28.hostedemail.com: domain of sandeen@sandeen.net designates 103.168.172.154 as permitted sender) smtp.mailfrom=sandeen@sandeen.net;
-	dmarc=none
+	by imf31.hostedemail.com (Postfix) with ESMTP id F41462000A
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 16:07:46 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=sandeen.net header.s=fm3 header.b=WWV0Ay2L;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="W 6zcFx4";
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of sandeen@sandeen.net designates 103.168.172.154 as permitted sender) smtp.mailfrom=sandeen@sandeen.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786723376;
+	s=arc-20220608; t=1786723667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QYhgrRzRiIDaFxWxjzhuwe8vWvGHjICrQiW1FTBvt1o=;
-	b=DV3U/A3B5k/VxlS04n+fHIdnWHFfpQnI8QqQK2XCjGWEvZv3olMu9B21YviqviCpS3dErO
-	UD/AHA833U67KA6qngHhgxujugvSQ15rN2YN7+AHmkRro9OnMwZDPoz1EmYDR3ccKdtEpg
-	mzx+MO6a5j87c1ymqnK5zGUTxPxG6fE=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id BBD7314000E7;
-	Fri, 14 Aug 2026 12:02:54 -0400 (EDT)
+	bh=VNUlU/tHnoQ5KDHu9/pwcilla1bjI0FIeW4BddgKQBc=;
+	b=8BHTS6JSVROmsj+yXuYLCl2VdXHMccUQMfFINK5GkNzzc/+KssYNG8uY04gm+VOqGh5I3e
+	yl0KkVDCHaiQJZWzUZP3kNa/2t3LTWXp7K6WXKM1DOMqYIPu1vtp7DCYqcdccfuyqM5AWy
+	tivCTxJL5C/8wk2lNAyho55E8W7UqLA=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=sandeen.net header.s=fm3 header.b=WWV0Ay2L;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="W 6zcFx4";
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of sandeen@sandeen.net designates 103.168.172.154 as permitted sender) smtp.mailfrom=sandeen@sandeen.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786723667;
+	b=q4Slniy/oGs+URgRwHdo+53ReVFCrIrwtkcJuGhNDD/xfWgJB54d5971uK6WN8hlyfEvbC
+	dJaswcFsgqS6F8pAuaFVgYcrS3rKZw0xSD6BtD5vjyHXImb+AXuQUs945tlaAa3FYtvX1p
+	EnFEdeTg0iHd6+GKEtPywlXKtMuh+Pk=
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 902D2140006E;
+	Fri, 14 Aug 2026 12:07:46 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Fri, 14 Aug 2026 12:02:54 -0400
+  by phl-compute-11.internal (MEProxy); Fri, 14 Aug 2026 12:07:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sandeen.net; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1786723374;
-	 x=1786809774; bh=QYhgrRzRiIDaFxWxjzhuwe8vWvGHjICrQiW1FTBvt1o=; b=
-	M546g2yLPQlqws0FGycFZwSzWMP8IqAAd/HbHHbXF2k3AawrOcXQ0Qv7TUaNQ8YV
-	370FQH7SPZMVMzX+5qawmLIgYtmXvOApmH0Co7uF2sRRXxeTufp7rSo5uTRON8gK
-	4HFyGgRk+YCEWvXgpJw/Hox9J/WBZk+GVz1LsNgMKPLe8mC7xmbj/ajPeu5iPNxa
-	gY9o7z8GZNgb5muL01NgDksMVIpS5U1rh02M5+x8UpsZCFTsgOOmNRqr72ZhRzAt
-	7Nt645kjl8YeIpV2GdQvOHDul2otdnfSOOwxfyAU5z8JJ/mWM1U85bKDLF5d6J2w
-	WUZUUWZlO4szMPSFQhMghQ==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1786723666;
+	 x=1786810066; bh=VNUlU/tHnoQ5KDHu9/pwcilla1bjI0FIeW4BddgKQBc=; b=
+	WWV0Ay2Lv2g6nJD1eMeeADJcg1hXu9q+Ig/bW9KSy8WvPrI9jq9gwV3uhVHEu9mE
+	2g2D4GgpRqKP9bBVlc69R2siwCzKR2IbpovPwMnpQ5nO1r/oCotLS+VPvE2ODUtf
+	f6PAHVC4DcqKpEdFoOtJzGg1BSBg4kCpHP2SzRl+hc3iaCgsfbmnd7Uj35w3ChUM
+	oWbMbM+Dby4Kh2TwbB7zORSNhe/atnvj4F0z2uYBYeuKyeVxiZKQXrylLQIqDMx/
+	uMjlwZzIgBcAMe4HUqZFk1/wJZ7fedZcxlCnFN6YYj1N9vvqa9WI4nlnhLZd4YfD
+	U3F8wHVWrUtCxyqv99V+sg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786723374; x=
-	1786809774; bh=QYhgrRzRiIDaFxWxjzhuwe8vWvGHjICrQiW1FTBvt1o=; b=W
-	uuhVAHUoYNMDK/0sGCf/BtQeWReCtDKjbhfXOMwfvKzvWQoFborrItm+eMKPW4YZ
-	ZI3N5g/JFGxYSH7vbZcOzcuOwHsBX25ST8XDEIXPhNnWz7mIq4c4+xzl+2StTj7j
-	Qz40GwamCc/WEMctr8XlWnaMkdAMJbZTU2zgOKs5+UGXO80pKC62Y42Cnnp8oZ35
-	+ZAyeGQnp4vOZHUKN0y7BMuMpQvX9JV/kKZWpMHOqpg+5QbCS2xHHPVQ4S1qBFqD
-	TjILwczbg6d0t755CfrY6DkadWH6HuZOQOkJLu23DAVLVDQ4ZlUMfjU5OzuGKPER
-	iejwQ0/sacIHMUZkCzh3g==
-X-ME-Sender: <xms:LTx_ajZ6FpZMX5Y1ecqtdIwZL3zoMELPlDUVrEp_I8eqcE6cBDUCcQ>
-    <xme:LTx_amHOl46YznMCvDUGdPmvI-2Qk213W0cAMP1YDvOqK9-nOFirD-D_TbbXxueGW
-    9ECSjIM_SG9WmD-nc3jSpGZwr4dl6Q8w6bk93817I5DSFuIUXEeYYY>
-X-ME-Received: <xmr:LTx_avxfPcIJG3CatH2CeApsrKVAfPTV7BdfJQD8Ux5ZB9wBpcjkbga60LzlzFEBXIMoI7mvrDiyJIx_mdZHKVjN>
-X-ME-Proxy-Cause: dmFkZTEC8hCadkRPHQJjEAY44A1Gs3XQA2yBp0wEpE+gH+Ek/olIlWLwulayq+FXgWuxUL
-    jX7Y+AoEWkVUAgkUIbuyNiUUzCoGfHhAP9bDJHn94KrJ3cbFQ/0FIWmdq/AUqqN0o6nyPj
-    7sjEEDHIpHZd66OBspZd7tjWc2VtEHfNcp+u7iQ+SLbW/wf0ng6VKnGhMVfoHA6FVabTtT
-    lhlSjdTMaWL4zlQmm1MRWXPfX7LcjM30nr48cx7jIdkdi6Z7DMSIHa4Or5oxGj6LkZnnOF
-    L72jHk921KmBzYLle+dr2NjVyFGLdmGcKjrigNRY0fvSEL5EwqfC0NKiSAQq40QQAIAcMf
-    qEGRi2k329UdM8FJmITYpJDlDSbae60ECXdgaLOgir7ErC/TtpYgvfCkWIhukktw6Q1xAZ
-    qVfPQ1ROdiHxY6MvidEd+pHoMo1zkCuZUyUh4VnYLpjGE3XoyTLzeSbVK4s5jhnRxFdwqu
-    gOIJTkabgaysPvyDBGOzIGYHNPXaEqpcJyCQcmnx/aqhDSnhQ67hIJlsLQMXCT8YK57SHW
-    lFyWvGk8QFYVyGd3mxw5VZFzZrH+iQCxqcC+pQOjthK7+F5lL66faH/Gu23DKvq0UKwwV6
-    yGARW7W1rzeWRDkEXbDPozWwroc/y9/+Jpv9M/LpL7tvibv1IbtVOaW3UGDA
-X-ME-Proxy: <xmx:LTx_agm2m8DkDoJaNBEEhbKSSO612BA-aDYRT2tNEaFmydiNUSoFrg>
-    <xmx:LTx_aglnmuxfW9T4J0aAkvBU3NCyp8-K0ae5KuQ5KdScfX0F9zEyLA>
-    <xmx:LTx_aqwTzM-OH8iPXAr7wz9GmAbOCMxJwSDF5qiLBpn5FVzl2EdHFA>
-    <xmx:LTx_atpeKSwEAGMIBuAQJ9HInaDR0_pnpCkQoqSFAULcwYPiQksvCA>
-    <xmx:Ljx_ascGYhi6V-y5gyiBka_dUbY8gDR5XLo-UVr-utb36f6PDbxCPDur>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786723666; x=
+	1786810066; bh=VNUlU/tHnoQ5KDHu9/pwcilla1bjI0FIeW4BddgKQBc=; b=W
+	6zcFx4v8FoQxnwG+6XLw3MchzLeewgQBmm99fdPKNEj7rzYDFUupqA0zJSJnuTUP
+	ipfoM+15ktKk6SGYyClb7X/E3mUXj8oK6tSJu0Ujut/3NVyu8xBB9HvyUbHIIyAC
+	KhvGKndfbFkG57BFRwWsaSrVNoh6o42k0vu6NvY/pjlUCzqulAtMbz7Az/ltsBli
+	urZ2HfaGh/zbtSVncBzIMM45X+44iwAmWHx5SsfBnszwvtALk8E/Ab4c1IBSdu2h
+	jfiegwshFTq3tElMEJhw082FwmBlglfh31xmCgt+dfth/j3kegZrTQwy/e12kJzU
+	2zCik4n/UPGI6IOktUkXQ==
+X-ME-Sender: <xms:Uj1_ahuSmJO47iQSTkmN1cOlviXPbEkaMD6mGIjs33qmVG6uIxrxbQ>
+    <xme:Uj1_ahc4TWnCXT_KgDLbnL2VsRM6RZtV6yh6-bkhk7AHNWa_M7uexqVBrXCnN3QGY
+    yEGW2CEAKEtKyJWXSdRTtjeChgF3Bab_hqk908J0-76COD-ynB3x81R>
+X-ME-Received: <xmr:Uj1_apyZY0vqZ3HaX3wmMK_WEEUmBB20x9PMY9RGomz1H_Tf_L9HUIsVcLLwqbvzh1jg0OjsBaY7FaAOUz3si2of>
+X-ME-Proxy-Cause: dmFkZTGjgA0y5oBk/MpKva3iNFZXJBWtc6+Fce5oVa8b4osBsgvkoNzuWwmcenbYIZsUJN
+    6MjE3HaFHLT5On+1P7Hen5P0rxkjejejrzObPDACCec4UlYvluy50NTfRyJ9C+9n+QkgvE
+    ghSW0S4WLWei6nrsQKEmQj+mSpNVlcjWpLZoJcT7YXZo8rPvqNY6l1SgJOtiV3LWhzJ/ap
+    KGjFNWewFzFDdsIvjQ5UtmB0yzph0+JfGpAM8U8KPSUR8yNZGXySeI+toc1to1C9+EPeD0
+    5J2uYhYAKqJh2E3JmgCO8+5BGLMyp3oc8OoFJZ7Rij5Pn2vW3LZBZz0DhOH5jmfDxSaeOK
+    pK2s9ijyy2mjmBTy8LGNhgaX98U4hshparW5G6LthA/hG/wwrgYJi/tkvl2MfklK/F0yg7
+    Cnv4l0dr90mYmelJy6pjtTPbMLvWJlCGNTrZ4iPmjirjaaFbqirFrC7Kz0Xzf8qMmM4Yvb
+    YIfTgWsZrCP5hm/qlZt7HujLrFDrqvWHBFTal4EYDLVFLLciCrjyE4jBuapXTqFmKq2lW3
+    +2mYe3y317oE2ZQSscKnONgcyrE8VZE2GADaNEUbLkdHvHteSH+ZBr41LC+yCvK8Ost+kw
+    edri7PL0wctKozKGoCk8vYUVXYuUyKqX9mkWoyQRGa1nZ/ytIT6fOC/O3/Uw
+X-ME-Proxy: <xmx:Uj1_anGdWlLZo3yrwclw4FhVaTEy8apVikZvnLd2cm6MkmvXfUUXdQ>
+    <xmx:Uj1_atzEdUmE3cKrPy5VBpPHkhqtSsKduMVJdbYC_RJN0TtiopzlnA>
+    <xmx:Uj1_aovHaKeVLOMli6CAT7S494Y4VAHWlKV2JJjXkMo_qI7SMEaVmQ>
+    <xmx:Uj1_aq3r8nDmK1TXGVD9QqjM6W9cCfM4XGUu91r6yBrM7cL-UM3Ztw>
+    <xmx:Uj1_ahhp3wrnu4DTfOoLrYq_-5x86AG2SUaowlHXnMh_YEau39d2o-lD>
 Feedback-ID: i2b59495a:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 14 Aug 2026 12:02:52 -0400 (EDT)
-Message-ID: <afa1e118-954d-4cec-9417-a0f48474fe76@sandeen.net>
-Date: Fri, 14 Aug 2026 11:02:52 -0500
+ 14 Aug 2026 12:07:45 -0400 (EDT)
+Message-ID: <11c14c65-8609-4482-b3d1-23d4d36afd66@sandeen.net>
+Date: Fri, 14 Aug 2026 11:07:45 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] xfs: count folio alloc'd xfs_buf items in
- NR_KERNEL_MISC_RECLAIMABLE
-To: Christoph Hellwig <hch@infradead.org>, Eric Sandeen <sandeen@redhat.com>
-Cc: linux-xfs@vger.kernel.org, linux-mm@kvack.org,
- Vlastimil Babka <vbabka@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: xfs: properly account xfs_buf items as reclaimable
+To: Dave Chinner <dgc@kernel.org>, Eric Sandeen <sandeen@redhat.com>
+Cc: linux-xfs@vger.kernel.org, linux-mm@kvack.org
 References: <20260813204929.2253988-1-sandeen@redhat.com>
- <20260813204929.2253988-3-sandeen@redhat.com>
- <an7C0L2PT-Ous0hn@infradead.org>
+ <an7D_9YRVDG-0Qjq@dread>
 Content-Language: en-US
 From: Eric Sandeen <sandeen@sandeen.net>
-In-Reply-To: <an7C0L2PT-Ous0hn@infradead.org>
+In-Reply-To: <an7D_9YRVDG-0Qjq@dread>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: oaojmyo89zyph9fsbytmhnjaqaj4ykkc
+X-Rspamd-Queue-Id: F41462000A
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B6E8BC0004
-X-Stat-Signature: w6xquekqx89ipdfuuaz5h9snqpjkfuwf
-X-HE-Tag: 1786723376-278282
-X-HE-Meta: U2FsdGVkX1/BRsewg9x1CEWkITXskcFfp3aHimV8cbh+mKGYFAJYDZgZD8KayO0HQULc+bkptCm8iB+8P56EaMPkq/g8+GC8L4SyzG2DXeoonsjetqwZ5jvmdEqPqxjN7C9GcZqdP6cJgis1wS/hFswfh94f6EsWDc05ELEXu7qQEF/lSXx/drpsaFXOlFTqyNlMomJzOkIaY4aWZIv+uXG/kT8yIMOr4eGsBqCDwplzzzmxCjjzAb8AjZKs11ir2rz+ts4pR34IFrQV2saE5OA9bacPOBqmuw4WTZ6hAKN7U8dFUF98gn4d0rRZ6CTGE6ZWYXBbDNVvNRGACxbxRxH7JuVs8yG0oMjYXXe3p3lmMRmfjq3ohCPG7W2CgZ9LUZiikKcKSUprPKsKmp64XB1SEQt+tvBTqzP3UG3OId4TCSbQiUbC2Cx325y1+QkxEqf5SIgDNAaCQ838H5b7VSCjRfv+YjYwfYvDNywhj2PuRr5NT9si5SEGgicJWcrf+1WxEq13hNDPmPtRB6GJKojxoLsYlg1ttjkVJTE/u4NaHQLW0Xv9PF9Z9vulLAPru60150TObpOpoz+kmartpDU4GNu/aRmjIiuBrvN86Mf/+QxVdrcUoChq7dJOyLgBO6c5AMMgCYkUkZwX3uoksmIBPvzVnmyxf34VJ3u/jpX8f3o/Qj8rxfDvmHTG5tzr+Q5Mcfn8rGt9tJKvEeTieJppuctfng7qmHn4pkjvM7at8xKw8nmCk9mRwOYaQWEjk5785YBKCTUoVTXVKHmPNcR9yay/RTG31qk/fHasWS4BdNMfqvHVE/SWDPX19NuTjaK+VLn54pES7VcUi6+94eHLwVaLwVInUpkmQ0Ai4JNRjHhN+Aa06fXr1Lh0GicsJIi5wdc8SfKLTz6+S1gl32A5SL65ysBT7LuMY43qWvdqY0nOAVN68eDF9RqTEL1CCQpJ2a38oIdRjsNWul7
- w+L8oHuk
- ib4z5ZEQoBDuRTjuTSC9csxbvIZbVT9L1u7SQ2sog4ZzfCT6niWCz80Ri4FckuenboVSc5TILMhaR2DYpAq6n+QFCw1yp3CYRp0IWsqGC0ZlmD/SxDdUdTLVyx18Et1KOKSalOo5maC0NyuBKhIO47H9yyUcHMEjjIp8JW+SMdxajDa6kQpAHOYnohGCdS+a2Z5pVVcWiOLscN2Uc1sT+yieZt8ujePf52yb6xGoK+Lm/QxSr8NGYAayPH2logrgOgSIiwynkgUkVAi+GYsORY3I7giCTM8HLoc6uSgNYdlnhGh/ps64Xr8GQQeq1AufE6Iq4Q1sOkTFCq02L4Wuk+rAWpmCV/Wij7yAIIiFpfyJEARiXxq9PJQnrblXXdro2htxcBbZecfTonMk=
+X-HE-Tag: 1786723666-75132
+X-HE-Meta: U2FsdGVkX1+7Db/fppcD/a+nlG//nPgzH0XfySeN0AqvvvrOUP9us2bJIARso99Ltc917XEzjRXMHS08U+7dFcTaXf7hw7QcvxZ0SCAS4IhmOYGBCqZ0apBCUq1Frym+uKDaCE9adamNBKtf96ME3GtxjOA+wgN4JLH5bKQmm76qGjhVwJUcV+LPB0EP2fK7lo5BTolTvxhWptW+RBCSdjVd9n1t2S8JyDcqNz6f8lnKSz0Iis/zkvE7goSOPoND2JTXeulem5lweFhNYGuTAVTaryv1j0AvWZHhnTL7F7R17WUBnASUz40t3eMiX0mhbew9qwgDYzlf6JSUyGHkziBMl1Cym5T26CbyrNaKqs/42SdsFQ+hnYjria5K3vth/8ffVKJ2wlQyv409TNcENBbCXKmicdG47HRY7mVzKrYBd7eGpq/AIQ1PkzaZxZTgh/Y8r0/9Lqzif/qoZAQQ97aspwsX0YU4b1Rv4psrmbvJHiwtzlS27DnSMYfujgXFDqCgS2Vjs/juaoLlNutz6dVMr/h7V8v/RirHXQ2oT/YKhd9PsstUDnyGbrN5WSS6zdF/GqiF1KVmIWjHi18s9/pn2eDwFKtPHXAmDvghgSn7PoBZnqXr3eY3evo8HrZFGI1rjcNfPxjIz2AIEtw0ufwn8cZcf7U9ZREQcFMj/cxNQgjp2geTWPmR2/u9ZpJAGNsVglI3oimcJtgyRz/92p19CIuY9kbrAUvHGGrVSko6d1l0a7bCgeRRwLL4ZyYIa6B80v88vvbpE8yAhlXxsF1YC9dRdVxjA/cG2ifwwAv/3ylhovIUhtf/t2V77kSVoNcBaDiTjNIasc387/25a6FnJt+cf3qgH4RMaeQ9pJ4phGFUHQBNPmOLdE1PVFqV/6b92QUZIRS3d+vh0mmCa3oV3auyquOeHhzAOsq2wCOZZ+dQDYNU1Gjy4Ma2T+pmCG8xsAxabsA5Sc11zaK
+ ThEkcYZB
+ 9ZKkQX/Xy3kRLIH9oe4DJS9jAir6nLEhV+lvLzC8c1belnRCABFal6ZUfZ/aw7flTaIK2Nt/bs82OrnyLO+HBNEx4WiByJF07PxWysvOMdhvWEcgxPL7NDxoUuD5Ky95tZ2PWBMo57hIUo16PA8tXhZBwrjAQzcaAalYVJIX7xOSgJP1Wl7ieyKpKRIHf934PXEGZac/DO+gDp9z5STdqRxW2Z60riqxdTzW7EHunk0FDEQtzZiqiIfDr+vnHcImBisFkV9XYOzcGqE6OCx6ztxKikLwIBqjKeBaA1my/M/f1yyivwt2qBJsomcoT/NmhR/zmf61AU8f2ZQQaIUYSPQLYlcrgr9kL/xdl2WkV0zbUJb8Y1s5ErrwYyGOM6mr3Ctrixjov/dIutq0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,38 +131,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/14/26 2:25 AM, Christoph Hellwig wrote:
-> On Thu, Aug 13, 2026 at 03:40:53PM -0500, Eric Sandeen wrote:
->> xfs_buf allocations via xfs_buf_alloc_folio are actually reclaimable,
->> but are not accounted for as such. NR_KERNEL_MISC_RECLAIMABLE seems
->> made for this purpose, although AFAICT there are no users today.
->>
->> To achieve this, add a new flag _XBF_PAGES to track what we have
->> allocated this way, increment the NR_KERNEL_MISC_RECLAIMABLE
->> count when we do, and then do the reverse when they are freed.
+On 8/14/26 2:30 AM, Dave Chinner wrote:
+> On Thu, Aug 13, 2026 at 03:40:51PM -0500, Eric Sandeen wrote:
+>> It was reported that xfs_buf items are not accounted for as
+>> reclaimable,
 > 
-> I don't see why we'd need the flag.  All buffers are either allocated
-> using vmalloc, kmalloc or as folios.  So it should always be set for
-> folio allocations (and is misnamed since it now covers folios as well).
-
-Hmm ok I think you're right. And using PAGES is misnamed, yeah.
->>
->> These allocations now show up under nr_kernel_misc_reclaimable in
->> /proc/vmstat when allocations are active, which in turn makes
->> MemAvailable more accurate in /proc/meminfo.
+> Actually, they are:
 > 
-> Adding linux-mm and a few people that touched this counter for
-> opinions.  I guess the counter is only for full folios, and we
-> should not set it for the small than page kmalloc allocations?
-> But even with that, why not set it for the vmalloc allocations?
-I hesitated based on node accounting but dchinner sounded unconcerned:
-"If it gets accounted to the node of the first folio,
-then it will at least always be consistently accounted, if not
-always 100% accurate for the vmalloc case."
+>         xfs_buf_cache = kmem_cache_create("xfs_buf", sizeof(struct xfs_buf), 0,
+>                                          SLAB_HWCACHE_ALIGN |
+>>>>>>>                                   SLAB_RECLAIM_ACCOUNT,
+>                                          NULL);
+> 
+> So the xfs_buf items themselves are accounted as reclaimable slab
+> objects, and these are what the xfs_buf shrinker itself acts on.
+> 
+>> and therefore various statistics in /proc/meminfo
+>> and /proc/vmstat do not reflect their reclaimable nature as
+>> other slab-allocated items with shrinkers would do, which in
+>> turn affects the accuracy of stats such as MemAvailable.
+>>
+>> 2 patches here to add accounting for xfs_bufs allocated via
+>> xfs_buf_alloc_kmem() and via xfs_buf_alloc_folio().
+> 
+> That's accounting for the memory attached to the xfs_buf, not the
+> xfs_buf itself. 
 
-I fixed those up but won't resend just yet, thanks.
+Yeah, sorry, I was sloppy/wrong in the cover letter. Tracking the
+reclaimable memory attached to the xfs_buf items is the intent
+here.
 
-And I promise to use more columns next time ;)
+> We don't use the size of that memory for reclaim
+> purposes, hence we haven't ever tracked it. It is, however, fed back
+> into shrinker based memory reclaim via mm_account_reclaimed_pages()
+> in xfs_buf_free() and hence memory reclaim correctly tracks how much
+> memory was released by the xfs_buf shrinker scan, even if the user
+> visible stats don't show it.
 
+I guess that's the crux of the question: should those stats show it?
+
+>> I was not sure how to handle xfs_buf_alloc_vmalloc but I think
+>> that's a relatively rare path, and the above two will capture
+>> the majority of xfs_buf allocations.
+> 
+> I think both folio and vmalloc should be accounted in the same
+> manner - as a number of pages based on the size of the buffer (i.e.
+> same as mm_account_reclaimed_pages() does already). It doesn't
+> matter if it is vmalloc or a high order folio, the amount of memory
+> is the same.  If it gets accounted to the node of the first folio,
+> then it will at least always be consistently accounted, if not
+> always 100% accurate for the vmalloc case.
+
+OK fair.
+
+>> I've cc:d linux-mm just because i think this is the first
+>> user of NR_KERNEL_MISC_RECLAIMABLE in the tree?
+> 
+> These are fs buffers - shouldn't they be accounted as something that
+> reports as "cached" or "buffers" in /proc/meminfo? I mean, if you're
+> going to do this to make meminfo/vmstat report the memory usage,
+> shouldn't we make the effort to classify the memory usage correctly
+> for the user?
+
+I'm not sure. NR_KERNEL_MISC_RECLAIMABLE says it's for
+"reclaimable non-slab kernel pages" and that seemed appropriate for
+this case; they really aren't the same as page cache?
+
+The commit (b29940c1abd7) that created NR_KERNEL_MISC_RECLAIMABLE
+renamed it from NR_INDIRECTLY_RECLAIMABLE_BYTES, and said it was
+"still useful for accounting direct page allocations (i.e. not slab)
+with a shrinker" so it seemed appropriate but clearly I'm a bit out
+of my depth here.
+
+Thanks,
 -Eric
+
+> Cheers,
+> 
+> Dave.
+> 
+
 
