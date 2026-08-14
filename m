@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07E0FC5DF66
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 01:29:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 446D2C5DF66
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 01:30:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E92B6B02D8; Thu, 13 Aug 2026 21:29:55 -0400 (EDT)
+	id 79EBA6B02DB; Thu, 13 Aug 2026 21:30:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A7706B02D9; Thu, 13 Aug 2026 21:29:55 -0400 (EDT)
+	id 729166B02DC; Thu, 13 Aug 2026 21:30:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 889E06B02DB; Thu, 13 Aug 2026 21:29:55 -0400 (EDT)
+	id 5548F6B02DD; Thu, 13 Aug 2026 21:30:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F7546B02D8
-	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:29:55 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 95C1340224
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:29:54 +0000 (UTC)
-X-FDA: 85098143508.13.68B29F8
-Received: from mta1.migadu.com (out-192.mta1.migadu.com [95.215.58.192])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 68AC01C000C
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:29:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ysodu+CX;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.192 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B2826B02DB
+	for <linux-mm@kvack.org>; Thu, 13 Aug 2026 21:30:00 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9A688A0168
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:29:59 +0000 (UTC)
+X-FDA: 85098143718.24.546E485
+Received: from mta0.migadu.com (out-175.mta0.migadu.com [91.218.175.175])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6AA2B140008
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:29:57 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DY1hXoZ6;
+	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.175 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786670993;
+	s=arc-20220608; t=1786670998;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=N5QXTXZEMhKvytncrBdE1Wg4B3aKB8YtUm7KPoentWI=;
-	b=Lq5bOKekzPFMs5zOEqzhI/uKA54V6f9ocHB+ROd70w1ph6j3xaz4/UXyAMHeGMXe3spFgr
-	MkltKm9QUnFGZNkUeaGpnXRB+zwTKQXYnuq7MabobEYiujqAFTnWzFRbcmdq77XTHeHENe
-	xu+ILateXMI3Nl1bqipVkI3NJR9GUzI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EkRV9cT8eTIGpK9Mjpl/pEyiUXlLpQy8HBJVP7Kwx8w=;
+	b=sAg9ejqlj4kv5lkqpLmCYHnxvfpaVCPp7ofLWj4aRc6P6v22eJtLbO0Jr1cVShy/5RYfMT
+	/taU+PmjckweNqk30IEwtg7yV/qF87lMt2sNHyRvNES9IkDsPoi+neICTVXd+sWsvQaMUB
+	PE6MOepGr1NgYP5WsTmlQMViToUUIIE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ysodu+CX;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.192 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DY1hXoZ6;
+	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.175 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786670993;
-	b=uXqBp+uc/Y0SKMhT+HVxQgPkAkUdkOXmeLLUtc8IyQSdUTEWpRNBwukW2GSUs5nxfxtgq8
-	pjXtuIc4ymfD94lE2qUdKRbnA7LE1bevprdRHfBwp6o83H4qawABKWXM4OVkq0b4TLsf3y
-	JU1JkU8iEogaQbmXO+/KyMljDVt4BAM=
+	t=1786670998;
+	b=wLzdt02nkO5GdFltgx2J+XjfPde3G2WV0qfg2Sx3R8ewHhp/KX+cCqq8r0TmZZaQhkFaRB
+	X6quVYoSfljSx4usJDUf695Lymb3+GPwzrVmHwyHZMRpCXV67WWasVw7/ez8a97Cz86zKI
+	c9tD95z8VQNrMWBPfu2j4jQHQQFzfp0=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ek42tK/WchC2oA1PHIRS4QtmcmVuTZv2hEePGmd7yqE=;
+DKIM-Signature: a=rsa-sha256; bh=mJVpl+4xZO80M/OyNFMbUx08bRvBm8AGaGXAAVqZKA8=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786670990; v=1; x=1787275790;
- b=Ysodu+CXDPXTiIFLN2mqoN6q0PkiQFKOuSyzCh2Bofp2hRs3BLHSVhrRvFQsb/AVrBaFZZAZ
- VxqQbgTuBdQzlX6qNGdimqMwh2xO2y/4gxFuHuvjcVSy6PToEmTQcZ+ZOFu8+JLSQt/mi4Xxd4M
- +/JGO38orJD4TksyYyhGXEHE=
+ t=1786670996; v=1; x=1787275796;
+ b=DY1hXoZ6vTmcsBXsYod4ZqC5V+KXAxrFf57kesxFOQRMAENF5GuaCE468aJspN4VQLLlo+Ap
+ Jr55opKuLFMIdV0AsWfgBLpWHaQjZ8ZecWNZs2GpwEy5+/20NvtaFm7xValiZLcPgy6Y/+9RJuV
+ GtsLoq8sF0YTHVmmZx+SwOzg=
 X-Envelope-To: linux-mm@kvack.org
 Received: from mi-ThinkCentre-M760t.mioffice.cn (14.29.108.92)
-	by smtp.migadu.com with ESMTPS id 8baf117ec7468f79;
-	Fri, 14 Aug 2026 01:29:40 +0000
+	by smtp.migadu.com with ESMTPS id b69033f2e9e602e1;
+	Fri, 14 Aug 2026 01:29:56 +0000
 X-Migadu-Flow: FLOW_OUT
 From: Ridong Chen <ridong.chen@linux.dev>
 To: Johannes Weiner <hannes@cmpxchg.org>,
@@ -77,20 +77,22 @@ Cc: Muchun Song <muchun.song@linux.dev>,
 	Tao Cui <cuitao@kylinos.cn>,
 	Ridong Chen <ridong.chen@linux.dev>,
 	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH v3 0/2] mm, memcg: fix memory.peak reset clobbering other fds' watermark
-Date: Fri, 14 Aug 2026 09:29:22 +0800
-Message-Id: <20260814012924.2388613-1-ridong.chen@linux.dev>
+Subject: [PATCH v3 2/2] mm, memcg: fix memory.peak reset clobbering other fds' watermark
+Date: Fri, 14 Aug 2026 09:29:24 +0800
+Message-Id: <20260814012924.2388613-3-ridong.chen@linux.dev>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260814012924.2388613-1-ridong.chen@linux.dev>
+References: <20260814012924.2388613-1-ridong.chen@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6AA2B140008
+X-Stat-Signature: wwj6cm6654r8eq4d58ekzu7myd63tmym
 X-Rspam-User: 
-X-Stat-Signature: mo5xopdabmxo7nwqaitgayja1b5w91n8
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 68AC01C000C
-X-HE-Tag: 1786670992-795510
-X-HE-Meta: U2FsdGVkX1/hbLNJGablxZo4vGNOxU3KCPDy0vbO2QqyqElVjRJI9kZ9K3x4ZIjiqdQX0fjyq/6OpDRv1SUB6V1NQ71Ot+STRra0dI9g5SKduvAmJ2HqrE4nscoY03eHLVvLVVFj/FDnHPGtoW6XB0JRsaF1XYriCj0bKqapZQyM2FgKm/Id1y/2qf0tFP7iDv7B9GROZd8xWbWdKwh1HYhpje6dlrLhgHC6tAq7amD/10NpZXMOqgi/iOp6AezxOHawSADjTCZ4E4wdan3hyCFuO8rs82fv2Rq+tj1nvCgQWBXbZ6pWetEldk0q1+AWlD5Mu3ZhFm2psluIYQkBkC0OADLHyLU8T9gbwM3pPHQ9PmUo4tYNpaMtwKstxqwvdLmqRmIC6XflFoifz9NghQ1IvGLM/YTRV2pjHVa61gJqKpgnZALt5TORvfEgk6t0+4vCnMJ6iS+8+K4p52XzEp/oztM3yjvgIJwLH0jjuFV5QlhfWJqBFbU/WnPah21vrzPffqwnEe21/7fDlgkyeVZoV1dqw0JztnFciOtRw+iUkR1O0aYn1FrLosGuk03g8SwSYsGKf1JDHiKXd0D5wNxEBKW2bNUyVE6jCBhgbuYPuf9QY6K7NlcsqImD8PBtqERfNisyeg+4K0B1PVDtQJ4UiUz59T+SvG2Ba0qaCHRil/gk6jbmzNZGuwhuxW3XhWodnSOvUWoUQQVJLtbQN4psmhifNAqtstsikPYzp0KIUj5krjofRGHs4XyL+5iULBoWm+dKpxNtRctDWqoxyVqCMLdVTD60I5ecK59zhuhyKXoUhfNjwOS7suZO0Br3b3j5015DH/itUPg5MrQC1Ivhc/960BsOf7HGX/XAPFm65Qy3APfQiuN1JEoaw3405hJbg1zOiw7IzoPPpoL6J4epIKHW6vmyc4avPIkeUOnt7lwjtt1lzXP8HkID+mVetnWS1OtKLO0DgsIetE3
- hYVbC3/+
- WoMBUQT60NHQvCNHWA4BcHv7o23mW3oNpW+ug5Ai2QDKGBOIOFuWlQxjPsydElOwPDF58/Kf/zaRPVebhRpiPtx9Y2OXZ1TE6gF/kjIuyShVtm7MYccIfAmP9rsGrh9Kd/FkN8kHAZvvfdvDoYlJzP4rdrLmYTvnhj3RHK8dIQgc5P9ArWFX3VL1IhYYHsiMY9JuimhV4YjADC8i9IULnwJ3C71QrSPPT7A9ZNpxYawA5kBMs4ed0eMOwjdXwrfYB139+bAhSX04VriF70llHAv1MPHXCfsUF235aEhEJ7UdQK+kcKVrDxXEwoXtA3+dUrkZfBAlrnC3yOW5oxyoag7EzfsaLZgL8IL3pnc4Bn1HD+a+0/y4T7Ikn1GoNzn/O/Yh01dPCKuas1lO5fmgkWKlv8AVZ3Dk30YGRaG9ZySW+utEQS7iPtqf5ltR/fuG3XsnySmjWqzA+53m96Ru4S3Cj8KyBVASxJ0iTKpBf4rkflV/hV0HiVSTpgwIhVdkbZFzNIlagmcVKThnKRh4PXKiuzS5HNgYzUsKqvtlRTStGdNevL5ek3UJqYCkCny891mVu+q+WAjrOGR52HeFVQewa9zd76GoVab7wjO7k1RVvAdmcm4HGs2aEBy74TAMRy9hIHlErRPiew28H48WDEnAnjw==
+X-HE-Tag: 1786670997-355280
+X-HE-Meta: U2FsdGVkX19scD/Tmx2iaItcB1zFAqnTPpRVMxmQu8vh6csLgs6PyeInU31BXDERlvgC4qTgPU13J4/3a5YIUhHxRZnzB5vZ7yncwYJkb0p6ORdk1vAANHHiDjkN2RZamP36Lx6I59MWwRT0gcmxB/z50jLhVvD5llDNYvGCDH7nrMaiGqMAh8U235xQDcXsPMQpVJm5yxdlx2WcK87RJhAyjfWUy5nJefR2kWQd2djaXwrDXLvvA/oFHeT0/ZlipVhnr0gtKkQPKeoD/9NodFDTXWoYVtDFNG0jxS+FnLd+znjXO1wNTFgYy6uDg60L6pUWvS1/TiLBlnWE1lCbRss3lK9346uY/7vn3ZyS2DRjWPgq4OlEmQNxdh2wSd4Ywisg2V7uwFvoVsbZ5cmaQekoo41IBV9SVd3QkFnWE6yhfnJ0pj80nTZsddtMLNB9Pqf40AKwmgQH+RqSW+7jKRacePoAR/XQXAU6KeJ/TOWmEpzKj4GlwlMW5ghxYx8mJKdRO1Gt+HStOaO2zIvS4IJ62gu0ej1n2y7Wg8d4pfeeDTLSIMyYlAlZC0g69yxxQ+h592Vz0Zz5hUWGu6KGm1zCtX+lAyFMcBYQ0IxcM+3Ga54cqt3zIKO4ev5wTaaGXxMNhK9nZDF4+67M9BVnX9hiIDZauDhitlJH28FFDPlFEFM70BlsMox91D1DxPgy7VmHR53gF+FKCVext0mmLf2vdTmIoof48QnzqPRZjHEyESCVmG8lkuHswoucmS0YgfTVEqQWOV0Y+B5PnjnVGMRVdTKgIzi2JU1nrvXVZk0KWm9dX10sj85WKp93Vb3xKtxlfQVCdWWhXnqOEKVTsPBHAClK7JGm21BnTBIyNg64s4hR7CEmxECFAdkTtPI1TeQjtFpw4R6lxocFMCqZiRXotuwNgHsSpYcb7PpTxg6RN7aW2nJ+W+fibp+uaPaFbTGUIqZm8+MdCWOUhqE
+ Ej0XdEZv
+ i7pTtNbsS+fhTl/jNpEkewV8e9p9ecp/jItVTfDC6X3IfhzmILnwyGt8aI5O+Lp70B0Y3NcjbBXt9gJReQeAf7HJgWAJT1qUnrGsMG3nL/9esfNIcY1fZTO/ZLtPg1PBdg7uSPUl6vrohPvJ1EoexHKASjpqJu0ZX48n4hDsumQnY4QSCHFWJNiR0E6VomlNrsnQR630lpZIE0/ED5mfQEEvP3s2gCHyZ6bm4V2AeubUWk7HEekp4JJlLJBWFD4jSIJjZH5+kepGtMRDyLInO9rh10hFdOa6NIGgh2Fjv27GSbR3u+luff9IQN+wonMJA72nagYLEVEnAZiPgPRppyyI7FhOEUNuyiOVSAA+noFP9rRTayfe+oPws7yFUQpZSydSsfW2qmVaepbLvEAF2fgmv4YksC4BWYH90wcMC7RuPoOQgsgKalMLUc7qgvVBSV2ulxQRPJljsBtymbp5H3A17f43qK/htqP40tmbxKYVwIFjL161kQdjHEwBpi+8Zecq+e+bvN8y6I/TvY9gr6u7cdhjtSi+ZMYvR9mdxuwmSdp7zVMPAUdMV4GvpKrwkvmC7Z7ay/T1pKc+z9tNe/lSP+xK21TuQsTHZx54ejw1IEK19Rvr+2TyGhm4bNJsMB/Gb4BJ73/PgGr58GzlZJd0suWf26cYpZrCUJJM7eBXHBNq3etkeA8yFpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,46 +102,61 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ridong Chen <chenridong@xiaomi.com>
 
-The memory.peak / memory.swap.peak per-fd watermark tracking has two
-issues. Each open fd is a watcher and reads back max(its own value, the
-shared local_watermark); both bugs live in that scheme.
+Writing to memory.peak resets the peak for that fd only. Each fd is a
+watcher and reads back max(its own value, the shared local_watermark).
 
-Worst case for both is the same and is userspace-visible: a reader of
-memory.peak (or memory.swap.peak) gets a value lower than the true peak,
-so a tool that sizes or bills a cgroup by its peak usage under-reports it.
+peak_write() resets by lowering local_watermark to the current usage.
+To keep the other watchers' peaks it then walks the watcher list, but it
+stores the current usage into them instead of the old watermark. So once
+usage has dropped from a peak, a reset on one fd wrongly drags every
+other fd's peak down too, even fds that never reset.
 
-Patch 1 (read side) fixes the race Sashiko pointed out in the v1 review
-[1]: peak_show() inspects local_watermark and the per-fd values without
-holding peaks_lock, so a reader that races an unrelated peak_write()
-reset briefly observes the lowered value. Transient. It takes peaks_lock
-in the show path.
+Reproduced on 7.2.0-rc5-next under QEMU, two fds A and B on one cgroup:
+B sees the peak (410624 KB), usage drops, then A resets -- and B's peak
+collapses to 1060 KB although B never reset. With this patch B keeps
+reading 410624 KB.
 
-Patch 2 (write side) fixes peak_write(): on a reset it stores the
-current usage into the other watchers instead of the old watermark, so
-once usage has dropped from a peak a reset on one fd drags every other
-fd's peak down too, even fds that never reset.
+Fix: save the old watermark before lowering it and use that to floor the
+other watchers, so a reset only affects the fd that issued it.
 
+Fixes: c6f53ed8f213 ("mm, memcg: cg2 memory{.swap,}.peak write handlers")
+Closes: https://sashiko.dev/#/patchset/20260807090000.1532495-1-ridong.chen@linux.dev
+Assisted-by: Claude:claude-opus-4-8
+Acked-by: Tao Cui <cuitao@kylinos.cn>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 ---
+ mm/memcontrol.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-Changes since v2:
-- Spell out the worst-case userspace-visible effect, per Andrew's
-  Go back to v1 [2].
-
-Changes since v1:
- - New patch 1: hold peaks_lock in the peak readers (Sashiko).
- - Patch 2: floor the peers with max(usage, local_watermark), mirroring
-   peak_show(), and skip the writing fd (Johannes Weiner).
-
-[1] https://sashiko.dev/#/patchset/20260730115314.1069089-1-ridong.chen@linux.dev?part=1
-[2] https://lore.kernel.org/all/20260730115314.1069089-1-ridong.chen@linux.dev/
-
-Ridong Chen (2):
-  memcg: acquire peaks_lock when reading memory.peak
-  mm, memcg: fix memory.peak reset clobbering other fds' watermark
-
- mm/memcontrol.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
-
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 6dd8756870ff..5e5edc988119 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4748,7 +4748,7 @@ static ssize_t peak_write(struct kernfs_open_file *of, char *buf, size_t nbytes,
+ 			  loff_t off, struct page_counter *pc,
+ 			  struct list_head *watchers)
+ {
+-	unsigned long usage;
++	unsigned long usage, old_watermark;
+ 	struct cgroup_of_peak *peer_ctx;
+ 	struct mem_cgroup *memcg = mem_cgroup_from_css(of_css(of));
+ 	struct cgroup_of_peak *ofp = of_peak(of);
+@@ -4756,11 +4756,12 @@ static ssize_t peak_write(struct kernfs_open_file *of, char *buf, size_t nbytes,
+ 	spin_lock(&memcg->peaks_lock);
+ 
+ 	usage = page_counter_read(pc);
++	old_watermark = READ_ONCE(pc->local_watermark);
+ 	WRITE_ONCE(pc->local_watermark, usage);
+ 
+ 	list_for_each_entry(peer_ctx, watchers, list)
+-		if (usage > peer_ctx->value)
+-			WRITE_ONCE(peer_ctx->value, usage);
++		if (peer_ctx != ofp && old_watermark > peer_ctx->value)
++			WRITE_ONCE(peer_ctx->value, old_watermark);
+ 
+ 	/* initial write, register watcher */
+ 	if (ofp->value == OFP_PEAK_UNSET)
 -- 
 2.34.1
 
