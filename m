@@ -4,101 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B9C7C5B572
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 08:26:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6EEFC5CFC1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 08:30:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFD2D6B02F4; Fri, 14 Aug 2026 04:26:39 -0400 (EDT)
+	id 8FC536B0658; Fri, 14 Aug 2026 04:30:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAE0B6B02F5; Fri, 14 Aug 2026 04:26:39 -0400 (EDT)
+	id 88D946B0659; Fri, 14 Aug 2026 04:30:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9D0A6B02F8; Fri, 14 Aug 2026 04:26:39 -0400 (EDT)
+	id 7773F6B065A; Fri, 14 Aug 2026 04:30:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FF956B02F4
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 04:26:39 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7E4461403E9
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:26:19 +0000 (UTC)
-X-FDA: 85099192878.12.054B080
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7EC6E40005
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:26:17 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SMgOxtmN;
-	spf=pass (imf12.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 519026B0658
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 04:30:55 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C895B1403D7
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:30:54 +0000 (UTC)
+X-FDA: 85099204428.16.C117D65
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E98EE80003
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:30:51 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=HNVrXq85;
+	spf=pass (imf02.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786695977;
-	b=qFoO3/9CITPtMN3yIQBFbC+5KymFuRD3mgpP0SbEGbtxHWXdfhEXlQs1KbPNDfvLqFv3Wf
-	A+FSuO14KrjKpSRM4GgzhyGgwDA3lxU2zTDwxTUBYqnh5peAJE5Dq0b6b6Y5jGkHEptL5I
-	I7IARxfA6kZd7DxqNaJgm3LRqM6g6fo=
+	t=1786696253;
+	b=qWJF0LV6mHxhRYpuS0qlwzXyxBVn0sNoM5lwPzJHUApowC2KTIDXrJmFXDilsKcbjz2AWN
+	TtsOvX5NAblg7RIqq/V8pi1EPb9kTSBCBY4SkoynRPErBHXjaJocJMxfxgfoLg1CcGYJOp
+	Hge63IbSPcpnD3EFq8GRwFniwjunoVU=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SMgOxtmN;
-	spf=pass (imf12.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=HNVrXq85;
+	spf=pass (imf02.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786695977;
+	s=arc-20220608; t=1786696253;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+WNFzfxSWW15fOIdnEaHeTYbpQjdQsx6jTbj9dE4ksY=;
-	b=3cvQ+fomxlBZSwAHn/uAaR70g1cvQifOwmY9SJYO9mhgj27nnPB27SaJ1opiOH/soK2OVp
-	OeHnkF9H52N4dmCtk+dM4azAnBt2BLeNEdSb2GXz8PQ5hgRMSbvCREvzShVyhleqOGYY/x
-	TPxknJuPTQDy3i5DfBhIfSrfeqZzxGg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 90D6143F2B
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:26:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F191F00ADE
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:26:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786695976;
-	bh=+WNFzfxSWW15fOIdnEaHeTYbpQjdQsx6jTbj9dE4ksY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=SMgOxtmN8Vf5EkQdQSMB+lyU6zdP5E/rVzeaMaT5tG37DvvceG22rBwtS4b3YBjJP
-	 LHtiprxppMxk76P3Tqs4D2P3wkaJoyHFi9y3e8+bupmb/8bQHh0OKCECOJLmpMa6ES
-	 X2ZxouX3gnn7Ahe/4T/D86o/e9/V4HlxSBV8rGnm8XQQxx/9GgKKxaVF97SzsJNfUj
-	 gs8dlFaRo7VPgUqJWmlibmGcv1jTfIVtSk6ZmDdMsIfFszF5GC+uTcdNJ/OHcED9f/
-	 m/dz0wP+llgLEZCa7RYZ8APKi76J7sFVFVR+Z31p4fgNuL0bbNFOjkMSjwOq5MBuEq
-	 DGiLti1auW0Dg==
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6a386a34603so1436630a12.1
-        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:26:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpO0TmcjXnxQm9roa5obO58IIx1Phv4i8Qw4xDruyqJ6sC7pE1XoZ+U3sZQeTj8pBqg6XKiGqkK4A==@kvack.org
-X-Gm-Message-State: AOJu0YwHRIKvJqOyT74f2nfa5voxzWEeB55ZoomAzd/JPkRG9LD1ztQ9
-	NTVVxdgBA/Y978HtanFvOmQwM1/b3sNLgwQDoA0wfezICz9axLdQ9JFPsS8KwbB970cFzHEcM4J
-	6U39awORzQhzlLSWxiRE+yQOw/3uH9Ms=
-X-Received: by 2002:a05:6402:324d:b0:6a1:332a:83c1 with SMTP id
- 4fb4d7f45d1cf-6a38aedabdamr1544094a12.6.1786695974968; Fri, 14 Aug 2026
- 01:26:14 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=U7hXadlTsmfu1w7IwtOEGxiT9suiSAxwHVGfz88KKmo=;
+	b=tlz3A5bhiP9vl97lHFoNiciDzkIReBnMBG+gUvcyFjo17XReorLQnsEkLr3zzO+Hwl9nT6
+	zEe97Jen8A/q3cGlS9p1C8Y396Br0kw3N+tthcL61UpkDgfKJwyeCcoiU/JgIKMEPDCVxy
+	fx5oDlUOnk/N8XdsNUakpc/x6h3yAGU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=U7
+	hXadlTsmfu1w7IwtOEGxiT9suiSAxwHVGfz88KKmo=; b=HNVrXq85autWHmgg+G
+	z5lnFIohYGRpmjRTUQ6u1tSGLSWWhRJXZ0y3CpKLBruX4QZLTNIhadSRDPnWMlIl
+	6cBLlmQjaOdLm2If/ctaBPfhn/f/8hsaG20JBgXTwow0NIxWFImtN8AK56NH+JPB
+	vdyOKEtSvmAhiR2cPKl3xE2e0=
+Received: from XLL-9950X.localdomain (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgAn8v4n0n5qL0vyLA--.16890S2;
+	Fri, 14 Aug 2026 16:30:32 +0800 (CST)
+From: Longlong Xia <xialonglong2025@163.com>
+To: Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>
+Cc: David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Longlong Xia <xialonglong@kylinos.cn>
+Subject: [PATCH 1/1] mm/hugetlb: keep max_huge_pages when dissolving surplus folios
+Date: Fri, 14 Aug 2026 16:30:27 +0800
+Message-ID: <20260814083027.1419487-1-xialonglong2025@163.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <CAAhV-H7+1bv6ULPO1+SZ5R=XFxNTh+54rqnYQUAW26kF83kiMg@mail.gmail.com>
- <20260813160307.15130-1-dongtai.guo@linux.dev>
-In-Reply-To: <20260813160307.15130-1-dongtai.guo@linux.dev>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Fri, 14 Aug 2026 16:26:41 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7XKFj93fSPcKAR9AR6Z4O28pC9va243hVccvPNOxH3qg@mail.gmail.com>
-X-Gm-Features: AUfX_mxWy0zifyMkCT_MNsH5vELQu4FCKCmOeWL2rt6IE_4N76SZIZUTr8aX0ys
-Message-ID: <CAAhV-H7XKFj93fSPcKAR9AR6Z4O28pC9va243hVccvPNOxH3qg@mail.gmail.com>
-Subject: Re: [PATCH v4 4/4] selftests/kho: add LoongArch vmtest support
-To: George Guo <dongtai.guo@linux.dev>
-Cc: rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, 
-	shuah@kernel.org, ardb@kernel.org, guodongtai@kylinos.cn, kernel@xen0n.name, 
-	graf@amazon.com, liukexin@kylinos.cn, loongarch@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-efi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 7EC6E40005
-X-Rspamd-Server: rspam10
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PSgvCgAn8v4n0n5qL0vyLA--.16890S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tF4xJw43KFWrCrW7CryxAFb_yoW8Xw4fpr
+	y7Wan8u3yUXryv9F18tF1jy3W5GrWUWrW0yFyxKrW3A3W3J3srKF9xXw15tayvvr4fJF4x
+	urWqqFZ0gF1agw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j5EfOUUUUU=
+X-Originating-IP: [240e:46d:1800:11e5:54aa:27ed:61cd:c0f8]
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC3Aj48Wp+0ih44QAA3q
+X-Rspamd-Queue-Id: E98EE80003
 X-Rspam-User: 
-X-Stat-Signature: wtgz3bgnbzifeqkg63xt1utztbh1u7t1
-X-HE-Tag: 1786695977-739310
-X-HE-Meta: U2FsdGVkX1/+192CVvZom5RSfIH7Mwp1T3cLYhaCbvP51MVayA/QrlPOYKOKs11yy35l06XgoSWOL/eSU5VFPGs7W8UA2yYYGsA/pPObcY0fqcA/U0qZ6AH7MG1Rnvon8Vr6lhhBDq4Fb4wEYXKdDp6MRhirVgSlaydB1VkOnS4TjPH6WCfuYLlS/ggCBaVBYwK+I97FOJBWJMTih5z0ANe4B0my1Z97Wh9NQmVnbTtE1lSsvGg6R45T0oyxejM9LhNKXLx1LXuYotsS0bRZ3WWuc5d4pci+LD00mJnp4gN0m3vZ0XqZFCsDPfAyl3DOg+ZhfS2BGDrF6PCG5Rch74AOYb95bb4z0xQFh/1N3KPEA0PliRwB9pkZadAxOL3BkJUfIxhURkONbkG2ixxjkeuvPYSliImSTL/clcYBPL0Hvrit+WqV+SJgBXVGavAyA618ZLwVmSHDtRHexcK8p+Tj5TR9zYf7cKebJ1c2fmAvm5KEZAhC3z0enOonyUjXshKnCLHFg4eeHogwf+rCEd7FKIne+mNtr2MAymTgVPrtrnbrAdXI6KKLEo1Wau1IGmWomiPJl4RxMuCF2Q6vBeQPeMGROplALJqHwrb5Y3n0mXUmBEh2ZPz/715C7Qu8c70F9m95RtGySZM+DoDBAjC2f3nO/HG2ZUJc9amQehJcunVJZgLI7KBndsL0EIKGvGKDpH5YjVg6Xfh+SU1Y7tV6o8vpgF2ynR1WzrmL1CA89slZh7um5Ej3kpZJ0hV0YfwiJ7nxievpNBj59V9hYUHRrGg5qCZ30gjb3TXFqagIs/z6qNjfLTNb41DCw2kEyAVrp6rMKXiRBRYcNOu/0424IX6DP3D44LYcYY8xyoHRn54WisA14p7cdDDXj2/wc4eQJxmiwQ6Ks+bLgdXtKT1wNOvCfzrgbgvgqJDDS1yTbXypp8WF1F78ZT+Ba6sIMGOxG0Q8i9RBJ7XijFQ
- V1emmvqC
- UcZjrOYfDCgVvtFE36hDytYtAhkFPw3w1Js2M+nyIB5Sk1LiSeC1g/3Gs8sNnrK+IZ+MrDYX2wcBzrSrjqKYYN4noZTdilK7sm/n3cAHztgsZwArVTZ3/DurtcojV1OByijAAab/NRNWILnShcW8aAiCP5JAyrHQ/RLIaUEptHWOy47BPnFjeCdtOJOrK1rXSSJdU02ieIr8Q5atkEdVgvHeloz60JEaeAGYQj9NNYKw0fBVkJMahRTE/y6l2SK3HGF8oEJBhzdkjmT8BUvqMJGlGHuqK+z+7BCpYxxQbB5VuQaRdwv7EYYmYdA==
+X-Stat-Signature: 7o1yqq3rma4icdos4hw1zdycq1k7e4mb
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786696251-619049
+X-HE-Meta: U2FsdGVkX18eEsn4hgHZC7J86d7Z6uttSy+roieu4fYLeLUwGcuKCQAWZiB2VYZUDx9Bzx9cIwHcr8SPpJefoJWhmc3/6UiMLN8sfOUpr05KwHV7T+bLyDr4w3STwOSLdckINan2fz6V5doO3+LTWXLjGeJE96NJbnpUpTaTyWQA2c9wXxEtDHT8uMYqnwrCXfukf9VpSwt7N5NoYZnGr7k/TOntUYMOh5XLw+GAYQH/OznWYOgBHH5MhU1KIN6jP0c/k77bq8epH9ZvYRMgL+w8Wo4/mUhaP6xGd2CfyxgLhVxVGD4CmlVTMNfRfr+rZAGJteIBxz6Ul250fqt5RpPobdPB94pJMNrSzjLk/5sjQXvEyIhX8wBKxwjuM0c+X9J26RZCWinpXC8VqZ8ajqVK1d4ZFgJaKeYgsx4OirVtsjEscJQ/7eeSH9Cb/XJ7d7jcbptSgPbjQsLtiYOaPZqnbaWk1mZMQh33rL0KUgkdBbM5GXmvYJppHKe7F3Vy/CDCFhvN5LbVhqtxU7GqWRcPjgXlYS3e+4Vmuo0wOLzTfzHP5sk/DeKPi4/LAQgrUJfWYp4ckJBawS8Ixm1G4FCWltHVZvI6reVoVg4s0TmWXbAa6avQs2E37lOsbaDym2ccAsbYxfprgfqjwhsu/5GsUYGT81L5FOrYuRb37gRma2ScjN1+iK4mKOKH1m/93KseNdYUsLPs6V6WdCCdC4H9OolO8/VXGBzp+kzZlnBXjd22rtVNSws7W8ftfjUnhBfsGhYZi23FWEt8XvHtJAfcOsfYnM1U7Kt5qLVDeVcApkt1hGNmayX3V4DCUaVfWUZcZiItyCtJ0bIcYkByBWYMNpuNRq7OzbDsaldEgn4vQvLEnyHdXp3hpWCOkMwvWO8f3Vt6lPNb4qMjxlF9qgi3yi3N/QuWZdS+RA5x0ALaL/1EVp+S/3XjJ71mL3keV0TZaf+eDA2W0SZtu61
+ O/Doemhp
+ hmG8JdJMpWaFa2P1aYZm4h0NaVkb3hBp/RqX3SythIzeNOEQ7HoGMslpgCJEB6V/kHwpMZYJrGTl+tGF77thi2L3Otd+MaN1+4/G2SJvkV6a88sisRnCLEs6WbDI829ta1uwSNpu1u4tNkGPZtHyU4bV07y0td2ar+LB31Xxe3ElTztNL6MJ029oP7ez0+yC1KOBrQJKw4Rsaul+mozNGxRmxfse8VJMXAs8SXkilr1SdJZ5pBHIqQDBUQBXN38W1teOqVe6eI5OmDBEmt3KnKYNP//0iOTm9k12HgJRAysJzmCSmS+D47Ilvspl9Xw08tYc2btgbNp/lt1/ebWKapIf4lew+h1x2OT+DG8uzVBE3++E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,76 +94,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 14, 2026 at 12:03=E2=80=AFAM George Guo <dongtai.guo@linux.dev>=
- wrote:
->
-> Hi Huacai,
->
-> On Sun, 9 Aug 2026 at 12:16, Huacai Chen <chenhuacai@kernel.org> wrote:
-> > You never answer me why in your test you should disable i8042 from V1
-> > until V4. In normal use we use a single kernel for both host and guest.
->
-> I owe you an apology: I did not actually understand your question. I
-> thought the commit message had already explained the reason (the
-> i8042_flush() panic), so I treated it as answered and never addressed
-> what you were really asking. Let me answer it directly now.
->
-> You are right that this is not just a selftest detail. i8042 is built on
-> every LoongArch kernel: arch/loongarch/Kconfig selects
-> ARCH_MIGHT_HAVE_PC_SERIO, and KEYBOARD_ATKBD and MOUSE_PS2 (both default
-> y) select SERIO_I8042 under it. So your "single kernel for host and
-> guest" point is correct -- a normal defconfig kernel has i8042 built in.
->
-> On the QEMU virtual machine there is no i8042, so PNP finds nothing and
-> i8042_pnp_init() falls back to probing the i8042 status and data
-> registers (I8042_STATUS_REG, I8042_DATA_REG) directly. On LoongArch those
-> registers are memory-mapped, and on the virtual machine they are not back=
-ed
-> by any device, so i8042_flush() takes a page fault and the kernel panics
-> before userspace. A normal LoongArch defconfig kernel booted as a QEMU
-> guest hits the same panic -- the "# CONFIG_SERIO_I8042 is not set" in
-> loongarch.conf is only a workaround to let the KHO selftest boot, not a
-> fix.
->
-> The real fix is separate from the KHO series: make i8042 bail out on
-> LoongArch when ACPI/PNP does not describe a controller, so the direct-por=
-t
-> fallback never runs. I have prepared that as a standalone patch -- the
-> relevant hunk is below -- and will send the full patch separately. The
-> selftest workaround can be dropped once it lands.
-You nearly answered nothing.
+From: Longlong Xia <xialonglong@kylinos.cn>
 
-Does your employer use different kernels for host and guest in KylinOS?
+dissolve_free_hugetlb_folio() can remove a free folio as surplus when
+its node has surplus pages.  In that case remove_hugetlb_folio()
+decrements both nr_huge_pages and surplus_huge_pages, leaving the
+persistent pool size unchanged.
 
-Huacai
+Updating max_huge_pages as if a persistent folio had been removed can
+therefore corrupt the persistent pool target and underflow it when
+max_huge_pages is zero.  Keep max_huge_pages unchanged for surplus
+folios, including the vmemmap restoration rollback path.
 
->
-> diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/=
-i8042-acpipnpio.h
-> --- a/drivers/input/serio/i8042-acpipnpio.h
-> +++ b/drivers/input/serio/i8042-acpipnpio.h
-> @@ -1633,8 +1633,14 @@ static int __init i8042_pnp_init(void)
->  #else
->                 pr_info("PNP: No PS/2 controller found.\n");
->  #if defined(__loongarch__)
-> -               if (acpi_disabled =3D=3D 0)
-> -                       return -ENODEV;
-> +               /*
-> +                * LoongArch legacy I/O ports are memory-mapped and are n=
-ot
-> +                * safely probeable when no controller is present: a dire=
-ct
-> +                * probe faults on the QEMU virtual machine and on any FD=
-T-based
-> +                * boot.  Do not fall back to probing them directly; if A=
-CPI/PNP
-> +                * did not describe a controller, assume there is none.
-> +                */
-> +               return -ENODEV;
->  #else
->                 if (x86_platform.legacy.i8042 !=3D
->                                 X86_LEGACY_I8042_EXPECTED_PRESENT)
->
-> Thanks,
-> George
+Fixes: cb402bbdabca ("mm/hugetlb: fix surplus pages in dissolve_free_huge_page()")
+Assisted-by: Codex:gpt-5.6-sol
+Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+---
+ mm/hugetlb.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index e93c4d2456aa..2239e2566a52 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -2002,7 +2002,8 @@ int dissolve_free_hugetlb_folio(struct folio *folio)
+ 		if (h->surplus_huge_pages_node[folio_nid(folio)])
+ 			adjust_surplus = true;
+ 		remove_hugetlb_folio(h, folio, adjust_surplus);
+-		h->max_huge_pages--;
++		if (!adjust_surplus)
++			h->max_huge_pages--;
+ 		spin_unlock_irq(&hugetlb_lock);
+ 
+ 		/*
+@@ -2022,7 +2023,8 @@ int dissolve_free_hugetlb_folio(struct folio *folio)
+ 			if (rc) {
+ 				spin_lock_irq(&hugetlb_lock);
+ 				add_hugetlb_folio(h, folio, adjust_surplus);
+-				h->max_huge_pages++;
++				if (!adjust_surplus)
++					h->max_huge_pages++;
+ 				goto out;
+ 			}
+ 		} else {
+-- 
+2.43.0
+
 
