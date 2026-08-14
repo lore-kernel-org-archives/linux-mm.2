@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84C4EC5CFC1
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 07:51:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0778C5B572
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 07:51:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EFBA6B0640; Fri, 14 Aug 2026 03:51:16 -0400 (EDT)
+	id 83E146B0641; Fri, 14 Aug 2026 03:51:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CEA26B0641; Fri, 14 Aug 2026 03:51:16 -0400 (EDT)
+	id 7EEC36B0643; Fri, 14 Aug 2026 03:51:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DD276B0642; Fri, 14 Aug 2026 03:51:16 -0400 (EDT)
+	id 6B6D16B0644; Fri, 14 Aug 2026 03:51:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EE666B0640
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 03:51:16 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C492A403B7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 31E1A6B0641
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 03:51:18 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B3CAAA2330
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 07:51:17 +0000 (UTC)
+X-FDA: 85099104594.04.88F9BD0
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E437A40004
 	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 07:51:15 +0000 (UTC)
-X-FDA: 85099104510.29.D0A4170
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	by imf30.hostedemail.com (Postfix) with ESMTP id F1BE780002
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 07:51:13 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=btZ1Lho6;
-	spf=pass (imf30.hostedemail.com: domain of ziyang.meme@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=ziyang.meme@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786693874;
-	b=0ri4hmeoF2jrPUHR8Bwp566dkgHgU3Uu+4Ckyl/KK0LrziIM/14MPlv1LWh4vy+UCCxpLP
-	aSPjRyEHTaAha7Keq9cVPbjVjJnPj9E0FD8UtI5nGMDsT9OnINRHSDO9gGRZcuGpX83Rwz
-	ybr3b2NWryGMEWINxvvx/NL9rmAgB3s=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=btZ1Lho6;
-	spf=pass (imf30.hostedemail.com: domain of ziyang.meme@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=ziyang.meme@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ch8uAawy;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of ziyang.meme@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=ziyang.meme@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786693874;
+	s=arc-20220608; t=1786693875;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=89IA+PFSruYcLCZ4LIxATlaba57zWC2jPqnIwBR3MIY=;
-	b=5w/iRBnaTAJEZv2ToyGc9WtDi60JCx0kRvgrTU5UvGBs/giEH2QmEW1vZecqrr0O4uyfIH
-	1lFtL69Y5gVNVsxht60ziNlrT/tMwYszIbCTZO4ZTKdaPHQ/IKYRosLNwzgyWYep2eA0Mp
-	Ib854aT9iWSBzTtdOewDfsyfStfl+kE=
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c9e607d81fcso405400a12.2
-        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 00:51:13 -0700 (PDT)
+	bh=5iC7bId76UQW5d2bpHES0WaC9Y+qxnjqx++rvqn4Nrk=;
+	b=Bn1opc7gYSWRKrBsNM3kGDwJ6avGLiRqPwEZhOvEgBYd+9NV602Dkg6USi1H/nJRHKxxAE
+	hoRcocezVDKC17/VQJTkDlYBazICnuifDym7EwDUkGSR9NW2gIWv8+yo/n93GL0axlQKCt
+	fHoYvUci0i4ACpWjx2B29hFLt63zHas=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ch8uAawy;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of ziyang.meme@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=ziyang.meme@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786693875;
+	b=uu5OUTAm9SnVlWf1DjZcmXGsRP6hgVR6BVhADFqf5ATTzCddUcDf0pgT/ZHXTydH7rkNPt
+	HQ/4uizYwRFYVPdcoqqviwTYxOozwN71XAoFRx5pjRpPeBjk0/LqKhFXu4vnJhQjgrooqn
+	nXmJ+DPKVvhCz8HWzXsdp8WnYIdRZ8M=
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c9e607d81fcso405419a12.2
+        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 00:51:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786693873; x=1787298673; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1786693875; x=1787298675; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=89IA+PFSruYcLCZ4LIxATlaba57zWC2jPqnIwBR3MIY=;
-        b=btZ1Lho6s7htv+R4+PpKRaMeJfO8vPcScEmY+kadZCxdV1+nE0q8Z3XaIWQi9BfTmv
-         oM7iH4mIqQYoQcrHH+1WKdEjgXnLEepNfqtCc/lSiTiSL/ixqqoxakvPAg1SdBRyy3CE
-         Cr70EhP9MyCu8WqgRIwSjZHCt6dB2PYB7EzMwXJ17ZvtaVBm+xizyGkmn5Oqh7mG7HeU
-         k80n64Sp548esdJFpkNstkl+r8L5fVIsuIr1XpODxN8pCNtrA+01vufwIcKtESG3Uy8u
-         hFsvP7ExWDG8ST5WHXMLOfh4ekn0i5WdF/Qt9V0Vh4O+hC2Ns3QGbEVw4/rHlqbS5Vw3
-         KB+Q==
+        bh=5iC7bId76UQW5d2bpHES0WaC9Y+qxnjqx++rvqn4Nrk=;
+        b=ch8uAawyebskp+kjKHqfe303A9d4zl6Ely0LW6iy6GJl2SS3FGi7V1kC4nGTI0ZELF
+         q6DwMvbwbFDerCUaabtXm0ITvDHIR7NzlZ1N+oRSHImTCOoxnHZbjtsxa8cOKDZxKRMd
+         hwXa6Fuk9LahUz0Gq1T5nNxL70Zffzsrwfs/BQzuGgI+CXBcygaTkr053O1ELnHLisHX
+         TH3EY4L2roU6WO8+NWP2UaLBiJfOu50FarYrJirnwmilGTOgRzKkvc5T6CsoKgT7BO/D
+         ZJW01/Qwwd2/i6GEQZNZZD2IwtN9iCHWwwlVvRrFe4eXBwy8WjzNFGKYmIE/JDiuQnmY
+         sCUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786693873; x=1787298673;
+        d=1e100.net; s=20251104; t=1786693875; x=1787298675;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=89IA+PFSruYcLCZ4LIxATlaba57zWC2jPqnIwBR3MIY=;
-        b=TrfDOfpeEu4x4tu4LsphmesyEt4GIIgnVB8RaR0P/Ql9LaOVEnMHw20hgJLKECXi+0
-         IXHcvcIj3J32vNWOI6V77N40bU7WJd7WgE5jgfzx0tMIla9SJRucAVFozf0e488/L4IE
-         gchIm51YJACZdr37zfNTuR43Gh17oFNrtneT/NE+4Mx3TpCcpbt5/4e+3kwg/rx/YNBI
-         bq+0LIZLedRhJ52HuBmFsaffrmqpDKDf8Lo1/XH+OLTxTtMpuLRy7AtFj4+BO/6grsy5
-         Rpr7tCybo4QLBEiQNhJiZtse2BN6Ib5/cI1vXkyLlcc2NFNWhWWYLy0iXJLk6caXnPsF
-         6B9g==
-X-Forwarded-Encrypted: i=1; AHgh+RrJzhqbssktIMGxOsFcjBgnSZfVi+QDKQNgow8RG9xE7W9uMKIlAikLcwal2c6xH3VAGaQX+zEk+g==@kvack.org
-X-Gm-Message-State: AOJu0YwkEAomNJ/sHzqSLuWECnR+kL2d4GBHgYUDrTfpREMDG6XQnWCs
-	Vrgb405OCDfAru/V3TYsKw61Dhal+PadTuv2QhE+0Vvur4zLGCW+ngdm
-X-Gm-Gg: AR+sD10oga/ilbz/q/iT9S3AzElqUGKUu+hVEzP6hR01CsukgLifavcK5I2B1RtwgoZ
-	ss20H3nCYgZAxzUmJmvmFG+Q8TDq+rZYQ4f/KUG50Da5q0kOvXdHnoGSYfKy66CIhedC6usX/51
-	QY1cZb6g7LQ3yL+KK5Iu2PirJL3/zOGNQre+GTJ8rxVunfijUIfDlBsr+SWYQ6rCBCDAZ+ezyKF
-	qYX7FSRGJEfWjrtdOinurEsg72AkfGjI6JdQxSmXHknHYGrKKCRCet2UVAcAHk9aRlYDUnLCnDR
-	UIKdknLXComT1cY+R3PrXU5CQRPsVtZUMZj89AyYfHq+xRm0vP7gbAooPWhuhPvbVX3t+0e1n7q
-	S+CVijHrfUzWCmt4+d57jKTnEZjZ5jRWIgf8H4Hc4DTds+9PhOMoqhuVnluKK/ctllWsBO3UIq3
-	dE3ugFbtwv+LwOyPazoI5fOVB5PSpXVy35mRXnxbmmzF4UldoxKrGnslk=
-X-Received: by 2002:a05:6a21:e8c:b0:3c3:954d:279a with SMTP id adf61e73a8af0-3cc71d8eafdmr4199683637.33.1786693872620;
-        Fri, 14 Aug 2026 00:51:12 -0700 (PDT)
-Received: from localhost ([2a03:2880:9ff:6f::])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1413889d914sm6565897c88.13.2026.08.14.00.51.11
+        bh=5iC7bId76UQW5d2bpHES0WaC9Y+qxnjqx++rvqn4Nrk=;
+        b=UoYHfDwg70cQwdNJ/mcwU3kFmc6Ii8Zw/B2feOn45bmhVFcSzmAXfGX3qxAo9hvVuF
+         AER5LvUwy7gR5Ko7hg6Xkocry+PHcha6W8z46c2jrvOMDK1KeadvLRyrr6Vo/BUvUIuo
+         TNrU9rQCqoPCiN8SWhE+je+UEsXeglplhQheqTduxJyZrhIacYqG9WUb+cMIQQYHkfwr
+         e8PTOjaGzTQlbSxb7pcK/ucnoobaY2sKabQnd+S3y3LUBal0A4eZbOrpT+ALVljev+TK
+         MdW5LVu3hyeWgDkAsksuLyK2CF9CejvEfeqkm14WjcupdOCDXTqYI3RmVNLJZMH+nMf8
+         Oz0Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpuEvP4xOkIY2Xnq9PtNz8gqNmxsYwn+pmh6WPhTrYycuaatfm7iewmG/2GMeWzBkv3IEJ7MbD3Cg==@kvack.org
+X-Gm-Message-State: AOJu0Yyt2MaqaQkyQ8xbgHnbLH6ekKOZflRciqaeDC3+I979CEY87Xi7
+	7pPIoTUEJCBzQSPAiM2eZN6NC6lKG+obEb+HSR/hOPzeYYGcPX+6uHh4
+X-Gm-Gg: AR+sD134Jc/OoBeg4MO9icPafRXa4x4mklIQMccSj4eQ0Iq8YKGK6li2LVp8MBW43cW
+	VMdrrMpcDUYgyFAtzIiiB/A3zlHxhufwXB7AboEUmCd3Pujq56oEvyhn1vORS/sNGLlHYvHtbaC
+	1x0utQUJO1JEDIzeG2jL84vL5zhsKQa4JGlNNYtOGxVxHMx15TgguL2OLkR4iCzIEmUR8PFDVJX
+	Llieu1txtWWBsGhzf+hUSOROMxUfh4PBLEs7xSx3ZdoQ3pUQPTqhxapw0jUlYdaEqwigR2OIf2W
+	YtoSMzVW8CD+bLNdyXLSn95wOs9fa2MlI6pPnO0jjr8f2PJZxV/2QPfA1b9CtJDnTvQ/oRkov3g
+	BOr+CmMU3HYjPOWrvuFEiBAw9v9dCDIJWFss0UXxPCX7hQacZ/RAacAUXR2Qm82hImhLWkzoF/I
+	Cv0p15IbVVvM+cFBQ+8sZ81/BgA1ciD0uUTT+QLjWrDmCcJNGzmBBFtQw=
+X-Received: by 2002:a05:6a20:12d2:b0:3c3:9746:1fcb with SMTP id adf61e73a8af0-3cc71dc524bmr4264915637.35.1786693874442;
+        Fri, 14 Aug 2026 00:51:14 -0700 (PDT)
+Received: from localhost ([2a03:2880:9ff:73::])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-320ea2fe8f1sm1433154eec.23.2026.08.14.00.51.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 00:51:11 -0700 (PDT)
+        Fri, 14 Aug 2026 00:51:13 -0700 (PDT)
 From: Ziyang Men <ziyang.meme@gmail.com>
 To: Shuah Khan <shuah@kernel.org>,
 	Tejun Heo <tj@kernel.org>,
@@ -120,22 +120,22 @@ Cc: Viktor Malik <vmalik@redhat.com>,
 	bpf@vger.kernel.org,
 	llvm@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/4] selftests: add shared lib.bpf.mk to build BPF progs and skeletons
-Date: Fri, 14 Aug 2026 00:50:51 -0700
-Message-ID: <20260814075054.507089-2-ziyang.meme@gmail.com>
+Subject: [PATCH v3 2/4] selftests/cgroup: add memcg_stat_cross_cpu correctness test for flush
+Date: Fri, 14 Aug 2026 00:50:52 -0700
+Message-ID: <20260814075054.507089-3-ziyang.meme@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260814075054.507089-1-ziyang.meme@gmail.com>
 References: <20260814075054.507089-1-ziyang.meme@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: d9cmjcjtw15yyjtgy63t5jsq3fcsu79j
+X-Rspamd-Queue-Id: E437A40004
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: F1BE780002
-X-Stat-Signature: 7dgskp69agzporb6k4e8aom8ritpjue6
-X-HE-Tag: 1786693873-874966
-X-HE-Meta: U2FsdGVkX1+hYLxL3P7UMhEjeEpLu8qBajadAfJnkidykl+Ydm4TuJb0RlEn4MVbSIDUvKbp2GVpK3aPWm40byP4bgALCWKsNk/H9CenBD0xVAV+lKzPwi58dKvUdtrfiEqE5AYZQuMa/04pJD20i7dvB1yLV5+Rtl93Pb8BcJeeZnbcprvXerlCyYAbHiAmvbdl7m+LRJLG7Dgn3V9M+EwJKf8F+udl0dciCOoi4NhBlBLycJ4LFaSlWQDlPzVdcgwPdw6B6UIaVfdGBVmoLHXQ7Kfh6SBBjfjhbRNW3JFQ2B5N4kwY290BHe2vKxBKRTvHB4gCHlEog6Ek1kiLYQUsLFOL2G9dQ3p0BK4/ZqjHxGl0cezybzSWMG4vyYz5cmlNnwwn5bJOXib2YLm9gclPiUPgs/+gWI38Vr7/WgqO6vF2d5lqog3OrQM6hcT1b68Ktfq+vsAoVjrKBD50DAWe9VNMlStDZe+G9yXceVASDkUrbTLPa1KqJlZ2DGVc7kdw36JmlH0n6uyXMm7G6SmmLRjZ1LH89qhIJWxBSPMDtBz+MntMyVmcm0+xioxBUXuxoRPneNMQ0UV3pPqHJKmFPkCexO5fbhw5vObIH2Xi6uOxLtr6VqXu9M15Bx3VVJH87fN3xZCXcBXf+sfi98kaXytt6UyvWcSmeMBLg1uV6Cwa3ErIv4JV1qyixtn2oiXKDVp9vtP5thDgLIhzxGZbb63j1VGBQBM7hMJERjVDI0wva5YIosCLd0cvmBVLGyBLWhQWgcHYkk7+4/5dSl5+cdqR5OpPHfDbffurOS9G2qRymZlNFSTOtFhik6tRM8BsYE+csH7SvGoif2bqKPS5H8rl21T3rF2wzNVQkvOsWW7MuV61OthnO7ZtiDkW85DgQMKob7zG3wR7iFANOzgPItQxm1/OgXrxzviOICw+IqMUhiXZM9T5FiI8EoZYCRoJ62wyulRH1Vzd0gd
- lfa7gR8Q
- q1eSvqB7b3SFCuqd4Gyd+tH8Ks0ThgTPeBpAY41f7fNm39mlGz2yVrIvTYRK5QhX8NdPUgLF1AeYwXAN9ZpdmBAEuNwoyxEiWkqjHano0btUjJlJyswu6mDHy1+mZww0zKi0tKrkD5wuzSESaZkA7qpmTCwX8ta/2yoVUpXfu9boQlI1K38DxIinTgYS6VGdSDrTyL5waceWXdMKXR8/3wTxi9UqxxtNsPrnF2PIfHia5QI4DaqnOaXcHv3rL7UNw2tqcJpHEFfOYUpISmaGRlNFVuL16E+9RsS80LI58TMPGE9uBhR8ArW0PNN1miRs9ic31h6tMvgWlfgLOaKgEiPT0uKIsTUXtS/9QnOUJEKoBv/UqE3QSSUXXztZTahMPeIlwe56wEiGDl0SOjRQY7GWhCv69JNcpOi2uj33R/TtOSbSz8Feb9r3NLMTKrXhqk+I6dCjtdVzP9RSS71EihEekIMIYq2nCWG3doGIXSYyvBNfxIWlqQ5auzacrYB3RN0YSCjMRUwwuXi10iURGOt4UJ993mdlJBZxY8o6ujEcD4XQV5luPLhreLtv9wtToyY/BUhsOd4zirQMgnKZq2QHXmqlGkzMvK7OL
+X-HE-Tag: 1786693875-924117
+X-HE-Meta: U2FsdGVkX19KZtowfXIkmtHqhE+QBWMRtbki0Dgd4fv2nOrhm7/0VELzH9c6gQi54r5j85T7LZpUVe9sSd31gSfs66hTLw7PoweDhUV7U/m4HP8CJLV4c2T5kQXVIgTU7EumHpirWj2lENxfe5r5JjN+8pHvss6LIjsdKRwLliiOh7ilU9MUVv+8bQc2UaJZ+taLejJsEe5ihHOLzWsDKh1CS5n3URJSslmEn7RHfaz2Xj5Jhemqqh6ExDubDeLxvOX1XgbeT3d3EDKGRySLBim7U99JVghNTpNcyzl72JnKuqG4lMZCRzrQWQy1gmFtpDMT+ythpUqnwyW5X8dBtUbxN/2A1NhwWwRyBfuNxvLkPXLRnMerLUrHBVJWiZKlGeT4tQZblpAvH3PNIi8Jiu05hcyvMNsa+rlY4gHBhR8d/1v2HUGOcZLu5XVymUJeqoAld27wCJuUTSm0A3mATJBciAJGkrHLDfeeX9s2ChVN26w89Ed6cIxA5f0Hjyt/4LlUJbaRDHLTiCR1OnjOiN77PwoszJOVp4YWaYCrbDnBIy0mnOha+vQ42cS95DViZ12lX51lMMs+RrwhtTTX/Njmt5F1wbWYx+wHVJXggDffnHQO4FUEl/+x7SQeb+qorYl/BUZNKTjjr47WX/QWH3WictVJAxrE9vFTg4eNPCVVKC+s68RCwQl8ojpmfzGav/Ei8hwmzeQeBiZd5Njb63K7njRILUgWeEU/jcZ8PCh0QCXRreZMQmX9T6eT810CIussGLW+kGFGrrmDaFegwwO3qUmdoiONQP+D2TVvI6wuVDC/i1SobmuzaYqctKpAfNXs5wHWDrbTNfu7OCjut4A+ouzoWCAmRMvGE2uQdSH9M+f75NdOKl5ZknP1Hh5tHYJN9GmDahaBG5PNbnUibV2if/j0lyRJIg9RGSK5CRYImjokvO1730eRlMy6Le0owMdjUz6hRXbESIDz2hj
+ fiT98TY3
+ D6ApMTXkyBTsqCh0JlEKddclLhBzBAyjRDA22bZ2nPxW3YGhV//HRvGiEIkaSt0M8Y0dm05Vf8YbR7Qw9K0R9nLLM2SMEBmi4rGgAbtbTsREvlA28enJMfptSGvAWZ9dOH+rCx9nG+fDngtG95nA3aMSTQF83VymauK4CcsJ7zp3ndnH0LnnSwyLiwCDTfWM9M5s1Fqb5K/cPQo7hATMgXA1Md+uKfEC8ZE7mo2WSmRr7FR3TKaDuB2P04d/r892L1Gz66MbIRJEHh+Z7Uqe8X04T7IaIIZIsiKRWCKmIkfi+cOhEHX3XeHydqRRfthM65giSEd3AO5d0qIisfcn0svVuykal/5mzfwAW5/bcTzZ4aieE1vuH2DcpliUZhoJVIFdFzBs9Sxgatw4yem4igyn4zfen2eZSnmYameL3H8xrKtwjjepRNTznL7FrX6wpEdhqZEv4tbkE5GrxWXjH2EDqR8PzKhTsQfl1kWkx9sHARdQxLsv7PeK3U0U16ZUcfALlfBemRulOfdwztpimV6E//uByn5VKFw+l94hUgGEwFbNSV+fx4vxnHNC3/VOUpEyiKWhf4MLx5TkdCaV/yoUElg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,342 +143,1063 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The libbpf + bpftool + vmlinux.h + BPF-object + skeleton build tool-chain
-is currently duplicated across tools/testing/selftests/{bpf,sched_ext,
-hid}/, each carrying ~100-140 lines of near-identical Makefile.  As more
-subsystems grow BPF-based selftests, the duplication scales poorly.
+This Patch adds a new selftest, selftests/cgroup/test_memcg_stat_cross_cpu,
+which checks the cgroup flush happens correctly by comparing the bpf
+read value matches the file reading.
 
-This patch adds tools/testing/selftests/lib.bpf.mk, a single includable
-fragment that provides the whole chain end-to-end.
+Existing approach in cgroup_iter_memcg only checks whether the read
+value is non-zero, rather than compare it with the actually ones, e.g.,
 
-To use: set BPF_SRCS and OVERRIDE_TARGETS := 1 before including ../lib.mk
-(so lib.mk's default link rule is suppressed), then include ../lib.bpf.mk
-and list $(BPF_SKELS) and $(BPFOBJ) as prerequisites of the test binary,
-e.g.,:
+  ASSERT_GT(memcg_query->nr_file_pages, 0, "final file value");
+  ASSERT_GT(memcg_query->nr_file_mapped, 0, "final file mapped value");
 
-    BPF_SRCS         := progs/foo.bpf.c
-    TEST_GEN_PROGS   := foo_test
-    OVERRIDE_TARGETS := 1
-    include ../lib.mk
-    include ../lib.bpf.mk
-    $(OUTPUT)/foo_test: foo_test.c $(BPF_SKELS) $(BPFOBJ)
-            $(call bpf_link,$@,$<)
+This ensures the flush does happen and take effect, but it does not
+check the flush take effect as expected. And this is why we want to
+compare with the file reading: it is a stronger evidence for the
+correctness of the flush function.
 
-This eases adding BPF-based selftests in other directories, such as
-cgroup.
+Besides, another check missed from the cgroup_iter_memcg is that it
+contains no accumulation tests for a cgroup subtree. Currently it only
+creates one children cgroup and puts the reading task in it. The flush
+never have a chance to merge-up the changes in the leaves.
+
+Another missing parts for the cgroup_iter_memcg is that it charges the
+memory and then reads the stats on the same cpu, which means a (possible
+broken) flush that processed only that CPU would pass the weak non-zero
+test. The new tests strengthen the check by pin each child to multiple
+CPUs. This increase the code length but greatly improves the test
+coverage.
 
 Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
-Suggested-by: Eduard Zingerman <eddyz87@gmail.com>
-Suggested-by: Mykola Lysenko <mykolal@meta.com>
 Assisted-by: Claude:claude-opus-5
 Signed-off-by: Ziyang Men <ziyang.meme@gmail.com>
 ---
- tools/testing/selftests/lib.bpf.mk | 296 +++++++++++++++++++++++++++++
- 1 file changed, 296 insertions(+)
- create mode 100644 tools/testing/selftests/lib.bpf.mk
+ tools/testing/selftests/cgroup/.gitignore     |   8 +
+ tools/testing/selftests/cgroup/Makefile       |  52 ++
+ tools/testing/selftests/cgroup/config         |   5 +
+ .../selftests/cgroup/lib/cgroup_util.c        |  83 +++
+ .../cgroup/lib/include/cgroup_util.h          |   3 +
+ .../cgroup/memcg_stat_cross_cpu.bpf.c         |  86 +++
+ .../selftests/cgroup/memcg_stat_cross_cpu.h   |  21 +
+ .../cgroup/test_memcg_stat_cross_cpu.c        | 596 ++++++++++++++++++
+ .../selftests/cgroup/test_memcontrol.c        |  29 +-
+ 9 files changed, 858 insertions(+), 25 deletions(-)
+ create mode 100644 tools/testing/selftests/cgroup/memcg_stat_cross_cpu.bpf.c
+ create mode 100644 tools/testing/selftests/cgroup/memcg_stat_cross_cpu.h
+ create mode 100644 tools/testing/selftests/cgroup/test_memcg_stat_cross_cpu.c
 
-diff --git a/tools/testing/selftests/lib.bpf.mk b/tools/testing/selftests/lib.bpf.mk
-new file mode 100644
-index 000000000000..433a26a36960
---- /dev/null
-+++ b/tools/testing/selftests/lib.bpf.mk
-@@ -0,0 +1,296 @@
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Build BPF programs and skeleton headers for selftests, then link them into
-+# test binaries.
-+#
-+# Use it from a test Makefile like this:
-+#
-+#     BPF_SRCS         := foo.bpf.c bar.bpf.c
-+#     TEST_GEN_PROGS   := foo_test
-+#     OVERRIDE_TARGETS := 1              # set before lib.mk
-+#     include ../lib.mk
-+#     include ../lib.bpf.mk
-+#
-+#     $(OUTPUT)/foo_test: foo_test.c $(BPF_SKELS) $(BPFOBJ)
-+#         $(call bpf_link,$@,$<)
-+#
-+# Keep $(BPFOBJ) in the dependencies so make relinks the test when libbpf.a
-+# changes.
-+#
-+# Options to set before including lib.bpf.mk:
-+#   BPF_PROG_EXT     - source ending; default .bpf.c. Use .c for progs/foo.c.
-+#   BPF_EXTRA_HDRS   - more headers needed by the BPF objects.
-+#   BPF_EXTRA_CFLAGS - more flags for compiling BPF programs.
-+#   BPF_SKEL_EXT     - skeleton header ending; default .skel.h.
-+#   BPF_GEN_SUBSKEL  - also create a subskeleton header when set.
-+#   BPF_OBJ_DIR      - folder for BPF objects; default $(OUTPUT).
-+#   BPF_SKEL_DIR     - folder for skeleton headers; default $(OUTPUT).
-+#
-+# You may replace BPF_CFLAGS after including this file. Make reads it when each
-+# object is built. Sources may be in subfolders, but generated files use only
-+# the source filename and are placed directly in their output folder.
-+#
-+# Include lib.mk first. This file uses OUTPUT, top_srcdir, CC, CLANG, Q and msg.
-+# OVERRIDE_TARGETS stops lib.mk from adding its normal link rule. This file sets
-+# BPFOBJ, BPFTOOL, BPF_OBJS, BPF_SKELS and BPF_LDLIBS, and adds to CFLAGS and
-+# EXTRA_CLEAN.
-+
-+include $(top_srcdir)/tools/scripts/Makefile.arch	# ARCH / SRCARCH / HOSTARCH
-+
-+# Some commands write bpftool output straight to $@. Remove a partial file when
-+# a command fails.
-+.DELETE_ON_ERROR:
-+
-+# Use matching host tools for libbpf and bpftool. This keeps an LLVM build from
-+# mixing Clang and GCC. Makefile.include is not used because it would also
-+# change the test's AR, LD, CXX and CFLAGS.
-+ifneq ($(LLVM),)
-+HOSTCC ?= $(LLVM_PREFIX)clang$(LLVM_SUFFIX)
-+HOSTLD ?= $(LLVM_PREFIX)ld.lld$(LLVM_SUFFIX)
+diff --git a/tools/testing/selftests/cgroup/.gitignore b/tools/testing/selftests/cgroup/.gitignore
+index 952e4448bf07..561a3e891b98 100644
+--- a/tools/testing/selftests/cgroup/.gitignore
++++ b/tools/testing/selftests/cgroup/.gitignore
+@@ -6,7 +6,15 @@ test_freezer
+ test_hugetlb_memcg
+ test_kill
+ test_kmem
++test_memcg_stat_cross_cpu
+ test_memcontrol
+ test_pids
+ test_zswap
+ wait_inotify
++# Artifacts generated by lib.bpf.mk
++/tools
++/host-tools
++*.bpf.o
++*.bpf.d
++*.linked*.o
++*.skel.h
+diff --git a/tools/testing/selftests/cgroup/Makefile b/tools/testing/selftests/cgroup/Makefile
+index e01584c2189a..01927511c059 100644
+--- a/tools/testing/selftests/cgroup/Makefile
++++ b/tools/testing/selftests/cgroup/Makefile
+@@ -20,9 +20,51 @@ TEST_GEN_PROGS += test_zswap
+ 
+ LOCAL_HDRS += $(selfdir)/clone3/clone3_selftests.h $(selfdir)/pidfd/pidfd.h
+ 
++# test_memcg_stat_cross_cpu needs clang and a vmlinux with BTF; build it only
++# where both exist, since every other test here needs just a C compiler.
++# lib.mk settles CLANG from LLVM=, but not before OVERRIDE_TARGETS is needed.
++ifneq ($(filter %/,$(LLVM)),)
++CLANG ?= $(LLVM)clang
 +else
-+HOSTCC ?= gcc
-+HOSTLD ?= ld
++CLANG ?= clang$(filter -%,$(LLVM))
 +endif
-+CLANG  ?= clang
-+
-+ifneq ($(V),1)
-+submake_extras := feature_display=0
-+endif
-+
-+# Pass RELEASE, OPT_FLAGS and EXTRA_CFLAGS to the libbpf and bpftool builds,
-+# matching selftests/bpf/Makefile.
-+OPT_FLAGS ?= $(if $(RELEASE),-O2,-O0)
-+
-+# ---- files and tools ------------------------------------------------------
-+# Use one full path. Different forms of the same -I path can change BTF order.
-+TOOLSDIR    := $(abspath $(top_srcdir)/tools)
-+LIBDIR      := $(TOOLSDIR)/lib
-+BPFDIR      := $(LIBDIR)/bpf
-+TOOLSINCDIR := $(TOOLSDIR)/include
-+BPFTOOLDIR  := $(TOOLSDIR)/bpf/bpftool
-+APIDIR      := $(TOOLSINCDIR)/uapi
-+
-+# Keep private build files under $(OUTPUT) for both in-tree and O= builds.
-+SCRATCH_DIR := $(OUTPUT)/tools
-+BUILD_DIR   := $(SCRATCH_DIR)/build
-+INCLUDE_DIR := $(SCRATCH_DIR)/include
-+BPFOBJ      := $(BUILD_DIR)/libbpf/libbpf.a
-+
-+# bpftool runs on the build host. Build a separate host libbpf when the target
-+# architecture is different.
-+ifneq ($(CROSS_COMPILE)$(filter-out $(HOSTARCH),$(SRCARCH)),)
-+HOST_BUILD_DIR   := $(BUILD_DIR)/host
-+HOST_SCRATCH_DIR := $(OUTPUT)/host-tools
-+else
-+HOST_BUILD_DIR   := $(BUILD_DIR)
-+HOST_SCRATCH_DIR := $(SCRATCH_DIR)
-+endif
-+HOST_BPFOBJ     := $(HOST_BUILD_DIR)/libbpf/libbpf.a
-+DEFAULT_BPFTOOL := $(HOST_SCRATCH_DIR)/sbin/bpftool
-+BPFTOOL         ?= $(DEFAULT_BPFTOOL)
-+
-+# When host and target are the same, bpftool uses the target libbpf and needs
-+# the same USERCFLAGS. Do not pass USERCFLAGS to separate host tools.
-+ifeq ($(BPFOBJ),$(HOST_BPFOBJ))
-+HOST_USERCFLAGS := $(USERCFLAGS)
-+endif
-+
-+# ---- find vmlinux BTF -----------------------------------------------------
++READELF ?= $(CROSS_COMPILE)readelf
 +VMLINUX_BTF_PATHS ?= $(if $(O),$(O)/vmlinux)				\
 +		     $(if $(KBUILD_OUTPUT),$(KBUILD_OUTPUT)/vmlinux)	\
-+		     $(top_srcdir)/vmlinux				\
++		     ../../../../vmlinux				\
 +		     /sys/kernel/btf/vmlinux				\
 +		     /boot/vmlinux-$(shell uname -r)
-+VMLINUX_BTF ?= $(abspath $(firstword $(wildcard $(VMLINUX_BTF_PATHS))))
-+# When VMLINUX_H is not set, report a missing vmlinux only while building
-+# vmlinux.h. Reporting it here would also make "make clean" fail.
++# A vmlinux built without CONFIG_DEBUG_INFO_BTF has nothing to dump, and taking
++# it would fail this whole directory rather than just skip the BPF test.  Pick
++# the first candidate that carries BTF; /sys/kernel/btf/vmlinux is raw BTF
++# rather than an ELF file, so it needs no check.
++VMLINUX_BTF ?= $(abspath $(firstword $(foreach v,$(wildcard $(VMLINUX_BTF_PATHS)),\
++		 $(if $(filter /sys/kernel/btf/%,$(v)),$(v),\
++		   $(if $(shell $(READELF) -S "$(v)" 2>/dev/null | grep -F .BTF),$(v))))))
++# Either of the two knobs lib.bpf.mk takes instead of a vmlinux will do.
++HAVE_BPF := $(and $(or $(VMLINUX_H),$(VMLINUX_BTF)),			\
++		  $(shell command -v $(CLANG) 2>/dev/null))
 +
-+# ---- compiler flags -------------------------------------------------------
-+# Find the normal system headers that Clang omits with --target=bpf. Put them
-+# last with -idirafter so they cannot replace project headers.
-+define get_sys_includes
-+$(shell $(1) $(2) -v -E - </dev/null 2>&1 \
-+	| sed -n '/<...> search starts here:/,/End of search list./{ s| \(/.*\)|-idirafter \1|p }') \
-+$(shell $(1) $(2) -dM -E - </dev/null | grep '__riscv_xlen ' | awk '{printf("-D__riscv_xlen=%d -D__BITS_PER_LONG=%d", $$3, $$3)}')
-+endef
-+ifneq ($(CROSS_COMPILE),)
-+CLANG_TARGET_ARCH = --target=$(notdir $(CROSS_COMPILE:%-=%))
-+endif
-+# Find the system include flags once and reuse them.
-+CLANG_SYS_INCLUDES := $(call get_sys_includes,$(CLANG),$(CLANG_TARGET_ARCH))
-+
-+IS_LITTLE_ENDIAN := $(shell $(CC) -dM -E - </dev/null | \
-+			grep 'define __BYTE_ORDER__ __ORDER_LITTLE_ENDIAN__')
-+MENDIAN := $(if $(IS_LITTLE_ENDIAN),-mlittle-endian,-mbig-endian)
-+
-+# Use BPF CPU v3 when Clang supports it. Otherwise use v2.
-+CLANG_BPF_CPU := $(shell $(CLANG) --target=bpf -mcpu=help 2>&1 | grep -q 'v3' \
-+			 && echo v3 || echo v2)
-+
-+# vmlinux.h can contain anonymous struct and union members. Clang needs
-+# -fms-extensions to accept them.
-+BPF_CFLAGS = -g -Wall -Werror -D__TARGET_ARCH_$(SRCARCH) $(MENDIAN)	\
-+	     -I$(INCLUDE_DIR) -I$(APIDIR) -I$(TOOLSINCDIR)		\
-+	     -std=gnu11							\
-+	     -fno-strict-aliasing					\
-+	     -fms-extensions -Wno-microsoft-anon-tag			\
-+	     -Wno-compare-distinct-pointer-types			\
-+	     $(CLANG_SYS_INCLUDES) $(BPF_EXTRA_CFLAGS)
-+
-+# $1 = source, $2 = object. -MMD -MP records every included header, including
-+# headers included by other headers.
-+define BPF_BUILD_RULE
-+	$(call msg,CLNG-BPF,,$2)
-+	$(Q)$(CLANG) $(BPF_CFLAGS) -O2 --target=bpf -mcpu=$(CLANG_BPF_CPU) \
-+		-MMD -MP -c $1 -o $2
-+endef
-+
-+# ---- output folders -------------------------------------------------------
-+BPF_OBJ_DIR  ?= $(OUTPUT)
-+BPF_SKEL_DIR ?= $(OUTPUT)
-+
-+# ---- build folders --------------------------------------------------------
-+MAKE_DIRS := $(sort $(BUILD_DIR)/libbpf $(HOST_BUILD_DIR)/libbpf		\
-+		    $(HOST_BUILD_DIR)/bpftool $(INCLUDE_DIR)		\
-+		    $(filter-out $(OUTPUT),$(BPF_OBJ_DIR) $(BPF_SKEL_DIR)))
-+$(MAKE_DIRS):
-+	$(call msg,MKDIR,,$@)
-+	$(Q)mkdir -p $@
-+
-+# ---- target libbpf --------------------------------------------------------
-+# Pass ARCH, CROSS_COMPILE and CC because lib.mk does not export CC. -fPIC lets
-+# libbpf.a link into PIE test binaries. libbpf reads EXTRA_CFLAGS, so pass
-+# USERCFLAGS there too.
-+$(BPFOBJ): $(wildcard $(BPFDIR)/*.[ch] $(BPFDIR)/Makefile) \
-+	   $(APIDIR)/linux/bpf.h | $(BUILD_DIR)/libbpf
-+	$(Q)$(MAKE) $(submake_extras) -C $(BPFDIR) OUTPUT=$(BUILD_DIR)/libbpf/ \
-+		    ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) CC="$(CC)"     \
-+		    EXTRA_CFLAGS='-g $(OPT_FLAGS) -fPIC $(EXTRA_CFLAGS) $(USERCFLAGS)' \
-+		    DESTDIR=$(SCRATCH_DIR) prefix= all install_headers
-+
-+# ---- host libbpf, only when the target differs ----------------------------
-+ifneq ($(BPFOBJ),$(HOST_BPFOBJ))
-+$(HOST_BPFOBJ): $(wildcard $(BPFDIR)/*.[ch] $(BPFDIR)/Makefile) \
-+		$(APIDIR)/linux/bpf.h | $(HOST_BUILD_DIR)/libbpf
-+	$(Q)$(MAKE) $(submake_extras) -C $(BPFDIR) ARCH= CROSS_COMPILE=	      \
-+		    OUTPUT=$(HOST_BUILD_DIR)/libbpf/ CC="$(HOSTCC)" LD="$(HOSTLD)" \
-+		    EXTRA_CFLAGS='-g $(OPT_FLAGS) $(EXTRA_CFLAGS)' \
-+		    DESTDIR=$(HOST_SCRATCH_DIR) prefix= all install_headers
++ifneq ($(HAVE_BPF),)
++TEST_GEN_PROGS += test_memcg_stat_cross_cpu
++BPF_SRCS := memcg_stat_cross_cpu.bpf.c
++# Suppresses lib.mk's default C link rule, re-supplied below.
++OVERRIDE_TARGETS := 1
 +endif
 +
-+# ---- host bpftool ---------------------------------------------------------
-+$(DEFAULT_BPFTOOL): $(wildcard $(BPFTOOLDIR)/*.[ch] $(BPFTOOLDIR)/Makefile) \
-+		    $(HOST_BPFOBJ) | $(HOST_BUILD_DIR)/bpftool
-+	$(Q)$(MAKE) $(submake_extras) -C $(BPFTOOLDIR)		  \
-+		    ARCH= CROSS_COMPILE= CC="$(HOSTCC)" LD="$(HOSTLD)" \
-+		    EXTRA_CFLAGS='-g $(OPT_FLAGS) $(EXTRA_CFLAGS) $(HOST_USERCFLAGS)' \
-+		    EXTRA_LDFLAGS='$(EXTRA_LDFLAGS)'		  \
-+		    OUTPUT=$(HOST_BUILD_DIR)/bpftool/		  \
-+		    LIBBPF_OUTPUT=$(HOST_BUILD_DIR)/libbpf/	  \
-+		    LIBBPF_DESTDIR=$(HOST_SCRATCH_DIR)/		  \
-+		    prefix= DESTDIR=$(HOST_SCRATCH_DIR)/ install-bin
+ include ../lib.mk
+ include lib/libcgroup.mk
+ 
++ifneq ($(HAVE_BPF),)
++include ../lib.bpf.mk
 +
-+# ---- build vmlinux.h ------------------------------------------------------
-+# Replace vmlinux.h only when its contents change. A new timestamp alone would
-+# rebuild every BPF object and skeleton.
-+$(INCLUDE_DIR)/vmlinux.h: $(VMLINUX_BTF) $(BPFTOOL) | $(INCLUDE_DIR)
-+ifeq ($(VMLINUX_H),)
-+	$(call msg,GEN,,$@)
-+	$(Q)test -n "$(VMLINUX_BTF)" || { \
-+		echo "lib.bpf.mk: no vmlinux with BTF at any of \"$(VMLINUX_BTF_PATHS)\"" >&2; \
-+		exit 1; }
-+	$(Q)$(BPFTOOL) btf dump file $(VMLINUX_BTF) format c > $@.tmp
-+else
-+	$(call msg,CP,,$@)
-+	$(Q)cp "$(VMLINUX_H)" $@.tmp
-+endif
-+	$(Q)cmp -s $@.tmp $@ || mv $@.tmp $@
-+	$(Q)rm -f $@.tmp
-+
-+# ---- BPF objects and skeletons --------------------------------------------
-+BPF_PROG_EXT ?= .bpf.c
-+# Each source must end with BPF_PROG_EXT so Make can remove that ending.
-+bpf_bad_srcs := $(filter-out %$(BPF_PROG_EXT),$(BPF_SRCS))
-+ifneq ($(bpf_bad_srcs),)
-+$(error lib.bpf.mk: BPF_SRCS entries must end in $(BPF_PROG_EXT): $(bpf_bad_srcs))
-+endif
-+bpf_stems := $(patsubst %$(BPF_PROG_EXT),%,$(notdir $(BPF_SRCS)))
-+# Reject any dot left after removing BPF_PROG_EXT. For example, foo.bpf.c leaves
-+# foo.bpf when the ending is set to .c.
-+bpf_dotted_stems := $(filter-out $(basename $(bpf_stems)),$(bpf_stems))
-+ifneq ($(bpf_dotted_stems),)
-+$(error lib.bpf.mk: BPF_SRCS basenames must not contain a dot: $(bpf_dotted_stems))
-+endif
-+# Generated files use only the source filename. Reject equal filenames instead
-+# of letting one replace another.
-+ifneq ($(words $(bpf_stems)),$(words $(sort $(bpf_stems))))
-+$(error lib.bpf.mk: BPF_SRCS has colliding basenames: $(BPF_SRCS))
-+endif
-+BPF_SKEL_EXT    ?= .skel.h
-+BPF_SUBSKEL_EXT := $(patsubst %skel.h,%subskel.h,$(BPF_SKEL_EXT))
-+# BPF_SKEL_EXT must end in skel.h so the subskeleton gets a different name.
-+ifneq ($(BPF_GEN_SUBSKEL),)
-+ifeq ($(BPF_SUBSKEL_EXT),$(BPF_SKEL_EXT))
-+$(error lib.bpf.mk: BPF_GEN_SUBSKEL needs BPF_SKEL_EXT to end in skel.h: $(BPF_SKEL_EXT))
-+endif
-+endif
-+BPF_OBJS  := $(addprefix $(BPF_OBJ_DIR)/,$(addsuffix .bpf.o,$(bpf_stems)))
-+BPF_SKELS := $(addprefix $(BPF_SKEL_DIR)/,$(addsuffix $(BPF_SKEL_EXT),$(bpf_stems)))
-+
-+# Make one rule for each source. A global vpath would also match the test's
-+# normal C rules when BPF_PROG_EXT is .c.
-+define bpf_obj_rule
-+$(BPF_OBJ_DIR)/$(patsubst %$(BPF_PROG_EXT),%,$(notdir $(1))).bpf.o: $(1)	\
-+		$(BPF_EXTRA_HDRS) $(INCLUDE_DIR)/vmlinux.h			\
-+		| $(BPF_OBJ_DIR) $(BPFOBJ)
-+	$$(call BPF_BUILD_RULE,$$<,$$@)
-+endef
-+$(foreach src,$(BPF_SRCS),$(eval $(call bpf_obj_rule,$(src))))
-+
-+# Link three times and compare the last two outputs. A correct linker must not
-+# change an object that it already linked.
-+$(BPF_SKELS): $(BPF_SKEL_DIR)/%$(BPF_SKEL_EXT): $(BPF_OBJ_DIR)/%.bpf.o $(BPFTOOL) | $(BPF_SKEL_DIR)
-+	$(call msg,GEN-SKEL,,$@)
-+	$(Q)$(BPFTOOL) gen object $(<:.o=.linked1.o) $<
-+	$(Q)$(BPFTOOL) gen object $(<:.o=.linked2.o) $(<:.o=.linked1.o)
-+	$(Q)$(BPFTOOL) gen object $(<:.o=.linked3.o) $(<:.o=.linked2.o)
-+	$(Q)diff $(<:.o=.linked2.o) $(<:.o=.linked3.o)
-+	$(Q)$(BPFTOOL) gen skeleton $(<:.o=.linked3.o) name $(notdir $(<:.bpf.o=)) > $@
-+ifneq ($(BPF_GEN_SUBSKEL),)
-+	$(Q)$(BPFTOOL) gen subskeleton $(<:.o=.linked3.o) name $(notdir $(<:.bpf.o=)) > $(@:$(BPF_SKEL_EXT)=$(BPF_SUBSKEL_EXT))
-+endif
-+	$(Q)rm -f $(<:.o=.linked1.o) $(<:.o=.linked2.o) $(<:.o=.linked3.o)
-+
-+# Read the header dependencies written by -MMD.
-+-include $(BPF_OBJS:.o=.d)
-+
-+# ---- values for the test Makefile -----------------------------------------
-+# Add paths for generated skeletons and vmlinux.h. Put the new libbpf headers
-+# first so an older copy under BPF_SKEL_DIR cannot be used by mistake.
-+CFLAGS += -I$(INCLUDE_DIR) -I$(OUTPUT) -I$(BPF_SKEL_DIR)
-+
-+# Add target zstd when pkg-config finds it. A cross build must use the target
-+# pkg-config, not the host one.
-+PKG_CONFIG ?= $(CROSS_COMPILE)pkg-config
-+BPF_LDLIBS := $(BPFOBJ) -lelf -lz
-+ifneq ($(shell $(PKG_CONFIG) --exists libzstd 2>/dev/null && echo y),)
-+BPF_LDLIBS += -lzstd
++# The default link rule for the plain tests, which OVERRIDE_TARGETS removed.
++LOCAL_HDRS += $(selfdir)/kselftest_harness.h $(selfdir)/kselftest.h
++$(OUTPUT)/%: %.c $(LOCAL_HDRS)
++	$(call msg,CC,,$@)
++	$(Q)$(LINK.c) $(filter-out $(LOCAL_HDRS),$^) $(LDLIBS) -o $@
 +endif
 +
-+# lib.mk made its "all" list before this file was included. Add the skeletons
-+# here so they are built.
-+all: $(BPF_SKELS)
+ $(OUTPUT)/test_core: $(LIBCGROUP_O)
+ $(OUTPUT)/test_cpu: $(LIBCGROUP_O)
+ $(OUTPUT)/test_cpuset: $(LIBCGROUP_O)
+@@ -33,3 +75,13 @@ $(OUTPUT)/test_kmem: $(LIBCGROUP_O)
+ $(OUTPUT)/test_memcontrol: $(LIBCGROUP_O)
+ $(OUTPUT)/test_pids: $(LIBCGROUP_O)
+ $(OUTPUT)/test_zswap: $(LIBCGROUP_O)
 +
-+# The skeleton already embeds each BPF object in the test binary. To install the
-+# objects separately, add TEST_GEN_FILES += $(BPF_OBJS).
++ifneq ($(HAVE_BPF),)
++# Links cgroup_util and the skeleton against the libbpf lib.bpf.mk built.  The
++# uapi include is private to this binary: the other tests here must keep
++# resolving <linux/*.h> against the system headers.
++$(OUTPUT)/test_memcg_stat_cross_cpu: private CFLAGS += -I$(top_srcdir)/tools/include/uapi
++$(OUTPUT)/test_memcg_stat_cross_cpu: test_memcg_stat_cross_cpu.c \
++					$(BPF_SKELS) $(LIBCGROUP_O) $(BPFOBJ)
++	$(call bpf_link,$@,$< $(LIBCGROUP_O))
++endif
+diff --git a/tools/testing/selftests/cgroup/config b/tools/testing/selftests/cgroup/config
+index 39f979690dd3..356b6a533d88 100644
+--- a/tools/testing/selftests/cgroup/config
++++ b/tools/testing/selftests/cgroup/config
+@@ -4,3 +4,8 @@ CONFIG_CGROUP_FREEZER=y
+ CONFIG_CGROUP_SCHED=y
+ CONFIG_MEMCG=y
+ CONFIG_PAGE_COUNTER=y
++CONFIG_BPF=y
++CONFIG_BPF_SYSCALL=y
++CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_BTF=y
++CONFIG_DEBUG_INFO_DWARF4=y
+diff --git a/tools/testing/selftests/cgroup/lib/cgroup_util.c b/tools/testing/selftests/cgroup/lib/cgroup_util.c
+index 2596c12cd864..0ae76e75e7f8 100644
+--- a/tools/testing/selftests/cgroup/lib/cgroup_util.c
++++ b/tools/testing/selftests/cgroup/lib/cgroup_util.c
+@@ -54,6 +54,89 @@ ssize_t write_text(const char *path, char *buf, ssize_t len)
+ 	return len < 0 ? -errno : len;
+ }
+ 
++/**
++ * cg_get_id - return the kernfs id of a cgroup directory
++ * @cgroup: absolute path to the cgroup directory
++ *
++ * This is what the kernel gives BPF as cgrp->kn->id, taken from the cgroupfs
++ * file handle.  It is not the directory's st_ino.
++ *
++ * Return: The cgroup id, or 0 on failure.
++ */
++unsigned long long cg_get_id(const char *cgroup)
++{
++	union {
++		unsigned long long id;
++		unsigned char raw[8];
++	} handle;
++	struct file_handle *fhp, *fhp2;
++	int mount_id, fhsize, err;
++	unsigned long long ret = 0;
 +
-+# $1 = binary, $2 = test source. Use the same compile and link flags as lib.mk.
-+define bpf_link
-+	$(call msg,BINARY,,$1)
-+	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH) $2 \
-+		$(BPF_LDLIBS) $(LDLIBS) -o $1
-+endef
++	fhsize = sizeof(*fhp);
++	fhp = calloc(1, fhsize);
++	if (!fhp)
++		return 0;
 +
-+EXTRA_CLEAN += $(sort $(SCRATCH_DIR) $(HOST_SCRATCH_DIR))		\
-+	       $(addprefix $(BPF_OBJ_DIR)/,*.bpf.o *.bpf.d *.linked*.o)	\
-+	       $(addprefix $(BPF_SKEL_DIR)/,*$(BPF_SKEL_EXT) *$(BPF_SUBSKEL_EXT))
++	/* The probe fails and reports the size; a cgroupfs handle is 8 bytes. */
++	err = name_to_handle_at(AT_FDCWD, cgroup, fhp, &mount_id, 0);
++	if (err >= 0 || fhp->handle_bytes != 8)
++		goto out;
++
++	fhsize = sizeof(*fhp) + fhp->handle_bytes;
++	fhp2 = realloc(fhp, fhsize);
++	if (!fhp2)
++		goto out;
++	fhp = fhp2;
++
++	if (name_to_handle_at(AT_FDCWD, cgroup, fhp, &mount_id, 0) < 0)
++		goto out;
++
++	memcpy(handle.raw, fhp->f_handle, 8);
++	ret = handle.id;
++out:
++	free(fhp);
++	return ret;
++}
++
++/**
++ * cg_touch_pages - write to every page of a region so it becomes resident
++ * @buf: start of the region
++ * @size: length of the region in bytes
++ *
++ * The pages are charged to the calling task's cgroup, on the cpu it runs on.
++ */
++void cg_touch_pages(char *buf, size_t size)
++{
++	long page_size = sysconf(_SC_PAGESIZE);
++	char *ptr;
++
++	if (page_size <= 0)
++		page_size = BUF_SIZE;
++
++	for (ptr = buf; ptr < buf + size; ptr += page_size)
++		*ptr = 0;
++}
++
++/**
++ * cg_alloc_anon - allocate anonymous memory and fault it in
++ * @size: bytes to allocate
++ *
++ * Return: The region, to be released with free(), or NULL.
++ */
++char *cg_alloc_anon(size_t size)
++{
++	char *buf = malloc(size);
++
++	if (!buf) {
++		fprintf(stderr, "malloc() failed\n");
++		return NULL;
++	}
++
++	cg_touch_pages(buf, size);
++	return buf;
++}
++
+ char *cg_name(const char *root, const char *name)
+ {
+ 	size_t len = strlen(root) + strlen(name) + 2;
+diff --git a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
+index 8ebb2b4d4ec0..640778018780 100644
+--- a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
++++ b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
+@@ -54,6 +54,9 @@ extern ssize_t write_text(const char *path, char *buf, ssize_t len);
+ extern int cg_find_controller_root(char *root, size_t len, const char *controller);
+ extern int cg_find_unified_root(char *root, size_t len, bool *nsdelegate);
+ extern char *cg_name(const char *root, const char *name);
++extern unsigned long long cg_get_id(const char *cgroup);
++extern void cg_touch_pages(char *buf, size_t size);
++extern char *cg_alloc_anon(size_t size);
+ extern char *cg_name_indexed(const char *root, const char *name, int index);
+ extern char *cg_control(const char *cgroup, const char *control);
+ extern int cg_create(const char *cgroup);
+diff --git a/tools/testing/selftests/cgroup/memcg_stat_cross_cpu.bpf.c b/tools/testing/selftests/cgroup/memcg_stat_cross_cpu.bpf.c
+new file mode 100644
+index 000000000000..3c2acd49c16b
+--- /dev/null
++++ b/tools/testing/selftests/cgroup/memcg_stat_cross_cpu.bpf.c
+@@ -0,0 +1,86 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (c) 2026 Meta Platforms, Inc. and affiliates. */
++#define BPF_NO_KFUNC_PROTOTYPES
++#include <vmlinux.h>
++#include <bpf/bpf_helpers.h>
++#include <bpf/bpf_core_read.h>
++#include "memcg_stat_cross_cpu.h"
++
++char _license[] SEC("license") = "GPL";
++
++/*
++ * Declared here rather than taken from vmlinux.h, which only has them if the
++ * build host's own kernel does.  A kernel without them is caught at run time.
++ */
++struct mem_cgroup *bpf_get_mem_cgroup(struct cgroup_subsys_state *css) __ksym;
++void bpf_put_mem_cgroup(struct mem_cgroup *memcg) __ksym;
++void bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg) __ksym;
++unsigned long bpf_mem_cgroup_page_state(struct mem_cgroup *memcg, int idx) __ksym;
++unsigned long bpf_mem_cgroup_vm_events(struct mem_cgroup *memcg,
++				       enum vm_event_item event) __ksym;
++
++/*
++ * Results keyed by cgroup id, which is the same value cg_get_id() returns.
++ * Userspace resizes the map to the subtree before load.
++ */
++struct {
++	__uint(type, BPF_MAP_TYPE_HASH);
++	__uint(max_entries, 1);
++	__type(key, __u64);
++	__type(value, struct memcg_stat_snapshot);
++} results SEC(".maps");
++
++/*
++ * Flush once at the subtree root, then read each cgroup through the kfuncs.
++ * iter.s because the flush kfunc may sleep.
++ */
++SEC("iter.s/cgroup")
++int cgroup_memcg_stat_cross_cpu(struct bpf_iter__cgroup *ctx)
++{
++	struct cgroup *cgrp = ctx->cgroup;
++	struct memcg_stat_snapshot snap = {};
++	struct cgroup_subsys_state *css;
++	struct mem_cgroup *memcg;
++	int idx_anon, idx_file, idx_shmem, idx_fmapped, idx_pgfault;
++	__u64 cg_id;
++
++	/* The walk ends with a NULL element; return 0 so it runs to the end. */
++	if (!cgrp)
++		return 0;
++
++	css = &cgrp->self;
++	memcg = bpf_get_mem_cgroup(css);
++	if (!memcg)
++		return 0;
++
++	/*
++	 * seq_num 0 is the subtree root in DESCENDANTS_PRE order, and the flush
++	 * is subtree-wide, so one call brings every descendant up to date.
++	 */
++	if (ctx->meta->seq_num == 0)
++		bpf_mem_cgroup_flush_stats(memcg);
++
++	cg_id = BPF_CORE_READ(cgrp, kn, id);
++	snap.cgroup_id = cg_id;
++
++	idx_anon = bpf_core_enum_value(enum node_stat_item, NR_ANON_MAPPED);
++	idx_file = bpf_core_enum_value(enum node_stat_item, NR_FILE_PAGES);
++	idx_shmem = bpf_core_enum_value(enum node_stat_item, NR_SHMEM);
++	idx_fmapped = bpf_core_enum_value(enum node_stat_item, NR_FILE_MAPPED);
++	idx_pgfault = bpf_core_enum_value(enum vm_event_item, PGFAULT);
++
++	snap.anon = bpf_mem_cgroup_page_state(memcg, idx_anon);
++	snap.file = bpf_mem_cgroup_page_state(memcg, idx_file);
++	snap.shmem = bpf_mem_cgroup_page_state(memcg, idx_shmem);
++	snap.file_mapped = bpf_mem_cgroup_page_state(memcg, idx_fmapped);
++	snap.pgfault = bpf_mem_cgroup_vm_events(memcg, idx_pgfault);
++
++	/* page_counter fields need no kfunc; read them off the trusted ptr. */
++	snap.usage_pages = BPF_CORE_READ(memcg, memory.usage.counter);
++	snap.max_pages = BPF_CORE_READ(memcg, memory.max);
++
++	bpf_map_update_elem(&results, &cg_id, &snap, BPF_ANY);
++
++	bpf_put_mem_cgroup(memcg);
++	return 0;
++}
+diff --git a/tools/testing/selftests/cgroup/memcg_stat_cross_cpu.h b/tools/testing/selftests/cgroup/memcg_stat_cross_cpu.h
+new file mode 100644
+index 000000000000..7177ab3b9380
+--- /dev/null
++++ b/tools/testing/selftests/cgroup/memcg_stat_cross_cpu.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (c) 2026 Meta Platforms, Inc. and affiliates. */
++#ifndef __MEMCG_STAT_CROSS_CPU_H
++#define __MEMCG_STAT_CROSS_CPU_H
++
++/*
++ * One per-cgroup snapshot, written by the BPF program and read by the test, so
++ * the fields are fixed-width rather than the long the other cgroup tests use.
++ */
++struct memcg_stat_snapshot {
++	__u64 cgroup_id;
++	__u64 anon;		/* NR_ANON_MAPPED, bytes */
++	__u64 file;		/* NR_FILE_PAGES, bytes */
++	__u64 shmem;		/* NR_SHMEM, bytes */
++	__u64 file_mapped;	/* NR_FILE_MAPPED, bytes */
++	__u64 pgfault;		/* PGFAULT, count */
++	__u64 usage_pages;	/* page_counter memory.usage, in PAGES */
++	__u64 max_pages;	/* page_counter memory.max, in PAGES */
++};
++
++#endif /* __MEMCG_STAT_CROSS_CPU_H */
+diff --git a/tools/testing/selftests/cgroup/test_memcg_stat_cross_cpu.c b/tools/testing/selftests/cgroup/test_memcg_stat_cross_cpu.c
+new file mode 100644
+index 000000000000..9946c41c7a90
+--- /dev/null
++++ b/tools/testing/selftests/cgroup/test_memcg_stat_cross_cpu.c
+@@ -0,0 +1,596 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (c) 2026 Meta Platforms, Inc. and affiliates. */
++
++/*
++ * Compare the memcg BPF kfuncs with memory.stat over a cgroup subtree whose
++ * charge is scattered across many CPUs.
++ *
++ * One child per leaf faults a region on K different CPUs and holds it, then the
++ * subtree is read by a SEC("iter.s/cgroup") program and from memory.stat.  The
++ * two readers must return the same values, which checks the readers.  The flush
++ * is checked by two invariants: each leaf's anon covers the charge it holds, and
++ * the root's equals the sum of the leaves'.  Comparing the readers cannot check
++ * the flush, because a flush clears the pending-update count the next one is
++ * gated on, so the second reader returns what the first one left.
++ *
++ * The comparison is exact, which needs the subtree quiesced: only this test's
++ * children charge it, and they block once their memory is faulted in.  Global
++ * reclaim would move the numbers and the test would report a mismatch.
++ * file, shmem and file_mapped are 0 under this workload; they are compared to
++ * keep the field set complete, not because the workload produces them.
++ */
++#define _GNU_SOURCE
++
++#include <linux/limits.h>
++#include <fcntl.h>
++#include <limits.h>
++#include <stdint.h>
++#include <sched.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
++#include <sys/wait.h>
++
++#include <linux/bpf.h>
++#include <bpf/bpf.h>
++#include <bpf/libbpf.h>
++#include <bpf/btf.h>
++
++#include "kselftest.h"
++#include "cgroup_util.h"
++#include "memcg_stat_cross_cpu.h"
++#include "memcg_stat_cross_cpu.skel.h"
++
++#define SUBTREE_NAME		"mcg_xcpu"
++
++#define MEMCG_CHARGE_BATCH	64
++
++#define FLUSH_MARGIN		4
++
++#define CHARGE_WAIT_RETRIES	100
++
++static char root[PATH_MAX];
++static char *subtree_root;
++static long page_size;
++
++/* Values parsed from memory.stat / memory.current, in bytes. */
++struct file_snap {
++	long anon, file, shmem, file_mapped, pgfault;
++	long current;
++};
++
++struct cg_node {
++	char path[PATH_MAX];
++	unsigned long long id;
++	bool is_leaf;			/* holds a charge of its own */
++	struct memcg_stat_snapshot bpf;	/* read through the kfuncs */
++	struct file_snap file;		/* read from memory.stat */
++};
++
++static struct cg_node *nodes;	/* DFS order: a parent precedes its children */
++static int n_nodes;
++static int n_leaves;
++
++/* ---- CPUs this test may run on ----------------------------------------- */
++
++static cpu_set_t allowed_cpus;
++static int n_cpu;
++
++static int nth_cpu(int n)
++{
++	int i, seen = 0;
++
++	for (i = 0; i < CPU_SETSIZE; i++) {
++		if (!CPU_ISSET(i, &allowed_cpus))
++			continue;
++		if (seen++ == n % n_cpu)
++			return i;
++	}
++	return -1;
++}
++
++static int pin_cpu(int cpu)
++{
++	cpu_set_t set;
++
++	if (cpu < 0)
++		return -1;
++
++	CPU_ZERO(&set);
++	CPU_SET(cpu, &set);
++	return sched_setaffinity(0, sizeof(set), &set);
++}
++
++/* ---- tree construction -------------------------------------------------- */
++
++static int add_node(const char *path, bool is_leaf)
++{
++	struct cg_node *n = &nodes[n_nodes];
++
++	if (cg_create(path))
++		return -1;
++
++	strncpy(n->path, path, sizeof(n->path) - 1);
++	n->id = cg_get_id(path);
++	n->is_leaf = is_leaf;
++	if (is_leaf)
++		n_leaves++;
++	n_nodes++;
++	return 0;
++}
++
++/* Create # @levels more levels below @path.
++ * Only the last level is charged.
++ */
++static int build_children(const char *path, int fanout, int levels)
++{
++	char child[PATH_MAX];
++	int i;
++
++	if (levels == 0)
++		return 0;
++
++	/* Enable memory on this interior node so its children get a memcg. */
++	if (cg_write(path, "cgroup.subtree_control", "+memory"))
++		return -1;
++
++	for (i = 0; i < fanout; i++) {
++		snprintf(child, sizeof(child), "%s/c%d", path, i);
++		if (add_node(child, levels == 1))
++			return -1;
++		if (build_children(child, fanout, levels - 1))
++			return -1;
++	}
++	return 0;
++}
++
++static size_t tree_capacity(int fanout, int depth)
++{
++	size_t total = 1, level = 1;
++	int d;
++
++	for (d = 0; d < depth; d++) {
++		level *= fanout;
++		total += level;
++	}
++	return total;
++}
++
++static int build_tree(int fanout, int depth, int *root_fd)
++{
++	n_nodes = 0;
++	n_leaves = 0;
++	nodes = calloc(tree_capacity(fanout, depth), sizeof(*nodes));
++	if (!nodes)
++		return -1;
++
++	if (add_node(subtree_root, depth == 0))
++		return -1;
++
++	*root_fd = open(subtree_root, O_RDONLY);
++	if (*root_fd < 0)
++		return -1;
++
++	return build_children(subtree_root, fanout, depth);
++}
++
++/*
++ * Remove in reverse creation order, so a child always goes before its parent.
++ * cg_destroy() kills the charging children; reap them afterwards.
++ */
++static void destroy_tree(void)
++{
++	int i;
++
++	if (!nodes)
++		return;
++
++	for (i = n_nodes - 1; i >= 0; i--)
++		cg_destroy(nodes[i].path);
++	free(nodes);
++	nodes = NULL;
++
++	while (waitpid(-1, NULL, 0) > 0)
++		;
++}
++
++/* ---- cross-CPU charge (one child per leaf) ------------------------------ */
++
++struct charge_args {
++	size_t bytes;	/* anon this leaf holds */
++	int base;	/* index of the first CPU to fault on */
++	int k;		/* CPUs to spread the charge over */
++};
++
++static int charge_leaf(const char *cgroup, void *arg)
++{
++	const struct charge_args *ca = arg;
++	int ppid = getppid();
++	size_t per, off;
++	char *buf;
++	int j;
++
++	buf = malloc(ca->bytes);
++	if (!buf) {
++		fprintf(stderr, "malloc() failed\n");
++		return -1;
++	}
++
++	/* Whole pages, or several slices would share one page and one CPU. */
++	per = ca->bytes / ca->k / page_size * page_size;
++
++	for (j = 0; j < ca->k; j++) {
++		off = (size_t)j * per;
++		if (pin_cpu(nth_cpu(ca->base + j))) {
++			free(buf);
++			return -1;
++		}
++		cg_touch_pages(buf + off,
++			       j == ca->k - 1 ? ca->bytes - off : per);
++	}
++
++	while (getppid() == ppid)
++		sleep(1);
++
++	free(buf);
++	return 0;
++}
++
++static size_t leaf_charge(size_t want, int k)
++{
++	long online = sysconf(_SC_NPROCESSORS_ONLN);
++	size_t floor;
++
++	floor = (size_t)FLUSH_MARGIN * MEMCG_CHARGE_BATCH * online *
++		page_size / n_leaves;
++	if (want < floor)
++		want = floor;
++	if (want < (size_t)k * page_size)
++		want = (size_t)k * page_size;
++
++	return (want + page_size - 1) / page_size * page_size;
++}
++
++static int start_chargers(int k, size_t bytes)
++{
++	struct charge_args ca = { .bytes = bytes, .k = k };
++	long prev, cur;
++	int i, retries;
++
++	for (i = 0; i < n_nodes; i++) {
++		if (!nodes[i].is_leaf)
++			continue;
++		if (cg_run_nowait(nodes[i].path, charge_leaf, &ca) < 0) {
++			ksft_print_msg("cannot start a charger on %s\n",
++				       nodes[i].path);
++			return -1;
++		}
++		ca.base += k;
++	}
++
++	for (i = 0; i < n_nodes; i++) {
++		if (!nodes[i].is_leaf)
++			continue;
++		/*
++		 * Wait for the charge to both cover the region and stop
++		 * moving.
++		 */
++		prev = -1;
++		for (retries = CHARGE_WAIT_RETRIES; retries; retries--) {
++			cur = cg_read_long(nodes[i].path, "memory.current");
++			if (cur >= (long)bytes && cur == prev)
++				break;
++			prev = cur;
++			usleep(DEFAULT_WAIT_INTERVAL_US / 10);
++		}
++		if (!retries) {
++			ksft_print_msg("%s never reached its charge\n",
++				       nodes[i].path);
++			return -1;
++		}
++	}
++	return 0;
++}
++
++/* ---- the two readers ---------------------------------------------------- */
++
++/*
++ * Collect what the kfuncs report.  The program flushes at the first cgroup it
++ * sees, the subtree root in DESCENDANTS_PRE order.
++ */
++static int read_bpf(int root_fd)
++{
++	DECLARE_LIBBPF_OPTS(bpf_iter_attach_opts, opts);
++	struct memcg_stat_cross_cpu *skel = NULL;
++	union bpf_iter_link_info linfo = {};
++	struct bpf_link *link = NULL;
++	int ret = -1, i, mfd, fd;
++	char buf[4096];
++	ssize_t r;
++
++	skel = memcg_stat_cross_cpu__open();
++	if (!skel) {
++		ksft_print_msg("skel open failed\n");
++		return -1;
++	}
++	if (bpf_map__set_max_entries(skel->maps.results, n_nodes + 8)) {
++		ksft_print_msg("set max_entries failed\n");
++		goto out;
++	}
++	if (memcg_stat_cross_cpu__load(skel)) {
++		ksft_print_msg("skel load failed\n");
++		goto out;
++	}
++
++	linfo.cgroup.cgroup_fd = root_fd;
++	linfo.cgroup.order = BPF_CGROUP_ITER_DESCENDANTS_PRE;
++	opts.link_info = &linfo;
++	opts.link_info_len = sizeof(linfo);
++
++	link = bpf_program__attach_iter(skel->progs.cgroup_memcg_stat_cross_cpu,
++					&opts);
++	if (!link) {
++		ksft_print_msg("attach iter failed\n");
++		goto out;
++	}
++
++	fd = bpf_iter_create(bpf_link__fd(link));
++	if (fd < 0) {
++		ksft_print_msg("bpf_iter_create failed\n");
++		goto out;
++	}
++	while ((r = read(fd, buf, sizeof(buf))) > 0)
++		;
++	close(fd);
++	if (r) {
++		ksft_print_msg("bpf walk failed\n");
++		goto out;
++	}
++
++	mfd = bpf_map__fd(skel->maps.results);
++	for (i = 0; i < n_nodes; i++)
++		if (bpf_map_lookup_elem(mfd, &nodes[i].id, &nodes[i].bpf)) {
++			ksft_print_msg("no map entry for %s\n", nodes[i].path);
++			goto out;
++		}
++	ret = 0;
++out:
++	bpf_link__destroy(link);
++	memcg_stat_cross_cpu__destroy(skel);
++	return ret;
++}
++
++/* Read the same numbers from cgroupfs, on the same tree, right afterwards. */
++static int read_files(void)
++{
++	int i;
++
++	for (i = 0; i < n_nodes; i++) {
++		const char *path = nodes[i].path;
++		struct file_snap *f = &nodes[i].file;
++
++		f->anon = cg_read_key_long(path, "memory.stat", "anon ");
++		f->file = cg_read_key_long(path, "memory.stat", "file ");
++		f->shmem = cg_read_key_long(path, "memory.stat", "shmem ");
++		f->file_mapped = cg_read_key_long(path, "memory.stat",
++						  "file_mapped ");
++		f->pgfault = cg_read_key_long(path, "memory.stat", "pgfault ");
++		f->current = cg_read_long(path, "memory.current");
++
++		if (f->anon < 0 || f->file < 0 || f->shmem < 0 ||
++		    f->file_mapped < 0 || f->pgfault < 0 || f->current < 0) {
++			ksft_print_msg("reading the stats of %s failed\n", path);
++			return -1;
++		}
++	}
++	return 0;
++}
++
++/* ---- comparison --------------------------------------------------------- */
++
++static void dump_node(const struct cg_node *n)
++{
++	ksft_print_msg("%s bpf : anon=%llu file=%llu shmem=%llu fmapped=%llu pgfault=%llu\n",
++		       n->path, n->bpf.anon, n->bpf.file, n->bpf.shmem,
++		       n->bpf.file_mapped, n->bpf.pgfault);
++	ksft_print_msg("%s file: anon=%ld file=%ld shmem=%ld fmapped=%ld pgfault=%ld\n",
++		       n->path, n->file.anon, n->file.file, n->file.shmem,
++		       n->file.file_mapped, n->file.pgfault);
++}
++
++/* The subtree is quiesced, so the two readers must agree exactly. */
++#define STAT_TOLERANCE_PCT	0
++
++static int check_tree(size_t charged)
++{
++	unsigned long long root_anon = 0, leaf_anon = 0;
++	int i, bad = 0;
++
++	for (i = 0; i < n_nodes; i++) {
++		const struct cg_node *n = &nodes[i];
++		const struct memcg_stat_snapshot *b = &n->bpf;
++
++		if (!values_close(b->anon, n->file.anon, STAT_TOLERANCE_PCT) ||
++		    !values_close(b->file, n->file.file, STAT_TOLERANCE_PCT) ||
++		    !values_close(b->shmem, n->file.shmem, STAT_TOLERANCE_PCT) ||
++		    !values_close(b->file_mapped, n->file.file_mapped,
++				  STAT_TOLERANCE_PCT) ||
++		    !values_close(b->pgfault, n->file.pgfault,
++				  STAT_TOLERANCE_PCT)) {
++			ksft_print_msg("kfuncs disagree with memory.stat\n");
++			dump_node(n);
++			bad++;
++		}
++
++		/*
++		 * Usage is a live page_counter read, not a flushed statistic,
++		 * so it is only a bound.
++		 */
++		if (b->anon > b->usage_pages * (unsigned long long)page_size ||
++		    n->file.anon > n->file.current) {
++			ksft_print_msg("%s: anon above usage: bpf %llu/%llu file %ld/%ld\n",
++				       n->path, b->anon,
++				       b->usage_pages * (unsigned long long)page_size,
++				       n->file.anon, n->file.current);
++			bad++;
++		}
++
++		if (n->is_leaf) {
++			if (b->anon < charged) {
++				ksft_print_msg("%s: flushed anon %llu, charged %zu\n",
++					       n->path, b->anon, charged);
++				bad++;
++			}
++			leaf_anon += b->anon;
++		}
++		if (i == 0)
++			root_anon = b->anon;
++	}
++
++	if (root_anon != leaf_anon) {
++		ksft_print_msg("subtree root anon %llu, sum of the leaves %llu\n",
++			       root_anon, leaf_anon);
++		bad++;
++	}
++	return bad ? -1 : 0;
++}
++
++/*
++ * memory.max is never set, so the counter must read PAGE_COUNTER_MAX.  That is
++ * LONG_MAX on a 32-bit kernel and LONG_MAX / PAGE_SIZE elsewhere, and the width
++ * of a userspace long does not tell us which, so accept either.
++ */
++static int check_unlimited(void)
++{
++	unsigned long long max64 = (unsigned long long)INT64_MAX / page_size;
++	unsigned long long max32 = INT32_MAX;
++
++	if (cg_read_strcmp(nodes[0].path, "memory.max", "max\n"))
++		return 0;
++
++	if (nodes[0].bpf.max_pages != max64 && nodes[0].bpf.max_pages != max32) {
++		ksft_print_msg("memory.max reads max, kfunc reports %llu pages\n",
++			       nodes[0].bpf.max_pages);
++		return -1;
++	}
++	return 0;
++}
++
++/* ---- one case ----------------------------------------------------------- */
++
++struct testcase {
++	const char *name;
++	int fanout;
++	int depth;
++	int cpus_per_leaf;	/* K, or 0 for every CPU */
++	size_t resident_bytes;	/* anon per leaf, raised if too small */
++};
++
++static int run_case(const struct testcase *tc)
++{
++	int root_fd = -1, ret = KSFT_FAIL, k;
++	size_t charged;
++
++	if (build_tree(tc->fanout, tc->depth, &root_fd)) {
++		ksft_print_msg("cannot build the tree\n");
++		goto out;
++	}
++
++	k = tc->cpus_per_leaf;
++	if (k <= 0 || k > n_cpu)
++		k = n_cpu;
++	charged = leaf_charge(tc->resident_bytes, k);
++
++	ksft_print_msg("%s: %d cgroups, %d leaves, %d/%d cpus, %zuKB per leaf\n",
++		       tc->name, n_nodes, n_leaves, k, n_cpu, charged >> 10);
++
++	if (start_chargers(k, charged))
++		goto out;
++
++	/* kfuncs first: their flush is the one that has work to do */
++	if (read_bpf(root_fd) || read_files())
++		goto out;
++
++	if (!check_tree(charged) && !check_unlimited())
++		ret = KSFT_PASS;
++out:
++	if (root_fd >= 0)
++		close(root_fd);
++	destroy_tree();
++	return ret;
++}
++
++static const struct testcase cases[] = {
++	/* name, fanout, depth, K, anon per leaf */
++	{ "single_cpu_small_tree", 4, 2, 1, 2 << 20 },
++	{ "cross_cpu_small_tree", 4, 2, 0, 2 << 20 },
++	{ "single_cpu_large_tree", 10, 3, 1, 256 << 10 },
++	{ "cross_cpu_large_tree", 10, 3, 0, 256 << 10 },
++};
++
++static bool memcg_kfuncs_available(void)
++{
++	struct btf *btf;
++	bool ok;
++
++	btf = btf__load_vmlinux_btf();
++	if (!btf)
++		return false;
++	ok = btf__find_by_name_kind(btf, "bpf_get_mem_cgroup", BTF_KIND_FUNC) > 0;
++	btf__free(btf);
++	return ok;
++}
++
++int main(int argc, char **argv)
++{
++	int i;
++
++	ksft_print_header();
++
++	/* Feature gate first: a read-only BTF probe, no privilege needed. */
++	if (!memcg_kfuncs_available())
++		ksft_exit_skip("memcg BPF kfuncs are not available\n");
++
++	if (cg_find_unified_root(root, sizeof(root), NULL))
++		ksft_exit_skip("cgroup v2 isn't mounted\n");
++
++	if (cg_read_strstr(root, "cgroup.controllers", "memory"))
++		ksft_exit_skip("memory controller isn't available\n");
++
++	if (cg_read_strstr(root, "cgroup.subtree_control", "memory"))
++		if (cg_write(root, "cgroup.subtree_control", "+memory"))
++			ksft_exit_skip("Failed to set memory controller\n");
++
++	CPU_ZERO(&allowed_cpus);
++	if (sched_getaffinity(0, sizeof(allowed_cpus), &allowed_cpus))
++		ksft_exit_skip("cannot read CPU affinity\n");
++	n_cpu = CPU_COUNT(&allowed_cpus);
++	if (n_cpu <= 0)
++		ksft_exit_skip("no CPU to run on\n");
++
++	page_size = sysconf(_SC_PAGESIZE);
++	if (page_size <= 0)
++		page_size = BUF_SIZE;
++
++	subtree_root = cg_name(root, SUBTREE_NAME);
++	if (!subtree_root)
++		ksft_exit_skip("cannot build subtree root path\n");
++
++	/* Set the plan only once nothing can skip the whole run any more. */
++	ksft_set_plan(ARRAY_SIZE(cases));
++
++	for (i = 0; i < ARRAY_SIZE(cases); i++) {
++		switch (run_case(&cases[i])) {
++		case KSFT_PASS:
++			ksft_test_result_pass("%s\n", cases[i].name);
++			break;
++		default:
++			ksft_test_result_fail("%s\n", cases[i].name);
++			break;
++		}
++	}
++
++	free(subtree_root);
++	ksft_finished();
++}
+diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
+index 0ebf796f3cff..15ba46879504 100644
+--- a/tools/testing/selftests/cgroup/test_memcontrol.c
++++ b/tools/testing/selftests/cgroup/test_memcontrol.c
+@@ -26,7 +26,6 @@
+ 
+ static bool has_localevents;
+ static bool has_recursiveprot;
+-static int page_size;
+ 
+ int get_temp_fd(void)
+ {
+@@ -56,28 +55,12 @@ int alloc_pagecache(int fd, size_t size)
+ 	return -1;
+ }
+ 
+-static char *alloc_and_populate_anon(size_t size)
+-{
+-	char *buf, *ptr;
+-
+-	buf = malloc(size);
+-	if (buf == NULL) {
+-		fprintf(stderr, "malloc() failed\n");
+-		return NULL;
+-	}
+-
+-	for (ptr = buf; ptr < buf + size; ptr += page_size)
+-		*ptr = 0;
+-
+-	return buf;
+-}
+-
+ int alloc_anon(const char *cgroup, void *arg)
+ {
+ 	size_t size = (unsigned long)arg;
+ 	char *buf;
+ 
+-	buf = alloc_and_populate_anon(size);
++	buf = cg_alloc_anon(size);
+ 	if (!buf)
+ 		return -1;
+ 
+@@ -195,7 +178,7 @@ static int alloc_anon_50M_check(const char *cgroup, void *arg)
+ 	long anon, current;
+ 	int ret = -1;
+ 
+-	buf = alloc_and_populate_anon(size);
++	buf = cg_alloc_anon(size);
+ 	if (!buf)
+ 		return -1;
+ 
+@@ -420,7 +403,7 @@ static int alloc_anon_noexit(const char *cgroup, void *arg)
+ 	size_t size = (unsigned long)arg;
+ 	char *buf;
+ 
+-	buf = alloc_and_populate_anon(size);
++	buf = cg_alloc_anon(size);
+ 	if (!buf)
+ 		return -1;
+ 
+@@ -1001,7 +984,7 @@ static int alloc_anon_50M_check_swap(const char *cgroup, void *arg)
+ 	long mem_current, swap_current;
+ 	int ret = -1;
+ 
+-	buf = alloc_and_populate_anon(size);
++	buf = cg_alloc_anon(size);
+ 	if (!buf)
+ 		return -1;
+ 
+@@ -1793,10 +1776,6 @@ int main(int argc, char **argv)
+ 	char root[PATH_MAX];
+ 	int i, proc_status;
+ 
+-	page_size = sysconf(_SC_PAGE_SIZE);
+-	if (page_size <= 0)
+-		page_size = BUF_SIZE;
+-
+ 	ksft_print_header();
+ 	ksft_set_plan(ARRAY_SIZE(tests));
+ 	if (cg_find_unified_root(root, sizeof(root), NULL))
 -- 
 2.53.0-Meta
 
