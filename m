@@ -4,105 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1F88C5CFC1
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 08:16:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66086C5B572
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 08:22:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A3866B0653; Fri, 14 Aug 2026 04:16:12 -0400 (EDT)
+	id 606E16B0651; Fri, 14 Aug 2026 04:22:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05BFE6B0654; Fri, 14 Aug 2026 04:16:11 -0400 (EDT)
+	id 5DDAE6B0654; Fri, 14 Aug 2026 04:22:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5EA36B0655; Fri, 14 Aug 2026 04:16:11 -0400 (EDT)
+	id 51B1A6B0656; Fri, 14 Aug 2026 04:22:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C00976B0653
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 04:16:11 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5AF641603D2
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:16:11 +0000 (UTC)
-X-FDA: 85099167342.01.3141B0C
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf30.hostedemail.com (Postfix) with ESMTP id AA8E080002
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:16:09 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf30.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AC026B0651
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 04:22:22 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AA3111203B5
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:22:21 +0000 (UTC)
+X-FDA: 85099182882.10.6D6649E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D2B9F1C0007
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 08:22:19 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GGdB8HlR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786695369;
+	s=arc-20220608; t=1786695739;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wBnpdnWFKbMPDExaAanijJY4JVJrT8GIOKA7W6meRK8=;
-	b=nuMkPuBS6cgYV4Ri4BzLKTEqqG0rov4RHPSPJsK4xycI3pnQzp+vQnENxAkwHWe2y4ZZxp
-	8kH6rqA9T7FIvSZOglPOB42/xwBh2MpbRlGVvrx4LqryJ2wqgscRQ/uDJHFTOE2NWA2j+k
-	dLltN3N6yaCM4W2pqiwWDk6nOZIRJ4c=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EIsk+Wf4F0dnluT9f5h0Biozt4hmYjxe7upSyC3uPSI=;
+	b=oXpNODeMj6rFJVnQik67Gs7lJSvz3cSfpgXhH60bm6ZzFm3G2OOLFXQMb9HxLDOKDb8iCQ
+	+y+BcXPgFqsqIYwmLWb133buEt4GsjkRWqFI15qRDz5/zXLnpt6Y6Bgi0d/8+Xkh08MgEU
+	xYrkmvH26Wf7AorRyXMy/M3+sijo/k8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf30.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GGdB8HlR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786695369;
-	b=OhbHtDsTwMI188L6IbK2o+VAThY+fUAwvNNO8QdUrw+u9O2nhW/3N6d8ZxaPMdIsIL6BFT
-	Ix4yihx0QEMskiqhicKYt9sMcCul8yW95Zj4DyylpkqrgUHzmEE/yyhBoACpzR7/rs94Zg
-	0qbSZ9FmorvRC9nGFNDjE6zOPrFqY9c=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 63B2B68B05; Fri, 14 Aug 2026 10:16:06 +0200 (CEST)
-Date: Fri, 14 Aug 2026 10:16:06 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: yu kuai <yukuai@fygo.io>
-Cc: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-	Tejun Heo <tj@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Tao Cui <cui.tao@linux.dev>, Jan Kara <jack@suse.cz>,
-	Ming Lei <ming.lei@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>, Coly Li <colyli@fygo.io>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Song Liu <song@kernel.org>, Li Nan <magiclinan@didiglobal.com>,
-	Xiao Ni <xiao@kernel.org>,
-	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-	Dan Williams <djbw@kernel.org>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Ira Weiny <iweiny@kernel.org>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>, cgroups@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org, linux-bcache@vger.kernel.org,
-	dm-devel@lists.linux.dev, linux-raid@vger.kernel.org,
-	nvdimm@lists.linux.dev, virtualization@lists.linux.dev,
-	gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 0/4] blk-cgroup: store blkcg in bio before
- blkcg_mutex conversion
-Message-ID: <20260814081606.GB13546@lst.de>
-References: <20260811064744.1139446-1-yukuai@kernel.org> <20260814064537.GA9355@lst.de> <d1d47b32-b746-42d1-a391-5e37d4e373fb@fygo.io>
+	t=1786695739;
+	b=rERS1yl0iByhuwtb8hS3PRVcTnT4MPykgyaiKYcCUq9hCH3nBA9X2llX5vD4pGo+nIECRk
+	rRf0hPjgpLHSEhYltQo4vcaeM8cuH0e5psnJok1vigHK6a+sa1my62BUIhJMVlPZP8AJnp
+	whVxFHOCY5pzzMe1VlfoZky/mZpS3fA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 27B1B4018E;
+	Fri, 14 Aug 2026 08:22:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D746D1F000E9;
+	Fri, 14 Aug 2026 08:22:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786695738;
+	bh=EIsk+Wf4F0dnluT9f5h0Biozt4hmYjxe7upSyC3uPSI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GGdB8HlRdNCLAI/kFaUg6q6hJdlaxu4wqup44Jfwh7ulG3dL4V+hKR2FQeEi4IhoZ
+	 aM6+r4s8zYekwBX0+DQlFpQpIbYVJFRhfapJ9Bj63/1pEGSNKhi6liFAdm3Z5q9uM7
+	 Y2bnBDJ0EV0k/tKGpsXFNZdsAX9iWoKdmjZWy3nWP6/UmVuejmROjAjj74ocXWYIvc
+	 W3QmWkHq6qFWC34U2v64st0h9CWFGP7xx2t1/42JebrcEgsTi2OB5F2Mawkry60k2U
+	 /exyBR6Ia9TlU2D5XBkOX9sSIAxkfMMVrRGwuKIze16rjcUQBrGO8kSKa+gFbY+alb
+	 5W18TnBeDEpYA==
+Date: Fri, 14 Aug 2026 09:21:59 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org, David Hildenbrand <david@kernel.org>, 
+	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/secretmem: prevent uncharged mremap expansion after
+ fork
+Message-ID: <an7Emqen9f7W801p@lucifer>
+References: <20260813225328.2010303-1-4ncienth@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d1d47b32-b746-42d1-a391-5e37d4e373fb@fygo.io>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Stat-Signature: 3txybmua8yuog9umdcz67xkaukod6pby
-X-Rspamd-Queue-Id: AA8E080002
+In-Reply-To: <20260813225328.2010303-1-4ncienth@gmail.com>
+X-Rspamd-Queue-Id: D2B9F1C0007
+X-Stat-Signature: ryg97m48rereddn8i6dphof9bgkuuf79
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786695369-462602
-X-HE-Meta: U2FsdGVkX1+IzgGb7BiAWtIqhxTug25Li1M1rNQKVvcV2KNPzkDuIbpMD1DwfTVVDmP73KR6boKF8nU4XpXAjtJ9xOKnTqyitcM12b4j6+gVLRh0zxBaYQaXfAESMJRjBZq/zowOUNh7V0MVmxpaGGk/CciSwYvFQzzyvFpDAdPEVJYbCGYDKsiCIhkgnb2YdgJMkxfo9TZtHjFG9efjp224OU+mYHxacvDbwJZ38alrMcKG4x/D9NQVhfcGXxWeRpmwVVBT8l3fG4wj0Vu/0A2ow7IvUYfrf16B18CO96M0bjCi4XilI4u0okdyLyzYsr0JJNAfSj6q3uUf/teNDH/+nNI+yQCE6Sit1LaXfS8jQxMjn15zMTNJIeEnGfL/JwVbpRXPWIPZ0oMJ+Ky4hwMsNuRkkTkzR+o/8DOnKFPugDapALSM9E8atwngIy0ATsQrlX/QImpkqmz54PEOJkpSLY6X13RWwJYcLUf6CGGUWKd6TDe/uE8NIcTQeFeyHTiBEwN3AC+E1/dwHf9ZC6lT6Iz/8RDxSG/zNU2W2LBUuddWYPN5cUlHje7UQwiE/QkJYOkmrcn15G7vDLng8/mz/YK57Uvnuay5Ym4ric9YTh/wshDI+uLTajr+MDFjjgzhpZXt+A+8TarJBV4mJ3cCJ+TrEMDVRcoHh00vG3Y5CUY/nIgmMCQr7GBD17JBQCrxg/VWzy1b3x0Ofl1CnzFC/neqs8AB6g0+AuCkj8DA3UOlxGvzgjZIx5oMTesBYxWho+juORkcXmaXgdwbClZohAyyYZZa0htorl8XSLsmYmkLyD6U7kWxTLndpOpxgkxDjI3wLEDc5TT5M1VA/dXHWOvCpYOvIl5wDRdUyiJ+CwAmuzotmF4Bx1+Dwp6rQAnEWq5sWPMsvlE6IyQyDMeZLdt/hqX4hym1WSiBBRC+h9igX/BwJIfL9/jM8WWfF78SsFflpkJpqPUVp+U
- vTBd7/Zs
- pCsnire2QyAAvihF5DyNLafRqtC+FO8ezDhkDx05IDQtErYmILQqH/xajIxiCix8LQvehc+cv4tYCj5hoDcf/0Qvw5+m/p9dnyAZN2hTWq6naE+1/IrHLmCh+E1liV+ZyNY7BN9u0d+XWo+Yv118JiSDoy5Qx1bTW4pbuPbZgN+c6HRYtECTCrmR+3l7z6MRFi1stdue7RDVDslm2quMdSKgGjQ==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786695739-687371
+X-HE-Meta: U2FsdGVkX181E3fGPWyn7pL8GvpwlEOdaDQjqHrOhap02gLg3iT1SxMNYUHWIUB85p26A0cPxZlhQ9XerQHyOCbclMxgEASK2UmJkYRhC+kI0ZWPSI7hXrxUIBvqWDcm//sx+xzYkk3ohy4oH1JshVtp5VkzxY01V1E1lVRUVjw0BaNpGY841gE6iYLoSKieVNHmLcXYLVzg+5YKoV0ST6LSANta14uYPPnV1RqbDQgoibj57TGBiQmf4UHku3weIyifSnKxqkQYcSJ2SlF+dI2WByaFrO8XryQCIiTig3ELZ/IX6SZuJdw4zmqQJwvy7/a0Id5+yKMnN8LAnCT+8V5vr8qgZzD/iPwIXH5sAwG4pryHr3p2AE/0moOAdVgqCFBqRoX9P3m4EGLcYirEhxjSlv6WKpUYu5x+VQCgZIAc5rASgrqjnSxc1cnL79+ViP8vEd6vK6BE/xqoUzpwCkhcPxHYATI4ogKroHkc5awGPbFgf+NtZQJ9uOCZUJopgOdQ32W/qD+wt5wrzXfoUeBwEF8sSKSlty//FnI1V6wx2K7hRJKbyehG3qAJVvhfKf5gtECFZovTvB19RhjuZbrzzoLSYfygpCjuA7G388vFFuBReWEMDqTtyAmiOgVanamcaYpSkdpgd/erU/4WN6/zBh2YZer8itc3KIXONvQcYMRoA43XAbt3iIXx+rgur4Bbc+Oa0HXt6HH+Cihk+NK5RuLP8PG9dJsNsFoV+xBQEpWrv8fLlD2KZ6Ysn23kDHX6/1zb2eWCQwJYON+rOQIygp4aJcpAi7GGvYbx34EcXddjI00681jhcqOmtJBmGN5sHlJrdUmpInXU2eU2K3MGkBuIUjxoaN6sNkz1TVn+CesFrqXJYxx7bfjxgw8OVHpozM4vfZnvaJC+k9y+0OgM3Mk7Wt4AqPbwP0rGqUvoTpGvz4WUVoRIrZABh851wLGAigxQXq0N/p9dzIh
+ /ao5gUjB
+ ndScVkM4Osfvd+k5QikW5/HfyMPbCQy4on418pdMYNoFb4/X/8cGlzeDNk3NabggLTgp1AIIzp+itB4Uox/PIDzDzZRa9TMDxKfcW1vMIOuf11erDtUGFFTPs+kAlUiWBi35XSiViYcsUDBzyWUYLqQ9jeJOizTR7k5rdcGwr9N6g+c8I+4Ngcqejoo0XE/VkCWjFUcsz0nlEu9EurQhQ8cldYodIPJSlzMv+T6ZXLR06JPVmk+bVBPGMSKDF7of0hY5mwOp4HBjngDCjM/fHKbFIda44sq7HNtnDkjzj630lBxttaAH1rU3RfA1R+L4cX+MV1BXM/C98F0c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,10 +94,229 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 14, 2026 at 03:53:44PM +0800, yu kuai wrote:
-> I'll rebase to the latest for-7.3/block branch in the next version.
+(I'm going to make an emacs macro to paste this now I think :)
 
-Thanks.  For anything complicated a link to the git branch can also
-be helpful.
+Given it's 2026, you're a [relative?] newcomer to mm, and you've proposed a
+patch for a very specific part of AI I have to ask - is this AI-generated?
+If so please add an Assisted-by tag as per kernel procedure.
+See https://docs.kernel.org/process/coding-assistants.html
 
+On Fri, Aug 14, 2026 at 07:53:28AM +0900, Daehyeon Ko wrote:
+> Secretmem mappings are charged against RLIMIT_MEMLOCK and marked
+> VM_LOCKED because their pages are unevictable and removed from the direct
+> map.
+
+secretmem is weird in that it does mapping_set_unevictable() and _then_
+marks things with VMA_LOCKED_BIT.
+
+The description though is woefully incomplete - that should be called out.
+
+I'm not really confident you understand this however.
+
+Though 'charged' isn't really the right term here I'd say.
+
+>
+> dup_mmap() clears VM_LOCKED on the child copy, but mremap() uses that
+> flag to decide whether an expansion needs a memlock limit check and
+> accounting. An unprivileged child can therefore expand an inherited
+> secretmem VMA past its limit and populate the added range.
+
+'Unprivileged'? I mean where does privilege come into this? I don't see
+capacity checks or needing escalated privileges anywhere.
+
+And forking from a parent process can only be done by err, the parent
+process?
+
+And what does 'past its limit' mean? You mean the size of the file?
+
+Well, already:
+
+	if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
+		return vmf_error(-EINVAL);
+
+Again you are lacking clarity and detail which speaks to a lack of
+understanding.
+
+You can already map a secretmem mapping of any size you like, but you'll
+just end up the part of the range as invalid.
+
+What I think you mean is only RLIMIT_LOCKED, and the fact that secretmem
+seeds its folios as unevictable and uses this as its only limit aside from
+memcg memory usage limits?
+
+>
+> Add a VMA open callback that marks secretmem copies without VM_LOCKED as
+> VM_DONTEXPAND. dup_mmap() invokes the callback after clearing VM_LOCKED,
+> while the original charged mapping retains its existing ability to grow
+> within the limit.
+
+Absolutely no to this. A complete abuse of the hook and an illegal
+operation.
+
+>
+> Add a selftest that verifies expansion of an inherited secretmem VMA is
+> rejected.
+>
+> Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+
+This solution is a horrible hack that doesn't really make any sense at all.
+
+You can expand something here on mremap, but I don't see what that would
+get you.
+
+The range not part of the inode's size and accesses outside its range would
+SIGBUS.
+
+I think what the real problem here is:
+
+- Parent process gets some secretmem memory up to RLIMIT_LOCKED.
+- Fork -> child.
+- Parent exits.
+- Child now has 0 VmLocked pages, can grab more secretmem memory past that limit.
+- Rinse and repeat - can ignore RLIMIT_LOCKED for secretmem.
+
+The real charging, i.e. memcg, all still remains correct.
+
+Your patch doesn't fix this at all.
+
+To address this would require some specific core mm logic to actually
+ensure the range gets accounted by RLIMIT_LOCKED in the child, also.
+
+I'll go think about that a bit.
+
+
+> ---
+>  mm/secretmem.c                            | 11 +++++
+>  tools/testing/selftests/mm/memfd_secret.c | 58 ++++++++++++++++++++++-
+>  2 files changed, 68 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/secretmem.c b/mm/secretmem.c
+> index 4877c262cb1f6f..e5878ce91c768c 100644
+> --- a/mm/secretmem.c
+> +++ b/mm/secretmem.c
+> @@ -108,7 +108,18 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+>  	return ret;
+>  }
+>
+> +static void secretmem_open(struct vm_area_struct *vma)
+> +{
+> +	/*
+> +	 * dup_mmap() clears VM_LOCKED before calling ->open().  Prevent an
+> +	 * inherited, uncharged mapping from being expanded by mremap().
+> +	 */
+> +	if (!vma_test(vma, VMA_LOCKED_BIT))
+> +		vma_set_flags(vma, VMA_DONTEXPAND_BIT);
+
+This is a completely illegal operation.
+
+You do not change a VMA from being functionally one thing to functionally
+another on fork, especially something that makes a VMA have 'special'
+properties like this.
+
+And yet again I am reminded what a terrible idea it is to _ever_ pass a VMA
+pointer to a hook anywhere.
+
+> +}
+> +
+>  static const struct vm_operations_struct secretmem_vm_ops = {
+> +	.open = secretmem_open,
+>  	.fault = secretmem_fault,
+>  };
+>
+> diff --git a/tools/testing/selftests/mm/memfd_secret.c b/tools/testing/selftests/mm/memfd_secret.c
+
+For future reference - keep test patches to another commit.
+
+
+
+> index aac4f795c327bd..3d33487eaaccf3 100644
+> --- a/tools/testing/selftests/mm/memfd_secret.c
+> +++ b/tools/testing/selftests/mm/memfd_secret.c
+> @@ -84,6 +84,61 @@ static void test_mlock_limit(int fd)
+>  	pass("mlock limit is respected\n");
+>  }
+>
+> +static void test_mremap_after_fork(void)
+> +{
+> +	void *mem, *remapped;
+> +	pid_t pid, waited;
+> +	int fd, status;
+> +
+> +	fd = memfd_secret(0);
+> +	if (fd < 0) {
+> +		fail("memfd_secret failed: %s\n", strerror(errno));
+> +		return;
+> +	}
+> +
+> +	if (ftruncate(fd, page_size * 2)) {
+> +		fail("ftruncate failed: %s\n", strerror(errno));
+> +		goto close_fd;
+> +	}
+> +
+> +	mem = mmap(NULL, page_size, prot, mode, fd, 0);
+> +	if (mem == MAP_FAILED) {
+> +		fail("unable to mmap secret memory: %s\n", strerror(errno));
+> +		goto close_fd;
+> +	}
+> +
+> +	pid = fork();
+> +	if (pid < 0) {
+> +		fail("fork failed: %s\n", strerror(errno));
+> +		goto unmap;
+> +	}
+> +
+> +	if (pid == 0) {
+> +		remapped = mremap(mem, page_size, page_size * 2,
+> +				  MREMAP_MAYMOVE);
+> +		if (remapped != MAP_FAILED) {
+> +			munmap(remapped, page_size * 2);
+> +			_exit(KSFT_FAIL);
+> +		}
+> +		_exit(errno == EFAULT ? KSFT_PASS : KSFT_FAIL);
+> +	}
+> +
+> +	do {
+> +		waited = waitpid(pid, &status, 0);
+> +	} while (waited < 0 && errno == EINTR);
+> +
+> +	if (waited == pid && WIFEXITED(status) &&
+> +	    WEXITSTATUS(status) == KSFT_PASS)
+> +		pass("mremap expansion after fork is blocked\n");
+> +	else
+> +		fail("mremap expansion after fork was not blocked\n");
+> +
+> +unmap:
+> +	munmap(mem, page_size);
+> +close_fd:
+> +	close(fd);
+> +}
+> +
+>  static void test_vmsplice(int fd, const char *desc)
+>  {
+>  	ssize_t transferred;
+> @@ -297,7 +352,7 @@ static void prepare(void)
+>  				   strerror(errno));
+>  }
+>
+> -#define NUM_TESTS 6
+> +#define NUM_TESTS 7
+>
+>  int main(int argc, char *argv[])
+>  {
+> @@ -320,6 +375,7 @@ int main(int argc, char *argv[])
+>  		ksft_exit_fail_msg("ftruncate failed: %s\n", strerror(errno));
+>
+>  	test_mlock_limit(fd);
+> +	test_mremap_after_fork();
+>  	test_file_apis(fd);
+>  	/*
+>  	 * We have to run the first vmsplice test before any secretmem page was
+> --
+> 2.54.0
+>
+
+--
+Cheers, Lorenzo
 
