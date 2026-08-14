@@ -4,130 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE4D0C5CFCF
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 05:18:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B580C5CFCF
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 05:25:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D4566B0616; Fri, 14 Aug 2026 01:18:39 -0400 (EDT)
+	id 50B8F6B0617; Fri, 14 Aug 2026 01:25:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 664326B0617; Fri, 14 Aug 2026 01:18:39 -0400 (EDT)
+	id 4C3A76B0619; Fri, 14 Aug 2026 01:25:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54EC56B0618; Fri, 14 Aug 2026 01:18:39 -0400 (EDT)
+	id 3B3306B061A; Fri, 14 Aug 2026 01:25:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AA446B0616
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:18:39 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7386712034A
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 05:18:38 +0000 (UTC)
-X-FDA: 85098719916.26.1CC6954
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 78F67C0002
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 05:18:35 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Fq9xTO1w;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf10.hostedemail.com: domain of binbin.wu@linux.intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1260F6B0617
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 01:25:37 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 094E140334
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 05:25:35 +0000 (UTC)
+X-FDA: 85098737430.08.0F3496A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 15508180002
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 05:25:32 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tg7Y3Bn+;
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786684716;
+	s=arc-20220608; t=1786685133;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nh/q1cVILIwClSOSvbH2tQ1Kqv8X4RdrCPcUQHn8eSQ=;
-	b=JGyUGdX2EZZ/bl6vw0MtHJI7wlUTBBNFsgNrIR+SwljgTnjnjHskOxoHncUBq/WQ0jk1gV
-	qID7Lz9xCK+Dxusg9ayBXO2/1XPiyUQZOlUzDxw4BMiBZqSoihZ76m3KOGakggTQJWpXbL
-	rsh4DGCnefLinR7+lx7X57CAv+w/3n8=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Fq9xTO1w;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf10.hostedemail.com: domain of binbin.wu@linux.intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com
+	bh=aEi20CfO0lLOWd/hYVkbrtdPtbquzEsFzkK6Q2Nujng=;
+	b=FvE8YHMWoV0bX3NRKWsGx58svNpXTilUviQAVpNX/8ff5XplU2ZsXlXVIfiJ4u49DuZu67
+	dMVDdzurEadmv/ZLi1EFjF+I2ZVUIjtmLY5K7Dv+XUf4lqsQv7zJN3HvBJE2IvndKSFAss
+	UmUvd6XrE8/pKR9YI+8d0vqQKhdcPzI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786684716;
-	b=TsaIHkmZklOEOoQ2VvOyLNYoEt8fejtHbptsJfIjiZa5aG+DPiBIuCISL56chHxnTRHo1/
-	Oll5s819Ux70/6rFgR4PrhPcp+p4yKa8Md+HR/Z5XDNZ2Nrt8xI6yXrZJnEWmz2F1K3AZx
-	4FUk3xLWt24VsQcxhpQFz0R1muudccg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786684716; x=1818220716;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=+MUxfRWOkqREAuoekA780+CfxxKTEqlm5E/NKiwihFE=;
-  b=Fq9xTO1wCx35Me5CWZnvAlS89GF8MFIiJGoH3Z2f5OrsOzPFfnrjylTo
-   ZWuB/sVjw2sL9XkPx8Er8cS6QBOLluXwh+RWDK0yZG4t6H5wzRcyhhDi8
-   /LUxL+qvy1Se31i+47SBDqz3WUJFZMnc1ZgfDt1IcOleuruaJQxX0Zolr
-   M15lVzggyhPltKXsTJg4xS+Dago3c1w9+DLSUorx3k22U0OumWE0oQxJV
-   G/zYOPLG/ge6vJA32hC7SMM4/9lDDP0U3prP6V7ZLuQRu4+CTUm7fBu1V
-   iyR3wHY9KhOOeoYbrbawXoBNp/O7DWZuXkjxcIXl4M70ydJtWlOUExiIp
-   Q==;
-X-CSE-ConnectionGUID: CBtRoOWfS0mkc+kZJV71pA==
-X-CSE-MsgGUID: tIkHBGYXScmaJlCdm/6glg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11874"; a="87481117"
-X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
-   d="scan'208";a="87481117"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 22:18:34 -0700
-X-CSE-ConnectionGUID: IN/b0L//SVCz/TGsloL3PQ==
-X-CSE-MsgGUID: VWlRvfb+T1OqDKsfu60fhQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
-   d="scan'208";a="266117899"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 22:18:20 -0700
-Message-ID: <645af2bd-2791-473a-9441-40db01f58913@linux.intel.com>
-Date: Fri, 14 Aug 2026 13:18:17 +0800
+	t=1786685133;
+	b=sit2Voegnyu5W+dcf+GV/HP+trbyWHA6uqcoB2NIWP8URRQTWoODpHdPBYAxlzpf6F9qH+
+	hH8tfpNbohhLpPwcwoOsoz8G/1GVqWKn3mCgBoJWDnCT6c4Ss0P0qvAur4FJCr3KqhqMq0
+	jsog5HbvXmnwVEDecOTvSXSroMNT/wA=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tg7Y3Bn+;
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 23BC94501C
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 05:25:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2A71F01559
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 05:25:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786685132;
+	bh=aEi20CfO0lLOWd/hYVkbrtdPtbquzEsFzkK6Q2Nujng=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Tg7Y3Bn+KKlws+1NmvQ1+3zc2COjtsCO7NGd/e+KV1FikHVcPn8a8UoJ06O7ZBUks
+	 U1JrBdVGUVXcJMyfpGQR9cqO5ZWkZWK7iSQWEnwBxNV/AZU8WMbW+vZ0BiKnsL/jXT
+	 BLL8SBpCWyOWGd2YJZuV6PFXpIc/O9fZepVfMzqJusxR5TS1KvuP1jnAU7d6bfHMO3
+	 2Fv3cAGJ9b5Xlgn29gc1NY/69JpwFScRKFlNxkJQ+BAuKStoln7k4Ngp0aDYHDm2IU
+	 WdEjYI0RFjY9Us24hbFLRJyDQZ5ec2KLgUIq6tt0rmFpUByZJiMs17AZLhdz9Wql/G
+	 wrs2TrfzlNrGQ==
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-9087fb771d3so3007456d6.0
+        for <linux-mm@kvack.org>; Thu, 13 Aug 2026 22:25:32 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyljpTF512siRf5gAVFsSgfJYJ/OrUjzPnow0VL1rDMzVf1XP7A
+	uATb3sFlkzKoon9YgdJPnYJyZiIBIQjR/BKBJBgqRRmsyFUDF+Go1c8ADptSkhNPRxKEW2nn74s
+	mG04VDXxQrnqp/dZ1IAYuwwxo8RoQ1LE=
+X-Received: by 2002:a05:6214:29c9:b0:908:949c:43a6 with SMTP id
+ 6a1803df08f44-90a91c69872mr34202666d6.6.1786685130856; Thu, 13 Aug 2026
+ 22:25:30 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 16/41] KVM: guest_memfd: Zero page while getting pfn
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-coco@lists.linux.dev,
- Xiaoyao Li <xiaoyao.li@intel.com>
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-16-2fc18ee6d3ba@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-16-2fc18ee6d3ba@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260804-mglru-fg-v1-0-4d8dad39dad6@tencent.com> <20260804-mglru-fg-v1-6-4d8dad39dad6@tencent.com>
+In-Reply-To: <20260804-mglru-fg-v1-6-4d8dad39dad6@tencent.com>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 14 Aug 2026 13:25:19 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yBJVpHO09HNP7cRyt4NH0AX77Sz0W4ppdQcc9fY1bAZw@mail.gmail.com>
+X-Gm-Features: AUfX_mzzMnQvgdbCstK5LkjY-xQ2Fpe4ooBRcNIV_EVsm8U_SmnPBE1-TTPmflA
+Message-ID: <CAGsJ_4yBJVpHO09HNP7cRyt4NH0AX77Sz0W4ppdQcc9fY1bAZw@mail.gmail.com>
+Subject: Re: [PATCH RFC 06/15] mm/mglru: use explicit tier range in read_ctrl_pos()
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>, 
+	Qi Zheng <qi.zheng@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
+	Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
+	Gregory Price <gourry@gourry.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	SeongJae Park <sj@kernel.org>, David Rientjes <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, 
+	Vernon Yang <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, 
+	Chen Ridong <chenridong@xiaomi.com>, Tal Zussman <tz2294@columbia.edu>, 
+	Kairui Song <ryncsn@gmail.com>, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 78F67C0002
-X-Rspamd-Server: rspam07
-X-Stat-Signature: nmc9i7kjqpeaztxmx7goryckcda18gi7
-X-HE-Tag: 1786684715-526985
-X-HE-Meta: U2FsdGVkX1/hHQdxdKZInD26vWD4tmtCgyH7bihsfUJom1sBjirJrrG0S2i5LD+V4npFcld6nUukkIsMhfQgXBvPmbgBbt7s+88q5m25IIGlBxXR29sDoT0RELvn3TS1bE2g+32bbzlGA3T3w2Sg9RcT1pPbZF9P1zAtCvdOMYY7QoNDrXHwL8A/+Uk7ONuBNqu1fIavvcktYp/lHGaC+/EEW1gd+5HSQX3vHY0McvBp/OKL0D8tOh1on9DuZ0qxy20vzY5r3ukfj/6pSiwjE0ueaA5bNA12LRNvG9pDWu88K4LmYye63rHwtRKfsidUQNw+jAn2bmWSxYm8HRjn8RukKzzSG/YdUEwkPanhgJ+wLTkCKGBZh2JRuRUSHVf5H4z6ob3yCsLVsjVYuemTrG/1KvNWTAV5Ti5ATUUpVY8eXNDKk9nfIu8O4QeOxg0TLcxIS1gCQnZAYkO73PrECbMrB3RWiPIwLSKMVlih7Cg+Px9Gz9n1L49wHfZHN++iDPX3CB9/QsdtS3kmJauTOhA9bPSLeHVJhfV5tWjgqoUd1sdMyDaMUqkwZdgzzthiWKHrc1l/5bHSJUL/EVEnqhS07vJtqfQBB0JWbEQ7/fPp+EYVzPBt4Q7IygCiE1Nw9dV3sFDHQswm3yUHGsdGXMXOyBli/w5W9iL+hcTqBP6mxnGtCNP/F2Bi3ggw+UOIFxFWfPUceUyySzg3hKnRC8VnyNE0QfZvJsAJnMWevjBebwwqKweZPu0ZKZ7tKhlB6a3C17zrnUM4fcs0i99gzkF0/bbekaByRyN1tV4Uk6FPATAi7gqMZ7QdozwGeE5Ad5WpEXRFJ9aNsVtiQTubD8nKeuDWodGfJJIQceirEMlUSFsPO4cszdqF+RJtd1Jr6jTpUkh4+zCHGLz1lsR63p98B8DjDJchoXl04RCrHYVo7gZavFTZLgefUh7/5p+ueKlLzM5RkbiRIWYivKN
- z2eJFj7W
- QXxp1+7hD396lfh3Wc6yDqguaDh7c6dyP99VpjjFFwPipKzI+NxM7JbJMVeaX7KMhRQuYJ5X3wvNRBsI5wKJjBxXzCL9rA2j7LC4YvxtcyfdrplmzYs+tup4pBtc2bwth6rDbbCv/1lR2H5YGHR+EyAJoTp9UZ0SjxhXrPhwlLouN5NBcY36MCs1xGcvekBX89ZKYnBIY2zhkSCq9WCb37o46Sz3uPdQ26Qs1Ea3h2YLsN0BPBX+dG3I2nujTPpTWmJUmp9nj35T8Sjz98czhncqgD3n/Cfgoa5NEZWXd5QilprTlZd6LmICTnSNwzw9DA1n9
+X-Stat-Signature: 8zj943msreztyea6bx8oxguwij1r9j1s
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 15508180002
+X-HE-Tag: 1786685132-497992
+X-HE-Meta: U2FsdGVkX181QHZUBOIs5ZBxd9allyzzQSXxL7kuLbFyascy753gLv6xRZwMAIABW6cO4cQ0T1ShhvR2PzzhXYO1ykSUfZV3TXsSxoynhA3Nn7a1z5jINFRv+cgUtvQXqVg7YSxEmiN1XYFvzDxnK0cMvRNyBCat7w6rKAHUkmWBfkre8SRbCucK8GHvX1/TvcCHZrIZdIBCpxX96eQC8ZuSUbQpeeNCTwaP3j4fl8ThxZOZk227bwrnV8ZN7hQfqjwxAISddTCJlvedxnEpX/geMXZV2oeNclpT8kbIm2xNWYzSPZctEzxQU3IPP/sjSvXC/tqrZtpxNHii7LmLxVbGyyx1DE1BD/K3HyS7F4uOr4/KFH4BXFi/Hz8KwG1t60sQg1Zh89jZZVrDHCh68ckkRIC4FYJ75+uqASNiYXtej7RMhGA7gOSUTzujApILiTgxw4lJIStdNy/VuJBwnpEkfvqgyDhGCTLcyjIR+aVfWPYXlwI+71/8h4uDZSalW3Pxir9Ocv4YiDwli70yzV4GTSqkzraiUpGmj0psdWVxNjh4hXuZ5ZYI0OhWOWGL9DXR/x3SABAMpo9vOUNq4mOCrzAdrqU1kQu7BU57gC86X8EgYeVW72I/m4ZhwEkbShttTNgORLWOBdmNmhbBiFDdGFoaJAY8Zz24dBnf3oue1YhOPu3e4ghMbsmqt94qaONOj5lRrhdNnBhSCQp/GD57QiET628EciGdzwBcyt5NoeRhcrwhNij+2gjP3uQKpKaCWK+eG5CTkWd2JuxARdlKjCEOkuiiNf6oQixiB8VvnqLUu13sKZYBZoC5+ivrdOEJGWotqVX72cjfYI6xNDZePp0GdCP12uxf1niCe18PvmmT2BjZ6bFI1QAZIJ++ZDexfScZzLy3qEN4VHLysZ2X2gc3pJ3JTgkRP5pWKZa5iP0ZcrVc4SZ/tq/CEoUFdtgghCuF6qGn+EhRZZS
+ NEFMP8Ka
+ cQj0Z7PIHmfTUBb+NHnd6EOyH+LgfPpM4DX+mpn4aD8HZCMo9OTTzrPs+o2k95Gpo5o6KzRfgNYDdCH/ooJdGwiheDpDyL9MIa+oNVrXX1ka387AOCefZ6isqZGDBnOHieeO/E2fqe7TDbYHhHg/70cf24KEZIwaRzjHTBG1/Tuq8V1B4/NVZhNpx25CoXRCk+MxCg+WJnlpCo+f/hhljaAeFO1TsHIqzgNO2AoGfClza+5t94Zrmrkkadv9wIlYQqSPH3+9UOTa+9Zancoz++sgBvM9ajfTTGUlyuUnv9s72XF9H7gOHm3FQfJL03L0By32qCL7E9uWoS1Xggf8RoeIfbtnXyoi0n3hQ3DMH7+yLQBowVxnaBSRbrFSJ077YEMQi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,82 +118,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> Move the folio initialization logic from kvm_gmem_get_pfn() into
-> __kvm_gmem_get_pfn() to also zero pages if the page is to be used in
-> kvm_gmem_populate().
-> 
-> With in-place conversion, the existing data in a guest_memfd page can be
-> populated into guest memory through platform-specific ioctls.
-> 
-> Without first zeroing the page obtained using __kvm_gmem_get_pfn(), it
-> might contain uninitialized host memory, which would leak to the guest if
-> the populate completes.
-> 
-> guest_memfd pages are zeroed at most once in the page's entire lifetime
-> with guest_memfd, and that is tracked using the uptodate flag.
-> 
-> Zeroing the page in __kvm_gmem_get_pfn() is chosen over zeroing in
-> kvm_gmem_get_folio() since other flows, such as a future write() syscall,
-> can get a page, write to the page and then set page uptodate without
-> zeroing.
-> 
-> This aligns with the concept of zeroing before first use - the other place
-> where zeroing happens is in kvm_gmem_fault_user_mapping().
-> 
-> Don't mark the page uptodate again after populating, since the page would
-> already be marked uptodate before the post_populate() call.
-> 
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Tested-by: Shivank Garg <shivankg@amd.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+On Tue, Aug 4, 2026 at 3:47=E2=80=AFAM Kairui Song via B4 Relay
+<devnull+kasong.tencent.com@kernel.org> wrote:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> read_ctrl_pos() encodes the tier range in a single "tier" parameter
+> via "tier % MAX_NR_TIERS" as the start and "min(tier, MAX_NR_TIERS-1)"
+> as the end.  This is hard to follow or maintain or extend. Tier
+> values 0..3 select a single tier, while tier =3D=3D MAX_NR_TIERS selects
+> the full range.
+>
+> Replace it with explicit (tier_min, tier_max) parameters using a
+> half-open [tier_min, tier_max) interval, which is the conventional C
+> idiom.  The call sites become self-documenting:
+>
+>   - get_tier_idx:   (0, 1) for tier 0, (tier, tier+1) for each tier
+>   - get_type_to_scan: (0, MAX_NR_TIERS) for the full range
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+I agree, this is a nice cleanup. The existing code is really hard to
+read. The magic is in i =3D tier % MAX_NR_TIERS, but I've been bitten
+by this magic a couple of times.
 
+But could we make the range inclusive? Right now, it still feels a bit
+difficult to follow.
+
+Since tier_min and tier_max are tier indices rather than a typical
+array range, would an inclusive [tier_min, tier_max] range be easier
+to read here? In particular, tier, tier + 1 at the call sites still
+requires the reader to know that tier_max is exclusive.
+
+>
+> No functional change.
+>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 > ---
->  virt/kvm/guest_memfd.c | 12 +++++-------
->  1 file changed, 5 insertions(+), 7 deletions(-)
-> 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 030af0855f8b0..41950c8105b5d 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -1079,6 +1079,11 @@ static struct folio *__kvm_gmem_get_pfn(struct file *file,
->  		return ERR_PTR(-EHWPOISON);
->  	}
->  
-> +	if (!folio_test_uptodate(folio)) {
-> +		clear_highpage(folio_page(folio, 0));
-> +		folio_mark_uptodate(folio);
-> +	}
-> +
->  	*pfn = folio_file_pfn(folio, index);
->  	if (max_order)
->  		*max_order = 0;
-> @@ -1108,11 +1113,6 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->  		goto out;
->  	}
->  
-> -	if (!folio_test_uptodate(folio)) {
-> -		clear_highpage(folio_page(folio, 0));
-> -		folio_mark_uptodate(folio);
-> -	}
-> -
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
->  	if (kvm_gmem_is_private_mem(file_inode(file), index))
->  		r = kvm_arch_gmem_make_private(kvm, gfn, *pfn,
-> @@ -1159,8 +1159,6 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
->  	}
->  
->  	ret = post_populate(kvm, gfn, pfn, src_page, opaque);
-> -	if (!ret)
-> -		folio_mark_uptodate(folio);
->  
->  out_put_folio:
->  	folio_put(folio);
-> 
+>  mm/vmscan.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index c2ea92c2b69e..a359d5a1ff41 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -3192,8 +3192,8 @@ struct ctrl_pos {
+>         int gain;
+>  };
+>
+> -static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier, int=
+ gain,
+> -                         struct ctrl_pos *pos)
+> +static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier_min,
+> +                         int tier_max, int gain, struct ctrl_pos *pos)
+>  {
+>         int i;
+>         struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
+> @@ -3202,7 +3202,7 @@ static void read_ctrl_pos(struct lruvec *lruvec, in=
+t type, int tier, int gain,
+>         pos->gain =3D gain;
+>         pos->refaulted =3D pos->total =3D 0;
+>
+> -       for (i =3D tier % MAX_NR_TIERS; i <=3D min(tier, MAX_NR_TIERS - 1=
+); i++) {
+> +       for (i =3D tier_min; i < tier_max; i++) {
+>                 pos->refaulted +=3D lrugen->avg_refaulted[type][i] +
+>                                   atomic_long_read(&lrugen->refaulted[his=
+t][type][i]);
+>                 pos->total +=3D lrugen->avg_total[type][i] +
+> @@ -4805,9 +4805,9 @@ static int get_tier_idx(struct lruvec *lruvec, int =
+type)
+>          * This value is chosen because any other tier would have at leas=
+t twice
+>          * as many refaults as the first tier.
+>          */
+> -       read_ctrl_pos(lruvec, type, 0, 2, &sp);
+> +       read_ctrl_pos(lruvec, type, 0, 1, 2, &sp);
 
+It's still a bit of a headache when three integers are put together.
+Could we somehow make the 0 more self-explanatory, such as using
+TIER_MIN or a named constant?
+
+>         for (tier =3D 1; tier < MAX_NR_TIERS; tier++) {
+> -               read_ctrl_pos(lruvec, type, tier, 3, &pv);
+> +               read_ctrl_pos(lruvec, type, tier, tier + 1, 3, &pv);
+>                 if (!positive_ctrl_err(&sp, &pv))
+>                         break;
+>         }
+> @@ -4828,8 +4828,8 @@ static int get_type_to_scan(struct lruvec *lruvec, =
+int swappiness)
+>          * Compare the sum of all tiers of anon with that of file to dete=
+rmine
+>          * which type to scan.
+>          */
+> -       read_ctrl_pos(lruvec, LRU_GEN_ANON, MAX_NR_TIERS, swappiness, &sp=
+);
+> -       read_ctrl_pos(lruvec, LRU_GEN_FILE, MAX_NR_TIERS, MAX_SWAPPINESS =
+- swappiness, &pv);
+> +       read_ctrl_pos(lruvec, LRU_GEN_ANON, 0, MAX_NR_TIERS, swappiness, =
+&sp);
+> +       read_ctrl_pos(lruvec, LRU_GEN_FILE, 0, MAX_NR_TIERS, MAX_SWAPPINE=
+SS - swappiness, &pv);
+>
+
+Maybe we could introduce macros such as TIER_MIN and TIER_MAX to
+make the intent clearer?
+
+#define TIER_MIN 0
+#define TIER_MAX (MAX_NR_TIERS - 1)
+
+Best Regards
+Barry
 
