@@ -4,100 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62D94C5B572
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 10:37:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56F15C5CFC1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Aug 2026 10:41:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79EF06B02FC; Fri, 14 Aug 2026 06:37:19 -0400 (EDT)
+	id 49F656B02FF; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 756EF6B02FD; Fri, 14 Aug 2026 06:37:19 -0400 (EDT)
+	id 409DF6B0302; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 664586B02FE; Fri, 14 Aug 2026 06:37:19 -0400 (EDT)
+	id 2AD056B0301; Fri, 14 Aug 2026 06:41:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 460D56B02FC
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 06:37:19 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C7EFF14040A
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 10:37:18 +0000 (UTC)
-X-FDA: 85099522956.19.75491FB
-Received: from mta1.migadu.com (out-25.mta1.migadu.com [95.215.58.25])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D5C5740002
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 10:37:14 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=A4dofpUH;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.25 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id E31746B02FE
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 06:41:26 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7548EA280E
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 10:41:26 +0000 (UTC)
+X-FDA: 85099533372.15.1A89EF1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 8ABE1C0009
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 10:41:24 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ZFddGD/R";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of joel.granados@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=joel.granados@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786703837;
+	s=arc-20220608; t=1786704084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OKQ5KPa7dB6PadOpOkfFoM7C4DfT+F8m/eFidCTkeQA=;
-	b=GRwXd1TzWXYTYU8qlc4xsu1l927YhZg6DBi07BVSDbZ4BzkLszWHZ6AxcM8ZmF5F0fzaUk
-	OcsGZbXknU4Xk9h1NBcNyvCe5YgCuGFd4F0SJ4fIaDfGoaC6JtRkDz5edi/nhasR/y65Fu
-	I+ignTOeQQep0Ygiv2K2tMvMg9w2WSU=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=cU3ZNIpDY+b4X3iaz8Cvs+nyy49d6sug4wUSJtEsGiI=;
+	b=Ajwy/xcYj1w1+0UoSXDuKVXfJ6uDWYM7Nr5A4yML8KxmVm5XIyHFtpof0fjTnljtGhFe0o
+	dLtzrE1w57lp1OUj1uaZauyO+rMAbzD721Ph9XyYlTL8lF7y+EUU9GG7j/qv3Ex4VZ1hXw
+	u/3bD+Pvt2HPkM+ZuP7KRXKsb8Un7tQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=A4dofpUH;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.25 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ZFddGD/R";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of joel.granados@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=joel.granados@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786703837;
-	b=4EkWpSAikBo9syjnxYcuGLyCdHvpJySVKlKsQKTHr9z7wbDJp8uhLJ1SbGbIJgtj1T6n69
-	ZdW5BKIUxbqsvx1Y4dHvuJo8WWCi1/ac7zEX6ZzqEiOzowu0E2NNBuGWFtEQR4igcA5cTa
-	cjxzRyiL8rJyRWN7I//0+YcPmRaC9Pk=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=QiLSPI+MPmY1LDSvHHQGw63yDUWEXiMCfHcerMNBDt0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786703833; v=1; x=1787308633;
- b=A4dofpUHhchwEeUszJTtMKVFgOF0QiZa4aH2obDU7IdY9TPywGR5Ujlari6kW0Wyeuny0oHW
- DlEP6N+kTEiDVRJ+mHMV6vjiu3fV3I9XF38A2XsaN7HBoIaEINn42nmyMcEdiwfNbM0kb7jWVg5
- NBrl71rBvJlYK/i24YpyOodk=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (77.97.51.77)
-	by smtp.migadu.com with ESMTPS id 61f550f3f67deb7c;
-	Fri, 14 Aug 2026 10:37:13 +0000
-X-Migadu-Flow: FLOW_OUT
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 14 Aug 2026 11:37:11 +0100
-Message-Id: <DKOLND2TRB15.2Y8DKB3ZKEYAY@linux.dev>
-To: "Yosry Ahmed" <yosry@kernel.org>, "Brendan Jackman"
- <jackmanb@google.com>
-Cc: "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
- <dave.hansen@linux.intel.com>, "Peter Zijlstra" <peterz@infradead.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
- <david@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike Rapoport"
- <rppt@kernel.org>, "Wei Xu" <weixugc@google.com>, "Johannes Weiner"
- <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Lorenzo Stoakes"
- <ljs@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <x86@kernel.org>, "Sumit Garg" <sumit.garg@oss.qualcomm.com>, "Will Deacon"
- <will@kernel.org>, <rientjes@google.com>, "Kalyazin, Nikita"
- <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, "Itazuri, Takahiro"
- <itazur@amazon.co.uk>, "Andy Lutomirski" <luto@kernel.org>, "David Kaplan"
- <david.kaplan@amd.com>, "Thomas Gleixner" <tglx@kernel.org>, "Patrick
- Bellasi" <derkling@google.com>, "Reiji Watanabe" <reijiw@google.com>, "Sean
- Christopherson" <seanjc@google.com>
-Subject: Re: [PATCH v3 13/26] mm: introduce freetype_t
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-X-Mailer: aerc 0.21.0
-References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-13-6f5729aa9832@google.com>
- <anJmOMqCVugycC9x@google.com>
-In-Reply-To: <anJmOMqCVugycC9x@google.com>
-X-Stat-Signature: w9ahs4bz9frg4zujspicb6tcgu73z5dr
-X-Rspamd-Queue-Id: D5C5740002
-X-Rspamd-Server: rspam03
+	t=1786704084;
+	b=2B/t41rFIVCHxeNNABBXZnYZLpQbf0nCK0kkIRSD0nTm8p6ASRDIw20BFYsSBrrVOnwlT2
+	9RsdeSIZZ5IqfKCjDyJIq1hgkky/uBO4u91JmQcsuy6zykkJx3q81mrG/zXMSZ1TvTvkYK
+	ZoDFKI1O1LxjZERJH3hKjHTSvRviCbA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B4BD04018F;
+	Fri, 14 Aug 2026 10:41:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8CA67C2BCB3;
+	Fri, 14 Aug 2026 10:41:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1786704083;
+	bh=VImGdtbQhVpxolptJjq7ucid3bvJX7n+SBXE+EDTI6I=;
+	h=From:Subject:Date:To:Cc:From;
+	b=ZFddGD/Rs90lVEEZWzFu20eMDuYEjDnodMuWcqXrF0M6euyPtxR0BcMOZTEkT1qSg
+	 5lCZeQvfZLHpT5Tg9+YYojjbC4lizqStnnNPaDZJMmJ2Vdq3fxpMab1CT89Xwy4YeW
+	 TRjpOmn9EnkR1lUio48N51w2Lg+AlgJnZvZQWpgqKZaKS0cKji4wR6tSdj8yux60aR
+	 SKCwrcMwT6cRFf6k99zKWn24s0gT0VKqH4vWdJardEiKBW3nqxCckNHVII2lhvfLhz
+	 z+aeyL4l0l5Gb0aVHO1ylkz8GXBAGyLjeFSzaC23BktGZitNsW1YpyZdEHxA64rZUV
+	 uqg6yR4cvjTXA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 799C8C5CFDB;
+	Fri, 14 Aug 2026 10:41:23 +0000 (UTC)
+From: Joel Granados <joel.granados@kernel.org>
+Subject: [PATCH v2 0/4] sysctl: Disallow partial updates of miss-formatted
+ sysctl vectors
+Date: Fri, 14 Aug 2026 12:41:11 +0200
+Message-Id: <20260814-lklm-partial_ctlvec-v2-0-9df50d26e477@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMfwfmoC/32NQQ6CMBBFr0JmbU0LQtGV9zDElHaACRXIlDQaw
+ t2tHMDle8l/f4OATBjglm3AGCnQPCXITxnYwUw9CnKJIZd5JWtVCD/6l1gMr2T8064+ohWtq+t
+ Kt1q60kJaLowdvY/qo0k8UFhn/hwnUf3s/15UQgrXXbFUVhVaXu4j8oT+PHMPzb7vX/lcKly3A
+ AAA
+X-Change-ID: 20260813-lklm-partial_ctlvec-bd8867b70d5c
+To: Kees Cook <kees@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: Jianlin Shi <shijianlin11@foxmail.com>, akpm@linux-foundation.org, 
+ vbabka@kernel.org, hannes@cmpxchg.org, surenb@google.com, mhocko@suse.com, 
+ jackmanb@google.com, ziy@nvidia.com, linux-kernel@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-mm@kvack.org, Joel Granados <joel.granados@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2346;
+ i=joel.granados@kernel.org; h=from:subject:message-id;
+ bh=VImGdtbQhVpxolptJjq7ucid3bvJX7n+SBXE+EDTI6I=;
+ b=owJ4nAHtARL+kA0DAAoBupfNUreWQU8ByyZiAGp+8M9/63kdDlD1fFzjnvUMsa3BnyokcX0Mn
+ YEESFUZ+6VyCIkBswQAAQoAHRYhBK5HCVcl5jElzssnkLqXzVK3lkFPBQJqfvDPAAoJELqXzVK3
+ lkFPX4gMAItfGWXct2+B8L4J8D1LbaCtRErVfSZzNrw+UZZyeZNt9JD07OYY9rsCAbsAFl9WfUZ
+ h5bHqfGZYsTC3CqgEuMBBWzNfjbfbY8tRsSDYbAjhtuRa12ARpdCY1foDgI9LQVRFobA6pdfM2g
+ 5G3VdUH2cxloE2AINCYY5ntOz/JXI3vgTm7IY23HTYa6PbmfGxsGHG9oy5da6OY1YwuW7a6z8ST
+ xJ/AGN/QeY1GZ7hxRjuRHB4G5sTtg8O1OD076hVqFuCPZu9/Y8g2mY1VtRCU3fLyw7hi45EW9N7
+ TH8rO95bdxPKc4ZFYgvSlxN1H/zUJaALtIPzNRY5p1aVJkFMnvBo2WEC9M+Dk/EmhUCO77e1Dtv
+ Pm08FU81/mg3v9Ax1i+7Jml6gtooXzQh67tuAlSzC4cGc9X5Ved8Zx+Q3rgDckoEMJbYAJtUfTH
+ VFqkdgnK8WsG2rXGpQEV8u07ehdfBzL+0gicCr48XZaL6I4OZ2XjVJxSrEKBRgz1rZp0LdRBin7
+ DU=
+X-Developer-Key: i=joel.granados@kernel.org; a=openpgp;
+ fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
+X-Endpoint-Received: by B4 Relay for joel.granados@kernel.org/default with
+ auth_id=239
 X-Rspam-User: 
-X-HE-Tag: 1786703834-199552
-X-HE-Meta: U2FsdGVkX1+GXJNq+09GEGQMW6lQ1pJYm28XMBxziZ/S4411lN8YfhvfiSvj3zB/goUxhk1v9tu0xTj20LdvExtQCL5F2tUj8yAj9t6lRsjAU+FAKkBtOllBoSqKg7Sf41eYNlA/jvwdYnXvYWOw9zgD0jsIxHe/CRw/SqoszL2OCxZThEQQ9LqlMfsZ/kC2xE6ntdIUVz0dwFLdLvjBAVvqbtU9nkH2tVKwcuwFqF0elaECdld7GJoHPu6GwhLpUIBUJLipEtXHPH3HeoDLHyunLgjvYEO0xa5Cf423VXn+nEyAYPwOW1nGF4RLbkt2Ik35wt6nrbJ6/HmHJsa8vN97GdmP5Hra+6tsNr966/6YCl7vcbMsOdOYUx0NcKKd6w/Mro9Zj9duK2UMOlEW+FnZnvecpPu0Khau+rRIMXg7Lkkdmfh/Ry0nuq3GJTONcp54iMURQ9p3NFvykNNJzbkBu86/ygjAsaAMkLvSQNqDDHrj4u6cIlpBZZt9yWpmg4zSqzyaKOpX8A4Y3czu3EvshmsLXU/8G7XiQCen/rBW46tM/LwF4m4Fbt3PlvZr9ApR7WdSdK0g3Jfo9Tu5QRwCfl0qqp4v0Fy162z4ZEpsLNx+T6uT42qDSt7OZlrhsl5ZWo0BLghwIpDB4kJbmQhAsg7ERdd2VPbCYbkNIJ9fS5HblgHRSaWhc8+IjSIvzuWDqKKaS4cHBV8zUjsFrJucRo7ykLVszxCjQzER689lgB3ueNazN6j3T+eQChBsFvUZENpcKXTAWJ7JzeNy+BI36wcie9aXQdETfG1dVsiUqMeujybH7Sj3vd8qrhMYSkEMpdmT9efT0F8euh1kqSW+BZuupPT6BQ/iomgpOChH+FC/OTKjfSbt/InQBw9THtndJjfr1Ces34Cp5DP6CP/tCIkmRk81ogfBrlDXCZpGLJUmbdK+YGknvkccNiH1zCmlFmG8tq5/6UArSA4
- ZNOSqwi0
- 7qum19qqs65p2wX+B6S1t7PEQk7UnT9qGoaTp6sGKszAQkO4oAYE9B/exFMulP1k70DCLjEzrTeo6gXwk+WKeP0XouAhgsaz8oKP7wzviwPs63fkP23Jkgs3o5inA/0HgPq5XihVvVOKlJGwWD72pfbuDSUeEScx5/0Jha9JuSN25jeeAY0AituhTnzDol2pRcAQUP4Z0wrVhIOgc9rNNk5xiSoW+LDmVhSOfmzoy67TFwvEZM+mwGCCHbGmK7QTOroga3E3+3kzu3Ucj676FmbSFaY6OJUL8azpQRph2qER3lu5ukag6cT0svaI36OQeYMj7b+waQY1FvFq5VLsj0zN2BjzEkylcyWWeeJcpjFjmb513AKytm0cMYz/RWjHu7QWAwTOqRUgINuESpI1lPVtt07AuTlQt1Lig
+X-Stat-Signature: zsydqim796gw9h4keies1m5no3xnyhje
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8ABE1C0009
+X-HE-Tag: 1786704084-491389
+X-HE-Meta: U2FsdGVkX18XcbjIJ2dKDYpC96WtSJxKRthDplE/fZG5195eqPq1XaT9QnZQy5/tnXnwFhvgtixESBlOiSDYo+BdDjzEA3gI7Fia0qmwpIVZF8sp08hZ3HKeGu3ehuO3so9kVBlOGeZfoirK7gaEFte9OdB9y2DzdU5u47TfXjFZHVeqWL6msjE5DHyWFA/eI1VC4J/e3HstwhPO4s86heipEnotqXD6v5qkYluX4a9CM2ga5pFvtlEHL8XrzhQ0TZvS5JDDRcKMsglFzOzdoNVig5bw18ombm/hANhXjQWgh86cF/qnY+IhkLhzcPjI/pOhDyAu/Lc9Pv/IWvkJ+C8vsLTHyv+FFHFn+IFxV8/FgO2wRSMxPyxknw9PhM6k3j5daKDcmphhGaSNz1vqrQl+QjD7SbACC4d5Uqy6f/Prir+4oh4SKOTgPC5mN0t9eC8gjIUKUfnJc/uSMYGbFPjnxekC23PG+DeGBNDgXBXTOjvROxfICg59jKhacHjvV1LFqYIaTXYbYLc+sjFUi6DiqYMAOKk64Gl3+J4K+0/3vysXVqEGMqUKX6OPoTIL0PJaCh2MkkNbgBB5CSgU0A6HZziXClPYg29G50/nSEOiXYM7JLl9rZc9QJe8guTcThQB7yV92HWrpBeBbTUSD+Gk75+YYHqBaRQEQRrxMsuqGLpmlYscUPBH6YN5GNrGzoKBHb+l0zgRkhC3Gr/GnaL4zfsTi9OY517iMJBmRcOOpqtATUhpUldK0BKeg/QEcTFZqJeYh3XPlojwkDUMcqsfJdlU9382ifMhTT5QpcHR2xJMApqlyu/4A+ohvo4JFQYdUDtiN1RDYvSqG2Zejvnpr3TINXXC6izNdPxJun9XD0MY7LzK8tw/g0kNeAoht1el8besD0kHLZgkRYIkkmsolXbTFJ5YwvyHowfEEQ/nEHgcoe1HTCJyw5BXMd7uSgsIrhZ9W0P/QxSrVOi
+ 9zrqckCu
+ vGkHeY4t3yq5yDDgLoGRHUli3Q5Ad8C6EhAEHGPFdaf5gKZXLteh4qeDMv/Dbti1AUg7xQ/yzzZW/GfOSFu2pLMJMvNwcrShMXkPp5DeN45c4ZKV7QXRjV3f01532mPSbD/Np48+986suFw3cpUw0J8YEJDrawwoz9nbuU70hi5LhigVE0YvS31v6fZ6iHG0QXVAiXNkNciI2ttptbA7qEP/m7jpejsKku7ZX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,107 +118,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Aug 4, 2026 at 11:23 PM BST, Yosry Ahmed wrote:
->> @@ -179,24 +180,62 @@ static inline bool migratetype_is_mergeable(int mt=
-)
->> =20
->>  #define for_each_free_list(list, zone, order) 				\
->>  	for (order =3D 0; order < NR_PAGE_ORDERS; order++) 		\
->> -		for (unsigned int __type =3D 0; 				\
->> -		     __type < MIGRATE_TYPES &&				\
->> -			(list =3D &(zone)->free_area[order].free_list[__type], 1); \
->> -		     __type++)
->> +		for (unsigned int __idx =3D 0; 				\
->> +		     __idx < NR_FREETYPE_IDXS &&			\
->> +			(list =3D &(zone)->free_area[order].free_list[__idx], 1); \
->> +		     __idx++)
->> +
->> +static inline freetype_t migrate_to_freetype(enum migratetype mt,
->> +					     unsigned int flags)
->> +{
->> +	freetype_t freetype;
->> +
->> +	/* No flags supported yet. */
->> +	VM_WARN_ON_ONCE(flags);
->> +
->> +	freetype.migratetype =3D mt;
->> +	return freetype;
->> +}
->> +
->> +static inline enum migratetype free_to_migratetype(freetype_t freetype)
->> +{
->> +	return freetype.migratetype;
->> +}
->> +
->> +/* Convenience helper, return the freetype modified to have the migrate=
-type. */
->> +static inline freetype_t freetype_with_migrate(freetype_t freetype,
->> +					       enum migratetype migratetype)
->> +{
->> +	return migrate_to_freetype(migratetype, freetype_flags(freetype));
->> +}
->> =20
->>  extern int page_group_by_mobility_disabled;
->> =20
->> +freetype_t get_pfnblock_freetype(const struct page *page, unsigned long=
- pfn);
->> +
->>  #define get_pageblock_migratetype(page) \
->>  	get_pfnblock_migratetype(page, page_to_pfn(page))
->> =20
->> +#define get_pageblock_freetype(page) \
->> +	get_pfnblock_freetype(page, page_to_pfn(page))
->> +
->>  #define folio_migratetype(folio) \
->>  	get_pageblock_migratetype(&folio->page)
->> =20
->>  struct free_area {
->> -	struct list_head	free_list[MIGRATE_TYPES];
->> +	struct list_head	free_list[NR_FREETYPE_IDXS];
->>  	unsigned long		nr_free;
->>  };
->> =20
->> +static inline
->> +struct list_head *free_area_list(struct free_area *area, freetype_t typ=
-e)
->> +{
->> +	int idx =3D freetype_idx(type);
->> +
->> +	VM_WARN_ON(idx < 0);
->> +	return &area->free_list[idx];
->
-> Should we return NULL here if idx < 0 instead of an out of bounds
-> access?
+What?
+=====
 
-TBH my descending order of preference is:
+Stage table->data when writing INT & ULONG ctl_tables. Commit staged
+data to kernel variable only when all the conversions have succeeded.
+This is applicable only to variables that represent a vector; paths
+pertaining to scalers are left unchanged. Notice that partial updates
+can still happen if less than the size of the vector are passed and
+correctly formatted.
 
-1.
+This is the behavior we are protecting against:
 
-BUG_ON(idx < 0);
-return &area->free_list[idx];
+  # echo "4 4 1 7" > /proc/sys/kernel/printk
+  # echo "1 x" > /proc/sys/kernel/printk
+  -bash: echo: write error: Invalid argument
+  # cat /proc/sys/kernel/printk
+  1 4 1 7    <- the write failed, the first element changed anyway
 
-2.
+Why?
+====
+Allowing a partial change to a vector after returning from an erroneous
+proc_handler is just plain wrong. This should be handled within sysctl
+to avoid users having to do it for themselves [1]. 
 
-if (WARN_ON(idx < 0)) // OR VM_WARN_ON
-  return NULL;
-return &area->free_list[idx];
+Behavioral Changes
+==================
+1. A failed write will not update the vector
+2. Vector writes can now fail with -ENOMEM
 
-3.
+Testing
+=======
+This went through regular sysctl kunit and self test. Also is posted to
+0-day.
 
-VM_WARN_ON(idx < 0);
-return &area->free_list[idx];
+I always find it difficult to know who wants to receive this. Please let
+me know if you want to be removed from the Cc/To.
 
-4.=20
+Best
 
-return &area->free_list[idx];
+[1] https://lore.kernel.org/all/tencent_A860C873956A52E26AD8D309A308A241BA08@qq.com/
 
-But I suspect[0] Vlastimil (and Linus) would order it the exact opposite
-way.
+Signed-off-by: Joel Granados <joel.granados@kernel.org>
+---
+Changes in v2:
+- Avoid doc compilation warnings related to apply_conv_on_vec function
+- Initialize rc in testing to avoid a false positive when executing 0013
+  individually
+- Link to v1: https://lore.kernel.org/r/20260813-lklm-partial_ctlvec-v1-0-df9e51c13704@kernel.org
 
-[0]: https://lore.kernel.org/all/bd36e972-8900-4476-a66b-4dc218b21a4d@kerne=
-l.org/
+---
+Joel Granados (4):
+      sysctl: Split data conversion and file position handling
+      sysctl: Reject uint arrays before calling the general proc_vec
+      sysctl: Disallow partial updates for erroneous sysctl vectors
+      sysctl: Add 0013 to test partially updated vectors
 
-And I care more about making Vlastimil (and Linus) happy than this tiny
-detail of the code, so I'll defer to him. The current style is a
-compromise, but maybe it's just a compromise that makes nobody happy.
+ kernel/sysctl.c                          | 237 ++++++++++++++++++++-----------
+ tools/testing/selftests/sysctl/sysctl.sh |  60 ++++++++
+ 2 files changed, 217 insertions(+), 80 deletions(-)
+---
+base-commit: 4c12287001da60f3c022bb25932aa7a5590fc0b1
+change-id: 20260813-lklm-partial_ctlvec-bd8867b70d5c
+
+Best regards,
+-- 
+Joel Granados <joel.granados@kernel.org>
+
+
 
