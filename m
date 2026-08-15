@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5D8EC5CFDB
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 15:30:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8F38C5AD5A
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 16:04:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 091A66B037E; Sat, 15 Aug 2026 11:30:26 -0400 (EDT)
+	id 3B6196B07D8; Sat, 15 Aug 2026 12:04:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 042566B037F; Sat, 15 Aug 2026 11:30:26 -0400 (EDT)
+	id 366FE6B07D9; Sat, 15 Aug 2026 12:04:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC13A6B0380; Sat, 15 Aug 2026 11:30:25 -0400 (EDT)
+	id 27E716B07DA; Sat, 15 Aug 2026 12:04:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CB21F6B037E
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 11:30:25 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 605011A0408
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 15:30:25 +0000 (UTC)
-X-FDA: 85103890410.26.B16BB66
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id BE0A3A000E
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 15:30:23 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P/7mFSz7";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id E697E6B07D8
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 12:04:41 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BBE66403CE
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 16:04:39 +0000 (UTC)
+X-FDA: 85103976678.10.1BF0301
+Received: from confino.investici.org (confino.investici.org [93.190.126.19])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 71F5D20005
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 16:04:37 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b=nx8sBAmP;
+	spf=pass (imf13.hostedemail.com: domain of include@grrlz.net designates 93.190.126.19 as permitted sender) smtp.mailfrom=include@grrlz.net;
+	dmarc=pass (policy=reject) header.from=grrlz.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786807823;
+	s=arc-20220608; t=1786809878;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oHygruvnWfw5G8qNQHmRxC1emMqhJUV6dq/1C7tMYtE=;
-	b=RuGxZT7SEncvOoJ5vcYbuFXlxllGnDvGhl41FNXHJQm66Ujc5dfELCdJKyd1+PnQAXE/2t
-	SbLXAGuoT7QIs9ckWiiaC7ixHFkh4nUHq1n0fU6FOEX5zgiaw4RRA3prhbgzdCPwSdrnTf
-	ceLZF+vtboLhyJqEePtnxGEq/AJmXZU=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=Ua8mFtf8zB2pwtSS5pdnlpxstzJMX9SfJcWg7kSeSCI=;
+	b=srbtuG2mxVa5jigU3vFfUZ7EOVMKVKoOsisqWICnJOCsQDVUfDomYbwN94y0hPuBfkxOCs
+	apevZEyFggrEilbfO1e1BiT+U/CDdUWgBCUvY8BSObOXPpkhGVmzu3i612HyX4p0w+Fp7D
+	jFq50mIlpZqMwEWQL4l9Y8WG3KebFnI=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P/7mFSz7";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b=nx8sBAmP;
+	spf=pass (imf13.hostedemail.com: domain of include@grrlz.net designates 93.190.126.19 as permitted sender) smtp.mailfrom=include@grrlz.net;
+	dmarc=pass (policy=reject) header.from=grrlz.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786807823;
-	b=NPbfqdBp6Wesv927m1PJAoKQ6EY4DlWUnWgbL3+79LRr/neb3OcnSkzpEU24Z5MjHhnBs/
-	gzYj7d5u3gZ8tf/J7kJLnmU6roRvjt27RYdGMsNu2OtaDMtvzrIUB8FPSgjLnmpo5UPt5I
-	oTlp+8XDTIplcFVfTbYJ8++JYRNqEyU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2DC3B600B1;
-	Sat, 15 Aug 2026 15:30:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9EE1F000E9;
-	Sat, 15 Aug 2026 15:30:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786807822;
-	bh=oHygruvnWfw5G8qNQHmRxC1emMqhJUV6dq/1C7tMYtE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P/7mFSz7zwhCNZu5FHYBXFRj5rNBIVRelod7uvpREfSzYxpuTqZfVkJZYDH2bXPWa
-	 r8BVa3t6hGsPaZZGDcMYLn7RDhLEAfQFgFIlHJD4NAADq7x4ncGuHBG865C0BNcloY
-	 82GxSUvdp41dHWbkUZuFFFJ5uz5L8mb4C4Ztn4yGsf+xYCco2fK3Q/Kjusn9iOhj/m
-	 v9CcEo5RULwgEdTOWru/5h5kSliDJ0bZG/70pPjyZzraxht4q7ZIJikWZ14pjnhFFp
-	 bq8I/tLbl3XJpORG4fNsSl82f/gDebhl7i8uA2IWUk8hSP+hAgkA9DEqmA8VcX8RGf
-	 ZNaJSYY/WRo8A==
-From: SJ Park <sj@kernel.org>
-To: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	shu17az@gmail.com,
-	jiayuan.chen@shopee.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/damon/tests: use scoped_guard() for damon_test_ops_registration
-Date: Sat, 15 Aug 2026 08:30:12 -0700
-Message-ID: <20260815153013.93851-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260815143039.17291-1-jaeyeon.lee.dev@gmail.com>
-References: 
+	t=1786809878;
+	b=e9CvRCHuHLBE5PE3T4vONWImSCMlIEU+HmmS2ZJUDh2zodp1XRTSS1JMQbuRg4I+v0K/u5
+	a1UKfCzvnJ0QE0RFIIgrklXlEjXisv65n2gh0P5Vd99rjWnVEjIuRlcisNu5USxqmdTRgN
+	pojbt+PAyFHuG07cNpWdsQCSvdbxMtg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
+	s=stigmate; t=1786809874;
+	bh=Ua8mFtf8zB2pwtSS5pdnlpxstzJMX9SfJcWg7kSeSCI=;
+	h=Date:From:To:CC:Subject:In-Reply-To:From;
+	b=nx8sBAmP3RxA/S+NfyjIysvZsUkNejCYLu2uASJxaavpSwhLWBsnPfBOB5mFI+2we
+	 6WNq0EgGMoJpMGxn+d1F39984zhZ57eVyg5u8tY0DUki0+GzaIc9+6z44Wvt3wZolO
+	 Z71V7gUjnIEwKoJNRDvqGENDxePuE+KVg5O7VNhY=
+Received: from mx1.investici.org (unknown [127.0.0.1])
+	by confino.investici.org (Postfix) with ESMTP id 4hMkSL2RQzz10rF;
+	Sat, 15 Aug 2026 16:04:34 +0000 (UTC)
+Received: by mx1.investici.org (Postfix) id 4hMkSK5zMvz10qy;
+	Sat, 15 Aug 2026 16:04:33 +0000 (UTC)
+Date: Sat, 15 Aug 2026 17:04:32 +0100
+From: Bradley Morgan <include@grrlz.net>
+To: joel.granados@kernel.org
+CC: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com,
+ kees@kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com,
+ shijianlin11@foxmail.com, shuah@kernel.org, surenb@google.com,
+ vbabka@kernel.org, ziy@nvidia.com
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_1/4=5D_sysctl=3A_Split_data?=
+ =?US-ASCII?Q?_conversion_and_file_position_handling?=
+In-Reply-To: <20260814-lklm-partial_ctlvec-v2-1-9df50d26e477@kernel.org>
+Message-ID: <D5FE866D-5393-4E51-8302-E6236B0D059A@grrlz.net>
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: pd6jwcxrpeycruwzkt4xeu9aj6qpu8h4
+X-Rspamd-Queue-Id: 71F5D20005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BE0A3A000E
-X-Rspamd-Server: rspam07
-X-Stat-Signature: xe1q8rqnxamzpce4jzuqbi1yesubp9rk
-X-HE-Tag: 1786807823-600850
-X-HE-Meta: U2FsdGVkX18+p/N4J16TaHhVWKKI37wxkM/7StztRNAfmzucCm+7vbCLBQrf/QJmdFxxn2qrrxiurLuRfUESVPuoe8VF5gB5H2UMSO4q0g6cTniGdrrt15SWYBIGqr3/3vZmubgM6Wm8Pe+jV52FlQzHQA+mDnzeGkr8MvdwG/NBiG4lskqB2N/EDNaKrR5aa+WiL0O8B9iqdRvIvDF/yPyDQmTlBhEmr+xOzXxZAidQxfd7OBG3yKil9LomUIVIYVWSpLzs14s5avnyrvibuBnZNJPLefmXD7/MlaNM1lpNl8CKaeAnXKGnrbQ2TcQ5R0uAsPItrlR7pf9G9KT/UplP/vGgV2mOD8lkbhv6ZljWV4geHtltkaOTj0Bha6hqUohkoAegQJfMBs8vgHCbPPhFrIwx3O83zqsmDYZkBze2HQ5IzklUeLxeef35HYahFfFEkwb8FKJreIipb7hHuw2Qqq34/EfZaemEnkd2+U8glW6VrFv9DClf4BUU9IHYVc8qXpBZ6HX58u/1TetdJume0nQgcGq78byyXTBwoTbVh8PL8WWIRNmA6A20YHCkWi+PbQ0pKx7hL3oAvWYxsjAqNe1fbCe/mCVBAemz5BQ5KGj2bnXrbrIx6EYSQkssAqYHGTIUVYD/LI6JzzVEqGjo3+BhyrwQgVfemb9dy4690VdvHcmXErgN/9jD3K5/0yHZqHFK/3/Nyu5YNdksrpCG1Xw2TuCUZuUK4gRs2QzP4NgLrR/klrFC0YyNvMGTcsPRyz1YwHkl82IyAmzxNSOFio8EWGhpWcE9SPIci5KluDt7mFt0S4efSE+kjw8PlFeb4biHqGUDAoKjoZ5Aesi9GZdorq4KjpdhL21Uvv6sC0qAF963YVj63fhl6K9GSOfMShVxuvtjJZv2+WvBJ9DNSf59FIT27dUhRRsIfw//piZWJofBKlOz80YmxWmLecYKrAMSICIvPPafWQJ
- m8KPxMLW
- DGyE75qlWvdDzVroPp+TuSlkeVxebOadc6h3jUAx/0yIorHiYW24pqzl4S+HtBHPX5uIxg6EtmZGH25+hN3KLqmm7K33UFYZYidC4kQ0N9H12p0W/yzqmNQ6UatBEXRWtcgt0kbxWCAeL1pG0Ft6KQSUZbwO3lXsWE2poHoTllXlBYdTLihRunLE5qkziWmllplHfIO3I3Df1q6nSEIHvCDutxcst3SY0jcXxd7xejuN7/9pWFZnJr2UhL0+nMKEwNm34XabeaXZKlcldpxgckk3mc3UvSMM/i8jFGSzmR4t4dzH+Tjd4UMkBS3TLWjdMR+9YH1md8dwzZFmtr792I1kGkMYDyCYw1/m1RQ2mGi+Ii95xV1gFwd5jeMz6mO4vgXrXwQlNa/B83StuqMC/wnJGEQ==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786809877-409666
+X-HE-Meta: U2FsdGVkX180XnQuMlfRxGHe2F/ERTgotoou7lF7/8bwwfFZh3a++qSeZoW2uZwSotsQXPf16krw5VhFidJ9z4VNB3AVDwMhLQp333tqsn4AFW7AIm0ub/cEFgt8TCX2l0Yxe4ENQUNmw+1aS3seCdzQtpwA+u59OEIATQ5wJOpidn1UJkaCJleg2bPKtixJsxtPGX0vzPVNwJ/BOKFO4wENi3Ypf+vwzGDQVQldmMGZulVf8BAiA66GQ7/y4AohUA63W8agyNCXkIDpsH3RtRxLvBP4B1MNBJ05R+0DaqFJuenFcEnEnE6jo0HRYwX9/O7PzUXGJU7PxNdb87dJCmEdsfMOaFL+CtKegU5JwFyqDWKnlBn4GdJbqjNoQOmYrKry3qu1T7oBf+xoF2Y4btCJmHusVGU3ShSZLVVrsKUb0dQVWPwsCYFIMQjaGhmgOPm5r03CllnSU2i2PoP+5FEdNxf53J0xPFvQxE1IESEVhF+micY3y3vFz6BoRHfYxBPRlzqrhCHEwab+laQq4sJvEEhlPba/yrariMx2mTncm2PG71HfoU0p5vp3N/nIcHUfb3+tRWbSEyR3gNyS4ROEgkq3Zo/vloU1PhzRs96UEXGs0JjXVdw+AdfANQrrziyiEiXK6G/7G/pAKeHT0y+Y1HPfAV5jLzzYsX9ffn3rnp6iexzUXRFpM8b4g1qs2yXzzWinfblYC2f/3NC368twV5WpaLcabg/E9gx4o8QfmWM0LklODHc1tmRaJlIZI+yoEK0mDa9yM5w1m7LgWcMI5tUuhs0gA7GJZ/C0XHCwqjTj8X+wA01zPraBJJVuAtSXvmiP817UCBDfB5jEJ+ZotkcfVJDkMSTKrAj+5Z+R2zhiw+k0EhqI3iMg1K6Vh9TfrpbTkrj8HE7ZSw9ys0yhn2JzAPZbc170NyDAXyObFu7wgkobsZuhsHl/IRxCfP8SPexOqHgdR2OJYkf
+ ubjxU0hA
+ /Z/V/U3paSUjllTny1AI3mdT+P506JwlE6PMjrsggrASQ7xYjGXi6hnB1TQ5Yd4zNb7uNlkYy5kZyPDk3XDjRntX0Ho5QeTUARfZ1yxcMnbYCURT0bZXyS+FO9p4BfL3sp5l+DnYzxqRRmKvFRwuXudhnhN/1JjEsDAiqr71fIHbZh7inIdk4UYwUX3GRK5pp8znfmtYspxfqMwW+KaqEjH/CdrwGsiZj3hOOly6ZhPN3qi73OURqFVxgN/DQSrHsUrH5jPFtU95fyj3X/PvH7EPTONRNXMU2aEkieycM65/nZY7dFAGVmsOuMiikDtBaVF4xuwzwLtrJ/a34+bsquOgJ3N9Uh1frHEEX8kc5GBCV1jnet10/hvfKd29n6TBaWGg43ice9dp3Xn8W9legkT4yJMCJdg7aUymy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,48 +92,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jaeyeon,
+>Rename function to prov_vec (from do_proc_vec).
 
+s/prov_vec/proc_vec/, the diff renames it to proc_vec.
 
-Thank you for sending this patch!
+Also the SIZE_MAX comment in proc_vec() only talks about the no
+parsed element case, but after 3/4 a kmemdup failure leaves
+left_nbyte unset too (it goes to out before buf_left_final gets
+written). So the sentinel covers -ENOMEM as well, a line saying so
+would help.
 
-On Sat, 15 Aug 2026 16:30:39 +0200 Jaeyeon Lee <jaeyeon.lee.dev@gmail.com> wrote:
+The split itself is fine, so with the typo fixed:
 
-> Replace manual mutex_lock() and mutex_unlock() calls with the
-> scoped_guard() macro. This simplifies the code, improves readability,
-> and ensures that the lock is automatically released when the scope
-> ends, preventing potential lock leaks in the future.
-
-I'm concerned if DAMON community is not familiar enough with scoped_guard()
-macro to handle it well.  At least I'm not yet familiar with it.  That said, it
-seems using it for one function in the unit test could be a safe and good
-start.
-
-So I want to have this change.  It is not because I want all DAMON code to use
-scoped guard, though.  I want to take this change because I want to see if it
-is really safe and easy to maintain.  In other words, let's not adopt scoped
-guard to more parts of DAMON code, for now.
-
-Thank you for introducing scoped guard to DAMON!
-
-> 
-> Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
-
-Reviewed-by: SJ Park <sj@kernel.org>
-
-I applied  this patch to damon/next [1] tree.  We are now quite close to next
-merge window.  We (mm community) want to focus on making mm.git more stabilized
-and therefore ready for the next merge window, rather than adding more changes
-that are not really urgent.  I understand this series is not really urgent.
-Hence, Andrew might not add this patch until next -rc1 release.  In the case, I
-will request adding this to mm.git after next -rc1 release.  So, no action from
-your side is needed for now.  Let me know if you think this is really  urgent.
-
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-
-
-Thanks,
-SJ
-
-[...]
+Reviewed-by: Bradley Morgan <include@grrlz.net>
+Thanks!
 
