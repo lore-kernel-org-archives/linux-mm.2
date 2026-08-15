@@ -4,87 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4278AC5CFDB
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 16:09:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F35C6C5AD5A
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 17:45:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56DA66B0380; Sat, 15 Aug 2026 12:09:38 -0400 (EDT)
+	id 92D046B07E2; Sat, 15 Aug 2026 13:45:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51DFB6B0381; Sat, 15 Aug 2026 12:09:38 -0400 (EDT)
+	id 8DD766B07E3; Sat, 15 Aug 2026 13:45:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 433EB6B0382; Sat, 15 Aug 2026 12:09:38 -0400 (EDT)
+	id 7CB816B07E4; Sat, 15 Aug 2026 13:45:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 218A26B0380
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 12:09:38 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 981BF1A03C2
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 16:09:37 +0000 (UTC)
-X-FDA: 85103989194.14.73AEE8A
-Received: from latitanza.investici.org (latitanza.investici.org [185.218.207.228])
-	by imf27.hostedemail.com (Postfix) with ESMTP id BCF9140009
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 16:09:35 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=WzLR1axz;
-	spf=pass (imf27.hostedemail.com: domain of include@grrlz.net designates 185.218.207.228 as permitted sender) smtp.mailfrom=include@grrlz.net;
-	dmarc=pass (policy=reject) header.from=grrlz.net
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F2FF6B07E2
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 13:45:00 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 47F6BA040F
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 17:44:58 +0000 (UTC)
+X-FDA: 85104229476.11.6AC5AD6
+Received: from mta0.migadu.com (out-70.mta0.migadu.com [91.218.175.70])
+	by imf31.hostedemail.com (Postfix) with ESMTP id AED5C20002
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 17:44:55 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=l03mVUsI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.70 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786810176;
+	s=arc-20220608; t=1786815896;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=2HZtJ5MrP8KDGrN133O/JlYL+AqZQq/JcEI5bqzXs3s=;
-	b=v7pnqGxYMtknF1DuJc+iMD6srjWxIOcLq69XJul1Qf1Ff8/gjF0+Vgprt5EuNIYDT1G9OP
-	6dv8NKbOG+/DjzJTkIprfLtbjreC9QZ3B4kXPfcWGup+zVEyfeG3qj+ZuE7yegIO02jjIH
-	wA4WDcbAuPWGoTN4fJbyLHnv5Xk3H/A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786810176;
-	b=bXUUdQMiTk0jKxkfdjm5a+z2shxBI4Ha71gY8rRkCIO8muN7+EHFSV6vWCtEG1P8YDKJWD
-	VIyHlNMotRQLTRObUDXVJSn+WtyPvocfTf2Vgb5CeLcNgDBDViFUks+nDNeVg0yNurmJxm
-	EsBUu5Wi+G0XJLrSw22ze4CzZCru9uM=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=avPeZm5/T510jKkZ9/tRUIvDLKwmbUPM18DoG4CWRaM=;
+	b=8dfHhIWvfo3CZS1Qwx2t940Y0XOl8G1zGhw1OYks6Ka/1KZ5kN44kzpFpIhvX87XYBX82q
+	FGEJx5upi1Mk2w40UqH09W4pSpMC04IZJf8y1z48Bfdp14WgbLl2j1XzooPEMjHT/iZ1Lu
+	hqxnWQwQKvX+SJebeOvatlvo8C4Z5i0=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=WzLR1axz;
-	spf=pass (imf27.hostedemail.com: domain of include@grrlz.net designates 185.218.207.228 as permitted sender) smtp.mailfrom=include@grrlz.net;
-	dmarc=pass (policy=reject) header.from=grrlz.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
-	s=stigmate; t=1786810172;
-	bh=2HZtJ5MrP8KDGrN133O/JlYL+AqZQq/JcEI5bqzXs3s=;
-	h=Date:From:To:CC:Subject:In-Reply-To:From;
-	b=WzLR1axz4j6/twlF8xiR93obSNDUtgr8l7RvUwKkksWtyIFGm9j0fD3+C/SjpWUi2
-	 N6bFjh4d0t6gGIuj+Ysq15rjqzwKtx6VsbBkCl7VDH0PLrEtLDCGS+tEEZkBYUCm7L
-	 mM8oUOI+bDVSVfh/xcHJDrY6XosQG+N1R4BAeApQ=
-Received: from mx3.investici.org (unknown [127.0.0.1])
-	by latitanza.investici.org (Postfix) with ESMTP id 4hMkZ419TdzGp8w;
-	Sat, 15 Aug 2026 16:09:32 +0000 (UTC)
-Received: by mx3.investici.org (Postfix) id 4hMkZ35ZyjzGp3p;
-	Sat, 15 Aug 2026 16:09:31 +0000 (UTC)
-Date: Sat, 15 Aug 2026 17:09:30 +0100
-From: Bradley Morgan <include@grrlz.net>
-To: joel.granados@kernel.org
-CC: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com,
- kees@kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com,
- shijianlin11@foxmail.com, shuah@kernel.org, surenb@google.com,
- vbabka@kernel.org, ziy@nvidia.com
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_0/4=5D_sysctl=3A_Disallow_partia?=
- =?US-ASCII?Q?l_updates_of_miss-formatted_sysctl_vectors?=
-In-Reply-To: <20260814-lklm-partial_ctlvec-v2-0-9df50d26e477@kernel.org>
-Message-ID: <5F021629-DD85-4941-8263-3C4F51E9D6BD@grrlz.net>
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=l03mVUsI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.70 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786815896;
+	b=DVPamDPXMJqOjIczOTaNo6rla6iiym9/o+KGROx93yT4TUEFXz+PSAWbgiXDg771U9FLyd
+	g5rrSE8ZAFOv4iaFpP3u2wH543YCens3p1F+9IhHxYAPzoj+OgqeST+iWgRvC0hgKEpTHr
+	WTn1e5YOMQcGBHCYyWywhtc+n/E//+0=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=avPeZm5/T510jKkZ9/tRUIvDLKwmbUPM18DoG4CWRaM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786815893; v=1; x=1787420693;
+ b=l03mVUsIYUY2BcNsooZ5LGtaOnitHBJ7niiREo2uQrR7KR5L8rNFfPYMR7nCZSH78D2LZKVV
+ FWeT7zPUGbiVcg091lF1RZ9aj19m0zFyvK0B1w9QZKhlKX8UzKpzPD67xanz3Xr9/Xp5qMk3yD8
+ 9aJ8IALZfLtgq1zoDfL1Q4Qk=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (2602:fce1:44f:115e::)
+	by smtp.migadu.com with ESMTPS id 3174625ea40415ed;
+	Sat, 15 Aug 2026 17:44:53 +0000
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: vernon2gm@gmail.com
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	zokeefe@google.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v2 0/3] mm: khugepaged: fix tracepoint UAF
+Date: Sun, 16 Aug 2026 01:44:44 +0800
+Message-Id: <20260815174444.4164-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20260815051924.194810-1-vernon2gm@gmail.com>
+References: <20260815051924.194810-1-vernon2gm@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: AED5C20002
+X-Stat-Signature: au6ejuwp7ce9xrcy59qcgejt87y6qd7f
 X-Rspam-User: 
-X-Stat-Signature: 3r1tzdcw3uwtyds8i7prt39g5zid5ie1
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: BCF9140009
-X-HE-Tag: 1786810175-957847
-X-HE-Meta: U2FsdGVkX19dLo7ir0sWjXhynFBGLCoCs9kunI44gCbEprcIknZeQ+qbc3rXJMswQc3VltWcX6XUGzl5Ryil74YxKon7Q1fNd0d7a59B79cL8kzzNz1FQwwjnmKqHypYPflQGdiS3fS9JF80jG8ek/9LSgz4ORwyw/M2z0qNACkYMDXipR9TylZ+tD9zvkLu8woDVkMFXObw4lsN6VSQSlGorRMQddX/eKg1kKZ5KO/DbWbLZM9mPZLVSlCLQEYwwM/5ZYf9cev3/J3EAbOXTyNhFY6kGwMvjmzyYLLRKjG2XQzWKsw3jbkU/gOY/HQVmliEbSLuZqWlWIGhJDj593Kjr8c8IhQQRHIrCbG8Vq6U4xi5DyJhcWQ2DN92rhyCOqMRRoeh0aTnqz555VzAK6ppk29F2tPv9wJNT5r6onzKyaWOuqyHX14SYndLxwdFGqMrwg2PbJxvufKtYdexT+idAnxj2Q4k6+s4/hDJuw8nFby2s1e514zUSYVBPMy1mTK4NuH1u7/5xQgkutHX73tj3Z4MxxetpQGPFlwr5ttfhST8nLYAiZ2pLsy6EEPQW8ylWdwQeUOn+sTHyvvFzUNPFSmFADPjRgUMXsVIiNfrIICHnKOYUQ4BZ+uNVZb89xvkUYV1BeXSkpaqQhHtiDLBGcgy0Ij50lDBjE+Sjoqe3EqjGlkp808BMIRKeCz733r3uH/dt58L15GfyqkS5B4/DzYMODnKjNFs0nAMj1PJtDVTCqMoD9zY3IdYlCzS3roesd2wrILx1bUYGsQZ0ul689W2fBllrY7SKV/LkZ6ArDRzhe7HIUeX5TBRxfKPyHup/Gz8Dm1xnVQWMvGSTm3D2B4w/QW332z8/bwX1GbLbvFZ/UazA5dcFTuJZnPISLEx8ihDcNIl1j6QghAy7jcy386k7onvva9ksaOVeMFdKhrIumqg91CQYcod20wOJTj496OUWReV8icL75S
- NKP9L+uG
- yo845Kqz13yRVqFiq3UTobK6jRZRGjI8Yo9e8y9TKYX+knamnOgeeTZeqLZ/leIbCcSKJB/q75fvN6Hwfxd0Lwf3X2YaIrBwlU2oWOnYVGimoAIfNBDU8cdGRT53GwrzmPcnoMDQZiJdB5WbZ1oDQx3+IygBfe7uXNtFNJQ91LfVphDiAGbblIA28D++yRnEFhmVebKVJcfiVkZjGJTjg8/V09lemGet1MKLMD6K9NPuT3j/LT3o/CJ25xwWTc1IJbsmG5CV5eAmt2CJbY5XyZUiC6lxuoVCg5Ohj/AaR5e8GrV2nHCJLG3ufaU74I4eb3uvgZ9O9KjC/zxI=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786815895-866147
+X-HE-Meta: U2FsdGVkX19X+2VsU7qdh8fV8sKs7KFhwxkn3ncNFqt4EXUoYAgxPXBtmlfJdxbkt3/ks669KHJsTCqQJ7BQ5XVgrIG3vORCmbulFx4ZbuIkkKRe9gxmRkEr+q7sCmA0Dn/j2dR7s5Yz47fZslf5tQLNwnqrae7H/TbYrwzHH0k5AA8+PYDfHghnVbueZ0MLiC4oBSiHgI1M6XNjl+Hv04LO0kHuUd4mUU/iNNDQMX3N2xpP/k5NjI6yWceY7bNbqIXn1uAmi5FJ/Pd20H2zXh+dm72CEqmG2nKJpUFG0p6N4lO7TqIQcfeYqtYUg0xuQ2eLKr6V3dScIlKZt+2JIQ3eroB6pqF0714jv4FRJUBrME47uKZeO2awktQ3xXe/AlsskWUEQ+T6DwfknRUXZ2s4FI/7+3rVUTBAAzVKStfACV8XtbaEgiqWSuyxETts/WP/lXuw7gTSOGi2ib4xv/byuvbIn9w8G3apOHKrFsPsRF1QVNHmnsSJWhQwen0OZv3v9x9973FBCbRfNlI0aLXpbT1DMTKn+zEq9g8NeY3jvJL804xmxODKRs9N0eUxrZDaVmtjbFAKhYAPEAeKvNR5stDwGb3GxOhVzsDDsRF7H5xxKhALt1I19t6qoh6wAjened9uhHOv8BzEiK/7WBqqtungDOgiLQwDYttdXh12WWLy3acm/6ZBlLbAFmwqL5c5g9OURLIwoYrKFfUy+tallXwNUWFhoM3ZtOG5bBvcbZX0LR07gMXusW7W87gANqH4Y9Sxoa4Bg218m+3NbI/MMz0yfaxmymrFkzzfrln/D4qXSqPJEiD+Fxs/18P/RvRNc4J5qXva2/1x4ptEbioVYofvdtFbmkb0nm6tcs0QZvpj6ns2/Bf+YqJtDWxYDCDukXTzIKjkqo+vtRYnT9zdUZ5eaxs4455STL/afCsI4F72HxkzsQoOHObjuBBPB/exssiMWdHhN2xkhQo
+ 4Bkmlk1Z
+ BAktZiREzct3EXZ3fGrQGoV+LoANtEdyjkitBIzrS2OWNXnl7F83RyP+vJ5sNXG88rrtiOxvaO3vryI7b3CDSQRArqCKI8ybP1atBUiNzXyf90P4Tpu6Yh1BmeNNGvkstcKpbMJIylYyCjv+3BaWYHCwp4jUhveIH8FQgWyDOAG160hGcDj9hIV/ALhlmE93ZHxUk9lIaqozDSrEu7i3wxT93N3KmNrNQiN49Os0rI4igGZNj8DjhZbWL2xItHA9TvuTfyd2KUR9jNqcrKAQ2am9EvRhL4RN3mjdZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,23 +101,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-Copy it, only write back once every value converted. That's the
-right way to do this. Went through the whole series against the
-tree, notes in the patch replies.
+On Sat, Aug 15, 2026 at 01:19:21PM +0800, Vernon Yang wrote:
+>From: Vernon Yang <yanglincheng@kylinos.cn>
+>
+>The khugepaged tracepoints take a folio pointer and call folio_pfn(),
+>but by then the folio may no longer be valid: freed after folio_put(),
+>folio_unlock() or pte_unmap_unlock(), or not a folio at all but an
+>xarray-encoded swap entry. On classic SPARSEMEM, dereferencing it oopses
+>khugepaged as soon as the trace event is enabled; on other memory models
+>it merely prints a bogus pfn.
+>
+>Pass the pfn to the tracepoints directly, captured while the folio is
+>still pinned, closing the use-after-free windows in
+>mm_khugepaged_scan_file(), mm_khugepaged_scan_pmd() and
+>mm_khugepaged_collapse_file().
 
-Some nits on the series:
-- "miss-formatted" in the subject. mis-formatted, or just malformed.
-- akpm's scalars nit still applies.
-- Sashiko saw something on this one (akpm linked it).
+Well spotted!
 
-Otherwise fine by me, the split is clean.
+Gave the series a run on x86_64 (KVM), all good (only classic SPARSEMEM
+untested) :)
 
-
-Reviewed-by: Bradley Morgan <include@grrlz.net>
-also
-
-Tested-by: Bradley Morgan <include@grrlz.net> for the test
-
-
-Thanks!
+Tested-by: Lance Yang <lance.yang@linux.dev>
 
