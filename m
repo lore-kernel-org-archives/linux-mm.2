@@ -4,99 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AA81C5DF67
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 14:30:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12AA7C5DF67
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 14:31:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C6026B07CC; Sat, 15 Aug 2026 10:30:54 -0400 (EDT)
+	id D45456B07CD; Sat, 15 Aug 2026 10:31:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 776076B07CD; Sat, 15 Aug 2026 10:30:54 -0400 (EDT)
+	id CF5556B07CF; Sat, 15 Aug 2026 10:31:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68B326B07CE; Sat, 15 Aug 2026 10:30:54 -0400 (EDT)
+	id BE4926B07D0; Sat, 15 Aug 2026 10:31:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 41BE86B07CC
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 10:30:54 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C3F7E803A6
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 14:30:53 +0000 (UTC)
-X-FDA: 85103740386.08.8F5796B
-Received: from mta0.migadu.com (out-112.mta0.migadu.com [91.218.175.112])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C355D120006
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 14:30:51 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ex1nmzfE;
-	spf=pass (imf29.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.112 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786804252;
-	b=S2zytFvdoH427mO+ofQ6nTLEYXnrk7OZIFr0YK1G7kFwmmbugnEubVBCmgNJ8kceCEjQm2
-	mxusCHhxZfmYuRYGColwfGYwR1fbXH9fI3NDLlU8MYcuV+rZhADy/wR86SLYMaG7VOdDwc
-	ZHFzy37XdQ+le8FGVgBDD5gKrVjhJfI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ex1nmzfE;
-	spf=pass (imf29.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.112 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 8BA266B07CD
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 10:31:29 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 22A351403EE
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 14:31:29 +0000 (UTC)
+X-FDA: 85103741898.16.A4B7D06
+Received: from mail-wm2-f10.google.com (mail-wm2-f10.google.com [74.125.225.138])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 6F2AA140002
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 14:31:27 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Lp/9FzaL";
+	spf=pass (imf23.hostedemail.com: domain of jaeyeon.lee.dev@gmail.com designates 74.125.225.138 as permitted sender) smtp.mailfrom=jaeyeon.lee.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786804252;
+	s=arc-20220608; t=1786804287;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/0Z/2LadPFY3rjFZ+EZ/aup+JHhu6t6XpboK+FK8giU=;
-	b=A9VsK2A/MZATJT42/Vx+TTlTA1zFSQzwo5kjw/9VWej6iDIhza+GfYjrTll/Clhzc4Keuk
-	9s/UtozecVcUA3Ol6cW01MtxQWc1JZ20OAHPowuc1EoiZ4cCSCZJr2rWiB0PFxwUQxWI9h
-	hf4DvVg1dF3frxSZDqy9MvgWeEGI+ro=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=f0l24nJdKCPn3HKZrSe3W0vzuVprJAb/6eQIXz+8b4s=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786804250; v=1; x=1787409050;
- b=Ex1nmzfE9iGXU5fCmahNyVytG7kca6ipEWwEzWtf0vrvM/wpyjFCaoBLJqYjYnexwQpYFLNq
- khPZE/FHwgZxmh4xvv/X5IevlsbrGNds5D6v8H/J8w7pFZVbM+UsuUlQa1+oqz22SqeXUikWLto
- RFurkYXa3v8WU8MfeX2grlxo=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (77.97.51.77)
-	by smtp.migadu.com with ESMTPS id aa0f9b3bd3bb642c;
-	Sat, 15 Aug 2026 14:30:49 +0000
-X-Migadu-Flow: FLOW_OUT
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 15 Aug 2026 15:30:44 +0100
-Message-Id: <DKPL8Q39R5JD.2OY4LAGZ84XTG@linux.dev>
-Cc: "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
- <dave.hansen@linux.intel.com>, "Peter Zijlstra" <peterz@infradead.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
- <david@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike Rapoport"
- <rppt@kernel.org>, "Wei Xu" <weixugc@google.com>, "Johannes Weiner"
- <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Lorenzo Stoakes"
- <ljs@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <x86@kernel.org>, "Sumit Garg" <sumit.garg@oss.qualcomm.com>, "Will Deacon"
- <will@kernel.org>, <rientjes@google.com>, <patrick.roy@linux.dev>,
- "Itazuri, Takahiro" <itazur@amazon.co.uk>, "Andy Lutomirski"
- <luto@kernel.org>, "David Kaplan" <david.kaplan@amd.com>, "Thomas Gleixner"
- <tglx@kernel.org>, "Patrick Bellasi" <derkling@google.com>, "Reiji
- Watanabe" <reijiw@google.com>, "Sean Christopherson" <seanjc@google.com>
-Subject: Re: [PATCH v3 21/26] mm/page_alloc: implement FREETYPE_UNMAPPED
- allocations
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-To: "Yosry Ahmed" <yosry@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-21-6f5729aa9832@google.com>
- <CAO9r8zODy9UCrtJuU5_SuiZDUbg4dUYLhOyOwZtD-U0N0tpCsA@mail.gmail.com>
-In-Reply-To: <CAO9r8zODy9UCrtJuU5_SuiZDUbg4dUYLhOyOwZtD-U0N0tpCsA@mail.gmail.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Vgs6AOcx4CaUB67rv6dy2Cg2Qla+WNDbQRNX2dCqX6U=;
+	b=Fk6foaQ0XICZLJVY+RyWZn1LQIQihW0kXIB8qDxpKEQ9j31cy+maTbgZDqPL+xCczK6zOB
+	um6FBX4Vq2VGSmaP/a9ruxiU3Tnv3Kf0E+gKX75OxKTzSDDQRwunSR9+PCfgz2aywN4ES+
+	c7bn9BpvT6ANBACqF/FVsSIbisk3ag8=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Lp/9FzaL";
+	spf=pass (imf23.hostedemail.com: domain of jaeyeon.lee.dev@gmail.com designates 74.125.225.138 as permitted sender) smtp.mailfrom=jaeyeon.lee.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786804287;
+	b=J8h65tuvsiiMzbhwhh2PQc4Dm0kQiEjOqXztPscUpPWBd0uiA52Ui7OG9Q5JfXeu+rfk3Y
+	Nc30R3n3aI7ppIYg667TQ8cn4l8PMYa6MzUdwe8jGXaYVf93uSUwPLMQPTIebX4Oi4uEOB
+	Qnb1DOqmbXg4cDAwJe/jrJhzYHiUJBA=
+Received: by mail-wm2-f10.google.com with SMTP id 5b1f17b1804b1-495459712d2so5219215e9.1
+        for <linux-mm@kvack.org>; Sat, 15 Aug 2026 07:31:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786804286; x=1787409086; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Vgs6AOcx4CaUB67rv6dy2Cg2Qla+WNDbQRNX2dCqX6U=;
+        b=Lp/9FzaLPamOHnvmZ5KED99D2baaEFCzvM17VpJO2Tdw3g4cHmDy2484ta78RQO+Ar
+         tTIapG7TZQilKSycA2DeMPVtHF+VBRyTfI9rFh6+ihlsaKctIZxx49vDPCpZy8P6aNGF
+         0knw5ia3CQNfA0Fxaw+wHYMt6AOx6FYTUNRvW7s80LnK0ntOPPfD8WagUuHDqNWUr/ZL
+         RAmHn0vG5CAOjSaMQWA7id7UBBmlr9VwlHQ30p561LVJf7jkkcqUV2mmpnsZWUVs7LQj
+         b/2AFPSoHTXyHsL2SR5ekVMwHy51p/R1jyA7ioPwLDRBXdKlnd668H2R1NfhQipIkWOB
+         H1RA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786804286; x=1787409086;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Vgs6AOcx4CaUB67rv6dy2Cg2Qla+WNDbQRNX2dCqX6U=;
+        b=TlQOQSGsx/ZpVY4B2tZ4Sn1XQIkt1A5s/XMaaR5Oh35YxaiCvOW9VpClSDp7YUp405
+         QvHIbFfQFWV3mF2ziyUhU8gG5AohnAj8ITRfi18sMufaBVzZBl0J8pZzlYsfCJZuLXGN
+         ahqB1mqq93bM7ou9TGQms2/qaGj7d0WQT2ZoBqwbhIbrsOgNQRyBnLWrVMydHMOTrEOt
+         bMxN9/Ck3DdjTsGJ5YgSTYXpwWo+b1rs0FlBg1A0/CEH+dVekTNRYfchr1oqw3sxNvid
+         bVMaccoFGFgH9Wc2aeVBrG7qZP8ilVmD/RYVAPW3dvwASRQmie1nnWQtc4yiAJ9rb5ZE
+         q2vA==
+X-Forwarded-Encrypted: i=1; AHgh+RqjvebE34O23h4uwLO126T9HxRbR3NbXhQJVowR8vDvBUPRX1X8H2z+o6CTldT/Gvc3yhgCA/Oi2A==@kvack.org
+X-Gm-Message-State: AOJu0YwD5g1St6oB0vQ2nOpOhHe92sQhKH2LbKWyklet1VvTbXMsY9I2
+	RIu4GhWGXWJzjyGt858i+y4x/vSOaO6K3lzgY8VC2FR/jiCuyvHlPyMq
+X-Gm-Gg: AR+sD132WLLYZPQEVm3vdS6bVIWjaXpejn9F/j18t+jkOGvh/xkB3aS6eSg1iXm1bxx
+	W+x52xzgPbFQupYJ1TnkwDdXUbmuROP/4z9qyA1/RMOZBgZuU5Rqu5NUFh60Npziqmj70d1XmeD
+	jmJumEyZrAimY/PKw9NQ9wQixnsyyRclg47+qISQPb+V43SjwPtV2ps4IFurQFybArdTDhRJcDd
+	bvDwZ7ypGvL5QFWSmDm0jguHK26c84x/ECji8BDo5RhBwzjyP9UF2EgNa21AEzP3Gkt/axRjgKX
+	VJj4wstsmruVQG3j/mfbw5Qfz3roHbItMQ4ILum5GTx0oWcBrAn08TUTPJWNSD3f0YGTpYqKfhy
+	PaAvVvjDfjvgDb9CHUs/Y102niODA4CnMZrfe73N1QV5XcdFuj/SX1m/oPg1kBjQFSRpF7AIsev
+	VG4brP/dYUt2jSYFaEXObS0CzSt7j8Gq5S27bgaCFQlq1pCGlX4CbrbyaGXGJcY4S7DLCuW8GzP
+	G9VO+bzYSNyj3UMCcv5PdZYt1KvfZpVq+GH6XPKXeXmtZBCHYgZt7ll8pOkRJsWF4R0eIlnVO/3
+	9lKuLthrYEs2p79slCc=
+X-Received: by 2002:a05:600c:4e04:b0:499:9069:c2c9 with SMTP id 5b1f17b1804b1-4999069cf2bmr75580105e9.11.1786804285834;
+        Sat, 15 Aug 2026 07:31:25 -0700 (PDT)
+Received: from lima-kernel.telekom.ip (84-115-221-9.cable.dynamic.surfer.at. [84.115.221.9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49988b24746sm251357515e9.12.2026.08.15.07.31.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 15 Aug 2026 07:31:25 -0700 (PDT)
+From: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
+To: sj@kernel.org,
+	akpm@linux-foundation.org
+Cc: shu17az@gmail.com,
+	jiayuan.chen@shopee.com,
+	jaeyeon.lee.dev@gmail.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm/damon/tests: use scoped_guard() for damon_test_ops_registration
+Date: Sat, 15 Aug 2026 16:30:39 +0200
+Message-ID: <20260815143039.17291-1-jaeyeon.lee.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6F2AA140002
+X-Stat-Signature: gb3yaziknz5mcdx9mkjfqji4iqcuu7pc
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C355D120006
-X-Stat-Signature: y985s31hbdrtrrtd3hygf3jn8f1cugsr
-X-HE-Tag: 1786804251-468997
-X-HE-Meta: U2FsdGVkX19E9wUVPUscq5ScKBI5qPFZKmx/dT/m2fqJ1IIV1XjxsXHo7fYhSC8L4XfaZqWewfhupUOBujG7EjyOAQD6JB+IelGbsi5xdYLK4d/e/RIGtSd2CokUfyQnSGThCXcqPa/8cgN/64XOyjTBLyPD0CNNvs6VE3hNqiTaiJa+co1lS1mrRsK1FCpwdLf90MztXv8nwbqiHfBTJqeB6q/6+PkCjzm2s622A5sDl0NtHJeoZNklzW3OtP9uVwforWDYvx41jujkdNP6frF+QU/wW9uXsYRNNX/nYJp5l7brBPoqwKJYoDOBGF4g/yFbf7K3VCzyY886ojeHpwz4KGRJgR8NSMrxpJXjYeIGbxC7yXioC6z/dVgnxNFgqq3q/AroH/5EPCezDpDpwK6jkkyo5Uv8kWXbTCmNL5UAZY+eMP4LoTRovnl9H/km9M/VJsaEWr6+ylI3ZvpezkhhZIZqNzrhZ6Ut1YdbMglVSu7CPUVTgyp6daI1SwJoQ99UX27kBXSTaE9dm46WISYDyRafiuE9uliLHVmqxhCXpGQouO+wHfwcI0SqtfzFXNEzDHTeFpyv/LBOEkBrraxNDRVVngO+QvEpnZ7aZc8LI29AbkPdVB2C0r0e2ZQ5IX/RnyTpc00zm+qYxA/XNzq1EJachMQfUVIW8RrOI/TR2Priq2iL3U1WjwuxsX2S2wnJCxSN9o09TPMALOnxIAdf/6Mt60bENGJtFwD66SQilwOBh3MqluRIDrtEi83gV7D6CWDOxtQKDY92UPeK8CdrLFpEp53x3KzEOJs/0NZwLTxq4PClOmAjg0ya7q2QHQ9WdKIt962MNpahZtigrwZ79KyCjCFyF+DXXXPMZY3ozZGLBLxkDh9ttdK8jv/hEcfMObggvGlbaCRNHcRQncw9KrNYIFYizp+6+bk6m4qMjKP5mz1kySj8byXX+6RhQOrLYa0HGKcST7cYFZK
- Gcxwf5br
- iUkoqUBWkKBO3u7nEV7qeHnR+QQE7+K49p2lGPE6C7uidvEuj1Ltfjy9zP4ZhhqZAh3UZjTbYSTeBOSaMq2kQLwiOYKus3veC3hnYkaVA7LfJ2mUme1kNwfkAzga6QLUgTV82jxUG+MSDK5T4ofq82vM5holocfxxjYqw/s/KRgXvdRD/R1b1ZLBmqoZ68Lj0S2rNZDlxZVdXqEZ1IKZxG9L0WyCigV9j/OZ3EXZS7hiM7Bkh4n65cRKA1mnEaY/7mCZAz0o1EmmX1zGrGhFTyVJrziLZDVbFipEqQm2EjQ1ujAvvq3fwVoBQlUuBqHfH8ayPM0DkJ2ftXLSPqy0N8k+QyXtAwVWq61qBLy3N9pCSag0=
+X-HE-Tag: 1786804287-109421
+X-HE-Meta: U2FsdGVkX19H3Y4hQC2Je12S5vljucorSqxltUTabmWUInzhl3g6+M+FtzeBuaag8pQEHGqeCaHHMPkdJhJdkDwEN3V1GK2/4IcTfdpwJMsK0ppFu8IVdt2+mr+WPHNIXbk2tcdEm7I8sYiVcUXqmVekYJDkCbziWICcu8WBjlXQZVLb8kBQ7oWEoB5ZxTrV/k509bYL66i8Ozc1WIt0OFWK3uk7fs5nn8Ib2d8rfGceUhqDtx/7No2ym/hmttKEXh2b+QN6evq/zEPsTBMeaBuRdwsCVVg+ZVvzISJhB0EC8iw5AtUW+OGFAWWkW5aRa5yr/6MALpu/wz3QLc1+BO89pGrVxSuStQLRVs2TwVgbIQ0pbA36a8kb7PL/vKzpjB3OrI9LFWpeQ+b2SklX6+REJv/ooN3cjJtxxJJUYsEvKZZxnbH+EX0Gp5oCexGEXbuMdJ+C/kHUWI2StGBMjmmM8bmG9r84upzVFJKTTN2XCjIIC3mAFZ1zQVwlEDopNmcaEqxYbonk+mtQ4JpgzRMf03NTVxGzB8W24w0kChmkJE+3wVmKCnSwfvGkierXqMQXcGbpaszp1ahZorPAcR249BzPxL9iK3hhw1TQxoU6NzwlOPPQzPuqGJDC9DmbBMNRsgt0p4a5YvrruoIzBr7VB7oJRz12KztEy2nvkFmsTSxvts9qiaDAV7jIFpUBG4HQe+lRosjUjfmOl2Ainb54PxFMFUCPJNSBr7TrjdA7X8rYc8Utjy8VtjxXDEv2E+CqC7LeczkvhqxqsSdcp8I9gOH8jg99EEfBfeOluT6MJH6VJvUR0HbGBYlHhcerEJPOoPbC1ptJ2Ksos5Kv+rE1AAFGy59a7I+YfWfg21PeQ+/rBPqAfG8TmhGHUx1bfrSt/jeMiz6XM/KRqyx/22LxQMajEimd3gR85lJsWvqGsRCweiix0cw2rr9WWIeNt9FJlswH7zUtfF0jZI9
+ /YxCZV0M
+ E0t9qk9KlUV6fuQvuzJkPwfTwUh51fACQmUrgL/5+oPQ5+FXaPTe0WNND2UdDyZ+1Fp2/tI+qT1ZVLljxiZFexRfLJ/C1wD/VVx+2bhklVlkBFnq2dE8vQJudUsFC/bxmd57XeIKZiXlEgzGAMdqV2A5Z/jr9zV53cKyGMQr22ff9ydjHZ9E0evZ72wB/TKdXGTBcVz1oQCT0XwWXXjzxgQQV9cGt13clxVaFmaddZ7cVPrX0gwXQxIqYzoNqqmWuOxCI6/EFMxBPNEDRJSy56g8RLl0kAnj5ToFZYS3UmYNpGoGOdU/bs6x5x+P3nDUK/CoQIdLXyBjpLfDWfRF3JPjSRUQmAgMDZ6hZ+Q2nvDHrh1DyMEpWTa9sDIRusIWZNZ6BCHEsDFLSqlCk4TJIvS3Ecl8ozhlXzqjCb7X1CD2XKO1DZ+Q3RewahTho2aqGmUZUvml/kbWKPrahvm8eHGV6eKrGvVEZ6kcbMGAbTHgwDJHhRNcNd/mMGT302PcuyoKOzmLDpOikzjnZ2JeHBRUWvw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,48 +121,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri Aug 7, 2026 at 1:16 AM BST, Yosry Ahmed wrote:
->> diff --git a/mm/compaction.c b/mm/compaction.c
->> index 67b01af024e17..c9eb3947ffc79 100644
->> --- a/mm/compaction.c
->> +++ b/mm/compaction.c
->> @@ -1393,6 +1393,9 @@ static bool suitable_migration_source(struct compa=
-ct_control *cc,
->>         block_ft =3D get_pageblock_freetype(page);
->>         block_mt =3D free_to_migratetype(block_ft);
->>
->> +       if (freetype_unmapped(get_pageblock_freetype(page)))
->> +               return false;
->> +
->>         /*
->>          * CMA pages can only be taken by ALLOC_CMA requests. For anybod=
-y
->>          * else, vacating a CMA block consumes free pages the caller
->> @@ -1444,6 +1447,9 @@ static bool suitable_migration_target(struct compa=
-ct_control *cc,
->>                         return false;
->>         }
->>
->> +       if (freetype_unmapped(get_pageblock_freetype(page)))
->> +               return false;
->> +
->
-> Do we also want to add safety checks in the page migration code? IIUC,
-> if we miss a check in the compaction code and try to compact an
-> unmapped pageblock the kernel will crash with a #PF in supervisor
-> mode.
+Replace manual mutex_lock() and mutex_unlock() calls with the
+scoped_guard() macro. This simplifies the code, improves readability,
+and ensures that the lock is automatically released when the scope
+ends, preventing potential lock leaks in the future.
 
-Shrug, yeah I would certainly be happy with sprinkling some more
+Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
+---
+ mm/damon/tests/core-kunit.h | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
-if (WARN_ON(freetype_unmapped(...)))
-  return -1;
-
-here and there. But yeah this feels like a maintainer preference /
-philosophy question :D If the machine is gonna crash quite clearly
-anyway maybe it's not worth it, I dunno.
-
->>         if (cc->ignore_block_suitable)
->>                 return true;
->>
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index 4a536d41cdb2..770927a30021 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -434,17 +434,17 @@ static void damon_test_ops_registration(struct kunit *test)
+ 	KUNIT_EXPECT_EQ(test, damon_select_ops(c, NR_DAMON_OPS), -EINVAL);
+ 
+ 	/* Registration should success after unregistration */
+-	mutex_lock(&damon_ops_lock);
+-	bak = damon_registered_ops[DAMON_OPS_VADDR];
+-	damon_registered_ops[DAMON_OPS_VADDR] = (struct damon_operations){};
+-	mutex_unlock(&damon_ops_lock);
++	scoped_guard(mutex, &damon_ops_lock) {
++		bak = damon_registered_ops[DAMON_OPS_VADDR];
++		damon_registered_ops[DAMON_OPS_VADDR] =
++			(struct damon_operations){};
++	}
+ 
+ 	ops.id = DAMON_OPS_VADDR;
+ 	KUNIT_EXPECT_EQ(test, damon_register_ops(&ops), 0);
+ 
+-	mutex_lock(&damon_ops_lock);
+-	damon_registered_ops[DAMON_OPS_VADDR] = bak;
+-	mutex_unlock(&damon_ops_lock);
++	scoped_guard(mutex, &damon_ops_lock)
++		damon_registered_ops[DAMON_OPS_VADDR] = bak;
+ 
+ 	/* Check double-registration failure again */
+ 	KUNIT_EXPECT_EQ(test, damon_register_ops(&ops), -EINVAL);
+@@ -452,10 +452,9 @@ static void damon_test_ops_registration(struct kunit *test)
+ 	damon_destroy_ctx(c);
+ 
+ 	if (need_cleanup) {
+-		mutex_lock(&damon_ops_lock);
+-		damon_registered_ops[DAMON_OPS_VADDR] =
+-			(struct damon_operations){};
+-		mutex_unlock(&damon_ops_lock);
++		scoped_guard(mutex, &damon_ops_lock)
++			damon_registered_ops[DAMON_OPS_VADDR] =
++				(struct damon_operations){};
+ 	}
+ }
+ 
+-- 
+2.43.0
 
 
