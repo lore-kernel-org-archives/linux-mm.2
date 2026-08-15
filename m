@@ -4,111 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ACFEC5CFC1
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 08:59:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F23E7C5CFDB
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 09:18:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 675586B035F; Sat, 15 Aug 2026 04:59:02 -0400 (EDT)
+	id 75BE96B0362; Sat, 15 Aug 2026 05:18:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64CCC6B0361; Sat, 15 Aug 2026 04:59:02 -0400 (EDT)
+	id 733E16B0363; Sat, 15 Aug 2026 05:18:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 562436B0362; Sat, 15 Aug 2026 04:59:02 -0400 (EDT)
+	id 6493F6B0364; Sat, 15 Aug 2026 05:18:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 30B7C6B035F
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 04:59:02 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9E4D716032B
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 08:59:01 +0000 (UTC)
-X-FDA: 85102904082.03.05B8A70
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 946BE140008
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 08:58:58 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	spf=pass (imf09.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B9296B0362
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 05:18:34 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 86E3F40336
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 09:18:33 +0000 (UTC)
+X-FDA: 85102953306.29.FDE53BE
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D01BE40003
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 09:18:31 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LlD6OUxz;
+	spf=pass (imf11.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786784339;
+	s=arc-20220608; t=1786785511;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vajMF5qc8VrYH5oIndzXjceiwDO7TMiHevWsujwDkac=;
-	b=sCacEGzqfbuy+eYz2DigKIZHYAyIVt/PS9akmaVcFaVThCpazN9pW8DhOu0vC04iWYI+l6
-	IADMNrEe5U740BRfiB8hOIwvLzeI/CL6IfT4CNxBhLR+6JoCpDTTWeyZ8iaYxQBYT9PR2/
-	hfnKcuRIZDB/RH25sydskEbTEMxbuzs=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=LXZKFyuDLY2DRqrs+BqA4wglyce4j9tGUwHMwcrD9yQ=;
+	b=MhppXJUBt41pgj2YGluzpjfIdtry9gZl97D/hjdbcYIXZ7XHaCnOTVbYOjS4jCnPsEvLlx
+	A3Tl3Z24e64EquU45nMsNYGThyeQBMTTdETdmntBS9S59MXVdURQmv969eVgZwJJFX6E/l
+	DX9Qsobf+pXt2YZvFZNRoTDfLmO18SQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LlD6OUxz;
+	spf=pass (imf11.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786784339;
-	b=37V3vNkfKezLJcUhG+X8jDh3ndJtWCBsSGGjn8L3p32SW7wUMb907OTrE2+Bl+yGC3kxNM
-	UXsvHekyFpJjmMBKV5166eLBp5+irc9Wzg+v3b8q12OOnemeIZVFVDPJk289BCUQWQK2b3
-	l0UKneH9PyaFU0rlvOynvyc8/RzzCQ8=
-X-UUID: 8757a842988711f19a56ed5b684f684d-20260815
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_TXT
-	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_MAILER_MTBG
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT
-	HR_TO_DOMAIN_COUNT, HR_TO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED, IP_LOWREP
-	SRC_LOWREP, DN_TRUSTED, SRC_TRUSTED, SA_TRUSTED, SA_EXISTED
-	SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
-	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
-	AMN_GOOD
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:81c10f86-3d18-4866-af93-38883b8493ee,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.19,REQID:81c10f86-3d18-4866-af93-38883b8493ee,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:7db8b62,CLOUDID:6f1d16ba5c230bba9e9d4b1eaa0da848,BulkI
-	D:260812164107VZ003DXX,BulkQuantity:8,SF:17|19|38|64|66|78|80|81|82|83|102
-	|127|841|865|898,TC:nil,Content:0|15|52,EDM:-3,IP:-2,URL:0,File:nil,RT:nil
-	,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BR
-	R:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 8757a842988711f19a56ed5b684f684d-20260815
-X-User: husong@kylinos.cn
-Received: from [192.168.1.116] [(111.162.215.50)] by mailgw.kylinos.cn
-	(envelope-from <husong@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 603180630; Sat, 15 Aug 2026 16:58:48 +0800
-Message-ID: <2e5a06b1-1a27-4bfa-8a7b-57121d5f5025@kylinos.cn>
-Date: Sat, 15 Aug 2026 16:58:45 +0800
+	t=1786785511;
+	b=aTotd7rlg53yH70TqqXwDgj2MlI/JKHjUX1JxFMYbh1BtKQE5v66WMU4F7U58yxqBCYveB
+	hnAWxN7hDUQfwtuElhzGpsoyYH04u28QBvYcnTTHSf55z7gZRHpRnEkkQXi2tN17YV5UNg
+	3aF9kpp+ZTa3UWmr3N8RrZjKEIZb0So=
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84faf87d19dso1871744b3a.3
+        for <linux-mm@kvack.org>; Sat, 15 Aug 2026 02:18:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786785511; x=1787390311; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LXZKFyuDLY2DRqrs+BqA4wglyce4j9tGUwHMwcrD9yQ=;
+        b=LlD6OUxzi7Nnk03EUn3DfzRz8yhm5lvB+3OeaLAb8NT39Egu9H4KsZxuOk8CmUMwmT
+         ixZv9fGOVSeqQxG/EzjczdCn/Q6yGlKDlO+v1uq8pz9xCcVd07DrN3ZLc/74UY7rW4Lh
+         3PMqSmbCvjIYQQp55hjX/00rM4ZGLzo0T59PHeRL4FyZbXwwHimiCLmjEKxTjZ89jlkO
+         FXngZAdcAIEC5LGuUNqRV92i9jF5MbkpZ+8tEnrWAEcW1aX9rPlCliNypdYvD8aTHGgh
+         S4yVWTy4yiAsLzCy9HPiiksvzTMnXVirL+kiaCDCeS/cmjlYqpq+KEOzrEfLWh/NjvPt
+         0OQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786785511; x=1787390311;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LXZKFyuDLY2DRqrs+BqA4wglyce4j9tGUwHMwcrD9yQ=;
+        b=Xgjc+paEVI6TID9yxqtSnh1e1TYzsYRuT8JcmpNnyp8kENLI6suEfD9b/pz1HU3TdU
+         yI3zlSpWbxOHU8d8C5bxn4F/6S+Vc57oJYKEvV8kuzCt6fJgMWaz4MM84gAsh/Y9BagC
+         8QAxb3SEWd7YCP2OzxjKIJe1x8Wnd8fs3b9yGKFSNqa293k5yc+KrIkLFC6l1rlmi1hS
+         EqyRPBSr1SlQVMK+8MbGpepn640NCkMl5DLlFw4YqzPDTtNx2/0KXI7azFKN04OuERRv
+         Fzjh5nWn41m/qVtvTTeZBrAx5c7djfYQWpkLpN2wTFqJsYufl5b9tA5j8a41oJX4tm1v
+         UGrg==
+X-Forwarded-Encrypted: i=1; AHgh+RpqiXTP+t4aeCzUB6JySA4kYdQQQD7KT3pT3sPjHDs3L+xaH1TQKZ0TheROunbBS2colwlVY/tOyQ==@kvack.org
+X-Gm-Message-State: AOJu0YzgkTN6TvSHcrpUu7uLai9vy6pUrlTFwGRoi4UZjnn4iKArHfJB
+	VKxO7NpNByuHEnwCn35spU7PNNcKOAsRmXBakqDEBhWdJBigzxrBoQlT
+X-Gm-Gg: AR+sD12HGZhDFECjKWvCBV7s4nAGizk6teLWN4Krg7Y8k/gbLyQk3kKnsFxvPIvGkeu
+	YI5JB3Uf+N1y7HUqBCJF2lcTnjmgG1FMYfZNYFBxelHCakNtjGlyjXA3YQ19XtPzxKPbcqOXH0e
+	91DkhqJguaNofixwoabdVbHb+FxPctvsQ5NaVpugokD+DqwsAX9z6B51M4/XeXIhEJ8O3uhlGOZ
+	bowFhRgtwol0Ym1J4XUlPzU+chAlvlCq3E+w2W1yGsrBGZgP6poYCjcDSZ/9A6fqda42dACfM00
+	0vR/zBTGVCus87Uotlphjjq6X40aLhvJJUK3UWPWra7ixDB3lsd7vV+/hhVa5YevVhTakdyG4LE
+	yzB30DzAqIqWcEiqKOnCi6Js8eD3C3D7z3YfkfcvJpmNuuXbRdbJMktVOvYVNep9MEQfllhYBWJ
+	TExRq8dFFlT+I3kBizOe8Q00Wz+IROsarEV7pKifmzfXY0YEpJ1h6galAG3Y8foQxA+QSlFxvOl
+	WOYfpz2+3BuI+280ku/cbAl/6E7
+X-Received: by 2002:a05:6a00:3d88:b0:851:8084:133a with SMTP id d2e1a72fcca58-8518084471emr6698912b3a.29.1786785510477;
+        Sat, 15 Aug 2026 02:18:30 -0700 (PDT)
+Received: from bj-kjy-standalone-gaoxiang17.mioffice.cn ([43.224.245.230])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8517d223f1bsm1274934b3a.38.2026.08.15.02.18.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 15 Aug 2026 02:18:28 -0700 (PDT)
+From: Xiang Gao <gxxa03070307@gmail.com>
+X-Google-Original-From: Xiang Gao <gaoxiang17@xiaomi.com>
+To: Andrii Nakryiko <andrii@kernel.org>
+Cc: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	yinchuang1@xiaomi.com,
+	bpf@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Xiang Gao <gaoxiang17@xiaomi.com>
+Subject: [RFC] bpf: account ring buffer backing pages separately from Lost RAM
+Date: Sat, 15 Aug 2026 17:18:19 +0800
+Message-Id: <20260815091819.3651099-1-gaoxiang17@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: husong@kylinos.cn, linux-mm@kvack.org, akpm@linux-foundation.org,
- david@kernel.org, ziy@nvidia.com, liam@infradead.org, nico.pache@linux.dev,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, usama.arif@linux.dev, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, corbet@lwn.net,
- skhan@linuxfoundation.org, rdunlap@infradead.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] Docs/mm: fix THP policy counts in transhuge
-To: Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-References: <20260812080313.330413-1-husong@kylinos.cn>
- <20260812080313.330413-3-husong@kylinos.cn> <anw8ASKdPWW9v86d@lucifer>
- <6e4aae7b-2c71-4109-945c-6481efde3636@linux.alibaba.com>
-From: Song Hu <husong@kylinos.cn>
-In-Reply-To: <6e4aae7b-2c71-4109-945c-6481efde3636@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D01BE40003
+X-Stat-Signature: bceru1zm8prwqgggq6ji5tb91dt8ufu1
 X-Rspam-User: 
-X-Stat-Signature: 3ny5qz58q7w4e3o76unic5uu45ioujqe
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 946BE140008
-X-HE-Tag: 1786784338-36347
-X-HE-Meta: U2FsdGVkX1+N4LW5XJqpjslspcVgzNYmXep93KKMsZVI+h0NKyT5g9FYeDlkfXliIjs0mcFJJG4i7DE6nI5Nu2WY+bWxnrsDfgG6S3+NXzIjlEwNoVouvH8zzKqdZ8tjWypu2ljKAvokVwNSj9dCbz2HYnqT5vSnqCpyVp+ff3wvK+FaOpVhpMTeJUbyPofu6QzNwTNPRpggZNS+8/ZkbwUYd/bLQHPrEr8ZionEtpg2n5Acx+Vs7WQ2uZxuX96XreR5C08PnYgKq4NjpzU9l1tIK7/fsNcBTMQHcqsQ0fF0DhDt4tlDuCZS3egPFClEM+PW3zJbxz2nDFrmNFCcKETWC2If+9Oyv7x3l91MtK64paDMOdjf39lgiVdlGNiAABM9A5lPVFajgSng/rzdAsQM5o0wUu9bmnSzqSfBYfOfJZUSN0gMAWvvKVBmoVPSqI6KLIZ3Km9rylhBReCVxapBPFH+uzleTPVfDQ2/LAtvGcNdnNvkMbJJVrUDM2qbcn57H/ikHg4tO3cw4aa/YlDUMu1mgTN5bGvJ5G9WYVl3p7W+OltsWzp017WFpYy0GLKUMtzT972Na2WqC6p+D11nYXfd9kSM18AZrqKBUxwhUrWx9CPCw4TGp8vf03vBvWm6emmcFHv7ib4lehYygisIU3C7H1nQtj2BHyjGt+baIiLyGbRpfqjYXCmp2yuNy4qg6erJMt2mriWN7ZTH4g7HIwBP9uER6iie6qUuS2UhFteV0FFRcZbXSvDlP2dwTuoAISppDXXAb+MllUbMWvujj2Sq/M6l2GJCp5mrBOp+FjGdHmh9vJelKqZcJ6T7dLW5qGC84NOVAYXdNHrb1fAY4oW7ncka9wkGN439HU9+v7+yssprj2YVLyVKCdVsBu0tbhqYlN2AR/P8cJxw5rD+TLsZOt93J2iFcGUay0+BIjaJTiqAsdVDkxc7k2H08V7F4QCRXs1+yyhdyhj
- SlVQDdiT
- r6HYQ0XnWMKkZT2wx0m3gL32kBsDOCTdVtjym51OZXsLn3j+wRxdRS7Gk8xJ7QVIqgUEu3pcKKdSS2Bc=
+X-HE-Tag: 1786785511-839027
+X-HE-Meta: U2FsdGVkX19e1+FcXoKP0OoeL3ERTbSm9b/131C8AMbnJ9HmAD7V1hvcn51Y+IQ7s1dZ3iXlQn0dgUSfjNrOozmf7vPQKx7IPWvgdQyJM6lxfe4t/gg2nAkI/LxRb0n2TTVKZ18JP9M4CeNZF5imWH8VyWH5ieZ6vpWHnYNPmXbdvMe7X/aq45CrtyTVpu2IB/TlSyJcnagJ9qbN72D0JE/T/t1qJMlHOOPVf8E4do0XtTWZiPSD2Q5pxISDbpI2grAok/c+xsMmUdgtzlJczhtB/QtmR23ualkjOCRQC5l89LnNMeL8jdQkkUxdmBEaSHzaQEQVk85s3jxOIAr7iiYcFruiED9ibjG+JXvWQ2z0VX3EP9ngHOpf7JZd0lYRZAhvwyNzEOqlimmuYjSb+jWh51NXF9ZpABE8FhsJXrMyFh8mTCZVfzn3OtefRLCVvZq3nU2HctScgYx5yDFa3fPNaTjaYKIrMWBAVCOzj/0j3SH1C+OQDO+Sg4XMkrlso+lE9Lfiig4TaQcmG8xlIes0j5Rf8Cugqx/f01ijvZtx7+ocH/ttnvUCT5LvR5Qkojv7Hvcqa/oF+fEbez3aYkJe29C57X1SDmjnHkf9sjW8TsFAFTeQK7R5qGzBN1C+vPSOL8rH0D1FfekSdnGE8AUKcEVYdyF2ltI9c1fOJbmvAP7NRnSnVvsYi4SSmWN1bpc5RtDfMllvo2ix+pDhu6w987h2Z/wgggADUMH5V0HLz/4hTQ2//I6QoDfJwWtK+RoNuBraZS+xcGb8wswgLvaqQ9Zu6yHkDsia7KbPQTxyNlHmydbdezrEiGRopn7ct4CPoIj1CsEFV1lnbLtZQO7x84NwD5yzXLUSphJV7DHP2K0Aw1ijrV7KmeB6yFUvLgu2DyeGyIAtuspEvmUYr7gFl+UhteW5J9dFgk6LH/yiDaWdl2gvBJNl4MTFNQ1mGr9GREEZV1ZsmTXWYs2
+ 9jPeh/QV
+ OZZufA6gDoNQ1O5KId0KylHLptU1hFHOLDvtgY1kvAb6ckTw7m108mYQlSaBH640oJG6tE/GqL3S1CeEIbAdGVHeqVa5FMcwniLZyBtGH3rcBdGfIP1l1QnxTO9KY34KU/nmT/3XJAblsq8J6NHbj0eY3oXzyS99IvqkNVoOacMeRkwhXBYftek+IWQSDrT5AsX6ZzsVPLKBxFJoNbEI9STo+RMGQRtaALeAWf6ySoz+whTp9zR0od9Fi3toKFbu2706jkDtg7vFKq/LukDsPXhemnhwdShDd3eCq5yYyQ1crQRzVdo7QyjCipnsssbUGS/Bi4r69MwVIN1iD+Ih0OicqqufwKMnjMwhH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,51 +124,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi,
 
+I would like to discuss accounting BPF ring buffer backing pages in
+system-wide memory reports.
 
-在 2026/8/12 18:52, Baolin Wang 写道:
-> 
-> 
-> On 8/12/26 5:27 PM, Lorenzo Stoakes (ARM) wrote:
->> On Wed, Aug 12, 2026 at 04:03:13PM +0800, Song Hu wrote:
->>> transhuge.rst claims seven policies for transparent_hugepage_shmem= and
->>> four for transparent_hugepage_tmpfs=.  Both boot parameters are parsed by
->>> shmem_parse_huge(), which accepts six: always, within_size, advise, never,
->>> deny and force.  The "four" applies only to the per-mount huge= option
->>> (shmem_param_enums_huge).  Fix both counts to six.
->>>
->>> Signed-off-by: Song Hu <husong@kylinos.cn>
->>> ---
->>>   Documentation/admin-guide/mm/transhuge.rst | 6 +++---
->>>   1 file changed, 3 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
->>> index b187d618452f..72e944f49da5 100644
->>> --- a/Documentation/admin-guide/mm/transhuge.rst
->>> +++ b/Documentation/admin-guide/mm/transhuge.rst
->>> @@ -389,14 +389,14 @@ is not defined within a valid ``thp_anon``, its policy will default to
->>>   Similarly to ``transparent_hugepage``, you can control the hugepage
->>>   allocation policy for the internal shmem mount by using the kernel parameter
->>>   ``transparent_hugepage_shmem=<policy>``, where ``<policy>`` is one of the
->>> -seven valid policies for shmem (``always``, ``within_size``, ``advise``,
->>> +six valid policies for shmem (``always``, ``within_size``, ``advise``,
->>>   ``never``, ``deny``, and ``force``).
->>
->> I'm not sure we really want to advertise 'special' testing modes like this,
->> sorry. These are not modes anybody should be using in practice especially at
->> kernel boot. We should probably stop people doing that...!
-> 
-> Yes, 'deny' and 'force' are testing-only configurations and really shouldn't be exposed via the kernel command line. I'll clean them up.
-Hi, Baolin, Lorenzo
+BPF ring buffers allocate their data and metadata as order-0 pages directly
+from the buddy allocator, and then map those pages with vmap().
 
-Thanks for the reviews.
+Because vmap() maps caller-owned pages, these backing pages are not counted
+by VmallocUsed. They are also not slab pages. As a result, most BPF ring
+buffer memory is not represented by an existing named /proc/meminfo category
+and appears as Lost RAM in Android memory reports.
 
-OK, dropping 1/2.
+We measured this on an Android 6.18 kernel.
 
-2/2 is wrong too, the tmpfs count was correct as written, and the shmem
-part is better sorted out by Baolin's cleanup of the deny/force boot
-param exposure.  Withdrawing the whole series.
+Test case:
+
+  32 BPF ring buffer maps
+  16 MiB data area per map
+  512 MiB total data area
+
+Observed changes:
+
+  Lost RAM:       approximately +529 MiB
+  VmallocUsed:      approximately +2 MiB
+  Slab:        approximately unchanged
+
+After destroying all maps, the values returned close to baseline.
+
+The question is whether the kernel should expose the unique physical backing
+pages of live BPF ring buffers through a dedicated global counter and a
+/proc/meminfo entry, for example:
+
+  BpfRingbuf: <value in kB>
+
+The proposed counter would include:
+
+  * ring buffer data pages;
+  * metadata pages;
+  * consumer and producer position pages.
+
+It would exclude:
+
+  * the second virtual mapping of data pages;
+  * the pages[] pointer array;
+  * map metadata allocations;
+  * vmap page tables.
+
+The goal is to account for the currently unclassified direct backing pages.
+Slab- and vmalloc-backed auxiliary allocations are already represented by
+existing memory categories and should not be counted again.
+
+A possible implementation is an NR_BPF_RINGBUF vmstat counter maintained by
+the ring buffer allocation and free paths, with the aggregate exposed through
+/proc/meminfo.
+
+Questions:
+
+1. Is a dedicated BPF ring buffer counter appropriate?
+2. Should this be represented as an NR_* vmstat counter?
+3. Is /proc/meminfo an acceptable interface for this information?
+4. Is counting only unique physical backing pages the correct accounting unit?
 
 Thanks,
-Song
+
+Xiang Gao
 
