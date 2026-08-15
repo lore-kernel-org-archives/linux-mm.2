@@ -4,138 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10FCDC5AD5A
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 05:58:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B77B3C5AD5A
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 05:58:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF9F36B03B2; Sat, 15 Aug 2026 01:58:37 -0400 (EDT)
+	id A78626B078D; Sat, 15 Aug 2026 01:58:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD2EF6B078D; Sat, 15 Aug 2026 01:58:37 -0400 (EDT)
+	id A29D26B078F; Sat, 15 Aug 2026 01:58:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC1E86B078E; Sat, 15 Aug 2026 01:58:37 -0400 (EDT)
+	id 917D86B0790; Sat, 15 Aug 2026 01:58:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9163D6B03B2
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 01:58:31 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 854B6140307
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 05:58:29 +0000 (UTC)
-X-FDA: 85102449138.27.92D4A85
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8D1B0C0004
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 05:58:27 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Boc3w1dr;
-	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786773507;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CD6D6B078D
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 01:58:41 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EE8C140307
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 05:58:40 +0000 (UTC)
+X-FDA: 85102449600.30.0C25DA4
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 31BB440003
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 05:58:37 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Y9pW4+aB;
+	spf=pass (imf01.hostedemail.com: domain of yi1.lai@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=yi1.lai@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786773519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GSNHZ1rhCWbjDqMjYrewNRXpE7DLnZyqNYRIuv59LLs=;
-	b=C/wJ2VBVC00uEsXWk5u3823qWgNMnKWoR3KmTC7efeYlK1zfx6d7CW1kpjlSNg4cxanUU/
-	om15nhTbnmMs5AO8MEobUo87oDGGUuf2z3vs6F/QjVh9BYg22ex/W3SNz5yhC7bhhdBif8
-	qR/N+fdc3JuQJJn9fgg9PJS7LdzUJb8=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786773507;
-	b=vapF9ESCXat4eDJI9AtXuuCAwWv2x2ZVwRkEOBr3e5CTwuYskx6WM2vBZzhr/06it3dXNX
-	GIjTmeqx6iTZlhHwNnX0NgJ/UyrLsXNKl3VWn+T9wZbhVHh5axkMSyYhasg20vUsopJiPN
-	YR/P3+CVWn2CAwTx9ghclOQigIGEs98=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Boc3w1dr;
-	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2d3b440b97aso168185ad.1
-        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 22:58:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786773506; cv=none;
-        d=google.com; s=arc-20260327;
-        b=B1gAWPVUPFTX3b/8IXonZ92h6Q/sExQavk89CaDADWpkGy7G6aJtoCpHUeMasHjLuh
-         M2O4vtB8OL6ouWIs9P859x7+s5zn4FhVRN6reRi7cpHv+hPqWla4fpJ4COdPTk6aPIFB
-         JswIn6Cfb/oCDsaCBgAd5uX+cP36WaBofAQtM2lIhlngPo9hY31kYjT2j2Mmxlmilh+e
-         HyZZ7xaNrv8WuRBmuYWRngt2mpCxhc0D+WtLzASwCTMzF3+uuzZj/saxFAHvMsBI+Bgc
-         zGbMT7rroOjedoLgrYX3y2t/gecwFG1FYLBJr9WB8/G7nZkY4eDcJ58QNfkVNyNdoYKQ
-         zDUw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GSNHZ1rhCWbjDqMjYrewNRXpE7DLnZyqNYRIuv59LLs=;
-        fh=Q7ksrw61WsOjC7YhNpEEFDMMd3hzeK/2apvAU3cYqr4=;
-        b=C+h3J8CnaiTMXlHQouDWH27PtlXNF0+HEDVcP0tCclbSgO6Ixog1MTyjzbY6xseRtl
-         /mGzMSTw2+S7NLWPFfJY0SOiptNgQcQb+byCxdz0w4GlYoKs1KWULEkfikWPisr/mQZC
-         P580f37tN2eb8Lpmaamfc4MFfNL4bJKwfmHu5a4HlPX8miNEn6JciSZfGxeHD0U9Dak3
-         BFuXs4RZm2k+Qtab1Ul4RMNfzPwwOvT27IgruC+wjXXyz3q5KLf7uHUHDfyVlA6aU8NE
-         KjI9hXKmQdgjfmC+edGczgNCbqRu4Pie8JQgQhu4tpsCBh9Y37P7HLzFJjZpuh0Hdg81
-         Aonw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786773506; x=1787378306; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GSNHZ1rhCWbjDqMjYrewNRXpE7DLnZyqNYRIuv59LLs=;
-        b=Boc3w1drB9GYiESOcjj8RylBoUVCDkbgZs1kIoBF2E653D3vpLBijq0sYPfHcb3s/6
-         1igTDRuD/cOnUAiQsOA4J/L6VB7pF4X3btL7tUjTKSbuGm6QLvYpJforK9/4DbWuJ4nj
-         rDOlsjpE6V7Kc7dIZ2IWID51e2lSRKhcpDhALsuEFcA+ld8Wa06YrTf4IdMLwES5Bz4J
-         BeOmQQs9yprOGLQaChIg6YxXsaTBkwhcFMsgbN+TKyWxxmvA5OpBMB84PcU1CQKX9+8I
-         80JziSYm5mm5m6K+d2CwIa9jQMhnIQO3KGAEn9SiIAQ9q22eioftqMTUWDXHeaX2epaA
-         79RQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786773506; x=1787378306;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GSNHZ1rhCWbjDqMjYrewNRXpE7DLnZyqNYRIuv59LLs=;
-        b=KI/OEF2wHja4qPcMRSa/v3oAe0SFfkUjm8i44YMAKF8gA3XDkKucG1YDwM0TmI2x6s
-         n0wkbjJ+ayxY83meZGyqiQ1bx/TlsY6QGeyO+wBd3Z8jwMKfR61LJ47mFB9vaR5vU/+b
-         ddU8tYKVu7Snfenp1xFmATP0Wwco0adK7aNjXzQdmiV3ERNaqejuC47uwdUljyNIf5IR
-         bHR2Ru3NY43lLQgkVMJUFLfUauFPKCuTzON6GymJBHLmghXQnc40J9zhoGIS+g7YUVZj
-         n5UCC4ETdiRX86B8arQBN8pALVJvmcs37oT3bo3R6yWRHEQYI7Rbz5EsvkOM347TcQG1
-         RZTw==
-X-Forwarded-Encrypted: i=1; AHgh+RqVyU2M9m26avY6TrGCLR0zGQ6Oq7cCIvWiFS32PteQj8oj573uv9R00wnrhz+A0VHUK9bLK4dQgA==@kvack.org
-X-Gm-Message-State: AOJu0Yz+RW750Z3Wv32a4ztlUWM/55jQyr0XXzYLb8BzpHnRfrQD70bn
-	wFHaRzTEHlMQZFYvp41nBUqqdfKOxl1FbqpBE4PMEeZbJLRCDldarh1Ex9WaGmQP04r2ccaBt+p
-	qKcemyzJhwSSRT0xxn5kd1bPSv3+dC0izeN1f8hWD
-X-Gm-Gg: AR+sD12Bl+PBsA9tZZ3CQJr1fAEEm2XZFla+ysHiJ18bVmeV9GhrGYT59QArCx0ywDT
-	qE2tqiHqRVzLOGCpwh0r1xJ6E2xIwxLSJ72VuCUMeFy9gOdGIi0HRZL8nTmxWghEztdLSOGoJ61
-	LKvPVtJTU3fO94iy85QDyi0FHJWMzAnXg7nqiCs0fl6NjRSFGqlWwPDrxBbNFyW1dJp2x6oE0ns
-	ud9+ILoDpqE0cqEeInpgimCwnwquFv4uuLmz2HGph/biPDyGg/KBqq4AdBxOFUZu4baEB07uQPX
-	X9qQwXDmGW0Wy/McWC83zQE/yNnKZZP2Xv9vFDVtHrFWOXa9TIgnb2g=
-X-Received: by 2002:a17:903:3246:b0:2ca:bf8e:360b with SMTP id
- d9443c01a7336-2d3b49010f5mr13153455ad.9.1786773505668; Fri, 14 Aug 2026
- 22:58:25 -0700 (PDT)
+	bh=bHlllpYGSplQ0P630meBrmRH75/+nl1XJLw2LsJ/LNA=;
+	b=3Y4S45XmqEHuLc/zY54EJvzMmn6yMIPrnKBeQOTM90SW0MF2qM2Piagw7+uQuRNWUFocwM
+	hG+v+UwTX9ZlRvGcvqNSJf1fF2hNYxberTraxA49SXpgTat9QavWfA8d4A5WLE7MVWFDo4
+	I7PeyAlrwp0FLGG8uwIGgtD7IWLx674=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Y9pW4+aB;
+	spf=pass (imf01.hostedemail.com: domain of yi1.lai@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=yi1.lai@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786773519;
+	b=iTdAKzoneKbUFdcduz+TgXKfDiYHGAjXbsKcOdfWPqMYmkMfMw1+Blny3t9iL+gFeJIE8P
+	ox9azhX410JVkn919grmZenRp/+qBpVEEC46C2vJRNtn29sT7OURBbW/lwp49jDDWHIosG
+	Kh6mpvE2p6Mi1vpmeEbTkH68an7bjnY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786773519; x=1818309519;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=gjNgyi75mKSLP0qFZKF47roDus09J1ZqRh7z5MgfQmQ=;
+  b=Y9pW4+aBwB9MHBC5oaZoe49Mca4vO9Y6xYurUKZZRxHqtVwFY3PYwAIq
+   bxVj6lAIZCGBz/6ImpFE7nW4KIIxHs/ny4QAT9A6kDrBja/MoQkBISyhC
+   5mViq7HQgOxhUDRA7n25ijkTLF+KWkvAK4GgI5cBGQoHkkzk+K5kznYlZ
+   f7azNu+UGZYbSkIVc/mWZpz+vIpw7tZbh7Wl2YR/ILX25dk03vHs4+fwH
+   0dw8E6N6gQmJcyvcxaH+6aP8Xp1Vk/iQjh/VF9/iujCWDgvhgDvFuRkjx
+   gtI6uup6ziqVqJfDV9EV+X4z8CUa187CnnlNpFlL8tGdc7PR1XTXvyPFI
+   A==;
+X-CSE-ConnectionGUID: vhCHoYrqQ1WYvX20ytuS5A==
+X-CSE-MsgGUID: EUZEEEgjQxqsTxzN54ASDw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11875"; a="87264106"
+X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
+   d="scan'208";a="87264106"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2026 22:58:37 -0700
+X-CSE-ConnectionGUID: uehPhlSGQi6zUjC9n0w1tA==
+X-CSE-MsgGUID: 4PqaEcKTS7G8yfZBQqcEMQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
+   d="scan'208";a="302647734"
+Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2026 22:58:33 -0700
+Date: Sat, 15 Aug 2026 13:58:29 +0800
+From: kernel test robot <yi1.lai@intel.com>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, oe-lkp@lists.linux.dev,
+	lkp@intel.com, Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org
+Subject: Re: [linux-next:master] [mm/vmpressure] ea928e9e18:
+ stress-ng.mremap.ops_per_sec 36.2% regression
+Message-ID: <aoAABX59IzUXz/Rv@ly-workstation>
+References: <202608131743.c6a7dda4-lkp@intel.com>
+ <an34C2N-yqfok2Nn@linux.dev>
+ <017721a3-5eae-449e-8b86-75cffb503dd3@linux.dev>
+ <an3-aksL0MZPM3ZJ@linux.dev>
+ <f330dd75-d9b8-4259-a02f-9e3ff4bcdc1e@linux.dev>
 MIME-Version: 1.0
-References: <20260812054105.102637-1-hao.ge@linux.dev> <20260812054105.102637-3-hao.ge@linux.dev>
-In-Reply-To: <20260812054105.102637-3-hao.ge@linux.dev>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 14 Aug 2026 22:58:14 -0700
-X-Gm-Features: AcwNN1Vv8e8AYIsvCRMSKDbhePjWJ2ljICkt_7vSL2FAbtl9G2kesUL9ji3umuM
-Message-ID: <CAJuCfpFvdNFdsKdK2CdF2fNp8gbNgFpoeAiaqp70mpbNGCvk3g@mail.gmail.com>
-Subject: Re: [PATCH v5 2/2] alloc_tag: fix undetected compressed tag overflow
- when profiling is disabled
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
-	linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f330dd75-d9b8-4259-a02f-9e3ff4bcdc1e@linux.dev>
+X-Stat-Signature: d41nq8hkqebq9cmjt71opfnypincz5j9
+X-Rspamd-Queue-Id: 31BB440003
 X-Rspam-User: 
-X-Stat-Signature: p1ppjhkr8wyssdxsmkn4tqkhb5xgrmn6
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8D1B0C0004
-X-HE-Tag: 1786773507-22392
-X-HE-Meta: U2FsdGVkX18CIK4c76C8568O694Vxx/CiduQ8bWXtNteqYtPKqaq+RY/B9nbEPMYICJOFL6uVe6tDxU6pGOofWqkXafZnXDq2tOmGi8peNwzZwSfFVYZ/pWYUW+hPd3HhbiqoWl0ihvY+CKkm3VPmwSCGy/BnXC0eS2AkQENNTCoStKWJx9p45WBxhPXpo3ikZkefGG0ZLFAbaaTNrSUCkbQ3+OyCn1WGi2onWyKVp2DxwrEiAvzER14kKBY8xxm2eoT1HRy9fyyuy9SJicm5fxZKhTBxoRXtr8MsAVE9QY/ywuoTsp1Xz52vaMG9spPxxsgmv84BqAWgHDIWTOph2i4cQG5hQPRn25R5RRl1FkloWyh46XybNGL++FC1e8su+uJYC1NZMLGvcTXvbJ/oBF0hNbupJjOZsiQuG58EUkQ5hdH1QYf9ly3MMZeIyWJKp55za0VBQuf/7aWtcycqkTkRy4Hdxnrz2ulxpk8krZD8tD5MPJvmQkADZDtMxQgIMpiIJ3Q/C5EbozU0bszxBcT16CSb2hGppcyHywRTX9wLaO8df6LYdRXxa5WNcY5oC/FIecUdyWX+NWowuOyYwhg7FQDu/sYy3wOgsK4L3JMWHzC2GfYmdLJySZ1R3IrT0xsRyaIkpO0ES/kgXezHxnlGhFZidZHwkDmj01Q9GJFAZ/3iTfLdEsIFGp1o0SSk1hQVeHnUtp03wQgW1osczSHWfliSEb/o/er3VoDuTgqF+vs92hlc3kCVtaH0M2OAHdIfQPZrAIuqdmwc1GtYfrLKcqeiIrET4TK2cat44HoJ5L8hwv1qVXjtidUVUf+m437ilMRUUaP4AnjZb6ePURqzuXUMY3o765VaOvnKkgkpnaaWcFOkTb8Ps2Ba71ohQ3miD2thaIoOyDLSr1pPDOQYjmQe+i/lqQ1X8GNZvkV6o1INkO7xg7mVrLydv0/sCJEdT1tGTJx3jgyAu0
- epqWr6oj
- 87AxJn+26sZGb9L9gA/D0xL2hf/Sm3wJwjbZtlSEWlwSEiiTV49hoO/NUHQRX0pPny/9L1fbCoJt4Elm+r4m8t1PZlGZ73yPwLwM1apQv+nhxphTIkVu3oFqgAC1jKMbVEupNutaLcoFO+yxgqiypCdUjnv3QvyDdd8V/rwuuEo5Fwvu9bVDkUsrs3bMVMYMzTXOGiQxiwznpnw8XL8HtToF51+3IdgmUvJ2nx0LZNTHQzavAVk4SZlgAltjSHNOrviW/3ggj3aoA+xVyXSvVFp+8e1sz398zOTEFN7W6Zi2pXahSsUVpO87yjWFvw/StYmYs4ygUFbImunM=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786773517-131401
+X-HE-Meta: U2FsdGVkX1+aTSi6Nb/0o9mYA/TUj7KobJ73zJ1JZC16Q02yJB/CQqNzWKjQrws7PtGzQtGLZVpz/xaOlY6OeNBB3iwY5PYQf1q1TH19BGBdRV665QvqMXhsBeJESqNObBtM3fPromx776AFlznLM6LVtX5eUqNGEWuPIToiHBOZC8AB95OjMsPbPZK2vAf0rSxbu9JoW/p2Y5BIIz9nEvvZSsvrSZ07mlibMhdf8jNT6dEceh/I2wVZyFkeGoXQmJoLbPkCyr9akgmcV4QMJpTW9YOiuNuchggFkGUWyNOl3lpqtsnohbnsxYhkUZrCUOEAymhgv1PfwoNTJn1OlMWiVDrEI01P/J1ezzd44clw/14gHu8ME6fxoNrtilTusCy9RY0gj7eid8Q6zcLlAoC0W+j7Z4ww9CTgituCup8NbcDC/vwexl7M0AYxEG28sx/ONRetjbiwK/2sC0wI2gP3g0J8dLNGIWITY6B6AS7MAwzCVU4QE3hOZCVLkInUjDfPmrEPYabCJRL/aFIm5+kDEoc1XRyY8zVQu2sRjzgoBAzkml6cUKZ7i+v2jhiawUJx54wkLsKCyGctKvsJ1DJZgH3cXUmoNMWeVC1Ux/h/UM5nMKSCGNFXFMqM8Caagjvc93hjjtlPhqY9jF5c/9/mNyP9mWz0XuiCZUyS2cCExXvmIuBrDUQlgoC9CSmZwC+yiryD6FKgEW2Wtg/d0xefIG1w5ZcKisaieTlOBLFapt4R77OSVq6XqDQLSxGUsO9f9MOYSwFmA5k2GcDpThEuSh0tcEAsLNAnqma5jh+/iaabpsvw7HsL+evP7HCDw0WuHD4T95NeV/hlrrOPsKbxefsQUsL+LOkV+2Gh9cMxSnial2MmICjWDtA6Xz19iiPqUnkreqvLcLjUlGFrwpxw9yvFX/DnuYjYy6x+thJJVN+wozNF7U+t2xruhoX8PRJ1XnJJiY7wisYzyz1
+ gfj3YDj+
+ Dkuxn0bqx918SLz78U1ZpDy0F9W6lEakNPHIshAZFCWOZwW6IJWENIfTEqzn/JMhNajXl5ryNzcR0KhE5In0/LyD3JKa616jI5RVVnoW+WArX/0p/nWsRmFTjULbyDNTQCtYWyqROvRQkUc2eZ0IxbvOerfb1nw21PDxfUdNpjbHRTKA5f01Hr4GIXNFSBMsLNBqJDnil2i0PltkZM+D4Yy+BryueJ/mWBxj6HIiBIQ4c8RE0pmGsr1mG3rHH2Bc1cZRPGEKXwg/d/jv48ntuaW/riXXAEkoywemP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,139 +117,202 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 10:41=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
->
-> In reserve_module_tags(), the tag overflow check is gated on
-> mem_alloc_profiling_enabled():
->
->     if (mem_alloc_profiling_enabled() && !tags_addressable())
->
-> If profiling is toggled off at runtime and a module is loaded whose
-> tags exceed the compressed-mode limit, shutdown_mem_profiling() is
-> skipped. vm_module_tags_populate() still maps memory for the tags and
-> the module loads successfully, but the total tag count now exceeds what
-> NR_UNUSED_PAGEFLAG_BITS can address.
->
-> Once profiling is re-enabled, ref_to_idx() computes each tag's index
-> as its position in the alloc_tag array. update_page_tag_ref() masks
-> it to alloc_tag_ref_mask before storing in page->flags. Indices
-> beyond the mask are truncated and idx_to_ref() resolves them to wrong
-> tags.
->
-> This silently corrupts /proc/allocinfo: allocated pages get attributed
-> to the wrong call sites, so the statistics it reports are wrong.
->
-> mem_alloc_profiling_enabled() and mem_profiling_compressed are
-> independent. Once compressed mode is established at boot, it stays
-> active regardless of runtime toggles of mem_profiling.
->
-> Remove the mem_alloc_profiling_enabled() guard. On overflow, shut down
-> profiling, release the reservation, and return -EAGAIN so that
-> layout_and_allocate() retries with profiling disabled: codetag sections
-> are then placed as regular module data and the module loads without
-> profiling rather than being rejected entirely.
->
-> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compress=
-ion")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Hao Ge <hao.ge@linux.dev>
-
-I'm looking at your fixes for pre-existing issues reported by Sashiko
-but this patch looks correct to me.
-
-Acked-by: Suren Baghdasaryan <surenb@google.com>
-
+On Fri, Aug 14, 2026 at 11:32:09AM +0100, Usama Arif wrote:
+> 
+> 
+> On 13/08/2026 18:29, Shakeel Butt wrote:
+> > On Thu, Aug 13, 2026 at 06:14:50PM +0100, Usama Arif wrote:
+> >>
+> >>
+> >> On 13/08/2026 18:01, Shakeel Butt wrote:
+> >>> On Thu, Aug 13, 2026 at 09:16:22PM +0800, kernel test robot wrote:
+> >>>>
+> >>>>
+> >>>> Hello,
+> >>>>
+> >>>> kernel test robot noticed a 36.2% regression of stress-ng.mremap.ops_per_sec on:
+> >>>>
+> >>>> commit: ea928e9e18da682e9a5bc40aa862bff7ce5ae42e ("mm/vmpressure: move v1 userspace eventfd code into memcontrol-v1.c") https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
+> >>>>
+> >>>> in testcase: stress-ng
+> >>>> version: stress-ng-x86_64-29ce10a2c-1_20260712
+> >>>> with following parameters:
+> >>>>
+> >>>> 	nr_threads: 100%
+> >>>> 	testtime: 60s
+> >>>> 	test: mremap
+> >>>> 	cpufreq_governor: performance
+> >>>>
+> >>>>
+> >>>>
+> >>>> config: x86_64-rhel-9.4 (CONFIG_MEMCG=y and CONFIG_MEMCG_V1 is not set)
+> >>>> compiler: gcc-14
+> >>>> test machine: 256 threads 4 sockets INTEL(R) XEON(R) PLATINUM 8592+ (Emerald Rapids) with 256G memory
+> >>>>
+> >>>> (please refer to attached dmesg/kmsg for entire log/backtrace)
+> >>>>
+> >>>
+> >>> Hi there,
+> >>>
+> >>> Can you please test the following patch and see if it fixes the regression?
+> >>>
+> >>>
+> >>> From 84c0b05b3bc5cf73ee66ead75aafb1ad684462c3 Mon Sep 17 00:00:00 2001
+> >>> From: Shakeel Butt <shakeel.butt@linux.dev>
+> >>> Date: Thu, 13 Aug 2026 09:38:28 -0700
+> >>> Subject: [PATCH] memcg: keep vmstats_percpu off the memory_events[] cacheline
+> >>>
+> >>> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> >>> ---
+> >>>  include/linux/memcontrol.h | 10 ++++++----
+> >>>  1 file changed, 6 insertions(+), 4 deletions(-)
+> >>>
+> >>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> >>> index e78bc98ab229..e25d5b9a1db8 100644
+> >>> --- a/include/linux/memcontrol.h
+> >>> +++ b/include/linux/memcontrol.h
+> >>> @@ -246,8 +246,13 @@ struct mem_cgroup {
+> >>>  	/* handle for "memory.swap.events" */
+> >>>  	struct cgroup_file swap_events_file;
+> >>>  
+> >>> -	/* memory.stat */
+> >>> +	/* Read-mostly. */
+> >>>  	struct memcg_vmstats	*vmstats;
+> >>> +	struct memcg_vmstats_percpu __percpu *vmstats_percpu;
+> >>> +	int			kmemcg_id;
+> >>> +
+> >>> +	/* Write-hot from here on; do not let it share with the above. */
+> >>> +	CACHELINE_PADDING(_pad_);
+> >>>  
+> >>>  	/* memory.events */
+> >>>  	atomic_long_t		memory_events[MEMCG_NR_MEMORY_EVENTS];
+> >>> @@ -266,9 +271,6 @@ struct mem_cgroup {
+> >>>  #if BITS_PER_LONG < 64
+> >>>  	seqlock_t		socket_pressure_seqlock;
+> >>>  #endif
+> >>> -	int kmemcg_id;
+> >>> -
+> >>> -	struct memcg_vmstats_percpu __percpu *vmstats_percpu;
+> >>>  
+> >>>  #ifdef CONFIG_CGROUP_WRITEBACK
+> >>>  	struct list_head cgwb_list;
+> >>
+> >>
+> >> I was currently testing this diff, not sure which one would be better.
+> > 
+> > I was just checking if false sharing of vmstats_percpu is the cause. If your
+> > patch does not increase the struct size, we can go with that as a backportable
+> > fix. I am planning to rearrange fields of struct mem_cgroup more drastically and
+> > have it more stable as future work as we continuously see these regressions keep
+> > popping up.
+> > 
+> 
+> 
+> Yes this makes sense. I did not expect such a big change in a benchmark
+> with my patch, although I feel like the microbenchmark is probably not
+> that realistic.
+> 
+> I think another issue is that its a 4 socket system.
+> I only have access to a single socket system, and I see a 4.38% regression.
+> 
+> Do you know if there a way for kernel test robot to test the below patch
+> on its host?
+> 
+> 
+> >From b862e84e7bd6a54b1546b7f21a6cf991253def18 Mon Sep 17 00:00:00 2001
+> From: Usama Arif <usama.arif@linux.dev>
+> Date: Thu, 13 Aug 2026 11:42:05 -0700
+> Subject: [PATCH] mm/memcontrol: avoid false sharing between vmstats and events
+> 
+> Moving v1 userspace eventfd handling into memcontrol-v1.c shrank
+> struct vmpressure from 112 to 24 bytes when CONFIG_MEMCG_V1 is disabled.
+> This moved memory_events_local[MEMCG_SWAP_FAIL] and the hot
+> vmstats_percpu pointer onto the same cacheline.
+> 
+> The stress-ng mremap stressor exercises MADV_PAGEOUT with swap
+> disabled, generating about 20 million MEMCG_SWAP_FAIL updates per
+> 60-second run on a 176-CPU test system.  Those writes bounce the line
+> while memcg statistics paths load vmstats_percpu.
+> 
+> Move cgwb_list into the existing alignment gap and cacheline-align
+> vmstats_percpu.  This separates the pointer from the event counters
+> without increasing the size of struct mem_cgroup in the tested
+> configuration.
+> 
+> The blamed commit reduced median mremap throughput by 4.38% on the
+> test system with one socket. The patched kernel brings the performance
+> to within 0.5% of the parent which is within the observed boot-to-boot
+> spread (up to 1.2%).
+> 
+> Fixes: ea928e9e18da ("mm/vmpressure: move v1 userspace eventfd code into memcontrol-v1.c")
+> Reported-by: kernel test robot <yi1.lai@intel.com>
+> Closes: https://lore.kernel.org/oe-lkp/202608131743.c6a7dda4-lkp@intel.com
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 > ---
->  kernel/module/main.c | 25 +++++++++++++++++++++++--
->  mm/alloc_tag.c       |  8 +++++---
->  2 files changed, 28 insertions(+), 5 deletions(-)
->
-> diff --git a/kernel/module/main.c b/kernel/module/main.c
-> index 46dd8d25a605..ed26f167be84 100644
-> --- a/kernel/module/main.c
-> +++ b/kernel/module/main.c
-> @@ -2944,6 +2944,7 @@ static struct module *layout_and_allocate(struct lo=
-ad_info *info, int flags)
->  {
->         struct module *mod;
->         int err;
-> +       unsigned long frob_size[MOD_MEM_NUM_TYPES];
->
->         /* Allow arches to frob section contents and sizes.  */
->         err =3D module_frob_arch_sections(info->hdr, info->sechdrs,
-> @@ -2966,18 +2967,38 @@ static struct module *layout_and_allocate(struct =
-load_info *info, int flags)
->          */
->         module_mark_ro_after_init(info->hdr, info->sechdrs, info->secstri=
-ngs);
->
-> +       /*
-> +        * Save the sizes reserved by module_frob_arch_sections() so they=
- can
-> +        * be restored if we retry below.
-> +        */
-> +       for_each_mod_mem_type(type)
-> +               frob_size[type] =3D info->mod->mem[type].size;
+>  include/linux/memcontrol.h | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index e78bc98ab229b..215e2e87f42b2 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -268,10 +268,15 @@ struct mem_cgroup {
+>  #endif
+>  	int kmemcg_id;
+>  
+> -	struct memcg_vmstats_percpu __percpu *vmstats_percpu;
+> -
+>  #ifdef CONFIG_CGROUP_WRITEBACK
+>  	struct list_head cgwb_list;
+> +#endif
 > +
->         /*
->          * Determine total sizes, and put offsets in sh_entsize.  For now
->          * this is done generically; there doesn't appear to be any
->          * special cases for the architectures.
->          */
-> +retry:
->         layout_sections(info->mod, info);
->         layout_symtab(info->mod, info);
+> +	/* Keep the hot per-CPU stats pointer away from memory event counters. */
+> +	struct memcg_vmstats_percpu __percpu *vmstats_percpu
+> +		____cacheline_aligned_in_smp;
+> +
+> +#ifdef CONFIG_CGROUP_WRITEBACK
+>  	struct wb_domain cgwb_domain;
+>  	struct memcg_cgwb_frn cgwb_frn[MEMCG_CGWB_FRN_CNT];
+>  #endif
+> -- 
+> 2.53.0-Meta
+> 
 >
->         /* Allocate and move to the final place */
->         err =3D move_module(info->mod, info);
-> -       if (err)
-> -               return ERR_PTR(err);
-> +       if (err) {
-> +               if (err !=3D -EAGAIN)
-> +                       return ERR_PTR(err);
-> +               /*
-> +                * -EAGAIN means profiling was disabled but the module
-> +                * can still load without it. Reset state and retry.
-> +                */
-> +               rewrite_section_headers(info, flags);
-> +               for_each_mod_mem_type(type)
-> +                       info->mod->mem[type].size =3D frob_size[type];
-> +               info->sechdrs[info->index.sym].sh_flags &=3D ~(unsigned l=
-ong)SHF_ALLOC;
-> +               info->sechdrs[info->index.str].sh_flags &=3D ~(unsigned l=
-ong)SHF_ALLOC;
-> +               goto retry;
-> +       }
->
->         /* Module has been copied to its final place now: return it. */
->         mod =3D (void *)info->sechdrs[info->index.mod].sh_addr;
-> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-> index af44f90379f2..0a7b657fe2de 100644
-> --- a/mm/alloc_tag.c
-> +++ b/mm/alloc_tag.c
-> @@ -950,10 +950,12 @@ static void *reserve_module_tags(struct module *mod=
-, unsigned long size,
->                 int grow_res;
->
->                 module_tags.size =3D offset + size;
-> -               if (mem_alloc_profiling_enabled() && !tags_addressable())=
- {
-> +               if (!tags_addressable()) {
->                         shutdown_mem_profiling(true);
-> -                       pr_warn("With module %s there are too many tags t=
-o fit in %d page flag bits. Memory allocation profiling is disabled!\n",
-> -                               mod->name, NR_UNUSED_PAGEFLAG_BITS);
-> +                       pr_warn_once("With module %s there are too many t=
-ags to fit in %d page flag bits. Memory allocation profiling is disabled!\n=
-",
-> +                                    mod->name, NR_UNUSED_PAGEFLAG_BITS);
-> +                       release_module_tags(mod, false);
-> +                       return ERR_PTR(-EAGAIN);
->                 }
->
->                 grow_res =3D vm_module_tags_populate();
-> --
-> 2.25.1
->
+
+Tested the patch on the same test machine. Here are the test results
+from stress-ng mremap benchmark (60s, 256 instances):
+
+	Commit Avg.ops_per_sec
+Base	a33b5c91	57311.85
+Reregression ea928e9e	36542.09
+Fix	582a7676	57089.22
+
+The performance regression introduced by ea928e9e is resolved.
+
+> 
+> >>
+> >> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> >> index e78bc98ab229b..215e2e87f42b2 100644
+> >> --- a/include/linux/memcontrol.h
+> >> +++ b/include/linux/memcontrol.h
+> >> @@ -268,10 +268,15 @@ struct mem_cgroup {
+> >>  #endif
+> >>         int kmemcg_id;
+> >>
+> >> -       struct memcg_vmstats_percpu __percpu *vmstats_percpu;
+> >> -
+> >>  #ifdef CONFIG_CGROUP_WRITEBACK
+> >>         struct list_head cgwb_list;
+> >> +#endif
+> >> +
+> >> +       /* Keep the hot per-CPU stats pointer away from memory event counters. */
+> >> +       struct memcg_vmstats_percpu __percpu *vmstats_percpu
+> >> +               ____cacheline_aligned_in_smp;
+> >> +
+> >> +#ifdef CONFIG_CGROUP_WRITEBACK
+> >>         struct wb_domain cgwb_domain;
+> >>         struct memcg_cgwb_frn cgwb_frn[MEMCG_CGWB_FRN_CNT];
+> >>  #endif
+> >>
+> 
 
