@@ -4,110 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65510C5CFDB
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 15:02:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5D8EC5CFDB
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 15:30:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4066C6B07D4; Sat, 15 Aug 2026 11:02:19 -0400 (EDT)
+	id 091A66B037E; Sat, 15 Aug 2026 11:30:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B7486B07D5; Sat, 15 Aug 2026 11:02:19 -0400 (EDT)
+	id 042566B037F; Sat, 15 Aug 2026 11:30:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CD016B07D6; Sat, 15 Aug 2026 11:02:19 -0400 (EDT)
+	id EC13A6B0380; Sat, 15 Aug 2026 11:30:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 03D586B07D4
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 11:02:18 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2FE66140405
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 15:02:18 +0000 (UTC)
-X-FDA: 85103819556.12.C1AD63F
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7693180002
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 15:02:16 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZMrSC82y;
-	spf=pass (imf30.hostedemail.com: domain of adobriyan@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=adobriyan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786806136;
-	b=KJJsBZ6A5xJ1ODiF0nXxJF7CN9SBUtth1SL29ojrYYzs+IVHKCm/EIPwmVQ5dnacFHNZ62
-	GAJWYJY6ZUX/HXh/H6t5lrkkdWpwe3lCei5b50CShIxfgvK9/UP9fgVOGSMuddMtMhNA9+
-	Vqr51o0njGhw5p/mvWy/JeYszRy8+cM=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZMrSC82y;
-	spf=pass (imf30.hostedemail.com: domain of adobriyan@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=adobriyan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CB21F6B037E
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 11:30:25 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 605011A0408
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 15:30:25 +0000 (UTC)
+X-FDA: 85103890410.26.B16BB66
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id BE0A3A000E
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 15:30:23 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P/7mFSz7";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786806136;
+	s=arc-20220608; t=1786807823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=EbqUSbxnlQHcRzjEdjJhxWY8yLtgyWwJdG/LIYZkXjo=;
-	b=25P7LUPOfN4VxXJ00c0735gKp52z1dDRrZpUsMWEfmMz7se2cLoMKM52svkqWDlD5pmp5K
-	SxY0p3/3K6wvWo9r8hmIJs2v65lMlqAWNEgDTYEn9fxB1Xv+O2B96JwIQFQBzEFok3udXb
-	mJ5fYamM34+VYaWKPbv5EluS2hk7Au4=
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4957eefd361so15109525e9.1
-        for <linux-mm@kvack.org>; Sat, 15 Aug 2026 08:02:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786806135; x=1787410935; darn=kvack.org;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EbqUSbxnlQHcRzjEdjJhxWY8yLtgyWwJdG/LIYZkXjo=;
-        b=ZMrSC82yp/pzdxtCZ4ruJG7bibFOYTetatrSLk+u1kdbxdVCHhodwxTWpXj+3vhTF7
-         fg+CZKjOmVJ1BShb8KOHM/mXGddNgiumxYhmE3f8Tix6Q2eVHSJfhrzRSFvQEY124zMb
-         NwK8N7sHCKHtVgzT9wX+5kAldeIv86+xltTfAiz5Sj0tQPioinqZFGCtOFQwI+ZK/xOZ
-         3pG50n+N524MEPKeung9uOlzlejpWL9upjrulPFv6zbza3euetptc1+AO07TXA3jwqyE
-         saOFhp9puIHY0JywUOapJRRCEaUORq26SWz+emvXkVQLmQ98swyMFJ4wnz3hB8wdMTnj
-         F3cQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786806135; x=1787410935;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EbqUSbxnlQHcRzjEdjJhxWY8yLtgyWwJdG/LIYZkXjo=;
-        b=j4xSKxqTt7rMO6YCvXvnBAIw+0zFmX/JlsTDerKf6Gn+k/+dpUevXSv6eyUBHEJPuD
-         fUtLl40yJYWTewzgWgX73XEfJN0smBGpiTpE3zqPPnEGgZG2Ur2X2ZmC7WPN1+y2NFQn
-         5bSmfBry5vr7fyMw886IJKwNELmqHF9+oIxwQ2LJS7VLfOxvxzI5OttHd/QgN/6RWxs5
-         VEDfhOCI9HZYYWy3LsvNeBWy/Z8D15OpCnjqWJ56h88+WaCk8/r/AGEutQHHAvDMXRmU
-         sTWKT5kirwvoa3vHUeOymqEDp7qrclC/49yB6hBQ8GzFUQQxGvwlPLgyYeBBw95SkLxU
-         Pmyw==
-X-Forwarded-Encrypted: i=1; AHgh+RoQcwGVNIBX2+s/mQocfsASwv6c/ScfI0OC3/tExKMXYWZta9K4knubn99tOiHa4DpXsLGVqWJKZQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxca7VyqF4iPq45kKN1cjs17aedWnCazHFFrbUBs3wahe3NtgfY
-	cLbfMryZco9YKlzWxeEY8i/fQp4+QjovN1getq8z5EoXn+aUnjdc+N8k0SoP
-X-Gm-Gg: AR+sD10x+j8C9RMzIMre99pFkLs3ZzNHtG5qUFRHEVmWETlDW0zslBDvVTGWv6TovMS
-	9Ij2OuBrH5XVeaCPpEkSfhGkG6U4FIaiO3Mucm+viARtiozv0ivtWdZxRqorcWD4ZRna1y4VD/z
-	N0xFzP9sJs0dS459WfwN5sN6d2rk+WANa1WVDRpvTcBmPNIYe1obvvmHa0aFNxhoHt47TiFlqMG
-	F7m4uMPh7itc/o+c3/znnrCGVe0BwycuQH4HDd3hPd5SAS8kWP0+o2d306mwBTgYizAFlYzT7Hq
-	F1wGuzNnAF5nVvtGoyecC3wGpH1vxmE4z22K2Lj4iV8W6z4erGUhXNdQ9Jq3RIgM2n6ioDXhK5p
-	tggQb5mjYpzJ4bPagPu4H5NGpLfIP2KDaYYjYl5EmOr33QnUivdsmZVyl6MfHVrQvC5LdbjP7yn
-	e+bOJnc7vfV6KwnXel4ufJWUXk6ApbL+zs73Ssvm00CtGJGGessfKluCFITvUy
-X-Received: by 2002:a05:600c:4f56:b0:499:7312:2d5f with SMTP id 5b1f17b1804b1-4998799eb7dmr203923655e9.19.1786806134927;
-        Sat, 15 Aug 2026 08:02:14 -0700 (PDT)
-Received: from p183 ([178.172.147.121])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4998fcc1b9esm105402305e9.2.2026.08.15.08.02.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Aug 2026 08:02:14 -0700 (PDT)
-Date: Sat, 15 Aug 2026 18:06:02 +0300
-From: Alexey Dobriyan <adobriyan@gmail.com>
-To: joyetamdk@gmail.com
-Cc: kees@kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	shuah@kernel.org
-Subject: Re: [PATCH] selftests/exec: add missing SPDX-License-Identifier tag
-Message-ID: <b1a53c0f-98ab-4f40-b295-a7839a5a3a8a@p183>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oHygruvnWfw5G8qNQHmRxC1emMqhJUV6dq/1C7tMYtE=;
+	b=RuGxZT7SEncvOoJ5vcYbuFXlxllGnDvGhl41FNXHJQm66Ujc5dfELCdJKyd1+PnQAXE/2t
+	SbLXAGuoT7QIs9ckWiiaC7ixHFkh4nUHq1n0fU6FOEX5zgiaw4RRA3prhbgzdCPwSdrnTf
+	ceLZF+vtboLhyJqEePtnxGEq/AJmXZU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P/7mFSz7";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786807823;
+	b=NPbfqdBp6Wesv927m1PJAoKQ6EY4DlWUnWgbL3+79LRr/neb3OcnSkzpEU24Z5MjHhnBs/
+	gzYj7d5u3gZ8tf/J7kJLnmU6roRvjt27RYdGMsNu2OtaDMtvzrIUB8FPSgjLnmpo5UPt5I
+	oTlp+8XDTIplcFVfTbYJ8++JYRNqEyU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2DC3B600B1;
+	Sat, 15 Aug 2026 15:30:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9EE1F000E9;
+	Sat, 15 Aug 2026 15:30:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786807822;
+	bh=oHygruvnWfw5G8qNQHmRxC1emMqhJUV6dq/1C7tMYtE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=P/7mFSz7zwhCNZu5FHYBXFRj5rNBIVRelod7uvpREfSzYxpuTqZfVkJZYDH2bXPWa
+	 r8BVa3t6hGsPaZZGDcMYLn7RDhLEAfQFgFIlHJD4NAADq7x4ncGuHBG865C0BNcloY
+	 82GxSUvdp41dHWbkUZuFFFJ5uz5L8mb4C4Ztn4yGsf+xYCco2fK3Q/Kjusn9iOhj/m
+	 v9CcEo5RULwgEdTOWru/5h5kSliDJ0bZG/70pPjyZzraxht4q7ZIJikWZ14pjnhFFp
+	 bq8I/tLbl3XJpORG4fNsSl82f/gDebhl7i8uA2IWUk8hSP+hAgkA9DEqmA8VcX8RGf
+	 ZNaJSYY/WRo8A==
+From: SJ Park <sj@kernel.org>
+To: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	shu17az@gmail.com,
+	jiayuan.chen@shopee.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/damon/tests: use scoped_guard() for damon_test_ops_registration
+Date: Sat, 15 Aug 2026 08:30:12 -0700
+Message-ID: <20260815153013.93851-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260815143039.17291-1-jaeyeon.lee.dev@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7693180002
-X-Stat-Signature: srbfejzmtoocce4n7dqxjacf7ntsfks1
-X-HE-Tag: 1786806136-748942
-X-HE-Meta: U2FsdGVkX1/V1N78ORMT6qAjuuupGsJrxaIugf11rreEPqmM4vdRXXiMa9F2RlT9Zz2o3DCHK+tKWI/jpCRSimhJJgmViM1Ozs0WiXgF8cVZgEzPMB4kGurVYx+yIghQWVGBckflsJR1YqYyBqMFetYPZrgXIO7QDTGAU7cbgMWJQ1/k7HR8/VU91CSZcmO+ynW7MLMdiWcyqEi/kODdR23RqfPJWmz+yEbMDK0ZlpH7yIkXzKbUVIkYilY+eRSyStNddFnlDUhAN5UM+xkuU3MGJ+USfbXDCzJEsDjZnTh3GjsXcTKempvx3j3kxrZ0fYbX6kIOJThKWRIfHrDp4b3m8nd6bBd2vhWm4OcG7Gjp1GcYYlznesIYUo6E6teVEsHQ10ENuPOEIUBRqQ2RB6zX0wwB4n2gtVnLbd4wy4h5Eb3M0RCIxB5tFqfOIJKPI4EIlaUblHCz9PXlWyrL0KrlMVhKv1HYqGC9trQxj/2qGjK79J/qnvNkZWNFjwF240TOf5r0B/L3fV2o5h4kvIha4FLOVeL8FHTbKb7U9JxCBdt92bnfGoLBCUb/4V+z4Rb6yQdpVGuoqcKTG3awRuNj+MM8+hNbGMHDjhTOgBJ+5zA2TZ9X8wSzG18p7mZnQs1p50Ly/wYJHpg3nhWjAqQVQsDJnbWWReG/v7yIn++9ysEi0HQoknHsAqJzCvXnxSu6Q2LcvtyU8sa34S5gDD/DAsPnZQ7BtkKDtteCBVa7WWcytLDre+fcrtuqEu3zzGNKGkAJeUwoQ6Xi+yrKWDE/H7fb1U/GaT42RQ6mtkWR3ajiWnO2ArX8x4IuxJoAn+tUIrU1TPYpQN5uJOVDxrwW8zL/R6YeKU4oj39zfdWlYUe1rXowXukiHL1SuKRD5WkCwefLsz6UNbocKEUsHdIMvmvtejGHWxekwPaImW83FW6XjpBWJZlRnOLBOWHZC6ITlNtXv4cKWK3qkeI
- IW+jm9p5
- 0WE6fRat1+0ktBVdqcuIPfnb5yL7TaodZHXA2mdXpXxxN+yV3aF+XLGfO1y8av+3qJChedcPSySb+lVUePVHESHqJkU3g8ex50H/sU9AI4E+yCuq/LnReCFN72wV39IKHaAJlr68C0ZrMjlte7/nVmKpOroHuzMBeZ3CKDuxylxFlUXTlVnsslDOr8Yyl02M+RjfRVDV8flvBWSARVDpx9+JLx0bLx9carXeTELRpouHTt1xFTrK4UvrlmJahSRNkog26pxDG7wSkHqMupeAcwERB+CSZx7fNQAkhPf7dU5aKPjRe4oKVuJPiEYa8hfogT33UA1C8+CVrXmEvq9YaCnTnb0uQDmyMWxdrKwpKGKII11cfZRmJS5l7sc27p//Swzll+Inf8YpUMfKJbHHKX36TkwPYL1Hdl1FDq05FPEczcs+rRxDlfHFTsX88Ic9PSqEJuKcjuAbBbfmwlwwZh/jQ+kx65Sy7ty59hcN7ClZvvXiUos0mDGHxbNeqWTuaFlMFMb0HjjNaTJ0=
+X-Rspamd-Queue-Id: BE0A3A000E
+X-Rspamd-Server: rspam07
+X-Stat-Signature: xe1q8rqnxamzpce4jzuqbi1yesubp9rk
+X-HE-Tag: 1786807823-600850
+X-HE-Meta: U2FsdGVkX18+p/N4J16TaHhVWKKI37wxkM/7StztRNAfmzucCm+7vbCLBQrf/QJmdFxxn2qrrxiurLuRfUESVPuoe8VF5gB5H2UMSO4q0g6cTniGdrrt15SWYBIGqr3/3vZmubgM6Wm8Pe+jV52FlQzHQA+mDnzeGkr8MvdwG/NBiG4lskqB2N/EDNaKrR5aa+WiL0O8B9iqdRvIvDF/yPyDQmTlBhEmr+xOzXxZAidQxfd7OBG3yKil9LomUIVIYVWSpLzs14s5avnyrvibuBnZNJPLefmXD7/MlaNM1lpNl8CKaeAnXKGnrbQ2TcQ5R0uAsPItrlR7pf9G9KT/UplP/vGgV2mOD8lkbhv6ZljWV4geHtltkaOTj0Bha6hqUohkoAegQJfMBs8vgHCbPPhFrIwx3O83zqsmDYZkBze2HQ5IzklUeLxeef35HYahFfFEkwb8FKJreIipb7hHuw2Qqq34/EfZaemEnkd2+U8glW6VrFv9DClf4BUU9IHYVc8qXpBZ6HX58u/1TetdJume0nQgcGq78byyXTBwoTbVh8PL8WWIRNmA6A20YHCkWi+PbQ0pKx7hL3oAvWYxsjAqNe1fbCe/mCVBAemz5BQ5KGj2bnXrbrIx6EYSQkssAqYHGTIUVYD/LI6JzzVEqGjo3+BhyrwQgVfemb9dy4690VdvHcmXErgN/9jD3K5/0yHZqHFK/3/Nyu5YNdksrpCG1Xw2TuCUZuUK4gRs2QzP4NgLrR/klrFC0YyNvMGTcsPRyz1YwHkl82IyAmzxNSOFio8EWGhpWcE9SPIci5KluDt7mFt0S4efSE+kjw8PlFeb4biHqGUDAoKjoZ5Aesi9GZdorq4KjpdhL21Uvv6sC0qAF963YVj63fhl6K9GSOfMShVxuvtjJZv2+WvBJ9DNSf59FIT27dUhRRsIfw//piZWJofBKlOz80YmxWmLecYKrAMSICIvPPafWQJ
+ m8KPxMLW
+ DGyE75qlWvdDzVroPp+TuSlkeVxebOadc6h3jUAx/0yIorHiYW24pqzl4S+HtBHPX5uIxg6EtmZGH25+hN3KLqmm7K33UFYZYidC4kQ0N9H12p0W/yzqmNQ6UatBEXRWtcgt0kbxWCAeL1pG0Ft6KQSUZbwO3lXsWE2poHoTllXlBYdTLihRunLE5qkziWmllplHfIO3I3Df1q6nSEIHvCDutxcst3SY0jcXxd7xejuN7/9pWFZnJr2UhL0+nMKEwNm34XabeaXZKlcldpxgckk3mc3UvSMM/i8jFGSzmR4t4dzH+Tjd4UMkBS3TLWjdMR+9YH1md8dwzZFmtr792I1kGkMYDyCYw1/m1RQ2mGi+Ii95xV1gFwd5jeMz6mO4vgXrXwQlNa/B83StuqMC/wnJGEQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,11 +95,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> --- a/tools/testing/selftests/exec/recursion-depth.c
-> +++ b/tools/testing/selftests/exec/recursion-depth.c
-> @@ -1,3 +1,4 @@
-> +// SPDX-License-Identifier: ISC
+Hi Jaeyeon,
 
-The license is OpenBSD, not ISC.
-https://cvsweb.openbsd.org/checkout/src/share/misc/license.template,v
+
+Thank you for sending this patch!
+
+On Sat, 15 Aug 2026 16:30:39 +0200 Jaeyeon Lee <jaeyeon.lee.dev@gmail.com> wrote:
+
+> Replace manual mutex_lock() and mutex_unlock() calls with the
+> scoped_guard() macro. This simplifies the code, improves readability,
+> and ensures that the lock is automatically released when the scope
+> ends, preventing potential lock leaks in the future.
+
+I'm concerned if DAMON community is not familiar enough with scoped_guard()
+macro to handle it well.  At least I'm not yet familiar with it.  That said, it
+seems using it for one function in the unit test could be a safe and good
+start.
+
+So I want to have this change.  It is not because I want all DAMON code to use
+scoped guard, though.  I want to take this change because I want to see if it
+is really safe and easy to maintain.  In other words, let's not adopt scoped
+guard to more parts of DAMON code, for now.
+
+Thank you for introducing scoped guard to DAMON!
+
+> 
+> Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+I applied  this patch to damon/next [1] tree.  We are now quite close to next
+merge window.  We (mm community) want to focus on making mm.git more stabilized
+and therefore ready for the next merge window, rather than adding more changes
+that are not really urgent.  I understand this series is not really urgent.
+Hence, Andrew might not add this patch until next -rc1 release.  In the case, I
+will request adding this to mm.git after next -rc1 release.  So, no action from
+your side is needed for now.  Let me know if you think this is really  urgent.
+
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+
+
+Thanks,
+SJ
+
+[...]
 
