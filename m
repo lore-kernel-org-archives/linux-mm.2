@@ -4,139 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E11B7C5CFC1
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 08:46:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ACFEC5CFC1
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 08:59:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06ADC6B033D; Sat, 15 Aug 2026 04:46:30 -0400 (EDT)
+	id 675586B035F; Sat, 15 Aug 2026 04:59:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01B836B0343; Sat, 15 Aug 2026 04:46:29 -0400 (EDT)
+	id 64CCC6B0361; Sat, 15 Aug 2026 04:59:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4C736B0344; Sat, 15 Aug 2026 04:46:29 -0400 (EDT)
+	id 562436B0362; Sat, 15 Aug 2026 04:59:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BA4486B033D
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 04:46:29 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2894B120317
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 08:46:29 +0000 (UTC)
-X-FDA: 85102872498.01.4B82B84
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 36A8F40003
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 08:46:27 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=luw7yxoP;
-	spf=pass (imf27.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786783587;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 30B7C6B035F
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 04:59:02 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9E4D716032B
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 08:59:01 +0000 (UTC)
+X-FDA: 85102904082.03.05B8A70
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 946BE140008
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 08:58:58 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	spf=pass (imf09.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786784339;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q7fNVFrdbRObpGAx18L1bHPOCx3k1Oy0uZjHGSI/yj8=;
-	b=2ndGFxYAL135UvZKNmy+rkkpg0NlitJMFv1JCoZfh6YBVmxa/Q3gqOHGTvsiZ6wcB+KgMo
-	FeUA3A74YXQM4wqzvdFXgvxhWMFDdFEsJ4+1zO2dX1Magn2ALI9DW0INgAYpPa6YZXyco6
-	XhivIx+GIVf7c6dKLO9nnulyvFnMwUo=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786783587;
-	b=F62M3zoFOLphzt9HsqsMLnRlRk50R7qUEmwlzj20Dx2K4cpbiyTgh0aDsn+VFtoD2eztTk
-	9SUbcd0ds03XETV6HG+IPFnXVT88VLtGSm0g4opIwMMaHo4FRtbxOjoONs3P2ntpvG9oe0
-	BnBzV9Ac680goSrzH2zmqlfAVnw5rg0=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=luw7yxoP;
-	spf=pass (imf27.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-934956bee57so185388285a.2
-        for <linux-mm@kvack.org>; Sat, 15 Aug 2026 01:46:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786783586; cv=none;
-        d=google.com; s=arc-20260327;
-        b=POr5LoQk3A9+YZEip1zapSbICyFFRl9bT1WVKXq+25FDCLxNADg0Rt3llo73akGxRB
-         LSkpAkzrKixHrcCBQQV/CHM6/ZfstDT2r3nP6pw8at+exD1idiGnaHvlxuEL6Sq0pAhK
-         ekT1XD6kxETiEq7GRcPwprOr8OiR/GMOYXQZsmwNjH9WBqx2aJWb67TrY00O2ZWAW1tq
-         8GeZFIFw1lMQkcca/KIBLbxxVZiDaqUot9yJnxFb/fwJDrCO8UrLPv3iWLCUl7hS4PCR
-         8BbZeWW9sxYLAsXtIr+9IRiBwhP70sES4Jd1q/NRaTaeaQcC2a9iPjD5clrnwF08uVnf
-         L63g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=q7fNVFrdbRObpGAx18L1bHPOCx3k1Oy0uZjHGSI/yj8=;
-        fh=4IIeFk49fIk+q323BHkh5f3Ox6NuZbE15PBjPVFrG+Y=;
-        b=hVtrvUHgy/ekq/SlAoZ5FmSp0KCMkPhuO1YufxgOnSeJ1kFia8PcuXtOS4k3Ixnp9E
-         oaTgB8+o1RnFGSwpdtwfGHQfHV4rZZwxV4hJjwdI/K4+d2p2NwNLzTdc0NSj4MYnqLJ1
-         A08Pc8mWjepAZQLcfeAvn1Yoy+MSuxsp1OM2u8MaKvmGk5kePftobuzvPndmspaavCwV
-         Ml/NEiZ/53xYIrKWd56culcxabE9vMQKjtNmdizQdQVIdUgr1o65qDe0/OtgOhM2NUTy
-         F6TwIe9r4+EOSaIT118bUZYKupL55sdmGwmwwHoRiC4Hip0skAa4Z/gtw9zxkydMLghq
-         KyWw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786783586; x=1787388386; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=q7fNVFrdbRObpGAx18L1bHPOCx3k1Oy0uZjHGSI/yj8=;
-        b=luw7yxoPoCsn9nDOpeM9Dlf5fmDxAPb+9eJRDzRuZUxS2bm0R1kz90MvBt6jehIzuT
-         n08dMhv+5o7srK6IlKtulPLIac63SugiXaYpJzMRxdl8+d0dez3XSHi+lSeiOoijEHCi
-         JkEmAXu+s/UdVR6fOy3/sgDcWJwVU1YvOUJVnaI/+dummtFv//KZ9IplH2UsrsQQ7Pzm
-         exlgmmsz3fEbmSSKcqxZ78G9sVs8zY7eZmGzM6GOzhRSBWEIio+EPMYBCtjVemB66YQT
-         Q2RQNeRTuzXPP1LmpCMNEkIFE/iqZ1EP+/rxpzgM+Z9TNzkJ1M7N9HieZWcwP6wFNW1o
-         FHpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786783586; x=1787388386;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=q7fNVFrdbRObpGAx18L1bHPOCx3k1Oy0uZjHGSI/yj8=;
-        b=dlNhSs3DsDHyZ8mK9Kf2QTqhQ9Sf27E4KbzR4flBVTyXD0mVdr0wuDJgZySGubXu8M
-         sMd9Q+UXFb29I1zl45+wx9xrdp+2EP/hq0TlNa67CIX1QLXzXaRVKa84aQBWYKm0gAx7
-         AdDPtXmOJM4o4G1DlmDlJSZV9f9P1EetrAi35TGqbgvx4AbijFdCxCmAvncdT/3HlMWQ
-         FrVhxFC1YYd2ULxgqBUdFxoqgjYAFOopFz1mJ33GnoneYN+kCkjPAIjU/uAC0RlU6DI6
-         5nN9EG89BzDxI079tclk8eRIB15SZrnIWB3OOtBIeUdhhaLFbZnE/HSfWdT8/FK609Gd
-         EWeQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqofnWTCf9dwJ7s/Hw0xOsaAZHCNDBJTc4nVspluv8Cf8roqNJhKbYDJzI80hoCwsmRQCKYboBGSw==@kvack.org
-X-Gm-Message-State: AOJu0Yxd/nQX1Fojmo43iPNfrs5SBk9Td5C91IH0xZsdXFHfbUKfutWY
-	w95ZXF1b88F6+kPEh3uGae6HvINp6Pg0hq8SrksdyuiAZFnXGc9UMVUxq5ySHwCTBnFSzH43bMM
-	PKVh68MFwMVFD8MYvvQxQqRRa/0jZ3yI=
-X-Gm-Gg: AR+sD11WZWw5DhcWtZSQ+HD+yIFjy7TdQI2Y6Z2E84V34atRpg7BGfcD3a2JW2B5dG+
-	2OkedDemnl7j4qCZPwWijpfpK3c76wG6sAKdbtZS6mjK+yB2BFJQae/3JfYo/OBuKHTxSRw8Mz4
-	paimOPPtcLPwh+8UFn73WQQgZa/Mk38WKeaTxXvSEgI+sNgC41CdD9aPjCzPPqY5v5XidpCWoLH
-	+4fFmQcphGVNK8hDfa/gt4QVZxSS816Gx5DOo7uKaY8HfYK7qR5W/nndNpm1oLS80GADASgV1z9
-	GuCsyhKQc/bPXf/QT+6HS0gV4emlEYFhnjJSBoJHXw1Wi99MMSeHRmHJ8Smv5+2M+jQ+XRUo11r
-	Xu1O0M87FnVuhxQXv149qZqY7Tz0ubFqdUSD+ZPj+XOi2qfrHfAV+iSY=
-X-Received: by 2002:a05:620a:462a:b0:936:e8c0:ef0b with SMTP id
- af79cd13be357-936e8c10514mr112115085a.19.1786783585744; Sat, 15 Aug 2026
- 01:46:25 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references;
+	bh=vajMF5qc8VrYH5oIndzXjceiwDO7TMiHevWsujwDkac=;
+	b=sCacEGzqfbuy+eYz2DigKIZHYAyIVt/PS9akmaVcFaVThCpazN9pW8DhOu0vC04iWYI+l6
+	IADMNrEe5U740BRfiB8hOIwvLzeI/CL6IfT4CNxBhLR+6JoCpDTTWeyZ8iaYxQBYT9PR2/
+	hfnKcuRIZDB/RH25sydskEbTEMxbuzs=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786784339;
+	b=37V3vNkfKezLJcUhG+X8jDh3ndJtWCBsSGGjn8L3p32SW7wUMb907OTrE2+Bl+yGC3kxNM
+	UXsvHekyFpJjmMBKV5166eLBp5+irc9Wzg+v3b8q12OOnemeIZVFVDPJk289BCUQWQK2b3
+	l0UKneH9PyaFU0rlvOynvyc8/RzzCQ8=
+X-UUID: 8757a842988711f19a56ed5b684f684d-20260815
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_TXT
+	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_MAILER_MTBG
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT
+	HR_TO_DOMAIN_COUNT, HR_TO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED, IP_LOWREP
+	SRC_LOWREP, DN_TRUSTED, SRC_TRUSTED, SA_TRUSTED, SA_EXISTED
+	SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
+	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
+	AMN_GOOD
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:81c10f86-3d18-4866-af93-38883b8493ee,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:10
+X-CID-INFO: VERSION:1.3.19,REQID:81c10f86-3d18-4866-af93-38883b8493ee,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:10
+X-CID-META: VersionHash:7db8b62,CLOUDID:6f1d16ba5c230bba9e9d4b1eaa0da848,BulkI
+	D:260812164107VZ003DXX,BulkQuantity:8,SF:17|19|38|64|66|78|80|81|82|83|102
+	|127|841|865|898,TC:nil,Content:0|15|52,EDM:-3,IP:-2,URL:0,File:nil,RT:nil
+	,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BR
+	R:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 8757a842988711f19a56ed5b684f684d-20260815
+X-User: husong@kylinos.cn
+Received: from [192.168.1.116] [(111.162.215.50)] by mailgw.kylinos.cn
+	(envelope-from <husong@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 603180630; Sat, 15 Aug 2026 16:58:48 +0800
+Message-ID: <2e5a06b1-1a27-4bfa-8a7b-57121d5f5025@kylinos.cn>
+Date: Sat, 15 Aug 2026 16:58:45 +0800
 MIME-Version: 1.0
-References: <20260421230239.172582-1-minchan@kernel.org> <20260421230239.172582-3-minchan@kernel.org>
- <aesg-sj6_VmXyqxb@tiehlicka> <7c7da8ae-cd39-4edf-b94f-c79ab85df456@kernel.org>
-In-Reply-To: <7c7da8ae-cd39-4edf-b94f-c79ab85df456@kernel.org>
-From: Barry Song <21cnbao@gmail.com>
-Date: Sat, 15 Aug 2026 16:46:14 +0800
-X-Gm-Features: AUfX_mxk6AG5EpFTGVPJpVGk0XPutuQz9ikJGFNdLSaSW6mkPTVoOt5CEs_37bc
-Message-ID: <CAGsJ_4xn=rTM2YFhJoDopGoeSw=4PKAuKR9Nd+SjqMqxQnVaXA@mail.gmail.com>
-Subject: Re: [PATCH v1 2/3] mm: process_mrelease: skip LRU movement for
- exclusive file folios
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>, Minchan Kim <minchan@kernel.org>, akpm@linux-foundation.org, 
-	hca@linux.ibm.com, linux-s390@vger.kernel.org, brauner@kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, surenb@google.com, 
-	timmurray@google.com, Minchan Kim <minchan@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Cc: husong@kylinos.cn, linux-mm@kvack.org, akpm@linux-foundation.org,
+ david@kernel.org, ziy@nvidia.com, liam@infradead.org, nico.pache@linux.dev,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, usama.arif@linux.dev, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, corbet@lwn.net,
+ skhan@linuxfoundation.org, rdunlap@infradead.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] Docs/mm: fix THP policy counts in transhuge
+To: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+References: <20260812080313.330413-1-husong@kylinos.cn>
+ <20260812080313.330413-3-husong@kylinos.cn> <anw8ASKdPWW9v86d@lucifer>
+ <6e4aae7b-2c71-4109-945c-6481efde3636@linux.alibaba.com>
+From: Song Hu <husong@kylinos.cn>
+In-Reply-To: <6e4aae7b-2c71-4109-945c-6481efde3636@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 6tieiz71rauwk44ujwkmaz16bikb1fbd
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 36A8F40003
-X-HE-Tag: 1786783587-750684
-X-HE-Meta: U2FsdGVkX1+Y/fIcyBUg9QHrM/TI9Yq25Yv2I9hYZtPovvgGS4cmJRLAjVTCEy5ko0nOAiEAaSK31QNswIpq0gzn7fAePpssb5ny0eYLURxwLuyc/npQvG4LKGuzw/461L+IULbs8fOS1kkpxh3En0/xMflcGtbSBnakBlhwiCzsow/2OxP9Bmqexhga8tmGgvquHXktDwN/LEh4sp6iOxO8pXPidcbWQErbVaHA6c5PFbTS6GTNBV4C0zzW+S9k/GatED1NkIPo+ucF/vI3wR1AfSV1HPPoaKAlOWCJ28i9HWgpqPBXIWYkqPWO27Y3JShbhaHUn5pkn1xyDgeC+v96BwAr/X3s4AdKPW/0HvJ4kvKJMSn52lOZLfEN6hM6i9FcJhQCiy28t0wvp9hS/5u5vBRjh2TFw7grUmnJIWxMDlO7FO34aT3ztxLiUZGjb77SpPzrPvKBO95dF8y8URsNaZKfuUcgox/vBLKOpFZpYgAk2ScXCe4pr7ACAuhSsPDedJJ6MfzSYqU7by2tKeNRomkKgyePnJufPQiFAvxb2fCbaJI84V/D8ZXPmPk7Tgg7pJFKq83BMmUsJeorDjRx1ruG66P6pXB94niTy0Q3YiNYqK65MBkpkWn/ljEs4T8W79cA67QKuD6M1Q4WgsJqE7PawuExlY2f+txjWMW/AHasTR4VZg3pZXIfS1Chwivc4d5erE39l+cbzaWc/FqNn/4f+OtJLv47lFAFW7UDAfbPuH70kdCzsOW4/U4g9XzG40zOT+spQf6pQDjMCWmp0LISWrQlW8OQFEQk6JpHW1kYVdBg4KPilcpzS1cdKzdiPzooAIjEAkeizLPkra0l/tTVVB5YtXgkCY18WpdqFdnES6rXwC2Bj7WpSwhTA/uM/EIT7fi2BNxp+87eWHM8AiZ0DTpuCRJtP5330t/ilycbtlyZ3dlMl1vWs/0pT7hFO2dBs7h8Sg+m+6b
- Zfy2GOxJ
- NI39+U2dnRMN4Fnqqzy9zViMDQ7PPsLTUKe3k9I+HOHLdGmOUCmlkC2uZJmgHgNcLBehs3BWnHX0IueJN+ssG9eSw0zhdesmtFUhBA7NOWsD6Vo7A9yfW4gKV8tM1ZtoGoh7RS1Z18+a5/a+AmSm+LU7qd9v971RsEf2VLrC5tXDjuOK8+NjcS3CTwDpgzqrcyuYeOBSAEAiO8ixRPJPVJdpCQsDtNpYcCtKNVO2KI8QPoAtkEAr28Wku+b4/LQeUk+vUha8+TU8tm6EVqPTMwhISIQa/v9fIlLxFKlg4tdeabCz5FWQNm1iurFfpHd80H+1AL/NqIUJVQ2nGISCynE1wJqc4LWShuOzqrsczZHN8XtxrXXgwWWWBPulANfTdg1FquS7G6gqKvv99byS/QzxP2Su3gugm8DcEro6NMro8n6t39mgYcKkIYrYvoyx+T0T9ZXTHIgl8H4th57Vayy8N+ReYZ9iFFl4LeAHKV97oh5iZLSB4W2twrA==
+X-Stat-Signature: 3ny5qz58q7w4e3o76unic5uu45ioujqe
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 946BE140008
+X-HE-Tag: 1786784338-36347
+X-HE-Meta: U2FsdGVkX1+N4LW5XJqpjslspcVgzNYmXep93KKMsZVI+h0NKyT5g9FYeDlkfXliIjs0mcFJJG4i7DE6nI5Nu2WY+bWxnrsDfgG6S3+NXzIjlEwNoVouvH8zzKqdZ8tjWypu2ljKAvokVwNSj9dCbz2HYnqT5vSnqCpyVp+ff3wvK+FaOpVhpMTeJUbyPofu6QzNwTNPRpggZNS+8/ZkbwUYd/bLQHPrEr8ZionEtpg2n5Acx+Vs7WQ2uZxuX96XreR5C08PnYgKq4NjpzU9l1tIK7/fsNcBTMQHcqsQ0fF0DhDt4tlDuCZS3egPFClEM+PW3zJbxz2nDFrmNFCcKETWC2If+9Oyv7x3l91MtK64paDMOdjf39lgiVdlGNiAABM9A5lPVFajgSng/rzdAsQM5o0wUu9bmnSzqSfBYfOfJZUSN0gMAWvvKVBmoVPSqI6KLIZ3Km9rylhBReCVxapBPFH+uzleTPVfDQ2/LAtvGcNdnNvkMbJJVrUDM2qbcn57H/ikHg4tO3cw4aa/YlDUMu1mgTN5bGvJ5G9WYVl3p7W+OltsWzp017WFpYy0GLKUMtzT972Na2WqC6p+D11nYXfd9kSM18AZrqKBUxwhUrWx9CPCw4TGp8vf03vBvWm6emmcFHv7ib4lehYygisIU3C7H1nQtj2BHyjGt+baIiLyGbRpfqjYXCmp2yuNy4qg6erJMt2mriWN7ZTH4g7HIwBP9uER6iie6qUuS2UhFteV0FFRcZbXSvDlP2dwTuoAISppDXXAb+MllUbMWvujj2Sq/M6l2GJCp5mrBOp+FjGdHmh9vJelKqZcJ6T7dLW5qGC84NOVAYXdNHrb1fAY4oW7ncka9wkGN439HU9+v7+yssprj2YVLyVKCdVsBu0tbhqYlN2AR/P8cJxw5rD+TLsZOt93J2iFcGUay0+BIjaJTiqAsdVDkxc7k2H08V7F4QCRXs1+yyhdyhj
+ SlVQDdiT
+ r6HYQ0XnWMKkZT2wx0m3gL32kBsDOCTdVtjym51OZXsLn3j+wRxdRS7Gk8xJ7QVIqgUEu3pcKKdSS2Bc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,68 +116,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 3:58=E2=80=AFPM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 4/24/26 09:51, Michal Hocko wrote:
-> > On Tue 21-04-26 16:02:38, Minchan Kim wrote:
-> >> For the process_mrelease reclaim, skip LRU handling for exclusive
-> >> file-backed folios since they will be freed soon so pointless
-> >> to move around in the LRU.
-> >>
-> >> This avoids costly LRU movement which accounts for a significant porti=
-on
-> >> of the time during unmap_page_range.
-> >>
-> >> -   91.31%     0.00%  mmap_exit_test   [kernel.kallsyms]  [.] exit_mm
-> >>      exit_mm
-> >>      __mmput
-> >>      exit_mmap
-> >>      unmap_vmas
-> >>    - unmap_page_range
-> >>       - 55.75% folio_mark_accessed
-> >>          + 48.79% __folio_batch_add_and_move
-> >>            4.23% workingset_activation
-> >>       + 12.94% folio_remove_rmap_ptes
-> >>       + 9.86% page_table_check_clear
-> >>       + 3.34% tlb_flush_mmu
-> >>         1.06% __page_table_check_pte_clear
-> >>
-> >> Signed-off-by: Minchan Kim <minchan@kernel.org>
-> >
-> > As pointed out in the previous version of the patch. I really dislike
-> > this to be mrelease or OOM specific. Behavior. You do not explain why
-> > this needs to be this way, except for the performance reasons. My main
-> > question is still unanswered (and NAK before this is sorted out). Why
-> > this cannot be applied in general for _any_ exiting task. As you argue
-> > the memory will just likely go away so why to bother?
->
-> I think there was a lengthy discussion involving Johannes from a previous=
- series.
->
-> That should be linked here indeed.
 
-For some reason, while looking into Android reclaim performance, I=E2=80=99=
-m
-re-reading Minchan=E2=80=99s old series. I guess the lengthy discussion you=
-=E2=80=99re
-referring to is the one below:
 
-rfc v1:
-https://lore.kernel.org/linux-mm/20250412085852.48524-1-21cnbao@gmail.com/
-rfc v2:
-https://lore.kernel.org/all/20250514070820.51793-1-21cnbao@gmail.com/
+在 2026/8/12 18:52, Baolin Wang 写道:
+> 
+> 
+> On 8/12/26 5:27 PM, Lorenzo Stoakes (ARM) wrote:
+>> On Wed, Aug 12, 2026 at 04:03:13PM +0800, Song Hu wrote:
+>>> transhuge.rst claims seven policies for transparent_hugepage_shmem= and
+>>> four for transparent_hugepage_tmpfs=.  Both boot parameters are parsed by
+>>> shmem_parse_huge(), which accepts six: always, within_size, advise, never,
+>>> deny and force.  The "four" applies only to the per-mount huge= option
+>>> (shmem_param_enums_huge).  Fix both counts to six.
+>>>
+>>> Signed-off-by: Song Hu <husong@kylinos.cn>
+>>> ---
+>>>   Documentation/admin-guide/mm/transhuge.rst | 6 +++---
+>>>   1 file changed, 3 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+>>> index b187d618452f..72e944f49da5 100644
+>>> --- a/Documentation/admin-guide/mm/transhuge.rst
+>>> +++ b/Documentation/admin-guide/mm/transhuge.rst
+>>> @@ -389,14 +389,14 @@ is not defined within a valid ``thp_anon``, its policy will default to
+>>>   Similarly to ``transparent_hugepage``, you can control the hugepage
+>>>   allocation policy for the internal shmem mount by using the kernel parameter
+>>>   ``transparent_hugepage_shmem=<policy>``, where ``<policy>`` is one of the
+>>> -seven valid policies for shmem (``always``, ``within_size``, ``advise``,
+>>> +six valid policies for shmem (``always``, ``within_size``, ``advise``,
+>>>   ``never``, ``deny``, and ``force``).
+>>
+>> I'm not sure we really want to advertise 'special' testing modes like this,
+>> sorry. These are not modes anybody should be using in practice especially at
+>> kernel boot. We should probably stop people doing that...!
+> 
+> Yes, 'deny' and 'force' are testing-only configurations and really shouldn't be exposed via the kernel command line. I'll clean them up.
+Hi, Baolin, Lorenzo
 
-In v2, I added a PR_SET_FADE_ON_DEATH option so that Android can
-enable it while other users can leave it disabled.
+Thanks for the reviews.
 
-Maybe there=E2=80=99s a chance to wake it up again?
+OK, dropping 1/2.
 
-> Cheers,
->
-> David
->
+2/2 is wrong too, the tmpfs count was correct as written, and the shmem
+part is better sorted out by Baolin's cleanup of the deny/force boot
+param exposure.  Withdrawing the whole series.
 
-Best Regards
-Barry
+Thanks,
+Song
 
