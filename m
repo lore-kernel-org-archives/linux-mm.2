@@ -4,90 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D216CC5B572
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 00:50:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F903C5B572
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 01:55:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D32636B0330; Fri, 14 Aug 2026 20:50:57 -0400 (EDT)
+	id 105D06B0744; Fri, 14 Aug 2026 21:55:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBB316B0331; Fri, 14 Aug 2026 20:50:57 -0400 (EDT)
+	id 0DDE36B0745; Fri, 14 Aug 2026 21:55:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BAAF66B0332; Fri, 14 Aug 2026 20:50:57 -0400 (EDT)
+	id F35CB6B0746; Fri, 14 Aug 2026 21:55:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 900896B0330
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 20:50:57 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 17373C02A0
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 00:50:57 +0000 (UTC)
-X-FDA: 85101674154.15.2C50CE4
-Received: from mta1.migadu.com (out-184.mta1.migadu.com [95.215.58.184])
-	by imf29.hostedemail.com (Postfix) with ESMTP id F3CE5120002
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 00:50:54 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="T/5uVyRr";
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786755055;
-	b=R81zjuBEg6cgNp7cvb3cL4dxCLbz7vlob6x45UUlS6C1QtpaLdlU/Iyj6+3k5+/Qkc1PDs
-	FQOfnFE3orexkfWTgrbwSJ0HpGWY+7EuXv72vH39RotswKarrcwR6czTHlbJwazwId2LQY
-	IcKj+0tyP8aXG5ERd/eQGrg2sHaZGes=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="T/5uVyRr";
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B75C96B0744
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 21:55:39 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3E8001A02C6
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 01:55:39 +0000 (UTC)
+X-FDA: 85101837198.22.7FE7922
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6218440002
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 01:55:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TXwkcB44;
+	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786755055;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1786758937;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pDhhlho4mNWXttvB/DhHQXs8kfIB971s8EySIMTwhQY=;
-	b=cckBpGUVH9Akt2gau2BlNwUZBC7EFP8gVs7gc+ekl5KKMq137T/OLHhgYIufmpf4u+Lfwq
-	B3xFnUsJRh2HPcf4227CTBJUi9jX9OeIeLgAzKevT8PKM8noWaAKyppJIJJmo1cCnWx0Zx
-	ZbOVTW16zm7H4cv+sZ10ysdt9La5Gqk=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=76/lMek3I/Lm2DW5pZ43j1lOWGN+BgwgiOZBOJZUj0E=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786755053; v=1; x=1787359853;
- b=T/5uVyRrVviafwxqmWzk85xw6vUb5zOTXbqkBjjcXbzT4jxvV+GrgoyvY6KGQvrfjt1R+1wn
- ej834zA5R8CMgdVIh/C9hjZPvty+/+CHW0osf1h4blGBv6ww3zfceSkb/4PMZZEYAKSfwjssbsz
- FRNuP2oBPHlKJngZccb0d5/M=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2a03:2880:10ff:70::)
-	by smtp.migadu.com with ESMTPS id 95cad438e84247e2;
-	Sat, 15 Aug 2026 00:50:53 +0000
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 14 Aug 2026 17:50:48 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com
-Subject: Re: [PATCH 1/9] memcg: make the v1 soft limit knob inert
-Message-ID: <an-3qupr53VNNOUa@linux.dev>
-References: <20260811203203.3456029-1-shakeel.butt@linux.dev>
- <20260811203203.3456029-2-shakeel.butt@linux.dev>
- <an1-4Rgwlsfd9Hjt@tiehlicka>
+	bh=KJfedCHwXV6kZVr0Cknx5A9jpM+kExPkRG8SEE/c37w=;
+	b=4TozZSJnf3YW+zZC4h3jUhgxWG/ZxrWH3lo34WTdepnnTEtHulQjT5dxLhMGwb1hAPomYt
+	CQ7oYtQf++Vi6oP5fg5Fm4PnQfQnkGOqK+3zTmj813s7OU8gwP/MNJWaLJFLPzAUKs8iV+
+	xONX5CMvVyAo35LReA/6rdFdjSknIYo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786758937;
+	b=ngEJbI1a/QewznqFFlJXJBvi81+VeYxaq9su/vYSZTNKtjat9TteSjxvoFeC1u8NOmvRIs
+	0v0GByUJ/aIhb0LBGeEbExQB5advzDEsC0XJCIPHvOhx2evAYERGfYXcT3SXYtix4TDIq2
+	lhzygS6OxT56g/P5CPFzsQk8E7wZKIA=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TXwkcB44;
+	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c197e7e4e94so294214366b.2
+        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 18:55:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786758936; x=1787363736; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KJfedCHwXV6kZVr0Cknx5A9jpM+kExPkRG8SEE/c37w=;
+        b=TXwkcB44eFw5UO2FRjMvq5fo/lAHdUkbhQLxEJNCPL7sW973yFlvTg1lB47TCkKwDy
+         sCk9ePLMq3CItaGqse1jXcpl3mwN6Lbcdl96PLpdBz/ft/ZBuTmyyR/OpAHbj8xT3rY8
+         ZcnTdFVeJIvM7DoFshQdWFBxgy15JAX6VTsAQQxIvhyuqqCJQYDDdpAl7tsHiGNuJpf7
+         0EgKyg83076rOmg8/UJ9ZNAsv8Sv9E5K0gzAPKQYMwUXbV0Ymz4ONTyM8qhFkpg1oQEl
+         QuDosY+iLu1nYL6KkdpEUfE0zxvcB66hO4fWEsle5oS7gG9BsgPKQDX2dlSL4hNwV8j4
+         HBYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786758936; x=1787363736;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=KJfedCHwXV6kZVr0Cknx5A9jpM+kExPkRG8SEE/c37w=;
+        b=TNzp69OGfVF6DuEGZfK3HAuGWmpfbGMZgcFJTTOzz2lNZND3BeH9VgarENFMUBkNIt
+         1BmFG+YQkcX8dAJpH+GUsOctclLcqpT1a4Q6fw33feD8RVzOGiXf03hj5mEk+y2We4Tg
+         p1ufBrSivGbbXgQrZD6GHp/NZCUdOvFlk7qMpRdSr2LiY/vD9E1zpGyB04sGgmhnbPMm
+         yfB4cV+HdSXJNBcNSMvXEFtDGm7Yfb7+eFq8vB+gzWrqJ0j1Wty+b70YC3iwhnDV0s96
+         Zyk9XU9lkozY8um0OdBtoSCcG2S89X8Z1Cu/mFt6rOlwXEF5ZB7A02xfReYhm7luXrMT
+         40TA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr5Ziav0VidZsQWh1GXI5gZyHChHjqR0zEeUuS1UjJ+Giz07wN6/onEfVZ+D5UIvLs7i1qXTQNESA==@kvack.org
+X-Gm-Message-State: AOJu0YywT9L0jJupmPGFH8ZXr6/KYiDb8F17jZ6vSiXMeT9SAiLRZgrk
+	e3M3zrwmo503My4jOyM9LPiwctCMpBpt+4gyAPwaooq7dc4UebYBCr8W
+X-Gm-Gg: AR+sD11cS1noSgkIiJEzKRQifdsawqsfQWKHYdJRgx6ikYKQ/ukOwHd2ntEg9cbGI1s
+	G9BzXXNBwuraublDiHSwKkWIhbpD558V5poJO45wkdti6/0e9YHsrR9bVcOELplMlCkpLEF+2gn
+	JpZQHp4qq8b+BIWex0Ek2Qj1BSd7rnFRXGKrdmfwZrTnYgahcJMdDdjbdJlNRUklSCcbchQIRti
+	nQ1Vaquo9xbrDEUm/XJN/mr/CHp78VXy+669jh8iwhvmPiR4rtGd/3TN3t8Pf88+vdrR4B8K15x
+	XaLIu60SwTxtup8gHPUHVME2/v9CkEG4N7Dh7OhbF34/VJGZjcFuTnKQx72R67D0C4T8QtFqSJC
+	vq0pUdLhhi68viuhfZiGOBWeFVXty5EBPMwFbarxPLp8YPxGWYXgFf9Ru0N34A18SHmnQ7ZgNYQ
+	udhNO/aT8QIlE1hDUA4snPP819q/LGqiWDw+ox6NVGqEENRYpUOSgnwGNVAdb+SgtjAUWIbA==
+X-Received: by 2002:a17:907:7b9c:b0:c19:6104:e5e4 with SMTP id a640c23a62f3a-c212a2b216cmr427391966b.20.1786758935575;
+        Fri, 14 Aug 2026 18:55:35 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c212378d9fcsm168007966b.34.2026.08.14.18.55.33
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 14 Aug 2026 18:55:34 -0700 (PDT)
+Date: Sat, 15 Aug 2026 01:55:32 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Liu, Yuan1" <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
+	Mike Rapoport <rppt@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"Zou, Nanhai" <nanhai.zou@intel.com>,
+	"Deng, Pan" <pan.deng@intel.com>,
+	"Li, Tianyou" <tianyou.li@intel.com>,
+	Chen Zhang <zhangchen.kidd@jd.com>,
+	"Zeng, Jason" <jason.zeng@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v6 1/2] mm/memory_hotplug: optimize zone contiguous check
+ when changing pfn range
+Message-ID: <20260815015532.ei4abygk4erdtlhh@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260723084946.189392-1-yuan1.liu@intel.com>
+ <20260723084946.189392-2-yuan1.liu@intel.com>
+ <a15107de-ab16-433a-a504-72c3e8dbf2a6@kernel.org>
+ <PH7PR11MB6932A554A6D18A4F1A29E90DA3D22@PH7PR11MB6932.namprd11.prod.outlook.com>
+ <2cbd42e1-b5bb-474c-b0e7-ce3f46541891@kernel.org>
+ <MW4PR11MB6936594CC6B15968AAB781DCA3D22@MW4PR11MB6936.namprd11.prod.outlook.com>
+ <0b02ef3e-363f-4b49-a208-54cdfea56c75@kernel.org>
+ <MW4PR11MB69363CCE15647FD7D85542B6A3D12@MW4PR11MB6936.namprd11.prod.outlook.com>
+ <f0593f56-870e-4e79-8552-1760fad255bc@kernel.org>
+ <01795519-54e8-4ed8-a94e-2b77780abc3a@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <an1-4Rgwlsfd9Hjt@tiehlicka>
-X-Rspamd-Queue-Id: F3CE5120002
-X-Rspamd-Server: rspam10
+In-Reply-To: <01795519-54e8-4ed8-a94e-2b77780abc3a@kernel.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Rspam-User: 
-X-Stat-Signature: n4ezq37n9psr34o17cm7dhgdbj5t9iwu
-X-HE-Tag: 1786755054-283185
-X-HE-Meta: U2FsdGVkX18e3GeJS3d5PmuFVPdvjJVEhwts1wJMnwQLEUqUKcY8LlZKX+jufaLMzPKCLao3LoYMMKgWaXyNaJ6vR1WXve6jYlWX7Cx7NS88EYh9hE8wCkn/ZtYimlzLbfF4jOqGvMKrV9XUfZLYE88vmB6BJ28JYChAoRWf6BrhlvN0kqHLhya0KORbonK0erqBon6e0m1Ay/nA8rjXtLo0qfeClrSFqPVXFBYckE0UxbhKPmwAmsVo/bs8qOLCLYp4QyrFFO6hxvDydZS9M94aiNK+gVck9BZ39Rg9HRrTENTmAzIvF4l8jn6BLaN8Qqzk2bc1XWKA6Zexa8YOsJYH3abRCwEU/XW1TQy3s+iO5v/RFz/LLZcBdmdrYbKeUWCwO6P2CgqgQm1x9A4tgSs5AX8gn0XQk4hYHNeOOHQ7V9FsTG24ddN/+OTbfYQrHoWdGVrdyjrH2ysFEQ6XJnxA4Kz80c1qMhvU9AB3wJkgJbfBaoQmwiq6D07tPN38f/WcxoE4lJ2RUuEJTUIXZORQFhAzG79OOwzisy194qpb4l8JffQeQ1SmraaYNkGHNxOKBLvxX86/NuEG39JBnEYhXlShCoth3kOQAieW7PnUcBLFCTVMzVnKE0sorZSL9vT94rBRQi+9cqKFMPlDCE2UhyHVG6I1W7HrJAKALKtrZRjDf/MS/wju5rI1n/qQ18B0BDYIdS5gjBw6H6rz+dEWae64gNM/6v1QLa563DqyxK5/2L3pAUsKE6krdopPLnzNX9+ai+8YsLz18LfBDI/8MsUJipyh/XNUrYLsqjIvPKzZYcsgBusvdAJzgrKCkQuprV8wSqOcyPzY/atGePaV0jDrKpL2+x1TvAhxf7JOUcqm6GMLV8DqzjLYqFB2dV6J8ahB1zvr/7KS1uQy4tt3YcyUkcOi1AHrI4LBvhwy1ZEiCpuPvV7ycCkJ9LIH++w2nfK57GIU368oChc
- a1k23iV0
- cB/1lb5teNQXslZ/9h7YCa7otfLlnln4OWbCLIxFzwYy4fpR9YOfhK8RmoRQiXSlw05jorONGTmvWs/qWQUsLX4FXGvK99+2nAR0KnguV4D4WbdsvYQyVEUCNxVNK3LqcxhTZ+YTfcYTeXvylqMfVkzZGFlMgZTpUcf0gQ8sOLsP1m/AG0rqGjaGQT888x+nHdqPNh/wBsoTWi/lNGAUszfb2EzwBeFUMBF++zWELRWZoFiThVLv7XpCLyrkRZiRNgIVl34WqXoL44AyHfyKhzBjCu31D8yTEMoAqEw6muq7a5EMM5PRK2zt4jbTlvTQn3TQzPX10kNZaAGvdjrqw+O+6sF03IF/mf78ho3ysauDVEHM2OFRGl+Fl80AfQvCP9PYE+VzhbltEgUWwGzX3B4SKexIwBoYTgq2VyPkJ+VGIKg6xdBULRp6+i4jXzvUZQJwjjwxckNJrYox4kdJJjUBGECUmTyADYxamrAkxJn0fN8sWstnVKvgx6/yNQtC1L/8/Cf2r5qzwFR9GnOkvFpW0aevzcsP20wX5blB4dF9U38cKBEvJzFeaS01S2Plu44ZsP40vhMyQMVruQoDRSk89hWJrfcJAIYlT23ycs89NrC4=
+X-Stat-Signature: umw9ms5ataegrdqxcmfme63x9tpsdxd1
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6218440002
+X-HE-Tag: 1786758937-975939
+X-HE-Meta: U2FsdGVkX1+JBTEdo3J9ciZBoqBVqq2JevkjUNEwKRpSGjK7oHBLXgC8VrRrW+h82qkyqF51L9QmmV9PdDDAJf9ULXZpWL6ISivWWo0ZMSso7OdmK87Eh5dt2vZIXOgX+tKox/Cr1ZROGaSrq/0A4Zrd3XGPBB7LmWYIxei70luk3SeyWuJPLzKiGItQ0a2DL3Qey8a6c0u0Ri9z6TJYpy7POBv3jJqDswrIjIIxVshM8vGXdQakuFqcgO5Svgyp/SC2LYmkkosMtpax+1r1szhGi6hZyiFXqyyjq6tq53gopeXHh7DsoPdKPaciMrtiWRtl2ZoXUmczyEzKbb6hS3lKiQcElCbTKU/SSPiU6KEPKON/CZdp6HJkLBJOcQLtFXkwqqJgY7dA1cVp86g76/7ETsuHbNmvB47QtDhIBCmU7uZFT1Q25noIlKdvbB2Xs2w01w2+n0gykPUpPRdj01l7jKnd+ADaCAVbwAjvuv/W3PQN4Z3uddRxQ8Z8QFPRwpKFu6cgNwEh1SH+mU9svcf3b0A4isrIzdlHGvjO6rEOCL8nE1wsL2kwtpvCsOOq0TFUMCaIaBxg3ip9C5P1dGPTf0Fs1sliEQ+mB6moPu6BbE+yFwH0rom4C+ZF4tLy0Tz14hf5PlpgxGNLE8Sgw186M6Y6lIgrw5Hbx9a7ahdNzhlEwcXO4OS+43VD7pJRsTtrpUUnetbaJX6mVotQ25ZRqouDPU5vOlV9PV6XuW/s3311gdXGRgqUbC9ga6zY4/0guyqpN9sHhxsvLW58ORLQTyVWefmezfGn8BHUOIAiZaQpvF5SLV6QTta32E0Kt13RjG5kXajGJL0NCpYny0t01IwUED1WOpsVeAfwhU9xckoUpr5abInrMOmDOJNSCcv4OSccRuuesx0F9/Pi7IDo5GHqtO4cSCX/yoIunswszas3LuA0wo/vMUNxD2tXiDhxRgI/zU8uKFTw1xd
+ EjxXfBHa
+ n9Ubi/vFoVQ6t/ts2etXMD6uCKGCNruu+OmJ/KuaX4PRQd/Kv4iomYujEwqqJHeERf9ey3U86QsKrW3vST5SlAYV56Q722hurWVKYiSeu8rcCg3kLoIouKl4JzIBJKkjCBoapcWNzc3L6T1xM91B5p+1XRJDXUeGZh1FQDPM8hVV7HVPubT1mxhf3HtuucnpSDw1NHjxzIGrz0nEf6IfuX9BijwcTGt+ww/EPqHo2Wmo3GfsG5J57WtJh2KKghXzQNrcKM+GUtRxCnE1bturXysN0iCkHiXh7JhULNOVwFkZC6EtDb29JRQJ2FEA9ncWFaMlHLrrou7B/i6nwhSQhj7BHapwoABtsc9WagLo33Ne9vF2GowfJ7T2x5c9k+KbVG6WhkYfZXH7PojpJIldyZya6Z3cFW+mWbeuyeiSceJwwNNO2MPCZeYYvw5CFX/+Z1m8O8+64SjICLs6uSGcRykbWtgQbrulRN5h3+QjrXME8mF2QxiUTvD5/PxajxEpdah+ydmL7iun57jELcTWx4J2/Pvv0uRBIPKOpdU+Hcw8b9nWQsE3ZTogGdyuva6YdGRbL6an1DEyAss9MyH2h2yrf3j2iRe6TP/t8CPNQf2EDAnyBkvco+VuHVSJzx0kzsmifZqb78dBSRqhaNDyjtuKxf180/I2UpzplXChfK8c4Z6hl+OWg7dEyiUPhnGgRKyZTZOjJHI9V5SzzULP3kPPSAdlpQSB/XSSYMUeMu5JicBmN01n49XPQdA6VdrHfaZOov6qBUq+3yWk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,36 +138,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026 at 10:22:57AM +0200, Michal Hocko wrote:
-> On Tue 11-08-26 13:31:55, Shakeel Butt wrote:
-> > The v1 soft limit has been deprecated since v6.12 and nobody has
-> > reported depending on it. Start the removal by decoupling the interface
-> > from the implementation: keep memory.soft_limit_in_bytes, but ignore
-> > writes to it and always report the maximum value on read similar to
-> > what memory.kmem.limit_in_bytes already does.
-> > 
-> > Writes are still parsed, so malformed input keeps returning -EINVAL.
-> > The knob now also behaves the same everywhere: it used to return
-> > -EOPNOTSUPP on PREEMPT_RT, where soft limit reclaim has always been
-> > disabled.
-> 
-> Is there any specific reason to not return EOPNOTSUPP for everybody now?
+On Tue, Aug 11, 2026 at 02:23:18PM +0200, David Hildenbrand (Arm) wrote:
+>On 8/10/26 16:04, David Hildenbrand (Arm) wrote:
+>>>
+>>> Hi David
+>>>
+>>> My understanding is that init_unavailable_range() initializes all
+>>> PFNs that satisfy pfn_valid(), but not all of them satisfy
+>>> pfn_to_online_page(), since some PFNs belong to subsections that are
+>>> not online.
+>> 
+>> Thanks for reminding me. I think the right direction is to finally clean up the
+>> pfn_valid() handling.
+>> 
+>>>
+>>> You previously mentioned:
+>>>
+>>>   pfn_valid() says early sections always have a full memmap, so even invalid
+>>>   subsections have a memmap. pfn_to_online_page() says an invalid subsection
+>>>   cannot be online and its content must be stale. for_each_valid_pfn() follows
+>>>   pfn_valid() semantics, and we use it to initialize memmap that is not going
+>>>   to be online and account it as pages_with_online_memmap, which is wrong.
+>>>
+>>>   The cleanest approach is to avoid allocating memmap for subsections, which
+>>>   also removes the special early-section handling from pfn_valid() and
+>>>   for_each_valid_pfn().
+>>>
+>>> I also share the concerns raised by Sashiko in the analysis below [1]:
+>>>
+>>>   Scanners like isolate_migratepages_block() will then blindly iterate through
+>>>   the pageblock and access the completely uninitialized struct pages of the hole,
+>>>   leading to functional errors or kernel panics when reading these zero-filled
+>>>   structures via macros like PageHuge() or page_zone().
+>>>
+>>> That's why we went with the current approach in v6 instead of your
+>>> earlier suggestion. I'd really appreciate your guidance on which
+>>> direction you think would be more appropriate.
+>> Let me take a stab at just having pfn_valid() / for_each_valid_pfn() respecting
+>> the subsection map.
+>
+>... and that turns complicated very quickly. The problem is that we have some users,
+>in particular the buddy, that just assumes that MAX_PAGE_ORDER regions are fully
+>accessible.
+>
+>The fun begins once we have MAX_PAGE_ORDER span multiple subsections. So we'd actually
+>want to initialize the memmap.
+>
+>The pfn_valid() vs. pfn_to_online_page() inconsistency is really nasty :(
+>
 
-I followed the memory.kmem.limit_in_bytes example. If you have strong opinion, I
-am ok with EOPNOTSUPP as well.
+One thing I'd like to confirm.
 
-> 
-> > This also fixes the syzbot report linked below. Soft limit reclaim is
-> > the only caller that runs shrink_lruvec() from kswapd against a
-> > specific memcg, so it is the only way to reach lru_gen_shrink_lruvec()
-> > and in turn set_mm_walk(), which warns when called from kswapd.
-> > 
-> > Reported-by: syzbot+12ee2725d5fde63a9c96@syzkaller.appspotmail.com
-> > Closes: https://lore.kernel.org/all/6a7a6929.b50370da.49fe0.005e.GAE@google.com/
-> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> 
-> Anyway
-> Acked-by: Michal Hocko <mhocko@suse.com>
+pfn_to_online_page() is expected to return an "online page", which is in
+buddy, right?
 
-Thanks for reviewing the series.
+>I mean, in init_unavailable_range() we could actually figure out fairly easily
+>whether we are dealing with holes where pfn_to_online_page() would succeed.
+>
+>diff --git a/mm/mm_init.c b/mm/mm_init.c
+>index e9c4204b73adb..54e71e17f2c3c 100644
+>--- a/mm/mm_init.c
+>+++ b/mm/mm_init.c
+>@@ -843,11 +843,13 @@ static void __init init_unavailable_range(unsigned long spfn,
+>                                          int zone, int node)
+> {
+>        unsigned long pfn;
+>-       u64 pgcnt = 0;
+>+       u64 pgcnt = 0, online_pgcnt = 0;
+> 
+>        for_each_valid_pfn(pfn, spfn, epfn) {
+>                __init_single_page(pfn_to_page(pfn), pfn, zone, node);
+>                __SetPageReserved(pfn_to_page(pfn));
+>+               if (pfn_to_online_page(pfn))
+>+                       online_pgcnt++;
+
+But a hole in early section could still return a valid page if the hole
+is less than a subsection.
+
+Is this an expected behavior?
+
+>                pgcnt++;
+>        }
+>
+>If it's a problem performance-wise, we can always try optimizing by skipping
+>checks within the same (sub)section.
+>
+>
+>-- 
+>Cheers,
+>
+>David
+
+-- 
+Wei Yang
+Help you, Help me
 
