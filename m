@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8F38C5AD5A
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 16:04:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35BD5C5AD5A
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 16:05:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B6196B07D8; Sat, 15 Aug 2026 12:04:42 -0400 (EDT)
+	id 517136B07D9; Sat, 15 Aug 2026 12:05:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 366FE6B07D9; Sat, 15 Aug 2026 12:04:42 -0400 (EDT)
+	id 4EDB46B07DB; Sat, 15 Aug 2026 12:05:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27E716B07DA; Sat, 15 Aug 2026 12:04:42 -0400 (EDT)
+	id 42AE56B07DC; Sat, 15 Aug 2026 12:05:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E697E6B07D8
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 12:04:41 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BBE66403CE
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 16:04:39 +0000 (UTC)
-X-FDA: 85103976678.10.1BF0301
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 252B26B07D9
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 12:05:01 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A593DA2189
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 16:05:00 +0000 (UTC)
+X-FDA: 85103977560.30.B8A7150
 Received: from confino.investici.org (confino.investici.org [93.190.126.19])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 71F5D20005
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 16:04:37 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=nx8sBAmP;
-	spf=pass (imf13.hostedemail.com: domain of include@grrlz.net designates 93.190.126.19 as permitted sender) smtp.mailfrom=include@grrlz.net;
+	by imf23.hostedemail.com (Postfix) with ESMTP id D678D140004
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 16:04:58 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b=YigGzi0w;
+	spf=pass (imf23.hostedemail.com: domain of include@grrlz.net designates 93.190.126.19 as permitted sender) smtp.mailfrom=include@grrlz.net;
 	dmarc=pass (policy=reject) header.from=grrlz.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786809878;
+	s=arc-20220608; t=1786809899;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=Ua8mFtf8zB2pwtSS5pdnlpxstzJMX9SfJcWg7kSeSCI=;
-	b=srbtuG2mxVa5jigU3vFfUZ7EOVMKVKoOsisqWICnJOCsQDVUfDomYbwN94y0hPuBfkxOCs
-	apevZEyFggrEilbfO1e1BiT+U/CDdUWgBCUvY8BSObOXPpkhGVmzu3i612HyX4p0w+Fp7D
-	jFq50mIlpZqMwEWQL4l9Y8WG3KebFnI=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=nx8sBAmP;
-	spf=pass (imf13.hostedemail.com: domain of include@grrlz.net designates 93.190.126.19 as permitted sender) smtp.mailfrom=include@grrlz.net;
-	dmarc=pass (policy=reject) header.from=grrlz.net
+	bh=ZN/KEvCkLP1TQzzwwFEbwVX54Bpxpf0tYWDEQSuBII0=;
+	b=V8cyr10RgB80ohfMDQ2XuwXVKWAXypK+KuI2JKXFMrpGQsZWr/tcngia45jIW+dO6Rz6zz
+	fdEPtW/WiVLW6+UUwdNLda2gz+VFXmnfOGLsG18Ja+ECOZLqeXuO5xfM2I7Uaxr+VO1Lps
+	jd2VKU7DALa+BZGYd6bcP0CjBq1sTvs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786809878;
-	b=e9CvRCHuHLBE5PE3T4vONWImSCMlIEU+HmmS2ZJUDh2zodp1XRTSS1JMQbuRg4I+v0K/u5
-	a1UKfCzvnJ0QE0RFIIgrklXlEjXisv65n2gh0P5Vd99rjWnVEjIuRlcisNu5USxqmdTRgN
-	pojbt+PAyFHuG07cNpWdsQCSvdbxMtg=
+	t=1786809899;
+	b=YLusXk7GmfZIClw1fzsOfIKY4lL0Dc+lA1eqj/NkILgv49a2VyUGWeytpEouGHh5VNT5Vu
+	G0TOWnqfBMU0lBtVflgEDYbhEPkQCdsihlUQIpCtpWX6/vEULlaLcpxSlwRRlQQKkV6EQQ
+	+ws0nyK/6jqPOTc/zfUt55cj/eAweuI=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b=YigGzi0w;
+	spf=pass (imf23.hostedemail.com: domain of include@grrlz.net designates 93.190.126.19 as permitted sender) smtp.mailfrom=include@grrlz.net;
+	dmarc=pass (policy=reject) header.from=grrlz.net
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
-	s=stigmate; t=1786809874;
-	bh=Ua8mFtf8zB2pwtSS5pdnlpxstzJMX9SfJcWg7kSeSCI=;
+	s=stigmate; t=1786809897;
+	bh=ZN/KEvCkLP1TQzzwwFEbwVX54Bpxpf0tYWDEQSuBII0=;
 	h=Date:From:To:CC:Subject:In-Reply-To:From;
-	b=nx8sBAmP3RxA/S+NfyjIysvZsUkNejCYLu2uASJxaavpSwhLWBsnPfBOB5mFI+2we
-	 6WNq0EgGMoJpMGxn+d1F39984zhZ57eVyg5u8tY0DUki0+GzaIc9+6z44Wvt3wZolO
-	 Z71V7gUjnIEwKoJNRDvqGENDxePuE+KVg5O7VNhY=
+	b=YigGzi0wvpDq9QD9UPFboTR40v/VExuK9vNaeP+w1HwqFYZihQswEDxa/ragKczdq
+	 W7ZXDRMBzkz0U2djN5LPlw76qJGR/TWeZBM5ett+VjAcMYDyEydU2v8mYDSjzdQY4A
+	 XhKS3vnPbbBmpVR7BfNEfvn3vTdBjxTZPUL3Hz40=
 Received: from mx1.investici.org (unknown [127.0.0.1])
-	by confino.investici.org (Postfix) with ESMTP id 4hMkSL2RQzz10rF;
-	Sat, 15 Aug 2026 16:04:34 +0000 (UTC)
-Received: by mx1.investici.org (Postfix) id 4hMkSK5zMvz10qy;
-	Sat, 15 Aug 2026 16:04:33 +0000 (UTC)
-Date: Sat, 15 Aug 2026 17:04:32 +0100
+	by confino.investici.org (Postfix) with ESMTP id 4hMkSn2mfPz10rF;
+	Sat, 15 Aug 2026 16:04:57 +0000 (UTC)
+Received: by mx1.investici.org (Postfix) id 4hMkSm5QTxz10qy;
+	Sat, 15 Aug 2026 16:04:56 +0000 (UTC)
+Date: Sat, 15 Aug 2026 17:04:55 +0100
 From: Bradley Morgan <include@grrlz.net>
 To: joel.granados@kernel.org
 CC: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com,
@@ -69,22 +69,22 @@ CC: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com,
  shijianlin11@foxmail.com, shuah@kernel.org, surenb@google.com,
  vbabka@kernel.org, ziy@nvidia.com
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_1/4=5D_sysctl=3A_Split_data?=
- =?US-ASCII?Q?_conversion_and_file_position_handling?=
-In-Reply-To: <20260814-lklm-partial_ctlvec-v2-1-9df50d26e477@kernel.org>
-Message-ID: <D5FE866D-5393-4E51-8302-E6236B0D059A@grrlz.net>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_2/4=5D_sysctl=3A_Reject_uint_a?=
+ =?US-ASCII?Q?rrays_before_calling_the_general_proc=5Fvec?=
+In-Reply-To: <20260814-lklm-partial_ctlvec-v2-2-9df50d26e477@kernel.org>
+Message-ID: <1A7C293B-4D12-4F26-AB80-7B903C6FB431@grrlz.net>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: pd6jwcxrpeycruwzkt4xeu9aj6qpu8h4
-X-Rspamd-Queue-Id: 71F5D20005
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786809877-409666
-X-HE-Meta: U2FsdGVkX180XnQuMlfRxGHe2F/ERTgotoou7lF7/8bwwfFZh3a++qSeZoW2uZwSotsQXPf16krw5VhFidJ9z4VNB3AVDwMhLQp333tqsn4AFW7AIm0ub/cEFgt8TCX2l0Yxe4ENQUNmw+1aS3seCdzQtpwA+u59OEIATQ5wJOpidn1UJkaCJleg2bPKtixJsxtPGX0vzPVNwJ/BOKFO4wENi3Ypf+vwzGDQVQldmMGZulVf8BAiA66GQ7/y4AohUA63W8agyNCXkIDpsH3RtRxLvBP4B1MNBJ05R+0DaqFJuenFcEnEnE6jo0HRYwX9/O7PzUXGJU7PxNdb87dJCmEdsfMOaFL+CtKegU5JwFyqDWKnlBn4GdJbqjNoQOmYrKry3qu1T7oBf+xoF2Y4btCJmHusVGU3ShSZLVVrsKUb0dQVWPwsCYFIMQjaGhmgOPm5r03CllnSU2i2PoP+5FEdNxf53J0xPFvQxE1IESEVhF+micY3y3vFz6BoRHfYxBPRlzqrhCHEwab+laQq4sJvEEhlPba/yrariMx2mTncm2PG71HfoU0p5vp3N/nIcHUfb3+tRWbSEyR3gNyS4ROEgkq3Zo/vloU1PhzRs96UEXGs0JjXVdw+AdfANQrrziyiEiXK6G/7G/pAKeHT0y+Y1HPfAV5jLzzYsX9ffn3rnp6iexzUXRFpM8b4g1qs2yXzzWinfblYC2f/3NC368twV5WpaLcabg/E9gx4o8QfmWM0LklODHc1tmRaJlIZI+yoEK0mDa9yM5w1m7LgWcMI5tUuhs0gA7GJZ/C0XHCwqjTj8X+wA01zPraBJJVuAtSXvmiP817UCBDfB5jEJ+ZotkcfVJDkMSTKrAj+5Z+R2zhiw+k0EhqI3iMg1K6Vh9TfrpbTkrj8HE7ZSw9ys0yhn2JzAPZbc170NyDAXyObFu7wgkobsZuhsHl/IRxCfP8SPexOqHgdR2OJYkf
- ubjxU0hA
- /Z/V/U3paSUjllTny1AI3mdT+P506JwlE6PMjrsggrASQ7xYjGXi6hnB1TQ5Yd4zNb7uNlkYy5kZyPDk3XDjRntX0Ho5QeTUARfZ1yxcMnbYCURT0bZXyS+FO9p4BfL3sp5l+DnYzxqRRmKvFRwuXudhnhN/1JjEsDAiqr71fIHbZh7inIdk4UYwUX3GRK5pp8znfmtYspxfqMwW+KaqEjH/CdrwGsiZj3hOOly6ZhPN3qi73OURqFVxgN/DQSrHsUrH5jPFtU95fyj3X/PvH7EPTONRNXMU2aEkieycM65/nZY7dFAGVmsOuMiikDtBaVF4xuwzwLtrJ/a34+bsquOgJ3N9Uh1frHEEX8kc5GBCV1jnet10/hvfKd29n6TBaWGg43ice9dp3Xn8W9legkT4yJMCJdg7aUymy
+X-Stat-Signature: 16dttnbr4t7chu6m3hnhy15ws4ipossj
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D678D140004
+X-HE-Tag: 1786809898-812689
+X-HE-Meta: U2FsdGVkX1+Wmu0c1YH8hg6l0wWRQo6VktBE8Hn70BG85JhkZeEuHVGmQh/SolgRwX7Hby5+2fr+2FSUrX0mxTIS2jlgtbJtUxy6X36+LzW/ItAInokFlTpPg5blC1Gx1yRgmP1PY3pk/TCYrIxzjxvpyXox0Uw1Prsrn8oAjVbGuiX43LOzhYqSOE2tBU+JEtzjE8FOEpBYrf1c6LmdVP9oT5l7H7SItpS5pq98rCUxUxnbA2IBLvLgO3kKdFPLliSM2Wscd4My7EX927SLM6rtlG+3xHeGJcc1/oeEEqSDuPSigz3otd83oJgmAJwWIhXpp3YNAj1dCIjQnrWMS80v7tygvks+QKAjg++fkKQ+OT8lrkQA5H5s7siYcm2prX2stjVKXZy4LdebGvGCYtAbcqH+8sLYLG51L9+VYZwKaVQp/kuqVmGGtq6rScKUPcH75WAT/WBOT4OKE023YG7QYKgClWNaPDX+616SeCCk7PUFsIUSr7gGjWJU0aJxfsBaTTu6m/Eg84CJvKnTRVoUNGKNb3UjVP1w0v249WmH6Y+42j/Ggi6MTHPnS+lUupvyCVboGInlhlt5igkH19Te5rs0Q04MQTx71VgYPXJdAf1zCSPL517aZUGO5uHiVsz+g3+o1h+BubGVIkgW3ULoO8xl3JIqgXL4o2Prxu3r0HkqIyL065CnhgFAfBOJGqTuMSnujVgl3+JgAQhuzNcLkEz4Imh2MzTh6nZ90PMXZKITcHJ7HcpZmlSDzK82mE7QCzeNC2hQF5sFfbwiSJTricqGykTZg96ksJ9mre9FTKWbF0Bx0SuA64aIqZe+XR7WlSv8NSqmY3ogar/0XTNeoKhKAOXKRPdLgzUxH9C5U89SWPuYG2UAsC6UKPP+DjFognQooFKSYlBw/Hqm006eIhgAUGXqd1HH8Tx9rwMWBWeXpiP052ELcN6/k9Tw+xwNts1Dyglcn0hFgvo
+ yukwWUff
+ H2RxEdvBcH1gvWKQqfUIoi8L2uBk3RBJELoLQjmyrvRXHh4gVhOifvXUD8Of+ozshvWycAxKR2SdHsJcl7S8+wvIwa66OrHo0YzCSSmPtq7p3oZPcBQhwUnjsbea6nmQKnsZaLh2o8hJfSz/XCki2jR/xrf+pNSXjkEcuAtr0pJwC2dS7otFyTvjJwB/2uVMqeNLBTOAIOCeactwODaYJhw1Sq9xTy+hNLz6g2Bx6PFyO/KU/npcuosXveHA+E0tiwUJF7Z5qQL3Fq2gHnNCOXWnJMlV4yIUAHjd4ypY8ZoUqHOSZvY0g9SMMkany3yLf+UGEo8Ms/fbE6zBVW0ngK7so1cK9vcgZVmPV8awZOEqkhFpqvtv/PNUkzBOHYbXCHfGKseXT26cCKoPR2/aSn3yf3pKunyKThJmTx1bPGtlmK8E8AnPztNd3xmNtJhDVKj2KiI+PLAP8ENE5WUsEUZyUj2T+M0oA6+/R
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,17 +92,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->Rename function to prov_vec (from do_proc_vec).
-
-s/prov_vec/proc_vec/, the diff renames it to proc_vec.
-
-Also the SIZE_MAX comment in proc_vec() only talks about the no
-parsed element case, but after 3/4 a kmemdup failure leaves
-left_nbyte unset too (it goes to out before buf_left_final gets
-written). So the sentinel covers -ENOMEM as well, a line saying so
-would help.
-
-The split itself is fine, so with the typo fixed:
+Looks good to me.
 
 Reviewed-by: Bradley Morgan <include@grrlz.net>
 Thanks!
