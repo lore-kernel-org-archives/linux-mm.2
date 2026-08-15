@@ -4,112 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 075E5C5DF67
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 08:08:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EA2BC5CFDB
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 08:40:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 839446B0341; Sat, 15 Aug 2026 04:08:09 -0400 (EDT)
+	id 764C96B035A; Sat, 15 Aug 2026 04:40:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8112C6B0343; Sat, 15 Aug 2026 04:08:09 -0400 (EDT)
+	id 7151B6B035B; Sat, 15 Aug 2026 04:40:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FFC76B0344; Sat, 15 Aug 2026 04:08:09 -0400 (EDT)
+	id 6044B6B035C; Sat, 15 Aug 2026 04:40:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5228C6B0341
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 04:08:09 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D13FD140321
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 08:08:08 +0000 (UTC)
-X-FDA: 85102775856.13.86008C0
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D780F160006
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 08:08:05 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	spf=pass (imf08.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E2E66B035A
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 04:40:44 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BF0EE1A032D
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 08:40:43 +0000 (UTC)
+X-FDA: 85102857966.01.68E7180
+Received: from mail-pj2-f4.google.com (mail-pj2-f4.google.com [74.125.227.132])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0937A1C0005
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 08:40:41 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Tym7qOYY;
+	spf=pass (imf21.hostedemail.com: domain of eamon112009@gmail.com designates 74.125.227.132 as permitted sender) smtp.mailfrom=eamon112009@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786783242;
+	b=Rge+e95O+dETiSIEeWPnwWqApsv/YX3LItrNcriL7Qs9/pBZGxkodzKpP64Ygnn/0uDv5p
+	+4vWAsvkumzJDUKhAShKrQwaUIruly6VfT1WEUo07CIH69bz2FBxIJiS/x34lSVXR5lc8Z
+	OmPepGtqJrhoXpWKp5uIsUbSfQLv858=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Tym7qOYY;
+	spf=pass (imf21.hostedemail.com: domain of eamon112009@gmail.com designates 74.125.227.132 as permitted sender) smtp.mailfrom=eamon112009@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786781286;
+	s=arc-20220608; t=1786783242;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NOESMuCRooVC4iczNiA0wcrFKWUXpQNEe7ijSb7ZFFk=;
-	b=sYqDRBGYjJhKwMrhwTKESR5/G/SCkoGqgipvC6S4y17NethYfvDBUF8kmTrjn8msCt32Y0
-	IEYaQNb2GrCD2gFRlszm2aLrlFxlFvYMMAyqigq/G6O9IfYtDgogoiZfEC4pJlMZDzmbOp
-	Bu85w9XiIJ8Rumrn8wZFmxzvKAGPgfI=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	spf=pass (imf08.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786781286;
-	b=wRr4+GhmZR1i7sFuu/sk+G5OpIhFU1d+FvQMHTi+I7f2kzk7z/++qj82ow2IaS1fvhteR5
-	rxATCpYsfpt6d+MwZ+9tNZuLeKrX52D+jr4j+cZGIDZYp7J+L6ulxzSP01qRtmcQ+U7366
-	VkZN+AJoFrSXiYrp/pzkZB3cEaSJ7JQ=
-X-UUID: 6b9018d0988011f19a56ed5b684f684d-20260815
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED, IP_LOWREP, SRC_LOWREP
-	DN_TRUSTED, SRC_TRUSTED, SA_TRUSTED, SA_EXISTED, SN_TRUSTED
-	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD
-	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:ddb5f0d2-0a7d-4394-bcbd-49de45807dca,IP:10,
-	URL:0,TC:0,Content:0,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-10
-X-CID-INFO: VERSION:1.3.19,REQID:ddb5f0d2-0a7d-4394-bcbd-49de45807dca,IP:10,UR
-	L:0,TC:0,Content:0,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:EDM_GE969F26,ACTIO
-	N:release,TS:-10
-X-CID-META: VersionHash:7db8b62,CLOUDID:10c0d73c66badb71245b2174fba588c3,BulkI
-	D:260815160800X5W5ZYME,BulkQuantity:0,SF:17|19|38|66|78|81|82|102|127|865|
-	898,TC:nil,Content:0|15|50,EDM:1|-100,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil
-	,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:
-	0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_AEC,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 6b9018d0988011f19a56ed5b684f684d-20260815
-X-User: husong@kylinos.cn
-Received: from ctao-book.. [(111.162.215.50)] by mailgw.kylinos.cn
-	(envelope-from <husong@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 2070273122; Sat, 15 Aug 2026 16:07:55 +0800
-From: Song Hu <husong@kylinos.cn>
-To: akpm@linux-foundation.org,
-	rppt@kernel.org,
-	sarthak.sharma@arm.com
+	 in-reply-to:references:dkim-signature;
+	bh=xcv8l5CiFtE29rX5E363F5csjK5+NcrGXED2GBfGaKQ=;
+	b=X6oaYtKUzQKlJUe3JZN0Ap5YLAvaRbaJ7U5JI13w4R74sIXQAgK/+HmQjT8ppLRc3d9D/6
+	8GoQIrdx+YBaTlSzx9wWE/d65rpRQTXNzRdtoQFxNzhd12ANPaQ5itY66XWILeNwe44oqC
+	OVV3K0G4VJq8TPfKmoPigJKDHfSrSaM=
+Received: by mail-pj2-f4.google.com with SMTP id d9443c01a7336-2cabe9335f1so8368275ad.0
+        for <linux-mm@kvack.org>; Sat, 15 Aug 2026 01:40:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786783241; x=1787388041; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xcv8l5CiFtE29rX5E363F5csjK5+NcrGXED2GBfGaKQ=;
+        b=Tym7qOYYqi2mLkfLINi+Yhnpi9LhYE+9++kpxRl8OyS1bktwRWeMSVYi57nALgKLLr
+         0JPrquj4GhqbEFw7AoOALiEjNgOTLErSiu/9MSt0NJbBzEghYL6mPwqvBDdCUJFpqa4N
+         7qjMr3+TxALoI2nF2w+mi4lv00uINT5PX8lYn1RtpkZ1ntmV7mNAXBqI8RkwWlRqzbr1
+         j1nLFu/QzP76D8sYY3zmkXz6DpF7MN2/dMHqY7jfoYncEayOpSD0q06LoNleG0rDA7bY
+         8ST2CABt7tqcKx3G4jfHgWyHBEDQXf4tAncn46K1bUtaAmSqb6X5uPfij5GAL46/kj+/
+         s/zQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786783241; x=1787388041;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xcv8l5CiFtE29rX5E363F5csjK5+NcrGXED2GBfGaKQ=;
+        b=ZRF9BMu/uEuCEiIjbrvBioh4qEiRm8RCpULxcZvQ+2AbdPoVaWitTwOnoJqyIySpes
+         PaSSLjtx+lBpnk/uu8FsOncsUzcydC6IgpoerpPmMYKyQv671qH5TKPeYwHJv/HToJWQ
+         mKEd4QbCrBMCK4seClvuXI43YqDYwcwpJdP7yxPKJcyLCVcl01y8tll7hRbKkoWv5ebg
+         EMDGIbpeT2POZBrGOpMjM5rRL07BWdGy+BYdTZAfOXv7IOQmQluuWpvMgF3Dl/vrP73J
+         cSLfd79jOyIAu9jiLjvZP7+gTzR03fBs2MPr4g972jMbXpG7C0RZIrl7ccB2er8amxRK
+         L7Zg==
+X-Gm-Message-State: AOJu0YxicoVFR8sTCo5730r+PVyO3wsUDEVa6CPvvJjc3kccFPQpnbUx
+	DVTLxoHBI6aI8FshT4II6MaTCZf8FjTnsg98ZbSiRc/odM+lIlnWmLHX
+X-Gm-Gg: AR+sD107hsB3cgIpZIzj01YDApU/6jbVSOBnXCoS0LyP5ANpVb3BHyhMRIrRbknzrfw
+	Ffnkn+hB88xs44mxwtHw7eWHYOs3NBA/U9hs1Mzndf2ckH+Pne41u8nbC0nFSROMaBzI2x/KV27
+	8upMQeqXIGQIEPmFK4C5i3XEF90SsjuQ/X+SCLJiZ2cvrCh+wbGtZWDQHTm1pmB9njHK6jjlF73
+	+1GL+q167Ks/wMyLDI/o6VOmfHSrJg8fmmO9I87vqphda0tl6UEc3cMe9Dk0XBd7HAcxynF89qX
+	GPvIOW6bH18jKVmwQRruodEi+Ko+6el4fvvQiHqvhPk9oNk77wW7E5E7vnmiGW0hl+1fXeGs26K
+	hdg3ibvAUOKNFJihwx9Y9/OEKHRbTDi6BCA38KCmHR3bdUs5bEwyBe6UkqGY/edkk+G4noZH327
+	QEYdX58+Re6VnkeKX6+j1hYW4hUTDsosqmilEt9IfzBYTDRJXGFJkxJ4hpzWzJgUl6ZBw3WQ7rg
+	H8Ri2lWsU1U0Tc=
+X-Received: by 2002:a05:6a21:3a47:b0:3c3:9993:d5c3 with SMTP id adf61e73a8af0-3cc71aae5admr15595751637.9.1786783240710;
+        Sat, 15 Aug 2026 01:40:40 -0700 (PDT)
+Received: from Ubuntu-172-24-64-1.localdomain ([157.37.185.197])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-141387c56aesm16591312c88.4.2026.08.15.01.40.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 15 Aug 2026 01:40:40 -0700 (PDT)
+From: Eamon Sippy <eamon112009@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org,
-	shuah@kernel.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	peterx@redhat.com,
-	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Song Hu <husong@kylinos.cn>
-Subject: [PATCH v2 3/3] selftests/mm: restore enable_soft_offline in hugetlb-soft-offline
-Date: Sat, 15 Aug 2026 16:07:16 +0800
-Message-ID: <20260815080716.3596514-4-husong@kylinos.cn>
+	Eamon Sippy <eamon112009@gmail.com>
+Subject: [PATCH] mm: cma: make mm/cma.h self-contained and conditionalize includes
+Date: Sat, 15 Aug 2026 08:40:26 +0000
+Message-ID: <20260815084026.44078-1-eamon112009@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260815080716.3596514-1-husong@kylinos.cn>
-References: <20260815080716.3596514-1-husong@kylinos.cn>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D780F160006
-X-Stat-Signature: jqehkzztn6i6ryk5ww9dbgas8xw6sewp
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0937A1C0005
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1786781285-735050
-X-HE-Meta: U2FsdGVkX19Aiov+ktGigDbCgS6SE26wQcrj32fblgrxsZuO+Y+M1mUTcqfwQ/1A4fC0G8OML2QGmvCvvgZ9OB1+dIrl9kkfbldRAn5X6TMOusL9GJOeLK4YdewACmoxL/6gRaOK/7wfv/A51gwDEV0n1+AV8ENpCKmPj4WrqX0TL6+vTzDFEB7Sa/jWjnXdzuaLeTOvJyM4eDOz1IeEBZ1XV98RjE10Wgbu5n3L+mvLKecsr3Rzo4Ohy0BOfVrDupHyTWhxc9gtFRfPsiS4h4HqAtrVfjKX3ByrWHqIaxq56Al0U9Ca61UErzHLzuA/vqSAYPq6VKHrzzneS+vAfdGdooyjdrSUbY+QbczDE1R5nHN6VAKDtYPuIr1MiJ7TLW7Im6uEXzzhjrrMlkC+LRa8ZZMNK3yX0u6XAka11NlWwMNWZ3TeNC2ApgdRe2zUyQXJOm61oz4WgyzFm4y0W7Zq1nts/tM9YVj/8N0klg7tOBVHhlac5fBkWMyPsWqPuYCYjCg2DGw4EcJS2/rvEvfZWL2vTB/7a8yigb4dfhdfnbJjDi53iyjBUe8sTQ7cOtFNkUMqx7J4QoZhwoprNZQ/KIkTQXgGZtqLjYtkK3tuX0yXsNNI3magEG630qIQG1oBAjzj/HNnNCTN1ZndtAG+RRH0Ccf/QEpmu7Kv4JUZSL3QX0PgqibZ9EHilMou4THz7TNakJKUiqa9N5HcXe5qm1Q3ctqpfiCHWAKeEqYV32Ymn6ia0lgmZH2ZNJpeqyJ2F52V1aASzJt0Vhi+vhSQ/RFUUV1znPDSs6IrQUD8gcpz8uZqvtGW4mxxcJb1/OZGy0Q7oUudEs4bLrnJHnB36xgfXtd83bg21VnJ8YMzYDXtlY4Lvnp0ZTYNbTC0Fo7p6AGozCYWd2G4tohDw6RjoRio8RqckF4hElBKrShFQQpodKfk5Kw/Xyvwx1ajSlz7JNMsKj+3aC5Cmic
- fcNuMOdT
- 2OUh7uUS50QFXeYwj8ppRA6vzykkPema8+wwx69HXRQY0L+sVacoZeu/3QA==
+X-Stat-Signature: b58wah63yekg8sszkcomosxhzri8qwrc
+X-HE-Tag: 1786783241-929577
+X-HE-Meta: U2FsdGVkX1/QbNb8KniXt6EyMvRMDJZDCHINIx1yEiWQ92MNfPMPEft5mFtT3dUNPmav0y0pSucYM+kuwveLl7Zsvyx4Z4htcnTFIjs4YZJDuwM3xZmCd82gjZ3f2DuGRmH1CtccQsCRMQumPQIrEVNJey8qfkCdCWC33iNt6iAe18wb640clb271YZum+eC6Gtw0Amnd+NBbLyu1s2SrVcbyZ/0VBxt4U62qMLmlw87CRcnjsHQmLv7hXXgdlUaPqi4uBBt6J69tBNw166N92vOLLwdKigeofTJzLaleZLVhwQ/CWSvuZjTCDUI9lU9ZHHCHleY7cCk2iFXA9bt8LA4mPPZPAW6Gjw/cEuX+94jdBMUUhqZFnn8UBxJLP7gSAM6M9NnEc1tYids8i9AEEi95sDwyy2C16jUyYPGPMxKiYW9jb59atzGZ7tTqgqIR1lllw2tHYlmNfvf4Q4lBF/Tfpjj95IiDbR4a8AutV9S0pqji3/pAPQvw53fYGODyxlgxoZJPBUf9OD7w+dytMFmVMcW0qaLPEHUG6S7YEMNXHpBZaErUd9fWRCLOt0uDLFr3CFYS/Mfd8UrQejR+f5Nzpt4dzBYjGjifnvoQMrotoLuxxbk5N8LWqpAJpJNBBZr+RvI+f8vr5ae3Rn9qx9ImscHybz8DkdbH3BJXHcPJtfb+SF2L10kf85ltgEQWO8bGjMWHzpxBfWxHnf6IiNylGRWH704A5noAGWFh0GiICa0ymsfp/0ME2XZvj5JHK9Ym83MPAI4SdMa1ZrFnnoTNenKOPTEbexCpD+0vDHesPM1mKWfHinrXPXTZpFrZN526pacyrwCFK1fbRpBR60ME+OOKndaGZDeGxdjP26yJ5gLhP3Kj5h96j7vYPzP2mI9U0jQjkUFPIuzCJlMZ+FKBLZlQKa/JX1NqEJeFoSmgPNq4JnHWcYvhuZ9McFc4M+45S1naGMEHRjlUGb
+ BhGOgMeY
+ ZLR04rtGp7pTkPyzvMEWPwNi7DxObFu+SMRMgHH9k6ir+sHt9K6GQfQSRvwPqfvM2dGRbq6HDGadZrlGDnjpbD6FiHKEsxl/cwy9GPtVuRJjZkt4irrDVGhe2s129YgU0DmXJuoaTZUh6KunmSypyvwlt908VimgmttyYDT5bNNbCzthobk7VA1vGZoa2j+QjdS8MqZ+jwLlpCRMvBrumHjTNNUBczvyxlmShyWa6OOXMn2y8rSDg7BBnDySCC66/M+7MzQKbiYSufD9C+M6mz0Yd3ViH9+9wEqhOfpnbiqhcKgMXqPU1+f4DShyFNU9hyWeiUlXx/YdO3gdmzUwLradKpQ5YtGsNczyZpr9cKdGBri95TWUXh7xcRg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,97 +115,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hugetlb-soft-offline toggles /proc/sys/vm/enable_soft_offline between 1
-and 0 (test_soft_offline_common(1) then (0)) and leaves it at 0 when it
-finishes, silently disabling soft offlining for the whole system after
-the run.
+mm/cma.h uses types from <linux/spinlock.h>, <linux/mutex.h>,
+<linux/atomic.h> and <linux/list.h> without explicitly including them,
+violating the kernel header self-containment guidelines.
 
-Save the original value before the test and restore it from an atexit()
-handler, so the sysctl is also restored when the test exits early via
-ksft_exit_fail_msg(), as hugepage_restore_settings_atexit() in
-hugepage_settings.c already does.  Use read_num()/write_num() from
-vm_util instead of the hand-rolled popen()/fopen() helpers.
+<linux/debugfs.h> and <linux/kobject.h> are also included unconditionally
+even though they are only needed under CONFIG_CMA_DEBUGFS and
+CONFIG_CMA_SYSFS respectively. Move the struct cma_kobject definition and
+<linux/kobject.h> inside the CONFIG_CMA_SYSFS block, and move
+<linux/debugfs.h> inside CONFIG_CMA_DEBUGFS.
 
-Signed-off-by: Song Hu <husong@kylinos.cn>
+Remove spurious trailing semicolons after the empty inline function bodies
+in the CONFIG_CMA_SYSFS #else branch.
+
+Add <linux/cma.h> so that MAX_CMA_AREAS and CMA_MAX_NAME are always
+available when this header is included.
+
+Signed-off-by: Eamon Sippy <eamon112009@gmail.com>
 ---
- .../selftests/mm/hugetlb-soft-offline.c       | 35 +++++++------------
- 1 file changed, 12 insertions(+), 23 deletions(-)
+ mm/cma.h | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/hugetlb-soft-offline.c b/tools/testing/selftests/mm/hugetlb-soft-offline.c
-index bc202e4ed2bd..86259921d54c 100644
---- a/tools/testing/selftests/mm/hugetlb-soft-offline.c
-+++ b/tools/testing/selftests/mm/hugetlb-soft-offline.c
-@@ -23,6 +23,7 @@
- #include <sys/types.h>
+diff --git a/mm/cma.h b/mm/cma.h
+index c70180c36559..0a1cb0141756 100644
+--- a/mm/cma.h
++++ b/mm/cma.h
+@@ -2,13 +2,24 @@
+ #ifndef __MM_CMA_H__
+ #define __MM_CMA_H__
  
- #include "kselftest.h"
-+#include "vm_util.h"
- #include "hugepage_settings.h"
- 
- #ifndef MADV_SOFT_OFFLINE
-@@ -31,6 +32,8 @@
- 
- #define EPREFIX " !!! "
- 
-+#define ENABLE_SOFT_OFFLINE_PATH "/proc/sys/vm/enable_soft_offline"
++#include <linux/atomic.h>
++#include <linux/cma.h>
++#include <linux/list.h>
++#include <linux/mutex.h>
++#include <linux/spinlock.h>
 +
- static int do_soft_offline(int fd, size_t len, int expect_errno)
- {
- 	char *filemap = NULL;
-@@ -77,26 +80,12 @@ static int do_soft_offline(int fd, size_t len, int expect_errno)
- 	return ret;
- }
- 
--static int set_enable_soft_offline(int value)
--{
--	char cmd[256] = {0};
--	FILE *cmdfile = NULL;
--
--	if (value != 0 && value != 1)
--		return -EINVAL;
--
--	sprintf(cmd, "echo %d > /proc/sys/vm/enable_soft_offline", value);
--	cmdfile = popen(cmd, "r");
--
--	if (cmdfile)
--		ksft_print_msg("enable_soft_offline => %d\n", value);
--	else {
--		ksft_perror(EPREFIX "failed to set enable_soft_offline");
--		return errno;
--	}
-+static unsigned long orig_enable_soft_offline = -1UL;
- 
--	pclose(cmdfile);
--	return 0;
-+static void restore_enable_soft_offline(void)
-+{
-+	if (orig_enable_soft_offline != -1UL)
-+		write_num(ENABLE_SOFT_OFFLINE_PATH, orig_enable_soft_offline);
- }
- 
- static int create_hugetlbfs_file(struct statfs *file_stat)
-@@ -145,10 +134,7 @@ static void test_soft_offline_common(int enable_soft_offline)
- 	hugepagesize_kb = file_stat.f_bsize / 1024;
- 	ksft_print_msg("Hugepagesize is %ldkB\n", hugepagesize_kb);
- 
--	if (set_enable_soft_offline(enable_soft_offline) != 0) {
--		close(fd);
--		ksft_exit_fail_msg("Failed to set enable_soft_offline\n");
--	}
-+	write_num(ENABLE_SOFT_OFFLINE_PATH, enable_soft_offline);
- 
- 	nr_hugepages_before = hugetlb_nr_default_pages();
- 
-@@ -192,6 +178,9 @@ int main(int argc, char **argv)
- 
- 	ksft_set_plan(2);
- 
-+	orig_enable_soft_offline = read_num(ENABLE_SOFT_OFFLINE_PATH);
-+	atexit(restore_enable_soft_offline);
++#ifdef CONFIG_CMA_DEBUGFS
+ #include <linux/debugfs.h>
++#endif
 +
- 	test_soft_offline_common(1);
- 	test_soft_offline_common(0);
++#ifdef CONFIG_CMA_SYSFS
+ #include <linux/kobject.h>
  
+ struct cma_kobject {
+ 	struct kobject kobj;
+ 	struct cma *cma;
+ };
++#endif
+ 
+ /*
+  * Multi-range support. This can be useful if the size of the allocation
+@@ -37,10 +48,10 @@ struct cma_memrange {
+ #define CMA_MAX_RANGES 8
+ 
+ struct cma {
+-	unsigned long   count;
+-	unsigned long	available_count;
++	unsigned long count;
++	unsigned long available_count;
+ 	unsigned int order_per_bit; /* Order of pages represented by one bit */
+-	spinlock_t	lock;
++	spinlock_t lock;	/* protects allocation bitmap */
+ 	struct mutex alloc_mutex;
+ #ifdef CONFIG_CMA_DEBUGFS
+ 	struct hlist_head mem_head;
+@@ -86,10 +97,11 @@ void cma_sysfs_account_fail_pages(struct cma *cma, unsigned long nr_pages);
+ void cma_sysfs_account_release_pages(struct cma *cma, unsigned long nr_pages);
+ #else
+ static inline void cma_sysfs_account_success_pages(struct cma *cma,
+-						   unsigned long nr_pages) {};
++						   unsigned long nr_pages) {}
+ static inline void cma_sysfs_account_fail_pages(struct cma *cma,
+-						unsigned long nr_pages) {};
++						unsigned long nr_pages) {}
+ static inline void cma_sysfs_account_release_pages(struct cma *cma,
+-						   unsigned long nr_pages) {};
++						   unsigned long nr_pages) {}
+ #endif
++
+ #endif
 -- 
 2.43.0
 
