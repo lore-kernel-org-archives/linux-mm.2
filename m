@@ -4,104 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D6F1C5CFC1
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 10:44:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0F9CC5CFC1
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 10:45:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 53BF86B07C0; Sat, 15 Aug 2026 06:44:07 -0400 (EDT)
+	id C1DD96B036A; Sat, 15 Aug 2026 06:45:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5138B6B07C1; Sat, 15 Aug 2026 06:44:07 -0400 (EDT)
+	id BF7F96B036B; Sat, 15 Aug 2026 06:45:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 428D76B07C2; Sat, 15 Aug 2026 06:44:07 -0400 (EDT)
+	id AE50F6B036D; Sat, 15 Aug 2026 06:45:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 073656B07C0
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 06:44:06 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7C9FBA2BDF
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 10:44:06 +0000 (UTC)
-X-FDA: 85103168892.05.9D6AF1E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E5A5140003
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 10:44:04 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kr/Tf5ck";
-	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7724E6B036A
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 06:45:58 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E68AF40334
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 10:45:57 +0000 (UTC)
+X-FDA: 85103173554.16.C8F287B
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf25.hostedemail.com (Postfix) with ESMTP id AFB94A0003
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 10:45:55 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=HcmZKoJ2;
+	spf=pass (imf25.hostedemail.com: domain of petr.pavlu@suse.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=petr.pavlu@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786790644;
+	s=arc-20220608; t=1786790756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EHN97m9JW2ZgHxLPFLcOKL8ZOHela7pDZzqoNJfQP5E=;
-	b=17IGHhx8Uch/2aFX3+Xiys7E2fCicdI6ufuBQrAP8EDGykGXHX+c1axwUwKCP8dtmJPAEe
-	krkynkF5HRVMwSV1oMHB1QeqyvOWGRwn04H7nlf/9DJ1sz0KkCsrbulN3VfKtOdFY/f7pQ
-	fwHDTw/2HAb5ab5GvIak6B150kwao78=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786790644;
-	b=n09Fk17SZlCdAxfEfX7iS5R8TWwrmHzw4bbDvU620Q0bF1thT0VZ3T9D1SlVPTGLz7JJAi
-	sJ8t+943c9ODmhJKa5vgARBZlZdw9bPYOw38cIR/rMCEJzDkMnjObyX5xGv28+OvxLOedC
-	2gXSnPbeJ+ibC34Dou5BjSxoSWcqidQ=
+	bh=+i8sSuNGd6mmLHE2UfzLIflavVjmbyhwZK+DDdZURwg=;
+	b=Y3HXJc7++ndGO9lBZjcE4r0fBl/73X8IJZsR2DEPHNoS0SoCeXlExzxMjKoUyVoBhqAmUg
+	afPpFOJCqwQMj4ovHB4qCBwuslX2vwsjP+0JEDZB7swyfOXz1ciTfNJqOnITE0xB5zi+G4
+	gCCg0ubVFTb7jOVOkGscwi2Du2S6uoY=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kr/Tf5ck";
-	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E903F60008;
-	Sat, 15 Aug 2026 10:44:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D271F000E9;
-	Sat, 15 Aug 2026 10:43:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786790643;
-	bh=EHN97m9JW2ZgHxLPFLcOKL8ZOHela7pDZzqoNJfQP5E=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=kr/Tf5ckh5K3hOdAtZRNaMYJfcRPbGlwjMHHlS0bf7W+6jLe5uTUgjrP9S+5f/IC/
-	 Ka/suzsag9pVo5MAFE5sUh0OdSOq15rVwKacT8p8g/2vLXGvNF6wyqDL/oQEHFwKNE
-	 uW0VRb45EN4jcoJ7gWykJKxHTXlr/mPQcjZ/7sibTUOtZlTPD7FkwaCSvI56oP4lze
-	 WYAMKxEpRdAEdaOxik7UE4xE+40VQZc/EdlggdhzMRACQMooZmNlts0xGE/K0+tEkl
-	 Xm1O4rjqoZBEa8az6uvNKeelMuWGoGXGMg4E4Z8cRr209WzF2prepZEjHbJND/nln1
-	 63kwlbLLevOoQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Tarun Sahu
- <tarunsahu@google.com>,  ackerleytng@google.com,  fuad.tabba@linux.dev,
-  Andrew Morton <akpm@linux-foundation.org>,  dmatlack@google.com,  Shuah
- Khan <skhan@linuxfoundation.org>,  Jonathan Corbet <corbet@lwn.net>,
-  david@redhat.com,  Pasha Tatashin <pasha.tatashin@soleen.com>,
-  sagis@google.com,  Paolo Bonzini <pbonzini@redhat.com>,  Mike Rapoport
- <rppt@kernel.org>,  Alexander Graf <graf@amazon.com>,
-  linux-kselftest@vger.kernel.org,  andre.przywara@arm.com,
-  michael.roth@amd.com,  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
-  will@kernel.org,  vannapurve@google.com,  maz@kernel.org,
-  fvdl@google.com,  kvm@vger.kernel.org,  oliver.upton@linux.dev,
-  kvmarm@lists.linux.dev,  alexandru.elisei@arm.com,  skhawaja@google.com,
-  aneesh.kumar@kernel.org,  linux-doc@vger.kernel.org,  David Hildenbrand
- <david@kernel.org>,  yan.y.zhao@intel.com,  kexec@lists.infradead.org,
-  suzuki.poulose@arm.com
-Subject: Re: [PATCH v4 05/11] KVM: LUO: Support VM preservation across live
- updates
-In-Reply-To: <anyObKiZIhfok5mk@google.com> (Sean Christopherson's message of
-	"Wed, 12 Aug 2026 08:17:00 -0700")
-References: <20260728121138.1103610-1-tarunsahu@google.com>
-	<20260728121138.1103610-6-tarunsahu@google.com>
-	<anphyjFv3FhF61iB@google.com> <2vxzpkzo51wg.fsf@kernel.org>
-	<anssOQFNZ2LfihbU@google.com> <2vxzik5f311e.fsf@kernel.org>
-	<anyObKiZIhfok5mk@google.com>
-Date: Sat, 15 Aug 2026 12:43:56 +0200
-Message-ID: <2vxzqzjz1x5f.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf25.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=HcmZKoJ2;
+	spf=pass (imf25.hostedemail.com: domain of petr.pavlu@suse.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=petr.pavlu@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786790756;
+	b=ybhk6ICSzqtwXRIPeCUq2GeOH2zPs/zgQ09npqJp45jAC+k0mTG32ySk53Ct2Om4kJQ9Cw
+	h3Hsscs9YmQAXABIjU+FFk8jMGNSH/uFXpo42mUn0CJ5H0RES1x9CaeB6nJxoEJLUXfeQR
+	z45bo6KDXNhEw+5s8Z6OVJUWLoIXasY=
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-47f703a9d05so1265630f8f.0
+        for <linux-mm@kvack.org>; Sat, 15 Aug 2026 03:45:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1786790754; x=1787395554; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+i8sSuNGd6mmLHE2UfzLIflavVjmbyhwZK+DDdZURwg=;
+        b=HcmZKoJ2xZQWoS4S52SQUrXxrsIojum1PROgOd524krur5hLLTv8uF/QZwZirmgjMd
+         Cwj4RnuMTHmvtX0eoroEJRUAUeLARmbqbD+YCmqpeSs5rViDamxYonI/Yboj+543dP8+
+         TEyfAg9XsTdp6XHvIE1237yNcwd0yzXR6JED7aY+qVICA3njUhhjIT0ol5+vZHtOchdh
+         JmwOaMnXF7oAleB408MeXCCia19ySiyqyiBaSxNma0JJZcgK0GSecLPwFHujl6AxCAmh
+         hrNikmweXMdKMQPEYgvnEa+JD/Way8W0eSRPHPiB2gz6M+aKBQUEuhnr4pjDhlEI2OFY
+         oBcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786790754; x=1787395554;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+i8sSuNGd6mmLHE2UfzLIflavVjmbyhwZK+DDdZURwg=;
+        b=p3OK+0mMl4WnmWOpiqxU1tHxzk0dOsZvSqR2Yvg+0zbRNRcWodYQ15pgmlqAkwQU5L
+         TV/A1K743ei0U/IOjL1GjQOjhZWmCMCOY62sS7DGtmc49vAi6lvw+tkfzpTVwENnAP/I
+         glUtbtL5cNs/Jo4+k7qnqx6m7Jd7XQ7aA++j8/sf9cGmertLsAbP5UWKuhRhi9aS98lZ
+         8Pf1LCVpYcLBeTAZzf2tnNhrJon2N1v6jh2RDRVXMTz42pQGhgjMvBrd7ClU7wAxUSMc
+         4iyM13ZubBkR5/8qxyHHEfgSz4fw2itbl29EI8OzvK8rBjRzxfALQEHq5KLhDK2Nc1Dx
+         iTyQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr1dF7umKUWFfC75PbjI0l2+wOls8JREs7jd4EXI8NL3JfYi+0sgfJeY66NZSqvtaYuktbPj9zb8g==@kvack.org
+X-Gm-Message-State: AOJu0YyDzci04XckelSi/nhURcsgGpkmpfZq9rj0JDQkCMB0EdZ03xHF
+	JgAOgPc2pmRHCTmCiTwOhoAf0UgEFU8rbJDuUS3fg6luhe03RkR9AknDT0O80LjFiNQ=
+X-Gm-Gg: AR+sD104vPATD5VFCJ/yEaMvnfHPnxsC6A4OVN26YMAyN3QNQ1I4tqg2yXQcEp3Qvtu
+	ad1s6ZC47opw8r+tx08xKLOwDrTDxGdKWQpyYs4ZfKM7a/J7RyBPywU/9fFrgKignN1OMhYTDaY
+	jVnGdQqhTplqF8Dkl/RgmbyHwXWCqOnl046sLb7+yMnEWTm5nt/UOmd0J+WmPfn7QMHOBB7YlX7
+	NJGPOasad0OqgpMYGkBPX1OuICnNNEBGH0Vw5eFSP9VetAEKeXu8EDNXgvZ4zWi8xCG3mDraY1C
+	KiqPZlWO9q3bn4wlETtVlvLbdrmBFMFmXLbQnaUWxfTzsQH/b9y6Oc4AhXmjTCmeUcb6axTC4op
+	KDsJLbT2BdhMPc8veWlsNaYe3ILxuDyM14Z6suM8qk0ubZTuIly4pyIKNMXuUKe2sx47YDnlo2j
+	Ye2yG7AJ/SiH2Tscvn240DjLHNp9QRKu7kvTbizYeqjLyPzc95BubqosIRHJvRg4aDtz/x07yiM
+	FCsCjnt8Zp6Ez0b9wqHWG+e
+X-Received: by 2002:a05:6000:29c2:b0:481:44e5:160c with SMTP id ffacd0b85a97d-48160723ca6mr13951544f8f.2.1786790754104;
+        Sat, 15 Aug 2026 03:45:54 -0700 (PDT)
+Received: from ?IPV6:2a07:de40:8100:0:fc6c:f9a2:4a0a:6354? ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f2ccc00sm15346737f8f.35.2026.08.15.03.45.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 15 Aug 2026 03:45:53 -0700 (PDT)
+Message-ID: <143a37b5-93a2-4038-8be9-29e13263e743@suse.com>
+Date: Sat, 15 Aug 2026 12:45:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/2] alloc_tag: fix undetected compressed tag overflow
+ when profiling is disabled
+To: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
+ linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org
+References: <20260812054105.102637-1-hao.ge@linux.dev>
+ <20260812054105.102637-3-hao.ge@linux.dev>
+ <CAJuCfpFvdNFdsKdK2CdF2fNp8gbNgFpoeAiaqp70mpbNGCvk3g@mail.gmail.com>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <CAJuCfpFvdNFdsKdK2CdF2fNp8gbNgFpoeAiaqp70mpbNGCvk3g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AFB94A0003
+X-Stat-Signature: h4d3wczd8k596icbsx8wkm8rcnyepcpi
 X-Rspam-User: 
-X-Stat-Signature: nsads4ui6yaognk6yjigqgpsyo5gpb97
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E5A5140003
-X-HE-Tag: 1786790644-852372
-X-HE-Meta: U2FsdGVkX191b9mtgLN4D7JXxFGq/4yUUvKvS8WRmVWSWbpY7lTI1trBGXyuHIVR0VYc+T6i3svAksx5GENDVzt57VTHFv41/f2UvPUgEdeQ/9Weu/3/GXc5nn3IVGV2bgLDS5SZF4L4/sQpFpLNyjeyDRqwFoGIr1Hi69rpWioUSKwWSDRKyWceT9tZMsPUCBmAzQTUfU4dJ+HVGG0biFPaJwOL0+D2sYQ2EY1eLGS4oSNzxz9PDp7yMQ/8WbMAOsNPw3PzPnQuX+wM8iypiC5FR6WcnOAL/NIZdtmGTrBAd0agMkKvcSVB0DmjlEpLbb+La88+k8WUkxQXRTJzu8ljnzjlqAPuUUaVk+fvrsxyDjR8bhFdANCcpC47eKsy1KC/q9eIdXqkkpr/Ft7z2VJjzsMp6htn3Nd934U8BBqRt/9nUXT1Xr7Ea2vkMCwLcuN1u9aE/HNeNFTsW5Y7uavV2KCDb/Vol+l22XTUB3CNER0/vxJQPNX/rbI/JlMJyi3ZEaVgCudRQ9SQ1tn5y+OcgdXqN0UZBuUM/BCrrA2f4P0pyHKrZiuVWY/KEZAAmctgtxXYk0P4Wl+VkBXpLq64BQ3RqhePHi29uFETqCkSbpQjV86qUO8E3h3krAZJH1ZFsSfzbPVy05DwJL6TdtKXwtXaK1QaP+A9NOjO7yuX2ziSPEBGOQFwYxq/GXxWOKWjL4nRKJ2/euzKktA4w3hCo9/bXq3YX08j4mR/hyPkhtYALs9kmfFua+e0uZii1ho28qPM8q5ZmQCkaMxtaue4QLED1Y8gVlDBHzx1vLsCKiQBuzWeiSRlkMMpZ7bJUxTjBROmwaFdu++oGQ4UlkhQUSgje+uFPCNDklRPjXrFerX/c/PODaezJ4Bvpg5DkZ0S+BFzqEcyrti3LAgcWbr4UYdanoqR+f8Yu2Ox2vStGuJLhKw6Tmkc+zOmavAMpuUt5s91kAf0GAEoUg4
- zWcpxkbg
- aJN6UixZ6L57nxXwS249+AksLeqxZUw56wXRlmi9X9krcbFAcXwFY4r0Y1Tia7mryKobB21dNKf/7o7kgXC+j10RmMPdgMX1mMpdc8K2aS22NgFoN1g/1plc+bEy58RaxUS7CuN2aGGXil5Uc4YEpnvI8oQScQpN749hoj1apApy2yV2n372Q8fO0R5axG7YzUv1giU7ahHEk6m1JYBLGJUpu0tqI3OAO4vw4k+C/UgkbEvLIKC9dVhL4ukHYXF+xWfK7
+X-HE-Tag: 1786790755-793395
+X-HE-Meta: U2FsdGVkX192sKBGPz8iTlyJXHWnewdZhRx7/iQHY5zBws1Lixx38EqQ3jh2f2Jnm2rdyh7rm4UOfALYLomTgT2uwmEU9eRa3CodzzlTWewyAb4shl0xSYtzjEPw3Q5O/SjfVP74jK0vN/TIMJmu6hAv11BGfaUvkjAUxq5wvDAN3bce8eZ0+ZBUG98eAkO2RKPG37dqTMfmY+4QZ6SUe9goQR8G+G0P7xzvBI60MdjDcWNwgo4BzEUkygIT4wBfKqbL7b/ysM5X31BixhEHCAKvxbWrfLooao8fXrnZs3clcmlEc7Esm4RBl0uuS40n6DRjxwOXI5gnOv58tMXx7X82b5nlPb0NLkoTIgcR5/8G779e0KRbBSYqVytKJznrzXy98squKe8xb6US43rXKLy/BXqDjhG0o3N64OMSkPCo/I/Xfiwcen/ZY+11oeqBJz2OJtdDTjtkc8QaWRN2gVZ9pwsi/QHRlaRLOVGqZQHgYmjUcVi/tsezkdLgU7XHTyCvQ3/lcFWK7MTjIjO+xQYM4RdWBBEtIneLCXizm1g59roGNJKv/W4ibukEa31UWLaZZhMf+dwxycM1w50iZTXniTGLFn7ga0liWPviWjEZoxcDMU2BpmDTOdlhG7MqP0wgfMcqBim9mNQygPgwgUAnJu9kmHssTlHcT18gzKSMyry8PY0Odge1tVVRKBLjcxNpF4F5+hzMlayCqNYdNFHlCWZ9tusRvggcuLgEEB7pEDmYRFPMMcrDGY3mFLvnZcKmvl1hyxz3DFC1fW/OWwNvIsq3jz1i9MarLTAFiGvEWkldY4ct02eGj/UZnpynaSguzsUbVw0pVQqU0S4y33Zeq/V41uskewCKojD8DnwXiqNiDTcOEBmnkqUNspk/7AA/WMiXSHCksCpvekTWzIo7NWythkE7+SciY9v2Z8m7uq4QNz9GReBKuwZEqD4CYFNfowgDLsW+m8EmQsk
+ F9L4Gz7K
+ br4ktRgvMDmQCmYTOGdVLQBNsVQfv6D/aMizjTa6mcOl6F8xxyuF94DOFFPYzwi4mujUoEic8VHFFSSEhFPZUxGmcVrDosNPGHXYB/u4ZMeSxgymUhWIgqHwkwDhtDlVfCwJpJ5iUCaxSE0LwXZ30pZ+w1FvoDOcEWiGeyt76kBzy52iWaxbDHAYalwsA+64wUcxlpAbx/YiYVe/Cc6+A5d/RRpEBD4q5lgmjpSY+sc5r+vDkFEuxdyElmP1TWTHH+r3JN0/ZTh63yahY2/Y5JTsGeVLrIyL2uv600XMtYxrFd/eX/ZckTBI4HHV6CzcNb8yD6WlPsKHchmRW37b2tG8bmLJI4R6g/a9t4wAiglJ+mc9YZB+avhHabocOqRX/rzDhp/ii6SitTLDjz0mrq92zqYimLTw9DhueQSdTyDqbFFQYbFKyYWIkGDo5zGbRaVN7O1xvZqvFi54=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,228 +129,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 12 2026, Sean Christopherson wrote:
+On 8/12/26 7:41 AM, Hao Ge wrote:
+> In reserve_module_tags(), the tag overflow check is gated on
+> mem_alloc_profiling_enabled():
+> 
+>     if (mem_alloc_profiling_enabled() && !tags_addressable())
+> 
+> If profiling is toggled off at runtime and a module is loaded whose
+> tags exceed the compressed-mode limit, shutdown_mem_profiling() is
+> skipped. vm_module_tags_populate() still maps memory for the tags and
+> the module loads successfully, but the total tag count now exceeds what
+> NR_UNUSED_PAGEFLAG_BITS can address.
+> 
+> Once profiling is re-enabled, ref_to_idx() computes each tag's index
+> as its position in the alloc_tag array. update_page_tag_ref() masks
+> it to alloc_tag_ref_mask before storing in page->flags. Indices
+> beyond the mask are truncated and idx_to_ref() resolves them to wrong
+> tags.
+> 
+> This silently corrupts /proc/allocinfo: allocated pages get attributed
+> to the wrong call sites, so the statistics it reports are wrong.
+> 
+> mem_alloc_profiling_enabled() and mem_profiling_compressed are
+> independent. Once compressed mode is established at boot, it stays
+> active regardless of runtime toggles of mem_profiling.
+> 
+> Remove the mem_alloc_profiling_enabled() guard. On overflow, shut down
+> profiling, release the reservation, and return -EAGAIN so that
+> layout_and_allocate() retries with profiling disabled: codetag sections
+> are then placed as regular module data and the module loads without
+> profiling rather than being rejected entirely.
 
-> On Wed, Aug 12, 2026, Pratyush Yadav wrote:
->> On Tue, Aug 11 2026, Sean Christopherson wrote:
-[...]
-> But that's all beside the point.  What I'm saying is that SNP and TDX *must* use
-> guest_memfd, whereas guest_memfd is optional for all other VM types.  And so adding
-> LUO support for guest_memfd without even sketching out a plan for CoCo VMs feels
-> backwards.
->
-> I'm not necessarily opposed to gradual guest_memfd support, but there needs to be
-> a clear plan of how all of this is going to fit together.  It doesn't need to be
-> perfect, and I'm sure we'll make mistakes along the way, but I want to at least
-> try not to paint ourselves into a corner, especially with respect to the ABI.
+When the described overflow occurs, why should codetag sections be
+placed as regular module data? Will the codetag support use them in any
+way, or do they simply waste space? Is the issue that alloc_hooks()
+creates relocations pointing into .codetag.alloc_tags?
 
-Right. I think landing shared guest_memfd is the first step. It is
-simple enough and doesn't need to preserve the more complicated
-architecture specific things like secure EPT, etc. The CoCo support
-can build on top of this.
+> 
+> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Suren Baghdasaryan <surenb@google.com>
+> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+> ---
+>  kernel/module/main.c | 25 +++++++++++++++++++++++--
+>  mm/alloc_tag.c       |  8 +++++---
+>  2 files changed, 28 insertions(+), 5 deletions(-)
+> 
+> diff --git a/kernel/module/main.c b/kernel/module/main.c
+> index 46dd8d25a605..ed26f167be84 100644
+> --- a/kernel/module/main.c
+> +++ b/kernel/module/main.c
+> @@ -2944,6 +2944,7 @@ static struct module *layout_and_allocate(struct load_info *info, int flags)
+>  {
+>  	struct module *mod;
+>  	int err;
+> +	unsigned long frob_size[MOD_MEM_NUM_TYPES];
 
-There is work underway already for an RFC of TDX live update, but Tarun
-knows the details better than me so I'll let him fill in the details for
-the next version of this series.
+frob_size is used to store values of module_memory::size, which has type
+`unsigned int`. The types should match.
 
->
->> >> > E.g. the LUO APIs seem pretty straightforward; I assume the bulk of the complexity
->> >> > is going to be in knowing what to save/restore, and how, which is much more about
->> >> > KVM than it is about liveupdate.
->> >> 
->> >> I think it is fine if you want to take these changes through the KVM
->> >> tree, but I would like live update maintainers to be listed as reviewers
->> >> at least.
->> >
->> > Why not simply add a file pattern match to the LIVE UPDATE entry?
->> >
->> > diff --git MAINTAINERS MAINTAINERS
->> > index 8014b9f8253e..2eb57b22c37f 100644
->> > --- MAINTAINERS
->> > +++ MAINTAINERS
->> > @@ -15052,8 +15052,8 @@ F:      include/linux/liveupdate.h
->> >  F:     include/uapi/linux/liveupdate.h
->> >  F:     kernel/liveupdate/
->> >  F:     lib/tests/liveupdate.c
->> > -F:     mm/memfd_luo.c
->> >  F:     tools/testing/selftests/liveupdate/
->> > +N:     [^a-z]luo
->> >  
->> >  LLC (802.2)
->> >  L:     netdev@vger.kernel.org
->> 
->> This would list us as maintainers of kvm_luo.c and the tree as liveupdate.git, 
->
-> It would list both "LIVE UPDATE" and "KERNEL VIRTUAL MACHINE (KVM)", as KVM would
-> still cover the files via "F:	virt/kvm/*".  And my read of MAINTAINERS is that
-> N: and K: entries are "secondary" if the files/scope is covered by an F: entry.
->
-> E.g. arch/x86/kvm/vmx/tdx.c is covered by "KERNEL VIRTUAL MACHINE FOR X86 (KVM/x86)"
-> via "F:	arch/x86/kvm/*/", and also by "X86 TRUST DOMAIN EXTENSIONS (TDX)" via
-> "N:	tdx" (or maybe "K:	\b(tdx)"?  I haven't bothered to check which one
-> triggers).  And while I don't think there was ever any formal discussion, AFAIK
-> everyone reads the situation as KVM still being the primary maintainer/tree for
-> that code.
->
->> both of which is something you're saying you _don't_ want.
->
-> No, what I don't want is a dedicated "KVM LIVE UPDATE" entry, because I think most
-> people would read "F:     virt/kvm/kvm_luo.c" and "F:     virt/kvm/guest_memfd_luo.c"
-> as being more precise than KVM's "F:   virt/kvm/*" and thus would read things as
-> "KVM LIVE UPDATE" being the primary maintainer.
->
-> In other words, I'm more than ok with LUO being looped in on KVM LUO changes and
-> having the authority to object to problematic changes, but I'm not ok with LUO
-> taking primary ownership of KVM code.
+>  
+>  	/* Allow arches to frob section contents and sizes.  */
+>  	err = module_frob_arch_sections(info->hdr, info->sechdrs,
+> @@ -2966,18 +2967,38 @@ static struct module *layout_and_allocate(struct load_info *info, int flags)
+>  	 */
+>  	module_mark_ro_after_init(info->hdr, info->sechdrs, info->secstrings);
+>  
+> +	/*
+> +	 * Save the sizes reserved by module_frob_arch_sections() so they can
+> +	 * be restored if we retry below.
+> +	 */
+> +	for_each_mod_mem_type(type)
+> +		frob_size[type] = info->mod->mem[type].size;
+> +
+>  	/*
+>  	 * Determine total sizes, and put offsets in sh_entsize.  For now
+>  	 * this is done generically; there doesn't appear to be any
+>  	 * special cases for the architectures.
+>  	 */
+> +retry:
+>  	layout_sections(info->mod, info);
+>  	layout_symtab(info->mod, info);
+>  
+>  	/* Allocate and move to the final place */
+>  	err = move_module(info->mod, info);
+> -	if (err)
+> -		return ERR_PTR(err);
+> +	if (err) {
+> +		if (err != -EAGAIN)
+> +			return ERR_PTR(err);
 
-Sure, that sounds good to me.
+The move_module() logic is non-trivial. -EAGAIN could be returned by
+other code, now or in the future.
 
->
-> I realize there's more than a bit of nuance in my interpretation of N: and K:,
-> but again my experience with TDX is that so long as the maintainers are aligned
-> on expectations, it's a non-issue in practice.
+> +		/*
+> +		 * -EAGAIN means profiling was disabled but the module
+> +		 * can still load without it. Reset state and retry.
+> +		 */
+> +		rewrite_section_headers(info, flags);
+> +		for_each_mod_mem_type(type)
+> +			info->mod->mem[type].size = frob_size[type];
+> +		info->sechdrs[info->index.sym].sh_flags &= ~(unsigned long)SHF_ALLOC;
+> +		info->sechdrs[info->index.str].sh_flags &= ~(unsigned long)SHF_ALLOC;
 
-Yep, as long as we agree among ourselves I don't think the red tape
-around which entry has higher priority matters much.
+Why is it necessary to reset SHF_ALLOC for .symtab and .strtab here?
 
->
->> >> At the same time, I also keep being (pleasantly)
->> >> surprised at preservation being relatively simple. For example, the code
->> >> to preserve a shmem file (via memfd) is roughly 600 lines, a big chunk
->> >> of which is comments. The code of course has some limitations, but it is
->> >> good enough for use in production.
->> >> 
->> >> For one, we care about ABI breakages and versioning. 
->> >
->> > Which is amusing to me because that implies KVM does not, and I would hazard to
->> 
->> No, it doesn't. What I'm saying is I care about changes to the _live
->> update ABI_. Just like you probably care about changes to KVM ABI but
->> not so much about BPF for example.
->> 
->> > guess that KVM has the biggest ABI surface of any subsystem in the kernel by a
->> > country mile (though I'm probably wildly underestimating the effective ABI surface
->> > of filesystems).
->> >
->> >> The serialized state is a part of live update ABI and changes to it should be
->> >> ACKed by us. 
->> >
->> > Meh, "Don't break userspace" is a universal rule in the kernel, I genuinely don't
->> > see why liveupdate needs special treatment.
->> 
->> Ironically enough, you miss my point. I'm not talking about userspace
->> ABI. We all know not to break that. I am talking about live update
->> _serialization ABI_. See the stuff under include/linux/kho/abi. This
->> series also adds things there.
->
-> No, I understand exactly what ABI you're talking about.
->
->> This is ABI between kernels. It needs to be stable-ish so you can move
->> from one kernel version to another. At the same time, unlike userspace
->> ABI, it can change.
->
-> Uh, yeah, so KVM has been managing such immutable ABI for practically its entire
-> existence.  KVM's save/restore uAPI has exactly what you're describing: serialization
-> ABI that needs to be backwards and forwards compatible between different kernels
-> in order to support both upgrade and rollback scenarios via live migration.
+> +		goto retry;
+> +	}
+>  
+>  	/* Module has been copied to its final place now: return it. */
+>  	mod = (void *)info->sechdrs[info->index.mod].sh_addr;
 
-I think there is a slight difference between KVM's save/resture uAPI and
-live update's ABI. With KVM's uAPI, you need to maintain strict
-backwards compatibility because userspace reads what you output. So if
-you change the layout, userspace will interpret it wrong and might
-break.
+I'm not sure this is the best approach. It's complex logic for what
+appears to be an edge case related to a debugging facility. It will have
+the usual problem of error paths not getting enough testing and breaking
+subtly over time.
 
-With live update, the ABI never gets to userspace. It is used to talk
-between kernels directly. So if you do break that, your userspace keeps
-working fine, you just might not be able to live update to the
-incompatible kernel.
+An alternative could be to reset SHF_ALLOC on the codetag section to
+remove it from further processing and have relocations that point to
+this section resolve to something else. It seems that alloc_hooks_tag()
+could tolerate this, since it only needs to reference the associated
+alloc_tag when mem_alloc_profiling_enabled() is true and that gets
+disabled by reserve_module_tags() on the overflow.
 
-So with live update, we don't need to keep backwards compatibility in
-the ABI forever. Of course, it is good to minimize changes, but we have
-more freedom to change it.
-
-The current idea is we change the ABI whenever needed. This is because
-live update is still in development so we are likely to see a lot more
-changes before we settle down into something that mostly works. At some
-point, we want to start being more strict between incompatible ABI
-changes. The current idea is that we would like to keep backwards
-compatibility across LTS kernels. But none of that is set in stone yet.
-
-That's why I would like to have an explicit ACK from the live update
-group for ABI changes. I would like to enforce these compatibility
-windows.
-
->
-> KVM also has immutable ABI between itself and guest kernels, including implicit
-> "ABI" in the form of not changing guest-visible behavior.
->
->> Today we don't have any rules and let you change things freely as long as you
->> do a version bump. But at a later point, the plan is to add some stability
->> requirements to the ABI so you can actually upgrade the kernel across major
->> versions.
->> 
->> So at least for ABI changes, there should be an explicit ACK from the
->> live update group.
->
-> I don't entirely agree.  I get where you're coming from, and I 100% agree that
-> the more eyeballs on changes that may affect ABI, the better.
->
-> Where I have problems with the above is that it doesn't account for the nuances
-> of save/restore across different kernels.  The literal format of the serialized
-> data is the most obvious form of ABI, but it's absolutely possible to change ABI
-> without changing the data format.
->
-> E.g. say there's a flags field in some serialization structure, and flags X and Y
-> are mutually exclusive in current kernels.  If a future kernel relaxes that
-> restriction for whatever reason, then the effective ABI has been broken because
-> state created and saved on new kernels can't be restored on old kernels.  And
-> this is not a theoretical concern, KVM has run afoul of this a few times (though
-> thankfully very rarely).
-
-That's a bug, and should be fixed.
-
-I am talking here about intentional ABI changes. As I mentioned above we
-_can_ change the ABI, we just need to be careful about it.
-
->
-> I don't think it's reasonable to expect LUO maintainers to gain enough expertise
-> in each subsystem to be able to ensure changes are forwards and backwards
-> compatible.  The only way I see LUO being successful in the long term is to get
-> subsystem maintainers/contributors to understand *and buy-in* to the LUO model
-> and rules, so that each subsystem can largely be self-sustatining.  I.e. setting
-> yourselves up as literal gatekeepers will help prevent blatant breakage, but it's
-> less likely to help guard against more subtle breakage, and in my experience,
-> subtle breakage is by far harder to detect and more painful to deal with.
-
-Outside of enforcing the ABI compatibility windows, I think this makes
-sense.
-
-In principle at least, though from my experience the maintainer appetite
-to care about live update varies. The feeling I've got from MM for
-example is more along the lines of "you break it, you buy it". Which is
-also a valid model IMO. The person who wrote the live update code for a
-subsystem is well equipped to understand these nuances.
-
->
-> Somewhat of a side topic: in my experience, using monotonically increasing version
-> numbers is a horrible way to enumerate features/content.  So for me, allowing
-> KVM's LUO ABI to change with a verson bump is probably a non-starter.  I.e.
-> whatever gets merged needs to be more future-proof than "we'll deal with it later".
-
-As I wrote above, the compatibility model for live update allows
-breaking ABI with version bumps. Userspace keeps working fine, it only
-restricts the set of kernels that you can go to. So the "we'll deal with
-it later" is not as harmful because our choices here are not permanent.
-
-Also, there is work underway to allow transitions between versions [0].
-
-But still, I am not opposed to a more flexible guest_memfd ABI. I think
-we can reserve some space for feature flags to let us add things in the
-future.
-
-[0] https://lore.kernel.org/kexec/20260731215224.831696-1-loganodell@google.com/
+It is also not an ideal approach, but I feel it could be less intrusive
+to the module loader. I can put together a prototype if needed.
 
 -- 
-Regards,
-Pratyush Yadav
+Thanks,
+Petr
 
