@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E016C5AD5A
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 16:05:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02AC8C5AD5A
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 16:06:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D6996B07DB; Sat, 15 Aug 2026 12:05:34 -0400 (EDT)
+	id E671A6B037F; Sat, 15 Aug 2026 12:06:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AECC6B07DD; Sat, 15 Aug 2026 12:05:34 -0400 (EDT)
+	id E18416B07DD; Sat, 15 Aug 2026 12:06:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EB996B07DE; Sat, 15 Aug 2026 12:05:34 -0400 (EDT)
+	id D57976B07DF; Sat, 15 Aug 2026 12:06:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B4F06B07DB
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 12:05:34 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C79881603F9
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 16:05:33 +0000 (UTC)
-X-FDA: 85103978946.09.3168EBE
-Received: from devianza.investici.org (devianza.investici.org [198.167.222.108])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0EC9B1C0002
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 16:05:31 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=X9w8gER7;
-	spf=pass (imf18.hostedemail.com: domain of include@grrlz.net designates 198.167.222.108 as permitted sender) smtp.mailfrom=include@grrlz.net;
-	dmarc=pass (policy=reject) header.from=grrlz.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786809932;
-	b=01gAJKDV9fil6GpI3VVcJ/x5Jx+WNpVx5/YajuCaOAoxjL+t0idmqfRU87rxSclRoDvpLN
-	m3go/ulqZciQw0TIM7CC9XaDglKm8Mvvst2mF+n7iJNtSvxa1v2kGifJPkvbKkh8Hmse4m
-	mV0AhT/52oJ1/9f94kolfVKvP5TMbrI=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=X9w8gER7;
-	spf=pass (imf18.hostedemail.com: domain of include@grrlz.net designates 198.167.222.108 as permitted sender) smtp.mailfrom=include@grrlz.net;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AF3046B037F
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 12:06:04 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 380244042F
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 16:06:04 +0000 (UTC)
+X-FDA: 85103980248.14.8A844D8
+Received: from confino.investici.org (confino.investici.org [93.190.126.19])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6A5E6180009
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 16:06:02 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b=CcePYo4R;
+	spf=pass (imf24.hostedemail.com: domain of include@grrlz.net designates 93.190.126.19 as permitted sender) smtp.mailfrom=include@grrlz.net;
 	dmarc=pass (policy=reject) header.from=grrlz.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786809932;
+	s=arc-20220608; t=1786809962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=C/2w3Fzs1DPhm/TJwzhpkL8Eiva07UXknvWOLY4BdGk=;
-	b=bDd7inpYER0nON1oLbNZJRm9sQi5sDCIji/CKB3rdP1Ma5P4CGEyZ6+KuAPXWD4F5741S6
-	QIyhPlu9kmeCvtQwTBcxB6Q6fY7OfqPmxMJ4baJ9EMmhJfqnkjl3Nkvvm2U2m1LL+vMRFo
-	RsjlqnC5h6bAQg5tCRnsYQgd4UEWO7s=
+	bh=5WQm4FOrSKWLlpnxV/luviAmOHGf4ebZ2NYMpvK6LrU=;
+	b=Lrsi4eHhCKB42/So/0q19HHxtPpYfWrnnGsQ3dfBxhMCojeD/0Lx2Pl8uKlGSVWbCBvETJ
+	xsPqf3U8mI5QKTrDxOG9DU87LcN8eoEJQOT6235wePuxugevvjNAUF6trL03yZst6YP3Km
+	8KyhTdu2FbuaUmeNSI1xuESfveaa8q0=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b=CcePYo4R;
+	spf=pass (imf24.hostedemail.com: domain of include@grrlz.net designates 93.190.126.19 as permitted sender) smtp.mailfrom=include@grrlz.net;
+	dmarc=pass (policy=reject) header.from=grrlz.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786809962;
+	b=J4V8NvyHDvVe/j12hjd5WBgDYqtPYAMH4QxVLN/TxHruXE/82aOea4MfDAasVuEpSv0rVf
+	uZVi6Zb7JPckK77Y4Rw7JwKdOUX0JhcQ6/1bTUHOCAlrQTnsmJ7t7t4lqFxg6MlgWZOYqo
+	od1UV3qPvSh4g97vjugAHCPMQj0T5vU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
-	s=stigmate; t=1786809928;
-	bh=C/2w3Fzs1DPhm/TJwzhpkL8Eiva07UXknvWOLY4BdGk=;
+	s=stigmate; t=1786809960;
+	bh=5WQm4FOrSKWLlpnxV/luviAmOHGf4ebZ2NYMpvK6LrU=;
 	h=Date:From:To:CC:Subject:In-Reply-To:From;
-	b=X9w8gER7OPQlnLdr12Ir6s+Ri74wI4h5Zz3/VwM2A5ifbB3VahEljU8lDBV0zr4Qw
-	 dtADfdcl1m+rLYCvvJ/mcRt38ancNsWyKg/A+6RWnjnEYuQycknz1pg8gA9uBI9/g8
-	 +FTyAukfHIf5Y6l+GGa8BSfQDZKAdCttljj73y/0=
-Received: from mx2.investici.org (unknown [127.0.0.1])
-	by devianza.investici.org (Postfix) with ESMTP id 4hMkTN6hwzz6vKd;
-	Sat, 15 Aug 2026 16:05:28 +0000 (UTC)
-Received: by mx2.investici.org (Postfix) id 4hMkTN39jLz4y6W;
-	Sat, 15 Aug 2026 16:05:28 +0000 (UTC)
-Date: Sat, 15 Aug 2026 17:05:26 +0100
+	b=CcePYo4RSbzzdbeEAv7fwt9PVJLoZVRTCNV37C7615ZhE8ZQbjvvTGcR10vdpStJM
+	 d2i0ajFa3ztqTRcLTYQguz/2w9H2xHWuHgpIwYT6ZGTuceJ4O4OxZdeUD+eVeypMWv
+	 GD+aHVsPkx7LhECOXmJrcUS5XIkUOW2CWYwq25Nk=
+Received: from mx1.investici.org (unknown [127.0.0.1])
+	by confino.investici.org (Postfix) with ESMTP id 4hMkV06bzlz10s3;
+	Sat, 15 Aug 2026 16:06:00 +0000 (UTC)
+Received: by mx1.investici.org (Postfix) id 4hMkV03P6Vz10qy;
+	Sat, 15 Aug 2026 16:06:00 +0000 (UTC)
+Date: Sat, 15 Aug 2026 17:05:59 +0100
 From: Bradley Morgan <include@grrlz.net>
 To: joel.granados@kernel.org
 CC: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com,
@@ -69,22 +69,21 @@ CC: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com,
  shijianlin11@foxmail.com, shuah@kernel.org, surenb@google.com,
  vbabka@kernel.org, ziy@nvidia.com
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_3/4=5D_sysctl=3A_Disallow_part?=
- =?US-ASCII?Q?ial_updates_for_erroneous_sysctl_vectors?=
-In-Reply-To: <20260814-lklm-partial_ctlvec-v2-3-9df50d26e477@kernel.org>
-Message-ID: <3A4FCA2B-2F42-4E8F-A328-5C1BD658B2A8@grrlz.net>
+Subject: Re: [PATCH v2 4/4] sysctl: Add 0013 to test partially updated vectors
+In-Reply-To: <20260814-lklm-partial_ctlvec-v2-4-9df50d26e477@kernel.org>
+Message-ID: <1EF80864-F479-44F2-8CD7-28383515F483@grrlz.net>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: pwiq733n5uzwtqhquiuxh3z31t5eafnh
+X-Rspamd-Queue-Id: 6A5E6180009
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0EC9B1C0002
-X-Stat-Signature: q8tq1xissyedh8yeqn1zigiwnrraqum5
-X-HE-Tag: 1786809931-348293
-X-HE-Meta: U2FsdGVkX18ygx0hMKM4DtM/Tn172T46Fe++ObEX3gyo0CG0snBPEUA8W7M5mXif2soAFb4Eb6T2bGENAV63+qiPvTusheOjQRxIbbe26HsvXjH3xLYGe9vOOnfBBR5Tz4sdtlhqCXxAioye88F5zOxIh8+5+peaEJgKTs0f7cGQHhwTcg1ACHa//TqEr4AXt+5uHuOnY51fPbVMkjj69MMiySfysVTVV2etO17QOCyePiCBtjy/GYFp8HDh1192BgsI7do+avsy0bvj53Bp/1ARbdDmBBM1gC0pP/QKgbGGAxxwSsTqb/pJov7eypcJXYzKZZ4aSEWhYogWppocw4jBjWH/Z0UsDYhmR+hj+TyqSzEU7MxfD7pgitERD6/WXAl4HZBWTbbS0bZy8lbiH7sl14xKlOjDwFiv/AnAA6Ybzo8NE5tg4081Ll5BWLVYZ/p8Qi1EoJjZi/vT5+VAhiHi7XqyD5JzqgU+FS6s/WXTRv8KlNbt/5CrIqTtYHakXSJVTcAoyA4vsCsD3mOwQadUStOFQFVfgP5jJeqt6X1ntEv34xvFU63/Uy0LkdpShkEpw2UtI2IpxEf4y8efekVPfi3PHzQvjGNLcrwOLN+AlKHyfNp+0NI0SiABjpAV9bAMnO5RyS6g6ytN8McaMi25ECpJkpZIdNtw9jmUnHDQWKhLh3qRro2hQteiKArqLsx+Li6rbURyZd36WBSGft+BpMC0eWzYP7EW1L+SuvuBP5gummD1oAVuXunoam/+jYj/ABopXlFDfLjGIJ6MEWtjV4GxqLN5heuyOrs2bNQhIc+D+CxI5BKjdZd2r+1JUTaXkaOjo09J11/VoP0Icben77JPjZEh8LhKUFB4i7SHHdb1IRkZ1jvoSfgeINbVupxIDZ+9nYBcwc49L0WQFDAG8O6r9iYCQRP/yVaIJ6ttcZyIcNHRwSiSvv7vq2LW8WGYAfjd//SdWmJJHd8
- TmNcb89V
- sKrnwdE1DHv3rU3wDfG1aNzculMbcmgV6tPkVHH0yQ6FHQCI9nZvQ/Wt8+prwyXZLAdOXefZ3IqY/6BR7WOyjPSuCj5CQGJFCzotEAoKtUzUnYUE6gsZO5kF/UfdJuOun6k0tfuiDt5qReoc3J1tM2xomuIqtj4HR87ImjCW+Pc7C3zvDJXQ+DXR5fMLat9tS2vJChT9wIx7uaGXSJhDWkSO2m4ZuXwaJ8k+vV+EvFJFPm9Kd6ukqJb6wPuE1bCpwjx3fOvUGqXzsJo41WJbrDLSCfsqNzAlUOE1UL/eFd5qyE1F8w/02QiI66FiuUHOIKKSXKe6q7LDkAU1J3UNvbNpCCJZLMAtYgFbKnJr/y0MYs8ExQdQe/GFksxXIXIw+8SXo0Gf4BKsNfLvAph0FYnCjSKBcNp8duUhX
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786809962-517674
+X-HE-Meta: U2FsdGVkX1+QUgjfgOV/vQn/OdeMzzQQPvmCD0k+gFCadyV8pZdPc0xH221T3VF4o0J16aQTAaOXv0F0x+fZHFd9HNVDE+Z/HehnWhXw6Jd6VGXhYbPUuuK2w/VHXaz9aMMpQvFn0+1dqsrQV8M2cvkdcv/0EAm9WNzsxoaB8ZWvi5l4pGh+shKsGHjvbrmV85yU67KzMwAlGMlhl9fBAFR6LAHCa2NcWOvlXQfMHzYHUqMPfTPm9S9QzO3uP9osvUc7oiP8IH74L9DKHTd5ixa/fsoMWSBFri6JCejB0BhU+ER8OT7/UrLwxHP4Fp/rEVfLfQM3wcEHHU97BsFDrJfnwE+GK79EQ73TLI4AYuls50gIVNyzbBWJHR6gq7K34OiNHAXzpJsQ6JWnq3fDplIDBhqQ4sSKMp4k+zP1KBN4/D3N4gtbKXU2hrItNxlORx5cZtyX6yvX5in+P0uo10RXqVF7Ov44i9bf4Iecl/CWRtSe8RkUibfQ3Sy4aS4TNQWDup47cw8QKzYbx07JrBYzdXUIzcdtCP4z/0S6DIFAak67P0F2r7Wc2gAm7EexeeyXT72Pf8INg+dosj8OTKgzr4DTGtfyPY+F1B7vA2vwXE64p1QaUw+9FF9F/yUUF7lFyQX+Pf6S8u9LKLOAkNKc8oDxRzan5fUIGOitcrkanvwE8K2vCvlw7xNZsSa9pOuvGqYiOWZjsTEw/QhuNvtJ4E+Z6zENefDlpmQTiYDq0cyBbdGNFZUr58yHdUpKbuX1GyA4AgyQyXtJrKPsjSSsgYvKJyOe1tfZ56oy5ge5hTXRYdK6yN2+9q9xKnkVp4Ako+r0q43XV+MrKKMbqn/4CQBamIra6BvVxrrPNft/WB58lElIlbtpBFZBbYAxDtoKyVTXR0VG/wE/7qM4Xm6R3CPQHJFfIPTnKuG1Mq752oSrL7EyH0WpLADXlr41Z0d61HPqcTeU9eXMYBU
+ MNLxS+Xm
+ +syk5kYNSfk/cYaYEkVY/ndpQwJa5+hOGC8hPT5hrf8UALYBC8MwZdDzwj3ZLUUYKabKSnhJWZpPNA+xrK+9X4Q3DKYj4a8sZYP/8IFDRQFwpql9g99q823m+H+mVDj1XfIF29IDofD7UDvnUSQiN+uobIWBfxcCeN3CyApt+gK0c5afbLKRWgrgIIDCiULeU8qRRRAt6JAHKgj3MyuNNWgs7CUGIKCFP3Q0/2Gtp1GU/BmOV9ARRF7cWawmyT5udtj1Sj4KAITXTS9ESQ8x9Tjyh1FJwiukGmTPPVRaSD/9aZdDaqcLzwy1YzxajQmW1B40YidIEiXaQLwozWE8SqnKc6uyeQeEmlPBe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,15 +91,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-commit_conv_vec() writes the elements one by one, so a reader can
-still see a mix of old and new values while the loop runs. Same as
-before this series, so no regression, but the changelog could say
-this doesn't make the write atomic either. Otherwise someone later
-will expect the vector to change all at once.
+The test covers the parse error, the out of range value and the
+first value failing. That's the right coverage.
 
-The copy is limited by table->maxlen and only vectors pay for it.
+The shellcheck disable should say why. The test functions are only
+called through the dispatch string, so shellcheck thinks they are
+unreachable.
 
-Fine by me.
+run_int_array_no_partial_update() uses spaces for its comment lines
+while the code uses tabs.
+
+reset_vals() has no case for int_0003, so sysctl_test_0013 calls it
+for nothing. Drop the call or add a case for int_0003.
+
+Nits aside, the test does what it should:
 
 Reviewed-by: Bradley Morgan <include@grrlz.net>
 Thanks!
