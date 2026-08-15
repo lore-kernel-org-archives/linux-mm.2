@@ -4,137 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04D36C5AD5A
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 03:38:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF45CC5AD5A
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 03:40:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 92AEF6B032F; Fri, 14 Aug 2026 23:38:19 -0400 (EDT)
+	id B7AA46B077A; Fri, 14 Aug 2026 23:40:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8ADC56B0334; Fri, 14 Aug 2026 23:38:19 -0400 (EDT)
+	id B24496B077B; Fri, 14 Aug 2026 23:40:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74E386B0335; Fri, 14 Aug 2026 23:38:19 -0400 (EDT)
+	id A13616B077C; Fri, 14 Aug 2026 23:40:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 329776B032F
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 23:38:19 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 702E11A01FF
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 03:38:18 +0000 (UTC)
-X-FDA: 85102095876.12.6B1857D
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 857E2C0004
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 03:38:16 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=osE4APB7;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 715CC6B077A
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 23:40:56 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 095DB1C0E0C
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 03:40:56 +0000 (UTC)
+X-FDA: 85102102512.02.FA22972
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 15331100002
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 03:40:53 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=fxhXXYGS;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf28.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com
+	spf=pass (imf14.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786765096;
+	s=arc-20220608; t=1786765254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=luVYJYWQOB0XY/tTpneISfB+TB1fZM2KMGuLqcIZEDI=;
-	b=avidigBMlCrpoZlY7tIDbJz0Mm5PtCmV9oKy56pHoZVrCfjzQRJF1NP5t0ZhYciMqmumri
-	+vgPL/iAr/NZZ3tVoG5FRgGPgS7vLcjQBd4fRhRyNeieTP1u0Q+wWrdVl1F5SvRnEYOdZX
-	SJbrs0Hva1p0rFBcgdV69l+cqReeUrs=
+	bh=vkBjXZgfE9QuZPVA0q0zgHjLQlsV7v8f9ZdsGtdUY+w=;
+	b=yyDb1vMuvxwsKvvWLJr4u40IiHdbJyStHLzzJXE4D9AetwfPytrxDgjq0IbSwX5tW+BO8n
+	L7P68wF+7lvML9FXGEDJElnuZFolh0O4+ZWwv26S0CoezxmQF/7zVIU/U8ZuxqqxtAE8aL
+	oJ8XLAbTLl0vPIzsKM2AM8B//nsJxug=
 ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=osE4APB7;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=fxhXXYGS;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf28.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com
+	spf=pass (imf14.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786765096;
-	b=y2Ptq4UZK4nlXe9JqxtCjky0gPK4hUdrmfFsq/3LAHRpopdnHs510bormMepPPxvKSQo1K
-	E61Lzv3yJb5fi8SSHWNLgjouzyleFkYWRijsZLVK68nt9AnszBgs24u7G8sTSKjsTMMVuH
-	BUnnHiodYObDaqfKYB3pM8WfX1ynSu8=
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-51c10e86e52so378421cf.1
-        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 20:38:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786765095; cv=none;
+	t=1786765254;
+	b=nOIM9cioPNqhOA7J7Tki9oL8l7+ixWKwhJrgNV5McWlNsLF6OAP5Bkf8us8lrPXV5dz/i6
+	QVZ3xWZ7U6MSaBx+wAH51QhM9O3kTxjT+5fwN4FjSVlTjEPowqzYEfJlewfP7XPv2a4ouA
+	0wu45Cmfo7bqevVBbIr2zC+JVoNpLak=
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-51c10e86e52so378541cf.1
+        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 20:40:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786765253; cv=none;
         d=google.com; s=arc-20260327;
-        b=F44Dmo2TzySXHrvWwG2O8qKO1J3Xcft0M5z77bQVgsht0HhsKF8de1GmNgs7r7DiKz
-         ZEMyazsIFKprqhkSLLCrujz8MTvUpm4PEuRWWrLWOfihVwdCwqkFaBpjOTk35FXnOvn8
-         taNDgzlDmq2j3a+agjTNljdVnRD9A5dS07KgELWuOQupyVe1k1p1351fv4WgCjEMoKdm
-         a0inKAOHL8uVRGynyKld8QG/HuCxrZo5DTIoaiYmds7/OMgKfL2wBuSiVnl4z7+mYbRi
-         LukolCp3a1uLsYS8J0j/vmttQL3qL8WOcfgSofWlCGR0kW60cfGO2dBzo0HFZaHYBCp1
-         YmzA==
+        b=rzPzzdLBmQKhw9zvUmN68FnZcdzb9EvBeI+mYhXL/pVSzQGCYXX+/TjXvz7jYejIq4
+         of3UuN+alpg0iotlfUT05KK094rzd6k+3hO9n+2cRPYScx1lHTbACE8O7CpXXf6k9vDw
+         l93NqL8VmsiVJiF6XmC89OnnHkiCDkI9M/hBATzuVjContW81HD28aU0dFNy2nbpwCHV
+         ZzKg2MKhZDdcgjdel2e6z91mSNQ/NS7uY7nx4zEFvQbUQwP3Rc4HwLEk2RSqBLMEvLJq
+         gN/0e3PDqVurzI6XuAjjWwA/s/Bjf0s28Gdo9+w+FOjXWw1OCvIxMkZ7RlJaeU/5xd86
+         I2zw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=luVYJYWQOB0XY/tTpneISfB+TB1fZM2KMGuLqcIZEDI=;
-        fh=r8J5esiCuBetDq9HLoADkNvVrQr+mKqr8t234LO84j0=;
-        b=IN7CQLQRy2Vb2gUWXFTYUMkcuA+OjxQWrRuGyg6gMvjiC7NgOG1mTE+qP8iIqeHyBh
-         DWbjgCqNeckNI2uT8bFv4cotJAat4Eo71hNLEHYzWAgdr2CyHiCZi+wVpIpUwlehq/uN
-         WPGls/EWiuJFx9lv8d/OjBoT/xE8YdIlj31rB14tnrqMLhWXlqr8yLkXmpnGAZ2Fphfp
-         yUrClm0rFHKfbxaFaEEFQNIZi4zqhwRHKfG0WYdTp+08+c3UlD8MDmUzbAP6gz+1VPPL
-         bg8Wz4BgsMQTvSFDAinKVEoEv64UzrPSzcHo5Xwfv4+/bm7eQZzTlhTM7EQUmoX5qhHD
-         kbNw==;
+        bh=vkBjXZgfE9QuZPVA0q0zgHjLQlsV7v8f9ZdsGtdUY+w=;
+        fh=gjunftKjRaYFgw1+z9KItKB5Yn0W2wwwL54wx++3afY=;
+        b=BzY+1fZgsmdV8Sj0B0FYHoFvLNFwkrMqtq2zUBNmZdkITUC5yaqc/HnHoSHP/i7CWE
+         3wQyx0L5qIUS6khWLUaM2HWQA0jObq/7nqpqUTm9dnulaggPTVp4DsR1xrNIjy319TF6
+         Ca98tff3zyRDeKg47y1nlGQ8lgTL3w2T6K83pP1wWUyt8dWwul+pPcflXzku0SXQ/amX
+         0re7z7+vYk6oQUB/HF4Zni91hHyVlUE+c9WW4fQAonGsynbAI1t7n7oRCpT/Y+6ZAxgX
+         aRlUPYX3UgruuxZ8rTLg/go2gHhhhIeasNnG2UnW3jVlSeGMKuLm4Q+lzd/E2qFzZrBb
+         gRxA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786765095; x=1787369895; darn=kvack.org;
+        d=google.com; s=20251104; t=1786765253; x=1787370053; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=luVYJYWQOB0XY/tTpneISfB+TB1fZM2KMGuLqcIZEDI=;
-        b=osE4APB7moxZMEcIPeP+CAbtAhmm5sVCcpC4LX6OlEOiHKf316T01L5Z2Ovkt0herg
-         7whBzcwj42hv7WhM3qUn5dXJmg+ZqNMOlqzo2eWGKUpP/CtnHppQMgdS1Lp+RsVIfSQo
-         HV+9BPK1RFpnAJ+DpaIo4ahPxkr4xKlg8NRvVyQkhrgeFbtuKAO8W69GqrScGR4W/+p1
-         OShoAipIKmlYFsnZXTRI6cO0Hb8bLcthQRTQVUExOkDojAOGG4eT8w3hvnx6Lr9OrhVK
-         xsfdpOjAwzARNqSJZeLJuVlkxP/b7s0CjiXX2izDEwXFVbJLAOvWKKNuSoj5w6UInD+O
-         jwPw==
+        bh=vkBjXZgfE9QuZPVA0q0zgHjLQlsV7v8f9ZdsGtdUY+w=;
+        b=fxhXXYGS3B/GdRtNVgXMCE9KbKP46Zx9X5ItMXfwmbx6GdIpKJynvo9jgL6cz/K9a7
+         lP/6v9E3edDXeLE0vmh0T+oGxwpzd35ofVysBYdV2GstohogP6BFn1SIv4XPxKr4zTXJ
+         MC7uulhFm1bsHWFXcsOE3upNuTHIUwssjdIvBCbMxhZ4u+oXAUtrE/Mkcm1RY3WAix8m
+         Gxeari58ExF7r+018iXK8SFk07YCc2P7rXmxgCCrrWIcaIcl3t2ydwGUz2luJ+11XSB7
+         EQRkxoaf3FehoqKmA+G1X6l+qoDEIO/x+/7M3zcV1kI2FfsyES6FmZmw9rAwNZXuZhoH
+         kbgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786765095; x=1787369895;
+        d=1e100.net; s=20251104; t=1786765253; x=1787370053;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=luVYJYWQOB0XY/tTpneISfB+TB1fZM2KMGuLqcIZEDI=;
-        b=gmcnb0Toag67I7SPsAEo1bwCToRV8mbPSYy2I6Qd3p+/QiyeWqNwhfLUKoA7RhyMkr
-         8J+T5JzxJO2pXqQo7d67iV6p8GwmXYZQcny3v6XSaE3t/M61PQ6ZdDexWiD1V/jNO9IH
-         NDBmBioYfgyTD2DVMWvkRMOetCDU4TEtAx06EDs4TiEBFiiMbcKDZF66jQKmKTX8WTTS
-         IYYF9Qf6QyIoV9OziLi4hswH1NZqKF7UgLR9Fc7QI1e0EUmS96k40fVwWgnyjUzUtXRT
-         WGAUhjcRV80CAOmomrH1mS5NxKasLSlgXxp7/b1hIbRo2jZcYpa36vnogKs89h+ps+un
-         rPHw==
-X-Forwarded-Encrypted: i=1; AHgh+RoaItF5j9WEkpfmJuMEyF+Ise9k1CWszoVSF9bBtvWf99z60LYlSbGsLH+rMESIwSwwylidnES3mw==@kvack.org
-X-Gm-Message-State: AOJu0Yw1GACW/3NZdi2Pt9brKCBisTvMcyGm8dv+gvC0314cAseh2I05
-	0APHvEOxHWdNuPFRVM02dEg+Qat8zMi+gYUPLefqS5sBXmKqQxpTSbgMEPfALhg8o9ss1WW16+z
-	O7jOD0uiBvmLBS8XQ2OQF0ZpIf3sbdXuSIizYGh/s
-X-Gm-Gg: AR+sD12KVvkmZiIVD2LsSAX5LEOFysGlYWnvJrNJrpqjLvq+a2sz/VqGAmwriG8luuY
-	1MkhG7qDihcq4cFeasLI4XRCGMD9ZHU8VTKgXFSFlCUhpe5hz3OAR83dkWbDvew7e3Y5CMqlOc4
-	fI59hE0oWJeTD9YWMA6pRNlG2Y1ZoQfdK7t8M12Y7UuXR1xTkeYd5r1d6HbtuumEfJ5RbqkrVRM
-	QCpMnso6y8ZHrgW9XYyDB9bXpOoc7an8woFV/0vjvjd83JzJP+mTcQ94j3OEqLbLB1J+pPjX9vA
-	c0AI89OuL/KWxSxnE6BHj4SYcz43KxCHrhfiRUW4Pgc=
-X-Received: by 2002:a05:622a:578e:b0:50f:af60:3496 with SMTP id
- d75a77b69052e-52d86192a1emr30633361cf.1.1786765094873; Fri, 14 Aug 2026
- 20:38:14 -0700 (PDT)
+        bh=vkBjXZgfE9QuZPVA0q0zgHjLQlsV7v8f9ZdsGtdUY+w=;
+        b=JW5fhg4ml/zL2tw5VVj1Yfd6gPCttSid6VmmNeHy28UKeXvjgO6mpAvyMw3BUOj9IB
+         vtzmg19+0141HvLnedV9lBGcbQjy/jdoK3n2vrByfuE3guvKgT08UGT8jnW67uaRLRTz
+         vPDpC3QiLBH4rXZL4/BF1TmBYArbfP6IM7SFNlf6XRP2NXtWJef1dQVbfGQ5d6AhOYEo
+         6+Yj2PbUq39O1IZUaOQr9h9PJ1FMIeyHsXHxLTYQ8U2pOCO5HNH0V6F4T9qdZCTXzLvD
+         Q67NQcQD8dEYzQMmPBM2SwLBYuQssal+r11Ba2Kyj8WnYUAiyy66LXnHswhgCb43DrDc
+         2Czw==
+X-Forwarded-Encrypted: i=1; AHgh+RqCFeDrZdzRKvGE78YNxyc56B7rzgp1LYWJ9KkYTUPF+s/mZibrLyresSHtAQfk6+eVgB9JENrGtA==@kvack.org
+X-Gm-Message-State: AOJu0YzfH3SGJ3VMeSxtt+ct4uHQzTxNgSkJ2yhUzrpdhpwZp5yI15OI
+	99xaPGUlrkrGIWkC6341LmxfGRNYZRdRCem8LxGuIrEB46BpobI8vfhE+Wc+gPkxob5Rozytola
+	mB9fFjk/YeLA7cfJPFgOPROrj18JGZlEhu4uf6McA
+X-Gm-Gg: AR+sD10tRUfuZwLCNw27RvP6CMJSKZ72D2idWE4rdIH0vsnPZiIFLv5ylA9EDL8DDgp
+	V6coPIkYItGUrHSYUtHEthHw4tTqiUaqtJkapyTitXpUxwn05XsG2d+vBP51Gm4L5qdY7SJEvtn
+	PGQ689oWNWczwTmdrrIYdotedcgJ7OpighBXcxA4iu46ykGXIxWfsDEC/HUFtNP5BdIv5Bv0/A8
+	LJSeN5nlABn5VvKEp1lzLYC/Ufa/xL1SIijPzo1LJlTEsU0PxMI9ds1u3N1gxUEM7P9XKxtxoh+
+	k9eBng/7JpG77LfteT1aOR9uhp3H+8sIRdTDWFsjJ2exZnPiGcinJA==
+X-Received: by 2002:a05:622a:2309:b0:516:3f51:81cb with SMTP id
+ d75a77b69052e-52d863056ebmr33346621cf.13.1786765252641; Fri, 14 Aug 2026
+ 20:40:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260803113944.3694290-1-praan@google.com> <20260803113944.3694290-2-praan@google.com>
- <2vxzqzk338y2.fsf@kernel.org> <an2skkjrNXBTFagK@kernel.org>
-In-Reply-To: <an2skkjrNXBTFagK@kernel.org>
+References: <20260812054105.102637-1-hao.ge@linux.dev> <20260812054105.102637-2-hao.ge@linux.dev>
+In-Reply-To: <20260812054105.102637-2-hao.ge@linux.dev>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 14 Aug 2026 20:38:03 -0700
-X-Gm-Features: AcwNN1XrGQyskIqu-lIjMZBTlBvDbp-7AMsoC0-TI6TqDyvNpYGgAf_q-RSalo8
-Message-ID: <CAJuCfpF-A1DeRmg1i7rNyTaFT3_0H+Rqsy6yQRUct4Z79xGtHw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] kho: Introduce a helper to init high order pages
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>, Pranjal Shrivastava <praan@google.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Alexander Graf <graf@amazon.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, David Matlack <dmatlack@google.com>, kexec@lists.infradead.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Date: Fri, 14 Aug 2026 20:40:41 -0700
+X-Gm-Features: AcwNN1VIChM5uS8AeDFgxDsAxr3cLyAQ5ichFcFG4fV7s7-Mxs0cUi0jsKmDMp0
+Message-ID: <CAJuCfpHYnjhHh6mex5vuzwz=ggn8cuW_oR03KWih9vx+76a+RQ@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] alloc_tag: move release_module_tags() above reserve_module_tags()
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
+	linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 137e9kgptuyzqwet6myo7dx6bi3pdpto
-X-Rspamd-Queue-Id: 857E2C0004
-X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 15331100002
+X-Stat-Signature: hgwa6uoxusbp7mqcbhu3ei7ewzidjrjo
 X-Rspam-User: 
-X-HE-Tag: 1786765096-126942
-X-HE-Meta: U2FsdGVkX19R0eujIhH6iQckYdTY2v/f+Y1Yokk/1zlwuWJda79XQBnGhiO4zDnbb5lQ+B+w809yHuuYCFnE+plyDozQ+qKVtJ0Os8e59sfTCfGtcLi+KCILK04H34DjndDL5zBl/2SpfFf9x6mai3CRX5jUGSEk+wUcaG88E4pIiU6Z581k08yG5zq/LDUC4ef6RWiMaYPdx4G+rwq+E8s16flHbjrDuIuzgxAnC9V+H70wdtn8J5FgZ57eIRo5VWpz5AfSlOgJqCp97KURy+BSfN9HRjjP+juDONPmcB3Kn+fHXAqShcN3AUEPSUYJEtewDLs1IiYXSZBKOiqUjdpm5lLQ3UaYWd3jv1st6Xlt+WgGIz9l9wb9D7K3aK8hUZjK6tKw0bhDu1Kkmiq1+BA5Ai/xRSBQNUkpOSFSrzGsUewcL5jl/65xaIbtJLbbY01IgW7Pbl4P4GH6PHta6mnKycX2HKSPEW9kT4ed2ifyV1p/BnXbdFunjs1DBegSzcH4/yD6emid4RnL58rCXVpczWi8dQ0nNEwewbrJetjwhQe65UDurSAJMeMoQ4KpGGfXjKRh2TOi8jYZadj0Ka3F+rwBcJXtSv4HpLIus6LeOebPfZpKStalO2L9XVFj5sjmrTl3buyATXiYBB8o3o/nLfWj7qSmAB+lrC56Nb1kXco5bUQSGggFbS40Wcn2a6rGdTLKwZcl96owJ8dYn8AtmdB+vNglPQSCyvs9aBpmi5FUJ+bbJ5CIbqn2F8rLW1swPOWbd8GoxClIPgg+7mzak340Z9f9KohkIs0cymPoErbYxyEXU36RWU12rMfMoyJsmIfhEk/Oxuh2mVlNWG9rHzn+HWBs5pn+osJjZmK2GpKVPk2Q7pkfiAQyuUr8Xm0dE71bCkbdJ4JWF2SQp0xlFoa9lVaCDFGpC6oiHf+jgYumPIKq3OPHDwkg169VIAFPwUGbmjSXafYup8F
- qmzrG6pi
- W9CzINkHYZ5b4ulKV1NkhkMkMuKABALeXZn1U7XSOMDU9G9i0a3Kcb0SJoguDzK2+3fUlmqttxSTF2koFaL+MjYjZz+bJgQRJ8wgM1rw7pdP5v790qOp89ygW7mQfGUw32VNygcrh1zBI5/j4m6DDe50Xx6+93FS0Yw/VWzKY8GJgboOzYBJfB2uaPUWsHbitL7xoFyZObB/oqu8O5VTte3srWA/CeNr/cruLrWRCFSqqwLb875JWrCbE90Hz2aa5nhKc4CBSQSR+H7Wosz2+ou6m/BPwr/KdVgOU
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786765253-815527
+X-HE-Meta: U2FsdGVkX1/pFfewfKo1bcUxDI3Wupwt9c93VUf62FJ16D/nTTu85+VJPD2YDcYU55k6g5LLjrnEF/v/037oPan6yHIAWMS2eHrcXzIzvvCNXkX4/Up8mlp+fF0K3JIwBLnZtxVuVB+JUDBE4yoP/yw/6uwyMx1HpnAdwGgLBkDkqFRGW+v6uMOXV2jjvd0VcCuhwOlPr5HvRskRYtt2OHM+3UfpQaSOdpHKN8MLTUCBbwTDuD47xS9gbNuKbU+QAl+/Oav7D9L+8/fJF7o46h3vIfvjKfRMuwRkLbrtBDebarmpE1fsXBIof+oEAxNf5zMMxGvK1rd6yjtS+uiVC8cnIp9xdnlnAimTwN2BxrVGVc1BXigYBukdAoCCwZLxEAuxm5MpCh7G6K/3r4Mw7hzA2HfIyrTtkEXqfonIczRDjLu20b5etVbCnJextfYcflVL/if0eQNERIcpy6QFIu5tfi5EM8T07pd1dR4ifdv976kV7X8MT+/+ieXRuWpP1oUHcXZe4JIFIMh8/vdwHJegcmhK6F43Gk9pPVLfx7Ex00isncvF6O4WqkZLWBFz49OPUCmfgG6w3EvF4s3uH+Hw1fJDgPQISkJm7HrERDO8B5yEN0AP0IdWDIhJXBma/Ex9Da0Y844aHfJ9YjA+th4SMLO6MEuPi9L46qpC1vgkjdt5mhPeY6DGMAD//AJOn8oPMfH6289F3FvCiJKrMSUks5tk+WakstSu70qOLIjg8erJft1OezjdeJQF0RC3B47ZtH41G5hhom0KlKImjFRFNvsb3ZobUYlGqHTPWXrgh8RkXo/Xz9GatLRkHhHTgtJtjJpp6xXKZnskGKNNwjETtPt4RSsrTD/RsSZv10UcVDO8Tx5ZE4+sNxP96bjE67v2zlmL+gyMfI9Se2vyNmgzAwvY0iGN0f0ANtwdgq+kTaSywaMnVm7GF6i+N/FiPQ3qtfxny5MO9+ov/16
+ M8cOizJB
+ 5SLxl/YKwjVE4Hm+Fnvq4l8krUO2jrcJSfW7lPMe59SEEBr/j5BPoORwGAPZRs0SSWkOorNbyiKEAAl9g51p66tNF0BJiqz7+LiZzkbrhmwa7D1hvV3x5aCMToTBp6qJ/eztWBV1ZAu1xYXtzrnwo4a5HS2AAXl0FusNyit/ZnFOuSDXOxkzxFsjWSywpsm46JieF3H40hqcPngrJUrIu+7UaEyrDE+DsRmdGP2nMbqdgmq3U3PJ5a8Gr+OX56/Z6UVsW1IbwmRkPw1FnyTfcZi7GOUlf9qmJG/STKfv70cU3w77YLpQebfU03ZReKjhJY2B+v8qlAiPmnBw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,112 +142,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026 at 4:38=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
-te:
+On Tue, Aug 11, 2026 at 10:41=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
 >
-> (added Suren)
-
-Thanks!
-
+> release_module_tags() is a cleanup helper. reserve_module_tags() can
+> also fail after storing the reservation in the maple tree, in which
+> case it should call release_module_tags() to undo it. Move the helper
+> above reserve_module_tags() so no forward declaration is needed.
 >
-> On Wed, Aug 12, 2026 at 12:54:45PM +0200, Pratyush Yadav wrote:
-> > On Mon, Aug 03 2026, Pranjal Shrivastava wrote:
-> >
-> > > The current KHO restoration logic assumes all multi-page blocks are
-> > > split into independent 4KB pages. Break out a helper to prepare for
-> > > supporting high-order non-compound pages.
-> > >
-> > > Extract kho_init_high_order_page() to handle the refcount pattern
-> > > where only the head page is refcounted. Use the helper for folio
-> > > restoration that requires a similar refcount logic.
-> > >
-> > > Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
-> > > Signed-off-by: Pranjal Shrivastava <praan@google.com>
-> > > ---
-> > >  kernel/liveupdate/kexec_handover.c | 29 +++++++++++++++++++---------=
--
-> > >  1 file changed, 19 insertions(+), 10 deletions(-)
-> > >
-> > > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/k=
-exec_handover.c
-> > > index 4834a809985a..e836efd98795 100644
-> > > --- a/kernel/liveupdate/kexec_handover.c
-> > > +++ b/kernel/liveupdate/kexec_handover.c
-> > > @@ -357,6 +357,24 @@ int kho_radix_walk_tree(struct kho_radix_tree *t=
-ree,
-> > >  }
-> > >  EXPORT_SYMBOL_GPL(kho_radix_walk_tree);
-> > >
-> > > +/* For physically contiguous pages. */
-> > > +static void kho_init_high_order_page(struct page *page, unsigned int=
- order)
-> > > +{
-> > > +   unsigned long nr_pages =3D (1UL << order);
-> > > +
-> > > +   /* Head page gets refcount of 1. */
-> > > +   set_page_count(page, 1);
-> > > +   /* Clear head page's codetag to avoid accounting mismatch. */
-> > > +   clear_page_tag_ref(page);
-> > > +
-> > > +   /* For high-order blocks, tail pages get a page count of zero. */
-> > > +   for (unsigned long i =3D 1; i < nr_pages; i++) {
-> > > +           set_page_count(page + i, 0);
-> > > +           /* Clear each page's codetag to avoid accounting mismatch=
-. */
-> > > +           clear_page_tag_ref(page + i);
-> > > +   }
-> >
-> > That's sneaky...
-> >
-> > The patch _almost_ looks like pure code movement, but then adds this
-> > little change. I'm not saying this is intentionally sneaky or anything
-> > of the sort, but these kind of things are easy to miss during code
-> > movement and should get a patch of their own or at least be called out
-> > in the commit message.
-> >
-> > I don't know how page tags work, but IIRC when the change was originall=
-y
-> > added by Ran, he said that we don't need to clear the tag for tail
-> > pages. That held true for folios, does it not hold true for non-compoun=
-d
-> > high-order pages?
-
-Yeah, only the head page is tagged with number of pages of (1 <<
-order), so the rest of the pages don't have tags to be cleared.
-
-> >
-> > > +}
-> > > +
-> > >  /* For physically contiguous 0-order pages. */
-> > >  static void kho_init_pages(struct page *page, unsigned long nr_pages=
-)
-> > >  {
-> > > @@ -369,16 +387,7 @@ static void kho_init_pages(struct page *page, un=
-signed long nr_pages)
-> > >
-> > >  static void kho_init_folio(struct page *page, unsigned int order)
-> > >  {
-> > > -   unsigned long nr_pages =3D (1 << order);
-> > > -
-> > > -   /* Head page gets refcount of 1. */
-> > > -   set_page_count(page, 1);
-> > > -   /* Clear head page's codetag to avoid accounting mismatch. */
-> > > -   clear_page_tag_ref(page);
-> > > -
-> > > -   /* For higher order folios, tail pages get a page count of zero. =
-*/
-> > > -   for (unsigned long i =3D 1; i < nr_pages; i++)
-> > > -           set_page_count(page + i, 0);
-> > > +   kho_init_high_order_page(page, order);
-> > >
-> > >     if (order > 0)
-> > >             prep_compound_page(page, order);
-> >
-> > --
-> > Regards,
-> > Pratyush Yadav
+> No functional change.
 >
+> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compress=
+ion")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+
+Acked-by: Suren Baghdasaryan <surenb@google.com>
+
+> ---
+>  mm/alloc_tag.c | 92 +++++++++++++++++++++++++-------------------------
+>  1 file changed, 46 insertions(+), 46 deletions(-)
+>
+> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+> index 52aece27b00e..af44f90379f2 100644
+> --- a/mm/alloc_tag.c
+> +++ b/mm/alloc_tag.c
+> @@ -835,6 +835,52 @@ static int vm_module_tags_populate(void)
+>         return 0;
+>  }
+>
+> +static void release_module_tags(struct module *mod, bool used)
+> +{
+> +       MA_STATE(mas, &mod_area_mt, module_tags.size, module_tags.size);
+> +       struct alloc_tag *start_tag;
+> +       struct alloc_tag *end_tag;
+> +       struct module *val;
+> +
+> +       mas_lock(&mas);
+> +       mas_for_each_rev(&mas, val, 0)
+> +               if (val =3D=3D mod)
+> +                       break;
+> +
+> +       if (!val) /* module not found */
+> +               goto out;
+> +
+> +       if (!used)
+> +               goto release_area;
+> +
+> +       start_tag =3D (struct alloc_tag *)(module_tags.start_addr + mas.i=
+ndex);
+> +       end_tag =3D (struct alloc_tag *)(module_tags.start_addr + mas.las=
+t);
+> +       if (!clean_unused_counters(start_tag, end_tag)) {
+> +               struct alloc_tag *tag;
+> +
+> +               for (tag =3D start_tag; tag <=3D end_tag; tag++) {
+> +                       struct alloc_tag_counters counter;
+> +
+> +                       if (!tag->counters)
+> +                               continue;
+> +
+> +                       counter =3D alloc_tag_read(tag);
+> +                       pr_info("%s:%u module %s func:%s has %llu allocat=
+ed at module unload\n",
+> +                               tag->ct.filename, tag->ct.lineno, tag->ct=
+.modname,
+> +                               tag->ct.function, counter.bytes);
+> +               }
+> +       } else {
+> +               used =3D false;
+> +       }
+> +release_area:
+> +       mas_store(&mas, used ? &unloaded_mod : NULL);
+> +       val =3D mas_prev_range(&mas, 0);
+> +       if (val =3D=3D &prepend_mod)
+> +               mas_store(&mas, NULL);
+> +out:
+> +       mas_unlock(&mas);
+> +}
+> +
+>  static void *reserve_module_tags(struct module *mod, unsigned long size,
+>                                  unsigned int prepend, unsigned long alig=
+n)
+>  {
+> @@ -922,52 +968,6 @@ static void *reserve_module_tags(struct module *mod,=
+ unsigned long size,
+>         return (struct alloc_tag *)(module_tags.start_addr + offset);
+>  }
+>
+> -static void release_module_tags(struct module *mod, bool used)
+> -{
+> -       MA_STATE(mas, &mod_area_mt, module_tags.size, module_tags.size);
+> -       struct alloc_tag *start_tag;
+> -       struct alloc_tag *end_tag;
+> -       struct module *val;
+> -
+> -       mas_lock(&mas);
+> -       mas_for_each_rev(&mas, val, 0)
+> -               if (val =3D=3D mod)
+> -                       break;
+> -
+> -       if (!val) /* module not found */
+> -               goto out;
+> -
+> -       if (!used)
+> -               goto release_area;
+> -
+> -       start_tag =3D (struct alloc_tag *)(module_tags.start_addr + mas.i=
+ndex);
+> -       end_tag =3D (struct alloc_tag *)(module_tags.start_addr + mas.las=
+t);
+> -       if (!clean_unused_counters(start_tag, end_tag)) {
+> -               struct alloc_tag *tag;
+> -
+> -               for (tag =3D start_tag; tag <=3D end_tag; tag++) {
+> -                       struct alloc_tag_counters counter;
+> -
+> -                       if (!tag->counters)
+> -                               continue;
+> -
+> -                       counter =3D alloc_tag_read(tag);
+> -                       pr_info("%s:%u module %s func:%s has %llu allocat=
+ed at module unload\n",
+> -                               tag->ct.filename, tag->ct.lineno, tag->ct=
+.modname,
+> -                               tag->ct.function, counter.bytes);
+> -               }
+> -       } else {
+> -               used =3D false;
+> -       }
+> -release_area:
+> -       mas_store(&mas, used ? &unloaded_mod : NULL);
+> -       val =3D mas_prev_range(&mas, 0);
+> -       if (val =3D=3D &prepend_mod)
+> -               mas_store(&mas, NULL);
+> -out:
+> -       mas_unlock(&mas);
+> -}
+> -
+>  static int load_module(struct module *mod, struct codetag *start, struct=
+ codetag *stop)
+>  {
+>         /* Allocate module alloc_tag percpu counters */
 > --
-> Sincerely yours,
-> Mike.
+> 2.25.1
+>
 
