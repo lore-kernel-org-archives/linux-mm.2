@@ -4,133 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F903C5B572
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 01:55:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D31E6C5B572
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 01:59:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 105D06B0744; Fri, 14 Aug 2026 21:55:40 -0400 (EDT)
+	id B1E2B6B0746; Fri, 14 Aug 2026 21:59:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DDE36B0745; Fri, 14 Aug 2026 21:55:40 -0400 (EDT)
+	id AF64C6B0747; Fri, 14 Aug 2026 21:59:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F35CB6B0746; Fri, 14 Aug 2026 21:55:39 -0400 (EDT)
+	id A0AF06B0748; Fri, 14 Aug 2026 21:59:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B75C96B0744
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 21:55:39 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3E8001A02C6
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 01:55:39 +0000 (UTC)
-X-FDA: 85101837198.22.7FE7922
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6218440002
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 01:55:37 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TXwkcB44;
-	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C7C26B0746
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 21:59:09 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0A297A0270
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 01:59:09 +0000 (UTC)
+X-FDA: 85101846018.14.9CC70D8
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 15F09180004
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 01:59:06 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b=0GUszIJx;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=XTEyCH+h;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786758937;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1786759147;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KJfedCHwXV6kZVr0Cknx5A9jpM+kExPkRG8SEE/c37w=;
-	b=4TozZSJnf3YW+zZC4h3jUhgxWG/ZxrWH3lo34WTdepnnTEtHulQjT5dxLhMGwb1hAPomYt
-	CQ7oYtQf++Vi6oP5fg5Fm4PnQfQnkGOqK+3zTmj813s7OU8gwP/MNJWaLJFLPzAUKs8iV+
-	xONX5CMvVyAo35LReA/6rdFdjSknIYo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786758937;
-	b=ngEJbI1a/QewznqFFlJXJBvi81+VeYxaq9su/vYSZTNKtjat9TteSjxvoFeC1u8NOmvRIs
-	0v0GByUJ/aIhb0LBGeEbExQB5advzDEsC0XJCIPHvOhx2evAYERGfYXcT3SXYtix4TDIq2
-	lhzygS6OxT56g/P5CPFzsQk8E7wZKIA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=z5hBIPxBD84BGgz5XckjHT+qTpsbdvAmR0AVjOp3Xpc=;
+	b=f/eRPgDJUcq/E0pM6SQZ3q+h8EaFIUB698mDPILwnPw0JOhN8vTfjY0QbcS8EBArnjqUOl
+	Xn0qUc5AkgzibktTGg/BUbI98VZevk3l+jEew+5kfyoD9w50KvmV3lJMNIjvqj6EXO9KIJ
+	KUsBYbwZoo3+tb2zGXoEOOeM6u5S01c=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TXwkcB44;
-	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c197e7e4e94so294214366b.2
-        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 18:55:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786758936; x=1787363736; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KJfedCHwXV6kZVr0Cknx5A9jpM+kExPkRG8SEE/c37w=;
-        b=TXwkcB44eFw5UO2FRjMvq5fo/lAHdUkbhQLxEJNCPL7sW973yFlvTg1lB47TCkKwDy
-         sCk9ePLMq3CItaGqse1jXcpl3mwN6Lbcdl96PLpdBz/ft/ZBuTmyyR/OpAHbj8xT3rY8
-         ZcnTdFVeJIvM7DoFshQdWFBxgy15JAX6VTsAQQxIvhyuqqCJQYDDdpAl7tsHiGNuJpf7
-         0EgKyg83076rOmg8/UJ9ZNAsv8Sv9E5K0gzAPKQYMwUXbV0Ymz4ONTyM8qhFkpg1oQEl
-         QuDosY+iLu1nYL6KkdpEUfE0zxvcB66hO4fWEsle5oS7gG9BsgPKQDX2dlSL4hNwV8j4
-         HBYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786758936; x=1787363736;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=KJfedCHwXV6kZVr0Cknx5A9jpM+kExPkRG8SEE/c37w=;
-        b=TNzp69OGfVF6DuEGZfK3HAuGWmpfbGMZgcFJTTOzz2lNZND3BeH9VgarENFMUBkNIt
-         1BmFG+YQkcX8dAJpH+GUsOctclLcqpT1a4Q6fw33feD8RVzOGiXf03hj5mEk+y2We4Tg
-         p1ufBrSivGbbXgQrZD6GHp/NZCUdOvFlk7qMpRdSr2LiY/vD9E1zpGyB04sGgmhnbPMm
-         yfB4cV+HdSXJNBcNSMvXEFtDGm7Yfb7+eFq8vB+gzWrqJ0j1Wty+b70YC3iwhnDV0s96
-         Zyk9XU9lkozY8um0OdBtoSCcG2S89X8Z1Cu/mFt6rOlwXEF5ZB7A02xfReYhm7luXrMT
-         40TA==
-X-Forwarded-Encrypted: i=1; AHgh+Rr5Ziav0VidZsQWh1GXI5gZyHChHjqR0zEeUuS1UjJ+Giz07wN6/onEfVZ+D5UIvLs7i1qXTQNESA==@kvack.org
-X-Gm-Message-State: AOJu0YywT9L0jJupmPGFH8ZXr6/KYiDb8F17jZ6vSiXMeT9SAiLRZgrk
-	e3M3zrwmo503My4jOyM9LPiwctCMpBpt+4gyAPwaooq7dc4UebYBCr8W
-X-Gm-Gg: AR+sD11cS1noSgkIiJEzKRQifdsawqsfQWKHYdJRgx6ikYKQ/ukOwHd2ntEg9cbGI1s
-	G9BzXXNBwuraublDiHSwKkWIhbpD558V5poJO45wkdti6/0e9YHsrR9bVcOELplMlCkpLEF+2gn
-	JpZQHp4qq8b+BIWex0Ek2Qj1BSd7rnFRXGKrdmfwZrTnYgahcJMdDdjbdJlNRUklSCcbchQIRti
-	nQ1Vaquo9xbrDEUm/XJN/mr/CHp78VXy+669jh8iwhvmPiR4rtGd/3TN3t8Pf88+vdrR4B8K15x
-	XaLIu60SwTxtup8gHPUHVME2/v9CkEG4N7Dh7OhbF34/VJGZjcFuTnKQx72R67D0C4T8QtFqSJC
-	vq0pUdLhhi68viuhfZiGOBWeFVXty5EBPMwFbarxPLp8YPxGWYXgFf9Ru0N34A18SHmnQ7ZgNYQ
-	udhNO/aT8QIlE1hDUA4snPP819q/LGqiWDw+ox6NVGqEENRYpUOSgnwGNVAdb+SgtjAUWIbA==
-X-Received: by 2002:a17:907:7b9c:b0:c19:6104:e5e4 with SMTP id a640c23a62f3a-c212a2b216cmr427391966b.20.1786758935575;
-        Fri, 14 Aug 2026 18:55:35 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c212378d9fcsm168007966b.34.2026.08.14.18.55.33
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 14 Aug 2026 18:55:34 -0700 (PDT)
-Date: Sat, 15 Aug 2026 01:55:32 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Liu, Yuan1" <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
-	Mike Rapoport <rppt@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"Zou, Nanhai" <nanhai.zou@intel.com>,
-	"Deng, Pan" <pan.deng@intel.com>,
-	"Li, Tianyou" <tianyou.li@intel.com>,
-	Chen Zhang <zhangchen.kidd@jd.com>,
-	"Zeng, Jason" <jason.zeng@intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v6 1/2] mm/memory_hotplug: optimize zone contiguous check
- when changing pfn range
-Message-ID: <20260815015532.ei4abygk4erdtlhh@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260723084946.189392-1-yuan1.liu@intel.com>
- <20260723084946.189392-2-yuan1.liu@intel.com>
- <a15107de-ab16-433a-a504-72c3e8dbf2a6@kernel.org>
- <PH7PR11MB6932A554A6D18A4F1A29E90DA3D22@PH7PR11MB6932.namprd11.prod.outlook.com>
- <2cbd42e1-b5bb-474c-b0e7-ce3f46541891@kernel.org>
- <MW4PR11MB6936594CC6B15968AAB781DCA3D22@MW4PR11MB6936.namprd11.prod.outlook.com>
- <0b02ef3e-363f-4b49-a208-54cdfea56c75@kernel.org>
- <MW4PR11MB69363CCE15647FD7D85542B6A3D12@MW4PR11MB6936.namprd11.prod.outlook.com>
- <f0593f56-870e-4e79-8552-1760fad255bc@kernel.org>
- <01795519-54e8-4ed8-a94e-2b77780abc3a@kernel.org>
+	imf06.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b=0GUszIJx;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=XTEyCH+h;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786759147;
+	b=IlPEhcMD61FSwngQm3LuiCqFcdvc+vRhmQFbCnZT/HpH8Z0SAwkHCZgl/JAym6O18o0ubq
+	A7ekDu0wqXOiyx6phIDGRtb08tHFWpv2KAz3Tqr1DR3GBsNs2N7zA+H8E1pEuzfigRoLqk
+	NC95D5s3EuFCi043Zxmt8N29ZUt7vu4=
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfout.phl.internal (Postfix) with ESMTP id 64339EC0221;
+	Fri, 14 Aug 2026 21:59:06 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Fri, 14 Aug 2026 21:59:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to; s=fm1; t=1786759146; x=1786845546; bh=z5hBIPxBD8
+	4BGgz5XckjHT+qTpsbdvAmR0AVjOp3Xpc=; b=0GUszIJxM5KtCArqpFF0STb2Iq
+	m562OnBDh6x18/f27bIlF+JUHlDFqUj0zZMVd/K5g26jvOgivlDnniJYMRBc22Oj
+	btksEM0I/dFM4sS+V/UEMR6Y2t2hCGR0GOhsALhBkCdbdRvUtY4vzWfBpGidQDRy
+	DxXvUzFZje/o9zwN7NJ/CeOAdGbV9gbwRKQFyZYvZMhXoE4+JGzw2rYZbgQqSMEA
+	uV3yQFP+gYGxgbe8xlhoWGDBfHu2NOszn+M632zr6LzprgcR7rawxJBUJbwM4uLX
+	44i1OHhvJjk9TpOhmNctYb21jLtN9mka3ZjmHcbjuJqTP7/N+CRff2/C1okQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1786759146; x=1786845546; bh=z5hBIPxBD84BGgz5XckjHT+qTpsbdvAmR0A
+	VjOp3Xpc=; b=XTEyCH+hXPCt6WTr/UQI0PmbX5MTJ65XCfhjbzEUnUbMq++Qib2
+	zfo/bIaUGy3/vXvjcUMX3RWh6t86AVJsi75VzWUEJFb4mEMgTQjvq73iw9sWCgmL
+	TroCRDS+n4Hb1bzTnrYtQZon0yXq7tcyvoz4jk3gjFwHwThTMN3kIzlezqCGGqW3
+	gW3z6rVB+FpGnPZAjhl7nxA9iy3lg9A0hbIsIj/YMlxSWu17ojSBpHRmEVlUmH9N
+	fo/inZJOwQZgDiIOYCkD9XyEV7vHfvN4Xdx9Ed30i0itf3z8qleJqJ4OBmqQsbYE
+	vLQUNOB6XOlMQpCU4sqW0VXuvOPIUnAT/AA==
+X-ME-Sender: <xms:6cd_aqq7TqtpdBggwvkzj47epOo_Snb9S6TrQ1A-2fOLefMBOxvN9w>
+    <xme:6cd_asnqAuhJ7TFXrE0RGKdc4YTz8GqXqwjSPcQYPSal_jLj7JVuD199C6yBfkLNb
+    d03zMiUKIbg-x1o0gn4AoDDMlKYD7q3EGb0fsZD8UxwHoUsx1QH3fwx>
+X-ME-Received: <xmr:6cd_anvNN3Ddyb7VNhaj9cCofTPgp-0Ne5S_14Yh7-7w703anzTtDB_7h2s>
+X-ME-Proxy-Cause: dmFkZTFRuFyfAL9s6YMq/kkqcY6cqV0BuRPVTNbUdbYkEZvCej+PUWaiCWlYSljfJMo9lL
+    a7WWdg2f0wOgbERSXkEJD3q/jR4pcr+3jUrcEu/0i9tk8FP2A1WP71XmMnMpKFlhXdywiR
+    5G/WT9I+/G/JXPJWKB4n02FG17lVUANOd5ZK6Tu0lvN4SO8bJQyvTpQLVxW1UFUytGpBtv
+    ESSNbFp0L0vlRX1F0oR2mTp0MlpE1y/ucZahg/3+xOr33nXycHDx4tAaM0qT0pcPV/B57X
+    Mto3Z1zsK/HWRsn//Bnn1HwbaE9BIuNB76DyBgyi0m/f3AofUzUp+eivgDx5jtY31DSfY8
+    akBtmWrPFoLz7+SHAfJcXQ43WBRJ6LbkHish8GNQnqODQGhp0CIkkuXhc2DMbPV2Oe88BQ
+    Z3PSHagy6L7p7P8spEyn5mtuuh5nj8WWbB4CgI66ThTyB46Sp5YNPbpvwZdk65ycV+DsLw
+    pF5tKE+wrWylqRm4F/E2fNc4lFfwx2NYj+ZLn4Rq8Y+kR89eSCO6joaHaukO/yZl5MhaU+
+    Q8vstSiG6gG1wydlaF9Yl+wyDCxM4AMx0/UBb7p+cfp+pdq8A1Zc4sV6iBs+u6+PNOtD/u
+    NyebvgozPVHioYKpet9ZEvfUuqsFVrzyGXD6Bbt5iHN8Ewhk6Kg68aAxS3LQ
+X-ME-Proxy: <xmx:6cd_ajcQn3MwK3pXPN85d7c6W75H7rESxw_pozB02zlCpH4bBHdjYQ>
+    <xmx:6cd_ahakx5bke2ZK0LNIHYK_MyORoVBpfbBpqxksAADJJSAoiz8-cQ>
+    <xmx:6cd_aj2z_edwPGToHvRjGvCH9RDMAYUEwzhdb6M6CP1HZGpeYBkT8w>
+    <xmx:6cd_aipFOyiPpABA0DJWmj_eZAbG6CYZoUA5T-zXRU-NJh22lHkhAQ>
+    <xmx:6sd_aqJSX0DAzssPMscEkAK96MwoTAY7LBuGN_KPfO93oJByyltx8Ggj>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 14 Aug 2026 21:59:04 -0400 (EDT)
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	nico.pache@linux.dev
+Cc: baolin.wang@linux.alibaba.com,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	hughd@google.com,
+	lance.yang@linux.dev,
+	liam@infradead.org,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	shuah@kernel.org,
+	surenb@google.com,
+	usama.arif@linux.dev,
+	vbabka@kernel.org,
+	ziy@nvidia.com,
+	usama.anjum@arm.com,
+	agordeev@linux.ibm.com,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kas@kernel.org
+Subject: [PATCH v4 00/19] selftests/mm: improve khugepaged coverage
+Date: Sat, 15 Aug 2026 02:58:42 +0100
+Message-ID: <20260815015901.1236937-1-kirill@shutemov.name>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <01795519-54e8-4ed8-a94e-2b77780abc3a@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 7kh5tk7cha73yxf7ccdnrn6fybb5n94a
+X-Rspamd-Queue-Id: 15F09180004
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: umw9ms5ataegrdqxcmfme63x9tpsdxd1
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6218440002
-X-HE-Tag: 1786758937-975939
-X-HE-Meta: U2FsdGVkX1+JBTEdo3J9ciZBoqBVqq2JevkjUNEwKRpSGjK7oHBLXgC8VrRrW+h82qkyqF51L9QmmV9PdDDAJf9ULXZpWL6ISivWWo0ZMSso7OdmK87Eh5dt2vZIXOgX+tKox/Cr1ZROGaSrq/0A4Zrd3XGPBB7LmWYIxei70luk3SeyWuJPLzKiGItQ0a2DL3Qey8a6c0u0Ri9z6TJYpy7POBv3jJqDswrIjIIxVshM8vGXdQakuFqcgO5Svgyp/SC2LYmkkosMtpax+1r1szhGi6hZyiFXqyyjq6tq53gopeXHh7DsoPdKPaciMrtiWRtl2ZoXUmczyEzKbb6hS3lKiQcElCbTKU/SSPiU6KEPKON/CZdp6HJkLBJOcQLtFXkwqqJgY7dA1cVp86g76/7ETsuHbNmvB47QtDhIBCmU7uZFT1Q25noIlKdvbB2Xs2w01w2+n0gykPUpPRdj01l7jKnd+ADaCAVbwAjvuv/W3PQN4Z3uddRxQ8Z8QFPRwpKFu6cgNwEh1SH+mU9svcf3b0A4isrIzdlHGvjO6rEOCL8nE1wsL2kwtpvCsOOq0TFUMCaIaBxg3ip9C5P1dGPTf0Fs1sliEQ+mB6moPu6BbE+yFwH0rom4C+ZF4tLy0Tz14hf5PlpgxGNLE8Sgw186M6Y6lIgrw5Hbx9a7ahdNzhlEwcXO4OS+43VD7pJRsTtrpUUnetbaJX6mVotQ25ZRqouDPU5vOlV9PV6XuW/s3311gdXGRgqUbC9ga6zY4/0guyqpN9sHhxsvLW58ORLQTyVWefmezfGn8BHUOIAiZaQpvF5SLV6QTta32E0Kt13RjG5kXajGJL0NCpYny0t01IwUED1WOpsVeAfwhU9xckoUpr5abInrMOmDOJNSCcv4OSccRuuesx0F9/Pi7IDo5GHqtO4cSCX/yoIunswszas3LuA0wo/vMUNxD2tXiDhxRgI/zU8uKFTw1xd
- EjxXfBHa
- n9Ubi/vFoVQ6t/ts2etXMD6uCKGCNruu+OmJ/KuaX4PRQd/Kv4iomYujEwqqJHeERf9ey3U86QsKrW3vST5SlAYV56Q722hurWVKYiSeu8rcCg3kLoIouKl4JzIBJKkjCBoapcWNzc3L6T1xM91B5p+1XRJDXUeGZh1FQDPM8hVV7HVPubT1mxhf3HtuucnpSDw1NHjxzIGrz0nEf6IfuX9BijwcTGt+ww/EPqHo2Wmo3GfsG5J57WtJh2KKghXzQNrcKM+GUtRxCnE1bturXysN0iCkHiXh7JhULNOVwFkZC6EtDb29JRQJ2FEA9ncWFaMlHLrrou7B/i6nwhSQhj7BHapwoABtsc9WagLo33Ne9vF2GowfJ7T2x5c9k+KbVG6WhkYfZXH7PojpJIldyZya6Z3cFW+mWbeuyeiSceJwwNNO2MPCZeYYvw5CFX/+Z1m8O8+64SjICLs6uSGcRykbWtgQbrulRN5h3+QjrXME8mF2QxiUTvD5/PxajxEpdah+ydmL7iun57jELcTWx4J2/Pvv0uRBIPKOpdU+Hcw8b9nWQsE3ZTogGdyuva6YdGRbL6an1DEyAss9MyH2h2yrf3j2iRe6TP/t8CPNQf2EDAnyBkvco+VuHVSJzx0kzsmifZqb78dBSRqhaNDyjtuKxf180/I2UpzplXChfK8c4Z6hl+OWg7dEyiUPhnGgRKyZTZOjJHI9V5SzzULP3kPPSAdlpQSB/XSSYMUeMu5JicBmN01n49XPQdA6VdrHfaZOov6qBUq+3yWk=
+X-HE-Tag: 1786759146-888533
+X-HE-Meta: U2FsdGVkX1+/34yvNuJb1xIXMyD+tjO/L8HDXXUtm5QPJJ8NifCgMLII6077lW7C30fC1a4jbBCGXgM7oGFcUyjnkJ40ud5ouLA/yBNFt6BCi+YkqrA93hrtOAlJ/fe0DuD4GP0cYDUJs3+gwYB5I/agPFBU4MdhJ9b5rHQJFrr7Rzlye4Mj+bKR2Q3pn8DE/jtPclCdMb3hzJCt0Z77MbC9r/gxVy3drqDC2+JtKOqnD0uyO7fFb6K5MgnTc53xUdGzQB7gxGphoSueqnxyR8KNe0Bfho0ZQNvSc8UwV/xbCK6ABVWZrm1mEtHngdt95JCyYIY22MD06KFRoBs8fJvlFbxNDtVhhzwsV9qgFLd4qjkNRFhd/9yi05zEyZ4LBnyCGicNA9qx1JqDn1qX4RPRbWn3wCM/qJCWYIb4nyKM4F4JUMqeMgtxO1P86AhsMgRYWqXWhm8PQNMaPzZ+0h4i80Psn/Kn2v+ypGgw/92rARyrQk8JnHy5e7LDx98wjg/ZK9c9hIZTUwkxFVChMy33YZjAdCI6krxFouKfRswvEDUvsZwY0z9yvJh/3zI3tqbZJHH+z4ONMkCbcxTGLtsIKkuFsLpHGY6a4lUI0ZDcbRezi7OFpDrTm6QXGBul6kslrpm3w97xqHJv7tPLvdSvFz+8Yc1t4zeaR2uJYE8duRBdDEctEWrw0ItgDmOR7w1bfa5zIHhnOGJJb5T+sOeMf6pqBtSkd+YPwr7eBErcQZ5h9fVDTmQCPZdTW4fbt2JK2dW54q4nBtKVX0BmpUj2waCffPaG5zrUXxJvDXD6dHwzrICM2PVMDbqGlZVJJCFKk3sC+l7i2UlD6FMRlg2UqXv0H0ZsZeROBgFLRktPU0KSiA2MkCYmEigGzni/7Jwh5eeUOW+7r5aZoRNjHC8ZTBg/7ZRqUANjp40Z4vKCkjIsdyLZvY32pBbI6Bh0H2pMovLdNeV2LttPvfW
+ jZU0VLpa
+ FMNLcjDxWCi3x0Q1uAPl+9fF9eq4BFt+j6ar8SAet/1+r5sHFIlcmDa0DOKbo5OUw0/fRgdiX2VZLS5k6O1NMrm0CPOuj9qL5OuIx87nC+7VQ3ifnexDlAcC18HDGfgGuq57Ftfjn398eAdZyudhdN1KSdMWJgBVOU3j4f4yj+q0XScYX2limrz5gnNh6XG8R6vSzHvLMU2Un0v5MmFTKPlNZGN2dposL3zD14i8UuRg/tN92M+DD8SBVRcCS+53edDoHAncro3xw0Nmlrpt37wporki5h9316DLzOCa+jgvpItg75DaFYuDvaiGbjeOzHYKpfGP2exNokRs/fc0XvkK+m3RwhXHMB7v1vbqDBk7mEowBL9xrbk1MUPb2iBhlTXoE4i6YJMDUmM5TH8Tfg2hMJxQ3jNHBsB43GDhhTxCvyPp2He/cukVj0Vf5PUn1VSsu49Bx/3yPIQc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,98 +145,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 02:23:18PM +0200, David Hildenbrand (Arm) wrote:
->On 8/10/26 16:04, David Hildenbrand (Arm) wrote:
->>>
->>> Hi David
->>>
->>> My understanding is that init_unavailable_range() initializes all
->>> PFNs that satisfy pfn_valid(), but not all of them satisfy
->>> pfn_to_online_page(), since some PFNs belong to subsections that are
->>> not online.
->> 
->> Thanks for reminding me. I think the right direction is to finally clean up the
->> pfn_valid() handling.
->> 
->>>
->>> You previously mentioned:
->>>
->>>   pfn_valid() says early sections always have a full memmap, so even invalid
->>>   subsections have a memmap. pfn_to_online_page() says an invalid subsection
->>>   cannot be online and its content must be stale. for_each_valid_pfn() follows
->>>   pfn_valid() semantics, and we use it to initialize memmap that is not going
->>>   to be online and account it as pages_with_online_memmap, which is wrong.
->>>
->>>   The cleanest approach is to avoid allocating memmap for subsections, which
->>>   also removes the special early-section handling from pfn_valid() and
->>>   for_each_valid_pfn().
->>>
->>> I also share the concerns raised by Sashiko in the analysis below [1]:
->>>
->>>   Scanners like isolate_migratepages_block() will then blindly iterate through
->>>   the pageblock and access the completely uninitialized struct pages of the hole,
->>>   leading to functional errors or kernel panics when reading these zero-filled
->>>   structures via macros like PageHuge() or page_zone().
->>>
->>> That's why we went with the current approach in v6 instead of your
->>> earlier suggestion. I'd really appreciate your guidance on which
->>> direction you think would be more appropriate.
->> Let me take a stab at just having pfn_valid() / for_each_valid_pfn() respecting
->> the subsection map.
->
->... and that turns complicated very quickly. The problem is that we have some users,
->in particular the buddy, that just assumes that MAX_PAGE_ORDER regions are fully
->accessible.
->
->The fun begins once we have MAX_PAGE_ORDER span multiple subsections. So we'd actually
->want to initialize the memmap.
->
->The pfn_valid() vs. pfn_to_online_page() inconsistency is really nasty :(
->
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-One thing I'd like to confirm.
+mTHP collapse went in for 7.2 with no functional selftest coverage. Every
+khugepaged collapse case is PMD-shaped, down to the detection: it reads
+smaps AnonHugePages, which cannot see anything below the PMD order.
 
-pfn_to_online_page() is expected to return an "online page", which is in
-buddy, right?
+I am also reworking khugepaged's collapse mechanism, and that wants a suite
+worth trusting before the mechanism changes underneath it. Nothing here
+depends on the rework: everything passes on an unmodified kernel and
+documents what khugepaged already does.
 
->I mean, in init_unavailable_range() we could actually figure out fairly easily
->whether we are dealing with holes where pfn_to_online_page() would succeed.
->
->diff --git a/mm/mm_init.c b/mm/mm_init.c
->index e9c4204b73adb..54e71e17f2c3c 100644
->--- a/mm/mm_init.c
->+++ b/mm/mm_init.c
->@@ -843,11 +843,13 @@ static void __init init_unavailable_range(unsigned long spfn,
->                                          int zone, int node)
-> {
->        unsigned long pfn;
->-       u64 pgcnt = 0;
->+       u64 pgcnt = 0, online_pgcnt = 0;
-> 
->        for_each_valid_pfn(pfn, spfn, epfn) {
->                __init_single_page(pfn_to_page(pfn), pfn, zone, node);
->                __SetPageReserved(pfn_to_page(pfn));
->+               if (pfn_to_online_page(pfn))
->+                       online_pgcnt++;
+The table of cases is raised to 256 entries first. It holds 64, and a full
+invocation -- every context crossed with every memory type, which needs a
+directory for the file and shmem ones -- already registers 63, so the next
+case added anywhere aborts the whole suite before a single test runs.
 
-But a hole in early section could still return a valid page if the hole
-is less than a subsection.
+Five existing cases fail on the environment rather than on the kernel:
 
-Is this an expected behavior?
+ - The collapse wait is a fixed three seconds, whatever a huge page costs
+   to build. Scale it with the PMD size.
 
->                pgcnt++;
->        }
->
->If it's a problem performance-wise, we can always try optimizing by skipping
->checks within the same (sub)section.
->
->
->-- 
->Cheers,
->
->David
+ - collapse_compound_extreme() wants a 512M folio from the fault path. Skip
+   it where the PMD is that large.
 
+ - The page cache caps folio order below the PMD order where a PMD is 512M,
+   so nothing can hold a PMD-sized page cache folio. Skip the shmem and
+   file cases there.
+
+ - The swap cases ask a best-effort MADV_PAGEOUT for an exact swap count,
+   and khugepaged reads the pages back in while they ask. Retry, hold the
+   range out of the daemon's reach while retrying, and skip if the pages
+   still will not go.
+
+ - The MADV_COLLAPSE cases leave khugepaged running beside them, so a case
+   can pass on the daemon's work rather than on its own.
+
+This is why the suite now runs on arm64 with 64K pages.
+
+Then the new coverage:
+
+ - Folio-order helpers in vm_util, and folio_order_check to validate them
+   against the kernel before any collapse test trusts them.
+
+ - Four order-parameterized anon collapse cases, plus mixed sources by
+   source order, at every supported order by default.
+
+ - A shared-source write race: a co-sharer writing throughout a collapse
+   and the collapsing side must not see each other's pages.
+
+ - khugepaged_full_pass(), which steps the daemon one scan at a time
+   through the sysfs wake path, and khugepaged_sync_check to hold it to
+   exactly one attributed collapse per step.
+
+ - khugepaged_race, racing faults, MADV_DONTNEED, pins, fork, mremap,
+   reclaim and compaction against collapse, at both ends of the occupancy
+   scale and over whole-table zaps, checked by content and by KASAN and
+   lockdep.
+
+Changes since v3:
+
+ - New patch 6 stops khugepaged during the MADV_COLLAPSE cases: the
+   per-order controls have to be cleared too, not only the global ones.
+
+ - The shared-source write race did not race. The two sides now hand off,
+   and the co-sharer unshares one page at a time (Sashiko).
+
+ - khugepaged_sync_check no longer counts a tracepoint only the collapse
+   rework emits.
+
+ - khugepaged_race loses -z and -p: both occupancy limits and both
+   pressure states always run.
+
+ - -c refused the PMD order it advertised.
+
+ - Smaller: two unchecked madvise() calls, and thread mask bits that had
+   to be renumbered by hand.
+
+ - The changelogs are rewritten throughout (Mike Rapoport).
+
+Tested on an unmodified mm-new (33f61b12d297), with KASAN, lockdep,
+DEBUG_VM and page_table_check, in 16G guests:
+
+  x86-64 4K     181 pass, 1 skip, 0 fail
+  arm64 64K     215 pass, 5 skip, 0 fail
+
+The skips are structural: mixed sources declines at the smallest order, and
+at 64K collapse_compound_extreme() skips as above. arm64 runs fewer cases
+than x86-64 rather than skipping them: with no PMD-order page cache folio
+the file and shmem contexts are never registered there.
+
+Kiryl Shutsemau (Meta) (19):
+  selftests/mm: raise the khugepaged test-case cap
+  selftests/mm: skip collapse_compound_extreme() where the PMD is too
+    large
+  selftests/mm: scale khugepaged's collapse wait with the PMD size
+  selftests/mm: skip khugepaged page cache cases without a PMD folio
+  selftests/mm: make the swap cases' swapout reliable
+  selftests/mm: stop khugepaged during the MADV_COLLAPSE cases
+  selftests/mm: move is_backed_by_folio() into vm_util
+  selftests/mm: add folio-order check for address ranges
+  selftests/mm: add folio-order detection self-check
+  selftests/mm: add khugepaged completion barrier helper
+  selftests/mm: add order-parameterized khugepaged collapse cases
+  selftests/mm: parameterize the mixed-source collapse case by source
+    order
+  selftests/mm: cover a shared-source collapse write race
+  selftests/mm: run every supported collapse order by default
+  selftests/mm: check that one khugepaged pass collapses one window
+  selftests/mm: add khugepaged race harness
+  selftests/mm: race collapse of windows with holes
+  selftests/mm: add memory-pressure threads to the khugepaged race
+    harness
+  selftests/mm: zap whole PTE tables in the khugepaged race harness
+
+ tools/testing/selftests/mm/Makefile           |   3 +
+ .../testing/selftests/mm/folio_order_check.c  | 137 ++++
+ tools/testing/selftests/mm/hmm-tests.c        |   1 -
+ .../testing/selftests/mm/hugepage_settings.c  |  74 ++-
+ .../testing/selftests/mm/hugepage_settings.h  |   3 +
+ tools/testing/selftests/mm/khugepaged.c       | 524 +++++++++++++++-
+ tools/testing/selftests/mm/khugepaged_race.c  | 589 ++++++++++++++++++
+ .../selftests/mm/khugepaged_sync_check.c      | 196 ++++++
+ tools/testing/selftests/mm/migration.c        |   1 -
+ tools/testing/selftests/mm/run_vmtests.sh     |   8 +-
+ .../selftests/mm/split_huge_page_test.c       |  62 --
+ tools/testing/selftests/mm/vm_util.c          | 145 +++++
+ tools/testing/selftests/mm/vm_util.h          |  10 +
+ 13 files changed, 1651 insertions(+), 102 deletions(-)
+ create mode 100644 tools/testing/selftests/mm/folio_order_check.c
+ create mode 100644 tools/testing/selftests/mm/khugepaged_race.c
+ create mode 100644 tools/testing/selftests/mm/khugepaged_sync_check.c
+
+
+base-commit: 33f61b12d297562321533c048e034b1fb21c1cf3
 -- 
-Wei Yang
-Help you, Help me
+2.54.0
+
 
