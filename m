@@ -4,107 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10E6AC5CFC1
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 10:42:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D6F1C5CFC1
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 10:44:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9D416B0343; Sat, 15 Aug 2026 06:42:20 -0400 (EDT)
+	id 53BF86B07C0; Sat, 15 Aug 2026 06:44:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D74486B07BD; Sat, 15 Aug 2026 06:42:20 -0400 (EDT)
+	id 5138B6B07C1; Sat, 15 Aug 2026 06:44:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C637A6B07BF; Sat, 15 Aug 2026 06:42:20 -0400 (EDT)
+	id 428D76B07C2; Sat, 15 Aug 2026 06:44:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 911BB6B0343
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 06:42:20 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 05DA41A034E
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 10:42:20 +0000 (UTC)
-X-FDA: 85103164440.28.377682A
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 647B3180002
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 10:42:18 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="KLT12/HI";
-	spf=pass (imf16.hostedemail.com: domain of foxieflakey@gmail.com designates 74.125.227.129 as permitted sender) smtp.mailfrom=foxieflakey@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 073656B07C0
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 06:44:06 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7C9FBA2BDF
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 10:44:06 +0000 (UTC)
+X-FDA: 85103168892.05.9D6AF1E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id E5A5140003
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 10:44:04 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kr/Tf5ck";
+	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786790538;
+	s=arc-20220608; t=1786790644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=QL+D2ZnVKPwk1r1lVr8tcXF6AdrhIQ8WvVtGFSKnTdo=;
-	b=H9QCDr1n9j1/prwrbhZ1F1PYrOtoKjvPxqlruLlEV06tgoGeL/ENtXPUKoPvK1NqXQ97Mc
-	aadhW+MapbM50krh9oWF0t+2wXNSZiJp59hnPagMC0cyT9BX/+DbMi+g6ImMD0cMTduaTV
-	RuwhadN97hw9i4pukSadX5P8Q9DNmmA=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EHN97m9JW2ZgHxLPFLcOKL8ZOHela7pDZzqoNJfQP5E=;
+	b=17IGHhx8Uch/2aFX3+Xiys7E2fCicdI6ufuBQrAP8EDGykGXHX+c1axwUwKCP8dtmJPAEe
+	krkynkF5HRVMwSV1oMHB1QeqyvOWGRwn04H7nlf/9DJ1sz0KkCsrbulN3VfKtOdFY/f7pQ
+	fwHDTw/2HAb5ab5GvIak6B150kwao78=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786790538;
-	b=pLH7hszo+B1mRLCBHBI1NnnBEIX8WyYYfnquqMGNfJEpkT8rzTJWaxckArCDkOpPKcfyG2
-	iAFlgE0Z1MIR4iKbrddHeVo+WUiTSBDQW4THzeP1kLemUYfHyBemv2PKxB5nIRybmD5svv
-	9jjEf+IY8J6Kv+4Vx/BTd1h9I7VqVi0=
+	t=1786790644;
+	b=n09Fk17SZlCdAxfEfX7iS5R8TWwrmHzw4bbDvU620Q0bF1thT0VZ3T9D1SlVPTGLz7JJAi
+	sJ8t+943c9ODmhJKa5vgARBZlZdw9bPYOw38cIR/rMCEJzDkMnjObyX5xGv28+OvxLOedC
+	2gXSnPbeJ+ibC34Dou5BjSxoSWcqidQ=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="KLT12/HI";
-	spf=pass (imf16.hostedemail.com: domain of foxieflakey@gmail.com designates 74.125.227.129 as permitted sender) smtp.mailfrom=foxieflakey@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj2-f1.google.com with SMTP id d9443c01a7336-2cb3f5bb19aso9350335ad.1
-        for <linux-mm@kvack.org>; Sat, 15 Aug 2026 03:42:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786790537; x=1787395337; darn=kvack.org;
-        h=content-type:mime-version:message-id:subject:cc:to:date:from:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QL+D2ZnVKPwk1r1lVr8tcXF6AdrhIQ8WvVtGFSKnTdo=;
-        b=KLT12/HI+THKMNm7r2F4povf6BdXg6B5SquehwmdJzI6PDuhfhYyZz+9qml9Tz/heH
-         Jr+57cAv0GzGoQCqRAwqM8gN0FqRssGlTh4/xwmm2k8bs9gmhoqHr+O0QwPmBRxZ7Gk6
-         G3TDcaRLx1/de7Qx9lmhxGwiKm3kgbTx8dfaT9IIn6shR65YDYNrHLGMYhjheilzxwG1
-         1MshDfUvuj4So2Zs0rHi1KiwE5DlmplUwyD9uRPqc79/wPIsHlOqa7QKyaGgx7PlS4l3
-         3ocxkRp2Sg5UH/rkI+Pj/xgnysT698QfI1LDpGauVLKS+h+YI7Y+PN5+8BHWhs9eq8gb
-         T6iA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786790537; x=1787395337;
-        h=content-type:mime-version:message-id:subject:cc:to:date:from
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=QL+D2ZnVKPwk1r1lVr8tcXF6AdrhIQ8WvVtGFSKnTdo=;
-        b=U2dkZwgC4MUC8HDExGZBvZO5ekK609SS4TVdIsqBIxFNB71nj4hpyEvFB4dK86j7Rh
-         O8wbvrRyVL5tefjTok2TVJkeVIYN1CLeX1AZiyp1/rPXu14ELQBCMS0TGKqMUPbIDz2o
-         H0iegnmz608cA9YG2958McYcrvfup6o4yXF8t8OZANdSQ+hmXkrGMnrebqjMOXcsz+q8
-         p2odEM+R0s7mC548hKl/tEWNe/dIt7dAoXlKMoCfwmczM7JCwyfh2UsgxA+tBDEeLR7A
-         V/pSYWNd1nJ4NaI97LYIQaiqpJyE9PIcSDQYTQ+TC0TfRH60lB89Syd0PtNZDFVTRPxD
-         QxCQ==
-X-Gm-Message-State: AOJu0YwYPoyyFBz7aGSD3iiBcXyDSPmQ7hRnfXJcK5NFTJAyN8xzNNqD
-	5js1qIBTpLGiD3QhXktwHwnUiT/Cx57skUOMDb3zRBZNdhH2r8Xok42C
-X-Gm-Gg: AR+sD13OR+54dzP0dUx2qWCGzzZSPCFUApo85tsvQrdNH9LmuplVFhg2AahucfUk+BJ
-	hcFAngm/8mURs1f4RAObA9lRqexyNVl+HFQBS9Rcju8E8STNhdqF+SGI3Mgmt8kfG4L+MZm6/Ly
-	lqPJRM6XPjBYc6bwYENPTwJGCFHvp0uJExN6R2fsXno9kWbaHhm+eSAMXla8xxcGDVyYEjA4ymF
-	NBA0Qawu9iobl5L1ezXiXnVPntRYr04a4s1MkpUWU6ol8qK5Y5lH5N6q04tUGe9xPIrByNniB8G
-	Yyp1GKR61iszad27KZ5E4hQCLPhFCm6MJsAcSv4LeZ+facQFR90oKEPRqnZ1Pv6bRJzvYo5oqcM
-	+la95bi+HtCarZ3Y14Scx+xNDB7Zch1P7AmuegZbfB99nrEGZSnjhWxuVJpMif/3o/BSA7oZk94
-	+GQGxg+W4NgvlRA7y/qz643GSM0y+FmnljeOFAgCQc54R+613vXdhx
-X-Received: by 2002:a05:6a20:ce43:b0:3b4:7eb0:47aa with SMTP id adf61e73a8af0-3cc71d19146mr15675813637.25.1786790537029;
-        Sat, 15 Aug 2026 03:42:17 -0700 (PDT)
-Received: from 192.168.1.2 ([157.85.198.7])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1413889bca5sm25944351c88.12.2026.08.15.03.42.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Aug 2026 03:42:16 -0700 (PDT)
-From: Foxie Flakey <foxieflakey@gmail.com>
-X-Google-Original-From: Foxie Flakey <foxie@gmail.com>
-Date: Sat, 15 Aug 2026 17:42:12 +0700 (WIB)
-To: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com
-cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] userfaultfd: reset err to be 0 when move_pages_ptes
- succeeded
-Message-ID: <9c936a9f-ed27-e510-872f-5b3b8c680975@gmail.com>
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kr/Tf5ck";
+	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E903F60008;
+	Sat, 15 Aug 2026 10:44:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D271F000E9;
+	Sat, 15 Aug 2026 10:43:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786790643;
+	bh=EHN97m9JW2ZgHxLPFLcOKL8ZOHela7pDZzqoNJfQP5E=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=kr/Tf5ckh5K3hOdAtZRNaMYJfcRPbGlwjMHHlS0bf7W+6jLe5uTUgjrP9S+5f/IC/
+	 Ka/suzsag9pVo5MAFE5sUh0OdSOq15rVwKacT8p8g/2vLXGvNF6wyqDL/oQEHFwKNE
+	 uW0VRb45EN4jcoJ7gWykJKxHTXlr/mPQcjZ/7sibTUOtZlTPD7FkwaCSvI56oP4lze
+	 WYAMKxEpRdAEdaOxik7UE4xE+40VQZc/EdlggdhzMRACQMooZmNlts0xGE/K0+tEkl
+	 Xm1O4rjqoZBEa8az6uvNKeelMuWGoGXGMg4E4Z8cRr209WzF2prepZEjHbJND/nln1
+	 63kwlbLLevOoQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Tarun Sahu
+ <tarunsahu@google.com>,  ackerleytng@google.com,  fuad.tabba@linux.dev,
+  Andrew Morton <akpm@linux-foundation.org>,  dmatlack@google.com,  Shuah
+ Khan <skhan@linuxfoundation.org>,  Jonathan Corbet <corbet@lwn.net>,
+  david@redhat.com,  Pasha Tatashin <pasha.tatashin@soleen.com>,
+  sagis@google.com,  Paolo Bonzini <pbonzini@redhat.com>,  Mike Rapoport
+ <rppt@kernel.org>,  Alexander Graf <graf@amazon.com>,
+  linux-kselftest@vger.kernel.org,  andre.przywara@arm.com,
+  michael.roth@amd.com,  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
+  will@kernel.org,  vannapurve@google.com,  maz@kernel.org,
+  fvdl@google.com,  kvm@vger.kernel.org,  oliver.upton@linux.dev,
+  kvmarm@lists.linux.dev,  alexandru.elisei@arm.com,  skhawaja@google.com,
+  aneesh.kumar@kernel.org,  linux-doc@vger.kernel.org,  David Hildenbrand
+ <david@kernel.org>,  yan.y.zhao@intel.com,  kexec@lists.infradead.org,
+  suzuki.poulose@arm.com
+Subject: Re: [PATCH v4 05/11] KVM: LUO: Support VM preservation across live
+ updates
+In-Reply-To: <anyObKiZIhfok5mk@google.com> (Sean Christopherson's message of
+	"Wed, 12 Aug 2026 08:17:00 -0700")
+References: <20260728121138.1103610-1-tarunsahu@google.com>
+	<20260728121138.1103610-6-tarunsahu@google.com>
+	<anphyjFv3FhF61iB@google.com> <2vxzpkzo51wg.fsf@kernel.org>
+	<anssOQFNZ2LfihbU@google.com> <2vxzik5f311e.fsf@kernel.org>
+	<anyObKiZIhfok5mk@google.com>
+Date: Sat, 15 Aug 2026 12:43:56 +0200
+Message-ID: <2vxzqzjz1x5f.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain
 X-Rspam-User: 
-X-Stat-Signature: ht5wcauu5d3errc3toarzhw5j77mjmxb
+X-Stat-Signature: nsads4ui6yaognk6yjigqgpsyo5gpb97
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 647B3180002
-X-HE-Tag: 1786790538-103144
-X-HE-Meta: U2FsdGVkX18EGTQBkU/7JSeYt5GfofR1MCfY+bMK+uElp0l4Mpglep7eaUgBlIyyK0oIizxeT6PXGAMzDhED9E44k2nfvQFpaRZK1qHlJRahOmFwfuS7EdFSA14iT1EMKhorEYuI78p7CuL52URfozFMb+vaub2ttN/OEw2eFP32rRmIe8UsZ8iJRGz8STGo+i/9QJMad9pM186Ck9Tdkub5IZ60Kr2HuD98qxxasKvFm2YRJNUaCQkp+9SOPTPjjSb4QghZZJt/NPFO+FpB1YzLwg5ypd8O84r0wUv3s1c0dFGOokYt32bRLgWE37TwjdpSQbhNE8fA0mpTpkcboO3QNt/xrCmkvrAWTkBb4WecuizBk9HfQqwTUzOfDIAHkjPEyMs+ODlCi7ekVm3HC1tAN3krsQnSXgSqyabqG8ZI8ugXI4M1wSwdBPBDGNG2i4U+8UwtRQ8B3Wxup71DnKJOtir7iLX62UkPe0yQAGSMAzRmEydFeLud1zUniNaJbyVzFfwgLZ9BHicwh6FiTMS096jtxdElhLrRxe4Ec7C4IwRQzEO7AVCv/VxwQWKvWmRmwGpGi0hdH+W/ov/uzfc4WHGRUPB2JXkCeOS7AIF5qz6b9/VxoLCPra6WS3F2Q8jukqx+TRZNIxgBpEC8S/7dy2Xw0Jck/lZ569o5qkfFR3QBo19An3l5LfJuaEQJUCpOtoz2MXGbXMVlGyWuHyjOeoiNpwNZTEPcV2FfvhBwDQMIONb1Bv+z1GSKmJCO0R8aqU+YRvR+/9wX1egRIP1sbyh4OaG1D+Hqc5VIZXZoLGuc5+9UoqQ3yGSImtiiHUTwoO8cHQojB/LPZ09RgYH+L/Y7ZO5A5c58az0QW9ryin3wgMTDyqzX6/BdQE99Jy2d42oAAXdroGbrhb4Qro4JM1HN7XBN9vQ7zL3W5ff/blBJztZn2p3U+9ORJt4Y5bbmk+4pd6rMIa54dKu
- 7JE9nR0m
- dJUSo/PzAn38KtK40Ji0LYhaLFPGlMdJ4SWvUW8HXgfR2J71rk88IS+3D5m0mdzgBQIb5mxqvZVG6ROIqI0J7+mAEjgW1eK6abyfNx4qBdNQnjrBOz2L/tZL4Zv015YfYQrojD4NyiNJ0uNrAUtLwyqGqW2pd55JknENL9eBP2T0aMi8elE77p90C9XD9BWy1DAXCHuN1kgKt5Jwl+yJdjJbDVnkljFNrTJXleUbaMNka3l7YKFpCj+AN9vkR8IHU1ktr4+UdaGpw/fe27cuGx7GTlbMcTAeRaR7Cl8MZ285+gqwNNZ5ZgpG/kX6BQbeaETKgZQe5wq7JzJeorP60pRDKJpEdyMDSmmwRz/2V0Fay+cY/6vIHL8Z0Dq6BrfP8NDbr0lW3enxloia4t+RZ6bsQMrHPI9EHDowFLze8qoEXrWA8TKH/D300Sy5EUb0uX5hS5yfWRUrs7I2XuFxC72vNsW8yFackBqMtJT/dswic/NlzFrDBkoi225iv5oo6dAExaPSGmIRP/x4Y7ht+ALPzgkIhOK+v/9fuZ+m10W6i8TqDGmDKWr8aFa+ylQcoo57lDlXQEzphf95snCREciHQIw==
+X-Rspamd-Queue-Id: E5A5140003
+X-HE-Tag: 1786790644-852372
+X-HE-Meta: U2FsdGVkX191b9mtgLN4D7JXxFGq/4yUUvKvS8WRmVWSWbpY7lTI1trBGXyuHIVR0VYc+T6i3svAksx5GENDVzt57VTHFv41/f2UvPUgEdeQ/9Weu/3/GXc5nn3IVGV2bgLDS5SZF4L4/sQpFpLNyjeyDRqwFoGIr1Hi69rpWioUSKwWSDRKyWceT9tZMsPUCBmAzQTUfU4dJ+HVGG0biFPaJwOL0+D2sYQ2EY1eLGS4oSNzxz9PDp7yMQ/8WbMAOsNPw3PzPnQuX+wM8iypiC5FR6WcnOAL/NIZdtmGTrBAd0agMkKvcSVB0DmjlEpLbb+La88+k8WUkxQXRTJzu8ljnzjlqAPuUUaVk+fvrsxyDjR8bhFdANCcpC47eKsy1KC/q9eIdXqkkpr/Ft7z2VJjzsMp6htn3Nd934U8BBqRt/9nUXT1Xr7Ea2vkMCwLcuN1u9aE/HNeNFTsW5Y7uavV2KCDb/Vol+l22XTUB3CNER0/vxJQPNX/rbI/JlMJyi3ZEaVgCudRQ9SQ1tn5y+OcgdXqN0UZBuUM/BCrrA2f4P0pyHKrZiuVWY/KEZAAmctgtxXYk0P4Wl+VkBXpLq64BQ3RqhePHi29uFETqCkSbpQjV86qUO8E3h3krAZJH1ZFsSfzbPVy05DwJL6TdtKXwtXaK1QaP+A9NOjO7yuX2ziSPEBGOQFwYxq/GXxWOKWjL4nRKJ2/euzKktA4w3hCo9/bXq3YX08j4mR/hyPkhtYALs9kmfFua+e0uZii1ho28qPM8q5ZmQCkaMxtaue4QLED1Y8gVlDBHzx1vLsCKiQBuzWeiSRlkMMpZ7bJUxTjBROmwaFdu++oGQ4UlkhQUSgje+uFPCNDklRPjXrFerX/c/PODaezJ4Bvpg5DkZ0S+BFzqEcyrti3LAgcWbr4UYdanoqR+f8Yu2Ox2vStGuJLhKw6Tmkc+zOmavAMpuUt5s91kAf0GAEoUg4
+ zWcpxkbg
+ aJN6UixZ6L57nxXwS249+AksLeqxZUw56wXRlmi9X9krcbFAcXwFY4r0Y1Tia7mryKobB21dNKf/7o7kgXC+j10RmMPdgMX1mMpdc8K2aS22NgFoN1g/1plc+bEy58RaxUS7CuN2aGGXil5Uc4YEpnvI8oQScQpN749hoj1apApy2yV2n372Q8fO0R5axG7YzUv1giU7ahHEk6m1JYBLGJUpu0tqI3OAO4vw4k+C/UgkbEvLIKC9dVhL4ukHYXF+xWfK7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,60 +109,228 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Aug 12 2026, Sean Christopherson wrote:
 
-An fix for edge case can occur if move_pages_ptes return -EAGAIN, later
-when checked and it is EAGAIN, outer loop would retry again on same page
-and succeeded but the err isn't reset so the outer loop would think need
-to retry again so it goes back again and move pages again. On third attempt
-move_pages_ptes will fail because it already moved and returns an error
-that is not EAGAIN when outer loop checks again it sees non EAGAIN so it
-dont retry and break out of loop. When loop is terminated it did not update
-the "moved" variable from successful 2nd iteration.
+> On Wed, Aug 12, 2026, Pratyush Yadav wrote:
+>> On Tue, Aug 11 2026, Sean Christopherson wrote:
+[...]
+> But that's all beside the point.  What I'm saying is that SNP and TDX *must* use
+> guest_memfd, whereas guest_memfd is optional for all other VM types.  And so adding
+> LUO support for guest_memfd without even sketching out a plan for CoCo VMs feels
+> backwards.
+>
+> I'm not necessarily opposed to gradual guest_memfd support, but there needs to be
+> a clear plan of how all of this is going to fit together.  It doesn't need to be
+> perfect, and I'm sure we'll make mistakes along the way, but I want to at least
+> try not to paint ourselves into a corner, especially with respect to the ABI.
 
-That behaviour manifested into this at userspace
+Right. I think landing shared guest_memfd is the first step. It is
+simple enough and doesn't need to preserve the more complicated
+architecture specific things like secure EPT, etc. The CoCo support
+can build on top of this.
 
-Source:      [ .. unmapped  .. ][ .. mapped    ..]
-Destination: [ .. mapped    .. ][ .. unmapped  ..]
-                          ^     ^
-                          \     Kernel moved this far in actuality
-                           What is reported to userspace on struct
-                           uffdio_move's move field
+There is work underway already for an RFC of TDX live update, but Tarun
+knows the details better than me so I'll let him fill in the details for
+the next version of this series.
 
-When the previous behaviour is
-Source:      [ .. unmapped  .. ][ .. mapped    ..]
-Destination: [ .. mapped    .. ][ .. unmapped  ..]
-                                ^
-                                Reported to user space via uffdio_move's
-                                move field
+>
+>> >> > E.g. the LUO APIs seem pretty straightforward; I assume the bulk of the complexity
+>> >> > is going to be in knowing what to save/restore, and how, which is much more about
+>> >> > KVM than it is about liveupdate.
+>> >> 
+>> >> I think it is fine if you want to take these changes through the KVM
+>> >> tree, but I would like live update maintainers to be listed as reviewers
+>> >> at least.
+>> >
+>> > Why not simply add a file pattern match to the LIVE UPDATE entry?
+>> >
+>> > diff --git MAINTAINERS MAINTAINERS
+>> > index 8014b9f8253e..2eb57b22c37f 100644
+>> > --- MAINTAINERS
+>> > +++ MAINTAINERS
+>> > @@ -15052,8 +15052,8 @@ F:      include/linux/liveupdate.h
+>> >  F:     include/uapi/linux/liveupdate.h
+>> >  F:     kernel/liveupdate/
+>> >  F:     lib/tests/liveupdate.c
+>> > -F:     mm/memfd_luo.c
+>> >  F:     tools/testing/selftests/liveupdate/
+>> > +N:     [^a-z]luo
+>> >  
+>> >  LLC (802.2)
+>> >  L:     netdev@vger.kernel.org
+>> 
+>> This would list us as maintainers of kvm_luo.c and the tree as liveupdate.git, 
+>
+> It would list both "LIVE UPDATE" and "KERNEL VIRTUAL MACHINE (KVM)", as KVM would
+> still cover the files via "F:	virt/kvm/*".  And my read of MAINTAINERS is that
+> N: and K: entries are "secondary" if the files/scope is covered by an F: entry.
+>
+> E.g. arch/x86/kvm/vmx/tdx.c is covered by "KERNEL VIRTUAL MACHINE FOR X86 (KVM/x86)"
+> via "F:	arch/x86/kvm/*/", and also by "X86 TRUST DOMAIN EXTENSIONS (TDX)" via
+> "N:	tdx" (or maybe "K:	\b(tdx)"?  I haven't bothered to check which one
+> triggers).  And while I don't think there was ever any formal discussion, AFAIK
+> everyone reads the situation as KVM still being the primary maintainer/tree for
+> that code.
+>
+>> both of which is something you're saying you _don't_ want.
+>
+> No, what I don't want is a dedicated "KVM LIVE UPDATE" entry, because I think most
+> people would read "F:     virt/kvm/kvm_luo.c" and "F:     virt/kvm/guest_memfd_luo.c"
+> as being more precise than KVM's "F:   virt/kvm/*" and thus would read things as
+> "KVM LIVE UPDATE" being the primary maintainer.
+>
+> In other words, I'm more than ok with LUO being looped in on KVM LUO changes and
+> having the authority to object to problematic changes, but I'm not ok with LUO
+> taking primary ownership of KVM code.
 
-Fixes: 50944692052b ("userfaultfd: opportunistic TLB-flush batching for present pages in MOVE")
-Signed-off-by: Foxie Flakey <foxieflakey@gmail.com>
----
- mm/userfaultfd.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Sure, that sounds good to me.
 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index c3adedaaf7d5..595e7e232f90 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -2069,10 +2069,12 @@ static ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
- 			ret = move_pages_ptes(mm, dst_pmd, src_pmd,
- 					      dst_vma, src_vma, dst_addr,
- 					      src_addr, src_end - src_addr, mode);
--			if (ret < 0)
-+			if (ret < 0) {
- 				err = ret;
--			else
-+			} else {
-+				err = 0;
- 				step_size = ret;
-+			}
- 		}
+>
+> I realize there's more than a bit of nuance in my interpretation of N: and K:,
+> but again my experience with TDX is that so long as the maintainers are aligned
+> on expectations, it's a non-issue in practice.
 
- 		cond_resched();
+Yep, as long as we agree among ourselves I don't think the red tape
+around which entry has higher priority matters much.
 
-base-commit: 62cc90241548d5570ee68e01aaba6506964e9811
+>
+>> >> At the same time, I also keep being (pleasantly)
+>> >> surprised at preservation being relatively simple. For example, the code
+>> >> to preserve a shmem file (via memfd) is roughly 600 lines, a big chunk
+>> >> of which is comments. The code of course has some limitations, but it is
+>> >> good enough for use in production.
+>> >> 
+>> >> For one, we care about ABI breakages and versioning. 
+>> >
+>> > Which is amusing to me because that implies KVM does not, and I would hazard to
+>> 
+>> No, it doesn't. What I'm saying is I care about changes to the _live
+>> update ABI_. Just like you probably care about changes to KVM ABI but
+>> not so much about BPF for example.
+>> 
+>> > guess that KVM has the biggest ABI surface of any subsystem in the kernel by a
+>> > country mile (though I'm probably wildly underestimating the effective ABI surface
+>> > of filesystems).
+>> >
+>> >> The serialized state is a part of live update ABI and changes to it should be
+>> >> ACKed by us. 
+>> >
+>> > Meh, "Don't break userspace" is a universal rule in the kernel, I genuinely don't
+>> > see why liveupdate needs special treatment.
+>> 
+>> Ironically enough, you miss my point. I'm not talking about userspace
+>> ABI. We all know not to break that. I am talking about live update
+>> _serialization ABI_. See the stuff under include/linux/kho/abi. This
+>> series also adds things there.
+>
+> No, I understand exactly what ABI you're talking about.
+>
+>> This is ABI between kernels. It needs to be stable-ish so you can move
+>> from one kernel version to another. At the same time, unlike userspace
+>> ABI, it can change.
+>
+> Uh, yeah, so KVM has been managing such immutable ABI for practically its entire
+> existence.  KVM's save/restore uAPI has exactly what you're describing: serialization
+> ABI that needs to be backwards and forwards compatible between different kernels
+> in order to support both upgrade and rollback scenarios via live migration.
+
+I think there is a slight difference between KVM's save/resture uAPI and
+live update's ABI. With KVM's uAPI, you need to maintain strict
+backwards compatibility because userspace reads what you output. So if
+you change the layout, userspace will interpret it wrong and might
+break.
+
+With live update, the ABI never gets to userspace. It is used to talk
+between kernels directly. So if you do break that, your userspace keeps
+working fine, you just might not be able to live update to the
+incompatible kernel.
+
+So with live update, we don't need to keep backwards compatibility in
+the ABI forever. Of course, it is good to minimize changes, but we have
+more freedom to change it.
+
+The current idea is we change the ABI whenever needed. This is because
+live update is still in development so we are likely to see a lot more
+changes before we settle down into something that mostly works. At some
+point, we want to start being more strict between incompatible ABI
+changes. The current idea is that we would like to keep backwards
+compatibility across LTS kernels. But none of that is set in stone yet.
+
+That's why I would like to have an explicit ACK from the live update
+group for ABI changes. I would like to enforce these compatibility
+windows.
+
+>
+> KVM also has immutable ABI between itself and guest kernels, including implicit
+> "ABI" in the form of not changing guest-visible behavior.
+>
+>> Today we don't have any rules and let you change things freely as long as you
+>> do a version bump. But at a later point, the plan is to add some stability
+>> requirements to the ABI so you can actually upgrade the kernel across major
+>> versions.
+>> 
+>> So at least for ABI changes, there should be an explicit ACK from the
+>> live update group.
+>
+> I don't entirely agree.  I get where you're coming from, and I 100% agree that
+> the more eyeballs on changes that may affect ABI, the better.
+>
+> Where I have problems with the above is that it doesn't account for the nuances
+> of save/restore across different kernels.  The literal format of the serialized
+> data is the most obvious form of ABI, but it's absolutely possible to change ABI
+> without changing the data format.
+>
+> E.g. say there's a flags field in some serialization structure, and flags X and Y
+> are mutually exclusive in current kernels.  If a future kernel relaxes that
+> restriction for whatever reason, then the effective ABI has been broken because
+> state created and saved on new kernels can't be restored on old kernels.  And
+> this is not a theoretical concern, KVM has run afoul of this a few times (though
+> thankfully very rarely).
+
+That's a bug, and should be fixed.
+
+I am talking here about intentional ABI changes. As I mentioned above we
+_can_ change the ABI, we just need to be careful about it.
+
+>
+> I don't think it's reasonable to expect LUO maintainers to gain enough expertise
+> in each subsystem to be able to ensure changes are forwards and backwards
+> compatible.  The only way I see LUO being successful in the long term is to get
+> subsystem maintainers/contributors to understand *and buy-in* to the LUO model
+> and rules, so that each subsystem can largely be self-sustatining.  I.e. setting
+> yourselves up as literal gatekeepers will help prevent blatant breakage, but it's
+> less likely to help guard against more subtle breakage, and in my experience,
+> subtle breakage is by far harder to detect and more painful to deal with.
+
+Outside of enforcing the ABI compatibility windows, I think this makes
+sense.
+
+In principle at least, though from my experience the maintainer appetite
+to care about live update varies. The feeling I've got from MM for
+example is more along the lines of "you break it, you buy it". Which is
+also a valid model IMO. The person who wrote the live update code for a
+subsystem is well equipped to understand these nuances.
+
+>
+> Somewhat of a side topic: in my experience, using monotonically increasing version
+> numbers is a horrible way to enumerate features/content.  So for me, allowing
+> KVM's LUO ABI to change with a verson bump is probably a non-starter.  I.e.
+> whatever gets merged needs to be more future-proof than "we'll deal with it later".
+
+As I wrote above, the compatibility model for live update allows
+breaking ABI with version bumps. Userspace keeps working fine, it only
+restricts the set of kernels that you can go to. So the "we'll deal with
+it later" is not as harmful because our choices here are not permanent.
+
+Also, there is work underway to allow transitions between versions [0].
+
+But still, I am not opposed to a more flexible guest_memfd ABI. I think
+we can reserve some space for feature flags to let us add things in the
+future.
+
+[0] https://lore.kernel.org/kexec/20260731215224.831696-1-loganodell@google.com/
+
 -- 
-2.55.0
-
+Regards,
+Pratyush Yadav
 
