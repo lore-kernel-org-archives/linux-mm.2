@@ -4,138 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43DEFC5CFC1
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 06:22:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEE64C5CFC1
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 06:35:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D61F96B033F; Sat, 15 Aug 2026 02:22:14 -0400 (EDT)
+	id 6C3C46B0794; Sat, 15 Aug 2026 02:35:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D12CD6B0340; Sat, 15 Aug 2026 02:22:14 -0400 (EDT)
+	id 674796B0795; Sat, 15 Aug 2026 02:35:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C01806B0341; Sat, 15 Aug 2026 02:22:14 -0400 (EDT)
+	id 58A666B0796; Sat, 15 Aug 2026 02:35:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 997686B033F
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 02:22:14 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1C9C01602E0
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 06:22:14 +0000 (UTC)
-X-FDA: 85102508988.01.E296985
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 24405140003
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 06:22:11 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=iDnsGDm0;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf09.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786774932;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FBB56B0794
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 02:35:55 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 91331C02D1
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 06:35:54 +0000 (UTC)
+X-FDA: 85102543428.29.E0FE689
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf12.hostedemail.com (Postfix) with ESMTP id CC72440002
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 06:35:49 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	spf=pass (imf12.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786775752;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OBKzlS6zgLX7HjDf60a09oLwp2mBkH0MhIIWPg5JjtQ=;
-	b=BqWtWrH5u2NylNvXeRCBCp41gWfxNp+dM1vv4HSZ0GlQfHZ+u4kJejNAfg2p62Lze5GBLa
-	0xCKUbmeKfssKzEZEGoWVoWCBmugUK3NByH1qiYmI/VDBoJdXj6zFyvLsbp0HH56SQJUMr
-	ov+zjp9+oS5nZZkT0pssWv5DMxrmhbE=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=iDnsGDm0;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf09.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786774932;
-	b=mlj62EzmVna7XqdVQVSrRllmPHSK55AdcpaRKTUiGKK97PmNUObQtskq6kiXoaCoLtDWfz
-	qSNOusZigKP20FPj2qDtf8LNpKvDz6AIy/RivV5pKt3c7q5+3xbnrOTtqfbVre+jz8JI0j
-	/aCv4tQphoDNPN/FeD+iLqAMf2/SWNI=
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51c15a5b265so418401cf.0
-        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 23:22:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786774931; cv=none;
-        d=google.com; s=arc-20260327;
-        b=J9I2fzUgG4akbOHL1jaNzJPCGS48paq/ALFOloEzf+3JS/GiK5jnxGJZC2CB6pgTiA
-         rLdTLo7kAfuVGiU+wgBXJCRq5qfvyCcZDG5vSbhEyXjICUr3zpXsIuZ7UGryyi5S1Z6f
-         eDpb8gY3Pe/QLv0ket2n3LUl+61/KbTjRcv4jYIjjogXDD1ASs9sO8Ha1VcIwXRAnIvf
-         ycY+9g6C36BIuV3+2wCbe6//CB5OHdfIZBpNNcG513i+GleTwAzemSjutqHWN8k5h1he
-         GzIyfF5G1kx5N40BeIlqXh1c9qZ1xoMvO1ow4yrwwSZm3bjFwQSdnsUqT2X00E62JNfL
-         GerQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OBKzlS6zgLX7HjDf60a09oLwp2mBkH0MhIIWPg5JjtQ=;
-        fh=nsGwMZIFpZskAbQNSWw7pjfA5kY+Olu/a+rPOglkp5E=;
-        b=qISSbQGJzhpS5NvBhqARCRVmbbPiJwj+3hFNA4VJOVNphjKWIALcS232GNrDi8fANs
-         JPbPSu2fBMdq3e2+R3vl0ZCIOlY4QSk7TQ/bWpjfHJilTpcVNliRj00lRGia0xToEAOb
-         pamLvNlIh0D+UKCD7BAwTvDV1ZkRgC1ortYkYyoJHF+P+0ZP/tqcxJL3nmDnkr+OI/xL
-         Mli19d4dve9PbbwRCQIuOlCvNv2zHucyqgEos/Zk0PKZ3pmI3DywK939YnUIrOcG5zPE
-         wj8crH7fFN/WVDHEekCrtazhGrh8USypE8BgScYNw+PLWj55UuBfBUm4EpmHj/EdVVq/
-         Twdw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786774931; x=1787379731; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OBKzlS6zgLX7HjDf60a09oLwp2mBkH0MhIIWPg5JjtQ=;
-        b=iDnsGDm0xZ98N4IhjEmXLTQkEP7KoEHI2Gj8GHXKmv8aYMcosaxLVwYpHBhfFsEmhC
-         d6eC8UEVi0VmzEO8ttHed9VZgI6RUMlsmPxycFCtNoG99X0i0mpCI3UJX3umXDBZpf2D
-         rvizJVd8cIUJ1e8j7Mse9UDpg03rarylT/5zDQ+QZTSsEWewam4wN/+PqT2SkrqxFTkX
-         qvDnwxZO8aqhYR6ADNtwCIKBWBZ5Dcg/VEaARyMMkw4z3uWbOdwqb3sdsz3IdJka/t5A
-         H4pWATr9pkr9w7A4U5EO/TGxfbCx1jv8j36bKlR8TWFLnte1hEo8wt90brlP1Kx2qovv
-         t01g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786774931; x=1787379731;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OBKzlS6zgLX7HjDf60a09oLwp2mBkH0MhIIWPg5JjtQ=;
-        b=WcH0YrDpQX+bqG/v5bs9NEITr/OPEaKW2IK89eqJNJ8/gQW6JUIPHXT5HRMWTh8jJH
-         J6MZQaWbxnc6o/ho+YNgDalmbtELPmVTYgcDgCd1g6CVfkZeOGTS49gc9o7Rw1M8zWSs
-         pifFV4H59Gss7YlCbUPP3x0tfSEBN8TSYY98vgwn+f99VwBrq5nvu8F4cVNCSa9DV7GO
-         RYXhfCrKOZIKVP9cclmPFbWT3vYJlmIpfNrkzHoV4/phqe6FkRY7SihDzOfT/j0RlTrK
-         8sgU2irQWloWMcSeWPUPhVkjy++iM+K4yfuktrTHnxA0TciPeWG8W602SYSkKMj1acFd
-         glKw==
-X-Forwarded-Encrypted: i=1; AHgh+Rohmg/sYmDysI+7A4gYLC2qxiJQrhpXr3P7JVIS+iqIWkkfdfwrdEJc6tKu3fAIgjzVFHc1addrgg==@kvack.org
-X-Gm-Message-State: AOJu0Yzf4QYETK6fY4YRVRZR1nloaPkTogfeXxmKF6zjxVZ7embxPqPl
-	aO45NfhWDXaL7kl4b60oaBEXVf9B5wEiP7MnvbFF94lOUbXxSu3PiYLZRQKOPQGclfT/3Er4yvd
-	APcUX/9ytqKoXwaEtFLUDQCGMrmGLE5L7DI7i6pAl
-X-Gm-Gg: AR+sD10U1clt+l5kiC/ZV+nKu5ZIgI1lKxYRu+/PWEk416JVyAPgs+xlO6ua4F3M/TW
-	JLtqCpH8f39EDOWuyOOk2OAuL1zGbP5afiCdoKUI0UEZiUzKpUGBKiS5IT0SVpPzWNDtqxrfcsX
-	Zue9jtOUjF1RFLWw8mK0ePHoUhQi1ssCvYUnYwo1UGzDzNA9YvzSoNu9UbP3VCtvr3pc5tDS5dT
-	SfbQwWDQc2I3zZ6syih3TFyjfl1mpMjUUBD7hDgVeGNFYS3vRR/YiijIpDba3AA9UC6L52lhoOW
-	TcnIwRlLH0ARPIEmM0ExaT85rM2VW9ffz3yb9eshYyg=
-X-Received: by 2002:a05:622a:591:b0:52b:4ec6:52ba with SMTP id
- d75a77b69052e-52d845c0170mr30884361cf.6.1786774930473; Fri, 14 Aug 2026
- 23:22:10 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references;
+	bh=Zr+5zFui5QOf39o7Ryur3tpGLm216jm+csK+nkkbkMA=;
+	b=Y0bx/7e6t2J6o4sp/NWlmOrhe+LM2cFokp8/EOaiL2jn1P3EfT2n3HaBbaVvDirtlsIryN
+	mUFMrHYSjqhGfkSRtpSYnah3X69ehMLJdJ8vingAF6d3GCVhGMXKCcLepfu+tj+JCsJ3ZI
+	yMGVCt7gPet5md+pe/HDhFptax/ruNw=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786775752;
+	b=07TbJ4m312SYDbIIC/2cvm1bwvjINV7wTT1sO9+cwOnRAFwrD3HJKG/+zpGOdakiGAdsAh
+	n0/uh0xBwb4S4Sic25o0u8FQhf/ubWC1mCZS4QbVtVTFiMUBQTxjp7Z8dSR/fxldnmMkwt
+	bAszIqkk0zcYg9V9YYCTECWvw5CojU4=
+X-UUID: 85af23d0987311f19a56ed5b684f684d-20260815
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_TXT
+	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_MAILER_MTBG
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT
+	HR_TO_DOMAIN_COUNT, HR_TO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED, IP_LOWREP
+	SRC_LOWREP, DN_TRUSTED, SRC_TRUSTED, SA_TRUSTED, SA_EXISTED
+	SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
+	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
+	AMN_GOOD
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:5d3b5378-70f7-4ad1-b4a4-a831192e5e2c,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:10
+X-CID-INFO: VERSION:1.3.19,REQID:5d3b5378-70f7-4ad1-b4a4-a831192e5e2c,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:10
+X-CID-META: VersionHash:7db8b62,CLOUDID:565d65f63a1052e78a0145bb396e5f6d,BulkI
+	D:260812214231S0PNYE0P,BulkQuantity:1,SF:17|19|64|66|78|80|81|82|83|102|12
+	7|841|865|898,TC:nil,Content:0|15|52,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bu
+	lk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0
+	,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 85af23d0987311f19a56ed5b684f684d-20260815
+X-User: husong@kylinos.cn
+Received: from [192.168.1.116] [(111.162.215.50)] by mailgw.kylinos.cn
+	(envelope-from <husong@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 2089476727; Sat, 15 Aug 2026 14:35:35 +0800
+Message-ID: <6c7644ac-9161-415a-ac18-551ff1eb6537@kylinos.cn>
+Date: Sat, 15 Aug 2026 14:35:32 +0800
 MIME-Version: 1.0
-References: <20260813093421.135230-1-hao.ge@linux.dev> <20260813093421.135230-3-hao.ge@linux.dev>
-In-Reply-To: <20260813093421.135230-3-hao.ge@linux.dev>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 14 Aug 2026 23:21:58 -0700
-X-Gm-Features: AcwNN1XREKpTOkn7MwudQ1sU-GPxwXHRR1fNjOfp72xmvYqYjGc-85rvjZBIN9o
-Message-ID: <CAJuCfpHBWFZh5yHHK01CT1i-z=OP74kzGobfYskkqKgBBLx_EQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 2/3] module: move codetag section placement decision
- to layout_sections()
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
-	linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 24405140003
-X-Stat-Signature: hwj3zebfahc8kb5dhmyp83scm1kkkmxq
+User-Agent: Mozilla Thunderbird
+Cc: husong@kylinos.cn, linux-mm@kvack.org, akpm@linux-foundation.org,
+ shuah@kernel.org, david@kernel.org, ljs@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, surenb@google.com, mhocko@suse.com, peterx@redhat.com,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] selftests/mm: restore enable_soft_offline in
+ hugetlb-soft-offline
+To: Mike Rapoport <rppt@kernel.org>
+References: <20260812120821.523860-1-husong@kylinos.cn>
+ <20260812120821.523860-4-husong@kylinos.cn> <anx4NBqyMKwqvEGb@kernel.org>
+From: Song Hu <husong@kylinos.cn>
+In-Reply-To: <anx4NBqyMKwqvEGb@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: mj61gbjrnsntqt5odbgpdehbztkw93id
+X-Rspamd-Queue-Id: CC72440002
 X-Rspam-User: 
-X-HE-Tag: 1786774931-250220
-X-HE-Meta: U2FsdGVkX18cZxajGiAN5P2u++Dg/A0M86EMAoklLRkR4dBwJNTY3JR9xm+Ju3K+T4cHXos+zEzdNP+KRs0hLkxRvvAPX/MLeb7dg21I8vtxs0dxqTuStGDmMlaNAgxrLkM1C4HfgZ/8ik1seXRtPS48VpOVEoGyI9a0VMoKyaiu7rCXfyY5DImr4LaiE+Uiobc6Jph8q9h4RIlT9MGfuCAspSJmFdDLq/W03OIXjePEe1wEFPY1w41Ss/iysTuFpUNCtkYbJ4xTO0Gg46AX0eXyQFfv6k5t5oX4CNGcPKWI9P8ZdunKypQAy4y83wDGxBBG1quu/jgAyaojQxVRgLqKZaopCZWT/59j7ZzQIt9MS8diAWVewtxK9KVRa1fiOGzaHteK4A024hHNg8PE/IgncuJvqm5GpgjnDo04D+HoeaLS43K7ARg/tZEf2kQA4z6t/1pVUp4yE1qA2Ru7DrPFF3yKD4D05LeLKMM/JHl8UcTVsW8u/b0wii1GKtZl/jq8EBRQyja4MIYmcKQ1G/Il/AqoolAIE+JN7Dqypia5CLrr72nqgm9KPRFMa8pD0da9ORboibuV6YmKHD6ZS8fNlDfGbKcrJ8K/aUUSaariqRVAuglLCMDnsmxxSbt8hI4O/y6o/E2asEuRiDC4F2J2N6IFTFNFYDgFSVS2qesEZBfH784c+6sOyHGoZYPDBE4iDo/1E4iV4+Z2ZsTAplcmmk06P8bYio/hq2Becd7u8uvNXDLAYL/nPOVbLanfIA+SAoXvKqjYA4Q+0Ln9zJucj1YFHciyBlRhzOrq+vFHTpSJ2GouD70Ph5oDvNKfc3tyniNeF38VLWTKW2johgbzvYg1w563aiTbFK6XLliznbBOcGCOqckqG3wzTt4NAbc5oWaOTOkABGzevB7G01hSP7C72VCFAMHbH+njuToXqY9z5Dm3n2Ff1D3RSHf2nuWYnmMXPLT7uWLCzj4
- 4/J0JnsD
- ujybw+vEAauY8JIg+BR0tyLG4Ci9Y1wpTc98bv+QXNHwXrMJdPgBXs3sbhATYaqZbrjOV+3QlBRY20D+Z6qALPADGoQ51ZDbWVjS/Mk2MEDiRNi+9/ZYdnjz8OmJ51lmv6eyewh0UfaIvalozZ1cCSROyFcZtw6LKE5L4ZAv5v5uuQOOkb4ll0cAJBI1n0Nxi12aPQIPvhvQUDTH7dNP2lf5niLv6Y6VATBzRYq3YRukpvuLLBRwwUZB+kyCGwjB5VPtM/CdqSoH6LBNSL0t2I6P7nx1irWVyopG4JpXIX29sKHO5svNV1bBL9A==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786775749-238101
+X-HE-Meta: U2FsdGVkX1+hVOMT9ooKH8Oh/CogQCi2GaZXfcy2cvH9Hr0Yo4aZnTaE21REPFG3TEGVbYqb6T5udtABv1DzvoERu4psBq+cDv4I/j69kp6rMKxd0igWhqD70vbbbo4VVAjeCutAseylYZ2gk7u66SAuG8hG8+65LpzRBXo1lMY3P1jMuo8FvCZGJfafT2xsV50jfk4GYpZx7nupFA2fgSt0RMqcEt8l7w4HO1TursXnk5d5WAwRnV5YykOt4JJZ76p9wGQH++jFipT5sN0Gq5r9Rs8S87khhqyyZCPcc0t1y2A26cK7qwpxWyJxq4bdTNcX9Td6xIK/dJUfLa4w2nU4SqIvwJbIkbROo9hrTq/ES1uILjkhc0jQRaWtU2gK3znzR7PmKL0H6ykUrc8ws+FMaWXaPFtvGbH4anWDpW6REKhFTR3uuFCowR1Fhu7Gonbe22wn18EiLslBPqt+vRejB5QvXdNph7uNVoznundW6l1H9u0C7dNEWc8QhL5pmk46InzxJHMSDgK0l+xuM4iOUGg3pK4xGMnBOZzvieddyO1c3UEbJxFRYVxxg8qE/ULA2YcTSMWMGMbfCepN8AOLpsHyhvJ0m/8iyMNy3BH1rgq4DuFZ2pOqtXr42DPH7SVvw8kWVCZVmOBcD20vviENptDRkovD+CO1+b+S/oDuUMm0g3DThe8ADXkLOUlC31/0MYGPakH9jagkOs1wPzU0rSxiMmkVBMN2Uh32AD7bgySlNEz1gIW1AuaBsyn9GxIxHReWmRUA2rTcJMk63AoijQttzLNhMhtWEXsQ42ymXNCelQX9Zc0j9Y3nw2a/JbRKr0jpTmpuDGa24KO8sphHQUxZgqJwFlYUaoH1xOAiX4vIsgVyV95D7IIwIEWYFbdVszIc265kX7EDMyCVOgJ50Y6hYzed73cjq0JVWxmGQL3YIwK569oJ6O3iUTWwq7Vuni2EH4GGmVV28zI
+ MAd9C9aA
+ sIv6ZqgvlSeL91UETJhqoHbjYDBqKg3BooCHSihXRxfr/5yzPIjo9PPj7CPb6OhGG4D7hggY0Xlj8nN7kVPujWvisaKhV6gGrF3fcy0hZdKw3FhfUqbdaHUVDUyz1ix49x8MM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,157 +112,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026 at 2:34=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
->
-> codetag_needs_module_section() is called twice per codetag section, once
-> in layout_sections() and once in move_module(), and both depend on
-> mem_profiling_support, which changes without a lock. If profiling is
-> disabled between the two calls, layout excludes the section (offset 0)
-> while move copies it as normal memory to offset 0:
->
->   CPU0 (insmod A)                    CPU1 (insmod B)
->   ----------------                   ----------------
->   layout_sections()
->     needs_section_mem() =3D=3D true
->     sh_entsize: type, offset =3D 0
->                                      reserve_module_tags() overflows
->                                        shutdown_mem_profiling()
->                                        mem_profiling_support =3D false
->   move_module()
->     needs_section_mem() =3D=3D false
->     offset =3D sh_entsize & MASK =3D 0
->     memcpy(mod->mem[type].base + 0, ...)
->        -> overwrites the first section there
->
-> Record the decision in layout_sections() in sh_entsize using a
-> MOD_MEM_CODETAG type, and have move_module() use that instead of asking
-> again.
->
-> reserve_module_tags() returns -EAGAIN if profiling was disabled after
-> layout, so the loader retries and places the section as normal memory.
->
-> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compress=
-ion")
-> Signed-off-by: Hao Ge <hao.ge@linux.dev>
-> ---
->  include/linux/module.h | 11 +++++++++++
->  kernel/module/main.c   | 17 ++++++-----------
->  mm/alloc_tag.c         |  8 ++++++++
->  3 files changed, 25 insertions(+), 11 deletions(-)
->
-> diff --git a/include/linux/module.h b/include/linux/module.h
-> index 7566815fabbe..a02016528e1d 100644
-> --- a/include/linux/module.h
-> +++ b/include/linux/module.h
-> @@ -328,6 +328,17 @@ enum mod_mem_type {
->         MOD_INVALID =3D -1,
->  };
->
-> +/*
-> + * If CONFIG_CODE_TAGGING is on, modules get a .codetag section.
-> + * codetag_needs_module_section() says where it goes: the usual
-> + * mod->mem[], or off to the codetag region.
-> + *
-> + * Mark the codetag-region ones with MOD_MEM_NUM_TYPES.
-> + * It's just past the real types, so it doesn't index into mod->mem[]
-> + * and for_each_mod_mem_type() skips it.
-> + */
-> +#define MOD_MEM_CODETAG        MOD_MEM_NUM_TYPES
-
-Ok, it feels a bit hacky but it's probably the simplest way to mark
-codetag regions.
-
-> +
->  #define mod_mem_type_is_init(type)     \
->         ((type) =3D=3D MOD_INIT_TEXT ||     \
->          (type) =3D=3D MOD_INIT_DATA ||     \
-> diff --git a/kernel/module/main.c b/kernel/module/main.c
-> index ed26f167be84..2337bf604f58 100644
-> --- a/kernel/module/main.c
-> +++ b/kernel/module/main.c
-> @@ -1728,11 +1728,8 @@ static void __layout_sections(struct module *mod, =
-struct load_info *info, bool i
->                          * preallocated contiguous memory.
->                          */
->                         if (codetag_needs_module_section(mod, sname, s->s=
-h_size)) {
-> -                               /*
-> -                                * s->sh_entsize won't be used but popula=
-te the
-> -                                * type field to avoid confusion.
-> -                                */
-> -                               s->sh_entsize =3D ((unsigned long)(type) =
-& SH_ENTSIZE_TYPE_MASK)
-> +                               s->sh_entsize =3D ((unsigned long)MOD_MEM=
-_CODETAG
-> +                                                & SH_ENTSIZE_TYPE_MASK)
->                                                 << SH_ENTSIZE_TYPE_SHIFT;
->                                 continue;
->                         }
-> @@ -2815,11 +2812,10 @@ static int move_module(struct module *mod, struct=
- load_info *info)
->                         continue;
->
->                 sname =3D info->secstrings + shdr->sh_name;
-> -               /*
-> -                * Load codetag sections separately as they might still b=
-e used
-> -                * after module unload.
-> -                */
-> -               if (codetag_needs_module_section(mod, sname, shdr->sh_siz=
-e)) {
-> +
-> +               enum mod_mem_type type =3D shdr->sh_entsize >> SH_ENTSIZE=
-_TYPE_SHIFT;
-> +
-> +               if (type =3D=3D MOD_MEM_CODETAG) {
->                         dest =3D codetag_alloc_module_section(mod, sname,=
- shdr->sh_size,
->                                         arch_mod_section_prepend(mod, i),=
- shdr->sh_addralign);
->                         if (WARN_ON(!dest)) {
-> @@ -2832,7 +2828,6 @@ static int move_module(struct module *mod, struct l=
-oad_info *info)
->                         }
->                         codetag_section_found =3D true;
->                 } else {
-> -                       enum mod_mem_type type =3D shdr->sh_entsize >> SH=
-_ENTSIZE_TYPE_SHIFT;
->                         unsigned long offset =3D shdr->sh_entsize & SH_EN=
-TSIZE_OFFSET_MASK;
->
->                         dest =3D mod->mem[type].base + offset;
-> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-> index 461fa87fbb0b..7481180dadd2 100644
-> --- a/mm/alloc_tag.c
-> +++ b/mm/alloc_tag.c
-> @@ -893,6 +893,14 @@ static void *reserve_module_tags(struct module *mod,=
- unsigned long size,
->         if (size < sizeof(struct alloc_tag))
->                 return ERR_PTR(-EINVAL);
->
-> +       /*
-> +        * Profiling may have been disabled by a concurrent module load.
-> +        * Return -EAGAIN so the loader retries with profiling off, layin=
-g
-> +        * the section out as ordinary module memory.
-> +        */
-> +       if (!mem_profiling_support)
-> +               return ERR_PTR(-EAGAIN);
-
-I think this requires your patch [1] from another patchset to work
-correctly, correct? If so, I would suggest sending this patch as part
-of that patchset since there is a dependency.
-
-[1] https://lore.kernel.org/all/20260812054105.102637-3-hao.ge@linux.dev/
 
 
-> +
->         /*
->          * align is always power of 2, so we can use IS_ALIGNED and ALIGN=
-.
->          * align 0 or 1 means no alignment, to simplify set to 1.
-> --
-> 2.25.1
->
+在 2026/8/12 21:42, Mike Rapoport 写道:
+> Hi,
+> 
+> On Wed, Aug 12, 2026 at 08:08:21PM +0800, Song Hu wrote:
+>> hugetlb-soft-offline toggles /proc/sys/vm/enable_soft_offline between 1 and
+>> 0 (test_soft_offline_common(1) then (0)) and leaves it at 0 when it
+>> finishes, silently disabling soft offlining for the whole system after the
+>> run.  Read the original value before the test and restore it before
+>> ksft_finished().
+>>
+>> Signed-off-by: Song Hu <husong@kylinos.cn>
+>> ---
+>>  .../selftests/mm/hugetlb-soft-offline.c       | 24 +++++++++++++++++++
+>>  1 file changed, 24 insertions(+)
+>>
+>> diff --git a/tools/testing/selftests/mm/hugetlb-soft-offline.c b/tools/testing/selftests/mm/hugetlb-soft-offline.c
+>> index bc202e4ed2bd..35dcf661b091 100644
+>> --- a/tools/testing/selftests/mm/hugetlb-soft-offline.c
+>> +++ b/tools/testing/selftests/mm/hugetlb-soft-offline.c
+>> @@ -99,6 +99,23 @@ static int set_enable_soft_offline(int value)
+>>  	return 0;
+>>  }
+>>  
+>> +static int get_enable_soft_offline(void)
+>> +{
+>> +	FILE *fp = fopen("/proc/sys/vm/enable_soft_offline", "r");
+>> +	int value = -1;
+>> +
+>> +	if (!fp) {
+>> +		ksft_perror(EPREFIX "failed to read enable_soft_offline");
+>> +		return -1;
+>> +	}
+>> +	if (fscanf(fp, "%d", &value) != 1) {
+>> +		ksft_perror(EPREFIX "failed to parse enable_soft_offline");
+>> +		value = -1;
+>> +	}
+>> +	fclose(fp);
+>> +	return value;
+>> +}
+> 
+> We have read_num() in vm_util and write_num() that can replace
+> set_enable_soft_offline().
+> 
+Will switch to them in v2 and drop both helpers.
+>> +
+>>  static int create_hugetlbfs_file(struct statfs *file_stat)
+>>  {
+>>  	int fd;
+>> @@ -185,6 +202,8 @@ static void test_soft_offline_common(int enable_soft_offline)
+>>  
+>>  int main(int argc, char **argv)
+>>  {
+>> +	int orig;
+> 
+> Please spell out what orig is this.
+> 
+Will rename to orig_enable_soft_offline.
+
+Also, per the error-path issue Andrew pointed out, v2 will register the
+restore with atexit() so it also runs when the test exits via
+ksft_exit_fail_msg(), like hugepage_restore_settings_atexit() in
+hugepage_settings.c.
+
+Thanks,
+Song>> +
+>>  	ksft_print_header();
+>>  
+>>  	if (!hugetlb_setup_default(8))
+>> @@ -192,8 +211,13 @@ int main(int argc, char **argv)
+>>  
+>>  	ksft_set_plan(2);
+>>  
+>> +	orig = get_enable_soft_offline();
+>> +
+>>  	test_soft_offline_common(1);
+>>  	test_soft_offline_common(0);
+>>  
+>> +	if (orig >= 0)
+>> +		set_enable_soft_offline(orig);
+>> +
+>>  	ksft_finished();
+>>  }
+>> -- 
+>> 2.43.0
+>>
+> 
+
 
