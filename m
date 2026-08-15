@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02AC8C5AD5A
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 16:06:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4278AC5CFDB
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 16:09:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E671A6B037F; Sat, 15 Aug 2026 12:06:04 -0400 (EDT)
+	id 56DA66B0380; Sat, 15 Aug 2026 12:09:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E18416B07DD; Sat, 15 Aug 2026 12:06:04 -0400 (EDT)
+	id 51DFB6B0381; Sat, 15 Aug 2026 12:09:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D57976B07DF; Sat, 15 Aug 2026 12:06:04 -0400 (EDT)
+	id 433EB6B0382; Sat, 15 Aug 2026 12:09:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AF3046B037F
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 12:06:04 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 218A26B0380
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 12:09:38 -0400 (EDT)
 Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 380244042F
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 16:06:04 +0000 (UTC)
-X-FDA: 85103980248.14.8A844D8
-Received: from confino.investici.org (confino.investici.org [93.190.126.19])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6A5E6180009
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 16:06:02 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=CcePYo4R;
-	spf=pass (imf24.hostedemail.com: domain of include@grrlz.net designates 93.190.126.19 as permitted sender) smtp.mailfrom=include@grrlz.net;
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 981BF1A03C2
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 16:09:37 +0000 (UTC)
+X-FDA: 85103989194.14.73AEE8A
+Received: from latitanza.investici.org (latitanza.investici.org [185.218.207.228])
+	by imf27.hostedemail.com (Postfix) with ESMTP id BCF9140009
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 16:09:35 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b=WzLR1axz;
+	spf=pass (imf27.hostedemail.com: domain of include@grrlz.net designates 185.218.207.228 as permitted sender) smtp.mailfrom=include@grrlz.net;
 	dmarc=pass (policy=reject) header.from=grrlz.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786809962;
+	s=arc-20220608; t=1786810176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=5WQm4FOrSKWLlpnxV/luviAmOHGf4ebZ2NYMpvK6LrU=;
-	b=Lrsi4eHhCKB42/So/0q19HHxtPpYfWrnnGsQ3dfBxhMCojeD/0Lx2Pl8uKlGSVWbCBvETJ
-	xsPqf3U8mI5QKTrDxOG9DU87LcN8eoEJQOT6235wePuxugevvjNAUF6trL03yZst6YP3Km
-	8KyhTdu2FbuaUmeNSI1xuESfveaa8q0=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=CcePYo4R;
-	spf=pass (imf24.hostedemail.com: domain of include@grrlz.net designates 93.190.126.19 as permitted sender) smtp.mailfrom=include@grrlz.net;
-	dmarc=pass (policy=reject) header.from=grrlz.net
+	bh=2HZtJ5MrP8KDGrN133O/JlYL+AqZQq/JcEI5bqzXs3s=;
+	b=v7pnqGxYMtknF1DuJc+iMD6srjWxIOcLq69XJul1Qf1Ff8/gjF0+Vgprt5EuNIYDT1G9OP
+	6dv8NKbOG+/DjzJTkIprfLtbjreC9QZ3B4kXPfcWGup+zVEyfeG3qj+ZuE7yegIO02jjIH
+	wA4WDcbAuPWGoTN4fJbyLHnv5Xk3H/A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786809962;
-	b=J4V8NvyHDvVe/j12hjd5WBgDYqtPYAMH4QxVLN/TxHruXE/82aOea4MfDAasVuEpSv0rVf
-	uZVi6Zb7JPckK77Y4Rw7JwKdOUX0JhcQ6/1bTUHOCAlrQTnsmJ7t7t4lqFxg6MlgWZOYqo
-	od1UV3qPvSh4g97vjugAHCPMQj0T5vU=
+	t=1786810176;
+	b=bXUUdQMiTk0jKxkfdjm5a+z2shxBI4Ha71gY8rRkCIO8muN7+EHFSV6vWCtEG1P8YDKJWD
+	VIyHlNMotRQLTRObUDXVJSn+WtyPvocfTf2Vgb5CeLcNgDBDViFUks+nDNeVg0yNurmJxm
+	EsBUu5Wi+G0XJLrSw22ze4CzZCru9uM=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b=WzLR1axz;
+	spf=pass (imf27.hostedemail.com: domain of include@grrlz.net designates 185.218.207.228 as permitted sender) smtp.mailfrom=include@grrlz.net;
+	dmarc=pass (policy=reject) header.from=grrlz.net
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
-	s=stigmate; t=1786809960;
-	bh=5WQm4FOrSKWLlpnxV/luviAmOHGf4ebZ2NYMpvK6LrU=;
+	s=stigmate; t=1786810172;
+	bh=2HZtJ5MrP8KDGrN133O/JlYL+AqZQq/JcEI5bqzXs3s=;
 	h=Date:From:To:CC:Subject:In-Reply-To:From;
-	b=CcePYo4RSbzzdbeEAv7fwt9PVJLoZVRTCNV37C7615ZhE8ZQbjvvTGcR10vdpStJM
-	 d2i0ajFa3ztqTRcLTYQguz/2w9H2xHWuHgpIwYT6ZGTuceJ4O4OxZdeUD+eVeypMWv
-	 GD+aHVsPkx7LhECOXmJrcUS5XIkUOW2CWYwq25Nk=
-Received: from mx1.investici.org (unknown [127.0.0.1])
-	by confino.investici.org (Postfix) with ESMTP id 4hMkV06bzlz10s3;
-	Sat, 15 Aug 2026 16:06:00 +0000 (UTC)
-Received: by mx1.investici.org (Postfix) id 4hMkV03P6Vz10qy;
-	Sat, 15 Aug 2026 16:06:00 +0000 (UTC)
-Date: Sat, 15 Aug 2026 17:05:59 +0100
+	b=WzLR1axz4j6/twlF8xiR93obSNDUtgr8l7RvUwKkksWtyIFGm9j0fD3+C/SjpWUi2
+	 N6bFjh4d0t6gGIuj+Ysq15rjqzwKtx6VsbBkCl7VDH0PLrEtLDCGS+tEEZkBYUCm7L
+	 mM8oUOI+bDVSVfh/xcHJDrY6XosQG+N1R4BAeApQ=
+Received: from mx3.investici.org (unknown [127.0.0.1])
+	by latitanza.investici.org (Postfix) with ESMTP id 4hMkZ419TdzGp8w;
+	Sat, 15 Aug 2026 16:09:32 +0000 (UTC)
+Received: by mx3.investici.org (Postfix) id 4hMkZ35ZyjzGp3p;
+	Sat, 15 Aug 2026 16:09:31 +0000 (UTC)
+Date: Sat, 15 Aug 2026 17:09:30 +0100
 From: Bradley Morgan <include@grrlz.net>
 To: joel.granados@kernel.org
 CC: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com,
@@ -69,21 +69,22 @@ CC: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com,
  shijianlin11@foxmail.com, shuah@kernel.org, surenb@google.com,
  vbabka@kernel.org, ziy@nvidia.com
-Subject: Re: [PATCH v2 4/4] sysctl: Add 0013 to test partially updated vectors
-In-Reply-To: <20260814-lklm-partial_ctlvec-v2-4-9df50d26e477@kernel.org>
-Message-ID: <1EF80864-F479-44F2-8CD7-28383515F483@grrlz.net>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_0/4=5D_sysctl=3A_Disallow_partia?=
+ =?US-ASCII?Q?l_updates_of_miss-formatted_sysctl_vectors?=
+In-Reply-To: <20260814-lklm-partial_ctlvec-v2-0-9df50d26e477@kernel.org>
+Message-ID: <5F021629-DD85-4941-8263-3C4F51E9D6BD@grrlz.net>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: pwiq733n5uzwtqhquiuxh3z31t5eafnh
-X-Rspamd-Queue-Id: 6A5E6180009
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786809962-517674
-X-HE-Meta: U2FsdGVkX1+QUgjfgOV/vQn/OdeMzzQQPvmCD0k+gFCadyV8pZdPc0xH221T3VF4o0J16aQTAaOXv0F0x+fZHFd9HNVDE+Z/HehnWhXw6Jd6VGXhYbPUuuK2w/VHXaz9aMMpQvFn0+1dqsrQV8M2cvkdcv/0EAm9WNzsxoaB8ZWvi5l4pGh+shKsGHjvbrmV85yU67KzMwAlGMlhl9fBAFR6LAHCa2NcWOvlXQfMHzYHUqMPfTPm9S9QzO3uP9osvUc7oiP8IH74L9DKHTd5ixa/fsoMWSBFri6JCejB0BhU+ER8OT7/UrLwxHP4Fp/rEVfLfQM3wcEHHU97BsFDrJfnwE+GK79EQ73TLI4AYuls50gIVNyzbBWJHR6gq7K34OiNHAXzpJsQ6JWnq3fDplIDBhqQ4sSKMp4k+zP1KBN4/D3N4gtbKXU2hrItNxlORx5cZtyX6yvX5in+P0uo10RXqVF7Ov44i9bf4Iecl/CWRtSe8RkUibfQ3Sy4aS4TNQWDup47cw8QKzYbx07JrBYzdXUIzcdtCP4z/0S6DIFAak67P0F2r7Wc2gAm7EexeeyXT72Pf8INg+dosj8OTKgzr4DTGtfyPY+F1B7vA2vwXE64p1QaUw+9FF9F/yUUF7lFyQX+Pf6S8u9LKLOAkNKc8oDxRzan5fUIGOitcrkanvwE8K2vCvlw7xNZsSa9pOuvGqYiOWZjsTEw/QhuNvtJ4E+Z6zENefDlpmQTiYDq0cyBbdGNFZUr58yHdUpKbuX1GyA4AgyQyXtJrKPsjSSsgYvKJyOe1tfZ56oy5ge5hTXRYdK6yN2+9q9xKnkVp4Ako+r0q43XV+MrKKMbqn/4CQBamIra6BvVxrrPNft/WB58lElIlbtpBFZBbYAxDtoKyVTXR0VG/wE/7qM4Xm6R3CPQHJFfIPTnKuG1Mq752oSrL7EyH0WpLADXlr41Z0d61HPqcTeU9eXMYBU
- MNLxS+Xm
- +syk5kYNSfk/cYaYEkVY/ndpQwJa5+hOGC8hPT5hrf8UALYBC8MwZdDzwj3ZLUUYKabKSnhJWZpPNA+xrK+9X4Q3DKYj4a8sZYP/8IFDRQFwpql9g99q823m+H+mVDj1XfIF29IDofD7UDvnUSQiN+uobIWBfxcCeN3CyApt+gK0c5afbLKRWgrgIIDCiULeU8qRRRAt6JAHKgj3MyuNNWgs7CUGIKCFP3Q0/2Gtp1GU/BmOV9ARRF7cWawmyT5udtj1Sj4KAITXTS9ESQ8x9Tjyh1FJwiukGmTPPVRaSD/9aZdDaqcLzwy1YzxajQmW1B40YidIEiXaQLwozWE8SqnKc6uyeQeEmlPBe
+X-Stat-Signature: 3r1tzdcw3uwtyds8i7prt39g5zid5ie1
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BCF9140009
+X-HE-Tag: 1786810175-957847
+X-HE-Meta: U2FsdGVkX19dLo7ir0sWjXhynFBGLCoCs9kunI44gCbEprcIknZeQ+qbc3rXJMswQc3VltWcX6XUGzl5Ryil74YxKon7Q1fNd0d7a59B79cL8kzzNz1FQwwjnmKqHypYPflQGdiS3fS9JF80jG8ek/9LSgz4ORwyw/M2z0qNACkYMDXipR9TylZ+tD9zvkLu8woDVkMFXObw4lsN6VSQSlGorRMQddX/eKg1kKZ5KO/DbWbLZM9mPZLVSlCLQEYwwM/5ZYf9cev3/J3EAbOXTyNhFY6kGwMvjmzyYLLRKjG2XQzWKsw3jbkU/gOY/HQVmliEbSLuZqWlWIGhJDj593Kjr8c8IhQQRHIrCbG8Vq6U4xi5DyJhcWQ2DN92rhyCOqMRRoeh0aTnqz555VzAK6ppk29F2tPv9wJNT5r6onzKyaWOuqyHX14SYndLxwdFGqMrwg2PbJxvufKtYdexT+idAnxj2Q4k6+s4/hDJuw8nFby2s1e514zUSYVBPMy1mTK4NuH1u7/5xQgkutHX73tj3Z4MxxetpQGPFlwr5ttfhST8nLYAiZ2pLsy6EEPQW8ylWdwQeUOn+sTHyvvFzUNPFSmFADPjRgUMXsVIiNfrIICHnKOYUQ4BZ+uNVZb89xvkUYV1BeXSkpaqQhHtiDLBGcgy0Ij50lDBjE+Sjoqe3EqjGlkp808BMIRKeCz733r3uH/dt58L15GfyqkS5B4/DzYMODnKjNFs0nAMj1PJtDVTCqMoD9zY3IdYlCzS3roesd2wrILx1bUYGsQZ0ul689W2fBllrY7SKV/LkZ6ArDRzhe7HIUeX5TBRxfKPyHup/Gz8Dm1xnVQWMvGSTm3D2B4w/QW332z8/bwX1GbLbvFZ/UazA5dcFTuJZnPISLEx8ihDcNIl1j6QghAy7jcy386k7onvva9ksaOVeMFdKhrIumqg91CQYcod20wOJTj496OUWReV8icL75S
+ NKP9L+uG
+ yo845Kqz13yRVqFiq3UTobK6jRZRGjI8Yo9e8y9TKYX+knamnOgeeTZeqLZ/leIbCcSKJB/q75fvN6Hwfxd0Lwf3X2YaIrBwlU2oWOnYVGimoAIfNBDU8cdGRT53GwrzmPcnoMDQZiJdB5WbZ1oDQx3+IygBfe7uXNtFNJQ91LfVphDiAGbblIA28D++yRnEFhmVebKVJcfiVkZjGJTjg8/V09lemGet1MKLMD6K9NPuT3j/LT3o/CJ25xwWTc1IJbsmG5CV5eAmt2CJbY5XyZUiC6lxuoVCg5Ohj/AaR5e8GrV2nHCJLG3ufaU74I4eb3uvgZ9O9KjC/zxI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,21 +92,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The test covers the parse error, the out of range value and the
-first value failing. That's the right coverage.
 
-The shellcheck disable should say why. The test functions are only
-called through the dispatch string, so shellcheck thinks they are
-unreachable.
+Copy it, only write back once every value converted. That's the
+right way to do this. Went through the whole series against the
+tree, notes in the patch replies.
 
-run_int_array_no_partial_update() uses spaces for its comment lines
-while the code uses tabs.
+Some nits on the series:
+- "miss-formatted" in the subject. mis-formatted, or just malformed.
+- akpm's scalars nit still applies.
+- Sashiko saw something on this one (akpm linked it).
 
-reset_vals() has no case for int_0003, so sysctl_test_0013 calls it
-for nothing. Drop the call or add a case for int_0003.
+Otherwise fine by me, the split is clean.
 
-Nits aside, the test does what it should:
 
 Reviewed-by: Bradley Morgan <include@grrlz.net>
+also
+
+Tested-by: Bradley Morgan <include@grrlz.net> for the test
+
+
 Thanks!
 
