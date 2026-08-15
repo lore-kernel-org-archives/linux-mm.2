@@ -4,112 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B77B3C5AD5A
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 05:58:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B287DC5CFC1
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 06:15:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A78626B078D; Sat, 15 Aug 2026 01:58:41 -0400 (EDT)
+	id 910856B033A; Sat, 15 Aug 2026 02:15:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A29D26B078F; Sat, 15 Aug 2026 01:58:41 -0400 (EDT)
+	id 8C16D6B033D; Sat, 15 Aug 2026 02:15:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 917D86B0790; Sat, 15 Aug 2026 01:58:41 -0400 (EDT)
+	id 7AFE86B033F; Sat, 15 Aug 2026 02:15:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CD6D6B078D
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 01:58:41 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EE8C140307
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 05:58:40 +0000 (UTC)
-X-FDA: 85102449600.30.0C25DA4
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 31BB440003
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 05:58:37 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Y9pW4+aB;
-	spf=pass (imf01.hostedemail.com: domain of yi1.lai@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=yi1.lai@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786773519;
+	by kanga.kvack.org (Postfix) with ESMTP id 386796B033A
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 02:15:46 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AFAE81A0312
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 06:15:45 +0000 (UTC)
+X-FDA: 85102492650.03.CBFA911
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C1D2C180003
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 06:15:43 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=r2HRjIJi;
+	spf=pass (imf24.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786774543;
+	b=EB1DWxO/gSuBrsv6QfzSpHri18/l9PQItTVjPeWdAkSnZdmwWZZm6Xq4iYDEx9MK4SzCJd
+	fBS6ryn6vqkqoFyeUrkWAHxr5Kmm+YObNjypCnsXhBI2gXRaQeQqFICjVoYP+lsk7No6aa
+	DChJSlPOL+EACu2biZ3g0WSs0a2TKUU=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=r2HRjIJi;
+	spf=pass (imf24.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786774543;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bHlllpYGSplQ0P630meBrmRH75/+nl1XJLw2LsJ/LNA=;
-	b=3Y4S45XmqEHuLc/zY54EJvzMmn6yMIPrnKBeQOTM90SW0MF2qM2Piagw7+uQuRNWUFocwM
-	hG+v+UwTX9ZlRvGcvqNSJf1fF2hNYxberTraxA49SXpgTat9QavWfA8d4A5WLE7MVWFDo4
-	I7PeyAlrwp0FLGG8uwIGgtD7IWLx674=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Y9pW4+aB;
-	spf=pass (imf01.hostedemail.com: domain of yi1.lai@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=yi1.lai@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786773519;
-	b=iTdAKzoneKbUFdcduz+TgXKfDiYHGAjXbsKcOdfWPqMYmkMfMw1+Blny3t9iL+gFeJIE8P
-	ox9azhX410JVkn919grmZenRp/+qBpVEEC46C2vJRNtn29sT7OURBbW/lwp49jDDWHIosG
-	Kh6mpvE2p6Mi1vpmeEbTkH68an7bjnY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786773519; x=1818309519;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gjNgyi75mKSLP0qFZKF47roDus09J1ZqRh7z5MgfQmQ=;
-  b=Y9pW4+aBwB9MHBC5oaZoe49Mca4vO9Y6xYurUKZZRxHqtVwFY3PYwAIq
-   bxVj6lAIZCGBz/6ImpFE7nW4KIIxHs/ny4QAT9A6kDrBja/MoQkBISyhC
-   5mViq7HQgOxhUDRA7n25ijkTLF+KWkvAK4GgI5cBGQoHkkzk+K5kznYlZ
-   f7azNu+UGZYbSkIVc/mWZpz+vIpw7tZbh7Wl2YR/ILX25dk03vHs4+fwH
-   0dw8E6N6gQmJcyvcxaH+6aP8Xp1Vk/iQjh/VF9/iujCWDgvhgDvFuRkjx
-   gtI6uup6ziqVqJfDV9EV+X4z8CUa187CnnlNpFlL8tGdc7PR1XTXvyPFI
-   A==;
-X-CSE-ConnectionGUID: vhCHoYrqQ1WYvX20ytuS5A==
-X-CSE-MsgGUID: EUZEEEgjQxqsTxzN54ASDw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11875"; a="87264106"
-X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
-   d="scan'208";a="87264106"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2026 22:58:37 -0700
-X-CSE-ConnectionGUID: uehPhlSGQi6zUjC9n0w1tA==
-X-CSE-MsgGUID: 4PqaEcKTS7G8yfZBQqcEMQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
-   d="scan'208";a="302647734"
-Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2026 22:58:33 -0700
-Date: Sat, 15 Aug 2026 13:58:29 +0800
-From: kernel test robot <yi1.lai@intel.com>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, oe-lkp@lists.linux.dev,
-	lkp@intel.com, Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org,
-	cgroups@vger.kernel.org
-Subject: Re: [linux-next:master] [mm/vmpressure] ea928e9e18:
- stress-ng.mremap.ops_per_sec 36.2% regression
-Message-ID: <aoAABX59IzUXz/Rv@ly-workstation>
-References: <202608131743.c6a7dda4-lkp@intel.com>
- <an34C2N-yqfok2Nn@linux.dev>
- <017721a3-5eae-449e-8b86-75cffb503dd3@linux.dev>
- <an3-aksL0MZPM3ZJ@linux.dev>
- <f330dd75-d9b8-4259-a02f-9e3ff4bcdc1e@linux.dev>
+	bh=CeWrvay8OBGyEYR6j0JzJMygxdhU+kGusNMdV7+ciFk=;
+	b=njnoo2QfgmVLazc1ju22jZPrNYOZd0ewZqB4HtEOqbu4ntb1WUJo/EYyNfW7tBfJViuqBO
+	LzutJPA+tUP2E7viCpZ/mENnkCE7MAhJ8yunrOgDqpMgJSrjJ06Vu3rM4F9ehdEQdOZfb9
+	R1JpR4NzMImcxJLbeZ5MM8gkquW3tGE=
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-51c10e86e52so387051cf.1
+        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 23:15:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786774543; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qwdE9IMZzxcwbNvNJdc3Q8/4AkIslS4z89a0IV42/qJjqpJbpXn2v9F1n+bFhYA5Ek
+         6hR1XhYXk/s2g3InxUiaAoDrJGdoNtxHvETL49Yk2pMoG43CeqjW6JtRSHWJMu3yKFpa
+         bnxUubKMXHf0PLqVrQGaqkZfi3f5cZcocLhdD/qZEjwrQBXWxZH2yojk9Q82jF4ybAGR
+         UjyTp81d86MLcU19RWHyokAImZxbKYSlw+JIfK1CWE2W3s8Bj2jkZ4q0OPiTSKue6K3+
+         tYoRRElNwLZvACH0cCKPlBkJmSKG96Wn46aExMBIGI+ONweeLsY6cfRdF3BvD2eqCIB9
+         dvLA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=CeWrvay8OBGyEYR6j0JzJMygxdhU+kGusNMdV7+ciFk=;
+        fh=F4FSHRSMr2Zk4Ddz1BqtkniFNvyjlEm/ELyDnPqGcZw=;
+        b=Q5+kfbK+4QWuztYvonW60Uutix8FeOP16UBRAhkbHGEs3u6gB2jpIguRgFrbPG8RCa
+         31WZXS0bh4c0mR7zPa2eqAAG0/dKLUoSsl2uUPmqOHfomvXtr5LPB5sMi1plRp4Wh1pF
+         sw0NzG/f6D0lbcDKdEQSYdA28lbU23gkjboNEcV4TZv4ib2qmTBiFQ06ca4/5Thl1RUh
+         HxK4KSxG5pQ8hxcvXlCNoxPuYxZNmCaSRs7G2UpdqOUZ9qQ3ouEj3nElucZ8a/9sSylU
+         uV/YOTUvPns9qAE9GtiRLS8yy3agq4nEgrslqfvE20vI+hdBaimamJAQ8bDY3bhNXxMs
+         berw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786774543; x=1787379343; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=CeWrvay8OBGyEYR6j0JzJMygxdhU+kGusNMdV7+ciFk=;
+        b=r2HRjIJi0XqqGmSJHGdyX5JzydreojmOmUqv/m1SllLEdnmwN53NEF/40ZjTf7QSX0
+         uGgTj2o/0/twLRke6blOhzohq9bugSPKzq2PPfuHJDSXDCHgKPW9sv/fMUaYmOpNhKGq
+         UkwHrtPZYExdJskd8FrXpABA+Gdq+hfsfoNC4q4D58WKVRm4iM1TF0sTkYHmh8eNLnaB
+         O26l2Unt1E2l+D3NDs+/680W6EsjVAeKmfAs/Jziz/A6xoqMlIK3nVWZilUmYldbw98u
+         rAAHPRWYAMC0kBox0+MvrCdcwI2nyu8jZ66xGFxyaqbLBmhSmpt79IdbZXLqO68R68bN
+         Zp+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786774543; x=1787379343;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CeWrvay8OBGyEYR6j0JzJMygxdhU+kGusNMdV7+ciFk=;
+        b=RGHl2lzMvJlfdpmCoYcnVod6BAH6JvFHDirRl1bRO2C0JeezPhPEP2ozNCoMFWJRBc
+         byz97tLjR9d3ztuZsh/NBV7qPZQcIlgdJjPJRZOd3txSojMBPcSf6GO0+Ogvpg0FEynV
+         5uGw7g231stJbEbbRHJNUP8WkGSbfW9ZiaoHmrDZiIs15m6A073Xffiio6dt3XlIXnke
+         avcrdz3As+HCyPwV404FF9wF+s/c1dDz6J4/29CvQXDeh1aeuGNDokZwXTzxWWYQY5Uw
+         kPNh2N8y7T5B8FAxGng+28yHaBFiyB9KHJMrMDDmKhFclC6sAdFXa6OVgHi/A2IcF3NW
+         PPsQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rosy0A1CClVjP/rNXYS9kgeIvXRxqv9bfT1SXfRZtCcK1FcPzut6uSsLtE3LmInDTo1DLtqdV/UoA==@kvack.org
+X-Gm-Message-State: AOJu0YyQB4BoBIrfoymC4MuAFGGkVKZOkQ1ixdglr97v55ijHQWMQ7sD
+	G/2gCqy1YmiKMVyMNrE8D69JbmKAsV7BUTaHYE3jkX+uNnNVfiOccJxsXUfy9nQjbe+TvQfQ6mR
+	CffIO94OPqhRyCCDDUZyLtQrWad4BPd5ltOWVm1W7
+X-Gm-Gg: AR+sD124niqeWBnRFTcCwTKf1P0eDHUvWtDZ1mti2YqdW0uP5IYSqicTtVMBLPFWrtr
+	iH0iAfp4ZXZ+wNNjf7jNKP0h0ziYJDiHlu8mZV2+FL9oyYMZa+aQqzjOI2xP6QL4aHchJE89JPe
+	Cx5UxnaOMYz+cbedAoAuGGrh0j2VFsW3b8DoNLn11jnZzRyT9llFkJZrIvqvqHJQoCopH1C3zlF
+	u2ur/3gQ6YZf3TBeIsq3CIn14xdxrv+ahJHL9VkAXkH/O1W31InV2qdAeJP5lVnh2VvwwThw6iV
+	eBFuR3p5cGxHKYmQ3GloKxTFLssWMYpFkZZTWw6Is5Ixjg+Ktkdbt47WiTY=
+X-Received: by 2002:a05:622a:4c0f:b0:51c:ae6:a57 with SMTP id
+ d75a77b69052e-52d862f6fe8mr30547411cf.11.1786774542180; Fri, 14 Aug 2026
+ 23:15:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f330dd75-d9b8-4259-a02f-9e3ff4bcdc1e@linux.dev>
-X-Stat-Signature: d41nq8hkqebq9cmjt71opfnypincz5j9
-X-Rspamd-Queue-Id: 31BB440003
+References: <20260813093421.135230-1-hao.ge@linux.dev> <20260813093421.135230-2-hao.ge@linux.dev>
+In-Reply-To: <20260813093421.135230-2-hao.ge@linux.dev>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Fri, 14 Aug 2026 23:15:31 -0700
+X-Gm-Features: AcwNN1VOSUdc7S9dQw7NoH9eXwXWzpOpXmtX7H1BYFB9QOUwq4hMXPOjuGhLgWM
+Message-ID: <CAJuCfpHAzhCC1Sx3uJr7kbhBzc7RFqwLhMyjo04hqZz=HBJH8Q@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/3] alloc_tag: skip percpu counter allocation when
+ profiling is disabled
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
+	linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786773517-131401
-X-HE-Meta: U2FsdGVkX1+aTSi6Nb/0o9mYA/TUj7KobJ73zJ1JZC16Q02yJB/CQqNzWKjQrws7PtGzQtGLZVpz/xaOlY6OeNBB3iwY5PYQf1q1TH19BGBdRV665QvqMXhsBeJESqNObBtM3fPromx776AFlznLM6LVtX5eUqNGEWuPIToiHBOZC8AB95OjMsPbPZK2vAf0rSxbu9JoW/p2Y5BIIz9nEvvZSsvrSZ07mlibMhdf8jNT6dEceh/I2wVZyFkeGoXQmJoLbPkCyr9akgmcV4QMJpTW9YOiuNuchggFkGUWyNOl3lpqtsnohbnsxYhkUZrCUOEAymhgv1PfwoNTJn1OlMWiVDrEI01P/J1ezzd44clw/14gHu8ME6fxoNrtilTusCy9RY0gj7eid8Q6zcLlAoC0W+j7Z4ww9CTgituCup8NbcDC/vwexl7M0AYxEG28sx/ONRetjbiwK/2sC0wI2gP3g0J8dLNGIWITY6B6AS7MAwzCVU4QE3hOZCVLkInUjDfPmrEPYabCJRL/aFIm5+kDEoc1XRyY8zVQu2sRjzgoBAzkml6cUKZ7i+v2jhiawUJx54wkLsKCyGctKvsJ1DJZgH3cXUmoNMWeVC1Ux/h/UM5nMKSCGNFXFMqM8Caagjvc93hjjtlPhqY9jF5c/9/mNyP9mWz0XuiCZUyS2cCExXvmIuBrDUQlgoC9CSmZwC+yiryD6FKgEW2Wtg/d0xefIG1w5ZcKisaieTlOBLFapt4R77OSVq6XqDQLSxGUsO9f9MOYSwFmA5k2GcDpThEuSh0tcEAsLNAnqma5jh+/iaabpsvw7HsL+evP7HCDw0WuHD4T95NeV/hlrrOPsKbxefsQUsL+LOkV+2Gh9cMxSnial2MmICjWDtA6Xz19iiPqUnkreqvLcLjUlGFrwpxw9yvFX/DnuYjYy6x+thJJVN+wozNF7U+t2xruhoX8PRJ1XnJJiY7wisYzyz1
- gfj3YDj+
- Dkuxn0bqx918SLz78U1ZpDy0F9W6lEakNPHIshAZFCWOZwW6IJWENIfTEqzn/JMhNajXl5ryNzcR0KhE5In0/LyD3JKa616jI5RVVnoW+WArX/0p/nWsRmFTjULbyDNTQCtYWyqROvRQkUc2eZ0IxbvOerfb1nw21PDxfUdNpjbHRTKA5f01Hr4GIXNFSBMsLNBqJDnil2i0PltkZM+D4Yy+BryueJ/mWBxj6HIiBIQ4c8RE0pmGsr1mG3rHH2Bc1cZRPGEKXwg/d/jv48ntuaW/riXXAEkoywemP
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C1D2C180003
+X-Stat-Signature: kze9shpb3fyztguwffsh659i73ioa65g
+X-HE-Tag: 1786774543-905183
+X-HE-Meta: U2FsdGVkX19P0VD0Zo4F/XwHZcdu2y7/3o9qT3nQ6iGgqnQqVkHGyM30m5hW153cQBmy0QRzEKRiOdzianoOejpsCsO+d3BXHIF4OehFFuSLpcGaSoCyACB8mGEVmNKvFiqdEcC+ujprNfrTMyKjgEocU1g7HWs87PSqhQcn1MDXIhR06nFqI3915JoRNKyoqJPTJ7Vnr/8nSiKpHVGBctTTAla996eG7vgyFdlXI22Q5zTjvHUrjvfb1XxioYFuMNc4dOiFeCE5PjY4kgOXzOmdMg4G/RQmCOxR+hQfx9GLHryoDZN0FmaXIIi04JRlN8yu0ubg2a8wlukqMawDDa7xPhHwS/EAPoZ5JHCblFcLwQcr6gSQ2qipRo2RBxtEtsWtRwM2T9pf1T0odvMZjjMm3Er8IECmzLs33yxpeEDXaHIlaoRfBHIx4OGM4NrDlFd4GWJo7n2scBacSX+LJldpYhrwUHF0upnINRD4jNt4KNckOCDwQ9v/Y6OQqy4gZtjNLLPv/ltwpefGXB8vlZZCrvXpbOzxGzSvjdzeWJhBUxA3uG24/fE2f3TQERDX4ryD9t/io1OYpIbKbEwDr9WRNpbfLb7MdRTm4wXafiFh4X17cKCM1nqH3TIczxx3+ZTf/ERjENtq2P/DGYTgIc/57NBY+IMfQVLxDXX8AWLvc1ooUQFG7hsSE2gY0qD0+uOHiQEbLiAIVM7u1w7XVgglAT0eFNkDAwtAJpOr3F3MDUyX/jcmeO/FJeQ83ETNvzljmWG1io53dVZD8eAsNPmYXsnByEpMSZiSiBX2fQ5zgoPfKxs/xkenXxmQDwXgw2VySl2fKXdOuXdpEp1iUMD9dg/ipOCA8xZnDcL+/WqAWoBE4TZhX4bfia8ljZNmxkdHuY+t05PATGOtlfy+arqbDNcFEgJMhgqOotgvEjon1OFYg1MBQDRqFMsk4OE9p2BUoGX4d9RrA9BE55w
+ s5i5A7tj
+ q6S3KQkPr0gOyNzFmUDai+1iERAP87XvKClPXJQJkoq5W6ncY9XqJPScyloRCHhY7UzQw/xA1F1WDno6SWi8xK6o/pcci4FgFQIA7rDqZdsVwMaK8ypfcsT8so2hd/RF4kHNRFOinItMjyHOwePMpAjRBtZxoRrib0oqhqKcRZe8//E54mYtYWGXPbjgr6uG2ZbKDhN8Jxn1a8Nh70Fq93wfDYEljpA1AuecQhu17JOjsYu4q2U6+EYe0zEsW//Qib6kX0q6+XihAY3af6ONtKPl8ZxntoRLv8uUc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,202 +143,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 14, 2026 at 11:32:09AM +0100, Usama Arif wrote:
-> 
-> 
-> On 13/08/2026 18:29, Shakeel Butt wrote:
-> > On Thu, Aug 13, 2026 at 06:14:50PM +0100, Usama Arif wrote:
-> >>
-> >>
-> >> On 13/08/2026 18:01, Shakeel Butt wrote:
-> >>> On Thu, Aug 13, 2026 at 09:16:22PM +0800, kernel test robot wrote:
-> >>>>
-> >>>>
-> >>>> Hello,
-> >>>>
-> >>>> kernel test robot noticed a 36.2% regression of stress-ng.mremap.ops_per_sec on:
-> >>>>
-> >>>> commit: ea928e9e18da682e9a5bc40aa862bff7ce5ae42e ("mm/vmpressure: move v1 userspace eventfd code into memcontrol-v1.c") https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
-> >>>>
-> >>>> in testcase: stress-ng
-> >>>> version: stress-ng-x86_64-29ce10a2c-1_20260712
-> >>>> with following parameters:
-> >>>>
-> >>>> 	nr_threads: 100%
-> >>>> 	testtime: 60s
-> >>>> 	test: mremap
-> >>>> 	cpufreq_governor: performance
-> >>>>
-> >>>>
-> >>>>
-> >>>> config: x86_64-rhel-9.4 (CONFIG_MEMCG=y and CONFIG_MEMCG_V1 is not set)
-> >>>> compiler: gcc-14
-> >>>> test machine: 256 threads 4 sockets INTEL(R) XEON(R) PLATINUM 8592+ (Emerald Rapids) with 256G memory
-> >>>>
-> >>>> (please refer to attached dmesg/kmsg for entire log/backtrace)
-> >>>>
-> >>>
-> >>> Hi there,
-> >>>
-> >>> Can you please test the following patch and see if it fixes the regression?
-> >>>
-> >>>
-> >>> From 84c0b05b3bc5cf73ee66ead75aafb1ad684462c3 Mon Sep 17 00:00:00 2001
-> >>> From: Shakeel Butt <shakeel.butt@linux.dev>
-> >>> Date: Thu, 13 Aug 2026 09:38:28 -0700
-> >>> Subject: [PATCH] memcg: keep vmstats_percpu off the memory_events[] cacheline
-> >>>
-> >>> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> >>> ---
-> >>>  include/linux/memcontrol.h | 10 ++++++----
-> >>>  1 file changed, 6 insertions(+), 4 deletions(-)
-> >>>
-> >>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> >>> index e78bc98ab229..e25d5b9a1db8 100644
-> >>> --- a/include/linux/memcontrol.h
-> >>> +++ b/include/linux/memcontrol.h
-> >>> @@ -246,8 +246,13 @@ struct mem_cgroup {
-> >>>  	/* handle for "memory.swap.events" */
-> >>>  	struct cgroup_file swap_events_file;
-> >>>  
-> >>> -	/* memory.stat */
-> >>> +	/* Read-mostly. */
-> >>>  	struct memcg_vmstats	*vmstats;
-> >>> +	struct memcg_vmstats_percpu __percpu *vmstats_percpu;
-> >>> +	int			kmemcg_id;
-> >>> +
-> >>> +	/* Write-hot from here on; do not let it share with the above. */
-> >>> +	CACHELINE_PADDING(_pad_);
-> >>>  
-> >>>  	/* memory.events */
-> >>>  	atomic_long_t		memory_events[MEMCG_NR_MEMORY_EVENTS];
-> >>> @@ -266,9 +271,6 @@ struct mem_cgroup {
-> >>>  #if BITS_PER_LONG < 64
-> >>>  	seqlock_t		socket_pressure_seqlock;
-> >>>  #endif
-> >>> -	int kmemcg_id;
-> >>> -
-> >>> -	struct memcg_vmstats_percpu __percpu *vmstats_percpu;
-> >>>  
-> >>>  #ifdef CONFIG_CGROUP_WRITEBACK
-> >>>  	struct list_head cgwb_list;
-> >>
-> >>
-> >> I was currently testing this diff, not sure which one would be better.
-> > 
-> > I was just checking if false sharing of vmstats_percpu is the cause. If your
-> > patch does not increase the struct size, we can go with that as a backportable
-> > fix. I am planning to rearrange fields of struct mem_cgroup more drastically and
-> > have it more stable as future work as we continuously see these regressions keep
-> > popping up.
-> > 
-> 
-> 
-> Yes this makes sense. I did not expect such a big change in a benchmark
-> with my patch, although I feel like the microbenchmark is probably not
-> that realistic.
-> 
-> I think another issue is that its a 4 socket system.
-> I only have access to a single socket system, and I see a 4.38% regression.
-> 
-> Do you know if there a way for kernel test robot to test the below patch
-> on its host?
-> 
-> 
-> >From b862e84e7bd6a54b1546b7f21a6cf991253def18 Mon Sep 17 00:00:00 2001
-> From: Usama Arif <usama.arif@linux.dev>
-> Date: Thu, 13 Aug 2026 11:42:05 -0700
-> Subject: [PATCH] mm/memcontrol: avoid false sharing between vmstats and events
-> 
-> Moving v1 userspace eventfd handling into memcontrol-v1.c shrank
-> struct vmpressure from 112 to 24 bytes when CONFIG_MEMCG_V1 is disabled.
-> This moved memory_events_local[MEMCG_SWAP_FAIL] and the hot
-> vmstats_percpu pointer onto the same cacheline.
-> 
-> The stress-ng mremap stressor exercises MADV_PAGEOUT with swap
-> disabled, generating about 20 million MEMCG_SWAP_FAIL updates per
-> 60-second run on a 176-CPU test system.  Those writes bounce the line
-> while memcg statistics paths load vmstats_percpu.
-> 
-> Move cgwb_list into the existing alignment gap and cacheline-align
-> vmstats_percpu.  This separates the pointer from the event counters
-> without increasing the size of struct mem_cgroup in the tested
-> configuration.
-> 
-> The blamed commit reduced median mremap throughput by 4.38% on the
-> test system with one socket. The patched kernel brings the performance
-> to within 0.5% of the parent which is within the observed boot-to-boot
-> spread (up to 1.2%).
-> 
-> Fixes: ea928e9e18da ("mm/vmpressure: move v1 userspace eventfd code into memcontrol-v1.c")
-> Reported-by: kernel test robot <yi1.lai@intel.com>
-> Closes: https://lore.kernel.org/oe-lkp/202608131743.c6a7dda4-lkp@intel.com
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> ---
->  include/linux/memcontrol.h | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index e78bc98ab229b..215e2e87f42b2 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -268,10 +268,15 @@ struct mem_cgroup {
->  #endif
->  	int kmemcg_id;
->  
-> -	struct memcg_vmstats_percpu __percpu *vmstats_percpu;
-> -
->  #ifdef CONFIG_CGROUP_WRITEBACK
->  	struct list_head cgwb_list;
-> +#endif
-> +
-> +	/* Keep the hot per-CPU stats pointer away from memory event counters. */
-> +	struct memcg_vmstats_percpu __percpu *vmstats_percpu
-> +		____cacheline_aligned_in_smp;
-> +
-> +#ifdef CONFIG_CGROUP_WRITEBACK
->  	struct wb_domain cgwb_domain;
->  	struct memcg_cgwb_frn cgwb_frn[MEMCG_CGWB_FRN_CNT];
->  #endif
-> -- 
-> 2.53.0-Meta
-> 
+On Thu, Aug 13, 2026 at 2:34=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
 >
+> After shutdown_mem_profiling() clears mem_profiling_support,
+> needs_section_mem() returns false, so later modules have their codetag
+> section placed as regular data and never enter the alloc_tag maple tree.
+> codetag_load_module() still called load_module(), which allocated a percp=
+u
+> counter for every tag; release_module_tags() could not find these modules
+> on unload, so the counters leaked.
+>
+> Return CODETAG_MODULE_EXCLUDED from load_module() when profiling is off:
+> codetag_module_init() drops the module's cmod and no counters are
+> allocated. codetag_unload_module() now always calls free_section_mem(),
+> since an excluded module may still hold a reserved section.
+>
+> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compress=
+ion")
+> Signed-off-by: Hao Ge <hao.ge@linux.dev>
 
-Tested the patch on the same test machine. Here are the test results
-from stress-ng mremap benchmark (60s, 256 instances):
+Thanks for the fix. I think it could be done simpler, see below.
 
-	Commit Avg.ops_per_sec
-Base	a33b5c91	57311.85
-Reregression ea928e9e	36542.09
-Fix	582a7676	57089.22
+> ---
+>  include/linux/codetag.h | 4 ++++
+>  lib/codetag.c           | 8 +++++---
+>  mm/alloc_tag.c          | 8 ++++++--
+>  3 files changed, 15 insertions(+), 5 deletions(-)
+>
+> diff --git a/include/linux/codetag.h b/include/linux/codetag.h
+> index a25a085c2df1..88081c618673 100644
+> --- a/include/linux/codetag.h
+> +++ b/include/linux/codetag.h
+> @@ -52,6 +52,10 @@ struct codetag_type_desc {
+>  #endif
+>  };
+>
+> +/* module_load() return values */
+> +#define CODETAG_MODULE_LOAD    0       /* module loads with its tags */
+> +#define CODETAG_MODULE_EXCLUDED        1       /* module loads without i=
+ts tags */
 
-The performance regression introduced by ea928e9e is resolved.
+I see no reason for adding these special values. You could simply
+return -ENOTSUP when profiling is disabled.
 
-> 
-> >>
-> >> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> >> index e78bc98ab229b..215e2e87f42b2 100644
-> >> --- a/include/linux/memcontrol.h
-> >> +++ b/include/linux/memcontrol.h
-> >> @@ -268,10 +268,15 @@ struct mem_cgroup {
-> >>  #endif
-> >>         int kmemcg_id;
-> >>
-> >> -       struct memcg_vmstats_percpu __percpu *vmstats_percpu;
-> >> -
-> >>  #ifdef CONFIG_CGROUP_WRITEBACK
-> >>         struct list_head cgwb_list;
-> >> +#endif
-> >> +
-> >> +       /* Keep the hot per-CPU stats pointer away from memory event counters. */
-> >> +       struct memcg_vmstats_percpu __percpu *vmstats_percpu
-> >> +               ____cacheline_aligned_in_smp;
-> >> +
-> >> +#ifdef CONFIG_CGROUP_WRITEBACK
-> >>         struct wb_domain cgwb_domain;
-> >>         struct memcg_cgwb_frn cgwb_frn[MEMCG_CGWB_FRN_CNT];
-> >>  #endif
-> >>
-> 
+> +
+>  struct codetag_iterator {
+>         struct codetag_type *cttype;
+>         struct codetag_module *cmod;
+> diff --git a/lib/codetag.c b/lib/codetag.c
+> index a9cda4c962a3..8506ecab9ea7 100644
+> --- a/lib/codetag.c
+> +++ b/lib/codetag.c
+> @@ -238,9 +238,10 @@ static int codetag_module_init(struct codetag_type *=
+cttype, struct module *mod)
+>         }
+>         up_write(&cttype->mod_lock);
+>
+> -       if (err < 0) {
+> +       if (err) {
+> +               /* Error or excluded: cmod is dropped, free it. */
+
+IIUC here you want to call kfree() if profiling got disabled. If you
+return -ENOTSUP instead of CODETAG_MODULE_EXCLUDED then this condition
+does not need to change.
+
+>                 kfree(cmod);
+> -               return err;
+> +               return err < 0 ? err : 0;
+
+Here you can do:
+                    if (err && err !=3D -ENOTSUP)
+                            return err;
+                   return 0;
+
+>         }
+>
+>         return 0;
+> @@ -388,7 +389,8 @@ void codetag_unload_module(struct module *mod)
+>                         ++cttype->content_id;
+>                 }
+>                 up_write(&cttype->mod_lock);
+> -               if (found && cttype->desc.free_section_mem)
+> +               /* an excluded module may still hold section memory */
+> +               if (cttype->desc.free_section_mem)
+>                         cttype->desc.free_section_mem(mod, true);
+>         }
+>         mutex_unlock(&codetag_lock);
+> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+> index 0a7b657fe2de..461fa87fbb0b 100644
+> --- a/mm/alloc_tag.c
+> +++ b/mm/alloc_tag.c
+> @@ -977,9 +977,13 @@ static int load_module(struct module *mod, struct co=
+detag *start, struct codetag
+>         struct alloc_tag *stop_tag;
+>         struct alloc_tag *tag;
+>
+> +       /* Profiling disabled: load the module but exclude its tags. */
+> +       if (!mem_profiling_support)
+> +               return CODETAG_MODULE_EXCLUDED;
+
+Return -ENOTSUP here.
+
+
+
+> +
+>         /* percpu counters for core allocations are already statically al=
+located */
+>         if (!mod)
+> -               return 0;
+> +               return CODETAG_MODULE_LOAD;
+>
+>         start_tag =3D ct_to_alloc_tag(start);
+>         stop_tag =3D ct_to_alloc_tag(stop);
+> @@ -1002,7 +1006,7 @@ static int load_module(struct module *mod, struct c=
+odetag *start, struct codetag
+>                  */
+>                 kmemleak_ignore_percpu(tag->counters);
+>         }
+> -       return 0;
+> +       return CODETAG_MODULE_LOAD;
+>  }
+>
+>  static void replace_module(struct module *mod, struct module *new_mod)
+> --
+> 2.25.1
+>
 
