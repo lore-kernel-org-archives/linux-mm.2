@@ -4,92 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36815C5AD5A
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 03:54:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD066C5AD5A
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 04:16:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C4B86B0332; Fri, 14 Aug 2026 23:54:51 -0400 (EDT)
+	id 74E196B0333; Sat, 15 Aug 2026 00:16:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59C576B0333; Fri, 14 Aug 2026 23:54:51 -0400 (EDT)
+	id 6FEDB6B0334; Sat, 15 Aug 2026 00:16:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D9046B0334; Fri, 14 Aug 2026 23:54:51 -0400 (EDT)
+	id 615076B0335; Sat, 15 Aug 2026 00:16:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BEE06B0332
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 23:54:51 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A4B771602DC
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 03:54:50 +0000 (UTC)
-X-FDA: 85102137540.23.D327E7F
-Received: from mta1.migadu.com (out-159.mta1.migadu.com [95.215.58.159])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3FD14A0003
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 03:54:47 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=n6vNuCnq;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.159 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 386816B0333
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 00:16:04 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ACF9E1602EB
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 04:16:03 +0000 (UTC)
+X-FDA: 85102191006.09.06E9E99
+Received: from mta1.migadu.com (out-28.mta1.migadu.com [95.215.58.28])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A1F8E100003
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 04:16:01 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=G5mZEqQ6;
+	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.28 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786767362;
+	b=J9IpxBHFwcER1dd3Rp4k1wM+nY/dEMnHCoY6jIY98ml3uuv562RnSk7GyM7aQo414/1PFi
+	FPfSww1TN4jCVKDD1sYaFs3Gz0YY6Z2L8HysqYufa5DDmGQZ95Drie5aBRkSMNQmXeMz4B
+	nX24OZGHCVtYoRQKmcLUBjS5OJKBJaM=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=G5mZEqQ6;
+	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.28 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786766088;
+	s=arc-20220608; t=1786767362;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dLrBt+uq+d03qzd5+hG+xXWr+Otm8On+JAXxs5+cV98=;
-	b=RiLRbD3xBhm6cJL60fIdTuOuV681aBxvH2ReyF65EY/c8+LyR4QZRUJ3eqAdSuGTcu993I
-	0omgx8fSokqePvGL36EtIyauI8xlIPbtdEeioqAGI34Jh7gSS+wDj1bM67fjG1iRksCokq
-	G8PGPYAjcJFPMfU4ECbAyPbk0PLRN+0=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=n6vNuCnq;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.159 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786766088;
-	b=ljShVH754q0Ezn7hEKjv/DU1or1jqJuqdqnZLIS2gx6pDvFtxnNa6Yo3OAzg/PcnT8FkAL
-	qU1rozI/XqY+hnYYEplYN30gGDg9hEcvpRINSsypncZzsWDDcmGfYJT4Td7T01yrRItxY7
-	KxI90xxGvhTeEEeHwFMgpm5NW4v/24o=
+	bh=y3K7b6ckx2Hltas4lYepUcEXu3vNRV1wOWoPphH5tTA=;
+	b=7Qp68+iZF4CGJ3rfo32g2XqLwrsRWNpf9htXlHV6+M3zYEQdmEv0vIlM1AWn5oGi0UeCqX
+	dE38KdTVl20WNSPKys2AwisFi2XBOLzynHkPJmvrdPLAG/UTS9LtftbJwwwS2FAiGOjOMj
+	j9lI4bsdQUnBFEUfeZUxhpQo1676LDM=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=8l7ix46u22DBJHyDAdgQxSxR4YiD9zuO4qj39ojr/7w=;
+DKIM-Signature: a=rsa-sha256; bh=y3K7b6ckx2Hltas4lYepUcEXu3vNRV1wOWoPphH5tTA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786766083; v=1; x=1787370883;
- b=n6vNuCnqlI+pUIgmT+1QhowfklOkFkZVaBsLd0sqdwQ73kTDDww8x9/IGcVEghlUSSfL4KNP
- CXPuhZucti2Llk3SjptI3lYKb/84QB2F9sEuTtD06+KgD8Kxu5rI4rCumuY4lXEYdoZ/Cs5i3QF
- 3OCP5YVG8aYRdGJTF1BQciwI=
+ t=1786767359; v=1; x=1787372159;
+ b=G5mZEqQ6LnD8bSDJbWEXDKeLE5ZYVSDmjjWsYAUu/ygOFUgoitVo2j7uhwWyKlbDoV60AOq7
+ aqnvdU7Tcx0Lc8GIT7jruvfhlwTof2bhhVgksqTZnf0m8EHNaoXxqlO8o62FoM2VKsgiSUwNhOk
+ Rb2+U00Ju6i8A6p0Wk/0HeX4=
 X-Envelope-To: linux-mm@kvack.org
-Received: from smtpclient.apple (2409:8a00:1832:cf0:a88a:e36b:332d:205d)
-	by mta12.migadu.com with ESMTPS id 0ecf74c5aca00b18;
-	Sat, 15 Aug 2026 03:54:43 +0000
+Received: from localhost (183.241.20.126)
+	by smtp.migadu.com with ESMTPS id b647dc149dd61193;
+	Sat, 15 Aug 2026 04:15:59 +0000
 X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH 1/1] mm/hugetlb: keep max_huge_pages when dissolving
- surplus folios
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260814083027.1419487-1-xialonglong2025@163.com>
-Date: Sat, 15 Aug 2026 11:54:29 +0800
-Cc: Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Jinjiang Tu <tujinjiang@huawei.com>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Longlong Xia <xialonglong@kylinos.cn>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <A277EA38-31EF-4252-BA17-6B8A18DB6174@linux.dev>
-References: <20260814083027.1419487-1-xialonglong2025@163.com>
-To: Longlong Xia <xialonglong2025@163.com>
-X-Mailer: Apple Mail (2.3864.600.51.1.1)
+From: Lance Yang <lance.yang@linux.dev>
+To: seohyun.kim@outlook.kr
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH] mm/rmap: synchronize lock and unlock target in anon_vma_clone
+Date: Sat, 15 Aug 2026 12:15:51 +0800
+Message-Id: <20260815041551.84041-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <OS7PR01MB139142FE16EC63B892559D40496DA2@OS7PR01MB13914.jpnprd01.prod.outlook.com>
+References: <OS7PR01MB139142FE16EC63B892559D40496DA2@OS7PR01MB13914.jpnprd01.prod.outlook.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3FD14A0003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ea7qgfwcpj5j7yndkrctgu9g4x3m6mkx
-X-HE-Tag: 1786766087-740539
-X-HE-Meta: U2FsdGVkX1+8+uyZ4so/TIdYBKi/hcci6ieYw1wlfrJaKgQdmnu5kiwZYWY8CYxDKHH7/gQen0Caod1dch6BR4vNhL7No/nI3EJ9xnh7SQfjF83Gup86iFLU+fS25yjEMYiYr9o9C9bvaF2uf12JrTCjZEXqBofaSJofEbNDMcGrOVynEM8dcioxK8cjbN2H4d4sstZv1HkpNCO+ouWLGRjO0S2Q2hbhaLezmdp6JuAerTJEOs9Ka8jqjWuyWhKe8mrRbAskg0AXBJAUxO+sF/XMZ/CbHtBwwSLAI1/d1ijtnL21FS+gFmB2Bpo8K8U/HnQvlWdmCVk23mYdPJ42GkiaVcf6rL2R5nxFKezAgPa5dodM8yD9NCeQA/8vLcAvwwMPsv118YtKGqDQNsbkSgkZKdFVeVC6RysM8VkyP0r5Sc1IYldvtFmvCmUswdNfeJ5iPoi+hWhP7jJsW++q8ncoPTYr7ceBDAUjDLs1QpugeCZRJiSUznM57MAxhM3AHS7vYSkPeNzHLVBizdmT2GGf46czwla1RJf7mnXZaToSNuqsqg6LgFSO0g0NNvPK8BrjQVNqfrgSyYl3dkN2duTCBOiQLe3YVpScPm7uozuze8IIwCgTFhS+Oa9nJBqyaRnlLbkrDALyPae4bhjZpJ6spDAJvFyCcI9pa4EBB4OoHaRjy9cCs3lMwIzwdPI3slCttEVJCA1d6S/RpwLOFMUbMLQMnfLLeXwfL77sj8gWHxme7MBkmAyq3Bs3w6+K63+eRApxDRzZ2PcgmMm0TIZzSHEpEBKf65dsRdQ03qLdA884uwV1Dmcu1pACNhfHSXSsyrZ75UF/QW426SoDOVSd4kaNwTGxzN+SxCQew5CaqsoInW5R/Ml9P74vXl7vYxysWxn8I++BbJDLBNUsgebvgcoXzxHoS76WfIlLdF99WVB90jAvJ63/FB35/T8NRlv8w7iiutWU6gNXUoM
- ApTk9TCi
- L2Vnfwd5zYrk+9kwiFvSezsRccIPM0yQnq/HtGnkTC/CurWujQw4T7kooNvbDRn7yCknmymt12rt/U1KnMUxQdS4QqjsJxcCmdZJoFLzWr3BPzQSPDMw9PbV+ScZ08lsc3WAuSnRUrdPk41aGDpgkXwFfu5b2iNzdG2a8EsHRNpu3v16+loYFFNrm90Sh8oYvM/htMIqj6ZN0hnvl2cONXljvsb9B6FXmxxlzy/dm2nRexQgchxDh+Azi8E75GDIju63T7Q7hbc1rqCKeTHjPeHlVtsyea55ZPRhc/gL7i6WI6psbaU1LevU5N8v63j085oBNsKohwes+mkh+QDn8x8gToSY7GvQZfZAucMbT5PF6QG5IGNGRFsdQiw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A1F8E100003
+X-Stat-Signature: 5dgbsbu3wiw8wnu6fqrj7my7k3mkiybj
+X-HE-Tag: 1786767361-804493
+X-HE-Meta: U2FsdGVkX19Z39oyAfEiNETNtMeYYRnPinge9rqOEUQ7umWTwmucOkuD9mNYlln+7dTzr33ZpDEmoyrqhngv4KJK6Q0Anus90jjhAl0lZXtcel5KePFRPApac6zCUiPvGCdLfrV+rbq7gBaAPgeQ/32EHwVPB3eem7avvCUdsKO9ci1rJriGELJHzqApNpLl0g1ulHkiSLtf1hqKmtz1CgC7jG9KxcJx72s5A406KPcARzD4EDkD95C+g7k0IG3+26f64pTE5Xzn03h+hcwgSQG4D5MWSvD+jXCeCtFOIvK/nCcifwcyBZQgvgL05yTWZ5OR/MN92xtCIgDv+0/qPvm74qbR7Ya1o3IpD5UiRXxbd8CxFowhZc08tInSzFZ7dpE+Ms2rDIf2+OKMPwQYQSCAZP9Pl+9Ul+MCMg4qliE483SRrDYHbTRMQdzA4wTZwdjOIlWA2Z08oLUuijT7X/rUqVrxgRhCdsiVf/bUBr44VpaREN9eIU7L5i4TV/Ab+cgNx0sRvcDlLyddsRnQtXNb5wCgeFVzxqBRHj6jJjjaa4Vw3h3UQsoGWlv1V/a08G4TVIXTSaGo6qFe2/nYBJ2/LjDhntftLN6/ss0M8ebZzgptMWEfL6wz0bxW/beh+Wd+V4orUdtvU/zSTUgodiBGwjX5uwXCNS/xdnfSIeLRQ85L6pOFZ4b2hH4riDKaw4fgJBphCi2vYdvIjqqXCrBmC/OnfO/KzeXQzavhn+YZZM5/pTunicPpIAOuxHOZ3sY52Tc0SnGoAwDeDZQYiN44af1Trva5iU14msQemgtI+0LXUHctNI0YUW1CqP+zue4UfsTUOnnfs7RGRmggX+9BUNswPKRsZz3atYMl/dWNBpidHAqsYgZJVZKTfsGJToKrKF3LyENQ0aRT0GO8SYwtXGUUmP22iMjVSLa7c/ZtEoXgdh9BjtYjG3JzYM+fdEfBlwDdAEgSFmR2WZY
+ 5G/s81fC
+ qzqh59RECmaR3KkdbGaYv286CXN34WFkVIRS1t399LzZYWu2AKECF9WzoTzJ1KiO1f8QmtAuR237dmKIuYZ4PCLvRyUvXelu9k9u2eJzdOuZ4NbPbKC1dS88tXqg29qKwya6wuJWh4mvA57lEGj9xqkRZm2BMyt2NAr5KhwfaeHKYHh9qSu06pUg2SDJULDJz5GeWrzDOWKw4GtYVcAwUlaRHG5CystfB2U6LYrI4FLcSKaKohGN9E28NYX9FAmtANS9LDJSY9+nrijOzq6jko2jmZakY57uoOULV8B0Gl6dwNQfQIZ2TJuTcJzKgc+MFcNh3bciYuiq9FwcJVKua+GoLT7KMeZRMoeYxked8ZHf0Sg4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,29 +100,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+On Fri, Aug 14, 2026 at 03:30:51PM +0900, Eric Kim wrote:
+>Currently, in anon_vma_clone(), src vma's anon_vma is assigned to
+>active_anon_vma and is used when unlocking anon_vma after linking new
+>AVCs. However, the anon_vma is locked using src->anon_vma, instead of
+>active_anon_vma, making the lock and unlock target inconsistent.
+>
+>Use active_anon_vma for both locking and unlocking.
+>
+>Signed-off-by: Eric Kim <seohyun.kim@outlook.kr>
+>---
 
-> On Aug 14, 2026, at 16:30, Longlong Xia <xialonglong2025@163.com> =
-wrote:
->=20
-> From: Longlong Xia <xialonglong@kylinos.cn>
->=20
-> dissolve_free_hugetlb_folio() can remove a free folio as surplus when
-> its node has surplus pages.  In that case remove_hugetlb_folio()
-> decrements both nr_huge_pages and surplus_huge_pages, leaving the
-> persistent pool size unchanged.
->=20
-> Updating max_huge_pages as if a persistent folio had been removed can
-> therefore corrupt the persistent pool target and underflow it when
-> max_huge_pages is zero.  Keep max_huge_pages unchanged for surplus
-> folios, including the vmemmap restoration rollback path.
->=20
-> Fixes: cb402bbdabca ("mm/hugetlb: fix surplus pages in =
-dissolve_free_huge_page()")
-> Assisted-by: Codex:gpt-5.6-sol
-> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
-
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-
-Thanks.
-
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
