@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6C39C5CFDB
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 01:59:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6B6FC5CFDB
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 01:59:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F3B46B074F; Fri, 14 Aug 2026 21:59:20 -0400 (EDT)
+	id 5F48E6B0751; Fri, 14 Aug 2026 21:59:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CA826B0751; Fri, 14 Aug 2026 21:59:20 -0400 (EDT)
+	id 59EFD6B0753; Fri, 14 Aug 2026 21:59:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 292746B0752; Fri, 14 Aug 2026 21:59:20 -0400 (EDT)
+	id 48E296B0754; Fri, 14 Aug 2026 21:59:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E45A66B074F
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 21:59:19 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6E119402B8
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 01:59:19 +0000 (UTC)
-X-FDA: 85101846438.08.E9B2E79
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DF296B0751
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 21:59:22 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A4E9EA02F7
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 01:59:21 +0000 (UTC)
+X-FDA: 85101846522.12.A14A6AF
 Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 64AD740003
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 01:59:17 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="v 8K+fLO";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=cA0akQKf;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	by imf01.hostedemail.com (Postfix) with ESMTP id B649F40005
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 01:59:19 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="C gdQW+J";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=Ku1e1ZdD;
+	spf=pass (imf01.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786759159;
+	b=cFPXBQsfNOVQy2WH94vetyTN0X0pJcAxRsHKOQ5q3i4uDLcejylDEaOCsoIawF/iBxV9OR
+	3N1nS7k74VF8ZHs1duYWYojdHzyTiuy7wC5mzDkgaplYd3Dd7GDFitq8qtEeyjY1rbpLfV
+	9Cy9hMhTnL8VtBhcjMBqIH2mgQeR4BA=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="C gdQW+J";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=Ku1e1ZdD;
+	spf=pass (imf01.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786759157;
+	s=arc-20220608; t=1786759159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bljFEbJ6nOpcyGugcFKzpM9ttTNPFcr/ZQQGmFBGNGQ=;
-	b=p4dgSVhgGeNNAkoljnd4y8RNjVKD6XZIftMuI7431lcsAVEWucWBdZ9iHSnO/fn9ROuc1L
-	EHy9bkqqCGnxQ2G0EFBE1asQWuoyhaKJg4bazZrMf1E1h2gBfQqNi0up/n17cvWCCGrQnd
-	n34Q0oZaBkndP6oZwyDP17MZq+28q3I=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="v 8K+fLO";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=cA0akQKf;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786759157;
-	b=Fio1aS8SaSHY7j0TdOlyFPkp43mSS0qtmW5GBznFIqZzKRT6vLiP19p9XTRByZfaK7hTGp
-	LI+9gqHVOs+lOWxEzoP+7bc7EI/Ma0B+sBDHMyxB1lyWT1OK4FGuJR/bnoZmmc6rGJsktM
-	/eIBtIvPxmj6hjKnLUlRsIU769v+GjY=
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfout.phl.internal (Postfix) with ESMTP id 030B8EC0222;
-	Fri, 14 Aug 2026 21:59:17 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Fri, 14 Aug 2026 21:59:17 -0400
+	bh=LgG13P0WQQyCBdBYOJL0T47tEW0jH9jShvZjUp74c7I=;
+	b=RxtdLJnFBv4U0G5CFpA5+7tU7Oxw7+6fZBnTkCwqj+q4+K9itjqdI6Tt36TKmwonyJQHtJ
+	3eRfG8I1l2gV7/j9aT3ksxmZl7toxTwt/0zlSBfzV9O94tVfi9OWq5rtZ6WBR+e+y0lxLJ
+	0Te085Nd7KnBXSc39cCb+w5P3wRkkWI=
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfout.phl.internal (Postfix) with ESMTP id 452B4EC0223;
+	Fri, 14 Aug 2026 21:59:19 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Fri, 14 Aug 2026 21:59:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1786759156; x=
-	1786845556; bh=bljFEbJ6nOpcyGugcFKzpM9ttTNPFcr/ZQQGmFBGNGQ=; b=v
-	8K+fLOCozrKSLZYkHw5wvKkubbHtkGy4qBB01a/I2nfGUKJmpYOKaISYKiPm+AF5
-	GveDWj8JXLDbSfkHMYVogaB/ZIJQBHFexFkr1HikMZ+nvKFF7TrX8LLrTr+zkdEC
-	HcpOE5paeofRUkNPUG5ZZqrRjQPZYJ17vhbq2ljFrWFxt/ZjL+oVB50OeErSUmGc
-	PFC6vEjlcz5RUkAn/T2/AMkRF0ZqFbO9R4WGdQQUDy3eR2HdnIT2IoCzvuie+UDJ
-	JV58kBmZCKDI0W1a4PSdZ6y4sRdkRiuZFnGX97+ERsRmT0Mx65XSz+qjJlkE0Vd1
-	8vdYphfoc1J1xvAIG41sA==
+	:reply-to:subject:subject:to:to; s=fm1; t=1786759159; x=
+	1786845559; bh=LgG13P0WQQyCBdBYOJL0T47tEW0jH9jShvZjUp74c7I=; b=C
+	gdQW+JcxJmpuInkt1ol9tNRCxUZmZA25NEmIzkRIS8KKN4Yz342KBwmMj2w7GVO8
+	jomEzYytrPXUhNhKQMVvuJ3NeKxvFK13xpt/kgYIE29Skm3NaxRzNwuO16CWPjPu
+	S7UJ0E1joYJwL0Aj4AbekRoES+ZfNke4zfULB7Ghs3NcW4e6UJ2z3vcNKh6eZks6
+	08Qgt017uRZI+sRhiF8wSfLTrX6t2FZWJHvIyhhJcPhcslHKhoX9SE+a1nAWwd4w
+	8botglqSk/iDwjmIVRUWqxPJhFuLMQQGIIAy230mCI5wa8rWLA/+FIgsiJe1IfwG
+	Gg3s1SlXbi8kUe+m7wxIg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1786759156; x=1786845556; bh=b
-	ljFEbJ6nOpcyGugcFKzpM9ttTNPFcr/ZQQGmFBGNGQ=; b=cA0akQKfu38IBZl4w
-	gV9Ov1ersw8ZlDu4zmZ4150TVSoLkM7I9Qss1DGin13bmPtPcgX0K4P3SkH32+iQ
-	67hhkc4pjiXqWzT3UU9OwyYUb5K2TlKc9k3bwuylTpd9HLgHGRWbFT9rW0Gv5+MO
-	0Ohk8UGeuOxvXFzQmBQpkTfv7X4grVIVkABWcDoV4mOJnL5r4iA+7HxD/sxT4pMD
-	KZKJ2UfJDJkZa+bZMdOoW2xHX/GIAWkTVTywyanPRmZTHeyEBsA3efcM+noWn6ZL
-	vZ6Df63xwrM9u+UW4XKOpnw55mvDTZH6QRolpfoaZAyks+ulRZPqQk+shhFElEMk
-	n5LJQ==
-X-ME-Sender: <xms:9Md_amQnouJf3SFBt72totxHPPOcqNMwEKqmHZu-UyO6NrtlbemyTg>
-    <xme:9Md_avvkyAT-qkNdOSjVI-G7OYNj1Qv0Dm0gsxgj6eHiuhBxTnykp9APRfQr_IjpD
-    jUxyAqqgJ9RtBImFGzm9h8iKgNbPxtI3VXK9-hY_OwS5e52pOr0HqA>
-X-ME-Received: <xmr:9Md_asVAZJHxjODmiE_uJnuODqAek-RtZBOiQOQHSbtYV1a5qHfgjIe5L6A>
-X-ME-Proxy-Cause: dmFkZTEYpEQiBdLKlCaLp317TOYqYwO99jnuX4YrBujo3RuW+IIGXdYj4qE1ezcGRvbtOZ
-    hc7RfnfkdlTehb5Dkvk4VZTcyRAqm2CcEjaldkIQshIttrB2HSeWyAKQfsR+ykmymFv8qO
-    aC/+wh3joJiQccaWn5NjVrqLVVMYdoVO37A5ZL6SnR75seJlCquk1NTOiA0EvXHIVSJ25Q
-    iFONSccd/wEzNfQZlOvvQQf5bCKiGIALXd0Rd37Vcnrh56q8DfWwmvEu2ZgBGSMa525iaP
-    HkMF5MKO3LDiNiHXJVHjo5f/L4XJttiAOfdXhljkaHgZI649okv5M81/eeF8HfhCZr1USB
-    aFDwzaDkfOm7MheaHSu0LnQkdQIwPXvaU0CQJ6NRlHYca+Szys49+C+KYF4TupoV0LnHl9
-    4oZHEL3wpxshS9kAwizxlp8iJnvvqoORWaf4t/+w2sr70KqtTeuQNBxMGtA6+n0hV1Bbs4
-    kUiKpye1DmC2Z3IY+5BCqeqlSxHA96oGURes8rVJevUEfVEdY2gZ84ack6+02xHVk3wkKg
-    MCfp5WjQhdx+11zRGO7zRb+mvvFoOEu4JGm+agYo4SaH6Uz0HkHI9pRvk3F6fCs6OR2lTy
-    TGwbWLIoANh0cEv1dt6xM/N3WfoyEI1ftOiK+Z4robHef9T3VSKUsgOcnjsw
-X-ME-Proxy: <xmx:9Md_armiWPfJzwArAMQkEQnFO3c5soMJn_op_d2U9QTVMu_vioiJ2Q>
-    <xmx:9Md_anDRQzJhngG-6nQspCYRRoEvNiVRc6_XO_VaJQO65kqAIoToEg>
-    <xmx:9Md_ao_ek4ekg6lbfyx_jlh58EsUQF71TdztknfsfMzg9yCt5S1fzw>
-    <xmx:9Md_ahRjrxFotXqbIhKU_wK9J1ZhtSJbuJaFFpfVRyqvNXX735gUFQ>
-    <xmx:9Md_au1TrEb3Q34XFxg4hdz-ML_VsBeN2orE7WZR69bx2MglxaB9i0Xf>
+	:x-me-sender:x-sasl-enc; s=fm3; t=1786759159; x=1786845559; bh=L
+	gG13P0WQQyCBdBYOJL0T47tEW0jH9jShvZjUp74c7I=; b=Ku1e1ZdDPyHtg2rcI
+	r2U/q7Hg+TiBVWuAW9EEfj9efA+oj1zwHGR+it846TTNXWG9mQE9PjHvQP0jC39r
+	zSoq7GotYkA+FzqNmrQqcuDAqzFdDhQvSaZ8G9ObFX8h2sDoHDefVQIxKm5H8Y1d
+	rtG0dGQrJUNygXM1X81xmtUsTsxM1h0iLqQApO/iZHvkBhtx1kmSy7hViFuwY5Ui
+	lSGb9nOweCEyOb6/vCnzB2ov+96yTqORv7Vmmk7viIziuc5vc6zCUEB/A2shzmCL
+	BwPFwbX5Udxs2ISIckSJMwLtbi3DRBPXrTBphyp3sfg6fuAQvZcEdpw0z95uMjBw
+	4r6vg==
+X-ME-Sender: <xms:9sd_aoMmzNHKpR3KIgvtjF-Ep9J8Z2ojFA9N-m_WbUiw-kcNMzGhbw>
+    <xme:9sd_ai5fdKey-Icw_BNF5NAlfZUk5HciJ2fv1trwqYpwt_mZKAuHR4My6afqJG6Yb
+    uYGC_E2_39Yk4_W83-j5GtFTLZ5q91slvvbAkTMEPqgxpO59mfjJV9b>
+X-ME-Received: <xmr:9sd_anwaNcXs-0jK5liElml7gwpEFZnCT2CK6vPrRw7y9tjS6w5p_3y8nn4>
+X-ME-Proxy-Cause: dmFkZTFkzjFsAsDS7jWvo8tVKWpCqxoPadMTBhe5gqM9L8x58RJwkgUd6ef20LiiZWkVJ2
+    5XQFhBj/83jOdOO/Ql8fjehU8OJYV5xIu11NhtpuSlnR0oerfSUAVFPgI11Kw5ramX9VWq
+    n08yQGhgo5srNyqhq1wQoX26nhsBi0/kG/kW3aJyoHPyWIE8LEdKOQSb0eQSt/HvnaOXE5
+    UcIyVyC42WtFkuUGaM3UI8X0We8hi8iW/Yy96suQXEqLNayQSzJTP+/kt+gGyLyNBuaXQP
+    ClJKWCE1EuRQ5KlZV/VIT/qKrfIiWHiKuiXCdDyNa4K7qcq8xZMDqhI/wNpN/ytfSmuiC9
+    ASDF64uDYYbJcKpkthtCvX+lL6hbpkE8rcBGht8D6sa5z3Wt/7XEw1SzEiJdE326cyseW0
+    C4UxUzzt/UaE7luBGDD7sTDLHv5DOkHTzgs1a1G23kMi0QipbeAo+uojtkKGEyV1ttU1E9
+    2GwrULNZCWkoidglMm4joCnVsrGWrN5jEtdvnnC7T+RL8Kbk0g5h1XcbA/vJJ6kuYy8+Z5
+    xtj/YfjsvJRrWkzRquVToRNe7Mj19b1w1lZ+y9a7DsIoR7l6OOPPWlQJWwhPyg2WbL+EyR
+    U4MTWsj3igdF1mDl5oVUQW12b2JHGbnAWyVl/npAQUdDcFRMPj/i1qntecmQ
+X-ME-Proxy: <xmx:9sd_aqS_kxE9i6az5uQab_w0lSvATkW3XHyNfFBpik-3teBjGuvqyw>
+    <xmx:9sd_an9DDuxqhVQ1Len7gljMBODwLB-li_-7S1iejOcrnAyi0iQk8g>
+    <xmx:9sd_avLoE63So8Jpq8E3DY2eHj2Z4PDhakZKr6FLjswcO4R_s1YOFw>
+    <xmx:9sd_ajvBzH8PHD1wcLkYqKCUfAMDXcmnyHjowzyheWQI0m5UUzOaag>
+    <xmx:98d_alAv27ZZQCZgCJcAyFsH5ZELwd5bFK6zQ4eCq6SRc_qSoVQ9w5bZ>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 14 Aug 2026 21:59:16 -0400 (EDT)
+ 14 Aug 2026 21:59:18 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -126,22 +126,22 @@ Cc: baolin.wang@linux.alibaba.com,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	kas@kernel.org
-Subject: [PATCH v4 05/19] selftests/mm: make the swap cases' swapout reliable
-Date: Sat, 15 Aug 2026 02:58:47 +0100
-Message-ID: <20260815015901.1236937-6-kirill@shutemov.name>
+Subject: [PATCH v4 06/19] selftests/mm: stop khugepaged during the MADV_COLLAPSE cases
+Date: Sat, 15 Aug 2026 02:58:48 +0100
+Message-ID: <20260815015901.1236937-7-kirill@shutemov.name>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260815015901.1236937-1-kirill@shutemov.name>
 References: <20260815015901.1236937-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 64AD740003
-X-Stat-Signature: 7wg9ctobtsubo97y8wyrstqdtygaxxt5
+X-Rspamd-Queue-Id: B649F40005
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786759157-419165
-X-HE-Meta: U2FsdGVkX18moMM1k8IEbRom6+1rBOAJ01uzJBxE5Eh+3azD6Rw/ZTRHjm2ygfgKXpbFyJcq1lPyJXxxnG9AwSNJRDf2dm5Xu54acFkH+rCFp+1O4penCei8DnVCuZUh8Acm9WeVkXdD5c655uo8hZ+FYqKP+dbZE9Mlc1qS/VSIABh/Bw6xIBoSKeCrOc7Ky/j0As3N4sO3SMnqzHANjclmf3OYudehzIahzzxu2buUVoY2ixm1yiVnYz1VtD7hLGozvV4RABkM6QK0gbcZiawjMYhsLucv9VVH0XgdGrqPsHjCcMEun2j4o8S29c6lQIk3AjN+dvzKD2fxazjIP7thCpSTBhjiIvB91cmMVmExluO/+5eFu2udwR34fy5DctwMq0ijnLktUHsD/+6z7ZkeZmoG+sPghBAdrOFMWNrF8wZs48or2lUElC2hiQO7Mu1accJN5NBnpmSKY72xhzAWWn6GWSMRZ0J64WH5NE6OkWBsx4vcpjn/CpvG3jkaNRXrhBcP3pRBzyUieS4AC0czRwZO2iblQhcn7DR5xO2NJunddKFCYBR6lFshgny8Sq7Tai5vsQQQ+o1B46VhEu8YXUS0p6GmlpNZeljRZfAwIihQ8eZyj8m5Ojbh1cQRtJzcmdkI/l+jx05O43+FZkIpoHozKPm4sD2XzrP/OvH1FScW2mtFKf673w85RYwxii/iAOwGjr86NZYMzXDWsdv9kVXZTZ9vXNb2pBdUKxXC2szZt9MVIiu7Sj5Tr+dp6bC/q82zve+WpBDJPA9N4x8kzMd7hQE84v0yyXyDhmy7GvU32hW+Sy9YUgXesgzwnp9fhKGuu6QTk+F4b2rdXTktQWPXozm0aKCKTuYp5PVzlwhcX8C5GxIiQOhEXKMG/YQSpvu1pu4I2YQiZjagXcf0pN05NnSdaInzJfSJ0ZisgkkZn/dd1qlBgWx6daYdgzAp7jT0MW/zHpW3xDW
- 4W9sSf5W
- XTWetDhfwjJ185qFHh0UX3Ca4eLAQBqGRqYvn2GWVKCI9TZ6jksqkPebEC+3fDAHBKn/sb4xaGrdq3LrGoa0oFV+S8Gyjk0NQarbu9+Msnes5kK6tVDMUc6UnTj8zm8ixFC7xVxVBgzS+34bYldMerYPctyXsrbSdSPZfNvQmXCcSXv1BOixdF+antkphLXaFpyoZC3fi2TVo0MDRvKWKZJBxMb7Jou8k5OTuNBNRSjqgKV3F4hu2RsCNozpmznr+Hpbv89+4qxaQ0Cif24cpGnIT/x4Zy7AxQObKwxnsvUNEhCIw1soyAFyjvTZ/vjS0WsLlQxX7cRYGkHUd4haOSmnrbrEKXESmryA9tIt8aifWIxbYeT+pClckX+zVB7+i55O/hQncCZ4tIXSeISx2Kr1by3os86S3R9+8BK/2ozUFQPaaFNqoH+sRWeaMsKx3XKFeLy89/TYm65EqBmscatJgSMcTSkk9u3ZValCndkIjXD+/Iu+89NRqd6CRNUq8V1Qd
+X-Stat-Signature: 7yu57pq1zh7kg4x1qt6az3rojdo8dm6c
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786759159-315807
+X-HE-Meta: U2FsdGVkX1/NS3FxqGWs4f770zBnp88Zx75lSOgMZg6vqSbHDYQx6L89oB37UrG6L7RD/0o3BVr/0sa5jylhiXsDtmcQshBCWlGW6y3wNVe/toxIwUCfY5Iy1gc6ddkZKXqlkv75s6kQozTu8lzlLgYK7GsrQDjVgiq5Lm0haLL6qA1K4AWmWuI3Ruae5ntyLgxzYI4XnvEcWEaKKZB3QeHi79YcvPLhGMWjk94TAhZsa6ydjEGkYxyIFdi1OXpikkBXJ855CxcC45vK4gajQ3ZbfR9C2FHO7HdPQRaIPKdbUtT47PXaJK+vMPZipSEVUWerAdZgUg/Njj+w9cYPHqdlzbxhnhmXkCXc6jH+eOd2eGn/w5t/BM5DD7cdjkdJHOYdU9v7VbJnWJgPRYk2+Nw1wMWwAoNqJf0Pz24hE3bnslewzpfLcyAAdPkt/9GyxODXz9P35YfYCzUJBHPFu1nWghJJjwyHZIn868lcsv1Ww7L6hgE6tE7JZ7Jk3Y3CRgJE1TrPNr41AYdCCpClQiZmHC/TPYYwPnlj0zNlCsWVhNa/uqjw9ujkf5vtzPNL7I69tdwQjm5b01LckYsLrdX4Rz6W6M8B/83Xz5D3DvoHFMuirj1E4S/yFN+X4CnOWN3m5Cn8Ms6nxnRkAAxwCGphEYyYoad26tJNFVH06VnZggGm4XCBPWIvbPYOBJrNYS1LZtXM31oLqOuhcI8fro4Q5kW34i97vGUftiJd2qlu+YYLVMxBlfGoNvB6TNzcnrIXeEECgjV1KZbltgLwM3G5Vs4CWT+RwBUp2Q2dVYaj0K5GWeLpKPftg/qKUAzrEiPExqHr4MgQ/wGU4rdD8wIbCk9WLHTEOrC0yiwkWDzqms15wcUTlKq+zvj/vaNYtbE2bwP4xGG6MrujcgE+cVl5awOD4khYTN0Va+XaS/4zU8z3z1t0qdOgmVcXoREDQdmry7ym3akgDWNSMXM
+ wvKprjhJ
+ VI+I3tkVnfdBN+HBbbODlqZhjZoKT9s011V9UklOul3qzMEA/I8RAI91N5hsMGgKi1t4wm7zgU03ecDtYZkpTIJgfa4SoVjYe5S5mngeCgon7aCypMfalP2opFrejNRq4JDKDQ+EVAkDEWqxoTnZ7J1uEDEtKNB0L9CdSsQW4yk7RIh5jHDRU3eHJbmlcC7ufLVBlzNLVVpzJNrkzyxTCnkW0gBIXFefsi9t0gwwkomiTMS5or4iWWh/Jnh5sUuaKBgxnmMcaJ3IHCSks2sR8t768kSBZiav2yOxXK8smGCYS8DR6lDyt+Ru2Ns6ipdAr4SvMm8ZwcEwtlyg0YI4mI0IX0eM0jeYM7+3XqfIu9v7RzPGo/+R5OytC1O8l4Vsj/BsL689DqMDPpHaPu104DqZftzl7lDMJIKl9oOhvVO/VegsxFPNxxUtVVDbUky1ChJ8v361M6BIKMI7FS7khd6tqnAyA6dcEEhvN/PSZv9jnjw5DTjZUKcyAjA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,128 +151,59 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-collapse_swapin_single_pte() and collapse_max_ptes_swap() swap a range out
-and then require smaps to report exactly the count they asked for.  Two
-things keep that count from arriving.
+__madvise_collapse() turns THP off before each MADV_COLLAPSE, both to keep
+khugepaged out of the range and to prove MADV_COLLAPSE ignores the setting.
+It clears the global controls only, which is no longer enough.  A per-order
+control overrides them, and -s leaves the source order at "always", so
+khugepaged collapses the very range the case is working on.  The case then
+fails on a collapse that was interfered with rather than refused.
 
-MADV_PAGEOUT is best effort, so the count often turns up a moment late.
+Clear the per-order controls too.  Set them to "inherit", not "never".
+khugepaged honours the global never and stays out.  A forced shmem collapse
+takes the order it builds from these very controls, and still finds one.
 
-And wait_for_scan() leaves MADV_HUGEPAGE behind, so khugepaged is still
-working on the range.  Collapsing a range with up to max_ptes_swap pages
-swapped out means reading them back in, so the daemon empties the swap as
-fast as the case fills it.  On arm64 with 64K pages max_ptes_swap is 1024
-pages, which is 64M a step, and the case loses:
-
-    # Swapout 1024 of 8192 pages... Fail
-    not ok 10 collapse_max_ptes_swap
-
-Ask again for up to two seconds, with the range held out of the daemon's
-reach while asking.  The collapse each case runs next puts MADV_HUGEPAGE
-back, so only the setup is affected.
-
-If the pages still will not go, skip.  A machine with no swap, or swap too
-small, full, capped by a memcg or busy with writeback, is not the kernel
-under test refusing.  An error from madvise() itself still ends the run.
-
+Fixes: 9f0704eae8a4 ("selftests/mm/khugepaged: enlighten for multi-size THP")
 Assisted-by: Claude-Code:claude-opus-5
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- tools/testing/selftests/mm/khugepaged.c | 53 +++++++++++++++++++------
- 1 file changed, 41 insertions(+), 12 deletions(-)
+ tools/testing/selftests/mm/khugepaged.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-index ec5c36a19d92..7eb9db0005a0 100644
+index 7eb9db0005a0..0008862e7cbc 100644
 --- a/tools/testing/selftests/mm/khugepaged.c
 +++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -219,6 +219,41 @@ static bool check_swap(void *addr, unsigned long size)
- 	return swap;
- }
- 
-+/*
-+ * Page the range out and wait for the swap count to say so.
-+ *
-+ * Two things get in the way.  MADV_PAGEOUT is best effort:
-+ * shrink_folio_list() leaves a folio alone when it cannot reclaim it right
-+ * away, and one still under writeback from an earlier pageout is the common
-+ * case, so the count the caller asks for arrives a moment later.  And a range
-+ * an earlier collapse left MADV_HUGEPAGE is one khugepaged is still working
-+ * on: collapsing a range with up to max_ptes_swap pages swapped out means
-+ * reading those pages back in, so the daemon undoes the pageout as fast as it
-+ * is asked for.  Keep the range out of its reach; the collapse the caller runs
-+ * next puts MADV_HUGEPAGE back.
-+ *
-+ * Failing to get the pages out is the machine's answer, not the kernel's --
-+ * swap too small, swap full, a memcg cap, a folio still under writeback -- so
-+ * callers skip rather than fail.  An error from madvise() is different, and
-+ * ends the run here.
-+ */
-+static bool swapout_range(void *p, unsigned long size)
-+{
-+	int i;
-+
-+	if (madvise(p, size, MADV_NOHUGEPAGE))
-+		ksft_exit_fail_perror("madvise(MADV_NOHUGEPAGE)");
-+
-+	for (i = 0; i < 40; i++) {
-+		if (madvise(p, size, MADV_PAGEOUT))
-+			ksft_exit_fail_perror("madvise(MADV_PAGEOUT)");
-+		if (check_swap(p, size))
-+			return true;
-+		usleep(50 * 1000);
-+	}
-+	return false;
-+}
-+
- static void *alloc_mapping(int nr)
+@@ -550,8 +550,8 @@ static bool is_anon(struct mem_ops *ops)
+ static void __madvise_collapse(const char *msg, char *p, int nr_hpages,
+ 			       struct mem_ops *ops, bool expect)
  {
- 	void *p;
-@@ -827,12 +862,10 @@ static void collapse_swapin_single_pte(struct collapse_context *c, struct mem_op
- 	ops->fault(p, 0, hpage_pmd_size);
+-	int ret;
+ 	struct thp_settings settings = *thp_current_settings();
++	int ret, i;
  
- 	ksft_print_msg("Swapout one page...");
--	if (madvise(p, page_size, MADV_PAGEOUT))
--		ksft_exit_fail_perror("madvise(MADV_PAGEOUT)");
--	if (check_swap(p, page_size)) {
-+	if (swapout_range(p, page_size)) {
- 		success("OK");
- 	} else {
--		fail("Fail");
-+		skip("Could not swap out");
- 		goto out;
- 	}
+ 	ksft_print_msg("%s...", msg);
  
-@@ -853,12 +886,10 @@ static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *o
- 	ops->fault(p, 0, hpage_pmd_size);
+@@ -564,9 +564,20 @@ static void __madvise_collapse(const char *msg, char *p, int nr_hpages,
+ 	/*
+ 	 * Prevent khugepaged interference and tests that MADV_COLLAPSE
+ 	 * ignores /sys/kernel/mm/transparent_hugepage/enabled
++	 *
++	 * The per-order controls have to go too, not just the global one: a
++	 * source order left at "always" -- which -s does -- lets khugepaged
++	 * collapse the very range the case is working on.  Set them to
++	 * "inherit", not "never".  khugepaged honours the global never and
++	 * stays out.  A forced shmem collapse takes the order it builds from
++	 * these very controls, and still finds one.
+ 	 */
+ 	settings.thp_enabled = THP_NEVER;
+ 	settings.shmem_enabled = SHMEM_NEVER;
++	for (i = 0; i < NR_ORDERS; i++) {
++		settings.hugepages[i].enabled = THP_INHERIT;
++		settings.shmem_hugepages[i].enabled = SHMEM_INHERIT;
++	}
+ 	thp_push_settings(&settings);
  
- 	ksft_print_msg("Swapout %d of %d pages...", max_ptes_swap + 1, hpage_pmd_nr);
--	if (madvise(p, (max_ptes_swap + 1) * page_size, MADV_PAGEOUT))
--		ksft_exit_fail_perror("madvise(MADV_PAGEOUT)");
--	if (check_swap(p, (max_ptes_swap + 1) * page_size)) {
-+	if (swapout_range(p, (max_ptes_swap + 1) * page_size)) {
- 		success("OK");
- 	} else {
--		fail("Fail");
-+		skip("Could not swap out");
- 		goto out;
- 	}
- 
-@@ -870,12 +901,10 @@ static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *o
- 		ops->fault(p, 0, hpage_pmd_size);
- 		ksft_print_msg("Swapout %d of %d pages...", max_ptes_swap,
- 		       hpage_pmd_nr);
--		if (madvise(p, max_ptes_swap * page_size, MADV_PAGEOUT))
--			ksft_exit_fail_perror("madvise(MADV_PAGEOUT)");
--		if (check_swap(p, max_ptes_swap * page_size)) {
-+		if (swapout_range(p, max_ptes_swap * page_size)) {
- 			success("OK");
- 		} else {
--			fail("Fail");
-+			skip("Could not swap out");
- 			goto out;
- 		}
- 
+ 	/* Clear VM_NOHUGEPAGE */
 -- 
 2.54.0
 
