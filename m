@@ -4,92 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4C67C5B572
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 00:36:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9896AC5B572
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 00:38:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7C666B008C; Fri, 14 Aug 2026 20:36:40 -0400 (EDT)
+	id 7C0916B032E; Fri, 14 Aug 2026 20:38:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2C956B0737; Fri, 14 Aug 2026 20:36:40 -0400 (EDT)
+	id 771C56B0330; Fri, 14 Aug 2026 20:38:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 969D06B0739; Fri, 14 Aug 2026 20:36:40 -0400 (EDT)
+	id 6887B6B0331; Fri, 14 Aug 2026 20:38:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 66D5A6B008C
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 20:36:40 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EFAEE1C0BBC
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 00:36:39 +0000 (UTC)
-X-FDA: 85101638118.21.1668EBC
-Received: from mta1.migadu.com (out-98.mta1.migadu.com [95.215.58.98])
-	by imf25.hostedemail.com (Postfix) with ESMTP id ADE02A0006
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 00:36:37 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZXtZQSeP;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.98 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C7116B032E
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 20:38:39 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B640FA288A
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 00:38:38 +0000 (UTC)
+X-FDA: 85101643116.25.03A011B
+Received: from mta0.migadu.com (out-152.mta0.migadu.com [91.218.175.152])
+	by imf22.hostedemail.com (Postfix) with ESMTP id AC456C0004
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 00:38:36 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tWfwiQO6;
+	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.152 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786754198;
+	s=arc-20220608; t=1786754317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=svj6eOFrSzzgJ1SOMS5+gToyyJbmaJHTkL+aw8mGFXw=;
-	b=vSw7XuHqfmOc9stV1IMMHc/XMtjWaoNaAPuWEIwO4ahA8OrBVGECekGMSkp+w3yyGJulFY
-	61xc7sJ67f6KaX4YshcPGWg0RJPHOw/nphLZvSVSc3ldyTBD69mPXLz7yGi8sBI1QvRFst
-	fmopUm9abgcIppww1kq1oPnUQ6UEaVU=
+	bh=COZfGlZkA+F8qfY+ts4BzwM7aozbYLRWFXOYMsCiIGQ=;
+	b=wY5R1lhUR1m4800C4IabBIo2DGfq2oPvaK3UKyoQ0qHZfLfDL0DBczt4DW03jSGEY3XDlH
+	T4j/m/JThxZOEAzflHsQNN42IxXYgSL886LdjctRebtWfdQhllO3UjWA9UbwZcgdLLYtmV
+	0ZwcwiV3wBLHneQuwiolfkUcNWWWO94=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZXtZQSeP;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.98 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tWfwiQO6;
+	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.152 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786754198;
-	b=oXD/8tFR35l4NI8w/Lt1IUHyzbYZCE1x12ArDbsfkxQndH3hI73h0yph2S5eqprWLDEf4T
-	NyGrM9rEsGLxKiC8yfbaRhPISqz70uNdjRTJud6+0f4DMlKxEWLsekZlma3G0Cw3jp+sXH
-	2TIKJOLmBmSc6B2S+9DhYKkF+fHs28E=
+	t=1786754317;
+	b=YzHE6SMrLBEpLoyQhOzdZHrVqq1axyFBgOaKCokxmtWes3pxVqiqAk3zLyBKOruJEueKN0
+	MKJGg02f9y4jVZuLdLxBXmSVElHBMFCOEU1tVRlq4Z+sZu6Gi7GooNzDWrs/8LaXdtdoUq
+	6S60usgsYypvO1E3sYmcw3cwVdmwioQ=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=tQFdd/qDklLAKb6V+af2UY+3ml4uiTf2rWfzA7UGu7k=;
+DKIM-Signature: a=rsa-sha256; bh=sM7q98Dlk5XbykTDQiACBDmjl2R/gtu/mzNUYNNIq/w=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786754194; v=1; x=1787358994;
- b=ZXtZQSePINP6hmH8ZHrgbAbxxJ2mLa41IjkEm2dUXKLUcHfyBWppffUu/E0xWfmOvbyNqyjl
- PMkAD5Vn2TlQSod2eMCZxJVzzu/dffreRYPoVDTYh2IlWXVKeV4T66p8x4by9Bnx6lFNO6eGS19
- /HpysRbRvp2+SrfXcqgXh5EE=
+ t=1786754315; v=1; x=1787359115;
+ b=tWfwiQO67aZItcVWXNy4V8/jTq4Mzo8GJnnmRKvlHYY3uLIyOrlbPkSmQDR3nW8jiCLEIkXw
+ RQLWjQXBpiWmH62OgXfhGrFBwmYE1k2aZzAiWCQKW5BXOv5zDUI/ndqksUAQcp6SA5kmrwOAyrk
+ uBKhbNPMRX4HgZXE+mRhTCAk=
 X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2a03:2880:10ff:6::)
-	by smtp.migadu.com with ESMTPS id eb90bf85938a14c4;
-	Sat, 15 Aug 2026 00:36:34 +0000
+Received: from localhost (2a03:2880:10ff:5::)
+	by smtp.migadu.com with ESMTPS id de1cbddc7a5009cc;
+	Sat, 15 Aug 2026 00:38:35 +0000
 X-Migadu-Flow: FLOW_OUT
-Date: Fri, 14 Aug 2026 17:36:32 -0700
+Date: Fri, 14 Aug 2026 17:38:30 -0700
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Barry Song <baohua@kernel.org>
-Cc: mambaxin@163.com, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, shakeelb@google.com, muchun.song@linux.dev, 
-	akpm@linux-foundation.org, david@redhat.com, v-songbaohua@oppo.com, hughd@google.com, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	gregkh@linuxfoundation.org, jose.fernandez@linux.dev, stable@vger.kernel.org, 
-	syzbot+e12bd9ca48157add237a@syzkaller.appspotmail.com, David Hildenbrand <david@kernel.org>, 
-	Kairui Song <ryncsn@gmail.com>, Sasha Levin <sashal@kernel.org>, chenxin <chenxinxin@xiaomi.com>
-Subject: Re: [PATCH] mm: swap_cgroup: fix NULL deref in lookup_swap_cgroup_id
- on swapless host
-Message-ID: <an-yt4a6td75VvHw@linux.dev>
-References: <20260814074705.939721-2-mambaxin@163.com>
- <CAGsJ_4y+kGUH7TjKEGU+hbwCotHeubNdbJtoBExP+Ya-Wf3fWA@mail.gmail.com>
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Muchun Song <muchun.song@linux.dev>, David Finkel <davidf@vimeo.com>, Tejun Heo <tj@kernel.org>, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <linux-mm@kvack.org>, linux-kernel@vger.kernel.org, Tao Cui <cuitao@kylinos.cn>, 
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: Re: [PATCH v4 2/2] mm, memcg: fix memory.peak reset clobbering other
+ fds' watermark
+Message-ID: <an-073JtSRWeyhr8@linux.dev>
+References: <20260814033005.2481920-1-ridong.chen@linux.dev>
+ <20260814033005.2481920-3-ridong.chen@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4y+kGUH7TjKEGU+hbwCotHeubNdbJtoBExP+Ya-Wf3fWA@mail.gmail.com>
+In-Reply-To: <20260814033005.2481920-3-ridong.chen@linux.dev>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AC456C0004
+X-Stat-Signature: de8c5rqcgaeegbnzp534zgwe1e514m7c
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ADE02A0006
-X-Rspamd-Server: rspam07
-X-Stat-Signature: m1ru4uws46n5k5kz96owoksm4hheof9q
-X-HE-Tag: 1786754197-357541
-X-HE-Meta: U2FsdGVkX1/XiUXLNi4BC8mloWLZyfbIFjPKykcHRqdIOX9tt/CDCTt20cNfTAOszoubPJQ2RM3ovp/VdexzspTKqdslcYuGGRzd0fnBi7QG9BalI7PmOOrImRUPgeFiBZIu91Mf/1SjsEBN+sPP8A4ALJRHd2aeaIZe/s7dGduOIvK6sVfZPurHxnkG4iSDYKWf4HdeTueSNpI7g3GLSsDDzqFkIK9WIrY7tlCeGJTMtabOel85a6P05i3uFl5mWWjGEtn23GestsTd8EhpCwzJyL1h4cSo6aDZVBBFUoSTjXaJULkQ/j7ZLwNugfjOhH3a3ui0q6lPlh8/TVSNfTNwcwc4x0GS69X66NilLbP4U17fk/l1Ws46BzY/WRmXSKw4j09BXvVEWVFvxP3HT7zf8IgnJ6n7R1+HSwlFOD4Z0wVG0InfNB7Qk3hhXr2LBx2oMw3nl/UZ8JRExPPr4igT456m3PieQzKEl+6WF3gEujYmrCZmWLVYF9n1S14RkDAFnpxcqsxJzL2Oo23m5tbNasr8X2ZYxiDglLHd4bP8hvq+/83xo3dq6Ciw7kfWqc/S/LkEETF6UpqriESNi4EiEIcLJjDU+zppByGxycMDOEpoQKQ9RyJ47BYTpd7y/pCfIH1Aed/h1KPdijv7FBgAs9sQOzSQKa3k221ejGcS9B/YL1R06bWfnsTq4RX5rC2a/MDOcTc+pH8q51pBufrEh5HitVM6qvNatnI2rDvN+lHUWYey/3zvmU0QhCpH5GMeA0zEonmOhXAaORduYYwz11Y+xRIvFTFddyE8DcQfcameDpPFeH2w5Av4pALkkmyx7gSzxkeDW7Q6QHeTsfwA3dMxV4k29ahC7yB7TCzQLJ+LQzZHQ9t5HaIaECkJ4nooWrDz8GlqFN0nlSaspBRUGTv8mw/E1oBhD/vVDnWpWBb3CwvERlvnm8X0irjuLnNzFUTd+qCa/6S9JSP
- teMcnwDN
- vb17MaG7CJWGyJmz1W95O4/fttfNZa5313g/jzpXsD9KcEk4nCq9yJ/LIbJcyZBQOoZfIhmoivTvHQcjnI9VeQ+NBDwSEgIWAqQuglDCPWfMBHH843SCk4AhYQBVbM/C2bNx7d3aclgBfwkjqnWGodwOM4AtCIgmPR9qbyBAdLE4A9ia4DskWHCBpaELaF+s0iaMbJ1YkTd+79nz1wXUiGLfqTq9CyUrdYnx9nq27MJRUKjRNvv1HZ1na9J3fepOFUJedtz9X/f2URZMT75nNnMSF6lcuCM7DG7KnMH5iOzgwgXqGrtMPoTe5hP/G9G68Cw0NJd37kGRixE+6DB+REjo12T0LNpiCKhtdBrp82Ye86mgxGrQZszRWKvhdHRAp8N5HB+EtnU1twOOEGMmlXdWkXpGMVV2EVQ+870ab0ahFS6O8Az8UI+70kjJsz/eXv9KjcA6jp9pH5yXKGPqOx6iXtJCrlHS9C0kjPf2IlR9QAIdZMgv4ijqFfQcw9Y42RARoWVnPsQBa2la4Dd5gjZCFIgxm47iAGgFZYkhkguqdjZc=
+X-HE-Tag: 1786754316-804006
+X-HE-Meta: U2FsdGVkX1+rq7XFaAckonkFY1PxzQqt0//Zq+naSLpLshu0APHvP+cmwdUyIWZGQQ5mEpvIQwBnP7mC0RIli4/KlHVGSaABqsBDCbI9URlvmcIolqzvdxTaTp7Qb5MOvnPaDFExFNPJMSHl6+phnPVpWibOCSOycrlCEdEZDFCFNXlNnBWa53bVU+jvaGZMBWsGlEq9I+H+VW+gTtTLEF+OE0WRwgYmGXfl53/D4IW/G/+kFBDTl6cJubFJasIv+6BVC1ZSrEHTpFYkQ4yaICTg43/n9YflTwgp46fQGOqw0TkrF5sfZNpSN4Oa2/NA7mBpSNghWWXT9qSXO4+3WUJE77EXlcbnUXpL/7O0gkx9t27WeYjyE6Ct1hWJF5iHbTobBPNIGMZ5LChT5PPaMa/WkJKNCNBcBaz3TB6KNptcU5+popc8iWs2RnZba5Yo2vodBU1ozRHMcnMVZmz+N0aeucFAKBANQUyqe6FpmzdawEQeccYTWkYRXHjx/F7E2yj8IL6pSxDkIMNCZWmTLrcQ0l+9YRTihfDFfk2k6Iv/19cDPTtsJrfHjec4aoGqJe7Iz//jk76WaKT9T83JDFbfCuHWrWfyUuUQvE83UBdBkMw/5fXMI7/JFgfUK9KRLxyEQKoVvgxRoxq4iYaAYfy0FACAGtXToYCjcuuXYRfhkVm3xXN/Ypi8VqspR3LDVL9XH/73WyFWgRJpPhNM6pPJvWebQ/JeAxXk+gjOe4ZauYK5oQqRl7LiVeyI3AMjkn/Wh6DhAbCAhlIKGgT0FfxE5MQU+PLqumwU0dgiJuy4ujVucA2oWct92asRnha7KcEDxjAtk3x/3UOFNrKwu2YbdbhzxAUUsP5XiBm2Fkt2UUq43qp926nFbIOGHZFQ/rImaWDMJy093KgWa0wuR53HWw5cBpc9Z2CQd5RBpKVd3Soya/VDI05Ot7Z9yIdXN3DBs26f1P7UqzCR/8n
+ Ir/djLPY
+ A2I4iHa7OJpE/T/JpVF2+qZ6+uASzRcaIm08FUvH35uvhClGfxRU0OD1qYQhs/JzLmu0yl8iXMLTlU7U7AQtFpcYW9m3f5/SawvOLz5iyvh7gFQfFcemdIrrd3uhqJvfKhc9wT7olF7SsJnV0cWrzz5by3Z62UlclRRHKwToEypVc0EWhF0CxqlP5AwLXol9hw6F/QA59M1bWhnlJWDXAywQMF4B2xW2nY5OLwzIlS8OLBjdqiXBrr40Qod/r3Szl9ZM8d+/XaW8jnlg/B2RMZd4PfiiUq73bZk4EiUpEUBR6+nnA0e5GI+HQt2slBFof+yy0/9ysvRswa09+quxkb73XWcak5eiUx/KBJdMfB8YYvpmMT/OakdlQkcAV/5aR7aJubcLn57XXifFzElaGSOhv8UmTZR41xyiNNdxmiF/n9bRG74EXypD/G/7ADvtCEuyCWsGT5KaXLgnmXl/45c22aA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,33 +94,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 14, 2026 at 07:23:41PM +0800, Barry Song wrote:
-> On Fri, Aug 14, 2026 at 3:48 PM <mambaxin@163.com> wrote:
-> >
-> > From: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
-> >
-> > [ Upstream commit 63b02a9409cb5180398491b093e48bcb5315f5fb ]
-> >
-> > lookup_swap_cgroup_id() passes swap_cgroup_ctrl[type].map to
-> > __swap_cgroup_id_lookup() without checking that the type was ever
-> > registered via swap_cgroup_swapon().  On a swapless host every ctrl->map
-> > is NULL, so __swap_cgroup_id_lookup() dereferences NULL + a scaled
-> > swp_offset().
-> >
-> > Since commit bea67dcc5eea ("mm: attempt to batch free swap entries for
-> > zap_pte_range()"), zap_pte_range() -> swap_pte_batch() calls
-> > lookup_swap_cgroup_id() on any non-present, non-none PTE that decodes as a
-> > real swap entry, without first validating it against swap_info[].  A
-> > single PTE corrupted into a type-0 swap entry takes the host down at
-> > process exit.
+On Fri, Aug 14, 2026 at 11:30:05AM +0800, Ridong Chen wrote:
+> From: Ridong Chen <chenridong@xiaomi.com>
 > 
-> Thanks for the patch. However, we have a strict check to ensure that
-> this is only done for valid swap entries:
+> Writing to memory.peak resets the peak for that fd only. Each fd is a
+> watcher and reads back max(its own value, the shared local_watermark).
+> 
+> peak_write() resets by lowering local_watermark to the current usage.
+> To keep the other watchers' peaks it then walks the watcher list, but it
+> stores the current usage into them instead of the old watermark. So once
+> usage has dropped from a peak, a reset on one fd wrongly drags every
+> other fd's peak down too, even fds that never reset.
+> 
+> Reproduced on 7.2.0-rc5-next under QEMU, two fds A and B on one cgroup:
+> B sees the peak (410624 KB), usage drops, then A resets -- and B's peak
+> collapses to 1060 KB although B never reset. With this patch B keeps
+> reading 410624 KB.
+> 
+> Fix: save the old watermark before lowering it and use that to floor the
+> other watchers, so a reset only affects the fd that issued it.
+> 
+> Fixes: c6f53ed8f213 ("mm, memcg: cg2 memory{.swap,}.peak write handlers")
+> Closes: https://sashiko.dev/#/patchset/20260807090000.1532495-1-ridong.chen@linux.dev
+> Assisted-by: Claude:claude-opus-4-8
+> Acked-by: Tao Cui <cuitao@kylinos.cn>
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 
-This patch is already in the upstream linus tree.
-
-Mambaxin, what do you want to do with this patch? Are you requesting to backport
-this to stable tree? Which one? It already had stable CCed, so I would expect
-the stable tree maintainers would pick this up automatically.
-
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
