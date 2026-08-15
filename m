@@ -4,89 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9896AC5B572
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 00:38:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5973C5B572
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 00:47:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C0916B032E; Fri, 14 Aug 2026 20:38:39 -0400 (EDT)
+	id E637F6B073C; Fri, 14 Aug 2026 20:47:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 771C56B0330; Fri, 14 Aug 2026 20:38:39 -0400 (EDT)
+	id E14A86B073D; Fri, 14 Aug 2026 20:47:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6887B6B0331; Fri, 14 Aug 2026 20:38:39 -0400 (EDT)
+	id D2A0D6B073E; Fri, 14 Aug 2026 20:47:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C7116B032E
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 20:38:39 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B640FA288A
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 00:38:38 +0000 (UTC)
-X-FDA: 85101643116.25.03A011B
-Received: from mta0.migadu.com (out-152.mta0.migadu.com [91.218.175.152])
-	by imf22.hostedemail.com (Postfix) with ESMTP id AC456C0004
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 00:38:36 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tWfwiQO6;
-	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.152 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id AEC2C6B073C
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 20:47:10 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 33B2D80295
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 00:47:10 +0000 (UTC)
+X-FDA: 85101664620.06.E9CA008
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8275180004
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 00:47:07 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=i16Ylhwx;
+	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786754317;
+	s=arc-20220608; t=1786754828;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=COZfGlZkA+F8qfY+ts4BzwM7aozbYLRWFXOYMsCiIGQ=;
-	b=wY5R1lhUR1m4800C4IabBIo2DGfq2oPvaK3UKyoQ0qHZfLfDL0DBczt4DW03jSGEY3XDlH
-	T4j/m/JThxZOEAzflHsQNN42IxXYgSL886LdjctRebtWfdQhllO3UjWA9UbwZcgdLLYtmV
-	0ZwcwiV3wBLHneQuwiolfkUcNWWWO94=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=M1GjqDqY9YQuYwoA8TTDDCJRJWVT3vSgoBMi5ybFBqs=;
+	b=rwk+W/c/SG/11dJYtrW8H4/IYDE9vbBOS0P71gKLThwj3/aUPgztQKSd7yrHIOIhM2YPtQ
+	W3f37jDbUU5vsylMW4rKwghL08QRhGTChyiOwA70VEclO0G47IpMPf7f0ARvfhB+4CV0Se
+	zsdhkZcfl/wdcBD7NpuyBpQLDhbD9xw=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tWfwiQO6;
-	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.152 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=i16Ylhwx;
+	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786754317;
-	b=YzHE6SMrLBEpLoyQhOzdZHrVqq1axyFBgOaKCokxmtWes3pxVqiqAk3zLyBKOruJEueKN0
-	MKJGg02f9y4jVZuLdLxBXmSVElHBMFCOEU1tVRlq4Z+sZu6Gi7GooNzDWrs/8LaXdtdoUq
-	6S60usgsYypvO1E3sYmcw3cwVdmwioQ=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=sM7q98Dlk5XbykTDQiACBDmjl2R/gtu/mzNUYNNIq/w=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786754315; v=1; x=1787359115;
- b=tWfwiQO67aZItcVWXNy4V8/jTq4Mzo8GJnnmRKvlHYY3uLIyOrlbPkSmQDR3nW8jiCLEIkXw
- RQLWjQXBpiWmH62OgXfhGrFBwmYE1k2aZzAiWCQKW5BXOv5zDUI/ndqksUAQcp6SA5kmrwOAyrk
- uBKhbNPMRX4HgZXE+mRhTCAk=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2a03:2880:10ff:5::)
-	by smtp.migadu.com with ESMTPS id de1cbddc7a5009cc;
-	Sat, 15 Aug 2026 00:38:35 +0000
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 14 Aug 2026 17:38:30 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Muchun Song <muchun.song@linux.dev>, David Finkel <davidf@vimeo.com>, Tejun Heo <tj@kernel.org>, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <linux-mm@kvack.org>, linux-kernel@vger.kernel.org, Tao Cui <cuitao@kylinos.cn>, 
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: Re: [PATCH v4 2/2] mm, memcg: fix memory.peak reset clobbering other
- fds' watermark
-Message-ID: <an-073JtSRWeyhr8@linux.dev>
-References: <20260814033005.2481920-1-ridong.chen@linux.dev>
- <20260814033005.2481920-3-ridong.chen@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260814033005.2481920-3-ridong.chen@linux.dev>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: AC456C0004
-X-Stat-Signature: de8c5rqcgaeegbnzp534zgwe1e514m7c
+	t=1786754828;
+	b=CAElL+sm7UpOe4rNCRuOt+j1DzwdckfzbSUV9McdsJqZdmULshO9l4+EJT8ef37SnUqWUH
+	RJKRdudg9c8iIG+qqlsNV5/ZI9YZgvjeeArjPjEspylhaso5C0bmgSlI5ewbHgCMvAnkpu
+	HW72lN9kq+7fUxRXRtneWRhV70WC2+0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786754828; x=1818290828;
+  h=date:from:to:cc:subject:message-id;
+  bh=etHYRGpiCmuGavxDzFQSiyhQmmDpoZp0Rpvk1+7Lw3U=;
+  b=i16YlhwxOYFpiti8Yuv5jx1oxxWX2mO37LvJWOXwoCtuIiAmuXbvKaht
+   AvBLv3iybxi/zWCj5LcG1et2VenqA1T0urqnGYf50osGHQU5R1bTd7AwZ
+   gzfYxesNmBrqcidP72xJbNApdT3EtIShchotWmXrJDuLoBim1GaUzY9F/
+   UtxCcq62g4e0Q5NSpszNLsbeT2IRF21jEobzsY+FJTmwHfeOUsWP/UvnT
+   UbFKi3RXNgrZAS81Og9kOGWz7kTM3EdboedjvH8fEtXsW2A1v5z8IV+Ai
+   roblfF911IiPbjMGP+Qsg981mBjL5dTMVjPEp1h6DJUGzeSC/zU6yKQ01
+   w==;
+X-CSE-ConnectionGUID: a1ys1nuGSQS3w7u/Y1Fw4A==
+X-CSE-MsgGUID: BUu2a5SPQNm+kKG92MVnQA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11875"; a="98488003"
+X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
+   d="scan'208";a="98488003"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2026 17:47:07 -0700
+X-CSE-ConnectionGUID: m/53ieOYRSCGMuNFckhJEQ==
+X-CSE-MsgGUID: 5Xv7btRAT9C28Rd209XX7A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
+   d="scan'208";a="263030089"
+Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 14 Aug 2026 17:47:04 -0700
+Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wv2YA-00000000afq-28NQ;
+	Sat, 15 Aug 2026 00:47:02 +0000
+Date: Sat, 15 Aug 2026 08:46:33 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Jordan R Abrahams-Whitehead" <ajordanr@google.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Nick Desaulniers <ndesaulniers@google.com>
+Subject: [linux-next:master 14076/14447] WARNING: modpost: vmlinux:
+ section mismatch in reference: tracing_gen_ctx+0xb0 (section: .text.unlikely)
+ -> initcall_level_names (section: .init.data)
+Message-ID: <202608150840.187qzdRz-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8275180004
+X-Stat-Signature: xwfbzbqx31amgri1btry1tnjxbpkjs1r
 X-Rspam-User: 
-X-HE-Tag: 1786754316-804006
-X-HE-Meta: U2FsdGVkX1+rq7XFaAckonkFY1PxzQqt0//Zq+naSLpLshu0APHvP+cmwdUyIWZGQQ5mEpvIQwBnP7mC0RIli4/KlHVGSaABqsBDCbI9URlvmcIolqzvdxTaTp7Qb5MOvnPaDFExFNPJMSHl6+phnPVpWibOCSOycrlCEdEZDFCFNXlNnBWa53bVU+jvaGZMBWsGlEq9I+H+VW+gTtTLEF+OE0WRwgYmGXfl53/D4IW/G/+kFBDTl6cJubFJasIv+6BVC1ZSrEHTpFYkQ4yaICTg43/n9YflTwgp46fQGOqw0TkrF5sfZNpSN4Oa2/NA7mBpSNghWWXT9qSXO4+3WUJE77EXlcbnUXpL/7O0gkx9t27WeYjyE6Ct1hWJF5iHbTobBPNIGMZ5LChT5PPaMa/WkJKNCNBcBaz3TB6KNptcU5+popc8iWs2RnZba5Yo2vodBU1ozRHMcnMVZmz+N0aeucFAKBANQUyqe6FpmzdawEQeccYTWkYRXHjx/F7E2yj8IL6pSxDkIMNCZWmTLrcQ0l+9YRTihfDFfk2k6Iv/19cDPTtsJrfHjec4aoGqJe7Iz//jk76WaKT9T83JDFbfCuHWrWfyUuUQvE83UBdBkMw/5fXMI7/JFgfUK9KRLxyEQKoVvgxRoxq4iYaAYfy0FACAGtXToYCjcuuXYRfhkVm3xXN/Ypi8VqspR3LDVL9XH/73WyFWgRJpPhNM6pPJvWebQ/JeAxXk+gjOe4ZauYK5oQqRl7LiVeyI3AMjkn/Wh6DhAbCAhlIKGgT0FfxE5MQU+PLqumwU0dgiJuy4ujVucA2oWct92asRnha7KcEDxjAtk3x/3UOFNrKwu2YbdbhzxAUUsP5XiBm2Fkt2UUq43qp926nFbIOGHZFQ/rImaWDMJy093KgWa0wuR53HWw5cBpc9Z2CQd5RBpKVd3Soya/VDI05Ot7Z9yIdXN3DBs26f1P7UqzCR/8n
- Ir/djLPY
- A2I4iHa7OJpE/T/JpVF2+qZ6+uASzRcaIm08FUvH35uvhClGfxRU0OD1qYQhs/JzLmu0yl8iXMLTlU7U7AQtFpcYW9m3f5/SawvOLz5iyvh7gFQfFcemdIrrd3uhqJvfKhc9wT7olF7SsJnV0cWrzz5by3Z62UlclRRHKwToEypVc0EWhF0CxqlP5AwLXol9hw6F/QA59M1bWhnlJWDXAywQMF4B2xW2nY5OLwzIlS8OLBjdqiXBrr40Qod/r3Szl9ZM8d+/XaW8jnlg/B2RMZd4PfiiUq73bZk4EiUpEUBR6+nnA0e5GI+HQt2slBFof+yy0/9ysvRswa09+quxkb73XWcak5eiUx/KBJdMfB8YYvpmMT/OakdlQkcAV/5aR7aJubcLn57XXifFzElaGSOhv8UmTZR41xyiNNdxmiF/n9bRG74EXypD/G/7ADvtCEuyCWsGT5KaXLgnmXl/45c22aA==
+X-HE-Tag: 1786754827-364928
+X-HE-Meta: U2FsdGVkX1/sWYb6/EMwBxVwkW24+EG1L0HtJ33rLX/DDHeEeRCrlQr+x3VIK3rOzihDAP8ukg4hL4pl1+bPop5aHfgDgPoiyype5mxelb9oNo6pA2kIRBkeWQf7Jcw3OTf715nHYv8uKUuQprJim1g7bppCXQhvzGlo3Z3ZzSYqfNp4MqnkEXxQ/edHBaVeqmQoi6z1qPPvrs4frOKHpoLF7Lr8T/VJIy4RXXhDRRbLtLmHeRAcF1soBBKrcrJUDvKgN2jCKjA8on7SK3dueM3D6tQ4fSz5KQ18AbcRe5oTaDeLlq78TX7URT9vbqsKtTuLfy5/nTf2g3RUpJ1XvmcNEU5pN7m88VRajhv/8f6Cx4816a27yRkijls40VOiNVR8Ug7pFu1PGM+p6td4DzV0W9XJ2EhHYJ77IBQqojgmNHhCyOneHmYiJk4ySgYG4gTPmptjOmXcxnngy08C+45tklA8HJTU2/VN/ADGxvnoQd3f2E+YeZazeuuVAVwxUqCj/5oVrm/Ll5Oohw2YG22BodYjl2qqceBGUWzCYw4rVv2S9JEOyuYxmMXXZozluavQNcsrVvA/eaBzsYXmH65y5+X7vWuaeZP+qa+1La/fJ5qT3SxyFpvEgYVqG3EQWfmeY1nglqfG4WGmfR0zrsaTw3TVE8THqiiiA9t1CjO+zlXl1iVxsSClutJuH6TzibJ5wYr41ZwkUjtQbvuEu+7t2mND0VVhbIz+T/qvT+DjgvIYawnGpqYr51h6zUWVkBSCwQCEI2TPk+VJy0v5GxbltMskll/Sgzcbp/XP++i0F7OOco9Urdv0gEqMpAw3nYp8niJueehQQUMelcbbHcZmYPM5YyCrPxciKNik6fWKRzznjyFIaGgABG7Qqvwg7ijxfJ09u0PD0utvct2Ec0k5Y9wevHFYUZJjnK21m9DOPdKWeFV1xVIluoSF7bKhioyX2e2/5g1vfKzjA/q
+ cZ9BfDma
+ bls+/Xbg7U5yUW3WbegiGFJjITu6EvB5ihIlNhhQijriZk3XoFm0zGArWe3073gagJPpjcCCFWAFscnoEf8p5zrQTPe9bP0YJcH/lU5Ro59IeNbBaOxIcT0jyDJiUt+w1Oby9bZZAIDWKUneg2H1KDceJIaqHsu0BSCxvM9uXgqsNu0cNaLLio7sAGvCnZEntMrEH00sXCgxRzRjAks9fHQPgdZh5t8F9QK4jskV8WkEPYu/MtcFpRRCAis9SvRyXrdZOcDomNO5YUb3xypKlt0DU3xC3pgVRopG1UAzs9YDMHsCybFtMQ4pqjxPV6EQc9eN8o+fDz28tUY0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,32 +104,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 14, 2026 at 11:30:05AM +0800, Ridong Chen wrote:
-> From: Ridong Chen <chenridong@xiaomi.com>
-> 
-> Writing to memory.peak resets the peak for that fd only. Each fd is a
-> watcher and reads back max(its own value, the shared local_watermark).
-> 
-> peak_write() resets by lowering local_watermark to the current usage.
-> To keep the other watchers' peaks it then walks the watcher list, but it
-> stores the current usage into them instead of the old watermark. So once
-> usage has dropped from a peak, a reset on one fd wrongly drags every
-> other fd's peak down too, even fds that never reset.
-> 
-> Reproduced on 7.2.0-rc5-next under QEMU, two fds A and B on one cgroup:
-> B sees the peak (410624 KB), usage drops, then A resets -- and B's peak
-> collapses to 1060 KB although B never reset. With this patch B keeps
-> reading 410624 KB.
-> 
-> Fix: save the old watermark before lowering it and use that to floor the
-> other watchers, so a reset only affects the fd that issued it.
-> 
-> Fixes: c6f53ed8f213 ("mm, memcg: cg2 memory{.swap,}.peak write handlers")
-> Closes: https://sashiko.dev/#/patchset/20260807090000.1532495-1-ridong.chen@linux.dev
-> Assisted-by: Claude:claude-opus-4-8
-> Acked-by: Tao Cui <cuitao@kylinos.cn>
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+head:   2697ef8943c9985c14708a6429e21812693857b2
+commit: 40fd9c2c1736dfd38593ae259600373dc99d447d [14076/14447] include/linux/list.h: mark list_add and __list_add as __always_inline
+config: xtensa-randconfig-002-20260814 (https://download.01.org/0day-ci/archive/20260815/202608150840.187qzdRz-lkp@intel.com/config)
+compiler: xtensa-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260815/202608150840.187qzdRz-lkp@intel.com/reproduce)
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202608150840.187qzdRz-lkp@intel.com/
+
+All warnings (new ones prefixed by >>, old ones prefixed by <<):
+
+WARNING: modpost: vmlinux: section mismatch in reference: try_to_run_init_process+0x2c (section: .text.unlikely) -> initcall_level_names (section: .init.data)
+>> WARNING: modpost: vmlinux: section mismatch in reference: tracing_gen_ctx+0xb0 (section: .text.unlikely) -> initcall_level_names (section: .init.data)
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
