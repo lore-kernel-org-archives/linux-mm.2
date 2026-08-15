@@ -4,94 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5E4EC5B572
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 00:25:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 352A0C5B572
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 00:28:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DAEE6B032D; Fri, 14 Aug 2026 20:25:48 -0400 (EDT)
+	id 02ECA6B0736; Fri, 14 Aug 2026 20:28:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B2E56B032E; Fri, 14 Aug 2026 20:25:48 -0400 (EDT)
+	id EFB906B0737; Fri, 14 Aug 2026 20:28:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F0826B032F; Fri, 14 Aug 2026 20:25:48 -0400 (EDT)
+	id DC38A6B0738; Fri, 14 Aug 2026 20:28:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 51A9A6B032D
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 20:25:48 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DB496160291
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 00:25:47 +0000 (UTC)
-X-FDA: 85101610734.11.6EA220E
-Received: from mta1.migadu.com (out-17.mta1.migadu.com [95.215.58.17])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 528A5A0007
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 00:25:44 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Eu7uF+EZ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.17 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A0D116B0736
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 20:28:30 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E51A7A28CB
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 00:28:29 +0000 (UTC)
+X-FDA: 85101617538.07.FE1AFEA
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 21170C0006
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 00:28:28 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HwMubyM1;
+	spf=pass (imf28.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786753546;
+	s=arc-20220608; t=1786753708;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nLTeimZZS69Ob0HoxipnUj9pCSRAdytqNdfoSRfborw=;
-	b=xcBt1exSSO3FHSQEnsuuk/NJxvwnQGCZVvK5gV3uWu7likZe3fV/ohnqoHU0OgH3VusFqz
-	PEG9zAxrsJUI7yLZFmgCmNLf/wAyLi9b9Q5sitlbMrAqredtFvcPe61bzVUyjuhVgxpFtX
-	aY+BiNh0RmFS4nJc8wI/Kcy6GVZQohQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Eu7uF+EZ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.17 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	bh=e5K+G6TwOX21s1Ie3PMbo+iOlYucj/5s5+PZY2NK0NE=;
+	b=pmFlpz1MFo/zKxEWDyDaf9Pytof3BcKR7cDoYGF7Afue8l8WDsH/YXoyJeeeWPwaYo6YXK
+	TbqqaczTT/mlJRhZEHZab7bTJyAdG/KvNElogShGkFrGIj4JLMVxM2kUX7dtPNc99vhbWO
+	VyNCTqCSli/fEXzQA8hE7enzd1smYF8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786753546;
-	b=NMgHPsWPYfd3LXMHMBcny79Zx2niwTeAzdnL1k+0syxwZF3RXrEntsKDFdiglc/3hKqKX9
-	hZxPQuSzTUGCmD08ozOZQt0Xo671wzJfFsyM5Zl5RfTwiW7zEzOttYl9nBkk9wm76/yieP
-	a6pzfb/WybbKu+dsMId2a1PVpm1FCVU=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=GYuFv7CQYkZCd17N/+SeP2Qi4r1CM+EVfUZM03WzySo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786753541; v=1; x=1787358341;
- b=Eu7uF+EZUCsY1M8UchM7uP64hCh58Fd58ixSWPXIPj77Vk4FD/ElfoyCr7fYwxHWCHLkZS7s
- 6gvEDUWK9VaL7+w0zZ4hCvgO81mSIUxUmzkKdh4/nnnRGxWcovgn9FI4smVQPfOB2kRXAa4MbNe
- h2kltY+QOq2OMIWNRsq6Myfg=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2a03:2880:10ff:7::)
-	by smtp.migadu.com with ESMTPS id b7d206ee5502d7bd;
-	Sat, 15 Aug 2026 00:25:41 +0000
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 14 Aug 2026 17:25:39 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: kernel test robot <yi1.lai@intel.com>, oe-lkp@lists.linux.dev, 
-	lkp@intel.com, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Suren Baghdasaryan <surenb@google.com>, 
-	Tejun Heo <tj@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, oliver.sang@intel.com
-Subject: Re: [linux-next:master] [mm/vmpressure] ea928e9e18:
- stress-ng.mremap.ops_per_sec 36.2% regression
-Message-ID: <an-w9UJy6y9Wg11J@linux.dev>
-References: <202608131743.c6a7dda4-lkp@intel.com>
- <an34C2N-yqfok2Nn@linux.dev>
- <017721a3-5eae-449e-8b86-75cffb503dd3@linux.dev>
- <an3-aksL0MZPM3ZJ@linux.dev>
- <f330dd75-d9b8-4259-a02f-9e3ff4bcdc1e@linux.dev>
+	t=1786753708;
+	b=ZWSTiZAig1Q++BzfYMKiwXWO0MaDY7yg1dhp8WGoEfi8dNmEby9y8e0lLGYVqD7PD8SsFo
+	8IT++BLfNY2vvpxu+zJc+gVpD+HK47gMTPy7vOux+FkpPj5dO1Aop75ZN+pAWslzfyUEEJ
+	mjSflDgqSByy3IRvvtW/alDpwzVdhEY=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HwMubyM1;
+	spf=pass (imf28.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4955aa106b1so13423195e9.0
+        for <linux-mm@kvack.org>; Fri, 14 Aug 2026 17:28:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786753707; x=1787358507; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=e5K+G6TwOX21s1Ie3PMbo+iOlYucj/5s5+PZY2NK0NE=;
+        b=HwMubyM1FP8nSxoOCdlptXK9H2RZTwNkIQZBDZKZJaGhw4vBqyB7hyoaTN4NO4nYrL
+         CptBsn23f/FZGxMJbyOhfuFcmpBdROhsMc1lQul/F68bwi/AvCDaBgBVM73qW9fbmfig
+         5nuyuOuJSnNiPd8R3ExkOxqkKuXpxMbQYTQfuZwZrYLQHsmvGScE0/iC9ukoS8OlXMSo
+         HoBSsB4RY9r4qFR49iagS5UGpyzDABxMZdc2yl5/f+qydqTMGBadpg40y5XXV0MvbsNF
+         1YJXSZsHcepP/0pfF4Z4A8KPwRK1TedjCcqrMcFMcbou1iIU6eUnRZCOM2ftdTDmwHn/
+         4H9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786753707; x=1787358507;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=e5K+G6TwOX21s1Ie3PMbo+iOlYucj/5s5+PZY2NK0NE=;
+        b=Mdg/QCz+c/+LqKD4B1vA436ocE9kFnJV3hO7xTEEApoAGYRYbNYCHTMPQOyFyInb33
+         EIABn9Ytx6bZqA2Pcp0LgfOD6FuI2Rjb7t7V6mEagVc7608/hQEuF0qvhNgK0wPUa+cC
+         AyyiiITQmtcfGlHtixcdTH2yzyH+PT+Zl5Xqggp12mg3xBHYTULrLDQ0/DpIFtcDN04a
+         vR3k6ObR3SUEARWIu6PQCpOpbssx0500p5irD+U1vuSGu73RiuoDIpouKPVyP55tj6+e
+         nhTL3L3m8xpPiMXVCrF8FrTmmv1/WoQWoSMo3V5awC/KoeSUPJhJEdW+RbOGNVILhkKz
+         p3nQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpjQ2jTzqwxLrPkemnFvyL273ZBVlPnyISbnTMgCC6damGRziwc39hIPvuzqWJe2661tLtWRg3YcA==@kvack.org
+X-Gm-Message-State: AOJu0Yz7/pbo8/Rm02nxAWRZXInUYhJ0wdFLziyE1F9DiaxD7KWrT66h
+	nwG+LyUPpObphVMkOgiP34rgA0ABXIUdPIPkq48HbdkUGPpSaQnxM7wA
+X-Gm-Gg: AR+sD12h5DT/D14KP1/+PNG9/W8blTEd9yUoDeY8ywloJyjAQ9+l29VeJ6wR/mBxeER
+	x04DkBD36v5obJlGZjQd8kN51H3eibgUHIQipx8h80SqwtDEkA5/w/XNuVn7eABipZS5An+yg2r
+	ynAQo0SacAZ2zYKCBepUYW+q+cSahJfmPHolMJqXiMc1cVNjBXBCs0ypf1/fOeenpUq1ak6hLz6
+	ibaOo+zvGB5HUxuzBGNT0K2MYtRD28Nz357Ou9IOFAjjJ591qlTnE1RCo8TjkyKNtu3XyH3ljfp
+	hYkVfISfQcMeMwaYlrSarMqZgFsazD2Y18fhTq9lCSmQKsdEhTpJX+JOvat+LklpyMSGx/UTXGQ
+	33Y5XV645nbI6zhvfmgnaq2cou8wx4fsrpUu+WCE+SF461ovLJoZ9S3+gIlFhcm4OxU157JLajy
+	15bV3EZ975VhbkGY9jMVxvJrKtWTUu53Mubo8JI9wY97z91Fm+cP+3QcVidbgInnLuomwC1FGi1
+	Qqb/qsT23t+avwS3n2kuzFB/8OaXLINX8Ga6+I/TeM7Kz9o7tKcAL/Ov6PwROgG1oIDVPmBKM38
+	Sn/D+sjOLrSzi3j298KLK1J7GC29mYrYbSJOtU6Gl4qZcdnVaL5iKVB8t26AyQmpJQ==
+X-Received: by 2002:a05:600c:4e0d:b0:499:900c:9c68 with SMTP id 5b1f17b1804b1-499900c9d75mr3231915e9.6.1786753706369;
+        Fri, 14 Aug 2026 17:28:26 -0700 (PDT)
+Received: from unknown748F3CBA5068 (dynamic-2a02-3100-9d7d-f301-9495-44ec-73e6-1be7.310.pool.telefonica.de. [2a02:3100:9d7d:f301:9495:44ec:73e6:1be7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4998ba01c62sm58696145e9.14.2026.08.14.17.28.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 17:28:25 -0700 (PDT)
+Date: Sat, 15 Aug 2026 02:28:22 +0200
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Kees Cook <kees@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Catalin Marinas <catalin.marinas@arm.com>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev
+Subject: Re: [PATCH v2 2/3] slab: check for ZERO_SIZE_PTR by exact match
+Message-ID: <an-yHQe938PS-Opz@gmail.com>
+References: <20260811141240.62519-1-kmehltretter@gmail.com>
+ <20260811141240.62519-3-kmehltretter@gmail.com>
+ <202608111716.0FA9DB17@keescook>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f330dd75-d9b8-4259-a02f-9e3ff4bcdc1e@linux.dev>
-X-Rspamd-Queue-Id: 528A5A0007
-X-Stat-Signature: fjkiscisfc8s5p18fwafqo4jxo9ztjuf
+In-Reply-To: <202608111716.0FA9DB17@keescook>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786753544-661605
-X-HE-Meta: U2FsdGVkX1/VPUeyFBS2nZCXZosXWN9VKIQqvZIolAcD6zkLmMc8twfzKcCRF/Ao4ex7o1AMzlHCp841u+685ZGu6LfFUunfAq45KtAW3Nktq1IODhbVciSKQ96fhocw5Lts++m5WmX5TkqaKL2NFEwK6RpCkDI/0SIs1tYjNGoDfEACqu57wdBW0LCNtNUdUhZsAcDzZIbHgKLlBWETuVq8A8p30bhZcl7tCl/W8TdY9EqzXuMJg7rAS/rWjJOrE1Qe9g0z2Xxvey16WuneCBIjBQGfeCWZL0loumOtkuugcsvwEq5/1QkdQZ3jKDyeTGEWXchJVCotcSLsSGvqnDYlv17DUfIeldQyuknVf7Po2eFvGHnLiwYxuIlOvaD4SUUy24b/9oegaI09evJrY4pqZ9b5RPXSBJ8zTgU95NqHco480ipeZ26Umifwsgh2tf9l4bpArmSuPwk9rn39Z+UrQRpAbYU+CGa37PHjvNyqipSgyADkOaunyOeOYEofV8rn8Y0qVL/by+zAeNR1t3sAJLdmAsSNwWKhLWrxyRGiRgI9U/bhs+FqgRyOpbQtT6fDHMAf9nokO//pV4wop4oR+f+fUHfiBf3UZrkEetzN4tzqZv7H7QkKoGsuSBppjQxBetfifybQXI3zBRaR7MMdQ4ByCj/r0JZ+wsHkz52z/P63tWlo022tCemUgVdTWl0cUGdEVdDJC39X+IJw8EFOtNC7QXiLmsdsvJ24kqJ5nG5I+g+01BYtQmfbrt5sZFRYwY4EZ0wuiLGPok9KrVu/fza0btSujim6/TBC/FouxJoHZS2a/77I0LazRxBBxyYTcEjJhViAfaPgHziKDiqzWWVeS99f+l/onXOIvqbWzUK8v/bCLHQ8siciiKeHHNxCI+brxgSTdIDDIFFuo40awynzbO4PIS5fs+0mUJB/XXnoHueyZ9WQ0ZKHWJDQm6629prrNSgpDfUl+bE
- lOKnXNv5
- ZVm0UqbaBdRyMySP1rwIdN+f8P8YKideFrT6hDcp+w+JDmE732HRg0plzn+Pjb1ddk2xyVDOcdH6sEWq2YAUpp+cRcwvGHe+6VRS6Lww3iakqB1D/0l4RXMG1kr14jbnpvi8Vy87DloyAGu/Zng2ekbEL1vS2wE3Sv/61nA21vTIhVG2zgUQHDxG0sLbN3AanFLJkrbxDOCDxbLdGvlmH+V/FFiN4QyMBwpTfJmgQOTPHK+sgXrtIO3RqPMzarmlHL57irewtwmeVUtjOhnti6C0baNrV+YwBlH2XLYKZ+uKLkmfvevl51WtgmzEBF2qMKINukjwfM9mWOjdPY44ZnUbNihP0IKvTWFq4W5WiqF0mZMm1iudtvtwm+gsZXoYU/bcnBpTlK0XfSBh+4o158UURJ0oDmYD1COYk
+X-Stat-Signature: wuqc4wrsdgeobfh1j7kyqxddir1prmf3
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 21170C0006
+X-HE-Tag: 1786753707-355329
+X-HE-Meta: U2FsdGVkX1/sAjlBFbjj2E7w8z60AIQBKDbUHUW9pfa++TQsTSxJp7pgOrDKn8njxADx6LIh4P+M+Uddb3wAsVTnVPQmLC8MNR56aNQdPKVuEz2UN576s5rEX7ipb6TqMNVq2z+wd8YRAPMxP4S/xC9BpX+6nsAAhclIvYX2/w0a2VDr3iNGxwSl7R0qhTJ2CSxPG9EqGY0GlP4hw/soM/erN23cTZjo+AVrI/7kRd+xaQQvzbvphlLH3dfZmHN1WvOW4ECqj8ysb+7/NlGkTzwIapRgKxQVk616NhdNCTp1BmqJLzKo2j6xJBYc5ug0/ttNDgoUSODf7mIcGkGc/bsz+roE4T5mHpZ1DuXR2ULiKJx33kafOAl/d9mNLlGUJlgSXIvISdcuPdRz26kM5aG6ctGfgE3PLeNs5V2hupESSMQOI8+kIU+Qr3zSA6EFM0ttp+B7Ib6PJCB4KfNOTE1TUNdiVkLWk9BtSCUqNA/xr0gHFloA+IkpWGfXrCc9BAUyVHXOlCwf4t+6Pvp9YD3nmYAhsur/x7YuGlDlbS6mQTJWJEMCmXU2plwnm39kidUrXpMeS5IE/YcJisq6WMhxVeQ/XVgpN5OFsQyBHUG4B1F0U5vIVjfePVChuzG2BkBedcvyJIQJ4cpvq9CO0ZiNcMxJk41/YMU7UD2jEAWK4wz6Dh/uyprnPaQrzsDU1Iqk6+QvXiFs20MFbjinF6P4Q62QM/7oIFR5OnXRdaNDvu7jmMUT5xI/KY/c/wBYZJ2AdakIhf2H7beJP61Ro6hzsbkzionRsWAYdI1ufUJOXLzTlRuVpcyitA+0Xz4c+KT2GjQ6NB93XqrTSA2pX/9e0L0DWP2bne2h1kkRJ5y8ZvoFaYxPkh88aQOpUL83qXWhfODaP07YKfJGE1eTpihm65q3YhOxV/34+R2If9PuVjvMW7juGAewBUt/gxPN0yWE7xDfM4dF0S6YiZt
+ JeR2sG8t
+ OjEc8ejwjMzmDCszA8xMmP3l9Tg42zoGitIp/tJ9iybo5xtfAX87edYOw3ZWKaNKe4NHKZ4ruY06XrBFfppdIexJ9B2+GKDS7U6ZqkX0CQV/6bwUPQ7epDViAl7Rstk5cJhaci+KvVZ6yJdDa1MUeeayhnkd84QZpUIeGFn73zTdZkDtNAE9A1mvXDQgzRKs57Vp5ua4uxySpiQD2DdnB6QxNTMkwgNH0uzrGOWuOceNElKbmk+zs/qIDT3h3OKknXKjNM8zbOu4hPTOemsA5DnyvfYYNlZ5K0AN4/6dj6ppQyNhgUBATWBeQ+feLuz2fiEIglRMNqFtDVMsDEyg3F0Xdm87X/j7O0oavdX0L9pu7EpR0tkA25AOgIqLl1p75KWk4c8IKPYEq5VVdLJ6uf/FVxTg2vrYYUOxd1lNLLxYwJmKFFKcwrr9e5jZZoK+IBwacQeuAgr1s23GLbcSAtvZFgJsuKDOwsU+otXAo9RZkx5LTMpg0TQ4RN2CpKEL6jCzdO26emnoRESPmYuO0+hO7W504YI6e0c88jnVhvr8qPlYXYDJCuIBXeNTOi3LtmOIlgFqmGWwRF3Cxvl3r1CnvSz+qdsFjYnZ6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,197 +127,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 14, 2026 at 11:32:09AM +0100, Usama Arif wrote:
+On Tue, Aug 11, 2026 at 05:17:48PM +0100, Kees Cook wrote:
+> > Compare explicitly against NULL and ZERO_SIZE_PTR. Store the argument
+> > in an unsigned long temporary to support both pointer and integer
+> > address arguments while evaluating it only once.
 > 
+> Can we move ZERO_SIZE_PTR to cover the ERR_PTR range too? See this issue:
+> https://github.com/KSPP/linux/issues/93
 > 
-> On 13/08/2026 18:29, Shakeel Butt wrote:
-> > On Thu, Aug 13, 2026 at 06:14:50PM +0100, Usama Arif wrote:
-> >>
-> >>
-> >> On 13/08/2026 18:01, Shakeel Butt wrote:
-> >>> On Thu, Aug 13, 2026 at 09:16:22PM +0800, kernel test robot wrote:
-> >>>>
-> >>>>
-> >>>> Hello,
-> >>>>
-> >>>> kernel test robot noticed a 36.2% regression of stress-ng.mremap.ops_per_sec on:
-> >>>>
-> >>>> commit: ea928e9e18da682e9a5bc40aa862bff7ce5ae42e ("mm/vmpressure: move v1 userspace eventfd code into memcontrol-v1.c") https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
-> >>>>
-> >>>> in testcase: stress-ng
-> >>>> version: stress-ng-x86_64-29ce10a2c-1_20260712
-> >>>> with following parameters:
-> >>>>
-> >>>> 	nr_threads: 100%
-> >>>> 	testtime: 60s
-> >>>> 	test: mremap
-> >>>> 	cpufreq_governor: performance
-> >>>>
-> >>>>
-> >>>>
-> >>>> config: x86_64-rhel-9.4 (CONFIG_MEMCG=y and CONFIG_MEMCG_V1 is not set)
-> >>>> compiler: gcc-14
-> >>>> test machine: 256 threads 4 sockets INTEL(R) XEON(R) PLATINUM 8592+ (Emerald Rapids) with 256G memory
-> >>>>
-> >>>> (please refer to attached dmesg/kmsg for entire log/backtrace)
-> >>>>
-> >>>
-> >>> Hi there,
-> >>>
-> >>> Can you please test the following patch and see if it fixes the regression?
-> >>>
-> >>>
-> >>> From 84c0b05b3bc5cf73ee66ead75aafb1ad684462c3 Mon Sep 17 00:00:00 2001
-> >>> From: Shakeel Butt <shakeel.butt@linux.dev>
-> >>> Date: Thu, 13 Aug 2026 09:38:28 -0700
-> >>> Subject: [PATCH] memcg: keep vmstats_percpu off the memory_events[] cacheline
-> >>>
-> >>> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> >>> ---
-> >>>  include/linux/memcontrol.h | 10 ++++++----
-> >>>  1 file changed, 6 insertions(+), 4 deletions(-)
-> >>>
-> >>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> >>> index e78bc98ab229..e25d5b9a1db8 100644
-> >>> --- a/include/linux/memcontrol.h
-> >>> +++ b/include/linux/memcontrol.h
-> >>> @@ -246,8 +246,13 @@ struct mem_cgroup {
-> >>>  	/* handle for "memory.swap.events" */
-> >>>  	struct cgroup_file swap_events_file;
-> >>>  
-> >>> -	/* memory.stat */
-> >>> +	/* Read-mostly. */
-> >>>  	struct memcg_vmstats	*vmstats;
-> >>> +	struct memcg_vmstats_percpu __percpu *vmstats_percpu;
-> >>> +	int			kmemcg_id;
-> >>> +
-> >>> +	/* Write-hot from here on; do not let it share with the above. */
-> >>> +	CACHELINE_PADDING(_pad_);
-> >>>  
-> >>>  	/* memory.events */
-> >>>  	atomic_long_t		memory_events[MEMCG_NR_MEMORY_EVENTS];
-> >>> @@ -266,9 +271,6 @@ struct mem_cgroup {
-> >>>  #if BITS_PER_LONG < 64
-> >>>  	seqlock_t		socket_pressure_seqlock;
-> >>>  #endif
-> >>> -	int kmemcg_id;
-> >>> -
-> >>> -	struct memcg_vmstats_percpu __percpu *vmstats_percpu;
-> >>>  
-> >>>  #ifdef CONFIG_CGROUP_WRITEBACK
-> >>>  	struct list_head cgwb_list;
-> >>
-> >>
-> >> I was currently testing this diff, not sure which one would be better.
-> > 
-> > I was just checking if false sharing of vmstats_percpu is the cause. If your
-> > patch does not increase the struct size, we can go with that as a backportable
-> > fix. I am planning to rearrange fields of struct mem_cgroup more drastically and
-> > have it more stable as future work as we continuously see these regressions keep
-> > popping up.
-> > 
+> > This also changes check_bogus_address() in hardened usercopy: nonzero
+> > addresses below ZERO_SIZE_PTR no longer cause its null-address abort.
 > 
+> And then check_bogus_address would also catch ERR_PTR.
 > 
-> Yes this makes sense. I did not expect such a big change in a benchmark
-> with my patch, although I feel like the microbenchmark is probably not
-> that realistic.
-> 
-> I think another issue is that its a 4 socket system.
-> I only have access to a single socket system, and I see a 4.38% regression.
-> 
-> Do you know if there a way for kernel test robot to test the below patch
-> on its host?
 
-+Oliver
+Thanks, I did not know about the earlier discussion and the KSPP issue.
 
-I used to request Oliver to test a patch for performance regressions reported by
-intel test robot.
+Using -4096 for ZERO_SIZE_PTR is tempting.
 
-> 
-> 
-> From b862e84e7bd6a54b1546b7f21a6cf991253def18 Mon Sep 17 00:00:00 2001
-> From: Usama Arif <usama.arif@linux.dev>
-> Date: Thu, 13 Aug 2026 11:42:05 -0700
-> Subject: [PATCH] mm/memcontrol: avoid false sharing between vmstats and events
-> 
-> Moving v1 userspace eventfd handling into memcontrol-v1.c shrank
-> struct vmpressure from 112 to 24 bytes when CONFIG_MEMCG_V1 is disabled.
-> This moved memory_events_local[MEMCG_SWAP_FAIL] and the hot
-> vmstats_percpu pointer onto the same cacheline.
-> 
-> The stress-ng mremap stressor exercises MADV_PAGEOUT with swap
-> disabled, generating about 20 million MEMCG_SWAP_FAIL updates per
-> 60-second run on a 176-CPU test system.  Those writes bounce the line
-> while memcg statistics paths load vmstats_percpu.
-> 
-> Move cgwb_list into the existing alignment gap and cacheline-align
-> vmstats_percpu.  This separates the pointer from the event counters
-> without increasing the size of struct mem_cgroup in the tested
-> configuration.
-> 
-> The blamed commit reduced median mremap throughput by 4.38% on the
-> test system with one socket. The patched kernel brings the performance
-> to within 0.5% of the parent which is within the observed boot-to-boot
-> spread (up to 1.2%).
-> 
-> Fixes: ea928e9e18da ("mm/vmpressure: move v1 userspace eventfd code into memcontrol-v1.c")
-> Reported-by: kernel test robot <yi1.lai@intel.com>
-> Closes: https://lore.kernel.org/oe-lkp/202608131743.c6a7dda4-lkp@intel.com
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> ---
->  include/linux/memcontrol.h | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index e78bc98ab229b..215e2e87f42b2 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -268,10 +268,15 @@ struct mem_cgroup {
->  #endif
->  	int kmemcg_id;
->  
-> -	struct memcg_vmstats_percpu __percpu *vmstats_percpu;
-> -
->  #ifdef CONFIG_CGROUP_WRITEBACK
->  	struct list_head cgwb_list;
-> +#endif
-> +
-> +	/* Keep the hot per-CPU stats pointer away from memory event counters. */
-> +	struct memcg_vmstats_percpu __percpu *vmstats_percpu
-> +		____cacheline_aligned_in_smp;
-> +
-> +#ifdef CONFIG_CGROUP_WRITEBACK
->  	struct wb_domain cgwb_domain;
->  	struct memcg_cgwb_frn cgwb_frn[MEMCG_CGWB_FRN_CNT];
->  #endif
-> -- 
-> 2.53.0-Meta
-> 
-> 
-> 
-> >>
-> >> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> >> index e78bc98ab229b..215e2e87f42b2 100644
-> >> --- a/include/linux/memcontrol.h
-> >> +++ b/include/linux/memcontrol.h
-> >> @@ -268,10 +268,15 @@ struct mem_cgroup {
-> >>  #endif
-> >>         int kmemcg_id;
-> >>
-> >> -       struct memcg_vmstats_percpu __percpu *vmstats_percpu;
-> >> -
-> >>  #ifdef CONFIG_CGROUP_WRITEBACK
-> >>         struct list_head cgwb_list;
-> >> +#endif
-> >> +
-> >> +       /* Keep the hot per-CPU stats pointer away from memory event counters. */
-> >> +       struct memcg_vmstats_percpu __percpu *vmstats_percpu
-> >> +               ____cacheline_aligned_in_smp;
-> >> +
-> >> +#ifdef CONFIG_CGROUP_WRITEBACK
-> >>         struct wb_domain cgwb_domain;
-> >>         struct memcg_cgwb_frn cgwb_frn[MEMCG_CGWB_FRN_CNT];
-> >>  #endif
-> >>
-> 
+However I found a few conflicts, for example:
+  - PowerPC KVM guest kernels map their magic page at exactly -4096. A
+    kernel making this change would probably have to move it to -8192.
+  - m68k DragonBall has a hardware register at exactly 0xfffff000.
+  - OpenRISC could reach this address with an exact 1 GiB direct map.
+
+Linus's original reason for choosing 16 was that it should fault
+like NULL:
+https://lore.kernel.org/r/alpine.LFD.0.98.0706011554300.3957@woody.linux-foundation.org
+
+I would not include ERR_PTR range for ZERO_OR_NULL_PTR()
+globally. krealloc() also uses it, where it would make an ERR_PTR()
+behave like NULL and allocate new memory.
+
+Maybe keep the exact check and add IS_ERR() separately
+to kfree() and hardened usercopy.
+
+Karl
 
