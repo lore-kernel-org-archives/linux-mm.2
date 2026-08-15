@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 458ADC5B572
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 00:47:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05D83C5CFC1
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 00:48:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 193F36B073D; Fri, 14 Aug 2026 20:47:43 -0400 (EDT)
+	id F03976B073F; Fri, 14 Aug 2026 20:48:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 144036B073F; Fri, 14 Aug 2026 20:47:43 -0400 (EDT)
+	id EB3A16B0741; Fri, 14 Aug 2026 20:48:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05A6B6B0740; Fri, 14 Aug 2026 20:47:43 -0400 (EDT)
+	id D7C2E6B0742; Fri, 14 Aug 2026 20:48:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C7DE36B073D
-	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 20:47:42 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4E1F216029B
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 00:47:42 +0000 (UTC)
-X-FDA: 85101665964.02.D74572A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id BB82080002
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 00:47:40 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RouPeZYP;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786754860;
-	b=mFO4js7A/mRuf5umLz6M0yCrDz02V7yKPbf+rTs+M9G2RJ6GFaKCy88yTEF2JgBTy7aBib
-	3IiSDoWnN83CWE3xNun+N9smulhQeCLQ8wcM0k/CKT1mjRVIej22UwJi1/w/BIcO+7EYU9
-	lPgKB3RDv+NGgfe7cW/DI6U3UzGR+qc=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RouPeZYP;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A646C6B073F
+	for <linux-mm@kvack.org>; Fri, 14 Aug 2026 20:48:52 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 34A6BA02E7
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 00:48:52 +0000 (UTC)
+X-FDA: 85101668904.10.BBC55EA
+Received: from mta0.migadu.com (out-221.mta0.migadu.com [91.218.175.221])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 19546C0004
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 00:48:49 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="M/iz1KRZ";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.221 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786754860;
+	s=arc-20220608; t=1786754930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EXjSPj2g8X11uO/ReLFrgauWbcYOxscwU3FcqHFGgS8=;
-	b=X4vqvtf1WlhYd29gilY5Qln4tjQF7MDAi2pF13GpQM/gAhTjtkLcTykiXgbM24rxFyyCRI
-	SjmiRXw24kRu4Rkcto7+ZkPW2E9eSsejx6vCPdK/EO06JjC/l+avp3+yUd33B552YBC5PS
-	uSQsQVuObHflJ3F3R1Le8mo8kxyOjow=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1574660008;
-	Sat, 15 Aug 2026 00:47:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE1B1F000E9;
-	Sat, 15 Aug 2026 00:47:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786754859;
-	bh=EXjSPj2g8X11uO/ReLFrgauWbcYOxscwU3FcqHFGgS8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RouPeZYPBKyWMOzE44JhhpIppAimjKV75i45nR0uE78muv32i3ucJxp6KhPuGoxZO
-	 Bc7ldcOkpEGUjQ4/YJeYs+PxlFTUGQTNvcTvnrm0g91G7bWKdPGPBrek9DTP1T9FCU
-	 L4iZOK+Qa0WdyFH6pXV7t9ZFEJJHqMcFhPVQRc4wW8V8UDDU0Bxax2W3VXGr469PPw
-	 QLtZsCGLQ7m1rDkCl42sj5ch5mCbPERQqoy0hmBegk3lqIBYxEoyvJpx7RHHppAYd3
-	 IeDeW+yQIrxKoxjN1ezeXHqT2ggr2UYwIw8YnlmYbZqBbQpfO3wl/beRaPTVvYoq53
-	 RHErsXlZugmmA==
-From: SJ Park <sj@kernel.org>
-To: Enze Li <lienze@kylinos.cn>
-Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	enze.li@gmx.com
-Subject: Re: [PATCH] mm/damon/stat: avoid iterating targets in damon_stat_sort_regions()
-Date: Fri, 14 Aug 2026 17:47:26 -0700
-Message-ID: <20260815004727.83755-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260814145409.553724-1-lienze@kylinos.cn>
-References: 
+	bh=RqnE69uQywPoAu63fy6IqdJ7L3LylRRMzmAIeCZ2SVI=;
+	b=uT1Rfb/glKSyImMIEvjYVzcEwjlJCllZoOSkACMrDx8BLE89pTJuZ66GE+JYCYey+gTB6s
+	ZEml6MsutF4w63RHVBiYjg8dfg2EYAoHcLx/N3ZMZYtKGVBQTVDGruLjWZY1knKq+xZcNw
+	SO29iZGfOyU86NsgIzGmZn4ZjPKI0QY=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="M/iz1KRZ";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.221 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786754930;
+	b=tSu4szobfIb5G6GMJid2inGnM/n2pAhp3xkDauzG4aW8Ia5pw392TQTUMi12VN3Rk8RGs7
+	CIkeoeUq2hn8Zb7nf49HEd0vpn8R8UyCWJ2HtTdSsasmj5d47ilGSMoy8y0ieBIgzuWKDo
+	1oYHTREW4LY5b5q/fmVdX2sIDtdX3T0=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=D2tHr41vvRZOGh8CfotiS63LZpn9WEESIso0qi3hUnc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786754928; v=1; x=1787359728;
+ b=M/iz1KRZ0lTqKQZPuHWE8x3SeGdOLunKWprCkF0Dgj/TsGb/fkncKsgqGHuMZGCmzFBiyPnL
+ cT21e0jdaxqQPpW59MxViYonn4zSWPT7iufa4AqAiBX7/jlJZR9VmmN7AJgK46C5NETt0zUn2Ny
+ 9VpinGuAWToyq70d7paTn19U=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (2a03:2880:10ff:12::)
+	by smtp.migadu.com with ESMTPS id f2405bb7f12b9bff;
+	Sat, 15 Aug 2026 00:48:48 +0000
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 14 Aug 2026 17:48:47 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH for-7.4 0/9] memcg: remove the v1 soft limit
+Message-ID: <an-3Ssc22Gm4J_Mb@linux.dev>
+References: <20260811203203.3456029-1-shakeel.butt@linux.dev>
+ <an2HYmJ57BCY_Zwt@lucifer>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <an2HYmJ57BCY_Zwt@lucifer>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BB82080002
-X-Stat-Signature: okuytezid3uouar1mmc5uya1kj49ydci
-X-HE-Tag: 1786754860-587114
-X-HE-Meta: U2FsdGVkX18tyNKSw9whdV1vQ/GWd0M6/+nH+BUv0Ki2JmSx4O1dYCzZPkSRu+2K27b67abPacOLxJqauBArNfyO33RSL6hbp2miMXk/CRhv3E9LBEHhrYqBM75MV6R8CuITA1pzG3Ij3vjQJ8m4SirAOn5jUeBhUd+f4XCmtBtWbhv4Om+5Rd+/utceP9yZ3XS6JAokXNRgKxNVe62JpA/1D2Xp7nVVFWt1Q+UalaBPpYIZA8TjkyD8LUimeVXunvhzz5ZdIEQpGDat07+K/xYjWvhdaF4W1bAM9J/yC2OJh5B0rOLjXHGMllV/TkPvmOlD1krGpHSZiK4toHdFqnBg2cjncOZ9cQRC0wHNeKW8MM4u8eHxxfn0jmXUi2IKivHwZyBJ6QO5kIW4ZRvmxL0MPxA8OdgijC1SJf3DOJPVqTaoE+Pwjd04apBlvYzp54cmEo+bf5iOlDyHMH0Cyvqn+8eUQNx2UqLZoatHzXMiuTnsj6gjy5+7vx31Qvkr5ai/6mr4JmqCOrpDHjpm4xOp3dMDIM3pfnrxd/334x2FVnQsAcluPQiSTUCZsLAkdyBJyfz2Zj4zYZ0wYXJDeAmy7mSxsOtr8/ZSO01nWZMSLhFt280KvGYtxwt1RcYVgZP1DD1+800oyuFZxmycJD8f+g2jM9CL3S1CJNoNV0JlzijA6dVO/XOrgNoUae1dm7NCCd9ehUBn1mP3wVn3kx1wgFB+xldUhtC6+Yj4dAz7XAlCYA1w26i29meWIu0BIHNQXJorw75NGT6K1Gn2ycoqEV58Cm3cPkySQ46VKeO+Q/GA7yZcKmodtZz+fXqyvsDMliN+JuLlh+qCNTDryZ4ov34OwscaCA6stppwTJDI5gtKLlehkNNUFe2S4Q82V2pClFVqWTea1h4x/LesFX+kUncROIopzMATxKcfBoulbYnj8w1SW7XuxGZzo4oOeAcEqZ7D/cdVlZKY9v2
- YE/hq4HI
- wzMfr2OBUc6QlcIn3uBPdQuF96wgOzE8AFTM5DPHSGa3LbXx3mqgLmHTBUMHPGi+K+z5RxDsozOmo3mTVl+Jxs0//WczytlPHJf8AawNtl23MvD2p2HGFgbBiIJoLb2OzfQNw5P7VfOGk0NZaq5LWZc6beYRGjppPuZWrbCNsGRbhk8NR2qNkQhzz1JZhEqIgioxn4C2EH7Djkrd9rAl3WFrRPuY6p+KebE3r3+8ERkcyJEb/yPYuNIhR/vK0m1C5eD9KjXwvDyCE/bJnIPrO7jaj7A==
+X-Rspamd-Queue-Id: 19546C0004
+X-Rspamd-Server: rspam07
+X-Stat-Signature: srewre77ktyi7h9uq6gkjk8mtsr8rp3h
+X-HE-Tag: 1786754929-250855
+X-HE-Meta: U2FsdGVkX19KkNjRK7IUGoJjHcJpbvEWTEKdHGwXC0vJmof4q6Fq8x1Yy4smSoKCgiiGlEpM5Nh/wHKjlx1uU6QRvpunYzUH9VKerHIYqXYh1T7FxdQSI/objbDh0vkfULHVIFZnV9ad5WK/tcxxeSn+6u9DHoHKezqCrs9kC5mPti0m8NlyeWKJ3SN5GMvrnGqka/ILF0VGsB/G3YXYWKVYAxJyxJVdDqHMOSGnuUHhZEJznbvLeW7sybrmJIf2clcgK/y1G1SOGjHVd/74EUtoOsr4GhDQVgtIesnealS5BUQdjZV1eTDGkpgC3I3h0Vyn9fGLJPa0eWnoSR+carnzNXFrtDPWOepldtncBx5nyihVuX3yK/l2TQ7CFvZgwFPxnkjI93giOkI0JQhnhZ2XKyOJHZ3wFNkJMaygbAt8HDsFMi8G8XRiw5AX14f1pWVUukOKecOOHPwNnyjYSdRPTIva5oHCLzvOKv2DNdMsmUQIm975jX3UpQVvwP/G3BrEHq0NqguqdCYVC2HMOfgOXEo0b7w8ggcyIZh88qym52T3XNszUQEyV091gDMQs6787dNXrcQF4uuD0jH/KrnWxb3GVL6mWT8+lt4VeYsfp+WNHCYaGMub86+oAckDryvoRYL4R3SzS1UfbVBthXZvLKG3ZxKaDP+1QWjkMZNmoMvPht+9RxyKsb7A9x3FtkSZTLlF6+q+WEdhA0TNBEkd/2QvUKRhrn+koIKQT3TQp8yk1xVYmlw6eahLSkH0Kgwh0+xIcSyIdSJXvJ9EBGyiuJboc1so3iI55EuN7aCegdvA8Oe1/CUlg3lhuHwNKKm4dbWLgLggffyjcsSD5Gs/xJnK/PzMwxv4gi8hggsTAmkn728tCmdtNXVScHa2CE6UP7QPdhfrpQyWwcy71rQHuIJUpaU1GHk2m3QGd7FvYcv6pE+mQVXYG36i5OBsNSX0gSD9WPtU/syLbki
+ PujM1yVi
+ eqQVCtBL4anTIcQybxAJea5LE0+qcEZI2YNR+1COBtCttK5Y1ElcUaNBIx7UJJQPcWpiWXl+Eyc785AYuwL763QHFjzk8O5Ui31P8ccrD7qW7m4fb7XakA9i0FGiV1BfB3AIcYnq5A6Umi5ChTDyuKSZDUuxt3pCuCTiPYba+N4f5DqDcIi/uoVHAVYNFOEjnvwQPOFAU77NL+znQl3LiwcX/D2zjtfWrub6WGkDj3MKmP/MaTq923g3q6aF/5jh9ZkEMRKgqHLM8cjs30J/vITs7rS3D0lqitCLaADIxWDQoPDWiKRYPVPsprKnNwTlirjwwWstfnkSnVVhoMnxbZ3HU4LWaor5qiY++/uPTiHHNjH4ksxgTTmfOcw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,26 +94,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 14 Aug 2026 22:54:09 +0800 Enze Li <lienze@kylinos.cn> wrote:
-
-> damon/stat module creates only one target in damon_stat_build_ctx(), and
-> the comment in damon_stat_sort_regions() already says so.  But the code
-> still iterates adaptive_targets with damon_for_each_target(), which is
-> needlessly verbose and adds an extra indentation level.
+On Thu, Aug 13, 2026 at 10:27:09AM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Tue, Aug 11, 2026 at 01:31:54PM -0700, Shakeel Butt wrote:
+> > Syzbot reported [1] a set_mm_walk() warning from kswapd. Soft limit
+> > reclaim is the only thing that runs shrink_lruvec() from kswapd with a
+> > target memcg set, and thus the only way kswapd can reach
+> > lru_gen_shrink_lruvec() and in turn set_mm_walk(). The offender,
+> > mem_cgroup_shrink_node(), has long carried a "Only used by soft limit
+> > reclaim. Do not reuse for anything else." comment and a priority hack,
+> > and it simply never got taught about MGLRU.
+> >
+> > Rather than teach it, let's delete it. The v1 soft limit was deprecated
+> > in v6.12 by commit 569c4f62d84a ("memcg: initiate deprecation of v1
+> > soft limit"). Nobody has reported depending on it in the ~21 months
+> > since, and v2 has covered the same ground for a long time with
+> > memory.low and memory.min.
+> >
+> > Link: https://lore.kernel.org/all/6a7a6929.b50370da.49fe0.005e.GAE@google.com/ [1]
+> >
+> > Shakeel Butt (9):
+> >   memcg: make the v1 soft limit knob inert
+> >   memcg: remove v1 soft limit reclaim
+> >   memcg: remove mem_cgroup_shrink_node()
+> >   memcg: remove the soft limit reclaim tracepoints
+> >   memcg: remove the soft limit rbtree
+> >   memcg: remove lru_gen_soft_reclaim()
+> >   memcg: remove the per-node soft limit tree fields
+> >   memcg: remove mem_cgroup->soft_limit
+> >   memcg: simplify v1 event ratelimiting
+> >
+> >  .../admin-guide/cgroup-v1/memory.rst          |  49 +-
+> >  include/linux/memcontrol.h                    |  27 --
+> >  include/linux/mmzone.h                        |  30 +-
+> >  include/trace/events/vmscan.h                 |  14 -
+> >  mm/internal.h                                 |   4 -
+> >  mm/memcontrol-v1.c                            | 435 ++----------------
+> >  mm/memcontrol-v1.h                            |  12 +-
+> >  mm/memcontrol.c                               |   7 +-
+> >  mm/vmscan.c                                   |  96 +---
+> >  9 files changed, 66 insertions(+), 608 deletions(-)
 > 
-> Just use list_first_entry() to grab the single target, with a
-> list_empty() check to be safe.
+> This is a gorgeous diffstat :)
+> 
+> Obviously not my area but looking over it, all LGTM so feel free to add:
+> 
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> 
+> To the whole series!
 
-damon_ctx->adaptive_targetes is a private field.  DAMON API callers should
-access the field using only public API that exposed on damon.h.  Let's not do
-this.
-
-If the verboseness and the indentation are problems, let's split out the code
-to a function.
-
-
-Thanks,
-SJ
-
-[...]
+Thanks for the review.
 
