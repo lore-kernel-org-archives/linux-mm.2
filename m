@@ -4,116 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12AA7C5DF67
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 14:31:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E313C5AD5A
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 14:43:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D45456B07CD; Sat, 15 Aug 2026 10:31:29 -0400 (EDT)
+	id 2D2BE6B07D0; Sat, 15 Aug 2026 10:43:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF5556B07CF; Sat, 15 Aug 2026 10:31:29 -0400 (EDT)
+	id 283616B07D1; Sat, 15 Aug 2026 10:43:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE4926B07D0; Sat, 15 Aug 2026 10:31:29 -0400 (EDT)
+	id 199CC6B07D2; Sat, 15 Aug 2026 10:43:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BA266B07CD
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 10:31:29 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 22A351403EE
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 14:31:29 +0000 (UTC)
-X-FDA: 85103741898.16.A4B7D06
-Received: from mail-wm2-f10.google.com (mail-wm2-f10.google.com [74.125.225.138])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6F2AA140002
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 14:31:27 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Lp/9FzaL";
-	spf=pass (imf23.hostedemail.com: domain of jaeyeon.lee.dev@gmail.com designates 74.125.225.138 as permitted sender) smtp.mailfrom=jaeyeon.lee.dev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id DBFC76B07D0
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 10:43:36 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5D6C6803A6
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 14:43:36 +0000 (UTC)
+X-FDA: 85103772432.27.73B4697
+Received: from mta1.migadu.com (out-215.mta1.migadu.com [95.215.58.215])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C6DBEC0004
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 14:43:32 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PjBcCm2v;
+	spf=pass (imf28.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.215 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786804287;
+	s=arc-20220608; t=1786805014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Vgs6AOcx4CaUB67rv6dy2Cg2Qla+WNDbQRNX2dCqX6U=;
-	b=Fk6foaQ0XICZLJVY+RyWZn1LQIQihW0kXIB8qDxpKEQ9j31cy+maTbgZDqPL+xCczK6zOB
-	um6FBX4Vq2VGSmaP/a9ruxiU3Tnv3Kf0E+gKX75OxKTzSDDQRwunSR9+PCfgz2aywN4ES+
-	c7bn9BpvT6ANBACqF/FVsSIbisk3ag8=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mT+SGaq9qMcfq9PDZDUhAjPXB4BUxffDwX0VGsfRq1s=;
+	b=LXHDQNc9lFA03ShbWMe9Piec1gdVewZdWAvibzChsk/MCazWoXOuzHpt973eutpkQX35CQ
+	vmH/WaBOvy4N2HOnAMiexTuoyEaViwpcBmBtWNm2wIOfz4oegI1jh/rwLMWJzzzAOIQt1W
+	2ReqgFjd8JETQ50VYoerV4BB0Vw/tkw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Lp/9FzaL";
-	spf=pass (imf23.hostedemail.com: domain of jaeyeon.lee.dev@gmail.com designates 74.125.225.138 as permitted sender) smtp.mailfrom=jaeyeon.lee.dev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PjBcCm2v;
+	spf=pass (imf28.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.215 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786804287;
-	b=J8h65tuvsiiMzbhwhh2PQc4Dm0kQiEjOqXztPscUpPWBd0uiA52Ui7OG9Q5JfXeu+rfk3Y
-	Nc30R3n3aI7ppIYg667TQ8cn4l8PMYa6MzUdwe8jGXaYVf93uSUwPLMQPTIebX4Oi4uEOB
-	Qnb1DOqmbXg4cDAwJe/jrJhzYHiUJBA=
-Received: by mail-wm2-f10.google.com with SMTP id 5b1f17b1804b1-495459712d2so5219215e9.1
-        for <linux-mm@kvack.org>; Sat, 15 Aug 2026 07:31:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786804286; x=1787409086; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Vgs6AOcx4CaUB67rv6dy2Cg2Qla+WNDbQRNX2dCqX6U=;
-        b=Lp/9FzaLPamOHnvmZ5KED99D2baaEFCzvM17VpJO2Tdw3g4cHmDy2484ta78RQO+Ar
-         tTIapG7TZQilKSycA2DeMPVtHF+VBRyTfI9rFh6+ihlsaKctIZxx49vDPCpZy8P6aNGF
-         0knw5ia3CQNfA0Fxaw+wHYMt6AOx6FYTUNRvW7s80LnK0ntOPPfD8WagUuHDqNWUr/ZL
-         RAmHn0vG5CAOjSaMQWA7id7UBBmlr9VwlHQ30p561LVJf7jkkcqUV2mmpnsZWUVs7LQj
-         b/2AFPSoHTXyHsL2SR5ekVMwHy51p/R1jyA7ioPwLDRBXdKlnd668H2R1NfhQipIkWOB
-         H1RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786804286; x=1787409086;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Vgs6AOcx4CaUB67rv6dy2Cg2Qla+WNDbQRNX2dCqX6U=;
-        b=TlQOQSGsx/ZpVY4B2tZ4Sn1XQIkt1A5s/XMaaR5Oh35YxaiCvOW9VpClSDp7YUp405
-         QvHIbFfQFWV3mF2ziyUhU8gG5AohnAj8ITRfi18sMufaBVzZBl0J8pZzlYsfCJZuLXGN
-         ahqB1mqq93bM7ou9TGQms2/qaGj7d0WQT2ZoBqwbhIbrsOgNQRyBnLWrVMydHMOTrEOt
-         bMxN9/Ck3DdjTsGJ5YgSTYXpwWo+b1rs0FlBg1A0/CEH+dVekTNRYfchr1oqw3sxNvid
-         bVMaccoFGFgH9Wc2aeVBrG7qZP8ilVmD/RYVAPW3dvwASRQmie1nnWQtc4yiAJ9rb5ZE
-         q2vA==
-X-Forwarded-Encrypted: i=1; AHgh+RqjvebE34O23h4uwLO126T9HxRbR3NbXhQJVowR8vDvBUPRX1X8H2z+o6CTldT/Gvc3yhgCA/Oi2A==@kvack.org
-X-Gm-Message-State: AOJu0YwD5g1St6oB0vQ2nOpOhHe92sQhKH2LbKWyklet1VvTbXMsY9I2
-	RIu4GhWGXWJzjyGt858i+y4x/vSOaO6K3lzgY8VC2FR/jiCuyvHlPyMq
-X-Gm-Gg: AR+sD132WLLYZPQEVm3vdS6bVIWjaXpejn9F/j18t+jkOGvh/xkB3aS6eSg1iXm1bxx
-	W+x52xzgPbFQupYJ1TnkwDdXUbmuROP/4z9qyA1/RMOZBgZuU5Rqu5NUFh60Npziqmj70d1XmeD
-	jmJumEyZrAimY/PKw9NQ9wQixnsyyRclg47+qISQPb+V43SjwPtV2ps4IFurQFybArdTDhRJcDd
-	bvDwZ7ypGvL5QFWSmDm0jguHK26c84x/ECji8BDo5RhBwzjyP9UF2EgNa21AEzP3Gkt/axRjgKX
-	VJj4wstsmruVQG3j/mfbw5Qfz3roHbItMQ4ILum5GTx0oWcBrAn08TUTPJWNSD3f0YGTpYqKfhy
-	PaAvVvjDfjvgDb9CHUs/Y102niODA4CnMZrfe73N1QV5XcdFuj/SX1m/oPg1kBjQFSRpF7AIsev
-	VG4brP/dYUt2jSYFaEXObS0CzSt7j8Gq5S27bgaCFQlq1pCGlX4CbrbyaGXGJcY4S7DLCuW8GzP
-	G9VO+bzYSNyj3UMCcv5PdZYt1KvfZpVq+GH6XPKXeXmtZBCHYgZt7ll8pOkRJsWF4R0eIlnVO/3
-	9lKuLthrYEs2p79slCc=
-X-Received: by 2002:a05:600c:4e04:b0:499:9069:c2c9 with SMTP id 5b1f17b1804b1-4999069cf2bmr75580105e9.11.1786804285834;
-        Sat, 15 Aug 2026 07:31:25 -0700 (PDT)
-Received: from lima-kernel.telekom.ip (84-115-221-9.cable.dynamic.surfer.at. [84.115.221.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49988b24746sm251357515e9.12.2026.08.15.07.31.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Aug 2026 07:31:25 -0700 (PDT)
-From: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
-To: sj@kernel.org,
-	akpm@linux-foundation.org
-Cc: shu17az@gmail.com,
-	jiayuan.chen@shopee.com,
-	jaeyeon.lee.dev@gmail.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/damon/tests: use scoped_guard() for damon_test_ops_registration
-Date: Sat, 15 Aug 2026 16:30:39 +0200
-Message-ID: <20260815143039.17291-1-jaeyeon.lee.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6F2AA140002
-X-Stat-Signature: gb3yaziknz5mcdx9mkjfqji4iqcuu7pc
+	t=1786805014;
+	b=P5TntdHDase1+geP4dOtCIyj9dZBuR2Lr2FJUNcH6A3o/FiHKHOr77dKXam/511GPjz4d2
+	lUUtmZ6plJuHJ8mhrFo0OUnCXrbeW3lLfpVG5KHQILaNIbNZ6GcZNapMTtSLU1v3mKhFAp
+	KjkBzqfmAsRYbptD+1wH7rwMt4Zi1k4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=4//uIXJEQ+puCtDj34Ag6s3cT0uGXLeBX5VN/A05+2w=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786805010; v=1; x=1787409810;
+ b=PjBcCm2vYXhQph+sYLh/Wf58HKQOfEadJOeYXQmZbEZLcZMzMNo3CSJGnMRHVV/8w8yciwO1
+ NxZd6dRoo503Pu5Wk4N4SKTt+dIpOEMko/wgsPFcED/M5fKN9/oPTf00fJibABLeVx61kF3lJI5
+ VFUlwgzDBZAM/oZB4YElfzcY=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (77.97.51.77)
+	by smtp.migadu.com with ESMTPS id 82a6b59325fd5af9;
+	Sat, 15 Aug 2026 14:43:19 +0000
+X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 15 Aug 2026 15:43:18 +0100
+Message-Id: <DKPLICBIHQMP.2HPKI7JZXSUFV@linux.dev>
+To: "Yosry Ahmed" <yosry@kernel.org>, "Brendan Jackman"
+ <brendan.jackman@linux.dev>
+Cc: "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
+ <dave.hansen@linux.intel.com>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
+ <david@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike Rapoport"
+ <rppt@kernel.org>, "Wei Xu" <weixugc@google.com>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Lorenzo Stoakes"
+ <ljs@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <x86@kernel.org>, "Sumit Garg" <sumit.garg@oss.qualcomm.com>, "Will Deacon"
+ <will@kernel.org>, <rientjes@google.com>, <patrick.roy@linux.dev>,
+ "Itazuri, Takahiro" <itazur@amazon.co.uk>, "Andy Lutomirski"
+ <luto@kernel.org>, "David Kaplan" <david.kaplan@amd.com>, "Thomas Gleixner"
+ <tglx@kernel.org>, "Patrick Bellasi" <derkling@google.com>, "Reiji
+ Watanabe" <reijiw@google.com>, "Sean Christopherson" <seanjc@google.com>
+Subject: Re: [PATCH v3 21/26] mm/page_alloc: implement FREETYPE_UNMAPPED
+ allocations
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+X-Mailer: aerc 0.21.0
+References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
+ <20260726-page_alloc-unmapped-v3-21-6f5729aa9832@google.com>
+ <anzinNUA6ZASDnvA@google.com>
+In-Reply-To: <anzinNUA6ZASDnvA@google.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C6DBEC0004
+X-Stat-Signature: szefb6p11fergyz1fbg1emwma84io4sg
 X-Rspam-User: 
-X-HE-Tag: 1786804287-109421
-X-HE-Meta: U2FsdGVkX19H3Y4hQC2Je12S5vljucorSqxltUTabmWUInzhl3g6+M+FtzeBuaag8pQEHGqeCaHHMPkdJhJdkDwEN3V1GK2/4IcTfdpwJMsK0ppFu8IVdt2+mr+WPHNIXbk2tcdEm7I8sYiVcUXqmVekYJDkCbziWICcu8WBjlXQZVLb8kBQ7oWEoB5ZxTrV/k509bYL66i8Ozc1WIt0OFWK3uk7fs5nn8Ib2d8rfGceUhqDtx/7No2ym/hmttKEXh2b+QN6evq/zEPsTBMeaBuRdwsCVVg+ZVvzISJhB0EC8iw5AtUW+OGFAWWkW5aRa5yr/6MALpu/wz3QLc1+BO89pGrVxSuStQLRVs2TwVgbIQ0pbA36a8kb7PL/vKzpjB3OrI9LFWpeQ+b2SklX6+REJv/ooN3cjJtxxJJUYsEvKZZxnbH+EX0Gp5oCexGEXbuMdJ+C/kHUWI2StGBMjmmM8bmG9r84upzVFJKTTN2XCjIIC3mAFZ1zQVwlEDopNmcaEqxYbonk+mtQ4JpgzRMf03NTVxGzB8W24w0kChmkJE+3wVmKCnSwfvGkierXqMQXcGbpaszp1ahZorPAcR249BzPxL9iK3hhw1TQxoU6NzwlOPPQzPuqGJDC9DmbBMNRsgt0p4a5YvrruoIzBr7VB7oJRz12KztEy2nvkFmsTSxvts9qiaDAV7jIFpUBG4HQe+lRosjUjfmOl2Ainb54PxFMFUCPJNSBr7TrjdA7X8rYc8Utjy8VtjxXDEv2E+CqC7LeczkvhqxqsSdcp8I9gOH8jg99EEfBfeOluT6MJH6VJvUR0HbGBYlHhcerEJPOoPbC1ptJ2Ksos5Kv+rE1AAFGy59a7I+YfWfg21PeQ+/rBPqAfG8TmhGHUx1bfrSt/jeMiz6XM/KRqyx/22LxQMajEimd3gR85lJsWvqGsRCweiix0cw2rr9WWIeNt9FJlswH7zUtfF0jZI9
- /YxCZV0M
- E0t9qk9KlUV6fuQvuzJkPwfTwUh51fACQmUrgL/5+oPQ5+FXaPTe0WNND2UdDyZ+1Fp2/tI+qT1ZVLljxiZFexRfLJ/C1wD/VVx+2bhklVlkBFnq2dE8vQJudUsFC/bxmd57XeIKZiXlEgzGAMdqV2A5Z/jr9zV53cKyGMQr22ff9ydjHZ9E0evZ72wB/TKdXGTBcVz1oQCT0XwWXXjzxgQQV9cGt13clxVaFmaddZ7cVPrX0gwXQxIqYzoNqqmWuOxCI6/EFMxBPNEDRJSy56g8RLl0kAnj5ToFZYS3UmYNpGoGOdU/bs6x5x+P3nDUK/CoQIdLXyBjpLfDWfRF3JPjSRUQmAgMDZ6hZ+Q2nvDHrh1DyMEpWTa9sDIRusIWZNZ6BCHEsDFLSqlCk4TJIvS3Ecl8ozhlXzqjCb7X1CD2XKO1DZ+Q3RewahTho2aqGmUZUvml/kbWKPrahvm8eHGV6eKrGvVEZ6kcbMGAbTHgwDJHhRNcNd/mMGT302PcuyoKOzmLDpOikzjnZ2JeHBRUWvw==
+X-HE-Tag: 1786805012-104679
+X-HE-Meta: U2FsdGVkX19lttTFsNqSclbMvqPRFwe4G7etjS+GMehS+rFYlSFkU6M64epFeFo2HWXDAJcVoETBNbULs5YE0BGuXT8hCxwcb4PvFo0bYMVnSI874AUNoMNzYGNQetRc3tY/wlz/p7YTU9xh038cPFd0juZ/2QRDKylzG/4HfrAS6NCgFfUkE+iYB6QVqkFdhRbl5qk7MOXUkbx+TqYYqIbEVQofk7BrZJ/cTwPUQxoCjFW3HpD4q/IpdeVB4uePZs5yXOhRaAa73Li4pyHky3i100eNW39u9DRIdSEWXDAWCJW3r4YPlvoEC+2xg8kb6Uxu5glcmp7j395zDicyodUoUHnBV5kiy8y8/OQqakXxC/tvRAvjCZ+FuxGkbWV2w9T3DJyYUuaJc/qzmKnvZm7XJrE4Htgs/mIg0aPR003KdHi347czBlyeA99s3JpP26wRaakbIiZS9PIb1Oqu+i+OkhgwYdXp+B74s242i7AlGfXJoSyrYDM5zJM5NeN674XR6WIGb5oBvHHv+tilKkEv9nRNqyhIPREhxwfjV2UwMNm8UqzJMFMFmwWeJTf8DIRRt/21M89OWnjs7ThNz+Xez5BKwjrospIGKDiLvnyyo4ZE8w93HqU/flwjMfF7NY5ZTaJ0C8rBvquvYy++qLB3+0THjChJM+U64+u0fQYeMp2ETioPWuCQK+Ud2PmlBdOe9sb8rioBL0Y5evBKD8vugN8F8fgsnGmSC+ZJVizKnQI4pgTVPBwsId+GQJQCAurPmGRFsY22YvJfdJqkgoFcozpB/m1dUQ+umgIP7q5FX+COlQotM1s8w2m96mcygwhUtXys7r/749rjYewKBjPqQKsDar0qnAAAxlDWe0dVZIzYze0fY+/dgBMlJLtEkXbKCLa6EIN/xZstXRaGLsNHFaXLrt6EYBvZk3f401ksST3vCy5vO0062WWvEHSeGcvfmSgphfuvSt2oKBQ
+ DR8QtTce
+ LrtYv3DjqaPCp1zVIcxw5VE39nrKk0BK/2SyFy9zqG2l2Fj2X943SpVlBZXxMUW88NRfx0gVeivA/ItpK1aKW6Xqm4ImXs6G3cqc1KCAScy60cgnF51dkqiWVGXQViS02IrzXDjgXbZTf7WuwUQ1gjRPimYqpaj+R1PV4clxWTElPEgjpkQCmSREzpokzkelVjMW0XiGhJR9E+IW3bWprH9Gez2nQlFNjm4ll8LDwnTbgPUsUG2S0owOCwryajjy0DALux0xSdGk7GxkkfEk1BkV8QZfq7KGmKNmm5YGcsbm6pFgRGIklvn8ZqGDuUd+rKVodh5s7vvNZm6fdH4205Wt5JAH4ARL9NIP8s56vhbX2P9Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,60 +105,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Replace manual mutex_lock() and mutex_unlock() calls with the
-scoped_guard() macro. This simplifies the code, improves readability,
-and ensures that the lock is automatically released when the scope
-ends, preventing potential lock leaks in the future.
+On Wed Aug 12, 2026 at 10:26 PM BST, Yosry Ahmed wrote:
+> [..]
+>>  static __always_inline
+>>  struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zo=
+ne,
+>>  			   unsigned int order, unsigned int alloc_flags,
+>> @@ -3433,13 +3580,15 @@ struct page *rmqueue_buddy(struct zone *preferre=
+d_zone, struct zone *zone,
+>>  			 */
+>>  			if (!page && (alloc_flags & (ALLOC_OOM|ALLOC_HARDER)))
+>>  				page =3D __rmqueue_smallest(zone, order, ft_high);
+>> -
+>> -			if (!page) {
+>> -				spin_unlock_irqrestore(&zone->lock, flags);
+>> -				return NULL;
+>> -			}
+>>  		}
+>>  		spin_unlock_irqrestore(&zone->lock, flags);
+>> +
+>> +		/* Try changing direct map, now we've released the zone lock */
+>> +		if (!page)
+>> +			page =3D __rmqueue_direct_map(zone, order, alloc_flags, freetype);
+>
+> Is it intentional that this is called outside __rmqueue() and doesn't
+> cover pcplists refills through rmqueue_bulk()?
+>
+> IIUC, we will never change a pageblock to unmapped to refill the
+> pcplists, so the unmapped pcplists can get filled in two ways:
+> (a) When unmapped pages are freed.
+> (b) When a pageblock is converted here (in rmqueue_buddy()), if the
+>     allocation only consumes part of it, the new allocation might move
+>     the rest into the pcplist through rmqueue_bulk().
+>
+> Does this mean that unmapped pcplists are less effective in serving
+> allocations? There is a tradeoff here because converting a pageblock to
+> unmapped is expensive, so maybe this is the right choice to make, I am
+> just wondering if this was intentional and/or if we tried it a different
+> way.
 
-Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
----
- mm/damon/tests/core-kunit.h | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+Yeah I think this is all aligned with how I envisaged this working. I
+have been assuming that changing pageblocks only happens:
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 4a536d41cdb2..770927a30021 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -434,17 +434,17 @@ static void damon_test_ops_registration(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, damon_select_ops(c, NR_DAMON_OPS), -EINVAL);
- 
- 	/* Registration should success after unregistration */
--	mutex_lock(&damon_ops_lock);
--	bak = damon_registered_ops[DAMON_OPS_VADDR];
--	damon_registered_ops[DAMON_OPS_VADDR] = (struct damon_operations){};
--	mutex_unlock(&damon_ops_lock);
-+	scoped_guard(mutex, &damon_ops_lock) {
-+		bak = damon_registered_ops[DAMON_OPS_VADDR];
-+		damon_registered_ops[DAMON_OPS_VADDR] =
-+			(struct damon_operations){};
-+	}
- 
- 	ops.id = DAMON_OPS_VADDR;
- 	KUNIT_EXPECT_EQ(test, damon_register_ops(&ops), 0);
- 
--	mutex_lock(&damon_ops_lock);
--	damon_registered_ops[DAMON_OPS_VADDR] = bak;
--	mutex_unlock(&damon_ops_lock);
-+	scoped_guard(mutex, &damon_ops_lock)
-+		damon_registered_ops[DAMON_OPS_VADDR] = bak;
- 
- 	/* Check double-registration failure again */
- 	KUNIT_EXPECT_EQ(test, damon_register_ops(&ops), -EINVAL);
-@@ -452,10 +452,9 @@ static void damon_test_ops_registration(struct kunit *test)
- 	damon_destroy_ctx(c);
- 
- 	if (need_cleanup) {
--		mutex_lock(&damon_ops_lock);
--		damon_registered_ops[DAMON_OPS_VADDR] =
--			(struct damon_operations){};
--		mutex_unlock(&damon_ops_lock);
-+		scoped_guard(mutex, &damon_ops_lock)
-+			damon_registered_ops[DAMON_OPS_VADDR] =
-+				(struct damon_operations){};
- 	}
- }
- 
--- 
-2.43.0
+1. When botting / changing between different kinds of workload.
+
+2. When the system is quite distressed by memory pressure.
+
+I think in both cases, proactively flipping a block just to refill
+pcplists is unhelpful?
+
+> Actuall, THPs are not covered by scenario (b) above if the pageblock
+> size is the same as THP size, as the converted THPs are always consumed
+> by the allocation, so the THP pcplist will only be filled when THPs are
+> freed.
+>
+> I wonder if this would cause a problem for THP-heavy workloads (e.g.
+> guest_memfd using THP, or any THP usage with ASI).
+
+And again it doesn't feel right to proactively flip a block just to
+create a pcplist. The cost of a pcplist miss is basically a bit of
+cacheline contention while the cost of flipping a block is pretty high,
+it seems well worth risking the former to avoid the latter.
+
+> The other thing (that I probably mentioned elsewhere) is that kcompactd
+> does not produce unmapped pageblocks, so it seems like THP allocations
+> will mostly hit this code path and convert a pageblock to unmapped.
+
+Yeah, I think making kcompactd produce unmapped blocks is a nice
+standalone optimisation series and it can probably wait until someone
+has a workload they can share the performance improvements from.
+
+> Actually, if we do bulk conversion to unmapped (e.g. in kcompactd) we
+> could batch the TLB shootdowns as well, but that should probably be done
+> separately.
+
+Oh, that's a good point though, coz that would also interact nicely with
+pcplists. In theory we could allocate several contiguous pageblocks,
+flip them with a single amortised flush, and then use that to refill
+pcplists. But yeah this still feels like far future optimisations if and
+when we actually knew it helped.
+
+>> +		if (!page)
+>> +			return NULL;
+>> +
+>>  	} while (check_new_pages(page, order));
+>> =20
+>>  	/*
 
 
