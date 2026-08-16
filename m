@@ -4,113 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA1F3C5DF70
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 13:58:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2467AC5B572
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 14:22:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DAF26B0354; Sun, 16 Aug 2026 09:58:12 -0400 (EDT)
+	id DA9876B0355; Sun, 16 Aug 2026 10:22:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58C616B0355; Sun, 16 Aug 2026 09:58:12 -0400 (EDT)
+	id D59F06B0356; Sun, 16 Aug 2026 10:22:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A1BB6B0356; Sun, 16 Aug 2026 09:58:12 -0400 (EDT)
+	id C704B6B0357; Sun, 16 Aug 2026 10:22:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 22A3A6B0354
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:58:12 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9A3621C1886
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 13:58:11 +0000 (UTC)
-X-FDA: 85107286782.21.A32C0A0
-Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C4ADEC0003
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 13:58:09 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kueHDcta;
-	spf=pass (imf10.hostedemail.com: domain of foxieflakey@gmail.com designates 209.85.214.195 as permitted sender) smtp.mailfrom=foxieflakey@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786888689;
-	b=dw02fwonwsZ8vBJNol8U9JcgJF27oL20UJoMK/gubRwpelhqCUjQZqSAP8XTyToTkntbHl
-	4/olYLv6Jdo5QObNVdFjaZqIKVoNfEiTFWNkCoC/6/mUqaf/rmO7XkWVn6mZKn3Fu695/K
-	+pzoPfM6TF7xsR3Q+J3umpkMD534Nyo=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kueHDcta;
-	spf=pass (imf10.hostedemail.com: domain of foxieflakey@gmail.com designates 209.85.214.195 as permitted sender) smtp.mailfrom=foxieflakey@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 945EB6B0355
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 10:22:41 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 21114A2E72
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 14:22:41 +0000 (UTC)
+X-FDA: 85107348522.29.963BB3E
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5BC2040004
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 14:22:39 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KuHB3FHf;
+	spf=pass (imf12.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786888689;
+	s=arc-20220608; t=1786890159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/fThRPUBNCrqFeDKJK17T0YONc4Gpv3LdKTE6Fvw3mI=;
-	b=3KnEo52wLxUmlzIFTALjnxpAc4Ry8wpCefh9uO0c982hd2W8HowhF1aK1o7AZzUoKkNRy8
-	COYOKyETb0emZqd/XvGcx1D+mVmYqCN6bqeQAh6ImsY2B5Aty7ZR2tS+bGCIgWU+DJH2H9
-	JUhZCBvrfBrejEl/Ka/EIyTh4nMzBAU=
-Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-2cc61541f8cso44359685ad.0
-        for <linux-mm@kvack.org>; Sun, 16 Aug 2026 06:58:09 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=XsGCXFozT69ITA4eF1crVo3PlInrHxlGF6a27uOAn/o=;
+	b=ppKrpXfeP5s2tPrvGC9t4atwX5wYwoACS9Nm+yL67MTELBowdbBiz37eoMsQzVRq01jrZR
+	D/rSTOg+gV1vFLbxvY24oNiS4cCnC/0WPRcLbnPYb53HVMEqg7/VRjx5UjYLo5S5bwel0Y
+	V5coRdU2gGSalKUkzvqVPkNI/nBjgqY=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KuHB3FHf;
+	spf=pass (imf12.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786890159;
+	b=syM7VTy3TInEk2Yqh5IxTiEhWmDcfqKaRd+jkmKWY8BAWNbcBKf2QZv/myFtcravd2jUKp
+	GW2eNiDBF+mzXR7S3uqtnJ2MMRZpz5vcobepbDM51w+xFFVT7gKnF8hRu2uWZSXcPmuzYW
+	QBUR57dAui7vxNhTJm7s/60V8qmPW6w=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2d049069377so26027065ad.0
+        for <linux-mm@kvack.org>; Sun, 16 Aug 2026 07:22:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786888688; x=1787493488; darn=kvack.org;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:date:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/fThRPUBNCrqFeDKJK17T0YONc4Gpv3LdKTE6Fvw3mI=;
-        b=kueHDcta54MVuK8H9f9kl9qUKil/7ZNEiZvI2CDWCUUFxR3MGL9zNt73PgVJHlKKTf
-         LRbai9ojxiGkEWxap0pAxJgeJsACqzPAPFOeJsAaHl2Cj1JdYESsr64L/0PSaWK4o1w9
-         0zWe+WXiBMTAqEh/VMVD/lSy2Y3IHadY4rKbvvBvtqvJFBKG+6eJIpl9fYT0DV0bZJ96
-         ZIeiQxUcKHqWJOOHyywVRottu6Sy78Xr8jDJNOzNw/x5QDrNbVIi7+KtYNjAXJI4TDg9
-         c4vcQ/GLVDadGKSMaNVIxuL0dAqV8zTwbI+l/D/cwDpR7Oc87p0A/NMX8dcMQOkTh9bM
-         h6uw==
+        d=gmail.com; s=20251104; t=1786890158; x=1787494958; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XsGCXFozT69ITA4eF1crVo3PlInrHxlGF6a27uOAn/o=;
+        b=KuHB3FHfc/NoMUHnHgolGZXh+ZHfDY6Q8aaOdisHRRIKSw/UFzEHMfQJQjtYue6s3O
+         6OONbLTqcLM606gfDj8AI2gmw+vwNGUKiDX8CR4JJYNfTfE4nbw1EG6oJEt3iqD4N70u
+         D1NFGRUklZggjhMPZB6ru/vSASVarVHkKZhngVbCOx8f7K0hnaNOK18J70/Dc+0cxpVG
+         PgxBkQplQhKzM8f7xyfQxRlynhkw9KefpoXQQfZod/OTo3QpbakmZAWUmCAacRgeGSkl
+         CgRtDrnWzyGrJn30QACAxdoS9UB8suHHzjzxFS7M8E/VSIcLI22YBs9UBaw2je5Wpr3F
+         DasA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786888688; x=1787493488;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1786890158; x=1787494958;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/fThRPUBNCrqFeDKJK17T0YONc4Gpv3LdKTE6Fvw3mI=;
-        b=O9BeKQQuGK4roo4KbBuOtAD6NBTfYZFQujBR2UP/wWxRco0s8UWTlKAIw/NV1J1IzK
-         W7+MI9Nhfwa5yB75P2X+0ceRZByLPaMeLTVC39+h0ULe7n2eu8NGSqVvXPZCJqAgRY5f
-         8jcOT2vKF1Z4yhPk0vawPifwho4m6cz4kfu8e/TNMqVMP34qclcif3fEjefURWo2iO3R
-         r+uFKWIIsr3gTqZd/r8zzbIdjFNk4q/qNgMEDtDcA0x5DAnXSlEQfGUnpBPoGq1fLMOE
-         rdMH5Maomsxct+6/aDk0jbccEPTc/MOWtDwpYrvUtoV6H0E7I9goKqO5zHvjgdxi7QBh
-         gH7Q==
-X-Forwarded-Encrypted: i=1; AHgh+RpxDbPcyDZru1eHb2TA/3G081JefQgdyp1fC01DQqHWGAEwTxtUjtY39GSVlO7+8CJ391/UtO0XmA==@kvack.org
-X-Gm-Message-State: AOJu0YyQxGDiawihdXwPDmMG/opeP6fDQlNGyZL5sGybBpLaRfE6MC8k
-	bpSBNVPtd31IZ+EkrARXW02Jd10+eFHe1j3Bcg+GPwzTggcxGPuU+a9Z
-X-Gm-Gg: AR+sD13gqqbIFsDfn3j4zqjOCo8kPVPEspKic8HgEl43LKNzLxLpakMj7V9dGWh/TXG
-	F+3TqAOXXYAxjp9vDPSDI83lqaBuLBwEw8QMbfTJyQ+6+ZoqKwXVvk2yNW2weR8pmdk3SiKCEwC
-	hV39HzmMNxYyY8lmmGNuuebReK2fjdeNl15bJkDD+uRBQtZvhI5JLk8pFdpQyzi7sSHrzh7BCOv
-	O/JVIPKsleLm9iyIRJqsHK4CULnh15ZOdk6OeKu3sh2hzfVZyVR5MZXtBpNm7XKbhOH20aIY+VR
-	ONj0kk1uTJE3TKi5m6kLXFCP+IjjXkZSwA0MbMQYidGW9bS8/3k5hlo922ClH8p2UFp9FrHYaLv
-	BicsB1KU83DxeXxeSAlqPK5qdwNPSLlJ8+PsK3UyboGEGx8F9uggaeJ2Nc+wMBmuygGTUO6cRAT
-	urQThOWZIIZAn7de7w38TeTTZJwsc7Gvrh0znq06yWoO3SO9ZEpiQm
-X-Received: by 2002:a17:90a:d005:b0:36d:b12b:f57d with SMTP id 98e67ed59e1d1-3931f581f38mr20607364a91.12.1786888688422;
-        Sun, 16 Aug 2026 06:58:08 -0700 (PDT)
-Received: from 192.168.1.2 ([157.85.198.7])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-141387e49d3sm31515973c88.7.2026.08.16.06.58.06
+        bh=XsGCXFozT69ITA4eF1crVo3PlInrHxlGF6a27uOAn/o=;
+        b=gNnr083lNDOVN/NoMEU+41g4CTlh+beGNnUvcNPI+Cefdjag9+y2qM7hliGeAdljkB
+         0pb++vIsG8wnKiY3am9dj0hu4jH21xpqZvYyOKA1JoBbapM3xV28qDjs383bmwE9ARBy
+         Lg5ptsm6X7OY7ERFRSMHPmXFXoRy9EkaPl44+jfE9MVi7ZitCpSm49eFt2TztRIgR34W
+         SRKfZXjooLie1pTfl4bXHIiKTDsZq4wF2yd/U24B3lvXg3dSZfNj0h8p5Nm7qB9e4EQi
+         KnaUXvGMqzd79lQ4Ad4pzT8L1Zuv4PHYWdjWg5c3egBk0L2mVioUUc6J85uXLlwkX+yX
+         5QPw==
+X-Forwarded-Encrypted: i=1; AHgh+RrWwtqylQac9WbiVySl+pNStE0T5D+7aXHNKocTAsZG0vznhL0+0HMOZjSGNqb8gtnGs9gFUjYb4w==@kvack.org
+X-Gm-Message-State: AOJu0Yw3i2oWeIdz7g9QMAhqem406XHpKu3MZz/qcrrNlATO9eF2S7WH
+	Ev/V8XDznNYe0LjtNdnvlszYt/+BXRObYkmxHqLqV+G3d/z/gNAeNGan
+X-Gm-Gg: AR+sD130Un2hRtHaIkEiuHRXfvzvD1hcB445x2wuK9a96SBzbyqur1x8Wt3T4944lAR
+	jDcahcsl9iEyy+c1fo88gTXaPVBqY4tt8JE2OwjWKRiLjCeEqVyK8UJtNyWKnIYcSnxlja3keb+
+	m68TSl4vA58XacgFZgeX01Y1lkUftafGJTEeLK87/TUDDD2snytl2qnCs9XrR0K+jdxwuLhIpno
+	x0Nx4L6O00XsYWJBthJ7MHrI2XanN7SDG6oYAwGSD1anYaWEtBnUAN7Bkhy+LRgeO0cvgMO5d/W
+	cM9H1GvJB0gW3pCmQ407q1HK9YmzJYQJxkXExTzns+rD8q+RJ22IyKxBsR3KMAPQPN6bk80x9ar
+	wBkJB1hdF30Cg63r8sMGHMzEMR1IBWKev/tPk2/k6pV4LZ38qeaBYEdDxPeZm9Bmw5xQ0SV0Ktf
+	DD3Fb6VraVW/IxiaqoceY8QfVZY96rLz1tWMLp5hhnb+hbZ/KezyVc5lF6bJVhwGuHS0gQMzncz
+	GQdTFlygL2g+wS/omA=
+X-Received: by 2002:a17:902:da82:b0:2cc:777f:d67c with SMTP id d9443c01a7336-2d3b0d5ed01mr190367395ad.13.1786890157697;
+        Sun, 16 Aug 2026 07:22:37 -0700 (PDT)
+Received: from kernel.tail6741c6.ts.net ([116.128.244.169])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d3aebc8199sm26102365ad.74.2026.08.16.07.22.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Aug 2026 06:58:08 -0700 (PDT)
-From: Foxie Flakey <foxieflakey@gmail.com>
-X-Google-Original-From: Foxie Flakey <foxie@gmail.com>
-Date: Sun, 16 Aug 2026 20:58:04 +0700 (WIB)
-To: Mike Rapoport <rppt@kernel.org>
-cc: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org, 
-    peterx@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] userfaultfd: reset err to be 0 when move_pages_ptes
- succeeded
-In-Reply-To: <aoGi3g9AlcG9EiyG@kernel.org>
-Message-ID: <f6c5c31c-13d9-801b-cdff-09fa8333e419@gmail.com>
-References: <9c936a9f-ed27-e510-872f-5b3b8c680975@gmail.com> <aoF_qmSHiEgujaH5@kernel.org> <69522f38-7e5d-ebdf-d42e-11d822bce662@gmail.com> <aoGi3g9AlcG9EiyG@kernel.org>
+        Sun, 16 Aug 2026 07:22:36 -0700 (PDT)
+From: Kunwu Chan <kunwu.chan@gmail.com>
+X-Google-Original-From: Kunwu Chan <kunwu.chan@linux.dev>
+To: will@kernel.org,
+	mark.rutland@arm.com,
+	sj@kernel.org,
+	akpm@linux-foundation.org,
+	shuah@kernel.org,
+	kunwu.chan@linux.dev
+Cc: linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-perf-users@vger.kernel.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	Kunwu Chan <kunwu.chan@gmail.com>
+Subject: [RFC PATCH 0/4] mm/damon/perf: add ARM SPE AUX backend
+Date: Sun, 16 Aug 2026 22:22:17 +0800
+Message-ID: <20260816142222.689624-1-kunwu.chan@linux.dev>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: C4ADEC0003
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5BC2040004
+X-Stat-Signature: ibxayssx4tyyobmb5mp8w6oxcnsh35bd
 X-Rspam-User: 
-X-Stat-Signature: hi9baa3ff6pxyitm8gysdqtwrhh9x1bp
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786888689-657436
-X-HE-Meta: U2FsdGVkX19ImSSp72bvCCvFTC3PcdjwE2MlQU9mP9hTuH+rYJui4YccImscMVxCVgwz9ioFVuQPnrGjMA3Hm3mwA4AKAeiNXq1I9blMRhN9dYxhjhVbQF2kMDWSyee9K1Fh8Gs7vH+99DdpYiQXELjvawZu1ubQFrB0U+g8QLe0UEGaAExBnnVfP2NLF0ijmIY85FdNxuzzNXdfKQEdg9MGWFf1M00Avi3svshnmu/L/LQvxjygpvNnycIojLLkc4mvVLmT7QKcZQ6IP2Dfw1ZGk8JS+id49A4QW8k6frhT1c6FomFMP5snfeNVBDapUemi9bT4s08h1Ahv+PCv1IjgN8xROEAbKAF0Iv6mc/LaN7bT7zo7PSI+LD2cGlojPPkdvhpiw5G9ZYIK9g9qm2pbho48u8OsqKhuMJSSLOEWDjU37Ofx9oh8vuMyxKsF1BJV5m1+nhY6s3Za7AvH7von30HPx5N6K6YONCnDccLJMfJcohCCwCY/8brIuMZSyxpKvJOIyTJecxdSU9p4wEhejRMvquBpHiFRuX4kvJ9Z83hoforhUs8yzU+dTFkWUHQkZMGAbUBbc6HbYkWmR6Viw3B+xpIjK2KkhF/CCsXJwhdoId/5kxNWRtn9m8DXkkBAaz25/2R6vYgXcekrvSo3Efwb/1rCtd+mSiYvVt7CVOJL0i/94MHyJ4Di+SV/R6/TLHl9OYh4YxiSJ92r6PT+e+K/DzeZ+JhUpoLQkRkg4Ah5vQZ8RsIXcyWqOIBxZIsYpsHp+GJzljB0sJNQY/hNZLdVcrlBnOTLmlHfQjfDyU/qvpAK+WKA08a6ps8no36NZKrZPcsHPX8f77mo3DPaewJCYewG0VxVsw+XArNGMg7Ir3ixt1IuKmnm6vvjAmUwcqfKTegqkXfNWlVakfbLsaOEoSVGjqsiVvQtdWuxskvEk7IBzxMArJNQm4sqrdT5SBar5wVOT+IgDOd
- MiMWZAHi
- 7khiD14UAjYPZsLQicuf9MCLGr5DjWpMvzHHgsbr5bxsrSnB+5DAfKsH3vRxZsC40W8HG0urBy8eYla/AzxemgqiGOWC9cO6FesOwW53R4dTz5jZrFst48ASryNfqKS//sg/t/AZ+Iic8ycWOSFlOyLd7BIHaTGOv1GXTWuO0J1zKCrPJNk52g1RDnBrh7s4Ej9RYJKgP2RCYj3Hon1WKins9ZvP5VHGt+19NBdiTI/ImLVFCSD6Q3vPcAmHIS+nkUvd7FSwSgdsG1YGdKIWorli1Ps4d+uK6UtqKNc3rgAGAXq0GhheEt0tt34jXzNMnA8WBfDKzrF9IuqMz/yZmLBStd1tYs2G2z020smAhRsJ8UMAy5y5LzomF3M6Y2wstFYr+dT0NtIFDQ/kNio+pbZGUuo0pEVREQyE3MJZ+vYgBh1vh6hkeXdreHWwvmXFvu3oGX0SV+TvRzIxy9MyyYTqx1cTS+0FFi9Ss9f/uOqugnOADNUO3l1+9NyAB44ngn331zmQfYedqC4TOzjD+DDIIEL3ubZL+Pu7VifyhBoHwAMwTfWMElOuhdxt8Dax/lqQIUsWnzUHuM8IcFym1tVVO4nyqPLHY9k0FSbqfCJfzbgxRej+8FTjB6pyViqn0uG3CTmT7nhUYH2OD99n+RZCyZA==
+X-HE-Tag: 1786890159-68559
+X-HE-Meta: U2FsdGVkX18qf7jlPB1e/RumKQ2b+5Hxred1Gu+1fPwTzolwtn8HPphcDWAGcxAh85UI2z3siEIAGrw+sgjjaPOHBVnV6yu8ako8dV3hlQ78BMX5GKE3e5PsClZ4+hP5uckbWLAzSsrdjAEwHrtx2+NfWISPg/+GfGH1qlbOVyqhnWXDSzkKgIvX1HSvxJexFqRc2aqdgxZ5g+fB5Jnf04T6dTEg2rrcmJDLCqWNPGMYw0Vke7gKA9c8rFbQMBFqLD79VY7Mpnj9pNB7WCY4fYg2kHNUQudOrDNbm7WIdbSgvD2ytu111o/Wzqh5m9zOUE2K4ujP1jWwis60NQeZ/OPjhMjCSYjYWtFx3tGyyD1Rpx5ushRsG3fCkQNcVkSlBrc5FPbyrdg4KK2Sk0IoFTwqJf6jZ2uOfZy1EWkzxvdTn4WUVA8X6GffhiU8gs2FitAtIWiNKesZVF0mMqRnRnRzUOSRQh1b36op8j0MNQHOpeI2iKp96GiWpN/fooVcw4XgtpDELhChnrX+L7Hd/LkpgcnAdkKkox/wZuFkau+XvK/m7Dxsri89gbATQpH/kA4NX97zUYPWfZVJ8ksISRc+dOzAo8oZvyyBloMaPfVmDp8IEbt/YRQPMWg+nXQfTw3iYkgin4nYccDFMh38k1F2FboBabl3n1f+2TYyWTNK6iHsZNElNqe5qX9ImMxj6JsedbUj3f1RCke0oXhRmr4+wrvBESe3xaMs2OpOQcsREQLn+QBmM7Sn9YxMoXGtPF/x8s2jimFLskAThXQaB24za77U2opZL4R8rEho/yoErtuWg8qQHIl5TWARouhdk3PhfaeQeIt0XVtjUZX3+wQeTri8v2UsMJpBO0gTGTjuMCD2KiQfNtDgMvjv/bGOCMAYO6P2xxye6dnwQuZDRsvdcMm9I4cYHGarULrtHjCR0n+4DLwfEYeo7Z9MHXdQcSBoXuQS+5dlF0uDoIl
+ YON0bhQ+
+ 5lo13k3CMNx9Cbc+WbKLlX7QG6xNuJwXTtonzsENL2w5NISKTfoVMIJoVyAI+H3fGUjxXpCN7fWrJ9kln9r8Id4Q8jG0WxHydEgx2BnwA6Mm1sM/HhLTFrZ0gZmZd/+SLJ3L/7qxMLCfOUOVAWIv2TnDFDAIZytpFX69SAy19eJkSuxAo5UMImzxmNT8Kupfer8QFrWE+aywmthB1i690Uwa4i/tIBJbhqknff1l/DSSqRalMxTrYyTtq64JSTu7Ptjm+38GRZVH/sX7vY/yc5P2YNYMpwPefM8CARmS0DMrIHvHiVZWdTKOhwT3Vm3rM5KPLg9ob1xU9AphMWK4171B/GdxYXnZe26r4YHWsjZj72WdUbAwAhROYZT7cSPA4FJijfZgM1GOdJHYWuzzMvnNWWVs5Sv/+v0/1UCO25ckzzEb2LOw5zSPbxm0Sop6/OcwX4Aqn9FACyAo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,38 +126,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 16 Aug 2026, Mike Rapoport wrote:
-> On Sun, Aug 16, 2026 at 04:41:07PM +0700, Foxie Flakey wrote:
-> > On Sun, 16 Aug 2026, Mike Rapoport wrote:
-> >
-> > > (adding Suren)
-> > >
-> > > On Sat, Aug 15, 2026 at 05:42:12PM +0700, Foxie Flakey wrote:
-> > > >
-> > > > Fixes: 50944692052b ("userfaultfd: opportunistic TLB-flush batching for present pages in MOVE")
-> > > > Signed-off-by: Foxie Flakey <foxieflakey@gmail.com>
-> > >
-> > > Is Foxie Flakey your real name?
-> > > Signed-off-by should be using a known identity (sorry, no anonymous contributions.)
-> >
-> > Thanks for response. Sorry, no. A question, by "known identity" there is it
-> > means my real/legal name? because I have read a document about Signed-off-by
-> > and because on internet I'm known as Foxie Flakey in multiple places, I
-> > thought its fine.
->
-> It does not have to be the legal name, but we do prefer real/preferred
-> names over nicknames:
->
-> CNCF's clarification on DCO explains it well:
-> https://github.com/cncf/foundation/blob/659fd32c86dc/dco-guidelines.md
+From: Kunwu Chan <kunwu.chan@gmail.com>
 
-I see thank you. So the Signed-off-by would be fine as in if I prefer not
-to put my legal/real/birth name. Would it fine to keep as "Foxie Flakey"?
-Because I have just read that guideline, Foxie Flakey isn't anonymous id
-nor false name.
+This series adds an AUX trace-buffer backend to the DAMON perf
+observability framework, enabling ARM SPE (Statistical Profiling
+Extension) to deliver hardware-sampled access reports into DAMON's
+existing SPSC report ring.
 
-A small confirmation question due not sure with results from internet about
-where should I add Suren. I looked that you placed Suren in Cc. After the
-initial To (your first reply to my mail), on followup replies I should
-place Suren or anyone else to Cc filed after initial To, am I correct?
+Patch 2 touches drivers/perf/arm_spe_pmu.c to expose the PMU matcher.
+This change is tightly coupled with the DAMON AUX backend.  ARM SPE
+PMU driver maintainers only need to review patch 2.
+
+This series is based on the Ravi's hardware-sampled access reports 
+branch [1], and depends on the perf AUX kernel-consumer RFC series [2].
+The dependencies is not upstream yet, so this series remains RFC.
+
+Why a dedicated AUX backend
+---------------------------
+ARM SPE and similar PMUs do not deliver samples through the standard
+perf overflow callback.  Instead, they write trace data into an AUX
+buffer managed by the perf core.  The AUX buffer is consumed from
+process context (kdamond) rather than from NMI, so the existing
+overflow-callback path in DAMON cannot be reused.
+
+The backend model adds three operations to the damon_perf_event
+lifecycle: init (allocate the AUX buffer), arm (position the consumer
+cursor), and drain (parse the SPE packet stream and publish reports).
+The backend is selected at event creation time by matching the PMU
+object via its event_init callback.
+
+What the series adds
+--------------------
+Patch 1 introduces the backend operations table, the backend state
+fields in damon_perf_event, and the Kconfig options.  ARM SPE must be
+built into the kernel; the KUnit test option is separate.
+
+Patch 2 is the ARM SPE backend.  It owns a per-CPU AUX buffer,
+decodes the SPE packet stream (the same encoding that perf's
+userspace arm-spe-decoder handles), resolves sampled
+CONTEXTIDR_EL1 values to tgids under RCU, and publishes synthesized
+access reports.  The drain runs before the SPSC ring consumer on
+each monitoring interval, and a final drain after event disable
+ensures no records are lost.  The backend also modifies the ARM SPE
+PMU driver to expose arm_spe_pmu_match() for PMU object matching.
+
+Patch 3 adds byte-exact KUnit tests for the SPE record parser.  The
+tests cover load and store records, timestamp terminators, multiple
+records in one window, PAD and ALIGNMENT packets at both odd and
+aligned positions, extended addresses, bad-packet resynchronization,
+truncated records, and records without a virtual address.  A split-
+record test verifies that a record spanning two AUX snapshots leaves
+the tail unchanged until the terminating packet arrives.
+
+Patch 4 adds a DAMON selftest for the AUX backend.  It checks the
+backend integration, the required AUX-before-ring lifecycle ordering,
+runs the parser KUnit suite through debugfs, and on an ARM SPE system
+creates a live DAMON session with a controlled userspace target,
+verifying positive end-to-end pipeline counters and final
+enqueue/dequeue closure.
+
+Testing
+=======
+Tested on Kunpeng 920 (256 CPUs, ARM SPE, kernel 7.1.0-rc5-mm-new-damon+):
+
+  ARM SPE KUnit (spe_parse_one_record):
+    16 passed, 0 failed, 0 skipped
+    (store record, load record with timestamp, two records, pad-wrapped,
+     alignment at odd/aligned positions, bad packet resync, record without
+     address, events/source/counter, truncated record retained, truncated
+     packet retained, extended address, invalid extended header, pad-only,
+     empty window, split record across two snapshots)
+
+  AUX selftest (damon_perf_aux_test.sh arm_spe_0):
+    SUMMARY: 52 passed, 0 failed, 0 skipped (Overall PASS)
+    callback=58318, valid=58318, enqueue=43390, dequeue=43390,
+    match=34049, update=564
+    final ring closure: enqueue=43390 dequeue=43390
+
+Known limitations
+=================
+- AUX_BACKEND_MAX=4: the AUX backend registration table holds at most 4
+  backend types.  This is a framework limit, not a per-PMU-instance cap.
+
+- ARM SPE must be built into the kernel (ARM_SPE_PMU=y), not as a
+  module, because the backend calls arm_spe_pmu_match() at initcall
+  time.
+
+- The AUX buffer is 2 pages (8 KiB).  The SPE hardware pauses when the
+  non-overwrite ring is full; the drain frees space and re-enables
+  the event.
+
+- CONTEXTIDR_EL1 carries the sampled task's pid, resolved to tgid
+  under RCU.  Records without a valid tgid are dropped.
+
+- This series requires the perf AUX kernel API patches [2] to be applied
+  first.  These patches are not yet upstream and must be reviewed by the
+  perf subsystem maintainers.
+
+References
+==========
+Link [1]: https://github.com/damonitor/linux.git
+          branch: ravi_hw_sampled_access_reports_rfc_v1
+          commit: fd968106e5bf
+
+Link [2]: https://lore.kernel.org/all/20260814144927.489172-1-kunwu.chan@linux.dev/
+          perf AUX kernel API PATCH Series:
+          - perf/core: add AUX buffer ownership for kernel events
+          - perf/core: add AUX ring accessors for kernel consumers
+          - perf/core: add KUnit tests for AUX kernel-consumer API
+          - selftests/perf_events: add userspace AUX regression test
+          - selftests/perf_events: add AUX kernel API selftest script
+
+
+Kunwu Chan (2):
+  mm/damon/perf: introduce AUX backend interface and Kconfig
+  mm/damon/perf: add AUX trace-buffer PMU backend for ARM SPE
+
+Lian Wang (ProcessMission) (2):
+  mm/damon/perf: add KUnit tests for the SPE record parser
+  selftests/damon: add DAMON perf AUX backend test
+
+ drivers/perf/arm_spe_pmu.c                    |   8 +
+ include/linux/damon.h                         |   5 +
+ include/linux/perf/arm_spe_pmu.h              |  11 +
+ mm/damon/Kconfig                              |  28 +
+ mm/damon/core.c                               |  22 +-
+ mm/damon/ops-common.h                         |   6 +-
+ mm/damon/perf/Makefile                        |   5 +
+ mm/damon/perf/aux_backend.c                   | 121 +++++
+ mm/damon/perf/aux_backend.h                   |  72 +++
+ mm/damon/perf/spe_backend.c                   | 479 ++++++++++++++++++
+ mm/damon/perf/spe_parser.h                    | 109 ++++
+ mm/damon/perf/spe_parser_test.c               | 365 +++++++++++++
+ mm/damon/vaddr.c                              |  68 ++-
+ tools/testing/selftests/damon/Makefile        |   1 +
+ .../selftests/damon/damon_perf_aux_test.sh    | 414 +++++++++++++++
+ 15 files changed, 1704 insertions(+), 10 deletions(-)
+ create mode 100644 include/linux/perf/arm_spe_pmu.h
+ create mode 100644 mm/damon/perf/aux_backend.c
+ create mode 100644 mm/damon/perf/aux_backend.h
+ create mode 100644 mm/damon/perf/spe_backend.c
+ create mode 100644 mm/damon/perf/spe_parser.h
+ create mode 100644 mm/damon/perf/spe_parser_test.c
+ create mode 100755 tools/testing/selftests/damon/damon_perf_aux_test.sh
+
+-- 
+2.43.0
+
 
