@@ -4,70 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D58ECC5B572
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 12:04:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C6E9C5B572
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 12:04:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 773B56B034B; Sun, 16 Aug 2026 08:04:42 -0400 (EDT)
+	id 48DB36B034F; Sun, 16 Aug 2026 08:04:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74B9F6B034F; Sun, 16 Aug 2026 08:04:42 -0400 (EDT)
+	id 43E686B0351; Sun, 16 Aug 2026 08:04:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 689776B0350; Sun, 16 Aug 2026 08:04:42 -0400 (EDT)
+	id 32D306B0354; Sun, 16 Aug 2026 08:04:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E8D2D6B034B
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 08:04:41 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6E68EC050C
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 12:04:41 +0000 (UTC)
-X-FDA: 85107000762.23.57CBCF0
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0492F6B034F
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 08:04:45 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9CF4C1C185D
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 12:04:45 +0000 (UTC)
+X-FDA: 85107000930.30.A18567E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BB792C0009
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 12:04:39 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EFI2AiJi;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id E1813100003
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 12:04:43 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YJnA59Sb;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786881884;
+	b=tl4Y0LaVIUYDTOoNkgeUbaNSNfkjbFMrtQ2n7e2s7HnJRCGr1QKxbEfYp9SloDViDvG3XP
+	wp2GklQGKEz3fRnNkMT8J3WFQMCRstykJODKSPcXO42AOUEPKBR9TvTVBIo8NN1d7FgHx2
+	gwfWVPeTQM2blbDSLlqytcrmjlRKHu8=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YJnA59Sb;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786881879;
+	s=arc-20220608; t=1786881884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dBTO9gktMqs+YZN9m7Dn6lVtYTSuJ1+92QAeVWOhE/A=;
-	b=t+wwYwIBKZpk7+EKcng4RpNHc1qg8N7QamXSgq9Ofiiexv67ktPQ2It73uL7TCZFEbEsvY
-	+e6CKakR3ivtITTzjnTjY6K6MuJ1uQcsuJ2SYIP00vbedUxLTQsfN3fPCXhcPv7XhmLYQa
-	dRb9FceVT171T3Ih2WT7hTiMmUX2xSo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786881879;
-	b=eBdxEeCzQqyuWl1fHWeRQg5Tys4Im2gJXvDUff83/rVq4Eo/QMgpkmuUYQ2MRjZn1Nho7U
-	cwltSDXNnMca2ecOVobA6g2dsz7zQTK6ZuzxWI/UOAXjiCJhD3vZ68Dz2nC+i3JfMK2T3b
-	jp5hpSoXhKVshgeN6mcN19cteXhFlSU=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EFI2AiJi;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=pcnkBAVEUjmpyOE2W5EPEYw0ee+IwKE8GrSAoYr+M2g=;
+	b=FLgGkL6ajKPmuHzAlaUOHXS+2dii/nFZpkdGbqPbblsO13KjMnGo+ny50UZJdGjDuXU/8R
+	9Ey/NreJxgFRB3BgX+FXGtRmkI3/d8p98JbXraMtjOhbxSZO38fe+xhzdLDuVVsz42wIWk
+	Hf4VmBY0zsiY4Lyg6tT26QjLl136aVU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AB57643DD6;
+	by sea.source.kernel.org (Postfix) with ESMTP id 3C35D40DE0;
+	Sun, 16 Aug 2026 12:04:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C6C1F00A3F;
 	Sun, 16 Aug 2026 12:04:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 737541F000E9;
-	Sun, 16 Aug 2026 12:04:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786881878;
-	bh=dBTO9gktMqs+YZN9m7Dn6lVtYTSuJ1+92QAeVWOhE/A=;
+	s=k20260515; t=1786881883;
+	bh=pcnkBAVEUjmpyOE2W5EPEYw0ee+IwKE8GrSAoYr+M2g=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=EFI2AiJiBMVGTf8OKeIv62ILnMeLdQnOqX7XgKJOIuanIz5p72B8GmkX+Qq2y9izX
-	 TXUvcNAoPP4qGtR3ierjyWaaFAkfBHeVBeMnnOEmp25skxCnD1k+o5A3KTBR9ClwGP
-	 S6fibZYyGXmVG/RPuNg2NRZU8xfpsgzT+6fgH3Wsyhvl6yPol7fbBJXlRlGsUFZ4Cx
-	 yHd/MsLv+kak8DVB2Qm1XV9wAhAMLolcGVQ/RNgamEUDINNETra6FefJKPnoVnMwg7
-	 BEb/UMroBRkIDQyozzLBLaZcPdNB0YkVw91+u7Tm7nDnbtanz4fEKS71fR9IKCqg0W
-	 ornYliEmDw1Tw==
+	b=YJnA59SbM2V/tctiXXk5aj0gwDKO5k4NwOYPnb3dKchy6Dia81+Z5l9SU2HSqp2Oq
+	 3brzwZte3zvXTVzMnIebltAc/hzQ7KBkUNY6n7kZwzr/K/1RP8hX1LCmwO08TT0Iph
+	 hXqdbQh8EaJtBQDnelnxF64naJs7ybvmIleWm4pmCt1hhY1XFgM4gbB2PKUGE9gAoP
+	 yIOUiFKdGHOB7LNCYvOwoFo/1ZYDz+iMFIvcyHEC8LXG+i5B9dIfAAVd5yaongKart
+	 w/J6FnujDLCWlx9wcpngAXc7NmB95J/ZgCv18MkQ6KOcad7w/L0lpuR/PT6Aw4LBfe
+	 0rX+Lc0kMaIdA==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v10 1/8] mm: fix stale ZONE_DEVICE refcount comment
+Subject: Re: [PATCH v10 2/8] mm: factor zone-device page init helpers out
+ of __init_zone_device_page
 From: Mike Rapoport <rppt@kernel.org>
 To: Li Zhe <lizhe.67@bytedance.com>
 Cc: akpm@linux-foundation.org, apopple@nvidia.com, arnd@arndb.de, 
@@ -76,20 +77,20 @@ Cc: akpm@linux-foundation.org, apopple@nvidia.com, arnd@arndb.de,
  rppt@kernel.org, tglx@kernel.org, linux-arch@vger.kernel.org, 
  linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org, x86@kernel.org
-In-Reply-To: <20260810122057.30447-2-lizhe.67@bytedance.com>
+In-Reply-To: <20260810122057.30447-3-lizhe.67@bytedance.com>
 References: <20260810122057.30447-1-lizhe.67@bytedance.com>
- <20260810122057.30447-2-lizhe.67@bytedance.com>
+ <20260810122057.30447-3-lizhe.67@bytedance.com>
 Date: Sun, 16 Aug 2026 15:04:30 +0300
-Message-Id: <178688187038.2799959.10744801601222444417.b4-review@b4>
+Message-Id: <178688187038.2799959.7900723270155108493.b4-review@b4>
 X-Mailer: b4 0.17-dev
+X-Rspamd-Queue-Id: E1813100003
 X-Rspam-User: 
-X-Stat-Signature: bbted3nao1ihjf3eeg1ekwrtb3zjpsfq
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: BB792C0009
-X-HE-Tag: 1786881879-15674
-X-HE-Meta: U2FsdGVkX18ZDZfhdWphCckk2gc5BHeQULjpfRjXy4EJVkijdiPGyr7N6U1alua+SC2FD3KL4SA80o5NO4XMwdWRbI5Ea053SyXkMasYpQTZVt+oi4bML8KVbLz/NGjheg2EooXDclfzBu12YZDW8rx5WDgj4Axp/xeIPdFjvciL6JTMzb2a39mcmvyNsU21ive7yPJE087UTy+EH2O2ZAGLiUij4cQkdV/YrbNgzL4n6VmzXF5sxo9NPUlUKPCEAasPWMLI2prrKKcZoNZ/iioWCcTS+iTvoO6UV2SLtzQby2FaSpiBWD8SEi2jHttN6deZJmoDpwqFYiSGTdDm95sneUBv3gCiKW2/eE3b6MQRfMPh3FEY6tnH9Hvn41bsuiKpR0Nu5X8CrNVdo0ymJo0yXTXbPHlGqB6RzCtItOgRlLD5A95G4j1EywT4Bib4TpK5CAyA2pvc99R5Jlw5BeqDdhlVxOyt38msE0MSRsie0brxETLbyJwVlVFkA66c25aTx58WbVIPwo3j5Sjz+8A4RhPBF6ZjUrDtPE4v8Rqzqst45KP9nm8I82nKwg3faQZHpiDAg9c8QLDzqR8FkinlO1XFSWxpW4g1CR2FWtEVuaKofA6i+cvVp26K2k8Uhm5nJV85KVChwGkrPz688ZPIaS+g7WVMIHletltQsKJ2bpAwn7c4bbaqcgpwIMkNA/x2NnVcSmLMvCTYfUxo3JutMzfgzHlshFt3xktrTKqOgp3YluOaXly2sCbnkqp/tLJJJw5WFIiUvGSHztU4ZkwW2fXe06T8WWRBTd1bDQVqfzVgnyHF5mLKEs0zELumhG6Uz3FWoxlcqGRcLB4jyTSQzfa+xw2dAVMxesoP1xDfT0UPPxiMvIDxOBoEW8jXXs6E+qmCkc7DdqNnDpBcmwz09jFXHJI5A1iv3UTj5SB6zDTJawqyYqQWxQVAE9d4U/yCjs3RggkS+KPdgr9
- MhR3JLOy
- x5/7gg8FupY1klRt8AqNhO+WinrCgToOhrHtsQvyW12V23INqq0iwnKUallUVRD9M+cbySZlmdRqmCiJhk3ekJCDjmlbhiDzQURpg/Occ1opd6Igoc8TaNI+AdKWWA8AeBh96D2eJ9q+yZQ87e+VKUIhj99h7bHEAkFd7sKGFmzwPmMSCYiYXehXetV50gvlozCkShDMZ51tHmTi9nxVKja0YNzmvjmOziR17439XOlGdz17ck9o3XSQNiVOLLa1+SHkByaneRw5brog44Xdf/QrmmMPdZh3xuZNja1Pdb5dRd4gnxPaPxW+n0Q==
+X-Stat-Signature: ebybrnmt8714iw3fpqop4ezczwbi9pef
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786881883-612939
+X-HE-Meta: U2FsdGVkX1/tJ9M/INz0mi5imvz4jHhRFKkI11BvJUS5hwxuUACbdsrBLw2FZbrb//MCb/rRi13PKQe/1B1W/AeZaD76S0vLaQ7ezlYMjDyZz65kPbvR4/QdnsLvSGNjJR2s4/5xa7I+EuG6P2vCYiJe76HTb93D6xEzx++9TjLln3AAmTx7wQ0nC0CXDxr7fg7vsJNWiXcLOc1ULFb3RaM8UVFRvBQUx6qR04td2m5zAPsfERg4oxgfCWxKY/uX+4m/ZC/t+2LgakMjktkFZEfXcAagGo5rdXZV5s9gKC+mIAuhS5/D4rO81c2tFofxyDu7MM/Y7bATZNne9zLklsbJzKIAPuUWQqu/kh27LAu1xy/AKH2/yC4lFpbNPOOFzYCApSDNgJxOJGSpqHSkREitYBloaoH11pbcU2M3unFpXFTGklIkl6FWqqZKpuwzhc1/9Ye6FtlxdW2iw3vbnNhokZPWDJzeCWuAtf0vpxVAhpraAvAbJlTNL/VQ59r/tkb8VkcmqqEkrliSMjQi1vcwVlgg+bD4Dldsp+BaXRF54W7/51w2KWFZctSNx9durRM9wu4COeLj1pp/6/40J0yl97T0xrwZnl/bsXs9U8FHOpCWUfwbIwjIT6/6/vobkPz+WnrePhQUI5qPDo6y5FZo24pAz1gH0BPO7Z2codMpoE5eae5qQOdt6Nel1NE8+qCgzVTs0Uw1TsI6+aZK0W9uvlgmIz0/mInTo2alp2DwF5vS/k5+B5DCbOmmkxbb9dh95DXsRtaROFE0faX3/0C9z7GAcnzYk2eH2v5/BLO2rDamL5ZPeR7Q7jSmj5jj+e9Yg+Kl8sYe/6JwNEvkzcaMSwU9Adeo8kATyh6VSvDkk+3XME2zqH6qX5wgxXXLh1Mc86fcfjTvW1ObSJYYe8zKY1hIDbCvSvSdWQegqBBbIbADEOUBVjAyojxShQQAm1j48uwqKpJwycXLvQE
+ 3OxfPuzz
+ 4rdv5g5JT09tWBXGP9dmGtFkbEkvMKTO5zA+eW7AwABpHzJiu4GeeTV+DivXIRe1JejodYCHihL0K9ZNb+8lvxyjF62DUw9+1q0DtFJ2buqBsWE/9wjhrMj9x+GgY9mRlyaPjFD6xG7vlnIckE54A0Usn6RtejbKWicsRU9OPV+ktbjVB7Ld3/CxBf3HxDQvqo90Nbzeer/6C/aJUGC+3WAa+Gt2b+IFbJEBVoArXE6avehHYA0Xkz1j+GrTKl6ynJt2OKVdkNtFoDn0FrUFn6HJQRUOLfdTzkvjZy16l6WgHpG3Zv8eshQM5SA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,19 +98,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 10 Aug 2026 20:20:50 +0800, Li Zhe <lizhe.67@bytedance.com> wrote:
-> The comment in __init_zone_device_page() still uses the old
-> MEMORY_TYPE_* names and implies that FS_DAX pages regain a
-> refcount of 1 in the free path. That no longer matches the code.
-> 
-> Update the comment to describe the current policy correctly:
-> MEMORY_DEVICE_GENERIC pages regain a refcount of 1 in the free path,
-> while the remaining ZONE_DEVICE types start from 0 here and raise the
-> count again when the allocator or driver hands the page out.
-> 
-> [...]
+Hi,
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> memmap_init_zone_device() currently mixes refcount policy and core
+> ZONE_DEVICE page setup in a single helper.
+> 
+> Factor the refcount-reset predicate into pagemap_requires_refcount_reset(),
+> move the common page initialization into __zone_device_page_init(), and
+> wrap the existing slow path in zone_device_page_init_slow().
+> 
+> This keeps the slow-path behaviour unchanged and gives later patches
+> reusable helper boundaries.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index 95808ab5cfdb..a70acb7431a6 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -1005,11 +1005,37 @@ static void __init memmap_init(void)
+>  }
+>  
+>  #ifdef CONFIG_ZONE_DEVICE
+> -static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
+> +/*
+> + * Return true when memmap_init_zone_device() must initialize the page
+> + * refcount to 0. MEMORY_DEVICE_GENERIC pages regain a refcount of 1 in
+> + * the free path, while the remaining ZONE_DEVICE types start from 0 here
+> + * and raise the count again when the allocator or driver hands the page
+> + * out.
+> + */
+> +static inline bool pagemap_requires_refcount_reset(const struct dev_pagemap *pgmap)
+> +{
+> +	/*
+> +	 * MEMORY_DEVICE_GENERIC pages regain a refcount of 1 in the free
+> +	 * path. The remaining ZONE_DEVICE types start from 0 here and raise
+> +	 * the count again when the allocator or driver hands the page out.
+> +	 */
+> +	switch (pgmap->type) {
+> +	case MEMORY_DEVICE_FS_DAX:
+> +	case MEMORY_DEVICE_PRIVATE:
+> +	case MEMORY_DEVICE_COHERENT:
+> +	case MEMORY_DEVICE_PCI_P2PDMA:
+> +		return true;
+> +	case MEMORY_DEVICE_GENERIC:
+> +		return false;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+> +static void __ref __zone_device_page_init(struct page *page, unsigned long pfn,
+>  					  unsigned long zone_idx, int nid,
+>  					  struct dev_pagemap *pgmap)
+>  {
+> -
+>  	__init_single_page(page, pfn, zone_idx, nid);
+>  
+>  	/*
+> @@ -1028,23 +1054,15 @@ static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
+>  	 */
+>  	page_folio(page)->pgmap = pgmap;
+>  	page->zone_device_data = NULL;
+> +}
+>  
+> -	/*
+> -	 * MEMORY_DEVICE_GENERIC pages regain a refcount of 1 in the free
+> -	 * path. The remaining ZONE_DEVICE types start from 0 here and raise
+> -	 * the count again when the allocator or driver hands the page out.
+> -	 */
+> -	switch (pgmap->type) {
+> -	case MEMORY_DEVICE_FS_DAX:
+> -	case MEMORY_DEVICE_PRIVATE:
+> -	case MEMORY_DEVICE_COHERENT:
+> -	case MEMORY_DEVICE_PCI_P2PDMA:
+> +static void __ref zone_device_page_init_slow(struct page *page,
+> +		unsigned long pfn, unsigned long zone_idx, int nid,
+> +		struct dev_pagemap *pgmap)
+> +{
+> +	__zone_device_page_init(page, pfn, zone_idx, nid, pgmap);
+> +	if (pagemap_requires_refcount_reset(pgmap))
+>  		set_page_count(page, 0);
+> -		break;
+> -
+> -	case MEMORY_DEVICE_GENERIC:
+> -		break;
+> -	}
+>  }
+>  
+>  /*
+> @@ -1090,7 +1108,7 @@ static void __ref memmap_init_compound(struct page *head,
+>  	for (pfn = head_pfn + 1; pfn < end_pfn; pfn++) {
+>  		struct page *page = pfn_to_page(pfn);
+>  
+> -		__init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
+> +		zone_device_page_init_slow(page, pfn, zone_idx, nid, pgmap);
+>  		prep_compound_tail(page, head, order);
+>  		set_page_count(page, 0);
+>  	}
+> @@ -1126,7 +1144,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
+>  	for (pfn = start_pfn; pfn < end_pfn; pfn += pfns_per_compound) {
+>  		struct page *page = pfn_to_page(pfn);
+>  
+> -		__init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
+> +		zone_device_page_init_slow(page, pfn, zone_idx, nid, pgmap);
+
+It looks like all callers of __init_zone_device_page() are now calling
+zone_device_page_init_slow() that with series evolution became a thin
+wrapper for __zone_device_page_init().
+
+Maybe we can just rename __init_zone_device_page() to
+__zone_device_page_init() and replace the open coded setting of the page
+count with the call to pagemap_requires_refcount_reset() an be done
+here?
 
 -- 
 Sincerely yours,
