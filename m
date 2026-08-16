@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B258AC5DF66
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:47:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B291CC5DF70
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:47:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 720256B03ED; Sun, 16 Aug 2026 18:46:44 -0400 (EDT)
+	id ACA846B0863; Sun, 16 Aug 2026 18:46:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F7926B0863; Sun, 16 Aug 2026 18:46:44 -0400 (EDT)
+	id A7BB26B0865; Sun, 16 Aug 2026 18:46:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60E136B0864; Sun, 16 Aug 2026 18:46:44 -0400 (EDT)
+	id 991B96B0866; Sun, 16 Aug 2026 18:46:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D7B196B03ED
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:46:42 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 61E2EC011D
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:46:42 +0000 (UTC)
-X-FDA: 85108618644.18.391E27E
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 652896B0863
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:46:45 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 055F21A05DA
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:46:45 +0000 (UTC)
+X-FDA: 85108618770.07.1A89D51
 Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6FA4240004
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:46:40 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="C ifAacI";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=ke+Pz5jQ;
-	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 2926420003
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:46:42 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="d MgjTlr";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=j7J0K0ur;
+	spf=pass (imf31.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786920400;
-	b=g72Nb0hmXaLVphCkj/OBZnSUDQa2OPOPXEG8bU6SR8VwB65stwxVikIRszroM6SQusvIGD
-	lP2vwRLTgkNDbsZU/FpPf1DW/yYiCx+GAnI58RpLpz8oS9c41kOTQp6nKmAfCVAdLNSust
-	wcJDpBZuoLKuJ9CLvcLZbX2JIdxKaZY=
+	t=1786920403;
+	b=Tc5cHle4PqTmUQI5uinZ7vffXta1Jn1ktqI3KYI+QfXQVGrN1IMimVuna2jihqphrA8QRw
+	8ULQw72QnbTIYqj1Td9KY2PyKeWu1ycFRs5jvwV33+48JKI+waJ9u6Q3BmWAH6eFDgA/dc
+	ZURZWuE7NCQD6O+JmBWv7uKrlQd4348=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="C ifAacI";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=ke+Pz5jQ;
-	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	imf31.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="d MgjTlr";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=j7J0K0ur;
+	spf=pass (imf31.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786920400;
+	s=arc-20220608; t=1786920403;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J+VwmvOWkQQIRGq2yrrL0lOcYIpS4iEV3Q9I35NYUqY=;
-	b=0P9OSdVNUhW4HQx/1iIsdOJRfETluMhhkzcA7jJW4INEpw+wrx9e0laa5V4BTZ+j7pbIde
-	1epG3w+iuSrH253cqbP57oHFS6dJMN7VdRIAQL31jJB8mvq4zzX5Ce6OvYcnOiCMK3ej8N
-	ishcUyWiE7JH+wJN5NL7g3SXutqDmUg=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id ED44C14000F8;
-	Sun, 16 Aug 2026 18:46:39 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Sun, 16 Aug 2026 18:46:39 -0400
+	bh=NZOPrMQr1FnE5Kz+0VaDbhYd69V7nE+v+WGyJ8jLpqs=;
+	b=WsEjpWaNJjLK9LPzZYvfHf/KUCJGyb3mU1xArX++/Q0O+uw8le1SiNEFoefZIalzs1JoIM
+	vfsICdTQA1alFPuKWb1zpIUhjQS0nE+ax2KxHDziE3T/uK1AhBP/PXZXMDsiSWwvbXi5hH
+	yC278EBO6AYo+ufZ0Xd8ENoFjvlRgfA=
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id A7F3714000FD;
+	Sun, 16 Aug 2026 18:46:42 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Sun, 16 Aug 2026 18:46:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1786920399; x=
-	1787006799; bh=J+VwmvOWkQQIRGq2yrrL0lOcYIpS4iEV3Q9I35NYUqY=; b=C
-	ifAacI5NLADSIgETp9aUgPDTj/HPjrbGohJHGfsGwfpEo9KdvcvoAoUBdqDMvbB4
-	xBHuRNjkopP/EfuEPaypBjHIDKETtXEZAGyqd/q+tX4bYiC1RJQ3JGUZIco+2ufd
-	LISfGTTlwLXNr0LahSfa4Z2RExpcVUG1z7jqK7IvCb71plD0WLOoyd34xfXrQhZX
-	UptGTHX09vbD78EAXlP7ZFgPNQT1fyWATp/HH5BnewSLIktm5sz+zG/zj3t7IaGB
-	PCDwf4Blk2wZ1K4I41MgOP4zeOkq7rpc8JklO9EBWEFVWLemaObCzQUuUVkAMsrq
-	1iAjbCB9Sj2YxPLkrWKmQ==
+	:reply-to:subject:subject:to:to; s=fm1; t=1786920402; x=
+	1787006802; bh=NZOPrMQr1FnE5Kz+0VaDbhYd69V7nE+v+WGyJ8jLpqs=; b=d
+	MgjTlrsA2TAN2Gz5Z208Bh7RwwxK4hCZ9Xp6qOXmN8dtzhGXvQ7fQZnjNFqzv5Jw
+	kXfZKB2tY9yvRg7yblTrPv0aW6UT6t5F8gyVGkI8Si58SuFnE/tdQ5FrgBk76Fw7
+	cZhh+dVKWLjD0hQ/W0GQj/YgWw+zNCFJWSlSllQg5p6kxgDg3+d+xPxi2ua0+6C7
+	DCnp0KWYKAqNVMyrZFfrd6L9nknXvlIXL4i0Oqho9U5n2kibbaP4LNBmK0MOcFNw
+	uQ4ipd8hFvpAiSo8yzX5ynoJdKckAoUKFa/oUo+tOxXfTX58LSFfg42o7bbTHtvl
+	G5i6KeH+YbxggOiW3310A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1786920399; x=1787006799; bh=J
-	+VwmvOWkQQIRGq2yrrL0lOcYIpS4iEV3Q9I35NYUqY=; b=ke+Pz5jQQ1F8Pj6qK
-	5LqN1WRiReWrEOxswy3084QMQEc9S9UOGbNnSgNbiMuZprqcu4Vk4ZZ6DxDtxzY6
-	i+DCfT2KI3lwdO9QteVxv9V2FVnE/mf2eN633nRA/D2qMUJfAHzEzCxLH902x/OW
-	LtNDJlCrqLIdltJ4HqofveFmukXb6qwMzdOWG4iSfOKQPeZ4CbDkvwpeOdA+yPk5
-	inw2Oi4Y29mKPx+oUTe6bjDrgO6MBirWz1ZYNT7fmkO0sdDyQ0lagVaL1veqUKC5
-	VDJCnJsn7boa9sormKAoDDs4xq+ik4MhMWHr1+Q38BuJsrCeaOjc/d7NvZbdy27/
-	FWFLw==
-X-ME-Sender: <xms:zz2Cavot6_JZr_FNJ2Dtg0pLX0MU7e_zBDt1OoMraSr1sRcC3ohUXg>
-    <xme:zz2Cau9kXLI7vxS11-T7EQqWOrQnYJh3zm4Ljr3qqE-SgKYwJnKfw5B6JaG2bTdGs
-    3ZisqrjBhyiNRPfpDMK8WA5h5jvoL12LxHtwLKlGTMrUh5OREzP4LI>
-X-ME-Received: <xmr:zz2CaoSrJ5_Cdhupsc7zlIWCTjLaT8APNSBPS4cgVQoP2k5rEx13AElTXAI>
-X-ME-Proxy-Cause: dmFkZTE1oit9MZbgdPNUA4HHWsMULK6Cz5sdpDL6Wk/wD7kfNXGu3e/EXf5M9JXawVpDPI
-    Kd9lJ1GZVafs565rM9S+cZw+n/cMd1S9oSxi3Xv7RrTuiH9afQzGtYFTyBhKsmYEaht9J5
-    vV7dyNSnAuCNScX81AQnXoyHXD4pg8pag19vnm592IJQcIf6BATwad+RD51AIfid8gba17
-    gKSwUtsEMegipv8zNYIHYPR4e68lUdiPrbHwyMm74ZzHlAmAfr/QUkf9Bs0a0GPARTfnrV
-    SpFrZ9EiV9esVNjz/LhavbueoSNqwHuOcKcj3vQwMSxA4okLdcH8vRa2PTuYlMcoV2XUMw
-    iPTPisQJJ3aMD2hQvaOlWvC36TobhKHzVMIEx3pDiySZgO1/07ljaQzRO6Zpje+xuTKxkE
-    ZKzA3xepHraairMh3zaBFf4LK64p7T+TbqDRH2+EsmE/ss3KoXhGPe2C/P+SzYzKECJzBk
-    sqx70BhANkCN6E47RQvptQNsJ606DlBKGaRnIAUe3hEbKuOipgIW7nC5bMTZkAZA1+KGYa
-    da+N4OnGE3uVHiChxofFWQqm4T/uX3/79S7l1N9TBgu5F6fBvk9VO8iNUMlDDL8G0RzFNf
-    hoa4Si9vWNYj/p4zzPWh9da7jH4bUOZQtdWKOMHfFgYp2+E7s2pLchRukpYA
-X-ME-Proxy: <xmx:zz2CaveBOdsbvrfUGIiQgLySafkgMOD74y2PbB4LaAc6PkR3EZZw3g>
-    <xmx:zz2CalKBVQPl3rXCRCVsNA0hhhvN-dtozT0-vIXlg0nM4qUq_EdXxw>
-    <xmx:zz2CakHaMKELXPrb9Uy2GhLC7Uejtu928RlKwOVAk_SZ25xezewKhA>
-    <xmx:zz2Cal6ol3SYxxbYHnsPlBbyuuIIN4ifo6FbZX7vL8wdWff6XeEEaA>
-    <xmx:zz2CaqufkSTusAdk-em37E7fAugpqSycFyCss2LJc2Wx_Sqq15IqmjxY>
+	:x-me-sender:x-sasl-enc; s=fm3; t=1786920402; x=1787006802; bh=N
+	ZOPrMQr1FnE5Kz+0VaDbhYd69V7nE+v+WGyJ8jLpqs=; b=j7J0K0urCx9gvHOAE
+	fuXPkD8y2DAoHplqbZBj3Aa3ZUsV6wBtLdv/eKXRz6ov2B+PWXyrNpMK9OySr0hz
+	KrNDP1xSt/qEwgmlp+00k8C9B7tSByxiDN3zqS+mYIYmF1+wOpq0srdNOeDtXjrp
+	DfRvz5/b9v33YzZELj6CrMA62mPobzpfhyzmOegLk0zNfziW9v2T8ilIjx+UDe+f
+	cIIPHqmGih8w/bQKiIYQINbL2yeqkq47y+gsD8ZxlKIy3ZcjhhE/AnKDYQShGb0x
+	G9Jofik0aSdiYr6QbbbqeB1BFxqIUn+d4UGfLM/8hulSqudEI+b8ajm5wENvQFpr
+	qxgIg==
+X-ME-Sender: <xms:0j2CauQ3RAF5DQJii9nlCoGOuXBO75usQnR6MLtDPV50aY7iKmitDg>
+    <xme:0j2CapHZ5dyNKzELd5KM8UGUXds87gpaInaxwhBQ6HmWMBqRvUy4u7-MXF69Apkx3
+    auxXjDtbWIIobA8tIxF2hyP3aoMjI-ZZ5GNbvdK3m0jQgB_OzP9UQxu>
+X-ME-Received: <xmr:0j2Can7gzzvjTrJyQvwWiufxG_HuUcbfyxW1_QGVDnK_rwAJJ5HX7PtQJkI>
+X-ME-Proxy-Cause: dmFkZTFX8QZ1Abcp//ElmtP0wYUsUMnb+KjPA544aOlJXhXcQAudkXa81C9Rj4L11ediC/
+    SYpDnD1LvcyFEAv2YFQNL3ReIx6t28G7cFOXvsWQqNdQRv24cIelnnbcWrHqur16sY2q+b
+    PHK84xbhjrx0R6ZFbdj3lDcQr+wbYteZ9PHsSvZgjQoovnxRkTlpJXxI+K+aK0DY9MqaWr
+    nM0jSjvJAOtmNeFdTIuI9VxKMOFqeJI9DUUNBafqnTlsaU2K5w1xy/oDJpRmozGKRfcEpJ
+    T4FDpTcqBKNo58tTW6I4nVl91YkYNyFfziYdH6IV5aj62MGBqsSUtSYZnaDODTOndFzTQ2
+    FelKSTgHEKVgvkY8tHcuDNVEAPCoxnB1STILl3mSOMqFTZSay6/ZYJqGaXIjf15nNBLQkS
+    eU9mF5lLSVPLb2CPUcn9gJUbtqVZ/RCOIIdYfQK21+XHkehy1IcjeQ9DMmCuHy0yD6l4Bo
+    YX/xWt+2giJuXoJnKCkcQdlCkYPKsf6Ju+WbotE2ZKZ7otu5xY8ea1wm66+wob/k5mrVv2
+    8kDZAoiYUG5B+oXDxbOgKDaeXqBa405IAf2lrH5h5KhqIh01oOJwJJ+HkLfWi1VRc36FAg
+    hVEvqxZZK3G9CgHUJk6MTFpk8O74DQPxp8Vc6G5mmmQON0G5YZoi+6Yfhobw
+X-ME-Proxy: <xmx:0j2Camms6FCa7VERWO9KpjeDzhsOgs8zqX-gzQdO4tZaoZW5ma-ctA>
+    <xmx:0j2Catz_JHxZzQXR-yF5H6XxMhF-Gbk2qQZvKAzGewXBNy2yQdGwPw>
+    <xmx:0j2CagO3cdCw7F6VwMhhQ9TtVxE-3A2hVGjZRsgT4DwvQeDnxIONYw>
+    <xmx:0j2CavjyY5jazKAH4ooZmS1twTI9R23Llr62m7erkzqrcGIvv5QSMA>
+    <xmx:0j2Cao11kBtD4UOxUZFz7kYewPzacDEqSN5eoTgzR-pbG4jVomDjv05r>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 16 Aug 2026 18:46:39 -0400 (EDT)
+ 16 Aug 2026 18:46:41 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -133,22 +133,22 @@ Cc: baolin.wang@linux.alibaba.com,
 	mhiramat@kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	bpf@vger.kernel.org
-Subject: [RFC PATCH 11/57] mm/collapse: sketch the passes of a round
-Date: Sun, 16 Aug 2026 23:45:23 +0100
-Message-ID: <20260816224609.308019-12-kirill@shutemov.name>
+Subject: [RFC PATCH 12/57] mm/collapse: allocate a destination per candidate
+Date: Sun, 16 Aug 2026 23:45:24 +0100
+Message-ID: <20260816224609.308019-13-kirill@shutemov.name>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260816224609.308019-1-kirill@shutemov.name>
 References: <20260816224609.308019-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6FA4240004
+X-Rspamd-Queue-Id: 2926420003
 X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: nucz5xozzsmywrp8migzafesmttho78p
-X-HE-Tag: 1786920400-712207
-X-HE-Meta: U2FsdGVkX1+TAkeErKgeRWACOx6YvSBWr5oJXsfNjcGl4GAHzFOjIRKd4X3jfh5UCUeX0GrrcVgpRN+jZ+2q3MUNcxpnoBegT/2EnhwEEmXV7k1E59LrE0zbNgs/aMuH07nArzr8KqR3+TuyeQQ4xQMONnmGpSWE8WPEEkcyKOLoMY7ukzry4dV+XYYEeDVtBixWS7zJAXzCtD3nRdAAAfYXvZmCxQjHkqH5VklTNY23DyAdRqMq955N1/iz0KSnIBKiOcYV+v4PLtYTNMO8FbGvzK07cNmbWWTY856e8IzGEECgBcxmhgM7rxpCo3U34sPMiOe7AaEBMR8lBMsLbP+UgfiDJ98LjF7yO71FzpwD1KcZIvfmKovn0D/m2Az7sPGkuknaj3q+JxdB6Elsc79izCItD/c6w4VORvfxgMyxYIrj0aT88TEshYiU9fS4CmEUDL+39ycT0AMaslI8X61g4Ntv5PBrXnMf+Gju6v3uOu9PdQmzuezbY39a1GkzFkfn3frR2y9QNmolDfaEPN3N8cKlT1p7fdS+C5wss3rKe4xZL+Xx/3LH27oaHk9+U+TQTpJ+tmrwsERIKiFGag6nU3giJQeFli0wSpX0omJmMWrOhWOezYKCK7MP4ThY1aIvUppDIvxNWchHaNvZGHCPJCOyberpRVgraaRV5eeq7i3IArbWS8s0wF4yPnNYQK+tV8eFJiOoTnYJEvpKGS4Zd6hH+yNN40ezVUgCo3CJFcCNSTi2O54mfbqA7CxKkuFEWm5Gs1EYP2Ad1VMWGhLZn+TqgtWPmzDwvH96VxQFZofF0VSn40DNikr6KGoyPaWgSAuPzFQTzU+mi5pTclXM0r+7XIfpzEemX1fI/i2DCg2Xyp01n16vk89YtTrXUwIOxEuvqzzRFCo8BA+qQptKtm9G5rwr9B9LWY8bLQV6AKh/h1mw4arfXYqZn0+hbiDcWa9ZrdA52xZxkei
- EWwsflcf
- 4r0YFwbqEdxXeC2t7GAsR4ZHxv+QDQFOQpnM0O7/zsRpM51wUfI1i5HVk/0HPqNk78MLkqIE4KENojDWNqDg7TT4IGY1zb0JABRUR17TwJbrN80/UUO/pdfbRWKoHjQn+2gk/DU4WIi2hbd3gkdLY4kAtRcczZ/hF6cd/kuC08ZbflhOsJpz2/prvgK2GGQu1BF2pcPr8eNgWdnfaPOSsHeq3o5haQYfJ25g7HfhFQLc1SYbeghUsJC4dgm7a2ayzvYsbYBijvm6lreZ+i5mu/U5nMBcfXn7DNjK8IkJ+IxIiReUOZiYr1h9SgfJpH3nsvHwH72QqF2L1TQCRLuXfO+CMrkBS/1hx4yN9lz43FowdVxspxRa6u8/TJxjoCg9G1CuIAtu+oQHDR9uJpzth/GyTIxcDDWRxgXbjwFbWTbkn2qvERgEZgTBhO7LN/AW9s/YSSBWfFYVyHZU=
+X-Stat-Signature: w5d68bkuzg4j97rcrcp7cti851374b4k
+X-HE-Tag: 1786920402-946542
+X-HE-Meta: U2FsdGVkX1/duQvmP8OdP+nrL5NRtdH6mAw3M7PO+lBatWVNg0bnK1hJoJjV3OcrV3Qq/bG7yeQPF/s0Q9SH6vlyBOtP+4/SWN/XigAvxjxXdZafLEtGCxNQBGKp/Il07EICYu5xpknB2Id7JwGTw5gSdYYnid2ZdupGunt0SbaO1taRl37sDSOVxHE4HUUpBCZ2hFS1jWg7mnRKZxOqVLTtkinFy00EguBkq8NO08iQi3YFJ6GeiUkh9kdFpmqWcnn5lNKnWI3TGcjKZidQ0RFeiOoi/2L6uB0kOsezcl6cD/LT5E4Xa1WLBLQ47gJvfJxOvonVUXKXsJDU3/Fy8MHspO11mOR6f6UezxSI9S9PGonyCeVY1ZpwZpmtDJ2hVoAl6daFNVXMrSMq8rTOakd14//IhHvjkJ/zNv6jyOVAc+HuRc62TKnpRmHmdCtS09q9hKOdE/IYX31YrLY7LG+j34q+tqzFuaTZxyWCplmIjWY/ozcccQEmvd5GAwVorf8f/OR1trUsre/4pN6qmeZ9v8qRwNg1WpgUJSVu8DjNVxXt7jpKKQBTAZGg5njUNYxXfsT1nr3wRsMox5Hdw9E9E8+DURWimcrWDEnkiPIDg+kviodzJCYrGH+e52ks+w5tenN9CUvejFQlBN8+OLoMIJpz8X+2ckhIuZiuRZbHPEMZufoDsyTOmetF4jUm3HzofXmP2cUMb3DRhwadNzvype8+2YCho+2HVMditNRx1pE6uyLZ68euWSZYLz5pNgiS/NlykafDogwPworh/RRQfuQSekTAdcABZPc8zKc4yQoQDYRZPpRnlJ+UO3GYtRzAV1DTRLNytayhmxo48oY5Etja+5aUExwvWU14P7dj/3fkjJd8pr9MR6vW3zdvmRuQqwcysQuurz/AQcANZI9mNoEfU6NJHI0jWfPeqSmaT4AII97dBuhj8tqybjiP+4RKinxVNZ/BL27kb6W
+ xNx4bBNn
+ wKgYQqA3X+cbgqFASM5ijIhWEhNsHsbwpz/vnx0Y73VuWoXg8srkK9GE5BC/ld9qGk6sSRlqmx+N/pWLO049tHMuPLIbbfikvAweN9xNUdk/lFt5ZWKZwJeKXIiN19Rxzs6KT2IcEtfY827S/e0kD84lIn4gcCpSfEaswxZc9YBffWzDy9rgLvQcsB9BCLXDMKcAwX0qgvcOAset+oPYVcml+YMHOgMHc2UjD1JpfqUADyhPdX/7rgpE+pp1GwiDsJFHNu6npdF9gSaokc2ZmIFTYbokweYJCJ+DEsRd4hAN1b8SxE4GeOKFRv2G5rMi9Fka7wFKBa8WAl5UwhzryFnGLYVVD+O8Tz6gbVqHiJI9W/NcuLHcQoy0VFdr/c2vcbVVpExzlGOx+fGSfPPWqpjucRvKv3+JnZln/6quNMX5cIO+A9uFqZIUF3avSCEWgWdTFYfXAgdLJW1hj44vFuQIXNL5g5Ucf4t730SGKIGjBSJk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,325 +158,302 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-A round is a sequence of passes over the same batch, and their order is
-most of the design.  It falls into three parts:
+Fill in the allocation, which happens on both sides of the freeze.
 
- - before any lock, the allocations that may sleep: destination folios,
-   and the page table a PMD-order candidate deposits;
- - under mmap_read, revalidation and fault-in, which may have to give the
-   lock up;
- - from the freeze onwards, a stretch that has to run to completion.
+A destination is a folio of the candidate's order, charged to the memcg,
+with the memcg's deferred-split list entry taken up front while sleeping
+is still allowed: the PMD-order install would otherwise need one under
+the pmd lock.
 
-Each pass in that last part works on what the one before it left, and
-every barrier raised has to be lowered again.  The destinations still
-missing are asked for there too, without reclaim: a faulter on a frozen
-source would wait for the allocation.
+collapse_alloc() does all of that for one candidate with the gfp it is
+handed, and counts nothing when it fails: what a miss means is up to the
+caller.
 
-Lay that sequence out, with every pass a stub but one.  collapse_round()
-takes mmap_read for the middle of it: a collapse is called without the
-lock, and takes its own for each round.  It brackets the frozen window in
-one mmu-notifier invalidate over the whole batch.
+collapse_provision() is the caller inside the window.  The sources are
+frozen by then and a faulter on any of them is waiting, so it asks
+without __GFP_DIRECT_RECLAIM: reclaim entered there would be paid for by
+that faulter.
 
-That invalidate needs a span before any pass has a body, so
-collapse_revalidate() settles it from the start, in cc->batch_start and
-cc->batch_end.  The span is taken over the candidates rather than off the
-ends of the array: a region refused at one order can re-enter selection
-at a lower one, so a round is not address-ordered and candidates[0] need
-not be the lowest.
+A candidate the allocator cannot spare one for is declined rather than
+failed.  It keeps its freeze and records SCAN_ALLOC_LIGHT_MISS, which
+asks for the reclaiming gfp so a later round can allocate for it before
+freezing anything.  Where the policy forbids reclaim there is nothing
+better to retry with, so the miss is the verdict: the real result is
+recorded and the failure counters fire.
 
-A fault-in that had to sleep comes back with the lock dropped, reported
-as SCAN_LOCK_DROPPED.  The round takes the lock again and runs the pass
-afresh, a bounded number of times, rather than sending the batch back to
-selection.
+collapse_reserve() honours those requests, before the round takes any
+lock.  This is where reclaim belongs: nothing is held or frozen, so a
+long compaction costs only khugepaged's own progress, which is why the
+mechanism being replaced allocated here too.  Having asked the allocator
+to try hard, a miss there is a failure.
 
-The stubs do nothing, so the round does nothing.
+Nothing sets cand->reclaim yet, so collapse_reserve() has nothing to do.
+The request comes from the selection side, which queues a region refused
+at one order for another attempt.
+
+The page table a PMD-order candidate deposits cannot be deferred the same
+way.  pte_alloc_one() allocates with GFP_PGTABLE_USER and takes no gfp to
+strip, so it may reclaim and sleep whatever the order asked for.
+collapse_deposit() secures it ahead of the freeze and refuses the
+candidate when it cannot.  A PMD-order window is a whole table, so there
+is at most one such candidate and it is the first.
 
 Assisted-by: Claude-Code:claude-opus-5
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- include/trace/events/huge_memory.h |   1 +
- mm/collapse.c                      | 207 +++++++++++++++++++++++++++++
- mm/collapse.h                      |   9 ++
- 3 files changed, 217 insertions(+)
+ include/trace/events/huge_memory.h |   3 +-
+ mm/collapse.c                      | 126 +++++++++++++++++++++++++++++
+ mm/collapse.h                      |   2 +
+ mm/khugepaged.c                    |   4 +-
+ 4 files changed, 132 insertions(+), 3 deletions(-)
 
 diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
-index 5a48c5406cce..778f5a56956c 100644
+index 778f5a56956c..68693eba82ef 100644
 --- a/include/trace/events/huge_memory.h
 +++ b/include/trace/events/huge_memory.h
-@@ -24,6 +24,7 @@
- 	EM( SCAN_PAGE_COUNT,		"not_suitable_page_count")	\
- 	EM( SCAN_PAGE_LRU,		"page_not_in_lru")		\
- 	EM( SCAN_PAGE_LOCK,		"page_locked")			\
-+	EM( SCAN_LOCK_DROPPED,		"lock_dropped")			\
- 	EM( SCAN_PAGE_ANON,		"page_not_anon")		\
- 	EM( SCAN_PAGE_LAZYFREE,		"page_lazyfree")		\
- 	EM( SCAN_PAGE_COMPOUND,		"page_compound")		\
+@@ -40,7 +40,8 @@
+ 	EM( SCAN_STORE_FAILED,		"store_failed")			\
+ 	EM( SCAN_COPY_MC,		"copy_poisoned_page")		\
+ 	EM( SCAN_PAGE_FILLED,		"page_filled")			\
+-	EMe(SCAN_PAGE_DIRTY_OR_WRITEBACK, "page_dirty_or_writeback")
++	EM( SCAN_PAGE_DIRTY_OR_WRITEBACK, "page_dirty_or_writeback")	\
++	EMe(SCAN_ALLOC_LIGHT_MISS,	"alloc_light_miss")
+ 
+ #undef EM
+ #undef EMe
 diff --git a/mm/collapse.c b/mm/collapse.c
-index ad9e5a447854..25c0f72a9a68 100644
+index 25c0f72a9a68..58c8d83f3468 100644
 --- a/mm/collapse.c
 +++ b/mm/collapse.c
-@@ -94,6 +94,14 @@
-  */
- #define COLLAPSE_BATCH_BYTES		SZ_32M
+@@ -17,6 +17,7 @@
+ #include <linux/slab.h>
+ #include <linux/swap.h>
+ #include <linux/userfaultfd_k.h>
++#include <linux/vmstat.h>
  
-+/*
-+ * How many times a round runs the fault-in pass.  A fault that has to wait drops
-+ * the lock, and running the pass again costs a walk of the batch but buys at
-+ * least one completed swap-in; readahead brings a cluster in at a time, so this
-+ * covers a PMD's default max_ptes_swap.
-+ */
-+#define COLLAPSE_FAULTIN_PASSES	8
+ #include <asm/tlb.h>
+ #include "collapse.h"
+@@ -114,6 +115,12 @@
+ 	min(COLLAPSE_BATCH_BYTES >> (PAGE_SHIFT + COLLAPSE_MIN_MTHP_ORDER), \
+ 	    COLLAPSE_TABLE_WINDOWS)
+ 
++/* How far a candidate got, and so what a failure has to undo for it */
++enum collapse_candidate_state {
++	CAND_SELECTED,		/* collected; nothing held on its behalf yet */
++	CAND_SKIPPED,		/* refused; nothing of it left to undo */
++};
 +
- /* Windows in one table at the finest order collapse cuts */
- #define COLLAPSE_TABLE_WINDOWS	(HPAGE_PMD_NR >> COLLAPSE_MIN_MTHP_ORDER)
- 
-@@ -118,6 +126,21 @@ struct collapse_candidate {
+ /*
+  * A candidate is an (addr, order) window selected for collapse.  Selection
+  * counts in PTE offsets -- the bitmap it reads and the alignment it honours are
+@@ -123,7 +130,12 @@
+ struct collapse_candidate {
+ 	unsigned long addr;
+ 	unsigned int order;
++	/* The light allocation missed last round: this one may reclaim for it */
++	bool reclaim;
++	enum collapse_candidate_state state;
  	enum scan_result result;
++	struct folio *new_folio;
++	pgtable_t deposit;		/* PMD order: fresh table to deposit */
  };
  
-+static unsigned long candidate_start(const struct collapse_candidate *cand)
-+{
-+	return cand->addr;
-+}
-+
-+static unsigned long candidate_size(const struct collapse_candidate *cand)
-+{
-+	return PAGE_SIZE << cand->order;
-+}
-+
-+static unsigned long candidate_end(const struct collapse_candidate *cand)
-+{
-+	return candidate_start(cand) + candidate_size(cand);
-+}
-+
- /* Where a candidate sits in the table, in the PTE offsets selection counts in */
- static unsigned int candidate_offset(const struct collapse_candidate *cand,
- 				     unsigned long pmd_addr)
-@@ -140,6 +163,134 @@ int collapse_control_init(struct collapse_control *cc)
- 	return 0;
+ static unsigned long candidate_start(const struct collapse_candidate *cand)
+@@ -218,6 +230,43 @@ static void collapse_freeze(struct vm_area_struct *vma,
+ {
  }
  
 +/*
-+ * The scan and the allocation both dropped mmap_lock, so nothing seen before it
-+ * can be trusted: find the VMA and the PTE table again, and check they still
-+ * allow every provisioned candidate.
++ * Allocate one candidate's destination with @gfp: a folio of its order, charged,
++ * with the memcg's deferred-split list heads in place so the install cannot need
++ * to allocate under the pmd lock.  Those heads cost only the first collapse in a
++ * memcg.
 + *
-+ * This is also where the batch's span is settled, for the invalidate the round
-+ * issues over it.
++ * A failure counts nothing and changes nothing: what a miss means is the caller's
++ * policy.
 + */
-+static enum scan_result collapse_revalidate(struct vm_area_struct *vma,
-+					    unsigned long pmd_addr,
-+					    struct collapse_control *cc,
-+					    pmd_t **pmdp)
++static enum scan_result collapse_alloc(struct mm_struct *mm,
++				       struct collapse_control *cc,
++				       struct collapse_candidate *cand,
++				       gfp_t gfp)
 +{
-+	unsigned int i;
++	struct folio *folio;
 +
-+	cc->batch_start = ULONG_MAX;
-+	cc->batch_end = 0;
++	folio = __folio_alloc(gfp, cand->order, collapse_find_target_node(cc),
++			      &cc->alloc_nmask);
++	if (!folio)
++		return SCAN_ALLOC_HUGE_PAGE_FAIL;
 +
-+	for (i = 0; i < cc->nr_candidates; i++) {
-+		struct collapse_candidate *cand = &cc->candidates[i];
-+
-+		cc->batch_start = min(cc->batch_start, candidate_start(cand));
-+		cc->batch_end = max(cc->batch_end, candidate_end(cand));
++	if (unlikely(mem_cgroup_charge(folio, mm, gfp)) ||
++	    folio_memcg_alloc_deferred(folio)) {
++		folio_put(folio);
++		return SCAN_CGROUP_CHARGE_FAIL;
 +	}
 +
++	if (is_pmd_order(cand->order)) {
++		count_vm_event(THP_COLLAPSE_ALLOC);
++		count_memcg_folio_events(folio, THP_COLLAPSE_ALLOC, 1);
++	}
++	count_mthp_stat(cand->order, MTHP_STAT_COLLAPSE_ALLOC);
++	cand->new_folio = folio;
++
 +	return SCAN_SUCCEED;
-+}
-+
-+/*
-+ * Make every source the round needs present and exclusively owned by this mm,
-+ * by faulting it in as an ordinary access would.  Sleeps, and drops mmap_lock on
-+ * failure, since a fault may have to be retried with it released.
-+ *
-+ * Anything faulted in lands on a per-CPU LRU batch, holding a reference the
-+ * freeze cannot account for, so the freeze drains those batches before it
-+ * starts.
-+ */
-+static enum scan_result collapse_faultin(struct vm_area_struct *vma,
-+					 struct collapse_control *cc,
-+					 pmd_t *pmd)
-+{
-+	return SCAN_SUCCEED;
-+}
-+
-+/*
-+ * Raise the two barriers on the sources of every candidate: migration entries in
-+ * their PTEs, then a frozen refcount.  Takes the table's ptl once for the whole
-+ * batch, and flushes the TLB once before dropping it.  A candidate whose sources
-+ * moved is dropped here.
-+ */
-+static void collapse_freeze(struct vm_area_struct *vma,
-+			    struct collapse_control *cc, pmd_t *pmd)
-+{
-+}
-+
-+/*
-+ * Allocate ahead of the freeze for the candidates whose light allocation missed
-+ * last round.  This is where reclaim belongs: nothing is held or frozen, so a
-+ * long compaction costs only khugepaged's own progress -- which is why the
-+ * mechanism this replaces allocated here too.  Having asked the allocator to try
-+ * hard, a miss now is a failure.
-+ */
-+static void collapse_reserve(struct mm_struct *mm, struct collapse_control *cc)
-+{
-+}
-+
-+/*
-+ * Secure the page table the PMD terminal layer deposits.  This stays ahead of the
-+ * freeze because pte_alloc_one() allocates with GFP_PGTABLE_USER and takes no gfp
-+ * to strip: order-0 or not, it may reclaim and sleep, which is what the window
-+ * exists to keep out.  The destination folio has a light gfp to fall back on and
-+ * so can be deferred; this has none.
-+ */
-+static void collapse_deposit(struct mm_struct *mm, struct collapse_control *cc)
-+{
-+}
-+
-+/*
-+ * Give the frozen candidates that still need one a destination folio, without
-+ * reclaim: a faulter on their sources would wait for it.
-+ *
-+ * A miss here is not a failure, as long as a retry could do better: the
-+ * candidate keeps its freeze and asks for the reclaiming gfp, which
-+ * collapse_reserve() uses before the next round freezes anything.  When the
-+ * policy forbids reclaim there is nothing better to retry with, so the miss is
-+ * the answer, and a smaller order over the same region is the better next move.
-+ */
-+static void collapse_provision(struct mm_struct *mm,
-+			       struct collapse_control *cc)
-+{
-+}
-+
-+/*
-+ * Copy the frozen sources into their destinations.  Nothing can reach either
-+ * side, so this needs no page-table lock, and it sleeps.
-+ */
-+static void collapse_copy(struct vm_area_struct *vma,
-+			  struct collapse_control *cc)
-+{
-+}
-+
-+/* Publish each destination folio in place of the sources it replaces */
-+static void collapse_install(struct vm_area_struct *vma,
-+			     struct collapse_control *cc, pmd_t *pmd)
-+{
-+}
-+
-+/*
-+ * Lower the barriers the freeze raised, on the sources of an installed candidate
-+ * and on those of one that got no further.
-+ */
-+static void collapse_putback(struct vm_area_struct *vma,
-+			     struct collapse_control *cc)
-+{
-+}
-+
-+/*
-+ * Settle whatever the round reached: account what was installed, release what
-+ * was not, and give every candidate the result selection will classify.  Returns
-+ * how many candidates were installed.
-+ */
-+static unsigned int collapse_finish(struct mm_struct *mm,
-+				    struct collapse_control *cc,
-+				    enum scan_result result)
-+{
-+	return 0;
 +}
 +
  /*
-  * Carry one batch of candidates through the passes.  Every candidate comes back
-  * with a result of its own: the passes before the freeze mark what they refuse
-@@ -149,6 +300,62 @@ int collapse_control_init(struct collapse_control *cc)
- static void collapse_round(struct mm_struct *mm, unsigned long pmd_addr,
- 			   struct collapse_control *cc)
+  * Allocate ahead of the freeze for the candidates whose light allocation missed
+  * last round.  This is where reclaim belongs: nothing is held or frozen, so a
+@@ -227,6 +276,31 @@ static void collapse_freeze(struct vm_area_struct *vma,
+  */
+ static void collapse_reserve(struct mm_struct *mm, struct collapse_control *cc)
  {
-+	unsigned int passes = COLLAPSE_FAULTIN_PASSES;
-+	struct mmu_notifier_range range;
-+	struct vm_area_struct *vma;
-+	enum scan_result result;
-+	pmd_t *pmd;
++	unsigned int i;
 +
-+	collapse_reserve(mm, cc);
-+	collapse_deposit(mm, cc);
++	for (i = 0; i < cc->nr_candidates; i++) {
++		struct collapse_candidate *cand = &cc->candidates[i];
++		enum scan_result result;
 +
-+retry:
-+	mmap_read_lock(mm);
++		if (!cand->reclaim)
++			continue;
++		cand->reclaim = false;
 +
-+	vma = find_vma(mm, pmd_addr);
-+	if (!vma) {
-+		result = SCAN_VMA_NULL;
-+		goto out_unlock;
++		result = collapse_alloc(mm, cc, cand, cc->policy.gfp);
++		if (result == SCAN_SUCCEED)
++			continue;
++
++		if (result == SCAN_ALLOC_HUGE_PAGE_FAIL) {
++			/* Asked the allocator to try hard and it still missed */
++			if (is_pmd_order(cand->order))
++				count_vm_event(THP_COLLAPSE_ALLOC_FAILED);
++			count_mthp_stat(cand->order,
++					MTHP_STAT_COLLAPSE_ALLOC_FAILED);
++		}
++
++		cand->state = CAND_SKIPPED;
++		cand->result = result;
 +	}
+ }
+ 
+ /*
+@@ -235,9 +309,28 @@ static void collapse_reserve(struct mm_struct *mm, struct collapse_control *cc)
+  * to strip: order-0 or not, it may reclaim and sleep, which is what the window
+  * exists to keep out.  The destination folio has a light gfp to fall back on and
+  * so can be deferred; this has none.
++ *
++ * A round is one table and a PMD-order window is the whole of it, so such a
++ * candidate cannot share a round: if there is one it is the only one, and it is
++ * candidates[0].  This secures one page table, never a batch of them.
+  */
+ static void collapse_deposit(struct mm_struct *mm, struct collapse_control *cc)
+ {
++	struct collapse_candidate *cand = &cc->candidates[0];
 +
-+	result = collapse_revalidate(vma, pmd_addr, cc, &pmd);
-+	if (result != SCAN_SUCCEED)
-+		goto out_unlock;
++	if (!is_pmd_order(cand->order))
++		return;
 +
-+	result = collapse_faultin(vma, cc, pmd);
-+	/*
-+	 * A fault dropped the lock to wait, as a swap-in does.  The swap-in it
-+	 * started is still running and the walk skips whatever has arrived, so
-+	 * take the lock again rather than send the batch back to selection.  The
-+	 * VMA and the table are looked up afresh: both may have changed.
-+	 */
-+	if (result == SCAN_LOCK_DROPPED && --passes)
-+		goto retry;
-+	if (result != SCAN_SUCCEED)
-+		goto out;	/* the callee released mmap_lock */
++	VM_WARN_ON_ONCE(cc->nr_candidates != 1);
 +
-+	/* One invalidate window spans the batch, as collapse_revalidate() left it */
-+	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
-+				cc->batch_start, cc->batch_end);
-+	mmu_notifier_invalidate_range_start(&range);
++	if (cand->state != CAND_SELECTED)
++		return;
 +
-+	/*
-+	 * None of these can fail as a whole: the freeze takes the sources it
-+	 * can and drops the candidates it cannot, and each pass after it works
-+	 * on what the one before left, so every barrier raised is lowered again.
-+	 */
-+	collapse_freeze(vma, cc, pmd);
-+	collapse_provision(mm, cc);
-+	collapse_copy(vma, cc);
-+	collapse_install(vma, cc, pmd);
-+	collapse_putback(vma, cc);
++	cand->deposit = pte_alloc_one(mm);
++	if (!cand->deposit) {
++		cand->state = CAND_SKIPPED;
++		cand->result = SCAN_ALLOC_HUGE_PAGE_FAIL;
++	}
+ }
+ 
+ /*
+@@ -253,6 +346,35 @@ static void collapse_deposit(struct mm_struct *mm, struct collapse_control *cc)
+ static void collapse_provision(struct mm_struct *mm,
+ 			       struct collapse_control *cc)
+ {
++	const gfp_t gfp = cc->policy.gfp & ~__GFP_DIRECT_RECLAIM;
++	const bool may_retry = gfp != cc->policy.gfp;
++	unsigned int i;
 +
-+	mmu_notifier_invalidate_range_end(&range);
++	for (i = 0; i < cc->nr_candidates; i++) {
++		struct collapse_candidate *cand = &cc->candidates[i];
++		enum scan_result result;
 +
-+out_unlock:
-+	mmap_read_unlock(mm);
-+out:
-+	collapse_finish(mm, cc, result);
++		if (cand->state != CAND_SELECTED || cand->new_folio)
++			continue;
++
++		result = collapse_alloc(mm, cc, cand, gfp);
++		if (result == SCAN_SUCCEED)
++			continue;
++
++		if (may_retry) {
++			/* A charge miss too: charging may reclaim when allowed */
++			cand->result = SCAN_ALLOC_LIGHT_MISS;
++		} else {
++			/* The gfp a retry would use, so this is the answer */
++			if (result == SCAN_ALLOC_HUGE_PAGE_FAIL) {
++				if (is_pmd_order(cand->order))
++					count_vm_event(THP_COLLAPSE_ALLOC_FAILED);
++				count_mthp_stat(cand->order,
++						MTHP_STAT_COLLAPSE_ALLOC_FAILED);
++			}
++			cand->result = result;
++		}
++	}
+ }
+ 
+ /*
+@@ -761,7 +883,11 @@ static void collapse_add_candidate(struct collapse_control *cc,
+ 	cc->nr_candidates++;
+ 	cand->addr = addr;
+ 	cand->order = order;
++	cand->reclaim = false;
++	cand->state = CAND_SELECTED;
+ 	cand->result = SCAN_FAIL;
++	cand->new_folio = NULL;
++	cand->deposit = NULL;
  }
  
  /*
 diff --git a/mm/collapse.h b/mm/collapse.h
-index 1159ed39b9eb..c61db86dc6c2 100644
+index c61db86dc6c2..feb2e0d57339 100644
 --- a/mm/collapse.h
 +++ b/mm/collapse.h
-@@ -29,6 +29,7 @@ enum scan_result {
- 	SCAN_PAGE_COUNT,
- 	SCAN_PAGE_LRU,
- 	SCAN_PAGE_LOCK,
-+	SCAN_LOCK_DROPPED,
- 	SCAN_PAGE_ANON,
- 	SCAN_PAGE_LAZYFREE,
- 	SCAN_PAGE_COMPOUND,
-@@ -126,6 +127,14 @@ struct collapse_control {
- 	/* The candidate windows collected for the current round */
- 	struct collapse_candidate *candidates;
- 	unsigned int nr_candidates;
-+
-+	/*
-+	 * What the candidates the round still means to freeze span, settled by
-+	 * collapse_revalidate() as it walks them.  A round is not necessarily
-+	 * address-ordered, so this cannot be read off the ends of the array.
-+	 */
-+	unsigned long batch_start;
-+	unsigned long batch_end;
+@@ -46,6 +46,7 @@ enum scan_result {
+ 	SCAN_COPY_MC,
+ 	SCAN_PAGE_FILLED,
+ 	SCAN_PAGE_DIRTY_OR_WRITEBACK,
++	SCAN_ALLOC_LIGHT_MISS,
  };
  
- int collapse_control_init(struct collapse_control *cc);
+ /*
+@@ -148,6 +149,7 @@ unsigned long collapse_possible_orders(struct vm_area_struct *vma,
+ 		vm_flags_t vm_flags, enum tva_type tva_flags);
+ enum scan_result find_pmd_or_thp_or_none(struct mm_struct *mm,
+ 		unsigned long address, pmd_t **pmd);
++int collapse_find_target_node(struct collapse_control *cc);
+ bool collapse_scan_abort(int nid, struct collapse_control *cc);
+ unsigned int collapse_max_ptes_none(struct collapse_control *cc,
+ 		struct vm_area_struct *vma, unsigned int order);
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 43f6107c953a..50b520961b9b 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -999,7 +999,7 @@ static void collapse_policy_forced(struct collapse_policy *p)
+ }
+ 
+ #ifdef CONFIG_NUMA
+-static int collapse_find_target_node(struct collapse_control *cc)
++int collapse_find_target_node(struct collapse_control *cc)
+ {
+ 	int nid, target_node = 0, max_value = 0;
+ 
+@@ -1018,7 +1018,7 @@ static int collapse_find_target_node(struct collapse_control *cc)
+ 	return target_node;
+ }
+ #else
+-static int collapse_find_target_node(struct collapse_control *cc)
++int collapse_find_target_node(struct collapse_control *cc)
+ {
+ 	return 0;
+ }
 -- 
 2.54.0
 
