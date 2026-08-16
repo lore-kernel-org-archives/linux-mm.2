@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58129C5B572
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 09:59:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BCE6C5DF66
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 09:59:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2701F6B0802; Sun, 16 Aug 2026 05:59:11 -0400 (EDT)
+	id 669176B0349; Sun, 16 Aug 2026 05:59:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 220C96B0803; Sun, 16 Aug 2026 05:59:11 -0400 (EDT)
+	id 640C06B034A; Sun, 16 Aug 2026 05:59:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 136456B0804; Sun, 16 Aug 2026 05:59:11 -0400 (EDT)
+	id 57D546B034B; Sun, 16 Aug 2026 05:59:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DF8D96B0802
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 05:59:10 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 73C871404EA
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:59:10 +0000 (UTC)
-X-FDA: 85106684460.06.347FE97
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 346BC6B0349
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 05:59:42 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BC5F21C1822
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:59:41 +0000 (UTC)
+X-FDA: 85106685762.07.C59F3A3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id DF60420004
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:59:07 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Y8Kj/UNg";
-	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786874347;
-	b=eR0tDXBKfi6Sa48Is/j8659F+2GBh98Y6cZueZrD754O0cZNg8Bs7XarMPNfkzVvX62iNe
-	75qjPCfsicBDxLmQmRECh93AoPhIfpLBjzojAysCtwm9TRuMEUYwT6GRorGMZtG1LclA9D
-	gP8b7n1nGDiQYRD8izPERfF7UhHrY+w=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Y8Kj/UNg";
-	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 15461100004
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:59:39 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S1kKAbt4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786874347;
+	s=arc-20220608; t=1786874380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NTYJAsVDkO7YIxBVl0sfyICvDw21eBl55uq6tMu+icE=;
-	b=Q7Fg/cXSf5lhyBVCjn+tNzOr4MxBrlWxi3V6axx7FE1l9yKp0KHH7sDutzssu/T6g2j+Jr
-	m/ZFqgYoX330g1wQW+0xiSktiRJELIXuaRiZInF3vCLhRoVm9IxDXQOLcNZUTE4fIzUOve
-	LcgQlBnD6OXbBeNYNecD1nuw0h+PaD0=
+	bh=d7MREgld/BLjhaewklUc18IFPosE8Z7M0EaKNZ/CkJ0=;
+	b=LNdcDxs1E43GDrw7QvOpCNC0O+tKsgiGBtKEcKPKME404fZG2oOxC7ukvC3L181TfVSjg6
+	IezWGeEfPpDlkC3YfUDpgg3UsWYXy3r0mCtDzuBz5t7Yv5z3qInD9cP8B4s8uQsRT81I/V
+	Ybloc8PJrKJs0vqmxySdCO/M3avsVZk=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S1kKAbt4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786874380;
+	b=FJ3X/YOyitSr+amzcL+jniowGQ9ppzm6ers1L+tXy2NBnNxSB+Q5qRIN+7mrjkUCx4eJkJ
+	0Hq7ljfAULU4Y2r+JQ1p6pI5j9oCpCHsIuhyD+x+0l8n4AYtpVwZDS2HxrqJ3JaqGWhqBf
+	B0CNYM0jf4wR7sjj1eoW9pB9IajBsNk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 20ED140557;
-	Sun, 16 Aug 2026 09:59:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6D31F000E9;
-	Sun, 16 Aug 2026 09:59:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 64F7A4397F;
+	Sun, 16 Aug 2026 09:59:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF871F000E9;
+	Sun, 16 Aug 2026 09:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786874347;
-	bh=NTYJAsVDkO7YIxBVl0sfyICvDw21eBl55uq6tMu+icE=;
+	s=k20260515; t=1786874379;
+	bh=d7MREgld/BLjhaewklUc18IFPosE8Z7M0EaKNZ/CkJ0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Y8Kj/UNgRL/skfMARhgY4keWAMhwtZeZa9GTiEpwT7TsDVKb52rE3IlBql5jX7br+
-	 crgRNKTt/d/EEr6h+SMDtPodg09wi6BcmELkdZ8pF0AVnc5JDXHqIdk2PTBPt1nGfH
-	 PID7IZlTaKnSQkSuz4Anro+841WvPyI7+Kd5T/+NLUQgQwG9tpVhgbgfyZatvtJhw8
-	 qitPPHYaSRfs2arUlT3nj1wFT3uH0+n9pERnI8GGdpfCsFuwKFezDJxBUIRU8I7M+B
-	 /tLBDWhjnUjZ11fe6oZ9gHXuRFWY5ABu1b2kq+T6MangVqAIMg/qw4Rz7845h+RKvU
-	 QwxpsqNjYyKgg==
-Date: Sun, 16 Aug 2026 12:59:00 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] arch_numa: Avoid false positive fortify warning in
- setup_node_to_cpumask_map()
-Message-ID: <aoGJ5KL9cMl1E7iV@kernel.org>
-References: <20260813-arch_numa-avoid-fortify-warning-v2-1-093ad97a78df@kernel.org>
+	b=S1kKAbt43t6hwTScs3DwkHJJCMlc7M7Ahq7fHaDVhxBEhEvHNLosu2UR1yXTrueFL
+	 7CYT6F6LwZ4HsykK3FexnQN55RsVnCXzo0j3TTUr35kykQY03pIh4bIclOjim6FmQJ
+	 X1qqD3+n2MJuioOA6Hm124D8c8bt8TpNy4BBI2JRwnteGGeH2c0GgNB8DmzJbAFw+V
+	 nJNTCzD11VXk+k3chuvzXEhTx8Ztzd8H0BpkohlKoKKugqYXEJU+o9hFAyUPf6sSic
+	 56UA8arTMiPOyvCey3yuknsaYM2vajh+PXaCI6L5wMOMcMYwKh+lvtJxSLiXXE6AKo
+	 xv7oC/UfH7PKA==
+Date: Sun, 16 Aug 2026 10:25:22 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Guopeng Zhang <guopeng.zhang@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Guopeng Zhang <zhangguopeng@kylinos.cn>, Ran Xiaokai <ran.xiaokai@zte.com.cn>
+Subject: Re: [PATCH] mm: memcg: fix slab over-accounting for in-object objcg
+ metadata
+Message-ID: <aoF-MIwlfeI78Aox@ubuntu-vm-arm64>
+References: <20260812124858.73487-1-guopeng.zhang@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260813-arch_numa-avoid-fortify-warning-v2-1-093ad97a78df@kernel.org>
-X-Rspamd-Queue-Id: DF60420004
-X-Rspamd-Server: rspam10
+In-Reply-To: <20260812124858.73487-1-guopeng.zhang@linux.dev>
+X-Stat-Signature: dxgti3brxucoietxasqn77fxizt7p7i6
+X-Rspamd-Queue-Id: 15461100004
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: qengpnfqpx1dforeezfep6k7ph99crrq
-X-HE-Tag: 1786874347-376010
-X-HE-Meta: U2FsdGVkX18JagzmL/146Y+b5HbNR4x9w9iy1sUHb76TjqgBcdy4NHNYqjfYSfYWxCr8NW/6MbSiUYHd22G9ReLKuYphwA4LJcOm7XLAwHkd1aXHmVvZHd3n4URdytXCFTbrPMgLn6AKmF/eusqUPzb5AM2pkNANinxqHNw2l89ZRY6mmJb7kUmnlzplCZ2QvqUKKDgPWm1sIcJeCk7QHPuxGZbybQo7WpRSUHNILsK46PSNvBM3J7Twh4wY947bLRIrr0YIOiy7peonpXsKJRNH+r+mfhyZ/Xa0p592aawk5tHxguPVfh970mk5pitcZyHeB598Z+guWDYP/xRgqIUiASS5ePX3OmYuaDzNyeGZAcwHWDd5odbrTAJzZD4fVkSDnxsmTd//pdMvBIFkbh6gTc6KFSiyFvSjGvJLENt5DNT5xHvLY7IRsBOS1LUC4bxKZyvX3fy7nsFHJfcT5dvA3n5zGa/Yf/8Hzoc8kNfc4SR7XrqChZ8tVp4DhfLF2kE9sLy8nMe7PGQBR5WGXGqAo9mAZjQTSHDYP2mkTvTT6ccaxXraBugDVw0Ujei6iacau9aybIiLOCt1aomGQGoI/eqpNur7/eyJOcXd1A6/y6J+cAtRtwxwBSn1i8YpoVf6F7ovyh148fLng4KO/zvKe+zgd1YcjUwslP2Xdnsq9mTAX/taN6m6eWFj8q8ui5BDp2YnbATnFNzA+Oko0WULwBYhsF+EbfzLTR6aNHEvae6A/mg2v21OO5Cfb2wpKRBIj4+xdmvRIyuv3znqIYYg6Mbtw2JX2u8haLj/iFvitX3YNtJBbuvaLwXRcLjilFHjz7HH7sJ2jTUS6koDzb/8U7zKYDpY1uv/gd/P4P1Ba87C8LaIgKS6efG+0eAYfTiivelzhn7AUrYlGE573LttlshaO5gUuLwYbRzsRsVFMONzuaKNouR4C+vGQANVgZv9UkVCxpUyICU/SfV
- kADLG5vu
- GMnxRYKjEJ1Ha5E84z+SWBhobLAc53J5ub12onju3u/OBlVhEOVRAE7MOG9CPXlBLwb64DQrLV1HSZN9Ya+4rE4DbaMKT+rH2dvt1s7IO6Kt/zAYMFRSXZcfahV+BLrCfflG2JAYm229FlcCgpSFGwMkFrBaOnaJvuCzFZstXrLCErI4SN9MM6VPa6cVUluLjtsXWs/5nZ0b3RhW1h1B7wTBKSYyK5X1yqJKbuFcyNsXiXcQMtUtM0uifJvBp4wfbe1T/RoBfyqElQvEI+6OIGhD8wQDK+acHNkqH54yFQ9O5u5Gwc/BDhlOHcy5Hrf2cWyuqTPhVecD87pRW2pAHtdweSmpee72pdl7r
+X-HE-Tag: 1786874379-103251
+X-HE-Meta: U2FsdGVkX1+oWMy6ulNzoqmOwzkYwsUgr7r2GDPpwi3fjNlznzEf8pk8A58cqRt3BUHlzU1XUdIaIlvOzlU4pPxffVE5hU125zeHOGllvqvz08TEtCIK+Gm05mIqr/zkKpdp8Mu9GPhzRmw4Aly33lcRjWiDUZNtPT58abc8T+3YrfIwAdUlt135DG/R9HJxefdwfcTq1bnoy4fy/vBr/xNdjtbQUohSo1MBk7yBHnYDlQNllzqU2c1LpIebIZwMoh4TS+7TEc59tZrHgzKGCkI9zVxWfqYJoxjgmyVD26gNAaWQNa8Q9DbvDKPIAJO4FtWR/JYxL08xfQWin3Cb4Vxd3/MoyO9Vuu1RfJrMlIY/UdGppW4SIslU3nTHYyy4nO5Q28wJyihk8S5Jg4Qpf4+9/o3fhkxGS57nd7hgmRrtZ2TYbYR8tN2VrU4Ah3UnB++8s/DV1HofQ81e3lh1BHTAW2iDDlJXHfaiPXw+rcXq5Xmv/BnGgzp3KJc2e9LhGohOorIrAuS74jdFC91irc/qihScE90Pk9xpTLghEJzTo5ueZH6+BpUCjJUZzpYqgYbpoalea4BIPX+GSMJIK8sbunEnQGReEbMoMWc2qbJ8TkymDkBpuRnPI2xn3Y3sf9KyHnWyoElv2KV72cxWMtHFROgPlDpinFjc6PB8C9GILts0dv6kidOPpPL5CHbhCKHUp6bkppiq6BJetKdpny6uF6f5pU18TezImKY/DjLgqhAmH/d/CgJjV7WTRNPt9CEusH3irSQtWAokiJca5UINzZycTKJ/ewrTCCt0Tb6+kh9w8ssRo5si+zCEk+4KKNq7Tlvzhg1ShURD3o1Pk//ZVlJkXKZs1cpMlJHjezKqPFh98Rrkyb2DmzuG7mrpDQ2wPjXvJ7ZWrl7BEKQKx43YP/FTppe9OOQItDVcfA76fEcKbck8bT7joPzHePNx7e4LbX23cK7kaOpDCOJ
+ NliyZWwZ
+ A61f2YvSu7C9GkP3Vx1KoUi8Zmu8WnUf+LDw+uZB+FpwZzYEl297M7dsqOmqLQADQ8GlJWQsfZGmBaljYTAzIYQywjcP494iXIUWit+FbGXAoGt7mfGtJELKRMngyu2zbXbzyvMkGCVtziwSbw8oG8z7Xv6My2q3lTUDM/GAUjnC6DWXrR9Csm6mFzhLnBaimDCa9u+Gw8TYYKop86HuhXSEl5xHC8ySOF8HeJmg+l9ZChcBqpzfhduVWRrcVNz/Zz97cIaF5U1oKhJ77miaNni+tPtSzNf/VatM6xyVZ3idkiDwCki9cNh+kGeXrweOAgyEMFnmpjTIodDREoxJNsr5P0yDkM2dtS8I7md3KC5OFbgA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,32 +95,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026 at 08:12:55PM -0700, Nathan Chancellor wrote:
-> When building ARCH=riscv using clang with CONFIG_FORTIFY_SOURCE and
-> CONFIG_UBSAN_BOUNDS enabled, CONFIG_NR_CPUS > 64, and the default value
-> of 2 for CONFIG_NODES_SHIFT, there is a compiletime warning from the
-> fortify routines.
+On Wed, Aug 12, 2026 at 08:48:58PM +0800, Guopeng Zhang wrote:
+> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
 > 
-> In this configuration, MAX_NUMNODES is 4. clang unrolls the for loop in
-> setup_node_to_cpumask_map() past this, which triggers the fortify check
-> when accessing node_to_cpumask_map on the theoretical fifth loop
-> iteration because it would be an out of bounds write.
+> obj_full_size() adds the size of an obj_cgroup pointer to s->size to
+> account for slabobj_ext storage, which normally resides outside the
+> object.
 > 
-> Make it clear to clang that nr_node_ids is bounded by MAX_NUMNODES due
-> to the logic in setup_nr_node_ids() by early returning in
-> setup_node_to_cpumask_map() should that condition be violated.
+> Since commit a77d6d338685 ("mm/slab: place slabobj_ext metadata in
+> unused space within s->size"), slabobj_ext can reside in object padding
+> already covered by s->size. The extra charge then accounts for the same
+> memory twice.
 > 
-> Cc: stable@vger.kernel.org # all applicable
-> Closes: https://github.com/ClangBuiltLinux/linux/issues/2174
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
+> The per-slab obj_exts_in_object bit introduced by commit b5bc35ace2c5
+> ("mm/slab: replace slab.stride with obj_exts_in_object") identifies this
+> layout. Use it to omit the extra charge only for in-object metadata.
+> Unlike in-object metadata, slab-leftover and separately allocated metadata
+> are not covered by the per-object s->size charge, so retain the existing
+> charge for those cases.
+> 
+> Reported-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> Link: https://lore.kernel.org/all/20260310113804.245647-1-ranxiaokai627@163.com/
+> Fixes: a77d6d338685 ("mm/slab: place slabobj_ext metadata in unused space within s->size")
+> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
 > ---
->  mm/arch_numa.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+>  mm/memcontrol.c | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index d1312441a02b..aef480f46891 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -3526,12 +3526,16 @@ void obj_cgroup_uncharge(struct obj_cgroup *objcg, size_t size)
+>  	refill_obj_stock(objcg, size, true);
+>  }
+>  
+> -static inline size_t obj_full_size(struct kmem_cache *s)
+> +static inline size_t obj_full_size(struct kmem_cache *s, struct slab *slab)
+>  {
+>  	/*
+>  	 * For each accounted object there is an extra space which is used
+> -	 * to store obj_cgroup membership. Charge it too.
+> +	 * to store obj_cgroup membership. Charge it too, unless it is stored
+> +	 * in object padding already covered by s->size.
+>  	 */
+> +	if (obj_exts_in_object(slab))
+> +		return s->size;
+> +
+>  	return s->size + sizeof(struct obj_cgroup *);
 
--- 
-Sincerely yours,
-Mike.
+From correctness terms of view, even this is not 100% correct because
+it doesn't account for the metadata for memory allocation profiling.
+
+But as Vlastimil questioned 5 months ago [1]: is it worth the
+complexity? Will simply charging s->size always make difference in
+practice?
+
+[1] https://lore.kernel.org/linux-mm/e7ccb3b0-791e-4e01-86c3-65b613e3cc5a@kernel.org
 
