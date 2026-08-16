@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BEE4C5DF70
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:48:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70A6DC5DF66
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:48:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E26F16B0877; Sun, 16 Aug 2026 18:47:03 -0400 (EDT)
+	id B403D6B0879; Sun, 16 Aug 2026 18:47:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFDC36B0879; Sun, 16 Aug 2026 18:47:03 -0400 (EDT)
+	id AC9686B087B; Sun, 16 Aug 2026 18:47:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC5B86B087A; Sun, 16 Aug 2026 18:47:03 -0400 (EDT)
+	id 8F51E6B087C; Sun, 16 Aug 2026 18:47:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A69036B0877
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:47:03 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3D4E91205FC
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:03 +0000 (UTC)
-X-FDA: 85108619526.29.6F355D2
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F63B6B0879
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:47:05 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E56AC40628
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:04 +0000 (UTC)
+X-FDA: 85108619568.12.625974C
 Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 55CC114000C
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:01 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="T f8ZBSB";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=AB0csPAg;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1164840004
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:02 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="n y2uZjQ";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=QHQBe79j;
+	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786920423;
+	b=rF519l2zhQcsW+ITzaB2tR8298CllYkeWrXr+1/I0bY5BKyRXAdC7biG4TjDDq/lYBui2e
+	PE/ZqDj5CVk2VjR3sPJ33e0VtGK4Y+wAMHXc20+M4B6cKZso+bXIYvSNb9sUO6M8WqxOz9
+	mspFkCKaV0gBE+KCNimZvaOBQUNaLzg=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="n y2uZjQ";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=QHQBe79j;
+	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786920421;
+	s=arc-20220608; t=1786920423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J1+9D9mcuyt/yxdgXW36/YFxLEOMLmPJXeDS+6QRV2M=;
-	b=idQrklLsKlXWhiGnL/gFC5SXeUDBavhe0mGXEYYZW10G1Bp7L4CTU4I8NwgRIxTQQvCAg5
-	ZKN4noZbTGA0SHV+5ag5an5B8/bL2ipqs2YXQ51bl8IH94q09CzG6kY6B9RIjd1OkntoZx
-	nXexgYsr1laSLEsLUwgVIEnlDq/+k98=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="T f8ZBSB";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=AB0csPAg;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786920421;
-	b=jLn5bqEKqi0n+p3h/0drWvIDaQnrdA+L8UusO9ToCq4OZ1n8hi64QpuXSkO2s8t9KwHMeb
-	J/ZyPXU54JuW8bVbfNemWrYZHTC2DedfBlKZeomtjXdzkmOOd/Lkfd5ga0IZNhxS2G8phe
-	gA7VThxlGqeueO6ttu0Yy6Y0rpVHqAc=
+	bh=qzlfiKIcvEbT8Dr/8J+UmVaUqw8Y/2tyxTnz6oo7+IU=;
+	b=fp5Pd9mQfbdC5Bx/KcYnRyxx7HLKgUojhASj7hLRrtzVmtk8PbF+YEA449qa2DmxgboJ6J
+	iI7wXMtxxEQpt8DBPL9gf9gcfA+Wu1sTQ9cFkbQ4RaTfaJjQ8Vlkg0/3UNYlgYLfeNE29x
+	ixe/iiNOZX4UoSdw0Ev/7/cSoJYEYBU=
 Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id E7A64EC0241;
-	Sun, 16 Aug 2026 18:47:00 -0400 (EDT)
+	by mailfout.phl.internal (Postfix) with ESMTP id A1ACAEC0246;
+	Sun, 16 Aug 2026 18:47:02 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Sun, 16 Aug 2026 18:47:00 -0400
+  by phl-compute-05.internal (MEProxy); Sun, 16 Aug 2026 18:47:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1786920420; x=
-	1787006820; bh=J1+9D9mcuyt/yxdgXW36/YFxLEOMLmPJXeDS+6QRV2M=; b=T
-	f8ZBSBA3TQRK3cD9jO4SD+8+5wk4KAvSmI88xPbHNQQ5uy6iP3VbK+kdBjeI3lQH
-	4Uc+i4JN1TGKJHDaJqLp87se4FThEzjG+MY6YJqo1ZSRYbIz54PGd597teurTpcZ
-	TiL4MzYQNoRWKr9j4akAwU9Y7zNfm9IOVaGc69Gf4WVWgDFoVOlL/UHDdSwBTWAG
-	DV+LyaFOKVXAheken+gJw4on7+C9BRs2RK5WwAHys4l0r/HxDuy7VKJandTVEiX3
-	ruO6aLt/NZYWUivJ26MQrQklgCuYO1mYxyANBTQEDz14R+sRW0tUVto6uBCgy5BN
-	zswoaiGjXIld8YV4WXptg==
+	:reply-to:subject:subject:to:to; s=fm1; t=1786920422; x=
+	1787006822; bh=qzlfiKIcvEbT8Dr/8J+UmVaUqw8Y/2tyxTnz6oo7+IU=; b=n
+	y2uZjQ39Z45oxzCucWHqHZWv5YZDRetLzNNV5GCNHCDEGC9wlzSI5jzbCF7uR7fk
+	1GvWKXurQgug48KbUeFublWC6BH7EEj6V3z5VvNideshKDSaJQVEmhzWHxg5SrVD
+	nKNs3PrXYkGNjn9tKOAX/VGCSQAeRzjhDuamghEBlzdKF31lvQY+NTDygccAxTNK
+	1iEeAwXTrcq4l9CTMRTp4drqBkBizQb2NDyXmjFwwQ9Mwgr+2X8Ae2wzwJzLs2ZY
+	fGbQb3Gm7ElB8nBZ0j3PpBlWEsMY3IpZrusavoC32Ja/Z8V+/IAWwQEJsWzDBSKw
+	l2jGNopytQGRqwoyzLYDA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1786920420; x=1787006820; bh=J
-	1+9D9mcuyt/yxdgXW36/YFxLEOMLmPJXeDS+6QRV2M=; b=AB0csPAgdvYAGp2gQ
-	PiZ8s9TB0lKptBLgc6G8XjReoWX3VQPWod9imkjpE79kqUKaLGn80ihiDFB1OIz0
-	B/CNlftWgGIIm35vtT2TvU17FV5LvtxlkCrlwYLrflNfzrpEnUZyxTBsQkgCqPL2
-	PxTKH2EqVOV2hhQEYiwpEtRnx8n0K44p0beGRM9qHVcrNgKXqNM3Hw8V6zKg2uUf
-	8hSVfY18P+DiMRqCfRwFEuEUDYj3UmnUGcyXBtVHhW7CsEZ5+169BbNgrcdk8gbu
-	X9vFIZ1sM4q2VI2IkvwLa0hg6UQKBvJIxlY979/8XvTxKQfQuRkUX35QffVinQIK
-	OX61g==
-X-ME-Sender: <xms:5D2CathmKe_S5Z3a5FPjO13vpZLQkGGy3yeCxM8B7Gb-qKQsrKKk8w>
-    <xme:5D2CarnR9IJlc4OvHwBtrp4ARBQMEWsGqrIzcHNf3vEm0qVsjjGk3Ztbw1dP1W9HV
-    VCjosG5RnmEABjBL1wnMlZIALY_447QCOCzXgrYAWgi3DlOq8OtSbU>
-X-ME-Received: <xmr:5D2Caohkwljo_5atCYjhUMEtNkX8d1rGTKMrRFt1hBVIB2YWsTWW6K6vZiM>
-X-ME-Proxy-Cause: dmFkZTGQiHMMNOd1xnoN6lXQSIrGAe7MwYo75Qud3VSOh3aIjL1T4IX+wE1i/v23Y8aWnG
-    m9SHT5inuXsr6fNeLF7q+XcMZ+pkZJxjpb2XQQyKrFdYKaLz7QDFEiegvQaT+Y5rGxRgjF
-    euipinLXiFMtCpFgMqQP9Dwn4SHq3YG285QsMU4KB7YfRQHYWKIG6dJTmdP/7bPKv1qUNe
-    3LkhBXaaROXWrLGafj+UVrogU8Abxo2OvgWTBKIlLl3SY5Eb27sggkfdoaZJgpjY1+W5mK
-    IYgTH3bmg7umgeRjJmx+WAhyhWPmGn2xLzWKHa3nzXVCTdFk2+6Uh9D41+s+1+4ThvFtc7
-    YPFXNzpcj4NYLt23UmZkN6vYCsvNuqRLXW2/cXefqbxj2Ku/EoFycRIBFGawf0PxryN+Ss
-    t7WEunz71VUfOY4zX967A9vNhnBU7zoN7JwtQVp8mdlYrYolVL1fcnlt4bdpNKdHuwZ3+v
-    ZxaZVO8TeJhVBOw1hQ1lmw0SyaRFM0DgZbVpmtF16qIJ/Y2yOFAOIDaAzF1wjmqhEnnqjk
-    IOf+1hbIQ3Wdy1ombl+1sqs1iZoiq11q6UdwsaD8e5fjodHmOzN/3y40+8nouAVZJxY6iF
-    aj0zkUU68uxiRWlFTw0RZwSEXhpsRX558YVTFYZaKy+qpBE9hovTY7LMtYzA
-X-ME-Proxy: <xmx:5D2Cag8_2A1zH9w4UURlg9PWxKVlZq2mm5BamwjpOk0vHirheiH7xw>
-    <xmx:5D2Carpxj2GAAs1QYydVib8Y9mszwmkLYpZr1J7MJevBzlm5-KEuvQ>
-    <xmx:5D2CauPcgOpDHV2cD5ci1dz3gV8mI9x3JZMQxdVezE2Rbe3bXdpLhA>
-    <xmx:5D2CavSij7eSks4BrppBv8RAbxirLNVGT4IxbIeVXJwfcoqO0mE7fw>
-    <xmx:5D2CanfwrsPJ0T76uZ0qz2L-Y19ekWjEQ3GpbXBMc44vBIxbOoQtqZIP>
+	:x-me-sender:x-sasl-enc; s=fm3; t=1786920422; x=1787006822; bh=q
+	zlfiKIcvEbT8Dr/8J+UmVaUqw8Y/2tyxTnz6oo7+IU=; b=QHQBe79jZ5W+AjIsH
+	8jI3at8052DccDT1GJdP0OC5UE9md2mgTewL+KWmZuZCnOLTPFGApWNq8Yq48taZ
+	4I3s2KdKjUdsBEPJmNr+3e11seON2EDhVFQPTe1TgzYB/OPKRUESJVWP8qoXp/9r
+	H6PpynctpSGgy58eeRFXP9hD2gypGH/dX8sLRQxiNWbkzx4xnvEuAnP4Ldq9xb8K
+	KyQpazIflBi6BCR3vGBi/np3WAp0OkUdZNZ4SVDnLvrD2Bmbj1xo4yCx81TV0HDz
+	iGgVpBWhpjrzFpFvKUIdDeaWRmbiHsPbSsgGsAPddNGvlPlqxdDXEqAQct9SeAOv
+	GtFdw==
+X-ME-Sender: <xms:5j2CavJHhQfMpft9fF6lKK3I9UNYhH5UXhIavu40vr9Po9fYLxH0EQ>
+    <xme:5j2CaodD7uuUrwWn5YphJz_7DvsE_yQ8UaPwF7ym-9_XLCpUqIfa-bP4TKBAUhFbx
+    q57imF6qDdsAVRdG3ReFnxhyYFbrLdMPw7zvsxQfP8fQWig3_hgZ22f>
+X-ME-Received: <xmr:5j2CajwCYDQfF2fNcOA_ESuOw60IVOjzOCw0jAsetxFsZBdiQnD7OPOWOqw>
+X-ME-Proxy-Cause: dmFkZTFX8QZ1Abcp//ElmtP0wYUsUMnb+KjPA544aOlJXhXcQAudkXa81C9Rj4L11ediC/
+    SYpDnD1LvcyFEAv2YFQNL3ReIx6t28G7cFOXvsWQqNdQRv24cIelnnbcWrHqur16sY2q+b
+    PHK84xbhjrx0R6ZFbdj3lDcQr+wbYteZ9PHsSvZgjQoovnxRkTlpJXxI+K+aK0DY9MqaWr
+    nM0jSjvJAOtmNeFdTIuI9VxKMOFqeJI9DUUNBafqnTlsaU2K5w1xy/oDJpRmozGKRfcEpJ
+    T4FDpTcqBKNo58tTW6I4nVl91YkYNyFfziYdH6IV5aj62MGBqsSUtSYZnaDODTOndFzToM
+    MZcmzdxzEDBChv7E0c2Xjsinj9zJe8Q5aa6n4OlJqqveLcQGvaXqWzd7QR9JsdEtU27rOw
+    JUcvqeU5GST0gG0WMSxAMvGj4+YO6ChL3A4m737E7UOdycrEYBdvuyCiO1B1fN4ildGW75
+    9DhSN/aJ4aniV6bisp3pLIVgHYSzBzKjs0JMAg4qCqUXig9qixxwzzHICDHHPzIQYQi7WP
+    ImdDWbUrXQYfXkXPLMpK+OxzBZQu5Wm+uObzndajfcgGbkFpakF3J0YAW0YeNiCPQKZxRr
+    XNeomXEHQ/V11EoDQUpSqlBfnVMS7YlgywXks3dovS90F97XkDJJiYmecVSg
+X-ME-Proxy: <xmx:5j2Cak--v4OsbjXRHbOoJ6mJxHhlU4F91eqMVrx5gL-r8jaIfexb8g>
+    <xmx:5j2CaspC1E9UwWOPuMUyAZa1K47nfAwESTorEZC2PgQz1bAFiUhRvQ>
+    <xmx:5j2CalkKm39NkL2Ge6MqhE1dJP9yVNC5tBo6Tfkv2C5Syjpvcf1d_g>
+    <xmx:5j2CapayI7VHpWdzY3cmKkxcWfXgphY7hmaQy_47kS-RuQgihgCKTg>
+    <xmx:5j2CatoMhtayUFIYO01sI8H4g4NCKtKeq-6QR-A7qZOOuw1SOZ7f1uDy>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 16 Aug 2026 18:47:00 -0400 (EDT)
+ 16 Aug 2026 18:47:01 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -133,22 +133,22 @@ Cc: baolin.wang@linux.alibaba.com,
 	mhiramat@kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	bpf@vger.kernel.org
-Subject: [RFC PATCH 22/57] mm/collapse: walk a table with a selection cursor
-Date: Sun, 16 Aug 2026 23:45:34 +0100
-Message-ID: <20260816224609.308019-23-kirill@shutemov.name>
+Subject: [RFC PATCH 23/57] mm/collapse: give a refused region a second chance
+Date: Sun, 16 Aug 2026 23:45:35 +0100
+Message-ID: <20260816224609.308019-24-kirill@shutemov.name>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260816224609.308019-1-kirill@shutemov.name>
 References: <20260816224609.308019-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 55CC114000C
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 3bq6gpph6worqygyjz4fkfp9hfqs9rbg
-X-HE-Tag: 1786920421-697846
-X-HE-Meta: U2FsdGVkX1+n96mjK9h3IomBqOgilPv8Z9CxinbxRI506U+o7kYKPM8Kzpsu4PCb0ZUawF5XG1RvrFRXbGC0XxQgKCYfZki2YpI7T3yFJm0WQThNFRHwfsLzhGmfFO9eO66asuJlNmJ2HnIYZfOd9YcpDFGh2IJo1/MQZ6NMC/q05/5umCTi5C/I9z8P9Q8TUL0Rk+35wm4WFCdcV0GD0DoMKCX72Pkc1rzG1zMu/1HO8S/nFP64YdpqNFVr1M3F2sXgTckp3Fty+6ipr8X9xsDOguZ2/FztMxxdyIqBmjb1ep9DmnRR7yec2+veagwztvIFGVx2A26AfM50dryXjzZwsRoWURgN2FVgw6pDsOdTUcBRq38uTukcuJZE3XMcKBPzLDKmbj9glixiVyffaj45x86VfQ0gfYkMbElKFbJuwH5939ebq4XJLl+KvxKzACpAp1/c0HMjncexMRADRk4PoeCGQ1GEzFwh2nm21tZAos5oIbTFhBDA/5ByXnwzsb6rey082H/EmwM/u+3UCeF+k1+amBGbkzrFRp4qobcxp626UjXoh7TiPBwxl9kuOGt9fnAMgHR0+s62C3W/+6/Lmj12pJpEwSNcx2ykhcfq8uytUDBWSWsiD1sKzwiG0QDiBD8y0JZ+9TJyiRL9p8CwF5Sa3XMxunDR6knLTirortXN5CiDIHqT3oCouL73zSepNeoqDvWLBkV7t3XaRtWc9F1In348ke3VLNl8PMvQcad0GjGRI/aOeK/ocUcq378MehCMo2V7W8qRnG4Q/lqi84HfTCkCyksbhkAi1jhbhCXkS28CHAT7faP8Jck6m+gANUO4rJjJUTLJCie12AwMEqGtEI71gsc0De8oJNl/99lRBKfOeqYTvtoAcgNm5MpwNB3RRU4Zqe9KhCne7IgkyVH8UcvOGN4kA2Zf5NppvRdXI+Vsw6AwvdPQ67i8Ju0X6e/OkRhpkWRxtsV
- 4XEx4k6P
- nQD8D2q6+UolGHP7rA3tBbb7OLi8UZC8gPBLgdRyQ5D3PdKSGu5QgCMO/P2R4RVVx26OZgaRc89eMk+B04gAj0SEOQXka9EYPlUPocdQrqsJaiUq/Oi+Ghz6Ipi+UlanIUV/G/qoYT1Naq1a1OecjAg3FV7bbh3lGaPqeniBGD6gZ3bzt0fmxnSel3oqj+DfMR02E9YpYG8TS0DXYGrZ8nl7fyQ43FBZF8NfPYlNGUbRBah8270K1STozxUICffq4JZoe7WiAEi/cqTUoRDTMeP/EQRHYs7wPSMKKodkmLsGZZdzA0gf/NaWMwWLxnaWaDMkqN0Zk4Kxl1wSOfwmYQvz4d8lbSyxKaB1dmMNTm3Ws/NeNp8fC7vQH0k4GIVoWzztE6BWsO87gCVC3bzt7eO4LTaXjTfKf/AEpRvBrYSLvJD2lRchLtjuZxQBjVNiZ3WKgeLUezifYXtM=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1164840004
+X-Stat-Signature: ahrr935ubq9st7ge39t5cm4oir9rmtk4
+X-HE-Tag: 1786920422-915447
+X-HE-Meta: U2FsdGVkX1+ShyHwIxXDPRj0Q0GK8BPWnD19kqjJ4qjNQQv1CaAw7wKYp7tZW0diCBdxLMMZqHixf1RCHLuaePgSPKXByxom7NvpDFvuMmWRVVumxWTKY/nt1J3FcsrBruuq8eR3d/HraRAIeiJquhZB3rsdbHITara5tT8x3fmo/fKxuqVvzktbM7CG93CoMwEGmL7YfgAc/HY+IeEcuMEC3CpX1FLGXdgbgNPOlIvamHNGdB2fLQbI45dyI0+S/nzt6V3P8eqHR2LxjkEqZvc1GRpT6tl5sOa2CY5xM+t62eL0q+D18SsFjH6O47MJFB02lkaHP3xpltfsVDNCERSqvcp2RaQ6qta+oh0lfuWaItKWwZh6FrVg2Qid0JldrIjzDLR94A2+iXIEcuXPGMDL3/qqDX1hnxkvR4BDYf4Wu3WMy9OtrbsLJECixoMND5tI3lBFYYPPc9FryNIJCYyvi5OD0VrK0wX1gNijMTCKk1Z5Fxrn0gOme+KORe9PMv3uCAJCkeflEVMnjO5cg1DbOfEdA5au7g31m7PGp6vgqd67u/16yJaBDw+9f+AqB0xY987/ryAziWHXG1TZF91DlntwtH3Wcs2Z7+i1kreeQErdF9BtxVPKdL3EDwqrIPhTPQto3Fxv4vVm1CBo5EdFHCPg9eAQNm4nUVfPy+JX6O5DzOksF+wM5RYIavmeTMXiS3BRcM1e+k8lJzpzii1ObVQM2MxpEcj0q1Rui7WLoQ2Nto5BYL51J6lzz5GuvXq2oeyCpQJge6dApRpakQ9OzBjOHv0ET0JlLPRKm49M3PCqeuriuYlMe1v4Tv4Aqr3Vbk/+nphMGhA1zJiyuwRhCYHf1cc1ghU9fR+gBBXDeSgPRzi17zADADpj/DqX3odEqjC+puNDFga3Q3WVYdnYzhucbeWUSd6GpLNakwoFlmscg0Uuhg8rHbqABsEVaDSCVqFmD1NwagHMH1y
+ nNTrtM8J
+ fHQJKgcu6EhvW6dD467bHsi05jZqrCzUPEirA9E2OT0mPB6nFdm7iXoykzvFLtKWOIGwpqNsOzReavB2y5xUmXqJOAf7X/rZ5E+6DUYpO4Y0D8DwS5reeQpAXH6bkugaGuNjYoe/AJ51ByfYfDp2dempM0rhB8H84g/zJp03RfR0sb7SggW914A/uU4JkADrS9OAqVzPX2Uq+7RdNVyU9gH03S+DAjIOCL9jRDgeTYeQn/yZ4q2PVFXhJSGs6OjGJvkxzIVNnc43kq/vokjs8mycAiOBb0CnlyQsjAJ3q0dk2cGv+7tMw/SQP2m0n3ozGOJhBBk/tjt6VLiUuBez9MUT5FQH88paM3S5cVZdLO4MVciPn59aTVLettHzzqgR4QT5B3zvG30Y/hvWyRT7jlDF2jW97yLaPktYPizr4Bxwi9PVNhIWY5QdCyykchOZMYmbFsnx6WxvhSwU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,243 +158,408 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-Fill in the half of selection that emits candidates: a cursor over the
-table, handing out the largest window that fits where it stands.
+Fill in the rest of selection: a store of regions to re-enter, and the
+classification that decides what goes in it.
 
-Two things bound the order at any point.  A huge page has to be naturally
-aligned, so the cursor's own offset caps it -- at offset 4 nothing above
-order 2 can start -- and the largest enabled order caps it too.
+Each attempted candidate's outcome is one of four:
 
-A window qualifies when enough of it is eligible: the scan's bits counted
-over the window, against the max_ptes_none limit for that order.  One
-that does not qualify drops to the next enabled order below, which need
-not be half of it, since a sparse set of enabled sizes may skip several.
-When no smaller order is left, the cursor steps over the region.
+ - it collapsed, or was already a huge page.  The region is done; the
+   cursor stepped past it at emission.
+ - it was refused for something a smaller window might avoid.  The whole
+   region goes back at the next enabled order down: selection cannot tell
+   which slot refused, so it re-probes the region rather than guessing.
+ - only its in-window allocation missed.  The region goes back at the
+   same order, marked so the round that picks it up allocates with
+   reclaim before freezing anything.
+ - the outcome condemns the table.  Selection stops there and drops
+   everything queued.
 
-Only the scan's bitmap is read, so a clear bit is either a hole or a PTE
-the scan disqualified.  Occupancy here means what a collapse could use,
-not what is present.
+A queued region is walked exactly as the table is: the largest order its
+offset's alignment allows, capped by the region's own, descending through
+the enabled orders until one qualifies, then stepping past what it
+emitted.  Walking rather than shrinking one window is what keeps the tail
+of a region in play, which is often where the collapsible part is.
 
-Non-present PTEs the scan accepted are the exception.  They are counted
-apart, in cc->scan_unmapped, and added back only for a PMD candidate,
-which faults them in; a smaller window leaves them as holes, sub-PMD
-collapse not reading swap.
+The store is a stack, and the classify loop feeding it walks the batch in
+emission order, so entries pop in the order they were refused rather than
+by address.  A round drawn from two of them is not address-ordered.
 
-The cursor advances at emission and never rewinds.  A round is collected
-before it is run, so within a round every attempt is assumed to succeed.
-Nothing here gives a refused region a second chance.
+Selection terminates because the pushes that tile a region strictly
+descend, and the one that keeps the order cannot repeat for a region: it
+comes back asking for reclaim, and a miss the allocator was asked to work
+for is a failure, which descends.
+
+An allocation failure is only reported as one when nothing smaller is
+left to try.  The caller answers such a failure by backing off for a
+while, and a failure at a large order is no reason to: one PMD is 512M
+with 64K pages, so that attempt fails as a matter of course, while the
+order the region settles for allocates fine.
+
+collapse_anon_pmd() can now say what the table yielded, in order of
+precedence:
+
+ - a collapse;
+ - an allocation failure, which the caller answers by backing off.  It
+   outranks both refusals below, being the only result acted on;
+ - the scan's own refusal, when selection never got as far as refusing a
+   window;
+ - the last reason a window was refused.
+
+All are per table, so the reset that opens a table clears them, the retry
+store included.
+
+A dropped lock is classified with the outcomes that abandon the table,
+not with those that try a smaller order.  The fault-in pass has already
+taken the lock again as many times as it may, so what is left says
+nothing about any window, and demoting every candidate the round was
+carrying would be a verdict no pass reached.
 
 Assisted-by: Claude-Code:claude-opus-5
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- mm/collapse.c   | 126 ++++++++++++++++++++++++++++++++++++++++++++++++
- mm/collapse.h   |  10 ++++
- mm/khugepaged.c |   2 +-
- 3 files changed, 137 insertions(+), 1 deletion(-)
+ mm/collapse.c | 201 +++++++++++++++++++++++++++++++++++++++++++++++---
+ mm/collapse.h |  11 +++
+ 2 files changed, 203 insertions(+), 9 deletions(-)
 
 diff --git a/mm/collapse.c b/mm/collapse.c
-index 2da1f8ddcca8..258bb9cc32c5 100644
+index 258bb9cc32c5..9b73ebff1103 100644
 --- a/mm/collapse.c
 +++ b/mm/collapse.c
-@@ -1841,6 +1841,7 @@ static enum scan_result collapse_scan_table(struct vm_area_struct *vma,
- 	if (result != SCAN_SUCCEED)
- 		cc->select_orders &= ~BIT(HPAGE_PMD_ORDER);
- 
-+	cc->scan_unmapped = unmapped;
- 	return result;
- }
- 
-@@ -1852,6 +1853,7 @@ static void collapse_anon_scan_init(struct collapse_control *cc)
- 	nodes_clear(cc->alloc_nmask);
- 
- 	cc->select_orders = 0;
-+	cc->scan_unmapped = 0;
- 	cc->nr_collapsed = 0;
- }
- 
-@@ -1896,10 +1898,116 @@ collapse_scan_anon_pmd(struct vm_area_struct *vma, unsigned long start,
- 	return cc->scan_refusal;
- }
+@@ -124,6 +124,16 @@
+  */
+ #define COLLAPSE_SAVED_PTES	HPAGE_PMD_NR
  
 +/*
-+ * Selection cuts the table into candidate windows and feeds them to rounds.  A
-+ * window is cut at the largest enabled order that fits and qualifies -- the PMD
-+ * order, when the whole table qualified -- and a region that does not qualify is
-+ * probed at the next enabled order below, which need not be half of it: a sparse
-+ * set of enabled sizes may skip several.
-+ *
-+ * Only cc->eligible_ptes is read, so a clear bit is either a hole or a PTE the
-+ * scan disqualified: a window's occupancy is what a collapse could use, not what
-+ * is present.
++ * Capacity of the retry store: the most regions a table can hold at once.  Live
++ * entries cover disjoint regions -- a region is one candidate's extent, and an
++ * extent is consumed from the cursor or from one entry, never from two -- and
++ * the smallest a producer pushes is one window at the smallest order.  Not
++ * bounded by what a round pushes: the stack is drained from the top, so an entry
++ * below a live one outlives the round that pushed it.
 + */
++#define COLLAPSE_RETRY_STORE_SIZE	COLLAPSE_TABLE_WINDOWS
 +
+ /* How far a candidate got, and so what a failure has to undo for it */
+ enum collapse_candidate_state {
+ 	CAND_SELECTED,		/* collected; nothing held on its behalf yet */
+@@ -132,6 +142,21 @@ enum collapse_candidate_state {
+ 	CAND_INSTALLED,		/* the destination is mapped */
+ };
+ 
 +/*
-+ * Largest order a window may be rooted at: the largest enabled one.
-+ * select_orders is fixed for the table, and the caller checked it is not empty,
-+ * so this is well-defined for the whole walk.
++ * A region queued to re-enter selection, walked like the table itself: @offset is
++ * the next window to probe, @end one past the region, and @order the largest to
++ * try -- below the order that just failed, so the same window cannot be emitted
++ * twice.  Walking the region rather than shrinking one window keeps its tail,
++ * which is often where the collapsible window is.
 + */
-+static unsigned int collapse_root_order(struct collapse_control *cc)
-+{
-+	return __fls(cc->select_orders);
-+}
++struct collapse_retry {
++	unsigned int offset;
++	unsigned int end;
++	unsigned int order;
++	/* The light allocation missed here: the next attempt may reclaim */
++	bool reclaim;
++};
 +
-+/*
-+ * The next enabled order below @order, or 0 when there is none.  select_orders
-+ * never carries an order below COLLAPSE_MIN_MTHP_ORDER -- THP_ORDERS_ALL_ANON
-+ * masks orders 0 and 1 -- so __fls() honours that floor by itself.  Order 0 has
-+ * no bits below it to mask and has to answer 0 outright: a walk that ascended
-+ * instead would emit a window at an offset it is not aligned for.
-+ */
-+static unsigned int collapse_lower_order(struct collapse_control *cc,
-+					 unsigned int order)
-+{
-+	unsigned long lower;
-+
-+	if (!order)
-+		return 0;
-+
-+	lower = cc->select_orders & GENMASK(order - 1, 0);
-+	return lower ? __fls(lower) : 0;
-+}
-+
- /* Point the selection cursor at [start, end) of the table, in PTE offsets */
- static void collapse_selection_init(struct collapse_control *cc,
- 				    unsigned int start, unsigned int end)
+ /*
+  * A candidate is an (addr, order) window selected for collapse.  Selection
+  * counts in PTE offsets -- the bitmap it reads and the alignment it honours are
+@@ -181,16 +206,20 @@ void collapse_control_release(struct collapse_control *cc)
  {
-+	cc->select_start = start;
-+	cc->select_end = end;
-+	cc->select_offset = start;
-+	cc->select_order = min(max_order_from_offset(start),
-+			       collapse_root_order(cc));
-+}
-+
-+/*
-+ * Advance past the region [select_offset, select_offset + nr_ptes) and determine
-+ * the highest order that can be attempted next.  Since huge pages must be
-+ * naturally aligned, it is limited by the alignment of the new offset: after an
-+ * order-2 mTHP at offset 0 the offset becomes 4, and __ffs(4) == 2, so the next
-+ * attempt starts at order 2.
-+ */
-+static void collapse_selection_advance(struct collapse_control *cc,
-+				       unsigned int nr_ptes)
-+{
-+	cc->select_offset += nr_ptes;
-+	cc->select_order = min(max_order_from_offset(cc->select_offset),
-+			       collapse_root_order(cc));
-+}
-+
-+/*
-+ * The window at the cursor did not qualify.  Drop to the next smaller enabled
-+ * order over the same region, or -- when no smaller order remains -- give the
-+ * region up and advance the cursor past it.
-+ */
-+static void collapse_selection_reject(struct collapse_control *cc)
-+{
-+	unsigned int lower = collapse_lower_order(cc, cc->select_order);
-+
-+	if (lower)
-+		cc->select_order = lower;
-+	else
-+		collapse_selection_advance(cc, 1U << cc->select_order);
-+}
-+
-+/* Is the window at @offset one a collapse of @order should be attempted on? */
-+static bool collapse_window_eligible(struct collapse_control *cc,
-+				     unsigned int offset, unsigned int order)
-+{
-+	unsigned int nr_ptes = 1U << order;
-+	unsigned int max_ptes_none, nr_eligible_ptes;
-+
-+	if (!test_bit(order, &cc->select_orders))
-+		return false;
-+
-+	/* The window must lie inside the scanned range */
-+	if (offset < cc->select_start || offset + nr_ptes > cc->select_end)
-+		return false;
-+
-+	max_ptes_none = collapse_max_ptes_none(cc, NULL, order);
-+	nr_eligible_ptes = bitmap_weight_from(cc->eligible_ptes, offset,
-+					      offset + nr_ptes);
-+
-+	/*
-+	 * Swap PTEs the scan accepted are counted in cc->scan_unmapped, not in
-+	 * the bitmap.  collapse_faultin() reads them in for a PMD candidate, so
-+	 * there they do become sources; a smaller window leaves them as holes,
-+	 * sub-PMD collapse not faulting swap in.
-+	 */
-+	if (is_pmd_order(order))
-+		nr_eligible_ptes += cc->scan_unmapped;
-+
-+	return nr_eligible_ptes >= nr_ptes - max_ptes_none;
+ 	kfree(cc->candidates);
+ 	kfree(cc->saved_ptes);
++	kfree(cc->retries);
+ 	cc->candidates = NULL;
+ 	cc->saved_ptes = NULL;
++	cc->retries = NULL;
+ }
+ 
+ int collapse_control_init(struct collapse_control *cc)
+ {
+ 	cc->nr_candidates = 0;
++	cc->nr_retries = 0;
+ 	cc->candidates = kmalloc_objs(*cc->candidates, COLLAPSE_MAX_CANDIDATES);
+ 	cc->saved_ptes = kmalloc_objs(*cc->saved_ptes, COLLAPSE_SAVED_PTES);
+-	if (!cc->candidates || !cc->saved_ptes) {
++	cc->retries = kmalloc_objs(*cc->retries, COLLAPSE_RETRY_STORE_SIZE);
++	if (!cc->candidates || !cc->saved_ptes || !cc->retries) {
+ 		collapse_control_release(cc);
+ 		return -ENOMEM;
+ 	}
+@@ -1855,6 +1884,9 @@ static void collapse_anon_scan_init(struct collapse_control *cc)
+ 	cc->select_orders = 0;
+ 	cc->scan_unmapped = 0;
+ 	cc->nr_collapsed = 0;
++	cc->select_result = SCAN_FAIL;
++	cc->smallest_alloc_failed = false;
++	cc->nr_retries = 0;
  }
  
  /*
-@@ -1913,6 +2021,24 @@ static void collapse_selection_init(struct collapse_control *cc,
+@@ -2010,6 +2042,48 @@ static bool collapse_window_eligible(struct collapse_control *cc,
+ 	return nr_eligible_ptes >= nr_ptes - max_ptes_none;
+ }
+ 
++/*
++ * Queue the region [@offset, @end) to re-enter selection at @order.  Two
++ * producers push, both in collapse_classify_result(): a refused region, tiled at
++ * the next enabled order down because selection cannot tell which slot refused;
++ * and a region whose in-window allocation missed, at an unchanged order, asking
++ * for reclaim next time.
++ *
++ * The store is a stack, and the classify loop that feeds it walks the batch by
++ * ascending address, so entries pop in the order they were refused rather than
++ * by address: a round drawn from two of them descends.  Nothing may take
++ * candidates[0] for the lowest -- what a round spans is cc->batch_start and
++ * cc->batch_end, taken over its candidates by collapse_revalidate().
++ *
++ * Selection terminates because the tiling producer strictly descends, and the
++ * unchanged-order one cannot fire twice for a region: its retry arrives with
++ * reclaim set, so the next miss is a failure that descends.
++ *
++ * The store is sized for the most regions a table can hold, so this cannot
++ * overflow; losing an entry would cost a region its lower-order attempt, so it
++ * asserts rather than fails.
++ */
++static void collapse_push_retry(struct collapse_control *cc, unsigned int offset,
++				unsigned int end, unsigned int order,
++				bool reclaim)
++{
++	struct collapse_retry *retry;
++
++	if (cc->nr_retries >= COLLAPSE_RETRY_STORE_SIZE) {
++		VM_WARN_ON_ONCE(1);
++		return;
++	}
++
++	retry = &cc->retries[cc->nr_retries];
++
++	retry->offset = offset;
++	retry->end = end;
++	retry->order = order;
++	retry->reclaim = reclaim;
++
++	cc->nr_retries++;
++}
++
+ /*
+  * The next window worth attempting, as an (offset, order) pair.  False when
+  * selection is exhausted, which is what ends the range.
+@@ -2019,8 +2093,42 @@ static bool collapse_window_eligible(struct collapse_control *cc,
+  * particular -- would be stale by construction.
+  */
  static bool collapse_next_candidate(struct collapse_control *cc,
- 				    unsigned int *offset, unsigned int *order)
+-				    unsigned int *offset, unsigned int *order)
++				    unsigned int *offset, unsigned int *order,
++				    bool *reclaim)
  {
-+	while (cc->select_offset < cc->select_end) {
-+		if (!collapse_window_eligible(cc, cc->select_offset,
-+					      cc->select_order)) {
-+			collapse_selection_reject(cc);
++	while (cc->nr_retries) {
++		struct collapse_retry *r = &cc->retries[cc->nr_retries - 1];
++		unsigned int try, smallest;
++
++		if (r->offset >= r->end) {
++			cc->nr_retries--;
 +			continue;
 +		}
 +
 +		/*
-+		 * The cursor advances past the window at emission: a round is
-+		 * collected before it is run, so within a round every attempt is
-+		 * assumed to succeed.
++		 * The same walk as the table's own: the largest order the
++		 * offset's alignment allows, capped by the region's, descending
++		 * through the enabled orders until one fits.  If nothing fits
++		 * here, step over the smallest window tried and carry on --
++		 * which is what keeps the region's tail in play.
 +		 */
-+		*offset = cc->select_offset;
-+		*order = cc->select_order;
-+		collapse_selection_advance(cc, 1U << cc->select_order);
-+		return true;
++		try = min(max_order_from_offset(r->offset), r->order);
++		smallest = try;
++		while (try && !collapse_window_eligible(cc, r->offset, try)) {
++			smallest = try;
++			try = collapse_lower_order(cc, try);
++		}
++
++		if (try) {
++			*offset = r->offset;
++			*order = try;
++			*reclaim = r->reclaim;
++			r->offset += 1U << try;
++			return true;
++		}
++		r->offset += 1U << smallest;
 +	}
 +
- 	return false;
+ 	while (cc->select_offset < cc->select_end) {
+ 		if (!collapse_window_eligible(cc, cc->select_offset,
+ 					      cc->select_order)) {
+@@ -2035,6 +2143,7 @@ static bool collapse_next_candidate(struct collapse_control *cc,
+ 		 */
+ 		*offset = cc->select_offset;
+ 		*order = cc->select_order;
++		*reclaim = false;
+ 		collapse_selection_advance(cc, 1U << cc->select_order);
+ 		return true;
+ 	}
+@@ -2051,7 +2160,68 @@ static bool collapse_classify_result(struct collapse_control *cc,
+ 				     unsigned int offset, unsigned int order,
+ 				     enum scan_result result)
+ {
+-	return true;
++	unsigned int lower;
++
++	switch (result) {
++	/* Done with the region: the cursor moved past it at emission */
++	case SCAN_SUCCEED:
++		cc->nr_collapsed += 1U << order;
++		fallthrough;
++	case SCAN_PTE_MAPPED_HUGEPAGE:
++		return true;
++	/* Only the light allocation missed: the same order, allowed to reclaim */
++	case SCAN_ALLOC_LIGHT_MISS:
++		collapse_push_retry(cc, offset, offset + (1U << order), order,
++				    /*reclaim=*/ true);
++		return true;
++	/* A smaller order over the same region might still fit */
++	case SCAN_ALLOC_HUGE_PAGE_FAIL:
++		/*
++		 * Only a failure with nothing left below it says the allocator
++		 * cannot serve this collapse.  A failure at a large order says
++		 * nothing about what the region will settle for -- one PMD is
++		 * 512M with 64K pages, so that attempt fails as a matter of
++		 * course -- and the caller answers an allocation failure by
++		 * backing off for a while.
++		 */
++		if (!collapse_lower_order(cc, order))
++			cc->smallest_alloc_failed = true;
++		fallthrough;
++	case SCAN_LACK_REFERENCED_PAGE:
++	case SCAN_EXCEED_NONE_PTE:
++	case SCAN_EXCEED_SWAP_PTE:
++	case SCAN_EXCEED_SHARED_PTE:
++	case SCAN_PAGE_LOCK:
++	case SCAN_PAGE_COUNT:
++	case SCAN_PAGE_NOT_EXCLUSIVE:
++	case SCAN_PAGE_NULL:
++	case SCAN_DEL_PAGE_LRU:
++	case SCAN_PTE_NON_PRESENT:
++	case SCAN_PTE_UFFD:
++	case SCAN_PAGE_LAZYFREE:
++	case SCAN_PAGE_DIRTY_OR_WRITEBACK:
++		cc->select_result = result;
++		lower = collapse_lower_order(cc, order);
++		if (lower) {
++			/* The whole failed region re-enters, as one entry */
++			collapse_push_retry(cc, offset, offset + (1U << order),
++					    lower, /*reclaim=*/ false);
++		}
++		return true;
++	/*
++	 * Nothing further is worth attempting in this table.  A dropped lock
++	 * belongs here rather than above: it says nothing about any window, so
++	 * lowering the order of every candidate the round was carrying would be
++	 * a verdict nobody reached.  The next scan finds the table again.
++	 */
++	case SCAN_LOCK_DROPPED:
++	case SCAN_PMD_MAPPED:
++	default:
++		cc->select_result = result;
++		cc->select_offset = cc->select_end;
++		cc->nr_retries = 0;
++		return false;
++	}
  }
  
+ /*
+@@ -2112,7 +2282,7 @@ static bool collapse_batch_full(struct collapse_control *cc, unsigned int slots,
+  */
+ static void collapse_add_candidate(struct collapse_control *cc,
+ 				   unsigned long addr, unsigned int order,
+-				   pte_t *saved_ptes)
++				   bool reclaim, pte_t *saved_ptes)
+ {
+ 	struct collapse_candidate *cand;
+ 
+@@ -2124,7 +2294,7 @@ static void collapse_add_candidate(struct collapse_control *cc,
+ 	cc->nr_candidates++;
+ 	cand->addr = addr;
+ 	cand->order = order;
+-	cand->reclaim = false;
++	cand->reclaim = reclaim;
+ 	cand->state = CAND_SELECTED;
+ 	cand->result = SCAN_FAIL;
+ 	cand->new_folio = NULL;
+@@ -2145,7 +2315,7 @@ collapse_anon_pmd(struct mm_struct *mm, unsigned long start, unsigned long end,
+ 	unsigned int offset, order;
+ 	unsigned long bytes = 0;
+ 	unsigned int slots = 0;
+-	bool pending = false;
++	bool pending = false, reclaim = false;
+ 	bool cont = true;
+ 
+ 	collapse_selection_init(cc, (start - pmd_addr) >> PAGE_SHIFT,
+@@ -2153,7 +2323,8 @@ collapse_anon_pmd(struct mm_struct *mm, unsigned long start, unsigned long end,
+ 
+ 	while (cont) {
+ 		if (!pending)
+-			pending = collapse_next_candidate(cc, &offset, &order);
++			pending = collapse_next_candidate(cc, &offset, &order,
++							  &reclaim);
+ 
+ 		if (!pending || collapse_batch_full(cc, slots, bytes, order)) {
+ 			/*
+@@ -2177,12 +2348,24 @@ collapse_anon_pmd(struct mm_struct *mm, unsigned long start, unsigned long end,
+ 		 * full round could not take is kept pending for the next one.
+ 		 */
+ 		collapse_add_candidate(cc, pmd_addr + offset * PAGE_SIZE, order,
+-				       cc->saved_ptes + slots);
++				       reclaim, cc->saved_ptes + slots);
+ 
+ 		slots += 1U << order;
+ 		bytes += PAGE_SIZE << order;
+ 		pending = false;
+ 	}
+ 
+-	return cc->nr_collapsed ? SCAN_SUCCEED : SCAN_FAIL;
++	if (cc->nr_collapsed)
++		return SCAN_SUCCEED;
++	/*
++	 * Report an allocation failure over any refusal, the scan's included: it
++	 * is the one outcome the caller acts on, by backing off rather than
++	 * scanning on.
++	 */
++	if (cc->smallest_alloc_failed)
++		return SCAN_ALLOC_HUGE_PAGE_FAIL;
++	/* Nothing salvaged and nothing to wait for: say what was refused */
++	if (cc->scan_refusal != SCAN_SUCCEED)
++		return cc->scan_refusal;
++	return cc->select_result;
+ }
 diff --git a/mm/collapse.h b/mm/collapse.h
-index 3256c45ee228..94b796271843 100644
+index 94b796271843..3803f5a89087 100644
 --- a/mm/collapse.h
 +++ b/mm/collapse.h
-@@ -114,6 +114,15 @@ struct collapse_control {
- 	/* Orders still worth attempting in the table being scanned */
- 	unsigned long select_orders;
+@@ -11,6 +11,7 @@
+ #define COLLAPSE_MIN_MTHP_ORDER		2
  
-+	/* Non-present PTEs the scan accepted, which no bitmap bit marks */
-+	unsigned int scan_unmapped;
+ struct collapse_candidate;
++struct collapse_retry;
+ 
+ enum scan_result {
+ 	SCAN_FAIL,
+@@ -135,6 +136,16 @@ struct collapse_control {
+ 	 */
+ 	enum scan_result scan_refusal;
+ 
++	/* Why the last window was refused */
++	enum scan_result select_result;
 +
-+	/* Where selection has got to in the table, and at what order */
-+	unsigned int select_start;
-+	unsigned int select_end;
-+	unsigned int select_offset;
-+	unsigned int select_order;
++	/* A region ran out of orders to try because none could be allocated */
++	bool smallest_alloc_failed;
 +
- 	/* PTEs collapsed in it so far */
- 	unsigned int nr_collapsed;
- 
-@@ -166,6 +175,7 @@ enum scan_result find_pmd_or_thp_or_none(struct mm_struct *mm,
- 		unsigned long address, pmd_t **pmd);
- int collapse_find_target_node(struct collapse_control *cc);
- bool collapse_scan_abort(int nid, struct collapse_control *cc);
-+unsigned int max_order_from_offset(unsigned int offset);
- unsigned int collapse_max_ptes_none(struct collapse_control *cc,
- 		struct vm_area_struct *vma, unsigned int order);
- unsigned int collapse_max_ptes_swap(struct collapse_control *cc,
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 1244e161beae..c7c933e819e2 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1426,7 +1426,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
- }
- 
- /* Return the highest naturally aligned order that fits at @offset within a PMD. */
--static unsigned int max_order_from_offset(unsigned int offset)
-+unsigned int max_order_from_offset(unsigned int offset)
- {
- 	if (offset == 0)
- 		return HPAGE_PMD_ORDER;
++	/* Regions waiting to re-enter selection at a lower order */
++	struct collapse_retry *retries;
++	unsigned int nr_retries;
++
+ 	/* The candidate windows collected for the current round */
+ 	struct collapse_candidate *candidates;
+ 	unsigned int nr_candidates;
 -- 
 2.54.0
 
