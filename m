@@ -4,87 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43513C5DF66
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 09:15:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38C8CC5DF66
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 09:25:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26A106B03A5; Sun, 16 Aug 2026 05:15:32 -0400 (EDT)
+	id C1B726B07FE; Sun, 16 Aug 2026 05:25:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21BBE6B07FC; Sun, 16 Aug 2026 05:15:32 -0400 (EDT)
+	id BCC246B07FF; Sun, 16 Aug 2026 05:25:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 131846B07FD; Sun, 16 Aug 2026 05:15:32 -0400 (EDT)
+	id AE1356B0800; Sun, 16 Aug 2026 05:25:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E55546B03A5
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 05:15:31 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 74AE31C1825
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:15:31 +0000 (UTC)
-X-FDA: 85106574462.04.BDCB252
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D36641C0002
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:15:29 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lVgxsH+k;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 911AC6B07FE
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 05:25:40 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 82BA31204B0
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:25:38 +0000 (UTC)
+X-FDA: 85106599956.16.59AEC7B
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B92D540007
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:25:36 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TFK0aPzC;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of kiarash.azarnia@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=kiarash.azarnia@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786871729;
+	s=arc-20220608; t=1786872336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2VGe88VAgYCJFGRjViK7Ut9gr8nKRTBvPXPBjJG3Wcc=;
-	b=1yXIOIiqP6tiS1Ie4WtnqERrCgfTaFXNaUw8go0XvumuRwaBt/2sJnUnaovab8WEJ68bPt
-	aXmqbwvyNBVu3hEx4EbF+xsSOi+esDLzP4gBM4bSOeowtilBEheR+LUsA3VWqAnToE2wxl
-	GvKrgRwxqTi4wL9Ms15ThYGKzNMBSdY=
+	bh=/vm/j07+KL21gvKlwAnAdnCIMV+QoeEuexJ+hzKNEg8=;
+	b=yNAV000cflCYhwdhXR5qYucVkYu53l3ub5aRT7JmP0ctAy4bIVyKxL1JYbIbKiIj0MgClP
+	EQX45YSmsE2BLt72Xo1t5z+R3DbAPY/+52PkE9KMbyu/obTsMKzXReh5M/RZ+pr4B6BoA4
+	NFMwTwQ0pwIEuFe5COVGZVEUp0wHvyk=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lVgxsH+k;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TFK0aPzC;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of kiarash.azarnia@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=kiarash.azarnia@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786871729;
-	b=w6HW9+YI6WdicHMXbziAgsWIZ5x7qU4cp0CGVKvUYioAGbmsi+c+EvOh3+rwG3yqVw9cLT
-	uHjcYP5vPawLgJu4psdoQvx8NiWCB7bpc3yMTdbx1pHOvYNBI1usezFCP4mWwjyqqCjAyy
-	v/46we9+gfPxkSh3gwfPXa73MS6Xxq0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 04A5E4178D;
-	Sun, 16 Aug 2026 09:15:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9134F1F000E9;
-	Sun, 16 Aug 2026 09:15:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786871728;
-	bh=2VGe88VAgYCJFGRjViK7Ut9gr8nKRTBvPXPBjJG3Wcc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lVgxsH+k0osth/xM2LJKAeiCBWztelADf/krHPlTt8D3crtjONIb/b4yVelO1OK49
-	 EDxFptWQ05JYmd2xZIy9oC5cPLpuK1A6bzYylLM86CN5qI7kIyHeSt5tBGP78PAGcG
-	 psDXjlVZZfLrZwPh+b3crqrr7/p/bvs4pRanOMcBbEYa89Ag6AVB5KM5+iFzyPTekX
-	 xK3Fe+jjPQXrAvE2YwhMG2uL89F9f5PuIpibEmsLEn3GEoTNAiMzDZO20kYWVZnqgN
-	 V5fPacuNF+444XAaIf+WC5qAjSypuUdzQFZHyExvFI2shLenc1iuy+MhloA9g3JG1h
-	 bRJE5xUgCMGDQ==
-Date: Sun, 16 Aug 2026 12:15:22 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Foxie Flakey <foxieflakey@gmail.com>,
-	Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, peterx@redhat.com, linux-mm@kvack.org,
+	t=1786872336;
+	b=XPggo5Nvwno590t//ytm4agG3BAFUYyaNgbf7laF5Nj6wcKAATIBsc1uzdG41qq5CL1aFy
+	uIDwLCA+vxyXdl/AM1T4FUmiCsMEaLpYUmN3tQ3O2FsWcqjXeJm7QmWUXE7askDLQohiU3
+	cOqaxwp1koCIJHT+vJFI5EmzJOuYqwY=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4953e04ef16so26556915e9.2
+        for <linux-mm@kvack.org>; Sun, 16 Aug 2026 02:25:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786872335; x=1787477135; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/vm/j07+KL21gvKlwAnAdnCIMV+QoeEuexJ+hzKNEg8=;
+        b=TFK0aPzCfgzT2AhPvyngxGOz3MVSrnmyJUdQpMd4oIIv7GZfKBmWGZ898Hf/xTy+kt
+         NEwEm2/y9Cux4BtpVb5V0cTg8qO9e0xM0a9/xyQyjcGY/s7ADHvK8li/U8Ru3QKGoPnD
+         Ehs6FKY8XIdit+4EFJhgavrcG8tbI4OIJaTrPfqNHHo8tqBmpSCE/P7TvusuoRwNWlKZ
+         2oyCYQDYO6Wi1kOrBtdMM3CHzpKROL02t8XXNaqWRm6ZWrlpRMam2FixxyJ8xYT1A4v0
+         dz3SHE4k2FcuJ3/k7GzU3UtqdxWV5nGbTkdpoRxiggkK+RkmiS6B3ABshFTeCkfvh+yJ
+         x1Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786872335; x=1787477135;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/vm/j07+KL21gvKlwAnAdnCIMV+QoeEuexJ+hzKNEg8=;
+        b=Jl56Ch+KQqoEma5OEmqc/8Fq1LZ7zDYgiQUCSeeZ8zPdw8Vg1hE/lv8mMz8qiVTAkQ
+         XkOQI/sO/Q+zjjyszbAYA9K1GxSkeP3JXWsi6mbECANJoIrIS5+pJdcD7hQhi7TLDYeh
+         MRGkRICWe2LiI5oNFVYjC+4T1kUQiDJlt4z12bMu7XIY0rte7cZe1ImVkWVvSpQHobQt
+         XhKka1jTOt6AjhGQJ2uege6CaahEE7sFJ9wzONks/uYcJcFwpmfJawmF1mhqgEv4xa8w
+         qpxfwfj37oxU3CP/8nx8ugwlE7pgcyUpPAwHTYSnvBEdmbnARqbSFZMZWumC7cGTpbyy
+         PEPw==
+X-Forwarded-Encrypted: i=1; AHgh+RrRz0EshVmxWfbDMT7gcNyAOFxKPmZoY+TT68lyCgi5rUxr3Qh3uLCNVKJmau9QqP6856aebzB7UQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw9mJF9axwLOpvTHOignZt65fNoW1QQBVU2GlOq31/Xo43WIFbS
+	iOui8QeLzFl754ssYUiTDtCELRb5mbkb2zMk4I2AzJ0vNy+pTAWYGLNT
+X-Gm-Gg: AR+sD12jRz3hAn5Jwmx8DBibAIpeMQZNLuKnSK0PxztVvg9z/dZpuIPOR35enYLo3VP
+	eWNbnfNgMQZOmy6ed7ZVSqSpaHsa9EILR3nSmm0HVPm6FFzG96MhfaJ9wpb1C6UdZKn8uYKrbJr
+	5korSnbZtIE/jpOJrJEjfYOgatuHMzbCSEs63IWxJVJwyPgkKWcknmkTSr/opOvmYoIxt3KN9XZ
+	+Z9pwOx5igrOHVcd/QblB3YmNGPkdRkcCYF0QWJnhE4p0HypTRaAZi1X5CyrxKJiWgmjJJtcpys
+	gsrGzSoYKp0uIaj/CXO1x1Zee/wxZUJsJ2J5JQsGfrXCiQitvz0wyTxdDvBTSU5iI6IPKwO6Pg8
+	1dUWrEtUFNAhnefGeNQLcToNx0xw1cOQflc97Ft01l7cefQUHsSpOpTQLN+Uskd8QJOjRnEmDym
+	9n3MfGqxQPMKIwpVz8KXNhvQ3CgfSHaOsir7vjl20PUmuodz9B1e64A2D5
+X-Received: by 2002:a05:600c:8714:b0:499:8704:242c with SMTP id 5b1f17b1804b1-499878ca13bmr307331535e9.0.1786872335384;
+        Sun, 16 Aug 2026 02:25:35 -0700 (PDT)
+Received: from zen ([37.203.152.61])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49996176b8asm27309575e9.11.2026.08.16.02.25.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Aug 2026 02:25:35 -0700 (PDT)
+From: Kiarash Azarnia <kiarash.azarnia@gmail.com>
+To: rppt@kernel.org,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org
+Cc: graf@amazon.com,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] userfaultfd: reset err to be 0 when move_pages_ptes
- succeeded
-Message-ID: <aoF_qmSHiEgujaH5@kernel.org>
-References: <9c936a9f-ed27-e510-872f-5b3b8c680975@gmail.com>
+Subject: Re: [PATCH] kho: fix signed shift UB in kho_preserved_memory_reserve()
+Date: Sun, 16 Aug 2026 12:55:34 +0330
+Message-ID: <20260816092534.3333563-1-kiarash.azarnia@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260816090038.3117276-1-kiarash.azarnia@gmail.com>
+References: <20260816090038.3117276-1-kiarash.azarnia@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9c936a9f-ed27-e510-872f-5b3b8c680975@gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D36641C0002
-X-Stat-Signature: 8fskxqat1z6zkfue6otrwjxra7gbkb6r
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1786871729-831307
-X-HE-Meta: U2FsdGVkX1+hWZttNa7gR2T8iwiRlnyuxqCwBtRyPZKy2F6NNjgZhdrcRiSxzENvzHN4+oUwlct/LJsFW24rEpVA9uYZ7dYZzwWoOhgIZh8e+enf/FAf+eMPdfFc4F3tWPIM+vMRlAwWwjJMHWNz9L7sKKclzHoTJK5XCqeiOIF5ntLG6A5ObqW17st0QPJ2eWfydZxDiVtTCSGZ/l1SniqtcB1bkfTT0amioTOcPiCqFmkhVNtiObHyh0+R+euvSh772uVOmzQpkeDHbhqDbXD4or6mBhNQ+JGP2+B0fF4OvFrEPwxh3uaPxu97NvdOQAsF6O3I47Rb/hJnDZczQ8h6hQgrmlhRQS6uDucDLx5ZD47CzXK+5DObyxmFigA6c0tdTjgu/Knh6y4Sky2VqsdKukPvDg/TPmuU/N9ArpF2UvUMJvk4y1CLtoJ45vt+KHakaUdEJFeeacUbtAYMxTEULrAoDCIHVdz5dJNLdwyKZ2URAs5+aps9ZV8eWtPFwJao5CZ35c7yYjzHp/gmwoRHlyTsO6t/eNkU5edgXyuj8zDwM2ODOKDVbC4/m+eV6Yk0yXeFgsJV3G5NiQ6rnUT9x8O3yc7/193v7RcXuyQyk97T0hhhrwURj8j1koGW3ZLj9ga5r2hc7GQV49FS59RTCxwuZC6KjUUamwxNoO8G4veRlQA7xyk69HGAtQhxtxRMjbOVPfNbSOjGGtxdvs5x+uvpBRYVBkEhMh3LUyHOHXKQDW0DQZkOocWuBk3wD4zniq+LmreATdlNEc7MOLPaDKVRN1Oqb42Ib/VpfztCSkpBAYh3lbBPNListmUn0NeW++TL8FNBMsVhup8fqW6dCF7zimhawbR51obMxmMaO/Wc7AoXhyE/JUpzlLe5JREiVqaNVpHZFEGkcj+jMReVAogcj6DIG4XnjR4OeoUOqy7Zvw0ZrFjSBwZP2kPFnbQrjKlYopef4/HN7Bz
- aphj13DB
- b1X+iP37sBS/MCMJiH0Zqg3Eq9OUMj3AECJWci7ffiDmoZLmCIEI3Xc+WXFtV5SUxiwg2akuBoFEXm2Z1X0khhWo23fXuLdz2h08pTrMrkAwDdzsKvbAqoL9b786gwiV570wZdt5r5lh8mFe+bYpn1A8NfqIiW9d6fVtpuBxKxxKd2yiHshDwyLgiT6AjFD4AG2mds31RV2H4UlDuUopEl9rc+oqUBicRGGAoB7mF8FWv8zufvnUW28iSB8Y5MguGSB4Br9lMRRR+bztl3VDf0p5/gm6K0un3QAAn++93zia7x7AXJkYLCWU5Ysf6kVTk65yY
+X-Rspamd-Queue-Id: B92D540007
+X-Rspamd-Server: rspam07
+X-Stat-Signature: pzwekmz7za3zpz16gj397jfgoyba48so
+X-HE-Tag: 1786872336-753386
+X-HE-Meta: U2FsdGVkX18QpAepOhh1tIZLmxF28ruiL6LgenudoJPTd8ueE5U2438FBuy7pIKSq70cKxAdDh/PKS9vpDOFShd6q+pFKIUIr970fjVPPz52p6kJIo7yHXiopa44EzTyFgdW/bXQ3HJqls23XwoBvGA1FgAXmpg1TEcIz0lRWuaw0xK50nb8OoYXQwylDbSugPkWMvVZ9Hyim/4lqy51VO7QIWaMtIVDuT8Cp5VIHQYJAi/S9mNVOvJjnA8ekjoSewvxtH3vBtsmHVuXuZtOG3Wkxyv2rt33BEQdsbmhIaMhgf8PbMVBbnQiATnSvrU0B8K7SaTACvR0lR2XfYPBKIGVQUsuD1X9wJIddD6EA4gdEqkTMBZm88CuHsJlUq6t01wh1or0apupngtzPgqFj5Cw/FLiUf6xFkIb+n7yVqFvlQMFgnePjdcAyDhPF0ePsmkWcBUf33jkhC0E6f5V+Y1y4Zek4E9/Qg1MoOjU0xhYRnzv5Quc8Bm3pdDEtw4Ej0+fgxUy/se0RyQ15npsW6H9lt2kuZZKXbB4/IBWZ939CU1AsfTkaGVLZyV4kVt3C41Te03rO9O3VulS9qGgR5a5LAsheyOTpSefQH/62rVV+Xmw27dYOcFRDvyvmiqa6Jmycxrdrhjrc0PAheDEov7BVxdqiXXiVZ5fyBjHZ5M1H9K/xXz3uadtaW3BfVo+m8lzzdBaGBhkZnbS0E1A3snJ+08xRtNHProCl7wbjQp86Pu0nRmfvf+kuGsNvElwA/B/lpmk+GZBtMMFf7dH88vGmOOvZZQvA56sVC9nkoPI+Ji46ijGhjF/bYAbj8n08dT7918imjqnDOTxzUfZPlIKendL28R9DeQOFG+1z9PUeUc5pFOMKG/xCaIsFIk8EFMWIb3gqfZ6LMvXkqKggoqNz0dM6Ea8kDDNIl0kXIb3/t4O1oauQ6vsXyv1E9Ytz5VI/JwIU2bQJEXDwcS
+ ynJpclX3
+ NfX/7ox/MWosAj24p+bhQJUMMauOLm3zn2U1AjAiEhCqbJuknKNqd/22vWRcVlkK0n7xuzYaPeerknb5oAWPtckK6tCkfXGxz9svEfmpsb7V4Vi+2QUPhGuBL/MtB/2UgtA9HUSuKYFUn9i7XZ5znh2fRA/cVxMD4bvOVZqNfvmY4z5dilFzlt+muDS7SkiLKm+sMD9MONJGFLFsnjVWpgnCa+wUl4eVBd+NxdgySnB3UosCeoEeZnVuoBcmmIM7y6rOYDb9BgD5X7avoxXwAAaRN13qUNcMmBdD1FezA78IlEsYp1ooSRbDVBMNeNyvCQR4Nkv2YB67tSIakxVRwDLG6e89n9Ct3rhZtmudxqt0RW0aWqVG8OYPeOkzzFDzeuVRQ9uwilGF1+Y1SycSh4OuZgheD6IoHNMPu4XRa9S58QTHp7dVphzSWIWUH4epcZh6ag762IUh5TX356u1Ums0isg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,71 +121,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-(adding Suren)
+Here is how I reproduced this, in case it is useful for review.
 
-On Sat, Aug 15, 2026 at 05:42:12PM +0700, Foxie Flakey wrote:
-> 
-> An fix for edge case can occur if move_pages_ptes return -EAGAIN, later
-> when checked and it is EAGAIN, outer loop would retry again on same page
-> and succeeded but the err isn't reset so the outer loop would think need
-> to retry again so it goes back again and move pages again. On third attempt
-> move_pages_ptes will fail because it already moved and returns an error
-> that is not EAGAIN when outer loop checks again it sees non EAGAIN so it
-> dont retry and break out of loop. When loop is terminated it did not update
-> the "moved" variable from successful 2nd iteration.
-> 
-> That behaviour manifested into this at userspace
-> 
-> Source:      [ .. unmapped  .. ][ .. mapped    ..]
-> Destination: [ .. mapped    .. ][ .. unmapped  ..]
->                           ^     ^
->                           \     Kernel moved this far in actuality
->                            What is reported to userspace on struct
->                            uffdio_move's move field
-> 
-> When the previous behaviour is
-> Source:      [ .. unmapped  .. ][ .. mapped    ..]
-> Destination: [ .. mapped    .. ][ .. unmapped  ..]
->                                 ^
->                                 Reported to user space via uffdio_move's
->                                 move field
-> 
-> Fixes: 50944692052b ("userfaultfd: opportunistic TLB-flush batching for present pages in MOVE")
-> Signed-off-by: Foxie Flakey <foxieflakey@gmail.com>
+Minimal reproducer (prints what the function computes, both ways):
 
-Is Foxie Flakey your real name?
-Signed-off-by should be using a known identity (sorry, no anonymous contributions.)
+  #include <stdio.h>
+  #define PAGE_SHIFT 12
 
-> ---
->  mm/userfaultfd.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index c3adedaaf7d5..595e7e232f90 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -2069,10 +2069,12 @@ static ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
->  			ret = move_pages_ptes(mm, dst_pmd, src_pmd,
->  					      dst_vma, src_vma, dst_addr,
->  					      src_addr, src_end - src_addr, mode);
-> -			if (ret < 0)
-> +			if (ret < 0) {
->  				err = ret;
-> -			else
-> +			} else {
-> +				err = 0;
->  				step_size = ret;
-> +			}
->  		}
-> 
->  		cond_resched();
-> 
-> base-commit: 62cc90241548d5570ee68e01aaba6506964e9811
-> -- 
-> 2.55.0
-> 
+  int main(void)
+  {
+          int order;
 
--- 
-Sincerely yours,
-Mike.
+          for (order = 18; order <= 20; order++) {
+                  unsigned long long before = 1 << (order + PAGE_SHIFT);
+                  unsigned long long after = (unsigned long long)1 << (order + PAGE_SHIFT);
+                  printf("order=%2d before=0x%llx after=0x%llx\n", order, before, after);
+          }
+          return 0;
+  }
+
+prints:
+
+  order=18 before=0x40000000 after=0x40000000
+  order=19 before=0xffffffff80000000 after=0x80000000
+  order=20 before=0x1 after=0x100000000
+
+Order 19 is a 2 GiB region, reachable from a reserve_mem=2G boot.
+
+It also shows on a real boot: with CONFIG_KEXEC_HANDOVER=y, CONFIG_LIVEUPDATE=y,
+CONFIG_UBSAN unset, and
+
+  reserve_mem=2G:2G:khotest kho_scratch=128M,128M,128M kho=on liveupdate=on
+  kexec -l -s --reuse-cmdline --append=" luo_stage=2"
+
+stage 2 warned in memblock_add_range and lost ~820 MB (MemTotal 5181908 kB vs
+6004928 kB in stage 1); after the fix, no WARN, MemTotal 6004884 kB.
 
