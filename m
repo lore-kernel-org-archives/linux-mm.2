@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D87DCC5DF66
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:49:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9645EC5DF66
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:49:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 813266B08B5; Sun, 16 Aug 2026 18:48:00 -0400 (EDT)
+	id 9BB4A6B08B3; Sun, 16 Aug 2026 18:48:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BF906B08B8; Sun, 16 Aug 2026 18:48:00 -0400 (EDT)
+	id 944B76B08B9; Sun, 16 Aug 2026 18:48:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D3566B08B7; Sun, 16 Aug 2026 18:48:00 -0400 (EDT)
+	id 80B716B08B3; Sun, 16 Aug 2026 18:48:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 292F06B08B3
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F4016B08B5
 	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:48:00 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1C56814064C
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:58 +0000 (UTC)
-X-FDA: 85108621836.25.18247BA
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3F87B160006
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:56 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="H gHGN44";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=G8U1xcnF;
-	spf=pass (imf08.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2AFEA0627
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:59 +0000 (UTC)
+X-FDA: 85108621878.24.0ED995A
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E3F84C0009
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:57 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="0 KrLNBO";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=fwlDkpgk;
+	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786920477;
+	b=vmqFgY1BaNM9SbPGbaIQRQn1CK6rF9HyOAF96aOxBvP3na48U4nT0rnB9Qi5yGX14TKO5c
+	NQVAdc/0ZGV/xUaakfRwhwm2ORmgQIIpnAksZHiElRCcCHLuHcDxGu5cFFmtMOfaaoqLdC
+	OzDG1qMDEv1G48Yvz/RTDD32QRKElig=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="0 KrLNBO";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=fwlDkpgk;
+	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786920476;
+	s=arc-20220608; t=1786920477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YVoKODTNuHH9tsvnWaADZQ9VZLR8etvBsMTlfNVNhEw=;
-	b=JJWYaX+56JhhcCdAQ0GMfM2c2XGKim1Ocyrd9Hs0HMKZFh4JCijjlrif9axkrmg9xBH4uC
-	2Uznx8swdg9duozLZogoNyWSNFvx+q6nC6VtKW6Wt/UgyFLC/0ISbRlQ9lVN3eOZSUrKcb
-	NMaNVmbt7XIz3bf1fk2759tm4bbskO4=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="H gHGN44";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=G8U1xcnF;
-	spf=pass (imf08.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786920476;
-	b=uKByzMw3WSnaGEEmJGkoxCJtQ4P6OsIV6u2DET9vkvN8RUL1SP6XXqIwPzjrKkgtAKryab
-	wRgo6R1pLsxSmEcpg2dwWIAtw4K/5czr0pb1o6jLzWPmtqXakHYQDJ+P65IfAgKzFCdX6m
-	VC6vlODdrso1962a26/5nP8T5S6vRBE=
+	bh=pI4lY+AJfKOOjXvPiR0jbn4HyML/QwSMTUaiVyOT0As=;
+	b=kcCpI2VmlukG7tslMvFMsXdqts2jg0udZpQTCNMJHXCtoiDPYiaMhoH1t5sEfqGTWcHJKs
+	mwMRpvB3eYiZ0ZSsDTP5d+Lf8G5fAWKlqwcJQjMwzn0W21QAd/UanbidgMsNfQWCd80rEg
+	wvClYo2lnLLUqmiRNIOAX59XpZv78lk=
 Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id C871A14000FB;
-	Sun, 16 Aug 2026 18:47:55 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Sun, 16 Aug 2026 18:47:55 -0400
+	by mailfout.phl.internal (Postfix) with ESMTP id 692D5EC0074;
+	Sun, 16 Aug 2026 18:47:57 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Sun, 16 Aug 2026 18:47:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1786920475; x=
-	1787006875; bh=YVoKODTNuHH9tsvnWaADZQ9VZLR8etvBsMTlfNVNhEw=; b=H
-	gHGN44biqF8ui1hgPrOaWlVx9x42CW2TrTQ1MBpnq9uZohHvhs9TFO8COYmiBtCQ
-	x092f/nn0bFsT4jxcfIqh4yGHRauPzg3rM62tQd+rliAmvov/yjuGh8SL0B1rWY+
-	hbGt5HaX9ZWi+CPjnEF7Gpu06s9ZzxKtL25W+JLXAm5m95PwqT58EM1QRCpYQ8Y8
-	A9SznxPCoxfH4y21kjuZpwwI58y6krWsOdIdjexXUSbQAu/m2ylSEVTAiMpyulSj
-	Mf89HJ7jwuv3gx0AfmaaIxd4QsMTQ3GFYKUXKqbtO6l7ASEFDRt1X9lgRkWYJoMx
-	qHj4B8Rlg2SfjUyO/jiNw==
+	:reply-to:subject:subject:to:to; s=fm1; t=1786920477; x=
+	1787006877; bh=pI4lY+AJfKOOjXvPiR0jbn4HyML/QwSMTUaiVyOT0As=; b=0
+	KrLNBOpYOPbnXg5hm7ina1g0ZHCTyNqP/VTFRHVM6sdgshZ2wVN2j3ej2iBzttnh
+	NAFDGpntTkBz66SHNLaWbBOblPFQCR+VRnv2V9DPWGeCv5mV9baYtrFc1BbgMSev
+	HrZSAsUrzTpuDBvQAfhsbtKU1sVtWv77Hpc3bl/55w+FTA5CBFcsQZwa8qNvjS9y
+	UA/9nHSkwNijJDlcDkAjGQMwh4ZuG/UIgy1abfmtDFrbBaRzBdjvSB1iLO7s0ccE
+	iL85a+IykYR7qjP+C2ouXneVPivWKeNXjgoL4dE3WJb4TboXzECfi7IQzvjvYPiC
+	87hASIGf73zI5ZtJaTqEg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1786920475; x=1787006875; bh=Y
-	VoKODTNuHH9tsvnWaADZQ9VZLR8etvBsMTlfNVNhEw=; b=G8U1xcnFalpJlNLkp
-	cMJJl5lDt/0JdgftmpIqkcaVJ5istmKoLWtdXShZo572ZMnXxNWs8lUmlTfJuUVZ
-	sJ0oKdAlnJeAEi8RfwsAi7Zow0AhAJpDGHKGFzUYuC9vKVZZ3PpKIcX1iGaU62fD
-	ZbuD7OgEZo5Gu2GQntxsilcY+newcgsOQAAVWUddpN6x81U7xrB9zkrs+XTN8Iau
-	jK2PJm6aPa/liiZhSlJ0HCJGn0lbtkeauX7LWN/kL/puId4wJ7pGTwhBDeEaN/Yb
-	mXxkUN6NBnt2KB3cpwfp7jM+S6qVsdwcameuR29CIdoVXBb0UioyoXaPv5xBveZP
-	C9zig==
-X-ME-Sender: <xms:Gz6Caoal4FlStzYDBFIdE2tm2uGtShL8G4GQm3nQnWZ68beuoa9j3A>
-    <xme:Gz6CaosTWK9QhJo2s8EFtvVm1tqYtKMLXaXM5lwdY41GHSphMHiSeNndnIxgi9agA
-    PEoX_eIHdkVxqfE2UqxNMHFdx4Fc9pGihXX_HG9h2fP3_DzP7bZ0z8>
-X-ME-Received: <xmr:Gz6CavArAbWlv_aIh7Wts9Fp_BPY0_i62aAeUQpeiBVUDzwHo111WdiXB_o>
+	:x-me-sender:x-sasl-enc; s=fm3; t=1786920477; x=1787006877; bh=p
+	I4lY+AJfKOOjXvPiR0jbn4HyML/QwSMTUaiVyOT0As=; b=fwlDkpgkeMZAR/C/C
+	ZHIYGibmR+6BagltMa4AF34xr2PMsy5NRw+2XrmedxKjk3KU+BKe3dGZZ2a/c44F
+	Ten7qAoPkTuUp9RW43eRSwxioiaEELXeJ/LPc9gwYawfdl/BJZbACsP9JDuEf6oB
+	Wtvdge7jFJW7ZBqHTQM0Wyvvq9Ee8bkKb0DQr1cQy6ymOJ6H7+CX+twmnrLXi5Lp
+	nfIWtZ9yeTCawpc4qzNfqq3/aRLrxfoOYUnpz7yK2pHtLUYiLCBuyHR/po/ALpbW
+	yS20oqx9rvGQqNSCztj9W2NjE/igqtmYUoTwny+hAuIYNNMGe7F8zve174pc0AVm
+	HCUnw==
+X-ME-Sender: <xms:HT6CaqfyvV1vIi4cPst5XmFoYwVTFj12MYVAmADUns_pNyquOFwaBw>
+    <xme:HT6Cat49Y_M7YC1mCQsfunNnGQ_3gaTp4CsJP6PQXp1aHFXIf2gMcJn6-6YONiTB4
+    Np8Q-v1GtiR0G8XnNFhyKFgRDXgWfaU_RzL0AgNZ7ncPrZ8WQezqMo>
+X-ME-Received: <xmr:HT6Caq0M4FYaQoZVQAo61i8KRQTbqjCb1K7aVDDpQjno9AKOcBYWBXEoCYA>
 X-ME-Proxy-Cause: dmFkZTFX8QZ1Abcp//ElmtP0wYUsUMnb+KjPA544aOlJXhXcQAudkXa81C9Rj4L11ediC/
     SYpDnD1LvcyFEAv2YFQNL3ReIx6t28G7cFOXvsWQqNdQRv24cIelnnbcWrHqur16sY2q+b
     PHK84xbhjrx0R6ZFbdj3lDcQr+wbYteZ9PHsSvZgjQoovnxRkTlpJXxI+K+aK0DY9MqaWr
     nM0jSjvJAOtmNeFdTIuI9VxKMOFqeJI9DUUNBafqnTlsaU2K5w1xy/oDJpRmozGKRfcEpJ
-    T4FDpTcqBKNo58tTW6I4nVl91YkYNyFfziYdH6IV5aj62MGBqsSUtSYZnaDODTOndFzTnT
-    D5+QXiNA7V0+//1GAWfYdWnFUDbJ4PKAYPebwd2vIw25LxzaUn6QnwsCjtV0vOBDOG68oD
-    Oqk6cCWO4XKcdDE7GZMuUoxBQVzvFGinAnfQRKXDAj//k/5a2GjRPi+pYfH35b9i57TE0h
-    XMcQaJjSBsGRFRkjnhDLw4f5+2D4nvb6hkAfT4rb9iy+9cz89AU2qog1b4xomiUSaQuLKo
-    YugSHkz9PMS2Kwoq88m1eRQ5YhN8GUeGt4kbhSAlFnxsssMN8NRLY8TPq77Lu3JPp+uR9g
-    JtdJwGX3/UFlAhzoIkkuyY2NCBLzeHHV6BWLrw7FTIxQWDTMxU/KKrZWRpRg
-X-ME-Proxy: <xmx:Gz6CavM3xp0qemypU0qR-XBXw8eaQ3nXInSdzCphmSY01aisG6dxiA>
-    <xmx:Gz6Cap5lD5H8hVGTfr395LWfMDrxzEM2tcghCsf1WL9p4_PGnJjngg>
-    <xmx:Gz6Cap1Wg1plDDHzez4r8oz0vBMGOG1iNK9RW5V-1p9JWxL4thpOOQ>
-    <xmx:Gz6CaopDQeVzLvBLfcI8PULfw8AQf-En0bRl2QFHJRgtK1looePk5Q>
-    <xmx:Gz6Case39aqqM3ygzLuRqDDXwiYAOEZii_dRxfn08yCZjZmzQlMRp-6e>
+    T4FDpTcqBKNo58tTW6I4nVl91YkYNyFfziYdH6IV5aj62MGBqsSUtSYZnaDODTOndFzTg4
+    3gj7NdlC8U/37zfIU9cOpYnuRdXqkl9pVUWc3zwBpKJzvj+ZfRQlz7GS0Ejlp3UR3S3OSR
+    Yd0A+lV4lpsWSXukhEFEBp0eGov5qfF8JzT+PPjVG2KIhEnHHbHIxwPmWbz8OxyU++EsAh
+    RsLI86qe1gASncpfU8bRy6B8cY8saqXrUVybVt5nqWgtzw4IJAa+6Td5Hbmb1QRUXlJbJx
+    GkafdYrgnhVsK1vDbEOoEqpzGn0iwNtltfuGQDQQEbiiDEAB8frR5GXA+RVgD6DnVcpjQT
+    3C3sZmLkZkqv6ZVIOyP1kW5sYHRBNe9OT/zSKApbEQuHaXzBQYMRjgclBtCA
+X-ME-Proxy: <xmx:HT6CagDyRQ4RhvEfGzHyB3EK742G3n4Cf0ippH7ddVrL0Cz8rHjG5Q>
+    <xmx:HT6CarFe_F_su38oOgOf65C28ts1cZwxARcLL1t57AJm7cbUPCxvrA>
+    <xmx:HT6Caqr7rAE7UR6Fz2MUQmypgCjJtDE4nkuSV6Tazj-PPVmoh0t5fQ>
+    <xmx:HT6Car1ATaoqGe7PghNyWRYplbjHgWERwim0QIUKm5Fxhc16Eglevw>
+    <xmx:HT6CavShMTfNJOFUXfFUaZCLyVx8e9_g9EfRz-XzhNxAflfK4Nd0UpGZ>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 16 Aug 2026 18:47:55 -0400 (EDT)
+ 16 Aug 2026 18:47:56 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -133,22 +133,22 @@ Cc: baolin.wang@linux.alibaba.com,
 	mhiramat@kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	bpf@vger.kernel.org
-Subject: [RFC PATCH 53/57] selftests/mm: cover collapse of mlocked ranges
-Date: Sun, 16 Aug 2026 23:46:05 +0100
-Message-ID: <20260816224609.308019-54-kirill@shutemov.name>
+Subject: [RFC PATCH 54/57] selftests/mm: cover collapse beside a MADV_FREE'd page
+Date: Sun, 16 Aug 2026 23:46:06 +0100
+Message-ID: <20260816224609.308019-55-kirill@shutemov.name>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260816224609.308019-1-kirill@shutemov.name>
 References: <20260816224609.308019-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3F87B160006
-X-Stat-Signature: imfwiouwxetba5x8otd5of66c6c9o6ez
 X-Rspam-User: 
-X-HE-Tag: 1786920476-431633
-X-HE-Meta: U2FsdGVkX1+pNuaaSFe/oTuOtjkQVXQURH92BJLG/Uqrvj5kBXz3eg8GEzOP/V4Ril8TzvRcrFHVXnILChtC6RCPeuyvjmtpSW8MlbGx9XBRlTmTn/QGmkMt3NN8bWZPUjgsdwylU1OO2n9UG+6xFPzacnv6OkwSZykmmlNl2BBmHePLKgnAxU2m9XYQoVryc7q6ZHA265e9z0+6huS0ENFTfeLy8elrjjSKHuZViucXKbRkBACOTwggm+v7QCJTkVEyiBxb6lJla+O9ofweXZbtqYIW3NkowKCcggcA8OyXPEUueTDL+OGHwcSUTuZZCr59XkmzkevTWtrAxFZIcljmrSjCnBHFWInDkUdS2DANPJidAOaURI3Wf4wOlunBEKXd71q28f5MVPu/N6ZfLReS+OyEWCXZbqIpy8nvgT8zC9OKteCY/Hhd/zkyEqUFEZwYNJrbIiFP6jRr2X/bBJTIAC9fYPM5LBlOZ2vUvwMpkjTvq3wVFqbsTbofTM1eVrFf26v8jvjMGhUCLrvEgDBe616Svp63DEa+G3P9TH3kU0NPYMVevmSPWXr/FGbiXzWYsaFCJyuXd3OkNQ27EF8vH5RffamjGmXiFxm9XSN8JkwPbm+arFAyfTyZ8dBseNdcI0boc7RkifBuf+0JG8cBpTcROu5Tsq50hVW3bJk00CKv0r/LRZh/tVQwTLAhoZ+jMRmUPG2r8BWgalOTYL+7Lr8gfb8r+NcNnLkvobvp4Jjal2V8b5NFUg8SO0/gbMo8MhPlc6uQFlZ1GUT0MVCZlYSfYa1Qf4dqEzi4xXhXvkYp/mXG2oTQMa4FQ9jUVM5GANJ8fPVwguvrbVh4d6VMmsN7jv87qjR/cWNR/6pVV7i1XIJ9KTWStDmFaaWe9Shwpmh/wdMkww6cgA3tR5UbDne8dBlmffwNfpD+bmhDY3Gd7xKuc2Y7jxcV/04o9kGj5TP3ZWT79OgzdFE
- MLmY/UyY
- yVbPA8McGvL1KG4Roo46xqRM6pqXDhLmQs41DKFG+oJMSp8GMi8PNqUljxr++2RY8QWfVBgV5UiU1gTxskpTNsyYykJDVLNyqiBgbEgx5bMJea7oPNKhhXFM335L1TMiVby4p3PvnFq31Js66DPH+5//PYW3/librJ8pwJHKI5AxEoGPsBgLcw/FiZvfGGO7iZrkybRO7kldXcWhcxMHi32isQsvB17gtXNk2LTR35ch2vEYv3jEMAOypcCUmzNJMaOZ5LFs+2YHuaWLNN5yZMc1qHrggqH703jpZwvUcdF8O27YkVqHKo8OTS1mCQID954TBmBSQ13jojmW8s/kf3bBSumNx417Ug86JcB3W3hdeKXa+Ndudl+cZsoQIxcv924gJK+8QgnSefbXwXcxMzlCOFRNI+qhvHpR9/teqza6H1ELUxIyb47WAuPbciZVyIcI5Oaz7keyL5p8=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E3F84C0009
+X-Stat-Signature: p5gnuw1htxu1mfyuhcknsxmc58hbchb7
+X-HE-Tag: 1786920477-771766
+X-HE-Meta: U2FsdGVkX1+YfKfwdSppf3hAVMkUlOWWlvAsx+vad0313gQ5etoQkjwRRW8y+Kuxk5Z/odKJpVmfazyUlOGsTuVimjUerMWW6s7z/EYhKTyIx2jo/p6Zd5KV6qZrHuGclgJWQ7Zo0UfJaEFOnOu/f7udbOAkU3IcbfvyjlTAZpPGLMug36qH5yKf0MKRCI/0sr8IL1QtrmgNo22gyem3ne3DdjNRjN2QLBV8woowLAYN/wq9hmoyFSgfye95z2vTZaPn6ke3T9Q0RCSQif5J6j+cgAOBzvi972Ca179GNyqKiARXf/2n7Qyis/84/4PXBvGQQzxYioy8+rCsCjyJ8YKgY5eo3jO/M2LXFpTes/+RQ16eGHmoePIqwN9EdS8bABo9z3at2b+yq8krH1vm0DnwfhoKHDxaSWtaVnI7iz6kYB9OMaJADc6ml4qtnNh4WEj3Mlm3g/DnsS0ZCT2X3VwqMR2IRFB3e4csgKLi8OUbnkEgqS/HxQvHXqx2XNwvZLFVU4o3faLTdw48+ai+AbcNZVQxl10fQLpQRYU7UTm1RWVYWcf2HjxYkCst949m/3FPltRVIqhxWtWSZ7OC8K5RvwUqiqwFjdydVlNRZ0lm9NZn2WH1DNc5EdylAlaqgUqTW0g3wJL0M66HByzkpyRkMXV3J4tIEH41szUNPonIN/BYsq9L4pfeRVbD9GQVr2weATQE4nl7nMaFqGvs4PPmi1V6qxbL+eI7Py3RFbw11+eY7qLGlbTPAOF0lsO0olXN8PJRKBplUOwTPYPlEGNd6us02DvlkHo418ZfA5T4zgtVozsKgXThYi/DIBVemNVm1cik6p303aD18+FQkZLI026NTBqPnkYiMM2OfDWL4S4hbI0/MDh6gy5h3MBQoONOpCe1LWy78+CeGcO+9uneaFJav4+SHzi268j5We78dgaE1rxtR2sGqQhQjkAUOIDh4Bbeukbhc2ic7Pd
+ l3AX9vXI
+ Mij4YCl2yzgtu8DdotuBuQ5qbWb+I3ASd+4bQ4suTdZlrUCEoCBdszwnajQeaAvlPLp3/D00Oijc29aHoBDWcKX5J9dWp5eBzF8vbPkFlpq0SzVG5z2S7zcBlq8axJUOizXG+b6hczLWd5SFk95PLYgrcWwwlLp7aF6nocib2kZCQPVT+deG9T6fWphx4cEc7wY8slM6w0xvCo7dclK6NI5acW2nHnOrro/GemgjZe0MsrxXS7pLj9dPREFTqDyyJyg1OzVdC4owbdz7AV4WvJ3m8vdoKOoArpz1EU2+D7QPd9itAiQmuCgIUr5hVLW4LTAEkaxnfDYCCAoNqny61KART1vdgbejR/7/UaARBzqbZvzCApxOEri29azrayQe+Vh+QQXHsGEi431SzuZzoax1RJNoL856ntghsLB3qeot+2Mvosl1zZf2hR5NVLwrZle/G4F/O6XJp/D8VzimbE1AK/M3EBsCklJQb97HufVOV9zYRR77wAjqu+g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,48 +158,49 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-Collapsing an mlocked range makes the teardown do something it does
-nowhere else: the sources have to be munlocked while the destination
-arrives already mlocked, and munlocking takes a reference.  So a teardown
-that reaches a source before it is unfrozen fails on a refcount that is
-not allowed to move.  That is the one ordering constraint in the putback
-with no other way to be caught.
+A clean lazyfree page must not be collapsed.  Copying it into a folio that
+is not lazyfree would quietly take back memory the process offered to the
+kernel, and reclaim would no longer be free to drop it.  khugepaged
+refuses the window that holds one.
 
-An mlocked range was collapsible before, as long as the whole VMA was
-locked.  This case is the other shape.  mlock() over part of a VMA splits
-it, leaving the locked part smaller than a PMD, which khugepaged passed
-over for as long as its coverage was rooted at PMD-aligned spans.  A
-partially mlocked region therefore went uncollapsed however long it lived.
+What it should not do is give up on the rest of the table.  One page a
+process no longer needs is a poor reason to leave a whole PMD's worth of
+memory without large folios.  Yet refusing per table is what khugepaged
+did: any single disqualified PTE ended the scan.
 
-Cover it deterministically: mlock a window, collapse it, check the
-contents survive.  Drive it under contention too, with a thread mlocking
-and munlocking random spans across the race harness's region, since the
-ordering only breaks when a teardown and an mlock overlap.  The plain
-racers never touch VM_LOCKED at all.
+So collapse a table with one MADV_FREE'd page in it, and expect three
+things: the windows beside it collapsed, the window holding it not, and
+the page itself still backed by an order-0 folio.
+
+That last one matters because selection descends orders on a refusal, so
+checking the target order alone would not notice a smaller window
+swallowing it.
+
+The freed page's contents are not checked -- reclaim is entitled to have
+dropped them -- but everything else must still read back.
 
 Assisted-by: Claude-Code:claude-opus-5
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- tools/testing/selftests/mm/khugepaged.c      | 38 ++++++++++++++++++++
- tools/testing/selftests/mm/khugepaged_race.c | 29 +++++++++++++--
- 2 files changed, 64 insertions(+), 3 deletions(-)
+ tools/testing/selftests/mm/khugepaged.c | 44 +++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
 diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-index b61e32566d47..208300ecb344 100644
+index 208300ecb344..58cb7364652e 100644
 --- a/tools/testing/selftests/mm/khugepaged.c
 +++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -1599,6 +1599,43 @@ static void collapse_order_sub_pmd_range(struct collapse_context *c,
- 	__collapse_order_sub_pmd_vma(c, ops, nr_windows, __func__);
+@@ -1685,6 +1685,49 @@ static void collapse_order_sub_pmd_holes(struct collapse_context *c,
+ 	ksft_test_result_report(exit_status, "%s\n", __func__);
  }
  
 +/*
-+ * Collapse of an mlocked window: source teardown munlocks the old
-+ * pages while the new folio arrives mlocked via folio_add_lru_vma().
-+ * A teardown that touches the sources while they are still frozen
-+ * blows up exactly here (munlock_folio() takes a reference).
++ * One MADV_FREE'd page must not stop the windows beside it from collapsing.
++ * khugepaged still refuses the window holding it: collapsing would copy the
++ * page into a folio that is not lazyfree, quietly making memory the process
++ * offered up undroppable again.
 + */
-+static void collapse_order_mlocked(struct collapse_context *c,
-+				   struct mem_ops *ops)
++static void collapse_order_lazyfree_window(struct collapse_context *c,
++					   struct mem_ops *ops)
 +{
 +	size_t window = mthp_window_size();
 +	void *p;
@@ -207,91 +208,45 @@ index b61e32566d47..208300ecb344 100644
 +	mthp_push_target_order();
 +
 +	p = ops->setup_area(1);
-+	ops->fault(p, 0, window);
-+	if (mlock(p, window))
-+		ksft_exit_fail_perror("mlock()");
++	ops->fault(p, 0, hpage_pmd_size);
 +	if (!window_not_collapsed(p, hpage_pmd_size))
 +		ksft_exit_fail_msg("Unexpected large folio after fault\n");
 +
++	/* Clean and lazyfree: do not touch this page again. */
++	if (madvise(p, page_size, MADV_FREE))
++		ksft_exit_fail_perror("MADV_FREE");
++
 +	madvise(p, hpage_pmd_size, MADV_HUGEPAGE);
-+	ksft_print_msg("Collapse fully populated mlocked window...");
++	ksft_print_msg("Collapse the windows beside a MADV_FREE'd page...");
 +	if (!khugepaged_wait_full_pass())
 +		fail("Timeout");
-+	else if (window_collapsed(p, window))
++	else if (window_collapsed(p + window, hpage_pmd_size - window) &&
++		 window_not_collapsed(p, window) &&
++		 /* Left alone at every order, not just the target one */
++		 is_range_backed_by_folio_orders(p, page_size, 0,
++						 pagemap_fd, kpageflags_fd))
 +		success("OK");
 +	else
 +		fail("Fail");
 +
-+	validate_memory(p, 0, window);
-+	munlock(p, window);
++	/* Everything but the freed page, whose contents may be gone. */
++	validate_memory(p, page_size, hpage_pmd_size);
 +	ops->cleanup_area(p, hpage_pmd_size);
 +	thp_pop_settings();
 +	ksft_test_result_report(exit_status, "%s\n", __func__);
 +}
 +
- /*
-  * A partially populated window in a sub-PMD VMA: population and
-  * sub-PMD eligibility at once. The unfaulted slots must come back
-@@ -1938,6 +1975,7 @@ int main(int argc, char **argv)
- 		TEST(collapse_order_sub_pmd_vma, mthp_khugepaged_context, anon_ops);
+ static void usage(void)
+ {
+ 	fprintf(stderr, "\nUsage: ./khugepaged [OPTIONS] <test type> [dir]\n\n");
+@@ -1976,6 +2019,7 @@ int main(int argc, char **argv)
  		TEST(collapse_order_sub_pmd_range, mthp_khugepaged_context, anon_ops);
  		TEST(collapse_order_sub_pmd_holes, mthp_khugepaged_context, anon_ops);
-+		TEST(collapse_order_mlocked, mthp_khugepaged_context, anon_ops);
+ 		TEST(collapse_order_mlocked, mthp_khugepaged_context, anon_ops);
++		TEST(collapse_order_lazyfree_window, mthp_khugepaged_context, anon_ops);
  	}
  
  	TEST(collapse_full, madvise_context, anon_ops);
-diff --git a/tools/testing/selftests/mm/khugepaged_race.c b/tools/testing/selftests/mm/khugepaged_race.c
-index 6682bbae0a8f..a4710130aabf 100644
---- a/tools/testing/selftests/mm/khugepaged_race.c
-+++ b/tools/testing/selftests/mm/khugepaged_race.c
-@@ -219,6 +219,29 @@ static void *forker_fn(void *arg)
- 	return NULL;
- }
- 
-+/*
-+ * mlock/munlock cycling over the shared areas: collapse of an mlocked
-+ * range munlocks the sources at teardown and mlocks the new folio --
-+ * the interaction the fuzzer caught (munlock on a frozen source) and
-+ * the plain racers never drove.
-+ */
-+static void *mlocker_fn(void *arg)
-+{
-+	unsigned int seed = (unsigned long)arg;
-+
-+	while (!stop) {
-+		unsigned long page_idx = rand_page(&seed);
-+		unsigned long nr = 1UL << (rand_r(&seed) % 8);	/* 1..128 pages */
-+
-+		if (rand_r(&seed) & 1)
-+			mlock(region + page_idx * page_size, nr * page_size);
-+		else
-+			munlock(region + page_idx * page_size, nr * page_size);
-+		usleep(rand_r(&seed) % 1000);
-+	}
-+	return NULL;
-+}
-+
- static void *mremapper_fn(void *arg)
- {
- 	unsigned int seed = (unsigned long)arg;
-@@ -328,14 +351,14 @@ int main(int argc, char **argv)
- {
- 	static const char * const thread_names[] = {
- 		"faulter", "faulter2", "dontneed", "pinner", "forker",
--		"mremapper", "pageout", "compactor",
-+		"mremapper", "mlocker", "pageout", "compactor",
- 	};
- 	void *(*const thread_fns[])(void *) = {
- 		faulter_fn, faulter_fn, dontneed_fn, pinner_fn, forker_fn,
--		mremapper_fn, pageout_fn, compactor_fn,
-+		mremapper_fn, mlocker_fn, pageout_fn, compactor_fn,
- 	};
- 	enum { T_FAULTER, T_FAULTER2, T_DONTNEED, T_PINNER, T_FORKER,
--	       T_MREMAPPER, T_PAGEOUT, T_COMPACTOR };
-+	       T_MREMAPPER, T_MLOCKER, T_PAGEOUT, T_COMPACTOR };
- 	const unsigned long pageout_bit = 1UL << T_PAGEOUT;
- 	const unsigned long compactor_bit = 1UL << T_COMPACTOR;
- 	const int nr_threads = ARRAY_SIZE(thread_names);
 -- 
 2.54.0
 
