@@ -4,90 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BCE6C5DF66
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 09:59:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C59FC5DF66
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 10:59:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 669176B0349; Sun, 16 Aug 2026 05:59:42 -0400 (EDT)
+	id D46576B0806; Sun, 16 Aug 2026 06:59:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 640C06B034A; Sun, 16 Aug 2026 05:59:42 -0400 (EDT)
+	id CF6976B0807; Sun, 16 Aug 2026 06:59:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57D546B034B; Sun, 16 Aug 2026 05:59:42 -0400 (EDT)
+	id BE5436B0808; Sun, 16 Aug 2026 06:59:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 346BC6B0349
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 05:59:42 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BC5F21C1822
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:59:41 +0000 (UTC)
-X-FDA: 85106685762.07.C59F3A3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 15461100004
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:59:39 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S1kKAbt4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C51B6B0806
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 06:59:43 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E5807A2DA8
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 10:59:42 +0000 (UTC)
+X-FDA: 85106837004.28.A33861A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 40173160006
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 10:59:41 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQiCOZPM;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786874380;
+	s=arc-20220608; t=1786877981;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d7MREgld/BLjhaewklUc18IFPosE8Z7M0EaKNZ/CkJ0=;
-	b=LNdcDxs1E43GDrw7QvOpCNC0O+tKsgiGBtKEcKPKME404fZG2oOxC7ukvC3L181TfVSjg6
-	IezWGeEfPpDlkC3YfUDpgg3UsWYXy3r0mCtDzuBz5t7Yv5z3qInD9cP8B4s8uQsRT81I/V
-	Ybloc8PJrKJs0vqmxySdCO/M3avsVZk=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S1kKAbt4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=EZMPuLn9lWRyJJinQ2c8b4OBBKHlDa+Kb1vfYZjvPU0=;
+	b=7RSf4c7i67QKvc8TN8z+qXq6Bzj53KTvxCA6zsDvJpUXgK/UMTwHN1TYFz6Xw9KJbwtN/y
+	Q8lwIE9B9hBx9nD/yzuk9VbJqujDcG+OdsSL7sdwOtmtn7kgOIU2yL3Bp/0Mr780yPEMA5
+	91JAt55AXc5CHYQXPO0ihlLIUkcy+1k=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786874380;
-	b=FJ3X/YOyitSr+amzcL+jniowGQ9ppzm6ers1L+tXy2NBnNxSB+Q5qRIN+7mrjkUCx4eJkJ
-	0Hq7ljfAULU4Y2r+JQ1p6pI5j9oCpCHsIuhyD+x+0l8n4AYtpVwZDS2HxrqJ3JaqGWhqBf
-	B0CNYM0jf4wR7sjj1eoW9pB9IajBsNk=
+	t=1786877981;
+	b=FjKTIFsn3DTJkPSzDMgoLu7UHOgN5D6CCTkph9xdDRUOOQr6zzlnJfjccIpGN3T9lopbkG
+	Y07mUNAnKzyR8v1MnRoPzPFs1H8rYGYX+aail5A7xbqn0PxUM78zuSiUHS8FXbDGYFLw7c
+	shRWNGtWMqj7I3a7T/BAPuH7uMHE3d0=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQiCOZPM;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 64F7A4397F;
-	Sun, 16 Aug 2026 09:59:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF871F000E9;
-	Sun, 16 Aug 2026 09:59:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5C8B060055;
+	Sun, 16 Aug 2026 10:59:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A78C61F000E9;
+	Sun, 16 Aug 2026 10:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786874379;
-	bh=d7MREgld/BLjhaewklUc18IFPosE8Z7M0EaKNZ/CkJ0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=S1kKAbt43t6hwTScs3DwkHJJCMlc7M7Ahq7fHaDVhxBEhEvHNLosu2UR1yXTrueFL
-	 7CYT6F6LwZ4HsykK3FexnQN55RsVnCXzo0j3TTUr35kykQY03pIh4bIclOjim6FmQJ
-	 X1qqD3+n2MJuioOA6Hm124D8c8bt8TpNy4BBI2JRwnteGGeH2c0GgNB8DmzJbAFw+V
-	 nJNTCzD11VXk+k3chuvzXEhTx8Ztzd8H0BpkohlKoKKugqYXEJU+o9hFAyUPf6sSic
-	 56UA8arTMiPOyvCey3yuknsaYM2vajh+PXaCI6L5wMOMcMYwKh+lvtJxSLiXXE6AKo
-	 xv7oC/UfH7PKA==
-Date: Sun, 16 Aug 2026 10:25:22 +0100
-From: Harry Yoo <harry@kernel.org>
-To: Guopeng Zhang <guopeng.zhang@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@kernel.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Guopeng Zhang <zhangguopeng@kylinos.cn>, Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Subject: Re: [PATCH] mm: memcg: fix slab over-accounting for in-object objcg
- metadata
-Message-ID: <aoF-MIwlfeI78Aox@ubuntu-vm-arm64>
-References: <20260812124858.73487-1-guopeng.zhang@linux.dev>
+	s=k20260515; t=1786877980;
+	bh=EZMPuLn9lWRyJJinQ2c8b4OBBKHlDa+Kb1vfYZjvPU0=;
+	h=From:Subject:Date:To:Cc;
+	b=mQiCOZPM10WFNlwj6S+/etLcOZ5lICzoIZa7PUr5atzrLfNCvr7yIRbgAh4jotlxM
+	 5JyYhCmGz/YoEQDsBDLbHt0Y3c6AmaQ8D8x/q9pWH75AG7Ru5Mgprs/KNnXKyqaBsL
+	 ejEpD2MHgWO73u0i3IFYum3fH4NH4kLKFKL5lO5dSr8ry9s8ne7h/aTShk4Y6Vpn7i
+	 5CuWmafPB+x4jOqhGz0dGaKnl/EFmtwKu92IwkMy/uGbXJ4TNzKbV8gfkMfk2nTONT
+	 mXjoku8XZsHQEWPnLFJuHj0gUgLc1MIXrDVZ1zTgt+/HzmRe1K+5BFceKLBRkqx4gB
+	 ukxJvdpWvHM9g==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Subject: [PATCH 0/6] arch, mm/execmem: resolve confusion about
+ set_direct_map_valid_noflush()
+Date: Sun, 16 Aug 2026 13:59:23 +0300
+Message-Id: <20260816-execmem-set-vm-perms-v0-2-v1-0-90944a3ad43f@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260812124858.73487-1-guopeng.zhang@linux.dev>
-X-Stat-Signature: dxgti3brxucoietxasqn77fxizt7p7i6
-X-Rspamd-Queue-Id: 15461100004
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWM0QqDMBAEf0XuuUc1iJX+SulDkq41pRclF0UQ/
+ 11tH2fZmZUUKUDpXqyUMAcNQzyguhTkexvf4PA6mExpmrKtGsYCLxBWZJ6FRyRRnks27Cza+mb
+ rrqk7OvwxoQvLr/14/lkn94HPZ/B8OKtgl2z0/TmJDFmuIjxFzdZ9Qdu2A009wYShAAAA
+X-Change-ID: 20260816-execmem-set-vm-perms-v0-2-bae847a4f64f
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, Alexandre Ghiti <alex@ghiti.fr>, 
+ Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+ Brendan Jackman <brendan.jackman@linux.dev>, 
+ Catalin Marinas <catalin.marinas@arm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, 
+ David Hildenbrand <david@kernel.org>, 
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+ Heiko Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, 
+ Ingo Molnar <mingo@redhat.com>, Len Brown <lenb@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Paul Walmsley <pjw@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+ Thomas Gleixner <tglx@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, 
+ Vasily Gorbik <gor@linux.ibm.com>, WANG Xuerui <kernel@xen0n.name>, 
+ Will Deacon <will@kernel.org>, x86@kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-pm@vger.kernel.org, 
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+ loongarch@lists.linux.dev
+X-Mailer: b4 0.17-dev
 X-Rspam-User: 
-X-HE-Tag: 1786874379-103251
-X-HE-Meta: U2FsdGVkX1+oWMy6ulNzoqmOwzkYwsUgr7r2GDPpwi3fjNlznzEf8pk8A58cqRt3BUHlzU1XUdIaIlvOzlU4pPxffVE5hU125zeHOGllvqvz08TEtCIK+Gm05mIqr/zkKpdp8Mu9GPhzRmw4Aly33lcRjWiDUZNtPT58abc8T+3YrfIwAdUlt135DG/R9HJxefdwfcTq1bnoy4fy/vBr/xNdjtbQUohSo1MBk7yBHnYDlQNllzqU2c1LpIebIZwMoh4TS+7TEc59tZrHgzKGCkI9zVxWfqYJoxjgmyVD26gNAaWQNa8Q9DbvDKPIAJO4FtWR/JYxL08xfQWin3Cb4Vxd3/MoyO9Vuu1RfJrMlIY/UdGppW4SIslU3nTHYyy4nO5Q28wJyihk8S5Jg4Qpf4+9/o3fhkxGS57nd7hgmRrtZ2TYbYR8tN2VrU4Ah3UnB++8s/DV1HofQ81e3lh1BHTAW2iDDlJXHfaiPXw+rcXq5Xmv/BnGgzp3KJc2e9LhGohOorIrAuS74jdFC91irc/qihScE90Pk9xpTLghEJzTo5ueZH6+BpUCjJUZzpYqgYbpoalea4BIPX+GSMJIK8sbunEnQGReEbMoMWc2qbJ8TkymDkBpuRnPI2xn3Y3sf9KyHnWyoElv2KV72cxWMtHFROgPlDpinFjc6PB8C9GILts0dv6kidOPpPL5CHbhCKHUp6bkppiq6BJetKdpny6uF6f5pU18TezImKY/DjLgqhAmH/d/CgJjV7WTRNPt9CEusH3irSQtWAokiJca5UINzZycTKJ/ewrTCCt0Tb6+kh9w8ssRo5si+zCEk+4KKNq7Tlvzhg1ShURD3o1Pk//ZVlJkXKZs1cpMlJHjezKqPFh98Rrkyb2DmzuG7mrpDQ2wPjXvJ7ZWrl7BEKQKx43YP/FTppe9OOQItDVcfA76fEcKbck8bT7joPzHePNx7e4LbX23cK7kaOpDCOJ
- NliyZWwZ
- A61f2YvSu7C9GkP3Vx1KoUi8Zmu8WnUf+LDw+uZB+FpwZzYEl297M7dsqOmqLQADQ8GlJWQsfZGmBaljYTAzIYQywjcP494iXIUWit+FbGXAoGt7mfGtJELKRMngyu2zbXbzyvMkGCVtziwSbw8oG8z7Xv6My2q3lTUDM/GAUjnC6DWXrR9Csm6mFzhLnBaimDCa9u+Gw8TYYKop86HuhXSEl5xHC8ySOF8HeJmg+l9ZChcBqpzfhduVWRrcVNz/Zz97cIaF5U1oKhJ77miaNni+tPtSzNf/VatM6xyVZ3idkiDwCki9cNh+kGeXrweOAgyEMFnmpjTIodDREoxJNsr5P0yDkM2dtS8I7md3KC5OFbgA=
+X-Stat-Signature: 97zieqcbbzoogh96dx4om47nwo6wj8z9
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 40173160006
+X-HE-Tag: 1786877981-670796
+X-HE-Meta: U2FsdGVkX19FfnSFLdmX+aOjWUi1vph95yCONqtH6KMLqZE/f5WvoQEIKlBchF1W9FbRcgt+2uMbSohf3l3on+DqZ0IXVVCPOXoMeC82PRyUy2GQQTgIGN1l2XgoxpWP6VKDiuviejNw8b1CdBLdQkvJkF4wmhzm0xrkvsUSWJajQxnXlJoOmyKUDenHMHG8dSAzLWPzSwbdFhwKuTfVPhZ7L52fwjbUXLmtHLSjmv4fbWHtJOtZaNyhBerYfQ7D8jE74AJ8daTdwhmAklY1ASPWpu7FdOefiO5he9WDzQRFcA9IlyNTjCabcMfi3lluk4vZRnUWno9qkIL5TMIQOFo/3POi0/wUhse9nSbgMx+IrOTZQllT9pAXhPcSwl9V/8tmIkwcJsYrqToEhq2LhvdRpt1pCvnfTZov3leVnFwUX6Fb7HG/xuyMZCT6wAabwDF+tl8Uxj9nC6CY/8Nj0xS7dbR7zTqa3tj+G1Glm09sy9ilk5Qv11sSUfRUVbTUWqv5349Ua5aKltoc+ybnOjfnDMnUN8Lx1q+d1i38NL9UMfc6T+NPB+4kmwcdYSXdHfMsBhC4SDjvO4y/qxGeT28Di2tYJEN0ktxcGdWFwUDgsEgLJm/o79BnGFOQ1gQ5Kb+TVUJeNpIYkmC3G7cDUTKD1ZJAj3JiImOxKFod+4lBurIE22lURSYa3r05fZRh16JF4wseWgAXZM4VpuZnplOTQndX3KKM0d5Vg7Xp81xLY1UFgc8Vh1j099+KubP/ZE3lSXEqVWD7AoqQKVhwFBsHZEDKxIv2oYQ0P1dFVlNrKaeyH/BRuOzRl8QRcfx1i+16zVRM4Hn1hUpwAj9wwGIcKBuDtFjcY2WtfWLoaZ6CFDlVTHDTWiIkhngAAgRaHw33ILsALy+zmvBJySDkNIRHwUuAZ+4mSej1F7zMCLcRt8XWoD21bfVGBYUn571Q0L8QluyQLqmHf5uwrr+
+ Zis0vL2i
+ jshXUFSULYmJLpH4/AXeLX8MpNc254e6pV8lm94LCqYTnv/I6E+cdoPzlpUGGSKhJXUJu2JHLihup9RZueU/BzKNN0130lwVjR6EdotjJQAiA/syMo+2MkUmhCTHGhWD3zz1i3VpByxOI4bNfl1t7+i9n75c32Ra5YK5KwFXySIdaks1PIYMU+FFHlIIJpIQ4wMxF5LSiA6/GdwZVi3TFvLdLoK/oCHre5UaBuclElA4xprZaQL/nOSBKPesrk0a7a80y0J2B2oI49JAJVx8eWmUSnNIP47H1Bdf2ri5e7xOELxwwRNJMPAbTWB8bZq3Vwbu2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,61 +116,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 12, 2026 at 08:48:58PM +0800, Guopeng Zhang wrote:
-> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
-> 
-> obj_full_size() adds the size of an obj_cgroup pointer to s->size to
-> account for slabobj_ext storage, which normally resides outside the
-> object.
-> 
-> Since commit a77d6d338685 ("mm/slab: place slabobj_ext metadata in
-> unused space within s->size"), slabobj_ext can reside in object padding
-> already covered by s->size. The extra charge then accounts for the same
-> memory twice.
-> 
-> The per-slab obj_exts_in_object bit introduced by commit b5bc35ace2c5
-> ("mm/slab: replace slab.stride with obj_exts_in_object") identifies this
-> layout. Use it to omit the extra charge only for in-object metadata.
-> Unlike in-object metadata, slab-leftover and separately allocated metadata
-> are not covered by the per-object s->size charge, so retain the existing
-> charge for those cases.
-> 
-> Reported-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> Link: https://lore.kernel.org/all/20260310113804.245647-1-ranxiaokai627@163.com/
-> Fixes: a77d6d338685 ("mm/slab: place slabobj_ext metadata in unused space within s->size")
-> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
-> ---
->  mm/memcontrol.c | 14 ++++++++++----
->  1 file changed, 10 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index d1312441a02b..aef480f46891 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -3526,12 +3526,16 @@ void obj_cgroup_uncharge(struct obj_cgroup *objcg, size_t size)
->  	refill_obj_stock(objcg, size, true);
->  }
->  
-> -static inline size_t obj_full_size(struct kmem_cache *s)
-> +static inline size_t obj_full_size(struct kmem_cache *s, struct slab *slab)
->  {
->  	/*
->  	 * For each accounted object there is an extra space which is used
-> -	 * to store obj_cgroup membership. Charge it too.
-> +	 * to store obj_cgroup membership. Charge it too, unless it is stored
-> +	 * in object padding already covered by s->size.
->  	 */
-> +	if (obj_exts_in_object(slab))
-> +		return s->size;
-> +
->  	return s->size + sizeof(struct obj_cgroup *);
+Recent discussion about implementation of execmem's ROX caches on arm64
+revealed a confusion about how set_direct_map_valid_noflush()
+implemented on different architectures.
 
-From correctness terms of view, even this is not 100% correct because
-it doesn't account for the metadata for memory allocation profiling.
+On arm64 it sets or clears the PTE_VALID bit marking a PTE as present or
+not present.
 
-But as Vlastimil questioned 5 months ago [1]: is it worth the
-complexity? Will simply charging s->size always make difference in
-practice?
+On other architectures it's a range version of
+set_direct_map_invalid_noflush() and set_direct_map_default_noflush()
 
-[1] https://lore.kernel.org/linux-mm/e7ccb3b0-791e-4e01-86c3-65b613e3cc5a@kernel.org
+Unlike arm64::set_direct_map_valid_noflush(),
+set_direct_map_default_noflush() not only marks PTE as present, but also
+sets its default protection mode.
+
+Other than that, initial design of execmem ROX caches didn't rely on
+restoration of large mappings that's now available on x86, but
+completely removed the memory allocated for the ROX cache from the
+direct map to ensure that large mappings are not split. This precluded
+usage of VM_FLUSH_RESET_PERMS for the ROX cache allocations and required
+execmem to implement manipulation of the direct map alias.
+
+Current implementation of ROX caches does not remove the direct map
+alias but simply calls set_memory_rox() that updates the permissions in
+both vmalloc address space and the direct map and relies on
+collapse_large_pages() in x86 CPA to keep large mappings.
+
+This allow using VM_FLUSH_RESET_PERMS for execmem ROX cache allocations
+with small adjustments to set_direct_map APIs and vmalloc::reset_perms()
+behaviour: adding number of pages parameter to set_direct_map APIs and
+making resetting of the direct map permissions in vmalloc VMAP_HUGE
+friendly.
+
+Implement these adjustments, make execmem always use
+VM_FLUSH_RESET_PERMS and revert set_direct_map_valid_noflush() changes.
+
+[1] https://lore.kernel.org/all/20260611130144.1385343-4-abarnas@google.com
+
+---
+Mike Rapoport (Microsoft) (6):
+      set_memory: add number of pages parameter to set_direct_map APIs
+      mm/vmalloc: set area's page_order after allocation succeeds
+      mm/vmalloc: constify vm parameter of get_vm_area_page_order()
+      mm/vmalloc: make set_area_direct_map HUGE_VMAP friendly
+      mm/execmem: use VM_FLUSH_RESET_PERMS for ROX cache allocations
+      Revert "arch: introduce set_direct_map_valid_noflush()"
+
+ arch/arm64/include/asm/set_memory.h     |  5 ++--
+ arch/arm64/mm/pageattr.c                | 24 ++++---------------
+ arch/loongarch/include/asm/set_memory.h |  5 ++--
+ arch/loongarch/mm/pageattr.c            | 27 ++++-----------------
+ arch/riscv/include/asm/set_memory.h     |  5 ++--
+ arch/riscv/mm/pageattr.c                | 23 ++++--------------
+ arch/s390/include/asm/set_memory.h      |  5 ++--
+ arch/s390/mm/pageattr.c                 | 20 ++++------------
+ arch/x86/include/asm/set_memory.h       |  5 ++--
+ arch/x86/mm/pat/set_memory.c            | 16 ++++---------
+ include/linux/set_memory.h              | 12 ++++------
+ kernel/power/snapshot.c                 |  4 ++--
+ mm/execmem.c                            | 42 ++++++---------------------------
+ mm/secretmem.c                          |  6 ++---
+ mm/vmalloc.c                            | 31 ++++++++++++++++--------
+ mm/vmalloc.h                            |  2 +-
+ 16 files changed, 68 insertions(+), 164 deletions(-)
+---
+base-commit: 1029098ee3275ea5b78e329ce132262affa2f8cc
+change-id: 20260816-execmem-set-vm-perms-v0-2-bae847a4f64f
+
+--
+Sincerely yours,
+Mike.
+
 
