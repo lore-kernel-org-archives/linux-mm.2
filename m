@@ -4,113 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6124C5B572
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 09:41:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58129C5B572
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 09:59:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED23E6B0345; Sun, 16 Aug 2026 05:41:15 -0400 (EDT)
+	id 2701F6B0802; Sun, 16 Aug 2026 05:59:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA98E6B0349; Sun, 16 Aug 2026 05:41:15 -0400 (EDT)
+	id 220C96B0803; Sun, 16 Aug 2026 05:59:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE5F66B034A; Sun, 16 Aug 2026 05:41:15 -0400 (EDT)
+	id 136456B0804; Sun, 16 Aug 2026 05:59:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BA1BD6B0345
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 05:41:15 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 522BCA2DEA
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:41:15 +0000 (UTC)
-X-FDA: 85106639310.27.ED1E40F
-Received: from mail-pj2-f10.google.com (mail-pj2-f10.google.com [74.125.227.138])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8A27540002
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:41:13 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BL1cS46U;
-	spf=pass (imf11.hostedemail.com: domain of foxieflakey@gmail.com designates 74.125.227.138 as permitted sender) smtp.mailfrom=foxieflakey@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id DF8D96B0802
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 05:59:10 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 73C871404EA
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:59:10 +0000 (UTC)
+X-FDA: 85106684460.06.347FE97
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id DF60420004
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:59:07 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Y8Kj/UNg";
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786874347;
+	b=eR0tDXBKfi6Sa48Is/j8659F+2GBh98Y6cZueZrD754O0cZNg8Bs7XarMPNfkzVvX62iNe
+	75qjPCfsicBDxLmQmRECh93AoPhIfpLBjzojAysCtwm9TRuMEUYwT6GRorGMZtG1LclA9D
+	gP8b7n1nGDiQYRD8izPERfF7UhHrY+w=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Y8Kj/UNg";
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786873273;
+	s=arc-20220608; t=1786874347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K+w3xZ8bo36DesNMI8mlOI+dkQ3ymR+iOqyVHgEBL4A=;
-	b=VaoBLlpAtDOyZbw2NE3KljPFQFZ6Qt22QEgiVUO8QXHN5zmFH4Ug38h6yT1xjGxugyDgPq
-	nNoc1FsIUfRJXJ0C5Jl+EHL4T28pG4NFqgojTzjE0SSIQU+7nn/0Ngjq1lMh5NR/ofDzkm
-	L7ZjqCT+MhkzR0zpOF6i+gbYVGBH+p8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786873273;
-	b=kRWjW2bT7Ak/6kKRlz6b3SlXK++jmlMnV1lNaboszOcWYmFU+P1Scrn8h3LO1WmxeXRcHv
-	c2uAY0ieD3EPrWyFQAShlJdH7ApwHdZpLVt4JeoTc+oWi1j59ZeuQHVn0FMMxCOxeIJI56
-	4JhHmRqoCC3cpx/W2iPwBfoZ2+txdCc=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BL1cS46U;
-	spf=pass (imf11.hostedemail.com: domain of foxieflakey@gmail.com designates 74.125.227.138 as permitted sender) smtp.mailfrom=foxieflakey@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj2-f10.google.com with SMTP id d9443c01a7336-2cf49dc298bso22174805ad.0
-        for <linux-mm@kvack.org>; Sun, 16 Aug 2026 02:41:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786873272; x=1787478072; darn=kvack.org;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:date:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=K+w3xZ8bo36DesNMI8mlOI+dkQ3ymR+iOqyVHgEBL4A=;
-        b=BL1cS46U6pua0cIc2YXiXrF/jUGBJNBfx9eOw5yW3Bklq3TrJ6leIkv1xBOv5JQolc
-         INmqD+lVHinAd+MfP4EHatuLJqwQ27nyTigdham/dco5dv39QNJC6NeXNuu2uqh23ujE
-         cG+55/Uh7HlZNuSRmh106cS/r3qdGQrCIJX2oZGG9tkZHjKXTsADJNdS/C7iTDU6Qog/
-         Cl5ntUSDG5rYTetkRtR/0t6c4S5ckaY6KN8AWNfCZyU08co9KCPaKM2EQ5I2pTfNRbIJ
-         FCqXMOwouTWTkIM3XKD9Sprap8OpqDz1EN6KsVQzEzld9JF1G4oj1lDiDqgKOBo1Lgfi
-         shWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786873272; x=1787478072;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=K+w3xZ8bo36DesNMI8mlOI+dkQ3ymR+iOqyVHgEBL4A=;
-        b=Kny1Fgb7CUY6C075URZBGy6UzjPjreGbZjeYw5D2x9Y4leoTdb91Yt/JZSNRPBhNzP
-         GkkrRLTZwxhBrHfvIVOtxym7kOeV2Sppp9WXsyfYaVG/7OuRuXZFrXtuYBNTq+GfA0rr
-         nVdUO0Fzaq+C59kHL3e9qvFIRZSSKCROBM7GEOi8LH9FJ8ezSltPoJnXoRbgTjgc8CGr
-         R/ZVOpnMm4W876zfGd2ovyZsPhlJ6FAb6Xn4ZUxFf4ZqvM/Z3BXHxE55qS19iaWT97sf
-         PsTkXSGF5otRvgtcD66ticyLwKVFCtKyKW62kTsO4aJ+dvYjR77G484EaJmYFoVw37On
-         G1rw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro8bJWJsr0maeS+I3bnVg9zGBp8tn1vByJU+96iF49uO6qIifj89sJ30ZgPhYL05QQBBdlPgWuq1w==@kvack.org
-X-Gm-Message-State: AOJu0Yznk8c3hGw+kFuNPZV4Lh8HXaVDQbug3gvtk/P+omvs+tsN5nse
-	N2bmZndz9CuBRbRBLQck4hNX9v7KSgTSpX8RmwKk6uT1sGT9a6JwH77SiapZB2hWbj4=
-X-Gm-Gg: AR+sD117PbOGx/gao4WBfs31xHfoIfppHHq5HKTkS5P7RHVgXprAI7yn9hfXNzW1n4O
-	RxiW8Rafm3nLkYJFd/2DbLwCWz9W8s8yC64a8/RbeJlnL4dE9MsjLOzJu5C7XGXV0VcDGK+Hys3
-	/WDY29JP353WdGVyNf5FYtseyz7X+X1g1lFKWYJsTg7/CSiiF3AxsJGCoFtopFTRqrQjdW3WG4e
-	qp6X7Yvde+2BnCcLXkPRvwTWYgTt2Uw3RWu0eTs84/1CCA+x0FZy8ztY431WwAVjozh+5VKZ78v
-	xyWMmW5fmg3vcPRDy2I1B/i952JoaAWg+JtwtJCOxso4KJKgpG3fbGWtr3o0/CUxYnvJCkqgdyP
-	4XMPMsgP+lZeC1gJYbiXYg8WVPsSKsYloxBsjpssGuP6hdCNP1YTiPPP6sDGUSAc+Q6ZXpGgBOi
-	++X2RoP9/lG0U9g640AA3UyOTOJvpoBkB7SZSU6fWm5rU4+gc5UxE+YBGvInRaF5g=
-X-Received: by 2002:a17:903:22cb:b0:2ca:61bc:317c with SMTP id d9443c01a7336-2d3b0c5df17mr174098085ad.13.1786873272194;
-        Sun, 16 Aug 2026 02:41:12 -0700 (PDT)
-Received: from 192.168.1.2 ([157.85.198.7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d3ae7ea4cbsm24361895ad.32.2026.08.16.02.41.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Aug 2026 02:41:11 -0700 (PDT)
-From: Foxie Flakey <foxieflakey@gmail.com>
-X-Google-Original-From: Foxie Flakey <foxie@gmail.com>
-Date: Sun, 16 Aug 2026 16:41:07 +0700 (WIB)
-To: Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>
-cc: akpm@linux-foundation.org, peterx@redhat.com, linux-mm@kvack.org, 
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] userfaultfd: reset err to be 0 when move_pages_ptes
- succeeded
-In-Reply-To: <aoF_qmSHiEgujaH5@kernel.org>
-Message-ID: <69522f38-7e5d-ebdf-d42e-11d822bce662@gmail.com>
-References: <9c936a9f-ed27-e510-872f-5b3b8c680975@gmail.com> <aoF_qmSHiEgujaH5@kernel.org>
+	bh=NTYJAsVDkO7YIxBVl0sfyICvDw21eBl55uq6tMu+icE=;
+	b=Q7Fg/cXSf5lhyBVCjn+tNzOr4MxBrlWxi3V6axx7FE1l9yKp0KHH7sDutzssu/T6g2j+Jr
+	m/ZFqgYoX330g1wQW+0xiSktiRJELIXuaRiZInF3vCLhRoVm9IxDXQOLcNZUTE4fIzUOve
+	LcgQlBnD6OXbBeNYNecD1nuw0h+PaD0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 20ED140557;
+	Sun, 16 Aug 2026 09:59:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6D31F000E9;
+	Sun, 16 Aug 2026 09:59:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786874347;
+	bh=NTYJAsVDkO7YIxBVl0sfyICvDw21eBl55uq6tMu+icE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Y8Kj/UNgRL/skfMARhgY4keWAMhwtZeZa9GTiEpwT7TsDVKb52rE3IlBql5jX7br+
+	 crgRNKTt/d/EEr6h+SMDtPodg09wi6BcmELkdZ8pF0AVnc5JDXHqIdk2PTBPt1nGfH
+	 PID7IZlTaKnSQkSuz4Anro+841WvPyI7+Kd5T/+NLUQgQwG9tpVhgbgfyZatvtJhw8
+	 qitPPHYaSRfs2arUlT3nj1wFT3uH0+n9pERnI8GGdpfCsFuwKFezDJxBUIRU8I7M+B
+	 /tLBDWhjnUjZ11fe6oZ9gHXuRFWY5ABu1b2kq+T6MangVqAIMg/qw4Rz7845h+RKvU
+	 QwxpsqNjYyKgg==
+Date: Sun, 16 Aug 2026 12:59:00 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] arch_numa: Avoid false positive fortify warning in
+ setup_node_to_cpumask_map()
+Message-ID: <aoGJ5KL9cMl1E7iV@kernel.org>
+References: <20260813-arch_numa-avoid-fortify-warning-v2-1-093ad97a78df@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260813-arch_numa-avoid-fortify-warning-v2-1-093ad97a78df@kernel.org>
+X-Rspamd-Queue-Id: DF60420004
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: wzazijcwwei36ggjf41qprttqrjousms
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8A27540002
-X-HE-Tag: 1786873273-16271
-X-HE-Meta: U2FsdGVkX194ZD8UlkQYmioM2OkRTHWajLWMWR5hKDT7PKzQWArvgwJytwJNU6AzoGv7wESWsdUpUiR32t0lLo4TVCfxUN9+wZr6+B2ro+pp+qOh3cAKt+XciVmqxRe2VjAkcxoDDnvnoaURPgpUBj9s0hxqv94dUuhw0U6DpvTTJsMoXDkeclQpNZJXEcm2caIPG9PEVj1LqxR+bXxJldcNm0Vc2co8b2ZLsRrQeAV4IML8xCaAZY6PoTPamhnnOw/20p9ifUQume2eX7iLOgCYEBA2EEzsHj8J2yUSFlObaZzRkezsPxpSt6S2gR1f84YT0dYzqKh+bt9yjxS9uFJUKLG63aU+96VJ+Yf3c6Y14ZSmRkBdaAsRbaV/r+QkFtW7RmTBjeRd6U2CG9672L1bODRcFp5VTBuKx7qc0ZjQ1UkQSnxgyQvTIS14qUrpC79uvxAer5cpUv1sH2Qj9hxv537571tLPI8sLWm226AGK43Bx/ohhWYSZDVwmBsKRDS7bT36BQtWe+C3FX5ObgH0m+vDBg8+5B9V77L7QdWCnaxQ56VID9n72/eeNjrGwIi1z93H+noLM/stZjRXDoztyPHIu0DXFkzi9q/3X0MNvOtOMkvfjBQZJmuQPMvIOoQpZfl7HhhQjlumKXN9ioxXltswcm048n4YEJUfKFwCCQ9IwdGWHshGicmoxDe417kMHGfVfFPD5ty+jCmju3y1wrWsLaVkR2Q0AMkwf/fgggNZ5yNOnd44UwfbzrKpqEV29uQMsBgAtAjZKmVlJvzZa8rITbbYlTXxoOmBBsVjfNCzgXXPyzM1bbF9ERNfW6kT3LNJiUjjipZod7FUP08hsctlqoIqGK2uU4IMK80NvwA7sDynjYXxVAyKokSS0fkvh+cdBlyeo1B1qzRXl2z3NTJWWc4eb64spgxGaeip4IYIdvzSHt3sn4y8TUSbZPTInX1/xm5qx3mvwdY
- cbIHGwNW
- jtebY0XStltU28EKCGXhgm1f94SOpuELSMftPSvM7gj00w9gLNJUtSlM/WUWRUWWjUOg7iOt0mKWqf5gtqCgbXweTHhjtR/xqCRrgtorMBYlhXAAJjXEQnB6r/UNl/gy6cTDA1zbys5cXaNpSqzRYd4MbiuWzIgHQ9QHW45PNh2jw9Pzmdiju4flMQjQsVWCHMT6mGdf54j3ptm6YJLe+sa/FD49oxdJaZOeyW7wp8q2YLhvkOG7ZgIXQmiqFOdEz0/MRegbgcBadk9I0UdzrY+KplEIyJdX0GM8+cfiTrLqdVitphGrRYypJB8amSJuhIreMifK1VQqaSugQaxc6TYsn2JxMMajKw3y/dQGkkJ5b0ynj1u5fnel9tJzxt32xbe6L7/u0/UCt67G1dtk2fXvh5H9nrczvUcHaeiEF9oR8IBMig221D2mdJ5+LEM537cDOETMsNJq7fHd9c98Dau7UkiZXki3EzGWWpvPNMOrsOgROBVAWIDy/anmIAzEFaJuXW8Rdy4mhIByVz8OOtBdcCikfyM0XKX5CiJqcbU/VI5xwGW30PeqHEFTGcFRH4hzFnBje+L7evjfbdrKOph2/Og==
+X-Stat-Signature: qengpnfqpx1dforeezfep6k7ph99crrq
+X-HE-Tag: 1786874347-376010
+X-HE-Meta: U2FsdGVkX18JagzmL/146Y+b5HbNR4x9w9iy1sUHb76TjqgBcdy4NHNYqjfYSfYWxCr8NW/6MbSiUYHd22G9ReLKuYphwA4LJcOm7XLAwHkd1aXHmVvZHd3n4URdytXCFTbrPMgLn6AKmF/eusqUPzb5AM2pkNANinxqHNw2l89ZRY6mmJb7kUmnlzplCZ2QvqUKKDgPWm1sIcJeCk7QHPuxGZbybQo7WpRSUHNILsK46PSNvBM3J7Twh4wY947bLRIrr0YIOiy7peonpXsKJRNH+r+mfhyZ/Xa0p592aawk5tHxguPVfh970mk5pitcZyHeB598Z+guWDYP/xRgqIUiASS5ePX3OmYuaDzNyeGZAcwHWDd5odbrTAJzZD4fVkSDnxsmTd//pdMvBIFkbh6gTc6KFSiyFvSjGvJLENt5DNT5xHvLY7IRsBOS1LUC4bxKZyvX3fy7nsFHJfcT5dvA3n5zGa/Yf/8Hzoc8kNfc4SR7XrqChZ8tVp4DhfLF2kE9sLy8nMe7PGQBR5WGXGqAo9mAZjQTSHDYP2mkTvTT6ccaxXraBugDVw0Ujei6iacau9aybIiLOCt1aomGQGoI/eqpNur7/eyJOcXd1A6/y6J+cAtRtwxwBSn1i8YpoVf6F7ovyh148fLng4KO/zvKe+zgd1YcjUwslP2Xdnsq9mTAX/taN6m6eWFj8q8ui5BDp2YnbATnFNzA+Oko0WULwBYhsF+EbfzLTR6aNHEvae6A/mg2v21OO5Cfb2wpKRBIj4+xdmvRIyuv3znqIYYg6Mbtw2JX2u8haLj/iFvitX3YNtJBbuvaLwXRcLjilFHjz7HH7sJ2jTUS6koDzb/8U7zKYDpY1uv/gd/P4P1Ba87C8LaIgKS6efG+0eAYfTiivelzhn7AUrYlGE573LttlshaO5gUuLwYbRzsRsVFMONzuaKNouR4C+vGQANVgZv9UkVCxpUyICU/SfV
+ kADLG5vu
+ GMnxRYKjEJ1Ha5E84z+SWBhobLAc53J5ub12onju3u/OBlVhEOVRAE7MOG9CPXlBLwb64DQrLV1HSZN9Ya+4rE4DbaMKT+rH2dvt1s7IO6Kt/zAYMFRSXZcfahV+BLrCfflG2JAYm229FlcCgpSFGwMkFrBaOnaJvuCzFZstXrLCErI4SN9MM6VPa6cVUluLjtsXWs/5nZ0b3RhW1h1B7wTBKSYyK5X1yqJKbuFcyNsXiXcQMtUtM0uifJvBp4wfbe1T/RoBfyqElQvEI+6OIGhD8wQDK+acHNkqH54yFQ9O5u5Gwc/BDhlOHcy5Hrf2cWyuqTPhVecD87pRW2pAHtdweSmpee72pdl7r
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,21 +95,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 16 Aug 2026, Mike Rapoport wrote:
+On Thu, Aug 13, 2026 at 08:12:55PM -0700, Nathan Chancellor wrote:
+> When building ARCH=riscv using clang with CONFIG_FORTIFY_SOURCE and
+> CONFIG_UBSAN_BOUNDS enabled, CONFIG_NR_CPUS > 64, and the default value
+> of 2 for CONFIG_NODES_SHIFT, there is a compiletime warning from the
+> fortify routines.
+> 
+> In this configuration, MAX_NUMNODES is 4. clang unrolls the for loop in
+> setup_node_to_cpumask_map() past this, which triggers the fortify check
+> when accessing node_to_cpumask_map on the theoretical fifth loop
+> iteration because it would be an out of bounds write.
+> 
+> Make it clear to clang that nr_node_ids is bounded by MAX_NUMNODES due
+> to the logic in setup_nr_node_ids() by early returning in
+> setup_node_to_cpumask_map() should that condition be violated.
+> 
+> Cc: stable@vger.kernel.org # all applicable
+> Closes: https://github.com/ClangBuiltLinux/linux/issues/2174
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 
-> (adding Suren)
->
-> On Sat, Aug 15, 2026 at 05:42:12PM +0700, Foxie Flakey wrote:
-> >
-> > Fixes: 50944692052b ("userfaultfd: opportunistic TLB-flush batching for present pages in MOVE")
-> > Signed-off-by: Foxie Flakey <foxieflakey@gmail.com>
->
-> Is Foxie Flakey your real name?
-> Signed-off-by should be using a known identity (sorry, no anonymous contributions.)
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Thanks for response. Sorry, no. A question, by "known identity" there is it
-means my real/legal name? because I have read a document about Signed-off-by
-and because on internet I'm known as Foxie Flakey in multiple places, I
-thought its fine.
+> ---
+>  mm/arch_numa.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 
+-- 
+Sincerely yours,
+Mike.
 
