@@ -4,167 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BD0AC5B572
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:46:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41F02C5B572
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:46:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08F736B0364; Sun, 16 Aug 2026 18:46:16 -0400 (EDT)
+	id 068BB6B0366; Sun, 16 Aug 2026 18:46:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 041036B0366; Sun, 16 Aug 2026 18:46:15 -0400 (EDT)
+	id 019D86B0367; Sun, 16 Aug 2026 18:46:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E71466B0367; Sun, 16 Aug 2026 18:46:15 -0400 (EDT)
+	id DFC2E6B0369; Sun, 16 Aug 2026 18:46:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ADBFF6B0364
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:46:15 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 82AEC4063A
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:46:13 +0000 (UTC)
-X-FDA: 85108617426.22.1E93289
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7E19740005
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:46:11 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=uv9iAiBe;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf11.hostedemail.com: domain of ackerleytng@google.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=ackerleytng@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786920371;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BFC16B0366
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:46:20 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 05E6212010A
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:46:20 +0000 (UTC)
+X-FDA: 85108617720.19.059F7D9
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+	by imf26.hostedemail.com (Postfix) with ESMTP id F29A7140006
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:46:17 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b=P8vrMzlP;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=acpPsw00;
+	spf=pass (imf26.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786920378;
+	b=yh1gdqe8kkfwGXrV0p7pUZKNWXPw/0x1rRBWbl74qoDn4RIzIfipnHMgZ/NWM6Srw1U8ji
+	7X4PozYA0TCVlXvPTvxxXfvDSC93WUJezfvgF1WDayKDgQbWc2OJg5m2vWySxlZ7m9z7Fp
+	wtnA3mzQqJ8GN2cCEcMv+mYvDgMDQCs=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b=P8vrMzlP;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=acpPsw00;
+	spf=pass (imf26.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786920378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uRJG9crnjSHGaiMl0ul/ePIhOSVGvO5xGqUR928BxPs=;
-	b=rj9+DM3Dz/IjheqHzPFlJOudd3eeoVjGg4glJcuzV3k0Y7p4kh7ZT3HCQffKFwLFfgxbhE
-	cHDYrS5eYkXhSeeKkUnsjW7k+BGWlo2fDdylqCjJpZZ0xQSHVyhfqxzkjcwmRH0OMiupFK
-	bc3zpTQ4nZSEVqhGz4OO31DiqPnHH38=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=uv9iAiBe;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf11.hostedemail.com: domain of ackerleytng@google.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=ackerleytng@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786920371;
-	b=fa5rGLr115DpvS3M66i2Pkr97HtkjHjCpcfrMfnn/Sa1o0p058fS9Uvv7OLv14xZzhGggG
-	MFIW6l7Ja7cT8c0B6epF8OgQBwvl0Cn0Ti+zK3YtQlkv/fUAk4yNonR8vHxGT38BFBHZIP
-	45OhIcHT2uOWxl8nTVivpsMEFHKy8jY=
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-ca00f126b7eso1661164a12.2
-        for <linux-mm@kvack.org>; Sun, 16 Aug 2026 15:46:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786920370; cv=none;
-        d=google.com; s=arc-20260327;
-        b=KXzZhW0OwvD6TwR/i03Tm/iDZVAs3U3bXnOxQyE1fL1SfgpAndt31Ty0fWPJa9TdON
-         nY0WVkzLPLDxttgzpZCnILiPqaquKOTadsNxo6WJS7RQS3veFioY+rLArzH3FOUxeA2i
-         4ycKpcLNdKk063ycywlc5ucxzclADl8zixwFmoGmcltpxeCl3kvGBiYS/XLqbQQjbYpf
-         wmmUeXDswjlkP3D9/gx0aCDLtpIk5Yqe60LYR9ngpDHQT4tpkayooOsBkDC477oIDiZT
-         6eB3KulktkUAQc8wCgGmGsQNf4tQ5iNVGsjLsNGwprS7BEn9rbkWB863h0cuWKPFXN35
-         6zJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=uRJG9crnjSHGaiMl0ul/ePIhOSVGvO5xGqUR928BxPs=;
-        fh=zzyT/KUuCx8iLzzqO4afK7vmkql9Inn/QdnNiJXrep0=;
-        b=RvNRoB9CRCUhzaHnRVTmrjmh3EKLIS+m5tMTFQiEhT6bymTw6Nlc6uD4MN4p28q8V5
-         jA2fgLPddMJm8Y+1mckl+QVrYWZwvSe3r7yJ8t+D1F0f9SFRoCwAMlqvZ7/B38RCQkpG
-         0vvgaLWtvTbPqRj8vXJaapJQ+Wq6z+JsVOB7fe5JPzomX8vUFtVKj5xeYRDN/aJEZp0g
-         vsmF1wJVTpvl/AQ+0Kq2JgR5ovqfq0+jwsIeWyTc18SfbiFurA5gfR1COHgvnI5EA2Br
-         iNYi8Zzvo8bzJjAAMiSWPzmqEf1qbSAS+aKiEO7MZGHpAiVI1xCtpnjdYudY36q+jvnb
-         L09w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786920370; x=1787525170; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uRJG9crnjSHGaiMl0ul/ePIhOSVGvO5xGqUR928BxPs=;
-        b=uv9iAiBep5wsdH6YaQ2blk+NDcHoAFRc240KzIC/ufCa50rrxNnUjpzlGWhZntkZiX
-         7+iICGG/Gylj2orpy2XukcnS0Hk4AGP2UnRXUjIztFG5jZ+1T8r3kv/Rwb8qDbAZeK/x
-         +ZWWoMglnKqyDV4eMDABT/NsnJv85c2Kgnb7ljINFpB0XC3Rztzr9kxJ55xUPLFKWJNG
-         7xtP2wROPf9zQv5/MAUP80POgSnIaxfdSdptT83QVnVCZB7UGstkWN8Ova3rN8YP2Agu
-         dt8mmRO/0AXENyNYF2te/e03jc/qMX73tstxodorkQ+2y9PbOKG1DMv4oXJFh6pS0FIx
-         x9+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786920370; x=1787525170;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uRJG9crnjSHGaiMl0ul/ePIhOSVGvO5xGqUR928BxPs=;
-        b=L1jrbtVu4qeXN0wra2UWzG/6BwG9FZxJtvRtumvr2zpckklWxsYeOGCEcYTXdi7TMV
-         MxwrZ2iLA5W+/sFOgnARjKBgQ6OKqfgFWFs2xTFXhE/FP77XsHBClJYGUErVjYdwLjNc
-         SYQjNR6Y+o2Ic84gbc3mGecED5sLSiLEzFSBrB4gqRUYKPiZg9DnhFU/4H9ZP1kYWrnJ
-         TWdLV/PM84s0zmFASYLAxFuiaWuHNnmRlRCQkTrK0WJI9ProRQKk/O3DYSpQ1sNaVIyt
-         /hDMu1zHXort6V3cTPcZxrHMU6m1DaApw0/u/aba6vAePtrtqlzaVy8D+m6u/aQoafmV
-         KngQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrBp+j2P2vQvMMbVWwPYNLPcTD1f/6Rs3U1zGUWf3udAYHBEEq9IhPQlhomBRaG/s854e5WrU65Ww==@kvack.org
-X-Gm-Message-State: AOJu0Yy5ZuUN3JpU1pNNCjDpfTVXHWTbVT+ecHSnAWJ86oCWa1m7b9de
-	9aPNX7S+HVQ1JMzv0LZZxT8nqS1+37HSecut75MtbzszoQSjOefr4iwq/SWTD9FBmN6qjbryj6z
-	UFXe1WnReKppGiByf9Ns2XgOAzkqNdtCYOe7GgPlm
-X-Gm-Gg: AR+sD11nxwLYKNCy5KsoXxAXdvJAuzTK1xb+93ip7tjJiI/LkakfhqFtttaKIWV7ej5
-	TF0Ia9pGjkW158JUWMnCkfDyLS7/VCyWG3vNtpXXYEqVj4nE122aTqB3nuREuYfhoUimoD07rXU
-	7RMdWhb6KqOeIxwlkDILUfjRXVYEvzLMvK0tOptGOluarEGuGzAZXaeTPH583sQHByjyvxkw4rX
-	l4t4wcSxMrG7u/HaB1+47pZCyGodM+eJkN6NJEnsIvVLAZtM6lcHuSh8SIouBWTEqc5zPp/PqUU
-	I2B7274AG9pVOc8ewz1rqYZUd8QeZRV7RBCtjZeDTvj6OvgY4EqM+ydIFEPRA9RzbxZx2xs4gJ6
-	1bQ==
-X-Received: by 2002:a05:6a20:748a:b0:3c3:a9e1:a819 with SMTP id
- adf61e73a8af0-3cc71fb5781mr22866718637.24.1786920369447; Sun, 16 Aug 2026
- 15:46:09 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 16 Aug 2026 15:46:08 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 16 Aug 2026 15:46:08 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <an8umm0qisEidt4n@google.com>
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-12-2fc18ee6d3ba@google.com>
- <1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com> <an3o4h-E8mj6CUaM@google.com>
- <CAEvNRgGpCVCGVjc9jCt9Yr+XypF=71h6eBahkXNkrXhfrtGY+g@mail.gmail.com>
- <an5AcEG9mqDgnBYk@google.com> <CAEvNRgE+05c9U8C=Zkm1S9hLw3Lw6YMmijZhEe7J4rYQAuNyEw@mail.gmail.com>
- <an8umm0qisEidt4n@google.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=KMOwF7RaNQPDQT30tM4Ai1c697tQZOME6gODSme32nc=;
+	b=1MbYIgy7Mb2bQO1oycZblPuo09ZKDn/1qXJ+W4kAaHIJv0uwyyfDlYigD1msAz1ww/Tfwl
+	nwKI9KG5QgD2UW63fIwyNrO/xaahoOApGMh2QgFhYLZZ77iQ5NqqzEb99L/p1ce2G995ng
+	8vZ1gscKxjAsdJfXdMCOgtfS1uw7Mb8=
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.phl.internal (Postfix) with ESMTP id 69933EC0074;
+	Sun, 16 Aug 2026 18:46:17 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Sun, 16 Aug 2026 18:46:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to; s=fm1; t=1786920377; x=1787006777; bh=KMOwF7RaNQ
+	PDQT30tM4Ai1c697tQZOME6gODSme32nc=; b=P8vrMzlP7j0qo3sbRYQ+UWfYt2
+	eMTGuY7KNZnw1mpVceMeJeTzQnTGwyT5ttp6T1lpFKs9Ehe+b22o12cwlJ5q8Ndj
+	y9Z4DQ4SqdQYnpOJ2dtOYL0yIMcPyRLbi8zIgEFGh9Jg7i8zHWhH9h1Xb9MnbMoO
+	2SL9jjm8vIHjdHJlsfoLWB2p0u0FDeqxLZUjiFlpPodjHcnGyc+F7JeVGRWeU7/H
+	rRlvZ/gQLwO01yv3/yd9MkjkhQVshj7t/ztc3L0Q+xMTyyKIAW0BmS1hMwRQLXby
+	HcqZhtJ/H+18pEHYwqLkb/jndyPcKxLvBZNwlThBUcOwK8mPSTlvvkhvVOLw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1786920377; x=1787006777; bh=KMOwF7RaNQPDQT30tM4Ai1c697tQZOME6gO
+	DSme32nc=; b=acpPsw00x12aF7BHBjO5u9Dx9isKbVV5ZtyVxIt5V6oMNGqla7I
+	sGCvDOU4IFs3B+US6xGIfR3aevvIi/YKdHDvUL+Z9QajYgeQorE2D+O5ckJyA5dp
+	h4sM1gtiGPtV+rA+VY5GHWy6weof/4bxZ2j4oVLJez5nHvBFMF6I3KqXHp6NiCaQ
+	PBCc+hIEqoY1MrAeC5gGE0AyhL/tr9818JjDR2Bh4SHIs+NlUuo7ZfJM85ZryZtv
+	BdVAchkAdbmPrcq3xGUV1bCQx0eeGvF6U8T+OG1ovNsNcMCzxH8MH6WkkQFYJuLa
+	wodmvHgPWJVB5BAuV/5E3dN6erqk2hLQnAQ==
+X-ME-Sender: <xms:tz2CahbYxUBiRiO_uYHjy8BlslnzvRozhK1sGI9oSfNrr32FdYEggw>
+    <xme:tz2Catv6G2eyCHm4JbnXE9mX87BviXTTo5ZjfoLFZOgjGE0DHDdLb8jRIeB44ChmG
+    frEYeePpnDxTQZ7CL1hr770P8xZMtoO_Wnk0gSx9ZgorRSzzxqILQWZ>
+X-ME-Received: <xmr:tz2CagCJ_JLDeQ24aeGl9ss9PrPLRhzZmIax2jGmOv5aBADEq7Cuv1A6-aY>
+X-ME-Proxy-Cause: dmFkZTFbCYZrON7GHnFBAPU1Krpos2uameokKZSzsDNNiRFuKEeMF/qF3g4szPwPpFXL+t
+    b6LOI5RUi8UTUHTgtNMThjzxQnbX4+l77+aqJB23DX+f1S251w/8mrs6yag0xeRwJsvw6t
+    S7CZ1rz+5gbtAanQa+AJiRKqOFYxpmPNfGHSYtWiA9D+e+wmCBm81EmHF6RKRdGLlkJ9v1
+    Jjj/zAsKIy3c8TYRGGJc/x0qNGzjCezb7JYt4osH8UmNbf2ECT5as2uUYGo1uZh+USD5Wn
+    SNio1GDB08UT1mOLIAZwO3Czn/AJkiCFBPoG2cp9YkqiVVAZseuObubo1nHkQ4I8BjyeGz
+    kCFLn1eobCDDSBuO4+EIrAQTN24ftXMaTDHeaIGvg2tac/2TKmhk8Jls8wGJtiprAvbySe
+    MUyuVBsaH7VSAwMwjKcLy/zqTUEiouWSGFoGx07Y27YTmIQ9cBbHuE0DvDi2sfzisuoHe0
+    5FyLY2BTWrCQJimorz86OtqckN6nCsp6RGwdhblbPOoLI/oVR8izi9riGk+5yCzCLbNeG6
+    JiTC4P+iwYBPOj9FG5k3BQxB0EHKQPOv5USKgTpiuFN8GJ9AaOqHYtudxPDpgWBJ2ggSG/
+    m03+k/twEtRsrkGJnOFcfVSbiGzz9CXxoouLa1NpVRRD0u8m7ZiShfsi9/Dw
+X-ME-Proxy: <xmx:tz2CasM3KaLFC4tOxeKQqVTL-kJb2UqEOf53XcPL9xVp0Dd5KUeAOA>
+    <xmx:tz2Cai4xy5TnKEKePYyARxNYIqKJFmZbJuvL_jxgacjPYgRlgAq16w>
+    <xmx:tz2Cau1iHDM4kz5x4DUOtFS2uNwGF2mhcB_ghPliI52wmaAC3LxVRw>
+    <xmx:tz2CapphO1kPVpWkOMwCSs34aQbsWqNSue-6iyO5adZ394s1d688tg>
+    <xmx:uT2CaheRAYD0EKUc8UvkihIwBiGGC9W7U2bzF7EIQsHI5zM2EkWJSmFS>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 16 Aug 2026 18:46:15 -0400 (EDT)
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	nico.pache@linux.dev
+Cc: baolin.wang@linux.alibaba.com,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	hughd@google.com,
+	lance.yang@linux.dev,
+	liam@infradead.org,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	shuah@kernel.org,
+	surenb@google.com,
+	usama.arif@linux.dev,
+	vbabka@kernel.org,
+	ziy@nvidia.com,
+	usama.anjum@arm.com,
+	agordeev@linux.ibm.com,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kas@kernel.org,
+	jannh@google.com,
+	willy@infradead.org,
+	pfalcato@suse.de,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [RFC PATCH 00/57] mm/collapse: rebuild collapse on migration primitives
+Date: Sun, 16 Aug 2026 23:45:12 +0100
+Message-ID: <20260816224609.308019-1-kirill@shutemov.name>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Date: Sun, 16 Aug 2026 15:46:08 -0700
-X-Gm-Features: AcwNN1VMiHczbSFfHuHVB6i-2Pe7bEu3JF_t6lQmU1zbdAOxcIWciSwKVy8tMcE
-Message-ID: <CAEvNRgFNCDDSeuvbwj7pD_d18o1TBXo4TNR2dXHxpm18KPfR5A@mail.gmail.com>
-Subject: Re: [PATCH v10 12/41] KVM: guest_memfd: Call arch make_shared
- callback for to-shared conversion
-To: Sean Christopherson <seanjc@google.com>
-Cc: Binbin Wu <binbin.wu@linux.intel.com>, aik@amd.com, andrew.jones@linux.dev, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, Fuad Tabba <fuad.tabba@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: k66x3wiy4xk9kd3ugi8szre65j781tox
-X-Rspamd-Queue-Id: 7E19740005
-X-Rspamd-Server: rspam03
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: F29A7140006
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1786920371-803248
-X-HE-Meta: U2FsdGVkX19LNXVFIaGpjyAViAtXyJjIeg8gBz1qA/85R8XNkud8r1WYuaR8I1Mi4eLuCTDobq6hOBs/UzkmfBd070Ua8e9bkAqHkG6LjJt7ThbAMdddrax7n2+cx1+TTOJqMKCQ6ww/AqTfhH6xXWWdZpHHUGT86RVdju1D1sdbyDHCgWgUdDgnmrAH7jpqgUeaOCgPXZl2BBu7QKIlQTILEr/pUTfWlB1ymG6gtq0cGGnH0djETZKD2m1+g5N/c9G5aj93St0UrTqV99FBgUx4wdlZVp+7qir+HutLWt9nBhs6kdQlcjOAjq/4ZqfHw9lPEn2+9UuRZcJXWB3VkbvgNMf9GVdL9HA0OfNkHjnzvVP2uT6zOtdKz+K3QUS0LtzBe6bLHsI4jqGTGFiCL1HCR1jxaTg+5dyLPf7eWh0kJ3aPRdYoPN2EEv/nayziInRBF0KSOxWZB7fC/wXo+Qd52wcV/heIMduVBk6X7wXG37MZTfqBdBipvK1QJn5JbpmnkenwqZpqolY4ediC0U614fZeULBbw/2epfe4A7yjLkV/JSF+MSMhpxqgJA9vrLdigOwKgZTJ/sooqbsQ8xfAJDXamFuPW61p0PsAhqD+cL/aqdqZw3G8PIdVEPp7P9+xxkVFPEl3Mww44GDts4R9A5oqyT6gTtERxqo+D8Exhg3oVcVoSrruohd42SK3w0SQUN2KBR4wc8QnY5fI4juVZLxA7AmvFvT3bbIAVBmBTtoEKeCP1tSycbFeIVQTqHo39WatcX6J+trbIxAutSHR7p6iXfbzldurK//vjwQjBNtf8ysMD3vYkuM/Le98VK6O1pS8P2wEsiGxK9gdmcPQUMdAbLoy9FSANLfJeaIJbMdHuK9oXeboFnh0AVTeq0LW6+WW+yvO8zPLAen6yBwc6cE+AYwW3O2mDaIY6C9g+1RXVuNbJnSCYLr3ExSiBz3fWEuqWkKLYVTb3rN
- MSTpZaJC
- Do5f/mZKmw6Ddvz4HGWnWEa7p2BhgFip6Rjg7iT5LDwxmKnjLSGNzrll7pCsTwwtscG/TCPU2V8cNF/rmkDyg/KsZFbceYsLBwAu57MFqABHZaDpx20i2068yxS4nGlCVY+NIVjqrXfejqTcLvuUk2ohY8EGmHTraJ8r4YtgnUAAdlsmWT8H8QAxotkPg36jMheExjL2OqMif2KzpL3UQ6xDfTTKfq+A4PFNIsB1XtP6gfjbaql6MDo0NF9aHdS/S6sMHCU5yfQI9T2jGlCMLMNsiCpwt1aHdqIE3svy98CXAqiUEeFC+OkHEgK62s409q0GeUvhwEtSdq5Z8Dkl7V2202bc5jRT1ilVU0By1iQrmfNj6DVS9g5o7NviogvbwdCJ+9bxIKkWgJeY=
+X-Stat-Signature: 5p1jbj7mc3fbbqqfr3ah1ioyqjmqxdx1
+X-HE-Tag: 1786920377-981509
+X-HE-Meta: U2FsdGVkX19/3ibRvu7uf1fmFbVTMUhMqOVYXf9B5/DiBxuIxWyuYGS1ZPeA0ncsAel4+4l1rogQZ5xaLOx1J7BfhAbJDtcL0cnhYlVarCEfrEqxoRScARwsd8ZtJe+j8hXm4BM83JZg5ajDZ7z1n6QkYv6BjmIRttaZGljwy8Jj0BIx6CGL6THcOaLy+j8lWKfs8ipjfJnPjP5LDULVdxu9mIvVF/Vn9zvnaw20H3V00lG8m57qkbQKlSnyOC+vslAMgQ/HxURqjRuyzQ0NFfDlKSNA3ncEyYpL/DR2bUaPHA6tGrAnCVjggghNyUWr/LGQrANGFX3BrlXi0YpP4oTurZOfJ8R9PccR4DNbVG6u43JLWfjE+TvRvusqf8hsGCwNNIwzpqOHyD6OWRyLnpV0M1gVMnq+nRuFvK7dBElow1hPxgB4Yp6gjrj0infk5hprcKt83nJpNIpekHV7CXO87ZGCTK5CvAsJROexoBwm+vD5V2NbkKzWkQ4qEi6Ty2mcVD1yCWcPkJ9+fL8/SAx+nslFrabd3R4BrannHvEbM9oycXatclthuozZVLVYwCJFh29P0utrE4qZaAP7U7ql4VI1i6xOgl0vhPFQFus1qH/it+IhlHXou0PJ9Dx+FcBZGy/j6b6aQrePsnB1ZAdY/n3e62gtn3Uh6MVs1SVi/2fp5LeYC83BJUHAHX1muwjZPP9HdEBS4MVHnxKAlVxsp0aHP/BOqoT5j7xLiWAHQOnIjIR6KjhFxfEqAsU8RVX8cnjccNViFQ1xOeYeMxXdX9zRU6bcacdiz5BXtY6CWadPUcDBb61zVIs4gX9C2cplOSfD9xkRd+ykwFSKuXJS8LTlEVGM+Cg9+PBOt2U9Vsahr+k5epaD3n73ZSH1fa+gdIV+kcMe8GUCkvLHOaZ8LAXJUrGPe7eGeyWy+I+ub5W6CKm64orrPtFabX1FdxjWlZjZNCwRxblaHR8
+ Gg2+fvzg
+ 0bJ6hzTCGQTk6bDJ5AYC2TBtLs1QGjvm354+6HuIokNpsF+0dLWxo/rovS5IEejN5gAh++nYkuUNPB/lrdYdkWX2H4mLbMh7fvOz3/5fYNC1BNRS79ZKr3PdPHHetqjoaqo4OzwVwrd2fRi0GJ2bJTqvtFF6j0sjuGnu+Y1xTPTa1J6Z3jcUUZji0NmhkDipEizep0E8xtL7srU32zBNIK+joucdKCOTUZzoRtiGcqm3qnRr1qfNWLs/KzAdj5pe6OpLOOKHTQwn5G7GIiChuxSNCxhZFsf2cxuVEA3cqRUpNulGJrS6vi/xsh5z3PHgovSqgcul8JHvymuC+ScmoS37/iCyQQiI00f1oA5Z0tTWTA315t5rR+hAVaEMdLdzbNpfe+ncJbiZ4nrbwHanHE6aKD/wq+c9MGN+Apz/DXcH7qtVvtFYMmrHOR2h9B7E2NU9DuS9GrqSDk2qA2fkBmzt5DdkY2P8YPuUcfmzSoyNo7T3uQyn4tCwKOgXsfyrygk6P
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -172,135 +152,459 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sean Christopherson <seanjc@google.com> writes:
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-> On Thu, Aug 13, 2026, Ackerley Tng wrote:
->> Sean Christopherson <seanjc@google.com> writes:
->> > That's why I think it's worth analyzing the cost: if it's in the
->> > noise, leave it alone.  If it's meaningful, figure out a not-too-gross way to skip
->> > the entire thing if kvm_arch_gmem_make_shared() is a glorified nop in the end.
->>
->> Is noise defined relative to the entire conversion process? Would this
->> benchmark look like
->>
->> 1. Convert 4G to shared on TDX with CONFIG_AMD_SEV defined
->> 2. Convert 4G to shared on TDX without CONFIG_AMD_SEV defined
->>
->> and then compare the difference in time taken?
->
-> That'd work, though I was envisioning something even simpler: use rdtsc() to
-> count the cycles it takes to iterate over various ranges of memory.  Do whatever
-> is easiest for you though.
+Yes, I know, this is a lot of changes. But I'm happy with the overall state
+of the patchset and the only reason I tag it as RFC is that it is tricky
+to get 57 patches upstream.
 
-I made some changes to add rdtsc() for the conversion process as Sean
-suggested [1], and exercised conversion like this [2]:
+I wanted to give a view of the end state first. I will suggest a possible
+way to split it below.
 
-1. Initialize some memory as private
-2. Get the guest to fault them into Secure EPTs
-3. Converts the memory to shared <<== this is being benchmarked
-4. Converts memory back to private
+I would appreciate any feedback.
 
-I made it build the VM once and convert 5 times:
+TL;DR
+=====
 
-./gmem_benchmark_tdx_convert --iterations=5 --size=1g
+This replaces khugepaged's anonymous collapse with an engine that
+can collapse sub-PMD ranges. It is built around migration entries and
+frozen folios instead of heavy locking and isolation, aiming for better
+scalability and less disruption to the workload being collapsed.
 
-Here are the raw prints:
+Why
+===
 
-[  396.403818] guest_memfd to_shared: nr_pages=1, make_shared=930
-cycles, total=39278 cycles
-[  396.412087] guest_memfd to_shared: nr_pages=1, make_shared=252
-cycles, total=28060 cycles
-[  396.420379] guest_memfd to_shared: nr_pages=1, make_shared=176
-cycles, total=26952 cycles
-[  396.428643] guest_memfd to_shared: nr_pages=1, make_shared=176
-cycles, total=27038 cycles
-[  396.436921] guest_memfd to_shared: nr_pages=1, make_shared=176
-cycles, total=26980 cycles
+mTHP collapse landed in khugepaged in 7.2 and I was glad to see it.  We
+at Meta run arm64 with 64K base pages, where a PMD is 512M: PMD-order THP
+is of limited use at that size, and mTHP is exactly what we want.
 
-[  400.338157] guest_memfd to_shared: nr_pages=1, make_shared=1072
-cycles, total=37236 cycles
-[  400.346509] guest_memfd to_shared: nr_pages=1, make_shared=316
-cycles, total=28338 cycles
-[  400.354805] guest_memfd to_shared: nr_pages=1, make_shared=176
-cycles, total=27182 cycles
-[  400.363090] guest_memfd to_shared: nr_pages=1, make_shared=176
-cycles, total=26972 cycles
-[  400.371349] guest_memfd to_shared: nr_pages=1, make_shared=176
-cycles, total=26886 cycles
+It turned out not to help us.
 
-[  448.761474] guest_memfd to_shared: nr_pages=262144,
-make_shared=15041018 cycles, total=6616067680 cycles
-[  455.807988] guest_memfd to_shared: nr_pages=262144,
-make_shared=14937462 cycles, total=6608542680 cycles
-[  462.848856] guest_memfd to_shared: nr_pages=262144,
-make_shared=15138858 cycles, total=6599494898 cycles
-[  469.885694] guest_memfd to_shared: nr_pages=262144,
-make_shared=15721972 cycles, total=6610219850 cycles
-[  476.928399] guest_memfd to_shared: nr_pages=262144,
-make_shared=15000406 cycles, total=6615114540 cycles
+khugepaged only ever looks at PMD-aligned windows, and it is not an easy
+limitation to lift.
 
-[  762.980690] guest_memfd to_shared: nr_pages=1048576,
-make_shared=61902982 cycles, total=26400884028 cycles
-[  791.022885] guest_memfd to_shared: nr_pages=1048576,
-make_shared=61746114 cycles, total=26401170984 cycles
-[  819.054580] guest_memfd to_shared: nr_pages=1048576,
-make_shared=61096794 cycles, total=26404409058 cycles
-[  847.120994] guest_memfd to_shared: nr_pages=1048576,
-make_shared=61446290 cycles, total=26447461896 cycles
-[  875.219750] guest_memfd to_shared: nr_pages=1048576,
-make_shared=61774646 cycles, total=26444608360 cycles
+Fixing the alignment is a one-line change, but what it feeds assumes the
+PMD everywhere that matters: collapse_huge_page() clears and flushes the
+whole PMD whatever order it is collapsing, installs a PMD leaf because
+that is the only thing it can produce, and keeps everyone out with
+mmap_write_lock, anon_vma_lock_write() and an IPI broadcast while it
+does.
 
-And here's the above, tabulated:
+Which is why hugepage_vma_revalidate() demands that the VMA span the
+whole PMD even for an mTHP order -- "we'd need to lock all VMAs in the
+PMD range to support this", as the comment there puts it.  A PMD-granular
+operation is only safe when one VMA owns the PMD, and that is exactly the
+restriction in the way.  The alignment is the symptom; the PMD is the
+design.
 
-  nr_pages      make_shared            total    percentage
-----------  ---------------  ---------------  ------------
-         1              930            39278       2.3677%
-         1              252            28060       0.8981%
-         1              176            26952       0.6530%
-         1              176            27038       0.6509%
-         1              176            26980       0.6523%
-         1             1072            37236       2.8789%
-         1              316            28338       1.1151%
-         1              176            27182       0.6475%
-         1              176            26972       0.6525%
-         1              176            26886       0.6546%
-    262144         15041018       6616067680       0.2273%
-    262144         14937462       6608542680       0.2260%
-    262144         15138858       6599494898       0.2294%
-    262144         15721972       6610219850       0.2378%
-    262144         15000406       6615114540       0.2268%
-   1048576         61902982      26400884028       0.2345%
-   1048576         61746114      26401170984       0.2339%
-   1048576         61096794      26404409058       0.2314%
-   1048576         61446290      26447461896       0.2323%
-   1048576         61774646      26444608360       0.2336%
+So both roots have to go.
 
-Looks to me it is within noise.
+Design
+======
 
-I also actually tried measuring the conversion time from userspace with
-CONFIG_AMD_SEV enabled and disabled. Converting a 1G-sized TD was faster
-by 0.2%, which is in line with the above table. Interestingly, when
-converting a 4G-sized TD, skipping kvm_gmem_make_shared() was _slower_
-over 2 runs. I don't have an explanation for that. I think the code was
-correct. (If it makes a difference, I skipped kvm_gmem_make_shared()
-using a custom guest_memfd creation time flag and skipped make_shared if
-the flag was set on the inode.)
+The old mechanism holds the address space still because it has nothing
+else stopping the sources from moving under the copy.  The new engine
+makes the sources themselves inert instead, with the two barriers
+migration already uses, raised in that order:
 
-I thought adding a kvm_arch_has_gmem_make_shared(), defaulting it to
-false for all archs and having x86 override with
-!!kvm_x86_ops.gmem_make_shared is not too bad either:
+  1. migration entries replace the source PTEs.  Faults and GUP-slow
+     now wait on the source folio's lock, which is taken before the
+     first entry becomes visible.
+  2. the source folio's refcount is frozen to its expected value.
+     GUP-fast, pfn walkers, reclaim, compaction and memory-failure all
+     fail folio_try_get() and back off.
 
-+ doesn't leak anything, since the function being called is
-  kvm_arch_gmem_make_shared and the accompanying function is
-  kvm_arch_has_gmem_make_shared. Or maybe just a little, since all the
-  other ops don't have the accompanying _has_ function
-+ it's a kernel-internal thing
-+ not too many lines of code, not too complex
+Between the two, nothing can reach a source, so the copy runs with no
+lock held at all -- and the address space is left alone while it does.
 
-Sean, let me know if you prefer to add kvm_arch_has_gmem_make_shared()
-and for my learning, what your considerations are regarding adding
-kvm_arch_has_gmem_make_shared() or not.
+What that removes from every collapse path:
 
-[1] https://github.com/googleprodkernel/linux-cc/commit/3295072cfeb8920e48d9e80c98fd1695d4bbad99
-[2] https://github.com/googleprodkernel/linux-cc/commit/a644618f270f02c832fb7e8402fcae98bc91f4e5
+  mmap_write_lock              -> mmap_read
+  anon_vma_lock_write()        -> nothing: an rmap walk needs the folio
+                                  locked, and the engine holds that lock
+                                  from freeze to putback
+  tlb_remove_table_sync_one()  -> nothing: one ranged flush per round
+  LRU isolation                -> nothing: sources are inert in place
+
+Working in windows rather than whole PMDs takes care of the other root.
+A sub-PMD window is collapsed under the page table lock, so a collapse
+disturbs only the window it collapses, and each candidate is validated
+at its own order -- a window need only fit its own VMA.  A PMD-order
+candidate still has to own the whole PMD, which is the old rule kept
+where it is still needed.
+
+Candidates are carried through the passes a batch at a time rather than
+one window at a time, so a round pays for its flush and its lock
+acquisitions once.
+
+With the barriers holding the sources still, which read lock the engine
+takes stops being part of the design.  A round works inside a single
+VMA, so patches 43-49 switch it from mmap_read to per-VMA locking: an
+mmap_write elsewhere in the mm then stops waiting for a collapse that
+has nothing to do with it.  That block is the only part of the series
+that needs per-VMA locking to be unconditional, and it is a separate
+dependency (see below); everything before it runs under mmap_read and
+does not care.
+
+Patch 7 sketches the engine as a comment naming every pass, what lock it
+takes and what it may sleep on; the details are there rather than here.
+
+What falls out beyond the lock diet:
+
+ - mTHP collapse in VMAs smaller than a PMD, which is the arm64 case
+   above: a 2M VMA on an arm64/64K machine collapses nothing today at
+   any order, and collapses to mTHP here.
+ - Hole and zeropage population at every order, so partially populated
+   windows collapse to mTHP under the same max_ptes_none policy as PMD.
+ - Sources come in spans -- any stretch of consecutive PTEs mapping
+   consecutive pages of one folio -- so partially mapped and scrambled
+   compound sources (the PTE-mapped-THP re-collapse class) work at
+   every order.
+ - A table that cannot become one huge page still yields the largest
+   windows inside it, where before a single disqualified PTE gave up
+   the whole table.
+
+Reading the series
+==================
+
+57 patches is a lot to land on a list.  They go in blocks:
+
+  1-6    helpers and shared state: pte_folio(), pte_none_or_zero(),
+         mm/collapse.h, and the policy that replaces asking whether
+         khugepaged started a collapse
+  7-8    the engine's shape: entry points, a call-tree comment naming
+         every pass, and the scan filled in
+  9-23   the collapse half, top down: the round frame, then each pass
+         in turn, then selection and the retry store
+  24     per-candidate tracing, before the switch takes the old
+         tracepoints away
+  25-28  the switch: point the anon path at the engine, widen coverage
+         to sub-PMD VMAs, delete the mechanism it replaces
+  29-35  move what is left of collapse out of khugepaged.c, and
+         MADV_COLLAPSE into madvise.c
+  36-42  tracing: the engine's own events and trace header
+  43-49  per-VMA locking, and the mm reference that makes it safe
+  50-56  selftests for what the engine can now do
+  57     MAINTAINERS
+
+The two patches worth reading first if you read nothing else are 7 (the
+design, as a comment naming the whole call tree) and 16 (the freeze,
+which is where the safety argument lives).
+
+A possible split, if that helps:
+
+  1-2    two mm helpers, pte_folio() and pte_none_or_zero().  Both
+         convert callers outside collapse and are useful on their own
+  3-27   the engine and the switch-over.  This is the smallest unit
+         that does anything: stop earlier and the tree carries an
+         engine nothing calls
+  28     remove the mechanism the engine replaces
+  29-42  moving what is left of collapse out of khugepaged.c, and the
+         engine's own tracepoints
+  43-49  per-VMA locking
+  50-57  selftests and MAINTAINERS
+
+Keeping the removal separate leaves both engines in the tree with only
+the new one reachable, so the switch can be reverted on its own if
+something turns up.  The old mechanism is already carried that way for
+three patches inside the series, so this costs nothing but 975 lines of
+unreferenced code until 28 lands.  That safety net only lasts until the
+blocks after it land, though: once collapse has moved out of
+khugepaged.c and the locking has changed, reverting the switch no longer
+gives back a working old engine.
+
+Base and dependencies
+=====================
+
+This applies on the selftests series, not on plain mm-new:
+
+  [PATCH v4 00/19] selftests/mm: improve khugepaged coverage
+  https://lore.kernel.org/all/20260815015901.1236937-1-kirill@shutemov.name/
+
+which is on mm-new 33f61b12d297.
+
+Patches 43-49 depend on Suren's unconditional per-VMA locks:
+
+  [PATCH v6 0/5] mm: Unconditional per-VMA locks and cleanups
+  https://lore.kernel.org/all/20260813193433.3318288-1-surenb@google.com/
+
+That series is not in mm-new yet, and with patch 46 applied SMP=n does
+not build without it: lock_next_vma() is behind CONFIG_PER_VMA_LOCK in
+mmap_lock.h.  Everything up to patch 42 builds and runs on mm-new as it
+stands.  There is no fallback path by choice -- adding one would mean
+carrying two locking models through every pass.
+
+Both branches are available at
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git collapse/rfc-v1
+
+and the benchmark used for the numbers below, which is unposted and not a
+dependency, at
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git perf/bench-usemem
+
+Performance
+===========
+
+Measuring khugepaged is awkward.  It is a background daemon, so what
+matters is what a workload feels while it runs, not what the daemon
+reports about itself -- and the usual coverage instrument is no help
+below the PMD: smaps AnonHugePages only counts PMD-order folios, so it
+reads zero however much mTHP has been collapsed.
+
+So I wrote "perf bench mem usemem" for this.  It touches a region while
+khugepaged works on it and reports the workload's own latency
+percentiles and throughput, against per-size counters that can see
+sub-PMD folios.  The branch is above; it is unposted and not a
+dependency.
+
+x86-64, production configs (no KASAN, no lockdep, no DEBUG_VM, no
+PAGE_TABLE_CHECK), interleaved rounds on an idle host, equal work on
+every arm.
+
+I measured three kernels, so the two halves of the series can be told
+apart in the numbers below:
+
+  A   the base
+  B   the new engine, still under mmap_read
+  C   B plus per-VMA locking -- what this series ends up with
+
+The engine: a sub-PMD collapse stops blanking the surrounding 2M
+-----------------------------------------------------------------
+
+base routes sub-PMD collapse through collapse_huge_page(), whose
+pmdp_collapse_flush() and tlb_remove_table_sync_one() are not gated on
+order: to collapse an order-4 window of 16 pages it clears and flushes
+the whole 512-page PMD and IPIs, then repopulates.  The engine does the
+window under the PTL.
+
+A thread reading and writing a 32G region while it is collapsed at
+order-4, 16384 collapses on every arm:
+
+                         A        B        C
+  read p99 (ns)       3071     1023     1023   -66.7%
+  write p99 (ns)      3071      927      927   -69.8%
+
+and the workload's read rate rises by 68% on both engine kernels.
+
+B == C, so this is the engine, not the locking.
+
+At PMD order the same workload is flat, and that is expected rather
+than disappointing: it is the one configuration where both mechanisms
+disturb exactly the same 2M.  Read it as no regression at PMD order.
+
+Per-VMA locking: address-space operations stop waiting on the scan
+-------------------------------------------------------------------
+
+MADV_HUGEPAGE/MADV_NOHUGEPAGE toggling against a scanning mm, which is
+what jemalloc does with its arenas.  4096 collapses on every arm:
+
+                         A        B        C
+  ops/sec           340656   340820   603305   +77%
+  p99 (ns)           77823    86015     3327   -96%
+  p99.9 (ns)         86015    94207     9215   -89%
+
+B is about 11% worse than base at p99 here, consistently across runs:
+the engine alone slightly worsens hint-toggle latency, and per-VMA
+locking is what turns it into a win.  Both halves are in this series, so
+C is what a reviewer gets, but the middle column is the honest one.
+
+The trade is real in the other direction too.  On settled memory with
+nothing to collapse and scan_sleep_millisecs=0, per-VMA locking costs
+about 47% of scan throughput against one mmap_read for the whole walk.
+That is a synthetic worst case -- the daemon wraps 8000 times a second
+there, where production defaults to 10s between passes -- and it buys
+mmap/munmap p99 of 56us against 1.4us.
+
+Collapse itself is not slower
+-----------------------------
+
+One complete pass over a 32G region, 16384 collapses, khugepaged CPU
+from /proc/<pid>/stat, 7 repeats:
+
+  A base    median 5760 ms   spread 12.7%
+  B engine  median 4990 ms   spread  3.8%
+  C pervma  median 5020 ms   spread 12.4%
+
+The base arm is bimodal, so its median moves with sampling and the
+percentage is soft.  The distribution-free statement is better: every
+engine run used less CPU than every base run.
+
+The engine also allocates one destination per folio installed, where
+base allocates 5.25 and frees the rest again: nothing is allocated until
+the sources are frozen and the collapse can no longer be refused.
+
+A measurement note, since an earlier version of this series quoted worse
+figures.  khugepaged CPU has to be measured per collapse or per
+completed pass, never over a fixed window with scan_sleep_millisecs=0:
+the daemon never sleeps, so whichever kernel finishes the work sooner
+spends the rest of the window scanning settled memory and is charged for
+it.  Measured that way the engine appeared to cost 10% more CPU;
+measured per unit of work it costs less.
+
+Costs
+=====
+
+At PMD order the engine issues two TLB flushes per collapse where the
+old mechanism issues one: the freeze's ranged flush plus the terminal
+layer's pmdp_collapse_flush().  A PMD candidate is alone in its round,
+so nothing amortizes the first.  Dropping the old per-collapse
+tlb_remove_table_sync_one() IPI presumably pays for it, but that was not
+measured and is not claimed here.
+
+There may be a way out -- a PMD migration entry over the table during
+the window, so the CPU never caches a walk to shoot down -- but that
+means teaching every pmd-level walker a new kind of entry, and I have
+not tried it.
+
+PMD collapse deposits a freshly allocated page table instead of
+redepositing the detached one.  Whoever withdraws a deposited table
+frees it immediately, with nothing to hold a lockless walker off first,
+and under a read lock the detached table may still be traversed by
+GUP-fast or an RCU pte walk.  It goes to pte_free_defer() instead,
+exactly as retract_page_tables() does.  One transient table page per PMD
+collapse buys the IPI's absence.
+
+That cost goes away if zap_deposited_table() -- the only site that frees
+a deposited table outright, the others redeposit it or repopulate the
+PMD with it -- used pte_free_defer().  The deposit would no longer have
+to be quiescent and the detached table could go straight back.  It would
+defer every THP zap's table free, and I have not tried it.
+
+A shared source now costs an extra copy.  The freeze needs every page
+exclusive to this mm, so the fault-in pass breaks CoW first -- an
+allocation and a copy -- and the collapse then copies that page into the
+destination; the old mechanism copied a shared page straight into the
+new folio and broke the sharing that way.  It is bounded by
+max_ptes_shared, which khugepaged holds at zero below the PMD order, so
+in practice this is PMD-order collapse and MADV_COLLAPSE.
+
+Size
+====
+
+mm/ grows by 1915 lines net: 4475 added against 2560 deleted.
+
+That is not a claim that this is less code, but it is less than it
+looks.  khugepaged.c goes from 3283 lines to 908.  The new engine is
+4052 lines across mm/collapse.c and mm/collapse.h, of which 1344 --
+about a third -- are comments, which is where the pipeline's invariants
+are written down.  What replaces three install paths with their own
+isolate/copy/rollback is one engine and one contract.
+
+Testing
+=======
+
+Both matrices run the mm selftests plus a race harness, on the
+validation config: KASAN, lockdep, PROVE_LOCKING, DEBUG_VM and
+PAGE_TABLE_CHECK, 16G of guest memory, swap active so the swap-in
+prepass is exercised rather than skipped.
+
+  x86-64        433 pass, 0 fail, 12 skip
+  arm64/64K     581 pass, 0 fail, 18 skip
+
+dmesg clean on both.  The arm64 skips are a pre-existing shmem
+MADV_COLLAPSE -EINVAL on 64K pages, confirmed against the base by A/B.
+
+Every one of the 57 patches builds with no new warnings; !NUMA and !MMU
+(arm nommu) build clean.  SMP=n does not build, for the reason in the
+dependencies section above.
+
+The race harness also gets longer soaks -- 1800s per driver mode, with
+memory pressure and swap -- and the engine is fuzzed with syzkaller on a
+KCOV+KASAN build.  That found two bugs the selftests could not reach: a
+teardown that dropped rmap while the source was still frozen, where
+removing an mlocked mapping munlocks and munlock_folio() takes a
+reference a frozen folio forbids; and a whole-table MADV_DONTNEED racing
+the copy window under CONFIG_PT_RECLAIM, which freed the table and left
+the sources frozen and locked.  Both are fixed, and both gained coverage
+-- the mlocked case is patch 53.
+
+Kiryl Shutsemau (Meta) (57):
+  mm: add pte_folio()
+  mm: add pte_none_or_zero()
+  mm/collapse: add collapse.h for the shared collapse state
+  mm/collapse: rename mthp_present_ptes to eligible_ptes
+  mm/collapse: state what a collapse may do in the policy
+  mm/collapse: move the smallest collapse order to collapse.h
+  mm/collapse: sketch the new anonymous collapse engine
+  mm/collapse: scan a table for what a collapse could use
+  mm/collapse: collect candidate windows into a round
+  mm/collapse: run a round and feed the outcomes back
+  mm/collapse: sketch the passes of a round
+  mm/collapse: allocate a destination per candidate
+  mm/collapse: revalidate a round against the VMA
+  mm/collapse: fault the sources in before the freeze
+  mm/collapse: check what a candidate would freeze
+  mm/collapse: freeze the sources behind migration entries
+  mm/collapse: copy the sources into the destinations
+  mm/collapse: install the destinations at PTE level
+  mm/collapse: install a PMD leaf as the terminal layer
+  mm/collapse: put the sources back
+  mm/collapse: settle whatever the round reached
+  mm/collapse: walk a table with a selection cursor
+  mm/collapse: give a refused region a second chance
+  mm/collapse: report each candidate's outcome to tracing
+  mm/collapse: collapse anonymous memory with the new engine
+  mm/collapse: give collapse_single_pmd() the range to work on
+  mm/collapse: scan the windows a VMA can hold
+  mm/collapse: remove the mechanism the engine replaces
+  mm/collapse: move what a collapse is judged on into collapse.c
+  mm/collapse: name the max_ptes ceiling after collapse
+  mm/khugepaged: count collapses where khugepaged makes them
+  mm/collapse: move the file collapse into collapse.c
+  mm/collapse: split collapse into a scan and a run
+  mm/collapse: implement MADV_COLLAPSE in madvise.c
+  mm/madvise: drop MADV_COLLAPSE's redundant mm reference
+  mm/collapse: report what the scan found
+  mm/collapse: report what the fault-in pass paid
+  mm/collapse: report the round, and what it made faulters wait
+  mm/collapse: name the file collapse's tracepoints after collapse
+  mm/collapse: remove the tracepoints of the mechanism that is gone
+  mm/collapse: give collapse its own trace header
+  mm/collapse: allow error injection into the freeze
+  mm/khugepaged: check the scan budget before the work, not after
+  mm/khugepaged: hold the address space open across a scan
+  mm/collapse: take a per-VMA read lock for the round
+  mm/khugepaged: scan under a per-VMA read lock
+  mm/madvise: collapse under a per-VMA read lock
+  mm/collapse: assert the mm reference the engine relies on
+  mm/khugepaged: drop the mmap_lock barrier from __khugepaged_exit()
+  selftests/mm: attribute collapses by candidate event alone
+  selftests/mm: cover collapse inside a sub-PMD VMA
+  selftests/mm: cover a hole-y window in a sub-PMD VMA
+  selftests/mm: cover collapse of mlocked ranges
+  selftests/mm: cover collapse beside a MADV_FREE'd page
+  selftests/mm: cover collapse beside a pinned page
+  selftests/mm: cover the scaled max_ptes_shared limit
+  MAINTAINERS: add an entry for collapse
+
+ MAINTAINERS                                   |   19 +-
+ fs/proc/task_mmu.c                            |    4 +-
+ include/linux/huge_mm.h                       |    9 -
+ include/linux/mm.h                            |   14 +
+ include/linux/pgtable.h                       |   17 +
+ .../events/{huge_memory.h => collapse.h}      |  176 +-
+ kernel/bpf/btf.c                              |    8 +-
+ mm/Makefile                                   |    2 +-
+ mm/collapse.c                                 | 3808 +++++++++++++++++
+ mm/collapse.h                                 |  244 ++
+ mm/hugetlb.c                                  |    8 +-
+ mm/khugepaged.c                               | 2711 +-----------
+ mm/madvise.c                                  |  251 +-
+ mm/migrate_device.c                           |    9 +-
+ mm/mremap.c                                   |    2 +-
+ tools/testing/selftests/mm/khugepaged.c       |  346 ++
+ tools/testing/selftests/mm/khugepaged_race.c  |   29 +-
+ .../selftests/mm/khugepaged_sync_check.c      |   65 +-
+ tools/testing/selftests/mm/vm_util.c          |    2 +-
+ 19 files changed, 5022 insertions(+), 2702 deletions(-)
+ rename include/trace/events/{huge_memory.h => collapse.h} (60%)
+ create mode 100644 mm/collapse.c
+ create mode 100644 mm/collapse.h
+
+
+base-commit: 8b76faf42c5d342b3bf0b1fd97bdaf603ee57354
+-- 
+2.54.0
+
 
