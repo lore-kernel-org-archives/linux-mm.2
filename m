@@ -4,96 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D246C5DF6E
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 13:42:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA1F3C5DF70
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 13:58:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60BE26B0825; Sun, 16 Aug 2026 09:42:20 -0400 (EDT)
+	id 5DAF26B0354; Sun, 16 Aug 2026 09:58:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BCA56B0827; Sun, 16 Aug 2026 09:42:20 -0400 (EDT)
+	id 58C616B0355; Sun, 16 Aug 2026 09:58:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D2366B0828; Sun, 16 Aug 2026 09:42:20 -0400 (EDT)
+	id 4A1BB6B0356; Sun, 16 Aug 2026 09:58:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D1786B0825
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:42:20 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B0341C0532
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 13:42:19 +0000 (UTC)
-X-FDA: 85107246798.24.DAAA356
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.76.78.106])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5D7EF40003
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 13:42:15 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	spf=pass (imf01.hostedemail.com: domain of dzm91@hust.edu.cn designates 13.76.78.106 as permitted sender) smtp.mailfrom=dzm91@hust.edu.cn
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 22A3A6B0354
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:58:12 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9A3621C1886
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 13:58:11 +0000 (UTC)
+X-FDA: 85107286782.21.A32C0A0
+Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C4ADEC0003
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 13:58:09 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kueHDcta;
+	spf=pass (imf10.hostedemail.com: domain of foxieflakey@gmail.com designates 209.85.214.195 as permitted sender) smtp.mailfrom=foxieflakey@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786888689;
+	b=dw02fwonwsZ8vBJNol8U9JcgJF27oL20UJoMK/gubRwpelhqCUjQZqSAP8XTyToTkntbHl
+	4/olYLv6Jdo5QObNVdFjaZqIKVoNfEiTFWNkCoC/6/mUqaf/rmO7XkWVn6mZKn3Fu695/K
+	+pzoPfM6TF7xsR3Q+J3umpkMD534Nyo=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kueHDcta;
+	spf=pass (imf10.hostedemail.com: domain of foxieflakey@gmail.com designates 209.85.214.195 as permitted sender) smtp.mailfrom=foxieflakey@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786887738;
+	s=arc-20220608; t=1786888689;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qNZXuREc0Kiz9gXcG/d+OI/6mUnNPlZ0ioXHQ2B3RTM=;
-	b=H8O96WOpj16StosmZWvtUMFL2u0r9o/s+IOl72phZXcNybYlP1/E1LCcbURMaOwqRA87JM
-	Z/YqikQB8SCRcymjy3Up+Ho8/7+bOVDBCDxR8l2xOj9maC7I6uEqLPLhiU8DroLpWcn+Hq
-	XILADgJjJKv4nbocDZjO2nPEjYNfEjY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786887738;
-	b=gWNh+Tl0caCSAEbRp8T8pk57JFDrCuWwGEjg8z7WYizMeyLtJjuhB6LKFmVG5ZX33hlHHl
-	Em3OG65IaONE9pGoK76Y7LIW8nSVsjfpT8Om/8xFciuaWSgSMq59oTfvkFNZqwx7uLsVvk
-	rPdj8NjHq6UGPFsKEab05N61fXt8/9o=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of dzm91@hust.edu.cn designates 13.76.78.106 as permitted sender) smtp.mailfrom=dzm91@hust.edu.cn
-Received: from hust.edu.cn (unknown [172.16.0.52])
-	by app1 (Coremail) with SMTP id HgEQrAAHLaL4vYFqm7F4Aw--.4588S2;
-	Sun, 16 Aug 2026 21:41:12 +0800 (CST)
-Received: from [198.18.0.1] (unknown [58.19.0.248])
-	by gateway (Coremail) with SMTP id _____wD3cc72vYFqvdFFAQ--.16793S2;
-	Sun, 16 Aug 2026 21:41:11 +0800 (CST)
-Message-ID: <3ea1fd37-848c-4581-ac1d-c95f9fb5c672@hust.edu.cn>
-Date: Sun, 16 Aug 2026 21:41:10 +0800
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/fThRPUBNCrqFeDKJK17T0YONc4Gpv3LdKTE6Fvw3mI=;
+	b=3KnEo52wLxUmlzIFTALjnxpAc4Ry8wpCefh9uO0c982hd2W8HowhF1aK1o7AZzUoKkNRy8
+	COYOKyETb0emZqd/XvGcx1D+mVmYqCN6bqeQAh6ImsY2B5Aty7ZR2tS+bGCIgWU+DJH2H9
+	JUhZCBvrfBrejEl/Ka/EIyTh4nMzBAU=
+Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-2cc61541f8cso44359685ad.0
+        for <linux-mm@kvack.org>; Sun, 16 Aug 2026 06:58:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786888688; x=1787493488; darn=kvack.org;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:date:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/fThRPUBNCrqFeDKJK17T0YONc4Gpv3LdKTE6Fvw3mI=;
+        b=kueHDcta54MVuK8H9f9kl9qUKil/7ZNEiZvI2CDWCUUFxR3MGL9zNt73PgVJHlKKTf
+         LRbai9ojxiGkEWxap0pAxJgeJsACqzPAPFOeJsAaHl2Cj1JdYESsr64L/0PSaWK4o1w9
+         0zWe+WXiBMTAqEh/VMVD/lSy2Y3IHadY4rKbvvBvtqvJFBKG+6eJIpl9fYT0DV0bZJ96
+         ZIeiQxUcKHqWJOOHyywVRottu6Sy78Xr8jDJNOzNw/x5QDrNbVIi7+KtYNjAXJI4TDg9
+         c4vcQ/GLVDadGKSMaNVIxuL0dAqV8zTwbI+l/D/cwDpR7Oc87p0A/NMX8dcMQOkTh9bM
+         h6uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786888688; x=1787493488;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/fThRPUBNCrqFeDKJK17T0YONc4Gpv3LdKTE6Fvw3mI=;
+        b=O9BeKQQuGK4roo4KbBuOtAD6NBTfYZFQujBR2UP/wWxRco0s8UWTlKAIw/NV1J1IzK
+         W7+MI9Nhfwa5yB75P2X+0ceRZByLPaMeLTVC39+h0ULe7n2eu8NGSqVvXPZCJqAgRY5f
+         8jcOT2vKF1Z4yhPk0vawPifwho4m6cz4kfu8e/TNMqVMP34qclcif3fEjefURWo2iO3R
+         r+uFKWIIsr3gTqZd/r8zzbIdjFNk4q/qNgMEDtDcA0x5DAnXSlEQfGUnpBPoGq1fLMOE
+         rdMH5Maomsxct+6/aDk0jbccEPTc/MOWtDwpYrvUtoV6H0E7I9goKqO5zHvjgdxi7QBh
+         gH7Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpxDbPcyDZru1eHb2TA/3G081JefQgdyp1fC01DQqHWGAEwTxtUjtY39GSVlO7+8CJ391/UtO0XmA==@kvack.org
+X-Gm-Message-State: AOJu0YyQxGDiawihdXwPDmMG/opeP6fDQlNGyZL5sGybBpLaRfE6MC8k
+	bpSBNVPtd31IZ+EkrARXW02Jd10+eFHe1j3Bcg+GPwzTggcxGPuU+a9Z
+X-Gm-Gg: AR+sD13gqqbIFsDfn3j4zqjOCo8kPVPEspKic8HgEl43LKNzLxLpakMj7V9dGWh/TXG
+	F+3TqAOXXYAxjp9vDPSDI83lqaBuLBwEw8QMbfTJyQ+6+ZoqKwXVvk2yNW2weR8pmdk3SiKCEwC
+	hV39HzmMNxYyY8lmmGNuuebReK2fjdeNl15bJkDD+uRBQtZvhI5JLk8pFdpQyzi7sSHrzh7BCOv
+	O/JVIPKsleLm9iyIRJqsHK4CULnh15ZOdk6OeKu3sh2hzfVZyVR5MZXtBpNm7XKbhOH20aIY+VR
+	ONj0kk1uTJE3TKi5m6kLXFCP+IjjXkZSwA0MbMQYidGW9bS8/3k5hlo922ClH8p2UFp9FrHYaLv
+	BicsB1KU83DxeXxeSAlqPK5qdwNPSLlJ8+PsK3UyboGEGx8F9uggaeJ2Nc+wMBmuygGTUO6cRAT
+	urQThOWZIIZAn7de7w38TeTTZJwsc7Gvrh0znq06yWoO3SO9ZEpiQm
+X-Received: by 2002:a17:90a:d005:b0:36d:b12b:f57d with SMTP id 98e67ed59e1d1-3931f581f38mr20607364a91.12.1786888688422;
+        Sun, 16 Aug 2026 06:58:08 -0700 (PDT)
+Received: from 192.168.1.2 ([157.85.198.7])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-141387e49d3sm31515973c88.7.2026.08.16.06.58.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Aug 2026 06:58:08 -0700 (PDT)
+From: Foxie Flakey <foxieflakey@gmail.com>
+X-Google-Original-From: Foxie Flakey <foxie@gmail.com>
+Date: Sun, 16 Aug 2026 20:58:04 +0700 (WIB)
+To: Mike Rapoport <rppt@kernel.org>
+cc: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org, 
+    peterx@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] userfaultfd: reset err to be 0 when move_pages_ptes
+ succeeded
+In-Reply-To: <aoGi3g9AlcG9EiyG@kernel.org>
+Message-ID: <f6c5c31c-13d9-801b-cdff-09fa8333e419@gmail.com>
+References: <9c936a9f-ed27-e510-872f-5b3b8c680975@gmail.com> <aoF_qmSHiEgujaH5@kernel.org> <69522f38-7e5d-ebdf-d42e-11d822bce662@gmail.com> <aoGi3g9AlcG9EiyG@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/7] docs/zh_CN: update DAMON documentation translation
-To: Doehyun Baek <doehyunbaek@gmail.com>, Alex Shi <alexs@kernel.org>,
- Yanteng Si <si.yanteng@linux.dev>
-Cc: SJ Park <sj@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, damon@lists.linux.dev,
- linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260812065914.3071433-1-doehyunbaek@gmail.com>
-From: Dongliang Mu <dzm91@hust.edu.cn>
-In-Reply-To: <20260812065914.3071433-1-doehyunbaek@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:HgEQrAAHLaL4vYFqm7F4Aw--.4588S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZFyfGFWUKr17Kry7GrWkCrg_yoW8Zr17p3
-	Z7KF93uas7tr13Zr1fGFWUJF1rAF48W3s5Ga4ftwnayFs5t340gr1UKryUt3yDXrWfJF13
-	ZF4FkrW7uayUArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBYb7Iv0xC_Cr1lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
-	v20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j6F4UM28EF7xvwVC2
-	z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2vYz4IE04k24V
-	AvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l
-	5I8CrVACY4xI64kE6c02F40Ex7xfMcIj64x0Y40En7xvr7AKxVW8Jr0_Cr1UMcIj6x8Erc
-	xFaVAv8VW8uFyUJr1UMcIj6xkF7I0En7xvr7AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWU
-	JVW8JwACjcxG0xvEwIxGrwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4fZr
-	1UJr1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
-	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
-	x0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
-	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWxJVW8Jr1lIxAIcVC2z280aVCY1x
-	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0yrW7UUUUU==
-X-CM-SenderInfo: asqsiiirqrkko6kx23oohg3hdfq/
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: C4ADEC0003
 X-Rspam-User: 
-X-Stat-Signature: m9t5i9cqq5xa54nd5t7w3i6dfwzocffy
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5D7EF40003
-X-HE-Tag: 1786887735-469874
-X-HE-Meta: U2FsdGVkX1+Lf3R3osV+fHu0j/hVTsGj8tNxZZ+EgPeUW69vV5T3E0DPArnX6D0aDWzSEMZo0SkLGM7mYlGAffPAg7bSOUjm8XyYlQAcmDzRTWsihda9wHmjtIuHJ5vTNagg3UKigsNcQL9KYMGKU8iATyYb+EeFCAGwI1t+FE4G1Nn9Rs9o2ROao4KSLiIO7qzFCBy64zPhWbX2Ra7aPoDZ5dycEse/P1O1xdm3In5+KBjkgTEXkv263IsLCO8LFVwtH6d0YenpMaJuG0J7nUKSutk/ADIthbL5G4RurQLfiUzCRXuJ0WgL5+g7jwzvwsgblbgiCzbkWcIioDU9gOyzVh3RP6ki2sYzAlXyY/NsWYjVV1wNocRc57kt+IbsXKlg7AcLDjDxzz7L1wcAT2tTxgr7FhF4OMrEjDJn/Say61OI87U2Ek9GbFHbwI15QFN624Sxx0xymwUF4xjC7aGkl0OG4pzWxX1ch5BcnfbsV5X45xKrvyZusO76iczfJDRAqiNlyoNuUiWpQN9gtUCrnR8ZGbGg5P3GbEdOWTOZw8hAS77BCRbzifsHkIoqTURXLUj73tmTPWqbZoFZ8DCEfs+4H2WqVK70IhqBZT/QpesltL/C6RbCw+yLnILmagbkXA4hH01T/SPHoguhsBk2rlwpcrYFXnFiU3qeK/9epBCwFohnQC3in6h1xrqUoEsUL9K6qMHVSZVG5/KERs/gspWA5/c1uRuKlwngJdsgvOpf/xnVJEDFd2xorMR9jxQb5KL6SIUSOhaomwyE/7to74VYnaHcmMhlWky7gn+VDc+4IoPUDb6CwRKKf70ztyxdL5UqD0t33+mhGlqU9wsCYuQBQZbYTp7AFMLKO0wvs1JDJwK6SOTwyX4j/aOARRB0uhS/vp84qO4EZqmGTiJRMYcmfFDmVokpZxg8GXnYni2bhmFYebKk99zq98hzN3j8J1wh2k3GDp2kZ86
- E4FJFq3T
- 9egrz+aeq7SSl30RMRHPGl/7KFyZst5cpddxdMETNCWkF/MeYxAZoBbwpFvvaU+ZbkKzs8Xrvahc9KcrtLYqWwH1RlET3apOXm9aluSmN/wqIIUWONDeZMQE16AeNfF53/oYaim5ojngGIFdORaNXkVNDQKvBiZYGKQxO
+X-Stat-Signature: hi9baa3ff6pxyitm8gysdqtwrhh9x1bp
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786888689-657436
+X-HE-Meta: U2FsdGVkX19ImSSp72bvCCvFTC3PcdjwE2MlQU9mP9hTuH+rYJui4YccImscMVxCVgwz9ioFVuQPnrGjMA3Hm3mwA4AKAeiNXq1I9blMRhN9dYxhjhVbQF2kMDWSyee9K1Fh8Gs7vH+99DdpYiQXELjvawZu1ubQFrB0U+g8QLe0UEGaAExBnnVfP2NLF0ijmIY85FdNxuzzNXdfKQEdg9MGWFf1M00Avi3svshnmu/L/LQvxjygpvNnycIojLLkc4mvVLmT7QKcZQ6IP2Dfw1ZGk8JS+id49A4QW8k6frhT1c6FomFMP5snfeNVBDapUemi9bT4s08h1Ahv+PCv1IjgN8xROEAbKAF0Iv6mc/LaN7bT7zo7PSI+LD2cGlojPPkdvhpiw5G9ZYIK9g9qm2pbho48u8OsqKhuMJSSLOEWDjU37Ofx9oh8vuMyxKsF1BJV5m1+nhY6s3Za7AvH7von30HPx5N6K6YONCnDccLJMfJcohCCwCY/8brIuMZSyxpKvJOIyTJecxdSU9p4wEhejRMvquBpHiFRuX4kvJ9Z83hoforhUs8yzU+dTFkWUHQkZMGAbUBbc6HbYkWmR6Viw3B+xpIjK2KkhF/CCsXJwhdoId/5kxNWRtn9m8DXkkBAaz25/2R6vYgXcekrvSo3Efwb/1rCtd+mSiYvVt7CVOJL0i/94MHyJ4Di+SV/R6/TLHl9OYh4YxiSJ92r6PT+e+K/DzeZ+JhUpoLQkRkg4Ah5vQZ8RsIXcyWqOIBxZIsYpsHp+GJzljB0sJNQY/hNZLdVcrlBnOTLmlHfQjfDyU/qvpAK+WKA08a6ps8no36NZKrZPcsHPX8f77mo3DPaewJCYewG0VxVsw+XArNGMg7Ir3ixt1IuKmnm6vvjAmUwcqfKTegqkXfNWlVakfbLsaOEoSVGjqsiVvQtdWuxskvEk7IBzxMArJNQm4sqrdT5SBar5wVOT+IgDOd
+ MiMWZAHi
+ 7khiD14UAjYPZsLQicuf9MCLGr5DjWpMvzHHgsbr5bxsrSnB+5DAfKsH3vRxZsC40W8HG0urBy8eYla/AzxemgqiGOWC9cO6FesOwW53R4dTz5jZrFst48ASryNfqKS//sg/t/AZ+Iic8ycWOSFlOyLd7BIHaTGOv1GXTWuO0J1zKCrPJNk52g1RDnBrh7s4Ej9RYJKgP2RCYj3Hon1WKins9ZvP5VHGt+19NBdiTI/ImLVFCSD6Q3vPcAmHIS+nkUvd7FSwSgdsG1YGdKIWorli1Ps4d+uK6UtqKNc3rgAGAXq0GhheEt0tt34jXzNMnA8WBfDKzrF9IuqMz/yZmLBStd1tYs2G2z020smAhRsJ8UMAy5y5LzomF3M6Y2wstFYr+dT0NtIFDQ/kNio+pbZGUuo0pEVREQyE3MJZ+vYgBh1vh6hkeXdreHWwvmXFvu3oGX0SV+TvRzIxy9MyyYTqx1cTS+0FFi9Ss9f/uOqugnOADNUO3l1+9NyAB44ngn331zmQfYedqC4TOzjD+DDIIEL3ubZL+Pu7VifyhBoHwAMwTfWMElOuhdxt8Dax/lqQIUsWnzUHuM8IcFym1tVVO4nyqPLHY9k0FSbqfCJfzbgxRej+8FTjB6pyViqn0uG3CTmT7nhUYH2OD99n+RZCyZA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,60 +118,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sun, 16 Aug 2026, Mike Rapoport wrote:
+> On Sun, Aug 16, 2026 at 04:41:07PM +0700, Foxie Flakey wrote:
+> > On Sun, 16 Aug 2026, Mike Rapoport wrote:
+> >
+> > > (adding Suren)
+> > >
+> > > On Sat, Aug 15, 2026 at 05:42:12PM +0700, Foxie Flakey wrote:
+> > > >
+> > > > Fixes: 50944692052b ("userfaultfd: opportunistic TLB-flush batching for present pages in MOVE")
+> > > > Signed-off-by: Foxie Flakey <foxieflakey@gmail.com>
+> > >
+> > > Is Foxie Flakey your real name?
+> > > Signed-off-by should be using a known identity (sorry, no anonymous contributions.)
+> >
+> > Thanks for response. Sorry, no. A question, by "known identity" there is it
+> > means my real/legal name? because I have read a document about Signed-off-by
+> > and because on internet I'm known as Foxie Flakey in multiple places, I
+> > thought its fine.
+>
+> It does not have to be the legal name, but we do prefer real/preferred
+> names over nicknames:
+>
+> CNCF's clarification on DCO explains it well:
+> https://github.com/cncf/foundation/blob/659fd32c86dc/dco-guidelines.md
 
-On 8/12/26 2:59 PM, Doehyun Baek wrote:
-> Bring the Chinese DAMON documentation translations up to date.  Update the
-> DAMON design and administration-guide translations, and add the DAMON_STAT
-> usage translation.
->
-> Changes from v6:
-> - Clarify the DAMOS quota goal descriptions for the optional ``nid`` and
->    ``path`` parameters.
-> - Improve the translation of "offload" and fix the duplicated character in
->    the non-access-pattern filter description.
-> - Consistently translate "tracepoint" as "跟踪点" throughout the series.
-> - Consistently use "监测上下文" and "聚集间隔" for DAMON terms.
-在每个
-``
-聚合间隔
-``
-过去后
-应改为：
-在每个
-``
-聚集间隔
-``
-过去后
-Please search this term in the zh_CN/mm/damon/design.rst. There is still 
-one
-``
-聚合间隔
-``
-left in the documentation.
-Dongliang Mu
->
-> The changes were suggested and clarified by Dongliang Mu.
->
-> Doehyun Baek (7):
->    docs/zh_CN: update DAMON design translation
->    docs/zh_CN: add DAMON_STAT usage translation
->    docs/zh_CN: update DAMON index translation
->    docs/zh_CN: update DAMON start translation
->    docs/zh_CN: update DAMON usage translation
->    docs/zh_CN: update DAMON reclaim translation
->    docs/zh_CN: update DAMON LRU sort translation
->
->   .../zh_CN/admin-guide/mm/damon/index.rst      |  15 +-
->   .../zh_CN/admin-guide/mm/damon/lru_sort.rst   |  68 +-
->   .../zh_CN/admin-guide/mm/damon/reclaim.rst    |  82 ++-
->   .../zh_CN/admin-guide/mm/damon/start.rst      |  63 +-
->   .../zh_CN/admin-guide/mm/damon/stat.rst       |  94 +++
->   .../zh_CN/admin-guide/mm/damon/usage.rst      | 523 +++++++++++---
->   .../translations/zh_CN/mm/damon/design.rst    | 667 +++++++++++++++++-
->   7 files changed, 1346 insertions(+), 166 deletions(-)
->   create mode 100644 Documentation/translations/zh_CN/admin-guide/mm/damon/stat.rst
->
->
-> base-commit: db6ed2a3d31068ca5577466591b2521dee0508ca
+I see thank you. So the Signed-off-by would be fine as in if I prefer not
+to put my legal/real/birth name. Would it fine to keep as "Foxie Flakey"?
+Because I have just read that guideline, Foxie Flakey isn't anonymous id
+nor false name.
 
+A small confirmation question due not sure with results from internet about
+where should I add Suren. I looked that you placed Suren in Cc. After the
+initial To (your first reply to my mail), on followup replies I should
+place Suren or anyone else to Cc filed after initial To, am I correct?
 
