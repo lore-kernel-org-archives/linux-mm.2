@@ -4,100 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A043C5DF66
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:02:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4DFFC5B572
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:20:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B2376B0361; Sun, 16 Aug 2026 18:02:53 -0400 (EDT)
+	id 961196B0363; Sun, 16 Aug 2026 18:20:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 063486B0363; Sun, 16 Aug 2026 18:02:53 -0400 (EDT)
+	id 911A96B0364; Sun, 16 Aug 2026 18:20:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBB5F6B0364; Sun, 16 Aug 2026 18:02:52 -0400 (EDT)
+	id 827AD6B0366; Sun, 16 Aug 2026 18:20:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C3EBB6B0361
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:02:52 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4B35F40631
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:02:52 +0000 (UTC)
-X-FDA: 85108508184.23.D079F21
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F0646B0363
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:20:39 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A9D8DC05DD
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:20:38 +0000 (UTC)
+X-FDA: 85108552956.06.8F2BC1A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 64B86100009
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:02:50 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X+w8P5tV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id B47A120003
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:20:36 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DvJR8cFU;
+	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786918836;
+	b=hE39unNP5AWQbw2MZiOKlEOatDcm8cQhrnKXK4DEZ0zA3oRyNZ1jaXJ8gP8Gd334asjm8Y
+	8hF4tYKiJKVkYwHwXGYj0KRXYW/gIxY+wTtzOAWkBEJLhyrwOVsjTU5YpSb6YEq8I+AY9R
+	+yXCfi+kondt63vHSy8RcMW9FfR8mxs=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DvJR8cFU;
+	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786917770;
+	s=arc-20220608; t=1786918836;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L0/TSCZ60Ev/GG1UGjLIM2EhRh30NWyXNDJWJ/3A4Ms=;
-	b=BVVFNmSMk95y+4Hv15P7FPsLpQ0ptbochMgCqtFy1xTDGfkxJs66JGoYwx1zD47RE6diO2
-	UBEr4OmNsIPDh3EaBKaLOvb53cR0itXcoNUicZsijjHxXjn4mtLGh1nSHDYlXPmZ4fDVJA
-	eBJ6udcnZP9HrzDxxGdDvc4RDHOFvjw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X+w8P5tV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786917770;
-	b=7mlSDVqOJEv7fSFpPBNU6JNsCq4iS5+i5ufOMxI2Hn7kc9NVQQio3JLOydSKX65Kff/2t9
-	i4jbpojIwzHxsxZMr/1kuAzNPEGL0SWAuckmHhM3PfHSZt2Wp2NzM6n7m0LVCbhFZ42802
-	EY/rS4WvQA6ITfTJDX7r0bFDUXh3hAs=
+	bh=3xUi81bvtSC3Z/ViPJCUb65EnnRJWWKtBwMmY39oQuc=;
+	b=UgS0RrLMlnYjnEvU/1zBF5PLRSn9IVqWcsXDpk+AN9PADv4lBDJbQtP2O6xFxVM+Jd2uWj
+	5VFVm8mEeN1ZjwvA5/kcsxH7XG1AawdN+kQlI2bScg7E2PgVa3SJEVR2ku2a28NFxI8EqH
+	eVZK1fMc8TiSRq3WhzzZC9hxelIeH2A=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1734F42E3B
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:02:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C201F00A3E
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:02:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E349242B06
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:20:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C86CC1F00A3D
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:20:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786917768;
-	bh=L0/TSCZ60Ev/GG1UGjLIM2EhRh30NWyXNDJWJ/3A4Ms=;
+	s=k20260515; t=1786918835;
+	bh=3xUi81bvtSC3Z/ViPJCUb65EnnRJWWKtBwMmY39oQuc=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=X+w8P5tVI/cJUv+YnpRs169/ZzzBOfg0HfulCSh6EAmjw7X5fOWQEOVvXS0uzhDAC
-	 g8f/4SyeeLC9SxEom/wecw5es+G40DHpivGzG4ClPRFRnSLKanwBf9i+A4y/hduAvP
-	 uglgeDv0Kp51dx2iJ9HgK3Jtzly/gG/mV6CAJ5UcMlG6U3oP1yvrn/zEmD80REusTy
-	 AXqh1s8Vtpsp0jeMYslgTMTWxN4ojCNlVpMec91jYbFrp9X+qh1LNrfQGVFzydCOMi
-	 07dhSkfZjIy0UpwFgGuUgzB4HxMg49eMyzgjDEzebwVZEMsqujnOCWOfzaF5+hKpce
-	 sNFPoZbOEN22A==
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-8fcc43c48f7so28340116d6.2
-        for <linux-mm@kvack.org>; Sun, 16 Aug 2026 15:02:48 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrR1TRQ9JGggqPSLUnXxeWTGV93RKB4JZnVMle19XwyB6YwzeIerwO6duBW7qgsWMoPJdkQobV0Og==@kvack.org
-X-Gm-Message-State: AOJu0YwSYa9OFbAYQLzzPr0OPqvrtTj3Bg1Q/2yxtLubUtLjdUw2nuVQ
-	ToVJghzwYLrCtwI45N2f0bIZCFAHIiF/xERgBe59eRjcku9f6b1IDM2aENUANSAhmkF5NouJiOD
-	e+Gqqa0iuGSN/qi2RusoxkDhLTELpb4Q=
-X-Received: by 2002:a05:6214:5085:b0:908:93ff:daa8 with SMTP id
- 6a1803df08f44-90a91cdc495mr238638176d6.3.1786917768072; Sun, 16 Aug 2026
- 15:02:48 -0700 (PDT)
+	b=DvJR8cFU6B8kbdkONg9Joq4/UX3u5bC3nT3NPzJkd07NyOeFRzsEG3Zleo2WGK84X
+	 ADK+RleD+XpxkXRWUz3wxi1mz9wO2liwzQz+iX/TRrFT/HLHFPaWBjezcGriJezP5I
+	 XNEWb7hrEHcYRjTUP6gCJL+JFTJqoZ48ko9TjA3TsBwL8fz0x0TYFlkvqzWz1GQCun
+	 MT/B/T88VxWBAmzd/M4KPvwLM6Sk0ViCzK3GqJEaj8Hlqt/Kte/k44FFKgjYsq90sy
+	 m+0s+n0OQvJvMbz8iBkvwfs9TKrCl03j7I4PFf7v7CaHZPI9xl7QJrsRio1WElvSUG
+	 Cb28jwJo8Jumg==
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-8ee43b3e5abso15780206d6.3
+        for <linux-mm@kvack.org>; Sun, 16 Aug 2026 15:20:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rr3c7eDk6oYv7XYbQUqmJ25AsKkjUdmmjwrq5yFAP/OUq5/LqKvCk9RL6rE5fiCUcKu+LPmFoPmww==@kvack.org
+X-Gm-Message-State: AOJu0YyxzBt9fDfQflOl3MjRHFuIAWk+mvnqnY2M0PPblRVKsfJkl++N
+	DaeyQz2fo8K4Ja9I0MrSrj0xpN6Pj1NQ8kfymTOvfLNkkB3pASq9CBIqm2oAn9GAEslAYMhtWhj
+	JgHbn1yc9WXy+2dmGhycepHrBvdAQegs=
+X-Received: by 2002:a05:6214:4808:b0:907:c6bb:5ce4 with SMTP id
+ 6a1803df08f44-90a91ea5d42mr260324786d6.32.1786918835215; Sun, 16 Aug 2026
+ 15:20:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <OS7PR01MB139142FE16EC63B892559D40496DA2@OS7PR01MB13914.jpnprd01.prod.outlook.com>
- <CAGsJ_4wNPeSYHe_-UZnNRF1i1yWOxdbOiqsuVXVtLU7BDOBbJg@mail.gmail.com> <OS7PR01MB13914906DFF1C9AF471A5B46996D82@OS7PR01MB13914.jpnprd01.prod.outlook.com>
-In-Reply-To: <OS7PR01MB13914906DFF1C9AF471A5B46996D82@OS7PR01MB13914.jpnprd01.prod.outlook.com>
+References: <20260813-swap-v2-0-4a625ccabdae@debian.org> <20260813-swap-v2-2-4a625ccabdae@debian.org>
+In-Reply-To: <20260813-swap-v2-2-4a625ccabdae@debian.org>
 From: Barry Song <baohua@kernel.org>
-Date: Mon, 17 Aug 2026 06:02:36 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xtF3awozoxJTHPu7nREiiJ09Gg1W8tY3B=8Zg_io2wOg@mail.gmail.com>
-X-Gm-Features: AcwNN1Vl_oDHrABx9k9sD8AEeCwoJ8NrmVQSnAhTrbP7mjbtBevf5TdXX27h16o
-Message-ID: <CAGsJ_4xtF3awozoxJTHPu7nREiiJ09Gg1W8tY3B=8Zg_io2wOg@mail.gmail.com>
-Subject: Re: [PATCH] mm/rmap: synchronize lock and unlock target in anon_vma_clone
-To: Seohyun Kim <seohyun.kim@outlook.kr>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	riel@surriel.com, liam@infradead.org, vbabka@kernel.org, harry@kernel.org, 
-	jannh@google.com, lance.yang@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
+Date: Mon, 17 Aug 2026 06:20:22 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wHxYvU2j8Jon6yv=7dGhwFEHzvFB+yYFhn_PFSseT2=w@mail.gmail.com>
+X-Gm-Features: AcwNN1WqMSxHFh8ZE8N55wDlAF2Pa2NO_LIGyF637iJ2QkoXmYiRMTfMEyVh-Z4
+Message-ID: <CAGsJ_4wHxYvU2j8Jon6yv=7dGhwFEHzvFB+yYFhn_PFSseT2=w@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] mm, swap: distinguish a malformed swap entry from
+ a dying device
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Peter Xu <peterx@redhat.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 64B86100009
-X-Stat-Signature: 39h93hiyd77oxrdhpkb7kasr3goq3kfp
+X-Rspamd-Queue-Id: B47A120003
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786917770-948629
-X-HE-Meta: U2FsdGVkX19vZ8q79xyzLWXsMXCJWAH0kF6egNV3cAIp1HLY3NwGXVuBS+UOADs+oX7uu8eEnStl+JyI3ffojV0Y6vckGcXi0aAE0ri1McPdCdB7Thw5XFBkO+XF8TGmFuEQ0RzJH2w4ulrdqYrQR4kvzgatFIKsNpXtOI101u71Dxkdhvwrhlhmx44YLisYSYt6okHq7ZpdKG0H/STI4zVQAEtgXSGl9ATdOje0XCRSENoDjsdHyCbMtWrl2fauSyz5EUtSJxaKJW2PMVUub2zOkZWOy8gDBnoCaw0la7AN5xtcvrWrToPSRxh/Bpsha/CLpZ9JndQI0IZk842xeyM0Mx5b1NLCteOJf2vUIHyoqFtT275ER9BDmt51IWPRSqg42UZlGgmE1ypPXxQdz10ZvdBzqKRLyygrLD5l7M6vQX/NX+RReRQMna5hPvSnxBB3JX06HG78upm1cD4VaaZ4e/sG1zwIdvjDERoEvFp+2jFKtj0EDz1rUgLPbd93zvRHj0flAexBY4PYm50ohW8vSKBinOlasCHy526hBImpq8A0O20SoIXzQZTFqqeQ31w1jSCVu/7l5fLq5Xhz0eoEk4hHe+KQS87GEEZ1b8kHm+/d2JQfzRI7E9mJFKkv0DQBgdj7u8tD31GXHCr4CfkA+g+pYgS8d+yYGw60Cw/4C6K4w6JJCQNxsngi96gUN2UXtnN5J2bGu7TeqMmpRdaaqEPh9vdqBKuCgCRBxPORCLh8CBqaQRaxuj/tZ/R2u790wzJiay/gjoNO280eZvvdpEiEKKdpJkF5VnZggJ7osZklsjgvdZpM+jmrJ8JajNFfhCQNdXDs3vo8Gf8WvrHoCr37FB0T25u6BSfaQDc5+z29hoPfmHsGM079jzZGHmKc1TJ6qvmLpnxLCII2ZZBG/ofHq6W+q+hTbu4jdBA4Wm+bzji63HkG3ql9YHkUhJ293J4NqDGfjZW2CLf
- Z8mc7Boi
- KmpFHC1m7kpg3vWev50M2qPRnxcASFT03Hag3XQACm2aYpwEc7NAlbUpKVW9I7+VB9BDocdqJOFwVvf+r2pX73k7PKYgvQ8f2q1OOR+AVG3xBuMjR5DlINsR1iCCUAcz3N83cpQ3H24LYuXiz/EsboiKlK1SNgjO0j36W8bqV1juifaaRXvid25x41MqwmCvJGXzDKLIPcUMrKc1Czen0taKguWhcT2MAuh8zMLzgjo4nJ8gKJuOFUCOg4hHU+cQ0RsQx0yG8RBaYzU4hXTKhKROT6k9Md371kLzO4op5oblfGKAnzSDGpg951GyNZf3I13k1Ytx7yA01KHE=
+X-Stat-Signature: bwtrdh8bksyp4hd3m53krt46eet4x376
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786918836-646067
+X-HE-Meta: U2FsdGVkX18DS7ws7Vjki3BeGmACusMUZXbthqgzgRB1wLA7kRaijmAOYHKolXSDlvkVOo6ENFlLB6R73iO/LvMUjU9yWK0l3LBAvOQo5r9eJHqysGB/v2NmhpNMEHd8M2aqfXR+fMaKWdbasMAXsgKiAUHEr+1dfBFh8w7NQMvtgwjvuoCROFEKppdYiOCVeP79oFqDqlJFWeDLQNxoyhLNZJc4Q2v1vGF1Q1tZrWUWuVuhDghlcl50ZhRV1j5EI+ZfF+pfySZdKMd28rwsW9M9f6tXUFsPNnXrKy0x6VdCBf8lk1JO/DUkOx3jpBEHztZGxqYpQ/xXJ8BvGni0Q8Ee6qszDwwTBB6UPzdIZLuy0jBw6E3r/9P23o2edr96MHIc49fT0W9kQmGqv6ox64askqyWS8RyGh5HShOn6ZICIqYovzelBx74RGuRjnU9dmNrrtWstWHoaYwejKP813EdFvqmS7SJFtW6WXsubhbZFstt4FvAtr7g3zagYVGy+pUMOp7okAUvbLrV3Vw5L2b/6JbufJv8RtJbqFh/WmSbucK4hC7nMWLrOFsa8/GYR/o5VqXGmLbDPMRiIgrAM2KrHucdEVaNpg5usro+BXG5je5h3GChEFzflbze5XxN3gSrbLZdzYd/EgrAV0S3pyv2+xd2BxbubUvYOr8tAYbcM07NQUAlH6CXEKXoQHRUrp/sLo9D3oEjyeHDUvreioUkiZ4jBRykMPA7S4bgrkOKCvKUAcVTMxQGQEmsktkAQ9OOeLj6P0pOHlbmecfPjxAbwaE+KBcvBtQ0fdsXPArP8BMowMShX8o0oiQg7kbUy4aD2knovQ5LKeOj/80G/d8rQxfH0PmAMyXPT3vQyGe99dm2086J2kZfPR968AWoY5E5LEZI5PEV0gDfqGk9r9TntFvsv1BNMaszQ5r/3z6XvXUyKPCMxT+dAgKqKPsckotj+cg8EbHvPnO3EwX
+ gXDVoK5w
+ AfxOPPAcuvX9hPGYixN9zVMrgW2h/FEi9UklIyhwYxblNV3VDrNGor5aT/BjCRXCG46luFiQY0zJYKmm9mj4XG54Z9o6QoEg9DFG7LFOm1UGWo1oV0lSuDDaem12PAMcpiItj73TNW8rmXBmrg9lcHUaGk6Yz+0A42ZXUYQsGOicLUTDMM3RKDb40cJw3dEZcPBIf6X9kn0aLTlSZrmTIwEKHcyBPUUmtgdDAa0YXJC1VWg9oMuVTojQZIr4dIbc3FCPL3aRBYPZ3OBn1AVAPgrKyyUbT2pwKynQo4WTm7wjvk7+uzTcHeegfgA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,26 +112,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 16, 2026 at 7:51=E2=80=AFPM Seohyun Kim <seohyun.kim@outlook.kr=
-> wrote:
+On Thu, Aug 13, 2026 at 6:02=E2=80=AFPM Breno Leitao <leitao@debian.org> wr=
+ote:
 >
-> On 8/15/26 14:21, Barry Song wrote:
+> get_swap_device() returns NULL for two different things: an entry whose
+> type names no swap device or whose offset is past the end of one, and a
+> device that swapoff is taking away. The first never becomes valid, the
+> second does, and callers cannot tell them apart.
 >
-> > On Fri, Aug 14, 2026 at 2:33=E2=80=AFPM Eric Kim <seohyun.kim@outlook.k=
-r> wrote:
+> Return ERR_PTR(-EIO) for the two malformed cases and keep NULL for
+> swapoff. copy_nonpresent_pte() already reports -EIO for the same
+> corruption on the fork path.
+>
+> Callers bail out on failure either way, so switch them to
+> IS_ERR_OR_NULL() and clear si where the cleanup path would otherwise
+> put an ERR_PTR. No functional change.
+>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
 [...]
 
-> You're right. My original commit message does come as confusing
-> because it sounds like there's an actual lock/unlock target mismatch.
-> (I'm not a native speaker too) My intent was to match the variable
-> name for locking and unlocking, and since active_anon_vma is the
-> implemented alias for src->anon_vma, anon_vma_clone() should
-> consistently use active_anon_vma. Should I send a v2 to clarify the commi=
-t
-> message?
+> @@ -1859,7 +1859,10 @@ void folio_put_swap(struct folio *folio, struct pa=
+ge *page)
+>   * Check whether swap entry is valid in the swap device.  If so,
+>   * return pointer to swap_info_struct, and keep the swap entry valid
+>   * via preventing the swap device from being swapoff, until
+> - * put_swap_device() is called.  Otherwise return NULL.
+> + * put_swap_device() is called.  Return NULL for an empty entry or a
+> + * device that is going away, and ERR_PTR(-EIO) if the entry's type
+> + * names no swap device or its offset is past the end of one. These EIOs
+> + * are preceded by pr_err().
+>   *
+>   * Notice that swapoff or swapoff+swapon can still happen before the
+>   * percpu_ref_tryget_live() in get_swap_device() or after the
+> @@ -1900,12 +1903,13 @@ struct swap_info_struct *get_swap_device(swp_entr=
+y_t entry)
+>         return si;
+>  bad_nofile:
+>         pr_err_ratelimited("%s: %s%08lx\n", __func__, Bad_file, entry.val=
+);
+> +       return ERR_PTR(-EIO);
+>  out:
+>         return NULL;
+>  put_out:
+>         pr_err_ratelimited("%s: %s%08lx\n", __func__, Bad_offset, entry.v=
+al);
+>         percpu_ref_put(&si->users);
+> -       return NULL;
+> +       return ERR_PTR(-EIO);
+>  }
 
-Yes, please, if possible. :-)
+Hi Breno,
 
-Best Regards
+Do you know why we=E2=80=99re seeing corrupted PTEs with `bad_nofile`?
+Does this issue still exist in mainline?
+
+Thanks
 Barry
 
