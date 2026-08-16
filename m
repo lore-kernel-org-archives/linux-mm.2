@@ -4,128 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E24CAC5CFC1
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Aug 2026 21:58:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02228C5DF67
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 00:05:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 760AE6B07EB; Sat, 15 Aug 2026 17:58:45 -0400 (EDT)
+	id 7E29E6B038F; Sat, 15 Aug 2026 20:05:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 711866B07ED; Sat, 15 Aug 2026 17:58:45 -0400 (EDT)
+	id 793946B0390; Sat, 15 Aug 2026 20:05:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 627A26B07EE; Sat, 15 Aug 2026 17:58:45 -0400 (EDT)
+	id 683696B0391; Sat, 15 Aug 2026 20:05:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DE996B07EB
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 17:58:45 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BD14340478
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 21:58:44 +0000 (UTC)
-X-FDA: 85104868968.28.1A7CE28
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 03D17180003
-	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 21:58:42 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="A5Oqm/MU";
-	spf=pass (imf06.hostedemail.com: domain of thehajime@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4040A6B038F
+	for <linux-mm@kvack.org>; Sat, 15 Aug 2026 20:05:32 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B45C3A04D1
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 00:05:31 +0000 (UTC)
+X-FDA: 85105188462.23.15B7ECC
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 31E9B120003
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 00:05:28 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=CNJ3Eb7o;
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786831123;
+	s=arc-20220608; t=1786838730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=31zdeqcy5sPeYzke8us34mex98HuBd1sdQEvsQlannI=;
-	b=DgqCKRZqLd/yH3NNWZtVXLXQFfQ/rmfR/gyT0bgeL3Ld7noCr9zZbyD+CcSaDd+mgWzHH6
-	z48K1ZG5md8fKaSxQZhXc8Jb1YzHCQzNLUygSfzgIkZFOdSfXkceq4O57pSDX7DJwCpWCB
-	h3lv0Yz9PYyrhW5ZJ1lpmUS8c62/r2o=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="A5Oqm/MU";
-	spf=pass (imf06.hostedemail.com: domain of thehajime@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=jYR/ejTsnTXTeX+NjHiy2sQRXo353/BXZCQRfkZ1HsQ=;
+	b=5dayTYIkyBiU/DlM4z4mmhGGM72/8uzqyZOo8PWTwMznpC6Us3YjdKy+xuXoYwgLYqZwIL
+	qHo+TXQonIejrdeST03UEKE7lxMYPokq4ulCgW5stxOrSFlKUdXkIuOrT7p8W7xLfe/6VG
+	qsacdXbwLW9Xx+T70mA3haalpARNsCg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786831123;
-	b=GatjwnRq+X36pjOFMPnnCmNkGiK0kO2ZQun91Ao7eOqIy7M1FydilPd2dhPJL7RNWFSQSe
-	UX37sDCzuwyacL76BcXX10qJn28sj4myPpvt0td0V4X3JNB6CfmZ8hXdsP06v4YVlKRHS3
-	0QEjWCw2bOjX1QyzAqSF1qQQhUWiYOk=
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-38511175ad3so2073481a91.2
-        for <linux-mm@kvack.org>; Sat, 15 Aug 2026 14:58:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786831122; x=1787435922; darn=kvack.org;
-        h=content-type:mime-version:user-agent:references:in-reply-to:subject
-         :cc:to:from:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=31zdeqcy5sPeYzke8us34mex98HuBd1sdQEvsQlannI=;
-        b=A5Oqm/MUnQ7bFKAH2sOjmYS0ZKzEj4KHALe9JoC5blyGp9ePs7mOaLonZFqNbtnqvY
-         UHoBMbne/bPUsKphZSLCy8Rc4czF0nuOejgAfpssjj7chS0IGQYjUC44JAJCpbBXuR3W
-         /LdC9izeQMXgGBuqeIYA1WuPlN9dRNr7XCLMxLmfvdfjVl0j3tWdYL8pAroAiAORucfz
-         3LWAemDrjxEnazt+CbsCs1lWNOcBFIfj976rRl2DziIX+G+Kg4AXzR4Z0YYjLIaS2b/4
-         GebW8446a3iBllqEex99J00ykQE24NNxQJ4iV345wXr1BRqOOx7ExznyNhaqlQAWL7vg
-         BTNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786831122; x=1787435922;
-        h=content-type:mime-version:user-agent:references:in-reply-to:subject
-         :cc:to:from:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=31zdeqcy5sPeYzke8us34mex98HuBd1sdQEvsQlannI=;
-        b=j3qsxgUBTpZBJJZbUzf3qkH1BDm6YKSg81ZGPYmiJtTv2WQ3cFFdSNbBSVn8OIoDDb
-         GxxRvJ/oIe8SKIALabzwzeYBRGT9jAkWHN2BbsGodYh+d4bJOYZ/PljspbzkCObmqSZU
-         vmEp5NFXWUKyDr+q0iiKlRAPqdnyGNKb4B1Hle8TrC/XW3ZRXIVZ2NfyVDX13Gl9lR8z
-         MfC5UzMKiq+1QgAveV0eK/lVKFxA0+yl5ExEl1KnbFaNahaNyB3Vatr1dttdyE3hZ8IH
-         cC3BAnjzXGwyIRRuEEwSwObrJe4KxnQCpcOlJbNztIaAJephsentNnE3nanQ4QCpujew
-         5s9w==
-X-Forwarded-Encrypted: i=1; AHgh+Rp6hYAvFRwAO8CPXk3CVthPFIZY0N/WCpxhCcVFs4wd8n0nTJK8xi9WKgz14kTa/FD74KPjPMBaiA==@kvack.org
-X-Gm-Message-State: AOJu0YwIIHOF706Gh4QAjiMmENSGz4S1ISJWwqdp1FKT/leVjGrbTB/7
-	o0q4qyCRhexSmpgMthyyBwxpqe8y1QSsrY+LbD5lP+85pVaJrjlBt/6+
-X-Gm-Gg: AR+sD12OT33PjWpD4SBgAeO7gU3fHiGI222cPqr8f+fwlYE+bmLTVYSGty1M874JemS
-	KmZPePz5MQg0gJtxh9bJ/acPr2Lw+k6ghS5FEdWoHdci+lQS45z+eGkXdHJfy49cTwfa+Tv5yrh
-	1Lef6+HBv2gRmAezayOD2dL4TzoafzWhhZ1k8vJzByOivRq/5/dU0jtrsS03GB7QyvvX27t6TpP
-	Mlw7lCo3Np3HR9Z7lPcZtpbQro+IYq+X/oCok2Zee3M+VKcvebARkZzMSV9/1AiDgHNP1m6/xrq
-	74RXSAaM4dLwzJreC02NOoxdBhPtldzj/F8Ue+TNsqMaCQHdH0q+2CYgM8JcL+Ht23O0u7umx+V
-	g54XmJtB76XEtxM2Ul0SHLvUzCffdG1vzjVEAUTtLzJAUQdzMpLzIsnyTkIux+riKvTFUtfJdb4
-	+Qzcnh9tIWJiWbzo9AdWYPdjOZ74tgWAIW7GxX0UV4jcZc7TrAopJLm02LZIST4FXmS2ByA56NF
-	MvcTVjTUFIK/9PA4jz5V1zTzuEn8MSc8A/yukg+Ee/Z2T1hQgZT7/07kLlWNEPzWPXMXlUfLi7n
-	9oDKJw==
-X-Received: by 2002:a17:90b:5606:b0:38e:6aa7:68ad with SMTP id 98e67ed59e1d1-3933b7fae6amr16351451a91.5.1786831121788;
-        Sat, 15 Aug 2026 14:58:41 -0700 (PDT)
-Received: from mars.local.gmail.com (221x241x217x81.ap221.ftth.ucom.ne.jp. [221.241.217.81])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-394ea9722fbsm7233622a91.3.2026.08.15.14.58.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Aug 2026 14:58:39 -0700 (PDT)
-Date: Sun, 16 Aug 2026 06:58:36 +0900
-Message-ID: <m2tsovoxkj.wl-thehajime@gmail.com>
-From: Hajime Tazaki <thehajime@gmail.com>
-To: broonie@kernel.org
-Cc: ljs@kernel.org,
-	linux-mm@kvack.org,
-	geert@linux-m68k.org,
-	daniel@thingy.jp,
-	shuah@kernel.org,
-	kees@kernel.org,
-	luto@amacapital.net,
-	wad@chromium.org,
-	jackmanb@google.com,
-	liuhangbin@gmail.com,
-	rbm@suse.com,
-	linux-kselftest@vger.kernel.org,
-	linux-um@lists.infradead.org
-Subject: Re: [RFC PATCH 5/6] selftests: run tests on nommu architecture
-In-Reply-To: <4355a510-2e00-41f7-9bb3-8f6b2d95503b@sirena.org.uk>
-References: <20260813063401.1786548-1-thehajime@gmail.com>
-	<20260813063401.1786548-6-thehajime@gmail.com>
-	<an8MlE22U3586R42@lucifer>
-	<4355a510-2e00-41f7-9bb3-8f6b2d95503b@sirena.org.uk>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 03D17180003
-X-Stat-Signature: 6oa4c3jugh7zmshtnrreors4msgr5h18
+	t=1786838730;
+	b=l+9rmqWlxEwyDXLA+yZ4++VbIvhOdkhfut7IZcfBYtHzLr6GrDUSErn7QSOBFoIZ+afUpB
+	ZBXpnjAUM1qLWq9J2quhwWV32hRE5e5IrNnXA02kRgwXoWs2Dl2INJbON3Co1VCK12XPQT
+	5rS37BHaHZpmnUEjehekZe2A6hOniW8=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=CNJ3Eb7o;
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786838729; x=1818374729;
+  h=date:from:to:cc:subject:message-id;
+  bh=VaOQwjUn/5W+Vxjff4nmO2RENY8dlbFq5sFTlodLZMY=;
+  b=CNJ3Eb7o7uZyziXveoWbMVTjPt2GAzG8YYeCHoswR4U3jxIPSTsPBIDx
+   8iTn8Y+f7N5sZk77WJlci7UQAJlsLSDiGUoRByKWCa7rqSFsZM8QZjC6u
+   q9FKUSUUda0V0pYUdDeVq5KE5ejfZ9r/OkDJ3hP1Oc5Na7TxcGaTFVbGI
+   9jWcq/l+XKBBDv6cbSzJbWpbldr6FlOaQ4bPFGbeQNt/TkWbG07s2lZqC
+   saJcsX/sJPOwW/hOdlcxUL5qw+kbhReWxMaXtA3jERAeCc3iyl9sjoxKK
+   v5GjIa1siMP0grcfrIMe64ifyUN9VUjhLUeBVAnBhJu5kO55zO1U/efpa
+   w==;
+X-CSE-ConnectionGUID: gZdqeadcROWeJoQCPm1ciA==
+X-CSE-MsgGUID: EjfEHJQkSdOCKtHPkfxJog==
+X-IronPort-AV: E=McAfee;i="6800,10657,11876"; a="87576795"
+X-IronPort-AV: E=Sophos;i="6.25,226,1779174000"; 
+   d="scan'208";a="87576795"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2026 17:05:24 -0700
+X-CSE-ConnectionGUID: 9rGtrACvRVu6jWmeacnoYQ==
+X-CSE-MsgGUID: /4g+NdXbTxK1B4enuqfjWQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,226,1779174000"; 
+   d="scan'208";a="261284156"
+Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 15 Aug 2026 17:05:23 -0700
+Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wvONM-00000000cYo-0uUj;
+	Sun, 16 Aug 2026 00:05:20 +0000
+Date: Sun, 16 Aug 2026 08:05:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Hildenbrand <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-new] BUILD SUCCESS
+ 33f61b12d297562321533c048e034b1fb21c1cf3
+Message-ID: <202608160855.VZWST6gY-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-HE-Tag: 1786831122-12006
-X-HE-Meta: U2FsdGVkX1+ynfMODEZkZijCyFs/jipIwXJ9fLXXOn0A2KViLLZ1V6N512OBys0ak0NJE9RtlsaLkHr3rbyg4+z+93g6uxYB0PyrI2pyiTtHphVKsAk15M1Ep0k4xL6NiPTWQBC6jWZaz2RsQswAQ6kmykoTOXmuLu79yL3cFTVgrH/a66zgZDCD4mbEHVYcNprh26FHWmyqxYe0ucRDipebC+gguo/LHDAjnvi4xd62SPMZZj3impqKBlQswq79+P1y5K+bQV6zG3E/REttPi8nO2w56Ix6YucKyzCcgTGjx8RWx0RRVk7zlBNp97EEoEd/fFxkbvWAND9IDpi/zprcAFWfx5HNZyqekKez8pHb1uvA3+sej4bQnZEktl2ApvE+o4ugz1Mwi38nqZCBGDhmsTvJ5IzAwI8wyXKEtnXjPYijB9Wsau5lyCezd9ikSjCe4yLdnYJQtk/N+V/io3Uh1RvIrEHozxlsj7k9WgnWaJZ98q7Mn4b49Ng+AhBQBaamQlArwSc9eY6i6dDRSPjXakhu+eFpQ5eqS4z6uIIWDEj8ZISH2LDRjEaILQxwwbnnwanyt64F2ZMchuA2PSOcJePEKG0SQlScTj4O2MoAgV+U3Dz7mvHwW5lj6nJog6kE7mpJ8BnGJbyK6srFyHqvuR40YVity7iyXlubuXwlkGwyaRBbWX+jORJ2+YoNDrK7ddRmpeCqHE0bfnPXZnvNOMymKraAHIgqEqSL4W4F7flulJ2tDncCl3LEOdNJrVu7A7tu6KMukQnmDxGp+XOLHi/SWopsvxJqAjAS16cu04Orbr7spKKcL5SRvyrtIAJZ2ta7OMRkPZO98FdrJhYpHL2zu45/tyQEhxr1kBHAmFTxUVjKcQ23iLKFKuo6q0aRqz6ttYGM47ceJ4IMhO6hEtTOblqR9g4eb0iT1yIQF+jd4VJBDBBHvNXaZsQsQrJNFOys7ZoUmfIMYLJ
- jPPTE+Oc
- rb8jUA2Bz/dP6gYoDz2vq2rLNxyALY26rQXvxcMOWaUWa4Orv5PmeevOLrTe/ef7TbiRXdnzeiJY78587v+DrOYoTpowDBGkywgrZokCPHPUjl3/gMG3mlMBBUxxRgB8G8GH5SEi4v//MgMTEFVanXmNZw7Ri+KQBQkqCLXNvyTtZlgUkhim1b07EI7hSSKPNzg2pPWCAlSgE3cGvuo8gTnZZqFq06KkVDsUUCnnd/GZSoGNf6lRL284oodI/hvpHhVXmViJMMkXNbNapkt94O+xAA3lscH9nt0FqywqAowl+md74p7vqHgxa3Bdz7ryLmSJZgJaYLW2ObDlIT2VRyLjlQICMP9CoxikrCGlRR9tws+sn/jKHQiTvK0OcWLxeK487FH8DSHf1TsE=
+X-Stat-Signature: nbcwkz96qsitcpd71rgsq8y4ex6fmi6g
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 31E9B120003
+X-HE-Tag: 1786838728-738970
+X-HE-Meta: U2FsdGVkX1/bSBuRFuHLmsUiCwFW90+9/V1FovVXSIziQN6kLoEzpbORFeupGdHeMZURmIFFO0OiujnQqkbtDmmPEXEmgQNGv64/fdmUnas7IMvH9eDnQzBKd/ypkdbCyc/vLqHZKzkx8zdw6s9hD/fCoD0Nzff00bDLEPpTamuloREDKkDhe2VHPW2wuSAeaL5uTDL9OpRmmPkqchBzfPR0uUdIa3KDnZtXrr/qbk1DLu+sSUbS6i8Eu9HpRTWrQ6Iu+RHU1BRH0Fa8YT86kbrJcu7diV6BC8uTz8koTR8g60HTLg7KLeTpMIDKAr/K6rtCEflog7Zk5yt2abq0ytEK0vaCANFsW8s37+V3UjucMUkmmno8o918XSlan+hmSY43kvpnIHJR5hBRGK2WZyOutH5zgAmYDgWbMzTFfnI1qRnHU5R9moLVhlgOsHsy4qVrmuGEzCRKpuuy3Lh0mpWpt3OKRbUnhp2l+qhIH7p/PUQJmuhqaNMzlolDbyVrsbJaO+pQg8fN8NzG1EFVfdHQhrR//044FjXoF6J8bLv91mXyxyafnufzKX6egmVEM1UjX3EAFaHKMFVfk171pFtmtRnJy3glU+u0OdrONaDYtDOifOmgV4t+f/FzhqaWCjtyZRwBwSlBsBN74TsFTOKiNkfc4dPJ4kTLfu1p3ANmcluaFB6RGR2miRKdt8TpxgyzCIOt8eecUsXENOvsweSFsFanI2HF6r2uGehv6zJlXe5ICDjWCP5wyfSPxgnNz04799HcJHiUChFba8pLKV/fadT+za1u9p0xgZUyGfE2CLQzeUsHLmz5d1p9VLqHjBj0g6JmTd2g1gOUILWwFiiRsn5awdCqL6VBMyJTySoEAUe2gzSeRln77UTj/4HBhPagwA8M6+KRmuSWEdee0ULsCna6g1Q0TytwFjsmELF67wbwN2+4HeWuz979YReheGCWvK5mrctlXIqZMcO
+ XFlhV4DT
+ Vwd1K3HMJABJso9JtqOYB9qduHnTkZcdzm3j/bcMifmnV3j/2onESTHC+pqCu/PiVRFVgmqgdbBusg6cqUyC657t4l1yCNIuttVlIZvjrvgLMenRe/T8guT9klj8wirBqSHgBqnmEk+P6OF7ehLpK4maxzrpxmrHSbpr4zkM+mOGhHrRhVEpKKlP4v5VVJ+LqgDtESH6Rkn5jg7U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,52 +102,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+branch HEAD: 33f61b12d297562321533c048e034b1fb21c1cf3  mm/swap, PM: hibernate: atomically replace hibernation pin
 
-Hello Mark,
+elapsed time: 773m
 
-thank you for your time to review the patch !
+configs tested: 99
+configs skipped: 1
 
-On Fri, 14 Aug 2026 23:34:15 +0900,
-Mark Brown wrote:
-> 
-> [1  <text/plain; us-ascii (quoted-printable)>]
-> On Fri, Aug 14, 2026 at 01:50:50PM +0100, Lorenzo Stoakes (ARM) wrote:
-> 
-> > So at this point you're not really running much of the selftests at all,
-> > and are only happening to run those that don't do the very basic stuff
-> > nommu can't deal with.
-> 
-> > I think an audit of existing tests to figure out what works with nommu vs
-> > what doesn't is really unreasonable again, given nobody tests or seemingly
-> > uses these arches.
-> 
-> > So this patch might beget more nommu carve outs and exceptions and
-> > therefore nommu workload and maintenance, which isn't really sustainable.
-> 
-> > I know I complain about lack of testing on nommu, but at the same time I
-> > don't think running arbitrary tests that happen to work on it and who knows
-> > if they are valid asserts anyway really fixes things.
-> 
-> > And given nobody really is doing testing, it's not really a great RoI
-> > here...
-> 
-> Perhaps a good first step here is to start off with getting some public
-> CI set up, then build up to getting things running cleanly.  That way
-> there'll be visible ongoing coverage which will help motivate getting
-> whatever changes integrated, and if the changes are done bit by bit
-> there should be clearer explanations for why they make sense on nommu.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-thanks,
+tested configs:
+alpha                            allnoconfig    gcc-16.1.0
+alpha                           allyesconfig    gcc-16.1.0
+alpha                              defconfig    gcc-16.1.0
+arc                             allmodconfig    gcc-16.1.0
+arc                             allyesconfig    gcc-16.1.0
+arc                  randconfig-001-20260815    gcc-11.5.0
+arc                  randconfig-002-20260815    gcc-8.5.0
+arm                  randconfig-001-20260815    clang-21
+arm                  randconfig-002-20260815    gcc-8.5.0
+arm                  randconfig-003-20260815    clang-17
+arm                  randconfig-004-20260815    gcc-8.5.0
+arm64                randconfig-001-20260815    clang-24
+arm64                randconfig-002-20260815    gcc-8.5.0
+arm64                randconfig-003-20260815    clang-17
+arm64                randconfig-004-20260815    clang-24
+csky                            allmodconfig    gcc-16.1.0
+csky                 randconfig-001-20260815    gcc-13.4.0
+csky                 randconfig-002-20260815    gcc-15.2.0
+hexagon              randconfig-001-20260815    clang-24
+hexagon              randconfig-002-20260815    clang-22
+i386                            allmodconfig    gcc-14
+i386       buildonly-randconfig-001-20260815    gcc-14
+i386       buildonly-randconfig-002-20260815    gcc-14
+i386       buildonly-randconfig-003-20260815    gcc-14
+i386       buildonly-randconfig-004-20260815    gcc-14
+i386       buildonly-randconfig-005-20260815    gcc-14
+i386       buildonly-randconfig-006-20260815    clang-22
+i386                          randconfig-001    clang-22
+i386                 randconfig-001-20260815    clang-22
+i386                 randconfig-002-20260815    clang-22
+i386                 randconfig-003-20260815    gcc-14
+i386                 randconfig-004-20260815    clang-22
+i386                 randconfig-005-20260815    gcc-14
+i386                 randconfig-006-20260815    gcc-14
+i386                 randconfig-007-20260815    gcc-14
+i386                 randconfig-011-20260815    clang-22
+i386                 randconfig-012-20260815    gcc-14
+i386                 randconfig-013-20260815    clang-22
+i386                 randconfig-014-20260815    clang-22
+i386                 randconfig-015-20260815    clang-22
+i386                 randconfig-016-20260815    gcc-14
+i386                 randconfig-017-20260815    clang-22
+loongarch                          defconfig    clang-24
+loongarch            randconfig-001-20260815    clang-18
+loongarch            randconfig-002-20260815    clang-18
+nios2                           allmodconfig    gcc-11.5.0
+nios2                            allnoconfig    gcc-11.5.0
+nios2                randconfig-001-20260815    gcc-8.5.0
+nios2                randconfig-002-20260815    gcc-8.5.0
+parisc                          allmodconfig    gcc-16.1.0
+parisc                          allyesconfig    gcc-16.1.0
+parisc                             defconfig    gcc-16.1.0
+parisc               randconfig-001-20260815    gcc-8.5.0
+parisc               randconfig-002-20260815    gcc-16.1.0
+powerpc              randconfig-001-20260815    gcc-9.5.0
+powerpc              randconfig-002-20260815    clang-17
+powerpc64            randconfig-001-20260815    gcc-11.5.0
+powerpc64            randconfig-002-20260815    gcc-8.5.0
+riscv                randconfig-001-20260815    gcc-8.5.0
+riscv                randconfig-002-20260815    gcc-8.5.0
+s390                 randconfig-001-20260815    clang-24
+s390                 randconfig-002-20260815    clang-21
+sh                                 defconfig    gcc-16.1.0
+sh                   randconfig-001-20260815    gcc-16.1.0
+sh                   randconfig-002-20260815    gcc-11.5.0
+sparc                randconfig-001-20260815    gcc-8.5.0
+sparc                randconfig-002-20260815    gcc-16.1.0
+sparc64              randconfig-001-20260815    clang-20
+sparc64              randconfig-002-20260815    gcc-8.5.0
+um                   randconfig-001-20260815    clang-24
+um                   randconfig-002-20260815    clang-24
+x86_64     buildonly-randconfig-001-20260815    clang-22
+x86_64     buildonly-randconfig-002-20260815    gcc-14
+x86_64     buildonly-randconfig-003-20260815    gcc-14
+x86_64     buildonly-randconfig-004-20260815    gcc-14
+x86_64     buildonly-randconfig-005-20260815    gcc-14
+x86_64     buildonly-randconfig-006-20260815    clang-22
+x86_64                        randconfig-001    gcc-14
+x86_64               randconfig-001-20260815    gcc-13
+x86_64               randconfig-002-20260815    clang-22
+x86_64               randconfig-003-20260815    clang-22
+x86_64               randconfig-004-20260815    clang-22
+x86_64               randconfig-005-20260815    clang-22
+x86_64               randconfig-006-20260815    gcc-14
+x86_64               randconfig-011-20260815    clang-22
+x86_64               randconfig-012-20260815    gcc-14
+x86_64               randconfig-013-20260815    clang-22
+x86_64               randconfig-014-20260815    clang-22
+x86_64               randconfig-015-20260815    gcc-14
+x86_64               randconfig-016-20260815    gcc-14
+x86_64               randconfig-071-20260815    clang-22
+x86_64               randconfig-072-20260815    clang-22
+x86_64               randconfig-073-20260815    gcc-12
+x86_64               randconfig-074-20260815    clang-22
+x86_64               randconfig-075-20260815    clang-22
+x86_64               randconfig-076-20260815    clang-22
+xtensa               randconfig-001-20260815    gcc-8.5.0
+xtensa               randconfig-002-20260815    gcc-8.5.0
+xtensa                        virt_defconfig    gcc-16.1.0
 
-I'm currently running tests on my personal CI (gh actions) but try to
-find a public one to be more visible to others.
-
-> You could perhaps use a skiplist to ignore tests that don't work yet so
-> the CI starts off clean?
-
-thanks, that would indeed make nommu tests more cleaner to integrate
-as a first step.
-
--- Hajime
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
