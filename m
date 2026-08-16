@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C170EC5DF66
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:46:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B400C5B572
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:46:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AF956B0375; Sun, 16 Aug 2026 18:46:36 -0400 (EDT)
+	id 5E7D16B0372; Sun, 16 Aug 2026 18:46:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39CC76B0378; Sun, 16 Aug 2026 18:46:36 -0400 (EDT)
+	id 598536B0375; Sun, 16 Aug 2026 18:46:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EF236B0379; Sun, 16 Aug 2026 18:46:36 -0400 (EDT)
+	id 4604C6B0378; Sun, 16 Aug 2026 18:46:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DD7776B0375
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:46:35 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5C13B12051E
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:46:35 +0000 (UTC)
-X-FDA: 85108618350.15.8B6D143
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 732AD1C0002
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 108736B0372
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:46:34 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8B0F08058F
 	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:46:33 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="p 4USo8N";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=Qhx8ktES;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+X-FDA: 85108618266.03.6A9D812
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9EEDCA0004
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:46:31 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="g Ab0TOV";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=V9uGK6Lo;
+	spf=pass (imf15.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786920391;
+	b=40napqOlRGvBAp+lsoi+TrfwqxEO0FZ4+bqSpD+Cc1zZl470sqRZHg1TjNV6P7t7SQV8bH
+	NKsyOGJS7eGKPC5VmX4cc1V5sbw5XkCr4QPBoFZLfhKm7OhSOLLYyeo37zEr96l2KvpRSC
+	3NdEd35Tf4IJ0irzuNuc4miZIZzVGvs=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="g Ab0TOV";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=V9uGK6Lo;
+	spf=pass (imf15.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786920393;
+	s=arc-20220608; t=1786920391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8XhPXvryxg5fpsuZkpieQ1Un5AH038hbB+W7T9Aoa/s=;
-	b=pjJYKpPznvTzSCTHspda6oPcwUuwFTf3iqA4RvU6Bq2V/TGGFE6SZwL20UWWbji1K7q3jt
-	3N7bShAESQVkOaZlVmV0Amx87MPCZveq/wY3b2LBO+Wr8BBH2mAfRchiGK6/RlgQUNNgZa
-	BVGIIasD3kSj1EsTEgjyCnMEWU8m6bo=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="p 4USo8N";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=Qhx8ktES;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786920393;
-	b=LlipPMRqfrAzWQOerroCPjfPwqAu12hKIm0YLArXLxaeAoVXFxTJ4qj1JMJPXtLshyUzFd
-	ODUvadgwTMRkygjwl0uwCvGK/fr0a1TDI7NMKffQAGozJ1gGoP5PG0wY6fvteA8msMslIi
-	PcwqA8Z73BOBEuVEnXVwC0LJwTW65JI=
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id 10E7BEC0241;
-	Sun, 16 Aug 2026 18:46:33 -0400 (EDT)
+	bh=7VxCBv+v1ZXEJKNvfPy2aqiMmOmTEgUap7KvFAJc7uU=;
+	b=RutMmIeJSvXP7wBQtvPo5pHVOntH53nPl+mw3W8Gp6vqgxi6iTbrGblfwIWnMWTKQrqR4k
+	WYlUha2NUs1JwGXwtAx3FcumSz0yOREWsNGDZgXFR1vbws3FY2sJjGhhhUHJRnl2Paqurh
+	VtZwhfkwbJGXPTALbwSb1Wv7n/T1yRk=
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id 3088BEC0243;
+	Sun, 16 Aug 2026 18:46:31 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Sun, 16 Aug 2026 18:46:33 -0400
+  by phl-compute-06.internal (MEProxy); Sun, 16 Aug 2026 18:46:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1786920393; x=
-	1787006793; bh=8XhPXvryxg5fpsuZkpieQ1Un5AH038hbB+W7T9Aoa/s=; b=p
-	4USo8N9/+B5/dIGGB8UZK3mvOa5tz05SY2zXme+4ezgXIb5PS9VjAjOicaRhtCW5
-	95dF04FTD/SLLZHhVVpSvn87U24l1Ii/ViYCLIvUUoHwNLsyHGUcnU8+0vYmuZnV
-	502aXAXVXT7bAfLCGrZ1y9np0XapvqWNaOaKRhAWPB/pxdOxlnOfBhdwdfyq5epK
-	H1hR8/siemyvyEUrUetJvOnYU3jRYFp2R86xQbPwGeTH1pqveyStgZJ9z42kAtbq
-	WQ8/jHAk6PzTfCCzNEYX41l5GTH8o6KnY9konMzLX30on9Fn7U7umcuhjzlJk3Q+
-	njpbqTTf8UseR0OPVIWrg==
+	:reply-to:subject:subject:to:to; s=fm1; t=1786920391; x=
+	1787006791; bh=7VxCBv+v1ZXEJKNvfPy2aqiMmOmTEgUap7KvFAJc7uU=; b=g
+	Ab0TOVpn+9qoUMsUan8zShJ2eYFdfYlNN48hFz7V7rEO6adbiMjWHyXwoc9+B3D+
+	hEgy73wLfFs/OKh7MXYMvZHEppDFJ7EL82dC4HldTYTGnY9wTtUrM94lz36xZo+A
+	dLPF5/h3pH+dUnyJhVBrdntA79JQiU46MNqF/zWywBW7Ku1ON6cfrFnNieNxrg2x
+	CaWyZa6GDa0PdOgtx/G+gP6udYy1ILjXH/+Nxb/JtwrdFYjR22UCs//sshwbpQ3R
+	KY0ZQhA4JDx87QEczUD1KGu6UHQJA97P9l4WU156i78r5ULxxpwlPnKdbURvOQdN
+	N9USjpiEWUpxwy5ZPNGNg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1786920393; x=1787006793; bh=8
-	XhPXvryxg5fpsuZkpieQ1Un5AH038hbB+W7T9Aoa/s=; b=Qhx8ktESQtz/mufMN
-	pHMdTjo47SG2Zg3B4+ysZ+o26OxTe5JUrqwUF6Gf751BtExE1XB4/4ANROgtIqaa
-	mxJtXU5cwmm9KAuQW8PtKm4jrNH3C5zXNbUPNA8VOD75+eVgTVLq0hU6O6kOeiSV
-	NouKdzqyAABI3+bT+8b9pfN6dZBZEovMcCyuAkUquAwUPohgaytbkUhr+F5DG6j/
-	bhRVd3ehj/dPhTVzJwnC9qBe8MNYFmwn+CRvjmgg6S8PUmugc+fpBsmNU5Alb4tW
-	Gv0jcu54m04uBcU75FO6N+FVboxZbucchY7e5Y6pqOaQfLP4fUa2vH9smOICFDUB
-	qbBMw==
-X-ME-Sender: <xms:yD2CaimxSoHsoLB6EVxAqLxVTaY8J3yErMCW3D6UH-5BqPW2QkK6Vg>
-    <xme:yD2CavJ5N9LMXFVK1Fq3F15pexsuseU-ELVjPa3JGy3S7Ws7rqSx4i6mp6oi5cZ61
-    fdGyNN6MBGVWTbg_8Xdyx9GYML-gqF7tCzE3x1XDOxOW6xaYMh7bUaB>
-X-ME-Received: <xmr:yD2CastPFP3ky56YN0qPu-v4BPOG23Jwt_7EsFIVMXIdFr7GdSDGeSkfLG8>
-X-ME-Proxy-Cause: dmFkZTGQiHMMNOd1xnoN6lXQSIrGAe7MwYo75Qud3VSOh3aIjL1T4IX+wE1i/v23Y8aWnG
-    m9SHT5inuXsr6fNeLF7q+XcMZ+pkZJxjpb2XQQyKrFdYKaLz7QDFEiegvQaT+Y5rGxRgjF
-    euipinLXiFMtCpFgMqQP9Dwn4SHq3YG285QsMU4KB7YfRQHYWKIG6dJTmdP/7bPKv1qUNe
-    3LkhBXaaROXWrLGafj+UVrogU8Abxo2OvgWTBKIlLl3SY5Eb27sggkfdoaZJgpjY1+W5mK
-    IYgTH3bmg7umgeRjJmx+WAhyhWPmGn2xLzWKHa3nzXVCTdFk2+6Uh9D41+s+1+4ThvFtfW
-    NEpLu0J2+1AtombAx/oKQAUo4FdAqIyUBygKONCIsIuzHn0ehaewfPdQc9JRA72ZVjUcvT
-    NN0yVeiW9iRHbQYdFkF2m3zJxcH+dpN3/rKfytNUy69Sg+2VSptJPgM26K/k2U4bFEl7EU
-    690xUCzQ2LJrxar1DAPsq7zqzyyluJwuIcx9Z841gYPLj1lJoDte6VWlNqmUvxKKp1BwlP
-    FLEH3ulX8mo8toqp8ngqwN6XZKd6wxD+06z8GoGpI2LzwWCTbBUI/s9vlIEsR3N3tn75UR
-    b2ROg4E02kVetP8D1V/XH9Rhum6U9QIMIrGTLJxUGQ368Ahd/W1KjD8NSZPA
-X-ME-Proxy: <xmx:yD2CajI-B3jAybRfhYHpZVzn8jTGKyrBQ20U8zUj-JVlplkukelNHw>
-    <xmx:yD2CanGob07kLNnwYKv02i3zaATxy3vi-yovk6H8w61CqvrUXXz9hA>
-    <xmx:yD2CanRcDQ1dSN-5BgirfpMFCi3th-A4SN3lIZjdJVVW0EzLoaescA>
-    <xmx:yD2CahXqeL8a-9gCmp9qdI63jY-jY4NsKey1Q5p5ft6RRVT4Xq-uXA>
-    <xmx:yT2CasnV-FrNd97dBrFOXFnov62LH7AeZI3wr_DmU_fzPzlv5XVwgJPE>
+	:x-me-sender:x-sasl-enc; s=fm3; t=1786920391; x=1787006791; bh=7
+	VxCBv+v1ZXEJKNvfPy2aqiMmOmTEgUap7KvFAJc7uU=; b=V9uGK6LoUNikpiRjD
+	CTRKPEM+RkNxg4AL9IZRimPQcHj0+Y/s89JbzBlqwOrHQ/88GlKAg2GdMr1NXvFn
+	ZGeEIaBa94w9uXJBz6AAv7PFvR9TyNzdZqLG7cBc/iTIUatH2V4ReQZ3sX1bXrtq
+	r87h3/tA0BPU901YuxbyyfH0h+qA7CzO60qAPIVHiQ2L3ZHoxmXQ016qObtnUUvc
+	z88x10Xi7mgucQNiIIHixKQz6bKbZS3zIgVo6TXleiOwEmw+hqMlLc40SmcL50yU
+	8WUCOygX0YHUHPgvoYf00XGMSY95qDV7uZmVD2pEqf5nXrvn9s71sQVrx8BsI/z2
+	9p12Q==
+X-ME-Sender: <xms:xz2CatKgdECJoF_4FPSo1z1p9D9IsAtaSgkNGZ3B0TvDf7z7lRK7Ag>
+    <xme:xz2CaudaMGJ2SWdm_3HrEqT2rqrsjq3GIwY0NHvwR9NzVjOH99aPkh_PH2cpnF2iK
+    fSWY9r5-Fh3fRB-EBOTSM-LiSCj8R1r44ADIG_UtkmnyyZWH7qtSMQ>
+X-ME-Received: <xmr:xz2Cahw2BLyshBqjRh6zEcOTSea4TADe25TVvatc9skguuSgp1lTIBwsibU>
+X-ME-Proxy-Cause: dmFkZTFt7uwKlsd4UyzlmYX1bnlzO4+qp5TmvoTS/qzkFKfMuj25xYssUPl6UU5Ie9xRba
+    Y0bWuaC/AePVMhqrkCnU3j3fo4+kQ4lrNr0qcDw4ZM2xDmZI+m2r8oZbGDZU/DcLlRMJvk
+    pxa8BemzxDXpf0p5hqW+oOweEwIQBvnr/hc1O3uCrLqxLkUCX+QMvT/AmKStBz4XcOBl17
+    ynvfoFkCi5Qu6ZndF8QgBKMwimBrechIaqu56LTRaFtWn2N2FSoSPFDDGPAClh8o3Wii3h
+    WmXtU4UIpdlwyanZt6DS7CEKxM1G2yBGNUvAI/9KSggaAyLfyuWlS9a0iep84iGUQaZXBZ
+    FT7lUXICRewRR2hApjAGIT2CFP2aecTYW5WBOWdkAu3PZGJMwVOaTCXCbpyyAw5uDutR9N
+    cM1vfgm+C6HgAfygQSu8EUBMJo7+djMMGvy1w1JiB0r7oXIzcj8YaeHLzsFDQuCP7Tk3JE
+    VYcUFIxgd6tXhGEDYtL3d75Uwq7YHKTP8lYdadtR5e+r7ixAFvfU/UibDxJtY36j4/ENrG
+    7O8W7AyTPTaJ/cCibLitvEYey+a9uFu63HUfggyD3oir7BbLzhjWVTsIkYheuXSmJhUyub
+    ho7En+8+81Adj/Pfu7T+uFcVIloLHtGz/Skb7mjPPkRiSkCjwpI39xh5Zgqw
+X-ME-Proxy: <xmx:xz2Caq8Uxd1pcQkIdzMX9KDdjHinFJ6jOKk1T5rOPe6YZoUBXxswiA>
+    <xmx:xz2CaqpJNFCkdb0IXdrzp_UeMLbitNwuA9hIdIuso7_A1Za09NFl-Q>
+    <xmx:xz2Cark3K4VPb52Y1dGXT2IhWTwp4lSeSAp59USh3gOE2emnKTpQaQ>
+    <xmx:xz2CanZEy7BW4VJ1oYn0xr09C_FfbfZCzbIB3bTKUsLcsAzI80Lqnw>
+    <xmx:xz2CaqNgjNTYaSskvUR4-dpE-NP3Y5rOwI4d9u1atTZc5DBUw-o28z3h>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 16 Aug 2026 18:46:32 -0400 (EDT)
+ 16 Aug 2026 18:46:30 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -133,22 +133,22 @@ Cc: baolin.wang@linux.alibaba.com,
 	mhiramat@kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	bpf@vger.kernel.org
-Subject: [RFC PATCH 08/57] mm/collapse: scan a table for what a collapse could use
-Date: Sun, 16 Aug 2026 23:45:20 +0100
-Message-ID: <20260816224609.308019-9-kirill@shutemov.name>
+Subject: [RFC PATCH 07/57] mm/collapse: sketch the new anonymous collapse engine
+Date: Sun, 16 Aug 2026 23:45:19 +0100
+Message-ID: <20260816224609.308019-8-kirill@shutemov.name>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260816224609.308019-1-kirill@shutemov.name>
 References: <20260816224609.308019-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9EEDCA0004
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: y8narkb35zccxjq9jrggjbgyapxqwn51
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 732AD1C0002
-X-HE-Tag: 1786920393-497433
-X-HE-Meta: U2FsdGVkX193FbSCHJcz1QlkD+FCk7pYbHTg+Azvi+7QfwJ1bTH5HE6pe5Gf+fc2WUjyH8JzLqjBo7CF3mnLv+00rDtieG5nTM7ViRzMLr/gXlz7hCjLutLnKlpG5qVKgGRvdvMK44T/XybhHdPbd/wRJBLjtuZ+UIw1G/nucYj4+q3BYuBidG9SSeU7329Or7Wi1XsX8DcoaYtbTprSJ4ccQ8k+gL8Ft9RJ+fqr9HP0uSwypnbDeCw9dzj7EpDzUO65TlsvpKTnvEyIqqsaRyCgQpuhID5+Dg+XsSy1GxDm77gdL3JQxD8OWy7240qC/vsjcPnfh3x18yXc29tFh/SUKwUhnNYEkwiEnDU7xsFfgy8fMYwlSYckEwQzMygF5rmxNRW5zdW1wQXNRDANWJtqUcTfyHVnLLPQ3w0KbnfgOkGKi4K4jC9jYh+3EwThusDmWSXJ5x5FneFL9uVLZ9O2XxGvi1z4zG7sfMj+ysPuAFojCMn2swPgSF/PVgWv3gG/2sD3HSIeRx1c+6cEnLxkzfGUlesAj32HDPrYjWREAPO1j9Glw9zqJef2qh3qR8PWV2nkg0+tp3dgcAEPAvOHms2PkcGz3jtj8Q58pqFcSJaS4hc9Qzp//t1tguU8dGvo+Z5ndPXrAgDMXC34ZbUMONwi0SlEVvyfzVsEOTZbYtD+dMnArDrINjQOkBv/9Z4/CXSqHy+2Tg67i0S9t2F3sPGlst+ZTbLzGGlyO9OqB6pRQMSajCeNr5QSuK0T4pkslTBMWb/dvNHQDqfgGnswhIcoBkHwbcbvPJrM7j2dND3OjUmGO5AkSDblW8xkvz5+bKu0ajooGGMtI/Dz4CU4CvS6ZJmh1UdJMcMZOKT/irCPk3lYfrnT6skA2Qt/cG9EayaEv3ICTn2l1849m8/EVSYULi5tWv5YL4M0vmpT2ba+uE46Cf5FcHBqDSAyLec05S8v9OeDsNpYT2x
- aeqIzZt+
- Yc4sfDDMwe0TgrHfjku6G6bRT7LhPdbiXFCP14kYhdxQ7z48jY6TAahemduddlBUch6H3mAZhWD/qjPFJ0gP7vAajO3lwvyFSqK3y5zhI/lpVm/m1LDypewi0cY5p1mslAhxaVYnSxqvV38qbGVUwKj26uzU1D9xEOPdcwej1kDK7IhLKsjvVUvsJifSJPDup25wwGWYWXoDDPgVvXTNBAHp0n1d6DXf35kiR/2otmozSKyTw5OoAzhkwp6mgx7OfyqhXT5z6KsZ/rHvIuuP9KLtQv/rlkMSqNxRmGkOJsro+y+YChpz4qO4IzFVmTm5ApHwcTJ3swrqkIInAehvN2CQyNwHuw5urGWlgg8ZVE6T+vypjHiAqvc9G9SdFs3GbfIpVZzSEE0MaySXqDcw+xOQdctz9ZYDYujMqbFtyJBfkL+3eDOgHv8nItuCMYfw4rgWXdu5NSFb3BNs=
+X-Stat-Signature: qsojrn4wtm6hci1rw9myjoiqskmr85sc
+X-HE-Tag: 1786920391-863829
+X-HE-Meta: U2FsdGVkX18EzavEiLfOnSnfsq7qrvG0lMZQF/jS4Prppe8dG7PIi2QzDFiEP6Jc/UZuyAYkUgZmPVAd7F8kYGAaIVVINkFP7W54OPTR5YaiePAN3mdclQZeHPR4/BD1uNUA0XliDWzSmwpmsGPK8axKdacBjN79oy3CG9/jLlNcCjukBnn8nqSfl+H0VSr4aqVXH/SXtfI9AsEtgizf6ZWYp5GU3jlnz5ruuKBcWXuDegXrFWueEt8UabnYAIF9MCE+PxJEkFwABAu7N1IQ9Q7hJ99cUjYS7uz7hp9PFsTYm3NgLZkRoXvoJIJ9Z+nf8UNrOD9/c6p8PxBCQfswSHsJTApKtaw0N6NS3Du423b/CRgK/EODRbzSeaRVyeyD0GuE/3xekvtIj0YVNQ8gBBYBDMcDSY/i+ujMyLvmcI5EcdZTMyLDdb2Nenz6n0FWBDFEa/yUl5lrc8jWsmboyD5Dygjku2eVDhMvBnEXNUz9rxrY4EMNPRyfaWuClznzRbvIz/Vi5eknTUF7mayLUfgZ5Nv/YEIuYw9AO725FmMlwN09bHU/3ZoEhrzZeeb5hLeEF3YZz14Z5H+UbDCGQWjCBdbrz3FY+rMQjl/Ub1j0a/aMLstKlLZOtl/5zTAAcT9c+PF+lSSDjcNijHprXXlks4RRDrTJNzh2zHG68K5d64yNlSwgrVGhy0z3GPGNzyTlwOp0T++Cq3JOZTihn/rd9cDH1lcrfqh2TtKRwoGvklT3BMqUJ1Ily2CPtCELFb+EfNGx/a7CLNYbrzYuu87HKCfWUHUTYlJG2laDjGtZR78cxdUY5AG8rzN2BUq/kL+Z6y2B8l+p4301Vz+Ns8Vp73O8+aZZ1BGatIsasvbISPmnuhRC6QXGcLFCtGUWzTbsCabZMRwzLIk1dAY3FxhjCfSRrKsKtxPORhQFpWVD2yO1Rf9fN09kf9Ta8ShOlv7WEHBw93Z68US8/ab
+ fIYn3FgG
+ SMx3umG1UOy0gJIf/rFkx6Ju2pIXq7xatAwSx0c12uCaXOva0qYErgPmai3Jd0/Jz69GtxyGhpxSaLi3aRD+d1mQzETBI/jNh0EzVYk4n9hRKVwI0z0yxuD+nuHD4kcEV2SVSYMX+180W2Kn6RWpzqQvzPs6XU5U7f+wz07Nl7pUc1pmSNckRUv18sPP961KQ1MvT2QmrQrRQcXBCsebF/ZHW+wTN9uLAtYBegJj90EGqNKz/sjmAwrZnrCEZk2W8EvDIRCkupI4c9itYemhtUyKHYx4n3wqnbwIVbDJ/4/4ar0bje8c2ZKEDVuJAD6FS2uaN6Bt+x2EwrrXxqdqKjW/NfxrrFWiPRrK+NGTdZTe0Fp0oRTJXvqz91mJRbDPO+P5sjYbE334+BgdgKXyYN+fHZc5j2rjaDoomuvPyLPPP7sgcTcL550r37bKvApcM0is8/QtVAXSrYIk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,369 +158,302 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-Fill in the scan.  Walk the range and set a bit in cc->eligible_ptes for
-every PTE a collapse may take as a source: present, anonymous, not
-uffd-armed, on the LRU and unlocked.  The bit is set last, so a PTE that
-failed anything leaves it clear.
+Anonymous collapse is held back in two ways that its current shape cannot
+be patched out of.
 
-The walk takes no page table lock.  What it produces is advice: the
-freeze settles every question the scan asks, by re-reading the table
-under the lock and freezing each source to the count it expects.  A racy
-read can only cost a candidate the freeze then refuses, or miss one the
-next pass finds.  What it buys is that a fault in the range does not wait
-for a walk of the whole table.
+Functionally, an mTHP is collapsed only when the whole PMD-sized window
+qualifies: collapse_scan_pmd() reaches mthp_collapse() only on
+SCAN_SUCCEED.  One PTE that disqualifies itself -- uffd-armed, not
+anonymous, clean lazyfree, off the LRU, pinned -- takes the whole table
+with it.  A 2M range with a single such page yields nothing, even where
+the half beside it would collapse perfectly well.
 
-pte_offset_map() holds rcu_read_lock() until pte_unmap(), which keeps the
-table from being freed underneath the walk.  mmap_lock keeps the VMA
-attached, without which free_pgtables() could free it without waiting for
-RCU at all.
+For scalability, collapse_huge_page() holds mmap_write across a collapse,
+and anon_vma_lock_write() with it, then does the same again for the next
+huge page.  Every collapse stops every fault in the address space, one
+huge page at a time.
 
-The verdict is two-sided, which is the point:
+The new engine addresses both.  It quiesces its sources the way migration
+does: migration entries in their PTEs, then a frozen refcount.  That is
+enough to make the copy safe without the exclusive lock, so the engine
+runs under mmap_read throughout.
 
- - A PTE that disqualifies only itself leaves the bitmap clear there and
-   drops the PMD order, since a PMD candidate needs the whole table.
-   Selection still gets the smaller windows that avoid it.
- - What refuses the table as a unit -- a limit the whole range exceeds,
-   or sources spread across nodes too distant for one folio to serve --
-   leaves no order eligible at all.
+It also carries a batch of windows through each step together, rather
+than one window through all of them.  Its verdict is per window rather
+than per table, so a table that cannot become one huge page still yields
+the largest windows inside it.
 
-Limits on swapped-out and shared PTEs are stated per PMD and scaled to
-what was actually scanned, so a partial table is held to the same density
-as a whole one.
+Lay the design out first and fill it in afterwards.  What arrives here is
+the shape of the engine: the two entry points, and a comment at the top
+of mm/collapse.c mapping the whole call tree.  Every step below them is a
+stub, filled in before the anonymous path is pointed at the engine.
 
-A folio whose reference count its mappings do not account for -- a GUP
-pin, say -- is left to the freeze rather than refused here.
-folio_expected_ref_count() wants a folio that cannot change order while
-it is read.  This walk holds no page table lock and no folio lock, so a
-folio splitting underneath it would have its count read for the wrong
-size.  A reference of its own would not help: that stops a folio being
-freed, not split.
+collapse_scan_anon_pmd() finds the table, asks the VMA which orders it
+allows, scans it, and leaves in the collapse_control what a collapse
+could use.  collapse_anon_pmd() takes that range and cuts it into
+windows.
 
-Whether a range has to look used at all is the caller's policy, so only a
-caller that asks gathers the young/referenced evidence.
+The line between the two is where the lock goes.  A scan only reads a VMA
+and a page table, so it keeps the mmap_lock it was called under and hands
+it back.  A collapse allocates, copies and flushes, so it is called
+without the lock and takes it again for each round of its own.  Nothing
+then has to tell a caller whether the lock survived a call, and a caller
+that finds nothing to collapse never gives the lock up at all.
+
+Nothing calls either entry point yet; the anonymous path keeps using the
+mechanism the engine replaces.
 
 Assisted-by: Claude-Code:claude-opus-5
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- mm/collapse.c   | 239 +++++++++++++++++++++++++++++++++++++++++++++++-
- mm/collapse.h   |   7 ++
- mm/khugepaged.c |   8 +-
- 3 files changed, 249 insertions(+), 5 deletions(-)
+ mm/Makefile     |   2 +-
+ mm/collapse.c   | 165 ++++++++++++++++++++++++++++++++++++++++++++++++
+ mm/collapse.h   |  24 +++++++
+ mm/khugepaged.c |   4 +-
+ 4 files changed, 192 insertions(+), 3 deletions(-)
+ create mode 100644 mm/collapse.c
 
+diff --git a/mm/Makefile b/mm/Makefile
+index e7245cb88c66..2bef749a5c21 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -98,7 +98,7 @@ obj-$(CONFIG_MEMTEST)		+= memtest.o
+ obj-$(CONFIG_MIGRATION) += migrate.o
+ obj-$(CONFIG_NUMA) += memory-tiers.o
+ obj-$(CONFIG_DEVICE_MIGRATION) += migrate_device.o
+-obj-$(CONFIG_TRANSPARENT_HUGEPAGE) += huge_memory.o khugepaged.o
++obj-$(CONFIG_TRANSPARENT_HUGEPAGE) += collapse.o huge_memory.o khugepaged.o
+ obj-$(CONFIG_PAGE_COUNTER) += page_counter.o
+ obj-$(CONFIG_LIVEUPDATE_MEMFD) += memfd_luo.o
+ obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o
 diff --git a/mm/collapse.c b/mm/collapse.c
-index 0e6c3c68b44c..66931ef6a6d0 100644
---- a/mm/collapse.c
+new file mode 100644
+index 000000000000..0e6c3c68b44c
+--- /dev/null
 +++ b/mm/collapse.c
-@@ -86,6 +86,20 @@
-  * replaces, and is switched over once both halves are complete.
-  */
- 
-+/*
-+ * Is @count past a limit stated per PMD, when only part of a table was scanned?
-+ * Scale the comparison to the table so a partial scan is held to the same
-+ * density as a whole one.
-+ */
-+static bool collapse_exceeds_limit(unsigned int count, unsigned int max_per_pmd,
-+				   unsigned long start, unsigned long end)
-+{
-+	const unsigned long nr_scanned = (end - start) >> PAGE_SHIFT;
+@@ -0,0 +1,165 @@
++// SPDX-License-Identifier: GPL-2.0
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 +
-+	return (unsigned long)count * HPAGE_PMD_NR >
-+	       (unsigned long)max_per_pmd * nr_scanned;
++#include <linux/bitops.h>
++#include <linux/highmem.h>
++#include <linux/huge_mm.h>
++#include <linux/hugetlb.h>	/* x86 flush_tlb_range() uses hstate_vma() */
++#include <linux/leafops.h>
++#include <linux/memcontrol.h>
++#include <linux/mm.h>
++#include <linux/mmu_notifier.h>
++#include <linux/pagemap.h>
++#include <linux/pgalloc.h>
++#include <linux/rmap.h>
++#include <linux/sched.h>
++#include <linux/sizes.h>
++#include <linux/slab.h>
++#include <linux/swap.h>
++#include <linux/userfaultfd_k.h>
++
++#include <asm/tlb.h>
++#include "collapse.h"
++#include "internal.h"
++
++/*
++ * Anonymous collapse, in rounds.
++ *
++ * The folios mapped across a window of PTEs become one folio of that window's
++ * order, with the sources quiesced by the two barriers migration uses --
++ * migration entries in their PTEs, then a frozen refcount -- so the copy itself
++ * needs no lock.  The engine runs under mmap_read throughout.
++ *
++ * A round carries a batch of candidate windows through the passes together,
++ * rather than carrying one window through the whole collapse.  [ptl] and
++ * [pmd lock] mark a pass that takes that lock and drops it again, so no
++ * page-table lock is ever held across passes; the source folio locks are the
++ * exception, held from freeze to putback.  [rcu] marks a pass that takes no
++ * page-table lock at all and reads the table racily, which only the scan does.
++ *
++ * Allocation happens on both sides of the freeze, and which side comes first
++ * matters.  collapse_provision() tries first, inside the window and after the
++ * freeze, with reclaim masked out of the gfp: the sources are frozen by then,
++ * so a faulter on one of them waits for this allocation.  A candidate the
++ * allocator has nothing ready for is not failed -- it goes back to selection,
++ * and collapse_reserve() allocates for it before the next round freezes
++ * anything, outside the window, where reclaim costs khugepaged its own
++ * progress and nobody else's wait.
++ *
++ * That second chance needs the policy's gfp to allow reclaim at all.  When it
++ * does not, a retry would miss the same way, so the first miss is the answer.
++ *
++ * collapse_scan_anon_pmd()            judge one PTE table's worth of a VMA
++ * `- collapse_scan_table()            [rcu] a bit per PTE a collapse can use
++ *
++ * collapse_anon_pmd()                 cut windows from those bits, run them
++ * |- collapse_next_candidate()        the next window worth attempting
++ * `- collapse_run_batch()             run the batch, then classify it
++ *    |- collapse_round()              below
++ *    `- collapse_classify_result()    carry on / lower / abandon
++ *       `- collapse_push_retry()      queue it for a lower order
++ *
++ * collapse_round()                    one batch of candidates
++ * |- collapse_reserve()               second try for what the last round
++ * |                                   missed, with reclaim; sleeps
++ * |- collapse_deposit()               a page table per PMD-order candidate
++ * |- collapse_revalidate()            check the VMA and the table survived
++ * |- collapse_faultin()               make the sources present and exclusive;
++ * |                                   sleeps, and may leave the lock dropped
++ * |- collapse_freeze()                raise the barriers [ptl], flush the TLB
++ * |- collapse_provision()             first try for every other destination,
++ * |                                   without reclaim: the sources are frozen
++ * |- collapse_copy()                  copy into the destinations; sleeps
++ * |- collapse_install()               publish them [ptl], or [pmd lock] and a
++ * |                                   second TLB flush at the PMD order
++ * |- collapse_putback()               lower the barriers, in order
++ * `- collapse_finish()                settle whatever the round reached
++ *
++ * Every slot of a candidate is a real source, a hole (pte_none, zero-filled
++ * and re-verified still-none at install), or the zeropage (cleared at freeze,
++ * zero-filled).  Sources come in "spans" -- consecutive PTEs mapping
++ * consecutive pages of one folio -- so partially mapped and compound sources
++ * collapse too: any order below the window's is a source, and a PMD candidate
++ * takes even a PTE-mapped THP of its own order.
++ *
++ * Nothing calls any of this yet: the anon path still uses the mechanism it
++ * replaces, and is switched over once both halves are complete.
++ */
++
++/*
++ * Scan the PTEs between @start and @end and record what a collapse could use: a
++ * bit in cc->eligible_ptes for every PTE that may be a source.  Returns
++ * SCAN_SUCCEED when every PTE in the range qualified, otherwise the reason one
++ * did not, and narrows cc->select_orders to what is still worth trying here.
++ */
++static enum scan_result collapse_scan_table(struct vm_area_struct *vma,
++					    pmd_t *pmd, unsigned long start,
++					    unsigned long end,
++					    struct collapse_control *cc)
++{
++	return SCAN_SUCCEED;
 +}
 +
- /*
-  * Scan the PTEs between @start and @end and record what a collapse could use: a
-  * bit in cc->eligible_ptes for every PTE that may be a source.  Returns
-@@ -97,7 +111,230 @@ static enum scan_result collapse_scan_table(struct vm_area_struct *vma,
- 					    unsigned long end,
- 					    struct collapse_control *cc)
- {
--	return SCAN_SUCCEED;
-+	const unsigned long pmd_addr = start & HPAGE_PMD_MASK;
-+	unsigned int max_ptes_none, max_ptes_swap, max_ptes_shared;
-+	int none_or_zero = 0, shared = 0, referenced = 0, unmapped = 0;
-+	enum scan_result result, pmd_result = SCAN_SUCCEED;
-+	unsigned int first_offset;
-+	unsigned long addr;
-+	pte_t *pte;
-+	int i;
++/* Everything a table is judged on starts empty for each table */
++static void collapse_anon_scan_init(struct collapse_control *cc)
++{
++	bitmap_zero(cc->eligible_ptes, MAX_PTRS_PER_PTE);
++	memset(cc->node_load, 0, sizeof(cc->node_load));
++	nodes_clear(cc->alloc_nmask);
 +
-+	max_ptes_none = collapse_max_ptes_none(cc, vma, HPAGE_PMD_ORDER);
-+	max_ptes_swap = collapse_max_ptes_swap(cc, HPAGE_PMD_ORDER);
-+	max_ptes_shared = collapse_max_ptes_shared(cc, HPAGE_PMD_ORDER);
-+
-+	/*
-+	 * No page table lock: what this builds is advice, and the freeze settles
-+	 * every question it asks by re-reading the table under the lock and
-+	 * freezing each source to the count it expects.  A racy read can only
-+	 * cost a candidate that the freeze then refuses, or miss one that the
-+	 * next pass finds.  What it buys is that a fault in this range does not
-+	 * wait for a scan of the whole table.
-+	 *
-+	 * pte_offset_map() holds rcu_read_lock() until pte_unmap(), which is
-+	 * what keeps the table itself from being freed underneath the walk;
-+	 * mmap_lock keeps the VMA attached, without which free_pgtables() could
-+	 * free it without waiting for RCU at all.  Nothing below here sleeps.
-+	 */
-+	pte = pte_offset_map(pmd, start);
-+	if (!pte) {
-+		cc->progress++;
-+		result = SCAN_NO_PTE_TABLE;
-+		goto out_no_table;
-+	}
-+
-+	/*
-+	 * The bitmap and the selection offsets stay relative to the table:
-+	 * natural-alignment math needs the table-absolute position, not the
-+	 * position within an arbitrarily placed VMA.
-+	 */
-+	first_offset = (start - pmd_addr) >> PAGE_SHIFT;
-+	for (i = first_offset, addr = start; addr < end;
-+	     i++, addr += PAGE_SIZE) {
-+		pte_t pteval = ptep_get(pte + (i - first_offset));
-+		struct folio *folio;
-+		struct page *page;
-+		int node;
-+
-+		cc->progress++;
-+
-+		if (pte_none_or_zero(pteval)) {
-+			if (++none_or_zero > max_ptes_none &&
-+			    pmd_result == SCAN_SUCCEED) {
-+				pmd_result = SCAN_EXCEED_NONE_PTE;
-+				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
-+				count_mthp_stat(HPAGE_PMD_ORDER,
-+						MTHP_STAT_COLLAPSE_EXCEED_NONE);
-+			}
-+			continue;
-+		}
-+		if (!pte_present(pteval)) {
-+			unmapped++;
-+			if (collapse_exceeds_limit(unmapped, max_ptes_swap,
-+						   start, end)) {
-+				result = SCAN_EXCEED_SWAP_PTE;
-+				count_vm_event(THP_SCAN_EXCEED_SWAP_PTE);
-+				count_mthp_stat(HPAGE_PMD_ORDER,
-+						MTHP_STAT_COLLAPSE_EXCEED_SWAP);
-+				goto out_table_refused;
-+			}
-+			/* Swap entries armed with uffd-wp are refused too */
-+			if (pte_swp_uffd_any(pteval) &&
-+			    pmd_result == SCAN_SUCCEED)
-+				pmd_result = SCAN_PTE_UFFD;
-+			continue;
-+		}
-+		if (pte_uffd(pteval)) {
-+			/*
-+			 * The huge PMD could be marked write protected when any
-+			 * of the small ones is, but that could deliver
-+			 * userfaults outside the registered range.  Keep it
-+			 * simple and refuse the PTE.
-+			 */
-+			if (pmd_result == SCAN_SUCCEED)
-+				pmd_result = SCAN_PTE_UFFD;
-+			continue;
-+		}
-+
-+		page = vm_normal_page(vma, addr, pteval);
-+		if (unlikely(!page) || unlikely(is_zone_device_page(page))) {
-+			if (pmd_result == SCAN_SUCCEED)
-+				pmd_result = SCAN_PAGE_NULL;
-+			continue;
-+		}
-+		folio = page_folio(page);
-+
-+		/*
-+		 * A VM_DROPPABLE VMA keeps the lazyfree property across the
-+		 * collapse, so there is nothing to preserve by skipping.
-+		 */
-+		if (cc->policy.skip_lazyfree &&
-+		    !(vma->vm_flags & VM_DROPPABLE) &&
-+		    folio_test_lazyfree(folio) && !pte_dirty(pteval)) {
-+			if (pmd_result == SCAN_SUCCEED)
-+				pmd_result = SCAN_PAGE_LAZYFREE;
-+			continue;
-+		}
-+
-+		if (!folio_test_anon(folio)) {
-+			if (pmd_result == SCAN_SUCCEED)
-+				pmd_result = SCAN_PAGE_ANON;
-+			continue;
-+		}
-+
-+		/*
-+		 * A page counts as shared if any part of its folio is, which
-+		 * bounds the cost of CoW-breaking rather than the count of it:
-+		 * collapse_faultin() unshares on !PageAnonExclusive(), a broader
-+		 * test -- a page whose fork co-mapper has exited is
-+		 * single-mapped, so not counted here, yet stays non-exclusive
-+		 * until a write reuses it.  Those are the cheap ones, reused in
-+		 * place.  A page that has to be copied is one this test catches,
-+		 * so the limit does bound the copying it is there to bound.
-+		 */
-+		if (folio_maybe_mapped_shared(folio)) {
-+			shared++;
-+			if (collapse_exceeds_limit(shared, max_ptes_shared,
-+						   start, end)) {
-+				result = SCAN_EXCEED_SHARED_PTE;
-+				count_vm_event(THP_SCAN_EXCEED_SHARED_PTE);
-+				count_mthp_stat(HPAGE_PMD_ORDER,
-+						MTHP_STAT_COLLAPSE_EXCEED_SHARED);
-+				goto out_table_refused;
-+			}
-+		}
-+
-+		/*
-+		 * Which node the sources are on decides where the destination is
-+		 * allocated: the one with the most of them wins.
-+		 */
-+		node = folio_nid(folio);
-+		if (collapse_scan_abort(node, cc)) {
-+			result = SCAN_SCAN_ABORT;
-+			goto out_table_refused;
-+		}
-+		cc->node_load[node]++;
-+
-+		/*
-+		 * Usually a folio somebody else is already isolating, whose
-+		 * reference the freeze would refuse anyway.  Not exact: one
-+		 * still on a per-CPU add batch reads the same, and the freeze
-+		 * drains those before it starts.
-+		 */
-+		if (!folio_test_lru(folio)) {
-+			if (pmd_result == SCAN_SUCCEED)
-+				pmd_result = SCAN_PAGE_LRU;
-+			continue;
-+		}
-+		if (folio_test_locked(folio)) {
-+			if (pmd_result == SCAN_SUCCEED)
-+				pmd_result = SCAN_PAGE_LOCK;
-+			continue;
-+		}
-+
-+		/*
-+		 * A folio whose reference count its mappings do not account for
-+		 * -- a GUP pin, say -- is refused by the freeze, not here.
-+		 * folio_expected_ref_count() wants a folio that cannot change
-+		 * order while it is read, and this walk holds no page table lock
-+		 * and no folio lock, so a folio splitting underneath it would
-+		 * have the count read for the wrong size.  A reference of our
-+		 * own would not help: it stops the folio being freed, not split.
-+		 *
-+		 * So leave it to the freeze, which reads the table under the
-+		 * lock and settles the question by freezing each source to the
-+		 * count it expects.  What it costs is a window selected here and
-+		 * refused there.
-+		 */
-+
-+		/*
-+		 * Every check passed: this PTE can be a collapse source.  The
-+		 * bit is set last, so a disqualified PTE leaves it clear.
-+		 */
-+		__set_bit(i, cc->eligible_ptes);
-+
-+		/*
-+		 * Whether a range has to look used at all is the caller's
-+		 * policy, so only a caller that asks gathers the evidence.
-+		 */
-+		if (cc->policy.require_referenced &&
-+		    (pte_young(pteval) || folio_test_young(folio) ||
-+		     folio_test_referenced(folio) ||
-+		     mmu_notifier_test_young(vma->vm_mm, addr)))
-+			referenced++;
-+	}
-+
-+	if (cc->policy.require_referenced &&
-+	    (!referenced || (unmapped && referenced < HPAGE_PMD_NR / 2)))
-+		result = SCAN_LACK_REFERENCED_PAGE;
-+	else
-+		result = pmd_result;
-+	pte_unmap(pte);
-+	goto out;
-+
-+out_table_refused:
-+	/*
-+	 * The table is refused as a unit -- a limit the whole range exceeds, or
-+	 * pages on nodes too distant for one folio to serve them all -- so no
-+	 * window inside it is eligible either.
-+	 */
-+	pte_unmap(pte);
-+out_no_table:
 +	cc->select_orders = 0;
-+out:
-+	/*
-+	 * A PMD candidate needs the whole table, so anything that disqualified a
-+	 * single PTE rules it out.  Smaller windows that avoid the offending
-+	 * PTEs are still collapsible, so drop just that order and leave the rest
-+	 * to selection -- dropping it also lowers the order selection roots its
-+	 * windows at.  MADV_COLLAPSE has no other order enabled, so it is left
-+	 * with none.
-+	 */
-+	if (result != SCAN_SUCCEED)
-+		cc->select_orders &= ~BIT(HPAGE_PMD_ORDER);
++	cc->nr_collapsed = 0;
++}
 +
-+	return result;
- }
- 
- /* Everything a table is judged on starts empty for each table */
++/*
++ * Judge one table's worth of @vma, leaving in @cc what a collapse could use:
++ * which orders are still worth attempting, and why the table was turned down if
++ * some order was.  Holds mmap_lock throughout -- it only reads -- and a caller
++ * that acts on what it found hands the range to collapse_anon_pmd() afterwards,
++ * without the lock.
++ */
++static enum scan_result __maybe_unused
++collapse_scan_anon_pmd(struct vm_area_struct *vma, unsigned long start,
++		       unsigned long end, struct collapse_control *cc)
++{
++	const unsigned long pmd_addr = start & HPAGE_PMD_MASK;
++	struct mm_struct *mm = vma->vm_mm;
++	pmd_t *pmd;
++
++	/* One table's worth at most, not empty, and inside the VMA */
++	VM_WARN_ON_ONCE(end > pmd_addr + HPAGE_PMD_SIZE || start >= end);
++	VM_WARN_ON_ONCE(start < vma->vm_start || end > vma->vm_end);
++
++	cc->scan_refusal = find_pmd_or_thp_or_none(mm, pmd_addr, &pmd);
++	if (cc->scan_refusal != SCAN_SUCCEED) {
++		cc->progress++;
++		return cc->scan_refusal;
++	}
++
++	/* Cleared only once a table has turned out to be there */
++	collapse_anon_scan_init(cc);
++
++	cc->select_orders = collapse_possible_orders(vma, vma->vm_flags,
++						     cc->policy.tva_type);
++	if (!cc->select_orders) {
++		cc->scan_refusal = SCAN_VMA_CHECK;
++		return cc->scan_refusal;
++	}
++
++	/* The scan narrows select_orders to whatever is left worth trying */
++	cc->scan_refusal = collapse_scan_table(vma, pmd, start, end, cc);
++
++	return cc->scan_refusal;
++}
++
++/*
++ * Cut the table into candidate windows and collapse what fits, from the
++ * largest order downwards.  Returns what the table yielded: a collapse, or
++ * the reason it did not.
++ */
++static enum scan_result __maybe_unused
++collapse_anon_pmd(struct mm_struct *mm, unsigned long start, unsigned long end,
++		  struct collapse_control *cc)
++{
++	return SCAN_FAIL;
++}
 diff --git a/mm/collapse.h b/mm/collapse.h
-index e2af4c47cb60..ad88b91d9a72 100644
+index 1e969292edcb..e2af4c47cb60 100644
 --- a/mm/collapse.h
 +++ b/mm/collapse.h
-@@ -130,5 +130,12 @@ unsigned long collapse_possible_orders(struct vm_area_struct *vma,
- 		vm_flags_t vm_flags, enum tva_type tva_flags);
- enum scan_result find_pmd_or_thp_or_none(struct mm_struct *mm,
- 		unsigned long address, pmd_t **pmd);
-+bool collapse_scan_abort(int nid, struct collapse_control *cc);
-+unsigned int collapse_max_ptes_none(struct collapse_control *cc,
-+		struct vm_area_struct *vma, unsigned int order);
-+unsigned int collapse_max_ptes_swap(struct collapse_control *cc,
-+		unsigned int order);
-+unsigned int collapse_max_ptes_shared(struct collapse_control *cc,
-+		unsigned int order);
+@@ -105,6 +105,30 @@ struct collapse_control {
  
- #endif	/* __MM_COLLAPSE_H */
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 26d25093260b..9823884a83c9 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -305,7 +305,7 @@ struct attribute_group khugepaged_attr_group = {
-  *
-  * Return: Maximum number of empty/shared zeropage PTEs for the collapse operation
-  */
--static unsigned int collapse_max_ptes_none(struct collapse_control *cc,
-+unsigned int collapse_max_ptes_none(struct collapse_control *cc,
- 		struct vm_area_struct *vma, unsigned int order)
- {
- 	const unsigned int max_ptes_none = cc->policy.max_ptes_none;
-@@ -341,7 +341,7 @@ static unsigned int collapse_max_ptes_none(struct collapse_control *cc,
-  * Return: Maximum number of PTEs that map shared anonymous pages for the
-  * collapse operation
-  */
--static unsigned int collapse_max_ptes_shared(struct collapse_control *cc,
-+unsigned int collapse_max_ptes_shared(struct collapse_control *cc,
- 		unsigned int order)
- {
- 	/*
-@@ -362,7 +362,7 @@ static unsigned int collapse_max_ptes_shared(struct collapse_control *cc,
-  * Return: Maximum number of non-present PTEs or the maximum allowed non-present
-  * pagecache entries for the collapse operation.
-  */
--static unsigned int collapse_max_ptes_swap(struct collapse_control *cc,
-+unsigned int collapse_max_ptes_swap(struct collapse_control *cc,
- 		unsigned int order)
- {
- 	/*
-@@ -934,7 +934,7 @@ static struct collapse_control khugepaged_collapse_control = {
- 	.is_khugepaged = true,
+ 	/* Each bit marks a PTE the scan accepted as a collapse source */
+ 	DECLARE_BITMAP(eligible_ptes, MAX_PTRS_PER_PTE);
++
++	/* Orders still worth attempting in the table being scanned */
++	unsigned long select_orders;
++
++	/* PTEs collapsed in it so far */
++	unsigned int nr_collapsed;
++
++	/*
++	 * Why the scan would not take all of the table, or SCAN_SUCCEED if it
++	 * took every order it was offered.  Not the opposite of what the scan
++	 * selected: a table can be worth collapsing at one order and refused at
++	 * another, so a scan that found work still has a reason to report, and
++	 * the collapse reports it when it salvages nothing.
++	 */
++	enum scan_result scan_refusal;
  };
  
--static bool collapse_scan_abort(int nid, struct collapse_control *cc)
-+bool collapse_scan_abort(int nid, struct collapse_control *cc)
++/*
++ * Defined in khugepaged.c, which still uses them itself.
++ * TODO: move each into collapse.c once its last khugepaged.c user is gone.
++ */
++unsigned long collapse_possible_orders(struct vm_area_struct *vma,
++		vm_flags_t vm_flags, enum tva_type tva_flags);
++enum scan_result find_pmd_or_thp_or_none(struct mm_struct *mm,
++		unsigned long address, pmd_t **pmd);
++
+ #endif	/* __MM_COLLAPSE_H */
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index f31689bf75a6..26d25093260b 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -498,7 +498,7 @@ void __khugepaged_enter(struct mm_struct *mm)
+  * Check what orders are possible based on the vma and collapse type.
+  * This is used to determine if mTHP collapse is a viable option.
+  */
+-static unsigned long collapse_possible_orders(struct vm_area_struct *vma,
++unsigned long collapse_possible_orders(struct vm_area_struct *vma,
+ 		vm_flags_t vm_flags, enum tva_type tva_flags)
  {
- 	int i;
+ 	unsigned long orders;
+@@ -1090,7 +1090,7 @@ static inline enum scan_result check_pmd_state(pmd_t *pmd)
+ 	return SCAN_SUCCEED;
+ }
  
+-static enum scan_result find_pmd_or_thp_or_none(struct mm_struct *mm,
++enum scan_result find_pmd_or_thp_or_none(struct mm_struct *mm,
+ 		unsigned long address, pmd_t **pmd)
+ {
+ 	*pmd = mm_find_pmd(mm, address);
 -- 
 2.54.0
 
