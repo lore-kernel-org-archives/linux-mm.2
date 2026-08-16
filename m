@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2233CC5B572
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 11:00:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A6EFC5DF76
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 11:00:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2986F6B080B; Sun, 16 Aug 2026 07:00:20 -0400 (EDT)
+	id 35C3E6B080D; Sun, 16 Aug 2026 07:00:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2488E6B080D; Sun, 16 Aug 2026 07:00:20 -0400 (EDT)
+	id 30CBE6B080F; Sun, 16 Aug 2026 07:00:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 110A46B080E; Sun, 16 Aug 2026 07:00:20 -0400 (EDT)
+	id 1D4996B0810; Sun, 16 Aug 2026 07:00:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E4CB16B080B
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 07:00:19 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 51D1A1604F5
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 11:00:19 +0000 (UTC)
-X-FDA: 85106838558.27.DAD9704
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7EFA114000B
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 11:00:17 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wn2tZkv2;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786878017;
-	b=YDAXLe5021W3VkGhFV1wRE6DgMZ2FbVn3QZY+z5SIUdP3Tu4EGOnAE6c4Dbpici18pYGRu
-	LfLFbWESyKV6opQ82YMamctLUw5CphHw7PkP9iPdoNRRPaxYKkFjiluRvmdmvw2OlCMye7
-	LyDpHAaKzECEmNWkU5/zpRF2DNwIwjc=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wn2tZkv2;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CE7356B080D
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 07:00:20 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8BD0DC04E7
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 11:00:09 +0000 (UTC)
+X-FDA: 85106838138.23.D6E7904
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id EA368C0005
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 11:00:07 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lhcayokE;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786878017;
+	s=arc-20220608; t=1786878007;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pVPiYTx5xsmZOnMUcbrtteXSXwIvJir7dW3VRw6OI/o=;
-	b=5zqf7BmFy40YReRHLz70J30NIZJSAiAfTi216fNgAaB5riFryoxb4lBknLJHsf9ycH9jNo
-	il2iwqanZAwfhGPnHhD1YR/OixTTkRT4zB+eW7E6+JpQb6+r/zXG3u8cdGqrGr84WuaFlR
-	e22iPXxN3b8gC29PKjAOY7a0Iamw5t8=
+	bh=gy2s2udgAuUOuqiiG581Z7vL2dnOoGEiogGjehxnVAI=;
+	b=IwxH+lG26e6KfdmPcKqVQD4wt6gQ/8mUHxoBMcTw+IPLImaENLtHiONe6uW7huvUnktYqh
+	HYKKVs2fBhSUy67p+7GHDS9M9ADgE5RH5gpnrIQ3Fy0jFp8q69i+LyYoU2Jhi6F8Mi4jrr
+	G0YOPNa47wQMwOUsJIC4X23N3oIbpq8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786878007;
+	b=OAcqi+vDLhyJFCVyh4Tvmf+7rRrX5UnUW7Ezk0+iQWFQ6GQmSGjPduOLUSLBB57rjnOZ4z
+	mCK6bdCe1AXx5180sfWxYjZIJaDI/3agSUeNhfXmclYeboRByZF8Tw1/Alzt4LwgL4fIEI
+	uBr1jRBQKjYUiCdz5fdBZyVNAFpgVwg=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lhcayokE;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 571CD40461;
-	Sun, 16 Aug 2026 11:00:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC81B1F000E9;
+	by tor.source.kernel.org (Postfix) with ESMTP id 99CE3600E2;
 	Sun, 16 Aug 2026 11:00:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90DB71F00A3A;
+	Sun, 16 Aug 2026 10:59:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786878016;
-	bh=pVPiYTx5xsmZOnMUcbrtteXSXwIvJir7dW3VRw6OI/o=;
+	s=k20260515; t=1786878007;
+	bh=gy2s2udgAuUOuqiiG581Z7vL2dnOoGEiogGjehxnVAI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Wn2tZkv2GmmvVvChb74RK7g+ieOJXoK9nRUtAwcKG1NxkbRbiQnwxuFtGfZc934GF
-	 ojnGXmG2CmOzyYd4WRDvKp74bLte24Nxofl5tovKCDjJt8Klp3pt15WXlZF0xsKWd/
-	 VAZrWr9rmwXSRxftpWSw5h1IkcUwmiJS2YwRKrOxgPSde0/kgHE18LZwznsC9zVKob
-	 RkLvq8BCC+Cb38ljwdvLoIU5DXXQkdqpAZkhq6nlU183ZRgqoCY/nK3PbTrZgcsh+x
-	 gKDjsg7+EFabNEvmBTKl2HgmFZfhiaPb85PFS+49KLaXDpFuB/mB1UDggWiTDWKvSb
-	 sgZxxI00zoBMg==
+	b=lhcayokEj43ho0cwYwXSsPkKuYBPIh9x6hGmG7ih3uLsYURAu3S/D5HPbKqADyg3G
+	 Pn/qo1s8e+YdNqNPYFYKLnk3uW+Qxcn4pjWu+rILw26T1RvSQ9uzDkgh8ZGk5iaXjp
+	 23V5pkiCv2OtGtQldL3UnMXwFTy1HAwZq3MNoDc0AVt84RmjXctY3LEIz5jZ/Nyfz7
+	 CisMqAS9gASEjwdc+fUzDeXAsec3VmceqO25xO+htrehQM6I7hJXZYjTU5GAos6kla
+	 Bpmwk7AT9oICEYNjyjibk/sz26kXrKCZIv0ddB9GkmW6oMBTDXpZ32LXrEpJqOT6bW
+	 vt3YeZwG5M/tg==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Sun, 16 Aug 2026 13:59:27 +0300
-Subject: [PATCH 4/6] mm/vmalloc: make set_area_direct_map HUGE_VMAP
- friendly
+Date: Sun, 16 Aug 2026 13:59:26 +0300
+Subject: [PATCH 3/6] mm/vmalloc: constify vm parameter of
+ get_vm_area_page_order()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260816-execmem-set-vm-perms-v0-2-v1-4-90944a3ad43f@kernel.org>
+Message-Id: <20260816-execmem-set-vm-perms-v0-2-v1-3-90944a3ad43f@kernel.org>
 References: <20260816-execmem-set-vm-perms-v0-2-v1-0-90944a3ad43f@kernel.org>
 In-Reply-To: <20260816-execmem-set-vm-perms-v0-2-v1-0-90944a3ad43f@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -100,14 +100,14 @@ Cc: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
  linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
  loongarch@lists.linux.dev
 X-Mailer: b4 0.17-dev
-X-Rspamd-Queue-Id: 7EFA114000B
 X-Rspam-User: 
-X-Stat-Signature: 93hs516yrgydcak43wefn31rd4h8bhwn
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786878017-600548
-X-HE-Meta: U2FsdGVkX18PS1mxadvpkUunQExxn8g8bxj1gUnJnPc+8xEfTk6e+LSV6NYZ44xaF10+qnFlVRqfpwI/uWHF16KPmM9lfJGUUndF1d0nkP9py/Pytyfm7VYd1RhOCAGME95sSBEPtdQvaySnmp/mt45VO3MtGPe9ddQfjoRV/ChZMGSoLX2L9vZSpmpUpWke51+rvAUH78Sw82VewQwJsinVVw5HO9oirB6YQULeGI/2NMtyCjVmd0t426pYL8twaSc+xlLSEth28k9dfl6N0KrAOkLMJczgwg+df18jo/2zLPleQccYSmk90n/Kkv9/FNNAuC9ZkeJO14D7g4iJiJFswb1A4VIHjFM1bGllaqzc8VY80gGk+P5Ar4fHF4x5RBI0bjXGZUlCY3FbSge+2AzmXfth064LQXAc3owmlSm5gl43nhl2UiDWb9MPjAmMmvKoYx3IbD1S3ejcZe9aU8meMWplOWj5F28mXOWPLY2z1TLaYYhvj/mfnmYTZHM7oQBGl0fFsSOxcka9PTDNhHGt4Jj9EM2a2SL2u7Gz09FFgK+SU0PySfKUeezzgZrZIktoAqrB9p6NVlmDaVr43ZQ2PveIMJGVmXV2Q2nyLuMCN1ZKb4Gp3rTnXsabsn3ssZPtz9Jo4OsaKV6sTipDL9ldQVb6oBeOugjjc6q2lUg6o5amVaFvXXz9f/tFz0wpkOxajKl/oHTd8l3p2dEiS5ze/h4uFinNPI+4+xQJS/6eQWbclHZT8MbSIgvbZXQjzVS59rHKJ2khDZgNXeKdsn9x/o7Ae1s2tXS7JNTRH7albIHX9YFPUNeNwapwyObHV8kehTss9FGJmVpcJFKwEJjromJqo5OrmZ6LpeTCXtafdBoE7yIOxH9062ZheovpHjASuxkvA8SLpfZmqAPE5HjHRGJYqMDToGAHkgrGbR0owMR6oGzXFrImwHz24Mjlm+MYfJN18IURKdHRnHg
- dbDKjQwj
- RxTsDMjU0IFS+iTy+QGDCPgHvxbkfn8HmVnVeTdpoo6w4jBNdtKDNqh9hzQ1koXxzOoUl89fzYnicXwYJZKiuaFUiOv4+he3mGtC/kJ/bSSIK14kkeK17W4Q0aJLR2d5Ex3Lr0e5pNNKpPHa0nKa/1eUhOnECxuQJ7pwgNs3Ms7gBelekcJRg6FZA2963UZYVYBHR1+++CddeMbLa7XnEffWRlA+UVk8EHt1NbpO6bNH81O4JFAbaJXIPjqFbNo0lnjWYtI8ksln8YL5qYs7Jg+TUcc6xSDbDI4pE
+X-Stat-Signature: mr3reznmow8mz5fph6hfyytz4wgse3ag
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EA368C0005
+X-HE-Tag: 1786878007-769346
+X-HE-Meta: U2FsdGVkX18mulu3kkBfkDCfYTQ2tGOqcCFZrk3Z4m6rQB/AhH9yWgGGMssPupstAXVAJPtN0pxXM4yHGdIryfn29fQp0tOeg4kDXK7b8+jajd5xaP+xl9r+o5Zxl/Z6aAyBEVug25wP4n8KFMT2ahjnC/dwPvk55hG3MSRna7I/51CPSJRygC1IuFlO1a8OgVlHkOe3OQtjBN7Jt5CRABda/VQtaoqakb9KVs997zLYzMD528reECs1nwA3SmNWWdd5orkNq3ninO8hhv6zhcD0Ua02HY6+Tjoy3lMK6Vzmnuh8DN/K241LIWXGJZDzyuiGgQdEjiuhdcRoiCMq8XaA6xsCkwOTIb1KfQLXL6oWNa29mzcOd9gM9jdTKL9SwhXek5JSbW+QF9AnTf7s33Nc35cpQRAa2yfQatp1AuvBQH5g4SmabsaflQQZRmC4yWbJU2k16jMluqYSSn3/dvIcHX3Epd9DK8LChlwx1PhzBaeCO9E8gGJZMRYhXFolGlUJxdA/tKb3i1R7bkbSWN6hdkQ0Ce33ngya9QEXv1oq/V5dse86elCqHA+R1+nvW3CpWv/v2dNlusvl32QpGE3F1wmaD1GnzsSbsidMcihcxEZl3DINZc0NqP7pMHIYeRdK+TCPWPjdLIpxWq5nMgYQKZuPfCyvMHTKPL2PUIAQxlcBs99zmn93o2s3bryI9AGG1jr8w1D5lddWE4RS4N8QaTr0pzAtJlW+CstU+h3xpGChZpcMSG/hE0M6Y3EdE1T/aMoIKKquDttiE0qm20pjNvgp1X2Wi9yOcrLAvx/nmpcPg/5trN3lhBsiahdb4NUsaZFMbE9Pp9FxlyG42uUkzYb6CNZldgCzlIAVbqO/+OF4uSwCIUIu7sADkiMst+OdRfs4CW0jwyuYhNDyBfmLFtk+djPdP0IBkO3GK3iXcFXNP/uH54Jk4z8R3oBgjlGcXWgNxXtyXM60vOZ
+ EUGSOVbg
+ KOYTuQH+X/9gaOL2GDxQTztbjwnHFh2gf1Q2k0JH4YGWl9ecqll7II+0TB+HH24FWH6R9Fk58XMrWiIo3PMbCkWHRcM9bXf+1E8zfy2xGIZ7PZXbFLbC2cXl1TmZQu83wOMr3aby/TgXDZICZYyZCMPCWnF1pQrv8Rrav12ZmDtXl2BrStNlSwH5s731bqR7T7qItbqmSdJXO5Kx0ptPR3K/3n3OjyvwmlogHH9dPCf3GWZaqbhPjfRg8oo08+xxYBTQxsgf/3gHKEWXTlLWTNsc/2aA3jzulMPKK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,53 +115,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-set_area_direct_map() always updates direct map alias permissions in
-single page increments.
+get_vm_area_page_order() and vm_area_page_order() do not need to modify
+struct vm_struct passed to them.
 
-For HUGE_VMAP areas it's suboptimal. Not only the loop in
-set_area_direct_map() needlessly has more iterations (e.g times 512 on
-x86), but it also causes fragmentation of the direct map that could be
-avoided for the HUGE_VMAP areas populated with large pages.
-
-All pages in an area are always of the same order: either same-order
-large pages when VM_ALLOW_HUGE_VMAP is set and all huge pages were
-successfully allocated, or order-0 page when VM_ALLOW_HUGE_VMAP is
-cleared or when huge pages allocation fails and fallback path is taken.
-
-Instead of updating the direct map permissions for every order-0 page in
-an area, use the area's page_order as the loop increment and update the
-large pages in one call to set_direct_map_{invalid,default}_noflush().
+Constify the parameter.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- mm/vmalloc.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ mm/vmalloc.c | 4 ++--
+ mm/vmalloc.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index fc7993db4152..11170d1ee5be 100644
+index 6822f0fe9583..fc7993db4152 100644
 --- a/mm/vmalloc.c
 +++ b/mm/vmalloc.c
-@@ -3361,12 +3361,15 @@ static inline void set_area_direct_map(const struct vm_struct *area,
- 				       int (*set_direct_map)(struct page *page,
- 							     unsigned int nr))
- {
--	unsigned long i;
-+	unsigned int nr = (1U << vm_area_page_order(area));
-+
-+	for (unsigned long i = 0; i < area->nr_pages; i += nr) {
-+		if (page_address(area->pages[i])) {
-+			int err = set_direct_map(area->pages[i], nr);
+@@ -3124,7 +3124,7 @@ EXPORT_SYMBOL(vm_map_ram);
  
--	/* HUGE_VMALLOC passes small pages to set_direct_map */
--	for (i = 0; i < area->nr_pages; i++)
--		if (page_address(area->pages[i]))
--			set_direct_map(area->pages[i], 1);
-+			WARN_ON_ONCE(err);
-+		}
-+	}
+ static struct vm_struct *vmlist __initdata;
+ 
+-static inline unsigned int vm_area_page_order(struct vm_struct *vm)
++static inline unsigned int vm_area_page_order(const struct vm_struct *vm)
+ {
+ #ifdef CONFIG_HAVE_ARCH_HUGE_VMALLOC
+ 	return vm->page_order;
+@@ -3133,7 +3133,7 @@ static inline unsigned int vm_area_page_order(struct vm_struct *vm)
+ #endif
  }
  
- /*
+-unsigned int get_vm_area_page_order(struct vm_struct *vm)
++unsigned int get_vm_area_page_order(const struct vm_struct *vm)
+ {
+ 	return vm_area_page_order(vm);
+ }
+diff --git a/mm/vmalloc.h b/mm/vmalloc.h
+index 8866ddcff668..211869f36509 100644
+--- a/mm/vmalloc.h
++++ b/mm/vmalloc.h
+@@ -12,7 +12,7 @@ void __init vmalloc_init(void);
+ int __must_check vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+ 		pgprot_t prot, struct page **pages,
+ 		unsigned int page_shift, gfp_t gfp_mask);
+-unsigned int get_vm_area_page_order(struct vm_struct *vm);
++unsigned int get_vm_area_page_order(const struct vm_struct *vm);
+ #else
+ static inline void vmalloc_init(void) {}
+ 
 
 -- 
 2.53.0
