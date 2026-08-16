@@ -4,114 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90D1AC5B572
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 09:00:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88C4CC5DF66
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 09:03:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29BE96B07F8; Sun, 16 Aug 2026 05:00:45 -0400 (EDT)
+	id 7D0F46B039E; Sun, 16 Aug 2026 05:03:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24CAE6B07F9; Sun, 16 Aug 2026 05:00:45 -0400 (EDT)
+	id 781CC6B03A2; Sun, 16 Aug 2026 05:03:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 163336B07FA; Sun, 16 Aug 2026 05:00:45 -0400 (EDT)
+	id 697C96B03A3; Sun, 16 Aug 2026 05:03:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A892A6B07F8
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 05:00:44 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 20C67804C7
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:00:44 +0000 (UTC)
-X-FDA: 85106537208.08.E2748D3
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5EA50C0004
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:00:42 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eCEj80WT;
-	spf=pass (imf22.hostedemail.com: domain of kiarash.azarnia@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=kiarash.azarnia@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786870842;
-	b=EhES8DgSZ+4U3palCTjXHQO1KquIkhaAOCl8CFI26ssxauTQPlX5wiPmHF0G1dZmsSbwMT
-	W+ZUG4hPQagCVTi0VVMiN+7wtPZXbUrOA2CoFjaAE3GO12ZMpVqB62GeN/A9OLsyOT+e5v
-	d2BAOYrVveUlenVA94OESQvTJKIzrKo=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eCEj80WT;
-	spf=pass (imf22.hostedemail.com: domain of kiarash.azarnia@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=kiarash.azarnia@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 436626B039E
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 05:03:21 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 265AD1C17E7
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:03:19 +0000 (UTC)
+X-FDA: 85106543718.12.08DC0A8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 7ADAD140008
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:03:17 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HhlJuTsS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786870842;
+	s=arc-20220608; t=1786870997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=TB5hLITgaLSvnkEZ2ABO7VyYwwjhkPuh1sGrI3sQjr4=;
-	b=qukL3HsvWSC+HAKRX0Pu9dFxfgTZjkCtkig58VcD2+x+riOT2KY6AmNSyHXqTuv3HOe4ty
-	0hKge+HmVY0xZ9eFUlrb7KMi2DbpyxJuSl7CHxO6jTdPaNfrBWndZJ9dg8cMOd0FKwvBwo
-	o6YB1iL++b9+vwp8UsTwjxGzvRag6eI=
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-47f7872abb6so1322131f8f.3
-        for <linux-mm@kvack.org>; Sun, 16 Aug 2026 02:00:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786870841; x=1787475641; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=TB5hLITgaLSvnkEZ2ABO7VyYwwjhkPuh1sGrI3sQjr4=;
-        b=eCEj80WT8wymomIn1QkbF4JKNan9onI3qnR2mZ5qSRjUlxhl1T5a27ijj7mpIpOY2L
-         iYt4Lolu0nvWFdWEk7s1V5VBhQYBpf4J1hjZovd8k/CluxmV4hpYr8+SLHnKxmVxeeWg
-         504DrFfef0ui3yzbwKIIZhsX32xoIULMnOPsGQ5/EyLY8PvckAxAVllhCWe4+no4bK3X
-         4qxi86XhKnyO1KJP035lxeWnRDCOV7tjI7gJ7coeqXbEbUx0U/03GbYRJBw1zS4rjdFo
-         ay01uE55jNDyYbQ3l32ew4pvQqS/cHqm45R3GyUj/h+3kFCyoeyMkxMp2CCzo9pLgI8Y
-         3NOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786870841; x=1787475641;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=TB5hLITgaLSvnkEZ2ABO7VyYwwjhkPuh1sGrI3sQjr4=;
-        b=OIRf1+Jo/vgW16S8mc1ymhCo0uq9+j8iiJQUOYez+zLfApTZy0iBa07QNdOwMrLbk7
-         0jU7Etxzvsi4/vIkQQ4BIdbO327cZzgxGPJoCQIgDQP448kllIqCMipN0HZ1AVbZ5I3h
-         nvDVnmMXaQmigdXdIWwjT2BsShg6A83g2cYhZZkhX9lbzrmnNed/2VYL1BJMj7PRkEoK
-         JapxP3Y9SH8KQBj6+qvSilVT7OFxcXRawVV+2sgdqhW4pX/ZBNG2qvkGDtwKF4axnDuI
-         G2AGAhj2MABWonpF4u70LE+C/E2b/HRjoIY0nAxBV0vJArmsEMqyx1PthiUPshJMMQ8x
-         d30g==
-X-Forwarded-Encrypted: i=1; AHgh+Ro/8YmI7/wSvQ94ruPODCGUxaBrdiqlnUGe0ww2NUREeQjn4jRAwu/tnN0a6thsKERa6BxAlEl9gg==@kvack.org
-X-Gm-Message-State: AOJu0YyYdiJkyT/+OOIGMvLe6o4UOZhMapwgvCJuw6PIC/CdL946BDuB
-	O1F/7QwU+xaStIIIfcmFzHi+P7fxhxChWLRHb8Cs8rSWruFn/R90fsMG
-X-Gm-Gg: AR+sD11c4UmE8XewJtl4vjuNcxCWlILaToW2nSZPZYCPrGTuIj1a2+Sp6+kkH6BIdd8
-	iz6v1qFyQDHosU71uT7Pztz6lii8aoIJMqdSUFai37FDDmrElPPR0Q9TZtgHlTEjdGAKBNVZauH
-	c5AYZMxU+NwDEgaWUU2NUi5itQLDZnGdK7DhRaheZhRmYKEUTaq6bfotBre8cBVSDV1y1lKNU7a
-	WVahqg/XC6NiIaspnBb2ZVU90HkB6j6yZIFAodFRLajh0xyg+2Vk5XFKkUfGK6ALdXM8i1hfrxX
-	Rd50zpKDSMyO4sDfotIASc544WygIHtJ9Pqkxn4gwot9PVRIWnQ9MXvzpesGnTfEAy7Bq86oXaL
-	awiMcm+IY6yvi+YsRcP+Okzkc1RZ7VAow+/bqWZDDjbOqJcwxlxpacK6EqSZpnaB7T3Okl3CWpc
-	E9D136BZD82RhD1bsINvFSlESEAWGsSnlNuuHYZwDPUG3Aw80que9zkTkD
-X-Received: by 2002:adf:f392:0:b0:46e:1815:6a83 with SMTP id ffacd0b85a97d-4816078c790mr19677263f8f.29.1786870840761;
-        Sun, 16 Aug 2026 02:00:40 -0700 (PDT)
-Received: from zen ([37.203.152.61])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f2b13c3sm18665907f8f.19.2026.08.16.02.00.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Aug 2026 02:00:39 -0700 (PDT)
-From: Kiarash Azarnia <kiarash.azarnia@gmail.com>
-To: rppt@kernel.org,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org
-Cc: graf@amazon.com,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] kho: fix signed shift UB in kho_preserved_memory_reserve()
-Date: Sun, 16 Aug 2026 12:30:37 +0330
-Message-ID: <20260816090038.3117276-1-kiarash.azarnia@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8dRSSX2JAQZgwWhR5q7ZovzbG0pw2Sc7JhH34Ynua1Y=;
+	b=qpBO8clTt3pYDA0H7/NwggCWL1FxQEKc0Vw5ciJ7HMbKaJYdLwDCxcP31BXoIk+hlEF9By
+	50o6HVWIqEtyVxniBQfy0AMq7FU+2T9XNilkXBglmDaGFKQ2C6xKsCCh+XT70xWTT/5qPF
+	cclTNEM49y6ogLCRZbyUrL/WEQF+WSY=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HhlJuTsS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786870997;
+	b=YkbToHGTTq0Rny2EZ4sIKwSjGsTLUW4pNNZ8jJiZNAGGM7NBRg/cirew5kKmwJHlQGmszb
+	PPgBzR0zq4svuKFo82i6vT5oQhZMWgks82BcVu0Sa19ujFCqKzTRml1tQXYHSHKqpkGamU
+	BED1um7JOcWIby7/OiweUSOgXCxNluM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D0C5D40962;
+	Sun, 16 Aug 2026 09:03:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC681F00A3A;
+	Sun, 16 Aug 2026 09:03:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786870995;
+	bh=8dRSSX2JAQZgwWhR5q7ZovzbG0pw2Sc7JhH34Ynua1Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HhlJuTsS9etJriQhma1EQG8iRFbEildqNTcjp8UrZmjCy1Y5uyZVhxDqZ2UN7jX45
+	 /UmEPju6KkW9SBS0sH5Ao29HbZ3Z10Qj2m51ct1m2ZQdSxr52E1SOmc/9PSmIZ5wDb
+	 yRgDcOXTgeBylHjxFIR/piJvlU9UmKKSX6aYLaeKITrReJxEZvEgDvnzqphs8kRwS0
+	 J7NCjjOaJ6NbSIM4WTO4+qJMk8FkR0qvpthCeYfRt3PDxuOPZj/PgdnKVEsnwEj/7z
+	 pMUB8xnDnnAlObV5tuwZEQrEkq71yXpl+HpnF+51DEptXpjFV4NruVV3/cD2WR1Cbl
+	 43c1uP2lb/vHg==
+Date: Sun, 16 Aug 2026 12:03:08 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Maxi Saparov <maxi.saparov@gmail.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Evangelos Petrongonas <epetron@amazon.de>,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, sdimitropoulos@coreweave.com,
+	Maxi Saparov <masaparov@coreweave.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] kho: do not reserve scratch memory in the kdump kernel
+Message-ID: <aoF8zPXiKpjt2Nsv@kernel.org>
+References: <20260803193938.8778-1-maxi.saparov@gmail.com>
+ <20260811161857.3096-1-maxi.saparov@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5EA50C0004
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260811161857.3096-1-maxi.saparov@gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: p7xgg5s4r9aght5jg1b4px8fynt9m5rz
-X-HE-Tag: 1786870842-45656
-X-HE-Meta: U2FsdGVkX19pLmwrO6BS5AdEKAL+Mf1IXlF9Sj9NZcihbihWMOjHyDbk8RbA+lAMfloMOdEGHY1KdfTBN8Gevm/Vak7su4Mf+Z6S/EOpibh4Ov3VGIBWvRMdW8sarcJ2Mc5t5/c2yOk64VfB/RazQljuAUfRNJP7LelFuOUYMTRMGjTEAE8Qs5NmGVETvwjeAN4PilY9drVGVd5QrDamzNYAQpVOtOT5fAmu3YwUb2aWbTC7rI04la5NDHdkJkqI9q4SwMhidKiTR3vf9FziYj3ENYyrQAqnm4v0ZFst6RK9QNH1nkh9qbiNww9W4UCK5wthWc/YUL6CVlf1zzKZp2LNJi3KpgovVZxRMpLz1kTh6uH891/rzZkIfiBOeN1pDxwKUWEdbUTtQ5oYWbLAjEcXHJ4nb7La8VrKCJ+xyGMB+PIoH1OIBMgFUYUJjuv+AaJy0PPadBCbPhoY5NwVcu4JDRIZQgizAuNkqQR8hHVRdkxIL65zApM2tM/CigTLqNF7vXT8ivN+iJEPM1gku2VIVCWBagwHQxghVdffkJPKwjsjzytdZwx8PfoNSxLK9Rfw10k5aSEDFTLIrhdf5u0imGnxaFyhkHvKwASgVXSxngG1V7/4EvULIYLYgH4Zaj+HpULBLa2dG2Xrmc2vh7n7NGA9k6Wv6VeOLMP6ktBrM0br9LWpRmIOdX632rEMXsBVUHeoeZRHrRpXl9wWXjNdiaxzLz6oohB84pw8C7Nd2oEQxWfcOCz6ft0eq9JfeMKBFIzV27qmo3+XJ+S+D/BhTYrJHqJvSuc/8vfgdejUyGpvWU6YhzsY6y0M/DFX5JumYUuf2jh9eTChyLrGBGZ6BDazmlPCt2+SMqXe4JNa9NQXfhVbibrLTdxDdaFnB/Sp4ZdHrzpm1wofQ0XVbBf2FTctTaSezc+uwUimjdA9hjflveONQRznYDGoCSUoU6ejj6ybfQIgl/KTO/7
- wA/RK76u
- WfFK1oIIXJDUcoUZJOoHaD2p56XaJHeCueM/INh+b10Us7PWfLRR0slKnm4S4qG59/oz44a8xa3XMLQUgSRxp+mChcVRpqxt8TtHVPkQtqK+wWF61pyJVLZKY3E9qnjscoa8ymGgg8XIGqSLBx2qXMNNxALTTlmIqfXWGGYqd1+4qk5/+obVWWg9SbZT0krzsHQTVOU8h7xaZ04MEJ2Kr79nt2/9HGoSPzOQod1XX7y0CUK/WN3aef4TvH3PueS2fDXrCw3ozEa6R9dQ2ueYMRERs/yhLi+nj+zL0JjHlsWA9ffB4DXE+1gxEs2CImR2CVVVGSmnuUTQbpZHcwWm4cZ7LFmOsxMoDmOT8tprO/VZoKHK8WWJ70Wz5E7J5TM/2GrU7ahuZwxdf/5ZbhY5tfkxqhoRxCYwDSb5zhAsdoLJISBJkVDwb3lsB/kl0XrR+haULWjHiDA3AQ7zW24OhzLNCP80V2mZl74gvHB29KijowRvp7anft3PUJXctb8Ctq1n4VgMk7MpDAMY=
+X-Stat-Signature: 8639p6j1rnth5tizpjrgf3bh3rpsejf4
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7ADAD140008
+X-HE-Tag: 1786870997-888352
+X-HE-Meta: U2FsdGVkX18ser4P4XLIuQNeZiFnuwrDZlcg0rbqicV+GxV7E8e4CqHpmIdEJIo3xfP0TAf/l/eV8KQcpJ6/5F98tFO2yk6HAwcXMQiUGqdqd/u87yV3Ro3Uhn1KQtwW/R67MO1H0mAfOgZngZlJDBOcB8ga/Ey7Yt5tth79+2tE0tW+KnekrX4/C6U5uov6wNB6vxU8K9xVroZQZvKeB1lEoA7LzgwrQ5an+OT9b7QqgRlpLOa+n9SZ05j2MjJfbeHb7zhArqvn3kFndiN/HdcYDGm47CIbmk7J2AUBJ4BU/MGadodTZw46Ede/3ugmOAq8pMy1qben2LubTj06TqJHNVBnyqhByb3RuIBZia0t66BdbpCQAZGdrf4ajEzYj9QOGR6EVYr/msEwmQ6j6r5DdSGVmJiEtRihnLZgkSng0zIodafo6BasWopjSD+vBx/hjAEF5zLSI/f6mOsxYnKQ6eVOntWl8Z7CcWTO5YJ8roV26j7OVzQLyflDqRjii6Z884wwLhe2dQSWltL9FWh8JAC3TrXZMxFvhFf6Svrrm4Bmko6Zy+zdge2Ltm2VcqnUIAaeN8l2Mcm/SmRn2cfoDN5CynCAp4FDMMGZgsfk2dobx6kO+ecBp9az4K2U94J4ZZqx8rhT100+1H6DJ9O87Rb4GAmAEQ5205hcCAJ6CqkJSayLME24zdn1SNP9BeWch0D4dVGyj2/COpE3BOpc3PZkJqK2fKgU1z26+5BGtCehZ5XdCYrFLFBoAUmLkDVsAVHHnR7sb4ifwCmybT3Sdz26h/HjUkLNKTJO4wPpW9sjA8n9vJNPNyYy2V2SdiIlw2Eh04u2S+KCJz3V4fqXZ6Z/n5uxKSkVI1jbdi3kvK80N7xd5ocmW5JjUDLrLN+D3eOHfKpfkjCH7PKwMctRM3HbtBfF0hWknjO0kIPVb92uJpvbnDePI8ImlUwFCMeeLlprGO3rkcZsY0m
+ waKDLUAZ
+ gANS6DZfDCgZ3NHv60GhNhOxKV8dLTHVqDrNOdqiYP9MfNAAMMPZcn+SQh6obnOU1Fab5nf3J4yl76PjkIUJLnR7MFjue49Ob0JmbMw6F7LTTLlEnb0cdd2kt9YZBqw7MU9PXNiJqXSaqz8UwGhIBh+XVEcZyrPtKBBXrgKnXqaENgbC5rxdcY30Ve0/mevKEmSKr9jtKmijiuG4w1nA/Ej98/O4qdcwupSzOr1ushBIIu3yducpQSrUWFfUCuVQGMD1nKTx/H0VbMNnlArwwS6Q1CiRLAC7J/fYeCDdQ9aW0Epasf9OelUomk9ZxQAoOHNhjvdA6hRNqThgzvr/r6ZmveT6BmYEVA3DSdkGHOPgUP5zD/7a8MS4I5ZpZRk5e/0needIBCMCOiIvAgTK8/wAfZFj/rlkYhZln4SMG42sx597htE2gnw9+Jg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,50 +96,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kho_preserved_memory_reserve() computes the size of a preserved
-reservation as:
+Hi,
 
-	sz = 1 << (order + PAGE_SHIFT);
+Please don't send vN+1 as a reply to vN next time.
 
-`1` is a signed int, so the shift is signed-int arithmetic. For order
-19 (a 2 GiB region) it produces 1 << 31, which is unrepresentable in
-int and is undefined behavior; in practice it yields 0x80000000,
-sign-extended on the assignment to the u64 sz. For order >= 20 the
-shift count exceeds the width of int, which is also undefined. The
-return value of memblock_reserve() is ignored and memblock_cap_size()
-clamps the bogus size, so the kernel silently reserves the wrong
-amount of memory for the preserved region.
+On Tue, Aug 11, 2026 at 12:18:57PM -0400, Maxi Saparov wrote:
+> From: Maxi Saparov <masaparov@coreweave.com>
+> 
+> If a kernel with CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT=y (or kho=on)
+> does not receive a handover FDT, it reserves KHO scratch memory in
+> kho_reserve_scratch().
+> 
+> The kdump kernel always takes this path. Since commit a6715d7ec472
+> ("kho: skip KHO for crash kernel"), the kernel does not add KHO
+> metadata to the crash kimage. As a result, the kdump kernel never
+> receives a handover FDT and always reserves scratch memory.
+> 
+> The kdump kernel boots in the small crashkernel= memory reservation.
+> On our x86 hosts, the kernel and initramfs make approximately 176 MB
+> of early reservations. The scratch areas then use approximately
+> 650 MB more of the crashkernel memory. When a large early allocation
+> fails, the kdump kernel panics:
+> 
+>   bio: can't create integrity buf pool
+> 
+> A kdump kernel has nothing to hand over: its only task is to dump the
+> memory of the old kernel and reboot. Fix is to disable KHO at the top of
+> kho_memory_init() so that the kdump kernel does not reserve scratch
+> memory.
+> 
+> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Maxi Saparov <masaparov@coreweave.com>
 
-kho_alloc_preserve() caps order at MAX_PAGE_ORDER and cannot reach
-order 19, but a boot-time reserve_mem= region of at least 2 GiB drives
-kho_preserve_pages() to compute order 19, and kho_preserve_pages() is
-EXPORT_SYMBOL_GPL(), so the path is reachable.
+I queued this patch for v7.4, it'll appear in the liveupdate tree after the
+merge window.
 
-Cast the shift operand to u64 so the arithmetic is done in 64 bits:
+> ---
+> v2: Move the kdump check to the top of kho_memory_init() as an early return.
+> v1: https://lore.kernel.org/all/20260803193938.8778-1-maxi.saparov@gmail.com/
+> 
+>  kernel/liveupdate/kexec_handover.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 
-	sz = (u64)1 << (order + PAGE_SHIFT);
-
-Fixes: 3f2ad90060f6 ("kho: adopt radix tree for preserved memory tracking")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kiarash Azarnia <kiarash.azarnia@gmail.com>
----
- kernel/liveupdate/kexec_handover.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 175c08a6e41e..c79f48bd64ac 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -501,7 +501,7 @@ static int __init kho_preserved_memory_reserve(phys_addr_t phys,
- 	struct page *page;
- 	u64 sz;
- 
--	sz = 1 << (order + PAGE_SHIFT);
-+	sz = (u64)1 << (order + PAGE_SHIFT);
- 	page = kho_get_preserved_page(phys, order);
- 
- 	/* Reserve the memory preserved in KHO in memblock */
 -- 
-2.53.0
-
+Sincerely yours,
+Mike.
 
