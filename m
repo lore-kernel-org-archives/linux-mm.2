@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33911C5B572
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:48:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99371C5B572
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:49:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0EE96B0893; Sun, 16 Aug 2026 18:47:28 -0400 (EDT)
+	id B68B06B0895; Sun, 16 Aug 2026 18:47:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9BB76B0895; Sun, 16 Aug 2026 18:47:28 -0400 (EDT)
+	id B40B16B0898; Sun, 16 Aug 2026 18:47:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D62316B0896; Sun, 16 Aug 2026 18:47:28 -0400 (EDT)
+	id A52D26B0895; Sun, 16 Aug 2026 18:47:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 964196B0893
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:47:28 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0E5091A05E0
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:28 +0000 (UTC)
-X-FDA: 85108620576.22.08558C7
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 29F5640003
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:26 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="U 8DMpup";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=Ne2vpsJ2;
-	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786920446;
-	b=QfVtlHlB4hNp4DwHexxVwGut+ChJW6oYc3u5tUyo3y3hTRsqZkRYyQ97+XmYmAooTu2oe0
-	ooJeratIQjx6jf91jb+6GpjrxJqJn+L5bfNXvzTFhx3wU+joSsHw8rHyxOZ+urBK31fJFE
-	f9n8HbVxWjJXjYtDJtvE1ZpHykQadis=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="U 8DMpup";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=Ne2vpsJ2;
-	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B14A6B0895
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:47:30 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C5B5E12010A
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:29 +0000 (UTC)
+X-FDA: 85108620618.30.EB9E924
+Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+	by imf11.hostedemail.com (Postfix) with ESMTP id DF66840007
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:27 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="d 6Y2jbr";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=SnXwxds2;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786920446;
+	s=arc-20220608; t=1786920447;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jQDVLS5QXQD8PSUIRmPFOeq1RPNNLBEX8FtCDNd5u2M=;
-	b=fbJOyrdhkV2v9iaWjX09COOGmr+KD5z8V8ZvkztBnPLzb37x8Mmqg3Z85yExow++omrUFO
-	db5xexwqrsq4aSBEdYpI2lCMXTbquE4CHxVIGolYSecwwCY3wi1+Rdo5fkPXKGhc/+lmc4
-	cM81tnhqKonQpGVDUTn763+597p+D4E=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id BC2ACEC0245;
-	Sun, 16 Aug 2026 18:47:25 -0400 (EDT)
+	bh=RxOUZtNI4iK6oDUbeznOi5j6qWIw7a+qTCAWQpT1d7E=;
+	b=08E/t76QAsf50gSyAn7ow948MM80oIPmYjZyhZCdS+tpbrfmknFCa/62vRAkcy9oTRFN8p
+	nXVd4R3tpnkjmc5PRhfZgTMSdgyyQDUR9GLpZD6Q6XKed6rloKB9M6rGwGMoU1MxaoRbKs
+	7FWJo9BsPzGmlVdpRdihFXx6wEQ1SQo=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="d 6Y2jbr";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=SnXwxds2;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786920447;
+	b=WYwjPmroikKbuAGwqjj0No5LGitFjOMyii74/69wdvxNU+ePKSWxIaAHF1broBEXvA2iHn
+	NV09Vj+gz/jd4ZybetOpBTZje+VZU4Y3YTQmMwQozEQey6FmchsiIb7if9QBBINwdPKAOf
+	29U6L/4UDQUCAXJAYyFeKPd2dL6zLkQ=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 75E8F14000FB;
+	Sun, 16 Aug 2026 18:47:27 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Sun, 16 Aug 2026 18:47:25 -0400
+  by phl-compute-04.internal (MEProxy); Sun, 16 Aug 2026 18:47:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1786920445; x=
-	1787006845; bh=jQDVLS5QXQD8PSUIRmPFOeq1RPNNLBEX8FtCDNd5u2M=; b=U
-	8DMpupRPxqNtjnk8MQ2nr5Tbo5J15VHzqtBgNexbVDLBpQK8kOZV1V9VY+oTuclR
-	FQwN1MvWVLuiLmcoyeMjBjAsCK5jQiMnCByX5sgQcVEV08a7dKIl5WJmD167xKsd
-	yxQ7OnXROVAGW/6T7F5mwovdCEXMiXGeyCbx0Blytwa7iAXZ9fy4r4TDPHRhwZaH
-	vClCvsD2KdWW3DONN2vx+ocz7EhMKeBAZdEmGRcSKeBQrFIA3qDi1+U+CcOSNLE2
-	5eDbkp2Q8RBM6gtc1s0Xkg2Edc72+x+DGSpowCNEvZ8LT8Ez3oNUoKYnNGCPP2Hm
-	xuahjYF0L026BXVJ9QcSg==
+	:reply-to:subject:subject:to:to; s=fm1; t=1786920447; x=
+	1787006847; bh=RxOUZtNI4iK6oDUbeznOi5j6qWIw7a+qTCAWQpT1d7E=; b=d
+	6Y2jbrLxcG+b7UlQQQDlAUCnECDZvaCKHbgYYo96wTHEGmtT61158UIi24EfmWBq
+	1r0MiJt1qD9EWnwIlRJ1FVDPQSHCuQQk2fnFJeYBzxHGnpFwer1hwqp22UwnDM2i
+	GF665c+8S6CCznhnz7Rxaon2MSmgX0NrQJdycztlwwZuy5MpTU2Teq7AmK9Br+rh
+	izXEyoj2U8owy02g1nD1Qj6i4jC4YyjP5FI2rG4tML9AyVg6sUVTfMzPyT6WUOF9
+	zAAV5AdKP1cwODl6BUU4DOg8bV+kyvHHxuV+0Y0QmTPawvH2JEVhRfVi3ztWiTCc
+	Vz6hvChnLuvM2EhXEAC4g==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1786920445; x=1787006845; bh=j
-	QDVLS5QXQD8PSUIRmPFOeq1RPNNLBEX8FtCDNd5u2M=; b=Ne2vpsJ2pSqH37gTo
-	Wmx5ryypkj6OLWQeygS4FAdp8lHexFPq9T6hnhqWd3FFoaJ8/u9jg8aewPXuAWAS
-	vfFKx+JtJDAjFXvqvAkkEPEZvhLlVERfDcBvsH4T53nK2mozBL/Cvrt5pq5zfyCl
-	A4+EEFq2kfAuNRTDskQydpsx9uP81j30iaWmjmWzj0Kel4UcWCky1aVAOkzvfuXa
-	Cl+wdwDq8VFhMsWFJNio4nZN4wuuCYjfQ4iX5XsjVIRHlza3dfHgIMbrxIF7iRC3
-	o5N+ta537koNr/JRGVSGrgGX0lKLqtbooNDWYePfkUiDFtW0Wv6uX1IcV369p2qt
-	GzBww==
-X-ME-Sender: <xms:_T2CasrVW5hajWbLikKl4dLJpd5a9eMTlGeM9lC1yc62Lwqk8W-Guw>
-    <xme:_T2Can-42G3Fwi1izl7fzD14uBRCTbRlts_oARlDYR21KfoHOAafPYAGMXvDZwtfg
-    TqYXOQUqw_q6mFU8shEp2CluRJHh4Y3gaPPJKGSaXo7Q35qDTQHx5E>
-X-ME-Received: <xmr:_T2CatSf6g4kKxV-6xyJXciG5ZvJNI0ybU8Dnndpbqo5YPgEFyPXt5N9lAI>
-X-ME-Proxy-Cause: dmFkZTFcTQrb7i2Wnr2aEeZt1aoD7asKutBPdJgU3YSD5OfcfuljRo8Y5zG4WAng55KhcU
-    fdYu9dW0n+wtsUDWiYHh8AwjWiiyOeVLRvzra0gUIzgKMFXfu2OsH3wUsDwz3Dpe7vEjB9
-    JjBmMfD78Db5X6Vl1RDz8Wz4IQF1tjtPvs8yYIcZ4vdtxAZhotrvrKr9o/e/MWe2qw9p1d
-    u/4ngMViLbtWn8zpPvYSIgtjaF8APmxmHCU5Ga5Rd5eIGcQp1MbbGmkchmHrMFMoUd9mrv
-    TpVQ9+TKNOdfLLUK+2CPoHpagx885EUQUSZxhSq0AxxU5QJRQ+JA8yzxyjEYMjW1uFFjmi
-    LqqoNifkXB79/90TSRF1slcFxxwzddkh5G5bZ3d0l80IbLrRpgBlzopY6EpPfytjdWVjfO
-    +DqxD67otuMVUFiKrSCwFY0E3gh/4zA/82p9GG1UXZlq2+64MGfIaNuCFx78ugxlx/Vxd3
-    zcra6CnnMWps68YaqKx2D1rCx0QlW0Fe4XYEBXJdYnAr+DVTZT5z4gxDDkKwjNDEjaX1X+
-    0qqckODmklZPLQLdNdAJbhiPAlLC0CzYGXGbs8lQ4kjAcpKVSed6BeRd67fF25naIaKKH6
-    DYyWnNDoe85We2Xvv2oHM5trVYOLjMtG281TyArJBr7AEnxa79wrFeGYYOLA
-X-ME-Proxy: <xmx:_T2CagdoezJWqKxXMydbSbxIDG9lyArj0l7AHk-4SpFKTBHooh1XOg>
-    <xmx:_T2CaiLW1lXeF5L1I6jVyK0EIJm0CfzXd9uXG2IEb_SItVwL0Daxzw>
-    <xmx:_T2CatHWNIRpSuMZlszw2kT5EhC_rxKl9vmYFA-koz1NgR9zkNOUjw>
-    <xmx:_T2Caq6R82YAoFOrIWzhTPEqBgxIZKbIvnGaAaPcd36HNWC7_rI47A>
-    <xmx:_T2CajsNeYuv7GPWRAu90uT4Hta4RKVmiOS_7coCKXhLeRfMVvsStC4e>
+	:x-me-sender:x-sasl-enc; s=fm3; t=1786920447; x=1787006847; bh=R
+	xOUZtNI4iK6oDUbeznOi5j6qWIw7a+qTCAWQpT1d7E=; b=SnXwxds2phmTEsFOj
+	Q2LaIYTq8f6mE6MN8pVm+gwliOOaKFVpnarOySZ1FjmfvCANGLx6V98d0FLbztWA
+	B9biuWNQ114cLiT0pExzYfTBAjP1lIJeDENfz04uTJKdsENucFxvn8NFnjIzDojQ
+	rN4j4aKvkTKFdK+PWQx9CFZ2bOkedltp9DqnN7IbzuX99k9Y5+1++80cNQmc3arD
+	b8c5YS9+7N68QAUhoUdsSU4gM67AF3m8qbE1G7ElyxXnjn20xzG3lb0IekzfMn5G
+	gxgHPBwT5QWFMdOWoUEnYJE6pNoxkJ3aZJHhY4pVR79n5Yk+ZaFycQjFXiJOknTt
+	X3SxA==
+X-ME-Sender: <xms:_z2Cauc9DGmMoL75smZAHOOUa-L2NhdOxlJ_rp36LakMlT2Eqh75eg>
+    <xme:_z2CatgaO-eQNOwuf6F2Z2Ck9MdJhWXiB-qTo6xvOm79lKajoFkqBFFVS1BFFdku_
+    oDq_lPJn_jcAL4OhM6C9oAL0_KZAQXbrfsL_CBve53Ot_yhga5383iJ>
+X-ME-Received: <xmr:_z2Carl1Nvp8EvT3DIIdmWUI7gymooa294TrXQH_9rRaAq_ETSOJo3puZLQ>
+X-ME-Proxy-Cause: dmFkZTFX8QZ1Abcp//ElmtP0wYUsUMnb+KjPA544aOlJXhXcQAudkXa81C9Rj4L11ediC/
+    SYpDnD1LvcyFEAv2YFQNL3ReIx6t28G7cFOXvsWQqNdQRv24cIelnnbcWrHqur16sY2q+b
+    PHK84xbhjrx0R6ZFbdj3lDcQr+wbYteZ9PHsSvZgjQoovnxRkTlpJXxI+K+aK0DY9MqaWr
+    nM0jSjvJAOtmNeFdTIuI9VxKMOFqeJI9DUUNBafqnTlsaU2K5w1xy/oDJpRmozGKRfcEpJ
+    T4FDpTcqBKNo58tTW6I4nVl91YkYNyFfziYdH6IV5aj62MGBqsSUtSYZnaDODTOndFzTVW
+    SGg4/Aho0z4roUqJEIyLZFKJMrH29ZtJmmfVu0Xk4xI9g5vXJsHBT/1UTWE52f63Iditod
+    QO+tCxiJRIyoY5eyvFqF/AP9BwfZSJJILY0yBU4a+Y77JTTBvzFRPmzoF2NwjJw/SQV0mw
+    3gBuVTYtebOsIyX9LdjddvoMVP97xwlvjYt5YJaoGGSpdBdloyVecVWIk3bHdHHzpzaiBL
+    dxjak1g91n3VQ8llIqbPfezoTwPoq1nkTX2Ju/5Z66s1JgNHx0dnFQ8yPZHSqhczgAz/jU
+    7Zani/FxXTb5g+3pyTmIq3aqyP8cdvHFbM+9BhJbzY2xyTHsPI232s/hahjg
+X-ME-Proxy: <xmx:_z2Caog4DUmEzXcltHF3csxAQnf_5pGe0MKw-3JmUR5xItcbVb-GFQ>
+    <xmx:_z2Cag-DLAjOOqxozuEjbqqJzs9d0xyiZQpE9DmPV51677Zf2XDseg>
+    <xmx:_z2CarpliFz2PvMsBQicbwgsE6m2IQuC7QERKy31r2MkPIheQOY3ZA>
+    <xmx:_z2CauPAuGHUr9v0vxTyGEGaDHW5mg17JLDPnFJNXuV7vGuwrCOYig>
+    <xmx:_z2CajQV9oAXOJAUMVuE72pGShFy5qQPsRrZc15PIVYZdxOi8IaBoqlW>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 16 Aug 2026 18:47:25 -0400 (EDT)
+ 16 Aug 2026 18:47:26 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -133,22 +133,22 @@ Cc: baolin.wang@linux.alibaba.com,
 	mhiramat@kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	bpf@vger.kernel.org
-Subject: [RFC PATCH 36/57] mm/collapse: report what the scan found
-Date: Sun, 16 Aug 2026 23:45:48 +0100
-Message-ID: <20260816224609.308019-37-kirill@shutemov.name>
+Subject: [RFC PATCH 37/57] mm/collapse: report what the fault-in pass paid
+Date: Sun, 16 Aug 2026 23:45:49 +0100
+Message-ID: <20260816224609.308019-38-kirill@shutemov.name>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260816224609.308019-1-kirill@shutemov.name>
 References: <20260816224609.308019-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 29F5640003
-X-Rspamd-Server: rspam10
+X-Stat-Signature: tn4r1a8wsi6msuna1ss9us1zmmu7auyc
+X-Rspamd-Queue-Id: DF66840007
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: mbq16xzgnjejspcefd37373wxt76gfnj
-X-HE-Tag: 1786920446-912059
-X-HE-Meta: U2FsdGVkX18z4xyGFsjmb2UtX93L0oVG/88a9kBQUHfmEmfFEZR4N0u0sMFoP2+4HyNpoSyKfz3wMlg1ZnL3Zle9Gr3HtSHWK8FpjmOoBkPQ5NdC0ni3OLciCWmfl95/ylLWqPpCsfzKMGAREHcEgzKBSwfHPBnis75xvtMiTXkirGvXFjZ62pF7dSkZXzA8otB3H6KMG9YCM6V+PF0H8BhuDSCrxm5jzPgtgYrI0Vl5swPnrKyoSDaiasymbdspd53ZqYxNO6udaaieDaLVH+hykGWjKBSAEfsiH08d2T59tDdcowoAMKoYf1HEP+0loLFMoqjlvH9ySltMWO41cO6wMt7uehh3TTGQNb1Bai0ShC1fzvVpZTjCInBzh7kT5qJlBoBp/0bo6dF2dvIWdTJPuCah9JKQqJsCrSEO/oya3B/Bd+JuKUNabXiQ7wClOz9KdDasuEbHUhyzyPmvZYA3U7xtw0LZeu0w8vyJtBoMTVly+p53foj60WCqntW0cMmgTGBXPwvBBYD+Ehu4FE/I4kB1Pbu6AMdrUdIlPqOTjFiR3gHhQPGTN3w0ndEamklffjFsECnlTi/rkV+IiBnymxgo/LvplkiRnT2NX8el7di0Ngq+ucEGadrnafmMZNRyRAtr0O/gqVTosW7e4/IZLGYjcQbImhLkMvp0hoEIrjuDzWusTZuDtRfd8C36F/bfroJ9V6zZb96yiTXr6qL/j4iTTnWsqaOf+d1K/kX1lST0vHiH3mOD6F1CWKdQfVCTtTPMDpNmPbNZfCPREhId7ouGQPD60wquDhK7rrythqAwDR2a7Q2VG3NjS/ZMBZd7fSKJsesLifF199JydoEsf3pUcu7dmLCYpazaae2AOCOi/V7/hJfaZidCOCrLy5WaII30FJ/q8u5z63vMsHPO/1hEy2XbRhfWVT6CrqK/+j3FGsNsywuOYLouBSiUXwswjo587PYgXU4HJDk
- 0AYJntWY
- 5RChE2okiBmUZg+fhXlOvIIwrmA3b31554YiRJZ9lT6iIosQ/CLWNgQzHuRZonnZXOiLWnDNtRObLEBS9MpbPQFqvSulyFsFCfegCiVFNlXwNgXEsGUFkx2L2HQC9J78/ChtSEZ8Bvco1ndTiAF5fWM1VIW7fv5qPCFSBUojTohvOT+7WFO7tm7sq0A1ti/UPLJMCvgSIeUma4oP0KXWUesOqmu//POvmmzCiv0q7Ub3MIbFguQekV+IqIv2nxyX73cqXgm7RpjdpWC+WFl4bGMPvWkjCAf5r7Te5fRrKo8Db2pQiW6skYuSF7O42Mt7CxCwzcyhnHUbVmRgpeI1r5Gmq71ie4+Uq1m536UAJ2XQ2yws/eOi355/LfyRiow+B1iDNDZPB3FkZUZMf8iVXbYM1WsgJqgFRKC5Iv5YPANcjw29CuweMJCi5Nb+ekvVSBwwHSS9kWKvZ7Jk=
+X-HE-Tag: 1786920447-445635
+X-HE-Meta: U2FsdGVkX1832dYNVtRDtrXZsckWlS79hccpv8gnf4gAakk4Pb82Q+e1EYDr7xApABeuvgtKaDIlwzOjuJ1FTms6CYkJoCqV2OGPVrrJzOjuLOboy2XpNNZF3+BGZ/1EPoaKhYNc1YwNiqH+Ue48OTOMukWhTNgEoqGr/nggJQ7t68BzF86j7HCbAXB4elGbbGRzVBsoPgjKHQwEJ3cOx6IudvmDutKcA3j27NCBUPi+pYARxHnzUOVPH6uZFZWX3tZJCsCqpAzZikqTtSVgZ0ThXm53Ph6SqYMiag3zLauNtSzefEV0gLLXGLXC20WK6TlJre1mMZZk+gpYVlTI7m/c7uJslXAMoZAzwSe7Lvb5fc6rhEIQXkUBqrr9LW5IL0hC+EWvfWxP1vK5rBTmhHkGYBEax8ra7QrmlIrg1t+sKb7GanXh8plmLqHJB6Vzj28+w9SHlpZcwkHAPnijspbbK5Ou/sLZWcWIaNLbjNjkxx6+U88nHmgU+7Sx/NAG12DPHiM5tGQ/7/jcIAWNzaF3JInJS2sjfIYMA/9UJV6jMPVsSCHPT6Hb0mlNxj+NnEDYHJhiBX2HIw7YKmKtnV/66j9MYChYWkxfruaHBQ9XHrimtZr1q3mRBcBbtS7bDNInQ1CaWvJhpX52E98YGMp20ulKfJkPKV/2H/xETSJZxIQMPPPTnmbPhu2HPaKdFG8gNTLeX/ETAH5fEpBpXeOBuLjGLJcCNrcsStR2f275u7iix+Ifg97XIrzczyGS+bpthU3hyEY744O6UrjROnee5J42MoItfoty/JHoGJVh67koZK+SADRanY5QOVl/WosiqBg5x5/12dqmCta3RZb4Z5frbA2WqjWmRxdDP4xWPvXifFBfPxCmMThty7cd4Mzvln7n69Cv4mLxNv+iipo6q0w/9a8BRtr3Ty/WnMftpwG1fJ72D3AMdokrdIHuYsqvSfI2Kns8ACZXB//
+ g6lQK5uj
+ E0UMi/D8QLjlvlezqAhCGRBqmPj6qQTfu58/WLJlKsweaFeAjflRCxH92mF23AWAh/WyfOQHbHO+jlyNXBcoLyZ/lHPvKQCajyl2OZw7EpXITeH8l6mARJvsRIy866q8OLSPzLfQU/yJchKntfekY1iV95lTFymAnCIFBHLKwWHdeyX7s626r/csImoBoQjLN2Eu9PkH2Ifewr82JXnCxCPZB0WpicqRJE7Jgr/DpQftjxR7awhfQU5MWqL9pi2WOxHy9F7uIcuo+oLDXacejo9KKrQxCP4moU8yyB/G4918HZKkWEOoReefn9wYxu3MfT0s5Laj8WTolS3WmtXJcWJj+PW3iBQRthj2U3XgN4SbzaKUg22lGsuobgFUJHqyl/9GtL3hCySQ4Se+jLufcCUtNGQVrvfmb6Y8lDMs0TA/xdqcg4rPWU0v1fQyhJiF4BVlBFmeWY0ui7pc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,70 +158,56 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-The anonymous scan reports nothing, and its verdict decides everything
-after it: which orders selection may still try, and whether the table is
-refused outright.  The only way to see it was to infer it from what the
-candidates did afterwards, or from their absence.
+The fault-in pass is the one place a collapse does work on someone else's
+behalf: a swap read, or a CoW break, for every slot that needs one.  How
+much of that a round pays is invisible, and it is the first thing to look
+at when collapses are slow, or when a workload notices khugepaged at all.
 
-Add mm_collapse_scan: where the table was scanned, how many slots were
-holes or the zeropage, how many were swapped out, which orders survived
-the scan, and the verdict.
+Add mm_collapse_faultin: the faults taken across the round, with the
+outcome.  A round that collapses a full table without faulting anything
+and one that reads sixty-four pages back from swap are otherwise
+indistinguishable.
 
-The first two counts are why a table yields a smaller window than
-expected.  The third is what a PMD candidate will have to read back.  The
-order mask is the scan's whole output to selection in one number: a table
-refused as a unit shows an empty mask, which distinguishes it at a glance
-from one that merely lost the PMD order.
-
-The file scan already reported through mm_khugepaged_scan_file; this gives
-the anonymous side the same.
+The mm is captured before the walk, because the pass returns with
+mmap_lock dropped on failure and the VMA is then unsafe to touch at the
+report.
 
 Assisted-by: Claude-Code:claude-opus-5
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- include/trace/events/huge_memory.h | 34 ++++++++++++++++++++++++++++++
- mm/collapse.c                      |  2 ++
- 2 files changed, 36 insertions(+)
+ include/trace/events/huge_memory.h | 24 ++++++++++++++++++++++++
+ mm/collapse.c                      | 19 ++++++++++++++-----
+ 2 files changed, 38 insertions(+), 5 deletions(-)
 
 diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
-index 86131845b761..573cf5428969 100644
+index 573cf5428969..c2314e26111c 100644
 --- a/include/trace/events/huge_memory.h
 +++ b/include/trace/events/huge_memory.h
-@@ -126,6 +126,40 @@ TRACE_EVENT(mm_collapse_huge_page,
- 		__entry->order)
+@@ -160,6 +160,30 @@ TRACE_EVENT(mm_collapse_scan,
+ 		__print_symbolic(__entry->result, SCAN_STATUS))
  );
  
-+TRACE_EVENT(mm_collapse_scan,
++TRACE_EVENT(mm_collapse_faultin,
 +
-+	TP_PROTO(struct mm_struct *mm, unsigned long addr, int none_or_zero,
-+		 int unmapped, unsigned long orders, int result),
++	TP_PROTO(struct mm_struct *mm, unsigned int nr_faults, int result),
 +
-+	TP_ARGS(mm, addr, none_or_zero, unmapped, orders, result),
++	TP_ARGS(mm, nr_faults, result),
 +
 +	TP_STRUCT__entry(
 +		__field(struct mm_struct *, mm)
-+		__field(unsigned long, addr)
-+		__field(int, none_or_zero)
-+		__field(int, unmapped)
-+		__field(unsigned long, orders)
++		__field(unsigned int, nr_faults)
 +		__field(int, result)
 +	),
 +
 +	TP_fast_assign(
 +		__entry->mm = mm;
-+		__entry->addr = addr;
-+		__entry->none_or_zero = none_or_zero;
-+		__entry->unmapped = unmapped;
-+		__entry->orders = orders;
++		__entry->nr_faults = nr_faults;
 +		__entry->result = result;
 +	),
 +
-+	TP_printk("mm=%p, addr=0x%lx, none_or_zero=%d, unmapped=%d, orders=0x%lx, result=%s",
++	TP_printk("mm=%p, nr_faults=%u, result=%s",
 +		__entry->mm,
-+		__entry->addr,
-+		__entry->none_or_zero,
-+		__entry->unmapped,
-+		__entry->orders,
++		__entry->nr_faults,
 +		__print_symbolic(__entry->result, SCAN_STATUS))
 +);
 +
@@ -229,15 +215,75 @@ index 86131845b761..573cf5428969 100644
  
  	TP_PROTO(struct mm_struct *mm, unsigned long addr, unsigned int order,
 diff --git a/mm/collapse.c b/mm/collapse.c
-index f0d80204c2bd..b750a1fc81a5 100644
+index b750a1fc81a5..1b5db42b6991 100644
 --- a/mm/collapse.c
 +++ b/mm/collapse.c
-@@ -2097,6 +2097,8 @@ static enum scan_result collapse_scan_table(struct vm_area_struct *vma,
- 		cc->select_orders &= ~BIT(HPAGE_PMD_ORDER);
+@@ -509,8 +509,10 @@ static enum scan_result collapse_revalidate(struct vm_area_struct *vma,
  
- 	cc->scan_unmapped = unmapped;
-+	trace_mm_collapse_scan(vma->vm_mm, start, none_or_zero, unmapped,
-+			       cc->select_orders, result);
+ /*
+  * Bring one address to a state the freeze will accept: present, and exclusive if
+- * it is anonymous.  Returns with mmap_lock dropped on every failure, because the
+- * fault path may drop it and the caller cannot tell which case it is in.
++ * it is anonymous.  Every fault it takes to get there counts in *nr_faults, each
++ * one an allocation or a read the round is paying for.  Returns with mmap_lock
++ * dropped on every failure, because the fault path may drop it and the caller
++ * cannot tell which case it is in.
+  *
+  * SCAN_EXCEED_SWAP_PTE is the exception: it is a verdict on this candidate
+  * rather than on the round, nothing was faulted to reach it, and it keeps the
+@@ -518,7 +520,8 @@ static enum scan_result collapse_revalidate(struct vm_area_struct *vma,
+  */
+ static enum scan_result collapse_faultin_addr(struct vm_area_struct *vma,
+ 					      struct collapse_candidate *cand,
+-					      pmd_t *pmd, unsigned long addr)
++					      pmd_t *pmd, unsigned long addr,
++					      unsigned int *nr_faults)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	const unsigned int flags = FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_UNSHARE |
+@@ -571,6 +574,7 @@ static enum scan_result collapse_faultin_addr(struct vm_area_struct *vma,
+ 
+ 		/* Only swap or shared PTEs reach here; the rest broke out */
+ 		ret = handle_mm_fault(vma, addr, flags, NULL);
++		(*nr_faults)++;
+ 		/*
+ 		 * Not a verdict on this window: the fault dropped the lock to
+ 		 * wait, which is what a swap-in normally does.  Distinct from
+@@ -600,7 +604,9 @@ static enum scan_result collapse_faultin(struct vm_area_struct *vma,
+ 					 struct collapse_control *cc,
+ 					 pmd_t *pmd)
+ {
++	struct mm_struct *mm = vma->vm_mm;
+ 	enum scan_result result = SCAN_SUCCEED;
++	unsigned int nr_faults = 0;
+ 	unsigned int i;
+ 
+ 	for (i = 0; i < cc->nr_candidates; i++) {
+@@ -616,7 +622,8 @@ static enum scan_result collapse_faultin(struct vm_area_struct *vma,
+ 		     j++, addr += PAGE_SIZE) {
+ 			enum scan_result r;
+ 
+-			r = collapse_faultin_addr(vma, cand, pmd, addr);
++			r = collapse_faultin_addr(vma, cand, pmd, addr,
++						  &nr_faults);
+ 			/*
+ 			 * The one failure that judges this candidate rather
+ 			 * than the round, and so the one that leaves the lock
+@@ -627,7 +634,7 @@ static enum scan_result collapse_faultin(struct vm_area_struct *vma,
+ 			if (r == SCAN_EXCEED_SWAP_PTE) {
+ 				cand->state = CAND_SKIPPED;
+ 				cand->result = r;
+-				collapse_trace_candidate(vma->vm_mm, cand,
++				collapse_trace_candidate(mm, cand,
+ 							 COLLAPSE_PASS_FAULTIN);
+ 				break;
+ 			}
+@@ -638,6 +645,8 @@ static enum scan_result collapse_faultin(struct vm_area_struct *vma,
+ 		}
+ 	}
+ out:
++	/* @vma is unsafe on the failure path: the callee dropped mmap_lock */
++	trace_mm_collapse_faultin(mm, nr_faults, result);
  	return result;
  }
  
