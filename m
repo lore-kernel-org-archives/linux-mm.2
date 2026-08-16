@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9464BC5DF66
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:48:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33011C5B572
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:48:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C27D6B0887; Sun, 16 Aug 2026 18:47:18 -0400 (EDT)
+	id 240846B088A; Sun, 16 Aug 2026 18:47:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 599B96B0889; Sun, 16 Aug 2026 18:47:18 -0400 (EDT)
+	id 217706B088B; Sun, 16 Aug 2026 18:47:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B0016B088A; Sun, 16 Aug 2026 18:47:18 -0400 (EDT)
+	id 12D2E6B088C; Sun, 16 Aug 2026 18:47:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 15EB46B0887
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:47:18 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 832BD160601
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C3D5D6B088A
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:47:19 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4D7151A0604
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:19 +0000 (UTC)
+X-FDA: 85108620198.27.0DE2862
+Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 52015100002
 	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:17 +0000 (UTC)
-X-FDA: 85108620114.17.8689D8B
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A139A140004
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:15 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="V 5giir+";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=GApl5JHf;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="n FwpijY";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=kzT8VXqp;
+	spf=pass (imf14.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786920437;
+	b=iPVbviEeZHylpdJQK4GQCbCvtQ388POY8jup6OZS4StAZmZeLgXDyw1v1QfPVDP3p+LTkY
+	PBYQj+znSLCbKmQuUYDVJnuA/WMTGUPycayNwur1Y7PwvhHCtq3j+xi8Kh0k3DUdGUsmV0
+	lq2GaVYwhq+0oBrso+cP1ec0X6PKLNo=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="n FwpijY";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=kzT8VXqp;
+	spf=pass (imf14.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786920435;
+	s=arc-20220608; t=1786920437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0Xh3qJFy3fUbrlN8Fy5RgHt7peoEA3/8bbzab7kXN/s=;
-	b=uB4G57YKSPj3XK5ZIojpXldnUO13GEG8VWuPLxJNrRePq3EyMYbptjAGZ470rrQp1GFP8b
-	COUL4cFPmQC5op/9nCqQil4Z44ypd3q6a5vLSbKBoHWbEUSjzVMIszQenzXW9B/LVAncCY
-	IqSAhKDX8C9k6Z86DnjtsaIWybGTmrM=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="V 5giir+";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=GApl5JHf;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786920435;
-	b=etNZHQHpQ+z+E0VvdxtZS1AINY7QCmZ1UtWzcEaRfJ4yMv90gex4pT8beCAnyz+nZe0N77
-	invJZNTmTy+x4fpvy1LJajZOqGj3V69xCbVfoKvM62/Kx090rt84n4LSdAuQy8jUk8B2sR
-	Q5DWolKyg3Vm9Ki5W0KBt5umlWsiLyQ=
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfout.phl.internal (Postfix) with ESMTP id 38940EC0242;
-	Sun, 16 Aug 2026 18:47:15 -0400 (EDT)
+	bh=j0njKa/sU97UuU9BC7LS/teFWmvcsdJR3szFnz2Zzu0=;
+	b=V9iF2pUJEe/88Wh1T+1h3AEcm0eaxQgHLLt7FuysgDplGY0e1g1bwGRK12yq8P6DOJteGj
+	xF1ab729urwgtCV8ANktry+11CCYNfG3NxCGkvLupKivm8qClh3pdgDhKixb0CurP4Vcty
+	7isu/QI5JZ+j9JOGyE2cbh4F7AmYa2I=
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id D792414000F8;
+	Sun, 16 Aug 2026 18:47:16 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Sun, 16 Aug 2026 18:47:15 -0400
+  by phl-compute-01.internal (MEProxy); Sun, 16 Aug 2026 18:47:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1786920435; x=
-	1787006835; bh=0Xh3qJFy3fUbrlN8Fy5RgHt7peoEA3/8bbzab7kXN/s=; b=V
-	5giir+FskG5CJ7dclo4ePNvd6SAwJqQ4yiFRkHkuQgTdwtX43TgBGCcujN18hpPC
-	RtjvbXARIqnkKrr2hpRHpBYlBOeLlSJ0nyu/Al0vs+246WUCf9WlXUarCqwF2kFE
-	omjK4nbjMDwDvNu6N7pPXuHBG7/Ey3yVmLU6Zv7W1ayBFV4aSyKwfQ5N04Xxtyjc
-	u9glyesF+QjUFHPyqBM+qiOeyYSuAQTTlXgUCAUuC0mSsYGk9W9AxivavcATJvxf
-	Gr42crPrhx4gE+UqaTqeT7txuIL8NINf/LYmAUQ8Yr9ahMsFyPw+ilLbnPy9ht8X
-	RgDOoqXtnvB7pw/3FLNMQ==
+	:reply-to:subject:subject:to:to; s=fm1; t=1786920436; x=
+	1787006836; bh=j0njKa/sU97UuU9BC7LS/teFWmvcsdJR3szFnz2Zzu0=; b=n
+	FwpijY7TTDo0MOviKSKnc53xYc9LVC2yNmby+rLfbuoxdBpQG/3VfPzA5ScaZeQk
+	VJBprsmLnSS9QYbRHPPzoMg7QYsT+NyU/2WTHigZ6gqh7N5H0aRa+obNo5lMnz9+
+	LIUDzFyF/ZjCZErzr6zVwQ1Bqrn2IKjWUutXndjWljG5vv3jDQQftjn0QIoD64xC
+	2f3eqT0rHMRdKWY2omcSMPpKCKRv08oyTTG89ScCptgCjx1VNjOa5VqeDkOPl38C
+	cUpqL5oI7MPT6jutBz2ks6pLq9EAP+cGTQHvOQC0TApQdjIbK8mUwp1tIg001iOI
+	S0IJE7xr9gVjevZ4YO4uA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1786920435; x=1787006835; bh=0
-	Xh3qJFy3fUbrlN8Fy5RgHt7peoEA3/8bbzab7kXN/s=; b=GApl5JHf4d23ZEorQ
-	EMstbMXZUb1M4UgrkGwCFZMAFdXcPxOT6ROYUSU/cH8dAgE9NiO09jAP+z9H5Xhv
-	VEABoGBQvAtGiWNxDNEfau5NaGo5dfHGNdJv6fzrB6LNxrLVw55XJQ8RwVn8UiNR
-	haN8wb0Ssgxm8r44TK+Kw9fwY7ZWiUvDWxZA4ElLSbfgNDrymH6sIj2P10BWjvVv
-	IADR1Ntgw2akgUPcVEsyf1QHZDh+sFA5OpHEr8RISRW8FjyO7cQR1zV2NE6vPcJc
-	Fpi39Ghn8vQCcTQM+xAHBOLTOWKjWchajHE8H0BYbYn6GXdfYf862gBGJ+iaZDDI
-	+BTtA==
-X-ME-Sender: <xms:8z2Caq4-OBD-AiIgXEWjU9hWbNHj4kVcsm9hvUsvbO9s196q3igM1g>
-    <xme:8z2CapM5HufFBu0pZ05nLf5hL2AEshucIhiVZS9TAODah5Xa8IOFaOUho9WF9zGS_
-    8ygme3Kzere6SIzB2bayDsQjnz9ChkzeQPCYD3ed1UBMVvDwAFZyEg>
-X-ME-Received: <xmr:8z2CaliN6nn2m2UACcbQtY92IouTMO_yENw3iTs1cSQcjBWDMx84pc0n9h0>
-X-ME-Proxy-Cause: dmFkZTEDk+RLLWMQ2xmtz+SLrRm4SAAyqR0dcBO/jFiSra6UqVmtacLBiFsIEc4u4O0k4e
-    TprFkQPKvch8mvItdBrQvHbw0cB+L9AXDq7j8E1YHObaRHu/NhSSUGMahPtwIv/D6P/2Ck
-    /ZmAzcEVmv8/4SK/QQlss/OdD6ZYE8aT6ou3Os4qcrsJTku67URPEU5YsnAJoGYWAjn3Up
-    7SKj7HM1m+Bk9heCO7PBXLylkVDNPLNBQlGmsET8D8iA96BjDQqliz/FRaUJqsbc23hZYK
-    6FfmpWMzIACF8l0zIVIJGtLfQU4v7CVbie56C+ilpPey1dPs7ANiSUKA9aUYDcXfVHEKIB
-    CBopL77cQG0VLaTu2WtaEqdiaZ5xCAD/3YiiT0Lq44Ym9vdIpYdhzK+jQXietixt7epVkB
-    if3RNtS6b9w3JJ41Es85ighZoOawaKfc83t0IoYu4uoikAtuRK+JbqxDq/gaHo9YYFOBBq
-    B65m56HfcLycTC3OwAjrSioOFCBDb40VhLH64PtRBYsZjA0+1n3CrhGCunvVAvf9rb6dEp
-    0jfbxFptvtcfTYM69fB3mqD0o8Q3g3qeOYT+NVvJ+WlCKBClxubhwGBnyR/4vMG7vwnYjS
-    uhnzb4yQEXQ/H5n2RPqlQYRsWTuxmq3VmvuT/9rB2mqs0kuK37xxe+LH8GWw
-X-ME-Proxy: <xmx:8z2CajshiB69gzwXiOvYVO9qyylDxqLk7a1iMxVPicc7T5J2EtjA9Q>
-    <xmx:8z2CakZplhn4MASd4j_fbvSMDjNcFNoG-kxxMVx8BZeQEYZMcibnFQ>
-    <xmx:8z2CaiXVKNiJfn49BNdWc7dKEb2CWa8_7MN9bPZq5EEHwfv1Y1r1vQ>
-    <xmx:8z2CanJTxqkiZtjkNB7JUeWLHOv8BqFBkd-p0oirHcfgTrGwRT5-fg>
-    <xmx:8z2Cas-SLvdtpXL2o2h3H4eBUjfSmnIzbxFWh5JZWZwoTqql0Tr3MUyX>
+	:x-me-sender:x-sasl-enc; s=fm3; t=1786920436; x=1787006836; bh=j
+	0njKa/sU97UuU9BC7LS/teFWmvcsdJR3szFnz2Zzu0=; b=kzT8VXqpML+W8GnWr
+	QIdRiSkVJ/ZiLN2FHS7sFEVJfNIkVJg351UzPogM2LODLj3cfPmCV2O9dlYdokxr
+	umwrk5AyQHqeMU7FJZzpfG6+TZuCyKnYVn3KOU6almFI5JnAvIrL+MV99NFSX5SW
+	BtosKOzNt3bvMBShA6ykTWrhsT0qdk38rzrhAHFBCDBJL/gjhrbFym1ENyCWWliM
+	zZmoMQCjlY9/SJJOUQperbWC6Je6wJBw+2Dfw1mNkNjIR06KkwiROJR3rtRq3F5/
+	zbmaOWTlngBrg331nR1ETZ1AKbvzjLjbaWWCILyxzYcPsjs4w8vqyype7S48NZtx
+	Y5b1Q==
+X-ME-Sender: <xms:9D2Cao6T5Am1e-r5CD0avxfP5709yrBmlLEORGHXdGmAIC39KeJx7Q>
+    <xme:9D2CavOcP4jGWAHUNEcMvIego9GeLyH2Wk3_s1cXQKLobntMaDZ5UV67XMxRhlexi
+    Hxl7qJW8likbxSG6ag_v-5yHAUOBItXmZS4iyJw6GpdXbTfahOmV-8D>
+X-ME-Received: <xmr:9D2Cajgd6vC6RFnaGmhCQBGP17PPITMPDvGVHdwBty4dSVubsGVqrW-7L80>
+X-ME-Proxy-Cause: dmFkZTFX8QZ1Abcp//ElmtP0wYUsUMnb+KjPA544aOlJXhXcQAudkXa81C9Rj4L11ediC/
+    SYpDnD1LvcyFEAv2YFQNL3ReIx6t28G7cFOXvsWQqNdQRv24cIelnnbcWrHqur16sY2q+b
+    PHK84xbhjrx0R6ZFbdj3lDcQr+wbYteZ9PHsSvZgjQoovnxRkTlpJXxI+K+aK0DY9MqaWr
+    nM0jSjvJAOtmNeFdTIuI9VxKMOFqeJI9DUUNBafqnTlsaU2K5w1xy/oDJpRmozGKRfcEpJ
+    T4FDpTcqBKNo58tTW6I4nVl91YkYNyFfziYdH6IV5aj62MGBqsSUtSYZnaDODTOndFzTD5
+    ylGlg2zq7m16jfM5uHJgPlIYbMxnPsaFzwmzt7lRLFaMXcTaKz54PlFbIvjMQOW6UMRTdo
+    qJTi5mkLOtGPpWwYdcJg3eekaqRuyFT/TOyP3TJ0aR58vKWg9nB3VYpnFoaCeuEyCZDDvw
+    1qnFPw7SZrPjoeir7CLHWxY6h3tVea27Z8Lz3Tztdek1L3AyXroPtcmRBi7gaOu/mMWaiG
+    rWJ7/Akg0ggNjjzmQJ916tdv+9CwLGhh6B0ikeVXChonVeoq7RofIRBCPlDV8zcgCVXDWt
+    nLtTsuB2Kqk3/b5bDoi4k+l6PtTz8vhwuFM3WW6Bwr3j7x1JzGPB+AxSWHrg
+X-ME-Proxy: <xmx:9D2CapujG0eb3guYgTN0rUcgfdYrtbP7M1C2IyVqEfJk4AK6_R5Mpg>
+    <xmx:9D2CaiYsB1iNLiiYVHWmUOe3GE9Qc42J1jvBVhp6rRcUeRFfx8nOaw>
+    <xmx:9D2CaoUOwaM1cqyfUTQlZ0Ov3O0XdM8OS0SXWww0LlS2ShvswIXv6g>
+    <xmx:9D2CalIBo0GVTkOiwUPSyb6LqXojuXSGUrcbPgbTltcL5pjE75c8CQ>
+    <xmx:9D2Cai9S2yg3REmeiq1hjM5akrxYFYgRDzntBVAlYzqDtQ8kirDAfWtd>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 16 Aug 2026 18:47:14 -0400 (EDT)
+ 16 Aug 2026 18:47:16 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -133,22 +133,22 @@ Cc: baolin.wang@linux.alibaba.com,
 	mhiramat@kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	bpf@vger.kernel.org
-Subject: [RFC PATCH 30/57] mm/collapse: name the max_ptes ceiling after collapse
-Date: Sun, 16 Aug 2026 23:45:42 +0100
-Message-ID: <20260816224609.308019-31-kirill@shutemov.name>
+Subject: [RFC PATCH 31/57] mm/khugepaged: count collapses where khugepaged makes them
+Date: Sun, 16 Aug 2026 23:45:43 +0100
+Message-ID: <20260816224609.308019-32-kirill@shutemov.name>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260816224609.308019-1-kirill@shutemov.name>
 References: <20260816224609.308019-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 52015100002
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A139A140004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: qtnw1d6xy46rqth5xi37o764px3hom19
-X-HE-Tag: 1786920435-606754
-X-HE-Meta: U2FsdGVkX1+hVdvH2AlFYLWr8eMS9XA03ucEuTHV2yFpTDKWoJk9dKEwU0Blmd40BYMXLrgovjXjNIR+IfWYu9sG6hP4bbWqP9PSh7KUv9GmoPulN1MdFMxG78An8l+HWuV4AKCW7FGNKru3PeQkAss/mZgpvqA/V/HckKduyGZTePG+GYSwvEy5k2570UEfLm/TwZF1URWUb1wt4QUqRVXqUf1v9DbmTf3rApsP7XMqMwh266Lr4zPLbKMCmdLTDeyNirLVMveesgiVvi4JP2n88TSdSQP+QZA22ZjdWDX/e44rs1j+vwD6uwRcymm5ujVNLginSNUt/rhLh1HvN6zXPqp/6YEk44vvcq54PDeFlB+9MGLemGtIJGs+QfK0m6LXaIjbUmhpwXOE9eIOdwaIEY6ddzeqKEJy2CVaIBlpU71MRaIl/FkMsVcHNvR6WcHDQE27cdp4rQ5+x9QEHDSXniwKz7aWZB/svu5VuHfTCged8GqdJRgqx2YeBYDvyW/xsRRTKL5HdUGgBLUFHD4O0nJTUvTq2PYcDCxBCipDiiJAjjLKepl/w6OhMurCMuHoUXK96gLR9bCknl8z63/RU4yDdrOWbfwyrjLSs2gcWpuM8+e0wJMglmsMg5WDnzijDX0deI/6e+rAaqoBemQmz+SWvxt+UiGipHJj1zjEgwJiK2nNhW2XMtw1Srci9Xip33zutd98j6X67fDt2g/4qUDa/cLUk9Og/w81lZB+os8nNNpw4DyTRMjMC/Mpie7glwlBaCxcbzxOQHG0nUAUS9jLKQd703d9P7x5MEl2dqt7uW8ZNB78lI7wf3ezxLh70iU/qWjzr5kzxEvJLeSotNM1/Mr3VXWf2v7xQfboAMqY/EO1UMhsq9xSwdTH2Eygtv//fSXPg8jJI12OZNDAF29Ur+ZiJ8+i4LHtqtrviaZ7/vDB+yOFG9JmFZE0KhNRO2r+hu3Z/ptyZk8
- hw9sm7gZ
- it/9iK1wDCjCZ0w3ZeInj57a6VhEccheqmohAY5A4ASmXE2hjNk7n3fu6Y1m//9rsWDRxRJLtyrkVncmUOPw7SPRNv8C9Y10TAGIaBcpxiRrZOUDhYuwkhWGVa4cwKotqNtqEZBs6i/hXaRYWN1MPjWkywcqd5gLPky9lrIrtIoRHGRroyysZ93ZSZLEA6AjTRl1JDMg00to1PGeU9Aq7oyHmW0QT/InZSKp0BmPKov+UuES0sMHW4mvldJBA4YGqRnv1JOEY5NXuAtG/SgZx8Ap/sQT8QPXPw8gzM9kCErUhwGkMRo4xKq+3S4GqlTRElDYtDwsOEQZJKnydzKKTXJ3ucjkBMxoXQcxT57PH5t0aeATSZX3qlUCZXhX/kSx/y0KXGuM7NHHaDI9wDR+qEKMhfjfd3YLH5G6Y+Ck8I32t/5+apjhc/XhawPwuFQ3Ffve++WrwMTms5KlZ/rLZK0d06L2ejzGMLuykJixq/4HceliSJkIV0wJLtA==
+X-Stat-Signature: q6pccimzjr7xthorgigwugxkd4ut9i4f
+X-HE-Tag: 1786920437-978630
+X-HE-Meta: U2FsdGVkX18kmpvEdnN1RoIaTbV5cPaH70pzChZlo2xIFoNrPuhEMno5MFmoIuuwTkJNIHABDokUJmXgHD/pEwYaN0Rq7W+77bOwjDss/eQwA7pVbhNcpLzWQ7yjXqZ+XM4xNlwgsP8S2+UMkrcstLiDHcVLV9z4WUdEf+shE7T7VF9Gw2NhzUtIL6A7ODiyE+u7NRNbbVYP+hNJFNwXCS5PxFqdFZ9o1IjKk7n7DZjBFKoZfos6+Fq7evqupOEv5LG13khv132gpZDVCH0RQCc5nzVCUi9tEVquvXxUqmBhU3qeelspFWfy5B9olS7cyP3/r5eSs7MPyEo2JmUkmER5zITAe9xolbwXGB72sYeU011MjzQEMCJKEMjVVZqWZ1zlVMgCxwSVoM/LbM8a/0Xxg7rdGrBtlEiPvN5TTZ+dHuQ+Si+PSjLXkBWzCR3C7meI/wYEGmyMuTV3jBRl6AZWzIS+yxAe16kdVyy62UoYHI+Qgs6onq65xRJdC83kYLTAl5Z+xhwpkdWfjwdg/zW+0gT1Fg0RrL6/NQCuEuubp+65TgNaYbBLSYbL2rkc6/XVQosrKuw+M28w08VWNjuEtcZfWGf9sOiuj4VbhmxkrdplQ6sea8zQIpdIN8R4rnPMXKFSXEhKRhy7JP6dyanXeb1Xqw++mY/rHqFUWpjkw2sD0GT6A2TpvxXYw+Q5RwoGZ1US0KILYaH++VptuKdFBoZBsvxpLB9dYANoXS+kBnIipfKRB1CHGehQ2qAFsf9hNzQpKKqayOK1fq44JpggBGHI6xv2Hp/qPXbyLy7GqbWEzNHqJI6BAE8SVAirjpFt1G1llTLuGpathHB2abDiFuHlvOr0SPCnvzI6+KuQEdAhcq+4USDdDG5NrsLX0C0/JiU+2WIILXhlWaKCMlv1OsLNxIbokRz7vrFeww4tPryFNVw5m2JUKoyylonPJDzDnRQAwYpH4sXADLn
+ H28yb2nz
+ 8PsKC4f4mfWSF3s9jUaVMXyklgwmli/gy0WRDtrr6r1oWeBTUQEM4CFwySIKrlqNzXg12Buz9EwXXyOVt/r3YE6ljVJXNi4cCsE+dapCPACML6GlL5a/C2pZ2wfQ2g3kOaOcxeBtr12MPMLGsk0ZDeZGaet+kUqTDCnN5W7LJDCli71U42W6UjwpOYzDjIXK5Lyzn4y8VO/5gf6YK8qoiKHAkdErVzG1IF/98qFJ6IBh8DtLYnfCamJByNelZF0oXDBFHa6lEuwyO0R8BHZWtfeheu70uXwnk8ABhQ8C0pUzBdN4PEBvwGDXXHYKxeUynqddM4tJjCSJiEHSxxD7ThCZj2ejljjeP1OvKwKNA29v+Mn7UuzAoPXfCTve+3M3k2N+lxKTMPZkqmeGgqPHMStwgI4Si6t6kUBXg0CwWTNbkQTvZKy16DEilVp8S1wX4zBmrdVNRsSShBGc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,103 +158,80 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-The constant lives in collapse.h and is read by the limit helpers there,
-so KHUGEPAGED_MAX_PTES_LIMIT names it after one of its callers rather
-than after what it is.
+collapse_single_pmd() bumps khugepaged_pages_collapsed for its caller, and
+tests cc->is_khugepaged to know whether it should: the counter belongs to
+the daemon, and MADV_COLLAPSE must not touch it.  So the one thing the
+shared path still asks about its caller is bookkeeping, not policy.
 
-Rename it to COLLAPSE_MAX_PTES_LIMIT, matching the other constant the
-header defines.  khugepaged keeps using it to bound what its tunables
-accept.
+Count in khugepaged's own walk instead, at the call it already makes.  The
+question goes away, and cc->is_khugepaged with it -- nothing else read it.
+current_is_khugepaged() is a different test, on the task rather than on
+the request.
+
+Preparation for moving the dispatcher into collapse.c, from where a static
+in khugepaged.c is out of reach.
 
 Assisted-by: Claude-Code:claude-opus-5
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- mm/collapse.c   | 8 ++++----
- mm/collapse.h   | 2 +-
- mm/khugepaged.c | 8 ++++----
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ mm/collapse.h   | 2 --
+ mm/khugepaged.c | 9 +++------
+ 2 files changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/mm/collapse.c b/mm/collapse.c
-index 43a4b771bbe1..ae7c2777b279 100644
---- a/mm/collapse.c
-+++ b/mm/collapse.c
-@@ -193,19 +193,19 @@ unsigned int collapse_max_ptes_none(struct collapse_control *cc,
- 	if (is_pmd_order(order) || !cc->policy.strict_sub_pmd)
- 		return max_ptes_none;
- 	/*
--	 * for mTHP collapse with the sysctl value set to KHUGEPAGED_MAX_PTES_LIMIT,
-+	 * for mTHP collapse with the sysctl value set to COLLAPSE_MAX_PTES_LIMIT,
- 	 * scale the maximum number of PTEs to the order of the collapse.
- 	 */
--	if (max_ptes_none == KHUGEPAGED_MAX_PTES_LIMIT)
-+	if (max_ptes_none == COLLAPSE_MAX_PTES_LIMIT)
- 		return (1 << order) - 1;
- 	/*
--	 * For mTHP collapse of values other than 0 or KHUGEPAGED_MAX_PTES_LIMIT,
-+	 * For mTHP collapse of values other than 0 or COLLAPSE_MAX_PTES_LIMIT,
- 	 * emit a warning and return 0.
- 	 */
- 	if (max_ptes_none)
- 		pr_warn_once("mTHP collapse does not support max_ptes_none"
- 		     " values other than 0 or %u, defaulting to 0.\n",
--		     KHUGEPAGED_MAX_PTES_LIMIT);
-+		     COLLAPSE_MAX_PTES_LIMIT);
- 	return 0;
- }
- 
 diff --git a/mm/collapse.h b/mm/collapse.h
-index 2fdb6418653a..94c11051f06a 100644
+index 94c11051f06a..11f51c6ea444 100644
 --- a/mm/collapse.h
 +++ b/mm/collapse.h
-@@ -8,7 +8,7 @@
- #include <linux/types.h>
+@@ -114,8 +114,6 @@ struct collapse_policy {
+ struct collapse_control {
+ 	struct collapse_policy policy;
  
- /* Ceiling the max_ptes_* tunables accept, and the value meaning "no limit" */
--#define KHUGEPAGED_MAX_PTES_LIMIT	(HPAGE_PMD_NR - 1)
-+#define COLLAPSE_MAX_PTES_LIMIT		(HPAGE_PMD_NR - 1)
+-	bool is_khugepaged;
+-
+ 	/* Num pages scanned per node */
+ 	u32 node_load[MAX_NUMNODES];
  
- /* The smallest order a collapse will build, and so the finest window it cuts */
- #define COLLAPSE_MIN_MTHP_ORDER		2
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 26c0e961ac9f..8c770e251c22 100644
+index 8c770e251c22..907ed1131460 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -214,7 +214,7 @@ static ssize_t max_ptes_none_store(struct kobject *kobj,
- 	unsigned long max_ptes_none;
+@@ -458,9 +458,7 @@ static void khugepaged_alloc_sleep(void)
+ 	remove_wait_queue(&khugepaged_wait, &wait);
+ }
  
- 	err = kstrtoul(buf, 10, &max_ptes_none);
--	if (err || max_ptes_none > KHUGEPAGED_MAX_PTES_LIMIT)
-+	if (err || max_ptes_none > COLLAPSE_MAX_PTES_LIMIT)
- 		return -EINVAL;
+-static struct collapse_control khugepaged_collapse_control = {
+-	.is_khugepaged = true,
+-};
++static struct collapse_control khugepaged_collapse_control;
  
- 	khugepaged_max_ptes_none = max_ptes_none;
-@@ -239,7 +239,7 @@ static ssize_t max_ptes_swap_store(struct kobject *kobj,
- 	unsigned long max_ptes_swap;
+ #define khugepaged_defrag()					\
+ 	(transparent_hugepage_flags &				\
+@@ -1639,8 +1637,6 @@ static enum scan_result collapse_single_pmd(unsigned long addr,
+ 		mmap_read_unlock(mm);
+ 	}
+ end:
+-	if (cc->is_khugepaged && result == SCAN_SUCCEED)
+-		++khugepaged_pages_collapsed;
+ 	return result;
+ }
  
- 	err  = kstrtoul(buf, 10, &max_ptes_swap);
--	if (err || max_ptes_swap > KHUGEPAGED_MAX_PTES_LIMIT)
-+	if (err || max_ptes_swap > COLLAPSE_MAX_PTES_LIMIT)
- 		return -EINVAL;
- 
- 	khugepaged_max_ptes_swap = max_ptes_swap;
-@@ -265,7 +265,7 @@ static ssize_t max_ptes_shared_store(struct kobject *kobj,
- 	unsigned long max_ptes_shared;
- 
- 	err  = kstrtoul(buf, 10, &max_ptes_shared);
--	if (err || max_ptes_shared > KHUGEPAGED_MAX_PTES_LIMIT)
-+	if (err || max_ptes_shared > COLLAPSE_MAX_PTES_LIMIT)
- 		return -EINVAL;
- 
- 	khugepaged_max_ptes_shared = max_ptes_shared;
-@@ -330,7 +330,7 @@ int __init khugepaged_init(void)
+@@ -1731,6 +1727,8 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
+ 			*result = collapse_single_pmd(khugepaged_scan.address,
+ 						      range_end, vma,
+ 						      &lock_dropped, cc);
++			if (*result == SCAN_SUCCEED)
++				++khugepaged_pages_collapsed;
+ 			/* move to next address */
+ 			khugepaged_scan.address = range_end;
+ 			if (lock_dropped)
+@@ -2039,7 +2037,6 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+ 	cc = kmalloc_obj(*cc);
+ 	if (!cc)
  		return -ENOMEM;
- 
- 	khugepaged_pages_to_scan = HPAGE_PMD_NR * 8;
--	khugepaged_max_ptes_none = KHUGEPAGED_MAX_PTES_LIMIT;
-+	khugepaged_max_ptes_none = COLLAPSE_MAX_PTES_LIMIT;
- 	khugepaged_max_ptes_swap = HPAGE_PMD_NR / 8;
- 	khugepaged_max_ptes_shared = HPAGE_PMD_NR / 2;
- 
+-	cc->is_khugepaged = false;
+ 	collapse_policy_forced(&cc->policy);
+ 	cc->progress = 0;
+ 	err = collapse_control_init(cc);
 -- 
 2.54.0
 
