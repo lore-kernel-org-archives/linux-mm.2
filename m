@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FAB2C5DF66
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:49:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEE49C5B572
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:49:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 797666B089F; Sun, 16 Aug 2026 18:47:39 -0400 (EDT)
+	id 96C076B08A1; Sun, 16 Aug 2026 18:47:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76CC16B08A1; Sun, 16 Aug 2026 18:47:39 -0400 (EDT)
+	id 944D06B08A3; Sun, 16 Aug 2026 18:47:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65E6A6B08A2; Sun, 16 Aug 2026 18:47:39 -0400 (EDT)
+	id 80BA06B08A4; Sun, 16 Aug 2026 18:47:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2994B6B089F
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:47:39 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9F1781C1974
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A6AF6B08A1
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:47:41 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4B05E12010A
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:40 +0000 (UTC)
+X-FDA: 85108621080.04.919DE5C
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7E6C280004
 	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:38 +0000 (UTC)
-X-FDA: 85108620996.24.36605A1
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C50BF100002
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:36 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="n G9tow1";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=BOnDi6ps;
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="f u2iY+k";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=QrkuiCXN;
+	spf=pass (imf30.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786920456;
+	s=arc-20220608; t=1786920458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UyrP/wXPOBJTdhoFE5YGqbURIEa1HSuJzV4RfAXPajU=;
-	b=kxSU3vSJwBeLULczMqvsJXF36bsa5CviZ1uCxR1mxmacm+faaBsD0RPpPLKtOB71XuEOUy
-	fK00BoeGInTAuBl2Eioyu71tydjrTVpPW3QYPT1TSshRYOHpuTyKnllFs8WIuEqN2LboBL
-	exIvZRE/9GMPEETUFlpWO0i2FjVwLYM=
+	bh=hsbtWGmnLS8gNA6v/OmuTl4g7B7VvEJrlwoMT5rjl2I=;
+	b=W/ieXWguDeK96/Xw7WVScUXFMueJYAYyDoA2GNXj7yxK+/fYiXwCWw6wj1bcZFDP038LT1
+	nA6RaCeqd0VKupgkKV3uIE+qmZqisgXSDAMoP+xQpBigvAKvQb5mNXaJGmAjUlk+M+x6r2
+	5GYJNWTE6FJ3LUVgyqGNgY7965NrZOA=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="n G9tow1";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=BOnDi6ps;
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	imf30.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="f u2iY+k";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=QrkuiCXN;
+	spf=pass (imf30.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786920456;
-	b=KKT+2af1jYWfKuBpvfekCiW6K2wGXrpgX25J4HW1sSD8LyKgmvg5Vf7MqWuJCSKHersEI/
-	hj2dUa/A/Cf3G10cN3rL4ZBJcifEN2J3AJHQlavhli8aEuRrNRfbJobyuF6fs0BdinErHl
-	sHET5whKntNdUNA1Nu4qUXbX8SOzpyE=
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 5785714000F8;
-	Sun, 16 Aug 2026 18:47:36 -0400 (EDT)
+	t=1786920458;
+	b=gWs0MfIyt2H6/LO448n28ftZ89qlNtrWMG3IuIOJW6KwW1I5KXK6POuU+2ET7PScnjCrtr
+	SK5bYkq0ICsf3d3+gLcVrsNuKmAqJ7mXjCDetgFvn4MqC3yUdn/f36CwmLVN11w9MEYtLH
+	JGgTBrwqTXC+vvKDOaueTXgr8PCFwe4=
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id 0A975EC0235;
+	Sun, 16 Aug 2026 18:47:38 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Sun, 16 Aug 2026 18:47:36 -0400
+  by phl-compute-06.internal (MEProxy); Sun, 16 Aug 2026 18:47:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1786920456; x=
-	1787006856; bh=UyrP/wXPOBJTdhoFE5YGqbURIEa1HSuJzV4RfAXPajU=; b=n
-	G9tow1dkQz77VjVwwF3jcgHCENpHOmT8atxbCLLECcSiWMcmK6RFYtDpUvqxkL9w
-	CDUp/5852TW8lhwrZBw4LnSUM49QS+ubiCBuP/Oc7zR+MnT7KO093rX60nzUsC8k
-	WF259W3rgsUCWMJnwYpO7w3ilcTCjCDYsbN844W1SHCtSPPG2qstrHMDxqNHsLlJ
-	H4Gkc9DevfM9JdR2snF+2PuW8JDFOhRAEBUlmzRJd7C3w7d5o8CPVFsE1fyzWzBQ
-	rHcAlP72IyQuA3Oa18FluUCvGMft6PBoqd3uurqhboVAcG32GFWXZl/UT3Umx44e
-	sLOTkOswIKKnPFy5hb0FA==
+	:reply-to:subject:subject:to:to; s=fm1; t=1786920458; x=
+	1787006858; bh=hsbtWGmnLS8gNA6v/OmuTl4g7B7VvEJrlwoMT5rjl2I=; b=f
+	u2iY+kcbdqg8XZ7qkFdaWgez1i5hIWQAqWtxE4ir7o14H6QTMAJOsoArRisr8+zF
+	XKgXHadiin9jdcqGoR2OnqoC40c2jyr/XvrAdX2LfRqrDWd3bLnUQTkcfD6EHDVj
+	D4I7m+ZK9rL2kJWu66YtJqYb1oLcF25VQrF9+2dad/xkK71QaojHbSgoznDIOpBW
+	cIkyw02O9OYt0r81b5abH4orCiBcMOCblMYhFVVN8xX2Akp1dVWilQFjS77rI1Mj
+	66kS42c5eYiXYqmJvRekO+PxrO/rzkJDTG11PqQDWJIswNS0G21VmTRLAStxJZPL
+	PykDV2ghQyRM18uwklarQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1786920456; x=1787006856; bh=U
-	yrP/wXPOBJTdhoFE5YGqbURIEa1HSuJzV4RfAXPajU=; b=BOnDi6psLSSwsXcqy
-	wmRIZYHNoPw/nNbEwui6al4nbqSnxczcCAJHo4343mGOYCf6oK2m18CURKPQZoZs
-	xxZjGtrvx3UEn4n7ABQXcJInQWQkREL/pkyU5g+S7F8sPN341QWSiUWETqSUJ8at
-	iXfU/+DnEsUhOfdIcMKtOJUrlBSisODgaAJdTHLCHvsk9q7M9gqUQvHcTf7waYn7
-	o++nyGT4JgrTC538YZDVwugzrO0mxcS23JtdrqvkLoBlRIxbWz9SGDhWLHGfAdDQ
-	FDs4Ee5ybxfGyhj4wF+/cg7InCmu16q9iKiW+4yBOQ4G5eYrHMPjDj6dLAXkpJpe
-	fcJuQ==
-X-ME-Sender: <xms:CD6Caj-CF3Y0_otzv_4ZbdHY3gFX2yND2MmM3jDxjierR0z7_MoOBA>
-    <xme:CD6CalBEjuXq5U-S7q1kTm-gKv2a85jFabeIpNonbwWh4tGOrQglGJyIRSramCnJ4
-    Yf6XfOVBPTsjqyxWn2m3W8NaprqcFmDHYPI15y09NsZ1AoOWSJsjlhT>
-X-ME-Received: <xmr:CD6CatHtgEXI0qqNF35XcyifsmWQdkizFI3ENThStE6oxSZGPjuXV_PniyY>
-X-ME-Proxy-Cause: dmFkZTFcTQrb7i2Wnr2aEeZt1aoD7asKutBPdJgU3YSD5OfcfuljRo8Y5zG4WAng55KhcU
-    fdYu9dW0n+wtsUDWiYHh8AwjWiiyOeVLRvzra0gUIzgKMFXfu2OsH3wUsDwz3Dpe7vEjB9
-    JjBmMfD78Db5X6Vl1RDz8Wz4IQF1tjtPvs8yYIcZ4vdtxAZhotrvrKr9o/e/MWe2qw9p1d
-    u/4ngMViLbtWn8zpPvYSIgtjaF8APmxmHCU5Ga5Rd5eIGcQp1MbbGmkchmHrMFMoUd9mrv
-    TpVQ9+TKNOdfLLUK+2CPoHpagx885EUQUSZxhSq0AxxU5QJRQ+JA8yzxyjEYMjW1uFFjcm
-    d7hzQcIDGBAJ9Kg3rplLw7jfe4LEi0F6SofMNmrKPLYc4yjweROnOFdgG3+P+anRpdNgju
-    yFWVmmTGSJ1pkA7ZfQP/zLvd+Qc57RLKd2grwoOvBrCoYfMf2/7JtIEgRKykbeQlJl1t2i
-    o3a7q3cY2oo04ey7M5qY21DAFRN0hvbmP917wCqhCug8/gv9jHuXVVRBq1P4rS/xZjYMWZ
-    +SfkbQhdbebpKUDV9jBzsvGf+1KfqEwOb5sbvgleSn3QvacH+qZWnvUYuTftewxhZ+GZdQ
-    8ctAXFBvI8gELPNX5p5dipgHyieJ7AirBkuIwt+OgA/k+nC52hzYouNJCAlA
-X-ME-Proxy: <xmx:CD6CasDqx8V6n1QCtiGUuhnFqgpylWRxWbs14mo2yFU_swQX1tzccw>
-    <xmx:CD6Caue0aLuCRyziW8qesyDXAY2Pz218diWwhOcQabijGhMKJxytBQ>
-    <xmx:CD6CarKuEQXWLeQMpHAA_DLMhLjch0EeW6biCjjXzyDI-ZGBE49saw>
-    <xmx:CD6CanuiW9Cj_kDQHiJh12QejcAO1iKHn9vPoyaNOlWqV6Lyy3ajUA>
-    <xmx:CD6Cao9rCdG_QX7fvRRJ82Zli3b-4DelKLGbYqVGJRFm2x9yP3VPSP6Q>
+	:x-me-sender:x-sasl-enc; s=fm3; t=1786920458; x=1787006858; bh=h
+	sbtWGmnLS8gNA6v/OmuTl4g7B7VvEJrlwoMT5rjl2I=; b=QrkuiCXNu9Ag8fKym
+	7s3tQryl5qs35v3JLJkB8cW2oZM5UeI+B6Y11iiR9Zp5PloR6bNbcTcicmuTnw8J
+	lVP4mCH2TikjEdOjGX1x5Zr5UhMkUfHXOFrFEDpSIO2EZveoX6nS27vjEq+Vy4Px
+	k7DS7Zz/TeZ1h5JsO5TG/3bm5dQdq3v2CTlWHQ3BWl/Jg2ZnVWC+CN1FU3rFPxxq
+	JWnzKxdhJWbGRXRwVewUho2MIIaXdEAY6t7E4nHBipdGWCl5uBesALz3spA3/8Bg
+	vcB6C9sMvd9e7HA0J840icixCdVA0ZoFl6RbinUEjij2zfrZ4Q5cFgIMg4DZkdkC
+	DasBg==
+X-ME-Sender: <xms:CT6Carm9G-x2NVenuQt7DYfIn9f7yv9N_OwRV6eLcEMQXTDj_lsCcw>
+    <xme:CT6CakIzQ5P8pH3sMYRDklrE0M-RYmTOCmPlnJGgVaAzoRHZCw99i8P_FGxQEND4o
+    ogZMnlFnfA7UrOXqQotXvTe7H1VhTdJyYddYaR8sh9BLMA1ROtTXolU>
+X-ME-Received: <xmr:CT6CatsWUO3qF_nAyhGWZBJf6gij0BNLc_sovt8HRRdHOxDqIu1pjHdapmM>
+X-ME-Proxy-Cause: dmFkZTFxktHaoHQCGyR7uz2gXQdTgUX0nZzUatWYXQdVxBJb4A/qMuEZ/RMKYvGIBz31Rt
+    TR5Nu17EPBqNyeZSjkVnK7sHElwU57b8x3/cyZ9PHHSfAaSWNWLOdeLuZVBbf5zubb18Bw
+    fy/mf5jpQtxpZDPvMPXwjw+an+TW+7k/Tw/n4sb2tNNa7d9nLnQnX6Rw+vp6wioFQOuuev
+    fpJbCZJSwa4xWiqXHUsCfuVr3o0xcsLHyTasHEYEkAGMtBoAwl7gOHcd9Yu3HcCvuVHzqL
+    dMVburb2rGaTCsZcGe3UWITClIJ34iPVxiKzwGBtfazzXdWK1ezlWroYFXdEl+xlvbcPMN
+    vZtr4rHndVJB562/WoDkew1Y03j21tKV2cnjL43Ck1uOBZ8NRyVlM3puHQQJb8vttWvbCT
+    Vub/4J6dev06TTYjDujIcAGui6NrZT7E0xqFxmiu9BmjvwUAj0YhVXNi3R3McxnqEuozCs
+    Cg+X7m9F7uqX2U6p6Xyjjpfd5s6+mLEaC2r7NYfvnpAv6qt2q0FyIdVJus0Zu4lfXxl41X
+    Ho6g80JFqnXt8OaS01tjl26CBO9wiBFx/ns5VSZG0hA3WGnD4j3/8rFwsQ9O4oX5Shk/Hx
+    K0jzuV1jZV8vH/x8VLuU4iFg4PHzM1/90qd2/8TgEM/6D9aaOPm8UyuE0hvA
+X-ME-Proxy: <xmx:CT6CagJgE9kztDHM6-XPR-SR2o5kgXZiK-cTFL0qeJrQ0PJIGX2zWw>
+    <xmx:CT6CagHuuhIwq4SvG_N8P-BS727mhFVkXru6E338dz6KBc-yOG_Zqw>
+    <xmx:CT6CasRaWUKuFDiO-XbCdO5DsWgyRoJFmwJ9bmKQhsi2ya_TBfoZ9g>
+    <xmx:CT6CaiUSEIlXqgUmW2LI0PYUkJLmULf_ujIyHBt6813C8Y_mqtirfw>
+    <xmx:Cj6CatnmcMoHwRQv7955E4KTzPM8XXoCsZRMvv22Hw0hDLnz-yaR-8Db>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 16 Aug 2026 18:47:35 -0400 (EDT)
+ 16 Aug 2026 18:47:37 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -133,22 +133,22 @@ Cc: baolin.wang@linux.alibaba.com,
 	mhiramat@kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	bpf@vger.kernel.org
-Subject: [RFC PATCH 42/57] mm/collapse: allow error injection into the freeze
-Date: Sun, 16 Aug 2026 23:45:54 +0100
-Message-ID: <20260816224609.308019-43-kirill@shutemov.name>
+Subject: [RFC PATCH 43/57] mm/khugepaged: check the scan budget before the work, not after
+Date: Sun, 16 Aug 2026 23:45:55 +0100
+Message-ID: <20260816224609.308019-44-kirill@shutemov.name>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260816224609.308019-1-kirill@shutemov.name>
 References: <20260816224609.308019-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ccxdh6ptmg5bhfm3511nnf9n599n6ura
+X-Rspamd-Queue-Id: 7E6C280004
 X-Rspam-User: 
-X-Stat-Signature: mnfq9hw3hxrg1gxyhjd9gxyytgr4ghsk
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C50BF100002
-X-HE-Tag: 1786920456-844286
-X-HE-Meta: U2FsdGVkX19FcPebjzR77TQSya9kWPNNEmpSaQdQlydfqxtMpxl76w4+m58IUHfKQ2KN8pUgqvX6i1EXlDJmgLgXtkQbOssNA90ezRCuiEVs1tBFhup1KaHs/pVzhVag7qcjZlNmYpQjrOIwbtC5OwPzmks0b+BX12juN8NRiKyuJrIWdlWqtRud0q1LiSX3v7cNi7DQWyId5xnsRAd6h2OSE9/XGaNkJJKlUzbxQ44GQqeNc6PRfjfrG1PG+rbKOMvQiV/5pEPsqTeEEukhgTjN59Xrah7waST9IhwKZuJ9fVZ2zxhtIdiRzLgpl1gshkdQrvEzDz9vcpKK7Pz1IC2MhmRL1sPcHRy8Br0LSqyzn9Ym4eDZkUOuRozhSktGkAf6NJpTSMbRs/H8rB/km3Z5UPbWaJmgMyFbCXujMJZ99UGczMpmkx9nPm+eUISjrxuEmfAxo1CnmjvzDtm0EFyONdyPzbGkosyjjLbSN1ABdYFWVLUidy0Cn5Lndk50nGzXB+5+DSKNSEnmAc0KyNsi4QmKwxvg5Wv5gBI8K3ZXbjfhMHABiN7a7/Iyfs+ChtF5MbQ4w+jmrVJaQrSB96VNyaxSJ/5/BsbkvuSu2Yg7LDwDhWVVBAzGK+htOcvyUA20UNQTwofgoiTl+fM9HbtU51pxh0XGLti+SJY4prDcxZEWl7GSd2AUzhqYWGIoR3ykxuGI+3QQL6P07r2EXCik9O8Jwf8gbCTXl3H226ws+0kWoSK89SXXIa4S96lVZuOEOrTtLxnIcaC66CSBdd96+Z8dffr//0DSoP2nYEPWa+cj/zE9MNuA2y5FFNs1k1uQQ7Gk98ICb7ebtD/pSbsD0ygY1MhHPITWpYAKu9xZCIOEEObAq/VLXhXXWlTw/xbKE7Z4b8LB5flxL+1M+1Bjvg/W9PLNhvOhDXiRqiIokXhGlQujgYdbZ8FvKpyH5EmSYIe2ZG6yT7l2H50
- 276PTgHu
- b7PCf1xWOKiV5IqD4nvNj0P1qEG2Spca+FAzFkIsFYIQTplGESoAdi45elbUEtjdiKH4bf2RJxFq7S9DAQ/+y0l8OzZ5zc3UvtC22qQf0rUohOspLQWjT90NH3l80ItZivDaRykr5a5dV57UDjY+12+/IsWQlZ8pdsA7dHd3W0KmdscbIzwG6M7NNBv0yzc7GbMxU3KxvcpAtxe7LylXJoNrk87N2RUG7st9FSptuJIvs+JRZEPsBY3d1ebguaqpehOB7vzAjX1XccEldQbs9teWD9p8bLBMqLSQPgNkFdbunq+GMy4UBucnP+PiUIlvyiH9jYa3gswiYsXgYavIlcEJq9arH+3b+iL8s5SiSChkSq5iu/jMze96pySYfHkVddwZhyVu6taD0eHJTCvB3IfTliREPIUPWUKAsQ6BUsFuyDN+CBb9f0v0tk8NnJJtw+uAPGCrXjvtmUOkIyF0UwqIIw4Q/GTshUNKGmNF8Xs0uUwI=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786920458-331258
+X-HE-Meta: U2FsdGVkX1+Hf8nsJk4X4MjzC2sV6v6g514Ue4MXuBKH7BJcOamPDvboEJJ24fB44HA4nm7gNpK4Ks6vYomeqny0FLUS2Csik3BmkSKKZ5ONFtQwRqv4e+fXWJPxeBtdSS4wrImKRjNiBpGNqBwffSWlZo94hn8Gm0IhZs/5ZwfzANfTVIOHzxwcTaFf3R38I8EtolnD5UqIpFhoVUAgx19GiDe0z1CG5/kL6dYsTRPfO5ITonprUeDzgrr38z1afvbPbm9ZVQBe6NfjLcTsF+f0Bb1LQWCgY0rId4DDOU+Hb509Y2Gm71jgvdUiYFQWQem64kCmmR3za50ixMSzpzZe7PlhyUyZ+ESDtReAR8ytl3NpVqYjTnVXdwnMEke5V9a3OJSDV6W1SAhzks/hGyMZEJVvIZSAyBZBJTlISVTVAzdn+BQLAas05+3FtF6XgBsBnxbjuAiHsfzRUTgEps4uhNCSYiq8tgqMmHznoBqV0rE2Ro5h5sA5CfhCAQvr0u1G4aowtZ1K/VeDwYRDzym3tcRD9VXu89Gg0FFKO8rI6VEA/9TmdzksibIQ7f/D/jWQi2eYLuCpfhMpvuVPuS+4uniRjtCSzyHu7vNbXiCBltTjEvNN8S9AZnSstqyGlGLrcJTUGQnlpKtxLgxi31ITlVvJAffZRhCu89gsJoPuYMEUevrgcgXiKK2g9t/e9N0oHKrvUW2OI89agLs3fH7U3lXNk+B1EUwK7mKGXDTZ60QjKWvtl/2MMUxx2hGiI1oiEU02sCnVSOaHa6NSmOezJhplMjN0tOj6JM9J2lt5bsSeXpTQ18xCdrwyko4P/C1O6rATGbgflJpZesybkjCtutpktveXEBZMpqfWlOWHoEWU6Jsr1eKUlu3sYkTLL6+QsLpXWYnI+pFMYeThwWJHR5xXti5LkqCPMQheevBxQYNnGvivDgi6vZaqeEfC/Xo9yTGOHpwsFBI54Nq
+ hjNoimGS
+ HYJR7iUytxgNzCd0xSggIYiSyiAlokjyJZ6tBHvhT0AmClbBAaEQqpAvncRo0F/yzek/aSrDRjGK22puh0px26QOhc7FkO3G3Zbg8uxUkHPB2YulLCkLJj/RXlBnqDet4xJ5zotOZMo5AkrLrUL2EbQonlCzjAhLqnCRnq0x8wuTMgmFiRrop/ZxjBHGlAkkQFwYhzo2WXaskZF/Aw9jZa/2Khs/uRYvmHijUD11So/AdnkJwGpU2AzLg6/kM6yFYrBDYmNv54nCsON3UZaFMs7PEyuyLeet6+ghiw8L8ro6o4LdqC/byjBayV7m3W1svf1KlAxI5+9lNo7XbDGy9/Q09MsdG84sBnMT9qiEUaxRtmVOKgbft3chkJhGb8sJB20FvAdN0jr+fAmE27sjts9+oT36F4lV3mtDf0M0XwgkwRukD9fybMSNG1Z5AiuBr9MB8bTyIiBLPpJD8I3UqDQ8WnpoHzN0+LAHKg5d6uyu103Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,57 +158,88 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-The freeze refuses a candidate for reasons a test cannot arrange: a
-co-mapper appearing between the two sweeps, a GUP-fast pin, writeback.
-What the round does then -- the candidate drops out, its neighbours carry
-on, the region goes back to selection at a lower order -- is worth
-exercising on purpose.
+pages_to_scan is meant to bound what one khugepaged pass does, but
+collapse_scan_mm_slot() tested it in only one place: after a table had
+been scanned and turned out to hold nothing.
 
-Tag collapse_freeze_candidate(), noinline so fail_function can find the
-symbol.  ERRNO is the only injection type for a function that returns a
-value rather than a pointer or a bool, so an injected result is a negative
-errno.  It only ever reaches cand->result, where every caller compares it
-against SCAN_SUCCEED and finds it unequal, which is the refusal the test
-wants.  Tracing prints it as a number, having no symbol for it.
+Neither of the other two ways of spending the budget reached that test.  A
+VMA the pass skips is charged for and walked past without asking -- one no
+order can be collapsed at, or one the cursor is already past the end of.
+A table that does hold a candidate leaves through the collapse.
 
-A forced return happens at function entry, so this reaches the refusal,
-not the freeze's own unwind path.
+So a pass over an address space of thousands of VMAs khugepaged cannot use
+walks every one of them, however low pages_to_scan is set.
+
+Ask at the top of both loops instead, where the other reasons to stop a
+pass are already asked.  The outer loop asks before it judges a VMA, the
+inner one before it scans a table.
+
+Stopping the outer loop only works if the cursor moves, and it did not for
+a skipped VMA.  Advance khugepaged_scan.address past one, so a pass that
+runs out of budget resumes after the VMAs it has already judged.  Without
+that, an address space with more skippable VMAs than the budget would be
+walked from the same place every pass and never scanned at all.
+
+pages_to_scan now bounds a pass that finds nothing to collapse, where
+before it did not.
 
 Assisted-by: Claude-Code:claude-opus-5
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- mm/collapse.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/khugepaged.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/mm/collapse.c b/mm/collapse.c
-index 952e3f62d920..76a53616b240 100644
---- a/mm/collapse.c
-+++ b/mm/collapse.c
-@@ -4,6 +4,7 @@
- #include <linux/backing-dev.h>
- #include <linux/bitops.h>
- #include <linux/dax.h>
-+#include <linux/error-injection.h>
- #include <linux/highmem.h>
- #include <linux/huge_mm.h>
- #include <linux/hugetlb.h>	/* x86 flush_tlb_range() uses hstate_vma() */
-@@ -937,7 +938,7 @@ static enum scan_result collapse_check_candidate(struct vm_area_struct *vma,
-  * collapse_freeze() issues the ranged TLB flush over everything that froze
-  * before dropping the ptl.  No copy may run before it completes.
-  */
--static enum scan_result collapse_freeze_candidate(struct mm_struct *mm,
-+static noinline enum scan_result collapse_freeze_candidate(struct mm_struct *mm,
- 		struct collapse_candidate *cand, pte_t *pte)
- {
- 	const unsigned int nr_pages = candidate_nr_pages(cand);
-@@ -1085,6 +1086,7 @@ static enum scan_result collapse_freeze_candidate(struct mm_struct *mm,
- 	collapse_unfreeze_candidate(mm, cand, pte, nr_saved, nr_frozen);
- 	return result;
- }
-+ALLOW_ERROR_INJECTION(collapse_freeze_candidate, ERRNO);
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index f3a7aad5e8f2..cc5ff429d811 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -553,9 +553,19 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
+ 			cc->progress++;
+ 			break;
+ 		}
++
++		/*
++		 * Before the VMA is judged, so that a pass over an address space
++		 * of VMAs it skips is bounded by the budget too: each one is
++		 * charged for, and none of them was being asked to be scanned.
++		 */
++		if (cc->progress >= progress_max)
++			break;
++
+ 		orders = collapse_possible_orders(vma, vma->vm_flags,
+ 						  TVA_KHUGEPAGED);
+ 		if (!orders) {
++			khugepaged_scan.address = vma->vm_end;
+ 			cc->progress++;
+ 			continue;
+ 		}
+@@ -570,6 +580,7 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
+ 		hstart = ALIGN(vma->vm_start, window);
+ 		hend = ALIGN_DOWN(vma->vm_end, window);
+ 		if (khugepaged_scan.address > hend) {
++			khugepaged_scan.address = vma->vm_end;
+ 			cc->progress++;
+ 			continue;
+ 		}
+@@ -584,7 +595,8 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
+ 			range_end = min(hend, pmd_addr + HPAGE_PMD_SIZE);
  
- /*
-  * Raise the two barriers on the sources of every candidate: migration entries in
+ 			cond_resched();
+-			if (unlikely(collapse_test_exit_or_disable(mm)))
++			if (unlikely(collapse_test_exit_or_disable(mm)) ||
++			    cc->progress >= progress_max)
+ 				goto breakouterloop;
+ 
+ 			VM_WARN_ON_ONCE(khugepaged_scan.address < hstart);
+@@ -596,8 +608,6 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
+ 			/* If nothing to collapse, the lock is still ours */
+ 			if (!collapse_scan_pmd(vma, start, range_end, cc, orders)) {
+ 				*result = cc->scan_refusal;
+-				if (cc->progress >= progress_max)
+-					goto breakouterloop;
+ 				continue;
+ 			}
+ 
 -- 
 2.54.0
 
