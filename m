@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37B31C5B572
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 14:23:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08B03C5B572
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 14:23:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40DB66B0358; Sun, 16 Aug 2026 10:23:09 -0400 (EDT)
+	id EBD3A6B0359; Sun, 16 Aug 2026 10:23:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BF4C6B0359; Sun, 16 Aug 2026 10:23:09 -0400 (EDT)
+	id E94426B035B; Sun, 16 Aug 2026 10:23:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D46F6B035B; Sun, 16 Aug 2026 10:23:09 -0400 (EDT)
+	id D83376B035C; Sun, 16 Aug 2026 10:23:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F01086B0358
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 10:23:08 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 616C24056F
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 14:23:08 +0000 (UTC)
-X-FDA: 85107349656.15.B2994ED
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 872B4C0004
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 14:23:06 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OVtYM7I8;
-	spf=pass (imf28.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A1D626B0359
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 10:23:16 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1284514056B
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 14:23:16 +0000 (UTC)
+X-FDA: 85107349992.18.025FECA
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1E4E340007
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 14:23:13 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hQcI+OLr;
+	spf=pass (imf11.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786890194;
+	b=spNssF0uBI84MeWrS7SRpIl5v3Uljdy2LiM8HTCouar+owbmYlUfWq+JCTcDHM09063Qg2
+	sGqS8/4CewcOpIoVwBQtYQSNDu6WDNkV2e7qhgSnHTgkpXIBjAM3TCCx1OkkGozi2km5Kq
+	dp5wMmXoicPTrTB/fekTUuBwwbR7X3M=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hQcI+OLr;
+	spf=pass (imf11.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786890186;
+	s=arc-20220608; t=1786890194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V80z3viJi/1rXBOV+LmIMGbRsmAIYZLeea8uFd5X4Y0=;
-	b=Ms6mGRjXKygu96ESg2CdjtbehXSAd/gGnZq8gMPhLk4GCcQmlOPZd9v7QeR+J36KDtrr9d
-	/EE+iWJ1r+oKtmGKKixiQ1cJkQ5TtsDO5/h4EGxhHCiCIVCUQXxNu+vcUcJP3aAAS5C16X
-	CxGesesvYg/3DVqUsKanbbVBuwJAdX8=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OVtYM7I8;
-	spf=pass (imf28.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786890186;
-	b=5nN8LK9MfTQCldTlljTmBi19AYWji+eZMCT/7cT4VgKmfdqjLMHv1QKelJL+8oN7j4xGlt
-	fx3DkVVo6GX7IR8xvZUZWG7VQfZGjrE1iZb9DPOeSxez9w71O1ZgjzHkQFTJWimVgapO+o
-	3W/Xaole7lUIb/RwWss+z/GxW4dV3VI=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cca0c5799eso23060275ad.0
-        for <linux-mm@kvack.org>; Sun, 16 Aug 2026 07:23:06 -0700 (PDT)
+	bh=VZh5CgmasB3FNwZhE5a0RmyqcaBUm5A+ddeEPpNzaA4=;
+	b=QUdENKTL5/lXxPzlMJKa0FjfORkiU3/J9lbz1EjHwpqOETgc07m/jHEDX33gjolwKbRRQ4
+	NzY91GsXjmBvjhEc2czmMA2vCxrVkf/VSBu9kG9KiqgLC5xdfnR6upsrnvL42cy9YkAnZ/
+	ESd6/v0CU9UjFkrPJPZglnMQY8YibYU=
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cca0c5799eso23060825ad.0
+        for <linux-mm@kvack.org>; Sun, 16 Aug 2026 07:23:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786890185; x=1787494985; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1786890193; x=1787494993; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=V80z3viJi/1rXBOV+LmIMGbRsmAIYZLeea8uFd5X4Y0=;
-        b=OVtYM7I8cz9TX9D88FPHvtqgv3a5Gs3Se+r1giun53LVlfCRIwIYqN/AGiShhkSC93
-         vtZShqHaNE8gKlorcLtNXVDhuLNKLLskv4Xixf742BEHpmHDxABATZ0HcX057hseWhjX
-         /N7RUhIHJ/RbofQpyKCS51vQUxH4CXxx//gp0OFg5TCqGt3wc0Ea9Fl7+u/Zf684bNcw
-         +pnLkZZ7Z0MYRQ7f1Lns1+pnHvMXZzO2Iw314HpWxNAgKSQSALwWWIs9ZMzyTIq0voC9
-         1VWlTgpyyT8DcB/N74vdIDlhBFONfVEbuC+XFH23dW21jsCzfSuk4naJvEe9up+yPjC4
-         z6nQ==
+        bh=VZh5CgmasB3FNwZhE5a0RmyqcaBUm5A+ddeEPpNzaA4=;
+        b=hQcI+OLrEhQFGIVk1JeI2TlgpInQZ+RDNq3CBph2CjYD5a2sp7N8W6amOda0i9XM3o
+         PJE9YLO2ProexcUhStfMdQX4Vvlq1zQ8Xw59vp2h8RLrjMyDLmdhPwZCL3E+YmBMRwms
+         eJGnu9uCWnmjjFBpajl43JHEKitJWBtqs+Ih05j73fhutk2YoPO8JtWKNXmvJmpSLVSM
+         KvhwckY2tIH+o/NO7tXQVVyOPlWgqQQf5TDDvPtw2JOLUvyG+66c6nltWP1p1RbM0yPA
+         PgyJXtbiVM25xPkwTMyMseHYJLBB5yVfxIgiAN9nrXWWjpIf8mYOyYbDoStzsHKnepIc
+         l46g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786890185; x=1787494985;
+        d=1e100.net; s=20251104; t=1786890193; x=1787494993;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=V80z3viJi/1rXBOV+LmIMGbRsmAIYZLeea8uFd5X4Y0=;
-        b=a1IO0XVohhk/tZPHM1BeEZG7v7HuFDJjpiRzyIznuOUj2db5F60YcYPh05E4aXyNUw
-         k5kkQyqC12q13QKgXuvSZjfAKiLUVFqawP+grKg+ELyGNVcT0cI8VmvE7V+++VvIKwfV
-         UDyPX8f3QotTe++WDU/QndmWKhuqYadpuN9F0M9AXOxK6JdmS4pu1Q1Uc+H2yRT1f/hP
-         juF5uZ5K4T68CpgmzgAtITVMhOhwpQYJvRxhhUCOCp97aMK6lk8EG9F+dYxtnpc3sKfj
-         euJdDu1t7kRFveVikY7eGhpNikZcIadgisvWaqH36w86uJ0jGSs+Cxw/nFnzRTZ+cPB1
-         3IvA==
-X-Forwarded-Encrypted: i=1; AHgh+RoGnMs6PqvGxatcjgV5d04+QHpqH3tOXy4CidMNFFuJ8w6NikVYKrjYqrTnq53lOrFDwS5RQXc3uQ==@kvack.org
-X-Gm-Message-State: AOJu0YxKcwXfBq/mNgARZ1ycTKD+LYZe6Ht7FDah117PInHAN6rZI0Zr
-	Ytccx35wxTRjA632JGWTbPsbnrcq/SBrLiDJxJYAVM2nRByzgvJzIndR
-X-Gm-Gg: AR+sD10BJSmIKaNOqgJbIYYlUca4iOlOgAAHfQT9Tyzis7RCq6g9j+3U22Q14jymjiu
-	hX/FgCYRBRiEnLkYP8uJ5XIQpLS3UGsdWOVGo+n+M26+1t+c+hZ8SxuMEfa+1MXx2RAVIzm8aBu
-	38BwZqKZVb0w4t/wXL28v2dmUqVh+9+C4XaeWq6CYp5Ow9AJYIByfqUe2zpDCvI41AHwXGViaD3
-	25J0v7f/9EBvesM18zEtl7aftazfkJlpl0fsgop4TjQ/SnP27zLBXB4RSvx6O7e/+tnPowzVeSS
-	g8xWC8O3c1fSgXnecs82tKK7k9G4KKq+5nZEJemHK6tEz9NhXpTgnJflt/xL74MHsr+uX4oB9Tb
-	eQdRbuwsA1dA5zFYeLu+kJ9g+6UGC7bKB1Y9ZP1l5FSQ4OCQfuSnVJgQll9pk0to+iDwoKVy/81
-	+dm6Q5yuRKb+hGYi+czc+K56SbxuP5e4pR/68X9zAGD20Hoi1kbSYbMWjxcACq7kqLGie7cM/H1
-	dyvB+2YIjKGns7DiA==
-X-Received: by 2002:a17:902:ce8c:b0:2cf:afa5:b19a with SMTP id d9443c01a7336-2d3b0d13bb8mr212666695ad.11.1786890185194;
-        Sun, 16 Aug 2026 07:23:05 -0700 (PDT)
+        bh=VZh5CgmasB3FNwZhE5a0RmyqcaBUm5A+ddeEPpNzaA4=;
+        b=JL39JFsek6rI5Mzrsgwc1+N2SQp4a5paDAD58CYibAi0u31Wv8RhD77U1UCD5kqtps
+         MzZJN1olYeQ5aGju2bH3u9e2YQDn/dUYkbd11AWUTEj/uuMZHf8CEhWjXXT0ytyG51ZI
+         tcVVL5M8oeKd2kg4HPrItcqFHPsqQ7Jejqs/Pnxlb+A6ssiz27XBdJ22KxqRBbO73+WY
+         tnKQC6EL+HdXcWFYz8fgpTiGAyjlP9uw07/Lis82H1cqF1WObHRXv6aQGD32dHylVLIv
+         D6yHlaNAcx7oG+nKd2x4b2ks/9p2IQw7NQ1v/q9CCX6tpEOE+QAO1mMyLGgUYkIJre5o
+         1kUg==
+X-Forwarded-Encrypted: i=1; AHgh+Rp2jkkJ8PeOd8+6Z6pzmNBSxkYzLUK+55/mYdqMPQB+8HWeH2Ejv2a6YVpn+wUGlrsUuvALl4h5iQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy69hpr8UL2W9hLdz17+UrHIWwHZRR0JkrvwaIWhDgJ5vDIc0yH
+	AfIw+Q9lKIaNF4+3QQ2yG44jeqCbyCZ112NBXoXMpXrjoC/hkcw1pJpP
+X-Gm-Gg: AR+sD10zKX1WuQhisAgfvxdVgtisrofP73ZTjIqZW2uLZk09kSnkZixw7+A/pPw0WcO
+	tx6ygSRueJ4D3tOgnSmTC/EXEX9TMNESS/3IBHVvpJveMJ3rK/L3iUhu/p0Uss4/fQG8OlaECnG
+	KUa3yiFjaVHkwtErM1iUrAfjHAU2rO2L7MEVvhOcPM3qG27o2jziEFfn8am6LSIM+WU1dg0DZWP
+	8Wzad2TJ/tpNqO/O4aZz27yMl878YG/uVqdj6U74p9hgQOkMQ2fRU4izVadRZrtTGXy6NrYTn2i
+	Okhw4O1lo4ndbR/kKVw2jGhf1kmnl/y/jUbyl9Q99KJYyM0vNaq5dpygN0A+7IG3WPurl9N6Oy+
+	g16GZcJCxo820+yIazNRac+ZApxZVJAOYSWiuTgNpdQAhqX7G0Ckw3warT7qYvgo8FDpBHBWOVX
+	ytwhCT+3xRi6mQ8ejSgpfi1f1cOnG21Rt8YHgWcDATGoCPenbM9dMvPAzSMJRBN5j2KCtoP5r0/
+	zdkE5g=
+X-Received: by 2002:a17:903:8d0:b0:2cc:aa36:c04c with SMTP id d9443c01a7336-2d3b0ad0fa1mr214403475ad.1.1786890192602;
+        Sun, 16 Aug 2026 07:23:12 -0700 (PDT)
 Received: from kernel.tail6741c6.ts.net ([116.128.244.169])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d3aebc8199sm26102365ad.74.2026.08.16.07.22.57
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d3aebc8199sm26102365ad.74.2026.08.16.07.23.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Aug 2026 07:23:04 -0700 (PDT)
+        Sun, 16 Aug 2026 07:23:12 -0700 (PDT)
 From: Kunwu Chan <kunwu.chan@gmail.com>
 X-Google-Original-From: Kunwu Chan <kunwu.chan@linux.dev>
 To: will@kernel.org,
@@ -107,22 +107,22 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	"Lian Wang (ProcessMission)" <lianux.mm@gmail.com>,
 	Kunwu Chan <kunwu.chan@gmail.com>
-Subject: [RFC PATCH 3/4] mm/damon/perf: add KUnit tests for the SPE record parser
-Date: Sun, 16 Aug 2026 22:22:20 +0800
-Message-ID: <20260816142222.689624-4-kunwu.chan@linux.dev>
+Subject: [RFC PATCH 4/4] selftests/damon: add DAMON perf AUX backend test
+Date: Sun, 16 Aug 2026 22:22:21 +0800
+Message-ID: <20260816142222.689624-5-kunwu.chan@linux.dev>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260816142222.689624-1-kunwu.chan@linux.dev>
 References: <20260816142222.689624-1-kunwu.chan@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: joh5q99fp61b4q3qgbmwwdwbp4sfxjax
-X-Rspamd-Queue-Id: 872B4C0004
+X-Rspamd-Queue-Id: 1E4E340007
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786890186-517872
-X-HE-Meta: U2FsdGVkX1+WJl2vHDnNMwoQZNFanllS/kh1GGyU1OkK2GK19ukvPy67EPbg9QXnGpaPI3gGAcEhYbJcioT6FZbD6FAjRU+uIjGfLY5w5+hmi/WJpYRYAHZLFo4Jnq/M6uW+j+0LjvhYgAoPfJHbnG6J0Lt6/7oxyZuTK4UjSX4G1EQR8t+WmDosmDG/KV8lqnoDCACFppMg0df7A7b157hStJkfHdeGeLjpU8ASFvxuCyzaBUHJAUaLRI7rrIx9LxLG+Yb/kenSICrh/Sje43vHZ6dB5ICHYoGHA2HCwB3R2KyAZBzPUAa0vgUY3mGWbXW8IKLKEwwX4vBp8TOZIqekTmsstg3gzyEHB8QRRyxp9SWQHpx47lO8K/LFTodtlleE4wD2RC8MfdIl6eiRdD9wzRiXvorvUCVCIIofOLNWYoOzMR1jKngTfAmEMFO7fhfFVsGEoinuUb/hYdhJWxOuOZRQQyPF4FFGgNFgUHETWb1EIqK6m0rTwIY9A66mXRHUqV+VYTXs712GNh7qujXqI/7dnb4l/I0yWCJbpIu3gyWAY5rSFAziZoCcVbBxfA2zZmcfceTLR0PyUqJtcjTGeG1xiGAutvcJsyWwc1ETqqt/6LhvHtPZvni0R5j1Q7YNffYO+VpupOvQa3XBQlhPeel8BFsdabqNfiKXtYqTvqWf/lg8Lh0zI5ulNcf/YGusX21KlIRm8fqtKY5ZNVAHQbduwNuOmvfHri1G3RHODOBIQ0fM0miR4vsJOH+sAe2o6dsR4VaBb/KUJV1dgm0/flHbbBwWKBFdvFLKtfF/Cz4yTum4WEDp0B2vx9F44OlO6uCvXYc3ByXmZSWQdCP/1yXnZRGmJKZLYCwDY5WrNYn9NhmQm1924CozFqVnbpPEy/9MszfhNM2FExLlVsvrU+JeuXeqI/Ba0f/tKUSP2emn8+ejQb6i8HCD1qvLwMg8/PJfFFsTrYP39Kl
- DxA6QsXl
- d4JCPGhFyVcJZ58KNiep+DUPPsE8104MVnk1pNqHUo+mC9xdYuI9duICjvF4J9azba273NbKFi+5mu3C1Q0ekGFPvZjeM/LYdeKFWjP3A+GOkBNaKLcQySUXWiZ4jm82D+1T3rFuMjJnGQKVB0n/PN7RrtY+K+0BakW9h1WpIHi6wI2PbqZRdnU8DxNDlfqCZi36/k4L5LNr4F0mWNcG6o1rPTrn0slze1Mdf+G3yCytK+kYzdiQCqfu2rJDp+F9edIPzn45oBaDEjDK7jOXx6pD6DkgOfaa7aqy0n9UPOkjXr7j71LgcGd5rN8WqQ0/NMVg3BKPrOMgVRQdCepH6pjGVF0u9SV4Cnny4kKYpgunnU5tB0N1ps/hxslgPYaGS1P8hypT1BfKp4PCdxudDU3PNTjdn3emeGcsFwQmmJJJckSlYhOoqCJD38URPfCHVQC4e
+X-Stat-Signature: ru5noqzujfys938giquho4o83w3uwdto
+X-HE-Tag: 1786890193-283586
+X-HE-Meta: U2FsdGVkX18e8bQl/f7ZtnfP8ZouGZR3jl978OTq3wwGd/+1AB5rQRl+4j8OKzZ7WDTZGBFe/vcC6syttB/0+pHhCkl5hiMeKoXZqjqlGSY1GLHOqm7b2I9SXPPC7Z3PrwOTxivaNBP4Z1FKnk6S82pmSYPFrXTLW2sBQ+vtjcrLYcaKuRYv7PKQQrOJYWyMSop1/Dx6UAX6nakFNxV40NzFWX85BfON6uP16LxrLVEG2eND9jNlSnch9XRvMR9C82WAIfsZMKPdnS3f5EfzPmGDP2qBDB7usm71Wn66xTW19z2XnWA8je4EPX46/PlRUk2qC9mXxKkWYnpfsiX9ZMml/U6S74/vJe+jkXrbAp/R0AFyGVYqmw4duUd6zuNAmHQtMJlg/GvhI9zjXllh795TGMFZ4E4E0W7Mb//zVpjMQKMaRT1xtiUKcrwwJOvYARi3oxavVYkyQC++zn6yNYpvbiB7UOS1T1vJ504bsFfcbb7laosRcG3hkqlSeeBX1U1Hq9MjsJ4pHjCP4xGbyYCmj+vWfm9inQYERZ6DKKA88rELHLV2TJ8KjlphGc9so7hpWuWSIB+N2rwzkS6VGF8FymseqD9yIyYq7n79sLscdSe1A6RD4svTqzaC42Lh7tnqqj6KNLwshq46MjuJfCX97CM6IWz+xxTqFQXQmhKeGYmf/0JYG6eG5DmMbIG/o8LwhhGAqSwF0dqDP+QWmaIrhCjrtbMMzFYq3YbICIUjr/OTwOV/juf5AQgtcG5A1WMkE05I0W2dyVWwMNfulz8RRofHFAvsfwHr3PM97s36+Odq5p9MXLKrQvv+hcEgDuPWJdJXzqgqKV/qUr/vpqBUXTYQQfI6MgeMWVh4NIHB5IS9SWQicfP1qnp9OV4luyta5HmYHHRhW9gTK7oAK3XTGM0L9595jut8FEvrkqbDf98T5gmUdSU3uIRXdPJC0/iqh1ZxiuoYmZMKDzy
+ VX7NcJvS
+ lxtrTwWBLtQbVJ6We/KE+BYN1TtG7q3DKImgOFZ3odDFcSUr1+O6UuT++iYIvJdE8IE5UdNvMGYTZX9U/1VQDu3xoPl/LEfBSfqBL/jJhuY3MPr9G8SqoTPfaLmokftq96qv1KLDhD7k0mW2Xsv8Lx3FhrorVjwy6dHdfZxNOmvpbaKTISefW+tBQqVCeeyklkbQN8LhmhxJxTPIWHr3uevGR6qfmWkZ4WKb6clpGAQ++z8gYBwi12sqhCVSHZngRXbB4hTpQac/lwqEhSEWYFF31RdF4wAWCGLxvdNAfzvS7hDLDX/n1WtbhSqMeiscHR0m97sbZjjX8RaCyelTTunIEU2apIK/vd7fPlmFqXCwflpD57/yNhLU8jhl3aonRr3GPQtJz0k7vKH5h9fdfsjnAOqBLd/EfPy4fK1LRisSdzOHj2FFn4zcMU5MFqd6NBEXj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,394 +132,459 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Lian Wang (ProcessMission)" <lianux.mm@gmail.com>
 
-Add byte-exact tests for load and store records, timestamp terminators,
-multiple records, PAD and ALIGNMENT packets, extended addresses, invalid
-extended headers, error resynchronization, and records without a virtual
-address.
+Register a DAMON kselftest for the ARM SPE AUX backend.  When kernel
+sources are available, check the backend integration and the required
+AUX-before-ring lifecycle ordering.  Independently run the SPE parser
+KUnit suite through debugfs when it is built.
 
-Cover ALIGNMENT packets at both odd and already aligned stream offsets.
-Also verify that a record split across two AUX snapshots leaves the tail
-unchanged until the terminating packet becomes available.
+On an ARM SPE system with no pre-existing kdamond, create one controlled
+userspace target and collect counter deltas from a five-second session.
+Stop the session explicitly, then verify positive end-to-end pipeline
+counters and final enqueue/dequeue closure.  Use a private mktemp result
+directory and restore only the DAMON state created by this test.
+
+This is a smoke and lifecycle test; full-ring pause/resume validation
+remains a separate hardware stress test.
 
 Co-developed-by: Kunwu Chan <kunwu.chan@gmail.com>
 Signed-off-by: Kunwu Chan <kunwu.chan@gmail.com>
 Signed-off-by: Lian Wang (ProcessMission) <lianux.mm@gmail.com>
 ---
- mm/damon/perf/spe_parser_test.c | 365 ++++++++++++++++++++++++++++++++
- 1 file changed, 365 insertions(+)
- create mode 100644 mm/damon/perf/spe_parser_test.c
+ tools/testing/selftests/damon/Makefile        |   1 +
+ .../selftests/damon/damon_perf_aux_test.sh    | 414 ++++++++++++++++++
+ 2 files changed, 415 insertions(+)
+ create mode 100755 tools/testing/selftests/damon/damon_perf_aux_test.sh
 
-diff --git a/mm/damon/perf/spe_parser_test.c b/mm/damon/perf/spe_parser_test.c
-new file mode 100644
-index 000000000000..598d9fd7cdc7
+diff --git a/tools/testing/selftests/damon/Makefile b/tools/testing/selftests/damon/Makefile
+index 1db8fa95ba2d..204a0b60d84a 100644
+--- a/tools/testing/selftests/damon/Makefile
++++ b/tools/testing/selftests/damon/Makefile
+@@ -24,4 +24,5 @@ TEST_PROGS += sysfs_no_op_commit_break.py
+ EXTRA_CLEAN = __pycache__
+ 
+ TEST_PROGS += damon_perf_obs_test.sh
++TEST_PROGS += damon_perf_aux_test.sh
+ include ../lib.mk
+diff --git a/tools/testing/selftests/damon/damon_perf_aux_test.sh b/tools/testing/selftests/damon/damon_perf_aux_test.sh
+new file mode 100755
+index 000000000000..86ccaca6310c
 --- /dev/null
-+++ b/mm/damon/perf/spe_parser_test.c
-@@ -0,0 +1,365 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * KUnit tests for the DAMON perf ARM SPE record parser.
-+ *
-+ * Each parameterized case feeds a byte-exact SPE packet stream (same
-+ * encodings and decode order as tools/perf/util/arm-spe-decoder) into
-+ * spe_parse_one_record() and verifies the synthesized records, the
-+ * return values, and the aux_tail accounting.  The loop mirrors
-+ * spe_backend_drain() including the caller-side window shrink.
-+ */
++++ b/tools/testing/selftests/damon/damon_perf_aux_test.sh
+@@ -0,0 +1,414 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++#
++# DAMON Perf AUX Backend - Automated Test
++#
++# Validates the AUX trace-buffer backend framework and the ARM SPE
++# backend:
++#   1. Source-level structure checks (files, Makefile, ops interface)
++#   2. SPE parser: runs the KUnit suite against byte-exact binary
++#      fixtures (mm/damon/perf/spe_parser_test.c) through debugfs
++#   3. Architecture checks (exact PMU match, SPSC ring contract,
++#      lifecycle ordering)
++#   4. Runtime smoke test: live DAMON session configured with an ARM
++#      SPE event.  Only runs when no kdamonds exist; the pre-test
++#      sysfs state is restored on exit.
++#
++# Usage:  sudo ./damon_perf_aux_test.sh [pmu-name]
++#
++# Requirements:
++#   - CONFIG_DAMON_PERF_OBSERVE=y
++#   - CONFIG_DAMON_PERF_SPE_KUNIT_TEST=y and CONFIG_KUNIT_DEBUGFS=y
++#     for section 2 (skipped otherwise)
++#   - CONFIG_ARM_SPE_PMU=y for section 4 (skipped otherwise)
++#   - Root privileges
 +
-+#include <kunit/test.h>
-+#include <linux/slab.h>
++set -e
++PASSED=0; FAILED=0; SKIPPED=0
++pass() { echo "  [PASS] $1"; PASSED=$((PASSED + 1)); }
++fail() { echo "  [FAIL] $1"; FAILED=$((FAILED + 1)); }
++skip() { echo "  [SKIP] $*"; SKIPPED=$((SKIPPED + 1)); }
 +
-+#include "spe_parser.h"
++PMU_NAME="${1:-arm_spe_0}"
++RESULTS_DIR=$(mktemp -d "${TMPDIR:-/tmp}/damon_aux_test.XXXXXX") || exit 1
++exec > >(tee "$RESULTS_DIR/output.log") 2>&1
 +
-+/**
-+ * struct spe_parse_case - One parser test case.
-+ * @name:	Parameter description (shown on failure).
-+ * @stream:	Byte-exact SPE packet stream.
-+ * @len:	@stream length.
-+ * @exp_reports:	Expected SPE_PARSE_REPORT count.
-+ * @exp_skips:		Expected SPE_PARSE_SKIP count.
-+ * @exp_errors:		Expected SPE_PARSE_ERROR count.
-+ * @exp_tail:		Expected st->aux_tail after the stream.
-+ * @exp_va: Expected virtual address of the first REPORT record.
-+ * @exp_tid: Expected tid of the first REPORT record.
-+ * @exp_is_write: Expected access type of the first REPORT record.
-+ */
-+struct spe_parse_case {
-+	const char *name;
-+	const u8 *stream;
-+	size_t len;
-+	unsigned int exp_reports;
-+	unsigned int exp_skips;
-+	unsigned int exp_errors;
-+	unsigned long exp_tail;
-+	unsigned long exp_va;
-+	u32 exp_tid;
-+	bool exp_is_write;
-+};
++ROOT="$(git rev-parse --show-toplevel 2>/dev/null || true)"
++if [[ -z "$ROOT" ]]; then
++    ROOT="/usr/src/linux"
++fi
++SRC_DIR="$ROOT/mm/damon/perf"
 +
-+static const u8 stream_store[] = {
-+	0x66, 0x2a, 0x00, 0x00, 0x00,			/* CONTEXT: 64-bit EL1 tid=42 */
-+	0xb2, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,	/* VA 0x1000 */
-+	0x49, 0x01,					/* OP-TYPE: ST */
-+	0x01,						/* END */
-+};
++ADMIN="/sys/kernel/mm/damon/admin"
 +
-+static const u8 stream_ts_load[] = {
-+	0xb2, 0x00, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,	/* VA 0x2000 */
-+	0x49, 0x00,					/* OP-TYPE: load */
-+	0x71, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,	/* TIMESTAMP end */
-+};
++echo "=========================================="
++echo " DAMON Perf AUX Backend Test"
++echo "=========================================="
 +
-+static const u8 stream_two[] = {
-+	0x66, 0x2a, 0x00, 0x00, 0x00,			/* CONTEXT: 64-bit EL1 tid=42 */
-+	0xb2, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,	/* VA 0x1000 */
-+	0x49, 0x01,					/* OP-TYPE: ST */
-+	0x01,						/* END */
-+	0xb2, 0x00, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,	/* VA 0x2000 */
-+	0x49, 0x00,					/* OP-TYPE: load */
-+	0x01,						/* END */
-+};
++# ---- Section 1: Source structure ----
++if [[ -d "$SRC_DIR" && -f "$ROOT/mm/damon/core.c" ]]; then
++echo ""
++echo "--- 1. Backend Source Files ---"
++for f in aux_backend.h aux_backend.c spe_parser.h spe_backend.c spe_parser_test.c; do
++    if [[ -f "$SRC_DIR/$f" ]]; then
++        pass "Source file: $f"
++    else
++        fail "Source file: $f"
++    fi
++done
 +
-+static const u8 stream_pad[] = {
-+	0x00, 0x00,					/* PAD prefix */
-+	0x66, 0x2a, 0x00, 0x00, 0x00,			/* CONTEXT: 64-bit EL1 tid=42 */
-+	0xb2, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,	/* VA 0x1000 */
-+	0x49, 0x01,					/* OP-TYPE: ST */
-+	0x01,						/* END */
-+	0x00, 0x00, 0x00,				/* PAD padding */
-+};
++echo ""
++echo "--- 2. Makefile Registration ---"
++for obj in aux_backend.o spe_backend.o spe_parser_test.o; do
++    if grep -q "$obj" "$SRC_DIR/Makefile" 2>/dev/null; then
++        pass "Makefile registers: $obj"
++    else
++        fail "Makefile registers: $obj"
++    fi
++done
 +
-+static const u8 stream_alignment[] = {
-+	0x66, 0x2a, 0x00, 0x00, 0x00,			/* CONTEXT: tid 42, pos 0-4 */
-+	0x20, 0x00,					/* ALIGNMENT at odd pos 5 */
-+	0xb2, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,	/* VA 0x1000 */
-+	0x49, 0x00,					/* OP-TYPE: load */
-+	0x01,						/* END */
-+};
++echo ""
++echo "--- 3. Backend Ops Interface ---"
++OPS_COUNT=$(grep -c '(\*match_pmu)\|(\*init)\|(\*cleanup)\|(\*arm)\|(\*disarm)\|(\*drain)' \
++    "$SRC_DIR/aux_backend.h" 2>/dev/null || echo 0)
++if [[ "$OPS_COUNT" -ge 6 ]]; then
++    pass "Backend ops interface: 6 ops defined ($OPS_COUNT found)"
++else
++    fail "Backend ops interface: expected 6 ops, found $OPS_COUNT"
++fi
++if grep -q 'DAMON_PERF_BACKEND_AUX' "$SRC_DIR/aux_backend.h" 2>/dev/null; then
++    pass "DAMON_PERF_BACKEND_AUX flag defined"
++else
++    fail "DAMON_PERF_BACKEND_AUX flag"
++fi
 +
-+static const u8 stream_alignment_aligned[] = {
-+	0x20, 0x00,					/* ALIGNMENT at even pos 0 */
-+	0x66, 0x2a, 0x00, 0x00, 0x00,			/* CONTEXT: 64-bit EL1 tid=42 */
-+	0xb2, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,	/* VA 0x1000 */
-+	0x49, 0x00,					/* OP-TYPE: load */
-+	0x01,						/* END */
-+};
++echo ""
++echo "--- 4. SPE Parser Constants ---"
++for c in SPE_BUFFER_MIN_PAGES SPE_BUFFER_MAX_RECORDS SPE_HDR_MASK1 SPE_HDR_PAD \
++    SPE_HDR_END SPE_HDR_TIMESTAMP SPE_HDR_EXTENDED SPE_ADDR_DATA_VIRT \
++    SPE_OP_CLASS_LDST; do
++    if grep -q "$c" "$SRC_DIR/spe_parser.h" 2>/dev/null; then
++        pass "Parser constant: $c"
++    else
++        fail "Parser constant: $c"
++    fi
++done
++else
++    skip "source structure" "kernel source tree not available"
++fi
 +
-+static const u8 stream_bad[] = {
-+	0xff,						/* unknown header */
-+	0x66, 0x2a, 0x00, 0x00, 0x00,			/* CONTEXT: 64-bit EL1 tid=42 */
-+	0xb2, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,	/* VA 0x1000 */
-+	0x49, 0x01,					/* OP-TYPE: ST */
-+	0x01,						/* END */
-+};
++# ---- Section 2: Parser correctness (KUnit, binary fixtures) ----
++echo ""
++echo "--- 5. SPE Parser: KUnit suite (binary fixtures) ---"
++KUNIT_DIR="/sys/kernel/debug/kunit/damon_perf_spe_parser"
++if [[ -d "$KUNIT_DIR" ]]; then
++    # Writing to "run" triggers a fresh run; "results" then holds the
++    # TAP output of the byte-exact fixture cases.
++    if [[ -f "$KUNIT_DIR/run" ]]; then
++        echo run > "$KUNIT_DIR/run" 2>/dev/null || true
++    fi
++    RES="$KUNIT_DIR/results"
++    if [[ -f "$RES" ]]; then
++        if grep -Eq "^[[:space:]]*not ok" "$RES"; then
++            fail "KUnit parser suite has failing cases"
++            grep -E "^[[:space:]]*not ok" "$RES" | sed 's/^/    /'
++        elif grep -Eq "^[[:space:]]*ok " "$RES"; then
++            pass "KUnit parser suite: all cases pass"
++        else
++            fail "KUnit parser suite produced no completed cases"
++        fi
++        echo "    $(grep '# Totals:' "$RES" | tail -1)"
++        # Spot-check the fixtures that cover the review-critical paths:
++        # record content, consumed-length accounting, truncation,
++        # alignment, extended packets, and error resync.
++        for c in "store record" "bad packet resync" \
++            "alignment packet at odd position" \
++            "alignment packet at aligned position" \
++            "extended address packet" \
++            "invalid extended header resync" \
++            "truncated trailing record retained" \
++            "truncated packet retained" \
++            "pad-only window"; do
++            if grep -Eq "^[[:space:]]*ok .*$c" "$RES"; then
++                pass "fixture: $c"
++            else
++                fail "fixture: $c"
++            fi
++        done
++    else
++        skip "KUnit results" "no results file (suite did not run)"
++    fi
++else
++    skip "KUnit parser suite" "CONFIG_KUNIT_DEBUGFS missing or suite not built"
++fi
 +
-+static const u8 stream_skip[] = {
-+	0x49, 0x00,					/* OP-TYPE: load */
-+	0x01,						/* END, no address */
-+};
++# ---- Section 3: Architecture checks ----
++echo ""
++echo "--- 6. Architecture Correctness ---"
 +
-+static const u8 stream_other_pkts[] = {
-+	0x42, 0x05,					/* EVENTS (width 1) */
-+	0x43, 0x06,					/* DATA-SOURCE (width 1) */
-+	0x98, 0x00, 0x00,				/* COUNTER (width 2) */
-+	0xb2, 0x00, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,	/* VA 0x3000 */
-+	0x49, 0x00,					/* OP-TYPE: load */
-+	0x01,						/* END */
-+};
++if [[ ! -d "$SRC_DIR" || ! -f "$ROOT/mm/damon/core.c" ]]; then
++    skip "architecture source checks" "kernel source tree not available"
++else
 +
-+static const u8 stream_truncated[] = {
-+	0x66, 0x2a, 0x00, 0x00, 0x00,			/* CONTEXT: 64-bit EL1 tid=42 */
-+	0xb2, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,	/* VA 0x1000 */
-+	0x49, 0x01,					/* OP-TYPE: ST, no END */
-+};
++# Exact PMU match by pmu object, not by name-prefix matching.
++if grep -q 'arm_spe_pmu_match' "$SRC_DIR/spe_backend.c" 2>/dev/null; then
++    pass "PMU match: exact match via arm_spe_pmu_match()"
++else
++    fail "PMU match: arm_spe_pmu_match() missing"
++fi
++if grep -q 'strncmp.*arm_spe' "$SRC_DIR/spe_backend.c" 2>/dev/null; then
++    fail "PMU match: strncmp name-prefix matching must not be used"
++else
++    pass "PMU match: no strncmp name-prefix matching"
++fi
 +
-+static const u8 stream_truncated_packet[] = {
-+	0xb2, 0x00, 0x10,				/* short 8-byte address */
-+};
++# Backend selection: gated on the ITRACE capability, then matched by PMU.
++if grep -q 'PERF_PMU_CAP_ITRACE' "$SRC_DIR/aux_backend.c" 2>/dev/null; then
++    pass "PMU selection: gated by PERF_PMU_CAP_ITRACE"
++else
++    fail "PMU selection: ITRACE gate missing"
++fi
 +
-+static const u8 stream_ext_addr[] = {
-+	0x20, 0xb2,					/* EXTENDED ADDRESS, DATA_VIRT */
-+	0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,	/* VA 0x4000 */
-+	0x49, 0x00,					/* OP-TYPE: load */
-+	0x01,						/* END */
-+};
++# Lifecycle ordering: arm() before perf_event_enable(), disarm() after
++# perf_event_disable().
++ARM_LINE=$(awk '/^int damon_perf_event_arm\(/ { in_fn=1 } \
++    in_fn && /ops->arm/ { print NR; exit }' "$ROOT/mm/damon/vaddr.c")
++ENABLE_LINE=$(awk '/^int damon_perf_event_arm\(/ { in_fn=1 } \
++    in_fn && /perf_event_enable/ { print NR; exit }' "$ROOT/mm/damon/vaddr.c")
++if [[ -n "$ARM_LINE" && -n "$ENABLE_LINE" && "$ARM_LINE" -lt "$ENABLE_LINE" ]]; then
++    pass "Lifecycle: ops->arm() before perf_event_enable()"
++else
++    fail "Lifecycle: arm() must precede perf_event_enable()"
++fi
 +
-+static const u8 stream_invalid_extended[] = {
-+	0x20, 0x42, 0x00,				/* invalid extended EVENTS */
-+	0x01,						/* END after resync */
-+};
++DISABLE_LINE=$(awk '/^void damon_perf_event_disarm\(/ { in_fn=1 } \
++    in_fn && /perf_event_disable/ { print NR; exit }' "$ROOT/mm/damon/vaddr.c")
++DISARM_LINE=$(awk '/^void damon_perf_event_disarm\(/ { in_fn=1 } \
++    in_fn && /ops->disarm/ { print NR; exit }' "$ROOT/mm/damon/vaddr.c")
++if [[ -n "$DISABLE_LINE" && -n "$DISARM_LINE" && "$DISABLE_LINE" -lt "$DISARM_LINE" ]]; then
++    pass "Lifecycle: ops->disarm() after perf_event_disable()"
++else
++    fail "Lifecycle: disarm() must follow perf_event_disable()"
++fi
 +
-+static const u8 stream_pad_only[] = {
-+	0x00, 0x00, 0x00,
-+};
++# The stop path calls the common check after disarming.  That common check
++# must drain AUX before it starts consuming the SPSC rings.
++DISARM_LOOP=$(grep -n 'damon_perf_event_disarm' "$ROOT/mm/damon/core.c" 2>/dev/null | \
++	tail -1 | cut -d: -f1)
++FINAL_CHECK=$(awk -v start="$DISARM_LOOP" 'NR > start && \
++    /kdamond_check_reported_accesses\(ctx\)/ { print NR; exit }' \
++    "$ROOT/mm/damon/core.c")
++if [[ -n "$DISARM_LOOP" && -n "$FINAL_CHECK" && \
++      "$DISARM_LOOP" -lt "$FINAL_CHECK" ]]; then
++    pass "Lifecycle: final common drain after disarm"
++else
++    fail "Lifecycle: final common drain must follow disarm"
++fi
 +
-+static const u8 stream_empty[] = { 0x00 };
++# Per-tick and final: AUX must publish before the SPSC loop reads rings.
++CHECK_FN=$(grep -n '^static unsigned int kdamond_check_reported_accesses' \
++    "$ROOT/mm/damon/core.c" | cut -d: -f1)
++DRAIN_TICK=$(awk -v start="$CHECK_FN" 'NR > start && \
++    /damon_perf_aux_drain\(ctx\)/ { print NR; exit }' "$ROOT/mm/damon/core.c")
++RING_DRAIN=$(awk -v start="$CHECK_FN" 'NR > start && \
++    /for_each_online_cpu\(cpu\)/ { print NR; exit }' "$ROOT/mm/damon/core.c")
++if [[ -n "$DRAIN_TICK" && -n "$RING_DRAIN" && \
++      "$DRAIN_TICK" -lt "$RING_DRAIN" ]]; then
++    pass "Tick: AUX drain before SPSC ring drain"
++else
++    fail "Tick: AUX drain must precede the ring drain"
++fi
 +
-+static const struct spe_parse_case spe_parse_cases[] = {
-+	{
-+		.name = "store record",
-+		.stream = stream_store,
-+		.len = sizeof(stream_store),
-+		.exp_reports = 1,
-+		.exp_tail = 17,
-+		.exp_va = 0x1000,
-+		.exp_tid = 42,
-+		.exp_is_write = true,
-+	},
-+	{
-+		.name = "load record with timestamp terminator",
-+		.stream = stream_ts_load,
-+		.len = sizeof(stream_ts_load),
-+		.exp_reports = 1,
-+		.exp_tail = 20,
-+		.exp_va = 0x2000,
-+		.exp_tid = 0,
-+		.exp_is_write = false,
-+	},
-+	{
-+		.name = "two records in one window",
-+		.stream = stream_two,
-+		.len = sizeof(stream_two),
-+		.exp_reports = 2,
-+		.exp_tail = 29,
-+		.exp_va = 0x1000,
-+		.exp_tid = 42,
-+		.exp_is_write = true,
-+	},
-+	{
-+		.name = "pad-wrapped record",
-+		.stream = stream_pad,
-+		.len = sizeof(stream_pad),
-+		.exp_reports = 1,
-+		.exp_tail = 22,
-+		.exp_va = 0x1000,
-+		.exp_tid = 42,
-+		.exp_is_write = true,
-+	},
-+	{
-+		.name = "alignment packet at odd position",
-+		.stream = stream_alignment,
-+		.len = sizeof(stream_alignment),
-+		.exp_reports = 1,
-+		.exp_tail = 19,
-+		.exp_va = 0x1000,
-+		.exp_tid = 42,
-+		.exp_is_write = false,
-+	},
-+	{
-+		.name = "alignment packet at aligned position",
-+		.stream = stream_alignment_aligned,
-+		.len = sizeof(stream_alignment_aligned),
-+		.exp_reports = 1,
-+		.exp_tail = sizeof(stream_alignment_aligned),
-+		.exp_va = 0x1000,
-+		.exp_tid = 42,
-+		.exp_is_write = false,
-+	},
-+	{
-+		.name = "bad packet resync",
-+		.stream = stream_bad,
-+		.len = sizeof(stream_bad),
-+		.exp_reports = 1,
-+		.exp_errors = 1,
-+		.exp_tail = 18,
-+		.exp_va = 0x1000,
-+		.exp_tid = 42,
-+		.exp_is_write = true,
-+	},
-+	{
-+		.name = "record without address",
-+		.stream = stream_skip,
-+		.len = sizeof(stream_skip),
-+		.exp_skips = 1,
-+		.exp_tail = 3,
-+	},
-+	{
-+		.name = "events/source/counter packets ignored",
-+		.stream = stream_other_pkts,
-+		.len = sizeof(stream_other_pkts),
-+		.exp_reports = 1,
-+		.exp_tail = 19,
-+		.exp_va = 0x3000,
-+		.exp_is_write = false,
-+	},
-+	{
-+		.name = "truncated trailing record retained",
-+		.stream = stream_truncated,
-+		.len = sizeof(stream_truncated),
-+		.exp_tail = 0,
-+	},
-+	{
-+		.name = "truncated packet retained",
-+		.stream = stream_truncated_packet,
-+		.len = sizeof(stream_truncated_packet),
-+		.exp_tail = 0,
-+	},
-+	{
-+		.name = "extended address packet",
-+		.stream = stream_ext_addr,
-+		.len = sizeof(stream_ext_addr),
-+		.exp_reports = 1,
-+		.exp_tail = 13,
-+		.exp_va = 0x4000,
-+		.exp_is_write = false,
-+	},
-+	{
-+		.name = "invalid extended header resync",
-+		.stream = stream_invalid_extended,
-+		.len = sizeof(stream_invalid_extended),
-+		.exp_skips = 1,
-+		.exp_errors = 1,
-+		.exp_tail = sizeof(stream_invalid_extended),
-+	},
-+	{
-+		.name = "pad-only window",
-+		.stream = stream_pad_only,
-+		.len = sizeof(stream_pad_only),
-+		.exp_tail = 3,
-+	},
-+	{
-+		.name = "empty window",
-+		.stream = stream_empty,
-+		.len = 0,
-+		.exp_tail = 0,
-+	},
-+};
++# Per-(event,cpu) parser state scoped via aux_priv.
++if grep -q 'aux_priv' "$ROOT/mm/damon/ops-common.h" 2>/dev/null; then
++    pass "State scoping: per-(event,cpu) via aux_priv"
++else
++    fail "State scoping: aux_priv in ops-common.h"
++fi
 +
-+KUNIT_ARRAY_PARAM_DESC(spe_parse, spe_parse_cases, name);
++# SPSC ring contract: kdamond is the only process-context producer and
++# writes only to its own CPU's ring.  A remote-write helper must not
++# exist.
++if grep -q 'damon_report_access_on_cpu' "$ROOT/mm/damon/core.c" 2>/dev/null; then
++    fail "SPSC: damon_report_access_on_cpu() must not exist"
++else
++    pass "SPSC: no remote-writer helper (current-CPU NMI-safe enqueue only)"
++fi
++if grep -q '^void damon_report_access' "$ROOT/mm/damon/core.c" 2>/dev/null; then
++    pass "SPSC: damon_report_access() present"
++else
++    fail "SPSC: damon_report_access() missing"
++fi
++fi
 +
-+static void spe_parse_case_test(struct kunit *test)
-+{
-+	const struct spe_parse_case *tc = test->param_value;
-+	struct spe_parser_state st = { 0 };
-+	struct spe_record rec;
-+	u8 *buf;
-+	unsigned int reports = 0, skips = 0, errors = 0, guard = 0;
-+	bool first_checked = false;
++# ---- Section 4: Runtime smoke test ----
++echo ""
++echo "--- 7. Runtime Smoke Test (live DAMON + SPE) ---"
 +
-+	buf = kunit_kmalloc(test, tc->len ?: 1, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
-+	memcpy(buf, tc->stream, tc->len);
-+	st.win = buf;
-+	st.win_size = tc->len;
++CREATED=0
++WORK_PID=""
++NR_SAVED=""
++if [[ -f "$ADMIN/kdamonds/nr_kdamonds" ]]; then
++    NR_SAVED=$(cat "$ADMIN/kdamonds/nr_kdamonds")
++fi
 +
-+	while (guard++ < SPE_BUFFER_MAX_RECORDS) {
-+		unsigned long tail0 = st.aux_tail;
-+		unsigned long consumed;
-+		int ret = spe_parse_one_record(&st, &rec);
-+
-+		if (ret == SPE_PARSE_NEED_MORE)
-+			break;
-+
-+		/* caller-side window shrink, mirrors spe_backend_drain() */
-+		consumed = st.aux_tail - tail0;
-+		st.win_size -= consumed;
-+		memmove(st.win, st.win + consumed, st.win_size);
-+
-+		switch (ret) {
-+		case SPE_PARSE_REPORT:
-+			reports++;
-+			if (!first_checked) {
-+				KUNIT_EXPECT_EQ(test, tc->exp_va, rec.va);
-+				KUNIT_EXPECT_EQ(test, tc->exp_tid, rec.tid);
-+				KUNIT_EXPECT_EQ(test, tc->exp_is_write,
-+						rec.is_write);
-+				first_checked = true;
-+			}
-+			break;
-+		case SPE_PARSE_SKIP:
-+			skips++;
-+			break;
-+		case SPE_PARSE_ERROR:
-+			errors++;
-+			break;
-+		}
-+	}
-+
-+	KUNIT_EXPECT_EQ(test, tc->exp_reports, reports);
-+	KUNIT_EXPECT_EQ(test, tc->exp_skips, skips);
-+	KUNIT_EXPECT_EQ(test, tc->exp_errors, errors);
-+	KUNIT_EXPECT_EQ(test, tc->exp_tail, st.aux_tail);
-+	KUNIT_EXPECT_EQ(test, tc->exp_tail, st.bytes);
-+	KUNIT_EXPECT_EQ(test, tc->exp_reports, st.records);
++restore_damon_state() {
++    # Tear down only what this test created, then restore the saved
++    # number of kdamonds.  A kdamond that was running before the test
++    # is never touched (section 7 skips in that case).
++    if [[ "$CREATED" == "1" ]]; then
++        echo off > "$ADMIN/kdamonds/0/state" 2>/dev/null || true
++        echo 0 > "$ADMIN/kdamonds/nr_kdamonds" 2>/dev/null || true
++        if [[ -n "$NR_SAVED" && "$NR_SAVED" -gt 0 ]]; then
++            echo "$NR_SAVED" > "$ADMIN/kdamonds/nr_kdamonds" 2>/dev/null || true
++        fi
++    fi
++    if [[ -n "$WORK_PID" ]]; then
++        kill "$WORK_PID" 2>/dev/null || true
++        wait "$WORK_PID" 2>/dev/null || true
++        WORK_PID=""
++    fi
 +}
++trap restore_damon_state EXIT
 +
-+static void spe_split_record_test(struct kunit *test)
-+{
-+	struct spe_parser_state st = {
-+		.win = (u8 *)stream_store,
-+		.win_size = sizeof(stream_store) - 1,
-+	};
-+	struct spe_record rec;
-+	int ret;
++if [[ -z "$NR_SAVED" ]]; then
++    skip "runtime smoke" "DAMON admin interface not available"
++elif [[ "$NR_SAVED" -gt 0 ]]; then
++    skip "runtime smoke" "existing kdamonds present (nr_kdamonds=$NR_SAVED);" \
++        "refusing to disturb them"
++elif [[ ! -d "/sys/bus/event_source/devices/$PMU_NAME" ]]; then
++    skip "runtime smoke" "no $PMU_NAME PMU (kernel without ARM SPE or not booted with it)"
++else
++    SPE_TYPE=$(cat "/sys/bus/event_source/devices/$PMU_NAME/type")
++    pass "SPE PMU $PMU_NAME present (type=$SPE_TYPE)"
++    DMESG_LINES_BEFORE=$(dmesg 2>/dev/null | wc -l)
 +
-+	ret = spe_parse_one_record(&st, &rec);
-+	KUNIT_ASSERT_EQ(test, SPE_PARSE_NEED_MORE, ret);
-+	KUNIT_EXPECT_EQ(test, 0UL, st.aux_tail);
-+	KUNIT_EXPECT_EQ(test, 0UL, st.bytes);
++    # Keep a userspace memory workload alive as both the DAMON target and
++    # an SPE data source.  The EXIT trap owns and terminates only this PID.
++    dd if=/dev/zero of=/dev/null bs=1M 2>/dev/null &
++    WORK_PID=$!
 +
-+	/* The next AUX copy starts at the unchanged tail and includes END. */
-+	st.win_size = sizeof(stream_store);
-+	ret = spe_parse_one_record(&st, &rec);
-+	KUNIT_ASSERT_EQ(test, SPE_PARSE_REPORT, ret);
-+	KUNIT_EXPECT_EQ(test, (unsigned long)sizeof(stream_store),
-+			st.aux_tail);
-+	KUNIT_EXPECT_EQ(test, 0x1000UL, rec.va);
-+	KUNIT_EXPECT_EQ(test, 42U, rec.tid);
-+}
++    # arm_spe_pmu_event_init() rejects freq mode, so the event must be
++    # configured in period mode.
++    echo 1 > "$ADMIN/kdamonds/nr_kdamonds"
++    CREATED=1
++    echo 1 > "$ADMIN/kdamonds/0/contexts/nr_contexts"
++    echo 1 > "$ADMIN/kdamonds/0/contexts/0/targets/nr_targets"
++    echo "$WORK_PID" > "$ADMIN/kdamonds/0/contexts/0/targets/0/pid_target"
++    echo 1 > "$ADMIN/kdamonds/0/contexts/0/monitoring_attrs/sample/perf_events/nr_perf_events"
++    echo "$SPE_TYPE" > "$ADMIN/kdamonds/0/contexts/0/monitoring_attrs/sample/perf_events/0/type"
++    echo 0 > "$ADMIN/kdamonds/0/contexts/0/monitoring_attrs/sample/perf_events/0/freq"
++    echo 256 > "$ADMIN/kdamonds/0/contexts/0/monitoring_attrs/sample/perf_events/0/sample_period"
++    echo 3 > "$ADMIN/kdamonds/0/contexts/0/monitoring_attrs/sample/perf_events/0/config"
++    PE="$ADMIN/kdamonds/0/contexts/0/monitoring_attrs/sample/perf_events"
++    FREQ_VAL=$(cat "$PE/0/freq" 2>/dev/null || true)
++    if [[ "$FREQ_VAL" == "0" ]]; then
++        pass "SPE event in period mode (freq=0, period=256)"
++    else
++        fail "SPE event must use period mode (freq=0), read back $FREQ_VAL"
++    fi
 +
-+static struct kunit_case spe_parser_test_cases[] = {
-+	KUNIT_CASE_PARAM(spe_parse_case_test, spe_parse_gen_params),
-+	KUNIT_CASE(spe_split_record_test),
-+	{},
-+};
++    STATS="/sys/kernel/debug/damon/perf_stats"
++    if [[ -r "$STATS" ]]; then
++        cp "$STATS" "$RESULTS_DIR/perf_stats-before.log"
++    fi
 +
-+static struct kunit_suite spe_parser_test_suite = {
-+	.name = "damon_perf_spe_parser",
-+	.test_cases = spe_parser_test_cases,
-+};
++    echo on > "$ADMIN/kdamonds/0/state"
++    sleep 5
 +
-+kunit_test_suite(spe_parser_test_suite);
++    STATE_NOW=$(cat "$ADMIN/kdamonds/0/state" 2>/dev/null || true)
++    if [[ "$STATE_NOW" == "on" ]]; then
++        pass "kdamond with SPE event is running"
++    else
++        fail "kdamond with SPE event failed to start (state=$STATE_NOW)"
++    fi
++
++    if [[ -r "$STATS" && -f "$RESULTS_DIR/perf_stats-before.log" ]]; then
++        cp "$STATS" "$RESULTS_DIR/perf_stats-running.log"
++    fi
++
++    # Stop explicitly so the final snapshot covers disable -> AUX drain ->
++    # SPSC ring drain, rather than leaving that path to the EXIT trap.
++    echo off > "$ADMIN/kdamonds/0/state"
++    for _ in $(seq 1 50); do
++        [[ "$(cat "$ADMIN/kdamonds/0/state" 2>/dev/null || true)" == "off" ]] && break
++        sleep 0.1
++    done
++    STATE_NOW=$(cat "$ADMIN/kdamonds/0/state" 2>/dev/null || true)
++    if [[ "$STATE_NOW" == "off" ]]; then
++        pass "kdamond stopped after final drain"
++    else
++        fail "kdamond did not stop (state=$STATE_NOW)"
++    fi
++
++    # Check only messages added during this run, not stale boot history.
++    DMESG_AFTER="$RESULTS_DIR/dmesg-after.log"
++    dmesg 2>/dev/null > "$DMESG_AFTER" || true
++    DMESG_LINES_AFTER=$(wc -l < "$DMESG_AFTER")
++    if [[ "$DMESG_LINES_AFTER" -ge "$DMESG_LINES_BEFORE" ]]; then
++        NEW_DMESG=$(tail -n "+$((DMESG_LINES_BEFORE + 1))" "$DMESG_AFTER")
++    else
++        NEW_DMESG=$(cat "$DMESG_AFTER")
++    fi
++    FAIL_LINES=$(printf '%s\n' "$NEW_DMESG" | \
++        grep -Ei "damon-perf.*(fail|warn|error)|WARNING:|BUG:|Oops:|lockdep" || true)
++    if [[ -n "$FAIL_LINES" ]]; then
++        fail "no damon-perf failures in dmesg"
++        echo "$FAIL_LINES" | sed 's/^/    /'
++    else
++        pass "no damon-perf failures in dmesg"
++    fi
++
++    if [[ -r "$STATS" && -f "$RESULTS_DIR/perf_stats-before.log" ]]; then
++        cp "$STATS" "$RESULTS_DIR/perf_stats-final.log"
++        pass "debugfs perf_stats readable"
++
++        stat_value() {
++            awk -v name="$2" '$1 == name { print $2; exit }' "$1"
++        }
++        for counter in callback valid enqueue dequeue match update; do
++            before=$(stat_value "$RESULTS_DIR/perf_stats-before.log" "$counter")
++            after=$(stat_value "$RESULTS_DIR/perf_stats-final.log" "$counter")
++            if [[ "$before" =~ ^[0-9]+$ && "$after" =~ ^[0-9]+$ ]]; then
++                delta=$((after - before))
++            else
++                delta=""
++            fi
++            if [[ "$delta" =~ ^[0-9]+$ && "$delta" -gt 0 ]]; then
++                pass "AUX pipeline: $counter delta=$delta"
++            else
++                fail "AUX pipeline: expected positive $counter delta, got ${delta:-missing}"
++            fi
++        done
++
++        enqueue_before=$(stat_value "$RESULTS_DIR/perf_stats-before.log" enqueue)
++        enqueue_final=$(stat_value "$RESULTS_DIR/perf_stats-final.log" enqueue)
++        dequeue_before=$(stat_value "$RESULTS_DIR/perf_stats-before.log" dequeue)
++        dequeue_final=$(stat_value "$RESULTS_DIR/perf_stats-final.log" dequeue)
++        enqueue_delta=$((enqueue_final - enqueue_before))
++        dequeue_delta=$((dequeue_final - dequeue_before))
++        if [[ "$enqueue_delta" -eq "$dequeue_delta" ]]; then
++            pass "final ring closure: enqueue=$enqueue_delta dequeue=$dequeue_delta"
++        else
++            fail "final ring closure: enqueue=$enqueue_delta dequeue=$dequeue_delta"
++        fi
++    else
++        fail "debugfs perf_stats unavailable; cannot validate AUX data path"
++    fi
++    # Cleanup happens in the EXIT trap (restore_damon_state).
++fi
++
++# ---- Summary ----
++echo ""
++echo "=========================================="
++echo " SUMMARY: $PASSED passed, $FAILED failed, $SKIPPED skipped"
++echo "=========================================="
++echo "Results saved to: $RESULTS_DIR"
++
++if [[ "$FAILED" -gt 0 ]]; then
++    echo "Overall: FAIL"
++    exit 1
++else
++    echo "Overall: PASS"
++    exit 0
++fi
 -- 
 2.43.0
 
