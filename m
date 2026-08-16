@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1777C5B572
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:49:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53AA3C5DF66
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 22:49:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C79F16B08AD; Sun, 16 Aug 2026 18:47:51 -0400 (EDT)
+	id E76456B08AF; Sun, 16 Aug 2026 18:47:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C51C06B08AF; Sun, 16 Aug 2026 18:47:51 -0400 (EDT)
+	id E4E946B08B1; Sun, 16 Aug 2026 18:47:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B400A6B08B0; Sun, 16 Aug 2026 18:47:51 -0400 (EDT)
+	id D63986B08B2; Sun, 16 Aug 2026 18:47:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EF256B08AD
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:47:51 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DB3D2A2FEA
+	by kanga.kvack.org (Postfix) with ESMTP id 6300E6B08AF
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:47:53 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A8D6E805DF
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:52 +0000 (UTC)
+X-FDA: 85108621584.26.CB7F420
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+	by imf12.hostedemail.com (Postfix) with ESMTP id AFFD740002
 	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:50 +0000 (UTC)
-X-FDA: 85108621500.18.765F24E
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 0156B20004
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:47:48 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="R /D9hrJ";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=cMcHegD+;
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="0 EkC16h";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=dghigcQF;
+	spf=pass (imf12.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786920469;
+	s=arc-20220608; t=1786920470;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RDFiXs9UFefjDWAntFW6mYoilxTkA+zz17UfIDflfSQ=;
-	b=aDRn6TATUI0ThY3hmVjVSUgpv8sUXSOi6CkJf8NHuqCSwUNS/ZaTty5QtaftXBaI7Mbq+7
-	kteEU78PgDg88YwpZaQ9QtubF8KcoX5BzGsFU9UmNcbtTxJOxq4xRW1kZSXzIE8mOGGRIY
-	v3t6O9Xsc4yiIM60b5MmVgApag+yd28=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="R /D9hrJ";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=cMcHegD+;
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	bh=PyXPtjPVYE8Z0aMRtUKX037WUeKGrSifkaLdS3sKWUk=;
+	b=y3thKj4pzWfiibyI+AMX15sQpBCixK2Pg7hbLuohMlSuBBFohQlFtXsY9SBR4xK+s5LTvp
+	nXpXGsc/vf4XRipEqzhNHWRWp1fLQ8hR10vs2krLC8HbDTEBSL3f7Is+P4U7dw3VG6kjux
+	NRIGLj9U1nA7OdBay08VBUR+EnUoT4c=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786920469;
-	b=jNMmSWgBGpJuy3Z1S4IscWSsTI/DhPbpuF3UVswNyfzHREgWV+XEvVgec7H4ECGmH7+cho
-	Furi5oW76om0/dEICnRGqZNjho44Lt/lHrS+34CKVU9KbYmOgM2G33h0nLq9ALjVLWhjXm
-	2G/D87QGjdPSLx6n3saMN0uwC/E+2fw=
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 918E714000FE;
-	Sun, 16 Aug 2026 18:47:48 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Sun, 16 Aug 2026 18:47:48 -0400
+	t=1786920470;
+	b=aDgzhzA0ctWZVm6YYaWyxg17ieW8LI1ZlNh/xl7ROuHlZJaUk24oa+JuKJp1/E8FZgs8tI
+	p70Qr7vfPeFMMSWlzEZRcLCOptTfG/EUVn5UMOvLhGyb/CyF6JyypTTJZkdfjvgU/324Qd
+	wiM646aeMuqe34RR7MxjXVULkW+Enxs=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="0 EkC16h";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=dghigcQF;
+	spf=pass (imf12.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id 4ED26EC0235;
+	Sun, 16 Aug 2026 18:47:50 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Sun, 16 Aug 2026 18:47:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1786920468; x=
-	1787006868; bh=RDFiXs9UFefjDWAntFW6mYoilxTkA+zz17UfIDflfSQ=; b=R
-	/D9hrJ/A6K3alQkubIQewlCsyxKk99E71DYl22d+XE0UTS8oqhOmPEXALqrmtPT+
-	fhuQgCJdw2MUES2F9umkeZgwgY7Q+WO2UprI3k8gGgT9QVoKAYH0w2Yrx3UOpMRK
-	T0EH6CMchU5fZMIz+NZ7j8tTZ0ons48Jar8nhm4n4gHQPLkgbj6fAW6o25vFywcN
-	f7ZtVUKrem5+kj6u9Jezo+JKRRKvfGWl1AtB9D598iwPDoetjHIJBonwWcHev36V
-	fpQ2h5896OHtH4/c0B1nLJ+qk+2/ePN4qBAyPZqaVs1L0VusKect+tsF/9Topjf5
-	cYlwFEB4mSG/xDuea4zLQ==
+	:reply-to:subject:subject:to:to; s=fm1; t=1786920470; x=
+	1787006870; bh=PyXPtjPVYE8Z0aMRtUKX037WUeKGrSifkaLdS3sKWUk=; b=0
+	EkC16hOhVsqh30c3Myj5XL1qP+K3wPn+xQsGWQHAIoL0MoTMTirS5zrh9jwW26t2
+	fBAEm/dy2wTAwkB/h3ZE3kSUvy9x/4nvh1q27BabBNosXddL+HpAY6fRpJu3BipR
+	8iqy3eHg6CeNMcQeurXur8Xo7z2x5a/ggI37tXw+K9PtbYpcZmV78hM9IvvkRE2R
+	sOeKu+Tgb9UbXSGTfTBeKA659U+9g9mzfmac24WxtEmGHmzOq0bDGXyXmdcu1z5l
+	cl7cPp1RdfPSNbG2FPTMz9N/DF8rPTqKVf+YY96FVzgS3ay4WBA77eGAzC0g05Vd
+	832iL1c6w9+8FFo0LmIVg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1786920468; x=1787006868; bh=R
-	DFiXs9UFefjDWAntFW6mYoilxTkA+zz17UfIDflfSQ=; b=cMcHegD+siSteXceA
-	eORchYYJpRg5mkjZpTJ4wtDQd1qhM4icwlRxaOng9Siw3K5cRYYAp7ay9pM9UbSi
-	Crhn6tlhUd9aPwxLjlsga0sRqVLTa65D6RmWWVm0Z1/+jSLfVsxsGUFqZDtsD3da
-	VwPhwjZqGp4gyFSzD4nBVo39qToJWxBQlF52iv/0BRsc4m+s5VJF9th88pwnxahQ
-	zmSTYQb6PCLMAAiX1c1BLtjdxHH943hWM85tvUwHXmJNmBX3SXis9thMwQiemlzn
-	VFWqoNl1GjEteU5c4kuGSgUd1IXh7wV2yHsqdNjtc6VrqiO92KGGjP8LSgVjdJT3
-	3cy8A==
-X-ME-Sender: <xms:FD6Caij5zk7EHpJYk0SEVw8nfTitQEEu943h-uXF36WJ-orjngfDXw>
-    <xme:FD6CaoU7Ta24wJTMCQqNgdekAeNJJhvn77pjj6-pJD3HyDu4ao6fcLt0ktvzm9gwD
-    VxNGk0LL5lCDQiMmp1q35P8SAnkeAtm7STFPtRlp6v2tju2s1cGw58>
-X-ME-Received: <xmr:FD6CamLNxb6VLNY6dmwcc0n63rIkmfjVHsD-n-qava3lM2QLm4vFk2T0lmY>
-X-ME-Proxy-Cause: dmFkZTFX8QZ1Abcp//ElmtP0wYUsUMnb+KjPA544aOlJXhXcQAudkXa81C9Rj4L11ediC/
-    SYpDnD1LvcyFEAv2YFQNL3ReIx6t28G7cFOXvsWQqNdQRv24cIelnnbcWrHqur16sY2q+b
-    PHK84xbhjrx0R6ZFbdj3lDcQr+wbYteZ9PHsSvZgjQoovnxRkTlpJXxI+K+aK0DY9MqaWr
-    nM0jSjvJAOtmNeFdTIuI9VxKMOFqeJI9DUUNBafqnTlsaU2K5w1xy/oDJpRmozGKRfcEpJ
-    T4FDpTcqBKNo58tTW6I4nVl91YkYNyFfziYdH6IV5aj62MGBqsSUtSYZnaDODTOndFzTlc
-    EbUeQzhKxJEmsRwlRPWupCudTuURb990558e34xXePZqhKsdittFqFVB13AvKNBPn+zTIC
-    vmM4mIxGpPzx/nK894dSAKdZpvpkCU2McTpnHaRUIk0aWa95Ge9rfXUXULEztRAndnCYbt
-    4qD7P3eAyIA5OFPCP2oHhYFpAkBT0mo15kPYR7H5/b3GrpRM2b7kXKyktWAQ4dA2U9USmE
-    fM3n0gonMJM6KinITZmpApKtfVndLpnhEgoZeb0eJJWbRvyWRI94p3CA2ZvaB1HejNnPzR
-    Unmc2v7FvenSNzXmIHyeuDNm+B0nonswhiJxC0bKiq5ZtPtGImr9bjx9A2Bw
-X-ME-Proxy: <xmx:FD6Can1hoyC6PmwnR3KJ4dbo6AaCtxi4W6oWnQ3-zNUMuqfvESwEww>
-    <xmx:FD6CamARxPMeY605qB94pGmuSHRBTI814URQxpldxXLXdEAlV-iRxg>
-    <xmx:FD6CajfEmEZ_BSxer4SMt38i9c-XlD2tG1D68WIaL60-b1zGoTyJBA>
-    <xmx:FD6CahxK0UCDvcRAJW9wRSf3H34UNiXlP6VB0qkJ-OWmeTGneOr14A>
-    <xmx:FD6CagGoFvpkcKSU7TANtFqL-or-_aq0-dmKR8_hl6WToLkaPkCRXok_>
+	:x-me-sender:x-sasl-enc; s=fm3; t=1786920470; x=1787006870; bh=P
+	yXPtjPVYE8Z0aMRtUKX037WUeKGrSifkaLdS3sKWUk=; b=dghigcQFSuackbjpf
+	i8ccZXUzsilX+jOQyQEmxsRAaw5KlmG+++n/q8Szwyp9fj5VwwLmt6JWIVLJtQPx
+	9Z6z5+Rf/ctbSVUqrCVcu9kPxz3jn0iASTx1yvIRYNQGmvMMo4kC+KCy/MZyJasx
+	564WfCpnJnO754Ya6z0dxyDhnjiSYP8aYao3MoBpoIf1W26oSdF9j3YrbHzlyZza
+	JL4TYl/Rj1x3MEd+h/95I+G2hy9ObHkYRC3fw37KisBD9c7OLokNEIDSjvv0AGHF
+	bhsQO+QwiedX376TuXwmQ9L+MjMyO/QDazWFYKgr/eisS7+NypQvIdmQbbH9uSDG
+	z/IGg==
+X-ME-Sender: <xms:Fj6Cah6znDgsOUy0HJujMw9V-DLP_g-Au06B1xf2g5413AmFWBbeUA>
+    <xme:Fj6CakNtwNGlE1WSWZ3bsFDkwlkOGVFSx1DzGEJpiKytyC-zoJa7rmx-SN1YqtTty
+    VRiSziF0BE-3AIQ39ENR89hDdHAlMG5Te0rpcWwNt3bt4zdYIe9nX0>
+X-ME-Received: <xmr:Fj6CakivqmGiV_BgjEyop1zjNIFG6OzfOcwF55JGFQzMlGYZyGqn32gXbLA>
+X-ME-Proxy-Cause: dmFkZTGLjSC+Sq1mG4OxzCqJWZCyq6WBdNxixaUzytYe9+wGJyabxJMeXSGoSuAsbaseo8
+    j4DSEFeK04hDwZtES01hwyaQU7EBbvB2uUyGWGXfBIvFkincgAhOfMPuQIYJEtCVnAaSQR
+    A4Ax8HD1ONlE2jDjL1mVvD+0hWY7OblS1nu5BjF2+enir154N1oLAu20vju0M/bNfdRnaJ
+    kR8ssngVd0jx9kVZmvlOu6xrNJDHPkWuaI7duTsmkJWDtl1nRnZmYTu08hiimZvSmFoDki
+    6dltoqAKCLj0c9eKP1Vuuwv4Z4pwJTjTf79O9CtQykYTwcA2QZ7OKyC8oLqq7vFkYshLYo
+    e77wWWIENfWWfKsbKC1kP1m+OxwAAiqZx0bEjZKDuPeV22XOXIGcwfKRFV0FN1rHmveHL0
+    Y6ejQe4oFZtmmgdQW5dIGSQZXfyUU5nLR+TZExZg0Bcb/lQn5/6SQDajFLx0I0bg5ey1S5
+    VVBBbzfOElkCyYT+2y9mCdYY69R2UkeyosAzehBiW5C//ulhzKnXpLOIAglVsKGDLTD3qg
+    KWjxi/4iYNGoMuWvB6ZUWuS8mA+ypg9x4kPFB/Msx2X7Cx2DUJIV3qpyFE9KM1niesKiwc
+    ddPOQNpAyzTHzdRzd6gdnR6t2t+NbuyxnuFQ8diZkqJAQ06NMSk0cglrCNug
+X-ME-Proxy: <xmx:Fj6Cams0FNOh1GD8Ydq2e-VIyGp_1FTHjlRCAHwB7Nmusiyatap6kg>
+    <xmx:Fj6Cara0tyJyyCpiPelu4nA9b6aGIIX1r_LGNFdYODym4cq-O5ae2A>
+    <xmx:Fj6CatWTXFCoJdBX5juAF0XJwfnaoba3jx7S45IOl4BAYeS62wJfxQ>
+    <xmx:Fj6CamKkYL9Oke65FnGPHjt4PidGrdGaTMkREDtGPBhbghyAiX2v3w>
+    <xmx:Fj6Can-0wwsVr_1rTIf9ZV4E29WzY3A_VG4LbVZBfE7HVE10QoLzuQci>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 16 Aug 2026 18:47:47 -0400 (EDT)
+ 16 Aug 2026 18:47:49 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -133,22 +133,22 @@ Cc: baolin.wang@linux.alibaba.com,
 	mhiramat@kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	bpf@vger.kernel.org
-Subject: [RFC PATCH 49/57] mm/khugepaged: drop the mmap_lock barrier from __khugepaged_exit()
-Date: Sun, 16 Aug 2026 23:46:01 +0100
-Message-ID: <20260816224609.308019-50-kirill@shutemov.name>
+Subject: [RFC PATCH 50/57] selftests/mm: attribute collapses by candidate event alone
+Date: Sun, 16 Aug 2026 23:46:02 +0100
+Message-ID: <20260816224609.308019-51-kirill@shutemov.name>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260816224609.308019-1-kirill@shutemov.name>
 References: <20260816224609.308019-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 6p1arom476x7ezby37aye4ed6mmo1o8n
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0156B20004
-X-HE-Tag: 1786920468-350370
-X-HE-Meta: U2FsdGVkX1/lfPts7lcIbvY6VeaIdiZfmYh5U/aiF+YW5yX7RJ1MmlDcRvbDypt3b4dmWx3z2Q8PDxiLkpiUHBf+kIVyZGlu+zrFk4nwpIl6mIoM4ZLUy93wg+YZPO8jyY3in5Iru+u6pxnD/u/O/hZZdHRo5I1au4QJJMMfepUvtVjilY4MxR61IuU4ybmSsFx+T8ye0f0bAaRIIBGSkW66FS09+QDEcJzhv0n6jRdd2bwN7B/hG6Oxv2ram9rx5I5BiFZgh7XucOT/j3PrLt6weJ9PxHxgIOCntdDisMtZwIc9oM6Apxk2lkcqnrD8VackByCQDueSz/ckbrpIL84chN76+WLl/11EPVovywCgZyQ7F1CsaUfuCrUbLXNwe8beLn1vyZ0SehISuraFfPtwm0N7Gsk3kLNjWLPEi0ZqMvmi8QeZZbyPOWAQxMPY+8Fx/SbOUKIggZQZQRjXwA5/IvLocERNJEboHF+KIjGWNwQX5uKQJ5GWeS6rYJXhMMyHvXTEArg8+0Y39c7z6p9j22OwM8kjc3iy3xRB2f0XplPxMjr/Ft5VKpzC4VD3xGVt6saiiUO+aFOMazjXqwJxF8s31QkpVfNj0h8PWJjTJ+RpelabKIBZcka523xs4dWBHexpYPopCAbc0MW1wWxUaZi8nrvSe20EKQMJjL7Ju/1a9k5yMMBFeGEEQlyB27W7WkfOiUdUO4IIDnLvhcYRobbGc82DdSKpMu5D/QHDXQ0GC5Wp3DI7CM32xK9CB+KyAeDoPitJXeFyeYhKBE5kebmG0Vk1bMscuDgf+pF9Qkq+L7C6LPu2l7YgDIZKvkcx29CdlEi68aWxCVhocYwFBN+wBAhNRNxPTEPzVhYnUVT8Mgpk9CNStX6jaFp+WyOZzCm02PMQV5CU1HOW/U8mNaYtPaCIMBBRHBn1NoDqyrr1GRzGsMliKnkfKP5mDAAoXOMdaOuysnuaq9m
- fpFgiIQV
- PLYCoZf59rLHtPjr6kWrJ9HvHo+SX88L7uhPWlPiEIZ+5I0/M/xjNbhNM2X3JF/GcfVz8JDU3iXFRD46Bi/8lI6GMAzUDs631Z1c4KLPF0FEoXZw4XpmBLBa+mJxAgsV/I7SFk6SNbK1kIDm7Y7jp5V7RZtKSJtOiYGW6Dcz0YdJVq8IvDJXXKvt9RroaG443JEaOzXNZh8naSXvZ66lrdcPtt7aigncoYQjEJ6I7fC37G0s8OIsNzCitC9HH0/OKBHWLcMZ5hioqlOu/znuBHybdxlsEL8slKIHwV0CIdMbdDsKDfjW3zBeIdoU2wQabV8CQuGIoNOkVl8QJcXO7o+eLMLSKFS4yrXfScRFqGi6ULz1vGmWnnzByqySK/delfwcG5l64C33jQpwP5U2k7Qum0zWpPH0RtiOVjO1Ta+986Pkkw+n1Z+Ok4yYeuZGxm8ijXeHM3QJkuFC2INT+24MQATt2kmthkHjFRC7JEsbu1ZxKpn4ofTLgWw==
+X-Stat-Signature: i6fjj3tmozspdwu7xzhsj8inkb4unqid
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: AFFD740002
+X-HE-Tag: 1786920470-433908
+X-HE-Meta: U2FsdGVkX1/IP/O5D/vwtKvpdOLrk+q5UtSDBwz80AblAOivnJ+a61bMThUqibyjs8Zkp87yGNmhN5qOvtiwgnunYRdj8gUNPwOTrlEvCv5X7fn+3NqBK+p5P7kBqAndrWbT4eCyK9uoJUw7O+YQcXtdnZwBXaLXjWlUSidMjFOrGDEh+u5ZFZ1YEB4SYZXvSiA60ocHPwm8ltBbvNCGsRIRKcax4+qSAJ+4sbUfwccffXJFZVpOwjV18bvxRSW/r+YXlrFRf7Dk2IJ7FdWZSYjqJqz+89eqXdeX79uxH/lQCj4M/i8C3JicRq+dsc4+YM9GNkWaiorjZobqfrmc58nyYYaDkUkvxIHmENaEQkTqH6XYMx9uR7taFBSQXx+sivym4FQkOki4QuMXuYM21nf3vrQO6lVfWiBHpiuHsyu1oQXO/NAFyUdEmMo3WYwYrlwgtQgwg6W0pvc85g1ToaMKa1VZNKjm/+N7tBa0HjMCxE09/gtYAjCK0dhxz3uq8DVpNDNjWOz+vulP7M80bu5ebqVGgcosRGbnVm73sf2TsetFMvG3lopTdulDIKVOxkdq/vBOJ/TwgY/9RjE0pL8xmBgaHMJHC6pqIJWtn+Nk5ppuLXONwP463+FxDGyJQjPgqiIrN1WlI520l2s0QygoUzjOV0gtjST/IhETbAdIF/kSwqFukJbutY9/ePiojCdkdQfrGClgquJPH5T548reHbEz2QSA5e0kRFyWL01brRamtDHUR2/IFABSIiotjF81PZoV9KURxLY1KSHoceBRYfmED9UbF3Ch4lW/Ooq4ByBX7QODDhb4JihGsX3EQGINUGrQMAdYzCQxb86NLbKDhuQky7zNgiXtyuSwfgAJZ5upfdmMl0k0TVoDt7Sop/fT740DgpBrShkUf46xw/Tjenb2w8IPhFeAt/WDZEf8RG4aDEkk3LQMWrFZsayGxmyIkphCCJxAqaGi3xg
+ qxeaVid/
+ MZ7V/t/Q6y8Wa/LsdBXQRoq//YdVKyvW0WZp4adVh05EfmC9S69EklVlSQmel1pPaTiJJEwY2ERV42yeij2kIVa4Q7JOh/HRIJnner5/aFOwzgpZYqWEe9gObparAaPWMubM3lVXHg2hOF2Gr2lD6cY093AD5+PGfJ2MnIxVft/ozBXck2Xy0KqVkPWgZCrKBAc7RJGI+kOSdWZ0FKS0TOfi8RKODEYjy+4QszKDF6DV8wZp7jvs+yn64gWJlCCIiKsJkcD+bQd+pJxhmTygWs/NDLBrEuW0nQQYb2/prOmGnyUzb1AMFwQnrFdiRwUjplITGUb5u9cfXzlq9JA9Rk5JuIoZhfQhDP1TcshKca4kL9lNlkBQ57Ppv/nomAN25r5R5K4Rqs4z2wBvFLoFkmEUNt6PyjwUGWLDrs6Og/+GoS4xMuQeq3fx4EQobkIv6xiZsYbf7LMkwPvA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,41 +158,131 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-__khugepaged_exit() took mmap_lock for writing and dropped it again, to
-wait for a scan holding it for reading before exit_mmap() destroyed the
-page tables underneath it.
+The check counts collapses of its window by matching isolate events
+against the source PFNs it recorded beforehand.  That tracepoint went with
+the mechanism that emitted it, so nothing would match.
 
-A scan now holds a reference on mm_users for as long as it runs, so it
-cannot be in flight here at all: __mmput() runs only once that count has
-reached zero, and asserts so on entry.  The barrier is redundant.
+Count the engine's per-candidate events instead: an install that
+succeeded, at the window's address and order, is one collapse of that
+window.
+
+Preparing the window still checks that the sources are present, which is
+the other thing those PFN lookups were doing.  The recorded PFNs
+themselves are no longer needed, so the array goes.
 
 Assisted-by: Claude-Code:claude-opus-5
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- mm/khugepaged.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ .../selftests/mm/khugepaged_sync_check.c      | 55 +++++++++----------
+ 1 file changed, 26 insertions(+), 29 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 1d77d9a8046d..2b3364bdb100 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -434,16 +434,6 @@ void __khugepaged_exit(struct mm_struct *mm)
- 		mm_flags_clear(MMF_VM_HUGEPAGE, mm);
- 		mm_slot_free(mm_slot_cache, slot);
- 		mmdrop(mm);
--	} else if (slot) {
--		/*
--		 * This is required to serialize against
--		 * collapse_test_exit() (which is guaranteed to run
--		 * under mmap_lock read mode). Stop here (after we return all
--		 * pagetables will be destroyed) until khugepaged has finished
--		 * working on the pagetables under the mmap_lock.
--		 */
--		mmap_write_lock(mm);
--		mmap_write_unlock(mm);
- 	}
+diff --git a/tools/testing/selftests/mm/khugepaged_sync_check.c b/tools/testing/selftests/mm/khugepaged_sync_check.c
+index 4c37b697d3dd..2a0c247aeec5 100644
+--- a/tools/testing/selftests/mm/khugepaged_sync_check.c
++++ b/tools/testing/selftests/mm/khugepaged_sync_check.c
+@@ -7,10 +7,9 @@
+  * advancing by two is a completion barrier for one full pass that
+  * started after setup (khugepaged_full_pass()). Verify the pair gives
+  * deterministic, attributable results: one barrier step over one
+- * prepared window produces exactly one collapse attempt on that
+- * window's source pages (mm_collapse_huge_page_isolate events filtered
+- * by source PFN and order) and the window is collapsed
+- * afterwards, repeatably.
++ * prepared window produces exactly one collapse of that window --
++ * mm_collapse_candidate install events at its address and order -- and
++ * the window is collapsed afterwards, repeatably.
+  *
+  * scan_sleep_millisecs is set to 60s to prove the wake path: without
+  * the wake, one barrier step would sleep multiples of that and blow
+@@ -51,11 +50,10 @@ static void trace_events_off(void)
  }
  
+ /*
+- * Count collapse attempts attributable to our window: isolate events whose
+- * scan_pfn is one of the window's source PFNs, reported once per attempt.
++ * Count the collapses attributable to our window: per-candidate install
++ * events at the window's address and order, one per collapse.
+  */
+-static int count_attributed(unsigned long *pfns, int nr_pfns,
+-			    unsigned int order)
++static int count_attributed(unsigned long addr, unsigned int order)
+ {
+ 	char line[1024];
+ 	int count = 0;
+@@ -66,25 +64,25 @@ static int count_attributed(unsigned long *pfns, int nr_pfns,
+ 		ksft_exit_fail_msg("Cannot open trace buffer\n");
+ 
+ 	while (fgets(line, sizeof(line), fp)) {
++		char *s;
+ 		unsigned long val;
+ 		unsigned int ord;
+-		char *s, *o;
+-		int i;
++		char *o;
+ 
+-		s = strstr(line, "mm_collapse_huge_page_isolate:");
+-		if (!s)
+-			continue;
+-		if (sscanf(s, "mm_collapse_huge_page_isolate: scan_pfn=0x%lx",
+-			   &val) != 1)
+-			continue;
+-		o = strstr(s, "order=");
+-		if (!o || sscanf(o, "order=%u", &ord) != 1 || ord != order)
+-			continue;
+-		for (i = 0; i < nr_pfns; i++) {
+-			if (val == pfns[i]) {
+-				count++;
+-				break;
+-			}
++		s = strstr(line, "mm_collapse_candidate:");
++		if (s) {
++			if (!strstr(s, "pass=install") ||
++			    !strstr(s, "result=succeeded"))
++				continue;
++			o = strstr(s, "addr=");
++			if (!o || sscanf(o, "addr=0x%lx", &val) != 1 ||
++			    val != addr)
++				continue;
++			o = strstr(s, "order=");
++			if (!o || sscanf(o, "order=%u", &ord) != 1 ||
++			    ord != order)
++				continue;
++			count++;
+ 		}
+ 	}
+ 	fclose(fp);
+@@ -95,7 +93,6 @@ static void one_step(int iteration)
+ {
+ 	const size_t window = getpagesize() << TARGET_ORDER;
+ 	const int nr_pages = 1 << TARGET_ORDER;
+-	unsigned long pfns[1 << TARGET_ORDER];
+ 	bool collapsed, passed;
+ 	int attributed;
+ 	char *p;
+@@ -106,11 +103,11 @@ static void one_step(int iteration)
+ 	if (p != BASE_ADDR)
+ 		ksft_exit_fail_perror("mmap() window");
+ 
+-	/* Prepare one window; record its source PFNs. */
++	/* Prepare one window, and check the sources really are present. */
+ 	for (i = 0; i < nr_pages; i++) {
+ 		p[i * getpagesize()] = i + 1;
+-		pfns[i] = pagemap_get_pfn(pagemap_fd, p + i * getpagesize());
+-		if (pfns[i] == -1UL)
++		if (pagemap_get_pfn(pagemap_fd,
++				    p + i * getpagesize()) == -1UL)
+ 			ksft_exit_fail_msg("Source page not present\n");
+ 	}
+ 
+@@ -133,7 +130,7 @@ static void one_step(int iteration)
+ 
+ 	collapsed = is_range_backed_by_folio_orders(p, window, TARGET_ORDER,
+ 						    pagemap_fd, kpageflags_fd);
+-	attributed = count_attributed(pfns, nr_pages, TARGET_ORDER);
++	attributed = count_attributed((unsigned long)p, TARGET_ORDER);
+ 
+ 	ksft_test_result(collapsed && attributed == 1,
+ 			 "step %d: window collapsed, %d attributed result(s)\n",
 -- 
 2.54.0
 
