@@ -4,91 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88C4CC5DF66
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 09:03:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43513C5DF66
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 09:15:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D0F46B039E; Sun, 16 Aug 2026 05:03:21 -0400 (EDT)
+	id 26A106B03A5; Sun, 16 Aug 2026 05:15:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 781CC6B03A2; Sun, 16 Aug 2026 05:03:21 -0400 (EDT)
+	id 21BBE6B07FC; Sun, 16 Aug 2026 05:15:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 697C96B03A3; Sun, 16 Aug 2026 05:03:21 -0400 (EDT)
+	id 131846B07FD; Sun, 16 Aug 2026 05:15:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 436626B039E
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 05:03:21 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 265AD1C17E7
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:03:19 +0000 (UTC)
-X-FDA: 85106543718.12.08DC0A8
+	by kanga.kvack.org (Postfix) with ESMTP id E55546B03A5
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 05:15:31 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 74AE31C1825
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:15:31 +0000 (UTC)
+X-FDA: 85106574462.04.BDCB252
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7ADAD140008
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:03:17 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HhlJuTsS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id D36641C0002
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 09:15:29 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lVgxsH+k;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786870997;
+	s=arc-20220608; t=1786871729;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8dRSSX2JAQZgwWhR5q7ZovzbG0pw2Sc7JhH34Ynua1Y=;
-	b=qpBO8clTt3pYDA0H7/NwggCWL1FxQEKc0Vw5ciJ7HMbKaJYdLwDCxcP31BXoIk+hlEF9By
-	50o6HVWIqEtyVxniBQfy0AMq7FU+2T9XNilkXBglmDaGFKQ2C6xKsCCh+XT70xWTT/5qPF
-	cclTNEM49y6ogLCRZbyUrL/WEQF+WSY=
+	bh=2VGe88VAgYCJFGRjViK7Ut9gr8nKRTBvPXPBjJG3Wcc=;
+	b=1yXIOIiqP6tiS1Ie4WtnqERrCgfTaFXNaUw8go0XvumuRwaBt/2sJnUnaovab8WEJ68bPt
+	aXmqbwvyNBVu3hEx4EbF+xsSOi+esDLzP4gBM4bSOeowtilBEheR+LUsA3VWqAnToE2wxl
+	GvKrgRwxqTi4wL9Ms15ThYGKzNMBSdY=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HhlJuTsS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lVgxsH+k;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786870997;
-	b=YkbToHGTTq0Rny2EZ4sIKwSjGsTLUW4pNNZ8jJiZNAGGM7NBRg/cirew5kKmwJHlQGmszb
-	PPgBzR0zq4svuKFo82i6vT5oQhZMWgks82BcVu0Sa19ujFCqKzTRml1tQXYHSHKqpkGamU
-	BED1um7JOcWIby7/OiweUSOgXCxNluM=
+	t=1786871729;
+	b=w6HW9+YI6WdicHMXbziAgsWIZ5x7qU4cp0CGVKvUYioAGbmsi+c+EvOh3+rwG3yqVw9cLT
+	uHjcYP5vPawLgJu4psdoQvx8NiWCB7bpc3yMTdbx1pHOvYNBI1usezFCP4mWwjyqqCjAyy
+	v/46we9+gfPxkSh3gwfPXa73MS6Xxq0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D0C5D40962;
-	Sun, 16 Aug 2026 09:03:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC681F00A3A;
-	Sun, 16 Aug 2026 09:03:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 04A5E4178D;
+	Sun, 16 Aug 2026 09:15:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9134F1F000E9;
+	Sun, 16 Aug 2026 09:15:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786870995;
-	bh=8dRSSX2JAQZgwWhR5q7ZovzbG0pw2Sc7JhH34Ynua1Y=;
+	s=k20260515; t=1786871728;
+	bh=2VGe88VAgYCJFGRjViK7Ut9gr8nKRTBvPXPBjJG3Wcc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HhlJuTsS9etJriQhma1EQG8iRFbEildqNTcjp8UrZmjCy1Y5uyZVhxDqZ2UN7jX45
-	 /UmEPju6KkW9SBS0sH5Ao29HbZ3Z10Qj2m51ct1m2ZQdSxr52E1SOmc/9PSmIZ5wDb
-	 yRgDcOXTgeBylHjxFIR/piJvlU9UmKKSX6aYLaeKITrReJxEZvEgDvnzqphs8kRwS0
-	 J7NCjjOaJ6NbSIM4WTO4+qJMk8FkR0qvpthCeYfRt3PDxuOPZj/PgdnKVEsnwEj/7z
-	 pMUB8xnDnnAlObV5tuwZEQrEkq71yXpl+HpnF+51DEptXpjFV4NruVV3/cD2WR1Cbl
-	 43c1uP2lb/vHg==
-Date: Sun, 16 Aug 2026 12:03:08 +0300
+	b=lVgxsH+k0osth/xM2LJKAeiCBWztelADf/krHPlTt8D3crtjONIb/b4yVelO1OK49
+	 EDxFptWQ05JYmd2xZIy9oC5cPLpuK1A6bzYylLM86CN5qI7kIyHeSt5tBGP78PAGcG
+	 psDXjlVZZfLrZwPh+b3crqrr7/p/bvs4pRanOMcBbEYa89Ag6AVB5KM5+iFzyPTekX
+	 xK3Fe+jjPQXrAvE2YwhMG2uL89F9f5PuIpibEmsLEn3GEoTNAiMzDZO20kYWVZnqgN
+	 V5fPacuNF+444XAaIf+WC5qAjSypuUdzQFZHyExvFI2shLenc1iuy+MhloA9g3JG1h
+	 bRJE5xUgCMGDQ==
+Date: Sun, 16 Aug 2026 12:15:22 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Maxi Saparov <maxi.saparov@gmail.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Evangelos Petrongonas <epetron@amazon.de>,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, sdimitropoulos@coreweave.com,
-	Maxi Saparov <masaparov@coreweave.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] kho: do not reserve scratch memory in the kdump kernel
-Message-ID: <aoF8zPXiKpjt2Nsv@kernel.org>
-References: <20260803193938.8778-1-maxi.saparov@gmail.com>
- <20260811161857.3096-1-maxi.saparov@gmail.com>
+To: Foxie Flakey <foxieflakey@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, peterx@redhat.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] userfaultfd: reset err to be 0 when move_pages_ptes
+ succeeded
+Message-ID: <aoF_qmSHiEgujaH5@kernel.org>
+References: <9c936a9f-ed27-e510-872f-5b3b8c680975@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260811161857.3096-1-maxi.saparov@gmail.com>
+In-Reply-To: <9c936a9f-ed27-e510-872f-5b3b8c680975@gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D36641C0002
+X-Stat-Signature: 8fskxqat1z6zkfue6otrwjxra7gbkb6r
 X-Rspam-User: 
-X-Stat-Signature: 8639p6j1rnth5tizpjrgf3bh3rpsejf4
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7ADAD140008
-X-HE-Tag: 1786870997-888352
-X-HE-Meta: U2FsdGVkX18ser4P4XLIuQNeZiFnuwrDZlcg0rbqicV+GxV7E8e4CqHpmIdEJIo3xfP0TAf/l/eV8KQcpJ6/5F98tFO2yk6HAwcXMQiUGqdqd/u87yV3Ro3Uhn1KQtwW/R67MO1H0mAfOgZngZlJDBOcB8ga/Ey7Yt5tth79+2tE0tW+KnekrX4/C6U5uov6wNB6vxU8K9xVroZQZvKeB1lEoA7LzgwrQ5an+OT9b7QqgRlpLOa+n9SZ05j2MjJfbeHb7zhArqvn3kFndiN/HdcYDGm47CIbmk7J2AUBJ4BU/MGadodTZw46Ede/3ugmOAq8pMy1qben2LubTj06TqJHNVBnyqhByb3RuIBZia0t66BdbpCQAZGdrf4ajEzYj9QOGR6EVYr/msEwmQ6j6r5DdSGVmJiEtRihnLZgkSng0zIodafo6BasWopjSD+vBx/hjAEF5zLSI/f6mOsxYnKQ6eVOntWl8Z7CcWTO5YJ8roV26j7OVzQLyflDqRjii6Z884wwLhe2dQSWltL9FWh8JAC3TrXZMxFvhFf6Svrrm4Bmko6Zy+zdge2Ltm2VcqnUIAaeN8l2Mcm/SmRn2cfoDN5CynCAp4FDMMGZgsfk2dobx6kO+ecBp9az4K2U94J4ZZqx8rhT100+1H6DJ9O87Rb4GAmAEQ5205hcCAJ6CqkJSayLME24zdn1SNP9BeWch0D4dVGyj2/COpE3BOpc3PZkJqK2fKgU1z26+5BGtCehZ5XdCYrFLFBoAUmLkDVsAVHHnR7sb4ifwCmybT3Sdz26h/HjUkLNKTJO4wPpW9sjA8n9vJNPNyYy2V2SdiIlw2Eh04u2S+KCJz3V4fqXZ6Z/n5uxKSkVI1jbdi3kvK80N7xd5ocmW5JjUDLrLN+D3eOHfKpfkjCH7PKwMctRM3HbtBfF0hWknjO0kIPVb92uJpvbnDePI8ImlUwFCMeeLlprGO3rkcZsY0m
- waKDLUAZ
- gANS6DZfDCgZ3NHv60GhNhOxKV8dLTHVqDrNOdqiYP9MfNAAMMPZcn+SQh6obnOU1Fab5nf3J4yl76PjkIUJLnR7MFjue49Ob0JmbMw6F7LTTLlEnb0cdd2kt9YZBqw7MU9PXNiJqXSaqz8UwGhIBh+XVEcZyrPtKBBXrgKnXqaENgbC5rxdcY30Ve0/mevKEmSKr9jtKmijiuG4w1nA/Ej98/O4qdcwupSzOr1ushBIIu3yducpQSrUWFfUCuVQGMD1nKTx/H0VbMNnlArwwS6Q1CiRLAC7J/fYeCDdQ9aW0Epasf9OelUomk9ZxQAoOHNhjvdA6hRNqThgzvr/r6ZmveT6BmYEVA3DSdkGHOPgUP5zD/7a8MS4I5ZpZRk5e/0needIBCMCOiIvAgTK8/wAfZFj/rlkYhZln4SMG42sx597htE2gnw9+Jg==
+X-HE-Tag: 1786871729-831307
+X-HE-Meta: U2FsdGVkX1+hWZttNa7gR2T8iwiRlnyuxqCwBtRyPZKy2F6NNjgZhdrcRiSxzENvzHN4+oUwlct/LJsFW24rEpVA9uYZ7dYZzwWoOhgIZh8e+enf/FAf+eMPdfFc4F3tWPIM+vMRlAwWwjJMHWNz9L7sKKclzHoTJK5XCqeiOIF5ntLG6A5ObqW17st0QPJ2eWfydZxDiVtTCSGZ/l1SniqtcB1bkfTT0amioTOcPiCqFmkhVNtiObHyh0+R+euvSh772uVOmzQpkeDHbhqDbXD4or6mBhNQ+JGP2+B0fF4OvFrEPwxh3uaPxu97NvdOQAsF6O3I47Rb/hJnDZczQ8h6hQgrmlhRQS6uDucDLx5ZD47CzXK+5DObyxmFigA6c0tdTjgu/Knh6y4Sky2VqsdKukPvDg/TPmuU/N9ArpF2UvUMJvk4y1CLtoJ45vt+KHakaUdEJFeeacUbtAYMxTEULrAoDCIHVdz5dJNLdwyKZ2URAs5+aps9ZV8eWtPFwJao5CZ35c7yYjzHp/gmwoRHlyTsO6t/eNkU5edgXyuj8zDwM2ODOKDVbC4/m+eV6Yk0yXeFgsJV3G5NiQ6rnUT9x8O3yc7/193v7RcXuyQyk97T0hhhrwURj8j1koGW3ZLj9ga5r2hc7GQV49FS59RTCxwuZC6KjUUamwxNoO8G4veRlQA7xyk69HGAtQhxtxRMjbOVPfNbSOjGGtxdvs5x+uvpBRYVBkEhMh3LUyHOHXKQDW0DQZkOocWuBk3wD4zniq+LmreATdlNEc7MOLPaDKVRN1Oqb42Ib/VpfztCSkpBAYh3lbBPNListmUn0NeW++TL8FNBMsVhup8fqW6dCF7zimhawbR51obMxmMaO/Wc7AoXhyE/JUpzlLe5JREiVqaNVpHZFEGkcj+jMReVAogcj6DIG4XnjR4OeoUOqy7Zvw0ZrFjSBwZP2kPFnbQrjKlYopef4/HN7Bz
+ aphj13DB
+ b1X+iP37sBS/MCMJiH0Zqg3Eq9OUMj3AECJWci7ffiDmoZLmCIEI3Xc+WXFtV5SUxiwg2akuBoFEXm2Z1X0khhWo23fXuLdz2h08pTrMrkAwDdzsKvbAqoL9b786gwiV570wZdt5r5lh8mFe+bYpn1A8NfqIiW9d6fVtpuBxKxxKd2yiHshDwyLgiT6AjFD4AG2mds31RV2H4UlDuUopEl9rc+oqUBicRGGAoB7mF8FWv8zufvnUW28iSB8Y5MguGSB4Br9lMRRR+bztl3VDf0p5/gm6K0un3QAAn++93zia7x7AXJkYLCWU5Ysf6kVTk65yY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,48 +92,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+(adding Suren)
 
-Please don't send vN+1 as a reply to vN next time.
+On Sat, Aug 15, 2026 at 05:42:12PM +0700, Foxie Flakey wrote:
+> 
+> An fix for edge case can occur if move_pages_ptes return -EAGAIN, later
+> when checked and it is EAGAIN, outer loop would retry again on same page
+> and succeeded but the err isn't reset so the outer loop would think need
+> to retry again so it goes back again and move pages again. On third attempt
+> move_pages_ptes will fail because it already moved and returns an error
+> that is not EAGAIN when outer loop checks again it sees non EAGAIN so it
+> dont retry and break out of loop. When loop is terminated it did not update
+> the "moved" variable from successful 2nd iteration.
+> 
+> That behaviour manifested into this at userspace
+> 
+> Source:      [ .. unmapped  .. ][ .. mapped    ..]
+> Destination: [ .. mapped    .. ][ .. unmapped  ..]
+>                           ^     ^
+>                           \     Kernel moved this far in actuality
+>                            What is reported to userspace on struct
+>                            uffdio_move's move field
+> 
+> When the previous behaviour is
+> Source:      [ .. unmapped  .. ][ .. mapped    ..]
+> Destination: [ .. mapped    .. ][ .. unmapped  ..]
+>                                 ^
+>                                 Reported to user space via uffdio_move's
+>                                 move field
+> 
+> Fixes: 50944692052b ("userfaultfd: opportunistic TLB-flush batching for present pages in MOVE")
+> Signed-off-by: Foxie Flakey <foxieflakey@gmail.com>
 
-On Tue, Aug 11, 2026 at 12:18:57PM -0400, Maxi Saparov wrote:
-> From: Maxi Saparov <masaparov@coreweave.com>
-> 
-> If a kernel with CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT=y (or kho=on)
-> does not receive a handover FDT, it reserves KHO scratch memory in
-> kho_reserve_scratch().
-> 
-> The kdump kernel always takes this path. Since commit a6715d7ec472
-> ("kho: skip KHO for crash kernel"), the kernel does not add KHO
-> metadata to the crash kimage. As a result, the kdump kernel never
-> receives a handover FDT and always reserves scratch memory.
-> 
-> The kdump kernel boots in the small crashkernel= memory reservation.
-> On our x86 hosts, the kernel and initramfs make approximately 176 MB
-> of early reservations. The scratch areas then use approximately
-> 650 MB more of the crashkernel memory. When a large early allocation
-> fails, the kdump kernel panics:
-> 
->   bio: can't create integrity buf pool
-> 
-> A kdump kernel has nothing to hand over: its only task is to dump the
-> memory of the old kernel and reboot. Fix is to disable KHO at the top of
-> kho_memory_init() so that the kdump kernel does not reserve scratch
-> memory.
-> 
-> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Maxi Saparov <masaparov@coreweave.com>
-
-I queued this patch for v7.4, it'll appear in the liveupdate tree after the
-merge window.
+Is Foxie Flakey your real name?
+Signed-off-by should be using a known identity (sorry, no anonymous contributions.)
 
 > ---
-> v2: Move the kdump check to the top of kho_memory_init() as an early return.
-> v1: https://lore.kernel.org/all/20260803193938.8778-1-maxi.saparov@gmail.com/
+>  mm/userfaultfd.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 > 
->  kernel/liveupdate/kexec_handover.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index c3adedaaf7d5..595e7e232f90 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -2069,10 +2069,12 @@ static ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+>  			ret = move_pages_ptes(mm, dst_pmd, src_pmd,
+>  					      dst_vma, src_vma, dst_addr,
+>  					      src_addr, src_end - src_addr, mode);
+> -			if (ret < 0)
+> +			if (ret < 0) {
+>  				err = ret;
+> -			else
+> +			} else {
+> +				err = 0;
+>  				step_size = ret;
+> +			}
+>  		}
+> 
+>  		cond_resched();
+> 
+> base-commit: 62cc90241548d5570ee68e01aaba6506964e9811
+> -- 
+> 2.55.0
+> 
 
 -- 
 Sincerely yours,
