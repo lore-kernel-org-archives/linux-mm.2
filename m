@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92A5EC5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 11:29:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 055ADC5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 11:29:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 874DA6B00B2; Mon, 17 Aug 2026 07:29:40 -0400 (EDT)
+	id E8F5C6B00B8; Mon, 17 Aug 2026 07:29:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84C4C6B00B3; Mon, 17 Aug 2026 07:29:40 -0400 (EDT)
+	id E66EC6B00B9; Mon, 17 Aug 2026 07:29:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7891F6B00B8; Mon, 17 Aug 2026 07:29:40 -0400 (EDT)
+	id DA35B6B00BA; Mon, 17 Aug 2026 07:29:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 585F66B00B2
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 07:29:40 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DB1151A0741
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:29:39 +0000 (UTC)
-X-FDA: 85110541278.05.C2D92FE
-Received: from mta1.migadu.com (out-126.mta1.migadu.com [95.215.58.126])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D0A5340007
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:29:37 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FQCDfwQ1;
-	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.126 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B73676B00B8
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 07:29:58 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4FD56A074D
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:29:58 +0000 (UTC)
+X-FDA: 85110542076.30.2AB75B1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B8B6A18000C
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:29:56 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ORlYguyd;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786966178;
-	b=Ne1BZCck8s8u5HelXrRiVlOay/A7PVoojRjqIrFtJky+5gzlrXGimVWl7/FQkD5MKN3s8p
-	GAPEQIaOB14ZNBMEZ+p2TiohXrdTdgNNtcgl9g4YjpiKaFMjvAW1eSC87134sKXifgetZL
-	EAh0oS+LNHrE44YZcKlgHNbkMMbFh+Y=
+	t=1786966196;
+	b=6lE6k4y6jyQ31rS1IfqNyKtV1rV88J4htjfMxBA+4DZa0wfB5KzU/LYQyN/WFLGeDhAQlH
+	/U2xxGTdLdMLFTtMaf5yhB9UIrAvnCBKgi2VHyNBmox9F6bxmmGdvDB2QHc1khRQhoBune
+	VCjE25sbSWNZd/ciTKbiCr56rrd/G8k=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FQCDfwQ1;
-	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.126 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ORlYguyd;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786966178;
+	s=arc-20220608; t=1786966196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wCVHFjCoJCDhU8nWVYdXDPl3Sitt70Cj77o6Y2o/XqI=;
-	b=rcghyBokHXlxU+282iOW1enrX3OE2AC+yM6yES6kkbDmq+Yt7KqeTY0plIecXyhSJrjxQv
-	IrAlRm5Fw2/DH3f3IWIzOJcMRsDmKeKWcZNWnvinuZOqVgX7Qx2cggOkH9OhFWPrt0K/KU
-	RyxEzB592pESRQhLNrWHQaO5tyBavNU=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=wCVHFjCoJCDhU8nWVYdXDPl3Sitt70Cj77o6Y2o/XqI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786966176; v=1; x=1787570976;
- b=FQCDfwQ1gMFZvJTCmRxfcnZ1UflzOtz5jlvblwxwSyFXRiFSGWtv31KaZ+QxLqIqWfN4sqKq
- XqENtP4ExSoGef0V9XdK84LSJy+/QVR8mnLVgHYLXsskcfRB4n5xReDjDEPF2Abz2ogCkaMH3f3
- ZqEglMhOyUmTygQf/Oh/2iqM=
-X-Envelope-To: linux-mm@kvack.org
-Received: from [10.4.50.126] (221.194.171.228)
-	by smtp.migadu.com with ESMTPS id ba7939d909808a56;
-	Mon, 17 Aug 2026 11:29:36 +0000
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <c13d13b9-6f2c-4550-a1ef-7e5e1c1c2777@linux.dev>
-Date: Mon, 17 Aug 2026 19:29:25 +0800
+	bh=Wk6/msOLkPqq9kd6J2GOV67X9aJwFjjT0QFc8AOwr5I=;
+	b=UHNtYbIE04LRoleuaspZMmQ2NuOhFkyXKMEXBcHO4JBGkuluYrkmdKJSmkW0KwI+a02/AX
+	+s8mm+2hOZWjdWGoQJkZusmWT0jkcBX4rl0+jiYPRWw98HUp4vazwQ31FN6FHbgpyJdODw
+	P0GSHCamCNCYW4XWbMg06kCw38TYkog=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CC0F0601DE;
+	Mon, 17 Aug 2026 11:29:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FAE1F00A3A;
+	Mon, 17 Aug 2026 11:29:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786966195;
+	bh=Wk6/msOLkPqq9kd6J2GOV67X9aJwFjjT0QFc8AOwr5I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ORlYguydCtGjM0ZGc6Q37mpzAF8U6ZpfF5KNK6tAUxrSoOhX10STX+1skMKZKDm5i
+	 AGfIQVHAYoUq8epEvTMX+9yWs+FxIvy06zE61Q2ZlgEsH7qhw7uiMY5uXGyETfEijJ
+	 q+yzVFoClbd+qo5oaaJmCQaFtpebVobItsUPgwf+3N2uqcvgQnklIRZaCYIZJykJri
+	 cH/4BKJUQELV/aMGQv/o8En9kGTirvTnV/5PLtmZJ5y3WHsrfeyckejvXaIIt92Bo7
+	 VtagPINO1BWPjZiN3XatD6BIh6SGwpnph88kJi+/xCohJC+5uSzVfItOfAm6hrI+Qo
+	 9GSDpHINrfJXA==
+Date: Mon, 17 Aug 2026 12:29:36 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Hongfu Li <hongfu.li@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	shuah@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Hongfu Li <lihongfu@kylinos.cn>, 
+	Muhammad Usama Anjum <usama.anjum@arm.com>
+Subject: Re: [PATCH] selftests/mm: Drop redundant open() in mprotect_tests()
+Message-ID: <aoLvynyoJ9RKRIMk@lucifer>
+References: <20260817080616.52946-1-hongfu.li@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/4] mm: memcontrol: make obj_cgroup_memcg() handle
- NULL objcg
-To: hughd@google.com, baolin.wang@linux.alibaba.com, usama.arif@linux.dev,
- brauner@kernel.org, akpm@linux-foundation.org, david@kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <cover.1786955972.git.zhengqi.arch@bytedance.com>
- <09bcf74312246a6e4146be8a0cb9787f8beddb28.1786955972.git.zhengqi.arch@bytedance.com>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <09bcf74312246a6e4146be8a0cb9787f8beddb28.1786955972.git.zhengqi.arch@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260817080616.52946-1-hongfu.li@linux.dev>
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D0A5340007
-X-Stat-Signature: sfeojjd7gju63nsktektedpwsefbrtit
-X-HE-Tag: 1786966177-583290
-X-HE-Meta: U2FsdGVkX1/ZE1fougTQpYfO2gdSqm8AtkjfMMWefdMWDVuJ7Pr5/D/OHaTdn//J1UpUZjbDFnPrIeFzCOCOwRsGkwSxy1sMBaXV51jiWMEXejmjXWZiIEpXgOsGM8cMsDz6IRxg90ZaejQZppKvpT+KrNopQBGXIQWUDRmFbMkV6IwQOY8OGWffRBHaH0+rPwaWe22vrP26ksZ6RyMXrInH5krYpHcCzQVAItgfZiODu5VIuKwzKJAo8js3k19FyKqB3GLFXQn01BnSY947rWE5gHihbLykRw1GLOCAQVK7oJD6jK921EysYNgPxL/my/4LBlqZRA0jlzfOyj9QW8wZXpg3awBRPBPdSjD0WFQnEfdgLhg11c28Ih/mLPNgYq4WGgrWZ78jAPXIBoJZ+5Uyk3KHSoaW4a6nVCXNFBOMsENfZox0YG1tsserNF/WrwsBC4UxRJHqcwx7+Z+3T5xIIVEkkbO2DZ5E0zYeuSeWylBXD+UyHRQG0VMsYcwPIKTGRJGoCd67SLxt4R7BKHzhV7z5NsejsUGbI7ySnd6TzHSjW7jUEhql+HSGjWnjUuhJBRyYAIWCPa70tQtGYmo3Y2fssD61Z3ss7Em0BnB5GBVRmMUAUhtA2mHfGZqDndhEdqvYW+1hCqwUsPPuHo8Q2RlHDFYbwab+JX6uvxJo3t5vCLfzF2Kxk5FM4WXZlSPfT5t2/eabWUKW718SYhvURaNx6luCqeVK1E6dg/cO9zQBOzc9lrjePXCO1xB0mrNocLP/8yB0hV7n7ihxWURL8wQ2AAw+2ooLAzYUR4OvXwJsIj0AYNDdKiPqvj1vHIeihHG42ckOZZADv25Dm3yin85+vCxZfhGwsb0+j4mSr2sHBhCIg4BdBDXRaXciTC8MdbKkqtU5DAaxiqRPazub4THapmi3PMWcnudgWHM6kWIlFRLi0dsgN2O1VNfXLgxUF7jITbb3+AyhCY8
- dJaW9KOo
- f/Hiz7smsWvrIrnn00qkRLjR/GoVEpFFnOHtkl7XA+iz8K6zYaI3KwUo1ng94c4vXxFi+yYi3JBK+HPVlwXNfoBs6PAQmUrYhaPiZETX4ruU7TYdKxpSFPSWO7/QGRS/71lrotCRWFJm9Zmo0U1I0uWGq0wBPihJ00xs7hyVzzhxxG/wcWr+CcaUyaRDvH1XlTb8UuVqWfiix7tRpt2db9V//cy9/BDmhjUL2QNlQKxwx0JYZv7kpOOvp7UNNLMtFUoLnEbZiQt/3dh0FVCuvnzwHbCJLQWhVZinzfMiVJGsYfVsGY18WABXVQYzwhHOphkpt
+X-Rspamd-Queue-Id: B8B6A18000C
+X-Stat-Signature: 4p71tosy5hcjsoixjrubpax331b53go7
+X-HE-Tag: 1786966196-238048
+X-HE-Meta: U2FsdGVkX197LSjeULyNlnMmpowvBLbGVtqe+FHAuOYr9GlDZzsFW6jJ6/Zs/IhRuUuFF+4VkOVFti4F5s8/KeJRqnK+XMnZOr9XyQgJ8zvRSkt9z56UuhlenHjmVjhw64nxoAWflkYfI/CqgxNxFmlbln2LDfq0+BQ08Yeoy3v3Vb+nIY3dozavYwd8T2vvA0fEC52/4WWhsI7K5nuogjFxP9k0RvD2XJ0RxatqtlhxvyXWLSCIjIFOir/yBdHiREkS6Ka0SNM/pt7a0t5X8mOY5NXqsgD9W1xOPp1aziuWMxSFStsdwCRVD5FCTZPyA9zl3oUXTJi4kwgkKS9NPhqVnI7I1BDDkd9LafI1YgHg2ZPrWUV6D7pm0bxnsuFBFPD8SxrgWwH3cbhwjRsQfxQr/sitotsHL7CVHAVKS8NQQA0LgPir04js9be2KHt2wmw2t/MLVFkw3D+B62urCVX0gvCMhm+1M9wOoYb5VkNrYgA2bh0RLEro5c12brkm5vK27gQ4fskbSqQ/t+2kUu7qNzA6JykfW7x5KECp0aLuq1I48PYopuJ9fPCkgWgjnpmJfz1AaHa8ATOJtt6Vl3Om1rtwrA2xIG2O+lyolw/CXZaGIZGXAi/Vzo6AGjRi7OkffeaYRscK1Sw7OMR0D93bgBBEnf880OuFnDdIj97sbxVz6QWbpSSboqV7k+2OGRtCRqhvIcbdzRQ5bOhO/JTP051MlqiPV9MIhZxvJTjdNe65SGKyTQY6vXBRCmeK4uowUQyssWPkkFELTP6jH2Eppz0iwij/jJSeEd2A3BpQfRyd94bXCYQffdXwiAc6HuwghWc/22i0zMH3SPoTCza/EcGopQiCWCzFqukMQnQhJ6hGb54N02fL54zJPBimZdxbzfHoJdq7d61GFYx2Xn9xAh41yMHV+gK22w8CbC8ucUKQSh2dgir7ar5eBTVWQyTRs3ulJGppT2t/UNw
+ 2Arzpx3c
+ zpUmse9G3qacSz7L7dZlMPOGpU3VQqnUpJ2udVMHIRJ44vv4wCmQW4EsW21w9Rv8d2jpONfgLFVS+mZmJCUAu/U8U+LjryR+F66j1GQfz12HP5iHl9Trc3ETwSPEjONTXjWbtz1jiw8zw3cztcLixsCwX1Txe36Ou+LmzxhlPmU5z4rB2nkw/XSCuUk2SlaMF87AYAp5ePM56aV8VISEPn+Ha6S/DzMP7tFcOKsCDv0jRQ6mVgvF9dBkL1xg0Kc6r6DbdVhMmIHTMwbFOXETQ0hm5va9Yz8kXhxy5MykCcvcded8WDRLb4PaZ9dYjbXpwmkSr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,7 +93,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
++cc Muhammad
 
-CC the maintainers of MEMCG who were missed in the previous email.
+On Mon, Aug 17, 2026 at 04:06:16PM +0800, Hongfu Li wrote:
+> From: Hongfu Li <lihongfu@kylinos.cn>
+>
+> Remove duplicate open() for local pagemap_fd in mprotect_tests() that
+> shadows the global pagemap_fd already opened in main(). The local fd
+> is never used in the function.
+>
+> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
 
+Hmm yeah it's not even closed either...
+
+I'm assuming this was an error in the origianl tests, Muhammad - I'm
+guessing some artifact of a previous approach or similar?
+
+Anyway, LGTM, so:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+>  tools/testing/selftests/mm/pagemap_ioctl.c | 6 ------
+>  1 file changed, 6 deletions(-)
+>
+> diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
+> index cfd1987339c1..eadc7159ca5b 100644
+> --- a/tools/testing/selftests/mm/pagemap_ioctl.c
+> +++ b/tools/testing/selftests/mm/pagemap_ioctl.c
+> @@ -1332,12 +1332,6 @@ int mprotect_tests(void)
+>  	int ret;
+>  	char *mem, *mem2;
+>  	struct page_region vec;
+> -	int pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
+> -
+> -	if (pagemap_fd < 0) {
+> -		fprintf(stderr, "open() failed\n");
+> -		exit(1);
+> -	}
+>
+>  	/* 1. Map two pages */
+>  	mem = mmap(0, 2 * page_size, PROT_READ|PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+> --
+> 2.54.0
+>
+
+--
+Cheers, Lorenzo
 
