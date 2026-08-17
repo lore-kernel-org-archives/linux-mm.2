@@ -4,85 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF755C5DF7D
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 22:26:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC290C5DF74
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 22:30:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4DF16B0114; Mon, 17 Aug 2026 18:26:09 -0400 (EDT)
+	id B6D2D6B011C; Mon, 17 Aug 2026 18:30:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB1136B011A; Mon, 17 Aug 2026 18:26:09 -0400 (EDT)
+	id B44226B011D; Mon, 17 Aug 2026 18:30:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7B3A6B011C; Mon, 17 Aug 2026 18:26:09 -0400 (EDT)
+	id A841C6B011E; Mon, 17 Aug 2026 18:30:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8278B6B0114
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:26:09 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 072D5140971
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:26:09 +0000 (UTC)
-X-FDA: 85112195658.10.6BC9F66
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8289C6B011C
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:30:53 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1201CA09B9
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:30:53 +0000 (UTC)
+X-FDA: 85112207586.03.6869F7F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4FA51140005
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:26:07 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=h7gneX+8;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5EBB6120003
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:30:51 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eTW8Odno;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787005567;
+	s=arc-20220608; t=1787005851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1b7jKWdEZGMoFyuy609fAfk/mYE8kL7oO5E00u5yre8=;
-	b=edGlmkk6QsLOpjISEk7vDku0EKFtWQ5mu5GvauwGsiqX0AThzmmuPwK0XRYpVuVfpxoZRf
-	JGkQR7R7WO0cT3WRaf7Hzj/a+IxnpS1Vm2rQjqVGEjfCKRwd5BG0VSxacmgTKIricGil4n
-	fw3UExRnhIo2oT5C1x0lZtg60y37E7Q=
+	bh=TL7juVfbUl+m0ZvSLQeExvxWsKmILyS9r2lR3m5Mto8=;
+	b=VLurHPdWXPld0hrVoPVq9XviO+LU6rxMADSX/BBlPPb/3yufT0a1EtJlZTNlMtJIFUerxe
+	7XWETQVkah5zzPEzZGJvJC6REXsJucExA898qvJOscpl/Ulr4hwlweviPyzoJNO/5PNz5n
+	PxkMFYD16O8Kb5jutV2etqpXyJEgziY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787005567;
-	b=6rIg7EscP/CNZSlKoI/wPRpQsYdJT7oGKroUGMiyZgBMQfz/fXO9BkJw/Cp8me1pqxdJeS
-	VvJn8u9hs3Cyi0KjBLJGAbjhq31/rKK5GcpuSmMcNhKPFeZB8b65b1a3dI4L3fTyIntt2T
-	+QCl5lVwW+kb+kjrUCznR2r96zoLiO8=
+	t=1787005851;
+	b=DtrSgdffWrfRVlNL2x46cZ1i+bYI3DH0x0QegDLyOrHitllyzGJF5ho2ij2RaN+4QTdwgR
+	oycjrYotEZAy2SSJW7cCJpr2wGUqrw5JQMcNVF4hnpesVbFMSEWH2P6puKtRE9IA4Tz1RT
+	GYA3nbn/Xq2LQpHjODjvSmbG1Dmg8EA=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=h7gneX+8;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eTW8Odno;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6C8BF42A2C;
-	Mon, 17 Aug 2026 22:26:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDE61F0156A;
-	Mon, 17 Aug 2026 22:26:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5C6B041FAE;
+	Mon, 17 Aug 2026 22:30:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D94731F000E9;
+	Mon, 17 Aug 2026 22:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1787005566;
-	bh=1b7jKWdEZGMoFyuy609fAfk/mYE8kL7oO5E00u5yre8=;
+	d=linux-foundation.org; s=korg; t=1787005850;
+	bh=TL7juVfbUl+m0ZvSLQeExvxWsKmILyS9r2lR3m5Mto8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=h7gneX+844xS7D9EO+tsMQ7wp6/YghmaCMnHl894psOygzK3Mj/axlnr34fk66c0+
-	 5tZ6gmDpB+oO20VFntrD0gNXzjrn9GF3bx+oLVctjc3kS2xjTLlROXE0k/Dzjr060E
-	 22xjgVprrQhGA7WygH4Cp5plfcOcb0oPP0mLVaeM=
-Date: Mon, 17 Aug 2026 15:26:05 -0700
+	b=eTW8Odno+P99BcU1Q2Z9rnhOHszjurKW/v/MOKKEepwOaUISyX5nJovEcwXI0C2dR
+	 p4QOVSwpDjdIkB8kIa/tHl+d0QIEFzo1BqRdAKXxu0b6SG4/2r67o16xPLAFB7ZFPz
+	 49TtX9yd/Qy56hNQe/WRdO/lGxNt20k7KHexs1RY=
+Date: Mon, 17 Aug 2026 15:30:49 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Foxie Flakey <foxieflakey@gmail.com>
-Cc: rppt@kernel.org, peterx@redhat.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] userfaultfd: reset err to be 0 when move_pages_ptes
- succeeded
-Message-Id: <20260817152605.5d2bee3fbf1a2bace4c0eff1@linux-foundation.org>
-In-Reply-To: <9c936a9f-ed27-e510-872f-5b3b8c680975@gmail.com>
-References: <9c936a9f-ed27-e510-872f-5b3b8c680975@gmail.com>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: baolin.wang@linux.alibaba.com, vernon2gm@gmail.com, david@kernel.org,
+ ljs@kernel.org, nico.pache@linux.dev, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev,
+ zokeefe@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 0/3] mm: khugepaged: fix tracepoint UAF
+Message-Id: <20260817153049.120e224cc303f1c2292cd768@linux-foundation.org>
+In-Reply-To: <20260815181632.21453-1-lance.yang@linux.dev>
+References: <20260815174444.4164-1-lance.yang@linux.dev>
+	<20260815181632.21453-1-lance.yang@linux.dev>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: df445t55pg8u7wbj8ek5wy781er35b8b
+X-Stat-Signature: dpokefyh4b456i1ash9tw6tafm1cbmoa
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4FA51140005
-X-HE-Tag: 1787005567-782199
-X-HE-Meta: U2FsdGVkX1+mZ1+mVqIET0BMuIDsumWELlU3eWIxgoTQQPtDrBaTpS1T5ahoSSkkLnxSenBN9w8inR0eTv8NJjrTdoc/w45WEJ3yB/TwH2QFz8Hj2TcbAO3pF/+qqvZIVtFGw/9IIfd+0kMJNc/Ei0BD2DkrQ5EfkLA2jgETQqWv62ZVQ490KN8OWFHZ0Kw+F7XBoYpUdeTXn+7Quwf4NGywhS6v415EwIdoVaB8j8yK19hhxuAllvHXgRKaLH2xiUxE7mSTSuHXTWijUe5h4JTLUjk/qvI669+LrUEE3OzMOZaNWjAhqtgUQWdc/hy5QOZZYqAdll3HyUseDVwzsJqqMZ+xBlzILgwxdSz5SfKA3NItS07sDEq+VNFs5ugruyAXRgblr+vRrk36qHu1c2wj4aGfWwjPCBTqKWuoPeTul0B5JWHqppMhxGGdfhL3L025A+K5xoG6owhPS1tPPkufn9DZfVeGD1960i1r7mHYxwmfUnGT8T/25z4oefbo9vHePvH63BAvy3EI+ox/EDmWP86/LbDGI6bRtrVLAbpCGGrdH/SfBA41lZeXgoPuFhBMgC0pojCojJIrgUxCFZqz5iAcyyXOcpdQcWobc1AGy71TSVqd7D78pIhpZwo32D3ZurhFqfGdQqWwiAHT0Ymq1Edry2vIR+ULJ40C5eanyLr1vGO3udEcBx9XrNcgU48+1yo54szHLpyBmhb+osmswTDBMsjv8i8+01JQHyr0IGPMlR9/eP1iszrboW/qXxUboTKQ3qtkFAUdxV03txuYSzD97vOyDD/+Mx+0ZSJIWvgShpA3mEHBTC4km96rvq1eho/I1cnvd2DOtvfFsttyliuVRnBz1mRY2DoYwcpgOLFyD0mhuqUm6jPlBj1jHzVWdaqYr0OkmqRzS1i1phlwe894EZDpe4tZbHxAqZOBAgKZZQ1nJB+Vofbp0R2TCU9vc7H+MpocwQTC5cZ
- W0dsnaNG
- 6bs2h+xkMLjK/rZImd2eLU3XI7Ju9778X1d87vZl//Iu7scUGPY5a7+Nef6uwZR8cj+PCB+XiSYLyxXuL5Pptn2iyPOyl1j84PqwW0aoCzNO4GG5RrseCUvvnwBWqS7RULFOeYFcZCg6Rtpgjf1v9fzQ8U3dvhQ39oDD390VrL41YVGOr7KIxobxZpOArIlORd9bQnt+qHqYVTKHPjBZLp/lvo7jgn04WyXuj8ttF6G/VbDXcgIsiWymZ0rZRqZdwrEkCbdVkO0jsCrvWiMODLMTrzoiWhrdUfuPTE8eBr4zWi+AT41h4ebX2LNsxQVE90z3pOpHx3FXFodU4iJLNTw9Jx0yr20utVMh0zJ0VZKt6XL0TJ0vvhj7Cu2kYX6dQNt9W0QjoL5EXTePCtgVmcMqdxJvKY20TkYh8xcTWSri16UXtJExaU6KnDA==
+X-Rspamd-Queue-Id: 5EBB6120003
+X-HE-Tag: 1787005851-715733
+X-HE-Meta: U2FsdGVkX1+e3ABw1OfKo9Bh0W9T+OT3PDrGFxWNS85cTuy1JOkUgCUY5rgjh73WGRMgJP4n0I2BHhyYayxG5PTVd9wMkSJZnur96W79MwAWydNPIHaBWEH0COpJ/5G985E6+bqJ2EnkVvJuPc03PHDnU5HZu/zFuT+JRltPsy0yy/S58O/gGl9Nne9urmrPdPG8YBj9gid1bleDNcdmY3ZKWPx3WLjcLnuM2XuM8wcrmRQC1icDZyqABO71RCbvmX6AEUvtt4SXFle9IK0fD3x1ploIibOp3l4t/iC+S6wuSkgh48ZvdNbtLaxM/iXIDw4oYkxXrNAN0H4Gw6c78JLj57DQPzOEnl2nG6fXYbRVg91qRHGnkudM+RWWWUpV1Y2Le+vOc2zehcMQx3Z1msI4SZcLanKxD84H9R3UXXUnbNz7LSW+KOTmP8K0MgBryPTWLlEf3EED3vz32f/8IwqNlAXYVAu7K2Bva1zlmn25bXD6yfJWKZ2YhCjfyLWkfGMZ3+qF+QxV+B8+9hZV7RhyNFNEumxjGT2jYnPvkL5Z6xwy3zdXYESjGVwPGdcU9QEu8LaZrfKsz3VnqQhAYrHf4axIiY7J47uaJFvb3iIfYyRwL1ItMuGtdR1abbc2o1WEqAJQmh/WD0PCj1LYNLpqlFqfwMD8yRo6tqA3uJT9fmS2bfRYtj/cDDCVLTETYjdaaXDEoQNhJxbki9/8s5iyFnIz8s8sj45hoJw1mJAPjpf+MMOvUAt05lQXPBE0IG3XOkrlla4smuDPq6oIKWRDdpnisCaiwO4Y8frZR0VpzzNYewUnhGyAWqNWLx9lu5ab4ScfENbeysTxX1JM2sVDferSlkbFKfkG0cWp91o65M/oOltNqk2LQ5/Da/18a60RSq1dPAzP9jUw5xxYJQI7PlrlBIlqbn9TpXw34d+LNau7Uds4GwB0xKMyCDa2owRQyoQ7+9uq0Xz1jlW
+ yEOzhMt5
+ NayBJ0RRhCjXa5DJp9JwfjzRAxmweFkoJwNaUGDBCMCtWgo0oXUuYSjNrBFJkqgMcMozH6zl911nnlRtK19Xrhguk73IGqLL41mhNUitfagEEhBr8D3Z8l1TKQgq7U1CF0GccVG0q2LyEAPzVU0Qr//2NXXHkiqeaq07zC8FAhNfPbMllMizOo867oFN/xUfri7d0JOCgF4ctg0fmM7TLW6q8hvj7WzuPF+ouIYMpkf7umoIRUd5uPJF5J7V/RaY0caTaCuHgc54krd8x+CIfaMth4Ro5y7Xl6uYXzo20KVzSaBTUWcdbh687NFWUwT4mSePdNcnjwqvOW+8obNpt5ByLOg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,68 +92,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 15 Aug 2026 17:42:12 +0700 (WIB) Foxie Flakey <foxieflakey@gmail.com> wrote:
+On Sun, 16 Aug 2026 02:16:32 +0800 Lance Yang <lance.yang@linux.dev> wrote:
 
+> >>Pass the pfn to the tracepoints directly, captured while the folio is
+> >>still pinned, closing the use-after-free windows in
+> >>mm_khugepaged_scan_file(), mm_khugepaged_scan_pmd() and
+> >>mm_khugepaged_collapse_file().
+> >
+> >Well spotted!
+> >
+> >Gave the series a run on x86_64 (KVM), all good (only classic SPARSEMEM
+> >untested) :)
 > 
-> An fix for edge case can occur if move_pages_ptes return -EAGAIN, later
-> when checked and it is EAGAIN, outer loop would retry again on same page
-> and succeeded but the err isn't reset so the outer loop would think need
-> to retry again so it goes back again and move pages again. On third attempt
-> move_pages_ptes will fail because it already moved and returns an error
-> that is not EAGAIN when outer loop checks again it sees non EAGAIN so it
-> dont retry and break out of loop. When loop is terminated it did not update
-> the "moved" variable from successful 2nd iteration.
-> 
-> That behaviour manifested into this at userspace
-> 
-> Source:      [ .. unmapped  .. ][ .. mapped    ..]
-> Destination: [ .. mapped    .. ][ .. unmapped  ..]
->                           ^     ^
->                           \     Kernel moved this far in actuality
->                            What is reported to userspace on struct
->                            uffdio_move's move field
-> 
-> When the previous behaviour is
-> Source:      [ .. unmapped  .. ][ .. mapped    ..]
-> Destination: [ .. mapped    .. ][ .. unmapped  ..]
->                                 ^
->                                 Reported to user space via uffdio_move's
->                                 move field
+> Hmm ... stumbled over something else while testing this ...
 
-Thanks.
+Sashiko might have found a couple of pre-existing things.
+	https://sashiko.dev/#/patchset/20260815051924.194810-1-vernon2gm@gmail.com
 
-The text is a bit hard to follow.  I asked Gemini to redo it and
-perhaps you prefer that?  https://share.gemini.google/cOWn3pQadvVw
+Vernon, you may decide that the second one is on-topic for this patchset?
 
-> Fixes: 50944692052b ("userfaultfd: opportunistic TLB-flush batching for present pages in MOVE")
-> Signed-off-by: Foxie Flakey <foxieflakey@gmail.com>
-
-Yes, the pseudonym is problematic - it is contrary to our written
-rules.  But I'm a sucker for fixes, sigh.  Perhaps if someone else were
-to send me your patch with their signoff also, the rules would be less
-offended.
-
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -2069,10 +2069,12 @@ static ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
->  			ret = move_pages_ptes(mm, dst_pmd, src_pmd,
->  					      dst_vma, src_vma, dst_addr,
->  					      src_addr, src_end - src_addr, mode);
-> -			if (ret < 0)
-> +			if (ret < 0) {
->  				err = ret;
-> -			else
-> +			} else {
-> +				err = 0;
->  				step_size = ret;
-> +			}
->  		}
-> 
->  		cond_resched();
-
-Maintainers, when reviewing this please let me know whether you think
-it should be backported.
-
-Sashiko did what it usually does when we make it look at uffd:
-	https://sashiko.dev/#/patchset/9c936a9f-ed27-e510-872f-5b3b8c680975@gmail.com
 
