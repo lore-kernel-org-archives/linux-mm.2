@@ -4,122 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E2D6C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 14:10:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D3AEC5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 14:17:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61E3F6B00F0; Mon, 17 Aug 2026 10:10:06 -0400 (EDT)
+	id A23226B00FC; Mon, 17 Aug 2026 10:17:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F6E76B0171; Mon, 17 Aug 2026 10:10:06 -0400 (EDT)
+	id 9D4366B016E; Mon, 17 Aug 2026 10:17:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50C436B041D; Mon, 17 Aug 2026 10:10:06 -0400 (EDT)
+	id 8E8A16B081A; Mon, 17 Aug 2026 10:17:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CA0706B00F0
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 10:10:05 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4E2EEC078A
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:10:05 +0000 (UTC)
-X-FDA: 85110945570.04.1B0E928
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4BA52180002
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:10:03 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="OPU/nTh2";
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf16.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 703136B00FC
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 10:17:14 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C965316076A
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:17:13 +0000 (UTC)
+X-FDA: 85110963546.29.4A4B397
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0DA8340010
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:17:10 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=vt9Ak3Qw;
+	spf=pass (imf01.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786975803;
+	s=arc-20220608; t=1786976232;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8MKoSFy0sjpfHZygpH5fwT4llQ68LAYzLIxwAjtZT14=;
-	b=kEG/nbyZLs40aTR5Z8ICuoLSc5K3gNVqvNWuETUrrKXQkgBPD6YhFKGfoQrv0scC8Q30mX
-	b33AF6zX5Z3DKBJVaLSDBvTPLm8WaOdkM2Y0IqlQ4JehyDS7IQCNCoC8B8KbtKLBlL+mL0
-	C5mAE84UWC8oLwo0KMbVvhiJ3TqfMz0=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="OPU/nTh2";
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf16.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mhocko@suse.com
+	bh=Oin+/NxTReK8f88sQ7DY4WS5rjyj5lUgHxy+oFnck10=;
+	b=l7vrXdvEMwGm0xp5OxdLqs1umhRfchfAS9RyoAmicP/Axc/Os13oh8JZis6vpNoh7U4H6g
+	gXa/wg4qHirk79bkU/FZlBTopUNPbWhwe6Rp8DgomC6Gty1mXwn5Ndq/C6at2ogZhz3eMx
+	66ASgyQICpk5SU4/aRG7i9Bq9hkBVXQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786975803;
-	b=fI6L2HCXzUgI7l1RrGlWq4MN502SLJpqPsvF97jnXrFWW57xdlqtM07ewizh9/pu01UGS0
-	X251WsLidBj2nnrqleLpqQGDt3WY5OgAxCxlQ8aomRPnrlmXURlKb5dwLgembYaZDtzEQH
-	Jh+VZaMnF1xMnf7+esTlUU29rBjlAWw=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-49978908b35so26960295e9.0
-        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 07:10:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1786975802; x=1787580602; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8MKoSFy0sjpfHZygpH5fwT4llQ68LAYzLIxwAjtZT14=;
-        b=OPU/nTh2odVUu935C+ig/u4Q+/BjT0FXCtnXGNF+ajp6e4qnXQpw4zTs95gR/4Zk0K
-         JoNt4GJeiraMd1kxmWa/TmU3nBYnQ5FChThFAQ8F1PtfHfr7QF9z1nq/L6jn5i1aTBbd
-         xrncR6zdu8/fQ2/pX5fpa+yaglEP3kkXlvJJkvIAAJDm/uKlIfwX2ySnJoBqU5bA2kcD
-         InRVyVpSKMq+iLlWVhId18+xI3XS/zC4hcZ8bahCFRr8qiMC67BDq7yYJGE8MJWfa/1R
-         QfLo1pmuhy/MQ5bPGBo8hJ1yKQgHY8dEr+DuyO514IR+uuiMCTDhfA55oTBuG7RMbA9M
-         o+Jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786975802; x=1787580602;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=8MKoSFy0sjpfHZygpH5fwT4llQ68LAYzLIxwAjtZT14=;
-        b=tFwiWf4WAgNwIixrOpjkiFqOiC6FCdckDT8RPBBlbUbwFSmg9a2uxGztTR5XsIoRnN
-         SEK57Z4/x5fBsAePBdryaW7g4yy8Si0TRXN96WZCeUxIQymhkUJqhCsOT4jOTesWejkT
-         n2vUA2gfgYlo0KhPoheegWXjeUwuXFFmYbaoVdDnDFB3+SJE9O2B/l0v9Yoe18ozchNL
-         +v2GfYwVdE45s9SAxI/SsFNw0OQmcJbM60b24DfDFUkXhw0nrZVrXtMrJ6OPK+CK1I/+
-         qX1pyf+VxW1Sp7A4PR4s0aSrmLA5oppVSwn1IESRFJl9Ks3TEzFPrreYyfqasP0wFc9Q
-         i2sQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrYRsv48PDHAyyb3Z+0O6zoA+4lM18yt5Qf3ZKhiBf5B27ZyNo3gF70NPW+IQSDgiAPrTabbPUCeA==@kvack.org
-X-Gm-Message-State: AOJu0YyCDDGMh1TZwCfOKIy6ktIascHjZxtVMbM9THF6BZRXpohzpaW2
-	ZhIKmFh0k2k9tcaAF4chKyvj/GLV1HZaYwUC2bjmLR6blwsFfpfdghaNo1j4bx4iIzY=
-X-Gm-Gg: AR+sD12bNdAkp9ivMX34cGJcvODZgaNzNL1F2uPQ5XEbzPlGG1l66ahxJtEei0Mea5D
-	BNqJo+uNe+8Da0qP32H2RoSN8IwJtewemEeRyWQq1yMcGdWajwBYbDAbOysHKFjKr1Uo9/EHxBj
-	jAoRWaNHaPhQG1EhkFkEb8NnOaLMwik/dBc/kXLRJf77fVVnWC1rvKieV7VvOzw1uWPHUBrLYMf
-	dHzdLCp/Jxnnzg+xYAJpFjYOabyDJW/FZdd3iRJiIs5qzeTpWrTZaiEE6O9SYGP0Zm9pTqKXrtV
-	lx6A7s5s0TMBZgaWNlotMZ4MfrI39JE270GaCjnT9cgPG1fIcgiEmrKSZCqhMj49r6cmotCc3AM
-	bIJi5JJiabpvBgb7rSgU9qkkGxfAqUiVDaDdInvuDgLLF4GeayANAGmXsdKvzYtYtIS22Z2q1ZB
-	2LfIQA3fr6/G5oUdvlZMAFEnp7j0c/X7JaKmDp+X4xLaddEEJyOxYKZN8GDHA2YQUuh95Vt6w=
-X-Received: by 2002:a05:600c:3b8f:b0:495:4491:b8c2 with SMTP id 5b1f17b1804b1-499906ce446mr290282905e9.3.1786975801738;
-        Mon, 17 Aug 2026 07:10:01 -0700 (PDT)
-Received: from localhost (109-81-86-48.rct.o2.cz. [109.81.86.48])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4999d078523sm45861335e9.6.2026.08.17.07.10.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 07:10:01 -0700 (PDT)
-Date: Mon, 17 Aug 2026 16:10:00 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Song Hu <husong@kylinos.cn>
-Cc: akpm@linux-foundation.org, audra@redhat.com, bingfangguo@tencent.com,
-	cgroups@vger.kernel.org, hannes@cmpxchg.org,
-	joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, muchun.song@linux.dev, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, zhuhui@kylinos.cn
-Subject: Re: [PATCH] mm: memcg: flush empty per-cpu stock slots on memcg
- offlining
-Message-ID: <aoMWOILN9A-GgXJN@tiehlicka>
-References: <aoLGzZHS8kj53-ey@tiehlicka>
- <20260817131221.44761-1-husong@kylinos.cn>
- <aoMMr6kEX7pW1dSF@tiehlicka>
- <eef3b61a-a8c2-4b2e-b560-c2dae129bb7a@kylinos.cn>
+	t=1786976232;
+	b=fm591+WvsjaHqK3+42rd0KnXkaG/hBjpueZg8vtahHiyCP0TCoLfdXCAfCPjEkBMVtfLvY
+	lMa80xLUo5FYSLDGlTSeNAa51LEQgh9NbGM5sLhVdSBIctEzflk09Kd5RPptJHVeOFXURY
+	datP/rQ9w3xcR6p9FEhH5+VjTuU/Wi0=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=vt9Ak3Qw;
+	spf=pass (imf01.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Oin+/NxTReK8f88sQ7DY4WS5rjyj5lUgHxy+oFnck10=; b=vt9Ak3QwaXmfDVJN3LvPGMLLEl
+	2G2jpDcw6WNe75xbZGaY6kAOusCAslccEzU6hiVAnURbuOelJvBGjNm0N3ePn7hWvmvMGI0s0sT6X
+	Lsinvy9Yj/kOG48fXMc0LDd2MOAqiy3XgHVKmIRshORRJ1wg1h+O/RWoCgUS5dZmddnoJkvZA/x3h
+	/GXN8YsWXbKV8pliZzmVCqY/XdkKh4/DrGwnwdvdF73aTjPVwXoGMySK2NBqFamgYVuAmtVUiih8e
+	to6mDXzYfTWJugce9OjjnyP7w0pdJWI+RB1qfSod52XHjoCFUdhNmOV7zef0oG0WMqapdZAk/Ij/k
+	bSZgdfUw==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wvy9F-00000006Hg1-1NmK;
+	Mon, 17 Aug 2026 14:17:09 +0000
+Date: Mon, 17 Aug 2026 10:17:03 -0400
+From: "Liam R. Howlett" <liam@infradead.org>
+To: Mark Sercombe <sercombe.joel.mark@gmail.com>
+Cc: akpm@linux-foundation.org, aliceryhl@google.com, 
+	andrewjballance@gmail.com, maple-tree@lists.infradead.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] maple_tree: fix comment typo
+Message-ID: <32auhvmka7wasz4fopvdffujrommsum3uc4gv3qxoakcdexkdc@zxbesu6wrz3s>
+References: <20260813183847.474357-1-sercombe.joel.mark@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <eef3b61a-a8c2-4b2e-b560-c2dae129bb7a@kylinos.cn>
-X-Stat-Signature: 76uk9u3krjjwpyfzdj7n3k6f3g4dwrfq
-X-Rspamd-Queue-Id: 4BA52180002
-X-Rspamd-Server: rspam03
+In-Reply-To: <20260813183847.474357-1-sercombe.joel.mark@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1786975803-829313
-X-HE-Meta: U2FsdGVkX19TWVXQjihaqT5igoydYW1VEa4RSvktIbbSk4VCg21iLv4XhEpsQawGrwCZxgTD34kvx/Of3IEkoXaRl5YdMBjCyNK5PlC/Fa30c2z+o/CEvWWdJZUcLBo267w9LsdPJxroAG70QnEHw/bjpGEpe2lbcJ+4o8rhkC6uKMUtFB6w5MKSBL34KY2fUkKLo6EPQJ03X1Y6cusqbg0a7TUTzQnMApZbgia68bWzljpFBsjQjU6SY4UadOVfzVYE2E3tCUhnyohnln8a9jHC89Rr42FHEPlO53QiNjGONCpaewOIxtNJigNpHqQqgZyExMcQ8zVQDMXHFYlTE+LkglH8cJisvsE0kJaDeH0UT2xQb9hZBdhoIDnjQ/tEtjE80PBHDz6AZ9/8B5zqzsbgQfWnE1jsbHrdP6tI0SttGG3i1sbAYkRa0wNhP4b8Fq7jYWapnG3hFTL/yoYA65UyQW4g1XWWQ/ZCgniYLQ8s+03M625wviGESh0KIhUn8rHlcC3iFA8xZJcOCUojQLUfBa9tW0i1c54chWSnjE0e+VViLCtLKeIHt6oDUfFYvCO1M0cBbMBdOXMWilmHTsTGdtHXzS+r972CuwJrTrjneWiAeOe5xLPtU0D9WFX4fqqpMktiJaKdARcQLGNOCE3N+nRR9AVsFt+5YZLDIedSniNCkrYK9tzbFq//Gg78Cdg2rcKbF0ci/xHoSRM+O10KH9/i+hG0+6x+WvkeJR2w15vl7YdDeQchStfo2V5yI1dpycBPrb+Xsn1qI42FcoPwfcOfUMAPFNe+4o4JxXkwbYMsqGz7+aqFMpcxtoH4PYDnXg3XJ9AJh3opcmnWxM902I5cwDgdO9YDFOtf9BW3HuJdKHQ9RdtN9X2fxI4RpA5eCyEJ6hLqT06OsA0nHroeoajRVn892pS4sjIQ3+mfGEmOXjL3+A4C8wRqk8Zp0XaKtac3F0yD5P0GBtX
- K8xobFtm
- AdZopqsIPT6lYXL8GDnoNuWaNNPlyLBpZocTAOWPyeJy0gIAej61c7vQJImjPfn0DtDyOBvamFTHN7Aw4CMi9nyK67eZZwd/gpj9C6qsTg8U4c2nTX915qxZEKX0YdyFGYGP4KqiDuBQgXpOWhVZtHls8cOUY4dxXmFnjVr2YeDciOqAED9hjI+zPH2S9YLAP9xiYf1Xzq34fPUTwBhSxm/7hfL2FOILqTEYU0DxVxifqxgxp9XXgvs6K6DKrGv4pKDV8Dl7NR/vr8TxqaKSM7qbOfjAc/qAdRELqT03PonmpSjj9vlGhWouE0vOpAjClTJHcu3qiD1JjCqZ9JoC94+cGcJ9u2Up62l9FaB5tWs5lx0x1GjleZnGzIeU2f2MGwn9EJfAsv+pMbL59bgEueDLC4cf3q98NqwAL8GV9XIa7LvkKIp/9hS7z116g0uKGKVzH4+E0Q+057Sk=
+X-Stat-Signature: 6g3yrycqf4p1istxycarp1kywdag1r7k
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0DA8340010
+X-HE-Tag: 1786976230-872580
+X-HE-Meta: U2FsdGVkX18kHKvz7fiZOvPknlbf1ADwunhS2gtXqC4SE1lkLxCRh9JlBAqVMX8NNryUDyjxgsfrW0ZFVoDMOnzXIh360AGRIw7TbuUFVOssZ41Rrpk+IBo2lvgZKqb6yFm7hMWJU1VnRouMzlunuyFqcej9j+xJmiCjpfqCD4MiFjmT2no94Oopy3ETJCVOTSW/LhaoaOt9/0SEgc/SuFyCt8GH0R/ljoVf87qcpEI/AM5y47fuNjBBO1VxuAB8eFcL8sa8qOE4rrezjlR9SwP3p4xF7bb8F8jNCTinYRTH7vuB25AZwNcYZ0bjeRa821X1OggbOkWO40qibmgM3HWiPmx5AC8HO9kjj9oSUApv7KaFbSbi4cfuCW2VY1f0A3ESh7YdqKra+mKBhUAgdt1g5nzIPbKIM3AyiJujPafrNNI84O8ZnPAZFtEK8+9q1SYDxMhjY98jT505Y8ml4LJ16gGt7mipVRulDgqwSjKZQMehmMQtZ9TSupIBo1+PXOux41cqRmqBKggvBiV28m18sPhAO8483EQjrX1qliTeY8+25YZ1NWzlXq4Z59RU2F5iYD+YAqObMscVmYQXzHq4W17oTuT2KVypopilwAAjnXCA6rJ3nskuCFbTNPXQ0k9t+h1U9L89jPBz1pTOXRzYBrRWeJaBcvrZ1b37QFYbyAlxpIUtGlFmf/h8tvj+ass0XNMD8yxGh3vNLPxvVM7tFEvdZ3dWYVk33zd7j4ODKrLKxX1arA1x6conFIPOUE3T9o1mkyA3ZoP3fDWD7gLdCQWuOSetkmMu+wcGACHuEnN8L169TjoApMxhTMfXRlTbjta6AOPWxl2F2M+2p7xfGAjR96b9rF3zXGYsKSQtLwBWqdpyvNL/3KXYaWojtPJ5DhoR8YOVlJghnJDhDF2bWhVD4bOiKjLhGL1yt4BNAQ/A7I1xQzUyOVMnMR+fENEFiwFm73IELzaJqDJ
+ u9a1vNX/
+ gXtD6FVTDpyRj+8HK/UGtYbFqgFQwr1Op14MeLaAY77jHsYIwf/G6Zl/K4E1iuFeJnKVi1olyvFJcc3Eqrv4t1O6hXVsa0ZnZ04L1RpCY/YV8pW/iOh3GniDI9k8XM0jy4QS7uILfFNKHgZ2HOam8tN0AvA3KtQk2EuuoXYwZkEU89O5vN6eD+ZpjvDst1sK362gzS7S6c4kz3wJPUMTb8Tgm3TI9JA+s2KIAw7zihXTaBK2T07LLB5qRCkZ0ezMTRu2eCgqMEjpcUChieTGuDGgVTm5X90RE+yUHl3X13tHcFnEcYY5Fb7VWynzLds0zseUSFVN9PV38O4NSjAodRclFqu9jmbCyr668IvUT/7XZ7hvzeIJIYbNmuxzKeZQ3phXhLxZQJfeexO2w5x8Z9w165mpQFFvDS/BfaQw9qY/XHICMWEoRP8AgbN81NiR/+wMgWF/0DFBIJQggwYFzhefMqIsfp6MjK7zpm24TMaJWm2c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,36 +90,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 17-08-26 21:58:39, Song Hu wrote:
-> Hi,Michal
+On 26/08/13 08:38PM, Mark Sercombe wrote:
+> Fix a spelling mistake n a code comment. This is a comment only
+> change with no functional impact.
 > 
-> 在 2026/8/17 21:29, Michal Hocko 写道:
-> > On Mon 17-08-26 21:12:21, Song Hu wrote:
-> >> On Mon 17-08-26, Michal Hocko wrote:
-> >>> Is there any specific reason why the memcg stays in the cache slot
-> >>> without any pages?
-> >>
-> >> consume_stock() doesn't release the slot when nr_pages hits zero.  It
-> >> is kept for the next charge of the same task and only gets displaced
-> >> by a charge under a different memcg or by CPU hotplug.  The problem is
-> >> that the offlining drain skips empty slots, so the css reference they
-> >> hold is never dropped unless something unrelated displaces them.
-> > 
-> > This doesn't answer my question, really, does it? Is there any good
-> > reason for this implementation? Why do we need to drop references
-> > remotely when we can do so when the last cached charge is consumed?
-> > 
+> Signed-off-by: Mark Sercombe <sercombe.joel.mark@gmail.com>
+
+Thanks!
+
+Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
+
+> ---
+>  lib/maple_tree.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Fair enough.  There is no strong reason.  Keeping the slot
-> populated after the last page is consumed only saves a
-> css_get()/css_put() pair when the same memcg charges again on that
-> CPU - a micro-optimization from the original single-slot
-> implementation.
-
-This would also allow more effective use of the stock because it
-wouldn't need to throw other stock away when refilling.
-
--- 
-Michal Hocko
-SUSE Labs
+> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+> index e52876435b77..9e47f21286b4 100644
+> --- a/lib/maple_tree.c
+> +++ b/lib/maple_tree.c
+> @@ -3595,7 +3595,7 @@ static inline void mas_wr_prealloc_setup(struct ma_wr_state *wr_mas)
+>  
+>  /**
+>   * mas_prealloc_calc() - Calculate number of nodes needed for a
+> - * given store oepration
+> + * given store operation
+>   * @wr_mas: The maple write state
+>   * @entry: The entry to store into the tree
+>   *
+> -- 
+> 2.55.0
+> 
 
