@@ -4,83 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01215C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 06:26:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 791E9C5CFC1
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 06:27:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17ECD6B091F; Mon, 17 Aug 2026 02:26:54 -0400 (EDT)
+	id 835266B0921; Mon, 17 Aug 2026 02:27:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15C566B0921; Mon, 17 Aug 2026 02:26:54 -0400 (EDT)
+	id 80C856B0923; Mon, 17 Aug 2026 02:27:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06BB66B0922; Mon, 17 Aug 2026 02:26:53 -0400 (EDT)
+	id 722606B0924; Mon, 17 Aug 2026 02:27:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DB4A06B091F
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:26:53 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6BFA91406CB
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 06:26:53 +0000 (UTC)
-X-FDA: 85109778306.15.BE4202B
-Received: from mta0.migadu.com (out-113.mta0.migadu.com [91.218.175.113])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 22260C000A
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 06:26:49 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LqdowEqv;
-	spf=pass (imf22.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.113 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 53BF16B0921
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:27:01 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D6A001406F1
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 06:27:00 +0000 (UTC)
+X-FDA: 85109778600.17.2E79B40
+Received: from mta1.migadu.com (out-84.mta1.migadu.com [95.215.58.84])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 00994C0007
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 06:26:58 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=f6LbZYdJ;
+	spf=pass (imf28.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.84 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786948019;
+	b=ct4vVHQnvY7daBdH234iVH9oPEoDNgfZcC0/+77klBQgHSmuCdJQn6TeVefrz2oxsgrdjK
+	kBswCG4VwWcfI8LXOWUtKrQoFPMOGzuz7fdU3TEkK0O3itQf2GWo5zZG1sKOYVm2aUe6at
+	/ZQVnylHR1TRZZ7x5IU79H17wS5iVo8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=f6LbZYdJ;
+	spf=pass (imf28.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.84 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786948011;
+	s=arc-20220608; t=1786948019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=KEGF23OhMC87+rYOlEfxrm4Wh1VRmmIgHqCzDaAhZFA=;
-	b=YiBDgin2R3lylqM1tRGnzv8k6DbZtDJWOBC+Zlr5C7Dv3LdAteLEazDv5vhGYW9Rg6KW5x
-	oPvTWMT/D3YuJbriSNmzwxpqrTy0tN0J/TtnKfM0YNI2KjxKOabI3gzS6uBKE0Fa/2yxRV
-	kkYlZdCpEqeWxEKn3R0qw3mYqkX+sjA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786948011;
-	b=tMkFUhmO8fHjWeb7YIo7K6AjRl3Z0fkLONFIqdi6VkI5DtdE+Pb6Nv6eBQRj03CXWGygI6
-	2rf0Xm3fKX0orF0be5nIYcqjTIZRIg0FYrTerOdRALq/b0jRXjz7hNYT88tkDecp/41QQ9
-	48tZAYnLaQ3oO6jqnM95lhu63oIJkXs=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LqdowEqv;
-	spf=pass (imf22.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.113 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Y0PMvdNu7veelu0uVn4CMMLM6OdXFaU9gxzcLpwuQCU=;
+	b=P8J0+PbJmidJPmKgiu0OLoDmXN0hK5tskAHcKtczzX1Uc1ueuL1iPnAUYNLGy1vHzuR6SQ
+	THhBWdH4tqeCG30wsDxx0gvdMKFOHj32ISIpuHwHjsIJ/EXNycrzbrnpgC/lIgeYAfd3/N
+	d12OWwBa1UGLn45yaqTNtL7dQDpJOmI=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=cp1D9oBcDI7MYultp2oPrdx51BLqcKdTzDrSb3vQWvc=;
+DKIM-Signature: a=rsa-sha256; bh=Nrl5tHbT9eQhQhzooTC92+qQ11qduWmutBe6i3Oleeo=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786948008; v=1; x=1787552808;
- b=LqdowEqvk3kL1t3sJQuK9rAEPmY6H0EkyU9fVoxPTNAldQHvHShFulplwPdL/RI6xp6cjgeT
- d3zvllnCBZa3vFTSRPHfETNeE/QwBB4SK4/JLonUAieNB/rOi4RW95Sj0iEUO/mjp8iTogkxgWS
- 61JeRlzX3ldVZjNb4rMx1L4E=
+ t=1786948017; v=1; x=1787552817;
+ b=f6LbZYdJbh+RYFONAlNMXgMCY6QH0m73I0gQkFwtcV5vUoPEq1W0rJI/BDaJSUr6yKX2kkcP
+ 57tl03izkRjx3CJv6Cr3Qab9i8hMy4S612po1osOSA0X/X60Qn+N0O8O50qNuWvFRbuRC2R7WrE
+ e+HDGPSYtiVd7lQZ0fgYrbaE=
 X-Envelope-To: linux-mm@kvack.org
 Received: from localhost.localdomain (116.128.244.169)
-	by smtp.migadu.com with ESMTPS id fdcc2f1a69ec06f3;
-	Mon, 17 Aug 2026 06:26:48 +0000
+	by smtp.migadu.com with ESMTPS id 411436bb243080ca;
+	Mon, 17 Aug 2026 06:26:57 +0000
 X-Migadu-Flow: FLOW_OUT
 From: Hao Ge <hao.ge@linux.dev>
 To: Suren Baghdasaryan <surenb@google.com>,
 	Kent Overstreet <kent.overstreet@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2 0/2] alloc_tag: fix a leak and a deadlock around shutdown_mem_profiling()
-Date: Mon, 17 Aug 2026 14:27:24 +0800
-Message-Id: <20260817062726.106511-1-hao.ge@linux.dev>
+	linux-mm@kvack.org,
+	Hao Ge <hao.ge@linux.dev>,
+	Sashiko <sashiko-bot@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] alloc_tag: skip percpu counter allocation when profiling is disabled
+Date: Mon, 17 Aug 2026 14:27:25 +0800
+Message-Id: <20260817062726.106511-2-hao.ge@linux.dev>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260817062726.106511-1-hao.ge@linux.dev>
+References: <20260817062726.106511-1-hao.ge@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 00994C0007
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: hsfcsabdzide8e56p6j58ppszw3txesn
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 22260C000A
-X-HE-Tag: 1786948009-828007
-X-HE-Meta: U2FsdGVkX19HiFkzarVEExduMG6VfIdXh6TXyiGnrkc83II0UExNXSCMVwxIfP4dYtE1NrOTGOrQdIx4DtRsRM+3ugLgR05WSfNLqj1qHb4Fii5zPFq8e/aY9vaezi/lEUt+gpTnVZSsrEejRpw0gUp1j78gFaE0HLnEjeAB+vkqq6mK92kxgN54tZuPd1Bf7FSrpCpsu2b3fFpR56cl0tJCiyc3j0Dhd/PpHvhTRoFFoGxIXo2dBEz2SRPo7smJ7hzWxkbeEEg2CJIvNPwuP2Zv5NVKyQj396WIT3htvadmi5i8Er3tkvJ76IMDlwCKsZSVFaUwW++ut9B4fkpQ7p2GoHq7pxXb+aB+8o04EzB8CMTgL/Ge5iB2iZWhzU0iLpf0mJYNbC6sMvXv6/JPSmXOB07otpheZ9LYEgrXXf2wqayNsmgDr47wPRM7GBhOcCLTb8tNVlTbBZnfQ1QyeZJPSCXD7hf+HDGQkaYHOExcv2Se4BejjD5apIH9s+MInmKSV5mb6L5vE4Qy+oB7Yv011JdmOS73+c+jjdIh24AE5Yt7VYYW6vu2AOCm4kfAeFqwAQd4QhmPum3FR8j7d3AZAy3Gc09W4p6iHYAxWcuwk+zthT6SY3OL1hXQSTBBaOos73qRHaaI/CPF5AibDCnEmedvFXWTcHY6xsket8RIv1hMhwGOMWkkdg1ftUN6Rs6slif9AYqa53RIs41OHANXeA3ZrLAY9MscuUFlIVW1O5RnbzocxRwa2kVtNoTqLJYYIvzEw79AGzJ0vNrSzxC0yzgF92qCezLX7gcWWojYybmUXKIxEwsWx7LTu8gih8hs37lRACKgee90fLQwVu30QbOktdjNT2seZk0yIwfRITHBj51oiAr40VKe6TVInP4ycbkB8bDlo5quT5/15qUGK3Crdme7SqnIMsWUIMbxbdTtB2M1Y+hu53Al7H8Zyat3OcwRsTm4u99qnbV
- LEp24x+Y
- OlCkJRz0ynp/KS5iV52w9CRUgsocKo0bQldQC32Cto0qSJQ/RzvXG88PsxzWm+RfxlGSRC4w8VURKBTeLfwXP3FjHr1kTOuQP7U+RGu1/EmFCa2ieV87k92TsSMU8gTug90CXCtRbo22nn0ygVIC/Nz2UMOFuMkWOsugIMYRR77beI366/kOUHE+Yf6aHLWWnP78uVWWFPC5Bbj4MhERSVuJlf4VX9JtGRCjYhiq4A65NSHWrrnF8AP+pQu43Jd4QI6Nmm3ONWl/eRwt4kobuLUc8FID7YJOKrh4+zM3gdDdLH0U=
+X-Stat-Signature: wr5e6ct4d7hca6ecgj8qoiu8imkafizs
+X-HE-Tag: 1786948018-178142
+X-HE-Meta: U2FsdGVkX1/U7n7C5uB79NpAnfRcxr/T88bQb07z3gXvzb+aONIVpCXOdXctU2u10wS5n2TrFgkY0nxnF7llpVwygqmpOP6Xoar0gY90+uzKnv2isILnsUs5wABmTEb3TnC/yb94Syx3ehWAsdnkdoSNnM6qfT+lrT7njEByl43HRUMoM8nz5iMSh5yGZ/eI2Uc6JL+mTXursDYfbb+Z3NVJoGrAmq5fAv3FT0Z+JUxn8BM+hMZWnPavjt/tWVymsNMD4kGewD48wIvuVB/ft+6KwLq0mXcz3304DDjPEy/Rw3ZCgQCtsadgfUGdjc/z9BToGe4kMSXrP89tHmKSMtNaLsiFoKUzjKZRii8tnotYdnTxB4mreyM2R7DYHONkDiiOgkGcA3m/H/JBozvD3v78lsFXGYl2wvU5i39M5pupssqJg5WnnKyy1hx7QcR8Aa4M11BsBvwJpTxkFajyEfj6zwE7z+Ly23D4Ty6cVx9pGUO22xDWVMZDEfsZP8zECR3OkkZDF9+HqpH5wcmIBEZYRMfVw/AyVO/b+iHuq+XzG+ySG8ectr5VShwPq8Ch6mPpaQtMG69gQ0VHHCUFj5JbFv3DooxgK8F2I28AuGnop7zzIKq1MWCtHRJfdNnriVq0KdYdL7JHTNTUcni5Wvgf7yfethdlLCjBPVKFr3MAvzc7LY0gfFi5NXsiDEptLqpwHsAwGhY/GqlAkM4vljVuaySdLC4jxhy8ZjbL1QDmyuW3JXZxFbjg0rxDINPMJ1IY3KLUvK6HN5KuX2vUAFPsnitEMt/MBVacxP6jsjd2/+5aHoXu5e82LJwlOzqsmJ9qryhNDkKvX2i3mVTPiomsjCz8m367keI40fCqI1mF08BTD5qtrjYalYBJfcVljJAzUYPiCM+tn+eCEMTJQQDut4Q6jYuvBxvbHA+fnFYJY4hp7kK+FRQI2TMLZmIJ7x379KwFOBc0XSFPnEt
+ CpI9OuWy
+ kJzGgZlPfGnNhJwB/JHAuwd9ogggY7g8w4iHi2sf6jWXDFXK7GDrTBAr1ADrZMQSoQhpOlnFeeFoumtPN9N6daWpETGJdRetZ45oEGzsYqJ2HVljulOGpe0Z2BjTHZTtMHpkH+QhMocTzr8aEIsQ5N8tLVai32TqvaoPo68JJ0E+Fx1rxrFFT0I1UVoBLWF0emSgAi+z82bcYSfoZ2H+GZ2CH9ZtEvWHBML8KpEovTosjV1TCmSJfvbzhuW/PuwpLHkbKafvfGii5qjMkqLRPvE7SVQzl9BGSe+38dSZYgZTMtmW3ma+pd1HstVT9lN1SbI0K
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,36 +93,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Two fixes for issues reported by sashiko:
+After shutdown_mem_profiling() clears mem_profiling_support,
+needs_section_mem() returns false, so later modules have their codetag
+section placed as regular data and never enter the alloc_tag maple tree.
+codetag_load_module() still called load_module(), which allocated a percpu
+counter for every tag; release_module_tags() could not find these modules
+on unload, so the counters leaked.
 
-  1. percpu counter leak on modules loaded after profiling is disabled.
-  2. AB-BA deadlock between module load and /proc/allocinfo readers.
+Return -EOPNOTSUPP from load_module() when profiling is off:
+codetag_module_init() drops the module's cmod, no counters are allocated
+and the module loads without its tags. codetag_unload_module() now always
+calls free_section_mem(), since a module whose module_load() returned
+-EOPNOTSUPP is not in the idr but may still hold a reserved section.
 
-Changes since the RFC [2]:
-
-  - The "move codetag section placement decision to layout_sections()"
-    patch is dropped from this series. Its retry path depends on [1],
-    so it will be sent as part of that patchset instead.
-  - Patch 1 now returns -EOPNOTSUPP instead of introducing
-    CODETAG_MODULE_LOAD/CODETAG_MODULE_EXCLUDED defines (suggested by
-    Suren).
-  - Reported-by tags added.
-
-Patch 1 skips percpu counter allocation when profiling is disabled,
-so the module loads without its tags instead of leaking counters.
-Patch 2 defers remove_proc_entry() to a workqueue.
-
-[1]: https://lore.kernel.org/all/20260812054105.102637-3-hao.ge@linux.dev/
-[2]: https://lore.kernel.org/all/20260813093421.135230-1-hao.ge@linux.dev/
-
-Hao Ge (2):
-  alloc_tag: skip percpu counter allocation when profiling is disabled
-  alloc_tag: remove /proc/allocinfo outside of mod_lock
-
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
+Cc: stable@vger.kernel.org
+Suggested-by: Suren Baghdasaryan <surenb@google.com>
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
+---
  lib/codetag.c  | 10 ++++++++--
- mm/alloc_tag.c | 14 ++++++++++++-
- 2 files changed, 21 insertions(+), 3 deletions(-)
+ mm/alloc_tag.c |  4 ++++
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
---
+diff --git a/lib/codetag.c b/lib/codetag.c
+index a9cda4c962a3..a0b600720afc 100644
+--- a/lib/codetag.c
++++ b/lib/codetag.c
+@@ -240,7 +240,9 @@ static int codetag_module_init(struct codetag_type *cttype, struct module *mod)
+ 
+ 	if (err < 0) {
+ 		kfree(cmod);
+-		return err;
++		/* -EOPNOTSUPP means we can load the module without its tag. */
++		if (err != -EOPNOTSUPP)
++			return err;
+ 	}
+ 
+ 	return 0;
+@@ -388,7 +390,11 @@ void codetag_unload_module(struct module *mod)
+ 			++cttype->content_id;
+ 		}
+ 		up_write(&cttype->mod_lock);
+-		if (found && cttype->desc.free_section_mem)
++		/*
++		 * A module whose module_load() returned -EOPNOTSUPP is not
++		 * in the idr but may still hold reserved section memory.
++		 */
++		if (cttype->desc.free_section_mem)
+ 			cttype->desc.free_section_mem(mod, true);
+ 	}
+ 	mutex_unlock(&codetag_lock);
+diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+index 52aece27b00e..80eccaca665a 100644
+--- a/mm/alloc_tag.c
++++ b/mm/alloc_tag.c
+@@ -975,6 +975,10 @@ static int load_module(struct module *mod, struct codetag *start, struct codetag
+ 	struct alloc_tag *stop_tag;
+ 	struct alloc_tag *tag;
+ 
++	/* Profiling disabled: load the module without its tags. */
++	if (!mem_profiling_support)
++		return -EOPNOTSUPP;
++
+ 	/* percpu counters for core allocations are already statically allocated */
+ 	if (!mod)
+ 		return 0;
+-- 
 2.25.1
+
 
