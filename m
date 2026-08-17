@@ -4,156 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 312F6C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 08:18:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E520DC5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 08:25:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6FDF6B00A4; Mon, 17 Aug 2026 04:18:48 -0400 (EDT)
+	id C6B206B008A; Mon, 17 Aug 2026 04:25:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D47B86B00A9; Mon, 17 Aug 2026 04:18:48 -0400 (EDT)
+	id C1C056B00C2; Mon, 17 Aug 2026 04:25:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C371C6B00B2; Mon, 17 Aug 2026 04:18:48 -0400 (EDT)
+	id B0BE66B00C3; Mon, 17 Aug 2026 04:25:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 942146B00A4
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 04:18:48 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2934E1A05AA
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 08:18:48 +0000 (UTC)
-X-FDA: 85110060336.04.E340FA0
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010058.outbound.protection.outlook.com [52.101.46.58])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4C7B280002
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 08:18:45 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=VA1svkZo;
-	spf=pass (imf02.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.46.58 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786954725;
-	b=raoGm8stO3vR91cHGjQKI3skdk6krGpn5u0e4O2SaeF1wd0BHj+tkxve7d60QdXX48JaV7
-	iUClVkEekmzoDGFe0iuxbC9AhH9BdyxQRoQ/o44w/pWRvgiYfWzPZPcYL7myp2epN0666f
-	M4hJqVWbPrniYW+t948N9H4X8zu3cVw=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=VA1svkZo;
-	spf=pass (imf02.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.46.58 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786954725;
+	by kanga.kvack.org (Postfix) with ESMTP id 81AE36B008A
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 04:25:32 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D31A64071F
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 08:25:31 +0000 (UTC)
+X-FDA: 85110077262.28.E07EACE
+Received: from mta1.migadu.com (out-199.mta1.migadu.com [95.215.58.199])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A0117140004
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 08:25:29 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LOyqKIP8;
+	spf=pass (imf23.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.199 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786955130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5G4f9pYhgY+kQUVWeqMc0DoRNYRWJCVMyFdbLKFqxlo=;
-	b=Fzwu6rlT7JGM9Sge+AVor7UbFnlBk7+/c4XeB8DhFp9ll1oGPysE0XTf6V3RWgtexAPOXw
-	2jWF7RozMld4z6K4oJ3BWfy52cbMlRYeFe16lYe1gwpdRfXH3Tthp3ob4dpGVzrg6E4zom
-	cTR+rYHrbGPA5ViLHxStu2S3e/xau5c=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=T45zjq5F2KH+qwet1iS4TvTrbsEy7gzhAE32B6DWNPlRq3XIxdVDTJcsOpavduO0PKrKvXk7pVSwTB9hOuBo3vpOxZFLsiG2PpjtTRsQPubKWfsYzbgRqXW2H8kiM+DsImz3zOo8FYZeMi51GPDNyRMhFOZhPpajn42WRRnTUVDM/R4X6eNWPAJKytuwy8q2k2LksFoLk7lb2O9nCpBkrQv13kDt4wVZf5p/qMHk/T68CVzMhIbshSy9TpLfOcgutuxSPNk8YzjpYzw7u4vwkQA1PTwjwBjqGgGu7VmLYFwpMzO0Yo+/benVsLx5pu1HKGoGYUfI51xKUc0keWhkwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5G4f9pYhgY+kQUVWeqMc0DoRNYRWJCVMyFdbLKFqxlo=;
- b=gV1AJNPDbhqbsucDlcLjEzW4zaLDbSCmtXRURBhY6OaJW1LMFANAqji0Zj2wwhgIbgt8oYnuL8mvkDZQrLsWgHfW30xewz9dZ5+K5Bp/SDg2G740WUPD2ZlpZHWZY0ahjyLHImPBn9p7uu3wFC7oK1qO5s9lVtBPm4UdoNJ1EyoMMVWPta/FXSTsFk5xBCy5OsfDDHW0NVb/P38h0VvjqCenmt0xSdOUEpvBYgkAiKle8RYE6slrFRMTJlP/o3Dh3+3cJL78sLUWAM/3+QbpgdK1ODdnf3NAmUTOBV52aF0q9tMOCUZXOJub71sCMhN9rSoI1O3CI1AMRYYhN0OjIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5G4f9pYhgY+kQUVWeqMc0DoRNYRWJCVMyFdbLKFqxlo=;
- b=VA1svkZoEh7WezUAWekDBAEE9ZhJkjb5CX24jlaxfSe+fOElcyOBzwaIekOILsEhFbce+tnRpuDK757Vx12rbO3peDXd9aOntYU6f7EB9tSiu14UtYm5PoH+Cx8CK9M8Bm8O1BnWL2hfRa3Il5euYWuo67t8ESahXvMaPfV9TW9pCpAOyS7KGh+dJ0oVIGrnWrCLrLRO/iTaSG1Wj3DBFgYrBHtjXrWTFwuJfI175IhX1u3b9XTVRBPe0nIiWggmVGW6d/QpZkPLM5WXTC6oo6jwm5MaursBs7e+CkCNFdaxoBH8FeK9sCe2xT9FHAgkpBhC5IkjpWJM7JZAaprpDA==
-Received: from CH1PR12MB9670.namprd12.prod.outlook.com (2603:10b6:610:2af::6)
- by CH2PR12MB4311.namprd12.prod.outlook.com (2603:10b6:610:a8::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
- 2026 08:18:39 +0000
-Received: from CH1PR12MB9670.namprd12.prod.outlook.com
- ([fe80::416:ea1f:d17b:2811]) by CH1PR12MB9670.namprd12.prod.outlook.com
- ([fe80::416:ea1f:d17b:2811%6]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
- 08:18:39 +0000
-Date: Mon, 17 Aug 2026 18:18:34 +1000
-From: Balbir Singh <balbirs@nvidia.com>
-To: Hui Su <sh_def@163.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
-	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/migrate_device: avoid out-of-bounds writes for
- compound folios
-Message-ID: <aoLDQifuyIiO-2eA@parvat>
-References: <20260817074350.442493-2-sh_def@163.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260817074350.442493-2-sh_def@163.com>
-X-ClientProxiedBy: ME3PR01CA0064.ausprd01.prod.outlook.com
- (2603:10c6:220:1c2::11) To CH1PR12MB9670.namprd12.prod.outlook.com
- (2603:10b6:610:2af::6)
+	bh=9NtS90fRAe355xukfFtCNj/3OysLrTWOHdxxnVUAgf0=;
+	b=fQdqbT7r2Qp7894qRoqjd1kpMRKtHQP2j4S+IrkNsEZ9QrolSqBLy5OkJNLV6cUtGKUnee
+	6/1eYOJV8MXaHFYGQqdsr9JLQ72IL5/TbhG1KbMQG5K1aNO+2JBi4IJpwfDes+dbCGeuBu
+	P22aCtPktbsGexIBFpfV0EL4vr2zMjs=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LOyqKIP8;
+	spf=pass (imf23.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.199 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786955130;
+	b=w4Ua3uwqzSNG91GYYGPRSuehrXDMBVfhyM0hqlWG29BP5aSfnv1HPLvHT1vaqN+P9wJ2LW
+	LUDD3AyH35tH1e4uyf9+X7yL4buBeWwuDPVm6HMAWUpMRNMfS68hSU+nikI/sskpapARKn
+	BJBtarmcKGnLQeHr83JHiOYyx6j3lto=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=eYNadUi07A8AhvVYvTwlB5KEurgeLlJSPKo7wDdWLLE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786955128; v=1; x=1787559928;
+ b=LOyqKIP8U/DmD1VoXOueW2cNHTUY3/mO+breI1tQhH1n/PEE4g8zlyymbMmdIYFnFcrv6RvC
+ pVvzJcfFBnQDqpvY1sCEcQN/mBN9OQtSc2BU1Xz7W+DoGA3BCDQYWKOezSiLUw8E1W5e2I7LTZe
+ wbwmY96SzDjJiffKJm3Ai8SM=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (3.112.29.171)
+	by mta10.migadu.com with ESMTPS id 5d0fb72b720b7f63;
+	Mon, 17 Aug 2026 08:25:17 +0000
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 17 Aug 2026 16:25:14 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Lukas Wunner <lukas@wunner.de>,
+	Jan Sebastian =?iso-8859-1?Q?G=F6tte?= <contact@jaseg.de>
+Cc: Jan Sebastian =?iso-8859-1?Q?G=F6tte?= <linux@jaseg.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Dave Young <ruirui.yang@linux.dev>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, David Howells <dhowells@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Ignat Korchagin <ignat@linux.win>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Eric Biggers <ebiggers@kernel.org>,
+	"Theodore Y. Ts'o" <tytso@mit.edu>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org, keyrings@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-security-module@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-nvme@lists.infradead.org,
+	linux-nfs@vger.kernel.org, linux-integrity@vger.kernel.org,
+	linux-afs@lists.infradead.org, netdev@vger.kernel.org,
+	linux-fscrypt@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	dm-devel@lists.linux.dev
+Subject: Re: [PATCH v2 01/13] kexec: add CRASH_WIPE_SECRETS to wipe secrets
+ before kdump
+Message-ID: <aoLFai0gzzH2bGgy@MiWiFi-R3L-srv>
+References: <20260811-crash-zeroize-rework-v2-0-9561d13c2340@jaseg.de>
+ <20260811-crash-zeroize-rework-v2-1-9561d13c2340@jaseg.de>
+ <anw9ILJiO5xIjP4f@MiWiFi-R3L-srv>
+ <9765f7ea-36bb-4c7b-a19b-7facec97b762@jaseg.de>
+ <aoGpcczo5GkBsPwt@wunner.de>
+ <aoK6jXA-tF9qfKOZ@MiWiFi-R3L-srv>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PR12MB9670:EE_|CH2PR12MB4311:EE_
-X-MS-Office365-Filtering-Correlation-Id: fdffbe07-6f1b-4be7-8936-08defc382432
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|23010399003|18002099003|22082099003|56012099006|11063799006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	lg1paaWcaiRqNlqOOvDWURS1tgmpub3JH/hfD/stKxCo/QQmRwY24Npc0HPElKIdZ4X1sZ56D6EpkZuTEcSSQv0pqWcz9+BUZbXPVfgZoAoqubgNL8YYHw3bTOAh7Ori3Q0uYGGU+tm1t8umjtiNpgjMCeLkK5lgCCeBAI3ULogbT+4QtdC9zobOwdEcWmpVPyKwrcM+xwn6OuLWqOUGZFlQK5+yZyRX2x8llEXTmMmMQyVl5uaHv7igctuG8KF9YhsnZi1VvIP8HprNh4QehQYeCBpjRnnLVuIpLVmOyMY1G0QIi3tZjVikfC8N1OgZZpXkO7BM5eXkZ0+SP6U7R3yzJepTUADjAUn+PSLP3TAAynlBAPw/CW92pKf6JcELYiKq6Bdw5PlYV6cXxTsWe8hlGTvtMEPKb8GT/fOXu0hZpft6EYKfoa6RlrtVV7/UW2+WDyDv58kcZQVbQpvVQcqIGp72xThmKhmYuzKHfjZG//Wa0zKUfJ3u3Vz4ezgk/0N23xi/mOsTxKBGdLOa/YDhHo63s01npQ+zGgHWjGpOmiPhZIyb3U5dT0pel5Vo5wGInNd713lBQlrgTlhwj3kHNOgAIXfjW28gpQeOOvq87qv3qw1pZbyc/uid/mG9QGS9LNGVhC1wy8BY9NIAM0QJffNLWeR64u6EO1yb6CE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH1PR12MB9670.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(23010399003)(18002099003)(22082099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?fs5MwAVuxxvaeJHse18Q8A09Y8viWbqicHZeBd93OjUjukp32jD6q3+TVu+5?=
- =?us-ascii?Q?+BNS8rscF8bzN9PdtX9ySP44ZQRZkaKHexTzk1uSToIyb1oVVDZhEAVKsgOL?=
- =?us-ascii?Q?aAxlV0Hyf+2OzKEaU9Gd0JpxqPCKUSBL/EE4OrlyOA4cCZ5wFYrudQdTiXX4?=
- =?us-ascii?Q?hlgHS+hz1HmxVPbPsaTLJW5+LFpbJpXrEyFjP9MF2B+Pxqew061DcpTxArbs?=
- =?us-ascii?Q?QA8J15ZE01s5oKI/T1s8zzr8crl0BazXH1Rp3K+pMbcpxUe695S9LbM5MchO?=
- =?us-ascii?Q?x5Vuz0KTiGuxyjP1MCJCWLoi6aqvU/Fx/PULCK/xe5N2xaIyevdNbnAF1KsB?=
- =?us-ascii?Q?YpLrj2p3POpyks9m07UX3+VmZN7QpokbzS/MvPguP9K6NxbW5soiIOx7eIdR?=
- =?us-ascii?Q?RW2b9Ryw9XS6ezLxakhErQ+YdtBta2uACx5Ii3ZhGFV9KHQ597XPjcjKPZtt?=
- =?us-ascii?Q?gMDueKzZY/nNPeD5zlxnogjOYABNa2putSyPf6Fh8PdGu5S7hGhUIMJ4sg5t?=
- =?us-ascii?Q?YaKGcI7riNJHlJRaPqZOa7MCc4QSJ/QIWy7otnQfUCEor7nVXXsnkrcevGLq?=
- =?us-ascii?Q?dLo5mxhWdfYvT/KQgtM1AmsdhvZtRUqeiYx4ARArGesGI0DEqSmZIy0idIBU?=
- =?us-ascii?Q?KM2izLfRAAw0NFINFaf/DpGqyvvO9BLel7CjlSIak88W1TSRxLvgNVXvbBVN?=
- =?us-ascii?Q?gFwinLmjjiiZYvilotIESWqAMai7JWI7oDQQTkXfOScpWK58UDGY856pxhg1?=
- =?us-ascii?Q?KmMQV70SyBFvE0bYjJofI/YtdzT1nhHhreV7lvdmf+ypRyHKsR/AEM6loSxh?=
- =?us-ascii?Q?Etz6juPAhOdfA9dTJtfnFm27aIiuTnvDakuC5hiQTxILqz9iBcoDrhHXK2mc?=
- =?us-ascii?Q?14BiyI6DXzrS46NfA1TVbsXap0oNEOUqaRIluNILcinF/83p8QTx++Vhc/+G?=
- =?us-ascii?Q?6FDR64k3ju4KHskpTDZ2b9QyQJ6CXFW2fuBnauf9K8w2WZARzd7fscKR/n5k?=
- =?us-ascii?Q?rFShYpCx0kIx0wYyDexXw0t52plh1fMgoM5S2au0xatnKUMbIL6hcKc3Yrg0?=
- =?us-ascii?Q?mpCSUrnytRJTTr5JkyK18UunCfZgqZsGeQdCwMv6kcc05oMLgpcPNziOGSsP?=
- =?us-ascii?Q?pwjgEQ8IeEHF86EGFXBJfcJep/58c9cAnOtzv0QEnJ08p5Kxk/XO/2i0lL2G?=
- =?us-ascii?Q?WJgFY4i13cr85fNe8G9Q+vEzTrsGO++LAF3HGrYf0Q3z1JddmrXJIOJDpJ1k?=
- =?us-ascii?Q?7NUTkZ7ftu8pF7eSDGK2YHq5ZSaz+fnZqLtwkatB36rVGc5Ep5sTSiVteunc?=
- =?us-ascii?Q?hAepBnmIb0LLlYtkDaPM0eLpxJg1TsIEuWhgQa2uC7dyVDQT3E/3TnoqXkgM?=
- =?us-ascii?Q?jxUZO/aWhQcCjz0SwlTcliPhkTHBKo9SYB9mrQjYLPgi3JoVTJsfmgvXbLNV?=
- =?us-ascii?Q?+y35jOspEsazXU7WLHLDpKyNa3UCL4HiJFL7LlrtxqlX6yU/4LWjhvBwCrr4?=
- =?us-ascii?Q?v0LhGfBSE1QeewGcPIHFIzaq/NbWwy/M6LmD0Y9O3pQCVtMqntYLGwpfaSTV?=
- =?us-ascii?Q?CXM7wqrKZJhyruhAYtg7M5mRYO1DN9AKABhzygMZX5eJeFRkzNdif5TV0N/V?=
- =?us-ascii?Q?r+En67JZstfVlsWllmnMSlEgXKp0Z+wGrQFJ8Cegia/HUkS5HGyhhFheUq1C?=
- =?us-ascii?Q?hp4ojFfuLtaElNOsHZPyuMue5RYwjLZHYOhqVKIUXnm6NwPKysNV/KcZ5KrF?=
- =?us-ascii?Q?iSLvedHLRw=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fdffbe07-6f1b-4be7-8936-08defc382432
-X-MS-Exchange-CrossTenant-AuthSource: CH1PR12MB9670.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 08:18:39.0400
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 26wmJc0umW1WEXtuYtpjH15CMNdVy3j1/xwP6JCW9xDxk8F2pzLviKKoQUosRpb/PQmbqy0y3YZb705YSf4Qsw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4311
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aoK6jXA-tF9qfKOZ@MiWiFi-R3L-srv>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A0117140004
+X-Stat-Signature: ehswnjsqk65gjqoa1nismds3i9rtzqip
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4C7B280002
-X-Stat-Signature: 8joxs3ajbianrcu84hd7ycp3494su1ju
-X-HE-Tag: 1786954725-895019
-X-HE-Meta: U2FsdGVkX18PTKJlukfthxjJ5ofYdf1V5foVNu+DkQMIncpJ/JRcbjHbqYE6hVeQmpJBP6X7zFeWbP2dfrdxE05Mc7oV150JcIU4u2c1nUgpdtYN97zsVlpprK4QRz3ebWBDrUXFeGF6CsS0DzpqHWl9MWomEXlg1GBTxZ6dic48LLlzmfDZhUUUWZqMDgc70Clj9vPBrbZxqm0h/5M5DRhzkyTx7auf6BeA8mEJd5B+nTOet22r/ti8XSVyE5nSXx6GqgpzEPdjgMED1khMP083DOjMRZaHjzOwDfOGbJa8hmK0l/X87EfA5KEbbXojbAlnmtQrP4fgJcUEmenuQZ9YI8cq1yZAxq5fFSeHp59ErBheF4fEZ7IuYk+4sMFsOdGm5ByZe5Ht9qrpyrF1VzyL+tYN6hi6/z8nGIbiqfSQdVsFBMSWtitCP5L48NQBFLw6cohVHMK6qkRsjJwx0l1pNWOIv9pVQuyJWe184hv9AUgA4JCCiQorhoekL/e5tkNS1p1S2mGevu5Opj+B9LWYX/nIF6H+ANFk4Zm+UD91jqD3aibXiB7SfxLMIxHKUdX8lS3/TtnZir+lfeBV+3ix0Zt5KmyuzClW8ciFwtMdEE8EMxVQCnT42dbRVs+6Vegc9thaGPttgvxIc1nRjGF1ADdx7p9v7djRnblY/grgzNLAr3ajNGdZ6WPH1XC73owWC/IdP+zt90Jl9G2CNo1o/oM2TNZJwnmievJxOYL/UDKaO8MF9yf4K5ZMqjIKef8fgRcEhuI+VcqUD1Ty9l5N5TNuNenTX7RAFeWZy2fUpY1sruD8NyXhhlgmQk0NM4ybPMtR6O24ay17yRZdzyW3P3KWF2iZJhZXr3vQYU6TofOYQm57BP+3nAUgpSj7yCnf4tfE75MsocGEeL7llWWhfCug8fDXBFt5VkqL+8WBHwu3kROMMH7qgsY3tchbzalKbs0mn+/hp8FsXBh
- fiSGIR7k
- YC06HX7/SyYOuRteS6GhK7FDNNBxS87hypaTD55fZvlY+gtWEJzPdlJif/z4nTgRj9r0KCi1GzYrxOYkqPn2tDOrXKzdhIZq/GJoaZT68W00Bllfj61mt5YV5Eh0GAODEk3kyGF9KpmTM8zvq3AKbttRvGovR8tM1fo8Spz+xmWWwpYDOtN6GtVNRkae1VrD9Z9Ux2UkfulTYhv2IRpzBdmrRVTQMBhw5fwO4vnrMJzhOcNCwbSHXv7TGxi/XPqIL8YlnaTy+1KOb8KBxeMQFwWlk3+yJtTr9livtw7y8mFdYmEznvnqWIGYKCDE6xbXPp0KUtJNKKA1xbJob9ntqqcgefTITdaNovmQvwgonVOtJjPP4FSExLpR0zHQHTvp/P9qGheNmapGwD3Sz2CSMaeTn+STts2k8s2C7PKd2KMCTNu+qaD/yNtNWcj7uwoRtAZstBabKjHI/gIpNHM9Qhf3Sf713MuWoW4IIuF7dM1IslhZVGpqbbZFmaJRXYA+8WhN9QYz2TGB7+t81mmLKlfBlR8Xw8t0fsKk1WF1YQCOIwDk=
+X-HE-Tag: 1786955129-644177
+X-HE-Meta: U2FsdGVkX19U5/SV6a3L6JBuqBuubePn3r5oTzLG+oQTx2mZ7DkUg/crIxkorREmvrbqPbT9Lw4xsoehEFNU5mKKNsIJtXrTIV8VxXXH3PbXsp8D6/4CdFaWTfe8GUYzfe5hK4Ltx6m/jSzLJZEEQl31QbSaujK2fuEtHCb46M0PYV+nLzsq2x+Ci4owv5I627Pz+9tm3ewMUifSGIN+fWZuH0FTryFg2WGTngquTke3T1SCbiXLLLrH8ZHsH3pihKdRhDdFrWRF5h+jTmbRMujJLVKThT4D/6gYBqDEgJdX1I5vJssrEUjzsF8anFgSSN+RRQJZEKFPfI5QSvIF9V0A4qW6ZvKm90aravmsoE/aUx/6dEqJilwZl7KFqKAI1AVPg6EcU5nhqIqecveoqbBVUrgIEz4SWRlIx6kCZjgKkgzF0074hfwxceKVpLjdpsOeDJUC5+wHbyeZJn4SQzp8uB8oNnkE4M4FN/9WScrxKetOV+uDoHHs65uQ1FGP62crAhv3KXiA8gQz4VPXZ60dqIX6kjx1oWOb6k55lLe5D88kHRAmYFvqE4OMBt15ZXijXSt3HQTYRqC0J3U5ZlILdtyKcibq7vDBOozCLH+Kjy5CTFfGzKIB9YiqTrnoJZ5LOGCkm6MNYgfan4leD/DJQ6EWXYGBiXVkktAb5J56fCxVMS5SuwT00sS1M11WAWJEJMh7yOTDLSqA9TdtcwqlfsUqth8raMczFqo20Nkc38P7+rfkVITyM3bcu9CBqNBK6HdxiK1OLTIcsvfijWVJjPZ3pc6c4np96+nmGUhe19fm4jXla+w5bEsBVHpP4hGPKLk8fhBDw37Nc2AIeFvDPsuB+6QFklM8KDizfVQa234oCL6r4RY3JAk2kUQS2My5I75G366+XrpLQAWBWTM7TxT5rGHLFhWnXyQAO+upkSyVdBp6lH1hC/oHHl2Rw2kojdo8RGZlODGUPjq
+ 88R2LDjq
+ Qyw0mxHboBWA3pvzjZRtcX6PZQrVq1w0/byHqD0ihz0UKhooRYqYluCEUtRHy69rMiNjfAt/jkz+TOU7XEaXAu8xY4gLm0lDeGWgvBxauh0b6EPeYGLHmeNgoZ/JVPK2AO8y+F0r4Ex4ulp0Ia9PPoMhBvUk/U0iJ4qd+i3PVT+mCQjP6/Dl0XqIBtAS5M7eJo0+OUb1OBkV26UvYFj5ef8t0n+xLTPRfPPzgzpRrAH3zY5no6OJ1pYPA3rC8MJd+DQCdEOjYcC50t9iekQZN8+kwn/YxMia2EnM/62A2h0WaoCaM3DjT/vPaEpvesmyQ0nQobc4MmLhER5j5MsEwZBOc/HD29J3PDlaxYXI7aS6p/Gc1LEFb5fuLkCVpJAJCbPWY98ROA2EYsRA+jwKZwF/pRE9iScoFaNdlUkNQyP5QWFUhgXV8yuhYgZW+FirRVoObd9FFV1OKmAi5+GY2bRuDQ5y9VlST5F+Q0W3jr2lSC3geJdZTpVlA6a7RaNXkDHfVvPaaYGrVTft+PFOo1MJz3jw/vOI98PNkNXRTDjz9/L95jCpxWOhNorRTRJ4YzAb9o03Fj2fJYgsOPjpHdJBP+g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,87 +135,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 17, 2026 at 03:43:51PM +0800, Hui Su wrote:
-> migrate_device_range() and migrate_device_pfns() clear the entries
-> following a compound folio so that the PFN arrays retain their
-> page-granular representation.
-> 
-> If a compound folio extends beyond the end of the caller-provided range,
-> the loops clear all following folio entries without limiting them to the
-> number of slots remaining in the npages-sized array, causing an
-> out-of-bounds write.
-> 
-> Limit the number of entries updated and consumed to the remaining array
-> slots while keeping the actual number of pages in the folio unchanged.
-> 
-> Observed with a KASAN x86 QEMU kernel using the HMM
-> migrate_anon_huge_zero selftest. Closing /dev/hmm_dmirror0 after
-> migrating an anonymous huge page to device memory exercises:
-> 
->   dmirror_fops_release()
->     -> dmirror_device_evict_chunk()
->       -> migrate_device_range()
-> 
-> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
-> Signed-off-by: Hui Su <sh_def@163.com>
-> ---
->  mm/migrate_device.c | 16 +++++++++-------
->  1 file changed, 9 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 908d2d4ec43a..67bfc1af0b29 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -1396,16 +1396,17 @@ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
->  	for (pfn = start, i = 0; i < npages; pfn++, i++) {
->  		struct page *page = pfn_to_page(pfn);
->  		struct folio *folio = page_folio(page);
-> -		unsigned int nr = 1;
-> +		unsigned long nr, slots;
->  
->  		src_pfns[i] = migrate_device_pfn_lock(pfn);
->  		nr = folio_nr_pages(folio);
-> +		slots = min(nr, npages - i);
->  		if (nr > 1) {
->  			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
-> -			for (j = 1; j < nr; j++)
-> +			for (j = 1; j < slots; j++)
->  				src_pfns[i+j] = 0;
-> -			i += j - 1;
-> -			pfn += j - 1;
-> +			i += slots - 1;
-> +			pfn += slots - 1;
->  		}
->  	}
->  
-> @@ -1430,15 +1431,16 @@ int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
->  	for (i = 0; i < npages; i++) {
->  		struct page *page = pfn_to_page(src_pfns[i]);
->  		struct folio *folio = page_folio(page);
-> -		unsigned int nr = 1;
-> +		unsigned long nr, slots;
->  
->  		src_pfns[i] = migrate_device_pfn_lock(src_pfns[i]);
->  		nr = folio_nr_pages(folio);
-> +		slots = min(nr, npages - i);
->  		if (nr > 1) {
->  			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
-> -			for (j = 1; j < nr; j++)
-> +			for (j = 1; j < slots; j++)
->  				src_pfns[i+j] = 0;
-> -			i += j - 1;
-> +			i += slots - 1;
->  		}
->  	}
->  
-> -- 
-> 2.54.0
-> 
->
+On 08/17/26 at 03:38pm, Baoquan He wrote:
+> On 08/16/26 at 02:13pm, Lukas Wunner wrote:
+> > On Wed, Aug 12, 2026 at 12:08:39PM +0200, Jan Sebastian Götte wrote:
+> > > I can imagine one alternative way to approach this, tell me what you think:
+> > > Instead of registering wipe handlers that memzero places on panic, I could
+> > > put an optional registry of (addr, len) descriptors into crashkernel memory
+> > > that the original kernel populates with the PAs of buffers to clear ahead of
+> > > time. Then the kdump kernel could do the actual memzero. This would remove
+> > > all code from the actual kdump path here. The registry could be made
+> > > per-core to avoid locks.
 
-There is a similar fix sent out by Matthew, The question is, is it OK to
-send in partial data upto npages (when nr > npages - i)? We should bail
-early and not proceed if that is the case.
+If this has to be done in kernel, your (addr, len) registry idea is a
+better direction, and we can make it a bit more general.
 
-Balbir
+Instead of a secrets-only wipe registry, consider a small "crash memory
+region" table with an action per entry:
+
+enum crash_region_action {
+    CRASH_REG_WIPE,   /* memzero, then dump normally (leave zeros) */
+    CRASH_REG_SKIP,   /* do not include in the vmcore at all */
+};
+
+struct crash_region {
+    phys_addr_t addr;
+    size_t      len;
+    enum crash_region_action action;
+};
+
+void crash_reg_add(phys_addr_t addr, size_t len,
+                   enum crash_region_action action);
+void crash_reg_del(phys_addr_t addr, size_t len);
+
+Two actions because the use cases differ:
+
+- WIPE is what you need: zero the secret, 
+- SKIP covers things people do not want in the dump at all
+   — Registering as SKIP reduce dump size. I have been considering how
+     to shrink vmcore size on some big system with huge memory, the
+     vmcore size usually is several or tens of GB.
+
+If this is OK to you, you can start a regiestry table
+infrastructure with wiping secrets, we can add SKIP later and plus some
+driver used memory.
+
+I am not sure if it's satisfactory, but you can give it a shot to show
+what it looks like.
+
+Thanks
+Baoquan
+
+> 
+> Since there are a lot of security expert in CC, I am wondering what's
+> the risk if we wipe secrets during dumping. System is located in
+> user's place, and vmcore is dumped and collected in user's place. If we
+> filter out secrets memory when we dumping, what could be leaked out?
+> 
+> > 
+> > Or create a dedicated mempool from which all sensitive data is allocated,
+> > then call mempool_free_bulk() on kexec to poison everything in that pool?
+> > 
+> > Thanks,
+> > 
+> > Lukas
 
