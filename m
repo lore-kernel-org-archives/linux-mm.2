@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C9ABC5DF66
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 12:43:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19B86C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 12:43:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99A8D6B00C4; Mon, 17 Aug 2026 08:43:09 -0400 (EDT)
+	id 443696B00C5; Mon, 17 Aug 2026 08:43:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9722C6B00C5; Mon, 17 Aug 2026 08:43:09 -0400 (EDT)
+	id 41B3D6B00CC; Mon, 17 Aug 2026 08:43:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88C546B00C6; Mon, 17 Aug 2026 08:43:09 -0400 (EDT)
+	id 294D46B00CD; Mon, 17 Aug 2026 08:43:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 547D36B00C4
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F30176B00C5
 	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 08:43:09 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C25D41C1A4E
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:43:08 +0000 (UTC)
-X-FDA: 85110726456.24.C0AAD5E
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E359BC000C
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:43:06 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ls4fv6kt;
-	spf=pass (imf22.hostedemail.com: domain of calebkan1106@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=calebkan1106@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7D21014079F
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:43:09 +0000 (UTC)
+X-FDA: 85110726498.15.F34FA9C
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 88373140003
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:43:07 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qXZTtngt;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of calebkan1106@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=calebkan1106@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786970586;
+	s=arc-20220608; t=1786970587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sRrI0ZiNFWDC68LZNy9rl9u6YO6/uPndbIK+uC0O4Y4=;
-	b=gVFlczFDd+uq7IP5oxOO/DdfEe8us5cU7/nJmTwHrG2DoxIEBkvrO9t6pCLQBp7wM4cZ5H
-	D5LV0l53dW2Zw9S5O1vVWXQ22cQwiweoXyX3OW2y3r57OHzgzOnq7TBBDG3eybNvu0J8lf
-	/fq00evdvfqIojWX4gI78I0b0JWrphk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786970586;
-	b=VFblwHQCQpnUdS2AgLo1hexJp29ovPnCfpEc8hRv6xDJFMMUYG1hB1cBaV+tHi3AKSGWmD
-	FczKi9SCiZKPHu4x9rqTSKb5XcsFkh9lT3P5y7h/jpFp62NFAGezuceCqtGgMkRfY5kbyE
-	WkV/jzwbaqOve2Ru3m7/n8BB9AD6u0E=
+	bh=h4fUYxQNQI9siUe9sl4T0IlOWMNDubqmMBb1FSe4NDw=;
+	b=olGveY3vyo3EIWDmp9c+1N7SonDI0k4L+iZKWgsJbv3pi4xKGf8isBMFFGgeEP+PKkRH/1
+	aOKdOs+XID2CqAslVt8b4gQuUWvtKFaKc8ZdHdgdC+CMb2KiQ8aR9GDFX99eHUwEajMcTf
+	qIFE/ekeMUPBxs0S01bW0ALUD86WFM4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ls4fv6kt;
-	spf=pass (imf22.hostedemail.com: domain of calebkan1106@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=calebkan1106@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c1712a04ddaso552196366b.2
-        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 05:43:06 -0700 (PDT)
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qXZTtngt;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of calebkan1106@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=calebkan1106@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786970587;
+	b=QhGtPZeRdYDtI1Wa3s3ZsfmWLWwq9E/bJCRj8UmiMGXJAh07wqBLK0xmoP1PzFmudcl9gi
+	XYeTvljnbbWNfME33IzxVi8o7Bv2E7GjYOuA/MEow5ku4sBpyIowCBui6CvI1baL7xohAq
+	JMHItuFdAXbE+1cmPmdg6abjZvah/64=
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c1712a04ddaso552198166b.2
+        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 05:43:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20251104; t=1786970586; x=1787575386; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=sRrI0ZiNFWDC68LZNy9rl9u6YO6/uPndbIK+uC0O4Y4=;
-        b=Ls4fv6ktWaSpsgnKCH0E9VqidpLoHCgwvUgVKXj0AZc0TK2wxMuxxHir3ce2pvGZRt
-         V/rijX9Uh51F6xH9+cg4VVZ5T/pnrfGA93MhbX1NTEKxc2o84fnI0MaiqYeb9jOUR708
-         XoE0ex9dMLAPpAhgs7a1UEtsOqSNapNz6sOpaP/zDx+ij+x0cXGFSXehpswyb14pzB46
-         qEuKTOP1xRqoCQB0Gsj+PwKhRavFaKlqjQK2DNH5eEj3RRp+35fluXeDmJY/g5umXK/R
-         2ZuxYrpfSl9MEwM1m7SZeb+RHg0lGPPwVx1Q9E4QWTzTE5fiRyJEbUSr31PTF/fjGE+I
-         ow0g==
+        bh=h4fUYxQNQI9siUe9sl4T0IlOWMNDubqmMBb1FSe4NDw=;
+        b=qXZTtngtkFRFA2RUuG60WjLQ1dSqzI6g0pPChe+BYbWUHI+/tIS/Zj8G3I18f4Lnss
+         VaR7DXdwWubCqNQ1yn71C1O3ThByhPHmcfpnwF+S7aDTMXT5dHxjB21wcQmLh2JSUQl2
+         srM87u81T0lhEXrup4QKf4BZJYIn6Kfcn/mz2Y4CC7bu9oRs7I+sarb64rGbbpHChNXV
+         V8xK0mIbL78euu2E2JqFKWqOP6UixCAbaqIaws4af6zWP+NirJvkSAzPI9Ha7HGaMVMa
+         Ri7VyiZRrG2cV+MY+FG7oGU0QAQ6Hz+T71u+W3AWn44xzu5ecFIJlY3TXOrvjL+NDWF/
+         nt7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1786970586; x=1787575386;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sRrI0ZiNFWDC68LZNy9rl9u6YO6/uPndbIK+uC0O4Y4=;
-        b=HaEu8Zm4dXgnnMD1DfAIIVC8sdEJTvT4kc3+9Lh3By4qtAvJGTKQt4PaAwz0Tav6cn
-         +ZAc61Bm+Qk+iJDYk7PU8sQQ8gtwbqSQMlXwvo7eUE/sS7T2pPHUlZHZVs2jtH5sSxN3
-         ZS2XdDs1cGCOAl2Ytp5oE5nCaPo8nw2I4bhGSMoFG4Nxc17eXiuJ6qMR1P09+LejgTrG
-         Wk/8i6419xABg9cT3LawBD5Wkp/AfiVTd2zhqI/W6huh0Mrml/iZPigrHDsqfaSaNYPL
-         KEM0thZQuUoX3j2o2a6NHdY7nHn3ILRS6nr7ijoQrguIeAfNd02zqi/31G35yewRAUYW
-         gPRA==
-X-Gm-Message-State: AOJu0Yz6tln2Sm0pUJ8HfiXXCkr0NdnNSUpM9b9qP7EOj4sJK+V+D8op
-	3yp/nQN/xO7+d0SV/jb7NULttM4tbjGPjxVGiF4iqwSMLrmFIc4njtO+
-X-Gm-Gg: AR+sD11ltaCVuTjeC/sf9L6hv4VqUm6ZI5Vkp9/ytKEawrYaJ789ly5Zcu8EoLtxqKZ
-	NMluOd4+LPZbKyLwngUnIlFoo8lE+ueBFtyoLD9ufUv6xNqCob9FrMCt7Z79/ILwSx2z3WsObWb
-	aLYuvj0xxgnFBecsT6xcjnu6I0e88Bz5Twcy29u09++HvLutcxWB5Hy6I2Y7DRMojpzGgB+dO/F
-	iJL6+eArK/JNTSqOpYigVuC65CmeRylwJbniIdTjbD3G6Ucp+jYBq/X+W2N4F8uwiPEPw6ROoqR
-	LG//5soSSB4sG1lj9nqwO1uGmkhGUhjSyelFiKZDhhTLYc6yjs3kUrYCJiShpoMns6FhFj3c4a5
-	oSyiXNxxeuzcgoYCU2q89fONb7ReJlGArJjhsiC+CfjFRbxCdXFrnW+vE+S0hZaOsE+Xc5cQMnC
-	TJy/TYxjaHOLTuL05NhQn7bBl73+x+UMUY38L1TyohuUQOlX5cpw==
-X-Received: by 2002:a17:907:1609:b0:c16:b87:de64 with SMTP id a640c23a62f3a-c212a1250a6mr1202678666b.15.1786970585499;
-        Mon, 17 Aug 2026 05:43:05 -0700 (PDT)
+        bh=h4fUYxQNQI9siUe9sl4T0IlOWMNDubqmMBb1FSe4NDw=;
+        b=oTldTuQjzzJuGQfcZ30g9RUDvt5VM7CZzYbopHKqY756ehgNUmNRRyAkTsWcbIWYln
+         ZBGjjeXPBIzXHdY5F6AYM6F7UOC+OvY3N2IceyAjK+lLBo/quw1dhYinkDaAXwsMVPyk
+         6hHTTnpnwX+LSBj7A/cbRBGFqcFmF77YYdjnWSdTzKIk565Ya8PU+y27K7/lcNj3dr2m
+         PGg65U5W1/j5QsmMPm+xDXc6mygcwT9bPOWBO7e5nS8YP1LJFbyFrfUwP5HfJ/5h/RVf
+         8K6TMNfui2oXXrpRXwN3ZpZy5jNu55tAqke5Zuw/WeQ+pUh6BGJ3EHRLrkNWkk4f7Qp0
+         cIxg==
+X-Gm-Message-State: AOJu0YzP1/96+iMevh7kDJSmsx4XNNGtUlsNQWS0q1rUm2289gE8LUvf
+	uEjs2APpTtIn3dSYMM2KpJ/OGRZZDOLvnruWIIe3bqhbq1hPvt707xsp
+X-Gm-Gg: AR+sD10mrpgnxDGu0mYYRHshvBOnzrEWLebgOBV+V+KT2jIyEi2uX8UNfGvIZtKiCFO
+	g8AR9ocAVkKI97xcNsSUTF8Jxjw4hCorAVVLAGVXiIigCDkFP5ZFqBxX/5wCB0Mq0T9RdenQtld
+	tCnhZ0PvP/a4//D8qLbm3HcIKBmDBd6Zltakw+ZvIX4+cfxJFg9b+YojUDRWZfhnEK4N4Sctkdf
+	DwrjuV4E6s3ul0Xw2jpTUgZ7gjFys55jw/4h+ok7Be6FudXLJbUBKiMFzbKSxI8pb1KQqKDJDDi
+	OjMXypYyjaZrIsCkKshAew4b6IXnhAjonmHRol/8T/u/60erDxll6zUZCmLbOS/CLjlwZrMgyip
+	whYj1N9vx8bX7BybKghRw5jB36XJeYaNPpPin+adKu+r+AkLqtufpKrAr3wkEoYWGAFJqsaXPvB
+	uF70grFxIOYn7n5GyVfCHLovOjIH4yUGLpMLkattVNM6bbxh3Y7w==
+X-Received: by 2002:a17:906:fe07:b0:c20:191e:89de with SMTP id a640c23a62f3a-c212a1c7d33mr1077304166b.25.1786970586168;
+        Mon, 17 Aug 2026 05:43:06 -0700 (PDT)
 Received: from [127.0.0.1] ([2a09:bac6:3861:1e5a::306:a])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c217feb99d4sm52626266b.22.2026.08.17.05.43.04
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c217feb99d4sm52626266b.22.2026.08.17.05.43.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Mon, 17 Aug 2026 05:43:05 -0700 (PDT)
 From: Caleb Kan <calebkan1106@gmail.com>
-Date: Mon, 17 Aug 2026 13:42:46 +0100
-Subject: [PATCH RFC 6/9] mm/slub: materialize trie-backed stack depot
- traces
+Date: Mon, 17 Aug 2026 13:42:47 +0100
+Subject: [PATCH RFC 7/9] drm/locking: preserve deadlock diagnostics for
+ trie-backed stacks
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260817-stackdepot-trie-v1-6-53870ca1651b@cloudflare.com>
+Message-Id: <20260817-stackdepot-trie-v1-7-53870ca1651b@cloudflare.com>
 References: <20260817-stackdepot-trie-v1-0-53870ca1651b@cloudflare.com>
 In-Reply-To: <20260817-stackdepot-trie-v1-0-53870ca1651b@cloudflare.com>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -109,14 +109,14 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Oscar Salvador <osalvador@suse.de>, Caleb Kan <ckan@cloudflare.com>, 
  kernel-team@cloudflare.com
 X-Mailer: b4 0.16.0
+X-Rspamd-Queue-Id: 88373140003
+X-Stat-Signature: 3e3z85zynjpf3hjhpqwwrgkho53rbi56
 X-Rspam-User: 
-X-Stat-Signature: c96zkbokfea8jomerf1rybnxxuafn5to
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E359BC000C
-X-HE-Tag: 1786970586-200211
-X-HE-Meta: U2FsdGVkX1+QbqMG7rn240ikzcsdF4C5gdI0tEAYaKpc3b1W2BeI44g1hXfr6NtnY/pWjzBQoOjLYc4sZv58nnfCcemgrwqimXtZppZy4+zEK7y0JQ6sPhgQFV4dxhp8B1/4LT6nl54oyje5oil7wtQF+KhD7fx44DnvTYJflqAfSKS2lV/3KKczZPqSd2eOzCvYf6Peh4uAdIAecisrwABOHwK3SiGu/6mxCGRnesmPBFkWNVnVw6rLWNxRmbb2Afw+fpK6jAzibnHs6JynCAz3vzUljVo6FTfxFtJkPCAqanlLAayaJvqddQnDF2pEYkvceD121i/aoFRmUCRIBUpFmacMpHINLEAF+ELZvTOf2NrYiodgmqrMGUsSkGlX2y4Y7Vip6UkvO5rqa4zVMFJUor0UCfNvRRz3EbKZ1ifmpjEMjdaeBFtOMmuGzgPExyesDfhkWmktWhKRZKfROAU31mZvglc8J4gzVUAsehfcajGU0bTzX35Yzm5N6LRxYHjYsvCKRWYaAfk8KUB1XB7vNrGKWObNpadcIpeZSQMdZa8F7lX6yt0mOOUXCIiejK7vs7LCBL+J40Co1l1uGUO42zp4Bx2c19lSsbZgOsYMMA9B3pxnVYVJtzbUPBKX7BNZf/VfjPn/2BkAfSSDhEyW1zQaG322OG2oB6UyZEb7EBGcgOYC4Jf0aY6jM4Ft/CFJEgbYyTubXujxZJT28RdoTaxmG6OPTGFtkm0nMxpV7ZRcYmJVWRwRJ6fzPLdkwvLEedUiFhKOovAhbJQn5gb+UjGC5em/X7MY+S5BchZQDHZM+wN4jCETaOyu4OYH7J7YWI0tKuxaZete3/bR8ejzT29JRV9s8MiSpQeuU+cKg/8JFVFtBbLJjizSCIvY97ShGE1nvo7usJh6D/gEGflLT268/zj9mG41++fW9n28qmBQYb6e1n1fyfqSMLkMjLgDqkARLvz4Xn5txDF
- k18omRhG
- v7m65Y9dB5sy5m2w2tw3UEdI2LrefIy5bSML8LVoWFyNhc7ilbawcWhOkShcNyr3PHJ8XgHJIIXSfbCTQpQxC2wnvfozVNF/afwY3hjGw+fATU2I/GL+hDgklyq5G7ZITFaFV91CiI3XxgGE0vDFfkeJuS66+iL1QzQLx68DrGQn8lp+miAhuyDkwLeZLSsc/F3GyT9NKhiF/3M/AUrcz72Wx7YZg+QbmzPGm6ZgnnARQqf5kC3Vx5QzxoyoExDfSdi9FyWBkx9Ub8UUJTrHo53ry7TT3WtTYmIlNBvkxv+1FFtHKwv/AJ2rEYSSqdNy0P+Ed+8j847hL/WTkKQUmdcfDXhZ0xFbID/D9nDZV9RkiBJlJa9CdIC6596Ct1UnIXf6XwcyEy3ZduDEgFtGL3QeTXvmx0ILbBAgQN7mMwRRe0nxr+GDGPIpLzWCf0XoULWXnmqBpTLpVUXxQraqda5/z6a6XKmlVrbh8
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786970587-16194
+X-HE-Meta: U2FsdGVkX18lvxvWOrs66wuz7haYeYP0P1wkuvew7t1rI4np21zazgNA3Fzhsycn6epjvyOYA2suINDHBYywlE8Et7wtPS8UpisX3oNcR/mSQ/Vd7PIeA5yUdpFzWeQSIdoEYHKghjsCgRyVEBMV1Gpv/sCpawGCmE3JLO++logdu2nmKG20s+bJuHGS2z+1D6+x+EtN4RdSHsXkrq/sh7Ab8A9vWv5uws8hCp3irtrD3692Aufod+FBfUdbuxYo0JbxA0MoQqUmb2TgfAxyLi4pwNbiwPJ1fOiMDVLEVTFq0W+52qkd6lToNYCAncnN3a0bUqLvjejI0wxCHhCy4LWXotKRgE/iqp6rCdD1/QtOwHcKNSik3lg6i2LhGoHTWIjsqRl29ceyVC45HLZc//ub+2rmKKhcWgI6SXDy2DHK7m6poA0muBhBa0gnae29fpfPF8Ol6WT8sxp5XEcAJBodeznsB/bj58GwBMz2paArz7xYhu/pgsyfNy/D+1wkJKs6Cv/89MEBcAcASE/skEkpKxO852lAQxeeUFRg8pH89hy/D9mDhxffaCPN881kTVbidQywJNlaxwmfCLHBnlEWCUk3GEl/Nfx0/zxMvS91iCUYy2mSfd5astzwbERYCF0Frlq03q6muXdZ3PByZ4LnXpHq+LOgoe3fYzEr30prxs9ZOyC3iErSDqxtiij7IozrggUQOxbWMi9SMb6OY6eLwIV6m4Z8HARbz8hvkbqHCmeynFf2/6NhDOmHPyb/gNqS39f8DUd2DmWIrvMXmhAzQir/22Ejqd6SCR3dRpw7gmlw3PE0UcAb3yKa9h3tZVnXuSn/bhCXW3FAVFZYZ4MnP26BEHO0XYcnIlBNg7o7zTgZZeyw/i/0ABmf0BSEcW9FlUVB25c+U0o0R57hXMVrqg5wsPrxF1z9aeA7hCQm/frcZ6+ijNOqT6M5nMDFs6WVkjoIFVBWKfAdFQ7
+ NI22sHrA
+ 1A7lyjPe+3uaij4GZZ85h8GEBoG2JUFjixXeIOctLGB6uDOAko99VowvE2PMSfn0av/NsQWQNalBNDAzCs7rj9RVXVuzTH+jZ7OK12IFTYCyqztLudZ8FW4aPa/zg0Q7SIiJXRAgzGb1SbxltjlwGnIb0+pcGlP2bqZvAO7l7GxLeVCQY1uh69Vwz6oe7iKBchlE+HxpRpgrGosHGqTdsDRnNwkRisVTZAe2w5iigoGSOxTaIFhF8scoroMbFrzQ3BrRB6+SbiPiDqdBMbqOIkgN6qCzrpqrghj/UjEGRtVxbmnc/AY1/qLr4Ovor0e6r5mi2vMHjFfEdpJ4DVfOBx3EehmJdTX4DpElH5AnTTRMSUrTW8/wnL0p3uwpaqHGb0wGzaThp8AQZHDQLB60yyWpYxA4NezBDPi6J+Wb7snzSklfcFjQWCMQNsoBOpRvkNlcWgQUX5F319BNMh2MAZ0S2KUBYwd2yVVzd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,66 +126,43 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Caleb Kan <ckan@cloudflare.com>
 
-SLUB owner tracking stores allocation and free stacks as persistent stack
-depot handles. Trie-backed handles do not expose contiguous stack-record
-entries, so __kmem_obj_info() and the alloc_traces and free_traces debugfs
-files cannot use stack_depot_fetch().
+When a modeset lock acquisition returns -EDEADLK, DRM saves the call chain
+and prints it if the caller later attempts another lock or drops its locks
+without first calling drm_modeset_backoff(). This diagnostic currently
+fetches the saved stack through stack_depot_fetch().
 
-Use stack_depot_fetch_into() with TRACK_ADDRS_COUNT-sized local arrays.
-This matches the save-side limit. Keep the existing KS_ADDRS_COUNT copy
-limit and debugfs formatting unchanged for hash-backed handles. Continue
-to copy or print no frames when the fetch returns zero.
+Persistent stack depot saves can now return trie-backed handles, while
+stack_depot_fetch() remains limited to hash-backed records. Use
+stack_depot_snprint() to format either backend. Preserve the PAGE_SIZE
+buffer, two-space indentation, warning, and backtrace.
 
 Signed-off-by: Caleb Kan <ckan@cloudflare.com>
 ---
- mm/slub.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/drm_modeset_lock.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 422bc3e12c02..138c3bc473c9 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -8093,12 +8093,12 @@ void __kmem_obj_info(struct kmem_obj_info *kpp, void *object, struct slab *slab)
- #ifdef CONFIG_STACKDEPOT
- 	{
- 		depot_stack_handle_t handle;
--		unsigned long *entries;
-+		unsigned long entries[TRACK_ADDRS_COUNT];
- 		unsigned int nr_entries;
+diff --git a/drivers/gpu/drm/drm_modeset_lock.c b/drivers/gpu/drm/drm_modeset_lock.c
+index 2c806b0146d6..a2ddb02b2aea 100644
+--- a/drivers/gpu/drm/drm_modeset_lock.c
++++ b/drivers/gpu/drm/drm_modeset_lock.c
+@@ -94,16 +94,13 @@ static noinline depot_stack_handle_t __drm_stack_depot_save(void)
+ static void __drm_stack_depot_print(depot_stack_handle_t stack_depot)
+ {
+ 	struct drm_printer p = drm_dbg_printer(NULL, DRM_UT_KMS, "drm_modeset_lock");
+-	unsigned long *entries;
+-	unsigned int nr_entries;
+ 	char *buf;
  
- 		handle = READ_ONCE(trackp->handle);
- 		if (handle) {
--			nr_entries = stack_depot_fetch(handle, &entries);
-+			nr_entries = stack_depot_fetch_into(handle, entries, ARRAY_SIZE(entries));
- 			for (i = 0; i < KS_ADDRS_COUNT && i < nr_entries; i++)
- 				kpp->kp_stack[i] = (void *)entries[i];
- 		}
-@@ -8106,7 +8106,7 @@ void __kmem_obj_info(struct kmem_obj_info *kpp, void *object, struct slab *slab)
- 		trackp = get_track(s, objp, TRACK_FREE);
- 		handle = READ_ONCE(trackp->handle);
- 		if (handle) {
--			nr_entries = stack_depot_fetch(handle, &entries);
-+			nr_entries = stack_depot_fetch_into(handle, entries, ARRAY_SIZE(entries));
- 			for (i = 0; i < KS_ADDRS_COUNT && i < nr_entries; i++)
- 				kpp->kp_free_stack[i] = (void *)entries[i];
- 		}
-@@ -9815,12 +9815,14 @@ static int slab_debugfs_show(struct seq_file *seq, void *v)
- #ifdef CONFIG_STACKDEPOT
- 		{
- 			depot_stack_handle_t handle;
--			unsigned long *entries;
-+			unsigned long entries[TRACK_ADDRS_COUNT];
- 			unsigned int nr_entries, j;
+ 	buf = kmalloc(PAGE_SIZE, GFP_NOWAIT | __GFP_NOWARN);
+ 	if (!buf)
+ 		return;
  
- 			handle = READ_ONCE(l->handle);
- 			if (handle) {
--				nr_entries = stack_depot_fetch(handle, &entries);
-+				nr_entries =
-+					stack_depot_fetch_into(handle, entries,
-+							       ARRAY_SIZE(entries));
- 				seq_puts(seq, "\n");
- 				for (j = 0; j < nr_entries; j++)
- 					seq_printf(seq, "        %pS\n", (void *)entries[j]);
+-	nr_entries = stack_depot_fetch(stack_depot, &entries);
+-	stack_trace_snprint(buf, PAGE_SIZE, entries, nr_entries, 2);
++	stack_depot_snprint(stack_depot, buf, PAGE_SIZE, 2);
+ 
+ 	drm_printf(&p, "attempting to lock a contended lock without backoff:\n%s", buf);
+ 
 
 -- 
 Git-155)
