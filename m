@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67CABC5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 17:40:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7793C5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 17:43:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A3F76B087E; Mon, 17 Aug 2026 13:40:04 -0400 (EDT)
+	id 70F036B0101; Mon, 17 Aug 2026 13:43:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7545F6B0882; Mon, 17 Aug 2026 13:40:04 -0400 (EDT)
+	id 6E7826B0102; Mon, 17 Aug 2026 13:43:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66AC46B0884; Mon, 17 Aug 2026 13:40:04 -0400 (EDT)
+	id 6265D6B0103; Mon, 17 Aug 2026 13:43:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 44C1A6B087E
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:40:04 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E754A120954
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:39:53 +0000 (UTC)
-X-FDA: 85111474266.06.5F1EE99
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 30B956B0101
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:43:45 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 34ADC1C1C6F
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:43:44 +0000 (UTC)
+X-FDA: 85111483968.12.5EB2865
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 1FA8B20003
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:39:51 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uiu93YaO;
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id 8ACA340007
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:43:42 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eKkxo1KR;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786988622;
+	b=bedxi23eDPCJDD6K75sxXFUA25npeUAninAdLwh0w8yQhPUiV9sb7ZFzvJLZIy5NjmMJZw
+	mvgCz8MwKRkpIWt45DCmvv/3SCWza5jhYq9b2cH6iOP/t/zKzb/I2UGJwR4sjzdocA+GOl
+	MPGJoz/2MF0GHZet8iqfVNw0ngno0FA=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eKkxo1KR;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786988392;
+	s=arc-20220608; t=1786988622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EldLsYcfZqfCW5hxzb5tOUJDz+gGEDI1z/tkTtJs2mE=;
-	b=pjuz1isSH42GQLnVPjnMHga00GwtIm0ElrjMMAwLvHWGOxeEkAwvdDpFFKOYh/2qyQfCDo
-	bYzoGYZ/y8vaz5unghLCtMP6x4Upd+gn5FwsbRkacuuanLQ1ldcWj1Cqm6fW72VK+Mou94
-	RxBPBAH7kw8WYpEnoSSXnToKtP0z9Mw=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uiu93YaO;
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786988392;
-	b=d+atKuZPGKKdqMiQ39qdHQZArJEyMrMG8FW/Ay3fP8s6CK6Fdtvyu6Zdf+EqJ8ODN86mkJ
-	OijITXJmySHTjIqxMp8b09sukAv733Lm1XGKQAhmpQDFBou7+oGAzd1XJmrSIBoA344zRX
-	IR5AqSwjpb3AUEZ7vvTxO/YylkZCwZI=
+	bh=ljlKfunao6ScN++sYA+g1iZ+XV/2BXLfKcwWuV93qQQ=;
+	b=y3cZYet2YVQCMU9NsJcLYhzMV3Tht1/b3qfYkZwWeZuy/4RHYgdOC8UU0uEGm4AhatNTBS
+	Kx+mlyPBP5xP3WYvLT913kE0DFN0TI4bOMXkXCDonS61k0q+Mu6B9YBDdnur6aKuPyutvQ
+	1nQvlmKtYS5o3wEB1Mxx9v1KYg6bU90=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7EBC4600AE;
-	Mon, 17 Aug 2026 17:39:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA511F000E9;
-	Mon, 17 Aug 2026 17:39:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 183E9601DE;
+	Mon, 17 Aug 2026 17:43:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA561F000E9;
+	Mon, 17 Aug 2026 17:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1786988391;
-	bh=EldLsYcfZqfCW5hxzb5tOUJDz+gGEDI1z/tkTtJs2mE=;
+	d=linux-foundation.org; s=korg; t=1786988621;
+	bh=ljlKfunao6ScN++sYA+g1iZ+XV/2BXLfKcwWuV93qQQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=uiu93YaOjew7mOLo84HKnQddyWvyyyNomIDx6TMOcHvXfDf5Hr0qsINLC8oVt1LO9
-	 +6mCdT3sP9qcuc1LI/TSrR9sIkWpI26014R49EWcYkv5XwVMOofMRo44q7f5aSQAqo
-	 ZCXsJ3fyIA35kNh4on92A1QlnxIDCiB427Panfnk=
-Date: Mon, 17 Aug 2026 10:39:50 -0700
+	b=eKkxo1KRikpizP51WbuqCMzjbpsMC2EB66RDsQvKs8ZF6hUQ2yzOxhKRJwpwRk0RM
+	 SvRpNBy0qrEWJRYHQvfYbb1gFQvJzRVbAKrWOX+MYnlTSghqalzzxK+zA3VajtvzZO
+	 mx/iPyqBLKgzIfRv2Gax1+Ob7z8N7wH2yITp70mc=
+Date: Mon, 17 Aug 2026 10:43:40 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Narek Jilavyan <njilav@gmail.com>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>, Shakeel Butt
- <shakeel.butt@linux.dev>, linux-mm@kvack.org, cgroups@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/hugetlb_cgroup: call page_counter_set_max() outside
- VM_BUG_ON()
-Message-Id: <20260817103950.5ff58d6ebe536e6ed6e7098c@linux-foundation.org>
-In-Reply-To: <20260817103433.191266-1-njilav@gmail.com>
-References: <20260817103433.191266-1-njilav@gmail.com>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: shakeel.butt@linux.dev, cgroups@vger.kernel.org, hannes@cmpxchg.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@kernel.org,
+ muchun.song@linux.dev, roman.gushchin@linux.dev, david@kernel.org,
+ kernel-team@meta.com, kernel test robot <yi1.lai@intel.com>
+Subject: Re: [PATCH] mm/memcontrol: avoid false sharing between vmstats and
+ events
+Message-Id: <20260817104340.c9bd2dae70d4fa31fd66b216@linux-foundation.org>
+In-Reply-To: <20260817103835.2937733-1-usama.arif@linux.dev>
+References: <20260817103835.2937733-1-usama.arif@linux.dev>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: zdhmay5ixix8dorgcpjfjfccsnn8g4mx
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1FA8B20003
-X-HE-Tag: 1786988391-122398
-X-HE-Meta: U2FsdGVkX1+wdo36X4S7iCGyx1Snb/nPLWhpa8tvaGUVF9SVulU7BP33ODa7zo2rJHB0yVN1LZKchMGdlwnV1Exk4Xnm0Uq9Ka3D7n1i7Jd1Mn79zBNGyJJqdk+vobuf975Rt2QMxKDd6gCUWSvQsBD60bAbQeUB+OS6ILg2o+WW69QFjlX1Esb9jboCLczdB4f2Tlporj8s/EAxzwE+HPsvn5rkg/kT2BC4aM+SOXxAY9t3j56pxgoGjCxBxFCGS57b3nYZiR2TSj79Y33J7nYDsJCpHhH/Ud2pLDeI0pHh6ACxz+D/hcALRtS0JBPx8iwiv5htIYg2hIU/g7vHaaMYfG1wsRo+zt7WmxAz3F5gQSf+SqL3hvvrUWvxoxR8MvrryqrPrV1KBAJGR35EnZQrJKotooc58+Gbo+5u+wQphBWq22xBRV+xhsQOhTsmTCKge1hrpK5c1YO9HMJfiDKrkzC9Y/SMhh14ZG9OJltxYorjQTV1hrjSELdvLKaGlTG79KHTRZJ2DYPvDPEPf/w4LQ3iu/lR/9PQ+5zZLTM/cdq4LmCkf947qoGRZASLP8Gxufg/vB3k9rwnvIAX58SL4GeusCpkm79dO0rOAA5bPxAc5ANDpiYXj7hg0dr5AK899yU+UT3FDNgf9AEe8I4egdJ1BIWVPRJst5RhhbYLXpRcHRMohW2MiM+2tR7mC+2i/OYR4RQhnEYcVaE1lEnbG95Dp4q6oTfXA5qO5HGy8ZMAXqu2+Ddmwx9dnoC9s9OdSywYK2hSMm0gHI0v70uA98GeIL6CM/yr3JigEUZqOIaoWOTNzRFfouR9bK0bn/k/cminXPfU27QDEvhfBpJmff8swdbpJBMUoGPRER7ovH8iJgoXFvvxKl4Vx8GDtYpHg1D7CYdfDlT6vQifndtgyCFdEqsaH6IYdNnW4ezg789oHHWe2qB4mCDeSGnO5svnU+mk6Y/0ivd719t
- p1ODSfGc
- UW3ExA3Au2UHAivJWL9HBlJoocahQ20btLwhErbs6eWDmSOebx7aTKJ/XeXkKwEyJR/FRH9guQudhE/Ca35SujuGzsk9XMz27RlTskNhDK4qAGiPs/a5qjzBCuZDP7Zy0jJ9k8r+D6u8+yIhTgCm3S4kpA7RWyKb7CNDcr9e15orFer2DvT9JCSF/Z4N2d2QNZcAY2L4Lb6MdtgaETYpuh1DPlXReSshnP3jRjmNypant3+0AR8v0e8VTe/vTtMYnojFHKFdTg34oy6BnLj4dzYBvrshYOThfoQsyzB3PD5rNYWlDtIIqBTzVFpfGC+SiokOO
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8ACA340007
+X-Stat-Signature: ox1etz89qrtcc3abkzhpwincatdx1mod
+X-HE-Tag: 1786988622-769794
+X-HE-Meta: U2FsdGVkX195uv8cUv7nul8WRwBX5xeSpIOfvE7VjD4sBuNFDB968RUyPxtGkMQ/JlsWVCl3eNwn6kqZVy7y+NXLD2UAFvPLyY0nNPTBT+ketfDYx4oQVMbWLrcbD4wtDnbODiDy0fdqn5OCCH9wcz3/87pTwLXzvkBocfH7Im6s/uRXA9W/eLmPleG/GLsuDiToC5LcG1+Nx3BLi8C50C/t5sfmdnS4uw141OWNVSqrc9EjTPIQeURAE7D3bPawoEaKPS0Ifk9V/mpCckUlNPPPTOCSNNr+rb+keYwmttiiIDv/M93NGmVASUFYjz9o3pLXAU7t69mR+ZrB1SB3uEqed37U3Ux6Rm+WyV7gnaGsZFpU4zCM6TkQktIPFVKDW9H8GPZ4zXC0wa7M9k3sCJ/JpjYyzRYT4zr9Z2vqL9Ht6pyxarEZf3bi8fOgDNG1FoD+rV9Ijb0nZ84LjESMLq483N1UMSfkuvZgJbX1R+fnO0G6hLmL5+pdORJJXOpKtE4omR7eW0k/PQLGKyTvQz8ALKg7qmhz/w2ubnWhMuJ0z4luZBfxWB68kjMYfPonXhxT2CZMAKMTtTp8jOHeN5y/VxWWdaswaNtaRrL3VV+8CAmyiOmaXUr532k1httGTypFkCXoo6RLRrA6GTUsCRSF/NmB/WRmQTCgwU9M9CQMvokrvViOrBjQdpoL0yvFXRPEXpMke0vozLpFVnu7WcswyvRQ6ZTodVFdRfImnaJNz0gYwditOerIYEToYnFjbrfQX/uEzX84dPDalYJkQTpMNT3P3nAMwwlq2Ur8BqNhh6mCPV+cnDPJWta2z39kyx8Gq0CvyBatjXXOQ9xuTreP52iMc6sOn1N+p+6Mt2mXx9GmwxrNYnCNpQugmYD87fgCdCnLKxhdSa3o6R/IuolfMFfLD0P0JOWnUL7btZLfyneqKz1vY+U0PNCkCJ0NQ/NYdgk1NO89UG0gaF0
+ amI/PVgo
+ dZPoxdM0sLMQpQNorcRjeLvDaeqMqWU99sBuCxExEn9VcDs6P5gTaLf8W/ru0uTM5DAkowoCVogC4piqhRDI8nMysNthsw34ENdC2kBdBzzXQDmqdUUe1ehBqoP+s+SqmP1L44YVLKXwEZ4rGoaBZRvBOc2XbnTQR65TIPc0XI068r804HT0Pn8E9QbALFm+ZcjmpZMknVFlxcC8BCN2UzJZ4WCqhph7UWNII6wBAaSSwQuX9gTJii80dMBHVVydJBvMw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,43 +92,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 17 Aug 2026 10:34:33 +0000 Narek Jilavyan <njilav@gmail.com> wrote:
+On Mon, 17 Aug 2026 03:38:35 -0700 Usama Arif <usama.arif@linux.dev> wrote:
 
-> hugetlb_cgroup_css_alloc() rounds the counter limit down to a multiple of
-> the huge page size and then applies it inside an assertion:
+> Moving v1 userspace eventfd handling into memcontrol-v1.c shrank
+> struct vmpressure from 112 to 24 bytes when CONFIG_MEMCG_V1 is disabled.
+> This moved memory_events_local[MEMCG_SWAP_FAIL] and the hot
+> vmstats_percpu pointer onto the same cacheline.
 > 
-> 	VM_BUG_ON(page_counter_set_max(fault, limit));
-> 	VM_BUG_ON(page_counter_set_max(rsvd, limit));
+> The stress-ng mremap stressor exercises MADV_PAGEOUT with swap
+> disabled, generating about 20 million MEMCG_SWAP_FAIL updates per
+> 60-second run on a 176-CPU test system.  Those writes bounce the line
+> while memcg statistics paths load vmstats_percpu.
 > 
-> With CONFIG_DEBUG_VM=n, VM_BUG_ON(cond) is BUILD_BUG_ON_INVALID(cond),
-> i.e. ((void)(sizeof((__force long)(cond)))), whose operand is never
-> evaluated.  page_counter_set_max() is not a predicate - it performs
-> xchg(&counter->max, nr_pages) - so on every non-debug kernel the limit is
-> never applied and the counters keep page_counter_init()'s
-> PAGE_COUNTER_MAX.
+> Move cgwb_list into the existing alignment gap and cacheline-align
+> vmstats_percpu.  This separates the pointer from the event counters
+> without increasing the size of struct mem_cgroup in the tested
+> configuration.
 > 
-> That is user-visible, because hugetlb_cgroup_read_u64_max() recomputes
-> the same rounded value and uses equality as its "unlimited" sentinel.
-> PAGE_COUNTER_MAX is LONG_MAX / PAGE_SIZE = 2251799813685247, which is
-> odd, so round_down() really does change it and the two sides disagree.
-> With CONFIG_DEBUG_VM=n:
-> 
-> 	$ cat /sys/fs/cgroup/t/hugetlb.2MB.max
-> 	9223372036854771712
-> 
-> and with this patch:
-> 
-> 	$ cat /sys/fs/cgroup/t/hugetlb.2MB.max
-> 	max
-> 
-> A debug option should not change cgroup output.
-> 
-> Call the function, then assert the result, as v6.12 did.  Use
-> VM_WARN_ON_ONCE() rather than restoring VM_BUG_ON(): the two are
-> identical under CONFIG_DEBUG_VM=n, and checkpatch asks that new code not
-> use BUG() variants.
+> The blamed commit reduced median mremap throughput by 4.38% on the
+> test system with one socket. The patched kernel brings the performance
+> to within 0.5% of the parent which is within the observed boot-to-boot
+> spread (up to 1.2%).
 
-Nice, thanks, I'll add cc:stable to this, to help ensure that users of
-earlier kernels get to enjoy it.
+Cool, thanks.
+
+> Fixes: ea928e9e18da ("mm/vmpressure: move v1 userspace eventfd code into memcontrol-v1.c")
+
+That's in mm-stable so I'll squeeze this fix into next week's 7.3-rc1
+merge pile.
+
 
 
