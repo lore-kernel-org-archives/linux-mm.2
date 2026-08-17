@@ -4,89 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D64BC5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 14:07:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E2D6C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 14:10:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E0B86B00DF; Mon, 17 Aug 2026 10:07:46 -0400 (EDT)
+	id 61E3F6B00F0; Mon, 17 Aug 2026 10:10:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4917E6B00E0; Mon, 17 Aug 2026 10:07:46 -0400 (EDT)
+	id 5F6E76B0171; Mon, 17 Aug 2026 10:10:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A7AB6B00E1; Mon, 17 Aug 2026 10:07:46 -0400 (EDT)
+	id 50C436B041D; Mon, 17 Aug 2026 10:10:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 139556B00DF
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 10:07:46 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9493D407B3
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:07:45 +0000 (UTC)
-X-FDA: 85110939690.16.B751CD1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E8290180006
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:07:43 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CA0706B00F0
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 10:10:05 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4E2EEC078A
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:10:05 +0000 (UTC)
+X-FDA: 85110945570.04.1B0E928
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4BA52180002
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:10:03 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oLOvm30R;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	dkim=pass header.d=suse.com header.s=google header.b="OPU/nTh2";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf16.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786975664;
+	s=arc-20220608; t=1786975803;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BPV0snyvdnGubekf6I4pL7WA2SUpgj+H9hK78RZnmSU=;
-	b=JEr4AmGg/TwJLreprC0TlHZIGK6TxfwjQXYxzg1GdgmCue1cvYKt7nap5uaY6afsXhoH6W
-	xB17FVYV3oIrJXovvLl8U7iP5SdZVvsZs4qyJLxu5+zJgU+CmaNyHABr2Ik9v1zU03x/LY
-	bRQ/LSzkqaQG8ayzRUQWCVJPQp26L84=
+	bh=8MKoSFy0sjpfHZygpH5fwT4llQ68LAYzLIxwAjtZT14=;
+	b=kEG/nbyZLs40aTR5Z8ICuoLSc5K3gNVqvNWuETUrrKXQkgBPD6YhFKGfoQrv0scC8Q30mX
+	b33AF6zX5Z3DKBJVaLSDBvTPLm8WaOdkM2Y0IqlQ4JehyDS7IQCNCoC8B8KbtKLBlL+mL0
+	C5mAE84UWC8oLwo0KMbVvhiJ3TqfMz0=
 ARC-Authentication-Results: i=1;
 	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oLOvm30R;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	dkim=pass header.d=suse.com header.s=google header.b="OPU/nTh2";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf16.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786975664;
-	b=hFDJ1Qs+dnuo+IOh3Akb+V85lcqq/GUnECucLJIfnEZ651kSwxSDYbBy1/CG5Beo1yFsTr
-	HYLMi/gw8a0wE6HzUfas908glZbAHibje89val4w1dlRC1A7mLvYVaHwjR/cpeg06ldHpQ
-	6XNYq2eE3SOpsK6l6fRxxqM+gzxMDvg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 01C3140AA3;
-	Mon, 17 Aug 2026 14:07:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42471F00A3A;
-	Mon, 17 Aug 2026 14:07:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786975662;
-	bh=BPV0snyvdnGubekf6I4pL7WA2SUpgj+H9hK78RZnmSU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oLOvm30R9NwwazdLONwpTMCWBNqGUNUz8swvK7TmqtEVQGGFgzfnZaGl4uIxdWGKD
-	 msxm/a/ZLLuzPqGGBFRrG2tprOsW7BqwGO/Xq5DrHPBqkV7dg4CHehvTnxNomSSwPk
-	 iU9uC09K121NbhHFFb2XRsSzEzyR+cQQhFcBtqE92Y1Vu0081dh6MvvatBXbro/ERa
-	 NHf153tjwpJAMfKB+FH4TEt557UyO4qksP8rvIKl1jozYXM8Y/8peT7wqpe74j8o5h
-	 OcC9hhnwVXVpy/mbjev0rX3iw3wYiqeA9jA5EAtKb6REEJo5e3pKlwORmZLvKl+LNk
-	 4JEHHyh0SUVVg==
-From: SJ Park <sj@kernel.org>
-To: Enze Li <lienze@kylinos.cn>
-Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	enze.li@gmx.com
-Subject: Re: [PATCH] mm/damon/core: introduce damon_set_target_pid()
-Date: Mon, 17 Aug 2026 07:07:40 -0700
-Message-ID: <20260817140740.78251-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260817125319.888994-1-lienze@kylinos.cn>
-References: 
+	t=1786975803;
+	b=fI6L2HCXzUgI7l1RrGlWq4MN502SLJpqPsvF97jnXrFWW57xdlqtM07ewizh9/pu01UGS0
+	X251WsLidBj2nnrqleLpqQGDt3WY5OgAxCxlQ8aomRPnrlmXURlKb5dwLgembYaZDtzEQH
+	Jh+VZaMnF1xMnf7+esTlUU29rBjlAWw=
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-49978908b35so26960295e9.0
+        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 07:10:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1786975802; x=1787580602; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8MKoSFy0sjpfHZygpH5fwT4llQ68LAYzLIxwAjtZT14=;
+        b=OPU/nTh2odVUu935C+ig/u4Q+/BjT0FXCtnXGNF+ajp6e4qnXQpw4zTs95gR/4Zk0K
+         JoNt4GJeiraMd1kxmWa/TmU3nBYnQ5FChThFAQ8F1PtfHfr7QF9z1nq/L6jn5i1aTBbd
+         xrncR6zdu8/fQ2/pX5fpa+yaglEP3kkXlvJJkvIAAJDm/uKlIfwX2ySnJoBqU5bA2kcD
+         InRVyVpSKMq+iLlWVhId18+xI3XS/zC4hcZ8bahCFRr8qiMC67BDq7yYJGE8MJWfa/1R
+         QfLo1pmuhy/MQ5bPGBo8hJ1yKQgHY8dEr+DuyO514IR+uuiMCTDhfA55oTBuG7RMbA9M
+         o+Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786975802; x=1787580602;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=8MKoSFy0sjpfHZygpH5fwT4llQ68LAYzLIxwAjtZT14=;
+        b=tFwiWf4WAgNwIixrOpjkiFqOiC6FCdckDT8RPBBlbUbwFSmg9a2uxGztTR5XsIoRnN
+         SEK57Z4/x5fBsAePBdryaW7g4yy8Si0TRXN96WZCeUxIQymhkUJqhCsOT4jOTesWejkT
+         n2vUA2gfgYlo0KhPoheegWXjeUwuXFFmYbaoVdDnDFB3+SJE9O2B/l0v9Yoe18ozchNL
+         +v2GfYwVdE45s9SAxI/SsFNw0OQmcJbM60b24DfDFUkXhw0nrZVrXtMrJ6OPK+CK1I/+
+         qX1pyf+VxW1Sp7A4PR4s0aSrmLA5oppVSwn1IESRFJl9Ks3TEzFPrreYyfqasP0wFc9Q
+         i2sQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrYRsv48PDHAyyb3Z+0O6zoA+4lM18yt5Qf3ZKhiBf5B27ZyNo3gF70NPW+IQSDgiAPrTabbPUCeA==@kvack.org
+X-Gm-Message-State: AOJu0YyCDDGMh1TZwCfOKIy6ktIascHjZxtVMbM9THF6BZRXpohzpaW2
+	ZhIKmFh0k2k9tcaAF4chKyvj/GLV1HZaYwUC2bjmLR6blwsFfpfdghaNo1j4bx4iIzY=
+X-Gm-Gg: AR+sD12bNdAkp9ivMX34cGJcvODZgaNzNL1F2uPQ5XEbzPlGG1l66ahxJtEei0Mea5D
+	BNqJo+uNe+8Da0qP32H2RoSN8IwJtewemEeRyWQq1yMcGdWajwBYbDAbOysHKFjKr1Uo9/EHxBj
+	jAoRWaNHaPhQG1EhkFkEb8NnOaLMwik/dBc/kXLRJf77fVVnWC1rvKieV7VvOzw1uWPHUBrLYMf
+	dHzdLCp/Jxnnzg+xYAJpFjYOabyDJW/FZdd3iRJiIs5qzeTpWrTZaiEE6O9SYGP0Zm9pTqKXrtV
+	lx6A7s5s0TMBZgaWNlotMZ4MfrI39JE270GaCjnT9cgPG1fIcgiEmrKSZCqhMj49r6cmotCc3AM
+	bIJi5JJiabpvBgb7rSgU9qkkGxfAqUiVDaDdInvuDgLLF4GeayANAGmXsdKvzYtYtIS22Z2q1ZB
+	2LfIQA3fr6/G5oUdvlZMAFEnp7j0c/X7JaKmDp+X4xLaddEEJyOxYKZN8GDHA2YQUuh95Vt6w=
+X-Received: by 2002:a05:600c:3b8f:b0:495:4491:b8c2 with SMTP id 5b1f17b1804b1-499906ce446mr290282905e9.3.1786975801738;
+        Mon, 17 Aug 2026 07:10:01 -0700 (PDT)
+Received: from localhost (109-81-86-48.rct.o2.cz. [109.81.86.48])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4999d078523sm45861335e9.6.2026.08.17.07.10.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Aug 2026 07:10:01 -0700 (PDT)
+Date: Mon, 17 Aug 2026 16:10:00 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Song Hu <husong@kylinos.cn>
+Cc: akpm@linux-foundation.org, audra@redhat.com, bingfangguo@tencent.com,
+	cgroups@vger.kernel.org, hannes@cmpxchg.org,
+	joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, muchun.song@linux.dev, roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev, zhuhui@kylinos.cn
+Subject: Re: [PATCH] mm: memcg: flush empty per-cpu stock slots on memcg
+ offlining
+Message-ID: <aoMWOILN9A-GgXJN@tiehlicka>
+References: <aoLGzZHS8kj53-ey@tiehlicka>
+ <20260817131221.44761-1-husong@kylinos.cn>
+ <aoMMr6kEX7pW1dSF@tiehlicka>
+ <eef3b61a-a8c2-4b2e-b560-c2dae129bb7a@kylinos.cn>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <eef3b61a-a8c2-4b2e-b560-c2dae129bb7a@kylinos.cn>
+X-Stat-Signature: 76uk9u3krjjwpyfzdj7n3k6f3g4dwrfq
+X-Rspamd-Queue-Id: 4BA52180002
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E8290180006
-X-Rspamd-Server: rspam07
-X-Stat-Signature: exzj4p6ksikaapykmpwdq4jrxzejiou3
-X-HE-Tag: 1786975663-732360
-X-HE-Meta: U2FsdGVkX18IKau968vBGLP67XciEHaFSd11KEw+mstNGqXj60qGyBU1zZRbfcuZaCUzfV7N+mETYEmb7YiZi9LPOrUv0h97YX+QtbfEehUkUYdLnyEvJ3nrMTqT1FOrrNIKggEODtrIP6gLMeQGSmUA7Hfkgn5DFfjEA+z/1jZfUVKp/POCikTtz3eGiWyndaqB/bbw1r8N3EYUSAljMRgyyYmArUFT210DvRWC8JyGJgHGUfpm9Eh1voEAGegE2BIJTMKrpg1RhMrNzvX/Bt1AObkd8LuoKrnb6AO3lrBU0XPorChWsw5GV4MqHoiyc/jyudc7m7zOl3CmqIS+FWTr6ng2nqeTzYYQahL9aiNAkcGWWs7Y8e8jCQqhLMK/cyWp54gAyEikH9Xfb6yhlTZncw7tpWuGnb+mk6d4BAi3CQ5EeZjL6/FZNKkTiuTWMkMX5DPfTqnmf3ZTqPWXcw2Wo0g2YNUZ5AkB5QsEw+OlEoNlNkAXFReejSn2fxBbGCRl2ITQ3SYVf+HQvvNFmYylmzRUMLQDdsJHiDa/0+KUt6XTLEZf6r3XsC9bDNUrjW6YRS/l/rSsRHxQTsDvKeZtcHDW6ar73J4ZcWK0DpCTyMYikSP1O9DEjO+5R6TVjt5G3W9XkRmKY68MkJixKtZHYN04zuEAsZb+X9B7kcZecK9n0SX5GwILi88dsHVvJWUhW+sgea4Va4ikO7HmktG33uorstLucFeJFxRy/R653/JCuou7Uhx82AXi+V4pB3g+K3lCJDnzEglzo8GeQau5dbjXPWuPcbqFoTJQ/XnzOq1KTfZVtFxZbHtUFIJcc4Tja/m/nJNwjkjqml1G8OFT1VqI9WKTQG5crbDvVHgIZ3eKqicu9bhVbq2Nbfd88ShbxvKlDY7PXEoky3JpX8RLOZP8/FI7oDe+7QgoOJRlXS9+1Rf5AlG0Xllg3yfBjXknsVJMm5Eey0M1sdt
- cvwkNdkb
- rrx4p6OwG3mG5+9B4bYa8//U/FSXiEOI4e+TpZch3lnIcD1OIX+zg/HJZNvd8dsL0Stv16mgMUWabXV13a5aflLvn23tWRrNwJr+mbhGcrsZYkXYmOnaDJUB2WmWGru+ZqEH6JN6XTCA8BQGpO/UWjq8b6YEh60wL8PwQbKntkvl18WXDeAiNU+1L5WYdFHE3yZiEF/G5ftovkTay+H+e+pEB/utmlc4Q3sG7fwNEePKvmnSEqqm3Po7AMfEqYFGj5IcRUjXRGtr7QdVp7bQ4NoAaMeXpPMkMWTGFQ9el9BmTi9PkFuoRNgqvLQ==
+X-HE-Tag: 1786975803-829313
+X-HE-Meta: U2FsdGVkX19TWVXQjihaqT5igoydYW1VEa4RSvktIbbSk4VCg21iLv4XhEpsQawGrwCZxgTD34kvx/Of3IEkoXaRl5YdMBjCyNK5PlC/Fa30c2z+o/CEvWWdJZUcLBo267w9LsdPJxroAG70QnEHw/bjpGEpe2lbcJ+4o8rhkC6uKMUtFB6w5MKSBL34KY2fUkKLo6EPQJ03X1Y6cusqbg0a7TUTzQnMApZbgia68bWzljpFBsjQjU6SY4UadOVfzVYE2E3tCUhnyohnln8a9jHC89Rr42FHEPlO53QiNjGONCpaewOIxtNJigNpHqQqgZyExMcQ8zVQDMXHFYlTE+LkglH8cJisvsE0kJaDeH0UT2xQb9hZBdhoIDnjQ/tEtjE80PBHDz6AZ9/8B5zqzsbgQfWnE1jsbHrdP6tI0SttGG3i1sbAYkRa0wNhP4b8Fq7jYWapnG3hFTL/yoYA65UyQW4g1XWWQ/ZCgniYLQ8s+03M625wviGESh0KIhUn8rHlcC3iFA8xZJcOCUojQLUfBa9tW0i1c54chWSnjE0e+VViLCtLKeIHt6oDUfFYvCO1M0cBbMBdOXMWilmHTsTGdtHXzS+r972CuwJrTrjneWiAeOe5xLPtU0D9WFX4fqqpMktiJaKdARcQLGNOCE3N+nRR9AVsFt+5YZLDIedSniNCkrYK9tzbFq//Gg78Cdg2rcKbF0ci/xHoSRM+O10KH9/i+hG0+6x+WvkeJR2w15vl7YdDeQchStfo2V5yI1dpycBPrb+Xsn1qI42FcoPwfcOfUMAPFNe+4o4JxXkwbYMsqGz7+aqFMpcxtoH4PYDnXg3XJ9AJh3opcmnWxM902I5cwDgdO9YDFOtf9BW3HuJdKHQ9RdtN9X2fxI4RpA5eCyEJ6hLqT06OsA0nHroeoajRVn892pS4sjIQ3+mfGEmOXjL3+A4C8wRqk8Zp0XaKtac3F0yD5P0GBtX
+ K8xobFtm
+ AdZopqsIPT6lYXL8GDnoNuWaNNPlyLBpZocTAOWPyeJy0gIAej61c7vQJImjPfn0DtDyOBvamFTHN7Aw4CMi9nyK67eZZwd/gpj9C6qsTg8U4c2nTX915qxZEKX0YdyFGYGP4KqiDuBQgXpOWhVZtHls8cOUY4dxXmFnjVr2YeDciOqAED9hjI+zPH2S9YLAP9xiYf1Xzq34fPUTwBhSxm/7hfL2FOILqTEYU0DxVxifqxgxp9XXgvs6K6DKrGv4pKDV8Dl7NR/vr8TxqaKSM7qbOfjAc/qAdRELqT03PonmpSjj9vlGhWouE0vOpAjClTJHcu3qiD1JjCqZ9JoC94+cGcJ9u2Up62l9FaB5tWs5lx0x1GjleZnGzIeU2f2MGwn9EJfAsv+pMbL59bgEueDLC4cf3q98NqwAL8GV9XIa7LvkKIp/9hS7z116g0uKGKVzH4+E0Q+057Sk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,34 +127,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 17 Aug 2026 20:53:19 +0800 Enze Li <lienze@kylinos.cn> wrote:
-
-> The logic that finds the struct pid for a given pid number and assigns
-> it to a damon_target is duplicated in multiple places.  Including
-> damon_sysfs_add_target() of mm/damon/sysfs.c and the start functions
-> of the two sample modules, samples/damon/wsse.c and
-> samples/damon/prcl.c.  Add a function that does the work, and replace
-> the duplicated code in the places with calls to the function.
-
-Looks good to me, thank you!
-
+On Mon 17-08-26 21:58:39, Song Hu wrote:
+> Hi,Michal
 > 
-> Signed-off-by: Enze Li <lienze@kylinos.cn>
+> 在 2026/8/17 21:29, Michal Hocko 写道:
+> > On Mon 17-08-26 21:12:21, Song Hu wrote:
+> >> On Mon 17-08-26, Michal Hocko wrote:
+> >>> Is there any specific reason why the memcg stays in the cache slot
+> >>> without any pages?
+> >>
+> >> consume_stock() doesn't release the slot when nr_pages hits zero.  It
+> >> is kept for the next charge of the same task and only gets displaced
+> >> by a charge under a different memcg or by CPU hotplug.  The problem is
+> >> that the offlining drain skips empty slots, so the css reference they
+> >> hold is never dropped unless something unrelated displaces them.
+> > 
+> > This doesn't answer my question, really, does it? Is there any good
+> > reason for this implementation? Why do we need to drop references
+> > remotely when we can do so when the last cached charge is consumed?
+> > 
+> 
+> Fair enough.  There is no strong reason.  Keeping the slot
+> populated after the last page is consumed only saves a
+> css_get()/css_put() pair when the same memcg charges again on that
+> CPU - a micro-optimization from the original single-slot
+> implementation.
 
-Reviewed-by: SJ Park <sj@kernel.org>
+This would also allow more effective use of the stock because it
+wouldn't need to throw other stock away when refilling.
 
-This patch is applied to damon/next [1] tree.  If this patch is not added to
-mm.git in short term, I will ask mm.git maintainer (Andrew Morton) to pick
-this.  Note that we are in the middle of the merge window.  The action would be
-made only after the end of the window.  So, no action from your side is needed
-for now.  If it seems I also forgot doing that or you cannot wait for my
-action, please feel free to directly ask that to Andrew.
-
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-
-
-Thanks,
-SJ
-
-[...]
+-- 
+Michal Hocko
+SUSE Labs
 
