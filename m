@@ -4,134 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24A93C5DF66
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 15:52:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CED46C5DF77
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 15:55:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 271076B00EA; Mon, 17 Aug 2026 11:52:43 -0400 (EDT)
+	id A165C6B014E; Mon, 17 Aug 2026 11:55:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 221A56B00EB; Mon, 17 Aug 2026 11:52:43 -0400 (EDT)
+	id 9EEE86B0687; Mon, 17 Aug 2026 11:55:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 110706B00EC; Mon, 17 Aug 2026 11:52:43 -0400 (EDT)
+	id 904026B0835; Mon, 17 Aug 2026 11:55:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D1C3E6B00EA
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:52:42 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5CD021407DE
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 15:52:42 +0000 (UTC)
-X-FDA: 85111204164.22.F7B859B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DE346B014E
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:55:30 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EA398160755
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 15:55:29 +0000 (UTC)
+X-FDA: 85111211178.17.FC01291
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 77739A000C
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 15:52:40 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iANNWR1A;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf31.hostedemail.com (Postfix) with ESMTP id 2B36720006
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 15:55:28 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ri+cHTNf;
+	spf=pass (imf31.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786981960;
+	s=arc-20220608; t=1786982128;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3xmAVz6xj7aLEgdSWsuJScsyd8G6EdI2tLeR0xpfNts=;
-	b=no4uWOcZfKRGLXH9fgSXQEqT+O1SCILRo54j4MRRsa0QDbsqohtLrQH8aNHrW+osvOmyjl
-	0Hklew9+diFYHc26qtRAd+ZT5b29P/6keiZXM8ZNgdB+XbvNLuTtlZEyU9T+Bs6rdhhxO3
-	li1szMH7FynSsEbKcxqVqX6AMM/2ZXk=
+	bh=48TIkL8sUSQum4wB/ysMBVLF/EysIA6sIeFfAUMacVI=;
+	b=Zk9taPKLu/PfmdVk8WRRl2mlxUQfwk/Z90Crb3asN0IZkBUR7/JIIjVt8SKYYxTP3U0UzU
+	hVon6eXQ5O/8EQU3yyLL7kbPvUmAgBCBhV5wvmqnlCauAKNzw0CZKLKML7BsyPCgXuaOHn
+	AurJqXSsTuWS8BuLtTVOjVlvNOLjpzE=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iANNWR1A;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ri+cHTNf;
+	spf=pass (imf31.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786981960;
-	b=ltuNJClxvKrA05ecq5UxMjnJVvU4e+I1HpCpT5hcHnAEPMJqeeqAxKMfDpG7XqvTHTkWo8
-	IcYLxciSlv72DK2IZfGZWGQsi0/ZoPtvz1ivYsl2yuxtI6+S6JgPU4TI4DnVara8nNLXTU
-	z7xuFDxsxLm8uqcHw9IrwZ5y81InBUg=
+	t=1786982128;
+	b=PjB92EA+F1UidDe1R3fL/bxyDpB1OU6bKZBgMZqzdr8qzkEBWYe4V6lQ5etW8gnzW4Os42
+	l3XHE/iR16pKcVbvX5DDbKUrO5+dsKZdjVAWNZYHtsfAnuD9RCh9AsLYpM3HTH+N3Qdz29
+	CwC7T1pYAoA2Wc6IRp37JgEFbpRCZ5w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8A120413ED;
-	Mon, 17 Aug 2026 15:52:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA5A1F000E9;
-	Mon, 17 Aug 2026 15:52:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786981959;
-	bh=3xmAVz6xj7aLEgdSWsuJScsyd8G6EdI2tLeR0xpfNts=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=iANNWR1AAQD0uk6PzsJnNGwuL4otB9pE/sXboIVh4RmY7yBk9vkbhvRyo1P7j54Ly
-	 wtTHPl+GHBIvv2ILbyh3HPBAj68sv2f1oiUj+F3mrERGo6Yk82iY/3plgP8lbvABji
-	 eF7jvGmoQAgJAsIkeuHFtX5VqPCC6lCSKkcj/Ij8EX5PIIC4oomzWp5pNfAf/1U4a5
-	 CuE/ncZCnvwPCF1OGErs4mFvV9nvJvD0xzsdYAheqQn06lY9oMmLIbkj0ZXXzeYypq
-	 Z9e8Bth4IKY9aAFS9J4OnSI+Zk6QX4cnC50ESKOe8nDO7LyRsK1qDRJmf6GIel8e+E
-	 EdS5Bxl9GdxIg==
-Message-ID: <3ae2f1e1-c784-44ed-9b2c-5edf5699d627@kernel.org>
-Date: Mon, 17 Aug 2026 17:52:34 +0200
+	by sea.source.kernel.org (Postfix) with ESMTP id 44ECD436EF;
+	Mon, 17 Aug 2026 15:55:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F2F1F000E9;
+	Mon, 17 Aug 2026 15:55:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1786982127;
+	bh=48TIkL8sUSQum4wB/ysMBVLF/EysIA6sIeFfAUMacVI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ri+cHTNf8pTkaYcu8jGgme42oh1ywbHOIQl3X9aABqkYRkrf9HMT5pIRLwUApQcR6
+	 vNND6mO3wBrwnghWLHdvMfK9SOQbrAhy9TZ0LFGau0B9QDnO7wDvUhr1I7HKpOxqKY
+	 3Y9NQwUxiwwqdV+E74TPz5Nr4/3npBUTt7Qj67t8=
+Date: Mon, 17 Aug 2026 17:55:22 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Alan Stern <stern@rowland.harvard.edu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	syzbot <syzbot+805630f1453e490427fa@syzkaller.appspotmail.com>,
+	apopple@nvidia.com, byungchul@sk.com, david@kernel.org,
+	gourry@gourry.net, joshua.hahnjy@gmail.com,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	matthew.brost@intel.com, rakie.kim@sk.com,
+	syzkaller-bugs@googlegroups.com, ying.huang@linux.alibaba.com,
+	linux-usb@vger.kernel.org
+Subject: Re: [syzbot] [mm?] WARNING in ep_write_iter
+Message-ID: <2026081732-unaltered-regime-f91f@gregkh>
+References: <DKQP5QC9XTDJ.3MI016NP0NPFY@nvidia.com>
+ <02c2e5c7-0d78-4763-90ff-75fa87105fcb@rowland.harvard.edu>
+ <DKQS9ADYVLN1.246LJPQ9QQYVP@nvidia.com>
+ <9787b33b-b30e-4c5e-a0ee-7f14515c7166@rowland.harvard.edu>
+ <DKQU9SQUIKDR.2KEZZPONJ1IJ7@nvidia.com>
+ <20260816194213.0e813ed338144ebc81ed4050@linux-foundation.org>
+ <472add4b-f16a-4b87-bbc3-98c8aa385cf5@rowland.harvard.edu>
+ <EDCC14FA-F7D8-4F72-B780-37D09E26D16C@nvidia.com>
+ <2026081745-unshaken-retread-d744@gregkh>
+ <1ED81A86-22F2-415A-8CC0-7E9B4A4446C2@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm: Use a folio in the softleaf_is_device_private path
-To: Hongfu Li <hongfu.li@linux.dev>, akpm@linux-foundation.org,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Hongfu Li <lihongfu@kylinos.cn>
-References: <20260803031554.30421-1-hongfu.li@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260803031554.30421-1-hongfu.li@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ygrbqwbna7jjgode1u37qt8hnzrpcd77
-X-Rspamd-Queue-Id: 77739A000C
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1ED81A86-22F2-415A-8CC0-7E9B4A4446C2@nvidia.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2B36720006
+X-Stat-Signature: bjaw543cccx3xi97onokduwihjgus3yw
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786981960-212932
-X-HE-Meta: U2FsdGVkX19AMoFLsxnVPYsi+ESWJO3HANkocH2haM/JtR8v8inDnxq1z8/L8OVOH3QCktFTYtxe9dzbCy2z97VQ3ZEPbIgXyCUxbLtOTtgVt0XItzF+PTIGarSqinAOguDvWCwhBX9iUArU3kb1CYTZ6h6mNfQMCbun5mKN0BPF9xbPwy9bMdIeeqwU7CGEYSGgCSUWcmTe/wD4I0BAUdY8VEpNXFeF9mzOfiO9JUE2sNtUNQhr1YBWl7JwwQXgXC7Z8xLNpiAB2ZkRZywFkSa7VsY+vn+S2o97HEadAAcKe3+IHQPKN4Drhk+aI+gkPnUiLacFy6dzK4KRZSkWeIT9m5iMwTq1KTrDpo6opRNVHM7mhGNxjEYRmIe5EVGLP0WAnIHxV3oLS2A2R39EdsxTfE4d8RhRAQ7vX3aOK5OK6T7ZZ70Se2s5FlOh+qf3GjFWPu7fpZQUz2e6RKhph6wvzSJckNJSwWeJ9AojVIb/ukcOp81UjNpMjJkxo7ULnryfPTsinS36tVgzJtYwubxHlN2OAQTAgwKYVN0ShyMCd24TEHtRQYgMHCuvH9YqcIe/Lu67HJKwhFeKcje32zjeS+JXOSnK7Yi12ReSR3stfeWgwyYMNNKov5cU52PGTvw4ND2h6El7G7mkY8UPjre5BrsRS96+sHDXkN8L8Td+71Tdyg3Y/IbFy8d7a2fLr4p8VTplDVcJ73WdYIUTtu4HkZd3WWdpjY6lmhCWIkbOV2YL4VPkxZkIp6lvYL5QhJIoBPposQ+51+ywpMI54Z3/d93A06iKy6+bFfT08l5X4wAf8n7OAG1rXGaPRxMUZ9as8EhPKoRIG76Se89wRWmwPnmpbX1ruEsC8Cee9On4l35SBadLCBuU+ZMdfk3EHMBVBsQ42ogF94FzdM+4j7QWd6M+eSVqXIz9YrDqXe05nMH7nMGTQYv9AGi1xdwB2CE0SnMf9Zzc2mXtiYp
- bKTo9CFe
- u68D9/q0iBQzer8p1v56KbOhzQdqyipHUpExmdBjtqcBm6OJin+iyc2RtAGcotB5+U2Rp70g2SB510KjJAxzOKinZZuFvgHBzqVCjvOBQ9pj08OlLKaJFtED280aoGndlYN6OwcyPYcDnOQDYIXHXHIccPMchVhdsn6ZHHxvIESMWk7eQHnzcZevu2Vbgz/X1rzziFCE7dYEYmmybe9zKIcs14cjMsUmJ3sLolJaooaho940tGIzLMivqhYswzE6D/ZNkaBf97KhowxhOmrH/qu6YlvEvnKnPsr7tb+LCRXXGyCSleNiHQrjU610e3gfnqdI5VwSWi/U/r1Y=
+X-HE-Tag: 1786982128-508027
+X-HE-Meta: U2FsdGVkX1/EVv1uhjLb/Wop7z1DMBGcUCzh5paP6HrBci10+v9OkUuhM6SqUvXvzq1FeW1l/bEmyN8znPcWfPD+GLUM/pGpoku1jiBZ/QLaKiDOIKD0LzCDq1gDwoJ2j+gjoMkXpLVIzVIpZ/WguWfubq+8nXup1Uk7FYm0uoh34Mj9KqitO8fJNipoLi40gzvGW0RX0b2RcXeEY2uJIMLEY+Owj5xoHaHhmztsrtayk6/x69/Oq2vY4bgEbDbyfi436aovKGCaGW+oVBoSBPDGOvyhj8IDCatBOXL8ivM0JXCBkDi4/tbiRo/FfzdTIWHHeyHMrkWTgW/eHwuP7wMz8ZmU4MXCxVnBcRlVxjjqnhAxKbpPsqT3Wk8OUf4tiBcC99gHaR574oQtEIHs+0+41wEISIHbjvT0vml6q4Es1uHGUYl8KiyO2M+AAr5tkSoQ4MkCUx+NCAoeuC/wllH3GSzomrLIvo88RdGs4vAXbm75NunF6s8EcwYYMlwAs1owveplY3d01rCb8aXKjr38XmSjAmy6psbwAZ8OeK3+ZhJ7sRBUUElI95w0JaHUI4mmqLtZ0fNdLOv1bzo9UPWrBwQzhvGycikTSHeuqbBDF3nqqPyrrZIohtIXlp03F3aowAaUuU9rz+ubKOEQPxYttWReZventZjQZtdnkEBSf6nzLiPMCiyJqhuz+8hox9/jbC9waK6ffa0VWPKcRvdkwDV0M+cia5tRfy7CxC+iYk54YUktiXMbibKfq8Yfj8dhsiS048eBw6s2OT33ZGI98tLM9X1kheRaw4TQjlt03WEe5JtoqtH/lcSCCZEPLBg2ZvNWjl6Z4xDyS4o8yOEl4GyAEPEyBOJ1uuVaufgkoUAzCp4q/79zPN+ylyHP4m5gQL3kfwbus6PXOvDFrYciWudh5Bq6A3rxjFiTXBUPkvF54X21PDl3lYey8JSsQ96+w6CgtlWRmrbF3s+
+ nVhGOHYM
+ M9hHJVwOj6+frCyTD77gYoEZDUDeMyBSx/fx3HSiRB6B7uIwJlyqaNHVaK4DGR9jDzDjPZ0U5ObMpzQ9wjrX1LXxbPUSGNcvotD4kQcqGbWGD7YKNtiZXQB5HDQL1jAsDPHkVBDTco1XqNofe0gWNnv9FdHNAcgH+STawLtqdOgrZ8Aq+DlAvbJH1qpiKKCeZVK/YZUl0CngZ3/t/1jHVGK1ZYfv/rLT9iule7eZEwmaelNjeiJvVVFrXXH32rrBwyE66tuAkPtPEaoqHmWnuNg8anDYxVnUs4TW92Q1/zeMiOmM9BJzKucfUj4mwUpUB3xsT2xhZTk2rvWfJ/0qsiJkaWWlvpnLvakUFwVl/NCSDx+grxm9QV2oJ+JbE/dB1mX2bSVgOzEQXrZrMF2p003UVkJ55JdlVVF5zCC4UXnlxTcIAqvW+oOkTx7F3Y+hjJURvq6uE97BQWYnd25CLWPbbnmsxw4xylj+RnRAQ5TIwzoSC+EP56sReZwai9UTIHRlvgVQYv5HEEFzNeEe2JT/e4UTorkcu7Wka0lebfqfVOenJy9mucjhjzWh1Zmgdzi6+lJAKE5QXzUVJJXgerrlljQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,109 +105,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/3/26 05:15, Hongfu Li wrote:
-> From: Hongfu Li <lihongfu@kylinos.cn>
+On Mon, Aug 17, 2026 at 11:19:23AM -0400, Zi Yan wrote:
+> On 17 Aug 2026, at 11:06, Greg Kroah-Hartman wrote:
 > 
-> Use the folio APIs in the device_private migration path of do_swap_page(),
-> replacing four calls to compound_head() with one.
+> > On Mon, Aug 17, 2026 at 10:34:26AM -0400, Zi Yan wrote:
+> >> On 17 Aug 2026, at 9:55, Alan Stern wrote:
+> >>
+> >>> On Sun, Aug 16, 2026 at 07:42:13PM -0700, Andrew Morton wrote:
+> >>>> On Sun, 16 Aug 2026 21:47:58 -0400 "Zi Yan" <ziy@nvidia.com> wrote:
+> >>>>
+> >>>>>>
+> >>>>>>>> I prefer Andrew's first suggestion.  If the user asks the kernel to copy
+> >>>>>>>> too much data, just fail -- with no warning.
+> >>>>>>>
+> >>>>>>> __GFP_WARN gets rid of all other warnings, even if user asks for a
+> >>>>>>> reasonable size. Why use such a big hammer?
+> >>>>>>
+> >>>>>> Because on many systems, WARN causes the kernel to crash.  You don't
+> >>>>>> want the entire system to crash just because the user asked for more
+> >>>>>> memory than was available.
+> >>>>>
+> >>>>> User asking for more memory that what is available is pretty common and
+> >>>>> should not trigger a WARN or crash, unless you have panic_on_oom set.
+> >>>>
+> >>>> I assume Alan is referring to panic_on_warn.
+> >>>
+> >>> Yes.
+> >>
+> >> Right. That is why I said “unless you have panic_on_oom set”. So panic_on_warn
+> >> will not crash the kernel if user asks for more memory than what is available.
+> >
+> > Are you sure?  It kicks off syzbot, what prevents the oops from
+> > happening if panic_on_warn is enabled and a warning like this happens?
+> > Am I missing some code somewhere?
 > 
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
-> v4:
-> - Drop the do_non_swap_page() extraction (patch 2/2 from v2)
-> - Added Reviewed-by: Lorenzo Stoakes
-> - Link to v2: https://lore.kernel.org/all/20260723030752.16979-1-hongfu.li@linux.dev/
-> v3:
-> - Please ignore v3.
-> v2:
-> - Drop fault_folio, reuse the existing folio variable instead
-> - Refresh commit messages
-> - Update comment to use "folio" instead of "page" in the
->   device_private path
-> - Add Acked-by: David Hildenbrand
-> - Add patch 2/2 to extract do_non_swap_page() from do_swap_page()
-> - Link to v1: https://lore.kernel.org/all/20260721013347.65698-1-hongfu.li@linux.dev/
-> ---
->  mm/memory.c | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
+> usb’s inode.c uses kmalloc to allocate > order 10 memory, namely >4MB. This
+> caused the warning.
 > 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 56b244552f13..bbb289ba09d3 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4873,18 +4873,19 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->  				goto unlock;
->  
->  			/*
-> -			 * Get a page reference while we know the page can't be
-> +			 * Get a folio reference while we know the folio can't be
->  			 * freed.
->  			 */
-> -			if (trylock_page(vmf->page)) {
-> +			folio = page_folio(vmf->page);
-> +			if (folio_trylock(folio)) {
->  				struct dev_pagemap *pgmap;
->  
-> -				get_page(vmf->page);
-> +				folio_get(folio);
->  				pte_unmap_unlock(vmf->pte, vmf->ptl);
->  				pgmap = page_pgmap(vmf->page);
->  				ret = pgmap->ops->migrate_to_ram(vmf);
-> -				unlock_page(vmf->page);
-> -				put_page(vmf->page);
-> +				folio_unlock(folio);
-> +				folio_put(folio);
->  			} else {
->  				pte_unmap(vmf->pte);
->  				softleaf_entry_wait_on_locked(entry, vmf->ptl);
+> kmalloc’s doc says:
+> 
+> kmalloc is the normal method of allocating memory
+> for objects smaller than page size in the kernel.
+> 
+> Shouldn’t usb inode.c use a proper memory allocation API?
 
-Okay, so this breaks the HMM selftests:
+Normally this function will be making >4MB allocations, as that's what
+USB devices do.  But if a malicious userspace were to ask for more,
+well, that's what we are now discussing.
 
-# ok 30 hmm.hmm_device_private.migrate_anon_huge_fault
-# #  RUN           hmm.hmm_device_private.migrate_partial_unmap_fault ...
-[   14.589125] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-[   14.589178] Modules linked in: test_hmm
-[   14.589203] CPU: 25 UID: 0 PID: 653 Comm: hmm-tests Not tainted 7.2.0-rc5+ #14 PREEMPT 
-[   14.589243] Hardware name: linux,dummy-virt (DT)
-[   14.589268] pstate: 63400005 (nZCv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-[   14.589300] pc : folio_unlock+0x78/0x88
-[   14.589326] lr : folio_unlock+0x78/0x88
-[   14.589349] sp : ffff80008284bb90
-[   14.589368] x29: ffff80008284bb90 x28: ffff0000cc8ce180 x27: 0000000000000000
-[   14.589406] x26: 0000000000000000 x25: ffff0000ca395dc0 x24: 0000000000000000
-[   14.589447] x23: 0000000020100073 x22: ffff0000c23d35c0 x21: ffffffffbfff8000
-[   14.589485] x20: ffffffffbfff8000 x19: ffff80008284bca0 x18: 0000000000000010
-[   14.589523] x17: 3030303030303030 x16: 2066666666666666 x15: 6630303030303030
-[   14.589562] x14: 0000000000000000 x13: 29296f696c6f6628 x12: 64656b636f6c5f74
-[   14.589603] x11: fffffffffffc7100 x10: fffffffffffc70b0 x9 : ffffb0504ff88f70
-[   14.589640] x8 : 3fffffffffffdfff x7 : ffff000c79b24bc0 x6 : 00000000000001a7
-[   14.589680] x5 : ffff000c79b24bc0 x4 : 0000000000000000 x3 : 0000000000000000
-[   14.589718] x2 : 0000000000000000 x1 : ffff0000cc8ce180 x0 : 000000000000003f
-[   14.589756] Call trace:
-[   14.589769]  folio_unlock+0x78/0x88 (P)
-[   14.589792]  do_swap_page+0xf40/0x1580
-[   14.589815]  __handle_mm_fault+0x648/0xe68
-[   14.589838]  handle_mm_fault+0x9c/0x330
-[   14.589858]  do_page_fault+0x268/0x7e0
-[   14.589882]  do_translation_fault+0x5c/0x80
-[   14.589904]  do_mem_abort+0x48/0xa0
-[   14.589927]  el0_da+0x38/0xd0
-[   14.589948]  el0t_64_sync_handler+0xd0/0xe8
-[   14.589970]  el0t_64_sync+0x198/0x1a0
-[   14.589990] Code: d65f03c0 d000eec1 913c4021 94015993 (d4210000) 
+This isn't the "normal" case, it's a "bad user, so what do we do to fix
+it" case.
 
-I can only speculate that we need another
+We can bound it by some magic value, or we can let the allocation fail
+like normal but just not cause a WARN message.  That's the two potential
+solutions here.
 
-	folio = page_folio(vmf->page);
+thanks,
 
-after the migrate_to_ram() call.
-
-Let me try that real quick.
-
--- 
-Cheers,
-
-David
+greg k-h
 
