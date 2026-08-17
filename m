@@ -4,100 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F5AFC5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 06:20:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64B36C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 06:25:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 122E96B091A; Mon, 17 Aug 2026 02:20:21 -0400 (EDT)
+	id 34FE76B0392; Mon, 17 Aug 2026 02:25:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D3A46B091B; Mon, 17 Aug 2026 02:20:21 -0400 (EDT)
+	id 300C86B03A2; Mon, 17 Aug 2026 02:25:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2BC76B091C; Mon, 17 Aug 2026 02:20:20 -0400 (EDT)
+	id 2178B6B03A3; Mon, 17 Aug 2026 02:25:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CFAD46B091A
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:20:20 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 365B4C05DB
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 06:20:20 +0000 (UTC)
-X-FDA: 85109761800.17.72D1CDE
-Received: from mta0.migadu.com (out-13.mta0.migadu.com [91.218.175.13])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0CD10120002
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 06:20:17 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZtJjXG26;
-	spf=pass (imf29.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.13 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0196F6B0392
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:25:31 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 81EFC1C1A33
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 06:25:31 +0000 (UTC)
+X-FDA: 85109774862.05.B426568
+Received: from mta1.migadu.com (out-66.mta1.migadu.com [95.215.58.66])
+	by imf18.hostedemail.com (Postfix) with ESMTP id AB5FE1C0002
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 06:25:29 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YoX+JG98;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.66 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786947618;
+	s=arc-20220608; t=1786947930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=+cJ6nRy02XdT7ao8SlW5vxrHYuGfqpb5ny+ypgftDbI=;
-	b=X8n0L5lvUEd+EukTDvfd+10sODQfqN8wvnvuraUUzut11aUfKZD6IpYQ4VVnYnVXb0G6Ce
-	31FsdH6LRApuAXFq1/nP4eAyz7ODLjkMYHqFJeutyvD3ixy/zzdVLV7ozO5PhcUO4KQmla
-	G5amJFP2rtyNqRZQo/vGto6aBkS8keY=
+	bh=KEGF23OhMC87+rYOlEfxrm4Wh1VRmmIgHqCzDaAhZFA=;
+	b=5/Nwkbt83Dhy0b+a8ZW/ukrL7nJ9lldqD88h1MUfnABC+IiRlTh+iqjfO49iU43/j3+F0a
+	9RAONw8RFr5LZO2gmnbbmMN0wk1AWPIXIPrvGadGX4BPmAytvA7dhMuGHedRh558XbkdD4
+	s/vaic2+s6YvLCwKXIncpvTMhAHa0io=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZtJjXG26;
-	spf=pass (imf29.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.13 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YoX+JG98;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.66 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786947618;
-	b=MOMyFfX+/Cx26dvacsAIscqfweiaiOWMAZUXnnDxQ3GGzAnHJp/WVNodoMg4EiyvRFhSOx
-	4JwlBE5sJSXit85gVrClMbIo5cNt7eHDkLUUAWJFCtHwa6RHbC/QD3rZzNoW/iiWA9g42u
-	wg6Imye7ppx5CnQohVuEG7fOOEvSth4=
+	t=1786947930;
+	b=yhm01Xmn83tXapxgTRvcLD3YshmXvIQBVUEuVDGemIfrpi9vhACPSpG985AoI5mFqZ+/yT
+	KT9tS0Ha490psd3ws/ectX39VMzIllkupO2dWaw9pE6yUF6BaVbK5xzRtnAn0rKl/MxcX7
+	tXa8tccOqugQJPDtnIGWsrxDY+RCuME=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=k9Hg/Aix5bXOJ45/B31jl2pbqakUepn4Yh5kPod+wDU=;
+DKIM-Signature: a=rsa-sha256; bh=cp1D9oBcDI7MYultp2oPrdx51BLqcKdTzDrSb3vQWvc=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786947616; v=1; x=1787552416;
- b=ZtJjXG26sMGVVKzxdBbJ8fIRgU3DCIobVeH8X8eRtvAr3xs+6Qcc7/0UNUEEGrUDB+INpLc8
- dfw1a55WGONBVbXZIikXTWcgFVc5ZyyX2BdOA4B4jfzF+9BkxXFb1KSGpoflcjlgee6aq1R1i+E
- wJCByBwYF43J/+WgSsUQCYI8=
+ t=1786947928; v=1; x=1787552728;
+ b=YoX+JG98liK4t9Ofiu8G839BsnNNR4l5NHUYJ9Y80GcE6MUVXTaL9Aq3pxKr9Hnn2kM6rVXr
+ L+rhADpPT4fLMk1WGUJIUoCYkWgGJZtWJsR02xM5GG6g8OLGbRq3KAilIrokOgrz2jeABiHDfBc
+ WNfEhzsDo+wF0ZDqyvLwHZDo=
 X-Envelope-To: linux-mm@kvack.org
-Received: from localhost.localdomain (223.70.159.239)
-	by smtp.migadu.com with ESMTPS id 5bb4235a9e59466b;
-	Mon, 17 Aug 2026 06:20:16 +0000
+Received: from localhost.localdomain (116.128.244.169)
+	by smtp.migadu.com with ESMTPS id 50b8b077964e6df9;
+	Mon, 17 Aug 2026 06:25:28 +0000
 X-Migadu-Flow: FLOW_OUT
-From: Hongfu Li <hongfu.li@linux.dev>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org
-Cc: linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	hongfu.li@linux.dev,
-	Hongfu Li <lihongfu@kylinos.cn>
-Subject: [PATCH] selftests/mm: khugepaged: consolidate error exits via kselftest helpers
-Date: Mon, 17 Aug 2026 14:19:55 +0800
-Message-ID: <20260817061955.45454-1-hongfu.li@linux.dev>
-X-Mailer: git-send-email 2.54.0
+From: Hao Ge <hao.ge@linux.dev>
+To: Suren Baghdasaryan <surenb@google.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v2 0/2] alloc_tag: fix a leak and a deadlock around shutdown_mem_profiling()
+Date: Mon, 17 Aug 2026 14:26:01 +0800
+Message-Id: <20260817062603.106196-1-hao.ge@linux.dev>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0CD10120002
-X-Stat-Signature: j73unhzcjds4k3axshmu1dcdrr38678z
+X-Stat-Signature: hsfcsabdzide8e56p6j58ppszw3txesn
+X-Rspamd-Queue-Id: AB5FE1C0002
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1786947617-600655
-X-HE-Meta: U2FsdGVkX1/r8o9WIvKH0xtN4+5DtK8Mn5ARUb7C+yM4J8MspDqdR/tDiGK5Wi/+Hr3IOAyQwXn/MT/Woj+fgeHDLFV1qyGJXrcjmm4/r27S7ukwvG7CDcLktzcDFgIhX7oLrkolZwaDgm3rN1BREfhtvcnQy+N3jXNMxrjVoQczt2478djE4Ke7PnvXelI+nWUqvHjg2DTEdAGjndA2TYIhh80LLT+yCnTKZ3P7/EbJZC99xXXqEWB9JACuNg6j4TNGU3i7N2VqQJrWGdDEGd5KlpH2qLzZYZukfv0Lwklki/ZhRXSPEoqvP5FeYgDMcMrgxuZK7o0MMenMzHDbL1lSeykh14tgq6NTDfTaxbO3/ClRwcs6EgCjiXx+c1RY/D0W8qkB7MFw0+/CTEgrESNPLb1ZfqAMVRFVM2IU14naZdU2rT0XZ2uEtAEl4RkGdFKzyW3E4r1pSbdbxXs9gpD1UgqO9fXOLBHalmMn8DIEHyQNayett3ebedHU13uLIJP3x2mMSnamT4HRcCPtRh3Q9mmJB0wz9JWh9tJTsUM6p5yZVKZ66tLpwv2w2QoJ2kd2CCGxH5o2AVb7KfwMJiLbKvxPeIRUSCvp3CpV2WNbxVhBZW9DuPz0gCrKL9ED14ynPYFaFQBjyinvDEqF5TDZ05Mc1gDIl/wE1V58JNXiBVyMCY3PI50bBdBzPW60Q1632sJ4omErVLH7UTZF8W0j4DiRbuSb/6MYn4/7njl8ECkIORGGG789c16ukcwPJ7NvNFBWDcOB4mxPxRA6+Ejmqp9ezy6giQhYJUKh0nVBZouJ/sqiUUnMPKbYLrjr5e2iXmon11Hqx1IWykrUIqiS7Z+C5gaAOY4/5LyPJOAuU8y8utbQFvxuTXST/DAEBtzobLAE4++T7hbwmRO3Quf9a9HFgjoJGdieFuNhGBXVvqcH9uZ+M/WypbdBQkTm1WSPIamRqQOEQQoG3IS
- cy2gHgxo
- rz2tWuNt9ZGLGUM4YC/pPgGPCjOpyHv4sCtYVYYvEtxS4hSPa18zkSJhbOU9A/dp6Ae5QfSis1shhkFAzaYF5dClrSFQpxub+R9wem16kYHMCoukFBTSkD+zqMVY6L6KuQPZwiW5pRWAs5MLtzAwSsqCj4Qlq0fya9ytAtLwcgrezJfc5Bb6868re/FBWuhRBJdFjM3tT+PmMw8Il2oSd6DCK3vI85+rNDuAK
+X-HE-Tag: 1786947929-515916
+X-HE-Meta: U2FsdGVkX1/DvQPCh//gHK6YVxZbNSnhIUj2Bwhw4XwFK5aSYyUUN+Trh8yQqmdzYKXaT2rI6UxnXiRFdOfC4eSGj5muVPF4oBW4mL3p8lSC21V7MtGWYPbx1yWOcl1knkRX9YT+avoO5I7qO3aSZGjNI5XxqzR1SNo1aOJBNHEkkxDBzCkUgzsduVjGbRcmfysbmgNmOpvh/r/43onKyLmT4zeqjmcEFCCNFCjXjrCMiPaC3hvrMT6GK5hWYVKAJ86Qzqd2Ez4Il5nC+KwCX8CXcN1o3AoJi6Mds1vJfiYrmOEnVpO+3E0RhTIEyjFHhJmNoMQXC4NQZOoBkXR7jY0gH03csuM11XaJlXtusTvm8NT4mHfEWsb5b9B+PZfpR33JGglgVSNWUmz9nMFR5uMLoY7kg9szZ+cGbXy+ZJGuThbg3i46hyu7GQMC4rMKGRLnLSnMvWiBSnVkZxOmf7sJK3S1Hwk1LUs0k7b8FZsj1NrxBnDZpN23vVCbzCHrZi26NSfdcmXwfdgMJYdz+Em4Qx4CtQ1mjBqJMWsEU9f8r//3fqfekk8GUsOJP8LQywBLRvh90YK+XnS9UvZdZ/H2LgNp/9w63puT9nFn5M7+5gWgnKHatLRQMFw7Q5/Mhj/CCTYVubW8537bmSyWEx2lVWLzS+Pz5v9jrYIJq7JOmTlKqUBylk5p16ETpeq1zyXGVL6ZLyCG2rCRFOMgq542U5I42vkXg/HiRBTPN98ZCE0jQBA0fBoXHN9zcADW/f2k7khjniHBQNLA1GuioGN95dSks7f3DKHVzwURfe1p6YZ30IUJl4FU2/P34LCjLudRhmq0aibLQrXUsDiqvUzdAiVhEIoDTIQrxruomWvCH2x5j5wbtDMiw+SK+MsuXmKPGtJLEv3tZFroaOWTkZDkMNaw1GgnXBTTqa3YxLemc8tDXBdjExYkXTsAp1TfZOWrZIiaDJzIaWlsLGE
+ i2JQkcab
+ xhTEYN3Lzic/9X6cOgnVJ/T977Qa/yyV0jprgJA9lepY8i3+29YQQyJLgZYt0QiV2mcfWtEq74C81JuHCOyw/JB3cbSVIVOODxUulLHiTD3E8MaEGJE2nLRn9Ui2D1Fa1ubfVFEMrkaMF4oINE7XCHibJ4VUbqBAbtM4EhG/WfoLrhb+bwFDLZLZtcEiAaIDYL0UXhmXVG0B7k/cAZkJieMsd8hu8pjPsxrsOQp4dpTK23NdxCUrHu9Ep1trq2+pWIHEIY8qyvtkD9CdYVSHNQttvO/E4UHh6IjXb33Fidyb5k8I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,59 +88,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hongfu Li <lihongfu@kylinos.cn>
+Two fixes for issues reported by sashiko:
 
-Replace the perror()+exit(EXIT_FAILURE) pattern with
-ksft_exit_fail_perror() so failures are reported through the
-kselftest framework, consistent with the rest of the file.
+  1. percpu counter leak on modules loaded after profiling is disabled.
+  2. AB-BA deadlock between module load and /proc/allocinfo readers.
 
-Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
----
- tools/testing/selftests/mm/khugepaged.c | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+Changes since the RFC [2]:
 
-diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-index 0d6c71ed2fae..8d1b87f2195c 100644
---- a/tools/testing/selftests/mm/khugepaged.c
-+++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -358,21 +358,15 @@ static void *file_setup_area_common(int nr_hpages, enum file_setup_ops setup)
- 		ksft_exit_fail_perror("open()");
- 
- 	size = nr_hpages * hpage_pmd_size;
--	if (ftruncate(fd, size)) {
--		perror("ftruncate()");
--		exit(EXIT_FAILURE);
--	}
-+	if (ftruncate(fd, size))
-+		ksft_exit_fail_perror("ftruncate()");
- 	p = mmap(BASE_ADDR, size, PROT_READ | PROT_WRITE,
- 		MAP_SHARED, fd, 0);
--	if (p != BASE_ADDR) {
--		perror("mmap()");
--		exit(EXIT_FAILURE);
--	}
-+	if (p != BASE_ADDR)
-+		ksft_exit_fail_perror("mmap()");
- 	fill_memory(p, 0, size);
--	if (msync(p, size, MS_SYNC)) {
--		perror("msync()");
--		exit(EXIT_FAILURE);
--	}
-+	if (msync(p, size, MS_SYNC))
-+		ksft_exit_fail_perror("msync()");
- 	close(fd);
- 	munmap(p, size);
- 	success("OK");
-@@ -447,7 +441,7 @@ static bool file_check_huge(void *addr, size_t len, int nr_hpages,
- 	case VMA_SHMEM:
- 		return check_huge_shmem(addr, len, nr_hpages, hpage_size);
- 	default:
--		exit(EXIT_FAILURE);
-+		ksft_exit_fail_msg("Unknown VMA type\n");
- 		return false;
- 	}
- }
--- 
-2.54.0
+  - The "move codetag section placement decision to layout_sections()"
+    patch is dropped from this series. Its retry path depends on [1],
+    so it will be sent as part of that patchset instead.
+  - Patch 1 now returns -EOPNOTSUPP instead of introducing
+    CODETAG_MODULE_LOAD/CODETAG_MODULE_EXCLUDED defines (suggested by
+    Suren).
+  - Reported-by tags added.
 
+Patch 1 skips percpu counter allocation when profiling is disabled,
+so the module loads without its tags instead of leaking counters.
+Patch 2 defers remove_proc_entry() to a workqueue.
+
+[1]: https://lore.kernel.org/all/20260812054105.102637-3-hao.ge@linux.dev/
+[2]: https://lore.kernel.org/all/20260813093421.135230-1-hao.ge@linux.dev/
+
+Hao Ge (2):
+  alloc_tag: skip percpu counter allocation when profiling is disabled
+  alloc_tag: remove /proc/allocinfo outside of mod_lock
+
+ lib/codetag.c  | 10 ++++++++--
+ mm/alloc_tag.c | 14 ++++++++++++-
+ 2 files changed, 21 insertions(+), 3 deletions(-)
+
+--
+2.25.1
 
