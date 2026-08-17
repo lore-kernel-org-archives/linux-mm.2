@@ -4,89 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80FD3C5DF66
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 14:02:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77466C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 14:04:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A85B6B00DB; Mon, 17 Aug 2026 10:02:35 -0400 (EDT)
+	id 5C4716B0817; Mon, 17 Aug 2026 10:04:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 832D86B00DD; Mon, 17 Aug 2026 10:02:35 -0400 (EDT)
+	id 59C1E6B0818; Mon, 17 Aug 2026 10:04:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7213B6B00DF; Mon, 17 Aug 2026 10:02:35 -0400 (EDT)
+	id 4B25D6B0819; Mon, 17 Aug 2026 10:04:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F36D6B00DB
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 10:02:35 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C23B31405CC
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:02:34 +0000 (UTC)
-X-FDA: 85110926628.23.C057413
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 15A16140015
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:02:32 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y0fdQcbf;
-	spf=pass (imf26.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786975353;
-	b=L0nccQpIyehs6vBNksStoNdmGzoBMElXS5mJxlbxm1NDYcay0a1qzWj01RyNEJXMFLNSuJ
-	HCzZ1280+RU6PHfOJtRZXBBrzgN5HS/AmMffvzoaJsmYigiRlCrPbXm3kzfCLu1LqaU8mf
-	/QBqhhL/TUe0aIOTklvCv32s9h+O4Mo=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y0fdQcbf;
-	spf=pass (imf26.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 168E66B0817
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 10:04:12 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8FB3B120781
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:04:11 +0000 (UTC)
+X-FDA: 85110930702.09.00E6800
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by imf31.hostedemail.com (Postfix) with ESMTP id E07F32000D
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:04:07 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=Xu7X2QLE;
+	spf=pass (imf31.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786975353;
+	s=arc-20220608; t=1786975449;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bk9cL2KwgbRIb7nFwPdx5v6FOYyA9DjpsbTLZv0L1eQ=;
-	b=3b50c9h72nro+gNptaNCHcrmneLj3PU93nMjVRUwYLYExuoiCztcCdDpkkLcTj2FLKV8TB
-	PMh+gK9+LSmzbQyaG6PcpRC/18zILHpR22ggFcPT+iF2BVxT3/HLov6jVhB7HDMFIsoJ5K
-	2HTAsg8Y1Ziclb5U12KzO4+GYD7A1Xc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 841FF600AE;
-	Mon, 17 Aug 2026 14:02:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71321F00A3A;
-	Mon, 17 Aug 2026 14:02:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786975352;
-	bh=Bk9cL2KwgbRIb7nFwPdx5v6FOYyA9DjpsbTLZv0L1eQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Y0fdQcbfy5dn/lI+yaPAltT3j6k7+vfjdPcicURAunKJ0n/z6Ts6qaRa2AQVqc6pU
-	 jcNPzCElF02SHYK35UcHOuWU1fv7xQIi1GTR+XqF+UryArI+SRmggY3LfKOmEMsSvW
-	 dnMYlqHMKtkowxUhDeUanWaXuckc6bP0hnSpkXUCtSC56i6G/pGLedy+v1AL6Oz/EY
-	 /dJu2mBJCvKwVIAb6wBVApzGWiOtvkvTeI3m7MlYozvqmCvGOc3KRZHwvO8iz1C6Mx
-	 cJxWae18iVMl0VXCkNHaf1dbUTUhQHcwPQ0AJ3rAnD84tCCJmPuhWFT4qS7zk6yZ94
-	 xdp8YrNZ+q0LA==
-Date: Mon, 17 Aug 2026 16:02:27 +0200
-From: Joel Granados <joel.granados@kernel.org>
-To: Kees Cook <kees@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc: Jianlin Shi <shijianlin11@foxmail.com>, akpm@linux-foundation.org, 
-	vbabka@kernel.org, hannes@cmpxchg.org, surenb@google.com, mhocko@suse.com, 
-	jackmanb@google.com, ziy@nvidia.com, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 0/4] sysctl: Disallow partial updates of
- miss-formatted sysctl vectors
-Message-ID: <gxiyb2aye6vvu6t7veykvptj4t3hxll67mugievbumjc6krstw@nivusuyqhpbr>
-References: <20260814-lklm-partial_ctlvec-v2-0-9df50d26e477@kernel.org>
+	bh=EthaWre51vm4c4XQ+XHjPvEXxi4SWd7KGNAMp4EnZNM=;
+	b=7ku6Jz1BgFdEJNx2+HLOMgMDI+S7gS9rLPcPwAK9jWkOa9PplfQvqtmYjSPHe9awPCUQTj
+	haFvKEDVOW2B3M37nHjILUDGteCix2hSVCyMXDFbxgShrixROQEE98+kNH9YpyV4mdiA/5
+	paM4lrIxbQL6KIUwPVi49ehkvRQlLzE=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=Xu7X2QLE;
+	spf=pass (imf31.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786975449;
+	b=2vZPYMb1wsFquw6R+f07lLW6iPnXCmZnAVvBqmMn9+noYRYBrjTBRUgN4nhDtC8uHDztZu
+	aqn7Rq2zEqTPlaLU1GzadV1mqdDKiTfI1JYRQd8buGtyaIGA/RmLsXLnOl2azf5gNRoq/5
+	VOX4EMEsdaBKS/IKU+LZCrxUhTcUum4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:From:Subject:To:
+	Content-Type; bh=EthaWre51vm4c4XQ+XHjPvEXxi4SWd7KGNAMp4EnZNM=;
+	b=Xu7X2QLE3T6INq1REmKc271AiaD6H2fpUf0fJ8rhTAOLh0pfbyqzx9xhhSrQCM
+	byF79jZBuHKCSO4vdPHwvZLehVIWRLF2FgzaHt+BUesJmaUy3M+UAioUpVAUEcJC
+	zZSkwexp2dKGTVFjJdegOUFNvCYeKeV0Jh4fuqqUsP2iE=
+Received: from [198.18.0.1] (unknown [])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wBXkO+_FINqYOyyCA--.6431S2;
+	Mon, 17 Aug 2026 22:03:44 +0800 (CST)
+Message-ID: <f5b79009-caa3-440a-81a8-997445598425@163.com>
+Date: Mon, 17 Aug 2026 22:03:44 +0800
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="5sktdhveowv3yy7h"
-Content-Disposition: inline
-In-Reply-To: <20260814-lklm-partial_ctlvec-v2-0-9df50d26e477@kernel.org>
-X-Rspamd-Queue-Id: 15A16140015
-X-Rspamd-Server: rspam10
+User-Agent: Mozilla Thunderbird
+From: Longlong Xia <xialonglong2025@163.com>
+Subject: Re: [PATCH 1/1] mm/hugetlb: keep max_huge_pages when dissolving
+ surplus folios
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>, Jinjiang Tu <tujinjiang@huawei.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Longlong Xia <xialonglong@kylinos.cn>
+References: <20260814083027.1419487-1-xialonglong2025@163.com>
+ <20260814114059.c9fd2ef48f4f1b71a8b437f3@linux-foundation.org>
+In-Reply-To: <20260814114059.c9fd2ef48f4f1b71a8b437f3@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wBXkO+_FINqYOyyCA--.6431S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7KryrGF47Gw1rZr4rKFy7trb_yoW8CF4UpF
+	yDGws8uFW8JFyvyr1xtFyjy3W5Ary3JrW8ta43tw43JF15C3srKryfta4Y9ayvyrn5Ja1I
+	9rWqg39rWFn0vaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U6UDAUUUUU=
+X-Originating-IP: [240e:46d:1800:11e5:b5a8:b25e:4af7:6167]
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC+AGwqWqDFMHZOQAA38
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E07F32000D
+X-Stat-Signature: 6mbbd4t31zuohdzy5o7o7c9erazpaosp
 X-Rspam-User: 
-X-Stat-Signature: weyenzcckr55etjd6tzk4ozs8dpsb7dz
-X-HE-Tag: 1786975352-455791
-X-HE-Meta: U2FsdGVkX1+oCukPXZ4YLhL1qr6TYUT+cIKi9n/FJ/Hg1Yi+ijateRVfjSOjpmqeDnrHyCswygBDaEdjKqDB0l47YJjxVNXRC5H+P7QQsMg3pXhTUJR8eqSJdiyzNU3/uVZhi8aUnqawqL47ti+YAfq2MygYt+zdws9hGpaKRrJ0bg8sSbZgYook0NPE/1+XZ8dK5xlDIShd4/4NWiuXRxnQDFcZgSiAmHNZ7Xbn1MhXwhvc79QkDPFfLkuC3dlnE+fmK3y83fD6LS7RtAiACbqBALXX000TroLTN5PPV5mQ7p8+ENxoInvUkw7fCInTxr6HfScDFnIp0wf5evM/sSHqeygIzigUG+pDp4grNnjHZEabnMz91BE9tChvib3daSMPXWrexQNKEyWi91Je8hfB7YdT9Nsosk8LQe+8MfRImMvSkNSMCpJrSQt+u+oUz7HZXAVK1aKQtNQ/fWHTBDPOYPXLWpzdDMVoOdzkeTH9sf2xk7hNdBVn9gLjWpFWBFA+SFS2DKoDyl6XOmgsWi3D3jK8rktHqLyZLnbENazkebikpzswbQZRPVyi+TA1xk8HU4MddtRnHe0whxoUjTNKIQreO0pTfpIaxvb2hGq5tSmhOqJNhwjF/0vOxPwUSAPNa5RyRBlmAad2RgsjuR5h+62yJ9aFNq0tY8GXEgTEn+PNwbFazbeH8bD8yXjGteFuOSAEvOWJhKS3YmCeml9R0BdWqF3uDsB/PbNjE52ao1vwG62KPdHucumXe5q1wgrm+SiQhIPGhT6NwbkmHQ6il6dj2UDuktrgcdfW3prR5OdySqdNk9slQncvv5wjO0brimSPXMPl5AM5qyMi5jG2pnGkwPA67XXNQDTYD4R8PexVduBJSxuKR2uj+LpYnyc7/b23iWaonJ5RrBZEKajBHqkHt9aP9/Gfovj79RSyizjgv9llf3WxUkFqjsXh9cFag059+YePnGhr+zh
- LFwwnsgS
- kjRqKq40AdaN0aooyz3PIufzPiSoCs14nbGjj5skAsHSuh6b2fTgVc+Zo87N1ghCLFRzoQCdT65t/xdOBUHESqaqHFDjsH/mIIMh7BHCaqb/Qc6Iu6tQJt3Ty5pVyMs5/Ov2lebJEhhsGc8JZyrq5UOYgLegdZm3+fBw7lUbK/1H/OEWoyC8I8iPB+UkT/scsAvXO+8KDthg0MCebo3YpHPYov7fJQCLHYo6+4mJiT7gzJOFpXeaGVdnEtvO/4jp5j10ltDYbSHEKJBcPHA+86/0ZOR+E4vyrX293SU3uLC2R0XZnstbfgsOjL0X25a1TvteZ5xf/O17zK6ygQnzXLt2YaWVcR32OvNY5tWhAv2WCwtH55DhetT4VeA==
+X-HE-Tag: 1786975447-64342
+X-HE-Meta: U2FsdGVkX18BFvCmq79tpaq+ey+L11Yo4rrccRA+UGZqSx63Kpo3gWTx2eUf0X7Fo93MTPjul/DbZPgoQboQTvWaJy0nCZQ7g/nRCHVx0fpHa22aP4R9Eo6yebhRP6ubKPMM8O9HJTVSNTK2QIwma5znSKAG6aLrXxa0i9LNhj7XPehoq7FNgoHC4e0S9i7KXrkDOkU4yx3vFlu7jhaxXDhuydRXvQNbeHmr7zGAaXRm2OgQzyTiAmr4WNxuPAHUTBGXrSCPkGmvV/nB6dvx/WJ5BR/u7hrPjykdAGRV7TQuGIY/8OHYo9t2aEV51FKJcYN+QqLBcWxAa6a+Bryd6Vs2vrViwhcgpZNjz4Jz4dZgSjpwyYDGDWnrZO8Dyjagir5bAZ+LmW7LYKTOyHZgZQyHp7FZQ1QYkbBQmWO6yYdHA+ZE5mroXwdPkSmaD6Z5cUSgjuMhFWszh5pRDp1JCh38OoSAUBojr935Ps8i2oFg4izs5FiXWoYYvB4uuj8UrjYhFeQe/Z3mQVF9WyTZYMQiwBFipAW9VmBA/p1NnNEjRSrmF4wCpsVJoQNpX3oXDWGxV8FiEeEGcJjWDU0s0UadeoEVh9B/VhZWs+nPaM8/IeZfsv40Fx56q7JFEV2cB9+RyGnzj1Ot2grtDLUmQcGA1yy5+QWd7ILFWb3DcBWJO92bsNPqSyJ+K/YFooaspVDefD5zh7J3wpzlEr1veM17es0DriqGw7eoO8DYxV/74EbntsWZnV2liQ1gTDv8iDWqlPgaF0CwcC9BomAxS/tpl+R60CD7uDMTru41608XuXbhZGv4G1r+6QHVhdkcBO3bwNXJxteQrvfoOVj4DtDJG8cqxs3NqqQG8hn2w2BzmDIwcj4YWO/3WyyMRxeVi2f+691MsE+k9G2Dg7pwTcrI0nZK7QFpEBWY3hFCp3S6r4tFxyZFkJr0OH+gYKUNDoN9BKaCJ9evYYAs8VR
+ 5EWwM57X
+ 4oOGamfzz5pX4ncDlUx+Jm5JZJmWvszxRV+Kyz2m+VId/K1+IiamFuGxPxgb4tgC0YQnYJAXGQ+zJgiWrkVjIy4sGwuqw+EqJUqnO4kQ4mxdxyo1LvDb2F4IbdIcoujrxFiebVpwmLPswdXFyaYcrHn3EdD/p78a6q3RNQt7mVulPtp0MNOFhlcGlar4Br3vkUAA78NfIOKHI9FP4Wrnyz/bRuSMBxOFxgg+5wdE/CWyt229ESyS9ZHZkDeTIIjYseC6piler5ZSh3A+LcP3V/Ho8NRx2L8jCjlZCPkBTH2G2ur0EL9/ovwElEX2x9eI+Wow5pBs71h4gyat+9ZOOrK+ah40IBHA/0rqKiCBl/20nEjE1aTAQE/t+vj1xW6gqXWN9gDgJcFhoWXzBricRtKJnAyldfKV0KOZpa7WlcMxpj9ypTJQxN52ECj+X4SCPQY15IRQfIy0Pf8NZ7i6fWCl6RVR1q90uZnqCmqtJwxg9fvWRAjPU5TBj8tBzBOPYmGGHlc8zk89vmFw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,68 +97,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
---5sktdhveowv3yy7h
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Aug 14, 2026 at 12:41:11PM +0200, Joel Granados wrote:
-> What?
-> =3D=3D=3D=3D=3D
->=20
-> Stage table->data when writing INT & ULONG ctl_tables. Commit staged
-> data to kernel variable only when all the conversions have succeeded.
-> This is applicable only to variables that represent a vector; paths
-> pertaining to scalers are left unchanged. Notice that partial updates
-> can still happen if less than the size of the vector are passed and
-> correctly formatted.
-=2E.. snip ...
->       sysctl: Split data conversion and file position handling
->       sysctl: Reject uint arrays before calling the general proc_vec
->       sysctl: Disallow partial updates for erroneous sysctl vectors
->       sysctl: Add 0013 to test partially updated vectors
->=20
->  kernel/sysctl.c                          | 237 ++++++++++++++++++++-----=
-------
->  tools/testing/selftests/sysctl/sysctl.sh |  60 ++++++++
->  2 files changed, 217 insertions(+), 80 deletions(-)
-> ---
-> base-commit: 4c12287001da60f3c022bb25932aa7a5590fc0b1
-> change-id: 20260813-lklm-partial_ctlvec-bd8867b70d5c
->=20
-> Best regards,
-> --=20
-> Joel Granados <joel.granados@kernel.org>
->=20
->=20
-
-I feel the superficial changes mentioned in the review (up until now) do
-not merit me sending a V3. The modified tree is here [1].=20
-
-Best
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/joel.granados/linux.git=
-/log/?h=3Djag/partial_ctlvec
+Hi Andrew,
 
 
---5sktdhveowv3yy7h
-Content-Type: application/pgp-signature; name="signature.asc"
+I'd suggest backporting this. cb402bbdabca reached mainline in v6.14
+and the -stable branches from v6.14.1 on (6.14.y–7.1.y), so those
+carry the max_huge_pages corruption;
 
------BEGIN PGP SIGNATURE-----
+The fix is four lines on two accounting spots, low risk.
 
-iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmqDFHIACgkQupfNUreW
-QU9Wtgv/W/Mxbk0Y5tHUqDrqO0jIgDma4VYCc49F8BOBiB9Y+y1EdV7R1UJ3rIwv
-BttI+rtCWKIsKBhJEZBHsCiyX2k83LH93TfXi5Wihrq8n/YN6xMzKvOU1mxSH9uB
-2MHNuUAmTFJtAnt+GCXroOizzsivvzcN6Xr3Xf7KseVsvTU0Jzn7YzX2v5gAbwK8
-6VhW8uVlbD0oPpedkkZAWA/Il6jKb4SN431WgYOt0hLU5TniChtQs37E7JZQJmkJ
-s5D7/H/E+IhhIOs8PZGUyAamcZe3I+DIQzIl2o6rPSFxZfwpqApJ+ZRGvKDdbSOk
-6L0fqamT6DeTIhnYvpQ5zte+g69C2sWP9+PU+5bjbeAtcxrtGpo4tYie53GANrc+
-o6N/qR4ag9GWVNk0KfEavJCcD7kBZuWEiF8UoZSS8EGMkczn+pnvjMSFoCUfkKSx
-kggJHEsI027hD2yZXnTWeGk1YWmFnAlfVx2vbIMrdiH3OqeMA4kHt0otPqaxPy0Q
-llqAqVbl
-=78b3
------END PGP SIGNATURE-----
 
---5sktdhveowv3yy7h--
+在 2026/8/15 2:40, Andrew Morton 写道:
+> On Fri, 14 Aug 2026 16:30:27 +0800 Longlong Xia<xialonglong2025@163.com> wrote:
+>
+>> From: Longlong Xia<xialonglong@kylinos.cn>
+>>
+>> dissolve_free_hugetlb_folio() can remove a free folio as surplus when
+>> its node has surplus pages.  In that case remove_hugetlb_folio()
+>> decrements both nr_huge_pages and surplus_huge_pages, leaving the
+>> persistent pool size unchanged.
+>>
+>> Updating max_huge_pages as if a persistent folio had been removed can
+>> therefore corrupt the persistent pool target and underflow it when
+>> max_huge_pages is zero.  Keep max_huge_pages unchanged for surplus
+>> folios, including the vmemmap restoration rollback path.
+> Thanks.
+>
+>> Fixes: cb402bbdabca ("mm/hugetlb: fix surplus pages in dissolve_free_huge_page()")
+> That's a year old, so I'm assuming there's no urgency here.  I'll
+> save the fix for later and shall await maintainer input.  While at it,
+> please suggest whether we should backport this.
+>
+> AI review might have found a couple of bugs in the surrounding code.  If true,
+> they look rather nasty.
+>
+> 	https://sashiko.dev/#/patchset/20260814083027.1419487-1-xialonglong2025@163.com
+
+The AI findings are real but pre-existing:
+dissolve_free_hugetlb_folio() doesn't check hstate_is_gigantic_no_runtime(h)
+though remove_hugetlb_folio()/update_and_free_hugetlb_folio() silently
+bail for such folios, so it frees a still-listed folio and, on vmemmap
+restore failure, the add_hugetlb_folio() rollback corrupts the free
+list. I will send separately fix patch.
+
+
+Thanks，
+Longlong
+
 
