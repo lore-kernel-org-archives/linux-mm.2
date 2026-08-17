@@ -4,95 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E5DAC5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 06:10:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F5AFC5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 06:20:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6188F6B0918; Mon, 17 Aug 2026 02:10:04 -0400 (EDT)
+	id 122E96B091A; Mon, 17 Aug 2026 02:20:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C9656B0919; Mon, 17 Aug 2026 02:10:04 -0400 (EDT)
+	id 0D3A46B091B; Mon, 17 Aug 2026 02:20:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DEC86B091A; Mon, 17 Aug 2026 02:10:04 -0400 (EDT)
+	id F2BC76B091C; Mon, 17 Aug 2026 02:20:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B1196B0918
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:10:04 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5FFE8A06C6
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 06:10:03 +0000 (UTC)
-X-FDA: 85109735886.14.E361BBC
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 67CC7C000A
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 06:10:00 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=lkz+IDdF;
-	spf=pass (imf22.hostedemail.com: domain of sh_def@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=sh_def@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786947001;
-	b=KzEkh4GgEoUUr7TUP2SyeF0Adqr1a0G6SeaUEUQnrtQKv/WwMg6rkuLHKjbcBtfayUQTPJ
-	/cPa7veQXRXtSZPpR/qJVTsDdum5OTS8X7Lvr5a+M02ZhtcmjYK9LFwPJjPD/szsnsC/C1
-	xn3ceKdBU43axxcRPlyLRMZ0yIvoDTg=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=lkz+IDdF;
-	spf=pass (imf22.hostedemail.com: domain of sh_def@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=sh_def@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CFAD46B091A
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:20:20 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 365B4C05DB
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 06:20:20 +0000 (UTC)
+X-FDA: 85109761800.17.72D1CDE
+Received: from mta0.migadu.com (out-13.mta0.migadu.com [91.218.175.13])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0CD10120002
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 06:20:17 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZtJjXG26;
+	spf=pass (imf29.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.13 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786947001;
+	s=arc-20220608; t=1786947618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=TZD1EDo+xk7AN+vVz2TemLYBJiWqNlZ+zCg0CyG1C1I=;
-	b=1vKDjD4Y37Q9NGstW4GzEI4v/j8TC2FFmvv1ajrzXgcgSbaiRgIiOQ4vYsRjAGIxZ/1/u9
-	66YCD4IR4OPXF3x/Xd/e3/f32PmdeDcxM7xtaueZHUw2CPt6ORe4r7ByNZfiVYsMpGwG6U
-	EVdoS9gwLIlnkH8ux0fbVqfU6YdKxMA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=TZ
-	D1EDo+xk7AN+vVz2TemLYBJiWqNlZ+zCg0CyG1C1I=; b=lkz+IDdFE7rcupKZ2G
-	8gSLNuNe4/pRQ1ts3z8VVdzYDVmnru49BDLfNfGl7fEui2whHM0yeGh7nyv/Xb4E
-	QMV1Sk9cyMjRrk0Lvp/v543cVkkai+m2xeSQpiv7yw4byNGLG0C6HBe6U1kRJfS1
-	oel+4WMREcNHeqYxtW7j75bHQ=
-Received: from localhost (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wBXvZGapYJqqe36QA--.24966S2;
-	Mon, 17 Aug 2026 14:09:31 +0800 (CST)
-From: Hui Su <sh_def@163.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	linux-mm@kvack.org,
+	bh=+cJ6nRy02XdT7ao8SlW5vxrHYuGfqpb5ny+ypgftDbI=;
+	b=X8n0L5lvUEd+EukTDvfd+10sODQfqN8wvnvuraUUzut11aUfKZD6IpYQ4VVnYnVXb0G6Ce
+	31FsdH6LRApuAXFq1/nP4eAyz7ODLjkMYHqFJeutyvD3ixy/zzdVLV7ozO5PhcUO4KQmla
+	G5amJFP2rtyNqRZQo/vGto6aBkS8keY=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZtJjXG26;
+	spf=pass (imf29.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.13 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786947618;
+	b=MOMyFfX+/Cx26dvacsAIscqfweiaiOWMAZUXnnDxQ3GGzAnHJp/WVNodoMg4EiyvRFhSOx
+	4JwlBE5sJSXit85gVrClMbIo5cNt7eHDkLUUAWJFCtHwa6RHbC/QD3rZzNoW/iiWA9g42u
+	wg6Imye7ppx5CnQohVuEG7fOOEvSth4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=k9Hg/Aix5bXOJ45/B31jl2pbqakUepn4Yh5kPod+wDU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786947616; v=1; x=1787552416;
+ b=ZtJjXG26sMGVVKzxdBbJ8fIRgU3DCIobVeH8X8eRtvAr3xs+6Qcc7/0UNUEEGrUDB+INpLc8
+ dfw1a55WGONBVbXZIikXTWcgFVc5ZyyX2BdOA4B4jfzF+9BkxXFb1KSGpoflcjlgee6aq1R1i+E
+ wJCByBwYF43J/+WgSsUQCYI8=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost.localdomain (223.70.159.239)
+	by smtp.migadu.com with ESMTPS id 5bb4235a9e59466b;
+	Mon, 17 Aug 2026 06:20:16 +0000
+X-Migadu-Flow: FLOW_OUT
+From: Hongfu Li <hongfu.li@linux.dev>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Hui Su <sh_def@163.com>
-Subject: [PATCH] mm/migrate_device: fix cache flush when replacing huge zero PMD
-Date: Mon, 17 Aug 2026 14:08:46 +0800
-Message-ID: <20260817060845.377800-2-sh_def@163.com>
+	hongfu.li@linux.dev,
+	Hongfu Li <lihongfu@kylinos.cn>
+Subject: [PATCH] selftests/mm: khugepaged: consolidate error exits via kselftest helpers
+Date: Mon, 17 Aug 2026 14:19:55 +0800
+Message-ID: <20260817061955.45454-1-hongfu.li@linux.dev>
 X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBXvZGapYJqqe36QA--.24966S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrKr13Xw1rKw43CFWxJryfXrb_yoWktFb_XF
-	WvywnFgrW8Xr18Ja43Aa1rtry3ta1YkFWUJ3y3Kws2g345Zr9YqF40v3y5GFyUWayDCFW3
-	Cr1vvr4S9w15KjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRNlksDUUUUU==
-X-Originating-IP: [183.192.101.80]
-X-CM-SenderInfo: xvkbvvri6rljoofrz/xtbC6RvKKmqCpZvEswAA3z
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0CD10120002
+X-Stat-Signature: j73unhzcjds4k3axshmu1dcdrr38678z
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 67CC7C000A
-X-Stat-Signature: wz8j7irewiebpypj4ndwun5hucurgp1q
-X-HE-Tag: 1786947000-546422
-X-HE-Meta: U2FsdGVkX19HFVFXn2XEXirZi0aMpAmmiEpI24Xi6HfUYe++5QFxa6ESnWYB6lw0SSb19Yqut3ebwwvi7yEUjfAg6/3BKQvUCZ8semwmvUE3B/3imWqbtBuONYVpNBJ6TxvT/U+ZJUjqi6MI22H3NSPi/Lbo1eGGUBFsfdFo89HPM92+F5vBCT/fxwQYYzSLYZpgwU2b7bc+MO9J5o0+Ct1Ad90k9b3neKp9Ch7vlSrhxP5pyzMQABCFYMZPhE+Bl5fWwe7CLAGidpzDNuzkeGknj/DdtfBVUNEC/tmWGsKdqUDBpBG1q5IWkFW+ayZu6ukavtLE62EFq/2PJ231OHxXM213qWN83dNtehBSv7wB7iNdSgoim4tu3QZXNVU8tO87iYfUuYN94IFqDGDQa36xnEgw+W6riwcwQytFDGF9aIYfb3M6ouCLtd1IEHQjt7xj6F8z9IvsGtchOZB7JJ10ez5UDI65WiJza6tlxhmb7IFe6PUg9nPlv+Wvv0iN1k3NL3c5BVkDsBILoKBCtwm6j9DPzzihKR8k3Hp2zzC1WPNE39rI4Ck/hqAeHP1S+FxF/Wh40W6MITezm6seMG+JPd7FgcgYJQMT9AGZq39P76skIZXsoX1Li4bREb0AeNV0UpebJKRzNOBXmmKyp0yQ0LP4y6qyHAiAcHOIrLbTMVGFTzglKqnvSGvmohkwp4mCza3tU4B914B0QspMfciG+yjCFYpPkKh9kScBn8i+cvqYGV34g2kBpYA15Wye46GoflVRJrQqhmqJioQQGf0+Ewiy4wDdQwRqFw/vUMGOw7kLVjS+/ZYIBgrmoqPXU/nCgipQgjm+zWFFRGeTm2A1hjBaXu7px06i0GyqjbWlk7PO/vq8/NQ675LqakNoeG9TPqjBHY+A6/PjzLcqAZ1OE03g79Xk43xAAp1wQ0QjI2fdoMH52H3v65wPYbeyKdB060eVaVXgOMoGarF
- ytNb0y79
- Ht7SGxGa2Xgeu8WT4NJ6SJqF+uTSWam5nNaSztnq+jqrKKWIRnzEfiRkSQ0nxi0s+BwfqqGC/sTZ38Ee+0+RRzrEtGU0VOeH9+256dsPpvDaWyf5i3LWNzkCWmqh1z9ALB2XkSqSPrRd21B5/mDFk4zI2lY9T4ctBPlzPbFX9T9WBCu9IGfx7x28felQkZZj6DAU+VhUTf36DZtK+c/IVORlk3g+8HlJZwMqqs98QTrhV+Q9C/5WqUJmxSO0KzrcKlEx3AfKKYL8YlynMNtsCFBhRap2qIRUKH9VZ92s0rkxm2S6KL2bgpJ6kZviwltB6Ai6QygF7tf+EZMJ913xIqreBe4OFunGZpluPjDWVfBTrJvtL30APhi6OvGpY8FRfL/h4N+ZXH6c4RxY4J4MM61lwWxLs1HRVbUhJcVxXso7cqq1g2TraounEnIR+5eL976gGxaNydSX0AtxWiLYh8AByWwxZSV1E57v3BnucaHIJEHrFOHoQ0bptLZkzRKWlUEu8tkEqCy2URZ7Hsx8OW6N7KRf6dJBKFzcZ
+X-HE-Tag: 1786947617-600655
+X-HE-Meta: U2FsdGVkX1/r8o9WIvKH0xtN4+5DtK8Mn5ARUb7C+yM4J8MspDqdR/tDiGK5Wi/+Hr3IOAyQwXn/MT/Woj+fgeHDLFV1qyGJXrcjmm4/r27S7ukwvG7CDcLktzcDFgIhX7oLrkolZwaDgm3rN1BREfhtvcnQy+N3jXNMxrjVoQczt2478djE4Ke7PnvXelI+nWUqvHjg2DTEdAGjndA2TYIhh80LLT+yCnTKZ3P7/EbJZC99xXXqEWB9JACuNg6j4TNGU3i7N2VqQJrWGdDEGd5KlpH2qLzZYZukfv0Lwklki/ZhRXSPEoqvP5FeYgDMcMrgxuZK7o0MMenMzHDbL1lSeykh14tgq6NTDfTaxbO3/ClRwcs6EgCjiXx+c1RY/D0W8qkB7MFw0+/CTEgrESNPLb1ZfqAMVRFVM2IU14naZdU2rT0XZ2uEtAEl4RkGdFKzyW3E4r1pSbdbxXs9gpD1UgqO9fXOLBHalmMn8DIEHyQNayett3ebedHU13uLIJP3x2mMSnamT4HRcCPtRh3Q9mmJB0wz9JWh9tJTsUM6p5yZVKZ66tLpwv2w2QoJ2kd2CCGxH5o2AVb7KfwMJiLbKvxPeIRUSCvp3CpV2WNbxVhBZW9DuPz0gCrKL9ED14ynPYFaFQBjyinvDEqF5TDZ05Mc1gDIl/wE1V58JNXiBVyMCY3PI50bBdBzPW60Q1632sJ4omErVLH7UTZF8W0j4DiRbuSb/6MYn4/7njl8ECkIORGGG789c16ukcwPJ7NvNFBWDcOB4mxPxRA6+Ejmqp9ezy6giQhYJUKh0nVBZouJ/sqiUUnMPKbYLrjr5e2iXmon11Hqx1IWykrUIqiS7Z+C5gaAOY4/5LyPJOAuU8y8utbQFvxuTXST/DAEBtzobLAE4++T7hbwmRO3Quf9a9HFgjoJGdieFuNhGBXVvqcH9uZ+M/WypbdBQkTm1WSPIamRqQOEQQoG3IS
+ cy2gHgxo
+ rz2tWuNt9ZGLGUM4YC/pPgGPCjOpyHv4sCtYVYYvEtxS4hSPa18zkSJhbOU9A/dp6Ae5QfSis1shhkFAzaYF5dClrSFQpxub+R9wem16kYHMCoukFBTSkD+zqMVY6L6KuQPZwiW5pRWAs5MLtzAwSsqCj4Qlq0fya9ytAtLwcgrezJfc5Bb6868re/FBWuhRBJdFjM3tT+PmMw8Il2oSd6DCK3vI85+rNDuAK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,34 +105,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-migrate_vma_insert_huge_pmd_page() calls flush_cache_page() before
-replacing an existing huge zero PMD. However, the third argument to
-flush_cache_page() is a PFN, while addr + HPAGE_PMD_SIZE is an end
-virtual address.
+From: Hongfu Li <lihongfu@kylinos.cn>
 
-More importantly, the mapping being invalidated is PMD-sized rather
-than PAGE_SIZE-sized. Flush the whole PMD range with
-flush_cache_range(), matching other huge PMD invalidation paths.
+Replace the perror()+exit(EXIT_FAILURE) pattern with
+ksft_exit_fail_perror() so failures are reported through the
+kselftest framework, consistent with the rest of the file.
 
-Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
-Signed-off-by: Hui Su <sh_def@163.com>
+Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
 ---
- mm/migrate_device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/mm/khugepaged.c | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 908d2d4ec43a..098c04c1b124 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -872,7 +872,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+index 0d6c71ed2fae..8d1b87f2195c 100644
+--- a/tools/testing/selftests/mm/khugepaged.c
++++ b/tools/testing/selftests/mm/khugepaged.c
+@@ -358,21 +358,15 @@ static void *file_setup_area_common(int nr_hpages, enum file_setup_ops setup)
+ 		ksft_exit_fail_perror("open()");
  
- 	if (flush) {
- 		pte_free(vma->vm_mm, pgtable);
--		flush_cache_page(vma, addr, addr + HPAGE_PMD_SIZE);
-+		flush_cache_range(vma, addr, addr + HPAGE_PMD_SIZE);
- 		pmdp_invalidate(vma, addr, pmdp);
- 	} else {
- 		pgtable_trans_huge_deposit(vma->vm_mm, pmdp, pgtable);
+ 	size = nr_hpages * hpage_pmd_size;
+-	if (ftruncate(fd, size)) {
+-		perror("ftruncate()");
+-		exit(EXIT_FAILURE);
+-	}
++	if (ftruncate(fd, size))
++		ksft_exit_fail_perror("ftruncate()");
+ 	p = mmap(BASE_ADDR, size, PROT_READ | PROT_WRITE,
+ 		MAP_SHARED, fd, 0);
+-	if (p != BASE_ADDR) {
+-		perror("mmap()");
+-		exit(EXIT_FAILURE);
+-	}
++	if (p != BASE_ADDR)
++		ksft_exit_fail_perror("mmap()");
+ 	fill_memory(p, 0, size);
+-	if (msync(p, size, MS_SYNC)) {
+-		perror("msync()");
+-		exit(EXIT_FAILURE);
+-	}
++	if (msync(p, size, MS_SYNC))
++		ksft_exit_fail_perror("msync()");
+ 	close(fd);
+ 	munmap(p, size);
+ 	success("OK");
+@@ -447,7 +441,7 @@ static bool file_check_huge(void *addr, size_t len, int nr_hpages,
+ 	case VMA_SHMEM:
+ 		return check_huge_shmem(addr, len, nr_hpages, hpage_size);
+ 	default:
+-		exit(EXIT_FAILURE);
++		ksft_exit_fail_msg("Unknown VMA type\n");
+ 		return false;
+ 	}
+ }
 -- 
 2.54.0
 
