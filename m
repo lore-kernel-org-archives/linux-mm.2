@@ -4,96 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8EB5C5DF7A
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 19:59:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9A8DC5DF7A
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 20:12:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9D1F6B0176; Mon, 17 Aug 2026 15:59:05 -0400 (EDT)
+	id D76726B010B; Mon, 17 Aug 2026 16:12:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A27676B024F; Mon, 17 Aug 2026 15:59:05 -0400 (EDT)
+	id D4D846B010D; Mon, 17 Aug 2026 16:12:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C7F66B03F0; Mon, 17 Aug 2026 15:59:05 -0400 (EDT)
+	id C62F96B010F; Mon, 17 Aug 2026 16:12:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FA5B6B0176
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 15:59:05 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DEC561608A4
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 19:59:04 +0000 (UTC)
-X-FDA: 85111825008.04.E3132C9
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2FB28100004
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 19:59:03 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of 3BmiDagkbAD8tz0lbmmfsbqqje.hpphmfvtfsdpoufou.dpn@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.70 as permitted sender) smtp.mailfrom=3BmiDagkbAD8tz0lbmmfsbqqje.hpphmfvtfsdpoufou.dpn@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786996743;
-	b=Gsj3QYxPAKljlXtma80MezDE8pXAsEeKBPg/LYV+SWibweXEeW1j7DzrK/JMFPiR2+7ODW
-	umIEgDDp+bmboONpE5lWuk0XXsjJEQZaUfIjrqxFuFoyP8zqK/shqsj1PGD9nNd7D/cThn
-	IkVM5HzeYzm/wamW9uQzyeNIxv+qwRQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of 3BmiDagkbAD8tz0lbmmfsbqqje.hpphmfvtfsdpoufou.dpn@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.70 as permitted sender) smtp.mailfrom=3BmiDagkbAD8tz0lbmmfsbqqje.hpphmfvtfsdpoufou.dpn@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F61F6B010B
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:12:10 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6539CA097F
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 20:12:09 +0000 (UTC)
+X-FDA: 85111857978.18.83749A2
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by imf31.hostedemail.com (Postfix) with ESMTP id B23A420009
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 20:12:07 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uXaTne3Q;
+	spf=pass (imf31.hostedemail.com: domain of 3FWuDagYKCFQE0w95y2AA270.yA8749GJ-886Hwy6.AD2@flex--seanjc.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=3FWuDagYKCFQE0w95y2AA270.yA8749GJ-886Hwy6.AD2@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786996743;
+	s=arc-20220608; t=1786997527;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=LtBBNJJEL5yAqoKvDxe2xuy3lD27DANuEB/TcNPZans=;
-	b=MZhyoxaUNI6MvDUjkb1sOv85I141h7pKUiRTCQdKvvDXmNMx4leY4MzfQfWOvLo4dIGnQd
-	k4DRwaXEUUwZkkUr73PVfoTBA71/J0ajP8j1oA+NV89MetQqQjGatiumNDnw8gcIrKddyq
-	gKc+traBQ7JJfFvmI+bCb4YNbN07UP4=
-Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-6a0f261aeb6so4842534eaf.3
-        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:59:02 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=N0+O1Vxdvyhj7pmjvbt8iDMZ8zrd75NX4nQ7WNMkzm4=;
+	b=qzSW8M91ZCjcK8fqcdnbQr5KVXYMYEKtMRpQd43vJ6R/nH8G0yhRmssNlGsAKBRxFNuVrf
+	IznGbfnIIEWn8rg0YoAme5o6wMNUibGirFD7ZtjShZI+ymCykoFD0iXx+tYOar7tjHNofa
+	BHvRa2I813Jmy3ZYYwuGNFlrTirXff0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786997527;
+	b=rMnQn5wjOV+Kn1ETg4ky8WK2heVi9+mpE7ullE5OFKfKYr/I0Yf0y5FtEq+02f8X1c5SJ9
+	1CtnisryzAaQ6jcIcRsoruDYWthYLLmlr6KThskJjk40ccQEjb5Pt/qTcEQ2k1PDyW/lpk
+	eNM6dyPCfCIEpz+zNggIm8TIZMR67OM=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uXaTne3Q;
+	spf=pass (imf31.hostedemail.com: domain of 3FWuDagYKCFQE0w95y2AA270.yA8749GJ-886Hwy6.AD2@flex--seanjc.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=3FWuDagYKCFQE0w95y2AA270.yA8749GJ-886Hwy6.AD2@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84e13b57b2cso4513919b3a.1
+        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:12:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786997526; x=1787602326; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=N0+O1Vxdvyhj7pmjvbt8iDMZ8zrd75NX4nQ7WNMkzm4=;
+        b=uXaTne3QHm0EvyhbgyIT+40Us9vuuJC+5Jc8JHffyw0noPQOORpd/dAVuDbfuPLzXf
+         iyFj23EhA7mMprjkQ582uZOw8Oz3424iIftdcG86f05JS3VZXfkdw45ZH885rNgd1pUf
+         UJJrzFY73yx3+8ucalv8x49Y/2ZhgWKVzWEhtILc+goppZ5l86DnPU9/Qielu1oiCNFy
+         E7cHcaVjN8fYKZ887g5ziiVjTYLLXqdtq/6zWl8wjcAEHMzGOzyKWbIh5fKkoXIgLRE4
+         Z0FmRfvb0qhrM08iDKOseqKYS8ayCr7lH9cV8NDu39ZcCvihqk11rcryU4TaxtbqFAyn
+         6irw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786996742; x=1787601542;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=LtBBNJJEL5yAqoKvDxe2xuy3lD27DANuEB/TcNPZans=;
-        b=Hs+7rrUEqinpFt2zK7cJ5CK6715Hhp26qIJQBVVG2M93ClVYCGIvqoMJ40E7+keiPv
-         C88x9tAKPkOOW7A6xp8UvtqWA2GKsouXCmiE8sXkLF/6K/oWHLlL5KN32Ywb7M4sjbin
-         1gdxxD+N+zNB0pTqPDdVEN4mFEB9ClIja6oScNbFxHBZT9eELJNe/6ilQF9AHNaSolwu
-         oaF50uLyA85q3Cb1zNLzG9fy3omtGIBzk7NCc7Ca9v/s6tTyX+JkqJhUMcp/bVaYMHvd
-         +VVkirmO+zorjFQCz8VaWMDQJJibvnknNB2xobR/3N/QERimTjqVBn7hMW0EmJoLCshi
-         WYCg==
-X-Forwarded-Encrypted: i=1; AHgh+RohxEsBGuj69psz2wOo4whLwgL3bWBeas6TG3rEgMuUwadTw4k1wUc7zriZ0+t/JbIpocPM/rZoGw==@kvack.org
-X-Gm-Message-State: AOJu0Yx2fM0rurHLoXbMIB+GDKJvGdlEW2gyUUNJS7+0n3w3EDMNJ8A+
-	izNl7F1PYfwCnjnGXrxE193KLcE+J+HwWQuO/GEFCvYI8pnbBWJNzGoy7lqKKh3qvyJCIWkwlNO
-	tMbcJs8M/iQQOynw+dQzWF+4GZ7XowbVpuGncaCCOmZz1vBx913Kyw53uq7o=
-MIME-Version: 1.0
-X-Received: by 2002:a05:6820:4c07:b0:6a1:363d:bc42 with SMTP id
- 006d021491bc7-6b0d61bec3dmr25274691eaf.15.1786996742271; Mon, 17 Aug 2026
- 12:59:02 -0700 (PDT)
-Date: Mon, 17 Aug 2026 12:59:02 -0700
-In-Reply-To: <DKRH6MEVABEQ.28CPBZM86HRGF@nvidia.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a836806.f7a79266.2f965f.002a.GAE@google.com>
-Subject: Re: [syzbot] [mm?] WARNING in ep_write_iter
-From: syzbot <syzbot+805630f1453e490427fa@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com, 
-	david@kernel.org, gourry@gourry.net, gregkh@linuxfoundation.org, 
-	joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-usb@vger.kernel.org, matthew.brost@intel.com, rakie.kim@sk.com, 
-	stern@rowland.harvard.edu, syzkaller-bugs@googlegroups.com, 
-	ying.huang@linux.alibaba.com, ziy@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
+        d=1e100.net; s=20251104; t=1786997526; x=1787602326;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=N0+O1Vxdvyhj7pmjvbt8iDMZ8zrd75NX4nQ7WNMkzm4=;
+        b=DLp/DFDF4/WJqPN7+3MEMQ92vUs3DjG2ZtThuQS4djWpu8YQvd2AlwsVMCVrU9TVj1
+         aIoPyvb2+y61NxAl6uxFF4rNcc6Q71TMq3na8TdohPTHilgQgSD7q++BsmKczO+nXg3+
+         /+ICtevxNZT56f4M2QiYFqDkY6HjE7h1jeIZsta4XOa/s39nmUHFvahcrVRg7CHuKiX3
+         nb4rlC0/6M/rc76tiKcbBztB/8hYkEkKLCVCtUaksB7QTObxD5d6rK8+cpktHAHFu/Oq
+         cGpqPVdn4gdB2bfi6391u+zSavocy87MC6f0ob4EpbkSRIZ6+bmwHKDy1UbiKscpSWkN
+         kx7g==
+X-Forwarded-Encrypted: i=1; AHgh+RpnyD5qUzdoWhHM6AVeKyuTAGaQoytC1OEXGS32sEOWlz2kAAdZCVksQ7H1NhOElqr2gBoXWy3/SQ==@kvack.org
+X-Gm-Message-State: AOJu0YxhE5/BUE8cQzj8Mcx7jYjMh/sCEQazd0o6eufIDcsdEhlYQiHu
+	WLsql77YsDN9GkpEVydsE/dhBLsEAQiULEBRl6dHpuf+MyuEo+0cYFWBCyMvWcJqrB7AfRH4qRO
+	Huacy1g==
+X-Received: from pgmp38.prod.google.com ([2002:a63:1e66:0:b0:cbe:e160:452d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:23c1:b0:847:968d:b101
+ with SMTP id d2e1a72fcca58-851b88ce701mr2522658b3a.21.1786997525814; Mon, 17
+ Aug 2026 13:12:05 -0700 (PDT)
+Date: Mon, 17 Aug 2026 13:12:05 -0700
+In-Reply-To: <aoKnmW9St5zCoTD3@yzhao56-desk.sh.intel.com>
+Mime-Version: 1.0
+References: <CAEvNRgFzRj_=GVy8T4P8ehhQjYomYxkngzwtKBF0iEL0Cv6fuQ@mail.gmail.com>
+ <anp1I64K0KeyQuyo@yzhao56-desk.sh.intel.com> <CAEvNRgFWcndQKJE_q+ZATFZEMYd=6uRLygozLvg7L77bPX0cEQ@mail.gmail.com>
+ <anqqKH6kuwpvuwp9@yzhao56-desk.sh.intel.com> <CAEvNRgGWDY_fxbyBM-5sMdYMevMe0HzVP9kbC1cCGLE_dV=_Gw@mail.gmail.com>
+ <a71d4fccdffd1f6a12332ddd18fa812542ea2118.camel@intel.com>
+ <CAEvNRgHxda6XK_XqWaqqVnA7oW=Fhp_C5gF4vNcL+-HfwfXMqQ@mail.gmail.com>
+ <0c80b9b0e13e3ab2cbe4f9eaf4a02ebba25a7001.camel@intel.com>
+ <an5RJYTwlYeym--O@google.com> <aoKnmW9St5zCoTD3@yzhao56-desk.sh.intel.com>
+Message-ID: <aoNrFX9yLfsM7KQI@google.com>
+Subject: Re: [PATCH v10 11/41] KVM: guest_memfd: Ensure pages are not in use
+ before conversion
+From: Sean Christopherson <seanjc@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
+	"ackerleytng@google.com" <ackerleytng@google.com>, "david@kernel.org" <david@kernel.org>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "steven.price@arm.com" <steven.price@arm.com>, 
+	"peterx@redhat.com" <peterx@redhat.com>, "forkloop@google.com" <forkloop@google.com>, 
+	"tabba@google.com" <tabba@google.com>, 
+	"linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	Vishal Annapurve <vannapurve@google.com>, "willy@infradead.org" <willy@infradead.org>, 
+	"tglx@kernel.org" <tglx@kernel.org>, "wyihan@google.com" <wyihan@google.com>, 
+	"pratyush@kernel.org" <pratyush@kernel.org>, "aik@amd.com" <aik@amd.com>, 
+	"jmattson@google.com" <jmattson@google.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "rientjes@google.com" <rientjes@google.com>, 
+	"andrew.jones@linux.dev" <andrew.jones@linux.dev>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "chrisl@kernel.org" <chrisl@kernel.org>, 
+	"shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
+	"mathieu.desnoyers@efficios.com" <mathieu.desnoyers@efficios.com>, "oupton@kernel.org" <oupton@kernel.org>, 
+	"mhiramat@kernel.org" <mhiramat@kernel.org>, "baohua@kernel.org" <baohua@kernel.org>, 
+	"tarunsahu@google.com" <tarunsahu@google.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
+	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jthoughton@google.com" <jthoughton@google.com>, 
+	"yuanchu@google.com" <yuanchu@google.com>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"shikemeng@huaweicloud.com" <shikemeng@huaweicloud.com>, "nphamcs@gmail.com" <nphamcs@gmail.com>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "shivankg@amd.com" <shivankg@amd.com>, 
+	"shuah@kernel.org" <shuah@kernel.org>, "youngjun.park@lge.com" <youngjun.park@lge.com>, 
+	"kasong@tencent.com" <kasong@tencent.com>, "pankaj.gupta@amd.com" <pankaj.gupta@amd.com>, 
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
+	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"vbabka@kernel.org" <vbabka@kernel.org>, "weixugc@google.com" <weixugc@google.com>, 
+	"michael.roth@amd.com" <michael.roth@amd.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "qperret@google.com" <qperret@google.com>, 
+	"brauner@kernel.org" <brauner@kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
+	"baoquan.he@linux.dev" <baoquan.he@linux.dev>, "corbet@lwn.net" <corbet@lwn.net>, 
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "liam@infradead.org" <liam@infradead.org>, 
+	"axelrasmussen@google.com" <axelrasmussen@google.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"qi.zheng@linux.dev" <qi.zheng@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2FB28100004
-X-Stat-Signature: 1n119bekuwf1p41ezbkai7dwf7peo3rn
-X-HE-Tag: 1786996743-913786
-X-HE-Meta: U2FsdGVkX1/Axijr54ZKuk1qc3eGGLZfjdTH3qAHxJDxh7uTkHs3LuuG57mTCtrJ4MkNkT9ndEs2AloUjthM15i4a5R9TkBXux1xFzgHG978SZpNyVP+N020z7gfNK4d1XwdNACkuyw/8blWdtR5GbAD7TsofLEYMG1aQGVmIH0nPo/bgWEmO8Va0f1Bo0SVGpp6ir0kBemJqsTD5MdF8qr9hqhV1W5vVQ9Yv3vOOqvqPb8h1Nz5H984NVO936CxFohrxUM3RjLyV75NXr8WtodZ97IJqrA9SoMmYEbGGYF6wDzOm//KdEfJPqI2jEFalzR0onGJUK7l/ivZ42yiznTkqPTytT8cbVk2jahLrWgvQqx0n5zE4qnH5XjquvdBdzDR/nnC6oUElk6sUEa9ei1JFdJ+SwG/yau8XyC0tgvSY99/o2VRGHIDI9miF1Pz0utrvumqUDWP4RTYmsNBYTSgvAooWZv/eOyapW3PbMt1GCXTF1Di4H3QuWgt5hXH0EbJ5auXTBBFzeyaWWSecXgyevV1BPNWqypd8iUPepLfdeL/c1y72wcQXooEO1S6hNRS0yDTAWW13cEsXicHHtYmN4wa49WDqqd6OmFxb1F7pt1A8ZJci5hpUuersU+TyNOXTEgdruV3rhu3Zi18xliXpsRX4wJ2ZgBJTXwOFV88MCuQw73ybsv8rswsm2rLZcg+l4b+XDwK4GjRWBeDior0UfFf/6AWEjBq1/q+Fv/UMJo5ymIK30KoGyl9Y1F5WrVEyyV1+m3aKQY0uT/4GtrNuNhi0CkDWGv4xDtONi/NiYw1ok2Dp+JAPpTV21Vu+dBJvWtssM2M5A0VWk0zxdBUCGbtml6OlFLh498EHxdHsW7qFaZX7SfzSbbinzXFiAP1g/SUuFeDpVZ570draG2yov64bVDXEoeogaeh8gPK5rVkl+QnWP0/JvjMUxOC9LHdFNgFjlFWNFqKpXk
- Nv6mZszo
- AvNQSNpCuGRpMPc8UymTi80QocsMhcAJ+dwx4CbRW0h8l6epFlANxrlfDazpe+3hwPuS2EX40etgthiHBQQR9rsiWQzytLAucFaoVPA7ud5lasJ4hh+Dnsw0s2YQbhGAZeEzI1CsHXgtoPRKFm2+30Kdq1mEZ7dbAvz4VrMpwoiVAQot/UpqFoAmz7lDRBYOsl7Hiy5e7RsnrJhwlGvPD2Ewh79zKWw5SErQQqMepCJxgbTPDoVyJvVs9upwJnj9YicpvVdtc4rBchVQz4ZjtlQplGlsUDEPbAmqv94ayAgHGM8OPqunA1FifPLfZz4qygytlUWLJTd/EEPbbkLcdPRCY7igz3gkfVdd5x+59MC/bux/4aeb6ZrQuV5TZ4ChHLt0W3+D1iHMe0NH63sRESgpExS3S2GzWEGZ1CG9ND8gbf4vpA3JF2G/g6mYR9LkXJJY48JZsHPBIZG4fY1tBdvS0+ss0hIxzost10p/WHobmBrN11h7xNvryT1euQecNfbLtmuNPTPEXq/kGUO4SQI95KNAjCK/52xQsas6CNKNFV37v2cdCZPl0dUgjMcF6rsPhehTPeYtGHp/e9SktgpRPludCOGaPHRHP/LaKI5uKyMH8diRVp1sqJh1vLwklderxjnUbHMcz055THNFwpEz/ms6u5llX1faQHRp0bJMjj0wmzYCzaAtfDo40s+YXxzOGWFEOOTZIfDiqM4ffVnz/bbk9fegJU/oKidBrgPkpxN7qRXEOKEdczvQjiGJ2op7JSwWGjZExk+GfM1S/scpkqlof+LWm5QrFm+miFTwrp/5SEXB0XJq/0rqkKx1cDmb/zxeGGEqIPshksv+uQQwWFp6PWDxucYk+uT5jpme/f32aNMMz4UDE4eWW8rqQK6WAAWl8zkeDGZ+ehkSHEhtVoQbu/DjwF35pnjEHhI5YtL407neC2ub3+X3FaHRm5PEWa0GOeNyRAsF6EAZQ45VJJbX8
- u6v55K3y
- TBNdSR7++bfC7+xyJbApzy521QKLrt8WVGNumbLTgywULEOjFiCS5g==
+X-Stat-Signature: cttwick6yaei946dutnbp9bhss9nn6k5
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B23A420009
+X-HE-Tag: 1786997527-724514
+X-HE-Meta: U2FsdGVkX19mzxTThBAaNXcVTGBGevIsCZ/uN+wbdL6T0qyDjxpYDa3+AEOQCYSccpNRd13tQmJuChsz74baSAU9knzh9fgc79sxf0PiH/7+tO2xlcQ+sIn6Mm2seyTQbkEl8UcMCw84KtoMTVv7yDzYbvVssPvThdLjnx0YX2tuDVbKmJOzH289R7VPIZgj6z6fyA4eXG0PKGmqZhs+jQhkNBn8ZX8eK5fR5IC/eGSMVNqo1yChtx5wmzn2QvO7PKYVHpWDAGMYDNIJjmeIpNdwqDHXC1CcySHdoGCE885JYgGGbOs83qVdFrpjKh/U1C9NQ5vhbQLK6mbNdFMgbBuuSf/T6cECNRt16QDy/JTXZue68XqjtxHdF6l6veq6VU/6BUELq8+iiC3B3OR88TpzV8av/1deBXYDiyyjmhCO1l1rSDEnVEHXVRTxfA9uz3OEW7WI8IJ++SF7c7t7ptTqtb+LkovNuUpylRFn36+Z0RtCsUlIrQ+EKMoTE6MvY1FBiKeR0QUK+hDhRmCN4tf+UO1a+2H6eoG23avb0wgtljK/2E1XSuK8OO8s0taLMgCyejh4pJA/CiaVrx3a5iRDTBSiytAmdMwWFmFzw9pT6GsyBeXRlxDX5YKb7gANuzFh4dN8AeBwEQ31hQ1ml5XNhtOev8c104OI2KpuNMs/IGgAUc+fICeBRO5YVVcjMBfu67pAdTq0ExyKc7pgGzpPIV6qKiAzgqsnbdi5sJ9j9Ui5qcDkdy7oO0AkcRpNfmfBi0S1j6uw73MCkbd3/niYa4pHVg87XAYtszDVBhtTq6FcI0mu2SlL75zAVAcLCgsPhqDPPErdOHXTeOlCpORt0fn36rmuRMGib6lroSkJZVOmyDWLotqdpk8IH1J01UxjGeyMEBzu/MWmhvd3S8AEJobe3Dhe16Imc+lugw0wYY1VEZOBzEzvTtcFxQHX5dOzxfEKV04Q3hj3d0Y
+ JqYZGGKQ
+ 7oR6tNzopKVhjdxlSCiHn03dIIGuOVFGPYTlHuDoOcdzk9Cz4jA5o20csUZ5Enht+qdSFb258RIoX8wUP5i/x8Idc/HUT3e70NE/BmfhCpwWU6xh75Hx4m/gOj9b3mvf5SHAUuNU6DcBiRhHKnPCHK7zXvhu9TNCWwXd7AJgFppKjSzOCeB7ofEmsmymuoY10Ghu3CMmMdAy7LsTsI9mMJo7djLMkkqwmoT0E0SE2hjKYbGMhHkxuXMGVBpGVgOmJ3Aa8w6EBKh0GOqJ9jx3ZlYAQagXNxifqrSkKdyjw0FJH76+yAYE+SwRqKTUX+cORCqATyzkhT/CZgsukWQF/kHVXDKDZPgQuReHxmysJ6T2C0JhILtpP2iVVPhHVpqRUptzLAvm75lLL/+Y9mQXqfRQd+S3uLQsweXqgIvjmVACQ6WYqHmBarslmhCWiHYVHXyWBkPfKoHc2p775cJP4p4uiGV8kReJzbCDglZ4nomIVgeIJsuIViURVuoPNxJy3xWZvfJyxYoefDWOH8WJAJ0eDI5+XWugfDyHhOHlW/+R82fGyHKbpCep+zIWsPTez4YYc7Dm6qD1ZCLyNHDDGanj3jKgj6taPFU78eq8ePz2dQxetlZfDnxws+vXnfyt1Q+ziaO4TOtlDpvR9+ZWW9oipnqq7K4bt1V/CoBtA/uZJcYkBcUp5OjQHPG9yEuXGzG/A7aPEOmhFIiv9KoltRM7a4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,22 +150,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Mon, Aug 17, 2026, Yan Zhao wrote:
+> On Thu, Aug 13, 2026 at 04:20:05PM -0700, Sean Christopherson wrote:
+> > On Thu, Aug 13, 2026, Rick P Edgecombe wrote:
+> > > > > nicely so we actually just run an old branch's TDX selftests against newer
+> > > > > kernels. So the branch is a bit of a pile, and not really suitable for sharing.
+> > > > > We plan to clean it and upstream it when the path clears. So it would really
+> > > > > help to get those basic ones upstream. We remain happy to help, so please let us
+> > > > > know.
+> > > > 
+> > > > I guess at this point I'm hoping y'all and Sean are okay that this
+> > > > conversions series merges, and we let this stress test failure be
+> > > > handled later. I'll be around to fix things :)
+> > > > 
+> > > > I'd say the line of sight to fixing this would be when the KVM MMU only
+> > > > gets PFNs (and no pages at all) from guest_memfd.
+> > > 
+> > > Hmm, I think we shouldn't upstream a uABI that we don't have line of sight to
+> > > making robust. So it would be good to settle this thread at least.
+> > 
+> > This isn't uABI.  You're talking about hitting a race condition between one task
+> Hmm. Perhaps it is not a uABI issue, since users are allowed to retry. However,
+> it is hard to convince me that it makes sense to require users to retry a
+> private-to-shared conversion before a GFN has ever been mapped, given that a
+> retry is not required when the GFN is currently in use by the guest.
+> 
+> > converting a page and another faulting in the same page.  An NMI, SMI, or IRQ at
+> > just the right/wrong time, especially on a preemptible kernel, could lead to the
+> > same test failures, even if KVM drops the refcount "immediately".
+> Could you elaborate on how an NMI, SMI, or IRQ at just the right/wrong time
+> could lead to the same test failures?
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+Ah, sorry, my bad.  I was speed reading and missed that the key to your suggested
+"*page = NULL" change was that the reference was put _before_
+filemap_invalidate_unlock_shared(), i.e. before dropping
+the invalidate lock and thus before __kvm_gmem_set_attributes() will walk the
+folios to look for outstanding references.  I was thinking that putting the
+reference right away was just shrinking the timing window, but putting the
+reference while still holding the invalidate lock closes the window entirely.
 
-Reported-by: syzbot+805630f1453e490427fa@syzkaller.appspotmail.com
-Tested-by: syzbot+805630f1453e490427fa@syzkaller.appspotmail.com
+So, I take back what I said about this not being ABI, and about this not blocking
+in-place conversion.  It most definitely affects ABI, and so needs to be addressed
+before merging in-place conversion.  The only question is if we want to commit to
+guaranteeing that conversion will succeed in this scenario, or if we want to take
+the easy way out and formally document that conversion can fail with EAGAIN at any
+time, even if userspace has never mmap()'d the memory in question.
 
-Tested on:
+I'm leaning pretty strongly towards guaranteeing conversion will succeed.  We'll
+still need to document the EAGAIN behavior, but IMO there's a massive difference
+between conversion failing if there's a lingering reference acquired via a VMA,
+conversion failing because a vCPU page fault raced with conversion.  E.g. being
+able to assert success in a very curated test, as the stress test presumably does,
+would be extremely valuable for helping detect/prevent edge case bugs.
 
-commit:         8d3ae592 Linux 7.2
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17008679580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=1d67342c314f228d
-dashboard link: https://syzkaller.appspot.com/bug?extid=805630f1453e490427fa
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=15a7d69e580000
+The argument against guaranteeing success is that we might make our future lives
+harder, e.g. if it turns out there are legitimate, hard-to-solve edge cases.  But
+I'm ok with that risk, as it seems highly unlikely to be problematic in practice,
+and there is real benefit to guaranteeing success.
 
-Note: testing is done by a robot and is best-effort only.
+> > As for in-place conversion, this is not a blocker.
+> Sorry. I didn't intend to block in-place conversion.
+
+LOL, what we intend and what happens aren't always the same. :-)
+
+> I encountered this issue during testing, so reported it.
+
+Thanks for doing so!  I'd *much* rather sort these issues out *before* merging
+code, even if it means delaying the merge by a bit.
 
