@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08165C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 22:08:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F905C5DF74
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 22:08:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C9A66B0115; Mon, 17 Aug 2026 18:08:19 -0400 (EDT)
+	id C77A16B0116; Mon, 17 Aug 2026 18:08:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A1406B0116; Mon, 17 Aug 2026 18:08:19 -0400 (EDT)
+	id C281F6B0117; Mon, 17 Aug 2026 18:08:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 090916B0117; Mon, 17 Aug 2026 18:08:19 -0400 (EDT)
+	id AA1D96B0118; Mon, 17 Aug 2026 18:08:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D905E6B0115
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:08:18 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6720EA355D
+	by kanga.kvack.org (Postfix) with ESMTP id 8AEDE6B0116
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:08:20 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1FFB7A3589
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:08:20 +0000 (UTC)
+X-FDA: 85112150760.16.7DDD7D9
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 65A34A0006
 	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:08:18 +0000 (UTC)
-X-FDA: 85112150676.05.D835776
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B1D1F40005
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:08:16 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=W5YyCrJP;
-	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787004496;
-	b=HXgYw8xPOX0qPwwdnW0s9SiASwcmLH9Zj0ggZMpsii1HWlf3NfyPU8UHPl81TmdLna6yby
-	fLe6aVpo68ziXnbSCUpLVoTFbm6VbHphrkM2tLRRQi5s09N+bt8EOHg7IMi6bN31FznsQd
-	zQs7ZYPumxBGxj4bk5NQVfH4c/SM6jg=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=W5YyCrJP;
-	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=SMQGrN8e;
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787004496;
+	s=arc-20220608; t=1787004498;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=WaMmOyr/e8hbHyUhtw1/fJWH2VLNaqO0DJDPfuneTJ4=;
-	b=diDBuzmdQmmVtyvTAqJ+2r+zSdAV3QiZ7Z4XPkAFYHMZpWaSbvCa5B0W3URjLWL5L+hmNG
-	h8SxJ7+VmbH4OsgJgtN/OFID0V19gecsPlPZOTHyk7EJ91h2V4UCggm6ZPOhO9zlDeCfHl
-	O+WHpIvx9B70nEuiR0BOJVLllk4adWQ=
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-936e393176fso126596785a.0
-        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 15:08:16 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2TbSdQcY7KD6I3WslktwD+M/q5vUGGfVm2gu43i1aVI=;
+	b=78xAdDhLwzEoYNCB8hG6SRoHbc46C18tPAN7+ji5ospPYM7U4jGIwOkIgbXpeVjul9Ydd+
+	PsxA8KUQFqQstOoSwlq8qIo7J9gKZliLlFa4ExQOnCWpLjxpsnVLxGi40JKX1t98rYXqWu
+	hVVcE5yG29xPrBgh/4zxmzOwFPy2Dro=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=SMQGrN8e;
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787004498;
+	b=U9ERFg0dmAt3hsqEnkI/0EgDL2qo8pAntbNtd0eCp4yVJxHg4pm9QiLwAnl8bIAOzoWkwI
+	NkMx9gp/nik3D0zvP+jm55lGkDU3kON5/rbOplXsGUY1zzvXCgHYVZhTA0zSfLAdTtV7gR
+	GZIlnIq7UCnUW5Z5gWy2oxKjIuFD7tw=
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-92e53581361so199757985a.1
+        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 15:08:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1787004496; x=1787609296; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WaMmOyr/e8hbHyUhtw1/fJWH2VLNaqO0DJDPfuneTJ4=;
-        b=W5YyCrJPfIgbbdINsOkVfwiOtf3uRAo/DqHB4fG3z4IpJXM0O6y6gidQ5ZJItcvZST
-         L/JKXdPXHzMzmBXxqHZezDySUiO4Mqasn4Tdp+3NQXqp3JqQJNGC6acccjobi8SJcNet
-         Kdz2EQe6j2s5qPm2rVlIJR1slr/xS9Q4YUfd/P+bdWGLQfyN/u4d0hP7CNlRMb1uSET+
-         mfm4uhe9yp/J019bNTOGkEBvwgWE1CXAD4HaAxQyBi5tOCcZY+bmjbd9CNXnr9Gll4y3
-         +Zjd8H5SjCfhOxg3irqZeK3I9It7gYR6M2PGdL3BSQJBcoSOddw9NSAwSOFE1tCV+s7K
-         6/XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787004496; x=1787609296;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gourry.net; s=google; t=1787004497; x=1787609297; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=WaMmOyr/e8hbHyUhtw1/fJWH2VLNaqO0DJDPfuneTJ4=;
-        b=j3VhTrBONQLXfiA62b3K3NYYQOmjv+xFR48V3cWX33sO4KZpIUpSp6Yaguz5hg+Jcx
-         vdNzojZOJF8i8z8qHhFswB+UXVw9xImVktwn9EOESO+6mjZfvHX9c77L4MWtGhppVMTC
-         JvKw74rIDkIfUv5kO2aCXV3Oh9S8aITpDxtH8edKCYbVb9pgMWA7DsYDLE96ID6KlUF8
-         lalH5xHzDpsrfRrsuwYgTGKVyXpR1fXK2P6Ubearvjaq8MH9VBMZWgDoXDl6yVjTjdRa
-         8jTHeF/f5ag4czMIcwqGIp1e/O3d8kRHqRvCAy22SUo5XZfuMj/4xSZXjncaWQAQSxyU
-         HrdA==
-X-Gm-Message-State: AOJu0YzlE5sc5Of8VpCLmgIGphVTcRi7kLgZM4HoQcKBhPX8yFSrSpHy
-	uf8XcB6jIIIluoYPlKR/K1oAViru9od0rfGzX/fCRfWOBgImWUwP5bmT819SkhvDDBWiOhN7CnS
-	1CP11X1c=
-X-Gm-Gg: AR+sD10AbzzmjhlCEH6I8mo5tJPPAwoenXfLJFYM23b8rkGIGBXKS2WpMO4UG9jZ8cn
-	0NzjgVnwjn1nKtW0RChT4BjizmaBdNE4ZKKTtNwAERFRJGMYuEp2fjgBnPaRLZ2eJ7H54vfWEFw
-	lApwPeQbCextisv6hdHotIIJv6DqobLmSnc6jAaMON5bGeV06ur6WuAtpagF2X839+bzAu4ob31
-	HNmmbMGaudm9N2i/MipTXmHGqBeq7B7/0Yd2r0o9cZQP6I488GEo6mrrI8bxAZ5M7fNLa7d9Hxw
-	eo5WW/yxi5mS2IQCq6G5Mzd1KyZGjvVMiuZrMwdMtQDPOonj1KwyvfL7LsS2HlV2R3El23IHph4
-	c4pumG4qs7G8tQT1GB3bDn+wV9XOYOM3r3qUV/RSdBVbamWmMTl2buRjmlFh/cmOkODFoQgr9YD
-	PgiJaxw9EkQG9fqQDtksj3PADvjHFJB6t2MK/g1wA6jFhu0Ad8mwp3LxtJkXTw0uU/GWlrXeceX
-	9MkqCDB7LpUyJrgcSbJZGOqNLjXEtkTAfNgCcrO+pE+y1dDSyFhuJE=
-X-Received: by 2002:a05:620a:170f:b0:92e:603f:1f20 with SMTP id af79cd13be357-936d2145adamr2421836985a.2.1787004495789;
-        Mon, 17 Aug 2026 15:08:15 -0700 (PDT)
+        bh=2TbSdQcY7KD6I3WslktwD+M/q5vUGGfVm2gu43i1aVI=;
+        b=SMQGrN8eVyV6F78j8wCwkBH+16gjcFpR/SDb24ujCKtrdKaD0xbhdC8fJQiD2FJRZU
+         vOt1CsqXIx4VgN0LzZmucpF1ZcU/kj5pXIyLoJLbObPMRnN47ErnGCBQCfgYgRA0+MP/
+         88V2wzs/QBhPFkXda86OIbLFNqWYl8O+Q3trC2QRcpWD7qKEZgDDHZEJwar3PIlnUlTv
+         NWiLRsyygfna1fKKd/Ouy+NoL7IJ1fohBgBcSrOxvBWA97/nAXAh1ynT+qAwLLD5tQl/
+         Izu5hL6hPzhihiA0nUS6NOM7NYXG7NuTNU49KMhp1BmrYN45Ws6J9GSzE81uDl8ncffO
+         FFhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787004497; x=1787609297;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2TbSdQcY7KD6I3WslktwD+M/q5vUGGfVm2gu43i1aVI=;
+        b=UFQNmhxDDpJ1snGj48nqqoNmYYMNDZ052mKPSsxZlHHCEK1W1wG/lq9qX4L4wWRiIq
+         E28C/N30hF0kZAIezNFd/PCeCgKGzTLRCgPisjSJh1pxfCxfEopbVM2sahCUe+p4jRwb
+         yqvpStt92JwHTtH3pUM/t/nmMw95QRZxIF2mreyBZSvtG1nG5wyPVpvIQZjC+a4fS11I
+         1IqdYJXzJzBxM5zQC4yIVi1JfB/T+gCd0uH5QKN5lV4u5ES7JY7UmLqdRejHhSywJqlj
+         JkNgol/foKLS/Q69UsmGqTI9FmNu+AzswBbpWoc8vR/z41hIkT4AyOWcv4DQdIoXKJGl
+         1PgA==
+X-Gm-Message-State: AOJu0Yyk/a8DshmeuH0MD7ISewfStLpYYqJ6nLxGhuQ6Rm4lwrqEg75c
+	ujZbZEFWxn3XJStJMasXhWB5g0XTY/KXf2jyo+IxC32l5KaJkf2QCrWcinzW8rOC8Rqftl6/2yi
+	7SSOH+YI=
+X-Gm-Gg: AR+sD10kQsgyOXO/XvMJ4tCQ66tsP6Pq6T55FVbIbXgKxYkQ0cYYWC8pxgt8Q6G5ws+
+	V3+LGcU/Q4NZWLAsO8jU1f559da0NJFYPGuadrPWtHHl0g/L0ecHFQC55G+vLHkgNA/stRG1ikv
+	Txu8SI7oN4iTP5JqmwWL9FWvq2BYZDlZzcT40F5yNHclaQDRSaW6Cf6V7tAgOnjMmNMsCwvwonU
+	K+g4J3+ZcFEn6jzlh5I6NbtgZd/qMpdLKCy/eWPPR9AaeH5HFZ91twch1u6T8nsGinFpJUP0mCm
+	LIreCbiBwf0b2Cvr9drlvyZAgYGsoDPp3Eh6MPfGJABH1HBAACL0a0OuAaxUuQe5gmNwloNGVYP
+	Le10tPlVOzZ1Kw+13EiyisOQkAaMAFjwSpl4cVcCNQSe+LGJ+h4pIcuNAKrVumafJaMXddSBXIs
+	waFFz0ELUxDla+BgnWMRwdmZOjlzazLbWoEEQt8TfvdMLp2YswG7p9+DwCoGe+dOD8Epr7X1tOO
+	bw4m4tZUyMkdGFBzhEbcTnXPd3u8xrobXRN+TMGS7henMHbWA==
+X-Received: by 2002:a05:620a:80d:b0:930:c12d:b915 with SMTP id af79cd13be357-936d202fbedmr2459244885a.18.1787004497552;
+        Mon, 17 Aug 2026 15:08:17 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-937033ce78csm147108885a.31.2026.08.17.15.08.14
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-937033ce78csm147108885a.31.2026.08.17.15.08.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 15:08:15 -0700 (PDT)
+        Mon, 17 Aug 2026 15:08:17 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -115,21 +116,24 @@ Cc: linux-kernel@vger.kernel.org,
 	gourry@gourry.net,
 	ying.huang@linux.alibaba.com,
 	apopple@nvidia.com,
-	balbirs@nvidia.com
-Subject: [PATCH v2 0/3] mm: reject zone device folios in more folio walkers
-Date: Mon, 17 Aug 2026 18:08:07 -0400
-Message-ID: <20260817220810.1175596-1-gourry@gourry.net>
+	balbirs@nvidia.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/3] mm/huge_memory: skip zone device folios in madvise_free_huge_pmd()
+Date: Mon, 17 Aug 2026 18:08:08 -0400
+Message-ID: <20260817220810.1175596-2-gourry@gourry.net>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260817220810.1175596-1-gourry@gourry.net>
+References: <20260817220810.1175596-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B1D1F40005
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 65A34A0006
+X-Stat-Signature: 8twsmbm7a1kndp64fkpk5t6heswzzwmo
 X-Rspam-User: 
-X-Stat-Signature: nchnng3hh43h5cyhw4mxzajy7rht48rh
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787004496-187829
-X-HE-Meta: U2FsdGVkX1/a6h5AjvmeregH6Kh15s8hI812OxoZTV/6VW3xiU3ArxmDuoT727gyMz8jNcvPOFNGf5Od6OxTTWmij8In1Q9YTc3Y3lsjWmt3RSnsCRCsTYxbbP0BpNhQCLKjOpBcJ2w9Xd7cTpaZyzjlyiwAeamVhBFTvJzN9ujTLKwmkz72LTMpann1Oy5+ZpppY6WaTAt9fv7hsSy2/4HJ6Qxha/7vsQri9ghpyIfcl1GGkS9H3NMryF9nu016KVIFcAyV35UTmPwNg3JkraQEehia4lPeiolGf1lFCYndNdMRpBUzqgnK3S3MNwvLtgAjwHlc+XbkaV6zZk2HxOE+GbLt60WniaZ/CKLn4hvyp7d3m2VuzcBgmi/69rfEhuKRuSImlbwB2xk/23llWnXdmJxRwFVvYvfBpNtsgsnDoi88MV0dQUYSZiwK7aZtFBwChaa8Hh0yIYEp6BkbkWOvJ3dk5tz/VTuZucQS/Jh3h+r2jtDXwjTi2ub8PHu5QPFPMRV4fdGovkzfwYXEXT9TAUaXJx13r0UDBQvxTjSXDSNok7HA4hwcufVDGJklptYo+A1Po0aeBR0x0kUwiDpT3K6hONyF7YF3TsMDzqeAohEXtzrb1CGrUh4tqUlXwJAZe/j8kb0cYUHlnpgcPK9uz10DtDDCX39PrUkWijqHqi6N8LPlYcLoChZx3K4kcIG532v1H69NOS3xIWYKvRXOlCavlmQ1x+mtAq+yZc4hM/MeG+XHTImKCejmXSKm3+m2dLgIAW4Xi7+mgYsWVrKiwsAoyvsUSK1o+MLW+skgUBLbGRuyq0QQFGSFSOPRHpKhIF7DPBxs/gP3oVmvpWMmhlsgXdzpXpCIevVfnTiLt6wQ5mtWj3cyA4Rgkbop9KTWvrEg739nDwP+iuzmN5a3xB1nJ6bxHtVCOUalF+rkMw69tvH211jdAZYecr0TJNpA6aE+Dze2TYektHt
- rmLndwqy
- BiZDXX4d2vUeX11KqAJ5Ohusv8oxSX8qYIqTa1usTZ8FdxIgOMQz9J7rE6ggMMFytEg195sEuDP+0cAKxQRogWui2hkGa1YTr8Z6zVdtDtqIr/MLIFsmwJKTaZw5Eslom8a2tdXa10Rr5ka9yoechPjYXxcvTLnjqXTuQc1sD3b8HyjuFZlQofHBpzBeGWfO/sXTJeTJ6uTr9ORouYKvYqJJZbYl7BCluEeRCkkJFC1CNqj1aWufmpgMPxnYVJWSfa3f69gBn09yn6K3LnoaBjr/CfpLBPtsMbzroH7fHzVD1crOSGosI3aLN8RYAPtT9sVUR
+X-HE-Tag: 1787004498-960135
+X-HE-Meta: U2FsdGVkX1+0/bcMMcb89liv9LIlkIKviGOnAw89o3pP6WPh5YHJOv39u0v720V8YrT+qt2+F+8CLRWv9eLClDPvNSqq3Oxj/vhb73bnF9HAkL0Lv/S0JjJDJujVBY25KYp6T2L69xsIGbSJvU7UYm0lbG42/uFJrs8LI8J699lf4aUlg8yq9MONPiflb9STss0O8/FFxXtgid+l8QlH7SJV8ZBs5EJ2azQO/akNbJHeEDDaKWDVP+aKHkty4wHWe2M8SE99TmzZ1duJKp/F1r+KsLAmoJv+bjxpLl1Qzif9TA3gq/HA+yiRev6OzW4yT0/9/WzGhAu9vSsX0ZH/Zdx2HOy2m6omP6UZQj6DT6qRsuM2dvs8qbUZsyvzrO4s6YH83jKt4fh0szRdmPyjiHJjHg4G+nYjWG9QyjhxanzMiaSFUPmUE5WP41HwlsIX2hboj2Sa1CCBuZwtgJj/gnzX3ZbOcZSIWCuRY8Rf+2XgJJ50NaUULtBLs2t72Mfrfsk84o0K8lh9HXwd6sos5n8k8bWkVvQBrPy36M7G+0LdPKmK7t7c3gEkYDSTOGZMrrlkni2jR6EX7gQ31u7G2IZUltgVMpw8BCf/wlfEzJDpEam+gBdIBQ5IlkgBuRsLMAZ833pAR/BJMmz77UxaxhyvbZkT7Zi9oj974Z9uti4g0lGH+zDUMBAHPbMwffjf4s0vwhNzWEhBOQi/ZVkyoUd2bRQ4VZnuMd7opg7c/uF09ZKi/9KhESznXNr2I5TuwDHUczlWdoaTK5+dJzWrA+fTm73o4w/qi4zICuMkmWoyPzULMq+3tizVPZt8f/6vKMuMl0LRlY2CeNo0ZKj1/sPEE3z9pUyFcGmR8/q3urrmaBYFHQ2xSXbr0qI6FYK+rCoXKlz8Nn0x34dboFtA9zIxQVEWNq9rrDrYkpaYCFBABy4Bm3z6Cgj8gOS0LMV4wdNz3Jp0eQRm2RZbrbi
+ Z2WrFBMl
+ BGdf4RNyifoVzjGd0MFnAfxG8jzhDnaYhpCE62Ke1Ec6G6ZBVMKGO9hWCSPduQrgk9sOQ5y13XIVZYQHuQvXhPZsdhCmHC0FauN77AFi7lnFo+ewd5nEgd5Jym3+lHb2GM6xNdt9ibQ4hyJAmVfCtzolPGWHQqxtJ7lNFCljwGARxOOBDjMh3y9pr4hmh0uQrMxzxi/GL/p6C1wU7yJSr08e7/7khPTUssPeWI60nffZR74pKkN5oKDuXnXvBmZD3IYpKaz+RHFSNU5RU7pH12vC8XST5Ufc/VNFwla7BAUkbN2ozGIjpVtLGhknuV2j8iEAA1Rx79PGVr6RzkTwuraywwfL8C8QoqlhRRqYyZFhoyrOvUYREuf3SlFX4SgqbPIj/Zvze8l5tH+ckSXIprNHuFD9dlidLWqUkP1Gh8AF+64KQrDvJSxyb8yHrsRByJVSR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,42 +141,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Several LRU-oriented mm walkers resolve the folio backing a PMD entry
-(or a physical pfn) and then reclaim, age, migrate, or lazyfree it
-without ever checking for ZONE_DEVICE memory.
+madvise_free_huge_pmd() resolves the folio backing a PMD via pmd_folio()
+and marks it lazyfree without checking for zone device memory.
 
-This series adds missing folio_is_zone_device() rejections, matching
-the checks that comparable walkers already perform.
+The surrounding guards do not cover every zone device case:
+ - MADV_FREE only operates on anonymous VMAs (DAX mappings are excluded)
 
-- mm/huge_memory, mm/madvise: the !pmd_present branch above these sites
-  only filters device-private entries (which are non-present).
+ - !pmd_present() branch rejects device-private and migration entries
 
-  A present zone device PMD (e.g. device-coherent) would still reach the
-  folio and be lazyfreed / aged / paged out. Add an explicit check.
+ - present zone device PMD (device coherent THP) is not filtered.
+   Unlike vm_normal_page_pmd(), it performs no special/pfnmap check,
+   and would be marked lazyfree here.
 
-- mm/mempolicy: queue_folios_pmd() can see a present zone device PMD
-  (e.g. device-coherent) and queue it for migration.
+Bail out when the folio is a zone device folio.
 
-No crash reproducer - this is a correctness/hardening cleanup found by
-inspection. All checks are placed after the folio is resolved and before
-it is acted upon, on paths that already hold the relevant page-table lock,
-so no locking or refcount changes are involved.
-
-Gregory Price (3):
-  mm/huge_memory: skip zone device folios in madvise_free_huge_pmd()
-  mm/madvise: skip zone device folios in cold/pageout PMD range
-  mm/mempolicy: skip zone device folios when queueing folios
-
- mm/huge_memory.c | 4 ++++
- mm/madvise.c     | 3 +++
- mm/mempolicy.c   | 2 ++
- 3 files changed, 9 insertions(+)
-
+Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
+ mm/huge_memory.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-v2 - drop hugetlb, move checks earlier in queue migration route
-   - fixes tags for all 3
-
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index ced400f72d43a..714773695bbff 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2381,6 +2381,10 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 	}
+ 
+ 	folio = pmd_folio(orig_pmd);
++
++	if (folio_is_zone_device(folio))
++		goto out;
++
+ 	/*
+ 	 * If other processes are mapping this folio, we couldn't discard
+ 	 * the folio unless they all do MADV_FREE so let's skip the folio.
 -- 
 2.53.0-Meta
 
