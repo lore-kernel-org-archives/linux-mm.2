@@ -4,138 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18FA1C5DF66
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 15:30:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C34BC5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 15:37:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE34D6B082C; Mon, 17 Aug 2026 11:30:05 -0400 (EDT)
+	id 1DF146B082E; Mon, 17 Aug 2026 11:37:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B93D26B082E; Mon, 17 Aug 2026 11:30:05 -0400 (EDT)
+	id 1B6496B0830; Mon, 17 Aug 2026 11:37:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A852B6B082F; Mon, 17 Aug 2026 11:30:05 -0400 (EDT)
+	id 0A5AE6B0831; Mon, 17 Aug 2026 11:37:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BAD96B082C
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:30:05 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E0C9B807B8
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 15:30:04 +0000 (UTC)
-X-FDA: 85111147128.28.B8CE739
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf10.hostedemail.com (Postfix) with ESMTP id AD4E3C0007
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 15:30:02 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sgxvc1E6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WYlgK5W1;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qY7ZhzU8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3U+ceEZX;
-	spf=pass (imf10.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D2F9B6B082E
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:37:10 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 44122C07DC
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 15:37:10 +0000 (UTC)
+X-FDA: 85111165020.10.2903584
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 34CF91A000A
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 15:37:08 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=dDnIm5Jd;
+	spf=pass (imf19.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786981028;
+	b=Ynvs8jC0KPPIoajQasnRjv36NLaXtd1f4ZbMt+KxvLJZXzcDTgoLdH2Jw5LhdeXsEeaLkp
+	1PuV8OJ+e4OrMSADWx05HMgZ5s500CUNxH3WUZjhGYd0XA1anIaRBy71ww+Ew8qbeXGTNY
+	TblQWvZvZxyVaSedShOncvMw8gGUDC4=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=dDnIm5Jd;
+	spf=pass (imf19.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786980602;
+	s=arc-20220608; t=1786981028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jwocy5HOnc4xM9hp/tGparlx+7VGWV7D51yWV27DQ5M=;
-	b=4kjA2A2aLhcnxKyvbHXhNt9iPhonQUD+pCp+UTkU8XKy13BhswDrWpjxhIhqPWvC2lIR1i
-	cU4GZ8zkEP/NilV+QQTUNzL83Vp58dC1DDmquSEX5PrhCZe0cYlmd2KDz8GLK9zor2B8sv
-	gP0VrCIQQCw+IO69sf7y3MdvwcL+Ns4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786980602;
-	b=ndkQ45j+rS4YIN+43uzaYqdEPUE9ybCpJolsxbbpCOnJj4/MNwzlY1qFjcHOB3dXeeQeiB
-	Yj6/MYJc9SEHmW+uToa6DZs0yNPRexkxecLAW+PCAR9yJi+FV0fWz4BdBvSB0RStT6Zo14
-	rXn+jxJ53CkZWrTU27TWxrE6xB5XvhQ=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sgxvc1E6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WYlgK5W1;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qY7ZhzU8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3U+ceEZX;
-	spf=pass (imf10.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 17DD482272;
-	Mon, 17 Aug 2026 15:29:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1786980597; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jwocy5HOnc4xM9hp/tGparlx+7VGWV7D51yWV27DQ5M=;
-	b=sgxvc1E66xVbgt4vyhq2S4LOHeyIw05arZapn7IOfAQil3Nw079pQnHe+KNKGoRMr5IMWn
-	RfB+OsPAHtkMl70gi6WvJKZWUWlNHKo8Mjupa79J73oL9uV94T5f8IUTyIXcp/WldlmGch
-	eAO0dXOswnaomaCIKlADpaMqmENP7Ew=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1786980597;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jwocy5HOnc4xM9hp/tGparlx+7VGWV7D51yWV27DQ5M=;
-	b=WYlgK5W1INQL3eJKuwgh7HpVp5WYC3yotN4+cxP4buKLvm8e+UBquk12kE7rDQczjRbkfk
-	ZrrniCCaYalPyXBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1786980593; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jwocy5HOnc4xM9hp/tGparlx+7VGWV7D51yWV27DQ5M=;
-	b=qY7ZhzU8cWYiuZUSn6Vddx85pZDAqRWlkLdsjl1v1XFOUSe27JtEt2QZv6NmLnc2hytTPy
-	Iim4DhM7UKGgfNZoVnnB5Ry10Y+/GLF+sKSJVDgXozjr5rkF+ziFGAujLUOrLJ+Bva0Csc
-	WppXgnJrpKNBNipQimA8rsEP/KZQzwQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1786980593;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jwocy5HOnc4xM9hp/tGparlx+7VGWV7D51yWV27DQ5M=;
-	b=3U+ceEZXdFnhrB4m1rTFO4lz4J5esIAAVjjptJB4/6MlejgCuMyAO5UFb/LBh6tOPr+3km
-	4UMLC8J16vuSoXBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0ACA979529;
-	Mon, 17 Aug 2026 15:29:53 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id rgE0AvEog2oMQAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 17 Aug 2026 15:29:53 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 9F8B0A13B5; Mon, 17 Aug 2026 17:29:52 +0200 (CEST)
-Date: Mon, 17 Aug 2026 17:29:52 +0200
-From: Jan Kara <jack@suse.cz>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Jan Kara <jack@suse.cz>, vova tokarev <vladimirelitokarev@gmail.com>, 
-	Christian Brauner <brauner@kernel.org>, Pedro Falcato <pfalcato@suse.de>, akpm@linux-foundation.org, 
-	security@kernel.org, linux-mm@kvack.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Kees Cook <kees@kernel.org>, linux-fsdevel@vger.kernel.org
-Subject: Re: Fwd: BadBunny: UFFDIO_COPY shmem killpriv bypass leading to
- local privilege escalation
-Message-ID: <5y3qictex4lbtab552i2ybgne2xt6gpmpen7nfsk46t6u5qh3j@jfmrs4dwa7fy>
-References: <CAGBKPgOm8q-8_rwyRPEmSj8JXdh_GaK1Q8vpJ=j-+yA0SgcNQw@mail.gmail.com>
- <CAGBKPgPPALX_5CQJAKUNjwi2fD28pBeS5pRuwQgePU93pOy8EA@mail.gmail.com>
- <anXnHMInq_JLYbWc@pedro-suse.lan>
- <CAGBKPgOfbMJruqcegJca6BBpEtpd91s5ASF_VU+gucWsjwp8WA@mail.gmail.com>
- <ancYCBUT8aB0qHwz@pedro-suse.lan>
- <anlOGOmO1HWVCMdF@casper.infradead.org>
- <20260811-knieprobleme-holten-palmen-4d42742b1962@brauner>
- <CAGBKPgPanzn8WuHK1hm44FLCXwJcnk7W=J6b17D9UzScWW7SJQ@mail.gmail.com>
- <trv2wwdwprrebu4s6i2ufepk5a5ir4edz3tnttv7ivlkzihx3e@zq6lt67oplc5>
- <aoMmOHjLMRyUXhys@casper.infradead.org>
+	bh=uu+hEA6LpTICQTZ2Rl+lYaUZeI9j9QCxnG5iiqyr/Ec=;
+	b=2mWpYPeRSuEn1ZThPhjcJuVvRGkt0QSAuk3zokpZnvar8gsmueCUDlAWoMX7GxOWcJQpU7
+	Gvw0+zTQ16LfGSDTfuiJ9cE+WmEv0ucaLNbPPxCOOUQs5ueERoWH0XejlqBrqWIOminXXD
+	pLGElgZVjkpjEnh16BJv4LagviJ5LbY=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 297001688;
+	Mon, 17 Aug 2026 08:37:03 -0700 (PDT)
+Received: from [10.2.198.93] (e142334-100.cambridge.arm.com [10.2.198.93])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E01183F673;
+	Mon, 17 Aug 2026 08:37:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786981027; bh=Lq8S4KyCIQ2zIcu/qUjZ64Lwjmhb7UJ5gjGjbTMLsHE=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=dDnIm5JdpaOigqiWjHMFyPCLfIQKrdkFAkOAp0xg7bnE4VWgGnQi+bTRR08FU6Gsm
+	 NiWWbiQ6k7VqAqUr78RjVlcEIMVFw1UL3XkFnchABg6+DnRtddDI3voFMliWalELVr
+	 XXBTVm5O4umADdQWlHLumZwD50h0r/c9hURvdVhs=
+Message-ID: <c8eda67d-34f1-4179-a1d7-ca2c28b2992e@arm.com>
+Date: Mon, 17 Aug 2026 16:37:03 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aoMmOHjLMRyUXhys@casper.infradead.org>
+User-Agent: Mozilla Thunderbird
+Cc: usama.anjum@arm.com, linux-mm@kvack.org, shuah@kernel.org,
+ david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+ surenb@google.com, mhocko@suse.com, peterx@redhat.com,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] selftests/mm: emit TAP header in uffd-wp-mremap
+To: Song Hu <husong@kylinos.cn>, akpm@linux-foundation.org, rppt@kernel.org,
+ sarthak.sharma@arm.com
+References: <20260815080716.3596514-1-husong@kylinos.cn>
+ <20260815080716.3596514-2-husong@kylinos.cn>
+Content-Language: en-US
+From: Usama Anjum <usama.anjum@arm.com>
+In-Reply-To: <20260815080716.3596514-2-husong@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 34CF91A000A
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: kzueg1iq3uk3mcdtxu4fs4bm93tmk1g8
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: AD4E3C0007
-X-HE-Tag: 1786980602-717500
-X-HE-Meta: U2FsdGVkX18D8AkeDY16JD+dcjCgoncN63+ArYNo4IN5/Z5EBDQCfEURTRYlmLeRJStG9+N+RxbZDEUbCzxj13R/YLudSKDgaHzd0dB8tZ0CRC/pANfiJTOICfMHS2O5k6auQBFNK6kB4cknu/m5J31QNSV1UyYzUF038e5Tph6E5QlvsxPN+vvjp0PXME0Gr1MkCt2Rpm43SxKznAQJCZTxgf0rrx714H63/huuNZO6PI5YXB55EW9lc/hyUdO2+oFDdeSRygimPC9HiZoCyqL3F3ZJHDfUJrcGZ4/uL744pwiyD+Y1Dq2JkB8jY9PQe5AQnkgZ2nnewYvDhATC+4NjfjiTWfdl4iTvOq7ZqFZTQNUBqU8kyY0fwjIRfMebiW7jWjSHpb8/4grZmBqYGSLuTdo0eQpmiqDGOOqZp16TnLB7gJNlbrjhmmnOLiiw/FMtz1c9HXTN1GLuRzNBzChHM/hE3gTT/cZ7MlrT40btKelXyoR0F48sIzY0Z32+FwzNFrcPmaPdcP91YfM4wJFqwk2GHDVyb2V08VNU1aprwn1gn1XcAx4XYFEzzaCTavWFqqmzLvvT7Qzsgmx+EAH0kFm+QS4lli0vMZJ6HZIYZTaD/diz4MLDrau0LSYUjkI+A45N557NzquYy03BwpPl8HgAE0hm7nzr6jM337j/V2qKM2vCshpkaqmehOOTe4SVZRrKSvqBkJ8fWeTaYTIwUN1NEUz5VvPTC5NoKxIL+OukE8sDG4SftNNNVRWCVcuHzocIhOJeuCsBdIhim8miM9nrHf7Nu3pcdj+36AMuvnoex1Ssij4uTvO3jdgi1ya4aIciXYCiQmZ2HBPFEs4DX35TFKL8nHlZzd32JtcbUr5PTjOXMeZYysj5hWYd6+3yNBp+rBTE6FJGiGxpfAr5AlMAME2U29Ex9iapu2C/7hfpS/SHNnyh9Nn+FQGl6GpojS2O5TGxM+2/+JH
- D/14lmND
- CsrE0z6biZg/VlmQHtOIcMXKhwsuaPM4f7Wz6UrEm+YdZRKhoq/kXxG354FfVuRM2zr94y/NBg0s3KcC17RRDx1BcuExDo7wrDFsjwdzwhTTJJ+FafaRc8jqWnXRf9mIn6+IjfexGkGQf0/KU79/cvmiGs3DuEDMLDSEXXc/U+bFfbNipxa+vux0T7oPfzLgOXDmRzz5p2+lR49gnqspIqhtvBoVJEtq2Y6yRsstDXOGw/7ULfVrRlKnZxKGXWhmVr0oUFLxGTI0MXHj7ZgqQMYwNOwh5FqORimESnoZ7oNd9e+hYcP/cY8wWny4sOt83dA6+Ye6v0kPa1s7JX7xJuUuL7R9CWaYaqwMMopZrh7knQLT4RrMu0jb1u19DC7EbA0F0mrBziWhUhec=
+X-Stat-Signature: u54exncepfhpcgwfpbmrfx6o79xpsbkg
+X-HE-Tag: 1786981028-410291
+X-HE-Meta: U2FsdGVkX18kJDsb6u3et1aiylGg3T7J1m+fbUWJXVjLyrtjl2116P+3wqKbacBs4EV4yfVDstz0xJl6P+/mONisw5ABw8lPEbVUVA21P9L6IiBQT1xxj8shkKG+uHnQQX7DuXBVlgzwt9Epctyc+QZqJHeT3SWSbzp3RxkZNOiGlCY6W9SKeydwSZrJZX1R7edjhcuyIiru3uHXB9bYEtzMYcASyuOjQayX13FkKxRWRe7Z4AsOM5Nol4huGsROovQa/9PnUEl0kWEyHZpeIGq8dCKdVOr+qOoQNATuWxMu9iIWnPAalHlrqKYSs8k/MKUiV4qHKrKyCgnTiu/RUGk+5w62KR11URRJQm9DPhFynOCTIOQXKVMMdcYGxKZQ3Vw3HCwatlMBAEaPYfYY6xzSLBcviqQ3dy2S7Mdf24zUK9TguMo8b6RBDQfOpwOAW4+NyTKbReeYZe68k3GmpB93ONF6ZKFGqKxBEIFZXeH/e9coyu0/kzienfC7qfdy+SI0YKp2rgEBbfVolYUfu9P59HLErmwVFjnlFgSNi3q9eyZqcQAO4woUiERmcFa7K/5DTo2onSbLiVP6v2/gle/dQXwnaf8HhMulIDPYhLBzEAtgvareCufbF54sJ28BU2psHbFmOzcH1rmEwrPMYgpWKHMPcLu56dgLmP6a63V8wytwhMS42+uomcp7ZggUJFwGaOnBE9BX/Hjax8TczmsYgmTz3ccDtzYBPmgcoc2GHs9nXkFJmClYMY3zoUof3mnFTWxNxBA9VcBWrSAFF8mmWb5xf8lYO4pAvPuEHlQPel78oJv7Pg6speZaWyLsPjidCycJV19dVrzjUR+EX3Y83r0TTAMASkmnTqmW3u/gbsIvmJBMK77LGLMHrn4+bCrk8h3EL32FG7P83cN29NeSHYYrM3QQS8UOXUG+nkeks3Vv+S+Cp3DmW3CARDi2QpnuSqqOZFN+C78ntpK
+ Amu0C3b9
+ hAZ8QDoCdxd/rSPwvIAayOgeMIANRQd2vyu/fGEkG6wSNF3yBCL8g6uamJMbi1trqtY9ZZNrr1byLsS80ydJI9zONLGUY471F8ypphWxw+rq8M8dYtnJQhuxPEPp+4oAsPoA5+S10z/KjohGOoI5kqt9c4nygFYbcMPzjJ1WIOdk38+RUCl0iFUR3XaK+fiddQvCupvTaMvHo4oE8ftJ/KGJSayZPCat8Y6L5fbX+QVPsaWMHhT4+Da9AyoL6/tMYfnuBG7klJUDcSyEkagjN4bBk5witk8CFtGWIpPAu98UhIVJ1284f4iYy7k7rQzVXUiW9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,55 +94,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 17-08-26 16:18:16, Matthew Wilcox wrote:
-> On Mon, Aug 17, 2026 at 04:53:08PM +0200, Jan Kara wrote:
-> > On Tue 11-08-26 14:16:31, vova tokarev wrote:
-> > > Matthew, Christian, Pedro,
-> > > 
-> > > Lol - fair point, I'll keep the reggaeton references out of future
-> > > commit messages.
-> > > 
-> > > Agreed on severity - but this is a
-> > > killpriv invariant violation, and the kernel has treated those as
-> > > security fixes worth backporting before.
-> > 
-> > I tend to agree this would be good to fix for consistency as much as I also
-> > don't think this is a particularly serious issue. Removing SUID bits on
-> > write is more of a hardening measure than serious security guarantee and is
-> > there mostly for historical reasons AFAIK from the old Unix days.  POSIX
-> > for write(2) mentions this as: "Upon successful completion, where nbyte is
-> > greater than 0, write() shall mark for update the st_ctime and st_mtime
-> > fields of the file, and if the file is a regular file, the S_ISUID and
-> > S_ISGID bits of the file mode may be cleared." truncate(), chmod(), chown()
-> > have similar notes. No mention of this when handling mmap BTW :).
-> > 
-> > Anyway, the problem with calling __file_remove_privs() when writing through
-> > mmap is with the implementation - in particular the locking. To be able to
-> > call __file_remove_privs() we need to hold i_rwsem and that ranks above VMA
-> > locks / mmap_lock we hold during the page fault. Now that I'm speaking
-> > about it I even have a vague recollection this has already come up in the
-> > past and we've just decided to leave it alone due to these technical
-> > difficulties.
+On 15/08/2026 9:07 am, Song Hu wrote:
+> uffd-wp-mremap calls ksft_set_plan() without ksft_print_header(), so its
+> output is not valid KTAP.  Add the header, like the sibling uffd tests
+> (uffd-stress, uffd-unit-tests).
 > 
-> Perhaps we could just do it at mmap() time rather than waiting for the
-> first fault?  Obviously only for MAP_SHARED / PROT_WRITE.  I could see
-> an unenlightened interpreter doing unnecessary MAP_SHARED / PROT_WRITE
-> mappings, so that might not fly.
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> Signed-off-by: Song Hu <husong@kylinos.cn>
+> ---
+>  tools/testing/selftests/mm/uffd-wp-mremap.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/mm/uffd-wp-mremap.c b/tools/testing/selftests/mm/uffd-wp-mremap.c
+> index c973d6722720..572c2516e874 100644
+> --- a/tools/testing/selftests/mm/uffd-wp-mremap.c
+> +++ b/tools/testing/selftests/mm/uffd-wp-mremap.c
+> @@ -347,6 +347,8 @@ int main(int argc, char **argv)
+>  	struct thp_settings settings;
+>  	int i, j, plan = 0;
+>  
+> +	ksft_print_header();
+> +
 
-Yes, I'd be afraid of userspace regressions here.
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 
-> We could also do it within filemap_fault() (and shmem_fault()).  If the
-> fault is a write and the suid bit is set, drop the locks, clear the suid
-> bit and return VM_FAULT_RETRY.  We already do that if we need to do
-> readahead, so it's a well-tested path.
+>  	hugepage_save_settings(true, true);
+>  
+>  	check_uffd_wp_feature_supported();
 
-Yeah, right, dropping the locks + VM_FAULT_RETRY would do it given how
-rare case that should be. Except we can have faults without
-FAULT_FLAG_ALLOW_RETRY (generally from GUP callers) for which we cannot do
-this... :-|
-
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
 
