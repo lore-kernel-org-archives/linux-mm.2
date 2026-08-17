@@ -4,131 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D50DC5DF66
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 10:07:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89838C5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 10:12:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 761006B00AA; Mon, 17 Aug 2026 06:07:17 -0400 (EDT)
+	id 743B26B00C0; Mon, 17 Aug 2026 06:12:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 711D36B00AC; Mon, 17 Aug 2026 06:07:17 -0400 (EDT)
+	id 6F4606B00C1; Mon, 17 Aug 2026 06:12:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B32C6B00AD; Mon, 17 Aug 2026 06:07:17 -0400 (EDT)
+	id 5E2D46B00FB; Mon, 17 Aug 2026 06:12:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3146A6B00AA
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 06:07:17 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A9397806DC
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 10:07:16 +0000 (UTC)
-X-FDA: 85110333672.29.24F29EE
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 209EF6B00C0
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 06:12:28 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 96F74160670
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 10:12:27 +0000 (UTC)
+X-FDA: 85110346734.13.6C9ED56
 Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A535C100008
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 10:07:14 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="O bw+j5W";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=jc5xJb2V;
-	spf=pass (imf14.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9129A20006
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 10:12:25 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="x RQqngJ";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=CfTV6G2L;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786961234;
+	s=arc-20220608; t=1786961545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aRuNgn93bXJUfUxBiQxkO2z074NGsTuHkXM1In4i/2g=;
-	b=nQW7yQwmmgYjzTYe5p58I8H0UuSx2mV1AkHp0haUQEWRh6d6jupVqeuNqXP/RJ5YE2mPIX
-	To9V8NdTxdaI6BeHnfkX5++e8j7e11xbNSwBp9UWJImwBf/yyaEFpsv6VjjxVVQ9WDrjdQ
-	EO1+UlJI4uIY09MqGrfytOR+wST6QjI=
+	bh=X2HZwQB8X79/qdi/4/eTag5lQ6IwYEUzzGIop06qT48=;
+	b=Dqv/hHOzRO49ElznBsYDOcFeGZ4S1TgGUctCgZfA+rlUY4DSVjswd5yYEXe85pgXxdgImS
+	EA8JsyARATve4z9D3Vu+aSdJQq5rWmESanjfajF5RahH02K7EWZHkBGKmMMHeAAEnElGZy
+	F2GRMMx1VaK32MvzG88P53ys9qqUDTc=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="O bw+j5W";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=jc5xJb2V;
-	spf=pass (imf14.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	imf03.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="x RQqngJ";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=CfTV6G2L;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786961234;
-	b=EAcDM2f0JaGaldj5b6CNAwerjZK7tp3TqkTwMZWedfi+LIM+1jEZ9ls34K7Tws6d1nS7Ai
-	xWHX3Xw47ndIZZe/2ilzFUC6UX0uaNMTYkZhua5kGgRxMngKjoSasxH/8NCzua6JhsbEFT
-	jMoak4Rzqn8RTlm3tLKOhhtn6C6lsmQ=
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.stl.internal (Postfix) with ESMTP id 5ECA31300157;
-	Mon, 17 Aug 2026 06:07:12 -0400 (EDT)
+	t=1786961545;
+	b=RIUGRBqshtsxAAEFuquafNstANpCAtlm6D8iv1ArXkJXAwax3FKhkJkpJbYnEkCYs/RoYx
+	+KeePG1sW6zAsusRhCVSihFLajN3+g70bR4taVweNdLN719NdW7GHPYzKGqt/lnS2yUAEP
+	vIbFAdPTMMZpZqy977ABap60kRl2ToQ=
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailflow.stl.internal (Postfix) with ESMTP id 63A571300117;
+	Mon, 17 Aug 2026 06:12:23 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Mon, 17 Aug 2026 06:07:13 -0400
+  by phl-compute-10.internal (MEProxy); Mon, 17 Aug 2026 06:12:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-type:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1786961232; x=
-	1786968432; bh=aRuNgn93bXJUfUxBiQxkO2z074NGsTuHkXM1In4i/2g=; b=O
-	bw+j5WgWN+X6RQhGAYltwX6zzKc0Fc3AgF/3bxvz2QdUBFHjnMtBLTcg+Y+dnImg
-	CyzEfKss1yEa2iQcZJvd7MoCY3w8OU/SSX5g8LouAtrJSqf2QgP4o3DVmRU4RfAE
-	xL6WLF8j79qAZvgk0xHb/r+suYpm9YbGpJj3HNbBlXaIFwCjomWvp39d7bu0pE9O
-	FQ7J9brTf0KpLa4NP5We5Yt5jfLeGAcKf8WLpTIrZIz5BEL9gW5R0udM8ieJU8AC
-	6+tWXw25nO0maJonQZMdrMIZq3EXoX0ev6OqrvgZfzxh6dvU6RvUG977GDJbSb4v
-	7MjxthZq5Ew36jTVBXhTQ==
+	:reply-to:subject:subject:to:to; s=fm1; t=1786961543; x=
+	1786968743; bh=X2HZwQB8X79/qdi/4/eTag5lQ6IwYEUzzGIop06qT48=; b=x
+	RQqngJsQvZrHf0s86jYgcXCj5Nva4QQgYdFLWvnPsm5pHlQWL4f4JsJcJmhZ1KQd
+	ebFLHWOBGxdPAmJtctVNUyRxj4+VhIKyNK3YnVAl972sH78EIK6ce05LQA1UmvkU
+	Gc0qqJ5KtPCg5gpc6OycPPTdXp5kb76hiwcFxd6wLtAauHCP/cYu4yRlnS/I0yjs
+	UiNYqJKPGN+Zk0j7dIYGHCZ6IHNKZAZutsmJpaYFEHXXzjaNobM3+E+I30W4Xu50
+	CkT4YMcOK0UsdcX7N/2ylmqshv+nlx8VmsGzHdAQQOacPUw9o/w4fiTgYAL2VncB
+	gc/zLvswJrx8vPKiXrWLw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1786961232; x=1786968432; bh=aRuNgn93bXJUfUxBiQxkO2z074NGsTuHkXM
-	1In4i/2g=; b=jc5xJb2VoVZ1fl2S6LLqziq4i2u2Rbe32OHQeJVp/2ttPYTXew0
-	7fI87ivUzXyjtnbDs9dM6NQNV3o8ArPMOKaUgnltc5Lub9V598q6WxgipKSq6vty
-	zeDD7M/ZgRR1gOO4hUgeirt736eb0ZwlUwCWnJNZDvk45D3gRHqaNGzzARe++MR9
-	T8wj+C5TYn88f0zcpQvtazCWS5NJGNTs8rMFuHegFjkZ7AePLSicCWft5HQoGLPo
-	Ln/FnQvW+gGfYcLSaa3nFZzFQoC5+Ljnv2h1n2phwmmvNY7BrTExfOMM6wYBBug/
-	CEcTRhxwPoeOjpi4FPmH/fDkD7KGYVnvEwQ==
-X-ME-Sender: <xms:Tt2CapXMRrdqUkLUYClECzMGWz7C6_A8JSuSSJczEnq-CYWn6lQsHg>
-    <xme:Tt2CaqBxYZMKV3YyzhukbCH2OSBWz-cCHzzrGjyuynRYx5hdylU-XPFPbhGqWCImY
-    hw6SzT0-0rOPRj49_5_IZYpzj-lPJn2bXjj1VxLQrLJl4bXkRPTjbzP>
-X-ME-Received: <xmr:Tt2Cam23dXjUyNx77-7MMZ_lxv3FAf44uQvC9wprJ7cpr2x2MfiOIMp7_-o>
-X-ME-Proxy-Cause: dmFkZTGPke0xlf6uK3/vVuV73Zp1ci4I00XU/mQfuBGFKH1EChMGX2W2K2Ay2xhloeELQD
-    YiSpOdYfS3z1XRkLC6OwopMYsiHdQ/yeActqocVNoFvfU/5hj7DZTAbsGqeu/+vlYMOKYe
-    MWZ9Q8UiaBU71nzHRAot0umiaedntditcGBLwUem5zhFHFf5OpfS/6n4GvupEXcpjvPGj3
-    YS/MsMxbcZPoVQjXb4Y5nmgZiQQTorgVnlVV7XtccWjaPbJxsCJxHuas6xK55NYWz1sLxN
-    BrpX30FWPC089z3CGRvQuRihRi+MjBpPadK+XwuOwmXhO/v6SpeTG64SVzAEO1fg3twnP1
-    Kff7Ds0jl28z1J7Pw/pA2yU9ggaWKCe8j6+zwfuGFFyZuYj9ej/W7PLO9hSwDLHvIdW6e6
-    Mr/XVT8/uY+izsqEvf9nEEzVsCTyF+Mu7ocLv1N8u1P7CBjqyb9zStDL6Ow8OhJrSPvHnZ
-    CY4gqFI+3SIrPoHTIQjBKp2kK4SlVy31eGOwFfSooL93C7phrDuEtE6RThgrayhp9q/CEb
-    MtROetx8oiqBJOf2mJ2ieygLVtmzuoOpIsCwDXTmS1tO5vJZ8JyienAdNO5QvrPaiK4piA
-    hA0YgweTdo/51rf4vottrOb6FRoIjt2cLXIPrFbDaGaLAA1zaoVYm2Nyd23A
-X-ME-Proxy: <xmx:Tt2CasUuEtiP84tS7a6-AsE2jEt4pUnaX_etlNhxWeXrpK8Iiw-iZA>
-    <xmx:Tt2Cai9U7lLXVYWTLOHt9tMTtMIJQhUW-2RPfF55m9wC3ZiigfrLbQ>
-    <xmx:Tt2Cah1N-5Sw1mAJFbviYO3ob6StIInc6Me9s3_0UAv57rrxd4fFhQ>
-    <xmx:Tt2CatD1gW3cHx2rVnpjpUMd3hGXJN-wCfU4S8HoIuNJkC5uGGA8kQ>
-    <xmx:UN2Can-cWdfMqC3gdMhs9v4sDRqa48mv37iCCpvVjODesicJh_YR0Jdx>
+	1786961543; x=1786968743; bh=X2HZwQB8X79/qdi/4/eTag5lQ6IwYEUzzGI
+	op06qT48=; b=CfTV6G2LTjN1icCJK3DcPrP9QPJjVSJHPG8zI/AUFBKAc5iZ4xi
+	BEA1j8oQreIWLuZjLOeq7e4byBwT98UUCgo1D0bLn82yuUMTZU4MxtGr2rV3/LAq
+	ncbRIN7DVdoL71TC5/EEaQ7K3gsezUrzmGlp0zVOEyNLHVPxo8L4R69Flq2iSwuf
+	2KPlbdSf8PPgZzMEF6QGo+EBmKJDYufqpS6CR1Z+1v9jmcHQ047HbO45s30og0Mv
+	rjxJv16nupiABUJpZxDIh4swNyobXKpmzNbgJO9pxVu9ltBYUgDTjlonPcz7tHJT
+	60r+kqnOk6LGF3nAFaaIclnFyXE9txjhnyQ==
+X-ME-Sender: <xms:ht6CajzZR34q0SpE3IBGlWMzV0HsL-On7sQsj9W0qut91mX6-gWjjQ>
+    <xme:ht6CarveJbz5zfChiOhwbUClj7gzKj2j7UzbG_Z7gTfe2kKYdHvuMQeL-DwdBY-jE
+    NiPYswveJGNCTo9suitCqpiy48ahU7evBboWLm-2KKLJFyTz0-k4wQy>
+X-ME-Received: <xmr:ht6CauxtAk3icX5Uj3LwCKfQQvgQ33e5GquzNj3jh6MWY81ykc2npIuhqco>
+X-ME-Proxy-Cause: dmFkZTE04h/Xk+B6F38wg1Z4C6OmnrAKlBfM7UzM5EIQKp4sCWLVWOi+/U7GmJGoQVV3aU
+    PCZ6qKdMqIGgdq11Uk+Bvg3GH0Qksqp9icwfxUi8xTi0VgIM9ofTpDppNiUf47vBs6CnCa
+    61NgyKhphhFRp6j0B1wVtMY/dUPe6YISZOK/wa2GNLF6Pdz3RFO7QexzO+CH5Dzon7VkqL
+    cUykLN6rKkOh2b64Cj4PEuZ8L0YOl6N3I5fW9T7NeStA2TOnjgJqfJ90ZWJWfkCgUetW8k
+    BwRmAcnGQoAwDIW3yl/VOiIdWYaNABY6slB4PBxG9o3FolT+tORmcgvXoOLN6jodX7rQHi
+    jtZcozexYhIZ73a4vTqm+HwRcZ+j4fnZ7nH2DgowV2OWuwKGUJjmojdWA5wbuU4UfE4WCr
+    XiSNq/MJrOKZsWh0BQ/fdiF/3UIo6WSAigw1v9d34tpR989iNEBeznfkd1GbFPo9SDz+jM
+    ukwd2k91H36BTEsP23SmdgqLLptzUc8tZxoDRdMmYEe2tkdWI5GmKU5pWWItjEYqXvpUoR
+    eRoIHtCk2h7wkLc/+7cF2eDgtfbj/UX/q/ipDTHmr6VYhkwM0NuLOf6t9SW2CyIZhZZGuv
+    JE79Jf/na2ye8Z/yLwVLL8B+/otnZA/k62pQwiGUk3SREVwoN8JCWEH9X3kQ
+X-ME-Proxy: <xmx:ht6Catj8BSPlV6w5NE2AfS7My6PfEb6qYAePZKZcqv2EbIDrekWfyA>
+    <xmx:ht6CakYkZruLAxRYLQcbZXIs0Lo_GApO_kKv2aijIaD26LH4oRaL6A>
+    <xmx:ht6CauiQJ3zXuSu-QM-XGtUkcsIqBNywZufZq5nCdi6ytv4f0seGig>
+    <xmx:ht6Caj81ZylIxOsO7YPadr1koFSi6F9Xcjdfa_-XQ1wfWK1AZLi98Q>
+    <xmx:h96CapKWXoutgBeqJ8uTcWbxvl8CkWe79PwwUwJ5FsBS-iCjL65xbjOI>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 17 Aug 2026 06:07:10 -0400 (EDT)
-Date: Mon, 17 Aug 2026 11:07:08 +0100
+ 17 Aug 2026 06:12:21 -0400 (EDT)
+Date: Mon, 17 Aug 2026 11:12:20 +0100
 From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Zi Yan <ziy@nvidia.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, akpm@linux-foundation.org, 
 	nico.pache@linux.dev, baolin.wang@linux.alibaba.com, baohua@kernel.org, 
 	dev.jain@arm.com, hughd@google.com, lance.yang@linux.dev, liam@infradead.org, 
 	mhocko@suse.com, rppt@kernel.org, ryan.roberts@arm.com, shuah@kernel.org, 
-	surenb@google.com, usama.arif@linux.dev, vbabka@kernel.org, usama.anjum@arm.com, 
-	agordeev@linux.ibm.com, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, jannh@google.com, willy@infradead.org, pfalcato@suse.de, 
-	rostedt@goodmis.org, mhiramat@kernel.org, linux-trace-kernel@vger.kernel.org, 
-	bpf@vger.kernel.org
-Subject: Re: [RFC PATCH 00/57] mm/collapse: rebuild collapse on migration
- primitives
-Message-ID: <aoLc38LkU8bLAJ3Q@thinkstation>
+	surenb@google.com, usama.arif@linux.dev, vbabka@kernel.org, ziy@nvidia.com, 
+	usama.anjum@arm.com, agordeev@linux.ibm.com, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, jannh@google.com, 
+	willy@infradead.org, pfalcato@suse.de, rostedt@goodmis.org, mhiramat@kernel.org, 
+	linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [RFC PATCH 57/57] MAINTAINERS: add an entry for collapse
+Message-ID: <aoLecacFrU6bqmp5@thinkstation>
 References: <20260816224609.308019-1-kirill@shutemov.name>
- <DKQUL7RN5K3W.30VLVVWFPBRXZ@nvidia.com>
+ <20260816224609.308019-58-kirill@shutemov.name>
+ <aoLASuFkQ3rUrWa0@lucifer>
+ <985a5b95-e2af-4603-b2af-973cd634cb59@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DKQUL7RN5K3W.30VLVVWFPBRXZ@nvidia.com>
-X-Stat-Signature: q77p4xpdff8i7dp7odzbm1nz5xmofdit
-X-Rspamd-Queue-Id: A535C100008
+In-Reply-To: <985a5b95-e2af-4603-b2af-973cd634cb59@kernel.org>
+X-Stat-Signature: rrgrxkjdbmt1foj4mowsmn5i97ntw3bq
+X-Rspamd-Queue-Id: 9129A20006
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786961234-6482
-X-HE-Meta: U2FsdGVkX18Wf0w69AsIcnu4zyPyDA1PqiBBh1AYzGO43Nx5Jemd4vb4U+A/HJd+e9o9nby8S9VYM4M9wLgSLSncRd9GQPvqmhKaTS+JwejPmASRkNuAAQ/3uWRTMcgW1Ki2WC9ahtsWPM9yc7Zmw7QI8j4AZ2zfx31KwZ7F10xyfzz9iUR+w+EcR/NQrgK1cHHx4xWFOHKoe1vPIPXgykGq6N2YX1bth6WkPuJ3/2xQhFSRkIrImAvm1wMsW9SKH4f2BkMEfrAiwto4LbwZkc7slUx7LEVhyn7aC6tn1n5OGNT6rdNd+crzAW/b7PAHVyH+2+OklX2m9+HV6ZzCP/VCVQO9Pez3KyWTC4Mngy5tHWvdUn8BAhn6jXXP9ZPpx5h6ZMVbac9tF7tFnVwJ/KESfNat9Jy/WnaqTVlU1Cslev3dCgAxcF+VMaKdqv7ktsd16RY8grTWPUvtMQF0zHVRJe2gNCnxUxDZvvpbq6nd5zClHHp6jhtCuVSN2J3zDFa9owYhWF6JVf7eF9cUKI/PSyNduaxgJShTelrZlmVhlexlOVmBCJJShCEj9IT5gPlosZi/eLp8vf5czxc1ZYMTFz64ON0DJdxPUZmT3Lu1T4cAmuPJQBHkycm9WgdTHoGZywwEG8KvY7QRv7HnV1XM3zJhVzr5gmGHiC8YrbOo61vASI7yoX3CDx1SMKha4WPlywwJ1v9Tja3hWuVkw1XJGOUDddq/6brsipTfTK+7V/ji6zmSolqUkAN5VYGkCzlQDd7M+ra9B4zI/RhVTWD+nGpYYIXo26YcJ+3lVY15QdwvBDcKrOSYfE+8L4QIiKjyixb6nbhL5HjCQLJqlTxPvvfFnDUxj+R937OXZMiAolXWsFRIwFGmzOhFlluXAgv0JEttKvIYyMZI4lAzLMJYOFBaKx4rUrz8KORKzQYoclq/j2HsEwAPH4yvaNtLunF9d5IERBi2p4hFWI1
- t0Kt+zLP
- 8PjDDWgpSm723Tovrgg2y89WS8jpHJegIjBo/7s2Ey+9MFXoGKBbQa854j9FExR3dkT3QBNGlvlIe/VGYgvWrOkasTB8Km2yc+Dsk+Yl5GxmwgkEVaUHcOlX75mXCY6IXEz8qv18nvcdrRvfNw6MI8oOI9Se0y+kf7ZyHMGo1KjrTf1LTZgiAqv9jPf3CAEwiHAYgcUFt2fDNQ4WVimyXJJgVqVXZprNbo2+Qv9H3+AYWOunI/D3bTlG26foeAGpSZ61ikw+3E7/dbC8bfJ9aJEPU+omODhX8VXVF++V8Ru7LXDDdRqZ7Dy6C9cAHT7ble1rkFL8mVafWEIXqf8nGMkGqXm+AW0hEcEal8cKGq7MV/hn7w5mLq4aOYzCOq9poq0AhQfN9YlpGiLquDHf8Npy+64hh4EygQCTaxuAF2/yEt2PqKqouyHsjRw0RxyWIxUrk
+X-HE-Tag: 1786961545-510235
+X-HE-Meta: U2FsdGVkX18Ox0/Z/JKreXNNHEZxVTrOWPgzTSqNQOVMlX9XRkDyisceXIxwqb/D/syKoXdkKtxQRkKQ7huy6DxrvKoqis5e30QU3ZzEU0gvJWXgc5YW7ft59JDVauPKzoY9XeqDHLvNeeLYunc1ZzlIS5uq4Xb0eYYNSjDxCni8v9fpOgGK6pG7b65JOF3PUYaYGLUqgif0RRk4zL2Lx41H0sN/7sJkoiz2dW5iYon8wpvzvyFrrkjTon9pkfAhhn63fTXUnxzZshjjnEr0i80NQsAKizR/77MPQLxfLZFxlyXmjFQfvlEbxu5Wd3ozEmfExiaCgsuDMEApA2ECOF6Uc2rXX9Nc4oPNI7ibj8Re8Kdav0hbN9eFkEkwj+LddfF1OUoU4plvnd/8MMcduromKOdvvyD+7XolCINSqoUjRnGAypHBJwWrdqP5BE0jAyTrJUVeGPoULBORmTw4jRq9QZx7ozUceOg4NqxmPwyHeX+pOW1btrusmeOQp9OyXMJfJ7i+AZkQKKYyH/SniXhBMJ0STEhIfwl0oaPMUIO6WUp+9Wo6jr8vkaWn3NECFujjvXR4LWs+S6poJ3pSZVGf2UPg9uiW8eyT+tI78zRSbeL5c4NW9+GKICAKd+tHcfda/IPAe/UpiFg7yCtL+QFDK9zD0sQkD7DWHztyE77Y8EheaC9LSzNKS8QdP2Z2MC6di3S0RycVT2esNSW0Z49hQZ1gOwwngtN3X3EBebabF0+NvdLEIM65G3INfbuxnS1ESZre4yR+wPh+CW8TceevU0IuI2c8jLMnj2DWfRD38binAtyvcdoHFlMLW+IPlBwm8HrSzeWgU2w0K6YG0hV8b6GoxEbRKq3pMiIVb/zo0AcG3mOI5Hb7g+e9AU48JQ2kn8kL7AKnUy2B1e9SkGH2RE1OHLm2mqeS4qyw6FVgEV2Q47pA9GNNbE51ZpBtWD0JYEJys+UvOsL7H0c
+ u4oF31ad
+ QEesFfnVzdN5/XH3CtzvcbJLN71RN+BURmryX9PTP42Kk5fhVf//oKXzWrZq3tUoAiIM3rBdX3mBe/RmprgIBLV7Y2K4u5+01Cu6+iHFqr26VskstppXyrKpQSq7kLfnwDKUZGym9vlKthjWe8F0ZQdMacnFLsZzaQ7jhlI1MmJ7rFd1/LnclhUGs0JFXxSJe0OgnCZTyObvQr6OjPjGdHXSv0cEtEqDWBqSOye+/NYxlW6bpkXdXLlRgeX5l8D6BaxqK1imJiLk/63k82aZWUf3HLBRrtUb79SeOObyEl1K2RBtbClLlrvJMExFdDqyuQEdjO4o+8ZNOQhrCQVPqxJDxa5tqEbRTo9rOM31N/pBXG4NE+HPnF2vrx5S6DxcS1QDZqGH+OdcpgxOKMPGuiBQzaGL5KYoMq9gL2L42/pbCq7IHYk4bBkvYj1xtb3SbxzJ7wHvXh4/b51nNAU9zR6Ca0XrBy4oJJCL9ImlP7/eVOUcWk+1Dbym+VPZSSJ7ZacRBx0TYQAdh6LRHPK3PtXI5nFSSvbFaqaCsIzsp40gd1b+QMpaVChn7mcK09rQ/mkgu07227sBM5Hk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,31 +137,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 16, 2026 at 10:02:53PM -0400, Zi Yan wrote:
-> > What that removes from every collapse path:
-> >
-> >   mmap_write_lock              -> mmap_read
-> >   anon_vma_lock_write()        -> nothing: an rmap walk needs the folio
-> >                                   locked, and the engine holds that lock
-> >                                   from freeze to putback
-> >   tlb_remove_table_sync_one()  -> nothing: one ranged flush per round
-> >   LRU isolation                -> nothing: sources are inert in place
+On Mon, Aug 17, 2026 at 10:08:32AM +0200, David Hildenbrand (Arm) wrote:
+> On 8/17/26 10:04, Lorenzo Stoakes (ARM) wrote:
+> >> diff --git a/MAINTAINERS b/MAINTAINERS
+> >> index 7c179b333e4e..4e4e5030b979 100644
+> >> --- a/MAINTAINERS
+> >> +++ b/MAINTAINERS
+> >> @@ -16955,6 +16955,20 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> >>  F:	include/linux/balloon.h
+> >>  F:	mm/balloon.c
+> >>
+> >> +MEMORY MANAGEMENT - COLLAPSE
+> >> +M:	Kiryl Shutsemau <kas@kernel.org>
+> >> +L:	linux-mm@kvack.org
+> >> +S:	Maintained
+> >> +W:	http://www.linux-mm.org
+> >> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> >> +F:	include/linux/khugepaged.h
+> >> +F:	include/trace/events/collapse.h
+> >> +F:	mm/collapse.c
+> >> +F:	mm/collapse.h
+> >> +F:	mm/khugepaged.c
+> >> +F:	mm/mm_slot.h
+> >> +F:	tools/testing/selftests/mm/khugepaged*.c
+> >> +
+> > 
+> > I'll look through the series properly, but presumably this is a separation of
+> > the THP collapse logic, and therefore should have the same maintainers/reviewers
+> > as the rest of THP.
 > 
-> I remember we were discussing using migration entry and the issue with
-> mmap_write_lock() in the context of in-place THP promotion and the
-> conclusion was that because MADV_DONTNEED (maybe MADV_REMOVE or
-> MADV_PAGEOUT) works on page table and does not change VMAs,
-> mmap_write_lock() is needed to prevent things being changed under
-> khugepaged. Anything different in normal khugepaged collapse process, so
-> that it is OK to use mmap_read_lock? Let me know if I misremember it.
+> Jup.
 
-IIRC that discussion predates Hugh's pte_offset_map() rework -- since
-0d940a9b270b the helper takes rcu_read_lock() and fails if the pmd is
-none, !present or huge, so mmap_write is no longer what keeps a pte
-walker out.  MADV_DONTNEED is still not excluded, and the engine does not
-try to: the install re-reads every slot under the ptl and publishes only
-if it still holds the migration entry this round put there, leaving a
-zapped slot alone and dropping the rmap the frozen source still held.
+Sure.  I just didn't want to volunteer anybody here.
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
