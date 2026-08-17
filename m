@@ -4,123 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 189A3C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 00:46:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E20EC5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 00:47:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95DA66B0376; Sun, 16 Aug 2026 20:46:23 -0400 (EDT)
+	id 6EED16B037D; Sun, 16 Aug 2026 20:47:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9357F6B037B; Sun, 16 Aug 2026 20:46:23 -0400 (EDT)
+	id 6C5826B0381; Sun, 16 Aug 2026 20:47:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84B1D6B037C; Sun, 16 Aug 2026 20:46:23 -0400 (EDT)
+	id 5DB926B0382; Sun, 16 Aug 2026 20:47:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A7DB6B0376
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 20:46:23 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9159214061E
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 00:46:22 +0000 (UTC)
-X-FDA: 85108920204.30.8313929
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B8EEB140004
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 00:46:20 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=jhiV9pah;
-	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 3DA426B037D
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 20:47:03 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BB66F805C8
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 00:47:02 +0000 (UTC)
+X-FDA: 85108921884.09.6AD3F24
+Received: from mta1.migadu.com (out-55.mta1.migadu.com [95.215.58.55])
+	by imf12.hostedemail.com (Postfix) with ESMTP id AD55840005
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 00:47:00 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Os/xQZJU";
+	spf=pass (imf12.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.55 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786927621;
+	b=rx3oPbuzwf3R9jFnDwnqIJNvnrD7Nl01nglnBitnI6LCudDbHzdR7lP0HsuHaPSEtsVn6T
+	fDY2iRuH9uUDnxnTiXLnD6O5t8ILbgdbDOeCQ9jMLGBQz9mS2FVDXzHjFoA0laR5yeGnSj
+	97toV+Tt7/PvCk2VpL/8B+jipm90VkA=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Os/xQZJU";
+	spf=pass (imf12.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.55 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786927580;
+	s=arc-20220608; t=1786927621;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1adrpR3QLynHsYFALPxmo4Zb1MnnrvFb0B1zDnSkG3k=;
-	b=j++E3pqkOeT7hylN6wxek1/hwjTZ690qPM88bMPW9T4PdtZRyIkKgVQ00yQezLUQCEc6Qh
-	CY6lxl+8lFPuNq7nM0wfN0ZVbvKCZmpvbXVOjbmNCnTYYST1sAtPBMptj4s5VwYYTpRizD
-	sg+kk5CxwiKfnsWjx6CaYNjdB8Ro8tQ=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=jhiV9pah;
-	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786927580;
-	b=O0iU1+RzjgJ6Qg4BrnQEpM7nGfsvcD95I8ohpPN0tutTflxRMITjoJF9qAKAmf+JZywRnS
-	0qqf0KpWv31J/EYji6HBs4yr8p1Obs8vNgy2leVnjnYIPlsX9Fe487ERd4wNaLyR82Gqns
-	2vJaZINYH+OjW0mC6WhXyUJMMs+IW9M=
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-52b6543169fso18635831cf.2
-        for <linux-mm@kvack.org>; Sun, 16 Aug 2026 17:46:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1786927580; x=1787532380; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1adrpR3QLynHsYFALPxmo4Zb1MnnrvFb0B1zDnSkG3k=;
-        b=jhiV9pahPuwbpw5YbXfskojSpEGAMZzzu6L+nl1cBE9PNk2yMI6reOPJ12XSJzlpPv
-         9L5UIV0S1XBh6tFoXGikEV4aoYG+IPMU4G1GW+WUss8fLYcmdS6yGWcJcDQcAs8F03rG
-         hCzNp0z0d2dRs8rIr5lorWwYjwuSEU5KZ5z5CgnuaG6ZKo4eeAd5hdu6Sqsn8CqAuJV0
-         Ycr6EQiysf0ZBn4J22Q8U/Ej35GJzBhg6B59bWJZmwOJcrP46JkqXkzbL56PF+EokOBi
-         rz2nQzF26uVC210A3m+PgyneO+tDT/PEU/XbY7eZJZILO8gpOu9mxfDOpjhxynSLBPCl
-         dRgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786927580; x=1787532380;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1adrpR3QLynHsYFALPxmo4Zb1MnnrvFb0B1zDnSkG3k=;
-        b=cqZVR80X54X7+BLUwt2ciyb6bneni7qd69TEwHcYM8Qjsy8NmIhXvfqyy33jPBuPpc
-         /tdRIycQriWL3clgVZRhzhfuXeqZyhHoBh36xS6DsJwqnypOvmlU10isG0CAKfNb8wfn
-         ROYmw3w3CjI6z5XnnPwFkoYiQw9MbZc7s+0jcoZdZzkiJNpblaDXiMhRHXpWkfM1h8Oq
-         S5Lnrd0Oy186tNOgHXF2cmMkOJu6uPRJFv/Hr0gXqzTBpsl+GYQixhzZ1UD1h9PeVwPU
-         NwEGcA6N1sy7pkRs7xooLC3OE617DBMW3kGCjzjoKU+fPLUbaxxzmO/NmjPdE2ytteHx
-         zDPA==
-X-Forwarded-Encrypted: i=1; AHgh+RrU165Zgs+XLcqzRNZBf06+kqGAcOPhf9hNkMDLe2gS0GocITuqhvitRR8oidmYjkmDu8u9+qNmHw==@kvack.org
-X-Gm-Message-State: AOJu0YwlfkpXg0xKa1DNNP4c2yCPvgp3YzOS+ovKQWbnp0XRrfHnMmWs
-	tVy12Uezthi6xhm6mssHDmhKUsgLDb5lCJzAAJ3+mmOO7xpiurkp4y0uxPBVrzPskJs=
-X-Gm-Gg: AR+sD11t2RPJJG0d1tV2tQURKhARfisWqZlcg43uifyRZrAa6DHDE1dwN6EQSrYFxXc
-	gUAhVDrTyLNpg1wtyLuIO4XCTlOtJT71iH9XoPJp2SY+4XfOL3+iJFtxxQp1dtI+HyhA4/aN40N
-	S7EIiTiZPwJ1nr5ZT7NScARIPuYRt667QpLcz1Qn5X0PCWXgL6NQjA41JjQx7uKjlJqenBS08UP
-	hrZTty7Rlniuy7PbJGkKI1tWqGTpxiRpsqelYYCRby6TBvqGJId17KP3LelKf3UXOiB55jtxXKc
-	7FNVAEmTE53pygnLbuE0LShVuxiZQzy+6BSOaOk/xOeosdUU7D1diK8lqsMnCoAHCJ2iXFsjwHq
-	JQ5phmrQansQTXizEA592VW1xFfXjjcOKXP69e0DQ8813z9h6hCpKoGfefQgtI0nMFCxAeYBKU0
-	zoOyAYEtaoxnq7s6Kajn5GxWarWdsSxfWd6VVfgH9mirSLSmzneAIU5B0kX7MYz4OK1LzqskkQh
-	+0lOSJV/+29vqUwU7DPObO9VVmf9BxWvtJHjHmXLBNC+ZmWr73jMzA=
-X-Received: by 2002:ac8:5f10:0:b0:528:1478:e1fc with SMTP id d75a77b69052e-52d854a4899mr216242221cf.34.1786927579795;
-        Sun, 16 Aug 2026 17:46:19 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52db612c2bfsm1249061cf.11.2026.08.16.17.46.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Aug 2026 17:46:19 -0700 (PDT)
-Date: Sun, 16 Aug 2026 20:46:16 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Rakie Kim <rakie.kim@sk.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
-	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, dave@stgolabs.net, 
-	jic23@kernel.org, dave.jiang@intel.com, alison.schofield@intel.com, 
-	vishal.l.verma@intel.com, ira.weiny@intel.com, harry@kernel.org, kernel_team@skhynix.com, 
-	honggyu.kim@sk.com, yunjeong.mun@sk.com
-Subject: Re: [PATCH 0/4] mm/mempolicy: introduce package-aware weighted
- interleave
-Message-ID: <aoJY53BJztPQYumw@gourry-fedora-PF4VCD3F>
-References: <an0t0mP9JB8f4ILK@fedora>
- <20260813062351.1856-1-rakie.kim@sk.com>
+	bh=Qtt4LQ8cSbLZ9yXXQdEILKcexLawEzM6wRDjI1YA8k0=;
+	b=wKWfg2uRsPDvH+glZI6gJu4tNksbqUE3paqgtEVS5fVhATpPK23yOPMi04mZ2NjjX9uJxg
+	TkJYVftrHLlxq6B2lXSsHBaNHFi1qijqECUsWk7BVbHXf/LdkRZ2lsTOwqXqaQCn3j/7iD
+	RVdJP5Wg10Kur9ky8Ks2wIaVp6fWl3E=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=RmRDd0T1DmftRn82bVM/bMZ1+VjMHGBKK/DFk8gJdq8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786927619; v=1; x=1787532419;
+ b=Os/xQZJULy96p7u/kHwmy9I/lKHDPaEJNqefsi9ovgToZZrPuqLQTpFGsdZ9F+4qJgpVlh8P
+ PNQ/WxQOHO7udxmXeK5VHADSQ85vkTxKjHHG/nhSeOAjahd9AA/1qXaFU9IsUsH4OqEJOWUxLCz
+ CmhmBJIbZqODNj0EPV5EgXT4=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (3.112.29.171)
+	by mta12.migadu.com with ESMTPS id 35c9ec350a8c0870;
+	Mon, 17 Aug 2026 00:46:49 +0000
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 17 Aug 2026 08:46:41 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Klara Modin <klarasmodin@gmail.com>
+Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
+	chrisl@kernel.org, nphamcs@gmail.com, kasong@tencent.com,
+	baohua@kernel.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+	yosry@kernel.org, shikemeng@huaweicloud.com,
+	chengming.zhou@linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [RFC v3 05/15] mm, swap: add xswap cluster grow via VM_SPARSE
+ vmalloc
+Message-ID: <aoJZ8QKMhFgwgUFz@MiWiFi-R3L-srv>
+References: <20260813104857.3450386-1-hebaoquan@kylinos.cn>
+ <20260813104857.3450386-6-hebaoquan@kylinos.cn>
+ <an-dmyT37Cq-aYUF@soda.int.kasm.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260813062351.1856-1-rakie.kim@sk.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B8EEB140004
-X-Stat-Signature: hruhnf5fjuca8k4k1hx5a15s7niih85x
+In-Reply-To: <an-dmyT37Cq-aYUF@soda.int.kasm.eu>
 X-Rspam-User: 
-X-HE-Tag: 1786927580-189194
-X-HE-Meta: U2FsdGVkX1+vZIdUHHNkhDaFrtmUhqZmzyM2qVx1P5LlD3OoZJ7CEf6qjRvb/unk7/HxfmvVmyTh2tQUK+kKE+wSJSzMsGuJN2XQltF16R2SpSMbDrDmoRLL5nz54EslYd+CEJI9D16XOxIXXkc35tPduM7M33Qi6G6rzLwCtUqZGL5NETBpxdJknrAzoP70sIDQiTUktxoQUO7fkQd+7ki2QL2QyNCqI1XDnzGig+u4R5cuI+toMODswvtlE67Y/zXgfweqRwBMf7Vw1a9LcfrWhfr9Jv/P15a1J+KF9WcviNQUomYAjqacFVfAKm0tq0Xox3tk1kxOK4bPaIu5+B4SIgGH6GgqoDHGn/Pjjx9JRCLl/KvogWjVplCPVicBP59IODYRe+F0dnX6fStd4Vb3Q3BKPDlM0pw7splbO0fAUA2Ue0NpLjPwzeik/nKzjFu37rFto/l7pPZH4YbFtnWDSfI232l1ORI8mRRgIZ2FlnKEEYo8JZN23PudZOFRFiiKT1g2HHH6k8pQyKz2zAzgoqTu/VTsKp6y23/qevLnB13L2mlaGwqg1q8toON+I6Vkk8SuaaN+PTwn1MKPP0Hsw8lVdgf7TCP5NasVckdr/a0U7dpUvPG4q/d/64jEG1kS+yjmA04GmmWN+EgT60jSfjkUofjZe8DxHQUXhRN9jHlg5wG3toMY6OlDZSTR4UcKamRXH1n8gqm/a30oiZ77RZ+Zz+gbvFd4wrogP/fCGklIQujYTL4kKlBDQKQd1ea7lVkZbxjZVFzBQGxKoMiDfuxjT8cy+y7n9qqK0zBGQGto3g1kQP4D91e7mU0Ja+K7kw3wQne5Ira5O55vI0l5qZ5tUv9Dhhn7xBQoUXAtBip1CUc2UR5KvnUhElJ+/1JuUIbDXR9q/HLOIqr14sQdIYH665iFgJyaDPoPlLfDikMU5XgdYnDevjXI/ndgWv4U4FIxxCpAtDr3xk2
- 8AIKb2bh
- kiRc/901yeBzuS6h/jM44TmcNSfa+f6cC/mIbAbWCt1KFv6aPZwhfe7cgBQ5DHQV55EDzgitWS6nnFn9yuJclRxk4MHWgNhDk7uP/5YWEMUKmEmGaYoq7r/Ir7JGxsXdQvJWCMJIF1tvs29wWsnM+3oA94vLPDs/b2U/1BC8iNUiFQ2m0FhkJdv7o1Sf4GnLKJ/yo2FgfvJEnvx9xtFzEyt8ZXRISUPm2EKAJ/XkJ6+YTCmGb6yZoqD09zYzQAzQdFi0AnL4grof18+1movXCxy/WBAficpEw62taJeZDJuflroQYhn9Q3LKPo9qQgRAJave8JBZkbOVw4RqY6TjDNaFuzcXaEiTboXOXPVN+RwOYvZMsQLceQXuwrXkUzZAT+50UFiz75VHiFWohV5f5GdqZ+JPqQOnbehgGkJDPf1pwTinlArW4Zjd/GDLTJXgOOsAxzsrlIqLI9CfyBas13UPbWg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AD55840005
+X-Stat-Signature: z84y4qzdbaxfk5hf7ax3pcnnbwphq1hs
+X-HE-Tag: 1786927620-50030
+X-HE-Meta: U2FsdGVkX180o7hiRkmYjXeSD4C4h2mVqJs8k1bgWceMQtT/E6og23/3gfpDnYB2ulpNODA54nl2nM0q6xS4AFV2HhlzIfrSu/QKvBdz1OoSVYiAmToHiqRBaXDSBdbRgFeZ3potk4otc1FRZZKs7tRSUXszyil/11ADuq4yeYL0hyfq+CaRGMUS9xyE722i96ZSLBm6vig9nQAV2JQhoNw8dO3fwubdkRDTYscLZAo4D/I70TqyS/XYybBHtSJQEGzJbkYv/uzE7yvA2Rv0drzrRl2e33UFRvQgMxReTfg4/BLd6arnh0yYZWCd0LRjqkjvcM8AlRN8QKosEwjqA3OqXgt8Wop1vLgy/jl5x5KpExv5KOfRKW5PSRJeRvBrKLZY8TcK0yG8uaLIWVZBBKqN4+X9Fx1BRPOeEPge5qmKeY3uWFYkv8Qzj9nWJh9GRJiBraTlx99/wkMtzJHfGa1cJcl44AnhQTbAHmD2cGPYobpmVCNGK4rgTPQQ6cl9mxkQ3cm53YyqtMEvUljRqBhYOEbk/hVC/NvLxn8V6IquX0FDqpfD7P1pNatIl97NBgKBnQ6zFVP9839LR86BwIcFkUy01DDs1A40W2Nne+jYtB8lnW8HIplj9OymEdQcjKPBLxG0aHxtGj6V+jdYkRnyRPCcg0X0juxFVogAxGWdJtjoJvepqKmkCkVUqZttb5DzjkiSo2kM0XWKI+TNvWNVqskxNvWIyfcrkq2ZF3DksDRNelkVdeo5BiXcnsXCBbalCXujSbVgEc3skHB//CM7bnJL1GnpCA3OdwqDAeUm8stNFlDhukX7ICh5yh/SO2k1wshigPHDBZeDwjxXLaBWDidalO35Ucn8XzmezZSZmP3CQOJgXpZEgR0qzh4sJROeO7+2ZA8qG2WOZEaxGmVpqx4Bl6gHQd/dC+c3nVYLPbfQ5CWD/AkT4YGuZ8Vd9WDHV3x45gviXAsp022
+ TfJqBC9f
+ 7JDs1DgB/mthhY63XlF97au8fXi2t/bxVNmlL52QbDOEm/yP+Fy29olpG5ciqZ7h5RNXA5UY2J6JE/Qw4PT97Oy8l2+UwhRxJj6Oz+4XiRzD97OMdHfhse+IFCKd5JzxYwZH+wKY0wXZfzDRZwB+6fpJoV0eQyewOk8/fzEAPn7HP2qfVb528a69Zbjob1SgmvBhA7FUQqV6yLxmWOCqOVX3rMfN8KP3KPMzqBmFg8puZLJJJjpo7ymNJGWgwpvV1mp/WIduRgJuKe7uzTZDL5qcPSpSSOnFsr9AX1qMNPvfqjmqjGlk8Q9sJvjvqFQnr0yWQnMZbo0vasvcaBEcGL+YGWdWV3In7QvEcwkL0CdJfr/3QqFQRtMie/nrocVuZRrs5ffO3UpLpamo7xZWkNSrS2dfzc7VZp0hSODmdZcnrnBvOhAWeS9tgnsg5ocDApAKI9Am3LBH/LhJdF6hh8uLIr2fXzB36XE6FPggL6GXQp+Sv2EoH+MjJRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,25 +94,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026 at 03:23:48PM +0900, Rakie Kim wrote:
-> On Wed, 12 Aug 2026 22:37:06 -0400 Gregory Price <gourry@gourry.net> wrote:
+On 08/15/26 at 01:09am, Klara Modin wrote:
+> Hi,
 > 
-> The cpuset.mems = 0,2 you describe is the node set of package 0, so
-> the tasks in that cgroup use node0 and node2 wherever they run.
+> On 2026-08-13 18:48:44 +0800, Baoquan He wrote:
+> > Implement dynamic cluster_info array growth for xswap devices using a
+> > VM_SPARSE vmalloc area:
+> > 
+......snip....
+> > @@ -3562,6 +3757,64 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
+> >  	int err = -ENOMEM;
+> >  	unsigned long i;
+> >  
+> > +#ifdef CONFIG_XSWAP
+> > +	if (si->flags & SWP_XSWAP) {
+> > +		unsigned long size = PAGE_ALIGN(nr_clusters * sizeof(*cluster_info));
+> > +		struct vm_struct *vm;
+> > +
+> > +		vm = get_vm_area(size, VM_SPARSE);
+> > +		if (!vm)
+> > +			goto err;
+> > +
+> > +		cluster_info = vm->addr;
+> > +		si->cluster_vm = vm;
+> > +		si->nr_clusters = nr_clusters;
+> > +		si->cluster_info = cluster_info;
 > 
+> Should probably initialise the mutex here instead since
+> xswap_map_clusters() uses it?
 
-I think you are over-complicating the explanation and that's making it
-hard for folks to reason about this.
+Many thanks for reviewing, and you are absolutely right. A real bug is
+caught, I will wrap up the fix in the next version as you suggested.
 
-My best understanding here is for multi-socket systems, weighted
-interleave as-designed is inherently sub-optimal for scaled workloads
-that utilize multi-socket ("package") memory resources (DRAM, CXL...)
-
-I think there is also an assumption that total memory utilization is
-less than the total capacity - otherwise some of the assumptions here
-break, but that comes with the general weighted interleave story.
-
-I'm getting back from vacation, I will take a closer look this week.
-
-~Gregory
+Thanks
+Baoquan
+> 
+> > +
+> > +		/* Map the initial chunk (at least cluster 0) */
+> > +		if (xswap_map_clusters(si, 0, min_t(unsigned long,
+> > +					XSWAP_GROW_CLUSTERS, nr_clusters)))
+> > +			goto err_free_vm;
+> 
+> > +
+> > +		/* xswap: only cluster 0 slot 0 is bad */
+> > +		err = swap_cluster_setup_bad_slot(si, cluster_info, 0, false);
+> > +		if (err)
+> > +			goto err_unmap;
+> > +
+> > +		INIT_LIST_HEAD(&si->free_clusters);
+> > +		INIT_LIST_HEAD(&si->full_clusters);
+> > +		INIT_LIST_HEAD(&si->discard_clusters);
+> > +		for (i = 0; i < SWAP_NR_ORDERS; i++) {
+> > +			INIT_LIST_HEAD(&si->nonfull_clusters[i]);
+> > +			INIT_LIST_HEAD(&si->frag_clusters[i]);
+> > +		}
+> > +
+> > +		/* Mark mapped clusters: cluster 0 has 1 bad slot, rest free */
+> > +		for (i = 0; i < si->nr_clusters_mapped; i++) {
+> > +			struct swap_cluster_info *ci = &cluster_info[i];
+> > +
+> > +			if (i == 0) {
+> > +				ci->flags = CLUSTER_FLAG_NONFULL;
+> > +				list_add_tail(&ci->list, &si->nonfull_clusters[0]);
+> > +			} else {
+> > +				ci->flags = CLUSTER_FLAG_FREE;
+> > +				list_add_tail(&ci->list, &si->free_clusters);
+> > +			}
+> > +		}
+> > +
+> > +		mutex_init(&si->xswap_lock);
+> > +		return 0;
+> > +
+> > +err_unmap:
+> > +		xswap_unmap_clusters(si, 0, si->nr_clusters_mapped);
+> > +err_free_vm:
+> > +		free_vm_area(si->cluster_vm);
+> > +		si->cluster_vm = NULL;
+> > +		si->cluster_info = NULL;
+> > +		return err;
+> > +	}
+> > +#endif /* CONFIG_XSWAP */
+> > +
+> >  	cluster_info = kvzalloc_objs(*cluster_info, nr_clusters);
+> >  	if (!cluster_info)
+> >  		goto err;
+> > -- 
+> > 2.54.0
+> > 
+> 
+> Regards,
+> Klara Modin
 
