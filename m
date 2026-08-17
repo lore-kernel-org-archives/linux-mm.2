@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85DCCC5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 04:40:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90F15C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 04:41:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62BC66B0908; Mon, 17 Aug 2026 00:40:49 -0400 (EDT)
+	id B84526B0909; Mon, 17 Aug 2026 00:41:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 602E76B0909; Mon, 17 Aug 2026 00:40:49 -0400 (EDT)
+	id B34D16B090B; Mon, 17 Aug 2026 00:41:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 541BD6B090A; Mon, 17 Aug 2026 00:40:49 -0400 (EDT)
+	id A74A96B090C; Mon, 17 Aug 2026 00:41:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 331AF6B0908
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 00:40:49 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AC64614069C
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 04:40:48 +0000 (UTC)
-X-FDA: 85109510976.07.1146722
-Received: from mta0.migadu.com (out-73.mta0.migadu.com [91.218.175.73])
-	by imf31.hostedemail.com (Postfix) with ESMTP id B38F320002
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 04:40:46 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dMK9o+Jr;
-	spf=pass (imf31.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.73 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 868236B0909
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 00:41:30 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0A2C814069F
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 04:41:30 +0000 (UTC)
+X-FDA: 85109512740.10.6AA2792
+Received: from mta0.migadu.com (out-83.mta0.migadu.com [91.218.175.83])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1410D80003
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 04:41:27 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AnoyqEqH;
+	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.83 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786941647;
+	s=arc-20220608; t=1786941688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sig0AIK+CTyDREqz+/6gNORlYF2lEzPEEGGXx1ld/m4=;
-	b=lCbnvk/v4Z0xjf+q4TMC9txtDTj6WRIO2h/jatpYoyauEMgtGX7ty2Fbt4ezVA6CmuTTZf
-	PkmWcyAGd46I+AMnmx0LzT7y7dJewu7PWWwNRS1517r4HI7EJmiXPbBA4Sd3slJyYLePel
-	0/lkCrL/etfaEF1NSTF33NRuiXniWyo=
+	bh=pGSo1Cfu6sLAcXoqpPoreSz60pwDzvhB8EVdtBx16UE=;
+	b=CgZpgLlw5+6cp0CE2b/AksStIUyrUvQXRd2xg7TaH80ZtrMq74JH1oLrt8116RlzF8XDXU
+	AHgaPuPZQM2kesJz4TzcoQSCIs4/dJUKv7NHM0ToKUyISkRr42QllqxMHtAFV9+Nl2//y7
+	nqXIoGpT9EEuxOSm5eDRioIPmHwXg/0=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dMK9o+Jr;
-	spf=pass (imf31.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.73 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AnoyqEqH;
+	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.83 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786941647;
-	b=cZ/YN8HyQ8JBD/wTjiVxg1N4OmnhhVzNmUEa8LDw6otVDHblT1M6geC7TmPPgANa7z14Wq
-	swi3Os0IsbBm6YUvw3MLZc8kvsSHLjOTqqY6mEoYnMOdQGbEJdj7wQz9fCUIOfYlxA+T0C
-	kS6w4osFew4NTZReSRM7OsXOq+RapVo=
+	t=1786941688;
+	b=uOuGN3Ie8O0+BhnxP6vkT2+ghVyq1gOWESgT+DWDFbRPXqpkYLTlLxuDL6CTE09JYtmEwd
+	NtoCDJM1ABull24dLI6rUKf6ZjCypEJ6a+L+ysA5RhyWOUO2UfEq+VO96rGYFNcM7IsYrw
+	hk3+TrHeoNir/yvK77PuVoYyA2k43AM=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Sig0AIK+CTyDREqz+/6gNORlYF2lEzPEEGGXx1ld/m4=;
+DKIM-Signature: a=rsa-sha256; bh=pGSo1Cfu6sLAcXoqpPoreSz60pwDzvhB8EVdtBx16UE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786941645; v=1; x=1787546445;
- b=dMK9o+JrgYkBBQFORz/x1H6fIOlz7GAJeyZcXqQZPE+mue6SBqtpD8+BXmpwfl4xU21c5WwF
- TOozHPmNRBzpBSUEh4mEViOPOurcnLpFH8EZvHgdJkjoR2+xiujETf7MB3K3CZDmOxNeFNf2peA
- 0LWHLkElAWzOYaSxeAcuap20=
+ t=1786941686; v=1; x=1787546486;
+ b=AnoyqEqHofWVEm2rFglZDqDkqc+0a+UFU6FSJW3k94xbfoK9HbFjis8PFbiBRwSHeH1D4e7J
+ IywKwp+mBHZcQ5U3+QHKVJYvsiSKAs3j5HDxc8NEqUUSqrdtMWMz54cpq4Wh878oLAjPfl+rPha
+ WuwN5sCaweeSPjmw9DQnnEHA=
 X-Envelope-To: linux-mm@kvack.org
 Received: from localhost (2602:fce1:44f:115e::)
-	by smtp.migadu.com with ESMTPS id 2bebd8705dd01731;
-	Mon, 17 Aug 2026 04:40:45 +0000
+	by smtp.migadu.com with ESMTPS id 2dcc283464ad7e50;
+	Mon, 17 Aug 2026 04:41:26 +0000
 X-Migadu-Flow: FLOW_OUT
 From: Lance Yang <lance.yang@linux.dev>
 To: nico.pache@linux.dev
@@ -84,23 +84,23 @@ Cc: linux-mm@kvack.org,
 	corbet@lwn.net,
 	skhan@linuxfoundation.org,
 	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH v4 6/7] mm/khugepaged: unmap pte before releasing vma write lock
-Date: Mon, 17 Aug 2026 12:40:34 +0800
-Message-Id: <20260817044034.85870-1-lance.yang@linux.dev>
+Subject: Re: [PATCH v4 7/7] mm: Documentation: clarify where the mTHP stats live
+Date: Mon, 17 Aug 2026 12:41:18 +0800
+Message-Id: <20260817044118.86344-1-lance.yang@linux.dev>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260811-khugepaged_pte_refactor-v4-6-ddac39d61c4a@linux.dev>
-References: <20260811-khugepaged_pte_refactor-v4-6-ddac39d61c4a@linux.dev>
+In-Reply-To: <20260811-khugepaged_pte_refactor-v4-7-ddac39d61c4a@linux.dev>
+References: <20260811-khugepaged_pte_refactor-v4-7-ddac39d61c4a@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B38F320002
-X-Stat-Signature: qw797k6s4d7sc3hzt1pudktdoox5xosf
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1410D80003
+X-Stat-Signature: xpnzr6z95apmfxgccbeyrm9c1xc3fx98
 X-Rspam-User: 
-X-HE-Tag: 1786941646-981999
-X-HE-Meta: U2FsdGVkX1+uTAjZjx+pSK2xvCl7Tdq6queqxSeu8Zqkd44BO2+aN6F3tY2XpwQixcNoJFp9naXp0XzzmyitTDwA4jdJWkbJZeUI28N7+EbKskXDTM7dssybGhMy5A+jWGi7ZLWyCE8nJLABhs+qf8LkXRzZCbaMoynOIzxgvigl5ATTfu9T9camTPTjAuqzEMbrkl6qLuZ8JGb+vPOqrC9D2gNFbs+m/+UURv1FDEG1iJ57r4KhIoCykiUvnfuQqOjWzd3w5dgVscb4D/8hWL9mfYuNQb2qHNwEp6lHWkbL/TCy3UQf6ja65ns89MQw8fbiZ8YT4hwvwLKUEweUgNqNpu/stfYcTbT1BnAUxr2M+y0Z7BzDc6kEOyntK33urhYWArYxc/Fa8x2Sp8zwWLbtXDbnY+LLo0j/DzzANr+jXIGYqdcuce9swoSgFCJKXKw+1s9DZQY0jv2QMcnymUTW9VUknZxs3npigKb078scH1rLTXsqkpiQiRoiR/HzdfouK2naTUimyzptAQTG2ltLzFPhnsGfVGrl1u5leIZMUY2OQ5Z7M6NzSp75S2q5127VvK3APMq4dUAhtUJkcqVU9H8hcw/xoLw+OEOeQd6X8FDchkNEDQEqaPPsZLmmXWz8V1D4Am/30FIahyhBGnkAPTLw4CLDf93kNJr7hZwegPTSyQy3XpYFMdjVCNxmOxIdWe6B6DxxacRCXUnneDDalAtDfnPNJR/KKUikeNe+Ljeld4KZLMCnhdrDpj2RyaRk5qLmAn6I9Lm4WPnshrhdk9DFHb2vdWnvugY4GFhcldPohxVW0oxlqOHTA9aNP6420rn2MPUKsmAP7faMX1sG/bPz2zlpXYQyQcAuUM8ded2z4khHP1u2/6lnG1cjtz+as4euiPx9RnUh63LHt5nzIhSuJnFe6pbo6tu7Wu/z1VRzbfYqv3VGRGD0JKggUeGGP2kaafDglCotvwC
- opout1cn
- HBBQwTrGLXXKzqD3vkXAMo46FXCXepE7qOBlx5hMDlc6nMI2Yeht1gWTDu6SQR0WT87xTTfQVbJ8NBCRpyJiUwdnMgY9vMritiZUfjzWRxBZjxHuyo8tSZ97Gs5AZ9ZBB0MRAodYbw06YRska4oNP7N61PRLPVlODJjC+Lnmd8c9JlD+61qDcqH8PODU3wO/qe+tFyQK1DDEK9FtB0fIKUf69+ZfI0gMl9XO5tum/INBwcz+7yxD/ZoHTboQ/WnnOIN233ODAH95ZOOWb/huynuVVOkUWsYieqEYWE8lQhektfnkgfibbsja7R3u1+sknOF1k06vp4wnyooZ4RCdsaXoTDg==
+X-HE-Tag: 1786941687-180132
+X-HE-Meta: U2FsdGVkX188o0hPNBCdNtyViZsVLzV3FroMOXQg8sqaMoU7tAG5Cg9T/kFbGDSTmHKeFKjUD0QcT6Hw4L9A9jByVeOaYZpHPI67FUU5SImgbDoXeJZ4i+8jRyoNrhUYo8a5L+E9M6+5ir+zDmRxLzUlnkut4sAlZoYorgM2RuphOqRkPUtTdJFVJTvnjistl8Q0nHsRPTCWrCyanDm6Zms4kq/ipRcy99semfR0T9ImF8GDfo2wIMvgjYfZLCwiWPAlmggzj06cp93gujHyAv4lJuZakYA8UscAN8DAhcFSXNeY8IyhHyZ77xc3Qeli9JOuc/1BR4hh/ioIvweMXJzBmnAp7LOvwN+8FNlXxt0zVcEEnmmXZZT27HyzKpkSKUlv7RecNCxiVHsxDq05CwBk9suc3A9jPl2ajWkZovyHMyQVFqxTSLyI0h56iDco2ltPXNpg0xMOk9Lia0ZwNZ5BNnmcl/wkAYpeQxi3mU/THkyalxR2uC6ATHGgP8JjrSv07spNMQfwMUHp9dYAP3nEn60NmKMlqtzuGIdLxHXM6MOXVcNdE0Hlply28EAZhjm6UItfTNvg5cxes0v5T3CGbSVMzf/A/up3vp7UU5VVrjYgVNa41HCNgVLBhT7kF3mG+txxp8ubevfGzBlSEVPBT7Wvzv3fkRy4+d5WMHDsYkmxhwGS2b+CMSuSD5850VmPoR0N9QhwJTBMixaZjg8WwOo13OgBABT0Q7ymxKFWzLnYOwr41hsKdKfs2/nr656Tnr2fZa0VU2SCYSm0JKFyhjVFxSKrAjZ6Z7nl1Su1vHH8UGLoPIin1qLIrFOrZasYT3qlx16nobN2hg/HfCoqkVDn81EMCnM3OgqyE2mQ5ikaiVTFei6axC1vK1zfiAz8/nZ3oOas9Ft5vdAQJcjZt7mACYQUDz3SknOYfwm7D8l7VApK1Pst0ZbOOEA4QUpk55FgFw2CtYD6YfQ
+ PgfRQ5qo
+ 9vBiWnENt0VCd6avXbsfaTpZ8+9D8XQJ10Jix/XeaLSaFqRMfkujFaz5GaqMEOhFfI1iudWtITYaexyEtqgkNHDB+MxlHorPkV1bxv4WmriDpaUlIlBgGSypnqzSz0OTMjuzmfSALsLENfC3ovfxOlY7aAT5NMLVCtTAsCdyQuIakPC96cR2VIgMlGwafZ5v7+4sWC8QocymXU+7Aff8hCc26q+1H86rUeoclGacbB+GJNE4M8Xn0s61UZDAwuZ73mTQlgZvDJi1k+NmLHubVa1SHL6Own7VHwOUaHYF/9YOFXRyqGaIT8pXvCray2cPqCw544xJPBMGYqp4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,12 +109,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On Tue, Aug 11, 2026 at 06:48:38AM -0600, Nico Pache (Red Hat) wrote:
->We are currently dropping the anon_vma write lock before unmapping the
->PTE. Although this is safe, due to us still holding the mmap_write_lock,
->its safer and less confusing to switch the order of these two operations.
+On Tue, Aug 11, 2026 at 06:48:39AM -0600, Nico Pache (Red Hat) wrote:
+>The note about khugepaged counters references /proc/vmstat for the PMD
+>case, but never mentions where the mTHPs stats can be found
+>(i.e.: /sys/kernel/mm/transparent_hugepage/hugepages-<size>kB/stats/)
+>Add a small addition to this section for clarity.
 >
->Suggested-by: David Hildenbrand <david@kernel.org>
+>Also fix a missing period while we are at it.
+>
+>Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
 >Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 >Signed-off-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
 >---
