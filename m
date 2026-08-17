@@ -4,139 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FD7DC5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 17:48:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4018BC5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 17:54:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 36D1B6B0889; Mon, 17 Aug 2026 13:48:02 -0400 (EDT)
+	id 1F3346B02DA; Mon, 17 Aug 2026 13:54:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31D2D6B088E; Mon, 17 Aug 2026 13:48:02 -0400 (EDT)
+	id 1A3006B0644; Mon, 17 Aug 2026 13:54:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 20C456B088F; Mon, 17 Aug 2026 13:48:02 -0400 (EDT)
+	id 0B9A16B088F; Mon, 17 Aug 2026 13:54:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EE62B6B0889
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:48:01 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D13D11A08DB
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:48:00 +0000 (UTC)
-X-FDA: 85111494720.18.8CD2DD8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id EB178140008
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:47:58 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UFC53VTl;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D94326B02DA
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:54:27 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 535821C1CD2
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:54:21 +0000 (UTC)
+X-FDA: 85111510722.28.0F8EF17
+Received: from mta0.migadu.com (out-194.mta0.migadu.com [91.218.175.194])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 1680440004
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:54:18 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RE0Eq1rl;
+	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.194 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786988879;
+	s=arc-20220608; t=1786989259;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iOfZaB713Ys+B7W6jfvJNm+JxoikF1oqkGAtPEWVmKM=;
-	b=1dhwSnI4H81anrmok13vkrQ8pRdtCJ/1I6/2yKIQXaC2+UszQT3SjEu9Gvmr9luxEpaqMA
-	WjKsK8BTTwF1scklWfd0mvzOqr/X8VjRUlEtoJSWmLxrrm8Wt2Rekh6++FTC1OULyYgE6e
-	qq869vSgCezFy19I6uuVAmIAJBnCq4M=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786988879;
-	b=g3Hqmh/W3sDHWpEcWxZESlNnGZe2qZ6QbSjHhXKmp1PsMVPXAdM3pHq8PI1l3o8TUrfJrX
-	dnW0AlegTLIyz8gIIrmbGjJmdldmibgZL/DiOgsuzOTku6KJCyk3MBG/vgunVP96XvBagQ
-	Vy73/9SiHRrqY+QeCwKxQnlFP6Fudgo=
+	bh=Cv5L8kwL6B87EoZv16i+GOhfYvnN2n6+gPat/nD2Fbo=;
+	b=Sbt+zFK2xRTQrHRwiqESxaWeMztu7/wH1WVrFHvzLK5N5OsxUZhy4RXp5Pkb8UL+02ST32
+	3PQTEVO8JNkWINDKqblJFc14OfiU1tqat25FStNw+8dXMIH14+DoGpC6gRxoY2ApZptKcN
+	nnnn3qIutz1ee/3UEULLiFl6BL2UJ8A=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UFC53VTl;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 130554162D;
-	Mon, 17 Aug 2026 17:47:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09A61F000E9;
-	Mon, 17 Aug 2026 17:47:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786988878;
-	bh=iOfZaB713Ys+B7W6jfvJNm+JxoikF1oqkGAtPEWVmKM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UFC53VTl2Puis5UdHizYJS6wpzdkR0Y4Cs2swJC+qyXyAJgM1ZYkvox7UjN5rhbsj
-	 1+NFH13oX6N+hcodMHyEgtNPdNRlwoqSt98ZPNHZKtNyDp6PXseAXNVN9Ls0qdFCG5
-	 oGf1yvZ9jgHFPR0lBXgqHL8/3mqgAwmgBfdPPGzGXRMq6ateng8F+4B3n3WzVi2QRH
-	 ZtfVbyZSB3L8fcXmbNE+QHMT7xtuyH5E8YwbOyVCqbg/mNHEtJA+AzZwPkRCb0y2rA
-	 8KMB33y59JwnRcapyXIzk1JimaAEJ8E6iTxCL3h7twR3XZJQzQYsHPeG1IYmMKeS/H
-	 myNzcFZeLvwpw==
-Message-ID: <4148c151-5ef7-4e5e-986e-b05e600045db@kernel.org>
-Date: Mon, 17 Aug 2026 19:47:51 +0200
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RE0Eq1rl;
+	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.194 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786989259;
+	b=2O6PyC9qfVd5Vt5bZPM2KM2sXrRNlAcDFr+yD6ab2pa3DZAohTldzdZOwYl4VDCO8q6p2q
+	1u1/QxfQDQLx0sk9eeYlYZW0uMOs0YeVLTSxrl26/Kp/DgQri7/xus5o4ZKDbXAtRvPtar
+	hGksDMb1R/c0CFpKjVk2XrF5vf3Di5Y=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=m1ED9yFio5Z+HXwoOeZ7XuPsrrjwmftWHlmKu2Sgup0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786989257; v=1; x=1787594057;
+ b=RE0Eq1rlYua2YPX00a/IdUGz2NVWXyNW6dnVNYqFeGZDoEjZtxkFwr5w2uvNa2UUkCiC3Mhm
+ 0YvLiJPzVLR7lcPmT6SUxMpTlxcWqeolSdzI8FIl4/Vuq2n5Bm/PJzLDbb0a3OcyUtjzwxiyY8+
+ CNOKJd9Uny/vAqjM0fh0y3kY=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (2a03:2880:10ff:58::)
+	by smtp.migadu.com with ESMTPS id cd6362939fe0a13b;
+	Mon, 17 Aug 2026 17:54:17 +0000
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 17 Aug 2026 10:54:16 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Usama Arif <usama.arif@linux.dev>, cgroups@vger.kernel.org, 
+	hannes@cmpxchg.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	mhocko@kernel.org, muchun.song@linux.dev, roman.gushchin@linux.dev, 
+	david@kernel.org, kernel-team@meta.com, kernel test robot <yi1.lai@intel.com>
+Subject: Re: [PATCH] mm/memcontrol: avoid false sharing between vmstats and
+ events
+Message-ID: <aoNKX83dql7_kzFa@linux.dev>
+References: <20260817103835.2937733-1-usama.arif@linux.dev>
+ <20260817104340.c9bd2dae70d4fa31fd66b216@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/migrate_device: fix cache flush when replacing huge
- zero PMD
-To: Zi Yan <ziy@nvidia.com>, Hui Su <sh_def@163.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260817060845.377800-2-sh_def@163.com>
- <DKRD8RERQHHC.1CVF14YIY4BSA@nvidia.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <DKRD8RERQHHC.1CVF14YIY4BSA@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260817104340.c9bd2dae70d4fa31fd66b216@linux-foundation.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1680440004
+X-Stat-Signature: mfdbkwkomjy8fxqtc86zimhzuutczct6
 X-Rspam-User: 
-X-Stat-Signature: xqbrjtqckxybn11w3fss41yam5n84nc5
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EB178140008
-X-HE-Tag: 1786988878-362172
-X-HE-Meta: U2FsdGVkX1+5sLpjUSkLB5iljHRsD9/TXBl7zTcCkkTCERVPCPu1xBMsgoAiRWMnW+UsJcRFI4WksxX9xyr3n3yD+HFEgGKoGFC723L9XR0RBCnumwOzmgrA8D7/umpl7PEoA8TBi1T6dM3zYtFF6Fx1H1PAk7gYwu1IaAMlSs8ycjw1yoouOKDT1b/UbX1WOrd+wTt/H0qAVMBvrkkxBVWKEI4jED7b79Y185t6Sx6QR67JehoOFMXM0Jw+zwHE2c//LPC4tSsDZsb/oTCAuw2DXgiwT3sbDGAX6KGSZtg6wnN2cRN4Im7L7uZr94nErlFlz5PbKAn98qq7Tlt5W7xqoxM0+dC7rb59b9h8qv6eR0m/v5q9nZNYNSA7s/9s2U42aMfvEm9KyXOk283QYQyTjHeFpEjYUMOqO+31Dz4I2yxTMiMogtqVCgqC3BSg30XF8b25A65jVHU5DinxnTLilzVArFBstLxwjDKzaxyt7xEc0AUwfgHLCYbvTZZdHggwFZavN+5TC3jdJS7UKPZwgJYp+mejnZ4obX0JeSDueX4ckuiDKRNqNiZoVaO3hE/xYYfvc1pFcEu2rrfgpaHWCDNKjOtfGR4F6xwGKaZl2pAbjYhrN8CwCqVSo2qyHhJeTeUG0HLvbKrskbdj6nJhSacl0vUyv0BZk12hzJsvrgYz4imqBF7jqjdjsTMZ3m82UnJ481kTHUXesH8H0l3gFFgyn6JwAw4BIQd7KAzoj4iI8Gw6uUDVZ9a5eGNZPQIWLnChRt5RY96aS5devNWcUE/n2Snz62vGlF1fECwfrNYvGgGoAwIcXkYkbnt9s4huob87JSF824tynHfnRjRwDxGnvkVCHedR3PDz3JYzrwSHu9gutUK7eYWCfWU/KDn/E74oYuHyghp2XYyOQ/xFjt0JwFauRnJy0HHGiVpUJsHEA7tS88m8RbgPI/rk7Y0MF5D9NMyiRBQu9Zr
- hC5hPDzK
- op8VQKVqtRSYdJwYbfUmD/VXQ4DYOrCXZ7ACJjAd6THDsbsXz7AOwIr0qPjVcPt6culqFBP50oIsWzOTpd0p/THk9N6z0y9I7FAJAiX+/LZ4OAftVWXnlSp8L6zz7535xDXGoO8Yl5ZosLL2Mn/20SXLs1XDI0kS5DlUzjyrz8ninkLqjtIgHeJXsQPunw5vR65Df1oGIDUqUfenWmXo/gbJABcXVJ+HUMM8uls4M0ClNO+rtxyT8TwfdlqnIkoj2FG8o5VAzYgbrrykY/SnASrq8qjZ0bg8Fnp4L5NZ1sNr4RryZlC9mgaQlQbnJQx7jJtkj2zi0WLbT0g1wA5N7Bxh/vGK4sYKeGXixUtsCvHNWnQUcjs1qwgLOGZ7pwM/NVqMYHGrgdwbJW54bg1UpKXOEv1zOiWJNWlwi4YjzDFVlFbIWkGRGrn42vkxEFl9AviC4K9xAwWgFIS4=
+X-HE-Tag: 1786989258-425359
+X-HE-Meta: U2FsdGVkX18V9aEBMAYgc+qZZsLEzl/x8X3PwFQf9piGKIJ49xhrpmE/kgcrynXMrJSwN2mK/9DNk5FzC0Pyr8kZ5AMxxmigF8Mv+InA/q7zHlTPmpOt909lw2R3cBSgQbdKsvpAo0viNRfubHinsaWT6eEkMG5b84IW5u5Dsre3wgo3ODR8IS6NDO9wZUw//0Fl6SkZt0uum/yZZ4sZW3hu+2NgaSUXnZiBeBSkgOpQbT/kTu4QCvGBmR1k+FE1NEAHrGI04GyF1ODvtogTg5Hpr18GNh8rTO7RuH8EhlgtWlFeAi52IhHKg96JAFIag/RboqLe+OkSGMNPZUO07kNPya5v3PV4EzJokTCySGJcUulMsQqEZXiCYqyuoaMMp+JvrZlnVzVBGduhhvL/rKUfsADeC4pT6uLIe4nnUPuRPYle9SNVy0D0ffUCkTCfazfpd3b6gQ5APXlSMdouqMGi1v6zj//TNyQIUUx5wUADNxaDzJAlndklfjQKkPz3QGUYRSlsr7xdLs7X5zuZ4D87DmF/6GRW5+MVSn9fEOVq9pX7K+GY6KTEiS8nhLsDNiIPDaxPV00JUmMxpxq3OgkqHo1K1mgFcKDvJR18dwLNLNGUgpSQ2MbehlGHR85nnSsLoAzHLHZmXrsq1ayWoHMyYieZ/EQOlvVc+tJcMKWlVUUZqVSGcstKRAlWOvYBJvmIVdsUZu061ny836WJm6FvXY2xAorNPJExXWK08xBRoNypNIAXwRjU2UhJbrNkP2CqBUy4FUub3tEF3myhC1F+CNoGc3LbUdIGVYyTEYeoYcEIkhMh3fNzaLAi2nT62XGFQRlQVFoh1tW5mmlRCTymCHKGNKFDhMnTEt83yFe1x9q3Tf0CSfzt9b+Szp/oQth8lZM1+jvDPJj1w5X5LNz9IZre4/nkUn9a9abPnaW+6PlAmSj+MPnxuEvufDLblPXzpfvh/9XGEowi/oI
+ Xp6fFKAi
+ 39N0FKPJk+leUwYbUD/UeB9Bq71UYwHTap5V2Jv5qHRo7a9Qfx+oU6cDXM7iTmRFruf7GqXkW5NOoZSeGI++Ay9ulJf/SQQVLrID3NNQkhL8gu5YO5v0cIi/nwQ/vR/5hr1cvjQ17j0WZfN46i+ZACwG87udEaqkEyypEwbUCjpywE83V/b1bXxVnu+5JBxgsx7R2niuFwiAkKFnF3J2kUXn84qmncpY+vkj3QYsQ3dizXjBk1+dBkK/kBKBNKiPLTV/MFwUTDs8zFw3hocQdIC0LUF1JUbqTGbeHq183A8X7vMqsrivIABAYKX0tLLHzoCYszo1ic1xklnDgdMhFHXGfvZcjjp+6oKlGBqKS+za1cBngXtMF9dBgyg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,34 +92,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/17/26 18:39, Zi Yan wrote:
-> On Mon Aug 17, 2026 at 2:08 AM EDT, Hui Su wrote:
->> migrate_vma_insert_huge_pmd_page() calls flush_cache_page() before
->> replacing an existing huge zero PMD. However, the third argument to
->> flush_cache_page() is a PFN, while addr + HPAGE_PMD_SIZE is an end
->> virtual address.
->>
->> More importantly, the mapping being invalidated is PMD-sized rather
->> than PAGE_SIZE-sized. Flush the whole PMD range with
->> flush_cache_range(), matching other huge PMD invalidation paths.
->>
->> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
->> Signed-off-by: Hui Su <sh_def@163.com>
->> ---
->>  mm/migrate_device.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
+On Mon, Aug 17, 2026 at 10:43:40AM -0700, Andrew Morton wrote:
+> On Mon, 17 Aug 2026 03:38:35 -0700 Usama Arif <usama.arif@linux.dev> wrote:
 > 
-> Thank you for fixing it.
+> > Moving v1 userspace eventfd handling into memcontrol-v1.c shrank
+> > struct vmpressure from 112 to 24 bytes when CONFIG_MEMCG_V1 is disabled.
+> > This moved memory_events_local[MEMCG_SWAP_FAIL] and the hot
+> > vmstats_percpu pointer onto the same cacheline.
+> > 
+> > The stress-ng mremap stressor exercises MADV_PAGEOUT with swap
+> > disabled, generating about 20 million MEMCG_SWAP_FAIL updates per
+> > 60-second run on a 176-CPU test system.  Those writes bounce the line
+> > while memcg statistics paths load vmstats_percpu.
+> > 
+> > Move cgwb_list into the existing alignment gap and cacheline-align
+> > vmstats_percpu.  This separates the pointer from the event counters
+> > without increasing the size of struct mem_cgroup in the tested
+> > configuration.
+> > 
+> > The blamed commit reduced median mremap throughput by 4.38% on the
+> > test system with one socket. The patched kernel brings the performance
+> > to within 0.5% of the parent which is within the observed boot-to-boot
+> > spread (up to 1.2%).
 > 
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Cool, thanks.
+> 
+> > Fixes: ea928e9e18da ("mm/vmpressure: move v1 userspace eventfd code into memcontrol-v1.c")
+> 
+> That's in mm-stable so I'll squeeze this fix into next week's 7.3-rc1
+> merge pile.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Thanks Andrew. We should also add the following tag due to http://lore.kernel.org/aoAABX59IzUXz/Rv@ly-workstation
 
-I do wonder whether there should be a PMD helper.
-
--- 
-Cheers,
-
-David
+Tested-by: kernel test robot <yi1.lai@intel.com>
+> 
+> 
 
