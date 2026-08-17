@@ -4,40 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42737C5DF80
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 17:22:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BC2BC5DF70
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 17:22:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BCDC6B0180; Mon, 17 Aug 2026 13:22:35 -0400 (EDT)
+	id 49E916B0766; Mon, 17 Aug 2026 13:22:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 057506B0766; Mon, 17 Aug 2026 13:22:34 -0400 (EDT)
+	id 4760E6B085B; Mon, 17 Aug 2026 13:22:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3A0E6B02D3; Mon, 17 Aug 2026 13:22:34 -0400 (EDT)
+	id 38BCA6B085A; Mon, 17 Aug 2026 13:22:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B0E1E6B02D2
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id ECDC96B02D5
 	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:22:34 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 24CF98084A
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6C1E212086E
 	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:22:34 +0000 (UTC)
-X-FDA: 85111430628.12.F6B62C8
+X-FDA: 85111430628.09.FE27439
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0F1D010000D
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:22:31 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ifKnws5C;
-	spf=pass (imf05.hostedemail.com: domain of devnull+jim.cromie.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+jim.cromie.gmail.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786987352;
-	b=U98DzZt98zpAq39pRtVuQFTf0ogxThF6MFB1HGYhhYY9a9CXPbWQ5raS4mG1MMdPoXPc/f
-	MiaamvyhIfbrDFiS9lEecM/qeLeL9B1uy7CgrHmYKeal6K7aqhPjPnqTHx/8+P95Z95jqu
-	tCtqI8Ee48h8fpw+pHMgl0Lhc/CVvv4=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ifKnws5C;
-	spf=pass (imf05.hostedemail.com: domain of devnull+jim.cromie.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+jim.cromie.gmail.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5DB411A0008
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:22:32 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P52QHUq3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of devnull+jim.cromie.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+jim.cromie.gmail.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1786987352;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -45,36 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CwF3TWOG3HhooMr5m4Lv5DjA1NrVpqtjXmUTlWMkAwI=;
-	b=OC1SCb8OYsNW7ZnVkwH7HlVp7s65m5rUuWMXIo/S2qx6n4MihOr7bNOQj8pQ+i2mISjM4L
-	RxsWuvwlidSuPepk1Ios+9SAikR6BHAw4eHy0UtOJibAt9VWB0JiUR0+YxnsHLHB8Tf9u8
-	9MJkeczZMqusShm5hCxKUM6Cff89xhc=
+	bh=JlBodnc5tkopifgCL+WIfEstJJ4csyLjdwl9nOXDY8A=;
+	b=MP+xO9rGfAjbAFNGf79SjdYXtmPwNItL0KaNy3/E4VsD4BDKCLXBnDM6yKBFp7+jKExdao
+	iyGWK3JvL+6g6QLfe63M1c/aH9xWzI3Oh/Ry2BJewMLssJy+QIHe6QcTV7N0hUqfUquXcq
+	GJAVauzuHbIQf3yTjfJ0WI8te8YO+8M=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P52QHUq3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of devnull+jim.cromie.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+jim.cromie.gmail.com@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786987352;
+	b=L+OZLnSgBBN9tL6LXXnbPSVKN6gVvNx79OLoabAxWXxqeiu0vijFWCQ+KFD50kKHUbt7Mj
+	SKSmY3Xo6mFVVQ/bo6cw73Y2iLbnOwtp9adaHq+BFN10XljLVGDTv0KcNWqRuFVMx53aa1
+	oWfkOXv7P3wMDiwBUNH/x2u0C8cWSA0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ED47C44034;
-	Mon, 17 Aug 2026 17:22:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C97EAC2BCFD;
+	by sea.source.kernel.org (Postfix) with ESMTP id 1858744588;
+	Mon, 17 Aug 2026 17:22:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E3897C2BCFF;
 	Mon, 17 Aug 2026 17:22:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1786987350;
-	bh=U1+Ek/3s/WPSEWc+Ji9eDDTMwh4oU/I3rpqWvBD4/dE=;
+	s=k20201202; t=1786987351;
+	bh=zTdYOCGpPbvo6ufi809Rri+YRM94kX0f0IXePRW5ia8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ifKnws5CPv2vi0ZSSyMwNFx4srNsY5jJt7UxYma2Zri19tbwn1erPuOK9QL3+NuaB
-	 +p8V3e3FsUTypKV18FKwrz4jLAdL/JMZN/FwFmuzCvAivepiGFUJPKC6tZ9s4giEv7
-	 f4QlUmN+k+1gbYTd5PdZhaQfjJysS0sVO2zgZqeNe9uPOcoRUdcsj5VskHRCYkRc51
-	 pkKo0tNfrP4DUjFlryhnf0k7Hl2kaDmVvY2oef7Tm5YiWm60HLv1OQ478ALvHop1fY
-	 WoSjf1vTEDHPB9lgjVJFiMu8KzM/8+qOJAVz9kkMeyTDAHZSkxp8LdPLBjsz74uNiu
-	 l+iTYjeweruug==
+	b=P52QHUq3/xcorcXZu7r6tCjygUQFwidPFzHoCJgQuXjwkzo58DSIP80l4FJrf3if4
+	 IGJxZWmoAC6om3/Pwce84778ATkDQKcLgVIMAL0vOMFlBmmca6FD8oaYdBTTYcRfZ5
+	 EwrO5S4MitRZmQnMm/3v8xxyfFsB1FsDgnA7FwMEr8WSS5Yb6prfvV8wyAyRX+eCnc
+	 esGFRuBzJWG3k2DAO7rcs6fN0+sDoukjnFGeEJUdWErwJzMVBxQvpKluM3rNFGa/V7
+	 iNCV3jOh4HXj8ubJZ22K3sPGKlOfUxoRrbJPaJtK7kADVDB/zshSt1nESuDBIygr9W
+	 zIG63CTRAn3Xw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A41D5C5DF7A;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C5935C5B572;
 	Mon, 17 Aug 2026 17:22:30 +0000 (UTC)
 From: Jim Cromie via B4 Relay <devnull+jim.cromie.gmail.com@kernel.org>
-Date: Mon, 17 Aug 2026 11:22:16 -0600
-Subject: [PATCH 2/9] netfilter/nf_tables: Add folio_scratchpad collector to
- struct nftables_pernet
+Date: Mon, 17 Aug 2026 11:22:17 -0600
+Subject: [PATCH 3/9] bpf/verifier: Route verifier stack state node
+ allocations to folio_pool
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260817-folio-pool-v1-v1-2-0c1d230aa3af@gmail.com>
+Message-Id: <20260817-folio-pool-v1-v1-3-0c1d230aa3af@gmail.com>
 References: <20260817-folio-pool-v1-v1-0-0c1d230aa3af@gmail.com>
 In-Reply-To: <20260817-folio-pool-v1-v1-0-0c1d230aa3af@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -104,25 +104,25 @@ Cc: netfilter-devel@vger.kernel.org, bpf@vger.kernel.org,
  linux-mm@kvack.org, coreteam@netfilter.org, netdev@vger.kernel.org, 
  Jim Cromie <jim.cromie@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786987349; l=7401;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786987349; l=3668;
  i=jim.cromie@gmail.com; s=20260203; h=from:subject:message-id;
- bh=dSEV/cYCZ3Qb6/NhIB64Wuhs+Fc/mi4yHqcEj2j33Gk=;
- b=JwPFc40mfBR4l4YApSTZHSCZ60JTvPi2kTFJYnQLHTMRj0R/cy/XYGAl2tIVO8F41I9bQT35N
- I3eRa3fAx4RD7q8aW/DO5QQmwa/bXaAKx8GdSbIDsNvNBRYUqAEOm6f
+ bh=wd43RzukeW/QIRUOsguKGysZSVWNap+EkJQwmYjEf9A=;
+ b=RF7O0cJ6UhuZWtoBFwIEZu/Uet9+m63ZwGntlkc7HifWVQ9cB6lvVPZZZ7oAkyvhDWt0UEWjL
+ GN7mnVJCnK5CEvsqbKbNn1jrRMc23jiFMLCZ23LsNR5YNbIQiBnNZdV
 X-Developer-Key: i=jim.cromie@gmail.com; a=ed25519;
  pk=C6E5ODlPQo7ZBynATXH9wg7K6HxP0pIXyf4s38Qw0XE=
 X-Endpoint-Received: by B4 Relay for jim.cromie@gmail.com/20260203 with
  auth_id=958
 X-Original-From: Jim Cromie <jim.cromie@gmail.com>
 Reply-To: jim.cromie@gmail.com
-X-Rspamd-Queue-Id: 0F1D010000D
-X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: to4q8h17rkp151cy5nfbe6ux7ab8prub
-X-HE-Tag: 1786987351-807695
-X-HE-Meta: U2FsdGVkX1/9Wvn688Z7w3q3LmVly835dRZHvj1Y15alE4wEsYjYRoWXK+1y34xrG0NDAbWdn8uxTARBnUr1OANbzIq4dEXZnENJSQrPSsKVazglT0NQT63RNzjuaLHqc1CellofB51nhyVPmEf0gxq+bn/poc8cc1mTy/UVuxFUhrkVo99+fB85qYLemccU7EOD/aqdANgxAhPiILVpzZpRglJlhvKqVv5/ryG3vSxdfQXTymGb8+pv6JK4FQHyebuwnB5qTYI68jr075usMwj+jXCOznAINpj3h/EnVdj+nwR7eOtMuLvzEcwjiBTos2IlUiIzPaTsGvsy8Axo1Ts+rBX7ZvOqxt+wqmIduxKGQiIbtrQfuTIRhDdOV+l+cMJew5KroT9S0F+glbvzOET5+OIS+UBZtM9IPHaHmQfJZIpVTh/OsSTmkKu/qWxANac572rulKqjpkR2ITCfGpJeUyPHYxlf4qNRgk/+/oNL2PPgtoVB10xQvjVelLW6+4TMaa5gitDgNlVx8obrSzEseOao4X4lkRZ5z32662WajBYv8jJE/gYvmA/uAJj/T7DCff9H+jDHjegBmXOl3DNGdvmXoiwHda0YzYOEe32CJdZ5l1/+wJ7BxiQCZRJpUcUKf0BbnD87rc1J8UhC0bn5o4Q/5btdtklJR2dFc/0bNHogvI6/p8mk4vw9a3u91hwKWBbxNGgq0khRQPtbQlZF2ol+iR5aK5WmBH5iPY0BPHNsE9Wz27O9PhNDQP7NWEoZt2XnfgsTT530gMbHkXnAtvRFPcKepXqSRPAMEZQ1MELPJ6ijkJENV5tOyg5oz+9jFkh28RD8/um25JARJ3PPPzPAh7/ZejLc3ouIL03FBkggyqVxzhXMTKjYgPiLYCM6VCJtObLMHnowMHu4d7QFHtNtUMxUmh9ZVWNT55+C1/Tq44OjnEs0wsekQt3Zqe/fUun8pTRZ7pSMQ5R
- 3MpGBdOh
- z7oI5BrXcpdWW4HVSk6Z9YA/Q06xEt951wYc8DjXMZk88P5jK4pRwzVtk6YLXHQa4o2+oaWSGT3Ut8tb2yLVSGPQf28KPGKxbsaGmsVt8pQG5VvDwKqCdhJL302dEVIaiN/8XVjbDKCKr6ITcm46SXCkRi/6vO+2ifXhuQLSfM3CH+BmBSw8sxZMQFLpe5OYwlc7dU1BUvJhM+FZMxUwtViCtcQRLgF78iNW998P396kt8WskragOBV4IXmLMK6vYa/Y2JFim70uTPOHb68pJQ1ouWJyg1id09FzYinAQS6Iidi3zKs9xh5Hjeybd7hdj/hTnYQJ4gdInfsg1JeBNyPiopqnQCJ9D4Jb4AavGG79ojo9qEvPxCKUNEoWESfegE35L6LDB/JnQqqHTw7+Duw27h82WIxy3evG4jOwdcpXOukTOhqP3Hbh8Utpey6OuRZsYeq87sJ6YAfs99ufTINDONnf4Qqe0D7fI3zfKPus43Un/Oxol3tPVeKGdI8z1uLwFmrODXMqSEg1DibtVb3ujz6gOwNz8G5xD8WnDdjKDbKPnk4eYl7snr4F6f/WCj/NUQJgpceeF+IM=
+X-Rspamd-Queue-Id: 5DB411A0008
+X-Rspamd-Server: rspam07
+X-Stat-Signature: d3b1oh7ohpgxooowxcbzt5t3drimitgx
+X-HE-Tag: 1786987352-275109
+X-HE-Meta: U2FsdGVkX193ICfCURc0ZvTOTs9khaPTLX8lkhh1CF1dLPRRqdDubkuzYv1khtvR0RF+IOnWtXJ5cZQgAdcja9+N6JmOnGLIIcpnOkZHXzgMPIaHsO9ltXdCaElCvEv+fRrZs+3QEhZsTLHElZzIDCTCf3IjxshobV63XqCDWA+K9s3SPegZoACNj8aeWUaxRQ0qcFmaK+gUmtlheJvDX+95Nub63VUKe+dJbxLsqjDkhE3j5UmIGxrCsCLFbvK+1NrUY1brILr6u/db4pMVZlEiV5CmR2x+kKN2ZVkvO9pteRLjSQ+HlzELzc+1L8RzDfHtQMzc2qCiMDbV8h6pxQmxjNjY0EIhmxJY0rxaoEgBXMYgD94aZt00N61npp0d4+i2AI+rvMN4w1N5Pzyzmy8yDkavvxBQ6HwkTH27emCqyI0qfg8SOBusyK8AegUNM5v1uhc6FiIqq1VidFrQ51tnIjVXvX9DtWyJKYtcoAgfYekABpGdyhMuCSEFPLQZVwFWZWMln1RQNoPERuD5lGmnC4qWx9mjAgGtGfTux7rT/DeKKDbthwI54QnTVr1vNjsPl9fpZPKZuakWYxX6NiqQM20hCQ1a9iREiyZfbpfWMq5SlB9DMhtjFLO234DN5UlnFqhZiOtMiEkrI5DpDqf3VR/68gFSeqOHoFTZ2FKj3jigLWqBoCtr+z/Kfb9DJO7ddPSXUKyMesvtK1uIojrhRV0L+a2E4Dk6UjcuzD2CWCVvL9aPhQq92pmbfqvKr301noTrTdePXsjwqdNjrsJ1bEPI/8McyyOkaYpFgGSMuWPGBkSaSSkUbRbvZiIf3iHA4+4WvIoC1mxzbAuJTMVmJJsULv6tcCeIG99v7o820Ueyvw6u1qR9GvxhN5MlN+BD7jw4wjmc5ZU7f7qoPFsvEKNuJro4sPgHgKohLIizJhyL7VeKBcU+dgr+Ip0TJrEXcRryUCh1S61RENV
+ U03VMk3r
+ 1OsveiTCQKzikoiLmJDFQ6TjzBFB8UA0E/gD96DmqcxwGlEayKat8YVZY+Ea2eOCkjq61r0jJMRmZM/IG1zSxGR7oYTEt1mU1kPdi5iFmeM3oIsueu7k7Qf9Q5XdOVkxs4EojVGh+r45rVmFymADz8/lcLlNBLcumHIcqQpAoX76NzA0Bqah+huvkq739sQCPZ8ipjnEbSfJagajXy04uE194tOYvSGHk9yzkgdHmyLWFBZM+y4rCR2bb5PgTooT7Kcag4ikxtFe8xruxzNZlDGV+KEZaBie4tmBGFC8PZ+isShbi88gZJQ1f3SquzwVEpw5H99BFAfw0h6st40FWyyEH+3TtQYmHwqhrVlsTk1prLZyi046YMnqoqg8yFa7u8ZV4nbQwWIPfyJxbEbgD6sSyUCFm6jyYvO5jcZ1+E27/35wZTZBIauuNcvW86RwcK1PZKrfwmqCyvooEQ0Z/8MZH2siNEmakHuHZ/wdvsYR+BgcLHgLng+Lw1fY7m12VttZlXsjATP80VBjIugtWoPjGYp9goCBlb9VwLEVRTacueKOXsonG8tDU/01J49EUOIK+T+tsn2hnt6w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,217 +132,101 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Jim Cromie <jim.cromie@gmail.com>
 
-Embed a struct folio_scratchpad inside struct nftables_pernet to support
-variable-sized region allocations and O(1) bulk teardown for Netfilter
-batch transactions.
+Embed a struct folio_pool inside struct bpf_verifier_env to allocate
+transient bpf_verifier_stack_elem frames using direct-map large folios,
+releasing all frames in bulk at the end of bpf_check().
 
-Route nft_trans_alloc allocations directly to folio_scratchpad_alloc_bytes(),
-releasing all transaction objects in O(1) bulk via folio_scratchpad_free()
-during commit/abort cleanup workers.
-
-Controlled in-kernel ftrace function profiling on 10,015 netfilter batch
-transaction allocations demonstrates ~12% faster allocation and ~7.6%
-faster destroy worker teardown compared to standard SLUB.
+Use folio_pool_alloc_obj() to preserve strict type specificity at callsites.
 
 Signed-off-by: Jim Cromie <jim.cromie@gmail.com>
 ---
- include/net/netfilter/nf_tables.h |  3 +++
- net/netfilter/nf_tables_api.c     | 51 ++++++++++++++++++++++++++++++---------
- 2 files changed, 43 insertions(+), 11 deletions(-)
+ include/linux/bpf_verifier.h |  3 +++
+ kernel/bpf/verifier.c        | 16 +++++++++++++---
+ 2 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 3be612145c13..b4a6cc1f46af 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -1941,6 +1941,8 @@ __printf(2, 3) int nft_request_module(struct net *net, const char *fmt, ...);
- static inline int nft_request_module(struct net *net, const char *fmt, ...) { return -ENOENT; }
- #endif
+diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
+index 39a851e690ec..43f5f0eaffac 100644
+--- a/include/linux/bpf_verifier.h
++++ b/include/linux/bpf_verifier.h
+@@ -898,6 +898,8 @@ struct bpf_scc_info {
+ 
+ struct bpf_liveness;
  
 +#include <linux/folio_pool.h>
 +
- struct nftables_pernet {
- 	struct list_head	tables;
- 	struct list_head	commit_list;
-@@ -1949,6 +1951,7 @@ struct nftables_pernet {
- 	struct list_head	binding_list;
- 	struct list_head	module_list;
- 	struct list_head	notify_list;
-+	struct folio_scratchpad	trans_scratchpad;
- 	struct mutex		commit_mutex;
- 	u64			table_handle;
- 	u64			tstamp;
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index af357f6c5070..8b9e0c905d84 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -173,12 +173,17 @@ static void nft_ctx_init(struct nft_ctx *ctx,
- 	bitmap_zero(ctx->reg_inited, NFT_REG32_NUM);
- }
- 
-+DEFINE_FOLIO_POOL_STATIC_KEY_PARAM(nft_trans_scratchpad_key, trans_scratchpad,
-+				   "Toggle nf_tables transaction folio scratchpad allocator");
-+
- static struct nft_trans *nft_trans_alloc(const struct nft_ctx *ctx,
- 					 int msg_type, u32 size)
- {
-+	struct nftables_pernet *nft_net = nft_pernet(ctx->net);
- 	struct nft_trans *trans;
- 
--	trans = kzalloc(size, GFP_KERNEL);
-+	trans = folio_scratchpad_alloc_bytes(nft_net, trans_scratchpad, size,
-+					     __alignof__(struct nft_trans), GFP_KERNEL);
- 	if (trans == NULL)
- 		return NULL;
- 
-@@ -194,6 +199,18 @@ static struct nft_trans *nft_trans_alloc(const struct nft_ctx *ctx,
- 	return trans;
- }
- 
-+/*
-+ * nft_trans_free - release a transaction object.
-+ *
-+ * Scratchpad-backed objects are not individually freed; they are reclaimed in
-+ * bulk by folio_scratchpad_free() at batch commit/abort boundary.  Kzalloc'd
-+ * objects reside on slab pages and are released immediately via kfree().
-+ */
-+static inline void nft_trans_free(struct nft_trans *trans)
-+{
-+	folio_scratchpad_free_elem(trans);
-+}
-+
- static struct nft_trans_binding *nft_trans_get_binding(struct nft_trans *trans)
- {
- 	switch (trans->msg_type) {
-@@ -219,7 +236,7 @@ static void nft_trans_list_del(struct nft_trans *trans)
- static void nft_trans_destroy(struct nft_trans *trans)
- {
- 	nft_trans_list_del(trans);
--	kfree(trans);
-+	nft_trans_free(trans);
- }
- 
- static void __nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set,
-@@ -519,8 +536,10 @@ static bool nft_trans_collapse_set_elem(struct nftables_pernet *nft_net,
- 	/* krealloc might free tail which invalidates list pointers */
- 	list_del_init(&tail->nft_trans.list);
- 
--	new_trans = krealloc(tail, struct_size(tail, elems, nelems),
--			     GFP_KERNEL);
-+	new_trans = folio_scratchpad_realloc(tail,
-+					     struct_size(tail, elems, old_nelems),
-+					     struct_size(tail, elems, nelems),
-+					     GFP_KERNEL);
- 	if (!new_trans) {
- 		list_add_tail(&tail->nft_trans.list,
- 			      &nft_net->commit_list);
-@@ -600,7 +619,7 @@ static void nft_trans_commit_list_add_elem(struct net *net, struct nft_trans *tr
- 		     trans->msg_type != NFT_MSG_DELSETELEM);
- 
- 	if (nft_trans_try_collapse(nft_net, trans)) {
--		kfree(trans);
-+		nft_trans_free(trans);
- 		return;
- 	}
- 
-@@ -3068,7 +3087,7 @@ static int nf_tables_updchain(struct nft_ctx *ctx, u8 genmask, u8 policy,
- 
- err_trans:
- 	free_percpu(stats);
--	kfree(trans);
-+	nft_trans_free(trans);
- err_hooks:
- 	if (nla[NFTA_CHAIN_HOOK]) {
- 		list_for_each_entry_safe(h, next, &hook.list, list) {
-@@ -7636,7 +7655,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 	return set_full ? -ENFILE : 0;
- 
- err_element_clash:
--	kfree(trans);
-+	nft_trans_free(trans);
- err_set_size:
- 	if (!(flags & NFT_SET_ELEM_CATCHALL))
- 		atomic_dec(&set->nelems);
-@@ -7904,7 +7923,7 @@ static int nft_del_setelem(struct nft_ctx *ctx, struct nft_set *set,
+ /* single container for all structs
+  * one verifier_env per bpf_check() call
+  */
+@@ -907,6 +909,7 @@ struct bpf_verifier_env {
+ 	struct bpf_prog *prog;		/* eBPF program being verified */
+ 	const struct bpf_verifier_ops *ops;
+ 	struct module *attach_btf_mod;	/* The owner module of prog->aux->attach_btf */
++	struct folio_pool state_pool;	/* pool for transient state nodes */
+ 	struct bpf_verifier_stack_elem *head; /* stack of verifier states to be processed */
+ 	int stack_size;			/* number of states to be processed */
+ 	bool strict_alignment;		/* perform strict pointer alignment checks */
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index fdc5fbb1f78c..8a9e66ce4dc8 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -1725,7 +1725,7 @@ static int pop_stack(struct bpf_verifier_env *env, int *prev_insn_idx,
+ 		*prev_insn_idx = head->prev_insn_idx;
+ 	elem = head->next;
+ 	bpf_free_verifier_state(&head->st, false);
+-	kfree(head);
++	folio_pool_free_elem(head);
+ 	env->head = elem;
+ 	env->stack_size--;
  	return 0;
- 
- fail_ops:
--	kfree(trans);
-+	nft_trans_free(trans);
- fail_trans:
- 	kfree(elem.priv);
- fail_elem_key_end:
-@@ -8287,7 +8306,7 @@ static int nf_tables_updobj(const struct nft_ctx *ctx,
- 	return 0;
- 
- err_free_trans:
--	kfree(trans);
-+	nft_trans_free(trans);
- err_trans:
- 	module_put(type->owner);
- 	return err;
-@@ -10253,7 +10272,7 @@ static void nft_commit_release(struct nft_trans *trans)
- 	if (trans->put_net)
- 		put_net(trans->net);
- 
--	kfree(trans);
-+	nft_trans_free(trans);
+@@ -1743,6 +1743,8 @@ static bool error_recoverable_with_nospec(int err)
+ 	return err == -EPERM || err == -EACCES || err == -EINVAL;
  }
  
- static void nf_tables_trans_destroy_work(struct work_struct *w)
-@@ -10275,6 +10294,8 @@ static void nf_tables_trans_destroy_work(struct work_struct *w)
- 		nft_trans_list_del(trans);
- 		nft_commit_release(trans);
- 	}
++DEFINE_STATIC_KEY_TRUE(bpf_state_pool_key);
 +
-+	folio_scratchpad_reset(&nft_net->trans_scratchpad);
- }
+ static struct bpf_verifier_state *push_stack(struct bpf_verifier_env *env,
+ 					     int insn_idx, int prev_insn_idx,
+ 					     bool speculative)
+@@ -1751,7 +1753,9 @@ static struct bpf_verifier_state *push_stack(struct bpf_verifier_env *env,
+ 	struct bpf_verifier_stack_elem *elem;
+ 	int err;
  
- void nf_tables_trans_destroy_flush_work(struct net *net)
-@@ -11244,7 +11265,7 @@ static void nf_tables_abort_release(struct nft_trans *trans)
- 			nf_tables_flowtable_destroy(nft_trans_flowtable(trans));
- 		break;
- 	}
--	kfree(trans);
-+	nft_trans_free(trans);
- }
+-	elem = kzalloc_obj(struct bpf_verifier_stack_elem, GFP_KERNEL_ACCOUNT);
++	elem = folio_pool_alloc_obj(env, state_pool,
++				    struct bpf_verifier_stack_elem,
++				    GFP_KERNEL_ACCOUNT);
+ 	if (!elem)
+ 		return ERR_PTR(-ENOMEM);
  
- static void nft_set_abort_update(struct list_head *set_update_list)
-@@ -11468,6 +11489,8 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
- 		nf_tables_abort_release(trans);
- 	}
+@@ -2275,7 +2279,9 @@ static struct bpf_verifier_state *push_async_cb(struct bpf_verifier_env *env,
+ 	struct bpf_verifier_stack_elem *elem;
+ 	struct bpf_func_state *frame;
  
-+	folio_scratchpad_reset(&nft_net->trans_scratchpad);
+-	elem = kzalloc_obj(struct bpf_verifier_stack_elem, GFP_KERNEL_ACCOUNT);
++	elem = folio_pool_alloc_obj(env, state_pool,
++				    struct bpf_verifier_stack_elem,
++				    GFP_KERNEL_ACCOUNT);
+ 	if (!elem)
+ 		return ERR_PTR(-ENOMEM);
+ 
+@@ -19789,6 +19795,9 @@ int bpf_check(struct bpf_prog **prog, union bpf_attr *attr, bpfptr_t uattr,
+ 	if (!env)
+ 		return -ENOMEM;
+ 
++	folio_pool_init_key(&env->state_pool, sizeof(struct bpf_verifier_stack_elem),
++			    get_order(SZ_64K), &bpf_state_pool_key);
 +
- 	return err;
- }
+ 	env->bt.env = env;
  
-@@ -11499,6 +11522,9 @@ static int nf_tables_abort(struct net *net, struct sk_buff *skb,
- 	else
- 		nf_tables_module_autoload_cleanup(net);
- 
-+	folio_scratchpad_free(&nft_net->trans_scratchpad);
-+	folio_scratchpad_init(&nft_net->trans_scratchpad, 4);
-+
- 	mutex_unlock(&nft_net->commit_mutex);
- 
- 	return ret;
-@@ -12142,6 +12168,8 @@ static int __net_init nf_tables_init_net(struct net *net)
- 	INIT_LIST_HEAD(&nft_net->binding_list);
- 	INIT_LIST_HEAD(&nft_net->module_list);
- 	INIT_LIST_HEAD(&nft_net->notify_list);
-+	folio_scratchpad_init_key(&nft_net->trans_scratchpad, get_order(SZ_64K),
-+				  &nft_trans_scratchpad_key);
- 	mutex_init(&nft_net->commit_mutex);
- 	net->nft.base_seq = 1;
- 	nft_net->gc_seq = 0;
-@@ -12186,6 +12214,7 @@ static void __net_exit nf_tables_exit_net(struct net *net)
- 	WARN_ON_ONCE(!list_empty(&nft_net->module_list));
- 	WARN_ON_ONCE(!list_empty(&nft_net->notify_list));
- 	WARN_ON_ONCE(!list_empty(&nft_net->destroy_list));
-+	folio_scratchpad_free(&nft_net->trans_scratchpad);
- }
- 
- static void nf_tables_exit_batch(struct list_head *net_exit_list)
+ 	len = (*prog)->len;
+@@ -20055,6 +20064,7 @@ int bpf_check(struct bpf_prog **prog, union bpf_attr *attr, bpfptr_t uattr,
+ 	bpf_clear_insn_aux_data(env, 0, env->prog->len);
+ err_free_env:
+ 	bpf_stack_liveness_free(env);
++	folio_pool_free(&env->state_pool);
+ 	kvfree(env->cfg.insn_postorder);
+ 	kvfree(env->scc_info);
+ 	kvfree(env->succ);
 
 -- 
 2.55.0
