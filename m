@@ -4,116 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2CE2C5DF70
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 18:35:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFF2AC5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 18:45:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D63286B089C; Mon, 17 Aug 2026 14:35:36 -0400 (EDT)
+	id F22C76B0107; Mon, 17 Aug 2026 14:45:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CED8B6B089D; Mon, 17 Aug 2026 14:35:36 -0400 (EDT)
+	id EF9BF6B0108; Mon, 17 Aug 2026 14:45:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB4366B089E; Mon, 17 Aug 2026 14:35:36 -0400 (EDT)
+	id DE8186B010A; Mon, 17 Aug 2026 14:45:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 874FE6B089C
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:35:36 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7BF7A80C4C
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:35:33 +0000 (UTC)
-X-FDA: 85111614546.19.ADB8F2E
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B3B8B80005
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:35:30 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="vX/A6JUR";
-	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786991731;
-	b=I33JvGT2V9hOiDTIxlsoU5bos9oMMb+zwbePtfWeE+PGdL87YvC3pHS06n6LWJ/DJPY78Z
-	EPf1+nsfF7ZOWZZeytaaZHGcoKCMUNCsVOlYePAfPHpwJfWOA7Lds3OTgg0gJRptV21c1H
-	EAsBjzMTrA8eU1RxiYTQDMKZb4vjMqI=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="vX/A6JUR";
-	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786991731;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A6D266B0107
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:45:28 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 24DFB1C19F3
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:45:28 +0000 (UTC)
+X-FDA: 85111639536.22.C0CE427
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010015.outbound.protection.outlook.com [52.101.193.15])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4A61180006
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:45:25 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=JhPj5gRy;
+	spf=pass (imf02.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.15 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786992325;
+	b=wBuHqxtl0p5x5nzZJFVoZn1MH4m2qNyq6knsHjd/HTwjhDV+J3WvysfesguafSVLa+4rWr
+	FnV0u3nIHfkWfozhJHDLmgmX/Bqm8P3N3RgLrsyARvuXi00/ALEIqTOOJM12YckYkCm6aA
+	3ToAOIX/b8EcLZCbmorWm4uGjzt/5OM=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=JhPj5gRy;
+	spf=pass (imf02.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.15 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786992325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7shnazFeFjFhvWi4xctYX+yRJGMgipdv+99SjZFKDrw=;
-	b=EEeQAmT+/utEQtjpFw+zMV+OzRhmMYgCpH0CYMC96ABw52zNjH3ou0X0AYQ74VtzVkZ0+q
-	N5RaRzNcW541KPhGFqp4wxqROfFB+Nh3tk6n4ITfeGj/bzqW58VYTq3AlT7jK0u2QFaqoM
-	FNFGkN2srU35gbjy/DtjWJJxwgBK2Fs=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=7shnazFeFjFhvWi4xctYX+yRJGMgipdv+99SjZFKDrw=; b=vX/A6JUR7JJc1Cu7W/sJL7JG1D
-	frHOMMcqPcHEgd0Vrbuv+MMSslzyzlbfX/oydkNbZJQmgOXpZY8Jepof4R0FEhzDF0E7SO4eFytDi
-	XnxMcciSgsLCtG0lINrYWr5PraWLmFYk/XpH7OQ6XXENzduwLndKOX+NMGo3YoSB/r6rDUpB8GXCI
-	q5fCiEiIKEWeZZ4WvVQ9aB8ynh9wREs5USUSOT4SRRBtNZtwZN6xMYm7oXugC6qkfKsnY8j4hqucM
-	0zP1hqOGmWQlLwWOBOoHvvl8WXxIvvGMQVmY6WbRsvfH7b9o4Oca/WhxBGBLXqGaUJavW9up0Cjg4
-	8P1soEHQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1ww2Ak-0000000Ad5q-0PAP;
-	Mon, 17 Aug 2026 18:34:58 +0000
-Date: Mon, 17 Aug 2026 19:34:57 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: jim.cromie@gmail.com
+	bh=hSJZk0qPBkzQbH2Nx9UCLgsZ7a9CzSDfMBMTsirouaM=;
+	b=uWqogHIqD8/SEBYecDCwzTovn4O5x3hwR2e2XVv7U6PdOwAu5wU2kW2ZDHo1gbCjtMLEQV
+	aI6K9DFPtuAGoeOFV7xNJ0FLeyvu0sCfUdtacVZbc8yMrpK9dB3XV6YBGptXmewB43O9VU
+	0GPp88utfA2uYtsCBH2mQM0TKDBCJnE=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CvA0d4YR24213WeD7jV0ad3O1qmqYiZhZvOYHAiSXyzOJnCKZSIlsLnvMH5zFarifyf96sxrhQqxmYqTNYbjKbRQXB2Hg74fNV4mLcGLGVSGFryd5XmPnSbC0SccUxWHGu9iApjp8JNj9odr5RZCkqMDK7ulPkiwZyhW+4iC4SNzD8akZXOI2FQ+pWl6+FmGaj8xN7/R2GM7MT7mAAImQgQun+LXcWx2a6N1JveTEBJ9WVWjwv9Gc3wTR+pXa6guUQErf61e99Ms43/AOJ0Hm+5aDJV1k/HiDRqDdS6EyPxOjoqKulay7od84dVsZziqrPu7Xxp2wKn1QRpK/UjUIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hSJZk0qPBkzQbH2Nx9UCLgsZ7a9CzSDfMBMTsirouaM=;
+ b=ttG2Kl1cATUBUP0/bWqxIQcrup0gYue3Zg5xes8w/SOIOygJ5gV3xa0T+C2id23Tdrg3Mewcj61ikhgySd+jxyoR5sTq+mXWqAP+glvxgA6/eaSncNAQvv6hAjDbBY3hqpe2E2KDb7Jw9P07lYuckh66swkpWVnUnq3SJT0iCOKUHP+7AzTcntBqRN0+0/hS/B81KjBOsu0HuP+o31ImuIH0UREgovVsfJxNRnQ677+d4ip6kH9Yj7OC7zh/i7q0sEKSYgHIg9UYzVbB5Rjag1K1BMCZ7kthGfTmmCBx24JixfeafsIb7CdlPdVcrIjen+ov4MVfV5wIumSSpX8IEg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hSJZk0qPBkzQbH2Nx9UCLgsZ7a9CzSDfMBMTsirouaM=;
+ b=JhPj5gRyazoDOS1i0TT1pJrHAKj7IX9NEw9/fUfoqHBx5NsHZElmQy2L24nvLH8BLJ2U7HxNSTJfoBVDiW2Mx7+5WZTwfFHEfDuIckMI7r8NXJCkaP3nRV51zEI1fYoxhGw7GDvR/qfc8XauZ2q/78PENILgWqXkEkkkZ2Gc/bQYhdyBSkc8SqIwf50yNRwNTZ0eMxWdAVW5QaJYmTbNM8eJL+A7jLdQfhJUcDjF52wBVXA2d32aWMYxFDfGwfbvwcUrAkuGHeXthDexBaDeb7rEYFGpLfPGraMgMxCPhJhszhnC2BWpwK28521FCZeIsijDiaGd0gvXd12gTwXbpw==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by IA0PR12MB7529.namprd12.prod.outlook.com (2603:10b6:208:431::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
+ 2026 18:45:21 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
+ 18:45:21 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Alan Stern <stern@rowland.harvard.edu>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Boqun Feng <boqun@kernel.org>, netfilter-devel@vger.kernel.org,
-	bpf@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	coreteam@netfilter.org, netdev@vger.kernel.org,
-	Byungchul Park <byungchul@sk.com>
-Subject: Re: [PATCH 0/9] lib/folio_pool: Direct-Map Large Folio Pool &
- Scratchpad bump allocators
-Message-ID: <aoNUUTG2DPS3kGzp@casper.infradead.org>
-References: <20260817-folio-pool-v1-v1-0-0c1d230aa3af@gmail.com>
+ syzbot <syzbot+805630f1453e490427fa@syzkaller.appspotmail.com>,
+ apopple@nvidia.com, byungchul@sk.com, david@kernel.org, gourry@gourry.net,
+ joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ matthew.brost@intel.com, rakie.kim@sk.com, syzkaller-bugs@googlegroups.com,
+ ying.huang@linux.alibaba.com,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>
+Subject: Re: [syzbot] [mm?] WARNING in ep_write_iter
+Date: Mon, 17 Aug 2026 14:45:19 -0400
+X-Mailer: MailMate (3.0r7024)
+Message-ID: <6FC11E12-9428-4975-B135-E24805C2D9BF@nvidia.com>
+In-Reply-To: <2bf01548-723c-465d-8368-247a814f61eb@rowland.harvard.edu>
+References: <02c2e5c7-0d78-4763-90ff-75fa87105fcb@rowland.harvard.edu>
+ <DKQS9ADYVLN1.246LJPQ9QQYVP@nvidia.com>
+ <9787b33b-b30e-4c5e-a0ee-7f14515c7166@rowland.harvard.edu>
+ <DKQU9SQUIKDR.2KEZZPONJ1IJ7@nvidia.com>
+ <20260816194213.0e813ed338144ebc81ed4050@linux-foundation.org>
+ <472add4b-f16a-4b87-bbc3-98c8aa385cf5@rowland.harvard.edu>
+ <EDCC14FA-F7D8-4F72-B780-37D09E26D16C@nvidia.com>
+ <EECC6FB3-7559-4D22-B9DA-33E30E5EC181@nvidia.com>
+ <7deabd9c-04d5-4a45-8b8a-39929c046152@rowland.harvard.edu>
+ <A2BA0883-6B5D-4AB1-A7CF-6B9BDF27F439@nvidia.com>
+ <2bf01548-723c-465d-8368-247a814f61eb@rowland.harvard.edu>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-MS-Reactions: disallow
+X-ClientProxiedBy: MN0PR04CA0005.namprd04.prod.outlook.com
+ (2603:10b6:208:52d::9) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260817-folio-pool-v1-v1-0-0c1d230aa3af@gmail.com>
-X-Rspamd-Queue-Id: B3B8B80005
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|IA0PR12MB7529:EE_
+X-MS-Office365-Filtering-Correlation-Id: eec2ef35-8434-4b3e-49c3-08defc8fb0da
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|366016|10067099003|56012099006|5023799004|11063799006|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	XmNbC7lMvUvCsywmGMrWG3oD1zokZHNVFxtvR1KlVH7HAgrrWwe7Arhv0KIcqd8Ylb9f5qqIU8/PyLQ2uMKHfHQ/tPAuc+NdCENerraZEGYvZ2MK9BTd+qzAEIUkpTbV3spLqnUpsFJeTQL2s/NPDip3ELdFuvtMz1g49qCLXVkHRwTM5e+y7czyl8Xt0VRXSbEhjVydE/dY1Zz+710X5pdZbo2FeBqUa+ieh/eBf8gWJY9XM6pNak8+nwAMwgo4Bl9ziCRJYeHE0mx2G3Uqe/cgUJozk4mP4WQzrJ/SQP6FsjCaiP787ARyKLL2R9MfEwQW76l2D72QrifjBXjXP69G2UxfUjDt8WnyIZ7ArrgR7BYcODi/SghVEyOdlfJc22kpjptgW9k+1rAOrnwswoX9MLqaI3KN1afDPn6zVRIEwH/+eAa0U8tFNaHHvyWckzMvcvBbtDiDWijDqFljHlhqstHBxdkamC/rJ7kx4jERcQ6SvGnIf02I8POj00wykDMXRpeNASbHrPRRRE3qIBS459XUHx0H/6xoqQPqZ7lto8ogw95JbeKY8SzJoRUVNWte6ruQk/IFI5GZXVQ5GuqG2HnYas0PSqB48cbNs83jt0U7qS8617o9CdU3RaVYDNN0RFF3rWac4fKhgQ0xTOBHRWrKHdFmv+WADHulqY8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(366016)(10067099003)(56012099006)(5023799004)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?v/6hvJFrV6TUub27uC5RkoIKlT15snVPWtegKouxg7InMuBStd2LmgMpXH31?=
+ =?us-ascii?Q?D+V1DcvfRDSpdcAa7ShUwxQzBX1vm3oL0QRfSEsG/WP2pXaWWDE7Vh1yJXI+?=
+ =?us-ascii?Q?Ki8gxo6rgSVp1bJMvPaMQCiGxdnkG2wTZ9eTMryWCRgbyGh/rk286AZEf0yc?=
+ =?us-ascii?Q?zKgZ7dGoZRbesAed7lQX7JF8SGnPVEd5li7lqC8pbd8ZEPALWGdj0zF75Abp?=
+ =?us-ascii?Q?pZmM0u/joscnAbMj3Gau5mAjFKS6lFLzu8dcwk5ojy1XuV96IYqwJBpFr7jT?=
+ =?us-ascii?Q?wvuFW8jjo5w1olXywza6EQ0SRJSxcHscdLiPBkBSlofAZLGMDEqpfnz+3sMv?=
+ =?us-ascii?Q?kJ8wle51lNmmb34xM6bur2vi4/mOz1866vd3xWB4nPivL542aMQgJ7hzYmnc?=
+ =?us-ascii?Q?k9H3/L+Z7+KZdmzcWtIViYnZnxUOEP9PcZSHKD+3zhH2sInWW+XK4s6cR5lN?=
+ =?us-ascii?Q?Jlpok9W//rud1qKofUjm4qMHlBd6M5mHGIvfZHlDwvuv0c2Cb3h54bCCy4qR?=
+ =?us-ascii?Q?T1TIid3jlxsFqPtG8TrjX83mbAeQnWyz1siKN/0lulAuecPutJAQGnD8UmPP?=
+ =?us-ascii?Q?7kURpgeuHwXGbI2Azb9+G8+TlO5mSX2yhsHpk649Z83dtmbu0tGO+wMegDvd?=
+ =?us-ascii?Q?you8sxjk4Kp00ahlH9/J3Xh0uZ2b1SkrqGQXcWx+yYZFFjkchVuFVhcOvaQz?=
+ =?us-ascii?Q?fOoN2kT/AxZrWWIxjgmMH2qMoVYuDTNloxLhbYIMgXGXSOoZ0stq6IUHFjNG?=
+ =?us-ascii?Q?LUStDiO2Rnd1okfwkDdKzwD4XG2rTEFu2jDeqlDB3jMjmeA2D1QWl3oywCUH?=
+ =?us-ascii?Q?YOmT8Hs7iipTj55UlPFdenB+/vPo3cZLQADwhAJ8CRuZQ427Tb2TGvznzILf?=
+ =?us-ascii?Q?5yy9O5kE68qL9BvLfnVR9UVZ97E8R4jGdNVz0kPx+TX5hxqJAEJrvfpNsYN9?=
+ =?us-ascii?Q?Wy68vGNJVYXM/RIzssE4rCxxAYnW0ag7B6AV9FVzD3J2wKzuVWcsrLN+Qrtu?=
+ =?us-ascii?Q?BcLY299RL9qsnf2BAOqTAsN26a5y6j1+Dp/li0z9w4fWQL6K7ruIF4RHojYh?=
+ =?us-ascii?Q?yuQFpkpUB+3/SWm14ZXfcz2qpgtpk+/WmY05Sfl+3+fBtceq0LNeqBnWrncB?=
+ =?us-ascii?Q?OeoghOHKe+bsqLLE75AlTwodht4bwwHmnN0yI9MgFzvh5M3Ag0jgqD5L0E4F?=
+ =?us-ascii?Q?QyMqHxRAe2mResjcthiKLNEaFxNOpkfYpCUWUWv0L1B0U7uJjAkgogs/6VoQ?=
+ =?us-ascii?Q?rGl95U2mHe16x15mKfCg7GCA1IsScWd1WAfhKqpsSZOxZ8vQvbLYqtRNLB5S?=
+ =?us-ascii?Q?X6YWmrNaL0NRAKv8aJCDjnVqrlRP1/VlxaMv9aKM4ES72Lbt+nLNgFERNgOC?=
+ =?us-ascii?Q?Y+MRu+DiAmg9+OYL8sSIYL9W/BUzCj7ryp8bxrON8Wt6tf/o7v1DLrxSOIU4?=
+ =?us-ascii?Q?lk0vH2CeTM9JNZRDsrIK45E1aMK48IItvoqj/4N45WrJqF6AMCswNZa0MyWC?=
+ =?us-ascii?Q?lmpnH510o1w5k7mBKLQIbBySmzMTtEGzdl0YMRVQ7gmbwko1pIE6e55uxo8J?=
+ =?us-ascii?Q?uCdt40TKo6MmNI8G+RjeYBeo4vIIttZscAtlrskNXInN4jcuZ8iPA+IboSQm?=
+ =?us-ascii?Q?t/WWetNPPYSLFlMXiM6bLuStL3Grd7+yVuaiKhDJW1HZQezAYSexZRog9iYb?=
+ =?us-ascii?Q?E07JCI6xm6WWzHcJmDHgR/ZVPr8H8WjW6GxZAIZ3LsVFPUuaBRiIB12R5n+e?=
+ =?us-ascii?Q?uLTfSelX3A=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: eec2ef35-8434-4b3e-49c3-08defc8fb0da
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 18:45:21.2500
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: v7rVCNOWtdhVk67iSjivZBgnvNxI3KMLifwfmK6emUe6m9GTxyjkliVJfPsMK4/G
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7529
 X-Rspam-User: 
-X-Stat-Signature: 66888811863q3bg7ospqdy7w9e3enh96
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786991730-58407
-X-HE-Meta: U2FsdGVkX19MvyECaVZktMXkGN9rnVVhBS0afN2fwLBxBA/zDaNXQo3S9sn6fLnHoXPA+YlM33Qf81Pcxo611wL5msuQg7W3UFGz8vv5IcB43+ZOuZsYTCTWWOPjz1bzCeDyBU1yQQA1NOTI5gI9CUPPjBZknqSX8GRw0X5+3GNQeda+SQjCSyPJrnatiFG0SULlHxSq1lw07kL7Hpp/F82hSRlphPCvV7exvYkjM5ThLWd6cuaL/0Lmaloa6iQAiRKkK8W6WaJ1G8CdeDoc8JmYWI/s2hD85FCX7P2/dDvvq6Z9oT3UYPAxRj9FmtX8yqB1QnE1kN0SNw0zfTjzCKomgyqvinfkcTNUaSrigjoqRCqyqqkrZpOiFWrZKsG+dICG+buPycEeD0whIGzZ157LEpX+yL8QFiTSVK2F2rCxAhPhbKxYvL4549yUKgwewFprGVex70gShUzcgFOFy7aW72yvtWMEQhESnZqntaxgG7y8cjqf5W/lFGgRspkaRug7/3cOH5g3Frw9AaOTdtglkFBuxGv8g1vpQYHLuo0npuamErvfGixgFGxgCMBkZtJHPj8+igJXg37OuSRmolYhzlmHzXp4VMFtj1lacNUoFxhzX53cALqxmAPGtDqfr/Tu+kpeeFvmr4qM0jsOzFOIzUPbIuhfNs82MnQ4mxVuqaDFfDbyXiA03FSiGUAhWeIScDS76XUom32KKJT4goPY7uCCjaIZAIWVYdEu1x9kISKg0XzK4IxsD13gPb9hwvdTTqa7w5MLEbyfb3QJvvgblICxBU96N4blr6h1Ad2rUU+W5v5jzSLIAWfpFj5YKmdgIniZClcMuXL4epkhu6G9m5YOWO2HPu5MP6+eGivw7wdnytpH+zuGSanA88yYm1pENm3eaVikZgCb95zle2Ek7LF0NgMJhWFj7Y4TCH+nmUC41VYcsW2wnNr6aSDH1mp4YG3IiLk5VZHZ00L
- NLNOt+As
- cGU8LLqn54sOv5KGQ86YCZn7Hv2Sm8XVBbQPcpNg6PEXwlvwAYIFNgTiFz8skaWnziIFowUcVVOFScYjyPvMf9VkkJJY1e7w9b8PAZF/7FneEHOyHCOhfN4PKJ+jCYsX/QP+UT5EVQWfxysncQj4+EldK8oSZebcHmceiSFfKXYFBHHM5GloLcB5kdzqZlARGMkz4ljk6mdj9/0LSQ4cSWRE8/5IsaXX0h2e1t+P2z1/RPV7dkcTj7bsXifROUtb7MJqSTi9+PVvpfCuoI8qU2ZBUZMvnPelVMX5bSdLQDtl6KyTf9a0bLNorE/oR+oxgdue6j9ksENAkiZqDTv330fQ02ysLM6yYk4d5eSvXJpnc4nIp1RaH8u5KQAeL1YFuTA0W2oMiatSYA4o1+4UCL6jb6rpqdDBsKTxlV3PgaXdStMU=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4A61180006
+X-Stat-Signature: rpcsquppbth9nh9tqcmcyu6ponno5ed6
+X-HE-Tag: 1786992325-127569
+X-HE-Meta: U2FsdGVkX1/xAqDWVOuvIv1EO/pGwEDw8AlQ6PTrbnUXEis3d/ex9j2wq8qo7svt4pTvmwwynbwBhJ+A/ppWjP/PdQGbxAVJHJE89oIUFmACahtCYxZnfsQ+FrxXWK2Y6JK8OL9VQLLWEqNdPi52V+lq1MsuKSIhtUUEWHwQ8WVSVQ2i14EPRQ5r67qbbS8fNglgsoI3IYnSu+xj8WpjMII+6HrGgnh83fC8S3C/PesxN/VH2TT9QqHvL8GEwuzfZXhdun83LtOqtUWRG7/U/Jjd8eyol3wUcKbX2Csra77wB6G/N82qPHVJKHRKryd9wwyDkeLqp/EuKFcPAnSabWKAyOpRaB0qjE1H+y29p/wtq6vfRrnLoaO8TKYMtZqU984Wz/QIIl2vZv39FL+mp+F3D4RbjUlSWU4n+BvaG1dnHqFEbVXiikM9Yq1dTtCBtj42IGBdnYTt9+FDOssSyq0BJvj+n2YmK4xq/HBLqumoca8MaqvQhBxgABAAVnHFkalkOb7ZdQfyCFkSwY4C8Gox/IpdLFldW/arKhdiFOC6U6SKsSScHOgTOoU0z0UJWrzOFlkl1EwNC57zCD+9aRHItUUln8jszbNKExZj8EktEO2rBhoUC/e9T4voKHDg2MmblFAK+IBf0KElsIqPLYGjOcBQiQKV9v7v7NzhjeL9G9/S/g4rv+3k7zXQUxwOtLCvwda/Z6aqwoXaMZ96wf33MJQA/U5pjLKkzwqpeeU6Hvi31omJflifyyZziMZeiue7N67s/wO4BhJyKi9aK7ViKAb9dmBzq1MqWT6NCXzlCc6zU/5bNUI3CpCPYCU8PYefkA4euf/ZPVHtqzfLah37WQQboQYLS+zkYTqS7TGPqefgeLRXt+7ZdAlulEd8cBgv47gcywOkptrdgXvzDdRwZG6pvRHk9ZweTFjEax9YABq+qrk7HRC1QbAY5bKGYQlYT4ur2lEwaef7sQ6
+ MI5KJxpL
+ ab2qwugdUCADjYimO0oroKHun3UtwrdWpg5rzN2X1K2rBQHQTAfq7Q1lNMY4XGt3ZA2bUFHN97+sGvp5c8rV/e6EDK7xk4c4hBimQNorfHEdKzQPfMV0eNbQk3MCBYZAOs/Vevbv95fNJAss21SVyj4xuipFnVjuxj1tvYTAmrQm880heHGN1jLvitvyXgHyYCkDreA3rPuWzFzc5Nljilb64Dfbnly+ejtAQlY2XSGIrV4kXpmy36E/30cHaOaqRFr3LeHNFx7KYkdoisVWoczc0LPLAnTM7MSf8sDxF3K17jZsc3wfsv5Pr8dVOC/sD3x5uIRl6JJ/E3taH3K9bf+Etle/EvRt24KDyDxtaj4bemJlIG5PbWJ+CZtL82s48pIw/S1zbAU7vgtcCwvfcZ2VUGvqabdROtlfuqoVJlPO7dlO5dCifa5jyzCwoOjzkcj1/fSQiB1Qfmm8GXwXEZZ/PyUUfhiv2bD31gCsfS1t5+Sve1g1zP0ZO+Exvoi2bsGbkTfBkMsDYqn+93QUy7QBviX1BxiYEkp39T4wuBrlz7uEqP3JpNbwfnqRrl7lNAs6NT+DEON1t/KpgV91dps4SKW+ldNuqyq7QQ0mHZjA67azQ8a54BqDiQJ5fAbLqG6bu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,205 +179,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 17, 2026 at 11:22:14AM -0600, Jim Cromie via B4 Relay wrote:
-> Introduce two light-weight bump allocators backed directly by compound
-> folio pages from the buddy allocator (skipping SLUB metadata overhead):
-> 
-> 1. struct folio_scratchpad - Variable-sized, alignment-aware bump allocator
->    for bursty, append-mostly lifecycles with bulk teardown.
-> 2. struct folio_pool - Fixed uniform-slot bump allocator for homogeneous
->    descriptors.
+On 17 Aug 2026, at 11:37, Alan Stern wrote:
 
-This is an inappropriate use of folios.  Folios are for memory that's
-in the page cache and anonymous user memory, not for general kernel
-use.  They would need their own memdesc type.
+> On Mon, Aug 17, 2026 at 11:22:47AM -0400, Zi Yan wrote:
+>>> Again, I disagree with some of the details of this argument in this
+>>> context.  For instance, if all kernel developers are supposed to know=
 
-But Byungchul is already doing that work.  So you should just reuse what
-he's done.
+>>> that they shouldn't ask kmalloc() for more than MAX_PAGE_ORDER at the=
 
-> These serve 2 kinds of use-cases:
-> 
-> 1: Ephemeral Batch/transaction Lifecycles (Netfilter, BPF, DRM GPUVM)
-> 
-> - Transactional subsystems allocate bursts of hundreds or thousands of
->   homogeneous or heterogeneous objects, only to tear them all down
->   simultaneously at batch completion or error abort.
-> 
-> - Under SLUB: Each descriptor incurs freelist traversal, lock
->   contention, and O(N) kfree() loops on teardown.
-> 
-> - Under Folio-Scratchpad: Allocations are straight-line pointer bumps,
->   bulk teardown is O(1) folio_put(), and consecutive Netlink
->   transactions reuse warm L1/L2 cachelines without buddy lock churn
->   via folio_scratchpad_reset().
-> 
-> 2: Dynamic Long-Lived Graph Scaling (Lockdep)
-> 
-> - Core subsystems historically avoided SLUB by statically
->   preallocating massive compile-time arrays in .bss
->   (e.g. list_entries[32768], 1.31 MB) to prevent SLUB allocator
->   recursion deadlocks.
-> 
-> - Fixed arrays exhaust their limit and permanently disable validation
->   (BUG: MAX_LOCKDEP_ENTRIES too low!).
->   
-> - Under Folio-Pool: Lockdep uses a 4,096-entry __initdata bootstrap
->   buffer for early boot prior to buddy initialization, then seamlessly
->   migrates and compacts all dependency edges into 64 KB direct-map
->   folios at late_initcall.
->   
-> - Permanent static .bss allocation for dependency edges is reduced
->   from 1.31 MB to 0 KB (100% reclamation at free_initmem()).
-> 
-> Core Primitives in include/linux/folio_pool.h & lib/folio_pool.c:
-> -----------------------------------------------------------------
-> 0. struct folio_scratchpad (Variable-Sized Elements):
->    - Dynamic alignment-aware bump pointer with zero padding waste.
->    - API: folio_scratchpad_init(), folio_scratchpad_alloc(),
->      folio_scratchpad_reset(), folio_scratchpad_free(),
->      folio_scratchpad_stats().
->    - Typed macros: folio_scratchpad_alloc_obj(),
->      folio_scratchpad_alloc_bytes(), DEFINE_FREE(folio_scratchpad, ...).
-> 
-> 1. struct folio_pool (Fixed Uniform Elements):
->    - Thin wrapper embedding struct folio_scratchpad for homogeneous objects.
->    - API: folio_pool_init(), folio_pool_alloc(), folio_pool_free(),
->      folio_pool_stats().
->    - Typed macros: folio_pool_alloc_obj(), folio_pool_alloc_type().
-> 
-> 2. Encapsulated Slab Discrimination & Reallocation:
->    - is_folio_pool_ptr(ptr): Direct-map folios are identified via
->      virt_to_folio(ptr) && !folio_test_slab(f), avoiding custom bitflags.
->    - folio_scratchpad_free_elem(ptr): Safe no-op for folio-backed objects;
->      delegates to kvfree() for SLUB/vmalloc fallback objects.
->    - folio_scratchpad_realloc(ptr, old_size, new_size, gfp): Delegates to
->      krealloc() for SLUB objects; allocates a fresh SLUB buffer and copies
->      payload for folio-backed descriptors.
-> 
-> 3. Subsystem Autonomy & Runtime Static-Key Control:
->    - DEFINE_FOLIO_POOL_STATIC_KEY_PARAM() allows maintainers of each
->      subsystem (Netfilter, Lockdep, DRM, BPF) to choose their own default
->      enablement policy (DECLARE_STATIC_KEY_TRUE vs FALSE) and independent
->      module/boot parameters (e.g. lockdep.folio_pool, nf_tables.trans_scratchpad).
->    - Enables isolated, zero-overhead A/B benchmarking and production triage
->      without cross-subsystem coupling or kernel recompilation.
-> 
-> Active Proofs & Performance Profiling:
-> --------------------------------------
-> 0. Virtualized Guest Netfilter Benchmark (KVM / virtme-ng ftrace):
->    Controlled A/B benchmark across 10,025 Netlink transaction descriptors
->    and 5 asynchronous commit/abort teardown passes:
-> 
->    Function: nft_trans_alloc (10,025 descriptor allocations)
->    -----------------------------------------------------------------------------
->    Mode                                 Total Time       Avg / Alloc      Delta
->    -----------------------------------------------------------------------------
->    folio_scratchpad Enabled (Bump)      9,158.02 us          0.914 us    -19.4%
->    SLUB Fallback (kzalloc)             11,366.53 us          1.134 us  Baseline
->    -----------------------------------------------------------------------------
->    Net allocation latency reduction:   -2,208.52 us (-2.21 ms)
-> 
->    Function: nf_tables_trans_destroy_work (5 asynchronous teardown passes)
->    -----------------------------------------------------------------------------
->    Mode                                 Total Time       Avg / Pass       Delta
->    -----------------------------------------------------------------------------
->    folio_scratchpad Enabled (Bulk)     36,065.65 us          7.21 ms      -8.6%
->    SLUB Fallback (O(N) kfree)          39,449.65 us          7.89 ms   Baseline
->    -----------------------------------------------------------------------------
->    Net teardown latency reduction:     -3,384.00 us (-3.38 ms)
-> 
->    Combined In-Kernel Netlink Transaction Lifecycle Savings: -5.59 ms (-13.3%)
-> 
-> 1. Bare-Metal Host Netfilter Profile (AMD Zen 3 Hardware PMU & ftrace):
->    - Asynchronous Teardown: 53.77 ms vs 56.03 ms (-2.26 ms / -4.0%).
->    - Instruction Retirement: 281.29M -> 282.46M (-1,174,062 instructions).
->    - Branch Instructions:     62.94M ->  63.20M (-265,961 branches).
-> 
-> 2. Bare-Metal Host Lockdep Telemetry (Physical Host frodo, AMD Zen SMP):
->    - Pre-Buddy Watermark: 928/4096 bootstrap entries consumed during boot.
->    - Graph Compaction: Migrated and compacted bootstrap dependency edges
->      into folio_pool at late_initcall; bootstrap array reclaimed by
->      free_initmem() (0 KB permanent .bss cost).
->    - Live procfs Telemetry (/proc/lockdep_stats):
->      lock-classes:                          996 [max: 8192]
->      direct dependencies:                  2324 [dynamic: 7 x 64 kB, tail: 17 kB/64 kB]
->      indirect dependencies:               24612
->      all direct dependencies:             81884
->      zapped classes:                          2
->      zapped lock chains:                    173
->    - Active Invariant Validation: Live module unloads exercised modernized
->      zap_class() direct list unlinking across dynamic folios with zero
->      global bitmap scans and zero assertions.
-> 
-> What's Unchanged:
-> -----------------
-> - All consumer object structures, alignment rules, and lifecycle boundaries
->   remain strictly identical.
-> - Memory safety invariants are preserved: individual deallocation is a safe
->   no-op for arena-backed objects while SLUB objects continue to use kfree().
-> 
-> Subsystem Adoptions in this Series:
-> -----------------------------------
-> 0. lib/folio_pool: Core direct-map large-folio pool and scratchpad allocators.
-> 1. netfilter/nf_tables: Pack netlink transaction descriptors into per-net
->    trans_scratchpad with bulk reclaim & warm chunk reset.
-> 2. bpf/verifier: Route verifier stack state node allocations to folio_pool.
-> 3. drm/gpuvm: Route gpuva_op allocations to folio_scratchpad.
-> 4. bpf/syscall: Route generic_map_update_batch key/value allocations to
->    folio_scratchpad.
-> 5. locking/lockdep: Fallback to folio_pool in alloc_list_entry when static
->    pool is full and expose dynamic folio telemetry in /proc/lockdep_stats.
-> 6. locking/lockdep: Traverse adjacency lists directly in zap_class().
-> 7. locking/lockdep: Shrink static list_entries array to early bootstrap buffer.
-> 8. locking/lockdep: Migrate and compact boot-time dependency graph from __initdata.
-> 
-> Patches in this series:
-> -----------------------
-> [PATCH 1/9] lib/folio_pool: Introduce Direct-Map Large Folio Pool & Scratchpad bump allocators
-> [PATCH 2/9] netfilter/nf_tables: Add folio_scratchpad collector to struct nftables_pernet
-> [PATCH 3/9] bpf/verifier: Route verifier stack state node allocations to folio_pool
-> [PATCH 4/9] drm/gpuvm: Route gpuva_op allocations to folio_scratchpad
-> [PATCH 5/9] bpf/syscall: Route generic_map_update_batch key/value allocations to folio_scratchpad
-> [PATCH 6/9] locking/lockdep: Fallback to folio_pool in alloc_list_entry when static pool is full
-> [PATCH 7/9] locking/lockdep: Traverse adjacency lists directly in zap_class()
-> [PATCH 8/9] locking/lockdep: Shrink static list_entries array to early bootstrap buffer
-> [PATCH 9/9] locking/lockdep: Migrate and compact boot-time dependency graph from __initdata
-> 
-> Signed-off-by: Jim Cromie <jim.cromie@gmail.com>
-> ---
-> Jim Cromie (9):
->       lib/folio_pool: Introduce Direct-Map Large Folio Pool & Scratchpad bump allocators
->       netfilter/nf_tables: Add folio_scratchpad collector to struct nftables_pernet
->       bpf/verifier: Route verifier stack state node allocations to folio_pool
->       drm/gpuvm: Route gpuva_op allocations to folio_scratchpad
->       bpf/syscall: Route generic_map_update_batch key/value allocations to folio_scratchpad
->       locking/lockdep: Fallback to folio_pool in alloc_list_entry when static pool is full
->       locking/lockdep: Traverse adjacency lists directly in zap_class()
->       locking/lockdep: Shrink static list_entries array to early bootstrap buffer
->       locking/lockdep: Migrate and compact boot-time dependency graph from __initdata
-> 
->  drivers/gpu/drm/drm_gpuvm.c        |  11 +-
->  include/drm/drm_gpuvm.h            |   6 +
->  include/linux/bpf_verifier.h       |   3 +
->  include/linux/folio_pool.h         | 279 +++++++++++++++++++++++++++++++++++++
->  include/net/netfilter/nf_tables.h  |   3 +
->  kernel/bpf/syscall.c               |  17 ++-
->  kernel/bpf/verifier.c              |  16 ++-
->  kernel/locking/lockdep.c           | 278 +++++++++++++++++++++++++++++-------
->  kernel/locking/lockdep_internals.h |   2 +
->  kernel/locking/lockdep_proc.c      |  16 ++-
->  lib/Makefile                       |   2 +-
->  lib/folio_pool.c                   | 230 ++++++++++++++++++++++++++++++
->  net/netfilter/nf_tables_api.c      |  51 +++++--
->  13 files changed, 837 insertions(+), 77 deletions(-)
-> ---
-> base-commit: 1a7ac48cd3e62f281ce62f8ed89dc2cc8866eaa4
-> change-id: 20260815-folio-pool-v1-cb75c247692c
-> 
-> Best regards,
-> -- 
-> Jim Cromie <jim.cromie@gmail.com>
-> 
-> 
-> 
+>>> risk of provoking a WARN, if this is such an important restriction, t=
+hen
+>>> shouldn't this requirement be mentioned in the kerneldoc for kmalloc(=
+)?
+>>
+>>
+>> kmalloc is the normal method of allocating memory
+>> for objects smaller than page size in the kernel.
+>
+> This means when you are allocating small objects, kmalloc is the normal=
+
+> way to do it.  It says nothing about what you should do when allocating=
+
+> large objects.
+
+alloc_pages() or vmalloc or kvmalloc(). kmalloc() is used if you really
+want physically contiguous memory.
+
+>
+> In particular, it doesn't say that if you ask kmalloc for more than 4 M=
+B
+> of memory, your system is likely to crash.
+
+Crash because panic_on_warn is set. You just conflate a sysctl config wit=
+h
+a WARN. I understand panic_on_warn is set by many systems, but that does =
+not
+mean every system crashes.
+
+Plus, if you use kvmalloc with a really large size, you also can get
+a WARN[1][2].
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tr=
+ee/mm/slub.c?h=3Dv7.2#n6912
+[2] https://lore.kernel.org/all/CAHk-=3DwiRq+_jd_O1gz3J6-ANtXMY7iLpi8XFUc=
+mtB3rBixvUXQ@mail.gmail.com/
+
+>
+>> See https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git=
+/tree/include/linux/slab.h?h=3Dv7.2#n1001
+>>
+>> In this case, kmalloc is used to request > 4MB memory.
+>>
+>>>
+>>> Regardless, if it is important to let kernel developers know that the=
+ir
+>>> code is doing something wrong, why not make the WARN conditional on
+>>> CONFIG_EXPERT or something similar?  In other words, prevent it from
+>>> crashing production systems.
+>
+> You didn't respond to this.
+
+I do not get your argument here. Why does this WARN need to be conditiona=
+l
+on CONFIG_EXPERT? What makes it special? Or you mean you want all WARNs
+to be conditional CONFIG_EXPERT?
+
+Anyway, if you do not want to check user input len and want core MM to
+do the check. I will send a patch to make kmalloc return NULL when
+the requested len is bigger than KMALLOC_MAX_SIZE without giving a warnin=
+g,
+based on my discussion with Vlastimil on IRC (he is out until next week).=
+
+
+
+Best Regards,
+Yan, Zi
 
