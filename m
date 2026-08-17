@@ -4,100 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DBC9C5CFC1
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 03:57:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 705D8C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 03:58:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40C8B6B08F6; Sun, 16 Aug 2026 23:57:17 -0400 (EDT)
+	id 791996B038C; Sun, 16 Aug 2026 23:58:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BCBE6B08F7; Sun, 16 Aug 2026 23:57:17 -0400 (EDT)
+	id 7411E6B038D; Sun, 16 Aug 2026 23:58:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D3B56B08F8; Sun, 16 Aug 2026 23:57:17 -0400 (EDT)
+	id 608736B038E; Sun, 16 Aug 2026 23:58:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EDB306B08F6
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 23:57:16 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6007D1C1944
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 03:57:16 +0000 (UTC)
-X-FDA: 85109401272.29.222900A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 645E3A0003
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 03:57:14 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NWNOBjND;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786939034;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F74B6B038C
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 23:58:13 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2D23040680
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 03:58:11 +0000 (UTC)
+X-FDA: 85109403582.12.34F3F5C
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazolkn19011011.outbound.protection.outlook.com [52.103.66.11])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 4F9F720003
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 03:58:08 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=OUTLOOK.KR header.s=selector1 header.b="iiW2uoK/";
+	dmarc=pass (policy=none) header.from=outlook.kr;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf31.hostedemail.com: domain of seohyun.kim@outlook.kr designates 52.103.66.11 as permitted sender) smtp.mailfrom=seohyun.kim@outlook.kr
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786939088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9rFHTgmrlKHpeZuAIR9zfpEsn8vyTPZqtjpwvr8fkJU=;
-	b=VjQmQ2ivA8z//ca2OREGVJU1+LQVGmZywPyikrD2IiZ6exhxDOOEQx9mqcAsEN2eTgDzxN
-	zbmJj0ozKd7s4wYWekzwC6h6o6Sp4RrabURljpdUN8q5J96Dd3or66UyuPa8awOwv8vxaP
-	XRlKlaf1F0FUQ/0gVJzg/T44dnt5et4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786939034;
-	b=HYFm9MbXNEjCQKsR5bAPCKDg/43UEpHdQV9QzlQrxSdZMu/QEK6gwgQkV070LoA/bH+Aps
-	lzXs1zNh63/tk3XZDi0dURrNqsGGhAsws9DzFxt+nNdbWaV5ac9pLzgBmHGOo4dbRrg0Vs
-	NlnTVgjzMgrkYQKQv6cgxt9Unmm0R7c=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NWNOBjND;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 466A943EE4
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 03:57:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD211F00AC4
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 03:57:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786939033;
-	bh=9rFHTgmrlKHpeZuAIR9zfpEsn8vyTPZqtjpwvr8fkJU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=NWNOBjNDomfZMZy4DJ2eQWa0KQlUiUC3OaKzhrIezMKARX4iUmQj1ehHtB67R4gtY
-	 S31oz0D83srsSNaQAFvsQk/O/WaR25HpMjCUpFeGeTpSOrMFG/QS8gkdoNcDDz6Uux
-	 xuOFBBaUQ1KEC2TipDjZFXbI1YpXhxwVfLQ/YJAuBs7bKbZ9o9Ah8lVRQpHvLEfyu5
-	 L6AkFvUMV/NCPLdwsSrF3/x6eq8KW0wC3qUEYiY6AriRtCd69v31oN1zBfAbNL+Dmb
-	 Anlpmm2y4goy/Cf4vpt68tmLYseOEkD1qS5jlnZmRRA5xCArlC/7IFBl8+joTRDfKW
-	 axJPaWgcFJIbA==
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8f186025973so27355936d6.0
-        for <linux-mm@kvack.org>; Sun, 16 Aug 2026 20:57:13 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoL07+jmkbbeWQtdZtsU/dHl8VBMUXfuEZDy+GhN+yMfAVQ5aqtRKWzHQ56xea89J3tminL+33L/A==@kvack.org
-X-Gm-Message-State: AOJu0YzoJYP1kSjzRvqkztrTaColYSaW+Cn3QV3n9wDr3JmkyjZDSEaW
-	B/FzVvg09n7H2L4YUAHi0Bfx5ZgSyB6UtJsDN2sT+oeZ18/+3V5CYlg85JaG4K/o2lvyVmnjYe2
-	cBprwVxnSzlWue6tf0GetAaIyEw8I7i0=
-X-Received: by 2002:a05:620a:7103:b0:92e:6122:130c with SMTP id
- af79cd13be357-936d236d3admr2151237685a.34.1786939032406; Sun, 16 Aug 2026
- 20:57:12 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=upIgUJmKeZ2BJ/JAE9XW/qy6aNP9YrzMQNe+zn4sJNQ=;
+	b=d5iiw8avI+hGZLkcpjUmOcGdlni1lmaBFy7x7OZG6ZiYlK+IbHgfEE0BrtZ1YZFEnrBf84
+	MtonAdIL9uzF6iT0c6UeHBlrqyldITN2GVexCF7cSa7Iclq4/HvL4oI7bVH9+BkB7aQo7V
+	4Ce+cJo6FdM+sU908hLNmXiZ9ezNhUE=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=OUTLOOK.KR header.s=selector1 header.b="iiW2uoK/";
+	dmarc=pass (policy=none) header.from=outlook.kr;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf31.hostedemail.com: domain of seohyun.kim@outlook.kr designates 52.103.66.11 as permitted sender) smtp.mailfrom=seohyun.kim@outlook.kr
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786939088;
+	b=fFZPN5n5CwLWd6VtABNGxwkKmIzvGrb6ky0Ae4kzsmdnz80fee2aHQWTW41CVEFu9OM8mr
+	FngHXa7q0sgMHzk+pirSEE6KgGzNXigub5tX9dDNhX5nbOu51aQao0HRGUiB0qhm+Tc2+G
+	2A5j0/th4dhEIJubrOs6y6MV2/R7BjQ=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ADUbI/3Rd5BrShnUSoLJMgBnbODIpOy9nJnAOBiwKwMjU/Tvnjn0Bu655jCcOYtGvDdOlRU2hMtTCMi2YVLstogaQxu0/vlGbCip6W/BqvxSfCrDM3bSk80drmD35+PzCfMVZQ1/R561bOtJZ4EpXnO/AlW522dfmKjokoFxu9Nk6TU2fraykMwyHBYYQCYnk89SfIcv2PD9Fg3rGpmh2IyW/afz+xTZPKK5dPYfd/ImH002XRatZ8ZiC6Qq6RDaqSe6AXTBFxYGpALIvhhZ5sz1gPwoTIBaHOIEokdqXWlhTSgdX7J/coYkItZWAKxDys3AqywvP59KpsL4psf0rQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=upIgUJmKeZ2BJ/JAE9XW/qy6aNP9YrzMQNe+zn4sJNQ=;
+ b=YzEYt9Yu5w8vrZiWipKQDsOfJFQFA7toAhfxOTYYUh3CPbqGT3nfwRvhc1LBssopR2H9Ltl1NmbINuxZDVSk2Db+MN6D4OprmZKgzNOhdKhzk+yHCEZTJ7W3F2NESuVqOqpgduOD/F9qw8N1Z0tqQ/yc0LieH9xqorlPZXf6jIPwOhXJavjLdQoBy5624z8pKkDAPeRRSDO0tmpRvJe/S6bjlxVo5D4HYaUl/qbLdmQX7SIn3q3hOVIoJI9+im7lCkw0CrrPlFqXwd2v/svcxqrkOWzlghLCYPbBlXX7EhoWfCOUFC6n/IYBiFyqhsffijnJcH68zkh9JITV94cQKA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=OUTLOOK.KR;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=upIgUJmKeZ2BJ/JAE9XW/qy6aNP9YrzMQNe+zn4sJNQ=;
+ b=iiW2uoK/xsVCJSOSU2XUUaHPZbQ8fykyTzlqngKZKMsaGBg5n6Y9+aUr50z7xgfVNjN31DxP1cOj7ePUBzdCYMRsrF0AdeefkQ8IYtp+zmSB39XnvBx0AzDX1vvSj8pWcoMwhxznCR9b0AAksfJiYV/SkbjzvMazT2wGA3W56Em8M9NzsvIVnx1uUj/6dtWMYBT+YwBF70qxkurUNJxe16nf4tcwPArb60+uOINBHEMYzhZQ4IRIUbCYBAfBFP54NQEKo2CqjOwAg5X59hMmzZI+CxhAeNvI/EaZYCxCJB+XMziepAIE7JKt8GXHKEHHxvIqHcqGgZvV6GHwtsBHIg==
+Received: from OS7PR01MB13914.jpnprd01.prod.outlook.com
+ (2603:1096:604:36b::13) by TY4PR01MB14562.jpnprd01.prod.outlook.com
+ (2603:1096:405:23b::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
+ 2026 03:58:00 +0000
+Received: from OS7PR01MB13914.jpnprd01.prod.outlook.com
+ ([fe80::641e:83cf:743b:85bc]) by OS7PR01MB13914.jpnprd01.prod.outlook.com
+ ([fe80::641e:83cf:743b:85bc%5]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
+ 03:58:00 +0000
+From: Eric Kim <seohyun.kim@outlook.kr>
+To: akpm@linux-foundation.org
+Cc: david@kernel.org,
+	ljs@kernel.org,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Eric Kim <seohyun.kim@outlook.kr>
+Subject: [PATCH v3] mm/rmap: synchronize lock and unlock target in anon_vma_clone
+Date: Mon, 17 Aug 2026 12:57:42 +0900
+Message-ID:
+ <OS7PR01MB13914A5991BF648E81288038E96A72@OS7PR01MB13914.jpnprd01.prod.outlook.com>
+X-Mailer: git-send-email 2.55.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SE2P216CA0098.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2c2::11) To OS7PR01MB13914.jpnprd01.prod.outlook.com
+ (2603:1096:604:36b::13)
+X-Microsoft-Original-Message-ID:
+ <20260817035742.4774-1-seohyun.kim@outlook.kr>
 MIME-Version: 1.0
-References: <20260814085300.399107-1-zhanghongru@xiaomi.com>
- <20260814115100.24a6be0cd0e672cc3c051f86@linux-foundation.org> <CAF3qr_LC_UFcUtQrqnVvzD8LHD_YzCBcw4ndCxD28Wqs-F-kTA@mail.gmail.com>
-In-Reply-To: <CAF3qr_LC_UFcUtQrqnVvzD8LHD_YzCBcw4ndCxD28Wqs-F-kTA@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 17 Aug 2026 11:57:01 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xt+OfZP40WVnJK9wnPwOP6tFf7QEaXyB4ZozsWuWRk8Q@mail.gmail.com>
-X-Gm-Features: AcwNN1XBwuRkFy3--vqQLii9jd0-9snfZ4Ce8JXy-bHSkD7zO9ilkpWQCo0jFTQ
-Message-ID: <CAGsJ_4xt+OfZP40WVnJK9wnPwOP6tFf7QEaXyB4ZozsWuWRk8Q@mail.gmail.com>
-Subject: Re: [RFC PATCH v5] mm: retry page faults once under the per-VMA lock
-To: Hongru Zhang <zhanghongru06@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, david@kernel.org, 
-	liam@infradead.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
-	mhocko@suse.com, rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com, 
-	vbabka@kernel.org, willy@infradead.org, zhanghongru@xiaomi.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: OS7PR01MB13914:EE_|TY4PR01MB14562:EE_
+X-MS-Office365-Filtering-Correlation-Id: ca325dbf-2e70-4c8f-7335-08defc13ba91
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|5062599005|51005399006|15080799012|8060799015|19110799012|24021099003|23021999003|25031999004|25010399006|5072599009|40105399003|2607281247196008|440099028|3412199025|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?qxpe+Jhqvuefn1ZcCGE2G9CEZRiBkEc9NIYzyJZjMZCKaC1qaJgx3wtNHfiN?=
+ =?us-ascii?Q?/9gODQD1JzphfGiU6VPySh4N+iq35G7kjEnF4O1wlo6fXLiaTf8e+XXlilI2?=
+ =?us-ascii?Q?MvxIqKG79oTa9QR897YASZJrDNRcwpb1UhGz6U8sNvr5CEtqxD3c4/EFWypA?=
+ =?us-ascii?Q?XG8OTRr4mn5KIsdxOaI/io6h+KL7mfJ3yfkLCYdFTElcv1mRQdB4UG1emfI9?=
+ =?us-ascii?Q?29zb6Zi9YxhGBhDasb6A9hFw8i5E26YFPrQTzikMM28YRdnC/OQSFDSqIguz?=
+ =?us-ascii?Q?x+E9sk168Oo4mVnKF5s1jud13NkJzbDRZio3pRwp8OJeORLKNlnME0HHBQ31?=
+ =?us-ascii?Q?zamvYfyqUUlvblBUwfQ6Z2PRR6Lr89w4CxWcVBh2nfkl/h5EKloa6fxaIqNp?=
+ =?us-ascii?Q?7lGQPkuUxGQzxPMv/XQlpoUbGWsgNW4lLzETUP8fZU5qlIXt4/q5lEazp3fs?=
+ =?us-ascii?Q?Ice4MMIKXx9+9IXaKlFMaSOpnV62Jchbb+AZ7DD7w4/mXj+cuuZTHKLio716?=
+ =?us-ascii?Q?GPBspBpuwCY5+1BDIffPYPh87ZDwBxps0ZO/QmbK0ouzB1jypKWJQFE+JaI/?=
+ =?us-ascii?Q?cHo3ee77FFCOPeSYHR7QIisUbneBaBC9Eee8+Hdv8c5xNQsJna+3E5FFDtEK?=
+ =?us-ascii?Q?5PJ14qNoSG8bMJpz+oFG0mMkmC/2zDyea6B9VNk9stIL9h1+I+eP67IfFM9L?=
+ =?us-ascii?Q?bcA64fvHRkLSev4kqXPkY67HBbUXKLCZJ3VPzp9iu2f8of6FBntQ3mhJ+qTW?=
+ =?us-ascii?Q?dhJgRFBIfA6fJQ6rGe/aSFaBCbFXNxclq53a7nJ7jyF0iOOmkAJrSj9kr18z?=
+ =?us-ascii?Q?qrwDQBWf5o2of3omzHxE3N9TeVJkrk0tYau148sOg5qtVCtaSsIOJz75MuHj?=
+ =?us-ascii?Q?FjYgEnbhwx2zJ3ZdjrO0AnxmoNsXcnjwvQfUHRrbGtFKEQMnOJkikc/xJbh4?=
+ =?us-ascii?Q?N/+3sRQpluCQFU+a9GJTGasbmGRbECf7OSaHoHiiHed6YPSe9AwikUl8bqF0?=
+ =?us-ascii?Q?TC8AUKfQlCr3RUb5xpU69NwRUg=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Gj2RJzyJd3Cuw6VI9VG/WGqABc14usarOxkCwE943WeoNWe1487VL73Vj9b6?=
+ =?us-ascii?Q?OFsU0MCR6P51GAtZsN7YSeBI9uxdEzfuxV760fQ37cLhDgGnv75eAbvWgo//?=
+ =?us-ascii?Q?uwflIwuIgEsFpK5/TAKknHLgpWj0YQ19fLbhm3d7pPVqMpnIBwx2B8BNbtVn?=
+ =?us-ascii?Q?76aUpibGFC5mAsOKd0N4vekhHURTJgSf2rsHNL5k4Q6bpPRip7S8/OtxznNa?=
+ =?us-ascii?Q?kU/9k18cOApJk7ejgttas+RnzZF3qq4h7z4SET9+5WCswUkIfMPGv9h6fhCE?=
+ =?us-ascii?Q?g1OTlncjjITtDH6a5a2bWWPuXnGJRwL+rs0P/VON/EzgOmj0Xnwtz8V5hUU4?=
+ =?us-ascii?Q?GKWpA2hy7VRPQlxKPPN2fT6HtHr/dydRImO+Vfeg3hOJADpMsDhme21liuBK?=
+ =?us-ascii?Q?YJxuRdmQXF5E5YH3pZslf099Lk0NozsYpoZUQ4aF3iD4G38RI31EA9FLeamr?=
+ =?us-ascii?Q?Twx+M+zehQaA73cg1hKzStkMyZkbqp7j/8dUVZQXnpxq5vXNXPauboPPTuK5?=
+ =?us-ascii?Q?s47G3PKWXzFwE2KFq+CdEXkmVcG6WTvt7C7xYXHnG/edo64Tnl2EpvfQp8B1?=
+ =?us-ascii?Q?OSTOdh8FfyNAb5e7CLQzd3tk53/jzNBubo5DmFLCPji3lQhCRd20wTJc98UE?=
+ =?us-ascii?Q?/g93rj4wTVdt9n6accId7EXjelF+X7WtVMBBk18KeRQfKw2kZpuWiiEjt3m3?=
+ =?us-ascii?Q?D2CTi34uhBNrY8jw+Hj/0jm7tOraOAQVXEEvaHJ3w67EO7jNvubPHNVhHqnv?=
+ =?us-ascii?Q?OsZeZ7pVecPnWV4aPzCKsClRX+OuuGLtO6Qep11OymJhyldI2ZQ81HHfeTJR?=
+ =?us-ascii?Q?1nhBSqXDoBGqd46oZ+WD+EsrdUzT8AIQe8bCUO13IpJg6CPu5tbkX/3jA/vO?=
+ =?us-ascii?Q?SzryqIA+OaoY8BkyuVZ0YxgaPXSr7QcginFGuMSNZ9OsD7wrjIsGTDGCdx9u?=
+ =?us-ascii?Q?qT6bJP83VhEtzcAm26vyiBAUubLP+IMhXPnpKeCcKQZPzCNFcb5UXjJ9kAeZ?=
+ =?us-ascii?Q?TIJE7ciOdtRojcDaUWaWlEUygn2geBUQbI+3Mz4IuTm3ErF5slo6fcShsaq5?=
+ =?us-ascii?Q?DPgQ7DOpD2xdYRcBmkiy+LJNqv6ujeDXn7RqnrOtemFVtEvTCUUBwdI9fWKJ?=
+ =?us-ascii?Q?JjyAB952F/US8gGQw0OBxleAbX4P4ApEX/xSAQf6BIct4VzIlPxoMrsfOYjQ?=
+ =?us-ascii?Q?yxn3Iv9f1vlZHlLttC7+OaTvrf1f1/tDjKwPWgip93ELaegkfcyZSsWkljl1?=
+ =?us-ascii?Q?WepT7sRXbHGsNnTxgFZfSS2Dk8o3BNNO4VAperOS7I2FCMBX3xS3rNdq5eHD?=
+ =?us-ascii?Q?Ok+WMZJdrxrxWX4Q/iWgyL6bVKbAihlp9VkZnJTDsjL4z3lDuVhTZAyeHEoW?=
+ =?us-ascii?Q?uP7fAcN11cOgGxNer1L2FgHYE7ks?=
+X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-b83fc.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca325dbf-2e70-4c8f-7335-08defc13ba91
+X-MS-Exchange-CrossTenant-AuthSource: OS7PR01MB13914.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 03:58:00.2964
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY4PR01MB14562
+X-Rspamd-Queue-Id: 4F9F720003
+X-Stat-Signature: gcco5poqidyt6gdg6ipjidksgmc1grzs
 X-Rspam-User: 
-X-Stat-Signature: xwpbictdzbu9oxatdmp1mxxze7941c99
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 645E3A0003
-X-HE-Tag: 1786939034-637370
-X-HE-Meta: U2FsdGVkX1/nrC2IkWA8DEsjMJsEGFYu3IxIm7/Q3k3huSRSG9vVGI2dV9bt509X6z9gGypoC5vzRs1FFkc9Hd4NkYZZvgnh/DYqYoY9lWRI6SWOqGCC5/OTPiUBn1ct4ZF22mI3zmA7ZKrYQuhXnndAlUA68NdKlZHbbUDP3xp5jEy1y4nEASKVy9wcL+pIO1sUT88q9qLxAR7wlHWyWXL0P4HCIbNNhG0c3r3kbXPPFm2F4C0me+RjiMf4tSz7s9/VEMV0rYewCFHiyLtW710x5dQCYRhwpUVAwXw5ZfGEUsgE9d97Xzx2xHF0pRMFLsR3qQAf9PrHSJglxDkIlWJbwfjCW8W7/3HgGM1jwTWsC8g4n882BfoJTkkbZez3ORTfPpmHS1Ep9UZ4jS77652EPcjluijAW3tPegrQf2vMczO4HO5OLvJPxz3bdlYc0fBR+Oe2gBuKraMybU5T7mnR0UxGsCFFjdKcoiBwqBQ1SoEGIjJsqhho4qEeeYGGlsnWl58nCPXBndnjo0ZyVkd4tALEUdHFYbqKlQczDAbz7RPQM0ph/CJ+CIjDPuxGJozy7SAfVVA3s/hOZgIOs1LUmJK7z40NsXJHiXLopDbpv7ITyllgeGJxODveD0TCZiQpUw6TsFZTx2+ijXgpd7Rg2mZ05XRqB3l+WJJZ1HeHETFzXuc2XigHs3DRWFHVpPESsv3pAw5l36xdQ2SKIgFNxC7xKrSl4/IPYJkTMx8LRNwRyCFCBpMcn7Nd/xVxSVGtPkUkAhchxsn1E4vK/cVM34lUGjyOU44VyxzbD1nUbc+tZIIY08wADVSQHcBiJtQN38ec+yZ3cybCE9f1pIzL0KvjiAsDVU6H+BmSK98N5Fon3GHCmuIutupGFN1pvypsHbMNKdsPBHNO3E3CsnnUvKK5upsnRklMF5JD6oO13tfllocpfm2FSzn1fYXQd8Th4yx+8E+hpT+/pNc
- BG05finq
- SnMyeIk999XLEXlo/VNsou78v0cXzxA6ic8fbMhFewvnbdI/KPwPuhFWFlDUQ6nsBS6xb7D/2Sua+qZB7taFNHJbeDIPxHlz15F+0XQ6+MDcDeu2LHMd0yd8S7A8ERnm75Bo/Vs/SoI0/HvZnjqM22801Nn30RamjLbm//qugNzjrdmtSd2JTtZPT2KNgegM0BKjys3QniV9y/RldayPDzWorUIk25sNI1wTgJKyq0ABHjNlttgZHT+21r7hpf4go0LO9gs6FTYcoR8DQb/c8LJ7TGNpqROJhxLagfnmnTBIyDC2p2GyYOA81VNNDLx8vm7Y+BDUG5Ly8GF14HbMh6Pm1d3kuV5IlhmrN6ZUYubKz9H1XaYp78yDHkCr3RJSKjV4mDZJtS/6qw8XsB5wxeIUKE5SHVsHo6Cay
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786939088-560375
+X-HE-Meta: U2FsdGVkX1+dzLJroHB2jnkk5HVwX3XLBnBi/24+h5MvuBylYIhTJbDmwIvXKIdRfgN33zSSK+VBFPQ0gmautAoTqZhWPd8VAZlHUWdreGGBYp1tgUvP4+jTHpWYwE9oWHXmV7+7YGJn8jbGTXRwl6dgcTIkxvQDH/zzMZRaZTAJieOJIVzgBFk631LYGMZW7DgPZVEfEoC4/nKRXWtoZUVQs0JjVHbyFFDR0eDTrmuIkpDzSgPPhCAJ4mitZWuROEOouMLBWukeUjEc499Ljb+vePdJzPO6TETtDiTkGObi38hBfxhcJOUzDVESF35QWSVhmPfMUTwKIuaGeVGcAPSfU1u/DZkK8EQ5bGQRvGcCPof8oOPWTsVwZX+F9O1gv6GFYxga6bjdYoNx4bxwP4leZo6aYvEQgTCbrT+MT/jks0psuqCrIweCxvh6H35LwrnvPzfse23Qed9abxI7vker38HgUCpRfuJyyFSR9J5PPRbrw96FlsAT7m6j0i+q80PDJoQOnCdRHRkLOtlwnwrJ23lX5oxlJc5Xix3fIGA1IHlMbmZGudw/iZnhVHpGtNr1k2uUoksf3ypU0zPbXsLd3MniI7h2f1jRPnZrGWTzntVD/xU7eCEydNEq2fCLd+XWp7tCZJueupzA2dSfyVyRNDbkY8GaLPN08RxnL1aOFcuAD2UBwPz4vB07P5KgEHqDqEJXwljT9BfZnwEKXBL5f/HRO+95pebTaAr9JPa+GqM7EJ3AJ+DD+fRXZF6ER9/hbRXWAkC0Xub4EDQYcCxtKRjUXkSmC9FDRuVCcu9TfI3ppBH4gvl/ouQULovjSKAl0WIAdSXvO3Y8pSj7DPuRqw1rJkJj0jvQFrqoxZOQ6oU00EAp3fbq3MywR2L6wJqcn93Na1mdRuQT4tSLwyM6j9H7x8Lm/bL4mv+oyxANsH4+duEDRetAmMFrIfg+qmskCDCqGl7dWtPwSEE
+ Xh81RDk3
+ 1GkcRK+ZibDvOS7zuqjwSCZitLly0xVlqq9crspsnkIUP5sz72/wNlq5/oLCXt+hHR34fMVhgj4UJtkjpcfS7U2LIP7QuxBIcK8GTIjdVIVbKJvmTyxlIvxH7LteZaMeqXCCCkqW/iwNR/NLIrwDRYohDa8DPTWRU5IfhAfrwlVfoAtu0LauRfSYUk59an8nHzCPUEpPfeL/H9LxiKS2hTao24OW0MmBm0n0ER0bN4xcdxA9taanKFDibY+pLjrfoPlxfon4r82KBz9I1EInbLkz+uqbVNRcLXdMME/7FM0bpDvT19t3btPHJ2X7XMxybXZT28ZvbxiZV0h/EAh5LvLgMpDUGe9pn0Z2XGJs/Z41/nvLQf+au5j4ZMIh3Dh8RDrJepKWAT8jRLQT1nfKEPJvNL62W8xBX64ZMPuKtnUekdi4JpvLohBmn0/1UNI8msawYC37A65YjWgeAifppAEjmI88H1cmKyM4vHzWNSwAz/TNp4qtLQrgOdgHwEJn+LBP6bdlHIA5azI6m1VRTWybzuVUgyfRj9zn74fK2c0IPuAEHD3qyY38vej/9U/6mbktwakm8eAsIQuaJggbkOWv4GucKqhXVOTWkQeR0ZQ9j+8I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,114 +176,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 17, 2026 at 11:02=E2=80=AFAM Hongru Zhang <zhanghongru06@gmail.=
-com> wrote:
->
-> On Sat, Aug 15, 2026 at 2:51=E2=80=AFAM Andrew Morton <akpm@linux-foundat=
-ion.org> wrote:
-> >
-> > On Fri, 14 Aug 2026 16:53:00 +0800 Hongru Zhang <zhanghongru06@gmail.co=
-m> wrote:
-> >
-> > > From: Hongru Zhang <zhanghongru@xiaomi.com>
-> > >
-> > > The per-VMA lock fault path falls back to mmap_lock on VM_FAULT_RETRY=
-.
-> > > When mmap_lock is write-contended, the fallback can reduce page-fault
-> > > throughput.
-> > >
-> > > Add a single retry under the per-VMA lock in the arch fault handler
-> > > instead of adding a new VM_FAULT_* flag.
-> > >
-> > > ...
-> > >
-> > > Swap Throughput (higher is better):
-> > > +--------------+-------------+---------------------------+
-> > > | mmap writers |   Vanilla   |          Patched          |
-> > > +--------------+-------------+---------------------------+
-> > > |      0       | 17303.09 /s | 17899.48 /s       (+3.4%) |
-> > > +--------------+-------------+---------------------------+
-> > > |      4       | 12596.23 /s | 16095.20 /s      (+27.8%) |
-> > > +--------------+-------------+---------------------------+
-> > > |      8       |     0.58 /s | 15420.57 /s (+2658619.0%) |
-> > > +--------------+-------------+---------------------------+
-> >
-> > Well.
-> >
-> > > With increasing mmap_lock write pressure, Vanilla degrades sharply an=
-d
-> > > drops to near zero at eight writers. Patched kernel holds up much bet=
-ter.
-> >
-> > Thanks for working on this.
-> >
-> > Are you able to help us understand how much effect this change will
-> > have upon any real-world workloads?
->
-> Thanks for raising this.
->
-> I'll run some real-world workload tests and follow up with the results.
+Currently, in anon_vma_clone(), active_anon_vma is assigned from
+src->anon_vma and is used when unlocking anon_vma after linking
+new AVCs. However, the corresponding lock operation uses
+src->anon_vma directly.
 
-I guess you just mean double-checking the data with the latest code.
+Use active_anon_vma consistently to make the lock/unlock pair explicit.
 
-Note that this is a real issue observed with a real workload. In an
-earlier version, we had the following data from Douyin (the Chinese
-version of TikTok). Oven=E2=80=99s data from the earlier version is shown b=
-elow
-[1].
+Signed-off-by: Eric Kim <seohyun.kim@outlook.kr>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Rik van Riel <riel@surriel.com>
+---
+v2:
+- Clarify the commit message to explain that src->anon_vma and
+  active_anon_vma refer to the same anon_vma.
+v3:
+- Carry over review tags from v2.
+mm/rmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-"The dramatically reduced mmap_lock contention leads to a
-significant improvement in Douyin performance.
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 1c77d5dc06e9..f3fadfb69c7f 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -350,7 +350,7 @@ int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src,
+ 	 * Now link the anon_vma's back to the newly inserted AVCs.
+ 	 * Note that all anon_vma's share the same root.
+ 	 */
+-	anon_vma_lock_write(src->anon_vma);
++	anon_vma_lock_write(active_anon_vma);
+ 	list_for_each_entry_reverse(avc, &dst->anon_vma_chain, same_vma) {
+ 		struct anon_vma *anon_vma = avc->anon_vma;
+ 
+-- 
+2.55.0
 
-Douyin (the Chinese version of TikTok) warm start on a smartphone with
-8GB RAM."
-
-=3D=3D mmap_lock Acquisitions And Wait Time =3D=3D
-
-Metric                    Before (Avg)    After (Avg)    Change
-------------------------------------------------------------------------
-Read Lock Count           20,010          5,719          -71.42%
-Read Total Wait (us)      10,695,877     408,436        -96.18%
-Read Avg Wait (us)        534.00         71.00           -86.70%
-Write Lock Count          838             909            +8.47%
-Write Total Wait (us)     501,293        97,633          -80.52%
-Write Avg Wait (us)       598.00         107.00          -82.11%
-
-
-=3D=3D Read Lock Waiting Time Distribution of mmap_lock =3D=3D
-
-Range (us)                 Before (Avg)    After (Avg)    Change
-------------------------------------------------------------------------
-[0, 1)                     9,927           4,286          -56.82%
-[1, 10)                    9,179           1,327          -85.54%
-[10, 100)                  191             88             -53.93%
-[100, 1000)                57              6              -89.47%
-[1000, 10000)              328             9              -97.26%
-[10000, 100000)            328             6              -98.17%
-[100000, 1000000)          0               0              N/A
-[1000000, +)               0               0              N/A
-
-=3D=3D Write Lock Waiting Time Distribution of mmap_lock =3D=3D
-
-Range (us)                 Before (Avg)    After (Avg)    Change
-------------------------------------------------------------------------
-[0, 1)                     250             300            +20.00%
-[1, 10)                    483             556            +15.11%
-[10, 100)                  52              41             -21.15%
-[100, 1000)                12              5              -58.33%
-[1000, 10000)              22              4              -81.82%
-[10000, 100000)            16              1              -93.75%
-[100000, 1000000)          0               0              N/A
-[1000000, +)               0               0              N/A
-
-
-You also have the Pixel 6 data showing that `mmap_lock` is a major
-source of frame drops.
-I guess you may just want to re-test those Android cases with the latest
-code from this version.
-
-[1] https://lore.kernel.org/all/20260430040427.4672-1-baohua@kernel.org/
-
-Thanks
-Barry
 
