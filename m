@@ -4,89 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A20AC5DF7D
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 22:12:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89AD6C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 22:15:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 071A46B0119; Mon, 17 Aug 2026 18:12:08 -0400 (EDT)
+	id 3D4E66B0882; Mon, 17 Aug 2026 18:15:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 049826B011A; Mon, 17 Aug 2026 18:12:07 -0400 (EDT)
+	id 385996B0884; Mon, 17 Aug 2026 18:15:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECAC66B011C; Mon, 17 Aug 2026 18:12:07 -0400 (EDT)
+	id 29DEA6B0886; Mon, 17 Aug 2026 18:15:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C45426B0119
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:12:07 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5812C160907
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:12:07 +0000 (UTC)
-X-FDA: 85112160294.11.44F0E45
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B5EF6C0008
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:12:05 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hMOtHPnz;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787004725;
-	b=arr2LCW39EY8Wkx0YGI2wQgedvMieufJTaMFNErXprHtoEc/WUTn/ZxLVux4mPJ18EiWDH
-	7eNHGNyUsK3l7YyeeNNfXIomjRJmNGPly9b4O/fDcPpkz8eXKI64Ld/xVQ/H4rGypVbqOz
-	mYIfjAc7XFo21BJ2kDOm2+GELs/I9QY=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hMOtHPnz;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 032746B0882
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:15:54 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 896AAA3583
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:15:54 +0000 (UTC)
+X-FDA: 85112169828.24.80743F7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C949140004
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:15:52 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sr3KJOYt;
+	spf=pass (imf12.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787004725;
+	s=arc-20220608; t=1787004953;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qDUxGBkk44tOjpfh9EXGkQkAJonIYZKKED1bmZdyP9I=;
-	b=dSCiofuVFLyQBiqCHrZ8/cG30CFDLPFLxQZH+xdqRtMk02uWlqv7DsZ5sVQzo0EefWvioE
-	zB7yiPRobYNTPE9Eh1qZfj0NSWJzeDQbi8tMTMWQ7n9kCeT3uZiJu6FjY86s/WfZDpripv
-	LrL08fI8U8+M1kdK/keowDSYkVdq9xY=
+	bh=b8PHYNwnPwjD4P97/aLgG+IksMysTOlP/5dyI7THzj8=;
+	b=aPnL47GAFE/upjk7fFZuwb/KiNYg3eQ5faFEOy/S1GJZrqKixinxPAfh+7pk98YnKMtu8u
+	KCIszOoxOuwZzneEAn/yoB+PDN7nasAEYdGqHlejMnv9N+Y5gS1tc8oTCgiz5FjHj2RzcL
+	vWxZTSqwOxw+wiCLXKvzWB39NCMm7os=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787004953;
+	b=R6Di+jA30WqrpKsyEq73LfEZYlPBPj/knb/XSFUrjXX7M6WL7KjzsVM2mLWjJus29SPfDk
+	RDVoymiOMnF+4URGMT5TWviQYArfW2Jel6h7x4vebg4SJDCrnBXFX2YRufRdFOz3s5i3Tc
+	+re2xd/vXrvqCHno5E5a+FuUAJ4v8CQ=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sr3KJOYt;
+	spf=pass (imf12.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3F405601DE;
-	Mon, 17 Aug 2026 22:12:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 954961F000E9;
-	Mon, 17 Aug 2026 22:12:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1787004725;
-	bh=qDUxGBkk44tOjpfh9EXGkQkAJonIYZKKED1bmZdyP9I=;
-	h=Date:From:To:Subject:In-Reply-To:References;
-	b=hMOtHPnze4qedvrdjm0cpkZabhZxEXLK4VPdmuyNtKV4pc/tLykmuM5sdH94rcq4+
-	 m3iaEQRJv/0Luv7TMWuXSMzR9ps5wi7Kq8U9wuhf+ebhR0Ubs/63mlDYYo9/Ro0CWx
-	 WOLv7oHaIMQu+v5N8oZOHkGfdvOaQRwtyowf6ctc=
-Date: Mon, 17 Aug 2026 15:12:04 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Hui Su <sh_def@163.com>, apopple@nvidia.com, balbirs@nvidia.com,
- byungchul@sk.com, david@kernel.org, gourry@gourry.net,
- joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- matthew.brost@intel.com, rakie.kim@sk.com, ying.huang@linux.alibaba.com,
- ziy@nvidia.com
-Subject: Re: [PATCH] mm/migrate_device: fix cache flush when replacing huge
- zero PMD
-Message-Id: <20260817151204.50749d6a3e16e322e6f05d7d@linux-foundation.org>
-In-Reply-To: <20260817143415.60bedb09819d13a2dc0fbe63@linux-foundation.org>
-References: <20260817090640.287a9a415da49e3974797aa4@linux-foundation.org>
-	<20260817163646.929678-1-sh_def@163.com>
-	<20260817143415.60bedb09819d13a2dc0fbe63@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B5EF6C0008
-X-Rspamd-Server: rspam10
+	by sea.source.kernel.org (Postfix) with ESMTP id 09FA942B1B;
+	Mon, 17 Aug 2026 22:15:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE95A1F000E9;
+	Mon, 17 Aug 2026 22:15:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787004951;
+	bh=b8PHYNwnPwjD4P97/aLgG+IksMysTOlP/5dyI7THzj8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Sr3KJOYtA2N9Ih00IL2TrShVL95fPeug79m6BzsdBenS9EW8b/GYJt6IlS4XqDdU1
+	 VpEJ+V63urYa7sVFZRT7NlHGGmLMljPQsbSpJL75plPkdo3WzgVgRID3ZMV2yH2SCO
+	 vD6Y8Yz5PGQsPBixTO30keh07tcDVuMIhWRK+Q+Ot++nGdijdQ/R7aDviaaoQ6+M4P
+	 vf9BBfxXXnzvJnj28Jl+DwgU62BSFXRUaLAYkYMbpgYAuIVOcHjA3Cgg82jSLDXRsv
+	 8EKKsN6e11vKzhiWEKKcniQR37+0WysYviGimti8r37wehgI7p0GsUy4U1MDlYET62
+	 jKFzGvMmtazlA==
+Date: Tue, 18 Aug 2026 08:15:43 +1000
+From: Dave Chinner <dgc@kernel.org>
+To: Eric Sandeen <sandeen@sandeen.net>
+Cc: Eric Sandeen <sandeen@redhat.com>, linux-xfs@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: xfs: properly account xfs_buf items as reclaimable
+Message-ID: <aoOID47x9csJo_W9@dread>
+References: <20260813204929.2253988-1-sandeen@redhat.com>
+ <an7D_9YRVDG-0Qjq@dread>
+ <11c14c65-8609-4482-b3d1-23d4d36afd66@sandeen.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <11c14c65-8609-4482-b3d1-23d4d36afd66@sandeen.net>
 X-Rspam-User: 
-X-Stat-Signature: grqbzdb5xfentjqfdsea7wn4u455ctus
-X-HE-Tag: 1787004725-649015
-X-HE-Meta: U2FsdGVkX1+u65YsLKExoKW28RqlXHi9TYa62IUP4cc8UVv7LhDYmtmHNJ17JpHv/lxyZqxgp8f1BUZFU7MeiH9WqNiev21XQB1wS/ithXYSb3jQvz5dWIxURAextoGy7QlnkaSae3Kn9XD4Qc2ygrB5hJTwx1LSHbZWsBxBlSUOgxp0QlXpgHjTXTB1uy4hO9vqN3QHV6nH35Aj1hjKUM1HwkZBsebcoVnJ/j+Nd5KNDk6hMqJ6tGEwvyVCOZgtoVpMX2oFqMdPoMOAYxdBJqP6HbMREJ/s4kw1vDd2L28THkWUs4cTobA5B0wIrKaLnzbt5L+uRE9nmOnqI+vwd+tGMvTDt7DryoUTyaMGgOi05CQtMA4s/zxaknRJw8+jt2BFiebvwv+5BvqQW5vaF1vn2M/r+RnXugxNwmgNGCOJuMhPjZSwl+skYRi2URVfP9f5FU23bP7fX3Hob52u6i5kvNZM/uOIA7U+zBDXHPZiQicDhS4iqhZcs8vXd0Czcdqta38JVmyVfiw+EeOKFlsw1GARQAD/AmScMt50oxD/YY5ChLxJE5VNBVDh6hGP3kaEIMREJkvxtWregEXjjdu07tX28+ZgttZ6APjDTg0jkLtLK6dLxF0Kj3aqRRIiwI/uLO6NA4HqtRraCiusWA/icItxecGnLCvuxz/B2KzVSmJIlpbmgvb5iieWXTCRBQS0d9vI85p+idHSsDVUtzzv8uuRJcTFoqAC5mImcHNGmUFPStTGe85gwGqnObmaIwcjSNRCOTbiMp7Edu/3QcXLpz7Ye8RNk9QpF0Vu9SmqoJvKruysKcTc3U/NaeLrzk2Zwt3Xt4WSQVvf9xArG9wzdFx8ELV4bItPSUPtsGIHPj4oyBXVc56ai3B32B3zuEKF8jeZVaescps4Zp7cAVhN7VV2vqlyVbXC36+JtQTNZi8NuKJVeOYgHJvG/p7Yv05t5oL8Mg1qbRL456+
- t0Xe0w37
- fELVeaGtPq4aEA8OQ+rlcwWCmkJQOi0hjxwP6cy2akWSyYB7lKiiRPfQNSCnOjETWhIRNh8RiAtXURb1GIRhHRw6FOuSN3Q+RO5PkxOGHXl6EK/NEITQj8ZzB9SmDtxPORDi0BNlo0wsrbSt9sLjySfNEHEkx/8Ol+WdNC19jDgBJIUGuYA516kPSsVSdT1ttafl07PxdeVWloXY+HASXdXQAX68/12bWKfy4K1s9M/GCM9U0hfiNCr+334QCHRk6LETfQUXjTV1s1Mwnwov2vn3cGeo9A/tc4ilQfzKhjNO5U7vIYcDtDw23bua6f2gpH08/0MOQPiMcN+IfCv6lvq8neNNSYTlerzUqydn8upB3tBmGt+AAXn6IVoFY4+wPFeeaL792yN8Nym2/chSvHvRtuNRc6a1On1cWQotHWaobEtLVjy0HAtpan+aty3cOpV/D47xjUmDYEYE=
+X-Stat-Signature: 9yyjqpdugjb9joi3b6npf11h5b3ruwpj
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C949140004
+X-HE-Tag: 1787004952-547361
+X-HE-Meta: U2FsdGVkX19we5qjQJuFWVBZFbAXGDF5gDsjqowYimNcRndQ90K/SBYOPfis1KIkajB/wRB1yPf9yA9YRwaK97CgjuaQk/KrjZNtPlMVMaHjtLDEjExc7csREBzOni64b+e83Ib5zkY7P+I8OkinUebopded5BkiqsGCFxj4QxrFyhqiJdSznsMy1Ad0PahV5+QWlMtD1v2yCaob9pw/Q6ao3ufn/DEkITp7qq7F84MZfiAz5LjHBHn2dO+1WCFB+jZ0Jojw9aWfmNnRej4POQrDDdBS1unyFBb5EgRAx88fGFjoUtIrXjm3eOA10tWGB0hlcYHKJmNm365g5c/l7v7cYbmrCVLTpWEYEwYCRwWtp6tH9jj0MMvBUQvQR8MjJcwRmFN1bxzPNdLAhu5ktOHNKuxmOuMxtuf9KHPbAC0WbydKZAt5f1Z5If5W7cnkiCNP0poqyTT3vidG/fnN9deDhVquXES/4ySDdS74x50Cru97ArlopNnH5xXPXnoXAGf7F3QaYFtGHRgsYpq626fiyRvm5rx+CI45bDm0W3QtM0Ygud3AtPXYbEZ3lmDQEIoUNxevg9ADLd9zfuXsj6oWm5/HEpG5OQx+e0g7habXaErFOTY8dHS2csdpLPVxxccqtt0kJ8yoxJgM+he8NMoyPgdk3HQj5feIKeGsE1peMTXLXHRXzkrSvHA/I1D8z9XMD9/G/z2ON4UWFBedGo02lOlh96yW3tjor024F8ap2LAsY8XFUDiTFUH+SrUP1wstoSDZrvRCsIXmQSsos3tcdOQoLW5CZ44tmQYrT20Pvj3t5GSUT0CzQww8cBA7JvbtWhKlkLBfdl9jB/e+dbahVAyJWv9kvE6rPtl3kFjELWy+xB0gAtW7iUutwTzcuQBb0ou0oxXwkYHAyKz1bX+ggAc+0JCkCWk2pBefILkQtojJcqfb6dLa3Odfqvf4/f3diTAyDotiZI1RKA+
+ g4b6b0kq
+ XvPbtnVqcXogzDt/P9qqsmvXDK+LjAuM6BFUWduPPwu4DqWWDwhP6YF99SzjRBdKWnFxmah4akOYaBNUVa204Tb+LcJY5YUfuqvDF6A3qYFYZUP4r4nSQV0Duhi65njYIgnr6lacMN9nrJZ2QXqPj9964wUP2ZzAhZYdC61cPohqRiOFPM2JUCabyef0+F0K4gFU//NxVSJYAF3TqSO8yu/qb7eYUJ6m+LxiIWpbXn2uZQmup4ddfzANxPQVvnAG+rHI6PsIak2mFhep0UqVNWA7dFJY/cVmjDC+R+JQc3WpLpm8Cx15yXw8lQZQOoR2SVdB7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,28 +92,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 17 Aug 2026 14:34:15 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
-
-> > Hi,
-> > 
-> > I took a closer look at this, there is no userspace-visible effect today.
-> > 
-> > The architectures that currently enable ARCH_ENABLE_THP_MIGRATION use
-> > no-op implementations of flush_cache_page()/flush_cache_range().
-> > 32-bit ARM has non-trivial implementations, but does not enable
-> > ARCH_ENABLE_THP_MIGRATION.
-> > 
-> > So this appears to be a latent API misuse rather than a currently
-> > observable bug, and I don't think a stable backport is necessary.
+On Fri, Aug 14, 2026 at 11:07:45AM -0500, Eric Sandeen wrote:
+> On 8/14/26 2:30 AM, Dave Chinner wrote:
+> > On Thu, Aug 13, 2026 at 03:40:51PM -0500, Eric Sandeen wrote:
+> > We don't use the size of that memory for reclaim
+> > purposes, hence we haven't ever tracked it. It is, however, fed back
+> > into shrinker based memory reclaim via mm_account_reclaimed_pages()
+> > in xfs_buf_free() and hence memory reclaim correctly tracks how much
+> > memory was released by the xfs_buf shrinker scan, even if the user
+> > visible stats don't show it.
 > 
-> OK, thanks for checking.
-> 
-> > Should I resend a v2 clarifying the userspace-visible effect in the
-> > changelog?
-> 
-> Yes please, after 7.3-rc1.
+> I guess that's the crux of the question: should those stats show it?
 
-Actually, I updated the changelog and added it to next week's
-queue-for-Linus.
+Filesystem metadata is often cached on the block device address
+space (e.g. anything that uses sb_getblk() like extN and various
+other filesystems do) and that shows up as "Buffers" in meminfo.
+i.e. cached file data shows up a page cache (i.e. NR_FILE...),
+cached metadata shows up as "buffers". 
 
+The XFS buffer cache is caching metadata buffers, but it's not in
+the block dev address space like bufferhead based filesystems do so
+the nr_blockdev_pages() does not automatically account for it.
+Unfortunately, this isn't accounted by a vmstat counter, but by
+iterating the list of block device inodes and counting the number of
+pages attached to each bdev mapping....
+
+> >> I was not sure how to handle xfs_buf_alloc_vmalloc but I think
+> >> that's a relatively rare path, and the above two will capture
+> >> the majority of xfs_buf allocations.
+> > 
+> > I think both folio and vmalloc should be accounted in the same
+> > manner - as a number of pages based on the size of the buffer (i.e.
+> > same as mm_account_reclaimed_pages() does already). It doesn't
+> > matter if it is vmalloc or a high order folio, the amount of memory
+> > is the same.  If it gets accounted to the node of the first folio,
+> > then it will at least always be consistently accounted, if not
+> > always 100% accurate for the vmalloc case.
+> 
+> OK fair.
+> 
+> >> I've cc:d linux-mm just because i think this is the first
+> >> user of NR_KERNEL_MISC_RECLAIMABLE in the tree?
+> > 
+> > These are fs buffers - shouldn't they be accounted as something that
+> > reports as "cached" or "buffers" in /proc/meminfo? I mean, if you're
+> > going to do this to make meminfo/vmstat report the memory usage,
+> > shouldn't we make the effort to classify the memory usage correctly
+> > for the user?
+> 
+> I'm not sure. NR_KERNEL_MISC_RECLAIMABLE says it's for
+> "reclaimable non-slab kernel pages" and that seemed appropriate for
+> this case; they really aren't the same as page cache?
+
+Bufferram is "double accounted" in meminfo output. The folios are
+accounted to the bdev page cache, but also to the "buffer" output.
+the meinfo code then calculates "cached" as (page cache - swap -
+buffers) - i.e. cached file data - so that buffers + cache totals
+all the cached filesystem data + metadata....
+
+Yes, XFS buffers don't fit into that, either, because we don't use
+the page cache for the bdev buffer cache, but my point is that most
+filesystems report cached metadata as "buffers" and users have long
+expected "cached" to be the total of cached file data, and buffers
+to be the total of cached metadata...
+
+IMO, if we are going to report how much metadata we are caching in
+the XFS buffer cache, we should try to make it match all the other
+filesystem accounting...
+
+> The commit (b29940c1abd7) that created NR_KERNEL_MISC_RECLAIMABLE
+> renamed it from NR_INDIRECTLY_RECLAIMABLE_BYTES, and said it was
+> "still useful for accounting direct page allocations (i.e. not slab)
+> with a shrinker" so it seemed appropriate but clearly I'm a bit out
+> of my depth here.
+
+It would be appropriate if there wasn't already stats that are
+supposed to report cached filesystem metadata. I could use the
+example of shrinker reclaimed DRM memory pools as an example of a
+valid use of NR_KERNEL_MISC_RECLAIMABLE because there is no other
+equivalent functionality. However, a few months back they made the
+DRM accounting a first class citizen via commit 2232ba9c7931 (mm:
+add gpu active/reclaim per-node stat counters (v2)).
+
+And that's kinda my point: if we need to expose the memory usage to
+userspace, we should be presenting it the right way - consistent
+with other filesystems - rather doing that requires minimal code but
+requires all sorts of mental gymnastics for the user to determine
+that some of their weird "MISC" memory usage is actually XFS
+metadata.
+
+-Dave.
+-- 
+Dave Chinner
+dgc@kernel.org
 
