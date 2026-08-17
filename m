@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09515C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 09:03:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83B68C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 09:04:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB4B76B00B5; Mon, 17 Aug 2026 05:03:54 -0400 (EDT)
+	id 7AC566B0630; Mon, 17 Aug 2026 05:04:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C17586B0630; Mon, 17 Aug 2026 05:03:54 -0400 (EDT)
+	id 75C886B0913; Mon, 17 Aug 2026 05:04:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADF036B0911; Mon, 17 Aug 2026 05:03:54 -0400 (EDT)
+	id 5D6826B0914; Mon, 17 Aug 2026 05:04:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 89DCE6B00B5
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 05:03:54 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1943D1A06AD
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:03:54 +0000 (UTC)
-X-FDA: 85110173988.08.E07D7F2
-Received: from mta1.migadu.com (out-61.mta1.migadu.com [95.215.58.61])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 91879100003
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:03:50 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lSpBKF3J;
-	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.61 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 326626B0630
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 05:04:00 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AC12580678
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:03:59 +0000 (UTC)
+X-FDA: 85110174198.20.ECB1513
+Received: from mta0.migadu.com (out-103.mta0.migadu.com [91.218.175.103])
+	by imf09.hostedemail.com (Postfix) with ESMTP id CD24E140003
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:03:57 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=g9+FHIJ1;
+	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.103 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786957432;
-	b=DOgK2tBZWzASOTx5uxYs8J30gWnES4aBentEtXe2tE99BFkODJ/V9u0lhYX8RYrXSzEkcv
-	Dz2Qui5/jN5b9o6TSjJxJxd/ZFsU7gLjIJVZTNf/JnGnrMqap4RPE8Dhfi86pz8VYsCVwo
-	8atEOUtI1MN9R7dHpOSgxJWDt1sHR9g=
+	t=1786957438;
+	b=vCaPLrzAftJDELr7jIVfy+ltJJfrEsA4XHIGeeXSAIxZz3N3R+2dT3G8T6mju63MDHZ2j8
+	E4yH3gkiHzmMFPnH5wXZx4HvyjynncVQ4LiXjml3Q/AxPcyIawc77MW239zMTYz4qmgYo0
+	MzvZr/i93mnjs8htuzQs7VaNGSvHGl4=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lSpBKF3J;
-	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.61 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=g9+FHIJ1;
+	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.103 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786957432;
+	s=arc-20220608; t=1786957438;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=J+YC8AfXQb9CQzr0TmDg6PXrV8b4l0gk5qTznpe9zjY=;
-	b=dFYV8iAZa3af4RY5pcg1pkS0fdIWYlz1wWRKdWa0xQ0BfwXc6Ky32xYG8JRf++d0i/uHSF
-	qSz8Yd9J6yl+VgMsqBlkxzrf1zOP7kmIHdGdEPSygKqHt6xmdeXbVpJ3SWsf1kKXDSlaf/
-	tTNX/iysDsFUfnTeMWOtBmiE0pXH5Sw=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=rhs4h0lxJDv/iNvOsweZCtQu1gyWvcZnjmbioGNLOYg=;
+	b=YiEx3jJh2a1Xay4T2auUQDBtoP776kpNyg1nvplkZW2GJdMUSXBfG7QuXpX5fqwpZPzEhZ
+	T43NKjqisW2VCCkET5GEZL/IdGA9eYfmqzRRhb8QOPZPdDnJp4PFDzsMBKDJ3yejCyVZmf
+	1mVKDnorpgyiHX4viJzgwLfdS2so6Fw=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=XzgGDt95Ipn1L8wXhdHD0C7oe53dd7o0MUGLso4B9JU=;
+DKIM-Signature: a=rsa-sha256; bh=9XCr4YD0T5VE0wZ5iIvs/iiwRl95Fjqj/a+tPYmfT30=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786957429; v=1; x=1787562229;
- b=lSpBKF3JovltINNhdlyBHQjQpmDZC7EaVo3BtitgSMa01vBkZhvZx+btVWx/rCbVZ85GneFG
- 1XPdIGQ/Y+G9MCVyaK5sdTxtUqT+fI3chAtFa62CbEatmKJbYdh2l92SChE5HV9z9Tv88wLjI0G
- rBXcfzUI0otCFiI/zglAPWcg=
+ t=1786957436; v=1; x=1787562236;
+ b=g9+FHIJ1dZ4urhxpqamidQhLOJ9l5WLuOAy5RT/4RlOIneVU7Gkidp5YUmbOOCR0UL7tXvkh
+ XCFm20tevD7Oj6qrTBM4erSiH3f2HrsTv6ew1sfbwSTbO/qS4Klwi8RkTgIVoaHpoOaGyfi1Q8i
+ aH6VgLzK8lMAQDHu06TbD2jM=
 X-Envelope-To: linux-mm@kvack.org
 Received: from localhost.localdomain (221.194.171.228)
-	by smtp.migadu.com with ESMTPS id 62ddee2e1f4fc43a;
-	Mon, 17 Aug 2026 09:03:49 +0000
+	by smtp.migadu.com with ESMTPS id 3c06767a59067357;
+	Mon, 17 Aug 2026 09:03:56 +0000
 X-Migadu-Flow: FLOW_OUT
 From: Qi Zheng <qi.zheng@linux.dev>
 To: hughd@google.com,
@@ -71,20 +71,22 @@ To: hughd@google.com,
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v4 0/4] make unused huge shrinker memcg aware
-Date: Mon, 17 Aug 2026 17:03:24 +0800
-Message-ID: <cover.1786955972.git.zhengqi.arch@bytedance.com>
+Subject: [PATCH v4 1/4] fs: fix missed removal of super_fs_objects_eligible()
+Date: Mon, 17 Aug 2026 17:03:25 +0800
+Message-ID: <3b038d373c70ebac7cdabfb0035bb91d1d6e6cfe.1786955972.git.zhengqi.arch@bytedance.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <cover.1786955972.git.zhengqi.arch@bytedance.com>
+References: <cover.1786955972.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 91879100003
-X-Stat-Signature: d8cnxsgfpq3a9c3hdearbjmog8w77uis
-X-HE-Tag: 1786957430-456785
-X-HE-Meta: U2FsdGVkX18vY6faBnuoclXy+OJf52suVUh+wSmdzDbYcLgtUB4R0VkLMSKwKMo22NqV4wo3mnlbzYhVFVeShMk6MvFH7d6bBoNJNNjwzFGO/EOgr6fwHpCP7C25kyc+Mj1hFmL1fQRhCj0pn+053jk1aZkN9sxSX5kMPiVkHNhpA+20JlBUEz0T1UMBsCOgp3k4b3bp354t2YBHNBGKRJg4KNpU3KC//q906zJ0N8e9kmJ+Uv/dYxo2hz7nTRFCZjZEO5NOBdXatjvgmgFssTupYh1AldXltppcYrWrR8w8m/VhCqcRSsgd8qXrAxZSsPOraSmMmlvttrp/AF3JkcKsZ9Pp23AJFCqafDSxreZT119po+6AkcwLMcVNK82RWfDTNwVw5thOw/eQeH4xwNP/LDGuoNs/qCzu8DbmfxBKu5Ak5e7DJUtbjsYcPnB5GEqzkNjCq7ZwKYFRJ3p94rOmz5qpEJdfcS3JGAJXOzc/UlHXcuzphmlp5fdFQTbEtA0iZQA36GdvGARqN1JOcflesFMrqjiPbNILhgWk3J7BBjnQzPV/NxehqrzpP8eAov21ZtHZMcd+SdCV1lqHqqJLbfJfEA50BCAp0Ae29t0T/8cdZb5oDj996Fbh5vnLW51iTuY9syFlDsMNHn4NbzJ6wWLbHX7kzs5U5yXXMZ8Fk328vXCRczGC0gJTFWMwbQ0uqn6pthUQucf+rps9k70v+4xuBVxPTUyMrunT73fPoeB7JeKASmpYJBGt1FSv1FjMvs+01dG1jybEGPIou0r9WNIAdqcLYGLtqFmEqF7cq/vztp6dH0tbR6M9UpBw09MlAFpWxVPvn1hng2R9N0l9BW5WWzzptKc1IllidSn1U9qFOJrSQcUHzSLm9uB3F/RV71hhkn8qVUVoTeaFok/W7ile80v1/9CtCS50Frxz2BntdP/H8HOo4/SkFcGp1H8Ns/T7xv6bC6Blky/
- BPRoAdJ2
- qQ8B9zvVTMeBiuzupWP0vFXcEo1W1TU7YYBEMUCMc7ZLnfTAwenNE//nsrgrVNeRT2bgzot3fReFD7HR9JvYtjHETNkwPbiEgJhGxGrLurN9O5RiT0YmUtxOZ/Z66tB/p/VrFzQUqJUr62HszvofiyW4tmeKhzb1yWUD/1eU9Slp2hBX6ExQMlx2uwZcFswlNwq9GcnK/qK4+VMz0ypRDnu7gIWl8PqFBvn3c/2Td8GqyyLM=
+X-Rspamd-Queue-Id: CD24E140003
+X-Stat-Signature: jdykf9go1k6fufj1sdupn9y1fpxi993e
+X-HE-Tag: 1786957437-170273
+X-HE-Meta: U2FsdGVkX1/ph8X1zIbXtA+zfI3ujLgCHAx0BOjUtbWBlPCFSQVVgG1+wBCjMCimCVpspvh2zp6As8gusLllLOxVrztC00vxBkNKRPs7iwvm22zzUYvo1Q8L491esEJliyuykcxEHl1htQddeksxeHEXVz/Gtw+b14TkW76P767CwWdiX3z5B0cmCejlddAAIR/5Mlhw16UHFT9NxYkvtTrm0E2NeRPiHte/tA/W0wYReEuMV+hQhNSFL5e/7KfVLsLSvuenyyxLXVdsIk9qohyhmch0+O6y0qqugZy3ZIpioKhQaST4NkIWisPT06cHoib/DUU/QmpwoFEiNMGdzrQaiFXWfM6WY8Dh3NA+wdbL7tvQ1hQb18SS4GompCQTayNpzk+eKj5ysLjo1ta+RMS7hiLl7NBRfsePgqnjhm1rCY4T3eNC0aXGvp0l+0+SHvf03+2dYQKgpsx6gq71ThTmaHX5GdA+3pqRarfMkyMVZZswyn/CBijyLdXGt7vV00v170nHc8vfbVDe0QAxgh29rYlOdrXFxfX3obgYGazmxGKuPMeXSlds8LBBIJNF+E7z4yhfll+/MIgJbYaTLdTO0YQXoNjbbT9QAQV3f14vhenoqNAy+W0wtNGXNTyFU3fkTRPmzHglhcsX4RFkKS2/txrMuZ931hY7OkkFDEHALSGE7TjF6LdyamoiCyE4vfaR759bKpp4hO8v4rJ6oYaUrFr9QsvuINoTMf37mvR0YoA77879m9INA0NH7e1ZnThSp//h/8VWqou7vJEC1Jsyx9Z4v9tXIH0i6lm2IzUKxRpAJuotnUHpNhdYod64B4MNzMkr2v4W6pXj5AavxpTuJbmMAAoFG52auAWrHKFz5G7EL63JDQc1JQF8CC5xDE1LpucPtAYkhWodOx8a/fITRMk8ep2Rv8Zf7DRhYwVzCcYEZQb/ppHToXs+IUKE/DAL44DRQmDXOxYHvZh
+ 0hvxCOCk
+ V3B3Vg45kXrplHYmxbG4nihn2jxs5ISwuWE08F058wXX5XrCYgTvmcjeb6DeVXsUHdPFm29Kx+QsdEgDxAz71pZiJjSRI1n2ucEZI+A43H1qPo0KJiKXVCz6U5CTN/FKKoGBv+VB9xL/pmISBbGJK+334fUesEABw2PKOSV51VIUfH4yxnH/+MQ3ap49+CbY2l2xJnURMM2V0KOQzfQ1Io4lhuLp+iLxNNquadAVcYUXyopSYCTApNg9jpaaFa122iMLy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,107 +96,59 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Changes in v4:
- - add [PATCH v4 2/4] to make obj_cgroup_memcg() handle NULL objcg
- - store obj_cgroup instead of mem_cgroup in shmem_inode_info to avoid
-   pinning a dying memcg through a long-lived CSS reference
-   (pointed by sashiko)
- - fix is_shmem_unused_huge_match() to always check the NUMA node for
-   shrinker reclaim, not only for non-root memcg reclaim
-   (pointed by sashiko)
- - collect Reviewed-by
- - rebase onto the next-20260814
+Commit 0ef8faff490be ("fs: push nr_cached_objects memcg gating into
+individual filesystems") forgot to drop the super_fs_objects_eligible(),
+just fix it.
 
-Note: [PATCH v4 1/4] should ideally be folded into commit 0ef8faff490be
-("fs: push nr_cached_objects memcg gating into individual filesystems") in
-linux-next.
+Fixes: 0ef8faff490be ("fs: push nr_cached_objects memcg gating into individual filesystems")
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+---
+ fs/super.c | 18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
 
-Changes in v3:
- - add a fix patch to fix missed removal of super_fs_objects_eligible()
- - move the original shrinklist addition logic after all checks are completed,
-   and split it into a separate patch. (suggested by Baolin)
- - simplify the shmem_unused_huge_requeue() (suggested by Baolin)
- - keep the move_back label in shmem_unused_huge_shrink() (suggested by Baolin)
- - rebase onto the next-20260731
-
-Changes in v2:
- - temporarily add the dependent patch from Usama to the series for review
-   convenience
- - remove shrinklist_scan and shrinklist_isolated from struct shmem_inode_info,
-   and re-implement the logic by resuing the same info->shrinklist
-   (suggested by Baolin)
- - add more comments (suggested by Andrew)
- - fix missing initialization of info->shrinklist_memcg (pointed by sashiko)
- - rebase onto the next-20260717
-
-Hi all,
-
-The shmem unused huge shrinker maintains a per-superblock list of inodes
-whose tail huge folio extends beyond i_size.  Because this list is not
-memcg aware, reclaim triggered by memcg A can scan inodes across the
-entire superblock and split huge folios charged to unrelated memcg B,
-causing unexpected impact on it.
-
-In the worst case, memcg A has no reclaimable shmem at all, making the
-reclaim entirely useless and incurring unnecessary latency.  We observed
-this in production, where page lock contention during split caused
-multi-hundred-millisecond stalls:
-
-  tid 11340 comm scanner locked a page for 182264 us! kstack:
-          unlock_page+1
-          split_huge_page_to_list+3135
-          shmem_unused_huge_shrink+767
-          super_cache_scan+329
-          do_shrink_slab+291
-          shrink_slab+533
-          shrink_node+400
-          do_try_to_free_pages+206
-          try_to_free_mem_cgroup_pages+262
-          try_charge_memcg+591
-          mem_cgroup_charge+136
-          __handle_mm_fault+2431
-          handle_mm_fault+194
-          do_user_addr_fault+462
-          __do_page_fault+176
-          do_page_fault+48
-          page_fault+62
-
-Usama's recent patch [1] prevents the shmem unused shrinker from being
-invoked during memcg-level reclaim altogether, but this is overly
-conservative: we can do better by reclaiming only the shmem charged to
-the reclaiming memcg.
-
-This series converts the shrinker list to a memcg-aware list_lru, so
-that non-root memcg reclaim walks only candidates charged to the
-reclaiming memcg.  Global reclaim, root memcg reclaim and shmem quota
-reclaim retain their existing global semantics.
-
-To avoid pinning a dying memcg through a long-lived CSS reference, each
-inode stores an obj_cgroup reference instead of a mem_cgroup reference.
-The list_lru add/delete paths resolve the current memcg from the objcg
-under RCU, staying consistent with list_lru's own memcg migration on
-offline.
-
-Thanks,
-Qi
-
-[1]. https://lore.kernel.org/all/20260715103516.2410175-1-usama.arif@linux.dev/
-
-Qi Zheng (4):
-  fs: fix missed removal of super_fs_objects_eligible()
-  mm: memcontrol: make obj_cgroup_memcg() handle NULL objcg
-  mm: shmem: move unused huge shrinklist queuing past the truncation
-    check
-  mm: shmem: make unused huge shrinker memcg aware
-
- fs/super.c                 |  18 +-
- include/linux/memcontrol.h |  11 +-
- include/linux/shmem_fs.h   |  12 +-
- mm/page_owner.c            |   2 +-
- mm/shmem.c                 | 382 ++++++++++++++++++++++++++++---------
- mm/zswap.c                 |  17 +-
- 6 files changed, 315 insertions(+), 127 deletions(-)
-
+diff --git a/fs/super.c b/fs/super.c
+index 05e4431730387..3ecce24328f67 100644
+--- a/fs/super.c
++++ b/fs/super.c
+@@ -171,19 +171,6 @@ static void super_wake(struct super_block *sb, unsigned int flag)
+ 	wake_up_var(&sb->s_flags);
+ }
+ 
+-/*
+- * The s_op->nr_cached_objects hooks (used for example by btrfs and xfs)
+- * operate on filesystem-global state and ignore sc->memcg. Driving them
+- * from per-memcg shrink_slab_memcg() invocations only burns CPU walking
+- * per-cpu counters and queueing duplicate work: the actual reclaim happens on
+- * the global path (kswapd or root direct reclaim) regardless. Restrict them
+- * to that path.
+- */
+-static inline bool super_fs_objects_eligible(struct shrink_control *sc)
+-{
+-	return !sc->memcg || mem_cgroup_is_root(sc->memcg);
+-}
+-
+ /*
+  * One thing we have to be careful of with a per-sb shrinker is that we don't
+  * drop the last active reference to the superblock from within the shrinker.
+@@ -213,7 +200,7 @@ static unsigned long super_cache_scan(struct shrinker *shrink,
+ 	if (!super_trylock_shared(sb))
+ 		return SHRINK_STOP;
+ 
+-	if (sb->s_op->nr_cached_objects && super_fs_objects_eligible(sc))
++	if (sb->s_op->nr_cached_objects)
+ 		fs_objects = sb->s_op->nr_cached_objects(sb, sc);
+ 
+ 	inodes = list_lru_shrink_count(&sb->s_inode_lru, sc);
+@@ -274,8 +261,7 @@ static unsigned long super_cache_count(struct shrinker *shrink,
+ 		return 0;
+ 	smp_rmb();
+ 
+-	if (sb->s_op && sb->s_op->nr_cached_objects &&
+-	    super_fs_objects_eligible(sc))
++	if (sb->s_op && sb->s_op->nr_cached_objects)
+ 		total_objects = sb->s_op->nr_cached_objects(sb, sc);
+ 
+ 	total_objects += list_lru_shrink_count(&sb->s_dentry_lru, sc);
 -- 
 2.54.0
 
