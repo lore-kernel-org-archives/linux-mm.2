@@ -4,85 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C01CAC5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 22:35:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8A79C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 22:44:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C7C86B0168; Mon, 17 Aug 2026 18:35:05 -0400 (EDT)
+	id C4B286B011D; Mon, 17 Aug 2026 18:44:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 978316B06B2; Mon, 17 Aug 2026 18:35:05 -0400 (EDT)
+	id BFC546B011E; Mon, 17 Aug 2026 18:44:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B5F96B0896; Mon, 17 Aug 2026 18:35:05 -0400 (EDT)
+	id B12666B011F; Mon, 17 Aug 2026 18:44:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6875B6B0168
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:35:05 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D1E2214083F
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:35:04 +0000 (UTC)
-X-FDA: 85112218128.21.8286015
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 909766B011D
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:44:00 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 25DF2A0321
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:44:00 +0000 (UTC)
+X-FDA: 85112240640.01.25E0CB1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 24FDC40003
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:35:02 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=sA83lo8o;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 71EC21C0007
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:43:58 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=TPOisz3A;
 	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787006103;
+	s=arc-20220608; t=1787006638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3tPX9/9lA2HGpLu7Wg6cEAm7Z/kVrysXnxuagUqdMIU=;
-	b=HpcIgfVi/c7mqstbP0Gq2uQVITMqFLv7Gr6pkx4lqU/NDMVyZ9HZtXFzH/SIMeCJbNYFAj
-	Af2WNVRLu1wDIq2BtqmC61k6oMrcfDbaLwVscuad0p+PLxP0dRy7KZGBf47Wf1GtvuTLNv
-	moVxePDvV6BGaOJXNAPTSU7yHzripGg=
+	bh=mv5AoSo9/V0u2RCFCjv3YwIVFM6rx0xjD7lOevDqBWs=;
+	b=3yujzEVnm/b74PNow5ndFXcENeIZ6pdAsEUOCRVE1kLQznYu5/Ar5243NjIpRLDTwpXE92
+	8rlLlLS/5FHTeE6YfVqQTzNJ7ONm2kWroBGxu/WqTTEWDHklHYmlI4An0fIMGL9kIXMTII
+	x5v4Kwl3AR3vtNKKQCjkBUsZ5Rih07w=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=sA83lo8o;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=TPOisz3A;
 	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787006103;
-	b=tKdZ3bovAcv57+A/2tTCihMecokm7IRjPKD5o6XLB6v5mppPH0iVGsLiWg7rcXMoK8FP+V
-	Dt96pH9o6+dvjcs/A42HNNjCb5wCQR1uyBeKO6JChI22tBXMRyKpVNvO3lDjJiIiLcTwS7
-	YN4mb/5WG/7imy7LEzAQ0Vo28GPsU+M=
+	t=1787006638;
+	b=QMq5oM4qIK2ahQNaxPZA6phaoWkiTiJxr1oGIFFkYnjdoRKFYuIFyL8GpSa1ZM8Apz2wc2
+	qlhyg8Upg6lzsyGjZNewymevWSjQ44J6QnDgbr2hlGqor7rOns9opzvxmMKU09rTXkvQi7
+	Uni6KSCUEOmdljSYIMgjPkA3Dxtv+yE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 57DB943BC0;
-	Mon, 17 Aug 2026 22:35:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1150D1F000E9;
-	Mon, 17 Aug 2026 22:35:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A428943F52;
+	Mon, 17 Aug 2026 22:43:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30ED81F000E9;
+	Mon, 17 Aug 2026 22:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1787006102;
-	bh=3tPX9/9lA2HGpLu7Wg6cEAm7Z/kVrysXnxuagUqdMIU=;
-	h=Date:From:To:Subject:In-Reply-To:References;
-	b=sA83lo8ok1wmkMwr/ZGIZ2goQzDlXsCzamAyzAIvL99C/9JgPHezFE7D66o/bZT2x
-	 bDrZTOW0okeCLy7Oz1Rc/YwS38s+MHW24zMItGUNVTWAOWQGdgay1X67hb4ldKC93M
-	 JGP5NjPB3AW1W33lmewtdx4LUpUtIGzhW8OAc3fc=
-Date: Mon, 17 Aug 2026 15:35:01 -0700
+	d=linux-foundation.org; s=korg; t=1787006637;
+	bh=mv5AoSo9/V0u2RCFCjv3YwIVFM6rx0xjD7lOevDqBWs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=TPOisz3A30UyNq8RNZ+f9HpJtnVxF51K4jyNTwK+waTu/skKZczVEKcqy9M+SqgXL
+	 5ku5F0lb8G5Fn4abRVfM0aHSqEPAUBeVc0H2cKhKiT5+GAaLmsSLweLjNz7RIQVQ47
+	 DAG7o8I3CZtEa8cOmb7Q4qm2UiUCODJeMxV0dKTA=
+Date: Mon, 17 Aug 2026 15:43:56 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Foxie Flakey <foxieflakey@gmail.com>, rppt@kernel.org,
- peterx@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] userfaultfd: reset err to be 0 when move_pages_ptes
- succeeded
-Message-Id: <20260817153501.ee2ee77976e1cd5b1e1c813b@linux-foundation.org>
-In-Reply-To: <20260817152605.5d2bee3fbf1a2bace4c0eff1@linux-foundation.org>
-References: <9c936a9f-ed27-e510-872f-5b3b8c680975@gmail.com>
-	<20260817152605.5d2bee3fbf1a2bace4c0eff1@linux-foundation.org>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org, David Hildenbrand
+ <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah
+ Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/secretmem: prevent uncharged mremap expansion after
+ fork
+Message-Id: <20260817154356.552ccde5d279f6e0a9ef0ff2@linux-foundation.org>
+In-Reply-To: <20260813225328.2010303-1-4ncienth@gmail.com>
+References: <20260813225328.2010303-1-4ncienth@gmail.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: uosyk1emrmx8btgq3k7apuqcwwiz9wik
+X-Rspamd-Queue-Id: 71EC21C0007
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: w99ga6ocmbyot49mpicozkr7wugq5e3a
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 24FDC40003
-X-HE-Tag: 1787006102-112456
-X-HE-Meta: U2FsdGVkX1/ecjad3MxuiXQDk/k+S+TKZM/Bdm1ZQYfDZw0X+YrG7HGa8Oo36aNhuuwp6Z2uVDuS2AYUSXubM1I44/JxA50G8mbGjmIyPxbiFDPhQf+BA7IEFTV0FzT9JN9Sf71rIhrpE7s1V4fR63MMdR3ui7GiUvm4yneaOo7Q+csuGqFQs6C82q9qPX/I1ioQxoe9gOoeqqRe6ZNeJWYQOKO5lx2mrnB5i5JHmieP+vnzzFYD8sq8cgvZSSSTgk63DH7TiRQaRi/Ke6dSAR551YaZEuwxClPINGjdHgcpcRRN6/R0qxhklvIMqp2z87Lyb9dpk4dPf2O9/f3jdRcq2TxnXNIK/HYjE6jgRe3TwNS/2dfSwPnf0pWTptJlgKBpfWfoCO2YOPJrsqPCxFLgHbXS39bV7suwTiDojDMZxUJxjIPZchER0qnX2547SKv1h2leAIPXxFFp1IM0MuYtP9Ebcl1P9bYACJUVaUVzcmt0O7+wS1Vab4GCIeCM/K19monEHQvGehhayW+IOhfqxPbNk9zwc0yMxRs8+s0RI7BrJuIcW8GIWd/dzU3QnHZKMpsPebQvJ0aLbUS2TreNAoKF146eRuul0MAsQCSqQVwmpwyHfd9uItINI9wy1udTDB2TCWL1SZE9p3p+qw0Bf38ps6F+tg1eKUDJbAExJIw4xk094S+Jd0VHvrBeG98kdd/2/E5YHT/48tFFm48jESMz2iyB+sJmtANZRC4RSKseJtAH56WA2tPcPjVJS7F4wlOT+H5rtKoa3gelJKAjmnjtcdkcM0s6VpaJ4WmU6W3IwTZNUxsAFFu+DCUlkXdvl7AydrCibyZEnssrV/TLvTnPa1MxxP0qAFVr7svo3xkc6DgQkaLk3fGQnjPWWgbtMVLDaV9sFYkf8wU0L/SuwAxhFRv8wYYBCySuwjhmW3rT8v8R+gbkgkj0U1i7Pb3Rj34n3oHIYkolnPp
- Fqiid/sB
- jXUyueBPoSztUjllun7tTuieziCPK66JUJ5lhgIvNnkPcW2VOGoBOnhytUaLTMDa/RsPp3usToZSE+4Bxn0Q7DxSQxdmAP9fqO8WcGXFZAMIs90JILi1eh9uQZTKg7EX2nWHzm6384CEiiRLzkAC+BPq3S+SUgdtgD3PfPV2VT3GAUfeU8Qc+iJT5mTR1KrMj9sw5qRTM2wMDxH5iI2V4B+HNwYI+XVRFGwsFa/e2XhkczwTQA58OJg2ISQQWyXOMHHJZHCpUay+phH4AGraeLabjLBd8ZYCJk08Yt9HwEyTQPihTjq2Y8tOhuswB1EOUTejptrj8LFp4brhLRyKrebtbRWyfQ7Te0UMk
+X-HE-Tag: 1787006638-20107
+X-HE-Meta: U2FsdGVkX19pbKdL5pm2xV2+4WzRvlIt6ESAvl3qZZtxo2uJjDLphDlbfnili0Q3Qe8b2119+SoAA4iNFIlVo4A0n1sIer2rMqO2aQ+bLRKa0/Muy4zhhz4J9bYK0quJ3saSvPU/XRrJhU4/eM2AfPKjQ5o+Xq6Q97BxKNBlSsUd4Dum83VXbxFznRUxkdFGJ1hUvvu6MQ5Wl1HGrOyeg6PyNHWTEw0O0AvXH0us/Fld/urd3BHIzu4rrc6ZkH53lSyX8OBfY3EXovUH+2oP8utWvdzSqNlUui615EcuNthP4PEkendhMxdTFlxdhq/4L/+V2CcczkTb4wkZLAKMcErr7aW0NJzG73V/GCqSiPWLOqOdsnp6QnSAlg2u3Jve1k+7aqC6pSAuxBgQREy6ONcKy1c52bTY6gfjB65R8M5elMNdcWRfMdR33/7PJqazNGE1SwmokSrsAZVlEdj5bjx9+8g9xBmOEEXpTueMtGopIBGsgDKNYY+BkCcD9h9hI4LuDeLF8A/L6K3zwYkV7ZAZUpqUOE8vXOCoD+gcB+0ARjtnvmAs2+fNCn5DvoeVASebwucidCLsBXBw0qmMAn46MMQ3h8mGptaN3NCYhnQZSHVwsccspzhjbZS3qnyTUs/0/3Za81UVMebhApQJbdTC6IWT5JTTH2kfnc85pN2vh3DVcMdaDZyB+b5AtWLKXkM50PaSGeumI1HsjMX9SueMbaBLhB/xyKv5dI6v8vYIdEER+VFuPMzZ19A6RiCrtSJCQjmCNi2sZoiYheJhcmwBuHr6KiMNt0Uyf5PfWb+Lg7AuNrdWUKEB4nr8r2Yzoa4W9dqUO0jpWBD6ljUxZVaoOnCnDNwNiL4R/mkxPA6+x7kcVaqTKmWMIlSTnVto5cK2qCGIX2DY6kW6DbK3y+Qj/tYx8N1YnNhujdic5P6hHrWvKqMVnWwyJBruk8phNsEHJIhXuGLxgRRPVB9
+ Zy6CoHOa
+ ILRtme0eeaPci/6Of8p7H7bsehYl9H7rqlf/vaEnE9Y2qxZ8t6rVt8Lzgf1x+hD6EY678Z909W1QSY5FQmd2WVvvXprfB39wagvT1+Sd7Elpc1Mf76Wc6rjl3pnpErhSozaQKAhSt7Z0M0fH0zr7+Y6esjS70VX8r0uxXbVZj9/ckjHlx7D52O3tNVEEH/Obywz2sd/UpmolXR2VKBcu98k3KIHJ0ERVFC82LnPKyYnQQ9ZtJtY0dBLWsO4YsJ0EYG6SX6ckI5cz4ehYY1HIq5rHuVSSQwTvzP1cK7Qe/eOLKJSeyW2UDenPNT7EI8OqAQoR3TKliHgaD2r1k4ExuaHs45cV0yripYaTmnPiJbg86B90=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,26 +94,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 17 Aug 2026 15:26:05 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+On Fri, 14 Aug 2026 07:53:28 +0900 Daehyeon Ko <4ncienth@gmail.com> wrote:
 
-> > That behaviour manifested into this at userspace
-> > 
-> > Source:      [ .. unmapped  .. ][ .. mapped    ..]
-> > Destination: [ .. mapped    .. ][ .. unmapped  ..]
-> >                           ^     ^
-> >                           \     Kernel moved this far in actuality
-> >                            What is reported to userspace on struct
-> >                            uffdio_move's move field
-> > 
-> > When the previous behaviour is
-> > Source:      [ .. unmapped  .. ][ .. mapped    ..]
-> > Destination: [ .. mapped    .. ][ .. unmapped  ..]
-> >                                 ^
-> >                                 Reported to user space via uffdio_move's
-> >                                 move field
+> Secretmem mappings are charged against RLIMIT_MEMLOCK and marked
+> VM_LOCKED because their pages are unevictable and removed from the direct
+> map.
+> 
+> dup_mmap() clears VM_LOCKED on the child copy, but mremap() uses that
+> flag to decide whether an expansion needs a memlock limit check and
+> accounting. An unprivileged child can therefore expand an inherited
+> secretmem VMA past its limit and populate the added range.
+> 
+> Add a VMA open callback that marks secretmem copies without VM_LOCKED as
+> VM_DONTEXPAND. dup_mmap() invokes the callback after clearing VM_LOCKED,
+> while the original charged mapping retains its existing ability to grow
+> within the limit.
 
-Also...
+Thanks.
 
-I assume the above illuminates lack of coverage in the uffd selftests. 
-Is it hard to add a case to detect this?
+> Add a selftest that verifies expansion of an inherited secretmem VMA is
+> rejected.
+
+And that's a nice touch.
+
+> Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+> Cc: stable@vger.kernel.org
+
+AI review might have found what appears to be a related bug in there:
+	https://sashiko.dev/#/patchset/20260813225328.2010303-1-4ncienth@gmail.com
+
+Do you think that's pertinent to your fix, or should it be addressed
+separately?
+
+
 
