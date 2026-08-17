@@ -4,127 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD14BC5DF74
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 14:42:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 951AEC5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 14:46:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6FF46B00E1; Mon, 17 Aug 2026 10:42:06 -0400 (EDT)
+	id 7C1716B081B; Mon, 17 Aug 2026 10:46:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E20FB6B0166; Mon, 17 Aug 2026 10:42:06 -0400 (EDT)
+	id 772876B081C; Mon, 17 Aug 2026 10:46:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0EDD6B02A4; Mon, 17 Aug 2026 10:42:06 -0400 (EDT)
+	id 661756B0820; Mon, 17 Aug 2026 10:46:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A5DE86B00E1
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 10:42:06 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1647980790
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:42:06 +0000 (UTC)
-X-FDA: 85111026252.30.1AD8D97
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3950380005
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:42:04 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=M3bgo9IU;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 403286B081B
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 10:46:35 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AE53E16075B
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:46:34 +0000 (UTC)
+X-FDA: 85111037508.10.03F5531
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A7507A0006
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:46:32 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	spf=pass (imf25.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.196 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786977724;
+	s=arc-20220608; t=1786977993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BCd/GM+SB+20nc87cPYs8vSFqEi5EzWcz9k0G1zmxpg=;
-	b=JnKj95kTmk0HTUKBzekGP1yHohhgYwo8s/4KjbaO44b5IbZe+db9c0ZK4EudSNLbG5xz1g
-	Ru0XU/XERvRmNJ3wh+9/7Qg4dvjUM7Av93wzqRYJXzG6EbeUc8liEweTQNLOvAD6GMGzen
-	epNBiF7QmOfz2o7EuVwglyB7MgUW6GU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=vuAgeslHmAUaE9dQyFBvwVRPv0diIVkjPobZLGUqLS8=;
+	b=tXy7VpHI32YtbsLTLwr1OdZUiOjMyvzJTEaqHYaldajGi0sR7moxlcWztJ8WJmKqhc70vL
+	Mjmu1L8f3AYhPnGqxo1r/UvYg6DRtoKBqLuCqEhBKT+v2+fPuAUxX6TeNLUU8GqcbvvBxJ
+	4eXlAjErJKHobrNxx+0/wrN2h8keMbs=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=M3bgo9IU;
+	imf25.hostedemail.com;
+	dkim=none;
 	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf25.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.196 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786977724;
-	b=ew2qOOglhR9vtsw4eONEO+7L7knZd/mr+C5yurrh1r+9+El+ieaGcjdRxCGAocMNeXA894
-	Zhx8Iq8VTYaXiZWnUYUp2gSWZ5FK6anak6mUDoJmRwu6kpOipAQJsTdYIGrwVxepzxqUpp
-	JlH6/kFei2I9ubqnVVvjD4fF/luOH64=
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-92e6c4a867cso210871085a.0
-        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 07:42:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1786977723; x=1787582523; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BCd/GM+SB+20nc87cPYs8vSFqEi5EzWcz9k0G1zmxpg=;
-        b=M3bgo9IU70Pr5Im77SB2l3Yr1b515ND3nvKKYhf47aE65eq297xSSh0PVb9pX9kUyq
-         ffO3Vd1sSBP8uYVk8v0PRbKqupUXmsa8piSN5oV2X81gBivwTFLk8Wq2GrHaXrJtoYHn
-         L6plZPPbyVAI/UQ0LMxvgZLY670F9+/ypxlQQYsc1StG/zG5FdJUmxnqQSdXC1ZjIk4x
-         ZeSLtK2+I+jsTnsKRyUpb3VLII8TK86VBZaMlXdDccb//YgI5MXFqDdZCfDx/f5Cez9J
-         CPCAUvIG/neQYTrjlUU6TG3iz0vigTODSATLdGEO8/s9V9uaxdcvnhABu151MpUgJK3u
-         DBUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786977723; x=1787582523;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BCd/GM+SB+20nc87cPYs8vSFqEi5EzWcz9k0G1zmxpg=;
-        b=PjdFVqTVi8/i+iNs2V/ig09JzIfqLjVLbtyqdB3BKXpZGCTOYy1zc0VXsNZsUjAB41
-         jjMEFzeHYbla6B1+sA2+WuAanzaP30EkFwgI5pM2BKP8daM86DOsbZijmwBLUByNH1b/
-         GYt7CgPFgIKM8j5XHzRYLnr403k9v7i8HJQq1DKuP+jwPtzku8wceX1pXLE3dXsifYLU
-         8iWSpwCKpOboQDtK5XWNy5o6Pd3lyfWyzMRJB1UbXVxBSLyCOPhSZ5Uda7dLTywrpS+M
-         87NJWBw+ALR9JeTRnUiw7bmk5iu61/pXaIl5ODG8UTxQRwbjL3ReMRHl4hPwmkoLXuSS
-         Y3RQ==
-X-Forwarded-Encrypted: i=1; AHgh+RozlPqMZiNdGcEXdOP/oKsUadI0Eb2exIalPS5oSpHMXC7UOEavSc5TwXcBN3MdnzyixzVe9Oc2xg==@kvack.org
-X-Gm-Message-State: AOJu0YyEVNmVqwILA49dvcLp+4jvZXwbdw4Gakp5kDy3X/GjKbU+Wy2l
-	7gM3BJxXaqI0ZXuwX9UAHWbitlptjNaNswhQy4I9bZQZjbN4B6ZMG0adEgvyA8W63Gs=
-X-Gm-Gg: AR+sD12s4SgkWHuCCA8iCc7znZ0c0T2dY6q2366/kuFxYYub9Oh4LlGTdW4YmDJUppE
-	0aMfUrFbvrXZsl0736ttanlFSxnJeSvCqINnPiTPL3AG17S/Ib9Brf0YCZxcr9pPa2/Vgno5YyO
-	yWPIYojGjuctxVl+xCRTmsoxkzMC/xa0WTT7p9wMB3xpaXwqjjozolG7e6H6+iIMX6krl0qNrdS
-	MijbbT2QKenigBf0L9pC0hoYxzkePMOBIGmNDZ0Bhe01bIOfIJJklftorEshFO32VJDfEioYR0p
-	+w7Qwwv1IDYyJ3gox3GDDM91elYNbKpAh9NnlDdBKAxfZ9JE6lBE3ij/wWl8ueuE1q+Yv1SQH3/
-	93RP3EY6erdjAGBD6C8YbKLGjQt+4tzoHN9u5btGwHQqo769m7mN0gls6oQEImdyO31NoV8Z40N
-	wAlYdShA4Ouj0VPbDfarkYH7aR3apbOJgGGDZ5nQtgm0SMJdfAX4Jwibx50USw1az0374M2Vf63
-	zXnz1F2ATgpH5kQ3IWLla9BO/1iVZopB9xYvOF8+RHq
-X-Received: by 2002:a05:620a:2682:b0:92e:e695:d622 with SMTP id af79cd13be357-936d22ea6bfmr2612870085a.28.1786977723026;
-        Mon, 17 Aug 2026 07:42:03 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-937010c3785sm100435385a.2.2026.08.17.07.42.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 07:42:02 -0700 (PDT)
-Date: Mon, 17 Aug 2026 10:42:00 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Mike Rapoport <rppt@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Alexander Graf <graf@amazon.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Baoquan He <baoquan.he@linux.dev>, x86@kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-mm@kvack.org, linux-efi@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arch@vger.kernel.org
-Subject: Re: [PATCH 0/4] kho: rename "scratch" to "bootmem"
-Message-ID: <aoMdJ7hpr1GonLz8@gourry-fedora-PF4VCD3F>
-References: <20260811162642.3504565-1-pratyush@kernel.org>
+	t=1786977993;
+	b=N2C0JUDK6Lr5eEjmMSoOr8EU14UAVFyVCzQQkzuG9SVJJpRfvm6tqqLIZ1U4OL+Mxi8+DS
+	yID27yKDGdIGr1Ke6DZs8Kxu1P6dPN+vZ6+7l04gD2rN7lXsWLpWfx2pO5F2J/mbq/Vp2Z
+	0BfEDWZu8B5/Dn+WEO2+xAugh1Fw1Z4=
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A89FD3EE10;
+	Mon, 17 Aug 2026 14:46:24 +0000 (UTC)
+From: Alexandre Ghiti <alex@ghiti.fr>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Alexandre Ghiti <alex@ghiti.fr>
+Subject: [PATCH v1 0/2] mm: fix workingset refaults in the zswap writeback path
+Date: Mon, 17 Aug 2026 16:46:11 +0200
+Message-ID: <20260817144622.137133-1-alex@ghiti.fr>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260811162642.3504565-1-pratyush@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alex@ghiti.fr
+X-GND-Cause: dmFkZTGUjkeGzsymjV3NjkiiE3tVH6yv4EmJTZUyCCmq6voginkV45d6QzS1PO9nmnrMCLepVqKoGpu4NphUdUpbju7Gdse2UXFdCN07mZpbTC+JOV3g91bAbjCgNqAbDDBxHNuPoOGpS72jeHejH/IQ4SSlJkc3E17i/NuMBekpkH6iX9agIh3DSZ+QzXkvXMqv1Obc64t8p27zNjztti4wckY7AHibflERfD8y8pUYkkLb8vZwJmLPvyp4cKycUeblGlmbwlaHWAXH6CuS6yrLZESsLtVX0PgRNIB3q8Tuab9sZMpdjaLxDuNWBf8IoFqN3BHhW29dv7ilJfJVbNHvkIRNGc7BZI2bn5oIv4TgZ80kPY8in24caXAf7rFecAdZH5HgNZwEgSwsaJBIuOHtRqyVJluzN+JaduXJe8AYL+KWVfRcNebtfXRt23rGc+0t1CkTgb4sTB26YH8DDEf28J0Kuunl66JtlrkPpvZ0Y69Ay6zJeQ563l2F1Zr3LyhSPm8MHAltNoWG9HwikVRQYp6hgr5xZmUK7BG3Gfjk5F7o5THmF50WDIzHm7D6nV5yPPb8APN2re/MgeHCXMpcMMuMDS/NKcWx7eqI8gBVmqb5vCQwDIvEv4UCdWP40rWrWyf8TWwH43/XF2ocHrkrbM7frNWN64JrBii7tIfSp1ZwHQ
+X-GND-State: clean
+X-GND-Score: -100
 X-Rspam-User: 
-X-Stat-Signature: n1nxdnxkjt3d7iuiwkatbb73qcd7g3o6
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3950380005
-X-HE-Tag: 1786977724-648445
-X-HE-Meta: U2FsdGVkX19ZRGxeThnauHdexoY2yFPsGCBI0y+mOBqiokIb3L8A0Ze6TaRuSMyX1wvslT5ly35PLO8C1cRjD6YuKsWtp02eDOfBEg50vvXR9FEKe0oVjasKLyyBE5wt9HqrT9yzXLGOikFIq0sMroifGGvPYGBypRDEeDkxfvA1OBktCoIHs/mQYvvHwRGj8Kv3UX7zzVruPFgxbcXlcHFUf1FfC0q6sNLQfcrcrOxVs/NlZT5TmqlD61hX1PnR/Se/BUUFPYn5snpsm8DrNLXqRq2X/jM8StSdYMk2VzB4a3KnpRls2Ri9BgtwviefQMh0Z1cQ/NMJE96u9b6ee/4RO22goBC69QtvSlfPRU9NNZw25QBbHyzUjjczogkXKfe28k+Z1tC+22TLe5P5iwLBVrOEu+zlHTFwuQid/ylvQchqs02l4Esog1OrKe0lBDgiK6Q7R0mX6cTZeefwgYbIFRgvX2sT/1NfVgoTjjPEa2UexuEBztx41l7jJdbotOpMR+UI33fp3T1JFIrWFigNjCeAq4XVj9HNLOS9Vv4GDp5uCxt7RGCoU4+bRN8JN/dbFPj/NR2y9LWgn6KkZcUJw6YjvFInEJOuG1M2UQdeQBeA6qhxSyL+IfQEYJDNBAhkkeva8mFr3Laype49oYpKXBB4fy9xIOyil0qTNUUcOO/RCRZaxuQDmZ2RFsVMK4+nEI9rro8nUve8jf/uld8ax/3RN70MEpiX/f+yE46g+bVILfwQr73f0a3zYnyNNLmyvUD7sw+OGNtWk1x/0KTbzLBS0tFq+7fv7pvrNIIjmJiP6XoLoTkVl6ahLGNm9NW0HNwWWWpJZk7/7w0OjEqVGieqUxZuEv8xzsZsRuaRLRS8ry8a7qKWtgcYHl1VqxAZpO0TmrDIVMVT1OfBl+xHdW9dZHl1VlMvElF4WBUhi026CgN8SVw7k3zGhz9+J0w1iQ9ovT8HtQAvd8I
- Boco31qU
- 8lxn/0WQV+F7AQ1uG9i6cBd2EhNPnLZJssbQ3Li2DXf+u291AVQOCrMPobE4pXt/2grCYX5BKO/+R438M4nbCaIOrbFnp30ddD3LaMTs1P5MMXwc4VXIcTzy+Vijl5XPLtaQZo9APH6GSr+pM/3ci2pSaDqcds/Jg2IzdArDRLOdw6vvgIBjiZWTv9FeV+u9cvuCgC+dbpGloqvLGcrVy4UChzqiDEMb1IHM89nd60Z4m9jmOGyyOQ5dbPIVnfLAzkPk77bQYeASonWY4ORF+cslnnEJ/TFEaCA1HZM2xAA9a/M2gLOdAQTinfvfSrwcw2T3RGvdjUzA7GEiV/6xJcfT5Xxhsk52f6giD
+X-Rspamd-Queue-Id: A7507A0006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: recrzs34drtxpcmo6ak445p5i88u3g9s
+X-HE-Tag: 1786977992-665953
+X-HE-Meta: U2FsdGVkX1/xy+0s4zndfxdDs+bpZP0fjuuM/TiQDDbTmQKxYUTCiS0VmuJplOgy63Sa9K364PIzldvgMp4MTyq3QkZ9SXeQKqKU8S/QdB2kHbA2DqcehFFvCCFOP48b8UUfORAidlexXH5tYpvNx2WKNyABVuK9WeyAZB7jKsgcOl57ODONo3XK1Q/RGEg9/BmgQ9MyGptFPCzOMijUukAk6qudMHETSaIG6HyPy0tPEjZBYnG8L4d2ZlC/Mv9rM7SYNlKMpOjK8wf9x2e+O/M0jksqCpZiiaV1JDxKZhq6oje8SdBMK9FlIw7dIf9Vf/1ocNBOpH/RDxERa2T2zQret9v4mDOZu6qgLp3I/CrzZkCDPc+5UEremqTML3R8s/1cFHTFbV4+WPoGHFwQryKLpgkUyCiYqyeAHpeaKmX5fhl5nAc7ACpRd4acwxqIuuwBm4xLtUmNJKQyydHISnR6aLZ6MahX05G7HQKh0cGJ5qtFGx/34tHyXlS8p2w4LT4k5zMf4f0Ze8fsyg+ALxY+xZUTmrzEjLyntEiLga+sva/FnCr4U0dq8mkWHLw9E6yGz5daRDR+T/PrxPAheysUUEzJsixLu/1Tfa8kVzs9aOVFLOp/MVkmsBwMmdzn2zfedC5E9ka7zS+oBTFxJkGUouM7sbvjy8zSOX8wJV/RxT5i3bfF7CaXKDWCLpVfEiA+R075P/PxvKm+yEyM+rAjlYCtKC/2G8MUPAUV6HwodrYr09un6zzSBU+ZfJRCqHWFnIxdWGc4GMTL9r0tdKGyGEe5PzV/awRz4JTcb0stFxguH3Hvr+5/GnIeY+hv+XiFoxFjeWnTv/g7/wrWCElzZuYa0m2xthFDtpTeTvb3W6YHT3nx2jFg+t5TXbj0Gc0suJ8M+wwH08t+N6MnZtlaJGbFKFow8ZiFoJk1ws3h9GUnJVPzc0CU3MA+z2usV5JCf5Clq56cA7UD0kO
+ Jz3E2aXo
+ O6kJs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,25 +102,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 06:26:36PM +0200, Pratyush Yadav wrote:
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
-> 
-> The term "KHO scratch" is vague and overloaded. It does not accurately
-> describe what the memory is for. This was discussed previously at [0].
-> The conclusion was to rename "KHO scratch" to "KHO bootmem", since this
-> is memory passed by the previous kernel for early boot allocations.
-> 
+When an anonymous folio is reclaimed, workingset_eviction() stores a
+"shadow" (the eviction cookie) in the swap slot so that a later swap-in
+can be recognised as a refault and, if the refault distance is short
+enough, the page can be re-activated. This is how anon workingset/refault
+detection has worked since commit aae466b0052e ("mm/swap: implement
+workingset detection for anonymous LRU").
 
-This seems like a lot of churn to just rename some stuff, especially for
-a term "scratch" which is very much understood to mean "temporary
-working memory region" in common computing parlance.
+zswap writeback breaks this in two independent ways:
 
-The boot param name change would also cause breakage for existing
-systems that update and depend on the scratch parameter.
+  - Over-count at writeback: the shrinker allocates a buffer folio in the
+    swap cache, and the allocation path counts that folio as a refault.
 
-Is there a non-verbiage reason to justify these changes?  Living with
-"scratch" seems better than potentially breaking folks.
+  - Lost eviction cookie at reclaim: adding the buffer to the swap cache
+    overwrites the slot's shadow, so the original cookie is lost; when the
+    buffer folio is finally reclaimed a fresh, inaccurate cookie is minted
+    in its place.
 
-~Gregory
+This series preserves the shadow within zswap itself, without any new
+swap-table or swap-slot state. At writeback, instead of erasing the freed
+zswap entry, the captured shadow is parked in the zswap tree in its place,
+so it outlives the writeback buffer folio.
+
+Finally, the refault evaluation is moved out of the swap-cache allocator
+into the swap-in callers, so allocating the writeback buffer is no longer
+miscounted as a refault.
+
+Results
+-------
+
+Measured with a sysbench OLTP (MariaDB) workload in a memory cgroup sized
+so the dataset and InnoDB buffer pool both overcommit it, with the zswap
+shrinker on so entries are continuously written back to an NVMe swap
+device (classic LRU; MGLRU off). Anon workingset counters over the
+measured window, baseline vs this series, mean +/- stddev over 10 runs:
+
+  workingset_refault_anon    383,242 +/- 59,345  ->  199,355 +/- 27,042   -48%
+  workingset_activate_anon    54,890 +/- 11,742  ->   22,607 +/-  3,118   -59%
+  workingset_restore_anon     16,212 +/-  4,590  ->    7,599 +/-  1,190   -53%
+
+Writeback volume is comparable (zswpwb 183k +/- 16k -> 178k +/- 15k), so
+the reduction is not from doing less work. Normalised per transaction the
+reduction holds (-53%/-49%/-39%) while the swap work per transaction is
+unchanged. A kernel build under the same pressure moves all three
+counters in the same direction.
+
+The run-to-run variance of these counters drops as well.
+
+Throughput is unaffected: over the same 10 runs, transactions/s is
+18.50 +/- 1.08 -> 18.65 +/- 0.94, i.e. +0.8% with a 95% confidence
+interval of +/- 7.7%.
+
+Alexandre Ghiti (2):
+  mm/swap: refault on swap-in, not in the swap cache allocator
+  mm/zswap: preserve the workingset shadow across writeback
+
+ include/linux/zswap.h | 12 +++++++
+ mm/memory.c           |  5 +++
+ mm/shmem.c            |  5 +++
+ mm/swap_state.c       | 30 ++++++++++++++--
+ mm/vmscan.c           |  4 ++-
+ mm/workingset.c       |  5 ++-
+ mm/zswap.c            | 80 ++++++++++++++++++++++++++++++++++++++++++-
+ 7 files changed, 136 insertions(+), 5 deletions(-)
+
+
+base-commit: 626acb37cd445144f321f1b64cac9a93760fa716
+-- 
+2.53.0-Meta
 
 
