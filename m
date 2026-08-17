@@ -4,108 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20301C5DF66
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 13:59:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80FD3C5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 14:02:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 286DD6B0812; Mon, 17 Aug 2026 09:59:03 -0400 (EDT)
+	id 8A85B6B00DB; Mon, 17 Aug 2026 10:02:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25ED56B0814; Mon, 17 Aug 2026 09:59:03 -0400 (EDT)
+	id 832D86B00DD; Mon, 17 Aug 2026 10:02:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 175AE6B0815; Mon, 17 Aug 2026 09:59:03 -0400 (EDT)
+	id 7213B6B00DF; Mon, 17 Aug 2026 10:02:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EAA1C6B0812
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:59:02 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7F42A1206D2
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:59:02 +0000 (UTC)
-X-FDA: 85110917724.24.A2BB689
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2572820008
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:58:56 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	spf=pass (imf13.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F36D6B00DB
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 10:02:35 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C23B31405CC
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:02:34 +0000 (UTC)
+X-FDA: 85110926628.23.C057413
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 15A16140015
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:02:32 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y0fdQcbf;
+	spf=pass (imf26.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786975353;
+	b=L0nccQpIyehs6vBNksStoNdmGzoBMElXS5mJxlbxm1NDYcay0a1qzWj01RyNEJXMFLNSuJ
+	HCzZ1280+RU6PHfOJtRZXBBrzgN5HS/AmMffvzoaJsmYigiRlCrPbXm3kzfCLu1LqaU8mf
+	/QBqhhL/TUe0aIOTklvCv32s9h+O4Mo=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y0fdQcbf;
+	spf=pass (imf26.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786975140;
+	s=arc-20220608; t=1786975353;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LDom/mBLisuznJwW3t+yEt5NXAw9HhuCxgKFwQok5NM=;
-	b=jvmDeq/5yeyme+W85mv0Wh017VSXF0tcpj8iuEdiBvEINO4tvZ5IOkwNJLmcJ9XB9nJZ8/
-	ZNyoIBzG7jF3zlr5A3C9Z/QoghyxviSspza1ezgqwraOuPUsvhJh2tgb/xw3rvxz+jzAbO
-	Dh9mtIlAlEqA605Oxl7EHcrYe8R9qqA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786975140;
-	b=r/bjebvZDvyM26FQISIee+H9iHl5mNNb8xxg3Lsx83QURYJplbAUeUEnm9+NnVq3vpN1j3
-	Nrfx67ttyKr+lN4+yS/e8dObDP4XN2Gj6Zj/GNSSkAjs9E/wcifoxmhgnFTk5pNTy7xuJ4
-	23Vwni49SkMeR2slp4J2ocgIBabEj2Y=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn;
-	dmarc=none
-X-UUID: c261060a9a4311f19a56ed5b684f684d-20260817
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_TXT
-	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_MAILER_MTBG
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
-	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
-	DMARC_NOPASS, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO
-	GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:615dd124-44dd-40ac-983f-4f78e53b0429,IP:20,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:8,RULE:Release_Ham,ACTION
-	:release,TS:28
-X-CID-INFO: VERSION:1.3.19,REQID:615dd124-44dd-40ac-983f-4f78e53b0429,IP:20,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:8,RULE:Release_Ham,ACTION:r
-	elease,TS:28
-X-CID-META: VersionHash:7db8b62,CLOUDID:ec1081a26d84b2229a074b656afc1cbe,BulkI
-	D:260817111225XMIBG1F7,BulkQuantity:10,SF:17|19|64|66|78|80|81|82|83|102|1
-	27|841|865|898,TC:nil,Content:0|15|52,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,B
-	ulk:40|20,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,B
-	RR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_OBB,
-	TF_CID_SPAM_FCD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: c261060a9a4311f19a56ed5b684f684d-20260817
-X-User: husong@kylinos.cn
-Received: from [192.168.110.173] [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <husong@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 1866070750; Mon, 17 Aug 2026 21:58:43 +0800
-Message-ID: <eef3b61a-a8c2-4b2e-b560-c2dae129bb7a@kylinos.cn>
-Date: Mon, 17 Aug 2026 21:58:39 +0800
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Bk9cL2KwgbRIb7nFwPdx5v6FOYyA9DjpsbTLZv0L1eQ=;
+	b=3b50c9h72nro+gNptaNCHcrmneLj3PU93nMjVRUwYLYExuoiCztcCdDpkkLcTj2FLKV8TB
+	PMh+gK9+LSmzbQyaG6PcpRC/18zILHpR22ggFcPT+iF2BVxT3/HLov6jVhB7HDMFIsoJ5K
+	2HTAsg8Y1Ziclb5U12KzO4+GYD7A1Xc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 841FF600AE;
+	Mon, 17 Aug 2026 14:02:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71321F00A3A;
+	Mon, 17 Aug 2026 14:02:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786975352;
+	bh=Bk9cL2KwgbRIb7nFwPdx5v6FOYyA9DjpsbTLZv0L1eQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Y0fdQcbfy5dn/lI+yaPAltT3j6k7+vfjdPcicURAunKJ0n/z6Ts6qaRa2AQVqc6pU
+	 jcNPzCElF02SHYK35UcHOuWU1fv7xQIi1GTR+XqF+UryArI+SRmggY3LfKOmEMsSvW
+	 dnMYlqHMKtkowxUhDeUanWaXuckc6bP0hnSpkXUCtSC56i6G/pGLedy+v1AL6Oz/EY
+	 /dJu2mBJCvKwVIAb6wBVApzGWiOtvkvTeI3m7MlYozvqmCvGOc3KRZHwvO8iz1C6Mx
+	 cJxWae18iVMl0VXCkNHaf1dbUTUhQHcwPQ0AJ3rAnD84tCCJmPuhWFT4qS7zk6yZ94
+	 xdp8YrNZ+q0LA==
+Date: Mon, 17 Aug 2026 16:02:27 +0200
+From: Joel Granados <joel.granados@kernel.org>
+To: Kees Cook <kees@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: Jianlin Shi <shijianlin11@foxmail.com>, akpm@linux-foundation.org, 
+	vbabka@kernel.org, hannes@cmpxchg.org, surenb@google.com, mhocko@suse.com, 
+	jackmanb@google.com, ziy@nvidia.com, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 0/4] sysctl: Disallow partial updates of
+ miss-formatted sysctl vectors
+Message-ID: <gxiyb2aye6vvu6t7veykvptj4t3hxll67mugievbumjc6krstw@nivusuyqhpbr>
+References: <20260814-lklm-partial_ctlvec-v2-0-9df50d26e477@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: husong@kylinos.cn, akpm@linux-foundation.org, audra@redhat.com,
- bingfangguo@tencent.com, cgroups@vger.kernel.org, hannes@cmpxchg.org,
- joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- muchun.song@linux.dev, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- zhuhui@kylinos.cn
-Subject: Re: [PATCH] mm: memcg: flush empty per-cpu stock slots on memcg
- offlining
-To: Michal Hocko <mhocko@suse.com>
-References: <aoLGzZHS8kj53-ey@tiehlicka>
- <20260817131221.44761-1-husong@kylinos.cn> <aoMMr6kEX7pW1dSF@tiehlicka>
-From: Song Hu <husong@kylinos.cn>
-In-Reply-To: <aoMMr6kEX7pW1dSF@tiehlicka>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="5sktdhveowv3yy7h"
+Content-Disposition: inline
+In-Reply-To: <20260814-lklm-partial_ctlvec-v2-0-9df50d26e477@kernel.org>
+X-Rspamd-Queue-Id: 15A16140015
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: 1384z79gikbcgaj7wyk4nycgar53jxkc
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2572820008
-X-HE-Tag: 1786975136-618574
-X-HE-Meta: U2FsdGVkX19Hh+ykGhz0HnNaGwDocB7yGF5OBOagoCjOU7OM7uDkBKhX9dorz47C5uvtGoytKzWo9bKmnWtSMhdlmU5QBzgrUe/0yxvnmm4HqRh2bUN9mY8tqHJ82GyQuEIuT1dOnL2ZuZDx+F2m8Z1cpybE+udRjuA3KqyZ/tIYaranPkJXSTy90Sz7KhDXCSk3NAAQUanqxiH1+UTE+V8ehKmFVHikNHYK5orJtVpSJ+LFw2fIRDiQXBayYWfUEdM+B59R8ZtpxWB5j91AyDYPLvk5BAt2wUHlDVyzTD4hBysb96+GOBMwIsYt4CeyUg6dChyx38gMZP553+3mJBipnZ2UsPQwKO0+WFDa+4n4W7I7AOBtH8/kT4X0RCDtFNxQPCqwbRTioDWKCOAyunDdQ5KckL/AViIfYIBGsNN7NCl3/U8aSgbIcp9rWdLrfjLwvw4XnJx7ua3VZwIwAIH2ov/Haf8kdNxbsvwiYx3VzhZuGri1izIyYcCNDV0ArqPJRZ39p1vnHWvzQREt1UMRlZhW1I+ew/zBjEiMAskY4Fg1W8LxOy38Ot2C/Y7ByO3g5tYGktQ5ymIwgUefenIFh5d6k9FxdtUaNLgIqWzrMAUPQcp1PZo4Sp9HEGrAB38QwZMYAP+lllSbmyCiVh6AnM3QZaT9IJdqznXaQylrK1yuooCbpdstcmGg+LBJ0ykfbTzaMXkSIPOvTJJ1mc5SwcrKWWFzOxX7peBy8C9Yc/jUWUQEzn+PMA/IAGPWc2wLsu5O6flb1rmj4RwnAvGreEP+fIqT+y8c9nNdfS4SelD1zW82OB40tqEuUJe4CWyXIK5c1ZiMXhCxF9rDgG5M0Or93zaSiRjf8q0o9AVHxXWgGMG29Xg9tB69z0kqWEwgxtS5x5yMVgT6Nqwzj4xitrqZu+VnBEVqmZ063NuHUoprl1+siYDpL3cEGHqOavIOz7P4tRR+D8A9GqO
- wf7I+/i/
- EWx8x4aDKCEp449CcGQ0HPt4ud3BaRXLdXpawsQBUIlVY++vxnu8p33Xd4dYv//fxVCUabqLVc3oQim0d1N+wBOen5bF6JTdh3xpmflQhjTVU6812ZtbIB6Dj/JdTogZ6X40Q2bOVML4jW3aMpdZqJJi0sA==
+X-Stat-Signature: weyenzcckr55etjd6tzk4ozs8dpsb7dz
+X-HE-Tag: 1786975352-455791
+X-HE-Meta: U2FsdGVkX1+oCukPXZ4YLhL1qr6TYUT+cIKi9n/FJ/Hg1Yi+ijateRVfjSOjpmqeDnrHyCswygBDaEdjKqDB0l47YJjxVNXRC5H+P7QQsMg3pXhTUJR8eqSJdiyzNU3/uVZhi8aUnqawqL47ti+YAfq2MygYt+zdws9hGpaKRrJ0bg8sSbZgYook0NPE/1+XZ8dK5xlDIShd4/4NWiuXRxnQDFcZgSiAmHNZ7Xbn1MhXwhvc79QkDPFfLkuC3dlnE+fmK3y83fD6LS7RtAiACbqBALXX000TroLTN5PPV5mQ7p8+ENxoInvUkw7fCInTxr6HfScDFnIp0wf5evM/sSHqeygIzigUG+pDp4grNnjHZEabnMz91BE9tChvib3daSMPXWrexQNKEyWi91Je8hfB7YdT9Nsosk8LQe+8MfRImMvSkNSMCpJrSQt+u+oUz7HZXAVK1aKQtNQ/fWHTBDPOYPXLWpzdDMVoOdzkeTH9sf2xk7hNdBVn9gLjWpFWBFA+SFS2DKoDyl6XOmgsWi3D3jK8rktHqLyZLnbENazkebikpzswbQZRPVyi+TA1xk8HU4MddtRnHe0whxoUjTNKIQreO0pTfpIaxvb2hGq5tSmhOqJNhwjF/0vOxPwUSAPNa5RyRBlmAad2RgsjuR5h+62yJ9aFNq0tY8GXEgTEn+PNwbFazbeH8bD8yXjGteFuOSAEvOWJhKS3YmCeml9R0BdWqF3uDsB/PbNjE52ao1vwG62KPdHucumXe5q1wgrm+SiQhIPGhT6NwbkmHQ6il6dj2UDuktrgcdfW3prR5OdySqdNk9slQncvv5wjO0brimSPXMPl5AM5qyMi5jG2pnGkwPA67XXNQDTYD4R8PexVduBJSxuKR2uj+LpYnyc7/b23iWaonJ5RrBZEKajBHqkHt9aP9/Gfovj79RSyizjgv9llf3WxUkFqjsXh9cFag059+YePnGhr+zh
+ LFwwnsgS
+ kjRqKq40AdaN0aooyz3PIufzPiSoCs14nbGjj5skAsHSuh6b2fTgVc+Zo87N1ghCLFRzoQCdT65t/xdOBUHESqaqHFDjsH/mIIMh7BHCaqb/Qc6Iu6tQJt3Ty5pVyMs5/Ov2lebJEhhsGc8JZyrq5UOYgLegdZm3+fBw7lUbK/1H/OEWoyC8I8iPB+UkT/scsAvXO+8KDthg0MCebo3YpHPYov7fJQCLHYo6+4mJiT7gzJOFpXeaGVdnEtvO/4jp5j10ltDYbSHEKJBcPHA+86/0ZOR+E4vyrX293SU3uLC2R0XZnstbfgsOjL0X25a1TvteZ5xf/O17zK6ygQnzXLt2YaWVcR32OvNY5tWhAv2WCwtH55DhetT4VeA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,48 +94,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,Michal
 
-在 2026/8/17 21:29, Michal Hocko 写道:
-> On Mon 17-08-26 21:12:21, Song Hu wrote:
->> On Mon 17-08-26, Michal Hocko wrote:
->>> Is there any specific reason why the memcg stays in the cache slot
->>> without any pages?
->>
->> consume_stock() doesn't release the slot when nr_pages hits zero.  It
->> is kept for the next charge of the same task and only gets displaced
->> by a charge under a different memcg or by CPU hotplug.  The problem is
->> that the offlining drain skips empty slots, so the css reference they
->> hold is never dropped unless something unrelated displaces them.
-> 
-> This doesn't answer my question, really, does it? Is there any good
-> reason for this implementation? Why do we need to drop references
-> remotely when we can do so when the last cached charge is consumed?
-> 
+--5sktdhveowv3yy7h
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fair enough.  There is no strong reason.  Keeping the slot
-populated after the last page is consumed only saves a
-css_get()/css_put() pair when the same memcg charges again on that
-CPU - a micro-optimization from the original single-slot
-implementation.
+On Fri, Aug 14, 2026 at 12:41:11PM +0200, Joel Granados wrote:
+> What?
+> =3D=3D=3D=3D=3D
+>=20
+> Stage table->data when writing INT & ULONG ctl_tables. Commit staged
+> data to kernel variable only when all the conversions have succeeded.
+> This is applicable only to variables that represent a vector; paths
+> pertaining to scalers are left unchanged. Notice that partial updates
+> can still happen if less than the size of the vector are passed and
+> correctly formatted.
+=2E.. snip ...
+>       sysctl: Split data conversion and file position handling
+>       sysctl: Reject uint arrays before calling the general proc_vec
+>       sysctl: Disallow partial updates for erroneous sysctl vectors
+>       sysctl: Add 0013 to test partially updated vectors
+>=20
+>  kernel/sysctl.c                          | 237 ++++++++++++++++++++-----=
+------
+>  tools/testing/selftests/sysctl/sysctl.sh |  60 ++++++++
+>  2 files changed, 217 insertions(+), 80 deletions(-)
+> ---
+> base-commit: 4c12287001da60f3c022bb25932aa7a5590fc0b1
+> change-id: 20260813-lklm-partial_ctlvec-bd8867b70d5c
+>=20
+> Best regards,
+> --=20
+> Joel Granados <joel.granados@kernel.org>
+>=20
+>=20
 
-Dropping the reference in consume_stock() when the slot empties is
-the better place.  Empty slots stop existing, so the offlining drain
-has nothing left to miss and is_memcg_drain_needed() stays as it
-is.  This also makes Joshua's concern about the full-stock drain go
-away entirely.  The cost is one refcount pair per emptied slot, at
-most once per MEMCG_CHARGE_BATCH pages.
+I feel the superficial changes mentioned in the review (up until now) do
+not merit me sending a V3. The modified tree is here [1].=20
 
-Joshua, this supersedes the css_is_dying gating you suggested and
-that I said I would do - with no empty slots left, the check would
-never fire, and the kill_css_sync() ordering argument becomes moot
-as well.  Since you are reworking this code, I'd appreciate a
-sanity check on releasing from consume_stock().
+Best
 
-If this direction works for you both, I'll rework the patch
-accordingly.
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/joel.granados/linux.git=
+/log/?h=3Djag/partial_ctlvec
 
-Thanks,
-Song
 
+--5sktdhveowv3yy7h
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmqDFHIACgkQupfNUreW
+QU9Wtgv/W/Mxbk0Y5tHUqDrqO0jIgDma4VYCc49F8BOBiB9Y+y1EdV7R1UJ3rIwv
+BttI+rtCWKIsKBhJEZBHsCiyX2k83LH93TfXi5Wihrq8n/YN6xMzKvOU1mxSH9uB
+2MHNuUAmTFJtAnt+GCXroOizzsivvzcN6Xr3Xf7KseVsvTU0Jzn7YzX2v5gAbwK8
+6VhW8uVlbD0oPpedkkZAWA/Il6jKb4SN431WgYOt0hLU5TniChtQs37E7JZQJmkJ
+s5D7/H/E+IhhIOs8PZGUyAamcZe3I+DIQzIl2o6rPSFxZfwpqApJ+ZRGvKDdbSOk
+6L0fqamT6DeTIhnYvpQ5zte+g69C2sWP9+PU+5bjbeAtcxrtGpo4tYie53GANrc+
+o6N/qR4ag9GWVNk0KfEavJCcD7kBZuWEiF8UoZSS8EGMkczn+pnvjMSFoCUfkKSx
+kggJHEsI027hD2yZXnTWeGk1YWmFnAlfVx2vbIMrdiH3OqeMA4kHt0otPqaxPy0Q
+llqAqVbl
+=78b3
+-----END PGP SIGNATURE-----
+
+--5sktdhveowv3yy7h--
 
