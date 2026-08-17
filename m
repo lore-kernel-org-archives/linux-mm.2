@@ -4,88 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C265C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 03:08:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35E05C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 03:13:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E868E6B08E9; Sun, 16 Aug 2026 23:08:03 -0400 (EDT)
+	id 233156B08F0; Sun, 16 Aug 2026 23:13:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E101C6B08EE; Sun, 16 Aug 2026 23:08:03 -0400 (EDT)
+	id 1E3D46B08F1; Sun, 16 Aug 2026 23:13:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFE7D6B08EF; Sun, 16 Aug 2026 23:08:03 -0400 (EDT)
+	id 0FA1C6B08F2; Sun, 16 Aug 2026 23:13:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 90B4D6B08E9
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 23:08:03 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0189F80608
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 03:08:02 +0000 (UTC)
-X-FDA: 85109277246.13.76AE179
-Received: from mta1.migadu.com (out-33.mta1.migadu.com [95.215.58.33])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C3B77160003
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 03:08:00 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="vYDg/dDJ";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.33 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DF6A16B08F0
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 23:13:13 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7335040667
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 03:13:13 +0000 (UTC)
+X-FDA: 85109290266.05.D01A05F
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 97E8640003
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 03:13:10 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=nOv0PWhk;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf01.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786936081;
+	s=arc-20220608; t=1786936391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SJL2/Cel1NyCH1jz8GraNjQ5flXYsrXujTT5Wrcindw=;
-	b=JRkk0BH6H6mwTaAxnHfYqX+WdR9/f9qV0fHjL8useJzk+N8PEj9mmFTJfH1mwWdKsqH5QR
-	hfLaYQrB7IgIbb4ZwCKa/qkeLHpEkZupKN290i1KrzNlQIiQuagfsKi+OYERMs0LErP1x9
-	VgSkHwxqnd0iAf01/elMU75vm27RQuY=
+	bh=2m2gkFnEIMedh4SD2cdL9BF+Y+jc08sxrvLi8/Eepho=;
+	b=NHC/1CG0wdiTiJLCYQvMzTihDV/Zim5bjN9XcLdqPTEu+QpIU2APGxn0h4aMWsXgNHg63k
+	7zcXMrbZR6QeYmTxHb94mpYMuqlM/iIZuUUBUvzQpifPeHcw3FMwFet+RXg1N9imHWF+Gl
+	FyeTAxfK138gb/uaDyqZjWd1dFamD2Q=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="vYDg/dDJ";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.33 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	imf01.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=nOv0PWhk;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf01.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786936081;
-	b=wVPc7/uO9YiqcHtBUvncv5xlrJmZzqwZZv8fND4LXzTEZw0EdMuVcxwQw4vay6zqJQ+vdT
-	vwYWaX+ClFd63r27+C/jMKG4jEEXcrFLxoebI138Y4iNdTDU4MwtWac9xzMA5VqC3rw5hr
-	H0zWD+HqEKsSLpiFd+etwtx2+dm7F4g=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=BxW4UAvk2xb0ecZRGZbpgODOejmvGyOqgKfMelcZ780=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786936079; v=1; x=1787540879;
- b=vYDg/dDJziUeP8QkyWYwysiyoKIJ0KXZtEl+RlDhvx61EcwjuJwlfxmKoMYSX5DnxmBIU1Ee
- AfuU+xhqB0XtC/EdAki5buYqJzU54ZcVMxdGXpMbqfwXSE8S4BUrKalqUsWo3cwzy0XC3sspAY6
- leF089eI1pWTu/4y0Xp06WfM=
-X-Envelope-To: linux-mm@kvack.org
-Received: from [10.244.244.3] (2602:fce1:44f:115e::)
-	by smtp.migadu.com with ESMTPS id 6049414b2e7cf9f4;
-	Mon, 17 Aug 2026 03:07:59 +0000
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <a2ec5fd7-fe7c-40ce-a78e-029b2fefcb84@linux.dev>
-Date: Mon, 17 Aug 2026 11:07:49 +0800
+	t=1786936391;
+	b=Of4pPMiTrs1Bmy0yw+4uz7bJdbqpVqqE3TSZTI2EdErznkE7NCyZKJpw75D5MANcOMAr7P
+	yZtao9pX+AMgxDj60pq+0+NrVQZFguzbEZ2Smvm6qmZbq25SqLvcOpxjP/KKNhkMS+Wsws
+	qXWytkQ0RD3rTFy3pQkF6bFJulS9EPY=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=2m2gkFnEIMedh4SD2cdL9BF+Y+jc08sxrvLi8/Eepho=;
+	b=nOv0PWhkS5CZro9o5eu4i4FZs0VQ3eCZGJDSQDGkZORH/3rp2j9GpueqJpr/QjtRQUQJEWPe7
+	EosiAhoILjeCBf0vepfTBWtcscZeq8UlL/n9PllBdmv5o2gOCATMmyZO6m55fFS2/mFhi9vsOZw
+	/uLEvwnBPKpRu2wcIS5V3JI=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4hNd0v02tDzRhVJ;
+	Mon, 17 Aug 2026 11:02:23 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1AFBC40538;
+	Mon, 17 Aug 2026 11:13:01 +0800 (CST)
+Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
+ (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Mon, 17 Aug
+ 2026 11:12:59 +0800
+Message-ID: <4b9293fc-82d1-4776-81d6-d7463439c1ae@huawei.com>
+Date: Mon, 17 Aug 2026 11:12:58 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/rmap: synchronize lock and unlock target in
- anon_vma_clone
-Content-Language: en-US
-To: Eric Kim <seohyun.kim@outlook.kr>
-Cc: david@kernel.org, ljs@kernel.org, riel@surriel.com, liam@infradead.org,
- vbabka@kernel.org, harry@kernel.org, jannh@google.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org
-References: <OS7PR01MB1391443074B4A2A774B7A956C96A72@OS7PR01MB13914.jpnprd01.prod.outlook.com>
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <OS7PR01MB1391443074B4A2A774B7A956C96A72@OS7PR01MB13914.jpnprd01.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 0/2] docs/ksm: fix advisor documentation and comment
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+CC: <akpm@linux-foundation.org>, <david@kernel.org>, <xu.xin16@zte.com.cn>,
+	<chengming.zhou@linux.dev>, <liam@infradead.org>, <vbabka@kernel.org>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>, <corbet@lwn.net>,
+	<skhan@linuxfoundation.org>, <shr@devkernel.io>, <linux-mm@kvack.org>,
+	<linux-doc@vger.kernel.org>, <wangkefeng.wang@huawei.com>,
+	<sunnanyong@huawei.com>
+References: <20260813031722.569983-1-tujinjiang@huawei.com>
+ <an3VdkvUvLapWzmw@lucifer>
+From: Jinjiang Tu <tujinjiang@huawei.com>
+In-Reply-To: <an3VdkvUvLapWzmw@lucifer>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.178.9]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Rspamd-Queue-Id: 97E8640003
+X-Stat-Signature: a8b1mqhc7xbpeysg7xbf8kt9bf6mpfny
 X-Rspam-User: 
-X-Stat-Signature: 5hf57h4149d1bzj9kwrxsrmxn9jswkcw
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C3B77160003
-X-HE-Tag: 1786936080-684186
-X-HE-Meta: U2FsdGVkX19F9dOyKWKmJWJKPM1CxXxEIy2rb44AQQ7kg++RR9QmgFVNBcqEcfw2TfNYEHJZK4wODW8ArDpq8tYmRuDwxYcZxgSfhvrHyEww/4bnZYMOObc+dbH2sGgCgsZtO2E+NstRmCHm2+T0gwm5aHHNlQvf5VYqACzWOPOiIzFnl8gyR3c2YVEPzZwMaceuu71nyJM3WLKRGiXMCkoL7/16VPIcwBFYJzR4kNrAkhOQe68Dou3HjuB4eQfJ/FcvAEbDkvH8K0WMHRPDWGUOwsHNFbeFazBaW1/BekHq33cgq0ml3pOPBttvQromCWwWm9Dm/d9D6NWMFdXQXjNmSzbeXkdmoF9jhV1Y6GstmF49tkqlAJiGNC/n1+rd/z8IYXOmrNX2Ff6WCVlvZzViyVfS+dAZhoT8E0Cg6GLEYhCebPFmGQ8MWisFahZIAs9bXaGVSppm9SSs8HOCmcIJBwRvDkt0lwhV9JcdHNaGOHoJkB6bBdGxN2Hs0y+TtNIn7szD8EA1s+kvXr0FuEV0u16B/l6ZaX95NBGr9+aRLbeTnFuLGTT99RB2KPMgopOOM+2s3zPRfg41asGTLIPYtMmrAj7wRIqL15WkiiunI+HDhzIMKdqBx8xvJkvDNP/6KICZEjxjtFWM1tP2gXUgsqI7bfj/SVuvFW7NWj9s2D/c4QvcusMOkEbQnjyocUoLIbgQVU0Q7PSnaotVf1lcI1PrZVFfPSF3A8MUXWDsu/YoXWinZh+qV3s3IS7LnoZBzOtEo3WojOXInei3heQ4nXMoBlgOSbReyAcCKbixb222c7NRZlFwi3oe1Gzlaro72RHTTeJqXJIaYa93zxZYhFLiP8bgCMroXuv5NsjgFF3asW7G3HnDmKW3QHDaBHhCAmD4d46l0ucYVRrgl8do1AEs556CjP+0fykpV8/AjZyiS96k/3f56vac0SKbElXZbPMIByG8AwCjdSC
- cs+NROtK
- GCxFiqNBxpJZn+b+xfUL9omosngJP2pRSjzPfoJ1Y6LI0FATFVM2lV+PdPrtGWuIVSUozI/d/pC+/2WZTOGpVTV+7Q8ga8LJTiyXEPhderEB2qIiiF5zxpVd3Od24IF62xFDa1Ttyj3bNektQVCTzrKkpjzR83zrIiIZLGnNbU09aNI85Z1ivyazFz59NSVLQirv8KyojKkTyu9wSKg0ih8+e16fZCfB/3WxYNrEEGBbzQ09P6UU6iBmIFd7Y7W7i0H9bf21aSsHSIyo1DsyHLPyy9L/9QywXD5yIsdmzQeMCtcyqE5W17bwKN4ekZS/z94Ar
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786936390-790617
+X-HE-Meta: U2FsdGVkX1+71rA7S5xmwdwvWY2g41CxH8C5cnFBnvTb1nMm//ejXqxLYo0xPW33Hr9dXKy/1K211w/epHRPoTbHFZ+1y/qKlM8BqVimnzTkAUnSMfaaCXH5dtUF0T+Xmvt69OFy3vAIWbT491Nm/ZfuNthBXT1tXLowaTtcNezSEo4rBKiToz1IaAgHO14gRkem+KGxNApGUD267WtbPPoQFqcNhlKc32IoR2OhHA25Ed6QGza56S4yn9rwjF1UosUadm5jSxflwRwLK2RJHz2Po94ZDGmKSft4uJsYOMYZ7oTZGoZZeDfP/Xulv+vvC8v3X1h2SbjYKwxQPJfD2B4YbX+Z8bik3XkUH9xcFwho23B8ENAhk7A4qrsqrmh1YXzuM+V8EwLpMCDe71Ov6wRARJOx7R2XB0C3WTqYgFRcEw4I1gvDgSx8xQlJ68FSaKjueIurXtAB0WZz+1JvJT60wMoDnK9IssC1jJ3j4A7PNuhxfQyDMXigzLeJaAEbf2DRDGTjUt1/h6EnDdKOszM6uvLKxoznWVLE60YFQ4LJh+4g1AyaPh5ZGywQHlRrtdlY4SRfY5IpUBWK3waI3z/h94jSVtXqM+uXL/xcDW2xW2bs3AmIZQm4KGaLq6BXT/0mlJK/HgbA9Xj8pznCUYt1HKIBE2VSJySRL5sjZJnyIcWyFs6NIVDtusVr1v2BAOjat1bC5eue2X7E7UwRM0NlYYJ1u+eUOMKrRTycIt5JVP/frMPTKAgcad47YdkvwvRRvgFqocF9hy8fAhG1zS3Bebz9CHg9kWA9qSNha4cTKEvgOu196SWW6LssFTVc07+Nd4c1ejvoFBa4gbvRu1b5phU+gQyKiYc9vgBh0F15EuEtTmarBOiJr9vAxW7Y8X+FjihwbtS/NsZt4cmWoO7LDjKwLSGK7Z42rbyOQ8crjywzJNnRwpW5NXMqmTZdG0Sryho8iWbNkBql8F+
+ HdgbpIwi
+ xSHOWLICdfOT3+u7HaNZ8CAf7S+8f8eEwTxRIO9tL3qdV8mcV/hY8BvlqqQc0l/VbqaTd6CxCdNpPfxzd1d4Mdk+FzwmAsVaa2aUw6977H+cm9CtnW6d6tZFZeEIqPsi0BLZzs8IJH9JIPJ8qBtkxNVi19ZmUvt13kJ69aCosdwLZotomhsx3NjRccc1U+sphXDD6wzzVmt5krYZvM0E/cV8DlkjlHyXekdZJj2KmBOBEvbnFgPH/6T0RZNcl/p+eOtwgtf0FSKbgflKaSb7kFC5mZs6qA8xMcXJjzXGKsNHsb+4hTDcOJqgK6C+uAR7Niobb7SzKBISAi1UEY958bT7NEQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,21 +103,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+在 2026/8/13 22:35, Lorenzo Stoakes (ARM) 写道:
+> This is a very bare cover letter...
 
-On 2026/8/17 10:34, Eric Kim wrote:
-> Currently, in anon_vma_clone(), active_anon_vma is assigned from
-> src->anon_vma and is used when unlocking anon_vma after linking
-> new AVCs. However, the corresponding lock operation uses
-> src->anon_vma directly.
-> 
-> Use active_anon_vma consistently to make the lock/unlock pair explicit.
-> 
-> Signed-off-by: Eric Kim <seohyun.kim@outlook.kr>
-> ---
-> v2:
-> - Clarify the commit message to explain that src->anon_vma and
->    active_anon_vma refer to the same anon_vma.
+I updated it:
 
-Just a heads-up... since only the commit message changed, the Reviewed-by
-tags from v1 still apply, so please carry them over ...
+This series fixes two problems left in the KSM advisor documentation
+and code comment:
+  - Patch 1 fixes two typos in sysfs knob names ("adivsor_max_cpu" and
+    "adivsor_max_pages_to_scan") in ksm.rst that don't match the actual
+   knob names.
+  - Patch 2 fixes the description of advisor_min_pages_to_scan: it is
+    described as the lower limit of pages_to_scan, but is actually only
+    used as it's initial value, and the runtime pages_to_scan can drop
+    below advisor_min_pages_to_scan.
+
 
