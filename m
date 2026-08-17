@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 951AEC5DF66
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 14:46:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16151C5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 14:47:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C1716B081B; Mon, 17 Aug 2026 10:46:35 -0400 (EDT)
+	id 04AFE6B0821; Mon, 17 Aug 2026 10:47:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 772876B081C; Mon, 17 Aug 2026 10:46:35 -0400 (EDT)
+	id 022C56B0822; Mon, 17 Aug 2026 10:47:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 661756B0820; Mon, 17 Aug 2026 10:46:35 -0400 (EDT)
+	id E2EF66B0824; Mon, 17 Aug 2026 10:47:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 403286B081B
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 10:46:35 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AE53E16075B
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:46:34 +0000 (UTC)
-X-FDA: 85111037508.10.03F5531
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A7507A0006
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:46:32 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	spf=pass (imf25.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.196 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BE2086B0821
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 10:47:46 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 43883C079C
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:47:41 +0000 (UTC)
+X-FDA: 85111040322.03.7C02A58
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 46CCC40003
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:47:39 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	spf=pass (imf11.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.193 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786978059;
+	b=sa6kwAZN/GEsn2E4dQEYtrzT971SBADCl0rHBz6zRhI9N/UhBOY3awf8Q714PoaBIyQyTG
+	fiKzqWgY7FT8ZwaXo5bZyTipHVO79eYo7vulkVOy+QOPoIhrxW6YrsaV3UxE6kbBFrZ7M8
+	+DLtMAdA6PQanzVVbRhnYkrz1LddFKs=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.193 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786977993;
+	s=arc-20220608; t=1786978059;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=vuAgeslHmAUaE9dQyFBvwVRPv0diIVkjPobZLGUqLS8=;
-	b=tXy7VpHI32YtbsLTLwr1OdZUiOjMyvzJTEaqHYaldajGi0sR7moxlcWztJ8WJmKqhc70vL
-	Mjmu1L8f3AYhPnGqxo1r/UvYg6DRtoKBqLuCqEhBKT+v2+fPuAUxX6TeNLUU8GqcbvvBxJ
-	4eXlAjErJKHobrNxx+0/wrN2h8keMbs=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.196 as permitted sender) smtp.mailfrom=alex@ghiti.fr
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786977993;
-	b=N2C0JUDK6Lr5eEjmMSoOr8EU14UAVFyVCzQQkzuG9SVJJpRfvm6tqqLIZ1U4OL+Mxi8+DS
-	yID27yKDGdIGr1Ke6DZs8Kxu1P6dPN+vZ6+7l04gD2rN7lXsWLpWfx2pO5F2J/mbq/Vp2Z
-	0BfEDWZu8B5/Dn+WEO2+xAugh1Fw1Z4=
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A89FD3EE10;
-	Mon, 17 Aug 2026 14:46:24 +0000 (UTC)
+	 in-reply-to:in-reply-to:references:references;
+	bh=vvEBRbH6jQos0xLUscD6wJtCYUlllr72FEKOShiX0jQ=;
+	b=cN9Pc6KQ/QBy9FCueBl19Y0fhq21T3vyo02ytFZtz0ySo756IC8QIURyWQWSvE2hSIU1YE
+	ejwbFqaj/n4i9pu6EdkqF38CiGZkTMOZcWg3Kq6Tqcc2LLPkwpY+bKftE1CyuOzVRrpGMs
+	NWFdrUkl/K9mFd4Igv2U+RFiNyzQ5k8=
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6ED123ECF9;
+	Mon, 17 Aug 2026 14:47:31 +0000 (UTC)
 From: Alexandre Ghiti <alex@ghiti.fr>
 To: Johannes Weiner <hannes@cmpxchg.org>,
 	Yosry Ahmed <yosry@kernel.org>,
@@ -77,24 +78,26 @@ To: Johannes Weiner <hannes@cmpxchg.org>,
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Alexandre Ghiti <alex@ghiti.fr>
-Subject: [PATCH v1 0/2] mm: fix workingset refaults in the zswap writeback path
-Date: Mon, 17 Aug 2026 16:46:11 +0200
-Message-ID: <20260817144622.137133-1-alex@ghiti.fr>
+Subject: [PATCH v1 1/2] mm/swap: refault on swap-in, not in the swap cache allocator
+Date: Mon, 17 Aug 2026 16:46:12 +0200
+Message-ID: <20260817144622.137133-2-alex@ghiti.fr>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260817144622.137133-1-alex@ghiti.fr>
+References: <20260817144622.137133-1-alex@ghiti.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: alex@ghiti.fr
-X-GND-Cause: dmFkZTGUjkeGzsymjV3NjkiiE3tVH6yv4EmJTZUyCCmq6voginkV45d6QzS1PO9nmnrMCLepVqKoGpu4NphUdUpbju7Gdse2UXFdCN07mZpbTC+JOV3g91bAbjCgNqAbDDBxHNuPoOGpS72jeHejH/IQ4SSlJkc3E17i/NuMBekpkH6iX9agIh3DSZ+QzXkvXMqv1Obc64t8p27zNjztti4wckY7AHibflERfD8y8pUYkkLb8vZwJmLPvyp4cKycUeblGlmbwlaHWAXH6CuS6yrLZESsLtVX0PgRNIB3q8Tuab9sZMpdjaLxDuNWBf8IoFqN3BHhW29dv7ilJfJVbNHvkIRNGc7BZI2bn5oIv4TgZ80kPY8in24caXAf7rFecAdZH5HgNZwEgSwsaJBIuOHtRqyVJluzN+JaduXJe8AYL+KWVfRcNebtfXRt23rGc+0t1CkTgb4sTB26YH8DDEf28J0Kuunl66JtlrkPpvZ0Y69Ay6zJeQ563l2F1Zr3LyhSPm8MHAltNoWG9HwikVRQYp6hgr5xZmUK7BG3Gfjk5F7o5THmF50WDIzHm7D6nV5yPPb8APN2re/MgeHCXMpcMMuMDS/NKcWx7eqI8gBVmqb5vCQwDIvEv4UCdWP40rWrWyf8TWwH43/XF2ocHrkrbM7frNWN64JrBii7tIfSp1ZwHQ
 X-GND-State: clean
 X-GND-Score: -100
+X-GND-Cause: dmFkZTGKlGYOr7RljmYIahLVOlN7/DGWYHn1tFLmT0GMge8GBo3gW4hMYG92IsUBqVx9gR1onNB2TGZ1oWgnsqOxdw5QaqkhSwAALNrpzZCkR9tu3Dpy6QzodbVxkM+Dgq+ZVHea+AxfIGMKYDr0Qg/2j2Os5zR4NMKHXhP6ARVehINVcGDnJt09yRXOSbH5Zyl48EP99n/gWW02gFBJX7NjXAKtCj/xbKsbHtLqxJmUfdLMWv17BafXu3sR9y5JUbXkuhh1m996h7BPNRd2FrTBOFr6cyEBWKzMMdFx0xNPT24eK9aGtNjfer3cXv5oXCJkSgCoRPT7ZFdTwF/HYILHhrpXsFgSxU8qQJzKt06bY2j50JaYHzO1k7jH0/EDSoE6W0gskKoBB1kmRdVjXTaP6l+G6rK1EvIMnG4gZhobNjnwKYTqrajmX+j+seT5ysiCCPVFDWSerVnFy9PChM/XzltFkcYQOEiPDx//ONtf4Fpydjhda7J7zSG6wbFleVCpavt/9Bg54mgBVnPr5GYkajIEzr4eOW3o/OArcBeP1PmLs5f4Ks17U6ppKAiCn/5TXet5WmhZZ09NT4L320W7U8z1ROG3toffNU959eoLoVrosMjF5d2Rm7S6UCN2eqeM+wz2GblE+46ah0kI7BTdPAFEOcmyPc1oIuE3Rvh7lxalfw
+X-Rspamd-Queue-Id: 46CCC40003
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A7507A0006
-X-Rspamd-Server: rspam07
-X-Stat-Signature: recrzs34drtxpcmo6ak445p5i88u3g9s
-X-HE-Tag: 1786977992-665953
-X-HE-Meta: U2FsdGVkX1/xy+0s4zndfxdDs+bpZP0fjuuM/TiQDDbTmQKxYUTCiS0VmuJplOgy63Sa9K364PIzldvgMp4MTyq3QkZ9SXeQKqKU8S/QdB2kHbA2DqcehFFvCCFOP48b8UUfORAidlexXH5tYpvNx2WKNyABVuK9WeyAZB7jKsgcOl57ODONo3XK1Q/RGEg9/BmgQ9MyGptFPCzOMijUukAk6qudMHETSaIG6HyPy0tPEjZBYnG8L4d2ZlC/Mv9rM7SYNlKMpOjK8wf9x2e+O/M0jksqCpZiiaV1JDxKZhq6oje8SdBMK9FlIw7dIf9Vf/1ocNBOpH/RDxERa2T2zQret9v4mDOZu6qgLp3I/CrzZkCDPc+5UEremqTML3R8s/1cFHTFbV4+WPoGHFwQryKLpgkUyCiYqyeAHpeaKmX5fhl5nAc7ACpRd4acwxqIuuwBm4xLtUmNJKQyydHISnR6aLZ6MahX05G7HQKh0cGJ5qtFGx/34tHyXlS8p2w4LT4k5zMf4f0Ze8fsyg+ALxY+xZUTmrzEjLyntEiLga+sva/FnCr4U0dq8mkWHLw9E6yGz5daRDR+T/PrxPAheysUUEzJsixLu/1Tfa8kVzs9aOVFLOp/MVkmsBwMmdzn2zfedC5E9ka7zS+oBTFxJkGUouM7sbvjy8zSOX8wJV/RxT5i3bfF7CaXKDWCLpVfEiA+R075P/PxvKm+yEyM+rAjlYCtKC/2G8MUPAUV6HwodrYr09un6zzSBU+ZfJRCqHWFnIxdWGc4GMTL9r0tdKGyGEe5PzV/awRz4JTcb0stFxguH3Hvr+5/GnIeY+hv+XiFoxFjeWnTv/g7/wrWCElzZuYa0m2xthFDtpTeTvb3W6YHT3nx2jFg+t5TXbj0Gc0suJ8M+wwH08t+N6MnZtlaJGbFKFow8ZiFoJk1ws3h9GUnJVPzc0CU3MA+z2usV5JCf5Clq56cA7UD0kO
- Jz3E2aXo
- O6kJs
+X-Stat-Signature: x5js8hmenyxkodt3xtubo5yqqbzofma4
+X-HE-Tag: 1786978059-591515
+X-HE-Meta: U2FsdGVkX1+VrqlxYGfNnFdM4ftZT1Y//D49Ciy8L+RFi8r/RyS04YG0apzvRLZwpE96xD+FecNI6SxlFoayuyrPybGjDYel4RQgCMctuRfVjNdFpEfY5vZagcA1SgHiFRl53MeW2iUa/sCDf5sO3qFZ8fOsNC/e79WbGAEL9ZswOnrLvGUnxxQjX3WxqWEFGo2UstODsLqvU9aFeKtV8TtURt8llGnoe1V6ApPQ57/fAiodmqMotg86z8VWHpbXBznqsxQ247H350nJXRWESAWVYeUEBs9gEifXKsIA7R+RssFKV+UfJS/dUH9lLEr5INFcc9RBguDghPeZ3+gyM1u474UMN3u1RaAIw5CoAP6Rf+7PLyW0edSnl3GaUSRQxJSCyCDp97T/fBqhIkhA6pksrGQwgPLxNNPX2q4xIPqueCiinHhsy+HlzBNQvLi14pKhj3o+RC0knRgfj4roiaa8MWmNLDMkArCR+bq4FrJxMeRZJAalitPw4PrXi8Aiqu0cDyRtJFze9erkQx1gld/59A1J5agXq/dUE5cgnSziCX56PdNR7dBRPDv4rJDWhnjD/GDdKTBnuOoZN5WF8TRPCce9gmci/VBuFwcdlfdOtXVQv87dNSZTYe6HxPjGj6J21fKco6h0xqoSKz09Snbc4M++vsbWAtkTu2zPaWJe7ika1SWvEmYPnY+bCKttj4jHPp5E7655pS18ap7AcRyCokKi1SDAO+W2e1nf7MTIsPim8imJSnxbfwmdZGfMw7m2Pbkbvo9O7NFKLVtEig0hUPPU4V8LRReM5y7ci9LjvC4KrWok+EPNvRZ/dwlDcQnuaYz3J0eMB1PRGhhNUkZUKhNiw9sb3ZYjU+sSbi7FSUHYFDLMVvl0mZb9tdRztPBrPhIpJGeH0k/7mOltaMHOI+usxVNs/7ECuvwis93rBv5HmVJFFydf3TwpOLF5dcN6pTKqJZlMcvEdwEq
+ BWRflNZR
+ Rd1fdqqdjSx4zAs/NSNUd+bxHQDNxiiCHy5v3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,72 +105,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When an anonymous folio is reclaimed, workingset_eviction() stores a
-"shadow" (the eviction cookie) in the swap slot so that a later swap-in
-can be recognised as a refault and, if the refault distance is short
-enough, the page can be re-activated. This is how anon workingset/refault
-detection has worked since commit aae466b0052e ("mm/swap: implement
-workingset detection for anonymous LRU").
+__swap_cache_alloc() calls workingset_refault() on every folio it
+allocates into the swap cache. That is correct for a swap-in, but wrong
+for a zswap writeback buffer, which is allocated through the same path
+(swap_cache_alloc_folio()): the buffer is not a refault of anything, yet
+it gets counted as one, inflating anon refault/activation.
 
-zswap writeback breaks this in two independent ways:
+Refaulting is a swap-in event, not an allocation event: move it out of
+__swap_cache_alloc() into the swap-in callers.
 
-  - Over-count at writeback: the shrinker allocates a buffer folio in the
-    swap cache, and the allocation path counts that folio as a refault.
+The allocator has already put the folio on the LRU by the time the callers
+refault, so workingset_refault() now has to activate an already-LRU folio:
+folio_set_active() only sets the flag before LRU insertion and would be a
+no-op here, so use folio_activate() when the folio is already on the LRU.
+Existing callers pass not-yet-LRU folios and are unaffected.
 
-  - Lost eviction cookie at reclaim: adding the buffer to the swap cache
-    overwrites the slot's shadow, so the original cookie is lost; when the
-    buffer folio is finally reclaimed a fresh, inaccurate cookie is minted
-    in its place.
+Fixes: aae466b0052e ("mm/swap: implement workingset detection for anonymous LRU")
+Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+---
+ mm/swap_state.c | 20 ++++++++++++++++++--
+ mm/workingset.c |  5 ++++-
+ 2 files changed, 22 insertions(+), 3 deletions(-)
 
-This series preserves the shadow within zswap itself, without any new
-swap-table or swap-slot state. At writeback, instead of erasing the freed
-zswap entry, the captured shadow is parked in the zswap tree in its place,
-so it outlives the writeback buffer folio.
-
-Finally, the refault evaluation is moved out of the swap-cache allocator
-into the swap-in callers, so allocating the writeback buffer is no longer
-miscounted as a refault.
-
-Results
--------
-
-Measured with a sysbench OLTP (MariaDB) workload in a memory cgroup sized
-so the dataset and InnoDB buffer pool both overcommit it, with the zswap
-shrinker on so entries are continuously written back to an NVMe swap
-device (classic LRU; MGLRU off). Anon workingset counters over the
-measured window, baseline vs this series, mean +/- stddev over 10 runs:
-
-  workingset_refault_anon    383,242 +/- 59,345  ->  199,355 +/- 27,042   -48%
-  workingset_activate_anon    54,890 +/- 11,742  ->   22,607 +/-  3,118   -59%
-  workingset_restore_anon     16,212 +/-  4,590  ->    7,599 +/-  1,190   -53%
-
-Writeback volume is comparable (zswpwb 183k +/- 16k -> 178k +/- 15k), so
-the reduction is not from doing less work. Normalised per transaction the
-reduction holds (-53%/-49%/-39%) while the swap work per transaction is
-unchanged. A kernel build under the same pressure moves all three
-counters in the same direction.
-
-The run-to-run variance of these counters drops as well.
-
-Throughput is unaffected: over the same 10 runs, transactions/s is
-18.50 +/- 1.08 -> 18.65 +/- 0.94, i.e. +0.8% with a 95% confidence
-interval of +/- 7.7%.
-
-Alexandre Ghiti (2):
-  mm/swap: refault on swap-in, not in the swap cache allocator
-  mm/zswap: preserve the workingset shadow across writeback
-
- include/linux/zswap.h | 12 +++++++
- mm/memory.c           |  5 +++
- mm/shmem.c            |  5 +++
- mm/swap_state.c       | 30 ++++++++++++++--
- mm/vmscan.c           |  4 ++-
- mm/workingset.c       |  5 ++-
- mm/zswap.c            | 80 ++++++++++++++++++++++++++++++++++++++++++-
- 7 files changed, 136 insertions(+), 5 deletions(-)
-
-
-base-commit: 626acb37cd445144f321f1b64cac9a93760fa716
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 9c3a5cf99778..0bb26d2ba2ba 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -477,8 +477,6 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+ 
+ 	/* memsw uncharges swap when folio is added to swap cache */
+ 	memcg1_swapin(folio);
+-	if (shadow)
+-		workingset_refault(folio, shadow);
+ 
+ 	node_stat_mod_folio(folio, NR_FILE_PAGES, nr_pages);
+ 	lruvec_stat_mod_folio(folio, NR_SWAPCACHE, nr_pages);
+@@ -638,17 +636,26 @@ static struct folio *swap_cache_read_folio(swp_entry_t entry, gfp_t gfp,
+ 					   struct swap_iocb **plug, bool readahead)
+ {
+ 	struct folio *folio;
++	void *shadow = NULL;
+ 
+ 	do {
+ 		folio = swap_cache_get_folio(entry);
+ 		if (folio)
+ 			return folio;
++		/*
++		 * Capture the slot's shadow before the allocation overwrites it,
++		 * so a fresh swap-in can be evaluated as a refault below.
++		 */
++		shadow = swap_cache_get_shadow(entry);
+ 		folio = swap_cache_alloc_folio(entry, gfp, BIT(0), NULL, mpol, ilx);
+ 	} while (PTR_ERR(folio) == -EEXIST);
+ 
+ 	if (IS_ERR_OR_NULL(folio))
+ 		return NULL;
+ 
++	if (shadow)
++		workingset_refault(folio, shadow);
++
+ 	swap_read_folio(folio, plug);
+ 	if (readahead) {
+ 		folio_set_readahead(folio);
+@@ -678,17 +685,26 @@ struct folio *swapin_sync(swp_entry_t entry, gfp_t gfp, unsigned long orders,
+ 			   struct vm_fault *vmf, struct mempolicy *mpol, pgoff_t ilx)
+ {
+ 	struct folio *folio;
++	void *shadow = NULL;
+ 
+ 	do {
+ 		folio = swap_cache_get_folio(entry);
+ 		if (folio)
+ 			return folio;
++		/*
++		 * Capture the slot's shadow before the allocation overwrites it,
++		 * so a fresh swap-in can be evaluated as a refault below.
++		 */
++		shadow = swap_cache_get_shadow(entry);
+ 		folio = swap_cache_alloc_folio(entry, gfp, orders, vmf, mpol, ilx);
+ 	} while (PTR_ERR(folio) == -EEXIST);
+ 
+ 	if (IS_ERR(folio))
+ 		return folio;
+ 
++	if (shadow)
++		workingset_refault(folio, shadow);
++
+ 	swap_read_folio(folio, NULL);
+ 	return folio;
+ }
+diff --git a/mm/workingset.c b/mm/workingset.c
+index f351798e723a..7c30cf091cbf 100644
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -577,7 +577,10 @@ void workingset_refault(struct folio *folio, void *shadow)
+ 	if (!workingset_test_recent(shadow, file, &workingset, true))
+ 		goto out;
+ 
+-	folio_set_active(folio);
++	if (unlikely(folio_test_lru(folio)))
++		folio_activate(folio);
++	else
++		folio_set_active(folio);
+ 	workingset_age_nonresident(lruvec, nr);
+ 	mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + file, nr);
+ 
 -- 
 2.53.0-Meta
 
