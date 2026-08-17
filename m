@@ -4,97 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35E05C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 03:13:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06B55C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 03:15:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 233156B08F0; Sun, 16 Aug 2026 23:13:14 -0400 (EDT)
+	id 03C066B038B; Sun, 16 Aug 2026 23:15:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E3D46B08F1; Sun, 16 Aug 2026 23:13:14 -0400 (EDT)
+	id F2F5F6B038C; Sun, 16 Aug 2026 23:15:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FA1C6B08F2; Sun, 16 Aug 2026 23:13:14 -0400 (EDT)
+	id E45476B038D; Sun, 16 Aug 2026 23:15:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DF6A16B08F0
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 23:13:13 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7335040667
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 03:13:13 +0000 (UTC)
-X-FDA: 85109290266.05.D01A05F
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 97E8640003
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 03:13:10 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=nOv0PWhk;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf01.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BAA546B038B
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 23:15:55 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4091B160624
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 03:15:55 +0000 (UTC)
+X-FDA: 85109297070.08.CABBD03
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 74D14180005
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 03:15:52 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=DZL+GvNE;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf16.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786936391;
+	s=arc-20220608; t=1786936553;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2m2gkFnEIMedh4SD2cdL9BF+Y+jc08sxrvLi8/Eepho=;
-	b=NHC/1CG0wdiTiJLCYQvMzTihDV/Zim5bjN9XcLdqPTEu+QpIU2APGxn0h4aMWsXgNHg63k
-	7zcXMrbZR6QeYmTxHb94mpYMuqlM/iIZuUUBUvzQpifPeHcw3FMwFet+RXg1N9imHWF+Gl
-	FyeTAxfK138gb/uaDyqZjWd1dFamD2Q=
+	bh=mP/kw3LMX/NnG5kUH90aD438amd9t1MOlcI7a9rTuLY=;
+	b=Q5/gFTnFqdPK6lQnCdwABl2nXCPI+bDU67iwgEno7SzhqJcBC4miy0y4m5nLoBIgBadkWA
+	GJmzq+In5t6sk3sjx8MVKKbwJ8APLkV4uGIx7bxlQw8d1f28ax3vHyf3BWSthT/ptf32Zi
+	K+RP0edXB+ugd0ItYMuLQuy86n6MTPs=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=nOv0PWhk;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf01.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=DZL+GvNE;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf16.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786936391;
-	b=Of4pPMiTrs1Bmy0yw+4uz7bJdbqpVqqE3TSZTI2EdErznkE7NCyZKJpw75D5MANcOMAr7P
-	yZtao9pX+AMgxDj60pq+0+NrVQZFguzbEZ2Smvm6qmZbq25SqLvcOpxjP/KKNhkMS+Wsws
-	qXWytkQ0RD3rTFy3pQkF6bFJulS9EPY=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=2m2gkFnEIMedh4SD2cdL9BF+Y+jc08sxrvLi8/Eepho=;
-	b=nOv0PWhkS5CZro9o5eu4i4FZs0VQ3eCZGJDSQDGkZORH/3rp2j9GpueqJpr/QjtRQUQJEWPe7
-	EosiAhoILjeCBf0vepfTBWtcscZeq8UlL/n9PllBdmv5o2gOCATMmyZO6m55fFS2/mFhi9vsOZw
-	/uLEvwnBPKpRu2wcIS5V3JI=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4hNd0v02tDzRhVJ;
-	Mon, 17 Aug 2026 11:02:23 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1AFBC40538;
-	Mon, 17 Aug 2026 11:13:01 +0800 (CST)
-Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Mon, 17 Aug
- 2026 11:12:59 +0800
-Message-ID: <4b9293fc-82d1-4776-81d6-d7463439c1ae@huawei.com>
-Date: Mon, 17 Aug 2026 11:12:58 +0800
+	t=1786936553;
+	b=8IN8AZnTOq2+IO53mcdjuO3xLNIzSXzfVn8XYvyeTJlpXVkrzQndaE2qURvIFzwTKcs4BJ
+	7i8NEWGw4o8rvhfDyfGDY1loRKb30NSKFv/tw+NiU5xmQo/GXd5qL/0GMaaVOFZbepKF8u
+	o6AC5VFbn+OqwXrhGVwktQM9I2En3Jw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=mP/kw3LMX/NnG5kUH90aD438amd9t1MOlcI7a9rTuLY=; b=DZL+GvNEdhD9zaGDTf3tLSh+AS
+	G//kFXPnun4Jx3eSwfguz93Zm3HZcH4+j2cdQ6mJct9apx28h+4EoTsVhg9gX+kjE6+BlmwBAJzqs
+	cvgpLvni5tRZZgZv7H/1u5120PX+12EujCPQoebEw7/bTGcu2AbpeUAZwj3UyIY7CI0iVpKkkNasW
+	RHrwWduslxmQn3VFO7qMG8pw/bztKxGiYOI7Mfg26C5/NAM2EQAkjVexANHwz7VTIfBrQOfneH/82
+	MTOhp+ST1s4CSm7gIiVVvjs/0nNn6HjY+5JdelRmbCOY2mxWf0lcIcKfJobavqtff8G8XKDvQlN9d
+	crHsFBDg==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wvnp8-00000009PbM-0xVL;
+	Mon, 17 Aug 2026 03:15:42 +0000
+Date: Mon, 17 Aug 2026 04:15:42 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Song Hu <husong@kylinos.cn>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org, hannes@cmpxchg.org, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, zhuhui@kylinos.cn, joshua.hahnjy@gmail.com,
+	audra@redhat.com, bingfangguo@tencent.com
+Subject: Re: [PATCH] mm: memcg: flush empty per-cpu stock slots on memcg
+ offlining
+Message-ID: <aoJ83tk7R1x3Jul-@casper.infradead.org>
+References: <20260817025917.66233-1-husong@kylinos.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] docs/ksm: fix advisor documentation and comment
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-CC: <akpm@linux-foundation.org>, <david@kernel.org>, <xu.xin16@zte.com.cn>,
-	<chengming.zhou@linux.dev>, <liam@infradead.org>, <vbabka@kernel.org>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>, <corbet@lwn.net>,
-	<skhan@linuxfoundation.org>, <shr@devkernel.io>, <linux-mm@kvack.org>,
-	<linux-doc@vger.kernel.org>, <wangkefeng.wang@huawei.com>,
-	<sunnanyong@huawei.com>
-References: <20260813031722.569983-1-tujinjiang@huawei.com>
- <an3VdkvUvLapWzmw@lucifer>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <an3VdkvUvLapWzmw@lucifer>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.9]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Queue-Id: 97E8640003
-X-Stat-Signature: a8b1mqhc7xbpeysg7xbf8kt9bf6mpfny
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260817025917.66233-1-husong@kylinos.cn>
+X-Stat-Signature: eg3k4yq79c8g5wm5nzw5epy48eq7exr8
+X-Rspamd-Queue-Id: 74D14180005
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786936390-790617
-X-HE-Meta: U2FsdGVkX1+71rA7S5xmwdwvWY2g41CxH8C5cnFBnvTb1nMm//ejXqxLYo0xPW33Hr9dXKy/1K211w/epHRPoTbHFZ+1y/qKlM8BqVimnzTkAUnSMfaaCXH5dtUF0T+Xmvt69OFy3vAIWbT491Nm/ZfuNthBXT1tXLowaTtcNezSEo4rBKiToz1IaAgHO14gRkem+KGxNApGUD267WtbPPoQFqcNhlKc32IoR2OhHA25Ed6QGza56S4yn9rwjF1UosUadm5jSxflwRwLK2RJHz2Po94ZDGmKSft4uJsYOMYZ7oTZGoZZeDfP/Xulv+vvC8v3X1h2SbjYKwxQPJfD2B4YbX+Z8bik3XkUH9xcFwho23B8ENAhk7A4qrsqrmh1YXzuM+V8EwLpMCDe71Ov6wRARJOx7R2XB0C3WTqYgFRcEw4I1gvDgSx8xQlJ68FSaKjueIurXtAB0WZz+1JvJT60wMoDnK9IssC1jJ3j4A7PNuhxfQyDMXigzLeJaAEbf2DRDGTjUt1/h6EnDdKOszM6uvLKxoznWVLE60YFQ4LJh+4g1AyaPh5ZGywQHlRrtdlY4SRfY5IpUBWK3waI3z/h94jSVtXqM+uXL/xcDW2xW2bs3AmIZQm4KGaLq6BXT/0mlJK/HgbA9Xj8pznCUYt1HKIBE2VSJySRL5sjZJnyIcWyFs6NIVDtusVr1v2BAOjat1bC5eue2X7E7UwRM0NlYYJ1u+eUOMKrRTycIt5JVP/frMPTKAgcad47YdkvwvRRvgFqocF9hy8fAhG1zS3Bebz9CHg9kWA9qSNha4cTKEvgOu196SWW6LssFTVc07+Nd4c1ejvoFBa4gbvRu1b5phU+gQyKiYc9vgBh0F15EuEtTmarBOiJr9vAxW7Y8X+FjihwbtS/NsZt4cmWoO7LDjKwLSGK7Z42rbyOQ8crjywzJNnRwpW5NXMqmTZdG0Sryho8iWbNkBql8F+
- HdgbpIwi
- xSHOWLICdfOT3+u7HaNZ8CAf7S+8f8eEwTxRIO9tL3qdV8mcV/hY8BvlqqQc0l/VbqaTd6CxCdNpPfxzd1d4Mdk+FzwmAsVaa2aUw6977H+cm9CtnW6d6tZFZeEIqPsi0BLZzs8IJH9JIPJ8qBtkxNVi19ZmUvt13kJ69aCosdwLZotomhsx3NjRccc1U+sphXDD6wzzVmt5krYZvM0E/cV8DlkjlHyXekdZJj2KmBOBEvbnFgPH/6T0RZNcl/p+eOtwgtf0FSKbgflKaSb7kFC5mZs6qA8xMcXJjzXGKsNHsb+4hTDcOJqgK6C+uAR7Niobb7SzKBISAi1UEY958bT7NEQ==
+X-HE-Tag: 1786936552-275853
+X-HE-Meta: U2FsdGVkX1+vHu7ifzWzxAL/tsVzT2+uTIxsHDonrDQYq6XVKs9vTYikhLj3Xn8LV9VkWceOwffQb61QpKd5FJWQIBuqCsaMTv+WVucVKL2KGFugfV2Q6aiz60MVGnekj0tkCZK9Va+uv5ksTRdooZdiAt4t/Ayhq6xhq0d03epr2pXUiw4nTXGE3b4jmaCOW32DlPh7ZWbilal+nV8XeHq/urwbwfSrqVsYRrmrj1RMfufhy0ocWCvzUAqVhZ9a64pP1qMkzeLMwF7mSAjqiq4UVxMKa7AYho/cR05J16GmU3hxdkfJ03MwNfH2/IWaipYjy+1zX+Al+33tU7klnUtyNk3DLwT0FI9Mi7nhLd27vtrGN89xxTwSOAUWmItkz7F8xwZkDsNE6d5XJva7vVMRXH/l0HhKhaSjsghCtKj82qu132p9J5gFN9muD/zelB+1D+tkfMgMIBZEKl2sz4XVN65SXQHeNYBlh3v1h38H6lKkkq2mdGV86x5uQZxmw6eEEEJ8ej3Y73aZ/99fRChV9Tkz6R/nbJDvPyaV3uWD1tILvKHmTKtP67KmoDFJxIkulZpQKtXUyEOVOJl7hB3k80k4DqAbhrBmJbP3WsDWA9s0XlWa8Qo/lFCNBXZL1KmnCub42ptmcTlX124UWf9Ud8CbU3a8CVXiPIwByklgKBD/IJQwR8U7RB2z4PvcghP/gvcue/V1Lbo34/iuVXYUflHD6Je978/0T1GnBfWGSXQdCO8DD1JqB86RiEdkjn3hK6fUbpwmM8577Xydl0QEK4GhUhFwQHh8Lvu6FSWPG5PMAz9Sm7PhqQlJLcDAncH11HRE4cMS4AvvxXT+rqp8omJGJEaoEPdqNoriq3JNW3cIjUhv/qe+uZO2Gvn65C+Zt5OCpRnWJnMhNv7Lsht8lxIq0cG3cDljlBZuyJmH9/3runjiy7slztg4BbigMgu/XkD1IENzdutwq45
+ 1T/nerYH
+ KbX1DmAJ7dDKOZ5R/ms3CCu/3OrbXOmtVy91HQH3yXOAXXGYkkiYwC0/OhBiUOsQdIYN48f2TY6eFSy7KvyNqAvwLvI02JJ/fJhghoAVOSwCiY23CA1lDUkQQ40qV52q6+GjQQU+ooCNOAqqGGTmarOjA5elbbAY8Tkg+/TCQmmNfKgKkATnXTOkmo+/Eow5dCSn/kUNlDZ3FDNL2xW7J0ix7t1bUcooLMfjtwjUEDwSXUDlHxNocUBt2vgKT8GZGIfB7tt48/jzzDqJPkE6cZvY94NngBkPUo/uuMZUpNuxJceh3K0lUx+mp8fVRIjj0X5vV/EhI0yld5O798KcL9wfZsJoQsnoveLFuqTOU3GGdUpG4rccF2ruC0w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,20 +92,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Aug 17, 2026 at 10:59:17AM +0800, Song Hu wrote:
+> refill_stock() takes a css reference for each cached memcg slot and
+> mem_cgroup_css_offline() relies on drain_all_stock() to release those
+> references before the cgroup can finish dying.
+> 
+> consume_stock() can drive a slot's nr_pages to zero while its cached[]
+> pointer stays set.  is_memcg_drain_needed() skips such empty slots, so
+> the offlining drain is a no-op for them: the pinned css reference is
+> released only if the slot happens to be evicted by later unrelated
+> charges on the same CPU, or by CPU hotplug.  The memcg then lingers
+> in the dying state indefinitely.  On a CPU with container churn, a
+> per-cpu stock can pin up to NR_MEMCG_STOCK (7) zombie memcgs.
+> 
+> The sibling obj_stock_flush_required() has no such gate: a cached
+> objcgs slot is flushed regardless of its byte count.  Drop the
+> nr_pages gate from is_memcg_drain_needed() accordingly.  Draining an
+> empty slot is a single css_put() and a NULL store, and it happens at
+> most once per slot per drain, so the extra work is negligible.
+> 
+> This is easily reproduced with short-lived cgroups pinned to one CPU:
+> 12 charge/exit/rmdir cycles leave nr_dying_subsys_memory at +2, stable
+> across later slot displacement.
+> 
+> Fixes: d1a05b6973c7 ("memcg: do not try to drain per-cpu caches without pages")
+> Signed-off-by: Song Hu <husong@kylinos.cn>
+> ---
+>  mm/memcontrol.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 17da1f43b7d3..b931ec16bb82 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -2291,8 +2291,12 @@ static bool is_memcg_drain_needed(struct memcg_stock_pcp *stock,
+>  		if (!memcg)
+>  			continue;
+>  
+> -		if (READ_ONCE(stock->nr_pages[i]) &&
+> -		    mem_cgroup_is_descendant(memcg, root_memcg)) {
+> +		/*
+> +		 * An empty slot still pins a css reference which
+> +		 * mem_cgroup_css_offline() relies on drain_all_stock()
+> +		 * to release.
+> +		 */
 
-在 2026/8/13 22:35, Lorenzo Stoakes (ARM) 写道:
-> This is a very bare cover letter...
+I don't think the comment adds any value.  It explains why something
+_isn't_ there which makes no sense to someone reading the code.
 
-I updated it:
-
-This series fixes two problems left in the KSM advisor documentation
-and code comment:
-  - Patch 1 fixes two typos in sysfs knob names ("adivsor_max_cpu" and
-    "adivsor_max_pages_to_scan") in ksm.rst that don't match the actual
-   knob names.
-  - Patch 2 fixes the description of advisor_min_pages_to_scan: it is
-    described as the lower limit of pages_to_scan, but is actually only
-    used as it's initial value, and the runtime pages_to_scan can drop
-    below advisor_min_pages_to_scan.
-
+> +		if (mem_cgroup_is_descendant(memcg, root_memcg)) {
+>  			flush = true;
+>  			break;
+>  		}
+> -- 
+> 2.43.0
+> 
+> 
 
