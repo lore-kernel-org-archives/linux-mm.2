@@ -4,98 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ECB7C5DF7A
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 12:22:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C126C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 12:38:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5CAD6B0106; Mon, 17 Aug 2026 08:22:17 -0400 (EDT)
+	id 1C86D6B0131; Mon, 17 Aug 2026 08:38:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0D566B0107; Mon, 17 Aug 2026 08:22:17 -0400 (EDT)
+	id 179616B070E; Mon, 17 Aug 2026 08:38:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94A9F6B010A; Mon, 17 Aug 2026 08:22:17 -0400 (EDT)
+	id 068D26B083F; Mon, 17 Aug 2026 08:38:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 69C116B0106
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 08:22:17 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E4441160730
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:22:16 +0000 (UTC)
-X-FDA: 85110673872.03.2435EB5
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A3E3520007
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:22:14 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=SJIrd9Vl;
-	spf=pass (imf03.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	by kanga.kvack.org (Postfix) with ESMTP id D782E6B0131
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 08:38:19 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6A602160723
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:38:19 +0000 (UTC)
+X-FDA: 85110714318.22.F624064
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BE688140008
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:38:17 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nt9JknIU;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786969334;
+	s=arc-20220608; t=1786970297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IcRuYbDemapntKxkxm0nYno5F87CmpF/VTX8mqgRBG4=;
-	b=10RWZ/8Xfu0qN22juf2Tvtbb6eQ5SVyzhIXFvbv8gVSE/voGliJeWMmyCfiUugUDPa0B78
-	u8ejd6YbNaKRaGDSJvqUNKQGJ0m/6E4+swZIyHrcJeRsoE3ZMrn0TPgUGwtan6if6VIgUO
-	ouWu2bWeqx8a41sk0EOAr7EFHbgGV54=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786969334;
-	b=3awt20vARCkCRsE7g5/SKl3HpfrpbuiFCK276QebmQhhy71d4A5lS/37f6GEjheTEagli+
-	4aT66GTIyfZx93nJIa7Q1aQfGEaqOE6U+GFlxAZXSY5cG5hW0vU4M9X8vzYVGWbY4a1sYE
-	+G1/sEfo5Tdr9+yi9puz6LgH7U7emDE=
+	bh=jan4OzxJD6YHTXR8sL9zOUPXJbJ02yzXDRqgLQqZmDw=;
+	b=yNrXLt1kaVaRyg5XwDEOQzjb/iFJsxSOv4bZqia0imLx1MEahqPvRRcKlEyjI4mRLGMsUM
+	M/3aEvzvHok168TzbHdntCzyc3mpLn23byjE0fScfw01VzXyxWcMrWPpXU7QV0u1sWUqL6
+	U4mQBaYBl9da/Dvq2Qf6sC06tMQG+m0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=SJIrd9Vl;
-	spf=pass (imf03.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=IcRuYbDemapntKxkxm0nYno5F87CmpF/VTX8mqgRBG4=; b=SJIrd9VloOXaqMpJtvhltKrkl2
-	iTbsrl1WsIGdJHF90ymVAuIjTCPKK2ZOjJc5PI8EtfGnSQ6HS3FJpx+uc0SxH2ms3jJXssrH/kK6Y
-	eyd0FW39IH9MrtDv7N503H+ojnNfT8sPGwxoEe63BZsaVWrm7aV3ldi3Np+9XaBqyGobQp6eHdLGx
-	+mJ2jH7woPjueWyCm0oEHu/UubQEkOrZjER2qkT7P0oDTUGFKXb0Rh4V+hv4Xq+IPC4IymxTzA8FL
-	3roTeSHSo5CWIlBP8nkJrtd37M27j2FL9fOs5FSJWbE7MrGLtbrRYACjpi05JW/Vof/SBLqLreZWW
-	WQGye5YQ==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wvwLS-008DhQ-34;
-	Mon, 17 Aug 2026 12:21:39 +0000
-Date: Mon, 17 Aug 2026 05:21:32 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Yosry Ahmed <yosry@kernel.org>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v2 0/3] mm, swap: don't spin or flood the console on a
- bad swap entry
-Message-ID: <aoL2hgmgQYk8vU8i@gmail.com>
-References: <20260813-swap-v2-0-4a625ccabdae@debian.org>
- <20260813133455.3fe770eadcbe640e6f6c46cb@linux-foundation.org>
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nt9JknIU;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786970297;
+	b=HaffGpIT27rZMFh+9cbgumQtykmmYL2PPgUej55jzNyrSu69vy58oQTjkBFpWWFs7W5qZE
+	AJ+ZpFDcEGAkm6n0utL6+/4Ko6rVmfv+pkgsoWT/sQbGvITU7H9pfHn8222U/VpYj2ravx
+	9Pc1d7Oq8Z5pOBrzBthZqLwzFKx2SNM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id EF9C043D6C;
+	Mon, 17 Aug 2026 12:38:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE791F00A3A;
+	Mon, 17 Aug 2026 12:38:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786970295;
+	bh=jan4OzxJD6YHTXR8sL9zOUPXJbJ02yzXDRqgLQqZmDw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Nt9JknIUypwluAT0Ji5LQTyrFOwSkVwDvkrda5dvgtXQy7U9YgSYXXEWUionZIWjL
+	 Ba/+IVsdJRP9OzsBQSOpGKoJVfI48sw3KnPL40Mm6WMf2wTBtYI5phjNgur1BlP3Fj
+	 OWL6PNOCC9KpfAQZ/6O7YGY2D+LeFJhdbgLvEOoY7uFT05MfMmwcrD7nqUgz2jUXgk
+	 g9ehqX7GSzo2ILJHxeI+1xHdHXJgoFqwEbXljMvAk+NEVLrWJZ7JXjSpB4yQRD71hi
+	 VgZhyJym8+fRVjUW5Qpn/T/jz1woo/5WOFXqICkq9apxed+UuaJp9q/BlqyHHWgT6X
+	 QITpVBN6IbbbQ==
+Date: Mon, 17 Aug 2026 13:37:56 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: Re: [PATCH v4 7/7] mm: Documentation: clarify where the mTHP stats
+ live
+Message-ID: <aoMAkG9hGAXAh9va@lucifer>
+References: <20260811-khugepaged_pte_refactor-v4-0-ddac39d61c4a@linux.dev>
+ <20260811-khugepaged_pte_refactor-v4-7-ddac39d61c4a@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260813133455.3fe770eadcbe640e6f6c46cb@linux-foundation.org>
-X-Debian-User: leitao
+In-Reply-To: <20260811-khugepaged_pte_refactor-v4-7-ddac39d61c4a@linux.dev>
+X-Stat-Signature: kodtg14w84199yybghwrtj6t1zo114p1
+X-Rspamd-Queue-Id: BE688140008
 X-Rspam-User: 
-X-Stat-Signature: f7ry89snbbtmga5acm5qrncg1k3b9fc1
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A3E3520007
-X-HE-Tag: 1786969334-883005
-X-HE-Meta: U2FsdGVkX1/pLmupBuFAMyYSSL6i1ivv2ojbfPo2qZBlWTHkRSQGVVLUWJ/LDv28jSMy6SJM8I+S+tTkV0JILInFVqgCvhm2txEdylP6NIcW0HjT+N25DY2AsPxJjNB0LPotHYQR7UHHQ/K0PsyNC4q1EqLHD+38HFEkWRtLau9MHrrimfyQI/2HkZmtbmqiTUx+thrP30+zs6rfxxzWkRK60u/7ooSnLdGwpT5khZ//TpRYs6s1CjyymGaLcOtDFC0kgRr9hRHg2NcCV78SQSz+Xk3n9J3cMMjmvwhFAyvX3+G+ga2M2Z1UPI+tDnbf+u4ifiWfyVQ/GaF3nKPSaELy8+hSTk/djswp+ER6pqmLRzEC54q5W0iLHaeu4zjV54eGODsIwPVTJ3K5E9/zmKHHKGDX0AOhR1kVG36ELgleqbIoKKyl6cy9X69d6niQJ6cvS2YpJeopCsYCxRjhO2fYiwJXOWrIRTR1gP/8H+VuAg6xcTVoEN6kqwjWib/A89pvife9sEEl/ia1fV8fvCBkiX0TQNpcsfibs9FRKBy6Ak1eGzpt9OP0AsDRlXMwWDo1S2NTAPX7o0esPXFefycYe2GwoNcKtXZxyU1neujBV19mYz6LCPEllx8uvBL7drpghpZRJF0/2YWEc52Y6E9e33QbhMt8O03iWANrh1th7v0rzox1vv241z3iOnMYHke4u7l0dqDo0DV7881nd+s+w2G3+Q2CqfsrsDeLN33okq5piR1RmSpx5953DQpTUz5vZO4oMCoYu5KlmJCjlH5FcHBL5q4zIyD/BAIrO/oPS1j/u47NG5YT8DNB+QWDGEfLu9gN/AkLFqlAZnYkBEksNlP3Xqv0LXSbWpt79fJ4VA+j/nYGF25VTXCOl6tj9KoZ9f0i+vI+PCq0jNKpJ19wFIGvdWR9kDgx+F0xjLiLbMmanHWZ7mOUlnjCXnXCH26hJIdIc/tsrksJQEF
- A9x+2o1G
- xF9icFplTuV7KaaHtA5u0ctMO3V3l4Jphr4ppz8W5JEkn9VA55/9of02HPsVHLcHOO14edpcHZ+A2/jhkzb+rIuy4CYNoP1Z4yN+CuXenCBynj2vX2t/sFVfei2CoAAZbde8Zif9tMHowkFFuyaoRxuxMaZIxRubbFqCzb5N8qHslcg1av4bkCeKCPlrHu52ZbpHMuZfeUzgKVxskmQdO7KoTIJvBNGv+vCqZD/Q/A4bftvYp3TF8zhBibEBnedejdz3X+tyJ1OrK0xlsimODHQJQcRsZeHgLIvqMTQFYwF9djkI=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786970297-122745
+X-HE-Meta: U2FsdGVkX1/s5a+HHt7PUbpfPSTsq+lFwgepeKR5VVgp9YHzGf++BUj4q7seurzf/v9GNKDey4P1umy5isz+PbNvsZHF0FtclW7V7gVr5PxyvUmjoXHWt0rR4m8ea4pKEd4PBVIr2FBhsMZUd+DH818HwTxQPWjTS9z1Pjq0tH6LFU5vX9XwsAzhLYLtokkN1J+Q3tx5O9ViB7Gavf4JdrrqYu4y9d6lbrzlgOI9aTHcnQ28qa+3jTY1gz91K7DdqQZAZKJnXM2cmQGyvp4pQREVSxCdhqKZpXeU8pUMdGzhzwSAKhwoSscmlgzUlTMY66zGfrVt6e/SIVzGSnc40vn9Tw4s8Qu47fG/lHOyVy5kq0EiytqUHuhIuZKPOQBdlX+JBCvTSYdmkDGlZrz01K28TCcZXiFYZJc4EgBCtUI/PdnWznVFxffnXrLxcLYZFtCJPVZ97hSKNmWyB+3XTpXUtX3AwZJC0A2BPO0+/yFh9XUpxptt6k7qPCHAGOdcQqlfwoWkUU/o6BiA7lrVxJejQt95tQuAZ9NcHS6faGLjC42GKelilx6awFLqul9VFwd8s6hbBo1g9bFpmhcmoeFE2pMd+a1OfA58MYJP8cc06ErK4KW0UFgW4sgVe1/fJdYTolo+ZbsTgpazdR6/S4jNPJFC7ESZ/OP35m2f9XvkIoi1RQ06kCTk9kNH3V7ebkKC3I4m+Aze3h61RMUyGIxYN+bTDSFC0gud/8+N5WDch9Zwemxf0PYwM/bQVtOhZr6c71v/25ebPJSxRO7Vpar79kRoYOQDQE32/Nv+yLzUFmUdKyC8RZLG5SsP+Uu6qThN3vRKkRJrpYCpLPH/HZnub8R0kcfUhyBRhNNCl+wDT20DxUoDfexKmiRJP2E4JRk673uysdkq7c06NNtI+gV2FY4MAA1d/4Hzqp+cG+dLv5II1lvEZVvGoE/DhABEit+6zy4lUPnJg/XBUdW
+ /OObPXWM
+ V0SKYsgsUe14YSqoUiRn0d3mB00FXUtCjSbxaaL+oqVkMN6K3cAXHlJo7Cb1cVhhuMSvMBoMG/Gifw5JJLPEoSDdHXOcYVBDfeOCLrxmNczwm2FeDyI+4hOMiNi3Gbrft1NQC3o0FPletq2nadFfBHG0/pFQ6NgIHetjCPIE7JJD4YaK1ImCiReuWevIA+l2F58+hmZjshzonN+eDRC/7B+/zKYJA4viPtw2MPdRentNyyJ91ppb4QUvCenvCjL+H5WwpUQGtJnQWSNM5r0VsARcM0+fThdATgR6VRGXcIBfvDLo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,93 +99,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Andrew,
+On Tue, Aug 11, 2026 at 06:48:39AM -0600, Nico Pache (Red Hat) wrote:
+> The note about khugepaged counters references /proc/vmstat for the PMD
+> case, but never mentions where the mTHPs stats can be found
+> (i.e.: /sys/kernel/mm/transparent_hugepage/hugepages-<size>kB/stats/)
+> Add a small addition to this section for clarity.
+>
+> Also fix a missing period while we are at it.
+>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
 
-On Thu, Aug 13, 2026 at 01:34:55PM -0700, Andrew Morton wrote:
-> On Thu, 13 Aug 2026 03:02:19 -0700 Breno Leitao <leitao@debian.org> wrote:
-> 
-> > I've seen some machines at Meta fleet that show the following type of
-> > problem:
-> > 
-> > 1) It gets some weird warning:
-> > 
-> >   BUG: Bad page map in process khugepaged  pte:f000eef300000017 pmd:00000067
-> >   addr:00007f57c0a01000 vm_flags:20200073 anon_vma:ffff88829af7c340 mapping:0000000000000000 index:7f57c0a01
-> > 
-> > The corruption is most likely the collapse/PT_RECLAIM race fixed by
-> > commit 366a4532d96f ("mm: fix the race between collapse and PT_RECLAIM
-> > under per-vma lock"). But this series is not about this one.
-> > 
-> > 2) Then it floods all the monitoring of the fleet, sending the same
-> >    message in the loop, crashing the our fleet kernel monitoring
-> >    subsystem (which is the part that I am interested in protecting)
-> > 
-> >   get_swap_device: Bad swap offset entry 3ffffffc043c5
-> > 
-> > For instance, in a host today it logged 6M in a few hours, and it is still
-> > going forever. Two things go wrong.
-> > 
-> > 1) get_swap_device() prints unconditionally, unlike print_bad_pte() next
-> >    door which suppresses itself with is_bad_page_map_ratelimited().
-> > 
-> > 1) do_swap_page() returns 0 when get_swap_device() fails, so the
-> >    fault is retried, reads the same entry and faults again.
-> >    Nothing in the round trip changes the PTE.
-> > 
-> > Trying to fix it in a naive way:
-> 
-> Cool.
-> 
-> These behaviors sound pretty obnoxious.  And the patches are quite
-> simple so hopefully the swap maintainers will make quick work of them.
-> 
-> I'm assuming that users of earlier kernels will want these things fixed
-> so please let's work on identifying suitable Fixes: targets and
-> deciding which of them should get a cc:stable.
-> 
-> 
-> 
-> In a spirit of experimentation I asked Gemini to identify suitable Fixes:
-> targets and it said
-> 
-> [1/3]: Fixes: 122e201211e4 ("mm, swap: get_swap_device() to get reference count of swap_info_struct")
-> 
-> [2/3]: Fixes: 122e201211e4 ("mm, swap: get_swap_device() to get reference count of swap_info_struct")
-> 	(and it complained that this patch doesn't fix anything)
-> 
-> [3/3] Fixes: 122e201211e4 ("mm, swap: get_swap_device() to get reference count of swap_info_struct")
-> 
-> And I cannot find such a commit anywhere, so wtf.
+Thanks! LGTM so:
 
-I think only 1/3 should be getting a Fixes: in v3. The message I am
-drowning in is the Bad_offset one:
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-  get_swap_device: Bad swap offset entry 3ffffffc043c5
 
-63d8620ecf93b5 ("mm/swapfile: use percpu_ref to serialize against
-concurrent swapoff") added the put_out: label with just the
-percpu_ref_put(), so that arm was silent. The pr_err() landed in v5.19:
+> ---
+>  Documentation/admin-guide/mm/transhuge.rst | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+> index 16f37135ed80..b187d618452f 100644
+> --- a/Documentation/admin-guide/mm/transhuge.rst
+> +++ b/Documentation/admin-guide/mm/transhuge.rst
+> @@ -224,7 +224,7 @@ khugepaged will be automatically started when any THP size is enabled
+>  (either of the per-size anon control or the top-level control are set
+>  to "always" or "madvise"), and it'll be automatically shutdown when
+>  all THP sizes are disabled (when both the per-size anon control and the
+> -top-level control are "never")
+> +top-level control are "never").
+>
+>  process THP controls
+>  --------------------
+> @@ -301,7 +301,9 @@ being replaced by a PMD mapping, or (2) physical pages replaced by one
+>  hugepage of various sizes (PMD-sized or mTHP). Each may happen independently,
+>  or together, depending on the type of memory and the failures that occur.
+>  As such, this value should be interpreted roughly as a sign of progress,
+> -and counters in /proc/vmstat consulted for more accurate accounting)::
+> +and counters in /proc/vmstat consulted for more accurate accounting.
+> +Per-order mTHP collapse statistics are also available under
+> +/sys/kernel/mm/transparent_hugepage/hugepages-<size>kB/stats/)::
+>
+>  	/sys/kernel/mm/transparent_hugepage/khugepaged/pages_collapsed
+>
+>
+> --
+> 2.55.0
+>
 
-So, if I need to update it, I will include:
-
-Fixes: 23b230ba8ac3 ("mm/swap: print bad swap offset entry in get_swap_device")
-Cc: <stable@vger.kernel.org>
-
-> [2/3] is "no functional change" so ideally it simply wouldn't be
-> present in the series - we should aim for minimal changes when fixing
-> bugs, then leave the cleanups for later.
-
-I need 2/3 to expose the difference in the first place.
-get_swap_device() returns NULL both for a malformed entry and for
-a device swapoff is taking away, so no caller can tell whether the
-failure is worth retrying. 
-
-2/3 adds that distinction and converts the callers, but none of them act
-on it yet, so it is no functional change on its own. 
-
-Then 3/3 is the actual fix, now that do_swap_page() can differentiate
-a retry from give up.
-
-Do you want me to squash them?
-
+--
+Cheers, Lorenzo
 
