@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C705C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 11:16:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8354C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 11:19:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E75216B00B1; Mon, 17 Aug 2026 07:16:27 -0400 (EDT)
+	id 0249D6B00C9; Mon, 17 Aug 2026 07:19:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E26376B00B2; Mon, 17 Aug 2026 07:16:27 -0400 (EDT)
+	id F3DCD6B00EC; Mon, 17 Aug 2026 07:19:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3B9D6B00B3; Mon, 17 Aug 2026 07:16:27 -0400 (EDT)
+	id E2C6E6B00EF; Mon, 17 Aug 2026 07:19:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B400A6B00B1
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 07:16:27 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 415D6A31D5
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:16:27 +0000 (UTC)
-X-FDA: 85110508014.12.5ECA0A1
-Received: from mta0.migadu.com (out-66.mta0.migadu.com [91.218.175.66])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5046520003
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:16:25 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qAyi6hYL;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.66 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BE1036B00C9
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 07:19:41 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 37E851A0765
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:19:41 +0000 (UTC)
+X-FDA: 85110516162.20.0CAA3DB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8BD9710000E
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:19:39 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z4zeGcmT;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786965579;
+	b=51WYlKPNGd95LHJT1Tas1q5YsTipoUBg/Pef3FP4y5iXLVjdYb4q+znGw8xWc+4Z9QSomu
+	0k8AiWptZYpCTx/XGsIHIXcpPz0TQlQmDoXS41kGi0Zpthurp3BbKe8kldmwD0A6XJma+u
+	27GSK1VNXuHqcq8fAZQDNmhAdlgT51s=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z4zeGcmT;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786965385;
+	s=arc-20220608; t=1786965579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nH9LwCWFH3rgs9p+wYne+nvJCLzluSxRDfVkYZbRm1Y=;
-	b=Luk7qUBf7TAjqqS0j3bwiqzyLvyA0B5qIYMyp75VCITtvjFyWbe14OazKNpLRA726QsAXq
-	rsNkDKPqdWSM8mgWUXtyhvQ+rsAxAGonOsWsTLcWb2uwIqC7iP4Db22mGnMJSdAemb5Y9y
-	Wf18G5SNZrxumOGO3fHR4biVyZRLHl4=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qAyi6hYL;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.66 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786965385;
-	b=6c8yZM5ZNacH5lwdBjLR81VhM4wlo0GmsCDfLJMuvmzuH5F/axUyCeMizV5z2IB05ndFPb
-	aPcw2DJlAa03IvSmcOoTuWh2KbXhNsZTseTlkZlpHQ/TmKK9/z1OMx05pPAdPv8m8Xz+Gf
-	QBvys268WVoDlxRCL2j9rO5ROp4rnlY=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=loF7uxICqmGQt3wW0ry5WgjSFhP6qd7mp4uDC29Scf4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786965384; v=1; x=1787570184;
- b=qAyi6hYL94Fub4gVBo8Rd1scupupswpmcpZ5pE5OaVa06KDDFft8qngsdUmYUuMjVMwmQlcu
- 3P1vrfQTi+yIs9yT5pCGQeCQ3Zg1BpJG9Ks64wKYLCDu8J89jQ1zRQ7fWggDSI0p7xiaSxoSXn9
- bU/SVGChdDkL8cVtwY25evMY=
-X-Envelope-To: linux-mm@kvack.org
-Received: from smtpclient.apple (2408:8606:1800:501::1:7)
-	by mta12.migadu.com with ESMTPS id fd8ad7876ef347e7;
-	Mon, 17 Aug 2026 11:16:13 +0000
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH] mm/hugetlb_cgroup: call page_counter_set_max() outside
- VM_BUG_ON()
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260817103433.191266-1-njilav@gmail.com>
-Date: Mon, 17 Aug 2026 19:15:57 +0800
-Cc: Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- linux-mm@kvack.org,
- cgroups@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <DA59320F-B64D-4B3E-AF6C-56266362DCA8@linux.dev>
-References: <20260817103433.191266-1-njilav@gmail.com>
-To: Narek Jilavyan <njilav@gmail.com>
-X-Mailer: Apple Mail (2.3864.600.51.1.1)
+	bh=/wjAZePGPW+1lTeTzAWETwTnmwk0ye6Pox92ahi7Up8=;
+	b=WIvyuSJI2acbwG4nbPmTagOKzLRKwPrwiXdt23BpykOgbVxVBFGG6r7nyzkyGmM9CEv29n
+	d/ehLkAAreEyp4MCPcuQh2K7Oc5BODGfxgpQmO3Y9KmkQQ8NTmajmPeDkXumrBEXrwWMXF
+	lKI2PmGVOpUrFAYa0cCc4faoiR7/wRE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1A6B4601DE;
+	Mon, 17 Aug 2026 11:19:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F400A1F000E9;
+	Mon, 17 Aug 2026 11:19:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786965578;
+	bh=/wjAZePGPW+1lTeTzAWETwTnmwk0ye6Pox92ahi7Up8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Z4zeGcmT+UuQPCMGh2Qb1ampLn0x8kI6lKKajPy+kHr/YJdDeQZ5PUvwAVY/DMOi9
+	 eZ+DhB2uGw0nOayDEqNh9xGOlS8+qeJ40L51RIC/DeHnHs36kagJgiIm670DUy+/OC
+	 YuaZTE57Riz1BHN8QGFwLslEOQM5DY0NWlS9XcVjB9XK4jWL5CFtbCIIX85OmtjjKT
+	 ikX9U0LnSac9ik3xEwuQtUA3RIvW3WcWWK8XBlmaEb4gYGr6f30AGPgc2EUDhEQCgH
+	 +Gi9sjIPEQ7DoBafyqYdggJkiO9TPteLICZ9YxYO6yHaLR8+KZm18P5/4Xdh/ns77A
+	 pjwAdRGxvraFg==
+Date: Mon, 17 Aug 2026 14:19:29 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Hongfu Li <hongfu.li@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org,
+	nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev,
+	vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
+	shuah@kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Hongfu Li <lihongfu@kylinos.cn>
+Subject: Re: [PATCH] selftests/mm: khugepaged: consolidate error exits via
+ kselftest helpers
+Message-ID: <aoLuQV-mGq-4wKf4@kernel.org>
+References: <20260817061955.45454-1-hongfu.li@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260817061955.45454-1-hongfu.li@linux.dev>
+X-Rspamd-Queue-Id: 8BD9710000E
 X-Rspam-User: 
-X-Stat-Signature: ajfnkuepuhecfq64a6jqwt3tmp9zh5t3
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5046520003
-X-HE-Tag: 1786965385-346490
-X-HE-Meta: U2FsdGVkX1/91O0uMGM1aRMe/JOiO/YlvDdAdhxXiOOTu4f/LLgU5JVl9Y5aK5+5u0IakIjTT+hclVmp00aiSQb8KJUNYJQoUhnC28rM1ZC3Ja4jyO9vrNM3Er3dOMaXgYijbP7SPAH8F9J2NNGldiHf+Y4AcgsyjJPMoN0o7CAK/uHoQu7zypiFH1Hs4qqnJRSGJiDhtITTkHXgzIOMNchHIzBl4W2PTRhnkwBNdDv/Y9hV15RIrRM2xtZHMi+IAOpZxJOZdB2d3shMokOQSLOpTPUoXbQob8YeYgrAk7+5UJ4iiYL5J1WCvXeeW0zYqJUngS+Kt231dkpBsTfULYQ2Pm+mlBzvSJPeex9iDJuuSA0RvVP0PeC/R6LvC3p6MM5/tAmd6mEbmJf9H39LgnYi6jdalTx0Z0I7KxLU7QHSEdbmszfkVcgYjKyQNRcOjm6u6qNcu4p/Ee2YKYZEaMZ/gQKzl6gL7t1M954yIWgcUMrjU2WiayQ8w2x46gV9iMl9q7yNHIGaFYcTynIXVfKbA9baPQwDxqvufMVmWwxm/KsGgueitsRvE4vddd0E34ws7Awg6VdE5opiXVwoo9lPuKJKM5JaS66sBMHRAZbwXM056RU3BBteGGftBOzgvk2KebS3dnV2eaz9Q5OPotp6hvgTlbC0pEnGx24/Pe7wt3W+MiU1jcXzNPaETbgt1H/rhvWiYzdOus52L1gnngnc8GsWNuXvDiYhIQ/gVIROMF/e0/fv/Fqjp0wnwJ4cHXBjWothgM+rvUfY+zmmSi+/wp8pY2p3NsAAwZtpGTXgO+dW8dvcVllre18sLY/L0e+V7/dlw7+bknJUlEFx8awsB7IJB0xEM8LvocoJWLtGK7+MSRQK8VMHZWWkaMkJ0kH0zI/4xIWIuNh1uRjjtmRrPaz1KNybUdmg/pIyV46cIrTTnG3hhL0O2AkgYUxPaqk3hI8aoZ6wrwuVREn
- ke0z1SiO
- okzct9WQ9l4zJUE+mCP1Q7i+vSMZBvDfJnMqJdtxHETks4xMCabEyuHHkzvV06CAhu9Cuyy+3CDx8/uphgWKPa7QpRo/KVHSALC0K1/WHg0GISQmclXcyrcoIe4j1Y18V9GFU+WUtWrmCemKDIzNi7o7kR8/UvMTJGtULTMPA73JcbSaTdJB3h229g7wwkPgFs0PgC2D2dVgI5vXTkcY2UO/0YPIbul9XT+AWU8UhGjcEcnzifNhttJJkUFV8jB/Sy2AywzRvZtdsQBN1XyfXm7Vs4YTe+bqN9urCU+juhJ0vhJKolVMi+9BweCp8MFN2/ulUUBg4G9iPK2k=
+X-Stat-Signature: n3ou8ujzeweks87eamhbs6ec8zgeguys
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786965579-891638
+X-HE-Meta: U2FsdGVkX1/c52jKj0yaN8ypKkVwVm26fhriSx+0Phkg/TA2jlhoPubeiGoeAl0weiDWRAqsdsREjngcrnYq5aM0seKmJLiBF+npXyWWC0ChdIdd7qnpDCF0+u0A1dZE0XvhQHZzhMgp52tZ6jj74h+WZORhJLVbw1qDIV5656V5amDVOPhfmjYquC/a64Nkvb+vYtz3mvR6rkacbQaNMrqn55qISTVn7BbRY3FBI4i4zzqkdq/+cp/5MMVJYDN2pWhxUQLPDFT//s/lVppKWuRim3dpL2F3GGgO3T93f6AHaRjRgzrwV8t1jfn+q/lib/9ZNSpOpvaJJ34iTouAD/r5uUv977CGVLDGAIrazEbYgcDLVXQE26EH/nKbT4MGTW66Nk7/ZoyGrLzg4aNbg89bPV0d0rxIKSO3XFE633UAi08GAZkkEpP4xnU+xLfAR+0XUsyIE+dRBSQx0dQqKeAjzo+yR3o/K6X6pHHn3k0ETGsZtZH8mW1vMJLwMcOavcmLtifAa0Ugobl6RqSU01ngd0WYwLt1foEmkh1CRIjWrFfI4Ja8z6WbruRCWKwf5YdUMKBAC0Ycd4r2F+6CZ20pkWleSpZ8a7BZqycxJkHkDmuruFTfgZf/Sw8+zBfOQb2zLv1N4XbIBO0L56s7aFT+e06uVwDYK5/Bt9PcbgVXUnDAyJNs3TYqS0v3ebxDspFtG4amM5GIoXrdSVaI4BEHbSRQOw7z82TLh4kXKKvrdXRIU381iNvz1Xzt5GZ5NeNQijE20Lx8+++33Y/fM/yexO8k/3rLSlq2CHwDQ0zltUnHU4nsteoc5LmkYsb+F9U3t5X3E02lu+W944EU90/iKt6YWwSNAnbAO997W8CtDxGJ3WZogJqYU6HV8A48zD+LSCawP4JXneYOyZJKJ4EhDR1M83iZeBR0wLQQRkOe8Ue7pKBjeIb2sDCmRKbv0ymEsbYMlM+qpKRGU/m
+ 0CwFtPha
+ sh0TwXbF6Xo17saOAz7sCPELYNIOivfMB7dj5LGvhjKTaeZtD2irkeFMY14U9lFVnU5ylUvLMSROL4abScVc+m7htsnWOjQK13GTBOasuHvKtHAPfRp0hfAsvjAf27lVhWfnhmdRq4jVqu0wlGXf3QfYrjbEd6m5wLUtoWXRyOd5hpMaQw+JWfKRavtje8bm+cxSwdNbX8mNrcHXEJ9xpOe93N8V2YQM40fI7wzA07ePYscEz3ym5oW/gQJFCZVJXpMBPsdifdy5yAemgALT3Ybsmtw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,49 +97,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Aug 17, 2026 at 02:19:55PM +0800, Hongfu Li wrote:
+> From: Hongfu Li <lihongfu@kylinos.cn>
+> 
+> Replace the perror()+exit(EXIT_FAILURE) pattern with
+> ksft_exit_fail_perror() so failures are reported through the
+> kselftest framework, consistent with the rest of the file.
+> 
+> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
 
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-> On Aug 17, 2026, at 18:34, Narek Jilavyan <njilav@gmail.com> wrote:
+> ---
+>  tools/testing/selftests/mm/khugepaged.c | 20 +++++++-------------
+>  1 file changed, 7 insertions(+), 13 deletions(-)
 > 
-> hugetlb_cgroup_css_alloc() rounds the counter limit down to a multiple of
-> the huge page size and then applies it inside an assertion:
+> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+> index 0d6c71ed2fae..8d1b87f2195c 100644
+> --- a/tools/testing/selftests/mm/khugepaged.c
+> +++ b/tools/testing/selftests/mm/khugepaged.c
+> @@ -358,21 +358,15 @@ static void *file_setup_area_common(int nr_hpages, enum file_setup_ops setup)
+>  		ksft_exit_fail_perror("open()");
+>  
+>  	size = nr_hpages * hpage_pmd_size;
+> -	if (ftruncate(fd, size)) {
+> -		perror("ftruncate()");
+> -		exit(EXIT_FAILURE);
+> -	}
+> +	if (ftruncate(fd, size))
+> +		ksft_exit_fail_perror("ftruncate()");
+>  	p = mmap(BASE_ADDR, size, PROT_READ | PROT_WRITE,
+>  		MAP_SHARED, fd, 0);
+> -	if (p != BASE_ADDR) {
+> -		perror("mmap()");
+> -		exit(EXIT_FAILURE);
+> -	}
+> +	if (p != BASE_ADDR)
+> +		ksft_exit_fail_perror("mmap()");
+>  	fill_memory(p, 0, size);
+> -	if (msync(p, size, MS_SYNC)) {
+> -		perror("msync()");
+> -		exit(EXIT_FAILURE);
+> -	}
+> +	if (msync(p, size, MS_SYNC))
+> +		ksft_exit_fail_perror("msync()");
+>  	close(fd);
+>  	munmap(p, size);
+>  	success("OK");
+> @@ -447,7 +441,7 @@ static bool file_check_huge(void *addr, size_t len, int nr_hpages,
+>  	case VMA_SHMEM:
+>  		return check_huge_shmem(addr, len, nr_hpages, hpage_size);
+>  	default:
+> -		exit(EXIT_FAILURE);
+> +		ksft_exit_fail_msg("Unknown VMA type\n");
+>  		return false;
+>  	}
+>  }
+> -- 
+> 2.54.0
 > 
-> VM_BUG_ON(page_counter_set_max(fault, limit));
-> VM_BUG_ON(page_counter_set_max(rsvd, limit));
-> 
-> With CONFIG_DEBUG_VM=n, VM_BUG_ON(cond) is BUILD_BUG_ON_INVALID(cond),
-> i.e. ((void)(sizeof((__force long)(cond)))), whose operand is never
-> evaluated.  page_counter_set_max() is not a predicate - it performs
-> xchg(&counter->max, nr_pages) - so on every non-debug kernel the limit is
-> never applied and the counters keep page_counter_init()'s
-> PAGE_COUNTER_MAX.
-> 
-> That is user-visible, because hugetlb_cgroup_read_u64_max() recomputes
-> the same rounded value and uses equality as its "unlimited" sentinel.
-> PAGE_COUNTER_MAX is LONG_MAX / PAGE_SIZE = 2251799813685247, which is
-> odd, so round_down() really does change it and the two sides disagree.
-> With CONFIG_DEBUG_VM=n:
-> 
-> $ cat /sys/fs/cgroup/t/hugetlb.2MB.max
-> 9223372036854771712
-> 
-> and with this patch:
-> 
-> $ cat /sys/fs/cgroup/t/hugetlb.2MB.max
-> max
-> 
-> A debug option should not change cgroup output.
-> 
-> Call the function, then assert the result, as v6.12 did.  Use
-> VM_WARN_ON_ONCE() rather than restoring VM_BUG_ON(): the two are
-> identical under CONFIG_DEBUG_VM=n, and checkpatch asks that new code not
-> use BUG() variants.
-> 
-> Fixes: 0e2759afcaf9 ("page_counter: track failcnt only for legacy cgroups")
-> Signed-off-by: Narek Jilavyan <njilav@gmail.com>
 
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-
-Thanks.
-
+-- 
+Sincerely yours,
+Mike.
 
