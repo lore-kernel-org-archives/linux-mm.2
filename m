@@ -4,124 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E20BC5B572
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Aug 2026 23:32:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42BCEC5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 00:13:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B12A6B08C4; Sun, 16 Aug 2026 19:32:19 -0400 (EDT)
+	id DB1E96B0379; Sun, 16 Aug 2026 20:13:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 462926B08C5; Sun, 16 Aug 2026 19:32:19 -0400 (EDT)
+	id D88C46B037B; Sun, 16 Aug 2026 20:13:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39F3E6B08C6; Sun, 16 Aug 2026 19:32:19 -0400 (EDT)
+	id C780D6B037C; Sun, 16 Aug 2026 20:13:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 10D226B08C4
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 19:32:19 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A4605160606
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 23:32:18 +0000 (UTC)
-X-FDA: 85108733556.21.B8C566F
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BCEB040004
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 23:32:16 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=lA2Klji7;
-	spf=pass (imf04.hostedemail.com: domain of stern@g.harvard.edu designates 209.85.160.179 as permitted sender) smtp.mailfrom=stern@g.harvard.edu;
-	dmarc=pass (policy=none) header.from=rowland.harvard.edu
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786923136;
-	b=jxUPoU7Ss5Yb55EIxXmOUCbfy+WCALL+pRFOzcNzzvgCy8Qn4CQz9IldkjIWQDtlvzgMpr
-	gMQJArmOAjP/H3pWaGD4Zxxrj/kbYFptJGuJbz5wN+Cz0Ot3P8zh+BG7QcOD5WvZuo8PWW
-	ZrM4cMgb1Mth9qeztkeZX/+LffXW+m8=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=lA2Klji7;
-	spf=pass (imf04.hostedemail.com: domain of stern@g.harvard.edu designates 209.85.160.179 as permitted sender) smtp.mailfrom=stern@g.harvard.edu;
-	dmarc=pass (policy=none) header.from=rowland.harvard.edu
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786923136;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A00F06B0379
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 20:13:27 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1D5151A05FF
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 00:13:27 +0000 (UTC)
+X-FDA: 85108837254.07.BEC33E5
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011040.outbound.protection.outlook.com [40.93.194.40])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3B57040003
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 00:13:24 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=KKpptt4M;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf11.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.40 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786925604;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BioqsUd1GnS7GvqtNJ5JnjYlksYkVofgrlCf+OKGs8k=;
-	b=6CvxnSsCjFWHy2ZUVaS2u5N8w606B48B+zHg9XnRI3f3CTfuiaKduo7XKXijRWxM5yrruK
-	L3oZPZ4dhk/uU29ZejTkeHLKrAHzyuHmDhFfikhpjC3GXV7XEYxG+vcATac1C9uqQ46cck
-	bytf1Dps3/tbOMll+8YyjHITBu0BqCU=
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-51a868b6962so28867701cf.2
-        for <linux-mm@kvack.org>; Sun, 16 Aug 2026 16:32:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1786923136; x=1787527936; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BioqsUd1GnS7GvqtNJ5JnjYlksYkVofgrlCf+OKGs8k=;
-        b=lA2Klji7Z/RihNNH/6Lr/fwQfgIfGF4C4QqGnt3b01LAM9GH11EvxWPPh4sEAElIei
-         1tEDLo/EFT8bV5Z6V3sIFcTihaBUpe9nW2QTy+W7Pqu13VvKHxAXnjjNWzB2syupjCEW
-         p/2gF1A94vw++HMgXABTrROo+CdG79nguMQwkL9LI5+IT6+jbDTiVhMDJ6s//Nv2nVjJ
-         GnpuAfjoOSrzqFeR5TqhI2SZ8GKpyp8pTCg+t2vK5lLwPPSP65HpwhUJC60oeA3mSKYD
-         MzHdjS2ZPUmlGEYFIGRjkXz09j5jYx0Qvrdd+4P6/Eu1hLraFt5xLqU9YtxXY5JdLdkY
-         40Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786923136; x=1787527936;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BioqsUd1GnS7GvqtNJ5JnjYlksYkVofgrlCf+OKGs8k=;
-        b=DfK0aH0ugKJgdSHe3fDK/KjIhMcqI27Y7I0+MRLzkmDcktdew0KF8ua96sfP2qTi5u
-         muICvvVhv6NCjUG6BeN/DB8UJ93Yy3uPQ0t4aYcXpvRse2fvAi0UM012+7h5rk/eZekX
-         p8PKVoTB43lUdQuEejbXotMX6r7GLJeIoWZADkO4iCdJzHs3/W5n4ILcWYOWfD9EC5oB
-         rjS2E2mdY7QoM+tXHKlSPYqKf/Bfq9+SjVlCG1La+REDWjual7i9elbAGEa2CZzZustG
-         81jxoxDMAF2B+hvlZk3x5uQMB9ienvcfZzStLIz0foGoPCKyYpHYFoexxadsj2mKEl7F
-         miAQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rp6tUnx0O7hXMMJByNsbfWqATJggBzLNrykliy5iInr2RhDJM65+pHL2ZUdSQq6htdZWvji4Swnkw==@kvack.org
-X-Gm-Message-State: AOJu0YwSGwask/LHhBm++Za3pIHrvKL0Wxkib3c8gHwOrVJCHrPpkGMt
-	Olqe5e7IkoE7mxc0dR2CqgmRw3+EbaTAduvX2rUGS7XV1ko3npw5MlyPaUWznc7TeQ==
-X-Gm-Gg: AR+sD10NxuDpPBLMxA6aKrWyyeR3moD1oXimKdVy2+pRUGLaETdzhyGcGF97wmU3os+
-	i3AbXy3xZHP1LBNYQUf7+mV17uK7HJU5L/ujQkF+jHUblfGhy+/wnCPNXnLTAZkSQ3QhfkIZdgT
-	JbTk/11bIPHtaaoYtgUkibsFXbfh0Hu4sWq4WGHRudxDqYPAcj5zejRJnubB6iFYGRp4pBBvRM2
-	sdZfdmRsiuqrycKXg4VulxOWgiC2EhHuoRmhJZ30VU+dEIR8i0gZbeEWVP3iwqL+KfkL1Jyk94o
-	PY8XT0y29ot14lh/0luup27aUCkTSPuVCMRvnaMQKLvlUJIDXJkXqWOnA5cqz4mwZdVWvasmGYz
-	x6s0lrt1qNGGDnldhdwDIZ7uuKCx8+kVGCGpHlSQdaTLQaJRRl6wbmvFgbmU3pJqVTNjh+DxM1J
-	VTwvVzf2JMGsn2Vk4CygS+SQ51iBiRqY7FqBbrssfp2zB1oOQke6Yb2RFgv8TSHQ==
-X-Received: by 2002:a05:622a:292:b0:517:6d82:ceff with SMTP id d75a77b69052e-52d853cbab0mr225176651cf.13.1786923135671;
-        Sun, 16 Aug 2026 16:32:15 -0700 (PDT)
-Received: from rowland.harvard.edu ([2601:19b:d01:d210::dfd8])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90a9350678esm68674476d6.26.2026.08.16.16.32.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Aug 2026 16:32:15 -0700 (PDT)
-Date: Sun, 16 Aug 2026 19:32:12 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	syzbot <syzbot+805630f1453e490427fa@syzkaller.appspotmail.com>,
-	apopple@nvidia.com, byungchul@sk.com, david@kernel.org,
-	gourry@gourry.net, joshua.hahnjy@gmail.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	matthew.brost@intel.com, rakie.kim@sk.com,
-	syzkaller-bugs@googlegroups.com, ying.huang@linux.alibaba.com,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org
+	bh=LdUb6gOlSaKJj/831cZlJZh1qvGa8AmLhwj4mv1PRZo=;
+	b=jryOyYb7umPusK/JD8gJJ9s/DGKiRNRV1cK1lOhhsRXEQzUeH6E6oqdKlVZpy9fCMReamO
+	y9aRmE3cdSgAK5oqBwcj+Dw6EaXt/9p4zG44iaSLoIUqAlR0vq0tESRUgybVxdruSlMN+5
+	pilI0aMGYxrZNm7WuTKcrH8j8i/F4+4=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=KKpptt4M;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf11.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.40 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786925604;
+	b=ec6WiASKxetdgjTxKFYWjDvANPBzavniU+n/+8a4enhEr0IyAXGXkYgEtbrLHqfW7sRzgL
+	59UPHKBelYNy7LszHr03pmmyhpKoYCKlLpzFqeZHSSWZU8C6z9IpGWW1Phk5xtsFzpy9TW
+	dt9/MxzCiXsRtofv2q+NWHfkqk3Br3I=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bxyyllItcovXq3kSs9pO2ZaVziuT0xbj8whUfAQeWZZrLdf0UVeCOwyeqbkWItlbin+S74QTe3bV5BDXEEKuA+uT9QZ22cQOatWsPMdmP9msMggifgJROYrLZ2E0C66Lf9o5VZx+t5hgTzshHoUKKR7NPHk5eOBBbfEqyne64asEq390X9Bu0tUp1fUoTY8XcHebLxqMZnj58p25+fY5DUMeNw6zlfrbJnQUpc539IZNX8iJ4OZxh0T+6IjxY/qIKdqWQej0PxWtfPoC98z8gytPuPwRmBZAbc7Ryz/FeEetMEqfNEqWnON5mAdFMZd1C/JD87SCITV10FeIt46LjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LdUb6gOlSaKJj/831cZlJZh1qvGa8AmLhwj4mv1PRZo=;
+ b=BwZhr6/Ny1OeUxPdnJSbMdIxE02+GsV9VdpsMjAhr/Ah8Oi+r9kz5q+t+3kRXyuaCAw8ABc0UXvlf3lntKPjZxm2aC2Fubdoiw3oYqiSqy03nzsMnwyS3CODTS4p1D5DnXvcMF/r0uztPMNBELIvHp83QQvpDkm/34LJS1eD0nzsS2Yau/i4uXQUGQSKUUDhlwR4mGxJHFWCKi+1o/k5Sfwxqo6xC6R4jLjhUz/su4qS3h9FkU2ptKrOHluzulNYTADfKih1Sg6GGIB1AqoTC8gjw99SzyUQ/qjpz0CQC5SwqHQlRuaetVzz1Gpb0LDgOT+J8jOtux1PDuP4LDnMDw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LdUb6gOlSaKJj/831cZlJZh1qvGa8AmLhwj4mv1PRZo=;
+ b=KKpptt4Mz8dMURAV8MbjJiCS4HGwErZ5vAiWc9Tgx0TZI0KoTcWKbbWSURSxo6kdeLFqP6bE76E52ePhKHCzaLZG2mLbB9av3HPZ/Ys1c6JMGjNpUBOUQp8nAAoNo7dMoJA4k7G+pZBrDeKUPguA+fVWjFLKtmQ2vvlchY+YKt/wIWaSBQ7AXrTBBgMyvKPBB1vEHZG/FbmXqrSHFGBJ6vLXpqns9UzSYCEXxuEHevjE75sVaKRNmNa6yXag8HGgjcn7KbGhQyA81lUTJO2q6DBZ/5xm3tAhkrkJFKkfcmJ//kE5/WncsWPTj9g1K1WXC3PZyC1BpN0YK0r4y5ioGQ==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by DSWPR12MB999152.namprd12.prod.outlook.com (2603:10b6:8:36e::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
+ 2026 00:13:18 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
+ 00:13:18 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 16 Aug 2026 20:13:16 -0400
+Message-Id: <DKQS9ADYVLN1.246LJPQ9QQYVP@nvidia.com>
 Subject: Re: [syzbot] [mm?] WARNING in ep_write_iter
-Message-ID: <02c2e5c7-0d78-4763-90ff-75fa87105fcb@rowland.harvard.edu>
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, "syzbot"
+ <syzbot+805630f1453e490427fa@syzkaller.appspotmail.com>,
+ <apopple@nvidia.com>, <byungchul@sk.com>, <david@kernel.org>,
+ <gourry@gourry.net>, <joshua.hahnjy@gmail.com>,
+ <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+ <matthew.brost@intel.com>, <rakie.kim@sk.com>,
+ <syzkaller-bugs@googlegroups.com>, <ying.huang@linux.alibaba.com>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, <linux-usb@vger.kernel.org>
+To: "Alan Stern" <stern@rowland.harvard.edu>
+From: "Zi Yan" <ziy@nvidia.com>
+X-Mailer: aerc 0.21.0
 References: <6a820ebc.9ebadd4d.20b15e.001b.GAE@google.com>
  <20260816135201.98590b17b526dda8c4ec9105@linux-foundation.org>
  <DKQP5QC9XTDJ.3MI016NP0NPFY@nvidia.com>
+ <02c2e5c7-0d78-4763-90ff-75fa87105fcb@rowland.harvard.edu>
+In-Reply-To: <02c2e5c7-0d78-4763-90ff-75fa87105fcb@rowland.harvard.edu>
+X-ClientProxiedBy: YQZPR01CA0100.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:83::21) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DKQP5QC9XTDJ.3MI016NP0NPFY@nvidia.com>
-X-Rspamd-Queue-Id: BCEB040004
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DSWPR12MB999152:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4187f894-e14b-4a65-15c1-08defbf456dd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|366016|6133799003|10067099003|4143699003|11063799006|56012099006|22082099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	xfU3R7ejGoSWYqCpSjaH11JHsfTMYu8JFKXnQbXOb6W35pMKpE3C4JnbLFq10xSOp43cmcjEPYDZq2rQ9SdS70crnTxR+ibvxzpHKpx4H7Vn8+fJVEn/M6BUqUHtx922hsuEr7+ZxAvaxQLfayh7TnAh/jF91YNqXy9Obk+e8TQe8PbV7Du4vGihA76xpszdwSYd0V6fYLmYF8EBYVFg29nlefpoe39aabGSBSEw0stPfdSLKzOc7TO+4FSYTDMgPptWalFCvjI2r5h6N5qGVVbtM9tT86EYeIg6rOglRclfjR9xvpyReU6ES55dOyCDfqdwI82RXFGKUGnmsWOJKgisoAR4+rN1w0Y0i5qDfXdP1g8gQ7k+cm6N+9Ig1a+Oo5/fgECtD4Qdyqyyw0qJGWOWHf8+0CbspRAaePa8e7xD0loFbYpsRZl+NRhR4+VtyR8efav8OIXmsWR8tGxfx9r6cJEji5mnrCvcNl3XslNzc+EalWKA+EKPwXSzP1USh6BFrM+iGhcsV9hJVh0khejydeUamKD98XJD9+fcxWDvFQHCLJK1zfV4eJeGjf6DnKJwi/ifBuxOsoi37t6y2G346WiFZwZUKrhVUHZXk8EZBhse5HkjB9xQTgVNM4YxbDEsHjO+Z8d4t8UrEiXflrZl0F8U/dfoolVJrDsWFDA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(366016)(6133799003)(10067099003)(4143699003)(11063799006)(56012099006)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?a3ZNcnlBQmx6SllObmVDdEpxWnIyTjNZSXBVbEx5cks4eTJlSnBvenVOQ0Ew?=
+ =?utf-8?B?bzBURDhSbG5IdkJKSlFlMTdnaU1EWkVaMWJ4MHgvdklJL0VhUzBhVUtQQU40?=
+ =?utf-8?B?NmhpakFQQnRnZjhPQkJUUTlCd0tnMEhIejlsZ2FSSThsWU1LYmhnRDRFajdv?=
+ =?utf-8?B?OUNjWTlSemdjL09QTzdWblVaU1pGelorN3duSjh0N1FkTno0TVhwMzNId2xB?=
+ =?utf-8?B?bjY0UmZXYzArdmU4dElIQ3BkOTU1akx3d0llTXRGM1BjUGtUVnRHRHJLdktH?=
+ =?utf-8?B?c1BreDNqem5tU1VGMy9YMUl5M0dMYkR6emNza1hvMDZDN09TUTZGS2ZMOXJp?=
+ =?utf-8?B?WGhINWZUV1lyMndiZFd2MkdqbzVaVi9RbEI3VDJ6bEhrTDQ3OUdxL0RZR3Av?=
+ =?utf-8?B?MGRQZmpXMkE0cGVNM0hRcDkvNWs3emp1anc3ZVI1ZlgvNUwrQk42ZERUZ2pM?=
+ =?utf-8?B?ajhXQVF4NEVRL080czBId2JFTmhnOEs2bnVBSXdhYXhmOTNNK0JGYWgzbWJh?=
+ =?utf-8?B?M0V4WnVMRnZMOVpZUGR6RitxNnlhd01YR2lRL2xIdGlLditWSW1HdlR1NmFX?=
+ =?utf-8?B?WDVSbFNLSnFYQkRGeUFtVlB6aUhMNEdUUGQ3dlBWVDUyQ2ExYmZ4eXhlT2U3?=
+ =?utf-8?B?VjJIOVFxMHVDbHlqS25ENlZlV1pzbzRwbnNTTGFGUklqNjRQVUhWcnFhSnNa?=
+ =?utf-8?B?NkVWNk1DVHY5U2ZxYUVHSFZBM1pFWGNnbSttZXYrZmN6Y09hQ2Y4bmZNcmlU?=
+ =?utf-8?B?TmlyVG5WbmNnNGFkSUZaUlo0SldsTHVpOFhJalV1VHphZ0o2UWtvMERoLzVG?=
+ =?utf-8?B?bWhpVTh4TU1JNWdMSWlHd2l4RzhQb0ozaWVWNW44VjRzWkNhYlhUMm1wK0w1?=
+ =?utf-8?B?R3VCSzM5dUJBYmI2WFlYY3lnY2MxQ2xSRHRyMUpDVkZXbnZOcytOKzErYlhl?=
+ =?utf-8?B?Nk1mMmErL3VBK2ZscnI1NkZENmZpbXZCZTZtbmx3OVpuTmpvTzVxL0RrWk9C?=
+ =?utf-8?B?cWc3ZmxVUEZpaXBPYlNvbVVGbDVVZ3RXQUYrOVlHNGhHY0JJelVCUm1vYmhk?=
+ =?utf-8?B?RXRQdlZJU2daNTBySlZCREFCK3JVTGFHWmcvaVYvaUg3N0xNbEUvM2FTMG5n?=
+ =?utf-8?B?OVRuV0lZMERQSHNLZkc3TUYyM082QkR5b3dwTnhWOWp4L204KzJpOFJVVng4?=
+ =?utf-8?B?R0d1aTkxS3FWS3k1MUozRWgzVnBBc3ZOQ296S01Rc0llK043bFdWMCtFR3pJ?=
+ =?utf-8?B?WUxaTDZxTGV6MnZ0eGhnTXpmNkN3MGJlWGJSTyt4U29Kb1pxWWNEREJkRDE3?=
+ =?utf-8?B?NmJ2TlRoR010ZUtONTFjWGFCZ0lKRGl2YjNwWE40UWo1MHVwUlNra1pwMFlT?=
+ =?utf-8?B?S3E5MExTUlowWktETFRXZkhMc1pmL2w4YUp3Zk9oRlNHbHJoaFhzZEp3RTEw?=
+ =?utf-8?B?RWp2TzBUb0xOaWxYNk1ydWR4aDV0VGRMY0NWSlkwVW5URjRod2FJS2JhTkZt?=
+ =?utf-8?B?MGVFYy8vRGVTMHh0MmExaXJHZ0lRQW1EY2phSU05YkxkSUk3S1NLTnBWOGFT?=
+ =?utf-8?B?Ymc4MzczZzA2SFBJZzlUT2wzR2dvUWs2OHQrd2k0cUh1bVc1dzVGTG1wQnND?=
+ =?utf-8?B?djAwL1lPSUN3OWtyS2E5ekZkK0p1L1V3RW9BWTQyVWJPRzdMenNwTzFyQ3Rw?=
+ =?utf-8?B?NGtMcVd0dTJLQ3NlOGRaYU52eEVCRU5wVUVhRG9nQ0xpM0FBc0o1NDRnY21p?=
+ =?utf-8?B?cmlhbUE2SVF5VXRyK0djS1d4QkFQeVdmSGpubVJZYjhXakNXQXRuZE90WERB?=
+ =?utf-8?B?RDdoTVVNbXJkNVdDbytuR0xaQ1NwZmMvL01HL3YvQ2lZU0RpT1FPbzdzS1Rn?=
+ =?utf-8?B?QVIrdXdMZGNWQWplOEFtalE1dktxRlJ0cWovdmVpVUJqajZ3a3I2VGlZZkUz?=
+ =?utf-8?B?VjQ1OG9tRHNXTVdwK0djbTkwaXRsblpBa3AySTZ2dE5iOFdsNVUra2oxUSs3?=
+ =?utf-8?B?ejNlVVE1WXlaUjRybFNqVC9BQ29rRG1jWHhMNloySXNyL3BNS0hISnMwaitj?=
+ =?utf-8?B?aHhDbkMvcGF5RmdMZEdRTDVCZ2g5dkR1Wllnc2FWMUdOWXQ1UjNVM2c0WUx5?=
+ =?utf-8?B?VWk1MzhiVkpJMFg3WVJ3SGlOdGM3dnFqeWd5V2ZwQjR5UmUyaklZdlNJY0ZL?=
+ =?utf-8?B?R2cybXdVUFJxL1E4RldiTGdrNElTbTc5OFhjT2tUMXBFRFkrbU5GQk96WHBQ?=
+ =?utf-8?B?a25hZFVob1J1UGlNNDlkTFY3TzFWSWR1Vks0eVZVanFUZ0l3cEd3NjZ0a01l?=
+ =?utf-8?Q?yNbo1zvOQne829jFrf?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4187f894-e14b-4a65-15c1-08defbf456dd
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 00:13:18.2428
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dcwO7aTkrQpMzdFPgoZ++1/rr+SvgV4M09+7cha0aIEH6bPqqG++MkT6p4iujVHI
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSWPR12MB999152
 X-Rspam-User: 
-X-Stat-Signature: ucswuu41ethj1sjxm9zi8ffxd589db1i
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786923136-673632
-X-HE-Meta: U2FsdGVkX19m7QIiAFLMpL/vHiUDq8NMHA+O/55Wa3f1cu9isqq0TlS3UHeyDm+B1XT+0Tv+jm8ns3RK/XhEXAAoLmdJSqqAkHLFxnhGByr2eb2qmP77LmyUf+HvaOvQUihSF/m/3K3KWa8ONIghWR8MBGK4Cu/BiqJ3acnCcLzN/VOg8AUYXzBSiaqZdDtH/30QFkDWM5jr/AvQKTTy42pHS0GzK+Boh3pPEmMkBP82uQrkrTGKo+ideF1eMxaOxjNnZPCkHBC13a/+piOhpUEogvvO0k5nmbO1e8DTLfaQKLMR7sU4pUp4WeiaMKLHiLVlLx4Y79YyMdAkMcT/wWbu4dDhmZanG2UUeqdWmkhogKNnhCpuaMJCShqkwNEP+bdjNaJvXeqojegILsJet8K8bP0rYNbnpHO3r7GTfzA7lGpJr12Gy6CYQEeH+BAdS138bwjXRFAWyfx7M3yuEmbGVAgomRJ3utrt9ibQclPTKnUsE1bKnMboC1A6XgY0j3vw46PyQdTdNcwN6VKJZyiEDlAjz9CTG3ARR8Hk5rtxpPpUpGVLz0TV2YB/3TrvXZlc/d+eNgzhSvN9ix89+vEB9H/uarv/USyJFPxkiHQnl6eH5Ai+i2iG30QykjkyJ26fXEM8AQTS4Qon4JrVQehmQ0tttNTULXSEzOKoLT9UiR2t8VQ+NTStLK5F/YHh/vtj9CaJzXLaSQhD/KvQdbQMR42wtmWUv+CdoYI4nQGyc8Uo7XX3huvUKxM33WSHBlc7EFZdgF1N12TuwLG6ANrgGcpAWrz0qnLshC+HwGajKCoJAlPNjE6vr6J1PrDJWDfTE72jw88htQGM6IeOl0T1eE3z3HY0/iUOLIFgarHvFkvfjTcd7zg4/ub/eZfKC7fXcx50SByBgUKf8P7Mf1/yZSr14tBPPCj5y7RQutFKDTpDrRDJ/knVKNAG3eEvVsAr0xQQUtojl2UN3V8
- 5ZqQia1Q
- 3XosuO53edulKZegDuBVH6f2jYWscnM03cLprqNp8N6ji44Wo4fW6m5NQgowJv6iNrV2rBLTHXs2msgwaJksHVZI2+I2HNvwO1gRE8LkR8h5c4YkJ4P2aDzEsTbR/aFjKvwohTQ9jtsOYd9DomqheCBHnGtJIe7AYdOD1hLBYRxMKBaB9I4kXY5YwAGSawtPcb+5RMMLQ56oFA58fFlMKIRPTx+P5XW4B7xCxZBCsTNK0X6CqYkFq4387MYVrh8YXxAkHISqDNnytLghukbfGB0XAUvVof2hmh59Yzqkz9haa6svu5xHl/5G4oWemtXPxu4sBCpxPAE7rd95rCD5TRseSKriq/2YTK3nbxr+RwJ0LFsWZTXhmNImnlfY2uPJUHSGHXjUTKhNWcA3xNh10fvR4U99IKNjqkHYFKRWapOWaWXmw2nEKWlAoKGlmGg0QDr47GQ69jiIYCOxPxIrjNSlJwUZvNMfVhiKwFXcu+bwaveGR5zQpaf3Ukfbv0CRMGpIPtQZOBwZ4YPFKdjXTbXTiOQRaGLAvk0C+W20T9QUoy90Pv7Y6dBATdcT6IVywB1B5iyc5CRnLK0sUUk/kjZM8UX5DylJCwN+gRZeWh+PU4/1QlYXIIL7bXHPr6hV3KEJFvA1HcXas7xC+F/gksU1TQedmz38JnEGzqA58XA2gBeXcWDndKEOVZN0xaMPFaQbwYmXWnvpcCY2Y+WgLSc6ycgUzL7+Mf/OEYdQaxKY9WhXp/DenJbvubSpV1R+/6AA+aghCLB7xZjtYexU21qumgxNMR3A/uYwbvKiPpirpqVddMjCLxrYroxrRSgkMQR32G45doMgdDZ1WnNWA1Sw1C3uavDln8YDRJjUVmnRALiSefbvAHAm5gl8oP9EYBlQWGYFdKfw2wybIEmwXZVIjCyD557mi1U2c3a3tBN5IG6E6/LFYWBVgXEys6tmPbr3uS3Oa7QWiJXd2CBCn7yPodGrf
- K1NwGyUR
- lRn8EAJE0N3ubeMYR1+aUTkBZa3xpfTR6TCD+c4A/WawZt3Xz00G0BcXmJS02cOZqUVjwPQSWiDplEDoMR8IFir9+3FCfRxfiS3dLtSR3SwB0ukw3a6NsHU99bw+hEuK+9Hxy79nWW9p865m/NZ8Xv2/cWFzmdw0H5gaoJmuFrBM6KMCEAWu7EpFdMy0AzMKvZJRABMpIsvSQUXY/BeIjMhAdimJD/9w2nanaDePhMkcoDTQi3hMvWI1IXjkJ1VtwWzHbP7mPjFzpBoHgNxXh41LInPVeQ7+z6RANCAO4T/I3aR14uIvCOXXz/wo8mvlaeM0y9brEV3ulKJRBD7pYO7y7lOt9wF4TJncm7vZhBo=
+X-Rspamd-Queue-Id: 3B57040003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 8wgjhib9bhbzcex5o6fyndq64zw8chxr
+X-HE-Tag: 1786925604-937007
+X-HE-Meta: U2FsdGVkX19TTBnjxC/H3FFk8gCgYCZrVT0I6pYGqbd6mje00n+Ns8niT9hwJ9OmjQx9gktYMCrLDQfO0MqhHMt6yMRlwcTkWnZRWB3fiTl6L8XAtLodV8Uj8zE19/GKaoAEiNIcri/LYWHRwDnwCZvwBjZWda1XiJsDRTEbFlUk3kJOD7nOvR801KJxEzWN6sapNvU7Wga41A0K35xTeuN0NYS33LnuTeoKWVLPvYVbibOv8pNa+RmFGQq0JWjhQHivf1bmhIEoyAlpllcvDktNjZzvWruW2g/lB+99UsrjobkSeaHMXGMxaKDi6tiKYPgKz4Sr4m71nqA13eKDVQm4F4wkuJgw9LKCjlve8yH5hvxOp9PfK26pDEwobxLm9hR6otARw6F+C1s/sPceAimMI09cRfcltFwpsaAsZaLHA/0Ha+/ZYwnRgoy95YqbGV+/i+DJyy5Cj95rWPy57/hkTiPM+TsZYHxeTvjvgJ/o6VrSQt6oSmNSbAlS3A42BNH84pJoSX3BRwjgQWaE6VugHLnX7Sii7gH4NKeiWYgBOTcShksdQ+JwiajbxvBiJadzEsSAfkCFcSWO/kgOhUOSSifZhbQd6BkYL/lOpf5uD/78D4JPB0JvrS5jRg4H8PFC6NBn0mn82YTgRcmvivdcWRakJiFnVJFFIuT06+7oCKnrubbzYq4Mi5fQ71Zav3inoprP3u2ofKEBdXWbnyWK9nCPyqesUNFkD/IHl1Jf2hrGAJIwEcVJsyKBG4uNsoT61+v0sycKYQpz7tlQ9kHZyGrCSt17TTWwyv0iOSnud/DcZ7+o08ByjsxnHvHHvaO30B4eeI2iLq1pf/Sh0WU97sbVjUCeLJHT+r4Hi+e4SzIqsaVSPwCVdwoiRZTwP66b/UU7CH7LZWHHO/Da1bYHwXfP/6kersKPSOGCoeRJS6R01yTNpfB3ljUaG1NZ64MqckoXXODSc6HLKak
+ 2prWFkn8
+ akNwJjfHErULYeDyBD8oRxO7DklhSpRzQ0PDwdalOp968ozhsZXAL9KehS/wgi8GlaH3Vpf6KC4g9Pe8yif1oXvHZYf8n3u8zDzx3IvdrG2hY/0V5yJbElf3FBw8T0J6vY7cByFGx+FgEgpbD4fO6tQOV4HWYX4fE5rNNknEeNkNZ3ycof6zfMMlK6gMh3CKzmncQKH48tC0vJGfIrVabBrqJdvSO0Cucd0te0+plj5ZZ0bNnyoRTfQq8FOhm1Yg3dy0bGC4e7wMC5/kmFfN7NDdiTrOwSH6IOC8eDOAVYCSsvqihcs/RKW4WizrK8DEfpYGz8cogLuR0hazbEnEAmVSfinAlrwg69KaOoaOL8t6RFPsfuHbhk88psbRzf0+C8vSZ9iVTWbgHqMVtpa3wNN75aWF2knZaLReRDzw1LUyUUUyn6jHBx6/XYSpwgpHD5SIeQKln8j5ImRzzevky52HYZeW7Ha11YfbvDpzz6YDZ7f4muL7ppc+vRv+EVLKtX4wDfIzGeEoajIghe5cqrY3A8naqJT3F/p8u9ct8bpQ2G5vsYHJotxF1gI8tHxmXP0znAiRwy9DGCDasMZDt3iwzJL9xaUbkwqs1Dc0WSsYfdU0MN5A0/a5+zC2e8aWBFct/Mqy/vp0NxtVNnXYfeVpWFHAyNM+JUQA3LdJQ8KIez8xtO9g5Dlhv3N7nInQ86D0SE2xUGKVo7lCC3OXKqwVMhl72niBHK9+YcbCB7eji7oEjdy5Ve+cDEhPEHAgz+fz74ISczxlwlXEZgrUHQ+X3WHGV/xbnNhs7vqLsh35CXGWuKqS12fITgolfec8T76mG5iqqcZHeFGr2+9u8vm4Z17kcf2+o8Yp7E0MtD9OdDVvOL057qmludHbH/hyizmEq2qtlko2ziv250oPZtOiUfkC0qTE/T6SQb9B5PgtLkY1c8pG4eISYeUYady7X3JnQcKmfKTif4RpHQS/Y31FeBkBO
+ aJazLcIZ
+ gPa5GeAUVrl/52Ge5zjWwcRcIongvc7e6TfHrb2Im6j5WzoEZxr5MX1mT11eDuZALZEs4Tc2wPWaCz7DYlT/BNKIAJKxD+wLg4ys2vihMLSP0th/o+KHIwEkppD/hG9D5XoynZSsV3g61iBiRjaYAjEEzADe9+hvwRJtPZAvvi1dU57fMX7M5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,62 +180,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 16, 2026 at 05:47:34PM -0400, Zi Yan wrote:
-> On Sun Aug 16, 2026 at 4:52 PM EDT, Andrew Morton wrote:
-> > On Sun, 16 Aug 2026 12:25:48 -0700 syzbot <syzbot+805630f1453e490427fa@syzkaller.appspotmail.com> wrote:
-> >
-> >> Hello,
-> >> 
-> >> syzbot found the following issue on:
-> >> 
-> >> HEAD commit:    3d6d817622b0 Merge tag 'scsi-fixes' of git://git.kernel.or..
-> >> git tree:       upstream
-> >> console output: https://syzkaller.appspot.com/x/log.txt?x=15927479580000
-> >> kernel config:  https://syzkaller.appspot.com/x/.config?x=a59830cba91a1981
-> >> dashboard link: https://syzkaller.appspot.com/bug?extid=805630f1453e490427fa
-> >> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-> >> 
-> >> Unfortunately, I don't have any reproducer for this issue yet.
-> >> 
-> >> Downloadable assets:
-> >> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-3d6d8176.raw.xz
-> >> vmlinux: https://storage.googleapis.com/syzbot-assets/d19e0514c02a/vmlinux-3d6d8176.xz
-> >> kernel image: https://storage.googleapis.com/syzbot-assets/f6da706811f4/bzImage-3d6d8176.xz
-> >> 
-> >> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> >> Reported-by: syzbot+805630f1453e490427fa@syzkaller.appspotmail.com
-> >> 
-> >> gadgetfs: bound to dummy_udc driver
-> >> ------------[ cut here ]------------
-> >> 1
-> >> WARNING: mm/page_alloc.c:5280 at __alloc_frozen_pages_noprof+0x2ce/0x380 mm/page_alloc.c:5280, CPU#0: syz.0.0/5319
-> >
-> > Thanks.  drivers/usb/gadget is the offender.
-> >
-> > Gemini sums it up well.  "ep_write_iter() needs a bounds check prior to
-> > memory allocation".  https://share.gemini.google/5NzjyttO0ULc
-> >
-> > I expect an easy fix would be
-> 
-> Maybe it is better to stop asking kmalloc for unreasonable len:
-> 
-> 
-> diff --git a/drivers/usb/gadget/legacy/inode.c b/drivers/usb/gadget/legacy/inode.c
-> index d87a8ab515107..20905f254968f 100644
-> --- a/drivers/usb/gadget/legacy/inode.c
-> +++ b/drivers/usb/gadget/legacy/inode.c
-> @@ -645,6 +645,9 @@ ep_write_iter(struct kiocb *iocb, struct iov_iter *from)
->  	ssize_t value;
->  	char *buf;
->  
-> +	if (len > KMALLOC_MAX_SIZE)
-> +		return -EINVAL;
+On Sun Aug 16, 2026 at 7:32 PM EDT, Alan Stern wrote:
+> On Sun, Aug 16, 2026 at 05:47:34PM -0400, Zi Yan wrote:
+>> On Sun Aug 16, 2026 at 4:52 PM EDT, Andrew Morton wrote:
+>> > On Sun, 16 Aug 2026 12:25:48 -0700 syzbot <syzbot+805630f1453e490427fa=
+@syzkaller.appspotmail.com> wrote:
+>> >
+>> >> Hello,
+>> >>=20
+>> >> syzbot found the following issue on:
+>> >>=20
+>> >> HEAD commit:    3d6d817622b0 Merge tag 'scsi-fixes' of git://git.kern=
+el.or..
+>> >> git tree:       upstream
+>> >> console output: https://syzkaller.appspot.com/x/log.txt?x=3D159274795=
+80000
+>> >> kernel config:  https://syzkaller.appspot.com/x/.config?x=3Da59830cba=
+91a1981
+>> >> dashboard link: https://syzkaller.appspot.com/bug?extid=3D805630f1453=
+e490427fa
+>> >> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda=
+6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+>> >>=20
+>> >> Unfortunately, I don't have any reproducer for this issue yet.
+>> >>=20
+>> >> Downloadable assets:
+>> >> disk image (non-bootable): https://storage.googleapis.com/syzbot-asse=
+ts/d900f083ada3/non_bootable_disk-3d6d8176.raw.xz
+>> >> vmlinux: https://storage.googleapis.com/syzbot-assets/d19e0514c02a/vm=
+linux-3d6d8176.xz
+>> >> kernel image: https://storage.googleapis.com/syzbot-assets/f6da706811=
+f4/bzImage-3d6d8176.xz
+>> >>=20
+>> >> IMPORTANT: if you fix the issue, please add the following tag to the =
+commit:
+>> >> Reported-by: syzbot+805630f1453e490427fa@syzkaller.appspotmail.com
+>> >>=20
+>> >> gadgetfs: bound to dummy_udc driver
+>> >> ------------[ cut here ]------------
+>> >> 1
+>> >> WARNING: mm/page_alloc.c:5280 at __alloc_frozen_pages_noprof+0x2ce/0x=
+380 mm/page_alloc.c:5280, CPU#0: syz.0.0/5319
+>> >
+>> > Thanks.  drivers/usb/gadget is the offender.
+>> >
+>> > Gemini sums it up well.  "ep_write_iter() needs a bounds check prior t=
+o
+>> > memory allocation".  https://share.gemini.google/5NzjyttO0ULc
+>> >
+>> > I expect an easy fix would be
+>>=20
+>> Maybe it is better to stop asking kmalloc for unreasonable len:
+>>=20
+>>=20
+>> diff --git a/drivers/usb/gadget/legacy/inode.c b/drivers/usb/gadget/lega=
+cy/inode.c
+>> index d87a8ab515107..20905f254968f 100644
+>> --- a/drivers/usb/gadget/legacy/inode.c
+>> +++ b/drivers/usb/gadget/legacy/inode.c
+>> @@ -645,6 +645,9 @@ ep_write_iter(struct kiocb *iocb, struct iov_iter *f=
+rom)
+>>  	ssize_t value;
+>>  	char *buf;
+>> =20
+>> +	if (len > KMALLOC_MAX_SIZE)
+>> +		return -EINVAL;
+>
+> Is there any reason to think that KMALLOC_MAX_SIZE is a good limit?  The=
+=20
+> allocation could still fail, and you'd still get a WARNing.
 
-Is there any reason to think that KMALLOC_MAX_SIZE is a good limit?  The 
-allocation could still fail, and you'd still get a WARNing.
+KMALLOC_MAX_SIZE uses MAX_PAGE_ORDER, anything bigger than that will be
+rejected by page allocator. This warning comes out because of it. This
+if solves the exact issue here.
 
-I prefer Andrew's first suggestion.  If the user asks the kernel to copy 
-too much data, just fail -- with no warning.
+>
+> I prefer Andrew's first suggestion.  If the user asks the kernel to copy=
+=20
+> too much data, just fail -- with no warning.
 
-Alan Stern
+__GFP_WARN gets rid of all other warnings, even if user asks for a
+reasonable size. Why use such a big hammer?
+
+
+--=20
+Best Regards,
+Yan, Zi
+
 
