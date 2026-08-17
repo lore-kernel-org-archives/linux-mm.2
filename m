@@ -4,79 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D30EC5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 17:46:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FD7DC5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 17:48:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B7826B0888; Mon, 17 Aug 2026 13:46:03 -0400 (EDT)
+	id 36D1B6B0889; Mon, 17 Aug 2026 13:48:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 368B46B0889; Mon, 17 Aug 2026 13:46:03 -0400 (EDT)
+	id 31D2D6B088E; Mon, 17 Aug 2026 13:48:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 257836B088C; Mon, 17 Aug 2026 13:46:03 -0400 (EDT)
+	id 20C456B088F; Mon, 17 Aug 2026 13:48:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DDCAD6B0888
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:46:02 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 17F44160889
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:45:53 +0000 (UTC)
-X-FDA: 85111489428.14.D8F3816
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EE62B6B0889
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:48:01 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D13D11A08DB
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:48:00 +0000 (UTC)
+X-FDA: 85111494720.18.8CD2DD8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 452E018000A
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:45:51 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z6lCAadT;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id EB178140008
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:47:58 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UFC53VTl;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786988751;
+	s=arc-20220608; t=1786988879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fAKo7TrZu9+ob9VDRDNL34HG8FM2DqWuvJo8ttA9XR0=;
-	b=Jm31kIF3XMgyoQPfLAo3OkSktYumK69hcxgW+blsHb6jgon/GEllsf7Zqqx8rTAtTA828l
-	kZbCkoaetIx+THZ7GKH49brAi3iWFJ4VfXOBGCbXTxJ0Q0qW1N9+FjQOg6YMY1VLq7hijD
-	23z8yWvAxpIVaF01ElFxmppMwOc/gt0=
+	bh=iOfZaB713Ys+B7W6jfvJNm+JxoikF1oqkGAtPEWVmKM=;
+	b=1dhwSnI4H81anrmok13vkrQ8pRdtCJ/1I6/2yKIQXaC2+UszQT3SjEu9Gvmr9luxEpaqMA
+	WjKsK8BTTwF1scklWfd0mvzOqr/X8VjRUlEtoJSWmLxrrm8Wt2Rekh6++FTC1OULyYgE6e
+	qq869vSgCezFy19I6uuVAmIAJBnCq4M=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786988751;
-	b=6vVbF/Y2GXKPUHDL0AvS5juLKVh0Ljg0xl0XtsbRg5fbl+aFW2s8KR1lKQwknRWuIO0ecG
-	E3YdkfKd+ectI8R028m4escNN1rDbeQjBbfV4iQZoDhNdNiEKjEHnuU2DgWXM44q77zGc8
-	hcosqMUTY3SGT8bjTJGUxopQTu2DibU=
+	t=1786988879;
+	b=g3Hqmh/W3sDHWpEcWxZESlNnGZe2qZ6QbSjHhXKmp1PsMVPXAdM3pHq8PI1l3o8TUrfJrX
+	dnW0AlegTLIyz8gIIrmbGjJmdldmibgZL/DiOgsuzOTku6KJCyk3MBG/vgunVP96XvBagQ
+	Vy73/9SiHRrqY+QeCwKxQnlFP6Fudgo=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z6lCAadT;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UFC53VTl;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7682C402B6;
-	Mon, 17 Aug 2026 17:45:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A411F000E9;
-	Mon, 17 Aug 2026 17:45:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 130554162D;
+	Mon, 17 Aug 2026 17:47:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09A61F000E9;
+	Mon, 17 Aug 2026 17:47:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786988750;
-	bh=fAKo7TrZu9+ob9VDRDNL34HG8FM2DqWuvJo8ttA9XR0=;
+	s=k20260515; t=1786988878;
+	bh=iOfZaB713Ys+B7W6jfvJNm+JxoikF1oqkGAtPEWVmKM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Z6lCAadT1fE7faFuJ2NmDgiosFfh6ejTBefrzHqr6GGcbbNigaLzYEBjOt40prDvR
-	 lyN7h+sbKHazVIoPNYRv3edYv48af0G+NYUC42N1LA4VEYONxZ91k3kCf6MBfiTZnV
-	 1oIf69wm1kSUsd0x9lJANQQRxnhi88WgZwsTiM6dyXSHCRkPYkuZK7qnnFceA6BF83
-	 AgyqyKmiL9OBCXKc694/LIaXxWHB8EmNPh2RaWkJfuCCvKaLCQshMu8iOYiRPRRYRH
-	 U8q6CKZXpVJe1MaNs5je5CpfV8nTJKJxTGIRiW/gAI/0SFWjn+0jk6XMeCSOHiL9km
-	 RbxVcocLbpAuQ==
-Message-ID: <d0d781bf-43fd-4a59-ae0f-960c1e942f19@kernel.org>
-Date: Mon, 17 Aug 2026 19:45:44 +0200
+	b=UFC53VTl2Puis5UdHizYJS6wpzdkR0Y4Cs2swJC+qyXyAJgM1ZYkvox7UjN5rhbsj
+	 1+NFH13oX6N+hcodMHyEgtNPdNRlwoqSt98ZPNHZKtNyDp6PXseAXNVN9Ls0qdFCG5
+	 oGf1yvZ9jgHFPR0lBXgqHL8/3mqgAwmgBfdPPGzGXRMq6ateng8F+4B3n3WzVi2QRH
+	 ZtfVbyZSB3L8fcXmbNE+QHMT7xtuyH5E8YwbOyVCqbg/mNHEtJA+AzZwPkRCb0y2rA
+	 8KMB33y59JwnRcapyXIzk1JimaAEJ8E6iTxCL3h7twR3XZJQzQYsHPeG1IYmMKeS/H
+	 myNzcFZeLvwpw==
+Message-ID: <4148c151-5ef7-4e5e-986e-b05e600045db@kernel.org>
+Date: Mon, 17 Aug 2026 19:47:51 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm: Use a folio in the softleaf_is_device_private path
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Hongfu Li <hongfu.li@linux.dev>, akpm@linux-foundation.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Hongfu Li <lihongfu@kylinos.cn>
-References: <20260803031554.30421-1-hongfu.li@linux.dev>
- <3ae2f1e1-c784-44ed-9b2c-5edf5699d627@kernel.org>
- <e20678ed-3fa1-4677-a1d7-e2af481e8302@kernel.org> <aoM4hkwYBRgSt88n@lucifer>
+Subject: Re: [PATCH] mm/migrate_device: fix cache flush when replacing huge
+ zero PMD
+To: Zi Yan <ziy@nvidia.com>, Hui Su <sh_def@163.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260817060845.377800-2-sh_def@163.com>
+ <DKRD8RERQHHC.1CVF14YIY4BSA@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aoM4hkwYBRgSt88n@lucifer>
+In-Reply-To: <DKRD8RERQHHC.1CVF14YIY4BSA@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: xxpj77nhes9dp41fqtgcsxef4wf5jkqj
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 452E018000A
-X-HE-Tag: 1786988751-239103
-X-HE-Meta: U2FsdGVkX193DnJFSdFVG5q3383EkL1eQHnd+ukOVEqQQvqSbH4UJAM8Ec0OeUyV0ejCrQoZuSdXZ5qqOAQhlMfEL13f35fMgkpQXuKAwMZoanufiFuFelj+8LEIPCaGTwDIG+HVVAZHZyPHFcyAqbTjvjLE+kKwCPP1y6Nq/GaPIF3itKhiCw9zA09EiNgcgNX37Qa6fufSw1UO3R7/gSzZhZXnt3/vBqvrUGbShQL3q0v0oLsaoDVVIAHHLk0gCh6kkiDW4h5QWNofCDL2L71aue7s1GycV7FtsROfao38/0tHIR8iAxaBwcT1FqlDNugHlrnXZEVSlDRZsyscZV67NCxuevZQOp0MfvASL/n0r9rkluzmIWvGs6g4TJWK/C/Dky1KHDrRqmIczl3Q2WW/QQqna/4mkDlOGGNXt4ivT/p/np5jGh3O5TS2fQNWWAudgJ+VCwwbU78P+YQiSpI6h8dyRHMOc7+c8ZrK6iQ7hz+292S/fVI4UXNC7lBt1/OLlipKhd4kv2b8ug235TkoshbbtWxwHKdMi/wWFvFDpCt4BDj77guCNkhYGwBWwFqOjVpnRxKu0a87WoJwNV8ApKaaAPl69XqrIjixJq5nH09YLiFG8tN2RWLdqqJumfCZd9mNSSSVQOuqaM8ifNDFzx99scMSYadmUaS7ZB0GyiW58rbprrSSNBG51msQ877a6Yfcbp1QOIjFJyIP2aKEZ7VWk4JfmreAgX2HQYpcQ3+wPXUAGmQXvDS1AU2YGwfrryCzvgn1ePbiLVUqc2EYTOGkX0WW5lOnBhgX8KEcrdx8XWACjWGYD1tXrlqF1pAZDRJ7WoCyjh4uHDzWjOiIzp4qiLqURfqd6bAcZku4V4l5xfblW78vkgQEYj6047RXqmqfK9ZzFGMok7WKXz52/kFaQVkVtZvsjkOhxVIIe5WeGzzEoZP+ro9RSfqQ7rrEBKu1+kruX/6oH+u
- tyeO36lW
- Fpxu0OzJ+y5Eo9h0t0ZoMrO9X8Pvq7HQ7GTt8SYg8l6ykWEhfMwx0B283Up6pCNR2QLjDEhKCjA8GfY1YoXW55Gafpwotd9unFyr0p21wt/XCfsfRzOl4AychOfN6NivVcMjDm40GNn9qHT3m4AiEUNfjNesKpFbcg4ldPu+igk2JEV2v99kKAEBcl7Fg6Ve/SoKUSP639rZFG3e8T2WD4c3Coz24J0CLfKWdbi5w6IiRPqD8UcOGBgyjrelJEjrdL8BssqXulkiCv0EMAM2+3/QZJ2XgQ3AQPsFmvtbExsBug/fKfujLGDz42A==
+X-Stat-Signature: xqbrjtqckxybn11w3fss41yam5n84nc5
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: EB178140008
+X-HE-Tag: 1786988878-362172
+X-HE-Meta: U2FsdGVkX1+5sLpjUSkLB5iljHRsD9/TXBl7zTcCkkTCERVPCPu1xBMsgoAiRWMnW+UsJcRFI4WksxX9xyr3n3yD+HFEgGKoGFC723L9XR0RBCnumwOzmgrA8D7/umpl7PEoA8TBi1T6dM3zYtFF6Fx1H1PAk7gYwu1IaAMlSs8ycjw1yoouOKDT1b/UbX1WOrd+wTt/H0qAVMBvrkkxBVWKEI4jED7b79Y185t6Sx6QR67JehoOFMXM0Jw+zwHE2c//LPC4tSsDZsb/oTCAuw2DXgiwT3sbDGAX6KGSZtg6wnN2cRN4Im7L7uZr94nErlFlz5PbKAn98qq7Tlt5W7xqoxM0+dC7rb59b9h8qv6eR0m/v5q9nZNYNSA7s/9s2U42aMfvEm9KyXOk283QYQyTjHeFpEjYUMOqO+31Dz4I2yxTMiMogtqVCgqC3BSg30XF8b25A65jVHU5DinxnTLilzVArFBstLxwjDKzaxyt7xEc0AUwfgHLCYbvTZZdHggwFZavN+5TC3jdJS7UKPZwgJYp+mejnZ4obX0JeSDueX4ckuiDKRNqNiZoVaO3hE/xYYfvc1pFcEu2rrfgpaHWCDNKjOtfGR4F6xwGKaZl2pAbjYhrN8CwCqVSo2qyHhJeTeUG0HLvbKrskbdj6nJhSacl0vUyv0BZk12hzJsvrgYz4imqBF7jqjdjsTMZ3m82UnJ481kTHUXesH8H0l3gFFgyn6JwAw4BIQd7KAzoj4iI8Gw6uUDVZ9a5eGNZPQIWLnChRt5RY96aS5devNWcUE/n2Snz62vGlF1fECwfrNYvGgGoAwIcXkYkbnt9s4huob87JSF824tynHfnRjRwDxGnvkVCHedR3PDz3JYzrwSHu9gutUK7eYWCfWU/KDn/E74oYuHyghp2XYyOQ/xFjt0JwFauRnJy0HHGiVpUJsHEA7tS88m8RbgPI/rk7Y0MF5D9NMyiRBQu9Zr
+ hC5hPDzK
+ op8VQKVqtRSYdJwYbfUmD/VXQ4DYOrCXZ7ACJjAd6THDsbsXz7AOwIr0qPjVcPt6culqFBP50oIsWzOTpd0p/THk9N6z0y9I7FAJAiX+/LZ4OAftVWXnlSp8L6zz7535xDXGoO8Yl5ZosLL2Mn/20SXLs1XDI0kS5DlUzjyrz8ninkLqjtIgHeJXsQPunw5vR65Df1oGIDUqUfenWmXo/gbJABcXVJ+HUMM8uls4M0ClNO+rtxyT8TwfdlqnIkoj2FG8o5VAzYgbrrykY/SnASrq8qjZ0bg8Fnp4L5NZ1sNr4RryZlC9mgaQlQbnJQx7jJtkj2zi0WLbT0g1wA5N7Bxh/vGK4sYKeGXixUtsCvHNWnQUcjs1qwgLOGZ7pwM/NVqMYHGrgdwbJW54bg1UpKXOEv1zOiWJNWlwi4YjzDFVlFbIWkGRGrn42vkxEFl9AviC4K9xAwWgFIS4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,83 +144,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/17/26 18:39, Lorenzo Stoakes (ARM) wrote:
-> On Mon, Aug 17, 2026 at 05:57:57PM +0200, David Hildenbrand (Arm) wrote:
->> On 8/17/26 17:52, David Hildenbrand (Arm) wrote:
->>>
->>> Okay, so this breaks the HMM selftests:
->>>
->>> # ok 30 hmm.hmm_device_private.migrate_anon_huge_fault
->>> # #  RUN           hmm.hmm_device_private.migrate_partial_unmap_fault ...
->>> [   14.589125] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
->>> [   14.589178] Modules linked in: test_hmm
->>> [   14.589203] CPU: 25 UID: 0 PID: 653 Comm: hmm-tests Not tainted 7.2.0-rc5+ #14 PREEMPT
->>> [   14.589243] Hardware name: linux,dummy-virt (DT)
->>> [   14.589268] pstate: 63400005 (nZCv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
->>> [   14.589300] pc : folio_unlock+0x78/0x88
->>> [   14.589326] lr : folio_unlock+0x78/0x88
->>> [   14.589349] sp : ffff80008284bb90
->>> [   14.589368] x29: ffff80008284bb90 x28: ffff0000cc8ce180 x27: 0000000000000000
->>> [   14.589406] x26: 0000000000000000 x25: ffff0000ca395dc0 x24: 0000000000000000
->>> [   14.589447] x23: 0000000020100073 x22: ffff0000c23d35c0 x21: ffffffffbfff8000
->>> [   14.589485] x20: ffffffffbfff8000 x19: ffff80008284bca0 x18: 0000000000000010
->>> [   14.589523] x17: 3030303030303030 x16: 2066666666666666 x15: 6630303030303030
->>> [   14.589562] x14: 0000000000000000 x13: 29296f696c6f6628 x12: 64656b636f6c5f74
->>> [   14.589603] x11: fffffffffffc7100 x10: fffffffffffc70b0 x9 : ffffb0504ff88f70
->>> [   14.589640] x8 : 3fffffffffffdfff x7 : ffff000c79b24bc0 x6 : 00000000000001a7
->>> [   14.589680] x5 : ffff000c79b24bc0 x4 : 0000000000000000 x3 : 0000000000000000
->>> [   14.589718] x2 : 0000000000000000 x1 : ffff0000cc8ce180 x0 : 000000000000003f
->>> [   14.589756] Call trace:
->>> [   14.589769]  folio_unlock+0x78/0x88 (P)
->>> [   14.589792]  do_swap_page+0xf40/0x1580
->>> [   14.589815]  __handle_mm_fault+0x648/0xe68
->>> [   14.589838]  handle_mm_fault+0x9c/0x330
->>> [   14.589858]  do_page_fault+0x268/0x7e0
->>> [   14.589882]  do_translation_fault+0x5c/0x80
->>> [   14.589904]  do_mem_abort+0x48/0xa0
->>> [   14.589927]  el0_da+0x38/0xd0
->>> [   14.589948]  el0t_64_sync_handler+0xd0/0xe8
->>> [   14.589970]  el0t_64_sync+0x198/0x1a0
->>> [   14.589990] Code: d65f03c0 d000eec1 913c4021 94015993 (d4210000)
->>>
->>> I can only speculate that we need another
->>>
->>> 	folio = page_folio(vmf->page);
->>>
->>> after the migrate_to_ram() call.
->>>
->>> Let me try that real quick.
->>>
+On 8/17/26 18:39, Zi Yan wrote:
+> On Mon Aug 17, 2026 at 2:08 AM EDT, Hui Su wrote:
+>> migrate_vma_insert_huge_pmd_page() calls flush_cache_page() before
+>> replacing an existing huge zero PMD. However, the third argument to
+>> flush_cache_page() is a PFN, while addr + HPAGE_PMD_SIZE is an end
+>> virtual address.
 >>
->> Yeah, that fixes it:
+>> More importantly, the mapping being invalidated is PMD-sized rather
+>> than PAGE_SIZE-sized. Flush the whole PMD range with
+>> flush_cache_range(), matching other huge PMD invalidation paths.
 >>
->> diff --git a/mm/memory.c b/mm/memory.c
->> index 4134ac607ee0..83d1a2be957c 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -4937,6 +4937,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->>                                 pte_unmap_unlock(vmf->pte, vmf->ptl);
->>                                 pgmap = page_pgmap(vmf->page);
->>                                 ret = pgmap->ops->migrate_to_ram(vmf);
->> +                               folio = page_folio(vmf->page);
+>> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+>> Signed-off-by: Hui Su <sh_def@163.com>
+>> ---
+>>  mm/migrate_device.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
 > 
-> So after migrate_to_ram() the folio might have been split or otherwise somehow
-> the page doesn't belong to the same locked, refcount-incremented folio it did
-> before?
-
-I suspect a split.
-
+> Thank you for fixing it.
 > 
-> That's kinda a footgun... but this documents it at least.
-> 
-> I think a comment explaining how this can happen would be helpful though as this
-> doesn't seem intuitive.
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
 
-I think, conceptually, calling into something that consumes a page (vmf->page)
-always needs care when operating on folios.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Passing the vmf to some callback might be the odd thing here, because the
-vmf->page contract is not really clear.
+I do wonder whether there should be a PMD helper.
 
 -- 
 Cheers,
