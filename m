@@ -4,87 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1AF3C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 14:05:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D64BC5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 14:07:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E5B36B0818; Mon, 17 Aug 2026 10:05:35 -0400 (EDT)
+	id 4E0B86B00DF; Mon, 17 Aug 2026 10:07:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BDF86B081A; Mon, 17 Aug 2026 10:05:35 -0400 (EDT)
+	id 4917E6B00E0; Mon, 17 Aug 2026 10:07:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F151E6B081B; Mon, 17 Aug 2026 10:05:34 -0400 (EDT)
+	id 3A7AB6B00E1; Mon, 17 Aug 2026 10:07:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CC50B6B0818
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 10:05:34 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5887D1A07BB
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:05:34 +0000 (UTC)
-X-FDA: 85110934188.24.E287B30
-Received: from confino.investici.org (confino.investici.org [93.190.126.19])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 94B14140005
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:05:32 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=IdANnYMD;
-	spf=pass (imf23.hostedemail.com: domain of include@grrlz.net designates 93.190.126.19 as permitted sender) smtp.mailfrom=include@grrlz.net;
-	dmarc=pass (policy=reject) header.from=grrlz.net
+	by kanga.kvack.org (Postfix) with ESMTP id 139556B00DF
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 10:07:46 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9493D407B3
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:07:45 +0000 (UTC)
+X-FDA: 85110939690.16.B751CD1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id E8290180006
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:07:43 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oLOvm30R;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786975532;
+	s=arc-20220608; t=1786975664;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4B633A1BFXz3QnMJ7GjsJGouuVbnGVqxnSyFxj5JBO8=;
-	b=nKAIYnaNv7Gy0x0iFKUvpHBTU4rOhQkRMUD/OrdPtPBA66hJKWVIsLdgTcWoIFKB/wrrVy
-	7Ubdrxl5wOE2S33iuzaSjYOp5yK+EW7UnR3PQdOlOoPF8QgvOMnRfjEHDGuTF5nOO/pfzT
-	IbgQp/0RSnIUsjQ6XLRX4UY+SLUjlEE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786975532;
-	b=J96O6EhF+b2YKk8qVbdl75TvacsSsE4xU7pyhYFKJy6ld5I/L5rSq3i6ConrZED15ukGHD
-	tGTiitkgdcFzJtK5abrcUij06hi29c5EEIBFRcu1JY2MvB0cn1k060xAfJZHqEoWzmNq4f
-	RlNcKze5r7koUyOQVbDTJy2/un8I1No=
+	bh=BPV0snyvdnGubekf6I4pL7WA2SUpgj+H9hK78RZnmSU=;
+	b=JEr4AmGg/TwJLreprC0TlHZIGK6TxfwjQXYxzg1GdgmCue1cvYKt7nap5uaY6afsXhoH6W
+	xB17FVYV3oIrJXovvLl8U7iP5SdZVvsZs4qyJLxu5+zJgU+CmaNyHABr2Ik9v1zU03x/LY
+	bRQ/LSzkqaQG8ayzRUQWCVJPQp26L84=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=IdANnYMD;
-	spf=pass (imf23.hostedemail.com: domain of include@grrlz.net designates 93.190.126.19 as permitted sender) smtp.mailfrom=include@grrlz.net;
-	dmarc=pass (policy=reject) header.from=grrlz.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
-	s=stigmate; t=1786975529;
-	bh=4B633A1BFXz3QnMJ7GjsJGouuVbnGVqxnSyFxj5JBO8=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=IdANnYMDDRiqe1QM3GlYoxohkeifa5s4OgBoSk0LX9rMHe4CddtYkabsEgX6v+XXd
-	 W0khG6MclelfnW3ZRi2PVIUChrjs2Cg5JGo+wrAvUqz3AilHKLHxrXdSYxG8bP3w6K
-	 vlEH5fImQxYDz314+gJvRyOiMZCyZ0kVkNYY/C1c=
-Received: from mx1.investici.org (unknown [127.0.0.1])
-	by confino.investici.org (Postfix) with ESMTP id 4hNvk14gKDz10px;
-	Mon, 17 Aug 2026 14:05:29 +0000 (UTC)
-Received: by mx1.investici.org (Postfix) id 4hNvk00QXJz10q6;
-	Mon, 17 Aug 2026 14:05:28 +0000 (UTC)
-Date: Mon, 17 Aug 2026 15:05:29 +0100
-From: Bradley Morgan <include@grrlz.net>
-To: Joel Granados <joel.granados@kernel.org>
-CC: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com,
- kees@kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com,
- shijianlin11@foxmail.com, shuah@kernel.org, surenb@google.com,
- vbabka@kernel.org, ziy@nvidia.com
-Subject: Re: [PATCH v2 4/4] sysctl: Add 0013 to test partially updated vectors
-In-Reply-To: <iahrpgl333k2cniihxiv4qbkgtalxmhn47gyzrq2xd7jshxbtd@cniqn2gdnqfw>
-References: <20260814-lklm-partial_ctlvec-v2-4-9df50d26e477@kernel.org> <1EF80864-F479-44F2-8CD7-28383515F483@grrlz.net> <iahrpgl333k2cniihxiv4qbkgtalxmhn47gyzrq2xd7jshxbtd@cniqn2gdnqfw>
-Message-ID: <9CD9A226-E6E3-4552-B12D-1AB984B8B21F@grrlz.net>
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oLOvm30R;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786975664;
+	b=hFDJ1Qs+dnuo+IOh3Akb+V85lcqq/GUnECucLJIfnEZ651kSwxSDYbBy1/CG5Beo1yFsTr
+	HYLMi/gw8a0wE6HzUfas908glZbAHibje89val4w1dlRC1A7mLvYVaHwjR/cpeg06ldHpQ
+	6XNYq2eE3SOpsK6l6fRxxqM+gzxMDvg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 01C3140AA3;
+	Mon, 17 Aug 2026 14:07:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42471F00A3A;
+	Mon, 17 Aug 2026 14:07:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786975662;
+	bh=BPV0snyvdnGubekf6I4pL7WA2SUpgj+H9hK78RZnmSU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=oLOvm30R9NwwazdLONwpTMCWBNqGUNUz8swvK7TmqtEVQGGFgzfnZaGl4uIxdWGKD
+	 msxm/a/ZLLuzPqGGBFRrG2tprOsW7BqwGO/Xq5DrHPBqkV7dg4CHehvTnxNomSSwPk
+	 iU9uC09K121NbhHFFb2XRsSzEzyR+cQQhFcBtqE92Y1Vu0081dh6MvvatBXbro/ERa
+	 NHf153tjwpJAMfKB+FH4TEt557UyO4qksP8rvIKl1jozYXM8Y/8peT7wqpe74j8o5h
+	 OcC9hhnwVXVpy/mbjev0rX3iw3wYiqeA9jA5EAtKb6REEJo5e3pKlwORmZLvKl+LNk
+	 4JEHHyh0SUVVg==
+From: SJ Park <sj@kernel.org>
+To: Enze Li <lienze@kylinos.cn>
+Cc: SJ Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	enze.li@gmx.com
+Subject: Re: [PATCH] mm/damon/core: introduce damon_set_target_pid()
+Date: Mon, 17 Aug 2026 07:07:40 -0700
+Message-ID: <20260817140740.78251-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260817125319.888994-1-lienze@kylinos.cn>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: ix5rc3d9y4pax4pnefswcm8eygy1z1mx
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 94B14140005
-X-HE-Tag: 1786975532-767782
-X-HE-Meta: U2FsdGVkX182wx8kvYh0itDmKEYR9rQkw2cmOozN2ndTy0WFOh5AoXKKg+k1zNxLf+dHGzR9kJto9WaCrng/AbzRQXW9xnIuVPG6t99/Zy69fJdTintDODd7w6O26cIcmEkG3bxZarX2n8w2qbJst9JLj0h0fpAKgsUtkQI4D9ttB4N2H4TtP2k13JRxwIXl/0rH6J3e/5kwZShkeFNImuUSvo4i8DPEZF+0IUx8hvAaTAYf8MafqWvdQaqZRitmN0t9H37Kg1Bk75PnZGqPPOuX/AryarRMDeuDCw6wXz/Kg7Oq1TxszJkU5puIUiAU8oezH2ig0OjWtonrR36ql40QbuWkefGphUmNgXu+a9BOzFwwfOKVmsV0FGKW0wGTH+F5NsuM1wVoqWNG/8Js/TFxGRAUyXvoEUrEdRw5mJHc9wGO5y8swD/XH8w9QGpFkjJyT/tP3/1S5q10KmyWfvbWGJQbdiJEkh31wBuYVKud7G150EcwZKC3dxK8yPN4p9Oww2+mTtXBdU9B0GPY0HQfmFDmqIUC+ng52gR0L3M0x7YTrNbSrV+JMh+q5b51bCwTYK1Gy4x6rwMwIHkSoSjH1Od3eaD1KYPhIPM9C9sSuoJBgd4UG85dwJvwICaNbnboGTklLbUOC4nwoRapqsCP/UkNQyrib4SzA4Ryp+PscM1v1/2RCX4X4rrV7ZFr77WyGWuVHetCsV2RQDbKZ4jM5D6wRPJjegGPln5W1lSrLPMAvwPDAtQKAUaYd4yChT9gpItTEiIpVnZ0Dzsuy/9xhQz2K8LDB8c1fi6Zx0uqw6t5AHPGMrd4yxio95a851oP4n3IJ+tz0zqxtIN7L9VN2ZSkyxYV5mUSBrE+6VCHT/9wyjtArVynnBCf8NrwE/LEh4TVcOse4qaIgRQxdvTZCMRkMRsg62W1iSCpSA7xDSi/QXh+GANAo4xby900YDJTyLBcApb7M9TDQou
- mJOC15hE
- vlokcOQQwAkwGzmX0azDw6eaMeoJZc19aEJUc3NPeyMG3tadg/Ehh2E88cNNwSFUh3Va5ypyw0tR5Sb7x9EO+BprdjybJ/6qXmpLc7g6Crlbv3hEPqjcrXiQMOmcsRRDkvgA2qZ4XllXuhaW+Of29GNn0iAAltRLOhEYdFZ1siWzkyXQOYmrKo1iekgLlFXMpy1Yb726x7Gup8hl61pxJm3AYoezAvFFR5UkUzAwO1rXKii4DFpA/FG4DAyKdLLZ5y3QXt6kbls4g2fD7nKRJwULLWGKXUJxTl7+X
+X-Rspamd-Queue-Id: E8290180006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: exzj4p6ksikaapykmpwdq4jrxzejiou3
+X-HE-Tag: 1786975663-732360
+X-HE-Meta: U2FsdGVkX18IKau968vBGLP67XciEHaFSd11KEw+mstNGqXj60qGyBU1zZRbfcuZaCUzfV7N+mETYEmb7YiZi9LPOrUv0h97YX+QtbfEehUkUYdLnyEvJ3nrMTqT1FOrrNIKggEODtrIP6gLMeQGSmUA7Hfkgn5DFfjEA+z/1jZfUVKp/POCikTtz3eGiWyndaqB/bbw1r8N3EYUSAljMRgyyYmArUFT210DvRWC8JyGJgHGUfpm9Eh1voEAGegE2BIJTMKrpg1RhMrNzvX/Bt1AObkd8LuoKrnb6AO3lrBU0XPorChWsw5GV4MqHoiyc/jyudc7m7zOl3CmqIS+FWTr6ng2nqeTzYYQahL9aiNAkcGWWs7Y8e8jCQqhLMK/cyWp54gAyEikH9Xfb6yhlTZncw7tpWuGnb+mk6d4BAi3CQ5EeZjL6/FZNKkTiuTWMkMX5DPfTqnmf3ZTqPWXcw2Wo0g2YNUZ5AkB5QsEw+OlEoNlNkAXFReejSn2fxBbGCRl2ITQ3SYVf+HQvvNFmYylmzRUMLQDdsJHiDa/0+KUt6XTLEZf6r3XsC9bDNUrjW6YRS/l/rSsRHxQTsDvKeZtcHDW6ar73J4ZcWK0DpCTyMYikSP1O9DEjO+5R6TVjt5G3W9XkRmKY68MkJixKtZHYN04zuEAsZb+X9B7kcZecK9n0SX5GwILi88dsHVvJWUhW+sgea4Va4ikO7HmktG33uorstLucFeJFxRy/R653/JCuou7Uhx82AXi+V4pB3g+K3lCJDnzEglzo8GeQau5dbjXPWuPcbqFoTJQ/XnzOq1KTfZVtFxZbHtUFIJcc4Tja/m/nJNwjkjqml1G8OFT1VqI9WKTQG5crbDvVHgIZ3eKqicu9bhVbq2Nbfd88ShbxvKlDY7PXEoky3JpX8RLOZP8/FI7oDe+7QgoOJRlXS9+1Rf5AlG0Xllg3yfBjXknsVJMm5Eey0M1sdt
+ cvwkNdkb
+ rrx4p6OwG3mG5+9B4bYa8//U/FSXiEOI4e+TpZch3lnIcD1OIX+zg/HJZNvd8dsL0Stv16mgMUWabXV13a5aflLvn23tWRrNwJr+mbhGcrsZYkXYmOnaDJUB2WmWGru+ZqEH6JN6XTCA8BQGpO/UWjq8b6YEh60wL8PwQbKntkvl18WXDeAiNU+1L5WYdFHE3yZiEF/G5ftovkTay+H+e+pEB/utmlc4Q3sG7fwNEePKvmnSEqqm3Po7AMfEqYFGj5IcRUjXRGtr7QdVp7bQ4NoAaMeXpPMkMWTGFQ9el9BmTi9PkFuoRNgqvLQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,63 +94,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17 August 2026 14:54:12 BST, Joel Granados <joel.granados@kernel.org>
-wrote:
->On Sat, Aug 15, 2026 at 05:05:59PM +0100, Bradley Morgan wrote:
->> The test covers the parse error, the out of range value and the
->> first value failing. That's the right coverage.
->> 
->> The shellcheck disable should say why. The test functions are only
->> called through the dispatch string, so shellcheck thinks they are
->> unreachable.
->I expect to remove this in the new sysctl selftests.
->
->> 
->> run_int_array_no_partial_update() uses spaces for its comment lines
->> while the code uses tabs.
->good catch 
->
->> 
->> reset_vals() has no case for int_0003, so sysctl_test_0013 calls it
->> for nothing. Drop the call or add a case for int_0003.
->The TARGET is reset to "". right?
->
+On Mon, 17 Aug 2026 20:53:19 +0800 Enze Li <lienze@kylinos.cn> wrote:
 
-From what I recall! note I review loads of kernel/ files, I'll rant a
-little below, some of it is related. Heh.
+> The logic that finds the struct pid for a given pid number and assigns
+> it to a damon_target is duplicated in multiple places.  Including
+> damon_sysfs_add_target() of mm/damon/sysfs.c and the start functions
+> of the two sample modules, samples/damon/wsse.c and
+> samples/damon/prcl.c.  Add a function that does the work, and replace
+> the duplicated code in the places with calls to the function.
 
->I'm reluctant to do more work on the sysctl.sh file as everything will
->probably be replaced.
->
->Thx
->
->Best
->> 
->> Nits aside, the test does what it should:
->> 
->> Reviewed-by: Bradley Morgan <include@grrlz.net>
->> Thanks!
->
+Looks good to me, thank you!
+
+> 
+> Signed-off-by: Enze Li <lienze@kylinos.cn>
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+This patch is applied to damon/next [1] tree.  If this patch is not added to
+mm.git in short term, I will ask mm.git maintainer (Andrew Morton) to pick
+this.  Note that we are in the middle of the merge window.  The action would be
+made only after the end of the window.  So, no action from your side is needed
+for now.  If it seems I also forgot doing that or you cannot wait for my
+action, please feel free to directly ask that to Andrew.
+
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
 
 
-RANT:
+Thanks,
+SJ
 
-I've been thinking, I hate clicking on the stupid mailto links on lore
-just to review a patch, I need to be CCed in most kernel/ patches anyway. 
-I already am, but im mostly a "pity" CC, because I spent time reviewing 
-patch, and like, I ask people all the time to CC me on most kernel/
-patches they do, but that's negligible..
-
-I have knowledge On sysctl, id love to wonder why I don't even
-get_maintainers catch yet. (And if I do, I don't even get CCed! Omg..!
-
-I really hope one day I get either reviewer or get_maintainers CCed so I
-don't have to go through this headache each and every time I bloody review!
-
-
-Sorry for that rant, I tend to think out loud. (Or overthink)
-
-
-
-Thanks!
+[...]
 
