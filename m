@@ -4,135 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00E36C5DF66
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 20:16:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9BC6C5DF7D
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 20:35:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F29D46B0113; Mon, 17 Aug 2026 16:16:06 -0400 (EDT)
+	id 7373F6B0314; Mon, 17 Aug 2026 16:34:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F02066B04F0; Mon, 17 Aug 2026 16:16:06 -0400 (EDT)
+	id 7104B6B03B8; Mon, 17 Aug 2026 16:34:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF30D6B0874; Mon, 17 Aug 2026 16:16:06 -0400 (EDT)
+	id 5FDF56B0874; Mon, 17 Aug 2026 16:34:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B61636B0113
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:16:06 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 504FBA32CD
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 20:16:06 +0000 (UTC)
-X-FDA: 85111867932.01.DFF0F81
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 93CE9100009
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 20:16:04 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=r90QzBfT;
-	spf=pass (imf05.hostedemail.com: domain of 3AmyDagYKCEMxjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com designates 209.85.210.200 as permitted sender) smtp.mailfrom=3AmyDagYKCEMxjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786997764;
+	by kanga.kvack.org (Postfix) with ESMTP id 399076B0314
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:34:59 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BA71E8090B
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 20:34:58 +0000 (UTC)
+X-FDA: 85111915476.29.CD66EDE
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011070.outbound.protection.outlook.com [52.101.52.70])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D83BF80009
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 20:34:55 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=EMOICK+H;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf02.hostedemail.com: domain of jhubbard@nvidia.com designates 52.101.52.70 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786998896;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wIaLcIcx0/JCu0rIvBOyaVIEo2fmoa+vo14Zh85W4qc=;
-	b=x0nigNrYHXf56qkCUIgbpA8cMlAWzbQS9XDQF7n8FbU9rLr+FiAkU2rU0GwgrMkBAmAPkL
-	xuWhzz8e6n2aG8sxZZO2NNG/zAWsUbmzABZlLzYgjlso9yiIngUme46xJUYAqt6aHkKcZx
-	gXYIGz2nZ4KBWSlzemWE85oNeZLHgsw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=r90QzBfT;
-	spf=pass (imf05.hostedemail.com: domain of 3AmyDagYKCEMxjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com designates 209.85.210.200 as permitted sender) smtp.mailfrom=3AmyDagYKCEMxjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786997764;
-	b=Le1mK7ProIH+t0PRtXciDs/qwvGkvhumgjzadpX+qsTBBln3J6/qzU8kaygEFCksXdXu5v
-	f9HAm77FuWrYB6DJ46oirREByH7PikIBuJoOpjmBVU48xsGyzbe3D71Z4PrPhkb/OlwShv
-	nnukwWXpHyaY3zrGbwBVsVzyjFp2Dbs=
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8484b9fb055so8761192b3a.0
-        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:16:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786997763; x=1787602563; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wIaLcIcx0/JCu0rIvBOyaVIEo2fmoa+vo14Zh85W4qc=;
-        b=r90QzBfT2+ecqMUmuIpXuNs60TNu7cF0JeBuOln3rFz4HyIBZ7hcvc30LwGFy6d5Ov
-         kUG1/ql22gUqVw4Lc8KFiwSP5PxJu5yQYq/+mdnDuLHOXXIK8tPfHbk+sZlX7SDg2m7b
-         NEtudpQat91haf95HrvXzZG4wNf6Hl/CvbObsOdb308oXzbETqJSimRmcym6A7pS+Aha
-         IOKkFs4if17/pdcf23aRzl4M+s2RRR38ZzLFYfi7EpMk39wKWnjtrXjWDUXz5rTfxAld
-         M8uOPfpKlad+1VhVlDDbkSR9xzleCiM2ip+4JIQK4ow/kk3bp22fqNoL/zQVXdC9fgZe
-         fyAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786997763; x=1787602563;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wIaLcIcx0/JCu0rIvBOyaVIEo2fmoa+vo14Zh85W4qc=;
-        b=OvrLrRfraWg86a8N9jHTaV2pdIlQCdT3bZH3LP2Ejmbe0XZY6G5YNEMCmEsHxQIJqz
-         bFkU3XC1dtcJviJXYixInNAXz3onO3FTF0taU01l8iwLd6a05RsJM42hTh2mcw0pGdX2
-         kN0P/uwuV8R+4wpD90F7/Kkezbk6AISGTlqFnabbyqhNTS2KAyt6LlYw/SKLVYS+gmOl
-         3YzRj8sqnr93G0SJX7soZgxcoIlD8zPNPx/0d5JdKuYiPSPw3enB6no0FgAXysaEhLR0
-         RVGT4xHmepjyY5kOSBhFvOKFX9h3FzL+0hOpcpxsxIwPzsOZpeGKEVdZUi8Ywuk1K1TH
-         OjzQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rq5EMWFHdVaiK0W5VN6eKdgzybgC88OD1o9/xAQK2292Ci1m0HRygV4UH/O8q2X2Uk8Mdc6e+tbEA==@kvack.org
-X-Gm-Message-State: AOJu0YyjqI2b1VQgMv2zuzk5GRLzQia0icu9Mh833yD26fIRzMijQd3b
-	wyGmyrMNcQiKvQCizf54qLR46+SKJp5edCostr/xVQR+sf2EjwGZEXaTGqUopjsI53np+p5eIX1
-	JB0/CHA==
-X-Received: from pfh39.prod.google.com ([2002:a05:6a00:12e7:b0:84e:24a3:b91c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3016:b0:848:5540:2377
- with SMTP id d2e1a72fcca58-84fde13600amr27080475b3a.17.1786997762969; Mon, 17
- Aug 2026 13:16:02 -0700 (PDT)
-Date: Mon, 17 Aug 2026 13:16:02 -0700
-In-Reply-To: <aoNlZRb5SV7hyNuk@google.com>
-Mime-Version: 1.0
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-12-2fc18ee6d3ba@google.com>
- <1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com> <an3o4h-E8mj6CUaM@google.com>
- <CAEvNRgGpCVCGVjc9jCt9Yr+XypF=71h6eBahkXNkrXhfrtGY+g@mail.gmail.com>
- <an5AcEG9mqDgnBYk@google.com> <CAEvNRgE+05c9U8C=Zkm1S9hLw3Lw6YMmijZhEe7J4rYQAuNyEw@mail.gmail.com>
- <an8umm0qisEidt4n@google.com> <CAEvNRgFNCDDSeuvbwj7pD_d18o1TBXo4TNR2dXHxpm18KPfR5A@mail.gmail.com>
- <aoNlZRb5SV7hyNuk@google.com>
-Message-ID: <aoNsAmLSKCuc4v4A@google.com>
-Subject: Re: [PATCH v10 12/41] KVM: guest_memfd: Call arch make_shared
- callback for to-shared conversion
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Binbin Wu <binbin.wu@linux.intel.com>, aik@amd.com, andrew.jones@linux.dev, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, Fuad Tabba <fuad.tabba@linux.dev>
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 93CE9100009
-X-Stat-Signature: yqt41jt74wgbiewmwn897i6u553xn5yf
+	bh=PWB62lEJpWuDk+WdVnDRr+KM+VHqeXPbB3lrNN90s+0=;
+	b=6UTZoNbMxOXiPGspdfqjSknvz0aacMI3Ci3y+akXIJGzuuAAbE2PJAGH5hJyy6r+FiSdWF
+	iKy4h0xlOneghaNTk9D+sgP90KM3It2l9830xZLeZCsxOj7BPE8Xe6agmK6m6wOES3nBYG
+	ORB+40SGE0OI4PKXqs8/eyyKQprF4TA=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=EMOICK+H;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf02.hostedemail.com: domain of jhubbard@nvidia.com designates 52.101.52.70 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786998896;
+	b=gYl6rnQ9jwB1SnLL35WEt8hGPBVYBxkRAPO2eWWomznNDM/N5No/sXnRQngO2i1NX45Y8K
+	Xfr3797/Lu73kOpg/A+sJKFa6uC1Cp3SJnC57azi10EGbOi2eesU4VQs602wG3W7mmM9nv
+	fxk6tfvg/2A7aqg0pqRZ+fUfU9scqF8=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZMwrgAAn4wg2llQ3EQ4wVa0KmfeFDLGSlSb9+0W8zHTyjdlIIb1T+ebeWdvJA2//no6XEccs6ic+Mb/VQQSVA536iPYvG53SiZXbXt9srTzpkY6iY0LdjOK6OyxmYWTwJVDgzszhp/+yHQH0nxmIE1zqr6JTUBsjIbsC4e/UrTfH2U8AdqoUGK45jhbSmpxjNAGbhx0M4CaoVFnGPGEVdSONfvvtDQ/f7RdtnLAFf/fGYKSsfVogyGupJhZjGQBET3NucXNR1DECFlxdNXwnFfiKdl4os4vbX0jZCrxKkJeubcWCZ32PnVUL2ILg9vbCEPSZ4hWZqwGG87A36oDpjg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PWB62lEJpWuDk+WdVnDRr+KM+VHqeXPbB3lrNN90s+0=;
+ b=Pe2psFxt/Rq1tugjIdMgOi4pZtwiQSzcRyQesSo+yr0CUKbFdluH+//sdTaWg4zP1GOLhkt29vKEzBxR91sDj0DmnAZoXYJgqrivMetsiWMa59F87MqmGhHB21BNWWSzqSiJiJrR68WpCr39iE1K/EiVqB/oDPOaS4MvfH7+mTJqlAm673haEHu/eG05RSbvPIG0QTyvPFKN+8DjkMf7vsPBKWdZsD7eiN/vkGus1n4WNV94RDJVLmlvgJspqRyud2tlZ3swq1XqrNecvPh+Vv+Xm+wrA7zFUhYn1AksNWHAz/FumJCejQOW7l5Uot/MFISvmBn+gGMlAKkgxY5blQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PWB62lEJpWuDk+WdVnDRr+KM+VHqeXPbB3lrNN90s+0=;
+ b=EMOICK+HyMSwH8s3abMFrE6zWZPY8IvWf4rVVX8KZnBwh8XWXBrOUs2lYkB/8oS3Va6xziwgqJYraSpwDBL9+KVDSxojQCg+u/Zf6IjNhsT3dz1yzhzK9AitxErfKJdXKnu6mPXrwJfshU8541MMHy0Me2fGsU80/i8107kNnRU8WMFqKQCi4U4rMUpPvAnI28hmLDk6A4ajQh9K9zHYNTlzzriNYu5fdklwMfDHLHpSw7XSxxbYmR9ZpKcf5gDZ1BDvOe8t/1wGNCIIrag/nilT4DfqKSfbzBJwwtA1VJxDzOEnn6BMpogtYlQ5IAj2gcjTJJO9tTScxTyinU0oIQ==
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ MN0PR12MB6296.namprd12.prod.outlook.com (2603:10b6:208:3d3::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.315.17; Mon, 17 Aug 2026 20:34:51 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%4]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
+ 20:34:45 +0000
+Message-ID: <bd091acb-fab9-4678-a185-0b65a2900a11@nvidia.com>
+Date: Mon, 17 Aug 2026 13:34:43 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot] [mm?] WARNING in ep_write_iter
+To: Zi Yan <ziy@nvidia.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alan Stern <stern@rowland.harvard.edu>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ syzbot <syzbot+805630f1453e490427fa@syzkaller.appspotmail.com>,
+ apopple@nvidia.com, byungchul@sk.com, david@kernel.org, gourry@gourry.net,
+ joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ matthew.brost@intel.com, rakie.kim@sk.com, syzkaller-bugs@googlegroups.com,
+ ying.huang@linux.alibaba.com, linux-usb@vger.kernel.org,
+ Vlastimil Babka <vbabka@kernel.org>
+References: <DKQP5QC9XTDJ.3MI016NP0NPFY@nvidia.com>
+ <02c2e5c7-0d78-4763-90ff-75fa87105fcb@rowland.harvard.edu>
+ <DKQS9ADYVLN1.246LJPQ9QQYVP@nvidia.com>
+ <9787b33b-b30e-4c5e-a0ee-7f14515c7166@rowland.harvard.edu>
+ <DKQU9SQUIKDR.2KEZZPONJ1IJ7@nvidia.com>
+ <20260816194213.0e813ed338144ebc81ed4050@linux-foundation.org>
+ <472add4b-f16a-4b87-bbc3-98c8aa385cf5@rowland.harvard.edu>
+ <EDCC14FA-F7D8-4F72-B780-37D09E26D16C@nvidia.com>
+ <2026081745-unshaken-retread-d744@gregkh>
+ <1ED81A86-22F2-415A-8CC0-7E9B4A4446C2@nvidia.com>
+ <2026081732-unaltered-regime-f91f@gregkh>
+ <92B3A471-F7BF-488F-94FA-6A011D33D31E@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <92B3A471-F7BF-488F-94FA-6A011D33D31E@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ2P221CA0003.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:a03:5db::10) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|MN0PR12MB6296:EE_
+X-MS-Office365-Filtering-Correlation-Id: f7c64e8e-379a-4522-2d19-08defc9ef991
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|376014|7416014|366016|18002099003|22082099003|10067099003|56012099006|11063799006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	1kySRiEBJsW6ROFLYnk1hWvn/lCw5CY70kFBRoLUzDE/ViZ4cvCX2V/p7BjORS8WMfGHycfbIyI9cvvwP/cyRspz+nypbKd/H8lZtglAoyv4S30bF/rnEzqT419O0B3tGa7NmvCjTIZXuwqn+res9BWpz13cBAm8vvOwXX0LcyXFBYAGpUX7DVG8WV/hSgIz5ssyBI6vS/G0uzYWDgCkdHAXri9jO9VDyamLbxFIYdm1XN+2gP2bEjXl97+U2PbY9054yXtpZO8NSNda33Kbg8xtWMWFkZwQ2CqfjbfjTErg58kYxhFy8PxcBecy+ZV131qFzHS51VEglLTf1c8qyCCnXZyJ8II9Z4IWkwg0m1mse1IJSpUnuV4ZE8FdQXiaa5gE5BhxHxxaC4bG6e3Ns6lTT9a/O+SI0OBWfdp/cMmRPMbmUTRz7s4g0D4jTMbmnhKpsQk/mVRjt0nYnFzjl8jgJWSjndpbaLPjqqouqoch5T4jzJoza7jqiPXo6+B9K6A54V0TFDz1YcqKY7WizMgg0HJzCqNH3NiAWEaDZ3TIshrCDEOtZNMO87Mhk7ejHKg04jFSfjQP2USDVisHB6IUJ2Q//2Du5DGBqlMFdx2JNhqsHm8fgsC93LGaIkrCuPDFN6yJsTvgV1E2ggJq7PFMBsWrwEzgZFvIllLZWCs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(7416014)(366016)(18002099003)(22082099003)(10067099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YWFheVBhRzBkOXkrMlRpM2l6V0k3ci9BMWJaVW9HT1k4Tks3K2JpanQ0ZkRW?=
+ =?utf-8?B?ZDdRUlhIQVNVVzhCdVY3Wk9Ka1kyK2kwOXRVYW11b3hKdjVjanp2eVUxNVZi?=
+ =?utf-8?B?K2lQQlhia0I1WkIrUHpwZFVYa1ZLVEFwVHkzN0lQSTlhY1UzekVNRmxoMlNm?=
+ =?utf-8?B?ajJwOTg0L1I4RnVXdmVyVHo2Q0hRWTlXWU5jbHNIdnZxTVh4NDMrc0pUdEZ1?=
+ =?utf-8?B?cGdYdDE2R0toV3l1VTNUZk9PNGllR1dCb2tld09VTGhCTnk5QVo0NEdxYkVF?=
+ =?utf-8?B?RXR3WCtOckl2ZHNOTmdGM1ZhRHZFaEQzZDBYdTQyMXBqYWM2ZjV3T3Vxa1Ba?=
+ =?utf-8?B?M3BiQmNqM3ZIME5BMGhtQjRwMkRTTEprVjA3cXZxSkNTZHJXYXJXOTdBa09X?=
+ =?utf-8?B?OUtoak9xSVpPVXR1N3ZSUHUzUU9ReDhCY2I5NmRmNW41dVd4dUxFMkMyM2Iz?=
+ =?utf-8?B?MGtSS2s3S0pBU0RLNGNXT2xTUFdKL0N4bm1HRDFPenRzMUFHNGxCUUlZMWpo?=
+ =?utf-8?B?Mkt1L1luNk5PdldhRmlhbStGOXRsZk5NUk9PbUc0N1dBbnF4bGxlZ2xqRVZC?=
+ =?utf-8?B?SmFmc0tOcGdydDJHTXF5cWYwVS9TTXJKTStFTjBqMkljUloxZjFRa0F0eGNF?=
+ =?utf-8?B?QWFaSEZ1SEJpTVVKSFFpcjl2VGtwWXFLQjVUbkpPZmdWUTc0NVQvaG43eUp5?=
+ =?utf-8?B?QjlvNldvWlpmNjFjcG01bzltNVg1MVJPcHFVakJDZ1RJa2dObkJnU3U5S2My?=
+ =?utf-8?B?cTh4ZXh0WFEzSVVoWUw4bkk0aGVOUk9ZTzBqY0pCdS9hOW03SjdZcXUwQkh2?=
+ =?utf-8?B?Z0ZLaEZsNm9LS2dRbzVSd3lKM0VrSXZzZzFFSjJRNmVLeHhDNmpyWFc4UmVU?=
+ =?utf-8?B?T28rZlNzWWxLVEJaUmsvbUxJMmxzMHJjVnhaZFpyNFEyS0p4TUNHb1dyZHVs?=
+ =?utf-8?B?M09IRDFpYVpiWE1DZUFvZWFKRjF0NnVKb0tFVlNJbFZJVG01UjdHaFluR3Jp?=
+ =?utf-8?B?TXBlQTRTUzJhL2tXTFFSL2xSc1RUMmoyUnJPMU9WaXJiaW5ORzRBaUVDN3Bw?=
+ =?utf-8?B?VGJTTlp0eXZmNVNPTDNxSWZIUkhUU3Nxcjk1QVJ4aW0vbG95NEl3L2QxeHJM?=
+ =?utf-8?B?QWs2VXVQUG1pZDBHVXd5djluOGdBaUVrMTZqNEdxMEFtZzlybm5mZ1hoQ1pX?=
+ =?utf-8?B?dC85K3VhRktyb0VZM3NZejlaS0RjWXJLQld0dWp3VE9iWk53ekFmakxUN2RB?=
+ =?utf-8?B?YStjV0djZjVWWGlTV240MjNHRnJrYUJVVjJxdHpZVXNLSE9Kc1RsRFVIVnRG?=
+ =?utf-8?B?bngyVVZnV0IyS1E0clRtc045L2RmYXFGZzBCblMrYXVQdEtxRGdnbXlYQjg2?=
+ =?utf-8?B?bTdtVDNrYW5LZWtIUE5ISzNMaFIvbWxsNXlMZHM1TW9nZlovek91SDBldlkr?=
+ =?utf-8?B?U01UdEJKcVJ3NjN6L2JTMnd2aFlqdmVnTkEvWHZkTG1JNFhjaENxRWdqN21Y?=
+ =?utf-8?B?eXJGMDkvdnJQZi82dGlQYXo0Y050aVZMZHhxMlBFMi9FUXJXZk1Ec2xQUnNM?=
+ =?utf-8?B?RnNqNG1zL1lMMHExa0l0c1RUZGpRcU4yWmpRbnEwcFQvQ1hyMlhYV1Q1VGhQ?=
+ =?utf-8?B?bks2THk3V2E5dXNwdUtuYkhuQm13NEhLd0lTOEVCVG53WjBaTW1pLzZrL2Nq?=
+ =?utf-8?B?N2Rkdk4vdjNaTFpybW5wTGtqYy95K0hpMlJqaTc3Y2tUNUdaVzhubDVZdHlU?=
+ =?utf-8?B?RUJkVmFOQ0pPUlRYVWNiRUhCNW01QllkL3k2YjhTZG1iMVQxSndIcmh1ZUZi?=
+ =?utf-8?B?UGUraGVoYXNEZVNkZW5ibGVvYUFrYXVIdm9EelArRGlab1c4MCtreExrWEVl?=
+ =?utf-8?B?Q0J3TXN4am1iZDRGMUhsWUMvY2ZET1F3aysvblM1TmJ4UUR6bGgwRVkvUDQv?=
+ =?utf-8?B?RE52SVVHUkd1aUx0ekxRQ1J0Y0tUUWJSaENYYUZzYzRudkFDbFZER2V1Vjk4?=
+ =?utf-8?B?QUYxQWFkR3FnU3pnWVRJbmF0aFZTV2dEL3BjaVgwNXZkSkpSZHJrWHVxSGhX?=
+ =?utf-8?B?NDFCVi9qNjByemRzZnQ5TjN2Y0t1cTVYMElxWjNaemZ3VnJ4ZVZTOS9ka1FU?=
+ =?utf-8?B?UDFKT011MlVxZGI3R3Q1TlBzY2JtN0JrL1hXRVBCMDV4T29JUEVIUmdsV1BJ?=
+ =?utf-8?B?L1dXMXpITm9iT1VwT1A1MjJVNUJKQVhIMG1FSW15ODdmWWt2TysxM0pXUlBq?=
+ =?utf-8?B?NUM1K0QxZ1JzK05yTzlEUndKbWc3Y3FVZ05KcGU2QzkxdzBFRW5BZHUxWWhQ?=
+ =?utf-8?B?TFJ0U0U3TG1RVjBaalp2M2xZcHlHZzBZVGF2aC9yQkptQTI1VEc5UT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f7c64e8e-379a-4522-2d19-08defc9ef991
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 20:34:45.6788
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CpTHpkOpbPkuHh71MTOXqGNesyCGFoAm8+qHxU46P+4WDMI00q5I9EVVViCbV6p1wrsY5F9cZwRqlIt9VOJITA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6296
+X-Stat-Signature: 4k8ifdkmmep69yfb5jmap9nq46qg5xto
+X-Rspamd-Queue-Id: D83BF80009
 X-Rspam-User: 
-X-HE-Tag: 1786997764-581585
-X-HE-Meta: U2FsdGVkX1+iGxtMSsfPMm3kkBXdMhfsd318NrP4Tv7cvPAW3qKAW641cmthOGZj2EQzxvATrs47SrecKSc3k7Vp/Tl1rTsogMKSurjX3lwvdOY99N2BDLqZuCnotqNZAZfJLJQZ+e8i2bAzfPuXRpKoWFHJ0FmAnCyXaydQfqIXwXnLNXdcIVtzBO/Qpf5dotM8kP9FveQ6r7PCy4Qb/pYEqpB8hjOX4QFZ+rrYB8vick5Z6+n4Ayt6Vd5jrqKjqkyXbhIakgajbQVI2HE1+QNmelQOXODslTv1XRcuXEE0WLM0bbcTLYw4ureQJgVFCwuSt5e/Nle74FuzuwPLhetWqPzrN0ybV61c/6sEM8o+1A4CzQUBmCDN48xwNjnI1c6mWnvXMplQTDHN+P+g0/KDlTKMdRTC5/WaGSjxmdY15NHGm6poBiG/Vd27AZAprOSwGddhOxcJAulNOAp2wAHeytNelW4DOfFuLUASvUo7S1CFiTX0DhDm5fCpCG6hseMDqyZhVt0hL3b3MiBIuyKyZw94q6El81/NyBRtdDealkgK1cA2GBp6hEpis62OK4ifKyN9Es+WffSgTJbAUljNBWzydz+CbGnMdlRBwy0kprwEdSwomVoWbgj8wk9y7ISl7VbBluxsknSG6TV1UgRpiyOjBDlOBFhS8O8CMD2HNBEZeCJwKyz2qd1AgHvmfvMmIg9MTyf76IbpF+FBDE38WIu0hGw9K+XRuGm1KzyVkALSEbnRDRLy+WzxRmPZqv1S5lK6mkulTYbRerwJNgfGTUZR0ssYfHuUl+Jq6Yw6bGoUReaeSJqDsf8XjVjGzHKXn3STvws9Bck1wkpjwCGkRND5aU0JaXjgM6H/WEL9VHbiOy5KSBqSDj2CAbCuYRJL7DutXQOzK7C7JmjERkxHmYHWFGkHED/IeWbwfUS4HCvY55APpQG09b1yZBHpHyVv2KSYEDqLbuaUPpD
- iMYskxS5
- 6mfM1erD65pVA6UXzuqrdGaVsifDImSP6uzWJC+E2MwEusBBC+R7lEcFZqRFTvdhm3cbOJcNmSEWDGM70bGN4zeLyEAqkq0CM2nYlzxi1epJ30mpJkdHU+4kLHv8YlrNgM/8/3m9ixInK2sR8bsueXW8dm2CL1XChwCUYld0V00xgyZueToQGdFPR332oMMoMAP7vVPJvRjUev7QjuLP1yJiFgjNh3c1l/D+6uTGPoiTDC49rD643sZw6Z2/hGURuzNhSmnJj0+wPgAp1WGEtq7UZAu93r/1gTGW50eMTHOMwtPOGZEH+qeApB1Y201nTrbTw0k8S1YAqXFXS6srxREFPAjKPLSkT2JWib+BtHH/144k5KkrPCqDruI1SP3gz46RT3otBKdTmeXTAZghCrLSuUuC7vo07WBJ9+gaGcizcf+elmQriKhCjdq+W8ZY85qyapLQE+rhydM8mqaX43io7kczAhGWpfADWGlEV+OT+T72Nyc/iXVblwldJs5JaGtGaz3RqM1b0h+E/3oALnS4vVvXT6V3g3r9V3Kgkzoqiv4PhsMft8EhWHY6SvBf8rRztvU2Re7Odc2UihITLjsoNI073OonVWSh1JhDk4KFQ3/dob+mvCnXjnhlCprV5ZY35GauyJ3GHcjMg9dLOjOixQW+EPgZ7bc0m
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786998895-677439
+X-HE-Meta: U2FsdGVkX19Ku19KEp9oRyh65OzVlSgnlFXPfBGMjOlCuhi1/uqT1/ZTZHQbAlz7+tz+DZ3RrDbxVcZ4xorc1theKLAEtBSuOlVvgE1nI2TGOdRg1Cw8MHoy1Pj8jpHLxatEDwgYBf76WsfCINURTASXBf61XGzGpdZro9zN2Ju50ZlKk7vmuOedCTZs8VfXNqzXvdFRrWT1ZqdZ2lO/NoNfNkry16V1i5A1RynG6fUAjJ0GtB5b9510rzPE8htu/iWQIVCCO55kb+6Hzo6JqKsKFa+ohNbfBPr6rOUTeNZ1Y5NjU9mG5UROHViI1X2BqMd9iQaggqhvJsvo0mZgOoZZIsPqG4adLs1rRs46/2BDJZKd6GfwSztgfR1+emNie5pNSH9qEUx/RwMwce+yhOAMYNp2O4lc6OikZ52EW1d3JkaRg2w0hPiPpkIY2JwQUR4wBV7nk5hilZCX7SkwDoD6mHjHGPmUIZFRBhDdtawA+GXl686ci4ukLQksracYPFksdZ9nMq1rnKk3ev7CC2Du1x/IRu7mZnLmN0V6tW1Dpm8jV+OffLx8CES4n0/BYMvDikyD0F25refjj4VNVxmfxTg6Kl5T/U/HZG7TPxzfA+RYIOmlbUlt3jroco8U6xJCoh9BY7Uyte5uz+F6D6R/HrNT/C2eBRMd2IMjpC+4vdsecg6zEoVnNMh6XVSu749HYjJnLb8G0AWLPSKnIEZ0BC+IELtJYR3rsesuUwLeBwoBD2vw8JFCZ2xuaX7pA1P9YKWRzILpZDJLK0Up5qGiFJ43w/IdkWvjAZlUN31IGPgMRTLBb3P66uFOi+Vjw5P9hYGZuGuYcw2JeYBGm/EmQMkJZxyCTPA5bnew6BVvLtoVr7tzQ6IvtzWNu16gfQX+0spaj0iAqGqOolwfuub2ZVbokkwGVPkD793BCXCHZ5Y8CfZOR1ZnfwBAtFgSJkWyENufRmYzubgecdU
+ tumbWr3p
+ HXUb0iwcNsieFXRtVppmtiuWcBGTj59ZwOS9eRhgpBMJy30jUjDEDszLV9mBKCGBR/r5T1dRN150oN8XuL4JL+U4TinCs5wgTvcsEzJuR5J5cGBLZucgzC34EG38i/USDzbrKyHR0Yn0Lw4W48D5fE4Z6qY3Q+/lp4wb0Vs9oOijT8tKi2oIur5tPM+ZyzjLIVT3FsB9VRcb/7uNWkSHeolYpMGMwrX9U2iBIDuSMQUPAygmwIvyY6qVdFFn+6W31jkUV7yq/8ykCgUuJnhMSVIZoafcBhrW1KLEm8iXFsmUUZ5Vygqq+LbZpuczBlDTxBNnnLMkC/lbvBrlp8ilQ4DMBNKyMJtQ2Et6lZJU1Wxi5auFH82uSqaeiadMwqhgYX7/pzLiuECzNe3FBWeq8AIpBgkWSn2PHM+fTg1JQzYQMnfczxT+85YYmXpNzc8g6JYQE/gFJo1k67xZjq0BXjK3v7Kckceyu1c4lPF/yMWE2YinZcg6L2jK907rWLdVQqksFqMDZY/JDNigYewymfUfg3xyp6zSy4RXOcGMGoPQzrEQK/duY91/Mn2USANPAdYAl+2MTaaVVv3eViw1YY5YhFi4FRY0/jg07Y1lueh0R8e2C6msv/dnmYaHDGvMsFdKqdnfLAkWl59+zniQkrsS3AYbxDe9JZBfc6lAwHamaKx2z0DTe4uWE3dY6X59tnpIkZkiDHgRjEI0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,89 +186,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 17, 2026, Sean Christopherson wrote:
-> On Sun, Aug 16, 2026, Ackerley Tng wrote:
-> > Sean Christopherson <seanjc@google.com> writes:
-> > 
-> > > On Thu, Aug 13, 2026, Ackerley Tng wrote:
-> > >> Sean Christopherson <seanjc@google.com> writes:
-> > >> > That's why I think it's worth analyzing the cost: if it's in the
-> > >> > noise, leave it alone.  If it's meaningful, figure out a not-too-gross way to skip
-> > >> > the entire thing if kvm_arch_gmem_make_shared() is a glorified nop in the end.
-> > >>
-> > >> Is noise defined relative to the entire conversion process? Would this
-> > >> benchmark look like
-> > >>
-> > >> 1. Convert 4G to shared on TDX with CONFIG_AMD_SEV defined
-> > >> 2. Convert 4G to shared on TDX without CONFIG_AMD_SEV defined
-> > >>
-> > >> and then compare the difference in time taken?
-> > >
-> > > That'd work, though I was envisioning something even simpler: use rdtsc() to
-> > > count the cycles it takes to iterate over various ranges of memory.  Do whatever
-> > > is easiest for you though.
-> > 
-> > I made some changes to add rdtsc() for the conversion process as Sean
-> > suggested [1], and exercised conversion like this [2]:
-> > 
-> > 1. Initialize some memory as private
-> > 2. Get the guest to fault them into Secure EPTs
-> > 3. Converts the memory to shared <<== this is being benchmarked
-> > 4. Converts memory back to private
-> > 
-> > I made it build the VM once and convert 5 times:
-> > 
-> > ./gmem_benchmark_tdx_convert --iterations=5 --size=1g
+On 8/17/26 11:51 AM, Zi Yan wrote:
+> On 17 Aug 2026, at 11:55, Greg Kroah-Hartman wrote:
+>> On Mon, Aug 17, 2026 at 11:19:23AM -0400, Zi Yan wrote:
+>>> On 17 Aug 2026, at 11:06, Greg Kroah-Hartman wrote:
+>>>> On Mon, Aug 17, 2026 at 10:34:26AM -0400, Zi Yan wrote:
+>>>>> On 17 Aug 2026, at 9:55, Alan Stern wrote:
+>>>>>> On Sun, Aug 16, 2026 at 07:42:13PM -0700, Andrew Morton wrote:
+>>>>>>> On Sun, 16 Aug 2026 21:47:58 -0400 "Zi Yan" <ziy@nvidia.com> wrote:
+... 
+> BTW, kvmalloc() also gives a WARN if the input size is bigger than INT_MAX[1][2].
 > 
-> ...
-> 
-> > And here's the above, tabulated:
-> > 
-> >   nr_pages      make_shared            total    percentage
-> > ----------  ---------------  ---------------  ------------
-> >          1              930            39278       2.3677%
-> >          1              252            28060       0.8981%
-> >          1              176            26952       0.6530%
-> >          1              176            27038       0.6509%
-> >          1              176            26980       0.6523%
-> >          1             1072            37236       2.8789%
-> >          1              316            28338       1.1151%
-> >          1              176            27182       0.6475%
-> >          1              176            26972       0.6525%
-> >          1              176            26886       0.6546%
-> >     262144         15041018       6616067680       0.2273%
-> >     262144         14937462       6608542680       0.2260%
-> >     262144         15138858       6599494898       0.2294%
-> >     262144         15721972       6610219850       0.2378%
-> >     262144         15000406       6615114540       0.2268%
-> >    1048576         61902982      26400884028       0.2345%
-> >    1048576         61746114      26401170984       0.2339%
-> >    1048576         61096794      26404409058       0.2314%
-> >    1048576         61446290      26447461896       0.2323%
-> >    1048576         61774646      26444608360       0.2336%
-> > 
-> > Looks to me it is within noise.
-> > 
-> > I also actually tried measuring the conversion time from userspace with
-> > CONFIG_AMD_SEV enabled and disabled. Converting a 1G-sized TD was faster
-> > by 0.2%, which is in line with the above table. Interestingly, when
-> > converting a 4G-sized TD, skipping kvm_gmem_make_shared() was _slower_
-> > over 2 runs. I don't have an explanation for that.
-> 
-> Might be some cache/memory locality benefits?  Though with a conversion that big,
-> it could also be nothing more than bad luck.
-> 
-> > I think the code was correct. (If it makes a difference, I skipped
-> > kvm_gmem_make_shared() using a custom guest_memfd creation time flag and
-> > skipped make_shared if the flag was set on the inode.)
-> > 
-> > I thought adding a kvm_arch_has_gmem_make_shared(), defaulting it to
-> 
-> I would do kvm_arch_has_gmem_convert() for consistency with the Kconfigs, and
-> because the cost of the reclaim invocation is a non-issue.
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/mm/slub.c?h=v7.2#n6912
+> [2] https://lore.kernel.org/all/CAHk-=wiRq+_jd_O1gz3J6-ANtXMY7iLpi8XFUcmtB3rBixvUXQ@mail.gmail.com/
+ 
+Probably best to remove those WARNs as well, both for consistency, and
+because the reasoning still holds for those two references as well.
 
-Forgot to say "why" I think it's worth adding kvm_arch_has_gmem_convert(): it's
-a trivial change in the grand scheme, and I can see the ~1000 cycles of overhead
-being problematic in use cases that do many one-off conversions, e.g. for guests
-whose shared memory is scattered all over.
+There is already enough information for the kernel developer: the allocation
+failed. "Go investigate, it's easy enough to find out what happened."
+
+No need to print out warnings.
+
+
+thanks,
+-- 
+John Hubbard
+
 
