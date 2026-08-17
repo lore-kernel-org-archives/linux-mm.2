@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19B86C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 12:43:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E814C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 12:43:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 443696B00C5; Mon, 17 Aug 2026 08:43:10 -0400 (EDT)
+	id E7CF46B00CD; Mon, 17 Aug 2026 08:43:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41B3D6B00CC; Mon, 17 Aug 2026 08:43:10 -0400 (EDT)
+	id E2D186B00CF; Mon, 17 Aug 2026 08:43:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 294D46B00CD; Mon, 17 Aug 2026 08:43:10 -0400 (EDT)
+	id CF5226B00CE; Mon, 17 Aug 2026 08:43:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F30176B00C5
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 08:43:09 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7D21014079F
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:43:09 +0000 (UTC)
-X-FDA: 85110726498.15.F34FA9C
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 88373140003
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:43:07 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qXZTtngt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of calebkan1106@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=calebkan1106@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A84FF6B00CC
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 08:43:10 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 22D641C1880
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:43:10 +0000 (UTC)
+X-FDA: 85110726540.13.F746CAA
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 56B78100009
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:43:08 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lgm6NCuO;
+	spf=pass (imf05.hostedemail.com: domain of calebkan1106@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=calebkan1106@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786970587;
+	s=arc-20220608; t=1786970588;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h4fUYxQNQI9siUe9sl4T0IlOWMNDubqmMBb1FSe4NDw=;
-	b=olGveY3vyo3EIWDmp9c+1N7SonDI0k4L+iZKWgsJbv3pi4xKGf8isBMFFGgeEP+PKkRH/1
-	aOKdOs+XID2CqAslVt8b4gQuUWvtKFaKc8ZdHdgdC+CMb2KiQ8aR9GDFX99eHUwEajMcTf
-	qIFE/ekeMUPBxs0S01bW0ALUD86WFM4=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qXZTtngt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of calebkan1106@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=calebkan1106@gmail.com
+	bh=9gAEJlNZVcNXMblqkUJuiyVruC7lTjyCbl+Qw91/T4Y=;
+	b=UseRRZecqAZ8t1YpL2bRe6k1b1vRC56FqCOSlBPXbDGAUwhNU6V6otsdyxFds9o3tIHiT5
+	Cl4loUHVMRzCjLPW1gwybQ65cVsj1Y5yi+7FU1wJHVuSIPKbKBcSRdsgy2BaPHxXbE2JGL
+	JL3wvrrprFWWnUCM6jcEFpxpYmx0ZSM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786970587;
-	b=QhGtPZeRdYDtI1Wa3s3ZsfmWLWwq9E/bJCRj8UmiMGXJAh07wqBLK0xmoP1PzFmudcl9gi
-	XYeTvljnbbWNfME33IzxVi8o7Bv2E7GjYOuA/MEow5ku4sBpyIowCBui6CvI1baL7xohAq
-	JMHItuFdAXbE+1cmPmdg6abjZvah/64=
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c1712a04ddaso552198166b.2
-        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 05:43:07 -0700 (PDT)
+	t=1786970588;
+	b=CfMf7NwrO3+IGVGRjmwEXu3w63enstI/Ni9jffV3dscDXSQhQ+A7NCzawkbV4oOQ+nmAXq
+	hdGW/6+eYiU2ehZR0vnMbGh1c37klf4ZFYaEW0vc1vcaN9+RO1Ijqi9Xsd5eqpRy9r6LRu
+	BsaQdwFO1D3NXbwNN0dMxSr1POwcpDo=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lgm6NCuO;
+	spf=pass (imf05.hostedemail.com: domain of calebkan1106@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=calebkan1106@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c1c26d7e951so518798666b.0
+        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 05:43:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786970586; x=1787575386; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1786970587; x=1787575387; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=h4fUYxQNQI9siUe9sl4T0IlOWMNDubqmMBb1FSe4NDw=;
-        b=qXZTtngtkFRFA2RUuG60WjLQ1dSqzI6g0pPChe+BYbWUHI+/tIS/Zj8G3I18f4Lnss
-         VaR7DXdwWubCqNQ1yn71C1O3ThByhPHmcfpnwF+S7aDTMXT5dHxjB21wcQmLh2JSUQl2
-         srM87u81T0lhEXrup4QKf4BZJYIn6Kfcn/mz2Y4CC7bu9oRs7I+sarb64rGbbpHChNXV
-         V8xK0mIbL78euu2E2JqFKWqOP6UixCAbaqIaws4af6zWP+NirJvkSAzPI9Ha7HGaMVMa
-         Ri7VyiZRrG2cV+MY+FG7oGU0QAQ6Hz+T71u+W3AWn44xzu5ecFIJlY3TXOrvjL+NDWF/
-         nt7g==
+        bh=9gAEJlNZVcNXMblqkUJuiyVruC7lTjyCbl+Qw91/T4Y=;
+        b=lgm6NCuOAr1sgGsP2s1PyQaiSJErkGBUn2FHfILlTagApQYIfGifatXFYRssNN7/Yw
+         sV6Dny8S5t7TRxC1s2uE3MjQF90YJAsRVL3ke3WhuWWFmJ4jOZylnAOj9WeMuAQ9sY5d
+         npP2whb3BkC/7cFuHs4XSERIfhLH2+FukR2kxar4RQ4ANbMaNj0X5fDnd/Nq8ZuB28/b
+         KrtfxECFm4rLq4Z5qYNxCvZX4Aol2OWi9e+oOQeDgcnJWrsAG+zEe1maMrgaRVqKx30e
+         5qNF7hiQILiG9W4GJt2b9zrlbKASYL9uKZNq7ax/zrgGtUAVRm2PqQxfBvqyUBt2Gdy9
+         KAog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786970586; x=1787575386;
+        d=1e100.net; s=20251104; t=1786970587; x=1787575387;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=h4fUYxQNQI9siUe9sl4T0IlOWMNDubqmMBb1FSe4NDw=;
-        b=oTldTuQjzzJuGQfcZ30g9RUDvt5VM7CZzYbopHKqY756ehgNUmNRRyAkTsWcbIWYln
-         ZBGjjeXPBIzXHdY5F6AYM6F7UOC+OvY3N2IceyAjK+lLBo/quw1dhYinkDaAXwsMVPyk
-         6hHTTnpnwX+LSBj7A/cbRBGFqcFmF77YYdjnWSdTzKIk565Ya8PU+y27K7/lcNj3dr2m
-         PGg65U5W1/j5QsmMPm+xDXc6mygcwT9bPOWBO7e5nS8YP1LJFbyFrfUwP5HfJ/5h/RVf
-         8K6TMNfui2oXXrpRXwN3ZpZy5jNu55tAqke5Zuw/WeQ+pUh6BGJ3EHRLrkNWkk4f7Qp0
-         cIxg==
-X-Gm-Message-State: AOJu0YzP1/96+iMevh7kDJSmsx4XNNGtUlsNQWS0q1rUm2289gE8LUvf
-	uEjs2APpTtIn3dSYMM2KpJ/OGRZZDOLvnruWIIe3bqhbq1hPvt707xsp
-X-Gm-Gg: AR+sD10mrpgnxDGu0mYYRHshvBOnzrEWLebgOBV+V+KT2jIyEi2uX8UNfGvIZtKiCFO
-	g8AR9ocAVkKI97xcNsSUTF8Jxjw4hCorAVVLAGVXiIigCDkFP5ZFqBxX/5wCB0Mq0T9RdenQtld
-	tCnhZ0PvP/a4//D8qLbm3HcIKBmDBd6Zltakw+ZvIX4+cfxJFg9b+YojUDRWZfhnEK4N4Sctkdf
-	DwrjuV4E6s3ul0Xw2jpTUgZ7gjFys55jw/4h+ok7Be6FudXLJbUBKiMFzbKSxI8pb1KQqKDJDDi
-	OjMXypYyjaZrIsCkKshAew4b6IXnhAjonmHRol/8T/u/60erDxll6zUZCmLbOS/CLjlwZrMgyip
-	whYj1N9vx8bX7BybKghRw5jB36XJeYaNPpPin+adKu+r+AkLqtufpKrAr3wkEoYWGAFJqsaXPvB
-	uF70grFxIOYn7n5GyVfCHLovOjIH4yUGLpMLkattVNM6bbxh3Y7w==
-X-Received: by 2002:a17:906:fe07:b0:c20:191e:89de with SMTP id a640c23a62f3a-c212a1c7d33mr1077304166b.25.1786970586168;
+        bh=9gAEJlNZVcNXMblqkUJuiyVruC7lTjyCbl+Qw91/T4Y=;
+        b=eMOR17pZblKd82zObmF1tuj6o5mEb06d8OENOsYy01OoNdGmo7l14PvDc91EEbMOY0
+         BNGY/M1QW2cpm27+5YQpqU/pJxNgaPwOrB8T1oyx8HMnjDfftZwnsLlBdYs4hOsahhb1
+         W3YlU+/RcWGiZNA5DLfbzcdP5eKTC1sfjNXqeeTPRtzErUls+SRqJiqj7L9FgVXeouPM
+         16sj6KVW2EMWQn2pRcS1aRL7V2lj7rgarLArcsPHo+lVkRTYbS0X9qylgBvhDNEoiuox
+         /hs+RTpJGNuOu2telR5xE4KB7fsJ39DqVTbvJd/7MXNz/DQvHtWWNjs63a8U046I1g6a
+         LRZA==
+X-Gm-Message-State: AOJu0Yww3kVx4RQlgHDuM5wL7daTTNK1YvLr+G5YtayLlYyKLha6k0VC
+	H29d9pq6ljoWSsAxw5X97c+SxiEv3DrEbbraggPTQHyKwqabt0YE4M1X
+X-Gm-Gg: AR+sD12cqQBILOnS5tLGurBcdnFh5vy9ycGLdMDyBn+t7O8xt8da4JfIktVU/mwFHTD
+	sOrpFvdoNl1pzHkTNYXrMWJ4r6gV4R7Um1jdrSH0XcDwywSa8Luu3UAiewgJNLSzX0Fz7647kH3
+	L+aj1/xiHCJPaiRavbCMK/eMqjIjYX0wWYLZrX9mgJ+37wBgD6FCeCICBHu+8Uu43LC2ofO/aRq
+	90e/UpyrEnj/8EtSRwhTvV7fLpN0J+yy4+1oNHgQBLgY/X2b/IE9h1vz/WJ/P5Uy+M2HX5QWmeq
+	blPMuZEyaBb86E5F5f8ZDh/60GT/aG8RxXsC9oJNLqdW8C93bIzHQ2c7M5eYdcxOMnl+wHNo2Qv
+	p5BcmTI8mVy1f8Uk5ncrc8+/lmfafdEVjZBoeg2ad7xa6/gnPwZslUdviRDZhaH1ryswxF46tJm
+	4A1FAwyHkbPEo9pj+PG4dIraQ3CoUz+f3PSaumzu+WtyhPfIYykw==
+X-Received: by 2002:a17:907:e1d1:10b0:c20:1bc5:6ff1 with SMTP id a640c23a62f3a-c212a18c668mr795218466b.5.1786970586864;
         Mon, 17 Aug 2026 05:43:06 -0700 (PDT)
 Received: from [127.0.0.1] ([2a09:bac6:3861:1e5a::306:a])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c217feb99d4sm52626266b.22.2026.08.17.05.43.05
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c217feb99d4sm52626266b.22.2026.08.17.05.43.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 05:43:05 -0700 (PDT)
+        Mon, 17 Aug 2026 05:43:06 -0700 (PDT)
 From: Caleb Kan <calebkan1106@gmail.com>
-Date: Mon, 17 Aug 2026 13:42:47 +0100
-Subject: [PATCH RFC 7/9] drm/locking: preserve deadlock diagnostics for
- trie-backed stacks
+Date: Mon, 17 Aug 2026 13:42:48 +0100
+Subject: [PATCH RFC 8/9] scripts/gdb: reject trie-backed stack depot
+ handles
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260817-stackdepot-trie-v1-7-53870ca1651b@cloudflare.com>
+Message-Id: <20260817-stackdepot-trie-v1-8-53870ca1651b@cloudflare.com>
 References: <20260817-stackdepot-trie-v1-0-53870ca1651b@cloudflare.com>
 In-Reply-To: <20260817-stackdepot-trie-v1-0-53870ca1651b@cloudflare.com>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -109,14 +109,14 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Oscar Salvador <osalvador@suse.de>, Caleb Kan <ckan@cloudflare.com>, 
  kernel-team@cloudflare.com
 X-Mailer: b4 0.16.0
-X-Rspamd-Queue-Id: 88373140003
-X-Stat-Signature: 3e3z85zynjpf3hjhpqwwrgkho53rbi56
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786970587-16194
-X-HE-Meta: U2FsdGVkX18lvxvWOrs66wuz7haYeYP0P1wkuvew7t1rI4np21zazgNA3Fzhsycn6epjvyOYA2suINDHBYywlE8Et7wtPS8UpisX3oNcR/mSQ/Vd7PIeA5yUdpFzWeQSIdoEYHKghjsCgRyVEBMV1Gpv/sCpawGCmE3JLO++logdu2nmKG20s+bJuHGS2z+1D6+x+EtN4RdSHsXkrq/sh7Ab8A9vWv5uws8hCp3irtrD3692Aufod+FBfUdbuxYo0JbxA0MoQqUmb2TgfAxyLi4pwNbiwPJ1fOiMDVLEVTFq0W+52qkd6lToNYCAncnN3a0bUqLvjejI0wxCHhCy4LWXotKRgE/iqp6rCdD1/QtOwHcKNSik3lg6i2LhGoHTWIjsqRl29ceyVC45HLZc//ub+2rmKKhcWgI6SXDy2DHK7m6poA0muBhBa0gnae29fpfPF8Ol6WT8sxp5XEcAJBodeznsB/bj58GwBMz2paArz7xYhu/pgsyfNy/D+1wkJKs6Cv/89MEBcAcASE/skEkpKxO852lAQxeeUFRg8pH89hy/D9mDhxffaCPN881kTVbidQywJNlaxwmfCLHBnlEWCUk3GEl/Nfx0/zxMvS91iCUYy2mSfd5astzwbERYCF0Frlq03q6muXdZ3PByZ4LnXpHq+LOgoe3fYzEr30prxs9ZOyC3iErSDqxtiij7IozrggUQOxbWMi9SMb6OY6eLwIV6m4Z8HARbz8hvkbqHCmeynFf2/6NhDOmHPyb/gNqS39f8DUd2DmWIrvMXmhAzQir/22Ejqd6SCR3dRpw7gmlw3PE0UcAb3yKa9h3tZVnXuSn/bhCXW3FAVFZYZ4MnP26BEHO0XYcnIlBNg7o7zTgZZeyw/i/0ABmf0BSEcW9FlUVB25c+U0o0R57hXMVrqg5wsPrxF1z9aeA7hCQm/frcZ6+ijNOqT6M5nMDFs6WVkjoIFVBWKfAdFQ7
- NI22sHrA
- 1A7lyjPe+3uaij4GZZ85h8GEBoG2JUFjixXeIOctLGB6uDOAko99VowvE2PMSfn0av/NsQWQNalBNDAzCs7rj9RVXVuzTH+jZ7OK12IFTYCyqztLudZ8FW4aPa/zg0Q7SIiJXRAgzGb1SbxltjlwGnIb0+pcGlP2bqZvAO7l7GxLeVCQY1uh69Vwz6oe7iKBchlE+HxpRpgrGosHGqTdsDRnNwkRisVTZAe2w5iigoGSOxTaIFhF8scoroMbFrzQ3BrRB6+SbiPiDqdBMbqOIkgN6qCzrpqrghj/UjEGRtVxbmnc/AY1/qLr4Ovor0e6r5mi2vMHjFfEdpJ4DVfOBx3EehmJdTX4DpElH5AnTTRMSUrTW8/wnL0p3uwpaqHGb0wGzaThp8AQZHDQLB60yyWpYxA4NezBDPi6J+Wb7snzSklfcFjQWCMQNsoBOpRvkNlcWgQUX5F319BNMh2MAZ0S2KUBYwd2yVVzd
+X-Stat-Signature: x49soyyf3xfq1zrpkp6zjmg8i3oeuo4i
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 56B78100009
+X-HE-Tag: 1786970588-771583
+X-HE-Meta: U2FsdGVkX19R1DxwoIsrRg2Iy7dASHFnTBz1o46JPwZteCSr/mrSn4/YF7H2fR5Qhoyx8MoROGq4iaWULylXBQMdH03HyohhQj0Rxea/nzqBMDg6gxPeNSXE6KNh4URQhgjQDowdL9RDnPAiwOKwVv17zjc3bpi9JzgLcDb+NfDa9EHeSZwJxL4D6anb5Le+b7flylzcMzGTW3jjQw0u0/9GoaBP5DHiYnM5/XHRJwKhLJbNe3YTcXgAF73hY4HqmC/wkSNttnUMSk1eDM9TVsgo8NjHSV9+Y/7iYHk+in5aTzWJ9SRb2biF02JxF6K2tPHsXeKe1vyzbB+ci2GvrrSc2+hK3U8N3xKrCzs4D2ubLLejfjrOkmjIyVXM84CJ9kvtEb1JRfKi//Nl1xec34OTvp907lkzoLezz3grmpsliKDSrxrDE7Xx+dQPsNRY2rWSry6tCD+mdPmJXr2JP9bcpCOYDFalytttxxON5DA0iD4UaonpcBXbFKrkZG81w4seat2RZE0woPUfIfaM56fbb8DANWwIvzXo6TibLtdt/DfIyULW2RvVmLgIaYZTsoITXXwql+bCyJyVMTc7zvefIMRRZuiX355CxlEfN8nStPOKTIc/hz1IiTKor4CGa2vaz2X011p+Dlzykx1prNm/U2cvcEH7dtzHjjcDr1hoSV4W/FfCt/XkgsK+DCAgSnz3idXODCu49jG4BxcCtoS6AHCwYldBhh66WGtY+PhSL1+HSF4E/hosDrLLldsbwbCV9NQ0cqwpIG+s9h7mqKKn8K7+wQW0MOQi41Sbspvc+qU8s2AFQqDAH1nVMHpIk3MpcCSq+KaErTYA5JuakAA5SUDIKdnwtkgY8Ol8fF74nfalsGXela8rJmGIGLea4BfDi2j+heJEbgfV2gFvV31oJ5Ae9kdGw7zJ6Lo4j6iNgrHYqz9w+1Hzg3jg7uffT/pcMwimDIZAbhStIzH
+ o9LD68Vp
+ t6RhQvZqseCJymQZ6aGcgfN2VrAsGKD454/gzkbkLWzowLabm0gJ/oaEA61hbZiSt8pNu1KciEV+VRuMmqwJTlNoEOQFiqxpeMS4+FlQnutzvkEgdMU4wLmufuHvOdpJyGvFjHKJVBPz4ntWftRkkbukWd4rRZAeURgEJFO2PA7KFbq3HS9I45IBCZVvD4R2QBbgggRg+B0P3cPi8VlkpUAX5Fz5QnO5iF+7WjMQI7xOaWrpYCGqndbXqGb7L5ncSJLNzQwWortwJRq90DgLF2KfbHl5MlvTgq6G4v6MLrgVcLeLbX6Y/oXUUdRjFO+KHLvPwnQfEFpilX7CKQD4Zg2r/1kZUDiK10QgxbnhePoY03AhEXnvYfiTT+7n4Ber8coNV+oYlJuUJ7xKTsKGcRObXn3YWAasMAFuf6XcUNUVVf+hv/dqn5I5WEhksiy+NH/s1ki/moiIpdLdHQ4BOKp7k2UPZGv1CgPT8Tq0VZ4ttslbgSlDzgLIrvg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,43 +126,36 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Caleb Kan <ckan@cloudflare.com>
 
-When a modeset lock acquisition returns -EDEADLK, DRM saves the call chain
-and prints it if the caller later attempts another lock or drops its locks
-without first calling drm_modeset_backoff(). This diagnostic currently
-fetches the saved stack through stack_depot_fetch().
+The lx-stack_depot_lookup command can materialize stacks only from
+contiguous hash-backed records. Trie-backed handles instead encode a dense
+stack ID in pool_index_plus_1 and offset, so treating them as hash handles
+misreports a valid handle as an out-of-bounds pool index.
 
-Persistent stack depot saves can now return trie-backed handles, while
-stack_depot_fetch() remains limited to hash-backed records. Use
-stack_depot_snprint() to format either backend. Preserve the PAGE_SIZE
-buffer, two-space indentation, warning, and backtrace.
+Reject pool_index_plus_1 values above stack_max_pools before the hash pool
+lookup and report that trie-backed handles are unsupported. Supporting them
+would require side-table and parent-link traversal in the helper, which is
+left for future work.
 
 Signed-off-by: Caleb Kan <ckan@cloudflare.com>
 ---
- drivers/gpu/drm/drm_modeset_lock.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ scripts/gdb/linux/stackdepot.py | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_modeset_lock.c b/drivers/gpu/drm/drm_modeset_lock.c
-index 2c806b0146d6..a2ddb02b2aea 100644
---- a/drivers/gpu/drm/drm_modeset_lock.c
-+++ b/drivers/gpu/drm/drm_modeset_lock.c
-@@ -94,16 +94,13 @@ static noinline depot_stack_handle_t __drm_stack_depot_save(void)
- static void __drm_stack_depot_print(depot_stack_handle_t stack_depot)
- {
- 	struct drm_printer p = drm_dbg_printer(NULL, DRM_UT_KMS, "drm_modeset_lock");
--	unsigned long *entries;
--	unsigned int nr_entries;
- 	char *buf;
+diff --git a/scripts/gdb/linux/stackdepot.py b/scripts/gdb/linux/stackdepot.py
+index 37313a5a51a0..82aeb9f532c3 100644
+--- a/scripts/gdb/linux/stackdepot.py
++++ b/scripts/gdb/linux/stackdepot.py
+@@ -37,6 +37,10 @@ def stack_depot_fetch(handle):
+     if handle == 0:
+         raise gdb.GdbError("handle is 0\n")
  
- 	buf = kmalloc(PAGE_SIZE, GFP_NOWAIT | __GFP_NOWARN);
- 	if (!buf)
- 		return;
- 
--	nr_entries = stack_depot_fetch(stack_depot, &entries);
--	stack_trace_snprint(buf, PAGE_SIZE, entries, nr_entries, 2);
-+	stack_depot_snprint(stack_depot, buf, PAGE_SIZE, 2);
- 
- 	drm_printf(&p, "attempting to lock a contended lock without backoff:\n%s", buf);
- 
++    stack_max_pools = gdb.parse_and_eval('stack_max_pools')
++    if parts['pool_index_plus_1'] > stack_max_pools:
++        raise gdb.GdbError("trie-backed stack depot handles are not supported\n")
++
+     pool_index = parts['pool_index_plus_1'] - 1
+     if pool_index >= pools_num:
+         gdb.write("pool index %d out of bounds (%d) for stack id 0x%08x\n" % (parts['pool_index'], pools_num, handle))
 
 -- 
 Git-155)
