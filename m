@@ -4,131 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48456C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 08:15:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 312F6C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 08:18:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37DCE6B00A0; Mon, 17 Aug 2026 04:15:19 -0400 (EDT)
+	id D6FDF6B00A4; Mon, 17 Aug 2026 04:18:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 331B16B00A1; Mon, 17 Aug 2026 04:15:19 -0400 (EDT)
+	id D47B86B00A9; Mon, 17 Aug 2026 04:18:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21D526B00AC; Mon, 17 Aug 2026 04:15:19 -0400 (EDT)
+	id C371C6B00B2; Mon, 17 Aug 2026 04:18:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EC56E6B00A0
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 04:15:18 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7E13FA06F0
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 08:15:18 +0000 (UTC)
-X-FDA: 85110051516.19.4CE483D
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B6E93C0006
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 08:15:16 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Kwf7hz3O;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of thehajime@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=thehajime@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786954516;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 942146B00A4
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 04:18:48 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2934E1A05AA
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 08:18:48 +0000 (UTC)
+X-FDA: 85110060336.04.E340FA0
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010058.outbound.protection.outlook.com [52.101.46.58])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4C7B280002
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 08:18:45 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=VA1svkZo;
+	spf=pass (imf02.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.46.58 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786954725;
+	b=raoGm8stO3vR91cHGjQKI3skdk6krGpn5u0e4O2SaeF1wd0BHj+tkxve7d60QdXX48JaV7
+	iUClVkEekmzoDGFe0iuxbC9AhH9BdyxQRoQ/o44w/pWRvgiYfWzPZPcYL7myp2epN0666f
+	M4hJqVWbPrniYW+t948N9H4X8zu3cVw=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=VA1svkZo;
+	spf=pass (imf02.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.46.58 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786954725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9JMAzOs5+LtBIqUezQL36zcGBLXxM2/IsK2lzs3jOBk=;
-	b=rkB3pv4X4TWGVvU+hMkO71yY9bNde8Y+Gic/2Ab39eVZsXN3g6hQuJrwau5apJXze3EUO3
-	rGJcgG+8VFzTI0tIIXAA0UnJlukC92PZ/OIX+jIbn9qElh+koJu8TWBqmROLhX1Bo/Q57t
-	Kx82WMD5ZIkN3wN/GAmcYwItsAkz6Mc=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Kwf7hz3O;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of thehajime@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=thehajime@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786954516;
-	b=iV8yVOApo9yKzhDlOheWyFDghR7/3RSF82ey/5bj3jHANi1vBcg27S72FU4a3eHqUOp8G/
-	/XeODLZNx7mkLLuDmx3+0kap3X2+WDVZAS06a9rh1125f3zc+JjRTslmce6h6KlKsLLbmZ
-	+GlcMhzPdzGpRcQA7PrCaDzpJqklrks=
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c966b9ee9cbso1958107a12.1
-        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 01:15:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786954515; x=1787559315; darn=kvack.org;
-        h=content-type:mime-version:user-agent:references:in-reply-to:subject
-         :cc:to:from:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=9JMAzOs5+LtBIqUezQL36zcGBLXxM2/IsK2lzs3jOBk=;
-        b=Kwf7hz3ON1RIH63pFTNbhAQtq5Je9IpLxvB6nrtuQUr2tWc3aLVlMNsudtvuiZ/jY3
-         GIIJ5DL3GK9UVelWgx+8juE1iQgT7jUfCiG0k97IerIRtKZ80U0LOx1oi7V5szCCO0rs
-         zcySTGj9G2devea6qXWw087rOOgMfdoGMhcFhS627mD52Eb7qdyjgxh4eT/5phHbX+Ir
-         DcXI7OwpPjLjbGW3uDTivVh0aJ2biUhpncau7MVCoFtBUR0QSkrWR9DKk+SwQ4bk7Hqi
-         BEwd/CUpXwqUSgHDD5Ec+48xltxQugIO4INc2ergf3hFAM6hQUrY/REt9EmyzI3odWUS
-         5Ohg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786954515; x=1787559315;
-        h=content-type:mime-version:user-agent:references:in-reply-to:subject
-         :cc:to:from:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=9JMAzOs5+LtBIqUezQL36zcGBLXxM2/IsK2lzs3jOBk=;
-        b=PEQrEp2z3snaurrmFAvvib8/HII+VeWhtXI9BcY0VtTMZv3MIDOhmAnRaldIxu1jBy
-         BwkUWyd5PiL1BzQVOpqQQf4yNs1dxOJ/SiAvp8DvxD4boFTuPQ6tPiEwaJ1897zIfw2e
-         6fBvhvffoAZoI8Uiy9CKB7Rp6YaCHvxQCBEKAdS90zjapLYfSIocxxCvMNQvSc9TqvrL
-         qUK6twF1x8pCjGL5b+8qPtmjwXZL68OwBWG6vjG0j4a4+q6N6DkdapAtsw5ie6P5v717
-         jgXDZaigcB1Z6O+Cj20gxa1MeZQhX7YuOy+7OKb7FxN8jhiKpX9Yk/xfgteWI1Ai4BuI
-         pOrg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr6bvcUSL62DNr4Q5pTdliiakDvNqBpChojPDJQYjrIh7qPJRPkRhepWUeaIL8OS8603y9CMBqa3g==@kvack.org
-X-Gm-Message-State: AOJu0Yyyfsld23E8Gx3HF2ncn4J0WKp/Tw7VgakGZamHfc2bxA5uCz/E
-	OeGoLMBePN8kzPyShA7RPr0rJQEedZTJqoLp5GjahbYLMq1O/ftMqnzp
-X-Gm-Gg: AR+sD13pz+wOgP79TnKQYNP+QzLFPeMQQCbIh8ov5spR2u4uPlKJW+3VN6JrWBZ4tdb
-	4x9YEVoNOfMq/1gjFpz3pNHFQEegoJC4AKNmDXLYr5NtZFOJwA+uOUOoDkWPbZla6ABSHhnIED+
-	ITSwie/9fVcudWAbiKnZ536j/Gq9YEHNcyj1+MraRjVOK7Eam501RwMN8OFLkJCmj+BahHH8AU4
-	x26G73bya2x7/3zq4ap7h0/9F5xk4T78BkO8q/1UmpOC7fLIfwqHuyUIFJ/Z+kXOkl+xSaXfEe9
-	YH6jNfEH77r+bgBNpfzHs3kfrUWyqP5CTvMHQUd9EisuZjeWmBFsLdiivlh+ez2XHAgESyDVBci
-	+XPSzTvZxUd0sR92TUPr0TJyEdVsuHt4bwXeWeaeG5pqAFIErm3A+cxIac25qKW8qaapPJ+CAyI
-	nuUK0jamgjK8TtG/5znMjBBeS7YCGoaUXVdSzq56XZjcZ3J5kSAgs+Kh+3sO3Y8lWzSzNEfacJE
-	yndNJ8W/RI0Tb9cxn7bx794BdZhnL3tjxZ3s9NDVZL4FsKqJekv0rFMlhmiCREJqx+xxmsqKVQs
-	+zbHdcH1ua0=
-X-Received: by 2002:a05:6a00:4481:b0:847:770f:da4c with SMTP id d2e1a72fcca58-84fde405e20mr22174169b3a.16.1786954515325;
-        Mon, 17 Aug 2026 01:15:15 -0700 (PDT)
-Received: from mars.local.gmail.com (221x241x217x81.ap221.ftth.ucom.ne.jp. [221.241.217.81])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8517d223d97sm2255073b3a.28.2026.08.17.01.15.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 01:15:14 -0700 (PDT)
-Date: Mon, 17 Aug 2026 17:15:11 +0900
-Message-ID: <m2se4dp3hs.wl-thehajime@gmail.com>
-From: Hajime Tazaki <thehajime@gmail.com>
-To: ljs@kernel.org
-Cc: daniel@thingy.jp,
-	gregkh@linuxfoundation.org,
-	linux-mm@kvack.org,
-	geert@linux-m68k.org,
-	arnd@arndb.de,
-	willy@infradead.org,
-	jack@suse.cz,
-	akpm@linux-foundation.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [RFC PATCH 3/6] mm: nommu: fix an issue on map request to /dev/zero
-In-Reply-To: <an8PTKUAuZh3BtJm@lucifer>
-References: <20260813063401.1786548-1-thehajime@gmail.com>
-	<20260813063401.1786548-4-thehajime@gmail.com>
-	<2026081355-remold-sterility-84f9@gregkh>
-	<CAFr9PX=zC8GnxwrR=wTwA4xQq89cHYpxZWooS+-=Q-WuNbjanQ@mail.gmail.com>
-	<an3COKVbgQKdY52d@lucifer>
-	<m25x1crhym.wl-thehajime@gmail.com>
-	<an8PTKUAuZh3BtJm@lucifer>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: wf5b7z8syymt6x49tg8zsnrokucq8o6q
-X-Rspamd-Queue-Id: B6E93C0006
-X-Rspamd-Server: rspam03
+	bh=5G4f9pYhgY+kQUVWeqMc0DoRNYRWJCVMyFdbLKFqxlo=;
+	b=Fzwu6rlT7JGM9Sge+AVor7UbFnlBk7+/c4XeB8DhFp9ll1oGPysE0XTf6V3RWgtexAPOXw
+	2jWF7RozMld4z6K4oJ3BWfy52cbMlRYeFe16lYe1gwpdRfXH3Tthp3ob4dpGVzrg6E4zom
+	cTR+rYHrbGPA5ViLHxStu2S3e/xau5c=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=T45zjq5F2KH+qwet1iS4TvTrbsEy7gzhAE32B6DWNPlRq3XIxdVDTJcsOpavduO0PKrKvXk7pVSwTB9hOuBo3vpOxZFLsiG2PpjtTRsQPubKWfsYzbgRqXW2H8kiM+DsImz3zOo8FYZeMi51GPDNyRMhFOZhPpajn42WRRnTUVDM/R4X6eNWPAJKytuwy8q2k2LksFoLk7lb2O9nCpBkrQv13kDt4wVZf5p/qMHk/T68CVzMhIbshSy9TpLfOcgutuxSPNk8YzjpYzw7u4vwkQA1PTwjwBjqGgGu7VmLYFwpMzO0Yo+/benVsLx5pu1HKGoGYUfI51xKUc0keWhkwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5G4f9pYhgY+kQUVWeqMc0DoRNYRWJCVMyFdbLKFqxlo=;
+ b=gV1AJNPDbhqbsucDlcLjEzW4zaLDbSCmtXRURBhY6OaJW1LMFANAqji0Zj2wwhgIbgt8oYnuL8mvkDZQrLsWgHfW30xewz9dZ5+K5Bp/SDg2G740WUPD2ZlpZHWZY0ahjyLHImPBn9p7uu3wFC7oK1qO5s9lVtBPm4UdoNJ1EyoMMVWPta/FXSTsFk5xBCy5OsfDDHW0NVb/P38h0VvjqCenmt0xSdOUEpvBYgkAiKle8RYE6slrFRMTJlP/o3Dh3+3cJL78sLUWAM/3+QbpgdK1ODdnf3NAmUTOBV52aF0q9tMOCUZXOJub71sCMhN9rSoI1O3CI1AMRYYhN0OjIg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5G4f9pYhgY+kQUVWeqMc0DoRNYRWJCVMyFdbLKFqxlo=;
+ b=VA1svkZoEh7WezUAWekDBAEE9ZhJkjb5CX24jlaxfSe+fOElcyOBzwaIekOILsEhFbce+tnRpuDK757Vx12rbO3peDXd9aOntYU6f7EB9tSiu14UtYm5PoH+Cx8CK9M8Bm8O1BnWL2hfRa3Il5euYWuo67t8ESahXvMaPfV9TW9pCpAOyS7KGh+dJ0oVIGrnWrCLrLRO/iTaSG1Wj3DBFgYrBHtjXrWTFwuJfI175IhX1u3b9XTVRBPe0nIiWggmVGW6d/QpZkPLM5WXTC6oo6jwm5MaursBs7e+CkCNFdaxoBH8FeK9sCe2xT9FHAgkpBhC5IkjpWJM7JZAaprpDA==
+Received: from CH1PR12MB9670.namprd12.prod.outlook.com (2603:10b6:610:2af::6)
+ by CH2PR12MB4311.namprd12.prod.outlook.com (2603:10b6:610:a8::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
+ 2026 08:18:39 +0000
+Received: from CH1PR12MB9670.namprd12.prod.outlook.com
+ ([fe80::416:ea1f:d17b:2811]) by CH1PR12MB9670.namprd12.prod.outlook.com
+ ([fe80::416:ea1f:d17b:2811%6]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
+ 08:18:39 +0000
+Date: Mon, 17 Aug 2026 18:18:34 +1000
+From: Balbir Singh <balbirs@nvidia.com>
+To: Hui Su <sh_def@163.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/migrate_device: avoid out-of-bounds writes for
+ compound folios
+Message-ID: <aoLDQifuyIiO-2eA@parvat>
+References: <20260817074350.442493-2-sh_def@163.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260817074350.442493-2-sh_def@163.com>
+X-ClientProxiedBy: ME3PR01CA0064.ausprd01.prod.outlook.com
+ (2603:10c6:220:1c2::11) To CH1PR12MB9670.namprd12.prod.outlook.com
+ (2603:10b6:610:2af::6)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PR12MB9670:EE_|CH2PR12MB4311:EE_
+X-MS-Office365-Filtering-Correlation-Id: fdffbe07-6f1b-4be7-8936-08defc382432
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|23010399003|18002099003|22082099003|56012099006|11063799006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	lg1paaWcaiRqNlqOOvDWURS1tgmpub3JH/hfD/stKxCo/QQmRwY24Npc0HPElKIdZ4X1sZ56D6EpkZuTEcSSQv0pqWcz9+BUZbXPVfgZoAoqubgNL8YYHw3bTOAh7Ori3Q0uYGGU+tm1t8umjtiNpgjMCeLkK5lgCCeBAI3ULogbT+4QtdC9zobOwdEcWmpVPyKwrcM+xwn6OuLWqOUGZFlQK5+yZyRX2x8llEXTmMmMQyVl5uaHv7igctuG8KF9YhsnZi1VvIP8HprNh4QehQYeCBpjRnnLVuIpLVmOyMY1G0QIi3tZjVikfC8N1OgZZpXkO7BM5eXkZ0+SP6U7R3yzJepTUADjAUn+PSLP3TAAynlBAPw/CW92pKf6JcELYiKq6Bdw5PlYV6cXxTsWe8hlGTvtMEPKb8GT/fOXu0hZpft6EYKfoa6RlrtVV7/UW2+WDyDv58kcZQVbQpvVQcqIGp72xThmKhmYuzKHfjZG//Wa0zKUfJ3u3Vz4ezgk/0N23xi/mOsTxKBGdLOa/YDhHo63s01npQ+zGgHWjGpOmiPhZIyb3U5dT0pel5Vo5wGInNd713lBQlrgTlhwj3kHNOgAIXfjW28gpQeOOvq87qv3qw1pZbyc/uid/mG9QGS9LNGVhC1wy8BY9NIAM0QJffNLWeR64u6EO1yb6CE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH1PR12MB9670.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(23010399003)(18002099003)(22082099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?fs5MwAVuxxvaeJHse18Q8A09Y8viWbqicHZeBd93OjUjukp32jD6q3+TVu+5?=
+ =?us-ascii?Q?+BNS8rscF8bzN9PdtX9ySP44ZQRZkaKHexTzk1uSToIyb1oVVDZhEAVKsgOL?=
+ =?us-ascii?Q?aAxlV0Hyf+2OzKEaU9Gd0JpxqPCKUSBL/EE4OrlyOA4cCZ5wFYrudQdTiXX4?=
+ =?us-ascii?Q?hlgHS+hz1HmxVPbPsaTLJW5+LFpbJpXrEyFjP9MF2B+Pxqew061DcpTxArbs?=
+ =?us-ascii?Q?QA8J15ZE01s5oKI/T1s8zzr8crl0BazXH1Rp3K+pMbcpxUe695S9LbM5MchO?=
+ =?us-ascii?Q?x5Vuz0KTiGuxyjP1MCJCWLoi6aqvU/Fx/PULCK/xe5N2xaIyevdNbnAF1KsB?=
+ =?us-ascii?Q?YpLrj2p3POpyks9m07UX3+VmZN7QpokbzS/MvPguP9K6NxbW5soiIOx7eIdR?=
+ =?us-ascii?Q?RW2b9Ryw9XS6ezLxakhErQ+YdtBta2uACx5Ii3ZhGFV9KHQ597XPjcjKPZtt?=
+ =?us-ascii?Q?gMDueKzZY/nNPeD5zlxnogjOYABNa2putSyPf6Fh8PdGu5S7hGhUIMJ4sg5t?=
+ =?us-ascii?Q?YaKGcI7riNJHlJRaPqZOa7MCc4QSJ/QIWy7otnQfUCEor7nVXXsnkrcevGLq?=
+ =?us-ascii?Q?dLo5mxhWdfYvT/KQgtM1AmsdhvZtRUqeiYx4ARArGesGI0DEqSmZIy0idIBU?=
+ =?us-ascii?Q?KM2izLfRAAw0NFINFaf/DpGqyvvO9BLel7CjlSIak88W1TSRxLvgNVXvbBVN?=
+ =?us-ascii?Q?gFwinLmjjiiZYvilotIESWqAMai7JWI7oDQQTkXfOScpWK58UDGY856pxhg1?=
+ =?us-ascii?Q?KmMQV70SyBFvE0bYjJofI/YtdzT1nhHhreV7lvdmf+ypRyHKsR/AEM6loSxh?=
+ =?us-ascii?Q?Etz6juPAhOdfA9dTJtfnFm27aIiuTnvDakuC5hiQTxILqz9iBcoDrhHXK2mc?=
+ =?us-ascii?Q?14BiyI6DXzrS46NfA1TVbsXap0oNEOUqaRIluNILcinF/83p8QTx++Vhc/+G?=
+ =?us-ascii?Q?6FDR64k3ju4KHskpTDZ2b9QyQJ6CXFW2fuBnauf9K8w2WZARzd7fscKR/n5k?=
+ =?us-ascii?Q?rFShYpCx0kIx0wYyDexXw0t52plh1fMgoM5S2au0xatnKUMbIL6hcKc3Yrg0?=
+ =?us-ascii?Q?mpCSUrnytRJTTr5JkyK18UunCfZgqZsGeQdCwMv6kcc05oMLgpcPNziOGSsP?=
+ =?us-ascii?Q?pwjgEQ8IeEHF86EGFXBJfcJep/58c9cAnOtzv0QEnJ08p5Kxk/XO/2i0lL2G?=
+ =?us-ascii?Q?WJgFY4i13cr85fNe8G9Q+vEzTrsGO++LAF3HGrYf0Q3z1JddmrXJIOJDpJ1k?=
+ =?us-ascii?Q?7NUTkZ7ftu8pF7eSDGK2YHq5ZSaz+fnZqLtwkatB36rVGc5Ep5sTSiVteunc?=
+ =?us-ascii?Q?hAepBnmIb0LLlYtkDaPM0eLpxJg1TsIEuWhgQa2uC7dyVDQT3E/3TnoqXkgM?=
+ =?us-ascii?Q?jxUZO/aWhQcCjz0SwlTcliPhkTHBKo9SYB9mrQjYLPgi3JoVTJsfmgvXbLNV?=
+ =?us-ascii?Q?+y35jOspEsazXU7WLHLDpKyNa3UCL4HiJFL7LlrtxqlX6yU/4LWjhvBwCrr4?=
+ =?us-ascii?Q?v0LhGfBSE1QeewGcPIHFIzaq/NbWwy/M6LmD0Y9O3pQCVtMqntYLGwpfaSTV?=
+ =?us-ascii?Q?CXM7wqrKZJhyruhAYtg7M5mRYO1DN9AKABhzygMZX5eJeFRkzNdif5TV0N/V?=
+ =?us-ascii?Q?r+En67JZstfVlsWllmnMSlEgXKp0Z+wGrQFJ8Cegia/HUkS5HGyhhFheUq1C?=
+ =?us-ascii?Q?hp4ojFfuLtaElNOsHZPyuMue5RYwjLZHYOhqVKIUXnm6NwPKysNV/KcZ5KrF?=
+ =?us-ascii?Q?iSLvedHLRw=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fdffbe07-6f1b-4be7-8936-08defc382432
+X-MS-Exchange-CrossTenant-AuthSource: CH1PR12MB9670.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 08:18:39.0400
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 26wmJc0umW1WEXtuYtpjH15CMNdVy3j1/xwP6JCW9xDxk8F2pzLviKKoQUosRpb/PQmbqy0y3YZb705YSf4Qsw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4311
 X-Rspam-User: 
-X-HE-Tag: 1786954516-385257
-X-HE-Meta: U2FsdGVkX19l52UwxAvjh2jPzkXQBOSICClIO8WsNzTwolOFhkaBByL1aXQ5uFs9VU2COtYwW7U+fuVa1HZEWlecBiVxOfRbSci69kqoblHLH2IdRVcsaI41jRoNmP+34eJ1TpLgHMj7tuhlDijY+wSQR+TLKynj/RHA6dw8plM8/6YaJG1WBf9ZV3E++TZkorSv5+bi5SaCKSsxQ8EgNpdGtZlB+EmaOjeYRm40Gjx5pU4YalOq8esemqmLBl5rRNkQc9yKfUgBzhZiuB5DjTOxuT7pGYqyhl8W2bFEPS513k4nq8Y/lm8QwStD+lydlQxTOdaADxbARj3Z/Ils6Ai2n3O/buBDorqYNBtH1jIGp8R+evbc9P8c1RTeXDR5gc3xMpyZdtlfGgKN9zE7GZ3qcs4u0yjqqqW0zdxOorZBEhO+2HpXH3DIAdzg1libfIV7x6blm9xRUhz1iCzuGLQyPsBp4YjPF9acG63ReMfr9jJyrvnz5s9BAX8LAi6U/nXXQ51pGF1AB7Xyk6TlI1J6cvR55nYu9LSfAoUoaXqxt95NyoTsPFg6uyPXKXEereQ1W2wbPr1EgJhQ4NSdu+kDOHNtl9iqzLRkf2QT/imdDRS15wIOHBiJnB1DRY3JizvHfxwaJZpGBp9W7QZl+dqdgVbFrmoxta9WcHuISFqp9WTFHEs7VaUw+wEP0tbE3ulKRlBpvJfCkBCW9vyUhKD46SKFjkbJsSY+ojRdYqVH0e5bcC1qbKA02SiQqXitgcjFk3n2Bd5zxrHA01QnkFPI0CbHuNJtVcbbmUa8VcUNz/EgLDvHPDlUPnMFT1OBbdPwkZYJmsn863/Tmu7Io2j0yiBHNAi2udbkVkVOz9Su3ES+y/adjzce/z9+FNMr4YUjQf0dAoTHiCFGueFZvlrNUFPDwJu06H7Div5bhApBudLCLBSLJrp8k4UyVVIPVuV1W3Kt9sw4gOHo1wt
- nc+YH7pt
- +PAUCMdHD2/9NEhSBATsMp0ikCjqYTyFC7m8+OTANjnU1eEDFnpzfriEPdX/Pa6zp7wQFPdGTBEygCXAmHjf06eRLkpwglJ0HluwEb27BuRIsbEz5W8wrECWsiWg3r3rw2VpWcR42W1toUklm/YJhtPFnM0qREnHItR25Y69byubKbiJmF7CmqX7h9Oh3vZ/BnCu24q9mWyJn1AnMTSQafLW2mdy7JYi66G8ZJEswRTDVBHhlRHLue0oAOhUbwvZybIdfQR+yioY3ixcBBIxkapdPCWng3/y/Ysuwfk1/Ht0q8ALjar/qjLZfUEO4SqJqY0JHYyXgKtmJueXFVNOnFgue38Vlbt9CUZv49+hpEJiTFDMgtjnY5RtMmq9YIEH9KM9OnlWOipbi28BGrWqopNT/n6jMA2VN6bEJDgiseSDz2AE=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4C7B280002
+X-Stat-Signature: 8joxs3ajbianrcu84hd7ycp3494su1ju
+X-HE-Tag: 1786954725-895019
+X-HE-Meta: U2FsdGVkX18PTKJlukfthxjJ5ofYdf1V5foVNu+DkQMIncpJ/JRcbjHbqYE6hVeQmpJBP6X7zFeWbP2dfrdxE05Mc7oV150JcIU4u2c1nUgpdtYN97zsVlpprK4QRz3ebWBDrUXFeGF6CsS0DzpqHWl9MWomEXlg1GBTxZ6dic48LLlzmfDZhUUUWZqMDgc70Clj9vPBrbZxqm0h/5M5DRhzkyTx7auf6BeA8mEJd5B+nTOet22r/ti8XSVyE5nSXx6GqgpzEPdjgMED1khMP083DOjMRZaHjzOwDfOGbJa8hmK0l/X87EfA5KEbbXojbAlnmtQrP4fgJcUEmenuQZ9YI8cq1yZAxq5fFSeHp59ErBheF4fEZ7IuYk+4sMFsOdGm5ByZe5Ht9qrpyrF1VzyL+tYN6hi6/z8nGIbiqfSQdVsFBMSWtitCP5L48NQBFLw6cohVHMK6qkRsjJwx0l1pNWOIv9pVQuyJWe184hv9AUgA4JCCiQorhoekL/e5tkNS1p1S2mGevu5Opj+B9LWYX/nIF6H+ANFk4Zm+UD91jqD3aibXiB7SfxLMIxHKUdX8lS3/TtnZir+lfeBV+3ix0Zt5KmyuzClW8ciFwtMdEE8EMxVQCnT42dbRVs+6Vegc9thaGPttgvxIc1nRjGF1ADdx7p9v7djRnblY/grgzNLAr3ajNGdZ6WPH1XC73owWC/IdP+zt90Jl9G2CNo1o/oM2TNZJwnmievJxOYL/UDKaO8MF9yf4K5ZMqjIKef8fgRcEhuI+VcqUD1Ty9l5N5TNuNenTX7RAFeWZy2fUpY1sruD8NyXhhlgmQk0NM4ybPMtR6O24ay17yRZdzyW3P3KWF2iZJhZXr3vQYU6TofOYQm57BP+3nAUgpSj7yCnf4tfE75MsocGEeL7llWWhfCug8fDXBFt5VkqL+8WBHwu3kROMMH7qgsY3tchbzalKbs0mn+/hp8FsXBh
+ fiSGIR7k
+ YC06HX7/SyYOuRteS6GhK7FDNNBxS87hypaTD55fZvlY+gtWEJzPdlJif/z4nTgRj9r0KCi1GzYrxOYkqPn2tDOrXKzdhIZq/GJoaZT68W00Bllfj61mt5YV5Eh0GAODEk3kyGF9KpmTM8zvq3AKbttRvGovR8tM1fo8Spz+xmWWwpYDOtN6GtVNRkae1VrD9Z9Ux2UkfulTYhv2IRpzBdmrRVTQMBhw5fwO4vnrMJzhOcNCwbSHXv7TGxi/XPqIL8YlnaTy+1KOb8KBxeMQFwWlk3+yJtTr9livtw7y8mFdYmEznvnqWIGYKCDE6xbXPp0KUtJNKKA1xbJob9ntqqcgefTITdaNovmQvwgonVOtJjPP4FSExLpR0zHQHTvp/P9qGheNmapGwD3Sz2CSMaeTn+STts2k8s2C7PKd2KMCTNu+qaD/yNtNWcj7uwoRtAZstBabKjHI/gIpNHM9Qhf3Sf713MuWoW4IIuF7dM1IslhZVGpqbbZFmaJRXYA+8WhN9QYz2TGB7+t81mmLKlfBlR8Xw8t0fsKk1WF1YQCOIwDk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,150 +161,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On Fri, 14 Aug 2026 22:02:21 +0900,
-Lorenzo Stoakes (ARM) wrote:
+On Mon, Aug 17, 2026 at 03:43:51PM +0800, Hui Su wrote:
+> migrate_device_range() and migrate_device_pfns() clear the entries
+> following a compound folio so that the PFN arrays retain their
+> page-granular representation.
 > 
-> On Fri, Aug 14, 2026 at 09:42:57PM +0900, Hajime Tazaki wrote:
-> >
-> > Hello Lorenzo,
-> >
-> > On Thu, 13 Aug 2026 22:29:38 +0900,
-> > Lorenzo Stoakes (ARM) wrote:
-> > >
-> > > On Thu, Aug 13, 2026 at 09:43:37PM +0900, Daniel Palmer wrote:
-> > > > Hi Greg,
-> > > >
-> > > > On Thu, 13 Aug 2026 at 21:26, Greg Kroah-Hartman
-> > > > <gregkh@linuxfoundation.org> wrote:
-> > > >
-> > > > > Given the age of this issue, I don't think anyone uses no-mmu systems
-> > > > > anymore :(
-> > > >
-> > > > There are a few of us using it for hobby stuff[0][1] and there are
-> > > > apparently people using it for actual commercial stuff.
-> > > > There was a session about this at LPC 2025...
-> > > >
-> > > > One of the big problems for nommu seems to be that everyone is
-> > > > convinced it is completely unused and totally broken. :)
-> > >
-> > > No, the issue is that nobody seems to do any testing or contribute any code
-> > > aside from at least Hajime (thanks Haijme :), and possibly others (forgive me if
-> > > I am missing people's names here!)
-> > >
-> > > There's been situtions where nommu has been broken for a year and _nobody
-> > > noticed_.
-> > >
-> > > And yet whenever nommu comes up people always seem to pop up and say how
-> > > important it is, then mention a talk etc.
-> > >
-> > > Well if it's important, test it. Test the tip kernel. Report bugs. Contribute
-> > > code. Any or all of it :)
-> > >
-> > > Meanwhile we in mm have to _constantly_ fix stuff up in nommu because it's a
-> > > total mess and has real maintenance overhead.
-> > >
-> > > Having to account for legacy systems that make no sense in 2026 when you're
-> > > trying to make improvements to systems people use, or not being able to do
-> > > certain things, really grates after a while.
-> > >
-> > > I mean if you don't believe me git log mm/nommu.c. This overhead reason is why I
-> > > now co-maintain it.
-> >
-> > after spending more times to look at code, fixing issues, finding
-> > other flaws, etc, now I become to understand what you meant in past
-> > emails, when you're saying a more maintainable way of implementation
-> > of nommu.c.
+> If a compound folio extends beyond the end of the caller-provided range,
+> the loops clear all following folio entries without limiting them to the
+> number of slots remaining in the npages-sized array, causing an
+> out-of-bounds write.
 > 
-> Yes :)
+> Limit the number of entries updated and consumed to the remaining array
+> slots while keeping the actual number of pages in the folio unchanged.
 > 
-> Thanks for having some empathy about this :) It seems a lot of the nommu
-> advocates simply assume it's little or no overhead and is 'working
-> code'. No and no.
-
-indeed, agree.
-
-> I know Liam had to do a _lot_ of work on maple tree to make things work
-> there, for instance.
-
-yes, I also encountered an issue involving maple tree on nommu (with
-some crash of UML), and initially it was not really sure what was
-going on.  It was not an issue of maple-tree itself but the usage of
-it was not correct.
-
-> And the recent VMA flags changes have had to be heavily updated to account
-> for nommu.
+> Observed with a KASAN x86 QEMU kernel using the HMM
+> migrate_anon_huge_zero selftest. Closing /dev/hmm_dmirror0 after
+> migrating an anonymous huge page to device memory exercises:
 > 
-> And the list goes on. New features have to touch it all the time to avoid
-> build failures even, and etc. etc.
+>   dmirror_fops_release()
+>     -> dmirror_device_evict_chunk()
+>       -> migrate_device_range()
 > 
-> It's a really absurd situation to be honest and the RoI isn't there at all.
+> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+> Signed-off-by: Hui Su <sh_def@163.com>
+> ---
+>  mm/migrate_device.c | 16 +++++++++-------
+>  1 file changed, 9 insertions(+), 7 deletions(-)
 > 
-> There's a reason I keep going on about this :)
-
-I still understand your pains.
-
-> >
-> > Since I wish to use nommu.c in future with the latest kernel, I'd like
-> > to contribute it for, let's say, refactoring the nommu component which
-> > mm subsystem currently has.
-> >
-> > but for the moment, I wish to start with introducing test cases from
-> > very basic checks (which is in the [6/6] patch of this series).
-> > Without such a base, we may not have any chances to improve this nasty
-> > situation of nommu component in mm subsystem.
-> >
-> > # this motivation also applies to LTP (linux test project) which
-> >   currently doesn't support running tests on nommu platforms (I've
-> >   already started).
-> >
-> > And also as I mentioned before, ideally the code should be maintained
-> > by people who use it.  And if I claimed that I used/use/will use
-> > nommu.c, I wish to maintain this, or at least wish to help to decrease
-> > the overhead of maintainers.  This series is a very fist step toward
-> > this.
-> >
-> > I hope it clarifies a bit for your concerns,
+> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> index 908d2d4ec43a..67bfc1af0b29 100644
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -1396,16 +1396,17 @@ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
+>  	for (pfn = start, i = 0; i < npages; pfn++, i++) {
+>  		struct page *page = pfn_to_page(pfn);
+>  		struct folio *folio = page_folio(page);
+> -		unsigned int nr = 1;
+> +		unsigned long nr, slots;
+>  
+>  		src_pfns[i] = migrate_device_pfn_lock(pfn);
+>  		nr = folio_nr_pages(folio);
+> +		slots = min(nr, npages - i);
+>  		if (nr > 1) {
+>  			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
+> -			for (j = 1; j < nr; j++)
+> +			for (j = 1; j < slots; j++)
+>  				src_pfns[i+j] = 0;
+> -			i += j - 1;
+> -			pfn += j - 1;
+> +			i += slots - 1;
+> +			pfn += slots - 1;
+>  		}
+>  	}
+>  
+> @@ -1430,15 +1431,16 @@ int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
+>  	for (i = 0; i < npages; i++) {
+>  		struct page *page = pfn_to_page(src_pfns[i]);
+>  		struct folio *folio = page_folio(page);
+> -		unsigned int nr = 1;
+> +		unsigned long nr, slots;
+>  
+>  		src_pfns[i] = migrate_device_pfn_lock(src_pfns[i]);
+>  		nr = folio_nr_pages(folio);
+> +		slots = min(nr, npages - i);
+>  		if (nr > 1) {
+>  			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
+> -			for (j = 1; j < nr; j++)
+> +			for (j = 1; j < slots; j++)
+>  				src_pfns[i+j] = 0;
+> -			i += j - 1;
+> +			i += slots - 1;
+>  		}
+>  	}
+>  
+> -- 
+> 2.54.0
 > 
-> Thanks, and I appreciate that you're actually doing work here, but I'm not
-> sure a single person suffices for this, as well intentioned as you are.
+>
 
-I agree.
+There is a similar fix sent out by Matthew, The question is, is it OK to
+send in partial data upto npages (when nr > npages - i)? We should bail
+early and not proceed if that is the case.
 
-I wish that having public test cases would motivate other people to
-fix/improve/extend code (because his/her patch has less regressions),
-to make this initial attempt useful for broader audience.
-
-So initially this is just a one-man contribution, and I also think
-it's not sufficient, but I'm always motivated (and assumed) that an
-initial contribution could open the doors to the any other people.
-
-> And as reviewed, these changes seem to be adding _more_ maintainership
-> overhead rather than less, I fear.
-
-for this /dev/zero patch in a current shape, I agree.
-
-for other fixes to the shrink/split flaws, I will try to improve it to
-let less overhead to maintain (by addressing your comments).
-
-> I believe nommu is pretty broken across many domains (it's fun to set
-> claude on it for instance).
-
-ah, I also have thought about that.
-
-> And we've already spoken about broken things that have sat around for
-> a long time.
-> 
-> The way it's implemented now is just horrendous in any case, if we were
-> forced to keep it in the upstream kernel then the correct solution would be
-> something that somehow 'emulates' an mmu system.
-> 
-> But I'm not sure that's even workable, and likely implies heavy
-> maintainership headaches.
-
-Indeed, an emulation of mmu would be one promising direction.
-I would like to spend more time to compare other alternatives for this
-goal (which might not be a trivial hack).
-
--- Hajime
+Balbir
 
