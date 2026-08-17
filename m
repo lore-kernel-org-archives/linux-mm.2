@@ -4,128 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92016C5DF66
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 16:48:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16561C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 16:55:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E3C46B00F5; Mon, 17 Aug 2026 12:48:41 -0400 (EDT)
+	id F1BE66B00FB; Mon, 17 Aug 2026 12:55:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7457C6B00FF; Mon, 17 Aug 2026 12:48:41 -0400 (EDT)
+	id EF3CA6B00FF; Mon, 17 Aug 2026 12:55:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6344E6B0100; Mon, 17 Aug 2026 12:48:41 -0400 (EDT)
+	id E0AB06B0100; Mon, 17 Aug 2026 12:55:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 32B656B00F5
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:48:41 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B76F1140833
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:48:40 +0000 (UTC)
-X-FDA: 85111345200.16.CE57218
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7D42A180007
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:48:38 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Eh4wirmh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="x/a5xipD";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0OOXJSPA;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=RT94AgWl;
-	spf=pass (imf06.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B6A206B00FB
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:55:47 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A5E75120814
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:55:45 +0000 (UTC)
+X-FDA: 85111363050.29.6198037
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id EA3691C000D
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:55:43 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gvWJIxWK;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786985318;
+	s=arc-20220608; t=1786985744;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w3zLzmZPTjsyeCNJxTMPQyOwGFcxlb4bymJngOb4M0I=;
-	b=NDSyzJM6PY98mHICSccThKME+axMNZ9bVDqQenMIBXFl6pC/XLBNU//TIryhW5Jm9CmUQm
-	lIGYXPFiLt+TWED5SSwMDNRp87MdRIfCxP8lhrZ9Yl2MGD/Qz7kgojFpxSd/qZtz1+uaXb
-	k/UXz6mJxQ8fO/CtVb2gwxCzhs9cqD8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786985318;
-	b=cdp/CL7MqbP1q0j0IEr5C/qfOM5VDaXidbKy8GtmdfCAAg5zLi9eAAW7rCQ815iHBjSVxu
-	tafOCJSqm16Of6CsLyWOe/8hL1PM9rdTtjlQPJzOP2TEYdgeEeFjLdig4HFBa/8sQ+zMZI
-	7ZLRvhnFqg60onxv9BEzKAEE5s48qw4=
+	bh=xTXizeJAPN4W1pOJCZ7S/BTb0ROM//QBXQ2YriiHtoA=;
+	b=NYvvMkDP8Osb30g3lvypv+CXvpEKHwfzLQSmbhzZ/kkRpzauuIAiqLuv2wf3fP2wN2HSZa
+	/E8IQb9Ub0lyyEA+uuTOzpbmyrza0rHdImFIc+K/LT+kjSzUoWECVc9sPZWrgT+chuMk4k
+	JSeVNS0nyms0TiH50yWmaFyv4P0Inrw=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Eh4wirmh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="x/a5xipD";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0OOXJSPA;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=RT94AgWl;
-	spf=pass (imf06.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 03366840BC;
-	Mon, 17 Aug 2026 16:48:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1786985313; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w3zLzmZPTjsyeCNJxTMPQyOwGFcxlb4bymJngOb4M0I=;
-	b=Eh4wirmhcatW88qg37SQqCKT4u6kSfztchn54o9nW/VyKqNgizumXLKO+CRy+7MidtwIWW
-	iMtl+3/EeWgvvGAY974PBfD+rNUfIsWW5rSf89ITMqSgrvtCm3dYGw6MBdNaMqvVlxtVAz
-	xEKaIO823UqlNHyQSwojB7qs+ixG408=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1786985313;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w3zLzmZPTjsyeCNJxTMPQyOwGFcxlb4bymJngOb4M0I=;
-	b=x/a5xipDgyFLGvK6XE/nRtUc6MTEfeJ1/+o4af+1OqxzVZmDb8ZQ8DwU9uAjSjq7x4afuC
-	ihcWoR0RulW0bRBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1786985309; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w3zLzmZPTjsyeCNJxTMPQyOwGFcxlb4bymJngOb4M0I=;
-	b=0OOXJSPABxSA44ExlLIczk02MA3Z2jPvtNH8h14C6N+eyYK9PKpDg4moQg+kI5qp5iuv8K
-	plU9ims/KnCKnsjizeg3dSdGtAuLcgzB9qBVuwgNItwLnaE+wmTu+8eO7ffBf9QqiZ64VG
-	VYXQFK/6uFSDVrj25rF6p03NAbmAZPw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1786985309;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w3zLzmZPTjsyeCNJxTMPQyOwGFcxlb4bymJngOb4M0I=;
-	b=RT94AgWlmYM9MlGg6BqMycisJT2UJTpR5HSuvHhxMNdPB4qGhLwSRoaR1kHpU2aRjkTf9q
-	UYTsjD68+tbEmEBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E181C79577;
-	Mon, 17 Aug 2026 16:48:28 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id kqKiNlw7g2ryDgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 17 Aug 2026 16:48:28 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 78A7CA13AA; Mon, 17 Aug 2026 18:48:28 +0200 (CEST)
-Date: Mon, 17 Aug 2026 18:48:28 +0200
-From: Jan Kara <jack@suse.cz>
-To: Jann Horn <jannh@google.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/page-writeback: document folio_mark_dirty()
- locking more explicitly
-Message-ID: <eref4jpa2fvzssamgks2qmt63enkfeioetj7jk57xhd2tejeio@smd77j22s2wa>
-References: <20260810-set-page-dirty-warnings-v2-1-1bd40fadfacd@google.com>
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gvWJIxWK;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786985744;
+	b=WxoqZaU5pxytKcMBnCKVQ6TN9KbGnwbEN9V5IcAud4CymerOBS4j7dQLdH7sqaUxTlqfQ/
+	0j1xM0nB0lHGLzHySEmyVVkP7jAsuuLayfzSGa35WgGRu9/NG6ZiK3XFDmc/sEDyhst3zq
+	Uud+OiIRsBMzZUlL8gI5oj3BBPMK56c=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 19629416F4;
+	Mon, 17 Aug 2026 16:55:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6711F000E9;
+	Mon, 17 Aug 2026 16:55:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786985743;
+	bh=xTXizeJAPN4W1pOJCZ7S/BTb0ROM//QBXQ2YriiHtoA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gvWJIxWKGZQArcmY6QS85E/A1O8ewuvUfJKRBan0w4Gono2Yrk7XlDXvs96RWzejn
+	 5VUHdR8hhSnoXJ9efGtKC2fgjVXBQJfyyykIJQltThPF/xDaRWzUpCPt7CSwVPmClA
+	 svxI1wBISMLxjmObdB4asMKk0V71IRJD5sqIddfZoB57Ra2jFKhxtXGSHPmRzTDhdJ
+	 J2gRRuJlPpIa7gTD/RuB31vhspwuiT4izxJNRLLUKNCVQ6zWb97umAv6karC9sLbW0
+	 NvRHudMrg0pTjU3qwdDdpcKGrH4xyz+2K0Cchn8VFy9ASkJbLbi1jNA7ohe2xBTPCc
+	 eNfeZ/EfkHgKA==
+Date: Mon, 17 Aug 2026 17:55:23 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, xu.xin16@zte.com.cn, 
+	chengming.zhou@linux.dev, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	shr@devkernel.io, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	wangkefeng.wang@huawei.com, sunnanyong@huawei.com
+Subject: Re: [PATCH v2 2/2] mm/ksm: fix advisor_min_pages_to_scan description
+Message-ID: <aoM8bbWNeuEbfCdy@lucifer>
+References: <20260813031722.569983-1-tujinjiang@huawei.com>
+ <20260813031722.569983-3-tujinjiang@huawei.com>
+ <an2g39TIN9v87enG@lucifer>
+ <b35d14b5-65d8-4b8e-8754-de35f03d4b2d@huawei.com>
+ <an3RcQgDuhmcAb37@lucifer>
+ <238c66fa-8144-4cad-b90c-e7992b14ee6f@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260810-set-page-dirty-warnings-v2-1-1bd40fadfacd@google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <238c66fa-8144-4cad-b90c-e7992b14ee6f@huawei.com>
+X-Stat-Signature: mma5jsebxmm14phbtaf5okpmztrjq8ry
+X-Rspamd-Queue-Id: EA3691C000D
 X-Rspam-User: 
-X-Stat-Signature: sdm71archa613tjtcq9a99se9wbt4ko8
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7D42A180007
-X-HE-Tag: 1786985318-888448
-X-HE-Meta: U2FsdGVkX1+RAVhV3YUXr4UqNTo4Dm4OlNTJV25uwPZwkyQFHjaEVpMo7/ZTrJdOSPwMS4U3HJ3LTbIOTNQXLw648RpbcKAB04EHof7W8fraTmEf+Qn1G1pX+L/txJBG1ogYT/BfubWtIlxe0YtRQym0fSOn9Dj1Z+tRZ1f030Euo7utIizgEXWtlXnGejWSQ6ck+PaCIItS2kXwU7+C18ZbuEhWZTSMhUBYZPKCkZ3dRXNyaT2FD5KvUNj9fCZpUP3NuT/hj+8Qtt9IBu3FPfwuy+MiUp99TAVcfCccrcs1xVY9d1A1Q6hSrBcw730siyELDKMnxrTRj6fUfG0jtXEXv9/wbZmU5tzVtos1LkVy8hzyqlrTH1LWX4S0w4aELeaYEtp6Dff+LMipcxduL4uPdVJ48HcvUEhFVDw+qW9xTGMmFAHOIZtvptn/47bDaAvgesG2DQwVLBO0qFK7vRNXVSk6mWW2p0cUvHAQUOHUyrc+CPMzDp0of7+E55OHYE6/rTaGf4G1+iPl2OyPdO8Pzxa5wRgzAj30W7f0u5wQEfJmbynvIjxKwVW8JijxOTC3EbfO3ZrlJmx3P8FTPud/j4mkaKIjCzbIfw9hacBHzgzQA0EVjDWT2x3cfwa0UORSIxyecJxC9MbVjSK7392IABeZZK/b8aPnkTmyJ7gAQsdLNkGhPLY6TM87iF3j474IrILtWfnaR7e6o3q72v9l4fIzSCrcb7khem/v2/bjMn03tGRSBRv/8Wcs+91KDSZFfaxA7de4dKesxsOEInPP8V0HbRdn+jdqRcjAa2VuQ5l8InAupUpgAYOZH9ZPj1NUHDXfXrc1FdZhUr3TDy+PLXCDJoONZUrzUoM8B6PkrlGvkSpteloas9rCrMxBDKPZznv75ltwi7hVq5m0rxZa4A8B/ccKBhuWgXXpVik2rzIaiAEy4dRh1Vh2qbJ+V3X7tnKDiWJUZbeyFqn
- XuPX4Me4
- k/K7v8iMCwOxisPhQSiGqy91kE0Tedc7dnqwkG2D1B16IfS9r9rVmqsXINfTwEGUxZi+XLGAoJYfCDn0dsOjSjrv2mi/km5j3cR2+H/4UtzvDUEqCunxAhkCxjsJ3RVIcivE0lWIbvx2gcoNnMQpqkcxDII9WXSM8wKOkL7x31GNV5cVCjq4maxFdcMAbLBcaHbHMMD4XmPSlduLXgkGQ42+9TVVZuRs7jnAj+uDktaSMn+Y46AstrTrrTtWC8oZIkFtaA2CaDZuJUJ0ReYcjX6HS3OMlRLCa4iwpkZJEkLPrnqrLNLbFaL6kURIBghbB9L3Z0kFZeuCpefbxInkvxcxD72C5ys3ULj2du1qi+BOnifrhhv4w8KV/PM+ANl7ayKfmshmkSB/LsI51Sgkx82bTMYL/VeiX3BMsw7Mv1Gmbh4iA3CCbO6bM9gt9Y3AhHACJiG1be5XdzDaAwL8Q2gCIStg09gnVFZ6fZJ98euM5gb/mQTg9/x1LEU48gtfD9gFV2fqImLH4O0A=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1786985743-860865
+X-HE-Meta: U2FsdGVkX1/5k/a3m7GjllnFYJx5mFKvuLLgpLXuGMJIIZ0vPZhf1ToG8UQ/fMGusm9SLMD9QhdanZuGTTmv8LcWkQFRLzMbA7bRZiV62Jme9O18U9ZekdFeAom1ANWPhYLSOCGfhtE/Uh+T3d0O6Nsmo6CscrSP6i5l6nIEVL/Drkv7s/jHGP8HcLmHMgLdFgIb0rwCpvgeFO2rmDAlyVEiU4twbUr69g18kD4qKjCYAzT6UbPplrvAYnmV8BRMrYHEhn8JbgSReRex5tOQ7gPCNg7B09A68w/jGAENbry8QXcDR7VyyIALboW/AeMbebU7iHrzvy/cohin6Yh4x1wHXKTh5es4rmWSbmzgkyetInOeR0Eu0b4smNzyiUoOgJtu7LbOrXd3bSNTkr0OEdWHMh17TTBi1OYIgut18Rw9xo6FGL4C9uOWGk57vz95NaAsa9wgRCnCTGhgsGv7JjUcuaWK5E3PC/DIEydjgc+EVpyW6z0GOKeMcKAyO2mTgMBRsiAJ0iV/wuGVE6t5tz0fg2nUp4KHL6pdyLxMmhMGFnIWJRm7Si1szu+TK1igwZiDmOylDKotDaZQGH5EX4jOPiR3BIEp9ZoWCPQVNNqMrLmwxacZWk5j67/5tdi8KCMZ+kUyDOT9ZZ1ahKxVCYQcj5ycH/s6ddUT/DrLSkBDEMMVaEe5P2IxuDJZaoAs2bAghTaMuTOcsGXbYOTGdJzpiuite7vryfH8hi+5+g6whw4JdVT2nPZwYesWMrZmYv1HN5wLnXUlfWn+30MBznXa6Yj5Sm9l7dnjionn7SDkGKXanmq0yWOlWQfhIJ6rM5tsCVM07sySTo9bsd0fMv2wdRqRPHCdU9CRWTaBHLCM0naCVgyNZ0+tx2dQfP+lp1AWAsUN3EY3fIJzs3E6hwF0mJ0WYdlWTXjpUUcLJ4RtLiHXzrFjphFxJ3nhgorg4ZqJekx8rGetAIsbShT
+ x018SzL0
+ lyvNB+gHeyGzKuRZHRYBVaY6zwKnleybakAyCPiLhVgKN2revoELxCBxOQIpnGxQx3FuR3vDfBen+i5VXbpjddCxdBucQ1Bqv2d1E1VsX+qXNTLAlDyu5HaMkTCq84nsFxZ2xWpr/QF0JURDc58KRo9hSqljUnXCA3undGYETwf09mYsplwQg/IRcK5GRQkH//RpVD9pFt6cE8FPCJFPtP1uyfEDeZrCJumCE3/vmFY27WCiiucjGvPUYSQPQRTQC6Wmt6enSmrwlgV2SarzMnErBJj5nKE0bZFFi1rjTXAS/4oocfO76U8mn1923JeFs4pjo7hhvXW9H5T8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,80 +100,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 10-08-26 20:10:01, Jann Horn wrote:
-> We have had bugs where set_page_dirty() was used on a page from GUP without
-> appropriate locking, leading to UAF, in:
-> 
->  - KVM, see
->    https://lore.kernel.org/r/20260810-x86-kvm-setpagedirty-v1-1-85f180892d4f@google.com
->  - i915, see commit 0d4bbe3d407f ("drm/i915/userptr: Try to acquire the
->    page lock around set_page_dirty()").
->  - VMCI, see commit 5a16c535409f ("VMCI: Use set_page_dirty_lock() when
->    unregistering guest memory")
->  - kpc2000 staging driver, see commit b6d13bd9f2c1 ("staging: kpc2000:
->    kpc_dma: Convert set_page_dirty() --> set_page_dirty_lock()")
-> 
-> I think set_page_dirty() and folio_mark_dirty() need more explicit
-> documentation on how they should be used with pages from GUP; so add a
-> comment on top of set_page_dirty() and make the comment above
-> folio_mark_dirty() more explicit.
-> 
-> Signed-off-by: Jann Horn <jannh@google.com>
+On Mon, Aug 17, 2026 at 10:54:52AM +0800, Jinjiang Tu wrote:
+>
+> 在 2026/8/13 22:32, Lorenzo Stoakes (ARM) 写道:
+> > Please show me the common courtesy of responding to _all_ the review given,
+> > not only the one point you want to respond to.
+> >
+> > I'm not happy with this patch, sorry, for the reasons stated that you chose
+> > to ignore.
+> >
+> > On Thu, Aug 13, 2026 at 07:17:05PM +0800, Jinjiang Tu wrote:
+> > > 在 2026/8/13 18:56, Lorenzo Stoakes (ARM) 写道:
+> > > > On Thu, Aug 13, 2026 at 11:17:22AM +0800, Jinjiang Tu wrote:
+> > > > > Both Documentation/admin-guide/mm/ksm.rst and the comment next to the
+> > > > > variable definition in mm/ksm.c describe advisor_min_pages_to_scan as a
+> > > > > lower limit of the pages_to_scan parameter, but that is not how the
+> > > > > scan-time advisor actually uses it. commit 4e5fa4f5eff6 ("mm/ksm: add ksm
+> > > > > advisor") only uses it to initialize ksm_thread_pages_to_scan when the
+> > > > > scan-time advisor is enabled. This will mislead the users.
+> > > > >
+> > > > > The semantics of advisor_min_pages_to_scan was updated in the v2 patchset
+> > > > > [1], but the documentation wasn't updated.
+> > > > >
+> > > > > Update the documentation and comment to match the semantics of
+> > > > > advisor_min_pages_to_scan.
+> > > > Umm, firstly if this were wrong you'd need to change the name of the variable
+> > > > too instad of documenting it as something completely distinct.
+> > > >
+> > > > But secondly AFAICT the logic in scan_time_advisor() suggests that it truly does
+> > > > act as a minimum bound as well as being the initial value for
+> > > > ksm_thread_pages_to_scan.
+> > > As the cover letter[1] said, 'The initial value and the max value for the pages_to_scan parameter can
+> > > be limited with:', ksm_advisor_min_pages is used as the initial value, not the min value of pages_to_scan.
+> > (Wrap your lines properly please, it's a common courtesy to learn how to
+> > send mail according to community conventions.)
+>
+> Thanks for the reminder, I will follow this in the future.
+>
+> > One of the part of my review you ignored:
+> >
+> > 	But in any case, you are making a claim here yet have provided no
+> > 	evidence for it. 'It is just the initial assignment' means nothing
+> > 	- if the logic can then only increase it up to the maximum value
+> > 	then it still acts as a minimum.
+>
+> ksm_thread_pages_to_scan is adjusted by scan_time_advisor() after a full
+> scan finishes. ksm_thread_pages_to_scan could increase or decrease depend
+> on the real scan time is longer or shorter than the target scan time.
+> The min value of ksm_thread_pages_to_scan is only limited by
+> KSM_ADVISOR_MIN_CPU, so ksm_thread_pages_to_scan could be smaller
+> than ksm_advisor_min_pages_to_scan.
 
-Thanks! Feel free to add:
+OK thanks :)
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+With this explanation put in the commit msg somewhere on respin then we should
+be good.
 
-								Honza
+Probably we want to rename the variable too but can save that for another change
+since the attr is called min still (ugh).
 
-> ---
-> Changes in v2:
-> - reword commit message to drop references to out-of-tree drivers, and
->   instead add more examples of upstream bugs
-> - Link to v1: https://patch.msgid.link/20260810-set-page-dirty-warnings-v1-1-53cad4890808@google.com
-> ---
->  mm/folio-compat.c   | 1 +
->  mm/page-writeback.c | 5 +++++
->  2 files changed, 6 insertions(+)
-> 
-> diff --git a/mm/folio-compat.c b/mm/folio-compat.c
-> index a02179a0bded..6212fdd6761a 100644
-> --- a/mm/folio-compat.c
-> +++ b/mm/folio-compat.c
-> @@ -41,6 +41,7 @@ void set_page_writeback(struct page *page)
->  }
->  EXPORT_SYMBOL(set_page_writeback);
->  
-> +/* Read the comment above folio_mark_dirty() regarding required locks! */
->  bool set_page_dirty(struct page *page)
->  {
->  	return folio_mark_dirty(page_folio(page));
-> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> index e98748112d1e..b0ab687c83be 100644
-> --- a/mm/page-writeback.c
-> +++ b/mm/page-writeback.c
-> @@ -2773,6 +2773,11 @@ EXPORT_SYMBOL(folio_redirty_for_writepage);
->   * in this folio.  Truncation will block on the page table lock as it
->   * unmaps pages before removing the folio from its mapping.
->   *
-> + * .. DANGER::
-> + *    Do not use this on a folio obtained from a function like
-> + *    get_user_pages_fast() without holding appropriate locks; you might want to
-> + *    use set_page_dirty_lock() or folio_mark_dirty_lock() instead.
-> + *
->   * Return: True if the folio was newly dirtied, false if it was already dirty.
->   */
->  bool folio_mark_dirty(struct folio *folio)
-> 
-> ---
-> base-commit: db2ddb87143519e20a95aa36c60b36107b736a58
-> change-id: 20260810-set-page-dirty-warnings-4000f0015394
-> 
-> Best regards,
-> --  
-> Jann Horn <jannh@google.com>
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+
+--
+Cheers, Lorenzo
 
