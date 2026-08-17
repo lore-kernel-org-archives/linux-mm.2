@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83B68C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 09:04:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 356DCC5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 09:04:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AC566B0630; Mon, 17 Aug 2026 05:04:00 -0400 (EDT)
+	id 11BDB6B0913; Mon, 17 Aug 2026 05:04:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75C886B0913; Mon, 17 Aug 2026 05:04:00 -0400 (EDT)
+	id 0CD876B0915; Mon, 17 Aug 2026 05:04:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D6826B0914; Mon, 17 Aug 2026 05:04:00 -0400 (EDT)
+	id EFE456B0917; Mon, 17 Aug 2026 05:04:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 326626B0630
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 05:04:00 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AC12580678
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:03:59 +0000 (UTC)
-X-FDA: 85110174198.20.ECB1513
-Received: from mta0.migadu.com (out-103.mta0.migadu.com [91.218.175.103])
-	by imf09.hostedemail.com (Postfix) with ESMTP id CD24E140003
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:03:57 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=g9+FHIJ1;
-	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.103 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786957438;
-	b=vCaPLrzAftJDELr7jIVfy+ltJJfrEsA4XHIGeeXSAIxZz3N3R+2dT3G8T6mju63MDHZ2j8
-	E4yH3gkiHzmMFPnH5wXZx4HvyjynncVQ4LiXjml3Q/AxPcyIawc77MW239zMTYz4qmgYo0
-	MzvZr/i93mnjs8htuzQs7VaNGSvHGl4=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=g9+FHIJ1;
-	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.103 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id C504D6B0913
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 05:04:07 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 555BE806CD
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:04:07 +0000 (UTC)
+X-FDA: 85110174534.18.FEC4D29
+Received: from mta1.migadu.com (out-70.mta1.migadu.com [95.215.58.70])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 4C130180009
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:04:05 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bOylzFai;
+	spf=pass (imf24.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.70 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786957438;
+	s=arc-20220608; t=1786957445;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rhs4h0lxJDv/iNvOsweZCtQu1gyWvcZnjmbioGNLOYg=;
-	b=YiEx3jJh2a1Xay4T2auUQDBtoP776kpNyg1nvplkZW2GJdMUSXBfG7QuXpX5fqwpZPzEhZ
-	T43NKjqisW2VCCkET5GEZL/IdGA9eYfmqzRRhb8QOPZPdDnJp4PFDzsMBKDJ3yejCyVZmf
-	1mVKDnorpgyiHX4viJzgwLfdS2so6Fw=
+	bh=YF+aXbbifBBBWQpu83+RxuL0q0WY7z7REe77O+Gj1Hs=;
+	b=RR536wNw9imO4RxXFbwXVHvdQKnDf//Bx3sxxQFrLp9jOh4/7ofPsO4NRw3iXiopsCql9h
+	1YAvoDHRGEshNAZH/zlkDbsyxlDaLuE+LEvbHBGd4uES03JS1UifGkdAyaqG/fpsB8qTYq
+	xVanNiybMck8gtbX/Kj3Rs8U4Wat/XE=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bOylzFai;
+	spf=pass (imf24.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.70 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786957445;
+	b=EmDhFVEurWlwVwXeoNAPCEmOgiFzBS3KU+NFL2qWpP51hFwfUNpkv4ATp0+uMWWiTaXyJH
+	bjzXQ+YzByyNSJDlaAQOwZgK4C0MKM35r7rE4KDSCazTyIS7dt6MrIwyVR3LhA4k/QqYku
+	B47+8Xgwck/MBxcDRqXP0WrNboWRMXM=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=9XCr4YD0T5VE0wZ5iIvs/iiwRl95Fjqj/a+tPYmfT30=;
+DKIM-Signature: a=rsa-sha256; bh=dkMQJ2rsBFy4+vU+FROiwJWs1Nekl7LDcV2tZun3MeY=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786957436; v=1; x=1787562236;
- b=g9+FHIJ1dZ4urhxpqamidQhLOJ9l5WLuOAy5RT/4RlOIneVU7Gkidp5YUmbOOCR0UL7tXvkh
- XCFm20tevD7Oj6qrTBM4erSiH3f2HrsTv6ew1sfbwSTbO/qS4Klwi8RkTgIVoaHpoOaGyfi1Q8i
- aH6VgLzK8lMAQDHu06TbD2jM=
+ t=1786957444; v=1; x=1787562244;
+ b=bOylzFaiOMQLrMBNpTJ9i/2BSB3NDz/2pXSaNOLrW2dLpo+6MDJWjEZtGahLShe66Hr6IFZI
+ DXJcQ6R7ie50M6xqgVRZ6ij0Qn9XAg3PPtSn2LDVFTg4EyVdDjwVOD29khBI4S2VDCNATWn2Xu+
+ qUmLeKOaPDildP9x4BcMUHaA=
 X-Envelope-To: linux-mm@kvack.org
 Received: from localhost.localdomain (221.194.171.228)
-	by smtp.migadu.com with ESMTPS id 3c06767a59067357;
-	Mon, 17 Aug 2026 09:03:56 +0000
+	by smtp.migadu.com with ESMTPS id 0154517dd3bf7b59;
+	Mon, 17 Aug 2026 09:04:03 +0000
 X-Migadu-Flow: FLOW_OUT
 From: Qi Zheng <qi.zheng@linux.dev>
 To: hughd@google.com,
@@ -71,22 +71,22 @@ To: hughd@google.com,
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v4 1/4] fs: fix missed removal of super_fs_objects_eligible()
-Date: Mon, 17 Aug 2026 17:03:25 +0800
-Message-ID: <3b038d373c70ebac7cdabfb0035bb91d1d6e6cfe.1786955972.git.zhengqi.arch@bytedance.com>
+Subject: [PATCH v4 2/4] mm: memcontrol: make obj_cgroup_memcg() handle NULL objcg
+Date: Mon, 17 Aug 2026 17:03:26 +0800
+Message-ID: <09bcf74312246a6e4146be8a0cb9787f8beddb28.1786955972.git.zhengqi.arch@bytedance.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1786955972.git.zhengqi.arch@bytedance.com>
 References: <cover.1786955972.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4C130180009
+X-Stat-Signature: qkjhey189rree4sjkagphex86s3qaanc
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CD24E140003
-X-Stat-Signature: jdykf9go1k6fufj1sdupn9y1fpxi993e
-X-HE-Tag: 1786957437-170273
-X-HE-Meta: U2FsdGVkX1/ph8X1zIbXtA+zfI3ujLgCHAx0BOjUtbWBlPCFSQVVgG1+wBCjMCimCVpspvh2zp6As8gusLllLOxVrztC00vxBkNKRPs7iwvm22zzUYvo1Q8L491esEJliyuykcxEHl1htQddeksxeHEXVz/Gtw+b14TkW76P767CwWdiX3z5B0cmCejlddAAIR/5Mlhw16UHFT9NxYkvtTrm0E2NeRPiHte/tA/W0wYReEuMV+hQhNSFL5e/7KfVLsLSvuenyyxLXVdsIk9qohyhmch0+O6y0qqugZy3ZIpioKhQaST4NkIWisPT06cHoib/DUU/QmpwoFEiNMGdzrQaiFXWfM6WY8Dh3NA+wdbL7tvQ1hQb18SS4GompCQTayNpzk+eKj5ysLjo1ta+RMS7hiLl7NBRfsePgqnjhm1rCY4T3eNC0aXGvp0l+0+SHvf03+2dYQKgpsx6gq71ThTmaHX5GdA+3pqRarfMkyMVZZswyn/CBijyLdXGt7vV00v170nHc8vfbVDe0QAxgh29rYlOdrXFxfX3obgYGazmxGKuPMeXSlds8LBBIJNF+E7z4yhfll+/MIgJbYaTLdTO0YQXoNjbbT9QAQV3f14vhenoqNAy+W0wtNGXNTyFU3fkTRPmzHglhcsX4RFkKS2/txrMuZ931hY7OkkFDEHALSGE7TjF6LdyamoiCyE4vfaR759bKpp4hO8v4rJ6oYaUrFr9QsvuINoTMf37mvR0YoA77879m9INA0NH7e1ZnThSp//h/8VWqou7vJEC1Jsyx9Z4v9tXIH0i6lm2IzUKxRpAJuotnUHpNhdYod64B4MNzMkr2v4W6pXj5AavxpTuJbmMAAoFG52auAWrHKFz5G7EL63JDQc1JQF8CC5xDE1LpucPtAYkhWodOx8a/fITRMk8ep2Rv8Zf7DRhYwVzCcYEZQb/ppHToXs+IUKE/DAL44DRQmDXOxYHvZh
- 0hvxCOCk
- V3B3Vg45kXrplHYmxbG4nihn2jxs5ISwuWE08F058wXX5XrCYgTvmcjeb6DeVXsUHdPFm29Kx+QsdEgDxAz71pZiJjSRI1n2ucEZI+A43H1qPo0KJiKXVCz6U5CTN/FKKoGBv+VB9xL/pmISBbGJK+334fUesEABw2PKOSV51VIUfH4yxnH/+MQ3ap49+CbY2l2xJnURMM2V0KOQzfQ1Io4lhuLp+iLxNNquadAVcYUXyopSYCTApNg9jpaaFa122iMLy
+X-HE-Tag: 1786957445-976092
+X-HE-Meta: U2FsdGVkX182IHXnlDbMMq2Zu4EAC4h70vDXy+jDHJMJ2lb4lXNHa6RJ8/bKzAFU4Z4w3clmPkHYjI5SaCzGxaG+pSl0dIPp2kumvgguPI33IaEavKGOF82rPnEeCTcNgjzm/p4hseWHK49sqw5B0dJ4H4dlWSeLJgGZmSQxP42rF6X2lgCP2ewBv7ksAsEk4kdzWasjUWC3kY6F4f0RH1pXvGvge4wk3s0ie8tc5MsrRVONkfEcubEz8lGJ2tvu9i4KZ5Fv8D8EGD4GJ0OMe5LT+u05PrA/JA1uLnxwRc22N0OzHLFPGDppsSImqRiIk5hO/O1/5wA6uz0Ut1kKo+Fufn8tijkSteUzCsnqOTldZnu6VLGQkfla4lFGqJ9s9Cdh99qdC8AYUr6fMS3sRpzOcktUb2TNo3r09ZZOXI4j3xozaov0znJse+51VrB8kW1Gh3wPnRK7sH3l9xF+lZk6UAP44Lfa5P4YX4Bq+irDUA+EFkfgNmEluUIneLrH8nDKAdL9iXh0Vsd3BvHiQ9vwi+TqKrHrGTU9XUBKCaA54zlePbsgMMOqkeJhT0zN+GTJWVcka+2cX5EOWwtJfHT7K/BY3gyYeaUKP2DH53qBnEL9IuT2AT7HR2U+IGXSpt5cjl1Hkcq1zu0fNQ8Uuus1bUVipG3OF3VdGKY50d3aEZIlu0EsdfrHGSnpaDWU8iYQmCPqYLADGd+cPG3mIuamrMV1JSjc7ZEK6Hk1xxWJccQkBhugwe2N7qUMFeRlmENJng4gqHZNf7b61DZ+93y/AoQPFqf+VYyBmBDEFPL6dCcpT6b+QR4L61/YqSvBwbJOOD8Ar1uPaGTTkZFCJkTTf5rOxa1ri5Gpkzfr2qyMV6jOhd6ntYRq/8kDf9GWDhEQDFhhq0x2WGsy1xpqWPdjxVUZVVeRPjp1bzARCqDbDEvG9GvPUoSRAJmSVl1r3q7MKU66O/Qco1+NVw9
+ 9JbncPbl
+ TdqYU7QDl+iBSg9xB+DkfsXbFdjEap2WRD0jys/VzY70BaRz6AwwgEUBQqEiBd89vmC1lqYcudVmqOX3bSrWUvEdPNlv8HN8W5SzRvoeygz2j2oruJpG4ZLebMY73sLXihV1IqE//GrC8iY2S/ZLsMsa1I9uvkwS72ROnL28J+Mkqmc9xyCenyYR5EKljt71BehD0xm5H8CDrgk/Mjah0BVN2F3+kxXHJ48UYCkvSQgUDuZIsYH49Wpfg2DiYER7YXWfa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,59 +96,124 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Commit 0ef8faff490be ("fs: push nr_cached_objects memcg gating into
-individual filesystems") forgot to drop the super_fs_objects_eligible(),
-just fix it.
+obj_cgroup_memcg() currently requires a non-NULL objcg, so callers that
+may hold a NULL objcg must guard the call with an explicit NULL check.
+This pattern is duplicated in folio_memcg(), folio_memcg_check(),
+mm/page_owner.c, and mm/zswap.c.
 
-Fixes: 0ef8faff490be ("fs: push nr_cached_objects memcg gating into individual filesystems")
+Teach obj_cgroup_memcg() to accept NULL and return NULL in that case, then
+remove the redundant NULL checks at the call sites.  Also remove the
+mem_cgroup_from_entry() wrapper in zswap, which existed solely to provide
+this NULL-safe behaviour, and replace its two callers with direct
+obj_cgroup_memcg() calls.
+
+No functional change intended.
+
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 ---
- fs/super.c | 18 ++----------------
- 1 file changed, 2 insertions(+), 16 deletions(-)
+ include/linux/memcontrol.h | 11 ++++++++---
+ mm/page_owner.c            |  2 +-
+ mm/zswap.c                 | 17 ++---------------
+ 3 files changed, 11 insertions(+), 19 deletions(-)
 
-diff --git a/fs/super.c b/fs/super.c
-index 05e4431730387..3ecce24328f67 100644
---- a/fs/super.c
-+++ b/fs/super.c
-@@ -171,19 +171,6 @@ static void super_wake(struct super_block *sb, unsigned int flag)
- 	wake_up_var(&sb->s_flags);
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index cba35690c21aa..5107c227ae9b8 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -375,7 +375,7 @@ enum objext_flags {
+ static inline struct mem_cgroup *obj_cgroup_memcg(struct obj_cgroup *objcg)
+ {
+ 	lockdep_assert_once(rcu_read_lock_held() || lockdep_is_held(&cgroup_mutex));
+-	return READ_ONCE(objcg->memcg);
++	return objcg ? READ_ONCE(objcg->memcg) : NULL;
  }
  
--/*
-- * The s_op->nr_cached_objects hooks (used for example by btrfs and xfs)
-- * operate on filesystem-global state and ignore sc->memcg. Driving them
-- * from per-memcg shrink_slab_memcg() invocations only burns CPU walking
-- * per-cpu counters and queueing duplicate work: the actual reclaim happens on
-- * the global path (kswapd or root direct reclaim) regardless. Restrict them
-- * to that path.
-- */
--static inline bool super_fs_objects_eligible(struct shrink_control *sc)
--{
--	return !sc->memcg || mem_cgroup_is_root(sc->memcg);
--}
--
  /*
-  * One thing we have to be careful of with a per-sb shrinker is that we don't
-  * drop the last active reference to the superblock from within the shrinker.
-@@ -213,7 +200,7 @@ static unsigned long super_cache_scan(struct shrinker *shrink,
- 	if (!super_trylock_shared(sb))
- 		return SHRINK_STOP;
+@@ -428,7 +428,7 @@ static inline struct mem_cgroup *folio_memcg(struct folio *folio)
+ {
+ 	struct obj_cgroup *objcg = folio_objcg(folio);
  
--	if (sb->s_op->nr_cached_objects && super_fs_objects_eligible(sc))
-+	if (sb->s_op->nr_cached_objects)
- 		fs_objects = sb->s_op->nr_cached_objects(sb, sc);
+-	return objcg ? obj_cgroup_memcg(objcg) : NULL;
++	return obj_cgroup_memcg(objcg);
+ }
  
- 	inodes = list_lru_shrink_count(&sb->s_inode_lru, sc);
-@@ -274,8 +261,7 @@ static unsigned long super_cache_count(struct shrinker *shrink,
- 		return 0;
- 	smp_rmb();
+ /*
+@@ -471,7 +471,7 @@ static inline struct mem_cgroup *folio_memcg_check(struct folio *folio)
  
--	if (sb->s_op && sb->s_op->nr_cached_objects &&
--	    super_fs_objects_eligible(sc))
-+	if (sb->s_op && sb->s_op->nr_cached_objects)
- 		total_objects = sb->s_op->nr_cached_objects(sb, sc);
+ 	objcg = (void *)(memcg_data & ~OBJEXTS_FLAGS_MASK);
  
- 	total_objects += list_lru_shrink_count(&sb->s_dentry_lru, sc);
+-	return objcg ? obj_cgroup_memcg(objcg) : NULL;
++	return obj_cgroup_memcg(objcg);
+ }
+ 
+ static inline struct mem_cgroup *page_memcg_check(struct page *page)
+@@ -1045,6 +1045,11 @@ void mem_cgroup_flush_workqueue(void);
+ extern int mem_cgroup_init(void);
+ #else /* CONFIG_MEMCG */
+ 
++static inline struct mem_cgroup *obj_cgroup_memcg(struct obj_cgroup *objcg)
++{
++	return NULL;
++}
++
+ #define MEM_CGROUP_ID_SHIFT	0
+ 
+ #define root_mem_cgroup		(NULL)
+diff --git a/mm/page_owner.c b/mm/page_owner.c
+index fbbda7ba914ba..3fc37d9b908ef 100644
+--- a/mm/page_owner.c
++++ b/mm/page_owner.c
+@@ -575,7 +575,7 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
+ 	}
+ 
+ 	objcg = (void *)(memcg_data & ~OBJEXTS_FLAGS_MASK);
+-	memcg = objcg ? obj_cgroup_memcg(objcg) : NULL;
++	memcg = obj_cgroup_memcg(objcg);
+ 	if (!memcg)
+ 		goto out_unlock;
+ 
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 37f34e406c8e3..c1dc60926bad9 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -647,19 +647,6 @@ static int zswap_enabled_param_set(const char *val,
+ * lru functions
+ **********************************/
+ 
+-/* should be called under RCU */
+-#ifdef CONFIG_MEMCG
+-static inline struct mem_cgroup *mem_cgroup_from_entry(struct zswap_entry *entry)
+-{
+-	return entry->objcg ? obj_cgroup_memcg(entry->objcg) : NULL;
+-}
+-#else
+-static inline struct mem_cgroup *mem_cgroup_from_entry(struct zswap_entry *entry)
+-{
+-	return NULL;
+-}
+-#endif
+-
+ static inline int entry_to_nid(struct zswap_entry *entry)
+ {
+ 	return page_to_nid(virt_to_page(entry));
+@@ -682,7 +669,7 @@ static void zswap_lru_add(struct zswap_entry *entry)
+ 	 * Similar reasoning holds for list_lru_del().
+ 	 */
+ 	rcu_read_lock();
+-	memcg = mem_cgroup_from_entry(entry);
++	memcg = obj_cgroup_memcg(entry->objcg);
+ 	/* will always succeed */
+ 	list_lru_add(&zswap_list_lru, &entry->lru, nid, memcg);
+ 	rcu_read_unlock();
+@@ -694,7 +681,7 @@ static void zswap_lru_del(struct zswap_entry *entry)
+ 	struct mem_cgroup *memcg;
+ 
+ 	rcu_read_lock();
+-	memcg = mem_cgroup_from_entry(entry);
++	memcg = obj_cgroup_memcg(entry->objcg);
+ 	/* will always succeed */
+ 	list_lru_del(&zswap_list_lru, &entry->lru, nid, memcg);
+ 	rcu_read_unlock();
 -- 
 2.54.0
 
