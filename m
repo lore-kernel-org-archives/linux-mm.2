@@ -4,94 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3656C5DF66
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 11:38:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1316AC5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 11:54:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E51F86B0165; Mon, 17 Aug 2026 07:38:47 -0400 (EDT)
+	id 0DAAB6B00DA; Mon, 17 Aug 2026 07:54:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E29ED6B0169; Mon, 17 Aug 2026 07:38:47 -0400 (EDT)
+	id 08AA06B070A; Mon, 17 Aug 2026 07:54:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3F6C6B016B; Mon, 17 Aug 2026 07:38:47 -0400 (EDT)
+	id E973A6B088F; Mon, 17 Aug 2026 07:54:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AC6836B0165
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 07:38:47 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 36DFAA076A
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:38:47 +0000 (UTC)
-X-FDA: 85110564294.13.F46F70C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id AF0D9C0004
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:38:45 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=amvVG5ic;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BF0C36B00DA
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 07:54:51 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3CEF740771
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:54:51 +0000 (UTC)
+X-FDA: 85110604782.17.931E97A
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id F398840005
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:54:48 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=V4ZYkkyQ;
+	spf=pass (imf17.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786966725;
+	s=arc-20220608; t=1786967689;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kz5p/H0TIZKomsHJng/nr5w+ftLpRUyUqVulCAYcvP8=;
-	b=cmv60isZ1aTrjoZBDPMNNxmphaB4rK9LoCRMI9hrN3KCkFKBy9Zgydwke9XVDpfGB+gzWW
-	eY0SqpTH/5AEWcsS/7taamPbU370q1VAefP1YnqzR3HgQFR9BEUpRqWor1X45YsiIpMm7N
-	SKWAqDt26rcgOXGRqXc1jy+diezvKd0=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=amvVG5ic;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=M0Ri55kciEVOMJnEtVQ2fUaxELixYrHWONiEbqixWmg=;
+	b=KABOIzqAFxkQWz+waXFFP+dh+A27fVc8Ca9r643sYNNRmhTD29bPpZ1v2ZgF+KA+qdWKo9
+	j14TSfr0JjuiDncNMUhzCW7Vpe92JqLorEutIEot6x4ZHdS4xnIQO8wH/wTV1kequqyk6s
+	qx9NNZSOtIFhNQnKUvXjNgyCKrXmfyk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786966725;
-	b=agJgm08CdE5ptzUVeAVMbD5FWwFIZUtX4RfiiESvFKVV00G83syW6yOJ++qfG246PZKN1y
-	ptBfSf3lT/djSreEUnu+/MHCjy04qfZWeyPnlOXGdD/tTiKNMi6HdVOJj6QqF2SVOCKRI1
-	tPI/rqLb8Xn/N9btd2ogJbN/DKqqRPo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5221D60204;
-	Mon, 17 Aug 2026 11:38:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F3A01F00A3A;
-	Mon, 17 Aug 2026 11:38:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786966725;
-	bh=Kz5p/H0TIZKomsHJng/nr5w+ftLpRUyUqVulCAYcvP8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=amvVG5icoRLGLTkN+kl08tXSEf0mSAQIWZx5Cm6O/l274LtGPX2bSEA+FNnog0COq
-	 85aHOeYtR2MhelU0R3OlN1lJkvEZohbaVkUwTchFvrkqTwaR1sQQtXIkfoBQtdgKOO
-	 LPP2wu7WyuUNOM7ZEcOZS6Vnfl6qmAu/aBIcHwb3HyRXR22N9ihRrMkm9B7H9hq/1v
-	 HOUVxTSFbLNBLClRy5kIRFZUMWVA8004T5pkZM/bWFfzbCExMvCdTvs2qiWcg3GTxM
-	 afb7lWV54TiyPsCApKQyB01yxNgzjJzlBaKU8w5KRcvMJcd+mNuvOb+7KgnLWDzIiC
-	 syq+PN1giBaOQ==
-Date: Mon, 17 Aug 2026 12:38:25 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH v4 6/7] mm/khugepaged: unmap pte before releasing vma
- write lock
-Message-ID: <aoLyqr_LZ42Kv6GM@lucifer>
-References: <20260811-khugepaged_pte_refactor-v4-0-ddac39d61c4a@linux.dev>
- <20260811-khugepaged_pte_refactor-v4-6-ddac39d61c4a@linux.dev>
+	t=1786967689;
+	b=LXWrOxDfCZbJJolOFTmdNXpG/CWwZVIPAgTnk5//7olZj7A6sERIfeu7muLhOHK+jXDr44
+	6G6BrqKtiAX9GrDd5cFvi2PFhyri2LfML+GWA4EfSay9DMN/tiZRwgbZEhnuG525q4veMz
+	bgOZy8ssVRGv2GLR8peEOuijUdx1yT4=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=V4ZYkkyQ;
+	spf=pass (imf17.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CFDD61688;
+	Mon, 17 Aug 2026 04:54:43 -0700 (PDT)
+Received: from [10.2.198.93] (e142334-100.cambridge.arm.com [10.2.198.93])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B80F83F85F;
+	Mon, 17 Aug 2026 04:54:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786967687; bh=661eddBtEHg+73xuJUgBQumGRYXf11IA7RbS7mODuQ8=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=V4ZYkkyQMswep8Nd0trfC74IkYcP6lCBZDcqGYVwopQ8+KrhE/WSHg6SAbUSVYprJ
+	 eJSQDahVKNeMWQuRBSwlEoE7+OwPiB4dx/U/R4Cu/s1NfhYENOT6qXZP5/42wRC/sV
+	 hjpmzCOU0F+aMhoCTC4vWqkurmsWSqU6dxWj5Fo8=
+Message-ID: <461b03f4-4bce-463b-abe6-ea3e56f8aa22@arm.com>
+Date: Mon, 17 Aug 2026 12:54:44 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260811-khugepaged_pte_refactor-v4-6-ddac39d61c4a@linux.dev>
+User-Agent: Mozilla Thunderbird
+Cc: usama.anjum@arm.com, akpm@linux-foundation.org, david@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, shuah@kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Hongfu Li <lihongfu@kylinos.cn>
+Subject: Re: [PATCH] selftests/mm: Drop redundant open() in mprotect_tests()
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Hongfu Li <hongfu.li@linux.dev>
+References: <20260817080616.52946-1-hongfu.li@linux.dev>
+ <aoLvynyoJ9RKRIMk@lucifer>
+From: Usama Anjum <usama.anjum@arm.com>
+Content-Language: en-US
+In-Reply-To: <aoLvynyoJ9RKRIMk@lucifer>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AF0D9C0004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 6zxhxj7186xwrzk7emg7u1wnoia3djzd
-X-HE-Tag: 1786966725-122186
-X-HE-Meta: U2FsdGVkX19DOIA7LpwLcl1mfyxdqu5gchE2cgSYEzEQyfmzmH6ehteSkQsuIds/8VlETlFC2U9PmsSSYCIshSFYhByHbRu4zzMgms81m3wtwzBwJCagHoEd4nMPDTKywW1zcjEwnvhdyFphUpRiH2wqvMisfslhfvGlv7pExVtzqXU/bt2IKhm770cnO/eiQgmcAszy2tVedQ6wdY6Kw3gP4R3p3kXzBFeuwIhdsLrA1QEqBdJd48IqdgGiSuFllCywkBReVvOIs1yd+Sto6k/sidJqt32ILKqWeN8HN4mILWBOwuOg0BhPqt1TwzG8OvJ5YMYkhJkJeJgtKPepPKLMqRfISSql/e8zozrJu2XKCz/p+MA0rcuK3E+kd7acKiXigowJi/hj3D9OSO1nOVwJxTiXQlXEdBKF4WyI1h8TBXoAfBFBR+/Mj0FRZ1QBmpXJvHxzMtULU51OgzdwubAnthadNdi7xLYXS2nc9xMlOeo++p6CHRkv1GD1aCcECH55r9i3SgM8m2jTmKGGLvPmdfB4G1SSDVCZzKT6PQvq/IDyHcWk3OFCqxUEBIEi9j46IsVG2oA8EpqJC33uPLTK3l5ap0igMoJQnRBNTI/AWUC0BER+aP5luzOetZe+gXoXZbVRu0idkwCnu512g8/hORu98IiGiCnuhEufq4dotBs4BcNXkVZxkNrUKrs3Xhu1BoGaAzf/B1iEe9EW7wiU9qTnkbMsfKS6oVHdrBQGdgnJZfZNCFjKqC/Y+Jl2f2PpSqF5a56+9Jz96fUZUUIuvIrsjCm0NHA1m6mfYjNrzh6YGcjGwJq3wl66iEl12el79Ym3Sc62kHIfF0e7ZnEOEGJQOHG9ASfPZZulCVC4VKlAU4MmR/Gp4qYe2ALJ3kDeuVoNEB+MSZlDcb6bTcVBpgW+hIPSYSkowIdvIRRwfU7dcy6yC15CuBDmh9E/hFDW6Pnj83TuyqXtj48
- 3yjRbCc9
- 4T1RXdftjWDetqqtgo75HaEaU8fWlJ2DmPPuLkkay11ZN3DvILoJISFgM0aQjCS4omr7cazF7MuGDKbt3ol2cv7ZahZw0Svj4lNjuQHOJuqm7FqOy5zDaXbT175v0VM4/B8D9KdUcZuHt4iURBuR5HXD2EAVXOFAWR6+2Wv24pgVXIAd1NmBefiw9GOLBd6Y/C2QM9GIIaL448dx9LeMDsZ/g+d4255SIoNOWal0wV/i0p6DcgrjCS9ojB5wA5dGXAOFgcTY0Q1aBpqeNRzqD2QQKQA==
+X-Stat-Signature: a7eyq8771pw71u6z9afz4mcq81rek7io
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: F398840005
+X-HE-Tag: 1786967688-508824
+X-HE-Meta: U2FsdGVkX18SJMqu6UeV/jWNH5/Lzb7glfcx2hHKc24YlxLcL+8HCFUHWyNLCEjtEI0Q/SSxOc2L1tHD8zv34huvHghEMOskVNbw2MqRLnfgWciNBKZvrgKKYVr0Easj0N2tBXwsCKbQu6P8Jowp4ukq6/23rgUTklWX0n75gXfgWzCSceF02U0ah7+eeNohBJkwfzEa5hbQW7to+Sj3V93z++t1Qm4ctIAFNSn6HUNPapIJVsvTFJWrUKm37itNhpzsmF6M7EVxV8qlTUDGn3ZS9hlnvxmb4fPLWwhg1RguGa1Po5zsEA0a9U05/ao3LmJpWE4TGafhTd6PmgVD4GI5CPRyi6Ye48fkcIamDBY0IPJN53mNFZaxtlJYd/PzgxOHCeAUScxoAqe8NA7XolSsqtUCUnkBu97Dz4leM4IpHzxSPvKNl/NJUvAfD4SC6AOd3k2JCKBs+7dvmoAshM9fYojj+kez1oRMLr9H/bYRINT8sQ1d9zXTiTnZ/PwmpdkjEyAesSnJnmlvik5SBNgtZ8Q0QLGYlKkTnem4G5Z+WzcJRQ3rLQQJg1u1s7m7Q/kDmxp82J6FI5nFPWX51Ov0yx1ADZANyoKR2VpibrUfMe+hRe+wsLP2YJgSKcT8WytzglWQIJuFCLL8kKii6cpyF2x3dpGgTGApo6nX55cJQ1UJl51Ao8UZO7LxJSug9BaoSbCIYB3GWq/eSOiDdKXWOhN8AwvpP82yPLn9saVNIfIJm50jScQN6omkX5zwBRQ9MULnbpi25UzliljIvwcfXtSiaX8z9kwgRaE+lNMgZHi/bDBKIXyzJ2T4cmSnpp5htR+4yoKY7JIDDxEyt8E7RIiIyU0eshEzNyvoqff5MBG/eNBilDfiy/dRD9Q6FE28q780Gzxf3FgXmUae+1Uyxk/zzol7rGVSKEAx4M29dJkYuP6ekRPIyBdG432FJAx5naAmAwXPL7LrvzY
+ vJMYS6l7
+ 6XByUHUOnJGv14dZce1vmDoD1HoKyimNtMfXywHKXhfK6AuvayDVkIU9Xd/SJNTiO1mFUzGbNaJt0OICeV6NAvn73Y+OemubpF5ZqZrKYkvOiZvdwrIGWAxOITL77JsRo4ghUIs29l0sb3IfB4zUGcNBn4DnO5CGtIzJxSOrtVqPHiObebcMWdZsgZngH7qyyyzKgcZO8y/KANQO85cFTgd1ZoScOfDxsvKA4YyeQKCQabeSMODa9XR9RQmWe9miDCEJm2fb54/OByO9ZMsOnh39ZdqsjXVrOnesSv+rstUXM4MMy5Vgab+iKUTROiS1d+b9wcwF/wL1zj50TLn/fpieTYt1fJTyUix1oPqvDeuKdt/5KzyTKExiorw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,45 +94,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 06:48:38AM -0600, Nico Pache (Red Hat) wrote:
-> We are currently dropping the anon_vma write lock before unmapping the
-> PTE. Although this is safe, due to us still holding the mmap_write_lock,
-> its safer and less confusing to switch the order of these two operations.
->
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
+On 17/08/2026 12:29 pm, Lorenzo Stoakes (ARM) wrote:
+> +cc Muhammad
+> 
+> On Mon, Aug 17, 2026 at 04:06:16PM +0800, Hongfu Li wrote:
+>> From: Hongfu Li <lihongfu@kylinos.cn>
+>>
+>> Remove duplicate open() for local pagemap_fd in mprotect_tests() that
+>> shadows the global pagemap_fd already opened in main(). The local fd
+>> is never used in the function.
+>>
+>> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+> 
+> Hmm yeah it's not even closed either...
+> 
+> I'm assuming this was an error in the origianl tests, Muhammad - I'm
+> guessing some artifact of a previous approach or similar?
+Its definitively the dead code.
 
-LGTM so:
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-> ---
->  mm/khugepaged.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index b7372aba4417..0ba637df9c48 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -1546,10 +1546,10 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
->
->  	result = SCAN_SUCCEED;
->  out_up_write:
-> -	if (anon_vma_locked)
-> -		anon_vma_unlock_write(vma->anon_vma);
->  	if (pte)
->  		pte_unmap(pte);
-> +	if (anon_vma_locked)
-> +		anon_vma_unlock_write(vma->anon_vma);
->  	mmap_write_unlock(mm);
->  out_nolock:
->  	if (folio)
->
+> 
+> Anyway, LGTM, so:
+> 
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> 
+>> ---
+>>  tools/testing/selftests/mm/pagemap_ioctl.c | 6 ------
+>>  1 file changed, 6 deletions(-)
+>>
+>> diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
+>> index cfd1987339c1..eadc7159ca5b 100644
+>> --- a/tools/testing/selftests/mm/pagemap_ioctl.c
+>> +++ b/tools/testing/selftests/mm/pagemap_ioctl.c
+>> @@ -1332,12 +1332,6 @@ int mprotect_tests(void)
+>>  	int ret;
+>>  	char *mem, *mem2;
+>>  	struct page_region vec;
+>> -	int pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
+>> -
+>> -	if (pagemap_fd < 0) {
+>> -		fprintf(stderr, "open() failed\n");
+>> -		exit(1);
+>> -	}
+>>
+>>  	/* 1. Map two pages */
+>>  	mem = mmap(0, 2 * page_size, PROT_READ|PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+>> --
+>> 2.54.0
+>>
+> 
 > --
-> 2.55.0
->
+> Cheers, Lorenzo
+> 
 
---
-Cheers, Lorenzo
 
