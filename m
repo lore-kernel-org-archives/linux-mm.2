@@ -4,113 +4,165 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFBFAC5DF70
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 09:15:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1A63C5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 09:15:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDFF56B0927; Mon, 17 Aug 2026 05:15:08 -0400 (EDT)
+	id 37D246B0929; Mon, 17 Aug 2026 05:15:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB7E46B0929; Mon, 17 Aug 2026 05:15:08 -0400 (EDT)
+	id 354346B092B; Mon, 17 Aug 2026 05:15:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA6076B092A; Mon, 17 Aug 2026 05:15:08 -0400 (EDT)
+	id 26A076B092C; Mon, 17 Aug 2026 05:15:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E4E26B0927
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 05:15:08 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0483A1406E9
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:15:07 +0000 (UTC)
-X-FDA: 85110202296.23.A4124A2
-Received: from mta1.migadu.com (out-16.mta1.migadu.com [95.215.58.16])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 565534000B
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:15:05 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vXxHi0hF;
-	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.16 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E17556B0929
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 05:15:44 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7AB8A160676
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:15:44 +0000 (UTC)
+X-FDA: 85110203808.10.715A44F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 943041C0005
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:15:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X2wo0EqG;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786958105;
-	b=mWRKi6MuI8+1Ha3CQ5G79aDf6+Ob1k1rb80ulTiAr6geUGjy+cxPE+uEWV2XfE9NzNzsiV
-	hd3/PJsNGHUrcC1IuS3qtNtqTVo7x0yX/Xo7eTARKZYL6nvkGXIkR86+lCqqRwH7fKQQJV
-	zUfP6A/vEHidzCMSXVE3NdrQ6Xop1g8=
+	t=1786958142;
+	b=BUSmwGsOEcPZstckV+C5aBD/F2Z2VmqDJ+Vu/G4alzQEsyth0wITKNnPI3trkBQ7Lqf6bS
+	I0mGsr0jrckWOwFt2oP/FC7IgGdPO9dW8A6d9ZRnvTIC6uqmDt7qrF2jFeQFSnDSdfvU/c
+	wVWi8lbtYF/OarzWutaxU3r+I3QK8Q0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vXxHi0hF;
-	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.16 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X2wo0EqG;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786958105;
+	s=arc-20220608; t=1786958142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xAJkncNFO1CV14jrHvP8WQr7ofW3QBRXSu2XlOlQXP8=;
-	b=ZnllLLHJCvsH5DOWOxrrmKDcoPiH+6D72RD0CRFQaiCncUSUaFEr2pi46aIbhQ2THa8xBY
-	jgF5qJ4CNX+ZoAuuOg/1ozAXQeu1h8RyZT+UTmDk0rtizMY/Y/UJK9+/95hPkfxCM30G3X
-	AzQmHZXB5Og7GjYoU/KH+kjvS1Osrzg=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=pWjIzPp6KhwnpZxPKLQY7HtxbwT6Y+7x5vhR3ao5oew=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786958103; v=1; x=1787562903;
- b=vXxHi0hFLegDUVRy+lP+4FNVC/Sr0bIpIpJD42KG0oy70BkKjScvTiflAlW2Ge8WkM8a9C66
- X52v60JaH51CFBoiWuaUzR8c6A61L4uQye5pnpxsMf8n9D3kYGqcg8a+h/cCzuXQyQRTDHAy4MU
- VRviEzpVtdXkf2w+deLb8yNE=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2602:fce1:44f:115e::)
-	by smtp.migadu.com with ESMTPS id 61a6489cc58dd9a8;
-	Mon, 17 Aug 2026 09:14:53 +0000
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: shivankg@amd.com,
-	linmiaohe@huawei.com
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	riel@surriel.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	kmanaouil.dev@gmail.com,
-	fvdl@google.com,
-	kinseyho@google.com,
-	weixugc@google.com,
-	bharata@amd.com,
-	rientjes@google.com,
-	dev.jain@arm.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH v2 7/7] mm/rmap: batch the unmap of large folios in try_to_migrate_one()
-Date: Mon, 17 Aug 2026 17:14:44 +0800
-Message-Id: <20260817091444.58876-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260813-migrate-rmap-batch-v2-7-3c5424c555c7@amd.com>
-References: <20260813-migrate-rmap-batch-v2-7-3c5424c555c7@amd.com>
+	bh=n9jm7nE+72OxJlRILZ3KDGXzGVb6MqFq8JwjpfeAmYE=;
+	b=dwAyl8QveibI2AHpPNA+AoNjbTrzsfEAurgQXsrns/fiiokDByP7s4cZST7O5/50kbeZc5
+	qehbKcHzTxJJXiY/qDt84KPWqATait3prOA8mzY4Li/iXRqGR4WDZFNcWdW0apx5AzGnRb
+	M/DOGADABvww94zdvWHeO7gzdQtwzgU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AC40F41AB0;
+	Mon, 17 Aug 2026 09:15:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BA61F000E9;
+	Mon, 17 Aug 2026 09:15:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786958141;
+	bh=n9jm7nE+72OxJlRILZ3KDGXzGVb6MqFq8JwjpfeAmYE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=X2wo0EqGs5RjqnGB89rtFjzKK8w0JntqVFiM2OgPKQ2PRuF5REQNaZuYkKDJkhrhY
+	 I70NB75bFxsNlA+4hqOyNxYB9XKiHs3fi3hVBt7YIkVdjqu0+wYxWFySzi2gTETqGX
+	 2qwjV8ylR/zdA0b/kyqwBVDEhcJZzSUsSEGH6sbmNepbEzv6q5/0sqrYcXzy62pJaz
+	 LGOVRJJmZx6aWyUbZupzgRfsr4pmEc8oy2D9nafip5whrbjOXhNNtTxgL1/yI9mQCB
+	 0fOS/CNfCgB1n2fn/gOmN5OkrI7sfW5VtwPY8SFbUS4AoZqKl5OK8Ae4mduQLFG3y9
+	 FAE9l3uICQSWA==
+Message-ID: <18529aed-9bb9-4771-9799-ba35fa0c657a@kernel.org>
+Date: Mon, 17 Aug 2026 11:15:21 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 20/41] KVM: Let userspace disable per-VM mem
+ attributes, enable per-gmem attributes
+To: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
+ andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
+ Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-20-2fc18ee6d3ba@google.com>
+ <82ded1ea-e0f6-48d9-8bcb-38a6bc5e9176@kernel.org>
+ <CAEvNRgHpy52iynKfXeEkyCixhhu0_Hnu5jSNT8i+BNxvEoG7Cg@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAEvNRgHpy52iynKfXeEkyCixhhu0_Hnu5jSNT8i+BNxvEoG7Cg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 565534000B
-X-Rspamd-Server: rspam10
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: oojs3kphrhxqjro8u9wptrzphjtbiboh
-X-HE-Tag: 1786958105-432067
-X-HE-Meta: U2FsdGVkX1+NyxOYIwRa54APuCRtHr1VA/LDA62bUOfbAk55IRevyGFAdIdn64o58vrQ6PN+6teovfZfjRCFdbYN9Yv6NnXv5xeoDkU1d5rMDjZ4ImF2KJIWEKaiJ3zJTZ4k20IidxgTMxXqcDUt51lh8fBDjANgvQPRPs33Rtn+gBvAX8SLCHotCZPFSVzC06H4EG/s5NN0x1CUYpCNsoXndVes4zk3G6KJMkV8sT1BHTpx6i07LZe27549QUpMiLMdPyiYQ+aT6jVQQNxJnLRd7QwJac2/Vteh20qlrAesDJ+U296jU+yOw6F3xYJuMq8Z88vM8rkZVJWwk240kL5+d9pl4NO7YtOnGq6/Ou4OBOTokTGFB+hrYJAj165hf0cONf4oef+bcs6J1OHiIIE+/q5+GOmV7XeLhs1ws1paz4EwfNbZinjytKq0OWkoD7amG7jorOpA7qlm1mb+kw2ouQM5S/t2TN7gQyNtzD7XI7GZTuGP9x51DpDf/S2jLqdwrN42BQDcbU2GXUPmaTsVJCtDIOvB0aIin/QyUMdqpkPatj5GmarPoihanPbLUoJHjyq8fdW0S4qMJDC/GKVdJ72jhX5sIQCZL9K+iKW6sG5K4Q+UxLAR+mFL5xZ6Ovh+afuOa8YfignwE8OE1WwdXrwC6YE2KOcBeCFkrFfBF8E4XA+AmRgTxFeGmOxZn1stFJezOvk4WxSjMioAgI3dC3xxNh7O2pRlZbtyZSuR5MKEZPNzSjzTeWdFF0w8ON3UBQCUhA/kvbA3ChyST/In5+FYFel0VzU436evYM2zbw2WihrmR7xr99yNfnzMVV0W4NYzct/Df74tJGgzBbfj2+PcVljaby/ZsSJ2FcxJzq3U4QKG7txmD72Nl0/ScDI5VGNYmMlq9hjdq4g7MoUOcCu+SxUEy5cWnHP2d46YbCwjxmjt15qBoG/tfkBqAOGp6v97R7Y/fCjACfl
- hhEa2G9P
- 5R4awdvLr8JWjHNnqE/iLphu8QfpxX3bXl2dXeL12ZgRgg1/OkskFsLNwvJ0Yie/kXnbSzXLWkWgh2SaaW6wupduRkoXnoaj1mbUHmCsCPkm4Mj388AF1EKGOHsunQi2N/vm8AOaIxFuLTsmGPQ8DVubaxXGPVgW3xEOyMtG/xqADqHuUNuGdQ/ol3VHmFxZ/60qQMvSSKse6/gEMM2cUwabjKdxKnQmstHcUUzs4nCYsr+LUUgxE8YHX/pyfe4qWVB5Un+h/uSYnwElHwrNOIfLhfjUDGI6dvjXBFrlAxNPj+dujj87lH2JKTTAZyq4H57NrikBk9UoufGQduwqYn4LYRUQQeL6TObeJmqzR3mCX0aHJG/p2RAI0HaA7pLJxM2JtJ/6xjY+AjKDv3+4fusxiqPBsGI1TMVG6w80PqEDqvhs=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 943041C0005
+X-Stat-Signature: htt5mebo9f74bxa5qu1i848jthecpwnb
+X-HE-Tag: 1786958142-204803
+X-HE-Meta: U2FsdGVkX18HWW8rgK4E2WvfFrfuEPqEy2oEvWmHOqbt8d3ZEjdliH/K1LywfClsh96q1BmpspkfcAPUPmfwYhskyCYOXsMlqeEZBHsawSPG5lo9qABY5wauK+C5oIMiB6KzH1C3ayLi7+krQLEdEL0ftgSbGlVv02nupHgJvAm64N7s2Cqhz1CD57Zo4IYMeboO3Qq56ZU/wlzMf/rCerb2crWUNSJlMmmwfp8fZ7K9U+VL9J5gJwq3ks4Ye9mM3rzQyhDJg7s9blAnhiy5SBWU90Kpvycfgv5MX172LQHJBgq9QKm+XvPuVRgVbrLTE5LhAjje5t5lCWludaF2t1X/v6u71vIWUkCzLJdO7XssknNhKw4oFL0NQe6WlkyMxAMUx0f2h75RnWaWXT06cTANPG5hTDS6Q0syUkq9HyfS/D+m7twlOPWe3DpdabN1j0K1SR0E4b8rdubnG1XIBZHANGNr8N21GJho8gqmCK0gdaNQhjTiCxniqzyLw1Ie5PYWP8gQQfTGnJV1DPL709Ne2cnQIyYmJO1nmyxj6Gd2XTr+etJu51p9OAsHx8k/Kz5dJq4DqrJwX4OceZMj3XwgjSwr59Ec+4h8j36uK4CdobPWCeoW2zIYCMh17N5/iUeofr/LXo+MtruAAafl/hBPAWDkmyFGJabsaOAhUilhHHzmuWjV/LvQCo94sqO6QSbwHOUQPdW0HhiV/yu5PcWpaejCvxW3V8mtReDFmvJnmqhvy1GqHqtL3YjEdHxcSFxgl3eiOQhKubYt0PTJ/ynA8bJTB64nuBsAD2Be/qF2yLi/FGfxmWRXt6f+OdLF2wH4LhlHMMmCCcOM9FMRI8414p77sIsAUyOlP2lnBghXhOYP+4/ZHpgK61KeOHWuS6I80bUFu6ny+kVIr+eG35AM3zTyPgN60Bwa4ij1ueimQULIOBs86iP0w7fvbZGerVBByClZZugL6zTOTX0
+ znz5BQc8
+ VeD6JOVqHqiRxOO7vX9tSXXoZ2ce689yw+G1OXuVYAOR/Hb8jRrABGOUfwNYRaEwB/aUbKBZ5GD0X+2Rxw2LHVkBXfC0QM0Kjb59iqV6I5SbKon4gsVWP/s6GKtc3BmiVChOF7+1tUrHDnBVOgfDhsWmpYYoa6wic1BI/s82/sKFl0hssLkQ3AlRi7SvKMHNw3YdODcD5Vgfo+/2bUiNaOsy1cp826Nbppy4TToSPWoS+SU6eyKUPbdIPMBuALBYmQpxFWCz5cJ23tjUMbfzk5uuauNdEaHw7WKJ1PSgh3Pg9JQZcxKVhFxUGYg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,243 +170,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+Cc Miaohe
+On 8/13/26 23:23, Ackerley Tng wrote:
+> "David Hildenbrand (Arm)" <david@kernel.org> writes:
+> 
+>> On 8/7/26 23:52, Ackerley Tng via B4 Relay wrote:
+>>> From: Ackerley Tng <ackerleytng@google.com>
+>>>
+>>>
+>>> [...snip...]
+>>>
+>>> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+>>> index abb108886733a..2c3c22aeafa54 100644
+>>> --- a/arch/x86/kvm/Kconfig
+>>> +++ b/arch/x86/kvm/Kconfig
+>>> @@ -81,13 +81,21 @@ config KVM_WERROR
+>>>  	  If in doubt, say "N".
+>>>
+>>>  config KVM_VM_MEMORY_ATTRIBUTES
+>>> -	bool
+>>> +	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
+>>> +	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
+>>> +	help
+>>> +	  Enable support for tracking PRIVATE vs. SHARED memory using per-VM
+>>> +	  memory attributes.  Using per-VM attributes is deprecated in favor of
+>>> +	  tracking PRIVATE state in guest_memfd.  Select this if you need to run
+>>> +	  CoCo VMs using a VMM that doesn't support guest_memfd memory
+>>> +	  attributes.
+>>> +
+>>> +	  If unsure, say N.
+>>
+>> Hm, does that imply that a distribution that must support both, cannot ship a
+>> single kernel?
+>>
+> 
+> Did you mean this as a documentation comment? Should the above read:
 
-On Thu, Aug 13, 2026 at 04:23:18AM +0000, Shivank Garg wrote:
->try_to_migrate_one() converts present PTEs to migration entries one at a
->time. For a PTE-mapped large folio, this repeat calls to ptep clear+flush,
->the migration entry build and set, folio_remove_rmap_pte() and folio_put(),
->each re-entering page_vma_mapped_walk() once per base page (256 times for
->1M folio).
->
->Mirror try_to_unmap_one() to introduce folio_migrate_pte_batch() to detect
->eligible batch for PTEs mapping conseuctive subpages of a large folios,
->and convert the whole batch in one shot using the batched helpers.
->
->A side-effect of this change is trace_set_migration_pte() will record
->one event per batched run instead of earlier behavior of one per base page.
->
->Signed-off-by: Shivank Garg <shivankg@amd.com>
->---
-> mm/rmap.c | 115 ++++++++++++++++++++++++++++++++++++++++++++++----------------
-> 1 file changed, 86 insertions(+), 29 deletions(-)
->
->diff --git a/mm/rmap.c b/mm/rmap.c
->index 35752a70f3a0..63b885c0b7ef 100644
->--- a/mm/rmap.c
->+++ b/mm/rmap.c
->@@ -2675,6 +2675,44 @@ static bool try_to_migrate_hugetlb_one(struct folio *folio,
-> 	return ret;
-> }
-> 
->+static inline unsigned int folio_migrate_pte_batch(struct folio *folio,
->+		struct page_vma_mapped_walk *pvmw, pte_t pte,
->+		struct page *subpage, bool anon_exclusive)
->+{
->+	unsigned long end_addr, addr = pvmw->address;
->+	struct vm_area_struct *vma = pvmw->vma;
->+	unsigned int max_nr, nr;
->+
->+#ifdef __HAVE_ARCH_UNMAP_ONE
->+	/* Cannot batch unmap if arch_unmap_one() is defined. */
->+	return 1;
->+#endif
->+
->+	if (!folio_test_large(folio))
->+		return 1;
->+	if (folio_is_zone_device(folio) || folio_test_has_hwpoisoned(folio))
->+		return 1;
->+	if (pte_unused(pte))
->+		return 1;
->+
->+	/* We may only batch within a single VMA and a single page table. */
->+	end_addr = pmd_addr_end(addr, vma->vm_end);
->+	max_nr = (end_addr - addr) >> PAGE_SHIFT;
+No, I was trying to understand the impact :)
 
-Hmm ... can this still batch over a poisoned tail page?
+IIUC, a distribution that would have to support both would simply enable
+CONFIG_KVM_VM_MEMORY_ATTRIBUTES, and the module parameter would have to be used
+to select the mode of operation.
 
-memory_failure() sets PageHWPoison() before taking folio lock, but
-cannot set PG_has_hwpoisoned until it acquires and releases that lock.
+I guess that's good enough!
 
-So tail page can already be poisoned while folio_test_has_hwpoisoned()
-still returns false ... no?
+> 
+> 	help
+> 	  Enable support for tracking PRIVATE vs. SHARED memory using per-VM
+> 	  memory attributes.  Using per-VM attributes is deprecated in favor of
+> 	  tracking PRIVATE state in guest_memfd.  Select this if you need to run
+> 	  CoCo VMs using a VMM that doesn't support guest_memfd memory
+> -	  attributes.
+> +	  attributes. Select this to defer selection of where PRIVATE vs. SHARED
+> +	  attributes are tracked to KVM module load time, where
+> +	  gmem_in_place_conversion can be specified as a module parameter.
+> 
+> 	  If unsure, say N.
+> 
+> I think we should do _without_ the above clarification since using VM
+> memory attributes for shared/private status is intended to be
+> deprecated.
+> 
+> Is it fair to say distributions should not support both, and if they
+> _must_ support both, they need to read code to figure this out?
 
-Starting from a healthy first subpage, folio_migrate_pte_batch() can
-then batch across poisoned tail page. hwpoison only describes first
-subpage, so set_softleaf_ptes() installs a normal migration entry for
-poisoned page instead of an HWPoison entry ...
+Yeah, I don't think we need a doc update.
 
-Should folio_migrate_pte_batch() check PageHWPoison() on every candidate
-subpage and stop before a poisoned one?
+-- 
+Cheers,
 
-Cheers, Lance
-
-
->+	/*
->+	 * If unmap fails, we need to restore the ptes. To avoid accidentally
->+	 * upgrading write permissions for ptes that were not originally writable,
->+	 * and to avoid losing the soft-dirty bit, use the appropriate FPB flags.
->+	 */
->+	nr = folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_nr,
->+				   FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
->+
->+	/* Limit possible batch count to a uniform PageAnonExclusive value */
->+	if (folio_test_anon(folio))
->+		nr = page_anon_exclusive_batch(0, nr, subpage, anon_exclusive);
->+
->+	return nr;
->+}
->+
-> /*
->  * @arg: enum ttu_flags will be passed to this argument.
->  *
->@@ -2686,12 +2724,12 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
-> {
-> 	struct mm_struct *mm = vma->vm_mm;
-> 	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
->-	bool anon_exclusive, writable, ret = true;
->+	bool anon_exclusive, hwpoison, writable, ret = true;
-> 	pte_t pteval;
-> 	struct page *subpage;
-> 	struct mmu_notifier_range range;
-> 	enum ttu_flags flags = (enum ttu_flags)(long)arg;
->-	unsigned long pfn;
->+	unsigned long pfn, end_addr, nr_pages;
-> 
-> 	/*
-> 	 * When racing against e.g. zap_pte_range() on another cpu,
->@@ -2744,11 +2782,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
-> 			VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
-> 					!folio_test_pmd_mappable(folio), folio);
-> 
->-			if (set_pmd_migration_entry(&pvmw, subpage)) {
->-				ret = false;
->-				page_vma_mapped_walk_done(&pvmw);
->-				break;
->-			}
->+			if (set_pmd_migration_entry(&pvmw, subpage))
->+				goto walk_abort;
-> 			continue;
-> #endif
-> 		}
->@@ -2773,10 +2808,25 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
-> 		subpage = folio_page(folio, pfn - folio_pfn(folio));
-> 		anon_exclusive = folio_test_anon(folio) &&
-> 				 PageAnonExclusive(subpage);
->+		/*
->+		 * memory_failure() can set PageHWPoison concurrently without holding
->+		 * the folio lock. Snapshot the flag here to decide whether to batch
->+		 * PTEs or install hwpoison entry.
->+		 */
->+		hwpoison = PageHWPoison(subpage);
-> 
->+		nr_pages = 1;
-> 		if (likely(pte_present(pteval))) {
->-			flush_cache_page(vma, address, pfn);
->-			/* Nuke the page table entry. */
->+			if (!hwpoison)
->+				nr_pages = folio_migrate_pte_batch(folio, &pvmw,
->+								   pteval, subpage,
->+								   anon_exclusive);
->+
->+			end_addr = address + nr_pages * PAGE_SIZE;
->+			flush_cache_range(vma, address, end_addr);
->+
->+			/* Nuke the page table entries. */
->+			pteval = get_and_clear_ptes(mm, address, pvmw.pte, nr_pages);
-> 			if (should_defer_flush(mm, flags)) {
-> 				/*
-> 				 * We clear the PTE but do not flush so potentially
->@@ -2786,11 +2836,9 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
-> 				 * transition on a cached TLB entry is written through
-> 				 * and traps if the PTE is unmapped.
-> 				 */
->-				pteval = ptep_get_and_clear(mm, address, pvmw.pte);
->-
->-				set_tlb_ubc_flush_pending(mm, pteval, address, address + PAGE_SIZE);
->+				set_tlb_ubc_flush_pending(mm, pteval, address, end_addr);
-> 			} else {
->-				pteval = ptep_clear_flush(vma, address, pvmw.pte);
->+				flush_tlb_range(vma, address, end_addr);
-> 			}
-> 			if (pte_dirty(pteval))
-> 				folio_mark_dirty(folio);
->@@ -2809,7 +2857,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
-> 		/* Update high watermark before we lower rss */
-> 		update_hiwater_rss(mm);
-> 
->-		if (PageHWPoison(subpage)) {
->+		if (hwpoison) {
->+			VM_WARN_ON_ONCE(nr_pages != 1);
-> 			VM_WARN_ON_FOLIO(folio_is_device_private(folio), folio);
-> 
-> 			pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
->@@ -2837,19 +2886,15 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
-> 			 * so we'll not check/care.
-> 			 */
-> 			if (arch_unmap_one(mm, vma, address, pteval) < 0) {
->-				set_pte_at(mm, address, pvmw.pte, pteval);
->-				ret = false;
->-				page_vma_mapped_walk_done(&pvmw);
->-				break;
->+				set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
->+				goto walk_abort;
-> 			}
-> 
->-			/* See folio_try_share_anon_rmap_pte(): clear PTE first. */
->+			/* See folio_try_share_anon_rmap_ptes(): clear PTE first. */
-> 			if (anon_exclusive &&
->-			    folio_try_share_anon_rmap_pte(folio, subpage)) {
->-				set_pte_at(mm, address, pvmw.pte, pteval);
->-				ret = false;
->-				page_vma_mapped_walk_done(&pvmw);
->-				break;
->+			    folio_try_share_anon_rmap_ptes(folio, subpage, nr_pages)) {
->+				set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
->+				goto walk_abort;
-> 			}
-> 
-> 			/*
->@@ -2859,19 +2904,31 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
-> 			 */
-> 			swp_pte = make_migration_pte(subpage, pteval,
-> 						     writable, anon_exclusive);
->-			set_pte_at(mm, address, pvmw.pte, swp_pte);
-> 			trace_set_migration_pte(address, pte_val(swp_pte),
-> 						folio_order(folio));
->+
->+			/* Set nr_pages migration entries, advancing the PFN. */
->+			set_softleaf_ptes(mm, address, pvmw.pte, swp_pte, nr_pages);
-> 			/*
-> 			 * No need to invalidate here it will synchronize on
-> 			 * against the special swap migration pte.
-> 			 */
-> 		}
-> 
->-		folio_remove_rmap_pte(folio, subpage, vma);
->-		if (vma->vm_flags & VM_LOCKED)
->-			mlock_drain_local();
->-		folio_put(folio);
->+		finish_folio_unmap(vma, folio, subpage, nr_pages);
->+
->+		/*
->+		 * If we batched the entire folio, there is nothing left to
->+		 * walk; stop right here.
->+		 */
->+		if (nr_pages == folio_nr_pages(folio))
->+			goto walk_done;
->+		continue;
->+walk_abort:
->+		ret = false;
->+walk_done:
->+		page_vma_mapped_walk_done(&pvmw);
->+		break;
-> 	}
-> 
-> 	mmu_notifier_invalidate_range_end(&range);
->
->-- 
->2.43.0
->
->
+David
 
