@@ -4,135 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53883C5DF66
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 15:58:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AAB3C5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 16:04:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D5586B00E6; Mon, 17 Aug 2026 11:58:06 -0400 (EDT)
+	id 8F0066B00EC; Mon, 17 Aug 2026 12:04:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 586926B00EB; Mon, 17 Aug 2026 11:58:06 -0400 (EDT)
+	id 8C6F56B00ED; Mon, 17 Aug 2026 12:04:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44E546B00EC; Mon, 17 Aug 2026 11:58:06 -0400 (EDT)
+	id 8084A6B00EE; Mon, 17 Aug 2026 12:04:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 167A96B00E6
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:58:06 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9064E807E6
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 15:58:05 +0000 (UTC)
-X-FDA: 85111217730.06.66D8FD3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id D7B3A20004
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 15:58:03 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cqdcn0VG;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DF926B00EC
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:04:28 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DB7D81C1BDA
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:04:27 +0000 (UTC)
+X-FDA: 85111233774.01.33925CF
+Received: from mta0.migadu.com (out-247.mta0.migadu.com [91.218.175.247])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C0EF840012
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:04:25 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=q6GDh+eB;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.247 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786982283;
+	s=arc-20220608; t=1786982666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nEGXB4A5gVD4yhh0v+vjyPfNcNQP55l8H/ySHn4DwGQ=;
-	b=T2sa+XPSn6qJ75CaWd/ZZIdXOwUmTu4NpB29cB/+oANZht9CesPWkwfExdISTxXKtx5azP
-	v8Ak4EfjNjEFvESIH2Unns+aX/b7bhjE4057weisMV+3ojhFqnwb1h3FvR4V4fuTlmPVbP
-	h04BpTDxjoq6k4305iQxIsNWKJDVpcE=
+	bh=6bvKWwul4MAxt/vg5vHzP9YNSKR5ox5YJG9+JAY1sAI=;
+	b=Uq3AVeTmRTLN/xOejg+FblbuT6fK8KmifbCTPb1WQ3Steq7vnYECsNG8lHdsCSANYr7VlV
+	AJwjwJvvuDE3sBFMvdJdkadKJdLljKYzWMYxBddKKHx0jEI/u3Qmfu1wVswdm1+HKtR1hg
+	SjhznuwXRV62Mwsp6WOi3thenk1y0wU=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cqdcn0VG;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=q6GDh+eB;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.247 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786982283;
-	b=wRq9E28N7+M02khrC4WbkCj731W9ftp2t6TW2Qy4Uh7zPb/YMIxnb0ZQoPHafadNehsAjU
-	+f3fHIsO3zR74B9y/BN3rdgee4qR0FWpskKrvuryBf/4y8qbuHBWmwpumM3XTYnw8xLtrF
-	zjQtoFoVG9W6Omim38q4ThoVX+NQytw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 52D5A600AE;
-	Mon, 17 Aug 2026 15:58:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1301F000E9;
-	Mon, 17 Aug 2026 15:57:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786982283;
-	bh=nEGXB4A5gVD4yhh0v+vjyPfNcNQP55l8H/ySHn4DwGQ=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=cqdcn0VGZiBw5cJDNbINfl/B+RMp0pLKQTMRA1L5+2zx0oxf/a3N+mJbpErITF0/X
-	 rfIYuYCcevchud8bbCcu3lHyMeFHE+OfB+o6SbNFSSOq0Ekil1yvNf/UhqW+2AV/fU
-	 3HokIPyP6rwkKmZe6wf9CnXzmAnUzYltUBK5EuiXcRZrhqNNX5WqkqkKK21D1BsfqQ
-	 IYvG+KlxKMssGDnj4s6F9GKwC+Qe5Gd4/uu3yy0GCHinH82ZHABJiyaMR7sWNXNm7h
-	 xQrAHBYiMTzisUHg9v1gr5PYS5ymqJKncbGH4BELavH03xPLbBq5YlH8Q61nGLlKdN
-	 ufrfKPI5fO1DQ==
-Message-ID: <e20678ed-3fa1-4677-a1d7-e2af481e8302@kernel.org>
-Date: Mon, 17 Aug 2026 17:57:57 +0200
+	t=1786982666;
+	b=X2Fw+9KNXArnaNPjgitWcelR1btvS5DOii/BFBVGrIgLoHaUr3IZWK9nnsk0wa2986irgc
+	0D3HYzHtWGmVe+DGZLRsRhrEnYcRzlxfsrJCDPHzbYVWnEdsCB8T/I/bLI5xSmbin4SnxE
+	wx4j7AravX8T30K2Usb+GFLjcjmsXQE=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=SjbR/PgkZJDP5BslDAQ5jDOl6LqPclZDfgrCJIHFSoo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786982664; v=1; x=1787587464;
+ b=q6GDh+eBCm+kWE8Uz+mzm0jcNG/ij3QPcfwPu9KuLFB7eDnHb2Ebs1CauCm2IpS1vEeeaseL
+ OE48io6WE6RAtPfCRZI4sd3sA+CXcQDkEFH1I6qZGyvmK8PuJB+9bXuIjmvpuJNOmv7Q7UBburd
+ bzs6+SyBOxk4kTDzUuDE3W6s=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (2a03:2880:10ff:2a::)
+	by smtp.migadu.com with ESMTPS id 68c5ea4acd3a7bb7;
+	Mon, 17 Aug 2026 16:04:24 +0000
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 17 Aug 2026 09:04:18 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Song Hu <husong@kylinos.cn>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, hannes@cmpxchg.org, nphamcs@gmail.com, yosry@kernel.org, 
+	chengming.zhou@linux.dev, yunzhao@cloudflare.com
+Subject: Re: [PATCH] mm: memcg: use ratelimited stats flush in
+ obj_cgroup_may_zswap()
+Message-ID: <aoMvtKr6o8a6KpDf@linux.dev>
+References: <20260817131843.45121-1-husong@kylinos.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm: Use a folio in the softleaf_is_device_private path
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Hongfu Li <hongfu.li@linux.dev>, akpm@linux-foundation.org,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Hongfu Li <lihongfu@kylinos.cn>
-References: <20260803031554.30421-1-hongfu.li@linux.dev>
- <3ae2f1e1-c784-44ed-9b2c-5edf5699d627@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <3ae2f1e1-c784-44ed-9b2c-5edf5699d627@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D7B3A20004
-X-Stat-Signature: nhfptya7ddzhz787crazftnuapmfynhe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260817131843.45121-1-husong@kylinos.cn>
 X-Rspam-User: 
-X-HE-Tag: 1786982283-701679
-X-HE-Meta: U2FsdGVkX18vIHWN9S0jHm52vWrZbzR0bZNhAdEz3tKjZORd96AVOnz9zdOY0VcNHKr1fcQ00K3u+CkBXkzvq6hZjkGa2ptnq7THJQ910DA0MfBdz09XOD3IsQ6PvWLe6wPxzoJnM5WHkALD8hpjLpC7qYnVhnMK+kr77O5RRbZP8GY5aLSE9+8KYtClkitMu5ChMHXDmDorM2dTdF6VJsh18qnUGhB8GkJxPk8pI4DaK9REJ/qrAqaX3jfv20P3uvopCR9ueRTMMx7ciA2oC9olmVS+Fvt4BIvL4jbCuaXwvj4tioCLXqy6FA4Lnf+Le/ah+Z4HQ9Fe/y9p3dmrY9EK/zGf9Mid+orn77QmqPIleOGaUHF1JOKrrCG2SGF2aum0wb2S7V278khvVJz4b1IR/qNqOizXgEMU6NFVisBZegZ8cUU2s4Yn7bhiKt0FPVuDsb0WfwPuv5TXYlJN0qxAkujVev0UdKOApzch5QT94Q+X9zliZsfK1jgueNvgsSYHo8pVqDPkSDr1vMG2W5H56sDoqm/Urkpf/nsGnYbtyD5bAqWmSwiB0oTvoLM0QfDdfAk3FZVV6u1pVdAJQQZMukHiAeoDzj942btEjAoqiBcVBBkpfZjk0t/EyzUeHmbg4oijpwQIqMbkRXfI4dLWohF1gf2evBaZPO7mOq6824BM3KBqXTev8hptg/rP+R/WE23sfiwaQS+yCfsu3GnGtd3NZPYo+N1g3HBKgaCFhDUuWyjUlF/N2R1/goJaqnsjuctpkkMXasbaU5BfzDs4R+wJa4ZsoLuS02SS6nqpRFDzPDig2PLELk6vNL3AnaBPXwf7DEMTijkMYF1AcU0qg5cU/DMgcMSUnlmwtyqkMlTFwUM+6g0myl3wL9b5mvnwSV+WNGoQOviUU0DEQHyN7v1RUklgzFGI0NHobvLWyV6KsMRsyZmaK6VdLmmEYgltO40qHImjLWekPox
- CpYxi/r/
- w0mWYBRJdY0N4h5/hdHncbUT4mYNW44NYPw/+VqbBe5ZPliiBwQATofPQpPplKzKDFyrAYrn6m3MEO0YenLkDJn/wqcOyl6SIf9uMJR6Lzu6wbAualh5bzmfhiCQYZvXObo/H1XSYRXhj7TH0p+G1uwwKbEhRaigZlCDvWw5IV0v4zQ7a6pslqHfRcgdJehTmcCkLM7eRwut2scc8ASwfbnUqpYX4tzBpYcf/EwGleFdXwcwJ6W6No2+ZiRRRT5Ewcq/Lod9VNSsLs4jWACPVEvoSRh4BfLuVUWPC+/Z8vh5kYzEGh84OiakBxMdUvtfj9IvxfSGlHw7xHVU=
+X-Rspamd-Queue-Id: C0EF840012
+X-Rspamd-Server: rspam07
+X-Stat-Signature: udbqxwzzbiuxs71zueuhjayyib1fophr
+X-HE-Tag: 1786982665-793882
+X-HE-Meta: U2FsdGVkX1/3A8TkBOAfNu4XcfpVSRjtUgh6CLey4ph5Scqe7Wyea1qQo7s80K99QqU4U7RagRbBD74lDqT6nd7BDk2KUjSsOvXtgQrJvzdL2r6Rvd1Ma5cncficd8dtzQ4nfRt8eZ8Tc5eNwxjW2uBJG6XOl10w/DHGEYMDCwJpWD0aBRkwwSAmRlYrYVjUHgzXn8CLRZCrZ3HtZKeDTWdYH0VoifS87SATpJFdxVi4lPX3zoRoy2/O/RHB3rRoA7WhgnvzWMfESDGlLaIaLfdnxbcuV4jqsHz1OQZqRWHmI5cmYN6mHp+vw3QN1LSlCH36BsH+H+rxyk3GOZfTtqf0unE3Ell02w/Pd2oNnVA2upA1is6djnkY1lbbluvebjNZflJ7XaCFBBVTKVTDZEoNizrgZ8gdkQGGOlvr73xvVBJWguB5/VUFRmMrkBA+XMeoeOzSllONxjGcA5hi5BLLvPpB/WMmdITCyWV6x0UOIglIA0s3NC8qAm+DTbbvb0LxImcVV4OtqQOS28lEhk5ra1hr5sxFY5tUjb1AfKWd7sVfK25RYlAPAsI5Cjr8cXoz69TarfQNj2EkPRTNwbk9k67RUrle/510J00K5iSEoBxAaCPDprj7/8N+PfcSTVZlrihexCW6Q/jGLyyxQZhT+6UOX8wdSzsh9+7jHCvuO4vQC0MQbOZziIkDHfoThR5vr2Y5mtD3ooRiLmIu9X7Aw+mYkPN1BCPKPiQxBdjNRSq4bkj6/PlaFrIyTSVsVVW8Nc2bzzbBFzj3FwfpJMqvp50epAOZPpCLjsHDNGgt6krSzEojBdDy1jV5jv6C4ndfhrMMzM+MjVVFWlLRDtq4/2B+hrURiO+sTj6C0gHOy3yyydwL3X49Qz07T2+39xtZqc4DIsL1BkLFfT7jApwlSinLrRiq3r+EuwggPUE1aiFC+TuLd7XDJ8swDS0kNpPpct3MXy5F47yZpXt
+ q7cxSCbh
+ O+1n9ttne/B77+fMYxLeIFUzvY7SAIq9sWCoL/Tc1LArh0iVaEhX8P6jpwsXpzaKcdEwejbbPZoNOEbGogb1DN8LhCUl1GFMH1KEvzwHjPQL2oPlAGPq0t+aZczFcDNpvS0z+cGZkG9e/w9LneH11Bn7LJgird22yt/NxC1Sm9X9s14WiNPi64TsSxEvgxBbBfrYcnW533EMswYNGPpyzb1f5VFXSBzo9IxnLY38zH6t/77jZ0ja0hk0CMC1/QbyTKOClPnuGdulU3HzZGL13ai+6e7hGQbrrWEPT+zBhFWgLMkdESya9IUvu3R2fd07UC0VALt5F9n9/L/BgPMPV0g3VG+W4fPVnehdoSz6/gZghCic=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,127 +90,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/17/26 17:52, David Hildenbrand (Arm) wrote:
-> On 8/3/26 05:15, Hongfu Li wrote:
->> From: Hongfu Li <lihongfu@kylinos.cn>
->>
->> Use the folio APIs in the device_private migration path of do_swap_page(),
->> replacing four calls to compound_head() with one.
->>
->> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
->> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->> ---
->> v4:
->> - Drop the do_non_swap_page() extraction (patch 2/2 from v2)
->> - Added Reviewed-by: Lorenzo Stoakes
->> - Link to v2: https://lore.kernel.org/all/20260723030752.16979-1-hongfu.li@linux.dev/
->> v3:
->> - Please ignore v3.
->> v2:
->> - Drop fault_folio, reuse the existing folio variable instead
->> - Refresh commit messages
->> - Update comment to use "folio" instead of "page" in the
->>   device_private path
->> - Add Acked-by: David Hildenbrand
->> - Add patch 2/2 to extract do_non_swap_page() from do_swap_page()
->> - Link to v1: https://lore.kernel.org/all/20260721013347.65698-1-hongfu.li@linux.dev/
->> ---
->>  mm/memory.c | 11 ++++++-----
->>  1 file changed, 6 insertions(+), 5 deletions(-)
->>
->> diff --git a/mm/memory.c b/mm/memory.c
->> index 56b244552f13..bbb289ba09d3 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -4873,18 +4873,19 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->>  				goto unlock;
->>  
->>  			/*
->> -			 * Get a page reference while we know the page can't be
->> +			 * Get a folio reference while we know the folio can't be
->>  			 * freed.
->>  			 */
->> -			if (trylock_page(vmf->page)) {
->> +			folio = page_folio(vmf->page);
->> +			if (folio_trylock(folio)) {
->>  				struct dev_pagemap *pgmap;
->>  
->> -				get_page(vmf->page);
->> +				folio_get(folio);
->>  				pte_unmap_unlock(vmf->pte, vmf->ptl);
->>  				pgmap = page_pgmap(vmf->page);
->>  				ret = pgmap->ops->migrate_to_ram(vmf);
->> -				unlock_page(vmf->page);
->> -				put_page(vmf->page);
->> +				folio_unlock(folio);
->> +				folio_put(folio);
->>  			} else {
->>  				pte_unmap(vmf->pte);
->>  				softleaf_entry_wait_on_locked(entry, vmf->ptl);
-> 
-> Okay, so this breaks the HMM selftests:
-> 
-> # ok 30 hmm.hmm_device_private.migrate_anon_huge_fault
-> # #  RUN           hmm.hmm_device_private.migrate_partial_unmap_fault ...
-> [   14.589125] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-> [   14.589178] Modules linked in: test_hmm
-> [   14.589203] CPU: 25 UID: 0 PID: 653 Comm: hmm-tests Not tainted 7.2.0-rc5+ #14 PREEMPT 
-> [   14.589243] Hardware name: linux,dummy-virt (DT)
-> [   14.589268] pstate: 63400005 (nZCv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-> [   14.589300] pc : folio_unlock+0x78/0x88
-> [   14.589326] lr : folio_unlock+0x78/0x88
-> [   14.589349] sp : ffff80008284bb90
-> [   14.589368] x29: ffff80008284bb90 x28: ffff0000cc8ce180 x27: 0000000000000000
-> [   14.589406] x26: 0000000000000000 x25: ffff0000ca395dc0 x24: 0000000000000000
-> [   14.589447] x23: 0000000020100073 x22: ffff0000c23d35c0 x21: ffffffffbfff8000
-> [   14.589485] x20: ffffffffbfff8000 x19: ffff80008284bca0 x18: 0000000000000010
-> [   14.589523] x17: 3030303030303030 x16: 2066666666666666 x15: 6630303030303030
-> [   14.589562] x14: 0000000000000000 x13: 29296f696c6f6628 x12: 64656b636f6c5f74
-> [   14.589603] x11: fffffffffffc7100 x10: fffffffffffc70b0 x9 : ffffb0504ff88f70
-> [   14.589640] x8 : 3fffffffffffdfff x7 : ffff000c79b24bc0 x6 : 00000000000001a7
-> [   14.589680] x5 : ffff000c79b24bc0 x4 : 0000000000000000 x3 : 0000000000000000
-> [   14.589718] x2 : 0000000000000000 x1 : ffff0000cc8ce180 x0 : 000000000000003f
-> [   14.589756] Call trace:
-> [   14.589769]  folio_unlock+0x78/0x88 (P)
-> [   14.589792]  do_swap_page+0xf40/0x1580
-> [   14.589815]  __handle_mm_fault+0x648/0xe68
-> [   14.589838]  handle_mm_fault+0x9c/0x330
-> [   14.589858]  do_page_fault+0x268/0x7e0
-> [   14.589882]  do_translation_fault+0x5c/0x80
-> [   14.589904]  do_mem_abort+0x48/0xa0
-> [   14.589927]  el0_da+0x38/0xd0
-> [   14.589948]  el0t_64_sync_handler+0xd0/0xe8
-> [   14.589970]  el0t_64_sync+0x198/0x1a0
-> [   14.589990] Code: d65f03c0 d000eec1 913c4021 94015993 (d4210000) 
-> 
-> I can only speculate that we need another
-> 
-> 	folio = page_folio(vmf->page);
-> 
-> after the migrate_to_ram() call.
-> 
-> Let me try that real quick.
-> 
+On Mon, Aug 17, 2026 at 09:18:43PM +0800, Song Hu wrote:
+> obj_cgroup_may_zswap() runs on every folio swapped out through
+> zswap.  For each ancestor with a non-max zswap.max, it flushes the
+> cgroup rstat hierarchy synchronously with force=true, which skips
+> the ratelimit inside __mem_cgroup_flush_stats().  In a swap storm
+> with zswap.max configured, a container takes the global rstat lock
+> on every swapped-out folio.
 
-Yeah, that fixes it:
+Any reason you are limiting zswap through zswap.max?
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 4134ac607ee0..83d1a2be957c 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4937,6 +4937,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-                                pte_unmap_unlock(vmf->pte, vmf->ptl);
-                                pgmap = page_pgmap(vmf->page);
-                                ret = pgmap->ops->migrate_to_ram(vmf);
-+                               folio = page_folio(vmf->page);
-                                folio_unlock(folio);
-                                folio_put(folio);
-                        } else {
+> 
+> zswap_shrinker_count() had the same pattern and switched to
+> mem_cgroup_flush_stats_ratelimited() in commit ea80da363a1f
+> ("mm/zswap: use ratelimited stats flush in zswap_shrinker_count()"),
+> where the same flush on the shrinker side showed up at 2.88% of
+> kernel cycles under osq_lock on a 96-core machine.
+> 
+> Measured on a KVM guest with a swap storm under a cgroup with
+> zswap.max set: obj_cgroup_may_zswap() was entered 198,977 times
+> before the patch and 198,968 times after, while
+> __mem_cgroup_flush_stats() was entered 281,017 times before and
+> 80,445 times after.  The removed 200,572 flushes match the store
+> attempt count almost exactly; the remainder comes from other stats
+> readers in the swap path.
 
+This is a known issue. Using ratelimited interface also comes with a drawback
+that the kernel may react on stale information and the consequences might be
+unneeded oom-kills.
 
--- 
-Cheers,
+There was orthogonal discussion on moving zswap limit enforcement away from
+rstat. Yosry, any updates on that?
 
-David
+> 
+> The stats can now be up to one flusher cycle stale, so zswap.max
+> admission can overshoot for one cycle in a storm; the overshoot is
+> corrected as soon as the next flush lands and later stores see it,
+> the same tradeoff the shrinker side made.
+> 
+> Fixes: f4840ccfca25 ("zswap: memcg accounting")
+> Signed-off-by: Song Hu <husong@kylinos.cn>
+> ---
+>  mm/memcontrol.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 17da1f43b7d3..7a8f689055c6 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -6000,8 +6000,7 @@ bool obj_cgroup_may_zswap(struct obj_cgroup *objcg)
+>  			break;
+>  		}
+>  
+> -		/* Force flush to get accurate stats for charging */
+> -		__mem_cgroup_flush_stats(memcg, true);
+> +		mem_cgroup_flush_stats_ratelimited(memcg);
+>  		pages = memcg_page_state(memcg, MEMCG_ZSWAP_B) / PAGE_SIZE;
+>  		if (pages < max)
+>  			continue;
+> -- 
+> 2.43.0
+> 
 
