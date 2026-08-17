@@ -4,88 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E898C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 13:46:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39CA2C5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 13:49:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68DC76B0156; Mon, 17 Aug 2026 09:46:05 -0400 (EDT)
+	id 227306B00D9; Mon, 17 Aug 2026 09:49:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6660E6B0163; Mon, 17 Aug 2026 09:46:05 -0400 (EDT)
+	id 1D95F6B00DB; Mon, 17 Aug 2026 09:49:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A2726B0426; Mon, 17 Aug 2026 09:46:05 -0400 (EDT)
+	id 0EFEE6B00DD; Mon, 17 Aug 2026 09:49:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 32F236B0156
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:46:05 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CA67CA07B0
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:46:04 +0000 (UTC)
-X-FDA: 85110885048.15.A0875D8
-Received: from devianza.investici.org (devianza.investici.org [198.167.222.108])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 86E2440009
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:46:02 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=AGIu3f6g;
-	spf=pass (imf01.hostedemail.com: domain of include@grrlz.net designates 198.167.222.108 as permitted sender) smtp.mailfrom=include@grrlz.net;
-	dmarc=pass (policy=reject) header.from=grrlz.net
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E3E416B00D9
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:49:55 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8020E1207A8
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:49:55 +0000 (UTC)
+X-FDA: 85110894750.17.71FDB60
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 03DD014000F
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:49:51 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=huawei-partners.com header.s=dkim header.b=ad5DWPZN;
+	spf=pass (imf09.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786974593;
+	b=arjyKGJP71k0z4F6uMf+BmrAEX8CkAfjgge9ftVLCqO2+N9T/EIIWb3wwqEtCJsJPHZc3R
+	VOfLc/tOkpA8ZlQPPI7Bv/X0oVVDrtWjSgy+k2IaPh9Yrne69Eoe2g+FP/PZgCf+XCBnEp
+	+wsRMC3t3RMpqTMnof+EIV11Edsu5v4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=huawei-partners.com header.s=dkim header.b=ad5DWPZN;
+	spf=pass (imf09.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786974363;
+	s=arc-20220608; t=1786974593;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ig8b2sENsh4uRBZuRVMIOvnD2w3jOwT8EfqPmaadLzY=;
-	b=TeFsABAvn2MEVmPfXi+FZBBYqOSLC4af8sKjooTEqAGOLkOd0NNLyjUr/lUUZ9L3q0fVPU
-	RbOiwCbz3v/aOAI2TOtCVMC13WQSW/lO2rsIrMZrd1I0ZwCB6aejhBex4xhwyyWLm678ge
-	swM8s83QYkRAMKdbVKRNvZ18pA9eW7o=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786974363;
-	b=7QbPuEiGKAgCKzwmSdXHuPmFaXEUZjo4/EVQEPlfw1E5vbfKC+irCdSZW/f2/zWNsrpduz
-	iz3x3Um4eVKg742O7oZwyAT4OJAHn/OL5PjhaPaOapTA+CL7cbQaj+YfNvRlrzUri4TrVy
-	AlmIpx49qM31M+ZLUTusueamSdG91sg=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=AGIu3f6g;
-	spf=pass (imf01.hostedemail.com: domain of include@grrlz.net designates 198.167.222.108 as permitted sender) smtp.mailfrom=include@grrlz.net;
-	dmarc=pass (policy=reject) header.from=grrlz.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
-	s=stigmate; t=1786974361;
-	bh=ig8b2sENsh4uRBZuRVMIOvnD2w3jOwT8EfqPmaadLzY=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=AGIu3f6giLeq5unMffhjmaNuwQG+K2BpF+4ytiFS5wBUFnwDpoT+5nKLTQJTcVHJK
-	 yYdVw8LyfbYpRLhrJnEsl/O0xUCrbegGEAZasN7B+G4R6eRWhVnK7m60ZMrGZeEy1H
-	 ejUPu3tHSjFbEv3BRigCKoZeM2H/gKBXAS9wGIfk=
-Received: from mx2.investici.org (unknown [127.0.0.1])
-	by devianza.investici.org (Postfix) with ESMTP id 4hNvHY3gdZz6vL2;
-	Mon, 17 Aug 2026 13:46:01 +0000 (UTC)
-Received: by mx2.investici.org (Postfix) id 4hNvHY0Chmz4y6W;
-	Mon, 17 Aug 2026 13:46:00 +0000 (UTC)
-Date: Mon, 17 Aug 2026 14:46:02 +0100
-From: Bradley Morgan <include@grrlz.net>
-To: Joel Granados <joel.granados@kernel.org>
-CC: akpm@linux-foundation.org, hannes@cmpxchg.org, kees@kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com,
- shijianlin11@foxmail.com, shuah@kernel.org, surenb@google.com,
- vbabka@kernel.org, ziy@nvidia.com
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_3/4=5D_sysctl=3A_Disallow_part?=
- =?US-ASCII?Q?ial_updates_for_erroneous_sysctl_vectors?=
-In-Reply-To: <FB1BAD61-3BC2-4CF0-9345-6CC2E9EC548A@grrlz.net>
-References: <20260814-lklm-partial_ctlvec-v2-3-9df50d26e477@kernel.org> <3A4FCA2B-2F42-4E8F-A328-5C1BD658B2A8@grrlz.net> <cwfpl5h47km6f35m5k7wa2pj3elciaax6i3nmetxcgws66qewq@fzygztolxed4> <FB1BAD61-3BC2-4CF0-9345-6CC2E9EC548A@grrlz.net>
-Message-ID: <C95DE45D-776A-4856-808F-936D7642756E@grrlz.net>
+	bh=b/Sge/HEaRHrAnq6gNY9Urt58pOU9P34p0y2R0WVaEE=;
+	b=sRLHewJxhenfAIGZMIK8Bo/bTCJ1XID24yBXc6GTBxBwswwYZZrGF5sj6+HnA4yGjTQzB0
+	YvpLRMqvlBXMBENTWW5n18+IxIlTDhDa/RV0lGea5AfgX97UrYnmlQ7FPPB2x+8X8hAY98
+	aNswV4n8+QghMDnHvi0OWpGafubpO7w=
+dkim-signature: v=1; a=rsa-sha256; d=huawei-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=b/Sge/HEaRHrAnq6gNY9Urt58pOU9P34p0y2R0WVaEE=;
+	b=ad5DWPZN3XAbiYxp7mTiS9vw22QA2QbQ/CsFhV52wvnlImJKGoN7CzDhWbtFj0LJJis75hoLt
+	H9DvtZ9d4jEsbmjFmeny8iTNN0bZhyFws0odThksdMKabfPRuUnB/xIK4M1eiDJqCNtaTwDrg9T
+	mDDLsS5EZaLKv0rv8XalUQg=
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4hNvMn1ngmzJ46F6;
+	Mon, 17 Aug 2026 21:49:41 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 146BB40575;
+	Mon, 17 Aug 2026 21:49:46 +0800 (CST)
+Received: from [10.123.123.154] (10.123.123.154) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 17 Aug 2026 16:49:45 +0300
+Message-ID: <dc075f92-2291-49f0-8f89-01b2ffb7fd82@huawei-partners.com>
+Date: Mon, 17 Aug 2026 16:49:45 +0300
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/damon/core: introduce damon_set_target_pid()
+To: Enze Li <lienze@kylinos.cn>, <sj@kernel.org>, <akpm@linux-foundation.org>
+CC: <damon@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <enze.li@gmx.com>
+References: <20260817125319.888994-1-lienze@kylinos.cn>
+Content-Language: en-US
+From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+In-Reply-To: <20260817125319.888994-1-lienze@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.123.123.154]
+X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
+X-Rspamd-Queue-Id: 03DD014000F
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: gnk16ee4iyrzfjb3bno3aimkotrbjwcd
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 86E2440009
-X-HE-Tag: 1786974362-649309
-X-HE-Meta: U2FsdGVkX1+2hbidpbhfHc6UA0IyOeLV1zRqDRxuMSt8hv8TBF8craqwv+8wwOllCy2FETdM9hvgbU1nI2gvSlGEYb29cKBDo6h12/1NEetAT/+giEbjzKCmKFjwf/MNv6YcBDMXSzIZ4B4CmN+nMxKFBjXfyOQXHZicR1Zcwq7JlZKODaa7I03+2RTV1cY8/lTZAmIcIqCzf2kPC8HRRNeaqdETyarjLk2n71zk50y16hh95cnLFH4KObz35d/qyK1BpesNWQpez9ZBR5iHao0gpegQltwOYU8w4njPCiawLFYoQjRI1op4Zcr4m7plHarAAF66QYyHXg17Qrfcio57p5jSF8Kry5D+ZXB7hb8/rLhiyCm/qGDiGuyTMUwWy4sDrqgiuy5oVK8wJ/SqeN+XOK5Jx6l+5NMCIq6+Q5Z07DsIVe5DJs0qbf4GA58+umLSKsqJEJaCkowhTlZJ2kMfOAxKQnjCPnU7iXbepgelMdPS7kP+AhxQ1JQkG/k1LqVyIsppcdSGwvO180/n/mMti7mhQPmu/b1jSTqmri0y4XlsOtWiN5kTGz5/qSDS7dlgHLE1BE6t1fWMvG/bQv6Psty6iN8CSUmJznrEMrd1jYrCK+PBzwUZro1xkUovu3XhXnECU9UpjmDyxcxGZ5xrbBH3vCvOODxQBnSUtQ1A6mEef8YdnnIMw4iE/gBJ2YLfR6w2rmuK1SkN0uFTuUC/iIsb3G+LWMOqvtax5Io2m2pc/Qn4zjRaoj1g3HZy3sHOJDmAhoQ7rV8t8Fp38DnN5T2UY5hqc0ieGyYGpda+8xfhrYXi9cy9Gt08pTWPr1/gYoN5qlmLEFqqFjY75y4pniOx5cS7VmU/M6mVpZ17VLTWGaueUsbmQ4cAvMdXznhvGWcn/t/xExglJ7cNZSb/AMer8coh14B6vWZiR6HxaQtcC0WEoNosfB2MN0Yrwl2N38Td2LkFXfpZtei
- bw2qFKiA
- WtKbv1SYO5Sk2MPd0D0s3cO9gGa3b/TxUDf+QHLeXzDoC6ceCVxr7DYYw5CNpIboh7O4XraGd5Kdb1B8dRXJmOrHiRfzI+AXWArLV3BtISXUzh9byfMAlUZXXb3MLsRL9Y1TCAgd5b3BpNL3ELokkZYw+dY+NaRhtcc9yaNZn4eVDzeXhDDVgCmbJislCkX1FQe9l30c2EylZ8ZqiDexhGDEqSMcg389iLY4ggLSTVoVSsKId4IeDUWXX7uJ0yq7Hbqjo34eC3A7eG61zB6kilcBxo22Cne3rZ7WVQ7LH/gPHqXcf4azs4gsgGSWUIQADRMELQcR2BxMtd985yXC0JS/89KsCwAFNT2buBBEtje2sGqQgWaFYCrEmqvM3SPGgxj3VfoBAyiCD87O563I26k7NrfAKw1la4O782zvRWSS1kRMeNOmJFpb3IzuoCJCkiQPjnVh45iJ2/Ag=
+X-Stat-Signature: f4dwa1csb1exqzrp7o6w6aonegyuhgcm
+X-HE-Tag: 1786974591-397041
+X-HE-Meta: U2FsdGVkX191xB2SXwbFHp8W8za0pOSbPF9jivu32UTkdK2XW2O5xasMONuGZj7pH+OMJNDpncVZPIkZSi2KkE1uSZCOjoxv52FUj+xEQxEKDBRrKMqiqWTqndfNAuVyvkMG2ILpzKn7xcWtaP9NJALg3hhOjJ3TWP5hTWFSR96c8KMNnJFfBJ4Mja44zYN1zLxi6rQ+YYkx3knEYErnEqNftxhIbBQX1G6s6T5V3oZR9+g8ayPiE0HFYwBGKK0vsQ5ljH7+yhFThAZODNKABrMDl7pQY0WMFKr/OOxFxP54PKyyWFR5523ncityiorv3WCUC4aSXP1vlSPBKi86HeI2lFXuVmJYNihEiZYhgotVtQEoKuIrd+gWZs27+3CdhCCwGQT6TSJqpoRgKtKCBqtxNT8+/2Jjh0e4fKoMv3hlQMrfiet1ph3Doj8UVzU+Qj82uLVTCJb0Bmynv9Rzt4JD7ynuPvmiUEiud55bS3mQE/pSoj9q0hDFIL2fqC63SjpzHWveqClgrIRg1A+k3g2jHIimQRaKxjwldbNGtM/E+Ah2951BaHNR7WxTMpnCYuDYeZ4WwbEWjMbYc2oGT+ZkY7ntTSLy+T4G6xjyMkTiR7rAiyY12Ao3Ecdovf2h70B1l26r6t7N7YKMFT5z+t8X1zbBCQ6AmUk4+oxAbAprBLhcbr/qhGtSmgzw+ppXU6GCtNiV947fMAoDgfr44d+7i/HAg9iF/Y8o3td5XIk3Qzsfv9jowAmUD9pzK5OE/q8B8gZ77QzllFF7HoKrLrzOkY27ZCW8R+6U2VzD5HAwEHrl4617On+uhFu4h3+YqCGe6mmoV0WD5PC0s7gRX5FJlnE1a8QfnnptEZKTRudOduOZOPgxw93PbvQDBqvPVLzog0D6NGuUrHcLKiXDdUPvlDnc01eUxb+6Al4ARjgNNnwvolUnFSyeCNn20d6QSoADCqKpA6g1Qib0uc8
+ Pt8LGC4y
+ G13ymE8V8ZIbaT2mHWm0KJa9h9PdCKJn+Skq4gQdZVkD3NrOkJbxnrUXUlU+DEYjouBIl3wpn2shUk+Cu4HdUIzAT3pGuMyZ2btfQExCqp/JKKUlGplctLe6FAAb4VFSIl6XKvzsNaEABw+N8eD3LV79wsARHwLznFqKjNEYxHj3xt37+L4fNaVvH1hVnkJCBFsY0fdj26+86/KPIL7IMqNfFfjSk7lOw7oOHL2/YqEowyYbqG9oUgvbEb+sQL3GtM5cwkkiElBcfj5Ab5fNSK5hE2Xvb5K11vdxBI97k9puOfvIOxXt84T5XdguqvnQmZD7fVToAaqlvZj85DvU2sMENqRNG/LKj4D0gZyM+mGNMiH+B/pabi7WW8UaeO4Cw1ZcHLrO5CnyKfv0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,66 +98,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17 August 2026 14:44:29 BST, Bradley Morgan <include@grrlz.net> wrote:
->On 17 August 2026 14:43:44 BST, Joel Granados <joel.granados@kernel.org>
->wrote:
->>On Sat, Aug 15, 2026 at 05:05:26PM +0100, Bradley Morgan wrote:
->>> commit_conv_vec() writes the elements one by one, so a reader can
->>> still see a mix of old and new values while the loop runs. Same as
->>> before this series, so no regression, but the changelog could say
->>> this doesn't make the write atomic either. Otherwise someone later
->>> will expect the vector to change all at once.
->>
->>Seems reasonable: here is what I added to the commit message:
->>
->>
->>"
->>... This (The staging vector) does **not** make the write atomic as a
->>reader
->>can still see a partially updated vector.
->>
->
->Good enough.
->
+Hi Enze,
 
+On 8/17/2026 3:53 PM, Enze Li wrote:
+> The logic that finds the struct pid for a given pid number and assigns
+> it to a damon_target is duplicated in multiple places.  Including
+> damon_sysfs_add_target() of mm/damon/sysfs.c and the start functions
+> of the two sample modules, samples/damon/wsse.c and
+> samples/damon/prcl.c.  Add a function that does the work, and replace
+> the duplicated code in the places with calls to the function.
+> 
+> Signed-off-by: Enze Li <lienze@kylinos.cn>
+> ---
+>  include/linux/damon.h |  1 +
+>  mm/damon/core.c       | 12 ++++++++++++
+>  mm/damon/sysfs.c      |  6 ++----
+>  samples/damon/prcl.c  |  5 +----
+>  samples/damon/wsse.c  |  5 +----
+>  5 files changed, 17 insertions(+), 12 deletions(-)
+> 
+> diff --git a/include/linux/damon.h b/include/linux/damon.h
+> index 0c8b7ddef9ab..a937aa55170b 100644
+> --- a/include/linux/damon.h
+> +++ b/include/linux/damon.h
+> @@ -1054,6 +1054,7 @@ int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src);
+>  
+>  struct damon_target *damon_new_target(void);
+>  void damon_add_target(struct damon_ctx *ctx, struct damon_target *t);
+> +int damon_set_target_pid(struct damon_target *t, int pid);
+>  bool damon_targets_empty(struct damon_ctx *ctx);
+>  void damon_free_target(struct damon_target *t);
+>  void damon_destroy_target(struct damon_target *t, struct damon_ctx *ctx);
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 644daf5a1656..82b196407ae8 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -10,6 +10,7 @@
+>  #include <linux/kthread.h>
+>  #include <linux/memcontrol.h>
+>  #include <linux/mm.h>
+> +#include <linux/pid.h>
+>  #include <linux/psi.h>
+>  #include <linux/sched.h>
+>  #include <linux/slab.h>
+> @@ -795,6 +796,17 @@ void damon_add_target(struct damon_ctx *ctx, struct damon_target *t)
+>  	list_add_tail(&t->list, &ctx->adaptive_targets);
+>  }
+>  
+> +/*
+> + * Assign the struct pid of the given pid number to the given target.
+> + */
+This method is simple enough. Do we really need a comment?
+> +int damon_set_target_pid(struct damon_target *t, int pid)
+> +{
+> +	t->pid = find_get_pid(pid);
+> +	if (!t->pid)
+> +		return -EINVAL;
+> +	return 0;
+> +}
+> +
+>  bool damon_targets_empty(struct damon_ctx *ctx)
+>  {
+>  	return list_empty(&ctx->adaptive_targets);
+> diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+> index e3858ffab4b2..3c81b4c91ac0 100644
+> --- a/mm/damon/sysfs.c
+> +++ b/mm/damon/sysfs.c
+> @@ -3,7 +3,6 @@
+>   * DAMON sysfs Interface
+>   */
+>  
+> -#include <linux/pid.h>
+>  #include <linux/sched.h>
+>  #include <linux/slab.h>
+>  
+> @@ -2035,9 +2034,8 @@ static int damon_sysfs_add_target(struct damon_sysfs_target *sys_target,
+>  		return -ENOMEM;
+>  	damon_add_target(ctx, t);
+>  	if (damon_target_has_pid(ctx)) {
+> -		t->pid = find_get_pid(sys_target->pid);
+> -		if (!t->pid)
+> -			/* caller will destroy targets */
+> +		/* caller will destroy targets */
+> +		if (damon_set_target_pid(t, sys_target->pid))
+>  			return -EINVAL;
+>  	}
+>  	t->obsolete = sys_target->obsolete;
+> diff --git a/samples/damon/prcl.c b/samples/damon/prcl.c
+> index 842099bd6228..83ddf12811d5 100644
+> --- a/samples/damon/prcl.c
+> +++ b/samples/damon/prcl.c
+> @@ -32,7 +32,6 @@ module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
+>  MODULE_PARM_DESC(enabled, "Enable or disable DAMON_SAMPLE_PRCL");
+>  
+>  static struct damon_ctx *ctx;
+> -static struct pid *target_pidp;
+>  
+>  static int damon_sample_prcl_repeat_call_fn(void *data)
+>  {
+> @@ -79,12 +78,10 @@ static int damon_sample_prcl_start(void)
+>  		return -ENOMEM;
+>  	}
+>  	damon_add_target(ctx, target);
+> -	target_pidp = find_get_pid(target_pid);
+> -	if (!target_pidp) {
+> +	if (damon_set_target_pid(target, target_pid)) {
+>  		damon_destroy_ctx(ctx);
+>  		return -EINVAL;
+>  	}
+> -	target->pid = target_pidp;
+>  
+>  	scheme = damon_new_scheme(
+>  			&(struct damos_access_pattern) {
+> diff --git a/samples/damon/wsse.c b/samples/damon/wsse.c
+> index 37fd5da20158..53944aea8428 100644
+> --- a/samples/damon/wsse.c
+> +++ b/samples/damon/wsse.c
+> @@ -33,7 +33,6 @@ module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
+>  MODULE_PARM_DESC(enabled, "Enable or disable DAMON_SAMPLE_WSSE");
+>  
+>  static struct damon_ctx *ctx;
+> -static struct pid *target_pidp;
+>  
+>  static int damon_sample_wsse_repeat_call_fn(void *data)
+>  {
+> @@ -79,12 +78,10 @@ static int damon_sample_wsse_start(void)
+>  		return -ENOMEM;
+>  	}
+>  	damon_add_target(ctx, target);
+> -	target_pidp = find_get_pid(target_pid);
+> -	if (!target_pidp) {
+> +	if (damon_set_target_pid(target, target_pid)) {
+>  		damon_destroy_ctx(ctx);
+>  		return -EINVAL;
+>  	}
+> -	target->pid = target_pidp;
+>  
+>  	err = damon_start(&ctx, 1, true);
+>  	if (err) {
 
-Hmm. Removed a folk off CC:
+Otherwise, it looks like a nice patch.
 
+-- 
+Asier Gutierrez
+Huawei
 
-** Address not found **
-
-Your message wasn't delivered to jackmanb@google.com because the address
-couldn't be found, or is unable to receive mail.
-
-Learn more here: https://support.google.com/mail/?p=NoSuchUser
-
-The response was:
-
-The email account that you tried to reach does not exist. Please try
-double-checking the recipient's email address for typos or unnecessary
-spaces. For more information, go to
-https://support.google.com/mail/?p=NoSuchUser
-
-:(
-
->
->>...
->>"
->>
->>Best
->>
->>Joel
->>
->>> 
->>> The copy is limited by table->maxlen and only vectors pay for it.
->>> 
->>> Fine by me.
->>> 
->>> Reviewed-by: Bradley Morgan <include@grrlz.net>
->>> Thanks!
->>
->
->Thanks!
-
-Thanks!
 
