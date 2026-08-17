@@ -4,84 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F33ABC5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 17:57:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D93E7C5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 18:10:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15C8C6B088F; Mon, 17 Aug 2026 13:57:45 -0400 (EDT)
+	id D0EA86B011B; Mon, 17 Aug 2026 14:10:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10E0E6B0892; Mon, 17 Aug 2026 13:57:45 -0400 (EDT)
+	id CEC5F6B02DE; Mon, 17 Aug 2026 14:10:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3F066B0894; Mon, 17 Aug 2026 13:57:44 -0400 (EDT)
+	id BFC7A6B0468; Mon, 17 Aug 2026 14:10:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CB11D6B088F
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:57:44 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2740E808D0
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:57:43 +0000 (UTC)
-X-FDA: 85111519206.07.99D7B0E
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 915A16B011B
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 14:10:38 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DBE12408BC
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:10:34 +0000 (UTC)
+X-FDA: 85111551588.21.E7EC7B0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 324554000A
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:57:41 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ReK/IXSP";
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2D8331C0002
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:10:32 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P6u3cyJO;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786989461;
+	s=arc-20220608; t=1786990233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i2yF4c1OLwY8lWTysKwC0MTw86KJas6HJqgjleBRs4w=;
-	b=QOJE1DFG4y04C03WdRMuDjGxQxvlgORh6sTJgXBubTgCG72844kZaNT7DA4iZcOiT5gm5u
-	C6RDHBB3EqcnrQcx7SU3tr1B0162k5OubRBxRFIJnmgrIAWB8FWwKtAUtmms+v8r5KyZW8
-	Byy1JfahVz/Zir6h/nd4XOZBYx+yyy4=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ReK/IXSP";
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=IWschY6PJIJj78TPAK68wuF6XfNqvRhD4s+H+yde0ec=;
+	b=up1tuZCi529sHGSVaV1K86bid/1yyI+U2BGmCgd1jkpE4vAoDGLvD3D7SwSA8ycWRBqpxH
+	Cj6WwpQ3N4dWPjTOQZr5cJWc4VTUBjnLCSsfhBfKYjIHMs3u3nAHS2HiBYSY2d3UM+m6iV
+	xzyfbBbQtdcqY/Yus4YmJClirxCw86U=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786989461;
-	b=aD9SQUZfe9LbW1hxZIxwJfeSFXvWEvA8utDjpayjfZdWtpAqvNtLh2dbAwybYyByEq0WCd
-	LJIyGog/COE1T59gRo5osK/hukP4Cfde+axOkj9mA48vIxs9VGO6MGJFYjgSLuzK8MzOOl
-	ZP3Hn4VI9fJ3HCta8yB4KLNxzv9N3rw=
+	t=1786990233;
+	b=4YCb3dJPArrVIHbIq7Gq9PzHlwMrWhJaw87gnngokqBKkYt3l9ZLBu58QeIR+C0GPdBAr8
+	fiZ8FvHgGZmemv8kExvDTG7QCSDjUsTcXcZDnlFtXo7wk52pe506DWr373F/ymkcQHul9h
+	Fa51OOQuOkh8VsA7Es1prcoqh9BsT7w=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P6u3cyJO;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B0F4F600AE;
-	Mon, 17 Aug 2026 17:57:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51E31F000E9;
-	Mon, 17 Aug 2026 17:57:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9A90F600AE;
+	Mon, 17 Aug 2026 18:10:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7283B1F000E9;
+	Mon, 17 Aug 2026 18:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786989460;
-	bh=i2yF4c1OLwY8lWTysKwC0MTw86KJas6HJqgjleBRs4w=;
+	s=k20260515; t=1786990232;
+	bh=IWschY6PJIJj78TPAK68wuF6XfNqvRhD4s+H+yde0ec=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ReK/IXSPH/4YsYTJZkaBfAvgKjwrfynlRf/qwsQFkzdMLro7PTAjFl9rXfwinda3h
-	 OoQWPkCFVlEV6OoqID/oSBHI8ah3Fjca17apx3QCIYgKh2gsIKiaUlyN5dcXI/LUJF
-	 V1rN0ix1OEhOTAkppuFKARsF75Ifu5mRR+sNJHDfI7Y0ICb8TnOEcnuqx+MskgGzaH
-	 xwtxbBHv+KboL/M9Zy5sQ63uKgAFzHv9K1ffro05lDfVoWmBsMZxmEPqm3/3DV7qyL
-	 xevV7ckBzNltGWxcfh3NH3aWU+NR6wb8BKE3bE8qmuL2QupgF99sxiHYIsLQolH8P+
-	 awDL+LI2VFGxg==
-Message-ID: <4e8e208c-3aa4-4060-b0a2-499bc76d19fa@kernel.org>
-Date: Mon, 17 Aug 2026 19:57:29 +0200
+	b=P6u3cyJOWqTGgmW2GpD2BfOMO+B6rcLUTroOW0CnhXHdzCA9hhbVgBoQyJnIMYQln
+	 ixmfd+ipl+0hMRrTCQiawq5EZ4qv193Fdt/sAatEejaoei9OExsjZVIXOVxID4VkuY
+	 KquJ+6JlpsFLMatZHvmkhsSVsjCPOWirDHXQ31UPChw/MI7AzicEq10JTfjGVF04Xc
+	 eqVWKErNMzostAW2c98rp/7g0HtznoiY7HfuAfJBD9Z7XFVhpzJCd4CdOApzkFxM95
+	 KhB1y5lCFli53BwAp9WLWlIcxVmmW4Lg5cFVsqHGeuIDQo0/SqGXb7C4eCfabHvMS5
+	 r/7/IUcLjvNjw==
+Message-ID: <04f3ce2f-67f5-4829-9551-a69b9df29854@kernel.org>
+Date: Mon, 17 Aug 2026 20:10:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 02/57] mm: add pte_none_or_zero()
-To: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org,
- ljs@kernel.org, nico.pache@linux.dev
-Cc: baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com,
- hughd@google.com, lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com,
- rppt@kernel.org, ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com,
- usama.arif@linux.dev, vbabka@kernel.org, ziy@nvidia.com,
- usama.anjum@arm.com, agordeev@linux.ibm.com, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- kas@kernel.org, jannh@google.com, willy@infradead.org, pfalcato@suse.de,
- rostedt@goodmis.org, mhiramat@kernel.org,
- linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
-References: <20260816224609.308019-1-kirill@shutemov.name>
- <20260816224609.308019-3-kirill@shutemov.name>
+Subject: Re: [RFC] bpf: account ring buffer backing pages separately from Lost
+ RAM
+To: Xiang Gao <gxxa03070307@gmail.com>, Andrii Nakryiko <andrii@kernel.org>
+Cc: Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Andrew Morton <akpm@linux-foundation.org>, yinchuang1@xiaomi.com,
+ bpf@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Xiang Gao <gaoxiang17@xiaomi.com>,
+ "Lorenzo Stoakes (Arm)" <ljs@kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>
+References: <20260815091819.3651099-1-gaoxiang17@xiaomi.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260816224609.308019-3-kirill@shutemov.name>
+In-Reply-To: <20260815091819.3651099-1-gaoxiang17@xiaomi.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 324554000A
-X-Stat-Signature: tqb6wg7zabdiwih4gywuums97y475xa4
 X-Rspam-User: 
-X-HE-Tag: 1786989461-189980
-X-HE-Meta: U2FsdGVkX1+I3hNnefFFIXxd/EwESZfL8Ghrka2wOGK03zt4UTVFjRBMts5NgPZeYyCk9ClYxaUdjRjNLG73w9NjGVcHkD9GYCjoKQ59nhWpRgEgoznMeIobmUQurraLfWwUS0e6tsxlf4iuvjGBq0ZbsY0hbDAqIvdhsmrVZD1MNuioB4Gm+q9rCe/cbf2jfofP/xt7mqQ3kiR5R/lohxvsnjliF+blku4olaZUv1iriRwMXTxddykrxfRu3aMrPE++Pb9iyP4MSHYZ98mXPWiLNzCSFUsEdJDDnFC6mLrBvtmEJnTavjhZ+nl4Swhoymv0Al/DOaUWGk8kpPzsPLfszK6aUqWjFrMm6/ZWaIDexOipFUuKL/qR+8z/oezJgtZvcUDT5bspsPasxaaQVUKDVtezSONamundm7m4npLtVaxOJy93Kf/xAYjZOt3YAQc0Bq0hLU+QfgMlprJt32KfaDWMXjle477pkQ24Qzh4tPYaeUPeYnUXXHeupH6/3i1JTZ2tAP6A8uTKSERf3QbvVsPEAHbAvKkQ9hRzHrjv/YCQ0edj3OTVHCizjaigq8+g77tUu+VP6UK9SYzLnFYG1u42etfAUDuZOsKsKyQ1ec3yK/hfw5a7AnuQeodn7Nfzo2DnNyPLkm16jS8VBlKdrWkCJkAWQmpj2zYty7Tfx8N1m5Hu89j4pj5y+EPO4OUvrCbQzYQcsO7V7GMKeecXkgr8PrqRWBPkVBCIG2qVSY87nFhMzhXxgca/oqZA9TXJoqnSfg0ooqRByv3YfGkMkm08xwW8WjhR81RzP9Ub1NjEINwt0ESX0kRVHEGx27QPc6OgsK9SDsFfwzeTU+w8BwBFDdrpqVY44hpOihb8JzacMh5vGSHNu9reLoSi6nAphGwGY5zl+AiwLycE0AXnDe7PRLA4lgo1JApEQuVDFyZdxF2LdDySHV+GXX+6LRdGddS0QIq7MZZqo7V
- O10Ct5cb
- RLp7UDF6bcU0c8/21jvyUd3MMDI8OIdeiva185++MyDakYQ4knHvO11S4glCG2gS6pL28LhgZVpVjHHtzyBAVvcslI03DkOELQfGFTlqTQlscde7k2IQ5btHxNzo2ztbKnQlt+LutJiNkWoAyyQecVBmsH70lZFBVaZVYc/QLLF+Jo3wUEMs9k0zOTOjhIyhMxEn51FPu9KmIfbU+04woBNnkW0frYUhn9GAvEZw+c93CcDFGBhJWqniczm2nPd03jkvcELkE3q8CJNPK6L/51YFc+fu7EEx66jq+75UmF0V39Yl6xmBgkpdRtsWwGOgaCrJ4MksM43fySn4=
+X-Stat-Signature: i688ir1taecqsjsdj9f4eujajzgoq5op
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2D8331C0002
+X-HE-Tag: 1786990232-344412
+X-HE-Meta: U2FsdGVkX19Ve1cm6eDCuv09hbf80RmHfb8vl4LXpPzeqbQ1Wtuaxk/U75NCKJBvNdLQz2Uh2FveyYG8NuIzyqiqdczNfWpIdNMejDEpx4fR7eGg/7nxs87dIy+5I1cKjSVI07hlUuV8/k3lLSpT2jFOI35xQjRquvrKqDEG5N7sAxtdgjP8EMWWouJ9lZMOrTpu2ct5lkUENPOz1dc5aGgT+V7esSCl3Udaj1U5Dp0faOGmrBnMG07vZYQ4QBTvVtk5RnNTG1GhINzSorFLD10xRTuM/suSQbVva787cxPC6IOvuNcPs8JOElPT0DJaJgL/36aYo/IIIk1rxhY8GaZeLPs6gsIcc4o2+D9GFkJCSBQRKUqqlSL/0n9NHWWBQVAdQPAN057RSeYaJyjKwKBfktvQW+NeoF3ZMKGyFuDbS+4XUkdaUTxf4D4n4cYSOxyNx363amyVdqEKNV+0K0n3aeUJBtXsObFvIaJXcefEvzrQpi+PlXGViz+XCLofzx9M/uz8lGKJWX3ugsM/F4+r3JLHsYOanQM0Rz7Y4QVGFP84uCX1dudDhMFW+8QwTDEqXOnElsNV8eCGBo+FtFMZX2GFObfZKHudV12SDxL6hKzzHMoub2sCFPIFZfBbGjavg043zENUU9yf8lhbvH9iCGjVy41IgNkLJo3GyLznHLGU7bKsgzLWIuyVBCpVpZV2mmPReKTOPuK+8OIF/3MVOjz8mZ/D1Aq4y8ER7s2y9wOQK6TMhtpQ/z/+yb0qrJj/f8mRzgTO1QxBeP0q0+HVoWbngV4u7H7WN7Rg80hXcigqkXcII5OfhD3ocJYyST7zsIXN0HS5oS4dmwixBDs/Z2DCvaB2j2fDF65KCHCvFacVm5AUp717qSuziW26Dn3MYQ2xZPHdyeWvJFFfrbLbnwI//Tg0wcNR7WDz7DU6yRaV8HlRYU6EVyMJ7j+fC0jJPEme1IhIe6GbdRR
+ eviVfJiw
+ 9kYRoIs7i+ZYEYm5Nb5Ee63Ej9wu/9JOvoqL7Xt8on5rxp88ISFZhj5UMKt65oPaFIyqMAGVyEdW9/Y0cFKaeq8MrDe2feC1B6PiMlJCVW7cXb13h5soFDtn67UuFRqL8/SWF+JJkDWT0utVKupuctB7tXBk+Ts0BsiwJP21ALfWmYw1zwPaZ37+/EKgU5ltjZr/Jm4OWWoWLUx+giuIfolIhydMQkp1odWpW65XFSdHHhf9iNiBX0TcPCkDHVA9HlyvmNeX/54q/KP8OnF+8R4+JZrySBM7SJ6XAgauTnr727kwZ70/pwP6GfA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,81 +143,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/17/26 00:45, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+On 8/15/26 11:18, Xiang Gao wrote:
+> Hi,
+
+Hi,
+
 > 
-> A PTE that is none and one that maps the shared zeropage both stand for
-> a page of zeroes the mapping does not own.  Code that cares only about
-> the contents can treat the two alike.
+> I would like to discuss accounting BPF ring buffer backing pages in
+> system-wide memory reports.
 > 
-> Move khugepaged's local helper for that test to pgtable.h, below the
-> is_zero_pfn() it is built on.
+> BPF ring buffers allocate their data and metadata as order-0 pages directly
+> from the buddy allocator, and then map those pages with vmap().
+
+I assume there is a reason the slab isn't used, right? Are these pages mapped
+into user space such that page->mapcount would get used?
+
+Can you point me at relevant code?
+
 > 
-> migrate_vma_insert_page() open-codes the same test on the slot it is
-> about to fill.  Convert it.  It still tells none from the zeropage, but
-> only to decide whether there is an old mapping to flush.
+> Because vmap() maps caller-owned pages, these backing pages are not counted
+> by VmallocUsed. They are also not slab pages. As a result, most BPF ring
+> buffer memory is not represented by an existing named /proc/meminfo category
+> and appears as Lost RAM in Android memory reports.
 > 
-> No functional change intended.
+> We measured this on an Android 6.18 kernel.
 > 
-> Assisted-by: Claude-Code:claude-opus-5
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
->  include/linux/pgtable.h | 17 +++++++++++++++++
->  mm/khugepaged.c         |  7 -------
->  mm/migrate_device.c     |  9 ++-------
->  3 files changed, 19 insertions(+), 14 deletions(-)
+> Test case:
 > 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 8c093c119e5a..bbee6d31f015 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -2064,6 +2064,23 @@ static inline struct page *_zero_page(unsigned long addr)
->  
->  #ifdef CONFIG_MMU
->  
-> +/**
-> + * pte_none_or_zero - Does this PTE map nothing, or the shared zeropage?
-> + * @pte: The page table entry to test.
-> + *
-> + * A PTE that is none and one that maps the shared zeropage both stand for a
-> + * page of zeroes the mapping does not own, so code that only cares about the
-> + * contents can treat them alike.
-> + *
-> + * Return: %true if @pte is none or maps the shared zeropage.
-> + */
-> +static inline bool pte_none_or_zero(pte_t pte)
-> +{
-> +	if (pte_none(pte))
-> +		return true;
-> +	return pte_present(pte) && is_zero_pfn(pte_pfn(pte));
-> +}
+>   32 BPF ring buffer maps
+>   16 MiB data area per map
+>   512 MiB total data area
+> 
+> Observed changes:
+> 
+>   Lost RAM:       approximately +529 MiB
+>   VmallocUsed:      approximately +2 MiB
+>   Slab:        approximately unchanged
+> 
+> After destroying all maps, the values returned close to baseline.
+> 
+> The question is whether the kernel should expose the unique physical backing
+> pages of live BPF ring buffers through a dedicated global counter and a
+> /proc/meminfo entry, for example:
+> 
+>   BpfRingbuf: <value in kB>
 
-(casually skimming over some patches)
+This looks a bit too specific for my taste. And I think we should try to no
+inflate these statistics here too much.
 
-That's just a horrible function. :)
+> 
+> The proposed counter would include:
+> 
+>   * ring buffer data pages;
+>   * metadata pages;
+>   * consumer and producer position pages.
+> 
+> It would exclude:
+> 
+>   * the second virtual mapping of data pages;
+>   * the pages[] pointer array;
+>   * map metadata allocations;
+>   * vmap page tables.
+> 
+> The goal is to account for the currently unclassified direct backing pages.
+> Slab- and vmalloc-backed auxiliary allocations are already represented by
+> existing memory categories and should not be counted again.
+> 
+> A possible implementation is an NR_BPF_RINGBUF vmstat counter maintained by
+> the ring buffer allocation and free paths, with the aggregate exposed through
+> /proc/meminfo.
+> 
+> Questions:
+> 
+> 1. Is a dedicated BPF ring buffer counter appropriate?
 
-If there is no pte_zero() then there also shouldn't be a pte_none_or_zero().
+I don't think so.
 
-And in the code-base we have "pte_t pte_zero = {0}" which actually makes sense,
-but is not what we care about here.
+See [1] where we just had the same discussion for tracing buffers. For them,
+Steve [2] had an idea on how to expose them more fine-grained and tracing specific.
 
+[1] https://lore.kernel.org/r/20260810094025.136705-1-gaoxiang17@xiaomi.com
+[2] https://lore.kernel.org/r/20260810105710.6ee5e493@gandalf.local.home
 
-Just have an additional helper like:
+> 2. Should this be represented as an NR_* vmstat counter?
 
-	pte_maps_zero_page()
-	pte_is_zero_page()
-	pte_maps_zero_folio()
-	pte_is_zero_folio()
-	pte_zero_page()
-	pte_zero_folio()
+I don't think so.
 
-And let the callers still spell both cases out.
+> 3. Is /proc/meminfo an acceptable interface for this information?
 
-if (pte_none(pte) || pte_is_zero_page(pte))
-	/* Do something amazing */
+Again, I don't think so. "Lost RAM" really is just "excessive memory allocated
+by some other subsystem".
 
-(we have both is_zero_page() and is_zero_folio() I assume "zero page" is cleaner
-as this thing might soon no longer be a folio)
+I agree that some users might want to figure out what is consuming that much
+memory, but I don't think growing /proc/meminfo in that way is really what we want.
+
+> 4. Is counting only unique physical backing pages the correct accounting unit?
+
+I'd assume the "It would exclude" part above should not be accounted there, if
+that's what you mean.
 
 -- 
 Cheers,
