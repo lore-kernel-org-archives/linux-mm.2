@@ -4,91 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA55BC5DF66
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 13:42:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C15FC5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 13:43:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D16046B00D7; Mon, 17 Aug 2026 09:42:12 -0400 (EDT)
+	id 06F426B00D5; Mon, 17 Aug 2026 09:43:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEF1F6B00D8; Mon, 17 Aug 2026 09:42:12 -0400 (EDT)
+	id 047876B00D9; Mon, 17 Aug 2026 09:43:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDEE66B00D9; Mon, 17 Aug 2026 09:42:12 -0400 (EDT)
+	id EC90C6B00DB; Mon, 17 Aug 2026 09:43:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9228C6B00D7
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:42:12 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 19AEE160734
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:42:12 +0000 (UTC)
-X-FDA: 85110875304.29.04DC9EB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 58EF7160006
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:42:10 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kUgKhK7A;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C9FF46B00D5
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:43:52 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4C6074079C
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:43:52 +0000 (UTC)
+X-FDA: 85110879504.25.97471AA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BA23020008
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:43:50 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fv/2ZQO2";
+	spf=pass (imf13.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786974130;
+	s=arc-20220608; t=1786974230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=THX0Z/8utD7j+IXnwYTDcoLP5zSf7naxjyTV86BLgDQ=;
-	b=CBVngwoSyXAtph969imIg6K6Icc3GLaeZ5k+QVhy6eCDLxZ9A1hZLmdoKK4+ipWYS2egF2
-	xtDnIky1SPhy2jALouYsQyMsXMjpk5jHLYremlVipIsvUHcojwO8EteUhZfttWB7rigW0y
-	Lm5VZDH3+8W/d5YR+JxpJuOegYI8eM8=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kUgKhK7A;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	bh=8j64C5Yyragyhv7d/QskN0ZuZnf5SRudffh4XmLXgPA=;
+	b=m5nCRDePFIDx9zX7pWB9xBv4flgeWqyyZKro9S2QEP6m6DDjBz3sXi0Kqb2cT/X9ClhCS8
+	D1qfr4d7SzXzTaSLtVnfDKWokhuebFlMU2qPXO7HSZK6MfSpiTyiBV5nhHfVWvTcNCd1b+
+	QpZlS/Nmu4hBp33+RIIeynXVYbso8Ac=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786974130;
-	b=QicbtK/PWp2ogqGRnZw1jHTqKPW5VDXUen2+4bnXxdCJwnG6nIlm2vwdkDmVzEazImhJs/
-	IXP2vdWMNNC0cy3AImF68loX4Vi/BNRyDtWe1LeJDJ+XJTG2d5fDkw2+U4oC1pDWL49T2q
-	Do/y3+6VYjp0iVgyHoxLV5m8YVHOjLM=
+	t=1786974230;
+	b=psUe7eYHYQhoK/00k5MjqTRFfQAuwxEvuQjZY71LtYwjknskRxbPffM9knkCppP+BFFP9N
+	71AizrFw+FsLd2o+in8hobRe8CCyD0rmYf+kWDfz69f+vAJmbbTCpUW6bhE4S96Irzp7dB
+	GW5yBlEGe+evS/SW0T9mJaOcQ/W0Q70=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fv/2ZQO2";
+	spf=pass (imf13.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7D44743CC5;
-	Mon, 17 Aug 2026 13:42:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2777C1F00A3A;
-	Mon, 17 Aug 2026 13:42:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 31AA3601FB;
+	Mon, 17 Aug 2026 13:43:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568C61F000E9;
+	Mon, 17 Aug 2026 13:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786974129;
-	bh=THX0Z/8utD7j+IXnwYTDcoLP5zSf7naxjyTV86BLgDQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kUgKhK7AoUwKAqnbkbeYM5ehgQFaN+R6d+cdrlJ8KaoIb724DCtdhNNOBc66wwJEv
-	 s5bP4WMHROjY9Im4Ure/mxamJRMC7nFf0tE5QJBZTNyH6pMogVxuNNuI1o8nTuj1Gx
-	 UYGH+JsT6fsECYGb1mkTufCVdjmS5KIoXGg0c3c/dIKXKNtxzAbS13yDzmA2Hz9pYL
-	 jCx2GZ577NJ0JSH2K/VNuzLCqvNhX3IsGZ7XDSYrnhwsP0MOT6+8OZyOx7D7hkO0sG
-	 UZnoP8n3+xFN304mgxB2QgGsUjPSNNfcRUtS4BzQVBk6X82MqZQ0SnN5WlZCk8X3j9
-	 ohfonFOSaP52A==
-From: SJ Park <sj@kernel.org>
-To: dayou5941@163.com
-Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	Li Youhong <liyouhong@kylinos.cn>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/damon/ops-common: factor out damon_putback_folio_list()
-Date: Mon, 17 Aug 2026 06:42:00 -0700
-Message-ID: <20260817134202.75525-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260817063458.351063-1-dayou5941@163.com>
-References: 
+	s=k20260515; t=1786974229;
+	bh=8j64C5Yyragyhv7d/QskN0ZuZnf5SRudffh4XmLXgPA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fv/2ZQO2uXpJGu70iBIjlFrOEwNQBIvY+cN3aEc2JQJrKV+/ppXEhMMg6yjqAuhiS
+	 yYOURAkApSFpXkHNaJPfPRucCDWpND2puzfYvkMli9JkAzB4cOWaQWQRJqYw1NUFJq
+	 6XhLHmI8oqZpN/A5IvpDkvd0dr6Ly/iH+rA0wWWDuPINNd3OEzxRjxbo1rBpd5GoNn
+	 wLz0lZzAXZS0K2JUJ8/hcxSBD9MrgYiooRSwQPMLJXYY+rDSfU+g5959fVycDBNGSw
+	 AvQmUh+g1ljr5NiMmQYqxQqPm7CkBqOQdmH+moxMHAuZXb7gl0uEos1Xg4mOXA9uSh
+	 x4hqihPivcngA==
+Date: Mon, 17 Aug 2026 15:43:44 +0200
+From: Joel Granados <joel.granados@kernel.org>
+To: Bradley Morgan <include@grrlz.net>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com, 
+	kees@kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com, shijianlin11@foxmail.com, 
+	shuah@kernel.org, surenb@google.com, vbabka@kernel.org, ziy@nvidia.com
+Subject: Re: [PATCH v2 3/4] sysctl: Disallow partial updates for erroneous
+ sysctl vectors
+Message-ID: <cwfpl5h47km6f35m5k7wa2pj3elciaax6i3nmetxcgws66qewq@fzygztolxed4>
+References: <20260814-lklm-partial_ctlvec-v2-3-9df50d26e477@kernel.org>
+ <3A4FCA2B-2F42-4E8F-A328-5C1BD658B2A8@grrlz.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 58EF7160006
-X-Stat-Signature: dgn565pyg7k5nf89x639fk54g847bcyy
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="xrhvwbqqqbh27ci5"
+Content-Disposition: inline
+In-Reply-To: <3A4FCA2B-2F42-4E8F-A328-5C1BD658B2A8@grrlz.net>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1786974130-373312
-X-HE-Meta: U2FsdGVkX1/AMDYd8doFyqTw7vrT5A9qgg4ea7kUPfwU76awCd8s77N09OX9KaGPESUssc0sdyMWkAnHHusUpoabab4d+lglKKIxxPmQDDd8Zz0IDkTt5MC1+Pk7Rm3EXxEST39HKnoUwqC9NYIv4QP1UUq1Id+zxKWV7uJs8J8sP7lFNWzOcL9vUTfEVxBF9CdnRetQLcIuDg8sXfwi6Kz6kwuZfYW6FJ4sOClwZBZwAgAqmYg4iAKCv2O2QGYoEMxNVVZz8SkGfljFIqg3htBsEQrhoSZnzeCTUV4fWabhRuTa1HyZGXyQuv8B8+PAnYccVSB6G8zn61KMiDdWNZ5aWP7LRrO8RDOseM0bQpV2H5ica6L9x8S/ykblUquY2WhqzmgB1MOQifPNiAUeui9x0bZilr7b2Bxiz5TMcEU4uodVvVK9A4sFLdxCtpH3LfjgDHHn8sY2F5prGA/tnHthS4CgCc6M855oja3XcQ1oZmkHssmo4fwPGiS5+Iv88OXHEMqjjqkOgEdx3my6GNDodw4V/FAaXSLmnnWaFiZidNM6jXa3qn5cKVAMk+GHYc4G97q0jrP7Jxi6EIDr8xfy3nvwpYsv8Vyg4nHVjAi8J6jCmsCBIwqm8ZBZJ2LBS9Jax68EG9oTYtkBuU7aIUoogvOGv2sBz8bO2et+r+oAB6uoQum9qEhXtRVOs8wcs3WuIVYja3B65mHMF620I+xTUokflz/kvD1meD4v22AbjXcgwvl3h/fHbDJaDlKd4z3QAA0TlKQruqe4pLbf+xE9iRNPoRmFu6Irl/0szisdbV8QbuWynTburm2BLEc76r2ouoB9JwTyRJuVOqVhx1jbw0YFuq8ThD8WM9yqrgT828DFny3HdoKavw43LZ4Ll7lig/67EdznmN/Sl1WK1KG0n1H3co9K+ndtPNcamH2MIDN8Y+Xg/gHSfJT7eZQIgCkghElRtb9dvrUhcUc
- VQhwuFy6
- K7RIm8za/zapLffFmZROW9S3Z01h4PDGDEcIYb63/gRlQDbCafN6GLw1pWYRTCA98uQTsxtswnNZNn0LuyciqNr1jJUk6BWEwt/lnDddHMX6x4WnUyPsqqO7HOmG3XptSRutNLanb1jVMlmmZE0RvLOrLacO0HGyR+ApaMLiKJBO31uja/mfdcxjmEq6Dp430ANK6nA9b8Y2UJLz/lwku6nc5ZCtOuDU9DsTpfokTdo1Or7YSD/apkOXbaRODzMn8GYXhCJnQcR06vTDayxRpe/F4waXycYlRivv7yPxnXHlTT5FTLmnr/AIYz8OoFvyLHIvQ7GU44138II+bl4fqirScr7jqcNPxPkTUjIr3mO1XV89VmM1n8IJsmDBA1GsursT9xQsDQIsGnXw=
+X-Stat-Signature: egrucdkmmc65hgizoen8teg7uzd181y7
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BA23020008
+X-HE-Tag: 1786974230-704931
+X-HE-Meta: U2FsdGVkX1+9vDo0pBHSmodJFJDAePKZfcJgbC7R4wfvY74gZlQQVjJDgr+n5Z3QqOcNYCmJvLWb1i3+Sm4B05Q4ptwrThs5Ax+y6ZsynqqXimor1fz4SHqOg/kQ8hwqsxaVl32zs256CbeoPqW2nY8nu5o6/+jP/lGirG8dsbf5/SWALtJX8Efbz3Jvl2ac9ZglYoHIh2VJR8hOst7kd0Sje5DBJnqn8IRigAGU4DLzDNScGvyc4lahcezhQV960Dj4PxmhAEfgyn74PzivgL3nL4FYU0i5R2CJYx/vo80t6Z0mzdjnwgnVefeU6hTFTUJq4wxlxG27UZlaiCrGZQenC0cvJfudKtlvijHLKnB6/U5JcmiHaT+6F2ikeSaaxD8qBN9SwjgAw9KI8WxXcsGuRFYC/mtbD/dnK3VSsAhu9eDAXY4I4vTcfrob3kGdvV7ILOZLI3vYZTE9oNTgGoUVs0Q+ukwYNmHSIpdq4EpQON/T1ypzcYakgY3+gRMltLlZ35sYRyP4gbCfLQ17L5ERK4fjaH8prgmjfLpssNgAxbHozoGuzvLp9VKhwJ8z9B4jsOr+t1XugBNT+r0uRvTA3PmcA6qkKWgUFEcZ6I6zFpo5MRQbhE18e/cY4OushLqzkZTUy/wXiD2iLSksLLyOOrsHBGMFqRB/ykZ8Elh9JW+Wm3WwY4wzUbFukIyPRB7uUjMZJD6DfSnlPK56KY0XkBmtoTl8pHgADjt8jrd4b5ocP7EQB4ZUq6LgXSXM4fnniot9bJpLaVpc4cq67aWHj4kxIzdNtwB9tdkV363vN0y6zBbjhOhSj8T5YeMxNKeebe8T403Af3s1xVKUTCjunLQ7X+6fcttKzpEG04OXVVL0BToGGFj1zfDp4UX2yB/lCpE99C++Jhp6mw6tqVT/NieMQmz1ZaQ5NE9BBfoBsAq15BEzPEY0Tyzr0moO6aavuTEupbpQ7L/xVv1
+ yv50JEiK
+ A/Mfzc7Z4MEyk5z3+c4tDMALCSrGEhU0vsHLaD5lmqN+m+zdV39HvhP8viLbN65RC6+SiubgviRc/ngbYyqPcAK6HL5yH51s6Tg6bX9u4wr2vKbYammCn/P6PZA2cJeMS2uVt3usVlIovpeH+OSmdzxaD/9O4Y/vCEiNRcn54/6s62kYbkt+nByt2WRmSnA8/8Hvniiq244a93qMqnH1Nw+zkBP3Utz4dsrQy4cMDGyTqpQOUGLrU9F/sDtX/rwafJHhYZOotJUsk1XtT8y1ASMAbhANEYJu9Hk2cwzRsKTMkLWO6vtya+YRe3G5q2Ly3QN+CeavsRk9EcVUVisJ6ha04plUiJu8ra6SpMg8yhhZqZyg/q2exT5ON6cbX4IEQhIEH+JREna6K+ZCDC0PyB1oLV23/DHzeC8tT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,84 +95,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Li,
 
-'get_maintainer.pl --nogit --nogit-fallback' suggests adding below recipients.
-I added them.  Please consier using get_maintainer.pl from the next time.
+--xrhvwbqqqbh27ci5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-- linux-mm@kvack.org
-- linux-kernel@vger.kernel.org
+On Sat, Aug 15, 2026 at 05:05:26PM +0100, Bradley Morgan wrote:
+> commit_conv_vec() writes the elements one by one, so a reader can
+> still see a mix of old and new values while the loop runs. Same as
+> before this series, so no regression, but the changelog could say
+> this doesn't make the write atomic either. Otherwise someone later
+> will expect the vector to change all at once.
 
-On Mon, 17 Aug 2026 14:34:58 +0800 dayou5941@163.com wrote:
-
-> From: Li Youhong <liyouhong@kylinos.cn>
-> 
-> The putback loop is duplicated in damon_migrate_folio_list() and on the
-> invalid-nid path of damon_migrate_pages().  Factor it into a small helper
-> for readability.  No functional change.
-
-Thank you for this patch.
-
-> 
-> Signed-off-by: Li Youhong <liyouhong@kylinos.cn>
-> 
-> ---
-> Note:
-> As previously pointed out by the AI regarding whether removing the local
-> variable struct folio *folio in the damon_migrate_folio_list()function
-> would introduce build-time issues: no build failure will actually occur.
-> This is because struct folio *folio is only used inside the while-loop.
-> link: https://lore.kernel.org/all/20260724060707.CE1F81F000E9@smtp.kernel.org/
-
-But, a build on my setup actually fails like below:
-
-    $ make O=../linux.out mm/damon/
-    [...]
-      CC      mm/damon/ops-common.o
-    mm/damon/ops-common.c: In function ‘damon_migrate_folio_list’:
-    mm/damon/ops-common.c:357:17: error: ‘folio’ undeclared (first use in this function)
-      357 |                 folio = lru_to_folio(folio_list);
-          |                 ^~~~~
-
-> 
-> ---
->  mm/damon/ops-common.c | 31 +++++++++++++++----------------
->  1 file changed, 15 insertions(+), 16 deletions(-)
-> 
-> diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
-> index 0bcad6b1e5b9..5c0c941b7f75 100644
-> --- a/mm/damon/ops-common.c
-> +++ b/mm/damon/ops-common.c
-> @@ -329,12 +329,24 @@ static unsigned int __damon_migrate_folio_list(
->  	return nr_succeeded;
->  }
->  
-> +static void damon_putback_folio_list(struct list_head *folio_list)
-> +{
-> +	struct folio *folio;
-> +
-> +	while (!list_empty(folio_list)) {
-> +		folio = lru_to_folio(folio_list);
-> +		list_del(&folio->lru);
-> +		node_stat_sub_folio(folio, NR_ISOLATED_ANON +
-> +				folio_is_file_lru(folio));
-> +		folio_putback_lru(folio);
-> +	}
-> +}
-> +
->  static unsigned int damon_migrate_folio_list(struct list_head *folio_list,
->  						struct pglist_data *pgdat,
->  						int target_nid)
->  {
->  	unsigned int nr_migrated = 0;
-> -	struct folio *folio;
-
-Above declaration removal is causing the build failure.  Let's keep the
-declaration.
+Seems reasonable: here is what I added to the commit message:
 
 
-Thanks,
-SJ
+"
+=2E.. This (The staging vector) does **not** make the write atomic as a rea=
+der
+can still see a partially updated vector.
 
-[...]
+=2E..
+"
+
+Best
+
+Joel
+
+>=20
+> The copy is limited by table->maxlen and only vectors pay for it.
+>=20
+> Fine by me.
+>=20
+> Reviewed-by: Bradley Morgan <include@grrlz.net>
+> Thanks!
+
+--xrhvwbqqqbh27ci5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmqDEA8ACgkQupfNUreW
+QU9zgQv/bnQ92wPIe9bSeDUP0FWKwpDTbtxn/2wHV3tzqIJArmIZzkr02Cy6qsxj
+/De7twF6hou7L9+YQyf777GU45woG89gvPpGLs/uJ52Jlv/sqEObSzxXJNbeWWWs
+Wozys0TZZsOAkBLwwvcBky4nw6EqSodJE+c1tFfAJFkr/8JeOk8kG0mPaWRP5KeK
++DlxLVpQTySKxVB1i/cZhNmeecG6FioVeMChDtLSKUvE96NSI/D1fngEd4I1aFTJ
+8W4Ha6oeALfo2iZvSA0/cM8gMVW7M+dhY5RtIMzF8ejMNSOs2BGUXUh8rxP5cRbr
+XXrDhO5SJbJsOnfj0HpAj/gQGJQMh+jmUSaCFp54251TyMaIpNH1WqxgZNmA68pA
+s+qOTeRjPSVTHluyR2aArr24sKaO46j2NXGO2uS3qiNAslPE1nQHfAUX5pQQBAPV
+dvsCclzMGntqE4wT8YWRI1wd37XdjtQVLHi55avd28i/lOSPjwfkmxpZBgmY9hTH
+bD+zj0To
+=AzpY
+-----END PGP SIGNATURE-----
+
+--xrhvwbqqqbh27ci5--
 
