@@ -4,90 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B98FC5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 17:32:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E985C5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 17:34:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5748B6B00FF; Mon, 17 Aug 2026 13:32:31 -0400 (EDT)
+	id 85D5C6B0878; Mon, 17 Aug 2026 13:34:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 524D96B0100; Mon, 17 Aug 2026 13:32:31 -0400 (EDT)
+	id 80DAD6B087A; Mon, 17 Aug 2026 13:34:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 413F56B0101; Mon, 17 Aug 2026 13:32:31 -0400 (EDT)
+	id 723216B087C; Mon, 17 Aug 2026 13:34:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 205B66B00FF
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:32:31 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F04B81205D2
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:32:27 +0000 (UTC)
-X-FDA: 85111455534.01.F5A0BBD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6032C1C0008
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:32:26 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Iq975uFa;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F6476B0878
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:34:25 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D023D1408D5
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:34:23 +0000 (UTC)
+X-FDA: 85111460406.24.1DE29A4
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B5BE340009
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:34:21 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=o2j6v1+1;
+	spf=pass (imf27.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786987946;
-	b=C4IYtRItvhvIAq8JICbS6JjKJoqJX8xNgppfvfeLiPraUnIJkJscRdZ+bbl/vVLWvaIvaC
-	sFVMjT4iwX6d0NEipmLFmL1mszazSwhgr7RdK3MscrDnypN2eLqpAyN847AQcVGezncFkx
-	pRDvHYVRKnoR+ez4oFXT99Pml22lU48=
+	t=1786988062;
+	b=2Aijtf30ZHQJvBuMmaX7921cyh3P1utUuHk3U+NYcqacnEs2I5H32XvNaKLXUoLS8pKt+T
+	VFszuOkh1W8+4FnWjzdPGFMObSkINQld87MsFcQEnseGFGLEk83mtYdS2Gd54WluS/QaDF
+	TvVlN5CumIe6514JX90M4EO1gz/qodw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Iq975uFa;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=o2j6v1+1;
+	spf=pass (imf27.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786987946;
+	s=arc-20220608; t=1786988062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MN6diR8GeSzCKvRRKh/mD2MDugE3edYYYYNW6HjYy5U=;
-	b=Zqk/2eFnJzkOMIq9v9cjHPtMI1xGmS0VRIPxJ1ALOCnOZnYWG9Pcb6bOBeML5+f+QKLA8w
-	Ly7+CyZcspuuC6HgVU7sGJMvjPw3EZS9v3IDTIkiYut7ADpSNEUPbWXexst+UII7E9NWXO
-	t2xVxC2ATpVp7+5qmlHjwKOP31nwIRg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CA4CA600AE;
-	Mon, 17 Aug 2026 17:32:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE62C1F000E9;
-	Mon, 17 Aug 2026 17:32:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786987945;
-	bh=MN6diR8GeSzCKvRRKh/mD2MDugE3edYYYYNW6HjYy5U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Iq975uFaNu656a5p36jXXMjkHcwIWAaCrKJvkDmPJqkG+AiuoiVfT2HC5ckbW7Id1
-	 OCg0Jt5MdWWmhCyJPkdwx8+HhjKQFNuwa7GX1vRdMTvINpRD/iljBeOni4uUNlKzFx
-	 y9i6vdn+N8t8b/BY54ez+38Bv/CenWXCcLqs96UA5NvTwUjL8gWPbXRiMoHiP1KLJl
-	 Bke4GkqrAJtxrpVDE/6yOA/FEH+irgYxYGWqwb9DqoD1Sd/NsL3MnZgsZt7kISiA6e
-	 bzF9kOeVcap8oaZ5mDTU3rQTB5dSLNOrgvFymPxxt8f8ycJ/yMYAfN6eH49WGWx/Uj
-	 wQVfDV7WK9vEQ==
-Date: Mon, 17 Aug 2026 18:32:21 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Hyunwoo Kim <imv4bel@gmail.com>, akpm@linux-foundation.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] selftests/mm: add stale walk->action race test
-Message-ID: <aoNFmM1Ozt7PaOaJ@gremlin>
-References: <20260811161949.3879321-1-imv4bel@gmail.com>
- <20260811161949.3879321-3-imv4bel@gmail.com>
- <b27f03ea-414a-4ae5-9649-2a05398fe082@kernel.org>
- <antoRbvwXVxoQ7Dw@gremlin>
- <0ec056ff-222c-42a4-a737-0bd65d1f0a93@kernel.org>
+	bh=N/80AwWXrivI+neZRMiIV+d6NMNyflzdEuKzM/Rjq8s=;
+	b=2Zw+5zoyIc075GSN3c8sJt6iWw6Nrabw8KJ5c7nKLcTOAQkepro7hPEpeI27NRApZuhQtu
+	LIpO2W/1b/ZKfiKYLq4U8EUk7lDTZAlgAvpvst1ocz22dU/+JrcFUGuIyh4aAB2S3+6kpE
+	poHDTHeRYHp+Qqpd2cR4PtHS2mliV4I=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A344514BF;
+	Mon, 17 Aug 2026 10:34:16 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7A6483F673;
+	Mon, 17 Aug 2026 10:34:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786988060; bh=dQHeVJirWd2OT1TdcvEiO5y7O6Dg5Prwr73YHx3YgGA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=o2j6v1+1kEj7SSVM9Z8novRqGeoQKzjTsL/kODG2VHN9wav2fIVvYLOOsBj2gcsay
+	 CORquf427smN+XQJ22xJ1GiiAFsv6aQMXPknWZ3Y2XT7vP+pbPcXpdgPCbLUA9yDAS
+	 bl/pMq5IX9UHlSyIxTvkIItls/szRGWTzY4swwyY=
+Date: Mon, 17 Aug 2026 18:34:16 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: James Houghton <jthoughton@google.com>
+Cc: Will Deacon <will@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Nikos Nikoleris <nikos.nikoleris@arm.com>,
+	Linu Cherian <linu.cherian@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Nanyong Sun <sunnanyong@huawei.com>, Yu Zhao <yuzhao@google.com>,
+	Frank van der Linden <fvdl@google.com>,
+	David Rientjes <rientjes@google.com>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH 00/18] Another attempt at HVO support on arm64
+Message-ID: <aoNGGKYZrOlaJ4mH@arm.com>
+References: <20260708031129.3503195-1-jthoughton@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0ec056ff-222c-42a4-a737-0bd65d1f0a93@kernel.org>
-X-Rspamd-Queue-Id: 6032C1C0008
+In-Reply-To: <20260708031129.3503195-1-jthoughton@google.com>
+X-Rspamd-Queue-Id: B5BE340009
 X-Rspam-User: 
-X-Stat-Signature: pgty46h5w8xq4w1gr6bs9djnj3azf8kc
+X-Stat-Signature: gmz3rmbzpianz9ycrkeno1m1ftcx8ucw
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1786987946-404594
-X-HE-Meta: U2FsdGVkX1+VbPOrH8koc/72yJFOt5m+cwYi4spJf3v3gSrjz7gkU2OHPaKap7gCcr7/zVD74+g803WfE7sxSKUVukVgs+I3V9GNxA/xR15eoSkq/U/JgsjRonEggvq6GM0zviE73dUMQyxNoi17qK8S4jZGzpzV5/1BR0eKhz03U1k/fkpfmff5k1ObYcvLL1dvTugqqjJUBvSvtiDvGPWNkUAyzK+1MoBXR7Tu2gBjDuFBY9zzG5clc0ktIGKN+OyUebOethdZFPHFmB+PumhvUEvCwiEi5ZZUXE3UKtNxPmIuOJuUXfK2VTesSBJFHI/Y0sgF25IKdHAiGhXulug15hMakql3jQhLbZ3Hlh0/0C4pFnNAezK5JhfR8Uz98RE1vMHN18RzUd3dSR7Dvw3JSTZdVjnwMbw05054SrY6Sv0OcExnEhBhEIXjGBNoVE0AMVpzBqrPfMkvowHNrtZWVLyUN34RiN9WxAPFy6muHfUTBCY/VTFNeN29XFMua0EeYD9rYT3UVx55TzeMixCYUgWuYhPC30W82+VaBVP9lOeCOoHcw4cqq8UcOJmCPMFDTBpsvobUOWf2VKwSb3N3b9+B1IA0kcvq7MY0JXudiwZb779latAs0IvmEO3Zg8y3B8x6G6Ka6/3IUpz4u2FgDQq1gHnWuo1vbNgkfz73kqywJVrbGmjfD5S1XJvLk6GNvh2x7CX9/3slczgSYRlZ5QrwgAhdo1VdovbxBSI2eBIRWEKkE1gdKfXpX6FUOnuitybflB85XVVKGZSl8Ua1S3Tg2NGm/0bNHJhzpZ7oyxgobBbL0bXlF3L5ocj55w1DJZ30bn+fGQByglS+RV0DJ0oRBs3hjiKkCTX5lwk++MRYUAoy8R6yy4jfKaWadEYoyw5rcCaDnWMGyI8I2zEIM19QBR3/H8VxwsBcrsFcO0F/v2OoBZ/RudvCEXbooS39YmA865LkahD6rUS
- pH/NRdqH
- Uv6cOxEwohfkUQMdRHxKR/LuRV5zEwcYmwB4w134Jy7GNYV0INWaXlS+A4mcFb/hWsXvXm2w+86Zb2+3/fOBsQaC2mVW5cV/KOyjQm0oPnjsC+CS3YNCgDBNolhziWiWUJVHulelVUg842Tax/mnUmtBWxMIq7ctr2ZQhRB3/v4sjqdZ5uTH+j/Cy26Nsmxp03dgauGCLYxDhYKd3urqN6aXbM6Q2AA2a0cKrkKLmlhQviJBnIweZAJU5TL8xWFXbepzk3kFuVB3YDjdduUXZpX5mhw==
+X-HE-Tag: 1786988061-719123
+X-HE-Meta: U2FsdGVkX19mTUBBZikdwIRzfOlbVMQrfZLAVtcwdxxSxO9XDr3BaHHD8qYuQOJgF+vxNlkKtIHcKzgcV4ExyjavCoHnDgmIwrIqZAluTrJ9XWUgPwLCFAJhwiyauBu3+8BscZ5cNvc0G9hM7L3NZtg1MpzHRj73n6EhLZ8A/PwnA47qt6JqUzQtsDwp4/9TXjBJdfjXix9cqjWgTSGsHRr8H4FrRfMzH3TQIAS84AoUHDBYY2Z/BSgKW9CF77PfWIgm5Njcnr8B+jZZaO51OprBxfs+RAN9PaK0nLttDC/XnR3V3S8h4mRqyp9Vq8eO0bKMq3V7V+odEcrQm0QU9i0peykMBcj8IOopfpn6HN+b/orzwj0JnapIF54BhEbvKW0ju2jH7rwv9hWgfb3zgFK3Jfg8UxZVE9qPRUBxQnu+6vxrcCbsxYlX0ygoxDiFXRivnGu3VnAK4Sfe9otTMSS33voJi6Adxl694nj0aXYb5u+zH6TLxgmrOAYT3o6f9WM2UoB47qKJ/Vjli8EwlW5quJ3+N0TW+R2rzqxjK6XKA3t6EmZaNqkdkTK0jL2L/wDt/iDjxWZ+t/RyF5Pd8Fi4gNkblI1C7g4q/NHKNiJz6aBGbtyHDN7plnEAUV/uXhX+Po8pyK8NlNvbn0yvQEgoBmMY22DgQ7Pdu3N4vxufyLotKbw8BoxEW+TbBo6DWF0eNHgKnDkOtSKiLWCyS+F7lwT1gQs/D0Yxw8gnxAFQAJmVAcr8nXEkh9gV9He//kws+Aqwy0n/UtHl28Oz6O1D5tASQ1nTWaHzAYZnCxkmjOoaDWtu/A4360wQd3vjPRlMq2CYIacrJk2Eo/+pJ9pbsPu51kCXtMx/0TxIGUADFLa6+HbC2iz5k7eWjSmYVGcPBy1zxgbnxg9aOI3cyp+trbYRVTx90eKh4iAeQOBqGfyaYwNa2vmCjiKzVRfkmNFLKm5OIwPka13ykY9
+ 6yl8oM86
+ J6aOo2FifbEZ/MGGUjSkCttauPNTOqIHKdh9eDJLRukkqrwep8GgGw9ks7n4kvK/mRotnKEf3B42S0oEl1N6laLK6rNIEG8muW28VdvVKuQwwEfkIJevMifKMp/FtvynMCSMtPalJuzA+ld+RZO4Z+wyJ2xb4V4Dtll/+Y5c9LF542mHTZLco3z/RZGIdcz7NZGXt5A4QJ3bDpFKl9LbCIthxnHTvwjN/QZ+C4P45S+RcigM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,61 +97,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 08:49:46PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/11/26 20:23, Lorenzo Stoakes (ARM) wrote:
-> > On Tue, Aug 11, 2026 at 07:11:59PM +0200, David Hildenbrand (Arm) wrote:
-> >> On 8/11/26 18:18, Hyunwoo Kim wrote:
-> >>> The added pagewalk_race_test maps two PMDs and faults in 2MB of the first
-> >>> one.  A second thread then faults in the second PMD and drops it again with
-> >>> MADV_DONTNEED in a loop, while the main thread reads Rss for the mapping
-> >>> from /proc/self/smaps.
-> >>>
-> >>> Clearing the second PMD while smaps_pte_range() runs leaves walk->action
-> >>> erroneously set to ACTION_AGAIN, which causes the PUD walk to be retried,
-> >>> so the first PMD is counted twice and Rss comes out twice as large as what
-> >>> was faulted in.
-> >>>
-> >>> mincore() is the caller named in the fix, but the second walk writes past
-> >>> the length mincore() copies back, so it cannot be seen from userspace
-> >>> there.  smaps reports what the callbacks counted, so the duplicate shows up
-> >>> in Rss.
-> >>>
-> >>> A failure can only come from the kernel counting the same page twice, so
-> >>> missing the race is harmless.  On an unfixed kernel the test fails after a
-> >>> few hundred reads at most and takes about half a second.
-> >>>
-> >>> Assisted-by: Claude:claude-opus-5
-> >>> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> >>> ---
-> >>
-> >> I'm sorry, but I don't consider such a specialized reproducer for a problem we
-> >> hit once a good fit for a selftest.
-> >>
-> >> Or am I missing something, that this here is more generic?
-> >
-> > To be fair I did ask him for this. :)
-> >
-> > I thought it would be useful to have a regression test because there's certainly
-> > no harm in it? The code is very sensitive and catching a similar mistake in
-> > future could be useful.
-> >
-> > If you're sure this isn't valuable then he could just drop it, but it's my fault
-> > sorry Hyunwoo for giving you extra work in this case! My bad.
->
-> pagewalk_race_test is just rather odd. If this would be part of a bigger test
-> that covers more things than just one odd race, it might be better.
->
-> But we certainly don't want one new test file for each kernel bug we ever
-> trigger, right? :)
+Hi James,
 
-Right yeah :) sure we can drop this then. Sorry Hyunwoo!
+On Wed, Jul 08, 2026 at 03:11:10AM +0000, James Houghton wrote:
+> The following Herd litmus test demonstrates the PTE update routine:
+> 
+>   AArch64 TTDFaultlessUpdate
+>   Variant=vmsa
+>   TTHM=HA
+>   {
+>    uint64_t x=1;
+>    uint64_t y=2;
+>    [PTE(x)]=(oa:PA(x), af:1);
+>    0:X0=PTE(x); 1:X0=PTE(x);
+>    0:X1=x; 1:X1=x;
+>    pteval_t 0:X2=(oa:PA(x), af:0);
+>    pteval_t 0:X3=(oa:PA(y), af:1);
+>   }
+>    P0                | P1             ;
+>    LDR X4,[X0]       | L0:            ;
+>    MOV X5,X4         | LDR X2,[X1]    ;
+>    CAS X4,X2,[X0]    |                ;
+>    DSB ISHST         |                ;
+>    LSR X9,X1,#12     |                ;
+>    TLBI VAALE1IS,X9  |                ;
+>    DSB ISH           |                ;
+>    ISB               |                ;
+>    CAS X2,X3,[X0]    |                ;
+>   exists
+>     0:X5=0:X4 /\ (* First CAS must succeed *)
+>     (fault(P1:L0) \/ ~(1:X2=2 \/ 1:X2=1))
+> 
+>   (* This test should not violate BBM requirements. *)
 
->
-> --
-> Cheers,
->
-> David
+We definitely need a clear statement in the Arm ARM around this. As
+already raised in this thread, we can assume that AF=0 entries won't be
+cached in TLB but there's more to the BBM rules. For the dirty bit, we
+have R_SGJBL, we might need something similar for AF in addition to the
+BBM rules update. In theory, I think your approach works but we need the
+memory model experts confirmation and the Arm ARM updated.
 
---
-Cheers, Lorenzo
+I'm not entirely clear what the above litmus test guarantees other than
+not giving a warning. On P1, X2 can be either 1 or 2, otherwise fault
+but that won't happen with HA. I'd rather have something in the 'exists'
+rule explicitly (like a TLB conflict abort; not supported AFAIK but
+maybe that's what fault(P1) was meant to show?).
+
+In addition to the above test, I wonder whether we could have P1 do two
+consecutive reads from [X1] and check the read values. Maybe go through
+a third mapping, OA(z) with AF=0 after the TLBI or just start with AF=0
+on x. Basically any other tests for coherency like read-after-read etc.,
+check that the behaviour is preserved through AF=0 just like going
+through valid=0 with BBM (that's something that should eventually be
+runnable on actual hardware to validate where we won't have a BBM
+warning message).
+
+-- 
+Catalin
 
