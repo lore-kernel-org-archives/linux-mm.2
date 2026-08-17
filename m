@@ -4,115 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A1F6C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 02:38:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F02D8C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 02:42:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F37A86B0384; Sun, 16 Aug 2026 22:38:02 -0400 (EDT)
+	id DDFD66B08E0; Sun, 16 Aug 2026 22:42:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE8876B0385; Sun, 16 Aug 2026 22:38:02 -0400 (EDT)
+	id D90D66B08E1; Sun, 16 Aug 2026 22:42:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFDF26B0386; Sun, 16 Aug 2026 22:38:02 -0400 (EDT)
+	id CA9656B08E2; Sun, 16 Aug 2026 22:42:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BD91C6B0384
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:38:02 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3B3C916061D
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:38:02 +0000 (UTC)
-X-FDA: 85109201604.13.01CF8B1
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D875840003
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:37:58 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="SaeTQP j";
-	spf=pass (imf01.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786934280;
-	b=Hx+NpuvQn7pA9WxCz80cAT8Rqc+g1khRlq7OX3Zhj5kVaKQ7hNA8sqciWZ8NlF9Iee4V4+
-	357gDYS3+enAGmef8EDBvoSinhDL2MbKwjpRzuwDdFYbmUEB2iFHlhPhRaSQJxirWcwEqZ
-	Jv0mbFSj1ezd4qKIqXHxS+Dw7gCoyk0=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="SaeTQP j";
-	spf=pass (imf01.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A70DD6B08E0
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:42:18 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2582F8061B
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:42:18 +0000 (UTC)
+X-FDA: 85109212356.05.D5AA39E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 5A6AAC0004
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:42:16 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CQShMVjj;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786934280;
+	s=arc-20220608; t=1786934536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xllxtvWrYct1HzRbWL6Jve5j+mopxShCmeLjd7RXrQY=;
-	b=DEPQMRDk4/D+n3ocjIoTPFSsSYoyIbK81kn6XxVG/gYutN+JVfJJ4hW8uqfY+/YcBJU0En
-	QlWEtYNOclfebPHTEghhNuSaGlCklxTprt7EubCf5OlnNzjE9UDkGM+pO+XACsFi7wvgWt
-	Yz5uSd0p0I8MT968JyTtQ9lhE3CbB70=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=xllxtvWrYct1HzRbWL6Jve5j+mopxShCmeLjd7RXrQY=; b=SaeTQP
-	j616rGQlUlmkn1pkLWNKw53Imb0QeAADGK0oWnAURqI6quX8S2KljU3oI89SPsF1c0saOFs2U/A63
-	yQ/QEHvcO9swgZs9lcenYsYt/fLV47TNl+mEKbIQ5VQcKVzS3J2j+v51XwDIgitZBKIlQkfPIK8/m
-	8snSBVzCx+ghN57rKTfPwu1/2Y/Rhh+tlwToiF/65uo0I7JuPX6VvEoypkZ7IiyWm9dGbH/Fl/aAw
-	rghzlOImXvIJ0aiiswWYdZcPA/T6vlAPd0qjczVeOUnup8XlIIcLG1Rk4sIh6CvDucb+N8/zAIMRr
-	6Qooxtzwf4M4aQ+YzWVsXFt5Kj2w==;
-Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1wvnDq-000000014Vf-34aP;
-	Mon, 17 Aug 2026 02:37:10 +0000
-Message-ID: <50659b89ba88f3f9fa2708351ab5244f4a19ad2a.camel@surriel.com>
-Subject: Re: [PATCH v2] mm/rmap: synchronize lock and unlock target in
- anon_vma_clone
-From: Rik van Riel <riel@surriel.com>
-To: Eric Kim <seohyun.kim@outlook.kr>, akpm@linux-foundation.org
-Cc: david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
- 	harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
- linux-mm@kvack.org, 	linux-kernel@vger.kernel.org
-Date: Sun, 16 Aug 2026 22:37:10 -0400
-In-Reply-To: <OS7PR01MB1391443074B4A2A774B7A956C96A72@OS7PR01MB13914.jpnprd01.prod.outlook.com>
-References: 
-	<OS7PR01MB1391443074B4A2A774B7A956C96A72@OS7PR01MB13914.jpnprd01.prod.outlook.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
-MIME-Version: 1.0
+	bh=HZTCYCleUiU3YRCHIU5xkcgU6TcXz2UCAgTFRMqwvL4=;
+	b=0sqMyz84DCPeagcWOtlZcbbcha+13rE/WTVfQNh8VJPma5XEoNrV6lLP+leEotcFGvkrtC
+	vpSClCZKitj9qRGpQe5kaFBCcdcSMZApXahgrT7MGh8whl6BnjPUbknAbZlWQDRNQhzX+I
+	0gmaznWluLHM6g0uH0hNp8+1KRH8B/M=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CQShMVjj;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786934536;
+	b=giQ5LWb4e7MX1APia8LFWOluHXdSQzBu/2zeA9C6CWMc8Yksn+nf9ZOIxhkAeKxhW0gdV4
+	9WBX5ACG1ODjLQSPUHbOCVRnyXtPMlluywD6PpVk+yhMZku9d/1sjwMVAPmPu4ToSj2lZI
+	ZDSymTsasHF0uFI6C7kivg4UUwSVGWc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 981EE4099A;
+	Mon, 17 Aug 2026 02:42:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077DF1F000E9;
+	Mon, 17 Aug 2026 02:42:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1786934534;
+	bh=HZTCYCleUiU3YRCHIU5xkcgU6TcXz2UCAgTFRMqwvL4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=CQShMVjjnI1IlYUmO0zNpP6fs6jQvF4hvVXe70zPGDgsR0gi4FCJ5g92ymEGRk1jU
+	 tQ9aG6fAGeNMW7tH6ndqVegbvFRz1q1s3RIBPl/NJ/a3hr5b6Ma83WTqLgkqxodOoa
+	 AffLXdw4vbc8OcrDBSACUUNAK7u42AlPD8C8uBPo=
+Date: Sun, 16 Aug 2026 19:42:13 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Zi Yan" <ziy@nvidia.com>
+Cc: "Alan Stern" <stern@rowland.harvard.edu>, "syzbot"
+ <syzbot+805630f1453e490427fa@syzkaller.appspotmail.com>,
+ <apopple@nvidia.com>, <byungchul@sk.com>, <david@kernel.org>,
+ <gourry@gourry.net>, <joshua.hahnjy@gmail.com>,
+ <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+ <matthew.brost@intel.com>, <rakie.kim@sk.com>,
+ <syzkaller-bugs@googlegroups.com>, <ying.huang@linux.alibaba.com>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ <linux-usb@vger.kernel.org>
+Subject: Re: [syzbot] [mm?] WARNING in ep_write_iter
+Message-Id: <20260816194213.0e813ed338144ebc81ed4050@linux-foundation.org>
+In-Reply-To: <DKQU9SQUIKDR.2KEZZPONJ1IJ7@nvidia.com>
+References: <6a820ebc.9ebadd4d.20b15e.001b.GAE@google.com>
+	<20260816135201.98590b17b526dda8c4ec9105@linux-foundation.org>
+	<DKQP5QC9XTDJ.3MI016NP0NPFY@nvidia.com>
+	<02c2e5c7-0d78-4763-90ff-75fa87105fcb@rowland.harvard.edu>
+	<DKQS9ADYVLN1.246LJPQ9QQYVP@nvidia.com>
+	<9787b33b-b30e-4c5e-a0ee-7f14515c7166@rowland.harvard.edu>
+	<DKQU9SQUIKDR.2KEZZPONJ1IJ7@nvidia.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D875840003
-X-Stat-Signature: xauhf5sphjwm33uaic7b3f9anweq71s7
-X-HE-Tag: 1786934278-331835
-X-HE-Meta: U2FsdGVkX1+mfo4aEhXnuBggepK21hydQ7pTofI1/Mf3bI+PeodJqACVd+HlGTTCYA5lCieDJPR2SNCndCShtUIni48cvCBWtz8RbxVt9qnAyybU+bfUqsouKVeF9HlvkskfuCwETx7Bx4a1yg3yrC6E0c3AoJf9uovC1eWp17oEQ/eRknZbN1EPXRT6DrHNvDmww4Sfy2HgLjDtlM044C5vYMUuezSr1/rDj2EpbRBHwrcLnTNRx8ZQegRZeOvSakPT84tp2zUEJrpWq7fwqU8JEo0jrIktiLLtqXvNHHM50mEiD/NsNuxZAFz+7hGq5YCAUKHLFpPPS4cbcvPJwOVYZjgeYO+D6fbIe5l25wRdp+R7vlPs1n+LQ5FHQkG133qflyp7rOvkP8cAYIc4qamrhINAIj7hQM+YhkeONEZu6wXaCUM3H6k/seo7jxA/5oHB4hr4zDVwGN9V6QIVHZhBbFQpIHSsSvT5ELuqA1MISpIg/jZyi5c5IHrkO756eFqRpAheFCrR3zxou2XGsm/BXAeIL/0gTFghSSL0uIKX+UTvbGpYvuX5HWC9DMwZob6+j73jvfxGbBiMMFwgnfn41hVJG/9Pgt/nDtQYT72kL+LE6Nc8j4+yFooQHtj5NQJnhW+tvM3l/g0TepEfxPzMhO+kLhiSlanKHEyFGi6ZJiKANcj54xgITmZgO47X2umaRR86tmDcuYqnMe1JddqcLDkPBULmVTsP/Rwld1fitid2JMW/RCEoYXhQIyq534yaQmXxfFEMj64rJQoAoHrq3UUNVEMbhM8p1xctnWs2xhzM+5qlBye9W+YrwFRxuW04ba06gq5rkS8K4TAqi+E+A1sY5777b+EarrETACiFINLL0rRIkzV0bYh5KRJm1V4xKBz1v+7KaTVfWUj5YnYeSvGWDF4W6A8fttMfPzc6M//GED254VJWPaiGbVIDKqG+Ftl1sJHOU9FRqlk
- ukL9RjRb
- QiIx8O6GU6OVW6NNqV+c+b/QNfbhnpBh32XrXF4YR72hD13n4XB8jGcAtL8eSQ+6hNC/Qv+Jgz4b4Elh3ANC96YT34iUsRm0URY/f6RoM4BUIrDkPwvpk8hBl9X5mvbLSYC1WITlhbVQkLpUz93WdJVJYaPLbFv34h1k7HoiT8vVZUUTjfl9YBc5FehhXs99jUGtS3w4aa7DBbtkavTucBslqjtf7AHPtfQxWXCOwDUL6B6k6KjkVnNWvf6WJc4PcuzchfXlcBSt5XaQoQxPzfOw87qLC5TiNkNLZai6+OeQ4FMyNjAGSfOfglZyszK3MDqsTkzkFBTsEcPmqUEjn5CkwFe8mJF6hULRFSGSjD8HMLrhQc6o3tmKExixBO2hzJ1Ph
+X-Rspamd-Queue-Id: 5A6AAC0004
+X-Rspamd-Server: rspam07
+X-Stat-Signature: qfrk39a7xyxey3zf3dh3n9xifcwpy8in
+X-HE-Tag: 1786934536-256534
+X-HE-Meta: U2FsdGVkX18GsOZTX22lcOIf+ATydWzy2BaxVSaTYkaW5d2nofqZGjqhb8MZm/qAEBndddKMwRetbHPWY0bMWJrjyKiZLTeYRIUa9UWfs270DkiaBMFHVjt/pdL7+vKH073bo21RZfL7Nq72LHKm6uyO5MU6tRdkalRk1mtBrdexi5qB4MomVjJ9bC4uHuv8pQnapRQi0H/EyXLpJ9+PfBFkNMHrYNJ3atueCMqinHrbzNQH42oUZgF/5w4SgwHoeQ4O3hoV5WjCWvNHqzdS+HQgdTV+LLhg0d8/rpNDVvmulH5k+vSDPbaGgQ4ONPR+b0Qq/se1PJ9vjVfXl5rurPSCH6bylrmMGl26fAtL1kj8SayA0W2lNoMTgzZtujVS66mmOSeytz6G/EOpcLIQvMWRZ7GFtlnWf80N9i1lQb++qnDV6v+iue8NtVwC+wAtEKHhyYFhZc9DscdwXS/WQAe20ESy8k3jlw+yjnCoA2mE1o2UAIW8B3Oqf4vHa/c5uLP9K3nmHLAjEm29b1Dry/aGz1JNoe2tz0YReum8nQtb2fZQ4Lb+w2SL7fhBrl+h6TzTQrKm8npoGn6oXjcDXUSSc5kySy3BcJQFI2v1K7x0g4vpjpye6QOlMm+/bxpL+TYfSTafy0WsvTI/LYg56ctRGt01QVOf4tfN2/CJTGewjKq4QHH2w0toT4KYTPGkJ35FDl5dIaXzgxV7AHAjXI7LpvDnEfB4GytRvoz4ovI4/6QwYMrNt0h2S4MIFRPHA/OeldFw5a51tozoVdKAlfcmqjB+taiAYPrFQpSqsMWwB6ast3KNaDXxDKkunNwyJakMfGvgLn+W5nTe7xkv/AYIIlD8ACfXIA5EaFz6Y6GS0UwPDmnABfkmt47gQQI3JyKlXrwk2WBxb+e6Hi6IJbpJOFuuFMyDSmQkDnWuuHoq7rEpGPlEyvpBYdgKFNxTXlBbW7R01EgwJO+pxMI
+ xxPU2f3k
+ ANHVoQf7suhI4+lHHJHAkPOpxjhiUzpKSYcEv2StYNYH64DhOlEXZ5yMs8vcsYjyG0tbnExrbxeyyIu9VGj5oH1sszJ3DO5K3jbXimx3C7UnoW5FifZm5yTY6jGjSGS/+L15yqPHfIFsNQ+SDYEvPC5fj8QvHtQdkKOl4/7dxggRxoaoo6VUHatzNGP7IO8iG9Z7HLhVBiwZFYaj95+qK3RuapByWJKb41FLr/J2LoFoj4lIw1WvRc3CYmORcsBr4VHlYeJwKmShWYdFqEKODBN+moOBnBXjqZCuTASKo0/DwMSYmpaVLNPbnSBrHEaRtChmK8NZ2Mk3jnJz9WI221Axycl1ZUxR1GgzXGLyZCmC1vMsAhAlrDB0m73m1tb5JzRnphYjuLWFQ1wA9YV0vYChsX/dlAUeytoZxO0Xga773msAkvLd+71e0U/nBaCTbWe5j1A7DRoBrcW8P/TB5gzzlIVWgG/3awFGq3e+qTwmRV8xBnjPdcmR4cQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,19 +102,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2026-08-17 at 11:34 +0900, Eric Kim wrote:
-> Currently, in anon_vma_clone(), active_anon_vma is assigned from
-> src->anon_vma and is used when unlocking anon_vma after linking
-> new AVCs. However, the corresponding lock operation uses
-> src->anon_vma directly.
->=20
-> Use active_anon_vma consistently to make the lock/unlock pair
-> explicit.
->=20
-> Signed-off-by: Eric Kim <seohyun.kim@outlook.kr>
+On Sun, 16 Aug 2026 21:47:58 -0400 "Zi Yan" <ziy@nvidia.com> wrote:
 
-Reviewed-by: Rik van Riel <riel@surriel.com>
+> >
+> >> > I prefer Andrew's first suggestion.  If the user asks the kernel to copy 
+> >> > too much data, just fail -- with no warning.
+> >> 
+> >> __GFP_WARN gets rid of all other warnings, even if user asks for a
+> >> reasonable size. Why use such a big hammer?
+> >
+> > Because on many systems, WARN causes the kernel to crash.  You don't 
+> > want the entire system to crash just because the user asked for more 
+> > memory than was available.
+> 
+> User asking for more memory that what is available is pretty common and
+> should not trigger a WARN or crash, unless you have panic_on_oom set.
 
---=20
-All Rights Reversed.
+I assume Alan is referring to panic_on_warn.
+
+Heaven knows how common panic_on_warn usage is.  Gemini tells me "There
+is no exact global headcount or precise user metric for how many people
+use panic_on_warn.  However, the setting is widely enabled across a few
+billion Android devices and many cloud/server provider host kernels
+where automated failover makes a full reboot preferable to running with
+an unknown warning state".
+
+So I do think that WARNs are more serious than we (mm developers) tend
+to assume.
+
+So we just shouldn't permit userspace to trivially trigger a
+page-allocation WARN.  Especially if the caller is perfectly capable of
+handling an ENOMEM allocation failure, as appears to be the case with
+usb-gadget.
+
+(Does usb-gadget actually get used by Android?  Surely not by cloud
+providers!)
+
+(Can this WARN be triggered by unprivileged userspace?  I didn't look,
+this matters a lot).
+
+> You can mmap a virtual address range bigger than your physical memory
+> size plus your swap space and try to fault all pages in. That would
+> cause OOM and the system should not crash.
+
+Right.  As long as it doesn't trigger a WARN!
+
+
+
+
+Perhaps we should revisit this.
+
+Why are we emitting a WARN if an allocation fails, given that this will
+often panic the kernel?  Should we on the core MM side dial that back
+to a pr_warn() and a helpful backtrace?
+
 
