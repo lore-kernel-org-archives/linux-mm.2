@@ -4,97 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4133C5DF66
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 16:37:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64A5AC5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 16:39:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3E536B013C; Mon, 17 Aug 2026 12:37:21 -0400 (EDT)
+	id 7D10A6B047F; Mon, 17 Aug 2026 12:39:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A16EF6B0150; Mon, 17 Aug 2026 12:37:21 -0400 (EDT)
+	id 782446B04C6; Mon, 17 Aug 2026 12:39:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9525E6B02CA; Mon, 17 Aug 2026 12:37:21 -0400 (EDT)
+	id 6981E6B05DC; Mon, 17 Aug 2026 12:39:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F7366B013C
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:37:21 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F03A8C082C
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:37:20 +0000 (UTC)
-X-FDA: 85111316640.13.716ABB7
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D6412140003
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:37:17 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=qH8gdYjc;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf09.hostedemail.com: domain of sh_def@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=sh_def@163.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 45BC46B047F
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:39:36 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C50461A07E8
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:39:35 +0000 (UTC)
+X-FDA: 85111322310.15.9B464F8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2E5EE180004
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:39:34 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B2decGWw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786984639;
+	s=arc-20220608; t=1786984774;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pDp7Y6nKu7sVMOaPrZ7lmPO+gASpbZ/ff+zMKWjK5TQ=;
-	b=RTPwgpLoTIYsYB+b3vLTt7/U02pB0lFww2NMJf6DtktB2awFIH8MSWqatpxb0c1o31CJWz
-	JdvxilqtVths1O5vYGHU8L0ayWTWl/gPDhlb55uQjhlcUFyGTqybit4zt3wXj/qMaa2JTn
-	QZ101oBL+YSfX6pBWpCjiq0dSxQYUho=
+	bh=Za7oukzhm99HtwTAkWVccIddRXW9GKa/mcDPH0VteRk=;
+	b=0Eeb8XyaE0fN57q34KppLbR8iE8LTt0PpRtEYESoAodmhFkntR2zk+ZkSHf9FncJga/Gum
+	nf36wd7CdPkWke5jB6rvktKLiIMK5MLAdxCl81qbctK3POmiV4u8E28b1hT5VuMPkNwDYL
+	0a2EwVOaR3NXHkPbuoMc6pg8ZSfxW0c=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=qH8gdYjc;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf09.hostedemail.com: domain of sh_def@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=sh_def@163.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B2decGWw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786984639;
-	b=FSMV0DEfKoAnQw6xt4dUEEGnHe7BHzdpwiBuNzQsUdy6Ven6aNIM62aGSkZ5JDUwPFA0a7
-	NokTVPkNE7v+VE+tCFE6SzE8h6gJSOI051apGhfvGzWDz4H+1AlsdYyCsR6rkngWfwC1G1
-	qg8XAHg4Y5EC+J1q+GFlJl40MJX5bco=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=pD
-	p7Y6nKu7sVMOaPrZ7lmPO+gASpbZ/ff+zMKWjK5TQ=; b=qH8gdYjcLNS1WpEpSx
-	64baJWgiOugHZfLBoderdm9quEeiS3SOQVLKa8E9exg1MoHanzXBzgvZYmPwpjji
-	Y8kDZr/vkHyZ70HTFR1DdykbYRmK16inibhvUNwrSZzY9M9LLzAIMeAlxQ2Ab7KV
-	+SBirFLf0BCRL+UshEb8CWA84=
-Received: from localhost (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgBHJh6dOINqPL8UMw--.63394S2;
-	Tue, 18 Aug 2026 00:36:46 +0800 (CST)
-From: Hui Su <sh_def@163.com>
-To: akpm@linux-foundation.org
-Cc: apopple@nvidia.com,
-	balbirs@nvidia.com,
-	byungchul@sk.com,
-	david@kernel.org,
-	gourry@gourry.net,
-	joshua.hahnjy@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	matthew.brost@intel.com,
-	rakie.kim@sk.com,
-	sh_def@163.com,
-	ying.huang@linux.alibaba.com,
-	ziy@nvidia.com
-Subject: Re: [PATCH] mm/migrate_device: fix cache flush when replacing huge zero PMD
-Date: Tue, 18 Aug 2026 00:36:46 +0800
-Message-ID: <20260817163646.929678-1-sh_def@163.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260817090640.287a9a415da49e3974797aa4@linux-foundation.org>
-References: <20260817090640.287a9a415da49e3974797aa4@linux-foundation.org>
+	t=1786984774;
+	b=FI7TX1ON9U4hgwSwKzoGTG/MDZGHoWcJOBgOFecfPEvQJ+3lLiMTEcNQVHNWqJph4rLut/
+	fttXqt1wE+SJN6LUstpCA7Zv5gRvZac52lbIrBM3URb+0u4EJDzd5B57FL1L+w+v7zgkd2
+	QBa7NY6C34X0N2jbfJJYtxiOhdpSCTM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 97AFA600AE;
+	Mon, 17 Aug 2026 16:39:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BEE51F000E9;
+	Mon, 17 Aug 2026 16:39:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786984773;
+	bh=Za7oukzhm99HtwTAkWVccIddRXW9GKa/mcDPH0VteRk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=B2decGWw0u8E7Av6H5ZFQnlYMzFfuJAbTInHOvgpu0D2kdZTJG0o3Zst6tb0ogmX2
+	 LM8dUeQolCxKnhlSnplrBUfpPQUDqoA1zXGC5hKj2qKOzBsdNkgonr/zDWXueKKYtf
+	 lBXXECedtgjcVqnpWWGwV4XFM+VTUBM1A5/YoQY1wjBfFERJpCYulqxvw0jSCuytQ8
+	 aK2rJaaI1iR3RVBlYwsnArjbskXGWTf6AbD9uLyxHv8JeTnbQE0LM05iGu9gT1KFtQ
+	 EbYbf1b4/090HVMcAjjg5YUSf8ymLDoVuYHPPJMbBpgO4Dgm08g/GPDheJWjuTG7Sn
+	 5WHUjgW6JR4Iw==
+Date: Mon, 17 Aug 2026 17:39:15 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Hongfu Li <hongfu.li@linux.dev>, akpm@linux-foundation.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Hongfu Li <lihongfu@kylinos.cn>
+Subject: Re: [PATCH v4] mm: Use a folio in the softleaf_is_device_private path
+Message-ID: <aoM4hkwYBRgSt88n@lucifer>
+References: <20260803031554.30421-1-hongfu.li@linux.dev>
+ <3ae2f1e1-c784-44ed-9b2c-5edf5699d627@kernel.org>
+ <e20678ed-3fa1-4677-a1d7-e2af481e8302@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCgvCgBHJh6dOINqPL8UMw--.63394S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7KFykGr4xKF1xWF15AF43Wrg_yoW8uw4kpr
-	WxGa1Iy397GryUCFn3XFnrJr1Y9ws7ta1fGrn5Jw109398ZFy5KryIgas0gF45Jr48Jr4x
-	Zr4UKa4xZF98Z3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUx-BtUUUUU=
-X-Originating-IP: [183.192.101.80]
-X-CM-SenderInfo: xvkbvvri6rljoofrz/xtbC6h6wEGqDOJ49GwAA39
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e20678ed-3fa1-4677-a1d7-e2af481e8302@kernel.org>
+X-Stat-Signature: 94u9yd1u36bnypektq775ysyg9wtgprd
+X-Rspamd-Queue-Id: 2E5EE180004
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D6412140003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 4bhb9kpd857duztskc6dbddgnccso4b4
-X-HE-Tag: 1786984637-696972
-X-HE-Meta: U2FsdGVkX1+uuqkHOEtRq5BjWcPP0oPph1FsF/TDuHg/ZxcMAkK0VoyNUM0W/oWDnGZwveQ9HQrOD5yz04Ad4gfdy6UtIYFo1DuTQIM1C6vEB/A3/47HniQO9OBK/tf1JTw82KDGPKrLJJdxulixlIdLb1QX0nk1SShuC7jt5OMx0Bq/eAra9IgdMi1XgunV1UN2K8M5buXgd7CyyB+5bRsoF0iIYwoICozqYfeqLC21cNlWIz9ZTCnsFeGRQD3HVspoQX3X7TYzZCudowWpoJIDY7dYddWYao4Trf9MTJlJcb+RtFcxfdGkq/xQLd2zWmAu8eFhTqwNv27By2nNqW1n+2XobF7ZZVIIOEHehRID9BbPRVxHajmSNGezEnLf5yKyXSYOX7Pv7ZwBLe1SyWmybduZQkuhPidzcdsGcKnTUBI5Lc2ZHuKVdYZMt4mTxoKWY5DmR6oYaVQcCsiotd9ro0Dr8guSw3iGt7ZEXGrhC6vNdWlfA8Pg8Xi0r4yPcnNRCWX3RdcCEQUNYfnqwawkm6YkwRbLzHVi0x7/aZWAspAYktdTkgzI++2WDAALtudOA8njKbeRJ4uimuXCn2cw47/MM2pklnjuM89Xh1v1WpzPiAHwBt/Z1GVcGTC94ums03/dR5QXrDE+TiVIr1QHGUm4guqpcYopZ7iFc9ka15G75fjyBjLGutLROghjhVZapIrPylzaJup9LdrbBFL7GyMIblsaO7d3Puu+HJqXgMZHcCSbgjEaqMpIhftIXPFLDfEJMd0MYg/QCS0JHZAtU5ErH1Yf+NTf6rr4VQ+58BXg1KOhYKVLu/1NR0eiQXfWC1/jPypP0c0TwWFVR4KMVhw/T+C2d8EtZuOSOHdMVO/jZZjN7pfEUaCtQJJPu2rgUBL4E7l6wmkkC78tv7AQqRcXetLfcni6EQUdmBAQKWSYSDihgU2q9491wZnHd/nIkLeOsGrQG1K3K3p
- og8FxNdY
- J5stF7+jdQjytpmUBTlmn1Nkb0ohvzyATLLBFOtaw+w3ouBzAZAAE9tBmdTr1FfCw9slwrIKioGVd8doGF8fb7rNwoQ09hKJ1IGhk840xZDSVsytN5lgMDx3frBYRmhiOwaGB/MvCwe/7W55hl/kvTWfoaTWlDI6J9kDmYuDeMnQfPk7T43uLVxnz1WQTdvpzhutxrq9GhKnGNyeJy3xGFyoiOE2tQvwU7cgC3sNnyN92tI/SB5uD4YpZIAvj9ELLnGMbMMEP4f+fuQLRum2zrS/mDAR1Fp9qoUgBK8mSd0G7EANTC2z3tXKTvGxkL1mf1t/zA374ESa+3L+i5osKvswnIGp4tYOFyDmZsNuZ83pilr/29cgXMDH6TEn524giG3SlTuUTgqa0k9t8aSkKghUHdvvCeNNwAGT2TmomGUrNGLvPKC138GIueLc92w6axoVGcYJvEzF5IWPUeb5lYCqhado7OKoJhelKE2gfSlolVZGEJR8YpmiBOqNJiP6IhjJj6K8KJb0U/6Nmtu17dCVDezKqb23OMuCrYWnfLYX9uef7vCQAo7Al9Q==
+X-HE-Tag: 1786984774-85087
+X-HE-Meta: U2FsdGVkX18ZY226/8SXaPT4c+sECdU5aP8DYDO1HhmFfwcJumaQU+cwjUQrPqNzuHwKdzLGgs6Mtzy29HWkc45wLJZ/jVE+af3idTO+FCrEK5Co+WJ5lQAFRBnTeYaJK/uCxflKG6pz1w3vI8drxQVT87M0nBXY9zwBq1uGeNQX3xo7f59vtSx1WazbjOJF+RDOs+7LWF3TOyBlVqGHiqHQ/Q/2XGkfYSeyRWolgXOMT7Gbqi51I3VQaX3SGWXVMu+Ri9H0/7Vb+8GQIkKhEOFIuTeBDz7Wq0vF65uJlBgJteYh+0bEOHCs1N/0ub/g/n5NsJDYpP0QzpfoKgjJpQ1uZIilhF6FOyWiZlrzB1FulvcP+uW1pPQGhTheGrxv5Ci0ol7ukxO6RB8bk2RR6YMFZAXVE0izwfOx2vR5fqe/k4A36FJcU4Verz9EdmEC5ztPXQwgKPCP/UaTj9m31K2hH3WPH0BkSYEi4v8qXkEgE6fFcREu577Z9ysCt63H1RIH8lS84WghOvT0x8wdvW7mpDLPKWOjnYYeMRlUl6vYeX5EObNmWSWdL7zQbrQ/Jk9CgmCfkBEpGSo/srGjK1cQ6FxwknuGe0jU1hk8fJKQxm23xB8M3UeDOZ9L//Ohdl7ZzLFur5GE1zVQ+iWIgY5ZW/k1DEhqXT1AcNGKIpkf/Mo9BltVfEHnJWbPe3ByFIHBHXyQV0D6k9L+XuCwPtGAq0h3GJhRQY4EO3K0J4n4lPQaj6MNiCCD3KHdTEVb+m+TP1OKjinl7ubKX/IhnifNlmLBwrzX/WpRZwQ4LLV4Y/VQSYRltnXJylpMRV2HEaekGlBpSMfVu8g2PPExau31qy3k38/CgTAUBZZ5rmyApbQFrIliJ4A3aC/t68NoeQNIpjr9bJh8NUPTpfDKhWhSfmi4TAJoWKxdim5f9c2eGgagFVpTguGnASp6vccPQhJGDwHtNb1unmniJNM
+ FuTiQ9RB
+ pjvzBMqHeuk1shtbghm74gagLk06/5mNlwXTF4ZivaIAAmuKbSIs4cCEiJCE5XL2kVtpk+KZYdRbCXwmErPEK2wMpMDXudrfSQoGhzc4eZzbtYRYyMlbo3m4/kie+TBaOcmRfqewRuQ8Qtko+hd1M37qdSoTG3VBNjFIODgvJqlxOARUrmC9PoaYzDMmRqqKvPyGFPcCblQWwUUwEnerpqruf3p/TMzgNtoke2mxNVkJrKK0nkN+o1Vg1YIG2VPyLMkchTDbjjlBM/zKUFFDVBgMXoCUTEl4XKP/Ws6ZM3MLtuonxZtqIf4/+4n0/vJR52hwH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,63 +94,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> On Mon, 17 Aug 2026 17:35:53 +1000 Balbir Singh <balbirs@nvidia.com> wrote:
-> 
-> > On 8/17/26 4:08 PM, Hui Su wrote:
-> > > migrate_vma_insert_huge_pmd_page() calls flush_cache_page() before
-> > > replacing an existing huge zero PMD. However, the third argument to
-> > > flush_cache_page() is a PFN, while addr + HPAGE_PMD_SIZE is an end
-> > > virtual address.
-> > > 
-> > > More importantly, the mapping being invalidated is PMD-sized rather
-> > > than PAGE_SIZE-sized. Flush the whole PMD range with
-> > > flush_cache_range(), matching other huge PMD invalidation paths.
-> > > 
-> > > Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
-> > > Signed-off-by: Hui Su <sh_def@163.com>
-> > > ---
-> > >  mm/migrate_device.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> > > index 908d2d4ec43a..098c04c1b124 100644
-> > > --- a/mm/migrate_device.c
-> > > +++ b/mm/migrate_device.c
-> > > @@ -872,7 +872,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
-> > >  
-> > >  	if (flush) {
-> > >  		pte_free(vma->vm_mm, pgtable);
-> > > -		flush_cache_page(vma, addr, addr + HPAGE_PMD_SIZE);
-> > > +		flush_cache_range(vma, addr, addr + HPAGE_PMD_SIZE);
-> > >  		pmdp_invalidate(vma, addr, pmdp);
-> > >  	} else {
-> > >  		pgtable_trans_huge_deposit(vma->vm_mm, pmdp, pgtable);
-> > 
-> > Reviewed-by: Balbir Singh <balbirs@nvidia.com>
-> 
-> doh.  It's a shame this actually compiled...
-> 
-> Can we add some speculation about the userspace-visible effects of the
-> bug?
-> 
-> I'm assuming we should backport the fix?
+On Mon, Aug 17, 2026 at 05:57:57PM +0200, David Hildenbrand (Arm) wrote:
+> On 8/17/26 17:52, David Hildenbrand (Arm) wrote:
+> > On 8/3/26 05:15, Hongfu Li wrote:
+> >> From: Hongfu Li <lihongfu@kylinos.cn>
+> >>
+> >> Use the folio APIs in the device_private migration path of do_swap_page(),
+> >> replacing four calls to compound_head() with one.
+> >>
+> >> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+> >> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> >> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> >> ---
+> >> v4:
+> >> - Drop the do_non_swap_page() extraction (patch 2/2 from v2)
+> >> - Added Reviewed-by: Lorenzo Stoakes
+> >> - Link to v2: https://lore.kernel.org/all/20260723030752.16979-1-hongfu.li@linux.dev/
+> >> v3:
+> >> - Please ignore v3.
+> >> v2:
+> >> - Drop fault_folio, reuse the existing folio variable instead
+> >> - Refresh commit messages
+> >> - Update comment to use "folio" instead of "page" in the
+> >>   device_private path
+> >> - Add Acked-by: David Hildenbrand
+> >> - Add patch 2/2 to extract do_non_swap_page() from do_swap_page()
+> >> - Link to v1: https://lore.kernel.org/all/20260721013347.65698-1-hongfu.li@linux.dev/
+> >> ---
+> >>  mm/memory.c | 11 ++++++-----
+> >>  1 file changed, 6 insertions(+), 5 deletions(-)
+> >>
+> >> diff --git a/mm/memory.c b/mm/memory.c
+> >> index 56b244552f13..bbb289ba09d3 100644
+> >> --- a/mm/memory.c
+> >> +++ b/mm/memory.c
+> >> @@ -4873,18 +4873,19 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> >>  				goto unlock;
+> >>
+> >>  			/*
+> >> -			 * Get a page reference while we know the page can't be
+> >> +			 * Get a folio reference while we know the folio can't be
+> >>  			 * freed.
+> >>  			 */
+> >> -			if (trylock_page(vmf->page)) {
+> >> +			folio = page_folio(vmf->page);
+> >> +			if (folio_trylock(folio)) {
+> >>  				struct dev_pagemap *pgmap;
+> >>
+> >> -				get_page(vmf->page);
+> >> +				folio_get(folio);
+> >>  				pte_unmap_unlock(vmf->pte, vmf->ptl);
+> >>  				pgmap = page_pgmap(vmf->page);
+> >>  				ret = pgmap->ops->migrate_to_ram(vmf);
+> >> -				unlock_page(vmf->page);
+> >> -				put_page(vmf->page);
+> >> +				folio_unlock(folio);
+> >> +				folio_put(folio);
+> >>  			} else {
+> >>  				pte_unmap(vmf->pte);
+> >>  				softleaf_entry_wait_on_locked(entry, vmf->ptl);
+> >
+> > Okay, so this breaks the HMM selftests:
+> >
+> > # ok 30 hmm.hmm_device_private.migrate_anon_huge_fault
+> > # #  RUN           hmm.hmm_device_private.migrate_partial_unmap_fault ...
+> > [   14.589125] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+> > [   14.589178] Modules linked in: test_hmm
+> > [   14.589203] CPU: 25 UID: 0 PID: 653 Comm: hmm-tests Not tainted 7.2.0-rc5+ #14 PREEMPT
+> > [   14.589243] Hardware name: linux,dummy-virt (DT)
+> > [   14.589268] pstate: 63400005 (nZCv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+> > [   14.589300] pc : folio_unlock+0x78/0x88
+> > [   14.589326] lr : folio_unlock+0x78/0x88
+> > [   14.589349] sp : ffff80008284bb90
+> > [   14.589368] x29: ffff80008284bb90 x28: ffff0000cc8ce180 x27: 0000000000000000
+> > [   14.589406] x26: 0000000000000000 x25: ffff0000ca395dc0 x24: 0000000000000000
+> > [   14.589447] x23: 0000000020100073 x22: ffff0000c23d35c0 x21: ffffffffbfff8000
+> > [   14.589485] x20: ffffffffbfff8000 x19: ffff80008284bca0 x18: 0000000000000010
+> > [   14.589523] x17: 3030303030303030 x16: 2066666666666666 x15: 6630303030303030
+> > [   14.589562] x14: 0000000000000000 x13: 29296f696c6f6628 x12: 64656b636f6c5f74
+> > [   14.589603] x11: fffffffffffc7100 x10: fffffffffffc70b0 x9 : ffffb0504ff88f70
+> > [   14.589640] x8 : 3fffffffffffdfff x7 : ffff000c79b24bc0 x6 : 00000000000001a7
+> > [   14.589680] x5 : ffff000c79b24bc0 x4 : 0000000000000000 x3 : 0000000000000000
+> > [   14.589718] x2 : 0000000000000000 x1 : ffff0000cc8ce180 x0 : 000000000000003f
+> > [   14.589756] Call trace:
+> > [   14.589769]  folio_unlock+0x78/0x88 (P)
+> > [   14.589792]  do_swap_page+0xf40/0x1580
+> > [   14.589815]  __handle_mm_fault+0x648/0xe68
+> > [   14.589838]  handle_mm_fault+0x9c/0x330
+> > [   14.589858]  do_page_fault+0x268/0x7e0
+> > [   14.589882]  do_translation_fault+0x5c/0x80
+> > [   14.589904]  do_mem_abort+0x48/0xa0
+> > [   14.589927]  el0_da+0x38/0xd0
+> > [   14.589948]  el0t_64_sync_handler+0xd0/0xe8
+> > [   14.589970]  el0t_64_sync+0x198/0x1a0
+> > [   14.589990] Code: d65f03c0 d000eec1 913c4021 94015993 (d4210000)
+> >
+> > I can only speculate that we need another
+> >
+> > 	folio = page_folio(vmf->page);
+> >
+> > after the migrate_to_ram() call.
+> >
+> > Let me try that real quick.
+> >
+>
+> Yeah, that fixes it:
+>
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 4134ac607ee0..83d1a2be957c 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4937,6 +4937,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>                                 pte_unmap_unlock(vmf->pte, vmf->ptl);
+>                                 pgmap = page_pgmap(vmf->page);
+>                                 ret = pgmap->ops->migrate_to_ram(vmf);
+> +                               folio = page_folio(vmf->page);
 
-Hi,
+So after migrate_to_ram() the folio might have been split or otherwise somehow
+the page doesn't belong to the same locked, refcount-incremented folio it did
+before?
 
-I took a closer look at this, there is no userspace-visible effect today.
+That's kinda a footgun... but this documents it at least.
 
-The architectures that currently enable ARCH_ENABLE_THP_MIGRATION use
-no-op implementations of flush_cache_page()/flush_cache_range().
-32-bit ARM has non-trivial implementations, but does not enable
-ARCH_ENABLE_THP_MIGRATION.
+I think a comment explaining how this can happen would be helpful though as this
+doesn't seem intuitive.
 
-So this appears to be a latent API misuse rather than a currently
-observable bug, and I don't think a stable backport is necessary.
 
-Should I resend a v2 clarifying the userspace-visible effect in the
-changelog?
+>                                 folio_unlock(folio);
+>                                 folio_put(folio);
+>                         } else {
+>
+>
+> --
+> Cheers,
+>
+> David
 
-Thanks,
-Hui
-
+--
+Cheers, Lorenzo
 
