@@ -4,80 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 106EDC5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 17:23:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F29BDC5DF70
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 17:23:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 154FB6B02D5; Mon, 17 Aug 2026 13:22:36 -0400 (EDT)
+	id CDC3E6B085F; Mon, 17 Aug 2026 13:22:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CCA66B085F; Mon, 17 Aug 2026 13:22:36 -0400 (EDT)
+	id CB3456B0868; Mon, 17 Aug 2026 13:22:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED58C6B0860; Mon, 17 Aug 2026 13:22:35 -0400 (EDT)
+	id BA8D46B085F; Mon, 17 Aug 2026 13:22:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A99026B085E
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:22:35 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 88FE0A0874
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:22:33 +0000 (UTC)
-X-FDA: 85111430586.25.E128F71
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 907CAA0004
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:22:31 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aomBkFFX;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 79B926B085F
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:22:37 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B7CE940876
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:22:36 +0000 (UTC)
+X-FDA: 85111430712.30.FC2D5AD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id AC3E040008
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:22:34 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Vgm6nGYx;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of devnull+jim.cromie.gmail.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+jim.cromie.gmail.com@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of devnull+jim.cromie.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+jim.cromie.gmail.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786987351;
+	s=arc-20220608; t=1786987354;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=bpTMG1p4pGsKVMyp0W09Uyzna7ch/b2bdwktRHYCGXw=;
-	b=Et9z6y9wF83VrVWBiZuWmV5Annld3DtnsuaFsWNBtLkilayV1gAOaQPTJ/+MC0B6WYpvHj
-	hZ8INnCIbaVYw8nUa7RYvTIB8HTKqOFj/WKZUNOW2cYufHpMTWQp3HhcemZpAW4sD9MPcw
-	FksfIerp2XZhclcsANRq0i3YziduQmg=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5+KmLuLMMLwjIxfc/Fnhyr2GjdPZm0VdgVF09lUELrQ=;
+	b=KQJfxGk5+WxqgKPvSnBdZvRn9TymTGYX/XaV5aAfXRP8LRCjhb1Aj8vbM+G91LhTr/nntl
+	PoCReP9VFDUmEIq3pSs8KQ3xNnrgqARGusWh8JCGvdx/yPxTcjZbqs5DmkZb9e3YRhZRTv
+	MrOX3WGEe8OrCjFhWQC/4r1SyfApJJU=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aomBkFFX;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Vgm6nGYx;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of devnull+jim.cromie.gmail.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+jim.cromie.gmail.com@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of devnull+jim.cromie.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+jim.cromie.gmail.com@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786987351;
-	b=5bKelJ/fFYCh5XWy7+TWj8IPzWw6sJQayBptYgpZfN3nSs/xZ6cITYc7hgIq1qJMegHAgK
-	4PhrKwNuA8ppA3SOWNdYsX2uwRsdShdcUzDDvZI+iEwT08++Fb/GhJsUvC5mGEtE4uUjrP
-	O5h2ZKhoonOhssKOpFYVbFGPUhwApKo=
+	t=1786987354;
+	b=8k+B+WgcDFBx8bq/xIPEj5y/FHCjE9mwtqUuXmGPczpEHC07jX15KZ+7vYzdhnbrt+hT14
+	686xoZZuPRZlx08g9NL+aswEbcpLhaCG15U4yUEMxqiHWCHHDiOl6N85BtsNy+Vu5WJKJa
+	WaRONveInyr5KSvl/yqg544YzwlXX00=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D27E1601E0;
-	Mon, 17 Aug 2026 17:22:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 740EFC2BCF6;
-	Mon, 17 Aug 2026 17:22:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9DCC044015;
+	Mon, 17 Aug 2026 17:22:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7AE43C2BCF6;
+	Mon, 17 Aug 2026 17:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1786987350;
-	bh=S4TsoAAriM4sI09Qb2bqw2yp5vAZgxjGGyIiOJ7aKR4=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=aomBkFFXeIFnbOAUWEbLNx0X3mPmbVuGIFa4tqa6nwUQ2LtgBFq7IpS7aoGbkqctX
-	 QCwpcK5KcvxXpvDivqws+s7depJBzlc9lMdeq7cpxwBZRBoT6wTn7wB2HiP6EwYCbx
-	 eSQVLJig/3PLSWNTg7xjCGBc4LLBCmeNvNxHC0Ih2PX5xMbXz+RF3McWzyzbame5UQ
-	 x1rovs3SQY32e/vlu9hnumizvYTYwAPutETBC/rEoh2ALESehmbb+w0d25qaqezV1Z
-	 nIuR0+alX0zHRsepM9HmMl9f0bUMHPRnGnC8/KgNDtWMLvMGNQFo2rKGK5QEndXO4D
-	 scZ4OGPOOrGCg==
+	s=k20201202; t=1786987351;
+	bh=RVVE5r0NGUE4k5ybuOlp+7aHs2IlhNHimZ4YfYSSYDE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=Vgm6nGYxPCpnhsPyBgdcgF8JbuxFF/gy/YpTLAh4AKZLyV0AmkmhdqB4ijiDN8khe
+	 d340Rr/KNdjeRaI8m59OUPzO92PqxbPW8i3f3zry1G9MtF/bAX8+tbShkp742iWpyO
+	 WfY44+cLHZhbzyyWPz6Txlra1l3JKspyLvgK3BBASHhU+Z2E2AFGwEvsJ7yhzVerx1
+	 5v5mnOrdoDy/qA8hk+7aDRJ6j9GQ2IwAj2VkSCRpYdCvRZcljSxlE7ex2jcvYIfaQ6
+	 d5uQdEcENIC0s+Px4jfZxngrNy+jKzR6HQvWyTgsY4H/zIr9QwVXyJZkBEMtkk1avG
+	 4kb03jlxCo8oQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 323DFC5DF66;
-	Mon, 17 Aug 2026 17:22:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 56928C5B572;
+	Mon, 17 Aug 2026 17:22:31 +0000 (UTC)
 From: Jim Cromie via B4 Relay <devnull+jim.cromie.gmail.com@kernel.org>
-Subject: [PATCH 0/9] lib/folio_pool: Direct-Map Large Folio Pool &
- Scratchpad bump allocators
-Date: Mon, 17 Aug 2026 11:22:14 -0600
-Message-Id: <20260817-folio-pool-v1-v1-0-0c1d230aa3af@gmail.com>
+Date: Mon, 17 Aug 2026 11:22:20 -0600
+Subject: [PATCH 6/9] locking/lockdep: Fallback to folio_pool in
+ alloc_list_entry when static pool is full
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/w3HQQqAIBAAwK/InltQSa1+U5vVgriR4EX8e85tG
- pT4cSywqQZfrFxY8oiZFNCz5zsin+NgtfV6MQ4vSSz4iiSsBukIjuwc/GoJev8BleereU8AAAA
- =
-X-Change-ID: 20260815-folio-pool-v1-cb75c247692c
+Message-Id: <20260817-folio-pool-v1-v1-6-0c1d230aa3af@gmail.com>
+References: <20260817-folio-pool-v1-v1-0-0c1d230aa3af@gmail.com>
+In-Reply-To: <20260817-folio-pool-v1-v1-0-0c1d230aa3af@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, 
  Phil Sutter <phil@nwl.cc>, Alexei Starovoitov <ast@kernel.org>, 
@@ -105,11 +104,11 @@ Cc: netfilter-devel@vger.kernel.org, bpf@vger.kernel.org,
  linux-mm@kvack.org, coreteam@netfilter.org, netdev@vger.kernel.org, 
  Jim Cromie <jim.cromie@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786987349; l=10279;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786987349; l=4052;
  i=jim.cromie@gmail.com; s=20260203; h=from:subject:message-id;
- bh=S4TsoAAriM4sI09Qb2bqw2yp5vAZgxjGGyIiOJ7aKR4=;
- b=6ocnK9kGfINHZu0sFQxosXoa9fjGshgR96/GaN0gRrx/bgz1WzePp0sGTF2pIHDrfTwHsE3pT
- Xf5QfrlXQLZBqAgieAwPs5KBseEIIPHPpOFwKAhctAZGFVpB/VetMaZ
+ bh=Hw9H0XS3lRz/8Cusmj0TdRoN7GOnkgdGE/QpF+OTKZE=;
+ b=7ApQuwEsLmNusDVgP3wGCUer5jWN1Mvb2G7RmfE1VdvcfA0Sc3zPBxPrhepGf2Qoooi58cGiI
+ /JMtsQaQwZxAKM58qj6awvp+EWf0JxWRjrcSmYqhuYL91ZsT2xJmsy6
 X-Developer-Key: i=jim.cromie@gmail.com; a=ed25519;
  pk=C6E5ODlPQo7ZBynATXH9wg7K6HxP0pIXyf4s38Qw0XE=
 X-Endpoint-Received: by B4 Relay for jim.cromie@gmail.com/20260203 with
@@ -117,13 +116,13 @@ X-Endpoint-Received: by B4 Relay for jim.cromie@gmail.com/20260203 with
 X-Original-From: Jim Cromie <jim.cromie@gmail.com>
 Reply-To: jim.cromie@gmail.com
 X-Rspam-User: 
-X-Stat-Signature: 9pf9pczriz39ag5bhr4s67gqu8nttazj
+X-Stat-Signature: metx3hhwmdm5uh9o77nwra5hf61j5b6a
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 907CAA0004
-X-HE-Tag: 1786987351-866514
-X-HE-Meta: U2FsdGVkX192D39GyCq9ZAZFa8xdX0gKTDDGOqWiGN9BsVzJ8FWr5DU9JP34x1B+V/NPlrez7er99l4OEM006MAqiAwV0OSzy2Pf9fMk2NISrUGKjgYjzZgxJ+sRF7a5mgYHGYS9dRYpAzGCdAoxQeYReuRsUPiIjvATaQgtk4wfM2Vu96eahglxglPQEackkHcSUzja6X9y8rjPkzYZuUg+AOAchDBmq3g4PwftOds3peRKfJcMGeT9q/nLvCF/cOmAj+QzPptUVKGBbFAVeLoxR9MpUlTuCbX1BuHaqVzRa8B1sm3C0Mbs561kDHm7NFVgZOLy46qSLrgAF9RdBg8vvvSSjWeLi/+e6UrX3a7018TC0KNeWTRZkzczvYPCmfrUd3jEb8X9vmWQ9+e8yBE2V/T/i9E47zy5QFXorID5xxsoZnxeo7F6pyAu9UPOVThTCAC01JHvx6uxhrnkTFKXF+MW7lkiduF0SQih+WWmTOrJ+CvAPZnf2XshUS0vo06W7OMzddf+Fd+WaFelSoorakPoVc01EC1bpwEJK1PQYQiKHcDTFegntDdDHJtF9vTfhjP64GfsdeqLQcphiOUHB+0JLfB8UtiyAv9pbD0dgEA1tCxlGUqAx76qF9G46rJ68+HJpd4mFZoFUAM56JAdT4kK4AQ5AxS50YDCMUylwuQ9W8UwfkILqaBlpU9ynuPBR+ZUQAD7+/TEBYrNpBIK9c2ICq4MkXyusYanowYK6HJJivRE7xBhPabg3dMA3NmClkwYf/br4neJ4Sle0pnLJPEVgX8fDQunuNzl/zjjnReuzlPl2xxf9tEjnjY3+SkDjdVD9mKKaLRrkoa0tG5/MzGbXdq10eKslRUmwA9HzHvq+f39O2XaO3mVh2MnUV9mun81YtIQ5Q2pPTge8sLLdV5iIC++xOVWXLlMWmo6pg1QSLXOxBwq4hbA2i1NUlb1jMguMsHCb//y2WX
- I2cKR9d1
- ULkdu4j+nUcTFXSjXzq1/ROKHPEsXMJbS5Iee3DPxfqt91rIXP41eCIk+F3gc8gTgTe8v7iSBU9umSi3xi07SPx1lC2gnOvMNf5jZpW/Xhqou7vcjKfuaAZjHS3Kmx/ulKvROn3YLiNfHUG4OMJzJeeUjrhYYJGD9oLjBJgurnamUE4j64wJu/20mZ2HjdkTNeRhZbsy1jml9vJvlniZLNxG+GE5QPeEjdj10OxQkzHdW7UyXvTuMftK+a3ZORdLApR/A4aVG8bdynJtL58Wzhdk4f/xjV7MwVDjdQXxxBPMexg1p0feYLKGQWOCVdHfyZrwhjGPHA7XvJSMrzLKmO40FBYXqiR3rB4xZbX9GMhTZBjLxDlcD9iTz2k+O5F/CIZW7LiyeuAv+FGYUGFlRDmQdnAAjfJN2j6YEQDvdgNFv2+55V4XI7HzyuWYw93/1KvDFkxtt9zr7rFymzyTH+4ALmk1TfavBP4BOZ7iODiBrvPetRJREZBY3HC9Ae3FeUCCfLopoE6GzfwZxlobLxHEDGUNwM7qarmIutjZ0x+pppK7s8i0FTMT6XRNtBsqKBqFA17JUcKq96Cg=
+X-Rspamd-Queue-Id: AC3E040008
+X-HE-Tag: 1786987354-869115
+X-HE-Meta: U2FsdGVkX1/3inrQa2xqUr9fk7JtFThGmdAgOTFo9C+oSkf7IDVnzyXX4FhX+xcfNAxTkXc1cepdL9UW6/A7p8gaIoh10Q3hGIm0LM6R05bm/dUkS3kA8LoVUzsS0cg6kNDNwTzBewYbJ4bkCa/IduW4/1WW5bQP+dBJ83mE8AeA2ykqtlmDbyA8cycdUeMx1ahQNeelblt7sceQctbZzqvkQN1tqSvwVfUVe7XbR6yZksbDUsLroC1GmbeqjrM/AKmGm8lxAucCXbCq2uBGdL3m878oQweXrowG6Ico44gDi8ORMMXObBoawnhaDpKKVzczQolNCymrTh6Q4F2NrnOqPOMfUYTjF4n2OHzgav+WSU/xU94qjO3eW9tRcVluCPWWlfWgtLR7NkE+RqPs90tJ3kLSnk5qt0MxsSu3qQ467yPJEtIoDWURNFkQd1Kj+TznnAruNxNGK7ym6t4ZasbqGBnIH07NRJbJQhKd1ajLNtu7KKt0k6QcMdVypNeyt0n9E9WckuJy1Eviq5qjTdSAoaotB23Y13zLbQQcosDsbEgANRj8LUbHhUglNfEoxdIDnSvRZ6BIyOkLhQqACnurNcOuCHCM5goJemXgEAWPkFDZj69vV6cN9gfSL1fYQ0auWlXonYXITr5PxN9Y+lAurf/JZCq+BxP/eEMhsCiXIpoqrxTdb/fs+gagTAufVKset7sX4/xjUHOn6PbnvdNb5SCj6/EfE4KSPPlZtBNxdWCkpBEYhnc9Zp7JVCO2L31ZdT/a4rwpluyAWskAmXorvuaLt39K0wqtQog4A0KhYWZSDZ5lw8z2wUPnQOX9Y91230eRIJuveLESSLVBzg1T/pHQh+F3cQ2ZeWkGZlXGvhC/e7jx1wDsM30efnO6pDvXS7BksFYg1n1D2wksMF+kW3fFnlI0pJ2B0cnWToB+wZE2z2Mwe2RaTejzGdCXJgKN4NnQ/7CIxLBwPvy
+ js6sjjG2
+ l9QGYmLlG9amDcKnCkQikd6LRgs7KwpTeZD/PMjKo+Dr0NQkK+soqJE5BarLC+3iXOk5X/4AbOP6CEVhYY0A9YOSSJEFqdLuRUIhQWe74+OLXz8OhZuKDCe4qS+5joY9+AVsX2AI9/vUlcJInQbZh8dOOyoQx2OzS+Kp62FBs6A5c8wfrvX3J5pXSh2zdaN5Ri6B780FkbV1JR+9Q+2Y6lza5Q3f1a4Ra9509cLZZyFKvs1y1XAyJDFPpkenFoljvd/WetKT2J5nnoPKhp3/4ynqHIWCIBketHMn9+qI/r28fH0op7Eh49XXLRMdurgdCnWfjkhumQ5fWawua1IBJAx8+XTj5vufiEp0yRM+H1SKF/+MOk6PGdjt7PRchh0tnOoIR3SWWRMCg45gB18XOf8AMQVxNNF04BoK24PXLHVG/8tG5Yj6ikvU4BBhxVi1krra9E3vacow3fm2N2xwGCywvXQ6vHV9VrlNQdAhYWR5I56NWxEq3JHIEkyr5F2HJfhn01rSGeMnYi1Rbe0qNiA1MUIGsjqopnmnB5rwPm3qv5dhbx0HPIkXhAO7Kf5/qh9f1gpVbGabNNfpudltlY5NiPj8VsHyDcdPrwwn0EBIht9Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,196 +130,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce two light-weight bump allocators backed directly by compound
-folio pages from the buddy allocator (skipping SLUB metadata overhead):
+From: Jim Cromie <jim.cromie@gmail.com>
 
-1. struct folio_scratchpad - Variable-sized, alignment-aware bump allocator
-   for bursty, append-mostly lifecycles with bulk teardown.
-2. struct folio_pool - Fixed uniform-slot bump allocator for homogeneous
-   descriptors.
-
-These serve 2 kinds of use-cases:
-
-1: Ephemeral Batch/transaction Lifecycles (Netfilter, BPF, DRM GPUVM)
-
-- Transactional subsystems allocate bursts of hundreds or thousands of
-  homogeneous or heterogeneous objects, only to tear them all down
-  simultaneously at batch completion or error abort.
-
-- Under SLUB: Each descriptor incurs freelist traversal, lock
-  contention, and O(N) kfree() loops on teardown.
-
-- Under Folio-Scratchpad: Allocations are straight-line pointer bumps,
-  bulk teardown is O(1) folio_put(), and consecutive Netlink
-  transactions reuse warm L1/L2 cachelines without buddy lock churn
-  via folio_scratchpad_reset().
-
-2: Dynamic Long-Lived Graph Scaling (Lockdep)
-
-- Core subsystems historically avoided SLUB by statically
-  preallocating massive compile-time arrays in .bss
-  (e.g. list_entries[32768], 1.31 MB) to prevent SLUB allocator
-  recursion deadlocks.
-
-- Fixed arrays exhaust their limit and permanently disable validation
-  (BUG: MAX_LOCKDEP_ENTRIES too low!).
-  
-- Under Folio-Pool: Lockdep uses a 4,096-entry __initdata bootstrap
-  buffer for early boot prior to buddy initialization, then seamlessly
-  migrates and compacts all dependency edges into 64 KB direct-map
-  folios at late_initcall.
-  
-- Permanent static .bss allocation for dependency edges is reduced
-  from 1.31 MB to 0 KB (100% reclamation at free_initmem()).
-
-Core Primitives in include/linux/folio_pool.h & lib/folio_pool.c:
------------------------------------------------------------------
-0. struct folio_scratchpad (Variable-Sized Elements):
-   - Dynamic alignment-aware bump pointer with zero padding waste.
-   - API: folio_scratchpad_init(), folio_scratchpad_alloc(),
-     folio_scratchpad_reset(), folio_scratchpad_free(),
-     folio_scratchpad_stats().
-   - Typed macros: folio_scratchpad_alloc_obj(),
-     folio_scratchpad_alloc_bytes(), DEFINE_FREE(folio_scratchpad, ...).
-
-1. struct folio_pool (Fixed Uniform Elements):
-   - Thin wrapper embedding struct folio_scratchpad for homogeneous objects.
-   - API: folio_pool_init(), folio_pool_alloc(), folio_pool_free(),
-     folio_pool_stats().
-   - Typed macros: folio_pool_alloc_obj(), folio_pool_alloc_type().
-
-2. Encapsulated Slab Discrimination & Reallocation:
-   - is_folio_pool_ptr(ptr): Direct-map folios are identified via
-     virt_to_folio(ptr) && !folio_test_slab(f), avoiding custom bitflags.
-   - folio_scratchpad_free_elem(ptr): Safe no-op for folio-backed objects;
-     delegates to kvfree() for SLUB/vmalloc fallback objects.
-   - folio_scratchpad_realloc(ptr, old_size, new_size, gfp): Delegates to
-     krealloc() for SLUB objects; allocates a fresh SLUB buffer and copies
-     payload for folio-backed descriptors.
-
-3. Subsystem Autonomy & Runtime Static-Key Control:
-   - DEFINE_FOLIO_POOL_STATIC_KEY_PARAM() allows maintainers of each
-     subsystem (Netfilter, Lockdep, DRM, BPF) to choose their own default
-     enablement policy (DECLARE_STATIC_KEY_TRUE vs FALSE) and independent
-     module/boot parameters (e.g. lockdep.folio_pool, nf_tables.trans_scratchpad).
-   - Enables isolated, zero-overhead A/B benchmarking and production triage
-     without cross-subsystem coupling or kernel recompilation.
-
-Active Proofs & Performance Profiling:
---------------------------------------
-0. Virtualized Guest Netfilter Benchmark (KVM / virtme-ng ftrace):
-   Controlled A/B benchmark across 10,025 Netlink transaction descriptors
-   and 5 asynchronous commit/abort teardown passes:
-
-   Function: nft_trans_alloc (10,025 descriptor allocations)
-   -----------------------------------------------------------------------------
-   Mode                                 Total Time       Avg / Alloc      Delta
-   -----------------------------------------------------------------------------
-   folio_scratchpad Enabled (Bump)      9,158.02 us          0.914 us    -19.4%
-   SLUB Fallback (kzalloc)             11,366.53 us          1.134 us  Baseline
-   -----------------------------------------------------------------------------
-   Net allocation latency reduction:   -2,208.52 us (-2.21 ms)
-
-   Function: nf_tables_trans_destroy_work (5 asynchronous teardown passes)
-   -----------------------------------------------------------------------------
-   Mode                                 Total Time       Avg / Pass       Delta
-   -----------------------------------------------------------------------------
-   folio_scratchpad Enabled (Bulk)     36,065.65 us          7.21 ms      -8.6%
-   SLUB Fallback (O(N) kfree)          39,449.65 us          7.89 ms   Baseline
-   -----------------------------------------------------------------------------
-   Net teardown latency reduction:     -3,384.00 us (-3.38 ms)
-
-   Combined In-Kernel Netlink Transaction Lifecycle Savings: -5.59 ms (-13.3%)
-
-1. Bare-Metal Host Netfilter Profile (AMD Zen 3 Hardware PMU & ftrace):
-   - Asynchronous Teardown: 53.77 ms vs 56.03 ms (-2.26 ms / -4.0%).
-   - Instruction Retirement: 281.29M -> 282.46M (-1,174,062 instructions).
-   - Branch Instructions:     62.94M ->  63.20M (-265,961 branches).
-
-2. Bare-Metal Host Lockdep Telemetry (Physical Host frodo, AMD Zen SMP):
-   - Pre-Buddy Watermark: 928/4096 bootstrap entries consumed during boot.
-   - Graph Compaction: Migrated and compacted bootstrap dependency edges
-     into folio_pool at late_initcall; bootstrap array reclaimed by
-     free_initmem() (0 KB permanent .bss cost).
-   - Live procfs Telemetry (/proc/lockdep_stats):
-     lock-classes:                          996 [max: 8192]
-     direct dependencies:                  2324 [dynamic: 7 x 64 kB, tail: 17 kB/64 kB]
-     indirect dependencies:               24612
-     all direct dependencies:             81884
-     zapped classes:                          2
-     zapped lock chains:                    173
-   - Active Invariant Validation: Live module unloads exercised modernized
-     zap_class() direct list unlinking across dynamic folios with zero
-     global bitmap scans and zero assertions.
-
-What's Unchanged:
------------------
-- All consumer object structures, alignment rules, and lifecycle boundaries
-  remain strictly identical.
-- Memory safety invariants are preserved: individual deallocation is a safe
-  no-op for arena-backed objects while SLUB objects continue to use kfree().
-
-Subsystem Adoptions in this Series:
------------------------------------
-0. lib/folio_pool: Core direct-map large-folio pool and scratchpad allocators.
-1. netfilter/nf_tables: Pack netlink transaction descriptors into per-net
-   trans_scratchpad with bulk reclaim & warm chunk reset.
-2. bpf/verifier: Route verifier stack state node allocations to folio_pool.
-3. drm/gpuvm: Route gpuva_op allocations to folio_scratchpad.
-4. bpf/syscall: Route generic_map_update_batch key/value allocations to
-   folio_scratchpad.
-5. locking/lockdep: Fallback to folio_pool in alloc_list_entry when static
-   pool is full and expose dynamic folio telemetry in /proc/lockdep_stats.
-6. locking/lockdep: Traverse adjacency lists directly in zap_class().
-7. locking/lockdep: Shrink static list_entries array to early bootstrap buffer.
-8. locking/lockdep: Migrate and compact boot-time dependency graph from __initdata.
-
-Patches in this series:
------------------------
-[PATCH 1/9] lib/folio_pool: Introduce Direct-Map Large Folio Pool & Scratchpad bump allocators
-[PATCH 2/9] netfilter/nf_tables: Add folio_scratchpad collector to struct nftables_pernet
-[PATCH 3/9] bpf/verifier: Route verifier stack state node allocations to folio_pool
-[PATCH 4/9] drm/gpuvm: Route gpuva_op allocations to folio_scratchpad
-[PATCH 5/9] bpf/syscall: Route generic_map_update_batch key/value allocations to folio_scratchpad
-[PATCH 6/9] locking/lockdep: Fallback to folio_pool in alloc_list_entry when static pool is full
-[PATCH 7/9] locking/lockdep: Traverse adjacency lists directly in zap_class()
-[PATCH 8/9] locking/lockdep: Shrink static list_entries array to early bootstrap buffer
-[PATCH 9/9] locking/lockdep: Migrate and compact boot-time dependency graph from __initdata
+Use struct folio_pool to dynamically expand lock dependency storage when
+the static list_entries pool is exhausted, avoiding premature lockdep
+disabling.
 
 Signed-off-by: Jim Cromie <jim.cromie@gmail.com>
 ---
-Jim Cromie (9):
-      lib/folio_pool: Introduce Direct-Map Large Folio Pool & Scratchpad bump allocators
-      netfilter/nf_tables: Add folio_scratchpad collector to struct nftables_pernet
-      bpf/verifier: Route verifier stack state node allocations to folio_pool
-      drm/gpuvm: Route gpuva_op allocations to folio_scratchpad
-      bpf/syscall: Route generic_map_update_batch key/value allocations to folio_scratchpad
-      locking/lockdep: Fallback to folio_pool in alloc_list_entry when static pool is full
-      locking/lockdep: Traverse adjacency lists directly in zap_class()
-      locking/lockdep: Shrink static list_entries array to early bootstrap buffer
-      locking/lockdep: Migrate and compact boot-time dependency graph from __initdata
+ kernel/locking/lockdep.c           | 35 ++++++++++++++++++++++++++++++++++-
+ kernel/locking/lockdep_internals.h |  2 ++
+ kernel/locking/lockdep_proc.c      | 16 ++++++++++++++--
+ 3 files changed, 50 insertions(+), 3 deletions(-)
 
- drivers/gpu/drm/drm_gpuvm.c        |  11 +-
- include/drm/drm_gpuvm.h            |   6 +
- include/linux/bpf_verifier.h       |   3 +
- include/linux/folio_pool.h         | 279 +++++++++++++++++++++++++++++++++++++
- include/net/netfilter/nf_tables.h  |   3 +
- kernel/bpf/syscall.c               |  17 ++-
- kernel/bpf/verifier.c              |  16 ++-
- kernel/locking/lockdep.c           | 278 +++++++++++++++++++++++++++++-------
- kernel/locking/lockdep_internals.h |   2 +
- kernel/locking/lockdep_proc.c      |  16 ++-
- lib/Makefile                       |   2 +-
- lib/folio_pool.c                   | 230 ++++++++++++++++++++++++++++++
- net/netfilter/nf_tables_api.c      |  51 +++++--
- 13 files changed, 837 insertions(+), 77 deletions(-)
----
-base-commit: 1a7ac48cd3e62f281ce62f8ed89dc2cc8866eaa4
-change-id: 20260815-folio-pool-v1-cb75c247692c
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 2d4c5bab5af8..f0f58db090ff 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -58,12 +58,37 @@
+ #include <linux/context_tracking.h>
+ #include <linux/console.h>
+ #include <linux/kasan.h>
++#include <linux/folio_pool.h>
++
++DEFINE_STATIC_KEY_TRUE(lockdep_pool_key);
++static struct folio_pool lockdep_pool =
++	FOLIO_POOL_INIT_KEY(lockdep_pool, sizeof(struct lock_list),
++			    FOLIO_POOL_64K_ORDER, &lockdep_pool_key);
++
++static int __init setup_lockdep_folio_pool(char *str)
++{
++	bool enable;
++
++	if (!kstrtobool(str, &enable)) {
++		if (enable)
++			static_branch_enable(&lockdep_pool_key);
++		else
++			static_branch_disable(&lockdep_pool_key);
++	}
++	return 1;
++}
++__setup("lockdep.folio_pool=", setup_lockdep_folio_pool);
+ 
+ #include <asm/sections.h>
+ 
+ #include "lockdep_internals.h"
+ #include "lock_events.h"
+ 
++void lockdep_pool_stats(unsigned int *nr_chunks, size_t *chunk_size, size_t *tail_used)
++{
++	folio_pool_stats(&lockdep_pool, nr_chunks, chunk_size, tail_used);
++}
++
+ #include <trace/events/lock.h>
+ 
+ #ifdef CONFIG_PROVE_LOCKING
+@@ -1404,11 +1429,19 @@ static struct lock_list *alloc_list_entry(void)
+ 				      ARRAY_SIZE(list_entries));
+ 
+ 	if (idx >= ARRAY_SIZE(list_entries)) {
++		struct lock_list *p;
++
++		p = folio_pool_alloc_type(&lockdep_pool, struct lock_list,
++					  GFP_ATOMIC);
++		if (p) {
++			nr_list_entries++;
++			return p;
++		}
+ 		if (!debug_locks_off_graph_unlock())
+ 			return NULL;
+ 
+ 		nbcon_cpu_emergency_enter();
+-		print_lockdep_off("BUG: MAX_LOCKDEP_ENTRIES too low!");
++		print_lockdep_off("BUG: MAX_LOCKDEP_ENTRIES too low and folio_pool exhausted!");
+ 		dump_stack();
+ 		nbcon_cpu_emergency_exit();
+ 		return NULL;
+diff --git a/kernel/locking/lockdep_internals.h b/kernel/locking/lockdep_internals.h
+index 0e5e6ffe91a3..f802160c0dd5 100644
+--- a/kernel/locking/lockdep_internals.h
++++ b/kernel/locking/lockdep_internals.h
+@@ -159,6 +159,8 @@ extern unsigned long max_lock_class_idx;
+ extern struct lock_class lock_classes[MAX_LOCKDEP_KEYS];
+ extern unsigned long lock_classes_in_use[];
+ 
++void lockdep_pool_stats(unsigned int *nr_chunks, size_t *chunk_size, size_t *tail_used);
++
+ #ifdef CONFIG_PROVE_LOCKING
+ extern unsigned long lockdep_count_forward_deps(struct lock_class *);
+ extern unsigned long lockdep_count_backward_deps(struct lock_class *);
+diff --git a/kernel/locking/lockdep_proc.c b/kernel/locking/lockdep_proc.c
+index 1916db9aa46b..3e6f24ae9b34 100644
+--- a/kernel/locking/lockdep_proc.c
++++ b/kernel/locking/lockdep_proc.c
+@@ -288,8 +288,20 @@ static int lockdep_stats_show(struct seq_file *m, void *v)
+ 			nr_lock_classes, MAX_LOCKDEP_KEYS);
+ 	seq_printf(m, " dynamic-keys:                  %11lu\n",
+ 			nr_dynamic_keys);
+-	seq_printf(m, " direct dependencies:           %11lu [max: %lu]\n",
+-			nr_list_entries, MAX_LOCKDEP_ENTRIES);
++	{
++		unsigned int fp_chunks = 0;
++		size_t fp_chunk_sz = 0, fp_tail_used = 0;
++
++		lockdep_pool_stats(&fp_chunks, &fp_chunk_sz, &fp_tail_used);
++		if (fp_chunks) {
++			seq_printf(m, " direct dependencies:           %11lu [dynamic: %u x %zu kB, tail: %zu kB/%zu kB]\n",
++				   nr_list_entries, fp_chunks, fp_chunk_sz / 1024,
++				   fp_tail_used / 1024, fp_chunk_sz / 1024);
++		} else {
++			seq_printf(m, " direct dependencies:           %11lu [max: %lu]\n",
++				   nr_list_entries, MAX_LOCKDEP_ENTRIES);
++		}
++	}
+ 	seq_printf(m, " indirect dependencies:         %11lu\n",
+ 			sum_forward_deps);
+ 
 
-Best regards,
 -- 
-Jim Cromie <jim.cromie@gmail.com>
+2.55.0
 
 
 
