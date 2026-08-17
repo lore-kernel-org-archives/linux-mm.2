@@ -4,94 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EB87C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 02:24:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 419C9C5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 02:25:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EB016B037C; Sun, 16 Aug 2026 22:24:40 -0400 (EDT)
+	id 5373A6B0381; Sun, 16 Aug 2026 22:25:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 274366B08D8; Sun, 16 Aug 2026 22:24:40 -0400 (EDT)
+	id 4C0936B0384; Sun, 16 Aug 2026 22:25:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13BF16B08D9; Sun, 16 Aug 2026 22:24:40 -0400 (EDT)
+	id 38A9C6B0385; Sun, 16 Aug 2026 22:25:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CE1076B037C
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:24:39 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4DD9A1C19A0
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:24:39 +0000 (UTC)
-X-FDA: 85109167878.22.7F7BEF3
-Received: from mta1.migadu.com (out-231.mta1.migadu.com [95.215.58.231])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E04091C0002
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:24:36 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nOmAen5C;
-	spf=pass (imf18.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.231 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1308F6B0381
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:25:53 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 951CDA065C
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:25:52 +0000 (UTC)
+X-FDA: 85109170944.14.4AF4CCF
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 91E74180004
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:25:49 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ZUMTekRC;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786933477;
+	s=arc-20220608; t=1786933551;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dcTUToU/dfT863E5xaL1RU99l1QmzFxDwDM8f4TNFSM=;
-	b=MpTpTAABGzjBFq3pLrMLp8CRNzRYJSdYC6462M8UcEKS8VD9gR1Xn9B1QNhstJ6qWZ6Tj6
-	fp1ahM+ux4d/98jk1s4FtSYcmdxoDmthPhAZjCc92U5hdsjcmM+LVJqgLni/64yXgcfi4M
-	h0DXgnBwxOyvwNDIgrvjAbrXTSHIGbc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786933477;
-	b=4jPLuUzMCK30Iqj81ajAUU41U6AUaUwQIxr8t4tCwfMGueVqP9NHj+ShBJmgU0Y9Rx79LN
-	Oi6tHFfFCxdE03SAY3LcGtrdtFdhq/tj0p7qaMoMV/JtglZqYOlRejxc5lPogN5Ufrni5W
-	rZgMKs2fC8ylsOG3qRo1GheiX8tIH+8=
+	bh=WfjW84M8GBMQrv2tnueF8p968fdREO0psJ4VmpyrVQE=;
+	b=QwyRK5V1yndEf6uskL6kWYI8uElm0jvvgt6jC78RkI6UpgRaUJqt/teF+V1tq9A+eXwcBA
+	+e2DV9ff3Y+z/zoFWgziPQkeChr5XF0/a1sffcMK4wAj5jeEco25k1rMh5WgphckfNotNz
+	vqYDGoldd4Z2ZdJjz55maaKU5uFoqSc=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nOmAen5C;
-	spf=pass (imf18.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.231 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=+n2cYNTTF7OlLHShJxkMX6+SCU1R/80rB+hgg30keQ0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786933475; v=1; x=1787538275;
- b=nOmAen5C58d50IQ4M/X7YSE5Kc7RvfUnNMB1aZ1fBzhWKq0rWKVfViIN02mMIAUzgY/MyExO
- rg4KsJPhpFXMC9zyG1nw34xHKThQBTV2mxEAudhQgFbkyxsl3UyEew+5F/H4dgNPGxqDjWhAt+i
- mty7ihe7icH1OnWKeImxPsu8=
-X-Envelope-To: linux-mm@kvack.org
-Received: from [10.42.12.33] (116.128.244.169)
-	by smtp.migadu.com with ESMTPS id 5ca538b453ddbf4b;
-	Mon, 17 Aug 2026 02:24:25 +0000
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <c67716f6-a478-492a-b086-39f2c7da132d@linux.dev>
-Date: Mon, 17 Aug 2026 10:24:58 +0800
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ZUMTekRC;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786933551;
+	b=eEMKSI02n7kZKLEmTZABY38hlks9T2qVBszMa4pHMpaJX7MauMmoPdTHxQ+ZlgqeT6oSKM
+	mpNTZRremKnWVRaFoi5YhIvETGwwvTDgibHq2ljBSKyZC+xX1QwJxk1OYJHOEmz3FQUCrd
+	9NRwRXjmFjsaXx7Re39rzyyiTpNC+W4=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1786933546; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=WfjW84M8GBMQrv2tnueF8p968fdREO0psJ4VmpyrVQE=;
+	b=ZUMTekRCWvdzHRoVvymGZUY4SSgP8ubj9z4khcUffRKeO/cAIAxKIXLr2vE2wrrcd3hhUe5UA5scn713gLitwGt3kUIkzPEXpDQecboO9+sg+tpOjSEW5EBdrTqUkFhmQLcyWRoXJqn3DuAVFvUCdpogkeUXjat0edFEJBKnY6o=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R811e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X91E0N5_1786933544;
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X91E0N5_1786933544 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 17 Aug 2026 10:25:45 +0800
+Message-ID: <0c4125f4-fbaa-43ad-9cc6-b9c5ae4af89f@linux.alibaba.com>
+Date: Mon, 17 Aug 2026 10:25:44 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/2] alloc_tag: fix undetected compressed tag overflow
- when profiling is disabled
-To: Suren Baghdasaryan <surenb@google.com>, Petr Pavlu <petr.pavlu@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
- Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
- linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, stable@vger.kernel.org
-References: <20260812054105.102637-1-hao.ge@linux.dev>
- <20260812054105.102637-3-hao.ge@linux.dev>
- <CAJuCfpFvdNFdsKdK2CdF2fNp8gbNgFpoeAiaqp70mpbNGCvk3g@mail.gmail.com>
- <143a37b5-93a2-4038-8be9-29e13263e743@suse.com>
- <CAJuCfpF1pWqhc+P9zPg8FT_CcdQxRuEpJ2DtYja1BeMXhW7-8Q@mail.gmail.com>
-Content-Language: en-US
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpF1pWqhc+P9zPg8FT_CcdQxRuEpJ2DtYja1BeMXhW7-8Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 0/3] mm: khugepaged: fix tracepoint UAF
+To: Lance Yang <lance.yang@linux.dev>
+Cc: vernon2gm@gmail.com, akpm@linux-foundation.org, david@kernel.org,
+ ljs@kernel.org, nico.pache@linux.dev, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev,
+ zokeefe@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260815174444.4164-1-lance.yang@linux.dev>
+ <20260815181632.21453-1-lance.yang@linux.dev>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260815181632.21453-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 1qhiuakirhqnu7dqnseeaky4o5nk7syt
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E04091C0002
-X-HE-Tag: 1786933476-357339
-X-HE-Meta: U2FsdGVkX18b52no3gUwf/PuDeeZ1bhuB6XRZa1Eannue5bW2gYOWUerMPTwiURSaMcMKZANCa1jQhJ2fI6pwnO0qybM3HE/vkekXVSgS15wDy+/E8CQvDnd4TSB90Bb3G1ZMfhg14if0enD5fa9a2g7LldMTloyy3U+OR1zgfivHDUNNxRvcIwM/LF5f1/s7+EKL6nWxuN+J7RZRFX+awYVL3KTtYWvzHFdGFXOyvzn7G/Yz04RMNHgf9e9dBuLrUyUkVWCTuo0o60rBNK5hC4p3Zi7XFE3FdGLEDdNenkeYYuuK3yMKb1GBi6w2n8fiyGYi/PdJbeaNskD5301M33KJg1YSIdpMAj6mznno5MVl/UtWZJUJQrDkgTGTsPrNzcqOAxKwkj+eseCAQiJaTJVxQ9lBpoBlzA+HgDRHO9cuACOHfGu9xmDJfbEy02zu1t9wxDZOFqY0PNsR/CzdAXiJUWO1nE4nbgXUvxcR3ztGDjX8vtEsUbDwcBpnBrV2Gb3ycnSGI+vBDTsQWA4+6W6TtX6llNPOtyf/mFhunhmqrx7zpHU7k9Qd9IJvUCZZc6ImG8i5/mk+kBsl9hGwvViTGaCPfA0YS6N53Xj0eS4SFf6V0a3hUauW2m8KN0WFSmAv4UCadtBldAcL7zPQw3cX4J+nWh88yXyJGJL8Z3geJXnIXFjCO/0EBMta52psvdpYGyRP6quwQjYD03WadyfoqdewdaryxixcqcTFnro9fYJBlFu1Q2BfBbwDGf4/k5nx5u5+0yfH+GGvtT/Dax+LimqUgPH7w7rrNGO0K4VgbIcPIpDGR6izbo89OriE2tqHJzTCtpdiI3QXNbss6Vd8HlyOKoItBG0yiYdw3ROkYjqFzXxr2LlNcVIeiO+aCfWnEvK/FI4b1DLklzwlaWQBwyBgiCk+gxaRqxW9kgCt1Cuf5ESIPFRJeb77p1MBqS3Mz65BXxLTw+gTGt
- 1ljyGDad
- URAj1yh9VtHHtt8wWhrpg/AiRx5vqMAzVFw/0BeL5ktrl2kp3kDURYqa2O+37CL7m1GZnriLq0mA8bWmnSGD+dP8fe4Srs6oHaPGn9uY4UQ/69AWg3x4cqSGwTQCgA1r4Sg8Ly31q2NRpCaFQs8lwLptQmxz70M/bFHRbToacHbl8Kml/Z/gnjNeQA3mxW7Wr8dOPEVnaZAMfj3CoyQo4jLCw23+naq14V0cBe6FnoY/ar0HtxKX/6s/OoWWiCn7lLbtqFgr6zx/XmluWYG1EHhZmgB94a1mbt5MJ+pC/lh0mngtDmqaWXimptlVpYt7JixM305QGr4wfK3NgjKeKqHftSgqCKlNtWQlKrRAI3iLboBhGj4Hrl7uGATTr+AibwWzB9a3PyBsUozF/b/v1P1LxQ9FVirE6Pifz2bPlm/kzDMxnAdRIa3KDtvngwzpHT0W4xQmh+WbZHAs=
+X-Stat-Signature: 9tkfzuujcixppagho8w475sn1spnw1g9
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 91E74180004
+X-HE-Tag: 1786933549-349702
+X-HE-Meta: U2FsdGVkX1/RPp4UGa9L0vhQTmR3CIKfHNjaf7JgTbsC4GcciNL7rtuvvuRClmWEUM3D4xnLMq3+3DZnqnD0kM46tcMUpy371x2Ni/bG77dpOC4xxYAXYohmXWQ159gYLgPtK9zSXn0ATFHmWGF9Aef7Tt8PPDMA9ZY3dUrpeUs9fpxnwdH3gYqW6R7xINvnUCDXpe5qFyVxiFeTcnGQmTzk+dWs172iMyddI/nDBRvZ/c26hHZwYhWgY/pDU6ACIHVWGYeUAuqq5B18YRJyrwS6UYLUjW99hqHh+0sYoHrl8PAu+YXL1TZ5gN7UpNJmQhAPGJqGRU3yYZny0XocXM5ADYCCVoXiG0rOO3YjW+M6zqVkQ2797SuYEtq4Z99dnWz02E+ELH9+X26EviJRR/qSlXbs+0Lv6dbwh1joHc1TrYpFU2+C4UilgFj4+n6mkXx5Miv4tKjynJzTBFXycQRGJuE/Ft5l5zvMQBimBdbY81feK/wCVck08CDmA1UWKwV85vikpzn1jZCtM45/2tjHkPCctd35SBMyD+tSwbIk2O9hRQ4mqR6CgQPaMTHW3QDbgu4q949jerlSueb/T38e/3pxUeHFr7UnPfqxKMg/7asadOMn/LdjJLRtbJ8tBfEQHfP7nP6QlAlgXlTHKg1KyuFH8XLvbax3yJeADv8cfPWclb4KwwJH4Ge9SGTR3T5LRnOOMDNOQLlhWvINC2MA8d9xFs+uX+LhGm1P/WgC8Luf7FmZ5OCEcyoZPDNOJYMTd7h/Cd274GjN4j3u77hWxa1k5LfVmrLXPz8nDDlw8ix2DmjEUXKp0+QecbxUkD895YQ1rP9zEmtC8PfFlx6QVN9cuyG6chPemIpKxVUfdCqWYH7KPSoCiqa6+1dId3iDlaDBmk1LZa1Pxr8r0UFy6O331fVWFWLr0Fr2ncERUCzT6ssv5s3GtuO9R4tCXKfBKfFyg1tY+V+1INw
+ gAEFWqGc
+ ws7iezlsoemu28uVIJOZIP22u7fi1xbDasHc2skS6iFe4KonRewUG3FebTBwuZelfG8mbLgiTdfKMpjGxA1syong3LeivKGVJPQ1cJGYJTDQVa7QpIsxgib8rzVuCXVvR7esWZF4TujRBACEHGeqgY0il5YJVRZOPKKECae9ISQkASwffJoetSS0rrs5yIh+AcXxx9ryvJY6pXYi6+t7bZ78OHx9eUm2Bp9cmppU2KH/9ZbIbITSMCCHgwb3CM01q+obZUGhhjC6EDKn2b2PC3OFETTNZzCsiGxdHmUeJpO5RZnYEANGEIxnRA24ggIy2I1Gj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,177 +89,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Lance,
 
+On 8/16/26 2:16 AM, Lance Yang wrote:
+> +Cc Baolin
+> 
+> On Sun, Aug 16, 2026 at 01:44:44AM +0800, Lance Yang wrote:
+>>
+>> On Sat, Aug 15, 2026 at 01:19:21PM +0800, Vernon Yang wrote:
+>>> From: Vernon Yang <yanglincheng@kylinos.cn>
+>>>
+>>> The khugepaged tracepoints take a folio pointer and call folio_pfn(),
+>>> but by then the folio may no longer be valid: freed after folio_put(),
+>>> folio_unlock() or pte_unmap_unlock(), or not a folio at all but an
+>>> xarray-encoded swap entry. On classic SPARSEMEM, dereferencing it oopses
+>>> khugepaged as soon as the trace event is enabled; on other memory models
+>>> it merely prints a bogus pfn.
+>>>
+>>> Pass the pfn to the tracepoints directly, captured while the folio is
+>>> still pinned, closing the use-after-free windows in
+>>> mm_khugepaged_scan_file(), mm_khugepaged_scan_pmd() and
+>>> mm_khugepaged_collapse_file().
+>>
+>> Well spotted!
+>>
+>> Gave the series a run on x86_64 (KVM), all good (only classic SPARSEMEM
+>> untested) :)
+> 
+> Hmm ... stumbled over something else while testing this ...
+> 
+> With tmpfs mounted huge=advise, one MADV_HUGEPAGE isn't enough to get
+> an unregistered mm onto khugepaged's list. Do it twice, and khugepaged
+> starts scanning right away.
+> 
+> The pending flags make it into khugepaged just fine:
+> 
+> int hugepage_madvise(struct vm_area_struct *vma,
+> 		     vm_flags_t *vm_flags, int advice)
+> {
+> 	switch (advice) {
+> 	case MADV_HUGEPAGE:
+> 		*vm_flags &= ~VM_NOHUGEPAGE;
+> 		*vm_flags |= VM_HUGEPAGE;
+> ...
+> 		khugepaged_enter_vma(vma, *vm_flags);
+> 		break;
+> ...
+> 	}
+> 
+> 	return 0;
+> }
+> 
+> and survive the common eligibility check:
+> 
+> unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+> 					 vm_flags_t vm_flags,
+> 					 enum tva_type type,
+> 					 unsigned long orders)
+> {
+> ...
+> 	/*
+> 	 * Enabled via shmem mount options or sysfs settings.
+> 	 * Must be done before hugepage flags check since shmem has its
+> 	 * own flags.
+> 	 */
+> 	if (!in_pf && shmem_file(vma->vm_file))
+> 		return orders & shmem_allowable_huge_orders(file_inode(vma->vm_file),
+> 						   vma, vma_start_pgoff(vma), 0,
+> 						   forced_collapse);
+> ...
+> }
+> 
+> But then the shmem helper reads them back from the VMA:
+> 
+> unsigned long shmem_allowable_huge_orders(struct inode *inode,
+> 				struct vm_area_struct *vma, pgoff_t index,
+> 				loff_t write_end, bool shmem_huge_force)
+> {
+> ...
+> 	vm_flags_t vm_flags = vma ? vma->vm_flags : 0;
+> ...
+> }
+> 
+> At that point vma->vm_flags still has the old value, so huge=advise
+> quietly gives us no allowable order.
+> 
+> First madvise still succeeds, of course. The second one works because it
+> finds VM_HUGEPAGE already installed by the first call.
+> 
+> Looked at history too ... we've been here before. 2cf1338454a8 ("mm: fix
+> khugepaged with shmem_enabled=advise") fixed this exact ordering bug and
+> tagged cd89fb065099 as the culprit. Then 6beeab870e70 was meant to be
+> "No functional changes", but moving shmem_huge_global_enabled() into
+> shmem_allowable_huge_orders() seems to have wired the stale vma->vm_flags
+> read back in.
+> 
+> So AFAICT, this regressed in v6.12 with 6beeab870e70.
+> 
+> @Baolin, does that ring a bell? Any reason shmem_allowable_huge_orders()
+> can't just take the pending vm_flags as well?
 
-On 2026/8/16 23:16, Suren Baghdasaryan wrote:
-> On Sat, Aug 15, 2026 at 3:45 AM Petr Pavlu <petr.pavlu@suse.com> wrote:
->>
->> On 8/12/26 7:41 AM, Hao Ge wrote:
->>> In reserve_module_tags(), the tag overflow check is gated on
->>> mem_alloc_profiling_enabled():
->>>
->>>     if (mem_alloc_profiling_enabled() && !tags_addressable())
->>>
->>> If profiling is toggled off at runtime and a module is loaded whose
->>> tags exceed the compressed-mode limit, shutdown_mem_profiling() is
->>> skipped. vm_module_tags_populate() still maps memory for the tags and
->>> the module loads successfully, but the total tag count now exceeds what
->>> NR_UNUSED_PAGEFLAG_BITS can address.
->>>
->>> Once profiling is re-enabled, ref_to_idx() computes each tag's index
->>> as its position in the alloc_tag array. update_page_tag_ref() masks
->>> it to alloc_tag_ref_mask before storing in page->flags. Indices
->>> beyond the mask are truncated and idx_to_ref() resolves them to wrong
->>> tags.
->>>
->>> This silently corrupts /proc/allocinfo: allocated pages get attributed
->>> to the wrong call sites, so the statistics it reports are wrong.
->>>
->>> mem_alloc_profiling_enabled() and mem_profiling_compressed are
->>> independent. Once compressed mode is established at boot, it stays
->>> active regardless of runtime toggles of mem_profiling.
->>>
->>> Remove the mem_alloc_profiling_enabled() guard. On overflow, shut down
->>> profiling, release the reservation, and return -EAGAIN so that
->>> layout_and_allocate() retries with profiling disabled: codetag sections
->>> are then placed as regular module data and the module loads without
->>> profiling rather than being rejected entirely.
->>
->> When the described overflow occurs, why should codetag sections be
->> placed as regular module data? Will the codetag support use them in any
->> way, or do they simply waste space? Is the issue that alloc_hooks()
->> creates relocations pointing into .codetag.alloc_tags?
-> 
-> Correct, alloc_hooks() will have references into .codetag.alloc_tags.
-> With mem_profiling_support=false they should technically never be used
-> but I don't think it's a good idea to skip .codetag.alloc_tags section
-> allocation and to leave dangling pointers. Also the case described
-> here is an outlier, so optimizing it would not yield much benefit.
-> 
->>
->>>
->>> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
->>> Cc: stable@vger.kernel.org
->>> Suggested-by: Suren Baghdasaryan <surenb@google.com>
->>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
->>> ---
->>>  kernel/module/main.c | 25 +++++++++++++++++++++++--
->>>  mm/alloc_tag.c       |  8 +++++---
->>>  2 files changed, 28 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/kernel/module/main.c b/kernel/module/main.c
->>> index 46dd8d25a605..ed26f167be84 100644
->>> --- a/kernel/module/main.c
->>> +++ b/kernel/module/main.c
->>> @@ -2944,6 +2944,7 @@ static struct module *layout_and_allocate(struct load_info *info, int flags)
->>>  {
->>>       struct module *mod;
->>>       int err;
->>> +     unsigned long frob_size[MOD_MEM_NUM_TYPES];
->>
->> frob_size is used to store values of module_memory::size, which has type
->> `unsigned int`. The types should match.
->>
->>>
->>>       /* Allow arches to frob section contents and sizes.  */
->>>       err = module_frob_arch_sections(info->hdr, info->sechdrs,
->>> @@ -2966,18 +2967,38 @@ static struct module *layout_and_allocate(struct load_info *info, int flags)
->>>        */
->>>       module_mark_ro_after_init(info->hdr, info->sechdrs, info->secstrings);
->>>
->>> +     /*
->>> +      * Save the sizes reserved by module_frob_arch_sections() so they can
->>> +      * be restored if we retry below.
->>> +      */
->>> +     for_each_mod_mem_type(type)
->>> +             frob_size[type] = info->mod->mem[type].size;
->>> +
->>>       /*
->>>        * Determine total sizes, and put offsets in sh_entsize.  For now
->>>        * this is done generically; there doesn't appear to be any
->>>        * special cases for the architectures.
->>>        */
->>> +retry:
->>>       layout_sections(info->mod, info);
->>>       layout_symtab(info->mod, info);
->>>
->>>       /* Allocate and move to the final place */
->>>       err = move_module(info->mod, info);
->>> -     if (err)
->>> -             return ERR_PTR(err);
->>> +     if (err) {
->>> +             if (err != -EAGAIN)
->>> +                     return ERR_PTR(err);
->>
->> The move_module() logic is non-trivial. -EAGAIN could be returned by
->> other code, now or in the future.
-> 
-> That's a good point.
-> 
->>
->>> +             /*
->>> +              * -EAGAIN means profiling was disabled but the module
->>> +              * can still load without it. Reset state and retry.
->>> +              */
->>> +             rewrite_section_headers(info, flags);
->>> +             for_each_mod_mem_type(type)
->>> +                     info->mod->mem[type].size = frob_size[type];
->>> +             info->sechdrs[info->index.sym].sh_flags &= ~(unsigned long)SHF_ALLOC;
->>> +             info->sechdrs[info->index.str].sh_flags &= ~(unsigned long)SHF_ALLOC;
->>
->> Why is it necessary to reset SHF_ALLOC for .symtab and .strtab here?
-> 
-> I believe layout_symtab() sets that bit and to retry we need to reset
-> it. But I might be wrong here.
-> 
-
-Thanks Suren.
-
-And yes, IMHO layout_symtab() is the reason. In the module ELF, .symtab and.strtab
-carry no flags at all. layout_symtab() sets SHF_ALLOC on them so that move_module()
-will copy them, and it places them itself at the end of MOD_INIT_DATA.
-
-Without the clearing, __layout_sections() on the second pass would pick the two
-sections up again: SHF_ALLOC set, no SHF_WRITE, so they match its RODATA mask and get
-some of MOD_RODATA reserved. Then layout_symtab() runs anyway, overwrites sh_entsize
-and puts them into MOD_INIT_DATA, same as the first pass. The reserved MOD_RODATA is
-never used by anything, so the module would just carry that dead space for no reason.
-Hence the clearing.
-
-Or am I missing any details?
-
->>
->>> +             goto retry;
->>> +     }
->>>
->>>       /* Module has been copied to its final place now: return it. */
->>>       mod = (void *)info->sechdrs[info->index.mod].sh_addr;
->>
->> I'm not sure this is the best approach. It's complex logic for what
->> appears to be an edge case related to a debugging facility. It will have
->> the usual problem of error paths not getting enough testing and breaking
->> subtly over time.
->>
->> An alternative could be to reset SHF_ALLOC on the codetag section to
->> remove it from further processing and have relocations that point to
->> this section resolve to something else. It seems that alloc_hooks_tag()
->> could tolerate this, since it only needs to reference the associated
->> alloc_tag when mem_alloc_profiling_enabled() is true and that gets
->> disabled by reserve_module_tags() on the overflow.
-> 
-> Hmm, yeah if we redirect the references into .codetag.alloc_tags, that
-> would be much better.
-> 
->>
->> It is also not an ideal approach, but I feel it could be less intrusive
->> to the module loader. I can put together a prototype if needed.
-> 
-> If your approach does not cause module loading to fail when we disable
-> profiling, then that sounds like a good idea. If it's not too much
-> trouble, could you please send an RFC?
-> 
->>
->> --
->> Thanks,
->> Petr
+Good catch. Sorry for my mistake. Would you like to send a fix? 
+Otherwise, I can fix it. Thanks for your report and analysis.
 
