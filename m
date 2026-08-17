@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E628C5DF70
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 17:22:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBB71C5DF7E
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 17:22:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A7716B085B; Mon, 17 Aug 2026 13:22:35 -0400 (EDT)
+	id F25E46B085D; Mon, 17 Aug 2026 13:22:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97F7B6B085D; Mon, 17 Aug 2026 13:22:35 -0400 (EDT)
+	id EFF5D6B02D5; Mon, 17 Aug 2026 13:22:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86DD56B085C; Mon, 17 Aug 2026 13:22:35 -0400 (EDT)
+	id DEB1C6B085F; Mon, 17 Aug 2026 13:22:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E3A56B02D5
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CA056B02D5
 	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 13:22:35 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C2C9D160811
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:22:34 +0000 (UTC)
-X-FDA: 85111430628.10.CB91ED7
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 071D8C084C
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:22:35 +0000 (UTC)
+X-FDA: 85111430670.29.6465890
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C252B1C0007
+	by imf03.hostedemail.com (Postfix) with ESMTP id DB5D120006
 	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 17:22:32 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OZlR7Gvl;
-	spf=pass (imf21.hostedemail.com: domain of devnull+jim.cromie.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+jim.cromie.gmail.com@kernel.org;
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kG43H0jB;
+	spf=pass (imf03.hostedemail.com: domain of devnull+jim.cromie.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+jim.cromie.gmail.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786987353;
+	b=72o/e4FBeauwhXysrC1gidMIBbDLnMirWfo2D1wQkZR3xNJHc2tCxNcsZs6HicZesBRKYN
+	IQb3PAKsvOjgby2UIy17TyEt/H/Su/PPRL4+Z6GSqfHVT7mykjN/uFi6H9ynJnExL144s1
+	TFkyO0GOCbNj7L+abOu7WxQcX9o/y/w=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kG43H0jB;
+	spf=pass (imf03.hostedemail.com: domain of devnull+jim.cromie.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+jim.cromie.gmail.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786987352;
+	s=arc-20220608; t=1786987353;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vSa3UC05mxHWjaa/VTL/h5Jk4T3fXImK3Z/Uh0wjmJs=;
-	b=DiHdXFx5AFMkFpFeiS4OSLXKNf3QhFJpLcfH/i6xzsIGu/8jY56mKiogH1mPXvj0USW+oF
-	geqOrdX6OW5POSVamRnl4H9dpubNI1x3mAJ+HUBI7rfgN7aFLPenv2FpogI2doMEtf7BJD
-	Ny8UT9yHcwQ2xw1P0yUv2n6KsYJDYnA=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OZlR7Gvl;
-	spf=pass (imf21.hostedemail.com: domain of devnull+jim.cromie.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+jim.cromie.gmail.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786987352;
-	b=DHcYN+NgzaS70VTiBuD/TTNU/FSD91DOsrAPaba1XWU/lyyfmBhdFcne2J7AypJxnmFqQM
-	x/QZuAbgH7Apzes680SaLu6b5IrNwWalaRimVuRTr0JOgZmyEpZEn+A5A7PfAVpuFRw9hq
-	cwrYUVfZ9xisAhGjlGOPeNHF3LboEBM=
+	bh=sndHjI9YLuuLAUATMwNa6axIKcD6SyxamsQxbA4nyLs=;
+	b=u13GjvdQw4KVQWsQIB8eca8n/7S5BCVe/wM4k9c40Sq+ZC3TajpSakWzFQVocJQFvCfF9b
+	EvdcMio2looQd/42VEb8HvEUES/1cb3H/O+2+ZgP4rv/tMDyYOk3/G5CceNbbjKgN4IAx9
+	NRLU223glr+NnvirKfkYbRGJP96xgwE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6DBA543F97;
+	by sea.source.kernel.org (Postfix) with ESMTP id 3F0C143427;
 	Mon, 17 Aug 2026 17:22:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 49D00C2BCB3;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1D4A9C2BD04;
 	Mon, 17 Aug 2026 17:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1786987351;
-	bh=VljahOe7p0VAPWPJ3YuDXhxu24pzuwulFn3TWrtzzxw=;
+	bh=kuEHwBXtGwctLu6qKXdhOx+wx0UojFjK0d0zFur0xrI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=OZlR7Gvl1KE/j9ReXCRHP7Rt86OUBhV/ePaNwQDyxcSXkkG5ol2WLsDDGFfjNCBcV
-	 PVIxF+ltwYjsXvOKAVy0xT+OFtG/i2egwaPIEq+RSrBCEqfBwsbu0GbdftUrtK0AMA
-	 gGyxvRwfi/0LSmYuoH7CUu6+igpzb2LmBbmOGT9OQgMTCdtZBSOc1C7pEq3X4e11gR
-	 YQhh8T1NPYniY1M0Ph059yqC59e10h8OudFMBZ3j7XV2N3EqMPAjGj+nbuz6HxS0z0
-	 AdXgrz48igGjkaF05KQEDMxDTaOpxI7mwNwQtTNHR1zDXvoFTR68QNRpp1EvLon2X/
-	 CvyjSfvtEP8Cg==
+	b=kG43H0jBu0rVsrd1NgkPvUPGMVMYK1kcKXsqFvXQLFPW25EqEaT4L8YJtveEm67Xp
+	 xC2Eo58kMX6Xkx0/UTlExtNVLTnnDeS7WAheSzyLL2lYCwJ6gkfBLmDDmMlX70yQ/h
+	 5j2WkCHzpipz91qd/luctZvN68eIOKYZ/+nl3PYMicNksHUsDxpxIcCt72EqAuE113
+	 uSbjPK0MfO5S1+wbLj5kwrYh72yXDi+OgaEZ/I8oBGhrtc4ExYRjMSb1QycWxONZOh
+	 Btzx7BoGq3Xq7JiAoNB73R5znsZd6vQwAYUuYUZerPMkj6dgBlKV4B/Hp4XlUyt0n+
+	 ztyybcMMTRNxA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2782DC5DF70;
-	Mon, 17 Aug 2026 17:22:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F0E31C5DF66;
+	Mon, 17 Aug 2026 17:22:30 +0000 (UTC)
 From: Jim Cromie via B4 Relay <devnull+jim.cromie.gmail.com@kernel.org>
-Date: Mon, 17 Aug 2026 11:22:19 -0600
-Subject: [PATCH 5/9] bpf/syscall: Route generic_map_update_batch key/value
- allocations to folio_scratchpad
+Date: Mon, 17 Aug 2026 11:22:18 -0600
+Subject: [PATCH 4/9] drm/gpuvm: Route gpuva_op allocations to
+ folio_scratchpad
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260817-folio-pool-v1-v1-5-0c1d230aa3af@gmail.com>
+Message-Id: <20260817-folio-pool-v1-v1-4-0c1d230aa3af@gmail.com>
 References: <20260817-folio-pool-v1-v1-0-0c1d230aa3af@gmail.com>
 In-Reply-To: <20260817-folio-pool-v1-v1-0-0c1d230aa3af@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -104,25 +104,25 @@ Cc: netfilter-devel@vger.kernel.org, bpf@vger.kernel.org,
  linux-mm@kvack.org, coreteam@netfilter.org, netdev@vger.kernel.org, 
  Jim Cromie <jim.cromie@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786987349; l=2199;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786987349; l=2727;
  i=jim.cromie@gmail.com; s=20260203; h=from:subject:message-id;
- bh=vm1aaD+pwQaXZSzhLFkT2JsY0U2BVsRDPtRXCFebL2I=;
- b=yxcUp3EtGyfmt7m8wjQpy/d4ZRch/7Ef/TJRKDqN6xOkUjagZRS1UvxqNUT9srZNE0A5I/Kqf
- Rvrf7VwYNhcAwfea2Ce5fgAe4ET6iLCh6mOiZH9iu26PxjqF38ObHo2
+ bh=hfnn2JXUUX2MnAJuI+XocbzOzt9nFPPM4gsyoKFfaV8=;
+ b=tOf7FwZgeFhwjRf2P61V+1ciBVYTcBIRJ4/DWzCwZDYpfrvSen9nBPACUBxDKUMeVVJ8v4CaP
+ mkzXUqlmIs3DYZ8/WvkgAQUjjUavZdG8d4TJsDC7vinDqpN8OckRK7E
 X-Developer-Key: i=jim.cromie@gmail.com; a=ed25519;
  pk=C6E5ODlPQo7ZBynATXH9wg7K6HxP0pIXyf4s38Qw0XE=
 X-Endpoint-Received: by B4 Relay for jim.cromie@gmail.com/20260203 with
  auth_id=958
 X-Original-From: Jim Cromie <jim.cromie@gmail.com>
 Reply-To: jim.cromie@gmail.com
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C252B1C0007
-X-Stat-Signature: 79gcjx67gnfrq4q7zorjgkce16bdi1w3
 X-Rspam-User: 
-X-HE-Tag: 1786987352-564304
-X-HE-Meta: U2FsdGVkX1++ikWfUdsCBO9UDQCHq0BKbY74LacfT3Q22rgVJmlN6mbhVeysYa12RycAu4O4wPAZvsPEtgfiy+VMjrJkxx3RJ0nrUcII7FUgGuYIdT5nmRjqV7fxRTDwC8evBfw4mrNX7kqJL0AksAToQ7S9zDRmqDrEpo/S52cMUjkOFQXLmaXTOOtbbUjweY0CTgAcw8K/NpcNPIJmi1pK51b5yVUMtkw4VZU84pU3BS0QFnXXLOvfbbNCnfBazYKubUj7HSw2eA0klBp3qCjOraYBZYLjg8kLlM+pM/zZugPyvEMtxhUzfQkBZihvqd8ss1G0yk/6gu4ElmXM2yLgUgwTinB33tc4ha9MTIwHBFfpVAyKsfx3f3uoJGkv2tWnZb8YhuliEwDemuXbVnGMJmPx1S5DAh7uCSDby+Auf/YaEngUCBqhwbI4OHvG9/wP436aHAWqWZMvUAWH2BA+VyhI0eHwewPwzNRE2R3zWTO4f/WuS5uhqSL5MIFpM8xgNHFbZ9GusQaslq/2s+4kcLuNYx57HqTqHOUlLkji0UWuA33BK9oPUh4ibLL4btbKrY/jVYbTlo2br3sjKlw5WwAm5SppFBD9SS1mv/sHqy9ZtVovrWnlDDx6513m/sk5p8EIhmisyyWsSBry7ij1MFnpLPVLFrceMNmbd65AZMtxYjj09bQFp1AlmEPpDFVHDxeCF7c517iS9v0FeY52T31QgpezUNg9EW0Le8VXLxngKxirgwzaz9Y2mei2DUjpfApBdCeTMlizM+Im6+OkJ0MO9/BxnFrSg7nC5hJX8WCC7Q77v0g+g7VdkSL+3e//STaQmntmRLZbwamoScCe/XizYIByDpBPr+iXfbh822TiOpwoEr6HdpFR2U8cFXQNsl7PjKASBhNtmrv3Ir4luhKeortYZ2QZsiVO+pN2EBGyRI5WstYmJpOcJ5h8I5lgnHPWapsxZeWKHDx
- uLvKT1Yn
- 2m5ipmOOhWJdp5mbKWECiQKZFFSy3fBdOYzK/+Pv1XYzmpsI9E9ZdT6nWb9vQQtYRNjDTglJC6IOUsBewtdHwR1aKo7UHIuu2ARcoDkbyen5ffEYvbt9wycToQEnc/sen20gfatnj8XXioX0DdFY8kEu9Soj2wRUm7BiX5eXgLH8qz8rrQPjnU2V/OPfqRpo33QrM99X+90Qg+ejqE+c5o8W6i7awyI2RIYLFnMljGxikbvFEzSubRetdNH2yy+XmRuv+TnFCOjOiBa/VHOnFl+FgIJ83LcvUsNEeVDogR9ZugP2qwxvvuxe19r+DQVU0mnOgx4maVLyKT1BYs98HzfP23Y5lYe9rt/DT8pTeT3m9UiWkw7RuKu0uNJEps4FL96ehak7k7BFxwbFbgFi59dYPA0IH8R7t+p3RG5PBoIF1JVHQ9tdWaNOs3jrl0qsli+imsVEEVjk/qWSBtUbfz7dbiXV2hEabnzZkmVDiAv4RBAF9Zp5usyz/ek1az0HfQRYU9ndoe+Vhkmj4SqmEa2LWVN/qTu/tsozSeCrzitxRK+8yTLn8+5vYHILclAuiSme9KgB9hKTdZ4Jm5giJKqpa2utRvAJ95Nwxue/oDXmrpac=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DB5D120006
+X-Stat-Signature: 7pz11qdnn67gwwxcheowmg8t4af368mf
+X-HE-Tag: 1786987352-342258
+X-HE-Meta: U2FsdGVkX19AUo8MGci5JdXqvqkirGenMwOjZ58wh3a7DOrbh/C7n2oAdXi7xl/p2Txal2kTcKQzSf+WUZhtOJq+yqW/HG1lsW2ksFx8cmjH56C357b2feW1Q/96l8+83IbgDQWg/W1GrRaIL/3HdwdwgL0b80VCHgDS1R+rJhGywF3Kjl+etYjEgGCiZV3bbKuaXrn6JnCQlB3qjXbhBwusN5GyyGGYu3258uKLtfehdETb2rniZfhiTrijpo+VaK1vLAPCy37xuq0CrD0ahgtyaYNpI1zJXUGCZIeL3NDdmvSeDMouPt9bguQjvjnGTgUF225eg/eQpepxgs+hmy44NXJesLoHZR6V68tQEPfEW3NqKV7bmojhaWseO8taEB4uA+zsysqISN4ir3zPfIjji9IptMGXA/b9fUR+rgVrDlrdqgkEqPtfnWCJIA9Jkqw0ESSiFSeojZlN+12RTkJrif8KaurwvXDBQwCl9j84IfrNb9novZ+HLBzu4k4v1mtqkRIek+4Gp+HRfqrTg9FPPLGoAuWFWvpSHZdJoph6sPvaHgWOMpeVkO4wrHPCbXB4Wy2Vki+VVf8NdckV/chOTTl3lN9OCITCJ+OZBgEADaectOo50BNASeCp3egG42KxAe4eJTQJVNFB60yisVniOVnRryWZu7T3Z56vj/pq15RXYLbu+P9/YaVx6/J2eN7orlqeiDlYJMBhCNtmIeSuyr4EmkU47VznZMpxFe2CKWYoymwF8SretevUndPH2dSMyxYQbPx4yQ29qPsdmU4yA2b98xDYWH6XYXRRSEKf2ncw7G4k3A2e6xiWQKBK/Kj/siwYjZpOST7/6LYXnWld86poEs7bdPP0bWYJH8AhYHGwvt9P6ihH2O1v9i6MAbL7Q2hb+g84XqOHEuZ67EfLNxy09qYcv8vhaWItosNuTRFBoyD3076lnK3INHdcysY+fCt73iHiwoDxyME
+ 74EmafAJ
+ 8NZlyJt3sGT5cvcFyFaJI0uZeX01pxJMpFEsEvbtCsIcRVbyYQqtFsQgplPz53StNKYtoZVasGdI7nHpvOvb2nqzw/ZmF1uh+FJNu9bBJnQYeSjWh26aHArDg3FxGrtqlllgXjHEL8oVK4EYaw6HdXahJ4+7cY4XAGl7r6j1VfL/hbCSE6oHXrNb7viNSDygyEHBQWq/7xLCIObvskjeMA79prkuAnHPOfq3YENy5Sz6ZdF9kJozR05rYlz4lr2qxv+ipwhbhpQ/0+2Qj3G+tBdjF8P/iEu3P8vb61Sdl+naIULrQyPpinQuKCTWtAlPGa4/xjD1TR9ID+nJ6ELuwxz8Xq+emBLqL5Nr3a5LzE+GKGBe0Ilan1SaV/Fzhc6TnjEPvY8HzEkXvjRodFPZjg89U/6gb63lhGolI6lT1iA4oT6s2/Ub1Lnpeavb5cpk6peGPVZ3B3C0xrubz+O/n8vhHtb+XH3EuX/HWozrdZg45MxUrLClO+lE0d3+0ylQhW2jXmbn09EMA9Ws5km4ybVbGtPpamliqV+TnFeJ+E8T/Cs6wW5epvwsgBNxTH7/1DOusK0s4RkYEebIyatXEQ8/cNggKKkd6lU90kgXhu1neKgY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,73 +132,91 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Jim Cromie <jim.cromie@gmail.com>
 
-Use struct folio_scratchpad to allocate transient key and value buffers
-during map update batch operations, bypassing SLUB cache churn.
+Embed a struct folio_scratchpad inside struct drm_gpuvm and route
+default gpuva_op allocations in gpuva_op_alloc() to
+folio_scratchpad_alloc_obj(), with O(1) bulk teardown in
+drm_gpuvm_fini().
 
 Signed-off-by: Jim Cromie <jim.cromie@gmail.com>
 ---
- kernel/bpf/syscall.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/drm_gpuvm.c | 11 +++++++++--
+ include/drm/drm_gpuvm.h     |  6 ++++++
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 6db306d23b47..8ef48673b933 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -19,6 +19,7 @@
- #include <linux/fdtable.h>
- #include <linux/file.h>
- #include <linux/fs.h>
-+#include <linux/folio_pool.h>
- #include <linux/license.h>
- #include <linux/filter.h>
- #include <linux/kernel.h>
-@@ -2059,12 +2060,15 @@ int generic_map_delete_batch(struct bpf_map *map,
- 	return err;
+diff --git a/drivers/gpu/drm/drm_gpuvm.c b/drivers/gpu/drm/drm_gpuvm.c
+index c422c5af1f4b..6bb82ac9e2d6 100644
+--- a/drivers/gpu/drm/drm_gpuvm.c
++++ b/drivers/gpu/drm/drm_gpuvm.c
+@@ -1109,6 +1109,8 @@ drm_gpuvm_init(struct drm_gpuvm *gpuvm, const char *name,
+ 	spin_lock_init(&gpuvm->evict.lock);
+ 
+ 	init_llist_head(&gpuvm->bo_defer);
++	folio_scratchpad_init_key(&gpuvm->va_scratchpad, get_order(SZ_64K),
++				  &gpuvm_scratchpad_key);
+ 
+ 	kref_init(&gpuvm->kref);
+ 
+@@ -1155,6 +1157,7 @@ drm_gpuvm_fini(struct drm_gpuvm *gpuvm)
+ 	drm_WARN(gpuvm->drm, !llist_empty(&gpuvm->bo_defer),
+ 		 "VM BO cleanup list should be empty.\n");
+ 
++	folio_scratchpad_free(&gpuvm->va_scratchpad);
+ 	drm_gem_object_put(gpuvm->r_obj);
  }
  
-+DEFINE_STATIC_KEY_TRUE(bpf_batch_scratchpad_key);
+@@ -2849,6 +2852,9 @@ drm_gpuvm_sm_unmap_exec_lock(struct drm_gpuvm *gpuvm, struct drm_exec *exec,
+ }
+ EXPORT_SYMBOL_GPL(drm_gpuvm_sm_unmap_exec_lock);
+ 
++DEFINE_FOLIO_POOL_STATIC_KEY_PARAM(gpuvm_scratchpad_key, va_scratchpad,
++				   "Toggle DRM GPUVM range folio scratchpad allocator");
 +
- int generic_map_update_batch(struct bpf_map *map, struct file *map_file,
- 			     const union bpf_attr *attr,
- 			     union bpf_attr __user *uattr)
+ static struct drm_gpuva_op *
+ gpuva_op_alloc(struct drm_gpuvm *gpuvm)
  {
- 	void __user *values = u64_to_user_ptr(attr->batch.values);
- 	void __user *keys = u64_to_user_ptr(attr->batch.keys);
-+	struct folio_scratchpad batch_sp;
- 	u32 value_size, cp, max_count;
- 	void *key, *value;
- 	int err = 0;
-@@ -2083,13 +2087,17 @@ int generic_map_update_batch(struct bpf_map *map, struct file *map_file,
- 	if (put_user(0, &uattr->batch.count))
- 		return -EFAULT;
+@@ -2858,7 +2864,8 @@ gpuva_op_alloc(struct drm_gpuvm *gpuvm)
+ 	if (fn && fn->op_alloc)
+ 		op = fn->op_alloc();
+ 	else
+-		op = kzalloc_obj(*op);
++		op = folio_scratchpad_alloc_obj(gpuvm, va_scratchpad,
++						struct drm_gpuva_op, GFP_KERNEL);
  
--	key = kvmalloc(map->key_size, GFP_USER | __GFP_NOWARN);
-+	folio_scratchpad_init_key(&batch_sp, 0, &bpf_batch_scratchpad_key);
-+
-+	key = folio_scratchpad_alloc(&batch_sp, map->key_size,
-+				     sizeof(void *), GFP_USER | __GFP_NOWARN);
- 	if (!key)
- 		return -ENOMEM;
- 
--	value = kvmalloc(value_size, GFP_USER | __GFP_NOWARN);
-+	value = folio_scratchpad_alloc(&batch_sp, value_size,
-+				       sizeof(void *), GFP_USER | __GFP_NOWARN);
- 	if (!value) {
--		kvfree(key);
-+		folio_scratchpad_free(&batch_sp);
- 		return -ENOMEM;
- 	}
- 
-@@ -2111,8 +2119,7 @@ int generic_map_update_batch(struct bpf_map *map, struct file *map_file,
- 	if (copy_to_user(&uattr->batch.count, &cp, sizeof(cp)))
- 		err = -EFAULT;
- 
--	kvfree(value);
--	kvfree(key);
-+	folio_scratchpad_free(&batch_sp);
- 
- 	return err;
+ 	if (unlikely(!op))
+ 		return NULL;
+@@ -2875,7 +2882,7 @@ gpuva_op_free(struct drm_gpuvm *gpuvm,
+ 	if (fn && fn->op_free)
+ 		fn->op_free(op);
+ 	else
+-		kfree(op);
++		folio_scratchpad_free_elem(op);
  }
+ 
+ static int
+diff --git a/include/drm/drm_gpuvm.h b/include/drm/drm_gpuvm.h
+index 655bd9104ffb..362b1d88d30d 100644
+--- a/include/drm/drm_gpuvm.h
++++ b/include/drm/drm_gpuvm.h
+@@ -30,6 +30,7 @@
+ #include <linux/llist.h>
+ #include <linux/rbtree.h>
+ #include <linux/types.h>
++#include <linux/folio_pool.h>
+ 
+ #include <drm/drm_device.h>
+ #include <drm/drm_gem.h>
+@@ -338,6 +339,11 @@ struct drm_gpuvm {
+ 	 * @bo_defer: structure holding vm_bos that need to be destroyed
+ 	 */
+ 	struct llist_head bo_defer;
++
++	/**
++	 * @va_scratchpad: folio scratchpad for transient GPU VA range allocations
++	 */
++	struct folio_scratchpad va_scratchpad;
+ };
+ 
+ void drm_gpuvm_init(struct drm_gpuvm *gpuvm, const char *name,
 
 -- 
 2.55.0
