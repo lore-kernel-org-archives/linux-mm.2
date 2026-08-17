@@ -4,84 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 419C9C5DF66
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 02:25:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1FA8C5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 02:34:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5373A6B0381; Sun, 16 Aug 2026 22:25:53 -0400 (EDT)
+	id D35516B08DC; Sun, 16 Aug 2026 22:34:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C0936B0384; Sun, 16 Aug 2026 22:25:53 -0400 (EDT)
+	id CEBB46B08DD; Sun, 16 Aug 2026 22:34:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38A9C6B0385; Sun, 16 Aug 2026 22:25:53 -0400 (EDT)
+	id B87926B08DE; Sun, 16 Aug 2026 22:34:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1308F6B0381
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:25:53 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 951CDA065C
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:25:52 +0000 (UTC)
-X-FDA: 85109170944.14.4AF4CCF
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 91E74180004
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:25:49 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ZUMTekRC;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786933551;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8192C6B08DC
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 22:34:44 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EC0C7C062B
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:34:43 +0000 (UTC)
+X-FDA: 85109193246.02.A4D4F69
+Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazolkn19010016.outbound.protection.outlook.com [52.103.43.16])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 12B9A20002
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:34:40 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=OUTLOOK.KR header.s=selector1 header.b=kme0ZPq2;
+	dmarc=pass (policy=none) header.from=outlook.kr;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf13.hostedemail.com: domain of seohyun.kim@outlook.kr designates 52.103.43.16 as permitted sender) smtp.mailfrom=seohyun.kim@outlook.kr
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786934081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WfjW84M8GBMQrv2tnueF8p968fdREO0psJ4VmpyrVQE=;
-	b=QwyRK5V1yndEf6uskL6kWYI8uElm0jvvgt6jC78RkI6UpgRaUJqt/teF+V1tq9A+eXwcBA
-	+e2DV9ff3Y+z/zoFWgziPQkeChr5XF0/a1sffcMK4wAj5jeEco25k1rMh5WgphckfNotNz
-	vqYDGoldd4Z2ZdJjz55maaKU5uFoqSc=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ZUMTekRC;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786933551;
-	b=eEMKSI02n7kZKLEmTZABY38hlks9T2qVBszMa4pHMpaJX7MauMmoPdTHxQ+ZlgqeT6oSKM
-	mpNTZRremKnWVRaFoi5YhIvETGwwvTDgibHq2ljBSKyZC+xX1QwJxk1OYJHOEmz3FQUCrd
-	9NRwRXjmFjsaXx7Re39rzyyiTpNC+W4=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1786933546; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=WfjW84M8GBMQrv2tnueF8p968fdREO0psJ4VmpyrVQE=;
-	b=ZUMTekRCWvdzHRoVvymGZUY4SSgP8ubj9z4khcUffRKeO/cAIAxKIXLr2vE2wrrcd3hhUe5UA5scn713gLitwGt3kUIkzPEXpDQecboO9+sg+tpOjSEW5EBdrTqUkFhmQLcyWRoXJqn3DuAVFvUCdpogkeUXjat0edFEJBKnY6o=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R811e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X91E0N5_1786933544;
-Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X91E0N5_1786933544 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 17 Aug 2026 10:25:45 +0800
-Message-ID: <0c4125f4-fbaa-43ad-9cc6-b9c5ae4af89f@linux.alibaba.com>
-Date: Mon, 17 Aug 2026 10:25:44 +0800
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=71OMoiKL8aO9tPcT379r3D2MzJdi2zvLvoYYbicLe9Q=;
+	b=2sY7Q1ZbwL7UvsrgeNPBhAn7ZF4cMbUuDSXZvPrpm8b5M2MvWVl7aggda0Q0CihWGNh9l9
+	b/mrsEfzXycSr1piR6LAkL0n38ACe5v0YGHPC1A8vWL34VJXu4WvuWscmzUjhNSiIXll0H
+	J253eLmwkfjdpDT080FZ7CspY158k5o=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=OUTLOOK.KR header.s=selector1 header.b=kme0ZPq2;
+	dmarc=pass (policy=none) header.from=outlook.kr;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf13.hostedemail.com: domain of seohyun.kim@outlook.kr designates 52.103.43.16 as permitted sender) smtp.mailfrom=seohyun.kim@outlook.kr
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786934081;
+	b=hBHyxkQkgDh+NkdidfmVY8QfCe73QcqIIF7LGdqboZpfambKV5qxGYKDc3w1GTlcEzc8pR
+	hKaxIRoqa88BC3MOvFX0H3yxfyKFtLCYpWw6fdMsEP5mKZo8bRb8820PfVL84AmJrDuhKu
+	6GcIbvOMDF9uSv0PkU/8aXS35i8ND30=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wwS4HuKb6ZyVKfVO31+K6BrNuYGfXNhFKFEn/uB49uGoMSBZ4nssaOMon1JskjXNVYdD1Cz8CCr4QEfwIhLnSHDnlmDeY4Osh9kwFBp2fmG7jIiIzl9tRfUNA09ORR3IObTRYZKyJLGRBUgNJD0DKtZMIx2BR4pQ6Q1r/BwzYIPYFkWXA2O1XuAVrjYDJfh607ePB2VEXKA2yyF/bcVOEjVPRsft7ffWso5D2yNTGVUZMq5qlo9niLm+KOKNd1mvh6StEf7NvrT+ayV7QcMS4XB+dAb0odpwIC0y3Bm+9dJ3SGFwClKUPXkK/dwbGb4oy7c+2HUmNLp9ro8WGOvjCA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=71OMoiKL8aO9tPcT379r3D2MzJdi2zvLvoYYbicLe9Q=;
+ b=M66FCMmubQSZzNe0ZQcH2Pfb0dLAII3PyFJd3ptMq2TFrHW7c5AAU1zou+QBmxChX4LBhoxt3L/LgYtMIxK7z+SnzL18FMqWw0n9WCAq70qAPPWgpWWe1F1UI12CN6rOiYqocYW5/+1ocHr45pnadPiRtl7R9yIMdldtuVgRB3FjaLgFxmWW8+TJ7FuHo/ZB5spV7RHfpq0dBKNLvhMA9k3KPwtVkOMzKL7bJiKnStFaYCq+63llrI6BVxDbqBQh1G5WTzfSiQlcOTE2q14+e9SGZ8jkG+X/EMPI9xfq2Js41sDH/ZkuuxF0dnoVX1HKLnz4vKmr4gyf6G/NvxX4Vg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=OUTLOOK.KR;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=71OMoiKL8aO9tPcT379r3D2MzJdi2zvLvoYYbicLe9Q=;
+ b=kme0ZPq2XLmfdq8KPF1utP6YpmXfQT/wYtm9Lb7gxgkrL72Vb7PSbUE4vdWu3aoSUs8z8VJM4YYQIh9WJicOJ+HJ9IUNBeaSVvxGJ+P2/4IDSMZLiEYBOcFDwMUOJ5K7R6nPbBFLji0VEEZdtgq9WIDhiPRTGn8XQy4fCCVMrsFdx7h39vKV+5Ok7eg1q9fb7Ri2noRKtWdoIrFWQC35j08us1FbBOwcCYGsNzIOoPBOdxI2Jd0LiJxrozseRIUgX2tUCcmpHK8VBpyEExBryrqlJPa8yHSsMsif1s4I9m9zMcQk8M7YgzFRNyVjd9dNhWqO6yYeoxY5hyMBhYXbvg==
+Received: from OS7PR01MB13914.jpnprd01.prod.outlook.com
+ (2603:1096:604:36b::13) by TY3PR01MB11113.jpnprd01.prod.outlook.com
+ (2603:1096:400:3d1::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
+ 2026 02:34:33 +0000
+Received: from OS7PR01MB13914.jpnprd01.prod.outlook.com
+ ([fe80::641e:83cf:743b:85bc]) by OS7PR01MB13914.jpnprd01.prod.outlook.com
+ ([fe80::641e:83cf:743b:85bc%5]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
+ 02:34:33 +0000
+From: Eric Kim <seohyun.kim@outlook.kr>
+To: akpm@linux-foundation.org
+Cc: david@kernel.org,
+	ljs@kernel.org,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Eric Kim <seohyun.kim@outlook.kr>
+Subject: [PATCH v2] mm/rmap: synchronize lock and unlock target in anon_vma_clone
+Date: Mon, 17 Aug 2026 11:34:04 +0900
+Message-ID:
+ <OS7PR01MB1391443074B4A2A774B7A956C96A72@OS7PR01MB13914.jpnprd01.prod.outlook.com>
+X-Mailer: git-send-email 2.55.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SEWP216CA0017.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2b6::14) To OS7PR01MB13914.jpnprd01.prod.outlook.com
+ (2603:1096:604:36b::13)
+X-Microsoft-Original-Message-ID:
+ <20260817023404.6404-1-seohyun.kim@outlook.kr>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] mm: khugepaged: fix tracepoint UAF
-To: Lance Yang <lance.yang@linux.dev>
-Cc: vernon2gm@gmail.com, akpm@linux-foundation.org, david@kernel.org,
- ljs@kernel.org, nico.pache@linux.dev, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev,
- zokeefe@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260815174444.4164-1-lance.yang@linux.dev>
- <20260815181632.21453-1-lance.yang@linux.dev>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260815181632.21453-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: OS7PR01MB13914:EE_|TY3PR01MB11113:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3bf92f7c-5abc-40e3-f111-08defc0811d3
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|5062599005|15080799012|51005399006|19110799012|8060799015|24021099003|23021999003|25031999004|25010399006|5072599009|40105399003|2607281247196008|440099028|3412199025|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?QMsqfoX9KxDDg91mAoo56tGKd8tgtC6uNvsYnkSC67jyly+DxBwDEDsgAqga?=
+ =?us-ascii?Q?hCjo0iaNKBHulIZdmyZhNUQrnMiZoUg22yRJDOYOHtuRp80RZq44Buaah1qp?=
+ =?us-ascii?Q?RP2gwgRj0VOzs/dh3iogyeneu3zySjIaQ1YfqLMX95e2qrFbxyrWIOXPEiLh?=
+ =?us-ascii?Q?vPvCQHFnwDyvOpWgZgJDkjxMHRHnFtAvCRexKTl3mVcljaMHIAJVHycHBz7L?=
+ =?us-ascii?Q?Wclpi2EbmlDjAbbgdl9xpIsQHupr9GbwVJbXOUEF7SFOvjLQeGzov8ze/krv?=
+ =?us-ascii?Q?8DK6BqBuYtDflTS+m6+keTNIF8F2bmy2HU9sOnm4T3DfnKqhaNwoS/tOk9VA?=
+ =?us-ascii?Q?Z89Ipq/3j3sGtiS/GJopzP7kZNn1h4ktyrapOczu17sMgrX7q08+ZUUwIHGB?=
+ =?us-ascii?Q?C8D0Qvn5LKLunllYmIg1pHnlcyKvacCT6fkw4VMcZJFwdczbmDfAfVg84RmZ?=
+ =?us-ascii?Q?oWrwp+dax2ISk2mSiRaYpTuQUeOw3+1tTzi4389a/iAMwaToKf7pLU6Ca0Gc?=
+ =?us-ascii?Q?3hJkHJDQz1OLUXQPhtb4LGXQYApBZ9Qj6b9rUgC5zohJLwZclUQzB94HOIIm?=
+ =?us-ascii?Q?lV4tpxnOwDxJ37mffMCBbKs1Ve+z0lNDR1/h/ahvisLqiP6ixqmSBPe79/09?=
+ =?us-ascii?Q?Mfe0HhTp3jf5LS9d+iiU5tCIDKRG5d9C0IMaZHCdnA0bdtXX/np+LHL1s6n6?=
+ =?us-ascii?Q?qxbKFO0OLsG7Xkg2pROkLeFNNvQYVybRbpYGgY9GyH0QYB/CDigK+wHsWf3o?=
+ =?us-ascii?Q?8yQbK2QfQ2PMKTNASsFI0QSvHHrOqnW2MbVwkyZfpngRoivnYhmFkfZaFEwT?=
+ =?us-ascii?Q?t2MYWRVk0H8gsyQLISQFi64rlCg89ikhYe+wxVF0GiFxSRjVvBaZ8VMGCHpQ?=
+ =?us-ascii?Q?yA9BL03jyHTk0peUkJpjmwCBqvvTOihGGJV+WPBygVSEfI1S+NO9xe2qq/aO?=
+ =?us-ascii?Q?fvv3l3f1lA9yNR7Ji1Q/9iZ2SMNT47BsrkYQxG4Nd+bIGj22xCHPAelRzAJg?=
+ =?us-ascii?Q?MR9TKaT8c/Yg2Q4k4Bzukv3dEg=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?4c6QD3bbF2Igv2L/ISQ6XQ4V4VJ4XkDaQo47in5gqsbSuoWYADqnMnd8CvEJ?=
+ =?us-ascii?Q?HosOwvjeLwCxO8FXYTDwgSiGBBaxYeM+6eBNfhkROE1jEPxOuKGK7v2TCy2y?=
+ =?us-ascii?Q?Y6wB6MZ9quZZMTYje9K28W0lNSyCshfrKx4qE7BbviAmwUBbo5U3tVRX5veE?=
+ =?us-ascii?Q?0+ubEcey0i4W3+qiyVRBrogCzR0qtr4fh0F/q0YOrHhDdn0GXcwZnGJmS/U1?=
+ =?us-ascii?Q?NgTz3C4cPL8hm1TOBi1jZfwpk9iuuykojRAi9tw81QjKpDkQwFLGHYf4aXcR?=
+ =?us-ascii?Q?GM3LTFOFb35Qe13Jut4xcs98ddjI31nCR5l1eNYIjr7mp1E2Dar1nbAe9PhD?=
+ =?us-ascii?Q?DJDB4Dgi2fFzOdfXtUYsiRZO5Rd7YQenaTrftTVSORBYl4BKi+QLX96ASGOF?=
+ =?us-ascii?Q?sn6xN3CrImdDqAOZDIftdKjHJD8uMKSbaeLutnTc+HcrQ2p7/vDMAzPhIStQ?=
+ =?us-ascii?Q?pAYsyL9p11Bb5J2QmNCnEArKlt61fC/0PIPIg6UjAbth8pqa4zJpXU65spDj?=
+ =?us-ascii?Q?e9GMxRuPm7VuAu2uRA47LUWl/PUM4A2FOp+4cUJ81hH8l5rVjslIViP+0f3Y?=
+ =?us-ascii?Q?2qBipTghTz29BfamxJwx6OoA4nxjWIEU0+iDFOgg6eZ9nfb4SF9CkdojX5U2?=
+ =?us-ascii?Q?0nLFhXgr3wWJj4mXY9cCQfEM14ROZ424w/PhY5tC4CsFyXDdFRpu6aDa+c0z?=
+ =?us-ascii?Q?W/MD4vsEdLySNaNwg/RJ1FQrXcJz1oZvTRl9AOB2QGxugmmcB+lwmorIy+pE?=
+ =?us-ascii?Q?xBuV+FD9plpDz66s5JmZG2UrFCAfKcm2C3IbjtVdeaV09sLN+tyDMZt209wx?=
+ =?us-ascii?Q?Cp3BI1FdY1Pdw4LE4X3guxDQ1c76NJJF6nzuo/YjBNBfCx/flfRtyJgx5wd0?=
+ =?us-ascii?Q?I3xLBGtRJOM4IsJKpyoajBYf1paTofTP66oAhIg21Bhpe6qlC4ZYhgYRNmwB?=
+ =?us-ascii?Q?GFM3yjsHuOTgkqbvT7YWpnRHp3QYt2lrfBB5LqX/de5NsHMBg+8yK58nGE9l?=
+ =?us-ascii?Q?NYu5jqTupCXesZs/c8sPVj0wrxOS9sH8RgEgcQGPqc3WkHOy1R2q+4ky9d66?=
+ =?us-ascii?Q?XzshjhmJ0EhD4ZvTLa5S+R9XuKn7nOm/zBaaiFukq/bZnEZkU7QLGOQ7xrtO?=
+ =?us-ascii?Q?PuFLGj9iHqiFhPNOlaaJXHmbHinFDZhqHz8YE4cejwFfWJzxqdYPMec2QE1y?=
+ =?us-ascii?Q?lU/Fc7P2H57TkRpVOaTWB/oAxiN5MUsmZu6jtYY6UzkroeIrrKBl5R7JKbzz?=
+ =?us-ascii?Q?0kzslRSZE6k/qay8sJQseuQUnjrnHuw5RNf0KHmcFBCg4XsydDzjMkJhJqeV?=
+ =?us-ascii?Q?+dNuFVDPyC5AsvDzyxVNcPkDzGWAX6uOmDW8LTaRBW2Td6w9p4xhNF8vTsDh?=
+ =?us-ascii?Q?2cvv6PFbuY6v9gNeDfMGLpgRg7OW?=
+X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-b83fc.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3bf92f7c-5abc-40e3-f111-08defc0811d3
+X-MS-Exchange-CrossTenant-AuthSource: OS7PR01MB13914.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 02:34:33.2131
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY3PR01MB11113
 X-Rspam-User: 
-X-Stat-Signature: 9tkfzuujcixppagho8w475sn1spnw1g9
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 91E74180004
-X-HE-Tag: 1786933549-349702
-X-HE-Meta: U2FsdGVkX1/RPp4UGa9L0vhQTmR3CIKfHNjaf7JgTbsC4GcciNL7rtuvvuRClmWEUM3D4xnLMq3+3DZnqnD0kM46tcMUpy371x2Ni/bG77dpOC4xxYAXYohmXWQ159gYLgPtK9zSXn0ATFHmWGF9Aef7Tt8PPDMA9ZY3dUrpeUs9fpxnwdH3gYqW6R7xINvnUCDXpe5qFyVxiFeTcnGQmTzk+dWs172iMyddI/nDBRvZ/c26hHZwYhWgY/pDU6ACIHVWGYeUAuqq5B18YRJyrwS6UYLUjW99hqHh+0sYoHrl8PAu+YXL1TZ5gN7UpNJmQhAPGJqGRU3yYZny0XocXM5ADYCCVoXiG0rOO3YjW+M6zqVkQ2797SuYEtq4Z99dnWz02E+ELH9+X26EviJRR/qSlXbs+0Lv6dbwh1joHc1TrYpFU2+C4UilgFj4+n6mkXx5Miv4tKjynJzTBFXycQRGJuE/Ft5l5zvMQBimBdbY81feK/wCVck08CDmA1UWKwV85vikpzn1jZCtM45/2tjHkPCctd35SBMyD+tSwbIk2O9hRQ4mqR6CgQPaMTHW3QDbgu4q949jerlSueb/T38e/3pxUeHFr7UnPfqxKMg/7asadOMn/LdjJLRtbJ8tBfEQHfP7nP6QlAlgXlTHKg1KyuFH8XLvbax3yJeADv8cfPWclb4KwwJH4Ge9SGTR3T5LRnOOMDNOQLlhWvINC2MA8d9xFs+uX+LhGm1P/WgC8Luf7FmZ5OCEcyoZPDNOJYMTd7h/Cd274GjN4j3u77hWxa1k5LfVmrLXPz8nDDlw8ix2DmjEUXKp0+QecbxUkD895YQ1rP9zEmtC8PfFlx6QVN9cuyG6chPemIpKxVUfdCqWYH7KPSoCiqa6+1dId3iDlaDBmk1LZa1Pxr8r0UFy6O331fVWFWLr0Fr2ncERUCzT6ssv5s3GtuO9R4tCXKfBKfFyg1tY+V+1INw
- gAEFWqGc
- ws7iezlsoemu28uVIJOZIP22u7fi1xbDasHc2skS6iFe4KonRewUG3FebTBwuZelfG8mbLgiTdfKMpjGxA1syong3LeivKGVJPQ1cJGYJTDQVa7QpIsxgib8rzVuCXVvR7esWZF4TujRBACEHGeqgY0il5YJVRZOPKKECae9ISQkASwffJoetSS0rrs5yIh+AcXxx9ryvJY6pXYi6+t7bZ78OHx9eUm2Bp9cmppU2KH/9ZbIbITSMCCHgwb3CM01q+obZUGhhjC6EDKn2b2PC3OFETTNZzCsiGxdHmUeJpO5RZnYEANGEIxnRA24ggIy2I1Gj
+X-Rspamd-Queue-Id: 12B9A20002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: aznco1s9cxa8cqqq69pmidfzwdi6hagp
+X-HE-Tag: 1786934080-86082
+X-HE-Meta: U2FsdGVkX189nd93mQkBp92eAc2+4V9yqJTbiOaArVqf9eT+qrOanvfpwvGNTOE9ucRG2MXb0m0RbJLPOVJulewxN2lGbnQrlCRGDXpjg32Cnn8IEZe3zE0wjM8fnlHN8VgiQccxRx/JUZ532KUj2ADyAktyBfIvQPtL+VnaU/PDHKSPs+udVpihi0FPRXrH53srnyqGNzoNN+GUcW/zwCJqrrT4d8mIiQx7J37d+1qEfeSJPTdj9tm6Vk+/k+LFHvpr52EhRd+eKPsS8zm4F+gHN83zBq8uK1HK8oMibUBaCalqt0pyI0NT2gJC2Xh4OdQrg9GXsDzE71/e1+RVPpIJHjX3AOwOGfnbm/JMY1UOwnWAyXUqjKPRgLub2fl2BiPVp9FVgM7gir1PlOytC2/h/iL4cI0ghuXARAcHnt0WcnIBCvAbkMA8zcA8T2qojP2XOk5m5GoVQOVt8kUKIbnGKjcr0HGWKJ5q+lW4RVfL9rr1yfeN3iKNld/N7JjI+3R/RpBzZrI9azyA459E8rAl0Q3lU0OKAeXvE6QwjUwsyULLjIfyf5nKtCSEu/bTvl3VnA2ZqqetFtR1x0+N+yxnEbe3lYLUUo9zWNYGtQXWqfRvsNr3UCid8jLsi4Kmo8a0WyYzwtHTsO866mwNb45CVRPXAuTzzZFdwyktLFFRmC28cVlu7yneje2OzaBLnYHO6fQto+8CJxIAqEtlludUAh2nrXK+Xo8kgicLrSvIS33Po1+4MHqPwXRXsg8V0ilSYYr1DN3tdqypnYf+jIFo3sc1RTR3s8fXz47EANxXnuZd8RoznplU5PzD+Hg6ZA++5PbGLGPFg83qRapVkJclHggnzvrzuknzEkyqsJCmRfj83+PxtDe9/4jIZkq2XMJhPBiJ8/He4CMSORuM3eVPtncu9urKKJYgIyGnNEDLyiWjkBfpOKY5q99ybQpcWGLGtLa2m1YNu0w/XqC
+ 48TMCge+
+ redcv7CZqTJNlq5XB0ajxJry7Qnhz5tBOtbvkQTwfhy3mvZeVhVhoTFZ2t64pEgF7NVkbwaSaAqv0TLGHPqDDGKvbImNZDf2qvB7jZ8KLMxxYrCCawD+h78kogPXzzIFbA65NaofwZ5i7KaZwl/emn81JcX3v/3lf0vfiC5OIRt9TeprgvFXNqCNUvX3wRqj1UUxWOwX4pH3lxedbvupMPyx1mum/9tODm7qah/3k7W20hxsZobsE5ON2qW0LTzH9lVEveLzil7sWAwF88g5Bnwss1v+UXV6XI41VEq5aKHvHBllXMyxFVuQs8BxKwrVk6kD7c2Ji0cfFU74wleh5PVAqXVEmuR9v8aBgeC7xW16HpP4DeJfjeiRPORVV9Pg0wdoajezmyprbOUeB+xs2ukScGv8XcksoAvcgYJJOhVc3KQCAz0GuYRSXKxa5O9T2zyNqR5rgYXJNuCyIpmbYCRDMZN9qWrlO1ZehYH5gSkfI7cH76tKhpJv5QdaXNPYWVbGZjh+WifRZEitr172J538R9w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,106 +176,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lance,
+Currently, in anon_vma_clone(), active_anon_vma is assigned from
+src->anon_vma and is used when unlocking anon_vma after linking
+new AVCs. However, the corresponding lock operation uses
+src->anon_vma directly.
 
-On 8/16/26 2:16 AM, Lance Yang wrote:
-> +Cc Baolin
-> 
-> On Sun, Aug 16, 2026 at 01:44:44AM +0800, Lance Yang wrote:
->>
->> On Sat, Aug 15, 2026 at 01:19:21PM +0800, Vernon Yang wrote:
->>> From: Vernon Yang <yanglincheng@kylinos.cn>
->>>
->>> The khugepaged tracepoints take a folio pointer and call folio_pfn(),
->>> but by then the folio may no longer be valid: freed after folio_put(),
->>> folio_unlock() or pte_unmap_unlock(), or not a folio at all but an
->>> xarray-encoded swap entry. On classic SPARSEMEM, dereferencing it oopses
->>> khugepaged as soon as the trace event is enabled; on other memory models
->>> it merely prints a bogus pfn.
->>>
->>> Pass the pfn to the tracepoints directly, captured while the folio is
->>> still pinned, closing the use-after-free windows in
->>> mm_khugepaged_scan_file(), mm_khugepaged_scan_pmd() and
->>> mm_khugepaged_collapse_file().
->>
->> Well spotted!
->>
->> Gave the series a run on x86_64 (KVM), all good (only classic SPARSEMEM
->> untested) :)
-> 
-> Hmm ... stumbled over something else while testing this ...
-> 
-> With tmpfs mounted huge=advise, one MADV_HUGEPAGE isn't enough to get
-> an unregistered mm onto khugepaged's list. Do it twice, and khugepaged
-> starts scanning right away.
-> 
-> The pending flags make it into khugepaged just fine:
-> 
-> int hugepage_madvise(struct vm_area_struct *vma,
-> 		     vm_flags_t *vm_flags, int advice)
-> {
-> 	switch (advice) {
-> 	case MADV_HUGEPAGE:
-> 		*vm_flags &= ~VM_NOHUGEPAGE;
-> 		*vm_flags |= VM_HUGEPAGE;
-> ...
-> 		khugepaged_enter_vma(vma, *vm_flags);
-> 		break;
-> ...
-> 	}
-> 
-> 	return 0;
-> }
-> 
-> and survive the common eligibility check:
-> 
-> unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
-> 					 vm_flags_t vm_flags,
-> 					 enum tva_type type,
-> 					 unsigned long orders)
-> {
-> ...
-> 	/*
-> 	 * Enabled via shmem mount options or sysfs settings.
-> 	 * Must be done before hugepage flags check since shmem has its
-> 	 * own flags.
-> 	 */
-> 	if (!in_pf && shmem_file(vma->vm_file))
-> 		return orders & shmem_allowable_huge_orders(file_inode(vma->vm_file),
-> 						   vma, vma_start_pgoff(vma), 0,
-> 						   forced_collapse);
-> ...
-> }
-> 
-> But then the shmem helper reads them back from the VMA:
-> 
-> unsigned long shmem_allowable_huge_orders(struct inode *inode,
-> 				struct vm_area_struct *vma, pgoff_t index,
-> 				loff_t write_end, bool shmem_huge_force)
-> {
-> ...
-> 	vm_flags_t vm_flags = vma ? vma->vm_flags : 0;
-> ...
-> }
-> 
-> At that point vma->vm_flags still has the old value, so huge=advise
-> quietly gives us no allowable order.
-> 
-> First madvise still succeeds, of course. The second one works because it
-> finds VM_HUGEPAGE already installed by the first call.
-> 
-> Looked at history too ... we've been here before. 2cf1338454a8 ("mm: fix
-> khugepaged with shmem_enabled=advise") fixed this exact ordering bug and
-> tagged cd89fb065099 as the culprit. Then 6beeab870e70 was meant to be
-> "No functional changes", but moving shmem_huge_global_enabled() into
-> shmem_allowable_huge_orders() seems to have wired the stale vma->vm_flags
-> read back in.
-> 
-> So AFAICT, this regressed in v6.12 with 6beeab870e70.
-> 
-> @Baolin, does that ring a bell? Any reason shmem_allowable_huge_orders()
-> can't just take the pending vm_flags as well?
+Use active_anon_vma consistently to make the lock/unlock pair explicit.
 
-Good catch. Sorry for my mistake. Would you like to send a fix? 
-Otherwise, I can fix it. Thanks for your report and analysis.
+Signed-off-by: Eric Kim <seohyun.kim@outlook.kr>
+---
+v2:
+- Clarify the commit message to explain that src->anon_vma and
+  active_anon_vma refer to the same anon_vma.
+
+mm/rmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 1c77d5dc06e9..f3fadfb69c7f 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -350,7 +350,7 @@ int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src,
+ 	 * Now link the anon_vma's back to the newly inserted AVCs.
+ 	 * Note that all anon_vma's share the same root.
+ 	 */
+-	anon_vma_lock_write(src->anon_vma);
++	anon_vma_lock_write(active_anon_vma);
+ 	list_for_each_entry_reverse(avc, &dst->anon_vma_chain, same_vma) {
+ 		struct anon_vma *anon_vma = avc->anon_vma;
+ 
+-- 
+2.55.0
+
 
