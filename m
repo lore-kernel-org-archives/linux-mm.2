@@ -4,89 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A106C5CFC1
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 07:48:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F411C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 07:52:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 830B46B009F; Mon, 17 Aug 2026 03:48:54 -0400 (EDT)
+	id 772226B00A5; Mon, 17 Aug 2026 03:52:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8076C6B00A4; Mon, 17 Aug 2026 03:48:54 -0400 (EDT)
+	id 723906B00AC; Mon, 17 Aug 2026 03:52:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71CFE6B00AC; Mon, 17 Aug 2026 03:48:54 -0400 (EDT)
+	id 6387B6B03A4; Mon, 17 Aug 2026 03:52:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FEDC6B009F
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 03:48:54 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CB48040660
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 07:48:53 +0000 (UTC)
-X-FDA: 85109984946.10.11952C3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 312E240007
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 07:48:52 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 40A166B00A5
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 03:52:19 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D22AD4070C
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 07:52:18 +0000 (UTC)
+X-FDA: 85109993556.03.1DBE743
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B2B3340003
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 07:52:14 +0000 (UTC)
 Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="B16+gD/h";
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=163.com header.s=s110527 header.b=MPcDCT93;
+	spf=pass (imf07.hostedemail.com: domain of sh_def@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=sh_def@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786952932;
+	s=arc-20220608; t=1786953136;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0gv21sh9XLRNZ9Jrxv7t4il9hC4kodx+sB469t0bwq8=;
-	b=kqo7uhYHEFYGEWm6qPSLzttWEuQUkaYV2gOyemLW+1WfS6p4QQthAkz/eU3BCmARVRx5HG
-	LN6yLp18IOaoYg/Ob00IKE1tzSnDXUTGjSJhgP04KMAxQF8rh66K5tQTiOFyy8VAdr+T8+
-	/WwtzM+31k0zkHnOla6dEtWwJb4zcSc=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=9t9jRj7/HCFVCvKEHPg2zTk5Ak8y48z3aFyjzy9sL2Q=;
+	b=nUu4iR/T7HM/BuzPqZsEeagRZREVZknA8bsFuEpiR2y1S11cSPB4qTKveeBXk0UgOmXujC
+	/oPNAdgzchogMXmOzy/n504p/X6PcnSHquo9lvDzMxBiBjwu4epVC/3/0i/RGvFBcNNeyq
+	KW+C4JUBctpyvZc8V0T4MkiqZiaUtHA=
 ARC-Authentication-Results: i=1;
 	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="B16+gD/h";
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=163.com header.s=s110527 header.b=MPcDCT93;
+	spf=pass (imf07.hostedemail.com: domain of sh_def@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=sh_def@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786952932;
-	b=EeZ3TU0iuWdSK1nGJnw6vh/hzKU+lf3aOoxhp0lyXaGf9W1u8OCDVO8g7fjlN8NeB2Wjw9
-	UxdFmlRVbezR1gNz0QQ5LUdWtr0017hg6Sru0tOZrD3atDFXTfPsgamez2cH26QiN5nJjR
-	nuaNF8gLJl6n2qK0gft/D/XRa6UbGRY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B20AC403ED;
-	Mon, 17 Aug 2026 07:48:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADF31F000E9;
-	Mon, 17 Aug 2026 07:48:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786952930;
-	bh=0gv21sh9XLRNZ9Jrxv7t4il9hC4kodx+sB469t0bwq8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=B16+gD/hF6e5hh9HS8Dt+1I3LlFX1KTKz5g3EqC9w4AsxdPeJ3+3uD1DcVzdGVluJ
-	 yB+PIorCeGjMXdXpuXKWcNKLp9S9OkT6euA30ktmo5dlw5fg9nFjkBHIW0VZXGfpjC
-	 4mQtZzVGVGi15Vxi23hLYR+UczR8ZPyKVGu2FgCMajs4e9F2OVOS6uR9FiyVQx2fTq
-	 y8C39kjP3ocaLrbGnHO3DAZeCPs6oP8asFJQz1r8/SwM0RKqQB+6jl9V4wFzEkWk0S
-	 h/tcWpX6WnaY1X1ofmgb9/D9Ghx5OKDTn/b5t4k0LJ0vfre+RfonhfkaLfFY/9nrht
-	 cRu94YkT2wxIA==
-Date: Mon, 17 Aug 2026 08:48:32 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Eric Kim <seohyun.kim@outlook.kr>
-Cc: akpm@linux-foundation.org, david@kernel.org, riel@surriel.com, 
-	liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com, 
-	lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Barry Song <baohua@kernel.org>
-Subject: Re: [PATCH v4] mm/rmap: synchronize lock and unlock target in
- anon_vma_clone
-Message-ID: <aoK8o0zmbKcDVDD9@lucifer>
-References: <OS7PR01MB13914C76BD66EFB5AE2BC8F6C96A72@OS7PR01MB13914.jpnprd01.prod.outlook.com>
- <aoK7Ko9O8cGz2iTF@lucifer>
+	t=1786953136;
+	b=Bnfc4U5D+iNJNu46nXIYA8UVol/PCZZzcrNg81UU8qT/RMmJ/zc1nxNylJDQQvn1pU58I/
+	IlGtD+ZMsMblXVpkOlUp6EqxBQxsHcjBFAD/fKJQzgi1w7XDUe2Hxa+dYZ0xQ/8JDDHAKK
+	JquJoUgU60644CaP2Sm9ajqz5kR/+Ng=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=9t
+	9jRj7/HCFVCvKEHPg2zTk5Ak8y48z3aFyjzy9sL2Q=; b=MPcDCT937sbS0kfEU8
+	fpGa+epsTdxlh/MMcVJluEWcH7Od7fh698QkiCpVzTM6RCbSBVwVrYNdXowVWM9r
+	nw0IXe28T1JldNB8mR3par0kODh+hUCyzMYC2IqTzyzpJdIDre5N1zCJbAWKIKO9
+	lefZH7KEcBV8UljzD30m5MNHQ=
+Received: from localhost (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wAHzAKTvYJqe4poOA--.32S2;
+	Mon, 17 Aug 2026 15:51:48 +0800 (CST)
+From: Hui Su <sh_def@163.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org
+Cc: ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	balbirs@nvidia.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Hui Su <sh_def@163.com>
+Subject: [PATCH] mm/migrate_device: avoid out-of-bounds writes for compound folios
+Date: Mon, 17 Aug 2026 15:43:51 +0800
+Message-ID: <20260817074350.442493-2-sh_def@163.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aoK7Ko9O8cGz2iTF@lucifer>
-X-Stat-Signature: eugdiug3hzdqrzho5ue4ejgi7p6focfm
-X-Rspamd-Queue-Id: 312E240007
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wAHzAKTvYJqe4poOA--.32S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7try3Gr1xXrW5tF17Xw4DXFb_yoW8Kry3pF
+	4Fg3WUtrWUWry7GF13Zw1kZr13ur9xXa13GFnrJr929Fs8JF95ua4Iy3s8tr45J397tFyx
+	ZFWaqa4xu3WUJw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piHa0PUUUUU=
+X-Originating-IP: [183.192.101.80]
+X-CM-SenderInfo: xvkbvvri6rljoofrz/xtbC6RTPL2qCvZQA7gAA3y
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B2B3340003
+X-Stat-Signature: rc94mhibffwqbs8whjhaxbr7s1u9m1wi
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1786952932-908157
-X-HE-Meta: U2FsdGVkX19Vo2vZmujagNK5bqnNmOplqMabIWA44sTqNhXOIWH0vL2N21MMT2eVeDld3clzlzsVJyRX221cDSvt0TSflokCMLJhXC6jPjiku5v3+khHySgtYTRfwOTzjaM576F5NWDTpwW+ZvGgf3PIp3aXsJ97IUsZnfnB9JRNdRCdcZO+uDP02cXXXfhVON1UEvfdLDWnKp/KcQxkg5bPOjEnDgDcwDpRwFONXRM/1Mo8RDKveEwXNvGwk/P/BFqPNN0+uJokICwCDSb9dDe2pM8BdtjDkf9lxh5Bkc+EBgN2/VMLnSeAwTrPOhDTn94GH+ZuGVpfjbGp6tD9Kfy2nfdsEYljvOwQlzKOIpLQHq5pVx/+H1C7fFBkmwh0lyc1qK2BBXgVpy+RTx4hc+eJSzyd4w0x9SLmqG0Z3dfMqfrabadJAmfI9zop2tDoKQX7a+tfYFBi1OZQuOR58d9d16qounJfXw47bwsQJsgWMvvqqHMrP+UgPbXZqYkH+KAVFq9mPCI8NCLzRA5qLYH9qdI21HYb5vsQez89Z7M4LuhYFp+Uic8WTn9PtPyjpW+85RFjdibQwMOaguo2VDuJuLqqzMz/u+xaH8D3Pk/XH9oiXZmFh+ok6VM3GRm3LgDFcd6X7ROOkgeczQMbPLK2Olx3JAck6bsipNMwZWYBg8Exikv7dqRTS3gG4eLOll0W/l6kjaWVprr9+VC/4BLGnTmnHwDjKUp42y9NtGw4CfG2GtTv9MRoDeLeo5FBUzeMbsBzoNyl208Epkp3iuUYIggNAsiMVnrydHI8+QtBubsi5ql4AQtvwEZEGlTM12aiOoZmQ5f4SEWHgJMtzCO43wcMM5EKOa0J3K9dzBRlmO4LYqlsNQx6SZO0y9CBWVX6csKG1VgFCqA6c0v469sh0SwaQCHaidOHuU3ncgSxtPOnw14G1Pkwl6ItbYW+9Avb9Inv9LHxMktEd+P
- eDg5nanR
- eAKwdnR9CyKm2En+xmtsDGcip3CsIb2XC+z61176hE5hKZ6L4xMRIh5M8ODcG1w6V6cXLOm0ET0w+s277M1iLNABtNIdsNqLGmLs2etYeKIZqe3msImoMA097ggLqgiwMq1u307S7QobTHXF6T7mENjW6ErXvr+/ni3ZsPKBCw4jUr3HOUF2Q4L0MseawIZskhGs+5z4OOOa5BYytLciZvBmQiT7xSPB30EyGbzM5wkRfN0Cn9yQEtAzzU31n70Zx6aELNZVv9FLtseVOiAo6yMr2aVUBYLLqIQGvSpJKD/aQ32s3Qv76cV43GiCHnlb29vW98NohrWFuI0Q=
+X-HE-Tag: 1786953134-781745
+X-HE-Meta: U2FsdGVkX1/LYeCBBsM05Us8iHl4xjXORJJjVSaowiM1lOjOUVTXws92e+rdOSkdE9JxxzBEdVPaVnviYggYBIYeb/HzcroJbJ/rGgHR3n5Rzqwx/Fogiw5qbAQcEhu7ztqd6DncPlJ5ErZhLqcmFvGlJnkMpmxJrdwfkK1rr4XaDD3wHZ0xxLb/tKUj8GdTGe632JLJ0jcU+VYP+Hs9GlzF2nBLcAdvZ+6eqfEqFsGfS7nHVcGid3BZhEgYvdU7WtxkjCgr1jvFNPfln/Fk5TaMLx/lhZuTob2ZuyQ8MuGYF4SENG6rHcMmTK0WaPBDzq+ZeM2wnHHsJFcO9dzpqDaLOdw6LZy3BXevTtDY07OryMz2rqm8GSDEUziuEUjjx3VOwRSTF17DqmuiVVBJ7nrO8CjjKN92LWHnL61yb2HZPWzhTN4XHv1PKrvp44zdeHbSMWWUrGylQ60qxAEHIDQ53m2DLLN+9+nud/VwnYw6hzntaWuTg5iBUIWt1I1twCCQ5LW92o48n2tNKQBYz4ZOCMxLEurz+5Kd9xVOHcE43eL8KwPVRQqxTKqwouBqPEjKxjJy4qMYGrrGR/8USB8i8PoDPbMJfBDP+3RTntySRcUIyulDNDYoRcnYo3ZS1NGI02+Cf+TAIzIPx3/igZPr25UxtB3W4pRcMnGLbI1q+9LWICMQMwuTcJCKDvpDbX+rOWlFk7tfU8r5Mls654KAq7O10Z88A4UfWDTpClD45NWG53aTKMAk5+4mSdfuU2W2pMbT+E1llVYNebWjC2f6JDCUJ6eaKaznQwjWu4KfWYk32smH7YBKorhRVRDeIVONsmlcBQzimFyEJFz6mC0g5zHlkxY9uk8r6eLDUU/ntTf9/PlZ4NfFPGL+VA9vo7E+IiC43xBoFy5Zk/oZt6SArwtZ+bqJWsILbh2OUXPo1VyR/oEhtjlBT61xl7lwDJQv/EG0Dve4EuGE0VH
+ VtS9EB5d
+ B9ZlGLeFlLEOKDgNXotAobq/n3+SEbvDhsBYPOCq/n40XlaRIZAjoEniIrHUTzIZYlwJy0L5VzUkzZEhTHAd85Y9hnS1YxvptqghfJjhKSIBkM4SCwk/81xU2jx3dN5p8dQMiwugcFUkEbNqBhQhRghgSyXY+zJqXnp1fFxFcQ6VzWzXADCS90eHVJEZK8Oi1ypFKRGu1Xkps6RfISax1DDsMd+DedMudSJq5Pzb5KGDvd8VLSorcPd2itx1Bu4MzztMfKRTUEz2KAID+zx6sJaK1qtTvyCd7QiGvjcrb6FuPvMedyKoWsgfmJb+l1ACyfpRXO0sSkz+mI+L2EQfxXyqvUg9uF3LqcxgprOhiR8IbBlrgCjRSoiqfQlI9F6vUCKEy/gzIWUvM+EpuhF87Ynj2ofvq2QcMAwV+XlD+u10/GQ6odtt4oMb7P8JN6e80y/ZbLSolodYHIXP2AJ232plbvdi3mvuILQCY+FTE/nonVVUPCgGD1tyFh1oKxNsUHxzSm/Jr8cq3acC7mDCNdxjkAoxmwPl/YY6c
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,27 +100,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 17, 2026 at 08:43:30AM +0100, Lorenzo Stoakes (ARM) wrote:
-> On Mon, Aug 17, 2026 at 02:25:11PM +0900, Eric Kim wrote:
-> > ---
-> > v2:
-> > - Clarify the commit message to explain that src->anon_vma and
-> >   active_anon_vma refer to the same anon_vma.
-> > v3:
-> > - Carry over review tags from v2.
-> > v4:
-> > - Clarify ctive_anon_vma and src->anon_vma refer to the same
-> >   anon_vma.
->
-> Extremely petty nit - and you don't have to do anything this is just for the
-> future:
->
-> - Prefer a reverse order, so latest revision at the top.
-> - Nice to have lore links to previous revisions.
+migrate_device_range() and migrate_device_pfns() clear the entries
+following a compound folio so that the PFN arrays retain their
+page-granular representation.
 
-Oh and also - nice to attribute the changes to the person who requested them,
-e.g. 'Clarify xxx as per Barry Song', etc. thanks! :)
+If a compound folio extends beyond the end of the caller-provided range,
+the loops clear all following folio entries without limiting them to the
+number of slots remaining in the npages-sized array, causing an
+out-of-bounds write.
 
---
-Cheers, Lorenzo
+Limit the number of entries updated and consumed to the remaining array
+slots while keeping the actual number of pages in the folio unchanged.
+
+Observed with a KASAN x86 QEMU kernel using the HMM
+migrate_anon_huge_zero selftest. Closing /dev/hmm_dmirror0 after
+migrating an anonymous huge page to device memory exercises:
+
+  dmirror_fops_release()
+    -> dmirror_device_evict_chunk()
+      -> migrate_device_range()
+
+Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+Signed-off-by: Hui Su <sh_def@163.com>
+---
+ mm/migrate_device.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
+
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 908d2d4ec43a..67bfc1af0b29 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -1396,16 +1396,17 @@ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
+ 	for (pfn = start, i = 0; i < npages; pfn++, i++) {
+ 		struct page *page = pfn_to_page(pfn);
+ 		struct folio *folio = page_folio(page);
+-		unsigned int nr = 1;
++		unsigned long nr, slots;
+ 
+ 		src_pfns[i] = migrate_device_pfn_lock(pfn);
+ 		nr = folio_nr_pages(folio);
++		slots = min(nr, npages - i);
+ 		if (nr > 1) {
+ 			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
+-			for (j = 1; j < nr; j++)
++			for (j = 1; j < slots; j++)
+ 				src_pfns[i+j] = 0;
+-			i += j - 1;
+-			pfn += j - 1;
++			i += slots - 1;
++			pfn += slots - 1;
+ 		}
+ 	}
+ 
+@@ -1430,15 +1431,16 @@ int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
+ 	for (i = 0; i < npages; i++) {
+ 		struct page *page = pfn_to_page(src_pfns[i]);
+ 		struct folio *folio = page_folio(page);
+-		unsigned int nr = 1;
++		unsigned long nr, slots;
+ 
+ 		src_pfns[i] = migrate_device_pfn_lock(src_pfns[i]);
+ 		nr = folio_nr_pages(folio);
++		slots = min(nr, npages - i);
+ 		if (nr > 1) {
+ 			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
+-			for (j = 1; j < nr; j++)
++			for (j = 1; j < slots; j++)
+ 				src_pfns[i+j] = 0;
+-			i += j - 1;
++			i += slots - 1;
+ 		}
+ 	}
+ 
+-- 
+2.54.0
+
 
