@@ -4,89 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 799A8C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 16:12:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36E54C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 16:16:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 702526B00F1; Mon, 17 Aug 2026 12:12:20 -0400 (EDT)
+	id 3FD6C6B00F2; Mon, 17 Aug 2026 12:16:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DA8D6B00F2; Mon, 17 Aug 2026 12:12:20 -0400 (EDT)
+	id 3D4646B00F3; Mon, 17 Aug 2026 12:16:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61AD46B00F3; Mon, 17 Aug 2026 12:12:20 -0400 (EDT)
+	id 2EA536B00F4; Mon, 17 Aug 2026 12:16:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A8026B00F1
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:12:20 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1DD2F807E1
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:12:18 +0000 (UTC)
-X-FDA: 85111253556.02.58789B3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6D7C3C000A
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:12:16 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CMzJBZll;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E7AF6B00F2
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:16:50 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9C1821A0849
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:16:49 +0000 (UTC)
+X-FDA: 85111264938.13.2313558
+Received: from mta0.migadu.com (out-151.mta0.migadu.com [91.218.175.151])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9567CC0002
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:16:47 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=S3wbMJnR;
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.151 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786983136;
-	b=Uex6ied6KbERwGRV4DN7Y2McX+Prvu3HtRV+NsL57+pZe605Sgnbmhhu+oe0yts/JVlMoU
-	tluv6iSYZ3aP9+G+MoeQoy3H2FGgW3OzvUxBBJutrji9xbRpWWv56PlS9kRgaBGnaCV7T5
-	C7vU+gHO6NzGmn7NAcCxQVvn4xG9+YU=
+	t=1786983408;
+	b=MuevdDV2Gk4LvvVnxe8KNx49Vvvdq/Wbs3GIHkSJAcu07w/P3ipJNtQaJyjARX8S6HI4Vf
+	+dz/mX+U+O7CS45wHjMemT/lJxFkNUkFirHAc11hF4mqa39wr7DEWXvAW/cyrKGo7WL50t
+	NtWUpQYuHi0IK7XgEOfTovb9vym7h6w=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CMzJBZll;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=S3wbMJnR;
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.151 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786983136;
+	s=arc-20220608; t=1786983408;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FQUvrkehKpwo8jNXcs2xc61eh0IJJnnFxqJq+fJqvow=;
-	b=K6Bgog1O4oILJXrKOENsZELHR6VNp2DlBToDyiv0rrZf3PRbuMugPZH1hio0z9YwncQkM1
-	PNuFV/OTfOA0GPn1OAUH3mckKNhQb/gl8d/N5e5H8YPFhtyMA043ZAWF2uUxxUIoS8oHtX
-	Vy/eUb8PonfHREnRqDSfldAkxrP0fFo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 91A35409F0;
-	Mon, 17 Aug 2026 16:12:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07ABF1F000E9;
-	Mon, 17 Aug 2026 16:12:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786983135;
-	bh=FQUvrkehKpwo8jNXcs2xc61eh0IJJnnFxqJq+fJqvow=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CMzJBZllxMo1S2XbnPp2+ODTD9IPmNxlpBKWEemO/6ae+sZK+yiC8J1YN2t5oLDQI
-	 zykM+NdAwk/Gm2M1oBQqTlZDJMXMHTRDHj8Eix49bl/yj9DHUNwS3f7wNDtKiacYNz
-	 lfbYgrzB4XALIVHOZs2SSzfwSvmKM1ZgLGzaa5BbjmON4PrTADLdblHH1KacPLVnpU
-	 5Pq/alv6hVTGv6eIQdLLz4bJ/wDVsNvLNmXbOY4w6JP1V4f1zli5fkXFI3p1Vndej4
-	 494gx6ntrO8yURjrgPHQsPXVJBl7IVRIcWUlYL40rjIDDc3YMkmAWuCCV7Zxn6K9qn
-	 Icya7Qcq03yvw==
-Date: Mon, 17 Aug 2026 17:11:56 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Vernon Yang <vernon2gm@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, nico.pache@linux.dev, 
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
-	usama.arif@linux.dev, zokeefe@google.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Vernon Yang <yanglincheng@kylinos.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] mm: khugepaged: fix folio is used after
- pte_unmap_unlock()
-Message-ID: <aoMynfFI2XK2UXXN@lucifer>
-References: <20260815051924.194810-1-vernon2gm@gmail.com>
- <20260815051924.194810-3-vernon2gm@gmail.com>
+	bh=Og3AUkkEqkruR1yPy0HNDP26ccUiFDFKO+Xo3r4tP0U=;
+	b=FJ56K4p0HLiR2kB/1EgO8SRLgf6FVwUiHEpbaLBh/cIPX1NENSs2TM8L97+e1UGRsirhPQ
+	SlghNdGfpjLNBk1Yq/OSKm1nhTGaqL7fnLMq7628Xr9+AcCkuqo9qR/oQ/+6jpppf0takG
+	QC19ksPMdlgJMH9yPGLaQNYrYqVxr0w=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=i6bQMq/DC00QCcuw75mN4wCsOIuCzDBMfmplOIXgDzk=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786983406; v=1; x=1787588206;
+ b=S3wbMJnRGCslnNbTCuupNF4iThPC3hCIaT4dcz/TttxVbErzmNazm2zKWEgOcC3McYiMrCvA
+ U9xYIHbx8ezn2IRl6XF7tAGQaiBsFpSXE+ACepnFo/JuyJkQJ4G+VaPEundGlELAk0d5J2/Kw1p
+ u3wxtnaY/9ZPeiwA68nSEcWI=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (2a03:2880:10ff:d::)
+	by smtp.migadu.com with ESMTPS id 2099e86e7d174f0f;
+	Mon, 17 Aug 2026 16:16:46 +0000
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 17 Aug 2026 09:16:40 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Tao Cui <cui.tao@linux.dev>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	muchun.song@linux.dev, Tao Cui <cuitao@kylinos.cn>
+Subject: Re: [PATCH] mm: page_counter: reject empty string in
+ page_counter_memparse()
+Message-ID: <aoMzchLCCz5hiFHp@linux.dev>
+References: <20260817042652.74136-1-cui.tao@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260815051924.194810-3-vernon2gm@gmail.com>
-X-Rspamd-Queue-Id: 6D7C3C000A
+In-Reply-To: <20260817042652.74136-1-cui.tao@linux.dev>
+X-Rspamd-Queue-Id: 9567CC0002
 X-Rspam-User: 
-X-Stat-Signature: 5hu3ampa4inkps8w9pp11yxqfpchm3tz
+X-Stat-Signature: sz9p6hueyp7ua6g9sb8go1ikfqgh9j1n
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1786983136-147813
-X-HE-Meta: U2FsdGVkX18h76nE0nlwotjJlF8GITw0EV2J6vg4h+evWshAXc+cQoWlxxj/ZzC8eGj3hGxHmNCq0VPTmwSfHcUEwkGEVH8gOUq7+dh/P16DAs0m0EfD/poQ93yaJ5ZjqEJ1MabbU42isY25zmXyF+h4U5Z4Tin/xsXn/Jil2rjHnFUDi02IrSC1speevVl1G3MU1g7KGS3quDgg7HXBWiaTHRdWbh0vaasSxQAek/zj3jcfE3/lEpjAALWpOX3ISHK3IAWqCcXEFnwZ+mvRrNF8F/4g3TDr+ndeCLVV4dr2u9zNmPrUxK/wxYByBB/Az5Pj9XqT0Z3K6j/pq0CyUg/XwYu700XxJHnGKFzOBgTYaRn5WKcu/UQvIecfYfxITQJwrLCAB3vIImEiUJgah5Ln/95lboRS4jViPFpxQBYOV7K3m9GSEUR4oW8Xb/DMJuYNFB9hH43hYF4dypU85InzpaaOrcsyf7AmkN9ZLjX3dMtkgvX5tBHv4Xp+xIXTDPpSr16NqrDuk6OeOcpAUGRWTri6MeIy3Efa4tlLIkqR8STiy1BiSy0NGCFWpB+2C/QhY5ccgkNCESFPxgVnkmYrHI/Okd6vv8GfIm9MNfAGD3nqiuFmlS1WWO9PedTc09Ox1hspekgdF3ONzB5mHeAm9fKXNMws0jzuc/4FUxTboVa+/ig0ZKb4oBTP7R4UOQWD8PXtekoO8Cj6n/ifteRTI5h6hZm0xxJglJGe7q2Zc99XCBWzV4nQH9b9tYyME//4ymYMCwvzEzVZk9GsBsL6XlxmX+amUdNyc0Wc39ZRj8+MEjnRuoeZSlV9b4DqGcY7zGdOhDVg5t+me/5SrVwRrHjPdkRcu0MSgV9LUlKZQ9KVuVlDkIevcHVHq3nRNyca0tM46WgmnGfBGhXnUMTes0vfmXY9TAzEkdJu/5Cftf2bQeWNKfj3dfcYbFoGbqJOrrV/RjuqRr0mglr
- TY2EUnR5
- d7XfGR/LqcuwnLmRay59rKmhvUeuGNXJsi7KIij+Cj6ZxZ4quWK1rEeSGPJar9OM1Xt2npsTqeI2zgXS8XLGKWdO/rmwf9/TS91rHETrvcxEVTpFLqIC8Z39g18hf3jG7Py7JUnYYrKKnTY046Txmmbv9bQklSYqoBp+zJRqwZgyw2xLRAcCwgPOc9tdKjgOCNif38xV6YcKRG0dNgswX8COo3emLwPMKTHxew1a+86Yqb9bfPF8/vTrK/s3aCOEajf4Q0XCyI/YENz1x6pJ9iiZGdTdSLReOxgcDPkEeWPcKCF2NiXcHtrVu3svCDUGlZgK6
+X-HE-Tag: 1786983407-195174
+X-HE-Meta: U2FsdGVkX19sxwwOGgpcIhFvII0Cohsd+0Grjs5W2b8+9ACcYjEemAkUcKojGOYTR6jYsDYRRZZ/Tpd9ev4NPAMU+OC2jHjmPXwOm6dC7lldmyk380W0F6lqqTo7+NrXN4CIeeRoe+349qYwju9MxGIx8xZ+/81wf9cMu76iuqO7me/sRL5ZlKNEkV4JvT7V4a5h3gOztPqJDGASvPuKsX1XsL6fsN4ywF1gnSuciV5e4lRZ6FjKbAA31S4ga7XMjEFY5kXWghPRj826foHVHUa4+l49bvfrOjsUM9nqlG0gcdai79SkDNdPAuX5ldlKaG/bg/H5gHySykrc2+SwTHw3pkMv3Ko9C9lvtSgg22xJjR2iXPabVtPzP5B/OAqtRYeVKtcLXwTjrsOaShmGHjUj8zJ9mDNeFngL2TudOiu1piYlBPq1eFo53K1vZ/CFK1CTLb+1VJ/M91A5By/K74stnxIp3HTdOyQWsWE9xLZ95DnxMo/5wOXi+P8NXfdA8qX7lJqJHBa/MZylo0qyU8g2hfrY4ELWg2gxKac8QW5M0mdy63VSVsNjrSRRj/W3eWQuRg7ZLB6btqI1vDQYjvQnXQ6K8nx7QMn8IViLYdj1f4AZYDo533l0lZHzCBIKDEmQv5G+ZbZoW4JIlvk04IZ1zMVYZjQ8KAoplSB58Sdm8IgffKHSGycvGJmJayDwQGSaj+M+IeOndG2C17DkLZVaz+g2s/nFwedHy6ESwPEfTxXWT3pR6VtYBzdEI0TLbtJRk3A0fiQgXPXQrUnxwkMuO97OLWRq4At92m8MVVnGoUuFM2aVUS9Kyq/Wkq1SSjIZthCE4yOZQsKoWlQ3B8BNMO/u3z24T5eIo8/fEGFsRe7F9sokSZ1F+b89IgeNjctGNZ24Gf6x0KuBuvLQyNPv0ws/t3OyPyiKoXuMagOlHguZLJo6jJyHSQCKaBnBUDDbCEV4FN80WNCqQ7/
+ 8kvGiuq1
+ AHc1OMVMU0JIH+je3eu/SnbIcqEuKtOdaLJDPsvTinC64uRfsknVVElSa1+vPKOwraRI68p1UKrt5z//PMRFcke7/6aAUUAUC29MJ69NoKIspv/IJaxpOg0RbOSXyykrEIwnHbE6zUErql2XnMJBoBqInT3Zbs5KhMlkbj5voDgXsNzxGyoPtdOxTjXrpXcIKff2ay3UI/Ql3/5aU7qVR4ci6uuifbYBG/kinbi/skDbRWhEJmQNGkUjxCZEwBAO96G3Nq0lj96xQArGWk+3fBhsHFP2wOBx3yM6fCQjJQ/ctGC50DaK/G5L6ecIyoC0JMnNH+XHIGHwk2zRQHBAUx+SVYCh7//mLltYaiFzsk1hX9ro=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,87 +90,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 15, 2026 at 01:19:23PM +0800, Vernon Yang wrote:
-> From: Vernon Yang <yanglincheng@kylinos.cn>
->
-> After the page table lock has dropped, the folio can be freed
-> concurrently. The trace_mm_khugepaged_scan_pmd() is left with
-> a dangling folio pointer.
->
-> So using the folio_pfn() before dropping the page table lock,
-> closing use-after-free window.
->
-> Fixes: 7d2eba0557c1 ("mm: add tracepoint for scanning pages")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+On Mon, Aug 17, 2026 at 12:26:52PM +0800, Tao Cui wrote:
+> From: Tao Cui <cuitao@kylinos.cn>
+> 
+> memparse() consumes no characters on an empty input and leaves the
+> end pointer at the terminating NUL.  The only validation in
+> page_counter_memparse() checks for trailing characters, so an empty
+> input slips through and the limit becomes 0.
+> 
+> All limit write callbacks of the memory controller strstrip() the
+> input before calling this helper, so a script that writes an unset
+> variable hits this path:
+> 
+>   LIMIT=
+>   echo "$LIMIT" > $CG/memory.max
+>   echo $?
+>   0
+>   cat $CG/memory.max
+>   0
+> 
+> Nothing reports the mistake: the limit is now 0 and the OOM killer
+> goes after every task in the cgroup.  The same happens for
+> memory.min, memory.low, memory.high, memory.swap.high,
+> memory.swap.max and memory.zswap.max, where 0 silently removes the
+> protection or disables swap and zswap.
+> 
+> Reject the input when no characters were consumed, which is the one
+> case the trailing-character check cannot catch.
+> 
+> Fixes: 3e32cb2e0a12 ("mm: memcontrol: lockless page counters")
+> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
 > ---
->  include/trace/events/huge_memory.h | 6 +++---
->  mm/khugepaged.c                    | 4 +++-
->  2 files changed, 6 insertions(+), 4 deletions(-)
->
-> diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
-> index d3572d4ef453..5dc71d292f47 100644
-> --- a/include/trace/events/huge_memory.h
-> +++ b/include/trace/events/huge_memory.h
-> @@ -55,10 +55,10 @@ SCAN_STATUS
->
->  TRACE_EVENT(mm_khugepaged_scan_pmd,
->
-> -	TP_PROTO(struct mm_struct *mm, struct folio *folio,
-> +	TP_PROTO(struct mm_struct *mm, unsigned long pfn,
->  		 int referenced, int none_or_zero, int status, int unmapped),
->
-> -	TP_ARGS(mm, folio, referenced, none_or_zero, status, unmapped),
-> +	TP_ARGS(mm, pfn, referenced, none_or_zero, status, unmapped),
->
->  	TP_STRUCT__entry(
->  		__field(struct mm_struct *, mm)
-> @@ -71,7 +71,7 @@ TRACE_EVENT(mm_khugepaged_scan_pmd,
->
->  	TP_fast_assign(
->  		__entry->mm = mm;
-> -		__entry->pfn = folio ? folio_pfn(folio) : -1;
-> +		__entry->pfn = pfn;
->  		__entry->referenced = referenced;
->  		__entry->none_or_zero = none_or_zero;
->  		__entry->status = status;
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index e7830761d3a2..7c8c48577408 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -1603,6 +1603,7 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
->  	enum scan_result result = SCAN_FAIL;
->  	struct page *page = NULL;
->  	struct folio *folio = NULL;
-> +	unsigned long pfn = -1;
->  	unsigned long addr;
->  	unsigned long enabled_orders;
->  	spinlock_t *ptl;
-> @@ -1778,6 +1779,7 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
->  		result = SCAN_SUCCEED;
+>  mm/page_counter.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/page_counter.c b/mm/page_counter.c
+> index 661e0f2a5127..d14db705b04f 100644
+> --- a/mm/page_counter.c
+> +++ b/mm/page_counter.c
+> @@ -281,7 +281,7 @@ int page_counter_memparse(const char *buf, const char *max,
 >  	}
->  out_unmap:
-> +	pfn = folio ? folio_pfn(folio) : -1;
->  	pte_unmap_unlock(pte, ptl);
->  	if (result == SCAN_SUCCEED) {
->  		/* collapse_huge_page expects the lock to be dropped before calling */
-> @@ -1788,7 +1790,7 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
->  		*lock_dropped = true;
->  	}
->  out:
-> -	trace_mm_khugepaged_scan_pmd(mm, folio, referenced,
-> +	trace_mm_khugepaged_scan_pmd(mm, pfn, referenced,
+>  
+>  	bytes = memparse(buf, &end);
+> -	if (*end != '\0')
+> +	if (*end != '\0' || end == buf)
+>  		return -EINVAL;
 
-Same comment as 1/3 I don't see why we should be storing a pfn value used
-nowhere else just for tracing.
+I wonder if someone started depending on this behavior. In that case it is
+better to return error instead of silently ignore, so we will hear complains
+loudly. This looks good to me.
 
->  				     none_or_zero, result, unmapped);
->  	return result;
->  }
-> --
-> 2.53.0
->
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
---
-Cheers, Lorenzo
+
+>  
+>  	*nr_pages = min(bytes / PAGE_SIZE, (u64)PAGE_COUNTER_MAX);
+> -- 
+> 2.43.0
+> 
 
