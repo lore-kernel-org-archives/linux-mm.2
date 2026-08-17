@@ -4,88 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ECF1C5DF66
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 11:25:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92A5EC5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 11:29:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A8626B0159; Mon, 17 Aug 2026 07:25:16 -0400 (EDT)
+	id 874DA6B00B2; Mon, 17 Aug 2026 07:29:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 780136B015C; Mon, 17 Aug 2026 07:25:16 -0400 (EDT)
+	id 84C4C6B00B3; Mon, 17 Aug 2026 07:29:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BD9D6B0681; Mon, 17 Aug 2026 07:25:16 -0400 (EDT)
+	id 7891F6B00B8; Mon, 17 Aug 2026 07:29:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C0CE6B0159
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 07:25:16 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B9FB1C0718
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:25:15 +0000 (UTC)
-X-FDA: 85110530190.14.5083A1B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1E6EB140009
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:25:13 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UiVG1LTJ;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 585F66B00B2
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 07:29:40 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DB1151A0741
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:29:39 +0000 (UTC)
+X-FDA: 85110541278.05.C2D92FE
+Received: from mta1.migadu.com (out-126.mta1.migadu.com [95.215.58.126])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D0A5340007
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:29:37 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FQCDfwQ1;
+	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.126 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786965914;
-	b=8budfBVhOPrFA8ABZoNn5+EuUkaEYh01fI1pU7HOYs2Y15Jrj6bOwfGYqUhEmbtJHxAQch
-	PfnaMlTYVDelGDlP/YTKmBXaDjSQqsxdAFMunxs1jQbJijZhQFofkkYYCbzRs5GtfcaJd3
-	n7M941lmVLvHga6tRaoTvF5/GBakoPQ=
+	t=1786966178;
+	b=Ne1BZCck8s8u5HelXrRiVlOay/A7PVoojRjqIrFtJky+5gzlrXGimVWl7/FQkD5MKN3s8p
+	GAPEQIaOB14ZNBMEZ+p2TiohXrdTdgNNtcgl9g4YjpiKaFMjvAW1eSC87134sKXifgetZL
+	EAh0oS+LNHrE44YZcKlgHNbkMMbFh+Y=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UiVG1LTJ;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FQCDfwQ1;
+	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.126 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786965914;
+	s=arc-20220608; t=1786966178;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eodZ9Rb4n0bAkFN1ha9WBQcFvF7IyL6dkjgO4Dxu55o=;
-	b=aKGJnfUloQePs1R1g1U5brvqWDL3mge3Y9SJr11AgOtOl7Zg9nffqbL2lX6pGCRe9hP36a
-	ZyajUjc4eHoFgvuFOnx/7kvgYlasv4lhFplO7rYJ9bOPWbR/J8ITEnJhENJAgdIce6YQII
-	79FlcSF0dMI5EK7TnHsnm+ZlmVvud7c=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 99285600AE;
-	Mon, 17 Aug 2026 11:25:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83DCF1F00A3A;
-	Mon, 17 Aug 2026 11:25:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786965913;
-	bh=eodZ9Rb4n0bAkFN1ha9WBQcFvF7IyL6dkjgO4Dxu55o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UiVG1LTJOaeHPT0ju9HwdcPGncOk6n2w46S25K8L0FRM2K+49EljiwcS1/bEbnt/d
-	 pbTGQGs88PF1s1E3Mikz+gBsAY3W5pvED66K8q6bDZIiocQu3TcZjsimuk3LfYc2Gi
-	 HDjTDtR2UCWezVkZbQ4WQ5UJG/k6NwgNUoKOvfjcPBapaWrHRHegpxpj2t2Fp9JaXx
-	 lnt5iQzmav7ZfupU7a7ju9n8sgvz+swnkF/Gs0Iqt58yVwe9L6VCSLrBjFkCcTBKN3
-	 t89SKumI9OQNvl5AeigM/DmEyzunlK7n+1A8UeYd348M/pLSvhq9wE27NAQvN4EdKR
-	 2m+YvCR/kzmjQ==
-Date: Mon, 17 Aug 2026 12:24:54 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Song Hu <husong@kylinos.cn>
-Cc: akpm@linux-foundation.org, rppt@kernel.org, usama.anjum@arm.com, 
-	leitao@debian.org, linux-mm@kvack.org, shuah@kernel.org, david@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, surenb@google.com, mhocko@suse.com, 
-	peterx@redhat.com, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] selftests/mm: emit KTAP output from
- ksft_kmemleak_dedup
-Message-ID: <aoLvf6jyaQaYDixW@lucifer>
-References: <20260815084231.3630742-1-husong@kylinos.cn>
+	bh=wCVHFjCoJCDhU8nWVYdXDPl3Sitt70Cj77o6Y2o/XqI=;
+	b=rcghyBokHXlxU+282iOW1enrX3OE2AC+yM6yES6kkbDmq+Yt7KqeTY0plIecXyhSJrjxQv
+	IrAlRm5Fw2/DH3f3IWIzOJcMRsDmKeKWcZNWnvinuZOqVgX7Qx2cggOkH9OhFWPrt0K/KU
+	RyxEzB592pESRQhLNrWHQaO5tyBavNU=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=wCVHFjCoJCDhU8nWVYdXDPl3Sitt70Cj77o6Y2o/XqI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786966176; v=1; x=1787570976;
+ b=FQCDfwQ1gMFZvJTCmRxfcnZ1UflzOtz5jlvblwxwSyFXRiFSGWtv31KaZ+QxLqIqWfN4sqKq
+ XqENtP4ExSoGef0V9XdK84LSJy+/QVR8mnLVgHYLXsskcfRB4n5xReDjDEPF2Abz2ogCkaMH3f3
+ ZqEglMhOyUmTygQf/Oh/2iqM=
+X-Envelope-To: linux-mm@kvack.org
+Received: from [10.4.50.126] (221.194.171.228)
+	by smtp.migadu.com with ESMTPS id ba7939d909808a56;
+	Mon, 17 Aug 2026 11:29:36 +0000
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <c13d13b9-6f2c-4550-a1ef-7e5e1c1c2777@linux.dev>
+Date: Mon, 17 Aug 2026 19:29:25 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260815084231.3630742-1-husong@kylinos.cn>
-X-Rspamd-Queue-Id: 1E6EB140009
-X-Rspamd-Server: rspam10
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/4] mm: memcontrol: make obj_cgroup_memcg() handle
+ NULL objcg
+To: hughd@google.com, baolin.wang@linux.alibaba.com, usama.arif@linux.dev,
+ brauner@kernel.org, akpm@linux-foundation.org, david@kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <cover.1786955972.git.zhengqi.arch@bytedance.com>
+ <09bcf74312246a6e4146be8a0cb9787f8beddb28.1786955972.git.zhengqi.arch@bytedance.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <09bcf74312246a6e4146be8a0cb9787f8beddb28.1786955972.git.zhengqi.arch@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: huxnzzbtr889ezcchensgbwbqmejfnbk
-X-HE-Tag: 1786965913-304738
-X-HE-Meta: U2FsdGVkX19ARiDOEJcnk4gRcemvajotMX6BaOxlTvBYHGdjOEHExM1pTJGgsOBl0q2m8N/p9VQu2RhocSUlthU9Vr0C2NWwlIrk/aJfgfgGI3w67oQDzUinXvcbeq+eN/aDX00A54ei9ERTR1r9xovhO6dcFOUNk5so0TScsL877izk4Z3PorIJn6apXUzsGMhf6OPsOSD7L1ydjBYfc4miC0QzfSEy2xw5chBR9Arby5EkUpnG1S2pm2xoCj3R5+/1lGnqI+xYIG7PZbWX2Hen+eWJfXV6A+DLATCS0kTPdpy082PAiKR6X//UucEWZK+1A7Pgw4zsvjsKv9jHN6wwjVMNLc3cwdoMfDpWOVQXkEHn0hnbqQu6C7wsWXFW2drktXdKM/rSnXG+pxc96rjfA8QUmx1Y4IcicJ8YE/MYwvkuJmooIoLkeMJ4T30LX2vYodJd8SvIsWHVmTfRTFM3U4Uz19OyDfTjzwpR3lLzNft6Of4xfhcCJ+gSYelBuBrqWPOHhN0HkYU/IjGx/7fjuPcYDl1y/Wgk149yW4zNVlsLesbNx3eYlMeVe/KX3sm40cVv5m+FExnDj6TJpcGd5c67Y2aTDFjv59WSNaMWJefyEbYgUgiMLN+TK7sycxRWNAewr94LUGgrxm9w7c/xiIkqUvqw5ECRr7dIAQqPpWLZfXbW2gCFIvjVmv52xwqA+GYb91adVlxyGCNdmWgvLIk7uu3fM0Ok1bn0sq9j+WRI0p+eTrwZtx5HIjRdpakwVqh7iJ9NmzDV2/duS1IR4MDMkGCKhi/mgW7XXyGNfpO8Z87lSl5YZBqBlFoohytg7BC4jHinCjzdrziAj+lo68zvj7a9aV6781JwN3vWnrDRdWMG/MgV6br6ajcNRh3d3k3yu+2ZcggGUkoNu5jHTupkueUJW9XRfcYXNX/gGib25z9CLFMcDGnFCvUkp45HZtxudYIb1Y3qBed
- Fslg+aMR
- p/1U4K/icP7b0ckWYcKSoHMdxcYAldTuBJf6T1aJpcaBAJeNGty49dx2N0OyrRHrHvHL4/qOPc57nyR+1/y0LwfRmDhtguoL63lO6LFBVT8tr/PQFBmd5A50gA04dFfgUoH1hpiTYGUeK8c/LKN5t37EZefBpuOkU+EsY24ZL2O89qW45+ouW/b6dOEdR4l/IR1yVmQm64y3k2ku3Ug0P1WU83d+ATfKNUUOHo1MeuVAmEBAt+f1h/IJ1o3dMwv3JaDbpHokOC80k7jwXKd5LNRrZW14tuVVzGw3u+sYounLaM75Te/9Kx+QcB6IrbBx4QUziLzupTH0OKSOdSS58uhVxLg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D0A5340007
+X-Stat-Signature: sfeojjd7gju63nsktektedpwsefbrtit
+X-HE-Tag: 1786966177-583290
+X-HE-Meta: U2FsdGVkX1/ZE1fougTQpYfO2gdSqm8AtkjfMMWefdMWDVuJ7Pr5/D/OHaTdn//J1UpUZjbDFnPrIeFzCOCOwRsGkwSxy1sMBaXV51jiWMEXejmjXWZiIEpXgOsGM8cMsDz6IRxg90ZaejQZppKvpT+KrNopQBGXIQWUDRmFbMkV6IwQOY8OGWffRBHaH0+rPwaWe22vrP26ksZ6RyMXrInH5krYpHcCzQVAItgfZiODu5VIuKwzKJAo8js3k19FyKqB3GLFXQn01BnSY947rWE5gHihbLykRw1GLOCAQVK7oJD6jK921EysYNgPxL/my/4LBlqZRA0jlzfOyj9QW8wZXpg3awBRPBPdSjD0WFQnEfdgLhg11c28Ih/mLPNgYq4WGgrWZ78jAPXIBoJZ+5Uyk3KHSoaW4a6nVCXNFBOMsENfZox0YG1tsserNF/WrwsBC4UxRJHqcwx7+Z+3T5xIIVEkkbO2DZ5E0zYeuSeWylBXD+UyHRQG0VMsYcwPIKTGRJGoCd67SLxt4R7BKHzhV7z5NsejsUGbI7ySnd6TzHSjW7jUEhql+HSGjWnjUuhJBRyYAIWCPa70tQtGYmo3Y2fssD61Z3ss7Em0BnB5GBVRmMUAUhtA2mHfGZqDndhEdqvYW+1hCqwUsPPuHo8Q2RlHDFYbwab+JX6uvxJo3t5vCLfzF2Kxk5FM4WXZlSPfT5t2/eabWUKW718SYhvURaNx6luCqeVK1E6dg/cO9zQBOzc9lrjePXCO1xB0mrNocLP/8yB0hV7n7ihxWURL8wQ2AAw+2ooLAzYUR4OvXwJsIj0AYNDdKiPqvj1vHIeihHG42ckOZZADv25Dm3yin85+vCxZfhGwsb0+j4mSr2sHBhCIg4BdBDXRaXciTC8MdbKkqtU5DAaxiqRPazub4THapmi3PMWcnudgWHM6kWIlFRLi0dsgN2O1VNfXLgxUF7jITbb3+AyhCY8
+ dJaW9KOo
+ f/Hiz7smsWvrIrnn00qkRLjR/GoVEpFFnOHtkl7XA+iz8K6zYaI3KwUo1ng94c4vXxFi+yYi3JBK+HPVlwXNfoBs6PAQmUrYhaPiZETX4ruU7TYdKxpSFPSWO7/QGRS/71lrotCRWFJm9Zmo0U1I0uWGq0wBPihJ00xs7hyVzzhxxG/wcWr+CcaUyaRDvH1XlTb8UuVqWfiix7tRpt2db9V//cy9/BDmhjUL2QNlQKxwx0JYZv7kpOOvp7UNNLMtFUoLnEbZiQt/3dh0FVCuvnzwHbCJLQWhVZinzfMiVJGsYfVsGY18WABXVQYzwhHOphkpt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,84 +96,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 15, 2026 at 04:42:31PM +0800, Song Hu wrote:
-> ksft_kmemleak_dedup.sh reports its result with raw "SKIP:"/"FAIL:"/"PASS:"
-> echoes and bare exit codes instead of KTAP, so parse_kselftest.py cannot
-> read it.  Convert it to the ktap_helpers.sh API, like its sibling
-> ksft_kmemleak_confirm.sh.
->
-> skip() and fail() emit ktap_test_skip()/ktap_test_fail() instead of
-> ktap_skip_all()/ktap_exit_fail_msg(), and a single ktap_set_plan() at the
-> top covers every path; ktap_finished() then prints the totals line and
-> provides the exit code for skip/fail/pass alike.
->
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Reviewed-by: Breno Leitao <leitao@debian.org>
-> Signed-off-by: Song Hu <husong@kylinos.cn>
 
-LGTM so:
+CC the maintainers of MEMCG who were missed in the previous email.
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-> ---
->
-> Changes in v2, per review feedback from Usama Anjum:
-> - use ktap_test_skip() instead of ktap_skip_all(), and ktap_test_fail()
->   instead of ktap_exit_fail_msg()
-> - move ktap_set_plan() to the very start so it covers all paths
-> - call ktap_finished() on the skip and fail paths as well
->
-> v1: https://lore.kernel.org/all/20260812132142.582390-1-husong@kylinos.cn/
->  .../selftests/mm/ksft_kmemleak_dedup.sh       | 21 ++++++++++++-------
->  1 file changed, 14 insertions(+), 7 deletions(-)
->
-> diff --git a/tools/testing/selftests/mm/ksft_kmemleak_dedup.sh b/tools/testing/selftests/mm/ksft_kmemleak_dedup.sh
-> index d01950244490..fda6a9340e0e 100755
-> --- a/tools/testing/selftests/mm/ksft_kmemleak_dedup.sh
-> +++ b/tools/testing/selftests/mm/ksft_kmemleak_dedup.sh
-> @@ -19,24 +19,31 @@
->  #
->  # Author: Breno Leitao <leitao@debian.org>
->
-> -ksft_skip=4
-> +# KTAP output helpers (ktap_test_pass, ktap_test_skip, ktap_test_fail, ...).
-> +DIR="$(dirname "$(readlink -f "$0")")"
-> +# shellcheck source=../kselftest/ktap_helpers.sh
-> +source "${DIR}"/../kselftest/ktap_helpers.sh
-> +
->  KMEMLEAK=/sys/kernel/debug/kmemleak
->  VERBOSE_PARAM=/sys/module/kmemleak/parameters/verbose
->  MODULE=kmemleak-test
->
-> +ktap_print_header
-> +ktap_set_plan 1
-> +
->  skip() {
-> -	echo "SKIP: $*"
-> -	exit $ksft_skip
-> +	ktap_test_skip "$*"
-> +	ktap_finished
->  }
->
->  fail() {
-> -	echo "FAIL: $*"
-> -	exit 1
-> +	ktap_test_fail "$*"
-> +	ktap_finished
->  }
->
->  pass() {
-> -	echo "PASS: $*"
-> -	exit 0
-> +	ktap_test_pass "$*"
-> +	ktap_finished
->  }
->
->  [ "$(id -u)" -eq 0 ] || skip "must run as root"
-> --
-> 2.43.0
->
-
---
-Cheers, Lorenzo
 
