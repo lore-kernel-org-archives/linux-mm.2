@@ -4,96 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 104FDC5DF66
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 09:14:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFBFAC5DF70
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 09:15:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 158106B08CE; Mon, 17 Aug 2026 05:14:35 -0400 (EDT)
+	id BDFF56B0927; Mon, 17 Aug 2026 05:15:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12FA36B0924; Mon, 17 Aug 2026 05:14:35 -0400 (EDT)
+	id BB7E46B0929; Mon, 17 Aug 2026 05:15:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 046546B0926; Mon, 17 Aug 2026 05:14:34 -0400 (EDT)
+	id AA6076B092A; Mon, 17 Aug 2026 05:15:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CA1436B08CE
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 05:14:34 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 49318C06C2
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:14:34 +0000 (UTC)
-X-FDA: 85110200868.18.2338A9C
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 94D99160008
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:14:32 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf08.hostedemail.com: domain of 399CCagkbAP4y45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.70 as permitted sender) smtp.mailfrom=399CCagkbAP4y45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786958072;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=0YnkKb4Fet8hxhNIWn1tISjKYbWQvuS7wogHoFnXdVU=;
-	b=ggeQ6avmvKrPIH8qxU98MelUjBGGZmd/pwySE9zz+ufTQvnHXN/kPKPgvRAr648RUAUgnQ
-	WT/Zht8Tcyq0N2CKkwmq2Ut1eFSZzjkNYRpcOc3zA+O9boS6nfPQfbIkUG81DIbe9YA6+o
-	hskZuSbfiXDn6uz1FdrzZFXXiosqFvs=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf08.hostedemail.com: domain of 399CCagkbAP4y45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.70 as permitted sender) smtp.mailfrom=399CCagkbAP4y45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E4E26B0927
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 05:15:08 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0483A1406E9
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:15:07 +0000 (UTC)
+X-FDA: 85110202296.23.A4124A2
+Received: from mta1.migadu.com (out-16.mta1.migadu.com [95.215.58.16])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 565534000B
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 09:15:05 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vXxHi0hF;
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.16 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786958072;
-	b=vtZMounDNsmCiHBOrbyKHGlcSRJed8EmljYXDEl0JVMKQB+C66BMvPgJK6o7owPrx76Exo
-	a24r02BZlLwCuPm8P4U6y4UtzLp3D5bj6+o6Z1f37x7JLdM6yA3ntV5W6AG0oe6OpqVmJ/
-	Rb+kYQNwaYE5veKSvgFSGPlmCT2E8R8=
-Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7f4071ad0d0so1743834a34.2
-        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:14:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786958071; x=1787562871;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=0YnkKb4Fet8hxhNIWn1tISjKYbWQvuS7wogHoFnXdVU=;
-        b=ifGX0aI/o4OsiJ1LZjw85Cmd6ITtYnFWdDdcW2lreGH3v0YRHq2abVpcdXgQWF/qun
-         7r7mNNQ0D07zyozYrmo6iGfIE7IXuZ5O4yj/eoLSi5Zw6T1DJLKHkjNmdR+G/zjllQWG
-         JxmHE40QNHS9n/po496Bt+Hr+54BJIjM8nT3w7EthrXgM/zASo3GLEuX4OkiMVc6n4QP
-         s4AzZglIrkupmrYdHgBFnAlLKGMgko4P8PLqyVRUQgJ4RI5ndLuzHEXmXJhCqIdgcdEi
-         EP+8r8xGV6QRSsn2YyY2ueyIPChzIUbndIHTWj9xkn6My1BCpI1sUSpfqFAI7xqWJZj/
-         sCjw==
-X-Forwarded-Encrypted: i=1; AHgh+RqXOBVpEkULoiy3RAJ8Zi6zPw2lvV9dMbxG5D7BLzCRtNIreSs2PevkOXEJLd2AvFhEEjc2F71xFg==@kvack.org
-X-Gm-Message-State: AOJu0YwtX1fEEe174zU2wylV17KD+4ctn8Poz8MXwmIky96JDDcq3mMf
-	lUqbsDFEmZ62gWFZ7pcLDgFvpXonPG3J7fhodlaEgzorgPicyrEFy5qmgW0mCIGIrBa7GL5ACrY
-	TkXcrQ7JUQ8TKP24/hN/SA1Mz+0IrAjemsP1DbKd6NO2L3Eu1OTGOLuxeLo8=
+	t=1786958105;
+	b=mWRKi6MuI8+1Ha3CQ5G79aDf6+Ob1k1rb80ulTiAr6geUGjy+cxPE+uEWV2XfE9NzNzsiV
+	hd3/PJsNGHUrcC1IuS3qtNtqTVo7x0yX/Xo7eTARKZYL6nvkGXIkR86+lCqqRwH7fKQQJV
+	zUfP6A/vEHidzCMSXVE3NdrQ6Xop1g8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vXxHi0hF;
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.16 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786958105;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xAJkncNFO1CV14jrHvP8WQr7ofW3QBRXSu2XlOlQXP8=;
+	b=ZnllLLHJCvsH5DOWOxrrmKDcoPiH+6D72RD0CRFQaiCncUSUaFEr2pi46aIbhQ2THa8xBY
+	jgF5qJ4CNX+ZoAuuOg/1ozAXQeu1h8RyZT+UTmDk0rtizMY/Y/UJK9+/95hPkfxCM30G3X
+	AzQmHZXB5Og7GjYoU/KH+kjvS1Osrzg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=pWjIzPp6KhwnpZxPKLQY7HtxbwT6Y+7x5vhR3ao5oew=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786958103; v=1; x=1787562903;
+ b=vXxHi0hFLegDUVRy+lP+4FNVC/Sr0bIpIpJD42KG0oy70BkKjScvTiflAlW2Ge8WkM8a9C66
+ X52v60JaH51CFBoiWuaUzR8c6A61L4uQye5pnpxsMf8n9D3kYGqcg8a+h/cCzuXQyQRTDHAy4MU
+ VRviEzpVtdXkf2w+deLb8yNE=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (2602:fce1:44f:115e::)
+	by smtp.migadu.com with ESMTPS id 61a6489cc58dd9a8;
+	Mon, 17 Aug 2026 09:14:53 +0000
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: shivankg@amd.com,
+	linmiaohe@huawei.com
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	kmanaouil.dev@gmail.com,
+	fvdl@google.com,
+	kinseyho@google.com,
+	weixugc@google.com,
+	bharata@amd.com,
+	rientjes@google.com,
+	dev.jain@arm.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v2 7/7] mm/rmap: batch the unmap of large folios in try_to_migrate_one()
+Date: Mon, 17 Aug 2026 17:14:44 +0800
+Message-Id: <20260817091444.58876-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20260813-migrate-rmap-batch-v2-7-3c5424c555c7@amd.com>
+References: <20260813-migrate-rmap-batch-v2-7-3c5424c555c7@amd.com>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1ca2:b0:6aa:f0fd:3f0a with SMTP id
- 006d021491bc7-6b0d68ebd55mr19778363eaf.30.1786958071630; Mon, 17 Aug 2026
- 02:14:31 -0700 (PDT)
-Date: Mon, 17 Aug 2026 02:14:31 -0700
-In-Reply-To: <6a820ebc.9ebadd4d.20b15e.001b.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a82d0f7.dbb3a75c.20434b.004d.GAE@google.com>
-Subject: Re: [syzbot] [mm?] WARNING in ep_write_iter
-From: syzbot <syzbot+805630f1453e490427fa@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com, 
-	david@kernel.org, gourry@gourry.net, gregkh@linuxfoundation.org, 
-	joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-usb@vger.kernel.org, matthew.brost@intel.com, rakie.kim@sk.com, 
-	stern@rowland.harvard.edu, syzkaller-bugs@googlegroups.com, 
-	ying.huang@linux.alibaba.com, ziy@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: snba9jef6cbpziug513tcz9azzyqbzwo
-X-Rspamd-Queue-Id: 94D99160008
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 565534000B
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1786958072-292102
-X-HE-Meta: U2FsdGVkX19K5iIHqjG5C85wJcgUWQzbvKxfAVRHTyWWH/0/jb1lfknQfrOHSu0+y/ODLQnYKAyyqYFafTMOr6cproRDcag6kM96/m9EKIJN2qwVWVeGs77wmzv5CswBrchyMk+kDGq6I87MiTHemczU6V7EZzQeHvDOsK9WHCAbFQAdrsJehHKW1jZBHmmobZ2eYIARhMvFE/ZgWb5vpFpX//YZG+yJKWZ/Un6UiNHGb0Tiz7osxO1IpVDq9e1p1EV/LmUoFl948plij8VlmB/HV+U/YCKg56k3992cfkfi002/4/yAnWG5sJOZBrqJtPhUeqh+qjo0825doc8FKQj/7ijKc40aQ8W5cXxlK4hT+/GydpbDCE0rxFT/+Jn+l/7Oe3TQEDhVCPQ4YxwcX8eoF5zSToYEEeev1denIIbNK0OpS0RNeaxrBb5z+scOy3zAPW5zyVJYZhZOW1jW+10jF48XX9eqrMiXlCbzEl+Fr4jL+O6kIvnthGbj/7Thj2C3Rs6iGMK5P3NLX5bDpmEy38ViWUJXNZYdq3x+Sh1X0oPMaunxL6ZXKy3v1oyedUg1sqTpzc2WU92hZds/Tuvyxmj/7aCZRa6V9mVGvYSmU8rkB1Rt5hNLUixtuH0hU+L7pdL6wqScqZd4eVKdwStAu6Yhme9O5YH6HJv3sMseuKInn1/9mZEBYXEw9hARRs/Tnmq03CGJKE75DLmL9+390tY2ResO+NWl1ekbj9EmJYYLd+yrsDajjT9L/KJyyMwHN+3Gex4v4vkKvARhypuupiN85pETWRAN/s2TfrlgeZDn361UFssQiXHiVSgPlhvOgctLnbTEFRJPxhNoo/PBD+E5PMyJnxt6HUt5eT3VRgGTM41e4Ic3vAuHssqx6hxG0xGAva+CD/R2AMoNzSYGAjUKgTzoPiBjEHYSiSGGAQVDQkpE8ONERNCDiKsQFxm/P9cW5YBdcd1rSRj
- y/08O7AR
- rAzsgj4CLPJNU5V5Bfhh+rl1ywQYJXplzYLI+TMmR3zLfj2S5+DSQwEvZ+w0rY219+9s7HPPlaKWM63DEjAnfB4/p3o6SkHOCZdQr1YJHOXwrblE0T/Ux91x1entenBZrgUdpoFejqpJxVauF/csyAE7CgO/5VLOt3aJaUkCUq0yoAcGgNPpZoQrqIEYyI7EHHAfUGOSzW0S1qWpozaIQV1zhlDl9k87v0qYXyunHpLKF9ZKM7UcQDb3RUyMo+e3j5V0iEDypqxhN2H5YZ7C5G0g0MuZAHVXaoLssbKn4J1qODMMgOV5bKGF3KtSXD4XgC5SsePU68BNIQVhOiNq29dNaUQ1gYhDwkQmV6693LuwxAKTlXAdImv3/S22cDWqHMySLb0S16I/zfTyX+yfh94qwx0IynXH4znAFKqQZifX7XxwexxLiij4E43weTLay7TPOH7+kRt535z6ZOKp7+2X6PnqQJvpyGU1xgHV3f6Vf9Dp+ffon7sjsi9Wk4eIsNqb2pHPMmgNBjnzrYJ6ni2BvT6+IAnYETvcwcs5gJZv32yGmZVIvulX0KFIkCoXbFBAQzRTu+Ic9EcpKs4PNaxNmBbcNjYfsbF6J3Z9tbFe5jtsyXsoUtMxBzRsEQcyicqbZ9dnXDids5KBBsSICaDriyLSxFcqdlElnRB3xX2fMtzxvr96QX8nnzz9NqanYNpNxaGsPRiWahu48iyPPimdJMx0/lUOcz8D7gfDL835MOwYD2UOYGY3gmkQQqsg4obhkpZCgMgFyxjy5swGYgUoj7DVW1AZT3HjkikWdKVd9gOkE8Ip0C8Ln2s4g59hDCOwPCBXxgWaEs65Oa/jh4jRdwnwCoZiz4GrzM+e1a79KY4i3fLGCtPgNWPBKLyp/p0NzOKSu5CmNH8T5VJVEyP9OdY8tOr3qClQ/VG9gYjdK/yvnhUcrIlVISTpWzWxmBaDw3MdoG2r2mPDZ+u9M6l8gmuwU
- DwJE1vPJ
- TQjMpVzkrLuUIfffeAEv00kJ9v3/b1rhwX522gip5fm3a2BuBuOLEQ==
+X-Stat-Signature: oojs3kphrhxqjro8u9wptrzphjtbiboh
+X-HE-Tag: 1786958105-432067
+X-HE-Meta: U2FsdGVkX1+NyxOYIwRa54APuCRtHr1VA/LDA62bUOfbAk55IRevyGFAdIdn64o58vrQ6PN+6teovfZfjRCFdbYN9Yv6NnXv5xeoDkU1d5rMDjZ4ImF2KJIWEKaiJ3zJTZ4k20IidxgTMxXqcDUt51lh8fBDjANgvQPRPs33Rtn+gBvAX8SLCHotCZPFSVzC06H4EG/s5NN0x1CUYpCNsoXndVes4zk3G6KJMkV8sT1BHTpx6i07LZe27549QUpMiLMdPyiYQ+aT6jVQQNxJnLRd7QwJac2/Vteh20qlrAesDJ+U296jU+yOw6F3xYJuMq8Z88vM8rkZVJWwk240kL5+d9pl4NO7YtOnGq6/Ou4OBOTokTGFB+hrYJAj165hf0cONf4oef+bcs6J1OHiIIE+/q5+GOmV7XeLhs1ws1paz4EwfNbZinjytKq0OWkoD7amG7jorOpA7qlm1mb+kw2ouQM5S/t2TN7gQyNtzD7XI7GZTuGP9x51DpDf/S2jLqdwrN42BQDcbU2GXUPmaTsVJCtDIOvB0aIin/QyUMdqpkPatj5GmarPoihanPbLUoJHjyq8fdW0S4qMJDC/GKVdJ72jhX5sIQCZL9K+iKW6sG5K4Q+UxLAR+mFL5xZ6Ovh+afuOa8YfignwE8OE1WwdXrwC6YE2KOcBeCFkrFfBF8E4XA+AmRgTxFeGmOxZn1stFJezOvk4WxSjMioAgI3dC3xxNh7O2pRlZbtyZSuR5MKEZPNzSjzTeWdFF0w8ON3UBQCUhA/kvbA3ChyST/In5+FYFel0VzU436evYM2zbw2WihrmR7xr99yNfnzMVV0W4NYzct/Df74tJGgzBbfj2+PcVljaby/ZsSJ2FcxJzq3U4QKG7txmD72Nl0/ScDI5VGNYmMlq9hjdq4g7MoUOcCu+SxUEy5cWnHP2d46YbCwjxmjt15qBoG/tfkBqAOGp6v97R7Y/fCjACfl
+ hhEa2G9P
+ 5R4awdvLr8JWjHNnqE/iLphu8QfpxX3bXl2dXeL12ZgRgg1/OkskFsLNwvJ0Yie/kXnbSzXLWkWgh2SaaW6wupduRkoXnoaj1mbUHmCsCPkm4Mj388AF1EKGOHsunQi2N/vm8AOaIxFuLTsmGPQ8DVubaxXGPVgW3xEOyMtG/xqADqHuUNuGdQ/ol3VHmFxZ/60qQMvSSKse6/gEMM2cUwabjKdxKnQmstHcUUzs4nCYsr+LUUgxE8YHX/pyfe4qWVB5Un+h/uSYnwElHwrNOIfLhfjUDGI6dvjXBFrlAxNPj+dujj87lH2JKTTAZyq4H57NrikBk9UoufGQduwqYn4LYRUQQeL6TObeJmqzR3mCX0aHJG/p2RAI0HaA7pLJxM2JtJ/6xjY+AjKDv3+4fusxiqPBsGI1TMVG6w80PqEDqvhs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,65 +118,243 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot has found a reproducer for the following issue on:
++Cc Miaohe
 
-HEAD commit:    8d3ae59288f1 Linux 7.2
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=13bad949580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=1d67342c314f228d
-dashboard link: https://syzkaller.appspot.com/bug?extid=805630f1453e490427fa
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1637ea25580000
+On Thu, Aug 13, 2026 at 04:23:18AM +0000, Shivank Garg wrote:
+>try_to_migrate_one() converts present PTEs to migration entries one at a
+>time. For a PTE-mapped large folio, this repeat calls to ptep clear+flush,
+>the migration entry build and set, folio_remove_rmap_pte() and folio_put(),
+>each re-entering page_vma_mapped_walk() once per base page (256 times for
+>1M folio).
+>
+>Mirror try_to_unmap_one() to introduce folio_migrate_pte_batch() to detect
+>eligible batch for PTEs mapping conseuctive subpages of a large folios,
+>and convert the whole batch in one shot using the batched helpers.
+>
+>A side-effect of this change is trace_set_migration_pte() will record
+>one event per batched run instead of earlier behavior of one per base page.
+>
+>Signed-off-by: Shivank Garg <shivankg@amd.com>
+>---
+> mm/rmap.c | 115 ++++++++++++++++++++++++++++++++++++++++++++++----------------
+> 1 file changed, 86 insertions(+), 29 deletions(-)
+>
+>diff --git a/mm/rmap.c b/mm/rmap.c
+>index 35752a70f3a0..63b885c0b7ef 100644
+>--- a/mm/rmap.c
+>+++ b/mm/rmap.c
+>@@ -2675,6 +2675,44 @@ static bool try_to_migrate_hugetlb_one(struct folio *folio,
+> 	return ret;
+> }
+> 
+>+static inline unsigned int folio_migrate_pte_batch(struct folio *folio,
+>+		struct page_vma_mapped_walk *pvmw, pte_t pte,
+>+		struct page *subpage, bool anon_exclusive)
+>+{
+>+	unsigned long end_addr, addr = pvmw->address;
+>+	struct vm_area_struct *vma = pvmw->vma;
+>+	unsigned int max_nr, nr;
+>+
+>+#ifdef __HAVE_ARCH_UNMAP_ONE
+>+	/* Cannot batch unmap if arch_unmap_one() is defined. */
+>+	return 1;
+>+#endif
+>+
+>+	if (!folio_test_large(folio))
+>+		return 1;
+>+	if (folio_is_zone_device(folio) || folio_test_has_hwpoisoned(folio))
+>+		return 1;
+>+	if (pte_unused(pte))
+>+		return 1;
+>+
+>+	/* We may only batch within a single VMA and a single page table. */
+>+	end_addr = pmd_addr_end(addr, vma->vm_end);
+>+	max_nr = (end_addr - addr) >> PAGE_SHIFT;
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+805630f1453e490427fa@syzkaller.appspotmail.com
+Hmm ... can this still batch over a poisoned tail page?
 
-gadgetfs: bound to dummy_udc driver
-------------[ cut here ]------------
-1
-WARNING: mm/page_alloc.c:5280 at __alloc_frozen_pages_noprof+0x2427/0x2dc0 mm/page_alloc.c:5280, CPU#2: syz-executor421/6034
-Modules linked in:
-CPU: 2 UID: 0 PID: 6034 Comm: syz-executor421 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:__alloc_frozen_pages_noprof+0x2427/0x2dc0 mm/page_alloc.c:5280
-Code: e9 8d fb ff ff 31 d2 be 28 12 00 00 48 c7 c7 a0 74 01 8c e8 7b 95 68 ff 2e 2e 2e 31 c0 e9 02 ed ff ff c6 05 85 90 bc 0e 01 90 <0f> 0b 90 e9 6f df ff ff 48 c7 c7 80 be f3 8e 45 89 f7 44 8b 74 24
-RSP: 0018:ffffc900048c7810 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 1ffff92000918f1c RDI: 0000000000040cc0
-RBP: 0000000000000013 R08: 0000000000000005 R09: 0000000000000009
-R10: 0000000000000013 R11: 0000000000000000 R12: 0000000000040cc0
-R13: 1ffff92000918f5a R14: ffffffff9b95c444 R15: 0000000000000001
-FS:  00005555738a6400(0000) GS:ffff8880d5dde000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffd5f5d6fe8 CR3: 0000000020943000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- alloc_pages_mpol+0x1fb/0x540 mm/mempolicy.c:2490
- ___kmalloc_large_node+0xe5/0x120 mm/slub.c:5274
- __kmalloc_large_node_noprof+0x1c/0x70 mm/slub.c:5305
- __do_kmalloc_node mm/slub.c:5322 [inline]
- __kmalloc_noprof+0x5a1/0x820 mm/slub.c:5359
- _kmalloc_noprof include/linux/slab.h:992 [inline]
- ep_write_iter+0x180/0xbc0 drivers/usb/gadget/legacy/inode.c:669
- new_sync_write fs/read_write.c:595 [inline]
- vfs_write+0x6ac/0x1050 fs/read_write.c:687
- ksys_write+0x12a/0x250 fs/read_write.c:739
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f7cc18b5cb7
-Code: 48 89 fa 4c 89 df e8 98 1d 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
-RSP: 002b:00007ffd5f5d76e0 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00005555738a6400 RCX: 00007f7cc18b5cb7
-RDX: 000000007fffffff RSI: 0000000000000000 RDI: 0000000000000004
-RBP: 00007ffd5f5d7730 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000202 R12: 00007ffd5f5d7930
-R13: 00007f7cc18ea039 R14: 00007ffd5f5d7b30 R15: 0000000000000002
- </TASK>
+memory_failure() sets PageHWPoison() before taking folio lock, but
+cannot set PG_has_hwpoisoned until it acquires and releases that lock.
+
+So tail page can already be poisoned while folio_test_has_hwpoisoned()
+still returns false ... no?
+
+Starting from a healthy first subpage, folio_migrate_pte_batch() can
+then batch across poisoned tail page. hwpoison only describes first
+subpage, so set_softleaf_ptes() installs a normal migration entry for
+poisoned page instead of an HWPoison entry ...
+
+Should folio_migrate_pte_batch() check PageHWPoison() on every candidate
+subpage and stop before a poisoned one?
+
+Cheers, Lance
 
 
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+>+	/*
+>+	 * If unmap fails, we need to restore the ptes. To avoid accidentally
+>+	 * upgrading write permissions for ptes that were not originally writable,
+>+	 * and to avoid losing the soft-dirty bit, use the appropriate FPB flags.
+>+	 */
+>+	nr = folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_nr,
+>+				   FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
+>+
+>+	/* Limit possible batch count to a uniform PageAnonExclusive value */
+>+	if (folio_test_anon(folio))
+>+		nr = page_anon_exclusive_batch(0, nr, subpage, anon_exclusive);
+>+
+>+	return nr;
+>+}
+>+
+> /*
+>  * @arg: enum ttu_flags will be passed to this argument.
+>  *
+>@@ -2686,12 +2724,12 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+> {
+> 	struct mm_struct *mm = vma->vm_mm;
+> 	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
+>-	bool anon_exclusive, writable, ret = true;
+>+	bool anon_exclusive, hwpoison, writable, ret = true;
+> 	pte_t pteval;
+> 	struct page *subpage;
+> 	struct mmu_notifier_range range;
+> 	enum ttu_flags flags = (enum ttu_flags)(long)arg;
+>-	unsigned long pfn;
+>+	unsigned long pfn, end_addr, nr_pages;
+> 
+> 	/*
+> 	 * When racing against e.g. zap_pte_range() on another cpu,
+>@@ -2744,11 +2782,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+> 			VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
+> 					!folio_test_pmd_mappable(folio), folio);
+> 
+>-			if (set_pmd_migration_entry(&pvmw, subpage)) {
+>-				ret = false;
+>-				page_vma_mapped_walk_done(&pvmw);
+>-				break;
+>-			}
+>+			if (set_pmd_migration_entry(&pvmw, subpage))
+>+				goto walk_abort;
+> 			continue;
+> #endif
+> 		}
+>@@ -2773,10 +2808,25 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+> 		subpage = folio_page(folio, pfn - folio_pfn(folio));
+> 		anon_exclusive = folio_test_anon(folio) &&
+> 				 PageAnonExclusive(subpage);
+>+		/*
+>+		 * memory_failure() can set PageHWPoison concurrently without holding
+>+		 * the folio lock. Snapshot the flag here to decide whether to batch
+>+		 * PTEs or install hwpoison entry.
+>+		 */
+>+		hwpoison = PageHWPoison(subpage);
+> 
+>+		nr_pages = 1;
+> 		if (likely(pte_present(pteval))) {
+>-			flush_cache_page(vma, address, pfn);
+>-			/* Nuke the page table entry. */
+>+			if (!hwpoison)
+>+				nr_pages = folio_migrate_pte_batch(folio, &pvmw,
+>+								   pteval, subpage,
+>+								   anon_exclusive);
+>+
+>+			end_addr = address + nr_pages * PAGE_SIZE;
+>+			flush_cache_range(vma, address, end_addr);
+>+
+>+			/* Nuke the page table entries. */
+>+			pteval = get_and_clear_ptes(mm, address, pvmw.pte, nr_pages);
+> 			if (should_defer_flush(mm, flags)) {
+> 				/*
+> 				 * We clear the PTE but do not flush so potentially
+>@@ -2786,11 +2836,9 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+> 				 * transition on a cached TLB entry is written through
+> 				 * and traps if the PTE is unmapped.
+> 				 */
+>-				pteval = ptep_get_and_clear(mm, address, pvmw.pte);
+>-
+>-				set_tlb_ubc_flush_pending(mm, pteval, address, address + PAGE_SIZE);
+>+				set_tlb_ubc_flush_pending(mm, pteval, address, end_addr);
+> 			} else {
+>-				pteval = ptep_clear_flush(vma, address, pvmw.pte);
+>+				flush_tlb_range(vma, address, end_addr);
+> 			}
+> 			if (pte_dirty(pteval))
+> 				folio_mark_dirty(folio);
+>@@ -2809,7 +2857,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+> 		/* Update high watermark before we lower rss */
+> 		update_hiwater_rss(mm);
+> 
+>-		if (PageHWPoison(subpage)) {
+>+		if (hwpoison) {
+>+			VM_WARN_ON_ONCE(nr_pages != 1);
+> 			VM_WARN_ON_FOLIO(folio_is_device_private(folio), folio);
+> 
+> 			pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
+>@@ -2837,19 +2886,15 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+> 			 * so we'll not check/care.
+> 			 */
+> 			if (arch_unmap_one(mm, vma, address, pteval) < 0) {
+>-				set_pte_at(mm, address, pvmw.pte, pteval);
+>-				ret = false;
+>-				page_vma_mapped_walk_done(&pvmw);
+>-				break;
+>+				set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
+>+				goto walk_abort;
+> 			}
+> 
+>-			/* See folio_try_share_anon_rmap_pte(): clear PTE first. */
+>+			/* See folio_try_share_anon_rmap_ptes(): clear PTE first. */
+> 			if (anon_exclusive &&
+>-			    folio_try_share_anon_rmap_pte(folio, subpage)) {
+>-				set_pte_at(mm, address, pvmw.pte, pteval);
+>-				ret = false;
+>-				page_vma_mapped_walk_done(&pvmw);
+>-				break;
+>+			    folio_try_share_anon_rmap_ptes(folio, subpage, nr_pages)) {
+>+				set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
+>+				goto walk_abort;
+> 			}
+> 
+> 			/*
+>@@ -2859,19 +2904,31 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+> 			 */
+> 			swp_pte = make_migration_pte(subpage, pteval,
+> 						     writable, anon_exclusive);
+>-			set_pte_at(mm, address, pvmw.pte, swp_pte);
+> 			trace_set_migration_pte(address, pte_val(swp_pte),
+> 						folio_order(folio));
+>+
+>+			/* Set nr_pages migration entries, advancing the PFN. */
+>+			set_softleaf_ptes(mm, address, pvmw.pte, swp_pte, nr_pages);
+> 			/*
+> 			 * No need to invalidate here it will synchronize on
+> 			 * against the special swap migration pte.
+> 			 */
+> 		}
+> 
+>-		folio_remove_rmap_pte(folio, subpage, vma);
+>-		if (vma->vm_flags & VM_LOCKED)
+>-			mlock_drain_local();
+>-		folio_put(folio);
+>+		finish_folio_unmap(vma, folio, subpage, nr_pages);
+>+
+>+		/*
+>+		 * If we batched the entire folio, there is nothing left to
+>+		 * walk; stop right here.
+>+		 */
+>+		if (nr_pages == folio_nr_pages(folio))
+>+			goto walk_done;
+>+		continue;
+>+walk_abort:
+>+		ret = false;
+>+walk_done:
+>+		page_vma_mapped_walk_done(&pvmw);
+>+		break;
+> 	}
+> 
+> 	mmu_notifier_invalidate_range_end(&range);
+>
+>-- 
+>2.43.0
+>
+>
 
