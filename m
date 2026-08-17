@@ -4,88 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 055ADC5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 11:29:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5ED55C5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 11:32:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8F5C6B00B8; Mon, 17 Aug 2026 07:29:58 -0400 (EDT)
+	id 5E1C46B00D6; Mon, 17 Aug 2026 07:32:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E66EC6B00B9; Mon, 17 Aug 2026 07:29:58 -0400 (EDT)
+	id 591996B015E; Mon, 17 Aug 2026 07:32:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA35B6B00BA; Mon, 17 Aug 2026 07:29:58 -0400 (EDT)
+	id 4AB4D6B015F; Mon, 17 Aug 2026 07:32:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B73676B00B8
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 07:29:58 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4FD56A074D
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:29:58 +0000 (UTC)
-X-FDA: 85110542076.30.2AB75B1
+	by kanga.kvack.org (Postfix) with ESMTP id 22F746B00D6
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 07:32:17 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9FAB3A0767
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:32:16 +0000 (UTC)
+X-FDA: 85110547872.07.00379AC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B8B6A18000C
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:29:56 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ORlYguyd;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786966196;
-	b=6lE6k4y6jyQ31rS1IfqNyKtV1rV88J4htjfMxBA+4DZa0wfB5KzU/LYQyN/WFLGeDhAQlH
-	/U2xxGTdLdMLFTtMaf5yhB9UIrAvnCBKgi2VHyNBmox9F6bxmmGdvDB2QHc1khRQhoBune
-	VCjE25sbSWNZd/ciTKbiCr56rrd/G8k=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ORlYguyd;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0FE2F18000E
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 11:32:14 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z3uQIP1q;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786966196;
+	s=arc-20220608; t=1786966335;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wk6/msOLkPqq9kd6J2GOV67X9aJwFjjT0QFc8AOwr5I=;
-	b=UHNtYbIE04LRoleuaspZMmQ2NuOhFkyXKMEXBcHO4JBGkuluYrkmdKJSmkW0KwI+a02/AX
-	+s8mm+2hOZWjdWGoQJkZusmWT0jkcBX4rl0+jiYPRWw98HUp4vazwQ31FN6FHbgpyJdODw
-	P0GSHCamCNCYW4XWbMg06kCw38TYkog=
+	bh=DTlJJQcM8pU6vk1pmcyVf5zZFnfSwwWA2cJ9LuzJSqs=;
+	b=g0cIav8gAP2fUarR+Qsj3mtnN+Heej4Lo05+oE7nOcG8HSLz7e4LnN7JCfFbRE7BClDzMP
+	3lnnqCQQ4muBJycrVa848Wm8CF7nqSCt779J6b0CZeuulTo3jlkkGtTYB6L9F3xO9QfT6x
+	ZjCERetJAnqKC/FJETWepHlx6Mx6Dc0=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z3uQIP1q;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786966335;
+	b=JncK/EdMCz5ZgXM2UciVlN0IdpV88sjxivbvpd8DxmZ0J/MxwKbAEPJ0H+8S2SPpss6K3d
+	+beNG0SzXRZNr5YMxJjqxhPmqY/5FeRQKup50cnc8bYBkVKExc3LrEWzs14EgbA/oPWroF
+	/iRcUFU6uNRPZyIseqW5d17oCqs8Dow=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CC0F0601DE;
-	Mon, 17 Aug 2026 11:29:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FAE1F00A3A;
-	Mon, 17 Aug 2026 11:29:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 86063600AE;
+	Mon, 17 Aug 2026 11:32:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD9E1F000E9;
+	Mon, 17 Aug 2026 11:32:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786966195;
-	bh=Wk6/msOLkPqq9kd6J2GOV67X9aJwFjjT0QFc8AOwr5I=;
+	s=k20260515; t=1786966334;
+	bh=DTlJJQcM8pU6vk1pmcyVf5zZFnfSwwWA2cJ9LuzJSqs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ORlYguydCtGjM0ZGc6Q37mpzAF8U6ZpfF5KNK6tAUxrSoOhX10STX+1skMKZKDm5i
-	 AGfIQVHAYoUq8epEvTMX+9yWs+FxIvy06zE61Q2ZlgEsH7qhw7uiMY5uXGyETfEijJ
-	 q+yzVFoClbd+qo5oaaJmCQaFtpebVobItsUPgwf+3N2uqcvgQnklIRZaCYIZJykJri
-	 cH/4BKJUQELV/aMGQv/o8En9kGTirvTnV/5PLtmZJ5y3WHsrfeyckejvXaIIt92Bo7
-	 VtagPINO1BWPjZiN3XatD6BIh6SGwpnph88kJi+/xCohJC+5uSzVfItOfAm6hrI+Qo
-	 9GSDpHINrfJXA==
-Date: Mon, 17 Aug 2026 12:29:36 +0100
+	b=Z3uQIP1qLZMwu/5dFRFnYba/NlMZ4a6dgptRC0hlYZpRaQS5dCs7Cgp82k21wbr2Z
+	 CEsiJpWD53fPeFzvSF8Xzk0qgI46xkC3PwQQCt6VVwTKueGIYktkR0WtZDW1LRP48M
+	 1J6HJpN3kld5RYwmvd+2e/zcixbQyE2batnnwXy/GqxgH4fdQexVZZkgM37fuBhaOf
+	 arp2oRbzY5hw9PNFx0d8uB2EN4477ABeg+Ky5VM6BQJb8CRbuxXBhxLAHa5q4W74MW
+	 ccbbyagzfYc9MDUDg8t/Pe5ku4/wtJnv7Ps5Or2JPykvCwEL72uNs3ucmmHFyky4pP
+	 5wLXW9T97m2ug==
+Date: Mon, 17 Aug 2026 12:31:54 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Hongfu Li <hongfu.li@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	shuah@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Hongfu Li <lihongfu@kylinos.cn>, 
-	Muhammad Usama Anjum <usama.anjum@arm.com>
-Subject: Re: [PATCH] selftests/mm: Drop redundant open() in mprotect_tests()
-Message-ID: <aoLvynyoJ9RKRIMk@lucifer>
-References: <20260817080616.52946-1-hongfu.li@linux.dev>
+To: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: Re: [PATCH v4 2/7] mm/khugepaged: extract reference check into
+ folio_pte_referenced() helper
+Message-ID: <aoLw_x_iVTPgm6wy@lucifer>
+References: <20260811-khugepaged_pte_refactor-v4-0-ddac39d61c4a@linux.dev>
+ <20260811-khugepaged_pte_refactor-v4-2-ddac39d61c4a@linux.dev>
+ <a23dd413-1462-4b7a-9ce1-136e1d806ed8@kernel.org>
+ <b4b24576-507b-4617-b1b3-f03ef31934bd@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260817080616.52946-1-hongfu.li@linux.dev>
+In-Reply-To: <b4b24576-507b-4617-b1b3-f03ef31934bd@linux.dev>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0FE2F18000E
+X-Stat-Signature: pe94epk44miwubmn19i1d9h7boj98ecd
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B8B6A18000C
-X-Stat-Signature: 4p71tosy5hcjsoixjrubpax331b53go7
-X-HE-Tag: 1786966196-238048
-X-HE-Meta: U2FsdGVkX197LSjeULyNlnMmpowvBLbGVtqe+FHAuOYr9GlDZzsFW6jJ6/Zs/IhRuUuFF+4VkOVFti4F5s8/KeJRqnK+XMnZOr9XyQgJ8zvRSkt9z56UuhlenHjmVjhw64nxoAWflkYfI/CqgxNxFmlbln2LDfq0+BQ08Yeoy3v3Vb+nIY3dozavYwd8T2vvA0fEC52/4WWhsI7K5nuogjFxP9k0RvD2XJ0RxatqtlhxvyXWLSCIjIFOir/yBdHiREkS6Ka0SNM/pt7a0t5X8mOY5NXqsgD9W1xOPp1aziuWMxSFStsdwCRVD5FCTZPyA9zl3oUXTJi4kwgkKS9NPhqVnI7I1BDDkd9LafI1YgHg2ZPrWUV6D7pm0bxnsuFBFPD8SxrgWwH3cbhwjRsQfxQr/sitotsHL7CVHAVKS8NQQA0LgPir04js9be2KHt2wmw2t/MLVFkw3D+B62urCVX0gvCMhm+1M9wOoYb5VkNrYgA2bh0RLEro5c12brkm5vK27gQ4fskbSqQ/t+2kUu7qNzA6JykfW7x5KECp0aLuq1I48PYopuJ9fPCkgWgjnpmJfz1AaHa8ATOJtt6Vl3Om1rtwrA2xIG2O+lyolw/CXZaGIZGXAi/Vzo6AGjRi7OkffeaYRscK1Sw7OMR0D93bgBBEnf880OuFnDdIj97sbxVz6QWbpSSboqV7k+2OGRtCRqhvIcbdzRQ5bOhO/JTP051MlqiPV9MIhZxvJTjdNe65SGKyTQY6vXBRCmeK4uowUQyssWPkkFELTP6jH2Eppz0iwij/jJSeEd2A3BpQfRyd94bXCYQffdXwiAc6HuwghWc/22i0zMH3SPoTCza/EcGopQiCWCzFqukMQnQhJ6hGb54N02fL54zJPBimZdxbzfHoJdq7d61GFYx2Xn9xAh41yMHV+gK22w8CbC8ucUKQSh2dgir7ar5eBTVWQyTRs3ulJGppT2t/UNw
- 2Arzpx3c
- zpUmse9G3qacSz7L7dZlMPOGpU3VQqnUpJ2udVMHIRJ44vv4wCmQW4EsW21w9Rv8d2jpONfgLFVS+mZmJCUAu/U8U+LjryR+F66j1GQfz12HP5iHl9Trc3ETwSPEjONTXjWbtz1jiw8zw3cztcLixsCwX1Txe36Ou+LmzxhlPmU5z4rB2nkw/XSCuUk2SlaMF87AYAp5ePM56aV8VISEPn+Ha6S/DzMP7tFcOKsCDv0jRQ6mVgvF9dBkL1xg0Kc6r6DbdVhMmIHTMwbFOXETQ0hm5va9Yz8kXhxy5MykCcvcded8WDRLb4PaZ9dYjbXpwmkSr
+X-HE-Tag: 1786966334-99987
+X-HE-Meta: U2FsdGVkX19JwzTtoaxM5sNjTD3FyNGllOwWUF6pBeNhroAjU0b7+Wwx5x1/xU6hgbP9Z1ONSDzha3RngZqv+alPgfk1EHn8xAZ3VOmSsCyXZdtaAou2qc0BaiugJvEfOrgFeSmrNphQdxioKq29nR2ETDeNVjkQ7c6nik+ei13T/BqYa0X7AIm1IdhGhX0Q2vdoV2nYNXXmjZnTeU1QwgAdTk22WORDXSBqosXTE99lOwCeaBnTCHDzi4NVBaxUGLg23q38ylTpLzBzmpgzY3R1hvsmzbrWG4aBR1thddjFXJcdskP2aj0J60XX2EhKGjEJx091HfksIvpiwB9vCkpYAoOhhGDHNohe1bRKcydaScbZB1zDJo6YZGNCJyS2VUaFAlnFw2NN78P8McvfDAfsl5oBbGcgAD4tVNp5piJxFmOHCwfNds6Qs0hCYsyXnl8bJq4u0zFbi5489l62DQLzpHsKIZ9np7V4JClnmCkJRrdRWNhqMMl/f2jztV1X9XpiqGBINDwR6rfsJphZaxP8TKbciMcWCIU49bp9Pl93p7NMXav0CC+PuCDHcUFWvSXK1tee6S0HcsW6Uv8l8yW/w0cPXFQ0U6kUgn05N9hef4iACIncKp2SHpT6F1I4xbIxAH3hDQpsYwDdp3GQ4w89PfZCStn1m/yqIK9aVWmM6HAiS66NVf77rZxnLnqYDro+P5N9QYBLFtcD97Ii3/v2ONhwv/zdUzkth0pi31TRYsb/d5+FYO0pOKo0D/I/UF2E8kSUwzcy9U/3o1c7NnVoAmoRLfil2uYJwkq5/zg0uOqUBTFrhu0VvLkSAwj6JV4r2DHYN1agd9SQZjP8myUSgELAWPmFAkRHapiur7Y1WdWyeL2kVxL4Yq1JxHnlkb7yYi9ay1Bp1NSHTcXIauouZHWWykMXw3gjgccCsQP/LNwki0SroGYwbo/e/SWJJXVBZpW1FtbB8NRWVJG
+ XuCfibej
+ VN9aCsfJbfS62WCzVxenrG4z3wu8WkVlSSABLrb6fJyiQ8X9EhY1IwwXU5eq9Ag3JLbExNHzbW3FVeNAUfZIhXS9T8fI2Kme2L11k1zLzaQ+KtHLaSTrPJVcU+j2eHZ4T8RTeJkqPi26N+/3INhHPHinSZhck6gMVoI7ef7Bxvkn9LCqhfSoAWD9846ofUgte4W0QG1AfYcaT/3QEzogilv9fzox4BEL2bAa/mFnS+HDZ4kpnVv591hUW3fFzr9MhrUdbLx8QLyKp4syR/I89v0sEQaep3FZV2Pk/L5DJ705xbVgZBz/AeiNtFpkhTq/0ZFrq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,49 +101,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+cc Muhammad
-
-On Mon, Aug 17, 2026 at 04:06:16PM +0800, Hongfu Li wrote:
-> From: Hongfu Li <lihongfu@kylinos.cn>
+On Wed, Aug 12, 2026 at 06:19:01PM -0600, Nico Pache (Red Hat) wrote:
 >
-> Remove duplicate open() for local pagemap_fd in mprotect_tests() that
-> shadows the global pagemap_fd already opened in main(). The local fd
-> is never used in the function.
 >
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
-
-Hmm yeah it's not even closed either...
-
-I'm assuming this was an error in the origianl tests, Muhammad - I'm
-guessing some artifact of a previous approach or similar?
-
-Anyway, LGTM, so:
-
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-> ---
->  tools/testing/selftests/mm/pagemap_ioctl.c | 6 ------
->  1 file changed, 6 deletions(-)
+> On 8/11/26 9:47 AM, David Hildenbrand (Arm) wrote:
+> > On 8/11/26 14:48, Nico Pache (Red Hat) wrote:
+> >> This change deduplicates the "is this PTE/folio referenced enough to be
+> >> considered for a collapse" condition that was repeated in both
+> >> __collapse_huge_page_isolate() and collapse_scan_pmd(), extracting it into
+> >> a single inline helper function.
+> >>
+> >> Also move the comment and use it as the function header. While we are at
+> >> it, updated the comment to clarify that a young pte is a recently accessed
+> >> one.
+> >>
+> >> Acked-by: Usama Arif <usama.arif@linux.dev>
+> >> Signed-off-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
+> >> ---
+> >>  mm/khugepaged.c | 32 ++++++++++++++++++--------------
+> >>  1 file changed, 18 insertions(+), 14 deletions(-)
+> >>
+> >> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> >> index 1e26ea97381a..8babd4c97db6 100644
+> >> --- a/mm/khugepaged.c
+> >> +++ b/mm/khugepaged.c
+> >> @@ -672,6 +672,22 @@ static void release_pte_pages(pte_t *pte, pte_t *_pte,
+> >>  	}
+> >>  }
+> >>
+> >> +/*
+> >> + * folio_pte_referenced() - Check if a folio or its PTE mapping was recently used
+> >> + *
+> >> + * Return: true if recent access was observed through either the folio state
+> >> + * or the current PTE mapping.
+> >> + */
+> >
+> > No need for doc for such a trivial internal helper :)
 >
-> diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
-> index cfd1987339c1..eadc7159ca5b 100644
-> --- a/tools/testing/selftests/mm/pagemap_ioctl.c
-> +++ b/tools/testing/selftests/mm/pagemap_ioctl.c
-> @@ -1332,12 +1332,6 @@ int mprotect_tests(void)
->  	int ret;
->  	char *mem, *mem2;
->  	struct page_region vec;
-> -	int pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
-> -
-> -	if (pagemap_fd < 0) {
-> -		fprintf(stderr, "open() failed\n");
-> -		exit(1);
-> -	}
+> Ok sounds good I can send a fixup to remove it. Lorenzo has often asked for
+> these when I've introduced functions, so I've got in the habit of including them.
+
+Yeah here it's probably not so necessary as what it does is somewhat inferred,
+more so useful for shared functions and those which have more complicated/less
+clear logic :)
+
 >
->  	/* 1. Map two pages */
->  	mem = mmap(0, 2 * page_size, PROT_READ|PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
-> --
-> 2.54.0
+> >
+> >> +static inline bool folio_pte_referenced(struct folio *folio,
+> >> +		struct vm_area_struct *vma, unsigned long addr, pte_t pteval)
+> >> +{
+> >> +	/* The folio was referenced previously ... */
+> >> +	if (folio_test_young(folio) || folio_test_referenced(folio))
+> >> +		return true;
+> >> +	/* ... or the PTE mapping was recently used */
+> >> +	return pte_young(pteval) || mmu_notifier_test_young(vma->vm_mm, addr);
+> >> +}
+> >> +
+> >
+> > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>
+> Thank you :)
+>
+> >
 >
 
 --
