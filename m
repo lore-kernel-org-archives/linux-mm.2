@@ -4,87 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89AD6C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 22:15:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 657E9C5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 22:21:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D4E66B0882; Mon, 17 Aug 2026 18:15:55 -0400 (EDT)
+	id 5B3706B0118; Mon, 17 Aug 2026 18:20:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 385996B0884; Mon, 17 Aug 2026 18:15:55 -0400 (EDT)
+	id 58A6D6B011A; Mon, 17 Aug 2026 18:20:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29DEA6B0886; Mon, 17 Aug 2026 18:15:55 -0400 (EDT)
+	id 4A0CC6B011C; Mon, 17 Aug 2026 18:20:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 032746B0882
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:15:54 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 896AAA3583
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:15:54 +0000 (UTC)
-X-FDA: 85112169828.24.80743F7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C949140004
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:15:52 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sr3KJOYt;
-	spf=pass (imf12.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 1F9766B0118
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:20:59 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9FCF3140993
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:20:58 +0000 (UTC)
+X-FDA: 85112182596.25.2F9DA24
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	by imf26.hostedemail.com (Postfix) with ESMTP id EE807140003
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:20:56 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="lfK/VuVJ";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of 3R4mDagYKCMI0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com designates 209.85.210.197 as permitted sender) smtp.mailfrom=3R4mDagYKCMI0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787004953;
+	s=arc-20220608; t=1787005257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b8PHYNwnPwjD4P97/aLgG+IksMysTOlP/5dyI7THzj8=;
-	b=aPnL47GAFE/upjk7fFZuwb/KiNYg3eQ5faFEOy/S1GJZrqKixinxPAfh+7pk98YnKMtu8u
-	KCIszOoxOuwZzneEAn/yoB+PDN7nasAEYdGqHlejMnv9N+Y5gS1tc8oTCgiz5FjHj2RzcL
-	vWxZTSqwOxw+wiCLXKvzWB39NCMm7os=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787004953;
-	b=R6Di+jA30WqrpKsyEq73LfEZYlPBPj/knb/XSFUrjXX7M6WL7KjzsVM2mLWjJus29SPfDk
-	RDVoymiOMnF+4URGMT5TWviQYArfW2Jel6h7x4vebg4SJDCrnBXFX2YRufRdFOz3s5i3Tc
-	+re2xd/vXrvqCHno5E5a+FuUAJ4v8CQ=
+	bh=4QnMwcUHFkDNVo8ywONCXuoDqyMfQDcpXyu7v/SbVys=;
+	b=PEQ4KDUD+oJKk32ItoxH5fKNHOBd2Q5tu1N7PBWyBmuHhcZ0u4CNgzBRI6UerRWELh8BH1
+	UNuzL+F+Rra7WoJ1OB0gshdPjeXImIiw/OIS9e6TNC3VdA6D0zgybnGO/Orq7mmhHJ9Iwa
+	MClOHk51udB/17a5gwXvbW13ZAe+hSA=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sr3KJOYt;
-	spf=pass (imf12.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 09FA942B1B;
-	Mon, 17 Aug 2026 22:15:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE95A1F000E9;
-	Mon, 17 Aug 2026 22:15:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787004951;
-	bh=b8PHYNwnPwjD4P97/aLgG+IksMysTOlP/5dyI7THzj8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Sr3KJOYtA2N9Ih00IL2TrShVL95fPeug79m6BzsdBenS9EW8b/GYJt6IlS4XqDdU1
-	 VpEJ+V63urYa7sVFZRT7NlHGGmLMljPQsbSpJL75plPkdo3WzgVgRID3ZMV2yH2SCO
-	 vD6Y8Yz5PGQsPBixTO30keh07tcDVuMIhWRK+Q+Ot++nGdijdQ/R7aDviaaoQ6+M4P
-	 vf9BBfxXXnzvJnj28Jl+DwgU62BSFXRUaLAYkYMbpgYAuIVOcHjA3Cgg82jSLDXRsv
-	 8EKKsN6e11vKzhiWEKKcniQR37+0WysYviGimti8r37wehgI7p0GsUy4U1MDlYET62
-	 jKFzGvMmtazlA==
-Date: Tue, 18 Aug 2026 08:15:43 +1000
-From: Dave Chinner <dgc@kernel.org>
-To: Eric Sandeen <sandeen@sandeen.net>
-Cc: Eric Sandeen <sandeen@redhat.com>, linux-xfs@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: xfs: properly account xfs_buf items as reclaimable
-Message-ID: <aoOID47x9csJo_W9@dread>
-References: <20260813204929.2253988-1-sandeen@redhat.com>
- <an7D_9YRVDG-0Qjq@dread>
- <11c14c65-8609-4482-b3d1-23d4d36afd66@sandeen.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <11c14c65-8609-4482-b3d1-23d4d36afd66@sandeen.net>
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="lfK/VuVJ";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of 3R4mDagYKCMI0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com designates 209.85.210.197 as permitted sender) smtp.mailfrom=3R4mDagYKCMI0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787005257;
+	b=1J0PorUOPc2BJ7kqA2JKyfDQFCbD4ESCKDPr+0faxZleXXRg5cee6pjQPd/EiMzq6DnbUX
+	EY+J1l9hHA4kcSXuwYxEsn6iq73dcZQaaefMbh0gmKvI0GDcN0UrsucCWRHZ0YwYJ99OVr
+	g4T+1/m3qJ+sd+WJbK4wOMu7+JDojVw=
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8487eb67173so6734866b3a.2
+        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 15:20:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787005256; x=1787610056; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4QnMwcUHFkDNVo8ywONCXuoDqyMfQDcpXyu7v/SbVys=;
+        b=lfK/VuVJEAASl1rOvZwVt7eMkYgxeOjtoH9+nAkBuSGmPy7SsH9Rgo5Z5dLSDJljJw
+         buLzkII/qo1zHgW1QTbQEkHA03CmuUqFCPIF06qn+g1/ukys9eyKId3/qn7pzYhFk4SN
+         oIUEvHuQbvuqNwp0ktS5yInxEzlRLWZADGnA9uFlrvCWwCnXYw+jnRL/u5/VVw0ee/KX
+         QZIXWQMmIRPTUfE2fagDOhJgg88Z24d6QFwY7klWwU5LMtQyyTmZHFdMKo24SSywS5tD
+         Dmdlw+CmHfrI880hYJipOvJNHUmPzbv+zc6JPuJAdJdIUTitCgYQEEM306dxmKtbNe0y
+         CBnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787005256; x=1787610056;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4QnMwcUHFkDNVo8ywONCXuoDqyMfQDcpXyu7v/SbVys=;
+        b=ZXAgSJ/mDnMLJjwWcjrEiyCNxD6EpLN5S0ybOS6/fMcnld0+gevCiHTyb+APIl7chL
+         e4p/VccGcNmTt4lVq1oGpPlNfBZ2WGQT/A9XYpxIyjgbo9X9eGZ7PtzWBX8akErf6eVP
+         YEq/H1c5Nig4VETD50LiXZgrcSLUNAcpPul1BmAL67PR0CvFhXwLD6CGkLj4Y1+egnzz
+         JzvNj9air+dCsA6NaFa5+6bdWDYOMsCN5kq/pmpRdQXPZTnIyCNzyv7E+3d6+M2glKfA
+         IaoFxUtUd02CXNcVMsgOX88HBd891HHkLTKkrWlghcOrB/OYcVNxw0AmFs+mLGqui50i
+         wOZg==
+X-Forwarded-Encrypted: i=1; AHgh+Rp8s4vUfA0KtX6oHK+SZVQ5qa6qZ2VI7KB1kMX2g7Cxe2RrEArOQUeHBSo7d5bV/xsxoHHRWsK37w==@kvack.org
+X-Gm-Message-State: AOJu0Yw6k+edorqGydsl5lcx3IDs7KQ9/C5EV661Ue+nNhavPD7iEpGf
+	PBNsCDWvJv3/msqb7jt4W7dMuU9njaielXqag1W5w72ITvOAExT7d7JfStQ9QQYlOA0bqYx3Ei7
+	ViXVyLw==
+X-Received: from pfbfq10.prod.google.com ([2002:a05:6a00:60ca:b0:84a:3bc9:3bcd])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1149:b0:847:7ffd:ce35
+ with SMTP id d2e1a72fcca58-851b87eaa83mr3450412b3a.8.1787005255291; Mon, 17
+ Aug 2026 15:20:55 -0700 (PDT)
+Date: Mon, 17 Aug 2026 15:20:54 -0700
+In-Reply-To: <CAEvNRgH_=8YqKHb_OJfT583ZJ346cceRimd9YJ762Vv08uJGHQ@mail.gmail.com>
+Mime-Version: 1.0
+References: <CAEvNRgFWcndQKJE_q+ZATFZEMYd=6uRLygozLvg7L77bPX0cEQ@mail.gmail.com>
+ <anqqKH6kuwpvuwp9@yzhao56-desk.sh.intel.com> <CAEvNRgGWDY_fxbyBM-5sMdYMevMe0HzVP9kbC1cCGLE_dV=_Gw@mail.gmail.com>
+ <a71d4fccdffd1f6a12332ddd18fa812542ea2118.camel@intel.com>
+ <CAEvNRgHxda6XK_XqWaqqVnA7oW=Fhp_C5gF4vNcL+-HfwfXMqQ@mail.gmail.com>
+ <0c80b9b0e13e3ab2cbe4f9eaf4a02ebba25a7001.camel@intel.com>
+ <an5RJYTwlYeym--O@google.com> <aoKnmW9St5zCoTD3@yzhao56-desk.sh.intel.com>
+ <aoNrFX9yLfsM7KQI@google.com> <CAEvNRgH_=8YqKHb_OJfT583ZJ346cceRimd9YJ762Vv08uJGHQ@mail.gmail.com>
+Message-ID: <aoOJRk5SXBzzT24K@google.com>
+Subject: Re: [PATCH v10 11/41] KVM: guest_memfd: Ensure pages are not in use
+ before conversion
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Yan Zhao <yan.y.zhao@intel.com>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
+	"david@kernel.org" <david@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"steven.price@arm.com" <steven.price@arm.com>, "peterx@redhat.com" <peterx@redhat.com>, 
+	"forkloop@google.com" <forkloop@google.com>, "tabba@google.com" <tabba@google.com>, 
+	"linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	Vishal Annapurve <vannapurve@google.com>, "willy@infradead.org" <willy@infradead.org>, 
+	"tglx@kernel.org" <tglx@kernel.org>, "wyihan@google.com" <wyihan@google.com>, 
+	"pratyush@kernel.org" <pratyush@kernel.org>, "aik@amd.com" <aik@amd.com>, 
+	"jmattson@google.com" <jmattson@google.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "rientjes@google.com" <rientjes@google.com>, 
+	"andrew.jones@linux.dev" <andrew.jones@linux.dev>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "chrisl@kernel.org" <chrisl@kernel.org>, 
+	"shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
+	"mathieu.desnoyers@efficios.com" <mathieu.desnoyers@efficios.com>, "oupton@kernel.org" <oupton@kernel.org>, 
+	"mhiramat@kernel.org" <mhiramat@kernel.org>, "baohua@kernel.org" <baohua@kernel.org>, 
+	"tarunsahu@google.com" <tarunsahu@google.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
+	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jthoughton@google.com" <jthoughton@google.com>, 
+	"yuanchu@google.com" <yuanchu@google.com>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"shikemeng@huaweicloud.com" <shikemeng@huaweicloud.com>, "nphamcs@gmail.com" <nphamcs@gmail.com>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "shivankg@amd.com" <shivankg@amd.com>, 
+	"shuah@kernel.org" <shuah@kernel.org>, "youngjun.park@lge.com" <youngjun.park@lge.com>, 
+	"kasong@tencent.com" <kasong@tencent.com>, "pankaj.gupta@amd.com" <pankaj.gupta@amd.com>, 
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
+	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"vbabka@kernel.org" <vbabka@kernel.org>, "weixugc@google.com" <weixugc@google.com>, 
+	"michael.roth@amd.com" <michael.roth@amd.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "qperret@google.com" <qperret@google.com>, 
+	"brauner@kernel.org" <brauner@kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
+	"baoquan.he@linux.dev" <baoquan.he@linux.dev>, "corbet@lwn.net" <corbet@lwn.net>, 
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "liam@infradead.org" <liam@infradead.org>, 
+	"axelrasmussen@google.com" <axelrasmussen@google.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"qi.zheng@linux.dev" <qi.zheng@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User: 
-X-Stat-Signature: 9yyjqpdugjb9joi3b6npf11h5b3ruwpj
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C949140004
-X-HE-Tag: 1787004952-547361
-X-HE-Meta: U2FsdGVkX19we5qjQJuFWVBZFbAXGDF5gDsjqowYimNcRndQ90K/SBYOPfis1KIkajB/wRB1yPf9yA9YRwaK97CgjuaQk/KrjZNtPlMVMaHjtLDEjExc7csREBzOni64b+e83Ib5zkY7P+I8OkinUebopded5BkiqsGCFxj4QxrFyhqiJdSznsMy1Ad0PahV5+QWlMtD1v2yCaob9pw/Q6ao3ufn/DEkITp7qq7F84MZfiAz5LjHBHn2dO+1WCFB+jZ0Jojw9aWfmNnRej4POQrDDdBS1unyFBb5EgRAx88fGFjoUtIrXjm3eOA10tWGB0hlcYHKJmNm365g5c/l7v7cYbmrCVLTpWEYEwYCRwWtp6tH9jj0MMvBUQvQR8MjJcwRmFN1bxzPNdLAhu5ktOHNKuxmOuMxtuf9KHPbAC0WbydKZAt5f1Z5If5W7cnkiCNP0poqyTT3vidG/fnN9deDhVquXES/4ySDdS74x50Cru97ArlopNnH5xXPXnoXAGf7F3QaYFtGHRgsYpq626fiyRvm5rx+CI45bDm0W3QtM0Ygud3AtPXYbEZ3lmDQEIoUNxevg9ADLd9zfuXsj6oWm5/HEpG5OQx+e0g7habXaErFOTY8dHS2csdpLPVxxccqtt0kJ8yoxJgM+he8NMoyPgdk3HQj5feIKeGsE1peMTXLXHRXzkrSvHA/I1D8z9XMD9/G/z2ON4UWFBedGo02lOlh96yW3tjor024F8ap2LAsY8XFUDiTFUH+SrUP1wstoSDZrvRCsIXmQSsos3tcdOQoLW5CZ44tmQYrT20Pvj3t5GSUT0CzQww8cBA7JvbtWhKlkLBfdl9jB/e+dbahVAyJWv9kvE6rPtl3kFjELWy+xB0gAtW7iUutwTzcuQBb0ou0oxXwkYHAyKz1bX+ggAc+0JCkCWk2pBefILkQtojJcqfb6dLa3Odfqvf4/f3diTAyDotiZI1RKA+
- g4b6b0kq
- XvPbtnVqcXogzDt/P9qqsmvXDK+LjAuM6BFUWduPPwu4DqWWDwhP6YF99SzjRBdKWnFxmah4akOYaBNUVa204Tb+LcJY5YUfuqvDF6A3qYFYZUP4r4nSQV0Duhi65njYIgnr6lacMN9nrJZ2QXqPj9964wUP2ZzAhZYdC61cPohqRiOFPM2JUCabyef0+F0K4gFU//NxVSJYAF3TqSO8yu/qb7eYUJ6m+LxiIWpbXn2uZQmup4ddfzANxPQVvnAG+rHI6PsIak2mFhep0UqVNWA7dFJY/cVmjDC+R+JQc3WpLpm8Cx15yXw8lQZQOoR2SVdB7
+X-Stat-Signature: j1gqbf7y5wqnp1mx3ekoft3f18hjsaet
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: EE807140003
+X-HE-Tag: 1787005256-313609
+X-HE-Meta: U2FsdGVkX18GqHJF3/bXZeRlqPUVnWYOs9Msh2wC45W+vtW+peRQEIZOeWFtQ/R6lO0yEYOm31ucZpBB0CY+Jmyr+ef8Qda53NLi//eSssFm3WnObo/GAfM+/mM/9wlll3Npo+K6cbPOlcj75OtXINUALPQ4mqY4tVy3mbxbCNU+FRFUh7InPM20+i66qNEQxxg46q5z2p7ed/BuG6/80jUCIkkV0MPNEj3dhtfMQrydK21JcMN2fDDOpZzK+5nXSjW2G1ANz7TTzuQmmlTAxclKbE6NVVPKGBd6osuyW6Z/BrOnN6eXAChbgsaxOdf7u/iYE6B1o4DYQqQTCLCDOPaR669SPb3AAZOJ+aZ0HqVW1IpkAgjnWSizrgLkFZdaqsj3nAxlTvZnJsuCWzOmwi5Ltb28uRStjTh0biz9etb8tUltGAsNlPebcZ4HdxZ18A8wYYT1SvE/8l+fG5LudD6rz2jqB5ATcC+nqJ0q5hrOWE2SSZz4TZhZj5naEmrh2xNlSNj/HQuMOT82mJy3mQLSKMVcCgy0LAKg1Cq6nZHD6cOtlskMky1yd5rgq1x70lgSY+b+PHLOCQflGN6IrTvyW72QFsBor1LcmCUiLRlFEaZI5qyMm1/5wFLFi+497UotgZsOxzVMZZ298KPrVDicIIeQgwoTvl/Tr0Bo+leAxr5l3weK0qZOPJlWC3Bf3UZV39NXCcmB1xoFS5s5cbpexQ61iImQjQTTMBa0eVpIxn/OIr6pq14qGSW113lpQeheiyhu8ztoFSSjFzs1kc4MoT0rdflpZT+Ffkkp8dtb7DIh/hypea6mu7ZaaCYv1RZJ+dYuTmT91LueNFMSiOybg+aFXW88+BQ1XqDR8fu0ITD9kwc3zi4yZc+x+7Ih/ehx4sg5YHzJ6Q47692j3jEocqKDxMmcaxnb0zfDaHMJTHnxSx+JSPcVYlNI+TNVmRVSgPlij8Z0UEkdYPw
+ 9z1Urtgx
+ zojJJDCXd5LPZZ/1/Bua1ooJLFQcWfdDyLEgBucyj/U6crzyWQ7OlU3whZY4edyMzegR5tui0lIHZTEMEH3DOM7bLqt+j6dyU7M9iMhSug0Up9pueBN8GBPdHnX2A3qF5aFpUFjFWwaOk5G6sJ2EUw2mTvnLH2RYJcBAqbFacCVUlpHBueg3QXu4aR+weJsqtjejFQO5HQ1nfWAa1GRe0IaIZS1uCZ8cWOFR1+sCrbEw249C5562eYG74dquM8rV5CAX3kbOfeJPvkUs2QhbtQrPEu67X14nWDY5zUmshRNndlhdXRHWXr91rPuVXtIlFf7H0XKy03JG3wMZ1TwudWja+49Yrvl2SxFnhdl6FJHpkficzx3USQTDAbhkNWb9gJ++F6tNksuG+/AiPSLLtZSgAP9flfzWmYQvwtycu1A7JEt4ambuc2jo2ZAKDQoUaCf9SNQKQk0N+zb2oPY1Y7YoyiV4/ordFJPQleJ6HxTTUxBD4RQ+oOZ6JlGSBlZc3jhAPZb/6PWsn2j5bnGxCvdYeh8KYNBIzMPoe5/i1zrQqwva5EC84GB55nGDNTzqdMVQDO8ywF/lDJ1U9oNmt2pPHoG0XN638x1Lps0tOKIjWtrTun99wom/aOlslVwJIv7ls+vX2mHTdk63Zf58uhsGHxPYVpPDo20yealw2rXJTPCHaQFhk954BB1s3F+m2lzZZCQpwIBRIzzk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,97 +149,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 14, 2026 at 11:07:45AM -0500, Eric Sandeen wrote:
-> On 8/14/26 2:30 AM, Dave Chinner wrote:
-> > On Thu, Aug 13, 2026 at 03:40:51PM -0500, Eric Sandeen wrote:
-> > We don't use the size of that memory for reclaim
-> > purposes, hence we haven't ever tracked it. It is, however, fed back
-> > into shrinker based memory reclaim via mm_account_reclaimed_pages()
-> > in xfs_buf_free() and hence memory reclaim correctly tracks how much
-> > memory was released by the xfs_buf shrinker scan, even if the user
-> > visible stats don't show it.
+On Mon, Aug 17, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> > On Mon, Aug 17, 2026, Yan Zhao wrote:
+> >> > converting a page and another faulting in the same page.  An NMI, SMI, or IRQ at
+> >> > just the right/wrong time, especially on a preemptible kernel, could lead to the
+> >> > same test failures, even if KVM drops the refcount "immediately".
+> >> Could you elaborate on how an NMI, SMI, or IRQ at just the right/wrong time
+> >> could lead to the same test failures?
+> >
+> > Ah, sorry, my bad.  I was speed reading and missed that the key to your suggested
+> > "*page = NULL" change was that the reference was put _before_
+> > filemap_invalidate_unlock_shared(), i.e. before dropping
+> > the invalidate lock and thus before __kvm_gmem_set_attributes() will walk the
+> > folios to look for outstanding references.  I was thinking that putting the
+> > reference right away was just shrinking the timing window, but putting the
+> > reference while still holding the invalidate lock closes the window entirely.
+> >
+> > So, I take back what I said about this not being ABI, and about this not blocking
+> > in-place conversion.  It most definitely affects ABI, and so needs to be addressed
+> > before merging in-place conversion.
 > 
-> I guess that's the crux of the question: should those stats show it?
+> I thought back then when David suggested that conversion can return
+> -EAGAIN, one of the core ABI benefits is that this leaves the door open
+> for things to gradually improve. If we can improve stuff within the
+> kernel, then the the kernel would just return fewer errors. This retains
+> backward compatibility, since extra userspace code that handles errors
+> can continue to exist, it just won't be used.
 
-Filesystem metadata is often cached on the block device address
-space (e.g. anything that uses sb_getblk() like extN and various
-other filesystems do) and that shows up as "Buffers" in meminfo.
-i.e. cached file data shows up a page cache (i.e. NR_FILE...),
-cached metadata shows up as "buffers". 
+Ya, that's definitely one of my hesitations to trying to guarantee success in
+the kernel.
 
-The XFS buffer cache is caching metadata buffers, but it's not in
-the block dev address space like bufferhead based filesystems do so
-the nr_blockdev_pages() does not automatically account for it.
-Unfortunately, this isn't accounted by a vmstat counter, but by
-iterating the list of block device inodes and counting the number of
-pages attached to each bdev mapping....
-
-> >> I was not sure how to handle xfs_buf_alloc_vmalloc but I think
-> >> that's a relatively rare path, and the above two will capture
-> >> the majority of xfs_buf allocations.
-> > 
-> > I think both folio and vmalloc should be accounted in the same
-> > manner - as a number of pages based on the size of the buffer (i.e.
-> > same as mm_account_reclaimed_pages() does already). It doesn't
-> > matter if it is vmalloc or a high order folio, the amount of memory
-> > is the same.  If it gets accounted to the node of the first folio,
-> > then it will at least always be consistently accounted, if not
-> > always 100% accurate for the vmalloc case.
+> > The only question is if we want to commit to
+> > guaranteeing that conversion will succeed in this scenario, or if we want to take
+> > the easy way out and formally document that conversion can fail with EAGAIN at any
+> > time, even if userspace has never mmap()'d the memory in question.
 > 
-> OK fair.
+> I don't really think there's a need to commit to this, IIUC in principle,
+> ignoring that on many paths of those guest_memfd may be excluded, refcounts
+> can be taken even if there are no host userspace mappings. For one, memory
+> failure handling doesn't care if there are mappings, the refcount will be
+> taken for a short while and could cause this conversion failure.
 > 
-> >> I've cc:d linux-mm just because i think this is the first
-> >> user of NR_KERNEL_MISC_RECLAIMABLE in the tree?
-> > 
-> > These are fs buffers - shouldn't they be accounted as something that
-> > reports as "cached" or "buffers" in /proc/meminfo? I mean, if you're
-> > going to do this to make meminfo/vmstat report the memory usage,
-> > shouldn't we make the effort to classify the memory usage correctly
-> > for the user?
+> Here's the relevant part of the documentation added for conversions:
 > 
-> I'm not sure. NR_KERNEL_MISC_RECLAIMABLE says it's for
-> "reclaimable non-slab kernel pages" and that seemed appropriate for
-> this case; they really aren't the same as page cache?
+>   If this ioctl returns -EAGAIN, the offset of the page with unexpected
+>   refcounts will be returned in `error_offset`. This can occur if there
+>   are transient refcounts on the pages, taken by other parts of the
+>   kernel.
+> 
+>   Userspace is expected to figure out how to remove all known refcounts
+>   on the shared pages, such as refcounts taken by get_user_pages(), and
+>   try the ioctl again. A possible source of these long term refcounts is
+>   if the guest_memfd memory was pinned in IOMMU page tables.
+>
+> > I'm leaning pretty strongly towards guaranteeing conversion will succeed.  We'll
+> > still need to document the EAGAIN behavior, but IMO there's a massive difference
+> > between conversion failing if there's a lingering reference acquired via a VMA,
+> > conversion failing because a vCPU page fault raced with conversion.  E.g. being
+> > able to assert success in a very curated test, as the stress test presumably does,
+> > would be extremely valuable for helping detect/prevent edge case bugs.
+> >
+> > The argument against guaranteeing success is that we might make our future lives
+> > harder, e.g. if it turns out there are legitimate, hard-to-solve edge cases.  But
+> > I'm ok with that risk, as it seems highly unlikely to be problematic in practice,
+> > and there is real benefit to guaranteeing success.
+> >
+> 
+> Is there really a need to commit to anything? This is already documented
+> as "can fail", and it's orthogonal to whether the memory was mapped.
 
-Bufferram is "double accounted" in meminfo output. The folios are
-accounted to the bdev page cache, but also to the "buffer" output.
-the meinfo code then calculates "cached" as (page cache - swap -
-buffers) - i.e. cached file data - so that buffers + cache totals
-all the cached filesystem data + metadata....
+Yes, but the above docs also say "it's userspace's problem".  Which I generally
+agree with, but that's not a very good story when it comes to KVM itself taking
+transient references, because then the answer becomes "Stop running all vCPUs",
+which I don't like.  E.g. in a very pathological scenario, it's theoretically
+possible that conversion may never succeed.  That's what gives me pause.
 
-Yes, XFS buffers don't fit into that, either, because we don't use
-the page cache for the bdev buffer cache, but my point is that most
-filesystems report cached metadata as "buffers" and users have long
-expected "cached" to be the total of cached file data, and buffers
-to be the total of cached metadata...
+> The transient nature of refcounts on pages in general makes it hard to
+> guarantee, and this stretches outside of KVM. I mean, anything could take a
+> refcount on a page in future and we can't be auditing the entire kernel for
+> no refcounts on guest_memfd pages ever.
 
-IMO, if we are going to report how much metadata we are caching in
-the XFS buffer cache, we should try to make it match all the other
-filesystem accounting...
+True, but at the same time, if there were never any VMAs then I would expect there
+to never be transient refcounts, modulo memory failure.  And it'd be easy enough
+to document the memory failure angle.
 
-> The commit (b29940c1abd7) that created NR_KERNEL_MISC_RECLAIMABLE
-> renamed it from NR_INDIRECTLY_RECLAIMABLE_BYTES, and said it was
-> "still useful for accounting direct page allocations (i.e. not slab)
-> with a shrinker" so it seemed appropriate but clearly I'm a bit out
-> of my depth here.
+> >> > As for in-place conversion, this is not a blocker.
+> >> Sorry. I didn't intend to block in-place conversion.
+> >
+> > LOL, what we intend and what happens aren't always the same. :-)
+> 
+> I don't think we're ready to guarantee conversion success when guest_memfd
+> pages are not mapped to userspace 
 
-It would be appropriate if there wasn't already stats that are
-supposed to report cached filesystem metadata. I could use the
-example of shrinker reclaimed DRM memory pools as an example of a
-valid use of NR_KERNEL_MISC_RECLAIMABLE because there is no other
-equivalent functionality. However, a few months back they made the
-DRM accounting a first class citizen via commit 2232ba9c7931 (mm:
-add gpu active/reclaim per-node stat counters (v2)).
+Yeah, that was too strong of wording on my part.  The needle I was trying to
+thread was "conversion for this specific scenario, in a controlled environment,
+is guaranteed to succeed".
 
-And that's kinda my point: if we need to expose the memory usage to
-userspace, we should be presenting it the right way - consistent
-with other filesystems - rather doing that requires minimal code but
-requires all sorts of mental gymnastics for the user to determine
-that some of their weird "MISC" memory usage is actually XFS
-metadata.
+> without dragging this out way further.
+>
+> I'm all for KVM not taking any references on guest_memfd, but I think
+> eliminating KVM itself as a source of transient refcounts can be a
+> series in itself.
 
--Dave.
--- 
-Dave Chinner
-dgc@kernel.org
+Yes, it would definitely be a separate mini-series.
+
+> KVM not taking any references on guest_memfd memory is definitely welcome,
+> it'll pave the way to using non-struct-page memory in guest_memfd.
+> 
+> It'll come, can we not block on this please?
+
+FWIW, it doesn't have to block initial merge, just the final release.  E.g. even
+if we decide that this is a blocking issue, we can still land the in-place
+conversion series, so long as it's not exposed to userspace in the final release
+of 7.4 (or whatever kernel) without fixing the transient refcount issue.
+
+> If we find a way to strengthen the guarantee, wouldn't that be an iterative
+> improvement?
+
+Yes, but we do need to draw a line in the sand.  E.g. if conversion failed 99%
+of the time because KVM was taking spurious references, I think we'd all agree
+that needs to be fixed before the code is released.
+
+I'm still leaning towards saying this one has to be fixed, because it would give
+us a solid baseline from which to start, and a way to enforce it going forward
+(Yan's stress test).  I could certinaly be convinced otherwise, though dropping
+the transiest reference seems straightforward enough that hopefully it's a moot
+point, i.e. we land both in 7.4 and don't actually have to make a decision.
 
