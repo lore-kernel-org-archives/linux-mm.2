@@ -4,137 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54322C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 00:49:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6FA9C5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 01:15:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 592BD6B08D0; Sun, 16 Aug 2026 20:49:31 -0400 (EDT)
+	id 2DE2B6B037B; Sun, 16 Aug 2026 21:15:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 543D86B08D1; Sun, 16 Aug 2026 20:49:31 -0400 (EDT)
+	id 28EF26B037C; Sun, 16 Aug 2026 21:15:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4324D6B08D2; Sun, 16 Aug 2026 20:49:31 -0400 (EDT)
+	id 0484C6B08D3; Sun, 16 Aug 2026 21:15:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 12E4B6B08D0
-	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 20:49:31 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7DCC81A03C6
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 00:49:30 +0000 (UTC)
-X-FDA: 85108928100.09.C128AC5
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B2219140009
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 00:49:28 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B509D6B037B
+	for <linux-mm@kvack.org>; Sun, 16 Aug 2026 21:15:30 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 27BC6A3078
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 01:15:30 +0000 (UTC)
+X-FDA: 85108993620.13.670AAF1
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 4BE52140003
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 01:15:28 +0000 (UTC)
 Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=MRyNp3B8;
-	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=te190mJU;
+	spf=pass (imf26.hostedemail.com: domain of stern@g.harvard.edu designates 209.85.160.174 as permitted sender) smtp.mailfrom=stern@g.harvard.edu;
+	dmarc=pass (policy=none) header.from=rowland.harvard.edu
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786927768;
-	b=Tbi0Gmzg6TiJmNstBweF0KjTdOJc/jiARMyCJFYGQD46r80p10Rjvb/yUKWtjJUUgEqv/0
-	VwJxeFlU3TwNDwX5/KAxzTTKmDqXUA8VtEAAcWxnGgSgcNpAz+r+TlPQ9+ZuuUGnNXPza5
-	W/D/ja+Nd35skNHdil63vIOF+ht17JE=
+	t=1786929328;
+	b=J2TH6OiRkwDLCkeq5RAAHAjJu3oqkcrP7BEywytO5iHy57iR/2F+OoLHy1YY7Dx9+PyxfV
+	DBWasFpMgfTFjsQEkfbk0r5nkxshNphxw+0HubEd9pgtdWtXF/4+WeofcETNX/+fooRB3u
+	uj5QwZGbdiOYYfGuhPYNmlhWe4AAnW0=
 ARC-Authentication-Results: i=1;
 	imf26.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=MRyNp3B8;
-	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=te190mJU;
+	spf=pass (imf26.hostedemail.com: domain of stern@g.harvard.edu designates 209.85.160.174 as permitted sender) smtp.mailfrom=stern@g.harvard.edu;
+	dmarc=pass (policy=none) header.from=rowland.harvard.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786927768;
+	s=arc-20220608; t=1786929328;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FcQdr0dRPL3xWk5ZJ+WEqnlvhAK6C+Y9UAGkoGf2Ky8=;
-	b=8mW5nNR+Xnhe6EnQl9TlNC47ARPEvpzIhUIXXellpXgyJJkzruQkJBkTtBcxu9FCgQ8Uok
-	8dgF4ZqiL1Wt8ujNJkgT/ZKZhpErvbuIqej8b1VrGDuOy5eYm3swN3k5AAYXrn3EeYgQV+
-	c+wrLEXUZN2x/d53fzwkSwXwDTOLfQQ=
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-51c2a76536bso28094641cf.1
-        for <linux-mm@kvack.org>; Sun, 16 Aug 2026 17:49:28 -0700 (PDT)
+	bh=uTaJ6cDDsOKdUS9+/FHpIpAVWqmJlzOEFqIUeHlYwtQ=;
+	b=6CDsU5cbNTZrpkBBEWKzmA09/2g8MpP4mIccIvIyrV0/vjB+kR26blhH8FujJtKMIKb+Z7
+	RAFYxPOLQEEmDlArgpVVmNrc+Uqb1HUqaKwhsbhswseHLOrBZZQq+pQhckm1InxNzU8DCx
+	qvaAEe49R+RvR+jEJbr4QVTi1TzFxAg=
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-51c04bf4711so28972501cf.2
+        for <linux-mm@kvack.org>; Sun, 16 Aug 2026 18:15:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1786927768; x=1787532568; darn=kvack.org;
+        d=rowland.harvard.edu; s=google; t=1786929327; x=1787534127; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=FcQdr0dRPL3xWk5ZJ+WEqnlvhAK6C+Y9UAGkoGf2Ky8=;
-        b=MRyNp3B8FAr1OAoS+i4jBF6+HuQwPHDakMWnX2L0xpYuBJH+mYy7PkMYEB960QrmnZ
-         RrSEkftikcXAJDDh4brZRp0q2YdVki65i8e7ziGrxF5as+4Z39ybDzDatVc1iWJrzeB6
-         PyG5lWs76AAcMABVqMoatAKLJr2sG9wDosKUzSpbAHhb915N5G+6Bd2oD8d364k15xbc
-         koaV0qwDjpLYZ/9uWsm95eX7hHuJFZJ6h8XEfio7seDfALAydYB5AbLrObX0I+gizmqm
-         AmBUya34gaUPSupzHcSfW5bFrXArryHfxjL/dMNEYDm+vDAnzMSD4fm+XxA6jghAcRZd
-         /VKg==
+        bh=uTaJ6cDDsOKdUS9+/FHpIpAVWqmJlzOEFqIUeHlYwtQ=;
+        b=te190mJUXNJxSp+opBPng6EvE2Sm2mvtxxQcuiO01533BeLHNWGZU07z0UbnH0vEBZ
+         zKdMGAIJd8kno7fa9WIf0Y6M0gLx8SR2fUnWfttOJgocMBQrscX2yQxOqaVzEtQIMInD
+         v3mirjWDPuGFD+JlfFOOzq5tnIxMfokBMaf8A7Ot+o17zZvgLmJbacrxGw0sCn7o74s3
+         QzmYF9PBlqLnESp8VAOqihvKE9dCS4ofvYs/pe7Zdpr8rtKT78kgagkkbW1HklIrwDsq
+         utlSx3Bp8gLsPAyeZQuu+HSSWh/eQdtn6m+ClYKAmFTI/jAWJ7InSOT21WDs8NLZ9Ajn
+         /FWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786927768; x=1787532568;
+        d=1e100.net; s=20251104; t=1786929327; x=1787534127;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FcQdr0dRPL3xWk5ZJ+WEqnlvhAK6C+Y9UAGkoGf2Ky8=;
-        b=q1DTvXdAfxOkysfIS8UnBK0c1s/7RqrgIZotJSsiQYf6R32nXIdHy+QNzeIMlTkUaQ
-         JUI81TU+L1hqCiRAO16Cd2S89l2tMyjtuPYBDAjKJ2GGnI7N7Z6/Ihcrz+RWg65yZh3Y
-         B+uujgsuu3rar8StifmHnFZW9pmgf90AuUticat4Zi6Ans9tPgxrk+U8AYYiQV9DCjtH
-         JKLUtYVMcEtTfT5dfyCfOrPg60GQIzQrI2pZM+cEclmABb3IvOMFEbWHLN+CLOhdO50c
-         RDHlFQmPIzdnWlEif9VaQzaubTjekfOB7jbKJRX2aCI5ZBgS/0H6Yi8wyXoSHaX078e3
-         ifwQ==
-X-Gm-Message-State: AOJu0YwbM08zKUHug46Y6ec423QVCq02YTAn5a/+haOg1UkVTsSARwaj
-	bDhmQFcQ+8ZF1+1gZY/eAPjnpCVLZEji/6DnGmh1X1yZvpHAhPwJLiW629r0DMz0L1s=
-X-Gm-Gg: AR+sD13JlT6q30SAlSBKYlvt+B1UHHQbhMzxb8yOhejXGlwBm0E23+27gPPWLw/xLXZ
-	HKVoz1jPDx6eHRRQpRpvTnUQRNJiCaTLDODrbZXCsqAcr/y96oi62JBZ3covis6R0yYwTjn0/CF
-	Jq40GC3ViAuLtBIYvVD4+7kRYLOxM4/qNv1r1V/voFIll72dNwv6jKUYyXyJEPBynC+CAngImnI
-	O0U8iLV9yb+TqbrurwejFYUsfy87vAvPo0lDm7gb3+lGQdqnoggwjJS2EfuUJlzEycZV8dI9InN
-	Ucp+hVzM6xb77+qUCedZNXnxNa/eNlAiMwd3sGuPjbbHmYSIhXNmGmfvyggh3YDXdgjy90xdgMG
-	zKR9oCFgcWE7no2cnes3iHo3G24XHbnz+qHybMd8nRYRm8GYGCCQLKb4P2rL6ITYT6Jf6f4ATn/
-	aoDVK/22iE8FXqokfncaYykEpxCmbciwUuvJw24rl5DzbTK0M2F2cJqHxkLhOZBGzh0yGWNunoP
-	2VJRRow1e6h9zcIdwXGqqcn/+ChgXQ9NptljSFh8VEB
-X-Received: by 2002:a05:622a:2b4b:b0:52d:a151:10f5 with SMTP id d75a77b69052e-52da15111admr97787241cf.22.1786927767788;
-        Sun, 16 Aug 2026 17:49:27 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52db62764f2sm1152051cf.30.2026.08.16.17.49.25
+        bh=uTaJ6cDDsOKdUS9+/FHpIpAVWqmJlzOEFqIUeHlYwtQ=;
+        b=UeOQNGgBTDU0Kjb5qhNXy/B384Xd6pvDhBw7B5LXaXUjy47qauWP1FKrOk5Q1kHG8m
+         jtUL+rmoQ3Y4aN1/PnaFl4RWkVadlwRssN0qrx5I0x2zIijBZcYNFEuXuMZuOTPq46mh
+         2BkKexHjm7dzNLG5RDIbsLa0V8Yentah+mohdRDL4u99sczOaP00TfkNWdHtHM+qsaUE
+         nM9GoD6YxUdbz4bmTJayeHY3qjtbi6TIblre2YUIINxqc1wrCtr8g5KeJq7RPPNEM+c8
+         92hbcaRwr8rrPy5S4L89nVRDF3mJCjNgeU65gUvXTFL5kCslLXPsfKKLWGF3Abk+CAom
+         94KA==
+X-Forwarded-Encrypted: i=1; AHgh+Rpzgir6xwDjI+BBUUzWxQqKuegyUfsnXIkhSf6qQKILo0JcRvBk8+3Ls1GxGiLxlkNhlsovrX3b7Q==@kvack.org
+X-Gm-Message-State: AOJu0YylgpWVbSxaR+ySyJ3w9uQMtR+vk9ZttfEMKmUYyhYaHByF9N86
+	d1cGHFrKkx0UQZBV+QDyWbocN8NsABcxaN7/qvWEsEN39kALZgVclO/bWT/baAKONQ==
+X-Gm-Gg: AR+sD10PoYbDZBI8WoUjD9N64NTxb21vZIU7Lj4Xi5g2nG5m6AIj+gy2JtjurFuiPad
+	dxvCCxXQaKJ2tMIlFfnppD6wOyYIE/7/P04HlmK2GUAh4jbMbQ+TokMDcYXYjD421cgOWppv4zO
+	dFW7ZZqK8qTrtGtl2cUmmUr92J66Zg59NwwpaO6RmKF5PxOdgtEpo8WhK6lSeJva92rBQPneW7R
+	IgNpzyK7/rMD9x16FOEUKvMzk1vJOBKM3LiwgVJM8sL/ytDiIKEdxocqT79KH06GpsIzt5qdQfu
+	6SS5SiQ+Se5Oq91fUlUD+Oe8XneASWf2dyaDQA7WjChvJz48shQZfKwDwLGtNiZO/mjme9pHQZq
+	qtDYcK0NOn+YaEeyoCHS735kXChpTRlY68kKzWoh//uKmDm9HMIuf6W8tyOcZhtN3FCWlMu5Ws5
+	a+vx3jyzM53ZW7PpFn2dyLCLlCMrYgFx85Po67Xchz5OsoHSO41uIMSWfnItxjaw==
+X-Received: by 2002:a05:622a:8f:b0:51c:f8f:13e with SMTP id d75a77b69052e-52d854ed352mr222577631cf.40.1786929327326;
+        Sun, 16 Aug 2026 18:15:27 -0700 (PDT)
+Received: from rowland.harvard.edu ([2601:19b:d01:d210::dfd8])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52db623aed9sm1662031cf.23.2026.08.16.18.15.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Aug 2026 17:49:27 -0700 (PDT)
-Date: Sun, 16 Aug 2026 20:49:24 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Qiqi Li <liqiqi23@huawei.com>
-Cc: linux-mm@kvack.org, Zhigang.Luo@amd.com, arun.george@samsung.com, 
-	balbirs@nvidia.com, brendan.jackman@linux.dev, yuzenghui@huawei.com, 
-	apopple@nvidia.com, alucerop@amd.com, matthew.brost@intel.com, 
-	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	corbet@lwn.net, skhan@linuxfoundation.org, gregkh@linuxfoundation.org, 
-	rafael@kernel.org, dakr@kernel.org, djbw@kernel.org, vishal.l.verma@intel.com, 
-	dave.jiang@intel.com, alison.schofield@intel.com, osandov@osandov.com, 
-	jannh@google.com, pfalcato@suse.de, jackmanb@google.com, hannes@cmpxchg.org, 
-	ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
-	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com, 
-	linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev, tj@kernel.org, 
-	mkoutny@suse.com, sj@kernel.org, jgg@ziepe.ca, jhubbard@nvidia.com, 
-	peterx@redhat.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, usama.arif@linux.dev, 
-	xu.xin16@zte.com.cn, chengming.zhou@linux.dev, roman.gushchin@linux.dev, 
-	muchun.song@linux.dev, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	driver-core@lists.linux.dev, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
-	linux-debuggers@vger.kernel.org, linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
-	cgroups@vger.kernel.org, damon@lists.linux.dev, linux-kselftest@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v5 25/36] mm/memory_hotplug: support N_MEMORY_PRIVATE
- node hotplug
-Message-ID: <aoJaaYp30LnKLj1w@gourry-fedora-PF4VCD3F>
-References: <20260720193431.3841992-1-gourry@gourry.net>
- <20260720193431.3841992-26-gourry@gourry.net>
- <6840c720-8cb7-46bb-a652-040c130a4427@huawei.com>
+        Sun, 16 Aug 2026 18:15:26 -0700 (PDT)
+Date: Sun, 16 Aug 2026 21:15:22 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	syzbot <syzbot+805630f1453e490427fa@syzkaller.appspotmail.com>,
+	apopple@nvidia.com, byungchul@sk.com, david@kernel.org,
+	gourry@gourry.net, joshua.hahnjy@gmail.com,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	matthew.brost@intel.com, rakie.kim@sk.com,
+	syzkaller-bugs@googlegroups.com, ying.huang@linux.alibaba.com,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org
+Subject: Re: [syzbot] [mm?] WARNING in ep_write_iter
+Message-ID: <9787b33b-b30e-4c5e-a0ee-7f14515c7166@rowland.harvard.edu>
+References: <6a820ebc.9ebadd4d.20b15e.001b.GAE@google.com>
+ <20260816135201.98590b17b526dda8c4ec9105@linux-foundation.org>
+ <DKQP5QC9XTDJ.3MI016NP0NPFY@nvidia.com>
+ <02c2e5c7-0d78-4763-90ff-75fa87105fcb@rowland.harvard.edu>
+ <DKQS9ADYVLN1.246LJPQ9QQYVP@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6840c720-8cb7-46bb-a652-040c130a4427@huawei.com>
+In-Reply-To: <DKQS9ADYVLN1.246LJPQ9QQYVP@nvidia.com>
+X-Rspamd-Queue-Id: 4BE52140003
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B2219140009
-X-Stat-Signature: rnhzstcb7rpyxiwkt3apineifs9pc5bz
-X-HE-Tag: 1786927768-453722
-X-HE-Meta: U2FsdGVkX1/gaLNEc5A97eTMN47g2QIzvzg1BThWxWRAgrdaO1q39+CPY9YapKsHi0cBoNGBdT3xYBxnjOGIdAy8PowS2+1yjrsZoXKyHlOXQfyT9pkUsDCEBOK8dNiy/ZzENJR4PMrBxxOTPSB8HMPLd2+hTJLA2LUytwpjoES1C8Btg6kdRHJkLhlafRXMBLC7YwGYeolpgaKHfNGTUKuf7+lAV9IP6cB+QR+zj0K66A3GWiKj/TCqGnoQMkFScPlTj1kcWLa37nXQg5dpLpFmYPllaoJcF8qBo+K+UmIGmsWN23tgyHnGrGjqApTv3u9SmptHeve6XqFSHrW7LJV7zPqifiuZOiC4o94zApujn2TtiLzXHlEqMRy+qpjhWyKQBS/wY1PB9Nc4YfYZqxCVlUsS5rgsMQQ1X0dmMQ3YhY0PT+JT9cLnXoMJ2h5ZaZsYkbU7rA1BpgJa6gcLLdIm7yG57BQAI1yM8bSK1tVksb+q0wabZJTq6UpCptEHFxwlABSi82whJi48hru5uq9vAzfB1gxkvVYphdOHUtaHl4dla/HgxHhL+xU7nAuqXRqhWw2eV99hcwpP7Ld7dNK/NcraHP3wBKtLmylqr71iHNLIiJqFHGE8FvoVlImrXo7W4pTTZxAir5kB9ZylIENI7FIb3o7NU9NxQFRVC8AyjMYJk5jObHzEm8ddBupcCcGKGgBL7euXWdATO/uddM+NW4uAI68+oDvgBzYf0vE3l7aZAAXO8pWDBHalJT2qb7DmFPshidARCyc6YBHr9kF9AsI+CMn/tQ+IrvnSNAVHbdZzzlHPUQZiyRkUMB7lhk8jTppPkp/0aAN5krziesh/PxEiCtXyVxb57dpzoyiH9XLPUdtfrSisDQMOHzNkDErChjmXXjzACiZ1P2ZGp0zMUW4su3oEzJ0jJHoMADMQ1gzh8FuLxCNlX7Cf/Kxg6K6kzQj33/JTyPxVG5U
- Hai9DNH+
- YR2HDp1FQ/OpVGfbMXj2P0pott16cbROuIM8vMkpABqGMBMY68nLx1I8SgRTpDZE4VeUunbt3sI+/zjh9sJbn3Thzm9CfB3EJuu8kB8nY5pNJqqPlTj8Zq6C7P5uhwfl3ifVMWE6cwruGmLkzbW6t9STlPfRHenFGsiilDLu9jPUy5iy4o3WRqfbWWdHYhoY6EWRVmIiSHsRp+XKAZuI2KSehykkX+tSxAnuWjlObuzeQEjsvEnoLzESqQXQgDjXi8HQE1eTRDngdgevyDTo4NrEOrVtw/yoNEDb6UMD0gzxHt2quBzH4pQoL8VtQToibUx97aPmaEn+u441sO9Y5tClA+EQ0Pr7RshtZnKPvso0THhMhY3tawjhE7xRiE5rw+kDLpc8fDasKxmW4EP1F3eLqfw2dW4dZFRc0Xe8+yaNVQTam/l3c6/TuCEcIDgKJeoo/TkPD89dQHi8e2PZRVf3kdItjl8ztHu9gSPaaG5AiKIyFlfNb6lawP1XyhYI3KTJ7CfeqIQ8TVs7Frpq/HoarAg==
+X-Stat-Signature: 7sjxbkoiwfjrrb9q79uu691nzfi3ox4q
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786929328-395368
+X-HE-Meta: U2FsdGVkX1/yX80arwoXOZMBZCPSmf9tN/rgnkowIjnxQm6NX/9DBSdntgg0WGGhCzawLb6No7uRbHFp+crOWZshm35j3X1g4BMU7KGbkBB8WGrbNofDddukqIDNFEnoCrqK9XeziYdhqdSHVWS2Q7dGsRJPORQNDSauysMt+qZpI3xHmBLU2yBo7B8+04AsZpX7IVEA1Lb4xPUyXn8xTfCA7WoK1EO1yP/PL9XmVtJBiwmK0yqP4/nxpKRaWy4UAV+BMltpwMcK3yoNpFK1GqiLx0cbpSA5w+IQihgXaIKlEr7bykiyMu3cXZm2pRvYwbEPGpkpDlTiHBkFRNtslcERwqrnpRf+TtQLFcycufXJN87C4TtWTPOxHmvHFhqAa1hbHJ61KIIhP6fksDwAAocinJU+qCS4CxYaMPAJdFmHFxhSab5uZvx+m3ESokPKeQJn9mmsIuPsDEUzybpd31j+ZPRbiXhxVTAHKV91eBCz0SwRYOVDQE/iix9VxzupDP3k4zvrYdwRLUdV622zvVJKm1w3cHmlQWGtJUFihcEkOuEb9q6tPPWc2fK8tpvSyAuCOzaTWs6z3CWrBkerUsjtaEzxaG3+WkEFQxIxPLE6AZIZNDTu2sw0QfaB6xmFbtTVwQFtsx3FqAPGX4kdB6k5oonQD48+bIBY0GK8ciL4kEDCu97Dm/YYAkVbWWjq57R1kKsyLuq9AbUTH+24PSwCWLZY3YlcEHkR1tcJXixQhIe+wG7UxyJoY0igQAtRZUlYd3JcfEjZtkXPRs7dwpzQ9oYTjSqEBGJlMwcX0HkEZaDAUHjv7UckRLYnpr7KHqu6x6QY4vsieqydKo5Oh8b3bDIbRSFqnOYiR0ACC4DOSSlo08/dzl3CAWpuoE0ye+vhjTSalhtbFcRdKTOgMhTdl+5HB67ue8bzCOkHtbjhm7eIzGEKRl/OYfxPdMlX2XHon1RLQ7iX3VRs0/Y
+ 6XOV4HyQ
+ eWQpIGPuhUaOic4EfEjwSZ12aKDoFeeidQHFPi3K86MEozgd5rK389wpFEEZ+76EmWjL+oFoEPJbTnBouS5f2b9eef5295yj/nYhTKFHExBmiiSHQ25I/VFVusNMYB5xkFv3fY1ZehA7YEiWKZXBUylwa2627g8qw2844HHy7DHdFJbKtNWgJ3WPXfPdOZFJU9eEh82CmZMFPerLduYo81j+waJsJ+S/TcG9jQnOzGYT12ExNtikRBDpqKFe/cKmxv6EWT5sCMzk7+f6HND0ubUJgnD/iTYTdyl5IMEF9iDzUs3N7i2eQtmUNLf5/yVx1LKT1yQjzH5Dq7N8wSEb8SVPBI/Ue2spaCCUc4R3GNTvJ4NZGKRvztJDTL61eCaXvin21yKqj13xHjhiJ0Bydbq23FYJL3pRqlAX1G6YI3F7xbPzFv9ZJ+x/60vwGq2nyHFAMjDGcjpH8K6fgSS5R7KZpASKE3CyRajnJHwXcoyoHYFjiQHpF+uLPQexbX45f4BDXaI2M06N0pi7xwHtVQQklVWZ+vKWKhc2/uFhI9tZ2jd3XvJizPcduB29Dm8eLdo9A8R52Oha+Y7tUIaq3rcYXXOJJ4ngF3SXt4Nn9V4HgQdFh5AA5k3RGVyfCGSuJj1pJKYnCfx8WZlerUfDJ2TjViyLOC5K6IFTRfW5/PriKIttmXPBR6UK/lIUU+TsCQW6jB1rPQFDzLWmo3IxUvDJR4eErXJ+8qkLBUYC99ZlgG6H18Gc3+TMJQlFbPcM3nSE9EYBCZOUM3mdRCeFh6d4qLwZe+NL16s50bY0TwuJWadRl5f/99w42ZPdUts3bz46WGU8ukGU5wNxpRxRnlmwuCzpzB9easmzFnWWz9MVfjTAD1yhIQ3A5W7HLhakLMeyLZKRRCqo9v5lBod9z5zPIUsSQnBe5i1a0AR1MNMkWre5uLIbdXGOelgao4L1iRkMeOgAjIuKzvM+YnfRh46PSfT5R
+ rmGp1DmG
+ Wp/dH+yMcBjEac4rQw5ZEPS2bW94/efj43l41KblvVGQTEzVIqV2ywYBGA6igBguMG5bF317xVt758UHdwoVQVgBPrJoZIBJckvNdhxduUjUrY+wEhR2oRBX7ogkoDlFfVnKQKUyhEV9ygEa0eLAn8oCClyGl8fJ9eOOg7kImFyZD2o6N1FoWUGJzwcip7oKNxGNZm6g0qGOKOU1m3olHWIU/pWk51FkIHtOkZKbUwvTN1dpNH8c4ugVFz6RG/tpSPv1OCUoRcwiEENBF8z4tLX4pd5/tnjQLnY08LXoMLR8BvGvwFGb2tb3QaClWpLK3uOCqmRNbyIrmL7nUqoYvMGwMzrAdhp6yvFI2/+jjTA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,38 +131,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 06, 2026 at 11:30:08AM +0800, Qiqi Li wrote:
-> Hi Gregory,
+On Sun, Aug 16, 2026 at 08:13:16PM -0400, Zi Yan wrote:
+> On Sun Aug 16, 2026 at 7:32 PM EDT, Alan Stern wrote:
+> > On Sun, Aug 16, 2026 at 05:47:34PM -0400, Zi Yan wrote:
+> >> On Sun Aug 16, 2026 at 4:52 PM EDT, Andrew Morton wrote:
+> >> > On Sun, 16 Aug 2026 12:25:48 -0700 syzbot <syzbot+805630f1453e490427fa@syzkaller.appspotmail.com> wrote:
+> >> >
+> >> >> Hello,
+> >> >> 
+> >> >> syzbot found the following issue on:
+> >> >> 
+> >> >> HEAD commit:    3d6d817622b0 Merge tag 'scsi-fixes' of git://git.kernel.or..
+> >> >> git tree:       upstream
+> >> >> console output: https://syzkaller.appspot.com/x/log.txt?x=15927479580000
+> >> >> kernel config:  https://syzkaller.appspot.com/x/.config?x=a59830cba91a1981
+> >> >> dashboard link: https://syzkaller.appspot.com/bug?extid=805630f1453e490427fa
+> >> >> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+> >> >> 
+> >> >> Unfortunately, I don't have any reproducer for this issue yet.
+> >> >> 
+> >> >> Downloadable assets:
+> >> >> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-3d6d8176.raw.xz
+> >> >> vmlinux: https://storage.googleapis.com/syzbot-assets/d19e0514c02a/vmlinux-3d6d8176.xz
+> >> >> kernel image: https://storage.googleapis.com/syzbot-assets/f6da706811f4/bzImage-3d6d8176.xz
+> >> >> 
+> >> >> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> >> >> Reported-by: syzbot+805630f1453e490427fa@syzkaller.appspotmail.com
+> >> >> 
+> >> >> gadgetfs: bound to dummy_udc driver
+> >> >> ------------[ cut here ]------------
+> >> >> 1
+> >> >> WARNING: mm/page_alloc.c:5280 at __alloc_frozen_pages_noprof+0x2ce/0x380 mm/page_alloc.c:5280, CPU#0: syz.0.0/5319
+> >> >
+> >> > Thanks.  drivers/usb/gadget is the offender.
+> >> >
+> >> > Gemini sums it up well.  "ep_write_iter() needs a bounds check prior to
+> >> > memory allocation".  https://share.gemini.google/5NzjyttO0ULc
+> >> >
+> >> > I expect an easy fix would be
+> >> 
+> >> Maybe it is better to stop asking kmalloc for unreasonable len:
+> >> 
+> >> 
+> >> diff --git a/drivers/usb/gadget/legacy/inode.c b/drivers/usb/gadget/legacy/inode.c
+> >> index d87a8ab515107..20905f254968f 100644
+> >> --- a/drivers/usb/gadget/legacy/inode.c
+> >> +++ b/drivers/usb/gadget/legacy/inode.c
+> >> @@ -645,6 +645,9 @@ ep_write_iter(struct kiocb *iocb, struct iov_iter *from)
+> >>  	ssize_t value;
+> >>  	char *buf;
+> >>  
+> >> +	if (len > KMALLOC_MAX_SIZE)
+> >> +		return -EINVAL;
+> >
+> > Is there any reason to think that KMALLOC_MAX_SIZE is a good limit?  The 
+> > allocation could still fail, and you'd still get a WARNing.
 > 
-> On 7/21/2026 3:34 AM, Gregory Price wrote:
-> 
-> > Add add_private_memory_driver_managed() to let modules hotplug
-> > memory onto an N_MEMORY_PRIVATE node they control.
-> 
-> I am trying to understand how the nid passed to
-> add_private_memory_driver_managed() is expected to be provisioned.
-> 
-> From what I can see, both node_private_register() and
-> __add_memory_resource() require the nid to already be present in
-> node_possible_map. My understanding is therefore that this patch
-> supports hotplugging private memory onto an existing possible node,
-> rather than creating a new possible node ID at runtime.
-> 
-> For example, in the use case I am looking at, the device's private
-> node is not described by firmware. Would its nid need to be reserved
-> during early NUMA initialization, or is there another mechanism that
-> I may have missed?
-> 
+> KMALLOC_MAX_SIZE uses MAX_PAGE_ORDER, anything bigger than that will be
+> rejected by page allocator. This warning comes out because of it. This
+> if solves the exact issue here.
 
-It would need to be reserved, and you could use numa emulation but
-that's clunky.  I have an RFC for exactly this issue - though i haven't
-pushed it further yet.
+Are you saying that if len < KMALLOC_MAX_SIZE and the allocation fails, 
+the kernel won't WARN?
 
-https://lore.kernel.org/all/20260610014517.253609-1-gourry@gourry.net/
-
-> Also, could you please Cc me on future revisions of this series?
-> I would appreciate it and would be happy to follow the work:)
+> > I prefer Andrew's first suggestion.  If the user asks the kernel to copy 
+> > too much data, just fail -- with no warning.
 > 
-> Thanks,
-> Qiqi
+> __GFP_WARN gets rid of all other warnings, even if user asks for a
+> reasonable size. Why use such a big hammer?
+
+Because on many systems, WARN causes the kernel to crash.  You don't 
+want the entire system to crash just because the user asked for more 
+memory than was available.
+
+Alan Stern
 
