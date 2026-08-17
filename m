@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44850C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 16:40:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EDD9C5DF66
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 16:44:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E62EF6B00FD; Mon, 17 Aug 2026 12:40:23 -0400 (EDT)
+	id 542DB6B02C9; Mon, 17 Aug 2026 12:44:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E13356B00FE; Mon, 17 Aug 2026 12:40:23 -0400 (EDT)
+	id 51AF56B05E1; Mon, 17 Aug 2026 12:44:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D294C6B00FF; Mon, 17 Aug 2026 12:40:23 -0400 (EDT)
+	id 430C06B0856; Mon, 17 Aug 2026 12:44:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A05D56B00FD
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:40:23 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0D5A11C1C25
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:40:23 +0000 (UTC)
-X-FDA: 85111324326.30.1AE29B0
+	by kanga.kvack.org (Postfix) with ESMTP id 1F8226B02C9
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 12:44:48 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A26E61607E0
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:44:47 +0000 (UTC)
+X-FDA: 85111335414.29.6B43CB6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6F7674000A
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:40:21 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cDOTH9QO;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786984821;
-	b=4rsWIMha6iS7bhr1ZCOwNNN6BO75rt8eNNBDUd4kiHY2Irv6xYQ/g5/2Xe3n0ORsVFqqEf
-	xlToBLORtPs5fLsbHHWSO/QnhjCLEsWE5IU+A2aurXykzt9fqsmWaJaLtQMv6J8gRhOweX
-	Fyq7J2+vCl9GfN8u8qSYC3/zxjHaLi0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cDOTH9QO;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id F05A5C0003
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 16:44:45 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BYnqBcKI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786984821;
+	s=arc-20220608; t=1786985086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0jT6S4YpgQH38JdW1g0o3Z2pQ+/PX/2D+lf/1VEYoUM=;
-	b=ucpxCL8n1Eq6tgtNe1m2g9Xif3uo4UIfBFogGtjxG6r5t+0FbeLDsTW/cgHz8cjNl94CBO
-	RhJixnVRntLr+fwC02o4fN94tWbPsT9aoM8DguFGWE9chtu7aSVkcpdIZ8NMbhd/otlJfl
-	OrEiWpIDjgkEgPq0bmg3fqjNjp89Gl0=
+	bh=yDuzR5cxKZS/BaI1hA0RgLkwfQvh6EYcntgsppszUIE=;
+	b=AYy2Fzv/LdvZSq2Ny0z9zx9QDZgo9KrpurwPuPLw38kC2/46oCj0YrxtQ/aksRIyfA+rmw
+	n4OgeGmsogwUdTzOoggiGAI6vxZK5vPcTmPpo2YWgbIeSTp0qLrcYzHmdzvObUs2/79a7r
+	YX/IRJx2peSngEn0u5vNZ+I6CnE8uVo=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BYnqBcKI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786985086;
+	b=wYx2eudhYmeRfbaZidJpdRrOkvGg/KsjAZhLRgWfddvPXut4g9mxTWTRaay/Q8ughVaS3r
+	M55sXBNOa2i5OJdd8Gb6ZfkaH/Js69izYnvOBlXIvKC3FUkc1pX0Qy1enXQiCcWce2Nkun
+	CpYmIDrXxG3R9+4FZikfswpY//l7Fz8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F0A4C601E9;
-	Mon, 17 Aug 2026 16:40:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB001F00A3D;
-	Mon, 17 Aug 2026 16:40:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 78D43601DE;
+	Mon, 17 Aug 2026 16:44:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE5D1F000E9;
+	Mon, 17 Aug 2026 16:44:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786984820;
-	bh=0jT6S4YpgQH38JdW1g0o3Z2pQ+/PX/2D+lf/1VEYoUM=;
+	s=k20260515; t=1786985085;
+	bh=yDuzR5cxKZS/BaI1hA0RgLkwfQvh6EYcntgsppszUIE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cDOTH9QOP614hNdU2RzYQKCefqWgx4OS8MfOUYsoBt9GFSmPkuy1Y41Z3NBnfEg4Z
-	 j1JPK1rUG+dUR39kkDskXbp3DfbW6GMesGUpeUmClpdeHrz0qGgKP5um+Oi/Q76Yae
-	 0ClklYuvV1wXKhqhFcs+Am4ZCLHrkdgU7y7vmYdRuqgcp6zxIhFhvdIaohDKMvY1/n
-	 +Xvk0jf6apulJTeyJV+2oehd9tfUXhibM2lZrG+IA+Bno2CZtHfxsV4RQe9TAIYKb+
-	 i08W2vLBg3+wHtnz01DcqXPJnpVZ37pqpqYIZRGjnos0Cww8aILf9zgIM/9Kwv+WgO
-	 gRlI+vaXeQIhg==
-Date: Mon, 17 Aug 2026 17:40:02 +0100
+	b=BYnqBcKIJLFZCXPWKVyHxamKQzGsB5l3qDD03SM/KGsbGpnbqPimRAPgGALZqRaBE
+	 M4fOlWgCN8kqMX8Ae+tOYNP55ixHIwCigtO56NLNiVfAxhDBPSO29mBxBZz1cqXE39
+	 60lQeq27eNIQczOHaekHwqdr/iPz9K4a6a6HJGhwEOAtjQ2/L7mbhUI6lFszyopUez
+	 Oa4RAFjAq3Q0Wh4JyxHTLM+4w33H0trzrfDyyLtjSA1qAKkp3ElbB5V1hi93LL4JUq
+	 yrCdZF0gaRI2dJzAhpFM72IYi7KaLAzsLenfwyjFciqckkhkl1X794faU1yUFr9Pl1
+	 b25+hC+bLSN/A==
+Date: Mon, 17 Aug 2026 17:44:26 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: Song Hu <husong@kylinos.cn>
 Cc: akpm@linux-foundation.org, rppt@kernel.org, sarthak.sharma@arm.com, 
 	linux-mm@kvack.org, shuah@kernel.org, david@kernel.org, liam@infradead.org, 
 	vbabka@kernel.org, surenb@google.com, mhocko@suse.com, peterx@redhat.com, 
 	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] selftests/mm: emit TAP header in uffd-wp-mremap
-Message-ID: <aoM5S9kq3aPEiMT3@lucifer>
+Subject: Re: [PATCH v2 2/3] selftests/mm: emit TAP header and use TAP skip in
+ mremap_test
+Message-ID: <aoM6YivoBU8JXnSO@lucifer>
 References: <20260815080716.3596514-1-husong@kylinos.cn>
- <20260815080716.3596514-2-husong@kylinos.cn>
+ <20260815080716.3596514-3-husong@kylinos.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260815080716.3596514-2-husong@kylinos.cn>
-X-Rspamd-Queue-Id: 6F7674000A
+In-Reply-To: <20260815080716.3596514-3-husong@kylinos.cn>
+X-Rspamd-Queue-Id: F05A5C0003
+X-Stat-Signature: x5ukxpxpim8t5xdungucqbz55gkx1bfd
 X-Rspam-User: 
-X-Stat-Signature: ggouf4i9397qc4yhftw3otz4nhiiyptd
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786984821-226438
-X-HE-Meta: U2FsdGVkX19+4XnQ4/1MvTaW8nsP9h1DeSBP6Cx4eZp09Wc41or8R1vGwYQNZs3+/lK11uPRijgSBfcY3fnQ6b2DSb0z7GHIn786PqUDwhN3POOVuGx5oB1zHVOcG/dI7xYELC2PR6PcIbY36ZyqEPEB75xHvxFjN+AQDUsuSoXPVrhpQXLGG4COBx7egihCqgUyvJGgJd6ppjHH9k7s1hkKyG8fPPrVGY3lE4QphvPPbGwpUUnooPbRl6KP684+l3FKJieXYyD0NNli/fZCG+X0J/AhXNV/K+I4SOqkmO5tWunvTEXcn7fa2DZLjv9jclhUTi9GLekdxEc9l9BlwsZYBXvBMrey7Hb+4TZjkFq7WukACuk3M2kJd/kuPoNg7ARpCNPiSPYsx2EUlmN3NmLAf46mbGElj5VU9PrsketWxQyNmOPJpueRm4ddAEQffepocHSN8B4vXSLrV65bBH8p7LMmOqS6xFLGl81DpOVD/i/N3EeD27TWTIcXP9tA2mtaGQdcHXu2nO1hftWdo/KARroRvMdoptqjxNW0a+BPCLnrqV0d7g2t4C7saRfjTU8nlYRWTHS+3YB7Oq2lv/J/KHg0oQll0xT04tRkZdtQd+cFDWX+TlZfnEsqQD9n2hznjcJFZ3prq2SyX60EmIhXzx1hvREEQXzqw86yGY4SP8SOx10CbsiSQ+z9tAqUcsoQdVLwf52KQfizLNRhMhUovRIbqTSlMjF2iLcqqNMfBm1hZfDi4EiJOV6xzBHMoGbi8IgQo5lgxeYlfn7RrrW+SlA+r1Czblsk4o6wxIQHS+iaDYsqqfTKNvSogfUkFCNuCWmW9uhScDObYSC8dywpLxpk8VAvYkpIVROsB2P7Q+5WXgzsm69D7BZISbN68Ra7acwP8dbJNc5ZNaLtGEeOOIMzc7ffoiAU+sTCVvPNW8kxqbz/n9pRZLqkdpKI+YjeojBp2OJQlHWupmd
- abR2miAe
- F4AFp1EBAxbIoHhds86FtzxAELPOszbYFHNyWkdZCPNvgYf8qw8MoRfcEONTipmVaBb2s3Tx+6X8TXKONdskBuk1NL3tOnhpwMQJy3Z3gdgymG1IVzMBVMarYe2iR5D1pV8uOj7x+ukpIp1nnNlIAIXCztbsw0Dy+5JTrvmD1z02aVmO8wCmr7oBoEl2WimT9BAgGn334ZXso2FWFIKp6ssnKmGwsStKwpqjFK8w8UqFJaJAWRoYoHFlKwFmNQb3hlmNxMkKbBP5YscncmZkS+/SRVlheFXiYC3X//4X/JDr2QLjpfTLi48H8Kg5fSBkZNyGCIGSg9QFeYRZlbB8ThGC3cg==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1786985085-637084
+X-HE-Meta: U2FsdGVkX19qUZEzNZS9GCfW31o9ym2HTOWQ7Jx/158W3dmfoXj7gLaqakM5ixyn/+eMf5I8pbHjIjDxC1N4TQU3iSIouZrtRywSNcgpaFrswEuCMLTPDxZl4q6Zg9GWpQ3332VjMoieSMUPhEDwlJelOWib9BnMQXTNKAfdgc0b7ijxSdPPy6i/gslS4lMWlnCWrMxlWEFlLrDApcIxq2EzVTp1aSa9ccD6hgnfMLbJhJ4nHyTDftsv+UnlX5Hrcqr3WrjqqqexO+Cg/sVQTW6q6mMGnhTZaZfWOznebBXWkOX11cIFjOwXqY80RL/GSm/fFmIt5MgcxRD4tOTAKJqHin+a1aVfdf1yFDPl3EbZatP/XSglfcJRF8ByRBkJI/PdafP+W1UmubYC5yu6VP/2MhCCU8PPhw9rOgocHmh2REkQqa/Rv5CLwdi5Ghq3aBrV7LksIfjSF4+vbSTpWxXSXcdxxAjiXJwWGe2spVR6CHFoF7NNTjruBcJBDub6dSo5SbQsrjl+S9Dv5Hfy6snLw/3O+VrheM+01QDFKzQWkiWuByMT0+JSaf/VpzghumEplDzAzg0joSDOomd1e0p+TvFQKsfKPzqXFWJDm6aWhCV7sTLjFDq/k8ZA9Rar2x/vU0+fldEPWwSWjRzuh5jdrqD9ec1PmgSfziVfIbGxJO8AdkHXZrT6mAKvAa6vFJWlb20DJW5qv1nCqbWHLolLJwKPO+RaHJU9xTcGStcFFqvEUPGRo4GfsvwmGNsYqtQ6Hmzs/RWTnobHP3Wj+Wf5qm5EdtNiWA7tUhkakbREi033Fk81UuxsAUEQtvAMF/XJX684U9dqHtA06fYmODgtYMUL6xmpC8Z6LFUKV3fpkvIs05sbLZdH3ZoQv6+UDotDFVOrD40AXhdvHJT4oYHMeoLH70J5qtvkGVG4lp1qt+mSLPDH3K7NSdY+ddwpM4n9gP4Z3L2zDv1YP9M
+ M62Q5KPX
+ r6UPC+5pWsFw0ogm3wEWfQxkl3WDUlwed3tsZqDp8b5skV1jilBcVlNJu+ScWn9PjGRJbEKR88vm1SJIrWO6H++cj12coyMb7SWBTpGloS1pZ8FSmfCtwgNtWQ0pJdPZSecLaW/7J4S5cqPnpAJpVaJYThCTr7qqH++esmfM29UgU0KS5VLOtFQHkXg7vN+bCH/0dOMSjPXEv9NRwedaSiCxlVzMTj4oY66pPNnk79Gs++qAQ9d5gTnbVmXEamCopbmlW4brO67XEmjLcTLXL2WqJLSz9csMK2DQ/ydys38pwxbJ1gCH72d/Ytujghug5+hMJCYDdQJPuKShKadpi3UDP9gFPzhJ5pXYFuUD5Oc6RfVaauuFNgay+5/VeDHymm2su
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,37 +94,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 15, 2026 at 04:07:14PM +0800, Song Hu wrote:
-> uffd-wp-mremap calls ksft_set_plan() without ksft_print_header(), so its
-> output is not valid KTAP.  Add the header, like the sibling uffd tests
-> (uffd-stress, uffd-unit-tests).
+On Sat, Aug 15, 2026 at 04:07:15PM +0800, Song Hu wrote:
+> mremap_test calls ksft_set_plan() without ksft_print_header(), and its
+> get_mmap_min_addr() skip path uses a bare exit(KSFT_SKIP) that prints no
+> TAP line, so its output is not valid KTAP.  Add the header and switch
+> the skip to ksft_exit_skip().
+>
+> Also fix two more KTAP compliance issues spotted in review:
+>
+> - get_mmap_min_addr() calls strerror(errno) after fclose(), which may
+>   clobber errno; save errno before fclose() instead.
+>
+> - Some ksft_*() messages embed "\n\t", so the text after each embedded
+>   newline is printed without the "# " prefix.  Split those into separate
+>   messages.
 >
 > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
 > Signed-off-by: Song Hu <husong@kylinos.cn>
 
-This all seems to be yet another way of saying 'somebody didn't use the
-kselftest harness and so things went wrong' :)
+All LGTM so:
 
 Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 > ---
->  tools/testing/selftests/mm/uffd-wp-mremap.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  tools/testing/selftests/mm/mremap_test.c | 41 +++++++++++++-----------
+>  1 file changed, 23 insertions(+), 18 deletions(-)
 >
-> diff --git a/tools/testing/selftests/mm/uffd-wp-mremap.c b/tools/testing/selftests/mm/uffd-wp-mremap.c
-> index c973d6722720..572c2516e874 100644
-> --- a/tools/testing/selftests/mm/uffd-wp-mremap.c
-> +++ b/tools/testing/selftests/mm/uffd-wp-mremap.c
-> @@ -347,6 +347,8 @@ int main(int argc, char **argv)
->  	struct thp_settings settings;
->  	int i, j, plan = 0;
+> diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
+> index 131d9d6db867..28f151daabe4 100644
+> --- a/tools/testing/selftests/mm/mremap_test.c
+> +++ b/tools/testing/selftests/mm/mremap_test.c
+> @@ -111,18 +111,17 @@ static unsigned long long get_mmap_min_addr(void)
+>  		return addr;
+>
+>  	fp = fopen("/proc/sys/vm/mmap_min_addr", "r");
+> -	if (fp == NULL) {
+> -		ksft_print_msg("Failed to open /proc/sys/vm/mmap_min_addr: %s\n",
+> -			strerror(errno));
+> -		exit(KSFT_SKIP);
+> -	}
+> +	if (!fp)
+> +		ksft_exit_skip("Failed to open /proc/sys/vm/mmap_min_addr: %s\n",
+> +			       strerror(errno));
+>
+>  	n_matched = fscanf(fp, "%llu", &addr);
+>  	if (n_matched != 1) {
+> -		ksft_print_msg("Failed to read /proc/sys/vm/mmap_min_addr: %s\n",
+> -			strerror(errno));
+> +		int err = errno;
+> +
+>  		fclose(fp);
+> -		exit(KSFT_SKIP);
+> +		ksft_exit_skip("Failed to read /proc/sys/vm/mmap_min_addr: %s\n",
+> +			       strerror(err));
+>  	}
+>
+>  	fclose(fp);
+> @@ -1164,10 +1163,11 @@ static void run_mremap_test_case(struct test test_case, int *failures,
+>  					    rand_addr);
+>
+>  	if (remap_time < 0) {
+> -		if (test_case.expect_failure)
+> -			ksft_test_result_xfail("%s\n\tExpected mremap failure\n",
+> -					      test_case.name);
+> -		else {
+> +		if (test_case.expect_failure) {
+> +			ksft_print_msg("%s: expected mremap failure\n",
+> +				       test_case.name);
+> +			ksft_test_result_xfail("%s\n", test_case.name);
+> +		} else {
+>  			ksft_test_result_fail("%s\n", test_case.name);
+>  			*failures += 1;
+>  		}
+> @@ -1177,11 +1177,13 @@ static void run_mremap_test_case(struct test test_case, int *failures,
+>  		 * was faulted in.
+>  		 */
+>  		if (threshold_mb == VALIDATION_NO_THRESHOLD ||
+> -		    test_case.config.region_size <= threshold_mb * _1MB)
+> -			ksft_test_result_pass("%s\n\tmremap time: %12lldns\n",
+> -					      test_case.name, remap_time);
+> -		else
+> +		    test_case.config.region_size <= threshold_mb * _1MB) {
+> +			ksft_print_msg("%s: mremap time: %12lldns\n",
+> +				       test_case.name, remap_time);
+>  			ksft_test_result_pass("%s\n", test_case.name);
+> +		} else {
+> +			ksft_test_result_pass("%s\n", test_case.name);
+> +		}
+>  	}
+>  }
+>
+> @@ -1250,13 +1252,16 @@ int main(int argc, char **argv)
+>  	time_t t;
+>  	FILE *maps_fp;
 >
 > +	ksft_print_header();
 > +
->  	hugepage_save_settings(true, true);
+>  	pattern_seed = (unsigned int) time(&t);
 >
->  	check_uffd_wp_feature_supported();
+>  	if (parse_args(argc, argv, &threshold_mb, &pattern_seed) < 0)
+>  		exit(EXIT_FAILURE);
+>
+> -	ksft_print_msg("Test configs:\n\tthreshold_mb=%u\n\tpattern_seed=%u\n\n",
+> -		       threshold_mb, pattern_seed);
+> +	ksft_print_msg("Test configs:\n");
+> +	ksft_print_msg("threshold_mb=%u\n", threshold_mb);
+> +	ksft_print_msg("pattern_seed=%u\n", pattern_seed);
+>
+>  	/*
+>  	 * set preallocated random array according to test configs; see the
 > --
 > 2.43.0
 >
