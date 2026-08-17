@@ -4,144 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 657E9C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 22:21:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF755C5DF7D
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 22:26:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B3706B0118; Mon, 17 Aug 2026 18:20:59 -0400 (EDT)
+	id C4DF16B0114; Mon, 17 Aug 2026 18:26:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58A6D6B011A; Mon, 17 Aug 2026 18:20:59 -0400 (EDT)
+	id BB1136B011A; Mon, 17 Aug 2026 18:26:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A0CC6B011C; Mon, 17 Aug 2026 18:20:59 -0400 (EDT)
+	id A7B3A6B011C; Mon, 17 Aug 2026 18:26:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F9766B0118
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:20:59 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9FCF3140993
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:20:58 +0000 (UTC)
-X-FDA: 85112182596.25.2F9DA24
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	by imf26.hostedemail.com (Postfix) with ESMTP id EE807140003
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:20:56 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="lfK/VuVJ";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf26.hostedemail.com: domain of 3R4mDagYKCMI0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com designates 209.85.210.197 as permitted sender) smtp.mailfrom=3R4mDagYKCMI0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8278B6B0114
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:26:09 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 072D5140971
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:26:09 +0000 (UTC)
+X-FDA: 85112195658.10.6BC9F66
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 4FA51140005
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:26:07 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=h7gneX+8;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787005257;
+	s=arc-20220608; t=1787005567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4QnMwcUHFkDNVo8ywONCXuoDqyMfQDcpXyu7v/SbVys=;
-	b=PEQ4KDUD+oJKk32ItoxH5fKNHOBd2Q5tu1N7PBWyBmuHhcZ0u4CNgzBRI6UerRWELh8BH1
-	UNuzL+F+Rra7WoJ1OB0gshdPjeXImIiw/OIS9e6TNC3VdA6D0zgybnGO/Orq7mmhHJ9Iwa
-	MClOHk51udB/17a5gwXvbW13ZAe+hSA=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="lfK/VuVJ";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf26.hostedemail.com: domain of 3R4mDagYKCMI0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com designates 209.85.210.197 as permitted sender) smtp.mailfrom=3R4mDagYKCMI0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com
+	bh=1b7jKWdEZGMoFyuy609fAfk/mYE8kL7oO5E00u5yre8=;
+	b=edGlmkk6QsLOpjISEk7vDku0EKFtWQ5mu5GvauwGsiqX0AThzmmuPwK0XRYpVuVfpxoZRf
+	JGkQR7R7WO0cT3WRaf7Hzj/a+IxnpS1Vm2rQjqVGEjfCKRwd5BG0VSxacmgTKIricGil4n
+	fw3UExRnhIo2oT5C1x0lZtg60y37E7Q=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787005257;
-	b=1J0PorUOPc2BJ7kqA2JKyfDQFCbD4ESCKDPr+0faxZleXXRg5cee6pjQPd/EiMzq6DnbUX
-	EY+J1l9hHA4kcSXuwYxEsn6iq73dcZQaaefMbh0gmKvI0GDcN0UrsucCWRHZ0YwYJ99OVr
-	g4T+1/m3qJ+sd+WJbK4wOMu7+JDojVw=
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8487eb67173so6734866b3a.2
-        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 15:20:56 -0700 (PDT)
+	t=1787005567;
+	b=6rIg7EscP/CNZSlKoI/wPRpQsYdJT7oGKroUGMiyZgBMQfz/fXO9BkJw/Cp8me1pqxdJeS
+	VvJn8u9hs3Cyi0KjBLJGAbjhq31/rKK5GcpuSmMcNhKPFeZB8b65b1a3dI4L3fTyIntt2T
+	+QCl5lVwW+kb+kjrUCznR2r96zoLiO8=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=h7gneX+8;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6C8BF42A2C;
+	Mon, 17 Aug 2026 22:26:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDE61F0156A;
+	Mon, 17 Aug 2026 22:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787005256; x=1787610056; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4QnMwcUHFkDNVo8ywONCXuoDqyMfQDcpXyu7v/SbVys=;
-        b=lfK/VuVJEAASl1rOvZwVt7eMkYgxeOjtoH9+nAkBuSGmPy7SsH9Rgo5Z5dLSDJljJw
-         buLzkII/qo1zHgW1QTbQEkHA03CmuUqFCPIF06qn+g1/ukys9eyKId3/qn7pzYhFk4SN
-         oIUEvHuQbvuqNwp0ktS5yInxEzlRLWZADGnA9uFlrvCWwCnXYw+jnRL/u5/VVw0ee/KX
-         QZIXWQMmIRPTUfE2fagDOhJgg88Z24d6QFwY7klWwU5LMtQyyTmZHFdMKo24SSywS5tD
-         Dmdlw+CmHfrI880hYJipOvJNHUmPzbv+zc6JPuJAdJdIUTitCgYQEEM306dxmKtbNe0y
-         CBnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787005256; x=1787610056;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4QnMwcUHFkDNVo8ywONCXuoDqyMfQDcpXyu7v/SbVys=;
-        b=ZXAgSJ/mDnMLJjwWcjrEiyCNxD6EpLN5S0ybOS6/fMcnld0+gevCiHTyb+APIl7chL
-         e4p/VccGcNmTt4lVq1oGpPlNfBZ2WGQT/A9XYpxIyjgbo9X9eGZ7PtzWBX8akErf6eVP
-         YEq/H1c5Nig4VETD50LiXZgrcSLUNAcpPul1BmAL67PR0CvFhXwLD6CGkLj4Y1+egnzz
-         JzvNj9air+dCsA6NaFa5+6bdWDYOMsCN5kq/pmpRdQXPZTnIyCNzyv7E+3d6+M2glKfA
-         IaoFxUtUd02CXNcVMsgOX88HBd891HHkLTKkrWlghcOrB/OYcVNxw0AmFs+mLGqui50i
-         wOZg==
-X-Forwarded-Encrypted: i=1; AHgh+Rp8s4vUfA0KtX6oHK+SZVQ5qa6qZ2VI7KB1kMX2g7Cxe2RrEArOQUeHBSo7d5bV/xsxoHHRWsK37w==@kvack.org
-X-Gm-Message-State: AOJu0Yw6k+edorqGydsl5lcx3IDs7KQ9/C5EV661Ue+nNhavPD7iEpGf
-	PBNsCDWvJv3/msqb7jt4W7dMuU9njaielXqag1W5w72ITvOAExT7d7JfStQ9QQYlOA0bqYx3Ei7
-	ViXVyLw==
-X-Received: from pfbfq10.prod.google.com ([2002:a05:6a00:60ca:b0:84a:3bc9:3bcd])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1149:b0:847:7ffd:ce35
- with SMTP id d2e1a72fcca58-851b87eaa83mr3450412b3a.8.1787005255291; Mon, 17
- Aug 2026 15:20:55 -0700 (PDT)
-Date: Mon, 17 Aug 2026 15:20:54 -0700
-In-Reply-To: <CAEvNRgH_=8YqKHb_OJfT583ZJ346cceRimd9YJ762Vv08uJGHQ@mail.gmail.com>
+	d=linux-foundation.org; s=korg; t=1787005566;
+	bh=1b7jKWdEZGMoFyuy609fAfk/mYE8kL7oO5E00u5yre8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=h7gneX+844xS7D9EO+tsMQ7wp6/YghmaCMnHl894psOygzK3Mj/axlnr34fk66c0+
+	 5tZ6gmDpB+oO20VFntrD0gNXzjrn9GF3bx+oLVctjc3kS2xjTLlROXE0k/Dzjr060E
+	 22xjgVprrQhGA7WygH4Cp5plfcOcb0oPP0mLVaeM=
+Date: Mon, 17 Aug 2026 15:26:05 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Foxie Flakey <foxieflakey@gmail.com>
+Cc: rppt@kernel.org, peterx@redhat.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] userfaultfd: reset err to be 0 when move_pages_ptes
+ succeeded
+Message-Id: <20260817152605.5d2bee3fbf1a2bace4c0eff1@linux-foundation.org>
+In-Reply-To: <9c936a9f-ed27-e510-872f-5b3b8c680975@gmail.com>
+References: <9c936a9f-ed27-e510-872f-5b3b8c680975@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-References: <CAEvNRgFWcndQKJE_q+ZATFZEMYd=6uRLygozLvg7L77bPX0cEQ@mail.gmail.com>
- <anqqKH6kuwpvuwp9@yzhao56-desk.sh.intel.com> <CAEvNRgGWDY_fxbyBM-5sMdYMevMe0HzVP9kbC1cCGLE_dV=_Gw@mail.gmail.com>
- <a71d4fccdffd1f6a12332ddd18fa812542ea2118.camel@intel.com>
- <CAEvNRgHxda6XK_XqWaqqVnA7oW=Fhp_C5gF4vNcL+-HfwfXMqQ@mail.gmail.com>
- <0c80b9b0e13e3ab2cbe4f9eaf4a02ebba25a7001.camel@intel.com>
- <an5RJYTwlYeym--O@google.com> <aoKnmW9St5zCoTD3@yzhao56-desk.sh.intel.com>
- <aoNrFX9yLfsM7KQI@google.com> <CAEvNRgH_=8YqKHb_OJfT583ZJ346cceRimd9YJ762Vv08uJGHQ@mail.gmail.com>
-Message-ID: <aoOJRk5SXBzzT24K@google.com>
-Subject: Re: [PATCH v10 11/41] KVM: guest_memfd: Ensure pages are not in use
- before conversion
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Yan Zhao <yan.y.zhao@intel.com>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
-	"david@kernel.org" <david@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"steven.price@arm.com" <steven.price@arm.com>, "peterx@redhat.com" <peterx@redhat.com>, 
-	"forkloop@google.com" <forkloop@google.com>, "tabba@google.com" <tabba@google.com>, 
-	"linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
-	Vishal Annapurve <vannapurve@google.com>, "willy@infradead.org" <willy@infradead.org>, 
-	"tglx@kernel.org" <tglx@kernel.org>, "wyihan@google.com" <wyihan@google.com>, 
-	"pratyush@kernel.org" <pratyush@kernel.org>, "aik@amd.com" <aik@amd.com>, 
-	"jmattson@google.com" <jmattson@google.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "rientjes@google.com" <rientjes@google.com>, 
-	"andrew.jones@linux.dev" <andrew.jones@linux.dev>, 
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "chrisl@kernel.org" <chrisl@kernel.org>, 
-	"shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
-	"mathieu.desnoyers@efficios.com" <mathieu.desnoyers@efficios.com>, "oupton@kernel.org" <oupton@kernel.org>, 
-	"mhiramat@kernel.org" <mhiramat@kernel.org>, "baohua@kernel.org" <baohua@kernel.org>, 
-	"tarunsahu@google.com" <tarunsahu@google.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
-	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jthoughton@google.com" <jthoughton@google.com>, 
-	"yuanchu@google.com" <yuanchu@google.com>, "hpa@zytor.com" <hpa@zytor.com>, 
-	"shikemeng@huaweicloud.com" <shikemeng@huaweicloud.com>, "nphamcs@gmail.com" <nphamcs@gmail.com>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "shivankg@amd.com" <shivankg@amd.com>, 
-	"shuah@kernel.org" <shuah@kernel.org>, "youngjun.park@lge.com" <youngjun.park@lge.com>, 
-	"kasong@tencent.com" <kasong@tencent.com>, "pankaj.gupta@amd.com" <pankaj.gupta@amd.com>, 
-	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
-	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"vbabka@kernel.org" <vbabka@kernel.org>, "weixugc@google.com" <weixugc@google.com>, 
-	"michael.roth@amd.com" <michael.roth@amd.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, 
-	"mingo@redhat.com" <mingo@redhat.com>, "qperret@google.com" <qperret@google.com>, 
-	"brauner@kernel.org" <brauner@kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
-	"baoquan.he@linux.dev" <baoquan.he@linux.dev>, "corbet@lwn.net" <corbet@lwn.net>, 
-	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "liam@infradead.org" <liam@infradead.org>, 
-	"axelrasmussen@google.com" <axelrasmussen@google.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"qi.zheng@linux.dev" <qi.zheng@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: j1gqbf7y5wqnp1mx3ekoft3f18hjsaet
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: EE807140003
-X-HE-Tag: 1787005256-313609
-X-HE-Meta: U2FsdGVkX18GqHJF3/bXZeRlqPUVnWYOs9Msh2wC45W+vtW+peRQEIZOeWFtQ/R6lO0yEYOm31ucZpBB0CY+Jmyr+ef8Qda53NLi//eSssFm3WnObo/GAfM+/mM/9wlll3Npo+K6cbPOlcj75OtXINUALPQ4mqY4tVy3mbxbCNU+FRFUh7InPM20+i66qNEQxxg46q5z2p7ed/BuG6/80jUCIkkV0MPNEj3dhtfMQrydK21JcMN2fDDOpZzK+5nXSjW2G1ANz7TTzuQmmlTAxclKbE6NVVPKGBd6osuyW6Z/BrOnN6eXAChbgsaxOdf7u/iYE6B1o4DYQqQTCLCDOPaR669SPb3AAZOJ+aZ0HqVW1IpkAgjnWSizrgLkFZdaqsj3nAxlTvZnJsuCWzOmwi5Ltb28uRStjTh0biz9etb8tUltGAsNlPebcZ4HdxZ18A8wYYT1SvE/8l+fG5LudD6rz2jqB5ATcC+nqJ0q5hrOWE2SSZz4TZhZj5naEmrh2xNlSNj/HQuMOT82mJy3mQLSKMVcCgy0LAKg1Cq6nZHD6cOtlskMky1yd5rgq1x70lgSY+b+PHLOCQflGN6IrTvyW72QFsBor1LcmCUiLRlFEaZI5qyMm1/5wFLFi+497UotgZsOxzVMZZ298KPrVDicIIeQgwoTvl/Tr0Bo+leAxr5l3weK0qZOPJlWC3Bf3UZV39NXCcmB1xoFS5s5cbpexQ61iImQjQTTMBa0eVpIxn/OIr6pq14qGSW113lpQeheiyhu8ztoFSSjFzs1kc4MoT0rdflpZT+Ffkkp8dtb7DIh/hypea6mu7ZaaCYv1RZJ+dYuTmT91LueNFMSiOybg+aFXW88+BQ1XqDR8fu0ITD9kwc3zi4yZc+x+7Ih/ehx4sg5YHzJ6Q47692j3jEocqKDxMmcaxnb0zfDaHMJTHnxSx+JSPcVYlNI+TNVmRVSgPlij8Z0UEkdYPw
- 9z1Urtgx
- zojJJDCXd5LPZZ/1/Bua1ooJLFQcWfdDyLEgBucyj/U6crzyWQ7OlU3whZY4edyMzegR5tui0lIHZTEMEH3DOM7bLqt+j6dyU7M9iMhSug0Up9pueBN8GBPdHnX2A3qF5aFpUFjFWwaOk5G6sJ2EUw2mTvnLH2RYJcBAqbFacCVUlpHBueg3QXu4aR+weJsqtjejFQO5HQ1nfWAa1GRe0IaIZS1uCZ8cWOFR1+sCrbEw249C5562eYG74dquM8rV5CAX3kbOfeJPvkUs2QhbtQrPEu67X14nWDY5zUmshRNndlhdXRHWXr91rPuVXtIlFf7H0XKy03JG3wMZ1TwudWja+49Yrvl2SxFnhdl6FJHpkficzx3USQTDAbhkNWb9gJ++F6tNksuG+/AiPSLLtZSgAP9flfzWmYQvwtycu1A7JEt4ambuc2jo2ZAKDQoUaCf9SNQKQk0N+zb2oPY1Y7YoyiV4/ordFJPQleJ6HxTTUxBD4RQ+oOZ6JlGSBlZc3jhAPZb/6PWsn2j5bnGxCvdYeh8KYNBIzMPoe5/i1zrQqwva5EC84GB55nGDNTzqdMVQDO8ywF/lDJ1U9oNmt2pPHoG0XN638x1Lps0tOKIjWtrTun99wom/aOlslVwJIv7ls+vX2mHTdk63Zf58uhsGHxPYVpPDo20yealw2rXJTPCHaQFhk954BB1s3F+m2lzZZCQpwIBRIzzk=
+X-Stat-Signature: df445t55pg8u7wbj8ek5wy781er35b8b
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4FA51140005
+X-HE-Tag: 1787005567-782199
+X-HE-Meta: U2FsdGVkX1+mZ1+mVqIET0BMuIDsumWELlU3eWIxgoTQQPtDrBaTpS1T5ahoSSkkLnxSenBN9w8inR0eTv8NJjrTdoc/w45WEJ3yB/TwH2QFz8Hj2TcbAO3pF/+qqvZIVtFGw/9IIfd+0kMJNc/Ei0BD2DkrQ5EfkLA2jgETQqWv62ZVQ490KN8OWFHZ0Kw+F7XBoYpUdeTXn+7Quwf4NGywhS6v415EwIdoVaB8j8yK19hhxuAllvHXgRKaLH2xiUxE7mSTSuHXTWijUe5h4JTLUjk/qvI669+LrUEE3OzMOZaNWjAhqtgUQWdc/hy5QOZZYqAdll3HyUseDVwzsJqqMZ+xBlzILgwxdSz5SfKA3NItS07sDEq+VNFs5ugruyAXRgblr+vRrk36qHu1c2wj4aGfWwjPCBTqKWuoPeTul0B5JWHqppMhxGGdfhL3L025A+K5xoG6owhPS1tPPkufn9DZfVeGD1960i1r7mHYxwmfUnGT8T/25z4oefbo9vHePvH63BAvy3EI+ox/EDmWP86/LbDGI6bRtrVLAbpCGGrdH/SfBA41lZeXgoPuFhBMgC0pojCojJIrgUxCFZqz5iAcyyXOcpdQcWobc1AGy71TSVqd7D78pIhpZwo32D3ZurhFqfGdQqWwiAHT0Ymq1Edry2vIR+ULJ40C5eanyLr1vGO3udEcBx9XrNcgU48+1yo54szHLpyBmhb+osmswTDBMsjv8i8+01JQHyr0IGPMlR9/eP1iszrboW/qXxUboTKQ3qtkFAUdxV03txuYSzD97vOyDD/+Mx+0ZSJIWvgShpA3mEHBTC4km96rvq1eho/I1cnvd2DOtvfFsttyliuVRnBz1mRY2DoYwcpgOLFyD0mhuqUm6jPlBj1jHzVWdaqYr0OkmqRzS1i1phlwe894EZDpe4tZbHxAqZOBAgKZZQ1nJB+Vofbp0R2TCU9vc7H+MpocwQTC5cZ
+ W0dsnaNG
+ 6bs2h+xkMLjK/rZImd2eLU3XI7Ju9778X1d87vZl//Iu7scUGPY5a7+Nef6uwZR8cj+PCB+XiSYLyxXuL5Pptn2iyPOyl1j84PqwW0aoCzNO4GG5RrseCUvvnwBWqS7RULFOeYFcZCg6Rtpgjf1v9fzQ8U3dvhQ39oDD390VrL41YVGOr7KIxobxZpOArIlORd9bQnt+qHqYVTKHPjBZLp/lvo7jgn04WyXuj8ttF6G/VbDXcgIsiWymZ0rZRqZdwrEkCbdVkO0jsCrvWiMODLMTrzoiWhrdUfuPTE8eBr4zWi+AT41h4ebX2LNsxQVE90z3pOpHx3FXFodU4iJLNTw9Jx0yr20utVMh0zJ0VZKt6XL0TJ0vvhj7Cu2kYX6dQNt9W0QjoL5EXTePCtgVmcMqdxJvKY20TkYh8xcTWSri16UXtJExaU6KnDA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,131 +90,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 17, 2026, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
-> > On Mon, Aug 17, 2026, Yan Zhao wrote:
-> >> > converting a page and another faulting in the same page.  An NMI, SMI, or IRQ at
-> >> > just the right/wrong time, especially on a preemptible kernel, could lead to the
-> >> > same test failures, even if KVM drops the refcount "immediately".
-> >> Could you elaborate on how an NMI, SMI, or IRQ at just the right/wrong time
-> >> could lead to the same test failures?
-> >
-> > Ah, sorry, my bad.  I was speed reading and missed that the key to your suggested
-> > "*page = NULL" change was that the reference was put _before_
-> > filemap_invalidate_unlock_shared(), i.e. before dropping
-> > the invalidate lock and thus before __kvm_gmem_set_attributes() will walk the
-> > folios to look for outstanding references.  I was thinking that putting the
-> > reference right away was just shrinking the timing window, but putting the
-> > reference while still holding the invalidate lock closes the window entirely.
-> >
-> > So, I take back what I said about this not being ABI, and about this not blocking
-> > in-place conversion.  It most definitely affects ABI, and so needs to be addressed
-> > before merging in-place conversion.
+On Sat, 15 Aug 2026 17:42:12 +0700 (WIB) Foxie Flakey <foxieflakey@gmail.com> wrote:
+
 > 
-> I thought back then when David suggested that conversion can return
-> -EAGAIN, one of the core ABI benefits is that this leaves the door open
-> for things to gradually improve. If we can improve stuff within the
-> kernel, then the the kernel would just return fewer errors. This retains
-> backward compatibility, since extra userspace code that handles errors
-> can continue to exist, it just won't be used.
-
-Ya, that's definitely one of my hesitations to trying to guarantee success in
-the kernel.
-
-> > The only question is if we want to commit to
-> > guaranteeing that conversion will succeed in this scenario, or if we want to take
-> > the easy way out and formally document that conversion can fail with EAGAIN at any
-> > time, even if userspace has never mmap()'d the memory in question.
+> An fix for edge case can occur if move_pages_ptes return -EAGAIN, later
+> when checked and it is EAGAIN, outer loop would retry again on same page
+> and succeeded but the err isn't reset so the outer loop would think need
+> to retry again so it goes back again and move pages again. On third attempt
+> move_pages_ptes will fail because it already moved and returns an error
+> that is not EAGAIN when outer loop checks again it sees non EAGAIN so it
+> dont retry and break out of loop. When loop is terminated it did not update
+> the "moved" variable from successful 2nd iteration.
 > 
-> I don't really think there's a need to commit to this, IIUC in principle,
-> ignoring that on many paths of those guest_memfd may be excluded, refcounts
-> can be taken even if there are no host userspace mappings. For one, memory
-> failure handling doesn't care if there are mappings, the refcount will be
-> taken for a short while and could cause this conversion failure.
+> That behaviour manifested into this at userspace
 > 
-> Here's the relevant part of the documentation added for conversions:
+> Source:      [ .. unmapped  .. ][ .. mapped    ..]
+> Destination: [ .. mapped    .. ][ .. unmapped  ..]
+>                           ^     ^
+>                           \     Kernel moved this far in actuality
+>                            What is reported to userspace on struct
+>                            uffdio_move's move field
 > 
->   If this ioctl returns -EAGAIN, the offset of the page with unexpected
->   refcounts will be returned in `error_offset`. This can occur if there
->   are transient refcounts on the pages, taken by other parts of the
->   kernel.
+> When the previous behaviour is
+> Source:      [ .. unmapped  .. ][ .. mapped    ..]
+> Destination: [ .. mapped    .. ][ .. unmapped  ..]
+>                                 ^
+>                                 Reported to user space via uffdio_move's
+>                                 move field
+
+Thanks.
+
+The text is a bit hard to follow.  I asked Gemini to redo it and
+perhaps you prefer that?  https://share.gemini.google/cOWn3pQadvVw
+
+> Fixes: 50944692052b ("userfaultfd: opportunistic TLB-flush batching for present pages in MOVE")
+> Signed-off-by: Foxie Flakey <foxieflakey@gmail.com>
+
+Yes, the pseudonym is problematic - it is contrary to our written
+rules.  But I'm a sucker for fixes, sigh.  Perhaps if someone else were
+to send me your patch with their signoff also, the rules would be less
+offended.
+
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -2069,10 +2069,12 @@ static ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+>  			ret = move_pages_ptes(mm, dst_pmd, src_pmd,
+>  					      dst_vma, src_vma, dst_addr,
+>  					      src_addr, src_end - src_addr, mode);
+> -			if (ret < 0)
+> +			if (ret < 0) {
+>  				err = ret;
+> -			else
+> +			} else {
+> +				err = 0;
+>  				step_size = ret;
+> +			}
+>  		}
 > 
->   Userspace is expected to figure out how to remove all known refcounts
->   on the shared pages, such as refcounts taken by get_user_pages(), and
->   try the ioctl again. A possible source of these long term refcounts is
->   if the guest_memfd memory was pinned in IOMMU page tables.
->
-> > I'm leaning pretty strongly towards guaranteeing conversion will succeed.  We'll
-> > still need to document the EAGAIN behavior, but IMO there's a massive difference
-> > between conversion failing if there's a lingering reference acquired via a VMA,
-> > conversion failing because a vCPU page fault raced with conversion.  E.g. being
-> > able to assert success in a very curated test, as the stress test presumably does,
-> > would be extremely valuable for helping detect/prevent edge case bugs.
-> >
-> > The argument against guaranteeing success is that we might make our future lives
-> > harder, e.g. if it turns out there are legitimate, hard-to-solve edge cases.  But
-> > I'm ok with that risk, as it seems highly unlikely to be problematic in practice,
-> > and there is real benefit to guaranteeing success.
-> >
-> 
-> Is there really a need to commit to anything? This is already documented
-> as "can fail", and it's orthogonal to whether the memory was mapped.
+>  		cond_resched();
 
-Yes, but the above docs also say "it's userspace's problem".  Which I generally
-agree with, but that's not a very good story when it comes to KVM itself taking
-transient references, because then the answer becomes "Stop running all vCPUs",
-which I don't like.  E.g. in a very pathological scenario, it's theoretically
-possible that conversion may never succeed.  That's what gives me pause.
+Maintainers, when reviewing this please let me know whether you think
+it should be backported.
 
-> The transient nature of refcounts on pages in general makes it hard to
-> guarantee, and this stretches outside of KVM. I mean, anything could take a
-> refcount on a page in future and we can't be auditing the entire kernel for
-> no refcounts on guest_memfd pages ever.
-
-True, but at the same time, if there were never any VMAs then I would expect there
-to never be transient refcounts, modulo memory failure.  And it'd be easy enough
-to document the memory failure angle.
-
-> >> > As for in-place conversion, this is not a blocker.
-> >> Sorry. I didn't intend to block in-place conversion.
-> >
-> > LOL, what we intend and what happens aren't always the same. :-)
-> 
-> I don't think we're ready to guarantee conversion success when guest_memfd
-> pages are not mapped to userspace 
-
-Yeah, that was too strong of wording on my part.  The needle I was trying to
-thread was "conversion for this specific scenario, in a controlled environment,
-is guaranteed to succeed".
-
-> without dragging this out way further.
->
-> I'm all for KVM not taking any references on guest_memfd, but I think
-> eliminating KVM itself as a source of transient refcounts can be a
-> series in itself.
-
-Yes, it would definitely be a separate mini-series.
-
-> KVM not taking any references on guest_memfd memory is definitely welcome,
-> it'll pave the way to using non-struct-page memory in guest_memfd.
-> 
-> It'll come, can we not block on this please?
-
-FWIW, it doesn't have to block initial merge, just the final release.  E.g. even
-if we decide that this is a blocking issue, we can still land the in-place
-conversion series, so long as it's not exposed to userspace in the final release
-of 7.4 (or whatever kernel) without fixing the transient refcount issue.
-
-> If we find a way to strengthen the guarantee, wouldn't that be an iterative
-> improvement?
-
-Yes, but we do need to draw a line in the sand.  E.g. if conversion failed 99%
-of the time because KVM was taking spurious references, I think we'd all agree
-that needs to be fixed before the code is released.
-
-I'm still leaning towards saying this one has to be fixed, because it would give
-us a solid baseline from which to start, and a way to enforce it going forward
-(Yan's stress test).  I could certinaly be convinced otherwise, though dropping
-the transiest reference seems straightforward enough that hopefully it's a moot
-point, i.e. we land both in 7.4 and don't actually have to make a decision.
+Sashiko did what it usually does when we make it look at uffd:
+	https://sashiko.dev/#/patchset/9c936a9f-ed27-e510-872f-5b3b8c680975@gmail.com
 
