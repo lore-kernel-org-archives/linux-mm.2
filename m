@@ -4,87 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52E39C5CFC1
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 05:51:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E5DAC5B572
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Aug 2026 06:10:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EA8A6B039C; Mon, 17 Aug 2026 01:51:45 -0400 (EDT)
+	id 6188F6B0918; Mon, 17 Aug 2026 02:10:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C1EF6B03A2; Mon, 17 Aug 2026 01:51:45 -0400 (EDT)
+	id 5C9656B0919; Mon, 17 Aug 2026 02:10:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DA1D6B03A3; Mon, 17 Aug 2026 01:51:45 -0400 (EDT)
+	id 4DEC86B091A; Mon, 17 Aug 2026 02:10:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EC9856B039C
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 01:51:44 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 69CDE1406B3
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 05:51:44 +0000 (UTC)
-X-FDA: 85109689728.02.611B3AD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C8111100002
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 05:51:42 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E2gKdWFh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B1196B0918
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 02:10:04 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5FFE8A06C6
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 06:10:03 +0000 (UTC)
+X-FDA: 85109735886.14.E361BBC
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 67CC7C000A
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 06:10:00 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=lkz+IDdF;
+	spf=pass (imf22.hostedemail.com: domain of sh_def@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=sh_def@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786947001;
+	b=KzEkh4GgEoUUr7TUP2SyeF0Adqr1a0G6SeaUEUQnrtQKv/WwMg6rkuLHKjbcBtfayUQTPJ
+	/cPa7veQXRXtSZPpR/qJVTsDdum5OTS8X7Lvr5a+M02ZhtcmjYK9LFwPJjPD/szsnsC/C1
+	xn3ceKdBU43axxcRPlyLRMZ0yIvoDTg=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=lkz+IDdF;
+	spf=pass (imf22.hostedemail.com: domain of sh_def@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=sh_def@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786945902;
+	s=arc-20220608; t=1786947001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=49GLJIYRy4vZ3cG5rYKQJNFQilEnE70SWvjy9to5mKY=;
-	b=UClqhw4rY5xYyAZAmjgMAywvLFhhGrFVLYlhviUCsLPetbEaI87fRdYFtq+ar8Cnxw+DT8
-	+4+YgiWOtUxDcE1fdKiXngHOS44WfcFDs65Wpm6VcioedITASsl8tzlY193/DhlsWyuCYe
-	e2Vh3/MSQt9ATBaCIBJWPIWPwauQr9s=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E2gKdWFh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786945902;
-	b=34wbaoBtArXif6b6k/rgBFZ3uXit2Q7AUfrNBK2sjKq1m0t6yvQrDfOFP2xCpX6AvlJsJm
-	raIP71JGW0LwpQaRqt//FXJ0O1p+UED6KYEgMPXhr7GA8cWD9HGswH3Vc+kCBVdbw9GjCc
-	2gZSZgnzpJ6f9hy/n8f2tM51SJMPeXw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C47F943990;
-	Mon, 17 Aug 2026 05:51:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9EC1F000E9;
-	Mon, 17 Aug 2026 05:51:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786945901;
-	bh=49GLJIYRy4vZ3cG5rYKQJNFQilEnE70SWvjy9to5mKY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=E2gKdWFh05E+WTUIOy6fVlmJoZ3AvzL3kKF6IpS67NmfM0FfdNGCl0v01yMKbnGC5
-	 gdYwLQP5f3+qFGLh37gfG4MPQtnrkZ/Ly5TzzUuhdbxJEpKQzEOewIjVencSyP5sWg
-	 qePR8aIdDUEXfbYtP2RFGB7IRpDpKJR3GnykUJ5p1yZFfcoxDTNJNy80cVP7Zr10ZY
-	 o6S9F93N96hliFB9V0GwS0CS0qP5agd9pNj/qum8Hcal7Syo8NGbz0OdNbKfOqpKWA
-	 zjROHDvoZF+n5TBVvlruFBx7pLDYILQsS0OoalotCdVlBLjku764siAifLFJzQ/S6M
-	 X8q/9FNobYH5A==
-Date: Mon, 17 Aug 2026 08:51:34 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Kiarash Azarnia <kiarash.azarnia@gmail.com>
-Cc: pasha.tatashin@soleen.com, pratyush@kernel.org, graf@amazon.com,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] kho: fix signed shift UB in
- kho_preserved_memory_reserve()
-Message-ID: <aoKhZqkTNUJGpOEf@kernel.org>
-References: <20260816090038.3117276-1-kiarash.azarnia@gmail.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=TZD1EDo+xk7AN+vVz2TemLYBJiWqNlZ+zCg0CyG1C1I=;
+	b=1vKDjD4Y37Q9NGstW4GzEI4v/j8TC2FFmvv1ajrzXgcgSbaiRgIiOQ4vYsRjAGIxZ/1/u9
+	66YCD4IR4OPXF3x/Xd/e3/f32PmdeDcxM7xtaueZHUw2CPt6ORe4r7ByNZfiVYsMpGwG6U
+	EVdoS9gwLIlnkH8ux0fbVqfU6YdKxMA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=TZ
+	D1EDo+xk7AN+vVz2TemLYBJiWqNlZ+zCg0CyG1C1I=; b=lkz+IDdFE7rcupKZ2G
+	8gSLNuNe4/pRQ1ts3z8VVdzYDVmnru49BDLfNfGl7fEui2whHM0yeGh7nyv/Xb4E
+	QMV1Sk9cyMjRrk0Lvp/v543cVkkai+m2xeSQpiv7yw4byNGLG0C6HBe6U1kRJfS1
+	oel+4WMREcNHeqYxtW7j75bHQ=
+Received: from localhost (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wBXvZGapYJqqe36QA--.24966S2;
+	Mon, 17 Aug 2026 14:09:31 +0800 (CST)
+From: Hui Su <sh_def@163.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Hui Su <sh_def@163.com>
+Subject: [PATCH] mm/migrate_device: fix cache flush when replacing huge zero PMD
+Date: Mon, 17 Aug 2026 14:08:46 +0800
+Message-ID: <20260817060845.377800-2-sh_def@163.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260816090038.3117276-1-kiarash.azarnia@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wBXvZGapYJqqe36QA--.24966S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrKr13Xw1rKw43CFWxJryfXrb_yoWktFb_XF
+	WvywnFgrW8Xr18Ja43Aa1rtry3ta1YkFWUJ3y3Kws2g345Zr9YqF40v3y5GFyUWayDCFW3
+	Cr1vvr4S9w15KjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRNlksDUUUUU==
+X-Originating-IP: [183.192.101.80]
+X-CM-SenderInfo: xvkbvvri6rljoofrz/xtbC6RvKKmqCpZvEswAA3z
 X-Rspam-User: 
-X-Stat-Signature: mgorob51tf69g1p5818ysjeaxe67x77w
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C8111100002
-X-HE-Tag: 1786945902-713049
-X-HE-Meta: U2FsdGVkX19QkzD5AUnr0mO6Yd2LJa2gP+uUn5zlBe4BmkL7JYcHHHevVZsBc2gXTsTVGJcCEIIwGffhYWQXci41fcciFTgQlDeXVdjZVMLSPuNs1d9RDVbuvNNysCHRn5usHR4SjocshKOEolMxWD/0nVIkEBt3kE8UYtDxfTFD+FLnNnF0xaGR5mQ6XMj6jSd9BLvmxrIMdm+y5/mpCgmSslo0ZZksab1n/ao4wCOPgM3Nyb8IoiiOpvkk/uoU8mOAEIp+ijYaQPtTs9T2EIc3TfDk9tCCLHQNaOu3qtgJ0LSNgre2e3lYBoqvbmPIernMSsF3/K+NWQuesbDKxhQMIln7Aj3a5iMoPG9DdM1VYcYw0FVZ4kruFImI2om1HVSCsemx6dzK0LzcaXQGNXluxhAsjfP5q9+VA3xBllGP5DC2hhDHYUMXbZLY9hie66pOq6cSrowWYPQ/v9zJ94KLlQuGaZVBeGGUrZXgX+ZmG27yyCmLQWkSmUmbfZR2Vb3FU2oFZodwO3e+VgwGN9mLA4pfKKAErqbhQ8CdsRrYK3bcAJ/3FX6NUHwDmjuTmvTeSwsaUurLFQehVdUgmillj9Cs1APeu+oJVZULahfZosCcYVREtL+BBd02vlOrLGZ491X8puB23Lt4G54ZR0O1Q7RjJuV2cpwhYp2TT0vGMJCfxaTgMo6CEucE0ivHOcRb05wVd1eqVhTrkYTmSQxK3/9jm+W//UjDeFWPyEkXYnrzb5tXVZsEH9iORxLzOZTQbRQYivwf1NjfWouGas3smjnDLukhNzC/Dn1gy+9qq2wulZ1p3rRsCKjVubpxayKUWhmLnpfDNIoYT+cWh2LYV0Lt/wu31W4tmds64Duhk90wEyzU9sgO6KBUgLzE4gh4id3L5OqoM9iI8up/UVVZyqxOIdGpRByyK84pMXTLNCQ7s8y66Rb0u4d4PVTIBeGYAQApm7AAQTbiWDt
- vQaGkrDy
- YP9MArdTYro/mfzSMzWM0x/eT9QLO9vI3O2w+pex3PbqFawiq465JjF24k6QIgy5qOLn8fITiYz6gFlDQ1ybHI0IH0ooE2jm7Pcy1gERqROvJsoaeWhPWaIu3JkikO0WguGy2yARvVfihzzKJ9zrAXlgBWTYd0Y63ikeEZsWGHzSXBuJmT3+vHxGKQETObYhmktiMwwxJim4B73ATlE/vh9OdG+/Pk3QxLnpVIS/0wRUtoUJ7Z8UxJSdGr/hNPpcdbpwyrEnsn8EGjfLtYwdMPc2KNcsPfK7IC6VSu++oO0Cqr+YqOi1Vzqt+uo9lCBYcK94RGVQedcJQgMmfJq1tsSrpaMx1+yPMzX9tXkjoC6AaHs4Sfh0XbM29oBnqinni8qlGebbkVGmnG0ZMWOyj202W40/eJhxaajSKuQ8arhhraoGB2WN636iGKyG+PWB7M2+LqhfinTPwNFLldGyYubFWL6Fa5vLWX84lWTZCIPbDJ1NIrYAeN5GL84azMDgkYVr0
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 67CC7C000A
+X-Stat-Signature: wz8j7irewiebpypj4ndwun5hucurgp1q
+X-HE-Tag: 1786947000-546422
+X-HE-Meta: U2FsdGVkX19HFVFXn2XEXirZi0aMpAmmiEpI24Xi6HfUYe++5QFxa6ESnWYB6lw0SSb19Yqut3ebwwvi7yEUjfAg6/3BKQvUCZ8semwmvUE3B/3imWqbtBuONYVpNBJ6TxvT/U+ZJUjqi6MI22H3NSPi/Lbo1eGGUBFsfdFo89HPM92+F5vBCT/fxwQYYzSLYZpgwU2b7bc+MO9J5o0+Ct1Ad90k9b3neKp9Ch7vlSrhxP5pyzMQABCFYMZPhE+Bl5fWwe7CLAGidpzDNuzkeGknj/DdtfBVUNEC/tmWGsKdqUDBpBG1q5IWkFW+ayZu6ukavtLE62EFq/2PJ231OHxXM213qWN83dNtehBSv7wB7iNdSgoim4tu3QZXNVU8tO87iYfUuYN94IFqDGDQa36xnEgw+W6riwcwQytFDGF9aIYfb3M6ouCLtd1IEHQjt7xj6F8z9IvsGtchOZB7JJ10ez5UDI65WiJza6tlxhmb7IFe6PUg9nPlv+Wvv0iN1k3NL3c5BVkDsBILoKBCtwm6j9DPzzihKR8k3Hp2zzC1WPNE39rI4Ck/hqAeHP1S+FxF/Wh40W6MITezm6seMG+JPd7FgcgYJQMT9AGZq39P76skIZXsoX1Li4bREb0AeNV0UpebJKRzNOBXmmKyp0yQ0LP4y6qyHAiAcHOIrLbTMVGFTzglKqnvSGvmohkwp4mCza3tU4B914B0QspMfciG+yjCFYpPkKh9kScBn8i+cvqYGV34g2kBpYA15Wye46GoflVRJrQqhmqJioQQGf0+Ewiy4wDdQwRqFw/vUMGOw7kLVjS+/ZYIBgrmoqPXU/nCgipQgjm+zWFFRGeTm2A1hjBaXu7px06i0GyqjbWlk7PO/vq8/NQ675LqakNoeG9TPqjBHY+A6/PjzLcqAZ1OE03g79Xk43xAAp1wQ0QjI2fdoMH52H3v65wPYbeyKdB060eVaVXgOMoGarF
+ ytNb0y79
+ Ht7SGxGa2Xgeu8WT4NJ6SJqF+uTSWam5nNaSztnq+jqrKKWIRnzEfiRkSQ0nxi0s+BwfqqGC/sTZ38Ee+0+RRzrEtGU0VOeH9+256dsPpvDaWyf5i3LWNzkCWmqh1z9ALB2XkSqSPrRd21B5/mDFk4zI2lY9T4ctBPlzPbFX9T9WBCu9IGfx7x28felQkZZj6DAU+VhUTf36DZtK+c/IVORlk3g+8HlJZwMqqs98QTrhV+Q9C/5WqUJmxSO0KzrcKlEx3AfKKYL8YlynMNtsCFBhRap2qIRUKH9VZ92s0rkxm2S6KL2bgpJ6kZviwltB6Ai6QygF7tf+EZMJ913xIqreBe4OFunGZpluPjDWVfBTrJvtL30APhi6OvGpY8FRfL/h4N+ZXH6c4RxY4J4MM61lwWxLs1HRVbUhJcVxXso7cqq1g2TraounEnIR+5eL976gGxaNydSX0AtxWiLYh8AByWwxZSV1E57v3BnucaHIJEHrFOHoQ0bptLZkzRKWlUEu8tkEqCy2URZ7Hsx8OW6N7KRf6dJBKFzcZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,61 +100,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 16, 2026 at 12:30:37PM +0330, Kiarash Azarnia wrote:
-> kho_preserved_memory_reserve() computes the size of a preserved
-> reservation as:
-> 
-> 	sz = 1 << (order + PAGE_SHIFT);
-> 
-> `1` is a signed int, so the shift is signed-int arithmetic. For order
-> 19 (a 2 GiB region) it produces 1 << 31, which is unrepresentable in
-> int and is undefined behavior; in practice it yields 0x80000000,
-> sign-extended on the assignment to the u64 sz. For order >= 20 the
-> shift count exceeds the width of int, which is also undefined. The
-> return value of memblock_reserve() is ignored and memblock_cap_size()
-> clamps the bogus size, so the kernel silently reserves the wrong
-> amount of memory for the preserved region.
-> 
-> kho_alloc_preserve() caps order at MAX_PAGE_ORDER and cannot reach
-> order 19, but a boot-time reserve_mem= region of at least 2 GiB drives
-> kho_preserve_pages() to compute order 19, and kho_preserve_pages() is
-> EXPORT_SYMBOL_GPL(), so the path is reachable.
+migrate_vma_insert_huge_pmd_page() calls flush_cache_page() before
+replacing an existing huge zero PMD. However, the third argument to
+flush_cache_page() is a PFN, while addr + HPAGE_PMD_SIZE is an end
+virtual address.
 
-This looks like LLM generated, please make sure to add Assisted-by tag next
-time.
+More importantly, the mapping being invalidated is PMD-sized rather
+than PAGE_SIZE-sized. Flush the whole PMD range with
+flush_cache_range(), matching other huge PMD invalidation paths.
+
+Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+Signed-off-by: Hui Su <sh_def@163.com>
+---
+ mm/migrate_device.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 908d2d4ec43a..098c04c1b124 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -872,7 +872,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
  
-> Cast the shift operand to u64 so the arithmetic is done in 64 bits:
-> 
-> 	sz = (u64)1 << (order + PAGE_SHIFT);
-> 
-> Fixes: 3f2ad90060f6 ("kho: adopt radix tree for preserved memory tracking")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kiarash Azarnia <kiarash.azarnia@gmail.com>
-> ---
->  kernel/liveupdate/kexec_handover.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 175c08a6e41e..c79f48bd64ac 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -501,7 +501,7 @@ static int __init kho_preserved_memory_reserve(phys_addr_t phys,
->  	struct page *page;
->  	u64 sz;
->  
-> -	sz = 1 << (order + PAGE_SHIFT);
-> +	sz = (u64)1 << (order + PAGE_SHIFT);
->  	page = kho_get_preserved_page(phys, order);
-
-This is already fixed:
-https://patch.msgid.link/20260727150240.889555-1-pratyush@kernel.org
-  
->  	/* Reserve the memory preserved in KHO in memblock */
-> -- 
-> 2.53.0
-> 
-
+ 	if (flush) {
+ 		pte_free(vma->vm_mm, pgtable);
+-		flush_cache_page(vma, addr, addr + HPAGE_PMD_SIZE);
++		flush_cache_range(vma, addr, addr + HPAGE_PMD_SIZE);
+ 		pmdp_invalidate(vma, addr, pmdp);
+ 	} else {
+ 		pgtable_trans_huge_deposit(vma->vm_mm, pmdp, pgtable);
 -- 
-Sincerely yours,
-Mike.
+2.54.0
+
 
