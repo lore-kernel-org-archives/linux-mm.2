@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32490C5DF85
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 13:12:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E221C5DF7E
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 13:12:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7E1D6B0199; Tue, 18 Aug 2026 09:12:18 -0400 (EDT)
+	id 6EA606B019C; Tue, 18 Aug 2026 09:12:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2EA66B019A; Tue, 18 Aug 2026 09:12:18 -0400 (EDT)
+	id 69B5A6B019D; Tue, 18 Aug 2026 09:12:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F6616B019B; Tue, 18 Aug 2026 09:12:18 -0400 (EDT)
+	id 515A26B019E; Tue, 18 Aug 2026 09:12:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 796C46B0199
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:12:18 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0B3E3160110
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:12:18 +0000 (UTC)
-X-FDA: 85114428756.30.D691A80
-Received: from mta1.migadu.com (out-145.mta1.migadu.com [95.215.58.145])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 13FC640003
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:12:15 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=euJIxsHV;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.145 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 285FA6B019C
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:12:25 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BC017A110F
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:12:24 +0000 (UTC)
+X-FDA: 85114429008.28.04E0799
+Received: from mta0.migadu.com (out-109.mta0.migadu.com [91.218.175.109])
+	by imf18.hostedemail.com (Postfix) with ESMTP id B95E81C0013
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:12:22 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ePR1CsFS;
+	spf=pass (imf18.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.109 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787058743;
+	b=62TlskqNQR/X5Y6OfRegeiQG9RroSmfVnbYs/e1wVdOiOZunx5exKjpsxgBHPJDXoEpssB
+	aAf0j6Tf+lY6Qnn9bGJQy/3Fz6TgfPdCb2eSVjaPMYM7T6qQGkXdRAaAy7yRnICg3ye7da
+	vTy4vktfwACj7xaRKBun7b22BhKRLDs=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ePR1CsFS;
+	spf=pass (imf18.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.109 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787058736;
+	s=arc-20220608; t=1787058743;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6/afzYIQ1idbepgMzCZluw1hZdgpbQH0G9iWXIy9+Es=;
-	b=4jS2YWKFGXbRDgg5v6JLTKuRiFeg03zJk8tk/56xtyoVraCJz/iieGCIGv6VOAcVpeRrTR
-	0lvAe5sZvdAfKvA73V+IV+y2glrhUhCwyHkhiCjKoHHP+1MHauH8XCATY4VAwXwotnhxP0
-	ZPQTYp13Zeqh3LidR9qQiUReEqRyjTk=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=euJIxsHV;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.145 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787058736;
-	b=7XN2q3JVQLbEWiasTsvCDGI4dHxQekGf/KsojiD2gpQMgh/jbsdljSZxILMHPE8PMpZ6H9
-	QRFHCwI885ltrHKM3Jt+Z1+GmhoWsfW42judx/WIlGvi0VOjtKsrhw8x1S7oj8oYCDckiU
-	0wFkbfAQ2MvcogBEmN6hM9PWZmJdky8=
+	bh=WTiqSurwJpM8yj9zXglpny3E2tJwQ8ok3T+yaHWXpmU=;
+	b=3Evcd0C6jHmWkx4GWjuAxUIAnG3EtKLw+4PFUAYlFP4PCOSdxaC/3YHBalhcTfh7xW1dSS
+	Gq66VxImvk9NN/D0TFB5v1e6bOQuWtX+qdpqzGQWrFZqxUb86aof42C/ZX1ml8CGvXkoT1
+	9AxeNkkwddubKKkD1hGG9XXPFzq5cEY=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Zq+Ctczt2l05WWIcApO8BE7BxqptNyjFszeHYSoNb5Y=;
+DKIM-Signature: a=rsa-sha256; bh=1Dz5t2k/qHsfuuzKgM9VwuvNQXNi7pjePtn1+ZkgY2I=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787058734; v=1; x=1787663534;
- b=euJIxsHVul8bRimE6+4nWu8fcxcXYKZMepyukjoBHaygAiw0945awiAEU7FddXuwkwG8+jwR
- CSRMK9ejFUwbGA3AaMlaOxOCYVKz0xgXyjM2Kh4sNcHoBWQE5pHM1Pa3cyjFDlTiPL8h4ewfQ6x
- cz1Y1KQ3a2IM5Bg4JpcqeQA8=
+ t=1787058741; v=1; x=1787663541;
+ b=ePR1CsFSfhtZnZDwdzp278rbXm8Fa/19ikhEl7qhC9YsSoeftTdy+Lf6sIPvRiKMyN1OB208
+ DTU5CEAEzL+MTIT3nlp1lfEVSmD0gQu61fhKKMUP+r7SWZ4IvXz7XZVKBeflgERBPyvmBtrjFYt
+ u3wJ9i5U9DwEHpNIK9QKyAXs=
 X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2a03:2880:10ff:42::)
-	by mta10.migadu.com with ESMTPS id 2117379505cae7b9;
-	Tue, 18 Aug 2026 13:12:14 +0000
+Received: from localhost (2a03:2880:10ff:48::)
+	by mta11.migadu.com with ESMTPS id 841d0e040e1652fc;
+	Tue, 18 Aug 2026 13:12:21 +0000
 X-Migadu-Flow: FLOW_OUT
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -92,22 +92,22 @@ Cc: ying.huang@linux.alibaba.com,
 	yosry@kernel.org,
 	kernel-team@meta.com,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v6 02/12] mm: add PMD swap entry detection support
-Date: Tue, 18 Aug 2026 06:09:43 -0700
-Message-ID: <20260818131202.494754-3-usama.arif@linux.dev>
+Subject: [PATCH v6 03/12] mm: add PMD swap entry splitting support
+Date: Tue, 18 Aug 2026 06:09:44 -0700
+Message-ID: <20260818131202.494754-4-usama.arif@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260818131202.494754-1-usama.arif@linux.dev>
 References: <20260818131202.494754-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 13FC640003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: uuek5m8pns9qwpkrbyxkkwhrwhkefkef
-X-HE-Tag: 1787058735-230407
-X-HE-Meta: U2FsdGVkX18cFpIYw9c7PD8LSw5G3iF6OMubb4MpuiLc3kBuhUJ+NkHkVZXXZEb7RQh1IHE4FZ/529wXsMqPPHo7G9Pue7OXDTfPnHxfizU2TfZtZMqMmYw0k/+TZ/Gl401OvaXFoNRkhA2rOdQkSiSXBqQXlUFVbcExv/zaw0jn76u6YTJy3dp6ktxHA+UtdRuaxTVxDA/tynnFc6/vTzjSRF+DlakgeXzglCwcNyFXWT1VrU+hxPs47M9sBfD5C3+LyVA58qZF23P7zKaECBs2MdXuJDbLpnNM5Kwz81sQfqq4dzDjXXfggxh6bloF4h0s+8FjsMQeV102vUv2ZxcpDBA7DB4YuGkx2RMhjalmyuHsP1Ib9x/RFYAWpdA0KR7CSFFy1Z09i2Lqz5wtnu7ddl6nrFwfyXtYMQCbLZ9t0uVqfvj21o1dEc8QjoOZlxhfs1HgEbkNCerbZ7OY0pGf9AatBqhICVcaFyCkb7ODvZ0zAVEI8wodtVhQRUKYXdEM0MksEHlclM+cWLvQ9baACF/dGha93OwnShS8ZMKRW3LqoMZI4UdfWU9uz//a0DTTGdofzCNunX+YmVah+Uh5w2Bbf4P09l9cKJw2JQcq40KZPIb9Jwx08AQzhKEZ8Zw+yLSufgJu4OSSjGQqTcp3+7+YJZ50s5iRhzC6IaMKSzx8s4qCqaVi+ipvJ669JR+3pOZ0yHzQnlE/dAywLQ+AnLe8+8HZeY0fXPW9Gn1w+3mx8dmIlBCJzEEEfcuFuE6SSSKiuyydcecXGMAmbFCsxA9JqPfJky+t/Qwhqtg9503m5JVImpKqi7fMHGcavlDM0s+G7hrolrKvJh0od3ND7xKQFwdAcbf+Qv0/jEoSWUlfI3rnqk8MOuhAvFYtxQxGr6pc3uGBxDb4WWp5auLnt45gXQErHwWiWZYoDoVmUnmiFsWuPuyTgrAiqIbU3W1+NDfQEJheTy9NS5U
- auVRgu7w
- +hA2o3lH+y8AUdopW3PB872U7wz0PgXnQlifB76Tcf1upPhGYNEoj94rDnu3igGNmt4iawtUSxZdLxwkg2mu5HQ61slIHJt6tipCb39uVka9IZ46+7Z/R+mamFJ7mz/PUZuMiKR5IJ3u0T43SUv5NQsPshZZIscRvTuxmibSWp5dr9nCU8xdr0U1ZoHsS/zdF09XkqNFPJwlaEfvReIFPrg0n/qvajiOyJH7UJnlQDiolmztIaDGmoE2w6uWxL4vuUFDE0H0u2zFD5MutYWELOvrUjyFlfZlygUMdBbyLDcd3Qw4=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B95E81C0013
+X-Stat-Signature: 98sqetbtmw6pxh8ee9u79ez14a45c9rd
+X-HE-Tag: 1787058742-982823
+X-HE-Meta: U2FsdGVkX1+QsOJ+PIh8ZA5TbD3U5Ryo4fXfvklY6hcPT+TMf0e06lR22b3ceGmA8aQ1tE6ptLX3vTgqUfJK1nTy6vTc07UgkA1YDR+HF17YNK46iOjOMvglxxmFFs/dt+WIqO4qyXogSlRYZv43RDj5DhQjPST2f43pDc4V2LR7bR46jSbvkEZztRZdH/tYkQMg89J4VPWcajKofK7oh+aRjpH9Wd0PEpurVC5tuYRKIqPyuVCTbe6WkzmWGGCTnHRRPyu//vkCiAAjzomu46g3yymQsTs0P2W8ydo0DQQffT2eTEzeiBleIa9u7P79UJYeOWlRfF9nn2pO/PxS1TI29Iy66/qTrn2CEiqsKyZESQB85LDFHxwR1BPjzquDN6ejKacVTpjg7HAXMPAuRsAF7dQ6UtSNQ93qiSFUcOMMXOxdmabGtJ1Nmx5L2Hc5bb6QrNB2QTLd6KF6XLLUKi0oVZBKnLBnWo/csdAHab/AyFZAblazQlJd/Bjdm1iBiNPB4StJwZNUilLrZUoBehj9wb5rtDp5p1aoN7i++pSEELQ3ezKU+nUHTgtIEOiNvt+PXCSLic/xPHoqGeOzpT6smSK6kLhagJtGr4T6qmIlgB+RYUSRSgavQ0ajaqiOMK5VIkmDts5AiCYCvfxowONBP55Y7Av5dnm1wpmhgEZy1kMvkDATv8L9EBX4znkN4IQfnXYqpCHqj/0iVVrIXDMZ79f68DB5VWMRgJ5MmZ/KdcCZu7lZ90cLc+jFZAHhSwUmcGVejyzAzqpFBrX8iaj3lG8m2pFK1aTtyC7uwfMeFdGMYS8R/x8q/8jW0HmmpSzUGxS7woTyE8uVWgkaYabTneICvxCpzWauPBtdAZImslaFgqTS+FN8DDW5Y/M1GQ6PlFwTDV7HMBtAOoA6cx5C1aLjfbQJmQIyIswkEvtQA5nl7rE09R3e+PTYlBi+sHoWRfZ1H+IOhvS8kXe
+ NQcuBJm5
+ qSgIygZfLl1mLLfrDq5RORfZMG9vqJ9thWmn4itLJZsNmzPSo0wTdkyHO5Pna+qmS5Y7begpLBU/yMDYqOV0fKqRwAfp3+s5jE1aLrCZWG2S35OTZ3GXLVlhoj8HidFLSZtmhZGGSQhBG1/gtDh98fYQoCrj0dEgTDVIKHiP9SOXr7mXqI1ws4BhZhNUA8YgPhGvq+VCl1gHiNI1nF6EMj8bYhWk00ra2K+b8Ntnc8OlPd1eUDdkw9T2Dg78wsKwreAzjw6PGnPmGsQSZ+Z8Gi9r1Xw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,283 +115,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently when a PMD-mapped THP is swapped out, the PMD is always
-split into HPAGE_PMD_NR PTE-level swap entries. To preserve huge
-page information across swap cycles, later patches will install a
-single PMD-level swap entry instead. Add the infrastructure to detect
-those entries.
+Add a swap branch in __split_huge_pmd_locked() that splits a PMD swap
+entry into 512 PTE swap entries. No folio reference is needed because
+swap entries point to swap slots rather than pages. Each PTE inherits
+the correct sub-slot offset and preserves soft_dirty, uffd_wp, and
+exclusive flags.
 
-Teach the softleaf layer to recognise PMD swap entries:
-pmd_is_swap_entry() detects them and softleaf_is_valid_pmd_entry()
-accepts them as a valid non-present type. Because swap entries do not
-encode a PFN, make pmd_softleaf_to_folio() warn and return NULL for them
-instead of passing the swap offset to softleaf_to_folio(). Clear the
-exclusive overlay bit in softleaf_from_pmd() before decoding, matching
-how soft_dirty and uffd bits are already stripped.
+The folio_remove_rmap_pmd() gate at the end must inspect old_pmd
+rather than *pmd: for a present THP split, *pmd has already been
+cleared by pmdp_invalidate(), and that invalidated bit pattern can
+decode as a plausible swap entry.
 
-Add pmd_swp_mkexclusive(), pmd_swp_exclusive(), and
-pmd_swp_clear_exclusive() helpers to each architecture that supports
-PMD softleaf entries (x86, arm64, s390, riscv, loongarch, powerpc),
-mirroring the existing PTE swap exclusive helpers in each arch's
-pgtable.h. Provide generic no-op PMD swap exclusive fallbacks for
-architectures without PMD softleaf support, matching the generic PMD
-swap soft-dirty fallbacks.
+This branch is reached from the explicit __split_huge_pmd() callers
+that hit a non-present PMD: partial-range mprotect / munmap, the
+wp_huge_pmd() PMD-COW fallback, and the swap-in / swapoff fallbacks
+added in later patches when the cached folio is no longer PMD-sized.
+page_vma_mapped_walk() does not iterate PMD swap entries, so
+try_to_unmap_one() and try_to_migrate_one() do not reach this branch
+and freeze=true cannot occur in this branch today.  page and folio
+are therefore left uninitialized in the swap branch; a
+VM_WARN_ON_ONCE(freeze) catches any future caller that breaks this
+invariant before the freeze path dereferences page_to_pfn(page + i)
+or put_page(page).
 
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- arch/arm64/include/asm/pgtable.h             |  6 +++++
- arch/loongarch/include/asm/pgtable.h         | 19 ++++++++++++++
- arch/powerpc/include/asm/book3s/64/pgtable.h | 17 +++++++++++++
- arch/riscv/include/asm/pgtable.h             | 15 +++++++++++
- arch/s390/include/asm/pgtable.h              | 17 +++++++++++++
- arch/x86/include/asm/pgtable.h               | 17 +++++++++++++
- include/linux/leafops.h                      | 26 ++++++++++++++++----
- include/linux/pgtable.h                      | 17 +++++++++++++
- 8 files changed, 129 insertions(+), 5 deletions(-)
+ mm/huge_memory.c | 29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index a2681d7553584..860f95573d1fb 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -598,6 +598,12 @@ static inline int pmd_protnone(pmd_t pmd)
- #define pmd_swp_clear_uffd(pmd) \
- 				pte_pmd(pte_swp_clear_uffd(pmd_pte(pmd)))
- #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
-+#define pmd_swp_exclusive(pmd)	pte_swp_exclusive(pmd_pte(pmd))
-+#define pmd_swp_mkexclusive(pmd)	pte_pmd(pte_swp_mkexclusive(pmd_pte(pmd)))
-+#define pmd_swp_clear_exclusive(pmd) \
-+				pte_pmd(pte_swp_clear_exclusive(pmd_pte(pmd)))
-+#endif
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 1b6b0aa2baa3b..a473e85d30f51 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3252,6 +3252,14 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 			folio_add_anon_rmap_ptes(folio, page, HPAGE_PMD_NR,
+ 						 vma, haddr, rmap_flags);
+ 		}
++	} else if (pmd_is_swap_entry(*pmd)) {
++		VM_WARN_ON_ONCE(freeze);
++		/* Swap entries have no page for the migration freeze path. */
++		freeze = false;
++		old_pmd = *pmd;
++		soft_dirty = pmd_swp_soft_dirty(old_pmd);
++		uffd_wp = pmd_swp_uffd(old_pmd);
++		anon_exclusive = pmd_swp_exclusive(old_pmd);
+ 	} else {
+ 		/*
+ 		 * Up to this point the pmd is present and huge and userland has
+@@ -3388,6 +3396,25 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 			VM_WARN_ON(!pte_none(ptep_get(pte + i)));
+ 			set_pte_at(mm, addr, pte + i, entry);
+ 		}
++	} else if (pmd_is_swap_entry(old_pmd)) {
++		softleaf_t sl_entry = softleaf_from_pmd(old_pmd);
++		pte_t swp_pte;
++		swp_entry_t sub_entry;
++
++		for (i = 0, addr = haddr; i < HPAGE_PMD_NR;
++		     i++, addr += PAGE_SIZE) {
++			sub_entry = swp_entry(swp_type(sl_entry),
++					      swp_offset(sl_entry) + i);
++			swp_pte = swp_entry_to_pte(sub_entry);
++			if (soft_dirty)
++				swp_pte = pte_swp_mksoft_dirty(swp_pte);
++			if (uffd_wp)
++				swp_pte = pte_swp_mkuffd(swp_pte);
++			if (anon_exclusive)
++				swp_pte = pte_swp_mkexclusive(swp_pte);
++			VM_WARN_ON(!pte_none(ptep_get(pte + i)));
++			set_pte_at(mm, addr, pte + i, swp_pte);
++		}
+ 	} else {
+ 		pte_t entry;
  
- #define pmd_write(pmd)		pte_write(pmd_pte(pmd))
- 
-diff --git a/arch/loongarch/include/asm/pgtable.h b/arch/loongarch/include/asm/pgtable.h
-index 1952e34bc8ee0..aa8e1223d3973 100644
---- a/arch/loongarch/include/asm/pgtable.h
-+++ b/arch/loongarch/include/asm/pgtable.h
-@@ -357,6 +357,25 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
- 	return pte;
- }
- 
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
-+static inline pmd_t pmd_swp_mkexclusive(pmd_t pmd)
-+{
-+	pmd_val(pmd) |= _PAGE_SWP_EXCLUSIVE;
-+	return pmd;
-+}
-+
-+static inline bool pmd_swp_exclusive(pmd_t pmd)
-+{
-+	return pmd_val(pmd) & _PAGE_SWP_EXCLUSIVE;
-+}
-+
-+static inline pmd_t pmd_swp_clear_exclusive(pmd_t pmd)
-+{
-+	pmd_val(pmd) &= ~_PAGE_SWP_EXCLUSIVE;
-+	return pmd;
-+}
-+#endif
-+
- #define pte_none(pte)		(!(pte_val(pte) & ~_PAGE_GLOBAL))
- #define pte_present(pte)	(pte_val(pte) & (_PAGE_PRESENT | _PAGE_PROTNONE))
- #define pte_no_exec(pte)	(pte_val(pte) & _PAGE_NO_EXEC)
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index f4db7d7fbd5c6..6a899d0793b3b 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -699,6 +699,23 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
- 	return __pte_raw(pte_raw(pte) & cpu_to_be64(~_PAGE_SWP_EXCLUSIVE));
- }
- 
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
-+static inline pmd_t pmd_swp_mkexclusive(pmd_t pmd)
-+{
-+	return __pmd_raw(pmd_raw(pmd) | cpu_to_be64(_PAGE_SWP_EXCLUSIVE));
-+}
-+
-+static inline bool pmd_swp_exclusive(pmd_t pmd)
-+{
-+	return !!(pmd_raw(pmd) & cpu_to_be64(_PAGE_SWP_EXCLUSIVE));
-+}
-+
-+static inline pmd_t pmd_swp_clear_exclusive(pmd_t pmd)
-+{
-+	return __pmd_raw(pmd_raw(pmd) & cpu_to_be64(~_PAGE_SWP_EXCLUSIVE));
-+}
-+#endif
-+
- static inline bool check_pte_access(unsigned long access, unsigned long ptev)
- {
- 	/*
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 1225cf05696a2..65b4181c62d9a 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -1213,6 +1213,21 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
- }
- 
- #ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
-+static inline bool pmd_swp_exclusive(pmd_t pmd)
-+{
-+	return pte_swp_exclusive(pmd_pte(pmd));
-+}
-+
-+static inline pmd_t pmd_swp_mkexclusive(pmd_t pmd)
-+{
-+	return pte_pmd(pte_swp_mkexclusive(pmd_pte(pmd)));
-+}
-+
-+static inline pmd_t pmd_swp_clear_exclusive(pmd_t pmd)
-+{
-+	return pte_pmd(pte_swp_clear_exclusive(pmd_pte(pmd)));
-+}
-+
- #define __pmd_to_swp_entry(pmd) ((swp_entry_t) { pmd_val(pmd) })
- #define __swp_entry_to_pmd(swp) __pmd((swp).val)
- #endif /* CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
-diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-index e882663a58e77..490e4a3464b19 100644
---- a/arch/s390/include/asm/pgtable.h
-+++ b/arch/s390/include/asm/pgtable.h
-@@ -870,6 +870,23 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
- 	return clear_pte_bit(pte, __pgprot(_PAGE_SWP_EXCLUSIVE));
- }
- 
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
-+static inline pmd_t pmd_swp_mkexclusive(pmd_t pmd)
-+{
-+	return set_pmd_bit(pmd, __pgprot(_PAGE_SWP_EXCLUSIVE));
-+}
-+
-+static inline bool pmd_swp_exclusive(pmd_t pmd)
-+{
-+	return pmd_val(pmd) & _PAGE_SWP_EXCLUSIVE;
-+}
-+
-+static inline pmd_t pmd_swp_clear_exclusive(pmd_t pmd)
-+{
-+	return clear_pmd_bit(pmd, __pgprot(_PAGE_SWP_EXCLUSIVE));
-+}
-+#endif
-+
- static inline int pte_soft_dirty(pte_t pte)
- {
- 	return pte_val(pte) & _PAGE_SOFT_DIRTY;
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index 8e0018fadd14e..b5da5447e83d0 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -1525,6 +1525,23 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
- 	return pte_clear_flags(pte, _PAGE_SWP_EXCLUSIVE);
- }
- 
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
-+static inline pmd_t pmd_swp_mkexclusive(pmd_t pmd)
-+{
-+	return pmd_set_flags(pmd, _PAGE_SWP_EXCLUSIVE);
-+}
-+
-+static inline int pmd_swp_exclusive(pmd_t pmd)
-+{
-+	return pmd_flags(pmd) & _PAGE_SWP_EXCLUSIVE;
-+}
-+
-+static inline pmd_t pmd_swp_clear_exclusive(pmd_t pmd)
-+{
-+	return pmd_clear_flags(pmd, _PAGE_SWP_EXCLUSIVE);
-+}
-+#endif
-+
- #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
- static inline pte_t pte_swp_mksoft_dirty(pte_t pte)
- {
-diff --git a/include/linux/leafops.h b/include/linux/leafops.h
-index 7c13c58a5e218..4a6c52974b305 100644
---- a/include/linux/leafops.h
-+++ b/include/linux/leafops.h
-@@ -102,6 +102,8 @@ static inline softleaf_t softleaf_from_pmd(pmd_t pmd)
- 		pmd = pmd_swp_clear_soft_dirty(pmd);
- 	if (pmd_swp_uffd(pmd))
- 		pmd = pmd_swp_clear_uffd(pmd);
-+	if (pmd_swp_exclusive(pmd))
-+		pmd = pmd_swp_clear_exclusive(pmd);
- 	arch_entry = __pmd_to_swp_entry(pmd);
- 
- 	/* Temporary until swp_entry_t eliminated. */
-@@ -634,18 +636,30 @@ static inline bool pmd_is_migration_entry(pmd_t pmd)
-  */
- static inline bool softleaf_is_valid_pmd_entry(softleaf_t entry)
- {
--	/* Only device private, migration entries valid for PMD. */
-+	/* Device private, migration, and swap entries valid for PMD. */
- 	return softleaf_is_device_private(entry) ||
--		softleaf_is_migration(entry);
-+		softleaf_is_migration(entry) ||
-+		softleaf_is_swap(entry);
-+}
-+
-+/**
-+ * pmd_is_swap_entry() - Does this PMD entry encode an actual swap entry?
-+ * @pmd: PMD entry.
-+ *
-+ * Returns: true if the PMD encodes a swap entry, otherwise false.
-+ */
-+static inline bool pmd_is_swap_entry(pmd_t pmd)
-+{
-+	return softleaf_is_swap(softleaf_from_pmd(pmd));
- }
- 
- /**
-  * pmd_is_valid_softleaf() - Is this PMD entry a valid softleaf entry?
-  * @pmd: PMD entry.
-  *
-- * PMD leaf entries are valid only if they are device private or migration
-- * entries. This function asserts that a PMD leaf entry is valid in this
-- * respect.
-+ * PMD leaf entries are valid only if they are device private, migration,
-+ * or swap entries. This function asserts that a PMD leaf entry is valid
-+ * in this respect.
-  *
-  * Returns: true if the PMD entry is a valid leaf entry, otherwise false.
-  */
-@@ -673,6 +687,8 @@ static inline struct folio *pmd_softleaf_to_folio(pmd_t pmd)
- 		VM_WARN_ON_ONCE(true);
- 		return NULL;
+@@ -3415,7 +3442,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
  	}
-+	if (WARN_ON_ONCE(!softleaf_has_pfn(entry)))
-+		return NULL;
- 	return softleaf_to_folio(entry);
- }
+ 	pte_unmap(pte);
  
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 8c093c119e5a8..e10a7e91e4260 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1917,6 +1917,23 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
- }
- #endif
- 
-+#ifndef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
-+static inline pmd_t pmd_swp_mkexclusive(pmd_t pmd)
-+{
-+	return pmd;
-+}
-+
-+static inline bool pmd_swp_exclusive(pmd_t pmd)
-+{
-+	return false;
-+}
-+
-+static inline pmd_t pmd_swp_clear_exclusive(pmd_t pmd)
-+{
-+	return pmd;
-+}
-+#endif
-+
- #ifndef __HAVE_PFNMAP_TRACKING
- /*
-  * Interfaces that can be used by architecture code to keep track of
+-	if (!pmd_is_migration_entry(*pmd))
++	if (!pmd_is_migration_entry(old_pmd) && !pmd_is_swap_entry(old_pmd))
+ 		folio_remove_rmap_pmd(folio, page, vma);
+ 	if (freeze)
+ 		put_page(page);
 -- 
 2.53.0-Meta
 
