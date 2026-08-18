@@ -4,129 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F9D0C5DF7D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 13:00:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DE5EC5DF7D
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 13:02:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 156086B018B; Tue, 18 Aug 2026 09:00:04 -0400 (EDT)
+	id 467B26B07D7; Tue, 18 Aug 2026 09:02:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12E5E6B018C; Tue, 18 Aug 2026 09:00:04 -0400 (EDT)
+	id 43FBB6B07DA; Tue, 18 Aug 2026 09:02:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01CF06B018D; Tue, 18 Aug 2026 09:00:03 -0400 (EDT)
+	id 37BC36B07DC; Tue, 18 Aug 2026 09:02:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D00416B018B
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:00:03 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5A172A3867
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:00:03 +0000 (UTC)
-X-FDA: 85114397886.11.F86FCE4
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7A66B4000D
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:00:01 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=krBssoRt;
-	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787058001;
-	b=ldEaGfj5OIFow80WltZcTv1nX627ky6Rrj1/RIm2jIkVIkxkRAIbWoLRBZ3GbM6Zp0iQgt
-	BMb1U2Jq0wbBAiAjlR01DN9OlL5XG1AtLicTk8L2oaduxGniNSZjf+BJL58EkYXxwrhZiR
-	21JdgQaV/g+i3CFO4w37cNHkbejQvLw=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=krBssoRt;
-	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 185136B07D7
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:02:29 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A8030160112
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:02:28 +0000 (UTC)
+X-FDA: 85114403976.19.69FB993
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4D7C5180011
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:02:24 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	spf=pass (imf16.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787058001;
+	s=arc-20220608; t=1787058146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wmgOUbj8BHDXCzIhBSspWfV30kk7RcENm70SlJA8E7U=;
-	b=aQpnVp537leqxJcJyh6MxtewoaXwsU7efUhnQ0Clxj1TN7Fie3Xkx3m+cQz9V9JnvTKY3d
-	WDXAsJKH4xCcjWS9UDWNDa6xth8Bdtpsti0A/3aDlmNMMzkXryiaN2tkDoCmCVDGPre0QO
-	bnkSJwjXqfBJWr0T4nbULFHztS2mIU8=
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92e7632b193so290421285a.2
-        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 06:00:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1787058000; x=1787662800; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=wmgOUbj8BHDXCzIhBSspWfV30kk7RcENm70SlJA8E7U=;
-        b=krBssoRtbLuZzFRmyDOuMAcA66Bed8IEVLwEy19pd0d/kYcx7NWrbWigc7oewLio1y
-         Rp7DVa3aTMG33o+ULSXhhL1LuDEdwOoZGyPhijh+k5UnWyan37B/sq5IKEUrjZ8TGFgL
-         TNGvr9tEHqIafXTw8mZLER4LYr8rgQ7tPuqc/qf2hffts7aNg/wt8bGMYi1skpgz5kwl
-         b9QZL7eh2sgC3CpoRxmJGJaebdyASSAiwI5Ks74uwD9cvKAE3wLIqvL2120i1L2yAl8M
-         bepWf0+NHdBaq3DUN3ZBdpcNuxQSg1QUfdVL7FHQz6lVGZKnFy7Cx7kJYNTLOP/j7tit
-         NBTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787058000; x=1787662800;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wmgOUbj8BHDXCzIhBSspWfV30kk7RcENm70SlJA8E7U=;
-        b=Q+FTX2wXkWJoZfF+8CeFDVFUrFSw7F/VAquQ8HXxHVb4RRRKdEtKAK9xK1IfkamqPt
-         boQ+pDf2+6DTNEu95v/zInsqmqVZ+wOhBo0qSG16KWz5YG/F7w8DC2+od5IAjlnSSjM8
-         42GOrHpGqJIDpDnGAohmjCP7a3WWqx1jU+3ge7Nf6CLF4a4ERQasv6vSa1aJjRkHhHoL
-         h2K3qfqzWFzumrv0e+CkLQQa8L5TxuRUgH1vyHFzW3mhzsd6memAzShmuDTCMgyf/uP+
-         E/frCY9Upwdhe3Q23H6XfiD0NFGFlVauCjGva8Wt99C3UxmIEa2IAvR24RAurVJxPmmq
-         qfCw==
-X-Forwarded-Encrypted: i=1; AHgh+RqL3bYgvIdxN+J/hPTydhWbHJKLDiO6FPSHKIyE5/nXh22PaDmZCFqv1dGPGn73Qg7S4yJM/Cd5ZQ==@kvack.org
-X-Gm-Message-State: AOJu0YwSn1HjrBB3nbcj+a6V8Nbc0BheSDSIzZa8gbP8vPf634D87mjy
-	FjiHV9vCcYh+54YQLHD0bUdDftWsdg+LniQU534V3z+Ek1J8BWzD07Eb45aws7cQ4gQ=
-X-Gm-Gg: AR+sD12qnnj/11l3vrV1gvjmOGLTZ/3MdR2fNl2Qh+opsTjZS27YWCGBPhIDCljUgAu
-	1aSzPL7Up4AX1L+HO/TfGU+rXOuTBfUg0GR7tfUWAe4BMBXqHXEpo44c+hlhosqlOEq+RTqTglU
-	71+KJN04TbMZQO4t1U8tI2pswQlVZayBtQjR+QX3vHG6QgLovQAdHag5pOwIiIwjWWdR76bukIs
-	YUCK9xJO9IAm2pYOGhw1sZHmd7uGDrF8kXrDMToa0uh/YkAyuP536HMXtwPda+HZxbQEE1gsiPD
-	hsE7OJc8o65jtwDfL3iLcU1ICJooICEP5kPCZpUYDVBFGSJSFVlj3vUzOyIxbjcPz5jQeNCyv1w
-	EGSca6jbIcRloZG/sVhRQhqcs0ejOR/bL7aCCbQ3jd8+BVnrWcyxtybAaP8k+De0RBZxef07Pr1
-	STrzfGavni57ygTMwfAy/+8M21XvTP+fu9FuKoxQ6zpTG5XfIDumw3xxTH/kq9QtaGv/YgUzRpt
-	/tWHLq/tcX++mlcY1ovoLoLMDLg2vfxae7r8t+Vy2/JuC9sMRVpYXU=
-X-Received: by 2002:a05:620a:22e9:b0:92e:6637:d98 with SMTP id af79cd13be357-936d2286961mr2640903285a.18.1787058000487;
-        Tue, 18 Aug 2026 06:00:00 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93703432242sm286024285a.46.2026.08.18.05.59.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 06:00:00 -0700 (PDT)
-Date: Tue, 18 Aug 2026 08:59:58 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Mike Rapoport <rppt@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Alexander Graf <graf@amazon.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	Saravana Kannan <saravanak@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Baoquan He <baoquan.he@linux.dev>, 
-	x86@kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arch@vger.kernel.org
-Subject: Re: [PATCH 0/4] kho: rename "scratch" to "bootmem"
-Message-ID: <aoRV7vF3v8DqGoyv@gourry-fedora-PF4VCD3F>
-References: <20260811162642.3504565-1-pratyush@kernel.org>
- <aoMdJ7hpr1GonLz8@gourry-fedora-PF4VCD3F>
- <20260817145231.GA579285-robh@kernel.org>
- <2vxz4igr1yq8.fsf@kernel.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=Ct/TH+xkZ7hqwIrnX3enDOECDcpAv+tKrYiLpUl55Kw=;
+	b=3DPRLTGzynm5vQAcn5tp6onTbEjOs0dtDioO5h1QKvwcB0JKuVSli6R2WuwcP8EVN1TxH3
+	zMEyzpIziX/YMaC43GSZJ30uFri1CkuSjTZORT8lPovC+1g0ga4+/88BRRzS02uy8nKjCr
+	ui1OTC0Yh7PkHK0y6PbvcdDlY/9e5I0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787058146;
+	b=B8FS5ntoEl+WUzk7bIKpzpxmwp+hziFRswl3Jbq6VZQqsdIh8DoVO0YdlGMxN6njgeolUd
+	JEdLECVQZ5Pqim/sX/UlcBqe+RDRV4BtUUbUlSRHc8B1oojnVklzaRj5iQOrnwKdQJoXSW
+	CluvgkS29vxxRqSUND/3ImzwQ2Ya7WI=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=none;
+	spf=pass (imf16.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn;
+	dmarc=none
+X-UUID: 067491609b0511f19a56ed5b684f684d-20260818
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
+	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
+	DMARC_NOPASS, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO
+	GTI_C_BU, AMN_T1, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:5b11598d-57da-4644-8347-efbc18028d8d,IP:10,
+	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:35
+X-CID-INFO: VERSION:1.3.19,REQID:5b11598d-57da-4644-8347-efbc18028d8d,IP:10,UR
+	L:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:35
+X-CID-META: VersionHash:7db8b62,CLOUDID:9cdabe40f9b50419632787e2e413e574,BulkI
+	D:260818210214G3XWLUVL,BulkQuantity:0,SF:17|19|38|66|78|102|127|865|898,TC
+	:nil,Content:0|15|50,EDM:5,IP:-2,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,
+	BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_ULS,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 067491609b0511f19a56ed5b684f684d-20260818
+X-User: husong@kylinos.cn
+Received: from ctao-book.. [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <husong@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1956968772; Tue, 18 Aug 2026 21:02:11 +0800
+From: Song Hu <husong@kylinos.cn>
+To: akpm@linux-foundation.org,
+	mhocko@suse.com,
+	mhocko@kernel.org,
+	joshua.hahnjy@gmail.com,
+	willy@infradead.org,
+	shakeel.butt@linux.dev
+Cc: linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	hannes@cmpxchg.org,
+	roman.gushchin@linux.dev,
+	muchun.song@linux.dev,
+	zhuhui@kylinos.cn,
+	audra@redhat.com,
+	bingfangguo@tencent.com,
+	Song Hu <husong@kylinos.cn>
+Subject: [PATCH v2] mm: memcg: release the css reference when a stock slot empties
+Date: Tue, 18 Aug 2026 21:01:35 +0800
+Message-ID: <20260818130135.154315-1-husong@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2vxz4igr1yq8.fsf@kernel.org>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7A66B4000D
-X-Stat-Signature: 1aioshtfu5ouextutx6t3pwzkgwdhb7u
-X-HE-Tag: 1787058001-673996
-X-HE-Meta: U2FsdGVkX1/IKDMoBDz/wF/K4vBjjeD8knKV0wSQTb7DlW+BKDRxrLBeA5WdhWAdvAJTwZO1wBfKHtzXLRSGPFdEPEWlvlaWw3je9cLc3zHKg3xBj1v7a2+Lx4gzf/xBTmDMw3ahrhLkFUax/1z+3ItxyIxFwe6mr2+EAsD7SC51GnGNXK+EyVHOQ21tY8TOBU2iXCxxP8qYqM0PFkRooznOUEKMagVbP8l6T/JMa4I4kjdjxEjsiAWQy3Tqm55fFbhsTV3l31/ztltshuUlIQivS2hIF3KYi6tt+FPkup/ZlKdW5R4WfJmsMrtnDrqda6d1gFydMAmFIB3BHfSzaB9xkPAvmUGq5xzk3LpMy2c3h70zEC2VhBRSoaOBLANdO3HBH1jmv0hALTA8Mc/wDv42mt//FveU9vGL4dxLTjfIj1N2M4cuWHjrlnrzyufAMWS+pW51+Ad6m2qAW7zIEUk2bk1/ITATtK1dnaj75+HeZ/0YtDFUyylf8nr2P7fJulgTgsOyGbEhDkycEUlVjz5neHq39W8ihCkLMTewQco0rIn0qy72sEBEBunPMhubPd6vmjtO9SXAKEd9+69k4T5Is9gn6jzSj35BV+kwg6kGLiLD2VAqGRv5aDfgWctC1EQRjnVW2dboY1G364GKjNL5XOucgLFO98cXlYC82CbYTHbbx6FKBNU8lsTGRumL74uQWxAzCj63bB1ZBzfIVx3+h/StrCHaRtazhzH5ejEZtwdiLqdWw+vAaTfnMcgolfcM7shZBMY6Y1Y3e5sn0AJ8vHg7R6KAaftEnnlS+JIB7byu3KmGs3yy5enB6kWFWQcb75kv8u/JWd+vGLPjwsHU2/ZekO/SEIrLdVx2tIgjrFytV7LPx1N66MhlRQuF4xLl+p5vKrYSPQ0TJSWKxEP0XGGrJv4AnkiC3vR7dv+pqprvD3jJwwBeXy6f3JlAcS8b4NzLiT7WL0+jGcR
- Jo06QmMG
- TZBHYwmVbhs8JCKbFwDLwZuMT4/7wHsT6dYIQrWVf7DkmxnsRmSB0V4cTk5H7lENPNnzQoPbnZXAD6LrebfDlo2FVQygnmdyPqmyHyzvXQEOIrrRkqAkYG3RmgpUfCVNmgnEuXcrA1QAILY4lmPZ6AsYD1wbAuNpZMjEWRZSVD88pImO9JoQ7utlFuTIEmfzqfw0RMyi+fmacpm6BVApvLbw8ba/xMlzkqh40+SPmHt4sPazg3ZM+K2L8damy+wENRR+d0Cnu81fZWZJ8Gv/CWxWjkgH4AKPsjtj9xhzoTrKF9xb9v80R5My0woq+CUj491saOOnXk99Fx9M=
+X-Stat-Signature: cdd4yax889ygek9nr7gxafu8spnid6tr
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4D7C5180011
+X-HE-Tag: 1787058144-261402
+X-HE-Meta: U2FsdGVkX181IaUCqpjuJbLtsYX8yF6vgxvc7hrFdtylJ6GdcZV3rADwjp/AHDyGBqVGMB2wTjBSeo+K7oT97g9d9Zd+ofMUlEhQeZaBgBwFN0hVA3umUlrPxJzuOFUkJaAxtcr148JxZcMO52levQd3PUCNWjwTUyWC44ld6aZolL0EpA5kSJwqDRmkDY2QlRuI8oWAJnBcLCN8NUroC1stRyVfc3BVN86EWYWOmDFIU5axfdB2C3VRp7Iu0TphR3WKAxHJDGyEqZoL74KcfqlMyrfNWztDA9/wNaTcTBcuPqVe4//1SjIECXa3mmpQOMMpeUJoobmVeVLcabRfp9m/F67baIy+j85YtGmxNtrTAgDG1fzSHwYCzVM3x2PFhbExpF1t8WTVW/iaWY3JTgdUSFgM1tZR8GEs38Z7CPAq7jLVw3avfCEwnTgKJh7XWzrkiL6FfCSRbEmW46D0ZpaLEbN/pSxFSi19HzHH+rOa8jxcZ8WXc++bdH17uwJkCxKYGnrjXO1OD/JGVTp0QE5Z4VG6CodeJ1Aa2PaRIdsM1rmsA6zuo/9Wet1+wBAMBIlAUVns+N0NH/DzXOoI46k0OvfvDkGBJpr9zNXY4ZLvaIxuNeuVryLfQQVP+cvLg9/s+YTP/bwlMYUOwUL2L+nuydsdxQ/PJmDhII1vtR+tLT+deTvgG2eHV7YnVGFkqvFtkaJLgZ5rxf9d+AAlJCiaUa9mC0qjF4bAa9YCFCB7roRVjjkgkj4UCpkhFlH99AQGFusi2agNe4BHU466h08k8AC9/UbNpPR9eOvZb8PPGkkq+KLd8Cts+6/z3MK6DWXNM+HVb1N6cQthfMoY1tTPGnEDbLdTMMGSfCcvbWJupC0luvy0iV7egI3VoMVFtRmULKYZhaLayKNk1Fr8zxQ9hKQmhTVDJ5h1gSGZNxhgjCNRSTSon9qGr0I7jfYhgwbEFOF2dQrqX9L6LX5
+ b1DiV5Vp
+ GE3/fhCvZ/g3iUf4rUf9UrYiDEr4V1sUdrApKCLyPgrva8Qjp22j9Bd6Ph8+7NtPsWC3dZ30TURywhIq2PaZt2yVSeI3+dlFOq0aS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,40 +114,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 18, 2026 at 12:58:55PM +0200, Pratyush Yadav wrote:
-> On Mon, Aug 17 2026, Rob Herring wrote:
-> 
-> For patch 3, I am honestly surprised at how large it ended up being. But
-> I am in principle opposed to the idea that we should not do any
-> housekeeping because it might cause "churn". So I think if the end
-> result is better then churn shouldn't stop us.
->
+consume_stock() can drive a stock slot's nr_pages to zero while its
+cached[] pointer stays set, so the slot keeps pinning the css
+reference that refill_stock() took.  The offlining drain only
+flushes slots with cached pages, so the reference is never released
+unless the slot happens to be displaced by an unrelated charge or
+by CPU hotplug, and the memcg lingers in the dying state - up to
+NR_MEMCG_STOCK (7) of them per CPU under container churn.
 
-Not really concerned about churn itself, just that I didn't fully see
-the value in moving from Scratch to NoPreserve - these things sort of
-read the same to me.  The additional context you've provided is
-reasonable, thank you for helping me understand better.
+Keeping the slot populated past the last page only saves a
+css_get()/css_put() pair on the next charge of the same memcg, and
+costs more than that: the offlining drain has to know about empty
+slots, and refill_stock() cannot reuse them either, so a charge
+under a different memcg evicts a live batch through the drain_idx
+rotation instead.
 
-> 
-> I renamed the commandline option because similar things have been done
-> in the past for other options too.
-> 
-> See commit c5bfece2d612 ("nohz: Switch from "extended nohz" to "full
-> nohz" based naming") for example. It renamed "nohz_extended" to
-> "nohz_full" because it is "a bit opaque and vague".
->
+Drop the reference in consume_stock() when the slot empties.
+Empty slots stop existing, so is_memcg_drain_needed() and the drain
+path stay as they are, and refill_stock() reuses emptied slots
+directly.  The cost is one refcount pair per emptied slot, at most
+once per MEMCG_CHARGE_BATCH pages.
 
-Also not opposed to the rename, just worth the question since it will
-break existing users. I know boot args don't have ABI guarantees, but
-some are used more than others :].
+Fixes: d1a05b6973c7 ("memcg: do not try to drain per-cpu caches without pages")
+Signed-off-by: Song Hu <husong@kylinos.cn>
+---
 
->
-> That said, I am not opposed to keeping backwards compatibility if
-> someone _does_ complain.
-> 
+Changes since v1: drop the reference at consume time instead of flushing
+empty slots from the offlining drain, as discussed with Michal Hocko and
+Joshua Hahn (full-stock drain cost, refill reuse).
 
-I think you've made the case well enough here, I appreciate the help in
-understanding.
+v1: https://lore.kernel.org/all/20260817025917.66233-1-husong@kylinos.cn/
 
-~Gregory
+ mm/memcontrol.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 17da1f43b7d3..1271d390b617 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2140,7 +2140,12 @@ static bool consume_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
+ 
+ 		stock_pages = READ_ONCE(stock->nr_pages[i]);
+ 		if (stock_pages >= nr_pages) {
+-			WRITE_ONCE(stock->nr_pages[i], stock_pages - nr_pages);
++			stock_pages -= nr_pages;
++			WRITE_ONCE(stock->nr_pages[i], stock_pages);
++			if (!stock_pages) {
++				css_put(&memcg->css);
++				WRITE_ONCE(stock->cached[i], NULL);
++			}
+ 			ret = true;
+ 		}
+ 		break;
+-- 
+2.43.0
+
 
