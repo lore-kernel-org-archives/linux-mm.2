@@ -4,103 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDB21C5DF7D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 10:59:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 724F3C5DF7D
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 11:04:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5E446B0280; Tue, 18 Aug 2026 06:59:05 -0400 (EDT)
+	id 391956B0276; Tue, 18 Aug 2026 07:04:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E36316B0288; Tue, 18 Aug 2026 06:59:05 -0400 (EDT)
+	id 368E06B0546; Tue, 18 Aug 2026 07:04:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D725C6B028C; Tue, 18 Aug 2026 06:59:05 -0400 (EDT)
+	id 280116B07FC; Tue, 18 Aug 2026 07:04:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B05476B0280
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 06:59:05 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 44CF0160B42
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:59:05 +0000 (UTC)
-X-FDA: 85114093050.10.419B1F5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id AD92540002
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:59:03 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ihoilFAp;
-	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787050743;
-	b=bGdvnGCCwMwYD2gI4+TXAAyDrRTyCYxkUwGV7cx08letfma0QXhDLDwHWxeifK6gdvJsrx
-	IbmzyaN2f8ayE75zc5zbXQ1MZmtmR3htTE5LWyvg+ItWHULR+Ct6jx9XXIWIhfv+7/Ipja
-	dsH237LdlOHXAs6J9Y6lTU+Lo93JMEI=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ihoilFAp;
-	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BAFC6B0276
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:04:11 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 989F3A38F5
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 11:04:10 +0000 (UTC)
+X-FDA: 85114105860.13.0D160A6
+Received: from mta1.migadu.com (out-175.mta1.migadu.com [95.215.58.175])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 07207140004
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 11:04:06 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="V5L/hW8R";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.175 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787050743;
+	s=arc-20220608; t=1787051047;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Koz3r/AfThNLRrBgrtFERGCjlw/bQbRflD0M4YMQKNo=;
-	b=iEnv35EUrY3zcIkZq14srNA8G5XWChOt1cBk1FBoS0zaZIx2ua2QlOS85UT98gEYRko09p
-	NzuTSOqzLWVjyY2JUXs7zGxkXJh+M7+OVWY84qlV85xdzmy/db0hU/k0I04UdyNR42effW
-	YiZZasTPiMS8G7NATK1Eqdmq3dVB3HA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 34D09601E0;
-	Tue, 18 Aug 2026 10:59:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3811F000E9;
-	Tue, 18 Aug 2026 10:58:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787050742;
-	bh=Koz3r/AfThNLRrBgrtFERGCjlw/bQbRflD0M4YMQKNo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=ihoilFApSOAE34vYAawnEXEPs2f7u8XzfhkPsgG2g14u5Q5sWxPAMOf71YALTPv8v
-	 fZyOdM6N19EY1DCuJzEcAgnNo9BvWctVjcxlxlZit/W1UkRoq7AnILj/k5I3fXHckj
-	 grBgpSIdu0Uxj74rIVP2vJjPjRmaX/GeuFFr/SaBlUOHJG0teMz5FRbtdoS1mfTTJB
-	 rv0RjYc0NXjBPQIsE0OKcZEy6Z5T+gJWmnkPZfyepE74gvHw2bKL7FMJuDxlOVEaTm
-	 mjg1MlR4odsf+vaZlanjE2Ww8L2FXJYF7SZMeEpBWtRQBMi5LcfJ29f2343Zn26qLX
-	 CFZBDHwCrHJwA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Rob Herring <robh@kernel.org>
-Cc: Gregory Price <gourry@gourry.net>,  Pratyush Yadav
- <pratyush@kernel.org>,  Jonathan Corbet <corbet@lwn.net>,  Shuah Khan
- <skhan@linuxfoundation.org>,  Mike Rapoport <rppt@kernel.org>,  Pasha
- Tatashin <pasha.tatashin@soleen.com>,  Alexander Graf <graf@amazon.com>,
-  Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
- <david@kernel.org>,  Lorenzo Stoakes <ljs@kernel.org>,  "Liam R. Howlett"
- <liam@infradead.org>,  Vlastimil Babka <vbabka@kernel.org>,  Suren
- Baghdasaryan <surenb@google.com>,  Michal Hocko <mhocko@suse.com>,  Thomas
- Gleixner <tglx@kernel.org>,  Ingo Molnar <mingo@redhat.com>,  Borislav
- Petkov <bp@alien8.de>,  Dave Hansen <dave.hansen@linux.intel.com>,  "H.
- Peter Anvin" <hpa@zytor.com>,  Ard Biesheuvel <ardb@kernel.org>,  Ilias
- Apalodimas <ilias.apalodimas@linaro.org>,  Saravana Kannan
- <saravanak@kernel.org>,  Arnd Bergmann <arnd@arndb.de>,  Baoquan He
- <baoquan.he@linux.dev>,  x86@kernel.org,  linux-doc@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  kexec@lists.infradead.org,
-  linux-mm@kvack.org,  linux-efi@vger.kernel.org,
-  devicetree@vger.kernel.org,  linux-arch@vger.kernel.org
-Subject: Re: [PATCH 0/4] kho: rename "scratch" to "bootmem"
-In-Reply-To: <20260817145231.GA579285-robh@kernel.org> (Rob Herring's message
-	of "Mon, 17 Aug 2026 09:52:31 -0500")
-References: <20260811162642.3504565-1-pratyush@kernel.org>
-	<aoMdJ7hpr1GonLz8@gourry-fedora-PF4VCD3F>
-	<20260817145231.GA579285-robh@kernel.org>
-Date: Tue, 18 Aug 2026 12:58:55 +0200
-Message-ID: <2vxz4igr1yq8.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: AD92540002
-X-Rspamd-Server: rspam10
+	bh=G/0s4yVGaQ2+n+sedVItDX72au6W2onzWr2cter1pAA=;
+	b=IDHzleQsUJ1q3wGKvcZu3exK+oEOSlk+ioBpdc9FVXuFOmjPgiGBswHBz/c+J52dNTzafC
+	Vd62Ohg9mfE3cnOEby7VVQ2FaB1vYzinflHhAR3cHTTkoseAuItnylTzPKGdXz3AX0PiBb
+	DAUsqpPuLRu/bmjXFdFNZNc7zkJHCsw=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="V5L/hW8R";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.175 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787051047;
+	b=eWCoFmQFescjO0KDqz7tmRn1FIupfvDF1Y3DL6sG14YoUp4nOe4ikolnElhxidGOzJ8lqz
+	xsOCHRsDbq6NqnwkljjHuOm0fzOJmxmID9IJjP7ZxDUFXzrgk/XCmm1jEDcYHh2yWczv43
+	tapyuEnJgsH+f6kYLIXaCpiFhyall2c=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=MWi4mSbgDzBcEms9pNWhuTCHSm4bPkMWdlMUVkjUkxk=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787051042; v=1; x=1787655842;
+ b=V5L/hW8RUYoITH5qbQVyLVBtzMWyvQD2ab3lU7BY15C4bDbhPmVFW1x6Shxguyq09mcB51Fv
+ I1Lfj8aQbN05sa1Hd82iXtkgXhwCBKQlB1mB3q7l41XNgG8t5R9VTb2YJNNhWcrBeckA894AjcK
+ HbTZGrzZL602ARvbjgyQNxZI=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (2a02:168:f6cc:0:a69a:f3a4:8fdd:3332)
+	by smtp.migadu.com with ESMTPS id 7a9325f046949f8f;
+	Tue, 18 Aug 2026 11:04:02 +0000
+X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 18 Aug 2026 13:03:57 +0200
+Message-Id: <DKS0Q1CR4APM.3JMJWR7UGI30U@linux.dev>
+To: "Yosry Ahmed" <yosry@kernel.org>, "Brendan Jackman"
+ <brendan.jackman@linux.dev>
+Cc: "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
+ <dave.hansen@linux.intel.com>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
+ <david@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike Rapoport"
+ <rppt@kernel.org>, "Wei Xu" <weixugc@google.com>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Lorenzo Stoakes"
+ <ljs@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <x86@kernel.org>, "Sumit Garg" <sumit.garg@oss.qualcomm.com>, "Will Deacon"
+ <will@kernel.org>, <rientjes@google.com>, <patrick.roy@linux.dev>,
+ "Itazuri, Takahiro" <itazur@amazon.co.uk>, "Andy Lutomirski"
+ <luto@kernel.org>, "David Kaplan" <david.kaplan@amd.com>, "Thomas Gleixner"
+ <tglx@kernel.org>, "Patrick Bellasi" <derkling@google.com>, "Reiji
+ Watanabe" <reijiw@google.com>, "Sean Christopherson" <seanjc@google.com>
+Subject: Re: [PATCH v3 21/26] mm/page_alloc: implement FREETYPE_UNMAPPED
+ allocations
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+X-Mailer: aerc 0.21.0
+References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
+ <20260726-page_alloc-unmapped-v3-21-6f5729aa9832@google.com>
+ <anJ45UK0MWvskzlK@google.com> <DKPL6YQLP6NT.1747A5QR1D8VH@linux.dev>
+ <aoOsiMyfWbkCbV8F@google.com>
+In-Reply-To: <aoOsiMyfWbkCbV8F@google.com>
+X-Stat-Signature: wq87bu5abhcnj7wdhpjcbwkodmcmobnk
+X-Rspamd-Queue-Id: 07207140004
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: ndnwco8r1epr6dy4dbngpmxbj788x9ia
-X-HE-Tag: 1787050743-936849
-X-HE-Meta: U2FsdGVkX199tZcexhpb4nHGRfmTHAjb31YTG4wV8XKDMOTkaEax10pbAymomklxyafA/euxO/uVotO8uJ7Mnh49/tpgudZC/8PotIkj0B+V7mODy8rwqXhsyAyPYRRn+EFM24nMedgBz8l+LS4KjD/3i4RqG0lQ1mREJUCzdYei4CNA8cj1O9/3OtUceSxyb/R3iguJ4GT/jJUiS2aevksjSfeexDlGemdnlTL572wQukopYau35pcSPbMaDEUTeov4KxNQ878B2pG0RtypmqcK2vEH7VgqJPriP4+xeeqxrxTBV9T2LWo6Am1mhrE68vh6oKA98oqvTEDq+dSw5cITwj/JuFviLf6FH6MrgMKLJ5NEGF651bV9NTQ+l4AhpllZpPCQWkFsNLetDTCP5gOW3dcdoY3W3pONYmKJ+cBxkfuzh3Na6iEouCpyj/qIu4S3DZL5IsUEHoaKawW6k8Baibl2MLXv5Rtxr+lCH1q+ubpjz1ZFvviEHZ1YFLFL9EfVSxCCX8m4ewFC1W5Jajmmoj3EvlHt6gq8N4hoGjUcfc5sZ59zqgNret5zlnzFIRXpo45liBgvTUNf/YBgevhkW86YPYki4S0WIKYb/07/LAFLD52HlO5jBHaI3qIkJhxkKXZc8xN3raEqmcaGo9xMBlJfmE4YN6feNkcBUdUSAoj17LTqLMWXjTUR1H5P3w8pJoz7lDlaHzxXmrmD1xnJobrduzDo6sO8KYha6V1M8FQJkaaoY1BpCsq0LsrW1NSOGPND2HipweMMAI4Rp0bs48qC+Q0/9nYzVKVLQ4F57Fromx0FS7XKpI82qMrwT25UFj8IMkF9u48qZL58ghSoEtlobth3NnZhUfhk1kyhzThjcPi6g02KgZX7V0UtB3clkvcaMnJzR0YkmZhi5z0gtz4mTFT8PzBUgaz4ZmTEDN+XPPjQd7X2OuEu3MxDunmmTm3gwSWGXsBtl72
- 38Tn9V5c
- U8s2btbH80SkgJVxwJ1+W/wKUo1VTfRB1UoIbYnTAOPRfOg71ToLxqcN5g99ahvvSaE+BAUUEiddrFAJZDNtcykfxBT2wjYKn5gwp6yCE8GqlxU/RGQOaeYCmg+GS7c0S/R5MFYHwcV3ovBmLbMNbSkNE17P8c70Y3cNB627L/4TlX9bJMjqsQnZPIW9W6BhRLNiaGZqKxgZXPtkEqts3eeBn34+jhRpewqg77aKSVtFD6Yc=
+X-HE-Tag: 1787051046-37370
+X-HE-Meta: U2FsdGVkX1/gM9dlEiXk/56ybsK5UxHUEcpEgDTjZs1vgSQIM/iajgnpLUGEgGmG2qkBe8n3fUtZYsm+yyV5gXLyuU/+Nj1UMPPC6Decp13bE1uC/sbZ0D6Qcav7P+ie6KNHIVHa2KfguhiA23Kyx6tbYb/Pg0c3E/yQO3YSNO7brUB9hJs6VVFHVW9j7WXKN1Hnyy1DF6Y+xFfutShqfc72Mv7xRc6mayK2GjYRo71k+LPFtUP09q1wNMcuawXK87kuJgCx9mbj1mgwflHliqDMKRHzO8XT2WJDg4S5fGWp+KDkmHUXiVOfLSgBzKtjfvdDL229cklgjitoRgXUxBdSy8eXk3Tgr57dXA7wFg5HlsrhK8zqm/6lB969l+ikbfchKvo1LEoW4bxvLD/2OoWqNJPLi5WRpXukXXtP+GZIjIETLkL0j88PyTapRTKcfhR+BswqcvN87IL8HHmnu0tPN1lu5tX9Ritz/dx8lDw3NR9Io2KZTRq/JHnklhMAxgoZl+W+74V4/T998+lk6yGLRLKA/Bg8bzGjvc4c9AzgT2SkOMdPwtY1MqrH6UrEIECP42BEFnhvauLWJYYO0SH9eYxuzEzXQnm7MAKvEIDLNMsW/62Au9V4quy6e9YSQfKX9hH3HfbHLR3PPx92MKdbIFR2vrNuuYfriT7BGeh7+1DigxLbKLM7oniW4UdPTl84KwW9EPDihGzA6EcK5/2N2Sn4y7zPf5FVTVRD0zvYXdIo5jH/vThrQMTzkONoNZnmRRCe+bLI4rLz073fNfcgu+CVsCpGAUj6MHJ6VSwgKuWuTMrHTA4a1MgJGB0XGDSq0jwjbzMZaV6kgA6IwKdPoG6JSc/nZWzE6XthpjIUdLUCrEU3bP0rDMANao+9CQzCMcoohvdIfTS2mDftCKj8eyZwjxIyUqy6eGxXNEHHN7V8pmWKUXS2KqGL7HhbwyRR9jCjkBlYJnmUfsW
+ 0veeo/3x
+ NCVnpDbgF7GiIjmgmCOC0KnZxG7oOc6+PzgeQbK7wD8rVq/36kb8jFnlkGQ2QBtOBPCng6o9ba/clGqrxoak54FTquYHAk0S5MKkMUqtsZNRyXM/7vbVDLPw3/SKaJH4dhWYVINizq+tYHI6aaji03rF9GcSeZZkdlVcy3EU7ieLr8mxdboOxVMnJEzEY5MxF+yjl9n2++N1uCjTI7bmMseLvHfRGc9lRGB9tRA00H1omC2qO/Czz9kKvZzsAjIoIPw+XCAJF33e9oqK7bD6zEqfoblwPV+/FHXEGdT8wNechBOMMWWPMUSQrMTpccy8TCybqukpcmXNtgztaHYnozhXa0aFin8ixOIlWaZQXnijW/DKZR7IjNqLzFqB4PedVAYf6OvCfYekmaLRrV2nN5hcSng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,93 +106,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 17 2026, Rob Herring wrote:
-
-> On Mon, Aug 17, 2026 at 10:42:00AM -0400, Gregory Price wrote:
->> On Tue, Aug 11, 2026 at 06:26:36PM +0200, Pratyush Yadav wrote:
->> > From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
->> > 
->> > The term "KHO scratch" is vague and overloaded. It does not accurately
->> > describe what the memory is for. This was discussed previously at [0].
->> > The conclusion was to rename "KHO scratch" to "KHO bootmem", since this
->> > is memory passed by the previous kernel for early boot allocations.
->> > 
->> 
->> This seems like a lot of churn to just rename some stuff, especially for
->> a term "scratch" which is very much understood to mean "temporary
->> working memory region" in common computing parlance.
-
-Gregory,
-
-Maybe. The people who work with the code on a daily basis (me, Mike,
-Pasha) think the rename is worthwhile because it helps us grok the code
-better.
-
-I think patch 1 and 2 should go in for sure. They make a noticeable
-improvement to memblock's code. Without that, memblock might have some
-memory marked as MEMBLOCK_KHO_SCRATCH that is part of "scratch" we got
-from KHO, and then some other memory also marked as MEMBLOCK_KHO_SCRATCH
-that we discovered at boot. Then later, the "scratch from KHO" needs to
-be initialized in a different way from "scratch discovered at boot". The
-rename to NOPRSRV makes it way more clear what the properties of the
-memory are and how memblock should use it.
-
-For patch 3, I am honestly surprised at how large it ended up being. But
-I am in principle opposed to the idea that we should not do any
-housekeeping because it might cause "churn". So I think if the end
-result is better then churn shouldn't stop us.
-
-Of course patch 3 has a lot of potential for bikeshedding so we can
-argue all day on what is better.
-
->> 
->> The boot param name change would also cause breakage for existing
->> systems that update and depend on the scratch parameter.
->> 
->> Is there a non-verbiage reason to justify these changes?  Living with
->> "scratch" seems better than potentially breaking folks.
-
-I renamed the commandline option because similar things have been done
-in the past for other options too.
-
-See commit c5bfece2d612 ("nohz: Switch from "extended nohz" to "full
-nohz" based naming") for example. It renamed "nohz_extended" to
-"nohz_full" because it is "a bit opaque and vague".
-
-Or commit 9406415f46f6 ("sched/debug: Rename the sched_debug parameter
-to sched_verbose"). Or a94e88cdd805 ("ACPICA: Tables: Avoid SSDT
-installation with acpi_gbl_disable_ssdt_table_load."). Or 632ff6170647
-("x86/microcode: Add microcode= cmdline parsing"). There are a handful
-more.
-
-So I think there is a bit of history of command line options being
-renamed to names the developers think are better.
-
-Also, I would imagine very few people are using kho_scratch= blindly.
-Since kho=on already does a pretty good job of automatically selecting
-the sizes, most people should not be using this option at all. Manual
-sizing of scratch areas is tricky and should only be done very carefully
-by observing each system's characteristics. And the numbers should be
-re-calibrated on each kernel upgrade since a new kernel might use more
-(or less) memory at boot. So really, I think the change is a lot less
-disruptive than you think.
-
-That said, I am not opposed to keeping backwards compatibility if
-someone _does_ complain.
-
-> I don't think these are the first breaking changes. And if the changes 
-
-Rob,
-
-What do you mean? None of the KHO's commandline options have changed
-before. And KHO has no uAPI to break in the first place.
-
-> are fine, then that means more breaking changes are fine, too. So why is 
-> this upstream at all until the design is settled?
+On Tue Aug 18, 2026 at 2:55 AM CEST, Yosry Ahmed wrote:
+...
+>> [0]: https://lore.kernel.org/all/20260805-shivank-gmem-migrate-v3-9-00d8=
+bdec4e1d@amd.com/
+>>=20
+>> > I wonder if we still need a fallback case where a pageblock contains a
+>> > mix of mapped and unmapped pages. We need to carefully handle such
+>> > pageblocks:
+>> > - For unmapped allocations, we need to unmap the relevant PTEs and
+>> >   potentially do a TLB shootdown (if they were previously mapped). May=
+be
+>> >   we should always flush the TLB for simplicity for now.
+>> > - For mapped allocations, we need to map the relevant PTEs. No TLB
+>> >   shootdown should be needed.
+>> >
+>> > Assuming unmapped allocations are always zeroed by the users on alloc
+>> > and free, we don't need to worry about zeroing pages either way.
+>> >
+>> > We may want to track the number of unmapped pages in such page blocks =
+to
+>> > now when it's fully mapped or fully unmapped and change its type, but
+>> > maybe this can be a followup if needed.
+>>=20
+>> ... However, yes this might be unavoidable despite what I said above.
+>> This was also DavidH's feeling when I chatted to him a few months back.
+>> The hard parts of it are a) the tracking as you hinted at and b) in the
+>> general case that means allocating pagetables.=20
 >
-> Rob
+> I am considering a simple-ish scheme to avoid per-page tracking and
+> potential TLB shootdowns in the freeing path (which prompted async
+> freeing internally).
+>
+> What if we just always map pages in such tainted/mixed pageblocks when
+> they are freed? If they are already mapped, nothing to do. If unmapped,
+> we map them and zero them. No TLB shootdown required.
+>
+> We also shouldn't ever need to allocate. If the pages were previously
+> unmapped, we should have already allocated any necessary page tables.
+> Right?
 
--- 
-Regards,
-Pratyush Yadav
+Why would we already have allocated them?  In case it wasn't clear, I'm
+talking about breaking down huge mappings here.
+
+> Zeroing on free may still be bad, but not prohibitive, and hopefully
+> this is only a fallback. We'll need to figure out where this fallback
+> fits (e.g. before or after reclaim/compaction).
+
+Yeah zeroing seems tolerable.
+
+>> So yeah I think it's probably doable but I _really_ want to avoid doing
+>> it in this series if we possibly can.
+>
+> Yeah I am trying to figure out whether the issue is theoretical enough
+> that we can do it in a follow up.
+
+I think it's definitely theoretical enough if secretmem is the only
+user. I hope given that guest_memfd usage is gated by a userspace opt-in
+that it's also automatically OK for that too...
 
