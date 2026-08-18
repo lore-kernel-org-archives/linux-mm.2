@@ -4,92 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22D49C5DF7D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 17:00:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99D5AC5DF81
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 17:02:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11B2C6B027B; Tue, 18 Aug 2026 13:00:00 -0400 (EDT)
+	id 899DA6B018D; Tue, 18 Aug 2026 13:02:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F39A6B04AF; Tue, 18 Aug 2026 13:00:00 -0400 (EDT)
+	id 84A476B018E; Tue, 18 Aug 2026 13:02:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00A496B0743; Tue, 18 Aug 2026 12:59:59 -0400 (EDT)
+	id 761CD6B018F; Tue, 18 Aug 2026 13:02:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D0E356B027B
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:59:59 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5E5BDA0247
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:59:59 +0000 (UTC)
-X-FDA: 85115002518.02.294BB12
-Received: from gentwo.org (gentwo.org [62.72.0.81])
-	by imf22.hostedemail.com (Postfix) with ESMTP id CB5A0C000A
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:59:56 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gentwo.org header.s=default header.b=hTjyAQZ5;
-	spf=pass (imf22.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
-	dmarc=pass (policy=reject) header.from=gentwo.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787072396;
-	b=22BO0Pfv3JAiiUqe+Rew5IW5/3dC2roWzlzX1PqgEC5ZAz6tjILhzyK0sEqnstHiRIlWmy
-	VXY5wgD8kECeyECbLDFyUmqr/r1ax7sHOhYUNV1VPHo3cbaFvwXOpZemuyiY97iXS8yCZm
-	dSZvUTAAe3VPX06dWVguFjBmC1TF9AY=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gentwo.org header.s=default header.b=hTjyAQZ5;
-	spf=pass (imf22.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
-	dmarc=pass (policy=reject) header.from=gentwo.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787072396;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 496A16B018D
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:02:34 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C048B80180
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 17:02:33 +0000 (UTC)
+X-FDA: 85115008986.13.5C8E65C
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	by imf13.hostedemail.com (Postfix) with ESMTP id ABB0E20018
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 17:02:31 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=f20eCJui;
+	spf=pass (imf13.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787072551;
+	b=uIdgHi5QztrM9A9UYLOm1+Y/z2EwKIH+9wK3fFZVYfSedowTxX+NiqfQmlhHUNjIkcYO/O
+	ndQvnjJChyEaIqmGYloBQG468E0XS5GUEQKoBZTtnmYN18req+vUoES4RfO6/fYORR3jpi
+	6kgtgY93umdko+WKGDXpBci/wo1JvrI=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=f20eCJui;
+	spf=pass (imf13.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787072551;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hjhuD+7fHMoacORpzwa+v4G/gOBUrswHbm+lgOme158=;
-	b=WZRo3OorZfljEhawZ9DgN5etok6/OfH+eJ7zN18lDoplDRz6eSh+cQcYhRjefq/e+lqBxl
-	qqdt+RnvcRyb9XxsoJ13S+kK6fxft13yCJcvyYFRAlyOibEKqnYbrKydw9EQzzGu2R0/l2
-	+l4rYgX/4pHUpSPgCJRlgDxDWhLQZL0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
-	s=default; t=1787071733;
-	bh=hjhuD+7fHMoacORpzwa+v4G/gOBUrswHbm+lgOme158=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=hTjyAQZ5wY8qRTt/Xh7TTvHKkJecAjz1LYJrlmFU2BBVR8nAdGDCfM7A785vhWnoc
-	 iE8bvWWGtj6/lhtv1mrf1cHM+RCINhw74H5Iqu8EOK5uGEJC2p2tRbfA9PNmLB9ltj
-	 4kaH+jkwbD8e6XmF9Zk7WEpKKTjgNxHnZsxeSKeM=
-Received: by gentwo.org (Postfix, from userid 1003)
-	id 1E4C2402B1; Tue, 18 Aug 2026 09:48:53 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-	by gentwo.org (Postfix) with ESMTP id 1B11B40293;
-	Tue, 18 Aug 2026 09:48:53 -0700 (PDT)
-Date: Tue, 18 Aug 2026 09:48:53 -0700 (PDT)
-From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-cc: Will Deacon <will@kernel.org>, 
-    Linus Torvalds <torvalds@linux-foundation.org>, 
-    "David Hildenbrand (Arm)" <david@kernel.org>, 
-    Mark Rutland <mark.rutland@arm.com>, 
-    Yang Shi <yang@os.amperecomputing.com>, 
-    Ryan Roberts <ryan.roberts@arm.com>, dennis@kernel.org, tj@kernel.org, 
-    urezki@gmail.com, catalin.marinas@arm.com, akpm@linux-foundation.org, 
-    hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-    linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
-    linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
- for this series)
-In-Reply-To: <anTCM94KoxY2nRaf@lucifer>
-Message-ID: <5fdbc331-8067-a0b1-6a66-5be9226a3f15@gentwo.org>
-References: <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com> <amCPBrdltFSE_fEf@J2N7QTR9R3> <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org> <4887267b-dc26-4c33-96ca-8dff054a0d1f@kernel.org> <anHuLy52o5S9Nlwp@lucifer>
- <CAHk-=wgJ0wO=T+1G5zJwoeE-N4bAptCNo2TFirK364iPhnGG6A@mail.gmail.com> <dadd8268-3cef-3a3a-e277-b593bef3b788@gentwo.org> <CAHk-=wha5um2rB9u7EDeEhZJyaWOUFye-wTKzsykQqJH41RNdw@mail.gmail.com> <anIXr4Kbn59Ac31Y@lucifer> <anTBN7WzVZukl26p@willie-the-truck>
- <anTCM94KoxY2nRaf@lucifer>
+	bh=gjtdIb6WLQbnwc+hZbvzaCjPXgJQSb26VEMl+8tkzq0=;
+	b=nglRhzRnnbSaJiSbWnvkLLXQkV6vRhEVIzYsFL+oafERSCnvZAUSTpVV3Df029hLu3MVSk
+	KmOnvHtzYzV92WMh5bQmjd+ArCmVmIt2Y7rNaEaWakJji4C+ciAA0BVUT0JUcOFslYvBKP
+	mJCpAYvEDudS/+w4X5s1tfm3RR1xEL4=
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5b01cb18515so122599e87.2
+        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:02:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787072550; cv=none;
+        d=google.com; s=arc-20260327;
+        b=pLC51FMV5wNRgFXr7ExjCf0az04PtL6JZp05X6FtlZ0ItS7Wp81RrRVemGWR/N1bS0
+         jCQtYkv4oIHYVGgks+fCGpf7nEYJlBjzGkjr95kicTPncfMa38pskNJWsSLVLqYPkUoc
+         OvH6/ulRzL6klwOXIAbZeRrUIRGlbkhLdk4sCZoNt2hZVt/iNyXNjLItiHUmvXlsO6hR
+         Q/4ORsJIRQJPNyQkNyC9q4BTFcQuIBzorn4exhKaFGxewWkj+KY/6uLCudhFUXsYH9K1
+         vDC5vwyO4kFlFRGZc0oDdK5XoUIGjHsw1OWmBLr8oWOtFopyGUS6u4EuNPzvAohGvUqx
+         y1MA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gjtdIb6WLQbnwc+hZbvzaCjPXgJQSb26VEMl+8tkzq0=;
+        fh=XpSjZ/Xv/nj8vmmX9axNNExEkosDl/NmvxFOf7ofuxk=;
+        b=G1KCsxTIa2rxSRSoWlunNKwzexAjvTI8Xqt67zx0fFaWTXeL1kr8vdktB+1qvDlpqF
+         lUBSTTO6eo2Ap/zDwPJbkiM/IlDbj+0xZ3gNDsD0SS8zbCTS1rbH5aptcZzeA/oihLSJ
+         LNcS6rzs+pu55MoNcQxtL1+RrqEyNAX18iUcckxcB1pcihFvU3MdHgyJw9iU42T7adTw
+         O7qJDV2P6j5JVfVQN7OA2IIUdhc0mNY6b9ukHGcr79C03aI1Rps+jrssQDSFszdq90SB
+         3wpZ6Q2uniXHuf037ffxx4br1LCivREt3G8tkxcvETy1TYLpj5j548Wm67sH0yTL9Pmd
+         aBHA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787072550; x=1787677350; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gjtdIb6WLQbnwc+hZbvzaCjPXgJQSb26VEMl+8tkzq0=;
+        b=f20eCJuiVZc3nyRukIRWbBtZ2EPKlDiahTrKFTWNPDIC9mmiMbO5f4FDjzv5GO3bs4
+         g8Fe5Bbhg/EOZtfciR3kNNsiJlz5kcoHpPEP7jSxxGt2x6UHQgPI/sAxxVEmiVl2UOnU
+         gXtP64M21sfrCIgs8t28wQIzX9jRPveD0nY4lQSiMD1ELMwE57cXk/TcbObpxcNQe3nK
+         Twb6/szH69c9evjqJ8I/eoW6ezhLPuAreMHgwceL/tUr2lVUE+uOe65mk4OeTrnmSneR
+         XbtnglPooUX0zLzS3Ezxm7SCOeJyt7Gy08szzTF7g76O/mze+bUd589xWHEaLPYXICtL
+         30/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787072550; x=1787677350;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gjtdIb6WLQbnwc+hZbvzaCjPXgJQSb26VEMl+8tkzq0=;
+        b=Dg/4Ti+81Yh6mX4uTQdafgP8m5/y3R81QC0Te7Z2vFYXgVI+4oCyd2LmmGLR/sbjpB
+         BDkxsaKszd+7F8Dfd2N5dndnmG+QC1+Q8Z0EcTpZU4ixudKCFku1eW6OJgJ3wJVU6/HY
+         jierAQT/3tkB7YL+K1Z/NL1Bz7yLcr9khjp/RAcr74sIsrBw63EZQwa7IDdlY4KwdoAi
+         EhTu2EapH99FkKj2o8394yR9F6ukv2PRO21HIVLkKkrCIcxrZgXOPkfJqB/58B3VN3du
+         SLl7+avQPbSgrblyKDwsDXRTuhsHODvP0/IhoJL0PHjXvt1+yh6quj+C4FW5uKelXR7/
+         G/Sw==
+X-Forwarded-Encrypted: i=1; AHgh+RqCDoNBJ4Pu7/1s9s8G4k3Y511gjtUpCzxmuUMWm3/33aL8qLr11JpafNGl4uU4hcFdmvhYoaJTWg==@kvack.org
+X-Gm-Message-State: AOJu0Yw5FOWcsT/Mlus68pKuXGdDVj//aDM8qQyKL3GC5cnHFJ7Kd17c
+	PsWhMrwGJqKtkRtG76CpSfjLgqQ8KwRCVZfatHUSlU1p9W7JXQSbZDDob/CVhjjcZICChfot1hO
+	4NDKLKMDaHe7UWxtO9VWBVN3/mB5SqZGzmGW2Rr6+
+X-Gm-Gg: AR+sD11MWBosx90zyP/jQuQaMyrqtNWl9zC86s3UkZ9hLh1FU/TPj6P6L4EZhBk26yv
+	VEfqJTYP/Bp4RnUzTflZiS9H8kxeXfS338jAabq/cc5lIHyvpZp/B3VpmTDlNZi5SyhhJ2K6BgZ
+	Q1RBGfV3ZozJLOHwIvOAXgh79v1zKy7xrflQL4JI5cP4qA7n3ruSj1RlkGd4/7Gc2y2eaBugRRt
+	vXDMb/fMTQhzWLqUSZcfAfD0PKBtD55uca0+W/33x+/teCBNf+ftR4r9UfT1BE0M+rNHUEIm8o8
+	D5RP8yqXfjQPimNQbjomDRCMHUkgNbmoewqDccCkNOB6
+X-Received: by 2002:a05:6512:6686:20b0:5b4:3ddd:8996 with SMTP id
+ 2adb3069b0e04-5b470676e75mr1757831e87.15.1787072549336; Tue, 18 Aug 2026
+ 10:02:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: CB5A0C000A
+References: <20260728221007.2098560-1-dmatlack@google.com>
+In-Reply-To: <20260728221007.2098560-1-dmatlack@google.com>
+From: David Matlack <dmatlack@google.com>
+Date: Tue, 18 Aug 2026 10:01:58 -0700
+X-Gm-Features: AcwNN1V4a25Yv0iJ76SrkHBknW5LsS7U4x19BfrVjGgcR0yRKfOyORXyqOEjm-s
+Message-ID: <CALzav=ezKW25+1h=xQCRx0TQDtpADKpXQcKfz-3vbapz5-zwvQ@mail.gmail.com>
+Subject: Re: [PATCH v8 00/12] PCI: liveupdate: PCI core support for Live Update
+To: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org
+Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
+	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
+	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, 
+	Parav Pandit <parav@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: ABB0E20018
 X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: ect3jcgsg5kdxpct51bpthi15z4511ao
-X-HE-Tag: 1787072396-649171
-X-HE-Meta: U2FsdGVkX1+J/PVsVQ4B/dPd3WWk747h1SH8TbgQh4fIrKC4x3QUf9s7eXu48fBq5AuVll7vIwdBy1XL1MAh3eRKORCt/sS7AONS+loMkXpB6s6f1YJHdVHfDJL482V5T+KEp8yZoxSpL5Jn6rliGjTeNXniNgt1ZTCmm6+GpZ/1+nc6Iwcgj0Fx+8HZhxAlV7M8CUxUYFQnuZ+Y/5uZL8qTFD4v5Oot6jXYsip9ZYgru3YZK/nhGBIW8YRvZTnfRrFKBIPwtC0h510RI0A7y5ljvMqO82vZsdaLt+YHOThm80Bq3H5GKMmiGokmNsxJfZAlOMJ5hdGY8Qe91/1Ho91pJl4m/iPTYOfgx4t0IAH72CwgXvKTfHQLRcW0MlZ1L4Ma/tPzzpHJW/XJ8EkPYoFwcdghLXtlmFB/58wqSsOB8O0DRmtj61Nxz1/FDx/w3PG80hDmec4WAeOTb1EiNFPMbKz+qqdpibkagdtb2rB1x7QTi3vVWyKnKeafJ7CVjYexgSxDJmFsDNfkqTIJoRBsmFfToPqsGlo+1kV/0O3XgWRS0CWOWC9DzPvuu/k4BVWwm5xEF3Z0GhhCWdjA6u+tKX6KS5kAMPs2raXJok3W8EUD7Dwe+UwQ1hUEtfrOQPCEoQ24TNxPoA1oBKOZzIXMGSypj7qXUpTs2ZTAqq9kHvzhe1bha1QwjDwmHsRYULzoX+8XhCF+WbQaxvAXVCIPaqyLXuGUlJj1RoodvMoUZ8uZbUDYh6TOGriXmOQY4UVy2a+c77rea/dCXT3umOzVP4hI16dzcuY2xleiov8M1CauiScBWqoTjfeckWvPHU5cffmtb1zJGNeDxW660yfQPh2Mq6k3nNj+Q3LexPAtd75vFmLE3x7a10EfatqjxyMqnnZf2fojJ5l8+gyuqdUGcktvmYV4aeglrvxPCvTuh/aTUNOpTXa2/xvSd0PlirbY3QFa1PNTa7yg5Ks
- onS82W0u
- Yvmcml1jELlN2Xsgq82FFc7c3niNqLj1aZ2sLAdeChXWrfL04m/p/9WyuyQkYpBFb7a1wFhPC1u5WhWrtd7rGbpXjFWLSjdlUbMEnopbzoLJNJB4Z4n2+PWTg62eBqmbDq1r6rQFyIUh/8PVCnKQvaWvJ8wE9sq1m/ud/w+ykn0iOiWfWZOGvcLpiOR9UPf3OwIR7nI5fjXKvEq2VxzhrH1VTxr8B5BZRryTXmX3SbGbwo0+hSGmmhENeB/ylz9zPE8f9NxRV2L6/TVfYehF5c9Ng4Puekt6ajUpeSzozC2uPp5w=
+X-Stat-Signature: y8aja3wun3ihooq3ncrjotyd9uxcc8ak
+X-HE-Tag: 1787072551-190283
+X-HE-Meta: U2FsdGVkX1/4aLgSfeINGphZX8yeUuum7T4fcJL6sa3ho+bNudCynXJbYQ7e1bpADs9gcj5dRO6LRwsDThH2BdKVl0chPYotL63FkqQ3v0OiLrXLxxNTqpGl3dDnXkAtQFLaLxk516nW1JzcTfUCfBvmooJQb7IodwXJhglky7uSainhX+10y61ZQCAkMXFY1f2/DLpGI4PUHAMoitwW8bgZLAQfLopeyPBvQp84cZhuKuuVYomzh+Ha2aAEskJ8YLef4QU5MjbZLaT7MbRsiVtXjwTIggOX3JnFhf4Kr1bEwKgXlgIfZbGL45Vkft2W0k3m6+xojpDmxOxntNAMzDHQWRfPWx9uFSgYTQuY0aTBS2TbGzq0IXhRfuM4UirI+mR7eMw/S1CcEfXWTGYlkteh5PBb8eu3WLLlsuClhdJq8z/fwaqZIkp1yjv4s4vFsR+uuasKY1e5OfvEp3pKv6dZrkL1TyK9/tMn4W6Now/Bknq8ei1UoNMtY7Wc1wECNQblNCLhE9CpzXBRJ8haZEKmBaDEO/kIMGP7OYrDGFoO4dVCTnLOUSLerJcLSpXE60nR+CcJ7Tsp1lvYxyZ6VxnKc+t+fHx5oKrytf1h4XlbxinSZOoEb47uslnXH/PVhUid74LDzcYBIWdDwuzYWhB4iMJ7gNw9LtFfDERP5oVEHfmqM9zX5Bg01W+RvBxNcns4VWTNiyj5albYHzRFB9lR40yrNBdo0KmYgw4aYureb4Qmn+zxGGhK3834CHsqhCHdeEG7xxcQWHMpQAKuFzvnXa4OWZVdzIDfr6E1EuH11Pw6iAW/OVVxtELmuG8p0wpYitQVeD4txtH3BfOCdy++x0NeuIhqOhV6QrDhn/7vFeewhkAdLN9xvF/p9ps0zklp4VnBSsuGLkItI11vVOmGAVeGewoDf7fk2I+Oqp1U6wRWaUCbvM9ATUFtlgJPpKdXPqurvQyZ2ERSG9+
+ i3EUebFb
+ iUu9K2DVpzHdmGI5rOSxqX5Xwl4Bzq6U68H7HFYT8a+DFitp9BCf7kBPEjDnMjECBdJxUV3ILYqNueS4qn64egkpvsWJCxI6uQsamkj25n3G2Uyj5PUycaDS+0jeekQrZikxwZNeP7IgQIvWo2aOGqe9xVzlr0cunbUS+7cBp5h3XrZf0JKexzDQB+5SKgEg4nKcRDZ98OU7297Cy5tcK2KJRx16Wff7rs/PRA69clZ5YKR3Pd5WgANvEp6F83GW29KOHOe/61P1kqtA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,56 +148,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 6 Aug 2026, Lorenzo Stoakes (ARM) wrote:
-
-> On Thu, Aug 06, 2026 at 06:15:35PM +0100, Will Deacon wrote:
-> > So the nice thing about having two implementations (i.e. the per-cpu
-> > page-tables *and* the preemption stuff from Mark) is that we can pitch
-> > them against each other to help us make a decision.
+On Tue, Jul 28, 2026 at 3:10=E2=80=AFPM David Matlack <dmatlack@google.com>=
+ wrote:
+...
+> Merge Plan
+> ----------
 >
-> Yes exactly :)
+> I propose we merge this series through liveupdate.git for 2 reasons:
 >
-> This point has been put to the submitters a number of times so I hope that
-> an additional repetition from an arm64 maintainer helps underline it.
+>  1. There are some LUO core changes around how FLBs are refcounted in
+>     the next branch of liveupdate.git that this series depends on.
 >
-> >
-> > However, I don't see how anybody could argue that Mark's series isn't
-> > cleaner and easier to maintain.
+>  2. We had previously agreed that the files covered by the PCI LIVE
+>     UPDATE maintainer entry would be merged through the liveupdate.git
+>     tree (which is the majority of this series), so this would be
+>     following that process.
 >
-> I completely agree.
+> This plan still needs to be Acked by Bjorn Helgaas as there are some PCI
+> core changes in this series.
+...
+> David Matlack (12):
+>   PCI: liveupdate: Set up FLB handler for the PCI core
+>   PCI: liveupdate: Track outgoing preserved PCI devices
+>   PCI: liveupdate: Track incoming preserved PCI devices
+>   PCI: liveupdate: Document driver binding responsibilities
+>   PCI: liveupdate: Preserve bus numbers during Live Update
+>   PCI: liveupdate: Auto-preserve upstream bridges across Live Update
+>   PCI: Refactor matching logic for pci_dev_acs_ops
+>   PCI: liveupdate: Adopt ACS controls in incoming preserved devices
+>   PCI: liveupdate: Adopt ARI Forwarding Enable on preserved bridges
+>   PCI: liveupdate: Freeze preservation status during shutdown
+>   PCI: liveupdate: Do not disable bus mastering on preserved devices
+>     during kexec
+>   Documentation: PCI: Add documentation for Live Update
 
-Changing a register used by code sometimes in a timer interrupt is
-cleaner than accessing a virtually mapped address?
+Hi Bjorn,
 
-A simple RMV instruction is simpler and cleaner than prefixing a code
-sequence with flags on how to modify registers if something happens like a
-timer interrupt.
+Pasha and I discussed this series and are hoping to merge it into the
+liveupdate tree by the first week of September so that it has enough
+time to soak in linux-next before 7.4. I was wondering if you think
+that is a reasonable plan and if you have any lingering concerns.
 
-> Let's hope sanity prevails.
-
-I sure hope so. But there is the ingroup behavior that rationalizes the
-wildest approaches as sane.
-
-> > seriously want to consider the per-cpu page-table approach on arm64, the
-> > numbers need to be _really_ good and across a variety of hardware, not
-> > just the stuff with a memory system made of baling twine. That extends
-> > to the kernel text replication efforts too.
->
-> Thanks, and equally so for the core mm changes that are required by the
-> page table approach (that requirement being attested to by the diffstat).
-
-The numbers are already approaching 20% and will go much higher because
-there is more potential here with the ability to localize various memory
-accesses in the future.
-
-Scaling to large core counts requires the reduction of traffic on the
-fabric connecting the cores. And the per cpu page tables allow that to
-happen and scale to high core counts while minimizing traffc.
-
-If you keep on with your hacky approach of changing registers in the tick
-then we wont be getting there. We may have entirely new classes of bugs
-because now the timer interrupts changes some registers. Think of the
-hacking potential. Wow.
-
-Please stop the madness.
+Thanks,
+--David
 
