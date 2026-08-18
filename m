@@ -4,92 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1899DC5B572
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 02:13:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED5C0C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 02:24:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BB036B0894; Mon, 17 Aug 2026 22:13:48 -0400 (EDT)
+	id CB55F6B0192; Mon, 17 Aug 2026 22:24:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06B4D6B0897; Mon, 17 Aug 2026 22:13:48 -0400 (EDT)
+	id C659D6B04F4; Mon, 17 Aug 2026 22:24:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC3096B089A; Mon, 17 Aug 2026 22:13:47 -0400 (EDT)
+	id B54916B0884; Mon, 17 Aug 2026 22:24:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D05F76B0894
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:13:47 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5D601A34DE
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:13:47 +0000 (UTC)
-X-FDA: 85112769294.17.3DC39AE
-Received: from mta0.migadu.com (out-73.mta0.migadu.com [91.218.175.73])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4F3EA180003
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:13:42 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=D1nkQdHr;
-	spf=pass (imf16.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.73 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 814226B0192
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:24:13 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0F51EA0A3B
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:24:13 +0000 (UTC)
+X-FDA: 85112795586.30.A24225E
+Received: from mta1.migadu.com (out-197.mta1.migadu.com [95.215.58.197])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DEDCC40002
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:24:10 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Z9fbAdyG;
+	spf=pass (imf17.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.197 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787019851;
+	b=WeMGE9ncm3MENpaLp22fTdtqTxcbKskTvHKg/Ig+i3idxjYjutnd7LCitBn08kSPhtlxCj
+	m3awhxLiehQ2dzGHMDJYZe5M2UAqTI8reZHI6+RIm+XOiycM7QLQAc/NNiOoIXi0jccoXc
+	7WXMzYGEQdVZDk45QKfRx+ZwWVQ/PeU=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Z9fbAdyG;
+	spf=pass (imf17.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.197 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787019225;
+	s=arc-20220608; t=1787019851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jqI+gLxknlBDLLeOTDhZctdTBOtwwvCitAa1MQ9WEBQ=;
-	b=FlKeXjODmwwM686cysKbOD/7qTTJVsbxlRpMmoQ3sEG4g7GXqOg8x0adF2SLC1PioRzVYy
-	ZZrhM7rMoKa58s1j+KULXBhajiegiGM+Px98T9ZiXUMVtHGHOPyKhEeDH8vTOeSmk6IF5c
-	Ek2JVJn8GRdcnQTcqakQDhAtIkQGq9E=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787019225;
-	b=Lm5rbH1rxCSLZlJY7dh4u5JHGY3NREs9u5dqNrRCpE0zN7esgU63IJ95r23UdrB+KnMaEE
-	IsScqRkV3KFkuscCLOivBz/SfRXI2R6aRSbd2xQ/hfv+nUlMIrVNyPIshHkNOnZNsULiZG
-	Qwk5tIwE7n6AKRQ2F4c//kkBlxKsUJ8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=D1nkQdHr;
-	spf=pass (imf16.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.73 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=1ewiDZhCjydHAZsdyEVhHh+6erZ0a2pG9r7TmjbO6ys=;
+	b=I1Es7cSNiXHD0quq4orzTSRZ/+iSvZKKz9rRma2TyfcTrLYS35t1BGiJCNeagaOjHy5rq2
+	wvC6xlWfJrJckS+BWp8PJADtojnH0llm0tuqxmk4CI0Jwhhzv7WTWZRVXD48KXdJDd00dh
+	lYnshh7lm95InWtAge7j6dYbQR8Jz6A=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=0PU5qADEL7pdf7bNZgRQ74sxC6pNxIIp3raq58ojt4E=;
+DKIM-Signature: a=rsa-sha256; bh=Kj2l2s2b8Q7rDIIPhTRWO4Dg9LJTGn1lCoLDlO7EmgE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787019220; v=1; x=1787624020;
- b=D1nkQdHrAsatLKEjVrljJKf5nRjM9kaKsf9/P4sK6XADWBro4xo81BVuU1n7FlYmyhxOK6uv
- hHMzmMtosEOFoyZHjCvosrgpfdTXH7Ws0j0vPSPniLGea4jkVOVQHW6CTVN1EAvNpwRukvZZfT6
- UkcUdKYqW1ZF7EjJKjRBS0O4=
+ t=1787019849; v=1; x=1787624649;
+ b=Z9fbAdyGWgXQT1KsRtu4yTyXeIgjWcfGxTCYxdbNl46jSVJgN3JtXrnMLwfeT5qLM/36/NMv
+ i1GseHdEcQT4XizWiVtDxJ/30MXPaJkyIQeGiVTTmCrLRC9APZlByWY1LpJlIyP3eWNveerFDhU
+ eIjfthqN2IE1Mq4jeA3bSex4=
 X-Envelope-To: linux-mm@kvack.org
-Received: from localhost.localdomain (223.70.159.239)
-	by smtp.migadu.com with ESMTPS id 142a8766c7c2699b;
-	Tue, 18 Aug 2026 02:13:40 +0000
+Received: from localhost (3.112.29.171)
+	by mta10.migadu.com with ESMTPS id d2aa8026bf3fbfef;
+	Tue, 18 Aug 2026 02:23:59 +0000
 X-Migadu-Flow: FLOW_OUT
-From: Hongfu Li <hongfu.li@linux.dev>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	hongfu.li@linux.dev,
-	liam@infradead.org,
-	lihongfu@kylinos.cn,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	rppt@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org
-Subject: Re: [PATCH v4] mm: Use a folio in the softleaf_is_device_private path
-Date: Tue, 18 Aug 2026 10:13:26 +0800
-Message-ID: <20260818021326.5910-1-hongfu.li@linux.dev>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <d0d781bf-43fd-4a59-ae0f-960c1e942f19@kernel.org>
-References: <d0d781bf-43fd-4a59-ae0f-960c1e942f19@kernel.org>
+Date: Tue, 18 Aug 2026 10:23:51 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Chris Li <chrisl@kernel.org>, Nico Pache <nico.pache@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>,
+	Gregory Price <gourry@gourry.net>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+	SeongJae Park <sj@kernel.org>, David Rientjes <rientjes@google.com>,
+	Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>,
+	Zicheng Wang <wangzicheng@honor.com>,
+	Chen Ridong <chenridong@xiaomi.com>,
+	Tal Zussman <tz2294@columbia.edu>, Kairui Song <ryncsn@gmail.com>,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Subject: Re: [PATCH RFC 05/15] mm/mglru: move max_seq read into
+ walk_update_folio
+Message-ID: <aoPCNxyRVpQFulwS@MiWiFi-R3L-srv>
+References: <20260804-mglru-fg-v1-0-4d8dad39dad6@tencent.com>
+ <20260804-mglru-fg-v1-5-4d8dad39dad6@tencent.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260804-mglru-fg-v1-5-4d8dad39dad6@tencent.com>
+X-Rspamd-Queue-Id: DEDCC40002
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: ofizwx3qa943gtwe1thkdgs5nuafoqu1
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4F3EA180003
-X-HE-Tag: 1787019222-269492
-X-HE-Meta: U2FsdGVkX19KcyhjaqKbOjuz/LCIdEsRJa0yuODvv0fwEQtaTKghCHN5+sp60STZm+cgRd29fMk8fsstyvK/MDZW9Bk4jvPw4poIzqIV2RsBT2aeynz1gRhcqCOtc544J/htoJM7wkJ8pijupkwf6IvGQi2itd74G59w2I3fspVaIZIAMULL6oIr1J1LGkWoI1mO8rwXxJQITafvIYJTd3OAhPQW2u68Ph8QZltdvKS7aSoNEIhA6U5zWDv5jMQXc3+L5qTdW2Rfa1Z9MBr+ZpkZfO1bAd8zX6pfUyGNR/9q7cAVpX+qXJVI7xfDlrG4JExO0H+lZFWBrlWTHkWc79C8PHOjDjCJ1qD9HUUoBvK5k7yVT7HtIwsVYWmpCs8eUrAMEyd8JrrOtiuAx0AbVDjPlB2XE7riq+ao6bmz1a59sH7L9O059bjwImnzXHtUQO16BYhQQnBGGXUZ1CsqMGPtGWaziwqemPGgnSI/CmMx20vfzWLwRoeRKJB86Jrs2a1kDxJhzQbKbEqs7REgcB5I1bIFleGpb9KDIKJAHCRkOtUnILxdphUQPDmvB/3q0hQFehR7k9Lq7+L6LGmz4k5WdlnSabKXkpDBIq4Q/O78HMoAna6oJIjvF5E1EgZ6yto14drJGGwcniXWR6dQ+B2mkbIcGc8bdCSevlFikFeJBhxBD2x0kN9KUfhpkqrpztuQC4vREXRuNQd0c9lm3Yy86UDXBPpZxFzG13N10K7xKHc71SSpLOB2/CPoZGtMHPfNBVHUP03+3fK/SydhRVYk7l+RH7TlVxyWmqa7nYBTuzh6h5XpjYhyLSG9FDqGriBT+H0qLcGoT0tXqBCGvTv0Uko1FwnjB8g7XMS0gWrGd6Cf8HDLyfm0V9ozVMZw6tUpy2iwaTfh3keRWrrLlvH+9qCmWuu94hKwpau/UuZ3jALsA4dW0A0VqaLYQ+ZfKcB8eHZsU7gzhvgCB2S
- Jwbhgd4Z
- zTNchnL+FJMLMbRgGgY70I/GMsotymY2jMUToqhp6JMvj52WXsZLpvfLf3oPUCUU63nCfCyLPLCsKcwiOX2rOaM0Y8pVOqCzja8fHuwsyiLg8vE+x37ZvR7PkaSMxxwrgcIRybzFGXKcs42UlBAVrOwkuLVsOH6h0EQ7Dzd4yKC8iKEWzIK1ncEHBiP/p2Fi844YE8xV33TkAzJYy5ZGoWfNHIP/25fHC24GhuEpW4uqZXs7sCbHE7syhFWC4dwfk2z4aBPZID4YOlB12CEFp1ECPHQ==
+X-Stat-Signature: h4dx97y5qhrtp1mmewtm7douigfs77oc
+X-HE-Tag: 1787019850-391985
+X-HE-Meta: U2FsdGVkX18lAM2CSDQQ2CbswfuqkJdjvarTQYmyagj/B7a2Vn+gbDRalb3SfMx3yOMlUGWlIm+jKLTYfaYjopJ5ABG4KgO9dR+dekVynSlf6WrIjv6dVkCNjidKo7KgYx7/VASlOUHgLPVl6mxvTes5eG+gUa9HSQIGT2+i6r8D21hVnxu3K5BSecI+AFHV7oDfCfrnER60alSM9N6NQ94hvdC2BY3gcw3sch+0DDYwurBeZi5N2I2lPv8z0+K5lfYYAIJFwJS7Rv/zQOHvrnhlpKpxhRGJG2Nf1kk3gpByXsBFghzTbPn+rEqKmqjz2GrL3XLGAGdQDsF6C5sXv4vd1lpz229x6E37zwEbJ0XSovMB8lOA7vuZx14W5i0l5A6AtV5pfxV1urXnoG1obPYVVNrOrKoYkv+XEpcBr3zoRndHqqx6ojdPFNsq0ErqvSmPasEU5XmaJSNZrtt2pxgRe/9u/jG3MEsYSqoYl7lURc+RTbLXNm2B/UmB+Z4vt7nCsfat8RG8RZ9wSAzcDYUEsapE1snuNvwUkFru3bwselmP+P2Hr82RvjIdjM6+b+cu0L3SscdjIRu46Za/qdefReObnwl9C5Yt4AH+j/IhXXEm3HXwu3aMvlkYampC0gb+1/xKR7boJkQbTDxlxbRphSWHilcoeUhdms/AyvZzd1pGqzn9qWZh4Edxpfh+UCATH1CscS0zrFecGDG5JB9NmGm93m9hfTgnz1lcbKlJyOqw3+2wU+fbSySNHaZxahHR75STKYUQfMRy+Dn3h9JvwVKBQ+c5KhchKzN8+6wZ7q+WlU4Y4bsiopg6ePVVJo9GULMt3hH0Et/gLFkh9wB52XGDbztAeDY3xsfneXv/T1cTFDPkD3ufVb+x0RDSY8xQeWKtnj6YQCZDJi81y1p0TFRbB2ArnTzE58NMr7TnEywhXLcJI/+1rtjg2o5T9d0g4nah4tjkicCnXUm
+ c3IOgok0
+ Db29JOIa+rGmvxrWC0qCjrstRkQZeY8uSYi/6Ff8FMYp0vGY8jhFc5NBAP+jk0aoiBCnuM449rqX1TsaCgHCEoHcaRGBGFY/hTUvj++YeoRH5GkemEGv0ULWowynvUKc0RcfN8f6/3FLuaTrhV8mCKUjLV7mUQlmY4UymluUqKUzuoents1rPNGrT/kfPcwMF1LXjAFJapphQcyq3hhzlmVzL6Kba+Bihan+9MoTVV43sb8z/bpQQTmUcov/5VtG7WbZHxLJiBZ391brY8+oq7IPGFoMTC5hh3nGGSVMO3cPKLB+MnEAQGGSbgDWiSm83N3wxtHEq3mT4La3hw/YMvOOg28HrsgA10G/TgJyXrOGR61aLxqmxd9CoZ7+bfo6jI/8tzeqyLYlwjjtaObzB7PkFildlb9rCFGhbTzmaAiQRdbpmi4yPFAE17KzfvLFnBN0VOXx6/GjDlAd+XWCWPGvfgSEZPbs6TwIJuaap2s6JBEJTpxST9mSEyiXAVFfBvvbCksBuSfHmh4kSvRQ7p+8uUYSwCYSy9BgfBEYDL4qAElGflyR2Dh6sHQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,48 +116,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > So after migrate_to_ram() the folio might have been split or otherwise somehow
-> > the page doesn't belong to the same locked, refcount-incremented folio it did
-> > before?
+On 08/04/26 at 03:47am, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
-> I suspect a split.
+> walk_pte_range(), walk_pmd_range_locked(), and lru_gen_look_around()
+> each read lrugen->max_seq to compute the target generation for
+> folio_update_gen(), then pass it as a parameter to
+> walk_update_folio().  Move the read into walk_update_folio() itself
+> so the callers no longer need to compute or pass the value.
 > 
-> > 
-> > That's kinda a footgun... but this documents it at least.
-> > 
-> > I think a comment explaining how this can happen would be helpful though as this
-> > doesn't seem intuitive.
+> This is a pure refactoring: no functional change.
 > 
-> I think, conceptually, calling into something that consumes a page (vmf->page)
-> always needs care when operating on folios.
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  mm/vmscan.c | 29 ++++++++++++-----------------
+>  1 file changed, 12 insertions(+), 17 deletions(-)
+
+Nice clean up.
+
+Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+
 > 
-> Passing the vmf to some callback might be the odd thing here, because the
-> vmf->page contract is not really clear.
-
-I'm very sorry for introducing this regression.
-Thank you for identifying and testing this issue.
-
-I will double-check this code path and apply your fix to run further
-tests locally.
-
-Would it make sense to add a comment here like the below, to make this
-subtle behavior clearer for future readers?
-
-diff --git a/mm/memory.c b/mm/memory.c
-index 4134ac607ee0..2b6d6c863ecb 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4937,6 +4937,12 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-                                pte_unmap_unlock(vmf->pte, vmf->ptl);
-                                pgmap = page_pgmap(vmf->page);
-                                ret = pgmap->ops->migrate_to_ram(vmf);
-+                               /*
-+                                * migrate_to_ram() can split a large folio, updating
-+                                * vmf->page to a different folio. Re-fetch folio for
-+                                * correct unlock/put.
-+                                */
-+                               folio = page_folio(vmf->page);
-                                folio_unlock(folio);
-                                folio_put(folio);
-                        } else {
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index b02d2ec8ff4b..c2ea92c2b69e 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -3511,13 +3511,15 @@ static bool suitable_to_scan(int total, int young)
+>  }
+>  
+>  static void walk_update_folio(struct lru_gen_mm_walk *walk, struct vm_area_struct *vma,
+> -		struct folio *folio, int new_gen, bool dirty)
+> +			      struct lruvec *lruvec, struct folio *folio, bool dirty)
+>  {
+> -	int old_gen;
+> +	int new_gen, old_gen;
+>  
+>  	if (!folio)
+>  		return;
+>  
+> +	new_gen = lru_gen_from_seq(READ_ONCE(lruvec->lrugen.max_seq));
+> +
+>  	if (dirty && !folio_test_dirty(folio) &&
+>  	    !(folio_test_anon(folio) && folio_test_swapbacked(folio) &&
+>  	      !folio_test_swapcache(folio)))
+> @@ -3548,8 +3550,6 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+>  	struct lru_gen_mm_walk *walk = args->private;
+>  	struct mem_cgroup *memcg = lruvec_memcg(walk->lruvec);
+>  	struct pglist_data *pgdat = lruvec_pgdat(walk->lruvec);
+> -	DEFINE_MAX_SEQ(walk->lruvec);
+> -	int gen = lru_gen_from_seq(max_seq);
+>  	unsigned int nr;
+>  	pmd_t pmdval;
+>  
+> @@ -3600,7 +3600,7 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+>  			continue;
+>  
+>  		if (last != folio) {
+> -			walk_update_folio(walk, args->vma, last, gen, dirty);
+> +			walk_update_folio(walk, args->vma, walk->lruvec, last, dirty);
+>  
+>  			last = folio;
+>  			dirty = false;
+> @@ -3613,7 +3613,7 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+>  		walk->mm_stats[MM_LEAF_YOUNG] += nr;
+>  	}
+>  
+> -	walk_update_folio(walk, args->vma, last, gen, dirty);
+> +	walk_update_folio(walk, args->vma, walk->lruvec, last, dirty);
+>  	last = NULL;
+>  
+>  	if (i < PTRS_PER_PTE && get_next_vma(PMD_MASK, PAGE_SIZE, args, &start, &end))
+> @@ -3636,8 +3636,6 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
+>  	struct lru_gen_mm_walk *walk = args->private;
+>  	struct mem_cgroup *memcg = lruvec_memcg(walk->lruvec);
+>  	struct pglist_data *pgdat = lruvec_pgdat(walk->lruvec);
+> -	DEFINE_MAX_SEQ(walk->lruvec);
+> -	int gen = lru_gen_from_seq(max_seq);
+>  
+>  	VM_WARN_ON_ONCE(pud_leaf(*pud));
+>  
+> @@ -3691,7 +3689,7 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
+>  			goto next;
+>  
+>  		if (last != folio) {
+> -			walk_update_folio(walk, vma, last, gen, dirty);
+> +			walk_update_folio(walk, vma, walk->lruvec, last, dirty);
+>  
+>  			last = folio;
+>  			dirty = false;
+> @@ -3705,7 +3703,7 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
+>  		i = i > MIN_LRU_BATCH ? 0 : find_next_bit(bitmap, MIN_LRU_BATCH, i) + 1;
+>  	} while (i <= MIN_LRU_BATCH);
+>  
+> -	walk_update_folio(walk, vma, last, gen, dirty);
+> +	walk_update_folio(walk, vma, walk->lruvec, last, dirty);
+>  
+>  	lazy_mmu_mode_disable();
+>  	spin_unlock(ptl);
+> @@ -4270,8 +4268,6 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+>  	struct pglist_data *pgdat = folio_pgdat(folio);
+>  	struct lruvec *lruvec;
+>  	struct lru_gen_mm_state *mm_state;
+> -	unsigned long max_seq;
+> -	int gen;
+>  
+>  	lockdep_assert_held(pvmw->ptl);
+>  	VM_WARN_ON_ONCE_FOLIO(folio_test_lru(folio), folio);
+> @@ -4308,8 +4304,6 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+>  
+>  	memcg = get_mem_cgroup_from_folio(folio);
+>  	lruvec = mem_cgroup_lruvec(memcg, pgdat);
+> -	max_seq = READ_ONCE((lruvec)->lrugen.max_seq);
+> -	gen = lru_gen_from_seq(max_seq);
+>  	mm_state = get_mm_state(lruvec);
+>  
+>  	lazy_mmu_mode_enable();
+> @@ -4341,7 +4335,7 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+>  			continue;
+>  
+>  		if (last != folio) {
+> -			walk_update_folio(walk, vma, last, gen, dirty);
+> +			walk_update_folio(walk, vma, lruvec, last, dirty);
+>  
+>  			last = folio;
+>  			dirty = false;
+> @@ -4353,13 +4347,14 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+>  		young += nr;
+>  	}
+>  
+> -	walk_update_folio(walk, vma, last, gen, dirty);
+> +	walk_update_folio(walk, vma, lruvec, last, dirty);
+>  
+>  	lazy_mmu_mode_disable();
+>  
+>  	/* feedback from rmap walkers to page table walkers */
+>  	if (mm_state && suitable_to_scan(i, young))
+> -		update_bloom_filter(mm_state, max_seq, pvmw->pmd);
+> +		update_bloom_filter(mm_state, READ_ONCE(lruvec->lrugen.max_seq),
+> +				    pvmw->pmd);
+>  
+>  	mem_cgroup_put(memcg);
+>  
+> 
+> -- 
+> 2.55.0
+> 
+> 
 
