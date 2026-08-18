@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB6D7C5DF67
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 03:46:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1058EC5DF67
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 03:46:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B2E776B013E; Mon, 17 Aug 2026 23:46:19 -0400 (EDT)
+	id BA3536B0140; Mon, 17 Aug 2026 23:46:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B06076B0140; Mon, 17 Aug 2026 23:46:19 -0400 (EDT)
+	id B54296B0141; Mon, 17 Aug 2026 23:46:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F4636B0141; Mon, 17 Aug 2026 23:46:19 -0400 (EDT)
+	id A1DE46B0142; Mon, 17 Aug 2026 23:46:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6940D6B013E
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 23:46:19 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C903640A4A
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:46:18 +0000 (UTC)
-X-FDA: 85113002436.30.04391F3
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A1BCD180009
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:46:16 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=g-ucla-edu.20251104.gappssmtp.com header.s=20251104 header.b="j/NcW8xx";
-	spf=pass (imf24.hostedemail.com: domain of jasonangelov@g.ucla.edu designates 209.85.214.170 as permitted sender) smtp.mailfrom=jasonangelov@g.ucla.edu;
-	dmarc=pass (policy=none) header.from=ucla.edu
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 70EA96B0140
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 23:46:20 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D5F7AC0975
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:46:19 +0000 (UTC)
+X-FDA: 85113002478.17.F0B40E8
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0B74040005
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:46:17 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=g-ucla-edu.20251104.gappssmtp.com header.s=20251104 header.b=YREg2AK6;
+	dmarc=pass (policy=none) header.from=ucla.edu;
+	spf=pass (imf27.hostedemail.com: domain of jasonangelov@g.ucla.edu designates 209.85.214.176 as permitted sender) smtp.mailfrom=jasonangelov@g.ucla.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787024777;
+	s=arc-20220608; t=1787024778;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lcV78j2ZP/Yix6CCbssJ5cpLVJY9XnuazqlvUAmQ51E=;
-	b=gtq9B9HJO7EvMkeZOFKo8jrDV1RR3QyHQnHLuCDJlhZ1y4pd95B7SEBbIjmps6hUHeWmxC
-	W1LeZN1obnFA6HgEzQYq+EL6B7PRPLSsdg7mlmGyrtfvrDuwxMaYSqG5h3gHXXnvdNHjTQ
-	6gYIYOKQM6pTWdipxmmtOOomXA6N/TA=
+	bh=fDkagHVNS2LJhNT8XESQiKeoHr8QVrsAQC8Ivqfl/sw=;
+	b=eoXf5qHeyCDsGtHHS1bwrWmluHSHexUPxIvesvi2WhRvRjbT3OUI189Rrjiz/mdF1gEMu+
+	8obznEneMLlhxzls6YB5j5xYBldIWzr+UIKv4KKiR3Gn+2VComycWcPTrEk0YkreI5nySR
+	K30UNNY6/mBP5g8Iz3Wsf5hCQCsISqY=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=g-ucla-edu.20251104.gappssmtp.com header.s=20251104 header.b="j/NcW8xx";
-	spf=pass (imf24.hostedemail.com: domain of jasonangelov@g.ucla.edu designates 209.85.214.170 as permitted sender) smtp.mailfrom=jasonangelov@g.ucla.edu;
-	dmarc=pass (policy=none) header.from=ucla.edu
+	imf27.hostedemail.com;
+	dkim=pass header.d=g-ucla-edu.20251104.gappssmtp.com header.s=20251104 header.b=YREg2AK6;
+	dmarc=pass (policy=none) header.from=ucla.edu;
+	spf=pass (imf27.hostedemail.com: domain of jasonangelov@g.ucla.edu designates 209.85.214.176 as permitted sender) smtp.mailfrom=jasonangelov@g.ucla.edu
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787024777;
-	b=4OLOEztxV3Y4bpdpswgeDoPTnwl3lJpqHMqwBBFMA5oDddzfWPb2TivijKa5Edd4O9Bxn1
-	i+aRa3GZ20nH5IzXEen4anCGE2aXB32x5wrNfmwSnZaQWD3dqnkqWVf6wBt8aA6w/pTmvD
-	RCr5/dN2DhxOAUG/zNuMGhOmCnqK9sU=
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2d049069377so43223025ad.0
-        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 20:46:16 -0700 (PDT)
+	t=1787024778;
+	b=Wofw48H1ZtbRUsEdHUAn9MV7zURwqQzLtfpDNGlVKj5H1A3JhMwfzh1nXeVgzwuuf1gpRi
+	6IcOhC9eVZjMCRYkBrHcDFi9YPPmBJ9K9pHTdAfbOK1eMIJu2L/jpY+Jfib1/zaIPfDurd
+	fcbxJlXcm5kqZYQaYHTkrs30ha4IMT4=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2d01663d816so37161015ad.1
+        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 20:46:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=g-ucla-edu.20251104.gappssmtp.com; s=20251104; t=1787024775; x=1787629575; darn=kvack.org;
+        d=g-ucla-edu.20251104.gappssmtp.com; s=20251104; t=1787024777; x=1787629577; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=lcV78j2ZP/Yix6CCbssJ5cpLVJY9XnuazqlvUAmQ51E=;
-        b=j/NcW8xxrU0+FsAC34j/jpMletbEKaEQE2/9aZsCKqDZJLvzckltShFIlIgKIwqZk1
-         8aDTNGk84k/+VohtJ6aX2OyGUwBTic34CV19+ZwlniI3tPBx1KZbFEdVRlIcV/M6QSB8
-         wbEgkndWnzu/gT69GJUz9o3shBNbehQIx1amWz8Mih24GICDxz2hpNDiDInxgA3WcYNu
-         W5npXdCY0JrOla8A9PCC5ykDCi0Fqx+h0HXp8khgjwsjdfVIS6NPz2caGdYr1DNyNldQ
-         bqZkwYWNPfqZ1f9ktjrxX0Y1gXV6pctwWK5TOeTKXqePeEBTTRERefObkkRnGlXM1wE/
-         yLsg==
+        bh=fDkagHVNS2LJhNT8XESQiKeoHr8QVrsAQC8Ivqfl/sw=;
+        b=YREg2AK6RebCEfxC/TVhl68s2uih44JpxKY9FjNfBLl1y8w3RHNemDxafM4uhp1Lzt
+         6VUf6L/DWGdWddBnLklBEeeCwrdpSLHNbL20v2Rqgnyf5QOBqIZtNyQKvsukOQnnwGKx
+         sBcswN/Nf+JnVcrPqnu9yt6EqYTHBcuQd1mRiHpH4Bs6O0HZxGIH/yqjvJDb9j6e31Vr
+         nNjKrHc44V0y+fp2PJbNpiGJ5y4WbZ1SzBxuX2sbZnYUuA1PKXyjrQbY7STC9UQuuEGi
+         rm5SUHPwT+6kya3USTrcef390jwCUnOfUYVO6yWyCk/7JOCj+1l0bWLEzUKr2c/tbC8z
+         yvzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787024775; x=1787629575;
+        d=1e100.net; s=20251104; t=1787024777; x=1787629577;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lcV78j2ZP/Yix6CCbssJ5cpLVJY9XnuazqlvUAmQ51E=;
-        b=XJOJA1x2MY9riBktSIZpRoDTxmhWKNPGsWnCnL5sIkCbnaZrmvsHsfpCl+e6JsVTx8
-         9qVjVdr88ovIgNWcf/v/M7iScES3lj1jk0nnEGqmlIpi+czmCQRtzSwSesHw924gKm3z
-         pjtiGZpGXoAfI10JmpZQRz8b1Jzg/6x65qtvP8TplY8WIID7qgC97DwYiQlwEeFnMqqQ
-         qtcjDnjV4+8DLrO1pTRyLj3qiYZD4WkQtSZmm1f7/F634GG0G7HsB6ahfqOVgntyuAo1
-         vwDwTPmXhySYNoln5prehWAE39pZMBdTuZlvxonvCr09H/WUvVevIE2nyuz+NVQlGLxj
-         rq0A==
-X-Forwarded-Encrypted: i=1; AHgh+Roe3hOrtNOwV0VT3RqN2C0eoNoe1aKUyfcQgyE+hrqTM/3DLM6KGDzxooEp4zFOh+WF8qcyMYFhTw==@kvack.org
-X-Gm-Message-State: AOJu0Yzi/2xrcCvat9VR7vV12E1fM38ohNilrs7gV+yyFQLoMdzmJsVl
-	dg4lPssqsWcoRAoEZrD7S0+Z8xhCxmb/myVxTFSqOWNfKU0hp4/L7SBQAcvFkusRMsM=
-X-Gm-Gg: AR+sD102KPaDRMW4fjPZYuJUQSvVp2ohb+O6jfwRDmXzQoDuqpsF0Wa4x5Es8K41GnN
-	Trb0lJTFHw+wib44wESwh0X770XLCJGMyl+8pp5nJ7Q7sOpQAk4Z/2s/naRGTJPpjS60vlnrkuS
-	kQLJ/5pGrMChDTHuyi1ZjvXObUbcSS8ujezpXzYbsrAIGJBarjdRn6oONtl1xFHIO1YY30r0//w
-	d5EiKU2JqKTwlwwLelA0ifOuIGBLFFbf2Kc6BuVNX5JlZ51ppmEwTG+4sRXlO7gPnDnMniT9o8/
-	IKNB9YoqxfQ1/sT/zMM1bsoPQTUgoYKr3Dc8iA0e8mXLNs74Wt1lNV58ioNy+JzVklu+F1RiXq3
-	ZqQI3AO4dhJM2ztkzRa2lO7iJQhLExZKSVAHizw2vpjFdgPWvcR2RS3u73sAC/tDY9l9lqPNqud
-	iOD3X9HX1UvXzXlyUAbxvhVO8W3iEyx0Bm9OCrZrASRma/J/3s83yAYhZsIO5w5lKo9Kd16yizl
-	rmgC5gwrBlpmIkz
-X-Received: by 2002:a17:902:e950:b0:2d3:a6db:299 with SMTP id d9443c01a7336-2d3b0c312b7mr344343175ad.6.1787024775405;
-        Mon, 17 Aug 2026 20:46:15 -0700 (PDT)
+        bh=fDkagHVNS2LJhNT8XESQiKeoHr8QVrsAQC8Ivqfl/sw=;
+        b=OWGdjdbw05Ha5Y4zG5RpZI77VXA9ei9smkhPH2yi4haXG7YNrqMAD1t4+J+Gmx7DzR
+         1i0z95HmWP5gTSRoQJheUNvjpBaSA8rELuNObKB9mnBSsTCfTVQ3mvjNtdaOTDMfXpA8
+         ab6WX3VitpTAs+5yyRdlMlIeN12LCbuMXDmdZvtrVYlGSYs5RyB0mX1mEmVrICwp3JJv
+         +dKTgrA8hfcfHXMK29tN0L7FSW6y5Z/fQ7w8ORn/njverYpH0Olyk9CWNL2cybng/cKY
+         fiyIw336z8z9QM4nO9lJK9gTWPe7CBQyP9ee1DDVsRXPWf1Akb/a/wqo4u6Q2EkwiQsq
+         cM1A==
+X-Forwarded-Encrypted: i=1; AHgh+RoCUaIkqkqioLyWI7xvLZJB05cW3kv8pZifidbNSZX6EPLEPxjV9HWy6vXDNXwyh4WishURyUDrlA==@kvack.org
+X-Gm-Message-State: AOJu0YzBZquetMz3upkHkBLYvvoihzsVdqsn4NA+dboXjlQsGYvKCLNb
+	Ep3sIcncMniyt9ZDVmJPcm9EQObYRvyh6LWMNK5XovCX3BRyU8+ESoRd/dIJrZ9f7Sg=
+X-Gm-Gg: AR+sD12hffNn5ZFcGfd+QRjcRWehPntAjbQvXEfVKxX/DWqYAccr/YwRR5HjJ+sTUTz
+	zPtnteZub0iV++so1CIimvUgO3CzgHyxK2rfhBPJ35eeRvSiZpPmLkG5Y5rtR7syfrQDlYFFdwy
+	1RMx1QKPASOasZ+RpXPQMJAPM/c+BkFXE6/d0hewVApprV7OXFL7DdE/ZL7PCk4b6LoGWnxMFJ6
+	Ept3wpcwaTEgHpM3gFSeoBtxui5AbRbPsQlEw+pYXrReeru13f9UHXrtPypdPKPXtn06bySmkGE
+	N7JLt2ljkkuDW2+gSoi1Q5oiwKZzlSlSR7NdEILgNXN0wrPX+sBbgy3wEvdDMU9dm7okGRWbjre
+	VxYD8D8yXuwMSAnbvlf6WEb7CKOGmm643l1pYo8erP3IinQnSrU/R02P4dSIKY4bfYMz/5YeSGM
+	glzLe4CfU5iWCebp0wpWNi6mcge/VuzyTmvqH2D/FGkzN0OC1xCCGNWc2xszx6pkFWlaw/NKu9O
+	jt0dqH1wpuBbbJV
+X-Received: by 2002:a17:903:37c4:b0:2d2:da8e:9017 with SMTP id d9443c01a7336-2d3b0c5437dmr334519695ad.8.1787024776791;
+        Mon, 17 Aug 2026 20:46:16 -0700 (PDT)
 Received: from damon-kunit-dev.tailb106f5.ts.net ([73.93.135.51])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3267be8e35bsm11453293eec.14.2026.08.17.20.46.14
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3267be8e35bsm11453293eec.14.2026.08.17.20.46.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 20:46:14 -0700 (PDT)
+        Mon, 17 Aug 2026 20:46:16 -0700 (PDT)
 From: Jason Angelov <jasonangelov@ucla.edu>
 To: sj@kernel.org,
 	akpm@linux-foundation.org
@@ -100,22 +100,22 @@ Cc: shu17az@gmail.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Jason Angelov <jasonangelov@ucla.edu>
-Subject: [PATCH 1/2] mm/damon/core-kunit: test probe_hits handling at region split and merge
-Date: Tue, 18 Aug 2026 03:45:51 +0000
-Message-ID: <20260818034552.11975-2-jasonangelov@ucla.edu>
+Subject: [PATCH 2/2] mm/damon/core-kunit: test damon_valid_probe_params()
+Date: Tue, 18 Aug 2026 03:45:52 +0000
+Message-ID: <20260818034552.11975-3-jasonangelov@ucla.edu>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260818034552.11975-1-jasonangelov@ucla.edu>
 References: <20260818034552.11975-1-jasonangelov@ucla.edu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A1BCD180009
-X-Stat-Signature: cpps5nfk7k756xrp9qfekk9sqa9g456h
+X-Stat-Signature: m73t6jxfiord54x7exhzgrsa4i6rpw6k
+X-Rspamd-Queue-Id: 0B74040005
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1787024776-54744
-X-HE-Meta: U2FsdGVkX19bwhcHVdwyDMRehEvKjX2yS4Kn2XaG+fGhb7Ewq/6hfUVOdJToJhj4j29DkjeuzD1dJB5G+S3VYII3rx4ZJPGx5sqKrjE+ctxtdqX2KN0vv5TmLeRtWM+RbqSM/l5Lnn0YXml7Yn0xtMNbMCndu2KbjX2T9i1EnLrxKdqu+SGdS+kF+95ZXMw43QAD8SuxZNk32PctaT7kG+Hcq8wEJKJLcdCZSZT8XhEqnLO0EGxLj4Eweljr0HFIG5ZcTn9sZ+UHQkhv63BYeEL6xWcQTCwa6KrxeG1GD5wZl3tFWTOVWBIu29QKTE9fH77mtOxdGAo/GCO0uw/FgWTvKMV35eOomXyZTQZyhgPKUBqv6UypW0vBfhWysSKZCUcgJNazqxemkUwC18KvgEV/crZka/8cZZj19hvCHTLN5Pk7WEYASg6ktsKr2gv5utVqmr53xBDXqGTdTBz1hPQvUQboehSEm8fVqKfvxXG7DORXKFfoWVYNnFSjkKdn9qgIrxIR8qrR9/dKu1qk0BLBRRvLh7knKFCKgj2ULmlkR6ljftE5SPN+lbC7OasZSd5/cCpGR+bXbEq9b6Oen0asjZFKPE66VHirNbFbyr7aNRBD3F4e0tCdv8nUom00/xTR7Mg794Ajjpj/7NHuCNT8RRjP3ue+1eJE4y1Rljia3HeMx+7ixNNrrH42D3U34jG/q7ha4Ye4UB31Z5ci5gKqb/x3tvbEaSGILr80YBTbfB6ahu09K7aEyACymj6QjGH9qi0fGBjXN3m1lfWYaERU/3OBIHDKFI2QhMKGe1YuFjGbZyXu22/2YfjHKTsTq3Fot0OLwE8dGGHHYVD7iL9vfn207JeTTDWgxRiuHRlGLT/9qHiKFztzPLqPMk7+0cb2u0Fpx3QmJKtqkQ1FP2ybk6EvN99xxKpfMZwrNOR7TgEVta9VyHJ4KwiFoY8Z1WVsMu1H3WyceX6tQlI
- lW5Y0iUe
- B8JIdQW+boT8kTPjutsPn7QlQnj9aexIAOhASScgUHXOsJlIuvp2E3hy4GU6fn1ZOWp8Qik6VADNzC3SGO/3PB0FNH9MyCIRyxoCdGPLJlT4n49zhb3I3mRl8bhCTG5hicJAoGXENyXy+laoQqiMtaPcvmBNrhcVyMTKL5sh8K7PuDGfXFjyTwopuTLoqB697KtMANYYFKTyBshMGvVsfp+ZBgzegPGDREl52CzUbX5qBncsiME4cTvITYcqKNHoE6QyfbeZe1S1oDHcN3IVU9ZcCJ9Xpe8Utwv9fdLD1T/4MUr3mjbF58UwoWN8pyD1uNMm/88GhCZRyZ021kFprlPXtJDJVGnBdRzZiuo1+gVyclBsqCv/a+dCZwdBUTX5q9zF7lj8/Sz0bgkoO4+h95uC+uicgRmp51NIHoL7rI6/6Hkll2zxPp6aFZfU5KUXNlH0KOfNnEeAy8tvAj8HG6pL9S8MUa8Kq68yI2lMOwux7W9bpykFcGomudkcE2GgVJScU8h90eraZq7jA9jnrzycmUL1p1NOhoe2K3xkjKtv5uuUgi61+Z8ONuVXAq80NHQNVENmQpmWBim0=
+X-HE-Tag: 1787024777-435453
+X-HE-Meta: U2FsdGVkX1/HIt7U5mFOtUwh8HykF+7BAtKg8Y4NxQCwQZZ+jl9c4aMDhaH+BWqfu2lix9tQ/ZUHG4i/J7V+uXtSV0AligRhwxm8HZ1WeqVQkiOXrgSIqsBQaQ5ND31KVNpTCS6DlBk6z35bvy0U7JLrey1XKtVzOQY84RqMaTXz+/JxtHQchVQOLbzKYL1mh/vw/J4UcV2CwhY1Qq9CBNFyNjkv/l2W0Re+ICJUpM9H5ScViWZk7WeE5KQnCR26YtdyW7sGwrmdc2F0js2/brcF30ZTikwf2AMUlJH+iplbLNEw/tHqTLWSpRt1oK0qvTymHGnkk4/MlGRKGDjpSia0lvU18ZkuNwXc+Foq54/1AHesl2ERxWpdVlBwVT1wnLDRR63uZcW2SDCrygz53VUobXZG1Bz50fF/XriHEwYVOa9Hrb/BbWg0+kw/XWfNZZza+3+pHXf1iROFN+fKCYrU9W5DlIxybYeKBjdgaAbK87onwQ4FhQ68EHTtt9SooIHbmJ7daUuPaz9gNh36VwCVbf63dtNTn46Lle1d0zjQlWordCMQ4FjZZyoxU/qeYo83yk1M+d5h0jB7+M1F9eTME4qBihCnzonp6LP3vfnfwBdo08nenfZCdAvhhfKr6dgp7OjSuihxjXyznqiEDB1oeN6QW4+iSVeSaff0O4lsmun1fld2AjKD9k/ulCDnwKrXi36LGEpagFGZAuDl1mrG+5CYxZFEi+HPugot2H435UfLowEStOTE4fnuRFU3MiUG9q5Q67WeTNy/KjY5W80L5GoWYck5PYjw7tcL3rjXqojKclWSZNsjzZqP1fBvDqdefndgUNw8WYKjJ5j+lYEGlTYJGHtoF4Nur6iZgdlQWfM1zN601Nm2hwufHP5gX3o/K9ekRxtxO7rDQ9B+3SlPVDg5wxSqU/BZ0baosyVM38ApibWCR5oiHWx+YGI1oKn47aUO0iH8EEqg4Cn
+ 9SejbWDZ
+ NfOEArSzZIyymNiZS3v6813IqOmfzJ8s2maCppyBguSEqfIk/SHrrflqaJM8PkS/gB+et8Zv7RjKnNz2n573DguWXFxAborMuRTBWWhzWNbV/nGwV0ek5pseGHqNsP1raWcEuEVax4Hrs3V1XAEcKEGI6f9uWaA72xMBsO7Bjjn/TGDCPZoDFKK3IOcdm34ftg/eKNx3/GBP5lgURe3mpepxsr/vBNgrNRyqfkWlxMbKlFyop7+8JGPVRFaaMopUf/dSEDaN80P3WoybqJtnucox/fn35Wj5/Z6aVU7E1e2WijTiWwFA+HjmlIfyvncYTUFVRPlsGUtJDkkFi+WSo60INt25ABR01vhJQWSqctT1HldGr61p/XjMKHnnQm8o3KwHyYrzOx6d2wH59h3E3JQ18qoLD3I0cA5afCqxgwoQxsy1HPkT+/iAi1qcs3CliShA2D8AKEI4ymcnJ8YUR51Agmp9MWYPL0oFS41MxugQd4q2AF8NbIGTqtzs/saH4c8z6xF0o/lXFkCFsHggxsP+IfGwWgSv0KaUP0r7QZ7pTNThPXHlyDZq78OZiCbp/98QYRNl6b+MCxwU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,65 +123,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_split_region_at() copies probe_hits[] and last_probe_hits[] to
-the new split region.
-damon_merge_two_regions() sets probe_hits[] to the size-weighted
-average of the merged regions.
+damon_valid_probe_params() makes damon_commit_ctx() reject probe
+configurations that could overflow a probe_hits counter, a single
+(weight * probe_hits) product, or the sum of those products.
 
-Extend damon_test_split_at() and damon_test_merge_two() tests to
-cover those fields.
+Add a kunit test covering each rejection at its boundary:
+
+- samples per aggregation interval: U8_MAX is allowed, one more could
+  overflow a probe_hits counter
+- single weight: the largest whose product fits in unsigned int is
+  allowed, one larger is rejected
+- multiple probes: each product fits, but their sum overflows
+- no weight set: the validation is skipped
 
 Signed-off-by: Jason Angelov <jasonangelov@ucla.edu>
 ---
- mm/damon/tests/core-kunit.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ mm/damon/tests/core-kunit.h | 57 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 57 insertions(+)
 
 diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 4a536d41cdb2..2db94d49c9ba 100644
+index 2db94d49c9ba..b1ca4c8e03f0 100644
 --- a/mm/damon/tests/core-kunit.h
 +++ b/mm/damon/tests/core-kunit.h
-@@ -152,6 +152,8 @@ static void damon_test_split_at(struct kunit *test)
- 	}
- 	r->nr_accesses = 42;
- 	r->last_nr_accesses = 15;
-+	r->probe_hits[0] = 7;
-+	r->last_probe_hits[0] = 3;
- 	r->age = 10;
- 	damon_add_region(r, t);
- 	damon_split_region_at(t, r, 25);
-@@ -168,6 +170,8 @@ static void damon_test_split_at(struct kunit *test)
+@@ -1338,6 +1338,62 @@ static void damon_test_commit_ctx(struct kunit *test)
+ 	damon_destroy_ctx(dst);
+ }
  
- 	KUNIT_EXPECT_EQ(test, r->nr_accesses, r_new->nr_accesses);
- 	KUNIT_EXPECT_EQ(test, r->last_nr_accesses, r_new->last_nr_accesses);
-+	KUNIT_EXPECT_EQ(test, r->probe_hits[0], r_new->probe_hits[0]);
-+	KUNIT_EXPECT_EQ(test, r->last_probe_hits[0], r_new->last_probe_hits[0]);
- 	KUNIT_EXPECT_EQ(test, r->age, r_new->age);
- 
- out:
-@@ -189,6 +193,7 @@ static void damon_test_merge_two(struct kunit *test)
- 		kunit_skip(test, "region alloc fail");
- 	}
- 	r->nr_accesses = 10;
-+	r->probe_hits[0] = 6;
- 	r->age = 9;
- 	damon_add_region(r, t);
- 	r2 = damon_new_region(100, 300);
-@@ -197,6 +202,7 @@ static void damon_test_merge_two(struct kunit *test)
- 		kunit_skip(test, "second region alloc fail");
- 	}
- 	r2->nr_accesses = 20;
-+	r2->probe_hits[0] = 14;
- 	r2->age = 21;
- 	damon_add_region(r2, t);
- 
-@@ -204,6 +210,7 @@ static void damon_test_merge_two(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
- 	KUNIT_EXPECT_EQ(test, r->ar.end, 300ul);
- 	KUNIT_EXPECT_EQ(test, r->nr_accesses, 16u);
-+	KUNIT_EXPECT_EQ(test, r->probe_hits[0], 11);
- 	KUNIT_EXPECT_EQ(test, r->age, 17u);
- 
- 	i = 0;
++static void damon_test_valid_probe_params(struct kunit *test)
++{
++	struct damon_ctx *ctx;
++	struct damon_probe *probe, *probe2;
++
++	ctx = damon_new_ctx();
++	if (!ctx)
++		kunit_skip(test, "ctx alloc fail");
++	probe = damon_new_probe();
++	if (!probe) {
++		damon_destroy_ctx(ctx);
++		kunit_skip(test, "probe alloc fail");
++	}
++	damon_add_probe(ctx, probe);
++
++	/* Parameters are validated only if any probe weight is set. */
++	ctx->attrs.sample_interval = 1;
++	ctx->attrs.aggr_interval = 1000000;
++	KUNIT_EXPECT_TRUE(test, damon_valid_probe_params(ctx));
++
++	/* Up to U8_MAX samples per aggregation interval are allowed. */
++	probe->weight = 100;
++	ctx->attrs.aggr_interval = 255;
++	KUNIT_EXPECT_TRUE(test, damon_valid_probe_params(ctx));
++
++	/* More samples could overflow the probe_hits counters. */
++	ctx->attrs.aggr_interval = 256;
++	KUNIT_EXPECT_FALSE(test, damon_valid_probe_params(ctx));
++
++	/* The largest weight whose weighted hit count fits in unsigned int. */
++	ctx->attrs.aggr_interval = 255;
++	probe->weight = UINT_MAX / 255;
++	KUNIT_EXPECT_TRUE(test, damon_valid_probe_params(ctx));
++
++	/* Any larger weight could overflow its weighted hit count. */
++	probe->weight = UINT_MAX / 255 + 1;
++	KUNIT_EXPECT_FALSE(test, damon_valid_probe_params(ctx));
++
++	/* With one sample per aggregation, even the largest weight fits. */
++	ctx->attrs.aggr_interval = 1;
++	probe->weight = UINT_MAX;
++	KUNIT_EXPECT_TRUE(test, damon_valid_probe_params(ctx));
++
++	/* The sum of all probes' weighted hit counts could also overflow. */
++	probe2 = damon_new_probe();
++	if (!probe2) {
++		damon_destroy_ctx(ctx);
++		kunit_skip(test, "probe2 alloc fail");
++	}
++	probe2->weight = 1;
++	damon_add_probe(ctx, probe2);
++	KUNIT_EXPECT_FALSE(test, damon_valid_probe_params(ctx));
++
++	damon_destroy_ctx(ctx);
++}
++
+ static void damos_test_filter_out(struct kunit *test)
+ {
+ 	struct damon_target *t;
+@@ -1664,6 +1720,7 @@ static struct kunit_case damon_test_cases[] = {
+ 	KUNIT_CASE(damos_test_commit_migrate_hot),
+ 	KUNIT_CASE(damon_test_commit_target_regions),
+ 	KUNIT_CASE(damon_test_commit_ctx),
++	KUNIT_CASE(damon_test_valid_probe_params),
+ 	KUNIT_CASE(damos_test_filter_out),
+ 	KUNIT_CASE(damon_test_feed_loop_next_input),
+ 	KUNIT_CASE(damon_test_set_filters_default_reject),
 -- 
 2.43.0
 
