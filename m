@@ -4,121 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9FBCC5DF7D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 15:50:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 464CFC5DF81
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 15:53:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0D036B018E; Tue, 18 Aug 2026 11:50:00 -0400 (EDT)
+	id 424206B018D; Tue, 18 Aug 2026 11:53:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBDE16B018F; Tue, 18 Aug 2026 11:50:00 -0400 (EDT)
+	id 3FC1F6B02A1; Tue, 18 Aug 2026 11:53:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AAC6E6B0190; Tue, 18 Aug 2026 11:50:00 -0400 (EDT)
+	id 312706B046B; Tue, 18 Aug 2026 11:53:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8454C6B018E
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 11:50:00 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1359EA1AB2
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 15:50:00 +0000 (UTC)
-X-FDA: 85114826160.11.C468F94
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 43C50A0002
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 15:49:58 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DjEm3XUR;
-	spf=pass (imf25.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787068198;
-	b=oDfMWEvGsQWp5KyCK2Ep91WRS6CV9QrK/zc5XYPGWMWWUlKEFBTCi8BL1kSeWsTw1bkGxB
-	yg/ZmD1L7dTFWZRQP8/tUpE/vSgKGjOltW+EptDyooMUf82dp+9VTCBkOEh+aMS9Di+SMx
-	ie1OVCeZcY9Up7oXQN+KIauavGPj3Qk=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DjEm3XUR;
-	spf=pass (imf25.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 079966B018D
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 11:53:17 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 609DA1401F6
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 15:53:17 +0000 (UTC)
+X-FDA: 85114834434.22.866A0D1
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 3FAD8100003
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 15:53:15 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=KiMNDdqo;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf05.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787068198;
+	s=arc-20220608; t=1787068395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O29WTaUjniaazmvc0G9Gs9N2gTRaT/iDFSjz7U1NMko=;
-	b=1eaJ4XYRo+IB4qS98ZVbUYz+1WUrbpX4thxVHCoWHFKB9d+hqWHRZ3gx0za6aD2fT9l7fr
-	ecP7w4ubvY2FNKm804iJc0pODxdR2i8Iy91GgDK9wawxx/TmCMtCWzH20DmXE9VezUqb9d
-	2lKh7Zc0ySiEKqNx7PWjrr34oX9kJyM=
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-451a49abd8aso57967fac.3
-        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:49:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787068197; x=1787672997; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=O29WTaUjniaazmvc0G9Gs9N2gTRaT/iDFSjz7U1NMko=;
-        b=DjEm3XUR7yTjCl4fQhNqBVCmkDPJye3+jJsYFfIJ+sZndR4+E3JwepaHYecb088wjN
-         lmsK7NosDVD6+vxGM5oOpl78dPz/jM3EGEmPSsa+KVyg7UmbGffLfrcZW9ys8JX6CfY+
-         MVMnEUwOxQ+UWx/v5nn17UK+iPAIHRpHPfEvzkUFVwM8vx5wvEEXLLZ9ULqjWijBo4qH
-         tf1KfRKF364QOEf6qjwU00x9C1zoPohp5Fctb5GRS0IW3EMaR0jkSZ5ihhoXVTRA2mba
-         7HOPu9N2K+OXF6tnapLPhABkKBMUuBwK+/k1ZFcwaiVT6WBXtSuyoAnbSkrexScvct6r
-         GtLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787068197; x=1787672997;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=O29WTaUjniaazmvc0G9Gs9N2gTRaT/iDFSjz7U1NMko=;
-        b=YPeEbFagoRdQuPxUrsshl+N2S0JENQ+layA5vtPy7cBC6m6wLHggUYHa5pWBjT6aYG
-         /Nr3H7VZUoc4BUTFiI2bcphv2icUQ53BYuN9zHtvmxz613q+r9i3OVf8Y0fqrqdukRUR
-         OcYXqQ0wP3vFQ0dV6cB4+LYeqyjVoxIYslYPq09cTQY54RTyEPebg0nDCABmz89hYmaQ
-         KixRWQ0OG6r6MyCb+FygRE7Ez6SZvIyfs8vgSOO6IKUnFoBKGo9qbfrT4rF8oUm1SGuY
-         b51fkUzbMurCaHE7O1bYGes6Y7kGE0DUxdMIJiTYqsh5M10GvCJOsTCY2CLVX0ZKU/E6
-         2sKw==
-X-Gm-Message-State: AOJu0Yxh1Lma/J9aSpCGVvsbgILDbcBXj0vSDe13FWfJvNyIVU0w4MDK
-	0V7eIks8JhNYuuwkcdRGmVZEQG7ur1CZpHrzHiYWOn7F5YVBG0NlI618
-X-Gm-Gg: AR+sD13M/1tYaeAT1f4q+RanonrYYdaF3ejlfYYw89m9TB1yLtp3g5S4BAZKELDtu46
-	41YowXdwjReoIBdbzMIxLFiQ4liIXlOCJshsNNPUe+j3x4kvSBuqG1dGqI2Ij3wDEs+GoAZnHNC
-	BGF79JgfqqY5ZNQr7P6ydghNbdkXkdKzEeYUYbG+3wM+9WAzhAvAL0gfSZrLazgltIRt/KpZCXZ
-	+d/lTcDbigDIfR+CjshThZbgs2zxcDEsFu3YURBv8sLMNeNHu2vN+9Q2Gw4v9ihO/AyvJX1IEMy
-	cLDXqfUamMwp2o5UTCNaQUf4sPpDEYosOx3FWlHglrobVMlwLswhG1h7hZqOgMRuy/kk0vsB1Fh
-	UW+YNWzO41u3w4cadojIbHsp5iL6ZiOEs33/EtGbuhXhJwVFBFCAogfJORUbldEa4j2DyyCubQM
-	h98yxj+3l3WQ+lVrhP4RgXL4sRymF+Sfq6AcehZKWlNv4Mt0eL1WPqfi8sX+ANBvlZUpoZzthJH
-	6gRhtB2IzqYJanNLH4=
-X-Received: by 2002:a05:6820:1795:b0:6a3:bdc5:591a with SMTP id 006d021491bc7-6b0d6919fd2mr29904034eaf.32.1787068196884;
-        Tue, 18 Aug 2026 08:49:56 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:17::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b1166bc727sm5033553eaf.11.2026.08.18.08.49.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 08:49:56 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: liuqiqi@kylinos.cn
-Cc: linux-mm@kvack.org,
-	tj@kernel.org,
-	mkoutny@suse.com,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	akpm@linux-foundation.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/8] mm/memcontrol: introduce per-tier memory accounting and control
-Date: Tue, 18 Aug 2026 08:49:53 -0700
-Message-ID: <20260818154954.805958-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260818023121.100613-1-liuqiqi@kylinos.cn>
-References: 
+	bh=geXWrV0/2z0kpozDGOhKEC+5F4VQGLvn66X7G1ETdLM=;
+	b=he4S6iHbpqskUL34c9XNx8ykU9hUHRZXQrasT2HoKKOJedOnuC6qLIL7Z6gHOig4PnKdTo
+	N1SXRjyxT+2tXE8Decq9Sw2xwyrP75T7ocvMQweWHYXlJX6boAqXZY47dm9WSI2XlnF7sC
+	0d+tl2/T42ugvYW/jE4d8ounZWkk3S8=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=KiMNDdqo;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf05.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787068395;
+	b=LRcSUBPjFt4R2pMEekaAs8bQeCJcXW7mp8Uc5YpfIUEoG2z4EyjBfLVM5gQlK88s/qqS+n
+	i0s9S7N5IPENSKUES/LKwm7kB2E179knxlTKVsJh2Af56/b8fT1ZVUY8lbC64/V+wUd64N
+	VVDZC7XGTzMsOjX0J6BKHfkGADOLCVw=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3316B1A00;
+	Tue, 18 Aug 2026 08:53:10 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9AEF53F763;
+	Tue, 18 Aug 2026 08:53:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1787068394; bh=n5Pn/EgrqrIEFc5DK4mgxFWT/9EScWqa5GcuyDfAyeo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KiMNDdqo79AFXbKqbuzUTJzNZjfCcxsyG80l6DMNVWk3SK8nXkyidq4VEkkObM4lg
+	 2k296O5lKEZVD5XqetWIn+E/GvtX7ic8xbAsx7MBDnbniwPndVR5pUbaKDi8vAr2ak
+	 /6nbyhSweQ+975pWMIkNhvlMelJpufEsIPDC/zOk=
+Date: Tue, 18 Aug 2026 16:53:08 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: James Houghton <jthoughton@google.com>
+Cc: Will Deacon <will@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Nikos Nikoleris <nikos.nikoleris@arm.com>,
+	Linu Cherian <linu.cherian@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Nanyong Sun <sunnanyong@huawei.com>, Yu Zhao <yuzhao@google.com>,
+	Frank van der Linden <fvdl@google.com>,
+	David Rientjes <rientjes@google.com>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH 11/18] hugetlb_vmemmap: Use try_populate_vmemmap_pmd for
+ replacing in-use PMDs
+Message-ID: <aoR_5LHPsVXUnxt6@arm.com>
+References: <20260708031129.3503195-1-jthoughton@google.com>
+ <20260708031129.3503195-12-jthoughton@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 43C50A0002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260708031129.3503195-12-jthoughton@google.com>
 X-Rspam-User: 
-X-Stat-Signature: 6gpmamnz489mkdr4gq3tfcj5mdgkyans
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787068198-116787
-X-HE-Meta: U2FsdGVkX19Vvlvc6st2kia4GAHGQNXeFSQ5BdkVMGrRim0+Wa61wgba6jMqVxBncwII2X7yTELJMntljlfSJcqTbp85ihpMCme9VAIeGQohg2bQF12HL70SjEt76y42/aYSInMM3yMqdNEjPI9+yn+2+rr5vVP3Bbec33GlmFGTLtf72rOiOLikOq+5wb1/jV8Eb5pjTLBHVUoLVLskKewErLEQsH5fellDGOw3wZdMneQBncA/xu5gTOt2o1SCvd31KqY23Kds53nyccV2tYV8kO1S4hUxlDZWpkjDLe+UtAthnDmNN4j3oCBxHrux3y5NJtNDMwkPAr2jqhY0U/ZSqmGnmXH7disR0IC9sAe6Hz5NhCaLpOYvphZSAjHcbkRJOiwz+yDBNGHj5bvgtXOzKs/5KLK8Fb7I/cqHUmb6Fw//pAs3wdSRO6dF0P4rGAx5xcFsEHv4E1qOsOQg+yEvMLO0fH0eFQoG6yj9SgnxEnVdyDJNl2Kl5r9sSaXlMM8A9N/zt9N6QxNOy9H16nTU2SukFpodU9LchiTrlK4oz0+DlLQRigWeoUtoA8UNVUPT4MSEpDTyyTDEXljlRrNpegCb3Vp3uKdFnIKYQPTL0Myc42xfySeoSXWLKUirzB5hDtf+/NXJVTixmFb+RvOL6iCGCS7EzgyCrtN1OfkpHL8l26XiAOpgHV+EvElI6R/jFX7WAkHzoi50KIDqr1QCXvhkB7yeNp2gMK4t3d58FbtHlIFuz2W47svgkni2v6XoBrM5NoZHyrMAHjdQzP+h+We4bsn6CIGCy2xSDdOOduhzkd9N6mGLDsh381nquA/8FK/D7XeTZ3yuhMGB0MS4O5MmJvgwKb4fGI7toKbbY2S4uXwBHL2VdCt3hr5W8hDCwdReVfLAPJ9RHBNzmM+WFvK+rjCGAZF2W10UVZGHo3ZCDBHRfHD3gQ4tuxmlfn+qr1ZCsCAVHk/2keB
- Wd3/J3/5
- MFLYV3CmUUBUTaQx/P4KUtzvm0s3jdi1Pd/A+23YAzYo99DAyzxFKVr/Drf5rcpd7qJAyyKg3+OhDedxrtu17a/WTHA3BS0wpBGVNprmqaYPpA+b8TcJqdaGV+fnzcWz1egSzBJwFdcrVVB9kqKkN4TareCObM/BnTp8bgbhee09JrnPuIuG/mgAftoqDRJ6UVPSpES+zjeq/3gb661d51xyuxneGyNed78wIZkdlu7WA2Lz8k3WZKfggifz6JLuhXTf/qb6rPaM+ld8NRrFm+DVODXe7Z6K2j7LeT8/t2zjI8DqX47xTLF6Br1T4GPeGyEEyNvPt+DACYvFH1ZJfaHVgmhqPF0OYFi1ffrKljRJcKo960ZQwVIA0K3CLCka6BWrV+fJrRITRi5ggsQya/wlyVloyasfjjky0wzifvCFLIHG5qgOKT3kM2qDicDJaoauMDvJmeJcofAqUcBnGebhf664h8B4INpQ4T1XhIYf4I795G6QcLK8DFw==
+X-Stat-Signature: z8iawb9jqkx6hnjesg6mf9yksb1docut
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3FAD8100003
+X-HE-Tag: 1787068395-828603
+X-HE-Meta: U2FsdGVkX19AYDJ10kZa3ys+EtRRhHI3y23hM+dvq+dTKZxJ6y/US+qpWJ43Qghhy9fgnTQ/43KXpzpm1tYiRuMN45uiV5HafCqIB7Fo4M/aURuRlbGMMQkLckqhfh1wr7qy/q3jUW1eNUXRynyC5UfAkM0fIO2G5C0aoO5zrengrzJcNO1mcopXI9vZhQfxYDl1CIwjb0t5YIC2MQFMzoVVHyRSi9uHzBZAHhz8hQODJ4csDVTONtupJA7XHCzyY5xurx94gfm+wSc0WYTSX/ptrCqhHibZKkFVeMt9XNuiL/O4pXYKrQnPgIMVQFYr+pL0Fj00NeYWSPGwA7MZyU9am3z5cwX079bY0R6e+SnU7jiC4zxEeSbgmpd3I+ja6WBOVNBR264dwr6g7om1KlC3Na8Ca5qf4707zsLNXa4YMXij0gEkqkDaxV1YApH2OwSj+ADjsofti7Tsp0LAbTQ7YNml0ALpIxeNTn7azVPZLfYrWh2usKUMIWlsKjD+oseHU1NF1bUbQpCnRza1cofJJYDD7xwuPVSnAjv5g6sTPqJA+1AX8dP5sqDCZWM/5H2bXihKhqvvt3sOmaRraKdSnVC72yUZd7fZwk9U1kM3/cq/epRd4z0kZz5gYhC+C1CSMeof/qLTsFdbIsVdA8bd0bKSGnRTiCeQ+8AgFoToRU2ciAm6gfCYu0ltrfQ2+ieMKyTZgGD5yn+/XX+Y6aYzJkNhpcoY+ScqToQD9WcCtd89wvYZ8nocdZZOizFRgfdBdbKie6jSaWNw246dLHCZWz0TMfwY8RUCvYlJJHlszg+QJj122DR+TM7JYH3Ph5dOzyJ1SoDE0VvNMT3eB3C17Ca35ezXLinJz1Cum/Qk5NiZ10+Z+BQ6ipACcqFi4qElGyVVvRHrdsfOBFa4Fjifl/jj8e2I3EuUBQ/SqAmpImeo4y4lU0zHnZnsVDscDK8rsW3rawvmOJt0k+0
+ TIIIkIsn
+ nh7SrK5pFDuwVXkr3bKYe8pxpyN+f6eiD0NQ8TsSClyNcUGZYy1aLnKdTSzPleXdgmSJL43eaTCu/KU2gVBjrEnTKv2WhAKBM2ai1j9+YmheRsQKxr2scpc9sXjuN7a1QwGwNMx/Dxd8PqBsY5oP6EYxCEsj71rBGyNLAo5yj0ly63/XpU0JDpZxVO10Sxgq7hhXOPLPBGdhDIlBrV1Sx7Qt6RKxMxX9s2ITJPcr4XOgAO/+Rduvk1tp9nQ8CWrX57Wjb/NmKIihh1iojeCSBGcDixg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,189 +99,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 18 Aug 2026 10:31:13 +0800 liuqiqi@kylinos.cn wrote:
+On Wed, Jul 08, 2026 at 03:11:21AM +0000, James Houghton wrote:
+> diff --git a/arch/arm64/include/asm/pgalloc.h b/arch/arm64/include/asm/pgalloc.h
+> index 1b4509d3382c..c8946250d431 100644
+> --- a/arch/arm64/include/asm/pgalloc.h
+> +++ b/arch/arm64/include/asm/pgalloc.h
+> @@ -121,4 +121,13 @@ pmd_populate(struct mm_struct *mm, pmd_t *pmdp, pgtable_t ptep)
+>  		       PMD_TYPE_TABLE | PMD_TABLE_AF | PMD_TABLE_PXN);
+>  }
+>  
+> +#define __HAVE_ARCH_TRY_POPULATE_VMEMMAP_PMD
+> +static inline int try_populate_vmemmap_pmd(pmd_t *pmdp, pte_t *pgtable,
+> +					   unsigned long addr)
+> +{
+> +	/* BBML2_NOABORT is required. Its presence has been checked. */
+> +	pmd_populate_kernel(&init_mm, pmdp, pgtable);
+> +	return 0;
+> +}
 
-> From: Qiqi Liu <liuqiqi@kylinos.cn>
-> 
-> This RFC introduces per-tier memory cgroup accounting. Each cgroup
-> tracks its memory usage per memory tier (e.g. DRAM, CXL), exposed
-> through a new memory.tier control file that reports per-tier usage
-> and accepts independent high (soft) and max (hard) limits per tier.
-> By default these limits are auto-derived from memory.high / memory.max
-> based on per-tier capacity ratios, and can be manually overridden.
-> 
-> The implementation integrates with the existing memory tiering and
-> demotion infrastructure. Per-tier usage (anonymous and file) is tracked
-> via dedicated page counters, and cross-tier migrations (e.g. demotion
-> from DRAM to CXL) correctly re-account charges. When a tier hits its
-> high limit, async reclaim is triggered within that tier's NUMA nodes;
-> exceeding max enforces reclaim scoped to the tier's own nodes, or OOM.
-> 
-> The feature is fully opt-in. When disabled, no extra counters or
-> charge/uncharge paths are created, memory.tier reads empty, and there
-> is no measurable overhead.
-> 
-> Why per-tier limits?
-> -------------------
-> 
-> On tiered memory systems, memory.max constrains total usage but cannot
-> express "keep fast-tier usage under X". Without per-tier limits, a
-> workload can monopolise DRAM, pushing other cgroups onto slower tiers.
-> This series gives each cgroup independent high (soft) and max (hard)
-> limits per tier, exposed and set through a new memory.tier file.
-> 
-> By default those limits auto-derive from memory.high / memory.max by
-> capacity ratio; writing memory.tier pins a tier.
-> 
-> This series takes a different approach from Joshua Hahn's toptier RFC [1],
-> tracking a separate page_counter per (memcg, tier) for N-tier support and
-> exposing writable per-tier limits under a cgroup mount option.
+This patch adds the same function in 4 different arch files. Can we not
+have a single generic implementation in linux/pgalloc.h, bracketed by
+some ARCH_WANTS_* (macro or config)?
 
-Hi Qiqi,
+I think the same goes for patch 4 with try_update_vmemmap_pte(), we can
+reduce the code duplication.
 
-Thanks for sending the series. I'm glad that there is additional interest
-in making tiered limits in the system. In this series, I do see a lot
-of duplicate work with my work here [2]. It looks like you cited [1]
-which is an older version of the series that I sent out. Notably the
-new version has N-tier support and a cgroup mount option.
+> diff --git a/include/linux/pgalloc.h b/include/linux/pgalloc.h
+> index 9174fa59bbc5..ed446d95ca37 100644
+> --- a/include/linux/pgalloc.h
+> +++ b/include/linux/pgalloc.h
+> @@ -26,4 +26,24 @@
+>  			arch_sync_kernel_mappings(addr, addr);		\
+>  	} while (0)
+>  
+> +#ifndef __HAVE_ARCH_TRY_POPULATE_VMEMMAP_PMD
+> +/*
+> + * try_populate_vmemmap_pmd - Populate a PMD that is in use by the vmemmap.
+> + * @addr: Base address of the remapped PMD.
+> + * @pmdp: Page table pointer to be overwritten.
+> + * @pgtable: Pointer to the page table that the new PMD will point to.
+> + *
+> + * This function is only to be used to update PMDs that map the vmemmap to
+> + * point to a page of already-populated PTEs that map the same pages.
+> + *
+> + * Implementations of this function must ensure that, while the update is taking
+> + * place, CPUs will not fault on the remapped virtual address range.
+> + */
+> +static inline int try_populate_vmemmap_pmd(pmd_t *pmdp, pte_t *pgtable,
+> +					   unsigned long addr)
 
-Also consider my series in [3] where I am moving stock to the
-page_counter level. It's been a while, but I'm hoping to send out a new
-version of that series next week.
+Nit: if we follow try_update_vmemmap_pte(), we could place 'addr' first.
+It matches pgd_populate_kernel() as well in this file.
 
-With all of that considered, I wanted to know what differences your RFC
-here has with my series. From where I stand, the only difference I can
-see was making the limits exposed / writable, which was an explicit
-design decision that I made to de-clutter the memcg tuning space and
-try to make the mechanism as transparent to the user as possible.
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +#endif
+> +
+>  #endif /* _LINUX_PGALLOC_H */
+> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+> index 977249e22ed0..b445febac0d2 100644
+> --- a/mm/hugetlb_vmemmap.c
+> +++ b/mm/hugetlb_vmemmap.c
+> @@ -55,6 +55,7 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long start,
+>  			     struct vmemmap_remap_walk *walk)
+>  {
+>  	pmd_t __pmd;
+> +	int ret;
+>  	int i;
+>  	unsigned long addr = start;
+>  	pte_t *pgtable;
+> @@ -74,8 +75,15 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long start,
+>  		set_pte_at(&init_mm, addr, pte, entry);
+>  	}
+>  
+> +	ret = 0;
+>  	spin_lock(&init_mm.page_table_lock);
+>  	if (likely(pmd_leaf(*pmd))) {
+> +		/* Make pte visible before pmd. See comment in pmd_install(). */
+> +		smp_wmb();
+> +		ret = try_populate_vmemmap_pmd(pmd, pgtable, start);
+> +		if (ret)
+> +			goto free;
+> +
+>  		/*
+>  		 * Higher order allocations from buddy allocator must be able to
+>  		 * be treated as independent small pages (as they can be freed
+> @@ -84,21 +92,17 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long start,
+>  		if (!PageReserved(head))
+>  			split_page(head, get_order(PMD_SIZE));
+>  
+> -		/* Make pte visible before pmd. See comment in pmd_install(). */
+> -		smp_wmb();
+> -		/*
+> -		 * On arm64, this requires BBML2_NOABORT. Its support has
+> -		 * already been checked.
+> -		 */
+> -		pmd_populate_kernel(&init_mm, pmd, pgtable);
+>  		if (!(walk->flags & VMEMMAP_SPLIT_NO_TLB_FLUSH))
+>  			flush_tlb_kernel_range(start, start + PMD_SIZE);
+> -	} else {
+> -		pte_free_kernel(&init_mm, pgtable);
+> -	}
+> -	spin_unlock(&init_mm.page_table_lock);
+> +	} else
+> +		goto free;
+>  
+> -	return 0;
+> +out:
+> +	spin_unlock(&init_mm.page_table_lock);
+> +	return ret;
+> +free:
+> +	pte_free_kernel(&init_mm, pgtable);
+> +	goto out;
+>  }
 
-The other parts of the series (per-tier reclaim, per-tier-memcg
-page_counter accounting, auto-scaling high/max from memory.high/max)
-seems to be the same as my series.
+Would 'free' first with fall through 'out' read better?
 
-Rather than duplicate our effort I think it would be best to foucs all
-of our effort and the maintainers' effort into discussing the design
-decisions for the series.
-
-Joshua
-
-> Patch structure
-> ---------------
-> 
->   1/8  mm/memory-tiers: add node_to_tier_id and tier_id_to_nodemask
->   2/8  mm/vmscan: add try_to_free_mem_cgroup_pages_nodemask
->   3/8  mm/memcontrol: add per-tier page counter infrastructure and lifecycle
->   4/8  mm/memcontrol: add per-tier charge and uncharge
->   5/8  mm/memcontrol: add per-cpu stock for tier charge/uncharge
->   6/8  mm/memcontrol: add memory.tier control file
->   7/8  mm/memcontrol: auto-derive tier high/max from memory.high/max
->   8/8  cgroup: add memory_tiered_limits cgroup mount option
-> 
-> Patches 1-2 are infrastructure (helpers in memory-tiers and vmscan).
-> Patches 3-5 add the core accounting: counter lifecycle (3),
-> per-page charge/uncharge (4), and stock batching (5).
-> Patch 6 adds the userspace file. Patch 7 adds auto-derivation. Patch 8
-> gates everything behind a mount option + kernel cmdline, so the feature
-> adds no measurable overhead when not opted in.
-> 
-> Usage
-> -----
-> 
-> Boot with:
-> 
->   cgroup_memory_tiered_limits=1
-> 
-> Or remount at runtime (affects newly created cgroups only):
-> 
->   mount -o remount,memory_tiered_limits /sys/fs/cgroup
-> 
-> Per-tier limits and usage can then be read from and written to
-> memory.tier.
-> 
-> Scope and limitations
-> ---------------------
-> 
-> - Only LRU folios (anonymous and file pages) are tier-accounted. Kernel
->   memory and socket buffers are not yet accounted per tier; support for
->   these is planned as follow-up work.
-> - Per-tier memory.min and memory.low protections are not implemented.
->   These can be added later by extending the per-tier interface to
->   expose and enforce min/low protection.
-> - The command-line parameter mirrors cgroup_favordynmods; automatic
->   enablement via the cgroup mount path is left to userspace.
-> 
-> Testing
-> -------
-> 
-> Tested on QEMU with fake NUMA (DRAM tier 4 + CXL tier 22), with
-> cgroup_memory_tiered_limits=1 on the kernel command line and demotion
-> enabled.
-> 
-> Set up a cgroup, apply per-tier limits, and run a memory-intensive
-> workload:
-> 
->   $ mkdir /sys/fs/cgroup/mycgroup
->   $ cd /sys/fs/cgroup/mycgroup
->   $ echo "tier4.high=200000000" > memory.tier
->   $ echo "tier4.max=300000000" > memory.tier
->   $ echo 1 > /sys/kernel/mm/numa/demotion_enabled
->   $ cgexec -g memory:/mycgroup ~/stream --ntimes 5 --malloc &
->   $ cat memory.tier
->   tier4.current=296488960
->   tier4.high=199999488
->   tier4.max=299999232
->   tier22.current=1625464832
->   tier22.high=max
->   tier22.max=max
-> 
-> DRAM (tier4) usage stays under tier4.max (hard limit, no OOM) but exceeds
-> tier4.high (soft limit, suggesting that async reclaim is in progress);
-> CXL (tier22) absorbs the overflow via demotion.
-> 
-> Also verified:
->   - tierN.current tracks per-tier usage (anon + file).
->   - Cross-tier migration (demotion) correctly re-accounts.
->   - memory.high / memory.max auto-derives tierN.high / tierN.max.
->   - Manual override (writing a number to memory.tier) pins the limit.
->   - Tier max enforcement triggers reclaim scoped to the tier's nodes.
->   - Feature fully off (no mount option): no counters, no charge/uncharge,
->     memory.tier exists but reads empty.
-> 
-> Open questions
-> --------------
-> 
-> - Should kmem/slab tier accounting be included in this series or deferred
->   to a follow-up?
-> - Should per-tier memory.min and memory.low protection be part of this
->   series or left for later?
-> 
-> [1] https://lore.kernel.org/all/20260423203445.2914963-1-joshua.hahnjy@gmail.com/
-> 
-> Signed-off-by: Qiqi Liu <liuqiqi@kylinos.cn>
-> 
-> Qiqi Liu (8):
->   mm/memory-tiers: add node_to_tier_id and tier_id_to_nodemask
->   mm/vmscan: add try_to_free_mem_cgroup_pages_nodemask
->   mm/memcontrol: add per-tier page counter infrastructure and lifecycle
->   mm/memcontrol: add per-tier charge and uncharge
->   mm/memcontrol: add per-cpu stock for tier charge/uncharge
->   mm/memcontrol: add memory.tier control file
->   mm/memcontrol: auto-derive tier high/max from memory.high/max
->   cgroup: add memory_tiered_limits cgroup mount option
-> 
->  include/linux/cgroup-defs.h  |   5 +
->  include/linux/memcontrol.h   |  26 ++
->  include/linux/memory-tiers.h |  12 +
->  include/linux/swap.h         |   6 +
->  kernel/cgroup/cgroup.c       |  21 +
->  mm/memcontrol.c              | 786 ++++++++++++++++++++++++++++++++++-
->  mm/memory-tiers.c            |  58 +++
->  mm/vmscan.c                  |  26 +-
->  8 files changed, 936 insertions(+), 4 deletions(-)
-> 
-> -- 
-> 2.43.0
-
-[2] https://lore.kernel.org/all/20260807202059.2620949-1-joshua.hahnjy@gmail.com/
-[3] https://lore.kernel.org/all/20260623180124.868655-1-joshua.hahnjy@gmail.com/
+-- 
+Catalin
 
