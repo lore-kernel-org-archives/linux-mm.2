@@ -4,83 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0919C5DF7D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 17:19:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89E57C5DF81
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 17:21:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E10316B018E; Tue, 18 Aug 2026 13:19:39 -0400 (EDT)
+	id 735AB6B018D; Tue, 18 Aug 2026 13:21:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE8786B018F; Tue, 18 Aug 2026 13:19:39 -0400 (EDT)
+	id 70DAC6B018F; Tue, 18 Aug 2026 13:21:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFEEC6B02A7; Tue, 18 Aug 2026 13:19:39 -0400 (EDT)
+	id 623A86B02A7; Tue, 18 Aug 2026 13:21:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A6B016B018E
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:19:39 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A23711C0030
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 17:19:37 +0000 (UTC)
-X-FDA: 85115051994.07.F988B50
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id CFE7C120002
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 17:19:35 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ixEfGvLA;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F1B66B018D
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:21:08 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CE8C91A01B7
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 17:21:07 +0000 (UTC)
+X-FDA: 85115055774.30.B91E0A2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1DBC920003
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 17:21:05 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Iqnz9UMl;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787073575;
+	s=arc-20220608; t=1787073666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=codh8Et1wTA8GwH2SxVdXCDGWvWVotpR40DaZsbuOm8=;
-	b=EWAxL6PBlcw1LH8MbQbEqJTeNDGuDuEbA7HsX21w3MHw836ULBCXhonDEsw7Q9ct5sQF2H
-	5eklYE8m7s5lOkMaPozU55XNI5DhOZZZaGeZcj/BsFI/ggCbiGJWxFG/ZW+Oirhmp2JxFA
-	tXcMGVhRdLCWYSdGVwZI6Hch9WLWeZI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787073575;
-	b=inMH/54trj+DVxyE07Um5LacjMjYl0jVJxc2zigskZ/sNkqtJIW8cJneatZqnGaQc5mjYC
-	l+LIr+tU7ssQVH+yO3gxSi3xjMaukxf0O65IHtZclsC1F81ge5VKuvGJUOHY8RjevgBthz
-	svJqK0b6D+Lz28YtiOOJ81e5uwlG9jM=
+	bh=usamnhvWOycZ6oPtfGQuy9B/PR/s1qj690CQK8wra7o=;
+	b=u3eJ8pXNB/OjqwwwZ1vJ8JsLvisWKhwzI5ZnE5QEaV4r70JBZqWN9rh0Wg/b1U9kFX9Rrj
+	EuFqeSWsi8bHpo1p7JYt8zEqVu4aQTsvRHTiZxYLiPa0ZZVGWnRieEnaBO4mkrd3kXrwsL
+	sZpAMet7Tq/6cdxOPpkv8WNgTPiZyd0=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ixEfGvLA;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Iqnz9UMl;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787073666;
+	b=TGRBY6TG2yPLFR+fsrwYmhl2+7SjxlvqDUBrovUmGfTmmXegOqIAgsbO9GZRGSCfzvYd5d
+	Y+AAj2J0QNiz/4+xtpXt880RizZFhJBYsnjfE4V5kaZJFN0wWwT3GPWMBHWroqzJ97n2TQ
+	j488wB7CJ24oQtZeLMIu4+/Wk58Yno4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 001F340F3A;
-	Tue, 18 Aug 2026 17:19:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A005B1F000E9;
-	Tue, 18 Aug 2026 17:19:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A841E601DE;
+	Tue, 18 Aug 2026 17:21:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 287EE1F000E9;
+	Tue, 18 Aug 2026 17:20:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787073574;
-	bh=codh8Et1wTA8GwH2SxVdXCDGWvWVotpR40DaZsbuOm8=;
+	s=k20260515; t=1787073664;
+	bh=usamnhvWOycZ6oPtfGQuy9B/PR/s1qj690CQK8wra7o=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ixEfGvLA08oUut+wZO9gqjF363gehhEiquE+kroGE9Qtisc+xbewQP5ZBEb7gFAOA
-	 KbNI7AqSIDYDy9cun29i8iwrhyKyLmIgC0CQ73atPQ//U2VoxL56zmbzmwRKr3L6AL
-	 gc/I9cMk5JQdLA5TGLPGXAJcG2ak/cFBKAFKOrfD+etXsYCRI0VMoq4XDZi/AR4nG6
-	 nwrnwZHNE8CA10F+kKtRYjjeNXsIrVMykJ8A5y6wdrNY0xTXpyUHnAzV4835+X9p6I
-	 DRU9OMCFfLp5BM18S39jAexljLZ4SNVtabdKrHShQSCRkmYaIcnY96qooYC++7XdNQ
-	 jJkS7Qp59oRpA==
-Message-ID: <712c2aeb-c0fa-40ef-a086-3898ac44fd25@kernel.org>
-Date: Tue, 18 Aug 2026 19:19:25 +0200
+	b=Iqnz9UMlga0okF1l0c78suFZFQqYyb/ObiOdyh+5jt9rAwZC0OV+2JSpzQFp4Dm8d
+	 tNPT/9KgLPaoglwZUx3ptPjCPh3TtIYbdrb/EHKwrp/rOCW3Ltp3fWWNzXVoUsgX1Q
+	 zqrawh25u4vR/w28ZPvRyBvjYsbon7qmiWdxfTxQoPcByhyrVh76yfPPCjTH6hkHMV
+	 uxJZEv46cyMr1O34mR4cyBWx6L96nNfAbGujhe+6Jr5ojCFODvgSkDaVPXpRmDB7rB
+	 43dbF/Z/RDsCrFz9cDuxdUT/Q79YIc5xkssqVBHTrmtMDzooAvR6G+nKc1lu6zZ7qZ
+	 xsrzNfIOjOMZw==
+Message-ID: <397f60ab-4a3d-438f-a7db-4c598af13f1c@kernel.org>
+Date: Tue, 18 Aug 2026 19:20:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] mm/mempolicy: skip zone device folios when
- queueing folios
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
- akpm@linux-foundation.org, ljs@kernel.org, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, liam@infradead.org, nico.pache@linux.dev,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, usama.arif@linux.dev, vbabka@kernel.org,
- jannh@google.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, balbirs@nvidia.com, stable@vger.kernel.org
-References: <20260817220810.1175596-1-gourry@gourry.net>
- <20260817220810.1175596-4-gourry@gourry.net>
+Subject: Re: [PATCH] mm, swap: ratelimit bad swap entry reports
+To: Breno Leitao <leitao@debian.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+ Miaohe Lin <linmiaohe@huawei.com>, Oscar Salvador <osalvador@suse.de>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ stable@vger.kernel.org
+References: <20260818-swap_part_one-v1-1-a4fc58119fc0@debian.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260817220810.1175596-4-gourry@gourry.net>
+In-Reply-To: <20260818-swap_part_one-v1-1-a4fc58119fc0@debian.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 193dw1j5bqwghiz99gzsgua4didhhf8k
+X-Rspamd-Queue-Id: 1DBC920003
 X-Rspam-User: 
-X-Stat-Signature: d5ph81hb188iprtqyrgkifsitimfqd64
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CFE7C120002
-X-HE-Tag: 1787073575-848127
-X-HE-Meta: U2FsdGVkX18dyCgAmoCTefI0RVrnkW3YVOepXtoJjTJ3G5ftPyGH8qIgzTgNx05gHYxta2AqbuAhthpj96/6G62H7BSjNb46KfKre2xWvnBpGWdNGNzSm+JSVesRUw7/UnRdFCXbytykHTNq3yML7A9EsceyaoGf6FedixGb3UaWOT3m7d7YzoioPgbPjKVIHznvtO5Kqe7WFg4UVo6e3Qm58hbchuB+mkJxMLgOviblaOHQWYYEb/AJDkX5wY5/4MhZos5x27WEHcXTdESxZY21G9/vopUb9Zp0x5ysO2UtBiaHdOlEq96w6KMxuD//DZxNYvQXxwYQkPiEX7gPSdn94uOckg6W9Ch064xWnCPtrTDDGLN3sIlKP7nOd3OIDoezJgbO73W6T2nxK4NIObffq9+CXLzjJ23SVbd9o32iG/fXic1HG86EGfC7hzgdM0+VVzddQv3F48LN5iDvKk7RZyawNwiW/ydn5evkZK4Td5Rb30ZQI3k/An/B2vGfhtqD5fDA9Omuu1CgI5vw4gy8BpmBlizmeqPQvCszeShizyh+RFGFfyqpec+16P4X16Pvto3uZDOiNvjdbq2P72KxMh4to+CdSuCXwPrCyQ7Cf/lnAAux7DQloWcIa+WMg8uUfTtCY8cO2H6nhYrw8H1HBUzsozCHKyh+RyeB2kKWB93niaijvmw9GQPnjJ8Ot3m6ZWPCotskuJu2JtxLis//Wax6rsTbXA5pgYRhK/bkEGQPFfZ2SmRq/0gIg+Wx9uwgiAjFkYQOjkXTZjHbQsar3/SwksADZn8tZTo4vnNOEDaHsgu+wKBK5jx/xdi7RW2a61bua2+WK9bFf0OOtrdJouLbgmkOc2hFMGTB2jApObsiHu3f1JX539Wga3NzAVaQbxuH/uUDBR20mPzAM8jz840/rXyI8w4Q8vA8LKs+TXw8iZOzmiETH/hv348hiWaACJbntTgzfwKAfuw
- BBTi5zQC
- Gy+mvrt/0up4ji7wzP77+2hLWa70jW0xEmXIBEmAV2SxCScsjAzXCsTDQ7tMYxaNr6dqTu9e+/WspwHvpeggark3DikD1eNyykP1ywVpcxl5bOcPuBQgi9fR59aNqUd0Q8YWoipHnNBy3uZXmNr8CgUa8bPQmsUD70p6bf9g9EtJlBmCrbqjKbL2Hi8VbqSeiTBpy0lowcwYq80wnVPskaUeDor+/8ewxPKXunJn5DeF2SSP0avGrBMDoMyycIWpTzXSdla2EuJwawWy4eCF78jNSXxOoHFbHT04iJmdDMf7dSgRdqFnI9GNzKXie59Yuan6JnJTDylKwbdKKLxO5QDVrSAhRLhwDmkuKlkpNS9b5Jn24cenJ91zB2gAM7ZqSwJg/EcR8+EenCgQNDzmLlez0QsVCPMsZx8ot
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787073665-802647
+X-HE-Meta: U2FsdGVkX19TZzMBMNa52ADzKYXsHLQd/vjOSV+fJ9D7/ksnpyYd+m+rf0pcBqKLM1OLUDCv9rB+Ok6IGpXbRrRGi5KrVXkB7LJ6+thSCNkNtwF6R/9TVw2XhCKP8Rwlt3BC7Z1PAdSFwlWeCILbWUag7Oq8R51Oglu6vAk1a5O5xRtHz2/5XyH2uPPJTEt4H1LhEtlIEEW4uKjSVaPchSTVlYvM1bUuHj5X1F8CqPSs27hjILhVExhfrvN3BnNHNBYLYgOhFHHI38u0ppTsKasl6p7sEPFyC9zSVU/S7CVALxyzFEYyOLbu0M92I2Dp9C817uC9cLQV4/M9JO0GOBKagPkGJC5CLePYs54HoIdo7NKcayLDB6TsBUB8QjoqsNMO5efN1iR+0RvuXVz/zF4VhCe8P2Aqi4qFafF64IyGO50gwZjWk/ytuzY2uVjUm5RWJamXfK0Aos+LyBpLitMt/O8CLAewD0YZyVyBkurkEdB0kc6E+LynXipYfxbPOBRsEADN4foCpFbaLR1e9ZtHhWcxdB3Jv/rvo04XXZJtUtweIQY1k2X3NbNlJKSPdeGkOau/R40M+41OfxI5M9M8lM4qenDPtB/6gI+tQYbJZew+apU5bubOewKrRgCeB+WhLzdpPFhfNE+lR28QEMz/g3kUupfRprQUUhTWKleDLqpNADJGj651O1uIbwUMuEiP9RFSLxywUew/iVrz79VMuS5llpJX+OznhsuH5mRkYpRwx0r+1bt4pWpyeNGufwhN+SaAz1+77xACwbM5+wdpl5br0cMFecvEv3BDVXHUyZQtcVhH9vID6GVSyFcqkNkXyKtlP3CLiewxDPEV1+rpGJq5RUviE1bxg8hHVJn7Y0lDDi7x8cKuRx3Ul4STSkbjqaXmWg8Pp5ItJ9qwada0wMMrjHlVTR11jqKoeLzTF3ZP5RdVxMA4LC1L73fdg6HZUAFDHjz6UTXeGOM
+ JzHT7kh4
+ hLtuFBnDXR1q0RwGYJprZxkgxW3DWx2JE+cd65qStduJqCQL+Zhx2HxpBTZiM6o1gQ4fnw2UzYCUULZ26OJEFhKrcQgNl/R9eN1iRp8SifKHf2xJMZJqeXcod0CDVP+xQ3Dui81MY8jQAdqhveiHgH2ymDlACwRG3sRNVEcucwWYfkvjBfJTQWF3bSCrkF71Q64MD29wSBGQ58QPzNYleqwEL0uKE1k6+LQPyOvH2KIegHxc0r7tmr5ce+7Cn/ETheX2qzS9EVPmM6wY4ueJ9JQu6cX/ZbwASuCR7kJI4UyERW3+DewqZLotbaJYKCfjYqPerbfSxx/U49k9aXAcqEPQPVWkuyz8CEW92aIBVQRrXvbwABu28T3uQXCii19ep0G3q2iqLw4gkS+WB8IpTNMHRkA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,32 +142,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/18/26 00:08, Gregory Price wrote:
-> queue_folios_pte_range() already pairs vm_normal_folio() with an
-> explicit folio_is_zone_device() check before adding folios to the
-> migration pagelist.
+On 8/18/26 11:03, Breno Leitao wrote:
+> A corrupt page table hands the same bogus entry to get_swap_device() on
+> every access to the mapping, and every rejection is logged. One machine
+> logged 6185620 copies of the same line in a few hours.
 > 
-> vm_normal_folio() alone does not reject zone device memory (a present
-> device-coherent page in a normal VMA is returned as "normal").
+> swap_dup_entry_direct() prints the same message from the fork path, once
+> per call: the WARN_ON_ONCE() guarding it warns once, the pr_err() inside
+> does not.
 > 
-> Mirror the explicit check in queue_folios_pmd() as well.
+> Rate limit all three prints.
 > 
-> queue_folios_pmd() uses pmd_folio() directly and can encounter a present
-> zone device PMD - e.g. a device-coherent THP.
-> 
-> This is not filtered by existing checks:
->   !pmd_present()   - only rejects non-present device-private and
->                      migration entries
-> 
->   vma_migratable() - excludes DAX and VM_PFNMAP.
-> 
-> The early return also means such a folio is no longer counted in
-> qp->nr_failed under MPOL_MF_STRICT.  This is the same pattern used
-> by queue_folios_pte_range() (skipping zone device without failing).
-> 
-> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+> Fixes: 23b230ba8ac3 ("mm/swap: print bad swap offset entry in get_swap_device")
+> Reviewed-by: Barry Song <baohua@kernel.org>
+> Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+> Acked-by: Kairui Song <kasong@tencent.com>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 > ---
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
