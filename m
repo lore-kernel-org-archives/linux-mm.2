@@ -4,96 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D6B3C5DF81
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 16:10:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B342C5DF81
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 16:11:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E10E6B018D; Tue, 18 Aug 2026 12:10:58 -0400 (EDT)
+	id A86AA6B018F; Tue, 18 Aug 2026 12:11:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B8786B018F; Tue, 18 Aug 2026 12:10:58 -0400 (EDT)
+	id A5DC96B0488; Tue, 18 Aug 2026 12:11:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CEAB6B0488; Tue, 18 Aug 2026 12:10:58 -0400 (EDT)
+	id 974256B0536; Tue, 18 Aug 2026 12:11:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 152196B018D
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:10:58 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3C55D8012D
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:10:57 +0000 (UTC)
-X-FDA: 85114878954.24.21E30A6
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 744ADA0007
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:10:54 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="KeATOA k";
-	spf=pass (imf25.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7CC396B018F
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:11:18 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 151C78011B
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:11:18 +0000 (UTC)
+X-FDA: 85114879836.06.B72CBF1
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 542BC80014
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:11:16 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=wb+uQEdD;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of 3IoSEagkKCJcK1ILEJ18L7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--tarunsahu.bounces.google.com designates 209.85.218.71 as permitted sender) smtp.mailfrom=3IoSEagkKCJcK1ILEJ18L7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--tarunsahu.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787069455;
+	s=arc-20220608; t=1787069476;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TCWJgyt+yj8iW+I0mXfDkyu3WR+FxzVzqga2224bXwI=;
-	b=Ae59FpZqu0ChpVNHlzrWKZJMqjhkN9Ag0NAFv55CzgSDpK692qy9HIo7FCJMpe8aiVDeHx
-	zHBWdl0iYVwJh/th+0oIaXVu5HTqh5xFi2WukmwQ9Rfs5qTth0Cla+AaNAa7xdpNCuErIv
-	YGkcFrvina8PEiDWII/O7KHcqIV+vvk=
+	bh=gq4c916t8aM4R9/gOTYj07vE672c6Dn+UdOcLkpJL3k=;
+	b=18wLOP2/7QQbFFOprvC25RTJSTdgz78hjvXpLez4mvk/ze4Muhmg2Z2Booh7H8vPpFUkvu
+	D2KBBtYy4PrYXD4XLEMZEOykx7nUDJuXnUOcsxMONJJ8OTEARf1VirqQJoCi8ug7v1q18+
+	toxqISrRiBCJTJfedfBzBwLu0FEWqo0=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="KeATOA k";
-	spf=pass (imf25.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=wb+uQEdD;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of 3IoSEagkKCJcK1ILEJ18L7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--tarunsahu.bounces.google.com designates 209.85.218.71 as permitted sender) smtp.mailfrom=3IoSEagkKCJcK1ILEJ18L7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--tarunsahu.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787069455;
-	b=X3F1mDHI5KA3VtgUHvHl1tj+IAxYForBSt2UXqVBI81BR/9vGLf1EKaalZrCmhMBCOI+4j
-	fb5R2JbIJKZZUnN+dFlG3XlKZcrCAQCIsPhzCe0MXFOLI19MSzOjGbfXOu3MxqgLhas52+
-	Ibe6TaZuc6bgrKftM4JuKHaYWflUs8A=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=TCWJgyt+yj8iW+I0mXfDkyu3WR+FxzVzqga2224bXwI=; b=KeATOA
-	kqQVG9ksZ/roxci4rBXXKNZdw7DanOHRbiqZ/0SPWzKXFN3/bMmMzOajVUCCby2zp4HJuLnw2YVhS
-	Yaj70H2QFcxWwfPBni3P3FEbPLPvPvmfkmc4BuMf2OVDp5eCNe55gQxwKPfc/6j4nV3yZv3RIAdJJ
-	U7n9LU4hLz/lW+7l+AVboxwcRrQYCvcn7PT/P5jqU3pWjIY/Td4lUMd4tEQRRwY2xcgKQ8pzhMSQp
-	wJGg0OX+BGZiKRV63udi9K5hwwkGvoU+zCMmrPeOQ3qKKZBc5QQ8FCwgaP0tS5sRHVBGdSzjwA6t1
-	RXy4+aU1Cbo9/U/RCV+MqJh94aog==;
-Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708] (helo=fangorn.surriel.com)
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1wwLga-00000001TR7-1YmE;
-	Tue, 18 Aug 2026 15:25:08 +0000
-From: Rik van Riel <riel@surriel.com>
-To: linux-kernel@vger.kernel.org
-Cc: kernel-team@meta.com,
-	joro@8bytes.org,
-	will@kernel.org,
-	robin.murphy@arm.com,
-	iommu@lists.linux.dev,
-	liam@infradead.org,
-	maple-tree@lists.infradead.org,
-	linux-mm@kvack.org,
-	ashok.raj@oss.qualcomm.com,
-	jgg@ziepe.ca,
-	kyle@mcmartin.ca,
-	Rik van Riel <riel@surriel.com>
-Subject: [RFC PATCH 2/3] iommu/iova: defer maple tree erase on GFP_ATOMIC failure
-Date: Tue, 18 Aug 2026 11:25:02 -0400
-Message-ID: <20260818152505.1057922-3-riel@surriel.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260818152505.1057922-1-riel@surriel.com>
-References: <20260818152505.1057922-1-riel@surriel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 744ADA0007
-X-Stat-Signature: 8no6wsh37ra7qa7udybjiyo7ko5cmp6x
+	t=1787069476;
+	b=1rSpWiiwnCY0fvIWdPPpXS75BccaH9eLbg5a9LQDkseJh8/bV6wEbLavjmzUobOajq2vCl
+	98n0hgUsaD5KzEpeMFUksussDkNyhQZRa4TRZtUbTUTDZEFOg463Xxa3T7+d8ZMRtzo8sL
+	hc6U32D/dMTOjrdqCSpGcZLARn/FVt0=
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c1c4715cf0eso422232066b.2
+        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:11:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787069475; x=1787674275; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gq4c916t8aM4R9/gOTYj07vE672c6Dn+UdOcLkpJL3k=;
+        b=wb+uQEdDB8Dm1rgeIwtk0Bily9TSb0Joq15+oT6MKmYJAsnNXR/eKq+rUwdvZCuwru
+         HJG3RQ/3v1dA+o3s7CXEdbvQNFlydCfWyg+FdWdUFHILt32QakvwRAWwzuA6q2zGbc9x
+         UBPuJ+wbNLTeLwNsFYjiVqRaldFoo13U7VR8c0MeEM51+G4Bq/tAcEWwXdBWW40TMI4W
+         w2RTx71rofcM/j31+zJtwi8xYeEw3mU+pe5O6VEMK5LkKyGjSpRBr5UT169kJfN2pr50
+         GmqFSg23+6OrqtAuMTebqrVKCgQh4ThiWz6WOMyFLqg9Nviv5xmcwqE+Cj8ckYdR/skR
+         MTRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787069475; x=1787674275;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gq4c916t8aM4R9/gOTYj07vE672c6Dn+UdOcLkpJL3k=;
+        b=NwFI/ALUsZpTgLdEk4fckLQuZga1SjISh6MuG9hjGAF4TzjG1Ctz+su5+8c3yS1DWi
+         d4XHaYNS/0/0H8HfbsGMARMDWaqxyAssvs+hG2xZDRJonIka7zdQIV+uGZsxGJFojss6
+         g+RPNcJWmU3huyUDHd+kkRzEdRYr5gdmHb6T64srsiG+RV5GEXur2doLTuXH+saI1gay
+         O0I4F6Ru9j2Df8ZNTAHhhGWbN8gzVCrQAq3wcoH2enjlDo0xAsEB2uwzTR0T60v/v6Tk
+         uWOe2ha9MVJmRFnoKykcCHLVgfn6Bsx73aRPvIjNeh01TCsLIj9pY5Intv60W3bNV+u/
+         0EPQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr/iLim9fdB6UwKvAoq2cyNQs803MUOT0WZTYPMKt53pACX1FfKRelyK2NJ0BAwWBKWB7MqqdC7kw==@kvack.org
+X-Gm-Message-State: AOJu0Yz/5Rx2HcE0+livro8rovi06yD+tEzm3npgW02FdwI+M8Rnj9Te
+	MYatcFJCyHeK9PSkpxoolXn6x2Qgi8VqDpQkMIYDCzLmoOhE2hpghYf4hVHMPDyoBsyvlQC4DjT
+	rSWhotBmyZxcCTc/gxA==
+X-Received: from edrs9.prod.google.com ([2002:aa7:c549:0:b0:6a3:6b8a:8011])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:434c:b0:69a:928:9405 with SMTP id 4fb4d7f45d1cf-6a38a8dbbefmr17632626a12.1.1787069474414;
+ Tue, 18 Aug 2026 09:11:14 -0700 (PDT)
+Date: Tue, 18 Aug 2026 16:11:13 +0000
+In-Reply-To: <ans2Qvo0453cc_DD@google.com>
+Mime-Version: 1.0
+References: <20260728121138.1103610-1-tarunsahu@google.com>
+ <20260728121138.1103610-2-tarunsahu@google.com> <anpXjM_lg_UTpl0q@google.com>
+ <9huzqzk4zt3n.fsf@tarunix.c.googlers.com> <ans2Qvo0453cc_DD@google.com>
+Message-ID: <9huzlda3v272.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v4 01/11] liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
+From: tarunsahu@google.com
+To: Sean Christopherson <seanjc@google.com>
+Cc: ackerleytng@google.com, fuad.tabba@linux.dev, 
+	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
+	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
+	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
+	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
+	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
+	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
+	suzuki.poulose@arm.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 542BC80014
+X-Stat-Signature: mroie9k3p8w6wt1nyud9ar5mmba4kgd5
 X-Rspam-User: 
-X-HE-Tag: 1787069454-770643
-X-HE-Meta: U2FsdGVkX18fxgGT5prF8buIDlBg1ZlTrfQh3dlbre5mZEVr3PzYW0hAhtCCbh4KTFqLM7smxn5uLF4a4+oRhxZTHyadXLM2j7Z0IaoPz1BKQjAe3uVK1GXd5dZ2oW53FpvqoAi+MLZJf28TxsDu1b31DTINNRiT6Y7BGP6iC9M+ZcvzhDLOUDHW/TVfrbI7Je8Ndox8DOVgsBKT7kEcmR3FoQ5oSiuVbMoz+87ESnEhVcSETOJT7N+i5gj9a29gej/ng8ycqUxX6ttnqH5VQmQknUOrfmyUq6CTAEzv/sQpKcTMQadVj5rjiD7hwbhMblzAgGzv8PkuCtRRM5xEP3Ed+DvnFet6l+XLPBsBVftLSdVi995Dr2ZMTRoYBwYiHKaAQ8PQ0Rg3bqVqVrfjHnjTc5aTHylDqzatB5kA+ORpZMmXfjPpBcdq0ShR5mbc1s7Xip6nttLkUAL1NyQbdHthABbK5keCKU9vRHoswl7hezEOZNKB9DvDJHta9WIkTdLK4KcVmBO8st5O8VmkPtZ7nkRokh3UdB5LZtK4tgJ6znld2fpgdcZLiiuJvHwyeeZz8aWhpR8bBYUVLVBEM2H0t8eNzEgp0qGD3WAIP5nehPw7CgdlDxNqie6fkiRIfYCiFwjQJOduFkkSWbw7dwK3NcQqQLyzsT84HlNdtTiAOGA8QSh90+jkZ3nZamgKUseaPvXN0R2aeZSdbiLL06c/y1DueKAhMosGZfQYM3EjbkI6Jf9IDY7MpfyRvAHQhK5DTpLXKGjbt1InY/Y4qyMojtkwKGSvw8lBFYMuMhfLqeYPHPiSIcG6z/mrkT4iFluy2pnzQE/9TJrsfvPiu6edSX31e/gtYrDhAz4OA3l+gD3Kk1SkeDDZt1qoY5ofrfuWug9imNnVJxs5LgNrc3Fyqg1ShF+kcEEyz7yMK6+7ekZRjems0rBYkvduB/CrP5bLq85Ww1sekcCcwcw
- niOvVh/l
- /x703smjue+XWy+DaiicqsnE8y3nl1U2iX9yBYA6yUDJp4gGQKkT+XBRziBHJhmfuogDL9i0Kz9DHWv0Wi9medQUOjN9C+GYANt5WQo5ry3tzllrprZdGemcOhXCJCk9CJrdML9Mfc4sczilPxeq240jL6r2SvFAu7pEArNP9uxL+XGYZgbRr3hi54MUvkbNzf/KANxUyM7y2/dE7AIFztMtxcoBsoTSR2k5hVan6epjsIipBj28l+XoPKx3FqDMOmtwGfSiUxuxljTKx0BS9VZHLOjqkv3Kd26zKiRM/5CYPLpmBGte/LtheehtyyLwHqrEqlNVUxarnZ4VACLbPVCi0bHRbKl5enQ9q8J1cP4M3NJSh2DldvLnx2Q==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787069476-254913
+X-HE-Meta: U2FsdGVkX1/jCxWVo24DBQu/CU4kwxGG0JVDEfBfk46O4qxFeOn4BGByxXhtjHL/QZyq1tOhaN3MhGWp1DkDvXpwZo+gh8Tx+PtJwKsZTz/XcSYLijIIP9/o21hj0xh/UMVHG9mXQ9PZWsRSHPi1EK6PKLWRUJJyX127Scj8OM379QbupwGL+nNwEwZx33W3lIFUCysi9fh4PwMh6qZ6gPkpx26Nj1TFqBTmT3MZwzTyIXQebNwWTPtdXGpPDW8wmbuRKDbnvPa2Fqr99RdYVeOBIxJ8fAhksho3bfVmeuwS1FSiC0XuD7OtdC+2XYy8m4qA1yaUNbLb9Z1UstqZXAm4fGnulJieXLYHFe6rvQSR0ujm/BkP/96ZXXvLdY1W0sAbwKmeuaUACyftpFcBvUgJX0gFemo5k/bZnyOOItSbQB4bIJqD6cgdGDjzAtpCAJL+LAS+OnfL6Flg39esf5lWyNXRXzOEByAg9yTkYpx1rkO18Li/d30BrUhEaK7AWj01rRWCqOld9GH/CaDNHgc+x7nUl5SEP+zlabZmjdfvwhBFylWPbt4C92dYkyS25V4KfrJua0Ry0xO42ZDPesAfJFF/K9WwgJnIms2Z8nrpStFILDICUIBlPRkvDdVt8VaSOcuC+fDOWtzTgxP26KDmvp0QpfApHQ6IfKWOH8lTaq0FDsz3DqeaxmNODM7pbfYTvV/H9OXOS6+YictAOFRFbU1AIEJ0zzhDVNjbQvUU7kn8II/DPWG27vvJYUM/PcomhXNGEBW+pDzwLLHS6s7iQ9i7RajpQ698XeST6lTKsXVwAKc0+nHFVMLu0lnX8L5JAM+nMBBvHnx5HoVYtwjIUCHXS/gui43YMSwr9oFZ1U/prEyYgnIMHwjlXxMEYS9BMn3atM7Q6h1PUYF3hEoNhFurA4FxJx+yyQevTZlGbixZ5a6oK5D9IkQvpLLBv6Abn79d5WO9JTfs7Uh
+ ZmFXZ/hX
+ 2l2FmsxXc6xU7ET4gpsZXCAwbC8tEugirGFaOwj3ZjfqJjB/RCh9wYXy/PYdDjyyO1NhFOyBP1NomyukUajAxR+3pjKh6Z8T9+PpT8WqPPzlQPGd6aW5CeVOJxFtHT1w1yftc31ab8AfGCmhlf9P1cWqJ4D+lLIlHuljivtd68KYzu8U2ESiIe9GzsRfAr75FReBVqoJEOJmisrFLOp2r5KaL6gTW2MNoXYEuwpo5qBvJ55UxAooTw1QFDnR+B/1nFKbj52ZfIx10pdeMdBCInSQNCuNfwxl6E8hXRZAumUX69h0afGtksWDdqIGsLAuiAFUc8iYdG8zzZPHMzMKVviVeqKyZ3ndWYeOZG3JLmP/kYFnNtbt7B5Hf3dSOsakoRHD3GbTlr97jcH6Rw8zweK20O1GfhbbJlTNrvXbjYqIWR2DkhLXKsO3pZmXMeozphGfYAEcTKeLh18Ub0ypGjtkNDvDm5BGqmW25P3bnNKDtUvP9BButf++aFXSaOTDTCrvZY4eOQzVVQQfZibvDECxrYRNUGneWoFy8pTWljB3x6W8wfBjiEYIb3+qlxHNBA3muMxRUOyny9vgDugfAa1iQ1cxkJ2GN9W++lN3jLv0lTWJolg8bTQCYRt4bJbVnBdxJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,280 +120,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-rb_erase() never allocates. Removing an entry from a maple tree can, so
-the mas_store_gfp(&mas, NULL, GFP_ATOMIC) in remove_iova() can fail, and
-iovas are freed from atomic context, where GFP_KERNEL is not available.
+Sean Christopherson <seanjc@google.com> writes:
 
-Failing takes a specific shape. Storing NULL runs mas_wr_extend_null()
-first, which pulls adjacent free ranges into the store. With a live iova
-on either side there is nothing to pull in, and the store is wr_exact_fit,
-which needs no node. Only a free neighbour, dropping the leaf below
-mt_min_slots, makes the tree rebalance and allocate.
+> On Tue, Aug 11, 2026, tarunsahu@google.com wrote:
+>> Sean Christopherson <seanjc@google.com> writes:
+>> 
+>> > On Tue, Jul 28, 2026, Tarun Sahu wrote:
+>> >> Introduce the LIVEUPDATE_GUEST_MEMFD Kconfig option. This option
+>> >> enables live update support for KVM guest_memfd files, enabling
+>> >> guest_memfd-backed memory preservation across kernel upgrades.
+>> >> 
+>> >> Currently this support only guest_memfd files that are full-shared
+>> >> (INIT_SHARED and no support for private_mem).
+>> >
+>> > Why?  Specifically, why do we need/want a separate Kconfig for guest_memfd
+>> > liveupdate versus KVM liveupdate?  I can _maybe_ see a KVM-wide Kconfig, but
+>> > even that seems like a stretch given that (AFAIK) hypervisors are the one and
+>> > only use-case for liveupdate.
+>> 
+>> LIVEUPDATE is used in many subsystem. It is possible to enable
+>> liveupdate and kvm without enabling KVM_GUEST_MEMFD. So GUEST_MEMFD
+>> preservation must depend on CONFIG_LIVEUPDATE and KVM_GUEST_MEMFD both.
+>> LIVEUPDATE_GUEST_MEMFD Kconfig is wrapper on both of them. It need not
+>> to be visible in menu, So I can make it hidden. WDYT?
+>> 
+>> Also, KVM VM_FILE preservation and GUEST_MEMFD preservation both depends
+>> on LIVEUPDATE_GUEST_MEMFD in this patch series. [PATCH 05/11]*
+>> Which is wrong. So I will update KVM VM_FILE preservation to depend only
+>> on CONFIG_LIVEUPDATE.
+>
+> Or just handle it all in the makefile?  E.g.
+>
+> diff --git virt/kvm/Makefile.kvm virt/kvm/Makefile.kvm
+> index d047d4cf58c9..e6f098498795 100644
+> --- virt/kvm/Makefile.kvm
+> +++ virt/kvm/Makefile.kvm
+> @@ -13,3 +13,8 @@ kvm-$(CONFIG_HAVE_KVM_IRQ_ROUTING) += $(KVM)/irqchip.o
+>  kvm-$(CONFIG_HAVE_KVM_DIRTY_RING) += $(KVM)/dirty_ring.o
+>  kvm-$(CONFIG_HAVE_KVM_PFNCACHE) += $(KVM)/pfncache.o
+>  kvm-$(CONFIG_KVM_GUEST_MEMFD) += $(KVM)/guest_memfd.o
+> +
+> +ifdef CONFIG_LIVEUPDATE
+> +kvm-y += $(KVM)/kvm_luo.o
+> +kvm-$(CONFIG_KVM_GUEST_MEMFD) += $(KVM)/guest_memfd_luo.o
+> +endif
 
-When the erase does fail, store IOVA_DEFERRED over the entry's own range
-instead, and free the struct iova. A non-NULL value does not extend the
-range, so that store is wr_exact_fit whatever the neighbours look like,
-and cannot fail.
-
-XA_ZERO_ENTRY would reserve the range too, but mtree_load() and mt_find()
-turn it back into NULL, so any later use of the normal API on this tree
-would see a marked range as free.
-
-The domain keeps a [deferred_lo, deferred_hi] range covering the markers.
-iova_drain_deferred() walks only that range, and retries the erases from
-the next allocation or the next successful free.
-
-struct iova stays at 16 bytes: the state is the marker plus two unsigned
-longs per domain. The store that can fail now runs where failure can be
-returned to the caller, so no timer or workqueue is needed.
-
-Should the marker store fail anyway, WARN_ON_ONCE() reports it and the
-entry stays in the tree as a live iova. Its range is then reserved until
-put_iova_domain() frees it with the rest of the domain. BUG_ON() would
-trade that stranded range for a dead machine.
-
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Rik van Riel <riel@surriel.com>
----
- drivers/iommu/iova.c | 131 +++++++++++++++++++++++++++++++++++++------
- include/linux/iova.h |   3 +
- 2 files changed, 118 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/iommu/iova.c b/drivers/iommu/iova.c
-index 69f80b14cb3d..255a1cefe8c5 100644
---- a/drivers/iommu/iova.c
-+++ b/drivers/iommu/iova.c
-@@ -26,6 +26,23 @@ static unsigned long iova_rcache_get(struct iova_domain *iovad,
- static void free_iova_rcaches(struct iova_domain *iovad);
- static void free_cpu_cached_iovas(unsigned int cpu, struct iova_domain *iovad);
- static void free_global_cached_iovas(struct iova_domain *iovad);
-+static void iova_drain_deferred(struct iova_domain *iovad);
-+
-+/*
-+ * Stored over an entry whose erase failed: an in-place store of a
-+ * non-NULL value needs no node allocation, so it works where the
-+ * erase did not. The gap search treats the slot as occupied, keeping
-+ * the range reserved; lookups, teardown and the invariant checker
-+ * skip it. Pointing at a static keeps it 8-byte aligned, out of the
-+ * range the maple tree uses for internal entries.
-+ */
-+static const unsigned long iova_deferred_marker;
-+#define IOVA_DEFERRED		((struct iova *)&iova_deferred_marker)
-+
-+static inline bool iova_has_deferred(const struct iova_domain *iovad)
-+{
-+	return iovad->deferred_lo <= iovad->deferred_hi;
-+}
- 
- void
- init_iova_domain(struct iova_domain *iovad, unsigned long granule,
-@@ -50,6 +67,8 @@ init_iova_domain(struct iova_domain *iovad, unsigned long granule,
- 	iovad->start_pfn = start_pfn;
- 	iovad->dma_32bit_pfn = 1UL << (32 - iova_shift(iovad));
- 	iovad->max32_alloc_size = iovad->dma_32bit_pfn;
-+	iovad->deferred_lo = ULONG_MAX;
-+	iovad->deferred_hi = 0;
- }
- EXPORT_SYMBOL_GPL(init_iova_domain);
- 
-@@ -71,6 +90,9 @@ static int __alloc_and_insert_iova_range(struct iova_domain *iovad,
- 	}
- 
- 	spin_lock_irqsave(&iovad->iova_lock, flags);
-+	/* Reclaim deferred frees to get their address space back. */
-+	if (unlikely(iova_has_deferred(iovad)))
-+		iova_drain_deferred(iovad);
- 	/* No 32-bit request this large can fit until the hint is cleared. */
- 	if (limit_pfn <= iovad->dma_32bit_pfn &&
- 			size >= iovad->max32_alloc_size)
-@@ -156,28 +178,96 @@ static struct iova *
- private_find_iova(struct iova_domain *iovad, unsigned long pfn)
- {
- 	MA_STATE(mas, &iovad->mtree, pfn, pfn);
-+	struct iova *iova;
-+
-+	assert_spin_locked(&iovad->iova_lock);
-+	iova = mas_walk(&mas);
-+	/* A deferred-erase marker is not a live iova; treat it as absent. */
-+	if (iova == IOVA_DEFERRED)
-+		return NULL;
-+	return iova;
-+}
-+
-+/* Every marker lies within [deferred_lo, deferred_hi]. Needs iova_lock. */
-+static void iova_drain_deferred(struct iova_domain *iovad)
-+{
-+	unsigned long hi = iovad->deferred_hi;
-+	void *entry;
-+
-+	MA_STATE(mas, &iovad->mtree, iovad->deferred_lo, hi);
- 
- 	assert_spin_locked(&iovad->iova_lock);
--	return mas_walk(&mas);
-+
-+	while ((entry = mas_find(&mas, hi)) != NULL) {
-+		unsigned long lo = mas.index, last = mas.last;
-+
-+		if (entry == IOVA_DEFERRED) {
-+			mas_set_range(&mas, lo, last);
-+			if (mas_store_gfp(&mas, NULL, GFP_ATOMIC)) {
-+				/*
-+				 * No reclaim can happen under the lock, so
-+				 * the remaining erases would fail too.
-+				 */
-+				iovad->deferred_lo = lo;
-+				iovad->deferred_hi = hi;
-+				return;
-+			}
-+			/* The store moves the iterator; re-anchor. */
-+			mas_set(&mas, last + 1);
-+		}
-+
-+		if (last >= hi)
-+			break;
-+	}
-+
-+	iovad->deferred_lo = ULONG_MAX;
-+	iovad->deferred_hi = 0;
- }
- 
-+/*
-+ * Must not fail: DMA unmap runs in atomic context, so there is no caller to
-+ * return an error to.
-+ */
- static void remove_iova(struct iova_domain *iovad, struct iova *iova)
- {
--	MA_STATE(mas, &iovad->mtree, iova->pfn_lo, iova->pfn_hi);
-+	unsigned long pfn_lo = iova->pfn_lo, pfn_hi = iova->pfn_hi;
-+
-+	MA_STATE(mas, &iovad->mtree, pfn_lo, pfn_hi);
- 
- 	assert_spin_locked(&iovad->iova_lock);
- 
--	if (iova->pfn_lo < iovad->dma_32bit_pfn)
-+	if (pfn_lo < iovad->dma_32bit_pfn)
- 		iovad->max32_alloc_size = iovad->dma_32bit_pfn;
- 
--	/*
--	 * A failed store leaves the iova in the tree, so it cannot be freed
--	 * here. The range stays reserved until the domain is torn down.
--	 */
--	if (mas_store_gfp(&mas, NULL, GFP_ATOMIC))
-+	if (mas_store_gfp(&mas, NULL, GFP_ATOMIC)) {
-+		/*
-+		 * A NULL store gets widened over the neighbouring free ranges,
-+		 * and the wider store may cause a maple tree rebalance, which
-+		 * can fail if tree nodes failed to allocate. The IOVA_DEFERRED
-+		 * store is never widened and needs no allocation, as
-+		 * test_marker_store_needs_no_node() checks. Check anyway,
-+		 * because surviving e.g. a maple tree corruption here is cheap.
-+		 */
-+		mas_set_range(&mas, pfn_lo, pfn_hi);
-+		if (WARN_ON_ONCE(mas_store_gfp(&mas, IOVA_DEFERRED, GFP_ATOMIC)))
-+			/*
-+			 * The tree still holds the live iova: nothing for the
-+			 * sweep to find, and teardown frees it.
-+			 */
-+			return;
-+		if (pfn_lo < iovad->deferred_lo)
-+			iovad->deferred_lo = pfn_lo;
-+		if (pfn_hi > iovad->deferred_hi)
-+			iovad->deferred_hi = pfn_hi;
-+		free_iova_mem(iova);
- 		return;
-+	}
- 
- 	free_iova_mem(iova);
-+
-+	/* A successful erase means memory is available; clear any backlog. */
-+	if (unlikely(iova_has_deferred(iovad)))
-+		iova_drain_deferred(iovad);
- }
- 
- /**
-@@ -231,11 +321,8 @@ free_iova(struct iova_domain *iovad, unsigned long pfn)
- 
- 	spin_lock_irqsave(&iovad->iova_lock, flags);
- 	iova = private_find_iova(iovad, pfn);
--	if (!iova) {
--		spin_unlock_irqrestore(&iovad->iova_lock, flags);
--		return;
--	}
--	remove_iova(iovad, iova);
-+	if (iova)
-+		remove_iova(iovad, iova);
- 	spin_unlock_irqrestore(&iovad->iova_lock, flags);
- }
- EXPORT_SYMBOL_GPL(free_iova);
-@@ -335,8 +422,10 @@ void put_iova_domain(struct iova_domain *iovad)
- 	 * walk still has to hold the lock the tree was given.
- 	 */
- 	spin_lock_irqsave(&iovad->iova_lock, flags);
-+	/* Skip IOVA_DEFERRED entries: their iovas were already freed. */
- 	mas_for_each(&mas, iova, ULONG_MAX)
--		free_iova_mem(iova);
-+		if (iova != IOVA_DEFERRED)
-+			free_iova_mem(iova);
- 	__mt_destroy(&iovad->mtree);
- 	spin_unlock_irqrestore(&iovad->iova_lock, flags);
- }
-@@ -369,6 +458,12 @@ static struct iova *iova_merge_overlaps(struct iova_domain *iovad,
- 	MA_STATE(mas, &iovad->mtree, pfn_lo, pfn_hi);
- 
- 	mas_for_each(&mas, overlap, pfn_hi) {
-+		/*
-+		 * A deferred-erase marker isn't a real iova; the merged-range
-+		 * store in the caller spans and overwrites it.
-+		 */
-+		if (overlap == IOVA_DEFERRED)
-+			continue;
- 		if (pfn_lo >= overlap->pfn_lo && pfn_hi <= overlap->pfn_hi)
- 			return overlap;
- 		if (overlap->pfn_lo < *lo)
-@@ -409,6 +504,10 @@ reserve_iova(struct iova_domain *iovad,
- 
- 	spin_lock_irqsave(&iovad->iova_lock, flags);
- 
-+	/* Leave the walk below with only live iovas to look at. */
-+	if (unlikely(iova_has_deferred(iovad)))
-+		iova_drain_deferred(iovad);
-+
- 	/*
- 	 * The overlapping iovas cannot be freed yet: the merged store below
- 	 * can fail, and freeing before a failed store would leave dangling
-@@ -435,7 +534,8 @@ reserve_iova(struct iova_domain *iovad,
- 
- 	mas_set_range(&fmas, merged_lo, merged_hi);
- 	mas_for_each(&fmas, overlap, merged_hi)
--		free_iova_mem(overlap);
-+		if (overlap != IOVA_DEFERRED)
-+			free_iova_mem(overlap);
- 
- 	mas_store_prealloc(&mas, iova);
- out:
-@@ -525,7 +625,6 @@ iova_magazine_free_pfns(struct iova_magazine *mag, struct iova_domain *iovad)
- 			continue;
- 
- 		remove_iova(iovad, iova);
--		free_iova_mem(iova);
- 	}
- 
- 	spin_unlock_irqrestore(&iovad->iova_lock, flags);
-diff --git a/include/linux/iova.h b/include/linux/iova.h
-index a3dab6c5fd62..e17bb1e85838 100644
---- a/include/linux/iova.h
-+++ b/include/linux/iova.h
-@@ -31,6 +31,9 @@ struct iova_domain {
- 	unsigned long	start_pfn;	/* Lower limit for this domain */
- 	unsigned long	dma_32bit_pfn;
- 	unsigned long	max32_alloc_size; /* Size of last failed allocation */
-+	/* Bounding range of deferred erases; lo > hi when there are none. */
-+	unsigned long	deferred_lo;
-+	unsigned long	deferred_hi;
- 
- 	struct iova_rcache	*rcaches;
- 	struct hlist_node	cpuhp_dead;
--- 
-2.53.0-Meta
+Sounds Good to me. Will take care of it. Thanks.
 
 
