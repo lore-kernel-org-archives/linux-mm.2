@@ -4,96 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24463C5DF7D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 14:42:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3322EC5DF7D
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 14:48:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C3126B018D; Tue, 18 Aug 2026 10:42:07 -0400 (EDT)
+	id 359C26B079F; Tue, 18 Aug 2026 10:48:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39C026B018F; Tue, 18 Aug 2026 10:42:07 -0400 (EDT)
+	id 30A8C6B07A0; Tue, 18 Aug 2026 10:48:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 264F06B0298; Tue, 18 Aug 2026 10:42:07 -0400 (EDT)
+	id 1F9486B07A1; Tue, 18 Aug 2026 10:48:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 067A86B018D
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:42:06 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 93EAC402A3
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:42:06 +0000 (UTC)
-X-FDA: 85114655052.23.13273CA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id CDDCC180011
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:42:04 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CDQc3TbX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DC1786B079F
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:48:07 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 73CECA2C77
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:48:07 +0000 (UTC)
+X-FDA: 85114670214.18.4235595
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B1F141C0002
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:48:05 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lBcveIGZ;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787064485;
+	b=3NlwO1jrwEmQMCPVXENHyYOiuc0bJcclTxZh1IRfznu/wVCZf2znBLKWREhuWkLwX7H6LX
+	XgBFt7nB1NK8/DP+/9MtjDFOqNixDhBjUvML0cEQOI9h/9O1krLO1P0olRj6eF4FybF8GX
+	t2ymfQm464NQURzuX8AIgwq8AH8qp4g=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lBcveIGZ;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787064124;
+	s=arc-20220608; t=1787064485;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fIgroO17cxW3StOu7FtwzJ0p4BsPX3URbvdP5tpra2A=;
-	b=JW//GT+ytSYjQLGjryOUnNkZdc9yO0qGXBlch2xR+dr6xj9rqs6V1Sf5NXAAsx5ALjSA2/
-	s3N1ZZq9jnRUXPxl32tb39uBOrG+PZ/blOSCJglI6OAAT8YaIXTHh63iGHj5Ojcr3/+yTD
-	hc6k2N+cRv1l4KrTDEiZ5MWlLTDslgI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CDQc3TbX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787064124;
-	b=Hu3k9Hp1myIHnvxxW7hoEv/ZTUnFFqvxkCo2aziAyhm0CTH9//bua8EvvleMUue737fc6z
-	1w5eJ2i15xn6Bq2Gcoi+VM/ekWjDjQOF1PFFBZ40gi2SwO2yTwQ6GsQ1qbv8HlqWgSfhO2
-	XnS8OINOotbZ3hPY64xQpnfiH/XhF7I=
+	bh=pUxD0USwu2jVqVh1UV3lHxlVH+TQ1GZ20FVn0Z7eupA=;
+	b=hseEaOU4p+Hp1T1O/tKgccLbyNGMTUpb/8FTn6WJPBrnZ7qvnhrHQPyzz6g902DleBYlBD
+	6yMXyo+S63DD33J/CafNnT/AOV6PI/KJn4I/Iyam4ZMCGkRe7lgqLx8RzOa4dtUOfOvQ37
+	7pbY8O/GEGf57tmH/wPGEU9LHmV+mGY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EC22E40234;
-	Tue, 18 Aug 2026 14:42:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2261F000E9;
-	Tue, 18 Aug 2026 14:41:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 11419600AD;
+	Tue, 18 Aug 2026 14:48:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36F101F000E9;
+	Tue, 18 Aug 2026 14:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787064123;
-	bh=fIgroO17cxW3StOu7FtwzJ0p4BsPX3URbvdP5tpra2A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CDQc3TbXHMGHuOVnFhO/NrVr0MqkyFFMgQaU1KZKGPZQbiFQsjLNVGsur+cfMnnZO
-	 UQPUWRzDS08US+P2dtx0QNBWWrenfUHoeJRTJTyWT+xDVcdAGiYgnODJzYbteqNI/1
-	 LPdnZLcxdLysRPBDgdvowJ0y9rqygjW/gvqdAu64/kzb8UYZL9wzLY5hk0+SdEOfhB
-	 J6s/JFVnqkhVvCOsSIb85qhuHJ/fUPElB2yxQ3YNC7EpiSHIEt4WOqosvz1N8aWpLm
-	 qUIT+6t6QlJNDUnSwUmtIWnwtHjPiDoi7fk9PBqGmwtkC9fD//KBG8JCJDhpCu4PG8
-	 vAgGurOJhSoHQ==
-Date: Tue, 18 Aug 2026 15:41:40 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org, 
-	nico.pache@linux.dev, baolin.wang@linux.alibaba.com, baohua@kernel.org, 
-	dev.jain@arm.com, hughd@google.com, lance.yang@linux.dev, liam@infradead.org, 
-	mhocko@suse.com, rppt@kernel.org, ryan.roberts@arm.com, shuah@kernel.org, 
-	surenb@google.com, usama.arif@linux.dev, vbabka@kernel.org, ziy@nvidia.com, 
-	usama.anjum@arm.com, agordeev@linux.ibm.com, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, jannh@google.com, 
-	willy@infradead.org, pfalcato@suse.de, rostedt@goodmis.org, mhiramat@kernel.org, 
-	linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [RFC PATCH 00/57] mm/collapse: rebuild collapse on migration
- primitives
-Message-ID: <aoRuqbgFAPyZtUli@lucifer>
-References: <20260816224609.308019-1-kirill@shutemov.name>
- <aoLAly-oL2OAa4n8@lucifer>
- <aoLkMUtmzRVuv2Hx@thinkstation>
- <99138bda-55ba-4c58-9b79-b76e9daecdde@kernel.org>
+	s=k20260515; t=1787064484;
+	bh=pUxD0USwu2jVqVh1UV3lHxlVH+TQ1GZ20FVn0Z7eupA=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=lBcveIGZwmJ5FcjsE5AM3BiwdA61AHLD32Icwp8nm7Pslq0h3OXXGcTN4L9rO1nYI
+	 7OqXtj8kuqmkjMRYZm01TI+Jh9dBfCCtq9rEVGdn9P+Lnjv07G4IVA9nhzfkNoaVyF
+	 Egq2atyVtJJ9nrNI/Qo78YODW2pjFUZ3vRjA5wtHLvjTYXL5tnj1G2/oj/Mlyo6Xmz
+	 lXLItN2BnqAVv1uNvAIcZLtTKtFuhREEHzT7PzbVXYfNpTWHwq9uAc67SzDbAFnDRC
+	 7Lm9XQTuE7awLEDNFg8H2YJui/HDIA8eHyNt1y7/JwEF8wUB9q7RhXjrfRbtZj9Za5
+	 s2pQlqxUO5k5w==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <99138bda-55ba-4c58-9b79-b76e9daecdde@kernel.org>
-X-Rspamd-Queue-Id: CDDCC180011
-X-Stat-Signature: 1pufzteua7kg5m5pk9u9dt3imzdgmjaw
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] mm/secretmem: properly account locked pages
+From: Mike Rapoport <rppt@kernel.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, 
+ James Bottomley <James.Bottomley@HansenPartnership.com>, 
+ Hagen Paul Pfeifer <hagen@jauu.net>, Pedro Falcato <pfalcato@suse.de>, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, 
+ bpf@vger.kernel.org, Daehyeon Ko <4ncienth@gmail.com>, 
+ stable@vger.kernel.org
+In-Reply-To: <20260814-secretmem-accounting-v1-1-d2f8c677980b@kernel.org>
+References: <20260814-secretmem-accounting-v1-1-d2f8c677980b@kernel.org>
+Date: Tue, 18 Aug 2026 17:47:55 +0300
+Message-Id: <178706447572.2799959.13846195033539124794.b4-review@b4>
+X-Mailer: b4 0.17-dev
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787064124-976380
-X-HE-Meta: U2FsdGVkX1+8hbBpJKuj2lW9gxgk3MTIAsxmSuTllzmz1/vGxoRvj7lWUEOXzKyajGRjkus4RMU5aTkpVPV3w/2tY/dTSfYnNq1dkpYz1fxs1p5I+Jug7nslCvjGEAiyJo6TXmkB7m5dMC+3hezsSxhiPcAMg1GnKR4d/wXhXAkAIywZfcN3yvoKdPx50lUex3aLTHhIXfumHrsEbRvTnjAAmEh7K1Bvr3EulrcK8RJaaXNEHBWEnBKTjOGdXsjA0g7mieK/abiaa6rLhDr7Ldd+SsvjOEokY3kDCeMbeARMNqmf+3+DKyA1R2lClAGD4X/0MK9nkaCjbzKlfw6m8pklm8BCElSauph+uLGSRsi4E8HNJ//622eB1dr/YSD0IE3iWKWnjOdXxMqvEuZyGjySttUzUestS+PhCBvZUCAxIzL/piKRh7LCmlfOREMMd+0b7GT7IqeIx6xiY8vfhpAaav685XAR1yQ6WTTYlfe0dbcEhu0HNVzHFvLMhTy/4+CVxmFqBgvdjB+Wc93aftG1i45k+CjvZul+3R5QKG2ZO2XWTjN03t3p2/+9qvU5lR3x3fWy5qVcMFs3TXNfWt2biBkNpyc5jSR5YS+Xmzfllk4nD2pgvCTZmh5cagIos0XQ9PxYrsRMzA22/V38x+f00Sp1oRfIaL5yQX9J6P3BXHPEQXgbO3BDl9iHKbrTaapWfzoRod5FVVj8EFt6zesj93UZEnebnhJh08ghV+VeZQTxJchN+cICxAaHP038Ugq9rxRr4Nxm5LpKdzN7sa6MgOKh6Upcfl88CrKQ5fqBeA9nrmBQmohoU6UJjLw6ekVINQxQJk75v1GhQo+FyJHvn29La2Q+LEWmzP11txemk6e4CzMAmwIj3vrZNA+NXxPRL8acEfRpKkErtZIeibvVCE6sOIfmC8hoSyQymaMSuNs3gLp3qgl0GQMBFPfbMJfVThC0qukY9KXKyb7
- cQWstcZ+
- 68y0xwm5TSXihpuVrhIxtX3XvBYAs2j+6u4hkGKdYTNH2XUauGSsJBotEVcHmo1nLEU7o/BIGXWteXDa6JCCNmYJHOB2gDl5rkKC+0ddf4lcKS50buwLlZug372G1QU7n4Z6bDjoJOvgqYRv9mgpC6fTkhIB9QIWnU4ogH2lASe6nqvTwQtv+kYtGjF7ry22T8Sw1O76i3OxL/DYWeYtNE7c1/JMEZpZCLCU1GjFpC6G19s5cXOWeHeoD/Ms/Zv912CqZrel3jmRUaYHDBG9RT9y6KgNZtgmIH04XWcXLvAQQnM0=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B1F141C0002
+X-Stat-Signature: msdnbmmrt8u69m8xggfmhk361ktk1ctc
+X-HE-Tag: 1787064485-221202
+X-HE-Meta: U2FsdGVkX19SleFcQqc7xPcqn3CWw2ltqcoodx0GfsNdjSNz6o55dV1vzcfqAjsYIv/AdPmdtCbVpGyadZi/bJRB2bbtw2PJqACJRwCMLprwNr3WB0g6lD0qL5rr3lbMWhV4X8CZrjYmWsXLhSrjRPUnjdRVSRku+aVgV5jGzKuCt0T86XUmrwhT1PrIQUUNsk5yr0ncFuGVvrAtCVRiIneA3SsceVtGoVr2N1/Cb7MwtdtEaQzHaCj6jYhxONTm5RqlYqFnnL17yU6+cVMz8lWlFJ0nbCC2lhp5YM2QPcBqunjKsibc+CSi4/GnuMyTMWNduQkYTz0fVjjanzaQXF6B+m6iU39ATixmR5O1A0iYN7yXj9c2za8IjM8ex2GagZpMCwoPEt0JH471MGK4tbjGeOnG0ejS7c60DyIaB4k/nkTF+FQi6BgEXU4xCjcVfOY3Exp8VxxmmhWDCzR08SOatgL2I65O+KzsEKW4BzTO/vrfeRi+LgaKvk0GCeswCP4nZCGwj127JxRVb/1AsHQ3NWNl8HfHP1ZprlnhRO7iriIXOaqEgy5z9gk8Kf0fD9sIcew+g55/k0TIP4x7PGG89EuKU3qyEgryOOIL1GpYFz0WgwiHakaHjuonrlvGrjSVyuCxb5U6xL1whuwmShhh+q9XNO5iCbe9ggik2GuL+Ll9QuBURfD4BKHIdudMg8MUZFFr8RuzSpGp28so0/1scPJJed7Tp1VqKpTp/c9qzlENW7g8ZAVtuMwg6wdCc7na4T14zOsfP4DXxLg1f8U5jF5NXswFtQFCbCDAn76+Is67Ttr7eIrXemf3hz8zmJtzANd5C2XPBl2QJi3fnIkkNEY1tgzYjsNJ5iwzS6B6Th2XgkB2KYZBIbq0CjrM0TY7EaZW4zGYiCk6jQjEJp0XmNyUgnW/U/MN++WQe477P29KLDJJX+GmZSNQ6dcfye8ZP5wkv6rBHtwtZ/t
+ YxhYoqIb
+ wbtTySQslNet0L2bUAKpoeb6udXPHmcoXVdthYAHv3Wo/KBaPumzwILkZ/Yj0YeARSh2y6O72kE23U2XZHnOotG1mgerdggsYjZl3mXIQ+fTBv76Lg4YVhf2CVhCqT8Lwh19t4blV+zTcoNmkhHN1SzVCs55/Eq1XN7MRPG5OdUNUqKaDjQxgHjep6TNjB2dg1UGhf6Rc54OoTKBt5h98A4cqb70RZZlkJL6R6sz6NlzJwwemd55buEoNY2PGhNzJkFbOoVWjYfBl57EpKyAoAUEgiRLzDuIjPBWPsFS/oUIbSr2XW7/ASJhCQXDorfBhBxZc9pEHaW29snDqJ3UPTJYe2GAQfEH2r+O2g0slaXlGHEq+35urLPrbrg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,76 +105,435 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 18, 2026 at 04:15:27PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/17/26 15:38, Kiryl Shutsemau wrote:
-> > On Mon, Aug 17, 2026 at 09:52:13AM +0100, Lorenzo Stoakes (ARM) wrote:
-> >> We have a THP cabal meeting every couple of weeks where it would have been
-> >> useful for you to raise this first.
-> >
-> > Fair -- though my invite is on my old @linux.intel.com address.  Could
-> > you forward it to kas@kernel.org?
-> >
-> >> In any case - this series is not something we'd consider at the moment,
-> >> even broken into parts.
-> >>
-> >> David and I have put THP into feature freeze - until the codebase is
-> >> subtantially improved we're not really interested in seeing significant
-> >> development.
-> >>
-> >> The technical debt is substantial and has to be paid down first.
-> >>
-> >> See [0] for a rough list of TODOs in this regard.
-> >
-> > I read the TODO list and I'll pick from it -- though I notice the
-> > technical debt section includes "Literally all of the code in
-> > mm/huge_memory.c and mm/khugepaged.c", which I'd argue this series is a
-> > fairly committed attempt at :)
-> >
-> > One clean up I wanted to do is consolidate code by functionality, not by
-> > the THP/non-THP split.  Move all page fault handler code into mm/fault.c,
-> > unmap code into mm/zap.c, fork's copying into mm/fork.c -- mirroring
-> > kernel/fork.c, so the mm half of a subsystem sits under the same name.
-> > Large folios are an integral part of mm nowadays and I don't think we
-> > benefit from keeping THP in a separate file.  It is also an opportunity to
-> > shift away from mm/memory.c being a kitchen sink.
-> >
-> > David and I talked about this at LSF/MM.
+> secretmem has a relatively laissez-faire attitude to accounting the folios
+> it allocates.
+> 
+> The intention is that the memory is treated as if it were mlock()'d and
+> thus is limited by the RLIMIT_MEMLOCK limit if the CAP_IPC_LOCK capability
+> is not in place (which broadly allows unlimited ranges of mlock()'d
+> memory).
+> 
+> The lifecycle for memfd accounting against this limit is - account on
+> map, unaccount on unmap.
+> 
+> But the lifecycle of memfd folios is allocate on fault, deallocate on inode
+> eviction.
+> 
+> This mismatch is problematic because the folios are unevictable and remain
+> so until the inode is evicted.
+> 
+> This is established using mapping_set_unevictable() setting the
+> AS_UNEVICTABLE flag in the relevant address_space data structure.
+> 
+> This is problematic as it eliminates usual mlock() semantics - mapping
+> folios then unmapping them does not clear their unevictable state, since it
+> depends on AS_UNEVICTABLE, not PG_mlocked.
+> 
+> This is checked by folio_evictable() which first checks for AS_UNEVICTABLE
+> before looking at PG_mlocked, which is cleared on unmap via
+> munlock_vma_folio().
+> 
+> A user can therefore easily work around the RLIMIT_MEMLOCK limit - simply
+> map then unmap and VmLck no longer counts the secretmem range, nor are they
+> accounted in the process's RSS even if mapped again, meaning the OOM killer
+> won't know to kill the process.
+> 
+> This can also be achieved by forking the process, as VMA_LOCKED_BIT is
+> cleared for VMAs copied to the child process, whose VmLck will be 0.
+> 
+> A user without the CAP_IPC_LOCK capability can therefore repeatedly
+> map/unmap (or map/fork) and consume all available system memory with
+> unevictable folios and cause system instability.
+> 
+> Worse, the OOM killer will not be able to resolve the situation.
+> 
+> Additionally, this fd can be passed between processes and over fork so a
+> per-process limit simply does not make sense.
+> 
+> There is precedent for addressing this issue - io_uring, perf, skbuff,
+> iommufd and xdp all perform the precise lifetime management required here
+> using an alternative method - tracking the number of locked pages in
+> struct user_struct->locked_vm.
+> 
+> Add secretmem to this list and account locked folios over the lifetime of
+> the inode to reflect the actual lifetime of the folios, while bypassing
+> this if the user has the CAP_IPC_LOCK capability.
+> 
+> As a result the semantics change - the RLIMIT_MEMLOCK limit is per-user not
+> per-process to reflect the actual scope of the allocated folios, and this
+> limit is shared between secretmem and io_uring, etc.
+> 
+> However this is reasonable given the need to track this limit in the actual
+> scope in which it applies.
+> 
+> Since GUP rejects secretmem mappings, setting VMA_LOCKED_BIT does not
+> result in memory being faulted in on map, another wrinkle with the mlock()
+> accounting.
+> 
+> This also leads to another oddity from the previous implementation -
+> mlock_future_ok() was checked on mmap() but since nothing is faulted in
+> right away, this check was more or less meaningless. Therefore drop this.
+> 
+> There is simply no reason to carry on marking the mapping as mlock()'d
+> since it's misleading and the lifecycle is now correctly handled, so remove
+> this too.
+> 
+> Additionally, fix the selftest which checks the limit as this now must
+> assert SIGBUS on limit violation on fault-in.
+> 
+> Also assert there that the limit applies to the lifetime of the fd rather
+> than the mapping by trying to map a single page past the maximum rlimit -
+> previously this would have succeeded as the prior unmap would have reset
+> the mlock limit.
+> 
+> __secretmem_account_pages() is essentially a duplicate of the code that
+> io_uring etc. use, but since this is a bug fix that needs backporting,
+> defer any de-duplication efforts to a follow-up.
+
+Can the commit message here be a page rather than a folio? ;-)
+
+> Reported-by: Daehyeon Ko <4ncienth@gmail.com>
+> Closes: https://lore.kernel.org/linux-mm/20260813225328.2010303-1-4ncienth@gmail.com/
+> Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 >
-> Ah, I missed the context in my other reply. Lorenzo already had some patches at
-> some point to split up mm/memory.c into better chunks that will also better help
-> our subcomponent maintenance model.
+> diff --git a/include/linux/sched/user.h b/include/linux/sched/user.h
+> index 4cc52698e214..8d7e5521f7cd 100644
+> --- a/include/linux/sched/user.h
+> +++ b/include/linux/sched/user.h
+> @@ -25,7 +25,8 @@ struct user_struct {
+>  
+>  #if defined(CONFIG_PERF_EVENTS) || defined(CONFIG_BPF_SYSCALL) || \
+>  	defined(CONFIG_NET) || defined(CONFIG_IO_URING) || \
+> -	defined(CONFIG_VFIO_PCI_ZDEV_KVM) || IS_ENABLED(CONFIG_IOMMUFD)
+> +	defined(CONFIG_VFIO_PCI_ZDEV_KVM) || IS_ENABLED(CONFIG_IOMMUFD) || \
+> +	defined(CONFIG_SECRETMEM)
+>  	atomic_long_t locked_vm;
+>  #endif
+>  #ifdef CONFIG_WATCH_QUEUE
+> diff --git a/mm/secretmem.c b/mm/secretmem.c
+> index d29865075b6e..537fe5b1222f 100644
+> --- a/mm/secretmem.c
+> +++ b/mm/secretmem.c
+> @@ -18,6 +18,8 @@
+>  #include <linux/secretmem.h>
+>  #include <linux/set_memory.h>
+>  #include <linux/sched/signal.h>
+> +#include <linux/sched/user.h>
+> +#include <linux/cred.h>
+>  
+>  #include <uapi/linux/magic.h>
+>  
+> @@ -47,10 +49,107 @@ bool secretmem_active(void)
+>  	return !!atomic_read(&secretmem_users);
+>  }
+>  
+> +struct secretmem_inode_state {
+> +	struct user_struct	*user;
+> +	atomic_long_t		nr_pages_accounted;
+> +};
+> +
+> +static bool __secretmem_account_pages(struct user_struct *user,
+> +		unsigned long nr_pages)
+> +{
+> +	unsigned long page_limit, cur_pages, new_pages;
+> +
+> +	if (!nr_pages)
+> +		return true;
+> +
+> +	page_limit = rlimit(RLIMIT_MEMLOCK) >> PAGE_SHIFT;
+> +
+> +	cur_pages = atomic_long_read(&user->locked_vm);
+> +	do {
+> +		new_pages = cur_pages + nr_pages;
+> +		if (new_pages > page_limit)
+> +			return false;
+> +	} while (!atomic_long_try_cmpxchg(&user->locked_vm,
+> +					  &cur_pages, new_pages));
+> +	return true;
+> +}
+> +
+> +static bool secretmem_account_folio(struct secretmem_inode_state *state,
+> +		const struct folio *folio)
+> +{
+> +	unsigned long nr_pages;
+> +
+> +	if (!state)
+> +		return true;
+> +
+> +	nr_pages = folio_nr_pages(folio);
+> +	if (!__secretmem_account_pages(state->user, nr_pages))
+> +		return false;
+> +
+> +	atomic_long_add(nr_pages, &state->nr_pages_accounted);
+> +	return true;
+> +}
+> +
+> +static void __secretmem_unaccount_pages(struct secretmem_inode_state *state,
+> +		unsigned long nr_pages)
+> +{
+> +	atomic_long_sub(nr_pages, &state->user->locked_vm);
+> +	atomic_long_sub(nr_pages, &state->nr_pages_accounted);
+> +}
+> +
+> +static void secretmem_unaccount_folio(struct secretmem_inode_state *state,
+> +		struct folio *folio)
+> +{
+> +	if (!state)
+> +		return;
+> +
+> +	__secretmem_unaccount_pages(state, folio_nr_pages(folio));
+> +}
+> +
+> +static void secretmem_unaccount_all_folios(struct secretmem_inode_state *state)
+> +{
+> +	unsigned long nr_pages_accounted;
+> +
+> +	if (!state)
+> +		return;
+> +
+> +	nr_pages_accounted = atomic_long_read(&state->nr_pages_accounted);
+> +	__secretmem_unaccount_pages(state, nr_pages_accounted);
+> +}
+> +
+> +static void secretmem_destroy_inode_priv(struct inode *inode)
+> +{
+> +	struct secretmem_inode_state *state = inode->i_private;
+> +
+> +	if (!state)
+> +		return;
+> +
+> +	secretmem_unaccount_all_folios(state);
+> +	free_uid(state->user);
+> +	kfree(state);
+> +}
+> +
+> +static int secretmem_init_inode_priv(struct inode *inode)
 
-Ah yeah I kinda lost those but indeed doing this is a good idea.
+Can _init and _destroy live closer to their callers please?
 
-I should try to dig those out again or look again when I have a chance...
+> +{
+> +	struct secretmem_inode_state *state;
+> +
+> +	if (ns_capable_noaudit(&init_user_ns, CAP_IPC_LOCK))
+> +		return 0;
 
->
-> I think the challenge is how to handle huge_memory.c, because ideally, we'd not
-> have these stupid callbacks into huge_memory.c once we make PMDs just a
-> first-class citizen.
+The check happens only on inode creation, so if a privileged process,
+e.g. a container engine, passes the fd to an unprivileged process, the
+accounting issue remains.
 
-Yes and another point and I think it's one that Kiryl also gets at is - can we
-_please_ stop pretending huge folios == THP == what the page cache does == page
-special cases like DAX? :)
+> +
+> +	state = kzalloc_obj(*state, GFP_KERNEL);
 
-I think Matthew had ideas (TM) about separating out CONFIG_THP from that stuff
-but that's another way in which we can unwend some of the horrors.
+GFP_KERNEL is implicit for kzalloc_obj(), isn't it?
 
->
-> This is, unfortunately, also something that needs more thought, because we don't
-> want to end up moving stuff back and forth.
+> +	if (!state)
+> +		return -ENOMEM;
+> +
+> +	state->user = get_uid(current_user());
+> +	inode->i_private = state;
+> +	return 0;
+> +}
+> +
+>  static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+>  {
+>  	struct address_space *mapping = vmf->vma->vm_file->f_mapping;
+>  	struct inode *inode = file_inode(vmf->vma->vm_file);
+> +	struct secretmem_inode_state *state = inode->i_private;
+>  	pgoff_t offset = vmf->pgoff;
+>  	gfp_t gfp = vmf->gfp_mask;
+>  	unsigned long addr;
+> @@ -72,8 +171,15 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+>  			goto out;
+>  		}
+>  
+> +		if (!secretmem_account_folio(state, folio)) {
 
-Yeah annoyingly it's not all straightforward. I wonder if actually gauging off
-of what series often touch in patches might be a good way of figuring out how to
-separate, funnily enough (certainly for mm-next conflict resolution purposes
-anyway).
+Oh, this is getting really hairy :(
+We need better gotos in secretmem_fault(), it could be a nice
+preparation patch, but I don't feel very strongly about it.
 
->
-> --
-> Cheers,
->
-> David
+> +			folio_put(folio);
+> +			ret = VM_FAULT_SIGBUS;
+> +			goto out;
+> +		}
+> +
+>  		err = set_direct_map_invalid_noflush(folio_page(folio, 0));
+>  		if (err) {
+> +			secretmem_unaccount_folio(state, folio);
+>  			folio_put(folio);
+>  			ret = vmf_error(err);
+>  			goto out;
+> @@ -82,6 +188,7 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+>  		__folio_mark_uptodate(folio);
+>  		err = filemap_add_folio(mapping, folio, offset, gfp);
+>  		if (unlikely(err)) {
+> +			secretmem_unaccount_folio(state, folio);
+>  			/*
+>  			 * If a split of large page was required, it
+>  			 * already happened when we marked the page invalid
+> @@ -115,19 +222,17 @@ static const struct vm_operations_struct secretmem_vm_ops = {
+>  static int secretmem_release(struct inode *inode, struct file *file)
+>  {
+>  	atomic_dec(&secretmem_users);
+> +	secretmem_destroy_inode_priv(inode);
+> +
+>  	return 0;
+>  }
+>  
+>  static int secretmem_mmap_prepare(struct vm_area_desc *desc)
+>  {
+> -	const unsigned long len = vma_desc_size(desc);
+> -
+>  	if (!vma_desc_test_any(desc, VMA_SHARED_BIT, VMA_MAYSHARE_BIT))
+>  		return -EINVAL;
+>  
+> -	vma_desc_set_flags(desc, VMA_LOCKED_BIT, VMA_DONTDUMP_BIT);
+> -	if (!mlock_future_ok(desc->mm, /*is_vma_locked=*/ true, len))
+> -		return -EAGAIN;
+> +	vma_desc_set_flags(desc, VMA_DONTDUMP_BIT);
+>  	desc->vm_ops = &secretmem_vm_ops;
+>  
+>  	return 0;
+> @@ -192,15 +297,23 @@ static struct file *secretmem_file_create(unsigned long flags)
+>  	struct file *file;
+>  	struct inode *inode;
+>  	const char *anon_name = "[secretmem]";
+> +	int err;
+>  
+>  	inode = anon_inode_make_secure_inode(secretmem_mnt->mnt_sb, anon_name, NULL);
+>  	if (IS_ERR(inode))
+>  		return ERR_CAST(inode);
+>  
+> +	err = secretmem_init_inode_priv(inode);
+> +	if (err)
+> +		goto err_free_inode;
+> +
+>  	file = alloc_file_pseudo(inode, secretmem_mnt, "secretmem",
+>  				 O_RDWR | O_LARGEFILE, &secretmem_fops);
+> -	if (IS_ERR(file))
+> +	if (IS_ERR(file)) {
+> +		secretmem_destroy_inode_priv(inode);
 
---
-Cheers, Lorenzo
+Please use goto for error handling here.
+
+> +		err = PTR_ERR(file);
+>  		goto err_free_inode;
+> +	}
+>  
+>  	mapping_set_gfp_mask(inode->i_mapping, GFP_USER);
+>  	mapping_set_unevictable(inode->i_mapping);
+> @@ -218,7 +331,7 @@ static struct file *secretmem_file_create(unsigned long flags)
+>  
+>  err_free_inode:
+>  	iput(inode);
+> -	return file;
+> +	return ERR_PTR(err);
+>  }
+>  
+>  SYSCALL_DEFINE1(memfd_secret, unsigned int, flags)
+> diff --git a/tools/testing/selftests/mm/memfd_secret.c b/tools/testing/selftests/mm/memfd_secret.c
+> index aac4f795c327..626e7033b72f 100644
+> --- a/tools/testing/selftests/mm/memfd_secret.c
+> +++ b/tools/testing/selftests/mm/memfd_secret.c
+> @@ -15,6 +15,8 @@
+>  #include <sys/resource.h>
+>  #include <sys/capability.h>
+>  
+> +#include <setjmp.h>
+> +#include <signal.h>
+>  #include <stdlib.h>
+>  #include <string.h>
+>  #include <unistd.h>
+> @@ -22,6 +24,8 @@
+>  #include <stdio.h>
+>  #include <fcntl.h>
+>  
+> +#include <sys/mman.h>
+> +
+>  #include "kselftest.h"
+>  
+>  #define fail(fmt, ...) ksft_test_result_fail(fmt, ##__VA_ARGS__)
+> @@ -31,6 +35,7 @@
+>  #ifdef __NR_memfd_secret
+>  
+>  #define PATTERN	0x55
+> +#define MLOCK_LIMIT_CAP	(8UL << 20)
+
+A comment about why capping at 8MB would be nice.
+
+>  static const int prot = PROT_READ | PROT_WRITE;
+>  static const int mode = MAP_SHARED;
+> @@ -39,6 +44,13 @@ static unsigned long page_size;
+>  static unsigned long mlock_limit_cur;
+>  static unsigned long mlock_limit_max;
+>  
+> +static sigjmp_buf fault_env;
+> +
+> +static void sigbus_handler(int sig)
+> +{
+> +	siglongjmp(fault_env, 1);
+> +}
+> +
+>  static int memfd_secret(unsigned int flags)
+>  {
+>  	return syscall(__NR_memfd_secret, flags);
+> @@ -57,10 +69,32 @@ static void test_file_apis(int fd)
+>  		pass("file IO is blocked as expected\n");
+>  }
+>  
+> -static void test_mlock_limit(int fd)
+> +/* GUP disallows automatic fault-in of secretmem, so do it manually. */
+> +static bool fault_in_secretmem(char *mem, size_t len)
+> +{
+> +	if (sigsetjmp(fault_env, 1))
+> +		return false;
+> +	memset(mem, PATTERN, len);
+> +	return true;
+> +}
+> +
+> +static void test_mlock_limit(void)
+>  {
+>  	size_t len;
+>  	char *mem;
+> +	int fd;
+> +
+> +	/* Locked pages have an inode lifetime, so need a new fd. */
+> +	fd = memfd_secret(0);
+> +	if (fd < 0) {
+> +		fail("memfd_secret failed: %s\n", strerror(errno));
+> +		return;
+> +	}
+> +
+> +	if (ftruncate(fd, mlock_limit_max * 2)) {
+> +		fail("ftruncate failed: %s\n", strerror(errno));
+> +		goto out_close;
+> +	}
+
+Can't we ftruncate to this size in main and be done?
+
+>  
+>  	len = mlock_limit_cur;
+>  	if (len % page_size != 0)
+> @@ -69,19 +103,48 @@ static void test_mlock_limit(int fd)
+>  	mem = mmap(NULL, len, prot, mode, fd, 0);
+>  	if (mem == MAP_FAILED) {
+>  		fail("unable to mmap secret memory\n");
+> -		return;
+> +		goto out_close;
+> +	}
+> +
+> +	if (!fault_in_secretmem(mem, len)) {
+> +		munmap(mem, len);
+> +		fail("unable to fault in secret memory\n");
+> +		goto out_close;
+
+Please don't mix cleanup styles, goto err_do_cleanup is the preferred
+way.
+
+-- 
+Sincerely yours,
+Mike.
+
 
