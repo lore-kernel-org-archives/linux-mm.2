@@ -4,119 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC69CC5DF74
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 14:08:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C6D6C5DF74
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 14:09:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF73B6B0191; Tue, 18 Aug 2026 10:08:24 -0400 (EDT)
+	id 44B5B6B0197; Tue, 18 Aug 2026 10:09:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECEFB6B0195; Tue, 18 Aug 2026 10:08:24 -0400 (EDT)
+	id 422FB6B0199; Tue, 18 Aug 2026 10:09:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0C7D6B0197; Tue, 18 Aug 2026 10:08:24 -0400 (EDT)
+	id 360F76B019A; Tue, 18 Aug 2026 10:09:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B3AEE6B0191
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:08:24 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3486D1402A8
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:08:24 +0000 (UTC)
-X-FDA: 85114570128.01.97EA758
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 5C46F20008
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:08:22 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 15C9E6B0197
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:09:44 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9D9D48029E
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:09:43 +0000 (UTC)
+X-FDA: 85114573446.24.5AE42FA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 11BCC20002
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:09:41 +0000 (UTC)
 Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=K5aA0OE4;
-	spf=pass (imf31.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787062102;
-	b=DCOFQRyzfoinSJCIhKq8vjFlr9atCddoVTQbVcRkvwYxgAPgv5kcdZC+6SAPKJQKd4OopN
-	IMjjMjqyyvDdQGJHz3IUj/jfkm/HPtq5jTATMVbC5HQmyYXqH6r+jiSg6i6U2exaPQmDCW
-	uS5mhvhDYEtmil36avDhVIaY0yO3Otg=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=K5aA0OE4;
-	spf=pass (imf31.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bVi5P/GX";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787062102;
+	s=arc-20220608; t=1787062182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MIbU6RCAysXGTpiqsbxIiRINbcDHCsMbZAd9JSG5n84=;
-	b=T6y5UAYEksLQq9dp/6nl8RLhbjZMEM/gawkR/bxmmjb1fp3Biv/IYzBIpeyAeaBqynsukf
-	v0NivKKhfSMFVMl9SlemAGYhTarboL3mhpQj7PQ5aOxa+ODY9cEmY0UUalKdOEYMzo3xUb
-	CHAIq2uZGT0CoiR5/JIWyOPoGvsFpcQ=
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4953de5be0aso37616085e9.0
-        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:08:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1787062101; x=1787666901; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MIbU6RCAysXGTpiqsbxIiRINbcDHCsMbZAd9JSG5n84=;
-        b=K5aA0OE4sQx1Ne5sdSYEGAag1qidnRduTCnCTRselrPRiYMD3tBCZ4oZ/FLU0wVxUO
-         mVh31tOZsdCH6z1+negtVYrZ6REvZ6uzygACoFWOkbpIdPtp3HA21rveqCH4JflU/4S0
-         fLoh9AZWa7UgE+FEVDcbha39F3GUPZbItaYnv5pDR5eabW8jPFT+OSugD1KBXeVgwDBQ
-         VWEyLgHJv3yEnpBniaSAWU+Mse6OA965XGS0t2D5APMy7tObqIJufbGmxxgVpVKvAriB
-         jTCJfjdWML3SMYQCrqeCv8nUbXjXWQbGIyPzhd9zw7M4/a3pjav8s98sfW7O6Hk1HZ98
-         F55w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787062101; x=1787666901;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MIbU6RCAysXGTpiqsbxIiRINbcDHCsMbZAd9JSG5n84=;
-        b=r9mFn0mIiV8uALo/2xM1JAlhPNItIK0zeUpjmSGxSaWRmoRbqAyf6DdtlvszLHlAvc
-         SlkQxaVurwoyepHWaTLLTlXxf4NYbExM6/pM7999lnknGQ+Wk9xGFrsd9pf9RTqOf2X5
-         LGjNdukB0wMNM/DRSWgHCZKFzJHrNNG14sBFHEfg7vHOc8AddjL8DOTUkCa9JJiCKi64
-         8L/QaOM9FgLt7SLBR1YTqTH7/FonKTN/R9Ujycohgb675C2ANY4LvXvSmmQSp/3uaDxd
-         V0Zsc0RBUltZSMdX0bBkiGViI+zs968FWUD+QO3Wd2heObhDbrUuPb6L772D+8dUqgzg
-         UE8Q==
-X-Gm-Message-State: AOJu0YxonpecgVMBXlZzwhyLp3G+G/pwtG09O7oHQKuYjI1q6jGKOBM3
-	AkIFifmi1aRcBe8gvV8ZSHVBAq//wTbmtFnllG8ci42kPc0WQNPux+alJTMUSAsa/w8=
-X-Gm-Gg: AR+sD12voMeCg/Kgo/a02qIol/B59yHkTwLncVHl5FpcWae0n0PajFRy1yK77+DnVK7
-	LVCibpITtX7vQ7bPmvbCH6elINwv+7a+fs1KC7wcwrOMBlhFjKtR8W1K6LbYl1FSpN86uKsED12
-	MdtmbBrzIFLuPgHGz6/QvvAIy73DY00wuLQXeEH/N3kjphCZSWOhgYdLJxCkcOjl+32PlB6EkiD
-	2WIzH6P4qHQj+Be7xzUixbHPJPtDkuk//mio04ts+5e0TrJoSKqQFggiplla94AQRVAxMnXUIGE
-	sV1f4TfN1KQyfFIq5z3YOkJrgx3S9XqrW+S5eD/vGxCFLqmDcemg3E+NfE1u5Ffx1joSRg2BcG9
-	hJa//IFV8CZrZJk9z4G2C+pxFSTwlWIynbzyKDo0qcCYMSi0vL0lkex13XnfAigOJX2b9hIJyEP
-	Q3QVkjK9TTRTBCfKjzkrgjB5S1g1x14GEe1xMdMBZKGUVjBVKpWsH2PFxb5MAv3Tcw5JNAn9rtx
-	A==
-X-Received: by 2002:a05:600c:828c:b0:495:3da3:beb with SMTP id 5b1f17b1804b1-49989345963mr567071855e9.10.1787062100854;
-        Tue, 18 Aug 2026 07:08:20 -0700 (PDT)
-Received: from localhost (109-81-87-166.rct.o2.cz. [109.81.87.166])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49996100184sm300612795e9.1.2026.08.18.07.08.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 07:08:20 -0700 (PDT)
-Date: Tue, 18 Aug 2026 16:08:19 +0200
-From: Michal Hocko <mhocko@suse.com>
+	bh=X8oJASEVHdJhH7uHF2vR+gZb+csEP8hI47I9UkZtJlM=;
+	b=6EM7vRNG9qRAd8Wm4b0EeCw72BCM/+6FXTfCEU/hgwsJO3gEO50MQ1YzALjOc1hGDJm98E
+	F7r+6/KI9thFsw4ahtynXG7Nv8kT7zwJZlakYL8HJuvWfDG3hGCSNy2Xerk7Q8G2RWJF0r
+	B0kYbqnNU/daT1rXOYxoKhHK+r3lN08=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bVi5P/GX";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787062182;
+	b=jpZw52QHkY5b2at8BmFacIfhcmU42vi2EcwiQ8+T8QWnr3r7/UbII4dvOT7UyGLP6R+kDr
+	iFJJsIa64K5+k/zc7/RSj0lY4B+jKTnMdTWrx/nE3OMHSppDd3Zi/KKha4N1cHwbk8ILE8
+	LrJWqSUOPuyyHa+Fx+FJGMObeO8zyDM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9ADF7600AD;
+	Tue, 18 Aug 2026 14:09:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769261F000E9;
+	Tue, 18 Aug 2026 14:09:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787062181;
+	bh=X8oJASEVHdJhH7uHF2vR+gZb+csEP8hI47I9UkZtJlM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bVi5P/GX9ay3YUlRE1FTJTFV+g9LQuHC72s4fDxSBwDEcdf1+laLaC8h8z3yaG2iL
+	 OVAWG7HMg25vuVgl9hhPokSFjdoyU0W/muL8vOJRWPmbnraprsgt1H2LZzArN/oS0r
+	 pBgxo2VOjkCJD/zX2mlqYY5rJhXVCgPR9fdIUZtIFuPgxjLfqDO+Wbthl36m8ZrR1z
+	 r9UyDoiZEVrFLZ/WizWZlUcF9A0TKw3QT9Njf83KUs9ARV3+rKwRDld45AMD0gjtb/
+	 M22ZOPIEEin/dBuQRzT0NSsGZwEq0bqjMnLm+PA1SWhKymOqVn6DpO37LuA3MbVdgI
+	 72aoqmJUlLoBA==
+Date: Tue, 18 Aug 2026 17:09:33 +0300
+From: Mike Rapoport <rppt@kernel.org>
 To: Leon Hwang <leon.hwang@linux.dev>
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	"Liam R . Howlett" <liam@infradead.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>
+	Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org,
+	Lance Yang <lance.yang@linux.dev>
 Subject: Re: [PATCH] mm: add cond_resched() to free_pud_range()
-Message-ID: <aoRnUxUlgf_kRlm8@tiehlicka>
+Message-ID: <aoRnnWIUrZbh2uL6@kernel.org>
 References: <20260818134934.92354-1-leon.hwang@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20260818134934.92354-1-leon.hwang@linux.dev>
+X-Stat-Signature: cnk54nm91gmck8we1q8zfximtbtodsdt
+X-Rspamd-Queue-Id: 11BCC20002
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5C46F20008
-X-Stat-Signature: d1ykx3ns3iqdswi7rorsok5hz9jdrftp
-X-HE-Tag: 1787062102-970669
-X-HE-Meta: U2FsdGVkX1/Fxnk+30B2NR5h8q4NZi9ditfMwK13ugyyitbzGJ49hBYtoNcBMZttwofp1FI2OHXKuZr9LU0k8i+uLsI9/E4Rv5od4zh7iFu+4dewvca+4Vim59qNoVVLHb7NaOnsNwdSfxEOhCUskVW4wqDa9q0k5qBqiVHNyl93Svhetvb2akZEsBYKa7yKMyUx1+T2eCCsbZ0e2jfb0CxR8pr1xYU/3DkBW4p6kvoiK6hrzzTKjZ75XT0naL4pSxBbj2z/XeJlSkuuMiNOBQ9gWakl5F5sW48IX3wKdStg7EtA0JZr6EKSOYffxQG808RKv3MfEOC3hI1okVhMWYIF3XclRrWwy871A/X3D60BmBFueQb6TQYQ1XoGPrKM8GKU+LvKAknM3OFtjkpTFm8rorXRvu9Sw6M7CWkc0xSoM1M4d9UsvZ40mFdujyTcViZZGWVfjzcwHm3pHYGLtZRGpW2cjq3T/udrFEQKlkp7sqdaW2NcLIHRQxaEHLZrAJs/5nq1hLW6OwPeXvVZKd49o9LoUpmxxeQssNzSYA9+NPU15qocUfLmNRC6tbQ5j+FC5YW86U2OPIamPOJXORPImFHTe7NB9qFkwbwZiXk5/iF1m5VfeuJbmJO0D8io9gKBGmQQUDSfFFLmnkT7/H8htlzPCOaw5ERb6EaTIRHlSBM6EWP3YGOndD7TafyrHgeIAzjLDfC3guzjDw/QdNS/drJXJq+SdPNa1DLN3BYW8nm4FQuyvxh9JCW9VGamxnZecW98gC15vZARVK0ljqzzlTlle2HJSsHlFZj+x5tLj9Uvo5iZ5XFD+Dx1TVukaC0zWRSOuWoGkkmxwxBclPapD8kji7ZYcIaASrr6UFVQy9UeOkwbhzkyCmVtwDzBDeiMKwHp8RZjRM0MSPpkhLe4O3MuAIL6ePDNG3SUZt0tNmEeTDaROqs0+Bjs5823UTEwsGXJy7FlBrEW4bZ
- AkADo5ii
- JLpuOzhW53Frp2BwmyUtKg+ccTdfBq8A18ZXBu/5+Ec4KQpMWfu8xoCna11N7xaOfmwhg6z2XEOZeUAHPheKg75Vu19WlJY9UkQP1HVQc/hs1cuOKzCqTRsCR9lBU7WccgBu3Hs0R64fIbdS5a1Bxahufd3lynNSksC4UFK6QyImfsc0KF3On0Y71mI8Cr3yPEIVZpo0KW5hwhtAWVVirJ8RlmzCxS712VnnxXbt+nAbmHeydhaRicd7HfXF/Lmx3sZHg+FWQaXPwBefACc8iNjsVrZSM5dzgYZPV2B5jRIDSG8ZoWQcvY41oOAEmc+wgys2bE46vfxsAvTA7H+qwmnVCbq6EssHLuF7DB3LiR924tcFJN2UrXeoc4XCMjtJESvkfilmwOtz/77i7n0MAbNARtQ==
+X-HE-Tag: 1787062181-233882
+X-HE-Meta: U2FsdGVkX1/tBXS4GJdY494//L0YmzF7LkELf+Ek6RkINrvjpFSl04mtOFh3Jy1HU4Jp4qfvc+ZRDyFjqwSOwu5Wg3ncPBoA31lS3JCudfsiIzyOSCQZRiDLxR8QSc3qbnVqa5ijPSyfGb5UcB6lBujhUBLbKj4WbuVFh7jyXk3B1qdJoRgBwaBHCV9WoKKYPO6dDHVPHGBVNdO2Yeg6S3sElo/DzR2hlR4n8sV5qvYp/2KAqFDGNB+p3fXQb15AsAJIC8fwiLvOrpZjlLDd1td71CMhKNFKfjfo37SBz461SxUaLKL6yOv7/RGhZ0JnSUbcEmrbxu5wcLb5D30/vOm7cg3uqhPC3kqDf6MaBa/7/uyQCBrCtoI9xrfoIfAO02My5nGblg0iFa99Y1eC+yXKqnpwKbvvKSq0ifCW2Kq0eWj9zGN5FFpefZaS1e9eWV6WCyq4HKE2e+HNQYUPkAQL85EARqYY8M+7yYMAKn15e2wkShCemlT+Gk1KYlvW6TbIH6StRE/Odx6RIdesnnFodwKpZISBtevBrUYWRPpvk+iFwC9pchIAg60V3LsaeXFJlScVmVywhnjacb96z2C2gSyVeo+8/r7XeTjnY7tMDtPzzGrkqyhnVRmF4mMdiuqMNEWtIu3U9xvv24PKUUpVKIjmwykfW4DwuPJEfd9T9zxT4HvQioa8yJQrT0wSugJiLgpI3U2VtGPoynYk8NHzRrJymee8NvcayQMPbiaHPT5t+K5aKdq+D3X3KOtYRCDAbQPI06BYwFt8QhOxNTKwQPySsdR4auPEr6wS+rxL7pvVnRN4ydnlOS0PDwDa58WfbQD+e5g1luclhOHCT3Ce252+z2izuDW7vxt4Fy6qEPmtEzEl5bQ0OA8T1/r2fSd5KAxu6IFQ1QQw4F1LX1vXoxqCxLcXZ+OlchrusGgYZ6Sc480KgOJzUBVRmieQrJoIalpGY8e8surqCrL
+ HtbF2IQh
+ ormrmfYSlU55QmXmQ1jDWFGwmR3MEwuoGUXDJ29KuX/KBj4km3UOPLYMvHy96Ri1Ed+l9NI1j56VXyT/iwo+B86ev3yGN28DRMftn5uPs3ASDnV8yvK+YfvFwojupln+kU1MOszomOzb4cohdAywMcq0SIYqiLoKS3wlv6Er7LXA/7nqUfBvtlJzr0PZaSKk+m4hdBn1OAqxl/xql+4PrBsaiqqilH6zqz8R9numpN3CElZLgHQQtFxAyxkyHydpBBcULHfIUbh97y0z/oZWc+BGJC9sApunWTXjmPm2932I5e/o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,7 +96,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 18-08-26 21:49:34, Leon Hwang wrote:
+On Tue, Aug 18, 2026 at 09:49:34PM +0800, Leon Hwang wrote:
 > Packet receive timeouts were seen in production. Tracing showed that an
 > exiting process with a sparse 2.5 TiB mapping could remain in kernel
 > context for over 20 ms without reaching a scheduling point while
@@ -136,11 +108,7 @@ On Tue 18-08-26 21:49:34, Leon Hwang wrote:
 > ksoftirqd and other runnable tasks can run between PUD entries. Testing
 > with PREEMPT_NONE showed that the maximum interval between scheduling
 > points fell from over 20 ms to below 2 ms.
-
-PREEMPT_NONE is effectivelly dead and most cond_resched will/should be
-removed. Is there any reason why you are not using full preemption when
-requiring low latencies?
-
+> 
 > Reported-by: Lance Yang <lance.yang@linux.dev>
 > Tested-by: Lance Yang <lance.yang@linux.dev>
 > Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
@@ -158,13 +126,17 @@ requiring low latencies?
 >  		free_pmd_range(tlb, pud, addr, next, floor, ceiling);
 > -	} while (pud++, addr = next, addr != end);
 > +	} while (pud++, cond_resched(), addr = next, addr != end);
+
+This is really obscure, can't it be in the loop body?
 >  
 >  	start &= P4D_MASK;
 >  	if (start < floor)
 > -- 
 > 2.55.0
+> 
+> 
 
 -- 
-Michal Hocko
-SUSE Labs
+Sincerely yours,
+Mike.
 
