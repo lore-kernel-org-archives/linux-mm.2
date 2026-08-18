@@ -4,169 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95033C5DF7E
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 11:13:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41E3FC5DF7D
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 11:40:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 996216B017F; Tue, 18 Aug 2026 07:13:42 -0400 (EDT)
+	id 077656B0183; Tue, 18 Aug 2026 07:40:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96CF86B0182; Tue, 18 Aug 2026 07:13:42 -0400 (EDT)
+	id 028686B0184; Tue, 18 Aug 2026 07:40:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85C4A6B0183; Tue, 18 Aug 2026 07:13:42 -0400 (EDT)
+	id E58656B0185; Tue, 18 Aug 2026 07:40:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A0D16B017F
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:13:42 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BEC48C0BF9
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 11:13:41 +0000 (UTC)
-X-FDA: 85114129842.21.C226747
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012009.outbound.protection.outlook.com [40.93.195.9])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 98C8B20002
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 11:13:38 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Aj90WoOc;
-	spf=pass (imf31.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.195.9 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787051618;
-	b=zNoHbN3ujxx/a4GgHHpjgaQCDgOe4+97K10TjvYctXF/o9i58uvhJZ4jukUa44/UWJ2m82
-	cq9cCiC2S/z3uoM73zIzFKEiuaap5XMqDRnzOqog2JM2F/nLH0pS4Zy21sUixW9r7hHNI0
-	678ZdlqVSUw6BT+/ORtDECG1Tm1pYwg=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Aj90WoOc;
-	spf=pass (imf31.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.195.9 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787051618;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AF4F06B0183
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:40:55 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3F01C140C39
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 11:40:55 +0000 (UTC)
+X-FDA: 85114198470.23.057405C
+Received: from mta1.migadu.com (out-206.mta1.migadu.com [95.215.58.206])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 194EF180006
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 11:40:52 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WuoiiXul;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.206 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787053253;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lLUzXjrh+WWc4l0LXpbfIQ0qVkc588TQYRg808JgDG8=;
-	b=iWyWgxpJUC6aQq1iBB9GBTd5kAhJ4rjKPshP7fxkFvw48UJdufbxOiHqso9d1nqFdzS0Mv
-	WC0JWE+LnqZGPk+YEbJWp0SLDxnmKJQOZ4wx4w0XCZYUXhTgLCw5QR7M805KOdr0u/gdWw
-	FM6xU1/Z1Y7VcsbjjzGrAjcVFlNL+YE=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cUTzc2wCiC/Syx+1TydhE9AP8QRHMk0sbm7ViUzWDK7fylcMrIZMxQbRt/fP2szxGQ6a9RiUWLoCyEPg/cEkzhrZ3WMwZ+XM/pROqVEFRFs9i0xLtLQhIz9+vafShxL806uecEQxj2HOHzye/rH5hfFFnS0G2w8QlkVb8nDBJ5BFbQPospJXUvWFmZtWmisnx2eZQ4o08dvDW95IjCuJMt4uHug5RsUFT8cYPI+Ju6s7JVT5G8gd9CPp0fmXBXBnB3QlQbsYuIJHuM8gJsL9OBIXeHVOAmrC7tPFWaOIxX0qfFmnm7EB9+EOlSPNm7tGQMoRLzPjr24RNryG7bd+/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lLUzXjrh+WWc4l0LXpbfIQ0qVkc588TQYRg808JgDG8=;
- b=oIo+CpNylSVf9DpW0KiVv2Id/1mODjpANCDvEQ2KD2mwzODbjOY1eMCdx1keBzryjp1dLva2DoeqvS+pS/Toqr1S/UoeOpPm7Ns3e4g7G1FKA0BRtNuIpqyxGxIXQASoLiUK9SrRsLYNPpH/XXXF7PyUF4/rSpZakRnvoDWxldW4FdN7bf4q+s6Fmu0XTHru42eg5zZaismpeWWN4oNkDvJBkvAaXTlJZBDNOU7goKoF5emLiOmrb3Dj3Qor3iLtQc6u4kS9yWo2v+VTe7NjgITmbyzb/AguydOaa3uLkHFDIUsgj4Yd27ny14IBk/pZBgZndqL66OcoKYFW9cXkog==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lLUzXjrh+WWc4l0LXpbfIQ0qVkc588TQYRg808JgDG8=;
- b=Aj90WoOcDjH4IzSPHLC6pZHFFD4MvbR5KUmqJDai/3YgoYdS5z8NKpGYRqiIirfN/uz95Gnc5oYYhyojqWT01P0w4MsDy9/zOFzIV6Ja2Up19geYu25Kz/uSfFtTIURBNgqxzRQdoEVjXzYAmNylUoWbmWf2WtnK8S7w34BK2CmRTgXHOp2XY7EogXQeeFLBkpKo1xl5/iyf88BVbbJRF6BVAqgr7481ZP2KwrwwBEg/109LxbUnedxXMnfbb3SjW0w0EXYEVTFUilvyF0+L5CeinT+Pl22Wt/A/1ywIuOmJSitxcLH3Er0wlrz10tuAHYVnhslVN3I1/3Tx+OorEw==
-Received: from CH1PR12MB9670.namprd12.prod.outlook.com (2603:10b6:610:2af::6)
- by PH7PR12MB5655.namprd12.prod.outlook.com (2603:10b6:510:138::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Tue, 18 Aug
- 2026 11:13:33 +0000
-Received: from CH1PR12MB9670.namprd12.prod.outlook.com
- ([fe80::416:ea1f:d17b:2811]) by CH1PR12MB9670.namprd12.prod.outlook.com
- ([fe80::416:ea1f:d17b:2811%6]) with mapi id 15.21.0315.016; Tue, 18 Aug 2026
- 11:13:33 +0000
-Message-ID: <f039fb9c-465f-479b-a909-2e57943d545a@nvidia.com>
-Date: Tue, 18 Aug 2026 21:13:25 +1000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/migrate_device: avoid out-of-bounds writes for
- compound folios
-To: Andrew Morton <akpm@linux-foundation.org>, Hui Su <sh_def@163.com>
-Cc: david@kernel.org, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260817120758.669807-3-sh_def@163.com>
- <20260817112150.aa6cc927cf501d687336c0ef@linux-foundation.org>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <20260817112150.aa6cc927cf501d687336c0ef@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MEVPR01CA0027.ausprd01.prod.outlook.com
- (2603:10c6:220:205::15) To CH1PR12MB9670.namprd12.prod.outlook.com
- (2603:10b6:610:2af::6)
+	bh=QIMjIRVSRsjkbvZY3kWcJeSFmt+zOAA4EO+OnD7hodU=;
+	b=zeUPxD9mcowGB37MRi7+DE1DtBRFPROZwOvIGDVDF/aBpmNSiBBGtLKaFqn5/RgOXRgalq
+	dRcN7Vcedeq76c2nSSZ+FMPvF+3y7i2kBZKnR7/7KnraW2U/PzmzIdQXAqS7ByzH8QjDZS
+	eDI2JoN1in3Kgx1PKN9vdzRoG6J2w7U=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WuoiiXul;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.206 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787053253;
+	b=hH03muHbgDO0cWX5zy//5QB8Dv3bSD8WHbv57Mah/flyG3NbSmuylPd5XPOkrvTyF7eEQh
+	HoYSIbuYsOzU+deAb2HMTrN4DqEhAoocLJVUBjyMcdtdxCMK+jIXBYDLXsJgcuXKiXWDBw
+	g2hk8WNViVXFH4YKqjRY5ZVjimxdJtw=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=1WMHENEYr0OqLYuuU4QREt9kYkPM7Zi0Jgv7vPZ7ygU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787053251; v=1; x=1787658051;
+ b=WuoiiXulGs2VD+GlB0mNMAZ5G9u0uuKyukUPpijrw8tBRlEVYBpcZ7tm+H6xiB9vYmPoFKDn
+ EPi63+m0ZvpgLpPfsQz+KcXSRVWkKVDS76oubsAauQsWdvwQal54KcUvubW6xE0WLDyQqFzSA1r
+ hgsF/ibxBFoCw5OHUBpN/0m4=
+X-Envelope-To: linux-mm@kvack.org
+Received: from fedora (117.129.78.49)
+	by smtp.migadu.com with ESMTPS id 5b473eed746572f9;
+	Tue, 18 Aug 2026 11:40:51 +0000
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 18 Aug 2026 19:40:27 +0800
+From: Hao Li <hao.li@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, bpf@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dmitry Vyukov <dvyukov@google.com>, 
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	kasan-dev@googlegroups.com, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH RFC 3/5] mm/slab, kmemleak: handle kmemleak freeing in
+ kfree_nolock()
+Message-ID: <aoRDqeBrzitJcqyY@fedora>
+References: <20260807-kfree_nolock_kmalloc-v1-0-ba993cbf7a60@kernel.org>
+ <20260807-kfree_nolock_kmalloc-v1-3-ba993cbf7a60@kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PR12MB9670:EE_|PH7PR12MB5655:EE_
-X-MS-Office365-Filtering-Correlation-Id: ad6f72bd-4979-4e96-f078-08defd19bdc8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|10067099003|56012099006|11063799006|4143699003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	0h5lgHmOyTMMbnNJ5xTOSAasooRAW92bTqSvOXp0MEkfq8KnaBbi2vZ8Y2Tez3yRbx+6XR6SWWg/qSCaWn926nxRPDp4dmBsAmnJgZZe2JxRSo+PyTSn4SSUioTIrgQIzPrtLiRSa8VhxV8u5ixJE5MFeotXvDQiEroXWvA5HI6448TkNmq3jiSQZIo1pfSF01l2JGjtm7WFNXDDoqNsnwLzXnyYekRSraf40+7audbJAosgS2AjDBdq0rVyHelj8s8efCHMcrM4TFYQM3lKkFYv9xPQ7glaEwzKg4CNmp5jgkXCCmQ+jZUuGjR/hG46222dlupS+Hk1+TlpjyJILKucOZShaQmh73ptjSSvt11LptGnMQ8wfrSJZf2khvUnYs6ztmTfiP39aYkBj1LhHRVzjgqADtxVaCjuj8JdrQ2zPqM2LHJorbp32r4AplwF3uVSQk2raidQX0lZX6pFr0PYoEU4wQSxSGX5HDRJ4nydus3/hFjpXvIwU8bEDxAst5w6nGMZ4EPmq3C3S2LW8iE7jDRgptqn5uRydo6dOYoNHdd7nUPuf4GsGbUqtfTVJWbwEQI0oLzG/e3OBlIosrP2Yl0y9iJEy7XzUbARQk8yiHTz7BVbdMo5sY4JPPUPfCJkkKipYOQvUKS/oFPbBxTYcRDNfdaxPDcIF+LgjWc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH1PR12MB9670.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(10067099003)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MCs2cWNXaG1jRGFLVmRZYTRPN2lZN0RFem9VV0VnMXNaVlBVU200SWQrTFY0?=
- =?utf-8?B?cUp5M1VQRWNrWnVQVmI3RU55eEppUlRMVkNXWldscWxxNXNHKzVrWU0yWEU2?=
- =?utf-8?B?T2EvQnNaVlAvTlZXOG5rK0MvbDFQYytDODN1UXdTVXZ2UE9VQ2ZhMkpYeUpk?=
- =?utf-8?B?cEZ4TlN6WjFDTUs4YjcyN1JHLzBWaktEb3p1eDk1WXVPazdWMURBWUwwVGFu?=
- =?utf-8?B?MW9xTUdQcm54QzN6dTdDZ0NKZ2tKTUNyakRHL2ZUL0FEb0plME9wMElWU2NP?=
- =?utf-8?B?MUJGeVpNUUVSWUtCVkZsKytDVlBHdHdGdDFtUEdkYVR5YThYaXlveGpkTHBI?=
- =?utf-8?B?UEdqak80YUJ1TW1PUXI5ek1yaU1UZzdmUllXNHpOcVJDOVJGZUpuWHVLcmVa?=
- =?utf-8?B?QzRieHF2YVIwVjJwT2s0ZzdVMG5YU2xzc25YazF2MlBydC9Ma1BqUzdQclQ3?=
- =?utf-8?B?Z24vTmt0eExEYmxNTGRkMWVQYTRhR2FmczdTcXh3Q0JpazZBTzBrN2RBd0xG?=
- =?utf-8?B?OGJQMUxLY21SanZtQlMrZEFDMUFVVlZtbnhIbWRrQ0RhR0tNT1QyMGc5Nzh2?=
- =?utf-8?B?M2xwL2JFS0JWVWxtOFVIdytMTzUwMmZac05iaGJXR2Jpb2lEY0R2eCthVzB2?=
- =?utf-8?B?QkExbkxwWm94bzY5QVg3Y2NTTGFuVnliTHJoSVluRmtpbXhhWGk5aGhCaVJo?=
- =?utf-8?B?L1FmTDN5VnNGeXNDNTk2dFVOOElFTS8yTXJNZ1BkNUc3akQrUjlqUXRTTHhS?=
- =?utf-8?B?MUdMd2daRTF6enFOZENTOXErTDBZVWFUdHg5MFBBeks3K2FrMlpMWm9DeUNI?=
- =?utf-8?B?YkpNY2ZuQXVlMWQxUnE0YS9qWEVTalV2ZDlCOERnUXVwUmNGY3ptOTd0QS9B?=
- =?utf-8?B?Tng4VVZHV0xUZVcxM1hUSHhUSkNidExSWmg3b2ZBR21yVHBnSDlFNUVTMTd6?=
- =?utf-8?B?NDlsL1ZtNlFTYTJhVXEvdzc4Yzh6S3RaWUZxazVhN3BjeTVGUzNOMVQxbWRN?=
- =?utf-8?B?L0kzZlhySWlMRlFtQlAxTVFaUXVZRGRIVHdid1BLT2VyOHlFVnovZUlmQW5L?=
- =?utf-8?B?UUV2dEVlbEFVeEorTGRZTDAwbHMySkt6MWxuQVpLL3RzQ1UwMG13b25YMG84?=
- =?utf-8?B?OEVnQ2diMkc5em9nM3RLajdqanRZN1lrSzVYL0lQTXhmMWNsT3BQT1Zwb01p?=
- =?utf-8?B?YWQxbTlIN2NIRUZoNHF4QzZTM1MrM0FxOURWTXVDY0cxQXN5UWwzbldQNHRF?=
- =?utf-8?B?anhxaFRYcnFGdjF1bmx2TE85S09mZzJKOTI5QjBRMEpSeThrWUJMajRWTkpl?=
- =?utf-8?B?endNUTR4c2dEeTNLL3J0QTcwM1dSZ002ei9RL1BkalZ1alpLdnhXdTVCcnpS?=
- =?utf-8?B?OXhTdlYvWEhtK1ozMHpBMDZFMmVSbCs1L1RjcmZZVnNjWVI1cUJSSFVNTkd1?=
- =?utf-8?B?Vk1kbGFHZUhESTIwRWFGNkpSNVFveGtkSTdLclRweXhVVkVtVFo3MkNzaE1m?=
- =?utf-8?B?YUZ4RVp5K09VRzdEMG1hTHNndWxPdlNHcnVBaGZkcE1xMU9VT2p3alVGc1F6?=
- =?utf-8?B?N1NCTk5IN2NBZ0VaVkFoenFQMmFNSERJeVdOSnE0VjhTb3hvc2Zab3lqWFFy?=
- =?utf-8?B?ZE9ua3YrSVFQbHlrMFhlUTM3T2JDSFB2UTl4TW9wOGE2TFFqM2RPSFZWNFFr?=
- =?utf-8?B?REl4bXNSS0JqUzltSDQxTW4rc3hLdTlXNEdqM1ptSThjbFBVOXhnWXdLZFNq?=
- =?utf-8?B?Zy9kenByN1NyZG1BUkJlUXNNaHVuaXQxMklDd21DSlpWVzd1MjU2MjZMMHM2?=
- =?utf-8?B?K1JCS212dDJpZTFrU2NjQndVQUk5YW1hZFpTUVF4eFhpcnc4ZkIzWVFhMHR0?=
- =?utf-8?B?amFUU2NHNmRlTGRCQnQyZHl2VDhkek5VbVN1ZjU2L1RmR1pQa1hQWi96dDNS?=
- =?utf-8?B?RXBlb2ZSZmtJMDBQMWtsOVZ6V2EzN3ZjY0Rad2xFcUxZbXdBelNyNFZFN3hB?=
- =?utf-8?B?YmNOZko5a3h0TU50bDNDb2hOeTNTU0FQcmJVK25pZnB2emEvSjFnKzZhdFpC?=
- =?utf-8?B?SnpIdVR3bjcyU3cybDZJcVVrdmhadFJxeE5jZ3E3UzQ4ck9YWGNOcHNMYy9s?=
- =?utf-8?B?YWtjand4RFFUSWUyVzFUTnlNSVFwNVMzanVEMENrTU56QkFoTEI0M2hUVGdx?=
- =?utf-8?B?YXZibVY1Tm9mcGlBaVlCUU4ydWdxTktRdmJjYU9jV0UwTFd3c0xrQlpPMU5w?=
- =?utf-8?B?KzZkUDdCZ2VncHIvcll0VjF1NWFXRllqMzRrQ3JGZ1dZOGdUWC83Vk5BU0M2?=
- =?utf-8?B?dG9pYUx0dXJtRXBiVVNrWjZSMlIwOUd3d0drR3BNZDhxNnlaeXViUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ad6f72bd-4979-4e96-f078-08defd19bdc8
-X-MS-Exchange-CrossTenant-AuthSource: CH1PR12MB9670.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2026 11:13:33.5493
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AhtUYqtzitdNf3RotO4kXB71xwqFiquvKLjbqG3Z+7uB8UUCeL9eSiTCqnT+iqIL63SkaU4ZnMWq4lLlwWGyMg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5655
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260807-kfree_nolock_kmalloc-v1-3-ba993cbf7a60@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 98C8B20002
-X-Stat-Signature: en5swzwspnzg8igbe87ty3ce13ngtqyc
-X-HE-Tag: 1787051618-727080
-X-HE-Meta: U2FsdGVkX1/mGZ5Uj1OwTW14hbFyUdbUnRNSX3Kq8XKCYc2UwNQvXfoti+NqQ3Cs1OMdPQj8m8WQO6lQuswWoRfc6CJFtXA9s4DGnA0E0YFsTWzq/wH8JDxj6p/W98DDND/tdWV9VWEvLxCJao+OGzgXF3C0zfv8WUEEJwN5TajC5o86IoJAE++clJ2MAYL6Xbvz0VtgTwp11115QFk0ZF0U0Csyb8JpxzpnZadXyovDD4aEiR/7lcpaeV9BxePbHGMb9e1/j5uQuw2luBzE+cbodp7qaBR5Udtm/Jn1Imcc912X67PPylQCFNbtb/Bn8HFT26ORLQJ/T1Wl9O/rhL4oc86/Qp9jSFUznvZM+A0DyFrWOmJlMf7bx0Pff/xdzsAxHbWWdopxIltr6QpNz2sW1bbVQIa9d73v0yMizD6qsqUWhyf62T8/FE6QLBtYHwDNnbLqcQ82jtXmn1306jVPoILBkTqqHCA5qFQk8vxZCyKLxN6BD9kvV0FYOYebiIRU8z69g+i7jAYIWqtxssQbgPYZ8f/VZaexLy/kh6CI6cj5ANeRuvxF9tn008sHURFTz0OPb//9Ek2TTLkwogs+62JejWD4WD5DetJ6nbxYgOtJFBnfGdN8pKFlJb27aVNsLSggIbxEdOHCPQCyDgZI3mP69iLUAJEQJbszq+dZ9qFRGr6NYHDlj2WEHwKYzkkgE7H6FKt04uIHeKAjf4j6UdXNN+ClPPFeDIGdIHen4UQjCeKK9lFPAZ30L3CbBh1oYE7rk5rsoYL6pDGoEaWPQ7iIYG2va/eUc5xiQC0/ThZvOJknPZR6BLMKcud9eSGVD+q5IZXvVHy/LGWVCFO991zIKANTBH7mh2A5CeJnMpomQNVPkzmJL3foQVcLeqkpgR60w3OrnhWzrLTXSeNPOUKx3munTf49QeVnk/ELtve0q/wtqR0d6Bxbug6sZ93ABw1eBr/mFq5KWyF
- 22ShIHX/
- YOV7frqObnapyx6IhLoQKWHsy1nSWXDGL3uxoj5fMBJ4c9Rg6jCTyFEd9M3e8crUTnT3MP8pUZlTjkg/xtwRYYqwZJiTSYsdB66rXJKD8zwauGpSKpxAe4TWSg4mqQ/6ahzaT4EdRasvVnyfkEhhqaG3d4bIGUHa09MwluqZgpTiWilxxThOMOW9UMnnRd+CJMueLNHbuguCDH3VY5sVBxKo3iZPVsWSbqcdJzoqOeQ4gypOC3ofIvJcTPclfFog+U/HLi9rGzbkOOfmzSR17paG5dxFWBg6sIT3eRDreP47X9mRc5yy/DLz47g4O3jKMBEJGJ72W5QreAzHH3VbPYVdzJKxo6amOKtlxRYUEd2ZByzG18SgK5dEfdG14Nb0nzu5R1UcSXlHwId2R3q9lBxZD+7795aeujHtxvhFrMQj0dS13juK7pD8NITaY+QwdKG/wed2LZ097XnRPdhAmqdvXmUbRSedkFMsGnLmqw5VjB1fnadAgOzKlap7oRR73jhmudQ53y7/bnnbtTswOoV+YY7CANHw4w4zmVSRZoVJI5o2RLgtmTTCTPb27TofldxvIqWeowbUkUko+VRHCZ6z4X6Fno2ugWamoGwrxmOlCMVk=
+X-Stat-Signature: g5f689phsnxktrrm5tiwdr8jrhio7wky
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 194EF180006
+X-HE-Tag: 1787053252-347580
+X-HE-Meta: U2FsdGVkX1/XVjJ5Q4Gc9P0EzWLAkLJ7ToeVTNYYG4SNZWpSDiXSqYZosWjn7Cf77DJE17PABQbi8zI1Fww3ceK4Kw0wlskEaKWZoDUqw91IAs3I89pQrzc2uSXS3x/cinfHBsg0KBZHv5nKF6a7ik3vCCnZmNg0nOFdVIzNioeVhAHxXv1Y2Bv2qGdosodIxL1HkWgX2kCREwQr7lWWbsBzCFCY5fQCUO6SzomCEo7aNZIVY+l3LmWOf6EwZuH9bvWTNLvDCqNvwKGp19/t82/TiI5DHGBvy3eWe9kyWsdKRnt7gy0sJs6SAcuyoQuey/UPJAMqtk8DNHl8AbKWlT3feEFX005jVk/rHGOEHC3RRqKGygbWJoAe4+Y5TXW5FQEDeoygM3mvslQZZh7lGSQJ2dTkucIZiUuGFcJDIX/vIwGpDCOYdvMsNU6yNh/UukY8URehKlbcDDlkzgLIGaJN0dlKrAOgYRT95qiixr46F7Cnm3mLizw0pQOiBY3IjvYURjEUB4+Kj2WRWtizh66U8H+ZYFUBTVn8aCcERJLI4Yecq90dmPZsYZ0uTFelElxwAqw6ufElyH2Sj28TojKlClZ7Ap/h+Ig5uosbRz6/6GPGxomKTfLRSigicDt4qK9XCrcDoF8yWsiOABa6nl9N9IJRlmJceY/jv7srhzc7oLtS8dtT9l3IKg6ILcLHfEa73MfnOIDGzOdJKM2xAzq9u+NbYcSKAI4F4JLxABzISfTDesn/EqSQbX7+Nv8bRvCn2XBefBw6EuPnZtHhOE3RzrqThh/Da55B/TL9+xyScNOH24ieKC0q/xkXSUwptsf0B9lAL8cYKFn5ior27gk2oi9/GCpunHhvR9VQ6xKs7CQD5+ms6+bvxj90qrNEI3MQ2ZaJMjjtwWICKh7xekh7dAXwJ+c/0v1qqcLkvSjaHx97kaha2iMt9TifolCDe1v+ZHwmiHhiIBcn5aZ
+ rkXu7WMD
+ 0m5mLerclMobFIIrVIG1Zmj0YxlOG8VvRc3mALRRKY74ed2UMj3ozauojtgoUDGdGHTWt1IPt5vKVC6Esw2o6o7QHBcSGn1rpotHdeGIo/Yg2LJF7o7A0LrdGftwRjKqnfog160WYjnVTuOrUmeY9qGgpgqI8jSnKVUCaZZkzrln2fCg6zCxRacQviQvWKlxFQEv1U4dqSO5QN8FyK/TGlAoIAGXFSsu4+4VGQWGd0OoObGKeNhilbmkveYhjAetRNrrq+/5hm2tPrWFzUh+JWb5OzMqAPSy3ck/KMe21IPbvxWUm7m7T3rMycI3FpwDMURDxEPwffWm4ylD2gNobkvWEzw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,51 +103,178 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/18/26 4:21 AM, Andrew Morton wrote:
-> On Mon, 17 Aug 2026 20:08:00 +0800 Hui Su <sh_def@163.com> wrote:
+On Fri, Aug 07, 2026 at 03:50:29PM +0200, Vlastimil Babka (SUSE) wrote:
+> Kmemleak handling is one of the reasons why kfree_nolock() cannot
+> currently handle kmalloc() objects, because calling kmemleak_free()
+> would involve spinning on its internal raw spinlocks.
 > 
->> migrate_device_range() and migrate_device_pfns() clear the entries
->> following a compound folio so that the PFN arrays retain their
->> page-granular representation.
->>
->> If a compound folio extends beyond the end of the caller-provided range,
->> the loops clear all following folio entries without limiting them to the
->> number of slots remaining in the npages-sized array, causing an
->> out-of-bounds write.
->>
->> Do not proceed with a compound folio if its page-granular representation
->> does not fit entirely in the remaining PFN array. If this happens, drop
->> any reference and lock acquired for the folio, clear the remaining
->> entries, and stop collecting.
->>
->> Observed with a KASAN x86 QEMU kernel using the HMM
->> migrate_anon_huge_zero selftest. Closing /dev/hmm_dmirror0 after
->> migrating an anonymous huge page to device memory exercises:
->>
->>   dmirror_fops_release()
->>     -> dmirror_device_evict_chunk()
->>       -> migrate_device_range()
+> Kmemleak is a debugging mechanism so we could simply defer all
+> kfree_nolock() to irq_work if it's enabled, and eat the extra cost. But
+> that would be unnecessary pessimistic. We expect kfree_nolock() will be
+> still mostly called on objects from kmalloc_nolock() that are not
+> registered in kmemleak so they still don't need any deferred freeing.
 > 
-> It isn't clear (to me, at least) what "exercises:" means.  Was there a
-> WARN?  Did the kernel crash?  Did it erase all my cat videos?
+> Thus introduce kmemleak_may_need_free() that can check if the object is
+> registered. This is done using __lookup_object() performed under a
+> raw_spin_trylock_irqsave(), which is safe to attempt from kfree_nolock()
+> (except from a NMI on a !CONFIG_SMP system). When that trylock fails or
+> can't be attempted, we however must assume the object might be
+> registered, and defer the freeing.
 > 
-> IOW, in detail, what are the userspace-visible effects of the bug? 
-> Please add this info to the changelog and maintain it.
+> The ordering of kmsan/kasan handling and kmemleak is also different from
+> what kfree() is doing, but as explained in the comment, it should be OK.
 > 
-> Sashiko might have found some things.  Some pre-existing, some newly added:
-> 	https://sashiko.dev/#/patchset/20260817120758.669807-3-sh_def@163.com
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
+>  include/linux/kmemleak.h | 17 +++++++++++++++++
+>  mm/kmemleak.c            | 42 ++++++++++++++++++++++++++++++++++++++++++
+>  mm/slub.c                | 34 ++++++++++++++++++++++++++--------
+>  3 files changed, 85 insertions(+), 8 deletions(-)
 > 
-> 
+> diff --git a/include/linux/kmemleak.h b/include/linux/kmemleak.h
+> index fbd424b2abb1..52f75f10a9ce 100644
+> --- a/include/linux/kmemleak.h
+> +++ b/include/linux/kmemleak.h
+> @@ -22,6 +22,7 @@ extern void kmemleak_alloc_percpu(const void __percpu *ptr, size_t size,
+>  extern void kmemleak_vmalloc(const struct vm_struct *area, size_t size,
+>  			     gfp_t gfp) __ref;
+>  extern void kmemleak_free(const void *ptr) __ref;
+> +bool kmemleak_may_need_free(const void *ptr) __ref;
+>  extern void kmemleak_free_part(const void *ptr, size_t size) __ref;
+>  extern void kmemleak_free_percpu(const void __percpu *ptr) __ref;
+>  extern void kmemleak_update_trace(const void *ptr) __ref;
+> @@ -50,6 +51,14 @@ static inline void kmemleak_free_recursive(const void *ptr, slab_flags_t flags)
+>  		kmemleak_free(ptr);
+>  }
+>  
+> +static inline bool kmemleak_may_need_free_recursive(const void *ptr, slab_flags_t flags)
+> +{
+> +	if (!(flags & SLAB_NOLEAKTRACE))
+> +		return kmemleak_may_need_free(ptr);
+> +
+> +	return false;
+> +}
+> +
+>  static inline void kmemleak_erase(void **ptr)
+>  {
+>  	*ptr = NULL;
+> @@ -86,6 +95,14 @@ static inline void kmemleak_free_part(const void *ptr, size_t size)
+>  static inline void kmemleak_free_recursive(const void *ptr, slab_flags_t flags)
+>  {
+>  }
+> +static inline bool kmemleak_may_need_free(const void *ptr)
+> +{
+> +	return false;
+> +}
+> +static inline bool kmemleak_may_need_free_recursive(const void *ptr, slab_flags_t flags)
+> +{
+> +	return false;
+> +}
+>  static inline void kmemleak_free_percpu(const void __percpu *ptr)
+>  {
+>  }
+> diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+> index 7c7ba17ce7af..e3560ce82632 100644
+> --- a/mm/kmemleak.c
+> +++ b/mm/kmemleak.c
+> @@ -1168,6 +1168,48 @@ void __ref kmemleak_free(const void *ptr)
+>  }
+>  EXPORT_SYMBOL_GPL(kmemleak_free);
+>  
+> +/**
+> + * kmemleak_may_need_free - check if object is registered
+> + * @ptr:	pointer to beginning of the object
+> + *
+> + * This function is called from the kernel allocator when an object should be
+> + * freed but the caller context might be unsafe to spin on the internal locks.
+> + *
+> + * It will therefore only use trylock and thus might return a false positive
+> + * if the trylock fails and the status cannot be determined.
+> + *
+> + * For objects that (might) need free, the allocator has to defer the actual
+> + * freeing to a safe context.
+> + *
+> + * The assumption is that most objects freed from the unsafe context are also
+> + * allocated in such context and thus are not registered in kmemleak, so it's
+> + * unlikely the defered freeing will be necessary just because kmemleak is
+> + * enabled.
+> + */
+> +bool __ref kmemleak_may_need_free(const void *ptr)
+> +{
+> +	unsigned long flags;
+> +	struct kmemleak_object *object;
+> +
+> +	pr_debug("%s(0x%px)\n", __func__, ptr);
+> +
+> +	if (!kmemleak_free_enabled || !ptr || IS_ERR(ptr))
+> +		return false;
+> +
+> +	/* On UP, raw_spin_trylock() always succeeds even when it is locked */
+> +	if (!IS_ENABLED(CONFIG_SMP) && in_nmi())
+> +		return true;
+> +
+> +	if (!raw_spin_trylock_irqsave(&kmemleak_lock, flags))
+> +		return true;
+> +
+> +	object = __lookup_object((unsigned long)ptr, 0, 0);
+> +
+> +	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
+> +
+> +	return !!object;
+> +}
+> +
+>  /**
+>   * kmemleak_free_part - partially unregister a previously registered object
+>   * @ptr:	pointer to the beginning or inside the object. This also
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 2d7648b96bfa..423b5bdb910b 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -6390,6 +6390,8 @@ static void deferred_percpu_work_fn(struct irq_work *work)
+>  		/* Point 'x' back to the beginning of allocated object */
+>  		x -= s->offset;
+>  
+> +		kmemleak_free_recursive(x, s->flags);
+> +
+>  		/*
+>  		 * We used freepointer in 'x' to link 'x' into df->objects.
+>  		 * Clear it to NULL to avoid false positive detection
+> @@ -6403,8 +6405,15 @@ static void deferred_percpu_work_fn(struct irq_work *work)
+>  
+>  	llnode = llist_del_all(&dpw->objects_kfence);
+>  	llist_for_each_safe(pos, t, llnode) {
+> +		struct kmem_cache *s;
+> +		struct slab *slab;
+>  		void *obj = kfence_llnode_to_obj(pos);
+>  
+> +		slab = virt_to_slab(obj);
+> +		s = slab->slab_cache;
+> +
+> +		kmemleak_free_recursive(obj, s->flags);
+> +
+>  		__kfence_free(obj);
+>  	}
+>  
+> @@ -6781,15 +6790,10 @@ EXPORT_SYMBOL(kfree);
+>  
+>  /*
+>   * Can be called while holding raw_spinlock_t or from IRQ and NMI,
+> - * but ONLY for objects allocated by kmalloc_nolock().
+> - *
+> - * In case kmemleak is enabled,
+> + * but may defer freeing to irq_work() in some cases.
+>   *
+> - * obj = kmalloc(); kfree_nolock(obj);
+> - *
+> - * will miss kmemleak book keeping and will cause false positives.
+> - *
+> - * large_kmalloc is not supported either.
+> + * Intended mainly for objects allocated from kmalloc_nolock(), but can handle
+> + * also kmem_cache_alloc() and kmalloc() objects, except large_kmalloc.
 
-userspace-visible effects are a function of the usage of the API by the device
-driver. If the device driver passes in npages that don't account for PMD pages,
-it would be an issue. In the case above, closing the device will evict pages
-from the device back to the CPU, but I am surprised that the size of npages was
-not properly split, we should fix that as well.
+Do we need to add slab_want_init_on_free support for kfree_nolock as well?
 
-FYI: I've tried reading through Sashiko's report, but there is too much
-pre-existing content that it points to and it can be quite time consuming. I am
-working on adding new test cases to try and catch some of the issues found
-
-Balbir
+-- 
+Thanks,
+Hao
 
