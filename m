@@ -4,135 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E94A9C5DF7D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 16:28:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 536BDC5DF81
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 16:29:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 993AA6B029D; Tue, 18 Aug 2026 12:28:29 -0400 (EDT)
+	id 3A3446B018E; Tue, 18 Aug 2026 12:29:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96BFE6B0577; Tue, 18 Aug 2026 12:28:29 -0400 (EDT)
+	id 37AD46B0191; Tue, 18 Aug 2026 12:29:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85BB06B075E; Tue, 18 Aug 2026 12:28:29 -0400 (EDT)
+	id 26CFD6B0577; Tue, 18 Aug 2026 12:29:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EB556B029D
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:28:29 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CDDDCA0215
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:28:28 +0000 (UTC)
-X-FDA: 85114923096.19.C097BDE
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E65ADC000A
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:28:26 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="JR1Fw6E/";
-	spf=pass (imf22.hostedemail.com: domain of calebkan1106@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=calebkan1106@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787070506;
-	b=D1i5LmI4M9iLE3F8gP7blXSamFVuJQHS7rPO+CQuyqEJWqPFiqPxz+xfq19Xed5xsCGFwR
-	ta2XVrRDPxZVIENjLqOc5mYEWTyP4Tb3Y1wRGrQoaucP/SYBR1eYDc79YKRCbq5JbIcOnw
-	Gd/wmgJzQpJDU8VjJwDzhzmWJ0hUkHY=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="JR1Fw6E/";
-	spf=pass (imf22.hostedemail.com: domain of calebkan1106@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=calebkan1106@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787070506;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0061D6B018E
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:29:53 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0F1711A0197
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:29:52 +0000 (UTC)
+X-FDA: 85114926666.01.07A8D7C
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 382F84000C
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:29:51 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=JRZ2RD1L;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf12.hostedemail.com: domain of 3fYiEagkKCPovctwpucjwiqqing.eqonkpwz-oomxcem.qti@flex--tarunsahu.bounces.google.com designates 209.85.208.69 as permitted sender) smtp.mailfrom=3fYiEagkKCPovctwpucjwiqqing.eqonkpwz-oomxcem.qti@flex--tarunsahu.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787070591;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dbZZ5Qry6yuxXO6bvmRGRdac1xpDRPzYGMineWgO9R0=;
-	b=ZXzoEaIyA+/5b+ynFoY7yFmk0WISnPDm04Glhmwd11jgX1KNX43gBGiDDyid0Am3qIGNzC
-	xfOymCMM5URyfgzPUABEXjRqJhCUJVXOvuvuogc0IBmx6kcHtuDPUECFQVf8Iex7SkTpSt
-	9v0IbcZlujM7kABSFS0K5nanf/NPFC4=
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-39fa5e3a428so10542831fa.1
-        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:28:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787070505; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CvIaF/D2N3M/DRVSoYcPT2gz0q7Gn91zJaazKAVie8RkldEq4N2Ud9J1L+xMVINzte
-         EPfFWB5dsa+0Shj6/iPFLtmQl2noX4FDSfj6P3TJFuEVNWkZW8k0DMvbiW3r2YICI30G
-         QQRdEgF/C7PK1rWNXboTSWK1M+SiBd7eV0O0OIOCRvR7KOh2RovVFCrJv3YHHjT6JbIs
-         3TbmtKQtpE+cIjB9llgNmQlb2CpaNdelttmHXqZ10UIUmAWLTeQfaQLkQBFQIjlCxWNL
-         mGsmCb6FSBJqJhSog2d5htH63x/rxy/iH4Ye6wNBgDq9+dDj7VWuUFiwfYxm+ks9SSTZ
-         hDKA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=dbZZ5Qry6yuxXO6bvmRGRdac1xpDRPzYGMineWgO9R0=;
-        fh=HxPuHCG8efBaIO/t0CExSdyupDUWsQY9LDGyj52+RHc=;
-        b=F7xUC6F9ZgzlDRh1c0v/PHo2fcCW+f/PZhDeJoQo1DW5nto04riQ9jUM0K0T+884zE
-         gF+8S7JpLx2YocPuN7tsG8Iv/NExvvN/EML8Zb8UWfQCcOFE5V4zc54+JtugvvF1Ka4I
-         WV5kkgHVIQB2h5yZ5YuKfKNzqBxdZGyYXDD6iFhkWK6vUCISFsTYgZsjooT6cGe3JhDC
-         DKLlL/GE2Fn7tod3Kahrv7tC3kcB/C9Ylnll7hGZDJe1FXNH6wc+EyZm5c/3mpXQedGv
-         WFnuoXiUdQaMpURoC8DrDNQDmyBLLWDmr5ODSpDjVvnw1lU3AQhB8/SILKQ1ru9YDrA+
-         m+gw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=/eyzaZNjJLEyd0fKbeRAuoUQBuqF6sdPIInoyVaJmj0=;
+	b=6vqYqzDKQd4KyUZkZ/U4wyKTojadIzrpOzAa+g+Esibh2ZVW941GFazljxh1pHgdDVlstq
+	VUCSDyrVZyEnmCVcUrBSRYLlBo6J34b/ywBeM+HejmAsisps4PzIqTBrQ93tl8B56PdXbv
+	VP6mFRLsInCsUkhpLkHrGQfA6IZZxys=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=JRZ2RD1L;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf12.hostedemail.com: domain of 3fYiEagkKCPovctwpucjwiqqing.eqonkpwz-oomxcem.qti@flex--tarunsahu.bounces.google.com designates 209.85.208.69 as permitted sender) smtp.mailfrom=3fYiEagkKCPovctwpucjwiqqing.eqonkpwz-oomxcem.qti@flex--tarunsahu.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787070591;
+	b=2B+NJOLh7sWwYffArtHu0B+nzaqqAEdCxBtVyBmySBZvVqIgWMuNT61nG63qqgMEghF6Kj
+	O/D4MoYxxqPs4AbIliRTglKrXG8G5aRl+9PY1DM8U3Jc5vM0RR6g3IgmLuts021TIbBlaM
+	4rqdLrepiViKqttCBFDjEmU5tKXxgtc=
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-6a368c27a94so18802a12.3
+        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:29:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787070505; x=1787675305; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1787070590; x=1787675390; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=dbZZ5Qry6yuxXO6bvmRGRdac1xpDRPzYGMineWgO9R0=;
-        b=JR1Fw6E/FkGzSD8TEjvxnBvlViDdeXyhaGH3eAN9s2c6U4aTe7g2k4iPpUFh0WjiyA
-         +I5g6uBtFTbfOt7LtLaO8YaXQqr4gTNGdbNhGiCCQfsIzMabMTf+Ucs5ZWkxs4lNPW48
-         s1M3MOwrd5JdzQD/mhaj4NY1sWB0JFcFB2gCeGSCuxoKK4L289ew0JdDY430AnoTMAvO
-         +NotobO2p83XL/Z1+o/2DfdlVAP3TJzI6wHJckU6OePHX6+4h3DYAgvW74DyuA8IsS3X
-         BUTtpz7O+ZsYvVxCQRDi7KORMsCDlURyg1tlKHIWX6eBqFJnLDHBzwakw6BKpDebs8Z0
-         DaLw==
+        bh=/eyzaZNjJLEyd0fKbeRAuoUQBuqF6sdPIInoyVaJmj0=;
+        b=JRZ2RD1LKX38BKxV5PaOG4f5dTGsX0w8Lme4QevUDQYaieyM2jtVtvhNLoBi5739sx
+         2pMPEUwVC5HNpdy8rMak/GTk0NlBoXizE3kWWbMFPuCo0Maa+egmfyhIDTvIpplXkS7l
+         g6VVaOmQxNkPM9F/rLp8yuoju2cDxF68fQUDGyi2POFTNV/+gUWaVR/M1wT63pZeRdkZ
+         Jik8Y8zvmwZ/EFrAtMlb8Kh6K7NMPjtQpdS0u5S/K+6At6RWQeeJGQMI9hpwV8bKeFKo
+         /XRtS0WOTE5ftoZLBTxzNaBgMS5kEKj0iavpmtO+OW6aqPhH1G6hJXEr37ur5Gqgq2X1
+         Nm/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787070505; x=1787675305;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=dbZZ5Qry6yuxXO6bvmRGRdac1xpDRPzYGMineWgO9R0=;
-        b=EVtev5q1JqII8uhgqx3r198iyyo1kAP2H83px53fFpGbtzQN3oX9IQh41aMb/1E4pl
-         HrzSZS7rMuMPacf8mr4Lpiami4TRYAVfJWD4qfPiLN8/tEkPDGvt2jkVGLVGWBgBnUM0
-         yPa662rGry6rGm4/olvrAOGH4JfU4bRLhMr7EJqbIiBHaX1c1JsISa/695AOtJRFvx+4
-         YSk5BCXf8r5H/ZuBw+GTP4PpgQZG+Yyi78ILfZ4ntNwfh7iEg879AkY6nV1PMaENRPUr
-         OTtCFfqCaatqYnsr/CulOQjc6+jCG1u2+LIdKGxH6h6POV1lviT/JtA5mM6lhEKMsAGM
-         Toww==
-X-Forwarded-Encrypted: i=1; AHgh+RqLp1e4QBcZhw+lOndqfLR3w0C+QUQ46SnKUOux5mtjLH+UqvAAMhn3HjSh+a39eZJbHY/nG5sTJg==@kvack.org
-X-Gm-Message-State: AOJu0YwPSy0oJ7C1knppkeC6fDQbelfSCQzXQLu3KdOO8q53TauW4Tum
-	/R+AwAH09CLJspsmsM/HPjOtQvrK5rCPU56Du2DWKDq6iqITSNJOZS6UHm1IkhTLJaZQtQT2nHB
-	AArLAWLgJrJKdWub8Zk5uPvzzAAV3RPw=
-X-Gm-Gg: AR+sD10XMpt5e0GAEckNz8Q6af440uhps4XRw1fAT03CNZ2J2haAE8ZaPYs9qy7c3ds
-	vIhmr0ccZIuI6ub3SUf3gnJUDUUMY41cG8FL6hEvDVWUqPMogmmNUmuZIjy/tY6cLXxGafROZwj
-	8jJHg6Ebm6f8ZSjoB9SQbohBaUePCwZoS1A8MTu31Nf4bJRmu6EvhK9OGHJRbFbcMtHTjRSsqfA
-	A8TmGMQA1tsRB6VSEYKLcK14a7RwthCxojKaAkdFSee1lG0pVVqLSXH3lQ3xjuU5m8+ejbrcX2V
-	v1wtxkFDowDs/uTEDILeQ0X9yd1L5b8rORhgX7PTmGvwOFmXU9hssZ7ob4BTPQ==
-X-Received: by 2002:a05:651c:a394:20b0:3a1:7927:c302 with SMTP id
- 38308e7fff4ca-3a17927c534mr9424561fa.2.1787070504773; Tue, 18 Aug 2026
- 09:28:24 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260817-stackdepot-trie-v1-0-53870ca1651b@cloudflare.com> <CANpmjNP4T=bov8gHN8cd7WwvE3daRGuwK+CmC4aEueCi20xRyg@mail.gmail.com>
-In-Reply-To: <CANpmjNP4T=bov8gHN8cd7WwvE3daRGuwK+CmC4aEueCi20xRyg@mail.gmail.com>
-From: Caleb Kan <calebkan1106@gmail.com>
-Date: Tue, 18 Aug 2026 17:28:11 +0100
-X-Gm-Features: AcwNN1Vz3DBmYRHZD_Q2DVfMCsbDVHhO9AT7M1dfD6y7lugpOHTU_T9MTzNQN38
-Message-ID: <CAB4F_Jn97AXhhen9ZVkzQmctToLn-=e9_CPC-_8-HZAZz=WoVg@mail.gmail.com>
-Subject: Re: [PATCH RFC 0/9] Path-compressed trie storage for persistent stack
- depot records
-To: Marco Elver <elver@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
-	Vlastimil Babka <vbabka@kernel.org>, Alexander Potapenko <glider@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Oscar Salvador <osalvador@suse.de>, Caleb Kan <ckan@cloudflare.com>, kernel-team@cloudflare.com
+        d=1e100.net; s=20251104; t=1787070590; x=1787675390;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/eyzaZNjJLEyd0fKbeRAuoUQBuqF6sdPIInoyVaJmj0=;
+        b=XLZI+cA6LQfdapKsQNcG58tWDouK8Of9ZSHfpmtBpc5+3RbUfR7ibdlrnLFa++mAEN
+         kgvGmmqW0vQvRFwVGW9KbbDGBBE0MpHQhnUKVDDNkL9tVOPDRtj/CxfZ7xHzi0sSExO0
+         607Ra7V96qIjdmNX63TyWVzBHOvKGOt3WQywf12/fmRVdhkEXHh24fljJPWa+8cvQVZN
+         nMbo5Ja0UCRxVo9CMG+MFAN3rYmLGBu95+POKMlpG8GzkmD9eXNDq6swlGCsFCAj31J2
+         a5LgIQSwSFrkicXEhlvaxrkdYNfvk7tkOZPm43ELx5kSq7ZFKlXbKUcVJxpbSex4T4fQ
+         YQkQ==
+X-Forwarded-Encrypted: i=1; AHgh+RopXkR7OuMQZJzY4x5QTnGPrK1170bN6z/ZJjUNnBAdU199cCtV3JBAI8i96Csa/jGEIyWoViqCvw==@kvack.org
+X-Gm-Message-State: AOJu0Yw7zrv6Wt01bNz/1Ax3WWSg67r+1BVmjqVtLWxNwsxDy7Ey38YL
+	C9C8TvHFhgxqS3nfnP7l4NNfabgAbd/B7TooI5/WMWhnoFlJ+jm/UPTPRtjrX5Oy6Sy8vrxTn4H
+	bzRqVIy+Dz67vXmXN3A==
+X-Received: from edts26.prod.google.com ([2002:aa7:cb1a:0:b0:6a1:f410:2ec5])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:e85:b0:6a3:edb6:2228 with SMTP id 4fb4d7f45d1cf-6a3edb6285cmr3681617a12.17.1787070589499;
+ Tue, 18 Aug 2026 09:29:49 -0700 (PDT)
+Date: Tue, 18 Aug 2026 16:29:48 +0000
+In-Reply-To: <anpdYD1UaO0ffQgi@google.com>
+Mime-Version: 1.0
+References: <20260728121138.1103610-1-tarunsahu@google.com>
+ <20260728121138.1103610-5-tarunsahu@google.com> <anpdYD1UaO0ffQgi@google.com>
+Message-ID: <9huzik57v1c3.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v4 04/11] KVM: Track weak reference to vm_file in struct kvm
+From: tarunsahu@google.com
+To: Sean Christopherson <seanjc@google.com>
+Cc: ackerleytng@google.com, fuad.tabba@linux.dev, 
+	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
+	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
+	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
+	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
+	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
+	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
+	suzuki.poulose@arm.com
 Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: g9dex85a8gyj3w9asfi9iq5ppkwe5ut8
+X-Rspamd-Queue-Id: 382F84000C
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E65ADC000A
-X-Stat-Signature: 4gssc1q4wecbc85xoepif76xpdbariqb
-X-HE-Tag: 1787070506-946963
-X-HE-Meta: U2FsdGVkX18GKjJIJ/59uo5XcNWbj7ZhoRCKzDCTdaqvUDXmEw/aXSBEolkxOaMHBNzArdjyszOmrWcxbL2IHw9F3TNMrhxR6dcHbv+3hOnY6JHtWNBJ9HqyomifATM5TtTWVvRt4a+Axccppui6gbCH3piQEsAeVkZxPNqbqsGvUO+UfL2sVqrJx+wkrkoUyd/DBbw0pPXdvpDtw/uKG/jyfpW7KnTLYbwdhVoskEPGvtmPDHiqUg9k+qjtSKmD+mh36ys6QOacDYGNVlf2zsoXuQKn8eSDqFuIbxFIfMrjeQQ5K0zUrKgY1h1a8DFXsVQ6YCd7ROlBa6PhdYevAA5jADurPRrvprayheyFL2wmuxQgG/BaRJ+0BlQLkgSZ+qsPDluMEp7tDQkD0cvIJwHmfizwQbn9BplRVhIiHvqwF88NEhI75uDrooXI+lCcN25q5+jZazJSclJit89FG7E5+pBbETZUSzdQd7Y8/gVIceTLNebqM0p3IKbMCk4pJwubnUF9IcjLVfEVc/iGVHCGPe2BmaGMNGgMOYkf1kaUWKqGJqfLV8k2Ipnk3w7ULrpdl+FijWtQfB16TBiECSJZe1dou26gg0GQA8NTGFyBBmNL5fs4C26D0zQK11FM1753DcC/vXGa62NNnMY82ORhoHaV8EbV7WnbiX6+U8p8stTv/UuXE9n0/ur9kh2TFX6NZaqwOs5CyU33kdiaBtAZauIJUtlYwbJyIEC9GA5p2gnSK4mT72Q8vtVsEtTDflF5ttbrWHjZj4Nz8RiTvnkbjp5rXhfQ7B2zM2W/LcYEVOrgB6shZeu5syhygdmeE9cl4NYzXsdQkVTLkYMlSGl37G4225fseUfY1aB1Yj0vL3tdj+15SuvoY9222W8APNcBLZTFfJLL1nPXXfPpVUIH2Np0EcSuS7x5i0JN1YKwdEEZwKCEMDI4dGxh2Yh1l79bntTKqjeZXakjWy0
- d5103JaW
- TotX2AnI0P4JzxfoFn5fh9vhQwPl4ipgEY9jd+slFNFQuLYFE9Y58pbTSCzINTFw0vMyqOaMS/Cy88xspCpnac1HfKd1efvVkN+7oqou9QQn/xUUw8VoXvijGAXKb+nbg8zyzlJVWt20RyRMeHmyB0u1xNVLe0Ud5IRyzieiH6M02lDYsexJamQv9uFKMmO4EHIcO8PdPh/X2XLwjNVMz1G7F5wY6Wnlk/3M5vpVFc90mxia+Ml6m6WHpasoYXJosgKhhNwLnXbbwnsDXGzgEkotdt4+67RW5KQIVvhO2PbQLr36ffHCIDeH7ozcA/DDm5f6fmEk43LudylEpX1ZIdDYwi017Y17V1/MuQKjEbkQmN5AdhNvSDy7Hu5L+ADjmpzQCw89QqYSIpAG0D9oKOvYg6iey7IcpKmwpdwCaYeu9xSc=
+X-HE-Tag: 1787070591-156793
+X-HE-Meta: U2FsdGVkX1+lJ227cqf3Iht5L2gEP6HW6h5QvBGZdOhOvuP9fm8RVkl8k8L0Vl8aIPi138lCRHMA9ZkvMwhOsFPZIHdBHNOf006N7y+VIG9FEe7t9215ohW8AeBl4u82XZisgTrHuWJYN20hnT3MY7Ce1qnfnRkEP3nDc3ud3eLO2H1/7NGP4sJyGrt9Sys7mrBpwjM4eTxyZNXivX7KWZtplPO7xOjj2uYzD0yr4YB6wVNHG+9tgHMDvPkl2Rp7+MUMsQBtfw+KoxU9fLalmHaUJijcqbOVwElHxsXcwDtPDlzYgaYALMsoifQezhz9gK0QQF03ExfER/69GiqWXU7621vRig9uCkTNfPBb/dSDvoRhKwEbuqrXNp8kXRhAX5ykQ7T8Wx4+12XNH0WPfCCVVf+9HEY1fNc4ClpcOegaCEwAxiDwnru4F82TRAQI0dRQUSwhSh7UbPNhOZY2KLufGM/9JG7MWq1p4S/6r2x8v2wnXlVOGPbKtFI/dS2z68bCkoa6pcf+rRhoPBdhNwoeQrDD1JDhzhuNcA84p/780QdLdcVVSN/+kO31DEGQu7b1/PNkbdksk3uifNaCFqKNHW0xHxhYLvZW9XAreenEo5GUcQGE8JKO/3hukUVxbSQrLwX5fPv2diXpPQ1DMbOyq9LuoC0mChlKaLHFBEAcRiXEM3Pe7iFtrK06Z9tiX0JZ0pEUiLK551JpoSpagj09O5zmAhZleKp5VpNahbBKU2DgTaBIhpo8qhB+U2FhJZegSoLNSVRpAGYlZKnZz/Y3vYW4zBsf8YSDmFT+Mrd23r6A6ifq8RxXtDMcvJKckmEFj3J+oM84DbTBROm/FBx0jmeSmGP0zjQbHz9YDGsvkeFknPS4M9lmHb/RWM44jfHZD02diPJ9/nmLrnm5TDEXSqFdDMTWB+TF1zaLeuTmQn4XG6F5bOskVP0O+h3SDqCb8rjfMP2vlR6iN/O
+ CYQm1YV4
+ Y6OSo8Hi9uvB+CwVt9Iffk2RGHnYfVpHYsxUI+FB7pQGaxUWRDNZV7OdwBAcC2qIEb3S4MLVJ5f/uGbD6kPluzn3jzWTjVIBbJk6X6mcEziuDeVbFGx5VIAXXFbBGZSrEEumFDE47EvEl7+CJztuW3NppUGFBlY8fe2EWaQNaWSr72ZmQBCwpJ50eQ3e2FKCaE2w0PYH/bD7MHjfxj10u8KcXT94K+cQwK+GCoDj/1M+wa6h9h7cBXcZTo7R7o+0R7PcXTMT5gH5hiM+hd3awcrJ7cQRkdh33TcnoTmQfC3xUxva4b/3tBh8mntpAHPvg7yQsU+EYYEVJOrci1w6pf2hRbA0V0FJggkzdjqP3tIKIXpdIud0uMxIXlCaAal/DR44JPnE5SDP8wCq1iGdj8Q9kAREQpv0ZP4nu4tWmhkFwGUXvT7ZV/LXkIaNCpBvgolnqbZe7GtfMFVLUR5zE8l/eBrFls6NznPPLo1IOqsKIQ4vU0ibh12pD6S47XRHs3cNiBdfF6Hy7WPJNk5O4vcuBaZhKf6LYWig0uz/HeRUjQHhPBvlpE7L2JGLxGWEvmB+7UXhnP0MEnebei9jSvmgbO1ncmDJ/CjL9lqTlj5cVxgb7lZKgUYsI9hZ0uWfYJMzK/UYRV+o+ZAMdJYNjJVBG0E1BHex0dk1wzX5zmMUxctw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,46 +119,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 18 Aug 2026 at 14:18, Marco Elver <elver@google.com> wrote:
-> Stackdepot's design involves several trade-offs. Changing that needs a
-> clearer motivation, in particular, which problem did you run into?
-> Which problem were you unable to solve due to stackdepot's current
-> design?
+Sean Christopherson <seanjc@google.com> writes:
+
+> On Tue, Jul 28, 2026, Tarun Sahu wrote:
+>> - Add a weak reference 'vm_file' in struct kvm under
 >
-> The fact we potentially exhaust the pool is known, and the easiest fix
-> is to increase the max number of pools. Compressing the records
-> introduces a lot of complexity, whereas the simplest fix is to just
-> double the pool size. Which environment are you targeting where
-> doubling pools wouldn't work?
+> "vm_file" is effectively already claimed by vm_area_struct.vm_file.  *If* we go
+> this route, I would very strongly prefer to take a dependency on "vfio: Use
+> file-based reference counting for KVM"[*].  I'll poke that thread, we really
+> should land that one particular patch long before the s390-is-arm64
+> insanity.
 
-We ran into this on Cloudflare servers running Generic KASAN.
-Stackdepot exhausted its pool budget even after we raised the limit
-from 8,192 to 32,768 pools. Increasing it again would buy more time,
-but it would not change the linear growth from storing each distinct
-trace in full. I'll make the motivation and exhaustion evidence clearer
-in v2.
+[*] Seem interesting way to solve this. So we will also have vm_file
+directly in guest_memfd instead of struct kvm and refcounting on vm_file
+instead struct kvm?
 
-> It sounds nice in theory, but you omitted the most imporant question
-> most reviewers would have: what's the performance overhead?
+struct gmem_file {
+-	struct kvm *kvm;
++	struct file *vm_file;
+	struct xarray bindings;
+	struct list_head entry;
+};
 
-I do not yet have direct measurements of save, lookup, or fetch overhead.
-I'll add controlled hash-versus-trie benchmarks, collect data, and include
-the results in v2.
+>
+> Empashish on "if" because this all feels backwards.
 
-> Not great; I'd expect changes to stackdepot internals to retain
-> feature parity and no changes in observable behaviour.
+> It's not at all clear to
+> me why liveupdate goes directly to guest_memfd, but then requires a token associated
+> with the VM.
 
-For v2, I'll add a best-effort constrained insertion path analogous to
-the hash backend, using only immediately available storage and without
-allocating, waiting, or blocking.
+guest_memfd can be recreated without having the struct kvm, Which there
+is no way to pass it on retrieval path. So the function
+kvm_gmem_luo_retrieve() gets this VM token, find the vm_file (hence
+struct kvm) associated with the preserved guest_memfd. Now it create a
+fresh guest_memfd by calling kvm_gmem_create(..., kvm). And populate
+preserved flags and folios to this guest_memfd.
 
-> I don't see a better option. One issue is that we're increasing stack
-> usage where stack_depot_fetch_into() is used, which in some contexts
-> is already very constrained.
-
-I'll measure the compiler-reported stack growth for every converted
-caller and reduce it where necessary, then report the results with v2.
-
-Thanks,
-Caleb
+>
+> https://lore.kernel.org/all/20260731130902.654679-2-seiden@linux.ibm.com
 
