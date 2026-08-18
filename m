@@ -4,125 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD638C5DF7D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 20:10:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29B3CC5DF85
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 21:34:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFB7D6B018D; Tue, 18 Aug 2026 16:10:45 -0400 (EDT)
+	id 871B26B008C; Tue, 18 Aug 2026 17:34:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EFC46B06A8; Tue, 18 Aug 2026 16:10:45 -0400 (EDT)
+	id 8235C6B0093; Tue, 18 Aug 2026 17:34:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B7B36B06A9; Tue, 18 Aug 2026 16:10:45 -0400 (EDT)
+	id 70E566B008C; Tue, 18 Aug 2026 17:34:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CFA96B018D
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:10:45 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AC282801BC
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 20:10:44 +0000 (UTC)
-X-FDA: 85115483208.08.4A17C01
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf02.hostedemail.com (Postfix) with ESMTP id DE18880008
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 20:10:42 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="OQsHpu I";
-	spf=pass (imf02.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787083843;
-	b=WtDI+Df5O/jg44lEmot927FhJni3Da0UnOCYYVeXhOGFmetQcLnV7GxKyrHmI3F9pvhX7H
-	hqDqK2xgHUYem6Y6Vc64CQY0w96PTyQVZTQTnI4EzK8Sulgl5dEg7j3tZ9bAO13sx1jXmC
-	GSq23lX3+COfwLUEj4t7+7SFyzgtVBU=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="OQsHpu I";
-	spf=pass (imf02.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 31D806B008C
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 17:34:15 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A75B080310
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 21:34:14 +0000 (UTC)
+X-FDA: 85115693628.01.368E832
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D7064A0009
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 21:34:12 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Oys+SFS5;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of utilityemal77@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=utilityemal77@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787083843;
+	s=arc-20220608; t=1787088852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=woT1zsi14to1BWM9P1WvMv8qVMYsV1szojyD7lMbyCc=;
-	b=IbB1NUZrGOe5C5I0Fb/EteELfaHswtw+91g36VKcYiKHfiVzcVW4jTH9muI1NqYnUhJjMr
-	GadqpBl/LaVYHh1jfx9TorPj5TwpBE+sOv84dfm+r28RclRqHdPu71gzI0ZDEz49yCJAJj
-	fvt024AFOeWUmKNGwxvPwu38GMhHDPE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=woT1zsi14to1BWM9P1WvMv8qVMYsV1szojyD7lMbyCc=; b=OQsHpu
-	ItmETeHPBNCexRGovGmSiK/1fEe9+feHxvUwum1vDTb3CfY+mvvrEAKC/LZb4I/e31JQabE4pAaDF
-	S0kdmZIMNZK3/4VsuxvzcdelOKLKBLDZeCADpZ2dmDCGJNdNh840FUZO+GEOtz6Z9GNl8EdMNpsVL
-	idS1l/7HJSth11v7TVneHNO9TsAzorxwdVSV+GOD9YZnGvZEF0RMoTzb6YbhkpgWTv5evnZsoac2+
-	ff9fINsIRrjiChTD8wo21iXUFag7kAEZdG2uYL8gT41oDNPzUbaEno1Hb/RtC8HFQXeItIQtBVqm1
-	vkW6ZUY+u+2Gl9kyKxyXPyuxyiOA==;
-Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1wwQ35-00000001X80-2pgq;
-	Tue, 18 Aug 2026 20:04:39 +0000
-Message-ID: <edcebef940c262a83421666de67e8a07ca93e85d.camel@surriel.com>
-Subject: Re: [RFC PATCH 01/57] mm: add pte_folio()
-From: Rik van Riel <riel@surriel.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Kiryl Shutsemau
-	 <kirill@shutemov.name>, akpm@linux-foundation.org, ljs@kernel.org, 
-	nico.pache@linux.dev
-Cc: baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com, 
-	hughd@google.com, lance.yang@linux.dev, liam@infradead.org,
- mhocko@suse.com, 	rppt@kernel.org, ryan.roberts@arm.com, shuah@kernel.org,
- surenb@google.com, 	usama.arif@linux.dev, vbabka@kernel.org,
- ziy@nvidia.com, usama.anjum@arm.com, 	agordeev@linux.ibm.com,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kas@kernel.org, jannh@google.com, 
-	willy@infradead.org, pfalcato@suse.de, rostedt@goodmis.org,
- mhiramat@kernel.org, 	linux-trace-kernel@vger.kernel.org,
- bpf@vger.kernel.org
-Date: Tue, 18 Aug 2026 16:04:39 -0400
-In-Reply-To: <c05f7bfb-c84b-4c36-8091-5ec7721a658b@kernel.org>
-References: <20260816224609.308019-1-kirill@shutemov.name>
-	 <20260816224609.308019-2-kirill@shutemov.name>
-	 <905d08d102e56a026a5ad69573c507d2d9becc37.camel@surriel.com>
-	 <c05f7bfb-c84b-4c36-8091-5ec7721a658b@kernel.org>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	bh=3sDmUeEbcal2gxd06G7R/9k1xkDLSkoYHHtzuG733R4=;
+	b=OPo1xCIJ+H5ktBq/nzGDGukZ68vNftjNaG8Wu3e7pzpbkC1nf/8vRBJwyek3HiYZ7XfBUM
+	kqyy33kxSlJvynOfBJbgqtQf+oTkoFbyn5CMn1H8FdU4Y9BWEpi2K8stEa3x9yRLBmtGje
+	t9fIwohepxzL+Tm+IZl8LMugV+gup4A=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Oys+SFS5;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of utilityemal77@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=utilityemal77@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787088852;
+	b=4J6VAI8at3baVMYFwPasNC04VgAA0LQtXSp1igPdMchYCm5mlF7kdKiXIfHOTqs13m/H4x
+	h4tlYI35DorYvEKRevHrtA/T126Fo2IrhNlmgx0a/ozvv7lFQjiYWi76pGMktprJQnwl4P
+	Yrgg/KnWmMow6kJUUcGDTJ898FnLHfk=
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-66bee06ff74so638999d50.0
+        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:34:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787088852; x=1787693652; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3sDmUeEbcal2gxd06G7R/9k1xkDLSkoYHHtzuG733R4=;
+        b=Oys+SFS5ndo87ZDo1XOVdqe3kNs6MqIJyKyCrwT48f7zsRQrHT0S6LeAXqUYKjD3lD
+         MgUVCXKIseNmjbDoyvciHGcILs57Q31IReaGa8AKpRdHuSESQp8t0cblsGCu5ssyYxnn
+         agiczV5EC/LelLNBf4YJ8fQR0CXJwWnWBrcPEjY0H6i4fTsR2mvng0kQgf/4trxQi5QA
+         kXz7RQ0VuU7H8+FN3fY+Bb10yHKV7C2JJYzkKwRZbcwwFJq77CemEe2jJVoRl+66Gw0Q
+         +YsppAfxIZpn5+NjyTpOKE1O9NcYBiX1UdrQz0mxmJJjgkjhVIWjVDktheXERk6XItMW
+         7Lnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787088852; x=1787693652;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3sDmUeEbcal2gxd06G7R/9k1xkDLSkoYHHtzuG733R4=;
+        b=UV7YK0qZ1fKeyIoIBCih5DeZRIfOe5cjff96tGs3w1sQDJmS2veISKDBdn8whSEp3F
+         VxlF2a+95FXCQ61MY68U6C8+9/jUzUmOb+m6CizNa/yTBfWlhFgegm6zq0ioyUrAiav1
+         Tio77Qsh9cQXBmA1a4RRHpWOOWbrqeksxb2GgqYGar1c20NxkVPMEBkKPXiLWIqkYd4w
+         MGfSgFBb+vWPtqkbRDbGXP9S7KolGMAzfGE+v2yVcWm4JubJrwSRQl0cqId4u4d8R5Qw
+         4pglFVaksrcqCZgY1Ii6U6Ae1rM35FFOUQqdzJNUPiIUl9Ovt5AVwH2LwIYeg5MN5UkS
+         62vg==
+X-Forwarded-Encrypted: i=1; AHgh+RpOM3FLWY2k/hB8Nw79ile629rnBKR3X+UsRD6/x7+jYZwIQGyn1p0RvZVq2jt7ZUHRWjRb/HOj1g==@kvack.org
+X-Gm-Message-State: AOJu0YyfCIPbsfaFMGcwrfmMC/chiN3WvDwqs5dLxP1tD8h9RU5nMvkp
+	i4smLjDQ5/abvchuZmiDgW70hpjynVziFVX9XAXB3C6nygF4evDPwMlr
+X-Gm-Gg: AR+sD13Yczm02t98QFb55WrVS9xQ19v0OVNvTPApJ2lpQDAOOBgyPXcsNKSIo9hnnv4
+	OEFhn8papbk9ZpQo5i9CHqWO5SBICNv4LPmUZGuyUL0+8xikwwx6ThBfkELJDkYXR8NqYGvkjVh
+	qcQhJk+BuK0CEeJVDqqugkBdNDL8Vh9gQzb7HE7niVtdJSQRIcmOigriMhO74YHp4bbRxbRolff
+	ESLU5j5K8GDol+XBSsK7sf9SlBgvoMvBhdrzOQzXw5gthSvXXzXCzjlyaSydF9lErhjQCdxeQsI
+	QLqZ/qbsvlJ8hVGl3UB8eEqnVXBKzzSf/Oioo8Blavr30JKXtLeU3F5ivji7GDuoJxelxQ1cIrf
+	EhZnEAlvBd27ncMOQ39cqG80agpWbeM9L2A1oFddE9RLpRhShVvX/2155127ccr4lJExv4Z28ST
+	muXFMouLuMAOl41fEG6r9MKo8FIUXfr4RvJ9oDOW2lPgDYsIsW2EMfcNWkmemCEyUeicnIvG4n8
+	cpvUefzXZHYxq1WYCwo9vw=
+X-Received: by 2002:a53:e911:0:b0:668:9b6a:653b with SMTP id 956f58d0204a3-66ccb537d3amr50318d50.3.1787088851823;
+        Tue, 18 Aug 2026 14:34:11 -0700 (PDT)
+Received: from zenbox ([2600:1700:18fb:6011:5ffe:d5c9:845d:50b5])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66ccb19e096sm52049d50.19.2026.08.18.14.34.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Aug 2026 14:34:11 -0700 (PDT)
+Date: Tue, 18 Aug 2026 17:34:10 -0400
+From: Justin Suess <utilityemal77@gmail.com>
+To: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
+Cc: akpm@linux-foundation.org, andrii@kernel.org, ast@kernel.org, 
+	bpf@vger.kernel.org, brauner@kernel.org, daniel@iogearbox.net, david@kernel.org, 
+	eddyz87@gmail.com, kpsingh@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, matt@bobrowski.net, memxor@gmail.com, 
+	song@kernel.org, viro@zeniv.linux.org.uk
+Subject: Re: [PATCH bpf-next 2/3] bpf: Add user memory access kfuncs for
+ linux_binprm
+Message-ID: <aoTMu0_CNLyLGh45@zenbox>
+References: <any3wCj66dWbwgwT@zenbox>
+ <20260818082441.4091-1-tasos.papagiannnis@gmail.com>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: DE18880008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260818082441.4091-1-tasos.papagiannnis@gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: zd1tt4acjhdao3qekkqyjmozhretibqf
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787083842-225088
-X-HE-Meta: U2FsdGVkX18n81U/hz3WujmOUKKXS6IGtTqD189Z8VMILt8gIELftJ1/fqDjS2xlMAA0+UdayHzVPzQGqobkvY1Sw7zxz3GtLtFG1SibS4JvrO3/UWsTSZyXR31xgMyyjAM7X5EUUPWCs4XutC2IYxPY9UfQGp5gDqra+3Prnx2lO4cNd9JoLd5LQq3RrDVq/Kl+qFxI2ihS7x/fAU+DdFQtHcy1feW+4/2hKIP3uecLqPVRJtOYi8MoTOiAgZ+A9mHRfWQrkKWiMz3RpoCxaOqoGY1vnDlCvMm/FIlYz7iwgEpPAzJHHp7/JC4tDvDm/ONQk4sug2yhH47FOMtMTygZnRCNJONgCR0eCG3MwCcFWwUeajzUqlrjl2b7+5bERiZ3YgVUaIYboRxPw2S9bMjiWdthV0xA4kiQIt4cIkEWzTNc30C+SwbUc1kRs/6BZsMFBtl5uMW3up5/Vsuy8aWQUmCEVPJh787isQ5somBBYUYpgBvKwaUyfWvve6WiKxkAyAhO7S2CzTsZZ7xdzO9Ag5HARmt9nuHR/F3rf/nSz42CMzpTEMm+z+I9OHLUJcvV7oKuASH3qwR/MMAmYvNXlJqszzDQkdU7hWDByDNrP7wzo0ZZs4nlEA3BNGBCpLhPkLP4q5QHqW1PDmtNnmswKGBF8tOuB7p6dBMkm9XYH2OYdGH//VaCwHI0Wn/8msAWIK0/EPBiNFsZNDdzrEwLgeMlPRpnWQT/Oij88QawVUs/CugC0rIwB9v/2w74ab62AntAbjLsbGC2YcdptM321pSSZw3fRayT12vSo+bZvLBDQo9Pcr7dYuBRmP7K4J4K5DnEzfY5kly/yo0/QWu1hWb96xbMDUPTGdYL0au3Saz2dUijrrUVxL9h1qG6PzNUX1c+6QJtPe37WQoWxjIBE1H1O6/EVlWUUIrBHj6BLGh7W4kYBlrb8UHQt9l+KsOd5EBWHTblT+X2g8L
- NveJhL0P
- l+vWj3rW0UghzYlwq52b8bret16IAr00I7ah2IyJg4/pGjs01rsFwHfrPIgRCHaTuQwfdeyl6aS+3CX8mwJGZozJmTOK+UZTxYH9kNaWfsVwAUkNz1LqaKBDmpJrCBgyzgaWk9Tx/8FtgHep9Ivo2dyKSBkVANo0f/9csf3eiRnl5qEGHpDRhqWGSNEkXwhCjKwUE0eVqzD+74GUMoSW0cLjKUmzL/7guu+GN5DufbvjXtnCIvilgJP0VHMXKS23fy14N+aM7n3gidRNjJwwpWV/cdR6Ksat/pD5reclMVMsGspsj4LPRA5AJjMvgDqGB83/QLsE94+5gCO20tBlT0/XwqN6ibl0qIj8L
+X-Stat-Signature: 8s49bb9oj6zzd3r6iw8q7aw3mbs19adb
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D7064A0009
+X-HE-Tag: 1787088852-275766
+X-HE-Meta: U2FsdGVkX1/OUC0wl5Mozu/aRA7hye8Q9x2mxGSIg9U0ow3chyt+YVTkdirKD3Gi0gRzohHf8ZhG5XtlcwIfVBKsVPzr072ltkYJZpYtXCH9Znsf3KEq/yCauncBdBz03Rb9LUjHY+KTWfzQimEJVywbQ0bF1OaChNQvrDbm8c3nDHL0LrPAebNpABLXm9chTXDBwL4Nefayu9/wURNRDCRAIt+41MIstYbIu0VXToLeiZ1EzBUnJ5FbKgszelVpnLMFh2f0WuxlmztfAkfzDQv6dOQrgGQCRoFm1PoMEcS4tZtnGgjYxBu25iIQMa9Nif17MtLi5ge3ssyM+VQIBWbCI0t8Fo2Zp+yrsX779pqNGOZnMHDu9MnCxJkNKJFURHyLtvQjgO8YoTUuFrx7FniJYD3HSmT2QaxLAQn2XsmuLneu9iNTuAoehtNcHEarFnq9PpuFQr9bcAXLS0tWzcfo9OKRg2XYc8f/XXE3FsMmJ+KVmYTu0mAYNUlaIpiJueFD+y46Ne1vXShWuOPJdSYRNRXrny66B07iX/lgln1S+QyW67OUvLFp3XfwKPRc4MeFzU1L9pQM7G+a4DfNoFNzZMVloOgaN4FQqX8+MhToI0Ree8wsM/fNUvJeoLpGCwatDIfMGJwgtBsWT4RY8rgOSgoNEdYWkB6KHB2SCIWxlNXuxhOjF8hs2yz3yAX/noBFZBtRKI5fUp1WxE+Y+bcABJ1XTjrSNSnOf+tsPpbDeKzIb+xeRJr+LCPQdDqgp3HLX9ZpsY99Rg0Pqnw9yKqvbInZwww/WRmnmzlOEkukn8wGiUW4ZuvvYep7SSCKRf5f07wjOnD+kCFVAmk0kjMH8yW/LI8S3ZghRtHPRql6JYIVVVr01L6mazNcfKDHTPYvAJ2ukr1BuTCxOCkZptD8mgP/MydSHdDbSEjAFQlWgQUJpydaHUEsutlx1mjN7jBkZwLzhhYi6rYaEhh
+ cJJnTTrm
+ VksLXOj5PgcnCAW34IGBQJyWXFLP+/yIVuwzrhW9d7wXOdz/XhTE8HMr9P439Joz6Y6CGE4dv0Pd7Taws68gAlN4ThK+cw2sVfksBjLC8UpI+oA5ESSuXIHUydF0X/0sGg96UmFo9qeKfWlQqdA8ue7uVNY4irKpdBwuAjT6yHv1l1lyrk02/4ZbnEs8igAMfGcOGozu/xU9E+sUvZalB9OBeSO9OtEfxvRWaVqkDfjt8xb2h+byPn6V8DWWGva2nRU7bObPzEMNM0mEUtQNplpiV3/koTSn13qeSxqpFZVlP960qcibmTQAJqvvhqG4tlrwdgshHqZFyz25qKsZRyMSCB0VKfENG8O+IcmwXTo3/4b8LTncg9gkvty1maIxPrvCBznuXUe5O6OS+SAt0gqaf+REf8Ea93HatkgKVLlmA632R3xX5jIY4j5HYmr8khyRda1Tgc+UxcSF64s28JQHxlDtkaDpQ+VyYZ5wtuzoowHvINQk0Me1NmX3j9Co4p2NusaZvt06UExk85CDKDBAcP9j1xhwivCmQpGivhUvB1FqD2i8XQA8qgWnie+XD6kW2SX08+xj6F88o81SAfWVgJQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,38 +124,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2026-08-18 at 20:13 +0200, David Hildenbrand (Arm) wrote:
-> On 8/18/26 18:38, Rik van Riel wrote:
-> > On Sun, 2026-08-16 at 23:45 +0100, Kiryl Shutsemau wrote:
-> > > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> > >=20
-> > > Callers that want the folio behind a present PTE spell it out as
-> > > page_folio(pte_page(pte)).
-> > >=20
-> > > Add pte_folio() as the folio companion to pte_page(), and convert
-> > > the
-> > > callers in fs/proc/task_mmu.c and mm/hugetlb.c.
-> > >=20
-> > > Preparation for the anonymous collapse engine, which reads the
-> > > folio
-> > > behind a PTE in several places.
-> > >=20
-> > > Assisted-by: Claude-Code:claude-opus-5
-> > > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> >=20
-> > Oh nice, this could clean up some things in the
-> > get_user_pages code too, when we get around to
-> > tech debt there.
->=20
-> We really need the page in GUP code ...
+On Tue, Aug 18, 2026 at 11:24:41AM +0300, Anastasios Papagiannis wrote:
+> Thanks for the review!
+> 
+> > Would it be better to handle that case transparently rather than
+> > requiring introducing a new kfunc / leaving that gap open for NOMMU?
+> 
+> > Either return an error or perform the copy from bprm->page[].
+> 
+> > Unless there's some reason I'm not seeing.
+> 
+> My understanding is that there is currently no way to use these kfuncs
+> on a NOMMU system. Although CONFIG_BPF_LSM does not directly depend on
+> CONFIG_MMU, as far as I can tell, no current NOMMU architecture provides
+> the required support to use them. For this reason even if I write that
+> code, this cannot be tested.
+> 
+> > It would also be better for portability across NOMMU / CONFIG_MMU
+> > systems (the exisiting kfunc is never registered, so a program using it
+> > would be rejected rather than able to handle the error).
+> 
+> As you suggested, I would propose to register those kfuncs
+> unconditionally, move the ifdefs inside those kfuncs, in the case
+> of NOMMU return an error (e.g. -EOPNOTSUPP) and allow the programs to
+> handle those.
+> 
+> Does this sound reasonable?
+>
+Yes that does. It's a small niche anyway (I don't think a lot of people
+are using BPF and NOMMU anyway, and BPF_LSM && !MMU is unsatisfiable
+unless RISC-V or some other architecture gets JIT support in nommu)
 
-Ugh, indeed. COW can create "holes" in the middle of
-a large folio, so even __access_remote_vm() will
-continue to need pages.
+And when/if (big if) it does, they wouldn't even need this kfunc and could
+bpf_probe_read_kernel() bprm->page[] directly.
 
-I guess we'll continue to look up both page and
-folio in that code, then :/
+So an error is best. 
 
---=20
-All Rights Reversed.
+Justin
+> Thanks,
+> Anastasios
 
