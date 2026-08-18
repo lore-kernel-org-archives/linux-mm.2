@@ -4,71 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F928C5DF74
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 14:12:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 036FAC5DF7E
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 14:12:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EF6B6B07CA; Tue, 18 Aug 2026 10:12:20 -0400 (EDT)
+	id 142B66B07CE; Tue, 18 Aug 2026 10:12:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A05B6B07CB; Tue, 18 Aug 2026 10:12:20 -0400 (EDT)
+	id 11A476B07D2; Tue, 18 Aug 2026 10:12:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DD746B07CE; Tue, 18 Aug 2026 10:12:20 -0400 (EDT)
+	id 057A36B07D3; Tue, 18 Aug 2026 10:12:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F3E146B07CA
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:12:19 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 677AFC02A6
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:12:19 +0000 (UTC)
-X-FDA: 85114579998.18.1C6C9C2
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DD6506B07CE
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:12:24 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7BA9F40269
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:12:24 +0000 (UTC)
+X-FDA: 85114580208.10.79BAC44
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8C1D91C0006
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:12:17 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=DijChpUd;
-	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787062337;
-	b=u/szULUuvIw86lTiQqTC9U+ck+Xa6qH+uKg8JFg4bveiKo3Qs2u+Il/Ivnt0c6NQWYsosC
-	OtK5r4Jhtal3uB6FtjG4dtXWAW7Qr/wHeC3WWNUk4Wxn/XlF6pSSjDldeVdsSQhidsUfVt
-	xmuNKXTIG6WZQ5K/2yP8WpWjxHelPYQ=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=DijChpUd;
-	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf03.hostedemail.com (Postfix) with ESMTP id 92A4F2000A
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:12:22 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tIsYUIRX;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf03.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787062337;
+	s=arc-20220608; t=1787062342;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w8iB9G7RpDcnb+97PZ+8AwUL+hlHtRZxbva7Wv/6m+Y=;
-	b=k2Er0AcnghhZUon3+yAJsw2z86sVVX03kNqhmLQGwhMfu64+DdiX1qIg/A0GV3qg+QFRNc
-	c5dO16POlLnUqG5kFrL1pNdM+rJMi2xYQkoCn1xsYHEC+93FtgZh2x6K+K2SmREzY3T3n7
-	zPnItk0GgqwNxr80DJC26DsYuWEDwkE=
+	bh=k3jNLRXLOf4mIf5pWMFVvGYcUV4jr5sCOmwFNFCTg/g=;
+	b=DaDUtWZJdefpIwyoIrlNgpEWF6w7c6oO0ZWn1KL0yFFX9ieEkMQJCpfXSgvv5A81YOMz2q
+	+ZSGTrKL/TUZIpQVNlEYjEnXiiB6gdXe+IxtRwGsbYOzsKtOIOg6wwb6rwrf/zADMvvSjp
+	DwyxQC29Gtilh3qPeh8o+WW90v29E6k=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tIsYUIRX;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf03.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787062342;
+	b=S6qS/M0qTeHNDaUx1jbI3joA0T6tPRaDGQzV677FO5ESSL2Q0vRp8GzSlQKSqLRkZCBu6j
+	KV2xHMcmBdzlEguEI27+3lD3OTfKv7dc6ahhJlL4OzHLeByoPzDrwu6RCA5ydJiwEO1gLa
+	Pixvgssc8Dxh3AKAuY0qKHBdPmr4UTc=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F03EE19F0;
-	Tue, 18 Aug 2026 07:12:12 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E970719F0;
+	Tue, 18 Aug 2026 07:12:17 -0700 (PDT)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.2.208.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3566E3F85F;
-	Tue, 18 Aug 2026 07:12:12 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3198A3F85F;
+	Tue, 18 Aug 2026 07:12:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1787062336; bh=/3l8zOUYVj+WOkd0xAlju+IzOxqp5kEU0RRVT0zZ9Bw=;
+	t=1787062341; bh=tZCx6H+R2YFZA0lLWiMZtQV/Hy+U8ncgFSxFQ23UdqA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=DijChpUdF1RuBdkyLFATeOsiSAmz3vRvsbQu9Xf4r8fSCwkLPYeX2u4TqhHmuvK5v
-	 bEA78LX2fa1R1gpIgUtzR5f05+sSjB9A7FnAX66ViZQxIp8GFqGwo92X07hrUbqCmL
-	 RxLHMp+W+M6Qq0IWBi4KLPfjUbXSDVaC+IE4DK+w=
+	b=tIsYUIRX9NUSaLkDiVL/frOEpjOraO7b7Ujw8E9/8sWJlXOsVRfBRvlEPIKKy5/2b
+	 OX9i78F7MPbzP/Em2u8IG4oCPnQyJvZ5CSybZbzV6WLA79X4pz6pwrNcT082n/FI+U
+	 Aure/5nAHyQLFM2CQIQSCV97xfifLfU1yiwz68yI=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Tue, 18 Aug 2026 15:08:53 +0100
-Subject: [PATCH RFC v9 11/25] mm: kpkeys: Introduce
- kpkeys_hardened_pgtables feature
+Date: Tue, 18 Aug 2026 15:08:54 +0100
+Subject: [PATCH RFC v9 12/25] mm: kpkeys: Protect regular page tables
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260818-kpkeys-v9-11-743ad31b2c8f@arm.com>
+Message-Id: <20260818-kpkeys-v9-12-743ad31b2c8f@arm.com>
 References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
 In-Reply-To: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
 To: linux-hardening@vger.kernel.org
@@ -95,21 +94,21 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  linux-mm@kvack.org, x86@kernel.org, Ira Weiny <iweiny@kernel.org>, 
  Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787062276; l=5593;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787062276; l=5188;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=/3l8zOUYVj+WOkd0xAlju+IzOxqp5kEU0RRVT0zZ9Bw=;
- b=qTIS+Q2f7O/ftDpgcOtYPcie0+ZP70DESK0YuE6VZ35VxabKw7HIm6ZYoMNyRRP8plVUnpJTj
- ukEN7bDubSeA5X5+HECw13im2U5oHjzFkg4rQuW3Ysw2V1t7wzyGZku
+ bh=tZCx6H+R2YFZA0lLWiMZtQV/Hy+U8ncgFSxFQ23UdqA=;
+ b=+wzJO/yKNtQkrrxtuiAwZr6RGyNqWmeattGueL0R06BjBBkuM3tkUp27om/GuO+f86HfknPmK
+ gUvv1ntSCNYDJhr4LhiUi0N4i2pDOR7HO3lJUSyIGADw1unJGF+gEjl
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
-X-Rspamd-Queue-Id: 8C1D91C0006
+X-Rspamd-Queue-Id: 92A4F2000A
+X-Stat-Signature: d7jo7dn7bxb495fab5r8q5es3pfs8gh3
 X-Rspam-User: 
-X-Stat-Signature: qom57xnedd1upyihzgh89qb8r4wqs7mb
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787062337-863189
-X-HE-Meta: U2FsdGVkX18qswJ+YdWI1nw6/zFwVGjnfLx47KgfQnLYi/4I3Zq9mRwfQe1u4U1KXZT8I+ixckUyLbQmnvnpYJjBg1t3PQx0oYvCEChKQlMrJKS3im85jBOmvLXMvzZtgcOnVyUQJPa0iSsyBC08wol7lgXy2N7eiywmU50u0H9XYDs2CXvavnwz0lL2PhYFGDFDe5H73juTBCJeMjvENv/+JbjfDp6qbb4g1Q7tuAxcSYbdEd+s+SdOoVjtiQl9RmXUa3Oi4sgBahAqdgDlGfOxE2o6swP83EOYlDvAWI41pjZzQj4pajxJbrHOKP+/j8Lm39+Ho6io/yXpdF4gwk486qTRgSKNtneN/eZYif3E5+q4kpC+e8z0p/5FQ9mCDxtg94z6jLHhthGrDwLhBPB47mtIoj+r0OaCHsYDozpFmQqQThmay4ufuTfZHow2HLq4SXoYbgBcnMzilPtOkY3u+MdcsrwGOf8mJVE7/IAmcAQYNxPX2Exmg0snW0Du9TwfunQ2HOEqb7n+okCJbzoDL7Wf7O0B3aq+0BHjSoOuQJLFBV4OjRo1U5wap2McA38ySpKez2P59Z3Y96slGcRGjq9EzHRVIehJFLYY0SAp9BZ8GCT1uJI+JH3Y9PR3VjycWRUlzOMFyfTnYp0X3ecRKiZoYL6+LRYDhqX1qpqS8uKCU1sno13nX1AAGhnl2BwVkA1uGFK7RpKpb5q+NOtBFwZSl/uKnjIVuVkQ4tak40s5BCPqpeUUbURCb+d8FOff9uFq8suSOfMju5Retm7RcHyBfwwJGfAnWIfN7szhDdbnGluDtGePY2qCeretA3Gf4ZBugGwXX/Bn4e6a6kGDgDMdrEkq2ZoixMCBs27pUyf8ya/gBQ9QbXgaxc+bzeyHfgLnbN0shqKZJrqEYJaoia6xCW3dpGe2Tj+QXJH7d2KM2AMAtIl3NFhB1bjxmfpeGA/kT1UiQT0C1YK
- Enx5ZzaN
- 7XHCp4oXkBr3Dpd101wS/pSBpSha3Gh6dluneHdQrv2PQHd9wKZ7acuch0XqqkhPYksdITxs47a24sCtRFe5QrNKy2+XfSftoQsqBWQFHM07xbbaeGzfp4BLabAdEcvlbxfXkGmEJ5uQDOCPvrAiGMhzl6WahpX3/t50yEyUOcLiFbHxofUd1fAD5Z/yoRxRa3ZxRxCYatDDbGdYKD7t10j82dJcjEbdd5848nRXku4xIsOPqWyk2Tf9QE1sngT7asKqylcpC4aULSikAoj7Sjq3KjiM2gF3NKELmXR/77YK19VHac7FX+dk1/gY7HdLHe34qsyxEzn0v6Lekvd4VYAu5Rg==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787062342-660456
+X-HE-Meta: U2FsdGVkX19vZypiXZW8kNJ9pFvw/CDw4k3JcO45C6WEKxQXPms+0/je5kqFzyrOH+gCKJFRZD+I46bd7exfBQ1B+HTN3zWTlxhz8FC+Eyv/cXL2O76WpbRd/PvdXwKCjUlHF5nu2Id1vGdAqIky4BILS++sJhNb7Swk7wouCS9TbAMEppm1TqCZRX/XJBy26h7GcvmLRM4EkBL8OWKg6+8ugwSk+a1T+Rq+mb8Vg7185rleglMqHcAIix44+tQ1OKshcqbJlHJfxH/EJfrL3Dyi1pp4lu7zY0I4A3ziCgTk7E2OAsXvtyeWa9HzI8ALfTozPsF0pAMKPJm6OrErIutjpNca8T5PNYOUiCIUVGXuP1stGgWPdrat/TUgZkwMioazP9Au6voyyeuSaO591sokd+DgZNed34LvFbRoXztR63yeVAWFAXm1yzmIPbVgzFKvFAEJtBbzwpqIusgMniTJ1BiQTYhtWx2Ij4tUW/5VGY8x214gJ4rVzliGb/dnnp8Y3HxJ8zvPR2RscxJWN+JA8KCtreUSfFwRgQDJnFO2vss1zkh8m3uurSusbniJF4d65xbPLWW1DEUxUvjT3p8HCb5sUV8sW2I2YMCZ6GNIbYAiWwh+d/euiJFUzokry34GPtU8T7gIRHSAKWGJpKvQFXDAq3YVYieJ/Xm/v5LR+ujKe6YEljIBZGyjp7KDAqnXDJlvLGKKxa4m4SkkMoN6YBRxANSzl1+Tyu/WrkN6wVmod/DGBri/sjn2YHuAXQfvsFO2BC7bdgEIf85iJ8FJXdz4wXHycdaNxm7cQj2v+mIw86rrh4evfs/20VDJ+HDkzWhkpryjDBPHBkHUx/UcdyUA4tArYs4caEF6wSGzXjHLutP5P1Q349dIZ9cO9oayLS7Axrf1kBsdJDzdXMFjghNda/KKKU1eda35hUMl6GaIR5TOv7xUfn/2NtbqcFaRJ1ZBj3ZFDWZZ7I3
+ Z/9mR2oQ
+ +9MzSF9q3HrruSE83CGhECrz3hEeG9+1q0SxS+SNZBhS/IieexShhWhRnIqdcpK2C0UKEl0BPF3axn/hdOsm0If+YIhok6RDMU1KQcGiLF/pRrAnV1ttvp6awFKVkKuCgviccRbAUv7qjV73tDQpMNvPMe7dCEePdtuopddGmourEa1UYLJ5JtRgR88R1rmES06WDdGsxzsZeD+Ocjrgfq3VTJWJyDerJpwbU1PJZwxiZjvUEgepw7VYL2E2sbM3Wp/OM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,182 +116,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kpkeys_hardened_pgtables is a hardening feature based on kpkeys. It
-aims to prevent the corruption of page tables by: 1. mapping all
-page table pages, both kernel and user, with a privileged pkey
-(KPKEYS_PKEY_PGTABLES), and 2. granting write access to that pkey
-only when running at in a privileged kpkeys context
-(KPKEYS_CTX_PGTABLES). This patch introduces basic infrastructure;
-the implementation of both aspects will follow.
+If the kpkeys_hardened_pgtables feature is enabled, page table pages
+(PTPs) should be protected by modifying the linear mapping to map
+them with a privileged pkey (KPKEYS_PKEY_PGTABLES). This patch
+introduces a new page allocator for that purpose:
 
-The feature is exposed as CONFIG_KPKEYS_HARDENED_PGTABLES; it
-requires explicit architecture opt-in by selecting
-ARCH_HAS_KPKEYS_HARDENED_PGTABLES, since much of the page table
-handling is arch-specific.
+* kpkeys_pgtable_alloc() allocates a new PTP and sets the linear
+  mapping to KPKEYS_PKEY_PGTABLES for that page
 
-Because this feature relies on kpkeys being supported and modifies
-attributes of the linear map, it must be inactive on boot.
-kpkeys_hardened_pgtables_init() enables it by toggling a static key;
-this function must be called by supported architectures in
-mem_init(), before any call to pagetable_alloc() is made.
+* kpkeys_pgtable_free() frees such a PTP and restores the linear
+  mapping to the default pkey
 
-Supported architectures must also provide
-arch_supports_kpkeys_early() in <asm/kpkeys.h>. This will be used
-during early boot to detect whether kpkeys_hardened_pgtables is
-going to be enabled (e.g. to decide how to allocate early page
-tables).
+This interface is then hooked into pagetable_alloc() and
+pagetable_free(), protecting all page tables created once the buddy
+allocator is available. Early page tables are allocated in other
+ways and will be protected in subsequent patches.
+
+This implementation of kpkeys_pgtable_{alloc,free}() is minimal and
+relies on the linear map being fully PTE-mapped - otherwise
+calling set_memory_pkey() on a single page may result in splitting a
+block mapping, which in turn requires allocating a new PTP. A more
+elaborate implementation could be added later to handle this
+situation.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- include/linux/kpkeys.h        | 37 +++++++++++++++++++++++++++++++++++++
- include/linux/kpkeys_types.h  |  5 +++++
- mm/Kconfig                    |  3 +++
- mm/Makefile                   |  1 +
- mm/kpkeys_hardened_pgtables.c | 16 ++++++++++++++++
- security/Kconfig.hardening    | 12 ++++++++++++
- 6 files changed, 74 insertions(+)
+ include/linux/kpkeys.h        | 10 +++++++++
+ include/linux/mm.h            | 14 +++++++++++--
+ mm/kpkeys_hardened_pgtables.c | 47 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 69 insertions(+), 2 deletions(-)
 
 diff --git a/include/linux/kpkeys.h b/include/linux/kpkeys.h
-index eac522f55214..23ae4ed512f5 100644
+index 23ae4ed512f5..288c8853eed6 100644
 --- a/include/linux/kpkeys.h
 +++ b/include/linux/kpkeys.h
-@@ -4,6 +4,7 @@
+@@ -116,6 +116,9 @@ static inline bool kpkeys_hardened_pgtables_early_enabled(void)
+ 	return arch_supports_kpkeys_early();
+ }
  
- #include <linux/bug.h>
- #include <linux/cleanup.h>
-+#include <linux/jump_label.h>
- #include <linux/kpkeys_types.h>
- 
- /**
-@@ -101,4 +102,40 @@ static inline bool kpkeys_supported(void)
- 
- #endif /* CONFIG_ARCH_HAS_KPKEYS */
- 
-+#ifdef CONFIG_KPKEYS_HARDENED_PGTABLES
++struct page *kpkeys_pgtable_alloc(gfp_t gfp, unsigned int order);
++void kpkeys_pgtable_free(struct page *page, unsigned int order);
 +
-+DECLARE_STATIC_KEY_FALSE(kpkeys_hardened_pgtables_key);
-+
-+static inline bool kpkeys_hardened_pgtables_enabled(void)
+ /*
+  * Should be called from mem_init(): as soon as the buddy allocator becomes
+  * available and before any call to pagetable_alloc().
+@@ -134,6 +137,13 @@ static inline bool kpkeys_hardened_pgtables_early_enabled(void)
+ 	return false;
+ }
+ 
++static inline struct page *kpkeys_pgtable_alloc(gfp_t gfp, unsigned int order)
 +{
-+	return static_branch_unlikely(&kpkeys_hardened_pgtables_key);
++	return NULL;
 +}
 +
-+static inline bool kpkeys_hardened_pgtables_early_enabled(void)
-+{
-+	return arch_supports_kpkeys_early();
-+}
++static inline void kpkeys_pgtable_free(struct page *page, unsigned int order) {}
 +
-+/*
-+ * Should be called from mem_init(): as soon as the buddy allocator becomes
-+ * available and before any call to pagetable_alloc().
-+ */
-+void kpkeys_hardened_pgtables_init(void);
-+
-+#else /* CONFIG_KPKEYS_HARDENED_PGTABLES */
-+
-+static inline bool kpkeys_hardened_pgtables_enabled(void)
-+{
-+	return false;
-+}
-+
-+static inline bool kpkeys_hardened_pgtables_early_enabled(void)
-+{
-+	return false;
-+}
-+
-+static inline void kpkeys_hardened_pgtables_init(void) {}
-+
-+#endif /* CONFIG_KPKEYS_HARDENED_PGTABLES */
-+
- #endif /* _LINUX_KPKEYS_H */
-diff --git a/include/linux/kpkeys_types.h b/include/linux/kpkeys_types.h
-index 9de59092e9c3..09f15a9565cf 100644
---- a/include/linux/kpkeys_types.h
-+++ b/include/linux/kpkeys_types.h
-@@ -8,10 +8,15 @@
- #include <asm/kpkeys_types.h>
- #endif
+ static inline void kpkeys_hardened_pgtables_init(void) {}
  
-+#ifndef KPKEYS_PKEY_PGTABLES
-+#define KPKEYS_PKEY_PGTABLES	1
-+#endif
-+
- #if defined(CONFIG_ARCH_HAS_KPKEYS) && !defined(__ASSEMBLY__)
- 
- enum kpkeys_ctx {
- 	KPKEYS_CTX_DEFAULT = 0,
-+	KPKEYS_CTX_PGTABLES,
- 	KPKEYS_CTX_COUNT,
- };
- 
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 55e6763d5792..21bd3e550de8 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1283,6 +1283,9 @@ config ARCH_HAS_PKEYS
- 	bool
- config ARCH_HAS_KPKEYS
- 	bool
-+config ARCH_HAS_KPKEYS_HARDENED_PGTABLES
-+	bool
-+	depends on ARCH_HAS_KPKEYS
- 
- config ARCH_USES_PG_ARCH_2
- 	bool
-diff --git a/mm/Makefile b/mm/Makefile
-index eff9f9e7e061..35982b6efb56 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -147,3 +147,4 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
- obj-$(CONFIG_EXECMEM) += execmem.o
- obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
- obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
-+obj-$(CONFIG_KPKEYS_HARDENED_PGTABLES) += kpkeys_hardened_pgtables.o
-diff --git a/mm/kpkeys_hardened_pgtables.c b/mm/kpkeys_hardened_pgtables.c
-new file mode 100644
-index 000000000000..4c654e0cf585
---- /dev/null
-+++ b/mm/kpkeys_hardened_pgtables.c
-@@ -0,0 +1,16 @@
-+// SPDX-License-Identifier: GPL-2.0-only
+ #endif /* CONFIG_KPKEYS_HARDENED_PGTABLES */
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 485df9c2dbdd..eea3131786b3 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -37,6 +37,7 @@
+ #include <linux/bitmap.h>
+ #include <linux/bitops.h>
+ #include <linux/iommu-debug-pagealloc.h>
 +#include <linux/kpkeys.h>
-+#include <linux/mm.h>
+ 
+ struct mempolicy;
+ struct anon_vma;
+@@ -3682,7 +3683,12 @@ static inline bool ptdesc_test_kernel(const struct ptdesc *ptdesc)
+  */
+ static inline struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int order)
+ {
+-	struct page *page = alloc_pages_noprof(gfp | __GFP_COMP, order);
++	struct page *page;
 +
-+#include <kunit/visibility.h>
-+
-+__ro_after_init DEFINE_STATIC_KEY_FALSE(kpkeys_hardened_pgtables_key);
-+EXPORT_SYMBOL_IF_KUNIT(kpkeys_hardened_pgtables_key);
-+
-+void __init kpkeys_hardened_pgtables_init(void)
++	if (kpkeys_hardened_pgtables_enabled())
++		page = kpkeys_pgtable_alloc(gfp | __GFP_COMP, order);
++	else
++		page = alloc_pages_noprof(gfp | __GFP_COMP, order);
+ 
+ 	return page_ptdesc(page);
+ }
+@@ -3691,8 +3697,12 @@ static inline struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int orde
+ static inline void __pagetable_free(struct ptdesc *pt)
+ {
+ 	struct page *page = ptdesc_page(pt);
++	unsigned int order = compound_order(page);
+ 
+-	__free_pages(page, compound_order(page));
++	if (kpkeys_hardened_pgtables_enabled())
++		kpkeys_pgtable_free(page, order);
++	else
++		__free_pages(page, order);
+ }
+ 
+ #ifdef CONFIG_ASYNC_KERNEL_PGTABLE_FREE
+diff --git a/mm/kpkeys_hardened_pgtables.c b/mm/kpkeys_hardened_pgtables.c
+index 4c654e0cf585..eca798207107 100644
+--- a/mm/kpkeys_hardened_pgtables.c
++++ b/mm/kpkeys_hardened_pgtables.c
+@@ -1,12 +1,59 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ #include <linux/kpkeys.h>
+ #include <linux/mm.h>
++#include <linux/set_memory.h>
+ 
+ #include <kunit/visibility.h>
+ 
+ __ro_after_init DEFINE_STATIC_KEY_FALSE(kpkeys_hardened_pgtables_key);
+ EXPORT_SYMBOL_IF_KUNIT(kpkeys_hardened_pgtables_key);
+ 
++static int set_pkey_pgtable(struct page *page, unsigned int nr_pages)
 +{
-+	if (!kpkeys_supported())
-+		return;
++	unsigned long addr = (unsigned long)page_address(page);
++	int ret;
 +
-+	static_branch_enable(&kpkeys_hardened_pgtables_key);
++	ret = set_memory_pkey(addr, nr_pages, KPKEYS_PKEY_PGTABLES);
++
++	WARN_ON(ret);
++	return ret;
 +}
-diff --git a/security/Kconfig.hardening b/security/Kconfig.hardening
-index 6923036e1a2f..bb75b580b7f1 100644
---- a/security/Kconfig.hardening
-+++ b/security/Kconfig.hardening
-@@ -271,6 +271,18 @@ config BUG_ON_DATA_CORRUPTION
- 
- 	  If unsure, say N.
- 
-+config KPKEYS_HARDENED_PGTABLES
-+	bool "Harden page tables using kernel pkeys"
-+	depends on ARCH_HAS_KPKEYS_HARDENED_PGTABLES
-+	help
-+	  This option makes all page tables mostly read-only by
-+	  allocating them with a non-default protection key (pkey) and
-+	  only enabling write access to that pkey in routines that are
-+	  expected to write to page table entries.
 +
-+	  This option has no effect if the system does not support
-+	  kernel pkeys.
++static int set_pkey_default(struct page *page, unsigned int nr_pages)
++{
++	unsigned long addr = (unsigned long)page_address(page);
++	int ret;
 +
- endmenu
- 
- config CC_HAS_RANDSTRUCT
++	ret = set_memory_pkey(addr, nr_pages, 0);
++
++	WARN_ON(ret);
++	return ret;
++}
++
++struct page *kpkeys_pgtable_alloc(gfp_t gfp, unsigned int order)
++{
++	struct page *page;
++	int ret;
++
++	page = alloc_pages_noprof(gfp, order);
++	if (!page)
++		return page;
++
++	ret = set_pkey_pgtable(page, 1 << order);
++	if (ret) {
++		__free_pages(page, order);
++		return NULL;
++	}
++
++	return page;
++}
++
++void kpkeys_pgtable_free(struct page *page, unsigned int order)
++{
++	set_pkey_default(page, 1 << order);
++	__free_pages(page, order);
++}
++
+ void __init kpkeys_hardened_pgtables_init(void)
+ {
+ 	if (!kpkeys_supported())
 
 -- 
 2.51.2
