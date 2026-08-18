@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2D86C5DF86
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 17:25:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FA85C5DF7D
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 17:25:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C47656B018E; Tue, 18 Aug 2026 13:25:20 -0400 (EDT)
+	id 84F306B0734; Tue, 18 Aug 2026 13:25:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD2A26B0734; Tue, 18 Aug 2026 13:25:20 -0400 (EDT)
+	id 8008C6B0735; Tue, 18 Aug 2026 13:25:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9A886B0735; Tue, 18 Aug 2026 13:25:20 -0400 (EDT)
+	id 67CCF6B0737; Tue, 18 Aug 2026 13:25:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DB806B018E
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:25:20 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0F2FFA26FB
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 17:25:20 +0000 (UTC)
-X-FDA: 85115066400.14.F174BEB
+	by kanga.kvack.org (Postfix) with ESMTP id 324156B0734
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:25:45 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A26671401D5
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 17:25:44 +0000 (UTC)
+X-FDA: 85115067408.19.9B8EA22
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 40B1E80003
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 17:25:18 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HHYuHZuq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id D2CA7160008
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 17:25:42 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KKnREi4q;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787073918;
+	s=arc-20220608; t=1787073942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AShWrs852J7IkStssEoEst3JiywPYlSikQUVe7RTkRk=;
-	b=Ugj0tOXbdqm/5mTxrmLuctg5/SBh8Co+DObKelGUq1if7osrLuq1Cjj46yOqI7ZNq4gPtF
-	YtHjq5gsz48aGBqKB9f7noL1ndK70PXtuMx6ALc+bXlxhA2QFnAhDaOHtbHNnd8WQ3MMGi
-	b4opSN8/c6Z31swRV+GLEdZRHY75cFw=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HHYuHZuq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=/tRX5gadGxF2TDYvvyHApdMb0Nud4dCL15xxVLvrQqs=;
+	b=ieC6VsPQkJJEDNuoMMV+rSQzERre4I09KUd3uzXiSBQqtvD3p5NekqkG/5PrVQIevvxA1i
+	xTkNAA43BcPDl0TUS8Sl6PPQObo0r3EkcU2A8WcsoyJ8nwMObZOAVi7Haa3pTLF3aTYPgK
+	q8lYqQYYJRZ2LK7CX/jcmcUL6iia/b0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787073918;
-	b=4tf1D90JMnToSXRqG91VYq8nxjPFP3VMuWXE8O/72SNsBjW4rYkdzANN9Sk2FpakQqU6p6
-	s86IELmsIq3dhHcWbaSPdeZvEl2pVmN/eS6t6XypnPO7jDlgSns/Y5Erq1NcZ4UqarmzX6
-	XdtsGoUM5plL6H1Y+nzfkS9lxNBLbTQ=
+	t=1787073942;
+	b=hV5EkMBzvS6UV9bE5+Si+jaUafSsH9CWgJU8ttqGTN6RBlSQbcZ/nH/UbwKCdxKOOQeVBw
+	x8PRSoIvwkbhKZqDJzaFk9MEfo2mTIuV2deEDhDYEvYCgNrCONe7UDQb8Cgb69iHaNGuOx
+	J4B7gQ7lApttKKFJ35BmG+fGy5iv1Fw=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KKnREi4q;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7C14943F63;
-	Tue, 18 Aug 2026 17:25:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A28E1F00A3A;
-	Tue, 18 Aug 2026 17:25:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1BAC0434E2;
+	Tue, 18 Aug 2026 17:25:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5371F000E9;
+	Tue, 18 Aug 2026 17:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787073917;
-	bh=AShWrs852J7IkStssEoEst3JiywPYlSikQUVe7RTkRk=;
+	s=k20260515; t=1787073942;
+	bh=/tRX5gadGxF2TDYvvyHApdMb0Nud4dCL15xxVLvrQqs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HHYuHZuq5zMXG+8OeZcsNEd1kunHyn8X+QRRdpazCD+PrQnY2MD+Ve9C7MoKwru4x
-	 dbBzkW2cGWbBN3m3D8evXSCxOc8q2AyH3nSXNiWo+xrK2TdFxAIivDqioG1XAtwxtF
-	 aMCegUXmfY55bD/l0MdwxRF/+47ynTjAj26vHT4KSJZRH0qcQ7HSLgqNnkGJ4K3+/W
-	 crGr6GNfZ3DAGAYgRt1N7RBfRYxh3dfuxofB0XlSNCLCsppsmpUwmMlxXD5gurFGnn
-	 9/OAXbxSo02M2icN//fOoDQwicorrXfhbp04ZPJhViHl6uwc6nkSncuJyuWweMLpgg
-	 uyhaHGoSxMwtA==
-Message-ID: <55d92b3e-ad3f-464f-b2db-a2552353223e@kernel.org>
-Date: Tue, 18 Aug 2026 19:25:07 +0200
+	b=KKnREi4qVhs1cPQdDtJRXNlNIIncHan3KC3+WcJvTRXesZ3TH9rRU+AWP9o/oNQFs
+	 84EN3gCly/2lP52XrRxXa1qYmuDx9pw6ENIhBrPcvWTYd0pbpgmxCS0C+tcYK8+4C3
+	 ET/WibVzGpu1HEF0tcPFrhW973ScvbeeQjiUrk/GaODsKh8hTeTIhJpKjwg7vWSh1F
+	 G87Nz/h1O/fLChNcDf4BKW2aleDSySJSp6StLJjzJ+pM5Yjter/WD50Dh3WNP/GnV3
+	 59faTBhguy6JJXCyJpd6kTBJVxLJPOHtnW1HjFbm02talOyJARmlStEWzG7OXfrxqt
+	 aqVzSoiBKdy5Q==
+Message-ID: <a467da8f-7a84-47c0-8172-4f2e23093f79@kernel.org>
+Date: Tue, 18 Aug 2026 19:25:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V3 1/8] mm: Make ptrval_to_str() generally available
+Subject: Re: [RFC V3 2/8] mm: Stop using pxd_ERROR()
 To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
  akpm@linux-foundation.org
 Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
@@ -86,7 +86,7 @@ Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
  linux-um@lists.infradead.org, linux-arch@vger.kernel.org,
  linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>
 References: <20260818040041.1891769-1-anshuman.khandual@arm.com>
- <20260818040041.1891769-2-anshuman.khandual@arm.com>
+ <20260818040041.1891769-3-anshuman.khandual@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260818040041.1891769-2-anshuman.khandual@arm.com>
+In-Reply-To: <20260818040041.1891769-3-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 40B1E80003
-X-Stat-Signature: 35tmwjmmzbp9o4aax9cznb47i334xjdr
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787073918-502688
-X-HE-Meta: U2FsdGVkX1/BW8XCcRXIjdLRCcGjmmgmUP4Rf+7zHDkp+jANokaeEeqEjVkHOLxZ339+UAqC0XWPcgLQGVeK19Yv+oKOOVCmtZwQ36J2aR3RqjWAnTufqv7/f67472j6gedtl91HtQzOwUQt4QAvpfC0Itza3F+ch1PTQveVFxfE9HZMueiCfwFdItaw5fry+a6NR/QUVZSicqZBzF8XXRXXMKUC9Efts11ozkhxAHtKzwrPiQbLxsVU11HSr9lTpibQ5ibOCB/zoSj4iWp4knxnM2CoSYwCiUOMoifEZV8+hhaUdT1zzV0FZlJRpIe+vzRuuteApDlThHRI0l4JBPlvx3ODEvkT2iuIY+Scrt4EpKjRgs7nl57jVwSz1HUabT/gkNL2pBnL+YZXEcTIrfnw4HoTxDmqVhgGTcFnj39O+acFx4SLfNUB7CWjhffaBSSYNI7GNXJtWP9PprPtCJu0B0bZ9ToDnStcsPF7BJN/SmXUVxPpih+RspLX4dUcqKxZuGVN69nG9/QX6SMl0yMLnpVn5cerhFguLZeATC+iaygdj0sYj82rCY/MD2EhLNeOEirnFIy3yrUqgsmDr4kJ7xSKhfXz/Oy61e7/Z+ygKSfWFVQTfMy/MCp/W+GqZAY3LMdOqqD9vfxaKP1Ue+jv5odv0BaMyTQVFFIU1ttXOagZDO2la5QE4tsxX1AmCnR6+rKbvyfbhFfZlr/H2/WD2YkJStdoTgMcwTAO7m5CGpH5g1ykZvYbVUaDlumuuLLr6YHWmLgFS5bGq2BORbRL3pOgPmOsKvgJqkvS3sOo3vYoBqLiYl7ELK71JwU2dMZ69DO8gmoCJAppAXDqoe2/e+TFiglolXtlkiQbbMw+qdSLnfJ6GefdNqRRI+gnM2bm8JiQAx99QaqjgPdeY07n7FjqiN9eAQ40Y7hBTziC2IUBTLqByNAcJKYZT5nWgYI5ba4p0GEg6DZp7Rx
- c0NW+2IW
- ej2qxIndVYrdLuHYNM73FaEze+qd13z0ZI53bfvmhPmf37HmmyHtEbCWosyq3+ZgRFl8sEB12XTh2/X8s7OWx0Hwy+QkCzClJ647XAzcN8KNKLKvGTT+jNZ7A4tJnDyoac80pO2nb3+XKYhtQFB2wi4RJDf2kdkW3lyf11kVFSQCT1SZmirjcrk5G53SzRxl8YCB0LF/xlKjC6GZzxEAF4Y+hsAzpp8ABv38Fy7NLzR64FQIqts0A63bbXwOYzrksxaNZ2hKd8TXlZu4kcwaEK9KDwk/2GJ/pOcmJWfmbjhWUu5HuKRG6rVgrv4Yg5Dg9poyLhJ75s+JaM7ID3h3Kpz1KJvzAuXtZDHw6ABrfwImLIYn1RsTDxwLAGgkNUE5bPFcY9QZdp9ZmEE4hweVOlcu8upHTO934hsPgUf+J27ZqNwwbYa/XOImq3bOnizs4W/p19NzDxWog2L9c/ZST7sU7Fo0A5TYRUY7ibLkxCIU+un8F0P44p85zMGBKKV9R3Pw1BwDK9XfTH/SojU4kEtsBUkFhfg6xekwrMQWmrkS2N4MSiS+J0gW2UBONvYbiRMmqOjjTMPOWrE4=
+X-Stat-Signature: smyafzoyzy56qtkez6or4q7kohfcnymx
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D2CA7160008
+X-HE-Tag: 1787073942-199294
+X-HE-Meta: U2FsdGVkX1+QHzDNMv7SMAc2rRAyNyU/U9QNtgEbLDR9FwKSe54AssZ6x9lMt7EeBEu22uxF92UTFQkCSW1hUJczyv+Z1mzOlf9DkZ6M+rZwugKKYy01Ay8fZR1NP5VisNU5zILUWrrVgnmKRJWB+aOwRnnJiuTuU8bBxOB8S9C00JtY8QXtlGZECJzdmxmCc6MTM0DBUfoINYe/PcoJZtmOQdbF90rlQpAa4G1UIKIc/AuMWbsYRfZp+IpT7QVwpdhN7lPM9XhoTF+gfQByMmKcPlmIEY0eOIPOt6uXb0MPEcJ4uhh7l49N0EzpxMW7iGq7QLfPT0TGTx8FA818nZFBWkYUj+CcIy6Ru43hSnWhbHBWm8oHfhOXwvS8sJQl5FIkHsy/8m8Z5S8VrU7LfzXQ7BRJxO0Y7TaW7xmnfmB4+oLawzsoEDnQjic+ufHt4cSKbWVus/B+hb6wRds2Ki2a6Cwpnjz49GjoHgI+tfUwjdd/3u++vY9NwhUtAN35At6l96s30pRj+jHruD9d80axpJM8kcYB26QrhDgymCcEWT4xB+nPd3gj8KoVVvsyGHfbO+bDvZ9ex+vi+XPsgj3mQP73eavMyqo6IuPUefS7jy2+37ke0oaR1AZ2acI0tbB8OYLnItEpZWobmOpFvkEqSqA/gcAeYMtbX+xPX/tkfJM9faiDPMX/2xuvHv3z5jHeTZ4SkqiLOeSAw5p3vfFNZUte5Ump/Lk9FXvWKE/lK0FAX7oWu2mEg/V0/H2+h05BM9OLAIPYrUhneEaaQd4N/hrdQR0qTvgDEeE9+wNMdLEyBEEA1peg0XHdZaO+w9oAj4cCsgnO4EhFnGyZdAN22BUsa0yEMRttBGq8YniCDCgRVSWqwtoDZqO7cvoJqAkU133uXYmQrSR++oiKycr6bkU3n3U52yasa/eTF9U5adbvSY4pSWVLDU6bxB4asN0S/LtR3oCYsf9aS8s
+ zCEVrLg8
+ d11QxfxnZrI59XAN5e6z0MZm1QQZRZDCLEBM8e0t7X0nVNOxVXKNxLZe9ZZYMWqBs3A+uXN3uqytqwsaBCNko4Y6cN9sOEVdQr+zTFlqS0XCqy1TY4i8SJOvM2HTba4uXvrlyOhCqWW0w6Yozb6oIxdkfQdzar2Ye811OTwgS2DyKd7GNdyhCytvi1VGbCTQRWKfZaSOYBB64XZC46/32UZtnli/hYm+hBhsumRBOyx3f8FTEAIKu/j7j/pD69MAMoO4Fe5PwHt38YCJEARvNXaZDh0SBMDl3BkfZ3udbBk/LVT6YlRrhHMXW1D33GdGf2MhQvEUjGnfnjDsG6FMQAP4xKJ6YaOk8BSLM0kQntievZ5NVtTCKDsPK3VWk8mrqEZLlG/y01Y06zEDImgIRhKAFQVoeJDcHORpYE8nIs+T/yk9055Pu1cKGo6LQnkcNasS5HzNdPZQ0Ki9jbDCKKugLpQDI891x1XcBmwXV0lWLZr21dC977X7zrbLdwoXO2f+PPMUvLtjhTGsb2XbQwEFTc6WvOzov0a/tHOBTQfeOqvVk0bNFCzfioTFjfRpRK9+JsO6kVJjJjzw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,9 +152,14 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/18/26 06:00, Anshuman Khandual wrote:
-> Move ptrval_to_str() inside a header thus making the helper more generally
-> available for new users which are being added later. While here, also move
-> another related string size macro PTVAL_STR_MAX inside the header as well.
+> pxd_ERROR() has been used in generic mm just to print the page table entry
+> in pxd_clear_bad() before clearing those out with pxd_clear() later. These
+> pxd_ERROR() macros have been provided by all platforms which basically did
+> the same thing.
+> 
+> Make pxd_clear_bad() use recently added ptval_to_str() instead for printing
+> page table entries thus completely dropping dependency on platform provided
+> pxd_ERROR() macros which can then be dropped off later on.
 > 
 > Cc: Andrew Morton <akpm@linux-foundation.org>
 > Cc: David Hildenbrand <david@kernel.org>
@@ -163,9 +168,6 @@ On 8/18/26 06:00, Anshuman Khandual wrote:
 > Cc: linux-kernel@vger.kernel.org
 > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 > ---
-
-I would have placed that into include/linux/pgtable.h. Any particular reason for
-mm_types?
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
