@@ -4,97 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C44C4C5DF67
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 04:25:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 781FDC5DF74
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 04:31:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC5F16B08D6; Tue, 18 Aug 2026 00:25:36 -0400 (EDT)
+	id 8C7916B0394; Tue, 18 Aug 2026 00:31:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D50306B08D7; Tue, 18 Aug 2026 00:25:36 -0400 (EDT)
+	id 89FDB6B0395; Tue, 18 Aug 2026 00:31:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C176A6B08D8; Tue, 18 Aug 2026 00:25:36 -0400 (EDT)
+	id 78E556B0397; Tue, 18 Aug 2026 00:31:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9888F6B08D6
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:25:36 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B7B25409AD
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 04:25:35 +0000 (UTC)
-X-FDA: 85113101430.05.8BC39AD
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 402FA100004
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 04:25:33 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=UXu1DPck;
-	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5877F6B0394
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:31:53 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CCB2540A85
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 04:31:52 +0000 (UTC)
+X-FDA: 85113117264.04.F6F0CA2
+Received: from mta1.migadu.com (out-100.mta1.migadu.com [95.215.58.100])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A0F4110000B
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 04:31:50 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eJ0sYUFh;
+	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.100 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787027134;
-	b=jo9SpX12AG2rTiKPe3sAsFL56cQq3I8FqDkGzgNzKHPy/aPhVSEgFo6jYGEnZYQfXAaRyu
-	KY7XS9HlzISk+F/+wAPAFLIKAPxD2Qrz5HRPU7Z8GHFKi0suQKS4V3dVddNf1JxLESF1NL
-	kGz4AVqoPTe18XYH3eg71nbfFsV3Cys=
+	t=1787027511;
+	b=36DrL0bBTl5H9O7E7OSDraSF0Qn1gPLBIBdUjLEkVWzZpOrJmUoGHzsO7zQOHCfp6Bi4Me
+	S4wfuagkJzV6Aehm9WE4a2rp2TVXCCKf80sus7EdLnTwgRMlC9N0sPoqfFT6d7HL5C9qU2
+	o1+qLOsEtIIz+qmIFADOiO+s/ycsiSk=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=UXu1DPck;
-	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eJ0sYUFh;
+	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.100 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787027134;
+	s=arc-20220608; t=1787027511;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=g7K5Z2kIVByKPZBdJMoYY9k8A5aVS0m63ocgv431RcU=;
-	b=nsZ7L+qzhUorHPlv9C4Wx1Kw4wV1j9YSfIWBhdYvE/qxnMy5Qrf0iSyTcvUpvE9y435tKb
-	tFKKvO4s0KVOK77s37WBTSy0KwXbe5wqOZFDr951bPlxAsN8BlfLKge280R4TaLZxaSQbF
-	mvV4ITEzD9qwTrwz56GUSRfSoBniLYY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787027133; x=1818563133;
-  h=date:from:to:cc:subject:message-id;
-  bh=AKfeuVMoPY1cuCSdmz85r2TT8nmwjetbFVFMFfAEzDs=;
-  b=UXu1DPcksb6KsIVI8JleSUpOvayYjE5Ao3siRSplLWMYxZekd5L53ZFm
-   fWlu35xTUh/VBP5YLA3t3f5oinfC4WDREd+2kRDO7Sms+w5E+Ukgl/K6z
-   /3D90wsx90nMBesdBnzHPNjz4N2LwqDU7MN7IoXU+AQl+dIIEs+YZaNI0
-   U1XizV1aA2wu83MxRzrvKfmtFskSHmGmf86s1zegHRbg3+p0Kl7jOy+7U
-   4Ho41NrvT+2ErXHcX5FgGhwjN1hwAAGGWDo9e5oJFpjZyrGOJdopeQV1h
-   9GEIMUyr/S4ykVQjHyy3rQ84lHptVPSO7ig9NUwVxgnidOqOaCZrJaC/h
-   A==;
-X-CSE-ConnectionGUID: iUL+2agKRS2PpH+53OE5Fw==
-X-CSE-MsgGUID: 5cKH/H+HTdqw+vGIntH94Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11878"; a="86626843"
-X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
-   d="scan'208";a="86626843"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 21:25:32 -0700
-X-CSE-ConnectionGUID: dVJfKGo5RmuomVQZdebHIQ==
-X-CSE-MsgGUID: hQ+Ex7iwS1KuYgbCW5FNyw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
-   d="scan'208";a="264668673"
-Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 17 Aug 2026 21:25:31 -0700
-Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wwBOB-00000000e6g-3E97;
-	Tue, 18 Aug 2026 04:25:27 +0000
-Date: Tue, 18 Aug 2026 12:24:58 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org
-Subject: [akpm-mm:mm-new] BUILD SUCCESS
- 4b65683fd25fe596b5b5947d934bb176413d077b
-Message-ID: <202608181245.wv1B7pIh-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gk0ZehlrJSadol57C4ISMKAtZvepnSELO6PZTCv8qK0=;
+	b=Mf1S87U6uPqX1Ku0hdzFtVCFdil9Y1UZX62qZTYO39cfPgweSlNqJWmoJx0vQCWYvr0oDq
+	aGAGudAxx5wAlL7eBWPtwaDdfnHGFPPJNlC1G0QeSBcbwzPCd61zP4c2eWXNMFgDeSibKn
+	vHulcyJWtwwWU98OaxNKTSAXzwJwT5M=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=b2qJdvQbeH43yX00jUqynKJ+7oIe65NCighffZRb504=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787027508; v=1; x=1787632308;
+ b=eJ0sYUFhhZAuNKTQ/qzhVQzv//0wCF3uo5zIDptKyc4TkCe2wAVOR7+S/zUqC+D4Pfp0ptqn
+ Oxavt8bxxgp9Di83cX4p3PyOdnaQ0xQtrbCd+CmoGDeJHUkK+3HPsXG6iV5x0MJjGHyyHRrxIdj
+ 7pwE9FAkyMc9LqHbMDNE8qgg=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (2602:fce1:44f:115e::)
+	by smtp.migadu.com with ESMTPS id 64c7aa18bce6ebfa;
+	Tue, 18 Aug 2026 04:31:48 +0000
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: gourry@gourry.net
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	usama.arif@linux.dev,
+	vbabka@kernel.org,
+	jannh@google.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	balbirs@nvidia.com,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v2 0/3] mm: reject zone device folios in more folio walkers
+Date: Tue, 18 Aug 2026 12:31:43 +0800
+Message-Id: <20260818043143.22297-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20260817220810.1175596-1-gourry@gourry.net>
+References: <20260817220810.1175596-1-gourry@gourry.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A0F4110000B
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 402FA100004
-X-Stat-Signature: 5fugk11wq4ss8f3663nf6ufi7jx7t4ha
-X-HE-Tag: 1787027133-208275
-X-HE-Meta: U2FsdGVkX1+BhZNCOzCbC98n00We58g+cim9AB6fBb216gTBj9duESdMEfHZ6xC17ji9qMGcXACiLaUHhqUkF8/5jNl1POAFc+1V0juaYNJQ09bO910lMTb5GvYD4MzX6kQJUoCWEANYX4BQ7yMCGjsbzs6V1l19WwL60eEAKQpjG40cXEf8oMKFqoR0q077FdWAzE507PW5/cb98+G6a3E1zMlBETkTpmvt11vXyz0+p5cJl7QJxCshyGYjDfjF+D+buOW3d5EdhtAmbHMYvuf8lRNX/CHY8u9Vbzadh6nH+iwQELFBLk1EXsPX1Mz3+Mo731F1FnNf45y7If++pJkqXwutpeWQOebjxD8f7m8KXFUGCfHjY8ma0f0AZQBnurJkpfIjZ9fula9Z16RrMnwhSd9wYOeiZXW5f+8d9blfkrB1G/h9fL6OpzeRbMcIYyyLepodX/87P0k+g0u7il67rIl/IVDiMvF9BMfzPrmRhp8Dh/PcGqzsJNPqefIYPpvN1YuY0Z/KL7SO1iKtI6fvAmhapI3uaGWpFvoqI32i4jVAd9UMRbSqhE2qcWjromngzssDywuDVM4Hv4kvbcaPIq4hXojnwvzkDfjEBw7G+ioUXKzgse5JyLpKZnmBSaxlzMtbislYrtmR/uiQPiyl0/iEHZZSoabhbamXPcqnI3/cCvleAf/m8OVw7mmRlOSEIcPuE0+CPLituacNYloNHMoXrtJET2lDb1BQrtgKmO+d9hrjSj1uRzhY0Q9omjeH2VOkL869nLlMYdCQ0cHgGeDyRMWTWPHx7QkemS0059fuMSFiJDzbIYFbr2yqRGZE385cqAtQ6Bz62nfpLgyYD3+t4IaZs5/oeCmczuwHI/OvG3XT0KuWCOtbei0+Qw489WkfYosJUzoOWCzlRbr/FCHvZTLP287n0RuVieGycVtJTNHVw1TXk5B1PitAbWMj1hbRUYQ28lIXqWD
- JF6murl4
- btGZPFTD/JNnLXNixEOh3p7A2UVvz/1my+5ihhYcpVvh+F/reKKtix6ctdBggDbSysy/soVQRJ32qeJAblKooT6xGM/TCIn856cisUc7/H6ZN/f6b8qZ9t2DRZtWlTvC6h4naUJpVqJz8WmOhQMJHxG6pGD23FD3Qq6HHKNptgBtspKY+f8uJwUbQfTqVf/M0NJ7/JmjvqXmxCCM=
+X-Stat-Signature: sf1o7we8zic3hpbyggacs3mdjbx5qtnu
+X-HE-Tag: 1787027510-981517
+X-HE-Meta: U2FsdGVkX19roRMRl+XCtRCGGsvYaBy/HrpX8uTbrwPKDoR3ANFT9nzqV0oE5fD2cqR6e2wtTOlTWPo+zchGT5Xq7Gwkmu13Adr6GImLBlcctmYL/7deLIENKPubpbiotEfz7V/J8p74kddlWZ8si60b7SPNprM4XnwtHHIZgstCUz6t7PWEo5S5DMj3iX+jaRuJf1yvPgvVbuyAcudMV7u9YfdZpFxRnx4mg1+6zvylKw8bj8zqFQCxaBY1rMB4wQr5xrhwDiFzvjA8bazV1HQ/lS/eBPN0mOMXCD/leMciWhwYVflxwzMnl3wFEBtc8SKqaBYD+9yBCL32GWO8XpKlD6hW7N5/8S8cgsWyfIB4s8qxmsERL5rfJvcFBSWeWasXCKFa6VGdHkCb4arNsysflZWyyVZGIrhUowDVP86KRkBhGwNPOKN7MC9f5VFYW+gN9t7kY+GYZWuhBbCBZnuZSWjjo9HdCVf4BzsHSHt4LgbRPcz0+v2x7Ewdnt1V4wmRIRLhOXUkabFFGeVicCFIJr0lprtRKpoUrq/rnJN3C0vWEmUo+ymUIxSEShLk1/zjH/QNsw7ZBipnqxM8/kHoSGSe1muWSrbcTeeycgXn7SBT4ImrMxxyNQ6eUkJY/aXn5ycdJbgLWpquLg60MqQCBB1ImWM7DlNvClmwvI9ZQSB3B0OL8N2cyFjVXyTtQg03fClBRn08IshxqnbmAe/w9QvLTQcAGG5ABhma8nzU5D4NCQNEt0cgMU+dyDG+r8sj/SkWRahuwdojjUbda+czQhYglDc6rpbb6MUkkqCUe+xGaSkpJIBWXQx4se709iKcqi6D3vNSXK7gfXBCS88XWmp1DWgkxv5hEIrS8KLevtFDUiYttnTkhK6eMPVQG2SM1K8lbmLqaU62dK5VWo3ufPDuivCVhWvheYq/XGzFBY93HOE+/LMxWyx5/qNn2eENQYxRoqXoIqb2hXF
+ 37C6r4GW
+ Mg4VMp/pDAWX9rLhnA2EaXNp9wDcLk00Ok7ZOpwt167SBLa/iFQL91nMpB6VSqp3e+z0TUhHHLcWVRuNEwo8868e86ounbZFwwYT643pil6RiosCMLLxiUypbcrir8OFYGhzZANxeS2+v96uBGrv73hU3H97THJsKlLHcBaCX1KOtkCUdpmQubb0MFv7PH5VJG/sXVRoIO0PTrcGEsFdGMN2l6n3fZ0pQE3lGpJ6rohFtcKm30zc9irADolLmpespZA01sgPi9vKcJl+5cF1GxHFGIrK4lAL8HseSJcms9zBIetjZ9vsQN0a9vtOaryLQHJEOYBomDfwSz6eXusH9MQlXnTuZArqICfCjU73BJeJIUUs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,185 +112,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-branch HEAD: 4b65683fd25fe596b5b5947d934bb176413d077b  mm/swap, PM: hibernate: atomically replace hibernation pin
 
-elapsed time: 2072m
+On Mon, Aug 17, 2026 at 06:08:07PM -0400, Gregory Price wrote:
+>Several LRU-oriented mm walkers resolve the folio backing a PMD entry
+>(or a physical pfn) and then reclaim, age, migrate, or lazyfree it
+>without ever checking for ZONE_DEVICE memory.
+>
+>This series adds missing folio_is_zone_device() rejections, matching
+>the checks that comparable walkers already perform.
+>
+>- mm/huge_memory, mm/madvise: the !pmd_present branch above these sites
+>  only filters device-private entries (which are non-present).
+>
+>  A present zone device PMD (e.g. device-coherent) would still reach the
+>  folio and be lazyfreed / aged / paged out. Add an explicit check.
+>
+>- mm/mempolicy: queue_folios_pmd() can see a present zone device PMD
+>  (e.g. device-coherent) and queue it for migration.
+>
+>No crash reproducer - this is a correctness/hardening cleanup found by
+>inspection. All checks are placed after the folio is resolved and before
+>it is acted upon, on paths that already hold the relevant page-table lock,
+>so no locking or refcount changes are involved.
 
-configs tested: 165
-configs skipped: 0
+Cool!
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Gave the whole series a spin on x86_64 QEMU with a PMD-mapped
+device-coherent THP. Without these patches, partial MADV_FREE and
+MADV_COLD reliably hit a kernel panic in remove_migration_pte(), while
+mbind(MPOL_MF_MOVE | MPOL_MF_STRICT) returned -EIO.
 
-tested configs:
-alpha                            allnoconfig    gcc-16.1.0
-alpha                           allyesconfig    gcc-16.1.0
-alpha                              defconfig    gcc-16.1.0
-arc                             allmodconfig    gcc-16.1.0
-arc                             allyesconfig    gcc-16.1.0
-arc                           randconfig-001    gcc-8.5.0
-arc                  randconfig-001-20260817    gcc-8.5.0
-arc                  randconfig-002-20260817    gcc-15.2.0
-arc                  randconfig-002-20260817    gcc-8.5.0
-arc                          tb10x_defconfig    gcc-16.1.0
-arm                        at91_dt_defconfig    clang-17
-arm                  randconfig-001-20260817    clang-24
-arm                  randconfig-001-20260817    gcc-8.5.0
-arm                  randconfig-002-20260817    clang-24
-arm                  randconfig-002-20260817    gcc-8.5.0
-arm                  randconfig-003-20260817    gcc-11.5.0
-arm                  randconfig-003-20260817    gcc-8.5.0
-arm                  randconfig-004-20260817    clang-24
-arm                  randconfig-004-20260817    gcc-8.5.0
-arm64                         randconfig-001    gcc-14.3.0
-arm64                randconfig-001-20260817    gcc-11.5.0
-arm64                randconfig-001-20260817    gcc-13.4.0
-arm64                randconfig-001-20260818    gcc-14.3.0
-arm64                randconfig-002-20260817    gcc-11.5.0
-arm64                randconfig-002-20260818    gcc-14.3.0
-arm64                randconfig-003-20260817    clang-17
-arm64                randconfig-003-20260817    gcc-11.5.0
-arm64                randconfig-003-20260818    gcc-14.3.0
-arm64                randconfig-004-20260817    clang-24
-arm64                randconfig-004-20260817    gcc-11.5.0
-arm64                randconfig-004-20260818    gcc-14.3.0
-csky                            allmodconfig    gcc-16.1.0
-csky                 randconfig-001-20260817    gcc-11.5.0
-csky                 randconfig-001-20260818    gcc-14.3.0
-csky                 randconfig-002-20260817    gcc-11.5.0
-csky                 randconfig-002-20260817    gcc-13.4.0
-csky                 randconfig-002-20260818    gcc-14.3.0
-hexagon              randconfig-001-20260817    clang-24
-hexagon              randconfig-001-20260817    gcc-8.5.0
-hexagon              randconfig-001-20260818    gcc-10.5.0
-hexagon              randconfig-002-20260817    clang-24
-hexagon              randconfig-002-20260817    gcc-8.5.0
-hexagon              randconfig-002-20260818    gcc-10.5.0
-i386                            allmodconfig    gcc-14
-i386                buildonly-randconfig-001    gcc-12
-i386       buildonly-randconfig-001-20260817    gcc-12
-i386       buildonly-randconfig-002-20260817    gcc-12
-i386       buildonly-randconfig-002-20260817    gcc-14
-i386       buildonly-randconfig-003-20260817    gcc-12
-i386       buildonly-randconfig-004-20260817    gcc-12
-i386       buildonly-randconfig-004-20260817    gcc-14
-i386       buildonly-randconfig-005-20260817    clang-22
-i386       buildonly-randconfig-005-20260817    gcc-12
-i386       buildonly-randconfig-006-20260817    gcc-12
-i386       buildonly-randconfig-006-20260817    gcc-14
-i386                 randconfig-001-20260817    gcc-14
-i386                 randconfig-002-20260817    gcc-14
-i386                 randconfig-003-20260817    gcc-14
-i386                 randconfig-004-20260817    gcc-14
-i386                 randconfig-005-20260817    gcc-14
-i386                 randconfig-006-20260817    gcc-14
-i386                 randconfig-007-20260817    clang-22
-i386                 randconfig-007-20260817    gcc-14
-i386                 randconfig-011-20260817    clang-22
-i386                 randconfig-011-20260817    gcc-13
-i386                 randconfig-012-20260817    clang-22
-i386                 randconfig-013-20260817    clang-22
-i386                 randconfig-013-20260817    gcc-14
-i386                 randconfig-014-20260817    clang-22
-i386                 randconfig-014-20260817    gcc-14
-i386                 randconfig-015-20260817    clang-22
-i386                 randconfig-016-20260817    clang-22
-i386                 randconfig-017-20260817    clang-22
-i386                 randconfig-017-20260817    gcc-14
-loongarch                          defconfig    clang-24
-loongarch            randconfig-001-20260817    clang-24
-loongarch            randconfig-001-20260817    gcc-8.5.0
-loongarch            randconfig-001-20260818    gcc-10.5.0
-loongarch            randconfig-002-20260817    clang-18
-loongarch            randconfig-002-20260817    gcc-8.5.0
-loongarch            randconfig-002-20260818    gcc-10.5.0
-mips                        db1xxx_defconfig    clang-24
-nios2                           allmodconfig    gcc-11.5.0
-nios2                            allnoconfig    gcc-11.5.0
-nios2                randconfig-001-20260817    gcc-8.5.0
-nios2                randconfig-001-20260818    gcc-10.5.0
-nios2                randconfig-002-20260817    gcc-8.5.0
-nios2                randconfig-002-20260818    gcc-10.5.0
-parisc                          allmodconfig    gcc-16.1.0
-parisc                          allyesconfig    gcc-16.1.0
-parisc                             defconfig    gcc-16.1.0
-parisc                        randconfig-001    gcc-13.4.0
-parisc               randconfig-001-20260817    gcc-12.5.0
-parisc               randconfig-001-20260817    gcc-13.4.0
-parisc               randconfig-001-20260818    clang-24
-parisc               randconfig-002-20260817    gcc-13.4.0
-parisc               randconfig-002-20260817    gcc-8.5.0
-parisc               randconfig-002-20260818    clang-24
-powerpc                     arches_defconfig    gcc-16.1.0
-powerpc              randconfig-001-20260817    gcc-13.4.0
-powerpc              randconfig-001-20260817    gcc-8.5.0
-powerpc              randconfig-001-20260818    clang-24
-powerpc              randconfig-002-20260817    clang-19
-powerpc              randconfig-002-20260817    gcc-13.4.0
-powerpc              randconfig-002-20260818    clang-24
-powerpc64            randconfig-001-20260817    gcc-13.4.0
-powerpc64            randconfig-001-20260818    clang-24
-powerpc64            randconfig-002-20260817    clang-24
-powerpc64            randconfig-002-20260817    gcc-13.4.0
-powerpc64            randconfig-002-20260818    clang-24
-riscv                randconfig-001-20260817    gcc-10.5.0
-riscv                randconfig-001-20260817    gcc-13.4.0
-riscv                randconfig-002-20260817    gcc-10.5.0
-riscv                randconfig-002-20260817    gcc-11.5.0
-s390                 randconfig-001-20260817    clang-17
-s390                 randconfig-001-20260817    gcc-10.5.0
-s390                 randconfig-002-20260817    gcc-10.5.0
-sh                                 defconfig    gcc-16.1.0
-sh                   randconfig-001-20260817    gcc-10.5.0
-sh                   randconfig-001-20260817    gcc-15.2.0
-sh                   randconfig-002-20260817    gcc-10.5.0
-sh                   randconfig-002-20260817    gcc-9.5.0
-sparc                randconfig-001-20260817    gcc-16.1.0
-sparc                randconfig-002-20260817    gcc-8.5.0
-sparc64              randconfig-001-20260817    gcc-10.5.0
-sparc64              randconfig-002-20260817    gcc-16.1.0
-um                   randconfig-001-20260817    clang-24
-um                   randconfig-002-20260817    clang-17
-x86_64     buildonly-randconfig-001-20260817    clang-22
-x86_64     buildonly-randconfig-001-20260817    gcc-14
-x86_64     buildonly-randconfig-002-20260817    clang-22
-x86_64     buildonly-randconfig-002-20260817    gcc-14
-x86_64     buildonly-randconfig-003-20260817    gcc-14
-x86_64     buildonly-randconfig-004-20260817    gcc-14
-x86_64     buildonly-randconfig-005-20260817    clang-22
-x86_64     buildonly-randconfig-005-20260817    gcc-14
-x86_64     buildonly-randconfig-006-20260817    clang-22
-x86_64     buildonly-randconfig-006-20260817    gcc-14
-x86_64                                 kexec    clang-22
-x86_64               randconfig-001-20260817    clang-22
-x86_64               randconfig-002-20260817    clang-22
-x86_64               randconfig-002-20260817    gcc-14
-x86_64               randconfig-003-20260817    clang-22
-x86_64               randconfig-003-20260817    gcc-14
-x86_64               randconfig-004-20260817    clang-22
-x86_64               randconfig-004-20260817    gcc-14
-x86_64               randconfig-005-20260817    clang-22
-x86_64               randconfig-006-20260817    clang-22
-x86_64               randconfig-011-20260817    clang-22
-x86_64               randconfig-012-20260817    clang-22
-x86_64               randconfig-013-20260817    clang-22
-x86_64               randconfig-013-20260817    gcc-14
-x86_64               randconfig-014-20260817    clang-22
-x86_64               randconfig-015-20260817    clang-22
-x86_64               randconfig-016-20260817    clang-22
-x86_64               randconfig-016-20260817    gcc-14
-x86_64               randconfig-071-20260817    clang-22
-x86_64               randconfig-072-20260817    clang-22
-x86_64               randconfig-073-20260817    gcc-14
-x86_64               randconfig-074-20260817    clang-22
-x86_64               randconfig-075-20260817    clang-22
-x86_64               randconfig-076-20260817    clang-22
-x86_64                          rhel-9.4-bpf    gcc-14
-xtensa               randconfig-001-20260817    gcc-8.5.0
-xtensa               randconfig-002-20260817    gcc-12.5.0
+With v2, all three worked fine, PMD mapping stayed intact, and data
+checked out :)
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Note that both kernels used the same small change to the in-kernel HMM
+test driver, allowing its coherent device memory to be allocated as 2 MB
+folios so the PMD-mapped test case could be exercised.
+
+Tested-by: Lance Yang <lance.yang@linux.dev>
 
