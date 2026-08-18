@@ -4,95 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36E61C5DF70
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 07:00:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BE59C5DF67
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 07:05:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 060AB6B01F3; Tue, 18 Aug 2026 03:00:30 -0400 (EDT)
+	id 1A1CF6B08B6; Tue, 18 Aug 2026 03:05:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 011B56B07E9; Tue, 18 Aug 2026 03:00:29 -0400 (EDT)
+	id 154676B08C6; Tue, 18 Aug 2026 03:05:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E69006B08BF; Tue, 18 Aug 2026 03:00:29 -0400 (EDT)
+	id 0420A6B08CB; Tue, 18 Aug 2026 03:05:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C3B906B01F3
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:00:29 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 41F811C1F9B
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:00:29 +0000 (UTC)
-X-FDA: 85113491778.27.73EE6D8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A3BCC1A0010
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:00:27 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OE4I8Vjx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D16C36B08B6
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:05:06 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6C060A3018
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:05:06 +0000 (UTC)
+X-FDA: 85113503412.14.49D6A03
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A40622000A
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:05:04 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qJbv8fTF;
+	spf=pass (imf03.hostedemail.com: domain of doehyunbaek@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=doehyunbaek@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787036427;
+	s=arc-20220608; t=1787036704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eLkCtMfElj3TBbhOnqAE7roUGQ5xLxxaMf/iSBaGdec=;
-	b=0l1qSdShXGuPco+dtbMYc1Nciq9Fx3KljGgUe58KZwapOvskMiZ2nxJygFcKokw9c0k1xn
-	e2oqa52IYZ89+irxdu6uEFLNsd2OfalxH6BtJI9lcgtklOGVtLGP7f+XZAVdZKBKcUMql8
-	nlspiwvq2hqK9H1deT6J/Us0qo3phqY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=jqcogyCGg70wu1Q5vb1IMYop9IyLUdmqSQiNTAzefnQ=;
+	b=47qNmyrrO9sZIyTo7Rr+pMmXD+C00JhSCYs8PQNUdhLy/zces9SExcTXMGfWCusnwXD8KI
+	w6TMJiBTOsDw1NVqdzL15sanFYcgMU2oK7HwhmxW/p+soFJLKPXcWRoztZkerkSJhcZh7s
+	M56HkGdnvdurz2/s5G5cPwrHLorYXIw=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OE4I8Vjx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qJbv8fTF;
+	spf=pass (imf03.hostedemail.com: domain of doehyunbaek@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=doehyunbaek@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787036427;
-	b=U6v1pbUgEwc88eZYms9qjCihmiFpXYjAeD8rKg82Fz3kumL3H4LOE+F9h04T2cPTYihnqD
-	O4myD5MVIRDhnF9b/j0DJclz9idjMjTEFxigvCEG1IMpKC2IYp1SUl2SHlXz2dOkYWJ0SG
-	dr47It2zv/poxV/Z/5XaqTp4nD8FP4I=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 73388406FB;
-	Tue, 18 Aug 2026 07:00:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0FB1F000E9;
-	Tue, 18 Aug 2026 07:00:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787036426;
-	bh=eLkCtMfElj3TBbhOnqAE7roUGQ5xLxxaMf/iSBaGdec=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OE4I8Vjx95n8znDxHW+u9FRfXy8EgQy3a3KN7JbsZ2DwzPrM2YozWbad13thW4cU2
-	 BMOgwcALvQQU7jmC/dcnWs3R/YgiONJji781fNCWIMjnQJD9C67DwIDetOVVeiV2IA
-	 bgnbB77DlSlkDpuqn1KBk1gb37XhKMb/1C3lsuGkBOeXCDpSTV4hAI3cE11F/vC/Ua
-	 o/y0NmcIo2JX8jLhixj+tl4Gxb5OUbA22RirFO28mWTzvZWamEg3mqvwihGjkjSUQ+
-	 AuWkIgg006Axbqy/5PskV9T30X6ileS9fKAFl78eTSVbm3OOz7/BAJd+pCZWEF81k8
-	 nRWr5HRJKQdfA==
-Date: Tue, 18 Aug 2026 08:00:04 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Daehyeon Ko <4ncienth@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Hagen Paul Pfeifer <hagen@jauu.net>, Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, 
-	bpf@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/secretmem: properly account locked pages
-Message-ID: <aoQBQWH1zWgC5f3A@lucifer>
-References: <20260814-secretmem-accounting-v1-1-d2f8c677980b@kernel.org>
- <20260818052006.2387242-1-4ncienth@gmail.com>
+	t=1787036704;
+	b=HYBXIuLuQYs4jvPjEWV4MLXgOeb1aTAF14TOPF3Sv6MjC1K/P5qeoQmia2JXCaZ/g9aQue
+	2FQlfSZ3LgtL+noa5y3yp+E2Ey7S63oCzBNHrOSI2CGYBdziPDUyNuuEwTbwyoNZGotQUM
+	HL9EafTXzlMP+PAFt9EkHjkpoZgymSg=
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-46f88060e8dso144618f8f.2
+        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:05:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787036703; x=1787641503; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jqcogyCGg70wu1Q5vb1IMYop9IyLUdmqSQiNTAzefnQ=;
+        b=qJbv8fTFM9FLk66HW+MgvU7NKkbFzn3M/5FWOpN3BAhRLzOw5/UyxPvBEozCbtg554
+         RnSXx4ahlEToV3NUC+mj1oV7yXHVdj2xwzJC4doaGDhWPveO/gDujK5lKMMWgVmEw+JD
+         8RKJys6R8VINnMch/R0HeMOe7fRbzXRzbEfXrxfdcU+lNsGrJga6RJTENxKO91cMFH/x
+         B6e6ZGz7N3OvvzQDken4udhLBTKlA7Lt3lAZjhoyxzG04lBG3sMIu3gnv9c1elBVG6wa
+         GLrFW93ZNBu2OS5zmnyP14zPwEm/LvSv/eLdDcg9OxxTVNEJyHFwKPhd54YiDr/Lm7tK
+         1dYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787036703; x=1787641503;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jqcogyCGg70wu1Q5vb1IMYop9IyLUdmqSQiNTAzefnQ=;
+        b=gF/Ti4IO2Oa4EqvxuQLuglCyowmfZX7IYxLXB1LBMkAb8QUZdCEiit8K+/Zqj/cOVJ
+         du2IxOPtJUUzBqIpdQOmN1tXIkN6IbfT7b+rbkJ+KrqVuXxOVi56mXoy6D7KxL3ce01p
+         /Nlwfr2pbFToePUmaLXqaNDimeSth6MwoGzY2K0rnoeb9/DWEltrWXP5oZvprGShgBJF
+         cdSmzAQ45ZvSVFDcuukDexi9efI/+YRcFKb4/cD2N9YCBPqzi+5NGgwCGsQQyzPzZgD4
+         tIT6e1uZFiBzaygUATbl6PIhN+E3NVjSQpg8jFj75amIncK8sPGVv6ViIBeBet9Bwtik
+         3DRw==
+X-Forwarded-Encrypted: i=1; AHgh+RoU5fqIdMZG+zNB/zEuz68lSjPOIyOimWcfI6sK0kYvWyI6dwJpcCsTOTlBYY49kKazO+++jofXXQ==@kvack.org
+X-Gm-Message-State: AOJu0YyYhp1Z4zgBsTZMkzpEE2vgWNATn62qU+UeLB6bKv7/cIItBTHs
+	lAXM3zxDsOLbZie+hwMyLhAt1U61M4Ui6HKWBU027mI4BY165YTUFrmE
+X-Gm-Gg: AR+sD12bF2mwhZQPcuOkgdxMwog7MMy0hKSj8prhk9f0dXJ5PrpNALY3rGbc3GSiXH0
+	aejWP11vsj4QTchj/CrkE0r/AxoYlOhrLaUjFvbyt1YRIo7m14snV+zjX7s1ELzfoqhEJlOBemR
+	oapPxdTzRNn33wgQsdWtWQ5jBpwJ/LrV05gfI7aCVNm71yB+Ko59bW37bJ6AVc+vcoRCtchd8nw
+	pAFLYOBw2Eo7Zw0wa8ga1eKaUGWCPqrsMHTfxqKI42L4OLHN8jlXuaRU6o1wbfrjlK6YHeeiuU9
+	SWbG+fHu/Nb4xuAhUpJ+2Wm933yXN5liGgDfT2dTDAoWoJU682EHak5bnE9BS9jn/lQivrH12TS
+	EjXpdPSzia2LNu+z/4mnX5qGIunFwH3QHCpW0BqOHvYQI+zi9e1F74fAZ0RDgCzGKoIDvRAn8+1
+	leza7RlWn8ZtDCpJHphKkvgGMFRIMkfw8E1NEtbMdgnLB1A+3M0vL2LWCF6vd86eVboTG5eB2CV
+	b1AEI3GoFJPoHCcjcPr/agkCMbB45M6PRcxbXVOjOhM41steHK60SYI3SgGewXBQTRhPlDp9W4y
+	upIvrnEvgv6QixYQ0YfKgftBgCC3cXU2Fdh9H1+MyKJjfo4ZLGpevx0I
+X-Received: by 2002:a05:600c:8b57:b0:499:8411:9e8d with SMTP id 5b1f17b1804b1-499878cb099mr229907745e9.0.1787036702721;
+        Tue, 18 Aug 2026 00:05:02 -0700 (PDT)
+Received: from doehyun-dev.pradel.rg.cispa.de (x06.xlate.fw.cispa.de. [195.37.157.6])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49996188217sm495557495e9.13.2026.08.18.00.05.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Aug 2026 00:05:02 -0700 (PDT)
+From: Doehyun Baek <doehyunbaek@gmail.com>
+To: Alex Shi <alexs@kernel.org>,
+	Yanteng Si <si.yanteng@linux.dev>
+Cc: Doehyun Baek <doehyunbaek@gmail.com>,
+	Dongliang Mu <dzm91@hust.edu.cn>,
+	SJ Park <sj@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v8 0/7] docs/zh_CN: update DAMON documentation translation
+Date: Tue, 18 Aug 2026 07:03:42 +0000
+Message-ID: <20260818070358.455768-1-doehyunbaek@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260818052006.2387242-1-4ncienth@gmail.com>
-X-Stat-Signature: 1htu831jkyuocx7jqotobhhfcfb4pxk8
-X-Rspamd-Queue-Id: A3BCC1A0010
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A40622000A
+X-Stat-Signature: 8gfimorjh9i4j5n78c3jo995jrkd8di3
 X-Rspam-User: 
-X-HE-Tag: 1787036427-742205
-X-HE-Meta: U2FsdGVkX1+R2XZn+TvAwIUHPovNGlndh0ZfRNg5hBUyPEK3pZjVRsj+HbVt+LHIvl6Vk2jlvumpl1wQGlDFB71fL5LvL85r0NuxnDx4Tsoe/bz82SrQfc8DP9wSmfPENCjP1UxC4yB/xHiv72UHXiKjZZzjSnkoIRSNM0k5K/wqHeigyQ93faBajTnz5RlQBODTAk5z54hGtyP7sJz79UF+540BswSxlIkUhx4gyJxjL6UXJDFjhCzRLpOsCyI+DAC4vBDs3tEGOKAO/k443tg8k2DRKuod/iwufjSkz1lK36iIyl7VuDD+Hip/4UBDp26tP2Nfo6YJylCsFVA3p87N+9RliyMEFQbi6HlSlsmsQY4sMGhUjTbudFY/sR3LRqlGvIWMPngHdZ/H8FznbrtcKnRyPSxjf2CCFaLc7pWPZyhLQv9YzX/up6zJxcB/K5VKNZicd71WGml50sZHFgNs3OeBrlD8pSKQs6HFyH8JgibhsQFfPiEHyaQTbOgoIMV2tKK0OljyU4Zstg+y230lDZUbyEDRgGTtrZWEzBw7gdynNeaPk0v4iQkme/07POG0wFMVxXjrsDOz7vjU4iI1ankCI8TE/Vb6n1pNZzRoj8sGJuagISAgcJH3as2cjjMd7+YyMCNePLNCYQtqloVynVILsC+BXy8oIW+nqZqH0m5KpGNsPAL50aHJfcGayoA2QJ1midb+HWxMXkn+cU5HIAvi1MdZm3/Mhnh4HP6iZtGWd90cGg5LFSnSSWGAHR8lVuSxjUw9ycs60+NaQVCoq2sN5W/mmKzngV/lMpwDAdnYZmXQGtZE5eJPpD/JilZ4gneefLB0wUTl8uljHC0dJMPcFIBSgGgsfzAx02IMjYaPzcoyFlhWbyg2JXQiMDIKrJPY4Z7hSw8nmotkUCmLfkhY9i3J/dW42HiyR45ESxkQ4pCWXNFnAgbABm+pwXrxdRILJp0gxyrzlaO
- 5LR9iMc4
- IQr2mGuKQLFuMHQEPuWmZXeP9VKdXXlaFX5VKeJ4djgY5PHia6G/JyroE7cy3RcNyWbG7cin6ZWNiz8JV9EgF4WCwzhVX7JlLpz2T6lGZPzoU9tXM8HT/et7EXni4+NRPRpcerJ+YwLsvHlwYoANqHxme4yO3qLi+OaxHJd6ZUiaw9unMOelJjxVxBYr5xzxaNucASX+cz+ccH0FGVpCThkxcQ7GIV+ETPbjPJx17RHW9EOMzJR0u+Z43JZKwnVWJNjZYWCL67dHQ8EgJyNnLKG4vZASnhcSQjdsJKV3wz3L42IkEtmuYxY91Q7PSKQzQnizkUIOM4gFlBUFUDw2eoHfm6hmj37gTaQRV
+X-HE-Tag: 1787036704-171324
+X-HE-Meta: U2FsdGVkX1/T/oYLxn7348urrzXPk8zFg+lHbBu0Ogl/DWHAWeAsa+ynJYfr+vqRZBqmRRnCEWoBYVXNpdlYHHwTe9N9nUm7MmTDOSU+LhK7GN+9qYewU+VVGrgaHeskSGRcMmgdTZgrD+An63z6+IUVOw6Tiq2Gw5BTCsif0RYwZNRY/dVGodjrONOGeNSST6zSlMN0OAOGkVn/Gfq8kgLdHPt+FMmSGwHnhAOIYtupvrYX16T7niLRZjTbpveSgis/giJ50/PzcgktO6/CxBms0U9uyGZxHHm1Lmnw2DIZ7wtH//WfB+VBwATLf9pG6jtnZ4TKkrbZSMWeHH/OMa32tcUh8G7Hxy0ARUxrYmM2T05RrpApUsIVBSzbsDyfwXHQ2yFLHld4li0LH62C6ufAyh8Iv9w7bGYL42xGNvCykQlSQFtPnu1O6tiKWBPafdcpXL/HOdJLf1B3q5XUk1FEY1FRnpQs5Tbo7PGxTKu3WVTxAiEsZI7Oa5KpabFVvRlOdNymz5gBg9jvcRmVJmY8JTqQ4SYtne+CQbiGClG2oyPrKeVKl0m/LNnmXYQQu1OUgWp5tcDQgtOPMN4c0u0q0RHyKJosgov1Kv0YYHmowDCSrXWAicaxd+LXMH8Lca6TyWjYlgWr9qJyPmCGDEY+9ED6AcFRL/edWE9Q8UDrtye7Hahl/P1HH+Wjrj+fV88hAnjffh/uKnxJ5xSJuDvDPyjonjVpEDzt6j2sQ4nihE+miaGp2y+yiUaxU9BfYdDoPa0WT/Y5xyKQFdhxDM/jaSPgk2S3eI1//vF94gXBRGQWbUVgDVouGreQHNrVnfkjoR5zmIYFDreRd4H75T8DQ3EMidh16OOC8tcvPkz8hl463Cu7kJEzEf4EfMIbAaAFO9szXahgAou/kgyk5AX92bAMa3QxvF1ARPtnP//Rn7JOV59NxgnXoAULk+xTXCQVEmJEkFGEpG6wcRs
+ WcSaEu0C
+ jlR+pH3/f5IcPywfjAp7mbeTtb7AIIXEE9KS7OnFG3yrKaKH43E8XgCxYV13xhyleh80XPNsMxtY4DEZU9lINVB6SCUM/fn52jHnZQwT+wguUUMaBZEYwMf2ZpybBYMWKjnbJhe3bpgAZHzCwf27pdpip//DInY49vgXlfiq1avVB5iB5r7b1Mq49pJXW5AJmnTqTHg9PZ8JByjihqXuZjsIkmsPZJtxZzmJtHuzAfPvw8bJO0YYJCNUoCpMiWhhj1F/rAeDvq/llS78Zz2rg5ykqxVcBLYdNAoOa8oDECzZFS5D8vp47Up6uxKOVukcMnmAPV3u6WSdfgDX48tYJkx6rfb/InMccuno2jzKhwOXSMaSQj2l5WAito1U94em6+91IPRRDKx7lkO3z8zVotVkNRxjDDjkNdMjtZqd9PpVEusP1zGZKpa5sZ94yxrHOrzBahpSyssvlHlMv6qgnncEYsA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,44 +126,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 18, 2026 at 02:20:06PM +0900, Daehyeon Ko wrote:
-> Thanks for the patch.
->
-> I tested this v1 on its stated base with an x86_64 KASAN kernel. The supplied
-> selftest passed 6/6 in three boots. Additional fork/unmap and inherited-VMA
-> mremap tests also passed.
->
-> One question: the inode stores the creator's user_struct, but the fault path
-> uses the current task's RLIMIT_MEMLOCK.
->
->   secretmem_init_inode_priv():
->     state->user = get_uid(current_user());
->   __secretmem_account_pages():
->     page_limit = rlimit(RLIMIT_MEMLOCK) >> PAGE_SHIFT;
->
-> With A limited to one page and B to four, A created the fd and passed it to B.
-> B faulted four pages, after which A got SIGBUS faulting one page on a new fd:
->
->   CROSS_PRINCIPAL receiver_pages=4 creator_fresh_page=0
->
-> This seems to charge A's locked_vm using B's limit. Is that intended?
+Bring the Chinese DAMON documentation translations up to date.  Update the
+DAMON design and administration-guide translations, and add the DAMON_STAT
+usage translation.
 
-Yup, it's a per-process limit even if the accounting spans multiple
-processes.
+Changes from v7:
+- Use the suggested translations for the DAMOS quota goal ``nid`` and
+  ``path`` descriptions.
+- Replace the remaining "聚合间隔" with the consistent term
+  "聚集间隔".
 
-It'd be incredibly involved to track each resource individually and this is
-a trade-off.
+Changes from v6:
+- Clarify the DAMOS quota goal ``nid`` and ``path`` parameter descriptions.
+- Improve the translation of "offload" and fix the duplicated character in
+  the non-access-pattern filter description.
+- Consistently translate "tracepoint" as "跟踪点" throughout the series.
+- Consistently use "监测上下文" and "聚集间隔" for DAMON terms.
 
-In practice people aren't typically varying the limits like this and in any
-case, the least surprising behaviour is to adhere to the current process's
-limit.
+The changes were suggested and clarified by Dongliang Mu.
 
-And this is the same solution used everywhere else by io_uring, etc.
+Doehyun Baek (7):
+  docs/zh_CN: update DAMON design translation
+  docs/zh_CN: add DAMON_STAT usage translation
+  docs/zh_CN: update DAMON index translation
+  docs/zh_CN: update DAMON start translation
+  docs/zh_CN: update DAMON usage translation
+  docs/zh_CN: update DAMON reclaim translation
+  docs/zh_CN: update DAMON LRU sort translation
 
->
-> Thanks,
-> Daehyeon
+ .../zh_CN/admin-guide/mm/damon/index.rst      |  15 +-
+ .../zh_CN/admin-guide/mm/damon/lru_sort.rst   |  68 +-
+ .../zh_CN/admin-guide/mm/damon/reclaim.rst    |  82 ++-
+ .../zh_CN/admin-guide/mm/damon/start.rst      |  63 +-
+ .../zh_CN/admin-guide/mm/damon/stat.rst       |  94 +++
+ .../zh_CN/admin-guide/mm/damon/usage.rst      | 523 +++++++++++---
+ .../translations/zh_CN/mm/damon/design.rst    | 667 +++++++++++++++++-
+ 7 files changed, 1345 insertions(+), 167 deletions(-)
+ create mode 100644 Documentation/translations/zh_CN/admin-guide/mm/damon/stat.rst
 
---
-Cheers, Lorenzo
+
+base-commit: db6ed2a3d31068ca5577466591b2521dee0508ca
+-- 
+2.43.0
+
 
