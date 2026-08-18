@@ -4,89 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9942BC5DF67
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 03:21:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00D34C5DF74
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 03:26:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 532126B013B; Mon, 17 Aug 2026 23:21:27 -0400 (EDT)
+	id E3B796B013F; Mon, 17 Aug 2026 23:26:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E2066B013E; Mon, 17 Aug 2026 23:21:27 -0400 (EDT)
+	id DEC676B0141; Mon, 17 Aug 2026 23:26:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FB5A6B013F; Mon, 17 Aug 2026 23:21:27 -0400 (EDT)
+	id CB4266B0140; Mon, 17 Aug 2026 23:26:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F105C6B013B
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 23:21:26 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 73DD61C1E78
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:21:26 +0000 (UTC)
-X-FDA: 85112939772.20.823FA32
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D162E1C0007
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:21:24 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y9Sot6Uh;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A7106B0139
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 23:26:49 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 11A28140A58
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:26:49 +0000 (UTC)
+X-FDA: 85112953338.18.91460C8
+Received: from mta1.migadu.com (out-113.mta1.migadu.com [95.215.58.113])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A0E6A40005
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:26:45 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WkLkdP02;
+	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.113 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787023284;
+	s=arc-20220608; t=1787023607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r8ycGWTUx2Z6i4TYl2DorBvyB4i7PAtWRsvpykEZrpo=;
-	b=ys5I2lVICPsMGVU8cvSeiGkgje8oNpospfvrXtazjwHYMa75/fwQh6fjbe+4Ep9/DPcZMU
-	xHdMFH1D8grSbdlLX14IFtb46LOeM+mif4TV/YRtMkEJYgP3ZktkFmtNHkZ7iMF3d/+MCp
-	vI6EOa+wkgSmKOslOB+FGDyob3uzpKs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787023284;
-	b=p3SZXAz1sdsutIji1i9x75TUA238KxFeJnlJFsRMnwo5gabQYq1mpgOuuwZYyaQd0p44//
-	DFNK5/O8jR1GNzMPiusA36fyuB/pr1SiWvzpnr6MtMAx+TEYJFRDmFFWBiLC2LVWtE8Nvi
-	AJyG+gbWfZkzqx7NFlkt9kZRlaGW9zY=
+	bh=EKEnWk4DvIf134y7xynqDH3no2IBhxVaxS/jANfdf9A=;
+	b=F/Xfn9DwVRMuvFUMj8nqXrcqWnJdfpQBKkf/2GlOtWUf3/H9zVmM22fUo/lBL+EC2tLWcV
+	6rRW96nT804zLjDd0qOqHIJWtbJJbSRdhkcwN8AmpoGuAzpElHoY4pIqkLtThEH0QQUJnV
+	JKsV7F/NWWIirtwJ0tw58uJ9L10PI28=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y9Sot6Uh;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C78DA40546;
-	Tue, 18 Aug 2026 03:21:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0341F000E9;
-	Tue, 18 Aug 2026 03:21:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787023283;
-	bh=r8ycGWTUx2Z6i4TYl2DorBvyB4i7PAtWRsvpykEZrpo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y9Sot6UhFW31l4tekFskkY/DZIvzGQa68alZJQG6Xim+nEmdHpvBdCHgXd00Vd0/j
-	 qTpZKWeOfXYZTJRmNCaxjIpmzvsU4GEliO8wBg3GRxmcGY3VrE/8ClxrwV4pZC+D4h
-	 c74GxNA77tVI3zgGWUnL/k+gmugOn6FQplXxg68yJ2W0m2m+hbdx0kvDGzLa3eRQvV
-	 hOXYZOQjdiIzAvi8yBuWIMSk3aPSQCFIHTcxn5VmM+zkmMvnbJlWra/fsyGVdb04xa
-	 zIaQasnLSlPLDYshIw95JxXIVJZTaDP0BYtAFY1myXkaP4WMe+cADKUOpJk40T6GpV
-	 to0fZwPUYYLsg==
-From: SJ Park <sj@kernel.org>
-To: dayou5941@163.com
-Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Li Youhong <liyouhong@kylinos.cn>
-Subject: Re: [PATCH v2] mm/damon/ops-common: factor out damon_putback_folio_list()
-Date: Mon, 17 Aug 2026 20:21:20 -0700
-Message-ID: <20260818032121.89231-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260818020650.2844354-1-dayou5941@163.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WkLkdP02;
+	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.113 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787023607;
+	b=7pTxmOpyEfTWsz4Q6Xa55cFW6HCxsPw/ZfzSyFyQYXfOkWc6LP/GPYCxc/Ca8imc+LV06P
+	6UGkPIJw+HoUum/ngf02UMHaLfji/YLvC7V5T5aTQT7ACmOjw6bEmAWG/9gkiTQtVVVNEt
+	DNcyhurLSvsdtq97o5+0aznnpF4FBj8=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=EKEnWk4DvIf134y7xynqDH3no2IBhxVaxS/jANfdf9A=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787023603; v=1; x=1787628403;
+ b=WkLkdP02YxyYRVDre4vNyIUPDyCFr2M/zXKgmX1jZIw1xNGar3y+9QrRJCIcre20jQQY7n3z
+ pQtWo/fmK9nsK5/PFjO9BAZ5G7IctiRWN0YTzPafD3FSdbrRFkYFwjqM4wf1Wv3nQ4KFGNDUaEu
+ m4IES8jYo2NWOCUzZkp3nsgY=
+X-Envelope-To: linux-mm@kvack.org
+Received: from smtpclient.apple (114.251.196.106)
+	by mta12.migadu.com with ESMTPS id b1cba1aab682bf34;
+	Tue, 18 Aug 2026 03:26:33 +0000
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH 1/1] mm/hugetlb: do not dissolve gigantic pages without
+ runtime support
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260817162039.1511838-1-xialonglong2025@163.com>
+Date: Tue, 18 Aug 2026 11:26:19 +0800
+Cc: osalvador@suse.de,
+ akpm@linux-foundation.org,
+ david@kernel.org,
+ mike.kravetz@oracle.com,
+ mhocko@suse.com,
+ linmiaohe@huawei.com,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Longlong Xia <xialonglong@kylinos.cn>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B299B9C7-9592-4197-98A8-A49B1FFB3EAA@linux.dev>
+References: <20260817162039.1511838-1-xialonglong2025@163.com>
+To: Longlong Xia <xialonglong2025@163.com>
+X-Mailer: Apple Mail (2.3864.600.51.1.1)
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A0E6A40005
+X-Stat-Signature: wjx6nziyedgsdmuj7gfzajn7goddfqxa
 X-Rspam-User: 
-X-Stat-Signature: phumxh9s3z74xteqzx4f718gzjwnij8q
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D162E1C0007
-X-HE-Tag: 1787023284-181313
-X-HE-Meta: U2FsdGVkX19icAR5+B5p9/mcPApQjGqM8nOsQy0+P51W4eG8MkSjqTq06dKFiWfDqCCWI0fXx3rCkWo1CleCd/30qpK/BoiubqiyP0IJDvm/7Fw7NOKFsU+uQakX3DCMT+pj965xZMT7a16Kb7hutQ9Nx8RA96dTZncifQ0yJJzfvTeroU1yOg9a1Z2DLjEpljbk31jAxyxiJvQbiefuBWxTlniSTOgFwJu1wXjSlJQA9KTh8kBXW4gfmyDIIN61ms6jQ7qfPW9GIV/jsMm7OKIW6RJtSGx/xyq/8mM6GosnX/Nn/2vIC0H0026d3S2VBa9egwdT/3FWa4XAGDmHi2RR4frBrN7zr+TSCUoGx0fOM/62qriVvi+BVOxcUM0sgg6Ap85n1Ty7gEJn3mkiBW6xI/usD99EyRXkN5M55EcFuAC33rD90DN0sD1QUkChOWrWSiv7ObCuGiok1qq2pW+ituLiTfff4H40l8mTz5nGIvQUzPiHU0yZEbutebytK+WozSP3eBBIUCZbWAW/cYQcy6zyWyc8DOFsr3nqpo3SoZUHeupnmadCACAxfBwKsn4yAd/qOTTkb6pIqVi8xBrf4sjVViD8OAn9GRtL/tg/1TJ19I+xXVOkIbcYa/QMF6r6Nzd5XbxdcCAh4vJfYRlHYYleUvh1IVJhSxS+1BzJV066lI9t/bt7Oy5nYYPi6wn7QcGCOW/8K7Q7+WJSVJAcQpZeKedGGaGQIwrjGH4YyK7zXnEgFObUqs7AVUb88m06Y25dsktctntFokKSiYAvfOA76HY6EmGq7sNg3+OaL1smRRGyij7VyLbMCUDwkqlY0KGtzMZhpNHTV2ivkFaZaKF8qAkZiuMBW9jzWBQVyw/2Qfs+yiIfuIf3vJcgOa9HSsSI2KMrSD40uaz4sc/EYMqcbUvr0ehnv3k/CohedLBsD460qB8H/gK/qvXZThG8j6kT1zwsXPT3tRk
- 0rINwhok
- /VjuW0sPbLExlQ+O/OmdiCWmZLdAyAZnTPhwPsViSQgN/hmPjq5Rci9u7DJTotTMVILWbY1mtCJqiY3HgQTgBEFtnFnyxny0/NN/oVuhAGp7Hcf6BGJCw2nr9/HyesoWYcIXy+bFLtFDmEgeHu/40VzEuyomc0UpBQfn4RcOo7iZV7Uf4OODxodhlhhbrt+Z21TojNJADyJspjdIykukmf0fBhrNrgiYDZdlbeU9Wka7Kbp/i3kmNIVgds/9uMjycwiYTgVHWOU/DJttfJY8cOmk7UJj9t1U1yn77j7eoC/RnILMoiZYtpwWkYDDZ9a7waq6q+Sf1emnYHuQ=
+X-HE-Tag: 1787023605-463740
+X-HE-Meta: U2FsdGVkX1/dQbumusckwvZxcKPaH8viM3wzem8DlW2ALNdrmDVFFrXUb+fcdMw7lRsAiy3k+VXIUfYKBwmTZtQUQLN5z124xfHXk5vgTLrvw0tBb07/IC2oE0leNR+YOxpWz3H6CUqxoMlCJFtB3ufC34YU3zwX/1S6BlU/o4hj0aA9HAxxnGmki7mRfcrOgaOXF7fHq5fD0bd4JFD4pyoDQxxMC+CwWtncsRfvjtyODC8c6HEy1ChRRBXAqR6c6tStyNZhdNhZVDg96XrS5Q7N+6j846GrTDmH0nZ2AXedoFO6xXl2RYvMCiBI44C51OCIWzdEag6UZvixI3YRvAhCdvMigZ4iyk+UuxHeqkmmbEL052ckdZu6dli3YEyDy/LPbFQmo30OshuB6U1iXGUyhreukhRChWBb503kmfhIYKMrO/L61GeR7Z55WYJAn6zwhhuw0Lg+N+CDMoPcUX9X8Bk4XosGZuIUob4XsS3xceeIv1304FDPH4KzhDXQxy6IUrFw5L1NEzGlYTLWThKhwJRDM7bqLLYa9VHZ+4Qrc9bG3mo+0qETJ/2CVHY2PfBnmmw0N5nx6i0ydH646RG/S6LioaruP/pztxNZG2ekUHqdpuhUlf37No4e0NjVPP0wfG6/fIPrC6jx1CxWjpqHfjrfSLIczevHisXRF0GZ1RWFPOR2NUXI9bg3m+2o3FtuOCwonbANZyW+XxHcLjxep6Aenp+M1gNqUuRe8r6UP5GP9uz7IUp1+yT8Db9+NwcCMhYiorMbUmNE6tnC+OCOaLuyX3lLg0APHtKwF7JUhKny6RAIQ8Z2Dowr8sQUDFu2nUlZXtN5+I1nRc/lk0/6WITwnAqtqH8vzgeqyiOVHBXtj5bml8cwFKn7IoZjR3a9GoOI+R6mBvU2ODZwJCbtCtlBnkfZgDi5ydmeiJPsl1U6+qnkExKdlpoA3m2EbeHAbZXycjk8GaQLUI1
+ NYXLHSnx
+ ah5/oz3RQJehDRDtqCWgbY0sXCm5gJvdqWHy+O29ozcjoKBB/zVgpLMOIjgFF5MXH+zdlt3FUm0pIsNHh5BNxFKc5ADpOdrzMngWCX9FY13fA3kAsOylT1el5QDzQdT7h1doUhuC4ZVjvhHga9JJK1dGtEODkyywLLHU/PJSgLJpXbJsAaJzvdDj/IlGdJtd4JCxTMK2xBQRHHJsWRjD3Jlo3j6oPRaVmrIL77Kd8NIq/ClzmB3UTIIsS/xnktjR6pltYycJmW7a9JRwI02Nv54c9kwNKAiHn708rqCvnfYxdwKgWYf7tA6r/bJ5VjR+tjXvLosbkEq8K+I7Z5IFE//xMcQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,34 +99,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 18 Aug 2026 10:06:50 +0800 dayou5941@163.com wrote:
-
-> From: Li Youhong <liyouhong@kylinos.cn>
-> 
-> The putback loop is duplicated in damon_migrate_folio_list() and on the
-> invalid-nid path of damon_migrate_pages().  Factor it into a small helper
-> for readability.  No functional change.
-
-Thank you for this nice cleanup.
-
-> 
-> Signed-off-by: Li Youhong <liyouhong@kylinos.cn>
-
-Reviewed-by: SJ Park <sj@kernel.org>
-
-This patch is applied to damon/next [1] tree.  If this patch is not added to
-mm.git in short term, I will ask mm.git maintainer (Andrew Morton) to pick
-this.  So, no action from your side is needed for now.  Note that we are in the
-middle of the merge window.  Andrew might not pick this until the end of the
-merge window.  I will make the action only after the merge window is closed.
-If it seems I also forgot doing that or you cannot wait for my action, please
-feel free to directly ask that to Andrew.
-
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
 
 
-Thanks,
-SJ
+> On Aug 18, 2026, at 00:20, Longlong Xia <xialonglong2025@163.com> =
+wrote:
+>=20
+> From: Longlong Xia <xialonglong@kylinos.cn>
+>=20
+> dissolve_free_hugetlb_folio() doesn't check =
+hstate_is_gigantic_no_runtime(h)
+> though remove_hugetlb_folio()/update_and_free_hugetlb_folio() silently
+> bail for such folios, so it frees a still-listed folio and, on vmemmap
+> restore failure, the add_hugetlb_folio() rollback corrupts the free
+> list.
+>=20
+> Link: =
+https://sashiko.dev/#/patchset/20260814083027.1419487-1-xialonglong2025@16=
+3.com
+> Fixes: 6eb4e88a6d27 ("hugetlb: create remove_hugetlb_page() to =
+separate functionality")
+> Assisted-by: Codex:gpt-5.6-sol
+> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
 
-[...]
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+
+Thanks.
+
 
