@@ -4,111 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77DD8C5DF74
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 02:52:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35AD3C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 02:56:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87D2A6B0135; Mon, 17 Aug 2026 22:52:20 -0400 (EDT)
+	id F3C3F6B08BE; Mon, 17 Aug 2026 22:56:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82E4F6B0137; Mon, 17 Aug 2026 22:52:20 -0400 (EDT)
+	id EED546B08C1; Mon, 17 Aug 2026 22:56:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 720976B0138; Mon, 17 Aug 2026 22:52:20 -0400 (EDT)
+	id DDC266B08C3; Mon, 17 Aug 2026 22:56:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B0136B0135
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:52:20 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D0D00C0A6E
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:52:19 +0000 (UTC)
-X-FDA: 85112866398.29.1E3A559
-Received: from mta0.migadu.com (out-83.mta0.migadu.com [91.218.175.83])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DCF66160003
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:52:17 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="SpY6/shO";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.83 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AC76A6B08BE
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:56:43 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 38ADA1A0A88
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:56:43 +0000 (UTC)
+X-FDA: 85112877486.19.F706F64
+Received: from va-2-115.ptr.blmpb.com (va-2-115.ptr.blmpb.com [209.127.231.115])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A770EA0003
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:56:40 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=G6t8z4aO;
+	spf=pass (imf25.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787021538;
+	s=arc-20220608; t=1787021801;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xJiH0ESi9xTkHt1Q5jRKh80eFTAjQdb7DvPeehsC1/I=;
-	b=cCE5BR7oeqGgpYxEdltEJB97PKf4tCf5wVb4IJUoSztfoWJYv+l1EWgrQm5Q/MdTg/7wzy
-	BMJ1pSfkYg8wLQECqvEw5+k6y8Q2B491/xgSh2LWRDw8M9S66g5wNkL9UnvbpJXOF1WYpG
-	Wu9DCtOoHZyUM9lj0kFapbTN0eC3Y2Q=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="SpY6/shO";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.83 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	bh=Mmzy2KRppiE9A8Y8ELPAoQZxfCoaZ+1Mf41Owvy1ldo=;
+	b=5pWGvoD6WJ5H8OhFgPwi1JgdwHpmncnlWb3sjfIr0DXpOpnR0DXrnPu5k0N9IiWo3bMaRi
+	UftjkQFi7XZx8yeie7x08ZF946E6W6J9/pOFCq/Upqk2umtZAA8voAv5iVxev8XrvzEwxP
+	vdJdrdVGQAIHprxVKXbYxqNCCUJDU3U=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787021538;
-	b=NA/UhHEII8urAMZ4xM7UW8YPTcp2tdvsGBgDb9zrGWeMUD8VTrXjyfXNSSj7pR1A7iA12x
-	PGcuA3yynC0wD+l63vaB1xA246+aLz7uCZ/lGcw1Jv5NGizSsAcCqZB2ZilNLUVCXIPxZc
-	sdBs0oBk8Iw6tf8C4L4u34PZCINbDYY=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=+tjcYmM4+1lY/ufxesPT9Adlqs9FR04NAEFsPbm6s8c=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787021536; v=1; x=1787626336;
- b=SpY6/shOZ3utvqYsXQXYPFvHPOv51bEh6uJjaMySYjay6u1j3+cknzXzsrfUlK0/x6Q0DSa9
- 9oYN+U75Mi8SLfb8gwmt7wzcMC6UJrT9cJXVP2e6JPatAoSTZ2MjkBeWuKTouvo+xhnCwp4IYAH
- ItZnps/mpdDhpqu4/H6ItHkA=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (3.112.29.171)
-	by mta11.migadu.com with ESMTPS id 9923006abc1b77f9;
-	Tue, 18 Aug 2026 02:52:06 +0000
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 18 Aug 2026 10:52:02 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Chris Li <chrisl@kernel.org>, Nico Pache <nico.pache@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>,
-	Gregory Price <gourry@gourry.net>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	SeongJae Park <sj@kernel.org>, David Rientjes <rientjes@google.com>,
-	Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>,
-	Zicheng Wang <wangzicheng@honor.com>,
-	Chen Ridong <chenridong@xiaomi.com>,
-	Tal Zussman <tz2294@columbia.edu>, Kairui Song <ryncsn@gmail.com>,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH RFC 06/15] mm/mglru: use explicit tier range in
- read_ctrl_pos()
-Message-ID: <aoPI0hlFe1uOPeFO@MiWiFi-R3L-srv>
-References: <20260804-mglru-fg-v1-0-4d8dad39dad6@tencent.com>
- <20260804-mglru-fg-v1-6-4d8dad39dad6@tencent.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260804-mglru-fg-v1-6-4d8dad39dad6@tencent.com>
-X-Stat-Signature: 6afk8g5z7nktgmqyg6mhtithxq7qthxy
-X-Rspamd-Queue-Id: DCF66160003
-X-Rspamd-Server: rspam03
+	t=1787021801;
+	b=lOg4UY3BPL8D3Bg35XUXFx4VaABT8jO4whx+iUqr03YHMhw1YyGaulhP5cerV4izX0cL+m
+	xbOn3qnNCREFw9RcRQP3cdIgJbCZhGclPyFKrU4fuI6tkmGtxe5qf/F2sVUDDegHITavAP
+	+YLwG6qwJc4k9dRoDRwmAZw3DgMhouA=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=G6t8z4aO;
+	spf=pass (imf25.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1787021794; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=Mmzy2KRppiE9A8Y8ELPAoQZxfCoaZ+1Mf41Owvy1ldo=;
+ b=G6t8z4aOiaCzjzAN2kz662NjpkK/owVRzHLTQhAZXx54Yi1Sg/N02PJ+48Rg9zDruutufI
+ J6WcnvsV5ly2B+1/Eii501RlXt3ImOEXcUw/PbsT15f4+6F6nZ8nRCh5pmKC/k8iM5ITkh
+ 71rQw74bCPphV3R6fxGOk7j5foh8qUZ4sTI3T7V/uJHDYYHro0ZbQ1jqifb8RCd7CtqM9L
+ FzoKg1JMMqvpE0LF7hn3zorSAdJWVP3aCiD4yFjMtXqedwFgrSRlrT8pxlDqqf1T17rKgk
+ PryGbnxPFVBVe8kAL0nRUk7lkKQICKoKzBbFUp1YojXUmxBYxDDjyx+Sbvyv5w==
+Subject: Re: [PATCH v10 2/8] mm: factor zone-device page init helpers out of __init_zone_device_page
+To: "Mike Rapoport" <rppt@kernel.org>
+References: <20260810122057.30447-1-lizhe.67@bytedance.com> <20260810122057.30447-3-lizhe.67@bytedance.com> <178688187038.2799959.7900723270155108493.b4-review@b4> <050c317f-111e-4293-aee5-ac8e154ebc7e@bytedance.com> <aoLtbbv5euE4H1xO@kernel.org>
+Content-Transfer-Encoding: 7bit
+In-Reply-To: <aoLtbbv5euE4H1xO@kernel.org>
+X-Lms-Return-Path: <lba+26a83c9e0+875291+kvack.org+lizhe.67@bytedance.com>
+Cc: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
+	<balbirs@nvidia.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>, 
+	<david@kernel.org>, <kees@kernel.org>, <mingo@redhat.com>, 
+	<muchun.song@linux.dev>, <tglx@kernel.org>, <linux-arch@vger.kernel.org>, 
+	<linux-hardening@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-mm@kvack.org>, <x86@kernel.org>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Mime-Version: 1.0
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+Date: Tue, 18 Aug 2026 10:56:10 +0800
+Message-Id: <6a066922-4528-4c4d-9bb5-bbdb2b6cd56f@bytedance.com>
+User-Agent: Mozilla Thunderbird
+Content-Type: text/plain; charset=UTF-8
 X-Rspam-User: 
-X-HE-Tag: 1787021537-78760
-X-HE-Meta: U2FsdGVkX1832k/Bo1P0tywzquz05c5+7sAtxOf0Tk0vPtTINhpCHwD12Kw9GaFnGvA0tGlyb+gBT8yT8D+9nLH/ojIiS8lNk53IGb+7QoK3Y+qgKY0pgJq4saFC2YDLECZEs7VdMXc5dXTwoQUaKgB1sZBsnAjMhUowB7EC2Ejh8J/ehxajI2+apBie+7bJgSGN9MYjzPjmj3l5/+va0fJjX4Swqa6/w5fK7AfYXe8KXlwFBMtOenDIT+8Fdu0q0P4F27puTkChdzc2EV5tTgJN0HRExZWtXlYPHxxECluwblTFMzd3a4xOiRb/BsyvPdbjkV7eYdPrqUxIrX8/GrIMpc6Jh+BTlDAFnCi0nGHoZMbvmUcGB7xGkOD2iyeBWyPO7VTGe1yQZJNNH01cHFXit350mpxD10MZjFJH80T1YEA3WquaC/G5TRNY8KDnMbrg6yKC84Rs7slJWQgJEP3PeNz6rIyV5k52ozjt6z1h2diERkJfAf2kySSPj8TMBMwWSkdroDvXrIanOy9oWK3fRGQhO6qkUHU3TNpn3lQegwgZsvYQjhJz8TbrKJWmtz4NZKZAAxEXOUGlu91yGwnGl+2aLdO7up9JgOio2wYzxwYj6WEk4s0YOsKaaAQSOSefUEhLTAFqU3Pemyqro481n7G2CZActe7xIIIEZQ2R3L4M6H7Orp/3pZ0+7lF7SWk+IWXyjmJ9baEQ4N2TYt3JONzIYXMYEFE/4IQHU82SvJxYIXbG+Mlz7B4cwY+sfGChspID+BeJ3pPXNZahbXu+ccxWV5JdftTMWSM/iMGrhC5wefYB/GvoR5r2RnIWA8Tz1xI3qJGz96qtvTPoxhhRvppMiDuzb0sd9bFMORJ/iPDRszSW5oEcU5R+rXp+oBO06oeobmtcyNv6pyYoybOB2SgSCXs70Z0mF7qKopKm3ejlj/m4vgnpGP4kVwnTX1D8mYJ81NhRdoL3Krk
- DnKHLCBi
- dAuR+16VpI/PMmMBSck0s1sbuiaYowf4C/qKM7MjnUr1mf4cOk/kppoUhqG6rWRZYecWsgxnnHFnCQ6NpLw9YkOBzH4H5T7Ds+VjRHeEqH6YgV09mz0/HHrLJKMBt7BD45ZEf5J/6GTBYq+vSWBnGwB+KUpP+psBTSKHwEWl9bNbJME93oPn/1cwPlc6Vy9o/7ypnXp2HOLvvn4GMv2K642f96v3SO2n1aOoOHJeeY05OUFoRBpOWcLH7EdhmGCj29RNWyldITVzenXgzTkiJgJEY6sXgp5qEP/xVQhANXty1mVH1wtHTLiae89aCmXXY9v+bRTq+tDx4DS28X4bX9s84CTb8uqwvNa4XpUoU57jDcB3yCkEW7tv8S47EvKt8mDPwIqno2GGHJxENDoCGTaFeiqybERkdvvNA0/h3/pUySE6ZM+BkP3X71zCFal7poQ2XbUpCEhEF5CAqP3dC40y1oWJFH1mFNCjrG5eQpC2xYx8UvK8VPTUidBSXKdc52rvyzHWXGDevUdQdf8W9A8yD9FM/0DFS5ckO53GTf+2+vEXu0M/99uhSmQ==
+X-Stat-Signature: wx86nu6fdkc95pxjfzh81r87gojwd6qk
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A770EA0003
+X-HE-Tag: 1787021800-494870
+X-HE-Meta: U2FsdGVkX18fiXmgULwUPTX5FFEvA1XnU+RvZ1Y9Is8BRUEOo/1rWHdJSKz7IZbaMtrpEnekQIa3p2Jvzf+1+8eyl7thLwUvJfou4dB6NwGtOE8dPhlTDn2ajxrvsaI5QM/oViyDiXNqv/0yQ9tWllYZ1nu+AyLxFigbBtDenskPWPqHt8+Wy8ndUfmS1ZxfSZ+9xbky/J1O1JRxi/hHP19f6Sx09qfYKR3nIWnP+ZJdP7HjNzXu5oSR1giBpPhwTx46fXKuUgd7rTxfgLfJsOXUpPWhQIFSm6eDjcETe6JJLuVTzNe81tMptHeafNyhFh4LpAVnIyQQkdFJrIZCVwo9YfD6bfDi11C4Rg7cxfKPTEFTqRuMhbbKywuDzfxo0yO3HJzWmNhAP1urhafzoJBnKpBByjBHRw8J/VrSMh5KNQdACd1p0A4w/HnkuMWYxSFFOwPi5Zb2hEJxsH8ie/1IUjbxdexN9qcBzwMEk15oabJNF7/pyxfvto2AQba5Lpq57lSuTZx7d2xuQjJJxozCqS6aZd7UpjmkSm8Dl1ji+2bE3I67jn1S5ln6D33ptDZDEwsltZWZfKzJ/sbifod+D2osx26JMbiFcEieTX5hj0W6pdwxVjAIbAlwb6peAIq9JBIF+Hvr2ctl3OEfbw/Id3HuZY7VnrAOtNdznH93jmW6HrjNvDsUOQiTQa2CZHhqiIDBwf9GMYsOWmt7tVf1muQr/Rcy6u9dGvcUSMIY/rEjfrpswLwUA4XdZDEnnYR+Ox+fJy3F8k0AlgsZ0KokGYy0Ttj2x5YtquuX5+9sRX7zgnbCDYysZowtRYk+sMFGkCToCu8uKxZ+R/iQbZfZZOf228IF3UwDx78y9fcOpmDHi4ooCdWe1hav28WN8UrHT9ckOVZ0vKQ7JDD/ZySXxW08WQxyLIvsuiMgLNyQX5bsvs2oiqscyDW9M7rodPXJDh/QWhvzePCqqFN
+ /s72UcvD
+ gt1R9N8/2RG7MxbBXzKss5wmvPmX4AH+DT2mPWMFI42FPRLmUT9TMdk8QgtupiWHh73CxLnJZn5ByqNx9kdpukaDIQaAR5hgbbREpQZlcd6i92dUs6wuo6cTPIoliC7WDsmBl/c+XFTudavLEhS3UmfSp61KXnJOvCTI9YihQthscDQ0ZC0SrnZcmxMJxf3l7hXBvDU5QgwTRLHPrbGQv2e7dSUWkjr2uoATB5qvCebwjexQlhdPE0hU6o+2azvJzlJTHLEGkv8mXBAi2KXLUzsyaWDu1xx9comyexThi9AHvZMRelm9pBT0CCri1DogzLkmwPYuBA3BV1oumgD9q98j7qculwvAzXgRVj03dTTWpH/wV7nFUKAM+lw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,85 +93,169 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/04/26 at 03:47am, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> read_ctrl_pos() encodes the tier range in a single "tier" parameter
-> via "tier % MAX_NR_TIERS" as the start and "min(tier, MAX_NR_TIERS-1)"
-> as the end.  This is hard to follow or maintain or extend. Tier
-> values 0..3 select a single tier, while tier == MAX_NR_TIERS selects
-> the full range.
-> 
-> Replace it with explicit (tier_min, tier_max) parameters using a
-> half-open [tier_min, tier_max) interval, which is the conventional C
-> idiom.  The call sites become self-documenting:
-> 
->   - get_tier_idx:   (0, 1) for tier 0, (tier, tier+1) for each tier
->   - get_type_to_scan: (0, MAX_NR_TIERS) for the full range
+On 8/17/26 7:15 PM, Mike Rapoport wrote:
+> On Mon, Aug 17, 2026 at 03:11:56PM +0800, Li Zhe wrote:
+>> On 8/16/26 8:04 PM, Mike Rapoport wrote:
+>>> Hi,
+>>>
+>>>> memmap_init_zone_device() currently mixes refcount policy and core
+>>>> ZONE_DEVICE page setup in a single helper.
+>>>>
+>>>> Factor the refcount-reset predicate into pagemap_requires_refcount_reset(),
+>>>> move the common page initialization into __zone_device_page_init(), and
+>>>> wrap the existing slow path in zone_device_page_init_slow().
+>>>>
+>>>> This keeps the slow-path behaviour unchanged and gives later patches
+>>>> reusable helper boundaries.
+>>>>
+>>>> No functional change intended.
+>>>>
+>>>> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+>>>> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>>>>
+>>>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+>>>> index 95808ab5cfdb..a70acb7431a6 100644
+>>>> --- a/mm/mm_init.c
+>>>> +++ b/mm/mm_init.c
+>>>> @@ -1005,11 +1005,37 @@ static void __init memmap_init(void)
+>>>>    }
+>>>>    
+>>>>    #ifdef CONFIG_ZONE_DEVICE
+>>>> -static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
+>>>> +/*
+>>>> + * Return true when memmap_init_zone_device() must initialize the page
+>>>> + * refcount to 0. MEMORY_DEVICE_GENERIC pages regain a refcount of 1 in
+>>>> + * the free path, while the remaining ZONE_DEVICE types start from 0 here
+>>>> + * and raise the count again when the allocator or driver hands the page
+>>>> + * out.
+>>>> + */
+>>>> +static inline bool pagemap_requires_refcount_reset(const struct dev_pagemap *pgmap)
+>>>> +{
+>>>> +	/*
+>>>> +	 * MEMORY_DEVICE_GENERIC pages regain a refcount of 1 in the free
+>>>> +	 * path. The remaining ZONE_DEVICE types start from 0 here and raise
+>>>> +	 * the count again when the allocator or driver hands the page out.
+>>>> +	 */
+>>>> +	switch (pgmap->type) {
+>>>> +	case MEMORY_DEVICE_FS_DAX:
+>>>> +	case MEMORY_DEVICE_PRIVATE:
+>>>> +	case MEMORY_DEVICE_COHERENT:
+>>>> +	case MEMORY_DEVICE_PCI_P2PDMA:
+>>>> +		return true;
+>>>> +	case MEMORY_DEVICE_GENERIC:
+>>>> +		return false;
+>>>> +	}
+>>>> +
+>>>> +	return false;
+>>>> +}
+>>>> +
+>>>> +static void __ref __zone_device_page_init(struct page *page, unsigned long pfn,
+>>>>    					  unsigned long zone_idx, int nid,
+>>>>    					  struct dev_pagemap *pgmap)
+>>>>    {
+>>>> -
+>>>>    	__init_single_page(page, pfn, zone_idx, nid);
+>>>>    
+>>>>    	/*
+>>>> @@ -1028,23 +1054,15 @@ static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
+>>>>    	 */
+>>>>    	page_folio(page)->pgmap = pgmap;
+>>>>    	page->zone_device_data = NULL;
+>>>> +}
+>>>>    
+>>>> -	/*
+>>>> -	 * MEMORY_DEVICE_GENERIC pages regain a refcount of 1 in the free
+>>>> -	 * path. The remaining ZONE_DEVICE types start from 0 here and raise
+>>>> -	 * the count again when the allocator or driver hands the page out.
+>>>> -	 */
+>>>> -	switch (pgmap->type) {
+>>>> -	case MEMORY_DEVICE_FS_DAX:
+>>>> -	case MEMORY_DEVICE_PRIVATE:
+>>>> -	case MEMORY_DEVICE_COHERENT:
+>>>> -	case MEMORY_DEVICE_PCI_P2PDMA:
+>>>> +static void __ref zone_device_page_init_slow(struct page *page,
+>>>> +		unsigned long pfn, unsigned long zone_idx, int nid,
+>>>> +		struct dev_pagemap *pgmap)
+>>>> +{
+>>>> +	__zone_device_page_init(page, pfn, zone_idx, nid, pgmap);
+>>>> +	if (pagemap_requires_refcount_reset(pgmap))
+>>>>    		set_page_count(page, 0);
+>>>> -		break;
+>>>> -
+>>>> -	case MEMORY_DEVICE_GENERIC:
+>>>> -		break;
+>>>> -	}
+>>>>    }
+>>>>    
+>>>>    /*
+>>>> @@ -1090,7 +1108,7 @@ static void __ref memmap_init_compound(struct page *head,
+>>>>    	for (pfn = head_pfn + 1; pfn < end_pfn; pfn++) {
+>>>>    		struct page *page = pfn_to_page(pfn);
+>>>>    
+>>>> -		__init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
+>>>> +		zone_device_page_init_slow(page, pfn, zone_idx, nid, pgmap);
+>>>>    		prep_compound_tail(page, head, order);
+>>>>    		set_page_count(page, 0);
+>>>>    	}
+>>>> @@ -1126,7 +1144,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
+>>>>    	for (pfn = start_pfn; pfn < end_pfn; pfn += pfns_per_compound) {
+>>>>    		struct page *page = pfn_to_page(pfn);
+>>>>    
+>>>> -		__init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
+>>>> +		zone_device_page_init_slow(page, pfn, zone_idx, nid, pgmap);
+>>> It looks like all callers of __init_zone_device_page() are now calling
+>>> zone_device_page_init_slow() that with series evolution became a thin
+>>> wrapper for __zone_device_page_init().
+>>>
+>>> Maybe we can just rename __init_zone_device_page() to
+>>> __zone_device_page_init() and replace the open coded setting of the page
+>>> count with the call to pagemap_requires_refcount_reset() an be done
+>>> here?
+>>
+>> Yes, that would make patch 2 simpler.
+>>
+>> The reason I kept the refcount policy outside __zone_device_page_init()
+>> is the compound-tail initialization added later in patch 5. Tail pages
+>> still need the same basic ZONE_DEVICE struct page initialization as head
+>> pages, including __init_single_page(), PageReserved, pgmap and
+>> zone_device_data setup. After that, the tail-page path calls
+>> prep_compound_tail() and sets the tail refcount to 0 unconditionally.
+>>
+>> Folding pagemap_requires_refcount_reset() into __zone_device_page_init()
+>> would make that helper include the head-page refcount policy even for
+>> callers that will immediately apply the tail-page refcount rule
+>> afterwards.
+> But you still call zone_device_page_init_slow() from
+> zone_device_tail_page_init() so it's anyway there.
 
-I agree with the complexity, while I am starting to like the original
-style once I understand it. Maybe add sentences to explain it?
 
-Anyway, leave this to other reviewers.
+Thanks for pointing this out. I was mistaken about the current split.
 
-> 
-> No functional change.
-> 
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  mm/vmscan.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index c2ea92c2b69e..a359d5a1ff41 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -3192,8 +3192,8 @@ struct ctrl_pos {
->  	int gain;
->  };
->  
-> -static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier, int gain,
-> -			  struct ctrl_pos *pos)
-> +static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier_min,
-> +			  int tier_max, int gain, struct ctrl_pos *pos)
->  {
->  	int i;
->  	struct lru_gen_folio *lrugen = &lruvec->lrugen;
-> @@ -3202,7 +3202,7 @@ static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier, int gain,
->  	pos->gain = gain;
->  	pos->refaulted = pos->total = 0;
->  
-> -	for (i = tier % MAX_NR_TIERS; i <= min(tier, MAX_NR_TIERS - 1); i++) {
-> +	for (i = tier_min; i < tier_max; i++) {
->  		pos->refaulted += lrugen->avg_refaulted[type][i] +
->  				  atomic_long_read(&lrugen->refaulted[hist][type][i]);
->  		pos->total += lrugen->avg_total[type][i] +
-> @@ -4805,9 +4805,9 @@ static int get_tier_idx(struct lruvec *lruvec, int type)
->  	 * This value is chosen because any other tier would have at least twice
->  	 * as many refaults as the first tier.
->  	 */
-> -	read_ctrl_pos(lruvec, type, 0, 2, &sp);
-> +	read_ctrl_pos(lruvec, type, 0, 1, 2, &sp);
->  	for (tier = 1; tier < MAX_NR_TIERS; tier++) {
-> -		read_ctrl_pos(lruvec, type, tier, 3, &pv);
-> +		read_ctrl_pos(lruvec, type, tier, tier + 1, 3, &pv);
->  		if (!positive_ctrl_err(&sp, &pv))
->  			break;
->  	}
-> @@ -4828,8 +4828,8 @@ static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
->  	 * Compare the sum of all tiers of anon with that of file to determine
->  	 * which type to scan.
->  	 */
-> -	read_ctrl_pos(lruvec, LRU_GEN_ANON, MAX_NR_TIERS, swappiness, &sp);
-> -	read_ctrl_pos(lruvec, LRU_GEN_FILE, MAX_NR_TIERS, MAX_SWAPPINESS - swappiness, &pv);
-> +	read_ctrl_pos(lruvec, LRU_GEN_ANON, 0, MAX_NR_TIERS, swappiness, &sp);
-> +	read_ctrl_pos(lruvec, LRU_GEN_FILE, 0, MAX_NR_TIERS, MAX_SWAPPINESS - swappiness, &pv);
->  
->  	return positive_ctrl_err(&sp, &pv);
->  }
-> 
-> -- 
-> 2.55.0
-> 
-> 
+>
+> I'd suggest combining this and the next patch into one, keeping
+> __init_zone_device_page() name without renaming it at all and open-coding
+> the initialization of the first head and the first tail page to properly
+> set refcount and call other prep methods.
+>
+> I'd also pull the initialization of the first page in both cases out of the
+> loop and make the loop only use the _template version.
+
+
+Thanks for the suggestion. This is indeed clearer. I will fix this in v11.
+
+Thanks,
+Zhe
+
+>   
+>> That preserves the final state, but I was trying to keep the common
+>> ZONE_DEVICE page setup separate from the head-page refcount policy for
+>> this reason.
+>>
+>> Would you still prefer the simpler renamed helper here, or should I keep
+>> the common ZONE_DEVICE page setup separate from the refcount policy and
+>> make the naming clearer in v11?
+>>
+>> Thanks,
+>> Zhe
+>>
 
