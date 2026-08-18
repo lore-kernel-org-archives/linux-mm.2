@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18E63C5DF70
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 06:11:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDF3BC5DF70
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 06:11:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EAA06B08E8; Tue, 18 Aug 2026 02:11:15 -0400 (EDT)
+	id 0F0406B08EC; Tue, 18 Aug 2026 02:11:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 274546B08EC; Tue, 18 Aug 2026 02:11:15 -0400 (EDT)
+	id 09FFF6B08EE; Tue, 18 Aug 2026 02:11:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1154A6B08ED; Tue, 18 Aug 2026 02:11:15 -0400 (EDT)
+	id EAA046B08EF; Tue, 18 Aug 2026 02:11:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D93CE6B08E8
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:11:14 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4EA94A0AE1
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 06:11:14 +0000 (UTC)
-X-FDA: 85113367668.11.B594065
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6D3C380007
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 06:11:12 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JWCucy63;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BDED86B08EC
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:11:21 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 38928A371C
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 06:11:21 +0000 (UTC)
+X-FDA: 85113367962.04.5A53970
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 434304000C
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 06:11:19 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=p1CmSzlz;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+	spf=pass (imf12.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787033472;
+	s=arc-20220608; t=1787033479;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7MnRAqJMoLRpsIrwycTnpOzFMIb3xRRTSx1mdIHCeG0=;
-	b=U06ZPJ6+O7S3xVTHXNOBWFWHVNCXIXRcjcE5CZ54ivJ9RIF7IkNfkw+6IyBxZUrWr8IjV3
-	rQ2fmGKGeaEwz5GD1IG3q2fEfhcF71vH17w7sNwcWAqeVQqgf5d4+VRUWwD/+XRbY/Xegc
-	5Gg2+QX+JBN0nqTzhAomos7Il7Q4pVQ=
+	bh=stz2R8m9lkuSZFQdtg7AzG6IQOSAxbyACeZhPcbbimg=;
+	b=1duAKpvWAinBZo4L1Q+7hUzL+1sGT8OVJ+o/XWDLdGbumM0jlAJlB2TpYZWrLc2X6rrGQv
+	aujQ5Kny2OmJmYgNkPe1s8q0jMDAs2gTFpBcORk+DBcOr2x/vUFWZypDL1CzK9GjNAKChh
+	m99+ZwsFYmvG5xnobnGkQvUWjkTBkPc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JWCucy63;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=p1CmSzlz;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+	spf=pass (imf12.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787033472;
-	b=lFNRRvpfDY6NY5RQIDz7K3HlGXhVLTwEWEHUBWaBBty/IkeifbWE7t4A0rFcaeroMvejjs
-	AM7ayB9sO+FtDOoSKiwFStpWSMY8sfLqAQN/kIcXofQpBohk1GwDKVULxYoRSS4rsiSzpB
-	mQSRJHVHgw+dIsLb2xWYrrLGbEQX13k=
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cbee3777e1cso2388132a12.3
-        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 23:11:12 -0700 (PDT)
+	t=1787033479;
+	b=B2PA+RIb0ym2/VjM/PahpbNJuzp2SYbg2tlsWApg5t8ywdzPJDpmdo5pJGN/zQXUbtONrx
+	SI4xVMDCyBRw0t6ZSR99wa6XRyDK/zJMF9CVeuuwQmMXq/FqBgZCmWfLB30XYv6cwKDREL
+	81T+afsCTDx4SQpjyzkl1U7JPyFnCa4=
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38e08baf860so4252273a91.2
+        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 23:11:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787033471; x=1787638271; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1787033478; x=1787638278; darn=kvack.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=7MnRAqJMoLRpsIrwycTnpOzFMIb3xRRTSx1mdIHCeG0=;
-        b=JWCucy636kHwsiiLZ5kQqfjsuFd67QFmOAY+MfiVriUsrkV2WmwuxXX2HmHN9+90FL
-         3Z1rydM2FAV9NkMWu4MpqphwBHA6CvoxOFEWE3beTe2IHgEjZlkUH7E1TWmB6tQTBPwK
-         A/vrjvl703i6EdchTuS2Bekv1hCkgKclEzv07LxszgwVWkJoA7CYiJvSQaZEK2Fxp4ql
-         XORB99btQ/yAjn9zpcb1A2+YVD9Ba0GuLjgs1BrjGvSqlUjtcoPpY1lz+tCEfphSkHPe
-         RrtNFOZ/qO6DC6V14InkWCcfdubetjfqQhowyCfOhNXb8cTvk41LotYxTZmhec+0kz4J
-         hovw==
+        bh=stz2R8m9lkuSZFQdtg7AzG6IQOSAxbyACeZhPcbbimg=;
+        b=p1CmSzlzmVzOX2lzH0KeMO2htQQO9WopGRV5wXM01VWJ591Zp0GbsQHJ2wNPH9l9+W
+         Z5k/1IGTWpBeFUAP3FQuwMckiVFY2+iP70KF6rq4I//2yTabtQQrJK/w+mPDXHWV2Yqy
+         ajCQFBSGINXuD9xiImRA4l4JMH94AKAXkgu+naHGxdg/T9v3PBztkW77yalbUc4shGIM
+         4ArKtDp/pHRoRj0l+gM+UPz9npG6gjG/KwUc+onikXMEFIJCL1yGU2VgV2TTwetBr2XV
+         9GpCac/79He8GWfCte9Vg0/JHJwg35zfrJNPCI2bnpQNHDcEJ6ycxBIF3TzsUD4l9C2q
+         ilNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787033471; x=1787638271;
+        d=1e100.net; s=20251104; t=1787033478; x=1787638278;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7MnRAqJMoLRpsIrwycTnpOzFMIb3xRRTSx1mdIHCeG0=;
-        b=cUDD0f5cDhiZ/unmkYKYGtyf4cZNJLWKOe6ZML6sxi5KmPz3uJpf5ah10k610rruCw
-         qM1wjcfHhjD1pcstg82Wekxq+kyxyVirejBGeNjJrqeeEQsct5FXagrSkK0y5JFyrk64
-         dfHj8tILXo7z3kUkxmZz9fuE0yzuiQOwQ6uExtZpI/Apt0lKAA3s6fI/SlODyACFTNHz
-         yglr+O9cI70qDaIuHB8vyTaIveBgnv9uLUEeds8wtxG8roSIH4FJKfPvyNxByPkdHZts
-         p3vd42zA4HZsKEUIhYsjbwWLeaKBXceRIMLIx7934NYxmjHEvYC6n9JTM8/WDbpjFVnf
-         UJ6A==
-X-Forwarded-Encrypted: i=1; AHgh+RpjGEZ73Gv8cc0wTQ6LyfTqFt8ztHjN8o5WBY7SWxLamDPDimDMlRje+ScqNS9fXUq0Iqy2zgxLoA==@kvack.org
-X-Gm-Message-State: AOJu0Yx5XhPWxYr4OF8ZL6Njsr8WEKTqdts+I+AN/EUiR4YJCuyT7K/l
-	xBfltDjq/vwqFtJuLqvk1qrIPu73HiIt60xTDkloEN4zfLoCJbbYqocr
-X-Gm-Gg: AR+sD13+dBiTCl0v+JQxDRBbEiNDOCiNuiQiq3CWVz5JTwmhNwPJlAhsicv6FmXSeUS
-	Pe4/vtEpZZ7VkZg+3EOsTihZUKHC0qENqdcVAPss3FDnL2lCdZdVvACkp77ylvuEZ/b9zHFb4cQ
-	TgFhzzECpnJyoFVQiwQLE+NCWaiHpBX9evebot+dgosVydYZQyIG7tWcHRLBMwQBgLQL/DaSew+
-	ghWQWClTTXllWxH/6CP+Ns+ZjAl/T9pl6dPcZuZs+BBbf9487MvXHyMMruAy0+8Nc65+pAcOAMi
-	/7nuXg6dVB1zalyrKGueJjkI8A9lrkK+0WgF+q1A2pJSubNUxiBTwWmCcEO4kmV7+yDU7JqK6nn
-	rejdMlnY3gVl5abdQKAJQhzEPM+MyH53ZxSQpDfJ8x+l+Gz4Qx1PjDq59y98fHChDBXF9c8jBVL
-	WsN7dLs1XrC9w9o+RCQCERuh0s4aHj4wEvQLyuSqoeTgWvLFSHyuK2wntRq/Ho0mHFKo8c0gYI7
-	sm4RZo=
-X-Received: by 2002:a17:90b:1d45:b0:366:10f1:3d91 with SMTP id 98e67ed59e1d1-3933b7c3b71mr32119576a91.1.1787033470824;
-        Mon, 17 Aug 2026 23:11:10 -0700 (PDT)
+        bh=stz2R8m9lkuSZFQdtg7AzG6IQOSAxbyACeZhPcbbimg=;
+        b=pWue59Px1Hirajcbd1hcJpH+NiEp9wH+LxENryMdTf4oROCJeoFly/WYyQf/ZhjrDU
+         IlAJQ4q09o+FtQfSjGgzXWl4mXVhZtpZRKVZfwY5HxSSmExX5vYL0iKmSYYb6XERZwKc
+         4S03hO1oBTh2arwZLpLQPYn2Uv9nLg9kYzUa3TSAXTWVLsY9iMf1ICxNGHkneqDk2vGz
+         IRB0unrElW7ypoHoP5F0k9dKEer8qCalhEnGwoNIun8s5g6ffPyhUHu37CGqyrqQ1jIt
+         +8uh/2RuQqvtJBNgVSRK02xr5SAk1xxqt5ruhztbgHS69JBH+ZyxNX5SYjUH8ME5+vWh
+         z7cQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpT+nvHub8V+Wby/QwoCYFfE7dNfTGDFrFD3n9hYV+yJndXt7RhP6bGzjBsk9FK0ozLx+OME+kjsg==@kvack.org
+X-Gm-Message-State: AOJu0YxCLj1x9qg1EUA/bTfWq02WbBKofjx5P6CcDQ8JwmllYDxkuCty
+	kd4on5t1wp8qsr6wnnRfbnvMYYSyGv9++T6S0pRHVZawBBaaxuZ+g1/Q
+X-Gm-Gg: AR+sD106E+/QJjvtuSUeB3/RjSa4xYYg9MrjB1U023JdXQOdMrx5xDucveLNycYeEJr
+	5zoEqQL4GNU7SdelMdeHjGdLAjn/JU40ITUzpSMUDiJXdnvfvhN6gukGIenULG5fjmHSvd+x0Wr
+	kFzhKF/pIN3vppsXf9fZuvXkmDi8Q6enkTTsPRQp+4fIVG+t+Mh0aflipmIcKWBccHmZ3mAYZ3V
+	YCFoBxmd4eTLsy9giCrqz3C67CUrYoA6obUzC29jCpMYiyRDho/6j+pmv8miSt9BnhoLixLRnuR
+	WKIeI0Jn7lwvtRRaHqpeKEITzNHXNl18qsujT8Z/LoCIgWE9WosneX0/RJoM1sF0wA8l2X87hoG
+	iDBawJNtywgk0FhLu/w3MEc/ww+PgC+59KwmRYdRUCWQXg9Fdldt8QpJcj1MgDMH5gsmwiQjtSv
+	fNRENky9HC8Bq1yjppF2ek2MjrEtMSzXf5buBM37tpCJ8E023pB99MLQl28cWXjb15b3eBZMEXb
+	c5NXlU=
+X-Received: by 2002:a17:90b:58e5:b0:381:a766:efc9 with SMTP id 98e67ed59e1d1-3933caf3a05mr33753321a91.7.1787033477673;
+        Mon, 17 Aug 2026 23:11:17 -0700 (PDT)
 Received: from kernel.tail6741c6.ts.net ([116.128.244.169])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3954d38bf94sm4633942a91.9.2026.08.17.23.11.04
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3954d38bf94sm4633942a91.9.2026.08.17.23.11.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 23:11:10 -0700 (PDT)
+        Mon, 17 Aug 2026 23:11:17 -0700 (PDT)
 From: Kunwu Chan <kunwu.chan@gmail.com>
 X-Google-Original-From: Kunwu Chan <kunwu.chan@linux.dev>
 To: sj@kernel.org,
@@ -108,23 +108,23 @@ Cc: damon@lists.linux.dev,
 	shuah@kernel.org,
 	lianux.mm@gmail.com,
 	Kunwu Chan <kunwu.chan@gmail.com>
-Subject: [RFC PATCH 4/7] mm/damon: integrate observe API into vaddr overflow handlers and core drain
-Date: Tue, 18 Aug 2026 14:10:28 +0800
-Message-ID: <20260818061031.827057-5-kunwu.chan@linux.dev>
+Subject: [RFC PATCH 5/7] selftests/damon: add automated layer-by-layer observability test
+Date: Tue, 18 Aug 2026 14:10:29 +0800
+Message-ID: <20260818061031.827057-6-kunwu.chan@linux.dev>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260818061031.827057-1-kunwu.chan@linux.dev>
 References: <20260818061031.827057-1-kunwu.chan@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: x8g9987wnasz35a15twrisiio1fy8iu7
+X-Rspamd-Queue-Id: 434304000C
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: dnc5xphkbzdfh86crjc8ocw4q7bb3oyh
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6D3C380007
-X-HE-Tag: 1787033472-900522
-X-HE-Meta: U2FsdGVkX1+gmqfSjK5DkHpXAIxVCPqBbuHm/2tey/WpYdrBYRlvhPcaiOLPrYNWyecAwswmEqDBSACYJaLj+hS+k4dQkAy38+kcRarUJTSr9mUJ+E9rfMGM0aGveBaIEF8u6gftDG2k08LfBsnFYvhq3rDYsJEmTWPbZwSFkaEIqilzTKlSW343Z5zkX7CeUPVfxbxyYXmxOPR8/zCojsX+6xPyKxqeg/pvRkIlgCnORjmr0xFv5Izd5UtBpdAzEYcbUeAL5UmgGYhU5FyB311y1qgIsa5DD28+pa7KgDV8hh/YjYX/v1yXSf4kkOwxz61zFFWeae9G+VACCi4qrM8H8ezBBtT2CyIkVtkfWp17PWsfnuWTiwU/qPg2cRbnBeXJNdo6Nmm4ZGZvIgBVpuMSE4HYoTkFn4Ks+aWsN9pjiMurTUTJogl+xQ8bOMbyxCfpVZMS2iVbOAj18rRA2QN5LmIhgUaPkoz/3V4Vkyxb4cfnLW3i9Y721+7CuWrjbZYjcjVtOyHuUFMOTshce/RzpWiwAFjoChjZVWeNF4WK/Rf/hZ29u0QCzERYlccDKOIz/r9w8cUtS6hkHVOaGiGCVecvMq7CuU0NTFAXgFfbW2RhWD0zIPjBWUab55CVzGAX6vNE+oEm5sGYUeJPR4pUgKCx6zydWN/N2vsgu9dGses/RpYRglWwQn/0pYg3Ogh9n7UOXIvqJKi416QudMw13jgV//lOWakhSJDZI/+YXa0N/QIydjuAa+jf1B91KXUdsHtyUi+fXmB6mJ7gqQ2srx/A2Fpqi3CnDVldtGoRfgYRzq+yrzFprXXgu32YFevB647F+J31MV8zqY5jjSqw46AMBVkiBSzVR9R1EaL66D4LfYcn/1o0mf1pZ9VjgKRUw1aXFNkYxC7JVzosiYnAgZq1y8k1HrmhtzTaBH2N2A2ug6/KNV+3e3tTL5eCuLAbck5WV2w2/CrG95w
- BwJktNDS
- Y7Zbzv4I9sNVbqpGAhNgl6dBPmDMOfcDBXcPkORPvAd+CQQlJGPvbiKJelF3tToqHD7Hq5AaOpoCmkj6H6mBKJB7OvSbyoJ2NEcupOEmw8LOSVUyCDGLf0oFYFxCajnj9YDb2Kmbd4tI37E8snofOg/1nVoeWpA2YWgPGyAxdJP1lzxu/fGQRp6ysJhV5HAZry+PWlPZkGRU87LiPAm1fM8BSwheF1Vo8wmMjzlCletRrHphFaiSKN/HCVVBQx1AECQq8aVKYVWM3nwkiHWv9mxxhOYf6Oha9bWb/VCJN563p52bqnBAwZq/OlUEAzf6mI5CJZ0T6c4S1tIge9emdxrLdaYTLsNDT5VI+dkMGM2wFerQHSiyHHX2TpyTe0HIi5YkWVuSTQ9fx+gwfkmQOctHOwd7rNtu72+GO9qlzAxEs1HfUDWzW0V5iHyvTQhTWP+282T7ZG60sQF4Ilel2L7hmrc5unv+PLiy6T0zM0k4bixk=
+X-HE-Tag: 1787033479-514726
+X-HE-Meta: U2FsdGVkX19sffX+VtiKGMWYNonVtnfbsfRoH7szMkZdH6OcdSR0JK5NcXk7UZ6KYP1D/TVcgRNKlm39L+pQKd4HmKorhDbVjphhAjrBEDjEVH9Pmv759VV0cZMXvJsKPvrEoRIbIaHyvJkByvdro+wVJltVxgzklLqfLgZWWO01x5Bte12/gNvtp2zZv9ajlOSdNvhFt6cHQRbjZHEAfXHeRdJxta2eG0evI4HbpDtMvlT4HOHLqcOpg+wizjO+tiidvRVTITiswS0tthPc+ZGUdDB+sSXmEucA/Ngaku1k2MRS+LLY+HsVyZDIsWAmQJaYPoqy7Pd7wVCFrOz3hAtLWQCCPAILj6Yl1EB7sMGddiVrDyHAbJLxmv7zvrf0cumXBFE+KBtmg6NXF/9Td4XDWtKaVL7EKFHMQQBHxO7bWwonIDrom6iwS9diKbwky9+yjfdbEkXMVYdfxbsrqydyGdijcTcT+/ua2F8D9D131DXhHn1+fcYg7vqoQ78zIjjjF2xpVnxCKx8Jsr74WnpgU+t1NUtWK+nSb6Lw8nlZr4wk4Jum7Rd1SxWXnpUKCo6+unDETpI+TEf7W6wnyto/uokQw+b2GVDUTu6tS9v3urBxk/dA4FUbHObURpPMs5BM6IWcMlnZo0xWUsJra5zMxf3JaURyVII0jNVtrC4y4AnH+IKZ/ijXF4LL1PZ519OsCl+YLA5EoJL756d4TgxU37IvPEVWrVVu8729FCff2zzKGm6IVoOESgeASuW6EUpl3+r32QqTuxgzFk6VhiOwk0vlkIbTkVRORdRet785UOqOjV7D4aB5U38SKzouFUEXdsdofki4pLKpIoVJWn900iMUZN46V1hIVnKxZUND5xSC1uJGjqnlbJiu9xaKARpa36Qs/uLO5q9ed2hZt3D7lWHltWiG23dwXy+LyCnIX2RoTgvU0uY5rmjQyVj+0JoU3n5oNObFuOCjfRG
+ AvZgjwmz
+ PHtfTRm/H4xPfgX5RhBCVQgwf5r5HAr7X+p9E11+cvGBjG5+sCjSfLm8Himr03L0BcKaZOJSGdsHKZk6Q21URtCgCE1vmVAG7nNCwL1zzTQv4qkmAJBlQMfnLCoIoploFspTKbd1fYQDCp/Ga57m/ZPUpUelwLDzGCXO2z9hoRqSMzaE5CEIS8k0GT+PLuHutAhhcUEIiKTpr7MEIN5W4JYu62fPm3p3VpjUqSYGIr2dz8Vz/JdYo+ZAvprvEARfJeE9L4z8fJwcdDwGNcg1z9KgE9ZusTcXHdsupRle9ZF08HcIJgH67EMcwBd8iHtAjXEc+/v9BuFkh4sfytwjhfsXT/4rxw2NvD3VR8LOPcyQWGl7a00D+k4/FIaWeJ20DASWW5o03yNOLDZnJ2o5fSFE5qGDY3PjsuH0Qpu+YsHc2xJy8iDVGIOARDddze8RPyZ925zHichJC+0NWb24zILzHTF+wdilMgnWKGhkyL3G3q7w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,473 +134,610 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kunwu Chan <kunwu.chan@gmail.com>
 
-Wire the observe_*() calls into the DAMON hot paths: vaddr access-check
-overflow handlers report into the per-CPU ring, and the kdamond drain
-matches each report against the target whose tgid owns it.  The observe
-calls are pure side-effect statistics (no-ops under
-CONFIG_DAMON_PERF_OBSERVE=n), so the switch never changes DAMON matching
-semantics.  The vaddr teardown frees the per-event cpu_state array.
+Drive the observe framework end-to-end with a software page-fault PMU
+positive control (no hardware PMU required): create a kdamond with a
+perf event via the DAMON sysfs interface, run a memory-pressure
+workload, capture a bounded trace window, and assert each pipeline
+layer from per-run snapshot/delta counter deltas (counters are
+cumulative since boot, so the snapshot is taken before the workload
+window): callbacks, valid data addresses, ring enqueue/dequeue/
+overflow, drain match/update, the four DAMON perf tracepoints, and the
+per-CPU state column advancing CREATED/BOUND/ENABLED to RUNNING after
+the first callback.
 
-Read ring->tail once with READ_ONCE in damon_report_access() and reuse
-the cached value for the peak-occupancy estimate, avoiding a torn read
-and a compiler reload on the producer side.
+A clean-session guard refuses to run while a kdamond already exists.
+Ends with a PMU support verdict (FULLY INTEGRATED / PLUMBING-ONLY /
+UNUSABLE).  Cleanup is ownership safe: it tears down only the kdamond,
+workload and debugfs mount created by this invocation, and retains the
+raw evidence directory by default.
 
 Co-developed-by: Lian Wang <lianux.mm@gmail.com>
 Signed-off-by: Lian Wang <lianux.mm@gmail.com>
 Signed-off-by: Kunwu Chan <kunwu.chan@gmail.com>
 ---
- mm/damon/core.c  | 129 +++++++++++++++++++++++++++++++++++++----------
- mm/damon/vaddr.c | 104 +++++++++++++++++++++++++++++++++++---
- 2 files changed, 199 insertions(+), 34 deletions(-)
+ tools/testing/selftests/damon/Makefile        |   1 +
+ .../selftests/damon/damon_perf_obs_test.sh    | 562 ++++++++++++++++++
+ 2 files changed, 563 insertions(+)
+ create mode 100755 tools/testing/selftests/damon/damon_perf_obs_test.sh
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 609d627e2b33..377f07122fb0 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -21,6 +21,7 @@
+diff --git a/tools/testing/selftests/damon/Makefile b/tools/testing/selftests/damon/Makefile
+index 2180c328a825..1db8fa95ba2d 100644
+--- a/tools/testing/selftests/damon/Makefile
++++ b/tools/testing/selftests/damon/Makefile
+@@ -23,4 +23,5 @@ TEST_PROGS += sysfs_no_op_commit_break.py
  
- /* for damon_get_folio() used by node eligible memory metrics */
- #include "ops-common.h"
-+#include "perf/perf.h"
+ EXTRA_CLEAN = __pycache__
  
- #define CREATE_TRACE_POINTS
- #include <trace/events/damon.h>
-@@ -2243,24 +2244,41 @@ void damon_report_access(struct damon_access_report *report)
- 	preempt_disable();
- 	if (local_inc_return(this_cpu_ptr(&damon_report_ring_busy)) != 1) {
- 		/* NMI nested on a process-context producer; drop. */
--		trace_damon_perf_ring_overflow(smp_processor_id());
-+#ifdef CONFIG_DAMON_PERF_OBSERVE
-+		damon_perf_observe_ring_overflow(smp_processor_id());
-+#endif /* CONFIG_DAMON_PERF_OBSERVE */
- 		goto out;
- 	}
- 
- 	ring = this_cpu_ptr(&damon_report_rings);
- 	head = ring->head;
- 	next = (head + 1) & DAMON_REPORT_RING_MASK;
-+	{
-+		unsigned int tail = READ_ONCE(ring->tail);
- 
--	if (next == READ_ONCE(ring->tail)) {
--		trace_damon_perf_ring_overflow(smp_processor_id());
--		goto out;
--	}
-+		if (next == tail) {
-+#ifdef CONFIG_DAMON_PERF_OBSERVE
-+			damon_perf_observe_ring_overflow(smp_processor_id());
-+#endif /* CONFIG_DAMON_PERF_OBSERVE */
-+			goto out;
-+		}
- 
--	ring->entries[head] = *report;
--	ring->entries[head].report_jiffies = jiffies;
--	smp_wmb(); /* publish entry before head advance */
--	WRITE_ONCE(ring->head, next);
--	WRITE_ONCE(*this_cpu_ptr(&damon_ring_pending), 1);
-+		ring->entries[head] = *report;
-+		ring->entries[head].report_jiffies = jiffies;
-+		smp_wmb(); /* publish entry before head advance */
-+		WRITE_ONCE(ring->head, next);
-+		WRITE_ONCE(*this_cpu_ptr(&damon_ring_pending), 1);
-+#ifdef CONFIG_DAMON_PERF_OBSERVE
-+		damon_perf_observe_ring_enqueue();
-+		/*
-+		 * Track peak occupancy for health evaluation.
-+		 * next is the new head; tail was read before enqueue
-+		 * (may be slightly stale — acceptable for a peak estimate).
-+		 */
-+		damon_perf_observe_ring_peak(
-+				(next - tail) & DAMON_REPORT_RING_MASK);
-+#endif /* CONFIG_DAMON_PERF_OBSERVE */
-+	}
- out:
- 	local_dec(this_cpu_ptr(&damon_report_ring_busy));
- 	preempt_enable();
-@@ -2276,6 +2294,9 @@ void damon_report_page_fault(struct vm_fault *vmf, bool huge_pmd)
- 		.tid = current->pid,
- 		.tgid = task_tgid_nr(current),
- 		.is_write = vmf->flags & FAULT_FLAG_WRITE,
-+#ifdef CONFIG_DAMON_PERF_OBSERVE
-+		.source = DAMON_REPORT_SRC_PAGE_FAULT,
-+#endif /* CONFIG_DAMON_PERF_OBSERVE */
- 	};
- 
- 	if (huge_pmd)
-@@ -3917,8 +3938,16 @@ static bool damon_sample_filter_out(struct damon_access_report *report,
- 	return !filter->allow;
- }
- 
--static void kdamond_apply_access_report(struct damon_access_report *report,
--		struct damon_target *t,
-+/*
-+ * Try to apply one access report to a target's region snapshot.
-+ *
-+ * Caller has already resolved tgid (for pid-based monitoring), so this
-+ * function only does address-to-region matching.  Miss reasons for
-+ * trace_damon_perf_report_missed use enum damon_report_miss_reason.
-+ *
-+ * Return: true if the report fell inside a known region, false otherwise.
-+ */
-+static bool kdamond_apply_access_report(struct damon_access_report *report,
- 		struct damon_region **regions, unsigned int nr_regions,
- 		struct damon_ctx *ctx)
- {
-@@ -3926,13 +3955,7 @@ static void kdamond_apply_access_report(struct damon_access_report *report,
- 	unsigned long addr;
- 	int left, right, mid;
- 
--	if (damon_target_has_pid(ctx)) {
--		if (pid_nr(t->pid) != report->tgid)
--			return;
--		addr = report->vaddr;
--	} else {
--		addr = report->paddr;
--	}
-+	addr = damon_target_has_pid(ctx) ? report->vaddr : report->paddr;
- 
- 	/* Binary search the snapshot for the region containing addr. */
- 	left = 0;
-@@ -3951,17 +3974,27 @@ static void kdamond_apply_access_report(struct damon_access_report *report,
- 		}
- 	}
- 
--	if (!r)
--		return;
-+	if (!r) {
-+		damon_perf_observe_miss(addr, report->cpu,
-+				DAMON_REPORT_MISS_NOREGION);
-+		return false;
-+	}
- 	/* Reject reports straddling a region boundary. */
--	if (addr + report->size > r->ar.end)
--		return;
-+	if (addr + report->size > r->ar.end) {
-+		damon_perf_observe_miss(addr, report->cpu,
-+				DAMON_REPORT_MISS_BOUNDARY);
-+		return false;
-+	}
- 	if (!r->access_reported) {
- 		damon_update_region_access_rate(r, true, &ctx->attrs);
- 		r->access_reported = true;
-+		damon_perf_observe_update(report->cpu);
- 	}
-+	damon_perf_observe_match(addr, report->cpu);
-+	return true;
- }
- 
++TEST_PROGS += damon_perf_obs_test.sh
+ include ../lib.mk
+diff --git a/tools/testing/selftests/damon/damon_perf_obs_test.sh b/tools/testing/selftests/damon/damon_perf_obs_test.sh
+new file mode 100755
+index 000000000000..4c4074cdd191
+--- /dev/null
++++ b/tools/testing/selftests/damon/damon_perf_obs_test.sh
+@@ -0,0 +1,562 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++#
++# DAMON Perf Observability Framework — Automated Layer-by-Layer Test
++#
++# Validates all 7 pipeline stages:
++#   Layer 1: Event Create   Layer 2: Event Bind
++#   Layer 3: Event Enable   Layer 4: Sampling (callback)
++#   Layer 5: Ring           Layer 6: Drain
++#   Layer 7: Match & Update
++#
++# The framework counters are cumulative since boot, so this script
++# snapshots them before the workload and reports per-run deltas.  It
++# also clears the trace buffer before the sampling window so trace.txt
++# carries only records produced by this run.
++#
++# Usage:
++#   # Software page-fault positive control (exercises the FULL pipeline,
++#   # works on any machine, no HW PMU required).  Defaults to sampling
++#   # every page fault (period 1); override with --freq/--period:
++#   sudo ./damon_perf_obs_test.sh --pmu software
++#   sudo ./damon_perf_obs_test.sh --pmu software --freq 1 --sample-freq 100
++#
++#   # With ARM SPE:
++#   sudo ./damon_perf_obs_test.sh --pmu arm_spe_0 --freq 0 --period 256
++#
++#   # With any PMU type number:
++#   sudo ./damon_perf_obs_test.sh --pmu-type 38 --freq 0 --period 256
++#
++# Notes:
++#   - `--config N` sets perf_event_attr.config.  For PERF_TYPE_SOFTWARE,
++#     config 2 (PERF_COUNT_SW_PAGE_FAULTS) is the only software event
++#     that populates data->addr; cpu-clock (config 0) delivers callbacks
++#     with addr always 0, so it can only validate Layers 1-4.
++#   - ARM SPE cannot sample through perf_event_create_kernel_counter()
++#     (it requires an AUX ring buffer, see arm_spe_pmu.c), so an SPE run
++#     is expected to report zero callbacks until an AUX backend exists.
++#     A zero-callback delta is the correct "PMU not usable" verdict.
++#
++# Requirements:
++#   - CONFIG_DAMON_PERF_OBSERVE=y (fatal if missing)
++#   - Root privileges
++#   - debugfs mounted
 +
- static unsigned int kdamond_apply_zero_access_report(struct damon_ctx *ctx)
- {
- 	struct damon_target *t;
-@@ -4045,6 +4078,7 @@ static unsigned int kdamond_check_reported_accesses(struct damon_ctx *ctx)
- 	struct damon_target_lookup *tbl;
- 	unsigned int nr_targets = 0;
- 	unsigned int i;
-+	unsigned int total_reports = 0, matched_reports = 0;
- 
- 	tbl = damon_build_target_lookup(ctx, &nr_targets);
- 	if (!tbl) {
-@@ -4077,6 +4111,10 @@ static unsigned int kdamond_check_reported_accesses(struct damon_ctx *ctx)
- 		while (tail != head) {
- 			struct damon_access_report *report =
- 				&ring->entries[tail];
-+			bool applied = false;
++set -e
 +
-+			/* Count every entry removed from the ring */
-+			damon_perf_observe_ring_dequeue(report->cpu);
- 
- 			if (time_before(report->report_jiffies,
- 					jiffies - usecs_to_jiffies(
-@@ -4085,16 +4123,52 @@ static unsigned int kdamond_check_reported_accesses(struct damon_ctx *ctx)
- 			if (damon_sample_filter_out(report,
- 					&ctx->sample_control))
- 				goto next;
--			for (i = 0; i < nr_targets; i++)
--				kdamond_apply_access_report(report,
--						tbl[i].t,
-+			/*
-+			 * For pid-based monitoring, resolve tgid to the
-+			 * single matching target before calling
-+			 * kdamond_apply_access_report(), avoiding a
-+			 * spurious miss tracepoint for every non-matching
-+			 * target.
-+			 */
-+			if (damon_target_has_pid(ctx)) {
-+				for (i = 0; i < nr_targets; i++) {
-+					if (pid_nr(tbl[i].t->pid) ==
-+							report->tgid) {
-+						applied =
-+					    kdamond_apply_access_report(
-+							report,
-+							tbl[i].regions,
-+							tbl[i].nr_regions,
-+							ctx);
-+						break;
-+					}
-+				}
-+				if (!applied && i == nr_targets)
-+					damon_perf_observe_miss(
-+						report->vaddr,
-+						report->cpu,
-+						DAMON_REPORT_MISS_TGID);
-+			} else {
-+				for (i = 0; i < nr_targets; i++)
-+					applied |=
-+					    kdamond_apply_access_report(
-+						report,
- 						tbl[i].regions,
- 						tbl[i].nr_regions, ctx);
-+			}
-+			total_reports++;
-+			if (applied)
-+				matched_reports++;
++# ---- defaults ----
++PMU_NAME=""
++PMU_TYPE=""
++PMU_CONFIG=0
++CONFIG_EXPLICIT=0
++FREQ=0
++PERIOD=256
++FREQ_EXPLICIT=0
++PERIOD_EXPLICIT=0
++SAMPLE_FREQ=100
++TIMEOUT=10
++TRACE_WINDOW=3
++TARGET_PID=""
++RESULTS_DIR="/tmp/damon_perf_test_$$"
++PASSED=0
++FAILED=0
++SKIPPED=0
++STRESS_PID=""
++CREATED_KDAMOND=0
++MOUNTED_DEBUGFS=0
++KEEP_RESULTS=${KEEP_RESULTS:-1}
 +
- next:
- 			tail = (tail + 1) & DAMON_REPORT_RING_MASK;
- 		}
- 		WRITE_ONCE(ring->tail, tail);
- 	}
++# ---- helpers ----
++pass() { echo "  [PASS] $1"; PASSED=$((PASSED + 1)); }
++fail() { echo "  [FAIL] $1 — $2"; FAILED=$((FAILED + 1)); }
++skip() { echo "  [SKIP] $1 — $2"; SKIPPED=$((SKIPPED + 1)); }
++die()  { echo "FATAL: $1"; exit 1; }
 +
-+	if (total_reports)
-+		damon_perf_observe_drain(total_reports, matched_reports);
++# ---- sysfs roots (kept under 100 columns) ----
++KD=/sys/kernel/mm/damon/admin/kdamonds
++ADMIN=$KD/0
++TRACE=/sys/kernel/debug/tracing
++TPD=$TRACE/events/damon
++PE=$ADMIN/contexts/0/monitoring_attrs/sample/perf_events
 +
- 	/* For nr_accesses_bp, absence of access should also be reported. */
- 	return kdamond_apply_zero_access_report(ctx);
- }
-@@ -4158,8 +4232,9 @@ static int kdamond_fn(void *data)
- 		ctx->passed_sample_intervals++;
- 
- 		if (!list_empty(&ctx->perf_events) ||
--		    ctx->sample_control.primitives_enabled.page_fault)
-+		    ctx->sample_control.primitives_enabled.page_fault) {
- 			max_nr_accesses = kdamond_check_reported_accesses(ctx);
-+		}
- 		else if (ctx->ops.check_accesses)
- 			max_nr_accesses = ctx->ops.check_accesses(ctx);
- 		if (ctx->ops.apply_probes)
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index 73fcea91afa0..a68c7262d533 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -17,6 +17,8 @@
- #include <linux/pagewalk.h>
- #include <linux/sched/mm.h>
- 
-+#include "perf/perf.h"
++# ---- saved pre-test state (restored in cleanup so the test is
++# ---- side-effect free: tracepoints, tracing_on)
++ORIG_TRACING_ON=$(cat $TRACE/tracing_on 2>/dev/null || echo 0)
++ORIG_TP_SAMPLE=$(cat $TRACE/events/damon/damon_perf_sample/enable 2>/dev/null || echo 0)
++ORIG_TP_OVERFLOW=$(cat $TRACE/events/damon/damon_perf_ring_overflow/enable 2>/dev/null || echo 0)
++ORIG_TP_MISSED=$(cat $TRACE/events/damon/damon_perf_report_missed/enable 2>/dev/null || echo 0)
++ORIG_TP_DRAIN=$(cat $TRACE/events/damon/damon_perf_drain/enable 2>/dev/null || echo 0)
 +
- #include "../internal.h"
- #include "ops-common.h"
- 
-@@ -975,13 +977,49 @@ static void damon_perf_overflow_vaddr(struct perf_event *perf_event,
- 		struct perf_sample_data *data, struct pt_regs *regs)
- {
- 	struct damon_access_report report;
-+	u64 data_src_val;
-+	u64 period_val;
++cleanup() {
++	echo ""
++	echo "=== Cleaning up ==="
++	if [[ -n "$STRESS_PID" ]]; then
++		kill "$STRESS_PID" 2>/dev/null || true
++		wait "$STRESS_PID" 2>/dev/null || true
++		STRESS_PID=""
++	fi
++	# Tear down only the kdamond instance created by this test.  In
++	# particular, the early "existing kdamonds" guard must be read-only.
++	if [[ "$CREATED_KDAMOND" == "1" ]]; then
++		echo off > $ADMIN/state 2>/dev/null || true
++		echo 0 > $KD/nr_kdamonds 2>/dev/null || true
++		CREATED_KDAMOND=0
++	fi
++	# Restore tracepoint and tracing state
++	echo 0 > $TRACE/tracing_on 2>/dev/null || true
++	echo "$ORIG_TP_SAMPLE" > $TRACE/events/damon/damon_perf_sample/enable 2>/dev/null || true
++	echo "$ORIG_TP_OVERFLOW" > $TPD/damon_perf_ring_overflow/enable 2>/dev/null || true
++	echo "$ORIG_TP_MISSED" > $TPD/damon_perf_report_missed/enable 2>/dev/null || true
++	echo "$ORIG_TP_DRAIN" > $TRACE/events/damon/damon_perf_drain/enable 2>/dev/null || true
++	echo "$ORIG_TRACING_ON" > $TRACE/tracing_on 2>/dev/null || true
++	if [[ "$MOUNTED_DEBUGFS" == "1" ]]; then
++		umount /sys/kernel/debug 2>/dev/null || true
++		MOUNTED_DEBUGFS=0
++	fi
++	[ "$KEEP_RESULTS" != "1" ] && rm -rf "$RESULTS_DIR"
++}
++trap cleanup EXIT
 +
-+	/*
-+	 * Observe every hardware sample through the unified API.
-+	 *
-+	 * reason encodes why a sample was dropped at the handler level:
-+	 *   0 = valid, queued to ring
-+	 *   1 = data == NULL
-+	 *   2 = addr == 0 (PMU did not populate data->addr)
-+	 *   3 = kernel address (addr >= TASK_SIZE)
-+	 */
-+	if (!data) {
-+		damon_perf_observe_sample(0, 0, 0,
-+				smp_processor_id(), 1, 0,
-+				perf_event->attr.sample_type);
-+		return;
-+	}
- 
--	if (!data || !data->addr)
-+	data_src_val = data->data_src.val;
-+	period_val = data->period;
++# ---- argument parsing ----
++while [[ $# -gt 0 ]]; do
++	case "$1" in
++		--pmu)       PMU_NAME="$2"; shift 2 ;;
++		--pmu-type)  PMU_TYPE="$2"; shift 2 ;;
++		--config)    PMU_CONFIG="$2"; CONFIG_EXPLICIT=1; shift 2 ;;
++		--freq)      FREQ="$2"; FREQ_EXPLICIT=1; shift 2 ;;
++		--period)    PERIOD="$2"; PERIOD_EXPLICIT=1; shift 2 ;;
++		--sample-freq) SAMPLE_FREQ="$2"; shift 2 ;;
++		--trace-window) TRACE_WINDOW="$2"; shift 2 ;;
++		--timeout)   TIMEOUT="$2"; shift 2 ;;
++		--pid)       TARGET_PID="$2"; shift 2 ;;
++		*) echo "Unknown: $1"; exit 1 ;;
++	esac
++done
 +
-+	if (!data->addr) {
-+		damon_perf_observe_sample(0, data_src_val, period_val,
-+				smp_processor_id(), 2,
-+				data->sample_flags,
-+				perf_event->attr.sample_type);
- 		return;
-+	}
- 
- 	/* Drop kernel-VA hits -- only user-space VAs land in damon vaddr regions. */
--	if (data->addr >= TASK_SIZE)
-+	if (data->addr >= TASK_SIZE) {
-+		damon_perf_observe_sample(data->addr, data_src_val, period_val,
-+				smp_processor_id(), 3,
-+				data->sample_flags,
-+				perf_event->attr.sample_type);
- 		return;
-+	}
++# Resolve PMU type
++if [[ -n "$PMU_NAME" && -z "$PMU_TYPE" ]]; then
++	if [[ "$PMU_NAME" == "software" ]]; then
++		PMU_TYPE=1
++	else
++		PMU_TYPE=$(cat /sys/bus/event_source/devices/$PMU_NAME/type 2>/dev/null) ||
++			die "Cannot find PMU: $PMU_NAME"
++	fi
++fi
++[[ -z "$PMU_TYPE" ]] && die "Specify --pmu <name> or --pmu-type <number>"
 +
-+	damon_perf_observe_sample(data->addr, data_src_val, period_val,
-+			smp_processor_id(), 0,
-+			data->sample_flags,
-+			perf_event->attr.sample_type);
- 
- 	report = (struct damon_access_report){
- 		.vaddr = data->addr & PAGE_MASK,
-@@ -990,6 +1028,9 @@ static void damon_perf_overflow_vaddr(struct perf_event *perf_event,
- 		.tid = current->pid,
- 		.tgid = current->tgid,
- 		.is_write = !!(data->data_src.mem_op & PERF_MEM_OP_STORE),
-+#ifdef CONFIG_DAMON_PERF_OBSERVE
-+		.source = DAMON_REPORT_SRC_PERF_OVERFLOW,
-+#endif /* CONFIG_DAMON_PERF_OBSERVE */
- 	};
- 	damon_report_access(&report);
- }
-@@ -998,9 +1039,18 @@ static void damon_perf_overflow_paddr(struct perf_event *perf_event,
- 		struct perf_sample_data *data, struct pt_regs *regs)
- {
- 	struct damon_access_report report;
-+	u64 data_src_val;
-+	u64 period_val;
- 
--	if (!data)
-+	if (!data) {
-+		damon_perf_observe_sample(0, 0, 0,
-+				smp_processor_id(), 1, 0,
-+				perf_event->attr.sample_type);
- 		return;
-+	}
++# For PERF_TYPE_SOFTWARE default to PERF_COUNT_SW_PAGE_FAULTS (config 2):
++# the only software event that carries a data address, i.e. the only one
++# that can exercise Layers 5-7.  Override with --config 0 for a pure
++# plumbing (cpu-clock) smoke test.
++if [[ "$PMU_TYPE" == "1" && "$CONFIG_EXPLICIT" == "0" ]]; then
++	PMU_CONFIG=2
++fi
 +
-+	data_src_val = data->data_src.val;
-+	period_val = data->period;
- 
- 	/*
- 	 * AMD IBS Op only populates data->phys_addr when
-@@ -1008,14 +1058,27 @@ static void damon_perf_overflow_paddr(struct perf_event *perf_event,
- 	 * carries a stale value.  Gate on sample_flags rather than testing
- 	 * phys_addr for zero (which would also drop legitimate page 0).
- 	 */
--	if (!(data->sample_flags & PERF_SAMPLE_PHYS_ADDR))
-+	if (!(data->sample_flags & PERF_SAMPLE_PHYS_ADDR)) {
-+		damon_perf_observe_sample(0, data_src_val,
-+				period_val, smp_processor_id(), 4,
-+				data->sample_flags,
-+				perf_event->attr.sample_type);
- 		return;
-+	}
++# For the page-fault positive control, sample every fault (period 1) by
++# default so enough reports flow for the ring/drain/match checks to be
++# meaningful on a short run.  Explicit --freq/--period override this.
++if [[ "$PMU_TYPE" == "1" && "$PMU_CONFIG" == "2" &&
++      "$FREQ_EXPLICIT" == "0" && "$PERIOD_EXPLICIT" == "0" ]]; then
++	FREQ=0
++	PERIOD=1
++fi
 +
-+	damon_perf_observe_sample(data->phys_addr, data_src_val, period_val,
-+			smp_processor_id(), 0,
-+			data->sample_flags,
-+			perf_event->attr.sample_type);
- 
- 	report = (struct damon_access_report){
- 		.paddr = data->phys_addr & PAGE_MASK,
- 		.size = PAGE_SIZE,
- 		.cpu = smp_processor_id(),
- 		.is_write = !!(data->data_src.mem_op & PERF_MEM_OP_STORE),
-+#ifdef CONFIG_DAMON_PERF_OBSERVE
-+		.source = DAMON_REPORT_SRC_PERF_OVERFLOW,
-+#endif /* CONFIG_DAMON_PERF_OBSERVE */
- 	};
- 	damon_report_access(&report);
- }
-@@ -1070,6 +1133,8 @@ static int damon_perf_cpu_online(unsigned int cpu, struct hlist_node *node)
- 	if (!perf)
- 		return 0;
- 
-+	damon_perf_observe_event_created(event, cpu);
++# For cpu-clock (config 0), sample_period is a TIME in ns, so the
++# default period 256 would mean 4 MHz of callbacks per CPU.  Never
++# let an unguarded default hit that: fall back to a gentle 100 Hz.
++if [[ "$PMU_TYPE" == "1" && "$PMU_CONFIG" == "0" &&
++      "$FREQ_EXPLICIT" == "0" && "$PERIOD_EXPLICIT" == "0" ]]; then
++	FREQ=1
++	SAMPLE_FREQ=100
++fi
 +
- 	damon_perf_event_init_attr(event, &attr);
- 
- 	/*
-@@ -1092,14 +1157,20 @@ static int damon_perf_cpu_online(unsigned int cpu, struct hlist_node *node)
- 		return 0;	/* never block CPU online */
- 	}
- 	*per_cpu_ptr(perf->event, cpu) = perf_event;
++# ---- Layer 0: Environment ----
++echo "=========================================="
++echo " DAMON Perf Observability — Layer-by-Layer Test"
++echo "=========================================="
++echo "PMU type: $PMU_TYPE  config: $PMU_CONFIG  freq: $FREQ  period: $PERIOD  timeout: ${TIMEOUT}s"
++if [[ -n "$TARGET_PID" ]]; then
++	echo "Target PID: $TARGET_PID (explicit)"
++else
++	echo "Target PID: workload process (started below)"
++fi
++echo ""
 +
-+	damon_perf_observe_event_bound(event, cpu, perf_event);
++mkdir -p "$RESULTS_DIR"
 +
- 	/*
- 	 * Late-online CPU after the substrate is armed: events are created
- 	 * with attr.disabled = 1 and would otherwise stay quiescent on this
- 	 * CPU until the next arm walk.  Enable here so coverage matches the
- 	 * already-online CPUs.
- 	 */
--	if (event->ctx && READ_ONCE(event->ctx->perf_events_active))
-+	if (event->ctx && READ_ONCE(event->ctx->perf_events_active)) {
- 		perf_event_enable(perf_event);
-+		damon_perf_observe_event_enabled(event, cpu,
-+				perf_event->state, perf_event->oncpu);
-+	}
- 	return 0;
- }
- 
-@@ -1115,6 +1186,7 @@ static int damon_perf_cpu_offline(unsigned int cpu, struct hlist_node *node)
- 
- 	perf_event = per_cpu(*perf->event, cpu);
- 	if (perf_event) {
-+		damon_perf_observe_event_destroyed(event, cpu);
- 		perf_event_disable(perf_event);
- 		perf_event_release_kernel(perf_event);
- 		*per_cpu_ptr(perf->event, cpu) = NULL;
-@@ -1133,8 +1205,12 @@ void damon_perf_event_arm(struct damon_perf_event *event)
- 
- 	for_each_online_cpu(cpu) {
- 		perf_event = *per_cpu_ptr(perf->event, cpu);
--		if (perf_event)
-+		if (perf_event) {
- 			perf_event_enable(perf_event);
-+			damon_perf_observe_event_enabled(event, cpu,
-+					perf_event->state,
-+					perf_event->oncpu);
-+		}
- 	}
- }
- 
-@@ -1149,8 +1225,11 @@ void damon_perf_event_disarm(struct damon_perf_event *event)
- 
- 	for_each_online_cpu(cpu) {
- 		perf_event = *per_cpu_ptr(perf->event, cpu);
--		if (perf_event)
-+		if (perf_event) {
- 			perf_event_disable(perf_event);
-+			damon_perf_observe_event_disabled(event, cpu,
-+					perf_event->state);
-+		}
- 	}
- }
- 
-@@ -1192,6 +1271,7 @@ int damon_perf_init(struct damon_ctx *ctx, struct damon_perf_event *event)
- 	return 0;
- 
- free_event:
-+	damon_perf_observe_event_free(event);
- 	free_percpu(perf->event);
- free_perf:
- 	kfree(perf);
-@@ -1203,6 +1283,8 @@ void damon_perf_cleanup(struct damon_ctx *ctx, struct damon_perf_event *event)
- {
- 	struct damon_perf *perf = event->priv;
- 
-+	damon_perf_observe_event_free(event);
++echo "--- Layer 0: Environment ---"
 +
- 	if (!perf)
- 		return;
- 
-@@ -1244,6 +1326,14 @@ static int __init damon_va_initcall(void)
- 	if (err < 0)
- 		return err;
- 	damon_perf_cpuhp_state = err;
++# Check kernel config
++CONFIG=""
++if [[ -f /proc/config.gz ]]; then
++	CONFIG=$(zcat /proc/config.gz)
++elif [[ -f /boot/config-$(uname -r) ]]; then
++	CONFIG=$(cat /boot/config-$(uname -r))
++else
++	die "Cannot read /proc/config.gz or /boot/config-$(uname -r)"
++fi
 +
-+#ifdef CONFIG_DAMON_PERF_OBSERVE
-+	err = damon_perf_framework_init();
-+	if (err < 0)
-+		pr_warn("damon-perf: framework init failed, observability unavailable: %d\n",
-+			err);
-+	/* Non-fatal: vaddr/fvaddr ops still register. */
-+#endif /* CONFIG_DAMON_PERF_OBSERVE */
- #endif
- 
- 	err = damon_register_ops(&ops);
++for opt in DAMON DAMON_SYSFS DAMON_VADDR PERF_EVENTS DEBUG_FS TRACING \
++		TRACEPOINTS; do
++	if echo "$CONFIG" | grep -q "CONFIG_${opt}=y"; then
++		pass "CONFIG_${opt}=y"
++	else
++		fail "CONFIG_${opt}" "not enabled"
++	fi
++done
++
++# DAMON_PERF_OBSERVE is fatal — the test cannot run without it
++if echo "$CONFIG" | grep -q "CONFIG_DAMON_PERF_OBSERVE=y"; then
++	pass "CONFIG_DAMON_PERF_OBSERVE=y"
++else
++	die "kernel not built with CONFIG_DAMON_PERF_OBSERVE=y"
++fi
++
++# Check root
++[[ $(id -u) -eq 0 ]] || die "Must run as root"
++
++# Mount debugfs only when this test owns the mount, and undo it on exit.
++if ! mountpoint -q /sys/kernel/debug; then
++	mount -t debugfs none /sys/kernel/debug || die "Cannot mount debugfs"
++	MOUNTED_DEBUGFS=1
++fi
++[[ -d /sys/kernel/debug/damon ]] || die "debugfs damon/ not found"
++pass "debugfs mounted"
++
++# Check tracepoints
++for tp in damon_perf_sample damon_perf_ring_overflow damon_perf_report_missed damon_perf_drain; do
++	if [[ -d /sys/kernel/debug/tracing/events/damon/$tp ]]; then
++		pass "tracepoint $tp exists"
++	else
++		fail "tracepoint $tp" "not found"
++	fi
++done
++
++# Check debugfs file (perf_stats only; format is debug-only, not an ABI)
++if [[ -f /sys/kernel/debug/damon/perf_stats ]]; then
++	pass "debugfs perf_stats exists"
++else
++	fail "debugfs perf_stats" "not found"
++fi
++
++# ---- Guard: refuse to run if kdamonds already exist ----
++NR_KDAMONDS=$(cat $KD/nr_kdamonds 2>/dev/null || echo 0)
++if [[ "$NR_KDAMONDS" -gt 0 ]]; then
++	skip "runtime" "kdamonds exist (nr_kdamonds=$NR_KDAMONDS) — refusing"
++	KEEP_RESULTS=1
++	exit 0
++fi
++
++# ---- Generate memory pressure workload first: the default DAMON
++# ---- target must be the workload process itself, so the workload
++# ---- must be running before the target PID is written.
++echo ""
++echo "Starting memory workload for ${TIMEOUT}s..."
++if command -v stress-ng &>/dev/null; then
++	stress-ng --vm 2 --vm-bytes 256M --timeout "${TIMEOUT}s" &
++	STRESS_PID=$!
++elif command -v stress &>/dev/null; then
++	stress --vm 2 --vm-bytes 256M --timeout "${TIMEOUT}s" &
++	STRESS_PID=$!
++else
++	# Fallback: dd-based memory pressure
++	dd if=/dev/zero of=/dev/null bs=1M count=1024 &
++	STRESS_PID=$!
++fi
++
++# Resolve target PID: explicit --pid wins, otherwise the workload
++if [[ -z "$TARGET_PID" ]]; then
++	TARGET_PID=$STRESS_PID
++fi
++
++echo ""
++echo "--- Layer 1: Event Create ---"
++
++# Configure kdamond
++echo 1 > /sys/kernel/mm/damon/admin/kdamonds/nr_kdamonds
++CREATED_KDAMOND=1
++echo 1 > /sys/kernel/mm/damon/admin/kdamonds/0/contexts/nr_contexts
++echo 1 > /sys/kernel/mm/damon/admin/kdamonds/0/contexts/0/targets/nr_targets
++echo "$TARGET_PID" > /sys/kernel/mm/damon/admin/kdamonds/0/contexts/0/targets/0/pid_target
++
++# Disable page-fault-based access check
++echo 0 > $PE/nr_perf_events 2>/dev/null || true
++
++# Configure perf event
++echo 1 > $PE/nr_perf_events
++echo "$PMU_TYPE" > $PE/0/type
++echo "$PMU_CONFIG" > $PE/0/config
++
++if [[ "$FREQ" -eq 1 ]]; then
++	echo "$SAMPLE_FREQ" > $PE/0/sample_freq
++else
++	echo "$PERIOD" > $PE/0/sample_period
++fi
++echo "$FREQ" > $PE/0/freq
++
++# Take a dmesg snapshot before enabling the kdamond, so we can
++# detect error messages that appear during the test.
++DMESG_BEFORE="$RESULTS_DIR/dmesg_before.txt"
++dmesg > "$DMESG_BEFORE" 2>/dev/null || true
++# Snapshot counters BEFORE the workload window.  All counters are
++# cumulative since boot; every Analysis number below is a delta against
++# this snapshot.  Read before echo on so the window starts at zero.
++STATS_BASE="$RESULTS_DIR/perf_stats_base.txt"
++cat /sys/kernel/debug/damon/perf_stats > "$STATS_BASE" 2>/dev/null || true
++
++echo on > /sys/kernel/mm/damon/admin/kdamonds/0/state
++sleep 2
++
++DMESG_OUT="$RESULTS_DIR/dmesg_create.txt"
++DMESG_DELTA="$RESULTS_DIR/dmesg_delta.txt"
++dmesg > "$DMESG_OUT" 2>/dev/null || true
++# Delta: lines in $DMESG_OUT not already present in $DMESG_BEFORE
++awk 'NR==FNR { seen[$0]++ }
++     NR>FNR { if (seen[$0] > 0) seen[$0]--; else print }' \
++	"$DMESG_BEFORE" "$DMESG_OUT" > "$DMESG_DELTA" || true
++
++# Check state is on
++STATE_VAL=$(cat /sys/kernel/mm/damon/admin/kdamonds/0/state 2>/dev/null)
++if [[ "$STATE_VAL" == "on" ]]; then
++	pass "Kdamond state is on"
++else
++	fail "Kdamond state" "expected 'on', got '$STATE_VAL'"
++fi
++
++echo ""
++echo "--- Layer 2-3: Enable & Run (via per-CPU state) ---"
++
++# Parse the maximum per-CPU state from the debugfs output.
++# The per-CPU line format is:
++#   CPU%02d: st=<state> cb=... enq=... ...
++max_cpu_state() {
++	awk -F'st=' '/^  CPU/ {
++		split($2, a, " ")
++		s = a[1]
++		# Map state name to numeric rank
++		if (s == "ERROR")   v = 5
++		else if (s == "RUNNING") v = 4
++		else if (s == "ENABLED") v = 3
++		else if (s == "BOUND")   v = 2
++		else if (s == "CREATED") v = 1
++		else v = 0
++		if (v > max) max = v
++	} END { print max+0 }' "$1" 2>/dev/null
++}
++
++CPU_ST_BASE=$(max_cpu_state "$STATS_BASE")
++
++if [[ "$CPU_ST_BASE" -ge 1 ]]; then
++	pass "Event Created (max per-CPU state >= CREATED)"
++else
++	fail "Event Created" "max per-CPU state is $CPU_ST_BASE"
++fi
++
++if [[ "$CPU_ST_BASE" -ge 2 ]]; then
++	pass "Event Bound (max per-CPU state >= BOUND)"
++else
++	fail "Event Bound" "max per-CPU state is $CPU_ST_BASE"
++fi
++
++if [[ "$CPU_ST_BASE" -ge 3 ]]; then
++	pass "Event Enabled (max per-CPU state >= ENABLED)"
++else
++	fail "Event Enabled" "max per-CPU state is $CPU_ST_BASE"
++fi
++
++# Check dmesg delta for errors (vaddr.c pr_warn_ratelimited paths)
++if grep -q 'damon-perf.*failed\|event create failed' "$DMESG_DELTA" 2>/dev/null; then
++	fail "Perf event" "perf event creation failed (see dmesg delta)"
++else
++	pass "Perf event creation (no errors in dmesg delta)"
++fi
++
++echo ""
++echo "--- Layer 4: Sampling (Callback) ---"
++
++# Clear the trace buffer so trace.txt only contains records produced by
++# this run, then enable tracepoints for a bounded sampling window.
++echo 0 > $TRACE/tracing_on 2>/dev/null || true
++echo > $TRACE/trace 2>/dev/null || true
++echo 1 > $TRACE/events/damon/damon_perf_sample/enable
++echo 1 > $TRACE/events/damon/damon_perf_ring_overflow/enable
++echo 1 > $TRACE/events/damon/damon_perf_report_missed/enable
++echo 1 > $TRACE/events/damon/damon_perf_drain/enable
++echo 1 > $TRACE/tracing_on
++
++# Sampling window: keeps trace.txt bounded even on PMUs that sample at
++# tens of kHz.  Counters keep accumulating for the full TIMEOUT.
++sleep "$TRACE_WINDOW"
++echo 0 > $TRACE/tracing_on 2>/dev/null || true
++[[ "$TIMEOUT" -gt "$TRACE_WINDOW" ]] && sleep $((TIMEOUT - TRACE_WINDOW))
++
++kill $STRESS_PID 2>/dev/null || true
++wait $STRESS_PID 2>/dev/null || true
++STRESS_PID=""
++echo "Workload done."
++
++sleep 2  # let kdamond drain
++
++# Collect trace
++TRACE_OUT="$RESULTS_DIR/trace.txt"
++cat /sys/kernel/debug/tracing/trace > "$TRACE_OUT" 2>/dev/null || true
++TRACE_LINES=$(wc -l < "$TRACE_OUT" 2>/dev/null || echo 0)
++
++# Collect stats (re-read after workload)
++STATS_OUT="$RESULTS_DIR/perf_stats.txt"
++cat /sys/kernel/debug/damon/perf_stats > "$STATS_OUT" 2>/dev/null || true
++
++# ---- Analysis ----
++echo ""
++echo "--- Analysis ---"
++
++
++# Aggregate counter reads
++stat_of() {
++	awk -v k="$1" '$1==k {print $2}' "$2" 2>/dev/null
++}
++
++# Per-run delta between baseline and post-workload snapshots
++delta() {
++	local b a
++	b=$(stat_of "$1" "$STATS_BASE")
++	a=$(stat_of "$1" "$STATS_OUT")
++	[[ -z "$b" ]] && b=0
++	[[ -z "$a" ]] && a=0
++	echo $((a-b))
++}
++
++CALLBACK=$(delta callback)
++VALID=$(delta valid)
++ADDR_ZERO=$(delta addr_zero)
++KERNEL=$(delta kernel)
++ENQUEUE=$(delta enqueue)
++DEQUEUE=$(delta dequeue)
++OVERFLOW=$(delta overflow)
++MATCH=$(delta match)
++UPDATE=$(delta update)
++
++echo "  Callback delta this run: ${CALLBACK} (cumulative totals in perf_stats.txt)"
++
++if [[ "$CALLBACK" -gt 0 ]]; then
++	pass "Sampling: ${CALLBACK} callbacks received"
++else
++	fail "Sampling" "0 callbacks — PMU is not delivering samples to DAMON"
++fi
++
++echo "  Callback breakdown (delta): valid=${VALID} addr_zero=${ADDR_ZERO} kernel=${KERNEL}"
++
++# Verify RUNNING state: first callback advances per-CPU state to
++# RUNNING, which persists until the kdamond is stopped.
++CPU_ST_FINAL=$(max_cpu_state "$STATS_OUT")
++if [[ "$CALLBACK" -gt 0 && "$CPU_ST_FINAL" -ge 4 ]]; then
++	pass "Event Running (max per-CPU state >= RUNNING)"
++elif [[ "$CALLBACK" -eq 0 ]]; then
++	skip "Event Running" "no callbacks — state cannot advance past ENABLED"
++else
++	fail "Event Running" "callbacks > 0 but max state is $CPU_ST_FINAL"
++fi
++
++echo "  Ring: enqueue=${ENQUEUE} dequeue=${DEQUEUE} overflow=${OVERFLOW}"
++
++if [[ "$ENQUEUE" -gt 0 ]]; then
++	pass "Ring: enqueue > 0"
++	if [[ "$DEQUEUE" -gt 0 ]]; then
++		pass "Ring: dequeue > 0"
++	else
++		fail "Ring: dequeue" "enqueued but never dequeued"
++	fi
++else
++	skip "Ring" "no enqueues (no valid samples: addr=0 or no callbacks)"
++fi
++
++echo "  Match: match=${MATCH} update=${UPDATE}"
++
++if [[ "$MATCH" -gt 0 ]]; then
++	pass "Drain & Match: ${MATCH} matched"
++	if [[ "$UPDATE" -gt 0 ]]; then
++		pass "Update: ${UPDATE} region updates"
++	else
++		fail "Update" "matched but never updated"
++	fi
++else
++	skip "Match/Update" "no matches (no valid samples reached region matching)"
++fi
++
++# Drain tracepoint: kdamond fires damon_perf_drain whenever it drained
++# at least one report.  The drain tracepoint is only expected when the
++# ring actually produced entries.
++DRAIN_COUNT=$(grep -c "damon_perf_drain" "$TRACE_OUT" 2>/dev/null || true)
++DRAIN_COUNT=${DRAIN_COUNT:-0}
++echo "  Drain tracepoint: ${DRAIN_COUNT} records"
++if [[ "$MATCH" -gt 0 ]]; then
++	if [[ "$DRAIN_COUNT" -gt 0 ]]; then
++		pass "Drain tracepoint fired (${DRAIN_COUNT} records)"
++	else
++		fail "Drain tracepoint" "matches occurred but damon_perf_drain never fired"
++	fi
++else
++	skip "Drain tracepoint" "no drained reports to summarize"
++fi
++
++# Context verification
++if grep -q 'context=' "$TRACE_OUT" 2>/dev/null; then
++	NMI_COUNT=$(grep -c 'context=3' "$TRACE_OUT" 2>/dev/null || true)
++	PROC_COUNT=$(grep -c 'context=0' "$TRACE_OUT" 2>/dev/null || true)
++	NMI_COUNT=${NMI_COUNT:-0}
++	PROC_COUNT=${PROC_COUNT:-0}
++	echo "  Context: NMI=${NMI_COUNT} process=${PROC_COUNT}"
++	pass "Context field in trace output"
++else
++	skip "Context" "no trace output to analyze"
++fi
++
++# Show a few sample records as raw evidence (they are the per-sample
++# view of the pipeline; useful for PMU support evaluation).
++echo ""
++echo "  First damon_perf_sample record(s) this run:"
++if grep -q "damon_perf_sample" "$TRACE_OUT" 2>/dev/null; then
++	grep -m 3 "damon_perf_sample" "$TRACE_OUT" | sed 's/^/    /'
++else
++	echo "    (none — no samples captured in the ${TRACE_WINDOW}s window)"
++fi
++echo "  First damon_perf_drain record(s) this run:"
++if grep -q "damon_perf_drain" "$TRACE_OUT" 2>/dev/null; then
++	grep -m 3 "damon_perf_drain" "$TRACE_OUT" | sed 's/^/    /'
++else
++	echo "    (none)"
++fi
++
++# ---- PMU support verdict ----
++echo ""
++echo "--- PMU support verdict ---"
++if [[ "$CALLBACK" -eq 0 ]]; then
++	echo "  UNUSABLE: the PMU never delivered a sample to DAMON"
++	echo "  (e.g. ARM SPE requires an AUX ring buffer that kernel"
++	echo "  counters do not provide; see arm_spe_pmu.c)"
++elif [[ "$VALID" -eq 0 ]]; then
++	echo "  PLUMBING-ONLY: callbacks flow but no data addresses"
++	echo "  (address-less PMU, e.g. cpu-clock / task-clock)"
++elif [[ "$ENQUEUE" -gt 0 && "$MATCH" -gt 0 ]]; then
++	echo "  FULLY INTEGRATED: samples carry addresses and reach"
++	echo "  DAMON region matching/update"
++else
++	echo "  PARTIAL: callbacks with addresses, but the drain/match"
++	echo "  pipeline did not complete (see counters above)"
++fi
++
++# ---- Summary ----
++echo ""
++echo "=========================================="
++echo " SUMMARY: $PASSED passed, $FAILED failed, $SKIPPED skipped"
++echo "=========================================="
++echo ""
++echo "Results retained in: $RESULTS_DIR (set KEEP_RESULTS=0 to remove)"
++
++if [[ "$FAILED" -gt 0 ]]; then
++	echo "Overall: FAIL ($FAILED checks failed)"
++	exit 1
++else
++	echo "Overall: PASS"
++	exit 0
++fi
 -- 
 2.43.0
 
