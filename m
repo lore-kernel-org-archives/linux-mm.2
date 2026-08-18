@@ -4,94 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E216BC5DF84
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 13:06:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2461C5DF7D
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 13:07:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D96466B018C; Tue, 18 Aug 2026 09:06:26 -0400 (EDT)
+	id BC5556B018A; Tue, 18 Aug 2026 09:07:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6E2D6B018D; Tue, 18 Aug 2026 09:06:26 -0400 (EDT)
+	id B9C356B018D; Tue, 18 Aug 2026 09:07:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAB436B018E; Tue, 18 Aug 2026 09:06:26 -0400 (EDT)
+	id AD8906B018E; Tue, 18 Aug 2026 09:07:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AB46B6B018C
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:06:26 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 922CB6B018A
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:07:37 -0400 (EDT)
 Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4AFC61C001F
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:06:26 +0000 (UTC)
-X-FDA: 85114413972.28.BFADA5D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A22274000F
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:06:24 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mBPFVZoD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2ED1D1C004D
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:07:37 +0000 (UTC)
+X-FDA: 85114416954.28.73EEFC7
+Received: from devianza.investici.org (devianza.investici.org [198.167.222.108])
+	by imf18.hostedemail.com (Postfix) with ESMTP id EEC091C0014
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:07:34 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b=ssVyY3sc;
+	spf=pass (imf18.hostedemail.com: domain of include@grrlz.net designates 198.167.222.108 as permitted sender) smtp.mailfrom=include@grrlz.net;
+	dmarc=pass (policy=reject) header.from=grrlz.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787058384;
+	s=arc-20220608; t=1787058455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2FNlOtEne2BhEcu6Y7eW1kChoZuYnNWnX7RcE7P3Zb4=;
-	b=O30eY73QcIpttBfE797XgTtPY6e/lC6OcPlKPwD5OpjP0915odwaHb0Z5WPrTyern6M1dO
-	bFUOAT7BqQYnHpRf4AqKShQodLax4xNJF+Xp74HlXgd7zU6J+MwRgzc0Vx0wGKow/7IDjA
-	YVWYccbspJCiI9pkpLouq6utHDCNS00=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mBPFVZoD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=d+FrlVBFSxRPONQ0ZzFJrYgl97w5FLa5RJAF4PEgUfs=;
+	b=cH/xEHBvLF1fyI3SqRuPdZsVWtjg6K5pz3b/8w1VGhUnJ0CUEHKyv5Mx19688gGzXoDy1a
+	l/AUBud4kZVIzG/PZQGApK4/BY64R/Zl/9FlWhaZPhdpus6H4x8tCBPmnB95we7vju8RCB
+	GHzgGUMihWw9hWQpplnrZd6MyAU2KBQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787058384;
-	b=SU8/TCyHduOWKHxANoOqh0OAlcYogtDizIaeSaclJzvw+ltm+XdlpuMqQo1Gkf5xwLyDJT
-	El3uy6nZU33CoVaiX3D+dOVHeeea0QQP7icaGdtaD3o2SQYT9SVxX4C2b86cekJwBWwske
-	CZH8C9XRVV0Ujz+GAFpc7+GmxnLIi9s=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BE9A54397B;
-	Tue, 18 Aug 2026 13:06:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6129A1F000E9;
-	Tue, 18 Aug 2026 13:06:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787058383;
-	bh=2FNlOtEne2BhEcu6Y7eW1kChoZuYnNWnX7RcE7P3Zb4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mBPFVZoDG/SLvcTMfgNwPH9Cb2Oc/RS/O5Y/sOn89/7RKIcKsexMMbOI7UxhXJnw5
-	 qgGYBl5SRQcgYW5bVdyIgSF5vZ+AsLxvFi7Bw6rdpnr/ZzKRPCflhzjdDMUqJVqyWe
-	 h/U0C7iBuN2NGm2gP2ulaBTuLXGo7pOSlPZE1gR9T6Y7A6zeCf2otS9HOx68k9skLj
-	 h6eLusz8CfDbnR+Cpr7JRYS/jzjTCr9mt6r1mgmIFE8H+Wwtaa/tMKo+3z4Q/3vpow
-	 4lAC7OqmrogXiAuWgMbXdy7aXV0pKKuaSNvYoZmSyijUWr2su5VdioTWYzH+IIu/Xk
-	 xCwck/ygS4rQQ==
-Date: Tue, 18 Aug 2026 14:06:01 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: akpm@linux-foundation.org, david@kernel.org, nico.pache@linux.dev, 
-	baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com, hughd@google.com, 
-	lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com, rppt@kernel.org, 
-	ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com, usama.arif@linux.dev, 
-	vbabka@kernel.org, ziy@nvidia.com, usama.anjum@arm.com, agordeev@linux.ibm.com, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	jannh@google.com, willy@infradead.org, pfalcato@suse.de, rostedt@goodmis.org, 
-	mhiramat@kernel.org, linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [RFC PATCH 00/57] mm/collapse: rebuild collapse on migration
- primitives
-Message-ID: <aoQ77EcD3M2kjeya@lucifer>
-References: <20260816224609.308019-1-kirill@shutemov.name>
- <aoLAly-oL2OAa4n8@lucifer>
- <aoLkMUtmzRVuv2Hx@thinkstation>
+	t=1787058455;
+	b=crMoo/EBtlMe+SboBFZu5QDQzjshczV1SaqaY5ohg0wu6mK6ZguUmc/hu+tPILtSrewi+d
+	jP53tTG2yE96Lb43qA/DuPTAT7WtgNzoJ0/JCEoC5dRRpyu4t6L+61EtodagrSRWOdVOdn
+	BzhJbJxz5RtLnTAvPEnyidX6BTO9ckE=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b=ssVyY3sc;
+	spf=pass (imf18.hostedemail.com: domain of include@grrlz.net designates 198.167.222.108 as permitted sender) smtp.mailfrom=include@grrlz.net;
+	dmarc=pass (policy=reject) header.from=grrlz.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
+	s=stigmate; t=1787058451;
+	bh=d+FrlVBFSxRPONQ0ZzFJrYgl97w5FLa5RJAF4PEgUfs=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=ssVyY3sc19bJ6q5l2YmHLAdN0vBOZKLOUyX3lHHwn532OcT974Lhkt1afyooIleJU
+	 /NOwFLmzS9yNHvkKXj7OV6bSJnA0aJqcYFF1ZUt5+wKDTzNNxOFL+8kioGCANJ7iqq
+	 hBdDOrX8umcjgN1U7E6dC1b1OlHSkMpcX/qsoX9c=
+Received: from mx2.investici.org (unknown [127.0.0.1])
+	by devianza.investici.org (Postfix) with ESMTP id 4hPVNg0vyyz6vKm;
+	Tue, 18 Aug 2026 13:07:31 +0000 (UTC)
+Received: by mx2.investici.org (Postfix) id 4hPVNf5BfMz4y6W;
+	Tue, 18 Aug 2026 13:07:30 +0000 (UTC)
+Date: Tue, 18 Aug 2026 14:07:30 +0100
+From: Bradley Morgan <include@grrlz.net>
+To: Joel Granados <joel.granados@kernel.org>
+CC: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com,
+ kees@kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com,
+ shijianlin11@foxmail.com, shuah@kernel.org, surenb@google.com,
+ vbabka@kernel.org, ziy@nvidia.com
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_0/4=5D_sysctl=3A_Disallow_partia?=
+ =?US-ASCII?Q?l_updates_of_miss-formatted_sysctl_vectors?=
+In-Reply-To: <4hbx4orb23mruq4dsjolglzgsjue5g25bbmnbeu5w37x7em4rm@o4hp6nu54ye6>
+References: <20260814-lklm-partial_ctlvec-v2-0-9df50d26e477@kernel.org> <5F021629-DD85-4941-8263-3C4F51E9D6BD@grrlz.net> <4hbx4orb23mruq4dsjolglzgsjue5g25bbmnbeu5w37x7em4rm@o4hp6nu54ye6>
+Message-ID: <9335573F-07B4-46EF-B947-502A118AC2AA@grrlz.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aoLkMUtmzRVuv2Hx@thinkstation>
-X-Rspamd-Queue-Id: A22274000F
-X-Stat-Signature: taqepitnoz6q89tp7ku97ua1gesjd68b
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787058384-726397
-X-HE-Meta: U2FsdGVkX184J5ICwUwI7X1Aq+BHT0AR62KRDYzWaa6qDDb2/MGkB4QCW9rNl+OLB2lOBE0fUbosb9ljYjL9Agdrvrkt49ULngm6XSnRSLIpbmDG5KqnoTixlUEF973+lcZWiCg37mgcAKc3lOdKQqmFl4uG6YA3xJ0Nhw0WbXllVr89R893nM7L21eRxzsaWI6lOCU5S0fukJNvyeGG2wGtUQXzqFEH2fLXK4/W05HfpdL+PObu1ONIEQqit2IXpuT1o9PcG8G9lv1TSzOI3Vx41C6lQRDti1UbhkUViT5xVFflVDWYxjw4j3Ihix1z4wH/4W11Bj9BKTqRmLbSftEnvsRhXYwTBGJvBJ1y94lwc+2sDFCvW2PUqaPa0lDzOSXFE0OHf/Qyvep8u+gzRxjw39ji1gd2ia/tO3M5DPZhHmS9sDWdNmKEwHPH1ZWiR5V8HKaIIQESDi2tdM4p/UjrQmlf4u2bMvZfRTs6R1Cw2jUrcJRWglDORe04fJJQ1zmTJLNivkrFlUSeXYEJkCUduYEFUbyN0eAEV/9lCAtgJfXMyWoBYvG6xMitkyyNc/gLIolsCzD66bg7O/7Y8Pr5pk0KtG9Fm3yWjIlWCW2kdGvgZOLhpnOblOrvBUZRptXSi14Mqj8AqXO8XTo5LNXQBvRzA+pxbmdRlIqY6xfFHgZhl6dCBlu4qSxPJU9PmkUZE+X5DoiYw0C2TbHVBh7pnqrkGOzM+3mt8THG8cRbr48R9WIRtcv4zKZyBaZr6E0te8PK0coT2FtewWWPOkqYDzoJ3WgCbl6bJH42DffwvsUBiLgMWoxxFUNaJRLbbH6IAN3z7oHqIb4IHWXbWPkuW+SIXD9DXWGKtna4gBKWyTwUzVA0I0xDApIAf73LIelBt09jyMS1BuEmRelzhkWY2DU0NVfwC5elHd1Mm7YZGmXiKfu9qTuU13c5KfhPqKRS8AZOnKdYRhQLSiQ
- 96bWYosH
- BLnaYDmqv5E4T4bm5D7cKJhSyt+WQB1nb7NY+Kzj1sR7jGua6XNMIiuKBWNIjbM8hIFOPRJSh9oH5BS26SLyjb/k61ooXCTQZPdyDkag0Hi7YhcIVqUobkO/JgWUxzbFH8aC9zCCVjaUob1wgCLyaH+h9uztRG7mShOhS6J02uaEWDY4c2xuzCBk2mRxTwsv0EDXFuzlxW+ts5y4/7KOEmEjNRqH6508mCl33pi5MgoJmP3dRP8ktdwew8GqYVM+Mp0/4
+X-Stat-Signature: gk8iswzjhj6ujsnm9tqqgisyudqzro6n
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: EEC091C0014
+X-HE-Tag: 1787058454-204770
+X-HE-Meta: U2FsdGVkX191WctqE4/YJ2yXEnLU0mkiwQvsusCVKulIGommBuuyGljECKALkySGw+CzldMqkGDPSmwc2WVEplstxKhl3K/BnsKf/34FhCbjIxgi3+LwcGRfrBDijVAv7P3H4MhMyHwQK89Rj7Gy1aI6B4wCRHhkkscSIHOpnE4Rq3eJqrgNMcC5yk3Bb0PANhicBKrWSPfEPCBYW6ZlfaQib7+TxMQJly7hQ7Csk36N7SNqfJivRhfHogACYBVbQaEqMWMvXsOnFqGaVaMh1vwxU7Ogw2iVmSm+pNZ8hpDS+n/jShcArg1Xv9uo/SXox4+Pw0YmXpqdWBFeGpG9sYMRHOTg9WI8hJ6rWx5eDJtZJbDn39opY4JA+NjM7hx9OMh4KPJh3Jthm3tQXSPt0a9XEhNTeOsbtRh1efqKYD045PKhrL0QhzupNDQiv7gSVgYOkwMfJ3lr3NlI4WpwmZKy5DtJ3xQx8hW6YjNH1wuBZidhOC5oxvXYfok7TlnkQedVZfNU1ubif3YwvTUromwp+ZsWyrpDTahlYXfDsHvLCuFd/i3lBYXbtuBL3Z/dkHlyhIuMuOj6qlFSiUlxkt38bKizPH6JM16yZDUKIUs+cEK2qlSudkoXDrat+biybrLSzA04GSy8ZMoYG5HHnGE1YyjcjrqkmWnPMRy3igzImgDhChaCxuN+iZsbS0rgwv06QP17pf8G9NbC6NSOfHi9BzXZukjp4kXc3G8xc7L79oqDKl+k0FUnY1R8tccYPBeGpGfJJoMt7j6Nosm3Se4d4GS/h9sB3jWvw83sEVHrgS24My1r44OOG0O9G+a8NRlKYklhUPuywVCLBHxb+wMCkONZQfIyvWK8x1vjCR1aSdekjDi17I+t1ms5YzUW2ho4ROh4zWeDkRpeRotZTC60X7qNK579MARAv4+t9ztMhZg8mvbZTLExBsiurDBmVyhY+j3YK4WtBY9l7hZ
+ 8ZbWielk
+ YdQI5mnihpI1YjVQp3XE/KVGrefk1VBm0xOUBc2vmr+ChgDJ/xetWKEIXrYoqJ8ijgVM6v/x+tl9eF+OoPCsCyuRQ/u/GG2MHhujiGBGSU967yTqa3uyU9chH4zYWiX+eyUQGMIT4GpBMqis50CIOoAxg1kEUChvsOY4kMokrpDrpSEmB/sMBW8hU+nm+fClA7t5YAAmMt9np9W7W3qHPjbrobma0cIPprAOzGZOjnSkYsGRDmJrT+t1BH86B0zHWvSrxmO6q/6GYVrNzcJLVGc4Xlkh5//BUFLrrrgw+sLWnUDghnCGR+CvX2XWkg9nDu+pHVgXp5N2TxwwMLuelGiQaiaOu0A48lnqBPuqDpoakiJEr3i3q/VMsQwYzfwSTqWQPLzusm0FEHQFM3BuE0pIOi7Q3Bj2qBsOGYSTHYc7yqHF4goQdBRQ35Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,43 +93,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-(I'll reply to the rest of this later)
+On 18 August 2026 13:46:58 BST, Joel Granados <joel.granados@kernel.org>
+wrote:
+>On Sat, Aug 15, 2026 at 05:09:30PM +0100, Bradley Morgan wrote:
+>> 
+>> Copy it, only write back once every value converted. That's the
+>> right way to do this. Went through the whole series against the
+>> tree, notes in the patch replies.
+>Your feedback was useful, but it was riddled with a *lot* of hand
+>waving. Please be succinct and to the point. The previous paragraph is
+>not needed.
+>
+>> 
+>> Some nits on the series:
+>> - "miss-formatted" in the subject. mis-formatted, or just malformed.
+>Note that this comment is missing the why. It is good to know why you
+>want the change
+>
+>> - akpm's scalars nit still applies.
+>> - Sashiko saw something on this one (akpm linked it).
+>In my opinion this is just noise. If you see that I have missed a
+>comment, call me out on it. If you have additional information, answer
+>to reviewers mail. 
+>
+>> 
+>> Otherwise fine by me, the split is clean.
+>> 
+>> 
+>> Reviewed-by: Bradley Morgan <include@grrlz.net>
+>> also
+>> 
+>> Tested-by: Bradley Morgan <include@grrlz.net> for the test
+>How did you test? And what where your results?
+>
 
-On Mon, Aug 17, 2026 at 02:38:44PM +0100, Kiryl Shutsemau wrote:
-> David and I talked about this at LSF/MM.  I can give it a try if it fits
-> your idea of "feature freeze" -- and if it doesn't collide with the series
-> you have in flight, in which case I'd rather go after yours than around it.
+Built and booted the latest kernel. Its the summer holidays, I can do all
+this, it's magical
 
-Whether intended or not you sound rather like you are trying to override me
-in favour of my co-maintainer here and it's... not helpful.
+>Best
+>
 
-David and I co-maintain THP together, are in constant communication, and
-have a great working relationship :)
-
-IOW - if one of us states a position on the sub(sub?)system - then take
-that to be the actual position.
-
-I have poured what must be hundreds of hours now into THP maintainership -
-it's by far my biggest workload on the maintenance front, by far the most
-painful and by far the most thankless.
-
-I do it because I care about mm a great deal and am, frankly, driven by a
-desire to see THP turn from a flaming trash pile of a code base with
-confusing semantics and many, many broken parts into something that serves
-the community's needs with far less maintenance burden.
-
-Looking over your series it seems some of the patches works in this
-direction (great!), but much else of it fundamentally changes key
-behaviour.
-
-So it's just a question of deferring the latter until we get to a sane
-point with the former.
-
-I keep talking about this stuff because companies are motivated by wanting
-to solve their problems (understandably) but if nobody pushes back then THP
-will continue to be a series of changes lumped on top of one another adding
-more and more technical debt.
-
---
-Cheers, Lorenzo
+Thanks!
 
