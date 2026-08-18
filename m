@@ -4,89 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12E01C5DF81
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 19:28:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD53BC5DF85
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 19:51:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DCDC6B018D; Tue, 18 Aug 2026 15:28:49 -0400 (EDT)
+	id 7FA466B06A9; Tue, 18 Aug 2026 15:51:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18E456B018E; Tue, 18 Aug 2026 15:28:49 -0400 (EDT)
+	id 7AB556B06AA; Tue, 18 Aug 2026 15:51:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 07D2A6B018F; Tue, 18 Aug 2026 15:28:49 -0400 (EDT)
+	id 64C6D6B06AE; Tue, 18 Aug 2026 15:51:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DFB4A6B018D
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 15:28:48 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6923A120208
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 19:28:48 +0000 (UTC)
-X-FDA: 85115377536.21.6A98E44
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A7C4CC000C
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 19:28:46 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1Ch6BF2p;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787081326;
-	b=qTZk6vN7ZCDWT5tkPxDeX5WVx/rOcfXoQsYD8+2H3VJShcgh/6naGYTkWDEmzrpXB/oCjO
-	gD698HNjlCQvjjiUsZAdK8kgb4Rtfvz9YVBsxYfa9ralBpaile/boeaA60nEpCYDkIBsBt
-	6vG5lK4UISNMA8/mKZeULojn2zV/Nzc=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1Ch6BF2p;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E6686B06A9
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 15:51:43 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AF8FF140287
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 19:51:42 +0000 (UTC)
+X-FDA: 85115435244.05.7B69981
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C5607C0002
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 19:51:40 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=qORZbtSq;
+	spf=pass (imf10.hostedemail.com: domain of jannh@google.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787081326;
+	s=arc-20220608; t=1787082700;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cZNjCfbYHIfdsRcFPvK2wydI/XjK8b1Rn1pUmZtlJeQ=;
-	b=7vLnoDQqzm18cloSM6KNkNsSXywx7f280wYKTKCaI6+DVfOvI2pAXYG/qvWbQXqOJbtb2/
-	NX4wgA0NS6xh4iVjlYg0qQsH+7f/5Fq39FS2WuuNH2GU9phOC9iF0Y7MOZF6pKckzcqXLr
-	J/rbtQ1i/g1MWNg9Mc0/sCCuZbaxeDw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EAC09601FB;
-	Tue, 18 Aug 2026 19:28:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F77A1F00AC4;
-	Tue, 18 Aug 2026 19:28:45 +0000 (UTC)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=drSOm1ixDHQGlI3smzn5LxemApeC9uWCJGzFJcvqnEk=;
+	b=JRDGlvj4GVfCpF7dxy7932qIuvsuP/1K/pkPs2+h8sIHpZQGLpyQinCOJWU0F5AydhfxsY
+	WvYzj/BJcLJseILstaYw/ZOjwOEdRB/RqcSsp3ONs2tYd1bjsfP6BGuIZ8UBWpys7vsJxD
+	Mh7sCP1XjRrFaV7wyjDvz0dJ/aKftTk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787082700;
+	b=pW5bI2NygjCArxNMmaMVkJr0gxIPSFh669AFAvPX7opeoNdoPrWzUUPPzV7pGdHIHnM+OH
+	7GbS2QE9neXkM51HdHVDXooFgmr12bNilP9sPPSSJei7J5ZYk5Bi4R4Gf4wpbXXVaQcvUg
+	zRbhoee9AawLmE9TlDLo7QQbloooNVM=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=qORZbtSq;
+	spf=pass (imf10.hostedemail.com: domain of jannh@google.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4994d67d260so1885e9.1
+        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:51:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1787081325;
-	bh=cZNjCfbYHIfdsRcFPvK2wydI/XjK8b1Rn1pUmZtlJeQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=1Ch6BF2pzmORCdDXF6fKXUg5XWDOtX8jdXFDfkMCik+01vWgZJ1w55VmLqepohv8e
-	 N2HH1+eTBtBJshqOcMJD8MKD4K+4A1/ewE4P/YoJeysTCe5hs8j82KO00EbkCu9jCZ
-	 gfNDcrr3VEJKSxiqXZ5cWBQdlY6kz1nvQFfBsprE=
-Date: Tue, 18 Aug 2026 12:28:44 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng
- Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
- <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, Youngjun Park
- <youngjun.park@lge.com>, David Hildenbrand <david@kernel.org>, Miaohe Lin
- <linmiaohe@huawei.com>, Oscar Salvador <osalvador@suse.de>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- stable@vger.kernel.org
-Subject: Re: [PATCH] mm, swap: ratelimit bad swap entry reports
-Message-Id: <20260818122844.71988535d6380ba67e8a2b1a@linux-foundation.org>
-In-Reply-To: <20260818-swap_part_one-v1-1-a4fc58119fc0@debian.org>
-References: <20260818-swap_part_one-v1-1-a4fc58119fc0@debian.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        d=google.com; s=20251104; t=1787082699; x=1787687499; darn=kvack.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=drSOm1ixDHQGlI3smzn5LxemApeC9uWCJGzFJcvqnEk=;
+        b=qORZbtSq7UFLRl/VNA6K+XoL6f0bvyV/Aut69kIpquzA3c4o/fsvV7dFfS3hIB86DW
+         QwvRPuHqPnr86C6xE7vOrx8wRCMwXhQppwq6GVcBz1akxB3qaqsym+j6DIbLXhfeXgyv
+         RF/zkdj3mzd1eMa8IyA5JqcyJFB3TLzBzlf5W9qxzdXgPOcjXI6oyJbSyLKMCKF5bze6
+         2/6aL/riw/A1C1oO+A7rRP1NGh2jWk+gF0VCDl3zGQdqxfOJsNQSggKNXtkEBCrcfUVC
+         im0UMfCCRIW/oENlYp61+UvNyi+jnpwl6jApWJv/G29jUk3lRqSggwPYX5LWTBot3s9T
+         lwww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787082699; x=1787687499;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=drSOm1ixDHQGlI3smzn5LxemApeC9uWCJGzFJcvqnEk=;
+        b=eFPkkdOajxcPLDVTpWvAPtr23cuWtvw8+fKS9ERRblXnladx0d5UD8Rr/mA4KTKS+q
+         MLkO3rLtVPSvj82g/iZJMlUfTkr4a9MDB4zhYT9D+1mwxbOtBxyawcWoWynRLsgh1Ql0
+         H/PHOFg6E1krVxYxLa0dSTSbusHXElNaFI3v0SHpXlU9Wb5Al1b2RTL+dya34ixtB4tz
+         Byd1cY/nBjS55hGyDlXJHUZjR3WbMide6JKvYMqBynCQ4yRrBOh9KXAxpSOd8hps9oFh
+         gBdGmr9GyFcE1IIAZouNXYg/oz5qTGNxRXPKunUdq2/xoaEKMiZHeu/WjWHSHqVqHEaC
+         bIFQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq4WTPYlLz1M1YmMSJwWZmTS+OA1/g8Jc6+LfZ/C4RaMbTHhlCznzkwmEIPxd2yOLnfgT1kRCUn/w==@kvack.org
+X-Gm-Message-State: AOJu0YxtQ+JzQVELHsG6Kj56y2ZNf35mkSAhLG8NhGnjMi/4/r1HEqcO
+	jbLz4SbACwM1yiiTIohlu3XqiHlt5MsWh+r41CKbB8yxgSKUW0h9parQnMDW1xKhqQ==
+X-Gm-Gg: AR+sD10bxMR7hediKNsWwr/TjmH6RpGHkqyI0C7EMW8zbuJJBG7voY8RO8PGfkpPz8S
+	h4ClcwL1s9/52/9DtglwL/wuNiGnzLfR8I4aagrl/PMqpBTyylXpj0B55lXyQEzXSaNa8HQUjeM
+	nxmjxghO575ZyeltmoiJIesbv0sJ21wYwuJJTdvfaIq9iuRD/VN9E4chFMUbfcTmWG8kZp0/fLd
+	RRphDSocHWEgudev4Tlsivmv4S43rLIBX7PO3O0I3gHEZbI8rkJ2F0i2nGZc40O69mb9DhryHRO
+	EUxqdRvAdwxaPn/MDQhCqNultFwlc83y+V8RddkqOFeBKkJhALhA8B3FtsEze0fiQRgTmSTticP
+	eMlQToNTqg0iHbIFaiDl5rMqCND+3MW/U1q6lEe1EZg40Hqe2KynysEFK/JSsU7uDBUEh9g8Z4Z
+	vZaX6gjSo//MWxUHMounL6ZCttJzn60jRyRDXtB/Rp6gi9ozpy3hf3AQh16cijNG+n1+T3SSwYh
+	L9toyf5y7Em/oEJirYPlBiBcypqNZCiEZSRs+Nb3izOxIJmTVUTSg==
+X-Received: by 2002:a05:600c:254:b0:499:7da3:dd0c with SMTP id 5b1f17b1804b1-499a94ed422mr57545e9.0.1787082698942;
+        Tue, 18 Aug 2026 12:51:38 -0700 (PDT)
+Received: from localhost ([2a00:79e0:288a:8:f466:5a15:1301:318d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4999d0fb85csm210096385e9.11.2026.08.18.12.51.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Aug 2026 12:51:37 -0700 (PDT)
+From: Jann Horn <jannh@google.com>
+Subject: [PATCH 0/3] proc,security,selinux: let SELinux block FOLL_FORCE
+ for /proc/self/mem
+Date: Tue, 18 Aug 2026 21:51:04 +0200
+Message-Id: <20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKi3hGoC/yXMQQ6CMBBG4auQWdsEmikQr2JcYPmFASmkA4aEc
+ HerLr/FewcpokDpmh0U8RaVOSQUl4x834QORtpksrkt87pgo3hJ2HazzCMmTIa5tM65ynPLlKo
+ l4in773i7/63bY4Bfvxs6zw9radgVcwAAAA==
+X-Change-ID: 20260814-selinux-pokemem-44625557c4d4
+To: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+ "Serge E. Hallyn" <serge@hallyn.com>, 
+ Stephen Smalley <stephen.smalley.work@gmail.com>, 
+ Jeff Xu <jeffxu@google.com>, 
+ =?utf-8?q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+ Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
+ David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, 
+ Jann Horn <jannh@google.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787082693; l=1964;
+ i=jannh@google.com; s=20240730; h=from:subject:message-id;
+ bh=tzzbnGcfHutO0vdB1fh0UMZvNK7uVy3ulgec3GLoLDg=;
+ b=HhNdXV2fub0RF+OgbExoBb2DXb+eAiN7VBv2jprX6UnhpvnrUS2oTrBxlzDBG1Smiw3tvds7u
+ /RA3CIJ29a5DZBSqk1r0aeUsB+aTrR6g2NeP2huXaOBXrPr7EzT7TP2
+X-Developer-Key: i=jannh@google.com; a=ed25519;
+ pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A7C4CC000C
-X-Stat-Signature: a3h5zgbnqmczazgkphjgdqumjtuf9iah
-X-HE-Tag: 1787081326-957884
-X-HE-Meta: U2FsdGVkX1+wOOaGbgbQi1R52SX9q4PwtDNqo3tBEoH7h7ZkwyoHQyvIdwfSjZwrmpa0Co1J6FC2bBjIndw39SfK7rx2SmKboXamUk9equhI6ZfehDdEUbCPQTpHmcyedmUfIlo6Fg1QH7JbhFim1QjdEd6uJ4/vmyw+7zX93nqI3qK9FCop19H7PCDsKQ66lfm564DFyvpqqCV9j1+nDX1VNbUNTcz+vMTuRarMKbJUFlP2X4SoXPY1aLkZ77YRbRZoffsMJfjOTgeQhO+Rt73W7J9UpxHNSDgBY9XFJXYMPxiQI6UMLEgu2CuF0nnPWAhV3uRKLud7yNCraSigBZOgG3m13IB9CF3lbuTTBzIqMmu5fr/AVe13qi8DSL2hsSCfk7VseWI0u80RC3zEOUrqPJ1G5bMda/NKEPxKS7yqahkLQJl76PdG1TK2mR0FUIwTHpPbBoM2NEZaPyh1v7cKLYRm6nGl3W1wKpRkxXpb1+XjaI0BkK7+8ISOkIQtlwHZ8so0Mo9QzkJO577PawxhneTQa5LM9hg4xdrkDXDFFqvW2E95PaiC5y1bTJdQ5Jgtlpw+umQhDZ8WyFK5V1NZ0iWfxUQU/rPJGl+GS4sXSYTsbPkiMTa0DHneb3J726HVkdPo/FK+1pEda94KeYXqv4VRSuVG6tGGsJi5x0IEFFt/dgo9Sz0vB76ZFo6Q8Zpemh+U2Vre52xFuIlm0kFT3V/k8l1ZmNpZ2CVpACOdIQqU/6fUut+TILdTpGeDcJrTaxbXGg57kan0Gg9VdOzTFMbqV+PQZNyT9/2B4/AH6DK4ur1AggHMSm1fJv8zTiv6Ct5O5YwuEryYdrNU8V5s4/gVuWVQD5/2EdIdc1KnTtEXPbYMALGk1iWErWWGcizIcxlofrLuuSv5wkF64P/8Pm93+7iNarblkcjtkwD+DiGe8ih0yjDoyE1iNRRCouHDoTo10lcZJLdrbHG
- 5YkwuZzY
- 0SajhaKYAKLf85VPNtD7NcVGZec2ElnDIsxQhiEWGH9rI6pAnFMcnlmP4Y1BvPLL+P32OKSJyxS7gVoFDCyX80NjnVcbvHG+LDMBfv+4AK4LsJkbGSS5ApCTkjIw+bVUc51Ko9YGFD8GUHk45HyQqn7wmtNEQZO5m+5tOquKV1VTlzdyw9gJ+qrYmbR1zWdFNfZc8AFODVYELb/Fv7scv1KaUmD5qwynCJ8gT/t/bx5Q6BbGGyCMSb51F304+wR6fH5IcQ4pA7SlH/oETHLTlRph7zqKRmnlhsBk/NHYK1yCQFcWygshsjiTRBPVYq3zeaCdI++z8FNurZIS7+IZ5thayYOnqz7oQ4sNPqbE9vCk5MloCdjFgIvkfd3mPd+n4oF6e
+X-Stat-Signature: 1hceit67zafyd74fd3f74ob5i99g41q7
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C5607C0002
+X-HE-Tag: 1787082700-776202
+X-HE-Meta: U2FsdGVkX18E0VZO90mKDHS2+ihy64EZc8naSwQ0Sqgh8ewbmt9IAXo75EbC+iMLNtMiH8vlkzaz46Rdj12+hW+TDRn9OztM8mdrpq3NF4HShFIDqL6cfov1HbScmlMFO9JnrNuPXO/mnJG8Xn3e5NYOg5/ir4uA6OI1BogpOa5VA19VRJwF0lCqBXWXCJDjOTOzClwiLHPAEC07zFbqtmGKckTRbDayhjj7p2yAuYgJNVmwT1eHVR1J1X+LxBMOARWqiKYxJ/wVff6t0mQ150vlSghUJYsuWuKVpA2caM0w5MJWIN8iatOKhLEROB6/0N4ImGB9vA4uujW17PWBYcgbfRdbYUD9R/PXz+gnPz8SC8+AAoROsN1IhsvZa9MbV4TofgRVYcUYwTJ/wTLKScoS0HRfpzyupPFFlD5enZGmH5myursNYa0sO3aAwG+P6TuU0jCmsxMV6HBPIqEbKYYxxuE+uJczt5TH68NHo07pHit16qRqNqgC9kIyzbxoIwKh5Mdi8HaODguceeWF3WQTy7Ajm14EAAfLdjbM/NjgoG6aZCzsFdBe23XxVCyK9UWz5sobDitfEiWs/tE+1k2MJUQAQiOP1ZgPxpPHmTo6r24K3Tg5DqRMQYaBPwLEtBOZLgpsfA9iD/FLTyOvnOmbQ91e/SlFNpZeXg7xLczL4hJxs8YhYgQyGvNWKy78J5va1YJbKCDOTGijkPFQo5UUESs1qrN+p1FkEL1z+Veo04HqKwnbfRkvc7bpd3DWn8N7HWPvN8oE0yCn5a/hYq3Aug07D7i6u90OZoVBKStsk+XMlmzo+dx/1myad4MEi5O9rBuUS6NAacNZGIjOIx316sbVKL7e3HsrXhVG5D/DFv0AsicOx6fJ5ZdX914c4Ro3ck+1Vlo2xXJ9L0J+T+ywshSC1GBX5Epn1VRXv8tDgM0OHWJla3KH1GvrSQ1S6Wqpp8fVDfGg2hpZcXT
+ C1/wwpom
+ v540g/xtJaYstCtGrsHgpMnjWiuQXvnX4ebRQFUg4YSuHTAmKD+1wW2Lr+n69oGmCgdngWWe2avcp3g+Qark7OxWFPeYHS0wrOPkn/5/DZHjpiZNbkB9IHaXw/W3GOo/1f3PcU8Coj0dmqQdhVhXmUc8lqO9cvdWuzoaJrFTveMg1eEf5BjSK2ox6ICsY+XUU0SorQkUzSmbIng+/dKoRuhUqaGH9yoS8U4QZckFAJ0FU+qGLFCaUwdWGmgA+28Igdy6j2x/g6XTarCz7cJsqq0kxz4ZJH8Kk2sZm0BBGCTi3YT8W8y2KMv+kyfxEOP2ghILqHuZyle/nHPp/UXzRNXALtLwKlrKeJCNrT0JqEAcNIeTXcYRI9rsA2D/+QJ7hvNamrICzMio/I1PLgvGGQOVTYDaIug5yF3EKYtWL7rBHa7NXeZPewDQIl5qMfaDmOF/+nfNCfO1rL4HzDb2QdOPnzTXXAeA0sdHzX+0C4axPYL3C9EildA0M6Kg697tr6W9vUvRTfcPiuthcPV8/bbspjaDklPefpf7PwHuLcpfOSM073+R2e3mQtepZvedwf3Gwrjs7OmxRqns=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,25 +140,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 18 Aug 2026 02:03:40 -0700 Breno Leitao <leitao@debian.org> wrote:
+The goal of this series is to let SELinux prevent the use of FOLL_FORCE
+when a process writes into /proc/self/mem and the system is configured
+with PROC_MEM_FORCE_ALWAYS (which used to be the default behavior, and
+is still used by current Android devices).
 
-> A corrupt page table hands the same bogus entry to get_swap_device() on
-> every access to the mapping, and every rejection is logged. One machine
-> logged 6185620 copies of the same line in a few hours.
-> 
-> swap_dup_entry_direct() prints the same message from the fork path, once
-> per call: the WARN_ON_ONCE() guarding it warns once, the pr_err() inside
-> does not.
-> 
-> Rate limit all three prints.
+Android has SELinux policy that attempts to ensure that only trusted
+code can be mapped as executable in several system processes, but this
+protection can currently be bypassed by writing into /proc/self/mem.
 
-Sashiko suggests that ratelimiting these might cause pre-existing
-problems to become worse:
-	https://sashiko.dev/#/patchset/20260818-swap_part_one-v1-1-a4fc58119fc0@debian.org
+I wrote this series after discussion with Android security folks about
+the state of proc_mem_foll_force() restrictions on Android.
 
-The problem it's identifying does require that unrelated things go
-wrong first - get_swap_device() failed, swap_retry_table_alloc() did a
-retry.  So presumably you wouldn't have hit this in testing.
+I'm sending this to:
 
-Sigh, so much to fix.
+ - maintainers for LSM hooks
+ - maintainers for SELinux
+ - maintainers for VFS (because I think they generally own procfs?)
+ - some MM folks just as FYI since this touches GUP usage
+ - the Android folks I talked to about this
+
+I think this should probably go through either the VFS tree or the
+LSM tree.
+
+The motivation for this series is that Project Zero managed to write a
+remote exploit for Google Pixel partly because of /proc/self/mem, see
+<https://projectzero.google/2026/01/pixel-0-click-part-1.html#whats-the-plan-seth-and-jann>.
+
+Signed-off-by: Jann Horn <jannh@google.com>
+---
+Jann Horn (3):
+      proc: refactor /proc/$pid/mem to use struct as private_data
+      proc: query LSMs for introspective mem access (if PROC_MEM_FORCE_ALWAYS)
+      selinux: require EXECMEM or PTRACE for FOLL_FORCE introspection
+
+ fs/proc/base.c                | 35 ++++++++++++++++++++++++++++++++---
+ include/linux/lsm_hook_defs.h |  1 +
+ include/linux/security.h      |  6 ++++++
+ security/security.c           | 15 +++++++++++++++
+ security/selinux/hooks.c      | 27 +++++++++++++++++++++++++++
+ 5 files changed, 81 insertions(+), 3 deletions(-)
+---
+base-commit: 2f1baf1fc8929e6c48370be543ad028ac7ad4131
+change-id: 20260814-selinux-pokemem-44625557c4d4
+
+Best regards,
+--  
+Jann Horn <jannh@google.com>
+
 
