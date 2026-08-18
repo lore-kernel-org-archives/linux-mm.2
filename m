@@ -4,90 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2438C5DF7E
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 12:47:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5C43C5DF7E
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 12:49:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4BE36B0188; Tue, 18 Aug 2026 08:47:07 -0400 (EDT)
+	id E62E26B0253; Tue, 18 Aug 2026 08:49:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFD066B018A; Tue, 18 Aug 2026 08:47:07 -0400 (EDT)
+	id E13246B04A2; Tue, 18 Aug 2026 08:49:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C12766B018B; Tue, 18 Aug 2026 08:47:07 -0400 (EDT)
+	id D28E56B04E0; Tue, 18 Aug 2026 08:49:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A7E886B0188
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:47:07 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 36A5E140C32
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:47:07 +0000 (UTC)
-X-FDA: 85114365294.25.F3DEE3E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A1DE440002
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:47:05 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lOdVgCsd;
-	spf=pass (imf12.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B91356B0253
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:49:46 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 50A7240C19
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:49:46 +0000 (UTC)
+X-FDA: 85114371972.07.AB6F5BA
+Received: from mta1.migadu.com (out-61.mta1.migadu.com [95.215.58.61])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 1065AA0004
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:49:43 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oqs48NcR;
+	spf=pass (imf25.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.61 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787057225;
+	s=arc-20220608; t=1787057384;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iFtjPd1BVmXAbioi3JU56OCVjaF4nzNNaOm0GcnCP7o=;
-	b=RFraB470tQBIWziMT0PVfFteJpR20Hjuo7gMCe4g6soWV1n39+19BLAXHKvwvwHSdUDIm6
-	cR1HbrunT4CoRwvYMKOZLPDh/W7JSXJbt7JpF959Eet0OqRSS39oJ4VP5+CFXWHAOs/dzY
-	lBUk2jwzMp9ZdJC6X/1GDx2De9QxWtE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787057225;
-	b=Acd+hb4Sa6Q36x3HPF0q/E9J9OTEDZMmz/XnigJiKfSGy1H2a+o28MoLJMBkXfrhPA7psb
-	vU+XahzHb/XUpvmunjNYRSL5Nj4k6t6WuuAvgdxx26zNxllrWZgQgR8oh+/QgPL51PN0mm
-	gvzhXCyPHxOXR8350C0I/YQ4ptX7DcQ=
+	bh=wA6o8d+hBviKHNGygSoXC85OkJ9sbBS3QYnjmaygKkA=;
+	b=01UbeJibx3pXsEeArc4KXuHJHJkukf7A4w2n+S7wul3kPR2xW1KZzHSRnm+wy6HeXqPiL0
+	0Dg2Zh835OifSnvFHuT8C/pl90DJUmH8qX3cLziCgjnaaTbIMiBfz+bJSa/KlWBrIMDeNA
+	l4MbvXhjwI2lQ8V7epoBkCAcVjksl8w=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lOdVgCsd;
-	spf=pass (imf12.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AC39D601DE;
-	Tue, 18 Aug 2026 12:47:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40951F000E9;
-	Tue, 18 Aug 2026 12:47:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787057224;
-	bh=iFtjPd1BVmXAbioi3JU56OCVjaF4nzNNaOm0GcnCP7o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lOdVgCsd+iB0AFj6Ivg0q9ZtPJ8aP3+6a8hfErCZiUukHR0gibiRmW+VOaim5wuYc
-	 ZrF8AbL+O5sZ4bB4s9C59+22+KiJlWkQz83mH9R1NswhWnDgCke1RSZ84Gd03CQ+fc
-	 DPAGkRuqc0I5+U6pzLgFTL8VkFf/9QZSQGNG0UwzgrPDJfM9fm0KoSXI1zrrDfpYQQ
-	 SEvHYJeKicw+tZiiN2hSkSqAewsghXoKIbhAftK4pRYrOlI5XywkQubaJC/rGqQubL
-	 /CZpXzfUE7MBBL1eNNByOtRNOaQKqsnPStmYELMB11y+fU7O+0wI+KAop+n9ZaXKQx
-	 yf4REBnfSVKyg==
-Date: Tue, 18 Aug 2026 14:46:58 +0200
-From: Joel Granados <joel.granados@kernel.org>
-To: Bradley Morgan <include@grrlz.net>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com, 
-	kees@kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com, shijianlin11@foxmail.com, 
-	shuah@kernel.org, surenb@google.com, vbabka@kernel.org, ziy@nvidia.com
-Subject: Re: [PATCH v2 0/4] sysctl: Disallow partial updates of
- miss-formatted sysctl vectors
-Message-ID: <4hbx4orb23mruq4dsjolglzgsjue5g25bbmnbeu5w37x7em4rm@o4hp6nu54ye6>
-References: <20260814-lklm-partial_ctlvec-v2-0-9df50d26e477@kernel.org>
- <5F021629-DD85-4941-8263-3C4F51E9D6BD@grrlz.net>
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oqs48NcR;
+	spf=pass (imf25.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.61 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787057384;
+	b=7Eesq6xn9AyChUZ9BLNugGZ7FEk2GksXHsE6qhhoaJq59VJIMN1rEc+5xJZfZruWeeEQdF
+	5obpo/LFKbt+VKsohDWbZazPo/yUeMBfYAnJMUanXgVQQxjH2UW67zeEWj0YQx4d6gh3EM
+	XUt07ojRVCy0xSrnSbPC2QVqYEfX+WU=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=fXiXs/GuwkDQORi9Tljqe5tR50GgCD+UJXW/sn4Xzy8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787057382; v=1; x=1787662182;
+ b=oqs48NcR4i1MvXruzYG2DQcZR34+64YOKRBYo17BJPLLYmlKJvNFuDwutMnrVcPNPuEBMLFE
+ 0gvS71LCxdhKky0CpybXuFCIK8kLZxII+GKCHHAjkBPO26EbTQEYNQI5+AW2+Me+qng9/c3qGcY
+ 9EgCl8/vgD/nF5wIetEWo9cA=
+X-Envelope-To: linux-mm@kvack.org
+Received: from teawater-KVM-Virtual-Machine (39.156.73.13)
+	by smtp.migadu.com with ESMTPS id c43fdcd8a3688fdf;
+	Tue, 18 Aug 2026 12:49:42 +0000
+X-Migadu-Flow: FLOW_OUT
+From: "Hui Zhu" <hui.zhu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [PATCH mm-unstable v3 1/2] mm/vmscan: fix missing NR_ISOLATED counter update in MGLRU reclaim path
+Date: Tue, 18 Aug 2026 20:48:56 +0800
+Message-ID: <8488e685f584e23c164e00a761c00c1104474815.1787056208.git.zhuhui@kylinos.cn>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1787056208.git.zhuhui@kylinos.cn>
+References: <cover.1787056208.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="l4ylzp3pd5pjeqyl"
-Content-Disposition: inline
-In-Reply-To: <5F021629-DD85-4941-8263-3C4F51E9D6BD@grrlz.net>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1065AA0004
+X-Stat-Signature: u76ruyqg6ohdj614ajqjkkn4bydpbg9i
 X-Rspam-User: 
-X-Stat-Signature: rp6qiwr98imy7e9bof77y8o1w3r5ifo3
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A1DE440002
-X-HE-Tag: 1787057225-228086
-X-HE-Meta: U2FsdGVkX1/otLqs7d8HUbgc+8tKZHyQaLZj+lnQEbLFHdBIzZuMEG+UTqB6z1SV0LJ78miIDhjtvEzruvAz7IZntRBUQaJ0rJYfUW5CvMFvvn6DgZY1c2VxahMqrbveIO/WqZdiLPUzMGTgwMdK8O2Dilx+C9RR6255LlvBKY7vdoP+B3ydf1Hmh+4k9IqELlRPn9ZwXCnU106XMmGy+LZfaQHpK7YiT7woTdLYQ6kjAChBfGeNKhFtRGPSzlroRZY4mcNlaq6QX80LiFynEV9HSsKOpW12WCqIqFPVHGc0g8v+OMpdyHzPaIiXrbrez//JtPbxmv5doU6eMpKkbnpGyijze7nMbpegqMElDvehsmraonSx3AwBPNINT7zjOcM2opuuhnXpc3OaYrWODHiniak4UEh6sLar89/DQr2lEwMXnR1pMJ1XnPTvRcsgTTtAzSSQ6fZ5V46I8n7exb0N+OXfj/my51Anl2UVKeIuC95G5EF5tT66om+iyZHIArTDJkj64RnbN7MT+djqgBxGu4rX/zER2X6n5YfWtTo6OwU6pFYhuFSjotjfZpKkLhv30k9uh3OwMwTnI6YdqEX1Jl2R4j6E0ZVDtVxTaiLPzXGS6i8ZYqJWKSKvI2QyE0vq8avVWuGOyxsAFRzD70TDPFKp3BybaJh+h2H3sAbOl6JvXS0/r9NI46sZc9ZCaCubCI02ylgsabyOF6E0k7cBiSYIIATW/DUE9KTqXb+kdv9YOuJYUwSg9wlKYsGdj6TDrYTgEw8sbe3i7ExzREhRB2SF/J25eSMd3lEMjCELygPWSUuOGOyKTL2JLdxQB/bnQa0rgvBwDom8Rb2pIKfb7Y0xtFQK6NVVg3tCcKWGGGtlJfTT5zKNxOz6sAIkZk6VMJd6KwD2AGmYph+YI446jsxlf8P2s2dzb4hlB3b0satlgaUaJTzGLH0D5PTlk3oT8xTrSsXi+iyVJVN
- rKJavTiy
- yKi94yvnH18FREf8kKpm99JBqeXEg1+HiJSfe81W0N7rJxNr4y6TMinHr2RtfP5zvgue8lwd+LmhjE0HmAoqY/+1pWcsiYXz/RcxN5icLq0vMsEvyp5haPmDvy2RAu0/3GLLqOnJqiRiEItv5a1TZqD77Pg725UsTNJhzf9ONVHDnc229giOfjVoeR8HNK39yupZHidiIqEV2ooIAzda+WkYVJImJeUe5IGgz7aPXmW1eLmFOReQU4F6pfBPu3AeA50r5eiDZrp8821uD49CAYPjHg/oIO+uoy3rI3igzTwnNCLV7fvvBOFWVZzsxWouJHXRYqK70XM5tivd8HO5RP0WiT7cz84Egnt5K/BXmxLy2N3+s+WzvNpTi1vA467ga4q4C/Ry94Y3BsllL5YuDJM2XGdPVh34Pej1j
+X-HE-Tag: 1787057383-904777
+X-HE-Meta: U2FsdGVkX1/x/LwhYRYCzcXiLFq3v3KAHolbdEttvAVcW7gznw0WSCHRMycgJH05NZjaQ0d3J+cBUCSuQ+giBqiLJvY7+PH2Rgw/CW99m6BrxQTFINVdumEVX51mDzqYro+Ox3iq/R6RtduXZq0toVQPK1TV1LbWv/j3vTOBpxqgARAcP9ebP8yzAItJzyehlD/W38DzrrfrwY2EC8VMEK1Uk8Gi4eGGYxSKAi4v9VAoqK2HWMD3z2CTEudtHABhreWq5a6bbhMSwFuT1MIIf+EDeEcb7OH8ALbZPd+zQT7ZolO33UJIYnn7WeEo3E08ktUg5XEwGabarKAWdCRVDRzJZ0enq09qgkDEp1BzWvv2MLT8KmsMhXrKBFxY/JWRp32sqtu5fKhp9pXKyVFqtwqVNXTWIphC2JUbcTkAllonCuanoM32GkJCWonS3ipKIOkvnZvVkuLexd/cFfzFGIFrQpGzhciGTpQAy5wdqLDngXNJ0KFd1xnU2BfJvbAY/qYj02jtVysO+uxDAn1S4evUJbq4OkE5Tn0xBseH0F5rLxKmpXDps3nYrkWo5uqqI2N65cOhjThk24Fomp5QnstFgZSE1H00pMhLJriz6Ycd6B6GGx4GmLLJxtiouGmpHkmqdrtN4FzbwqlxQruOmA3KyXXKqPg+y2k7SVnq3805apkRTa5z3IWSJBv9g1wR/2LBG4I+gNJfk1yYmy5PU2NlRQoLtIJoqIXoqMIXE28CelZiHSm2Kcafhpo/MyoqSmUkTzashoP0Eq+YH6DQr+l+lfmvHMiioLtBg6M47UE0xE0SCJybj0ASbgdfj7x4Qt2OE0rQZuPQ1m1MAk1r6OYhZ2gIUxjXON1HkSjnFj4jmriBwQPcRqRiBYcNqmLqgP6K52AiI8r/vmRquEjbKZkIi7Fg4KU8KNY2CPYgEOW0zJhmVVMEf3KnTOLLsZ+7zweasnDv+bvwvaUV9cI
+ g9S5LKbf
+ W4Robj0XBB/Mcy1W/UZqNZyNeUvfse0HRDh7t7yqM8+xkuZ7nblhket0SKwgSwRHGgrBBUV0VuQfWxUZ8sumvRAcRhTK/PiEga/EUM5zAUG3KTTukOm5NYJ8Hxu2r+0HEKdfNIAFoovU5fOvOHWZ+Lh2ArfDoWZHMiCl3udNqCq7Shll6cornNUs+zk9zDzf1lp3F0Zp6N8fNbkIEg/FbFc6v3fQ4wFjX4H1pFaBXYHArazoRxXHA7clEFLyzV/PHsw0v
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,62 +101,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Hui Zhu <zhuhui@kylinos.cn>
 
---l4ylzp3pd5pjeqyl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+MGLRU evict_folios() isolates folios from the LRU without updating
+the NR_ISOLATED_ANON/FILE counters, unlike the legacy
+shrink_inactive_list() path. This causes compaction's
+too_many_isolated() check to under-count isolated pages when MGLRU
+reclaim is active.
 
-On Sat, Aug 15, 2026 at 05:09:30PM +0100, Bradley Morgan wrote:
->=20
-> Copy it, only write back once every value converted. That's the
-> right way to do this. Went through the whole series against the
-> tree, notes in the patch replies.
-Your feedback was useful, but it was riddled with a *lot* of hand
-waving. Please be succinct and to the point. The previous paragraph is
-not needed.
+Add NR_ISOLATED counter updates in evict_folios(): increment after
+isolate_folios() and decrement after all retry passes complete, using
+the existing nr_isolated which holds the original isolated count.
 
->=20
-> Some nits on the series:
-> - "miss-formatted" in the subject. mis-formatted, or just malformed.
-Note that this comment is missing the why. It is good to know why you
-want the change
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+---
+ mm/vmscan.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-> - akpm's scalars nit still applies.
-> - Sashiko saw something on this one (akpm linked it).
-In my opinion this is just noise. If you see that I have missed a
-comment, call me out on it. If you have additional information, answer
-to reviewers mail.=20
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index c1404a59523d..98226bb021f3 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4892,6 +4892,9 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness,
+ 				 &list, &isolated, &type, &type_scanned);
+ 	nr_isolated = isolated;
++	if (nr_isolated)
++		__mod_node_page_state(pgdat, NR_ISOLATED_ANON + type,
++				      nr_isolated);
+ 
+ 	/* Scanning may have emptied the oldest gen, flush it */
+ 	if (scanned)
+@@ -4954,6 +4957,8 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 		goto retry;
+ 	}
+ 
++	mod_node_page_state(pgdat, NR_ISOLATED_ANON + type, -nr_isolated);
++
+ 	if (nr_isolated > total_reclaimed)
+ 		mod_lruvec_state(lruvec, PGROTATE_ANON + type,
+ 				 nr_isolated - total_reclaimed);
+-- 
+2.53.0
 
->=20
-> Otherwise fine by me, the split is clean.
->=20
->=20
-> Reviewed-by: Bradley Morgan <include@grrlz.net>
-> also
->=20
-> Tested-by: Bradley Morgan <include@grrlz.net> for the test
-How did you test? And what where your results?
-
-Best
-
---l4ylzp3pd5pjeqyl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmqEVDkACgkQupfNUreW
-QU+sdQwAiiR0nJg+0a4UBdZxBcSQ1BO7cn+hJgcmdVyUFr+plSJKAcYIJW4gWdJX
-2V2MSMvW2RSvPkucsQZJogIPsw7Uf/vSCwtyiy2sOCBPIGxd4KaMJRKunzrZGbSp
-BNqLfvKzm8VUWBCA9x0b28LIVuZLp28mDR8tv/+W+4Ah2GcaeDDRccCtZL3TjYV0
-ScfIr710yqRMkCUPil0qkEdU5LApmXvIEHz0N+HxksOGddsW4SPBmtmQ91ZNa7+v
-X9ldCz7evpB9n22vjGkMI3QXI8IeRB7lbWWDtvQZXeWypFPvyhgBXbmAi4HZqAjj
-dNcPj4rPVAR7saqHOm5uFbR5lMYolL3xApT9pZx31h7bDNrkKxn9CUosZ8yJ1L6b
-MOxxPxY2DAFU1T377mMnzF4cVrPAaCgAEP4lvzax4ictwZpMJ1n30HMghgmeb2R6
-IK2TdWDgavFQLBtUKOCPY0SawLS4ekWMsA0CeqDZoEoWPHtNgaz/jPLw5V8YHu+W
-zhJT4INO
-=x0ir
------END PGP SIGNATURE-----
-
---l4ylzp3pd5pjeqyl--
 
