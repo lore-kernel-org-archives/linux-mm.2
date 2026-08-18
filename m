@@ -4,89 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE2A4C5DF67
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 03:36:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7BF3C5DF67
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 03:43:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B43306B08D3; Mon, 17 Aug 2026 23:36:24 -0400 (EDT)
+	id EABC06B0196; Mon, 17 Aug 2026 23:43:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1AC36B08D4; Mon, 17 Aug 2026 23:36:24 -0400 (EDT)
+	id E5C296B0705; Mon, 17 Aug 2026 23:43:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A572E6B08D5; Mon, 17 Aug 2026 23:36:24 -0400 (EDT)
+	id D4AD36B08D4; Mon, 17 Aug 2026 23:43:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EC426B08D3
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 23:36:24 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 10D37160A03
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:36:24 +0000 (UTC)
-X-FDA: 85112977488.26.486A94F
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A01081C0006
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:36:18 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="mwt/+vdK";
-	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id AE65D6B0196
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 23:43:03 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 306E41C1BC7
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:43:03 +0000 (UTC)
+X-FDA: 85112994246.08.29D49E3
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 646BD40005
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:43:01 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=V1HRyp11;
+	spf=pass (imf04.hostedemail.com: domain of 4ncienth@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=4ncienth@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787024182;
-	b=tw2nRh8MEQseeFp326Z6AbdMK5ZrLP9/PNGHF5G0XxHhNLPikqOEgyxMIjOqMjMyl+pSsF
-	8pWer5tfGMt7dgvilxJnIn14HCOn5hZ2VuUbzAheeyjXIuP9YBPQJtY+Cpa8oZZlXGXhSh
-	WMfQkIQ0XnZ3JAJXdPkIjQ/BghUoPXE=
+	t=1787024581;
+	b=xcw129UqDOHcq0fWwOVfSK2aCxFREMnYku+Fb5Hwc5hG9vB8dS7QD1CF/AtTRusk58+j3l
+	epp0HsKyMbMR9TMGTM3XSB8cH48oKPHJha1HiG9cSevA3/MiExfsJCXrX30LNxI4ylkBfl
+	S24t14wFhDfktWnsjIbSsNgH1NOPYkg=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="mwt/+vdK";
-	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=V1HRyp11;
+	spf=pass (imf04.hostedemail.com: domain of 4ncienth@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=4ncienth@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787024182;
+	s=arc-20220608; t=1787024581;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pLRJ4oNNFpYWGdiEIZ6Tl4aYLJPaTNBMq+3LGFYpe7Y=;
-	b=5INE5E+zi+e8ZJIww481nmWX3wBmdVXjCKjBVG0KlfZn+IG7hn1Os9xmOzv2tx5wIKLFP1
-	vFjXEFJv/D4hCXuCHuLqqMB9EzZV3cGwjJwUqqT/F3tyLmoyXMcNke0PRzcNU7KlJCKUrk
-	4Ne0NCpRx3WI31UbFnHy8z7TMl126o4=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1787024175; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=pLRJ4oNNFpYWGdiEIZ6Tl4aYLJPaTNBMq+3LGFYpe7Y=;
-	b=mwt/+vdK51+Fg/ukA1fa7KvQj9uITU+MpXi9pGGyzhLqbZMGyyMh046LnqMV3PLUrQpM2djlQKG8Dz1aniPt9ej388ua9ElG+VZqUghjr1w2tfJTxh4hTn12WGV/M2npYupcBKL3LYoi7kRFbz478NuC82tyZg6SQwureQP8xmU=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R271e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X9BvX3n_1787024174;
-Received: from 30.74.144.114(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X9BvX3n_1787024174 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 18 Aug 2026 11:36:15 +0800
-Message-ID: <e5c15b42-55e9-4912-9000-cd720a44b57b@linux.alibaba.com>
-Date: Tue, 18 Aug 2026 11:36:14 +0800
+	bh=dRDoeNY2WfplCeM6Yc0GSWDWLkBmqI8DxH4apG0CyCA=;
+	b=iX5IazhcZhCRmG7RCI1w9aAqs1d3adyf4DR12Plq4ZGMTHcg2slnvc1U+BgRoybFLDIJdC
+	nIsk9E3CoxFrIT8JwfL3gctKmWH48/3QCGPywdcGKXAd4rrz5UrIVO6GVYMpjEsvtNyCK4
+	A0W8ou1prm2qhfVZX8z/A7z8xbdYo1Y=
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-381c51fde6bso4966426a91.2
+        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 20:43:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787024580; x=1787629380; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dRDoeNY2WfplCeM6Yc0GSWDWLkBmqI8DxH4apG0CyCA=;
+        b=V1HRyp11zXsoIGSPjCGwoAVuRclqlf1dnv+Q6nSzqA6TTOGmvCiMAXGoZJ05CigTQ1
+         oBNXfAHxAJpdOcCrNg6aoh1EdrMwQ2pjqJUF0AIh+9tJoCaIu/rDbPxd6SyVjqYikIFm
+         OVtIGXoUC+qp/BHolb4Igm3OsWHdGJjcC6dE7Ewk/eDAZT6NDu5ii3zRG3wRMKhspb6B
+         I/qwc9qTUlEwEJ5IH2wpPxpXqlrElHmHlQMQSom9G+9ejpFhmwxS0U2fM//NwjJSHMRr
+         wCaS3Mqprmqosfgnkd6Sxv1W9l+rhMhQxolodm3vPKwsuIVcc4JKPnUrattbzw/m83qm
+         4Hug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787024580; x=1787629380;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dRDoeNY2WfplCeM6Yc0GSWDWLkBmqI8DxH4apG0CyCA=;
+        b=P+G1JW14B5DdVFky1yLw/4b5+KAzUGB/MdOJUPS/QwomG33DNPAp0SsUgyLVtx/2KZ
+         qm5Vk9pkIRuUVk2fAHc6uZaK1TaA/3v3vD6tYnCkjT5OsDP1L9ae5s5xz5upfb6vaRow
+         YEJUeXATRWaBoE5k1ox2R064vFvNWg1/LMjpi5PJPXdcAvSIYhWR0PdlscnM4k4s7Tzq
+         wfzzpfFMC6kxFhmtM55ZN/3OUyUxomD7WJTbtx54gezIkkwol+4W9WWD1K9nOHKnkKe0
+         FEs+jnfud3MeJXbyUv932asjZjyILrbzmSVdyhyGrEQlQ8QXYnnGE8rwOQcCTiqtHbqO
+         7W2w==
+X-Forwarded-Encrypted: i=1; AHgh+Ros3Ivl/BcPZbHHbLI7aCqm7KTX0EkCv41FcOJvAMDlfAQwxi3L+S0QVPySu8q6QM3g8raFwLUGQw==@kvack.org
+X-Gm-Message-State: AOJu0YxzlsJXuivFCCUX18PlulRpbCZKKjNg+1gmkKsTDmkVsXNQvU0D
+	Fy8nx+K17sknXuCRaQKlv0/E2UoJhjRbIIF2oybqSHPHWnX0eBeeoQPO
+X-Gm-Gg: AR+sD10vKZmkLrihQ0nBfiTzS1wqxX+J+m7y1BatVG1A8rB/gnWMEi4wy4M1ozXtjuK
+	3EkLgLeSEPd730MZCnOxIfdQT6gtfG9plUG6Tb9pNCbWIgCiTfVJhv1lN5wYDpVGX+RCv0pj99A
+	Y5xrpXoTSmp/CzoZf1PUe2/BEX0KzsnTE0nzI1wukNN5tHdijwlvZGNHbO3JQ1IzqtWTS9NdMrO
+	D/csw8DHL3qJUvAFvn7mx+0jXBZIG5gXARamE95Nccf1AVVJHpRQ4Hc2uamETiptWmPTP4DR+RL
+	PeV3teNAs0HCUdWuc4jCugxsnd+pIaLei063F4Ufuyy9cx3r0UEkh8oA2Wh66+2z1WKPQGytyc6
+	27WoXm5Vg644T+NHjmqBOIgvBiTdCisKEGxHusczyAfO/3VCB48wLcidq2aJjZUP+8CAk3nKGRP
+	nAVesIdfO1Rq+dnSV6Y7ymvidWxEoyG2ZBgt9ZrPmkpMUlg/njuSp8cuDEU92r6L/U0LVQFZcg
+X-Received: by 2002:a17:90a:e18d:b0:380:7688:fbe9 with SMTP id 98e67ed59e1d1-3933b764d23mr33386383a91.8.1787024579941;
+        Mon, 17 Aug 2026 20:42:59 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3954d3b3b91sm4418656a91.13.2026.08.17.20.42.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Aug 2026 20:42:59 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	linux-mm@kvack.org,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/secretmem: prevent uncharged mremap expansion after fork
+Date: Tue, 18 Aug 2026 12:42:12 +0900
+Message-ID: <20260818034212.1761451-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260817154356.552ccde5d279f6e0a9ef0ff2@linux-foundation.org>
+References: <20260813225328.2010303-1-4ncienth@gmail.com> <20260817154356.552ccde5d279f6e0a9ef0ff2@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable v2 2/2] mm/vmscan: apply too_many_isolated()
- throttling to MGLRU eviction
-To: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-References: <cover.1786950138.git.zhuhui@kylinos.cn>
- <858e2e0ae536bbe185267472d3c84a5684937131.1786950138.git.zhuhui@kylinos.cn>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <858e2e0ae536bbe185267472d3c84a5684937131.1786950138.git.zhuhui@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A01081C0006
-X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 646BD40005
 X-Rspam-User: 
-X-Stat-Signature: y7pzaies8mbfadizrkw8ssjfspu8un7e
-X-HE-Tag: 1787024178-991284
-X-HE-Meta: U2FsdGVkX19l2btGB4Y8cbxUl1/PMnj/7g4Bj9f0CM8xIX1zQ/njDeUqzeKaXstwJsxvkr9nX61pINkAGp4sRxzNhYcUoITVRa01RBa3WqeYeLVisMUECMzWNlfC8ZJyGy9LnxtH9ambzHt4o08vR6we9lpGluKiUzTpVmyJkxGTlMIK8TbpjxO+pS82m2Gm2s4BPaeUZa5VVAEdRCVz9VBBChEwr8S1RUo2B/RF654mHzuNEipHN2sD9RBmENSVHRRx4OMMlBuKqyuH9y6EyW1bI3M1pxl65KsyiNJcCKvqbmhtA0moEaQQvR60mj7DfnkshSUsV0XVkC8X1KN+0TKJrZdbdmk7S52JrEsS2eTkzD9h/xpNM6UbH8Tm9s1O0KLI1UUpXWbWjUV40B7h8otssqvPuCXujoF4ocvR5F5y/Rm3139YotdlA8F4FdsCSohn0mQcBTTyJCNRPuBcU5nzq9GyeK2E8YQr0FBNdA44sxEei9L7mmVgyQdkKnJzSpx9wPz2AlIjebsq2G43cIt62ieUnEhhrCibg/yUAPVz8o/h2m7IrA2/hw2BZnWYd70bLgODFDpt+0wkpK1qCB0Sh1v4pBWRPBC0tVgdrh8EOsaiONS6zeiyyhz750HyxlVM3QvypqSHgjGRb7CyqSwjhX1qLZNzgyEt206UR0D5ct/q9pb9Xw7ZMo7RLOI9MBhPlSEhsePsVFyOIuA4A8pwl/EJBhRoKHbt/txVERYkO1sz1hZwyqD/aTcm8p7u/CygJAI5xl3OZe0cKQUk7lyLiviulKHWffkJNs0QHDkdT++b7Qdez3P5woyy6Fck58P7xUtabP1n+9pnEd8L8Sn0JO69+XVGwmLiQS5ZHGV/7qzvPcn2x2dDUnacFh7rGSwdww1FUaCRxebbdHAv9Rb6IYl+rM6nHO/FI4SXKuW3MjYpuSyHITZkrBQ3l1t3qWCN5LMQ+l7fTv8xpbN
- crYlCFjw
- EDC91zhdK5EKDcZgzqHYYW1kt0serFKUvFvJ5p8uxCvhCRnJ7rZ8aMiaAoMvOrgI5wfgWjyrR+qWFcBKwsJO9Hbw2M76D7OJgpmYxodzQPKMFz+Q5zqRNED5ZbVgJbYwc+ZXf9mz53TaFFtr1n8yQzrwYHBO284PP8B42UCcQh5gzZE2/YXb/KGz8nT3bwWRBvOclFAoXoKb1Sn7egOqaF010oY0Jf58+oIECMTFNqKc+WiSDteSUti24jPZL9i/D80eQRvXcZLujsdYxy9BYIVhnWbJrZVhXeNQnmE8K9HfsVqCbXrZdHdTSE6NbYK6/hF3Iv9HIj6Tn1J80tjcy6vhLNyDpswlJIe3L8Zsood2033D6y9y0n1lJHk5AjMdqqP/XlXhlJerkRYA=
+X-Stat-Signature: rsswfdi8doxxf5ntqgn7tgg3xapwmxcz
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787024581-812739
+X-HE-Meta: U2FsdGVkX1/85GQ6YXOuMAigYsF8+OjcBZ/uASqSOBSlE2HkgtTaSemGAD+xMqg21O90xi79Moc51Wo2TN9BL6yciGgN/RE8sg4ri7UcZgLKmjlNdk8sBi/hlqzfIhAjYlXd4UsBGXzs6rRSIyXHF6rTabC1m/Pm3ymSUUe0VWjBMDASoeIyERaWJGIt6AKdga4DzWk3IZsFqHWZWyyMBcqvCf+0JwuVRtMJyB/Jh98OorXHpD9GPVQebryzSK4UaKshWKabaIUdNixIKJE6etR7ED1lqGlVCNh5KnMRmW1o1y3gwwxG+FJ9rxyM/EIVqzkGq1kFEwmgktosGEMuDT69ATu6+YvCbP2TloDVWXqLdNIQZt/C1Lu+DH4hGCrJMYivMWM9Cjhag51TbpDmMascCoFYKNEBWOi/Md7Xb//MxXhqweBIitIDIKjFIRHamKwcqZV5oeu5DGCcogaQalYr6TihBevFrDix0JSPTGSSkfjn0rl/a/MbMPBC5D6B3zKoS8eMYKcthI992D2GZqTb9yJtxnSLrqKy8knoaXexwF7CkZqYoqmo4yQgnBtAdXRiB6TNAPmfKrA9iHbuVZ6bTcXGwdWNmMr/zHBesTw9A1e7o0gWTXlWgVaSr39zKaF+r+EUuECedYKTBvFH4lFaNYQri7MPzb98RCuL4osikhGDsVdhL5WrMh0LoCii+HC/dqze5LUnfwMtU/UOAVU9ZPf5PHUyxod8Jt13CLcKnNzJCwaeL94t190KaH5L9ZJx9vzL2y3+SViErt89jwh+krvMd5Kn4qUWKOBmu+UkeUWHQ/+D0SGtKhVEuFv0jRKAdW02A6YrXP/QoisP5BNVFWODiFcU6+b9gFS7pzFqrKJTVIujqu/MREMpZ0aEjBE7NGA6x+KElNo3Y7VRuw4WbukTmZ1bYsrhVTp+uAZlrglOcFf87BxCeBEpvJJNPF3+r/H36dEM95fwZrJ
+ dOnnEa0y
+ VjXy7eUQMarVV+gOTctALfxDijsISrXhjojcQpOAr5ViqhBo6Wx3K0Gl4LG0mbJQeHpiqJPmJZBCYoyZ7ixMzHhZKBCcSjpGOa/6fFAOaPIWatr+IhZQM3tquoP0+HV0G6qkS32Gy4ydpDD7phzlHaVCxeMSVkLpYbRHCRRDKD1tR7CniZdPB4QIvLbRMAxWKmUgeYwVvui3c4XZiXrLfD/voMggXH1+vK78CreH7FpCSLfw4Xmc7lw2Ek3wrMG9scoX8E93qM/lzQ8kzo2I496ZgI5Mk4LBHR9Z8T26vCH5LQm9zO6yUpweh2aVF4UZY20iJN5LLOnfkPrwNnzgxFn6nADZtryiKWBOn0xxFtEm9VM/T1Dd4xx5D1rv6sDRLYS5e
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,140 +126,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Thanks for the review.
 
+Yes, this patch was developed with AI assistance. I should have included the
+required Assisted-by trailer, and I apologize for the omission.
 
-On 8/17/26 3:11 PM, Hui Zhu wrote:
-> From: Hui Zhu <zhuhui@kylinos.cn>
-> 
-> The legacy path throttles direct reclaim in shrink_inactive_list()
-> when too many isolated folios pile up, but MGLRU's evict_folios()
-> isolates folios without this check, which can lead to unnecessary
-> swapping, thrashing and OOM.
-> 
-> With the NR_ISOLATED counters now updated in evict_folios(), extract
-> the throttling loop from shrink_inactive_list() into
-> throttle_isolated() and reuse it in evict_folios(). The type to
-> isolate is predicted with get_type_to_scan() since it is unknown
-> until isolation.
-> 
-> If a fatal signal is pending, fake reclaim progress the same way the
-> legacy path does, so the dying task exits reclaim quickly instead of
-> being held in the throttle.
-> 
-> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> ---
->   mm/vmscan.c | 67 ++++++++++++++++++++++++++++++++++++++++++++---------
->   1 file changed, 56 insertions(+), 11 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index fdc45d7d8fba..886a53f563ab 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -1819,7 +1819,7 @@ bool folio_isolate_lru(struct folio *folio)
->    * the LRU list will go small and be scanned faster than necessary, leading to
->    * unnecessary swapping, thrashing and OOM.
->    */
-> -static bool too_many_isolated(struct pglist_data *pgdat, int file,
-> +static bool too_many_isolated(struct pglist_data *pgdat, bool file,
->   		struct scan_control *sc)
->   {
->   	unsigned long inactive, isolated;
-> @@ -1856,6 +1856,37 @@ static bool too_many_isolated(struct pglist_data *pgdat, int file,
->   	return too_many;
->   }
->   
-> +/*
-> + * Throttle reclaim if too many isolated folios are piling up. If this makes
-> + * no progress, the caller is probably looping on unevictable folios, so give
-> + * up. Returns false to tell the caller to stop reclaiming, and sets @fatal
-> + * if the task received a fatal signal while waiting, so that the caller can
-> + * bail out faster.
-> + */
-> +static bool throttle_isolated(struct pglist_data *pgdat, bool file,
-> +			      struct scan_control *sc, bool *fatal)
-> +{
-> +	bool stalled = false;
-> +
-> +	*fatal = false;
-> +	while (unlikely(too_many_isolated(pgdat, file, sc))) {
-> +		if (stalled)
-> +			return false;
-> +
-> +		/* wait a bit for the reclaimer. */
-> +		stalled = true;
-> +		reclaim_throttle(pgdat, VMSCAN_THROTTLE_ISOLATED);
-> +
-> +		/* We are about to die and free our memory. Return now. */
-> +		if (fatal_signal_pending(current)) {
-> +			*fatal = true;
-> +			return false;
-> +		}
-> +	}
-> +
-> +	return true;
+The related issue is pertinent. Lorenzo's follow-up shows that the underlying
+problem is broader than the fork/mremap path: secretmem accounting follows the
+VMA lifetime, while the folios remain unevictable until inode eviction. My
+VM_DONTEXPAND approach only blocks one path and is not an appropriate fix.
 
-Returning ‘true’ or 'false' looks confusing to me, maybe use a readable 
-variable 'is_throttled'?
+Please drop this patch. I will test Lorenzo's follow-up patch and report the
+results on that thread.
 
-> +}
-> +
->   /*
->    * move_folios_to_lru() moves folios from private @list to appropriate LRU list.
->    *
-> @@ -1992,19 +2023,14 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
->   	bool file = is_file_lru(lru);
->   	enum node_stat_item item;
->   	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-> -	bool stalled = false;
-> -
-> -	while (unlikely(too_many_isolated(pgdat, file, sc))) {
-> -		if (stalled)
-> -			return 0;
-> -
-> -		/* wait a bit for the reclaimer. */
-> -		stalled = true;
-> -		reclaim_throttle(pgdat, VMSCAN_THROTTLE_ISOLATED);
-> +	bool fatal;
->   
-> +	if (!throttle_isolated(pgdat, file, sc, &fatal)) {
->   		/* We are about to die and free our memory. Return now. */
-> -		if (fatal_signal_pending(current))
-> +		if (fatal)
->   			return SWAP_CLUSTER_MAX;
-> +
-> +		return 0;
->   	}
->   
->   	lru_add_drain();
-> @@ -4883,6 +4909,25 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->   	bool skip_retry = false;
->   	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
->   	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-> +	bool fatal;
-> +
-> +	/*
-> +	 * The type to isolate is unknown until isolation, so predict it for
-> +	 * the throttling check. isolate_folios() may still fall back to the
-> +	 * other type, which is fine for this heuristic.
-> +	 */
-> +	type = get_type_to_scan(lruvec, swappiness);
-
-Perhaps we could use 'for_each_evictable_type(i, swappiness)' to check 
-each type's isolation?
-
-> +	if (!throttle_isolated(pgdat, type, sc, &fatal)) {
-> +		/*
-> +		 * We are about to die and free our memory. Like the legacy
-> +		 * path, pretend some pages were reclaimed so reclaim unwinds
-> +		 * quickly instead of looping back into the throttle.
-> +		 */
-> +		if (fatal)
-> +			sc->nr_reclaimed += SWAP_CLUSTER_MAX;
-> +
-> +		return 0;
-> +	}
->   
->   	lruvec_lock_irq(lruvec);
->   
-
+Thanks,
+Daehyeon
 
