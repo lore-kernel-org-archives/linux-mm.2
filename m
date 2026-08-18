@@ -4,113 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A689AC5DF67
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 05:38:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB5CFC5DF70
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 05:39:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FBE76B014C; Tue, 18 Aug 2026 01:38:29 -0400 (EDT)
+	id 8EF9C6B0150; Tue, 18 Aug 2026 01:38:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AF0A6B0150; Tue, 18 Aug 2026 01:38:29 -0400 (EDT)
+	id 8C79A6B0151; Tue, 18 Aug 2026 01:38:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19B7F6B014D; Tue, 18 Aug 2026 01:38:29 -0400 (EDT)
+	id 742F16B0152; Tue, 18 Aug 2026 01:38:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D47986B014D
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 01:38:28 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 46141160A57
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 05:38:28 +0000 (UTC)
-X-FDA: 85113285096.19.E567621
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 46DD8100002
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 05:38:26 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ks1Otgoo;
-	spf=pass (imf14.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C0E36B0150
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 01:38:40 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C3D2680A9A
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 05:38:39 +0000 (UTC)
+X-FDA: 85113285558.08.6B2CAEC
+Received: from mta1.migadu.com (out-159.mta1.migadu.com [95.215.58.159])
+	by imf31.hostedemail.com (Postfix) with ESMTP id ABBC920004
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 05:38:37 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XW06ohtZ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.159 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787031506;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1787031518;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tCUT5oRuy4GYW3H2Yu8gY2zcyX2c480U5E8MG7nLvEk=;
-	b=I4Vzk4oSI+G6rRYs9RCOwe43CkkHBmbpoYpChtOxjVM84BAx6IEOX8lRfXDruLJS2pstHB
-	5FfzuirwQRIwTIk5fGMx9NX+QXckKDljGawIytIeCunljWWntAIRqkOmciopiJEx/CadqS
-	E4W9aAE/hq8Z0qphiDsMAQLYAa2UiQg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787031506;
-	b=QwQc+zYACQdoPW9C0osoELNd6Bt5OokkcMvHYGAQ/A4dp45dZZDhTj4U1GL2FQaUnPE1PG
-	ZzQJvbZ5KRvn0CltofY6GdfkNMnOScmtjJz6VSBUeLAMcwv63+6g3xSBR41jk6P8J59QTo
-	or1FL91+UWs8Hw7OnlVk1LUkrx6sG1k=
+	bh=lr+lR4+IO3r0vpe8umZ7mEEDDFGJCtdsk10I1pkYKWU=;
+	b=i52rdoeWtxpmeC3gPlp7yQopzQBwXEP+2DlDjxTWWKkmvdFg8zcUVpwwPzs2DzDxhoB8Ek
+	KqPalDcpV3EW14tLCMO2mVtjXymkiIgXppQEk0jrNjBSywqg0DtwemxkLiIRSG6XAE0pFQ
+	+G39IAmG11Pcl/eIw6ECPXNHou0ZGrE=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ks1Otgoo;
-	spf=pass (imf14.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BEBF944082;
-	Tue, 18 Aug 2026 05:38:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 84F7BC2BCFF;
-	Tue, 18 Aug 2026 05:38:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1787031504;
-	bh=sQcddfGPGWpgil3snuuOfjff6hNZ59AO94B/J9asvAQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Ks1OtgooAkhlZ9BEfLD8zNw/0RdXJER1xD8oZsV5FnRqqq4mIrONZJQalSFH1NPqA
-	 5jo+MCmWXefEKvy1HrDrNwVzH9dFJlBkQZJj1r0UZNqKbo0HCOpguhGV49I3HksP9m
-	 MEVdxxIHjJRpdJQwTQpjGybbh+qBQn5LyJa5DNxbQRMKQkfP+gnXj011sTxypp3YGY
-	 tFaPRpBfbZmOzVirp1KBWFVlXbatHv3GkUuFRGs77l8u7eZYg9grVTZWgC487eyloU
-	 nQKem1xQveV1UtSdjj3XqjosxP5wu2UaeNE8Je5WhSpWBSj4Xkku2mzj+q5TIHvOIV
-	 C9JshW/V+omcw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 71C86C5DF70;
-	Tue, 18 Aug 2026 05:38:24 +0000 (UTC)
-From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Tue, 18 Aug 2026 13:38:08 +0800
-Subject: [PATCH 6/7] mm/mglru: fix potential generation folio number leak
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XW06ohtZ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.159 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787031518;
+	b=hdOgrH0R5wcc0Hq+5K/P+8r78YGQz6wB8wjBvuF+Ru5NUX/Jfjol4fTtn/+nFMUm7Sh2sN
+	7EhiLzc0faGyM1H66x+CG9LclqDMK1QNoW1EEqX5ZYAy/7rgOO7vK3vn+M5XxZWW4okFo3
+	AGi3ye21gWGVSf4U6JswyuwX8jIrzpE=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=lr+lR4+IO3r0vpe8umZ7mEEDDFGJCtdsk10I1pkYKWU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787031516; v=1; x=1787636316;
+ b=XW06ohtZY9wtYK8rcYukeP+kccgqnUHlbj+EA5IwyEXO7osJEmTOPwm6+zk6XDDTCmw8p3RD
+ 0qAPDUbIXWf6m10OBaoPZN9Mlvzw7ruc6Oal2gK2bXLM1Gj6AIirHbbb6h/LDqSryk3RyGZsOeV
+ IMrtrKMvGWldHbkWEDul+mMA=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (2602:fce1:44f:115e::)
+	by smtp.migadu.com with ESMTPS id 591b174a047f5b98;
+	Tue, 18 Aug 2026 05:38:26 +0000
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: hongfu.li@linux.dev
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	usama.arif@linux.dev,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lihongfu@kylinos.cn,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH] selftests/mm: khugepaged: consolidate error exits via kselftest helpers
+Date: Tue, 18 Aug 2026 13:38:16 +0800
+Message-Id: <20260818053816.27502-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20260817061955.45454-1-hongfu.li@linux.dev>
+References: <20260817061955.45454-1-hongfu.li@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260818-mglru-flags-cleanup-v1-6-8dbbdac0d28c@tencent.com>
-References: <20260818-mglru-flags-cleanup-v1-0-8dbbdac0d28c@tencent.com>
-In-Reply-To: <20260818-mglru-flags-cleanup-v1-0-8dbbdac0d28c@tencent.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
- Baoquan He <baoquan.he@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Yu Zhao <yuzhao@google.com>, Zi Yan <ziy@nvidia.com>, 
- Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Kairui Song <ryncsn@gmail.com>, 
- Kairui Song <kasong@tencent.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787031500; l=4447;
- i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=RQ+/yXu5Ad8B7H0/N8WrVK9khx+u3YPD4VofNalxc64=;
- b=cfXZesEt3HAFlRTwsJTeSktOmQNsfJsb5vwfLGKcBYj5CBIRCSV1MsCNF4o1W99XR2XRVNn9C
- Ys4Vr2qcYhqDmbxB9rHcNo3vZlGDHEOJ4R6A9Gbmih2jVq/1NJ5Cd5y
-X-Developer-Key: i=kasong@tencent.com; a=ed25519;
- pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
- with auth_id=562
-X-Original-From: Kairui Song <kasong@tencent.com>
-Reply-To: kasong@tencent.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: eq5sgpojesxig6wu7ft8uamz9wdoij34
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 46DD8100002
-X-HE-Tag: 1787031506-834480
-X-HE-Meta: U2FsdGVkX1/C+DcX6pr7e0FJ76CHY3eDE6+t8hO1e2gZMwwJ5QDuJtd/BgyYkOJQy+5oUREUZtHhBl+jx8Pby1hYsZ5UuKEXuotb/dObp1oLmki97c8QZRnU1qz5/2SmJKj03zCyK1DaC1wEZxx3WyQmAdc10Ko6POqdRNs5v0VgwJQ4CVEtXuyhozcweoDaGeQcMpTdvNM9iAiblzS4C0K7jpHXzqlHAUCz2VYt61vtLgoBv+S+EQwjf9MzC3mpn6y9ggczrU3svtzUAM953WkNxoSPX9t39NMrsKnzngOh/Y2NpNn2hX7AazuFdjmjflwEG9Q+y4/53AwDCKslOA1Of2a0AYu3XqklXpnmNqyHg7oixRdlfMWF7TyljSxnUteUsHhW27QXFJEoZDsWcnKFkJgDGvaK0P2RuzeEjfMAPTvcFzwv5HAgrj6ykhYBuGy3xBgDB0HIbda4saajp4AcInCRknG3WFQ8SbYCnL2s5jx4G98AyvcMfbs3whou8DvbIEj3ebX6puQU/rFwbYh0RhtSBF+eOrTPtnXh2yHM0MSC+uA7cto/HOoc8QxbQ4/WEzH8JSrdy852nbAThCFS9hoLFuBUDo+m5LWXrODosWIq/5oEIAf2pY4hCRGbF+lZFps4o68nw9AYnnZSEGMRorzAmE6iTcs84rN+d6fBPrCcW0uzw/mMD2ck7wcUYCt/WJDtjjEfO+1C+VjLgJqT0C1jpzPdR5RGTPGzhWspreXrdEnxMogcvWyqLHKkmPEL0Tvlqy1m7icKt6kzOpC63l4mdfv0uDodB9+Gz0JjSDGq7pAR5rnGrXbLoy7Ny4E657LMv9ecciPH9NaOJFE6NUb1rZXback7OzjMn3sThEkR2BnNVI2/k1oNZPk2gK61WhiIE5OQSzMFJjPiEuD233Y6s8P8mPXZ3SChmRtSFYFl00AAMSn+lxMZcvtDwK7tkC2wbC7eIzFB3eP
- yVQ16Rwl
- UB5TvkVLBfoySFheDDODR4zPCjpQMDEKJDTanQEyqxlnyftk0SwJ7Ar+R/sVdhEXOejadWEXaIKnST8gHv3h0yqkRkCqERxLI/EhUn4PbFWiPSgvCji0gxmRYLzTRd/YmWNd+aK147aoRnsOG6tZ6HWmCE4YS50Hkf9ETgQsY4kOJd7qlQ7DMu+gHGvtTc9QV6MlxEEryNjVxSEIGX72AdqM1sKWt14bwVVb28wUlmpZ844C9G5H00drWYOIRwpZ8SmVD3PyxdID0iFeODnnadsQsH+VrKn8jjENh71CmHbFQJm0KOf4f+IY5K10vd23lFg5KgtJX5gZFclu6r2/o7xaIv2Yf9ylWyXQ1ZiIfyENL2fsUcxVHNXTwIQyUXVZtT1mU6DFOBJAmtAtLxyscAsedBdyLi9VEHmQWS6RhMvgLAKspZI2K7/azVjtilGJscyL2
+X-Rspamd-Queue-Id: ABBC920004
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 15hcowa155da1zsguiazond8oxhdudce
+X-HE-Tag: 1787031517-790661
+X-HE-Meta: U2FsdGVkX1/T4fY/4pCFenZBd6z2fE2A3FoOiAnIQlClBEWD9/nEExH8931pAtSViiA/+DLBHdIxDcm3kP+Xqw8nTxmXgsTg0sG73Nebz+z4nvVZX//nbYO0+4Z5xSX/CjLdHy2lzsHA3F7gA8OobJ4oyxnWzkOEo84NsSZV7NnZ3Kr49UX6lc5lPKhTKv8wk7C9D4q/c8oETUwP76YofIS/6/m4unofpdj69RZegBG8hWFoqcmqLM6cJhsTMdRhPQlxYWXdLUW2xw8W3BsC3bdpqMkgZzdsTMMWMjReYVZM0It82yGvCqYrEead3inMDzoSPU2Y1Apq7R9/uczNlGDLjG/ulvhbmlS3sQSjHv/jDGtISt5UzagHwkGuIFDamnq7C4MNCAVxJ2faSg3igjcD0UMNmrDrAiwiOCYZDrEs5+v2Jpee/OD4oPMrvylWUtW7Qq8GdtLBsVzEQYw060o20Aw2Tw6Rhd9PBCftRttSa7XjeaPS4Vg/x9WIYPIQ0SXISxKLzPHyho6HmNafcYy+wDLy+MBW4j2wCzGi8ClpDtck8lE67841Vv8aR06/sebSVhGYM/XOWFMiH1GHNQl3RUyDDSURviDwpdF0wvemOSgFPc2CnIOSNe97rh7wMijroOu1aPwN8M5AVQHbs57FT9mO4Wth4krIXtwxaIe8kACSwhOl+WMaF5sXhuXYmu3bYQaTdW0Ek2oKnqRHhZ+K4t5iyFY45H7z19aR0IMSD/xRSI3Jxy2EwHhowp9C9UPiAgQyOGl2u96I0NFnXls9lHomiN1ZEB37qKDEyyZvubR9ee3gi74KaZZgMGySyPKzFcRy4uekWZetIwnLD+YIkc8KeARNqgcvUl/yyq4eU+56Mo/hoYZeUQiUwf4kv+r5uNNz4yNkC3YuHzbQuSTm03cBM5WJkB6NdtbDA4uvT73+SaL8WVCXi/RfUCO2uhOoW+Z2ZDmTaC4drUo
+ zL6NMlAW
+ lSkFHSxIfAQfn1KtUlUqvLq2jbqqCwHKLmPe2PR2d17Ovj5wIaUkakEkkUG+7/11BxOwiUnMAMN3nMfBkwL0w11lzSGfuXxLhQ6dLc46Sxl5abTsWOYK5YgIo+lcvE9ABqrLZF4jI6fWEuBsa6ZRvDbHTrgosOIns0y6E/+41E+YALarp38ywoaOTkNRP3er5xxrbL4c2gdmRkonmoydNTofprsqo6lAZAaZdYE3qBzHSUtWKKK4CrjDraCx+LH+y8ZMxMUkszHxNRX1FzpbmlRA6vrS0JHE2NdOP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,118 +109,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
 
-Each generation of MGLRU accounts anon and file folio numbers
-separately. The page table walker's update_batch_size() derives the
-anon / file type of a folio from its current flags, but the page table
-walk holds neither the lruvec lock nor the folio lock, so the type can
-change during that period.
+On Mon, Aug 17, 2026 at 02:19:55PM +0800, Hongfu Li wrote:
+>From: Hongfu Li <lihongfu@kylinos.cn>
+>
+>Replace the perror()+exit(EXIT_FAILURE) pattern with
+>ksft_exit_fail_perror() so failures are reported through the
+>kselftest framework, consistent with the rest of the file.
+>
+>Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+>---
 
-MADV_FREE's lazyfree path clears PG_swapbacked under the lruvec lock,
-so the folio is no longer considered on the anon LRU list. Lazyfreed
-folios can also be changed back to the anon list again. If the flip
-lands between folio_update_gen()'s cmpxchg and the type read in
-update_batch_size(), the batched delta pair is applied to the wrong
-type. The anon and file generation counters then carry phantom deltas
-that nothing reconciles, permanently skewing lrugen->nr_pages and the
-reclaim budgets derived from it.
-
-Fix it by capturing the type from the flags snapshot the cmpxchg
-linearized against: folio_update_gen() returns the type of the state
-it transitioned from, and update_batch_size() accounts with it instead
-of re-reading the live flags. The batched deltas then always match the
-type of the state the cmpxchg transitioned from.
-
-Fixes: 018ee47f1489 ("mm: multi-gen LRU: exploit locality in rmap")
-Signed-off-by: Kairui Song <kasong@tencent.com>
----
- include/linux/mm_inline.h |  7 ++++++-
- mm/vmscan.c               | 13 +++++++------
- 2 files changed, 13 insertions(+), 7 deletions(-)
-
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index df62daaa2ee7..4bb390d9516e 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -10,6 +10,11 @@
- #include <linux/userfaultfd_k.h>
- #include <linux/leafops.h>
- 
-+static inline int folio_flags_is_file_lru(const unsigned long *flags)
-+{
-+	return !test_bit(PG_swapbacked, flags);
-+}
-+
- /**
-  * folio_is_file_lru - Should the folio be on a file LRU or anon LRU?
-  * @folio: The folio to test.
-@@ -27,7 +32,7 @@
-  */
- static inline int folio_is_file_lru(const struct folio *folio)
- {
--	return !folio_test_swapbacked(folio);
-+	return folio_flags_is_file_lru(const_folio_flags(folio, 0));
- }
- 
- static __always_inline void __update_lru_size(struct lruvec *lruvec,
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index a613bb8d7271..7169cac60869 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3269,7 +3269,8 @@ static bool positive_ctrl_err(struct ctrl_pos *sp, struct ctrl_pos *pv)
-  ******************************************************************************/
- 
- /* promote pages accessed through page tables */
--static int folio_update_gen(struct folio *folio, int new_gen, const vma_flags_t *vma_flags)
-+static int folio_update_gen(struct folio *folio, int new_gen, int *is_file,
-+			    const vma_flags_t *vma_flags)
- {
- 	unsigned long new_flags, old_flags = READ_ONCE(*folio_flags(folio, 0));
- 	int old_gen;
-@@ -3298,6 +3299,7 @@ static int folio_update_gen(struct folio *folio, int new_gen, const vma_flags_t
- 		new_flags |= BIT(PG_workingset);
- 	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
- 
-+	*is_file = folio_flags_is_file_lru(&old_flags);
- 	return old_gen;
- }
- 
-@@ -3328,9 +3330,8 @@ static int folio_inc_gen(struct lruvec *lruvec, struct folio *folio)
- }
- 
- static void update_batch_size(struct lru_gen_mm_walk *walk, struct folio *folio,
--			      int old_gen, int new_gen)
-+			      int old_gen, int new_gen, int type)
- {
--	int type = folio_is_file_lru(folio);
- 	int zone = folio_zonenum(folio);
- 	int delta = folio_nr_pages(folio);
- 
-@@ -3519,7 +3520,7 @@ static bool suitable_to_scan(int total, int young)
- static void walk_update_folio(struct lru_gen_mm_walk *walk, struct vm_area_struct *vma,
- 			      struct lruvec *lruvec, struct folio *folio, bool dirty)
- {
--	int new_gen, old_gen;
-+	int new_gen, old_gen, file;
- 
- 	if (!folio)
- 		return;
-@@ -3532,9 +3533,9 @@ static void walk_update_folio(struct lru_gen_mm_walk *walk, struct vm_area_struc
- 		folio_mark_dirty(folio);
- 
- 	if (walk) {
--		old_gen = folio_update_gen(folio, new_gen, &vma->flags);
-+		old_gen = folio_update_gen(folio, new_gen, &file, &vma->flags);
- 		if (old_gen >= 0 && old_gen != new_gen)
--			update_batch_size(walk, folio, old_gen, new_gen);
-+			update_batch_size(walk, folio, old_gen, new_gen, file);
- 	} else if (lru_gen_set_refs(folio, &vma->flags)) {
- 		old_gen = folio_lru_gen(folio);
- 		if (old_gen >= 0 && old_gen != new_gen)
-
--- 
-2.55.0
-
-
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
