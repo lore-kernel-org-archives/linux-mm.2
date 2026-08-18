@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8102C5B572
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 00:49:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12064C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 00:51:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4DD86B0121; Mon, 17 Aug 2026 20:49:38 -0400 (EDT)
+	id EE39B6B034E; Mon, 17 Aug 2026 20:51:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FDDB6B0122; Mon, 17 Aug 2026 20:49:38 -0400 (EDT)
+	id E94A46B059F; Mon, 17 Aug 2026 20:51:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 913DB6B0123; Mon, 17 Aug 2026 20:49:38 -0400 (EDT)
+	id D83806B0876; Mon, 17 Aug 2026 20:51:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C29D6B0121
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 20:49:38 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 02E58A2AA9
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:49:37 +0000 (UTC)
-X-FDA: 85112557236.18.C432E6A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 48C831C0003
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:49:36 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d1DrblM9;
-	spf=pass (imf21.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B4B186B034E
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 20:51:05 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AF800A0969
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:51:03 +0000 (UTC)
+X-FDA: 85112560806.04.DD4BA3D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1F3F320006
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:51:01 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mOIy4XAt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787014176;
+	s=arc-20220608; t=1787014262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ClssdD91oq/MStCE+y61oU2BRmlqfB32tzgOC4Y7hqg=;
-	b=iulRJo28dDCGuwlZ1iW9vzJ4pn2Ru/2FuX/luDTX622Zia47ahedVT9tJ+nNQQhvrS2b8Y
-	ujKnX5Icc3Tdol8SjIp42EJK+Xtfu3tlmtk3LSyxEV+5sYzObUTLNpbBEWJrbkQzRHVqYF
-	pf5icEAtxlsZFYvXBnnrF+OStsMfYZo=
+	bh=HAo3mj35bMKVyA+WQx6ie7qsjBC0OY0XZUzTIFcDYRY=;
+	b=DFU0FkmSytfOZolq6Oqs5PyKh81lK+oXYD/q5WBr9r+aPV2Op/DV4nDWEBivR84MG9Ddsu
+	UAA19jjNl815wQaIMTA6vpggrj1DfuHzeydfFNYsYZpH0+y1g459EOewLbQ+J+p/KS/Cvt
+	lulz+o/rx1ZtGf2a9UtPVwQi69YOgQA=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d1DrblM9;
-	spf=pass (imf21.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mOIy4XAt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787014176;
-	b=GQnZCafAd6ihG27fwxqqXxQHH5J91o5UyeBWK4nSPv+PC4fKtyKMrVfQb4dFEwyfbIEWUc
-	JWEG+AVV7jDxxOgQ3MPpxdeyLSYhEkr30JU+024sLHWqIFx2zGJW/hBlXd0XQB0MhQk+PF
-	8bKvRjv7n/ijebA5ymkFK6COtMtJopI=
+	t=1787014262;
+	b=LL8P7PVtVX/sjdZ2xPmZxNyNYLOPhBasd6OOazJiRnZ4ISjKlA/0BP3kLl/M1rfp+b0ObW
+	KIRg8WSbUQXXWHLBfGPu2JXcrl8yCeUHaYpMHc2btzr445em+mxc7ft+lD8VFz6l+pvPiL
+	v6348Q31bK+KapMX/nu6q0OZOa+77eU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6700240760;
-	Tue, 18 Aug 2026 00:49:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611391F000E9;
-	Tue, 18 Aug 2026 00:49:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 98F10600C8;
+	Tue, 18 Aug 2026 00:51:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6581F1F000E9;
+	Tue, 18 Aug 2026 00:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787014175;
-	bh=ClssdD91oq/MStCE+y61oU2BRmlqfB32tzgOC4Y7hqg=;
+	s=k20260515; t=1787014261;
+	bh=HAo3mj35bMKVyA+WQx6ie7qsjBC0OY0XZUzTIFcDYRY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=d1DrblM9L1RfFyBf5bUrSxDMsRf+HElRT4kC8IeYcvkT/zoJrLYvtavyFy06hjGBz
-	 UNR7SuVQ/5buJCqkwKcb8ZfuL9eynueKEWfpQoKcrFz4R23NpSVzIGfyXOFvmMhK0c
-	 70RcXww3NH4HutBf4jd3Rn+6wsc3/f7odF+ZGjO7U/5kFThgp0SnYmWLfk+V4GVRfn
-	 xFAcEWahrFxTUXdKW4uoqWyNxyyvqOjo9caGfW1jR/Tfy31if8nJRbzEklGNY3rYbT
-	 eYCpM7sMJ4EDXArPIr3ESoor6yxjq5DeXsM5EtRxzaBSjazHpMOE+/jz562nCe8P7O
-	 WWLUeO7qv1M2g==
-Date: Tue, 18 Aug 2026 00:49:33 +0000
+	b=mOIy4XAtMF1EaYAtHJCzs8bkHOds93qkjM8FrgqHH+bkltBN3F8NEy0QTaeRmv6mL
+	 bXU5yX4rosIcHXDE/7zm+5neHzf0gBAE+uwP8Gc7wMUrLFZoBsIhK6ECzTLnvf0qCB
+	 naqX8EMciR1iY6WOwkJPDZYE0D/bSJP8r3xM3P01F8cE3dunjN4iSKDX/bI0TltfNp
+	 xA6c0b9L7FDBcnKbBnUWMpTYsyF0D/QhTSh4gZuM7PcluFs2SMK/HhkhFPib8vPSKz
+	 6nB4KYgvx7e+866hDsbKVMKoQWTdqOZgmHj3HSGxS6tgWF6ITxS495eXqiQ9wLlHh/
+	 wp1Ad1RA5qfuw==
+Date: Tue, 18 Aug 2026 00:50:59 +0000
 From: Yosry Ahmed <yosry@kernel.org>
 To: Brendan Jackman <brendan.jackman@linux.dev>
 Cc: Borislav Petkov <bp@alien8.de>, 
@@ -79,23 +79,23 @@ Cc: Borislav Petkov <bp@alien8.de>,
 	Reiji Watanabe <reijiw@google.com>, Sean Christopherson <seanjc@google.com>
 Subject: Re: [PATCH v3 21/26] mm/page_alloc: implement FREETYPE_UNMAPPED
  allocations
-Message-ID: <aoOrrgLgW53etM5C@google.com>
+Message-ID: <aoOsKZ8JorqyE7aw@google.com>
 References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
  <20260726-page_alloc-unmapped-v3-21-6f5729aa9832@google.com>
- <anzinNUA6ZASDnvA@google.com>
- <DKPLICBIHQMP.2HPKI7JZXSUFV@linux.dev>
+ <CAO9r8zODy9UCrtJuU5_SuiZDUbg4dUYLhOyOwZtD-U0N0tpCsA@mail.gmail.com>
+ <DKPL8Q39R5JD.2OY4LAGZ84XTG@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DKPLICBIHQMP.2HPKI7JZXSUFV@linux.dev>
-X-Stat-Signature: dpzpnjsjoduzdepco4xu87qp5sfnkxqw
-X-Rspamd-Queue-Id: 48C831C0003
+In-Reply-To: <DKPL8Q39R5JD.2OY4LAGZ84XTG@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787014176-990444
-X-HE-Meta: U2FsdGVkX1/dkrieFyLpnLUr+MKO7Q5P3//w8hD5BzlC1gUh6//qSVFXFYTpXZnkRUWrgskjRwzPjzxivgrbK6tTpnJ8snVGIo5U0uH/oER4vEVw1qWHb8+n27gMTfOa9n1A6SZCrhn3RZ2QkKp/5xd7WDQLVMEfx+MHgQibfJO4fWqH2O0xYW5F5qDYiUYBY+4yHb5VQp4YdqR6SqsU3hdoozNDExrbaJGgw3hhKe6Nyj0vci5mVuO9xSVRaeahEniTg+/KMZZEpy5ILe6c76R+smzemTrFeOdibjKmC1qgWeL+5yZkwck2ckBYa9Lm/s6KbkPK9NuIu2EQ8fUmk8yk6C0/yhck2Eq4EhHygYz99O2SrWbSqSq4G2YB+RyPiSLKLQ4KoCQCBEPs0F9shfv2+OmxWWjm05DCc0aQK1qd0SufBNeW9+MtBIr4vMyb1CldM5K9zqiCszRDlG16w8/vOKlBFx+piEGjskrigB0xHW/A0ekIF328x6hL4Ss1FuBUHHvUY24vtB3I4vFA3ELNuqX/VglZpZb3RIfkTAniZ+gyjcFt1gXkOIUdAe/FcvDfetAzQZ+JawmDvcl9oANZWfLep/jsD6wQ8NmYzBKKo0/SA4adKxvfG4LfGO5QvZfU1XE8eyyz97QYFi9spul6OUzrjukpLN1VBX6gDXxtBxlJSDx4/EvXRE520JaoaK1V3n1yt8oJ5jOVvDVUuZ0jS7F2BvkZ/MfhRSVOhpkaj2pc9B6ttPyZPbJDOzYO33HLksqO8cJMVaOFCjjXUBtfKQhAYWYOCudhBAcT7x9fRmlehYEJHoP96aWO3Ssby2pSEHf/8oonkljXNG1/HZxZHa9IRGMdmoMu3/9E1qfxP8JaWc88GvpUXp/eShEbnrny+jw150lrV0DbQKmzW03taD/08m6xTAhJHSZpqRj4CgWGt/cc4b2Hs0jW5sfxNkrDRlsAgPXNoumEqZn
- SimqETSD
- i/iA7WSA0HtENDcC4NXOxOcN6ONE+yicTBqqsNI6EpV1Xy8ZG8wDhYPsIg65kn7r1a2bFQmhtxmo9kdG4mOzJISuT0tbIgMxUfEI+CFxpBjfrJShHJG5/w+X6HBXTuA4HMwmabv0BJf8bScgAfiasQK22ApP5eiLpWc/lN/avokBSxrsaGjD9JTiTDZpZgzicqxdZapIH2qVWmgXU772ig7p8s4Kj+7Wq0j/lR8eaLhJufCBG/uYvl+2ZCm3JxeAJHj2tm798XqHbA4RcIHk/OexN0F3AzPbuPjRsGPEzv1Lx86WQq04Wn3Ejm4apD6LwMY95oc2BisNbxgC4jhbySjmztw==
+X-Rspamd-Queue-Id: 1F3F320006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: trp4cbkfc5ngjwyfem3q3rniqtp3kd6c
+X-HE-Tag: 1787014261-327402
+X-HE-Meta: U2FsdGVkX1/0RoqWwqojjS/2m18PT0uF8DpYr7XfCCF/hUS7K8g4VRI4gks7dLqCp7HgoDpJHoEWl5MB/P66msvdEAtSffKkpsTUSnhfBzylB3kVRjUsi18hkA6xzw8lydJ3A8/aByAPtVbepEAXXtc1tHmlJd4HEr78LwIluU6H4KHeHHdPsSvaw985eRWZbzNVMe+lw5L2gCOh9w9rXfBfZYa+BJC2uF8jBaC7fAzj5z9jmkAnVw+8xb8fKpPS04iZvTrCZTwb1Q7tTFKM1zIcODBzxbRY41yGT7rxAbWbqw2XlUgCFQVC4IsaHVnTwP9JfJtCue+BdQLYr6Xo4SoR84z40jenrD1qWMtBDRrL171bSoYcuHkyUTISnJqA49ueQBZRn/EdUoICssVMdt30hEHlnTw30HiDP3SF7WrvFjLUR7bgT8Hy4A//yjB7/qrZ1qFr/J/YxmP6N5yjsfjy4YrhhdjRT4Mfzv7crY2LTrfxDvY83T8Pa/jbUJao/RX3UCbxpHx4Jdl5TFigDjOrXyXax0rLZzBOu+9Ga2w9TIyrZC6iJrHQOMdoX1TD8oowgL1oTf9ZsOZyDnCLvd6F+urVxrtP7C/C72gSlfDN06Pv/YU5RpCcQl82ERzYINlUKMfZsjKJjOulaWRYOEvsaU93uzX5nDdiqPfdgx2+6FFJHKy4QKepfwYQA47bSW8mcCU27aB0qEMk3m5lcECXtW9PBWMIHHyDTf4J4y/uFUTCERnRtIGl1T0JS2/FMSUBw2XlEytiFP8xx+qj0D6xvrfNrLIxl2fe0jv+KCTPMDYhhPNG2CLkMgLgRA0eH6rOddGH/PMw7RHpoSLHyPr1TbN4jFGykSpurZAdXVeGCji1E5z+h1u1vU33/WRDaDPOEm5B3foV17BZjEkmg0O6gNxlhN/f4+DQnJleC9OuvJEvsU0C8RHOy5GWRrNGnetNHkLdJPwiqXx30Ls
+ nfnBJZo9
+ KGRF+niKibZbZUi59Wrtg3Hh1TIiKC8s3BhzhvDwU4A/pI1MxrQtsv9VdIHDoj85clJVS0vmP6tGzzReclGmWWVxdY3PJxBUXWwPVmvPzM5Ocn4Cu7Pdt10/E43wSgfOW+gRXoT3ePRkOwAAiCtSoBdaTttKcK6Oh/mDRxx2LK0DGlKe1t0K4GBvZwlu9i8POTSYFVkqQTnJDtw0/hdxQN0pigZYTZDv2tNKegzXKHVSvRF6iRIv3BcZsFiTxZjPnAuJESBBKCBR+Rh0mHhwdIloLdHfSmNIAxQUvegOFIQJrHyF5/922Ko9Llq15nRA+GGAvctIQNIRT+CQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,97 +103,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 15, 2026 at 03:43:18PM +0100, Brendan Jackman wrote:
-> On Wed Aug 12, 2026 at 10:26 PM BST, Yosry Ahmed wrote:
-> > [..]
-> >>  static __always_inline
-> >>  struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
-> >>  			   unsigned int order, unsigned int alloc_flags,
-> >> @@ -3433,13 +3580,15 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
-> >>  			 */
-> >>  			if (!page && (alloc_flags & (ALLOC_OOM|ALLOC_HARDER)))
-> >>  				page = __rmqueue_smallest(zone, order, ft_high);
-> >> -
-> >> -			if (!page) {
-> >> -				spin_unlock_irqrestore(&zone->lock, flags);
-> >> -				return NULL;
-> >> -			}
-> >>  		}
-> >>  		spin_unlock_irqrestore(&zone->lock, flags);
+On Sat, Aug 15, 2026 at 03:30:44PM +0100, Brendan Jackman wrote:
+> On Fri Aug 7, 2026 at 1:16 AM BST, Yosry Ahmed wrote:
+> >> diff --git a/mm/compaction.c b/mm/compaction.c
+> >> index 67b01af024e17..c9eb3947ffc79 100644
+> >> --- a/mm/compaction.c
+> >> +++ b/mm/compaction.c
+> >> @@ -1393,6 +1393,9 @@ static bool suitable_migration_source(struct compact_control *cc,
+> >>         block_ft = get_pageblock_freetype(page);
+> >>         block_mt = free_to_migratetype(block_ft);
+> >>
+> >> +       if (freetype_unmapped(get_pageblock_freetype(page)))
+> >> +               return false;
 > >> +
-> >> +		/* Try changing direct map, now we've released the zone lock */
-> >> +		if (!page)
-> >> +			page = __rmqueue_direct_map(zone, order, alloc_flags, freetype);
+> >>         /*
+> >>          * CMA pages can only be taken by ALLOC_CMA requests. For anybody
+> >>          * else, vacating a CMA block consumes free pages the caller
+> >> @@ -1444,6 +1447,9 @@ static bool suitable_migration_target(struct compact_control *cc,
+> >>                         return false;
+> >>         }
+> >>
+> >> +       if (freetype_unmapped(get_pageblock_freetype(page)))
+> >> +               return false;
+> >> +
 > >
-> > Is it intentional that this is called outside __rmqueue() and doesn't
-> > cover pcplists refills through rmqueue_bulk()?
-> >
-> > IIUC, we will never change a pageblock to unmapped to refill the
-> > pcplists, so the unmapped pcplists can get filled in two ways:
-> > (a) When unmapped pages are freed.
-> > (b) When a pageblock is converted here (in rmqueue_buddy()), if the
-> >     allocation only consumes part of it, the new allocation might move
-> >     the rest into the pcplist through rmqueue_bulk().
-> >
-> > Does this mean that unmapped pcplists are less effective in serving
-> > allocations? There is a tradeoff here because converting a pageblock to
-> > unmapped is expensive, so maybe this is the right choice to make, I am
-> > just wondering if this was intentional and/or if we tried it a different
-> > way.
+> > Do we also want to add safety checks in the page migration code? IIUC,
+> > if we miss a check in the compaction code and try to compact an
+> > unmapped pageblock the kernel will crash with a #PF in supervisor
+> > mode.
 > 
-> Yeah I think this is all aligned with how I envisaged this working. I
-> have been assuming that changing pageblocks only happens:
+> Shrug, yeah I would certainly be happy with sprinkling some more
 > 
-> 1. When botting / changing between different kinds of workload.
+> if (WARN_ON(freetype_unmapped(...)))
+>   return -1;
 > 
-> 2. When the system is quite distressed by memory pressure.
-> 
-> I think in both cases, proactively flipping a block just to refill
-> pcplists is unhelpful?
+> here and there. But yeah this feels like a maintainer preference /
+> philosophy question :D If the machine is gonna crash quite clearly
+> anyway maybe it's not worth it, I dunno.
 
-I guess it depends on what context we refill in the pcplists in. If we
-are already holding the zone lock it might be worth a refill to avoid
-holding it again to do it later? I am not sure. We can probably punt on
-this until we have numbers.
+Hmm not necessarily crash? Right now if we do miss a check and end up
+trying to migrate an unmapped page we will crash (we actually do, will
+respond separately). If migration fails, I assume compaction will just
+fail and we might end up with more reclaim or OOMs, but not necessarily
+crash?
+
+Migration is where we actually access memory, so having checks there to
+avoid crashes (when possible) seems worthwhile.
 
 > 
-> > Actuall, THPs are not covered by scenario (b) above if the pageblock
-> > size is the same as THP size, as the converted THPs are always consumed
-> > by the allocation, so the THP pcplist will only be filled when THPs are
-> > freed.
-> >
-> > I wonder if this would cause a problem for THP-heavy workloads (e.g.
-> > guest_memfd using THP, or any THP usage with ASI).
+> >>         if (cc->ignore_block_suitable)
+> >>                 return true;
+> >>
 > 
-> And again it doesn't feel right to proactively flip a block just to
-> create a pcplist. The cost of a pcplist miss is basically a bit of
-> cacheline contention while the cost of flipping a block is pretty high,
-> it seems well worth risking the former to avoid the latter.
-
-Zone lock contention can be a big problem. But yeah we probably
-shouldn't make a decision without some numbers.
-
-> 
-> > The other thing (that I probably mentioned elsewhere) is that kcompactd
-> > does not produce unmapped pageblocks, so it seems like THP allocations
-> > will mostly hit this code path and convert a pageblock to unmapped.
-> 
-> Yeah, I think making kcompactd produce unmapped blocks is a nice
-> standalone optimisation series and it can probably wait until someone
-> has a workload they can share the performance improvements from.
-
-Yup.
-
-> 
-> > Actually, if we do bulk conversion to unmapped (e.g. in kcompactd) we
-> > could batch the TLB shootdowns as well, but that should probably be done
-> > separately.
-> 
-> Oh, that's a good point though, coz that would also interact nicely with
-> pcplists. In theory we could allocate several contiguous pageblocks,
-> flip them with a single amortised flush, and then use that to refill
-> pcplists. But yeah this still feels like far future optimisations if and
-> when we actually knew it helped.
-
-Agreed.
 
