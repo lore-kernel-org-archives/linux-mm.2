@@ -4,96 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC42FC5DF7D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 12:49:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02946C5DF7E
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 12:51:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A43926B067B; Tue, 18 Aug 2026 08:49:54 -0400 (EDT)
+	id 2317A6B07CF; Tue, 18 Aug 2026 08:51:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F4176B07CF; Tue, 18 Aug 2026 08:49:54 -0400 (EDT)
+	id 1BBE36B07D3; Tue, 18 Aug 2026 08:51:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 930F76B07D2; Tue, 18 Aug 2026 08:49:54 -0400 (EDT)
+	id 082A56B07D5; Tue, 18 Aug 2026 08:51:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FCA56B067B
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:49:54 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 09722160BCA
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:49:54 +0000 (UTC)
-X-FDA: 85114372308.16.BDCEA51
-Received: from mta1.migadu.com (out-71.mta1.migadu.com [95.215.58.71])
-	by imf19.hostedemail.com (Postfix) with ESMTP id F04201A0005
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:49:51 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MZRAhGIA;
-	spf=pass (imf19.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.71 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DD1F16B07CF
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:51:51 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6B9A4C0C66
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:51:51 +0000 (UTC)
+X-FDA: 85114377222.30.976A96D
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 871D0A0007
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:51:49 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=GNtJ8zh0;
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787057509;
+	b=3f7os/qsuBv7MUi24Z13NAsnfhqJbL8yXxzfAed3OOattyrViKzFSj5WRdfqtuk1Kz9dAH
+	7zvd+2v1nouRF2rI/dLQD8vsDuS4XnxRRu91hjrHWGv7JF2Nmd/R6fxcsba89jWDkcr+4J
+	B687I7GlCgrn25us41vOUrIcDDNWCBg=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=GNtJ8zh0;
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787057392;
+	s=arc-20220608; t=1787057509;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gdT6hPIOlo8wlaYjoKPpTRDYP8BOnS+NqBZEqoxx7AU=;
-	b=KQpMTU9zqvzYrfnLZQKcu4SIXVE2PZMsI+PK/6cnmPc4rO2LoG/bLV9H1r7aTp01RNtKSG
-	XFtcMBWI/qr97suXP6kKNmF/kIXmY3/kymlGmhcDiqon+sRYbyUyYjx1WlQGLD02RCgR1P
-	Q8GBeCj9AwJCP/egC+Q0f8h427xLbuE=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MZRAhGIA;
-	spf=pass (imf19.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.71 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787057392;
-	b=TVsnB8fu20FdsJ2B4eahNRFcGJxWS5fJ40bdC+UOvJJRO/Dr7S8rlQSr6Bg7qi9ag5mE4/
-	JDnF23vA15BswW45gIuFqFtybWihg2LHFWR3fHJ4+nDCyw6IPk8YHeVdHMKU5zEnv3hmuc
-	yRW1V5/2C9As1mzFv6qGBEfjJc5WsLw=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=+ZaGSzQvA67tttFmZkgVqyG/izCzwDTO3GPvWzOf9tU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787057390; v=1; x=1787662190;
- b=MZRAhGIA9plhsfxMA5xurbNG3zc0ex1U2g4d9BPNSbweFd9SE24u2738XehVtbLhh6wlf0FZ
- hfzR5qgztknQy5D8lstAs1HDBBp5t1EnjzWI/Ji6GHF+uuFVEwU/l3xduRQDqyG4/KwQzDmp4YQ
- O36Bt77UUnd49Puzpqz7qDiA=
-X-Envelope-To: linux-mm@kvack.org
-Received: from teawater-KVM-Virtual-Machine (39.156.73.13)
-	by smtp.migadu.com with ESMTPS id 9ee484d082169ca3;
-	Tue, 18 Aug 2026 12:49:50 +0000
-X-Migadu-Flow: FLOW_OUT
-From: "Hui Zhu" <hui.zhu@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH mm-unstable v3 2/2] mm/vmscan: apply too_many_isolated() throttling to MGLRU eviction
-Date: Tue, 18 Aug 2026 20:48:57 +0800
-Message-ID: <4b4d4e3065e36f1b60dd69e8276cb92082f393a6.1787056208.git.zhuhui@kylinos.cn>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1787056208.git.zhuhui@kylinos.cn>
-References: <cover.1787056208.git.zhuhui@kylinos.cn>
+	bh=Kc5oCXq282LiDe88kKeCJ1XghMe7rR40RcvOL931zw8=;
+	b=6iM5zQ4cxjRA0eIH67z+AT4w9+ulW/radXdqWzHXxnXNhW/NB+EG5Gl7Xe/gJjZpBZ7+hy
+	BC8moVJyy225X38jZkRTW2Xp0QSs2Int5M8hlXySOoQqqpa69Em0/cUsCBdl5FiAE9glDD
+	KEnnszI19Law9sUuSyDW/oO3JDhiHrI=
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-52b3934af3fso45367711cf.1
+        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 05:51:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1787057508; x=1787662308; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Kc5oCXq282LiDe88kKeCJ1XghMe7rR40RcvOL931zw8=;
+        b=GNtJ8zh01vL1i0BG0x/1EdJ0gA9NWJ8kTrDgy783+cjmecD2DKasDONcY/jRKFRR6e
+         4I+UMqVus9GezGHWNcdosCqfjmvWKlojcp8ljqOqWF5aUijjFJyQwIGmZVVwTwkhP4qe
+         a9dqNTXpiV85/zjdgFioZk1PjBMVGaoKdm7r6dm0OIdtWfTDJpL2otUo6HnBb+mTnKU8
+         j8wPDK0+0IfqdB4MmNNG0PrQ0YDGjDntFf3ckcKwW6K1wvz3l3HzNLEW/16j3fFGDSqM
+         hCxrAwcHcps2ePmQqLBVuGVLouNANM0M5B7+lT6+oXlH1eZEtlBrp7xV2UEq2L5ydUi2
+         vOpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787057508; x=1787662308;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Kc5oCXq282LiDe88kKeCJ1XghMe7rR40RcvOL931zw8=;
+        b=MiESvCsNHsLQu7dKAMr5Dmcx5iyXevFsziYGFZJYuTxVzsBfVSy9f9JkI7DPq9wInX
+         3nHkNSK2qxjcL1J6Y3Czvf7ly5no5Gy+KabGtSJ8yl/RDoG3E2tldO0anNho64dVdp2N
+         MUpiEXzWlz7YL12mkMfeH7bTmKzIT4wm4sfD0OXzzzRjMSkTBQKvnn1C4Sy8kSmeMSms
+         oMDmxtDOfHxVQgqDxC8Nuah+UpOjK5FrFtxHuHvSQR9686LNrYVKpWXysYIXc4Oo/eCV
+         foHvttwrAEnVUVZ27VeelcgwyX58uBXxohQkw04DMLg1AAxbm9xmKDfEk8b3ciiYUzlc
+         QUDg==
+X-Gm-Message-State: AOJu0YzoL1yoX9RsAG0hCf1Ejh+sYvNDmqSCTNHM0gHOiI+ZOb8HgPnp
+	wPrkP+Ows+JZBUZNLMSP3QJ5RHr/tVvJUJZmS8uwDbBNCl7YeaDrbsmxI8C+UgajJMM=
+X-Gm-Gg: AR+sD10MbsCc+BNqhVcibWU3ji/k0rmqvB7kcnkhNPHf271lAzlwoZTDLd0DBSxLpVz
+	B1E9ya6rfmJdTRbE0RPQksC8nVT3aoHXjz9UyNwbVjT3mhG85Jr/nBCxY6cazhICMJtZYQRWfMW
+	YDzAP2LmVZNm2OzeJAroaKU8HcG/jAG9DDOdl2eFWtGUi6QHjNnp6e81Fwcqn3qo2r7QQLUflEC
+	2JBV9cyPTgakGR4pwSxSvC38yZW8+YQykOFH/T9gMAsf8t26rMnA77A9C5MDr26xU8d9GnOugFq
+	Yh8IkRK4eTY+5yx7Pavww1pIvhY0GDbv6n9UzQbnCOz/L8mU88uDjk7KIGF9E3JpS+dJhlMtS/J
+	trmgMr1wvEvWCErMnLtiwkmaVFqcAO2atS7TuWDXpoxBjpmiuuondikumGGKUKsTYrLo+v1+w/E
+	jrrFABocP5ZGTI9otTCSxlZwAvdaHbv19MqkXing8+TNAO/mimYJdGh5tF3RCJtewZdM2QvlWgc
+	FrTIQXJzp5vrIwYEkTgaYVn1h8cZNAmK5NduJEdN+Wa
+X-Received: by 2002:a05:622a:14b:b0:52b:4e1f:941d with SMTP id d75a77b69052e-52d8530dbc7mr334517651cf.6.1787057508583;
+        Tue, 18 Aug 2026 05:51:48 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52db613ca70sm37684191cf.13.2026.08.18.05.51.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Aug 2026 05:51:48 -0700 (PDT)
+Date: Tue, 18 Aug 2026 08:51:46 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Balbir Singh <balbirs@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev, 
+	vbabka@kernel.org, jannh@google.com, matthew.brost@intel.com, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] mm/mempolicy: skip zone device folios when
+ queueing folios
+Message-ID: <aoRUzDNvLgmMCqUn@gourry-fedora-PF4VCD3F>
+References: <20260817220810.1175596-1-gourry@gourry.net>
+ <20260817220810.1175596-4-gourry@gourry.net>
+ <aoONaAtLLnYAZnmG@parvat>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F04201A0005
-X-Stat-Signature: fsswd7dqysiepzwhskf8fctaunwya4da
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aoONaAtLLnYAZnmG@parvat>
 X-Rspam-User: 
-X-HE-Tag: 1787057391-188482
-X-HE-Meta: U2FsdGVkX19ikgiFOhdKrDlybt5ZbYPh0sHB/2wPew8WwihMyI/iA2PjB2Gxz9NfedTeJbnf4K7RIks3N+IPrDVS5ypVjm7sFepBisHe3DKPCbrIgaGvpJuRmSJt4u7VhkeJZiZ9n0m2rlAgjyFiKduX90UViZkBz+HvZiwIfNKZ5NW3NyyyBI4YSpLB5WWkKbVES+Z/idI6glOfwYhZfYakOLaoGkvresMiTogDH7/YfbrJpEq/hPJkAINj08X/4SvVVRJntECrx7Po0qZQ+HjZLbD1E8DSauaQSvI5isVC5mExHmENhmPPMJqNrAUubCNZU3Nh/3s2lt9P62+HHZQmy8GhrqUL3wtky12F+8pwGbS9DVtPt0x/1NnArOC6yzvcix5rcJAjInlN4uh6gidYN8II6ST6FVnOVLWj6wlWBClp3ksEJyAohmjay0LhoFdJQvEP6CZWcVLeBpier+f0etRzyijJPgF+x8LVPxsrhoaydk/poDS0c0PGNzmpT+yDcwVLsjjTcAdMnZaMLEM1TAkv1xUPqBRX+2dEuzlvo0vdr6sOPNLZ6a3lMVCTSKasl9OK/IIhmeJOLmXni/f8nfS/uLY2N6ttJFarNhi2QgLIOUvBfvWToGpcE8CD2MB58WOvv5C8fpkLqLpWOJxWoc4Ex/GQ7pWEDMXsXFUQuY2wkQpoteCMvZv4ASz/QI5YrpJ9dfob/jthjcaE7X9BXlcl5vdxgYR9G3TsgzwuHPWPpxlg/rPJ2Z29IeTlls6kGrH9COcrsYrrXVhuUWNttDF5jX1JJB/w3d73GrfkUZ9be3ECf6MylxebrO5x7DjsIIoWvQUU6iWFJ6xr9hN0PjoEjSX5MjrtdbhI/L8PQqBnLCvIG8QCQ06wG4tOJUu9mw1G3Wsz1jeAErDKL5dcOp/qrv1uZVuY+OqXI2iSAF01+vTf/odtEFMtQYTOCpQf3+TX2JcHwfgRL6X
- 75sjLF+g
- yfAeDz+T3EjyaMGIBkSC/0XRFHvwOCk0NMCvEOqVWk7p8/019N4dG8j4io+IdBJD7GMYJm9c0Pv32HvLOE7oKOZyhDqgNVaxPlzJOmwB1SNOeyymJkJsV9n1cE/AnmXzMO44YR5vbb430rWHjjWBlqbT5IGnzz2Z+bBld/MWiW+ur6WJD+5ttBp3krjYj3h43sryCzluLwY51Gya6nuaW01NlA8lhYV4Y6Hx8MfSu4Qgku/o=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 871D0A0007
+X-Stat-Signature: c9z6atuawai9nwnb1q39smwiyiihprj9
+X-HE-Tag: 1787057509-633337
+X-HE-Meta: U2FsdGVkX198WzsTXOpBjpokBbypCWdIlSpuuOxE9IW2EOq5DsRakgZ5n1O1lM9J3lwHAb0ciTqPej27pzH8jFlGnCQVW6b0xEhnqiNd8THJHcHpUi1aChgr6wN/6C6yS1rHRvCqRwTH5f8ysoXRNceHwAbHX8XqaGZYm8B9s3UrgXjUiU3/yXOPmlJ/gLxOObfYVRAc0Gf++heTz9YYQ60LJ2AARSFF/oKnjylzZnF7Rt8jCGXeFOuz2xlCVVA2/Vde3zaE3LQ0Om9VGPczTRyoPtkoUxpWp+oL4NR2gXZqoaCpSbVSCj+ZE+0O7POGfPUKGT+OzPjvxhkvjbr17Ypt0WwRlc0Lcw7HgIbbEeMMV07EsuAguQyDnDu9dGRTnMQ2o1RTURbjpOxxaXKddtrVIY6JcR09n9l3xqJv5OhtqdISpZXC0gHlQxMzSmj84sVRYoESTH8I5tZeIXVMvwyHKz91jxEzHd10Qg/2EYrO0TmjIVz6ygodV6TWqcbQunbUTJeN8f4Oun8PzEOhpQBsnTtMwrgbJYn7zUGSG36D2Tf+id3SsP5aUvOBEq1H/ihLB5Sn/lk5qIT3/VmzAw/Dlc+2JTq0SJT7Vws42GJ1UEad+NMlVzksz1NOrE8Dp/GkHihRrOZuoAohCg/6/gFbawzKN7VlsKRKWcH6igYdq3q2XZu/l1f/jpqnE4NOpFugkxIv7JCd5Wut5s81Hup/8HrO2pVGIa9usTKejTiG91JoPfRQDAaNvzHrSjEgCH/Fx6x28SUYgAYLOcv3Vqb4CP2sOZf7mUmVHNFwGHzOOduo+nJbPd3nFv7otNaCgc+CJwar55+3mjKdHr7aKtla17y2FOtTKzil3sXkFQBaKTbpCpQ15WEQtTtKZSAblaEQgpXiOZGWcJsJGFIGYpTuSde5b9fkdf2lg3B/8Ag+KBwOEjVUSFzMwtqFO9TwkEB5MUDcZO3+r2XhwKV
+ YAagq309
+ cKK2H+fVzLJYdZAyjMpqjts+LtHvn4pQMeTx/4Duw2xjQxnqQL4zIbMhxZLS3o8wst+d5WxfDSxpv73lYZhJoDlNRaeganQ0o97PjrAGpBHBY1x3qPeBUhsBrpvH/K9eiQO+ipkN0IjB68FPRxxFCT9CmL9mt83BaNWhz/lJrk6JOkI59yJEViKJ4aIWqfy+50UMzSzmZ1S4cKZ61uuJgD2vebubYZ0ytakfe2LkSWUh3RDabfqoEmODe3cHh8wn8D/eRVUu2ZVfRBfc9Z4xlHk1zHRtb9Juf1gEq3NqpLHIvRCbMPEYmwqsoAOFoCvSO1204CewR7Geu7Aj/i8hnt6GFQsdkQwxEH5IYFNmPauFqEmN91PZHxc7vUTCcrPd+VUEH/f/ZiSrAVGWMhXjMnitdZQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,142 +126,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+On Tue, Aug 18, 2026 at 09:34:49AM +1000, Balbir Singh wrote:
+> On Mon, Aug 17, 2026 at 06:08:10PM -0400, Gregory Price wrote:
+> > 
+> > diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> > index 3498a5651d50f..3418b5664dcf8 100644
+> > --- a/mm/mempolicy.c
+> > +++ b/mm/mempolicy.c
+> > @@ -662,6 +662,8 @@ static void queue_folios_pmd(pmd_t *pmd, struct mm_walk *walk)
+> >  		return;
+> >  	}
+> >  	folio = pmd_folio(pmdval);
+> > +	if (folio_is_zone_device(folio))
+> > +		return;
+> >  	if (is_huge_zero_folio(folio)) {
+> >  		walk->action = ACTION_CONTINUE;
+> >  		return;
+> > -- 
+> > 2.53.0-Meta
+> >
+> 
+> 
+> A similar patch was sent out earlier, but that was only for zone device
+> private THP, we don't support migration of device coherent THP today (we
+> should add support). The patch itself makes sense
+> 
 
-The legacy path throttles direct reclaim in shrink_inactive_list()
-when too many isolated folios pile up, but MGLRU's evict_folios()
-isolates folios without this check, which can lead to unnecessary
-swapping, thrashing and OOM.
+Yeah IIRC that was Usama's and I got confused thinking this had already
+been resolved - but i realized this still affects device coherent.
 
-With the NR_ISOLATED counters now updated in evict_folios(), extract
-the throttling loop from shrink_inactive_list() into
-throttle_is_throttled() and reuse it in evict_folios(). Since the
-type to isolate is unknown until isolation and isolate_folios() may
-fall back to the other type, check all evictable types with
-for_each_evictable_type() and throttle if any of them has too many
-isolated folios.
+ty!
 
-If a fatal signal is pending, fake reclaim progress the same way the
-legacy path does, so the dying task exits reclaim quickly instead of
-being held in the throttle.
-
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
----
- mm/vmscan.c | 71 ++++++++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 59 insertions(+), 12 deletions(-)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 98226bb021f3..6fe8824430ac 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1819,7 +1819,7 @@ bool folio_isolate_lru(struct folio *folio)
-  * the LRU list will go small and be scanned faster than necessary, leading to
-  * unnecessary swapping, thrashing and OOM.
-  */
--static bool too_many_isolated(struct pglist_data *pgdat, int file,
-+static bool too_many_isolated(struct pglist_data *pgdat, bool file,
- 		struct scan_control *sc)
- {
- 	unsigned long inactive, isolated;
-@@ -1856,6 +1856,37 @@ static bool too_many_isolated(struct pglist_data *pgdat, int file,
- 	return too_many;
- }
- 
-+/*
-+ * Throttle reclaim if too many isolated folios are piling up. If this makes
-+ * no progress, the caller is probably looping on unevictable folios, so give
-+ * up. Returns true to tell the caller to stop reclaiming, and sets @fatal
-+ * if the task received a fatal signal while waiting, so that the caller can
-+ * bail out faster.
-+ */
-+static bool throttle_is_throttled(struct pglist_data *pgdat, bool file,
-+				  struct scan_control *sc, bool *fatal)
-+{
-+	bool stalled = false;
-+
-+	*fatal = false;
-+	while (unlikely(too_many_isolated(pgdat, file, sc))) {
-+		if (stalled)
-+			return true;
-+
-+		/* wait a bit for the reclaimer. */
-+		stalled = true;
-+		reclaim_throttle(pgdat, VMSCAN_THROTTLE_ISOLATED);
-+
-+		/* We are about to die and free our memory. Return now. */
-+		if (fatal_signal_pending(current)) {
-+			*fatal = true;
-+			return true;
-+		}
-+	}
-+
-+	return false;
-+}
-+
- /*
-  * move_folios_to_lru() moves folios from private @list to appropriate LRU list.
-  *
-@@ -1992,19 +2023,14 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
- 	bool file = is_file_lru(lru);
- 	enum node_stat_item item;
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
--	bool stalled = false;
--
--	while (unlikely(too_many_isolated(pgdat, file, sc))) {
--		if (stalled)
--			return 0;
--
--		/* wait a bit for the reclaimer. */
--		stalled = true;
--		reclaim_throttle(pgdat, VMSCAN_THROTTLE_ISOLATED);
-+	bool fatal;
- 
-+	if (throttle_is_throttled(pgdat, file, sc, &fatal)) {
- 		/* We are about to die and free our memory. Return now. */
--		if (fatal_signal_pending(current))
-+		if (fatal)
- 			return SWAP_CLUSTER_MAX;
-+
-+		return 0;
- 	}
- 
- 	lru_add_drain();
-@@ -4877,12 +4903,33 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 	enum node_stat_item item;
- 	struct reclaim_stat stat;
- 	struct lru_gen_mm_walk *walk;
--	int scanned, reclaimed;
-+	int i, scanned, reclaimed;
- 	int isolated = 0, nr_isolated = 0, type, type_scanned;
- 	unsigned long total_reclaimed = 0;
- 	bool skip_retry = false;
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-+	bool fatal;
-+
-+	/*
-+	 * The type to isolate is unknown until isolation, and
-+	 * isolate_folios() may fall back to the other type. Throttle if
-+	 * any evictable type has too many isolated folios.
-+	 */
-+	for_each_evictable_type(i, swappiness) {
-+		if (throttle_is_throttled(pgdat, i, sc, &fatal)) {
-+			/*
-+			 * We are about to die and free our memory. Like the
-+			 * legacy path, pretend some pages were reclaimed so
-+			 * reclaim unwinds quickly instead of looping back
-+			 * into the throttle.
-+			 */
-+			if (fatal)
-+				sc->nr_reclaimed += SWAP_CLUSTER_MAX;
-+
-+			return 0;
-+		}
-+	}
- 
- 	lruvec_lock_irq(lruvec);
- 
--- 
-2.53.0
-
+~Gregory
 
