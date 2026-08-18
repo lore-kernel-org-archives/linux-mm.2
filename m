@@ -4,97 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9F39C5DF74
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 03:15:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4577FC5DF67
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 03:19:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 944F76B0137; Mon, 17 Aug 2026 23:15:27 -0400 (EDT)
+	id 5C9C16B0370; Mon, 17 Aug 2026 23:19:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91CD86B013A; Mon, 17 Aug 2026 23:15:27 -0400 (EDT)
+	id 57B316B0844; Mon, 17 Aug 2026 23:19:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 833486B013B; Mon, 17 Aug 2026 23:15:27 -0400 (EDT)
+	id 469826B08CD; Mon, 17 Aug 2026 23:19:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6104D6B0137
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 23:15:27 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B41FE80A42
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:15:26 +0000 (UTC)
-X-FDA: 85112924652.23.4679C76
-Received: from mta1.migadu.com (out-35.mta1.migadu.com [95.215.58.35])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9ECB4140002
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:15:24 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fWoEI2Ao;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.35 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D2746B0370
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 23:19:49 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A91F01C195B
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:19:48 +0000 (UTC)
+X-FDA: 85112935656.28.CB89303
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 784D1100003
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:19:45 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=vmaWZ58w;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787022925;
+	s=arc-20220608; t=1787023187;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gdwn4Mp6UhNovGC1bZn3V9R5tEd9VnDd5H+H3PR8T8k=;
-	b=1fxoSrtNXj605AgfXKZCD6LxRe5miaDpb7DfMxA4Rf6Y+DEBPtp1R6z0Le7XAwHMNbfhgc
-	JnHwP1TN7qOskvTm/ZzsN1pugEb0XRsYKt/X96iLw2x/n8bP0r7kJ03mz932vsneoGAvNp
-	Lvs8i25IwcQ7W5vFUSATuR6BM3eMzh0=
+	bh=7J/Uduy/xE+C4LP4mB+3ZctUtQysnqQkKDdtyXBHTxo=;
+	b=nW8GksoCh5ixa3us82VYXPPuX+1MsrQ1YRlTc/6XCVyKWWg5Hjv0R2VmGGHgCk99+BQSnI
+	Oop0OieVsHMF+7KwQcy7i2nP2klYQh3dQpDFsruVfm1QerQSBqNrTCQN+5MKB65zkW8ngl
+	d4GdQdjbqgfVHtr7aJqyfZEA/4VGRN8=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fWoEI2Ao;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.35 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=vmaWZ58w;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787022925;
-	b=pTAMMvcRIvQIQckLLmdLKmur1uocc2rTx1zgwFLeyhA6OLSWe1BFn5O2pp2HyTBtJkhvoR
-	YXu+FCc594g96hxbcHqEvq51QcgFrMQmndsY702NXHOEOb5m+Ye3+hy9YOuVPVgfbanh2s
-	q7UHk3bXAgcJR0+JuuEHMzP8BDLfA1E=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=QPjkqeMQzOAZpb/zyY52x+vxw+KmNvb6bRJRhWPK3mw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787022923; v=1; x=1787627723;
- b=fWoEI2AoSNK4ISQ1bMiEYIXBx5uvD5XXW9ySANPlXaBYKAxH7qk0XdW0mBooYSkDLJ+fIIfs
- TlPY2+0FvliuUTHqVRldHeucnVQdr9HWvl3Dc5yU0VnrKGXJ2GhFYRh8XLK6hkn7lHiia6ZjdHA
- JD0asjkYetuble1r1tROkbJc=
-X-Envelope-To: linux-mm@kvack.org
-Received: from fedora (117.129.78.49)
-	by smtp.migadu.com with ESMTPS id 68147398b43ced4c;
-	Tue, 18 Aug 2026 03:15:22 +0000
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 18 Aug 2026 11:15:12 +0800
-From: Hao Li <hao.li@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, bpf@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dmitry Vyukov <dvyukov@google.com>, 
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	kasan-dev@googlegroups.com, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH RFC 1/5] mm/slab: cleanup deferred free handling
-Message-ID: <aoPN2evd_u09IxfR@fedora>
-References: <20260807-kfree_nolock_kmalloc-v1-0-ba993cbf7a60@kernel.org>
- <20260807-kfree_nolock_kmalloc-v1-1-ba993cbf7a60@kernel.org>
+	t=1787023187;
+	b=V+B7G/beWFbqF0TfKTqorao2piGTbrINCnVMbvVScUmO4HOVoWrDPb55yQxVoA7797kJDH
+	uEB+zEoe7XaC/y1DGhHnWLxJmaE8zoRz+/+my2wdAFY6T/OrFK/ue9XMpsqs98N/gKUk/C
+	eKIpEKF3l6jT7DU9SkrTpkv5LxsX1Pc=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1787023182; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=7J/Uduy/xE+C4LP4mB+3ZctUtQysnqQkKDdtyXBHTxo=;
+	b=vmaWZ58wrenNsdFecVeRQFpPmiWUbDCIp7HpQfqZQsqi+A5kJ+CgH9RjG/21MTbEQ2h1d3z/M0QngEurigEnWJhryygATwDEGtnWhEC0HFrMZHMOjgt7NJiRSFCLnF7iZc5IdnFvDGJ//ozsV9fBZhDhwXx97klX8fGmdgDzJFw=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X9BvS.-_1787023179;
+Received: from 30.74.144.114(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X9BvS.-_1787023179 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 18 Aug 2026 11:19:40 +0800
+Message-ID: <7e99b10a-183c-446b-9fbe-8db8cfc0acca@linux.alibaba.com>
+Date: Tue, 18 Aug 2026 11:19:39 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260807-kfree_nolock_kmalloc-v1-1-ba993cbf7a60@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-unstable v2 1/2] mm/vmscan: fix missing NR_ISOLATED
+ counter update in MGLRU reclaim path
+To: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+References: <cover.1786950138.git.zhuhui@kylinos.cn>
+ <9635d3c027bb8a5a416df04ea891a482beb3de9e.1786950138.git.zhuhui@kylinos.cn>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <9635d3c027bb8a5a416df04ea891a482beb3de9e.1786950138.git.zhuhui@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: jnyeu7bjizw8kzh3ddrreds6mkrqexg3
+X-Stat-Signature: qjpnrw6myd49f57xcx5ken9tpot5r9gn
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9ECB4140002
-X-HE-Tag: 1787022924-413036
-X-HE-Meta: U2FsdGVkX1/z53g+5w8BrSRvbh7/VjQ6A3kv3Jk87QvkZf0v1pn2J0cKe/oZaNzJ0mWjuOyw0OyJlUrym/Nn1LPJMbwwMbQgtzzPncEDmzGPYbn7O4WXoOFnoTH7KcfQQ6EYKCtzCvLjZhCYsOupZ8Vby3RcJJlJj2d/Y+iDPCvxmWTsI9xT1HAQPfNyGc7VC7p+bdsu1PQjtzpeDxr7PJos3PB9Q8mwQLpMOqbFyZTsNEltNjoQnZIzuBenqBMNq9Tsi/j/CQb6Je8Pgt2LTYAwC4r/b0Q0/+a2Qj+mThdnGz5rmVXA4qzzE2mjG78sMFgh5+rI3GQPpzF3HcgSoIlEm1s2h0GeIlTBdaqOuZDpof3rgE0EySybBJP1eLLdwGcmRHODCQF+MeQfvUvAwIdmOy8BpoWVoyr6fl6n+7Uch7hDnoFK3uf2oVqZrwaGzGW9uLC4ZKGfwTyS74GqFVY8iumIZ+SQvqEE9qYzJaiJ+slK/60Xl4sW+GISrblHTaW9UyH5BPELVU6ds7g1CM7jFRPqGsf6T5avYT7Cm93cf6MJK28n7HL2n51LLA5qqOw6AEhcHXxtAQZyzn+J47tM8pLinGH2tJbHZJGnlzEjgs9wsRqIinktTdqO9KIHmFBXSVDsVS/hzPiG0zBeypuI61SL8o7KlUiDGaXv8SEL3F/HYU6ZX7jy+n+GdgtW+bBORlAjyDQvGzUEw2xyJtjee1/gkPcDgPdVDVnhedKUTOm9eZyq6ECp5epSSNU0cWT/VGqpu8NKZbgkZWreBWfmPnROAcJg4OPLy3PixIzyqPM2QkhRerljIKrWYQ/6+QSAHvapvxpTQixwx2DCkqcH7+30w+E84gZ3OEzNCFP+a4wuEkgaNNt4YoM5XX9eg4PVR+c7pSjEGtEOcsAC15vV4+/g/8JlFTOFQ8O4app7CcYhSxRla3w5pQeQZWcGu56B+pKDBQgODG609yH
- e0C4jf3Q
- DP1TFmwV2iLLpqqlsGwSduelTvXeJyh7kGj0O5ac4MxU/GSbD9jB9510sbL8kqZHRvXLtt1TgHrprenfID2NGSZ51+bmfOpnvKwKrmdP+1dFeGpwX2tbOltt0qgqVp2nY92CEPgh/ZGRPsFfppnBsxUuhZr5bs+vs5uAy+dvCR+XEl2kNaVTfWENJmnnxCvLYyzKbYHpk3OfWO72RWXdobaoL3IeoOoABq0qCiGDs/x9x3WDJOXF0zHTKM2pm3app1niU0HLQDxtYhAtk60ElsGM2gGGFGm2tCYJ6OjzphQILOYlUhNgSJVFT7bW7Y62mVrf/
+X-Rspamd-Queue-Id: 784D1100003
+X-HE-Tag: 1787023185-372588
+X-HE-Meta: U2FsdGVkX1+raSQh9TK3Kb4IW6+sxH+DVbv86MPE7rAaycaenrbEpgoh4WaPK+IzR6Ly08lajAUGQIbMk5OxytT9F4ScjEf/cz70zXrtO9S10Hqgp7DUoq3P+p7z2sGrZK7KO3fNjC1pAor/Ovzrd+g59cl3ADoOMSNEyjG7xKFvunfTK8riIoMUsDTraNVBDz+5+y52rOjwQTdllA3y2PPXtMi3zkjlIDq2+2uqpmrOvZ4l002q7wQNbODMq34ICZBi0ddRZ/pEzcZxn2jiJQY3+NSTW2+mhbQyzfHVjLu0BBjqcOjmTTfoH7/AWWNmc9HF9rnXngpaHTEYYydpBcB+LjFAW1/uG8fSw6wqca0GpajHRDtjFQraa4yqv9YB0NeQVLvZcHRrRZeyNFTn3VjCpgPhMV4W3UoKNFMpOBeAwtR4ZufY0rVvuMaY5rml3uxUyV+jzXm5MBxXn5yR4IcwBz5lnDMTNlAlnpkzM3UHGlvNTBE70heWMJDhq02vyMOGxwvYi75apjMeQUjt6OPfOS2vFGGHMhulUMrez0UYO37WVjOGVkXsPMBPk9QG/Ot5/mcxSQlWdMwj429zKNa7GBaPxV5wgq8ceH9lPQi/pwzlzo5wE6I6bTETjy3H3YgJx1eJTOTpl3NGHqRETyR5hf2D1gbabsdqZJqZSJG5NEpu1mXeSbbXg9GncSMMT1OCNpHrDDywwtEPSAADNV5WUSjWUd5k+fAlaGh3T7GDrL4YdOVa42+bIsbFlyT8lNEA6/kC9Swkb38OKcNwsOChTPU+/d9CnSNcSzK26nl/O+wBhskPTb+wFbKST+eDhVSm3L3eemkzLBu73S6LlPvsgwRn9gaLMSR+5VvCqxNuazcQXwNRqTTFe4PPWaIFXISc/kL7xYyCoceNAIUbgjEz1UOMw3UMRUm3kx1LUMMU56wrdWhBkFJVp4S+M8OuvrpDhNV3uMvvZ3rue3k
+ RsZmmjZX
+ PYVDUP3FXo6Zv1xKrQcdwizB7rshQVSGmltu2DWVEZYwxuCGElWRTllI+8S1a+JVGihfO35Te2CFA7RBrIfQ/b520otUSr4q0HDBRTB7F1yJx/pm/ujSqjvFXMXSNThtagBZVhEf70riXkcQV90aD8e3eNDABcb9pOe2txgjvXanCLT8yJWeLKJRjW8HW7GH/IjBzefqNtGLRLZQRItU3y2D6/MtR1McKGmOvRqHCBM3W2O4LV2OLQdc/tk5NZnoT0kTzhjyvN51SiEJYKelJkvI4NEa2nkwTN/YnR5l/8fvPi5dmINijOa9iHLI5oDqTO6/W/fv8hJFxFNt+x59UuCriNmIiH2ZCi8hB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,23 +94,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 07, 2026 at 03:50:27PM +0200, Vlastimil Babka (SUSE) wrote:
-> In deferred_percpu_work_fn() we have a bunch of single-use local
-> variables for the various llists. Remove them and access the lists
-> directly.
+
+
+On 8/17/26 3:11 PM, Hui Zhu wrote:
+> From: Hui Zhu <zhuhui@kylinos.cn>
 > 
-> In defer_free() make it more obvious and documented what we are doing.
-> Also restrict guard(preempt) to only the necessary part.
+> MGLRU evict_folios() isolates folios from the LRU without updating
+> the NR_ISOLATED_ANON/FILE counters, unlike the legacy
+> shrink_inactive_list() path. This causes compaction's
+> too_many_isolated() check to under-count isolated pages when MGLRU
+> reclaim is active.
 > 
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Add NR_ISOLATED counter updates in evict_folios(): increment after
+> isolate_folios() and decrement after all retry passes complete, using
+> the existing nr_isolated which holds the original isolated count.
+> 
+> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
 > ---
->  mm/slub.c | 24 +++++++++++++-----------
->  1 file changed, 13 insertions(+), 11 deletions(-)
 
-Looks much cleaner now.
-Reviewed-by: Hao Li <hao.li@linux.dev>
+Changes look good to me with one nit below.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
--- 
-Thanks,
-Hao
+>   mm/vmscan.c | 7 +++++++
+>   1 file changed, 7 insertions(+)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index c1404a59523d..fdc45d7d8fba 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4892,6 +4892,9 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>   	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness,
+>   				 &list, &isolated, &type, &type_scanned);
+>   	nr_isolated = isolated;
+> +	if (nr_isolated)
+> +		__mod_node_page_state(pgdat, NR_ISOLATED_ANON + type,
+> +				      nr_isolated);
+>   
+>   	/* Scanning may have emptied the oldest gen, flush it */
+>   	if (scanned)
+> @@ -4954,6 +4957,10 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>   		goto retry;
+>   	}
+>   
+> +	if (nr_isolated)
+
+Nit: we can remove this check, since we never reach here if nr_isolated 
+is 0.
+
+> +		mod_node_page_state(pgdat, NR_ISOLATED_ANON + type,
+> +				    -nr_isolated);
+> +
+>   	if (nr_isolated > total_reclaimed)
+>   		mod_lruvec_state(lruvec, PGROTATE_ANON + type,
+>   				 nr_isolated - total_reclaimed);
+
 
