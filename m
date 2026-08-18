@@ -4,89 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50296C5DF70
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 09:17:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BCFEC5DF83
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 09:20:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED2D86B0167; Tue, 18 Aug 2026 05:17:14 -0400 (EDT)
+	id 9A8106B041F; Tue, 18 Aug 2026 05:20:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EABCC6B0438; Tue, 18 Aug 2026 05:17:14 -0400 (EDT)
+	id 958DF6B078E; Tue, 18 Aug 2026 05:20:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE7D66B0513; Tue, 18 Aug 2026 05:17:14 -0400 (EDT)
+	id 8210A6B0792; Tue, 18 Aug 2026 05:20:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C0DB56B0167
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 05:17:14 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B8DE2120B79
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:17:12 +0000 (UTC)
-X-FDA: 85113836304.18.647667D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 194B340002
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:17:10 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Sp+d8/Up";
-	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E710A6B041F
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 05:20:41 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 74D8FA386F
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:20:41 +0000 (UTC)
+X-FDA: 85113845082.13.98C9D98
+Received: from mta0.migadu.com (out-29.mta0.migadu.com [91.218.175.29])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 7CCE4140006
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:20:39 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="W1/rOEwN";
+	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.29 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787044631;
-	b=SW60E+mMcb/A5VrAvUVq7iK8dyUXm/QMvfIBHK3V453yfVBSArV4bQwlz/09kFSIPE9jkG
-	L54eElamxjlIjk/1zjD/InnHtCfyPhOZSTWJT2K0g4zJRXGcd1mUgzLpEAKBnL/buYymrN
-	2ilmd6lEs20wU8IXs5MRDgWYyJ946VI=
+	t=1787044839;
+	b=A8aFZRD3noQfwFYoquzH1ynkaLclw3gKmZ2UbURt4/+54VJBPynvMuJ3rAYzdIKk4B2J1E
+	owbhqoeh6yZxNzCsDbOFha5M1Hy0vlc1ztpFv+yTUQP3/H9WIolcEotmmSegZRt1uowPIh
+	k6mvpRmImZsUrhVOTWHW0rG9UefvSjE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Sp+d8/Up";
-	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="W1/rOEwN";
+	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.29 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787044631;
+	s=arc-20220608; t=1787044839;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CgxvZuvkwadEpFuIclkSP8Q6+jXLcm9MUedkH6duLsc=;
-	b=wA9JbhjZKsoL1zBCRT+cw9fAECVuN1ajUPM3CxIgy19tIC1e1FeCfd9rNrWTO+mp27LtbN
-	Fj3AN/eOhBGNDkL20q3OI75i+3umGGIqLPBACw/KfmJK+ajix+45Y+kbWMozV3nbqgbi6H
-	hPei3WvR11TuYpA2mlpd3IvT0uzy8kE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 25348433BB;
-	Tue, 18 Aug 2026 09:17:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5751F000E9;
-	Tue, 18 Aug 2026 09:17:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787044630;
-	bh=CgxvZuvkwadEpFuIclkSP8Q6+jXLcm9MUedkH6duLsc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Sp+d8/UpGyNfg9ewcl0Xff86tUjKVbiovZXBlh3Ez8eoIN3BHBBPccNWCWgOFcs7r
-	 LVZEt5YFnKAmBxjwOWsKZ14WMGgXL99MEGoY8psZcp9Va/MxxfPaJUDoWcUM56Kk21
-	 yFQZxRnckxSwrP5xQXVRDsbGZSyaFjGQUsTRMMpaA1QGx0xqRlBR6oaT+60odvl2u+
-	 JQH3UW2CSjfU/6pE7mweMMg7erA82fC2Pq6GSQbODg+g7jDCbuugtfcSxPUWKS2+GN
-	 M4Kgfe9jfmjsZ55GZQM2ppBjHrz1aoxwZudGG0lU/6cI+eYbucLvLxMsOcfnbp13BY
-	 HUJTI/5305zig==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Chenghao Duan <duanchenghao@kylinos.cn>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  pasha.tatashin@soleen.com,
-  rppt@kernel.org,  graf@amazon.com,  linux-kernel@vger.kernel.org,
-  linux-mm@kvack.org,  kexec@lists.infradead.org,  jianghaoran@kylinos.cn
-Subject: Re: [PATCH] liveupdate: use scoped_guard for mutex in session
- operations
-In-Reply-To: <20260817025146.GA133735@chenghao-pc> (Chenghao Duan's message of
-	"Mon, 17 Aug 2026 10:51:46 +0800")
-References: <20260814095506.631274-1-duanchenghao@kylinos.cn>
-	<2vxzzeyo23ol.fsf@kernel.org> <20260817025146.GA133735@chenghao-pc>
-Date: Tue, 18 Aug 2026 11:17:07 +0200
-Message-ID: <2vxzfr0b23fw.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=+iaMFEkENevOiafYJhQSzgJjYXspgKydE1cZb/53whg=;
+	b=hggY8RTV/bs7YvronM3cNVSYde56Z/R8ejNuktETL0O9vVC78HfZz1aawzzzF08xcegPdx
+	ZpHnTE73YTx4J5r/AoQ1W6qD4YpwscMgeQWP7t1KYl0Nh7kLR3ItE02t/vr9AohojaFD0Q
+	ep2qHfQ43P0Zi29/GPQebT7dMbSYD9c=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=B1m6agvmeh0+Uq3KM3O2ABateFoLYnXjxIldxiUU5DY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787044838; v=1; x=1787649638;
+ b=W1/rOEwNCrcocXF0rGLJGMXPVcd488WUGrrF0fuvY8JZ+a6JcJqi03JP9hixULMVWTbONSRR
+ +KnhQMa/+Hl4QENdc/PwNW6Smpu3O48n6KwbCQFgFm9Rw5GuTEMi6JjUc2+589AN013X7M8A+9a
+ VBP8A9i7OKOMuy+PSkYLL/Vw=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (2602:fce1:44f:115e::)
+	by smtp.migadu.com with ESMTPS id 178fe688d0370b01;
+	Tue, 18 Aug 2026 09:20:38 +0000
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: linmiaohe@huawei.com
+Cc: shivankg@amd.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	kmanaouil.dev@gmail.com,
+	fvdl@google.com,
+	kinseyho@google.com,
+	weixugc@google.com,
+	bharata@amd.com,
+	rientjes@google.com,
+	dev.jain@arm.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v2 7/7] mm/rmap: batch the unmap of large folios in try_to_migrate_one()
+Date: Tue, 18 Aug 2026 17:20:32 +0800
+Message-Id: <20260818092032.47670-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <860941c2-287f-f88f-920c-6d99e2cd4483@huawei.com>
+References: <860941c2-287f-f88f-920c-6d99e2cd4483@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 194B340002
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7CCE4140006
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: t54174kxckxhcpdp5tmkwr8oqwxqsnd3
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787044630-706139
-X-HE-Meta: U2FsdGVkX1/X4tIHWAq5JGV3x3R9bnvtDZwXsNY2ofl3/JCwU2MFs6OvO+6/s309afPMzGCS9WfkDmt2TV5cOEIWWM7BXgak4ZdUWpl8NBFIHWlBcrRzdzTCEocgqAzzuyFJFJpGaBa2FAKX3tfYlbHeTnFyBI7iAl1LbV8FJMNkBPBBzKlrFd2/5zu2y5nM/sAxn4RIxJDmQ1EQtG50EG6WYHIO4Medj7lMQeLBLoyFfEWfIhmvnIKRkmd8h0pIU+Z/Cqr4dPIU4fdAynaW60kCTWO1OtMByG8MqNrFHWn/rzAIl6RKqtpoQOj6zMXBshSx03wsaM8OVCeNv26sKJ0zlWgUY4JTwkvGxltCiCF+9KeC+n0FGsWFuEOi7k2HexMXw8+YnnH3Bw8dzVSb0xKbOXnmq1XYDXi2aTpFtAhs7ImZQyGEvqQcX6IMjvltDP3i0caam/a44EFl7yoxrNiB467sdVzJZPcwAVZ8/uHGSjNE5VHlDWwUQ66wfr9ZjApc9ivoWs5NlEJ6MocOFJ73qcNVaY309J284AaWBZZ8mGQxi6TYgm3Z6co74W7CDFNkePrfdALAwqarg0idMiPdl31gouOOkKpZTOJsOMoUEAAsY5OH0YwSmcgI4VX2ahKC5q+5e4nJ/0PfjDtgcVj+kDijQC1ESBnLmZ2mo/doFeBCj/kBnO9Jr5QANWFfGd9YLvWJfIL7EMjmiEYC1ifJiZrDGcRAW0kHqvHgV0ISxfhJE6VC3e7QR90DxcabWidUDZVswt+jaVKtuhrDqTlEzLjy8lNYMp9iai+CIIP/ySDn5iGbMU1e4CWdec/o7d+VLyJYqMBlym1OBgDjrdZD1BlkOuq22up2hKW2QVPCjXw8yZA/W/vqSBd4XscJISbUnaWtG5+1yiRXNQKAOZVTwKiOmBF/WGcTMUY23N0FkAl3pWV3QRfXRrWCC6LQKJgqYMLJR8vNyro0Vmq
- 3aZgkKHA
- GqHRPCFao2PmrMvoLPSOJ6T1G3wkZ/6wC6zvoVb1fvI6Fo5jdcPsk+TDI7pVvrA/7Yw6+D7nIQUa8FgXTJViAOZvNbJnsmNFtvV7+sHhjgdprY1PqvDw2Bfb4tFlHN695TF1LFJPtBQmhjxWxE9bpqD16ZAsVq2kArHZQpNLIKHQfus9zWl/jnVNYZw57eOe5Gqf6H2PArq2Hmw1ZpS/BJEpcOSvaHcUycn9NxR5IDJnYHBkat1VsrzP2aWJlCvQWuqk7
+X-Stat-Signature: bcx1ijwws6ty1wxhradkwr4k9d1utaih
+X-HE-Tag: 1787044839-644
+X-HE-Meta: U2FsdGVkX19Rm8LJznTmc7tHSaWCukPehG/BerXfEjBFoQTxg9I8rLeSH1GVhLygGy2pxc/BOgMpFNefJXr61fHLRws1q8rKjQTIJj1a2CP/vy0Bzf5eec4Bg7KGZaEpUfHtr8tUaf69nSsXrHzwZWXc2bw1slj58OVrGJk/HOGi+1J96CSYGLl+4Xk0OaR6ims7BpzF2m4rDZt0rqXpwI0hYdn1TxG4ojtBydfx9XpgFlSoLR33OlDbMWUv+LSCmVhuVxUTiNpV4dRo/517c9EWGGOcajlFtdO60IbJQo+4J7ZsUuLUfEMm0eSJFsZsgT3R+bxX1XtSjXwky/EmhE1dkun3L58igUnWV/5ELrfyVufuxHDNTeveZ76DQk1spNIdM0Zj9/mR31LzNclwnsVqesEYtprTf3Mpp5i1vtWJXr1iIquuSqS/5N+1uWbfAfty6RKz2YyE0RoNZYKm/63+D7X+KNQ7kIZDorqmFXMrv8uAEFIR3r7c/cOk7SAw0oqmaDR9lAkIt/ZPJdO4blKH6yIf1fQTSuXLNzRKc7lKmkz+Qp0QbtztAUl+Ue9gLRzf7BMZtEWH4Z/dKABAjmseSkK11xotoN8QkjyK5ii03Nl5NRkacEfEBvpkP4JeppV6DWr0WDv2TLp88b/M20bQFYvyxvSJSsgAsmPFNSfjqxf4m59qvwXC8UhATIVETkvO08yTjF9raouO1Rm4JOeM56ZyrmlVv1/occZin8Pn7rRbHLQfA7hRWokcLQFM88pJ37pEXWjZozUrd2d28dnBqjL1cc+dY0wUZv/I6lOj/6ZE2LjALelCimQOZaQK2og7/Lwg6xzqrGrLhZVKKTWvtGFkaQyQAOgf/N8qcR2xIsWSIfD53J7mGDCR1S9P3lIFN1tGkI8gLBf0WHzCVMprbKk5I81C67Jdr1T/BHjrIPKuqiJ5VWC7kFN0sZGj/iRxYSvYBSIg40VG/wv
+ cxRuz7YJ
+ pHRcEUjccucxTeq55e4TH6+Bgi/cIYT08S3/Uyse1Yk8dO0RsR3vYb0nYlDrdFOxVaSxheVYfEHRFaWJZyJ4oQvvQtBsiMC9Rodf6zvAZBjup7aOV3etuf/szYNbjrjQBk2scmfXiZach6ZTeDjRmKxihxDvzmrp2gHMvM1BNqSK/y1nW9j+gskvTjn+YThJQdovDsaqD0cp5fC+eBbZdfYHcPZtlAzR1xB4DG4R5QgeX3hqMwNfAK3CuNXwP9BUQzF8XprhE/45kH18Fbe2wMHh74mOPpq8P5eV8tpYNb1gx0TLptRNfyqCUIYifJorA9uHYxAU2fhh2j4edTcFTMYe2APHi+IcLEzV926lB83FodL8qG1cCEl6WRyQk7cR7GSit1H3vhPlyaMGizOelJhLe8r0shmwZ5m7+UNSse73w/QxvV1BnwoTxLQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,63 +118,276 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 17 2026, Chenghao Duan wrote:
 
-> On Fri, Aug 14, 2026 at 04:10:34PM +0200, Pratyush Yadav wrote:
->> On Fri, Aug 14 2026, Chenghao Duan wrote:
+On Tue, Aug 18, 2026 at 04:55:06PM +0800, Miaohe Lin wrote:
+>On 2026/8/17 17:14, Lance Yang wrote:
+>> +Cc Miaohe
 >> 
->> > Replace manually paired mutex_lock/unlock with scoped_guard to align
->> > with the coding style of the rest of the codebase and simplify locking
->> > paths.
+>> On Thu, Aug 13, 2026 at 04:23:18AM +0000, Shivank Garg wrote:
+>>> try_to_migrate_one() converts present PTEs to migration entries one at a
+>>> time. For a PTE-mapped large folio, this repeat calls to ptep clear+flush,
+>>> the migration entry build and set, folio_remove_rmap_pte() and folio_put(),
+>>> each re-entering page_vma_mapped_walk() once per base page (256 times for
+>>> 1M folio).
+>>>
+>>> Mirror try_to_unmap_one() to introduce folio_migrate_pte_batch() to detect
+>>> eligible batch for PTEs mapping conseuctive subpages of a large folios,
+>>> and convert the whole batch in one shot using the batched helpers.
+>>>
+>>> A side-effect of this change is trace_set_migration_pte() will record
+>>> one event per batched run instead of earlier behavior of one per base page.
+>>>
+>>> Signed-off-by: Shivank Garg <shivankg@amd.com>
+>>> ---
+>>> mm/rmap.c | 115 ++++++++++++++++++++++++++++++++++++++++++++++----------------
+>>> 1 file changed, 86 insertions(+), 29 deletions(-)
+>>>
+>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>> index 35752a70f3a0..63b885c0b7ef 100644
+>>> --- a/mm/rmap.c
+>>> +++ b/mm/rmap.c
+>>> @@ -2675,6 +2675,44 @@ static bool try_to_migrate_hugetlb_one(struct folio *folio,
+>>> 	return ret;
+>>> }
+>>>
+>>> +static inline unsigned int folio_migrate_pte_batch(struct folio *folio,
+>>> +		struct page_vma_mapped_walk *pvmw, pte_t pte,
+>>> +		struct page *subpage, bool anon_exclusive)
+>>> +{
+>>> +	unsigned long end_addr, addr = pvmw->address;
+>>> +	struct vm_area_struct *vma = pvmw->vma;
+>>> +	unsigned int max_nr, nr;
+>>> +
+>>> +#ifdef __HAVE_ARCH_UNMAP_ONE
+>>> +	/* Cannot batch unmap if arch_unmap_one() is defined. */
+>>> +	return 1;
+>>> +#endif
+>>> +
+>>> +	if (!folio_test_large(folio))
+>>> +		return 1;
+>>> +	if (folio_is_zone_device(folio) || folio_test_has_hwpoisoned(folio))
+>>> +		return 1;
+>>> +	if (pte_unused(pte))
+>>> +		return 1;
+>>> +
+>>> +	/* We may only batch within a single VMA and a single page table. */
+>>> +	end_addr = pmd_addr_end(addr, vma->vm_end);
+>>> +	max_nr = (end_addr - addr) >> PAGE_SHIFT;
 >> 
->> No. This is done explicitly because we don't want to mix gotos with the
->> automatic cleanup-style locking. I don't think we should change this.
+>> Hmm ... can this still batch over a poisoned tail page?
+>> 
+>> memory_failure() sets PageHWPoison() before taking folio lock, but
+>> cannot set PG_has_hwpoisoned until it acquires and releases that lock.
+>> 
+>> So tail page can already be poisoned while folio_test_has_hwpoisoned()
+>> still returns false ... no?
+>
+>When memory error hits thp pages, memory_failure() first set PG_has_hwpoisoned and
+>then tries to split thp pages. And try_to_migrate() will be called to set migration
+>entries for anon pages. Does folio_migrate_pte_batch() work on this case? If so, the
+>folio_test_has_hwpoisoned() check above could catch the bad pages?
+>
+>Or do you worry about the scene that meory error hits a thp while it's under migration?
+
+Yeah, latter case is exactly what I meant.
+
+try_to_migrate() is called with folio lock held. If migration already
+owns the lock, memory_failure() can set PageHWPoison() on a tail page and
+then block in folio_lock(), before reaching folio_set_has_hwpoisoned().
+try_to_migrate_one() may meanwhile start from a healthy subpage, see
+PageHWPoison(subpage) clear and PG_has_hwpoisoned still clear, then batch
+across poisoned tail and install a normal migration entry for it.
+
+Once memory_failure() publishes PG_has_hwpoisoned, the folio-level check
+does stop batching, as you said. It's just this window before publication
+that worries me ...
+
+Thanks, Lance
+
+>Thanks both.
+>.
+>
+>> 
+>> Starting from a healthy first subpage, folio_migrate_pte_batch() can
+>> then batch across poisoned tail page. hwpoison only describes first
+>> subpage, so set_softleaf_ptes() installs a normal migration entry for
+>> poisoned page instead of an HWPoison entry ...
+>> 
+>> Should folio_migrate_pte_batch() check PageHWPoison() on every candidate
+>> subpage and stop before a poisoned one?
+>> 
+>> Cheers, Lance
+>> 
+>> 
+>>> +	/*
+>>> +	 * If unmap fails, we need to restore the ptes. To avoid accidentally
+>>> +	 * upgrading write permissions for ptes that were not originally writable,
+>>> +	 * and to avoid losing the soft-dirty bit, use the appropriate FPB flags.
+>>> +	 */
+>>> +	nr = folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_nr,
+>>> +				   FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
+>>> +
+>>> +	/* Limit possible batch count to a uniform PageAnonExclusive value */
+>>> +	if (folio_test_anon(folio))
+>>> +		nr = page_anon_exclusive_batch(0, nr, subpage, anon_exclusive);
+>>> +
+>>> +	return nr;
+>>> +}
+>>> +
+>>> /*
+>>>  * @arg: enum ttu_flags will be passed to this argument.
+>>>  *
+>>> @@ -2686,12 +2724,12 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>> {
+>>> 	struct mm_struct *mm = vma->vm_mm;
+>>> 	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
+>>> -	bool anon_exclusive, writable, ret = true;
+>>> +	bool anon_exclusive, hwpoison, writable, ret = true;
+>>> 	pte_t pteval;
+>>> 	struct page *subpage;
+>>> 	struct mmu_notifier_range range;
+>>> 	enum ttu_flags flags = (enum ttu_flags)(long)arg;
+>>> -	unsigned long pfn;
+>>> +	unsigned long pfn, end_addr, nr_pages;
+>>>
+>>> 	/*
+>>> 	 * When racing against e.g. zap_pte_range() on another cpu,
+>>> @@ -2744,11 +2782,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>> 			VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
+>>> 					!folio_test_pmd_mappable(folio), folio);
+>>>
+>>> -			if (set_pmd_migration_entry(&pvmw, subpage)) {
+>>> -				ret = false;
+>>> -				page_vma_mapped_walk_done(&pvmw);
+>>> -				break;
+>>> -			}
+>>> +			if (set_pmd_migration_entry(&pvmw, subpage))
+>>> +				goto walk_abort;
+>>> 			continue;
+>>> #endif
+>>> 		}
+>>> @@ -2773,10 +2808,25 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>> 		subpage = folio_page(folio, pfn - folio_pfn(folio));
+>>> 		anon_exclusive = folio_test_anon(folio) &&
+>>> 				 PageAnonExclusive(subpage);
+>>> +		/*
+>>> +		 * memory_failure() can set PageHWPoison concurrently without holding
+>>> +		 * the folio lock. Snapshot the flag here to decide whether to batch
+>>> +		 * PTEs or install hwpoison entry.
+>>> +		 */
+>>> +		hwpoison = PageHWPoison(subpage);
+>>>
+>>> +		nr_pages = 1;
+>>> 		if (likely(pte_present(pteval))) {
+>>> -			flush_cache_page(vma, address, pfn);
+>>> -			/* Nuke the page table entry. */
+>>> +			if (!hwpoison)
+>>> +				nr_pages = folio_migrate_pte_batch(folio, &pvmw,
+>>> +								   pteval, subpage,
+>>> +								   anon_exclusive);
+>>> +
+>>> +			end_addr = address + nr_pages * PAGE_SIZE;
+>>> +			flush_cache_range(vma, address, end_addr);
+>>> +
+>>> +			/* Nuke the page table entries. */
+>>> +			pteval = get_and_clear_ptes(mm, address, pvmw.pte, nr_pages);
+>>> 			if (should_defer_flush(mm, flags)) {
+>>> 				/*
+>>> 				 * We clear the PTE but do not flush so potentially
+>>> @@ -2786,11 +2836,9 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>> 				 * transition on a cached TLB entry is written through
+>>> 				 * and traps if the PTE is unmapped.
+>>> 				 */
+>>> -				pteval = ptep_get_and_clear(mm, address, pvmw.pte);
+>>> -
+>>> -				set_tlb_ubc_flush_pending(mm, pteval, address, address + PAGE_SIZE);
+>>> +				set_tlb_ubc_flush_pending(mm, pteval, address, end_addr);
+>>> 			} else {
+>>> -				pteval = ptep_clear_flush(vma, address, pvmw.pte);
+>>> +				flush_tlb_range(vma, address, end_addr);
+>>> 			}
+>>> 			if (pte_dirty(pteval))
+>>> 				folio_mark_dirty(folio);
+>>> @@ -2809,7 +2857,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>> 		/* Update high watermark before we lower rss */
+>>> 		update_hiwater_rss(mm);
+>>>
+>>> -		if (PageHWPoison(subpage)) {
+>>> +		if (hwpoison) {
+>>> +			VM_WARN_ON_ONCE(nr_pages != 1);
+>>> 			VM_WARN_ON_FOLIO(folio_is_device_private(folio), folio);
+>>>
+>>> 			pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
+>>> @@ -2837,19 +2886,15 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>> 			 * so we'll not check/care.
+>>> 			 */
+>>> 			if (arch_unmap_one(mm, vma, address, pteval) < 0) {
+>>> -				set_pte_at(mm, address, pvmw.pte, pteval);
+>>> -				ret = false;
+>>> -				page_vma_mapped_walk_done(&pvmw);
+>>> -				break;
+>>> +				set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
+>>> +				goto walk_abort;
+>>> 			}
+>>>
+>>> -			/* See folio_try_share_anon_rmap_pte(): clear PTE first. */
+>>> +			/* See folio_try_share_anon_rmap_ptes(): clear PTE first. */
+>>> 			if (anon_exclusive &&
+>>> -			    folio_try_share_anon_rmap_pte(folio, subpage)) {
+>>> -				set_pte_at(mm, address, pvmw.pte, pteval);
+>>> -				ret = false;
+>>> -				page_vma_mapped_walk_done(&pvmw);
+>>> -				break;
+>>> +			    folio_try_share_anon_rmap_ptes(folio, subpage, nr_pages)) {
+>>> +				set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
+>>> +				goto walk_abort;
+>>> 			}
+>>>
+>>> 			/*
+>>> @@ -2859,19 +2904,31 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>> 			 */
+>>> 			swp_pte = make_migration_pte(subpage, pteval,
+>>> 						     writable, anon_exclusive);
+>>> -			set_pte_at(mm, address, pvmw.pte, swp_pte);
+>>> 			trace_set_migration_pte(address, pte_val(swp_pte),
+>>> 						folio_order(folio));
+>>> +
+>>> +			/* Set nr_pages migration entries, advancing the PFN. */
+>>> +			set_softleaf_ptes(mm, address, pvmw.pte, swp_pte, nr_pages);
+>>> 			/*
+>>> 			 * No need to invalidate here it will synchronize on
+>>> 			 * against the special swap migration pte.
+>>> 			 */
+>>> 		}
+>>>
+>>> -		folio_remove_rmap_pte(folio, subpage, vma);
+>>> -		if (vma->vm_flags & VM_LOCKED)
+>>> -			mlock_drain_local();
+>>> -		folio_put(folio);
+>>> +		finish_folio_unmap(vma, folio, subpage, nr_pages);
+>>> +
+>>> +		/*
+>>> +		 * If we batched the entire folio, there is nothing left to
+>>> +		 * walk; stop right here.
+>>> +		 */
+>>> +		if (nr_pages == folio_nr_pages(folio))
+>>> +			goto walk_done;
+>>> +		continue;
+>>> +walk_abort:
+>>> +		ret = false;
+>>> +walk_done:
+>>> +		page_vma_mapped_walk_done(&pvmw);
+>>> +		break;
+>>> 	}
+>>>
+>>> 	mmu_notifier_invalidate_range_end(&range);
+>>>
+>>> -- 
+>>> 2.43.0
+>>>
+>>>
+>> .
 >> 
 >
-> Thank you for the clarification. I understand your concern about mixing
-> `goto`-based error handling with automatic cleanup-style locking.
 >
-> I was wondering if these particular cases might still be suitable for
-> using `scoped_guard()`. The patch only changes two manually paired mutex
-> lock/unlock instances, and in both cases, the guard scope is limited to
-> the operation that requires the mutex. The lock is released before the
-> subsequent error-handling logic is executed, so the `goto` paths do not
-> cross the scope of the guard.
->
-> We could also use an explicit `scoped_guard { ... }` scope to make the
-> lifetime of the guard more obvious and easier to review.
->
-> Of course, I may be missing some broader considerations. If there are
-> other reasons why these cases should retain the explicit lock/unlock
-> pattern, I would be happy to follow your guidance.
-
-That's one of the recommendations of the cleanup API. From
-include/linux/cleanup.h:
-
-    Lastly, given that the benefit of cleanup helpers is removal of
-    "goto", and that the "goto" statement can jump between scopes, the
-    expectation is that usage of "goto" and cleanup helpers is never
-    mixed in the same function. I.e. for a given routine, convert all
-    resources that need a "goto" cleanup to scope-based cleanup, or
-    convert none of them.
-
-Which sort of makes sense I think. Also, cleanup-style guards can cause
-compilation failures too. For example, if you do:
-
-    err = sanity_check();
-    if (err)
-    	goto out;
-    
-    guard(mutex)(&my_lock);
-    
-    ...
-
-This will fail to compile.
-
-Now this problem doesn't exist with scoped guards as far as I can tell,
-but I do see why it is recommended to not mix them with gotos.
-
--- 
-Regards,
-Pratyush Yadav
 
