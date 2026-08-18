@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A23CC5DF7D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 14:07:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85CF1C5DF7D
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 14:07:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A6C56B018D; Tue, 18 Aug 2026 10:07:37 -0400 (EDT)
+	id 6BABA6B018F; Tue, 18 Aug 2026 10:07:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5580A6B018E; Tue, 18 Aug 2026 10:07:37 -0400 (EDT)
+	id 66BB46B0190; Tue, 18 Aug 2026 10:07:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4942C6B018F; Tue, 18 Aug 2026 10:07:37 -0400 (EDT)
+	id 5A77F6B0191; Tue, 18 Aug 2026 10:07:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 27CB66B018D
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:07:37 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2DEB68028C
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:07:35 +0000 (UTC)
-X-FDA: 85114568070.15.8CE4935
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C5806B018F
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:07:53 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C5C65C0202
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:07:52 +0000 (UTC)
+X-FDA: 85114568784.10.23B4887
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id ED086A0016
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:07:32 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="B/ow6Zp0";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf15.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1263C80003
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:07:50 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=jlQrt93o;
+	spf=pass (imf02.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787062053;
+	s=arc-20220608; t=1787062071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xc14/yx8KFIXbhoySniAcr559uW1aJdvBMPXJmtA6xA=;
-	b=XOD/LtLDlEq0rY4IB6ldWUcDFbJSc6ibSYVhLe8Rjapid3ISFNpVL2euglhNDS2nCHhgJG
-	bS5UMq1OF3iR2zj7BjQ/eaDR9soie/Xldsx7xGKX+BWaJBW2xhk8spJ13492Ao0CQBKijd
-	zgGNQa5nb15nj86WaIJNodKqqoQwBd8=
+	bh=Ln7Mczd79sZi5QwsaLE9jqFE0MNCEuo9MspZyFqDHr0=;
+	b=N9oFWbTHJDz60fc3IG+Pe7OfzS64Q++/702lA0apDEK5DjB9nUj2tHuXaCkdOx0f3i1wpg
+	RoqMMPoEVvvbngd5kR28/Foj0fyVH2Gv1V94G638w4R9Dteg24ury6KFmNqSmUpmacODdD
+	vT3G4EwUlnZogpRMeLiKj6t9k+256QM=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="B/ow6Zp0";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf15.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=jlQrt93o;
+	spf=pass (imf02.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787062053;
-	b=JnnlDBWUzAiLZ5WcF2SxuunuX1sdsZ7/rtjphD6YwDo38y1SX074SZtBUpjinFA58uV47U
-	q72donfeGCV/3QH1spglHKRTeNUpi4K1qHsaxyL3tjzzKN7rRPyj7cOOoBmU5pLcKLXd6b
-	kEPKoo/DpwOF443juO99A2y18eHlWeE=
+	t=1787062071;
+	b=jMzycDAeLMCggUSYzLTgNja1tFKxsinssna0t+BAUc1wMc7pVEz/Zy+qCVKT2xG5/8+SXa
+	639uXf2CTwtXDI8KBV1wLxsrbkTHCfq9hWCJXp63KY0yZy4FuOdBAon2+whQBjsZeYYatM
+	8+vHGX11zGLppkWdPcnirsIf/KkPTO8=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F16B8152B;
-	Tue, 18 Aug 2026 07:07:27 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 44278152B;
+	Tue, 18 Aug 2026 07:07:46 -0700 (PDT)
 Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 632493F85F;
-	Tue, 18 Aug 2026 07:07:29 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 187C43F85F;
+	Tue, 18 Aug 2026 07:07:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1787062051; bh=0sqtwohSLIumibqmsfO/JhI8IBhQB0YsriVnfH2MrIY=;
+	t=1787062070; bh=XYnpofG5ApFYBdgBh7eiqhDJLh9ipL/B1jlA8wAAIas=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B/ow6Zp02cKG2P76++iFsGJ6k7yaOTQOK8xrZVon85fmjZmVhaZ9NQtGZ4qPZTEoX
-	 JfwIGa8hvFIOJUJzvFjegNEft6us5fqSsEqGAmPLWl0YDshdw7drqJuLSgzgUxTd5P
-	 x6LK1qC9ES5qugkoUL869bbTO1dgdzB1eXoGqCds=
-Date: Tue, 18 Aug 2026 15:07:26 +0100
+	b=jlQrt93omVnNUGW5AJAWkmrhdAxdJUeYlENyL9uf3jbP9mEjIJbPbVHtQ8AbK/8XQ
+	 qBdKSDBteuuzyBA4Km/Yh2uL4pt+s6L1zOxsmN2ydh8aCItQsF1z7h81P3Gf7S8WvB
+	 wrjfJAgW8ba8u3QAJm4YaQLsE0ncWlqwcTgwpqOg=
+Date: Tue, 18 Aug 2026 15:07:45 +0100
 From: Catalin Marinas <catalin.marinas@arm.com>
 To: James Houghton <jthoughton@google.com>
 Cc: Will Deacon <will@kernel.org>, Muchun Song <muchun.song@linux.dev>,
@@ -75,23 +75,22 @@ Cc: Will Deacon <will@kernel.org>, Muchun Song <muchun.song@linux.dev>,
 	Frank van der Linden <fvdl@google.com>,
 	David Rientjes <rientjes@google.com>, linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
-Subject: Re: [PATCH 03/18] hugetlb_vmemmap: Leave pages partially HVOed upon
- restore failure
-Message-ID: <aoRnHjaQ9Y61OB5Q@arm.com>
+Subject: Re: [PATCH 07/18] arm64: Add system_supports_hvo
+Message-ID: <aoRnMRZ0jE0ycwcT@arm.com>
 References: <20260708031129.3503195-1-jthoughton@google.com>
- <20260708031129.3503195-4-jthoughton@google.com>
+ <20260708031129.3503195-8-jthoughton@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260708031129.3503195-4-jthoughton@google.com>
-X-Rspamd-Queue-Id: ED086A0016
-X-Stat-Signature: cpc1si3c59rdzugdz8bzsyk3dyupybxa
+In-Reply-To: <20260708031129.3503195-8-jthoughton@google.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1263C80003
+X-Stat-Signature: bj4zua5xeamtfzay34gtebe5gpws6rc1
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787062052-679664
-X-HE-Meta: U2FsdGVkX1+yAUBPJhaay7oM1g8uheUbGA1WURizaNT0GehHIa8J5oKcqvtYZLai6qVP8XVkPq8sC+FiBW4g5/19q4Ifngy9THyV4eu73pimDOA2Mzxzvz+avjBqFTcZKBkLRyXTAwqzOeYg2J9GHaTYIMQ1iO2ubACbFpU5zr1fpzHbwd4CKZMtnn/+NYrYtQ5dlKYGS5Mb4YzQGgd4s7VRH5Yi6pJtLmWFNNejmgEiYvuuMurcmRjewCAJHSvIjXb2S0/2w+okNMvIlxdPVwkJpGUF9/VdxhNo/6zVddbgPI3BEIS/36mvtiihLTtnZSX3KnK0LHZSaE+9HQeSIi4R6JJJEG4V0kysav9jKjNijT/FiaPZCW0iV74nzYlNvtj2e8s/EQnCpO8GqFIiGv4uXvXUxbJchYhOlt1Yjgnu5qpwzHKwxyrEwCXU6b+85dvsb0l3mQx3GxVYCTp+HoxTQgm7YaO9pcu34OZQ3pHYmVshwfgBSC9Ih2CM/qhlVvj/NEPUcYOaUYaqW4RYaFUB5ws7k1Q0x2uJOujYTV49j9YQkHrvOcsxKyqIhN4282vjhhXCB0Sy9pUmp7gzpAOg4jmyqtW/wy9lRHKcguMXZihzHSsgz/QAH00/yytLBXe9GWxNv2uf1eblJ0ahg1KoRIOzzP6nuScxs3XfXXyzsaDlVJZV0qxjMBSKByL7zu6ykAXQj3rUMoOmdOlGnEBo0rikw2Akvzif5wBYh7Lmuy6nxximFamtesJJHx9W6X9BLOPllX2qnsecybwnyi6TFxlZ8jzRLQx6PWYmU8B/9dq5H+mXYbNNHmVCSvo28mZVCf1IfPUhpAbXvAkhntVc+bWeAX4iKHrbn5BdOaMW+ojcvPNaKvJbe4eri4d8IKPJFDPPcoQJVlNVeVIC4NXsfUPrXvfzgFJ1NYYXTLLWHob5A90SbbStDljWw8ZKWC+3cZLJ2YZ+AChh+1S
- 6r7nGZot
- e2haHK+bSHK59tSBVyYU2oYq1jOz8DCk1gG6W1bZcna+gMEe4iLcq8bVMVmAEP2pU/+w8TPPx0wqiIVXkX+l5Z01i0VhinQCVwAkMvVRZ4HZyGumep3V5aqHAmvXGrGH582Cidf99HvYrSOarRS0tSkj5FnfBgfYCx4Kx5DCr7N9tCpHEluMrE/PGIIYNgfL0cx/dE0ILMj/EB0No0w8yOWblfKqmdGfwBpP9/+lxEEdpVjQG1nbwkFd/Kip11KOs/ZtXN/345LfzcE6LwJrWSpouNQ==
+X-HE-Tag: 1787062070-291858
+X-HE-Meta: U2FsdGVkX1+dMNWrd8u3XaIBwl9akjdGYd7K0k1J0fzwO5s58cLnkB38OYQlFdSdlZR6Gh9CRXuL5VlDnFdmnWTojLfWhgrSO+x6W13vZ0d8ru23Rdl61U7IbUjT8jOAELFLBbrnF3f68239k8f+FJ4mti0QQUFflPUqYVwkYj/7WgXBfNRo5zBUp+enoktWdCwAIxQHsI9bmsu6JGFrMhmDR7U6WjdDQaY4ps5olbs9Pcy8gV1E5vwHpOYAc+zvzUvfys/Cv6QMRqbjtuIVSnn6wCEPy+m9w9Wi8vgRwoeupnvILuBUoqgtEX21x++P1YUyErZTu2lXFLfHj7e/hmHsL5m2KQLHPGAwWDXutGRc2yXqQgDqt9/W95dywNKksuDxq8Ijd4Z2RFZ48cnWLZ0OEV/q5Z0mk+xdblPH457TspgMeZvFb6zVxvk2zveaEKL00KxO0q7WAjNVsov+1WuWIcO8iz0RrRRX1slXrQj61V2Ttowv2Q7Sbvcsb741f6QBGdSLt8dZPytbZP5Z6ymMxiedL77qS3rbFIIUFsOPTQbAp8CFi/zVNGb08kAHj9s9+AKTGIB5BCvoVeo2vLVnJaAiidffyrDYMmfscdeYdbxFDcPuSIfhiQ0B/W1gJjXVCqiEZZE3A6gA36J0BJEEIXsYWUBgbOg/CAhfX6t0M1NsKo3pQSjEQzmsszmvgCYFMWBEoXYA1B9k5Q6g+PBZE/9CigWc43lGfp4skjXHlN4hWjVg/pCFIYiNXpgaJ5hMLtwWy4J0lfyxstRHhx8oB6fo9PRPhf8qqGa+KC0voXLHKqw7tPShJ3IFSJPPq3H8Oa7I9RGjE5g3pEJRQGSlS8TuhzNKYn76sO2iSit4ytTJzwrmGRAXQj8Rv7FVM+KkjRQL4ToMj+IsLjIDHYKZnYmOPXx+2rGfk8dxULvmMsNGCkHZootGx2PrQD63ti2YXKAN281r7DC3UI6
+ txtGAMbD
+ amW0OunpL8ZJVtBVvgx0sGvwQglUp+VmQxSx8vVpY7EkfvXBk7sEfYsxAuRZGW7wuPsXy4Z1fu4jAsHIT30MGRxaCs+ZQro9verZ+GvIGSmU6l5GgNtR1YuCLhOOaG6cA72Fly6NGVOrQ+inZJnJ/b4IouQlBSO6j9a0qRO97cCBAXdQQnBXdXpuaETheekZKSSaJsplnNWPCQlKE5uSZqG0ShYzlMkvyz4OUH3j97xEasd/4OY3O6l8FlmCbvrbUQi17c9l2taJkIdyV/7+/Ev75dA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,11 +98,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 08, 2026 at 03:11:13AM +0000, James Houghton wrote:
-> +static const int VMEMMAP_REMAP_INCOMPLETE = 1;
+On Wed, Jul 08, 2026 at 03:11:17AM +0000, James Houghton wrote:
+> diff --git a/arch/arm64/include/asm/cpucaps.h b/arch/arm64/include/asm/cpucaps.h
+> index 25c61cda901c..6db3ef827f86 100644
+> --- a/arch/arm64/include/asm/cpucaps.h
+> +++ b/arch/arm64/include/asm/cpucaps.h
+> @@ -75,6 +75,8 @@ cpucap_is_possible(const unsigned int cap)
+>  		return IS_ENABLED(CONFIG_HW_PERF_EVENTS);
+>  	case ARM64_HAS_LSUI:
+>  		return IS_ENABLED(CONFIG_ARM64_LSUI);
+> +	case ARM64_HVO_COMPATIBLE:
+> +		return IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP);
+>  	}
 
-Nitpick: I get it's all within a file but a static const int feels a bit
-weird. I'd use an enum or #define.
+We shouldn't use HVO, a software feature, as a CPU capability name, even
+if it's called HVO_COMPATIBLE. Maybe we can come up with a hardware
+related name, e.g. BBM_THROUGH_AF.
+
+> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+> index 9a22df0c5120..3b9224b99a5f 100644
+> --- a/arch/arm64/kernel/cpufeature.c
+> +++ b/arch/arm64/kernel/cpufeature.c
+> @@ -2172,6 +2172,16 @@ static bool has_bbml2_noabort(const struct arm64_cpu_capabilities *caps, int sco
+>  	return cpu_supports_bbml2_noabort();
+>  }
+>  
+> +static bool hvo_compatible(const struct arm64_cpu_capabilities *caps, int scope)
+> +{
+> +	/*
+> +	 * We need BBML2 to support Block -> Table transitions without taking
+> +	 * faults, and we need HW AF support to support changing the OA without
+> +	 * taking faults.
+> +	 */
+> +	return cpu_supports_bbml2_noabort() && supports_hw_af(scope);
+> +}
+
+I think this is wrong. cpu_supports_bbml2_noabort() only checks the
+current CPU while hvo_compatible() will be run once on the sanitised
+register values (SCOPE_SYSTEM). I should be something like:
+
+	cpus_have_cap(ARM64_HAS_BBML2_NOABORT) && supports_hw_af(scope)
 
 -- 
 Catalin
