@@ -4,94 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D557FC5DF81
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 18:30:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EB7DC5DF81
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 18:35:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5C566B018D; Tue, 18 Aug 2026 14:30:47 -0400 (EDT)
+	id 4B35C6B02D1; Tue, 18 Aug 2026 14:35:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D0CEE6B018E; Tue, 18 Aug 2026 14:30:47 -0400 (EDT)
+	id 489CD6B047D; Tue, 18 Aug 2026 14:35:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD5516B018F; Tue, 18 Aug 2026 14:30:47 -0400 (EDT)
+	id 39F7D6B06E1; Tue, 18 Aug 2026 14:35:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 93E4B6B018D
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:30:47 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1DDEC140145
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 18:30:47 +0000 (UTC)
-X-FDA: 85115231334.01.57A8804
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 70D191A000D
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 18:30:45 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O8374aHW;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 12EEA6B02D1
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:35:23 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 99047A02B0
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 18:35:22 +0000 (UTC)
+X-FDA: 85115242884.24.9BFB9F5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C23D5120005
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 18:35:20 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ie1glb95;
+	spf=pass (imf29.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787077845;
-	b=jIHvO+WWVZiyj80lqK7mQogsBz1G5Ff3jGS/GNcwWo0g6UY5yvUJ4AtBOBJ702HXwG/3/g
-	v5KU9IAVHtnxXgflKKzXaAKj2kY4uga23nfWOMxDuQEo0yFmupdE8sFP29n5UFKjrAhQ1g
-	6ma0XL0fEA+d1VhpgiRAisNNJoxFECM=
+	t=1787078120;
+	b=LxgMLvsXhZ4LX4who58wBvhHXfhkGWaYWjBFSTMNoumcpMh0NIYSuR/lbOz2dQy9cR3x46
+	4JnQUmcIwLbybbMkzriQQHGiTrIXF54s5glyWPY1qdarlhcfAAAItOPcqgCie5ErqRXK5l
+	sfuj/eJayk7Clav500Ead4q7EIQHFYM=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O8374aHW;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ie1glb95;
+	spf=pass (imf29.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787077845;
+	s=arc-20220608; t=1787078120;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eSXj30Cc4bmvN5zj0El/x/FOhUHkxKr00UzqKxKBUTI=;
-	b=ENweUPEsvaNSsOt1+w3Snam1zzvP+qqLupALwLvfP/Grk5T1+7KCkwBv4qBhie7dFDaiD2
-	hwsoredZOCMqyc0qZmM+L2OKe5qOUEsNG8G2T5zaKyA47zy8nB5gLrHPZAVODPsjla5fCp
-	Jj5flKQy0w93wOpi3chv2S+fQDmYgGs=
+	bh=nD9alVem4M7AVItlV4nlRl6Uyfz7vLLSdNxJ+Yr1jCA=;
+	b=dxW4pPjRi+smzLLNIbs+Ol7JXMriWBhwF+2QbdoiomAQuebh2i0Cfpe+i13dd4kZcF0zsf
+	kmlRCwgM0mlwY+1ze541DofiGXvTQxlm1Fq/4uMAjg/940/1PHBIonpzFw+qVODVuasae0
+	46IXGew4rRPCg96jrMuwj+ZJl6r0Ljw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 970AD409FE;
-	Tue, 18 Aug 2026 18:30:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18681F000E9;
-	Tue, 18 Aug 2026 18:30:37 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 33BF760204
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 18:35:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9701F00ADB
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 18:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787077844;
-	bh=eSXj30Cc4bmvN5zj0El/x/FOhUHkxKr00UzqKxKBUTI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=O8374aHWwEIpB8vv/xQ0m1FNeDAEKwlQw84Lo7RO26aHb7Xkv6sMyt0AFUrdVi4Rm
-	 tO4QoAB/9x/IVsbdh9XhzSMFY/ByTQVzQ4PT8NIsRKLbzSYvB0bSFN3IzDaoQjuW5X
-	 YmpRYejAZqxKJJZWMnu9Jphxjj7+/bJDgmdLuGXRdBFy6z39EM6+6zZvVSsDawJIdl
-	 5/O+1Km9e9sfPWZk05mSKMRXq/kKgMZ4lDeruxxyKAfuYsbicybncvqifQkYmvguYm
-	 8vEhpn5b//iiuT/v19he/sjcqBpQLJAtEm3lEZmpkutCo2hwIs0XIMiKaVDzwrAvg7
-	 Kpy89eo19Y2zg==
-Date: Tue, 18 Aug 2026 19:30:34 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org, 
-	nico.pache@linux.dev, baolin.wang@linux.alibaba.com, baohua@kernel.org, 
-	dev.jain@arm.com, hughd@google.com, lance.yang@linux.dev, liam@infradead.org, 
-	mhocko@suse.com, rppt@kernel.org, ryan.roberts@arm.com, shuah@kernel.org, 
-	surenb@google.com, usama.arif@linux.dev, vbabka@kernel.org, ziy@nvidia.com, 
-	usama.anjum@arm.com, agordeev@linux.ibm.com, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, kas@kernel.org, jannh@google.com, 
-	willy@infradead.org, pfalcato@suse.de, rostedt@goodmis.org, mhiramat@kernel.org, 
-	linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [RFC PATCH 01/57] mm: add pte_folio()
-Message-ID: <aoSj1bxg8zR_grwQ@gremlin>
-References: <20260816224609.308019-1-kirill@shutemov.name>
- <20260816224609.308019-2-kirill@shutemov.name>
- <7e40cdfe-67d2-4ddf-a048-f33b2d590371@kernel.org>
+	s=k20260515; t=1787078119;
+	bh=nD9alVem4M7AVItlV4nlRl6Uyfz7vLLSdNxJ+Yr1jCA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Ie1glb95zaKBXlAb+RIz+qLby/qvHHBIXjQPQpf/Yb/lG0bftM8DJKG7jfyy7Rnj1
+	 KsTrEhl2hhLcuyFzvLcYHEyMPxivzsEa2xC9Kq+k81NI3FOJI95D7sIYokTPTd4TBQ
+	 /k90gZljqGygUNrwU7EpTXB5V+TyVgfKrLiLVLv+A7Opd5uTGt1KfW5rcG15SrRkY1
+	 7xnwNhJJcoDleiZVAu1VGYZztB5G/k62h164N7gh4PAcMokq6Z7x9xPppobO2N0N3o
+	 H8penjN1DDYWN7qLmMiJEYvmoGC5a1N8Cu+6p5YHJymdQRf/KBM46scApsWP+roR07
+	 NGUyW5hDOGLwQ==
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c15d3cd51b2so15208266b.3
+        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 11:35:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rr6sbkE86U60JGRrTVsYva3Ysgqgo0h7iKVca46hmw2T5yJIvnDbVCfgUknV6kL8BDKYXh8H1xmfg==@kvack.org
+X-Gm-Message-State: AOJu0Yzk47qc3+U6TG0p8wd47Uc6HyiwGRODUwTKE9mfcTv/ia3LvLZD
+	vhkBjhu9l3QLbv88ISUzQIhYjir2FxHrZD7ED0I1k5lrVU1MGsbaRE1J0/M+7BtJ0cH9CspHhlE
+	a2dea/vCMxfJLqwBlzE9gErlnhx9PeZY=
+X-Received: by 2002:a17:906:9f90:b0:c21:72b:dec0 with SMTP id
+ a640c23a62f3a-c2216dbea77mr29484666b.5.1787078118783; Tue, 18 Aug 2026
+ 11:35:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7e40cdfe-67d2-4ddf-a048-f33b2d590371@kernel.org>
+References: <20260817131843.45121-1-husong@kylinos.cn> <1787017182353556.21.seg@mailgw.kylinos.cn>
+ <0689d805-45c6-4bb2-8eb2-f065457c45bf@kylinos.cn>
+In-Reply-To: <0689d805-45c6-4bb2-8eb2-f065457c45bf@kylinos.cn>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 18 Aug 2026 11:35:07 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNxnVYpwrsuB1Ofcwf-Lks2e+DL1Ys9CXZ5jozBug_ybQ@mail.gmail.com>
+X-Gm-Features: AcwNN1X0fMYlCQhwIAy4yXr2cG_a9NPX56FNrRgmFSglhsymz0fEqah-11M1DVE
+Message-ID: <CAO9r8zNxnVYpwrsuB1Ofcwf-Lks2e+DL1Ys9CXZ5jozBug_ybQ@mail.gmail.com>
+Subject: Re: [PATCH] mm: memcg: use ratelimited stats flush in obj_cgroup_may_zswap()
+To: Song Hu <husong@kylinos.cn>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Joanne Koong <joannelkoong@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, hannes@cmpxchg.org, nphamcs@gmail.com, 
+	chengming.zhou@linux.dev, yunzhao@cloudflare.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: C23D5120005
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 70D191A000D
-X-Stat-Signature: f8tfre99hp4783iiiitzecmt3pe8mzx5
-X-HE-Tag: 1787077845-256157
-X-HE-Meta: U2FsdGVkX1+3AzxhKHUtVI1JSUdTGg5Y5hnibVwkyk2A+V2Ter4EQmcaWZ/kW3FOSsQZYQWqwLw4UH/SM+2Sg7Z4ohmUn6F5TDisDalGhIFYCUjDXYZKtq+gJo4dUuBOsfURxOxGzW4r98q+SiYbP/HbiIx0q4nPF6YgZRBfD4LqGbfTUegOYJphsXxYI+C6XqLyiA3NaNs5+H7MYdI0x4K47hs6nPyHbzIeztSNZeq5y/YDYadmEZ1QdVztEvFEY8JNH24JcoepNaQ3hhzSVuMMNHc6XQH3gX4Ilbx0s+jUeuRHYYBDoCyZoVHneMfxNBTa7SxMKUsEGbnYVhctwmg2S/m6/ijgvvKUOzllgiRrNUc+j+17SKBOp1TV5YgHh8yKPSNn9FPoSKpGpc8rEAhUsTsv348DTK55VVTVx91XaDROmfpjex4JJ3v+N6sjipUAARKjzMhdHynOAw9UmShZ8Il6uyhfL4n74zXN/vlf6rXQDU6Y1KFtbRmiqL0aIaM/6Ut9JDHVbZx3iXtN4riM0Oe1EUQMZlJLb/HsJyypt9rtzz4EavAWk0ERVS3+wFg/avx5CNwQH3JD2rohqL6m2aAKhvr6XT88gU4cXvX4ZtqaYJykXKmUGJk4JZVXPxs4J0bwxoYGeFzxStqAmc4tq3xHztWHv0vvVcByjPNdp9SGZ3JRFmtbJhJyo3nmo6FZomDn3chqdBnJ6ZM7AxgXEi4TzF9+4v1CDlQ5bb+AzoZsEOfRgFFUG4JsiF0NIjJ4pFJqBL0IMtpELBvMMb3GVJ5/UQfEW0cmmOA3oWlqSSUIjzGmm3hRfuj+yI5R6A/nKO4vHefrfnnHReHiMgwStfl5r+t3TqFu28ns6+rGzvgfw8UXrQ5Se3dITYdGzCFXoUjOmJzPPBsdNo2SmeDMQXAnIiof/nSh5AqnsRtr5LeiGXYJOJvUva81mmV6plJkKz6s8UB93IyarD3
- lMUiRG64
- KeRe4O5Rv+61i1n8a8nC2dtEyCOt1vd1HTSjkNCOiwXZEDuJ+yA+9FHNJYJxMLgmDtjDw1QpACi68EOeP7nXYY1iyhuWXW4rMb/zY4i9gHRjizTTM5fRjn20Ydd7LHAEogywHVCChFm96OMOOhmpPVgferHHrkUX9DkCh3L+h3JEnYs7uEMg5UW5Z5HM66NzLDOAQKW521elJ3ZBRZ1gq1CkaH2KD8sbzZNltik5qVhpcw0k8IHa4Bik0mc6YFMSPBIUNn9diCUvrJwMVFMkALsbrrBCujKuhec5kMi7bmXSWLFdlJtSOMuXJvGLYT4PaVyEa
+X-Stat-Signature: xhqrzy1c1g1adjuf7gc58hbrcqaxcaba
+X-HE-Tag: 1787078120-170924
+X-HE-Meta: U2FsdGVkX1/heKC9THhYeHW4Ckj6qBleYszeTJaNz1z7cRQxOehUxUbLyspllrISS64A4wUT8Jsn8cf1V7Ko4U8mNiYBfoMjK3v3ymyDRk33IhVHu5UC+Xp7Gv/8a7NijB/+1BEIYJJDzgV9pdy7ZIV5pNEk6kw7JXHEYN6H8uywjHQjocapDTdHuHe96zATPn8s4/EwIEn8Omq5E8nHeD6OWS/5ekRHjhM/UTtc4vQd3pzr3AthBALSZsPJzochrZdJX/D3yojqLJ59+8uglV9/Q0ZRZlpxdUP/FSl6nuVtJ/Oh34QAo9NHke4v2XFLPPdjWJ72JkkZCe8EZUoIf7pZh5o5g+EfkYYL5Lei/PGV/uKZ6hllQ64NnSJLw3/AITUDM0ZSW3dxUovfNjqDXaDuszPHY065aGGh2qCIPxeqlag8n+fCnZXDp/G9DkLpScxTPvNT8r5MeBLxZDlrJsmeVR/dbX+UG0psmQXjhnMEgdXTWgPpuw2HglQykwHY3q8W9cLMTYx8ziJJ+2KzoD2TdjHuSKB//ZyipLdRp+LgV5y75YsiiEv+5js+yh5DlaEMQImSanKMRXJbrQIR4riwwq84WdRQDKpqFWfPAR5Owu6gn2ADzuqgOwamrZnuezmDO91ZO1MHhI166sxbf3oxrQ6FR8yok9wo1yKQo9eE9S9AtGOkel1wIs2LjJj6UHO/iRgp7wTAWs3TJfzYmlxwCe7K6pA089LNPX34ijTGeA4PgMzu27L9lupdpK6+PLBVwiaG+NVBdIGMqafUnllsuC1JMGbjnTdR276ogUGv1T9J81rDp2iAVOqmLCWl+ml0194jPPz6gtaEEAgaqIml/tC24lyD/FiNk7ZURALkM6nx3P5Af4yO3FbqKBITUBOOgeDO2tVdUOEROFj1c7hItzVD5N8jRAm69kCwfFGI0LCHSSmHO1R8GkRKRNq0oA+mmBAGBJnJfQyu96K
+ mSmzyh8J
+ qIQZpTsibbalAbWyAR4LzysF4vDFYptbqGD0DymieT2yBYOBHFqQFCyyo/F9T5iSH/jvXKkG9hxi1+6HTTIJUfQA9Ptb6nLK+013/bsBzR7EjHJ5K0fCSjMZpo8NkyBUAWk5XvD+4jaKCP0zsy6+Bn8bTgSU34JgIZQcS0JJ4/irQ72Yzh+ymhhs4oFCInS7SN1hF7E/ea5ZuLvre76X1pyIEEG698fB9wJwtOQDqq/X0f4rihTugyJuMlMpO2Uejp12+2MAFecDllIl4fRdyKDP0TBd1DeegESRqkV0ajW/6XMSWkiLdP0Nxa1EuWZGQqOZ2pOVsDqJbBoQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,66 +105,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 18, 2026 at 07:09:48PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/17/26 00:45, Kiryl Shutsemau wrote:
-> > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+On Mon, Aug 17, 2026 at 6:53=E2=80=AFPM Song Hu <husong@kylinos.cn> wrote:
+>
+>
+>
+> =E5=9C=A8 2026/8/18 00:04, Shakeel Butt =E5=86=99=E9=81=93:
+> > On Mon, Aug 17, 2026 at 09:18:43PM +0800, Song Hu wrote:
+> >> obj_cgroup_may_zswap() runs on every folio swapped out through
+> >> zswap.  For each ancestor with a non-max zswap.max, it flushes the
+> >> cgroup rstat hierarchy synchronously with force=3Dtrue, which skips
+> >> the ratelimit inside __mem_cgroup_flush_stats().  In a swap storm
+> >> with zswap.max configured, a container takes the global rstat lock
+> >> on every swapped-out folio.
 > >
-> > Callers that want the folio behind a present PTE spell it out as
-> > page_folio(pte_page(pte)).
+> > Any reason you are limiting zswap through zswap.max?
 > >
-> > Add pte_folio() as the folio companion to pte_page(), and convert the
-> > callers in fs/proc/task_mmu.c and mm/hugetlb.c.
+>
+> Mostly fairness on a shared pool: zswap.max_pool_percent is global
+> only, so on a multi-tenant host one cgroup's cold anonymous memory
+> can soak the pool and crowd out the others.  zswap.max is the only
+> per-cgroup control over that share; memory.max bounds the total
+> footprint, not the share of the pool.
+>
+> >>
+> >> zswap_shrinker_count() had the same pattern and switched to
+> >> mem_cgroup_flush_stats_ratelimited() in commit ea80da363a1f
+> >> ("mm/zswap: use ratelimited stats flush in zswap_shrinker_count()"),
+> >> where the same flush on the shrinker side showed up at 2.88% of
+> >> kernel cycles under osq_lock on a 96-core machine.
+> >>
+> >> Measured on a KVM guest with a swap storm under a cgroup with
+> >> zswap.max set: obj_cgroup_may_zswap() was entered 198,977 times
+> >> before the patch and 198,968 times after, while
+> >> __mem_cgroup_flush_stats() was entered 281,017 times before and
+> >> 80,445 times after.  The removed 200,572 flushes match the store
+> >> attempt count almost exactly; the remainder comes from other stats
+> >> readers in the swap path.
 > >
-> > Preparation for the anonymous collapse engine, which reads the folio
-> > behind a PTE in several places.
->
-> [...]
->
+> > This is a known issue. Using ratelimited interface also comes with a dr=
+awback
+> > that the kernel may react on stale information and the consequences mig=
+ht be
+> > unneeded oom-kills.
 > >
-> > +/**
-> > + * pte_folio - Return the folio mapped by a present PTE.
-> > + * @pte: A present page table entry.
-> > + *
-> > + * The folio companion to pte_page(); only meaningful for a present PTE
-> > + * that maps a struct-page-backed folio.
-> > + *
-> > + * Return: The folio containing the page @pte maps.
-> > + */
-> > +static inline struct folio *pte_folio(pte_t pte)
-> > +{
-> > +	return page_folio(pte_page(pte));
-> > +}
->
-> There is a reason why most code doesn't need that: because they should be using
-> vm_normal_page() / vm_normal_folio(), or need the exact page and handle special
-> ptes differently (see gup.c that uses pte_page()).
->
-> And other code that uses pte_page() doesn't really operate on folios AFAIKs.
->
-> That's also why you are only touching hugetlb code here.
->
-> IOW, there must be a pretty good reason for us to add a non-hugetlb helper when
-> that looks like a good fit for common code when it's really only hugetlb that
-> does weird things (and doesn't need the exact page!).
->
-> If we really *need* this helper, we should spell out clearly that it is very
-> likely the wrong thing to use outside hugetlb code.
+> > There was orthogonal discussion on moving zswap limit enforcement away =
+from
+> > rstat. Yosry, any updates on that?
 
-I'm also a bit concerned about softleaves here. Kinda implying every pte
-has a folio is problematic in general especially if there is nothing
-guarding against that being used incorrectly.
+I am not actively looking into that, but Joanne was looking into
+AFAICT. I will respond to the thread there and CC Song as well.
 
-pte_page() is more of an low-level arch-helper it seems to me (let's go
-look up a PFN from the vmemmap modulo arch stuff around the pte).
-
-So yeah I'm a little iffy about it too! :)
-
+> >
 >
-> --
-> Cheers,
+> Fair point.  The direction I had considered is the benign one -
+> stale low after a burst of stores overshoots admission for a cycle.
+> But after a burst of writebacks the folded value can be stale high
+> too, and premature rejection with zswap.writeback off or swap.max
+> tight ends in a memcg OOM kill that accurate stats would have
+> avoided.  may_zswap() is admission control rather than a hint, so
+> the guarantee matters more here than for the shrinker side
+> of ea80da363a1f.
 >
-> David
+> If moving the limit enforcement off rstat is happening, that
+> supersedes this patch and I am happy to drop it.  Otherwise it can
+> serve as a stopgap for the per-folio lock cost - your call, and
+> curious where Yosry's discussion stands.
 
---
-Cheers, Lorenzo
+Not sure how much progress is being made there, but I would really
+like to stop the proliferation of ratelimited flushing, especially in
+this case where it can cause OOM kills.
 
