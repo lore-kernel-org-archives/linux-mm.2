@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 617CCC5DF87
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 17:26:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E895C5DF88
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 17:26:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F1A76B0737; Tue, 18 Aug 2026 13:26:07 -0400 (EDT)
+	id 89FD56B0739; Tue, 18 Aug 2026 13:26:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A19F6B0738; Tue, 18 Aug 2026 13:26:07 -0400 (EDT)
+	id 850BA6B073A; Tue, 18 Aug 2026 13:26:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 569946B0739; Tue, 18 Aug 2026 13:26:07 -0400 (EDT)
+	id 718A86B073B; Tue, 18 Aug 2026 13:26:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D81F6B0737
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:26:07 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A28021401D0
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 17:26:06 +0000 (UTC)
-X-FDA: 85115068332.28.C19057B
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 45D866B0739
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:26:44 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DD2DBA011A
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 17:26:43 +0000 (UTC)
+X-FDA: 85115069886.26.F659B9D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id D6B7920002
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 17:26:04 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hd4zZqYl;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 1744A20004
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 17:26:41 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VkTka9sB;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787073965;
+	s=arc-20220608; t=1787074002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bVsmR2M21o1vKJ3cy/12UmIutLddLn3TpoYg5BwFDD0=;
-	b=Sna8a/TEFrNI947R0ncSgxvVqiYqhkcr99e7r6OUtcLAuP3sO+vITYLeDPtzfJ4KuWfioB
-	Xkzxjt5LODpgT/4cbli+kZMGxCcEcbtEaH70zhwMIF7h5lpzcgsXedwi30c40NtF6OlDiu
-	HyWvMKeV8sRoiQ0zqmf7vz2M85vhX+M=
+	bh=rnEdMRtIz89oIwbynNL9OjJWy1tOvB6Av/Ys5ptNXPk=;
+	b=sOUKE/lrFSa9uPoyXqXTjJWuragJJpB3GAJtEmDWSUnJtxFugCx7Y+gCLHm24ZESgVunfO
+	1BYZqbvteM1xbsmaQ2UDM6CrfTglQfG1dxKIuR1eU7nSkGLD26gPlKSx+NDE6vGijlZyMv
+	rbRESWehQ4/Yqz281L9MpFt7DwLAYrU=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hd4zZqYl;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VkTka9sB;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787073965;
-	b=fRlsNap4qY2i9X/3IFq5PHDAwO8tlODE62rktIHqMxdUO1LRcHrSHCAsEJmwEIujLmJAVW
-	WHhzKBggGWgv/rNxC1yi9lln4OMZRzLID2n81Q0yUVasxuV3FdGT32T7MaeDJKF3DwQxmW
-	QkBmh8lgVgfDf5PDBCp/Vpwl1M/We1U=
+	t=1787074002;
+	b=AMQOPyRRE97QHTj0mlMPnvUPCAMSZ6zW+UXOMSiKefF9S3eHK/54KvEUXHdvfd3EpcrjLT
+	xcjlKCUVFc7p7DHX84wp2DBTHJvA6axt3sJOaOaVkJ5dtSN52jSBjQxNYPjokBnVx4ZdPm
+	zPHY5H+SAijLXp7QaZ8PizCzwe2MSII=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1DD6D403C9;
-	Tue, 18 Aug 2026 17:26:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7EAE1F000E9;
-	Tue, 18 Aug 2026 17:25:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5BC3743687;
+	Tue, 18 Aug 2026 17:26:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62471F000E9;
+	Tue, 18 Aug 2026 17:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787073964;
-	bh=bVsmR2M21o1vKJ3cy/12UmIutLddLn3TpoYg5BwFDD0=;
+	s=k20260515; t=1787074001;
+	bh=rnEdMRtIz89oIwbynNL9OjJWy1tOvB6Av/Ys5ptNXPk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Hd4zZqYlsGKEx/jhtQpqKkSx9RTUboWG40nyZZJHu3aMW61Z87euXiGJSy0ADtjyR
-	 m66jdF1q+357id1bqIreIhbEdpZ/sgMPUxHsRL5upT0UyFGrvM6HyCS9SVpJA4TU+d
-	 gassLD90Xeh6KMJaO1fqTs+OebEDB8HnsqsPPn/z3u5gxAPalXv3a4gb1hT5xHadHh
-	 fdg8S8VR8ZQvXv6NBUwwaSAUrE12u/ZJCbhBwd6+Psh5v0mgM7k+65hSQgJg6UjjKK
-	 hdN0pPR0VYT1k9eqEIiOxYwmelrWgOV0PAZslwiEj/BEKTam2bKJR5YLAScDZA3fpC
-	 RmKBXcclg5XyA==
-Message-ID: <1de1adf1-84a6-4247-98c1-406686233d3f@kernel.org>
-Date: Tue, 18 Aug 2026 19:25:53 +0200
+	b=VkTka9sBrgxZBjvuWUfpq/xlYMQqt4vpe7baWUl2zn2trNJ8rpzrhrpwL6vtjm3qW
+	 wbBqpaxiu9lVfp57KyMZOJ7kiRQV+cpJAlq/k/zDZfJLSvyZUzi/0CTmFciWw53seW
+	 vhjcZ7sV12pjEumpOcvCJzxXwMSMqf/WGil9kIw7Tu+AxtV8233UXYJIJiJB2/EHVb
+	 WniMIdls6pU17tb/SWmZ8ViqAqCUJqJ72muZNyGzWteYnFUePKPv7MWye28Hnrbr6t
+	 XqELe+93riD5Sw2O3gRt+a1tqkyKyasmmoOMQSHfaI6RV28GMzsXnPLYB2jq1hl07U
+	 mMfTEguOfeKeg==
+Message-ID: <12829f76-f577-4305-abe6-319405bf8dc6@kernel.org>
+Date: Tue, 18 Aug 2026 19:26:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V3 3/8] loongarch/mm: Stop using pte_ERROR()
+Subject: Re: [RFC V3 5/8] sh/mm: Stop using pte_ERROR()
 To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
  akpm@linux-foundation.org
 Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
@@ -86,7 +86,7 @@ Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
  linux-um@lists.infradead.org, linux-arch@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20260818040041.1891769-1-anshuman.khandual@arm.com>
- <20260818040041.1891769-4-anshuman.khandual@arm.com>
+ <20260818040041.1891769-6-anshuman.khandual@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260818040041.1891769-4-anshuman.khandual@arm.com>
+In-Reply-To: <20260818040041.1891769-6-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D6B7920002
-X-Stat-Signature: e5fqsq4bunmcjux7rqdtuscm59bi4ezg
+X-Rspamd-Queue-Id: 1744A20004
+X-Stat-Signature: 3pnribirqbi8ebzj9nnsowwq7pjegkqh
 X-Rspam-User: 
-X-HE-Tag: 1787073964-836239
-X-HE-Meta: U2FsdGVkX18vuLELZwf+9lbw0nSJJnkT1szf/1dD0gg2zwlS/t8aU5TOGUhuYLr16DfCdXoitr8ZT9BfzRYdGV6gytDfbQrEV8CjKY3o8iqNLSHbZv1E/swr8sOpdjAXIM/ekcHE/+37c4cqk1A7DuuT2IaI9w4AxEvwlL0P0de38EmXzgJJgnj50X9Wa5M1zBEbpyRSuAaNxbtojvfHkde03dhUCs7PhbMSTjrhYA1vVK4UFjdwt2mqikt8fxN2PQalFn3QNlXPV5REsz+aPFrdBNcrtR/HPmKLnFpYVxPK9EX3B4mSCnTIKH8P+8Pz1mFLc10Rpscwh/kXE5L6je3tbHuxOjxVMgAbzBY9cYuzguO7SRktfDi0fYEArwMK81+8csilgLX0FSyGKbMWSfK9cBAqJ/759m7i45Owwq4h/GPKMJMsATuuqwT44sAQobabsXLixD+k6sA8c67qHIhlMOn6+jsAvoTh3nD+TEPJm72bRR23se86yY7He/VE3LANW8EPaf5I7LquVvHampkyC5fl1kpiHBPkmFcX7D+Eg7mn0k2F0evf0sLdweUf2u4jVhxZR1KqhS8Ae2C4dDZAGUa8jb6yoq5qFW3k6ErcTskhhlxtTn7bP+kbZYLdFg1O/tz+Ba2Ca7UDfsgqFaBRqPRp6rQSft97T9mAR9SyV3tEjuLNpDiF9N1Q8URFRbf3V2eK7ixMQxoSqiQwue+mon6JFP1QidBt1jMilzkZggJDNncZYRnd/MVjpAQ/5NZNTZzrtsrm0PqggdYQqem5QOybfAWC9yDTFZljrHyPda9Lds+GEgIyv0uwyVLs5tCsndFe8xqv77rlIbjE5VZqJ/SyqNGbIenMQqfKEMRUe66fZDLuflqmZIvfcvglWk/AHDNy3wSUVbJg+5n+cbttJLapXfQqmGiLMtuFH39Mt3rG2HwLiozzwD0kDB68NAY9D+vZsauu8F656Z9
- LFEzMvyU
- ahEHrGWz10dG0pynDhqWwrKsS8YnGGJ+UjlcPsG/ZykI8S96H3fv9ErR/FeMmZODe2c1pykL5aE0eIKofmo/WeFGaC2tXm2mVenfPeJGL5NKqCJzf6wSVgeaf5ZDwatDB3s8HpCwbipK1XCPXMx5Gy8d/U5wf1tOIgOlH8ktgHBhBOkgCfDihGanHvdG4zQ1qPjY8cTGrDoRNTAnblE6yQq74jV1YMIMRPmuQLmD/3DFvcKBH4A8pzGNp2EbE6SwY0GzuC3t+BdsdHEIO1AnUuxXWpGqz7zCpQtq1bQ3PJt1yf6lHXefDd4tIUSRIDovJ6LBRY7iyk9RKgqD3xdvpGDeCqZhbQJXUKfmDSlAVBtXp+RU8vu3LPvthzAoD5T0WeOs7AgICuKj+5+ackgu3QJu94hwoaqz06atymN7X0SkSPt4XXhpxgrqwGFDbVe18JzTEIvU9K7VqKmNX3cj9qoBLJg==
+X-HE-Tag: 1787074001-692881
+X-HE-Meta: U2FsdGVkX19nejA81rHSkV8JfYevdWjux1up39dNoUahxAN8vGmg8QK2LHIWRoweRbTe6T0A5RVluss5IHe1tBOI7OVtcytY3FItoO/B6k3oW4BrDj/kbxXvaHiRYw/pmZQOjp8tE+XwgIOVEflbtzE7kXpQGC66eam7e+bqhqa0x15HZEPSE8v1gZIBBfRj/ABlw8HM69aWKDVO8PydkLP7ME+uRlC6a9yHorRZX7BWdUDEA1GHK6OvWRLkImG32xo4zANS+aF5uVagh7T+Tu5B43duEs9FfyiGuhCNqRYx68DHCan1S3rn1n7m8OazdZTFGs2Xw4r5ZE+yWqw07ea2N4YqHIotHvRGBIRCGtiRb6JydaH8xT3gOpDG5OmizsQ03NgIDcUGvOmQOwq9gZ1hv2gZyE0FfAhAamNq5qvmM6zIAPwJJbkPSgSsC14uyno1//yA0+RMMlIRcJNJKzESr/f4C+HSgIYvFyEk5K0leTl+/YBaRtaWT0lsJtQ8/xztCfn1YZ8U5DpowNQB5OsKmSe8oFe4qVbWAh4f6OZPfyVD7kEMRAZ2QSD4OhlnikB9QhnwPobivWdHGWEellAq22jTGPhRRjYp6QRclOde9OCEIhk1eL68Qvh+QagYbE31tBMTKDnCj+iDbgovpAUTVbggJttMtyX1LZvS1wBd8QRSw9kLjKM6lNAFJyi2bFZEcCS3xe0QOSg8iLvdvqPYwWCNtM7bGn/xBumOjchcYRXzDjZICyLf0GKW74VoUpXP59WehdfeGeJSl7S8XkKxax1ugm96eAsoCsa8sNK5nIicdnuwgp0BQuj9KTIFtVmaNFUwsIQnmtur6tGMSr0OBKi7r0jSxU27B0Zanp1lpDZ6BZFgU00J4Tp/AaOxg/Q8OvzT0//PPt59tG1rRAvVwbaqRFVCoZwyebGg52Y7vskhgFlGVMG3+scg+e7oRIwasRsua2U0sgIVvZC
+ /sX+Y+rR
+ oN9qWwmq8dH4KisBcBB8eQB+l/X64CMbFxrCpzGUvgI/8XkD1tJYDehjM+k/U4F7fFAs++1eUwXnxM89Bu3iChPAzaIOeHdWnbej0G/8JHqw3BfrBIAtbYuQicZcwVwiuL+44i8sZZqDGnK+9YngTIRlc/wucEeYXtJN9pB0yO7ROQ8fbdb3oDw/L9PplLoAchjPtvM4LpJvFktlVICQh53lyEULxyuxZO3XL7tO1MTfUWEcXhKXS8iXWAz3aNJ6rIVREYkPYmXc4rooGVXrjB1t5jFDHuwiR65cMsisc4d38HJJVRZNWGDUhEJApu/xMI78wI98AyfS8PLMUN2qn70w0RvouDfaIe0HF2otuAzIvBcKvCsMDIbrDtmzdZDKTbqgeu0PfUjHO6wKzoPRQ6cTfIFFh7lR9fhj28zBCzta35cX9ZmD3affu6INeuojvDsoOBcjVyZu8ioEYPaFGg1oJwD8bAPCrrleBbD73L+wPn+Ga7wbLaOYUtOXKKJa0C8H9ULvRPoKI36NVPSwrMpx1Ig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,16 +152,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/18/26 06:00, Anshuman Khandual wrote:
-> Directly use pr_err() in __set_fixmap() and drop pte_ERROR() which helps in
+> Directly use pr_err() in set_pte_phys() and drop pte_ERROR() which helps in
 > eventually dropping pte_ERROR() macro across the tree. In this new printing
 > __FILE__ and __LINE__ has been dropped because they are always the same and
-> don't really add any value. The new ptval_to_str() helper is being used for
-> converting pgtable entry value into a string. The error message itself has
-> been cleaned up as well.
+> don't really add any value. Besides ptrval_to_str() has been able to handle
+> different PTE representation with and without CONFIG_X2TLB, which helped in
+> unifying error message printing.
 > 
-> Cc: Huacai Chen <chenhuacai@kernel.org>
-> Cc: WANG Xuerui <kernel@xen0n.name>
-> Cc: loongarch@lists.linux.dev
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> Cc: linux-sh@vger.kernel.org
 > Cc: linux-kernel@vger.kernel.org
 > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 > ---
