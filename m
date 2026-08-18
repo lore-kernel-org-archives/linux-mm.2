@@ -4,112 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66210C5DF80
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 09:07:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87A9CC5DF70
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 09:08:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7936A6B0161; Tue, 18 Aug 2026 05:07:06 -0400 (EDT)
+	id 7E4146B024D; Tue, 18 Aug 2026 05:08:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76DA16B0163; Tue, 18 Aug 2026 05:07:06 -0400 (EDT)
+	id 7BB876B03D6; Tue, 18 Aug 2026 05:08:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 681BF6B0166; Tue, 18 Aug 2026 05:07:06 -0400 (EDT)
+	id 6D1F76B041F; Tue, 18 Aug 2026 05:08:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 364856B0161
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 05:07:06 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CCE9116093C
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:07:05 +0000 (UTC)
-X-FDA: 85113810810.09.737C075
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C85E240004
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:07:02 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Pwradp7i;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf07.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 498E66B024D
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 05:08:18 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B347740B61
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:08:17 +0000 (UTC)
+X-FDA: 85113813834.07.5ED53A7
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E0FD42000E
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:08:15 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=q1LZRKCx;
+	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787044095;
+	b=pty1n1ic4PpRpOJ5sulZ0XGYbv94EN0J0mqn+feGynOu/rSx01DVSqlusNCP23TJ9TvlBV
+	YY3zhWOks2wHMRY0Vi7cWs13EcxWBKFPXLWDkFntvxUW5r3vdHqzQGLUKJc+YPPG7QoJhQ
+	vdqVL6uu3YUjDdKbpK2XxbWhSW6pdsY=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=q1LZRKCx;
+	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787044023;
+	s=arc-20220608; t=1787044095;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OUmQzs8imz/cxJgfjhdMM5XOnPvU68WAXE5zrkkXS0Q=;
-	b=L9fF8ot90YBqMq00Ih1G2h0fmfRgF7ccbdCkDe+5AY8jOSWjpdhN+JkVsBXYLzDEflWf+v
-	nUkdsN5Yd+WSOABXxFptflV26H2PiZLQ0UDqk8vuPlC24n8dfQ2diUrR7Y7hxD5iYkiaYa
-	VE0wSI62TCtnpQccU2gaWlo3UW7lKX4=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Pwradp7i;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf07.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787044023;
-	b=TV3x1TO7ChuElz3p8+kRm4iO3xgEGuPaCiJTK4mfS4pNQGVUl9lwJnBOJeAVTLXqAIGACx
-	+opb2jhTypbpXwhSfbJxHYtqY0U24Bd8LTYO7IRCaBjLy7Mzfz1oMGY/sqggxE3s5ZlWV6
-	hPRwqGuvpCKsfEI7qahYcZb02auDH8U=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=OUmQzs8imz/cxJgfjhdMM5XOnPvU68WAXE5zrkkXS0Q=;
-	b=Pwradp7iCtV9l0a3R0vCZDtP6ReAzqUBTqUY3M03OC6hUoXQa6x17MXUppagkfe0ZEhOUbI/p
-	nQDm96w2WikjWdQvEhgoBpu62fkrJBRpbmaEKOCFf2+r4RZ++1/CF1b7ZB0PHbfP/i5cWYM60uc
-	8VRtaosH3NkI3Sr6rXVO9Hc=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hPNqV0dlJz1T4Mc;
-	Tue, 18 Aug 2026 16:56:54 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 016A14058C;
-	Tue, 18 Aug 2026 17:06:53 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 18 Aug 2026 17:06:52 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 18 Aug 2026 17:06:51 +0800
-Subject: Re: [PATCH v6 4/5] mm/memory-failure: skip take_page_off_buddy after
- dissolving HWPoison HugeTLB page
-To: Jiaqi Yan <jiaqiyan@google.com>
-CC: <osalvador@kernel.org>, <willy@infradead.org>, <osalvador@suse.de>,
-	<jackmanb@google.com>, <hannes@cmpxchg.org>, <nao.horiguchi@gmail.com>,
-	<david@kernel.org>, <william.roche@oracle.com>, <tony.luck@intel.com>,
-	<wangkefeng.wang@huawei.com>, <jane.chu@oracle.com>,
-	<akpm@linux-foundation.org>, <muchun.song@linux.dev>, <liam@infradead.org>,
-	<rientjes@google.com>, <duenwen@google.com>, <jthoughton@google.com>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <shuah@kernel.org>, <surenb@google.com>,
-	<mhocko@suse.com>, <boudewijn@delta-utec.com>, <ljs@kernel.org>,
-	<ziy@nvidia.com>, <vbabka@kernel.org>
-References: <20260705180714.3708947-1-jiaqiyan@google.com>
- <20260705180714.3708947-5-jiaqiyan@google.com>
- <c5d4a1e4-cc3f-5cee-2ec3-53d5eb01bbb2@huawei.com>
- <CACw3F52RfFR4gZ9+kAmi6fkq39t6Sk1oUW0jqiXOFAAgn0iOyQ@mail.gmail.com>
- <d908b3d6-e3db-6eaf-100f-ffc1dd765c55@huawei.com>
- <CACw3F537_QTg8eax-aB2jDv+tEqgg8GqsP=T9wEfpH+zNttanw@mail.gmail.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <b7319726-4621-1896-07d0-f83a7fc37258@huawei.com>
-Date: Tue, 18 Aug 2026 17:06:50 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	bh=eH2+LAOZDihNr0Vw33UUIwKMjBqap0RbvpO51o4UzTc=;
+	b=EdgXTUuUP/KWw1L0UggrIbUiCZtLxih3aq9UmaCGJGS2L0qw1lku9bXlZyMWgy5yBtZ7N2
+	aGmu9a9nGwbC7iVcdC9DllVGw+mUtyMPvAMVQPSKQEoOfXsuvP5AJ7HaBYlbiDap6uG9lk
+	RetW6nhquxhWADeo5Jg5LgXVTzGFDWQ=
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cbedd5aece4so576400a12.0
+        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:08:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787044095; x=1787648895; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eH2+LAOZDihNr0Vw33UUIwKMjBqap0RbvpO51o4UzTc=;
+        b=q1LZRKCxItmilcN1Z21MQuE2JHBbjJLSFaEcIPRkKrRziy9zlMvl3wDH9yrkeooPg3
+         p48unDm3fchl6Ann5ntwHi93r22D25cL2hqj1lcfRnYvl1BLc96nJR/NTkqLYOkwKAem
+         TOxGdNah+Aj90fXjgY48zvMt7REY4Zf5uUodaFZUTPYBMq365XrvCyU+qYw4exNoJC/V
+         uLbI0TB9CMU9GZ3VLnoF9VrgSSTuCbTLkd43oFOxpUswUnSGmJ0GinBmgYlNnzmXqB1K
+         Em9xJGG1byUIq010QEkGPcK558zBluJdF5kMU5xrGbaE0kKXroK2RPNew7p3KwRI012e
+         9f0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787044095; x=1787648895;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eH2+LAOZDihNr0Vw33UUIwKMjBqap0RbvpO51o4UzTc=;
+        b=h70LPlnSX8+xA+wbqVGnyyDu7aykdyT0+7ZyfiqDlysg0V7h3KaUKQtDnsjQ6tV6D6
+         gWzvqhvZpLw+gncjUWGQgfJyeFXS+PXHLNN84xF27GB/fLaEaAyEtogh651bpPqZniwe
+         6k141aoxXWGwG+Kl+vRw8XjR65OjnslsNLrVnT4tLJFnLhJvg36eEONBP37bnEvC7+9a
+         EQ6UhnPOjJyOG+ZDftnROBtrkPu4f3j7OClnKVcVSXfsKOyf4gFlOyYegjcxroXaw+Hi
+         t6ss5mgfYXR7NutSc6A0bO9xy4y6raZVuWOqOZeUMsWov1teSVNXh5+W/Q6/RUHiisrf
+         Rpng==
+X-Forwarded-Encrypted: i=1; AHgh+RpIgKv7FHDOxn9vgZzk1zIgeWyXWYlbzwAZ33Id4OGL20qW1oKY+87VXD9fYGCDDIc/VeBP3RyCLA==@kvack.org
+X-Gm-Message-State: AOJu0YxhQCz1zhHztiPZoPWzsQARf5ywxbRU+EVIht0j8IBRhpGBiCPi
+	jmWo1aZg/UU+tHx9Q9StWKKBbrZTKTtjobJQR6q1nXre6VNIWqlYuSQ9
+X-Gm-Gg: AR+sD11H4NDN9Wr25cW+88sP90Xx0gEQk+fK2ua6Cn09azQiYnpIHRxyb92LJJ0a0bQ
+	GAzqoRba723+SnJilG0fb1J5DeIVZewU6UMlvE+eNSLete3kUifSzcSFYgP4jMk7RWx6y1CLQu/
+	Jz16oFSNdP0oI04087/R4scNauGZOX6xYy8wckLA1bBJ6FRCZEuYXrIFsJnmg+dQWjOdifP6ZGf
+	vw21JnSfPXCmNi34i1YS3rCzQc1xrenStRF2649u1HvqYnoMq3kCTmiwtU4jhfgybgUSeCMTVbo
+	N3hlWtbdkrsW7+vn4BjH70dlYft2UsDwYfiKTyCP1LgmPeSPzKa+Pf00iEHydb7jQep4kuuB9jz
+	auo4H1SamdDq1qrynfgSleuFHW3PPX4r9ncGusd7ApJ0iSXDWr2fvNuWuU5hGeutkNzt18tiUlS
+	F94eUmzCJyvPcOqLn8L08Eo0GItHHhFzPJbXFcdKmm29tzcvEo4QFfzokc5uSy+1TkfMxpuhF5a
+	wBDRCbQbV4W0ezVz96FwXlw85/nXe5ywBo=
+X-Received: by 2002:a17:90b:3e87:b0:38e:7f22:f674 with SMTP id 98e67ed59e1d1-395638e58abmr3372749a91.11.1787044094652;
+        Tue, 18 Aug 2026 02:08:14 -0700 (PDT)
+Received: from KASONG-MC4 ([43.132.141.21])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39531fba7e8sm7803783a91.11.2026.08.18.02.08.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Aug 2026 02:08:14 -0700 (PDT)
+Date: Tue, 18 Aug 2026 17:08:06 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Yosry Ahmed <yosry@kernel.org>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 2/3] mm, swap: distinguish a malformed swap entry from
+ a dying device
+Message-ID: <aoQFzEgZP_ZuSP3e@KASONG-MC4>
+References: <20260813-swap-v2-0-4a625ccabdae@debian.org>
+ <20260813-swap-v2-2-4a625ccabdae@debian.org>
 MIME-Version: 1.0
-In-Reply-To: <CACw3F537_QTg8eax-aB2jDv+tEqgg8GqsP=T9wEfpH+zNttanw@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemq500010.china.huawei.com (7.202.194.235)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260813-swap-v2-2-4a625ccabdae@debian.org>
+X-Rspamd-Queue-Id: E0FD42000E
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C85E240004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: fa6zoghzaooop9weohxeh991uuzs7jkj
-X-HE-Tag: 1787044022-34426
-X-HE-Meta: U2FsdGVkX19cVzS2LVAdFSwA9xTM6zRE9AKls0e8AWG9clQvfZrSjIgE9NyHXzkz8NSXtb8VvlrDyYZ2SgmwHKUWTMRUSRc9zhhN1oekgfieZdb3udAm8vckxVL5JEekR2aXWXii/aXlN3ufolDsPr0G0RfXOWjf+qiQH720gxGKMBhTyxhPm6rG8wTAO+6ZBzTWQwE2tQYo/wiui8d4H3/JWMLPVh6Zpo+kd/CF0G23Jx8lVugEk8jt0EvllImZMgjl3pgH6QeS05MGncohqlWTfBvLExIq3HyO7wy7In2Xw9qFRRLvpSup3j6ICOahj8clD4rQWNS9Hve0iYo9Bu7pW8FzqFxik8T28BSBI/XD3lWnIJN/Ezr3238esLAIu443F+aWsTG3/WVvrPrKlxPXOw1gWeAU6/RuOA2JdctodG5T2LUueH7W657TDhaFWwupP3H8ciLTGYHIKk8dO+/2t/1RXaWBFQlcZDNMB5QUcdJ5M2yiSpMzRSxkRw7BIqdSQtKRyMBNzDc0vq4cS1pw/C2jpoII8+PGowV4s1U13Fw0P/vDh5Q/QyeEjSR9NV8HNHXAe19w+kbO68fBZpPhg9XLoy30KrIOmspTWASbPgBGAZW8jvU/xUrmAHkkEjRQhDuXMdJsS2JrHJD3fOgIg1uEUgMojfcl86fad8rVrxjC0tKb3g2leSXeywKr9wXQZvVSFWrw0EMMQ+BqQmU+wX53mNoxNn6ruqUVMEELID4Ew1dv/WoWW36PrXh9p6Q4K+fchQLl1YcMRUZ5No5/uU2gLlKC+zkUPxatpINl9nFE8WWCr28EIG/L03BLJrxkVBN6qi14Vb+6cwvA8nfdMtqpqSpEJgXJPGcwvXSvyo8OMcsYEJ/oviLEHAJ4NedxJvPc7dGYW+wX8IvMDCNQD9QqMG8ZhX/3Z6NwksU4zIz1W79lF9DDKumy8rgq+MiKvVyOXzY2PTF8xkH
- QCw7n5nC
- PQCIXVEjImheimwDyUCh4hOk823iUHVwn+G9J06nvjKtnI4yP9Cl5OwK6pb+DjjQXgElCBd6lUzKox0agaBLicEcwi2c4ZoAukiHdBRgXDAoRZC2MSuVL9YztvFvJNcuA0nquDRqEgoiF5YLvdmzQXfaprRslunO6PpF73EdkNnGPgJgrf3wEiOMckF5hZ1fI/5l/j+ZSkG8mp9ofPoWqR1CcRAZvn2/NdETqwldB612KX3+vbcufEOKqlC8bdX2ndfyLlpAedmSbN1JgiuAjfsg0XbEFTBHJkhSzXPsp/kilGFPPjUPeYtRvhymYCd1tN74scnRi8IFuzfmBl16yLCIx4ykXqOj2dfEx93adpaSRunnoYA6Wsm35RSUi6GAO12acQTee54W1BFRNpXK60gEj4ZU4T/hGe2M5Vf/w4BeDr0YCesv6gdU8TRCrCVvpUkHlTj8WIsHqxJCwo+lNpHdd8BK1QS/stpLH
+X-Stat-Signature: rkgz96qri3agps8gssw8ei6q748bj96j
+X-HE-Tag: 1787044095-841318
+X-HE-Meta: U2FsdGVkX19a7x5XZGSieN/dB60Lf0esiviC0EK2qYzXfubKSWSa4O7DI6NWZWy0qn66q59YPy6V5rwNhUtqgdUbSNAPFI7giGEVPYL/N3RCo9eyA0FLG01UqfdJBRDqJq/VOga/AN3g8DBfjTmlBtL7xEJiNlhRuOATKlPJrkVfzwBojqYl6H/aCiFTU+kP07BMr688mIQO2XqNb+mZ2KeL9xWibTaYHB0i4czQZLqtY08oIO855Jgvm5n7LZjeR0v1VCMgjEj8TrRVOpD15Ke8jqgb0feB3NDffAfy4jZxcFE3qkaR6Eizif9Qqum9A06+e5i/iuIi++2lZk3wTM1QOENcPIKvXH1x4gKnlWRmMr6QLvlO+9pf5Lxx2b3f26sW6rBV8baogX3EbPk71XvLHKrY+UgysJWZ/Vv2NK/g0qIWxSjhCcqM70yXMxXU/CjLwrABfOVnMvgFe4oC8huFyO8r0dtmJjAW8bd4kR+kJMvc6AnR5p6xWnroneism763T21o90zBwL9xWLGK07+28P7+uJnVSmA/0cYipnHL3SqFTXARTkGFCg1bdTAnldmrsMzLYjRpOu3aTA/Em2Y27Hx8zej+01XHfI0eAWdjFCW1159CZNYHpOBVmC8/6EUD3bHo7Ze1xK7nK+7XCOVIDpIbfsCEkY4XBFwA+DyOHchvgVbLmjgpaKss2kte/lengq1nZGWTvVjgO4hNWjoXJo9jaRUVpj2oj68/BfF85ixemr+pBZRRSKiyrTNtuP5eVsP086W3Y169AJPOU6cfav20T00JQMpRXOTfmwweoJClvYSaFnsa4YpCv33S+mmf6sLXhwtr5R4ccZ8QDHBrWZRXB6XSfQoGeJ8KI5PK+gET328+LH7Q+fCQ+y5SyeSfZddVQ5GDu4xWK54SGQD0KqU1scU92GL9xLID5k3ozqBr4F3e9OAefAuRLX16UCnoraippwthHJ2kRBT
+ YZq0W8pt
+ CXbg/zjdrSI01035XaVD5YfQ30IqLocvXjwt3EHpN67JPaOcENEafXVKU/Np5Plrpk1p+w1KC9osN78X3y8agRFJmRZDmf44PJ1aet++IWiSUbZDWrnLwVnB2YrMGZwcJoeKT4jCUHZIQAAEvuiB8CQc4NsxZRZSjNb8Hx8rz2hgJHLaVchAO571TCt0VNGVCfgUmloLVkAQ4Texd67R0w3XkDEc9OhpoydKOwA5d4VsJuuR8hW6UQZgW02dcOYmJmYQE+NNcG8NeoTO/WvLTePPRi9Z58goTQPthN45nzYdKTcdCwi35xJUVNFDrrNGn3qaF7lBJibQCEw7yXjOEE6StZEOmWxKqRPh/puAzGBlcYlRgWSCctnze8U7HQhYO4tAODEA8QDcNKBRd19cxHdBVG4VFsl9i/aV5CQooXL5rAypYKiNPXacU/29cesrlA2jAW8UUuEvpr7vRo77J5MmAyja9b6bqrBQqrZq8fuonB0p1m40O9v3J996R1IfNz6WrnEAFpxJqAdbYC9msf/MbNSEb4Nh5h/RLV8w3VIKLhfolnYJdBapYka59D1JJMbfd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,158 +131,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/8/18 11:30, Jiaqi Yan wrote:
-> On Mon, Aug 17, 2026 at 12:23 AM Miaohe Lin <linmiaohe@huawei.com> wrote:
->>
->> On 2026/8/17 8:29, Jiaqi Yan wrote:
->>> On Fri, Jul 17, 2026 at 12:37 AM Miaohe Lin <linmiaohe@huawei.com> wrote:
->>>>
->>>> On 2026/7/6 2:07, Jiaqi Yan wrote:
->>>>> Now that HWPoison subpage(s) within HugeTLB page will be rejected by
->>>>> buddy allocator during dissolve_free_hugetlb_folio(), there is no
->>>>> need to drain_all_pages() and take_page_off_buddy() anymore. In fact,
->>>>> calling take_page_off_buddy() after dissolve_free_hugetlb_folio()
->>>>> succeeded returns false, making caller think __page_handle_poison()
->>>>> failed.
->>>>>
->>>>> Add __hugepage_handle_poison() and replace __page_handle_poison() at
->>>>> HugeTLB specific call sites. The being handled HugeTLB page either
->>>>> is free at the moment of try_memory_failure_hugetlb(), or becomes
->>>>> free at the moment of me_huge_page().
->>>>>
->>>>> Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
->>>>> ---
->>>>>  mm/memory-failure.c | 36 ++++++++++++++++++++++++++++++------
->>>>>  1 file changed, 30 insertions(+), 6 deletions(-)
->>>>>
->>>>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->>>>> index 3d15b4c1b694..a37b67550718 100644
->>>>> --- a/mm/memory-failure.c
->>>>> +++ b/mm/memory-failure.c
->>>>> @@ -174,6 +174,30 @@ static struct rb_root_cached pfn_space_itree = RB_ROOT_CACHED;
->>>>>  static DEFINE_MUTEX(pfn_space_lock);
->>>>>
->>>>>  /*
->>>>> + * Only for a HugeTLB page being handled by memory_failure(). The key
->>>>> + * difference to soft_offline() is that, no HWPoison subpage will make
->>>>> + * into buddy allocator after a successful dissolve_free_hugetlb_folio(),
->>>>> + * so take_page_off_buddy() is unnecessary.
->>>>> + */
->>>>> +static int __hugepage_handle_poison(struct page *page)
->>>>> +{
->>>>> +     struct folio *folio = page_folio(page);
->>>>> +
->>>>> +     /*
->>>>> +      * Can't use dissolve_free_hugetlb_folio() without a reliable
->>>>> +      * raw_hwp_list telling which subpage is HWPoison. So do not free
->>>>> +      * them to the buddy allocator. dequeue_hugetlb_folio_node_exact()
->>>>> +      * will ensure to never re-allocate this hugepage.
->>>>> +      */
->>>>> +     if (folio_test_hugetlb_raw_hwp_unreliable(folio))
->>>>> +             /* raw_hwp_list becomes unreliable when kmalloc() fails. */
->>>>> +             return -ENOMEM;
->>>>
->>>> There are some branches in __update_and_free_hugetlb_folio that will leave hugetlb
->>>> folio untouched:
->>>>
->>>> static void __update_and_free_hugetlb_folio(struct hstate *h,
->>>>                                                 struct folio *folio)
->>>> {
->>>>         bool clear_flag = folio_test_hugetlb_vmemmap_optimized(folio);
->>>>
->>>>         if (hstate_is_gigantic_no_runtime(h))
->>>>                 return;<-- 1
->>>
->>> Thanks for catching this, Miaohe.
->>>
->>> I think the most challenging part is that
->>> update_and_free_hugetlb_folio() must support deferring freeing (via
->>> schedule_work()), so adding a return value isn't that straightforward
->>> without some refactoring...
->>>
->>> If making __hugepage_handle_poison() check
->>> hstate_is_gigantic_no_runtime() == 0 (or
->>> gigantic_page_runtime_supported() == 1) isn't an absurd idea, we can
->>
->> I'm afraid this might not be a good idea. Maybe we could re-check page state after
+On Thu, Aug 13, 2026 at 03:02:21AM +0800, Breno Leitao wrote:
+> get_swap_device() returns NULL for two different things: an entry whose
+> type names no swap device or whose offset is past the end of one, and a
+> device that swapoff is taking away. The first never becomes valid, the
+> second does, and callers cannot tell them apart.
 > 
-> Any specific reason? It seems to me that code that included
-> "hugetlb.h" can access gigantic_page_runtime_supported().
-
-I am concerned that with the changes of the implementation of
-dissolve_free_hugetlb_folio(), gigantic_page_runtime_supported()
-might not be the sole reason causing dissolve_free_hugetlb_folio()
-to fail. This would require __hugepage_handle_poison() to be modified
-accordingly but we might miss that in the future... But still no strong
-opinion here. :)
-
-Thanks.
-.
-
+> Return ERR_PTR(-EIO) for the two malformed cases and keep NULL for
+> swapoff. copy_nonpresent_pte() already reports -EIO for the same
+> corruption on the fork path.
 > 
-> I feel checking gigantic_page_runtime_supported() upfront is cleaner
-> than checking page state after dissolve:
+> Callers bail out on failure either way, so switch them to
+> IS_ERR_OR_NULL() and clear si where the cleanup path would otherwise
+> put an ERR_PTR. No functional change.
 > 
-> if (!gigantic_page_runtime_supported())
->     return -EOPNOTSUPP;
-> 
-> vs
-> 
-> /* Direct state check after dissolve */
-> rc = dissolve_free_hugetlb_folio(folio);
-> if (!rc && folio_test_hugetlb(folio)) {
->     /* Dissolve failed silently due to unsupported gigantic runtime freeing */
->     rc = -EOPNOTSUPP;
-> }
-> 
-> 
->> calling dissolve_free_hugetlb_folio?
->>
->>> just do that and avoid adding return value to
->>> __update_and_free_hugetlb_folio().
->>>
->>>>
->>>>         /*
->>>>          * If we don't know which subpages are hwpoisoned, we can't free
->>>>          * the hugepage, so it's leaked intentionally.
->>>>          */
->>>>         if (folio_test_hugetlb_raw_hwp_unreliable(folio))
->>>>                 return;<-- 2
->>>
->>> __hugepage_handle_poison() already checked this, and with mf_mutex no
->>> one can set raw_hwp_unreliable.
->>
->> Agreed.
->>
->>>
->>>>
->>>>         /*
->>>>          * If folio is not vmemmap optimized (!clear_flag), then the folio
->>>>          * is no longer identified as a hugetlb page.  hugetlb_vmemmap_restore_folio
->>>>          * can only be passed hugetlb pages and will BUG otherwise.
->>>>          */
->>>>         if (clear_flag && hugetlb_vmemmap_restore_folio(h, folio)) {
->>>>                 spin_lock_irq(&hugetlb_lock);
->>>>                 /*
->>>>                  * If we cannot allocate vmemmap pages, just refuse to free the
->>>>                  * page and put the page back on the hugetlb free list and treat
->>>>                  * as a surplus page.
->>>>                  */
->>>>                 add_hugetlb_folio(h, folio, true);
->>>>                 spin_unlock_irq(&hugetlb_lock);
->>>>                 return;<-- 3
->>>
->>> __hugepage_handle_poison() should not get into this if-block because
->>> dissolve_free_hugetlb_folio() must have
->>> hugetlb_vmemmap_restore_folio()-ed successfully, so clear_flag must be
->>> false here. Otherwise dissolve_free_hugetlb_folio() already returns
->>> early without update_and_free_hugetlb_folio().
->>
->> Agreed.
->>
->> Thanks.
->> .
-> .
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  mm/memory.c      |  6 ++++--
+>  mm/mincore.c     |  2 +-
+>  mm/shmem.c       |  2 +-
+>  mm/swap_state.c  |  4 ++--
+>  mm/swapfile.c    | 14 +++++++++-----
+>  mm/userfaultfd.c |  3 ++-
+>  mm/zswap.c       |  2 +-
+>  7 files changed, 20 insertions(+), 13 deletions(-)
 > 
 
+Looks good, thanks!
+
+Acked-by: Kairui Song <kasong@tencent.com>
 
