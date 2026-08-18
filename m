@@ -4,115 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 093C4C5DF80
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 08:12:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89869C5DF70
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 08:21:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD43C6B0157; Tue, 18 Aug 2026 04:12:26 -0400 (EDT)
+	id 8C3416B089E; Tue, 18 Aug 2026 04:21:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A858A6B0158; Tue, 18 Aug 2026 04:12:26 -0400 (EDT)
+	id 874736B08A4; Tue, 18 Aug 2026 04:21:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99A4A6B015A; Tue, 18 Aug 2026 04:12:26 -0400 (EDT)
+	id 763646B08A8; Tue, 18 Aug 2026 04:21:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7420A6B0157
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 04:12:26 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7E74E160ADE
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:12:24 +0000 (UTC)
-X-FDA: 85113673008.29.445B2A0
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 8D0D680005
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:12:22 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Dsgha4GZ;
-	spf=pass (imf30.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id 561E66B089E
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 04:21:57 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E2E62160ADD
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:21:56 +0000 (UTC)
+X-FDA: 85113697032.20.ED8E5C6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3E7DC1C0006
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:21:55 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cv/zZt18";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787040742;
+	s=arc-20220608; t=1787041315;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ut+xbTDj7ZhkvGJB+feKg7bYPoIX3tceZd+RikWwvEg=;
-	b=gEdDyINVnLeMvKOvD2HIdPM2qsCWrIO86YabUMGpsWZGh5rhJGpLTRqBH1MQ2uriagCXR5
-	ljTHLL+/UkeUgQYm8R34obZ5Eo6swi9Udji9OEuIkSYrQlMtvnzbIGNq8BQXeS+Sd7YJ+4
-	0sQ//WSIaDU2YUFeRgIciUj4i3a01Qk=
+	bh=7aLY/2rHSc0H4xWV38Nj7mu6p4voUj76rve8wfVW5R4=;
+	b=epXTS12jKfg3NQTLuv4ZzMzV95JF7vEPaidTPtoC8iM+z8dZ0YCkY9A4N7Lt86lK0ngXEe
+	XRMvMRiEh4/v8XxaDHmbuqJvO+A0vrmZuXb8m6p/RikbBlpIu5RP9lh99eDV7fzthQ5Kif
+	Sj/L9g2a2iqiiouE1/OMt5IR+ffi/Po=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Dsgha4GZ;
-	spf=pass (imf30.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cv/zZt18";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787040742;
-	b=cSHe1pleqhBIAqft4VJpUvu7QgBZPJe9uL31nL5svWqkr95DqnJ3DXsIYOEOyOiNkqBDVr
-	V5QHX5yUIs2zmVzuhwn4OxYBGlDFf670lYpyb1Kq3W84WScCim7cIF0GBfX6knXwPOKbdk
-	/7y2W1c4lgpPK4RRA0ofZu2kR1pqCc8=
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-481412f1828so1430946f8f.1
-        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 01:12:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1787040741; x=1787645541; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Ut+xbTDj7ZhkvGJB+feKg7bYPoIX3tceZd+RikWwvEg=;
-        b=Dsgha4GZpi3XW+2havcNRzcOiOahMBozsIzD1M9qnaqCEsMdLKrVivvV5TpKYHTB9i
-         sO+JMj8XCYth+LBJzL9GlkJyC6SunSdeGMU7OTIGNVDD7VPlkOj4FAy+kSKIspjphbvA
-         lwi35G47CRichnrM9CWGxgxuUd9+ROtcSsm9b9mrKjJ+ldV4w73a9MQzm2hg5KmLW9hX
-         8c14cbOP8C6skahUjNqQzPAAxPeIA/UeLNVTojUEiL74CwMyPJbDQCdSCyUYFKSac5sj
-         g1vjsBhTkoxxAiHLOfyIPqUvxvq9qX68AiZP3fDkt+uCS7xnEYa5iqbUCo5eBj3qNGKJ
-         /KyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787040741; x=1787645541;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ut+xbTDj7ZhkvGJB+feKg7bYPoIX3tceZd+RikWwvEg=;
-        b=R2MuHAnqfcUfUHRJWsDhEsSNbhUka2TGWHVd+tgvG/eQ+Pfa1nSQ6LmiI2ldY8jOv4
-         6XqU5iqZk9qhtqn/MCo9XoGCGdus2ISU6T4mwIh0xrVexe2V4E2uTTaaxZ1fYVm8+djC
-         IV0IapQ42gsLyC8iy9yPn517YOOKmD1rnHb3gMyksRKYbXLVPVyD26I6QeDo/oYJdCWx
-         TDxzAid1gJQdlUecBFAlV8cB4HgJs907tJgerb8SAx6JnC65ejEMw1BThc6O0pYe9cn1
-         VEcQFQqjgJxVl0OriW6D7eL5qckJV79okHauGou5kfEGf8vAlwA3JWUijq70/hVeLmyD
-         tCNg==
-X-Gm-Message-State: AOJu0Yxb0gVEI8R+kNsNO3/0cQNdt+LqR5KNnw9IY1D6COKV2B+nMqp1
-	UhsFqNmnah1QfEJocc0Mw6KjRiWg6pzeOlq9WYGL3ntbhA3R+iF5zg+RYQ+KQ2ZHa/w=
-X-Gm-Gg: AR+sD13t5kGVRysDNqQmGCzQd3ZA9vmYloPJhuRRzjCgqsXKL5nGP3h0gMdrxemP63q
-	VYXetn71LYUcUxQWzB/dc7ijJ3qW1WPREtfAa62G+Basn9DB/SbGnv0n06UWhzO4csWQ567KE9U
-	WzpEhV0qpVr8/iTjfqu89CqtZO94ZI+4xu2B38m6h+GtRMpSoAansDPNPb5r3cFNEAXeV/gIgoM
-	WgbwGm2OVs7tq1V3zGjAQKu8lLMMxgLmkNOPb+HBOW3ddmyM/+rhtQarXuaQ0Gpe07Ofvx9BB+s
-	Ik4R/5581oqBCVvttrYZotmDf8U6mp7hQZU+z9zz8rH3MP4w8fJlyjLlb+YsN+nMZ00S+HkZOjR
-	DfZil57hdAd5byzyNnvxHOx8wOBS9fGslvGFeIKTb6/GfepxKjlfaxBPSxmeyNrKiwqrjeRQUej
-	S6zISo+wrabOESofGWHYWk9BhvBuXtPra+vEb61tD5GfUtflT1yHzW94FFl69vITPiHx214/4=
-X-Received: by 2002:adf:f708:0:b0:47f:aead:f81b with SMTP id ffacd0b85a97d-48160756569mr38056944f8f.21.1787040740958;
-        Tue, 18 Aug 2026 01:12:20 -0700 (PDT)
-Received: from localhost (109-81-86-48.rct.o2.cz. [109.81.86.48])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482a5b77fa3sm9726073f8f.26.2026.08.18.01.12.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 01:12:20 -0700 (PDT)
-Date: Tue, 18 Aug 2026 10:12:19 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: liuqiqi@kylinos.cn, Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: linux-mm@kvack.org, tj@kernel.org, mkoutny@suse.com, hannes@cmpxchg.org,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, akpm@linux-foundation.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/8] mm/memcontrol: introduce per-tier memory
- accounting and control
-Message-ID: <aoQT45_Vu8KZ9rjk@tiehlicka>
-References: <20260818023121.100613-1-liuqiqi@kylinos.cn>
+	t=1787041315;
+	b=ae3KXzqIRgPYIi/FPuCY015g6b8+USk6DixH4CF5sDWIJK/jOtzonsSPjOGIJ97maal5RK
+	5AcIo1i9oXtBv7OfSsPPm4TnCv8jBtHmbyfeKnzn+5QVJcQQgsysDCMFI39rvXaQ39hu/F
+	Xp3tNRVzw4++6gf7DSbQEFX1QUR8SrY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5705A601DE;
+	Tue, 18 Aug 2026 08:21:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B117F1F000E9;
+	Tue, 18 Aug 2026 08:21:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787041314;
+	bh=7aLY/2rHSc0H4xWV38Nj7mu6p4voUj76rve8wfVW5R4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=cv/zZt18oNDbdfW10lQ4W9vSXzpH5nZ1k4+9zsUHQ3CqiEXxZ06dotCXkyHQhy/CV
+	 Sq2IftAjlNy8UvUPBoJHUnHOIshmc8hILs2/Be9sOMqM1batzY7Zwn3HlQxq39zjsI
+	 aL61FcaJlbu+K8D2RhMZUaOK0SeL7EsiUbuQ/cWPRTDJjnYt7GAzEOb/NrDDKKpkSx
+	 BhIh1nJBpOd7fAcdjypwpS0jWL1M1r42CGIb8CpaLYgiKa/GJbGdAk2mVuZvRAq/SV
+	 5nd3d+raMBd1OfXPvNSR0hiwqkhnsGzlWO93BQQbVmrB28Ktw83ZCTYTsoU5iJw8/M
+	 I1HMJSfnFSevg==
+Message-ID: <ffa0c74d-415a-4a63-9843-7b9412359c46@kernel.org>
+Date: Tue, 18 Aug 2026 10:21:47 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260818023121.100613-1-liuqiqi@kylinos.cn>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8D0D680005
-X-Stat-Signature: ayonpzj7w8eyhwcrw5grkwcajrauskak
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests/mm: Drop redundant open() in mprotect_tests()
+To: Hongfu Li <hongfu.li@linux.dev>, akpm@linux-foundation.org,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, shuah@kernel.org
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Hongfu Li <lihongfu@kylinos.cn>
+References: <20260817080616.52946-1-hongfu.li@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260817080616.52946-1-hongfu.li@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: yzjcftpn6d5cakngesqs3fudwfwtfnu5
+X-Rspamd-Queue-Id: 3E7DC1C0006
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1787040742-573293
-X-HE-Meta: U2FsdGVkX1/JfWnsq3RmixBBU0liuLZvDQqHiVYmZKHGalhQVjNHtgqLepbHVqB/iwuY5BzyCapemt2Tb5A7FHquowUOJ9C1kOcJAyUnTizOmKUfivuLqri/f2gaKAjBTnkO31O1+arh54QZPjUmCkdqcMoBocB4xwqH8tqyp4lwn/sHGvEcnBLbqRPE59vlUALaX47a1jKTX5Kdk6vf8KU87Eu2mty1vNXyoneh3/A2cIrR2uI/RjzJ5bHc9SOMj756L+rlGmHO8TGMZiSltWHWPMTi93tgZRggOrPOesc/Djx7Y+7ErPDtLokXQkihfc5v2w5nCyCYCPAfUsnmfRIhSKByWaJVJn/wjjU3WAsUVQPmsbGKH2wVfwgm16it5UeM6d1AX5ChdxfEGfGr5zwKt0onrhIHShd5RS5omBAopwgJJwF4YuDhG8NZqCEL2Rh+B4WXgAMlOaHkCm7477C4bpNpFoPbp/QTErxhtHvBZRTy+hEW6MUQEB1mQOWUkbIMGGxAHfrxU2njKVOfDJCJyL5/2nAl3IGwyYnZ7olHQ0Vbay6LhoqA0XWkR9ZH244TACTOHq8HaqmlC69H6DCfTaUiTrltkhD5EkIUBkd6D+ncfK+lmQ2Y3xdukdTANk1AfYi0I2bSn4kxSoRAsPLdIU30Akaq/8E/lhQfAU9PpSWWYQGC9I/ojyKmkTkSObuQSpL7KEIo6+XeNWrgHrmBJzgKF3Fd2lzESj03bGXSckGohcNCB6Tgw2yvY467XvkgYR8fHP1BjnMEWpfw4AulNdvcQ1DyJK0zyK1TxdEbk4R6e/gDhiDLqMW1CfZxbpuRIJZRVLZ52k9cYNADpAixguVNZUl66q4qL186GJdsZ52bvIbSzc00oUukh2USOpRTYkrNY8vwe9QsbUWIGhXFo4LA0AecKg2QfN5SDKnvcXA6WAWffHlTtbliA01JPbfVeOH1ISKugoKGozY
- cvIKBEQL
- 9BxqFOZxjSrWhVkQ7msGGVRi/KClCXJeZ3fzNd3zkEXUJHeJJmje/vPy/ILMYyuT/ZuL/kxs7y8rkSbxwFGgX7+AITLbl02hVvoqMKUBFEjF9e8pIuSlojhCwufjuo09982NxY7NtwNS2fzAPi5OVnJc6uGlhGK9M5hYfv15ThasyGRezopcMn/xHxhN81YS72/0CMD+hjqYPl1T3htGMoAN/ZmkRnFCXpb3UhLag+CdMQfVjOQX2CBTPS18rwD5OYzx0OROTeHKBh+OhZES6W7bHAxQQf3xtT9WpVC7S7HLPy8nJJF4CF3kebKvmEvBQ9awSTswFo99ougJ3RjddLfhekmf3l5i3xh6AicJl9b6527VRF+IjKxiE6kUPWuMEVd2svvUj8SiuQsQys9hK1kELkYXGApjoyTOqsCt+17NsChEEprQN+VLmLDIcbCfS5227NYra8N71UE88k4Syarkr4Rh5UUaE+pPR
+X-HE-Tag: 1787041315-606588
+X-HE-Meta: U2FsdGVkX1+Jxf3XaGTkP1imzN/cOz1Us9zLsi9KSsXlFqJFyFIyHoKB7e751qzLUIhcJ592X7UmperAZrzCoS09AaPt55f87BPmRvmYK/Xh/bOBy69swT6rli+hQENJbf6bzgA2jIpd/OEeu5XyHsmVGJ/gio9KtOHMhf6Yn5R13dOOVNhK1pK0H58dOFs8Ln5avSDlhSlNYOn2YqFinEYP5dWs11iTcC5egp65C1hHkZ0PWCcCU+AHJ2bl876nKnm9C2+j6lY/wgOjVLpxcD/1TYBxgOcdPcAxyi2i1GwKeqx7NEaePoYiM6t6xH1wdvsuXUAPuouPev9DcZH8nxRt8XH88s3q9JWK71Omf4NXZi0ZSr6I46IUcAJpM+N7OJIcAkdAKC13U1Q7GZRjVP/Evalzte01SlrYcOn0KUC7h+cq2LnRNDYiIUL3R7iIJrnqaVb7pce/pj1lvNEWaEs17zHZ0nsU10+q5m7dSdOGl612mQmFkuTr8PE83998IzSI6Q6e6KlRcyY5Ya6ZPO8WUUxLolT48bGCqqbcrYJDzZS1e/YxT4XND6QwPkTKCcuBUMMLfvw9GDyLYnD5mDbWZsZnaHwAzo+385NR+AKd1eaHS16QtzjkuubWNDoDSdd2+qLOeJUQ3yO2nvcOde4deQhtcNUBYeTYPyyOnZq7tkia910yQxyyh2InH+o9+ZYxTOYRrFQhBokaI0NKnghd3Bu0o/KKpMSRNqk3RwOSdV8m+Ii1FlhzeD7Ybr9g8iz5qhHeWQnG39nIJMKXMwUhHlDN9pdHZeXIu7Puqcf5lfxt6gl1VxH7gxwJ2dKWbRrf97evicWxdrmkpvHt3YCmlwAsxvndCBz3zVbQrEp+Nc/mlQfRjBsVV8MTxhCCN5wJTyhyoii0A7TNmht9llotpqKDZJZFsxlsYe/sQYzqc7xZeTTJUxaI/B/XCrz9UdEkWibJMKGYp/ZstbK
+ 3f32pCow
+ /7RZGQMdJOVa+Vih4EtLdh6+SLcUzi2sK394V4tZXp9ry58AyLua+aVfmxfUYc8qAG9M3PC5tkhD3Zk5Gm6Ge95IgyDT/Ptn4j8sYY+3QiOhc95c/w3cvBCpcPwnIYvos2utvCVxhoAhhyEaOmNunBrHVDPuQJOPYhMWK8ZjsVhiPi/8jRXG8ViXsoFi3ruwTjrI5x4MHITvrXnFwvkCSoA54NhXshEYOwrN/JldAkKW+eeYaRVOenGU16tTqna1zKtrYzB4AwQVnlFqv4O6+bZzTO6Th5x6YNLskdKX2v7lG0HyTldep7x91k3lwG5uRmGEH45mBcGwFmsc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,172 +139,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Are you aware of a similar work in this area by Joshua
-https://lore.kernel.org/all/20260807202059.2620949-1-joshua.hahnjy@gmail.com/T/#u?
-We owe Joshua review feedback for quite some time but if I have to be
-honest the most impeding factor on my end is that I am not really
-convinced tier aware controlling is the right direction. I have
-expressed some concerns on one of the earlier proposal by Joshua
-https://lore.kernel.org/all/aZ2LC0KPF0xsAwAL@tiehlicka/T/#u
+On 8/17/26 10:06, Hongfu Li wrote:
+> From: Hongfu Li <lihongfu@kylinos.cn>
+> 
+> Remove duplicate open() for local pagemap_fd in mprotect_tests() that
+> shadows the global pagemap_fd already opened in main(). The local fd
+> is never used in the function.
+> 
+> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+> ---
 
-In any way it would be great to talk and compare your approaches see
-where they align and the discuss further.
-
-On Tue 18-08-26 10:31:13, liuqiqi@kylinos.cn wrote:
-> From: Qiqi Liu <liuqiqi@kylinos.cn>
-> 
-> This RFC introduces per-tier memory cgroup accounting. Each cgroup
-> tracks its memory usage per memory tier (e.g. DRAM, CXL), exposed
-> through a new memory.tier control file that reports per-tier usage
-> and accepts independent high (soft) and max (hard) limits per tier.
-> By default these limits are auto-derived from memory.high / memory.max
-> based on per-tier capacity ratios, and can be manually overridden.
-> 
-> The implementation integrates with the existing memory tiering and
-> demotion infrastructure. Per-tier usage (anonymous and file) is tracked
-> via dedicated page counters, and cross-tier migrations (e.g. demotion
-> from DRAM to CXL) correctly re-account charges. When a tier hits its
-> high limit, async reclaim is triggered within that tier's NUMA nodes;
-> exceeding max enforces reclaim scoped to the tier's own nodes, or OOM.
-> 
-> The feature is fully opt-in. When disabled, no extra counters or
-> charge/uncharge paths are created, memory.tier reads empty, and there
-> is no measurable overhead.
-> 
-> Why per-tier limits?
-> -------------------
-> 
-> On tiered memory systems, memory.max constrains total usage but cannot
-> express "keep fast-tier usage under X". Without per-tier limits, a
-> workload can monopolise DRAM, pushing other cgroups onto slower tiers.
-> This series gives each cgroup independent high (soft) and max (hard)
-> limits per tier, exposed and set through a new memory.tier file.
-> 
-> By default those limits auto-derive from memory.high / memory.max by
-> capacity ratio; writing memory.tier pins a tier.
-> 
-> This series takes a different approach from Joshua Hahn's toptier RFC [1],
-> tracking a separate page_counter per (memcg, tier) for N-tier support and
-> exposing writable per-tier limits under a cgroup mount option.
-> 
-> Patch structure
-> ---------------
-> 
->   1/8  mm/memory-tiers: add node_to_tier_id and tier_id_to_nodemask
->   2/8  mm/vmscan: add try_to_free_mem_cgroup_pages_nodemask
->   3/8  mm/memcontrol: add per-tier page counter infrastructure and lifecycle
->   4/8  mm/memcontrol: add per-tier charge and uncharge
->   5/8  mm/memcontrol: add per-cpu stock for tier charge/uncharge
->   6/8  mm/memcontrol: add memory.tier control file
->   7/8  mm/memcontrol: auto-derive tier high/max from memory.high/max
->   8/8  cgroup: add memory_tiered_limits cgroup mount option
-> 
-> Patches 1-2 are infrastructure (helpers in memory-tiers and vmscan).
-> Patches 3-5 add the core accounting: counter lifecycle (3),
-> per-page charge/uncharge (4), and stock batching (5).
-> Patch 6 adds the userspace file. Patch 7 adds auto-derivation. Patch 8
-> gates everything behind a mount option + kernel cmdline, so the feature
-> adds no measurable overhead when not opted in.
-> 
-> Usage
-> -----
-> 
-> Boot with:
-> 
->   cgroup_memory_tiered_limits=1
-> 
-> Or remount at runtime (affects newly created cgroups only):
-> 
->   mount -o remount,memory_tiered_limits /sys/fs/cgroup
-> 
-> Per-tier limits and usage can then be read from and written to
-> memory.tier.
-> 
-> Scope and limitations
-> ---------------------
-> 
-> - Only LRU folios (anonymous and file pages) are tier-accounted. Kernel
->   memory and socket buffers are not yet accounted per tier; support for
->   these is planned as follow-up work.
-> - Per-tier memory.min and memory.low protections are not implemented.
->   These can be added later by extending the per-tier interface to
->   expose and enforce min/low protection.
-> - The command-line parameter mirrors cgroup_favordynmods; automatic
->   enablement via the cgroup mount path is left to userspace.
-> 
-> Testing
-> -------
-> 
-> Tested on QEMU with fake NUMA (DRAM tier 4 + CXL tier 22), with
-> cgroup_memory_tiered_limits=1 on the kernel command line and demotion
-> enabled.
-> 
-> Set up a cgroup, apply per-tier limits, and run a memory-intensive
-> workload:
-> 
->   $ mkdir /sys/fs/cgroup/mycgroup
->   $ cd /sys/fs/cgroup/mycgroup
->   $ echo "tier4.high=200000000" > memory.tier
->   $ echo "tier4.max=300000000" > memory.tier
->   $ echo 1 > /sys/kernel/mm/numa/demotion_enabled
->   $ cgexec -g memory:/mycgroup ~/stream --ntimes 5 --malloc &
->   $ cat memory.tier
->   tier4.current=296488960
->   tier4.high=199999488
->   tier4.max=299999232
->   tier22.current=1625464832
->   tier22.high=max
->   tier22.max=max
-> 
-> DRAM (tier4) usage stays under tier4.max (hard limit, no OOM) but exceeds
-> tier4.high (soft limit, suggesting that async reclaim is in progress);
-> CXL (tier22) absorbs the overflow via demotion.
-> 
-> Also verified:
->   - tierN.current tracks per-tier usage (anon + file).
->   - Cross-tier migration (demotion) correctly re-accounts.
->   - memory.high / memory.max auto-derives tierN.high / tierN.max.
->   - Manual override (writing a number to memory.tier) pins the limit.
->   - Tier max enforcement triggers reclaim scoped to the tier's nodes.
->   - Feature fully off (no mount option): no counters, no charge/uncharge,
->     memory.tier exists but reads empty.
-> 
-> Open questions
-> --------------
-> 
-> - Should kmem/slab tier accounting be included in this series or deferred
->   to a follow-up?
-> - Should per-tier memory.min and memory.low protection be part of this
->   series or left for later?
-> 
-> [1] https://lore.kernel.org/all/20260423203445.2914963-1-joshua.hahnjy@gmail.com/
-> 
-> Signed-off-by: Qiqi Liu <liuqiqi@kylinos.cn>
-> 
-> Qiqi Liu (8):
->   mm/memory-tiers: add node_to_tier_id and tier_id_to_nodemask
->   mm/vmscan: add try_to_free_mem_cgroup_pages_nodemask
->   mm/memcontrol: add per-tier page counter infrastructure and lifecycle
->   mm/memcontrol: add per-tier charge and uncharge
->   mm/memcontrol: add per-cpu stock for tier charge/uncharge
->   mm/memcontrol: add memory.tier control file
->   mm/memcontrol: auto-derive tier high/max from memory.high/max
->   cgroup: add memory_tiered_limits cgroup mount option
-> 
->  include/linux/cgroup-defs.h  |   5 +
->  include/linux/memcontrol.h   |  26 ++
->  include/linux/memory-tiers.h |  12 +
->  include/linux/swap.h         |   6 +
->  kernel/cgroup/cgroup.c       |  21 +
->  mm/memcontrol.c              | 786 ++++++++++++++++++++++++++++++++++-
->  mm/memory-tiers.c            |  58 +++
->  mm/vmscan.c                  |  26 +-
->  8 files changed, 936 insertions(+), 4 deletions(-)
-> 
-> -- 
-> 2.43.0
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
-Michal Hocko
-SUSE Labs
+Cheers,
+
+David
 
