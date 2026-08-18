@@ -4,135 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 875FCC5DF81
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 18:21:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE091C5DF7D
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 18:28:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3EBE6B06EE; Tue, 18 Aug 2026 14:21:45 -0400 (EDT)
+	id 039DB6B0594; Tue, 18 Aug 2026 14:28:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A16176B06EF; Tue, 18 Aug 2026 14:21:45 -0400 (EDT)
+	id F2C896B0664; Tue, 18 Aug 2026 14:28:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9049D6B06F1; Tue, 18 Aug 2026 14:21:45 -0400 (EDT)
+	id E1D7D6B06E1; Tue, 18 Aug 2026 14:28:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 642B46B06EE
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:21:45 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E45338024A
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 18:21:44 +0000 (UTC)
-X-FDA: 85115208528.19.1DB76DA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 10EFC20008
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 18:21:42 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ha70fL+a;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BE5546B0594
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:28:39 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4DE911C06C3
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 18:28:39 +0000 (UTC)
+X-FDA: 85115225958.07.96C2C18
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8CAC940003
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 18:28:37 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oeHIwqYk;
+	spf=pass (imf01.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787077303;
+	s=arc-20220608; t=1787077717;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oTaxowGYxPAPGFyxd1NFA2Af0dHR5XEqV4XaIiJGh1k=;
-	b=G/c9M6ZGPsxJ//M3uncokzdnxv6Roap6L6EWJ9BABMMrRFu4SHC0pWepVEOlL5WzDBOyz5
-	PswyTCbL8h9W/nQrQhUbz/d5FqU9fTSt0KTcVl4iaFUI21WVY2r+QGExhI8KG9+sLjKLml
-	NKWffDOITi0zZ5Brc4gcQjVKOQD8GyA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787077303;
-	b=c6rQjpn7DxBSbTb2J5nAn8q3/PN5i0krW0DcIioYNq5zeXqQSbzyG1ANgBmcaCjc9q21/P
-	KVEtXGhCTcPXKAE7+tgnX1k56xoRVY7ULoZ3LD7StAqV8a1JGYiW9+PsJAjB0wQAjYxUF1
-	RoRSd1nf0ZMRHAVfLo85h5te1KS2rl8=
+	bh=3L8XS/M8UIugRp9h76f20f/MXfnL3N+htoo+qe2xUNM=;
+	b=2IAU36ZoqETtrXmOX++vID6WWJAZhwloB1i62ojIcEskhYwlsqZAGuzkcagpP3NalX8tF1
+	naJZ2JUdlfIXxCtIULTdO7ZXboqJJbUH8f+k2VayYUUNVuaXbtCq+iXFeUdjINWY4sWle3
+	98kjjGGKWQWeXrPJXsJQg36oL1BjL98=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ha70fL+a;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oeHIwqYk;
+	spf=pass (imf01.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787077717;
+	b=S/Kh+PL1XjKybpgh1XumVw9kDFm7e5YPfBh4+A5tnvDOQnI8FBUGlYFKR/PVdzTHjquDPL
+	H3VH+Lhs42RaHHAa0ObNuKcCEw8VYMW3rEqiBSTnXGQQIMszwy0yEAGJkfW3Hrr6ilsh97
+	buiXyVlO+HkCb+1iCH8jO8RU6TFm1yE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4802E41A54;
-	Tue, 18 Aug 2026 18:21:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9B61F000E9;
-	Tue, 18 Aug 2026 18:21:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 57DF9601DE;
+	Tue, 18 Aug 2026 18:28:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA981F000E9;
+	Tue, 18 Aug 2026 18:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787077302;
-	bh=oTaxowGYxPAPGFyxd1NFA2Af0dHR5XEqV4XaIiJGh1k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Ha70fL+aGh3fQT2cA0gDU+rSONQ0xfV4rN9SR4DUJkI3H6GrHl41CDWWp+uT1UrLb
-	 dxa1AGDS5pE0KOkya2w8jTciQewaLuKhhoKVvXPTgCMF0m94/z/Tan5uAJ2CsTvUzd
-	 2recbwMoxdDzn2CC8nsw3siQXHUXggEzQ4trU34NSrDJ1NANqUBRR3Yu9niAlBRqHX
-	 hkL6sqeBGDCMhNFL8XwIZCnWQh/EYRueccbzeY2i1fytTpmWQUBJN33FU6ep0nvaGQ
-	 q6IRduP/fdiAt50DgJlrsk8pZViQlyMyUfExEVMm583/dI4uDYnwSa0SyCRy8UI6nO
-	 1S9zStDyNiggw==
-Message-ID: <2a523945-825c-45a5-a680-37e941e092d3@kernel.org>
-Date: Tue, 18 Aug 2026 20:21:37 +0200
+	s=k20260515; t=1787077716;
+	bh=3L8XS/M8UIugRp9h76f20f/MXfnL3N+htoo+qe2xUNM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oeHIwqYky9kKrqi3hUu0ofGI0att8GT5xTFvPoodQ5V2wQFEBaemfZ9xg66dQfYC8
+	 NZDtrJ1ZdKJhO8UFlg4vN0tSnfKIT8AgLFR2qAqg4HdxiEgwmwrr4Uvm0QirFASGrC
+	 K/VKTANzc/tks5GNslS96WzYTsB+9kpdaoQe234qEKtxUnBzaW+PAj1eH1W2AvMcJL
+	 fhlkjv7ag4YXjPi54KQ9VnaHcwWifj6AbmksmLMM3a6UIOWIMoMfWn5I55dFuPzqQJ
+	 KjdcDu1M3Blpncs9GF0TkCcEMQksFYEQG07QSqWvBWe2nRtaiXQx+gJBDsbS4A0EXB
+	 nprPySEWklNFA==
+Date: Tue, 18 Aug 2026 18:28:33 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
+	chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, 
+	linux-mm@kvack.org, ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>, 
+	willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, 
+	shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org, baohua@kernel.org, 
+	dev.jain@arm.com, baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>, 
+	"Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>, 
+	lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com, 
+	shikemeng@huaweicloud.com, kernel-team@meta.com, Alexandre Ghiti <alexghiti@fb.com>
+Subject: Re: [PATCH v6 05/12] mm: zswap: add range lookup for large-folio
+ swapin
+Message-ID: <aoSd8iovG5QKc6mT@google.com>
+References: <20260818131202.494754-1-usama.arif@linux.dev>
+ <20260818131202.494754-6-usama.arif@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hugetlb: add cond_resched() to __unmap_hugepage_range()
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Leon Hwang <leon.hwang@linux.dev>, linux-mm@kvack.org,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>
-References: <20260818135029.93288-1-leon.hwang@linux.dev>
- <3dadebb3-7e2a-459c-a5e8-b375faf89938@kernel.org>
- <20260818111756.6b0e347db3170bc22cc3c5af@linux-foundation.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260818111756.6b0e347db3170bc22cc3c5af@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260818131202.494754-6-usama.arif@linux.dev>
+X-Stat-Signature: t5dh596kurum8kchnwo6k4d51jejp113
+X-Rspamd-Queue-Id: 8CAC940003
 X-Rspam-User: 
-X-Stat-Signature: cifj3hjszr7uddtpgcfcuye8bjnzfdgt
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 10EFC20008
-X-HE-Tag: 1787077302-84082
-X-HE-Meta: U2FsdGVkX1+bFgWkCymbKVUwU5My3P57L6fXOK5fmqRCIxeLP8SkBQfcTEt2xdkn/IMGqyfIkb6RStE2fcLD7gLA1H5qnoRio1Fp3riF6ufl39NwHJ7741JzYysmvgEFffdmiPDz7+QJScqARWfqwYT436cO6XicP8YAGoBGSf6SF4rSFhqGF6DA6NCrRfMks/swp+vJxuCzNgRp0pESKrD+hI28ZdVWXnPejnKYmEdDed63EPEFIM4yGGiyhZctg0G0bQOrstXfRB2LmjxMgPvt5S//oJzUk+RxH/c7Tv+lrrmdByNE1LSNYLikfU1LcIeJQR5Ss7jMZfWJQf4Q/7mjsqaF1d9xpYiDdZCnBcdfNA0QTG/V9zxpP5dZ2erVOZ/8gw2GUToHNQCWNljTjlx30YE/7Ya0By3BcbsjAam6B9n3NS5E6Tdt6KMA+DajHAByq8wTsXBsg0CUYs46RYgWFLOBm/CJljAhWakjOCXJI/Soj1VYjcq7YBG4XrSfOqNKdnnL2RbHE1Sqvm//JJEC+KoNzhkTurgn67liJknuUWqhpE7zsXH/I2FjdEKpmDT/0lr3EZDF5cQykgLfRPCUC19TLJxsRGsHLk91DoEO+Rva4eBd8jdmn7ZoS5UjJxxeI9PZYgxDR9S+9umWlaXTnkY1q8yI3INTEvCsYpF9WEDKU04XTfch0K20sidkTMwK3YYutSwSnYUreYrU5Sa4ZGYTPG2Z6mOLJYepbxYDuwrdD4Xsyt3Q43MdTXZbi45xZxcJLvC1+CsG41HtJk/UgYUtgFwyQt4q/iKD4EyFZEXrerd2Zo/NqPqjzcaaHv6JRFx65SK4o5tc1LTpPnOjkxDFlRc7CjxYZcTZlLgpQHOglyNVnvTT+9YJeM8xrtDfMg78YwZ9vIfLdra/DJXLigyhn2lZoPFhToUKFxhwrH8VFk1WyM6q5exAGqYtHNLYnaZIGr46Hhjkh/F
- /Zg7OdO/
- VB4dJhcEb12r4knDbgbamGhGfDVe8q/ic256qpqI5d5PJYlm9Q7UeiAl1AzYDWIYGKZ53+V87yxHqv6nOW48ItMGNpUOcR7MxYIQGuilfl4KbkumdTvZYuO+/JFDSRf9eMWdH3zlwb0o5UTZ1OZg+7GOs/UR5/XYdJxdO4wvT0/Y5YPBI+b6GFNSeeBxnHhmgFwMoi6FjEAgB7k+1/akCglq2dvIy4VdQjAqaTOwPS3qrVix29OHlzydd/asOXN5rkyWfF4HS7UXkQG7CmO5V7dkRPy7rUndJKK/Nxc6DfUetS6rTIs8+yizs68vMB1Eq6HUCFysEPq5PGBFZMKpp+gzfP+q14VEGk22ib18Z2QNpN2M=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787077717-625120
+X-HE-Meta: U2FsdGVkX18lemxec1PKUPZ6UQESgNpky5g8ztFyF27Av8TvO7tdf/scHok5OSlMZyD8ChTIxbn7GmT7JT3F/GMnWBC+IV5SlDIFWk4qsVNc6JdCwnlFh1lZG8ciTwBiunAXKIXIHlK/nnFFNJUEAYv3YCWcdJW0S2VOTjEJCUZApv4OTTRReupxlcEXN8iaEH8zwEPFumb9DULIaTNVjbKhrm+QqVweJJGzRobc4CkcAeoedyNvB6Q+OA2fmMmzikXYH4z0IB2WfsReKuXFXLXy5plIrZ4uf2DoL+B8tI3/Uzkp9YJL4HrqhXKvf7nov9iRkvssaPGac10ox1vvWekrnFgkxQm67hZZcyz4DhUrP6qmEOlqUan6fHdQS7nY1WQcEkflui83CV7c3sDxXXm3W0pVXNA0IzB42mmvuMtRArO8+LZpy0hgBkurvcN7YerykAZm+JZ012CPFQFw8Lsc/3Id3aMpMbL1H4eqVIrL4+CjsusDCWRROjCOHgvRDE/tUcH4mtEhXKo7nNrE674dlz3+q6hw701nhXKIf5DP8Ni0VJJSQT5pmnblteGlScXQw030ZBma4J/YIL41GKZxtm3H/nLSKhMlBSt+HdmmrE4bMCapSZHrJdKanBST88q2Ngv2CvgEedlUT9N6adWWTVU7zwXY5P5g0xKZUJfHXaHv63wMEbdKT9wI7LDaxl4v9Tlfe0E1TDA7pHWujqmHK59QAZBbzBhJDDUrnR9w9GxvQjS6DZmuUohn3YJ0nAuOX7VrcTHgo3L70CZhiV+j68L7tTmh7kv4Uh9ooUtFJ0LTOqCFTQ9HKkNry0Ag9pbFeWuB0OQlr0NgBQLlIEzdBxXOEclfKYzUwQJc6+Tm0qfOvkN1oYOpVe4kIP6cZRX3yfxY0ciqzZHAqG/WY1f6S6JAyQcGEEW8DKqZkY7Yyi9Cc9bl9wKYLjRFizkf5EHXNiiyxgmTLbjW+YH
+ NxOvxavq
+ g9BneL5yNvvM1KIF7/f7o5cF4ikjmcLtBQ9CRswReD1M2EPyL6r56dt3uT8YLs1SVe/zxo3QFDaPQcl0ACKdafgbDK+QnDg6v8Sh/G7Njj4aSE6E4Fh0hFBouw3IymxP3VK14iUvAeMg2Q50NklNkKCFsAc+Nsb3vd8msUlSyQR+pdzNh5fVrye9QqAi0S9Otk6lQNShVKVoIeaVjkpMw+N5uRaf5Or/JJtg6VL/UI/YrUqv+UQ3/xvs9eMsvfs57OwAQDj0AUcKKfaPjGWNmMCjuOxmXzwRFSTG2WhdNDvvaQm3Al2PlSXDCOw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,67 +99,221 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/18/26 20:17, Andrew Morton wrote:
-> On Tue, 18 Aug 2026 16:23:29 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+On Tue, Aug 18, 2026 at 06:09:46AM -0700, Usama Arif wrote:
+> From: Alexandre Ghiti <alexghiti@fb.com>
 > 
->> On 8/18/26 15:50, Leon Hwang wrote:
->>> Packet receive timeouts were traced to sparse HugeTLB unmapping in
->>> production. A task unmapping a sparse 2.5 TiB HugeTLB mapping could
->>> remain in kernel context for over 40 ms without reaching a scheduling
->>> point while walking empty huge PTEs. Although hard IRQs could still be
->>> handled, the per-CPU ksoftirqd thread and other runnable tasks could not
->>> run during that interval, delaying NET_RX softirq work queued to
->>> ksoftirqd.
->>>
->>> Add cond_resched() at the beginning of the hugepage loop so ksoftirqd
->>> and other runnable tasks can run between iterations. Testing with
->>> PREEMPT_NONE showed that the maximum interval between scheduling points
->>> fell from over 40 ms to below 2.5 ms. Total time spent in
->>> __unmap_hugepage_range() remained about 36 ms.
->>>
->>> Reported-by: Lance Yang <lance.yang@linux.dev>
->>> Tested-by: Lance Yang <lance.yang@linux.dev>
+> A large folio reaches zswap_load() only when the caller expects
+> the whole range to be on disk. Zswap still stores large folios as
+> independent order-0 entries, so reconstructing a large folio from
+> zswap entries would risk returning partially initialized data.
 > 
-> Is there a Link: to Lance's report?
+> Teach zswap_load() to scan the covered range. If no slot is in zswap,
+> return -ENOENT so swap_read_folio() reads the backing device. If any
+> slot is still in zswap, fail the large-folio read so the caller can
+> fall back to per-page swapin.
 > 
->>> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
->>> ---
->>>  mm/hugetlb.c | 2 ++
->>>  1 file changed, 2 insertions(+)
->>>
->>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->>> index dded1768193a..0a91aac2369f 100644
->>> --- a/mm/hugetlb.c
->>> +++ b/mm/hugetlb.c
->>> @@ -5233,6 +5233,8 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->>>  	last_addr_mask = hugetlb_mask_last_page(h);
->>>  	address = start;
->>>  	for (; address < end; address += sz) {
->>> +		cond_resched();
->>> +
->>>  		ptep = hugetlb_walk(vma, address, sz);
->>>  		if (!ptep) {
->>>  			address |= last_addr_mask;
->>
->> As Michal just put it:
->>
->> "PREEMPT_NONE is effectivelly dead and most cond_resched will/should be
->> removed. Is there any reason why you are not using full preemption when
->> requiring low latencies?"
->>
->> https://lore.kernel.org/r/aoRnUxUlgf_kRlm8@tiehlicka
+> Return -EIO rather than -EINVAL for that conflict. Large-folio loads
+> are now valid requests; the error means zswap cannot safely satisfy
+> the request from partial per-page compressed state, not that the
+> request is unsupported. Existing callers only distinguish -ENOENT,
+> so this is a semantic clarification rather than a behavioral change.
 > 
-> That's pretty bad behavior and we might want to fix it in earlier
-> kernels.  Is PREEMPT_NONE effectively dead in 6.18.x and its
-> existing users?
+> Add zswap_is_present() so PMD swap-entry consumers can make the same
+> range decision before attempting PMD-order swapin. Also use it from
+> __swap_cache_add_check() for multi-page insertions while holding the
+> swap cluster lock. That check runs before folio allocation and again
+> immediately before swap-cache insertion, closing the race with zswap
+> writeback and rejecting mixed zswap/disk backing with -EBUSY.
 > 
-> If yes, we do want to fix older kernels then we should merge this.
+> Signed-off-by: Alexandre Ghiti <alexghiti@fb.com>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> ---
+>  include/linux/zswap.h |  6 ++++++
+>  mm/swap_state.c       | 10 ++++++++++
+>  mm/zswap.c            | 46 +++++++++++++++++++++++++++++++------------
+>  3 files changed, 49 insertions(+), 13 deletions(-)
 > 
+> diff --git a/include/linux/zswap.h b/include/linux/zswap.h
+> index 30c193a1207e1..cd9efcf9dec94 100644
+> --- a/include/linux/zswap.h
+> +++ b/include/linux/zswap.h
+> @@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
+>  void zswap_folio_swapin(struct folio *folio);
+>  bool zswap_is_enabled(void);
+>  bool zswap_never_enabled(void);
+> +bool zswap_is_present(swp_entry_t entry, unsigned int nr);
+>  #else
+>  
+>  struct zswap_lruvec_state {};
+> @@ -69,6 +70,11 @@ static inline bool zswap_never_enabled(void)
+>  	return true;
+>  }
+>  
+> +static inline bool zswap_is_present(swp_entry_t entry, unsigned int nr)
+> +{
+> +	return false;
+> +}
+> +
+>  #endif
+>  
+>  #endif /* _LINUX_ZSWAP_H */
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index b76eb3d876fd7..15e200d6966b9 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -12,6 +12,7 @@
+>  #include <linux/kernel_stat.h>
+>  #include <linux/mempolicy.h>
+>  #include <linux/swap.h>
+> +#include <linux/zswap.h>
+>  #include <linux/leafops.h>
+>  #include <linux/init.h>
+>  #include <linux/pagemap.h>
+> @@ -191,6 +192,15 @@ static int __swap_cache_add_check(struct swap_cluster_info *ci,
+>  	if (nr == 1)
+>  		return 0;
+>  
+> +	/*
+> +	 * The cluster lock serializes swap-cache insertion with zswap
+> +	 * writeback. Reject mixed zswap/disk backing before allocating a
+> +	 * large folio and recheck it before adding the folio to swap cache.
+> +	 */
+> +	if (zswap_is_present(swp_entry(swp_type(targ_entry),
+> +				       round_down(swp_offset(targ_entry), nr)), nr))
 
-Okay, but that would be stable-only fixes?
 
--- 
-Cheers,
+Sorry I didn't catch it in the discussion in v5, but I think it's
+actually clearer to do have this check in __swap_cache_alloc() as you
+initially suggested, but not necessarily under the lock.
 
-David
+I don't think the cluster lock is relevant per se, but rather the actual
+swap cache allocation. Once you allocate the folio in the swapcache,
+you cannot race with zswap store or writeback. I think the comment here
+is a bit misleading in that regard. Especially that it mentions
+writeback, but I think the real risk is racing with zswap store?
+
+The check here is performed twice, once before allocating the folio and
+once after. I think the one before allocating the folio is not really
+useful, as we don't actually allocate the swapcache entry so nothing
+actually prevents a zswap store/writeback from happening right after
+releasing the lock.
+
+We already have a failure path in __swap_cache_alloc() after allocating
+the folio and dropping the lock. Can we use the same path to check if
+zswap is present?
+
+Maybe something along these lines (completely untested):
+
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 8ccd03c39a407..ce00a2311c5fd 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -415,6 +415,7 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+        swp_entry_t entry;
+        struct folio *folio;
+        void *shadow = NULL;
++       bool large_in_zswap;
+        unsigned short memcg_id;
+        unsigned long address, nr_pages = 1UL << order;
+        struct vm_area_struct *vma = vmf ? vmf->vma : NULL;
+@@ -459,7 +460,16 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+        __swap_cache_do_add_folio(ci, folio, entry);
+        spin_unlock(&ci->lock);
+
+-       if (mem_cgroup_swapin_charge_folio(folio, memcg_id,
++       /*
++        * Check if any part of the folio is in zswap after stabilizing the swap
++        * cache entry to avoid races with zswap store/writeback. Reject
++        * high-order entries that are partially or fully in zswap, as it is not
++        * supported.
++        */
++       large_in_zswap = order && zswap_is_present(entry, nr_pages);
++
++       if (large_in_zswap ||
++           mem_cgroup_swapin_charge_folio(folio, memcg_id,
+                                           vmf ? vmf->vma->vm_mm : NULL, gfp)) {
+                spin_lock(&ci->lock);
+                __swap_cache_do_del_folio(ci, folio, entry, shadow);
+
+
+> +		return -EBUSY;
+> +
+>  	is_zero = __swap_table_test_zero(ci, ci_off);
+>  	ci_off = round_down(ci_off, nr);
+>  	ci_end = ci_off + nr;
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 37f34e406c8e3..32671dc2bf84d 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1571,6 +1571,23 @@ bool zswap_store(struct folio *folio)
+>  	return ret;
+>  }
+>  
+> +/**
+> + * zswap_is_present() - is any slot in [entry, entry + nr) in zswap?
+> + * @entry: base swap entry of the range
+> + * @nr: number of contiguous slots to check (pass 1 for a single-slot query)
+> + */
+> +bool zswap_is_present(swp_entry_t entry, unsigned int nr)
+> +{
+> +	pgoff_t offset = swp_offset(entry);
+> +	struct xarray *tree = swap_zswap_tree(entry);
+> +	unsigned long index = offset;
+> +
+> +	if (!nr || zswap_never_enabled())
+> +		return false;
+> +
+> +	return xa_find(tree, &index, offset + nr - 1, XA_PRESENT);
+> +}
+> +
+>  /**
+>   * zswap_load() - load a folio from zswap
+>   * @folio: folio to load
+> @@ -1578,13 +1595,9 @@ bool zswap_store(struct folio *folio)
+>   * Return: 0 on success, with the folio unlocked and marked up-to-date, or one
+>   * of the following error codes:
+>   *
+> - *  -EIO: if the swapped out content was in zswap, but could not be loaded
+> - *  into the page due to a decompression failure. The folio is unlocked, but
+> - *  NOT marked up-to-date, so that an IO error is emitted (e.g. do_swap_page()
+> - *  will SIGBUS).
+> - *
+> - *  -EINVAL: if the swapped out content was in zswap, but the page belongs
+> - *  to a large folio, which is not supported by zswap. The folio is unlocked,
+> + *  -EIO: if the swapped out content was in zswap but could not be handed
+> + *  back, either because decompression failed or because a slot in a
+> + *  large-folio range is unexpectedly still in zswap. The folio is unlocked,
+>   *  but NOT marked up-to-date, so that an IO error is emitted (e.g.
+>   *  do_swap_page() will SIGBUS).
+>   *
+> @@ -1605,13 +1618,20 @@ int zswap_load(struct folio *folio)
+>  		return -ENOENT;
+>  
+>  	/*
+> -	 * Large folios should not be swapped in while zswap is being used, as
+> -	 * they are not properly handled. Zswap does not properly load large
+> -	 * folios, and a large folio may only be partially in zswap.
+> +	 * A large folio reaches zswap_load() only when its whole range is
+> +	 * expected to be on disk: PMD swap-entry consumers split before
+> +	 * calling into PMD-order swapin whenever any slot is still in zswap.
+> +	 * Confirm the range is entirely absent from zswap and return -ENOENT
+> +	 * so the caller reads it from disk; if a slot is unexpectedly still in
+> +	 * zswap, fail the read rather than return partially-initialized data.
+>  	 */
+> -	if (WARN_ON_ONCE(folio_test_large(folio))) {
+> -		folio_unlock(folio);
+> -		return -EINVAL;
+> +	if (folio_test_large(folio)) {
+> +		if (WARN_ON_ONCE(zswap_is_present(swp,
+> +						  folio_nr_pages(folio)))) {
+> +			folio_unlock(folio);
+> +			return -EIO;
+> +		}
+> +		return -ENOENT;
+>  	}
+>  
+>  	entry = xa_load(tree, offset);
+> -- 
+> 2.53.0-Meta
+> 
 
