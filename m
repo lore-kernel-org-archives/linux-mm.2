@@ -4,151 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E564C5DF67
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 07:41:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73C1DC5DF67
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 07:42:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2AB656B08EF; Tue, 18 Aug 2026 03:41:39 -0400 (EDT)
+	id 914CD6B08F2; Tue, 18 Aug 2026 03:42:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25C166B08F2; Tue, 18 Aug 2026 03:41:39 -0400 (EDT)
+	id 8C5276B08F4; Tue, 18 Aug 2026 03:42:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FD0E6B08F3; Tue, 18 Aug 2026 03:41:39 -0400 (EDT)
+	id 7B3D06B08F5; Tue, 18 Aug 2026 03:42:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D09C66B08EF
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:41:38 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6FC8DA0B57
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:41:38 +0000 (UTC)
-X-FDA: 85113595476.15.C20E32C
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 7DB68140005
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:41:36 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TYsiERAh;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787038896;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 53B526B08F2
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:42:19 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DFF5C1C1D3E
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:42:18 +0000 (UTC)
+X-FDA: 85113597156.18.2E2A5DC
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf12.hostedemail.com (Postfix) with ESMTP id EA42240002
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:42:16 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=SlckDBzN;
+	spf=pass (imf12.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787038937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VahNcEYmw+mGcn7LtyCZe2us9vTkZlTxAEikuZwKYxg=;
-	b=CZ7Uy67wdI3suZ6V0oDQDHFXl4ljf7mCA+bZ3Cn8KuprIiHrEIIoUY/kCZPft9V92Sy+51
-	BkV4RR6izzCRzYEeBrN4gH3hfqUZLR4IdVwzavLt9H57m9IiSYpkOECNPR0IbSOBLP6sF/
-	52JnTyw7r7b3+GZSgG5OSwbqkXHuGlE=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TYsiERAh;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787038896;
-	b=gf8/kJzMMSC0oJcbVHBgSnHqYPpY5SRC7iLoUDHZAtFj49HaJFCDvOSiSrBWxNGecME77b
-	yu7meZMuqkGZ4zuiSw8ozB//JRb7b2NtIsWAd5QOajWOzdmujLsvAWKzmCQ9r0G++LOtbE
-	B9rqYmnz3l/2kh+JXwzYDPJ8LuRzABg=
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6a0794669a6so7161591a12.2
-        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:41:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787038895; cv=none;
-        d=google.com; s=arc-20260327;
-        b=rugb9U7cAKqeczXb5PvIYZSfCC//KdqQd7IwHj9FxvtWxjv6i38oCPQlJ9C7yKQKEh
-         xWT8PfA7rQdmsBoQi/xotAZlzg9ibvoQsh2C06VN2IQNlPF0o6rLOt/Pqk7uMwNKY4ol
-         C+yTOPHII6AZpoe0hsO1CBx8SA7I4W3wSaMeYrZn8WIv2OY9iatVQ7p5qF4JBXQiOPww
-         OdiRseIDFWK2qRG9uV8V/YCDp02MQorUdqbPANfSbeIUhGLiQwnzjTSu0qPG33sW8Eth
-         saCNncv23z3CBFTLRlN9Q+gCb5biJjUHRQH/g75RLiNBTkc+V+3yxI5CbHH3E7kGjEMg
-         srKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=VahNcEYmw+mGcn7LtyCZe2us9vTkZlTxAEikuZwKYxg=;
-        fh=Ig90bcx6qOexKJCJoXpsNu2qlrCnTN35tWkrCKDUqE0=;
-        b=noJT4dfL/SNvTGrp5FUC2I99XhTg0fNnpwAYAn5NesjqPZiFYCp01te2jb0PVcRNW0
-         +LcPM2cl5bKnbzxEFHr8Iwf6qigibNHZrvJ2FSy9N13GGDzYltAjvfnj0CfXtuXoMAZm
-         U6d+MXonZKxtvIUcawS0AA2YnwEaAIALR6qC4rTyC1CG6b805Qg4LGo9m5Om9RmWTZSj
-         noKmdfmNWtAVt5Qsn8TkAqi5IdNd/Q8PuxgLHkR6micCULHwQMM2bE3zhk/Ceqost7PD
-         PBu3oj8m21vK3+SRQIXmXXn0tVRQ6E7YT1XllOI2G86FVoopN/q13YVLse7Z1Uz40qdL
-         Sw9A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=8kxhoXQ3JMlTJinzz2e3MZXls2upTKaBok9FISR0LnA=;
+	b=2pRX9vHV5JKZpy+/pMyD6g+CwpWCSNBztAdi6hwkZxoI6TTDNDCg9KBAqRDQevPu0jWN8c
+	LUEhJQyKkCwdxMd+wt+QrUR7Uc7057XsjYPFYkuDT1HFiONO9nZEifbFJkxF15GU6/UsIx
+	LzhOTmXWLCiGLBcdCSyBIFBziUD+D5Y=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=SlckDBzN;
+	spf=pass (imf12.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787038937;
+	b=cKnq+WMvg+F5vZtEg75Q0W7M6ROMHd50heGnoReaWd+B25SETm1zNGeYIjZujieY4bpSae
+	lf1Lo151/w2AVXjnkMfxsIocUysCX91d64vPI2VXZScA3Y54Z6AWULiT7fAtk+LT2cT5O+
+	uYxlIVZliSn5BdzH55E3EoV4ef87bCI=
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-47f93b2fe4cso2351697f8f.0
+        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:42:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787038895; x=1787643695; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=suse.com; s=google; t=1787038936; x=1787643736; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=VahNcEYmw+mGcn7LtyCZe2us9vTkZlTxAEikuZwKYxg=;
-        b=TYsiERAhWZ+K33sMtcBmrTOkyxFQq+TKjEdp9/k/neqmQdITWe7jqJ6w9y0zt1EG4s
-         6DEFZg0TZ70y6MXj/qs5nQuyYE0XO4sAVeQSDRIkgJYCl03Kr0wlw2WUAhEsqS4SVbn0
-         8ydgVRJWwXQyBzW6Qqbyhg5dhMoKgMsm2RTyc7j1KrndfinU/xUcdfXl+d1zbiebuWy3
-         BKaI5hjI77rLm4V3n6ZJxganqVAlzdURMLA8kVquAIqQXu1KCSUcagt9MsyX3LLlnlR6
-         oaqd/1Ci+2xlSZdG9JiwGfemXZLIk5Uwc7h3CGKPRfWo+7ye45hmD8y2mnNUJetsws5C
-         5j8w==
+        bh=8kxhoXQ3JMlTJinzz2e3MZXls2upTKaBok9FISR0LnA=;
+        b=SlckDBzNpLRbxx4by32vP5+CeLExsSfNURy/bOQFH9fQdLxz55kxLJY+nXJKndwrvM
+         SFdqyPYcChPsp2SHwCL9sVeX5UaikKF6guB/nRvkKxVjjCHGwiU2WcGG4JeSCjTNDd4J
+         uDti+zrxCwCqyyoVbkrcC2x9K7CrgVMCe/isps4URR53M/wJTk4RH1p8K23GJc6Y8pgn
+         v2JkslFaGzElfMyPiPihynVJgQ50fXsxwotEMez5NhhSwroyvmDLZWFDqK408mOliopf
+         Me9ISAGhge3j97zX4gmaj5xqnpFXMC+dXZTzLH8eoITa//D++UpkGFce/l+f0B+Rxgt2
+         UdVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787038895; x=1787643695;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1787038936; x=1787643736;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=VahNcEYmw+mGcn7LtyCZe2us9vTkZlTxAEikuZwKYxg=;
-        b=WONliH8OKLMNkdXd8EsTCS/x4YqEqPFGfEGCf8ydWgo0qdSa96T8roLfIztI2sbqrT
-         CJ9qemhJ8trCO3aCJXEhZu2WvNPF5SY5BWALWMxkrjqpWBUSt1a4SV/VwojopC2YApZg
-         TNzkO/FAXBmzcSi7Qwnv2nV7jXPhz3HA056EVxBHmoSi2Ba7P4HO5ApoYu1bQm2INEro
-         mq9xVXHFekZqlGlbtb89Kmc/QPr6580+GLRH3cRkbtVIWPh6M4GlwcKNqVV0PZQr2HLA
-         XaMk19q+8ugThhqkqT433Ye241f1FZeTKQuoQUJhCRbl/uHKZFUXrrhcISQVSStHk+4Q
-         0i4Q==
-X-Gm-Message-State: AOJu0YwxR2dkvSS2mk9esk82d5Krlk4wd1tKpMESfEuPJDEOYNGMn8rj
-	ngOCn2wT2/9HRfeIgch0bU0SXkHEVz4oM17MWT4SFtw7KRzROCPCErKF8WzxWZJzIgrVeHWGbQZ
-	lATTuCzbCaHQ075ar5U9N1GwPtQUE0FY=
-X-Gm-Gg: AR+sD13o4H3xTNoYWVOgRc3APUw3NtYk3rQNVQyjT0465lzxGEndefGK3PGs/eFLuCX
-	d5ybvDlGr9XUA4HEqmsqg3Zs7/1lDpyL2gV1k27Wpq/1/PhIHD0MgOC7m0psG42bkvop7Z2Wrfe
-	76t0yWOZZRgRlGi0SXdz3FydTxzvOW3aB2WZFvCSJ2WGMnHgBUv1WyklMgaG2P6yHU6pdrFz3bM
-	32mY712eUtEjcfIDANbEwzhPy+pl3lGerCLZzCZWvvDQIEhDYqF+bZEOCg898r5bn6HB0/oylL8
-	+fE1sGD7gU67N+tloHjV1XRR7LpNPZNeDTcxJ804iv0JjnjaU4lRjnjW6fQGVvjYALRBVd5xlwH
-	Cjg==
-X-Received: by 2002:a05:6402:3250:b0:6a1:df2c:cfa3 with SMTP id
- 4fb4d7f45d1cf-6a38a8d884cmr12171377a12.4.1787038894697; Tue, 18 Aug 2026
- 00:41:34 -0700 (PDT)
+        bh=8kxhoXQ3JMlTJinzz2e3MZXls2upTKaBok9FISR0LnA=;
+        b=efAe+jnXmhFYMgFar0cNH0H7Vk9IrXQEIZiLIPLgut63sUj19Jo1BuggNwO3xvw6Ru
+         kHGjAlCbT5ZFkSMs/zVhhYMprBcVs/2z+0wtWZUFZpIcGRhcvyvyMHLB85kZtEv8DB0m
+         X8Zy4WMontuVdM5JSXOLRmQ/i70VcAHB3lb4h5OzBgPIXGhzSIVi9HHDlYO0RQMl7Dfa
+         apoRCGjGnToguBfA5PGK+jGTPlwt7myJmA6ARFk+NMtdnOh6C1SgnHNOn7z6iHeetzRw
+         YgqLHqgwH0TxvLAqvYAAnPXLer2mv+ItbpfpnHUR0aOkh9VqWoDev10So0vcPXyow5j6
+         hlPA==
+X-Forwarded-Encrypted: i=1; AHgh+RoZnFCBJhLtIcpusMjR53rPX34v7yhQIXPBKRWbpP8kCPnZc4sWwDt9no5+K31D0AaXI4SD7YM1mA==@kvack.org
+X-Gm-Message-State: AOJu0YxHbmmtBXQIzgL3Jm5e7uzgvmUrWNEnmGGP5xQFgO5tnyn9SOXl
+	sBUdvBZbcQXAJGabNvyJWAttY0bGkSGB8+Lu7EIlcuN7HtBoXBIZV8VOMxYkEu+OxZ8=
+X-Gm-Gg: AR+sD10LlLScM2bdpehZg8G7ifhQUsE/3l/7xYETblKDcW0Jg1tDiAQpykvRGZIzryF
+	6EabPWzumIeBBojVkGKxOmM5Nwb9Ot5qBAf7UFVFGLOOc94EKqabICTwTGnKCrHFlFtHERlCig/
+	8RiXI4JnSPpNvCQvm6avro6baWlVi2LgLnr+77XeuA1929AiP9jtUpxb9FS7HBGG6lhZGD+Slcr
+	cTywgevIrS+kBr0nkP6o0qP+U0pyCP9kd/pV+0RSKFj5s/wuJiI0hcs0j7KXZhVULqGFDeduAwd
+	vKoHlhc/BBpssQ+rT6Sb6soRsrurqdN6hAofL6540zNWmxrj9FvecXxVBr0MdfSDqXqPaUmp2Vc
+	5nG1T1o7uEy28ECH9QZ78kyxJVq4fpnM54KRiDGz2LZaJKiH1dNDKt//trpdaUXOrFNZ3p3dtYw
+	6tYd5yfkKa60vnvaV3Igl5dZChpO2H5W5rqeM6WMUvv+h4izs9UBK02MPv3ZMbngsoErYd6KI=
+X-Received: by 2002:a05:6000:40de:b0:47f:83ee:e56f with SMTP id ffacd0b85a97d-48160748fb9mr49670647f8f.18.1787038935656;
+        Tue, 18 Aug 2026 00:42:15 -0700 (PDT)
+Received: from localhost (109-81-86-48.rct.o2.cz. [109.81.86.48])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482a5b81748sm9986909f8f.37.2026.08.18.00.42.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Aug 2026 00:42:15 -0700 (PDT)
+Date: Tue, 18 Aug 2026 09:42:14 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: shakeel.butt@linux.dev, cgroups@vger.kernel.org, hannes@cmpxchg.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	muchun.song@linux.dev, roman.gushchin@linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+	kernel-team@meta.com, kernel test robot <yi1.lai@intel.com>
+Subject: Re: [PATCH] mm/memcontrol: avoid false sharing between vmstats and
+ events
+Message-ID: <aoQM1i39pGKh_0Fk@tiehlicka>
+References: <20260817103835.2937733-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-References: <20260804-mglru-fg-v1-0-4d8dad39dad6@tencent.com>
- <20260804-mglru-fg-v1-9-4d8dad39dad6@tencent.com> <aoQFw_SWJBAdO8w-@MiWiFi-R3L-srv>
-In-Reply-To: <aoQFw_SWJBAdO8w-@MiWiFi-R3L-srv>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Tue, 18 Aug 2026 15:40:57 +0800
-X-Gm-Features: AcwNN1VRYTzbtiXYoU92qfjSmVzpQzxLtJTMmiPxSS8NOzR75LT-X-q805MIN_s
-Message-ID: <CAMgjq7C1nFb92FGE+uSapZZS+14R95OG9w8ji+ZBkF=fOQ2Eag@mail.gmail.com>
-Subject: Re: [PATCH RFC 09/15] mm/mglru: frequency guided workingset promotion (MGLRU-FG)
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>, 
-	Qi Zheng <qi.zheng@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Chris Li <chrisl@kernel.org>, Nico Pache <nico.pache@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
-	Gregory Price <gourry@gourry.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
-	SeongJae Park <sj@kernel.org>, David Rientjes <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, 
-	Vernon Yang <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, 
-	Chen Ridong <chenridong@xiaomi.com>, Tal Zussman <tz2294@columbia.edu>, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: zbn8xq8oxtuxprujgddw5ok3f65xp1gp
-X-Rspamd-Queue-Id: 7DB68140005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260817103835.2937733-1-usama.arif@linux.dev>
+X-Stat-Signature: mn14uymeahc3cya1gj7bns1zmhoq83do
+X-Rspamd-Queue-Id: EA42240002
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1787038896-53668
-X-HE-Meta: U2FsdGVkX1+Ryj7EO0z1hpD62aKgB33YaBpLoeZeP1Xc1hiqQVooH9wy3R7q6CdyKDoTuETIo8C1QSC57KrAsZnQtLp1tUY3BrTwZJ+Y+r8bBmRPQdr7tE9sxbcMVTnHSQdYiafJnxzz54ugpUBuXKR2QdDucW7WLMo+RXkH5acj5vyNzaoO7kdZB75IJBF34pCVemRavgYIvMKDMXzqmVFogc0Ajpg9io7p+Exh2yeSdsIva1d9huVmkEzPZVnir0G5f8HDb8NXf7ts8lAUmfNvw0RX66IO/mjY/zneiffl2FOkSDXkNhdR11icKklRs+fdJoeT4YaWjM0J+x6S6CnopT7sWgO13G7MYKZ2KB1mCFRl+7IZ7/oSVlOYimRg63TxHQzuf/j5ltKHlWrLsENY1LXrr32DiCl3kEWC6WLVeTMXlHdgbjTovI0ow/9EnYM7zVlKm20ue50DSRYW4KPTnia1lMvt992EblJ1X5KGwbPam5YZg5NkMVmkMiHe3Grw4FMd/0jc9BObOiKeVjEzChiR83cGFJcJroPOtD4mPpRjXk66UKOlwVz8xzS4+h0gzJFNy8IxPwqWmNcJ3rGxHIzNPrfaQWMk2Wi8kQ93pfOSrGRaolkAkyDsFY8HIfJTyDbK5RXWQBTk+cpPbqCqupOEVliPon4ifbtMM9D97PYpBraPRDTScz6HnU93KGPMOKjqDPifIHIMCaJUqfHm5EO1FuD8vkjFl5d9TJ0oWUOfzV5kv2X9TQ+qWnbcHmOIXNNtctYnLAb6a+3kI0aIX669ZWgw+G4ps5Ki+zJp4OV4ahE8ddcuBXJU0pWlyTAAG8dvegJ7uGNSaVBAqlrtUf/t8yLAwGG3FDC7RbKoS2fh7O2pR/lY5caWiF2/SXW+4PIZG7u0dG08XwFcJUN1CxgO2UnIyZ4Fz7guZ7TqgZ8T98xxyYv/7cXhCX8pexdNqc5cCqU0rOBBOl2
- UrItRJnU
- 6DYeGomCPW8FDQSxhs3+HGx5f4EiarKkYJ5DL9kasK6cSKJ29jjeFmfCbEHk6WI9svLC8TC+peNRLsSaLkHCcTEmvhtuJQ8m0Z3PB9mI6n+ldZD2w3gtNJe3rxXl70nMHcyUpEJRnYFXdzU/cwnfg+h+dtXv1vF63GNJurT+7CCKoGW4U6W76hHf4uIOmXQNJBMdxGzdCnps3XjiLZjJzPNRN/fGAk21p3ZwL4y1f8p/NvmiZfjDyu5ShIVEHS7S9LSBACOWcyq5sVGMT85olGTlFmDpGojEcc6ynPa5EjZFa5mrXMr/Skcs2XJxzcwaJ+0C4m1oA/5S/MGUDwaTkFyKmX4RDwsvCl7yF0/wHKJOOfYshg6x/KbEeiApSdDfskrm8DuBhI9OXOXjimUSiOqxp4w==
+X-HE-Tag: 1787038936-212425
+X-HE-Meta: U2FsdGVkX18DTA+eGtLF6UAYR0qJlr7W0QLNeE2NfneF53RGusIERv1DJnH4baMERvE0ihdx1cghz3iP5pHckeTsZk1QuKB2qF12BN9vsEUmtMzk3T17wr882pwKuG6yZB7CKelgAZhLiOUfzKO/pmGr2LaLwIsczGi3nbQeykuWYUViVkksoTao62XMhmniO91O4Mftlt9//QJBRJeT4qj8IMirt/7eiSI+RAKqkT7rtXKzbsdrXi3qnKIbIwaI85/n8jvdmWbX+bkED3+6po5b2Ap0c9g1lMAS00nCHNIv7LZf5jDS2/nmf6r7iN6/jjZw7J5rxHmIzUFAE5DSyFdNSu4HgMROyr+uayZyQQr0ptHbjVcguS9Fa0vjrbbI8DL39MybcVGXqG09tr96EePZGuuxVjG1lh5U7SvSLt8dEZkEhI9yBN0v5Sosztq3q5L5A2sNaaK7EpDnB2xTgji7+/1yJYaRiJ1fI39MPIhFIISe94srOoVQNjazMYeOZB83R+6bK6qmX+D7MqeG/lGWcrwbARxt7eC+XKOAhRXI35Nx121RvdfPNGgpyQH5FMuH3epgyCJEUY/zXQSUjAiBDgSvof7eXlpwRq+wBDPyFdDo8fDMuSFJp0B0LtUQ+VD7ku1IQCEXa8oU5ImBlaBh1Y+p6HuhDMmFZIUyaSWQUv0j73yxxi2GXp57rxFyiWd5pEdKpvZWVH6/7wKhj8hq+UZETHWEVJKNb4xcbeY+fjXUbid97Q4HKycph0b/CDIUjTq3Lzdube7FiUmFHlXlWI0mrY0AEpk5vd3H68mfyADpT/3ZAK5UpVPzsQK9h5a+qLgsR4UBDc22FmQAjffaidkPNcZ+QBTX+wFXA+S7LC0eo103xoQBziE5ORwoMRNZlZ6VHoIVGBz1bHq+3FkOc2PfBB8FP8XPAMpOpKRqKMqYpl1OnINaCTkiu0Hzr6HX+ktQo6coCvaHhzJ
+ VEAfYyiP
+ WI+S25Jw8/NonTljYDXSbcy6uOx0oTRSgHrbK9gZVut8VGaE0YFw/j1f5QcWvFOuSwX9EYqv5t3OVlXErQxDm7wOtyZiAJXFSbAZsR8CgzqixeLsANI3A2Kbo16ggEmcvN4LEzXH6Lz9D85/RFQ5noTMQnrS+sl9CVHc2wRX4Zi1P6uJHN5ybXBBcCslotzV8/S3ekyxHA4xQsLBlqq7f61G38L70KoJ6jFe4P7nVGql66qurZkawiCIGDPR/N31M6SMODxW6VRaDFTdU8V2mF8tsRgf7EHgTz2m7Ms2iKZG30N+9yBrifHDS/xPuu7QuOLQNiiEDfPu0S3BI4etnuDf4CjUXPoVhugNM1iSvNbJAa5+TgYTpD3iSrAihotz9vEnO8V9/3825NPr4ds8pFzXgQ0njZGCIMBjWh6pGQ1L7OVe1nr0xAZmvlFwTy5AIDXhYS+WInPf6H7T+chgutC5KJQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,191 +122,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 18, 2026 at 3:12=E2=80=AFPM Baoquan He <baoquan.he@linux.dev> w=
-rote:
->
-> On 08/04/26 at 03:47am, Kairui Song via B4 Relay wrote:
-> ...snip...
-> > +int folio_inc_lru_refs(struct folio *folio, bool is_fault, bool is_exe=
-c)
-> > +{
-> > +     int max_gen, min_gen;
-> > +     int type, refs, gen, new_gen;
-> > +     unsigned long new_flags, old_flags, max_seq;
-> > +     struct lru_gen_folio *lrugen;
-> > +     struct lruvec *lruvec;
-> > +
-> > +     type =3D folio_is_file_lru(folio);
-> > +     lruvec =3D folio_lruvec_live_get(folio);
-> > +     lrugen =3D &lruvec->lrugen;
-> > +
-> > +     old_flags =3D READ_ONCE(*folio_flags(folio, 0));
-> > +     do {
-> > +             new_flags =3D old_flags;
-> > +             gen =3D lru_gen_from_flags(old_flags);
-> > +             refs =3D lru_refs_from_flags(old_flags) + 1;
-> > +             new_gen =3D gen;
-> > +             if (!(old_flags & BIT(PG_lru)) || gen < 0)
-> > +                     goto out;
-> > +
-> > +             max_seq =3D READ_ONCE(lrugen->max_seq);
-> > +             max_gen =3D lru_gen_from_seq(max_seq);
-> > +             min_gen =3D lru_gen_from_seq(READ_ONCE(lrugen->min_seq[ty=
-pe]));
-> > +             if (gen =3D=3D max_gen)
-> > +                     goto out;
-> > +
->
-> I am a little confused about the new mechanism. In the current mglru, it
-> does have the issue both mm walk and fd read set PG_referenced at the
-> 1st access, this is a obvious drawback. Now with the change, the ref
-> count is clearer, while the mm walk and fd read accessing is still mixed.
-> Imagine the cases below:
->  - one fd read; then mm walk; directly move to max_gen;
->  - one mm walk; then several times fd read; promote to next gen;
->
-> Can I understand the final effect as:
-> 1) explicti ref count;
-> 2) more drastically promote mm walk based on the mixing ref counting;
->    - compared with the old behaviour: move to next gen when 2nd mm walk
+On Mon 17-08-26 03:38:35, Usama Arif wrote:
+> Moving v1 userspace eventfd handling into memcontrol-v1.c shrank
+> struct vmpressure from 112 to 24 bytes when CONFIG_MEMCG_V1 is disabled.
+> This moved memory_events_local[MEMCG_SWAP_FAIL] and the hot
+> vmstats_percpu pointer onto the same cacheline.
+> 
+> The stress-ng mremap stressor exercises MADV_PAGEOUT with swap
+> disabled, generating about 20 million MEMCG_SWAP_FAIL updates per
+> 60-second run on a 176-CPU test system.  Those writes bounce the line
+> while memcg statistics paths load vmstats_percpu.
+> 
+> Move cgwb_list into the existing alignment gap and cacheline-align
+> vmstats_percpu.  This separates the pointer from the event counters
+> without increasing the size of struct mem_cgroup in the tested
+> configuration.
+> 
+> The blamed commit reduced median mremap throughput by 4.38% on the
+> test system with one socket. The patched kernel brings the performance
+> to within 0.5% of the parent which is within the observed boot-to-boot
+> spread (up to 1.2%).
+> 
+> Fixes: ea928e9e18da ("mm/vmpressure: move v1 userspace eventfd code into memcontrol-v1.c")
+> Reported-by: kernel test robot <yi1.lai@intel.com>
+> Closes: https://lore.kernel.org/oe-lkp/202608131743.c6a7dda4-lkp@intel.com
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-Hi Baoquan, Thanks a lot for the review!
+Acked-by: Michal Hocko <mhocko@suse.com>
+Thanks!
 
-The old behavior is move to max_gen on walk access (unless it's the
-first access of a folio), and only protect non-mapped folios with PID
-refaults. Now, the non-mapped folios are also promoted after multiple
-accesses.
+> ---
+>  include/linux/memcontrol.h | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index e78bc98ab229b..215e2e87f42b2 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -268,10 +268,15 @@ struct mem_cgroup {
+>  #endif
+>  	int kmemcg_id;
+>  
+> -	struct memcg_vmstats_percpu __percpu *vmstats_percpu;
+> -
+>  #ifdef CONFIG_CGROUP_WRITEBACK
+>  	struct list_head cgwb_list;
+> +#endif
+> +
+> +	/* Keep the hot per-CPU stats pointer away from memory event counters. */
+> +	struct memcg_vmstats_percpu __percpu *vmstats_percpu
+> +		____cacheline_aligned_in_smp;
+> +
+> +#ifdef CONFIG_CGROUP_WRITEBACK
+>  	struct wb_domain cgwb_domain;
+>  	struct memcg_cgwb_frn cgwb_frn[MEMCG_CGWB_FRN_CNT];
+>  #endif
+> -- 
+> 2.53.0-Meta
 
-The promotion is more proactive but not that drastic; it still
-requires 8 accesses (2^3, which overflows tier 4) to force promote one
-folio.
-
-For anonymous pages, this also provides a more consistent and explicit
-reference count mechanism, and you will see folios distributed fairly
-among tiers now, as repeated page table access will increase the refs
-above LRU_REFS_PROTECTED. Previously, all anon folios were stuck at
-tiers 0, 1, and mostly 3, skipping tier 2 completely.
-
-Also we reduced the bit usage by 1.
-
-This new mechanism is supposed to work as a whole, This new mechanism
-is supposed to work as a whole; it is documented and described in the
-chunk of comments in mmzone.h (maybe not the best place but old
-MGLRU's comments are there so I just updated it inplace). I tried to
-split it into smaller parts, which doesn't seem doable.
-
-And I think the three folio_inc_lru_refs* helper are also kind of self
-explaining on this.
-
-> I can only see one benefit and one significant change. Do I understand
-> it correctly, and is it worth?
-
-I think it's definitely worth it, if you look at the results in the
-cover letter :), especially the zipf access test (1.2, 1.1, 0.9, 0.8
-have similar results, zipf is commonly used standard to simulate
-realworld access patterns) and a few other cases; 90% of the
-performance gain comes from this design. I tweaked the refs &
-promotion rule many times to double check and ensure it fits well for
-different workloads.
-
-And note that this is not an anon/file reclaim balance tradeoff issue,
-both anon refaults, file refaults, and pgpgins are reduced, meaning
-MGLRU is doing better at protecting both hotter anon and hotter files.
-
-It's widely complaines that MGLRU was actually performing poor on
-unmapped folio protection, worse than classical LRU in many workloads
-(Not the LRU overhead, MGLRU had lower overhead, but the actual
-ability to protect the hotter cache is not good, provable with the
-zipf test in the cover letter). After this change, its performance is
-obviously better than that of classical LRU.
-
-Attachment: a typical tier layout of a workload before this change:
- node     0
-         35       3910      37524           0x
-                     0        238r      15596e          0p          0x
-         0x          0x
-                     1        409r       6429e       6211p          0x
-         0x          0x
-                     2          0r          0e          0p          0x
-         0x          0x
-                     3        895r      39182e       8588p          0x
-         0x          0x
-                                0x          0x          0x          0x
-         36       3244      84684           0
-                     0          0x          0x          0x       2882r
-      6059e          0p
-                     1          0x          0x          0x        448r
-       964e          0p
-                     2          0x          0x          0x        298r
-       439e          0p
-                     3          0x          0x          0x        416r
-       721e          0p
-                                0x          0x          0x          0x
-         37       2858     221580        4269
-                     0          0x          0x          0x          0x
-         0x          0x
-                     1          0x          0x          0x          0x
-         0x          0x
-                     2          0x          0x          0x          0x
-         0x          0x
-                     3          0x          0x          0x          0x
-         0x          0x
-                                0x          0x          0x          0x
-         38       2183      29167         242
-                     0         12R       2499T          0x       2496R
-      4101T          0x
-                     1        322R      29241T          0x         92R
-       156T          0x
-                     2          0R          0T          0x        100R
-       144T          0x
-                     3        150R      75764T          0x        741R
-      1161T          0x
-                         20903930T    5439295Y      48822F      19595A
-
-And after:
- node     0
-         47       3227     197247           0x
-                     0        967r      35231e          0p          0x
-         0x          0x
-                     1        412r       6871e       1051p          0x
-         0x          0x
-                     2         12r        639e       2319p          0x
-         0x          0x
-                     3          0r          0e         49p          0x
-         0x          0x
-                                0x          0x          0x          0x
-         48       1623      49290           0
-                     0          0x          0x          0x       2065r
-      3586e          0p
-                     1          0x          0x          0x        338r
-       836e          0p
-                     2          0x          0x          0x        352r
-       817e          0p
-                     3          0x          0x          0x        107r
-       139e          0p
-                                0x          0x          0x          0x
-         49       1491      91927        4865
-                     0          0x          0x          0x          0x
-         0x          0x
-                     1          0x          0x          0x          0x
-         0x          0x
-                     2          0x          0x          0x          0x
-         0x          0x
-                     3          0x          0x          0x          0x
-         0x          0x
-                                0x          0x          0x          0x
-         50       1305      10444         674
-                     0         69R       6630T          0x       1082R
-      2586T          0x
-                     1         21R       2509T          0x         55R
-       168T          0x
-                     2         71R       2322T          0x        111R
-       288T          0x
-                     3          0R          6T          0x        114R
-       619T          0x
-                         31126090T    7780753Y      72142F      27409A
-
-For file heavy workloads, the file folios are also now fairly
-distributed amon gens instead of being stuck at tail gen. And it's not
-just looks prettier, the performance is indeed better.
+-- 
+Michal Hocko
+SUSE Labs
 
