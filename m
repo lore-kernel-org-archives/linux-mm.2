@@ -4,91 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C6D6C5DF74
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 14:09:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0797CC5DF7D
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 14:10:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44B5B6B0197; Tue, 18 Aug 2026 10:09:44 -0400 (EDT)
+	id 0F1036B027C; Tue, 18 Aug 2026 10:10:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 422FB6B0199; Tue, 18 Aug 2026 10:09:44 -0400 (EDT)
+	id 0C88B6B027D; Tue, 18 Aug 2026 10:10:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 360F76B019A; Tue, 18 Aug 2026 10:09:44 -0400 (EDT)
+	id F23CD6B03B9; Tue, 18 Aug 2026 10:10:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 15C9E6B0197
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:09:44 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9D9D48029E
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:09:43 +0000 (UTC)
-X-FDA: 85114573446.24.5AE42FA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 11BCC20002
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:09:41 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bVi5P/GX";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D5EC46B027C
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:10:44 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6FE8B12029E
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:10:44 +0000 (UTC)
+X-FDA: 85114576008.06.B7712DF
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 654F820009
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:10:42 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=t5Eewfnf;
+	spf=pass (imf13.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787062242;
+	b=OFOEIDzE92P4maOjNDTp8qV/ip3zfyK0pwjD69/kjavsxMja9o2SCVdUsatuTUycSW+KUj
+	CQbZGOLynme/pU3eXDna1M+PdatGaagtcmN04PbPpQrRNm+PXEw5/G2NBEeRGtZh9x1V4H
+	mjIgcmG3hog60EbUW6WI0iV8nC5s3Dk=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=t5Eewfnf;
+	spf=pass (imf13.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787062182;
+	s=arc-20220608; t=1787062242;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X8oJASEVHdJhH7uHF2vR+gZb+csEP8hI47I9UkZtJlM=;
-	b=6EM7vRNG9qRAd8Wm4b0EeCw72BCM/+6FXTfCEU/hgwsJO3gEO50MQ1YzALjOc1hGDJm98E
-	F7r+6/KI9thFsw4ahtynXG7Nv8kT7zwJZlakYL8HJuvWfDG3hGCSNy2Xerk7Q8G2RWJF0r
-	B0kYbqnNU/daT1rXOYxoKhHK+r3lN08=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bVi5P/GX";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787062182;
-	b=jpZw52QHkY5b2at8BmFacIfhcmU42vi2EcwiQ8+T8QWnr3r7/UbII4dvOT7UyGLP6R+kDr
-	iFJJsIa64K5+k/zc7/RSj0lY4B+jKTnMdTWrx/nE3OMHSppDd3Zi/KKha4N1cHwbk8ILE8
-	LrJWqSUOPuyyHa+Fx+FJGMObeO8zyDM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9ADF7600AD;
-	Tue, 18 Aug 2026 14:09:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769261F000E9;
-	Tue, 18 Aug 2026 14:09:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787062181;
-	bh=X8oJASEVHdJhH7uHF2vR+gZb+csEP8hI47I9UkZtJlM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bVi5P/GX9ay3YUlRE1FTJTFV+g9LQuHC72s4fDxSBwDEcdf1+laLaC8h8z3yaG2iL
-	 OVAWG7HMg25vuVgl9hhPokSFjdoyU0W/muL8vOJRWPmbnraprsgt1H2LZzArN/oS0r
-	 pBgxo2VOjkCJD/zX2mlqYY5rJhXVCgPR9fdIUZtIFuPgxjLfqDO+Wbthl36m8ZrR1z
-	 r9UyDoiZEVrFLZ/WizWZlUcF9A0TKw3QT9Njf83KUs9ARV3+rKwRDld45AMD0gjtb/
-	 M22ZOPIEEin/dBuQRzT0NSsGZwEq0bqjMnLm+PA1SWhKymOqVn6DpO37LuA3MbVdgI
-	 72aoqmJUlLoBA==
-Date: Tue, 18 Aug 2026 17:09:33 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Leon Hwang <leon.hwang@linux.dev>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	bh=l03Q5ptSYhWuGPtHN3uRfvI7ji1htrQDlyLsSY8uXvw=;
+	b=e5VS/vpEd7iFI0m9huc5Mcm6CInEZ98W170JPX/aX4VZRByBB3St4xz601L0J8lwGUi7hy
+	jD1m0VInHb6uVAHphxFeYhU87HjkjMjUmPtJ+6HEUZZQvL/+3JMq5T5QsD5n/VV4093H9C
+	Nz+wQvFPztjCe/lpUmzIw2iq1SK4rHg=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 93860152B;
+	Tue, 18 Aug 2026 07:10:37 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6DB1A3F85F;
+	Tue, 18 Aug 2026 07:10:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1787062241; bh=ViG9p523Gtj965obqgoqvstIweJ3Dnp0nqQZuKx6Weo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=t5EewfnfFIPzdq/m5PX24TI4FOzPov6Iap7L97itk/zFF2JCkMgIjuBE6my9umw9P
+	 tFtho4uCZpiIO+IPA9jO61MjT2OuD6svwQBMCmxLRn+dHYIAz6+6ydfZvkZsFQTtnN
+	 DMrNb1prYHYEqMTQiMrKfD8+D5z9qlbLSjIWJKDU=
+Date: Tue, 18 Aug 2026 15:10:36 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: James Houghton <jthoughton@google.com>
+Cc: Will Deacon <will@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Nikos Nikoleris <nikos.nikoleris@arm.com>,
+	Linu Cherian <linu.cherian@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
 	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH] mm: add cond_resched() to free_pud_range()
-Message-ID: <aoRnnWIUrZbh2uL6@kernel.org>
-References: <20260818134934.92354-1-leon.hwang@linux.dev>
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Nanyong Sun <sunnanyong@huawei.com>, Yu Zhao <yuzhao@google.com>,
+	Frank van der Linden <fvdl@google.com>,
+	David Rientjes <rientjes@google.com>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH 08/18] arm64: Implement try_update_vmemmap_pte using the
+ AF trick
+Message-ID: <aoRn3Fn1dhTdsk6d@arm.com>
+References: <20260708031129.3503195-1-jthoughton@google.com>
+ <20260708031129.3503195-9-jthoughton@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260818134934.92354-1-leon.hwang@linux.dev>
-X-Stat-Signature: cnk54nm91gmck8we1q8zfximtbtodsdt
-X-Rspamd-Queue-Id: 11BCC20002
-X-Rspamd-Server: rspam03
+In-Reply-To: <20260708031129.3503195-9-jthoughton@google.com>
+X-Rspamd-Queue-Id: 654F820009
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1787062181-233882
-X-HE-Meta: U2FsdGVkX1/tBXS4GJdY494//L0YmzF7LkELf+Ek6RkINrvjpFSl04mtOFh3Jy1HU4Jp4qfvc+ZRDyFjqwSOwu5Wg3ncPBoA31lS3JCudfsiIzyOSCQZRiDLxR8QSc3qbnVqa5ijPSyfGb5UcB6lBujhUBLbKj4WbuVFh7jyXk3B1qdJoRgBwaBHCV9WoKKYPO6dDHVPHGBVNdO2Yeg6S3sElo/DzR2hlR4n8sV5qvYp/2KAqFDGNB+p3fXQb15AsAJIC8fwiLvOrpZjlLDd1td71CMhKNFKfjfo37SBz461SxUaLKL6yOv7/RGhZ0JnSUbcEmrbxu5wcLb5D30/vOm7cg3uqhPC3kqDf6MaBa/7/uyQCBrCtoI9xrfoIfAO02My5nGblg0iFa99Y1eC+yXKqnpwKbvvKSq0ifCW2Kq0eWj9zGN5FFpefZaS1e9eWV6WCyq4HKE2e+HNQYUPkAQL85EARqYY8M+7yYMAKn15e2wkShCemlT+Gk1KYlvW6TbIH6StRE/Odx6RIdesnnFodwKpZISBtevBrUYWRPpvk+iFwC9pchIAg60V3LsaeXFJlScVmVywhnjacb96z2C2gSyVeo+8/r7XeTjnY7tMDtPzzGrkqyhnVRmF4mMdiuqMNEWtIu3U9xvv24PKUUpVKIjmwykfW4DwuPJEfd9T9zxT4HvQioa8yJQrT0wSugJiLgpI3U2VtGPoynYk8NHzRrJymee8NvcayQMPbiaHPT5t+K5aKdq+D3X3KOtYRCDAbQPI06BYwFt8QhOxNTKwQPySsdR4auPEr6wS+rxL7pvVnRN4ydnlOS0PDwDa58WfbQD+e5g1luclhOHCT3Ce252+z2izuDW7vxt4Fy6qEPmtEzEl5bQ0OA8T1/r2fSd5KAxu6IFQ1QQw4F1LX1vXoxqCxLcXZ+OlchrusGgYZ6Sc480KgOJzUBVRmieQrJoIalpGY8e8surqCrL
- HtbF2IQh
- ormrmfYSlU55QmXmQ1jDWFGwmR3MEwuoGUXDJ29KuX/KBj4km3UOPLYMvHy96Ri1Ed+l9NI1j56VXyT/iwo+B86ev3yGN28DRMftn5uPs3ASDnV8yvK+YfvFwojupln+kU1MOszomOzb4cohdAywMcq0SIYqiLoKS3wlv6Er7LXA/7nqUfBvtlJzr0PZaSKk+m4hdBn1OAqxl/xql+4PrBsaiqqilH6zqz8R9numpN3CElZLgHQQtFxAyxkyHydpBBcULHfIUbh97y0z/oZWc+BGJC9sApunWTXjmPm2932I5e/o=
+X-Stat-Signature: qckh8po9ee5ye9gf9hnixx6dramy4q7d
+X-HE-Tag: 1787062242-234741
+X-HE-Meta: U2FsdGVkX1/oKEKFjPe5xjLsZvcyaR8OvcCLBmz8gnBYADCEPTy5/EOB58kM++6h/IJXST4twDPr3MllW2FFI33rSZKev7meHItgDjclBpbxX1x1mUI6xKMCE9cbj2vjRnfLWgdcSz4DY5K38k9VlDI3wndWkwn2G5hr1EmqXd3+Xnk3QS7EGrlCFIlzplQC3eT8KEO1Es5ydCKJNW3WagPjeHHbeM3uMWGh0se+OfytRtsOWDEfXtH20UoINz7JWKqG9jmUw92NJrAb//UsRj4XGBbfZPvOwRw/bCHzMwFa7iqNBEY9H0CQSSFGqFDiC40S7n+86/GRXjj7+aL4k//m86SeRv0vKuuEXudRmFEdyTY+UHifdlTSMK+kFr8JUYKU2hAF9iFKm7KtpjqZr8pCoAM5TfuVD6zGhpGt39D1weloovdTRaaNQeM8XEbhPVBHe6VxyMPnTDlk0sLBBsQCimGkYtyW/+tyCqDn96hBwgJEkv6gHX2mCn1S39ioxlL0m4u/rs8VdK3823iKKrccAjok5FcoWs39BAuQmwC/6gHCBKKMz26slWvf1asK07y4dwXF0RY4oO9aT+uAQg+2UZSlOQf0MD2cuki9cxI+/q5cKxbgY29AcY/k7iutd8KJMSyZ4moRRKmFGaxXTTAoCnQ9C9V9NB7i4GOC0Ejo6sx980ROsfeeeRxVpvm5TCFZZdaJbwRn7Qiqx4OgRwUiY80Am+MUkaizNPi782RUcyeylf5Bi6ffxEbC8AgRlZNgrKJLDUDvhXhaGAb28OYtdq0FrL1xH6Fk660EDM0oxX+iZGoVjoDoLMkvy5NsMSxo4/Zsvtg9kwq37kjOp+oH3e6VyOr8IxFgWYJI7yUHlTE1CgoX4PleqjpyG/SOfTqZI4EtRWsyT9gc2qtIgueZSrNKM+qySDJAuGTV9xJTiLtaL65Lf22FMw2F7Xydxy6BDfkyAeKkaDE1sdB
+ Eux8YuvT
+ gLmji7plOw7VIU3IZHkND4U0r9LlFY54tYZyoXphSmPJHLJtG9jBU45u0q8sxUgTKSM37FisBTCrjLPzhrjhSUK2/e7ZfXGxNxlcZYdDVykXZRgXurkhJw0RBg3B/2zmRRJUqXacHmEmHmCLmKZYtrEV8D2+CuxzKKZ8U2INoEWL0TaW4IK8TrWtAj4d+ulBed82puHF6QNZssdOWw+xeeOZaHCHiyTTMO8yp1zP+lOVfibLuGCNmHX6MKUL34WeiQic7nsmoo1GbWhoBAcGCw10PkQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,47 +99,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 18, 2026 at 09:49:34PM +0800, Leon Hwang wrote:
-> Packet receive timeouts were seen in production. Tracing showed that an
-> exiting process with a sparse 2.5 TiB mapping could remain in kernel
-> context for over 20 ms without reaching a scheduling point while
-> freeing PTE page-table pages. Hard IRQs could still be handled, but the
-> per-CPU ksoftirqd thread and other runnable tasks could not run during
-> that interval, delaying NET_RX softirq work queued to ksoftirqd.
-> 
-> Like zap_pud_range(), add cond_resched() to free_pud_range() so
-> ksoftirqd and other runnable tasks can run between PUD entries. Testing
-> with PREEMPT_NONE showed that the maximum interval between scheduling
-> points fell from over 20 ms to below 2 ms.
-> 
-> Reported-by: Lance Yang <lance.yang@linux.dev>
-> Tested-by: Lance Yang <lance.yang@linux.dev>
-> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
-> ---
->  mm/memory.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 4134ac607ee0..68c15449de07 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -231,7 +231,7 @@ static inline void free_pud_range(struct mmu_gather *tlb, p4d_t *p4d,
->  		if (pud_none_or_clear_bad(pud))
->  			continue;
->  		free_pmd_range(tlb, pud, addr, next, floor, ceiling);
-> -	} while (pud++, addr = next, addr != end);
-> +	} while (pud++, cond_resched(), addr = next, addr != end);
-
-This is really obscure, can't it be in the loop body?
+On Wed, Jul 08, 2026 at 03:11:18AM +0000, James Houghton wrote:
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index 5f21d3a738ee..7b11aa41d0a0 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -1302,8 +1302,7 @@ static inline void __pte_clear(struct mm_struct *mm,
+>  	__set_pte(ptep, __pte(0));
+>  }
 >  
->  	start &= P4D_MASK;
->  	if (start < floor)
-> -- 
-> 2.55.0
-> 
-> 
+> -static inline bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
+> -		unsigned long address, pte_t *ptep)
+> +static inline pte_t __ptep_clear_young(pte_t *ptep)
+>  {
+>  	pte_t old_pte, pte;
+>  
+> @@ -1315,7 +1314,13 @@ static inline bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
+>  					       pte_val(old_pte), pte_val(pte));
+>  	} while (pte_val(pte) != pte_val(old_pte));
+>  
+> -	return pte_young(pte);
+> +	return pte;
+> +}
+
+At some point, we should use LSE atomics directly here if supported
+rather than a CAS loop (well, this is LSE as well if supported but it
+doesn't guarantee forward progress of the loop). I reckon we can replace
+it with some test_and_clear_bit_relaxed() call.
+
+> +static inline bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
+> +		unsigned long address, pte_t *ptep)
+> +{
+> +	return pte_young(__ptep_clear_young(ptep));
+>  }
+>  
+>  static inline bool __ptep_clear_flush_young(struct vm_area_struct *vma,
+> @@ -1793,6 +1798,48 @@ static inline void pte_clear(struct mm_struct *mm,
+>  	__pte_clear(mm, addr, ptep);
+>  }
+>  
+> +#define __HAVE_ARCH_TRY_UPDATE_VMEMMAP_PTE
+> +static inline int try_update_vmemmap_pte(unsigned long addr, pte_t *ptep,
+> +					 const pte_t pte)
+> +{
+> +	const int max_attempts = 16;
+> +	int attempts = 0;
+> +	pte_t old_pte;
+> +
+> +	if (!system_supports_hvo())
+> +		return -EOPNOTSUPP;
+> +
+> +	/* This routine is only to be used for valid-to-valid transitions. */
+> +	if (WARN_ON_ONCE(!pte_valid(pte)))
+> +		return -EINVAL;
+> +
+> +	old_pte = __ptep_get(ptep);
+> +
+> +	do {
+> +		if (WARN_ON_ONCE(!pte_valid(old_pte)))
+> +			return -EINVAL;
+> +
+> +		/* We should never get a contiguous PTE here. */
+> +		if (WARN_ON_ONCE(pte_valid_cont(old_pte)))
+> +			return -EINVAL;
+> +
+> +		if (pte_young(old_pte)) {
+> +			/* __ptep_clear_young() returns the overwritten PTE */
+> +			old_pte = pte_mkold(__ptep_clear_young(ptep));
+> +
+> +			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+> +		}
+
+I think this is going to do a lot of TLBIs given that the default kernel
+prot has PTE_AF. It somewhat defeats the VMEMMAP_REMAP_NO_TLB_FLUSH
+flag but I haven't figured exactly how this optimisation works.
+
+If it becomes a problem, we could do a first pass to clear AF as an
+optimisation or later via vmemmap_split_pmd(), only map with AF=0. We
+still have some page copying that touches the vmemmap, bringing AF back.
+Of course, you'd still need the above flush, just wondering whether we
+can reduce/coalesce it.
+
+> +	/*
+> +	 * Translations without AF cannot be cached, so we can replace
+> +	 * them without BBM.
+> +	 */
+> +	} while (!try_cmpxchg_relaxed(&pte_val(*ptep), &pte_val(old_pte),
+> +				      pte_val(pte)) &&
+> +		 ++attempts < max_attempts);
+> +
+> +	return attempts == max_attempts ? -EAGAIN : 0;
+> +}
+
+Here, indeed, we do need this bounded, otherwise some pathological cases
+may set the AF continuously.
 
 -- 
-Sincerely yours,
-Mike.
+Catalin
 
