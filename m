@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 515E9C5DF70
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 05:38:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84962C5DF67
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 05:38:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E1E56B0149; Tue, 18 Aug 2026 01:38:28 -0400 (EDT)
+	id 264F66B0146; Tue, 18 Aug 2026 01:38:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0634E6B0146; Tue, 18 Aug 2026 01:38:27 -0400 (EDT)
+	id 1C1CD6B0147; Tue, 18 Aug 2026 01:38:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD14E6B014A; Tue, 18 Aug 2026 01:38:27 -0400 (EDT)
+	id F2FDF6B014B; Tue, 18 Aug 2026 01:38:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BCBCB6B0146
+	by kanga.kvack.org (Postfix) with ESMTP id C20566B0147
 	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 01:38:27 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 508EA140B01
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4D112A3751
 	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 05:38:27 +0000 (UTC)
-X-FDA: 85113285054.04.99AE74C
+X-FDA: 85113285054.03.FFBE92C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7284A40005
+	by imf30.hostedemail.com (Postfix) with ESMTP id 782BE80007
 	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 05:38:25 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kKAKg1hL;
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YxaW6lZi;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1787031505;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -35,45 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Rd/iQv4TZrWHm69tDUrgR6ziK59tmcdSkmhKFtQKJUs=;
-	b=eeUrMgGQyy8st09qPzbBv0ce57+TCa27+VIcRbjb5NdwZMZfUlL3+E3LcVHiOd6200NDb+
-	IrAvr6Vl4RCNDWa+9rkvEyfjrIHAZ7seXno2CmtXUZtUSA6rWECHn08PJxVR16H961SZs4
-	UitfWy6WMJUXQqEN+Tch2DWbcUiTTUM=
+	bh=juWPkc5m22wYkE1lGGoo3Hccxa+wk+R2kwWIVCV7tqA=;
+	b=A0GBW4u8FgkJCG6GKlv8S4qRx6GIV9YwNzdv93wbtXNvCPuR+Yf7X4NU6Qx60w43kUsWb2
+	MLyr1cGiLsjBOHYxkWZ8/hwe3+RA21BT/e1lxUupRhKg/U9tsoElzGpAc9ydtlIg2mkGA3
+	ktz5k8bBpKli728bFMEKqUrgj4rjQu0=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kKAKg1hL;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YxaW6lZi;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1787031505;
-	b=712KnZrwSXJIwce0YUnyD6zw3zosyOBdHnAde/C4IYyRvEZUyscA49wnmv2gv07LJvX92m
-	45UkCVOleNPipSPouu3rFfCXfnucTfaC0PURg+MOMHjKSaZGjj4NDIZ/ve6udFrDbbxT1K
-	HKf63EOW4CrktRPtvpb6HbSVmZXxej0=
+	b=x5OQgRaVvtwoJyedT6QSYUoXFY0h9MERG17KCr09pMtWA6+hnLGQAW+e/+AP1Y9yH1awEX
+	EI0hcsMsIDrL/bk/HieV+ZKm+b8YtaxqtEPWFqSSF3Nsxsd6B8gZoU6jypimCNHFND4bye
+	7xBZElZiOVDNz05nk+QIJ6Q91Liwr0I=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DEB7A6020E;
+	by tor.source.kernel.org (Postfix) with ESMTP id 7D867600C8;
 	Tue, 18 Aug 2026 05:38:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 72091C4AF1A;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1DAF8C2BCF7;
 	Tue, 18 Aug 2026 05:38:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1787031504;
-	bh=Sx8EIzWCQwmQ5nLlhTfCRcDmg7PW3HdfIWlqtAUVtug=;
+	bh=2gRxy25hnembdVhYLwRZncDSQOFGYsoukSzLF39j9ZU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=kKAKg1hL8/QJ6S0wakilKwr0s1rR7LJsgNCNefhuFRVEv8PUwaWU9/SSo2PhnEhZn
-	 HVKQ9xn+0mBjwgJV4cWk66CGmEVELNGV4V7QqIzj4K95A/LY1fJixWtIBpIr04SrFf
-	 DBlbgwCurQ10l/B4NqBwnexoc8HLfHMwzuZ+B49662MrfentTkxYsUwdlYU7l2BzZa
-	 SnXLgolF2haIKbQz4jZvJttKu8WCYkfMSufzF+wQQhKdZjM82gQbnAc/t2D4jgB49A
-	 lT0pEkpbCsOUH5Wcwz0fwpdWc0Cqd2mUBsOITguRHS3xBi0rbG8F6iowhhHfiQ5WGJ
-	 EJeOrv0s/cWPg==
+	b=YxaW6lZinIMHZU5k8okndOkUM+44MLlwH4XKPA/n2SQtOh00509sra1motCX6yPLb
+	 v303PCaLott/IN8Y9Mxvoif0JOAC3NzgFkyFlFiMYPHTDFik/VKnjovSp6Mu9/AwzS
+	 SbIjaGWqpfmi6BZUIQQeBWtDMLHY+gQ0v21BBucNC/MhvtdCsBiPDtuO/c0BAe+28O
+	 syxICUizu05TX5YVNN3ynL03nKj3L/4Wwf5gzOuAYe0TOpe2Yx/eauSamHItpoiTZ/
+	 ZdO5IasUTVc+eVfxWULRZUux8AjPrTMmv3JTxz+qUtCoDDHhOOFXJctygz/ei1BtG0
+	 HK+Q81jqOTysQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A915C5DF67;
-	Tue, 18 Aug 2026 05:38:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EDD9EC5DF67;
+	Tue, 18 Aug 2026 05:38:23 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Tue, 18 Aug 2026 13:38:07 +0800
-Subject: [PATCH 5/7] mm/mglru: use explicit tier range in read_ctrl_pos()
+Date: Tue, 18 Aug 2026 13:38:03 +0800
+Subject: [PATCH 1/7] mm/memcontrol: make lru_zone_size atomic and simplify
+ sanity check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260818-mglru-flags-cleanup-v1-5-8dbbdac0d28c@tencent.com>
+Message-Id: <20260818-mglru-flags-cleanup-v1-1-8dbbdac0d28c@tencent.com>
 References: <20260818-mglru-flags-cleanup-v1-0-8dbbdac0d28c@tencent.com>
 In-Reply-To: <20260818-mglru-flags-cleanup-v1-0-8dbbdac0d28c@tencent.com>
 To: linux-mm@kvack.org
@@ -92,25 +93,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-kernel@vger.kernel.org, Kairui Song <ryncsn@gmail.com>, 
  Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787031500; l=3448;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787031500; l=3566;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=GYBGb1xTYAtwF8ULj9QKeuy7M/IFOhc3aBT9Nkjj2Us=;
- b=hZsipqcQnctqC9gaBUbfHO2y8v0AyYm5uSBYOqOLuZZpuIPS1tItIjOSQv7M5GcDMTYwSIrAD
- Vygm8AIFzatCFz7bA7FXXGfPRfwCpMJd9W58MsRsA4lbht1gCaM74wm
+ bh=/T+OKeuJl3olH2b22zrXZqywkoz/djv44CIgkgQ7VaQ=;
+ b=i+2Ei8YdqwDPFssEabm+WHT0ilQlC8IDHXtxYrZA1/QkexYde2gP0a8PvqjROPnzKpImG2i9Y
+ ylZAtICzyIeApv5ta641aTQM6nqveZq6AQ9GZ+1AADs+c31OLcPr2CK
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
-X-Rspamd-Queue-Id: 7284A40005
-X-Stat-Signature: 481fkymwobi3jg1489yefh6gx4x4i15o
+X-Rspamd-Queue-Id: 782BE80007
+X-Stat-Signature: 3bxdgsy9f637gxhbrurdxoznzz6kmt1k
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-HE-Tag: 1787031505-928400
-X-HE-Meta: U2FsdGVkX1+a4i2UoGV6/POBxPWsx8OrDNgZYCrqoMxV86ZbKkAMnwQ2LJ/ZeHY0VE1/5svWEJ936oJnbqDQKs08h1zb7jNLH0h+Jpk6ET0nC2/qLKZnjFiSBkI8a69G/DoSOV8YUMN6tYOUaT9txVupb5I8AMmac1eHZCMPwW8/5P9PvYt54KsrfaKep6OFqfaFmgEY92qQkqU6S7sNFS+rUrdKQWOLUMqi0PHE/fv/T3Ez0sykBN8DAVjs3mc2tjylIW6KsDEAJlm1iI7KudgUzNSEBxFUHWMEwm8zqLWWvcVDliP9YksjnDO0PTje5iRWUAwcCnJMQ9P17hMH2v8ilCJthgm2aJdnnXVBVZuwXBtJbaO7wdjoRb+Is0hs+mq7NiWMqrZ8qq7B3giztZdpPX4k0b1vdD53sZVTY4ug+B/LQLjc06jMCbMKWg2nUnRqQVFLLOgOot8sIyXpwLTThd220qCoUBbWGEjidV5dB+hpiC76dgomwJq5LoVIMZ+zvHyenqUTta7UhlTmYsBzu5bPMHDByN1XVHzm+EcgrA/o8qRy2fcjpyfIlxgq5kPv78Vej3UQ9y1fZGyAdJ1ysrDQxK8qzcOl2y81jRcs3hAZ6uy0EMmppqcevGk9U2uvmJaghNJBOb4wKPShajr45xpBoFdXR8IZYnIkod2vHSck3yHs7lidaWEge1LtTQZgJQSi0ZYkcvSdpL3XyLirUX5RMUa4LjLLgaX6oyIjuXx+z4yCZBmkDHKZ2hxKZMW1ZQndWBq4JkLNDFZ/r8r3y8JoIObT8GU4E3TUnttA7QHrx6qrxLJf7gdhVCBBIqaovRIXT56247YEPNRtRIQC9lMLDHrmA42G+jf9n84CbcWpFuyaVhDcKyWmo3p8tqxii2Y9Hc3ujTRbNbzBcYBa4p6QLp9wihiNf3+CMxjFW28dBDFGVtlksfuUw0c3aYil6CFhvy4b1RcaOBb
- FHTrhY/Z
- oHK4lCUtWaEK4aOI09OMutp9LCAmTlqtqAA0uSC3joT+lN6z1hWQY4tPhkEOS2uNaPpu+C85pkiRnXyBkQzIh5VcejR9nnalqmhzMUl3gPPUbu4jyHM4WDVi07z8WTg/C+RnyT9Gy0TSBbqt6ujKwHnBesC0cqSyZ9LLUkcvD/FqT6Yie3LngFz22tt+w7LXo33N06+AEgXpk3lTQi5kfcPOZNf37ECjm3u+cYZxKponajy8OITnvaxiQTUTQykecr8/A0aQ1uSvNfk4hZwBEbWP0EqD4LJiVLxfIxGwdUUA1WowBjgCABi/sLtqYqv4/IfX3CTtn0iIYhRTi4WuGwQGeJT8gL+qhXPubhYPRCr04DkqNHyw35c7OnuS8iG30Td4ofgD8uczWilXYuCja54gsG3d7/LrANaZOEhHlyx2DK0RpBel0bmymNEITAilDIro0C/91QlCtgHg=
+X-HE-Tag: 1787031505-212391
+X-HE-Meta: U2FsdGVkX197KpuOklDvOuHfFZzS3MbyD/f/dCHk1a+H+yGTmU56pAnyruIv0y3OSz9f/smeluHq6j7NqpM3nzFiUbP7Qwj2IHF/kFavqHrYtSzIkb0BMi3PpzDb8BkcPxUB4qFUC2HB/e5o1FCn0p2HcgjPsAL+QhQRAjkAgzR9+NnPYTYlCDFqbc+J5vyu+2fkfUQKS3bt+lAU/UKuY4r6eFJQg3nOs+wS86vpCnpXBFzgrF7v4QQV/HDo18LDG8ws1xkVmK5qLztSgjh6FzMnx6ssIw7b3dXPGwBNVjtFGZphoVfTi7T5hFYp+R2LGKXEyYikNbmewGFDSQL9XzSHB2wV0BLy0kHJvYDGZwWy0ViaVQbeRII7gXFX0SZHVhk3GwY1WUPLT1QTeWXuXzwnpatbua4ZXjBk9Q1bQUKPof8lG2Z6KLHDXs+MlQyc/r6I9aZw+oMf0t/3G4oa+xH7ZqTIQatH2Zupu7s9jj9lHMxBHc4lN3PHskQ/VNy1A6iE5JdGqiKdgNfbg5U/1OxmIehP+VFchQzdyYtBBC3MiCax4P6tggGjdJUugpv9sa9b8Mw2OZJ0eetM2yatMbuMYYPE50B9Fo/gjT4l1ijFzISa0V+F70Jt6i9aGZhemfPaEWqEeVhbhzi8kMtYZy4LaZujVG5OZrLfcCok/V7SgnkwtRpmYpQ8oP/U+9ZT8G/Y807EORpWk59EJQzBmys0a4XI+dF4Len6q+m0dOLYxPNgoRtK9gOtw9Pq0AEGxOc0G0rYdmHF6DqHP4S3fIatUiDA1O8tBSybGw3uJ8GgrXZTF8cr/BXpk/ca0hB2p9jJ8dLTF1pk4nfRYQTqKQjgH43Z6ABIKRrfF0KiqrNqTFXVthQk/wBftXSS6Uzrhj13tmfQzcibIjNikqP837B1+mq5GtJ3OTNFdeLnHFHWu3wPhNpR4Qfg7x+J45j9M5EM0jfoSRyxNMGiaEV
+ SoezQ+hJ
+ qRqYrhxbkVuDhodsGg/pcQducqIDobsGxANUMVtKVl1PecKKKiHkcc7zPyS+1BjEo7hkaaTpLF5kQl0rQsOI0nVxHkRIXhmeVkyKdN5MZIZpPrZnQ/GFSqC5Q8JS7AtJCmvy0AQRtC4/zHz7gxHuR9FHY+j2CXu11HJO/G8N4E1KKBXmWGrMHtNzl8Yptawx5Qy7t7ZJ0H4+jYJs8q1i+8NBanXaI31SYiaic3D03AHgLJkJ5EdnGs8dk1mu7fkCttGVW4sX2ukbnezctMEEJgHwwJBya2dzRa4VJ8wzFDBuMGS44TM2lGzVh/Q7+yZnvBY1wBM5Bc64MDQtQqJD3o4cskzfoE+jMnT/nTwWeN4YWZN8v31DaTG3WT2CfcuigjokWlOGZL/g0dpR05v8+giTgCBRKU9Wgmc5SfWPO9tnMkFTEIevOj0T9EjmUPp07mzzWvIRGQxq7nlI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,92 +121,101 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-read_ctrl_pos() encodes the tier range in a single "tier" parameter
-via "tier % MAX_NR_TIERS" as the start and "min(tier, MAX_NR_TIERS-1)"
-as the end. This is hard to follow, maintain, or extend. Tier values
-0..3 select a single tier, while tier == MAX_NR_TIERS selects the
-full range.
+commit ca707239e8a7 ("mm: update_lru_size warn and reset bad lru_size")
+introduced a sanity check to catch memcg counter underflow, which was
+more of a workaround for another bug: lru_zone_size is unsigned, so
+underflow wraps it around and returns an enormously large number, then
+the memcg shrinker loops almost forever as the calculated number of
+folios to shrink is huge. That commit also checked if a zero value
+matches the empty LRU list, so we have to hold the LRU lock, and
+handle the positive and negative deltas separately.
 
-Replace it with explicit (tier_min, tier_max) parameters using a
-closed [tier_min, tier_max] interval, and add LRU_TIER_MIN and
-LRU_TIER_MAX for the tier bounds. The call sites now become
-self-documenting:
+But later commit b4536f0c829c ("mm, memcg: fix the active list aging
+for lowmem requests when memcg is enabled") already removed the LRU
+emptiness check, so handling the deltas separately is no longer
+needed. And if we just turn it into an atomic long, underflow isn't a
+big issue either, and can be checked at the reader side, which is
+called much less frequently than the updater.
 
-  - get_tier_idx:   (LRU_TIER_MIN, LRU_TIER_MIN) for the first tier,
-                    (tier, tier) for each subsequent tier
-  - get_type_to_scan: (LRU_TIER_MIN, LRU_TIER_MAX) for the full range
-
-No functional change.
+So let's turn the counter into an atomic long and check at the reader
+side instead, which has a smaller overhead. The underflow correction
+is removed: a massive leak of the LRU size counter would indicate
+that something else has gone very wrong, and one should fix that
+leaking site instead. Besides, the updater-side sanity check is
+unlikely to catch the leaking site anyway: if a folio was removed
+without updating the counter while other folios remain on the LRU,
+the WARN only triggers much later, from a likely innocent callsite.
 
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- include/linux/mmzone.h |  2 ++
- mm/vmscan.c            | 18 ++++++++++--------
- 2 files changed, 12 insertions(+), 8 deletions(-)
+ include/linux/memcontrol.h |  9 +++++++--
+ mm/memcontrol.c            | 18 +-----------------
+ 2 files changed, 8 insertions(+), 19 deletions(-)
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 32d9354a754f..d0b5c6217d25 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -492,6 +492,8 @@ enum lruvec_flags {
-  * folio->flags, masked by LRU_REFS_MASK.
-  */
- #define MAX_NR_TIERS		4U
-+#define LRU_TIER_MIN		0U
-+#define LRU_TIER_MAX		(MAX_NR_TIERS - 1)
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index e78bc98ab229..b13e3f056319 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -113,7 +113,7 @@ struct mem_cgroup_per_node {
+ 	/* Fields which get updated often at the end. */
+ 	struct lruvec		lruvec;
+ 	CACHELINE_PADDING(_pad2_);
+-	unsigned long		lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
++	atomic_long_t		lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
+ 	struct mem_cgroup_reclaim_iter	iter;
  
- #ifndef __GENERATING_BOUNDS_H
- 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index a819be6b7ae9..a613bb8d7271 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3198,8 +3198,8 @@ struct ctrl_pos {
- 	int gain;
- };
- 
--static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier, int gain,
--			  struct ctrl_pos *pos)
-+static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier_min,
-+			  int tier_max, int gain, struct ctrl_pos *pos)
+ 	/*
+@@ -897,10 +897,15 @@ static inline
+ unsigned long mem_cgroup_get_zone_lru_size(struct lruvec *lruvec,
+ 		enum lru_list lru, int zone_idx)
  {
- 	int i;
- 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
-@@ -3208,7 +3208,7 @@ static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier, int gain,
- 	pos->gain = gain;
- 	pos->refaulted = pos->total = 0;
++	long val;
+ 	struct mem_cgroup_per_node *mz;
  
--	for (i = tier % MAX_NR_TIERS; i <= min(tier, MAX_NR_TIERS - 1); i++) {
-+	for (i = tier_min; i <= tier_max; i++) {
- 		pos->refaulted += lrugen->avg_refaulted[type][i] +
- 				  atomic_long_read(&lrugen->refaulted[hist][type][i]);
- 		pos->total += lrugen->avg_total[type][i] +
-@@ -4804,9 +4804,9 @@ static int get_tier_idx(struct lruvec *lruvec, int type)
- 	 * This value is chosen because any other tier would have at least twice
- 	 * as many refaults as the first tier.
- 	 */
--	read_ctrl_pos(lruvec, type, 0, 2, &sp);
--	for (tier = 1; tier < MAX_NR_TIERS; tier++) {
--		read_ctrl_pos(lruvec, type, tier, 3, &pv);
-+	read_ctrl_pos(lruvec, type, LRU_TIER_MIN, LRU_TIER_MIN, 2, &sp);
-+	for (tier = LRU_TIER_MIN + 1; tier <= LRU_TIER_MAX; tier++) {
-+		read_ctrl_pos(lruvec, type, tier, tier, 3, &pv);
- 		if (!positive_ctrl_err(&sp, &pv))
- 			break;
- 	}
-@@ -4827,8 +4827,10 @@ static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
- 	 * Compare the sum of all tiers of anon with that of file to determine
- 	 * which type to scan.
- 	 */
--	read_ctrl_pos(lruvec, LRU_GEN_ANON, MAX_NR_TIERS, swappiness, &sp);
--	read_ctrl_pos(lruvec, LRU_GEN_FILE, MAX_NR_TIERS, MAX_SWAPPINESS - swappiness, &pv);
-+	read_ctrl_pos(lruvec, LRU_GEN_ANON, LRU_TIER_MIN, LRU_TIER_MAX,
-+		      swappiness, &sp);
-+	read_ctrl_pos(lruvec, LRU_GEN_FILE, LRU_TIER_MIN, LRU_TIER_MAX,
-+		      MAX_SWAPPINESS - swappiness, &pv);
- 
- 	return positive_ctrl_err(&sp, &pv);
+ 	mz = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
+-	return READ_ONCE(mz->lru_zone_size[zone_idx][lru]);
++	val = atomic_long_read(&mz->lru_zone_size[zone_idx][lru]);
++	if (WARN_ON_ONCE(val < 0))
++		return 0;
++
++	return val;
  }
+ 
+ void __mem_cgroup_handle_over_high(gfp_t gfp_mask);
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 1d3339520809..9d0ee3d3bda7 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -1529,28 +1529,12 @@ void mem_cgroup_update_lru_size(struct lruvec *lruvec, enum lru_list lru,
+ 				int zid, long nr_pages)
+ {
+ 	struct mem_cgroup_per_node *mz;
+-	unsigned long *lru_size;
+-	long size;
+ 
+ 	if (mem_cgroup_disabled())
+ 		return;
+ 
+ 	mz = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
+-	lru_size = &mz->lru_zone_size[zid][lru];
+-
+-	if (nr_pages < 0)
+-		*lru_size += nr_pages;
+-
+-	size = *lru_size;
+-	if (WARN_ONCE(size < 0,
+-		"%s(%p, %d, %ld): lru_size %ld\n",
+-		__func__, lruvec, lru, nr_pages, size)) {
+-		VM_BUG_ON(1);
+-		*lru_size = 0;
+-	}
+-
+-	if (nr_pages > 0)
+-		*lru_size += nr_pages;
++	atomic_long_add(nr_pages, &mz->lru_zone_size[zid][lru]);
+ }
+ 
+ /**
 
 -- 
 2.55.0
