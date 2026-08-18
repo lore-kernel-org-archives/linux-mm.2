@@ -4,97 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E49BC5B572
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 00:35:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B794C5DF74
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 00:45:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C58266B085C; Mon, 17 Aug 2026 20:35:20 -0400 (EDT)
+	id 5658D6B0868; Mon, 17 Aug 2026 20:45:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C085F6B0866; Mon, 17 Aug 2026 20:35:20 -0400 (EDT)
+	id 4F3456B086E; Mon, 17 Aug 2026 20:45:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACF986B0868; Mon, 17 Aug 2026 20:35:20 -0400 (EDT)
+	id 406F16B0870; Mon, 17 Aug 2026 20:45:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 86FE76B085C
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 20:35:20 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EA4701206BE
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:35:19 +0000 (UTC)
-X-FDA: 85112521158.22.03647AE
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B1DE6B0868
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 20:45:17 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8FA82C095B
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:45:16 +0000 (UTC)
+X-FDA: 85112546232.04.DA6FB70
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 658DC40004
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:35:18 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U7lhpOz2;
-	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 038A8120006
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:45:14 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UCXeXMTz;
+	spf=pass (imf29.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787013318;
+	s=arc-20220608; t=1787013915;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D6o/Mjguy0kTftlgmBYSy4gaJDB68wNIKzA6Vj3TLJI=;
-	b=4M89mLTmh32B0oMUTRk7vB+zOWmTFrbdSoXz1FNo+2tL1w04fqF4qAS4YDGneunFwFnSao
-	XPx+VZh37XFdg/OaeYRTBeQvVug20W8XxC/lnP2qwDNMHBMzSfYkCyiG5tT2j8IN3+X0IW
-	ksix7J2s/KVTNN7Sfae8prCF5AkjEe4=
+	bh=Y7IBZ9whj8N27pOck+w1kYgcf4pKNDKFKbZGgA8fyUE=;
+	b=z4cT4fnQhZiP5klKxKDfdHvOs5IwqhNr4KEf801EYPfJjJVme/cL6TV6Q5p95T51RM9LmW
+	FjVicQE62w/uIBN9bulJIWoJeXywvhoaPh3GgBI9lwY7CgJiXJXu6hEvm+4dtNL9n/RPyU
+	QY+Y5XnVRh84a4s9LIzdRTT1ODJF8N0=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U7lhpOz2;
-	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UCXeXMTz;
+	spf=pass (imf29.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787013318;
-	b=O9H8CDDINWg+bO8q7D0PA1Jn74NLU0oWR+wK28cMT3c8v5nxyszY3NXzte3VeIX73WsDHf
-	qqW1cE3DbjhqZ8WfEl7XY0gTZmBd8f0s9WyWfjjxEM/Dazkw/W8nLuoPVrkgyapa/9JuZx
-	aWHWA53fGCCpn79Vq8vBCITSwsMegkk=
+	t=1787013915;
+	b=CiPmwEDrLrt8uZRkwBJ0IMaxnptfSwuBF0IgGwTFmW3J48otIDOZq89uA2SnfB+7qEhoWC
+	cfdI7w3VLTPXhyM7xbQk1njhuxKRzpkSsIJoOG5O5TR3v9W/G5orZ+kuqFx3Nt/UBUrt+c
+	v/dRxqhkJ9pfv3tUlVx3CSOTIoPWOt4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C13CE601DE;
-	Tue, 18 Aug 2026 00:35:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746451F000E9;
-	Tue, 18 Aug 2026 00:35:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 70A60600C8;
+	Tue, 18 Aug 2026 00:45:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E6DC1F000E9;
+	Tue, 18 Aug 2026 00:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787013317;
-	bh=D6o/Mjguy0kTftlgmBYSy4gaJDB68wNIKzA6Vj3TLJI=;
+	s=k20260515; t=1787013914;
+	bh=Y7IBZ9whj8N27pOck+w1kYgcf4pKNDKFKbZGgA8fyUE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=U7lhpOz2V9rjd0zWT8krD+LZt3v1GQPuKmCukHl/7x7wY9DvYezxlkpiTF8vcsjzF
-	 ha+2mMxkmKc7BvRPbSCjlCdQbgwj7ZmXXeflh2but+bff51Dj1LQA0rf6z48ad6qbH
-	 uu0tjJ8c+sXQ95Pv62HTCo70d9TlC3u0c9+SFFtviD5Kgiq0xou+dXp91DZxVAdWUo
-	 1ZaO0OfzoMtupVa40r9H/TLiR+e/uOG67SzaGkO91E1zQUDXs6K+tgrlUu9rvowIgE
-	 DXFVdukK+HWqV6vIvLiJ5nG/v3xnPjwHC5uTyn3k34tjomvJu4F7j7OvDGmhg5goqD
-	 OBphIxoXc5pnw==
-Date: Tue, 18 Aug 2026 00:35:15 +0000
+	b=UCXeXMTz+dlXORAFIthhGIBJp/jEko/vO888JKdoWD7GCBmXYh8ZESI9OoCouAQdD
+	 jHGxoQIiARkrkBpEeejYUwOSEA2iZLrskeL4TUwKK+F0oLrH8FNXzeQQIe6sMuQLjk
+	 lqn/tptC1D3yAN1dyZOTOU9LmmOybo56tyGPswn1J4TUXTtrUIooZx81tb/oTyByqH
+	 InLlzOwJecAefFVN8a43oEKRtI+p9bTg3err5T15cn2j/282kIOFJXvcirldJL7v6G
+	 QD3mGNyb4n6PSclOX4DjCNaY1I0xOp4MyUTkHAxDmySIMg+iCq91BMzypbt6cq0Dq5
+	 4/U8nL4P/xizQ==
+Date: Tue, 18 Aug 2026 00:45:11 +0000
 From: Yosry Ahmed <yosry@kernel.org>
 To: Brendan Jackman <brendan.jackman@linux.dev>
-Cc: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu <weixugc@google.com>, 
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu <weixugc@google.com>, 
 	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
 	Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, rientjes@google.com, 
-	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
+	patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
 	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
 	Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, 
 	Reiji Watanabe <reijiw@google.com>, Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH v3 13/26] mm: introduce freetype_t
-Message-ID: <aoOomzh1ErtSeKFb@google.com>
+Subject: Re: [PATCH v3 19/26] mm/page_alloc: rename ALLOC_NON_BLOCK back to
+ _HARDER
+Message-ID: <aoOqd8Th9dhx2bjT@google.com>
 References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-13-6f5729aa9832@google.com>
- <anJmOMqCVugycC9x@google.com>
- <DKOLND2TRB15.2Y8DKB3ZKEYAY@linux.dev>
+ <20260726-page_alloc-unmapped-v3-19-6f5729aa9832@google.com>
+ <ee8df643-91dc-4a38-a676-486a0d52c919@kernel.org>
+ <anJc8Ansf-QWFfFo@google.com>
+ <DKONM2LHEP8I.1PW06S1B3CDC7@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DKOLND2TRB15.2Y8DKB3ZKEYAY@linux.dev>
+In-Reply-To: <DKONM2LHEP8I.1PW06S1B3CDC7@linux.dev>
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 658DC40004
-X-Stat-Signature: bu6i8t8yyko8owhytzjkexeqgs1f3nu4
+X-Rspamd-Queue-Id: 038A8120006
+X-Stat-Signature: xxaw7pxomww696wiayy8mzj4g6e79mqw
 X-Rspam-User: 
-X-HE-Tag: 1787013318-251161
-X-HE-Meta: U2FsdGVkX1/lAZ4jsPZInzZVDOqV8XbDfOdxy5ZgqJcAU8njhfdCqHBXySkyt2XFLnawFAt0drThXqY6w/7L8TM++/xKOWXzgl40+kbEzmTWow6qU6NIbhtvu8l0a+zo8eJxLDlSuc1MOxAr2hmN0Auk9mFqthPoRof6PY2sUI3iR3ZhfMfgKUL9Ly1qTqXnTlcVRT6cJUO60iukFh3C1/Al9OC1nfK66vLcwwJbcy3TjDELB+ch/zcJcagzPcibz/uxaxGaour2V17DKr0rtMf946qELazJwGjrvbA1QFswQ54aBiJSlLzsiDpWcO2RvQFskrxAgFe75aL38+itLd2QrKecRFnwx4tzWKgQelyPyTLxd5Tu4dmD/Ah1+565Fn8RzKx09aTZ5Fxxg6BA4gjmfJhYbPIX+dXj6V4JujrR1lNEiDPmfnFSJqEPaa8+Pasr2fRrNBojdpDu4SC/d5T3JacXp15TaWkULo/UjJjH2pPIX0aAeTjZheog00hYd3f2niwCA6kSEA6va7evwT5BvMmjYjMSiXOLClUmJrqLUTtA6fiqLfBRz+JXlu+HRJ78VLu1BP2dYqyDdWOH9j+/+0uXNf4663Tw30osMV/P4s7TIPD5dITOi9/2EMN9UGhjc/lCMwKXx9jmAnnTPWIgOAj/Oqpo2+5cIOrxBVyOyAZzlFlImwHqebaVOklgGlAxjIEW8eua8fXtmBZh2333nlww3R58PfK4LB2rM+2tk1ClWmBvKcwY0xsXI0s7GVpb2xo4R27lcVAAwJ6+q1feLDvBBGe1W0vovKHXENwdHb7ENKpJDLQSNOQCpjnl4IZP2WpNQ2idtNfDvhEMOmfMPtrdz7R6sF+uO3HWFVTGZo1tKRQJJyJwPQxs2Cz4rhhhv7XAEFgMfNW8SYJ4vAXUcvdfkGDwWsEFrMYWsvc+cGX6FuH9jPhpqPdyvVzXtsErlcyArgSPApJUVpI
- WowfKmyV
- oH1uLU6POVoeYLhvPBrvtfnapBdXA0n4zudalHdxoLMRv26I/bhP/MJqcFrIwa/SMjncQ1bITpCm5iuVhnfv+jiIYEs/J8SX2oiDgWHi2MmYnkQhXxCDheotoGmWrrlVH58atFpQWpe2poxpacvGVLbBtpzowVqXH3PyCxWohjP77m756QrnA8UiL524kyqTQGgBX39rsokHQJ6wwNeoCSS32MIvT7y0hbMni3CttoUvRfXBNV7kwjxPLtC4f5XQLYPm3QXyGM7ThvNRivYTWOefEYKXpaWOPwspKRq3B6bHlgruCkFz+SXO8fPP+uXeSGiBg
+X-HE-Tag: 1787013914-565070
+X-HE-Meta: U2FsdGVkX1+qks+0OJwpIDSbQOqfgMi+VJa3YImhwuIyg1KwsNtsWWnYQCjMaH1nxBT+/sBrwPZXchhmRi/SYzk/f/6hBuxcrISVIfQEDs80RzaBVnfJ2PWnPaz0nTh3/UubYrBmYJuKQjNwlSt7AVT/OaPmYJIZpoHTDDZ/Kxns6UzYBDoCFVa6owYsBiHuACnC0JtvAvJKS2OVPGxT34XtCrvFOgSJEdlKpBkT2oWrgVHBp4yeztebGVHm72VNQIYoVXV6nY9Idw2RVf8RGwD1ynTUvH/8c7mGig1t5FRtd0RCqCmC7Bwew/K26JcBS/HGrHDrrkRNGx4WN4g76a+8viBkEy44lgLmRxk3EyiaoGE2oAAJkKfo4wJCpY27mdOR+oirQBTzLtZ7yMrU5t7U211rqxpXJiYlsDQRBwYicHjeO5wEP5xN306bGxlA+PlTTRascaFS89eFGwoZDTjXqGZTVrulORR4tUX/ErKPj7+H7gkP89bFdODRGd4IWJ8wh5DvUhLze1/H9yYzhfBtuMtK19/HiDrJNybfL+3BioeTbMiCfP55Fw9HnV3aHh6+/8qqPd8RDTTVosByN+Uag23BdfGrAJZiAc+LOzGpDiHF7XWLPSoa2419yXHOzxCbEFv65afzaiZb+ywTND5RaNaetX6NyTyUgsdcJR0I6M8WSt/p+XmkPKO8F7/mBR0l4MVZnL6Cl8XdjGyNBU4hwd26jvR9o7hZ+4NPj/J+8Fhf5RKo+901fuZa1usXk3smvdpK6EctBFjR8/G18HWofSvF+MDlxf7Qpm6i017Ls59ptbwwF7gAP6NUXK/02t2KzAfb3io8nq26P5t2CiTX7LyM8zOQoey1I7YXOR6KuN+Bqr0X/Zjr/UHokoqxzmX1yIHU3hOiRIIyrjCAmUCdULrM9nFEF4lYWUfjSORSOMXfH7vAWzViLhrRmmjZGOzly79rJZX0VFZKkYF
+ Z4Pmm9/r
+ 9Rc4GMx72EumpI/YVf5b/+ky5HpSfdAjis7zfv0Zw1mvbFW/0lG0tUUvPFyTQ9YL3XtF1/MXln9ScsxY3Yf4+8yblMtip3iZu3WDUX/u9EyKp3mZNGf4TOlhwDvWSQ4FlriP+ZxwL8lC8xrcsNfM0fe/RyGTlxbqXbc8Jmb2TMspP61v4O4LTDFxn7WRjwFzQBvnCoG8c01AKcLK3SR42cqjtgu/D5af4OJaZoPAikI6PNJvB2ZQ/0Y7V49aMua3iFjT7Ej3JmWBbmY1QMuzMief13Oev40QrAzPb0LfUOOfnN0BZDvKJTRx6tkbaVyt/NGBq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,48 +104,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> >> +static inline
-> >> +struct list_head *free_area_list(struct free_area *area, freetype_t type)
-> >> +{
-> >> +	int idx = freetype_idx(type);
-> >> +
-> >> +	VM_WARN_ON(idx < 0);
-> >> +	return &area->free_list[idx];
-> >
-> > Should we return NULL here if idx < 0 instead of an out of bounds
-> > access?
+On Fri, Aug 14, 2026 at 01:09:32PM +0100, Brendan Jackman wrote:
+> On Tue Aug 4, 2026 at 10:50 PM BST, Yosry Ahmed wrote:
+> > On Fri, Jul 31, 2026 at 04:52:59PM +0200, Vlastimil Babka (SUSE) wrote:
+> >> On 7/27/26 00:22, Brendan Jackman wrote:
+> >> > Commit 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH
+> >> > non-blocking allocations accesses reserves") renamed ALLOC_HARDER to
+> >> > ALLOC_NON_BLOCK because the former is "a vague description".
+> >> > 
+> >> > However, vagueness is accurate here, this is a vague flag. It is not set
+> >> > for __GFP_NOMEMALLOC. It doesn't really mean "allocate without blocking"
+> >> > but rather "allow dipping into atomic reserves, _because_ of the need
+> >> > not to block".
+> >> > 
+> >> > A later commit will need an alloc flag that really means "don't block
+> >> > here", so go back to the flag's old name and update the commentary
+> >> > to try and give it a slightly clearer meaning.
+> >> > 
+> >> > Signed-off-by: Brendan Jackman <jackmanb@google.com>
 > 
-> TBH my descending order of preference is:
+> Writing this to get it clear in my head, so I'll also dump it in the
+> mail in case it helps get us on the same page... 
 > 
-> 1.
+> What we actually want here is a flag that tells us when we can do a TLB
+> shootdown. That means (on x86) that IRQs must be on and we mustn't be
+> holding some random spinlock (most spinlocks would actually be fine but
+> I think it's simpler to assume we can't hold any). 
 > 
-> BUG_ON(idx < 0);
-> return &area->free_list[idx];
-> 
-> 2.
-> 
-> if (WARN_ON(idx < 0)) // OR VM_WARN_ON
->   return NULL;
-> return &area->free_list[idx];
-> 
-> 3.
-> 
-> VM_WARN_ON(idx < 0);
-> return &area->free_list[idx];
-> 
-> 4. 
-> 
-> return &area->free_list[idx];
-> 
-> But I suspect[0] Vlastimil (and Linus) would order it the exact opposite
-> way.
-> 
-> [0]: https://lore.kernel.org/all/bd36e972-8900-4476-a66b-4dc218b21a4d@kernel.org/
-> 
-> And I care more about making Vlastimil (and Linus) happy than this tiny
-> detail of the code, so I'll defer to him. The current style is a
-> compromise, but maybe it's just a compromise that makes nobody happy.
+> It must never be over-permissive i.e. tell us we can do a TLB flush
+> when we can't. It's fine to _sometimes_ be over-restrictive i.e. tell us
+> we can't do a TLB flush when we can, but if it always forbids flushing
+> while GFP_BOOT_MASK is in effect then we'll fail critical allocations
+> and crash.
 
-I think I prefer #2 (regardless of whether it's WARN_ON() or
-VM_WARN_ON()), let's see if anyone disagrees.
+Why is it a problem if it forbids flushing while GFP_BOOT_MASK is in
+effect? We should change gfp_allowed_mask before any unmapped
+allocations are possible, right?
+
+> 
+> >> I wonder if we need to do this, and instead we could repurpose
+> >> ALLOC_NON_BLOCK directly. AFAIU it's about removing the side-effect of
+> >> gfp_allowed_mask in the next patch. But what would happen if we did that
+> >> using the existing ALLOC_NON_BLOCK (or maybe just renamed to ALLOC_NOBLOCK?).
+> >>
+> >> - in __zone_watermark_ok(), ALLOC_NON_BLOCK could now be *not* set in
+> >> situations where previously it was set due to gfp_allowed_mask masking out
+> >> __GFP_DIRECT_RECLAIM. 
+> 
+> Hm, I can't follow this. The first paragraph sounds like you're
+> proposing that we set ALLOC_NON_BLOCk regardless of gfp_allowed_mask. I
+> think that would be fine. But then the second paragraph is saying
+> ALLOC_NON_BLOCK would now be unset in places where it's formerly set,
+> whereas I think the proposal means it gets set in places it was formerly
+> unset.
+> 
+> >> But it only has an effect on top of __GFP_HIGH (thus
+> >> ALLOC_MIN_RESERVE... which seems contradicting the ALLOC_NON_BLOCK
+> >> description comment btw). Also __GFP_DIRECT_RECLAIM is only masked out by
+> >> GFP_BOOT_MASK when all memory is free, so it's kinda moot?
+> 
+> ... but yes, I do think making the existing ALLOC_NON_BLOCK ignore
+> gfp_allowed_mask would probably work.
+> 
+> Aside from gfp_allowed_mask the other thing about ALLOC_NON_BLOCK is
+> that it gets disabled if __GFP_NOMEMALLOC is set. That is fine for the
+> current usecase, but it's pretty confusing...
+> 
+> >> - in rmqueue_buddy() we allow access to highatomic reserves since
+> >> 281dd25c1a018. That commit describes GFP_ATOMIC so we could have been
+> >> checking ALLOC_MIN_RESERVE. But we can also leave this alone because it
+> >> doesn't actually matter when GFP_BOOT_MASK is set, as above.
+> >
+> > IIUC we are trying to find out if the callers either has interrupts
+> > disabled or is holding a lock, and using __GFP_DIRECT_RECLAIM as an
+> > indicator. As you mention, it seems like __GFP_DIRECT_RECLAIM is only
+> > masked during boot, presumably before we can allocate any unmapped
+> > memory (should always be user memory?).
+> 
+> Exactly.
+> 
+> > So maybe we should just use gfpflags_allow_blocking()?
+> 
+> Oh yeah, it definitely should. This doesn't change any of the plumbing
+> challenges though since we've lost the GFP flags by the time we get to
+> __rmqueue_direct_map().
+
+Yeah I think I prefer just using gfpflags_allow_blocking() if we cannot
+use preemtible().
+
+> 
+> > I also wonder if restricing to callers __GFP_DIRECT_RECLAIM is too
+> > restrictive, 
+> 
+> It is overly restrictive, but I dont' know of anything better, and if it
+> existed I think it would be in gfpflags_allow_blocking().
+> 
+> > we can probably key off __GFP_ATOMIC as I assume any
+> > callers with IRQs disabled or wiht a lock have to set it.
+> 
+> There's no such thing as __GFP_ATOMIC. (I think there used to be?)
+
+Duh.
+
+> 
+> > Maybe we can also use preemptible(), but that creates a dependency on
+> > CONFIG_PREEMPT_COUNT as far as I can tell.
+> 
+> Yeah. Which...  maybe is fine nowadays? Since commit 7dadeaa6e851
+> ("sched: Further restrict the preemption modes") you can only set
+> PREEMPT_NONE on alpha/hexagon/m68k. And this restriction only actually
+> matters on x86 anyway...
+
+Yeah I will look into that. I like preemptible() because it encodes
+exactly what we actually need.
 
