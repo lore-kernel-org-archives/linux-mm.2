@@ -4,147 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1D9BC5DF81
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 16:04:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDB83C5DF81
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 16:10:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC8346B077C; Tue, 18 Aug 2026 12:04:37 -0400 (EDT)
+	id 9C19A6B029A; Tue, 18 Aug 2026 12:10:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A79686B077D; Tue, 18 Aug 2026 12:04:37 -0400 (EDT)
+	id 999336B0488; Tue, 18 Aug 2026 12:10:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 940376B077F; Tue, 18 Aug 2026 12:04:37 -0400 (EDT)
+	id 888EF6B0536; Tue, 18 Aug 2026 12:10:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 661516B077C
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:04:37 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E00EA4012B
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:04:36 +0000 (UTC)
-X-FDA: 85114862952.04.9A42D77
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 73BC3A0008
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:04:34 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="PA2y/Q3s";
-	spf=pass (imf25.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CB826B029A
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:10:36 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D3FA4160142
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:10:35 +0000 (UTC)
+X-FDA: 85114878030.18.A3A25C6
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 15FC240002
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:10:33 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=t45o4rDx;
+	spf=pass (imf04.hostedemail.com: domain of 3-IOEagkKCG0eLcfYdLSfRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--tarunsahu.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=3-IOEagkKCG0eLcfYdLSfRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787069074;
+	s=arc-20220608; t=1787069434;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7GcnCyLG75obtAvBlP35RBRJpiMoGm0EyyPyoIzan5Y=;
-	b=aFM1s20q5o/P9UpfUAEIuHV+h7ljNiPtYwHKzpw2wHR+hQwfbJSdANuL+SELU1Dajmfejv
-	zedIMPv83KRgAdrHN5coH74RRBzyQegOErRAnxlNjKhzziPcHTUemWN5xUJidydqZiJTae
-	sQvcLeQtehUeigvv0s8H+Y9I/ou3A7U=
+	bh=mHrQKH+zHwT+WPXcscvHx+YAi87Fp0trF0xTLxVXA3U=;
+	b=Wf/LQOx8TCe149tE7gZZwCGzwb+Tr/95srmdfzJDoE5IsICALHZbsvnaU6khIJPWwir9wZ
+	MN4VBWFQkwHgFXbO73l/a+zZT/PO2fPUcav6Av2FEJ1LY/DkauSp8FF2PcnZt/E2SHQqhy
+	XHMe0yHOtxypZIzlpgSc4ZzBCu05Ec0=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="PA2y/Q3s";
-	spf=pass (imf25.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=t45o4rDx;
+	spf=pass (imf04.hostedemail.com: domain of 3-IOEagkKCG0eLcfYdLSfRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--tarunsahu.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=3-IOEagkKCG0eLcfYdLSfRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787069074;
-	b=fjughwvoVCdPffguHEka96XGmjtsKsLbGGggdUNyl/U3NG8xhZhVNgob9fGXDTBEQQ8Ldu
-	zHOH5Cn1Ca74IG5/Ftp8qkjiVcD0QnQpqNRmWuQH6e+6dGrkaz8CTw6tU0m0My9wWlTdgK
-	put+YB2EfdvRTsXWZwbqGE8KheYw2rI=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67IE45uH402315;
-	Tue, 18 Aug 2026 16:04:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=7GcnCyLG75obtAvBlP35RBRJpiMoGm
-	0EyyPyoIzan5Y=; b=PA2y/Q3sQp6wybUCOnKYvCzHmaRKeveJB/slnjSsF0sKj9
-	Rs4xSd9UbkXZFmdKGUY2aIV+nWRXQZPo9lNh+mElrXBgJbFqe+Etf7cMuGONZ0P6
-	rp6aEUi11NUl7LqMF9IHktsSaumpmteLY+CXMnpN2+DyaT8QojhnHCK5N/LfBUeL
-	jfDGE2UCyhNIaDckmoY4hG/WzwNX3VmnbY43tqXK4KY3MlqVWnZe4gnNwbfcAzjA
-	0ZNVdMIYRkfJzjeHJo93NKIsp7hiL8ZR5cDTGxrCK2g15xVXgm7FwxK/BNYNJJJB
-	OXJVrYrzYC+Np80ll1zDyuLq9lBWzGf5+8q/kYDA==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g2dhm14q6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Aug 2026 16:04:16 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67IFuMTF027544;
-	Tue, 18 Aug 2026 16:04:15 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g34ngbvbr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Aug 2026 16:04:15 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67IG4Dgo51970544
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Aug 2026 16:04:13 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A82822004B;
-	Tue, 18 Aug 2026 16:04:13 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1D08E20040;
-	Tue, 18 Aug 2026 16:04:09 +0000 (GMT)
-Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.39.16.140])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 18 Aug 2026 16:04:08 +0000 (GMT)
-Date: Tue, 18 Aug 2026 21:34:06 +0530
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-To: "Pankaj Raghav (Samsung)" <pankaj.raghav@linux.dev>
-Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org,
-        "Darrick J . Wong" <djwong@kernel.org>,
-        Carlos Maiolino <cem@kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Ritesh Harjani <ritesh.list@gmail.com>, Zhang Yi <yi.zhang@huawei.com>,
-        Christoph Hellwig <hch@lst.de>, Dave Chinner <dchinner@redhat.com>,
-        Daniel Gomez <da.gomez@kernel.org>, Theodore Tso <tytso@mit.edu>,
-        linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, Dave Chinner <dgc@kernel.org>
-Subject: Re: [RFC PATCH v3 04/11] iomap: Add initial support for buffered
- RWF_WRITETHROUGH
-Message-ID: <aoSCdnKqCjy8zRTJ@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
-References: <cover.1785908600.git.ojaswin@linux.ibm.com>
- <c108df815e3330e76f2d6adfde791a6e20a498b9.1785908600.git.ojaswin@linux.ibm.com>
- <aoMCtTAZFN_DlZjw@quentin>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aoMCtTAZFN_DlZjw@quentin>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDExOCBTYWx0ZWRfXxzB03zp0uDAf
- t50aGjTES+mPTXNMTEJRlw06Xou7kuHQWFGitRTd7zlGNRtCCW6aIqieK7NWog1ni6KI+c4q/je
- 6vT49k16FLwlCLWdlSdXZiOidH0Nm/UdLMXWg7B1LtgTvnVhwxC2hXR7isAhVzJVQcQgZG51Roy
- MYSQh6aur0WClwyneZ2uwKJ4YOLkcKU0WMCpr3AzOANEFxiCwN61GRYq7zuUfHARyNHfCHv6iOY
- 1YQjsHs+XNwJF9YLq+A7SGaZqRUyEltx4bBaq5LOYeQKSeLVFVCAnCWSxFcWfKJJtANCsEuYvED
- WQnTpW5TAiQbtdLJmaF0kgQ2U4oXxlc8VquAio8LxiPVEClaDutPii3besnT/cwADz75zZU21f6
- HqLXUqgkNc+X8lZ+hLLn8q+6f+7whAZ/4q2bWB+JphzddWYTl+qpv1eQEjXaJXyHT0iJrGyOw/A
- 2VWeZO3BTUEn90HpPZw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDExOCBTYWx0ZWRfX/MZOWtvovkxW
- irxu9Hgg9ngIkjIz0xiUusImXZGejp3TBYawO4LhMRjvncv1iRq4h88Vkj92Sj02bwWln9odO8b
- 06193M1HKqLTHtzFMYBxaC4IXIWUyo8=
-X-Authority-Analysis: v=2.4 cv=JKkLdcKb c=1 sm=1 tr=0 ts=6a848281 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=Qb9LMyuyepaNm-1pOgYA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: N8cU29wC1u0R3-keFNEBzWoBycdbnVy3
-X-Proofpoint-GUID: 3wcR2FtiJ0kKoahbrKqDONLrLhz0SU4X
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-18_02,2026-08-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 malwarescore=0 priorityscore=1501
- lowpriorityscore=0 clxscore=1015 adultscore=0 impostorscore=0 spamscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608180118
+	t=1787069434;
+	b=ClqZntsb8L8fOc1aBBZ8Wh1I21Gm2MteeaqI/mLX8CyS67Pph6lb1+JvcrLnYHAddhf8oL
+	GdvmFDli14RKyD1Nu3Xsrqh0DKIuLjIwnzlDDpXDaRpiSqOp45ZRBylJG6RJtufzjdswMa
+	RPYExBvFL2OyC3VeEykc2U7PYMHLraw=
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6a3f8cbd9feso120206a12.2
+        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:10:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787069432; x=1787674232; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mHrQKH+zHwT+WPXcscvHx+YAi87Fp0trF0xTLxVXA3U=;
+        b=t45o4rDxxg4BOgdUdnIDW76u4uXBFZazgLCf7iO9OY4sWAarjA/3DiQTg2LsbnOkTf
+         PZ94oYQtFsAjc8vLzqbH5OHpi+KDYNS4by41H/+4g94i5tfyR7fYAUShadduFByjUZow
+         D9zhqh8DmGAt5NVNC5tQaju45thT0p3zFeOd5RsfDfHeddR0ZCTIIgeMQMgd8VIL2sYx
+         YFyCqgolj/SD9Kx3upNgmycFTj+y112L+DESVBTJZa8kOu+KyKSkbIty0KaK51Km43ZZ
+         /Rtora5HPn+cGCJ2Nldz0Ogj7i1bqHbPWhfHpD8jzTAeEZPWY+AVzRXNsLNbvWtZ6Oux
+         Xk4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787069432; x=1787674232;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mHrQKH+zHwT+WPXcscvHx+YAi87Fp0trF0xTLxVXA3U=;
+        b=Ep19GferBSrzWMkbYUCTukL2v+cxzm4OLqKqOfSV04t3CerfR1CFQwkJABMGep02+x
+         dTa4E5PIDURPQJO+Ab0IGkW1CN3O65zREYYYbyZ2hHQSGLqKw0KNCIhT+XO2OcobRKuN
+         Var7576L2+bVOkB8BLHtvyfFhBExBHSrLh63Vgndae5aAMHtbbW4MXJDOR2yyy0EA4PH
+         Ff1g7hn7XE7j6g/oG9Fgh+lLsB8iXoQd3jksXM0fIML+iwHu4PLnx/0SPeGOSUn9ILjN
+         Qfv+kSLiglcTo7MXh+Ai9F2bpQN9aiNfEyKrCqE5qfMWaWkCM5642Jp7BnTvwr1D69OJ
+         ty7Q==
+X-Forwarded-Encrypted: i=1; AHgh+RrlikbNH/6nAebACdF81p+X01hD4NVS7BaznqXxxwKwNlT7eW1NAkio++XKfKJ2N/4d55oq1GcPJA==@kvack.org
+X-Gm-Message-State: AOJu0YxPBOhJHd4bXADt6UPnRi6XqJ9XqjBWm/vQIKdgeBWc+SphnLah
+	fdM+0XzxlkRaLyhIOnGnjreAPaQQL0K41eGIqwswlo76DTTzAtqlMLeHJt1C42I/CAVduM4+v7R
+	Qw4nPqVkB9rMT3p5ydw==
+X-Received: from edts26.prod.google.com ([2002:aa7:cb1a:0:b0:6a1:f410:2ec5])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:210b:b0:6a0:a4f5:f4eb with SMTP id 4fb4d7f45d1cf-6a3e0fed785mr5782524a12.4.1787069432349;
+ Tue, 18 Aug 2026 09:10:32 -0700 (PDT)
+Date: Tue, 18 Aug 2026 16:10:31 +0000
+In-Reply-To: <anssOQFNZ2LfihbU@google.com>
+Mime-Version: 1.0
+References: <20260728121138.1103610-1-tarunsahu@google.com>
+ <20260728121138.1103610-6-tarunsahu@google.com> <anphyjFv3FhF61iB@google.com>
+ <2vxzpkzo51wg.fsf@kernel.org> <anssOQFNZ2LfihbU@google.com>
+Message-ID: <9huzo6ezv288.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v4 05/11] KVM: LUO: Support VM preservation across live updates
+From: tarunsahu@google.com
+To: Sean Christopherson <seanjc@google.com>, Pratyush Yadav <pratyush@kernel.org>
+Cc: ackerleytng@google.com, fuad.tabba@linux.dev, 
+	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
+	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, sagis@google.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
+	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
+	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
+	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
+	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
+	suzuki.poulose@arm.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 73BC3A0008
-X-Stat-Signature: 1iaxjffnis44r8oq7qeu53m3uqttzyrj
+X-Rspamd-Queue-Id: 15FC240002
+X-Stat-Signature: 7j1owzc1x83qa7iynn4xnrgi64pjh1fn
 X-Rspam-User: 
-X-HE-Tag: 1787069074-978475
-X-HE-Meta: U2FsdGVkX18CzZCIVGodPUen1dxNmFvjeIXoEfgIY3MNIBpbE4vYri17G39/BqlXY20aNg8wdZLcRLtRvgk1+d2imzgg7NlEoWo04AQpdcKVKNatH18CaSTKnTzX+ICDgmfZ/MlyXoqiQErhvhi0bJ8qVBSGpIDHyfonkROFoF2hBNXJOUITbsRzUudXQCqJCgKkyEgquFcXQ0lEIvVlahG7vP6mW0WziIWpud3NCbb+6PZ2j0KaipYYkGnOwrvytIKFVMgX/2gdCmutcPW3zUH4TQTImxJ06psaoTdSvZNo/uGaoXRazOyijCnP7DNq3gfI59FIakCS4CkdHHjkffpsE4J+59NLBnHsws0mi0vFoDuNY/dQTQA7wIaAKgw8JFRqYQM23Miac+V9++Xu2oGwowa65RKM6x9hqfBQyw70nF46WoANJ7OjZAbdliFPiwyleYw8OZqadGFoAXE+K9UqeYSnq70iVbpolm/3o348DRjPnZC/7tIKPhJXRG9TnYzwREP6PerwFdcro8jacCAQUornWvtR6nh/h6cnv37PbIhBgp5FmFeZYM8Gw9WsU27aUzAilMkQrfac4bX/gRCFGfjyii7fwtL9LJt8LcrnopW3Q8ayN8mxTsP7PL8BgDc2ZgcdV5/S76naYPCEdTi6H8SRe4+rfnfb2iZU6w/Wt5J7RQw3naxillvdBLbH5ubKGIsCYQcXtyJ6yIISPIVEaGNo69hlFsarUnYGS3EUdj/h0qTNF5ObkVWsyEdLVpamBzTFFRksAoETDQ7LurqcVhIHgYipQ1XAd7Nghujg70eGQsZ5IEQy9QXfsYzynU0EueDgSNeuDbX8QqW76i7mqQkE49g7m148kOInKEtbLLRIAGNLvij8D23bxhjGHoTwzb+o5v8MN8tUwh+rqP6s4x6ANWt+JZ4zo2A0vJmpDQpmqW4Rgx56QMKB+cMgMWR6dkD8mzXEudJxjZG
- zQf0bz+2
- obTTzbbLbD95sltZy5N+5U9aSCUDzGrOYdl3+uPxiwi4sdT4Pzd7E/WLZt69g1nY8dOfr7WdiO0lzcLhU7ubZMQu1Xa3OhJk8y4R62oQgVxmGQ3BWO7+zt61MWOXSZWd+TqNnc5y3QMJXbD012TgaZSnXMEF0UO2pkwap7JN6N/+4u6seUp7Zj+A2R1L/XBSeKDNQwY7+QNMjZWxZDIpmgp+dsY5o1knt6vkRMjixdxiVC/6cQTPOM0PtOtFOm8h1rc66GAugUe+/fzFTThHKDkuVeaLeBT5uMAzr+ms5D3lFalWhsEigrv4YpmKizImsVdBeEpbmeIoBw+P+v8SKkDqRfdtglRGAQwx2TvITeF4FAasDUZdrfedEXPLCgl8nK7UR7jDNKHx+90w2AIJPo1JKXOeeOh93e3gE1L9wfH7sfHCQp4ckAx/agmKzZQe176I4
+X-HE-Tag: 1787069433-472456
+X-HE-Meta: U2FsdGVkX1+NEx6dfuWn4AsCvwSUI7C2w4vpBnITp7AqgmDhBr3bM8SJHmtwfaSEGrkR5Qu8mdJJzNOnEzRpoMQDWSpeIkUvOJOYfQKFyYhGerWKPPFheChGeezMcYMCKHQDuAHpVvuu/X10vkgADWcfKHL74P+PDxqaashMN9e8vQB0+79bsJ3D0dVqQ9J85uyzQYyuLYMk1WofXSPMWowmnTL7Xdm1mI/hF48mvKgtyEm9a2q+aUWEMsyLK66XOn3GxZMG/3yEjqE0wuCpGDBjCKZ3TqpD2EnL/XblO2o9v81TF1lz6uDVx84oH/+1X1yAZFDr4JuqxDod7lmiRI8pcAKqkAR/EYbEKpH5nfsaEp/2o0u+3UNd/k4Fv5yeSfWn4i9+4yyxm5hGfefOUMyhPCQDskJ0qIIrai8g8hU9K24NKnehc9Gi6MCpTmXqGNlT8AtC1PleDUwRmQup0Hwrtj4WcuhBgL9EMa3KF6NUQ8GNCaOm086moMWVfwVGQa8LjbvL1Dspjr317xMjg54HhCyydhfqMzt/Pmkp03XQVp1D080Hn5trIVcxp8QDfdZWvfsqYBsUQW6oe7sgHpHm1bis1Qph122cHWHOPYNI6g+DgusfxGEirDeO/dBgg/drK49hO9hVUvlXTTz3xjUKx8y14laZsZUzbLTwB9B4BaTO3HS2tSgOmU66/xI3LBolqGAAHSTSRWVLCbIQRbU+aSMEMGuDXV8BVbcf9NAn8QlUJO4LR7ax0Q98wmdumS54N9jBpiRtdqi+O1A2kBcKMkioctk8RJ6zAwBwYi4XbrcvXtbL1IW7FBmHVatPvWfOuBk07uCzQKq4zoqNDIAksv4dkO3x0ZYxlFga8aAzPiSHrl7j209pDPajuY1yHPl5gFqqgZAjs2ol7zBakElANE7W2igQzadYcQ+f3ymwCK4qxDTgEAm2jtJZlVEXXDCFjGhfQNBZOORNUJf
+ MZwnq94U
+ rCaB0NMvAU/wvQCFjoQV5L8CGOoaCSvtmtADXKzD2oTOi7wvFyb5MOlQMH4PfoxvGZc+0wt+O1vtGkJFqY1YALFK2LFP06N/mKti8E3Qi5P62Yr//kAM8+J8mhpKELNxLWfKM1k1aNGocIIpUa6+2PdKQp3LqoRsfTWLLbvaE/4kG9IJajQ3mDMr7dAYZ9jY5UtT6Eotspp8mH1UPGbiIALHVUrZAr0UuDran/kzbITSpbxI6rzBES6zLE3li0JInWqqwdrSF+sZ5XKDI8yD2ZWto7YZNmtMkkHY4kNXDeJiCJB+o2VZajRq6efQj2Km6Mz+07mQLRMz5EJYlp/cMKqBZCqxv2oMpYkdGlw2nsN9E27khVnxurFesCRAg8ae/PekRZ1gFmEe3zC1UFZfoeW4Zl9Q5gzDSMoOAb1TU/6+LVYfzgBdokCQcR1aMkEWmNhpMLGFOWGSFB+uaN04EhAU6OLklxU3A9JBGA/3sN6DCotAjD4fbnmSS9eSvh10OGyQHk+XhU47r5MFTDnmHv5E9LutOp0HECWcM1FdD5PVUILYOuYgFOMa/HIb9Y8WGKUhHF7dJtFJwzWNY4LHRWFsrN8/SD4PQiu5idv1ZgbJlzzWDTomu3DIEDcX7NdMEG5p4DTKos3jITurpuFtZDMs2xcLvm6DwSgrdkqSxIoj9UIr3LG4FWC9FrwS6OsZnTKiDsBDjpKKMLa3eWEfWbbylaggsFdRM9RukCGqx0sLU/g1yCLbqKeMCjxlUN5LRrTjxY0+hl5JgwH+7pDQBASDu75Hcrp6negd3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,250 +120,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 17, 2026 at 03:20:12PM +0200, Pankaj Raghav (Samsung) wrote:
-> I have added some minor comments. I haven't checked Sashiko's review, so
-> ignore them if it is a repeat.
+Sean Christopherson <seanjc@google.com> writes:
 
-Hi Pankaj,
+> On Tue, Aug 11, 2026, Pratyush Yadav wrote:
+>> On Mon, Aug 10 2026, Sean Christopherson wrote:
+>> 
+>> > On Tue, Jul 28, 2026, Tarun Sahu wrote:
+>> >> Register a Live Update Orchestrator (LUO) file handler for KVM VM files
+>> >> to serialize and deserialize VM state across kexec live updates.
+>> >> 
+>> >> Currently, Only VM type (e.g. arch.vm_type on x86) is preserved as part
+>> >> of VM preservation.
+>> >
+>> > Why?
+>> >
+>> >> On retrieval, kvm_luo_retrieve() recreates the KVM VM file via
+>> >> kvm_create_vm_file() and use an atomically incremented ID for the internal
+>> >> fdname, as the final fdname assigned by userspace is not yet known during
+>> >> retrieval. As this fdname is only used in debugfs infra, This will not break
+>> >> any UAPI.
+>> >> 
+>> >> This infrastructure establishes the foundation for preserving guest_memfd
+>> >> instances across live updates, and can be expanded in the future to
+>> >> preserve additional VM state.
+>> >
+>> > Uh, why guest_memfd?  As much as I want to push guest_memfd adoption, it seems
+>> > guest_memfd should be the _last_ thing we support, not the first.  As evidenced
+>> > by the last two decades, it's very doable to have KVM VMs without guest_memfd,
+>> > but it's rather hard to have VMs without vCPUs.
+>> 
+>> You _can_ preserve vCPUs today using KVM_{GET,SET}_REGS, they just won't
+>> run in the background during the reboot.
+>
+> What about x86 CoCo VMs?  Which are quite literally _the_ reason guest_memfd was
+> created in the first place.
+>
+>> This series can save you from dumping VM memory to disk if it is backed by
+>> guest_memfd.
+>
+> Or to word it another way, one _can_ save guest_memfd, it's just
+> slower.
+>
+>
+> My point is that this series needs to provide a _lot_ more information about the
+> bigger KVM picture.
 
-Thanks for the review!
-> 
-> > +
-> > +	if (!wt_ctx->nr_bvecs)
-> > +		goto exit;
-> > +
-> > +	for (i = 0; i < wt_ctx->nr_bvecs; i++)
-> > +		len += wt_ctx->bvec[i].bv_len;
-> > +
-> > +	bio = bio_alloc(iomap->bdev, wt_ctx->nr_bvecs, opf, GFP_NOFS);
-> > +	bio->bi_iter.bi_sector	= iomap_sector(iomap, wt_ctx->bio_pos);
-> > +	bio->bi_end_io		= iomap_writethrough_bio_end_io;
-> > +	bio->bi_private		= wt_ctx;
-> > +
-> > +	for (i = 0; i < wt_ctx->nr_bvecs; i++)
-> > +		__bio_add_page(bio, wt_ctx->bvec[i].bv_page,
-> > +				wt_ctx->bvec[i].bv_len,
-> > +				wt_ctx->bvec[i].bv_offset);
-> 
-> bio_add_folio_nofail()?
+Yes, I agree. I will try to layout the plan.
 
-Hmm actually your suggestion is right but it also got me thinking about
-if we are actually ensuring that bio_add_folio_nofail() will never face
-any issues.
+End goal of this series is to preserve VM memory which is backed by
+guest_memfd. Not all VM are backed by guest_memfd. So preservation of
+KVM (vm_file) is independent of preservation of guest_memfd.
+But guest_memefd can not be preserved without preserving the KVM (vm_file).
+So I agree to your suggestion:
 
-We make sure that we don't let the bvecs grow more than BIO_MAX_VECS ie
-we can at max have 256 pages in the bio, however on higher page size
-systems will a larger large page size, i think we can actually cross the
-BIO_MAX_SIZE limit causing the bi_size to wrap around.
+diff --git virt/kvm/Makefile.kvm virt/kvm/Makefile.kvm
+index d047d4cf58c9..e6f098498795 100644
+--- virt/kvm/Makefile.kvm
++++ virt/kvm/Makefile.kvm
+@@ -13,3 +13,8 @@ kvm-$(CONFIG_HAVE_KVM_IRQ_ROUTING) += $(KVM)/irqchip.o
+ kvm-$(CONFIG_HAVE_KVM_DIRTY_RING) += $(KVM)/dirty_ring.o
+ kvm-$(CONFIG_HAVE_KVM_PFNCACHE) += $(KVM)/pfncache.o
+ kvm-$(CONFIG_KVM_GUEST_MEMFD) += $(KVM)/guest_memfd.o
++
++ifdef CONFIG_LIVEUPDATE
++kvm-y += $(KVM)/kvm_luo.o
++kvm-$(CONFIG_KVM_GUEST_MEMFD) += $(KVM)/guest_memfd_luo.o
++endif
 
-I think in addition to adding the helper, we should also add a check to
-make sure we are not crossing that limit. I'll look into this a bit
-more.
-> 
-> > +
-> > +	if (!error && wt_ops->writethrough_submit)
-> > +		error = wt_ops->writethrough_submit(wt_ctx->inode, iomap,
-> > +						    wt_ctx->bio_pos, len);
-> > +
-> > +
-> > +	atomic_inc(&wt_ctx->ref);
-> > +
-> > +	/*
-> > +	 * In case of error we still need the I/O completion to run so we can
-> > +	 * release references and end writeback on the folios.
-> > +	 */
-> > +	if (error) {
-> > +		bio->bi_status = errno_to_blk_status(error);
-> > +		bio_endio(bio);
-> > +		return error;
-> > +	}
-> > +
-> > +	submit_bio(bio);
-> > +	wt_ctx->nr_bvecs = 0;
-> > +
-> > +exit:
-> > +	return 0;
-> <snip>
-> > +
-> > +		if (!wt_ctx->nr_bvecs) {
-> > +			wt_ctx->bio_pos = round_down(pos, bs);
-> > +			submit_start_pos = pos;
-> > +		}
-> > +
-> > +		bvec_set_folio(&wt_ctx->bvec[wt_ctx->nr_bvecs], folio,
-> > +			       len_aligned, off_aligned);
-> > +		wt_ctx->nr_bvecs++;
-> > +
-> > +put_folio:
-> > +		__iomap_put_folio(iter, wt_ops->write_ops, written, folio);
-> > +
-> > +		if (old_size < pos)
-> > +			pagecache_isize_extended(iter->inode, old_size, pos);
-> 
-> Some new code has been added upstream to include VERITY. Probably the
-> same thing needs to be done here?
-> 
-> if (pos + written > old_size &&
->      !(iter->iomap.flags & IOMAP_F_FSVERITY)) {
->          i_size_write(iter->inode, pos + written);
->          iter->iomap.flags |= IOMAP_F_SIZE_CHANGED;
->  }
->  __iomap_put_folio(iter, write_ops, written, folio);
+Guest_memfd can't be created alone without struct kvm
+(kvm_gmem_create() and KVM_GMEM_CREATE ioctl). This is how
+guest_memfd has been designed. I don't want to break this design which
+has been accepted upstream after lot of discussion.
+
+So while LUO preserve guest_memfd's data, It just preserve the PFNs
+value, few flags that belongs to the guest_memfd.
+
+On restore side in new kernel, These PFNs, flags will be populated
+to a _newly_ created guest_memfd. that is how preservation and
+retrieval works. So To create this new guest_memfd, We need struct
+kvm (vm_file). this vm_file must be the same VM which had this
+guest_memfd in old kernel, So we preserve the vm_file, get its TOKEN
+preserve with guest_memfd and during restore, we create the guest_memfd
+with the same VM (vm_file/struct kvm).
+
+I agree, I did not do good job explaining things in commit message. I
+will make sure to update them in next revision.
+
+> For those of us that are on the very fringes of live update,
+> it's practically impossible to review because, to us, it seems very arbitrary.
+>
+> The part that's especially confusing is the saving of the VM type.  That comes
+> straight from userspace, so it's super bizarre to automatically save/restore that,
+> but nothing else.
+
+Like, guest_memfd needs struct kvm to create itself. struct kvm (vm_file) needs
+vm_type to create itself (kvm_create_vm() or KVM_CREATE_VM IOCTL). LUO
+does not provde functionality to pass any subsystem specific arguments. So
+vm_type needs to be preserved even though, userspace is aware about it.
+
+So Why do we preserve only vm_type:  To keep things simple for this
+series, As target is guest_memfd.
+
+Currently I dont have discreet plan on what else will
+,in future, be needed to be preserved. Which I agree not a absoulute right
+way to approach. I will layout a rough plan on KVM side preservation.
+
+Having this need for backward compatiblity: I responded here:
+https://lore.kernel.org/all/9huzv797v45k.fsf@tarunix.c.googlers.com/
+
+
+
+>
+>> >> +KVM LIVE UPDATE
+>> >> +M:	Pasha Tatashin <pasha.tatashin@soleen.com>
+>> >> +M:	Mike Rapoport <rppt@kernel.org>
+>> >> +M:	Pratyush Yadav <pratyush@kernel.org>
+>> >> +R:	Tarun Sahu <tarunsahu@google.com>
+>> >> +L:	kexec@lists.infradead.org
+>> >> +L:	kvm@vger.kernel.org
+>> >> +S:	Maintained
+>> >> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git
+>> >
+>> > NAK on taking changes through a different tree.  This is KVM code, period.
+>> >
+>> > In general, I'm skeptical of the dedicated MAINTAINERS entry.  It's extremely
+>> > difficult to tell since this series is little more than a skeleton (either that
+>> > or liveupdate is way simpler that I was expecting), but I suspect that maintaining
+>
+> ...
+>
+>> > E.g. the LUO APIs seem pretty straightforward; I assume the bulk of the complexity
+>> > is going to be in knowing what to save/restore, and how, which is much more about
+>> > KVM than it is about liveupdate.
+>> 
+>> I think it is fine if you want to take these changes through the KVM
+>> tree, but I would like live update maintainers to be listed as reviewers
+>> at least.
+>
+> Why not simply add a file pattern match to the LIVE UPDATE entry?
+>
+> diff --git MAINTAINERS MAINTAINERS
+> index 8014b9f8253e..2eb57b22c37f 100644
+> --- MAINTAINERS
+> +++ MAINTAINERS
+> @@ -15052,8 +15052,8 @@ F:      include/linux/liveupdate.h
+>  F:     include/uapi/linux/liveupdate.h
+>  F:     kernel/liveupdate/
+>  F:     lib/tests/liveupdate.c
+> -F:     mm/memfd_luo.c
+>  F:     tools/testing/selftests/liveupdate/
+> +N:     [^a-z]luo
 >  
->  if (old_size < pos && !(iter->iomap.flags & IOMAP_F_FSVERITY))
->          pagecache_isize_extended(iter->inode, old_size, pos);
-> 
-
-Oh right, I'll take care of it, thanks for pointing it out.
-
-> > +
-> > +		cond_resched();
-> > +		if (unlikely(written == 0)) {
-> > +			iomap_write_failed(iter->inode, pos, bytes);
-> > +			iov_iter_revert(i, copied);
-> > +
-> > +			if (chunk > PAGE_SIZE)
-> > +				chunk /= 2;
-> > +			if (copied) {
-> > +				bytes = copied;
-> > +				goto retry;
-> > +			}
-> > +		} else {
-> > +			total_written += written;
-> > +			pending += written;
-> > +			iomap_iter_advance(iter, written);
-> > +		}
-> > +
-> > +		/*
-> > +		 * If we fail to submit the bio, we immediately call the
-> > +		 * IO completion handler that records the error. We
-> > +		 * shall not retry anymore cause this could lead to
-> > +		 * infinite loops in case of non-transient errors.
-> > +		 */
-> > +		if (wt_ctx->nr_bvecs == wt_ctx->max_bvecs) {
-> > +			status = iomap_writethrough_try_submit(wt_ctx,
-> > +					&iter->iomap, wt_ops, &pending);
-> > +			if (status)
-> > +				goto submit_failed;
-> > +		}
-> > +
-> > +	} while (iov_iter_count(i) && iomap_length(iter));
-> > +
-> > +	if (wt_ctx->nr_bvecs) {
-> > +		status = iomap_writethrough_try_submit(wt_ctx,
-> > +				&iter->iomap, wt_ops, &pending);
-> > +		if (status)
-> > +			goto submit_failed;
-> > +	}
-> > +
-> > +	/*
-> > +	 * In case of an error, we only consider the bytes we were actually able
-> > +	 * to submit IO for as valid data and revert the iters accordingly
-> > +	 */
-> > +	if (status) {
-> > +		/*
-> > +		 * we still need to run the endio completion for cleanup work
-> > +		 * hence call the below helper to take care of it, if we haven't
-> > +		 * already done so. We can ignore the return value here.
-> > +		 */
-> > +		iomap_writethrough_submit_bio(wt_ctx, &iter->iomap, wt_ops, status);
-> 
-> Do we even need to call iomap_writethrough_submit_bio() here? 
-> 
-> In all the failure scenario we reach submit_failed directly right? In
-> the cases where we fail before copy_folio_from_iter_atomic(), we will
-> not have anything to do anyway, therefore, making the above call a no
-> op? Am I missing something?
-
-Actually if we break of of the loop due to some error and nr_bvecs
-is empty then I added this call so that we could handle the cleanup and
-even if there are not bvecs to submit, it is still responsible for
-calling bio_endio to set wt_ctx->error = status, so that later we can
-return it to the user in iomap_writethrough_complete().
-
-But as you said I think we might not need the complete endio flow and
-further, I think in this case even wt_ctx->error is set in the higher
-layer. I'll take a look at it again, thanks for pointing it out.
-
-> 
-> > +
-> > +submit_failed:
-> > +		iomap_write_failed(iter->inode, submit_start_pos, pending);
-> > +		iomap_iter_revert(iter, pending);
-> > +		iov_iter_revert(i, pending);
-> > +	}
-> > +
-> > +	return status;
-> > +}
-> > +
-> >  static int iomap_write_iter(struct iomap_iter *iter, struct iov_iter *i,
-> >  		const struct iomap_write_ops *write_ops)
-> >  {
-> > @@ -1345,6 +1700,88 @@ int iomap_fsverity_write(struct file *file, loff_t pos, size_t length,
-> >  }
-> >  EXPORT_SYMBOL_GPL(iomap_fsverity_write);
-> >  
-> > +ssize_t iomap_file_writethrough_write(struct kiocb *iocb, struct iov_iter *i,
-> > +				      const struct iomap_writethrough_ops *wt_ops,
-> > +				      void *private)
-> > +{
-> > +	struct inode *inode = iocb->ki_filp->f_mapping->host;
-> > +	struct iomap_iter iter = {
-> > +		.inode		= inode,
-> > +		.pos		= iocb->ki_pos,
-> > +		.len		= iov_iter_count(i),
-> > +		.flags		= IOMAP_WRITE | IOMAP_WRITETHROUGH,
-> > +		.private	= private,
-> > +	};
-> > +	struct iomap_writethrough_ctx *wt_ctx;
-> > +	unsigned int max_bvecs;
-> > +	ssize_t ret;
-> > +	struct blk_plug plug;
-> > +	size_t min_folio_bytes = PAGE_SIZE
-> > +				 << mapping_min_folio_order(inode->i_mapping);
-> 
-> mapping_min_folio_nrbytes can be used here.
-
-Right, I will make the change.
-> 
-> > +
-> > +	/*
-> > +	 * For now we don't support any other flag with WRITETHROUGH
-> > +	 */
-> >  		__folio_cancel_dirty(folio);
-> >  }
-> >  bool folio_clear_dirty_for_io(struct folio *folio);
-> > +bool folio_clear_dirty_for_writethrough(struct folio *folio);
-> >  bool clear_page_dirty_for_io(struct page *page);
-> >  void folio_invalidate(struct folio *folio, size_t offset, size_t length);
-> >  bool noop_dirty_folio(struct address_space *mapping, struct folio *folio);
-> > diff --git a/include/uapi/linux/fs.h b/include/uapi/linux/fs.h
-> > index bd87262f2e34..9c8d91b926a7 100644
-> > --- a/include/uapi/linux/fs.h
-> > +++ b/include/uapi/linux/fs.h
-> > @@ -451,10 +451,13 @@ typedef int __bitwise __kernel_rwf_t;
-> >  /* prevent pipe and socket writes from raising SIGPIPE */
-> >  #define RWF_NOSIGNAL	((__force __kernel_rwf_t)0x00000100)
-> >  
-> > +/* buffered IO that is asynchronously written through to disk after write */
-> 
-> Isn't it synchronously written?
-
-Oh right, I think it got left over for an earlier variant. I'll fix this
-thanks!
-
-Regards,
-ojaswin
-> 
-> > +#define RWF_WRITETHROUGH	((__force __kernel_rwf_t)0x00000200)
-> > +
-> >  /* mask of flags supported by the kernel */
-> >  #define RWF_SUPPORTED	(RWF_HIPRI | RWF_DSYNC | RWF_SYNC | RWF_NOWAIT |\
-> >  			 RWF_APPEND | RWF_NOAPPEND | RWF_ATOMIC |\
-> > -			 RWF_DONTCACHE | RWF_NOSIGNAL)
-> > +			 RWF_DONTCACHE | RWF_NOSIGNAL | RWF_WRITETHROUGH)
-> >  
-> 
-> --
-> Pankaj
+>  LLC (802.2)
+>  L:     netdev@vger.kernel.org
+>
+>> At the same time, I also keep being (pleasantly)
+>> surprised at preservation being relatively simple. For example, the code
+>> to preserve a shmem file (via memfd) is roughly 600 lines, a big chunk
+>> of which is comments. The code of course has some limitations, but it is
+>> good enough for use in production.
+>> 
+>> For one, we care about ABI breakages and versioning. 
+>
+> Which is amusing to me because that implies KVM does not, and I would hazard to
+> guess that KVM has the biggest ABI surface of any subsystem in the kernel by a
+> country mile (though I'm probably wildly underestimating the effective ABI surface
+> of filesystems).
+>
+>> The serialized state is a part of live update ABI and changes to it should be
+>> ACKed by us. 
+>
+> Meh, "Don't break userspace" is a universal rule in the kernel, I genuinely don't
+> see why liveupdate needs special treatment.
+>
+>> For another, how the file handlers interact with their dependencies can
+>> affect the behaviour that VMMs observe. Those changes should also pass by
+>> some live update eyes.
+>
+> Perhaps in the short term, but IMO, that's not a winning strategy in the long
+> term.  From my perspective, that like saying the PAGE CACHE maintainers should
+> review every usage of the filemap APIs, because how the APIs are used impacts
+> the page cache and affects userspace-visible behavior.  There are myriad analogies
+> like that throughout the kernel.
+>
+> Yes, liveupdate is new and shiny, but IMO for it to be successful and maintainable,
+> it needs to be treated like any other core infrastructure in the kernel, not a
+> special snowflake whose details are known only by a handful of people.  Because
+> I think it's likely liveupdate goes one of two ways: either liveupdate becomes a
+> very niche thing that is used sparingly throughout the kernel, or it becomes a
+> broadly used feature that is supported by many filesystems and subsystems.
+>
+> If liveupdate is relegated to niche status, then it probably isn't going to see
+> a significant amount of ongoing development, at which point the folks working on
+> liveupdate will naturally migrate to other projects, and maintenance will largely
+> be left to subsystem maintainers.
+>
+> If liveupdate is broadly used, then having a single group of people maintain
+> every subsystem's usage won't scale, and maintenance will again largely fall on
+> the shoulder of subsystem maintainers.  Which is totally fine and working as
+> intended, because that's exactly what subystem maintainers are signing up for
+> by merging support for liveupdate.
 
