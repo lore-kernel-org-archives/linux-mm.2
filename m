@@ -4,113 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F4B9C5DF74
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 13:34:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 189DAC5DF74
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 13:43:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EF9F6B0279; Tue, 18 Aug 2026 09:34:16 -0400 (EDT)
+	id E2AD06B018D; Tue, 18 Aug 2026 09:43:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A0EA6B0460; Tue, 18 Aug 2026 09:34:16 -0400 (EDT)
+	id E02526B018E; Tue, 18 Aug 2026 09:43:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3900B6B048B; Tue, 18 Aug 2026 09:34:16 -0400 (EDT)
+	id D16EC6B018F; Tue, 18 Aug 2026 09:43:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 122AE6B0279
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:34:16 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A95191601A3
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:34:15 +0000 (UTC)
-X-FDA: 85114484070.27.01A9DE6
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf19.hostedemail.com (Postfix) with ESMTP id F2DD01A0005
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:34:13 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dt8xX4YQ;
-	spf=pass (imf19.hostedemail.com: domain of anshumantewari123@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=anshumantewari123@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A7A036B018D
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:43:27 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 25690801F3
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:43:27 +0000 (UTC)
+X-FDA: 85114507254.24.5F7B9A0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 533B980008
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:43:25 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CNqkvMTJ;
+	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787060054;
-	b=tNd85Jr7pTDhZDN9/2byx0dPFv470heXYyzUSLW9pkCoMwiD7QHKMR6qQ1rxBASbtZZezK
-	YTBHmq/yC01aMGq2lMCDyZCwk3VA50OaXeUaJLOHgVD6p+TKw6hJwy+7fh/qBRPLl4j8Pz
-	09bGcC94tfnBiUpQla4EVav2Yz4N1tg=
+	t=1787060605;
+	b=0DSnaY9hz/eq3eYOaYCCVrijSinVPdAt7AotE7bnp2XyCEsfBYVEMFBQzdrd9atSxExFnZ
+	3Y23CJ16OLMs089NY2vjlaV60s6I7AQjKl8Z9ocYxJf5wpt+RW1VZ29lnAV0WqCIyXC+xt
+	Bwq5659bsZY/7jgKo+BpRPouimuYyYA=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dt8xX4YQ;
-	spf=pass (imf19.hostedemail.com: domain of anshumantewari123@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=anshumantewari123@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CNqkvMTJ;
+	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787060054;
+	s=arc-20220608; t=1787060605;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=uDJI06X+swFMyKE3VwabpX0LpGG6OnS2z+jrHL8keO0=;
-	b=1RoUT0QfbXhktE3ir78Uz+BkHINl8d2Y5stC8nes1ip6ieAP0Q5MAsEUshR2Y7Xu6Eqaf5
-	AwEeDRHwrRx+N6kyWD8ULauCS/R0c/E+mFyMMlVIskYkCs/ZF1T3on7FfOoU++prczz5QH
-	2mwVe05ELTdNH1QO15pN6dNcgK62iPY=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cee9b74ee1so34458815ad.3
-        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 06:34:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787060053; x=1787664853; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uDJI06X+swFMyKE3VwabpX0LpGG6OnS2z+jrHL8keO0=;
-        b=dt8xX4YQpoo8/H1KdYue2FBlEz5kymjI+deygpR92n9LRtYjlrmJb4L+RBI9HMOJz6
-         MNqqcGk8g3QXiA0xxjFh46pInmE02vFeuIMdPHIR94540FyMdMmieWUEJe2Y2WQnR0YS
-         6peoDL07/DH3N4Xvlrw6ZqzgltvAmqh37kTmgMSp5xfF2MI3ZfxXgFT4qIOcnAhoZrMV
-         psZXoMYolf/AkjZY/Jcjf0w5pYWkQ0Q+M8m/MjPYPr3UEUhdiv6LhO1Dt3/cbkQR30cA
-         nEfJVBy4cURQOIWUeSk/LZ81+LqgfDtT9DC4lwA2nrOEu/zfUxf77wsxyUl0PiY2y8pV
-         6QBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787060053; x=1787664853;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uDJI06X+swFMyKE3VwabpX0LpGG6OnS2z+jrHL8keO0=;
-        b=qUpO3vv5K36TXCpXCng+e9j4Hein6TGNwyah/OwuGiN9r8zcrOT+fP25xGLHW4Fz3R
-         SICXzmQVqMEYQNPIkYlL642oW0vZ0sT0Nc9jNZws3bCBhIIz/rFxKE5DTgyvffV+FMgf
-         rMGbdzQtFlFmDfqY3gCp71gtnBQSWaAZ3JvfnwmYrmMap27syKi8AxW2ZNhM0UY2fDLt
-         A0hKTYjn/KP+tUFTDuvOxf7RqQyF7CD5uIn9xCcIOrUfDWOFVAi7TVA9/Tq29+VexavE
-         ETXyjzmfD32/ptE8ZkDWJP7aMzO70BQpu9aqeMxdYJ6b33xVQotd+5NfAd01OXV+LaVy
-         eCZw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp03Uf8bNpe/q2gYDaEDmRwwJI1HyPz3CyHTSBkVcNLCdEEcH+QeyAZKF8sWa9/oF2ePjIww33FxA==@kvack.org
-X-Gm-Message-State: AOJu0YzB6qTpS/WQt6kgrjdmeMfr3MsGrUdnz7Aw70hNsURG9WdLi0Jr
-	I386WJXKaygmTx9uZpTD1FTIQIZPLi/Kzy4J7JPkRRzslqC9xBKFMYrayEddkX0PYaQ=
-X-Gm-Gg: AR+sD12Q8WthhmKAn114YHMFA5tUCRnIdlfI7KqRhQs+Agl8LOJG6ewxum6k9QD3Cmd
-	Qs69dGESnfbUsBYyrFZjpFsTnhm64+qJ+1lAtY8a2UWyB51pEmuyj6zLfAJnHKZrZ+LRg/beRQ2
-	Z8/LVn1p1ZoY0ts6/GIn65RfnKduU14PVzxXsZVNAZmwLN7/rtfcjTQa5tGcGzkAumrNOSk1uwQ
-	92Fy/38qPlKw0jif93S56Dnr+O89p/qCj5umC3ZGzcOPy/Z1EOLEG6vsJykVe9fAMvOaBoiABbR
-	ewahz3L5ME0M+KmUgmbbV75Rdc1tZiK8OEnRWuAtm8KBsCPj27xs0untjm2pSU9NDK0dFUd39LG
-	Cy7CT0QgdLykgKr3cYXqhv8kmbTNUwjmSFt+iK80LuAmu49FNdqHM85uYAXYLyIRmOTGmPck7vk
-	RNsOORb3J8TC5steg3K5DEUlquyfPhCUq7K2wlW6jaeeq2u/lA5bz65JgnuelYMO0PiA==
-X-Received: by 2002:a17:903:984:b0:2cf:47c4:3d1a with SMTP id d9443c01a7336-2d3b0cdb21amr413664155ad.3.1787060052742;
-        Tue, 18 Aug 2026 06:34:12 -0700 (PDT)
-Received: from Anshuman ([123.63.59.156])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-326793ca665sm19202557eec.8.2026.08.18.06.34.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 06:34:12 -0700 (PDT)
-From: Anshuman <anshumantewari123@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Anshuman <anshumantewari123@gmail.com>
-Subject: [PATCH] selftests/mm: fix unchecked ftruncate return value in soft-dirty test
-Date: Tue, 18 Aug 2026 19:02:06 +0530
-Message-ID: <20260818133206.39503-1-anshumantewari123@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nCaPyvw2iFSAtJp+/S0lPXfdeu+F7EyJ6au4lKiWYEc=;
+	b=qkCxQEJ/Q1SbkD7mnN1jSDyVTLHIJ5Eum5Wpfzsgqp/so6rMRAnIKA61ZZtuamD7vqUgu1
+	sa6Q+WK7kB//x5ohJJ9SPa+1eBivjWThYuQHGB06OQsPv7j4Ll2D2tGFA+E0h1CaQQF4vp
+	Y8NNpJolPLSqIB2APZXmdVnAp8i3v0A=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 58DE6436AF;
+	Tue, 18 Aug 2026 13:43:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F0CB1F000E9;
+	Tue, 18 Aug 2026 13:43:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787060604;
+	bh=nCaPyvw2iFSAtJp+/S0lPXfdeu+F7EyJ6au4lKiWYEc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=CNqkvMTJLXNXiEeYKsDcJ5vMCl9APuMbVQIu0B3nogx96ycdVcxhEfA8Y935rOFQB
+	 DwbNjFOYTMnBcvSeBREzeVOMYq7oUx9+JWYNVQm4Q0PKS+TKPkUhGIwiw2tE5w+5Ve
+	 LAEdg6oApkQLyaWE+1c4QN377ZwYbBFYC0UH/Ok81z64U3FaYuILqh5ogSr2NI8qW5
+	 Ege/V5Ma8jQasI6rRqF3rtGgJBIUlCgSKy5x8PZPaKbx9kzGG3jWEalwW+u9kH3QZa
+	 hA+6ZSEFatqG59DQNkEy9P9hX2+kEigKQsIcMrgm1kYnd9bXj74pxxwXASSs+5JduV
+	 qiO3xv/HZavsA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Tarun Sahu
+ <tarunsahu@google.com>,  ackerleytng@google.com,  fuad.tabba@linux.dev,
+  Andrew Morton <akpm@linux-foundation.org>,  dmatlack@google.com,  Shuah
+ Khan <skhan@linuxfoundation.org>,  Jonathan Corbet <corbet@lwn.net>,
+  david@redhat.com,  Pasha Tatashin <pasha.tatashin@soleen.com>,
+  sagis@google.com,  Paolo Bonzini <pbonzini@redhat.com>,  Mike Rapoport
+ <rppt@kernel.org>,  Alexander Graf <graf@amazon.com>,
+  linux-kselftest@vger.kernel.org,  andre.przywara@arm.com,
+  michael.roth@amd.com,  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
+  will@kernel.org,  vannapurve@google.com,  maz@kernel.org,
+  fvdl@google.com,  kvm@vger.kernel.org,  oliver.upton@linux.dev,
+  kvmarm@lists.linux.dev,  alexandru.elisei@arm.com,  skhawaja@google.com,
+  aneesh.kumar@kernel.org,  linux-doc@vger.kernel.org,  David Hildenbrand
+ <david@kernel.org>,  yan.y.zhao@intel.com,  kexec@lists.infradead.org,
+  suzuki.poulose@arm.com
+Subject: Re: [PATCH v4 05/11] KVM: LUO: Support VM preservation across live
+ updates
+In-Reply-To: <aoMcqp0gr06YXAPU@google.com> (Sean Christopherson's message of
+	"Mon, 17 Aug 2026 07:37:30 -0700")
+References: <20260728121138.1103610-1-tarunsahu@google.com>
+	<20260728121138.1103610-6-tarunsahu@google.com>
+	<anphyjFv3FhF61iB@google.com> <2vxzpkzo51wg.fsf@kernel.org>
+	<anssOQFNZ2LfihbU@google.com> <2vxzik5f311e.fsf@kernel.org>
+	<anyObKiZIhfok5mk@google.com> <2vxzqzjz1x5f.fsf@kernel.org>
+	<aoMcqp0gr06YXAPU@google.com>
+Date: Tue, 18 Aug 2026 15:43:16 +0200
+Message-ID: <2vxzy0e3zgqz.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F2DD01A0005
-X-Rspamd-Server: rspam10
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 533B980008
 X-Rspam-User: 
-X-Stat-Signature: xu7quq84h8ttx3x9x4w8aq8c4xb4yuks
-X-HE-Tag: 1787060053-728292
-X-HE-Meta: U2FsdGVkX18xxUOt1+4gW7FqJbszVbivORgsXsIeOa6eiYt3x176Ay7DgvIyQoqG4bsWeOCLctDO+MVuX7QAPu7Vu+w72N357WiaFC/7zGQDtDbeEb3sdFazAQPxpRSjgtteR4thqalxbPkZh4nsyZm3Ov8OVLQG2Q4618DZqXIrB4KI9IeWIJqT6iuZ67gwMH7PUuze/VzKlsUcasKvoTDoNvxfCOqya5piQYcNKsUPYVBu34EqUY9P4b1PDGgiTY3QuEcPXcMFGcZhmxmDabjBgkFdnMrFGiDG+xfqMxFyySiUInvFwFcVY16u3ccLdzKQzX+4lp8NyJw/+cN7CUFVLCX76i5vfbhOUNYBD7j9La98EX4dUNgywk/JGEif/5rnpz/YL/OgXJkct9DGtMrvt7dnCo17UVz2M1Vf4wJTCBodMnoMhfvcLXofCPGzjmqd4wnsPOXqpPzZUQiX6tnT2sFOEyRqCSy/DkoXWMtyDwIasgHJdtQKEibhl4XHgnp1o7mLkyhQecIO3Twhv3Knvm2afMIbpv3Ucprka8d7VlLI1LYzi5yv3hMRGsWzKIzRu5jZnpfYAzPa3f/LJJmJWK7xuwOhiqpFNO5NHX0lrwtZHdlGUj2lfDtn+9luBrus7YWmpfHCO/k4WCVhy2fFSGJ38Y+wcmvCjXArqDLLaSCYU81zCb4DvPhIdB8GBJ0D2S9XGupctafcc2TarBzMai/WYRcxG6CADHcssBeHSmTU/AUVQGTpKcAp+oTIS/KaKQe3nGXjWoBf/iD/i4e/NjY/NlXizs88zi3cZIpfLMp17703LCOX5QDRq9c5A89YLDa7lfNueduQ0MWUd8D+UpIOf9NFj2GWzLedjWJFGP0CoZ2FYpdE18Q7dBvVHLr+/PUnb7SACR8r2Owue4NiKOtD6KqA6mWiOkfAlMBovGCuBTr8RA2P+pg17KIQsuyBuqwm6L29UFh0U6y
- 4OV1nR3k
- /gPUxan7LMQDLPPC818yzkbHq9lm7b0f4KKpW2eEFDnmWeAtwdwX0mK+StTcwFikwpG4kOfNgERC6tVEHZuPw8lU++xlZ6EW2w8lif36Ugc1pA26Fwyn6Cn4bBbmGSEDcnsRMPbh1107TkGVKA/mvvsXPiNX9BGmns7NjijTGhd1/ybg2osqe/l4rJp0hgnw9UuH7Hk+Doj5oS0o+g580jDrEyALKSiPeg3p3ZIwTFdhtPJeV2jkoJyOhJf+eVT3/Jnxk/SR/AvVVfkt/rTFYHg/BoHriBseLopC0kgZUuB7FSLo7Yj5pVANpdgdfbX6uVywxv3s5kPXFYDbJOo4wGVY+x66a2YEvj4HupMflSzTLClHVChj5V+zS+hHVoGIxwkyivoWyYRXPGZlXg5TOXmbPpjoEW/S4v+3OIDPAVxlEBXZStbM+m8rbRbf4o1oRuqUV3Jj39CiLoRCJuZ+uxR1Y6uX56+7NH0LPN5m9VcipODUqMuX3wPZNY+GKVlQuKmGqTIJqlW9y/H9qKRzXLvzsQA==
+X-Stat-Signature: 331s7i1n5bgttkdwnyr36xkf7og9eqx5
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787060605-611961
+X-HE-Meta: U2FsdGVkX1+8lgi8So2putgU9fz8Y8xcdLB1gczlhWGaH5RfGgLtHcEz6sE9ooxDdv0gBxqnLM0wv8suBHiTED6k3+g8p7GmUQFzrn0VmfSOVPKTg7A+YF3/G0ca8o0PkDYr+Pt4tJRYC030MO56ppOcgDdKKnYNYaUSwMg7PaBxxr15Jzxpm9ilJXNRqoZyh0oQNCnwgErWNeb5uX9LsSFSkVwMFlHzLfQ9dvjgQiVe+zNr2Kx1SukMAHoKDEFaOQecEyZjxhHrFcz1PVXLs2HwWc4m3Q9GL93cM2OKtyDM/Pe3hWcTOm8V21zBHwApI/qaI4oQkVEoVy2iVQ0s5gVAIxHY6aCaH6i595l/0ZNVL3wTnEIYkLvUqhyvIbxUyeBb0+VU/YfXiKXYaiAjsqgi5dN5cCMJuGjiR3UwZORb6ZiZ8D2h7Y/aDvRGOn0VHL7nYkioQ0/eV0HeOUbG4NMKTgSgyzEVh7xTotTBiFbAdJYZtUnPbCJ482vzfMkbzuNpB0Jew9ZO+33H96gM3sx7TiC07smxysofMz0N8hmlRk1TkGyRP9k3z0ANZSoxALSNiBs9e5R5S3OT/qp97URyb+JN8dCoFU4BALshDMsptevnhK9jFQx946b0lirJoErTl+oYjb7t3lWwnA/cLwsNxgH8z1PPLGybul9YuhgV1iZyS694vxq+WxdMvgU2aG8/IQmBasfP2WN3IZ+yorI5ygMlxn/SfUXzp1b6uwkL1pB0og+cFxzZ4VSSQ//b4k/rfpJs2Z3KayzR4NCGfpWJXOJ0HvnNbf5gFyxA8so0F71nUvhC41MRoI6eEVSlS48HV1Sz/WJQp2joZ6YIedXachVJHKJisvzPvyqTzv1s67/bEFQfoZBXcIax/mnGQDaq8VgTzsv25nDDydymf6H4o6klqd9IIFHeeh7/wW1mPQrIN6qiNVToSNoH/hgH9ei68HyyJ3vjQkHTU5Z
+ 4JfIE2IN
+ AGZ38YvTUHEWhzvt+okmr5PngNipT6W3OMlRCvDpYoxiu2yp7DFgd7o+ELRkNiPyy/u39ru9jhWcfkL0NaN0jRrZxnbyhte7mgD6uVFdVq7rWSk7MhHtaIkDVc3C9StIU9HWWEo4cPp+wRCMlxFZ/aO3B8BuLdKFAeXoIk9Y29Q9uZ8Dtgt7+neH2DOuG5LXJ2N5l3cdyZL5b3cGKCmRnklKd9Tuv9ZA3zXfDIwSMO4Hxmx0NoVt1cPf4ljBJTJY2V4Ww0v1rD2k8/kDICJ25IpLJeMknTOWw4zoz77Hr1qCW2WeHWwGndEOS1YDpLZvYamuOJq4D4WSx7Tq7Sv5iM1XJ+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,38 +110,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-test_mprotect() calls ftruncate() to resize the backing file
-before mmap()'ing it, but never checks the return value. If
-ftruncate() fails, the file may remain shorter than the requested
-mapping size. The subsequent mmap() with MAP_SHARED can still
-succeed in this case, but the very next line writes directly into
-the mapped memory (*map = 1), which can trigger SIGBUS if the
-mapping extends beyond the actual file size.
+Hi Sean,
 
-Check the return value and fail cleanly with ksft_exit_fail_msg() if
-ftruncate() fails, matching the error-handling style already used
-for the mmap() call immediately below it.
+On Mon, Aug 17 2026, Sean Christopherson wrote:
 
-Signed-off-by: Anshuman <anshumantewari123@gmail.com>
----
- tools/testing/selftests/mm/soft-dirty.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> On Sat, Aug 15, 2026, Pratyush Yadav wrote:
+>> On Wed, Aug 12 2026, Sean Christopherson wrote:
+>> > On Wed, Aug 12, 2026, Pratyush Yadav wrote:
+>> >> This is ABI between kernels. It needs to be stable-ish so you can move
+>> >> from one kernel version to another. At the same time, unlike userspace
+>> >> ABI, it can change.
+>> >
+>> > Uh, yeah, so KVM has been managing such immutable ABI for practically its entire
+>> > existence.  KVM's save/restore uAPI has exactly what you're describing: serialization
+>> > ABI that needs to be backwards and forwards compatible between different kernels
+>> > in order to support both upgrade and rollback scenarios via live migration.
+>> 
+>> I think there is a slight difference between KVM's save/resture uAPI and
+>> live update's ABI. With KVM's uAPI, you need to maintain strict
+>> backwards compatibility because userspace reads what you output. So if
+>> you change the layout, userspace will interpret it wrong and might
+>> break.
+>> 
+>> With live update, the ABI never gets to userspace. It is used to talk
+>> between kernels directly. So if you do break that, your userspace keeps
+>> working fine, you just might not be able to live update to the
+>> incompatible kernel.
+>> 
+>> So with live update, we don't need to keep backwards compatibility in
+>> the ABI forever. Of course, it is good to minimize changes, but we have
+>> more freedom to change it.
+>
+> Ah.  So this is the heart of the disconnect.  I very strongly disagree with the
+> statement that live update doesn't need to support backwards compatibility.  I
+> can totally believe that the folks working on live update are ok breaking backwards
+> compatibility because their use cases are "fine" with such breakage.  And I can
+> also believe live update as an upstream kernel feature being developed by those
+> same folks is also ok with breaking backwards compatibility.
+>
+> But with my upstream KVM maintainer hat on, I am not ok with that.  I did not agree
+> to support a world where KVM is allowed to break backwards compatibility, so long
+> as it's done "carefully" or whatever.  If y'all want to deal with the resulting
+> complexity, that's fine by me, but you'll be doing it without KVM.
 
-diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
-index fb1864a68..a52ef79dd 100644
---- a/tools/testing/selftests/mm/soft-dirty.c
-+++ b/tools/testing/selftests/mm/soft-dirty.c
-@@ -152,7 +152,8 @@ static void test_mprotect(int pagemap_fd, int pagesize, bool anon)
- 			return;
- 		}
- 		unlink(fname);
--		ftruncate(test_fd, pagesize);
-+		if (ftruncate(test_fd, pagesize) != 0)
-+			ksft_exit_fail_msg("ftruncate failed\n");
- 		map = mmap(NULL, pagesize, PROT_READ|PROT_WRITE,
- 			   MAP_SHARED, test_fd, 0);
- 		if (map == MAP_FAILED)
+Let's step back a bit. I don't think backwards compatibility in the
+_ABI_ is all that important in live update's context. What is important
+is that our users are able to live update from kernel version X to Y.
+The line format the kernel uses to describe its state is an
+implementation detail. Our users never see it.
+
+The high level idea is that when you need to make a change to the ABI so
+the kernel can better describe the objects/resources/files it is
+passing, you create a new version of the ABI and allow transitions from
+older versions.
+
+Say you make some changes and need an ABI version v5. You don't get rid
+of v4. You keep it around. LUO core will facilitate picking the right
+version for the next kernel. So it will be possible to seamlessly
+upgrade your kernel that speaks v4 to a new kernel that speaks v4 and
+v5. Now this kernel can start speaking v5 if its successor speaks v5
+too. And so on for going to v6 and v7, etc.
+
+After a "reasonable" time given for upgrades, you deprecate v4. v4 has
+been around long enough and our users have had a chance to go to kernels
+speaking newer versions. That's when you remove the code for v4 from the
+kernel.
+
+We can argue what "reasonable" means, but the core idea stays. 
+
+It will still be possible to go back to v4 or earlier, but you'd need an
+extra stop along the way. And of course, vendors can keep a wider
+support matrix downstream if they see the need for it.
+
+Does this idea of "backwards compatibility" sound acceptable to you, at
+least at a high level?
+
+Now coming back to today's reality. We don't yet support this version
+transition. I proposed the idea at LPC 2025 [0]. Logan Odell has taken
+over the work since I have other things on my plate, but it is something
+being actively developed. Logan recently sent some RFCs [1] for this
+too, though TBH I haven't yet gotten to those patches. We also have
+proposed a talk about this at LPC 2026, it would be great if you could
+attend (if the talk gets accepted).
+
+If you say that we should figure this version transition out and land it
+upstream before we land the KVM code, I think that's a fair ask. I can
+work with that.
+
+But I think we first need to agree on the principles of the
+compatibility model I described above.
+
+[0] https://lpc.events/event/19/contributions/2049/
+[1] https://lore.kernel.org/kexec/20260731215224.831696-1-loganodell@google.com/T/#u
+
+>
+> I totally understand that exploratory work and initial development is best done
+> in private and/or in a small working groups.  But decisions that will significantly
+> impact multiple subsystems need to be made *with* those subystems.  I mean,
+> obviously it's possible to make a decision in a small group and then "publish"
+> the result later, but then as is happening here, the community and subsystem
+> maintainers like me may refuse to play ball if they disagree.
+
+The design of live update was discussed and agreed upon in the open.
+David Rientjes (and now Pasha) has been hosting the live update
+biweeklies [2] from the very start of the project. The series is open to
+everyone and notes shared for those who couldn't join. This meeting was
+attended by a lot of people from different companies and different
+subsystem backgrounds.
+
+There have also been a microconference at LPC 2025 where topics around
+live update in PCI, MM, VFIO, IOMMU, etc. were discussed, along with
+presentations at subsystem tracks in other conferences.
+
+Of course, it is impossible to get all maintainers of all subsystems to
+attend these sessions or conferences. That's fine.
+
+But I think it is quite unfair to say that live update is developed in
+private or in small groups.
+
+[2] https://lore.kernel.org/all/?q=s%3A%22%5BHypervisor+Live+Update%5D%22
+
 -- 
-2.55.0
-
+Regards,
+Pratyush Yadav
 
