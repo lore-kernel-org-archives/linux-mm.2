@@ -4,110 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E95E9C5B572
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 02:40:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D213CC5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 02:47:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBFD26B0128; Mon, 17 Aug 2026 22:40:44 -0400 (EDT)
+	id 913406B08BA; Mon, 17 Aug 2026 22:47:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6FE36B0136; Mon, 17 Aug 2026 22:40:44 -0400 (EDT)
+	id 8C2EC6B08BB; Mon, 17 Aug 2026 22:47:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5F0F6B0137; Mon, 17 Aug 2026 22:40:44 -0400 (EDT)
+	id 7D8BC6B08BE; Mon, 17 Aug 2026 22:47:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 98D216B0128
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:40:44 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 122FB120A0E
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:40:44 +0000 (UTC)
-X-FDA: 85112837208.10.49BAEF2
-Received: from mta1.migadu.com (out-45.mta1.migadu.com [95.215.58.45])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 74F0A100003
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:40:40 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=c2dFeVSl;
-	spf=pass (imf05.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.45 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787020842;
-	b=PBI/qHXD8QmV8L0NulFDI8NnWaTB37owu+J8/PxDZJH6lBbhtUFYMgMJw1PP/F8tqBcmlF
-	SM0khzfX/dqNVM+0f1jvHgAmUMy1HXcPlG1xQI6noHtFU/mzqxPgz5RyIMTemTaflfZYTe
-	+Z7QdmuJWOEm78pvZcPN0ClqIHviZYo=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=c2dFeVSl;
-	spf=pass (imf05.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.45 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 55D476B08BA
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:47:47 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 41861140A68
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:47:45 +0000 (UTC)
+X-FDA: 85112854890.11.4212079
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 26E62C000C
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:47:40 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=WQ+Cj8mw;
+	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787020842;
+	s=arc-20220608; t=1787021262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0D7RKj5tkFqpfcxXWG7HKLB3AcEgTi4vs7vo5/zBsmM=;
-	b=5g3WmK1X/kGp6xrBIeNjhnzEFA0GJl3ds+kz1G0ylz/52DQY+BizUA+sslPCWTDhpPoANs
-	d69N6Yy0eYM5f4I820w5qzE30/glsPsI4qdsIWfORMdmNw0atWZrSlY0rxokp9FD4KC3N4
-	J+hHGN9fCYy6u+sH3DC4toavJ5+DMrk=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=VjTzbzJ5U7fulfyPD/S6iBjuQ+IHP/erX76i5LQT7Og=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787020839; v=1; x=1787625639;
- b=c2dFeVSlgzJ1LnSRu8P9fBpSd4jqTo2vYQvM6hdrbUFBIIDrVmSnSro3n02v+JSv8ezhn66w
- plwXV3TZatHPXhHqounD+WSYxk87PcuyIo6T6F6zBqMuG36jem8Kzo8YAQChd6LWLmnna+X4SMr
- u+88g73pEEggZp4uzZs6Gf6Y=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (3.112.29.171)
-	by mta11.migadu.com with ESMTPS id 0adc373bf01fa8f4;
-	Tue, 18 Aug 2026 02:40:39 +0000
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 18 Aug 2026 10:40:35 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Chris Li <chrisl@kernel.org>, Nico Pache <nico.pache@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>,
-	Gregory Price <gourry@gourry.net>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	SeongJae Park <sj@kernel.org>, David Rientjes <rientjes@google.com>,
-	Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>,
-	Zicheng Wang <wangzicheng@honor.com>,
-	Chen Ridong <chenridong@xiaomi.com>,
-	Tal Zussman <tz2294@columbia.edu>, Kairui Song <ryncsn@gmail.com>,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH RFC 04/15] mm/mglru: make generation page counters atomic
-Message-ID: <aoPGI__XtDJ08I96@MiWiFi-R3L-srv>
-References: <20260804-mglru-fg-v1-0-4d8dad39dad6@tencent.com>
- <20260804-mglru-fg-v1-4-4d8dad39dad6@tencent.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=o8HXjTmtSGyMNj4VnIyLtTJCTZHouZ2WYIC15u5uiAg=;
+	b=aprpi4G3R/FEtmufuRKjGkPO9x0KKE3/SDI2WpAdB1MWljT+lRN6bvMvQM4JMwCbfjEjZI
+	yqA9tWJ8Vm/wsRfVUFS30atWqE4KptwHNvbS+T3BRczcq4MRcZTrqYUpvzpSMhQKOXyM4d
+	71OR4sbKd72hfgSELmM7SPSE1TSEcPk=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=WQ+Cj8mw;
+	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787021262;
+	b=szvW7wZpnbGU74l6ae2NhSyN7ZUQf5Zsgjl1vu0cevBTU3pQzLy8WM9f6mzQnRtFjkop3T
+	H5QzkOt34RRb4ZQu5Vhad9YNAw4mnlJHyUo0oP1a8L4erc3OUgQ79Y5kxk4iVajhW8D3Ww
+	tpEpPd/IKnfZyyomXiguv3wbFAiuxvI=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1787021258; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=o8HXjTmtSGyMNj4VnIyLtTJCTZHouZ2WYIC15u5uiAg=;
+	b=WQ+Cj8mwZmaBFLekZcDMQlJNnUAv2TNgEIw/11vHEfNWqL9dn3KwvaXeBg+F84z/K8RxVXY3Equ8/FBqsT5+z54Wdz9mmKLpAxBuqcYKKsr2IGqxns7UW7TH6Klgkkl6qvftCNK5jzhKvTwgDNr+rkQ5ekAvQQrAAcVB1n/C60k=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R611e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X9Blfsr_1787021256;
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X9Blfsr_1787021256 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 18 Aug 2026 10:47:37 +0800
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	hughd@google.com
+Cc: vbabka@kernel.org,
+	annh@google.com,
+	ziy@nvidia.com,
+	liam@infradead.org,
+	nico.pache@linux.dev,
+	dev.jain@arm.com,
+	ryan.roberts@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] mm: fix incorrect vm_flags usage when checking allowable orders for tmpfs
+Date: Tue, 18 Aug 2026 10:47:26 +0800
+Message-ID: <7d5b5eb27be798f89d563b06254c947ff53db0b2.1787020910.git.baolin.wang@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260804-mglru-fg-v1-4-4d8dad39dad6@tencent.com>
-X-Rspamd-Queue-Id: 74F0A100003
-X-Rspamd-Server: rspam10
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 26E62C000C
+X-Stat-Signature: eafk9mnenq7ab9u8foor7zwb3ik65x6q
 X-Rspam-User: 
-X-Stat-Signature: h8qphzxe4c36ayk46e5qddc4u5hhq9uz
-X-HE-Tag: 1787020840-127960
-X-HE-Meta: U2FsdGVkX1+MgQjt9Jf5g/ZhPjrQba8CmkP01yDdyzZ6O/ubv7865LDbmkOkn0jYaPV960fG3QnSMIVbQwVKrdweLd7lmPuMpX4HKow0YP3QDEWE7x9/IPUHUpxxTAz+ID39wdf46pac3P9IGOIQ6tN1Qd2/zAmhtJqXfK77No6jgkksBjbPMJ/eGGH2cAJJTMJd/km4gmPO9fYYfVfmRx3MXxeJDboUJcjnk+uNM4tj4/PNQ/p7tdfs18zaAZHDwAeF23U5MAuSKBMnPhfw7fk+HC0owFjp/HYG9gRTuK5LvhNRS2C/V7+mLi8LZwpQWn870komcpx2IMWysvZ1ICqLr9hh8RIc20RvFTqmAoi1hqMIrLdc+yCrlNBONR2a/rbd81BKQVng+scBV44/keYi63P2Hpey987fyC1Ldb50JAh8lmCAqaMq0apxv92dZ5BQolFDPltkzYt5CwsaRUf7vj927V0mi8zf+oS54a3IXQDlb/B3CQS2BSDMArpNOvk+jzCjZeZ60n/GMu5wRMHTnnIKNSvs0Go6dNc7SLCLVGgcN5AlcyRafv6p9lEw3Ugre08qbzSVIdF3+RV7JUWAL35+TfwAylC2S/QgdRKsurjFyV39INgwc6qQcsmMAGpRzAv4hpd0E5ws6BRcrU0lOJ8fLTC0QsWjiwvklHm2FKIYUBnNqw3yyONyUdvLhBRDXd8tHkrUv/up0klSoBsMZqMjiAXYSBIlBOW2y3W8/DEB2jjOn8enmR2Bm9sW9J0UDOnEPoQexr8yEFkc0o5Lotd6QgsLoRq/inJZQTZ8uSmDHw2xJhpXxgudYLUSKkEzSszAmcVPGibi4tx1oDHbaRR0CxO+o2dTWVRaZVYoc04GQ5m9n+9yyZBlrsU5ntR0CMUvjUjddRg7+YDTx1hY+WGE9UF3djakIgFRERG2h1PqC/R3q8H4sWu0UJDAw4ld8YhDvuTIttrVgXN
- mYiJpcve
- m7QQIoHVZ4WOqxTrzhTiX94J1+bb0Zd7V1DvV4K7p+woX9TzDFUfAx4nPDKwk8wcu10kb74s3qucs8RBcX6hZs8gLAXBc+WoBVvmaZ78iYdYEWdSQ6jPSyuo0jYcF6wSqv/FNTgx8GOknPULpQWUaACI+cWz2RqJRsRw7OYyooz/g5jWQFPuyK/myQyZmc6DCr0VgDnRJivwNfUD3/FWau5YZvpiTi2Hxd2TCdFISefx0tTl2EwLplF/Kw7oCkc1lWxAIrOP/zuAGrji5b8Hmh5Q6rhxBIisV4lsNnio3oLXh8a6MUWfqzhs7/CBzD4adj6pW8RCHDRHvm6B0Eg+nbqGZFE4IkO2SEtjCO0QDwFlMd5wl0D8qbFO56+PyO0JInBqVDVh0USxKkOjCwnKuXdO44ftP9XcjbkEWBNQECYm6WuYLhyzWk7DSsGy5d4ZhAgSMXHQUmIkV+22mUU2yo6H/wekCRQOgsQkbt51q8NwyR22E3TnZ5a5YahrlXB5WOnwg
+X-HE-Tag: 1787021260-98800
+X-HE-Meta: U2FsdGVkX18GNcwtD5sgrULsPz1UcRHA2OG/A7XEZNPUDMlQa45IWbRQG/gdXjnfzvYDxVtXvqH4m3EKpWgZ6RtddA1lFKcnw+jVqjbslVkgSuMH2E8yvrpJOrnvb/LZdQiDed4yPZ55GEaD6kTfAtSyzqC+M0XsZOVM4yye5LXlGSS+98ogBEL8hd2OKemb9U9XwMkPJBVM86iOSredTtdU0SDXR8iCsLOtwHASn5K/jvBVhm9OCrLS5vbL1gm8BGXv4hBa4YGft0IsNbgs2ZOjOgTnZo2a2Bx0wTg0qiD/lQdhsw5v1p52y4KRtvs1weuT2/TD5Tth+xQkGFZe4tkmLLyj6gpqDX3/tJ4S/2MRJKqjvhP32h4ELhl/PXKWChTQbCCRVYXZDru+r+aiTpoQ5kaoyji/c8T1K80B762+0YWFM9wtOqW1Q8J9oUcVNOR/O6CQI62ReX+E5zlvGDKDqPBYurULqH5PJBTBViFCkEc42YiM1KJyVcdB2UaGwfm1M+JpCj/1CRTlqcE6yp1bWb6yK8I1z610pSgwv706EJuB63bASZMga2DnFbT/QacSZwKIZIVHjeCjsLZT773akBF18Q2Sign+ejRGHGZd6l52Yp5dNOi8buebwI1wbJFlG8Pxtm4hEVNy5r5F8fCRaNZz34OoRWNknI14neulrjFDiKxN4g9OmfWOnOYDNoOdzzSmMwebo8TKR9Qlzg153MAaIUIY9jU72bAVYXQrrL9P2+Ar0IpbwHBCdJSxyuZjxKhuseddob86dT4mGgdbwhuTzdY9vcWlyDq/qhhlpOI33g03fYhPaOJFCVP5kY+oLngk6mYC+sm1kBNgq4NaPDVPca133fw2ruGOHBAAf1Tc0hq32qtpLFt/2nuwkmaqzlhBSEFwV67wwcX5PpSJ9KFBSrhzLzq2DuRtPUR4QFChRJ3pOvbbZWytsQie7fCdJn0mt6WdHN1Fv+f
+ Z+DY6PBb
+ 82bw8ma2l4kXcGKZhMuw5XYgOTqO6ZvJms4apuubAvca5TPLDQAlotHgclTgq7DCtX/+rY0ou2a7F4Z5D6sGv5Z/TVp8Vt/7WLDKYsTRpPK91rRhCDjcD8T0CCwWkt7Di3MPyD6Ts1D+RXy5hKuunrSv1MpGXgA4EkET9fWzbX9/4at0PBOdVIFFInvU21AXZXF7DJof4lJmES6eejG7Hv6sYVUJq5CQI3LPeO5kGrCWhVX0ftT5TVxirDz184vMQL6992z1YMQ9ZAoO0n+pAstFhV+bTKqqqQv43MdEMsB+IkrVWnEgnkS8S3dicdlx7rhWY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,128 +96,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/04/26 at 03:47am, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> No feature change, convert them to atomic so we can update them without
-> holding the LRU lock. There is no risk of overflow. The reader always
-> compares and uses zero instead if the counter values are negative. It
-> follows final consistency.
+Lance reported that when nothing else causes the mm to be considered for
+khugepaged collapse, an MADV_HUGEPAGE-advised tmpfs VMA alone does not trigger
+scanning.
 
-It's better to tell this is a preparation patch, and who will use them
-in the coming patch or function. Otherwise we can't see why we need it
-if it's no feature change.
+After commit 6beeab870e70 ("mm: shmem: move shmem_huge_global_enabled() into
+shmem_allowable_huge_orders()"), the shmem/tmpfs allowable order check reads
+vma->flags directly.  However, when MADV_HUGEPAGE is handled,
+khugepaged_enter_vma() is called before the VMA's flags have been updated,
+so the check uses stale flags and incorrectly rejects the VMA for collapse.
+As a result, khugepaged does not collapse the tmpfs file into PMD order in time.
 
-The code change looks good to me.
+Fix this by calling khugepaged_enter_vma() with the new VMA flags in
+madvise_update_vma(). Meanwhile we can remove the khugepaged_enter_vma()
+in hugepage_madvise().
 
-> 
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  include/linux/mm_inline.h |  6 ++----
->  include/linux/mmzone.h    |  2 +-
->  mm/vmscan.c               | 20 ++++++++++----------
->  3 files changed, 13 insertions(+), 15 deletions(-)
-> 
-> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> index 4076e3f7dcc8..018a2f54a5c9 100644
-> --- a/include/linux/mm_inline.h
-> +++ b/include/linux/mm_inline.h
-> @@ -245,11 +245,9 @@ static inline void lru_gen_update_size(struct lruvec *lruvec, struct folio *foli
->  	VM_WARN_ON_ONCE(old_gen == -1 && new_gen == -1);
->  
->  	if (old_gen >= 0)
-> -		WRITE_ONCE(lrugen->nr_pages[old_gen][type][zone],
-> -			   lrugen->nr_pages[old_gen][type][zone] - delta);
-> +		atomic_long_sub(delta, &lrugen->nr_pages[old_gen][type][zone]);
->  	if (new_gen >= 0)
-> -		WRITE_ONCE(lrugen->nr_pages[new_gen][type][zone],
-> -			   lrugen->nr_pages[new_gen][type][zone] + delta);
-> +		atomic_long_add(delta, &lrugen->nr_pages[new_gen][type][zone]);
->  
->  	/* addition */
->  	if (old_gen < 0) {
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 8048c6b0544d..4225dab760ba 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -572,7 +572,7 @@ struct lru_gen_folio {
->  	/* the multi-gen LRU lists, lazily sorted on eviction */
->  	struct list_head folios[MAX_NR_GENS][ANON_AND_FILE][MAX_NR_ZONES];
->  	/* the multi-gen LRU sizes, eventually consistent */
-> -	long nr_pages[MAX_NR_GENS][ANON_AND_FILE][MAX_NR_ZONES];
-> +	atomic_long_t nr_pages[MAX_NR_GENS][ANON_AND_FILE][MAX_NR_ZONES];
->  	/* the exponential moving average of refaulted */
->  	unsigned long avg_refaulted[ANON_AND_FILE][MAX_NR_TIERS];
->  	/* the exponential moving average of evicted+protected */
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index f5b0a7c63a3a..b02d2ec8ff4b 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -3354,8 +3354,7 @@ static void reset_batch_size(struct lru_gen_mm_walk *walk)
->  			continue;
->  
->  		walk->nr_pages[gen][type][zone] = 0;
-> -		WRITE_ONCE(lrugen->nr_pages[gen][type][zone],
-> -			   lrugen->nr_pages[gen][type][zone] + delta);
-> +		atomic_long_add(delta, &lrugen->nr_pages[gen][type][zone]);
->  
->  		if (lru_gen_is_active(lruvec, gen))
->  			lru += LRU_ACTIVE;
-> @@ -4044,8 +4043,8 @@ static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int swappiness
->  	for (type = 0; type < ANON_AND_FILE; type++) {
->  		for (zone = 0; zone < MAX_NR_ZONES; zone++) {
->  			enum lru_list lru = type * LRU_INACTIVE_FILE;
-> -			long delta = lrugen->nr_pages[prev][type][zone] -
-> -				     lrugen->nr_pages[next][type][zone];
-> +			long delta = atomic_long_read(&lrugen->nr_pages[prev][type][zone]) -
-> +				     atomic_long_read(&lrugen->nr_pages[next][type][zone]);
->  
->  			if (!delta)
->  				continue;
-> @@ -4163,7 +4162,8 @@ static unsigned long lruvec_evictable_size(struct lruvec *lruvec, int swappiness
->  		for (seq = min_seq[type]; seq <= max_seq; seq++) {
->  			gen = lru_gen_from_seq(seq);
->  			for (zone = 0; zone < MAX_NR_ZONES; zone++)
-> -				total += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
-> +				total += max(atomic_long_read(&lrugen->nr_pages[gen][type][zone]),
-> +					     0L);
->  		}
->  	}
->  
-> @@ -4598,7 +4598,7 @@ static void __lru_gen_reparent_memcg(struct lruvec *child_lruvec, struct lruvec
->  
->  	for (i = 0; i < get_nr_gens(child_lruvec, type); i++) {
->  		int gen = lru_gen_from_seq(child_lrugen->max_seq - i);
-> -		long nr_pages = child_lrugen->nr_pages[gen][type][zone];
-> +		long nr_pages = atomic_long_read(&child_lrugen->nr_pages[gen][type][zone]);
->  		int child_lru_active = lru_gen_is_active(child_lruvec, gen) ? LRU_ACTIVE : 0;
->  		int parent_lru_active = lru_gen_is_active(parent_lruvec, gen) ? LRU_ACTIVE : 0;
->  
-> @@ -4606,9 +4606,8 @@ static void __lru_gen_reparent_memcg(struct lruvec *child_lruvec, struct lruvec
->  		list_splice_tail_init(&child_lrugen->folios[gen][type][zone],
->  				      &parent_lrugen->folios[gen][type][zone]);
->  
-> -		WRITE_ONCE(child_lrugen->nr_pages[gen][type][zone], 0);
-> -		WRITE_ONCE(parent_lrugen->nr_pages[gen][type][zone],
-> -			   parent_lrugen->nr_pages[gen][type][zone] + nr_pages);
-> +		atomic_long_set(&child_lrugen->nr_pages[gen][type][zone], 0);
-> +		atomic_long_add(nr_pages, &parent_lrugen->nr_pages[gen][type][zone]);
->  
->  		if (lru_gen_is_active(child_lruvec, gen) != lru_gen_is_active(parent_lruvec, gen)) {
->  			__update_lru_size(child_lruvec, lru + child_lru_active, zone, -nr_pages);
-> @@ -5650,7 +5649,8 @@ static int lru_gen_seq_show(struct seq_file *m, void *v)
->  			char mark = full && seq < min_seq[type] ? 'x' : ' ';
->  
->  			for (zone = 0; zone < MAX_NR_ZONES; zone++)
-> -				size += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
-> +				size += max(atomic_long_read(&lrugen->nr_pages[gen][type][zone]),
-> +					    0L);
->  
->  			seq_printf(m, " %10lu%c", size, mark);
->  		}
-> 
-> -- 
-> 2.55.0
-> 
-> 
+Reported-by: Lance Yang <lance.yang@linux.dev>
+Closes: https://lore.kernel.org/all/20260815181632.21453-1-lance.yang@linux.dev/
+Fixes: 6beeab870e70 ("mm: shmem: move shmem_huge_global_enabled() into shmem_allowable_huge_orders()")
+Cc: stable@vger.kernel.org
+Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+---
+Changes from v1:
+v1: https://lore.kernel.org/all/ed34ca03ae7d65e89467fb87bc961f5497049c00.1786948410.git.baolin.wang@linux.alibaba.com/
+ - Update the commit message (per Lorenzo).
+ - Call khugepaged_enter_vma() in madvise_update_vma() (per Lorenzo).
+---
+ mm/khugepaged.c | 6 ------
+ mm/madvise.c    | 8 ++++++++
+ 2 files changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 5a06e3942e88..79effd3f3da4 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -454,12 +454,6 @@ int hugepage_madvise(struct vm_area_struct *vma,
+ 	case MADV_HUGEPAGE:
+ 		*vm_flags &= ~VM_NOHUGEPAGE;
+ 		*vm_flags |= VM_HUGEPAGE;
+-		/*
+-		 * If the vma become good for khugepaged to scan,
+-		 * register it here without waiting a page fault that
+-		 * may not happen any time soon.
+-		 */
+-		khugepaged_enter_vma(vma, *vm_flags);
+ 		break;
+ 	case MADV_NOHUGEPAGE:
+ 		*vm_flags &= ~VM_HUGEPAGE;
+diff --git a/mm/madvise.c b/mm/madvise.c
+index c179938097bf..cb93cf82d8df 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -178,6 +178,14 @@ static int madvise_update_vma(vm_flags_t new_flags,
+ 	/* vm_flags is protected by the mmap_lock held in write mode. */
+ 	vma_start_write(vma);
+ 	vma->flags = new_vma_flags;
++	/*
++	 * If the vma become good for khugepaged to scan,
++	 * register it here without waiting a page fault that
++	 * may not happen any time soon.
++	 */
++	if (vma_flags_test(&new_vma_flags, VMA_HUGEPAGE_BIT))
++		khugepaged_enter_vma(vma, vma_flags_to_legacy(new_vma_flags));
++
+ 	if (set_new_anon_name)
+ 		return replace_anon_vma_name(vma, anon_name);
+ 
+-- 
+2.47.3
+
 
