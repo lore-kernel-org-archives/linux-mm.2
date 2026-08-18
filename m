@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92F79C5DF7D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 10:30:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15015C5DF80
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 10:30:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CC126B017B; Tue, 18 Aug 2026 06:29:59 -0400 (EDT)
+	id CEB5E6B017D; Tue, 18 Aug 2026 06:30:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87C846B017D; Tue, 18 Aug 2026 06:29:59 -0400 (EDT)
+	id CC2EC6B017E; Tue, 18 Aug 2026 06:30:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 744306B017E; Tue, 18 Aug 2026 06:29:59 -0400 (EDT)
+	id B8BCC6B017F; Tue, 18 Aug 2026 06:30:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 45B9D6B017B
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 06:29:59 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B5980120B90
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:29:58 +0000 (UTC)
-X-FDA: 85114019676.23.B54ACB1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E9450140009
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:29:56 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wo4B3Hrr;
-	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787048997;
-	b=0sNFtW0bJoOjLpAmPLmTWaVbzeBN/OXnsrvEb90UctO+XFu4b8KqpyPXwEReo/i5BNW0JI
-	qGcsNdxtPpbwVBvILRWRM+A2Y09ONLE9lLEVlqJuNxafmwGBYORNvcMUfRaJ74NcTpDijS
-	8WqoModZADG4t1ukLvYJF4QSds8K5jY=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wo4B3Hrr;
-	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 91AF86B017D
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 06:30:01 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2FD62120B98
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:30:01 +0000 (UTC)
+X-FDA: 85114019802.20.2E70D6E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7E6E6C0007
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:29:59 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HOFcuzXp;
+	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787048997;
+	s=arc-20220608; t=1787048999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VPZl98l4CPrZS3piiaW24mMgeYOQktD4a4Y6ADL5g6s=;
-	b=WHYy1NcHkE2+U7EBZA72sWBsIhfNUq8fdUS7Gcb5nqToa9pQ1aVvalb2n0B1/O5ToS3Wx1
-	bBBc+uEgyrGZHF3EAKREn+d9LOKvv9lCMZv7JJIK6K1fn0AWe2UDMFbqQB1mYGu06hkHQP
-	nS/PtNtA+xo014lm61S6wllwhFlwSno=
+	bh=oA5YhOItUInh8TEcUIpTf7oUnEBcO06MQC7rRQBXdXo=;
+	b=kmZKukmF4YInlmsP5T3e++CT+MTCaw5AGpowGu4Ymdr1L4RJDce+UzDQyADuJ9ix2jF3ok
+	+6B6GOwooLNP6nQQjGDRwNJyYDDWsV+2+RFc5Sg6YJHhKY99pZEN0TaWvtG3tfspnaXEGr
+	c7zXBPyLU1GQa2rWRVHd3HKbcwseWAk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787048999;
+	b=OZd3DsgHgcnvwaXqc2SjLPFtchi16tW/3P3LDVXqn0zb8WEkbtUD49gm4Mt53R4LgfrGxa
+	vpSjbhfFzRQ9dU1PGcv0PgN7Bzjo+MmKUyzoRu1rrI9nCLsSBxk0eejvAUQkfZ0GOFX+2x
+	fvIbU5gFL9rOfvFCJhZ/kQUHm6VuRu8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HOFcuzXp;
+	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0BB7B43F2C;
+	by tor.source.kernel.org (Postfix) with ESMTP id 18BC760A7D;
+	Tue, 18 Aug 2026 10:29:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63E941F00A3A;
 	Tue, 18 Aug 2026 10:29:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A89F1F000E9;
-	Tue, 18 Aug 2026 10:29:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787048995;
-	bh=VPZl98l4CPrZS3piiaW24mMgeYOQktD4a4Y6ADL5g6s=;
+	s=k20260515; t=1787048998;
+	bh=oA5YhOItUInh8TEcUIpTf7oUnEBcO06MQC7rRQBXdXo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Wo4B3HrrILSaIBFlcJIumKvfMF4WPhZJqSA3JhJZJMx8FfD3/G74SH6Con+pny/uk
-	 GQobDR+a7idvz1X5MiDacBccb5+vtkoxJwBDs2wguQqVuixRTvsDkMuSP8a/VfPvov
-	 JozdUmsRA2YgmrT2gDVMH3IXtcYFe3Gv6xqhsP4IBjQ+aQcYEnIV9CQLbDJ25yek8i
-	 Zn+SC7Gk+8sTygV/6PiaHFIU3GMbbA4i/FrBHgrbjvb0RkyxsQ+dr4BigLt5T/Yzin
-	 rE1sF2WZLlSZuKGUD38mIRdE8pdKke7cVojUqllzZQEQgW9Auwt59FQoCXbJj+o+L/
-	 ebYbXX4HhppMg==
+	b=HOFcuzXpnKI05Fmts6b8sTaR8G+Nie1XPP0qhdWGno/awjz/3qX2CxKOnnKijS7v4
+	 BUU30bv01pzSO3PifvCMDfFsmaZpIsGxvWO3CVRkukQlnR1wUCZTnV9HO8s7uo5jrl
+	 7aV5vXAViE0JxPFJ691ULt3CDQV3zcrcoY0aIUK+LPaXNh5l7God+ejWTBy+ghkgj2
+	 db9PVSLhO8qVjsVpXIsmZQYyDqQWJ5OGIcN7lBHtRQoB2Ez0cF5ozxqOE0UTuSwUAO
+	 BdLlSFzn6i0vhUzxnnrmYm2GDEooILujNH/XyIWKnkbazCXB/vKazBiSihh3TbGtx0
+	 5yWaQ3KIJkxRw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 18 Aug 2026 12:29:38 +0200
-Subject: [PATCH 3/4] selftests/coredump: test that TIF_NOTIFY_SIGNAL
- doesn't truncate a coredump
+Date: Tue, 18 Aug 2026 12:29:39 +0200
+Subject: [PATCH 4/4] smb: prevent TIF_NOTIFY_SIGNAL from interrupting
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260818-work-tif_notify_signal-v1-3-1ee1fcc5b3ff@kernel.org>
+Message-Id: <20260818-work-tif_notify_signal-v1-4-1ee1fcc5b3ff@kernel.org>
 References: <20260818-work-tif_notify_signal-v1-0-1ee1fcc5b3ff@kernel.org>
 In-Reply-To: <20260818-work-tif_notify_signal-v1-0-1ee1fcc5b3ff@kernel.org>
 To: Oleg Nesterov <oleg@redhat.com>, Jens Axboe <axboe@kernel.dk>
@@ -81,22 +80,22 @@ Cc: Peter Zijlstra <peterz@infradead.org>,
  bpf@vger.kernel.org, linux-cifs@vger.kernel.org, linux-mm@kvack.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-362b8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=22621; i=brauner@kernel.org;
- h=from:subject:message-id; bh=8EQafczp25kg58yJ4WGi1PH92wWrNcHZNPfxvyY2jxI=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS1mEjIMRyfPPGXwmf1eon+npZjrJd+lhr1f36xz9Pr3
- JcN50rOd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzEz5LhD/+t+ZG7ApdsUZ/l
- 8vFiwpVrU4wOnA0/wJV350O3yrcrirMZGX46nJlf8P9Wx5Ocra59S+2PS+QdneI3YdssIc2DqhV
- B5cwA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2385; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=PHoG4Al+J6bmlX5hfjF9xp+ZYim9zrGXQmfo1DpuFPY=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS1mEhwbL+3bJXZT9MfWj4VASUfWCuyT1m+K1j/au6Gq
+ TNa+D4ZdZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzE6wzD/8A5vto3tRx2b9/U
+ tee1i+2r2eIrD35on9fYvdakOPB0xQeGf4qToh5Pz8gqCj50ceK5H7GiSxuC+8wemO9VM2U91bz
+ anwUA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Queue-Id: E9450140009
-X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: drcsfbot4q1m8obxsdgoeh78i1txrd1z
-X-HE-Tag: 1787048996-395844
-X-HE-Meta: U2FsdGVkX1/gxx0ROS7cG6xlwhU2Xdqbt6FdMzJ2AKp8Cl6ExH73fJS/Jz0oLGxMq8GbwK4Sqr2iYwwHug0tmzDSPqt0A+bMbCm8AkFglpcN8fgzW7nOIXcaQuKiQ58IhK4r4aMH0nSbVeZVzeaIeBWuXnflANmyDhIqa6BbLvhfknf5bNQkbl7JVeHcOXJamiCTKD49Rh4CKgCIz8JkuOpi9Jacyo7NGwD9K0zh5Yt7kg5xclK3r+d6qoQc2V26/5UfdiTc78JHbstuHU3aY1BPucxzol317f+PMavSKfbmX3WfLyGGGLg3751rhcQ7rYvwy0fD3qynmdv/8BHa0oWrEqi65EmTTvk3lt11X7LefO+ZiiSBwzh+J+gXU9eWQWP1AJVVmGQY7ZcV/4oRjL0JrU9K/9BnFxRvUAcUv+/BL5ucVsouZwdHBXXH87T4/2pu9vrBZ2r7E1x5QpzwOQVRj+lAVXa3vHSVw9pzu0nntg2rPx7xNM5os93+2JaJk25vHn2Ej3u/IWnyVhvKMo36+f8V7nP9ybcKVycwYPVx+zamYTpTKYM48aDDrNF3pCK0fTtFYogfIu7eZqyGYMtlmeY80Gn9XaX9fwGPYLizoVqTLS6xV3yzU+wARmW+trBCYMpa7xf27IwNywXuess3RjhzAYlO0h3KMUKw9hRJSqXeFODsxrqvueQAJ2SC21GV68G+0GPLoQhZsVVYmWKvfjOwr8Swti9r1ZD3Y6rRefYHIMdk1O2Fpd4afTnyIIXDFaaqNeYUIJIToTVQqtAh2Xp05QmppdxrK3NqXLU/Jaf+7guOpcvCelgIhaNnTQeir6yCmzQliq56pI8R2EFfWRipk7peC4S8/2YlgYd3jIOF5ImVjmx4VZszPt2c2uF9kK86gaLy4ZvkAtnykOq8hF3uzTWFYzcFTNn5aHjx5cyG147IZy4Gm+Z20Z2QtNL/Jl6y1fAZyfKRT3+
- dQnvLe3b
- vu7OLlap71AGr228sREYyka80i27wshq6o4D1MhO+3izMzHqffL1yMPwR3N07R3VDTD50F9IXVecVphDFDhiJb19phnYngbzXQ/RGp5EzcxRdr/K+XH3KjWDIzyENrcf7qWo/a9NmGNKnSsqgcrXyd9hA9cIQQwrLv8h5dluCTHURkHIw5COHH0IJQSm6fE9o0bVzere7mT8+H9AdEiUZMHN/URnwqhLNewliPvNkxVMiKc5kzzVy5zoiLiT2f/PLu00Dqmo+gEbKP3PQnlGYCjDtwGrc/VxD+QRG
+X-Stat-Signature: ud5nepccujbb6kzfwaf6azp66se7s6yq
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7E6E6C0007
+X-HE-Tag: 1787048999-116646
+X-HE-Meta: U2FsdGVkX1+vsF4FGAHNPv7Eri4M9pt+QoLng1MkHLILxEES4lBml2yZtih8UEUO/L8+VRkuooAEYMwQtIklMxQDRQ5UpEVsiNHLcaONqUI/RVrz996lZp/N8VpmmeY/2Wu89RGlnH6EegEh54nuhzHR0NyNHnhHlv7BMTgSEmTXM7K4dSuWvvnMK+OfKWJOOnxfMUWstRe8juqG2NjLa8G4lOcC2wvfRK4EjuOKtZaNs5b7k0qYxRkhyNfgkeXC2rme/Uww+0kbC5uXWxA/2PN2m0DR7jCjGah5xLtfQi+KhmD1Rj2nfBIKkCKM7DxKjKZ2HxpsFAIE7+MQ9KVhbB7SMrrLCtW+xDG3fKW13pzK/y5TzcoDgsqM+gkDQswpqw9lMiOTvBC2PPULCUB2pVfbux4vD/kYX7Ygv2qBDqy2Xw3EUudmfF5bqi6I5rYpw86GuZHUGsZJLdgj3BKZDFsXkcZUPolpB0XjhylWg9HFPdWSRExepIkUvvsMnI9BH0rb//fvf6/YitMAzSfctpVtskhcz8i6dWYga8XZqBVrKcD9Pqb3l2wTwgjIkcZoSPje5T7rF7dd+Ey/9gPqZ7oVh87kUmGPUqiTwl3gaoQuSp3Unb+vXUE9KdqmwEOCljcAppcGpIOT6+WaLJynUWqmm/VyUjK/pfhudj7+lTm6w/PlUL/pbgVJIQS7g6kYBlDOT+1ScIqlSk7kXpK6v6GFpadrqRbWOot0bNeOVIWxWhJChDm6jTIED46pvZAYwnY2CtJPpbjE2sRhF2VCzNvO1CZElzRcCN+m3DBZCwwmM3jxzoT9bI4s16/235DABD1ibuUfqP7CsxNeru8Y2bEn2gdAHTfJHxHHKEZe7SEwcR8i73utzE1RRKYaQS26Modjqzj/fH7hMdHyqZ9REByxBMa54BzexVIMKlXjbYh2Y0TkR3WaDLsycgKCOPPcV/CMgxV4wGqAsXJD8hy
+ reEY7WWL
+ ZuuxOB/4/9if/MEHmaFQ9SXqx/vzyBwly0OSToRYfOn5N2Vv9fW2Rlb3D0xEKVvIdr9qOA4jcD8TJf50oq+aUHwV3jHl3bzKRvFS1bVUu7JQkZY+44+yr/wVc3MIk7SEIoCWV4zXrxUjUhAUW+vq1QWS3Ij1DjDP3xU8U9fzE/T3MtDbKBRw0vO+jV71gTFENJ4UEHd7Rii/Lez0JIRLR0dfpciKtU+Y3SGAMXP9xzH5d/ZVirz7JVqqjPsmui7cS4nts7nPkQnxVAgjKfYCkGBV8sw0a882hEHwde9uTFCzFGnbH5LKm5n4xz+ULvktqUzqx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,745 +103,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a test that verifies that a coredump cannot be cut short by
-TIF_NOTIFY_SIGNAL through io_uring running task work for uninterruptible
-tasks.
+smb_send_kvec() blocks every signal during a send:
+
+	sigfillset(&mask);
+	sigprocmask(SIG_BLOCK, &mask, &oldmask);
+
+An incomplete or partial sent would cause the connection to become out
+of sync. That in turn would cause the session to be torn down and
+reconnected.
+
+In 00be6f26a2a7 ("smb: client: transport: avoid reconnects triggered
+by pending task work") smb hand-rolled its own solution. Have it use the
+new no_notify_signal_save() critical section instead.
+
+This stops io_uring from cancelling a send in flight but that's just
+like it is today and it is bounded by sk_sndtimeo at around 15s.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- tools/testing/selftests/coredump/Makefile          |   7 +-
- .../selftests/coredump/coredump_notify_signal.h    |  29 ++
- .../coredump/coredump_notify_signal_helper.c       |  46 +++
- .../coredump/coredump_notify_signal_test.c         | 245 ++++++++++++++++
- tools/testing/selftests/coredump/coredump_test.h   |   1 +
- .../selftests/coredump/coredump_test_helpers.c     | 318 +++++++++++++++++++++
- 6 files changed, 645 insertions(+), 1 deletion(-)
+ fs/smb/client/transport.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/coredump/Makefile b/tools/testing/selftests/coredump/Makefile
-index dece1a31d561..728f3c342eb9 100644
---- a/tools/testing/selftests/coredump/Makefile
-+++ b/tools/testing/selftests/coredump/Makefile
-@@ -3,7 +3,10 @@ CFLAGS += -Wall -O0 -g $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
- 
- TEST_GEN_PROGS := stackdump_test \
- 		  coredump_socket_test \
--		  coredump_socket_protocol_test
-+		  coredump_socket_protocol_test \
-+		  coredump_notify_signal_test
-+# Spawned by the kernel as the |helper, not a test of its own.
-+TEST_GEN_FILES := coredump_notify_signal_helper
- TEST_FILES := stackdump
- 
- include ../lib.mk
-@@ -11,3 +14,5 @@ include ../lib.mk
- $(OUTPUT)/stackdump_test: coredump_test_helpers.c
- $(OUTPUT)/coredump_socket_test: coredump_test_helpers.c
- $(OUTPUT)/coredump_socket_protocol_test: coredump_test_helpers.c
-+$(OUTPUT)/coredump_notify_signal_test: coredump_test_helpers.c
-+$(OUTPUT)/coredump_notify_signal_helper: coredump_test_helpers.c
-diff --git a/tools/testing/selftests/coredump/coredump_notify_signal.h b/tools/testing/selftests/coredump/coredump_notify_signal.h
-new file mode 100644
-index 000000000000..9a2892de8192
---- /dev/null
-+++ b/tools/testing/selftests/coredump/coredump_notify_signal.h
-@@ -0,0 +1,29 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#ifndef __COREDUMP_NOTIFY_SIGNAL_H
-+#define __COREDUMP_NOTIFY_SIGNAL_H
-+
-+#include <stdbool.h>
-+#include <sys/types.h>
-+
-+/*
-+ * Define a bunch of constants we need. We create a situation where the
-+ * file note note blows pasts 200K. That's way beyond the default 64K
-+ * pipe ring and past the ~36K an af_unix skb holds. So we force a write
-+ * to come back short.
-+ */
-+#define NOTIFY_SIGNAL_MAP_COUNT		4000
-+#define NOTIFY_SIGNAL_ANON_BYTES	(4UL << 20)
-+#define NOTIFY_SIGNAL_STALL_US		200000
-+#define NOTIFY_SIGNAL_MAPFILE		"/tmp/coredump.notify_signal.mapfile"
-+#define NOTIFY_SIGNAL_TRIGGER		"/tmp/coredump.notify_signal.trigger"
-+#define NOTIFY_SIGNAL_CORE_FILE		"/tmp/coredump.notify_signal.core"
-+#define NOTIFY_SIGNAL_CORE_TMPFILE	"/tmp/coredump.notify_signal.core.tmp"
-+#define NOTIFY_SIGNAL_SOCKET		"/tmp/coredump.notify_signal.socket"
-+
-+void crashing_child_notify_signal(void);
-+bool coredump_io_uring_available(void);
-+ssize_t recv_coredump_notify_signal(int fd, int fd_out, bool arm);
-+long long coredump_expected_size(const char *path, long long *tail);
-+
-+#endif /* __COREDUMP_NOTIFY_SIGNAL_H */
-diff --git a/tools/testing/selftests/coredump/coredump_notify_signal_helper.c b/tools/testing/selftests/coredump/coredump_notify_signal_helper.c
-new file mode 100644
-index 000000000000..849f5c1ea736
---- /dev/null
-+++ b/tools/testing/selftests/coredump/coredump_notify_signal_helper.c
-@@ -0,0 +1,46 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * The |helper half of coredump_notify_signal_test. The kernel spawns this
-+ * with the coredump on stdin, so it cannot be part of the test binary.
-+ * It saves the dump and, once the notes have started, trips the fifo the
-+ * crashing task is polling so TIF_NOTIFY_SIGNAL is raised while the note
-+ * write is in flight.
-+ */
-+
-+#include <fcntl.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <unistd.h>
-+
-+#include "coredump_notify_signal.h"
-+
-+int main(int argc, char *argv[])
-+{
-+	int fd_core_file;
-+	ssize_t ret;
-+
-+	fd_core_file = open(NOTIFY_SIGNAL_CORE_TMPFILE,
-+			    O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC, 0600);
-+	if (fd_core_file < 0) {
-+		fprintf(stderr, "%s: open failed: %m\n", argv[0]);
-+		return EXIT_FAILURE;
-+	}
-+
-+	ret = recv_coredump_notify_signal(STDIN_FILENO, fd_core_file, true);
-+	close(fd_core_file);
-+	if (ret < 0)
-+		goto err;
-+
-+	/* The test polls for this name, so only create it once it is whole. */
-+	if (rename(NOTIFY_SIGNAL_CORE_TMPFILE, NOTIFY_SIGNAL_CORE_FILE)) {
-+		fprintf(stderr, "%s: rename failed: %m\n", argv[0]);
-+		goto err;
-+	}
-+
-+	return EXIT_SUCCESS;
-+
-+err:
-+	unlink(NOTIFY_SIGNAL_CORE_TMPFILE);
-+	return EXIT_FAILURE;
-+}
-diff --git a/tools/testing/selftests/coredump/coredump_notify_signal_test.c b/tools/testing/selftests/coredump/coredump_notify_signal_test.c
-new file mode 100644
-index 000000000000..e63c06a81562
---- /dev/null
-+++ b/tools/testing/selftests/coredump/coredump_notify_signal_test.c
-@@ -0,0 +1,245 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * A coredump is meant to be interrupted by SIGKILL and by the freezer and
-+ * by nothing else. dump_interrupted() says so, but the blocking waits
-+ * underneath it test signal_pending(), which is also true for
-+ * TIF_NOTIFY_SIGNAL. A crashing task that has an io_uring completion land
-+ * on it mid-dump therefore keeps dumping while every wait it enters bails
-+ * out at once, and the dump is silently cut short. Nothing reports it:
-+ * binfmt_elf sets has_dumped before it writes anything, so WCOREDUMP()
-+ * says the dump worked.
-+ *
-+ * A coredump note is the only dump_emit() that exceeds what the transport
-+ * takes in one go, so it is the one write that is certain to block. Both
-+ * tests crash a child holding enough file backed mappings for its NT_FILE
-+ * note to run past that, arm an io_uring poll on it, and trip the poll
-+ * while the note is being written. What comes out has to be the whole
-+ * dump.
-+ */
-+
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <sys/socket.h>
-+#include <sys/stat.h>
-+#include <sys/un.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+
-+#include "coredump_test.h"
-+
-+FIXTURE_SETUP(coredump)
-+{
-+	FILE *file;
-+	int ret;
-+
-+	self->pid_coredump_server = -ESRCH;
-+	self->fd_tmpfs_detached = -1;
-+	file = fopen("/proc/sys/kernel/core_pattern", "r");
-+	ASSERT_NE(NULL, file);
-+
-+	ret = fread(self->original_core_pattern, 1,
-+		    sizeof(self->original_core_pattern), file);
-+	ASSERT_TRUE(ret || feof(file));
-+	ASSERT_LT(ret, sizeof(self->original_core_pattern));
-+
-+	self->original_core_pattern[ret] = '\0';
-+	self->fd_tmpfs_detached = create_detached_tmpfs();
-+	ASSERT_GE(self->fd_tmpfs_detached, 0);
-+
-+	ret = fclose(file);
-+	ASSERT_EQ(0, ret);
-+
-+	unlink(NOTIFY_SIGNAL_TRIGGER);
-+	ASSERT_EQ(mkfifo(NOTIFY_SIGNAL_TRIGGER, 0600), 0);
-+}
-+
-+FIXTURE_TEARDOWN(coredump)
-+{
-+	const char *reason;
-+	FILE *file;
-+	int ret, status;
-+
-+	if (self->pid_coredump_server > 0) {
-+		kill(self->pid_coredump_server, SIGTERM);
-+		waitpid(self->pid_coredump_server, &status, 0);
-+	}
-+	unlink(NOTIFY_SIGNAL_CORE_FILE);
-+	unlink(NOTIFY_SIGNAL_CORE_TMPFILE);
-+	unlink(NOTIFY_SIGNAL_SOCKET);
-+	unlink(NOTIFY_SIGNAL_TRIGGER);
-+	unlink(NOTIFY_SIGNAL_MAPFILE);
-+
-+	file = fopen("/proc/sys/kernel/core_pattern", "w");
-+	if (!file) {
-+		reason = "Unable to open core_pattern";
-+		goto fail;
-+	}
-+
-+	ret = fprintf(file, "%s", self->original_core_pattern);
-+	if (ret < 0) {
-+		reason = "Unable to write to core_pattern";
-+		goto fail;
-+	}
-+
-+	ret = fclose(file);
-+	if (ret) {
-+		reason = "Unable to close core_pattern";
-+		goto fail;
-+	}
-+
-+	if (self->fd_tmpfs_detached >= 0) {
-+		ret = close(self->fd_tmpfs_detached);
-+		if (ret < 0) {
-+			reason = "Unable to close detached tmpfs";
-+			goto fail;
-+		}
-+		self->fd_tmpfs_detached = -1;
-+	}
-+
-+	return;
-+fail:
-+	/* This should never happen */
-+	fprintf(stderr, "Failed to cleanup coredump test: %s\n", reason);
-+}
-+
-+/*
-+ * Check that what the helper or the server saved is the whole dump. Only
-+ * a hole at the very end can be missing, see coredump_expected_size().
-+ */
-+static void check_whole_coredump(struct __test_metadata *const _metadata)
-+{
-+	long long expected, tail;
-+	struct stat st;
-+
-+	expected = coredump_expected_size(NOTIFY_SIGNAL_CORE_FILE, &tail);
-+	ASSERT_GT(expected, 0);
-+	ASSERT_EQ(stat(NOTIFY_SIGNAL_CORE_FILE, &st), 0);
-+	ASSERT_LE((long long)st.st_size, expected);
-+	ASSERT_GE((long long)st.st_size, expected - tail);
-+}
-+
-+/*
-+ * The dump goes to a |helper, so the reader is a separate program the
-+ * kernel spawns. It saves what it received to NOTIFY_SIGNAL_CORE_FILE.
-+ */
-+TEST_F(coredump, notify_signal_pipe)
-+{
-+	char pattern[PATH_MAX], helper[PATH_MAX], *p;
-+	struct stat st;
-+	int status, i;
-+	pid_t pid;
-+	ssize_t n;
-+
-+	if (!coredump_io_uring_available())
-+		SKIP(return, "io_uring not available");
-+
-+	n = readlink("/proc/self/exe", helper, sizeof(helper) - 1);
-+	ASSERT_GT(n, 0);
-+	helper[n] = '\0';
-+	p = strstr(helper, "coredump_notify_signal_test");
-+	ASSERT_NE(p, NULL);
-+	ASSERT_LE((size_t)(p - helper) + sizeof("coredump_notify_signal_helper"),
-+		  sizeof(helper));
-+	strcpy(p, "coredump_notify_signal_helper");
-+	if (access(helper, X_OK))
-+		SKIP(return, "coredump_notify_signal_helper not built");
-+
-+	ASSERT_LT(snprintf(pattern, sizeof(pattern), "|%s", helper),
-+		  (int)sizeof(pattern));
-+	ASSERT_TRUE(set_core_pattern(pattern));
-+
-+	pid = fork();
-+	ASSERT_GE(pid, 0);
-+	if (pid == 0)
-+		crashing_child_notify_signal();
-+
-+	ASSERT_EQ(waitpid(pid, &status, 0), pid);
-+	ASSERT_TRUE(WIFSIGNALED(status));
-+
-+	/* The kernel does not wait for the helper, so poll for it. */
-+	for (i = 0; i < 100; i++) {
-+		if (!stat(NOTIFY_SIGNAL_CORE_FILE, &st) && st.st_size)
-+			break;
-+		usleep(100000);
-+	}
-+
-+	check_whole_coredump(_metadata);
-+}
-+
-+/* The same thing with the dump going to a coredump socket. */
-+TEST_F(coredump, notify_signal_socket)
-+{
-+	pid_t pid, pid_coredump_server;
-+	int ipc_sockets[2], status;
-+	char pattern[PATH_MAX];
-+	char c;
-+
-+	if (!coredump_io_uring_available())
-+		SKIP(return, "io_uring not available");
-+
-+	ASSERT_EQ(socketpair(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0,
-+			     ipc_sockets), 0);
-+	ASSERT_LT(snprintf(pattern, sizeof(pattern), "@%s",
-+			   NOTIFY_SIGNAL_SOCKET), (int)sizeof(pattern));
-+	ASSERT_TRUE(set_core_pattern(pattern));
-+
-+	pid_coredump_server = fork();
-+	ASSERT_GE(pid_coredump_server, 0);
-+	if (pid_coredump_server == 0) {
-+		int fd_server = -1, fd_coredump = -1, fd_core_file = -1;
-+		int exit_code = EXIT_FAILURE;
-+
-+		close(ipc_sockets[0]);
-+
-+		fd_server = create_and_listen_unix_socket(NOTIFY_SIGNAL_SOCKET);
-+		if (fd_server < 0)
-+			goto out;
-+		if (write_nointr(ipc_sockets[1], "1", 1) < 0)
-+			goto out;
-+		close(ipc_sockets[1]);
-+
-+		fd_coredump = accept4(fd_server, NULL, NULL, SOCK_CLOEXEC);
-+		if (fd_coredump < 0)
-+			goto out;
-+
-+		fd_core_file = open(NOTIFY_SIGNAL_CORE_FILE,
-+				    O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC,
-+				    0600);
-+		if (fd_core_file < 0)
-+			goto out;
-+
-+		if (recv_coredump_notify_signal(fd_coredump, fd_core_file,
-+						true) < 0)
-+			goto out;
-+
-+		exit_code = EXIT_SUCCESS;
-+out:
-+		if (fd_core_file >= 0)
-+			close(fd_core_file);
-+		if (fd_coredump >= 0)
-+			close(fd_coredump);
-+		if (fd_server >= 0)
-+			close(fd_server);
-+		_exit(exit_code);
-+	}
-+	self->pid_coredump_server = pid_coredump_server;
-+
-+	EXPECT_EQ(close(ipc_sockets[1]), 0);
-+	ASSERT_EQ(read_nointr(ipc_sockets[0], &c, 1), 1);
-+	EXPECT_EQ(close(ipc_sockets[0]), 0);
-+
-+	pid = fork();
-+	ASSERT_GE(pid, 0);
-+	if (pid == 0)
-+		crashing_child_notify_signal();
-+
-+	ASSERT_EQ(waitpid(pid, &status, 0), pid);
-+	ASSERT_TRUE(WIFSIGNALED(status));
-+
-+	wait_and_check_coredump_server(pid_coredump_server, _metadata, self);
-+
-+	check_whole_coredump(_metadata);
-+}
-+
-+TEST_HARNESS_MAIN
-diff --git a/tools/testing/selftests/coredump/coredump_test.h b/tools/testing/selftests/coredump/coredump_test.h
-index ed47f01fa53c..06f997ba47fd 100644
---- a/tools/testing/selftests/coredump/coredump_test.h
-+++ b/tools/testing/selftests/coredump/coredump_test.h
-@@ -9,6 +9,7 @@
- 
- #include "../kselftest_harness.h"
- #include "../pidfd/pidfd.h"
-+#include "coredump_notify_signal.h"
- 
- #ifndef PAGE_SIZE
- #define PAGE_SIZE 4096
-diff --git a/tools/testing/selftests/coredump/coredump_test_helpers.c b/tools/testing/selftests/coredump/coredump_test_helpers.c
-index 2a20faf9cb0a..20fcc5b644c3 100644
---- a/tools/testing/selftests/coredump/coredump_test_helpers.c
-+++ b/tools/testing/selftests/coredump/coredump_test_helpers.c
-@@ -1,11 +1,18 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- #include <assert.h>
-+#include <elf.h>
-+#include <endian.h>
- #include <errno.h>
- #include <fcntl.h>
- #include <limits.h>
-+#include <link.h>
-+#include <linux/stddef.h>
-+#include <linux/io_uring.h>
-+#include <linux/swab.h>
- #include <linux/coredump.h>
- #include <linux/fs.h>
-+#include <poll.h>
- #include <pthread.h>
- #include <stdbool.h>
- #include <stdio.h>
-@@ -13,7 +20,9 @@
- #include <string.h>
- #include <sys/epoll.h>
- #include <sys/ioctl.h>
-+#include <sys/mman.h>
- #include <sys/socket.h>
-+#include <sys/syscall.h>
- #include <sys/types.h>
- #include <sys/un.h>
- #include <sys/wait.h>
-@@ -21,6 +30,7 @@
- 
- #include "../filesystems/wrappers.h"
- #include "../pidfd/pidfd.h"
-+#include "coredump_notify_signal.h"
- 
- /* Forward declarations to avoid including harness header */
- struct __test_metadata;
-@@ -381,3 +391,311 @@ void process_coredump_worker(int fd_coredump, int fd_peer_pidfd, int fd_core_fil
- 		close(fd_coredump);
- 	_exit(exit_code);
- }
-+
-+/*
-+ * TIF_NOTIFY_SIGNAL coredump helpers.
-+ *
-+ * __dump_emit() takes anything short of a full write as the end of the
-+ * dump, so every emit that blocks on a full transport can lose the rest
-+ * of it. The NT_FILE note is the one emit that is certain to block,
-+ * because it is the only one larger than the transport, so these helpers
-+ * build a note large enough for that and then raise TIF_NOTIFY_SIGNAL on
-+ * the dumping task while that write is in flight.
-+ */
-+
-+static int io_uring_setup_raw(unsigned int entries, struct io_uring_params *p)
-+{
-+	return syscall(__NR_io_uring_setup, entries, p);
-+}
-+
-+/* io_uring reads poll32_events back through swahw32() on big endian. */
-+static __u32 notify_poll_mask(__u32 events)
-+{
-+#if defined(__BYTE_ORDER) && __BYTE_ORDER == __BIG_ENDIAN
-+	return __swahw32(events);
-+#else
-+	return events;
-+#endif
-+}
-+
-+bool coredump_io_uring_available(void)
-+{
-+	struct io_uring_params p = {};
-+	int fd;
-+
-+	fd = io_uring_setup_raw(1, &p);
-+	if (fd < 0)
-+		return false;
-+	close(fd);
-+	return true;
-+}
-+
-+/*
-+ * Arm a poll on @fd. io_uring leaves ctx->notify_method at TWA_SIGNAL
-+ * unless the ring asks for SQPOLL or COOP_TASKRUN, so the completion runs
-+ * set_notify_signal() against the task that submitted it. That is us, and
-+ * we are about to become the coredumping task.
-+ */
-+static int arm_poll_notify(int trigger_fd)
-+{
-+	struct io_uring_params p = {};
-+	unsigned int *sq_tail, *sq_array;
-+	struct io_uring_sqe *sqes;
-+	size_t sqring_sz;
-+	void *sq;
-+	int ring;
-+
-+	ring = io_uring_setup_raw(8, &p);
-+	if (ring < 0)
-+		return -1;
-+
-+	sqring_sz = p.sq_off.array + p.sq_entries * sizeof(unsigned int);
-+	sq = mmap(NULL, sqring_sz, PROT_READ | PROT_WRITE,
-+		  MAP_SHARED | MAP_POPULATE, ring, IORING_OFF_SQ_RING);
-+	if (sq == MAP_FAILED)
-+		return -1;
-+
-+	sqes = mmap(NULL, p.sq_entries * sizeof(*sqes), PROT_READ | PROT_WRITE,
-+		    MAP_SHARED | MAP_POPULATE, ring, IORING_OFF_SQES);
-+	if (sqes == MAP_FAILED)
-+		return -1;
-+
-+	sq_tail = (unsigned int *)((char *)sq + p.sq_off.tail);
-+	sq_array = (unsigned int *)((char *)sq + p.sq_off.array);
-+
-+	memset(&sqes[0], 0, sizeof(sqes[0]));
-+	sqes[0].opcode = IORING_OP_POLL_ADD;
-+	sqes[0].fd = trigger_fd;
-+	sqes[0].poll32_events = notify_poll_mask(POLLIN);
-+
-+	sq_array[0] = 0;
-+	__atomic_store_n(sq_tail, 1, __ATOMIC_RELEASE);
-+
-+	if (syscall(__NR_io_uring_enter, ring, 1, 0, 0, NULL, 0) < 0)
-+		return -1;
-+
-+	/* Deliberately leaked, we are about to crash. */
-+	return 0;
-+}
-+
-+/*
-+ * Adjacent mappings with identical flags and contiguous file offsets are
-+ * merged into one VMA, which would collapse NT_FILE back to nothing, so
-+ * alternate the protection to keep every mapping an entry of its own.
-+ * Not PROT_EXEC, /tmp is often mounted noexec. Nothing is ever written
-+ * through these so they get no anon_vma and stay out of the dump itself.
-+ */
-+static int make_file_mappings(void)
-+{
-+	long pgsz = sysconf(_SC_PAGESIZE);
-+	int fd, i;
-+
-+	fd = open(NOTIFY_SIGNAL_MAPFILE,
-+		  O_RDWR | O_CREAT | O_TRUNC | O_CLOEXEC, 0600);
-+	if (fd < 0)
-+		return 0;
-+	if (ftruncate(fd, (off_t)NOTIFY_SIGNAL_MAP_COUNT * pgsz)) {
-+		close(fd);
-+		return 0;
-+	}
-+
-+	for (i = 0; i < NOTIFY_SIGNAL_MAP_COUNT; i++) {
-+		int prot = (i & 1) ? PROT_READ : (PROT_READ | PROT_WRITE);
-+
-+		if (mmap(NULL, pgsz, prot, MAP_PRIVATE, fd,
-+			 (off_t)i * pgsz) == MAP_FAILED)
-+			break;
-+	}
-+	close(fd);
-+	return i;
-+}
-+
-+void crashing_child_notify_signal(void)
-+{
-+	long pgsz = sysconf(_SC_PAGESIZE);
-+	unsigned char *p;
-+	int trigger_fd;
-+	unsigned long off;
-+
-+	/* Open the read side first so the reader's open() cannot block. */
-+	trigger_fd = open(NOTIFY_SIGNAL_TRIGGER, O_RDONLY | O_NONBLOCK | O_CLOEXEC);
-+
-+	/* Exit rather than crash: a dump without the poll armed proves nothing. */
-+	if (trigger_fd < 0)
-+		_exit(EXIT_FAILURE);
-+
-+	if (make_file_mappings() < NOTIFY_SIGNAL_MAP_COUNT)
-+		_exit(EXIT_FAILURE);
-+
-+	p = mmap(NULL, NOTIFY_SIGNAL_ANON_BYTES, PROT_READ | PROT_WRITE,
-+		 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	if (p == MAP_FAILED)
-+		_exit(EXIT_FAILURE);
-+	for (off = 0; off < NOTIFY_SIGNAL_ANON_BYTES; off += pgsz)
-+		p[off] = 1;
-+
-+	if (arm_poll_notify(trigger_fd))
-+		_exit(EXIT_FAILURE);
-+
-+	/* crash on purpose */
-+	*(volatile int *)NULL = 0;
-+	_exit(EXIT_FAILURE);
-+}
-+
-+static int pull_trigger(void)
-+{
-+	int fd;
-+
-+	fd = open(NOTIFY_SIGNAL_TRIGGER, O_WRONLY | O_NONBLOCK | O_CLOEXEC);
-+	if (fd < 0) {
-+		fprintf(stderr, "%s: open failed: %m\n", __func__);
-+		return -1;
-+	}
-+	if (write(fd, "x", 1) != 1) {
-+		fprintf(stderr, "%s: write failed: %m\n", __func__);
-+		close(fd);
-+		return -1;
-+	}
-+	close(fd);
-+	return 0;
-+}
-+
-+/*
-+ * phdr[0] is the PT_NOTE entry: elf_core_dump() emits it right after the
-+ * ELF header. Its p_offset is where the notes begin.
-+ */
-+static long long note_offset(const unsigned char *hdr)
-+{
-+	ElfW(Phdr) ph;
-+	ElfW(Ehdr) eh;
-+
-+	memcpy(&eh, hdr, sizeof(eh));
-+	if (memcmp(eh.e_ident, ELFMAG, SELFMAG) || eh.e_type != ET_CORE)
-+		return -1;
-+	memcpy(&ph, hdr + sizeof(eh), sizeof(ph));
-+	if (ph.p_type != PT_NOTE)
-+		return -1;
-+	return (long long)ph.p_offset;
-+}
-+
-+/*
-+ * Drain a coredump off @fd, counting what arrives. Once the notes have
-+ * started the kernel is inside the one big note write, so poke the fifo
-+ * the crashing task is polling and stop reading, which keeps the
-+ * transport full and the write blocked with a partial count when the
-+ * wakeup lands. Then carry on to end of file.
-+ *
-+ * What arrives is written to @fd_out when that is not negative.
-+ * Returns the number of bytes received, or -1. Failing to trip the fifo
-+ * is an error too: a dump that was never interrupted proves nothing.
-+ */
-+ssize_t recv_coredump_notify_signal(int fd, int fd_out, bool arm)
-+{
-+	unsigned char hdr[sizeof(ElfW(Ehdr)) + sizeof(ElfW(Phdr))];
-+	static char buf[64 << 10];
-+	long pgsz = sysconf(_SC_PAGESIZE);
-+	long long note_off = 0;
-+	size_t hdrlen = 0;
-+	ssize_t total = 0;
-+	bool armed = false;
-+
-+	for (;;) {
-+		ssize_t n = read(fd, buf, sizeof(buf));
-+
-+		if (n < 0) {
-+			if (errno == EINTR)
-+				continue;
-+			return -1;
-+		}
-+		if (n == 0)
-+			break;
-+		if (fd_out >= 0 && write(fd_out, buf, n) != n)
-+			return -1;
-+
-+		if (hdrlen < sizeof(hdr)) {
-+			size_t want = sizeof(hdr) - hdrlen;
-+
-+			if (want > (size_t)n)
-+				want = (size_t)n;
-+			memcpy(hdr + hdrlen, buf, want);
-+			hdrlen += want;
-+			if (hdrlen == sizeof(hdr))
-+				note_off = note_offset(hdr);
-+		}
-+
-+		total += n;
-+
-+		if (arm && !armed && note_off > 0 &&
-+		    total > note_off + (long long)pgsz) {
-+			if (pull_trigger())
-+				return -1;
-+			armed = true;
-+			usleep(NOTIFY_SIGNAL_STALL_US);
-+			continue;
-+		}
-+	}
-+
-+	if (arm && !armed)
-+		return -1;
-+
-+	return total;
-+}
-+
-+/*
-+ * How large the dump was meant to be. The ELF header and the program
-+ * headers are the first thing emitted, so even a truncated dump says how
-+ * far it should have run: the end is max(p_offset + p_filesz).
-+ *
-+ * A hole at the end of the last segment is the one thing that never
-+ * arrives. dump_skip() only accumulates cprm->to_skip, elf_core_dump()
-+ * has no flush after the last dump_user_range() and a pipe cannot seek,
-+ * so those bytes are dropped. On x86_64 the last segment is the gate vma
-+ * and vsyscall=xonly leaves no page behind it, so a whole dump is one
-+ * page short of what the headers promise. @tail returns the size of that
-+ * last segment, which bounds what may go missing this way.
-+ */
-+long long coredump_expected_size(const char *path, long long *tail)
-+{
-+	ElfW(Phdr) *phdr = NULL;
-+	long long expected = 0;
-+	unsigned int nphdr, i;
-+	ElfW(Ehdr) eh;
-+	int fd;
-+
-+	*tail = 0;
-+
-+	fd = open(path, O_RDONLY | O_CLOEXEC);
-+	if (fd < 0)
-+		return -1;
-+	if (read(fd, &eh, sizeof(eh)) != sizeof(eh))
-+		goto err;
-+	if (memcmp(eh.e_ident, ELFMAG, SELFMAG) || eh.e_type != ET_CORE)
-+		goto err;
-+	if (!eh.e_phnum || eh.e_phentsize != sizeof(*phdr))
-+		goto err;
-+
-+	nphdr = eh.e_phnum;
-+	phdr = calloc(nphdr, sizeof(*phdr));
-+	if (!phdr)
-+		goto err;
-+	if (pread(fd, phdr, (size_t)nphdr * sizeof(*phdr), (off_t)eh.e_phoff) !=
-+	    (ssize_t)((size_t)nphdr * sizeof(*phdr)))
-+		goto err;
-+
-+	for (i = 0; i < nphdr; i++) {
-+		long long end = (long long)phdr[i].p_offset +
-+				(long long)phdr[i].p_filesz;
-+		if (end > expected) {
-+			expected = end;
-+			*tail = (long long)phdr[i].p_filesz;
-+		}
-+	}
-+
-+	free(phdr);
-+	close(fd);
-+	return expected;
-+err:
-+	free(phdr);
-+	close(fd);
-+	return -1;
-+}
+diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
+index fdf4e50c27ce..05dc20916c27 100644
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -22,7 +22,6 @@
+ #include <linux/mempool.h>
+ #include <linux/sched/signal.h>
+ #include <linux/task_io_accounting_ops.h>
+-#include <linux/task_work.h>
+ #include "cifsglob.h"
+ #include "cifsproto.h"
+ #include "cifs_debug.h"
+@@ -142,6 +141,7 @@ int
+ smb_send_kvec(struct TCP_Server_Info *server, struct msghdr *smb_msg,
+ 	      size_t *sent)
+ {
++	unsigned int notify_flags;
+ 	int rc = 0;
+ 	int retries = 0;
+ 	struct socket *ssocket = server->ssocket;
+@@ -172,15 +172,12 @@ smb_send_kvec(struct TCP_Server_Info *server, struct msghdr *smb_msg,
+ 		 * after the retries we will kill the socket and
+ 		 * reconnect which may clear the network problem.
+ 		 *
+-		 * Even if regular signals are masked, EINTR might be
+-		 * propagated from sk_stream_wait_memory() to here when
+-		 * TIF_NOTIFY_SIGNAL is used for task work. For example,
+-		 * certain io_uring completions will use that. Treat
+-		 * having EINTR with pending task work the same as EAGAIN
+-		 * to avoid unnecessary reconnects.
++		 * Task work must not abort the send, see signal_pending().
+ 		 */
++		notify_flags = no_notify_signal_save();
+ 		rc = sock_sendmsg(ssocket, smb_msg);
+-		if (rc == -EAGAIN || unlikely(rc == -EINTR && task_work_pending(current))) {
++		no_notify_signal_restore(notify_flags);
++		if (rc == -EAGAIN) {
+ 			retries++;
+ 			if (retries >= 14 ||
+ 			    (!server->noblocksnd && (retries > 2))) {
 
 -- 
 2.53.0
