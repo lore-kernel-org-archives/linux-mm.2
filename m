@@ -4,99 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E619C5DF74
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 02:28:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20907C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 02:34:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D7A96B0126; Mon, 17 Aug 2026 22:28:41 -0400 (EDT)
+	id 0E2AA6B0129; Mon, 17 Aug 2026 22:34:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 088B46B0128; Mon, 17 Aug 2026 22:28:41 -0400 (EDT)
+	id 094196B012A; Mon, 17 Aug 2026 22:34:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE0F16B0129; Mon, 17 Aug 2026 22:28:40 -0400 (EDT)
+	id EC4186B012B; Mon, 17 Aug 2026 22:34:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C63A16B0126
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:28:40 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5BB421A089E
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:28:40 +0000 (UTC)
-X-FDA: 85112806800.21.F7443A3
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DEA8A12000B
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:28:36 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=RP+HWovR;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf29.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BD96D6B0129
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:34:32 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2B0C1C0A72
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:34:32 +0000 (UTC)
+X-FDA: 85112821584.11.DAD0922
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf05.hostedemail.com (Postfix) with ESMTP id E867D100007
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:34:28 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	spf=pass (imf05.hostedemail.com: domain of liuqiqi@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liuqiqi@kylinos.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787020469;
+	b=gEXFaPiYf/v0Rg73hQ6pPW2o5o0vuYHJ+JKU6fEgit+wW99F1iV30lAw2iV5PEbDGJWK4A
+	3gORIOhURBgMKnhl77EEXf412fPrw/n22ovqp9ii7c9N9iWEfNA2Wg8Kxc4V46MxXBj/Dv
+	5ZQ+7Gle70aUaIPzjyQSmVm8Jlo38rU=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of liuqiqi@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liuqiqi@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787020118;
+	s=arc-20220608; t=1787020469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BwG3+/eW1U2Q5NmRKM3Ulxh9NPgPJjBj/aoaDVhJaoE=;
-	b=N7GUlqk2XHsN9NDJIH0y65W72HjnehIsXRioP7ZwYm60MJ07Jr0ODaO4I8GQsbJgX4+i5s
-	Ft7VzVNlJwOjelbkGjG9mJ5XTHsec4E/mBQorpuZtIHnfwXSWxO09nwPycNNNqA9yFgWTH
-	AQy2ezAGm/WzftmA1t0/yZChC9tdyAY=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=RP+HWovR;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf29.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787020118;
-	b=SWxd1Qe8whITzdloDOqXzVGJq0OINMrGJWTMInERzjnflOEMzO7/V9OkRG2rAGAw0d9n7J
-	fI44FrisNUwvNOMPx3yaqM5VqY1jNpDXmOK3wYdzr8Xh1191Afb6enOxGXpn/U2luP8AuT
-	0TXcBBSp7o4fFVmfs8wfDH1sSYCBXlE=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=BwG3+/eW1U2Q5NmRKM3Ulxh9NPgPJjBj/aoaDVhJaoE=;
-	b=RP+HWovRAZtuANBcKD7Gh61ix9TlZPCtDw5HwDs4/k54BGKo4OWAWedZY0PLmIWUW6T2q6KWr
-	NfHmB/uA3n0a2Lmd0ea5azAf/u1iIKRP5WvJcHfoyu8oUkv0VYB3HApHBU8oMLG/fPfTyoJTiWs
-	FzTDe+QvTgEQfs6G2yX8Ea4=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4hPCyz2yZkz1K96b;
-	Tue, 18 Aug 2026 10:17:47 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 077084055B;
-	Tue, 18 Aug 2026 10:28:28 +0800 (CST)
-Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 18 Aug
- 2026 10:28:26 +0800
-Message-ID: <9dcc2527-21c5-4092-8ad1-d0755e787931@huawei.com>
-Date: Tue, 18 Aug 2026 10:28:25 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=8JNaTats77r79W69MPDc10pA6wEGDMVhdlWzBH6wAjs=;
+	b=yUHb9kv+Eeo4FiDTUwVV3DKNoiLqlt2eDAPVk0dDP9C9idT5FHvKA//SEJPU2pZVccuBGe
+	ABEdv/ruSGZEocsclaintoWUzTDb17n7RHNqcov1tG2bhSCR5H9ujUMEujRQc+7DFOV7wF
+	E2gt0OB1SfyC/Dt5Cbv+nfwyFFK+i0k=
+X-UUID: 508344ca9aad11f19a56ed5b684f684d-20260818
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_SJ_DIGIT_LEN
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED, SPF_NOPASS
+	DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
+	GTI_C_CI, GTI_FG_IT, GTI_RG_INFO, GTI_C_BU, AMN_T1
+	AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:54965268-4203-4b57-b4ff-b1cd1b4b2efd,IP:20,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:20
+X-CID-INFO: VERSION:1.3.19,REQID:54965268-4203-4b57-b4ff-b1cd1b4b2efd,IP:20,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:20
+X-CID-META: VersionHash:7db8b62,CLOUDID:f6d94200ad9876474a8648ca9f656496,BulkI
+	D:260818103421R58TZA7K,BulkQuantity:0,SF:10|66|78|102|123|127|136|850|865|
+	898,TC:nil,Content:0|15|50,EDM:-3|-100,IP:-2,URL:99|1,File:nil,RT:nil,Bulk
+	:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,
+	BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 508344ca9aad11f19a56ed5b684f684d-20260818
+X-User: liuqiqi@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <liuqiqi@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 896177119; Tue, 18 Aug 2026 10:34:19 +0800
+From: liuqiqi@kylinos.cn
+To: linux-mm@kvack.org
+Cc: tj@kernel.org,
+	mkoutny@suse.com,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	akpm@linux-foundation.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Qiqi Liu <liuqiqi@kylinos.cn>
+Subject: [RFC PATCH 0/8] mm/memcontrol: introduce per-tier memory accounting and control
+Date: Tue, 18 Aug 2026 10:31:13 +0800
+Message-Id: <20260818023121.100613-1-liuqiqi@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] mm/ksm: fix advisor_min_pages_to_scan description
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-CC: <akpm@linux-foundation.org>, <david@kernel.org>, <xu.xin16@zte.com.cn>,
-	<chengming.zhou@linux.dev>, <liam@infradead.org>, <vbabka@kernel.org>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>, <corbet@lwn.net>,
-	<skhan@linuxfoundation.org>, <shr@devkernel.io>, <linux-mm@kvack.org>,
-	<linux-doc@vger.kernel.org>, <wangkefeng.wang@huawei.com>,
-	<sunnanyong@huawei.com>
-References: <20260813031722.569983-1-tujinjiang@huawei.com>
- <20260813031722.569983-3-tujinjiang@huawei.com> <an2g39TIN9v87enG@lucifer>
- <b35d14b5-65d8-4b8e-8754-de35f03d4b2d@huawei.com> <an3RcQgDuhmcAb37@lucifer>
- <238c66fa-8144-4cad-b90c-e7992b14ee6f@huawei.com> <aoM8bbWNeuEbfCdy@lucifer>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <aoM8bbWNeuEbfCdy@lucifer>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.9]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemr500001.china.huawei.com (7.202.194.229)
+X-Rspamd-Queue-Id: E867D100007
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DEA8A12000B
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 695btkbr4bqwni6igi6bo933aof46dpy
-X-HE-Tag: 1787020116-830448
-X-HE-Meta: U2FsdGVkX1/qLutZrx3bHvsQXUSypCiqxFHREbE+QnPicoXq2N25dSLCDflw8KIbAUVLk0hu9WktPMSmO6DgYnDFmduwBSmhL3Rj2ygo1J2oqTKyt33b5GqtMdOYlAltM6ShV9avG57G/SINYI+An+3SoTpLq69gAc70JZnbfsenef4zvAxLomfMTHJmRLK8JqX4S2G9kaJQMWDyFb6we5tt7/k8gto9PPyPOMzeFHmV1Z/u5WbrTOIQcdAKejN1ewPNdfs1294x3X4gzqdNgGD10w2+bLpOiTz5H6Cm8r+/tEiVIYP0EHvP2Z2+t+aw3bnMbmMirmomG/3KYztYTskNMIVLyC3/9gdpPXcFXY+eStsoiVS8gKRi7jp2SeJ1uSD2/cuwBDgtXdLCsVY2xGu2imG35ZxUVuG2IjxbAbG8zBmHXl7g+9uFmsAzQtofuDtW9PMTE3Q8ifwDeBwK5NaH/nUiIz/pAM6YhIJcXKt2NbYNgrQIKmwQym98XQA6eNgPddcxHTBhxroXre1rqnx0USHe6BKc1jabaap16F8pD+MfKYG1Qf2s34U/k0Yy3W2gP9CvPXt4KGBKs/8Smuw3pPB1P2sVZgDwtjT1TGfSxaAWkonC1xd2fWBgzSyNBE9qlUh42MeTxyV2xuFhe5yI48rqIRCcGinmblIjB2XAQ8DIxCRFPaznIjkePMtfNFPnN4eg5MVANCDAhfRwqY8DEUzsraqyvU+FFdeCp5Lj5jzjbtJouoWS27IO8V9dVtYTHxSv9F3Bn2LLXK0l6qY6wNIr2QGR/DU0qnoiwqnaragVCWP1nWBeb3CKMBCIUHUj+14LmYIW5gg7K2jyrtw+PNgMiW0coW7HcQUV1p6DZRAymkiQNP+P6SFRflvl8qoDHsBAuaW5qPdwg4t1y7spRl9krpP3M9oEhvIbCd1cn99H6sX5fAiD0cJLmryFdPJByW7uc42fH0Lp6fk
- apeG3XmR
- XXaInxwwUQ0JZG3lsLDmWtVE72kdndlK3hLcRPuC1AV8bt8/+g3A+FeefczaHiNPKLqbGrZI9JAbWjVD5VifJQzzehlhB1foWz61fVody7jXN7/RUXl3twuayLjE2//x0/fXUYShJsSDD2IKB9IACZMTmfs25kHzmsYRTJVzYOe96lLWWVV1Fmnk7SFuzZGc6+jrAO6cqxlnpspbXsOLBmzBHREp6iwAMZTvG8r2NSgQUPhc1Z+fUeIwiYcGfeDWcbbxC6HOdVV843n8Tf6DZ4AYCuY2sSAUOvCSCA7fX4RUfOrxatushftalLXR6SjvZtISQ0qfSK/6eLpcgARqh3AIlnmt18RxAmBusZmwOVcmXdO1Pm8oJF0KkuzN/jeWhC+nTtRQXPE5w9kY=
+X-Stat-Signature: czktdmdzptpk7w4oqnqqhjz1rdksdako
+X-HE-Tag: 1787020468-951536
+X-HE-Meta: U2FsdGVkX18Uxuhp2ar6wGX3v8DMNfqu3la0GUfe/jVdoxdzFuaVBs5CB4pkoONb8CBf4go/WfildrFzvL9nbN7XDnrRaqyDij/OsTnvtzbnX73FojHdvVfBYXYeN3+Hy2YF/arevUhSeof/MUa7k8fRwVpqldF4RSm5GiCI0n8IYzcLq8v7PUt1q0HSd4ffhu5KC2FUIMspiyu2Vwwt2VrMv4GLwvCpomtCsD+swmkHHcKr5kIDh/lGBqE5DgbfEo+bhyjrnbEnX009GNBOyjTMLz6b3E6MmV3PgSQut7kGybKmmBVtKLbFcDgA44NBvJp8n7ku7oPTgYHbEq7Rh8OGMMWtSsa15se5zMJvTtKfiGc9V0W9ZqRPs7Zk6qYi2DBQx3GBiM2rS7vCJ4hd+dArFlOHU8DDZvOAz4B6m65RgyFpM1bvF38PorRI0y1u9EQSARLlkBS0uM9u+zdcfHKFeFRbz4LoKlOhHQBHrqyQZG1LXpvl2TLrIkYoHJqwlvdgjMwp0MnVE5p7IeEig+qwfCTQviOO+nDqAru0afjbTdSGGjxgK4EM68a3nJJZUZgtW8LE22DdPAr45OetiQraqJgXdRF0gIHomxJkje0/+A2deM8RZmpwArv3M9mMXvwvJvew9EQ71pfzYN8ftr/sbnv2T9SygGWOvzoHwX0tocWPJR7mr2YrlUkVbl0wHPHgGga5i7dimNjS6pH9hVj9nSVIJ3HO5lAV+/m06KQaJV4PxLzG0MYeUSAKtyOsPgpEJyyKV9r45m2U9du7JIa2/J55ktsOaUBae8Fc72hfNHU9DvDgfynH6xA0rxom31nCgPv078f9qWahVwow5PB9kwx+KuaKAGp7LYXH+5Ke6A0nP36M1+fL19F5Jz4NHTqoBi+NNPDoLyzLUjqm0f9UrtrLakg2h+EOh04mM8sEnes+G1rUf0sizEo09jlVNMYT/ujzz38T2sNv6AJ
+ pWzbrFhQ
+ cT6h/RCa6jCA8Z7/rUPJy7Td2AQ9EpD4AsdQXv0EvV7zCTezxzUe5F5wzeQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,73 +111,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Qiqi Liu <liuqiqi@kylinos.cn>
 
-在 2026/8/18 0:55, Lorenzo Stoakes (ARM) 写道:
-> On Mon, Aug 17, 2026 at 10:54:52AM +0800, Jinjiang Tu wrote:
->> 在 2026/8/13 22:32, Lorenzo Stoakes (ARM) 写道:
->>> Please show me the common courtesy of responding to _all_ the review given,
->>> not only the one point you want to respond to.
->>>
->>> I'm not happy with this patch, sorry, for the reasons stated that you chose
->>> to ignore.
->>>
->>> On Thu, Aug 13, 2026 at 07:17:05PM +0800, Jinjiang Tu wrote:
->>>> 在 2026/8/13 18:56, Lorenzo Stoakes (ARM) 写道:
->>>>> On Thu, Aug 13, 2026 at 11:17:22AM +0800, Jinjiang Tu wrote:
->>>>>> Both Documentation/admin-guide/mm/ksm.rst and the comment next to the
->>>>>> variable definition in mm/ksm.c describe advisor_min_pages_to_scan as a
->>>>>> lower limit of the pages_to_scan parameter, but that is not how the
->>>>>> scan-time advisor actually uses it. commit 4e5fa4f5eff6 ("mm/ksm: add ksm
->>>>>> advisor") only uses it to initialize ksm_thread_pages_to_scan when the
->>>>>> scan-time advisor is enabled. This will mislead the users.
->>>>>>
->>>>>> The semantics of advisor_min_pages_to_scan was updated in the v2 patchset
->>>>>> [1], but the documentation wasn't updated.
->>>>>>
->>>>>> Update the documentation and comment to match the semantics of
->>>>>> advisor_min_pages_to_scan.
->>>>> Umm, firstly if this were wrong you'd need to change the name of the variable
->>>>> too instad of documenting it as something completely distinct.
->>>>>
->>>>> But secondly AFAICT the logic in scan_time_advisor() suggests that it truly does
->>>>> act as a minimum bound as well as being the initial value for
->>>>> ksm_thread_pages_to_scan.
->>>> As the cover letter[1] said, 'The initial value and the max value for the pages_to_scan parameter can
->>>> be limited with:', ksm_advisor_min_pages is used as the initial value, not the min value of pages_to_scan.
->>> (Wrap your lines properly please, it's a common courtesy to learn how to
->>> send mail according to community conventions.)
->> Thanks for the reminder, I will follow this in the future.
->>
->>> One of the part of my review you ignored:
->>>
->>> 	But in any case, you are making a claim here yet have provided no
->>> 	evidence for it. 'It is just the initial assignment' means nothing
->>> 	- if the logic can then only increase it up to the maximum value
->>> 	then it still acts as a minimum.
->> ksm_thread_pages_to_scan is adjusted by scan_time_advisor() after a full
->> scan finishes. ksm_thread_pages_to_scan could increase or decrease depend
->> on the real scan time is longer or shorter than the target scan time.
->> The min value of ksm_thread_pages_to_scan is only limited by
->> KSM_ADVISOR_MIN_CPU, so ksm_thread_pages_to_scan could be smaller
->> than ksm_advisor_min_pages_to_scan.
-> OK thanks :)
->
-> With this explanation put in the commit msg somewhere on respin then we should
-> be good.
+This RFC introduces per-tier memory cgroup accounting. Each cgroup
+tracks its memory usage per memory tier (e.g. DRAM, CXL), exposed
+through a new memory.tier control file that reports per-tier usage
+and accepts independent high (soft) and max (hard) limits per tier.
+By default these limits are auto-derived from memory.high / memory.max
+based on per-tier capacity ratios, and can be manually overridden.
 
-I will update the commit message in v3.
+The implementation integrates with the existing memory tiering and
+demotion infrastructure. Per-tier usage (anonymous and file) is tracked
+via dedicated page counters, and cross-tier migrations (e.g. demotion
+from DRAM to CXL) correctly re-account charges. When a tier hits its
+high limit, async reclaim is triggered within that tier's NUMA nodes;
+exceeding max enforces reclaim scoped to the tier's own nodes, or OOM.
 
->
-> Probably we want to rename the variable too but can save that for another change
-> since the attr is called min still (ugh).
+The feature is fully opt-in. When disabled, no extra counters or
+charge/uncharge paths are created, memory.tier reads empty, and there
+is no measurable overhead.
 
-Yes, I have considered to rename the variable, but the sysfs knob name is
-advisor_min_pages_to_scan and couldn't be renamed to keep compatibility IIUC.
-so I keep the variable name unchanged too, to keep the variable name and sysfs
-knob name consistent.
+Why per-tier limits?
+-------------------
 
->
->
-> --
-> Cheers, Lorenzo
+On tiered memory systems, memory.max constrains total usage but cannot
+express "keep fast-tier usage under X". Without per-tier limits, a
+workload can monopolise DRAM, pushing other cgroups onto slower tiers.
+This series gives each cgroup independent high (soft) and max (hard)
+limits per tier, exposed and set through a new memory.tier file.
+
+By default those limits auto-derive from memory.high / memory.max by
+capacity ratio; writing memory.tier pins a tier.
+
+This series takes a different approach from Joshua Hahn's toptier RFC [1],
+tracking a separate page_counter per (memcg, tier) for N-tier support and
+exposing writable per-tier limits under a cgroup mount option.
+
+Patch structure
+---------------
+
+  1/8  mm/memory-tiers: add node_to_tier_id and tier_id_to_nodemask
+  2/8  mm/vmscan: add try_to_free_mem_cgroup_pages_nodemask
+  3/8  mm/memcontrol: add per-tier page counter infrastructure and lifecycle
+  4/8  mm/memcontrol: add per-tier charge and uncharge
+  5/8  mm/memcontrol: add per-cpu stock for tier charge/uncharge
+  6/8  mm/memcontrol: add memory.tier control file
+  7/8  mm/memcontrol: auto-derive tier high/max from memory.high/max
+  8/8  cgroup: add memory_tiered_limits cgroup mount option
+
+Patches 1-2 are infrastructure (helpers in memory-tiers and vmscan).
+Patches 3-5 add the core accounting: counter lifecycle (3),
+per-page charge/uncharge (4), and stock batching (5).
+Patch 6 adds the userspace file. Patch 7 adds auto-derivation. Patch 8
+gates everything behind a mount option + kernel cmdline, so the feature
+adds no measurable overhead when not opted in.
+
+Usage
+-----
+
+Boot with:
+
+  cgroup_memory_tiered_limits=1
+
+Or remount at runtime (affects newly created cgroups only):
+
+  mount -o remount,memory_tiered_limits /sys/fs/cgroup
+
+Per-tier limits and usage can then be read from and written to
+memory.tier.
+
+Scope and limitations
+---------------------
+
+- Only LRU folios (anonymous and file pages) are tier-accounted. Kernel
+  memory and socket buffers are not yet accounted per tier; support for
+  these is planned as follow-up work.
+- Per-tier memory.min and memory.low protections are not implemented.
+  These can be added later by extending the per-tier interface to
+  expose and enforce min/low protection.
+- The command-line parameter mirrors cgroup_favordynmods; automatic
+  enablement via the cgroup mount path is left to userspace.
+
+Testing
+-------
+
+Tested on QEMU with fake NUMA (DRAM tier 4 + CXL tier 22), with
+cgroup_memory_tiered_limits=1 on the kernel command line and demotion
+enabled.
+
+Set up a cgroup, apply per-tier limits, and run a memory-intensive
+workload:
+
+  $ mkdir /sys/fs/cgroup/mycgroup
+  $ cd /sys/fs/cgroup/mycgroup
+  $ echo "tier4.high=200000000" > memory.tier
+  $ echo "tier4.max=300000000" > memory.tier
+  $ echo 1 > /sys/kernel/mm/numa/demotion_enabled
+  $ cgexec -g memory:/mycgroup ~/stream --ntimes 5 --malloc &
+  $ cat memory.tier
+  tier4.current=296488960
+  tier4.high=199999488
+  tier4.max=299999232
+  tier22.current=1625464832
+  tier22.high=max
+  tier22.max=max
+
+DRAM (tier4) usage stays under tier4.max (hard limit, no OOM) but exceeds
+tier4.high (soft limit, suggesting that async reclaim is in progress);
+CXL (tier22) absorbs the overflow via demotion.
+
+Also verified:
+  - tierN.current tracks per-tier usage (anon + file).
+  - Cross-tier migration (demotion) correctly re-accounts.
+  - memory.high / memory.max auto-derives tierN.high / tierN.max.
+  - Manual override (writing a number to memory.tier) pins the limit.
+  - Tier max enforcement triggers reclaim scoped to the tier's nodes.
+  - Feature fully off (no mount option): no counters, no charge/uncharge,
+    memory.tier exists but reads empty.
+
+Open questions
+--------------
+
+- Should kmem/slab tier accounting be included in this series or deferred
+  to a follow-up?
+- Should per-tier memory.min and memory.low protection be part of this
+  series or left for later?
+
+[1] https://lore.kernel.org/all/20260423203445.2914963-1-joshua.hahnjy@gmail.com/
+
+Signed-off-by: Qiqi Liu <liuqiqi@kylinos.cn>
+
+Qiqi Liu (8):
+  mm/memory-tiers: add node_to_tier_id and tier_id_to_nodemask
+  mm/vmscan: add try_to_free_mem_cgroup_pages_nodemask
+  mm/memcontrol: add per-tier page counter infrastructure and lifecycle
+  mm/memcontrol: add per-tier charge and uncharge
+  mm/memcontrol: add per-cpu stock for tier charge/uncharge
+  mm/memcontrol: add memory.tier control file
+  mm/memcontrol: auto-derive tier high/max from memory.high/max
+  cgroup: add memory_tiered_limits cgroup mount option
+
+ include/linux/cgroup-defs.h  |   5 +
+ include/linux/memcontrol.h   |  26 ++
+ include/linux/memory-tiers.h |  12 +
+ include/linux/swap.h         |   6 +
+ kernel/cgroup/cgroup.c       |  21 +
+ mm/memcontrol.c              | 786 ++++++++++++++++++++++++++++++++++-
+ mm/memory-tiers.c            |  58 +++
+ mm/vmscan.c                  |  26 +-
+ 8 files changed, 936 insertions(+), 4 deletions(-)
+
+-- 
+2.43.0
+
 
