@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DC50C5DF7D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 10:29:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 403A7C5DF7D
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 10:29:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8B856B0178; Tue, 18 Aug 2026 06:29:54 -0400 (EDT)
+	id 1C85D6B0179; Tue, 18 Aug 2026 06:29:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3BFD6B0179; Tue, 18 Aug 2026 06:29:54 -0400 (EDT)
+	id 19FFE6B017A; Tue, 18 Aug 2026 06:29:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A51FD6B017A; Tue, 18 Aug 2026 06:29:54 -0400 (EDT)
+	id 0B4686B017B; Tue, 18 Aug 2026 06:29:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 85F126B0178
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 06:29:54 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 84291A262A
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:29:52 +0000 (UTC)
-X-FDA: 85114019424.08.05F1835
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D0FF26B0179
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 06:29:55 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5F5E1A0BCE
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:29:55 +0000 (UTC)
+X-FDA: 85114019550.28.145E114
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C9D25C0004
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:29:50 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QqauSKQ0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9F163140002
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:29:53 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CuE/lrGP";
+	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787048993;
+	b=KMRudvaWK0hov6DCnkxzgSX2MueirGayW2+PPLMSjQYGwqsZ/TAzQD4ccrjYzrIqCLM7g5
+	pbtT5Gd88+EMlHnGymtScMhL59p6Ps4poM0A6JdgwRgbVt4pO0V9C22DfwlGtOsnYiM4FM
+	CuYizcNcRvod9zYtUitwhLBgvwFZy+g=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CuE/lrGP";
+	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787048990;
+	s=arc-20220608; t=1787048993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A5uPn/aNxaggwKLcm1ypjdrg/Nu/GJZLii6douxX+c8=;
-	b=bZcpEBAkA728OhFArHahUrNuqGx9Tn7UEv9y7yR0lDxbaCHxMUnXD63K6E57UEiptQ4tCZ
-	CgSizRw7paO/SjHJc3rk+PSRC0Qe9YHSuqQzf1k5f3zKWKQTynA0ycz7TCYZcN/nv5OLYK
-	Wni/4V2VMsO0TtEoNwnACBMjvL9Y+cQ=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QqauSKQ0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787048990;
-	b=XxpcJ/CvqUO9Uyw3T+ZhmB3Eeijc9puHe1GoBhtfhO7dc9wjDfGRTcvABwmI8VBcpXsrGc
-	kFgDUho/gzfwhnJc3+yNFzITqKqRyDvgOsRr0Lkm7jcC3zNBJjvMUrGr+7LKerYxlgS1As
-	XbKs+T2akpuHPkhUKiSGEyZgk1V6iRI=
+	bh=m/3ifLeO/V9zJX3ZBj1vaYITNvgCXsDgv6gphRWwGw0=;
+	b=KmOxJ4drhoyzee5JPhTYkdMuezAejadv6jgu6XTKSWNa5LXNUIF8NpO7ofV+Ou0sGezkhj
+	EVSq0ucVpmHcHd99gGWuGbnwEBQI1qxtq59cPQTiTfzHszboQr1yBLJKT7OpdtlOAmHWTA
+	Z2HzLZMjsk7qOaYP2o6YH6ZxaZ4SS1Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5EE5460A59;
+	by tor.source.kernel.org (Postfix) with ESMTP id 4189B60A5B;
+	Tue, 18 Aug 2026 10:29:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893EC1F00A3E;
 	Tue, 18 Aug 2026 10:29:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AADEC1F00A3A;
-	Tue, 18 Aug 2026 10:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787048990;
-	bh=A5uPn/aNxaggwKLcm1ypjdrg/Nu/GJZLii6douxX+c8=;
+	s=k20260515; t=1787048993;
+	bh=m/3ifLeO/V9zJX3ZBj1vaYITNvgCXsDgv6gphRWwGw0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=QqauSKQ0GXzyMDD4lZDP5b0eCGig9L7ovZxo46V8STWM6/YqHy6Qz/ZTG5zKq+KfQ
-	 Q1ouXdfFEc1DmV/KL52o8mCCUmHrXB4Dfl5q4tcg+ATdCw3IHhglGMlMryYdkygWPS
-	 K7bYmdIW0t+nHL1Us7BXnFCUSrCDYjjrGXcQN6q/Gb8VkEOh5XnFvO1sUdg+yyirBL
-	 83EBw1oUCUctGTz3+1GcRv91jo1XZcd7A32I/vLn63EmkNfDAo6xULPd6ttQJelanY
-	 vLTHIjMAgaZFGEKLB3NRYPLIMRybByrBlzHzCIYdtm94Z2Ygg3UBQtCjinTnEz3r5R
-	 47I9voNDEgtJQ==
+	b=CuE/lrGPX6isVHbIQzZA08LMcy27Fmp6ZutGuN35bVmcmUE6T9J6plBWxx+UPoRTK
+	 Zkzl16Oup8Ae8THh6W+l3S2iXXd6dZ+J72hRFD00JdsgSLy1XBv0noXcbWI0lQRtum
+	 kp0+ZYV58PVcvNhkXpSy2LSayAFbs8tkRA8+lgNrywF5nts3jf/Wcx9hXcQ/RYs12z
+	 54qwPf4FJ0rQgfMJUOma6lN+XMxyE+eWMlJkafpdLln0TKidBJpozi+DMMVHMNaGtk
+	 JrAC8Ef1Jqy7/iWGYBH3dcE/V75vAm8ADmk61Y+X/VUX9UAqZtm3Nj9Gb6ZZic0tiY
+	 1UfitxFOe8m9w==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 18 Aug 2026 12:29:36 +0200
-Subject: [PATCH 1/4] signal: allow taks to temporarily block
- TIF_NOTIFY_SIGNAL
+Date: Tue, 18 Aug 2026 12:29:37 +0200
+Subject: [PATCH 2/4] coredump: prevent TIF_NOTIFY_SIGNAL from interrupting
+ coredumps
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260818-work-tif_notify_signal-v1-1-1ee1fcc5b3ff@kernel.org>
+Message-Id: <20260818-work-tif_notify_signal-v1-2-1ee1fcc5b3ff@kernel.org>
 References: <20260818-work-tif_notify_signal-v1-0-1ee1fcc5b3ff@kernel.org>
 In-Reply-To: <20260818-work-tif_notify_signal-v1-0-1ee1fcc5b3ff@kernel.org>
 To: Oleg Nesterov <oleg@redhat.com>, Jens Axboe <axboe@kernel.dk>
@@ -81,22 +81,22 @@ Cc: Peter Zijlstra <peterz@infradead.org>,
  bpf@vger.kernel.org, linux-cifs@vger.kernel.org, linux-mm@kvack.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-362b8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2967; i=brauner@kernel.org;
- h=from:subject:message-id; bh=GPNbpnB0jcJa4smLJiVmwCjZkDxhRfuvI09qEeH/sQI=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS1mEhMmtW6JHi34afW+Y4Xd9+seZh6RISx1cdEKOGKY
- EnJUbmJHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABN5EMnwPy8y6+uZ9jMZM9t4
- fWwsyg5ctN34SCH2zaaLSSdffNLt9GT4w7NLPbl5YWnU+X6JffsmPo2ZJ53ntdfNeqN4qcCiGVK
- TGQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3118; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=5J6LIO7ZuXJfHFopgZ4uyqtR3+Ho4X2+WCmNF1f3Q+M=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS1mEhkrFpo4VP65tNxmZj9Ag+/njX6vOdz6U3X9TNMv
+ lwxKknV6ihlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZiIayEjwzpmh4fHJM1qey28
+ jY5yFW///qv0TtHTgkrzwkk/b2iF/2P4w3Eqb13q8iOTxHM4OZz/PVTWeiex9r/2ZJm+U6wfe6f
+ 18gEA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: q4fnxqshxhry1tbbuirs9eikzx9dmmte
-X-Rspamd-Queue-Id: C9D25C0004
-X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 9F163140002
 X-Rspam-User: 
-X-HE-Tag: 1787048990-666184
-X-HE-Meta: U2FsdGVkX1+EEnyg2S1TsBl71ZXJuBKXFb5phV1VO0pQ6e9rI4J/pGgJgGVQOvTzPX0lDJIyoYcv7+3Hl12ja2JlJ/E0QRZBFMIyoW8aK+Qof4zn0ueokBYPxEy6t83/oe9UE6Mj6OTfWWHL6G1iRzp/9F4uq47gP5/pVDni+m7213hyb0irpmMvsDhzdkIPrgAoCGp2XDT38JFRGqxJFCz/udSILtsVwu7Oe8I+10m9WbzrjgJjClbKfHRpdMuJbO5kNjp1bUDh6jsbvXKMxItqnjefCrquEWNEc4NaKs2TF3FdXoA0cO/UfA/dpuf0qIZLV8rl6vwUckEmmF11XLO9X3r4vFrAmcZYQ5vKmYmoTIPOJWADMyY880y7s6VGT9m/UxY8ZoLh7SbAFSwWUtZSvPeEE9osR17MEsB7x38Dv8263c6hxStUfyc7WIFL5LGFUdk0qVhqiiPihjEPDRUICB2+gdY9yRNehiL8yd9ffIXyMWikSXbbOVD76NkqPUhVVHFv4oQ6/vAlW/3Tiu8wgp27WIZ/50eFl3J9AhSe2t6qq39KQRpLLEzl2HxhDjvySFvK1OYSXj2MVM7vhdSBf0GeDW3zHYPWoC8KYhYFIq7BITIwg76Uhx4EMGfMpp97cl0ktTf2UcKxRpeQK4HnFcfImlAf5b1ttZyo0ZdLVOe3uIYCXeoOfzjiFFsL6LBHUMjPADvNlvYY62lvVIHMfFCK/LMziFoPB2k+JD2GRHZW2BexSWBwZN65oAPtdIeMzmU2gQ214mcHWAi88pMUFDSawiNnQWglZcbQ2yx1O0ThN67Hu2dVqMnyiOClFfDILE5Q8XzUnYUao4/bjm1cASQvwYZRrzkHgxn2haEjm0yGXcFPdRQbd7uN61Tz00iJEW0VpMF5TlWYVuHSdmQwovBKrojQpKuXG1QyxQ/f7D1FTlEJk279BiyCljaYqJgnrBxkDZIrSQq4T6p
- mB74PpqA
- fzgsuO39RM8itH4wfGzIxiS8FBOVyWNPVHqZzVJqEnvXTjYKWK5IAEk751/m4WtPwORHzE36yPQ4FhR2jniCC7b3zY4nOpLLDMgx2qf7VgZJJxWvKqru3GgYZv2gItOg2tMQSTnWeW2VTZ/48mFRby91eb0H5qMZY6FgXF77jbmDep/bGeZl30RmGvaxdHRXKSJvwzEbeYOVhBUcwCZXIHRxEH74sOA8pwlfhNyUufmXElLPuAZsL1T739SWW6JlrNzKjy8NrbF+kvLfQkBQyrToIeljrdqueo9jF
+X-Stat-Signature: u1395kewimwwynmxa3c4rifhy7rgewaw
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787048993-603061
+X-HE-Meta: U2FsdGVkX1/O1+V8e2/QPCuWE2m44vL1rxRpQbL5sq6pkecRGhj9GkHQyGTEBeSpMeXnW4pjX8V9/U5Xh9ZIslVODL1akzES4N2XA+D13WeelnJGeKuvdLduZlCg2gEIU422N8Z6pmp/n6PgigwbNBn6pR1j9fxVM0drfpmVnxD/ACvGAl3HNqg2Z5ru0h+4QcaC4k/bL12azAyiC327I9LEwhZT7JvXNanM4/mkTdjcAf3UMJUhzZ9Fkn9hhe4CEbMYqeMGJ7nPc9CtPNkwe8zVtojOhoIIqxaz+Wu5pLboFrYyeHsCxOu2AW/TfgBBiQYOTAN6fqOYA7rqVZRDp7c9antXIG8jlTg/54JuHcMGH54uaGr0I1CxF7awpTQolI2oJswSvyHjuPK/Ki49u7QcOfPT33TGPdhS4jpiYrcLe7SkowMqNY28UhTshV2OARSZD7L191pVL2N+ap7A0GTtpB39agONUzvoMIfmB9gi2LfFszKvHwqZ7a8SuCFxAaCWz3wdOUbev6B9GZ3OLGiz8Dj9IH3dZE5TNaxuYTJFzcfyfb9ciPNSiLmG1vyo8Vhp4pJitQCXqEf71Ny9SUrnzSGP0t/80QnrByehRoWbjQAU5Lz/EwAeDbMMRRUvm4rO2e9XzOUZXq2wpXmIwBRhefBtyS3weAP3mGoNttOti8zwsliwtCyZ2DNA1K3ACRBSvM0Pb5rA1HLyYKwg+3saw2o9G4RM1j+udXmnbD4C6zbD/rMOijen2m/YkrYJiHP3gU3w+axCImKaa+JaVriBW7bkL3hk5H/dehJA0zw7HdQ07BEhhGbi/7n6BY7HgRK23kGDbZzPk4hmfLROZZwtJUD+TW6oyqkdoCInhEXApBPnWFw/iXAQbLYUwKLX7iDunDYkwptKValBd8HNRR/nFDPTMXlkairPeKVvw9ys8avDoFwAje+xZwd/GL/8mpcNdenPMP2Tlk9NSrw
+ ETZkpT7a
+ tZEaNUsFfqh6fc0Vb4JDd+U+zzoCl5flSKpc7j2QNq/btpK2C6d/RCJyhc3pIaDBoQKLV0S2AR04k34UV4EtjJG1yUEw93GBz+ZlXLdOVIIEzuPvIsvptRWWWnG+P0ubtlOeus1KeYw6bJJvk7nwvKI2SU/4ugBwC+ElcryKIZGP4Mxr8mAqdpdwx5WWBB0oCwIRFPsp9u7dwOj9LSI/SF1JELmRVnbNqGI6eHVbHCwlVCsRCztFsU98SZK3GEZf4n1k1o0OxF0CNo2v0BciBo6FB2SoIYkBZ0q4b
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,75 +106,82 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 TIF_NOTIFY_SIGNAL is used to kick a task in uninterruptible sleep to
 return to userspace and run task work and then go back to sleep. This
-mechanism works well but breaks e.g., coredumps. dump_interrupted() only
+mechanism works well but breaks coredumps. dump_interrupted() only
 allows fatal signals to interrupt a coredump and the whole regular write
 path going to actual filesystems is impervious to TIF_NOTIFY_SIGNAL as
 well.
 
-Add PF_NO_NOTIFY_SIGNAL and helpers to raise and restore it. This is the
-same approach as memalloc_nofs_save(). signal_pending() will not report
-a fake pending signal via TIF_NOTIFY_SIGNAL if inside a
-PF_NO_NOTIFY_SIGNAL section.
+However, both the usermodehelper pipe and the coredump socket will bail
+early on TIF_NOTIFY_SIGNAL. This affects the following codepaths:
 
-No functional changes.
+- coredump_sock_recv() -> unix_stream_read_generic()
+  The request/ack handshake is abandoned before any coredump data is
+  sent.
+
+- anon_pipe_write() returning -ERESTARTSYS
+  Once the pipe is full this truncates the coredump.
+
+- unix_stream_sendmsg() returning -ERESTARTSYS
+  Once the send buffer is full this truncates the coredump.
+
+- coredump_sock_wait() -> __kernel_read()
+  This reports a failure that didn't happen.
+
+- wait_for_dump_helpers() -> wait_event_interruptible()
+  This stops waiting for the coredump helpers.
+
+Such truncation is entirely invisible to userspace and all uapi bits
+still indicate that a successful coredump happened. A crashing process
+with a bunch of file backed mappings and io_uring thrown in loses most
+of the coredump data. If the NT_FILE note goes past PAGE_SIZE mappings
+it's gonzo.
+
+TIF_NOTIFY_SIGNAL is sent by io_uring for the common case. And it uses
+poll without sleeping so a completion callback runs task_work_add() from
+interrupt context against the task that submitted the request. This is
+the task that is running the coredump. Since that task hasn't set
+work_exited (it hasn't exited yet after all) TIF_NOTIFY_SIGNAL keeps
+reappearing.
+
+A coredumping task doesn't return to userspace. The task work is run at
+exit. So interrupting it doesn't buy anything and just loses the
+coredump which is quite valuable.
+
+Note that this isn't specific to io_uring. There's also
+klp_send_signals(), bpf_task_work_schedule_signal(), landlock's tsync
+and then  technically, kthread_stop() and the printk kunit test set the
+bit raw.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- include/linux/sched.h        |  2 +-
- include/linux/sched/signal.h | 21 +++++++++++++++++++--
- 2 files changed, 20 insertions(+), 3 deletions(-)
+ fs/coredump.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 373bcc0598d1..fd72ca4ee92f 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1796,7 +1796,7 @@ extern struct pid *cad_pid;
- 						 * I am cleaning dirty pages from some other bdi. */
- #define PF_KTHREAD		0x00200000	/* I am a kernel thread */
- #define PF_RANDOMIZE		0x00400000	/* Randomize virtual address space */
--#define PF__HOLE__00800000	0x00800000
-+#define PF_NO_NOTIFY_SIGNAL	0x00800000	/* see no_notify_signal_save() */
- #define PF__HOLE__01000000	0x01000000
- #define PF__HOLE__02000000	0x02000000
- #define PF_NO_SETAFFINITY	0x04000000	/* Userland is not allowed to meddle with cpus_mask */
-diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
-index 584ae88b435e..3182de4ff948 100644
---- a/include/linux/sched/signal.h
-+++ b/include/linux/sched/signal.h
-@@ -384,14 +384,31 @@ static inline int task_sigpending(struct task_struct *p)
- 	return unlikely(test_tsk_thread_flag(p,TIF_SIGPENDING));
+diff --git a/fs/coredump.c b/fs/coredump.c
+index e68a76ff92a3..edb5a1a61d84 100644
+--- a/fs/coredump.c
++++ b/fs/coredump.c
+@@ -1165,6 +1165,7 @@ void vfs_coredump(const kernel_siginfo_t *siginfo)
+ 	struct core_name cn;
+ 	const struct mm_struct *mm = current->mm;
+ 	const struct linux_binfmt *binfmt = mm->binfmt;
++	unsigned int notify_flags;
+ 	int argc = 0;
+ 	struct coredump_params cprm = {
+ 		.siginfo = siginfo,
+@@ -1196,9 +1197,12 @@ void vfs_coredump(const kernel_siginfo_t *siginfo)
+ 	if (coredump_wait(siginfo->si_signo, &core_state) < 0)
+ 		return;
+ 
++	/* Task work must not cut the dump short, see signal_pending(). */
++	notify_flags = no_notify_signal_save();
+ 	scoped_with_creds(cred)
+ 		do_coredump(&cn, &cprm, &argv, &argc, binfmt);
+ 	coredump_cleanup(&cn, &cprm);
++	no_notify_signal_restore(notify_flags);
+ 	return;
  }
  
-+/* Prevent TIF_NOTIFY_SIGNAL from interrupting this task. */
-+static inline unsigned int no_notify_signal_save(void)
-+{
-+	unsigned int flags = current->flags & PF_NO_NOTIFY_SIGNAL;
-+
-+	current->flags |= PF_NO_NOTIFY_SIGNAL;
-+	return flags;
-+}
-+
-+/* Restore TIF_NOTIFY_SIGNAL. */
-+static inline void no_notify_signal_restore(unsigned int flags)
-+{
-+	current_restore_flags(flags, PF_NO_NOTIFY_SIGNAL);
-+}
-+
- static inline int signal_pending(struct task_struct *p)
- {
- 	/*
- 	 * TIF_NOTIFY_SIGNAL isn't really a signal, but it requires the same
- 	 * behavior in terms of ensuring that we break out of wait loops
--	 * so that notify signal callbacks can be processed.
-+	 * so that notify signal callbacks can be processed. Not for a task
-+	 * that asked not to be interrupted by it, see no_notify_signal_save().
- 	 */
--	if (unlikely(test_tsk_thread_flag(p, TIF_NOTIFY_SIGNAL)))
-+	if (unlikely(test_tsk_thread_flag(p, TIF_NOTIFY_SIGNAL)) &&
-+	    likely(!(READ_ONCE(p->flags) & PF_NO_NOTIFY_SIGNAL)))
- 		return 1;
- 	return task_sigpending(p);
- }
 
 -- 
 2.53.0
