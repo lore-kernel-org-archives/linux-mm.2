@@ -4,92 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77B84C5DF7D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 10:25:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27B67C5DF7D
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 10:29:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73E8F6B0171; Tue, 18 Aug 2026 06:25:52 -0400 (EDT)
+	id 1C7F46B0174; Tue, 18 Aug 2026 06:29:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6EE996B0174; Tue, 18 Aug 2026 06:25:52 -0400 (EDT)
+	id 1A54A6B0178; Tue, 18 Aug 2026 06:29:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DDB96B0177; Tue, 18 Aug 2026 06:25:52 -0400 (EDT)
+	id 0B5646B0179; Tue, 18 Aug 2026 06:29:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 378CE6B0171
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 06:25:52 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id D2B466B0174
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 06:29:50 -0400 (EDT)
 Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CA3A240BB4
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:25:51 +0000 (UTC)
-X-FDA: 85114009302.30.2BDA840
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B13881A0C05
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:29:49 +0000 (UTC)
+X-FDA: 85114019298.30.6EA2BCD
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 37F44140004
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:25:50 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iQGfEf4S;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 0609D1C0004
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:29:47 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NuFqqhx/";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787048750;
+	s=arc-20220608; t=1787048988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9venlAYI7bc+4UF3P+DsNZ7UbsjWk6/adcKmtx/yJEs=;
-	b=7I03WySKrwg6XqEkwZ/VL1Rs+YxmmNsKx34j+KxxaMqMEM+IQAtuWgFda8hm/yPgiF/Q/T
-	v7AqWbeRQF0sMI/X/gYSRMzA5ydaEWX/kwnaSXRetudVHNag9o6EAOKzWcVy2W4f7Zm4dY
-	39OBdeDTuXh0OmI+YO3b7ujBzaPoyO0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=YGBu95KxEYL60/6Z19Vi2hF5fBbivoB9n1qwKiIoQCA=;
+	b=cG0pYEjv71PyXEAQ0oaBzycED1oyTSRqyOKCezlBVOPqZgb1K3GXup3c9vJ7xEDEFTQzuV
+	qo5ACrIo+b2RTVehwPXjHz/eAdDn/JwNEhHnfB2dZeBRYWaSGto3orQKnGTrrDqBXN0L3i
+	q7FqnxdbJQOW8h84SZTDPEGRp8bt6JM=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iQGfEf4S;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NuFqqhx/";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787048750;
-	b=AhD++hw22D8K7Gw476lWIRqpSeRuIB8gcZAZY9sjKUTIhMElu7RpFYlzSkP3ZmuzfbAplR
-	AwVUFc6tayiQFJN7FygzzxC/BV9OceDBU6rZVkVO7gLaDDSfnvIJdyH5k9knLUHtS3QLv3
-	fzGuDK+cz202DpTsEjwHYA87bApcAao=
+	t=1787048988;
+	b=hge2iCo860nY1yohyeso3n6mYmE9Xpaf/tarrzyY22TaAbVtweB/F3VSlg1InYvJMiU8pj
+	S3WsqKPAtCIaGfC67arbDI5enoHhuoGUPZO8MPoQ0/yk5RXV2f/xlsCrwJawyMrEEARh9m
+	J4kzVhPmSbnSBbOPVP/kfLkeqAtLi9M=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9F999601DE;
-	Tue, 18 Aug 2026 10:25:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7A71F000E9;
-	Tue, 18 Aug 2026 10:25:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 81375601E0;
+	Tue, 18 Aug 2026 10:29:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D781A1F000E9;
+	Tue, 18 Aug 2026 10:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787048749;
-	bh=9venlAYI7bc+4UF3P+DsNZ7UbsjWk6/adcKmtx/yJEs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iQGfEf4Sjm0ecEEdEi7v/xrseuBpYZHAmo+r1TVdH/Suu9l1kSwUkIpdROZ8L9Bba
-	 7Rtbzq39W022yjAIC+ffKOFr9Jgo5oN0JCCv3evZG6Pgnv+Gu/Z5n/+wLuNYpRzjp3
-	 HUuyxmJBiQCQENoSTw/vN61x5nNYf+HCAlXpZyl/2LI1yE7y/WqTWhU+WR8y7/Ooln
-	 n5w40LWFVGT2AQuHtpxwROQwqIhKsX+uirM48GMhGbvgdtniYn7fnLDmKEydrr0wP/
-	 XcoPdKamXHCfApYT5TfAJZoYe08HtZG1BtwhDh2sfJk8RYitTOOje0mNWb1ZQoVH5X
-	 hAS8Pl5ntln5w==
-Date: Tue, 18 Aug 2026 11:25:27 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: akpm@linux-foundation.org, david@kernel.org, nico.pache@linux.dev, 
-	baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com, hughd@google.com, 
-	lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com, rppt@kernel.org, 
-	ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com, usama.arif@linux.dev, 
-	vbabka@kernel.org, ziy@nvidia.com, usama.anjum@arm.com, agordeev@linux.ibm.com, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kas@kernel.org
-Subject: Re: [PATCH v4 08/19] selftests/mm: add folio-order check for address
- ranges
-Message-ID: <aoQxLVg3IsTuA9NE@lucifer>
-References: <20260815015901.1236937-1-kirill@shutemov.name>
- <20260815015901.1236937-9-kirill@shutemov.name>
+	s=k20260515; t=1787048987;
+	bh=YGBu95KxEYL60/6Z19Vi2hF5fBbivoB9n1qwKiIoQCA=;
+	h=From:Subject:Date:To:Cc;
+	b=NuFqqhx/OBpG4enp+eYRdbfn7ghsLQThetOxvPIFUTslDtl7sQEqYSRncFJjSNLME
+	 tHvpuXUaGEtJTshEQmEvEVrUELhr+x1sNnlmdx1UCiFIaPIE+IrKfWyl3o7MTFzBMb
+	 Jar4dMZ3WjHgaLLQO6WO7Ja9zmMVR1kt1OEmVkuHHF5RR0Q86DvDqiAmw6LwjmBi5B
+	 h4E2Lg6wzH9kFsEDnzkC1wRwo6KnPdQ5vLIlZJlxGBOkPwXICi7jrmFueLVOhV4ej2
+	 QQwJd8okOEDS3uRsMKSgpN1UCfDt4PEl3FJpD/+bKiHjbddgIHnq89OPvGv1ccmzxr
+	 Gtq34sog6jPVg==
+From: Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 0/4] Stop TIF_NOTIFY_SIGNAL from interrupting work that
+ can't be restarted
+Date: Tue, 18 Aug 2026 12:29:35 +0200
+Message-Id: <20260818-work-tif_notify_signal-v1-0-1ee1fcc5b3ff@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260815015901.1236937-9-kirill@shutemov.name>
-X-Rspamd-Queue-Id: 37F44140004
-X-Stat-Signature: nwjf3kdwxpaud33m5r8kb5e4dgnuzufc
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWM2w6CMBBEf4XssyWlJAX9FWNICwusl5bsImoI/
+ 27Rl0nOZOasIMiEAqdsBcaFhGJIUBwyaEcXBlTUJQajjdV1UalX5JuaqW9CTPlphIbg7so6r2v
+ dlaU9lpDOE2NP75/4fPmzPP0V23m37QvvBJVnF9pxrx5OZuR8qXID2/YF7EDK4pgAAAA=
+X-Change-ID: 20260817-work-tif_notify_signal-6ab080d33693
+To: Oleg Nesterov <oleg@redhat.com>, Jens Axboe <axboe@kernel.dk>
+Cc: Peter Zijlstra <peterz@infradead.org>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+ Steve French <sfrench@samba.org>, linux-fsdevel@vger.kernel.org, 
+ bpf@vger.kernel.org, linux-cifs@vger.kernel.org, linux-mm@kvack.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>
+X-Mailer: b4 0.17-dev-362b8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5657; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=IkGa6xqKFM5x7wT1EwhGFPFaIGs9Gn9uxpjtq8no2A0=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS1mEi8d51zdc+hz9ordprwXjomqr104t+pot8OP7qwa
+ HWzg5HqqY5SFgYxLgZZMUUWh3aTcLnlPBWbjTI1YOawMoEMYeDiFICJ7LnL8E9PxWHzicts8foZ
+ F3/cvrzC4o1tSNqiCqX8JUa+ibeY15gyMryZ/v76KZGtC5tuGcUzKUoETNkWlnfx4bqnp2UcDnN
+ OZuEDAA==
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Stat-Signature: 8t68pjabn5tqcmi98dp3hmnsza1uz9p8
+X-Rspamd-Queue-Id: 0609D1C0004
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787048750-117833
-X-HE-Meta: U2FsdGVkX1+e/iQByTkrITkNTHhlwmBV80SqxlxhBOJBamRlk1v8vKuawBLPMpxHT2zPF0hAI+VWq+m5B4wllULkccy4lXumzGXo8ghPVu/yF6FyS9cQbIJzN/LJJovaQXzwLxQZAUGxkb2QuVbMVWDdwYy1JDPuozVhdu/hOUvQ8X9s6ahOdDSdJJqEOpogCL/92SgZ7oNSMMLIY52cfykWdy8pydzByTg4y2VWLXGvv9N8mCAIJ7BqGLGdy655vF/JtjC+cw0BmKjnsc8dY9ek8Cn682TMGQvw2HBPW5Wn5tOqShPhcXwutccXTD4rYnXZGYjdiwVpTMUDN369jc72v83emaHhQYSFl/3L1tRhRJgsmvcakouDxXsESsLuPWMiMxhyofoUU+2U6Kmu/k9glwOg6Oy4KcpSvJHgo45x/xN3fTD5SkAMRNV73rrn/Jvm9qhY4awlnbjtVSELJJTpPWCHZwtRyVXhvBVyXkiDMBYBH7b+pBTEybq2lLXQoEIuGizJuQcXcu1b3pOT2bFbH+UNLA05jHP/2lgXfcoA3ZGYypYi4LgGzPA5RL5CfZO6JF3R+kklL0uqeAJSzmD93JV80vgOBUTa4zAtoWYYR0nxU2S8VZTOsPiwxO6tBs6XWv4CS4zAFpIY0fhSZGi93ZS2RYqWA6UiZGM9adaLcAppqa/gBgW74pw82Hr3EYtUUJadHQTHUcH0YBmFIZLcJiXhQ8EGUiaAIHj0X1FPiSGtpLj9ohMpPtzuU3w8WXa0g/b7PUkE4rLWMVuangwSVZR04W51+9eEICeJ1czaWsk0a3XJsiLKlBqVvADHvBigUZpMeynM0vH6Ilb0PUdMagzP8HQ1A3IyZRtOx0x3KuC+I7ErJXYLIEZFm5akUlJfFCDFelX2pDu/itpijA2RQZGwMK9W68fM9xN4B2HDuSfZzVDI6e0fGnEAlTUDS9S7NLQRSfmkxoP0LnN
- Xaor5IU1
- 24PqdPVn2xnAeozm7meMkZiZbclUM+0CZ1R8B9BSWuoiMgJthNkVplXgMVAC4yj1xDiXRejTiSbZWE45/zqqZ0+3Oak2IZSuGOGsxzxe9V/7Wr3O3j0/T726YTr8AUe9hfd4ZyLA63ztRX7efDMs1NACeHsY0+dqjerKgEKbDwtLyRhwMaHIoGRapfzyp9qCbJZS/eGbDIfjVYWBQA4ydIuWUSkV5bAmr8kkQDAXIaS92xBIdCcjDVJp3OzLZIATZ/1P/pr4B38SiIgrpBfC/iXL4EXylQk3g6c0SSaYfvtgcpApXYLkhQBta462K427AebTFSF4iYfsdk4FiSdFy5ZHdGQ==
+X-HE-Tag: 1787048987-439854
+X-HE-Meta: U2FsdGVkX19z7Th3BhfjZ9wbifp+2lc4tWQWksJoGfpnTr10H2s0mkEGeIkJJMp4NHNh7YZwZrK24wiFkDhDx5xQk7sk1WlShiOBsbJOItP1W81YWZ2C8ycfvRDoo7Nm7a0B5sdO+1+2SVoMgosZ+NXt9h70nrvdV0q+JvFT7xeXSHXa5mCfXYE81wTHFYAJDN3+RuT353BgSP+KsND46e0lnyzWSrj+nZsokQzC0mf6Ahtl/pncrcMZByWWRM62MwYF0zokNC7BC74Z3rV0UiesXWkwhuWEAWudpXvz33SWeMH217w6DKHGPUR6nvzKc24cLtFeAbmfwlhY3ktY0qE7Du8uySB+ywSx55cnh7ISJ+wFndq3gk7GBFe7u0MS3uBLCYm4B8datGMpej+gTG7237c2LWAHITt8aiKLGd50G7QOMXcungfmrWymr68WXmaCN4yaDl9760eIZSKhPbUoDcgJxWSDbDt7Rc2uOg6QgbyjbZIWv8nh3A3lpOBvkyp6bNvxcsTfj7aWVudeSelR8C+RUxVboI6x1ymbxbEmQKBAYjzcNIFEyFbBhlBdZebqUWJzZm2kFHD86qAsy14kaDiT7SalfwXBEnI/n9gQXyGYrD/2EuVlRFBAF2YbxxrPVV/oSbt4NnL5p6MLC031q7du23cGgtvQcjgAiTPRbby9Pq+8JdGFskjlAhso0qCCXxb8cMxO5DIjXmaJiyGNCzBARvXUECtoUbsyc0DNwzkDBOHrd1Q0W0BQtf6ca9wt33n+VlfLmSQu9fivB2yXxR05PGLzo3AVHoaPMLIV7GDmqjW2MEljkdDW305CsYmnXPTMH8CMhTTCdl99SG4C064g5fQI6yh79c+DmgT44mIAyrTuysKtMG0ZgT5RETuT9/DAvjIsgdiw2jtDEuG3k1xb/8/irJSU/t4Q4TXJ29+PiG3RRmHysPcTTYO1kpGv2yhOP1rEKYh/qDo
+ wUW7p5yf
+ ct93Tf5PRp0JKZxo1cGMyFMiBBaxwLMLrbK6+u6YKYFDgUsH9NcdHAF7Mt8sYEypkZqScYWrgOdX9/GwdMbePNNrR1Z2+CU6WSpgAXA2oMgGxtkOeTfDfLV8DUpFAIwEX//DyTd9UE85qMdbCGADO/o8ifnfAaQVJhhnrxkSfjPziWZcuO9ctuxWNFp3zq+M+n5o74MilSze+1ol7QFuLus7djTuLZ7Pe6hVrJ4p5IuNZLOkfap0xoQ8e0DDhmxFipXLH9U9jE3XyjYzAihSU0pe1CGisAVyBMAXPuq8FKzHCvBIZgIokBxB4GsMhXe3LkLNR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,136 +105,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 15, 2026 at 02:58:50AM +0100, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
->
-> An mTHP collapse test needs to know that a range is backed by folios of the
-> target order, and that they sit where a collapse would put them.  Nothing
-> answers that today: is_backed_by_folio() classifies the folio behind a
-> single page, and check_huge_anon() reads smaps AnonHugePages, which only
-> accounts PMD mappings.
->
-> Add is_range_backed_by_folio_orders().  For every order-aligned window of
-> the range it requires a present head PFN at its natural alignment and a
-> contiguous PFN run across the window.
->
-> A window backed by two smaller folios fails the contiguity check, and a
-> folio mapped off the window's alignment fails the head check.  The mTHP
-> cases need both to tell a collapsed window from the one beside it.
->
-> Assisted-by: Claude-Code:claude-opus-5
-> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
->  tools/testing/selftests/mm/vm_util.c | 42 ++++++++++++++++++++++++++++
->  tools/testing/selftests/mm/vm_util.h |  2 ++
->  2 files changed, 44 insertions(+)
->
-> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-> index 5db1a7774f49..c9bd6c92fa41 100644
-> --- a/tools/testing/selftests/mm/vm_util.c
-> +++ b/tools/testing/selftests/mm/vm_util.c
-> @@ -556,6 +556,48 @@ bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
->  	return false;
->  }
->
-> +/*
-> + * Check whether every order-@order window of [start, len) maps exactly one
+Ok, so I was looking into things and as usual got
+side-tracked so here we are. Oleg, save me please.
 
-Strange to reference @order in a non-kdoc comment. And then to start referring
-to start and len without @? :)
+IF_NOTIFY_SIGNAL is used to kick a task in uninterruptible sleep to
+return to userspace and run task work and then go back to sleep. This
+mechanism works well but breaks coredumps. dump_interrupted() only
+allows fatal signals to interrupt a coredump and the whole regular write
+path going to actual filesystems is impervious to TIF_NOTIFY_SIGNAL as
+well.
 
-And I'm not sure 'window' is really clear here as a term...
+The core is that you can have quite deep callchains that end up calling
+signal_pending() in both the pipe and the socket codepaths so it's like
+we can just pass a flag through somehow.
 
-> + * folio of that order, head to tail.  The address range must be naturally
-> + * aligned, each window's PFN run must be contiguous, and a window's first
-> + * PFN must be the folio head.
+For coredumps its very annoying because it means io_uring is - depending
+on how much outstanding work you have - incompatible with generating
+non-truncated coredumps. A process with too many file backed mappings
+and io_uring requests in flight ends up losing most of the coredump.
 
-Also 'PFN run' is adding a new vague term.
+While zap_threads() has cleared TIF_SIGPENDING for a long time, just
+clearing TIF_NOTIFY_SIGNAL isn't going to work because the next
+completion will just set it again.
 
-> + *
-> + * This is the check "did this range collapse into order-@order folios": a
-> + * window assembled from parts of several folios, or mapping a folio shifted
-> + * from its natural position, fails.
+The fun part also is that io_uring isn't actually the only case:
 
-I think you could simplify this to something like:
+(1) io_uring
 
-	Check that the buffer @start of @len bytes is mTHP-backed by @order
-	folios wholly contained within the range.
+(2) klp_send_signals()
 
-	This requires that @buffer is aligned to @order and that every folio
-	is fully contained head-to-tail.
+(3) bpf_task_work_schedule_signal()
 
-	Returns: true if wholly mTHP backed, false otherwise.
+(4) landlock's tsync
 
-> + */
-> +bool is_range_backed_by_folio_orders(char *start, size_t len, int order,
+And technically, kthread_stop() and the printk kunit test set the bit
+raw. So no simple way of just fixing this in one subsystem.
 
-is_range_mthp_backed() seems a lot clearer?
+So, a fix for this issue has the following constraints:
 
-> +				     int pagemap_fd, int kpageflags_fd)
-> +{
-> +	const unsigned long nr_pages = 1UL << order;
-> +	const size_t window = nr_pages * psize();
+(i) The places where a write is aborted are deep callchains that we
+    can't reasonably parameterize. For example, anon_pipe_write(),
+    unix_stream_sendmsg(), unix_stream_read_generic(),
+    sk_stream_wait_memory(), or a bare wait_event_interruptible() in
+    wait_for_dump_helpers(). All of them are shared with regular
+    syscalls that must stay interruptible.
 
-folio_size seems clearer?
+    IOW, the state has to be per-task and ambient.
 
-> +	char *vaddr;
-> +
-> +	if ((uintptr_t)start % window || len % window)
-> +		return false;
-> +
-> +	for (vaddr = start; vaddr < start + len; vaddr += window) {
-> +		unsigned long pfn = pagemap_get_pfn(pagemap_fd, vaddr);
+    An LLM would call this "load bearing"...
 
-NIT: can const-ify.
+(ii) There are multiple ways TIF_NOTIFY_SIGNAL can get raised and they
+     can get set from irq context against any task. As said above we
+     have at least io_uring paths (poll task_work, msg_ring, tctx exit,
+     io-wq via __set_notify_signal()), bpf_task_work_schedule_signal(),
+     klp_send_signals(), landlock tsync, plus kthread_stop() and the
+     printk kunit stuff that set the bit raw.
 
-> +		unsigned long i;
-> +
-> +		/* Not present, or not mapping the folio head. */
+     So fixing this up in the individual subsystems is doomed to fail or
+     require constant audits in case some new variant shows up.
 
-'Or a tail page' maybe?
+(iii) The coredump task is exiting and can't restart the work.
 
-> +		if (pfn == -1UL || pfn % nr_pages)
-> +			return false;
-> +
-> +		for (i = 1; i < nr_pages; i++) {
-> +			if (pagemap_get_pfn(pagemap_fd, vaddr + i * psize()) !=
-> +			    pfn + i)
-> +				return false;
-> +		}
+So here's some stuff that was considered but I think it not really
+feasible:
 
-NIT: can drop the {}.
+(a) Check for task_is_coredumping(). That will end up forcing
+    task_work_add() users to know about coredumps. This seems like a
+    layering violation.
 
-> +
-> +		if (!is_backed_by_folio(vaddr, order, pagemap_fd,
-> +					kpageflags_fd))
-> +			return false;
-> +	}
-> +
-> +	return true;
-> +}
-> +
->  /* If `ioctls' non-NULL, the allowed ioctls will be returned into the var */
->  int uffd_register_with_ioctls(int uffd, void *addr, uint64_t len,
->  			      bool miss, bool wp, bool minor, uint64_t *ioctls)
-> diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-> index 56a28ce7d029..39dfb18dc10c 100644
-> --- a/tools/testing/selftests/mm/vm_util.h
-> +++ b/tools/testing/selftests/mm/vm_util.h
-> @@ -99,6 +99,8 @@ int gather_folio_orders(char *vaddr_start, size_t len,
->  		int pagemap_fd, int kpageflags_fd, int orders[], int nr_orders);
->  bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
->  			int kpageflags_fd);
-> +bool is_range_backed_by_folio_orders(char *start, size_t len, int order,
-> +				     int pagemap_fd, int kpageflags_fd);
->
->  int uffd_register(int uffd, void *addr, uint64_t len,
->  		  bool miss, bool wp, bool minor);
-> --
-> 2.54.0
->
+    I have a patch for this as well but it's ugly. It races with the
+    dump staarting unless the bit setter takes a lock in the io_uring
+    completion. I know someone that will disagree with this approach. ;)
 
---
-Cheers, Lorenzo
+(b) Oleg's old suggestion iirc. Just clear the bit at coredump entry.
+    That doesn't work because io_uring poll completions just raise it
+    again from irq context. So you also need synchronization with the
+    setter of which there are quite a few.
+
+(c) Let the setting task defer setting the bit if the task is flagged
+    and then raise it again at exit.
+
+(d) Take TIF_NOTIFY_SIGNAL out of singal_pending() and make it opt-in at
+    specific points. That breaks io_uring quite badly and forces a
+    tree-wide audit.
+
+So the amount of patches for this issue over the years is impressive. So
+let me add one to the pile for the lolz.
+
+Add PF_NO_NOTIFY_SIGNAL and helpers to raise/restore it. This is the
+same approach as memalloc_nofs_save(). signal_pending() will not report
+a fake pending signal via TIF_NOTIFY_SIGNAL if inside a
+PF_NO_NOTIFY_SIGNAL critical section. Obviously you can't
+fork()/clone3() in such a section.
+
+Fix coredumps and smb. Fwiw, I think there's a few other potential users
+of the helpers that are left out of this series.
+
+|         |    notify_signal_pipe     |   notify_signal_socket    |
+|---------|---------------------------|---------------------------|
+| fix     | ok                        | ok                        |
+|---------|---------------------------|---------------------------|
+| unfixed | 357324 of ≥ 5111808 bytes | 467336 of ≥ 5111808 bytes |
+
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+Christian Brauner (4):
+      signal: allow taks to temporarily block TIF_NOTIFY_SIGNAL
+      coredump: prevent TIF_NOTIFY_SIGNAL from interrupting coredumps
+      selftests/coredump: test that TIF_NOTIFY_SIGNAL doesn't truncate a coredump
+      smb: prevent TIF_NOTIFY_SIGNAL from interrupting
+
+ fs/coredump.c                                      |   4 +
+ fs/smb/client/transport.c                          |  13 +-
+ include/linux/sched.h                              |   2 +-
+ include/linux/sched/signal.h                       |  21 +-
+ tools/testing/selftests/coredump/Makefile          |   7 +-
+ .../selftests/coredump/coredump_notify_signal.h    |  29 ++
+ .../coredump/coredump_notify_signal_helper.c       |  46 +++
+ .../coredump/coredump_notify_signal_test.c         | 245 ++++++++++++++++
+ tools/testing/selftests/coredump/coredump_test.h   |   1 +
+ .../selftests/coredump/coredump_test_helpers.c     | 318 +++++++++++++++++++++
+ 10 files changed, 674 insertions(+), 12 deletions(-)
+---
+base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
+change-id: 20260817-work-tif_notify_signal-6ab080d33693
+
 
