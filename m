@@ -4,125 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE734C5DF70
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 07:05:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE4D3C5DF70
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 07:07:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B18966B08DB; Tue, 18 Aug 2026 03:05:18 -0400 (EDT)
+	id 7E88D6B08E3; Tue, 18 Aug 2026 03:07:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC89A6B08E3; Tue, 18 Aug 2026 03:05:18 -0400 (EDT)
+	id 798F66B08EB; Tue, 18 Aug 2026 03:07:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B8AE6B08E7; Tue, 18 Aug 2026 03:05:18 -0400 (EDT)
+	id 687106B08ED; Tue, 18 Aug 2026 03:07:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 71C966B08DB
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:05:18 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F31B7160A85
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:05:17 +0000 (UTC)
-X-FDA: 85113503874.12.9149321
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 246DE140006
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:05:15 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="d80p/iom";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of doehyunbaek@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=doehyunbaek@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 416206B08E3
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:07:21 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CD9BDA37EA
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:07:20 +0000 (UTC)
+X-FDA: 85113509040.27.B7B6C62
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 525ECC0004
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:07:19 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="f7Q/JaIa";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of yukuai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yukuai@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787036716;
+	s=arc-20220608; t=1787036839;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s31nZQVBL8BUGSoys1iksqFJSqf6kbi1kgLlk3gjtUc=;
-	b=NcY+1Dy4SyYssY1XVIFL9MZUsX668d7LC0lOrIwbhBQEe/oaJlVMyBAgNz8d2z8ppx1OD+
-	DwDb9RLxUTp4bDiDnpNw6yogYJalD/VuQ5GQsdKXcn3QBgkZu7XLz0AxaW7GcBV+sYSVVF
-	ajGo1Tp5kwzqYFXboCEdzAv9jXWaeAI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=RNvoeC0JEXeBglk9uCkZKrFP7tQLecq/zIhUBpbbNJU=;
+	b=1imBNLqM4lJV/19OKJpnq+ho3hrnCJCn0twKJmURHboyiZFWsUYN1F6R1sxmxA7WcWxAbF
+	98q3i/S5UJDECtCDyuzJTLkIk5ZgdO65XJWR1bDvCvrawY6OEaamv4WwDvYvUVnrYu/o+T
+	RkX09ZhdkLMJIJQqTRWRLdOgAuGsWCM=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="d80p/iom";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of doehyunbaek@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=doehyunbaek@gmail.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="f7Q/JaIa";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of yukuai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yukuai@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787036716;
-	b=QCD1W7NvRBCSXP6nvSHvfw8RsM6zL4NZsrcfPoqbAyaEN3uT/Xvdc7S1aQalF3isVnrqlR
-	Mlui4hc90H0v5ggdmJlViwe8tzJrYOrUNZIseOYTJPA6leNbs5tq41X1joX0Yf5c9lEpm+
-	kwN+i9S3irXwCZ+ixLqtV/Pos4Wq4a8=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-495522bc0e2so80065e9.2
-        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:05:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787036715; x=1787641515; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=s31nZQVBL8BUGSoys1iksqFJSqf6kbi1kgLlk3gjtUc=;
-        b=d80p/iomaJlsFjozhqQZ0ux5KksE838O01Qt9Nw9tR8wWRQbUmxGeWBHKSvp3O9rSl
-         XPYhdjbC0GVpPVqvjXEA9BkXGU6AuPdTdlYbltMJf0au/lC96Ega5lLtXFocZOptwVR9
-         rCVJI7lDxKzZcGo00n3jmKKrUd1AcU65KCOaKnC8Ji+5ZM/BCLX7lnzjnrmdgtc+kDsF
-         1OvFI4CIFaJ1SV6okmFdr05FVx7qfdI4G18wn9Hy5nIviudrNThAERL+dFyXfdC2V8O7
-         o0RvBIj6elCxKLDh4CrvPofMN0Op/3/IRvLayo07Ielru/SBqB53NP+WmQZeOfbaRE4w
-         lyBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787036715; x=1787641515;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=s31nZQVBL8BUGSoys1iksqFJSqf6kbi1kgLlk3gjtUc=;
-        b=fMP4glBZwUSvPlJMu3Z4yW3ehxki0hGE7dNqPtnfW3DgBHLoZwDmGo45rynIh3pi9g
-         xHe1o4Kg3VYXpKpua97VVFnz9qVhUGHvKsgQxM0gsPJkwD96DGfq9dtYcuZJTxWh8/h3
-         HwcCzcBCSzI3V1NZNRwIkBjeB2j/ZmYP8hfyrbAzXChvx7XrGLPGxTF79+Pb1Jz3n/pb
-         Kh7wrXVvtxwh1a1zC+0fxr9LZkMNG6RBd8FS34tlnwWWsPONMhM/YIrAadeYhY8phXF2
-         cWhNJExTvMLDjzmK/qX6crMItJUrgnRRxvrkxiaNxA2qFLMk0pFxbhWH1Xet9Vliis3J
-         Zs1g==
-X-Forwarded-Encrypted: i=1; AHgh+RoJRwZdjdiuwwdIYhTBvTclR9Vq7l+pEk7/OVFYTRM4MYvG+L/ZwTKR3c8kqLSjnKipl3MVdLUFdg==@kvack.org
-X-Gm-Message-State: AOJu0YyRo0lfWumSvZMS8oUBx3/hOJRGR23ezhuXx1bmT1MW15mnbLHM
-	L7z2uRN4UTtW8o1pErkbNtKbsXOku9JMlq88OwZJxialtN6FHVJphw58
-X-Gm-Gg: AR+sD13JBpaqMAyjqzaFU95mt21BHEq9efYvioBzwg7/4QK/CRQMs37kWXtHbbIZpw4
-	18/hdkM+rnjcYxOgui8r3spu6+YoINyUOSINrbGqPQW0mgJcI3PfE6G3MOLfzF4F8NRwhdC2/ni
-	noQMJd/1gwnNJA/ez2mxznL5gdoRXAk5HCsFXd9kx9aGtyJ5yyiR13WfwoMGCJYedAVRzaupLbM
-	LPn58yDJ5RGgBQ11KzqdlHsV5X22OpPt2mM8sy+gdFdnuJQkcQ5uEI1gxUzebktq7VdUSCjuQD+
-	3Ndt6KMz4GDuonS1x360gRyGyv9gpnXqJUPniCwDAvo9DcrB+LF8d2wxOJk1R6I0mc/P41GIZEk
-	R8Wa6SVrhhRI1F2b1+ezf7RJ1qtv/eSz26YVRHoMMtHwQ/8aez0FApN7lC6ZnL/2bJuxpExKtQ0
-	vixQ0qiJdQuXbkJ1MXBA8dlX7aUaHiRR1ldeWFV/ryACjhEYFcQOwEvs3kqKlYNUZeTH4Dz3vvk
-	W35keNihRU/g3IXBTfOHPuFsdmhYNiXkloFOGC7is12M/RbrUbnzZVC4XQKSxusvm/YQP4hxu6N
-	KP6XhFPMThXVOsESglFmN33CjQaJznJTKhsMtwlIudDNMA==
-X-Received: by 2002:a05:600c:a0d:b0:498:1371:660c with SMTP id 5b1f17b1804b1-499878d5e0dmr231844905e9.0.1787036714647;
-        Tue, 18 Aug 2026 00:05:14 -0700 (PDT)
-Received: from doehyun-dev.pradel.rg.cispa.de (x06.xlate.fw.cispa.de. [195.37.157.6])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49996188217sm495557495e9.13.2026.08.18.00.05.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 00:05:14 -0700 (PDT)
-From: Doehyun Baek <doehyunbaek@gmail.com>
-To: Alex Shi <alexs@kernel.org>,
-	Yanteng Si <si.yanteng@linux.dev>
-Cc: Doehyun Baek <doehyunbaek@gmail.com>,
-	Dongliang Mu <dzm91@hust.edu.cn>,
-	SJ Park <sj@kernel.org>,
+	t=1787036839;
+	b=Id7hx9VrUVnWW6GihlFwbsP+MmT2YN9WGb/ofwdFIGtk16YrSOwYTgDRl9IcE4+V9GYl/t
+	T6VdHxtk4S+vptJgTGDSE7y8nH9ymF4uCjuOfje+e/KInt2W4qFAHQzQfQuVRQQYd44s0R
+	HTNX16A/QyRjnRxQ7HqF4oQZQ2U1Qx0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7F5BA60254;
+	Tue, 18 Aug 2026 07:07:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A4721F000E9;
+	Tue, 18 Aug 2026 07:06:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787036837;
+	bh=RNvoeC0JEXeBglk9uCkZKrFP7tQLecq/zIhUBpbbNJU=;
+	h=From:To:Cc:Subject:Date;
+	b=f7Q/JaIaMl86dmjnFfyr2kSJU4hsCbDnFS4xWvkYwDU8g4aSuVyXa9+GHJKcdIiw7
+	 DxU6in0bDgKlHhbpAbPaOtDielfMvAZ4xxMS2FdRb1DAldqufqTV0/aMcUJ2xiNDmU
+	 efY6eMjABNG2upUM/p3MESs1xKCrnD8fwBsM/96GXwwYLaDm7c6mZKIHT8hGJBfpgK
+	 mVopXLxlbEd+mhg/iIGeE/V2uFgr86/trU10wAjQ27mBaSPta4axKQuXN5bS0I+NoZ
+	 nvl75La8qKMGLJx/ShWuXY1Jl2sDPQg5ridFKsAbvfCX2O+lCwwSca7/fcB71KqU7b
+	 9yIq5JhwNIEtg==
+From: Yu Kuai <yukuai@kernel.org>
+To: Jens Axboe <axboe@kernel.dk>,
+	Tejun Heo <tj@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>
+Cc: Yu Kuai <yukuai@fygo.io>,
+	Christoph Hellwig <hch@lst.de>,
+	Tao Cui <cui.tao@linux.dev>,
+	Jan Kara <jack@suse.cz>,
+	Ming Lei <ming.lei@redhat.com>,
 	Jonathan Corbet <corbet@lwn.net>,
 	Shuah Khan <skhan@linuxfoundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
+	Coly Li <colyli@fygo.io>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Alasdair Kergon <agk@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Song Liu <song@kernel.org>,
+	Li Nan <magiclinan@didiglobal.com>,
+	Xiao Ni <xiao@kernel.org>,
+	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+	Dan Williams <djbw@kernel.org>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Ira Weiny <iweiny@kernel.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	cgroups@vger.kernel.org,
 	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v8 7/7] docs/zh_CN: update DAMON LRU sort translation
-Date: Tue, 18 Aug 2026 07:03:49 +0000
-Message-ID: <20260818070358.455768-8-doehyunbaek@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260818070358.455768-1-doehyunbaek@gmail.com>
-References: <20260818070358.455768-1-doehyunbaek@gmail.com>
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-bcache@vger.kernel.org,
+	dm-devel@lists.linux.dev,
+	linux-raid@vger.kernel.org,
+	nvdimm@lists.linux.dev,
+	virtualization@lists.linux.dev,
+	gfs2@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v3 0/3] blk-cgroup: store blkcg in bio before blkcg_mutex conversion
+Date: Tue, 18 Aug 2026 15:06:38 +0800
+Message-ID: <20260818070641.756747-1-yukuai@kernel.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: tm51co1ywitkyyyj599oqfqdrz7o63o4
-X-Rspamd-Queue-Id: 246DE140006
+X-Stat-Signature: 77b8hdkw4uuotar91my79c8365bewibf
+X-Rspamd-Queue-Id: 525ECC0004
 X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1787036715-47513
-X-HE-Meta: U2FsdGVkX1//L5hZuPen6XcSJw67/5if8MjPeDksQTm5PlQMpJd3fBwh2O6cv3mFqTl+vBnTevs0f5x5w7OhLWlBWEblD1xHE4FKP47yubR27Lh3p9i91XPcDxR3d2CyfNEB9H/YRXVaGpMlFcEko0/eyP/XQ0q0wkayeV8m7uhGFQJsVt2B0/+nKiRi1nUQfbJF+vto65RZrS3jHg++vOX6+F4zsiet9QmLnKN8BtAo8/yjBKHSFmbfGcG0DYOHdJzs/9p1SwBja2bfxAP+4d08jtFsMYRvwW+D7VzqQCccyjwuRxhF6XeDaDoj/6cZ1aduUMqUEYbQudR88PhbjDvbYfPOcYzZ/TAIrw45Ts7lr6AB43XNMPvzRtu7D7INJZrrj2ydWX5twhQ0fdOK1AWrrDzHLvX1pCc5JNvCqPmn/khUffi2kLbbUqQKLaVtuK3Dz9cZlvFfpvajNTfDoxaLLCJkjTWxxsUt8UjNgDdOGwCRtK53EMW6optgobcAnfiP5PVxFWn9NMrlyA8FClcpXwM6CDBQ9mSWhap6Dd77RQHpUSTxBOVHc3xOqjKvsqayu2caoj0aadXFW3yfOE4FACwC6imj+hVgFab9TqS696bSZ1HAFmql9S3mT75bsuU6Jhoxlm59aVFDiE0D0cyU9XIVREwb68o+XjFE4BIAXunz2jgZD4rarTn34V76FInt++svGjPLgncyI7ULoTyrEJ/pG8LcAexNzV1M7zjFVm6p7Xn3o5FRwgSuw1uDtIP5kOaCX3XAe82ijTj0ed85OC2ehmFuFrC9hwupd4UsT36U3jexzIwvdcoquSIEoxvoE+axjpOcImXUl43CxyffYJSPmkEtIkz3czurLcbbPSB+a0C1i8I7H1IDi/pFeI748nmFqUgUTjBEjNWsJGZvJ/aqdTKwVnGFC2FYYDsNt4IFi4zz2OEVVhdLgqBHmGQSjg1HpHYsAs1LukW
- QRj9P7qT
- hNGfwP0Y/GzpF6U4q4SsC/RUA4xg17fOLAAalzOC3HShBlt2cYHnzI0SheaXT0G0fb1AaR2uIJUeBQqFIVS/pus4fW3LcEj6yOMpM6d1SK4Y/+mbZi3vYF1Ikieef0uzldztkPfGp1F2agt9P2H3ENyiKP/xdugjEbOsrq6m1uMaJsG0WXIwxK6AZIfMQ5xFSKbm0sOz/4utQ4MChcPfrC5S/Yv7oRiQnGYuqUGWJaamyyKGhVRJLXnRB5g21kVxv2rUWHFs4d5GnvoS6SijJtLEGmSU0+Xd/qxkUnocAhdH4OFEjqFX5LFWqkpsGz3ZGtfJl8HdzeeLOoBGqggwYLLKEviJ4iZ8lkxFvrUpDlKV3xXFhGiztiEzgythKP3WA5apiAvpD3fPJ0AN8PWPNv/eHhYwbeS9GRrVQUhPADpbSIH/8hvTSF+CGz5QUZl1UDTuU18lFY8Ad1JmXtL1nhM0Wi+bRSqDLTkcFr9X1HLrDhYFghTSwvSNk6YwSuaeGsL73Vh/C6lTowNU3y5ZUp6ah7A==
+X-HE-Tag: 1787036839-132744
+X-HE-Meta: U2FsdGVkX1+RTN9dsLfg4423GP6+BdZpBCmoh0BKOJjFZ42iHqNt31Kj8rsE/mjP4yaaFfjiwR+k0Q9KGF3Uyw1SBLmqWfw9w9Ev1OaGqVMn0X9Q2PJYuu1yV2zN80DMTEZtZav4IO27zINuaoUF1VNat1wFL5FwzF2+4ftGXipBucCGDvAEZwsC67BT0QJyjkzlx07D2rIou7a/aH9tazR6VGa8gmZMMjx3a1ZV5WgnlMsTfn9ztiPx191R3OddIc29RCXcF13GoCw+GjnuOt1eYuZdoTGwNisBC7b3FqQ7DrbHKmq9aF1n0M4DfKOcgiMK5y4LZSqfacKY+ZAod7836nJotYCtBkGmu7KaNe8umVOHREjpxEv+WFFUv+5kINROMoRVtDmbF2nwLOer5RGpX+eeVzp3r/xeI6Ziyh6IoxYhnNvsQCvbwZZqbLPizrfl9CNbHo/wxwUs4mfFkggi1SIqektmmzRHlJUO6w50IvKy11Ov0SqwV9WimFrAy3gUFSZ5G/mf/4yYSYN0cAXgMT98CsKElOljaM2gOPwMvoNiGNl41RsDucZoKvnGHKQERu3ZicTMNfhulErOmjAOLV03uDQfYYUvzFzeTvaWTiayExeiPTOUeGa6/vCKV6/4XFxWlQ/wZtBwFinYN05I/QwZ6InutchxcMV3Y9ZmO267V+OXv3L8I2velxxzhcKIwWcTb1fzgqWZJjqDEuk8KmKappn61cIz3Cfi7eEfcPW1syaUZiG6Ju8nU5f+5x7dM9Du8ouqkx4e8yqMBxWUiCO0vLDook3RwZdRVMDIiISaJIo4EEWVgm1X7HnMwQNN2wFqXFKqTLXVmTdU/JwOtXYRY3GjVPerduesNdP14xRugOYaiXfmAGzJIkOE8u90ctHGujlk0/O+2ZUo9O4lU3F9ByE6qrZPMm7B2kPsbQp99FqGq75UfQ0gPx9bx/VZmcn+r2ei5/qHzd4
+ dwada+Ag
+ bOwdhYZpWKoO7mRq4qNd4/EKri32QAwS2GNAEtmIrYMyKLBHtQatnjaXtfEinvxqzAiZA5LHUh9iI6Z66ZVY/KIpq1ePPeWEFjhxnCUj5S5gs2j63U+YaGRXDu1sxMYyFvcRbv62ruHdooS0Oh0oshlzF8KzOVnz+0JEMXQgGSyKnueNP5il7wpetZhEIYMg02X7DVrVbDaG2ff0Dg7XNdIJpAeLrQNRkVyUHpi3rxad7UjFAGyWLox3wuiOXWq3Fzb75xjtl7GTkq2zvMxbnBCpJFssdHHyf8/jQC1KrOxi+LaYY1fZKJktXGdpaofW9+zIrBYRQxdU63+N2uOJD/EdcZGRZ7AUyYhjRyPTJPpoJT6o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,134 +134,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update the Chinese translation of .../admin-guide/mm/damon/lru_sort.rst.
+From: Yu Kuai <yukuai@fygo.io>
 
-Update the translation through commit c9380cdd949d
-("Docs/{admin-guide,mm}/damon: fix DAMON documentation details").
+This RFC remains a preparatory series for the blkcg_mutex conversion
+proposed in the related blkcg_mutex RFC v2 series [1].  That conversion
+moves queue-local blkg topology synchronization from q->queue_lock to
+q->blkcg_mutex, which is awkward while bios directly store queue-local
+blkg references.
 
-Signed-off-by: Doehyun Baek <doehyunbaek@gmail.com>
----
- .../zh_CN/admin-guide/mm/damon/lru_sort.rst   | 68 +++++++++++++++++--
- 1 file changed, 64 insertions(+), 4 deletions(-)
+v1 made the stored bio association queue-independent by replacing bi_blkg
+with bi_blkcg, but a bio-owned blkg reference still had to be recovered by
+looking up the bio's blkcg and current request_queue.  Tao Cui reported that
+cgroup removal deletes a dying blkg from the per-blkcg radix tree before a
+throttled bio drops its reference.  A later lookup for that pinned blkg then
+fails, triggers the warning in bio_pinned_blkg(), and leaks the reference.
 
-diff --git a/Documentation/translations/zh_CN/admin-guide/mm/damon/lru_sort.rst b/Documentation/translations/zh_CN/admin-guide/mm/damon/lru_sort.rst
-index 03d33c710604..6af0dd59ef5d 100644
---- a/Documentation/translations/zh_CN/admin-guide/mm/damon/lru_sort.rst
-+++ b/Documentation/translations/zh_CN/admin-guide/mm/damon/lru_sort.rst
-@@ -48,7 +48,7 @@ DAMON_LRU_SORT使用DAMON寻找热页（范围内的页面访问频率高于用
- 
- 为了让系统管理员打开或者关闭并且调节指定的系统，DAMON_LRU_SORT设计了模块参数。
- 这意味着，你可以添加 ``damon_lru_sort.<parameter>=<value>`` 到内核的启动命令行
--参数，或者在 ``/sys/modules/damon_lru_sort/parameters/<parameter>`` 写入正确的
-+参数，或者在 ``/sys/module/damon_lru_sort/parameters/<parameter>`` 写入正确的
- 值。
- 
- 下边是每个参数的描述
-@@ -71,6 +71,41 @@ commit_inputs
- ，DAMON_LRU_SORT会再次读取除了 ``enabled`` 之外的参数。读取完成后，这个参数会被
- 设置为 ``N`` 。如果在读取时发现有无效参数，DAMON_LRU_SORT会被关闭。
- 
-+一旦向该参数写入 ``Y``，用户在再次读取 ``commit_inputs`` 返回 ``N`` 之前，
-+不得写入任何参数。如果用户违反该规则，内核可能表现出未定义行为。
-+
-+active_mem_bp
-+-------------
-+
-+期望的活跃内存与[非]活跃内存比率，单位为 bp（1/10,000）。
-+
-+在保持其他配额设置的上限的同时，DAMON_LRU_SORT 会自动增减配额的有效水平，
-+目标是让热/冷内存的 LRU [降低]优先级处理产生该活跃内存与[非]活跃内存比率。
-+值为零表示禁用该自动调优功能。
-+
-+默认禁用。
-+
-+autotune_monitoring_intervals
-+-----------------------------
-+
-+如果该参数设置为 ``Y``，DAMON_LRU_SORT 会自动调优 DAMON 的采样和聚集间隔。
-+自动调优的目标是在每个 DAMON 快照中捕获有意义数量的访问事件，同时将采样
-+间隔限制在最小 5 毫秒、最大 10 秒。将其设置为 ``N`` 会禁用自动调优。
-+
-+默认禁用。
-+
-+filter_young_pages
-+------------------
-+
-+相应地为 LRU [降低]优先级处理过滤[非]年轻页。
-+
-+如果设置该参数，则在每次 LRU [降低]优先级处理操作前再次检查页级访问
-+（年轻性）。如果该页自上次检查以来未被访问（不年轻），则跳过 LRU 提高
-+优先级操作。如果该页自上次检查以来已被访问（年轻），则跳过 LRU 降低优先级
-+操作。当该参数分别设置为 ``Y`` 或 ``N`` 时，会启用或禁用该功能。
-+
-+默认禁用。
-+
- hot_thres_access_freq
- ---------------------
- 
-@@ -163,6 +198,8 @@ min_nr_regions
- 对冷内存区域监测的最小数量。这个值可以作为监测质量的下限。不过，这个值设置的过
- 大会增加开销。更多细节请参考DAMON文档 (:doc:`usage`) 。默认值为10。
- 
-+请注意，该值必须为 3 或更高。该下限的理由请参考设计文档的 :ref:`监测 <damon_design_monitoring_zh_CN>` 章节。
-+
- max_nr_regions
- --------------
- 
-@@ -176,14 +213,34 @@ monitor_region_start
- 
- 目标内存区域的起始物理地址。
- 
--DAMON_LRU_SORT要处理的目标内存区域的起始物理地址。默认，使用系统最大内存。
-+DAMON_LRU_SORT要处理的目标内存区域的起始物理地址。默认，使用系统的整个物理内存。
- 
- monitor_region_end
- ------------------
- 
- 目标内存区域的结束物理地址。
- 
--DAMON_LRU_SORT要处理的目标内存区域的结束物理地址。默认，使用系统最大内存。
-+DAMON_LRU_SORT要处理的目标内存区域的结束物理地址。默认，使用系统的整个物理内存。
-+
-+addr_unit
-+---------
-+
-+内存地址和字节数的缩放因子。
-+
-+该参数用于设置和获取 DAMON_RECLAIM 的 DAMON 实例的 :ref:`地址单位 <damon_design_addr_unit_zh_CN>` 参数。
-+
-+``monitor_region_start`` 和 ``monitor_region_end`` 应以该单位提供。例如，
-+假设 ``addr_unit``、``monitor_region_start`` 和 ``monitor_region_end``
-+分别设置为 ``1024``、``0`` 和 ``10``。那么 DAMON_LRU_SORT 将处理从地址零
-+开始、长度为 10 KiB 的物理地址范围（以字节表示为
-+``[0 * 1024, 10 * 1024)``）。
-+
-+带有 ``bytes_`` 前缀的统计参数也使用该单位。例如，假设 ``addr_unit``、
-+``bytes_lru_sort_tried_hot_regions`` 和 ``bytes_lru_sorted_hot_regions`` 的值
-+分别为 ``1024``、``42`` 和 ``32``。那么这表示 DAMON_LRU_SORT 尝试对
-+42 KiB 热内存进行 LRU 排序，并总共成功对其中 32 KiB 内存进行了 LRU 排序。
-+
-+如果不确定，只使用默认值（``1``）并忘记这个参数即可。
- 
- kdamond_pid
- -----------
-@@ -252,7 +309,7 @@ LRU的优先级的提升，同时降低那些超过120秒无人访问的内存
- 进展且空闲内存低于20%，再次让DAMON_LRU_SORT停止工作，以此回退到以LRU链表为基础
- 以页面为单位的内存回收上。 ::
- 
--    # cd /sys/modules/damon_lru_sort/parameters
-+    # cd /sys/module/damon_lru_sort/parameters
-     # echo 500 > hot_thres_access_freq
-     # echo 120000000 > cold_min_age
-     # echo 10 > quota_ms
-@@ -261,3 +318,6 @@ LRU的优先级的提升，同时降低那些超过120秒无人访问的内存
-     # echo 400 > wmarks_mid
-     # echo 200 > wmarks_low
-     # echo Y > enabled
-+
-+请注意，该模块（damon_lru_sort）不能与其他基于 DAMON 的专用模块同时运行。
-+更多细节请参考 :ref:`DAMON 设计文档的专用模块互斥性 <damon_design_special_purpose_modules_exclusivity_zh_CN>`。
+v2 makes request_queue the authoritative lookup owner before converting the
+bio association.  A queue-owned rhashtable, keyed by the blkcg CSS ID, keeps
+dying blkgs discoverable until their references drain while q->blkg_list
+remains available for ordered walks.  The bio conversion then stores and
+pins the blkcg CSS, lazily creates a blkg only for users which need one, and
+uses lookup-only access for completion and accounting paths which already
+own a blkg reference.  Async bio punt state is finally moved from blkg to
+blkcg so punting alone does not instantiate a queue-local blkg.
+
+A git branch is available at:
+  https://git.kernel.org/pub/scm/linux/kernel/git/yukuai/linux.git/log/?h=block-7.3-blkg_list-rhashtable-v3
+
+Changes since v2:
+
+  - Drop the old patch 1 and send it separately as a bugfix for 7.3 and
+    -stable, as suggested by Christoph Hellwig.
+  - Rebase onto the latest for-7.3/block branch.
+  - In the new patch 1, note that the remaining q->blkg_list walkers are
+    cgroupfs/sysfs slow paths and can move to rhashtable iteration after
+    the queue_lock-to-blkcg_mutex conversion.
+  - In the new patch 1, explain the list_empty case in blkg_release(), and
+    add an RCU lockdep assertion plus documentation that blkg_lookup_any()
+    does not acquire a reference.
+
+Changes since v1:
+
+  - Add patch 1 to wait for every old blkg to leave q->blkg_list before a
+    shared request_queue is rebound, instead of treating root_blkg == NULL
+    as completion of asynchronous blkg teardown.
+  - Add patch 2 to replace the per-blkcg radix tree and lookup hint with a
+    request_queue rhashtable keyed by blkcg->css.id, as suggested by
+    Christoph Hellwig.  Keep dying pinned blkgs in the hash until
+    blkg_release() so bio-owned references remain discoverable.
+  - Fold the v1 helper-only patch into patch 3, as suggested by Jan Kara and
+    Christoph Hellwig, and make bio_blkcg() naturally return NULL for an
+    unassociated bio.
+  - Rework patch 3 so blkg_lookup_create() acquires the bio-owned reference,
+    falls back to a live parent when creation or tryget fails, and updates
+    bi_blkcg when the returned blkg belongs to an ancestor.
+  - Make bio_blkg_lookup() lookup-only: it returns NULL unless BIO_BLKG_REF
+    is already set.  Use bio_blkg() in the BFQ and IOCOST merge paths which
+    may need to create a blkg, while keeping blk_cgroup_bio_start() and
+    completion paths lookup-only.
+  - Move CSS online-reference handling into
+    bio_associate_blkcg_from_css(), including fallback to the root blkcg, so
+    bio_associate_blkcg() does not take a redundant reference.
+  - Keep the v1 async bio punt conversion as patch 4 and document that
+    async_bio_lock protects async_bios.
+
+Previous versions:
+  v2: https://lore.kernel.org/r/20260811064744.1139446-1-yukuai@kernel.org
+  v1: https://lore.kernel.org/r/20260804065313.2092022-1-yukuai@kernel.org
+
+Related series:
+  [1] RFC v2 blk-cgroup: protect blkgs with blkcg_mutex
+      https://lore.kernel.org/r/20260724123037.3004560-1-yukuai@kernel.org
+
+Yu Kuai (3):
+  blk-cgroup: use a request_queue rhashtable for blkg lookup
+  blk-cgroup: store blkcg in bio instead of blkg
+  blk-cgroup: move async bio punt state to blkcg
+
+ Documentation/admin-guide/cgroup-v2.rst |   2 +-
+ block/bfq-cgroup.c                      |  16 +-
+ block/bfq-iosched.c                     |  19 +-
+ block/bio.c                             |  22 +-
+ block/blk-cgroup-fc-appid.c             |  10 +-
+ block/blk-cgroup.c                      | 339 ++++++++++++++----------
+ block/blk-cgroup.h                      |  89 +++++--
+ block/blk-core.c                        |   9 +-
+ block/blk-crypto-fallback.c             |   2 +-
+ block/blk-iocost.c                      |  12 +-
+ block/blk-iolatency.c                   |  11 +-
+ block/blk-ioprio.c                      |   2 +-
+ block/blk-throttle.c                    |   2 +-
+ block/blk-throttle.h                    |   2 +-
+ drivers/md/bcache/request.c             |   2 +-
+ drivers/md/dm.c                         |   2 +-
+ drivers/md/md.c                         |   2 +-
+ drivers/nvdimm/nd_virtio.c              |   2 +-
+ fs/gfs2/lops.c                          |   3 +-
+ include/linux/bio.h                     |  26 +-
+ include/linux/blk_types.h               |   9 +-
+ include/linux/blkdev.h                  |   2 +
+ include/linux/writeback.h               |   2 +-
+ mm/page_io.c                            |  13 +-
+ 24 files changed, 364 insertions(+), 236 deletions(-)
+
 -- 
-2.43.0
-
+2.51.0
 
