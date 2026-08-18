@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EC8BC5DF80
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 09:24:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FB52C5DF80
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 09:24:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8030B6B0169; Tue, 18 Aug 2026 05:24:32 -0400 (EDT)
+	id 2AB976B016B; Tue, 18 Aug 2026 05:24:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B3BD6B016A; Tue, 18 Aug 2026 05:24:32 -0400 (EDT)
+	id 2835F6B016C; Tue, 18 Aug 2026 05:24:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A2796B016B; Tue, 18 Aug 2026 05:24:32 -0400 (EDT)
+	id 1727A6B016D; Tue, 18 Aug 2026 05:24:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EA1F6B0169
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 05:24:32 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ACCF9C0BC7
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:24:31 +0000 (UTC)
-X-FDA: 85113854742.09.6C558B3
-Received: from mail-pz2-f0.google.com (mail-pz2-f0.google.com [74.125.228.0])
-	by imf08.hostedemail.com (Postfix) with ESMTP id F1204160005
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:24:29 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=E3W+6SbQ;
-	spf=pass (imf08.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.0 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id E0DC96B016B
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 05:24:36 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 553EAC0BB4
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:24:36 +0000 (UTC)
+X-FDA: 85113854952.03.41A6ABC
+Received: from mail-pf1-f195.google.com (mail-pf1-f195.google.com [209.85.210.195])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 80712C0003
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:24:34 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CjDZK7Kq;
+	spf=pass (imf10.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.210.195 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787045074;
+	b=flKHb+zSr7wzmLb9yz2RrkZ5I/gBYXlUnpGrZXWG0YoW1LXHcrwCf9gOsoCw1vss9eXJu+
+	rWbX4WLcUvJPLM4vnE9FW23XlrSlcBDDzDZhIbtkUjXGUl439irtIaQZkCW5+E458qkY3A
+	wu//BYW/pfw031GZM4Ey2+XqnkZoobw=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CjDZK7Kq;
+	spf=pass (imf10.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.210.195 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787045070;
+	s=arc-20220608; t=1787045074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=A1pbnb70esMHiIG2GjQa1pvwn7zF1O2Mpz4YdOsewSo=;
-	b=b4lLQ8EtKHPKIgzGC9mytEvp6G+oH5UVK7Fw5gA2QQvXDYkhHBVDLgSsvV5seGTdvdwgDa
-	BDam/xpk+QOU82siaPQzaJeJ0hOFfuXney86GAmYPpQhC/dwimoUYYo5gCQoVsVTf4fN1H
-	brKcMbZ7tUGrLXH1np36fJC5BvEC2vg=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=E3W+6SbQ;
-	spf=pass (imf08.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.0 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787045070;
-	b=L62yp6oMyv6+29baSgcA76v9fgdabg3jFKBUNd9J844uyVTnTwuAeERqgCS5FmtLY3s50u
-	JmwkcK1ghjW9a8232AdJw8cjU5ZiHS7mLpUxTKSfe3uQxFN2HREI00M1NEj7hT9spGEAFr
-	Z+8M2/TDrrOJbY64UOY4+X9EXJuACMU=
-Received: by mail-pz2-f0.google.com with SMTP id 41be03b00d2f7-cbb92a1213fso1618603a12.0
-        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:24:29 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=edFBVCDZ8uahtaafghiqDdA2JkU9nFhvYVeD5bTaUSM=;
+	b=1mJVdPuFM9eYdFGMyvH629+9phhwawIrIUlAVNYHhSGam7A5XqAlhh0rrkYByWWcW46qPU
+	XuZM1o8+N29rReYDsvcz3LnnvgBBA708WuuoRCoKdASFZ/3qCgp3AOLO+Uq/+jT31Olc/5
+	y8EXBjl9S1O04n1pnGcIjLLViLlseBQ=
+Received: by mail-pf1-f195.google.com with SMTP id d2e1a72fcca58-84847482584so606921b3a.0
+        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:24:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787045069; x=1787649869; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=A1pbnb70esMHiIG2GjQa1pvwn7zF1O2Mpz4YdOsewSo=;
-        b=E3W+6SbQtr9hW2aS5g1l04lb2HqgfHa0J+IpsKuiUSi90AiAvySWbNV67VElt1PNrw
-         1k92XJvk1VE0PjpU14HHcORROx1AMM688tHYQA8JH2vccQp4ZBBwUsyHWQS2kDBr2qdk
-         KrHix/fn2Wlb2QP5Q1uWUmwPrZcWs97/QiwgipUycMtm13UdpFAyr2WquE8LIA4WbvjM
-         MVNE3OpwendP55sArTeSWn8Qb9SYjddBr9OmCq7+yQmT3AVoJ99ScWkQOoRm/rr6j5U3
-         xkpnKcKag+6qU9bkYqOquvyYlUqHyQCAmGytVUN2jhl5WAbftCEEmwrl7AllMD7P2XsV
-         O/dQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787045069; x=1787649869;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1787045073; x=1787649873; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=A1pbnb70esMHiIG2GjQa1pvwn7zF1O2Mpz4YdOsewSo=;
-        b=Xtne2I+G6alyvc80M44QSszV7dXPRL8MQPeOWU+xC77ypXxINuPNtklp2Ljz0GeHHj
-         Ry0wK7vC/rdgT8l+7P9//F9GxSr7Jofb3e2iVo92uwKv0IaHzblDJWrgQvPxK28w7cnt
-         0XdiLgrRQvs3cbIqw2zvJZfcAQG5DV4dZxZNQQudjQQFElgi4pVRIpxC2tOUZV+5YFyz
-         tR11JSSObUxiV1FkFeTszDaYXBWB17Y5+VZoF+0TcLswIAvj2uYmvkWs0zFOf+QRr9Ik
-         zoAPeLDYXl6HR9jZ6g5+/mC1hDmMWtFiucyob7VAV1PFszXF1xDPdaJkqbCvTTrUQevZ
-         ivuw==
-X-Forwarded-Encrypted: i=1; AHgh+Rr5koutKcAEL4CFA9BDBSaDux1t46DPxqOCmRoqA+zBfqUpKQSXh8HL7NGTdv/iYQO31aSuVae3Bg==@kvack.org
-X-Gm-Message-State: AOJu0YwWxTsEHut3Z2Fa3DnOr6mbvbLn2iL0FnOyhrDI9AhThwapoeKO
-	otVYz7nSdcYcxkL2qhgkQvBCHty27iHCES4pGtoGI1ecjZ+LQNkuwAWJ
-X-Gm-Gg: AR+sD12xOi2Y8YkpUOJ0997h2P+qVOAuXezm6lUWYh7aq50TmOvOp//BMCMrej6QyEm
-	+y/bw+Kb3x6l+v2DFUQNRW+YXnTnB9wyq2AfQF6Qw7O7Oa0WMpLq6OzwVY267IHhmE7+M7I5ZTl
-	D96yISQI4eXxm3dm/0GViSJMpw9nJFDUldMW4/1UPCDMWHcEydAuvIK+ol4RUs96IPuvQzbhX5I
-	8kdJhb5vUO72Y71l87xadoaRUwbhFU4S9rJ1Cgiv40XURbEVrlbAGuhemHiex5xWhks0NFf6Jru
-	SDSmoAhBAcouKQksIu7h6AojJQfxZliFZDa2Nhl3ijdzWd3sBj0/3BY/XkQI0FXKK1vByoBtoNT
-	8iQi/e90V7ziPn2C6lZr0p6ryyJ6jGnVRxFX4AjcWx+AXKxNYqrx/FpfFXXWi6cHGyOEGtCzrzv
-	MuZjpEfX7vfYRs8G568589goNMY0MsP++lrLvryFmRRJc55fRTBsQa+UssIQbv3REdu/lRKmoW
-X-Received: by 2002:a05:6a20:c90b:b0:3c4:2cf9:28ad with SMTP id adf61e73a8af0-3cc71ddfff1mr40412723637.12.1787045068712;
-        Tue, 18 Aug 2026 02:24:28 -0700 (PDT)
+        bh=edFBVCDZ8uahtaafghiqDdA2JkU9nFhvYVeD5bTaUSM=;
+        b=CjDZK7Kq4NIhZIKqrcJ8F4kA1MViusQ/hpgOEGLI3quxrkG2SofEuyBCImjInG9vDn
+         +Cy3JRyCTiaWupDsnacTvTAAatU/Sc3i2h3As407imOgFDMV5GuVB7bjOHIsQc2c0OCd
+         MoGOEWgNOK+c7+KbT83Lcpqa/vM76kxys6M+q2EzLfglbFgPIsMkbOx0WeQYB3gfUpwo
+         15ood8kZzXdD4buk3hDU+LxjVUI+XbpFU5sD3ZkHHpqM0mUukTQY+U8zhRPzwp8aKzr4
+         XHwJ0AQ8IF2ouoNxpDytLtdExVYf2eLFugMohIJqW2vp5eYsnRYfxHnIUfuYzct7p2VL
+         H6ZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787045073; x=1787649873;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=edFBVCDZ8uahtaafghiqDdA2JkU9nFhvYVeD5bTaUSM=;
+        b=kWkEJoL7lXIikJO5hWACRoMwctc+8zy98oBwk1I33nCSECljIo+j5YNp0rz1OFVbf/
+         DsT7if7jNd5va1tB7s/sDpA6JjNcTIXRH+F0v2XYn5KIugigq90UAsRMEh9pwYN9n/jZ
+         Sk7/ETS6iAZqRQczmAfu+ptyFVugTKWlA0RpgLomp67HBG4nQNs0bUYHrqxZHIxyIjYB
+         0DqwXPmYegOzrUlphg99KfhNlVk/GnX8KP7N+JLlBG57oyTmEwMKESivrGBIPMjDZNsY
+         WLIczRyjXUYa8TUtIvI1E3bHHQcey9D8AvRAOX1Z+ApF/m8lOcNfa8IYx5o9Q5xsMtsi
+         thiQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpQpZ3RvZe6TL3o9t8dqujymwjNqvjVlG8OBcc8nCOKVrS+dgsUrog5gdztDCCmjOh1hJdAjTV4sw==@kvack.org
+X-Gm-Message-State: AOJu0YxUdCfDszAbiF55aBNw/x+U7x99MXkY7UKNLWiQmB2cw3Xu5AXO
+	Q+MkRVAbTCa98OaigFbfvTr2cIGFuFcrZuznsbASUmM4qQUTPpSe98ukYHSEH2yR7Nc=
+X-Gm-Gg: AR+sD12sBfJdwKm0KV5Fx+pZgSGYav22gKhGH3Uz9PMqGfb8MoPzbRLMlZPYKMRlWTG
+	0Tz+jKqhKeDo5Mj0s474dEOv3O8OTfjG2k0H86bG7XOfw4Zk89NpJociba8b2kVMzO4UDY2SZEH
+	xAwpPsGcDYVpMwbKvkh2s7b38JwLesNrAaPfAusx5JTqtRkp5O6Mp7f8T5sHRaCwZvmxr/GblFM
+	TW9d8xYSyW5XsCnZGVXiK+SO2Shav5U3jG/eU3eXL/RwqQ7OO47jFLxk85Jm4I3/+kPqvPjE8Ry
+	VLGaJ0NdQrjOGTf2Ma3bw8W0fd+lp9txy7xDvraIbSCEztWdBoYu9DV+1UjHiM1c1ZpVtbpMkj+
+	HSqQyhBntMZqSkT3QMFbI2agZPrwrFyfVYRR45tx1+VzR6DeTjFe429egQ/GxNWNIB4IwEXDXIO
+	UQyOALpfMcQQ1VqGzVWOChhFdcH0x9GHrB8jxjVHOnpGUjMtKK5+ec3cy1gxd1rcbTxAo5RPp0
+X-Received: by 2002:a05:6a00:3a13:b0:84e:ea49:8899 with SMTP id d2e1a72fcca58-851bc2cc6b9mr4442181b3a.6.1787045073210;
+        Tue, 18 Aug 2026 02:24:33 -0700 (PDT)
 Received: from intel.company.local ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc13c036c50sm1855975a12.26.2026.08.18.02.24.24
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc13c036c50sm1855975a12.26.2026.08.18.02.24.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 02:24:27 -0700 (PDT)
+        Tue, 18 Aug 2026 02:24:32 -0700 (PDT)
 From: Wandun Chen <chenwandun1@gmail.com>
 To: robh@kernel.org,
 	saravanak@kernel.org,
@@ -98,20 +99,22 @@ To: robh@kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
 Cc: akpm@linux-foundation.org
-Subject: [PATCH v2 0/5] of: reserved_mem: several fixes about reserved memory
-Date: Tue, 18 Aug 2026 17:24:15 +0800
-Message-ID: <20260818092420.2859026-1-chenwandun1@gmail.com>
+Subject: [PATCH v2 1/5] of: reserved_mem: skip init for regions whose early reservation failed
+Date: Tue, 18 Aug 2026 17:24:16 +0800
+Message-ID: <20260818092420.2859026-2-chenwandun1@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260818092420.2859026-1-chenwandun1@gmail.com>
+References: <20260818092420.2859026-1-chenwandun1@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F1204160005
-X-Stat-Signature: e3txa9ordznj4cs8kck5prbhc8knnmhz
+X-Rspamd-Queue-Id: 80712C0003
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1787045069-530761
-X-HE-Meta: U2FsdGVkX1+ohLlvPBF2i+WMmdRyOJ/bvXsG7qloD3vp2p+SeXJ5grF+3tniKlC3PqByn4eUwqhWSacu4pTpYWe2BWKQy9YKGSdOtN5LUNx3HrIQIrFrOxDmX0N7JM1G6Rms79W6ZLGIymAKh8EbyZMoeQcevKl2KJgBnpfF2M9efRNZE0ZvhuLYeo597CwZiwd1uxxfYJr9cQ9q+bhFC8WkfNRwHvCj+XiPF/20S+WOtNSvrBCscwucZMfG7/CCSSGWGwGohO3Dp0rTum89ABHbAuqwXjh99RxKSrb7pPMEeZUL4BF5xzGbQ+ctSMbwpRbTzK0XY9MxuBuOZ7Ne6SYCwIeut89H8lOgrzkVai/ZAD8QBDRaOiIANwMZ84oOd/RWL+6eU0afzmm3s33LWouGIwh9rD+0An7WjGwRd34gGPFUI+mDohyRCHGB3B7oFeiKvI+9c8UA9ZaF2FIK1qsN8imbb39KH/0fCjFB+dVZvolDaePLyoGpXcT1C2MVQ/tWVA1PGYbvvhePRigJgwXw3FBbyuHsq1ODUnsP6BnyUj+Kz/jjWULFhKqp6qDcQPF6Y9yVFFVKtF1LQzMEjDc3XLI8JENc4KpmlxG63ldtbE1XE3hvQja39PN3K3Bax/EriLxIRZu0shSpAoxT4GyZ0TXR+0AZ2gEjuXMjJ3uAAhg3Be0p4HPW9NQNxSaf9c0IY7LJVtxhTZZOBYm+Pp4EUjlbeXPKIyLO0T2VdYDoXbS0FSIWa12KoNc3c8XAMg+CeGy7T77iGtdn1CmnIim8Pv/9hEm2LNhWLQlId0BsAX/KG2g9DvMQRAMUZWCmTdSK52Tt9Q163D9BurHJk77rozrP4c3RGyUNNPhwFNItLwofLxBRU8Ybviw1+ePUeOy037ia1nXw6cZ8dtvKfH856Z1v+SlQ3pcq45+n0EebN7eOw1o6FeALCfax8xgrIKV/qJQ/8boc+GtQX4M
- fht2tZHM
- niZCDkxCfz4v3NI6fXiSsvOGmcLdsyWC00VQVDG+QyE2XHyy0+i1plRBmhEllWB8w8U6fZOK7j3KEPoIG0I31r2L6tCuUpYtbj4TdNGd28PqncoXNMHklVPfczQXpJ5GDvBGmEX+Y3C0LCdi7cqQWGEoP+Gz6ihhL1jzuu+UgNbaeyn+EBk6sk/p1LuAnvQAb7ZnuVi+J2Gn19szx0hKqyzSgN5PoOrNfcV04ysft9Trl5mmlodtCrYP3QZhC7d3kE7mcZPJaKCKZ21XtZOoZCtnuTs37AijufbmOVQ7sJbv13jait4CZJZAB02XUTKDMM05KIvf5+2RgXz0kUd7qHCCYyTGHbTlnjMBZbads9sscx0EUK/xSVyhXdLMIPkJCSzi7djL//dD81MG7C7xBAiWH/U1PzKZGmqoBocrLB/ha9Mlji0PJDvnducWpcxNRDaWHCWPcOs4XIOenKA4+Gp/UBc/ytlbaxVP98DX3iHP3CHxfBlAmN/MqQST/SjULjFnu/P0N4WLoKSllR274OPsnistzojaQjEty
+X-Stat-Signature: et3irces5hpxw5mhjf41qg34s3aqqa61
+X-HE-Tag: 1787045074-605198
+X-HE-Meta: U2FsdGVkX19GDt3CeyPsuzq7/ZsuMIe6G8JBY/Sw2AZPjBZ+Q0huicvIHaWobfxdOkYy0nyFFc1WGwDqdSOiRpsXiIvH9NeMhpVE6e/3U+fmTeyqy/UZeVXSYPZMWoQ+9y+7g0GwBT+tBfyNymAXOXTgRi772uc9y8S5srnb+ZsH3ICSwD82G8ZTbrsBM44z1KuHgjzlHv/1fVrzWIKWj/EicPwhNuESOQmyBApSyjbPrDa1IQaVRK7OlG22LFh21R3pQlvlgccA6AM9CQBrDzmHW/Wml1YViU2AtA5PO5bPdUoW8e3Wi1hnFGAxfNTLD87pkBFRnwJwvJEHF97hYQbb7b4WPpXbDv2LwwchEZCp3v3Gi+zULqYbfIQcYqTuYzDkCE5a+RXA76yvmKKvtciUyxwqCt9GzSueHcYFoTMaTBZ0Etzn3CUjnS8BFesg930uiXW0ck/cR8X4RpZcNQ8nnsputI6Hw2ZlmpmXgwvHOT/DlbsHdFy62AjeJAJRXnlqLWQ4LpsoZkdTxJLKt18JIF0lB8vAn2vpuDU6uIUb4ypgh+e9KSmMVKGhKjYHnXnzp/C+bjEtr6RLt8RgQ16eqFLESY7Jf8Db/sy68EDuXRIqTwYC0RwAorxwyNd2+U5wiHOaAt1UNepc6H4En9KevTGaw8l18L44iujnId0jqYM9SQ/bnwgFCbaqx3CWa34VDJtsRNRaOA+HrV2fbbVLToa1a/DGxSeP3ZkTTan2iJ/4NeIHG4rbpIEyz0eSJxB1RpqH6yYAMxsusb8VvUHwOBMHjy8b+TSOGnLBVvJPqvEBbsD0OfjFvSKpPqvlTRnhUR3JjJs8xLOlWzpI89abISvotk4YuVKnjzUhtaf6f8ZTp3rbjpbXwboUOllViWTIJpqAkmMiWAh+c6AZbVb36wz84qruDR3abEyHCAKT13m8HYhVcY8CFVOToXApa/RTO0SkKilYS25paxl
+ TzzztL8A
+ q1DEedVpisxMzv9yDSAfAS+Sobh7Mk6Wn6P/I9zdi27+FvBhfJ2qKRiBAPlCK0wL9OcTjJFf+um/kLJF6afce12FPs61Wm+RamP1sHVS022BKkRmGr+OAdFCVIhzzN2Qkz0czK4x7hCufvB8tx8uiYKokp73xiex/VgiHZtGYNkPW6WPIHJPDbUpQFPtaIUwJIEiYn6DvPNAkM4ek7qGP9GusALGxLiZR70KR+4RdpT8552m1UYQBemGSej496n1mSi7ribqfn/xaXGaFN9hH0p8+DpIJ9JaJ67QdAUNhTz13dI3q2q+BXMFNqNkgA+Wk7xtrQSNEnt7gP50In3Oijo7TM7Q9bZc7+xooZicJscUVF4wUT6+5G+WqAqyXMy/sZ8iac0XfTK6w7WbF2W/iG6A0yC1TZGjhSNQkwybwcxPkm2BjnhFfIyJCKKzOK0hL7OQ7hCcqy0VRgT1NdsuqE8fFelxnrb35YBHQLGa7uqmKmn3aSyWJhk3QVA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,45 +124,153 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Wandun Chen <chenwandun@lixiang.com>
 
-This series fixes several error-handling issues in the reserved-memory
-initialization paths.
+__reserved_mem_reserve_reg() discards the error from
+early_init_dt_reserve_memory() and returns 0 unconditionally, so the
+caller counts the node in total_reserved_mem_cnt and the late scan
+initializes it without checking whether the early reservation actually
+succeeded. A region whose reservation failed is then handed to a
+device assuming the memory is protected.
 
-Static reserved-memory nodes are reserved during the early DT scan but
-initialized later. The first patch prevents a node whose early
-reservation failed from reaching the late initialization path.
+Propagate the error so failed reservations are no longer counted, and
+record the failed nodes so fdt_scan_reserved_mem_late() can skip them.
 
-The following two patches reject overlapping static regions. Without
-these checks, overlapping nodes can be initialized over the same
-physical memory, result in data corrupt.
+Recording the failed nodes explicitly is necessary because
+fdt_scan_reserved_mem_late() rescans the DT independently. It cannot
+tell from memblock whether early reservation succeeded.
 
-The last two patches fix cleanup of no-map regions after driver.
+The failed-node array is bounded by MAX_RESERVED_REGIONS, the number
+of static regions is not bounded by it, so on overflow the extra nodes
+fall back to being initialized, which is the current behavior.
 
-Sashiko reported these issues in [1] [2] [3].
+Fixes: 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved memory regions are processed")
+Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
+---
+ drivers/of/of_reserved_mem.c | 65 ++++++++++++++++++++++++++++++------
+ 1 file changed, 54 insertions(+), 11 deletions(-)
 
-[1] https://sashiko.dev/#/message/20260814090305.4C8741F00A3D%40smtp.kernel.org
-[2] https://sashiko.dev/#/message/20260814084718.29C341F000E9%40smtp.kernel.org
-[3] https://sashiko.dev/#/message/20260806100605.2C2C01F000E9%40smtp.kernel.org
-
-v1 --> v2:
-1. Rework failed-node tracking in patch 1: do not track zero-sized nodes,
-   and keep a reserved_mem slot when tracking overflows.
-2. Reject static reserved regions overlapping existing no-map regions.
-3. Keep MEMBLOCK_NOMAP flag for static no-map regions when init failure.
-
-Wandun Chen (5):
-  of: reserved_mem: skip init for regions whose early reservation failed
-  of: reserved_mem: reject static regions overlapping no-map memory
-  of: reserved_mem: reject statically placed regions overlapping
-    existing reservations
-  of: reserved_mem: release dynamically allocated no-map region on init
-    failure
-  of: reserved_mem: retain static no-map memory on init failure
-
- drivers/of/of_reserved_mem.c | 87 +++++++++++++++++++++++++++++-------
- include/linux/memblock.h     |  1 +
- mm/memblock.c                | 14 ++++++
- 3 files changed, 85 insertions(+), 17 deletions(-)
-
+diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
+index 8c9d6395d6a3..c6e73d710ee1 100644
+--- a/drivers/of/of_reserved_mem.c
++++ b/drivers/of/of_reserved_mem.c
+@@ -32,6 +32,30 @@ static struct reserved_mem *reserved_mem __refdata = reserved_mem_array;
+ static int total_reserved_mem_cnt = MAX_RESERVED_REGIONS;
+ static int reserved_mem_count;
+ 
++static int reserve_failed_nodes[MAX_RESERVED_REGIONS] __initdata;
++static int reserve_failed_nodes_cnt __initdata;
++
++static bool __init reserved_mem_node_reserve_failed(int node)
++{
++	int i;
++
++	for (i = 0; i < reserve_failed_nodes_cnt; i++)
++		if (reserve_failed_nodes[i] == node)
++			return true;
++	return false;
++}
++
++static bool __init record_reserve_failed_node(int node, const char *uname)
++{
++	if (reserve_failed_nodes_cnt == MAX_RESERVED_REGIONS) {
++		pr_err("too many failed regions, '%s' reservation failed\n", uname);
++		return false;
++	}
++
++	reserve_failed_nodes[reserve_failed_nodes_cnt++] = node;
++	return true;
++}
++
+ static int __init early_init_dt_alloc_reserved_memory_arch(phys_addr_t size,
+ 	phys_addr_t align, phys_addr_t start, phys_addr_t end, bool nomap,
+ 	phys_addr_t *res_base)
+@@ -141,7 +165,8 @@ static int __init early_init_dt_reserve_memory(phys_addr_t base,
+  * first entry in 'reg' property
+  */
+ static int __init __reserved_mem_reserve_reg(unsigned long node,
+-					     const char *uname)
++					     const char *uname,
++					     bool *should_record_failed_node)
+ {
+ 	phys_addr_t base, size;
+ 	int len, err;
+@@ -149,6 +174,8 @@ static int __init __reserved_mem_reserve_reg(unsigned long node,
+ 	bool nomap;
+ 	u64 b, s;
+ 
++	*should_record_failed_node = false;
++
+ 	prop = of_flat_dt_get_addr_size_prop(node, "reg", &len);
+ 	if (!prop || !len)
+ 		return -ENOENT;
+@@ -167,14 +194,20 @@ static int __init __reserved_mem_reserve_reg(unsigned long node,
+ 	base = b;
+ 	size = s;
+ 
+-	if (size && early_init_dt_reserve_memory(base, size, nomap) == 0) {
+-		fdt_fixup_reserved_mem_node(node, base, size);
+-		pr_debug("Reserved memory: reserved region for node '%s': base %pa, size %lu MiB\n",
+-			 uname, &base, (unsigned long)(size / SZ_1M));
+-	} else {
++	if (!size)
++		return -EINVAL;
++
++	err = early_init_dt_reserve_memory(base, size, nomap);
++	if (err) {
++		*should_record_failed_node = true;
+ 		pr_err("Reserved memory: failed to reserve memory for node '%s': base %pa, size %lu MiB\n",
+ 		       uname, &base, (unsigned long)(size / SZ_1M));
++		return err;
+ 	}
++
++	fdt_fixup_reserved_mem_node(node, base, size);
++	pr_debug("Reserved memory: reserved region for node '%s': base %pa, size %lu MiB\n",
++		 uname, &base, (unsigned long)(size / SZ_1M));
+ 	return 0;
+ }
+ 
+@@ -306,10 +339,14 @@ void __init fdt_scan_reserved_mem_late(void)
+ 		base = b;
+ 		size = s;
+ 
+-		if (size) {
+-			uname = fdt_get_name(fdt, child, NULL);
+-			fdt_init_reserved_mem_node(child, uname, base, size);
+-		}
++		if (!size)
++			continue;
++
++		if (reserved_mem_node_reserve_failed(child))
++			continue;
++
++		uname = fdt_get_name(fdt, child, NULL);
++		fdt_init_reserved_mem_node(child, uname, base, size);
+ 	}
+ 
+ 	/* check for overlapping reserved regions */
+@@ -349,6 +386,7 @@ int __init fdt_scan_reserved_mem(void)
+ 
+ 	fdt_for_each_subnode(child, fdt, node) {
+ 		const char *uname;
++		bool should_record_failed_node;
+ 		int err;
+ 
+ 		if (!of_fdt_device_is_available(fdt, child))
+@@ -356,9 +394,14 @@ int __init fdt_scan_reserved_mem(void)
+ 
+ 		uname = fdt_get_name(fdt, child, NULL);
+ 
+-		err = __reserved_mem_reserve_reg(child, uname);
++		err = __reserved_mem_reserve_reg(child, uname,
++						 &should_record_failed_node);
+ 		if (!err)
+ 			count++;
++		else if (should_record_failed_node &&
++			 !record_reserve_failed_node(child, uname))
++			/* Keep a slot for the untracked node's late initialization. */
++			count++;
+ 
+ 		/*
+ 		 * Save the nodes for the dynamically-placed regions
 -- 
 2.43.0
 
