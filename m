@@ -4,91 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D213CC5B572
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 02:47:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77DD8C5DF74
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 02:52:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 913406B08BA; Mon, 17 Aug 2026 22:47:47 -0400 (EDT)
+	id 87D2A6B0135; Mon, 17 Aug 2026 22:52:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C2EC6B08BB; Mon, 17 Aug 2026 22:47:47 -0400 (EDT)
+	id 82E4F6B0137; Mon, 17 Aug 2026 22:52:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D8BC6B08BE; Mon, 17 Aug 2026 22:47:47 -0400 (EDT)
+	id 720976B0138; Mon, 17 Aug 2026 22:52:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 55D476B08BA
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:47:47 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 41861140A68
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:47:45 +0000 (UTC)
-X-FDA: 85112854890.11.4212079
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 26E62C000C
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:47:40 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=WQ+Cj8mw;
-	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B0136B0135
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:52:20 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D0D00C0A6E
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:52:19 +0000 (UTC)
+X-FDA: 85112866398.29.1E3A559
+Received: from mta0.migadu.com (out-83.mta0.migadu.com [91.218.175.83])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DCF66160003
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:52:17 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="SpY6/shO";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.83 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787021262;
+	s=arc-20220608; t=1787021538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=o8HXjTmtSGyMNj4VnIyLtTJCTZHouZ2WYIC15u5uiAg=;
-	b=aprpi4G3R/FEtmufuRKjGkPO9x0KKE3/SDI2WpAdB1MWljT+lRN6bvMvQM4JMwCbfjEjZI
-	yqA9tWJ8Vm/wsRfVUFS30atWqE4KptwHNvbS+T3BRczcq4MRcZTrqYUpvzpSMhQKOXyM4d
-	71OR4sbKd72hfgSELmM7SPSE1TSEcPk=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xJiH0ESi9xTkHt1Q5jRKh80eFTAjQdb7DvPeehsC1/I=;
+	b=cCE5BR7oeqGgpYxEdltEJB97PKf4tCf5wVb4IJUoSztfoWJYv+l1EWgrQm5Q/MdTg/7wzy
+	BMJ1pSfkYg8wLQECqvEw5+k6y8Q2B491/xgSh2LWRDw8M9S66g5wNkL9UnvbpJXOF1WYpG
+	Wu9DCtOoHZyUM9lj0kFapbTN0eC3Y2Q=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=WQ+Cj8mw;
-	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="SpY6/shO";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.83 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787021262;
-	b=szvW7wZpnbGU74l6ae2NhSyN7ZUQf5Zsgjl1vu0cevBTU3pQzLy8WM9f6mzQnRtFjkop3T
-	H5QzkOt34RRb4ZQu5Vhad9YNAw4mnlJHyUo0oP1a8L4erc3OUgQ79Y5kxk4iVajhW8D3Ww
-	tpEpPd/IKnfZyyomXiguv3wbFAiuxvI=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1787021258; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=o8HXjTmtSGyMNj4VnIyLtTJCTZHouZ2WYIC15u5uiAg=;
-	b=WQ+Cj8mwZmaBFLekZcDMQlJNnUAv2TNgEIw/11vHEfNWqL9dn3KwvaXeBg+F84z/K8RxVXY3Equ8/FBqsT5+z54Wdz9mmKLpAxBuqcYKKsr2IGqxns7UW7TH6Klgkkl6qvftCNK5jzhKvTwgDNr+rkQ5ekAvQQrAAcVB1n/C60k=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R611e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X9Blfsr_1787021256;
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X9Blfsr_1787021256 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 18 Aug 2026 10:47:37 +0800
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	hughd@google.com
-Cc: vbabka@kernel.org,
-	annh@google.com,
-	ziy@nvidia.com,
-	liam@infradead.org,
-	nico.pache@linux.dev,
-	dev.jain@arm.com,
-	ryan.roberts@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] mm: fix incorrect vm_flags usage when checking allowable orders for tmpfs
-Date: Tue, 18 Aug 2026 10:47:26 +0800
-Message-ID: <7d5b5eb27be798f89d563b06254c947ff53db0b2.1787020910.git.baolin.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.5
+	t=1787021538;
+	b=NA/UhHEII8urAMZ4xM7UW8YPTcp2tdvsGBgDb9zrGWeMUD8VTrXjyfXNSSj7pR1A7iA12x
+	PGcuA3yynC0wD+l63vaB1xA246+aLz7uCZ/lGcw1Jv5NGizSsAcCqZB2ZilNLUVCXIPxZc
+	sdBs0oBk8Iw6tf8C4L4u34PZCINbDYY=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=+tjcYmM4+1lY/ufxesPT9Adlqs9FR04NAEFsPbm6s8c=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787021536; v=1; x=1787626336;
+ b=SpY6/shOZ3utvqYsXQXYPFvHPOv51bEh6uJjaMySYjay6u1j3+cknzXzsrfUlK0/x6Q0DSa9
+ 9oYN+U75Mi8SLfb8gwmt7wzcMC6UJrT9cJXVP2e6JPatAoSTZ2MjkBeWuKTouvo+xhnCwp4IYAH
+ ItZnps/mpdDhpqu4/H6ItHkA=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (3.112.29.171)
+	by mta11.migadu.com with ESMTPS id 9923006abc1b77f9;
+	Tue, 18 Aug 2026 02:52:06 +0000
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 18 Aug 2026 10:52:02 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Chris Li <chrisl@kernel.org>, Nico Pache <nico.pache@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>,
+	Gregory Price <gourry@gourry.net>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+	SeongJae Park <sj@kernel.org>, David Rientjes <rientjes@google.com>,
+	Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>,
+	Zicheng Wang <wangzicheng@honor.com>,
+	Chen Ridong <chenridong@xiaomi.com>,
+	Tal Zussman <tz2294@columbia.edu>, Kairui Song <ryncsn@gmail.com>,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Subject: Re: [PATCH RFC 06/15] mm/mglru: use explicit tier range in
+ read_ctrl_pos()
+Message-ID: <aoPI0hlFe1uOPeFO@MiWiFi-R3L-srv>
+References: <20260804-mglru-fg-v1-0-4d8dad39dad6@tencent.com>
+ <20260804-mglru-fg-v1-6-4d8dad39dad6@tencent.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 26E62C000C
-X-Stat-Signature: eafk9mnenq7ab9u8foor7zwb3ik65x6q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260804-mglru-fg-v1-6-4d8dad39dad6@tencent.com>
+X-Stat-Signature: 6afk8g5z7nktgmqyg6mhtithxq7qthxy
+X-Rspamd-Queue-Id: DCF66160003
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1787021260-98800
-X-HE-Meta: U2FsdGVkX18GNcwtD5sgrULsPz1UcRHA2OG/A7XEZNPUDMlQa45IWbRQG/gdXjnfzvYDxVtXvqH4m3EKpWgZ6RtddA1lFKcnw+jVqjbslVkgSuMH2E8yvrpJOrnvb/LZdQiDed4yPZ55GEaD6kTfAtSyzqC+M0XsZOVM4yye5LXlGSS+98ogBEL8hd2OKemb9U9XwMkPJBVM86iOSredTtdU0SDXR8iCsLOtwHASn5K/jvBVhm9OCrLS5vbL1gm8BGXv4hBa4YGft0IsNbgs2ZOjOgTnZo2a2Bx0wTg0qiD/lQdhsw5v1p52y4KRtvs1weuT2/TD5Tth+xQkGFZe4tkmLLyj6gpqDX3/tJ4S/2MRJKqjvhP32h4ELhl/PXKWChTQbCCRVYXZDru+r+aiTpoQ5kaoyji/c8T1K80B762+0YWFM9wtOqW1Q8J9oUcVNOR/O6CQI62ReX+E5zlvGDKDqPBYurULqH5PJBTBViFCkEc42YiM1KJyVcdB2UaGwfm1M+JpCj/1CRTlqcE6yp1bWb6yK8I1z610pSgwv706EJuB63bASZMga2DnFbT/QacSZwKIZIVHjeCjsLZT773akBF18Q2Sign+ejRGHGZd6l52Yp5dNOi8buebwI1wbJFlG8Pxtm4hEVNy5r5F8fCRaNZz34OoRWNknI14neulrjFDiKxN4g9OmfWOnOYDNoOdzzSmMwebo8TKR9Qlzg153MAaIUIY9jU72bAVYXQrrL9P2+Ar0IpbwHBCdJSxyuZjxKhuseddob86dT4mGgdbwhuTzdY9vcWlyDq/qhhlpOI33g03fYhPaOJFCVP5kY+oLngk6mYC+sm1kBNgq4NaPDVPca133fw2ruGOHBAAf1Tc0hq32qtpLFt/2nuwkmaqzlhBSEFwV67wwcX5PpSJ9KFBSrhzLzq2DuRtPUR4QFChRJ3pOvbbZWytsQie7fCdJn0mt6WdHN1Fv+f
- Z+DY6PBb
- 82bw8ma2l4kXcGKZhMuw5XYgOTqO6ZvJms4apuubAvca5TPLDQAlotHgclTgq7DCtX/+rY0ou2a7F4Z5D6sGv5Z/TVp8Vt/7WLDKYsTRpPK91rRhCDjcD8T0CCwWkt7Di3MPyD6Ts1D+RXy5hKuunrSv1MpGXgA4EkET9fWzbX9/4at0PBOdVIFFInvU21AXZXF7DJof4lJmES6eejG7Hv6sYVUJq5CQI3LPeO5kGrCWhVX0ftT5TVxirDz184vMQL6992z1YMQ9ZAoO0n+pAstFhV+bTKqqqQv43MdEMsB+IkrVWnEgnkS8S3dicdlx7rhWY
+X-HE-Tag: 1787021537-78760
+X-HE-Meta: U2FsdGVkX1832k/Bo1P0tywzquz05c5+7sAtxOf0Tk0vPtTINhpCHwD12Kw9GaFnGvA0tGlyb+gBT8yT8D+9nLH/ojIiS8lNk53IGb+7QoK3Y+qgKY0pgJq4saFC2YDLECZEs7VdMXc5dXTwoQUaKgB1sZBsnAjMhUowB7EC2Ejh8J/ehxajI2+apBie+7bJgSGN9MYjzPjmj3l5/+va0fJjX4Swqa6/w5fK7AfYXe8KXlwFBMtOenDIT+8Fdu0q0P4F27puTkChdzc2EV5tTgJN0HRExZWtXlYPHxxECluwblTFMzd3a4xOiRb/BsyvPdbjkV7eYdPrqUxIrX8/GrIMpc6Jh+BTlDAFnCi0nGHoZMbvmUcGB7xGkOD2iyeBWyPO7VTGe1yQZJNNH01cHFXit350mpxD10MZjFJH80T1YEA3WquaC/G5TRNY8KDnMbrg6yKC84Rs7slJWQgJEP3PeNz6rIyV5k52ozjt6z1h2diERkJfAf2kySSPj8TMBMwWSkdroDvXrIanOy9oWK3fRGQhO6qkUHU3TNpn3lQegwgZsvYQjhJz8TbrKJWmtz4NZKZAAxEXOUGlu91yGwnGl+2aLdO7up9JgOio2wYzxwYj6WEk4s0YOsKaaAQSOSefUEhLTAFqU3Pemyqro481n7G2CZActe7xIIIEZQ2R3L4M6H7Orp/3pZ0+7lF7SWk+IWXyjmJ9baEQ4N2TYt3JONzIYXMYEFE/4IQHU82SvJxYIXbG+Mlz7B4cwY+sfGChspID+BeJ3pPXNZahbXu+ccxWV5JdftTMWSM/iMGrhC5wefYB/GvoR5r2RnIWA8Tz1xI3qJGz96qtvTPoxhhRvppMiDuzb0sd9bFMORJ/iPDRszSW5oEcU5R+rXp+oBO06oeobmtcyNv6pyYoybOB2SgSCXs70Z0mF7qKopKm3ejlj/m4vgnpGP4kVwnTX1D8mYJ81NhRdoL3Krk
+ DnKHLCBi
+ dAuR+16VpI/PMmMBSck0s1sbuiaYowf4C/qKM7MjnUr1mf4cOk/kppoUhqG6rWRZYecWsgxnnHFnCQ6NpLw9YkOBzH4H5T7Ds+VjRHeEqH6YgV09mz0/HHrLJKMBt7BD45ZEf5J/6GTBYq+vSWBnGwB+KUpP+psBTSKHwEWl9bNbJME93oPn/1cwPlc6Vy9o/7ypnXp2HOLvvn4GMv2K642f96v3SO2n1aOoOHJeeY05OUFoRBpOWcLH7EdhmGCj29RNWyldITVzenXgzTkiJgJEY6sXgp5qEP/xVQhANXty1mVH1wtHTLiae89aCmXXY9v+bRTq+tDx4DS28X4bX9s84CTb8uqwvNa4XpUoU57jDcB3yCkEW7tv8S47EvKt8mDPwIqno2GGHJxENDoCGTaFeiqybERkdvvNA0/h3/pUySE6ZM+BkP3X71zCFal7poQ2XbUpCEhEF5CAqP3dC40y1oWJFH1mFNCjrG5eQpC2xYx8UvK8VPTUidBSXKdc52rvyzHWXGDevUdQdf8W9A8yD9FM/0DFS5ckO53GTf+2+vEXu0M/99uhSmQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,74 +116,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Lance reported that when nothing else causes the mm to be considered for
-khugepaged collapse, an MADV_HUGEPAGE-advised tmpfs VMA alone does not trigger
-scanning.
+On 08/04/26 at 03:47am, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> read_ctrl_pos() encodes the tier range in a single "tier" parameter
+> via "tier % MAX_NR_TIERS" as the start and "min(tier, MAX_NR_TIERS-1)"
+> as the end.  This is hard to follow or maintain or extend. Tier
+> values 0..3 select a single tier, while tier == MAX_NR_TIERS selects
+> the full range.
+> 
+> Replace it with explicit (tier_min, tier_max) parameters using a
+> half-open [tier_min, tier_max) interval, which is the conventional C
+> idiom.  The call sites become self-documenting:
+> 
+>   - get_tier_idx:   (0, 1) for tier 0, (tier, tier+1) for each tier
+>   - get_type_to_scan: (0, MAX_NR_TIERS) for the full range
 
-After commit 6beeab870e70 ("mm: shmem: move shmem_huge_global_enabled() into
-shmem_allowable_huge_orders()"), the shmem/tmpfs allowable order check reads
-vma->flags directly.  However, when MADV_HUGEPAGE is handled,
-khugepaged_enter_vma() is called before the VMA's flags have been updated,
-so the check uses stale flags and incorrectly rejects the VMA for collapse.
-As a result, khugepaged does not collapse the tmpfs file into PMD order in time.
+I agree with the complexity, while I am starting to like the original
+style once I understand it. Maybe add sentences to explain it?
 
-Fix this by calling khugepaged_enter_vma() with the new VMA flags in
-madvise_update_vma(). Meanwhile we can remove the khugepaged_enter_vma()
-in hugepage_madvise().
+Anyway, leave this to other reviewers.
 
-Reported-by: Lance Yang <lance.yang@linux.dev>
-Closes: https://lore.kernel.org/all/20260815181632.21453-1-lance.yang@linux.dev/
-Fixes: 6beeab870e70 ("mm: shmem: move shmem_huge_global_enabled() into shmem_allowable_huge_orders()")
-Cc: stable@vger.kernel.org
-Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
-Changes from v1:
-v1: https://lore.kernel.org/all/ed34ca03ae7d65e89467fb87bc961f5497049c00.1786948410.git.baolin.wang@linux.alibaba.com/
- - Update the commit message (per Lorenzo).
- - Call khugepaged_enter_vma() in madvise_update_vma() (per Lorenzo).
----
- mm/khugepaged.c | 6 ------
- mm/madvise.c    | 8 ++++++++
- 2 files changed, 8 insertions(+), 6 deletions(-)
-
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 5a06e3942e88..79effd3f3da4 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -454,12 +454,6 @@ int hugepage_madvise(struct vm_area_struct *vma,
- 	case MADV_HUGEPAGE:
- 		*vm_flags &= ~VM_NOHUGEPAGE;
- 		*vm_flags |= VM_HUGEPAGE;
--		/*
--		 * If the vma become good for khugepaged to scan,
--		 * register it here without waiting a page fault that
--		 * may not happen any time soon.
--		 */
--		khugepaged_enter_vma(vma, *vm_flags);
- 		break;
- 	case MADV_NOHUGEPAGE:
- 		*vm_flags &= ~VM_HUGEPAGE;
-diff --git a/mm/madvise.c b/mm/madvise.c
-index c179938097bf..cb93cf82d8df 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -178,6 +178,14 @@ static int madvise_update_vma(vm_flags_t new_flags,
- 	/* vm_flags is protected by the mmap_lock held in write mode. */
- 	vma_start_write(vma);
- 	vma->flags = new_vma_flags;
-+	/*
-+	 * If the vma become good for khugepaged to scan,
-+	 * register it here without waiting a page fault that
-+	 * may not happen any time soon.
-+	 */
-+	if (vma_flags_test(&new_vma_flags, VMA_HUGEPAGE_BIT))
-+		khugepaged_enter_vma(vma, vma_flags_to_legacy(new_vma_flags));
-+
- 	if (set_new_anon_name)
- 		return replace_anon_vma_name(vma, anon_name);
- 
--- 
-2.47.3
-
+> 
+> No functional change.
+> 
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  mm/vmscan.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index c2ea92c2b69e..a359d5a1ff41 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -3192,8 +3192,8 @@ struct ctrl_pos {
+>  	int gain;
+>  };
+>  
+> -static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier, int gain,
+> -			  struct ctrl_pos *pos)
+> +static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier_min,
+> +			  int tier_max, int gain, struct ctrl_pos *pos)
+>  {
+>  	int i;
+>  	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+> @@ -3202,7 +3202,7 @@ static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier, int gain,
+>  	pos->gain = gain;
+>  	pos->refaulted = pos->total = 0;
+>  
+> -	for (i = tier % MAX_NR_TIERS; i <= min(tier, MAX_NR_TIERS - 1); i++) {
+> +	for (i = tier_min; i < tier_max; i++) {
+>  		pos->refaulted += lrugen->avg_refaulted[type][i] +
+>  				  atomic_long_read(&lrugen->refaulted[hist][type][i]);
+>  		pos->total += lrugen->avg_total[type][i] +
+> @@ -4805,9 +4805,9 @@ static int get_tier_idx(struct lruvec *lruvec, int type)
+>  	 * This value is chosen because any other tier would have at least twice
+>  	 * as many refaults as the first tier.
+>  	 */
+> -	read_ctrl_pos(lruvec, type, 0, 2, &sp);
+> +	read_ctrl_pos(lruvec, type, 0, 1, 2, &sp);
+>  	for (tier = 1; tier < MAX_NR_TIERS; tier++) {
+> -		read_ctrl_pos(lruvec, type, tier, 3, &pv);
+> +		read_ctrl_pos(lruvec, type, tier, tier + 1, 3, &pv);
+>  		if (!positive_ctrl_err(&sp, &pv))
+>  			break;
+>  	}
+> @@ -4828,8 +4828,8 @@ static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
+>  	 * Compare the sum of all tiers of anon with that of file to determine
+>  	 * which type to scan.
+>  	 */
+> -	read_ctrl_pos(lruvec, LRU_GEN_ANON, MAX_NR_TIERS, swappiness, &sp);
+> -	read_ctrl_pos(lruvec, LRU_GEN_FILE, MAX_NR_TIERS, MAX_SWAPPINESS - swappiness, &pv);
+> +	read_ctrl_pos(lruvec, LRU_GEN_ANON, 0, MAX_NR_TIERS, swappiness, &sp);
+> +	read_ctrl_pos(lruvec, LRU_GEN_FILE, 0, MAX_NR_TIERS, MAX_SWAPPINESS - swappiness, &pv);
+>  
+>  	return positive_ctrl_err(&sp, &pv);
+>  }
+> 
+> -- 
+> 2.55.0
+> 
+> 
 
