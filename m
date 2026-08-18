@@ -4,115 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B342C5DF81
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 16:11:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8696C5DF81
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 16:11:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A86AA6B018F; Tue, 18 Aug 2026 12:11:18 -0400 (EDT)
+	id BE62D6B0536; Tue, 18 Aug 2026 12:11:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5DC96B0488; Tue, 18 Aug 2026 12:11:18 -0400 (EDT)
+	id B98066B05AF; Tue, 18 Aug 2026 12:11:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 974256B0536; Tue, 18 Aug 2026 12:11:18 -0400 (EDT)
+	id A85776B0779; Tue, 18 Aug 2026 12:11:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CC396B018F
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:11:18 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 151C78011B
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:11:18 +0000 (UTC)
-X-FDA: 85114879836.06.B72CBF1
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 542BC80014
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:11:16 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=wb+uQEdD;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of 3IoSEagkKCJcK1ILEJ18L7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--tarunsahu.bounces.google.com designates 209.85.218.71 as permitted sender) smtp.mailfrom=3IoSEagkKCJcK1ILEJ18L7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--tarunsahu.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E6496B0536
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:11:32 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 17C6B1A0171
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:11:32 +0000 (UTC)
+X-FDA: 85114880424.08.F57572F
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 66FD04000C
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:11:30 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="mXVQOR x";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf12.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787069476;
+	s=arc-20220608; t=1787069490;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gq4c916t8aM4R9/gOTYj07vE672c6Dn+UdOcLkpJL3k=;
-	b=18wLOP2/7QQbFFOprvC25RTJSTdgz78hjvXpLez4mvk/ze4Muhmg2Z2Booh7H8vPpFUkvu
-	D2KBBtYy4PrYXD4XLEMZEOykx7nUDJuXnUOcsxMONJJ8OTEARf1VirqQJoCi8ug7v1q18+
-	toxqISrRiBCJTJfedfBzBwLu0FEWqo0=
+	bh=nX6Ci+N1yckREzOLlHG8MRMpXVzr2Q4lmsP91rgqCg0=;
+	b=GgTyG/tUAfVvvOlbYAvMfCZYKrwVmyhIaz1vWROAVQPvON4lxpSUC10gKgi6UN2WoTvK4W
+	R3OdpDJxaTuMyl+mAgbxjiEnNyxcmKzIWp7q0/qq6c2sujRnIJRcW5b8m6bQ64IT0dtlsq
+	M7A/H0QTIqLNIwVW3dkV5X5cpGTY4UY=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=wb+uQEdD;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of 3IoSEagkKCJcK1ILEJ18L7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--tarunsahu.bounces.google.com designates 209.85.218.71 as permitted sender) smtp.mailfrom=3IoSEagkKCJcK1ILEJ18L7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--tarunsahu.bounces.google.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="mXVQOR x";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf12.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787069476;
-	b=1rSpWiiwnCY0fvIWdPPpXS75BccaH9eLbg5a9LQDkseJh8/bV6wEbLavjmzUobOajq2vCl
-	98n0hgUsaD5KzEpeMFUksussDkNyhQZRa4TRZtUbTUTDZEFOg463Xxa3T7+d8ZMRtzo8sL
-	hc6U32D/dMTOjrdqCSpGcZLARn/FVt0=
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c1c4715cf0eso422232066b.2
-        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:11:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787069475; x=1787674275; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gq4c916t8aM4R9/gOTYj07vE672c6Dn+UdOcLkpJL3k=;
-        b=wb+uQEdDB8Dm1rgeIwtk0Bily9TSb0Joq15+oT6MKmYJAsnNXR/eKq+rUwdvZCuwru
-         HJG3RQ/3v1dA+o3s7CXEdbvQNFlydCfWyg+FdWdUFHILt32QakvwRAWwzuA6q2zGbc9x
-         UBPuJ+wbNLTeLwNsFYjiVqRaldFoo13U7VR8c0MeEM51+G4Bq/tAcEWwXdBWW40TMI4W
-         w2RTx71rofcM/j31+zJtwi8xYeEw3mU+pe5O6VEMK5LkKyGjSpRBr5UT169kJfN2pr50
-         GmqFSg23+6OrqtAuMTebqrVKCgQh4ThiWz6WOMyFLqg9Nviv5xmcwqE+Cj8ckYdR/skR
-         MTRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787069475; x=1787674275;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gq4c916t8aM4R9/gOTYj07vE672c6Dn+UdOcLkpJL3k=;
-        b=NwFI/ALUsZpTgLdEk4fckLQuZga1SjISh6MuG9hjGAF4TzjG1Ctz+su5+8c3yS1DWi
-         d4XHaYNS/0/0H8HfbsGMARMDWaqxyAssvs+hG2xZDRJonIka7zdQIV+uGZsxGJFojss6
-         g+RPNcJWmU3huyUDHd+kkRzEdRYr5gdmHb6T64srsiG+RV5GEXur2doLTuXH+saI1gay
-         O0I4F6Ru9j2Df8ZNTAHhhGWbN8gzVCrQAq3wcoH2enjlDo0xAsEB2uwzTR0T60v/v6Tk
-         uWOe2ha9MVJmRFnoKykcCHLVgfn6Bsx73aRPvIjNeh01TCsLIj9pY5Intv60W3bNV+u/
-         0EPQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr/iLim9fdB6UwKvAoq2cyNQs803MUOT0WZTYPMKt53pACX1FfKRelyK2NJ0BAwWBKWB7MqqdC7kw==@kvack.org
-X-Gm-Message-State: AOJu0Yz/5Rx2HcE0+livro8rovi06yD+tEzm3npgW02FdwI+M8Rnj9Te
-	MYatcFJCyHeK9PSkpxoolXn6x2Qgi8VqDpQkMIYDCzLmoOhE2hpghYf4hVHMPDyoBsyvlQC4DjT
-	rSWhotBmyZxcCTc/gxA==
-X-Received: from edrs9.prod.google.com ([2002:aa7:c549:0:b0:6a3:6b8a:8011])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:434c:b0:69a:928:9405 with SMTP id 4fb4d7f45d1cf-6a38a8dbbefmr17632626a12.1.1787069474414;
- Tue, 18 Aug 2026 09:11:14 -0700 (PDT)
-Date: Tue, 18 Aug 2026 16:11:13 +0000
-In-Reply-To: <ans2Qvo0453cc_DD@google.com>
-Mime-Version: 1.0
-References: <20260728121138.1103610-1-tarunsahu@google.com>
- <20260728121138.1103610-2-tarunsahu@google.com> <anpXjM_lg_UTpl0q@google.com>
- <9huzqzk4zt3n.fsf@tarunix.c.googlers.com> <ans2Qvo0453cc_DD@google.com>
-Message-ID: <9huzlda3v272.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v4 01/11] liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
-From: tarunsahu@google.com
-To: Sean Christopherson <seanjc@google.com>
-Cc: ackerleytng@google.com, fuad.tabba@linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
-	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
-	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
-	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
-	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
-	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
-	suzuki.poulose@arm.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 542BC80014
-X-Stat-Signature: mroie9k3p8w6wt1nyud9ar5mmba4kgd5
+	t=1787069490;
+	b=lIGvJhKL7WpXToFNRPQNCzHK9nDu4QjEHmlsR/UcVDgBZts0nir/AxfV96k9dor6f+Pof+
+	lfHUd+cKQhcVMNze/8+q7jjAL7M9cATqRO3shRjUiP9yJkPdUdrAg6rhHJNk3qKzCZ0l7n
+	okADtgNuLHLawxBtxX69hguF2421WMQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=nX6Ci+N1yckREzOLlHG8MRMpXVzr2Q4lmsP91rgqCg0=; b=mXVQOR
+	xbH3vjlUcNdExAt0OLf554yBdyb8QfIpWeZQIusoGkduAVkH2I2iu/VaV2MHS1H3x5UJ1CULPArJq
+	uq6nCRRA4iMBSC0ZJ/2atiBav8uMfKJJRmJSTeuVeSnWsZhTyoDen80Nu0l2Udsl95kFQBtJR969H
+	+l/T0GkK9hPtGb4EkBB5Loauo3hKv+KwFBIfvgvu4sv/0hRXr/o8T09kPxMsFLR73qf3Ut5/ir3Ni
+	o31/H5R2HAnFAxGIkQ99RiXQS5yNNwu1Wl/1uUQg9D+v4vi7OzWu+U6mjZLFibi5TA2sA2DZ+vFLM
+	e8LFV7aUTXtB9vRKmLvTqq+8nGQg==;
+Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708] (helo=fangorn.surriel.com)
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1wwLga-00000001TR7-1R1J;
+	Tue, 18 Aug 2026 15:25:08 +0000
+From: Rik van Riel <riel@surriel.com>
+To: linux-kernel@vger.kernel.org
+Cc: kernel-team@meta.com,
+	joro@8bytes.org,
+	will@kernel.org,
+	robin.murphy@arm.com,
+	iommu@lists.linux.dev,
+	liam@infradead.org,
+	maple-tree@lists.infradead.org,
+	linux-mm@kvack.org,
+	ashok.raj@oss.qualcomm.com,
+	jgg@ziepe.ca,
+	kyle@mcmartin.ca,
+	Rik van Riel <riel@surriel.com>
+Subject: [RFC PATCH 1/3] iommu/iova: convert from rbtree to maple tree
+Date: Tue, 18 Aug 2026 11:25:01 -0400
+Message-ID: <20260818152505.1057922-2-riel@surriel.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260818152505.1057922-1-riel@surriel.com>
+References: <20260818152505.1057922-1-riel@surriel.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 66FD04000C
+X-Stat-Signature: gzguo7mcspq7axsi9af4fuato9bqaogx
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-HE-Tag: 1787069476-254913
-X-HE-Meta: U2FsdGVkX1/jCxWVo24DBQu/CU4kwxGG0JVDEfBfk46O4qxFeOn4BGByxXhtjHL/QZyq1tOhaN3MhGWp1DkDvXpwZo+gh8Tx+PtJwKsZTz/XcSYLijIIP9/o21hj0xh/UMVHG9mXQ9PZWsRSHPi1EK6PKLWRUJJyX127Scj8OM379QbupwGL+nNwEwZx33W3lIFUCysi9fh4PwMh6qZ6gPkpx26Nj1TFqBTmT3MZwzTyIXQebNwWTPtdXGpPDW8wmbuRKDbnvPa2Fqr99RdYVeOBIxJ8fAhksho3bfVmeuwS1FSiC0XuD7OtdC+2XYy8m4qA1yaUNbLb9Z1UstqZXAm4fGnulJieXLYHFe6rvQSR0ujm/BkP/96ZXXvLdY1W0sAbwKmeuaUACyftpFcBvUgJX0gFemo5k/bZnyOOItSbQB4bIJqD6cgdGDjzAtpCAJL+LAS+OnfL6Flg39esf5lWyNXRXzOEByAg9yTkYpx1rkO18Li/d30BrUhEaK7AWj01rRWCqOld9GH/CaDNHgc+x7nUl5SEP+zlabZmjdfvwhBFylWPbt4C92dYkyS25V4KfrJua0Ry0xO42ZDPesAfJFF/K9WwgJnIms2Z8nrpStFILDICUIBlPRkvDdVt8VaSOcuC+fDOWtzTgxP26KDmvp0QpfApHQ6IfKWOH8lTaq0FDsz3DqeaxmNODM7pbfYTvV/H9OXOS6+YictAOFRFbU1AIEJ0zzhDVNjbQvUU7kn8II/DPWG27vvJYUM/PcomhXNGEBW+pDzwLLHS6s7iQ9i7RajpQ698XeST6lTKsXVwAKc0+nHFVMLu0lnX8L5JAM+nMBBvHnx5HoVYtwjIUCHXS/gui43YMSwr9oFZ1U/prEyYgnIMHwjlXxMEYS9BMn3atM7Q6h1PUYF3hEoNhFurA4FxJx+yyQevTZlGbixZ5a6oK5D9IkQvpLLBv6Abn79d5WO9JTfs7Uh
- ZmFXZ/hX
- 2l2FmsxXc6xU7ET4gpsZXCAwbC8tEugirGFaOwj3ZjfqJjB/RCh9wYXy/PYdDjyyO1NhFOyBP1NomyukUajAxR+3pjKh6Z8T9+PpT8WqPPzlQPGd6aW5CeVOJxFtHT1w1yftc31ab8AfGCmhlf9P1cWqJ4D+lLIlHuljivtd68KYzu8U2ESiIe9GzsRfAr75FReBVqoJEOJmisrFLOp2r5KaL6gTW2MNoXYEuwpo5qBvJ55UxAooTw1QFDnR+B/1nFKbj52ZfIx10pdeMdBCInSQNCuNfwxl6E8hXRZAumUX69h0afGtksWDdqIGsLAuiAFUc8iYdG8zzZPHMzMKVviVeqKyZ3ndWYeOZG3JLmP/kYFnNtbt7B5Hf3dSOsakoRHD3GbTlr97jcH6Rw8zweK20O1GfhbbJlTNrvXbjYqIWR2DkhLXKsO3pZmXMeozphGfYAEcTKeLh18Ub0ypGjtkNDvDm5BGqmW25P3bnNKDtUvP9BButf++aFXSaOTDTCrvZY4eOQzVVQQfZibvDECxrYRNUGneWoFy8pTWljB3x6W8wfBjiEYIb3+qlxHNBA3muMxRUOyny9vgDugfAa1iQ1cxkJ2GN9W++lN3jLv0lTWJolg8bTQCYRt4bJbVnBdxJ
+X-HE-Tag: 1787069490-460734
+X-HE-Meta: U2FsdGVkX1/00tKupEl5RkhTcnpW/D3SCaIY74uhaWuYRrpXBCUDgqHeAJMEhzCXZohjRK+ed2rjOD4K7jYshRUF3sA3HbYQpmQCEQIApvSFHHc6uVA4lFTQS8CpP6TzrnrsFcOvkDR+xtrVWTsZ39LtHQ5+fSkM/9EM0YEf35jTRzL/oB/H/HxNIMytL4VAs9y1TiM42eiQDWeKQsbLA82shv1RJci21m98P2AMeWOimgNL1dIjKjvWGCfl6mTqzEFdOLaqZzhQlMJU4s2l27WTeiCyYmX0lKM5PkERpwHPRs76K0V8ib5L7IGCDHG/AC3gF0hi/37MJISsFc5MqqdxqDi4i5l7PnZTuUycX250navscibnvRrubRzlTYTKxBxDo+Kgbn7cAdzt+AeFHYTCk9LPND8MX5wEsK1q+JvjC77L+TWZK6D/0WEQxxw4hWIAz1D528EP9TrnSxq/MEbcMJU0DovyyPi3Nb4SF/OhPFvJKQcTO93nH2m48EuqVxhlmukTn3nR0BLGGTEJ8u070FVNqPzefz1vyz1JfBTHcYN2tTZO85cSDVEqXHLTQIzyE9QQvk0qkvYpDGMXl42RNmg9gMwByX1pjyeK4PvJkT0l55ukZoEMyw+h/ly8RE8m8o8Fz0pZQFALjGd9rjAhSifrslG2i+9/mBqWhhuk094uQceMB5wdvdFKfyaIjZxyEtW+vwdgiXa/+yW/fqrPFJAZI+9r/alusXi2uRsrxZsb5ZMilaTH0Xo/Ktfn1CsQhj7lCKFMZPvMdhyXp7OFhGyYK4rRxI4N/GHQ11oeGICpzSWBVX/Qi2Y+H47qGvlxaugxqeydXAAx+5dvsQekWbMHruHg3x3GvMffzqY0KKterP2xZyDDEViT8X16Iby5Xt4Dq/F6hPcLK3QAv1U4raLgcaUkVYKVx/RSXDaub5X9SmLUePAIGBO/q7DNPqgv555uqZPm+fui5np
+ t8BUGXft
+ a0Yzg3YxFczhxkP9J8JmgGbp5RSeyzVstbzO23KukdiqaFjZafE9uKB5HHLiBxba8yqZAHnr4LzWY/z9aMoAX4vzf4WV2YI4q7mbVx9GK6IYlnGU4J6SpAd8nXBLdwDdkQ+r/7HWecA5jYQy96LCO0z5bEUx51zehXVyIoXdh4Vr3Ct4DkkiMr37TFVWoVsFmmBL6hlUb1GjFuCnuXd8FPI5asQ5NeTYl1QLQB8u4o3fBe032KK8GLHaJXYEb3cgt/eS9Mm3TAxRqRjCwWjxGZ1PvK0XAyXAG7b71i2GSi1szRjINNls9VRQ8JXaO9ks++k+UK1FY2vEbu5RIxeywjZMru6gwqJyOB2KBfxzEJdRXfTKXLnsQvajB7BJmnf4WQWhOYtzvUlfK7yU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,51 +101,636 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sean Christopherson <seanjc@google.com> writes:
+alloc_iova() looks for free space by walking the rbtree linearly.
+On production workloads at Meta, enough CPUs have ended up in that walk
+at the same time to trigger soft lockups.
 
-> On Tue, Aug 11, 2026, tarunsahu@google.com wrote:
->> Sean Christopherson <seanjc@google.com> writes:
->> 
->> > On Tue, Jul 28, 2026, Tarun Sahu wrote:
->> >> Introduce the LIVEUPDATE_GUEST_MEMFD Kconfig option. This option
->> >> enables live update support for KVM guest_memfd files, enabling
->> >> guest_memfd-backed memory preservation across kernel upgrades.
->> >> 
->> >> Currently this support only guest_memfd files that are full-shared
->> >> (INIT_SHARED and no support for private_mem).
->> >
->> > Why?  Specifically, why do we need/want a separate Kconfig for guest_memfd
->> > liveupdate versus KVM liveupdate?  I can _maybe_ see a KVM-wide Kconfig, but
->> > even that seems like a stretch given that (AFAIK) hypervisors are the one and
->> > only use-case for liveupdate.
->> 
->> LIVEUPDATE is used in many subsystem. It is possible to enable
->> liveupdate and kvm without enabling KVM_GUEST_MEMFD. So GUEST_MEMFD
->> preservation must depend on CONFIG_LIVEUPDATE and KVM_GUEST_MEMFD both.
->> LIVEUPDATE_GUEST_MEMFD Kconfig is wrapper on both of them. It need not
->> to be visible in menu, So I can make it hidden. WDYT?
->> 
->> Also, KVM VM_FILE preservation and GUEST_MEMFD preservation both depends
->> on LIVEUPDATE_GUEST_MEMFD in this patch series. [PATCH 05/11]*
->> Which is wrong. So I will update KVM VM_FILE preservation to depend only
->> on CONFIG_LIVEUPDATE.
->
-> Or just handle it all in the makefile?  E.g.
->
-> diff --git virt/kvm/Makefile.kvm virt/kvm/Makefile.kvm
-> index d047d4cf58c9..e6f098498795 100644
-> --- virt/kvm/Makefile.kvm
-> +++ virt/kvm/Makefile.kvm
-> @@ -13,3 +13,8 @@ kvm-$(CONFIG_HAVE_KVM_IRQ_ROUTING) += $(KVM)/irqchip.o
->  kvm-$(CONFIG_HAVE_KVM_DIRTY_RING) += $(KVM)/dirty_ring.o
->  kvm-$(CONFIG_HAVE_KVM_PFNCACHE) += $(KVM)/pfncache.o
->  kvm-$(CONFIG_KVM_GUEST_MEMFD) += $(KVM)/guest_memfd.o
-> +
-> +ifdef CONFIG_LIVEUPDATE
-> +kvm-y += $(KVM)/kvm_luo.o
-> +kvm-$(CONFIG_KVM_GUEST_MEMFD) += $(KVM)/guest_memfd_luo.o
-> +endif
+Index the iova ranges in a maple tree instead. Its gap search makes
+alloc_iova() O(log n).
 
-Sounds Good to me. Will take care of it. Thanks.
+__alloc_and_insert_iova_range() asks mas_empty_area_rev() for the
+highest free range below limit_pfn. Alignment is handled by rounding
+up the allocation size, prioritizing speed over address space waste,
+with the thought that many iova requests on a system will be similar
+in size, and reuse the same holes.
+
+remove_iova() stores NULL over the entry's range with
+mas_store_gfp(&mas, NULL, GFP_ATOMIC). mas_erase() is not usable here:
+it retries a failed allocation with GFP_KERNEL, which the irq-safe
+iova_lock does not allow.
+
+That store can fail when the tree needs a node to rebalance, and the
+entry then stays in the tree. The next patch marks such a range and
+retries the erase from iova_drain_deferred().
+
+reserve_iova() widens the requested range to cover every overlapping
+entry in iova_merge_overlaps(), stores one merged entry, and frees the
+entries that entry supersedes. A request already covered by an existing
+entry gets that entry back.
+
+struct iova loses its rb_node and shrinks from 40 to 16 bytes. Remove
+SLAB_HWCACHE_ALIGN to pack 4 iova structs in a cache line.
+
+The tree tracks gaps itself, so the IOVA_ANCHOR sentinel and the
+cached_node and cached32_node fields are gone.
+
+iova_rbtree_lock is renamed to iova_lock and handed to the tree with
+MT_FLAGS_LOCK_EXTERN, because the iova code can be called from interrupt
+context, and an irq safe lock is needed. The same lock also protects
+related iova data.
+
+The rcache layer is unchanged. It deals in raw pfn values and does not
+care what the ranges are kept in.
+
+Assisted-by: Claude:claude-opus-4-8
+Suggested-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Rik van Riel <riel@surriel.com>
+---
+ drivers/iommu/iova.c | 379 ++++++++++++++++---------------------------
+ include/linux/iova.h |  10 +-
+ 2 files changed, 140 insertions(+), 249 deletions(-)
+
+diff --git a/drivers/iommu/iova.c b/drivers/iommu/iova.c
+index 021daf6528de..69f80b14cb3d 100644
+--- a/drivers/iommu/iova.c
++++ b/drivers/iommu/iova.c
+@@ -13,9 +13,7 @@
+ #include <linux/bitops.h>
+ #include <linux/cpu.h>
+ #include <linux/workqueue.h>
+-
+-/* The anchor node sits above the top of the usable address space */
+-#define IOVA_ANCHOR	~0UL
++#include <linux/maple_tree.h>
+ 
+ #define IOVA_RANGE_CACHE_MAX_SIZE 6	/* log of max cached IOVA range size (in pages) */
+ 
+@@ -29,11 +27,6 @@ static void free_iova_rcaches(struct iova_domain *iovad);
+ static void free_cpu_cached_iovas(unsigned int cpu, struct iova_domain *iovad);
+ static void free_global_cached_iovas(struct iova_domain *iovad);
+ 
+-static struct iova *to_iova(struct rb_node *node)
+-{
+-	return rb_entry(node, struct iova, node);
+-}
+-
+ void
+ init_iova_domain(struct iova_domain *iovad, unsigned long granule,
+ 	unsigned long start_pfn)
+@@ -45,180 +38,68 @@ init_iova_domain(struct iova_domain *iovad, unsigned long granule,
+ 	 */
+ 	BUG_ON((granule > PAGE_SIZE) || !is_power_of_2(granule));
+ 
+-	spin_lock_init(&iovad->iova_rbtree_lock);
+-	iovad->rbroot = RB_ROOT;
+-	iovad->cached_node = &iovad->anchor.node;
+-	iovad->cached32_node = &iovad->anchor.node;
++	spin_lock_init(&iovad->iova_lock);
++	/*
++	 * IOVAs are freed from hardirq context; use the irq-safe iova_lock,
++	 * instead of the mtree lock. It also protects related iova data.
++	 */
++	mt_init_flags(&iovad->mtree,
++		      MT_FLAGS_ALLOC_RANGE | MT_FLAGS_LOCK_EXTERN);
++	mt_set_external_lock(&iovad->mtree, &iovad->iova_lock);
+ 	iovad->granule = granule;
+ 	iovad->start_pfn = start_pfn;
+ 	iovad->dma_32bit_pfn = 1UL << (32 - iova_shift(iovad));
+ 	iovad->max32_alloc_size = iovad->dma_32bit_pfn;
+-	iovad->anchor.pfn_lo = iovad->anchor.pfn_hi = IOVA_ANCHOR;
+-	rb_link_node(&iovad->anchor.node, NULL, &iovad->rbroot.rb_node);
+-	rb_insert_color(&iovad->anchor.node, &iovad->rbroot);
+ }
+ EXPORT_SYMBOL_GPL(init_iova_domain);
+ 
+-static struct rb_node *
+-__get_cached_rbnode(struct iova_domain *iovad, unsigned long limit_pfn)
+-{
+-	if (limit_pfn <= iovad->dma_32bit_pfn)
+-		return iovad->cached32_node;
+-
+-	return iovad->cached_node;
+-}
+-
+-static void
+-__cached_rbnode_insert_update(struct iova_domain *iovad, struct iova *new)
+-{
+-	if (new->pfn_hi < iovad->dma_32bit_pfn)
+-		iovad->cached32_node = &new->node;
+-	else
+-		iovad->cached_node = &new->node;
+-}
+-
+-static void
+-__cached_rbnode_delete_update(struct iova_domain *iovad, struct iova *free)
+-{
+-	struct iova *cached_iova;
+-
+-	cached_iova = to_iova(iovad->cached32_node);
+-	if (free == cached_iova ||
+-	    (free->pfn_hi < iovad->dma_32bit_pfn &&
+-	     free->pfn_lo >= cached_iova->pfn_lo))
+-		iovad->cached32_node = rb_next(&free->node);
+-
+-	if (free->pfn_lo < iovad->dma_32bit_pfn)
+-		iovad->max32_alloc_size = iovad->dma_32bit_pfn;
+-
+-	cached_iova = to_iova(iovad->cached_node);
+-	if (free->pfn_lo >= cached_iova->pfn_lo)
+-		iovad->cached_node = rb_next(&free->node);
+-}
+-
+-static struct rb_node *iova_find_limit(struct iova_domain *iovad, unsigned long limit_pfn)
+-{
+-	struct rb_node *node, *next;
+-	/*
+-	 * Ideally what we'd like to judge here is whether limit_pfn is close
+-	 * enough to the highest-allocated IOVA that starting the allocation
+-	 * walk from the anchor node will be quicker than this initial work to
+-	 * find an exact starting point (especially if that ends up being the
+-	 * anchor node anyway). This is an incredibly crude approximation which
+-	 * only really helps the most likely case, but is at least trivially easy.
+-	 */
+-	if (limit_pfn > iovad->dma_32bit_pfn)
+-		return &iovad->anchor.node;
+-
+-	node = iovad->rbroot.rb_node;
+-	while (to_iova(node)->pfn_hi < limit_pfn)
+-		node = node->rb_right;
+-
+-search_left:
+-	while (node->rb_left && to_iova(node->rb_left)->pfn_lo >= limit_pfn)
+-		node = node->rb_left;
+-
+-	if (!node->rb_left)
+-		return node;
+-
+-	next = node->rb_left;
+-	while (next->rb_right) {
+-		next = next->rb_right;
+-		if (to_iova(next)->pfn_lo >= limit_pfn) {
+-			node = next;
+-			goto search_left;
+-		}
+-	}
+-
+-	return node;
+-}
+-
+-/* Insert the iova into domain rbtree by holding writer lock */
+-static void
+-iova_insert_rbtree(struct rb_root *root, struct iova *iova,
+-		   struct rb_node *start)
+-{
+-	struct rb_node **new, *parent = NULL;
+-
+-	new = (start) ? &start : &(root->rb_node);
+-	/* Figure out where to put new node */
+-	while (*new) {
+-		struct iova *this = to_iova(*new);
+-
+-		parent = *new;
+-
+-		if (iova->pfn_lo < this->pfn_lo)
+-			new = &((*new)->rb_left);
+-		else if (iova->pfn_lo > this->pfn_lo)
+-			new = &((*new)->rb_right);
+-		else {
+-			WARN_ON(1); /* this should not happen */
+-			return;
+-		}
+-	}
+-	/* Add new node and rebalance tree. */
+-	rb_link_node(&iova->node, parent, new);
+-	rb_insert_color(&iova->node, root);
+-}
+-
+ static int __alloc_and_insert_iova_range(struct iova_domain *iovad,
+ 		unsigned long size, unsigned long limit_pfn,
+ 			struct iova *new, bool size_aligned)
+ {
+-	struct rb_node *curr, *prev;
+-	struct iova *curr_iova;
+ 	unsigned long flags;
+-	unsigned long new_pfn, retry_pfn;
++	unsigned long new_pfn;
+ 	unsigned long align_mask = ~0UL;
+-	unsigned long high_pfn = limit_pfn, low_pfn = iovad->start_pfn;
++	unsigned long search_size = size;
++	MA_STATE(mas, &iovad->mtree, 0, 0);
++
++	if (size_aligned) {
++		unsigned long align = 1UL << fls_long(size - 1);
+ 
+-	if (size_aligned)
+ 		align_mask <<= fls_long(size - 1);
++		search_size = size + align - 1;
++	}
+ 
+-	/* Walk the tree backwards */
+-	spin_lock_irqsave(&iovad->iova_rbtree_lock, flags);
++	spin_lock_irqsave(&iovad->iova_lock, flags);
++	/* No 32-bit request this large can fit until the hint is cleared. */
+ 	if (limit_pfn <= iovad->dma_32bit_pfn &&
+ 			size >= iovad->max32_alloc_size)
+-		goto iova32_full;
+-
+-	curr = __get_cached_rbnode(iovad, limit_pfn);
+-	curr_iova = to_iova(curr);
+-	retry_pfn = curr_iova->pfn_hi;
+-
+-retry:
+-	do {
+-		high_pfn = min(high_pfn, curr_iova->pfn_lo);
+-		new_pfn = (high_pfn - size) & align_mask;
+-		prev = curr;
+-		curr = rb_prev(curr);
+-		curr_iova = to_iova(curr);
+-	} while (curr && new_pfn <= curr_iova->pfn_hi && new_pfn >= low_pfn);
+-
+-	if (high_pfn < size || new_pfn < low_pfn) {
+-		if (low_pfn == iovad->start_pfn && retry_pfn < limit_pfn) {
+-			high_pfn = limit_pfn;
+-			low_pfn = retry_pfn + 1;
+-			curr = iova_find_limit(iovad, limit_pfn);
+-			curr_iova = to_iova(curr);
+-			goto retry;
+-		}
+-		iovad->max32_alloc_size = size;
+-		goto iova32_full;
++		goto alloc_fail;
++
++	if (mas_empty_area_rev(&mas, iovad->start_pfn,
++				 limit_pfn - 1, search_size)) {
++		/* Only real exhaustion sets the hint, not a failed store. */
++		if (limit_pfn <= iovad->dma_32bit_pfn)
++			iovad->max32_alloc_size = size;
++		goto alloc_fail;
+ 	}
+ 
+-	/* pfn_lo will point to size aligned address if size_aligned is set */
++	/* The gap is search_size wide, so alignment cannot pass start_pfn. */
++	new_pfn = (mas.last - size + 1) & align_mask;
++
+ 	new->pfn_lo = new_pfn;
+-	new->pfn_hi = new->pfn_lo + size - 1;
++	new->pfn_hi = new_pfn + size - 1;
+ 
+-	/* If we have 'prev', it's a valid place to start the insertion. */
+-	iova_insert_rbtree(&iovad->rbroot, new, prev);
+-	__cached_rbnode_insert_update(iovad, new);
++	mas.index = new->pfn_lo;
++	mas.last = new->pfn_hi;
++	if (mas_store_gfp(&mas, new, GFP_ATOMIC))
++		goto alloc_fail;
+ 
+-	spin_unlock_irqrestore(&iovad->iova_rbtree_lock, flags);
++	spin_unlock_irqrestore(&iovad->iova_lock, flags);
+ 	return 0;
+ 
+-iova32_full:
+-	spin_unlock_irqrestore(&iovad->iova_rbtree_lock, flags);
++alloc_fail:
++	spin_unlock_irqrestore(&iovad->iova_lock, flags);
+ 	return -ENOMEM;
+ }
+ 
+@@ -233,8 +114,7 @@ static struct iova *alloc_iova_mem(void)
+ 
+ static void free_iova_mem(struct iova *iova)
+ {
+-	if (iova->pfn_lo != IOVA_ANCHOR)
+-		kmem_cache_free(iova_cache, iova);
++	kmem_cache_free(iova_cache, iova);
+ }
+ 
+ /**
+@@ -275,29 +155,29 @@ EXPORT_SYMBOL_GPL(alloc_iova);
+ static struct iova *
+ private_find_iova(struct iova_domain *iovad, unsigned long pfn)
+ {
+-	struct rb_node *node = iovad->rbroot.rb_node;
+-
+-	assert_spin_locked(&iovad->iova_rbtree_lock);
+-
+-	while (node) {
+-		struct iova *iova = to_iova(node);
+-
+-		if (pfn < iova->pfn_lo)
+-			node = node->rb_left;
+-		else if (pfn > iova->pfn_hi)
+-			node = node->rb_right;
+-		else
+-			return iova;	/* pfn falls within iova's range */
+-	}
++	MA_STATE(mas, &iovad->mtree, pfn, pfn);
+ 
+-	return NULL;
++	assert_spin_locked(&iovad->iova_lock);
++	return mas_walk(&mas);
+ }
+ 
+ static void remove_iova(struct iova_domain *iovad, struct iova *iova)
+ {
+-	assert_spin_locked(&iovad->iova_rbtree_lock);
+-	__cached_rbnode_delete_update(iovad, iova);
+-	rb_erase(&iova->node, &iovad->rbroot);
++	MA_STATE(mas, &iovad->mtree, iova->pfn_lo, iova->pfn_hi);
++
++	assert_spin_locked(&iovad->iova_lock);
++
++	if (iova->pfn_lo < iovad->dma_32bit_pfn)
++		iovad->max32_alloc_size = iovad->dma_32bit_pfn;
++
++	/*
++	 * A failed store leaves the iova in the tree, so it cannot be freed
++	 * here. The range stays reserved until the domain is torn down.
++	 */
++	if (mas_store_gfp(&mas, NULL, GFP_ATOMIC))
++		return;
++
++	free_iova_mem(iova);
+ }
+ 
+ /**
+@@ -312,10 +192,9 @@ struct iova *find_iova(struct iova_domain *iovad, unsigned long pfn)
+ 	unsigned long flags;
+ 	struct iova *iova;
+ 
+-	/* Take the lock so that no other thread is manipulating the rbtree */
+-	spin_lock_irqsave(&iovad->iova_rbtree_lock, flags);
++	spin_lock_irqsave(&iovad->iova_lock, flags);
+ 	iova = private_find_iova(iovad, pfn);
+-	spin_unlock_irqrestore(&iovad->iova_rbtree_lock, flags);
++	spin_unlock_irqrestore(&iovad->iova_lock, flags);
+ 	return iova;
+ }
+ EXPORT_SYMBOL_GPL(find_iova);
+@@ -331,10 +210,9 @@ __free_iova(struct iova_domain *iovad, struct iova *iova)
+ {
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&iovad->iova_rbtree_lock, flags);
++	spin_lock_irqsave(&iovad->iova_lock, flags);
+ 	remove_iova(iovad, iova);
+-	spin_unlock_irqrestore(&iovad->iova_rbtree_lock, flags);
+-	free_iova_mem(iova);
++	spin_unlock_irqrestore(&iovad->iova_lock, flags);
+ }
+ EXPORT_SYMBOL_GPL(__free_iova);
+ 
+@@ -351,15 +229,14 @@ free_iova(struct iova_domain *iovad, unsigned long pfn)
+ 	unsigned long flags;
+ 	struct iova *iova;
+ 
+-	spin_lock_irqsave(&iovad->iova_rbtree_lock, flags);
++	spin_lock_irqsave(&iovad->iova_lock, flags);
+ 	iova = private_find_iova(iovad, pfn);
+ 	if (!iova) {
+-		spin_unlock_irqrestore(&iovad->iova_rbtree_lock, flags);
++		spin_unlock_irqrestore(&iovad->iova_lock, flags);
+ 		return;
+ 	}
+ 	remove_iova(iovad, iova);
+-	spin_unlock_irqrestore(&iovad->iova_rbtree_lock, flags);
+-	free_iova_mem(iova);
++	spin_unlock_irqrestore(&iovad->iova_lock, flags);
+ }
+ EXPORT_SYMBOL_GPL(free_iova);
+ 
+@@ -445,27 +322,26 @@ static void iova_domain_free_rcaches(struct iova_domain *iovad)
+  */
+ void put_iova_domain(struct iova_domain *iovad)
+ {
+-	struct iova *iova, *tmp;
++	unsigned long flags;
++	struct iova *iova;
++
++	MA_STATE(mas, &iovad->mtree, 0, 0);
+ 
+ 	if (iovad->rcaches)
+ 		iova_domain_free_rcaches(iovad);
+ 
+-	rbtree_postorder_for_each_entry_safe(iova, tmp, &iovad->rbroot, node)
++	/*
++	 * Nothing else can reach a domain being destroyed, but the maple tree
++	 * walk still has to hold the lock the tree was given.
++	 */
++	spin_lock_irqsave(&iovad->iova_lock, flags);
++	mas_for_each(&mas, iova, ULONG_MAX)
+ 		free_iova_mem(iova);
++	__mt_destroy(&iovad->mtree);
++	spin_unlock_irqrestore(&iovad->iova_lock, flags);
+ }
+ EXPORT_SYMBOL_GPL(put_iova_domain);
+ 
+-static int
+-__is_range_overlap(struct rb_node *node,
+-	unsigned long pfn_lo, unsigned long pfn_hi)
+-{
+-	struct iova *iova = to_iova(node);
+-
+-	if ((pfn_lo <= iova->pfn_hi) && (pfn_hi >= iova->pfn_lo))
+-		return 1;
+-	return 0;
+-}
+-
+ static inline struct iova *
+ alloc_and_init_iova(unsigned long pfn_lo, unsigned long pfn_hi)
+ {
+@@ -480,27 +356,28 @@ alloc_and_init_iova(unsigned long pfn_lo, unsigned long pfn_hi)
+ 	return iova;
+ }
+ 
+-static struct iova *
+-__insert_new_range(struct iova_domain *iovad,
+-	unsigned long pfn_lo, unsigned long pfn_hi)
++/*
++ * A maple tree cannot hold overlapping ranges, so overlapping reservations
++ * have to be merged into one wider entry.
++ */
++static struct iova *iova_merge_overlaps(struct iova_domain *iovad,
++					unsigned long *lo, unsigned long *hi)
+ {
+-	struct iova *iova;
++	unsigned long pfn_lo = *lo, pfn_hi = *hi;
++	struct iova *overlap;
+ 
+-	iova = alloc_and_init_iova(pfn_lo, pfn_hi);
+-	if (iova)
+-		iova_insert_rbtree(&iovad->rbroot, iova, NULL);
++	MA_STATE(mas, &iovad->mtree, pfn_lo, pfn_hi);
+ 
+-	return iova;
+-}
++	mas_for_each(&mas, overlap, pfn_hi) {
++		if (pfn_lo >= overlap->pfn_lo && pfn_hi <= overlap->pfn_hi)
++			return overlap;
++		if (overlap->pfn_lo < *lo)
++			*lo = overlap->pfn_lo;
++		if (overlap->pfn_hi > *hi)
++			*hi = overlap->pfn_hi;
++	}
+ 
+-static void
+-__adjust_overlap_range(struct iova *iova,
+-	unsigned long *pfn_lo, unsigned long *pfn_hi)
+-{
+-	if (*pfn_lo < iova->pfn_lo)
+-		iova->pfn_lo = *pfn_lo;
+-	if (*pfn_hi > iova->pfn_hi)
+-		*pfn_lo = iova->pfn_hi + 1;
++	return NULL;
+ }
+ 
+ /**
+@@ -510,41 +387,59 @@ __adjust_overlap_range(struct iova *iova,
+  * @pfn_hi:- higher pfn address
+  * This function allocates reserves the address range from pfn_lo to pfn_hi so
+  * that this address is not dished out as part of alloc_iova.
++ *
++ * If the requested range overlaps existing reservations, ranges are merged.
++ * If the requested range is fully covered by an existing reservation, the
++ * existing entry is returned without allocating.
+  */
+ struct iova *
+ reserve_iova(struct iova_domain *iovad,
+ 	unsigned long pfn_lo, unsigned long pfn_hi)
+ {
+-	struct rb_node *node;
++	unsigned long merged_lo = pfn_lo, merged_hi = pfn_hi;
++	struct iova *iova, *overlap;
+ 	unsigned long flags;
+-	struct iova *iova;
+-	unsigned int overlap = 0;
++
++	MA_STATE(mas, &iovad->mtree, 0, 0);
++	MA_STATE(fmas, &iovad->mtree, 0, 0);
+ 
+ 	/* Don't allow nonsensical pfns */
+ 	if (WARN_ON((pfn_hi | pfn_lo) > (ULLONG_MAX >> iova_shift(iovad))))
+ 		return NULL;
+ 
+-	spin_lock_irqsave(&iovad->iova_rbtree_lock, flags);
+-	for (node = rb_first(&iovad->rbroot); node; node = rb_next(node)) {
+-		if (__is_range_overlap(node, pfn_lo, pfn_hi)) {
+-			iova = to_iova(node);
+-			__adjust_overlap_range(iova, &pfn_lo, &pfn_hi);
+-			if ((pfn_lo >= iova->pfn_lo) &&
+-				(pfn_hi <= iova->pfn_hi))
+-				goto finish;
+-			overlap = 1;
+-
+-		} else if (overlap)
+-				break;
+-	}
++	spin_lock_irqsave(&iovad->iova_lock, flags);
++
++	/*
++	 * The overlapping iovas cannot be freed yet: the merged store below
++	 * can fail, and freeing before a failed store would leave dangling
++	 * pointers in the tree.
++	 */
++	iova = iova_merge_overlaps(iovad, &merged_lo, &merged_hi);
++	if (iova)
++		goto out;
++
++	iova = alloc_and_init_iova(merged_lo, merged_hi);
++	if (!iova)
++		goto out;
+ 
+-	/* We are here either because this is the first reserver node
+-	 * or need to insert remaining non overlap addr range
++	/*
++	 * The superseded overlaps are freed before the merged store, so the
++	 * store must not be able to fail after that point.
+ 	 */
+-	iova = __insert_new_range(iovad, pfn_lo, pfn_hi);
+-finish:
++	mas_set_range(&mas, merged_lo, merged_hi);
++	if (mas_preallocate(&mas, iova, GFP_ATOMIC)) {
++		free_iova_mem(iova);
++		iova = NULL;
++		goto out;
++	}
++
++	mas_set_range(&fmas, merged_lo, merged_hi);
++	mas_for_each(&fmas, overlap, merged_hi)
++		free_iova_mem(overlap);
+ 
+-	spin_unlock_irqrestore(&iovad->iova_rbtree_lock, flags);
++	mas_store_prealloc(&mas, iova);
++out:
++	spin_unlock_irqrestore(&iovad->iova_lock, flags);
+ 	return iova;
+ }
+ EXPORT_SYMBOL_GPL(reserve_iova);
+@@ -621,7 +516,7 @@ iova_magazine_free_pfns(struct iova_magazine *mag, struct iova_domain *iovad)
+ 	unsigned long flags;
+ 	int i;
+ 
+-	spin_lock_irqsave(&iovad->iova_rbtree_lock, flags);
++	spin_lock_irqsave(&iovad->iova_lock, flags);
+ 
+ 	for (i = 0 ; i < mag->size; ++i) {
+ 		struct iova *iova = private_find_iova(iovad, mag->pfns[i]);
+@@ -633,7 +528,7 @@ iova_magazine_free_pfns(struct iova_magazine *mag, struct iova_domain *iovad)
+ 		free_iova_mem(iova);
+ 	}
+ 
+-	spin_unlock_irqrestore(&iovad->iova_rbtree_lock, flags);
++	spin_unlock_irqrestore(&iovad->iova_lock, flags);
+ 
+ 	mag->size = 0;
+ }
+@@ -956,8 +851,8 @@ int iova_cache_get(void)
+ 
+ 	mutex_lock(&iova_cache_mutex);
+ 	if (!iova_cache_users) {
+-		iova_cache = kmem_cache_create("iommu_iova", sizeof(struct iova), 0,
+-					       SLAB_HWCACHE_ALIGN, NULL);
++		iova_cache = kmem_cache_create("iommu_iova", sizeof(struct iova),
++					       0, 0, NULL);
+ 		if (!iova_cache)
+ 			goto out_err;
+ 
+diff --git a/include/linux/iova.h b/include/linux/iova.h
+index d2c4fd923efa..a3dab6c5fd62 100644
+--- a/include/linux/iova.h
++++ b/include/linux/iova.h
+@@ -11,12 +11,11 @@
+ 
+ #include <linux/types.h>
+ #include <linux/kernel.h>
+-#include <linux/rbtree.h>
++#include <linux/maple_tree.h>
+ #include <linux/dma-mapping.h>
+ 
+ /* iova structure */
+ struct iova {
+-	struct rb_node	node;
+ 	unsigned long	pfn_hi; /* Highest allocated pfn */
+ 	unsigned long	pfn_lo; /* Lowest allocated pfn */
+ };
+@@ -26,15 +25,12 @@ struct iova_rcache;
+ 
+ /* holds all the iova translations for a domain */
+ struct iova_domain {
+-	spinlock_t	iova_rbtree_lock; /* Lock to protect update of rbtree */
+-	struct rb_root	rbroot;		/* iova domain rbtree root */
+-	struct rb_node	*cached_node;	/* Save last alloced node */
+-	struct rb_node	*cached32_node; /* Save last 32-bit alloced node */
++	spinlock_t	iova_lock;	/* Protects the maple tree */
++	struct maple_tree	mtree;
+ 	unsigned long	granule;	/* pfn granularity for this domain */
+ 	unsigned long	start_pfn;	/* Lower limit for this domain */
+ 	unsigned long	dma_32bit_pfn;
+ 	unsigned long	max32_alloc_size; /* Size of last failed allocation */
+-	struct iova	anchor;		/* rbtree lookup anchor */
+ 
+ 	struct iova_rcache	*rcaches;
+ 	struct hlist_node	cpuhp_dead;
+-- 
+2.53.0-Meta
 
 
