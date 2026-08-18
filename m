@@ -4,122 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F400C5DF7D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 15:57:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20FACC5DF7D
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 16:02:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A9256B02A5; Tue, 18 Aug 2026 11:57:18 -0400 (EDT)
+	id 19CD16B018D; Tue, 18 Aug 2026 12:02:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95A346B06EF; Tue, 18 Aug 2026 11:57:18 -0400 (EDT)
+	id 127136B018E; Tue, 18 Aug 2026 12:02:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 897026B077B; Tue, 18 Aug 2026 11:57:18 -0400 (EDT)
+	id F309A6B018F; Tue, 18 Aug 2026 12:02:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EAE06B02A5
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 11:57:18 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EB4DE160116
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 15:57:17 +0000 (UTC)
-X-FDA: 85114844514.08.733F6E5
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 2174D100007
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 15:57:15 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GHCrDmW2;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id B87566B018D
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:02:21 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3AA3B1C01CF
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:02:21 +0000 (UTC)
+X-FDA: 85114857282.05.5AD9A2B
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 799D6160012
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 16:02:19 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=No39rc8N;
+	spf=pass (imf08.hostedemail.com: domain of 3CYKEagYKCHoqcYlhaemmejc.amkjglsv-kkitYai.mpe@flex--seanjc.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3CYKEagYKCHoqcYlhaemmejc.amkjglsv-kkitYai.mpe@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787068636;
+	s=arc-20220608; t=1787068939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aJsNbFhcAvc23yP9oB4/NO35b1/oluJDB0GRajdvh5k=;
-	b=bi0TBhLzz+Gz2Vkr37Ha70o6rHYb52G27tG4SvkZAn69NOzUOGnxydGu05b3CKF1OhFwAp
-	V14//yV9mAQlPohy0uqBpzoHlh/E/4+zFdEV0nphBjWjS5DGEcOWtWfHhty0DKZFMr2YHu
-	r8fe+wmJlDkkPDX+3muCdfYAsLkSZXE=
+	bh=hTu8rIIeaYeWexH+JKqzOvDmozZVoZIeVfoU7C4RXZA=;
+	b=jT5gePkO4bDBw89DjJ/+ar+dFIdxzyZfxnRpHeocru8Nu5MeosWyIC56dlLvDt1Y8cjXIf
+	pJ/tZkNL2Lyv3qUnGboJ0j0WhgCKVx4HRAzTdQuhXwiv+OVB11qwG2JXnf0q1usrAuey8+
+	GoFdXYyQ7ZlXvj0w0cJdpl2PDXEm+Fs=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GHCrDmW2;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=No39rc8N;
+	spf=pass (imf08.hostedemail.com: domain of 3CYKEagYKCHoqcYlhaemmejc.amkjglsv-kkitYai.mpe@flex--seanjc.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3CYKEagYKCHoqcYlhaemmejc.amkjglsv-kkitYai.mpe@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787068636;
-	b=H0FXiqu0JzPeXgE8jnDF7WNe5I+V4uhvoG6DJ/VCG45P/Zkc4h9cgXgy4q6ZaTyYkifbKD
-	IaZU2z3tE3kYBlDHc+fPgHXObgMK22NLbDy7iMTpWIFD85BZxnOmCJ7xyHsdGVXp72A3Yw
-	B+fSWyLsx3eae4jUqvscLEgIDgNpxL0=
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7eb1dc6bd53so3486151a34.2
-        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:57:15 -0700 (PDT)
+	t=1787068939;
+	b=h5Cdfguw23zWM0Fdwzw9QPCfGziKvdrT/5/n0xjPZVgk5IL32LBDceTe6t32emo4hmGVu+
+	OAj5tcutc4ANI0YzNImjM4zWJOTlKNPjcmSkJEL+nT+6kq3mAWiWHLBvum068gF/QVCYVL
+	KUlOehCh21b94XP0tBcw0+LrsjL+FBE=
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cb7049fa552so4398645a12.2
+        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:02:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787068635; x=1787673435; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aJsNbFhcAvc23yP9oB4/NO35b1/oluJDB0GRajdvh5k=;
-        b=GHCrDmW2rXYIxfP4pZpmjqQh826hYiprywvtYwM7lFdYOUKjO4hwS3K/ejvRvkr3wQ
-         cYWgNFD74fwchyTzU+jwb7HKvMMICRH+PYu2U7yOpMLidLxP7qGpqnk4LDhKKN4s8TJZ
-         SWeDDP7miH/RwqakeKRhMAUsASO+cFBiPcUAWTVFsqB3FkM5KNPWoOGGZU5dhtjzwCj6
-         tqiMnYTOxJ6AFE04kWoXJ5/2qF94dQGnYKUBiDjhapXyQrJ4sTjtquawOC1pTJutl2hr
-         0hziR4BG6HzI67COqBBsIw9RYlz/EfJdf+7vLCA9iSnz1gxSulTNuNv/kGeHCw4xctZi
-         tqxA==
+        d=google.com; s=20251104; t=1787068938; x=1787673738; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hTu8rIIeaYeWexH+JKqzOvDmozZVoZIeVfoU7C4RXZA=;
+        b=No39rc8NkobPCt/46+6NPusspaYXKS+MAoB8A/m48+5jITiapneL1HhTLdipSYhlEy
+         qT6wdn2wg4/iibfWsXQBaYiu8i/dZiH1bagswHzSesExcwk7hZmmRLFnwn2QNQm2prHo
+         zWRhuoy+/AN23yggzXu37nc7b8wgOZVbUmSQpJ+VXNx344XahARnRzC4at/jaRTQoLXm
+         aFXBU3E+xnyNNovySqJLnnHK3Rz0jNrVin/62GBYbSRUWP8avchgLrgvjSewCjoyT4tx
+         WkEcqAJDUZQLw8RzlNnmfvLn3qItd72X2RXciNEUIKKUkzTLhiiTIVoYa9r2B2I5mKLE
+         M3Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787068635; x=1787673435;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aJsNbFhcAvc23yP9oB4/NO35b1/oluJDB0GRajdvh5k=;
-        b=LpbAJzXo0RyyjKAB9mMjnLV/hXBE/INo0L3I77mnYg6JNXy/6ZQ8bIwSA4nQTAEoW6
-         ayf1Z8CBWy53LV3J+VYFNw9fanPClAw3sNnSM4+N5fuJpdWuNUiv3t5/JlQcYy7r+Phd
-         3io9xHfZ27HInmzrFD960/mQRhYlZAqqpko5D4mGokXNwmVR+Kgu4fQvZH6HJMMXxbad
-         +AUnQlsJHhYMsS6cRawbOgiVisYYJ1pigdQuoZntFEpJWjQ315IaXdRExJ9SNj59XgaK
-         uwVDnISxFRbemm/DwGerwG78zQbtkn2flSXkxnzBu8fNL7HkeodHyK/MNI4mFEMozbHb
-         CGgQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrL+3j1zdhPw3JlHxsbyyzJNohT2G61l2xZuGVPAnBIZQ3C8aAU441yo/ioMy6Lkq3zaZg9X/N6DA==@kvack.org
-X-Gm-Message-State: AOJu0Yx95drE5XiE7kp2eLH5oKDePjqzsWMuyjjwhv+VwxXWeCq2pq6u
-	q01Z00zIztUlIQ48Eo1/1g6yuuy29RKEVCP5OMb2+yK/l4aP6rDqRGHa
-X-Gm-Gg: AR+sD111XrQZUNK47kr0lA5h8HE7KQCBwOdpDvpNHiBkFsU3G8g1oofhrppJTN6T/91
-	3ni4GNZsPWHq9EjEbTj7uaGS0vU2Hal74iiwbqBV+ne8n30GPt5rq/E9/ax+4msDdV78CnwHsQJ
-	rDpAolCvVa+p5rKCKeUB1tL9xR/bQKytIR8IvLV6SIpo2S7PCnCPnofnBUbXPozVg7Jq8VgJKay
-	43OnRtgHrxgOCqqhWFwdc+POXdZBvqYDIyuEgzY6kuSNDlkIUpyuPdYWkVINDKoskA3WSOEOe1G
-	VqhwHPspcPsiZAJ2B+MxUirRZe4vA4R4aR2qIqGDsuEam0hcBaww/R2kKRdKpfdntsWkkCX/iIT
-	yqK0N2wvgF2cD8lKLKm4feMr/NT0GCQ4rEXhj0PVhQxJKYS3EcPnFfUZmxaIlfMgizHBc6xsdB8
-	TIuwJeEyFwSxUBMNv7lbtj5EdBBYqPKQr6m0n+blp4QiNPgo7kWEBoY+dNHjaTYWxKBzHcA/I3q
-	zttZxgxOq8tFe5IfOtuxp+qLPQ+/sYXPRZgx3961lSc
-X-Received: by 2002:a05:6830:63cc:b0:7e6:f7fb:9678 with SMTP id 46e09a7af769-7f423c38469mr9469536a34.1.1787068634964;
-        Tue, 18 Aug 2026 08:57:14 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:49::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f41c0f3598sm5379975a34.20.2026.08.18.08.57.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 08:57:14 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Michal Hocko <mhocko@suse.com>
-Cc: liuqiqi@kylinos.cn,
-	linux-mm@kvack.org,
-	tj@kernel.org,
-	mkoutny@suse.com,
-	hannes@cmpxchg.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	akpm@linux-foundation.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/8] mm/memcontrol: introduce per-tier memory accounting and control
-Date: Tue, 18 Aug 2026 08:57:12 -0700
-Message-ID: <20260818155712.882286-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <aoQT45_Vu8KZ9rjk@tiehlicka>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1p3kacagw8u8wb6wfjpxax7s8cupya63
-X-Rspamd-Queue-Id: 2174D100007
-X-Rspamd-Server: rspam03
+        d=1e100.net; s=20251104; t=1787068938; x=1787673738;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hTu8rIIeaYeWexH+JKqzOvDmozZVoZIeVfoU7C4RXZA=;
+        b=RyhxJepINZwm/dBGZzebNQxqTgRr92ZD3g+ul2PmT7cdSHGfqVxTouC5kLLswPZYno
+         7s39of2u5t75vdJHacHcuNcF6GAtD+A3l1I7fbm0bv81/kOc2AolYda/c3/xbEeqAOUq
+         8KaSAW+WhgNZq1ny0bRuI7ki4mDfWDgFpOHoLEOzrXxOMlV4EqwspbmmHY77KQJ3jXCU
+         R9pZREZyYOC8qE//LrnHEiuWPyWTCRNJY9oS2sIkNXJK6ZXQmakW/TjZPJP/MshV/O2g
+         HMaBT6YSf3RCvrGUXGcDJxkFEbXkcy27fZBRfVwZOTHMb+uYu/Z45q85aLaikKiZ7DJG
+         zALg==
+X-Forwarded-Encrypted: i=1; AHgh+RpvTkXq23YDOLgIc4vSzbQR8oAJJYsF2GfR3FZ/VY2O5NiY0QSSzzrJAHUaRAolxe1SUg28bYGLXw==@kvack.org
+X-Gm-Message-State: AOJu0YxK9NCSi3plvIdN54D3+7nSoW0AR1TIr2FkgacdKM+DSELSmIwD
+	aoN4Jbslj31IwmoIOozQY9om9Zmfu69MZU6JX7hbrAgIjtnycQmj17XBfrJnMlhDQqCGJD4FdtI
+	qV2I8IA==
+X-Received: from pgvc22.prod.google.com ([2002:a65:6196:0:b0:cbf:d9a:2fcf])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7f99:b0:3c3:9df0:2d66
+ with SMTP id adf61e73a8af0-3cc719fe453mr37508125637.6.1787068937949; Tue, 18
+ Aug 2026 09:02:17 -0700 (PDT)
+Date: Tue, 18 Aug 2026 09:02:17 -0700
+In-Reply-To: <2vxzy0e3zgqz.fsf@kernel.org>
+Mime-Version: 1.0
+References: <20260728121138.1103610-1-tarunsahu@google.com>
+ <20260728121138.1103610-6-tarunsahu@google.com> <anphyjFv3FhF61iB@google.com>
+ <2vxzpkzo51wg.fsf@kernel.org> <anssOQFNZ2LfihbU@google.com>
+ <2vxzik5f311e.fsf@kernel.org> <anyObKiZIhfok5mk@google.com>
+ <2vxzqzjz1x5f.fsf@kernel.org> <aoMcqp0gr06YXAPU@google.com> <2vxzy0e3zgqz.fsf@kernel.org>
+Message-ID: <aoSCCTTBn9D5hqzk@google.com>
+Subject: Re: [PATCH v4 05/11] KVM: LUO: Support VM preservation across live updates
+From: Sean Christopherson <seanjc@google.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Tarun Sahu <tarunsahu@google.com>, ackerleytng@google.com, fuad.tabba@linux.dev, 
+	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
+	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, sagis@google.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
+	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
+	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
+	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
+	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
+	suzuki.poulose@arm.com
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 799D6160012
+X-Stat-Signature: n8z11qfc5xwmdocdakpukqpugto1huou
 X-Rspam-User: 
-X-HE-Tag: 1787068635-468083
-X-HE-Meta: U2FsdGVkX1/Cj9cvQZ0iHbnadQu3y4dKJBZNIMp8NjIZG33S4OQ/HuuCRyRjpHJ1zIvIOVYPERv3nqrut0qUDOaH4cBdhbztFLohA07TzhpbgOvkxyeldWtBKVlg1gEAa9V+tV/c7kK20XhSTHJfjW7oS04dS99M5ePYeCg0mTmmkdaIXuhigDl/wfpO/4HjtdMcJaIWH7nKp5vFpABWbbiLi7NqjuaFK84Qpzh9Jh8kCA+xj95ZbhW325zVwpFjGPuGsuIDkxpFdVTFIKZef9Z5s+V8zlNLXFq2D2qceURLNYE8PzgFz1d5ciiYkxWnWkye7FHQlEfu9IpbYNtmOuVKgasmziTwXYKLIiaeVu2UZfjYWDZkesQHKefuW4VwWoSrUTXt2m5vppZkIs8+6Otxa4bGcKadVVUV5KJGPUdkzZBEjyRXYFAUR8iZtVrD4zwMIJA3M+wJoEQObJkGhOyTuBcfqOqB4CkHJZZmW7iTgPYSK89VolYJ6UjoQYTwpRyyULt/1v6sbCKFYn7XUQZyQRnY43uTUgZfHX3cajwWXXfV2pTRDF6ESLY2j8I6y+S8A1/rMQU8KtwIXAjpSDPdJ/6R+/brS3z3bSb4D7u4bXgdSIZ8d+uONMk1PT7uYsp9KhdnHLyz5a1+GwODRFMUez83Zj9M0P4a1fM1Lm0Fi5GO47MWrz9gyTAq1e6D3mToVqVQmSHhL30wZwwYUisUcJ0Ndv4mYM78Guu5iqXcOeJUbBwGNIpgH03ilFUeuu3oYJTZ0VguIP7OmFQLJrWJT+z7iO/CIexxVpQHv6SQ9YJlcTewAmhn0PmWX2iQ++Zcjbg46/EIgq6NY21OD9itR82M3GwhjkSiaidO97PReAhOr7xQIm1+wsNkoWRM8YmC29RVdkD2X6Ncj8ljFmy7hyCbYNt//mEK302WIx1fgRx1R5UMtcSwUoJq1fi0Tz1qEcCTtCHmd41NBIp
- Lji8H0p+
- KMq4glsiVxNcDf4XhCBs+4OcqmHsFTxxl4LEpIi7OV5Q1RIxm7aCoimqaJRgQg2t80MYVOvkcaIRVKW8u0+h95eQ1v5cIQjJHL/WFNHVk3kNuGQdfe8qt6ieB3i43tzPBRTPYRdjbOQV+pIRyiBJLGSgATeJG7ahRakrVeTu9mELzQjC+knJXMnCfQKUaMyMPQNaLwbYaiSTVxrpb2EYLalQYjVPkXsHFspfjjPEdTe3H4kh8gaB3naQItrpnK7IfnxW8IyFyI2+YT/wYFlZj0r46A/zeYzV7AChw4HaC1n98sRwgRJBlRIrNckMVReiQ68+j17vkcvzFe39MfT1k/9URFXeWLW26LEG2kReAhUIVtIZIoAujpD3bTwcuGNqIQEMrwFtmcj9HBr3lgqHxc7PmZNOPgzD+pQWFR5sI/MCP1kqnWYtd1kAanef/GCSUsBXh0V9u1TqW+Fh60ZHfWsHzwBdq2JfuLYx8fmhQGTd91HuMMSsktqlsIX+v9Yq9XKeTvM8zpUPr6QCNq2CEHCD+goHIW2pjQB6Ck7oBLEZVNyM=
+X-HE-Tag: 1787068939-415820
+X-HE-Meta: U2FsdGVkX1+xGL8lY1xVCtI6eR8KHeOL117ZHov34XHaI54gG8zKuMngr0HOkNlSqhGvKvhz0MwcE+AofPRA+KYSRWP4ng6yr7ehQepoCZ06D9hbNO1z4jHg+acpQGFZYtU8YNxf2n5xYwIf1AI1RjSyWNIZz4PSLiv/frjnEd+WyeuZuHSHQe5Td7Jr6ys1qix8HDn0mWVf1TsoUep4xI0sobbHuhYc59u87qCYVjxVpIqQuFy1hW6YO85JAZk9c89NBjVPMgctGoAY8n7ypWnGZ7v4KTfn3b9Ad2bSEkGhj2bCQoguKeAn++gnH2sQieQajUfrNdHsbO/0rViMrsWCz76In68ywoHAm1A1ihqTfNFhbiNcg2XSsHlw6VZiIbCIxD0NgSaHH2plosgHK7fgAbp8M9ECold/B86Wy0sEXowstf+axmCTn717y1kZ9cezpVpjgMGZdngwn7V+IU+PVQtsKBzvvvnv3pKoJVXA7m7NHXQ/sGLQzcvYv//AHtTg2n9vZXVGlB7NMBEA82xsGEaYZq6UScKE3ElTG6qD48GFq02tqGpoIRtOgv30IYo/Md+0J2H1lBXz3MSWCZEzHl4BcrnStEVmjehR28DAeceLhrBk0hN7syyTriw85aZI4aECYp5yjrw55WT9NQXqgUxEjVyYKPgRHVcA7CHhVt2d85vdfqd2vkHEIl8GwF/FXg1j6pmFgQq33EJ69N2qRIvduWKU/Rhu6DYTvuxAcRmfjKrg8ykyo+5QnGDALKHqyGTaHRCPGLxy8lfL/FbxLpXrcW1vfqJ1HzqJUX5EBS35yWosE6KY+5B4uDsXNWhMLlkJ+Wrl2VG7FDGM2ab6KKlR4ZSn/9+U0QfCcMnK/8QogMYGLxVRddIkpAN1qh73pE8AgIyqvX+DmwvCNzsYDHMtjsKOC/I0dvOMZaEzS9o7ZZFEGZoFaYc/8HS0RrcgupA8LSTmH3+snwC
+ 1+EW8nvQ
+ dX4Dd1aVGtDoAswlU47CG2dAxNmT4vZ/Dx/hfCgj/byveEnfLXosnK+SilKJmS60orWwWmdui20Mdy/7wzoTUBGh9Xztv6fnzSTE3VSCweywcN5RMxl4MvzjmseZ88qyQ++EDPNt+F8wDGoR1POThgh1AzMn2nF6KIHACRecUXlpRrb4+Fr8XeO+olgpMJy7OzVKHsXSImxtzWW+GDcsG/w3PWGAEnflcT16bWcoQawYP/PUiGfyolzhClk/OU6jZ3usJHbosnk4Ty3UfN15FjtF9I7iahwouOd0w3FybDycjggwWz2dDuGnyMvMg9MKY+68QoeCjJDPwenZ+fVj8e2CqvKQU5gdq6mmk/+ozL+g70rm6JJURbU5bJ9QucxoJ/iFbtxiNJTBXOunGZcu29UZIftiNinV9KRSnjeoa0JkwmTtZLOd4m85DHODBJNdDRm4/iKwSW52LsSii5sY4JnrjzI1igdrvXUW9HDalCeLZ4nEx5UynzTxeUSd0YxgyAvErbVA2Ytu6fd0+2lXBHxgaI/aok4/pX/7KomufFEKr2rTNyDCd5PfGh3qcgXzQjSJtNIvLeAYx/sq0lOF02IRSjuRona3OEK+pjScMjHpUhLsB3fINgAFAOr+7XyEu9kNF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,34 +122,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 18 Aug 2026 10:12:19 +0200 Michal Hocko <mhocko@suse.com> wrote:
-
-> Are you aware of a similar work in this area by Joshua
-> https://lore.kernel.org/all/20260807202059.2620949-1-joshua.hahnjy@gmail.com/T/#u?
-> We owe Joshua review feedback for quite some time but if I have to be
-> honest the most impeding factor on my end is that I am not really
-> convinced tier aware controlling is the right direction. I have
-> expressed some concerns on one of the earlier proposal by Joshua
-> https://lore.kernel.org/all/aZ2LC0KPF0xsAwAL@tiehlicka/T/#u
+On Tue, Aug 18, 2026, Pratyush Yadav wrote:
+> Hi Sean,
 > 
-> In any way it would be great to talk and compare your approaches see
-> where they align and the discuss further.
+> On Mon, Aug 17 2026, Sean Christopherson wrote:
+> 
+> > On Sat, Aug 15, 2026, Pratyush Yadav wrote:
+> >> On Wed, Aug 12 2026, Sean Christopherson wrote:
+> >> > On Wed, Aug 12, 2026, Pratyush Yadav wrote:
+> >> So with live update, we don't need to keep backwards compatibility in
+> >> the ABI forever. Of course, it is good to minimize changes, but we have
+> >> more freedom to change it.
+> >
+> > Ah.  So this is the heart of the disconnect.  I very strongly disagree with the
+> > statement that live update doesn't need to support backwards compatibility.  I
+> > can totally believe that the folks working on live update are ok breaking backwards
+> > compatibility because their use cases are "fine" with such breakage.  And I can
+> > also believe live update as an upstream kernel feature being developed by those
+> > same folks is also ok with breaking backwards compatibility.
+> >
+> > But with my upstream KVM maintainer hat on, I am not ok with that.  I did not agree
+> > to support a world where KVM is allowed to break backwards compatibility, so long
+> > as it's done "carefully" or whatever.  If y'all want to deal with the resulting
+> > complexity, that's fine by me, but you'll be doing it without KVM.
+> 
+> Let's step back a bit. I don't think backwards compatibility in the
+> _ABI_ is all that important in live update's context. What is important
+> is that our users are able to live update from kernel version X to Y.
+> The line format the kernel uses to describe its state is an
+> implementation detail. Our users never see it.
 
-Hi Michal,
+The rule is thou shalt not break userspace.  Whether or not the breakage is the
+result of an explicit ABI change is irrelevant.
 
-I hope you have been doing well! Maybe this is a good opportunity to
-squash concerns about the series : -) I've sent a new version which
-addresses a lot of the concerns that David Hildenbrand had previously
-brought up [1]. This implementation is as transparent as can be to the
-user. I hope that this makes sense to you! 
+> The high level idea is that when you need to make a change to the ABI so
+> the kernel can better describe the objects/resources/files it is
+> passing, you create a new version of the ABI and allow transitions from
+> older versions.
+> 
+> Say you make some changes and need an ABI version v5. You don't get rid
+> of v4. You keep it around. LUO core will facilitate picking the right
+> version for the next kernel. So it will be possible to seamlessly
+> upgrade your kernel that speaks v4 to a new kernel that speaks v4 and
+> v5. Now this kernel can start speaking v5 if its successor speaks v5
+> too. And so on for going to v6 and v7, etc.
+> 
+> After a "reasonable" time given for upgrades, you deprecate v4. v4 has
+> been around long enough and our users have had a chance to go to kernels
+> speaking newer versions. That's when you remove the code for v4 from the
+> kernel.
+> 
+> We can argue what "reasonable" means, but the core idea stays. 
+> 
+> It will still be possible to go back to v4 or earlier, but you'd need an
+> extra stop along the way. And of course, vendors can keep a wider
+> support matrix downstream if they see the need for it.
+> 
+> Does this idea of "backwards compatibility" sound acceptable to you, at
+> least at a high level?
 
-IIRC you had some concerns about getting the interface right the first
-time we introduce this feature. Hopefully with no user-visible features
-(and only a mount option) your concerns there are resolved and hopefully
-we can work to figure out what remaining concerns there are.
+No.
 
-Thank you as always for your time. I hope you have a great day!
-Joshua
+It's probably fine for Google and other large companies that tightly control their
+kernels and use cases, and have the resources to juggle the resulting complexity,
+e.g. have kernel engineers on staff to track feature and dependencies, coordinate
+and plan kernel upgrades, etc.
 
-[1] https://lore.kernel.org/all/20260807202059.2620949-1-joshua.hahnjy@gmail.com/
+It's not acceptable for upstream, where downstream consumers often run a distro
+kernel, have much more varied use cases, and don't always have a horde of kernel
+engineers on staff to help them thread the needle you describe above.  And if
+supporting live update as a general feature for all users of the kernel isn't
+being factored into design considerations, then that needs to change, otherwise
+this is all dead in the water.
+
+I also don't see the point.  Maintaining a rigid save/restore ABI is annoying,
+but it's not _hard_ (or at least, not _that_ hard), especially if there's a set
+of well-documented best known practices that subsystems can follow, e.g. so that
+individual subsystems don't need to learn painful lessons first-hand.  I genuinely
+believe that maintaining the version hell you describe above would be more costly
+in the long run than simply committing to full backwards compatibility within a
+given subsystem.  I can imagine that enumerating what subsystems' information is
+in the payload will require a different scheme, but for a given subsystem, I don't
+see any reason to aim for anything less than full backwards compatibility.
 
