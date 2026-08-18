@@ -4,104 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB5CFC5DF70
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 05:39:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B03A0C5DF70
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 06:01:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EF9C6B0150; Tue, 18 Aug 2026 01:38:40 -0400 (EDT)
+	id 940F06B0143; Tue, 18 Aug 2026 02:01:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C79A6B0151; Tue, 18 Aug 2026 01:38:40 -0400 (EDT)
+	id 8F1BF6B014D; Tue, 18 Aug 2026 02:01:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 742F16B0152; Tue, 18 Aug 2026 01:38:40 -0400 (EDT)
+	id 7E0B76B0151; Tue, 18 Aug 2026 02:01:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C0E36B0150
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 01:38:40 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C3D2680A9A
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 05:38:39 +0000 (UTC)
-X-FDA: 85113285558.08.6B2CAEC
-Received: from mta1.migadu.com (out-159.mta1.migadu.com [95.215.58.159])
-	by imf31.hostedemail.com (Postfix) with ESMTP id ABBC920004
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 05:38:37 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XW06ohtZ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf31.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.159 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 580756B0143
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:01:39 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D4A7A120AD6
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 06:01:38 +0000 (UTC)
+X-FDA: 85113343476.15.49154F0
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2C7AE4000C
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 06:01:35 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=sk.com;
+	spf=pass (imf07.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787031518;
+	s=arc-20220608; t=1787032897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lr+lR4+IO3r0vpe8umZ7mEEDDFGJCtdsk10I1pkYKWU=;
-	b=i52rdoeWtxpmeC3gPlp7yQopzQBwXEP+2DlDjxTWWKkmvdFg8zcUVpwwPzs2DzDxhoB8Ek
-	KqPalDcpV3EW14tLCMO2mVtjXymkiIgXppQEk0jrNjBSywqg0DtwemxkLiIRSG6XAE0pFQ
-	+G39IAmG11Pcl/eIw6ECPXNHou0ZGrE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2HWQ+1Hofy0TiNJM3gg9vufAVBmsJX2uYq+bDtHscK8=;
+	b=zaX8feLh+qhdbcyw4YiJxVC6BCYxyHpZvS2AYxmvZ+L5CO6jhEsep1EjdW6UIBT/KUoWY4
+	uFM10kTMPrRCtO+V3kqn0i7VQ09/w23Awy/n5drtOZSoI8dnyzd6NjXoqodhHSX0pW4E0R
+	4l+qeEYI11EgIfj655CL2ZWVOlqIrZU=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XW06ohtZ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf31.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.159 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	imf07.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=sk.com;
+	spf=pass (imf07.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787031518;
-	b=hdOgrH0R5wcc0Hq+5K/P+8r78YGQz6wB8wjBvuF+Ru5NUX/Jfjol4fTtn/+nFMUm7Sh2sN
-	7EhiLzc0faGyM1H66x+CG9LclqDMK1QNoW1EEqX5ZYAy/7rgOO7vK3vn+M5XxZWW4okFo3
-	AGi3ye21gWGVSf4U6JswyuwX8jIrzpE=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=lr+lR4+IO3r0vpe8umZ7mEEDDFGJCtdsk10I1pkYKWU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787031516; v=1; x=1787636316;
- b=XW06ohtZY9wtYK8rcYukeP+kccgqnUHlbj+EA5IwyEXO7osJEmTOPwm6+zk6XDDTCmw8p3RD
- 0qAPDUbIXWf6m10OBaoPZN9Mlvzw7ruc6Oal2gK2bXLM1Gj6AIirHbbb6h/LDqSryk3RyGZsOeV
- IMrtrKMvGWldHbkWEDul+mMA=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2602:fce1:44f:115e::)
-	by smtp.migadu.com with ESMTPS id 591b174a047f5b98;
-	Tue, 18 Aug 2026 05:38:26 +0000
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: hongfu.li@linux.dev
+	t=1787032897;
+	b=RvlqEFu3PCBJPrTOWuh52lZA/ieQ9EkWNz5BiTgdrwbcGIDWrVdMzeiFMifrZtxkf1z5AL
+	ldqcEFE0dOkYN6A1yok2taFBK0t4Y1wgrGoP9XTm0JhCCv53r/MUf5rLRn/RTOW9psOyz5
+	OFYrPoqYFRkHsFtkO6TrNZCaclfwbkY=
+X-AuditID: a67dfc5b-c45ff70000001609-84-6a83f53a1e00
+From: Rakie Kim <rakie.kim@sk.com>
+To: Gregory Price <gourry@gourry.net>
 Cc: akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	nvdimm@lists.linux.dev,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	byungchul@sk.com,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
 	david@kernel.org,
 	ljs@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
 	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	usama.arif@linux.dev,
 	vbabka@kernel.org,
 	rppt@kernel.org,
 	surenb@google.com,
 	mhocko@suse.com,
-	shuah@kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lihongfu@kylinos.cn,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH] selftests/mm: khugepaged: consolidate error exits via kselftest helpers
-Date: Tue, 18 Aug 2026 13:38:16 +0800
-Message-Id: <20260818053816.27502-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260817061955.45454-1-hongfu.li@linux.dev>
-References: <20260817061955.45454-1-hongfu.li@linux.dev>
+	dave@stgolabs.net,
+	jic23@kernel.org,
+	dave.jiang@intel.com,
+	alison.schofield@intel.com,
+	vishal.l.verma@intel.com,
+	ira.weiny@intel.com,
+	harry@kernel.org,
+	kernel_team@skhynix.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com,
+	Rakie Kim <rakie.kim@sk.com>
+Subject: Re: [PATCH 0/4] mm/mempolicy: introduce package-aware weighted interleave
+Date: Tue, 18 Aug 2026 15:01:25 +0900
+Message-ID: <20260818060128.1876-1-rakie.kim@sk.com>
+X-Mailer: git-send-email 2.52.0.windows.1
+In-Reply-To: <aoJY53BJztPQYumw@gourry-fedora-PF4VCD3F>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrFIsWRmVeSWpSXmKPExsXC9ZZnka7V1+Ysg7svTCzmrF/DZnH38QU2
+	i103QixO3Gxks1h9cw2jxfOtvxgtft49zm5x/dZKRov9T5+zWDxoWsVkcXzrPHaLdacOsVmc
+	n3WKxeLyrjlsFvfW/Ge1ePPYzeJbn7TF/T4Hi5U//rBaHFm/ncli8qUFbBYdL++zWNyacIzJ
+	YvWaDIvZR++xO0h67Jx1l91jwaZSj+62y+wem1doeSze85LJY9OqTjaPTZ8msXucmPGbxWPn
+	Q0uPF5tnMnr0Nr9j85g6u95j/ZarLB6fN8kF8EVx2aSk5mSWpRbp2yVwZayYNpm94BRnxdbV
+	vewNjNfYuxg5OCQETCTObo3uYuQEM48u38cEEmYTUJI4tjcGxBQRUJVou+IOUsEssI1V4tZF
+	TRBbWCBIomv6c0YQmwWo5Nny2Ywg5bxAU9raRSEGakqs23iLBcTmFDCTuPTgOhuILSTAI/Fq
+	w36wVl4BQYmTM5+wQIyXl2jeOpu5i5ELqPcru8T7qV/ZIAZJShxccYNlAiP/LCQ9s5D0LGBk
+	WsUolJlXlpuYmWOil1GZl1mhl5yfu4kRGKPLav9E72D8dCH4EKMAB6MSD++OD01ZQqyJZcWV
+	uYcYJTiYlUR4P04GCvGmJFZWpRblxxeV5qQWH2KU5mBREuc1+laeIiSQnliSmp2aWpBaBJNl
+	4uCUamBMeF7oMPnf3KKPCsuZj37dvCTl6J9lQuVc1xb0RK2OlhTXaJ23beY7Uc8dZ7iMxGzF
+	nwvVfo/Xdp3lJyTH/aI00tzkfd/N/b9lT2SeXHX83HRWs+pJjz8GrjjSU1O1x2qz4gEmz3cG
+	OiKWXo7LTYU5Xhn8Va4MuL97n0eSisrHoqbrwg0vK24qsRRnJBpqMRcVJwIACE9UAM0CAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrFIsWRmVeSWpSXmKPExsXCNUM9Rtfqa3OWwa+HmhZz1q9hs7j7+AKb
+	xa4bIRbnpsxmszhxs5HNYvXNNYwWz7f+YrT4efc4u8X1WysZLT4/e81ssf/pcxaLB02rmCyO
+	b53HbnF47klWi3WnDrFZnJ91isXi8q45bBb31vxntXjz2M3iW5+0xf0+B4uVP/6wWhy69pzV
+	4sj67UwWky8tYLPoeHmfxeLWhGNMFqvXZFj83raCzWL20XvsDnIeO2fdZfdYsKnUo7vtMrvH
+	5hVaHov3vGTy2LSqk81j06dJ7B4nZvxm8dj50NLjxeaZjB69ze/YPL7d9vBY/OIDk8fU2fUe
+	67dcZfH4vEkuQCCKyyYlNSezLLVI3y6BK2PFtMnsBac4K7au7mVvYLzG3sXIySEhYCJxdPk+
+	pi5GDg42ASWJY3tjQEwRAVWJtivuIBXMAttYJW5d1ASxhQWCJLqmP2cEsVmASp4tn80IUs4L
+	NKWtXRRioKbEuo23WEBsTgEziUsPrrOB2EICPBKvNuwHa+UVEJQ4OfMJC8R4eYnmrbOZJzDy
+	zEKSmoUktYCRaRWjSGZeWW5iZo6pXnF2RmVeZoVecn7uJkZgjC6r/TNxB+OXy+6HGAU4GJV4
+	eHd8aMoSYk0sK67MPcQowcGsJML7cTJQiDclsbIqtSg/vqg0J7X4EKM0B4uSOK9XeGqCkEB6
+	YklqdmpqQWoRTJaJg1OqgdFl/qbSS7d3Z2ccnMN56dGi5qMNUyWDVZqXLajcd27/Fx6BFXlJ
+	T+8znPnGIiw6d5r0XNar6u6yM/r+Rq14uqRhI7O3D9fjs55KW49w2OQ7/7vRWnTBNztAaIF0
+	e/aK83zTCjblpJaaXjwh8Ud7dtEF49bixnPl6rk9QV/k34WtEfKZ97nd7pASS3FGoqEWc1Fx
+	IgCfDHa9zQIAAA==
+X-CFilter-Loop: Reflected
+X-Rspamd-Queue-Id: 2C7AE4000C
+X-Stat-Signature: d5r5grhg8qaquf786cashz9x4eykjgt7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ABBC920004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 15hcowa155da1zsguiazond8oxhdudce
-X-HE-Tag: 1787031517-790661
-X-HE-Meta: U2FsdGVkX1/T4fY/4pCFenZBd6z2fE2A3FoOiAnIQlClBEWD9/nEExH8931pAtSViiA/+DLBHdIxDcm3kP+Xqw8nTxmXgsTg0sG73Nebz+z4nvVZX//nbYO0+4Z5xSX/CjLdHy2lzsHA3F7gA8OobJ4oyxnWzkOEo84NsSZV7NnZ3Kr49UX6lc5lPKhTKv8wk7C9D4q/c8oETUwP76YofIS/6/m4unofpdj69RZegBG8hWFoqcmqLM6cJhsTMdRhPQlxYWXdLUW2xw8W3BsC3bdpqMkgZzdsTMMWMjReYVZM0It82yGvCqYrEead3inMDzoSPU2Y1Apq7R9/uczNlGDLjG/ulvhbmlS3sQSjHv/jDGtISt5UzagHwkGuIFDamnq7C4MNCAVxJ2faSg3igjcD0UMNmrDrAiwiOCYZDrEs5+v2Jpee/OD4oPMrvylWUtW7Qq8GdtLBsVzEQYw060o20Aw2Tw6Rhd9PBCftRttSa7XjeaPS4Vg/x9WIYPIQ0SXISxKLzPHyho6HmNafcYy+wDLy+MBW4j2wCzGi8ClpDtck8lE67841Vv8aR06/sebSVhGYM/XOWFMiH1GHNQl3RUyDDSURviDwpdF0wvemOSgFPc2CnIOSNe97rh7wMijroOu1aPwN8M5AVQHbs57FT9mO4Wth4krIXtwxaIe8kACSwhOl+WMaF5sXhuXYmu3bYQaTdW0Ek2oKnqRHhZ+K4t5iyFY45H7z19aR0IMSD/xRSI3Jxy2EwHhowp9C9UPiAgQyOGl2u96I0NFnXls9lHomiN1ZEB37qKDEyyZvubR9ee3gi74KaZZgMGySyPKzFcRy4uekWZetIwnLD+YIkc8KeARNqgcvUl/yyq4eU+56Mo/hoYZeUQiUwf4kv+r5uNNz4yNkC3YuHzbQuSTm03cBM5WJkB6NdtbDA4uvT73+SaL8WVCXi/RfUCO2uhOoW+Z2ZDmTaC4drUo
- zL6NMlAW
- lSkFHSxIfAQfn1KtUlUqvLq2jbqqCwHKLmPe2PR2d17Ovj5wIaUkakEkkUG+7/11BxOwiUnMAMN3nMfBkwL0w11lzSGfuXxLhQ6dLc46Sxl5abTsWOYK5YgIo+lcvE9ABqrLZF4jI6fWEuBsa6ZRvDbHTrgosOIns0y6E/+41E+YALarp38ywoaOTkNRP3er5xxrbL4c2gdmRkonmoydNTofprsqo6lAZAaZdYE3qBzHSUtWKKK4CrjDraCx+LH+y8ZMxMUkszHxNRX1FzpbmlRA6vrS0JHE2NdOP
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787032895-167535
+X-HE-Meta: U2FsdGVkX1/9XAippTIyubohuiPbDLoWvRxQYmaYhHnIUQB4AeSosfp80DChgLAosDldwc5vzsdzU+Q4Xbtdz36w+CBts1bsZx6B1r27kChzH+N/E6wbmm5aYgZW6Ul6EuCLEYsuhB58VIDwsx6bQbLQ8+kWw5dm82TffyxXlo7ZDH389EZk86S1qnddg1x7XmOEabuUMIKrlMW6aO+ZqPekfrjzTDoJpVhWzKzwQKrY31JRL1t74q4WlfN2SKvPtCPmysqkaVTOlwQ7rVLaJFYQTg++fuvXbe/3BOhCrdu6GEVq6s9250pAvgm0gcw5V+mnNdQ4zaN/joPlfWmJuhuzX5Frps847M69Qb0lLxQSzcokvcgRveiI2ikqi32/F1s8Lku2bbL+yVKnKOz3T6mNfWl5v+jYYR7TqWyxhYKuIaDVknUyJ+VUJQfY/fLHUWBgQUKZsExqISaWSMhYOkudo1roJ+48wxKIeM/YMyM2cjfrZ8riKL681ijz7Ui9nurxQrJkZlFUJut3VFK3I66AvytbHbFt5MAi9MEbNF/JxPpY48xLfF8UuDiOIieO6DduNLPZ1cj4fwECgN2Pgp+GndFda7PpBkN2wF+kMg2mgEAA+kFBmd4IyC35ry/Dr02rRmWWHv1IKqfmQOJDYkYHq9d5zXADoE07gfc5zuskKaaB/mAIE5QFwQiCU9rcgoI+KgV7gbO4xjeFk8xl7NlZqgH3vDzb9CenuQRV5oDaNNdLdGPBzLSYE72Qx3mxzxm+G43X0vX05IhIdwcoA1sRPveIqzd3iwvX+fUgfDYtJEVJZcTGcerFoCHiclEKDcqwSS6E7Ab5f+t0jB1/dXuihW7wJyl7BOqNLBiaJxmEMkbYxmx/LXwG04vvTEIp929NvwiSCPYQ/2jvpk7YnxOnAH14veyxDyZSnu/eFXcwM6izJALFf/bsWQABMKOIWBZvs8muq9JsZCGU1l0
+ N5Y/k3JF
+ hdr94nT7HX7Ghgo9vaoRqLfOccSR1Po4wRloWxYY6oUb867bBfwYT30WSJ0YhZBtF2FYs5E9oMwsgmo53feBKQYQhU6oLw/yA6P54bWwISCbF6oCUIiEJxhkSCg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,16 +131,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sun, 16 Aug 2026 20:46:16 -0400 Gregory Price <gourry@gourry.net> wrote:
 
-On Mon, Aug 17, 2026 at 02:19:55PM +0800, Hongfu Li wrote:
->From: Hongfu Li <lihongfu@kylinos.cn>
->
->Replace the perror()+exit(EXIT_FAILURE) pattern with
->ksft_exit_fail_perror() so failures are reported through the
->kselftest framework, consistent with the rest of the file.
->
->Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
->---
+Hello Gregory,
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Thanks for your review and feedback.
+
+> I think you are over-complicating the explanation and that's making it
+> hard for folks to reason about this.
+
+You are right. I will keep my explanations focused on the key points
+from here on, and the next cover letter will be written that way as
+well.
+
+> My best understanding here is for multi-socket systems, weighted
+> interleave as-designed is inherently sub-optimal for scaled workloads
+> that utilize multi-socket ("package") memory resources (DRAM, CXL...)
+
+Your summary is correct. That is the problem this series addresses.
+
+> I think there is also an assumption that total memory utilization is
+> less than the total capacity - otherwise some of the assumptions here
+> break, but that comes with the general weighted interleave story.
+
+Your assumption is correct. It is the same as the existing weighted
+interleave: when the nodes are full, memory is allocated from other
+nodes.
+
+> I'm getting back from vacation, I will take a closer look this week.
+
+Thank you. I look forward to your comments.
+
+Thanks again for your time and review.
+
+Rakie Kim
 
