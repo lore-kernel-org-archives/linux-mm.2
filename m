@@ -4,111 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66180C5DF67
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 07:12:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4B27C5DF67
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 07:16:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 817C36B08F8; Tue, 18 Aug 2026 03:12:15 -0400 (EDT)
+	id 7D3306B0155; Tue, 18 Aug 2026 03:16:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EFEE6B08FB; Tue, 18 Aug 2026 03:12:15 -0400 (EDT)
+	id 7837A6B0157; Tue, 18 Aug 2026 03:16:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7056B6B08FD; Tue, 18 Aug 2026 03:12:15 -0400 (EDT)
+	id 64C456B0158; Tue, 18 Aug 2026 03:16:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B2A46B08F8
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:12:15 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CF27F40ADD
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:12:14 +0000 (UTC)
-X-FDA: 85113521388.19.FAD2B57
-Received: from mta1.migadu.com (out-185.mta1.migadu.com [95.215.58.185])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 81C7680005
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:12:11 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HQ1hs5OQ;
-	spf=pass (imf02.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.185 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 2AF0B6B0155
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:16:46 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7731740AFD
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:16:45 +0000 (UTC)
+X-FDA: 85113532770.17.18CE568
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 06FDE100003
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:16:42 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TUWDgzud;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787037133;
+	s=arc-20220608; t=1787037403;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1lDws7X1BprcipWdI99uEWfLkCe6M8EyI8bph9ZugdI=;
-	b=n8uReyMJL5q2OHOTXz92tzg39X7hSqWiyB3EV1ivUn6+rOu/GEZT8+BHNjsRNl/pB2iwcJ
-	94R+6b23ByH0ltWUkAB5q265vN7tQ7wup/xKPWxYqypzTOGC8MRl5PyHICYsncBAYS1tnb
-	+Qy3qp0zxjrxxXDc8X6f7ax2Mc0AW+0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787037133;
-	b=0zRAZV+K+sxz4W3ouccuzz2aeMtSSt9anzXXVoIeD/Jbw69KBcg5U7U6EEWxqLAdBO/SJr
-	0KgVzF2e9nXGOdiPxJRpQRa1HimFVMuDxyFa6Oo5qAkCcdlwZ28rwsYlAcH0PPNjG6/6fQ
-	PMlDGdJ8UD6jhmznFmTAvEEQN/DzIjc=
+	bh=YSi68YQ1b6ket9ADghC9xT0rrZLBKS9r3cQe8y6Lwd4=;
+	b=sUlq4qz/7iq9rOvqzhk+KuBR+rs+5ln1mjL7mhpV4pBs1oGPKKxTcpH3NC9Jpdprq2awUt
+	npptifJ+7uYxNQizwjKZqiz05/sKUPOBpj3zhZJFz8FpkHXyRfCfo7tnqYctdtuCuioOLO
+	eTajQlhEamXdFBpCqOC8bHDIhqJkbV4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HQ1hs5OQ;
-	spf=pass (imf02.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.185 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=FPJDATMWoGt1TFbDMRPs4zDCkqR5X1QfRmCXxZRdMd4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787037128; v=1; x=1787641928;
- b=HQ1hs5OQrXx8E917fOnxlLZsSrG2kY9wwGPc0+p5Hzk2siG2I15Q4BpPXMUyl2pM0TU3LXQt
- dDrzDU2YkplWOo4TewW7WpogwU4WuqiVk0OkW42cajq4Kyvej7rn4hw9hH5P0qjD5P7xiKa8z6Z
- //WbGNQCGkvZwgsNYA1Z5dUk=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (3.112.29.171)
-	by mta10.migadu.com with ESMTPS id a42f6392fa17638b;
-	Tue, 18 Aug 2026 07:12:08 +0000
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 18 Aug 2026 15:12:03 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Chris Li <chrisl@kernel.org>, Nico Pache <nico.pache@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>,
-	Gregory Price <gourry@gourry.net>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	SeongJae Park <sj@kernel.org>, David Rientjes <rientjes@google.com>,
-	Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>,
-	Zicheng Wang <wangzicheng@honor.com>,
-	Chen Ridong <chenridong@xiaomi.com>,
-	Tal Zussman <tz2294@columbia.edu>, Kairui Song <ryncsn@gmail.com>,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH RFC 09/15] mm/mglru: frequency guided workingset
- promotion (MGLRU-FG)
-Message-ID: <aoQFw_SWJBAdO8w-@MiWiFi-R3L-srv>
-References: <20260804-mglru-fg-v1-0-4d8dad39dad6@tencent.com>
- <20260804-mglru-fg-v1-9-4d8dad39dad6@tencent.com>
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TUWDgzud;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787037403;
+	b=15zqKXNwcr3E1PViSzGpvtfkvD977A1+Ozt2WUsYcHg+68b4rari5/Lg7A1oO37Mu5f5sW
+	E5OdaFLGKCR4Vc0JdLlTvhpLNu/o2sBQ0R/Xm8FW337c6sX4Dn36eT3mV/fUksgOkAJl8d
+	j/RWI+JT3dpPNhHIZ7T3v5Rr1rWOnqA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 581AA40136;
+	Tue, 18 Aug 2026 07:16:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E94FE1F000E9;
+	Tue, 18 Aug 2026 07:16:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787037401;
+	bh=YSi68YQ1b6ket9ADghC9xT0rrZLBKS9r3cQe8y6Lwd4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=TUWDgzudrlRbaLYizQ/L+Yv9HhJoPISIWkvwrqqXHkXYQ/P+Mjucy07z+SVpZ1Hp6
+	 1+9KTXdMY5MK6Bl5U6yE7HQU8SyMx5aAVVcmET66QYcsaIErLO2M4LjTbbDfSSVEg9
+	 KUfSLXuY3hio4aRh64O1hzuJa78MJ9tKa9NXlhtwOZBgiSAxwk/PdTOPXEXERacTOZ
+	 X89WCmwnRA0sc/SCIGgfkZ4fabn+PEY5vw5/yoDnAjl8sJI6PJHRsDjRb6sEKuE0Tx
+	 vLnZB2AJKTRiMH004WUuwyMr/+YxPjxsHhQhdd4C+CpFVTAIHsLSJ91VhJ9qR8sORX
+	 rwwRXiAHWZjNQ==
+Date: Tue, 18 Aug 2026 08:16:19 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+	Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, James Bottomley <James.Bottomley@hansenpartnership.com>, 
+	Hagen Paul Pfeifer <hagen@jauu.net>, Pedro Falcato <pfalcato@suse.de>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	Daehyeon Ko <4ncienth@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/secretmem: properly account locked pages
+Message-ID: <aoQFsk9GwrZvb7rM@lucifer>
+References: <20260814-secretmem-accounting-v1-1-d2f8c677980b@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260804-mglru-fg-v1-9-4d8dad39dad6@tencent.com>
+In-Reply-To: <20260814-secretmem-accounting-v1-1-d2f8c677980b@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: hmatzr588kwf7smhbg5tdsta7wbeqpnh
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 81C7680005
-X-HE-Tag: 1787037131-950698
-X-HE-Meta: U2FsdGVkX18MWKuJSLEO7GFa4mFwuI+KMTft01mshQho05E7bDYFtbvoNYRU37FS8JhdPBFe0UZLVv9dS4x0EthAGSfKyJuBvNlxr+qypkVHDYTwIuv5Mhdm8hP6kZT8OKdRgpdf4q613WABZpQLIOvLy4I6/zHNYeUSWTOP17dEinHoVsJ34Xf7iMgnmVQsYsI8WsAOxVZ17cbfuOubqHbmXgC2T2u8n2BHsTSIibvnJGEAhmBa8Kf8VxN4kUmuYKI8PpvZWuPpV4ZZmpUKOeB70QiVyE9x9Bkpzda70iaYnYWai8YlVJ0Vr4NdqTb4rzHXAkWPsPPFql9+l4Nud8zQqe6fBgysGbvd1FcYpB/CV5dwylPHqRVRQi0Xjl6+dT1WcjhvdJ33P37AwhWfp2K5csnjuSNK6cnhbVMAThCRIZBaav8g8oo41+iQh5tSiPADmMPUGaYuARYDh9A0YokCE1w8wFKpgoiEIprTGdfJxG0yq/NOVzy5tYKUf8x1QD2LB5QXAbW9EBqLiLRnivOK3pE66MnwovhTI6ui0Z7kRB2W0bDk8AdKIrSh5h+IOXHs/jTamBDGD2KgK5dhJF8/nFGPE/sMS8fxOGLJlJEBz/9cp9B1DDnjH3JFAG8MPCCAPJuX+Su24gZkDOIXlTtGagKFZHLEpoVyAg45rIri3Ogi5VRHkGpDkRGW26lExo+pZ7CsfqoHyGmLsFB2KIzWtnRDqIR5hw5Ca6xLmZMIVkdvIHZQilzenioLB/uj1JEucGwiweSPyh/pJj5/b9IImviQMEPlNO6mz0hcAtPp1Mcx6D0W6+nJ6YjQQeXXKTyFM8lu1sZTP0Ls8H4BXxZGEUFpWHzwLvCS9aYNfQYJmQpnS1eZ0H12VPDrzNa8NFrBpYGSYVFPp4h4i2rXIt4gZRHiXsIYHVTO5JXuku3BHoGwJzcQ/GLMrhKtnzCBlPlBXZkqgnQ+Xng5LYl
- SCCsPCBR
- VRMM/p4Hl5JVYVpjyYikLRZrhg2FMbgeDL4qAC3/eC15VzS6n/BIDqcUJ1LTAhvoP9Uf+Fdactnv9uJSuZSuCqf84Uy1LuXqjMDAnOFSa79rvDCOjeXSeSkJCxspuXIIVl8YsFcsNickaojfQboyg6/MNH7ThOPprov/RDxtP0DXp7+GR15keBlC7ojTFTP/fYZCBAKq6S6Is4q/WSA1cQrV2+S51ZoTe/oGe7O9u2SzugRdTFJb3FWGAnKsxi49BxOfXExdY9wAz17+QkvvyHirxYxTMenowATO0Prr7tk/uucFcf6ghvCUBa1PGil/Pkb3BMIimu6ze1U19UZB/QTQjmCMUtZhRxiF83HRNddxiobKFHXWXNHrrKoNt/gW4nThMnX1mWI+aMGsRfz2SXO5M98tQB1zyMzaTPTFQqpS0zRDKSeQFocSM8OcA6eUW0TM+
+X-Stat-Signature: ei8xgobp7u8dmudhxdazx6yhkx6nf8a8
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 06FDE100003
+X-HE-Tag: 1787037402-15876
+X-HE-Meta: U2FsdGVkX195HrgMhQlW36ke/Z8sAKcvx5AXxlx9SM9fEPWR7LekR7ZvOttRBUysz7FJadplJjegGht1BdW4HfiaUrwe9iaUPWAsCR0IpD3nPpf0FIaEhb2wiBpmbq0W20JdkgvIoUaJhQBLGZtvkWPNnxWipavwhzUsbdhsqMDpTW+kxeMbcvM9doarWNCIwUTCzWXB8tLLzsmR43E40QB7/CShdmSijhiAEvUSyHrkQn/zgZWL3T2KbVoEKKDaOW0ibUKaJ68gbxo0r5z1mBv0u5jlK+5fyMne7QqTn/NwIQX88FbpzzmCZhJBJM2qwwfPDM/hVlo+/vy7c0pcVlsOaRii4RzhARla1l+oNJaH2yg2oJ5D2fJlxT1mVD4GdRgrmTmm4Js5KlulA62zWN6c0UBkl+eo0yGXxzCMmKhGC9FeUwFDKrzuiCCAV+MOI4SHOsgs1qwNvBd32TyWaQqHS6hk/xNzq/D0SYyTZYVq7GZwHXurCdFvAGCBfeaE0CDQ9pNEcrXRRKnqElmKZVaRc35q0oeF0xAx2t3tVHHC+P14KgSsIY72HppHiIBtlQrLHZPZWXVi6/GO2Il3wgWkxSSP61UpMj/WQ/rRfyZB4ve9V6NWEiQ1lFYAkaDg6+DzG4NfmIGWHQfQMF6KmBqHOnSVrCrNzSYxT/Yz+dfPGOADDKpNtjA4pcBSEt4WjGGQG7LY0mLzGSnghJjfALI50STKzcWZ7Lo6B2KQRHNO2yXc8mmIVYPvj5lHoLNd8TBsYInC/ES4WaSLZOFECsb8blQnwsVqTnfgJRZbpx/6qR/z2Xwccgxqtm8WEC2TZkyYqE/xnkivmuiWi9F/98SOibyCN9hAegnnkQdim3XRQVwl0GXL5/9YxZImlk0Ln8i1gmSMYXZHoIZcsXU40utOuibt4qtdSFUJk5W6S0DC0Fpccsd44PZMaPgiAiIEUmqsJD/i0zX+SYjLnSy
+ CNHApVWR
+ elwDbZwk+NK+SbAWunJi1/X0udsHBVWscJ4UFOKrAo/8y0ZqLcKv0FbdOlFCv0vpn35biGIx0Mv2hYvAAzVtwhOD5Iyc9saMbwttsjQwE+y/rkurJZoGSgXtPLIbewwa8Hn8S1kZ++dM8hWorkumjiw/hpYQVcpamT2gzQHc/HLOVloq/CXLZrO08lMmedAec80yNQ4r5nkq0yGclJwiHsNIR+pNwr79l/+u8Vt1R7zRk1UBsi+ANveO1GSEZlmBlDo4TVYSG8K1K+UjMSZebMzpzstiUDQ91VpEeCmeNGLijZiivOpQAXjg2Uco1kqkl7fym6ERpzXb/Pvn8OUZOOZKDSA5WbOp+s5x3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,498 +99,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/04/26 at 03:47am, Kairui Song via B4 Relay wrote:
-...snip...
-> +int folio_inc_lru_refs(struct folio *folio, bool is_fault, bool is_exec)
-> +{
-> +	int max_gen, min_gen;
-> +	int type, refs, gen, new_gen;
-> +	unsigned long new_flags, old_flags, max_seq;
-> +	struct lru_gen_folio *lrugen;
-> +	struct lruvec *lruvec;
-> +
-> +	type = folio_is_file_lru(folio);
-> +	lruvec = folio_lruvec_live_get(folio);
-> +	lrugen = &lruvec->lrugen;
-> +
-> +	old_flags = READ_ONCE(*folio_flags(folio, 0));
-> +	do {
-> +		new_flags = old_flags;
-> +		gen = lru_gen_from_flags(old_flags);
-> +		refs = lru_refs_from_flags(old_flags) + 1;
-> +		new_gen = gen;
-> +		if (!(old_flags & BIT(PG_lru)) || gen < 0)
-> +			goto out;
-> +
-> +		max_seq = READ_ONCE(lrugen->max_seq);
-> +		max_gen = lru_gen_from_seq(max_seq);
-> +		min_gen = lru_gen_from_seq(READ_ONCE(lrugen->min_seq[type]));
-> +		if (gen == max_gen)
-> +			goto out;
-> +
+To preempt the sashiko stuff, both are false positives:
 
-I am a little confused about the new mechanism. In the current mglru, it
-does have the issue both mm walk and fd read set PG_referenced at the
-1st access, this is a obvious drawback. Now with the change, the ref
-count is clearer, while the mm walk and fd read accessing is still mixed.
-Imagine the cases below:
- - one fd read; then mm walk; directly move to max_gen;
- - one mm walk; then several times fd read; promote to next gen;
+1. The per-process RLIMIT_MEMLOCK limit is on purpose, it's what you'd expect,
+   it matches what io_uring and every other use of the pattern does, and it's
+   strictly _more_ limiting as it's per-process limit vs. total inode usage.
 
-Can I understand the final effect as:
-1) explicti ref count;
-2) more drastically promote mm walk based on the mixing ref counting;
-   - compared with the old behaviour: move to next gen when 2nd mm walk
+2. It doesn't support fallocate so hole-punching isn't an issue. Pseudo-inodes
+   are used so you can't drop_caches (which is a privileged operation anyway)
+   and secretmem_release() will be called eventually regardless of how things
+   are discarded so there's no possibility of an imbalance.
 
-I can only see one benefit and one significant change. Do I understand
-it correctly, and is it worth?
-
-Thanks
-Baoquan
-
-> +		if (is_fault || is_exec) {
-> +			/* Promote second page table access or executable */
-> +			if (refs > LRU_REFS_REFERENCED || is_exec)
-> +				new_gen = max_gen;
-> +			else
-> +				new_gen = (gen + 1UL) % MAX_NR_GENS;
-> +			refs = min(refs, LRU_REFS_PROTECTED);
-> +		} else if (refs > LRU_REFS_MAX) {
-> +			/* LRU refs counting overflow, bump the gen */
-> +			new_gen = (gen + 1UL) % MAX_NR_GENS;
-> +			refs = LRU_REFS_PROTECTED;
-> +		} else if (gen == min_gen && refs >= LRU_REFS_WORKINGSET) {
-> +			/* Defer eviction of just accessed workingset */
-> +			new_gen = (gen + 1UL) % MAX_NR_GENS;
-> +			refs = min(refs, LRU_REFS_PROTECTED);
->  		}
-> +out:
-> +		refs = min(refs, LRU_REFS_MAX);
-> +		lru_refs_set_flags(&new_flags, refs);
-> +		if (new_gen >= 0)
-> +			lru_gen_set_flags(&new_flags, new_gen);
-> +	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
->  
-> -		folio_set_lru_refs(folio, 1);
-> -		return false;
-> +	if (new_gen != gen) {
-> +		/*
-> +		 * Gen can only go forward, so concurrent aging is
-> +		 * usually fine, except when multiple aging increase
-> +		 * max_seq multiple times, new_gen may have go beyond
-> +		 * the new max_seq's current gen border and causes
-> +		 * hotness inversion. In that very unlikely case,
-> +		 * just activate the folio.
-> +		 */
-> +		lru_gen_update_size(lruvec, folio, gen, new_gen);
-> +		if (unlikely(READ_ONCE(lrugen->max_seq) - max_seq > MIN_NR_GENS))
-> +			folio_activate(folio);
->  	}
->  
-> -	/* Promote on second access */
-> -	if (folio_lru_refs(folio) > 1) {
-> -		folio_set_lru_refs(folio, 0);
-> -		folio_set_workingset(folio);
-> -	} else {
-> -		folio_mark_accessed(folio);
-> -	}
-> -	return true;
-> +	folio_lruvec_live_put(lruvec);
-> +	return refs;
-> +}
-> +
-> +/*
-> + * Update the folio's lru refs indicator during a page table walk.
-> + * max_seq is stable since this runs inside the aging process.
-> + *
-> + * Returns the old generation and stores the new generation in @new_gen when
-> + * the folio is promoted (to max_gen) or advanced by one generation.
-> + * Returns -1 if no gen change occurred.
-> + */
-> +static int folio_inc_lru_refs_walk(struct folio *folio, struct lruvec *lruvec,
-> +				   const vma_flags_t *vma_flags, int *new_gen)
-> +{
-> +	unsigned long new_flags, old_flags = READ_ONCE(*folio_flags(folio, 0));
-> +	unsigned long max_seq = READ_ONCE(lruvec->lrugen.max_seq);
-> +	int refs, gen, max_gen, ret;
-> +
-> +	max_gen = lru_gen_from_seq(max_seq);
-> +
-> +	do {
-> +		gen = lru_gen_from_flags(old_flags);
-> +		refs = lru_refs_from_flags(old_flags) + 1;
-> +		new_flags = old_flags;
-> +
-> +		if (gen >= 0 && gen != max_gen) {
-> +			ret = gen;
-> +			/* Promote second page table access or executable */
-> +			if (refs > LRU_REFS_REFERENCED || is_exec_file_folio(folio, vma_flags))
-> +				*new_gen = max_gen;
-> +			else
-> +				*new_gen = (gen + 1) % MAX_NR_GENS;
-> +			lru_gen_set_flags(&new_flags, *new_gen);
-> +			lru_refs_set_flags(&new_flags, min(refs, LRU_REFS_PROTECTED));
-> +		} else {
-> +			ret = -1;
-> +			lru_refs_set_flags(&new_flags, min(refs, LRU_REFS_MAX));
-> +		}
-> +	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
-> +
-> +	return ret;
-> +}
-> +
-> +/*
-> + * Update the folio's lru refs indicator while the folio is isolated.
-> + * Only used on mapped folios upon the final eviction, when the folio is
-> + * off the LRU list (isolated).
-> + *
-> + * Increments the refs count (capped at LRU_REFS_PROTECTED).  Returns true
-> + * if the caller should activate the folio (second access or
-> + * executable), false to keep it in the eviction list.
-> + */
-> +static bool folio_inc_lru_refs_isolated(struct folio *folio, const vma_flags_t *vma_flags)
-> +{
-> +	unsigned long new_flags, old_flags = READ_ONCE(*folio_flags(folio, 0));
-> +	int refs;
-> +
-> +	do {
-> +		new_flags = old_flags;
-> +		refs = lru_refs_from_flags(old_flags) + 1;
-> +		lru_refs_set_flags(&new_flags, min(refs, LRU_REFS_PROTECTED));
-> +	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
-> +
-> +	/* Promote second page table access or executable */
-> +	return refs > LRU_REFS_REFERENCED || is_exec_file_folio(folio, vma_flags);
->  }
->  #else
-> -static bool lru_gen_set_refs(struct folio *folio, const vma_flags_t *vma_flags)
-> +static bool folio_inc_lru_refs_isolated(struct folio *folio, const vma_flags_t *vma_flags)
->  {
->  	return false;
->  }
-> @@ -896,7 +1035,8 @@ static enum folio_references folio_check_references(struct folio *folio,
->  		if (!referenced_ptes)
->  			return FOLIOREF_RECLAIM;
->  
-> -		return lru_gen_set_refs(folio, &vma_flags) ? FOLIOREF_ACTIVATE : FOLIOREF_KEEP;
-> +		return folio_inc_lru_refs_isolated(folio, &vma_flags) ?
-> +		       FOLIOREF_ACTIVATE : FOLIOREF_KEEP;
->  	}
->  
->  	referenced_folio = folio_test_clear_referenced(folio);
-> @@ -3262,59 +3402,31 @@ static bool positive_ctrl_err(struct ctrl_pos *sp, struct ctrl_pos *pv)
->   *                          the aging
->   ******************************************************************************/
->  
-> -/* promote pages accessed through page tables */
-> -static int folio_update_gen(struct folio *folio, int new_gen, const vma_flags_t *vma_flags)
-> -{
-> -	unsigned long new_flags, old_flags = READ_ONCE(*folio_flags(folio, 0));
-> -	int old_gen;
-> -
-> -	/*
-> -	 * See the comment on LRU_REFS_FLAGS, and activate file-backed
-> -	 * executable folios after first usage to avoid typical IO
-> -	 * thrashing from reclaiming.
-> -	 */
-> -	if (!folio_test_referenced(folio) && !folio_test_workingset(folio) &&
-> -	    !is_exec_file_folio(folio, vma_flags)) {
-> -		folio_set_lru_refs(folio, 1);
-> -		return -1;
-> -	}
-> -
-> -	do {
-> -		old_gen = lru_gen_from_flags(old_flags);
-> -		new_flags = old_flags;
-> -
-> -		/* lru_gen_del_folio() has isolated this page? */
-> -		if (old_gen < 0)
-> -			break;
-> -
-> -		lru_gen_set_flags(&new_flags, new_gen);
-> -		lru_refs_set_flags(&new_flags, 0);
-> -		new_flags |= BIT(PG_workingset);
-> -	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
-> -
-> -	return old_gen;
-> -}
-> -
-> -/* protect pages accessed multiple times through file descriptors */
-> +/*
-> + * Force bump a folio's generation. Used for PID protection or defer the
-> + * eviction of temporarily unevictable folio.
-> + */
->  static int folio_inc_gen(struct lruvec *lruvec, struct folio *folio)
->  {
-> +	int refs;
->  	int type = folio_is_file_lru(folio);
->  	struct lru_gen_folio *lrugen = &lruvec->lrugen;
->  	int old_gen, new_gen, min_gen = lru_gen_from_seq(lrugen->min_seq[type]);
->  	unsigned long new_flags, old_flags = READ_ONCE(*folio_flags(folio, 0));
->  
->  	do {
-> +		new_flags = old_flags;
-> +		refs = lru_refs_from_flags(old_flags);
->  		old_gen = lru_gen_from_flags(old_flags);
->  		VM_WARN_ON_ONCE_FOLIO(old_gen < 0, folio);
->  
-> -		/* folio_update_gen() has promoted this page? */
-> +		/* folio has been promoted? */
->  		if (old_gen >= 0 && old_gen != min_gen)
->  			return old_gen;
->  
-> -		new_flags = old_flags;
->  		new_gen = (old_gen + 1) % MAX_NR_GENS;
->  		lru_gen_set_flags(&new_flags, new_gen);
-> -		lru_refs_set_flags(&new_flags, 0);
-> +		lru_refs_set_flags(&new_flags, min(refs, LRU_REFS_WORKINGSET));
->  	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
->  
->  	lru_gen_update_size(lruvec, folio, old_gen, new_gen);
-> @@ -3518,21 +3630,17 @@ static void walk_update_folio(struct lru_gen_mm_walk *walk, struct vm_area_struc
->  	if (!folio)
->  		return;
->  
-> -	new_gen = lru_gen_from_seq(READ_ONCE(lruvec->lrugen.max_seq));
-> -
->  	if (dirty && !folio_test_dirty(folio) &&
->  	    !(folio_test_anon(folio) && folio_test_swapbacked(folio) &&
->  	      !folio_test_swapcache(folio)))
->  		folio_mark_dirty(folio);
->  
->  	if (walk) {
-> -		old_gen = folio_update_gen(folio, new_gen, &vma->flags);
-> -		if (old_gen >= 0 && old_gen != new_gen)
-> +		old_gen = folio_inc_lru_refs_walk(folio, lruvec, &vma->flags, &new_gen);
-> +		if (old_gen >= 0)
->  			update_batch_size(walk, folio, old_gen, new_gen);
-> -	} else if (lru_gen_set_refs(folio, &vma->flags)) {
-> -		old_gen = folio_lru_gen(folio);
-> -		if (old_gen >= 0 && old_gen != new_gen)
-> -			folio_activate(folio);
-> +	} else {
-> +		folio_inc_lru_refs(folio, true, is_exec_file_folio(folio, &vma->flags));
->  	}
->  }
->  
-> @@ -3917,7 +4025,8 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
->  		while (!list_empty(head)) {
->  			struct folio *folio = lru_to_folio(head);
->  			int refs = folio_lru_refs(folio);
-> -			bool workingset = folio_test_workingset(folio);
-> +			int delta = folio_nr_pages(folio);
-> +			int tier = lru_tier_from_refs(refs);
->  
->  			VM_WARN_ON_ONCE_FOLIO(folio_test_unevictable(folio), folio);
->  			VM_WARN_ON_ONCE_FOLIO(folio_test_active(folio), folio);
-> @@ -3927,14 +4036,8 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
->  			new_gen = folio_inc_gen(lruvec, folio);
->  			list_move_tail(&folio->lru, &lrugen->folios[new_gen][type][zone]);
->  
-> -			/* don't count the workingset being lazily promoted */
-> -			if (refs + workingset != BIT(LRU_REFS_WIDTH) + 1) {
-> -				int tier = lru_tier_from_refs(refs, workingset);
-> -				int delta = folio_nr_pages(folio);
-> -
-> -				WRITE_ONCE(lrugen->protected[hist][type][tier],
-> -					   lrugen->protected[hist][type][tier] + delta);
-> -			}
-> +			WRITE_ONCE(lrugen->protected[hist][type][tier],
-> +				   lrugen->protected[hist][type][tier] + delta);
->  
->  			if (!--remaining)
->  				return false;
-> @@ -4649,8 +4752,7 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
->  	int zone = folio_zonenum(folio);
->  	int delta = folio_nr_pages(folio);
->  	int refs = folio_lru_refs(folio);
-> -	bool workingset = folio_test_workingset(folio);
-> -	int tier = lru_tier_from_refs(refs, workingset);
-> +	int tier = lru_tier_from_refs(refs);
->  	struct lru_gen_folio *lrugen = &lruvec->lrugen;
->  
->  	VM_WARN_ON_ONCE_FOLIO(gen >= MAX_NR_GENS, folio);
-> @@ -4672,17 +4774,15 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
->  	}
->  
->  	/* protected */
-> -	if (tier > tier_idx || refs + workingset == BIT(LRU_REFS_WIDTH) + 1) {
-> +	if (tier > tier_idx) {
-> +		int hist = lru_hist_from_seq(lrugen->min_seq[type]);
-> +
->  		gen = folio_inc_gen(lruvec, folio);
->  		list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
->  
-> -		/* don't count the workingset being lazily promoted */
-> -		if (refs + workingset != BIT(LRU_REFS_WIDTH) + 1) {
-> -			int hist = lru_hist_from_seq(lrugen->min_seq[type]);
-> +		WRITE_ONCE(lrugen->protected[hist][type][tier],
-> +			   lrugen->protected[hist][type][tier] + delta);
->  
-> -			WRITE_ONCE(lrugen->protected[hist][type][tier],
-> -				   lrugen->protected[hist][type][tier] + delta);
-> -		}
->  		return true;
->  	}
->  
-> @@ -4710,10 +4810,6 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
->  		return false;
->  	}
->  
-> -	/* see the comment on LRU_REFS_FLAGS */
-> -	if (!folio_test_referenced(folio))
-> -		folio_set_lru_refs(folio, 0);
-> -
->  	success = lru_gen_del_folio(lruvec, folio, true);
->  	VM_WARN_ON_ONCE_FOLIO(!success, folio);
->  
-> @@ -4801,13 +4897,13 @@ static int get_tier_idx(struct lruvec *lruvec, int type)
->  	struct ctrl_pos sp, pv = {};
->  
->  	/*
-> -	 * To leave a margin for fluctuations, use a larger gain factor (2:3).
-> +	 * To leave a margin for fluctuations, use a larger gain factor (1:2).
->  	 * This value is chosen because any other tier would have at least twice
->  	 * as many refaults as the first tier.
->  	 */
-> -	read_ctrl_pos(lruvec, type, 0, 1, 2, &sp);
->  	for (tier = 1; tier < MAX_NR_TIERS; tier++) {
-> -		read_ctrl_pos(lruvec, type, tier, tier + 1, 3, &pv);
-> +		read_ctrl_pos(lruvec, type, 0, tier, 1, &sp);
-> +		read_ctrl_pos(lruvec, type, tier, tier + 1, 2, &pv);
->  		if (!positive_ctrl_err(&sp, &pv))
->  			break;
->  	}
-> @@ -4930,10 +5026,8 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->  		}
->  
->  		/* don't add rejected folios to the oldest generation */
-> -		if (lru_gen_folio_seq(lruvec, folio, false) == min_seq[type]) {
-> -			folio_set_lru_refs(folio, 0);
-> +		if (lru_gen_folio_seq(lruvec, folio, false) == min_seq[type])
->  			folio_set_active(folio);
-> -		}
->  	}
->  
->  	move_folios_to_lru(&list);
-> diff --git a/mm/workingset.c b/mm/workingset.c
-> index 5438e9390011..452fe8554990 100644
-> --- a/mm/workingset.c
-> +++ b/mm/workingset.c
-> @@ -189,6 +189,13 @@
->  #define EVICTION_MASK	(~0UL >> EVICTION_SHIFT)
->  #define EVICTION_MASK_ANON	(~0UL >> EVICTION_SHIFT_ANON)
->  
-> +/*
-> + * LRU refs uses LRU_REFS_WIDTH + 2 bits, the 2 bits are PG_workingset and
-> + * PG_referenced. But here we record PG_workingset separately (to reuse
-> + * pack_shadow).
-> + */
-> +#define LRU_REFS_BITS ((LRU_REFS_WIDTH + 2) - 1)
-> +
->  /*
->   * Eviction timestamps need to be able to cover the full range of
->   * actionable refaults. However, bits are tight in the xarray
-> @@ -242,13 +249,12 @@ static void *lru_gen_eviction(struct folio *folio)
->  	int type = folio_is_file_lru(folio);
->  	int delta = folio_nr_pages(folio);
->  	int refs = folio_lru_refs(folio);
-> -	bool workingset = folio_test_workingset(folio);
-> -	int tier = lru_tier_from_refs(refs, workingset);
-> +	int tier = lru_tier_from_refs(refs);
->  	struct mem_cgroup *memcg;
->  	struct pglist_data *pgdat = folio_pgdat(folio);
->  	unsigned short memcg_id;
->  
-> -	BUILD_BUG_ON(LRU_GEN_WIDTH + LRU_REFS_WIDTH >
-> +	BUILD_BUG_ON(LRU_GEN_WIDTH + LRU_REFS_BITS >
->  		     BITS_PER_LONG - max(EVICTION_SHIFT, EVICTION_SHIFT_ANON));
->  
->  	rcu_read_lock();
-> @@ -256,14 +262,14 @@ static void *lru_gen_eviction(struct folio *folio)
->  	lruvec = mem_cgroup_lruvec(memcg, pgdat);
->  	lrugen = &lruvec->lrugen;
->  	min_seq = READ_ONCE(lrugen->min_seq[type]);
-> -	token = (min_seq << LRU_REFS_WIDTH) | max(refs - 1, 0);
-> +	token = (min_seq << LRU_REFS_BITS) | refs >> 1;
->  
->  	hist = lru_hist_from_seq(min_seq);
->  	atomic_long_add(delta, &lrugen->evicted[hist][type][tier]);
->  	memcg_id = mem_cgroup_private_id(memcg);
->  	rcu_read_unlock();
->  
-> -	return pack_shadow(memcg_id, pgdat, token, workingset, type);
-> +	return pack_shadow(memcg_id, pgdat, token, refs & 1, type);
->  }
->  
->  /*
-> @@ -284,11 +290,24 @@ static bool lru_gen_test_recent(void *shadow, struct lruvec **lruvec,
->  	*lruvec = mem_cgroup_lruvec(memcg, pgdat);
->  
->  	max_seq = READ_ONCE((*lruvec)->lrugen.max_seq);
-> -	max_seq &= (file ? EVICTION_MASK : EVICTION_MASK_ANON) >> LRU_REFS_WIDTH;
-> +	max_seq &= (file ? EVICTION_MASK : EVICTION_MASK_ANON) >> LRU_REFS_BITS;
->  
-> -	return abs_diff(max_seq, *token >> LRU_REFS_WIDTH) < MAX_NR_GENS;
-> +	return abs_diff(max_seq, *token >> LRU_REFS_BITS) < MAX_NR_GENS;
->  }
->  
-> +/*
-> + * Restore the refs of a refaulted folio from its shadow entry.
-> + *
-> + * Any folio that was accessed at least once before eviction (refs >=
-> + * LRU_REFS_REFERENCED) is activated on a fault-driven refault, giving it a
-> + * strong gen placement. Non-fault refaults (e.g. readahead) are not
-> + * activated regardless of refs.
-> + *
-> + * The restored refs is capped at LRU_REFS_PROTECTED to prevent stale
-> + * high-tier history from carrying over across eviction cycles. The
-> + * WORKINGSET_RESTORE stat is bumped only for refs >= LRU_REFS_WORKINGSET
-> + * to track genuine workingset restoration.
-> + */
->  static void lru_gen_refault(struct folio *folio, void *shadow)
->  {
->  	bool recent;
-> @@ -314,21 +333,29 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
->  	lrugen = &lruvec->lrugen;
->  
->  	hist = lru_hist_from_seq(READ_ONCE(lrugen->min_seq[type]));
-> -	refs = (token & (BIT(LRU_REFS_WIDTH) - 1)) + 1;
-> -	tier = lru_tier_from_refs(refs, workingset);
-> +	refs = ((token & (BIT(LRU_REFS_BITS) - 1)) << 1) + workingset;
-> +	tier = lru_tier_from_refs(refs);
->  
->  	atomic_long_add(delta, &lrugen->refaulted[hist][type][tier]);
->  
-> -	if (workingset) {
-> -		/* Send refaulted workingset folios to active generations. */
-> +	/*
-> +	 * Activate a fault-driven refault: the folio was accessed at
-> +	 * least once before eviction and would have been promoted had
-> +	 * it stayed in memory.
-> +	 */
-> +	if (refs >= LRU_REFS_REFERENCED) {
->  		if (lru_gen_in_fault()) {
->  			folio_set_active(folio);
->  			mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
->  		}
-> -		folio_set_workingset(folio);
-> +		/* Cap restored refs to prevent stale high-tier carry-over */
-> +		folio_set_lru_refs(folio, min(refs, LRU_REFS_PROTECTED));
-> +	}
-> +
-> +	/* WORKINGSET_RESTORE tracks genuine workingset-level refaults */
-> +	if (refs >= LRU_REFS_WORKINGSET)
->  		mod_lruvec_state(lruvec, WORKINGSET_RESTORE_BASE + type, delta);
-> -	} else
-> -		set_mask_bits(&folio->flags.f, LRU_REFS_MASK, (refs - 1UL) << LRU_REFS_PGOFF);
-> +
->  unlock:
->  	rcu_read_unlock();
->  }
-> 
-> -- 
-> 2.55.0
-> 
-> 
+--
+Cheers, Lorenzo
 
