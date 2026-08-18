@@ -4,129 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03A99C5DF7D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 11:50:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6A57C5DF7E
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 12:01:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FEC86B0186; Tue, 18 Aug 2026 07:50:43 -0400 (EDT)
+	id 7C8216B07DD; Tue, 18 Aug 2026 08:01:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0885D6B0187; Tue, 18 Aug 2026 07:50:43 -0400 (EDT)
+	id 778CD6B07DE; Tue, 18 Aug 2026 08:01:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBACF6B0188; Tue, 18 Aug 2026 07:50:42 -0400 (EDT)
+	id 6693E6B07DF; Tue, 18 Aug 2026 08:01:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C4E9F6B0186
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:50:42 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 22409120718
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 11:50:42 +0000 (UTC)
-X-FDA: 85114223124.17.2C2490E
-Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3D7F01A0003
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 11:50:40 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b=HRtMPSDb;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=PTOtcQey;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 411326B07DD
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:01:42 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C422FC0C4E
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:01:41 +0000 (UTC)
+X-FDA: 85114250802.11.8360CDB
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 5151314000C
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:01:39 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=QEO8N4dO;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf09.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787053840;
+	s=arc-20220608; t=1787054499;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=HvALgY+C1eQVkG6C9K+dnVzA9fN8YaCd9+e5MyvHjUs=;
-	b=tnpzxYgGLSzuwdOGoH2KUECTFkWbV2t5y8v4F2FRb4r+LZiyAXp3KJ38C7Rte/tE0M/zqM
-	w94v0hkaw3fd1D66K5W3HifipEAP0RYI/NaxSneR33k6ouJXQOC5n/ffXEq1TlmLfM+ldB
-	3rQxuyqfYnP0zfgV8PwHdv6c9ES2VVs=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HSxxRZGefKh0In0u0GvJexPyMujQYJ1MaPf9PybNez8=;
+	b=3YpQTtiwb2C9UMxN9g/B5B62W3rP5pvoEYWyoaGSlHpYUTzrKaa9+Ck+pPOuQD2Um3L89a
+	+PT1sB6kMQ16aibZ916aGHd8sUd1ktrkD0sG81L6WRDlYtzptY5uIMpUinVyJVzzmJKJCX
+	I3v/gKkhkcUDEuvJkeBtf7l4/Gdr6yU=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b=HRtMPSDb;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=PTOtcQey;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	imf09.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=QEO8N4dO;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf09.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787053840;
-	b=oVXF4PBYzh+M8dAho8GjvaGIYzWhdSibydxBEUP3UbG4z9jGbTAJT/N4qJXiIUuDqkU/YQ
-	//SQ0Ehf37fc+mtL8w0csZ8aIB2ayaUEr+Pl6/h39R2dVNbRVM43dBSlmTLAMzNe1lKT/N
-	9Lh9+XXZKbHgx208QWveTPMMgsiSW/Y=
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.phl.internal (Postfix) with ESMTP id 967F0EC0210;
-	Tue, 18 Aug 2026 07:50:39 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Tue, 18 Aug 2026 07:50:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to; s=fm1; t=1787053839; x=1787140239; bh=HvALgY+C1e
-	QVkG6C9K+dnVzA9fN8YaCd9+e5MyvHjUs=; b=HRtMPSDbui2lxRWQkiYRushRaO
-	74MP3LGfESpHZLu7wj5GgItyyM1MvnRVr9+LJ96XYRy/eecfeUYuyZCvtHpDaOx4
-	68eDXW5CBkT44Eq8hRhAe4qdADD+MTloHh06wikeTj7R2Y/U89sc34DM4vvq8eAn
-	/Pc5oFXNbcvNPynjYxEI7+fTs8Q6MHCGcWZh4lqV01VAya7vFBVg74l8BOR2VJkU
-	5yuDXWcq4Qu8Wp2U/U27TGsnFdIGQpvKjI/DyR01vuNOAZI5obDMG/DXfKHVHS1Y
-	wetcAW4c8wwtQJw194EU1TIosVgRj9wIFX3cMX0BpBcQvomb2MxaVYm1O3WA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1787053839; x=1787140239; bh=HvALgY+C1eQVkG6C9K+dnVzA9fN8YaCd9+e
-	5MyvHjUs=; b=PTOtcQeyF9x5tvF1B0tKOr3CrOb/ITAVsPSOurT8uY1T2lVEK22
-	uSeOohjSb9j+GelbdyigOwkY7Qoiig7r+Du/JUJqXmWOK/owMLdjpMeNALFyB1Wh
-	96lWjAnIyze+YnNUAlRj7F/ywR+MtCOdO6gLtLc2gd4UzYwJ61zvMJ5wFpfxnpHa
-	zWTyEFLtUyBp+HcFQCtXUJ5CErXtvXrUg8EOoQ4AkI991yHaTU/pTMv8Nw9lnm1H
-	VLlCV2XmaaPKmEx46qWQNtnZDwu11l0VsPmscW6NDxJD4st090kkbBkpxEBC4q2U
-	Yc1m9w32p745KmYUPaItpzj3V81biloiIUw==
-X-ME-Sender: <xms:DkeEau7FZFCdgEhppQwnu1Em2yCQvlh4tKPNJOPkwwo2sXIszpkaTA>
-    <xme:DkeEauSYjvJgKOdoffXwGoAVfz4xOvmNj5mhrArhZnCnJbWmSxXhC6r842kRl0dN2
-    acbJ9QSaLelIlfA2i42jfgXpkbOcEtHFLOtS9IMNqWQBtmNuDEsomhS>
-X-ME-Received: <xmr:DkeEapsSNIsBPYlPFIj_SOxrzJKfGZAZaMilZVg92NUe0Q8VPSVtlpgQUrs>
-X-ME-Proxy-Cause: dmFkZTGsabZgZYsehve2zIUhKVtgavvsURXgt8es64sUN0FMk0GnUGY394O6bg1Hdic1L8
-    kwCIsuGBUxMy6SYl7cQ0avm76YzMS9JksZlaGWWbYuuMLMx5ipCokj2WSCYs32Goibva/k
-    V8ImNigIwOvBiBi6Ga+knUrq9pgsuA3C7oqKUkfveQpVJJsXur1WUGFd6eEHbmijFPn/Yk
-    p+qPNyt9gtCw3MeqiLezo8cjBU+LEWGKirBh10+zenW8B3o6U0oKI7mxYdVDNGvGveNqGi
-    bUnxw2DJ7C6jQk14vH4248CLV1cra3spL+XoIrk0h0n6rikyn7TKxp8APJdS/t+UBkIsc7
-    izmwvwYNxUhOhwPJq43Clar5erF9KsaHRfH3fGMMUeaXBhtR6PtmnMKQWY0Xr6v9sWpk+Y
-    QHdhoE8rpFD5ju8dUxM/lz2MvtuWjHO9NFI/Az9TN1Nw0Mf7XjarN9IPYY5syPKx9k4wD9
-    PcakzjuKdC+fvnWEcvOIrOk5mR2KV0Ij883/8g/g+9/W0FnSeOCtJ0XARebaJZSz7/32Uu
-    3dKy8mkb+kgkFOV2QSjtIKkZbt4p78WvSIrGN4KzqUx30ppcN4m5C12DRSgKL18h2lIsQx
-    Wx0wg/mxnqVm2B3cU90EUzt0wnuABPTmGhvQ/KXHKF0Lv3X3on+hqDhxmRbQ
-X-ME-Proxy: <xmx:DkeEao_NNAS-Otmhe34Qlt27JCA4KkW7hor1A-xvJahGtHvpqR3R3A>
-    <xmx:DkeEaqwK6FXx0qeeOXAe5ndRhL0AjthThLpr6z8q59WYEAaGEeTw6g>
-    <xmx:DkeEai9fnRmNxy6oKWG3hbPIiZ0uqxATE8h8zkxm4pCciv9K3O3z4Q>
-    <xmx:DkeEagOkx0b-4Hu0df2sHRd1O1QzJLY65h9Byc3fd4bAu6yL2JgPiw>
-    <xmx:D0eEak4XFgwevBxcFFvzzYyB43_FWd_vpdHEWnfX0IVbxN4vpywKVDgh>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 18 Aug 2026 07:50:38 -0400 (EDT)
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	kasong@tencent.com
-Cc: ljs@kernel.org,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	baoquan.he@linux.dev,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH] mm: include swap.h in swapops.h
-Date: Tue, 18 Aug 2026 12:50:26 +0100
-Message-ID: <20260818115026.656406-1-kirill@shutemov.name>
-X-Mailer: git-send-email 2.54.0
+	t=1787054499;
+	b=yy/duMRgquUjo1JGFcPltRml3Fb7LV87Eded845CMWVeOy4ujc1ApuaByxeUPwI4TqEjUo
+	76U375maNt2y7mCqeF3PqW6DY88U8lKZHxLD4VrROe32FQmOSzlzZs5gqFn23hPcXnumgH
+	wRS4wb9kdQ+GcPITgJyJCIl4xx0t+kQ=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67IAVoFf4121620;
+	Tue, 18 Aug 2026 12:01:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=HSxxRZGefKh0In0u0GvJexPyMujQYJ
+	1MaPf9PybNez8=; b=QEO8N4dOFZJyWOraWG3QpYsTqgbPy15DVnacHTwS7Nmua7
+	hPMyqfFwKr1GrtH3HM81G9SK4ff8IlUvMALTADrh6Jy3D5KmN2T/7zW8MozCMWGN
+	dbUb2idIyVSFBFW/Xf5lQCH7Q6PcjWDD3UKf8dtZ+a8ND+S6Q4mD6ysDD8/V9jyR
+	KXL1re+TBmbRn6PHSdlDQv7i9f4CRW8OalXnVkaAszxi/MOTaQMWMOZREfU9UV2D
+	4eYK7miLz9SNE1bODuF1CC/iepg1oqdiVKputnkG+AIVzzxASlPRVMHbXB0aPSUN
+	JtPOkn0lwpMJa7x+7/stTVAKbiiikq9WfmCb69CA==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g2dhkytvg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Aug 2026 12:01:36 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67IBuIli023448;
+	Tue, 18 Aug 2026 12:01:35 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g32eq36y6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Aug 2026 12:01:35 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67IC1Wpl51184008
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 18 Aug 2026 12:01:32 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 074FD2004D;
+	Tue, 18 Aug 2026 12:01:32 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D491920040;
+	Tue, 18 Aug 2026 12:01:31 +0000 (GMT)
+Received: from tuxmaker (unknown [9.87.85.9])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 18 Aug 2026 12:01:31 +0000 (GMT)
+Date: Tue, 18 Aug 2026 14:01:30 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>, linux-s390@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        kasan-dev@googlegroups.com
+Subject: Re: [PATCH v7 3/4] mm/kasan: Introduce helpers for lazy MMU mode
+ sanitizer
+Message-ID: <20260818120130.1411942A70-agordeev@linux.ibm.com>
+References: <cover.1786956464.git.agordeev@linux.ibm.com>
+ <52c9be0cf71a8896a5d76c148c38fb24a2005dd9.1786956464.git.agordeev@linux.ibm.com>
+ <CA+fCnZfMkPDVyy0t9W-3d55M2ba9wXoRyzj2EWWYLEW=QO3zWg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: qd61uf8w7wohtxmxdqobi5jh4qtca97o
-X-Rspamd-Queue-Id: 3D7F01A0003
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+fCnZfMkPDVyy0t9W-3d55M2ba9wXoRyzj2EWWYLEW=QO3zWg@mail.gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDA4OCBTYWx0ZWRfX/HzJ7nnyCHrh
+ +HaoG7Id6qPNfsSLkUn8mpVhPXOsqePWVGHOcVMdnZc71woPoeBm51360tzgkp6pAXAUkmsKfdw
+ uySTXd818WHVCgQiDXvFNCL+sQKyINLqnpzF4En1gWktv+YUG8hOvwg3+qyuSpoEiPdUSfUjHy5
+ sVUMA5g6I0ktA4IXxQ/SJockakps4NfT2kGZkqekhp4rQS327gew3p3GltYmDT9HAYP3WccN4nf
+ lW3+kHKC9OLej7j4SUzXSLWhHYHTAj6DI85bAimADWgotsdmfZdmdT1ad6tbRNh/5OTcKIQ4I53
+ 4iC8dCbroiEFZaaY5vwu/7/n5x2FUnKJokVbBJnWPeZ2I5NKoxmfysQyNzsbJz/7yyGpIiFvLEF
+ 5nRR0QluSHGgCq4jk5daT3oX9pRssJggUFa3GgQIOIF7nLtiqgIcmD2WFwdXSQAMonkNZvPBddA
+ AfBuyIgIdoEp0+LpXfQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDA4OCBTYWx0ZWRfXxMSVUzPPppRN
+ ief7nN+40tBCowkFDgNL4o/GB7pq7c2SdXf+jIMTMvFH7PEyZ0wkjsP0P9uBY0fYWrHJJmR51WA
+ qSzR0/DJz/X8lToW9bcfQV0/KPJssgM=
+X-Authority-Analysis: v=2.4 cv=JKkLdcKb c=1 sm=1 tr=0 ts=6a8449a1 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=7CQSdrXTAAAA:8 a=8Uvy48UusG5hzorP5EsA:9 a=CjuIK1q_8ugA:10 a=zZCYzV9kfG8A:10
+ a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-ORIG-GUID: N5GgORfBdGiu4Lb-ApmOs7EFDv6zGCAn
+X-Proofpoint-GUID: VKmHdYY6rFcIke9BaqPbB--R8GbSD7J7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-18_01,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0 malwarescore=0 priorityscore=1501
+ lowpriorityscore=0 clxscore=1015 adultscore=0 impostorscore=0 spamscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608180088
+X-Rspamd-Queue-Id: 5151314000C
+X-Stat-Signature: ymz3pyebp8w1sfacewrtqkipib8mi7yu
 X-Rspam-User: 
-X-HE-Tag: 1787053840-410397
-X-HE-Meta: U2FsdGVkX187qlq9cnkJVT0cz3sKbWdDrCzoMrW8vq7DaxrHT3AJW99WYdZhhzqu5nr26gx4Mn2Y77PtgjHotVfYMXJYX1ywiRV062KhgpK5PDqWTY7QqdIw/FnoHiqiUSS5OcZnW7EHt0aJgxfoIEo6SDyS5Uaj8LoohU+3/MoWH/5znbnc9LvAm7jCMFXpIx1s4u8sftMp2KS4VMYsvceVgg5fPkec8g8BU2Ia9QPFqSZ7sr9ZXpOktqpQEPLVinX6zD6MmV7vd/yP1K9SamtbqmuPhwCJCeQ/LdP5FYE/qcKyWXKGrORxpukGj8/w+74SpPGy7QLiqUpD9wMf4eFNmxbMVd2zEOhvA9hpmN+QvNL91NGa5gT0wVT/DMFyt2S9wUeLz9icwN63VdnlLmIdMQZ7SwjH2iHlQnTVocagK63pXjuDEi5hTneFktgXa3tygQF4gpACnsu+2u2oWRcC9rswjbpVrjq3ZwVDTpeGP1tj1NCwln3CegpZJjKvUDSn0DiF0j4ZoAc4JtF5vSruOuYhamQdCdCckK6LzdddLOiimEY+JJ+WHjqp90di859P0LJ6GyAA0z+TPVeYTtXigWEpQ8Bfw2alkCtdqOBdMWRljLLp7HjLWZvnjl0BpijIQbmm7BvXdZ4YQldnDSF9jsHPtjnI5l1os4qE5p3wgPfVHwzcyzHF/TiAJ44YlkokDczAlAxfb0yqP9SmR6/utmjcJtpCiBnGfdYLNc4NKoes/s27PYzZ13zRL6iDQHdoipNOOtEz1I9jSykZYfVaTY7WB3vNTuYHdd42XR3KtcfM1RzUHELoOTIWxYMxnOE01UGFTWDXis8b6/VfvfuX5sv3qA+ttKbIyu1LPV4vq33twyXIY+u3SUbaOV/h4TRC6EYUboIDo5sggHJO91Zuhk3QytrAYPkg1g+5uNPUFVQPz0/61PxOeXnyrMsffIlUCez/5EFaRJ309Gk
- /p4IQu/z
- SfcskugAyrCwYBcXaj8Q/DwJo8ennagxWR+uTh+4eM+M8seYJE09DjMANWFxmIN2WAweVrt/oemXVTLkn5hI2s//nRazE9ZsS5LzH1Nk6lLJs1GqGcrlIAjcWxFlaYtftliL83oiS7S0D4KWt3Zv/3IEyAaeFU/GK/9hmAauRy3Su3tGrAbJHZdY7zoXnKteGmh0XnWFhvrHy9c8vgxczeg+86nCqKuvdB0lau6NV4YzNoWvIoNV1AfX47FwcuWXrsqFbWgOOchippLYs/IrhHvGUXgPHJ7TqMpAPkZLeFI96YNm5g0uiCEVJNeD4WMkY2DLs4DeDFwbyQNsutvqI9rXyPXP/N3zO/tMEblPqnfDxNT1mnUL2FuKDDhMVnW8uj/udiqufUD2XzUrOKdknpJ5ezT/B10e1l+clKSCNzs7fD+hSX99yVWM9CT2k/9SFG3CcYBee7TgrFcs/i8rKEkgamc1qM7Oh8VUD
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787054499-679548
+X-HE-Meta: U2FsdGVkX1+EFIaHxihM5AVJA24xqQLXin9wnOVqSyYGsqpa3PbiNLvaxDCugy8EHsgDn1/6aZIJADM/s8my5sx7FdVIeL4kpCVg7sP4W107M8+LUXRPQ4Gja3K8mi/QxyVfE7Y6W6Jm7g0mnInUFy/HEb3aEFZa8e8zu/pRF2lPbgQRlGVfDJakQmVxgz6nWhB+wTkbf0zm68V3J9VNws2zIdiAa2hAVgB79e+G1fD972jgKH/WaQ5dM2oYTnIY3/pf8iCJXkLfhNGtMN1pTt3uyxWU2vQt74MD86hTGLQoe1XiNu8Jfgohph6kxBGGhbZo/7hDYpb/c5EL0I/fiAjtSiVY6LultiX2iH3khHBqI8/VzT3v1vPHQh7cDjqdEJKJEh7jkLw1dx+t6+ij4SfVCxgdueLWIvpo8g3vVrTIbL22MToqpT6fg1AuTRmDDSEBN1rIVg0qC01t6K2CUsuGNwSo/A6ZShg0HWvohk1zZ9wnCWtOzpGfyXfVNhofj4/2GORdtPMQpBo9aZ6/geCAyQYghW2Qzqv+zOiA/HCiWc2wW5n1s9d1EeEjiVk/fq0iFW1UW2crVKlzRx16gCpE3qrlkovU7tFzNA51q3qokZicJUc0shcJ91Y3mIHlWUHeC/R8WKA9socXnU9sfBv5K2dsKJHur0OMHnIuCfEBivIRb6Evf/EHdlfC6qBrY+ICW6fzt/5/YMU+sEO3IaUiwe+HpRpCeUmTD5pQFcg1lyulJxSeYVn5hV33V/3M6hGoWmJDaZKcRg+OTD3aof1kXqqAIZU/G74GqCiv1jWFrCDmcuo1HatWitsjdpfrEqvJ118khygkw9phffpfkLdm5/axDL35spRVsvvrYTH8E3VGIfKT2Z/VLV+D5NQ4BHz8kqBqZOkmSDL5ahUV8rzpzilK63wiTF3TUXKlXS1dKzif+Iy0ge8LLsAMZJpcRZ0jggIMAF83GfaTBQ0
+ S0GOqC04
+ T7oyyCOy7Uj9fjbB1tSdEaq/87CCuyrNhQpx+tc2U6JbSD+oupLWzT0arj+e+YkN4Q5hV0wMXb3as7otgbspnnuWRDOJzn3UYz84BlmA8LEGkg6pePphBlnlahTrrv8zk1BwvU2D4o6pS8LhOdzx6EmJLHzoC3SoHczh1hFn5/B6SX3fJAYB7K14WnFmdGibq2Z1NiGmT7uUO0vUYoadGMdiohKelouVmYvRbgNN7Yhsi5koE764GPzHjWkzil1cn8uLgbD1822YAsTppSd0KYZ/q3KzDey+vwrmpf1DdTVSpfyEXGyfLNtsZ2qoLS8/vsXM97fqTjM9dP+zR5W0dY+kKOn+CWuylsYja083SKcsGDjPO2DmfCgLbBv4zoE+NSozrey/N+syNkrf67jksaJ11ZaRhre37lbzSUuf36/ODNWiDuF5PvNwIMHG0UHK9qh8/fO0B1rvPwA19eIjrp2gNegXNgD3bWHlAIYzHDtY5jyh8t6g8kByHxQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,42 +150,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+On Tue, Aug 18, 2026 at 12:11:34AM +0200, Andrey Konovalov wrote:
+...
+> Hi Alexander,
+> 
+> Should all this be limited to only s390?
 
-swapops.h uses MAX_SWAPFILES_SHIFT, SWP_MIGRATION_READ and SWP_PTE_MARKER,
-all of which swap.h defines, but does not include swap.h.  It compiles only
-where the translation unit pulled swap.h in first.  leafops.h includes
-swapops.h on the line above swap.h, so a file whose include list reaches
-leafops.h before swap.h gets:
+The idea is to allow any architecture to opt-in. Once [1] is accepted
+this may look redundant, but I still see the benefit in having it.
 
-    In file included from include/linux/leafops.h:11:
-    include/linux/swapops.h:88:21: error: use of undeclared
-    identifier 'MAX_SWAPFILES_SHIFT'
+I only did not manage to circumvent the ugly __no_sanitize_address
+for ptep_get_lockless() to make it avoid "bogus" kasan complains when
+gup_fast walks a page table that entered the lazy mmu mode.
 
-A header that uses a definition has to include the header that provides it.
+1. https://lore.kernel.org/linux-mm/20260806083926.1807279-1-usama.anjum@arm.com/
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202608181757.mza9RRj7-lkp@intel.com/
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
----
- include/linux/swapops.h | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/include/linux/swapops.h b/include/linux/swapops.h
-index 1f3ff3b93e16..e7d0d529f3e0 100644
---- a/include/linux/swapops.h
-+++ b/include/linux/swapops.h
-@@ -5,6 +5,7 @@
- #include <linux/radix-tree.h>
- #include <linux/bug.h>
- #include <linux/mm_types.h>
-+#include <linux/swap.h>
- 
- #ifdef CONFIG_MMU
- 
-
-base-commit: 33f61b12d297562321533c048e034b1fb21c1cf3
--- 
-2.54.0
-
+> Thanks!
 
