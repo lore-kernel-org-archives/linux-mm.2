@@ -4,105 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67D25C5DF7D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 18:40:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAE87C5DF81
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 18:41:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 558746B018E; Tue, 18 Aug 2026 14:40:41 -0400 (EDT)
+	id EF6B06B018D; Tue, 18 Aug 2026 14:41:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52FCB6B02D1; Tue, 18 Aug 2026 14:40:41 -0400 (EDT)
+	id EA77B6B02D1; Tue, 18 Aug 2026 14:41:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4464D6B0593; Tue, 18 Aug 2026 14:40:41 -0400 (EDT)
+	id DBDDE6B0593; Tue, 18 Aug 2026 14:41:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 180A96B018E
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:40:41 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 949F2402F7
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 18:40:40 +0000 (UTC)
-X-FDA: 85115256240.04.3F8A4BB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 95F3E18000B
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 18:40:38 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gxo2dy9i;
-	spf=pass (imf06.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787078438;
-	b=UtBh1lob0SuYfNT/XEJA9sd5KWUjLATp+oYLDkWx/V7pEq2DtGPk/w2JFESFkcWyam6IZL
-	2sCy6ifVE3/7bs5DiQEIyDu/AlkSTTT0BM/3vb9RJRSkl290MWedXI5/mbPtXXYFdfONPU
-	DKjw3p7bDLnQqmBeELx4w36OFyJANaY=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gxo2dy9i;
-	spf=pass (imf06.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787078438;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B36A16B018D
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:41:41 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4BF85A02E7
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 18:41:41 +0000 (UTC)
+X-FDA: 85115258802.06.236BDA5
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5CF00120006
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 18:41:39 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UeehXGpo;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787078499;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ny3XfJw5AppvIZCDXFSTRJl6zICfUFbpvldeep36UPQ=;
-	b=ZA++wWM9g9EJHl2LiCkiyFLpZ68/WkcrUT44sel53QcU1pCHzkAxD9iJLVDkJqPpAGPOcK
-	89M9uOkupSzQYw+dDMSvmaGgkdyXYydO82xrY21l/GYvRZ+N5J6FbmKjWBAPDOdxo1CsId
-	GBUOdCzQzgS2bw1ovsBStDWw9hPRanw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CB98F42AAB
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 18:40:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F341F00ADB
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 18:40:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787078437;
-	bh=ny3XfJw5AppvIZCDXFSTRJl6zICfUFbpvldeep36UPQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Gxo2dy9i+r9hMkx4kXWc3gktO/h6sygr3MqxCShm2PUAKqgro78w65IZ9rJErhTDd
-	 mTJnTV362z9LZ+RA85FOQ2zL0HMWfeS/e10WuK2U0u3Z7ldKsHiPfTiXArsChaLbp6
-	 sTl8V/iaCsF8lD+dI7XbReDvP/kjO624/3Bo7wGBKgr3uU09fWxJweFTcuFn07Xad6
-	 lsgZoZFBYA5lAkMWNkdsSE3seXNWMpQkooUQlA2M3SmGoxYzCV5oQlQLm78YCEvZcb
-	 kctcvvms/EzCQo3PEnajZYc3dcDMOnr20bCVWu1ZyBof57sh99gqp0tU0HMrL5gGSN
-	 bgw7TuI0U44AQ==
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6983d3dae7aso2200047a12.0
-        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 11:40:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpH1QOTvRZaRecSUHoAhSFZUi3SvmCzsR0bJyDBffCpp7eP5lvSKWexg0RkTGSLxuPGyY+iNRbdXw==@kvack.org
-X-Gm-Message-State: AOJu0YxQSFlulnocq8v4A3sQcGoYS1ABhWoGVZgpCK07tZO5gSFSpHV6
-	r5n28Wi4JL0oChQvbk81KkijduLz+U/IaQrXKdg+vp/Ym555aF0eOoNNrlINQp+9ZTrX2BJFnvO
-	HiDvcwjRpXCrE8cUypWMz8+bvcVyqb94=
-X-Received: by 2002:a17:907:a68a:b0:c21:4698:ee9e with SMTP id
- a640c23a62f3a-c22297f3440mr23803966b.7.1787078436420; Tue, 18 Aug 2026
- 11:40:36 -0700 (PDT)
+	bh=6pyYJI0TNCEOKN/gsnOgTV5eL5yphEPrCvzUhCQngc4=;
+	b=S5v1BvKSiNaNoFCG/b1ak58HaK6Tj6ELiKU//cy7faSoAGKR+lWUVM5Kju5Brsb/nW10Tj
+	mMwsfJIlPzNtnxW8qWAR46EmArojVBjLxfqB83ZJyxqM/3NCOwdT7JCK6AA1Nu3CEUSrqj
+	07DhdXY+hacjRSEE3mwHBcOIfXhSx+o=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UeehXGpo;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787078499;
+	b=vLpJS8INGo6CgC7O32CPgXY2MR3gQROIztumFJfb0f9OZzje3kCG2x6DTFAhA+cWoXVsw9
+	9SsA9Gw2I6kcR3Bg7sMkYhXH6OPtgIX4JldVJeRB6gA50NhOkrHJJ07lbFX0jnCCOw8EqU
+	aEffL/TBUGqVF+IX2Gulx4znh4MBBgM=
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-47f633e6058so111350f8f.0
+        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 11:41:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787078498; cv=none;
+        d=google.com; s=arc-20260327;
+        b=P63jIE6Uhv21b31Wg3O92F0/5vIW36PTkPYH5CJGO0GqyfCqtw+2d1262JnsHcXdg3
+         jsfEvHFInAsB2zjrRlJS/eQE9sL3AFymmFaL6ipYCwTC+j0rWcd75+sXSej/Sh6pkpFR
+         CU8QzeqNahhMMv4FVtCHWGHaArjS4XQM3lxD/1c1HJRfXLZxUXHGWmmmXjGhylTjwBXC
+         kTtusJ9T97QSiWo0dKW394YiC5bOGXSKHK+qAfxsNsJGTRQAAJrmxBYbWMvZWYH4kMz5
+         4Ya3gSuU6yo5LoBIbW/VDNqGbyY+IhHxKg2UuHI+CZbxndVvSiDm5bN+cSMp0UECpOxH
+         8hsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6pyYJI0TNCEOKN/gsnOgTV5eL5yphEPrCvzUhCQngc4=;
+        fh=vORJx92KSCRxIqLdqWYV6GqIb59x8ZxZomWw/jTjBv0=;
+        b=eu/pY6xjypKnvflEPbDcrwBlG+ZnFynRTVWGcMtoQYhGeG+QeN6RFzSkITqpEeSKOz
+         fKFkcpmu9fsNTFbytxGmEyhkFCzLNSM7WuAaFi1eW0lYhltlNzmoXWxgpfeWSis5VZj2
+         zbf6JFq8blONjGvW6fEMn8JmFfu69HJh+vKjMM4r8KCNYjR9g6/fA2Aj3ge0b1UiN/DD
+         NwTKiKWcbkvCuW5fnjMactCCz377zgAJJvpictlRL/PWbJ88pw29/vMnrZMGAv2gCNiB
+         oQmkTQdYeuNEzmFpWKlHTsB0401SzM0DUW5W2w3x7CJ4N+2HRaRPI/4xs08mZsH5KqBx
+         czJQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787078498; x=1787683298; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6pyYJI0TNCEOKN/gsnOgTV5eL5yphEPrCvzUhCQngc4=;
+        b=UeehXGpoUpgphwAxFmOGkaalyhnwDkpdRI4I5v3I13sMdVH+X0HWyGGdOQBQPlE8fD
+         8sH+0EjMCC/2y+04qFdMu9v8cnDm/+UsKIV6xbhNy6KP0wfeHGl5wqTosPvncY0INS6O
+         9jPm0TGqipi66qmTT1tPP9nrkkeKWdHJJDh9hKCxafFH5vrw54YcsxwrXOTqJn0/MLD7
+         YlKzMEfuIzvytv4svHOKIQBcB3IiHwf9ZwsGRPeFedDiw+mcqyziv5dC3LZaVrd6Bao2
+         9kSuq3yw4Vt/pmhblzpXGk7Ane5nqkOWzjSJmRO3xJzIQuARClA2vj6Q6/aPoaiwuwLX
+         MSzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787078498; x=1787683298;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6pyYJI0TNCEOKN/gsnOgTV5eL5yphEPrCvzUhCQngc4=;
+        b=J9nal+KmgFBDkbLOMKLiiVxtgIWS3tAd72QFX/d6Oz9fiX98pYcBDur4grP7+tWlpV
+         A6FYSiIpjV4EPlU0yMTCD11tDKonh9HhuE04moP09Acrxocyf9B2DOXYrB6YbmSodK6G
+         IdKPjbXuP8FKtooM7KwaadRfdKKMiiWcuWoZGSes9kgAgbw03UZbjbE/B1twB+EqULSi
+         obuq2asEUuerVJhIuiYp1pnWBLJxnAjvN2HBWZmCYVpuFJ9fNEQKb8Tk7sfmhDoMasJ0
+         r5i0m0MCVYTcJoiafMvvxyKYg6b14CK1rp6kkrNrkMhdgOSTn2Ydhp9jTYSnZJzba/am
+         y0BA==
+X-Forwarded-Encrypted: i=1; AHgh+Rrm3PSNcokXFZaa7i2GNuj0BpPVgtsuajXmdABSJvSE04XFoHENTSMimcO5JM8udUqXNCCn434KTQ==@kvack.org
+X-Gm-Message-State: AOJu0YwLrikCQ3WOTWQj+wByxw9lKEc+2JxgDrQB4Uu5fDRje7B6G+Qx
+	r5KgWLUpFwahgKqPinxvhRIrjfRbzkWJT+92pV8UUuve3slJw+v9jxt149AA2JbsDvKgStWmIY6
+	L6J+W2GmGUDulnhbahh21JTzZHISd+Es=
+X-Gm-Gg: AR+sD13jtKIl1ZIvIkeOhKMFDq8o8NYMj8IQM7yIib01PcFcsN9mFWmeGA7+9+5+0dO
+	uXGuwEolZLVB0UCaylOVAlFBqhkyByPzDa7vEQ+gQUCiNAUmyMEZOWPqF1f1ey6fHGChJV60YpI
+	LP0tsPe3YzWiv8nErfEUKwZQ2hVcYjFFP66BACq3Y2wqo3/Gvbv7LjVviM4Dnm7URwDeedC2vUU
+	NrTgBocgGNZqUnHQWYrSAu4m2O4Dr4XfyvPZW2C6n8xa/ypQrym+pX/VKqZ7mU10nJ/fFQEivus
+	xnmqi24XBr52V89uqKpSk2DpC4l9uc7h+X+y7zGvLf5LUjeVxI8/NEINkZX4Uy8mHh3VvGH6yTq
+	B
+X-Received: by 2002:a5d:5d86:0:b0:481:5f3c:39d4 with SMTP id
+ ffacd0b85a97d-482b07d03e4mr120191f8f.1.1787078497580; Tue, 18 Aug 2026
+ 11:41:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAJnrk1bk66ZhRAS7mojSnD5RBfFS+0ChAPymE3ObRWr0C_udWg@mail.gmail.com>
- <CAO9r8zPpe6fWOSXtRUjFB8WNMroeBqvLT+2QtAU4E27AtLUXMQ@mail.gmail.com>
- <CAJnrk1YifN22mA5PFRVrh3m_ygxax6x4_8nraG2hPqCzyzBj7A@mail.gmail.com>
- <anpsLy_pCanocgS1@google.com> <CAJnrk1Yoj7fqbzurmHkbA-vegpQu3cf-_dfvKor_VxuNhPR-AA@mail.gmail.com>
-In-Reply-To: <CAJnrk1Yoj7fqbzurmHkbA-vegpQu3cf-_dfvKor_VxuNhPR-AA@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 18 Aug 2026 11:40:24 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPLipVW6bvyDK1ypSawbo=LHKvmLqWH0xA6WMR9GYNJpg@mail.gmail.com>
-X-Gm-Features: AcwNN1X1aov6WUElnPNE-Id7S1ebr1jq7bpiqptm-nHaxscbWcI6WEioZMaqF7I
-Message-ID: <CAO9r8zPLipVW6bvyDK1ypSawbo=LHKvmLqWH0xA6WMR9GYNJpg@mail.gmail.com>
-Subject: Re: memcg stats flushing (WAS "Re: [PATCH] fuse: disable default bdi strictlimiting")
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Miklos Szeredi <miklos@szeredi.hu>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, kernel-team@meta.com, 
-	fuse-devel <fuse-devel@lists.linux.dev>, Jingbo Xu <jefflexu@linux.alibaba.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	linux-mm <linux-mm@kvack.org>, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Yunzhao Li <yunzhao@cloudflare.com>, Song Hu <husong@kylinos.cn>
+References: <20260806184254.3790858-1-nphamcs@gmail.com> <20260806184254.3790858-2-nphamcs@gmail.com>
+ <anX-ga41DMNWF6-2@cmpxchg.org>
+In-Reply-To: <anX-ga41DMNWF6-2@cmpxchg.org>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 18 Aug 2026 11:41:25 -0700
+X-Gm-Features: AcwNN1VHimYofVoIsN8UQymuxDsdfQrRmhj9S6ClyvLCQWRkK5fYio35kYdGPrc
+Message-ID: <CAKEwX=MmqyWdqfrp8kxeuucNFhU2e6Hk2TdANUGhNFHhvtSPwg@mail.gmail.com>
+Subject: Re: [PATCH v3 01/11] mm, swap: add virtual swap device infrastructure
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com, 
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
+	yosry@kernel.org, david@kernel.org, muchun.song@linux.dev, 
+	shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org, 
+	youngjun.park@lge.com, chengming.zhou@linux.dev, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, riel@surriel.com, gourry@gourry.net, 
+	haowenchao22@gmail.com, corbet@lwn.net, kernel-team@meta.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	cgroups@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 95F3E18000B
-X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: qx5p14mbbkzu1cdet1jbfpru3c1yydf8
-X-HE-Tag: 1787078438-121827
-X-HE-Meta: U2FsdGVkX1+oeNxJZdYpIykSkVKNl4NtP/xeK3kOkoN8acIZuus8uwRHJaaVQ52MJ5OmdSzerEuBQsud4FjRe0axx/wtzb6dPrNOmQ3YKJJpFV3Q9+UdO3NUe7VqpSS1Xjr2lNwYCTiRrOT50rxUeT36VRcdENGr6PDXotijVYHJU1S5Y06FdzVk9jmNpcVMwiGlZIUUjAVUaN3nCjocHLCAWG+gIhWoy59YdMA7HzYmn+QfFsO8R626dDJp36SUIRDxZj6MYSOXy46+lmkXxDWBCxxF3ePSw9oVfd+9bOu1khUWq464J6WELoR/LPfwNuKugcqwWWPqZrzjk9G6Jfuhz8ebWbMVz/FDsfjMmlMOtSz2wUELXw64vSiKXvrQo25lXxo4s9h4b3FUgHnVubm4d1XOKXgGOj2oJ+6QfSc9aRWjdzwcc6p3bFKLHgMj1NzgIfcz62QOg5YB0qXxEP+yzNPmDyjluED+CqFF2Gr3Suy3nzbE9bYDY+36IATNUQTgx/21zySQsDNDlndK/sIG2wfc/XEdNKokPj39nsJf9/Q43W9lLAuB2RgguAXMemhM8wtM9qE+sLBlV18n9WvsR5/j0hCjwVndyE1EIXCqjXQt93kXUSs0BlXpT1c9yQleTKdqHjRs/3vVg+s939JJo1Ue1N432Q8qGLBMLNNXDKWC+CcDzWvFrsLtJUhd/edvT+oEwj099FUNnouMgsS2b6DuIypghSUDi4Us+fFoMYjurJdpGpnLl+7Jfk6J7pvLI0Md12EG3o597IwYemVcUQCrWr94JzGE+wHuDOTYHGgjEZirne4G1fTJTEhEDD4sr+zYDVS2HVMVSh7pa4x80e44CZMoFlTX8Okmm6IN2ad5HeVHXaOJ4Uv4/tfOJBlXPTVMPUideu00/wCYZqYSWjk2BNEDnlVV+X/ePijlqRzavyyEks3gKSSr0wackjVpGIfuwf/9id57Wxy
- 0tt2O3rA
- tIj0rPjVxqNPnzDoRd8DOeDtcdic07inNP0keUmkpXnpQgSKHdOkxPxMByRU/VpdlfdjS737O4gy6eA5/uCwZZQB42x9MXl9cIxwSGi5VXCRo2uaH/V0uMJ7QsZ1eQT7sOVav2BnZPDOynAF8i/8On4lKClBAveLVwfzUDg8enQlFyo0oSDLg65WCXvZR0HN/EaJoiSWPH8eZG6Zy8WC6ElcdKZ7DG6Y8aZokETZaYt7Mo6/qly597yawQK3IAqllMmE/XLLCbJs9kg+2PD8od51d8aNH8EpnJ7zU1x9B8ewPb5Q5xFXHAgCeo7NWSnKpGzh03eKheflvVik=
+X-Rspamd-Queue-Id: 5CF00120006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 4z6o866ntuk3xfuj9dyg6qwyfuw719uu
+X-HE-Tag: 1787078499-938099
+X-HE-Meta: U2FsdGVkX1/ixBSJXq9xKo27hq8C4VomxJoIoszic0lDiro5N+Gh7SCAmDFuyTQM7CiIsYfvoaMDsh9tVABlBKSgDszD+pW4iYwq/Yhyz9ZJKD6Ouwk9XwSqmXf2sDyY7s9Rk7y7cbLoz3LRagGZ9NfJiKk+C2my6mfh+GynRl0JoG/hzsq440N423G1LO1Gu7lM4NsEXxsu43AY6w5qvAVY+ZZhGMZMKy2+5hixzpCTkkYso04ahYTvKreVofJhO4DmuI07oYWIhiDKRcT9nOlawg0GZKIurkpomzx6R+I+Gmb0vRmyN8ig3VO3AX/4/1MyinN7VRDmQvRhHdNRBf5Y8YfBlTHm/l5opGt/SejhlCYXKsohBx8dZof4N0lrYsA5Uqhu0cuA/dCLovpFmdDi8B7ocda8w3BhSsQC/KQhyja9s/ClNHjBKiKm/2AXt3m5ct9USWSbDAYrDAUFyscHBdW52lTY5d3v+llAjVGwx3pNMc9ZZp4YaVABtU1HG7+dHB8mG0bsiwJGNjWnycjONxuYALipBiafC/fOMSM2md2T0288Ft0knovjP9Pg2/MYak+qflCkmcVmoRCrIy6aQ+rFFiIxryIvvkd6Du0cnn/hmSwDtBEYe0EqwZ8SVr2a1ufm94hrH0/x9sOfAFMWz0WJwRlSevGi4dKa1hxdV+EqBPK8ApH7+BX92cDIF+z+Krs1uh1F2zWf+pCpGvsXcT+LZjWflVkY0SGBHYgnuhGFADADbDrpYRl3cy1Dttes9zB7LEHBH+QO5spz5B9TsHPRNW+fVx6PboQbVi4kXYETGj2nzyvZNRBmC+5yzJunguq9l0UP1cENwCEBrax5wbbtNLKeB3t+Uu7FaiJ24Q23sv2HnrPUv584B5HHqCqJwJQ/9Iw4NZK8PCFaX3Mzjtw/fSAEsrGgGm94LOHwA13DMlK5p/nKITxJrlj9gGRoaY3MFeCV+7+O45/
+ DyaFVfCi
+ /Igggt/OUdpBEODQs51X02jg2b9zd9UiQ1KcMwsh9hLkFnuHzNQRXdiHKiXabMqKlxEKSnprc2JYUFZIQl9qK4+Od1iRXJjidbmNNy0j3vxzZ0Z0YQwpkEkxg8rZyCSXZwC+35HLWJDNlRXHamZpTblMI3yjSrxqjoJg6QgkZBJEWwbtqxKNbMdgzkOkW85SP7cllJf4hJiZ70Xi/mPBljcirIC0S1rNIuoC61ZlqMkIvoFx/Cqc1gIddlUVXkvf+ZFioDftnRRiVjGeeqKoFT8UfFx6LhsQr/DQ8U94CX/886xjr7dJj5AVhzvrDoVOvuh9QrzzLXiP6DUUqd8cyaUqM6i55mKoJJg5KImRwF08y+ViPXLjXsnl817vCUKqAJJJE9HvzjhxAQ1Mv/mEONVlDahoHLn32UR5enr0SBdKghALmLSfByL0HV5HWpOWCJt7z8DT7sNRGvMtWWXrWeOUV9A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,305 +150,419 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 12, 2026 at 1:59=E2=80=AFPM Joanne Koong <joannelkoong@gmail.co=
-m> wrote:
->
-> On Mon, Aug 10, 2026 at 5:48=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wr=
-ote:
-> >
-> > On Mon, Aug 10, 2026 at 09:49:31AM -0700, Joanne Koong wrote:
-> > > On Thu, Aug 6, 2026 at 2:31=E2=80=AFPM Yosry Ahmed <yosry@kernel.org>=
+On Fri, Aug 7, 2026 at 8:49=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.org>=
  wrote:
-> > > >
-> > > > On Thu, Aug 6, 2026 at 2:04=E2=80=AFPM Joanne Koong <joannelkoong@g=
-mail.com> wrote:
-> > > > >
-> > > > > I'm not too familiar with memcg or vmstat so apologies if this is=
- a
-> > > > > naive question, but does it make sense for memcg to just do a sim=
-ilar
-> > > > > approach to what vmstat does? As I understand it, mod_lruvec_stat=
-e()
-> > > > > updates the node counter and the memcg counter (if memcg applies)=
+
+Hi Johannes,
+
+My apologies for the delayed response. I saw and read your email, but
+I wanted to stew on it, code things out, and stare at things before
+responding.
+
+I think most of our suggestions here make sense. I coded most of them
+out already, and I'm stress testing them - will report back if there
+are surprises.
+
+>
+> Hello Nhat,
+>
+> This looks pretty clean to me overall. Nice. A few comments inline:
+>
+> On Thu, Aug 06, 2026 at 11:42:44AM -0700, Nhat Pham wrote:
+> > @@ -276,8 +277,21 @@ struct swap_info_struct {
+> >       struct list_head discard_clusters; /* discard clusters list */
+> >       struct plist_node avail_list;   /* entry in swap_avail_head */
+> >       const struct swap_ops *ops;
+> > +     struct xarray cluster_info_pool; /* Xarray for vswap dynamic clus=
+ter info */
+> >  };
+> >
+> > +#ifdef CONFIG_VSWAP
+> > +static inline bool swap_is_vswap(struct swap_info_struct *si)
+> > +{
+> > +     return si->flags & SWP_VSWAP;
+> > +}
+> > +#else
+>
+> I think what could make sense is have
+>
+> - CONFIG_VSWAP
+> - CONFIG_VSWAP_DEFAULT_ENABLED
+> - a boot flag that's =3D CONFIG_VSWAP_DEFAULT_ENABLED
+>
+> Then you can use jump labels to cut runtime overhead to 0 if it isn't
+> enabled at boot.
+>
+> This way distributions can ship it with no overhead out of the box,
+> while allowing users to opt in for early testing.
+>
+> IMO this is more valuable than a runtime toggle.
+>
+> It should be part of this patch if you add it.
+
+I've been thinking about this and your other suggestions regarding
+removing CONFIG_VSWAP. I've coded them out - it does indeed look
+cleaner :)
+
+Let me test things first to make sure I did not introduce some weird
+bugs, but to recap:
+
+1. CONFIG_VSWAP gone (along with most of the !CONFIG_VSWAP stubs,
+saving 100 LoCs or so).
+
+2. Runtime param gone, replaced by a boot param.
+
+3. CONFIG_VSWAP_DEFAULT_ENABLED only decides the default value of the
+boot param (still gated by 64bit config).
+
+4. If we detect that the system is 32 bit, we ignore bootparam
+selection by users (with a small warn).
+
+If the boot param is false (either because of user selection, the
+build config, or because the system is 32 bit), we don't allocate the
+vswap device, and bypass all vswap code paths. There should be
+negligible overhead here.
+
+>
+> > +static inline bool swap_is_vswap(struct swap_info_struct *si)
+> > +{
+> > +     return false;
+> > +}
+> > +#endif
+> > +
+> >  static inline swp_entry_t page_swap_entry(struct page *page)
+> >  {
+> >       struct folio *folio =3D page_folio(page);
+> > @@ -402,6 +416,8 @@ void swap_free_hibernation_slot(swp_entry_t entry);
+> >
+> >  static inline void put_swap_device(struct swap_info_struct *si)
+> >  {
+> > +     if (swap_is_vswap(si))
+> > +             return;
+> >       percpu_ref_put(&si->users);
+> >  }
+> >
+> > diff --git a/mm/Kconfig b/mm/Kconfig
+> > index 331daf7fcfab..32d38b552845 100644
+> > --- a/mm/Kconfig
+> > +++ b/mm/Kconfig
+> > @@ -19,6 +19,16 @@ menuconfig SWAP
+> >         used to provide more virtual memory than the actual RAM present
+> >         in your computer.  If unsure say Y.
+> >
+> > +config VSWAP
+> > +     bool "Virtual swap device"
+> > +     depends on SWAP && 64BIT
+> > +     help
+> > +       Adds a virtual swap layer that decouples swap entries in page
+> > +       tables from physical backing storage. Swap entries are allocate=
+d
+> > +       from a virtual swap device and can be backed by zswap, a physic=
+al
+> > +       swapfile, or kept in memory - with the backing changeable at
+> > +       runtime without invalidating page table entries.
+>
+> IMO this is difficult for a user to decide.
+>
+> If we want to make this as a config, then IMO the help text should be
+> about not requiring a swapfile to use zswap, zerofill pages etc.
+>
+> From where I'm standing, though, this code is no longer a separate
+> vswap.c feature like it used to be. It's pretty integrated into the
+> swapcode, and it looks like a good chunk of the core datastructures
+> aren't conditional either.
+>
+> At that point, the usefulness of the config option is limited. If you
+> go with the jump label and there is no runtime overhead, it might make
+> sense to just keep the option on what the JL should default to.
+>
+> > @@ -143,9 +150,19 @@ static inline struct swap_info_struct *__swap_entr=
+y_to_info(swp_entry_t entry)
+> >  static inline struct swap_cluster_info *__swap_offset_to_cluster(
+> >               struct swap_info_struct *si, pgoff_t offset)
+> >  {
+> > +     unsigned int cluster_idx =3D offset / SWAPFILE_CLUSTER;
+> > +
+> >       VM_WARN_ON_ONCE(percpu_ref_is_zero(&si->users)); /* race with swa=
+poff */
+> >       VM_WARN_ON_ONCE(offset >=3D roundup(si->max, SWAPFILE_CLUSTER));
+> > -     return &si->cluster_info[offset / SWAPFILE_CLUSTER];
+> > +
+> > +     if (swap_is_vswap(si)) {
+> > +             struct swap_cluster_info_dynamic *ci_dyn;
+> > +
+> > +             ci_dyn =3D xa_load(&si->cluster_info_pool, cluster_idx);
+> > +             return ci_dyn ? &ci_dyn->ci : NULL;
+> > +     }
+> > +
+> > +     return &si->cluster_info[cluster_idx];
+> >  }
+>
+> This now requires rcu. IMO a kdoc explaining that would be good.
+
+Good point yeah.
+
+>
+> > @@ -733,6 +765,11 @@ static void free_cluster(struct swap_info_struct *=
+si, struct swap_cluster_info *
+> >               return;
+> >       }
+> >
+> > +     if (swap_is_vswap(si)) {
+> > +             vswap_free_cluster(si, ci);
+> > +             return;
+> > +     }
+> > +
+> >       __free_cluster(si, ci);
+>
+> Should this be part of __free_cluster() instead?
+>
+> - swap_cluster_assert_empty() seems useful.
+> - move_cluster() handles the list linkage and could do the list_del().
+> - swap_cluster_free_table() is the same.
+>
+> The other caller is the discard path. That one isn't relevant, but it
+> shouldn't hurt. The layering would still be a bit cleaner this way.
+
+I think this should work.
+
+>
+> > @@ -835,14 +872,21 @@ static int swap_cluster_setup_bad_slot(struct swa=
+p_info_struct *si,
+> >   * stolen by a lower order). @usable will be set to false if that happ=
+ens.
+> >   */
+> >  static bool cluster_reclaim_range(struct swap_info_struct *si,
+> > -                               struct swap_cluster_info *ci,
+> > +                               struct swap_cluster_info **pcip,
+> >                                 unsigned long start, unsigned int order=
 ,
-> > > > > where for updating the node counter, mod_node_state() does some
-> > > > > batching where it updates the global counter for that stat only o=
-nce
-> > > > > it crosses some threshold (pcp->stat_threshold). Could memcg keep=
- its
-> > > > > per-CPU counter as the accumulator but once it reaches some thres=
-hold,
-> > > > > it then propagates it up the parent/ancestors into a per-memcg at=
-omic
-> > > > > global counter? The atomic would then only have to be touched onc=
-e per
-> > > > > batch than on every update, which might eliminate the overhead of=
- the
-> > > > > per-memcg atomic you saw previously? It seems like this would get=
- rid
-> > > > > of needing to do any flushing altogether, as we could just read t=
-hat
-> > > > > global counter directly.
-> > > >
-> > > > The memcg stats perform similar per-CPU counting and thresholding. =
-The
-> > > > main difference from vmstat AFAICT is the cgroup hierarchy. In vmst=
-at
-> > > > we have per-CPU counters and a global atomic counter for each stat.
-> > > > For memcg, we have the same for each cgroup, then we also have a
-> > > > cgroup tree. When we read the stats of a cgroup, we usually want th=
-e
-> > > > hierarchical stats including all of its children, so we can't just
-> > > > read the global counter.
-> > > >
-> > > > We use rstat, a cgroup framework that keeps track of which cgroups
-> > > > have updates on which CPUs, and then memcg has thresholding logic o=
-n
-> > > > top to only flush if the number of pending updates exceeds a
-> > > > threshold. Essentially, if the magnitude updates on a CPU exceeds
-> > > > MEMCG_CHARGE_BATCH, we add it to a global per-memcg counter. We onl=
-y
-> > > > flush if that global per-memcg counter has > NR_CPUS *
-> > > > MEMCG_CHARGE_BATCH updates. So in theory I think we tolerate up to =
-2 *
-> > > > NR_CPUS * MEMCG_CHARGE_BATCH of stale stats (combined for all the
-> > > > stats).
-> > > >
-> > > > See memcg_rstat_updated() and memcg_vmstats_needs_flush() for this =
-logic.
-> > > >
-> > > > Looking at this code again, it made me realize that we already iter=
-ate
-> > > > the per-CPU stats_updates on every update to increment the number o=
-f
-> > > > pending stats on this CPU. I wonder if we can replace this with
-> > > > actually updating the stat on each parent, then the flush path only
-> > > > needs to accumulate CPU counters. Or maybe as you mention, we updat=
-e
-> > > > the global per-memcg counter when updates on a CPU exceed a thresho=
-ld,
-> > > > and forgo the rstat flushing logic completely.
-> > > >
-> > >
-> > > I can run some experiments and see if updating the global per-memcg
-> > > counter per batch and forgoing flushing could be a viable solution.
-> > > I can use my setup to test it for writeback, but for the zswap use
-> > > case, what's the best way to test if the changes are too expensive? I=
-s
-> > > there a benchmark program you're running?
+> >                                 bool *usable)
+> >  {
+> > +     struct swap_cluster_info *ci =3D *pcip;
+> >       unsigned int nr_pages =3D 1 << order;
+> >       unsigned long offset =3D start, end =3D start + nr_pages;
+> >       unsigned long swp_tb;
 > >
-> > I was running stress-ng and measuring the latency of zswap_load() and
-> > zswap_store() with bpftrace. But I suspect whatever works for writeback
-> > should work for zswap :)
-> >
-> > >
-> > > For updating the stat on each parent and having the flush path only
-> > > accumulate CPU counters, I think this means we would have to
-> > > unconditionally walk the ancestors + update its counters on every
-> > > update, as we wouldn't be able to early break if the flushable
-> > > threshold was already exceeded. I don't think we could replace the
-> > > stats_update update, as it seems like readers still need some way of
-> > > knowing when to flush. It seems like this could be a nontrivial
-> > > performance hit, but maybe it's a non-factor in reality. If you think
-> > > this would be useful to get benchmark numbers on, I can run some
-> > > experiments on this too.
-> >
-> > I think we need to experiment with how much work we can shift around
-> > between the update and reader sides.
-> >
-> > Right now, on the update side, we call __css_rstat_updated(), which
-> > iterates the parents and puts them on the per-CPU rstat tree, then we
-> > iterate the parents again in memcg_rstat_updated() and:
-> > - Check if flushing threshold is already met.
-> > - Update per-CPU counter for stats_updates.
-> > - If per-CPU update exceeds (another) threshold, we update an atomic fo=
-r
-> >   stats_updates.
-> >
-> > The flush side checks the flushing threshold and does an rstat flush,
-> > which will walk the update trees on all CPUs and iterates all child
-> > cgroups on it. Pretty expensive when the threshold is met.
-> >
-> > I think we discussed two different options:
-> >
-> > (a) On stats updates, iterate the parents and update the per-CPU
-> > counters of the stat directly.
-> >
-> > In this case, we can't keep using rstat, as we would still need to add
-> > the cgroup and all its ancestors to the update tree anyway and the flus=
-h
-> > cost will remain similar. So on the flush path we'll need to iterate al=
-l
-> > CPUs and add the counters. We can explore if use a cpumask can help
-> > here, but perhaps not since we'll need to update it atomically on all
-> > stat updates.
-> >
-> > I imagine that if we do this we'll drop the stats_updates optimization
-> > to avoid adding more cost to the update side. We'll be replacing parent
-> > stats_updates modification with parent stat counter modification. But
-> > maybe it's feasible to keep both to limit the cost of flusing.
-> >
-> > This only works if the cost of iterate the CPUs on the flush side ends
-> > up being cheaper than the current flush. I imagine the average cost wil=
-l
-> > be higher but the cost should be much more consistent vs the current
-> > flush, so the tail should be better.
-> >
-> > (b) On stats updates, iterate the parents and update the per-CPU
-> > counters of the stat directly AND update a global atomic if the per-CPU
-> > counter exceeds a threshold. I think updates may get too expensive as w=
-e
-> > may need to update multiple atomics, especially when updating the root
-> > counter as it will be contended by all cgroups.
-> >
-> > The flush side becomes an atomic read, so should be very cheap, and we
-> > can drop other heuristics and optimizations.
-> >
-> > ---
-> >
-> > I think ultimately we need to experiment with these approachs (and
-> > perhaps others) to check what actually works in practice. You'll
-> > probably want some benchmarks or synthetic tests with many cgroups to
-> > exercise the worst case scenarios.
-> >
-> > For the zswap stats, I used to run stress-ng with a bunch of workers
-> > (20, 50, 100, ..) in cgroups of different levels. Since all workers are
-> > in the same cgroups, all the parents are common and all threads end up
-> > competing on the same atomics, so worst case scenario. I was also
-> > testing in a VM that has more CPUs than stress-ng workers, to exercise
-> > the full extent of the concurrency and contention.
-> >
-> > This could be a lot of work, so I am not really asking you to do it, bu=
-t
-> > just brainstorming and sharing ideas :)
+> > +     /*
+> > +      * Take RCU read lock before releasing the cluster lock to keep c=
+i
+> > +      * alive - for vswap dynamic clusters, ci is freed via kfree_rcu
+> > +      * and the grace period could otherwise elapse in the window.
+> > +      */
+> > +     rcu_read_lock();
+> >       spin_unlock(&ci->lock);
 >
-> Thanks for your guidance and insights on this, Yosry! Your responses
-> have been very helpful.
->
-> I'll do some experimentation with this and try to get a sense of what
-> the update costs are.
+> Since you replace the naked spin_lock() below with
+> swap_cluster_lock(), change this to swap_cluster_unlock() as well?
 
-Looking forward to that!
+Good point in the renaming, yeah.
+
+On a related note, I'm thinking of just removing this piece of code in
+cluster_reclaim_range(). We have no signal to trigger
+cluster_reclaim_range() (i.e swap-cache-only reclamation) for vswap
+clusters, and vswap (similar to swap-sync-io devices such as zram)
+already try to free swap slots (and swap cache) when the last PTE
+reference of the swap entry is dropped. I don't think this code path
+is triggered at all in my benchmarks.
+
+Let's keep cluster_reclaim_range() for phys swap device only.
+
 
 >
-> One thing I was unclear about and have been looking at is how
-> pervasive/important this issue is outside of the writeback case. It
-> looks like there are roughly 4 other categories of users that rely on
-> stats that can be 2s stale: zswap, cachestat(), working set, and
-> vmscan.
+> >       do {
+> >               swp_tb =3D swap_table_get(ci, offset % SWAPFILE_CLUSTER);
+> > @@ -852,7 +896,15 @@ static bool cluster_reclaim_range(struct swap_info=
+_struct *si,
+> >                       if (__try_to_reclaim_swap(si, offset, TTRS_ANYWAY=
+) < 0)
+> >                               break;
+> >       } while (++offset < end);
+> > -     spin_lock(&ci->lock);
+> > +     rcu_read_unlock();
+> > +
+> > +     /* Re-lookup: dynamic cluster may have been freed while lock was =
+dropped */
+> > +     ci =3D swap_cluster_lock(si, start);
+> > +     *pcip =3D ci;
+> > +     if (!ci) {
+> > +             *usable =3D false;
+> > +             return false;
+> > +     }
+> >
+> >       /*
+> >        * We just dropped ci->lock so cluster could be used by another
 >
-> Of these, vmscan is the only one that looks troublesome. Some armchair
-> analysis below:
+> > @@ -1146,6 +1239,12 @@ static unsigned long cluster_alloc_swap_entry(st=
+ruct swap_info_struct *si,
+> >                       goto done;
+> >       }
+> >
+> > +     if (swap_is_vswap(si)) {
+> > +             found =3D alloc_swap_scan_dynamic(si, folio);
+> > +             if (found)
+> > +                     goto done;
+> > +     }
 >
-> a) zswap (zswap_shrinker_count()): 2s of staleness looks fine. the
-> stats are only used to calculate the compression ratio and the ratio
-> scales a count that comes from a list_lru and *isn't* stale. The ratio
-> is an average over the whole pool, so it seems like that should be
-> fairly steady across 2s. A stale result doesn't seem too bad - afaict,
-> it is a heuristic of how zswap should get weighed against the other
-> shrinkers.
-
-There is also the zswap limits calculation, which Song sent a patch to
-change to using ratelimited flushing. I think that case is more
-problematic as it can cause OOM kills if we use stale stats (e.g.
-after a burst of writeback frees up space in zswap). Adding Song here.
-
-The shrinker case is more benign.
-
+> The name and the composability look off to me.
 >
-> b) cachestat() syscall (filemap_cachestat()): seems preferable to just
-> rely on the 2s flusher worker. The results are returned back to
-> userspace and not used for any internal kernel decision-making, seems
-> ok to have one field in it (nr_recently_evicted) potentially be stale.
-> Seems better to err on the side of less frequent flushing anyways, as
-> the call path is invoked from unprivileged userspace and flushes the
-> root memcg.
+> Can you make this a pure allocation function - vswap_alloc_cluster()
+> or something - that links it to &si->free_clusters, then jump back and
+> use the existing alloc_swap_scan_list() sites?
 
-I am not sure how the cachestat() syscall is used, but my preference
-would be to treat it like memory.stat and do a full flush on userspace
-read, unless it's a syscall that is invoked frequently for some
-reason.
+That name was vestigial from Kairui's RFC, but yeah I agree
+vswap_alloc_cluster sounds better.
 
->
-> c) workingset: looking at the original commits, the calculations are
-> estimates that don't require exact stats -
->
-> refaulting (workingset_test_recent()): commit 9b3016154c91 ("memcg:
-> sync flush only if periodic flush is delayed")
->     Now the question: what are the side-effects of this change? The worst
->     that can happen is the refault codepath will see 4sec old lruvec stat=
-s
->     and may cause false (or missed) activations of the refaulted page whi=
-ch
->     may under-or-overestimate the workingset size.  Though that is not ve=
-ry
->     concerning as the kernel can already miss or do false activations.
-
-Incorrect activations can lead to thrashing in some cases, but I am
-not sure how practical the concern is.
+Regarding the linkage of the newly allocated cluster to the free list
+- I'm a bit hesitant to introduce new surface for these clusters,
+mostly because I'm afraid I might mess up the handling of these
+clusters (when I unlink them from the free list), but I can give it a
+shot.
 
 >
-> shadow-node shrinker (count_shadow_nodes()): commit d4a5b369ad6d ("mm:
-> ratelimit stat flush from workingset shrinker")
->     On further inspection it seems like we don't really need
->     accurate stats in this function as it was already approximating the a=
-mount
->     of appropriate shadow entries to keep for maintaining the refault
->     information.
+> There is a new_cluster: label upstream you could use for the retry.
 >
-> d) vmscan (prepare_scan_control()): for determining whether reclaim
-> can deactivate, there's this logic
+> > +
+> >       if (!(si->flags & SWP_PAGE_DISCARD)) {
+> >               found =3D alloc_swap_scan_list(si, &si->free_clusters, fo=
+lio, false);
+> >               if (found)
+> > @@ -1264,6 +1363,13 @@ static void add_to_avail_list(struct swap_info_s=
+truct *si, bool swapon)
+> >                       goto skip;
+> >       }
+> >
+> > +     /*
+> > +      * Keep vswap off the avail list - it is not allocated from by
+> > +      * the physical swap allocator (swap_alloc_fast/slow).
+> > +      */
+> > +     if (swap_is_vswap(si))
+> > +             goto skip;
 >
->                 /*
->                  * When refaults are being observed, it means a new
->                  * workingset is being established. Deactivate to get
->                  * rid of any stale active pages quickly.
->                  */
->                 refaults =3D lruvec_page_state(target_lruvec,
->                                 WORKINGSET_ACTIVATE_ANON);
->                 if (refaults !=3D target_lruvec->refaults[WORKINGSET_ANON=
-] ||
->                         inactive_is_low(target_lruvec, LRU_INACTIVE_ANON)=
-)
->                         sc->may_deactivate |=3D DEACTIVATE_ANON;
->                 else
->                         sc->may_deactivate &=3D ~DEACTIVATE_ANON;
+> This is describing what the code does, followed by a why not.
 >
-> (and same for DEACTIVATE_FILE for file-backed folios)
+> Describe the why: Vswap space is only allocated through [...], not [...]
 >
-> target_lruvec->refaults[] gets set at the end of the reclaim pass. It
-> stores the same lruvec_page_state() value that prepare_scan_control()
-> will read at the start of the next reclaim pass, which means if
-> reclaim passes happen more frequently than the 2s flushes (eg under
-> sustained/heavy memory pressure), this logic will incorrectly assume
-> no refaults occurred and deactivation is disabled, which afaict means
-> folios won't be moved from the active -> inactive list, and reclaim
-> will start evicting pages from the inactive list that are hot (eg more
-> refaults).
+> > @@ -3528,10 +3668,43 @@ static int setup_swap_clusters_info(struct swap=
+_info_struct *si,
+> >                                   unsigned long maxpages)
+> >  {
+> >       unsigned long nr_clusters =3D DIV_ROUND_UP(maxpages, SWAPFILE_CLU=
+STER);
+> > -     struct swap_cluster_info *cluster_info;
+> > +     struct swap_cluster_info *cluster_info =3D NULL;
+> > +     struct swap_cluster_info_dynamic *ci_dyn;
+> >       int err =3D -ENOMEM;
+> >       unsigned long i;
+> >
+> > +     /* For SWP_VSWAP files, initialize Xarray pool instead of static =
+array */
+> > +     if (swap_is_vswap(si)) {
+> > +             /*
+> > +              * Pre-allocate cluster 0 and mark slot 0 (header page)
+> > +              * as bad so the allocator never hands out page offset 0.
+> > +              */
+> > +             ci_dyn =3D kzalloc_obj(*ci_dyn, GFP_KERNEL);
+> > +             if (!ci_dyn)
+> > +                     goto err;
+> > +             spin_lock_init(&ci_dyn->ci.lock);
+> > +             INIT_LIST_HEAD(&ci_dyn->ci.list);
+> > +
+> > +             nr_clusters =3D 0;
 >
-> This is from reading the code rather than a reproducer though, so I
-> don't know how much this matters in practice. Unlike for the writeback
-> case, I don't think flushign more frequently solves the problem. It
-> would shrink the staleness window but not eliminate it. Maybe one
-> solution is to keep the deactivation state for a period of time if
-> refaults were observed.
+> But it's one, not zero. And only the first slot is bad. Why is the
+> rest not usable and the cluster on the nonfull_clusters list?
+>
+> I think you can make the integration a bit more organic in general:
+>
+> Don't do the DIV_ROUND_UP per default only to overwrite it here again
+> e.g.
+>
+> If you come out of this branch with cluster_info =3D=3D &ci_dyn->ci, you
+> should be able to reuse the existing swap_cluster_setup_bad_slot(0).
+>
+> swap_header && i < swap_header->info.nr_badpages should skip that loop
+> as well.
+>
+> Your maxpages is SWAPFILE_CLUSTER aligned, so that
+>
+>         for (i =3D maxpages; i < round_up(maxpages, SWAPFILE_CLUSTER); i+=
++) {
+>
+> loop is skipped as well.
+>
+> > +             xa_init_flags(&si->cluster_info_pool, XA_FLAGS_ALLOC);
+> > +             err =3D xa_insert(&si->cluster_info_pool, 0, ci_dyn, GFP_=
+KERNEL);
+> > +             if (err) {
+> > +                     kfree(ci_dyn);
+> > +                     goto err;
+> > +             }
+> > +
+> > +             err =3D swap_cluster_setup_bad_slot(si, &ci_dyn->ci, 0, f=
+alse);
+> > +             if (err) {
+> > +                     xa_erase(&si->cluster_info_pool, 0);
+> > +                     swap_cluster_free_table(&ci_dyn->ci);
+> > +                     kfree(ci_dyn);
+>
+> IMO it would be nicer to make this part of free_swap_cluster_info()
+> instead of duplicating it.
+>
+> > +                     xa_destroy(&si->cluster_info_pool);
+>
+> That one probably doesn't matter. If these allocations fail at boot,
+> the system is in trouble.
+>
+> > +                     goto err;
+> > +             }
+> > +
+> > +             goto setup_cluster_info;
+> > +     }
+> > +
+> >       cluster_info =3D kvzalloc_objs(*cluster_info, nr_clusters);
+> >       if (!cluster_info)
+> >               goto err;
+> > @@ -3556,6 +3729,10 @@ static int setup_swap_clusters_info(struct swap_=
+info_struct *si,
+> >       err =3D swap_cluster_setup_bad_slot(si, cluster_info, 0, false);
+> >       if (err)
+> >               goto err;
+> > +
+> > +     if (!swap_header)
+> > +             goto setup_cluster_info;
+>
+> Is this reachable?
+>
+> > @@ -3949,3 +4127,51 @@ static int __init swapfile_init(void)
+> >       return 0;
+> >  }
+> >  subsys_initcall(swapfile_init);
+> > +
+> > +#ifdef CONFIG_VSWAP
+> > +struct swap_info_struct *vswap_si;
+> > +
+> > +/* vswap does no IO on its own. */
+> > +static const struct swap_ops vswap_ops =3D { };
+> > +
+> > +static int __init vswap_init(void)
+> > +{
+> > +     struct swap_info_struct *si;
+> > +     unsigned long maxpages;
+> > +     int err;
+> > +
+> > +     si =3D alloc_swap_info();
+> > +     if (IS_ERR(si))
+> > +             return PTR_ERR(si);
+> > +
+> > +     maxpages =3D min(swapfile_maximum_size,
+> > +                    ALIGN_DOWN((unsigned long)UINT_MAX, SWAPFILE_CLUST=
+ER));
+> > +     si->flags |=3D SWP_VSWAP | SWP_SOLIDSTATE | SWP_WRITEOK;
+>
+> Please add a comment on the flag choices besides SWP_VSWAP.
 
-We do have an internal test that runs a VM under memory pressure and
-we started observing OOM kills after the ratelimited flush was added
-in vmscan, so I think it's more problematic than just reclaiming hot
-memory, but I didn't look too closely.
-
->
-> If it turns out iterating the parents and updating the per-CPU
-> counters of the stat on updates is too expensive, perhaps it makes
-> sense to keep the existing rstat logic as is and have caller-side
-> workarounds, as only writeback and vmscan would require them.
-
-Also zswap limits calculation. I am not sure how benign the workingset
-case is, but it has been ratelimited for a while now AFAICT, so maybe
-it's fine.
-
->
-> Thanks,
-> Joanne
+Will do yeah. I tend to forget them myself too :) SWP_SOLIDSTATE is
+mostly to opt-in to the cluster-based allocaiton algo. SWP_WRITEOK is
+checked in a couple of places to allow allocation.
 
