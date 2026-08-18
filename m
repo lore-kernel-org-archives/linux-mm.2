@@ -4,172 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D1C1C5DF7E
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 12:11:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFE42C5DF7D
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 12:16:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 283DD6B0185; Tue, 18 Aug 2026 08:11:20 -0400 (EDT)
+	id C9F836B0187; Tue, 18 Aug 2026 08:16:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20D236B0187; Tue, 18 Aug 2026 08:11:20 -0400 (EDT)
+	id C77046B0188; Tue, 18 Aug 2026 08:16:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AE5F6B0188; Tue, 18 Aug 2026 08:11:20 -0400 (EDT)
+	id B65CD6B018A; Tue, 18 Aug 2026 08:16:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C67C36B0185
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:11:19 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4AF5480BF3
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:11:19 +0000 (UTC)
-X-FDA: 85114275078.02.7FE9D49
-Received: from SEYPR02CU001.outbound.protection.outlook.com (mail-koreacentralazon11013050.outbound.protection.outlook.com [40.107.44.50])
-	by imf27.hostedemail.com (Postfix) with ESMTP id EE0DE40010
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:11:14 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=vivo.com header.s=selector2 header.b=OzP18j3T;
-	spf=pass (imf27.hostedemail.com: domain of xueyuan.chen@vivo.com designates 40.107.44.50 as permitted sender) smtp.mailfrom=xueyuan.chen@vivo.com;
-	dmarc=pass (policy=quarantine) header.from=vivo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787055076;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 987786B0187
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:16:14 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1FD6AA0BD3
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:16:14 +0000 (UTC)
+X-FDA: 85114287468.24.E3976CD
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3F0CB180008
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:16:10 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=CtkBOOzd;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf16.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787055372;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AI2vgI0nq987M37I+l6OzGTYkyA+zwboAuB5IlKd5rQ=;
-	b=ilNkxlQMzvwgdlbBtiuSjJpo+TVUejVSkZsivc+QIdmJitdIv1G3B0TbiDqQssLLCYUfoY
-	RelaE0Cel3zd7uL4aJybOHfaYmlkelW9MPxY6tAPHpzBIqibHsdgfilKT3of/MxMJkQdSq
-	EK2p/n8WaJ6QO9cWTKZbq2HowbIKiDU=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787055076;
-	b=mhaQYQ+7pZKA0RqECL2BlnuKDBtckFq4htDEPwi0Fb7M84C3Zg72xCSdklprljiO4oFvsv
-	ZfJfyGtIuHHwnZQUDnoZ8O+PG/2lL24qvPtfYVMv0OhyGG2yfCnsRF1YnLZ2yLE/DtKNQy
-	jWq5jtIPW9qftTkz4GEwtJjPIJ293vc=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=vivo.com header.s=selector2 header.b=OzP18j3T;
-	spf=pass (imf27.hostedemail.com: domain of xueyuan.chen@vivo.com designates 40.107.44.50 as permitted sender) smtp.mailfrom=xueyuan.chen@vivo.com;
-	dmarc=pass (policy=quarantine) header.from=vivo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=J8jDRLLiwLrPory34vJyf+L4FHlBGA53dZfppXRXP7DZOp5qbbcwVHryAEFFzqofjEPpDC1bGT1OsmLNVMxcnm0XF7zWEtJfP04q8u39SMjOU1bTPfhZi9we+iFJ/ExWYdPvZFDO4navG9KX+71t4GAsBrzQqpWs9YKNUeQKXiT1PYqJpyPCUY4A3m3uKzc6lUnlOU5B+EByGEvWKwEfvUIin7ue8OuXp79T55yFfTVbYY0uvXAgjproT9nnAjKRYSueikUzaLgn6fjfnoFj3R0C1OTmzWL+X8+wU9MfCNkvnB0eYLX/f7BsuwDV6p1uPz76mrCNGkBeGPu6g4JNdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AI2vgI0nq987M37I+l6OzGTYkyA+zwboAuB5IlKd5rQ=;
- b=UeCytqPIC12yGjPE31qKgTuJrcemevACrEUst3f48O+NDivH4Uyp+MmNATDGiKdlzcrHB3gXFQBmRlOHvyhkAfhGuI3G+YzpV0CC8srmZfa6Ll5CyD4a0GOyKKs3Rzx8Ruj1FHL/JJ9yaiXPNPJQ3G4bckiM4z2Ti36pZ5NjSsvReO2gVMtbyFBnsxrmBlhkSOwj10ady4jxiZz8qA48T3gHVVqkJ1ASE8Pl4ZWhliQFZQDn0xrdtnFqkTz3trBxhdLU4XnHqP2vCxpk25MG0cSVTV6dqoHIUJfuOz5tj2PMrE8y69fLhYwRooRWCKkSh9Jj2mQBZ4mjHQzuJcUY6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AI2vgI0nq987M37I+l6OzGTYkyA+zwboAuB5IlKd5rQ=;
- b=OzP18j3TIEkdNwnA4nJrg2V2zXPbw1x9q5mmItRXWx1+F03m+jc1AzrAyEXJ9oaZFEIn4YtHq8Ww4BdgQ/342nEgJOprCZbhXTl0j5YimHKRQySrwqFcCLHf/g79rRm9GG7RVGdYYigXvzFElEUFtunAO+p42BA1T4OOq/7cRwQWW9n8IjkDLFPuyi+H++e5u5yEsdrATSW0RVz+mk1A1FockNU2DLagl0alAZV8c6e0EkvgrUfetkJI5wiTQtBqHokCAy15/nuNF0Zu1E1wGdjLOhSQiKY0AIV0WQCL5Bh9Yp7oZw8tENw2Od4VTA/Ml9F3KmDd+ZcW0suYTegABg==
-Received: from TYPPR06MB8235.apcprd06.prod.outlook.com (2603:1096:405:383::20)
- by JH0PR06MB6509.apcprd06.prod.outlook.com (2603:1096:990:32::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Tue, 18 Aug
- 2026 12:11:06 +0000
-Received: from TYPPR06MB8235.apcprd06.prod.outlook.com
- ([fe80::6ef9:8fa6:5ebd:96]) by TYPPR06MB8235.apcprd06.prod.outlook.com
- ([fe80::6ef9:8fa6:5ebd:96%5]) with mapi id 15.21.0315.016; Tue, 18 Aug 2026
- 12:11:06 +0000
-Message-ID: <e83e26ea-be26-479f-ba59-e8544b6d9897@vivo.com>
-Date: Tue, 18 Aug 2026 20:11:04 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction
- budget-aware
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
- Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>,
- Minchan Kim <minchan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, xueyuan.chen21@gmail.com
-References: <cover.1786003779.git.xueyuan.chen@vivo.com>
- <anVWZVOt-xeD0dMH@google.com> <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com>
- <anXJ-5_vO7-toSe1@google.com>
- <CAKEwX=Mm2tXcen-quRXHf1Y2qSHYvpEUe4xiw-mHYaJnRUR-EA@mail.gmail.com>
- <7b83c51a-1777-45e3-ba38-89e12dc87b5a@vivo.com>
- <CAKEwX=N0Ocxa3o7A+F+2_iwEPtyvXzunfNXOsq7UaPEKWSB-gA@mail.gmail.com>
-From: Xueyuan Chen <xueyuan.chen@vivo.com>
-In-Reply-To: <CAKEwX=N0Ocxa3o7A+F+2_iwEPtyvXzunfNXOsq7UaPEKWSB-gA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TYCP286CA0024.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:263::14) To TYPPR06MB8235.apcprd06.prod.outlook.com
- (2603:1096:405:383::20)
+	bh=YJN1XNbV1kVG2NQ3eF3Cz0aSxHqvy1o4DerQ17ykIz0=;
+	b=JzO9jHLxgRKRBOSmwuScVgTxIQFOBORDwIK3tt5c2ka/RhbSmDCXNZ2UMcwOr5iMPje6W/
+	i1maan64xkwBBAwUb22ndxb82Marj00WNACITCUsGb1ByPuId3bDRDrv7AGu/b4u3P8yQI
+	zKH+l9HqSpNyU/goR790ymuBmzdg4QQ=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=CtkBOOzd;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf16.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787055372;
+	b=GwGX5MEBho19sLPApEuphTz8sgPqyUbb8dM3JAruzmWgiN0ovUBHBVdfMtyaxC3GlspXAa
+	/aEIN3epvzpCdm3kTQU2dXsNvaRqzd9FhFENXux4cGbFBqGh4IPwBncZsREJr5JBQZUcEq
+	yWAFrG6aCw/Y8agKPknZwqvS8Jm3Ta4=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=YJN1XNbV1kVG2NQ3eF3Cz0aSxHqvy1o4DerQ17ykIz0=;
+	b=CtkBOOzdgvQOOkYQfbKQ9+0f6okaXLJPPYPMqpbF8rpax8HOWbesMuK28GuLhRD77zlNyyGCc
+	b1Rvju6IUfwQKh/prrn2V54H+ShXHIpbM34dNJzEFASE4P+GnwduddcihO2hS+GFEcb+eDFnQkh
+	xK3Kz/K/Mlck3bzypEjgXFU=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4hPT0x3MLnzRhQt;
+	Tue, 18 Aug 2026 20:05:21 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6B8D14057D;
+	Tue, 18 Aug 2026 20:16:00 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 18 Aug 2026 20:16:00 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 18 Aug 2026 20:15:58 +0800
+Subject: Re: [PATCH v6 2/2] kexec: keep the next kernel off hardware-poisoned
+ pages
+To: Breno Leitao <leitao@debian.org>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<kexec@lists.infradead.org>, <rmikey@meta.com>, <riel@surriel.com>,
+	<kernel-team@meta.com>, Kiryl Shutsemau <kas@kernel.org>, Bradley Morgan
+	<include@grrlz.net>, Andrew Morton <akpm@linux-foundation.org>, "David
+ Hildenbrand" <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
+ Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, "Mike
+ Rapoport" <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, "Michal
+ Hocko" <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>, Pasha Tatashin
+	<pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, "Naoya
+ Horiguchi" <nao.horiguchi@gmail.com>
+References: <20260812-kexec_posioned-v6-0-e477887086f0@debian.org>
+ <20260812-kexec_posioned-v6-2-e477887086f0@debian.org>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <f794a7b8-ea8b-ef21-5bf7-de36f3210837@huawei.com>
+Date: Tue, 18 Aug 2026 20:15:58 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYPPR06MB8235:EE_|JH0PR06MB6509:EE_
-X-MS-Office365-Filtering-Correlation-Id: 54766830-cf13-40a8-4f3e-08defd21c7e3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|366016|376014|7416014|11063799006|10067099003|4143699003|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	U4MttQUWn97g8bAkxFQWO5NdH1GSEiJSaoYoZOhRo1PX2pMvMD7LyeZ17RsHoOKc1XDk/LEmB8KOkVb1rP5upcTBavmtlFEg9NQ/RsoVOqJo80vyGA+VIxRaS06HB7hbAiqCPGLJp6CxVt4DjH9zeozRiMm0VMD4cJn/1ibF1uHXZGR78FiT8oF9NZdyrK8KODbrGl6E02vFWcnNNWPYxbjHt8DdPL/wx5cLFhl4s6ufngP6NUwwSPq062BEydnanMqgWeou3NppFnMep0m0sYsLBNnsU4TdKdUgci6IBsWBpOjHBTGjYUQXvLRK8z6h1RYtBn8P/W8SlNB+4WWdWvsAhS3wF8TRaKZLmlTjIyCWWZKywp6ZOsRICnC+SmqVetKnrPM9kYtx/lgZ0uzgQ2TUVdiFOcGDiMxOia84c4niZBaML9k/x6t/tr1d7bY2n3STyPFnAQ9yJRRgrky5mVx6zNO5UcxoNykk8VJyyIImwhRfvsPtDR7z5UQjP1GOzKLuz1nbN4gtWpz+r1ionP8vndJybJsxlJgTO1vVvMmzCgPpcXzZfOUSCe6rYU9fDjoergEmwj/YVB5kTi7PfOWirs5rqvcNSRuf6ne1045Zstg5j7jdZiAMpTHGcWxpQoHWuPhSprw5/Lxh4Dy+9qRMXPKCIURL2uhKOlh2i4A=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYPPR06MB8235.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(7416014)(11063799006)(10067099003)(4143699003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?b3ViQXFpdHVBOWprZ1lFVk5zSUIzekJyT3VuMFFUc2tvL0NBdUFjdW0za1Y0?=
- =?utf-8?B?S1hTaFpyNDdkT2xDZTdBYmRQTENaa05WeGdmQWNCRkVrbWZOVWpnTld3dXNT?=
- =?utf-8?B?MjdJYzBhTFZOVzNyYk9xSCtOeHZ1eUxDclNZcTVHRjBueWNYVUZYNENscjA5?=
- =?utf-8?B?TE0wT29rTEkrdnErMFVqNDhLSkMwL1pwNitPaUhiUWt5THhQNVNrU0QzMWZI?=
- =?utf-8?B?YTNLZXJUdFh5ZGtRQkZ6c3I3MUMyeTk2ZTA3Z3RTS1Uzek1uanJuMmNHcHVQ?=
- =?utf-8?B?L01BRElOeVlYSU1kTkxPUDNsQmFPRmYzcG1RSVpqS0tHSlBGbW5lRkVOd0E5?=
- =?utf-8?B?T0RyZ0tGcEZrQ2kvYlhxOHF1ZUl6YkJxdDlGQlM4R0ZXYWlINU53SERiZC9t?=
- =?utf-8?B?MkltbHQ0UngycnA2azlXa3ZFOUdqbkswZ21TV3daKzZwbGZtOVFEMnp5cmVS?=
- =?utf-8?B?SE45NXJzWHQ2M0JWUjFhcndUTElUMDB0dnpHRFkrSXd6bmIycnZvTTNURjVw?=
- =?utf-8?B?VExnVHRUS1Q0ZFNOT2pheERvQTIzQWVqM3R1UitBc0k0NVU2cVJGVkRiWVlG?=
- =?utf-8?B?Q05LR0RGZ05PSzdJb0lKUUgwMGpkdXFXVWx0V1NTUmlNa09COEU0V2tXbEQ4?=
- =?utf-8?B?SmR0L21BdWxiZnpUTFRreUdVTzBaOHdOV1ZkeFp3TGdPRmRoVXNHcDJEYkVE?=
- =?utf-8?B?aTFqS2RDNnc4djVoWEFrRFJmRHVXY2c1NVlmMGhiMlVTVjVVeXFOK2FSbGJU?=
- =?utf-8?B?QWt5eHliNGJGWWFmL3Q1VGs1SHE2SzRPVFV2d3RCN2tyY1NBVVVEYUI1cmNi?=
- =?utf-8?B?d081bHRKK2lBa2RnSW13UVRSUzNvbzhuSE9iN3hiZUlia2dBc1cyVVpCUmRr?=
- =?utf-8?B?MlhBZUl1eDF3UHdUR21WaEp1SWg5Zmx2U2xyL2xpYXh4Ky9QN2FMS0lsakNY?=
- =?utf-8?B?MklpbVA1UGpsMlFSeXlhM3h1NlhraDJyTmpPSFBrRm5tWHF2Sk9kb1UwNXRj?=
- =?utf-8?B?dERWY240VmJTbzJrckR6UmhoZHh2QTZLNHB3cnVZZVlwenl6YUJFa2t1aTl6?=
- =?utf-8?B?bjNJV2VHUDhtb0ZxSlIzK3pUUXpiZFkvcE5FM0x1YmllWHMvRCs1Nksvbm55?=
- =?utf-8?B?OUhINVozWG5YUXB2dDJMcWhTaklJYk54TWhuK1c2cFd1cUpSaDRrc0FzVzhT?=
- =?utf-8?B?ZzBma0gwT3dFYTE0SmY0RHF3SFU2Z1hQWG5QUlVqY3lUWXJHd1ppRFQwOE9F?=
- =?utf-8?B?UFdkbHJPNnVwcHkzaExmSS9nenNMeGREbThnUXh2cTExRGtDQm4ySmFXa1Fs?=
- =?utf-8?B?YkRwOEdUenpINjFrZUsrNnpuWEZFRzBmeDIrNFdoNnhsUlhHTTVyWmlDRmZt?=
- =?utf-8?B?U3hpY0Zpa0VaS3YwL0NoTjJEZ2MxRGFTeFZZZmRlbnY0WHV3ZmtCRXdMbjZm?=
- =?utf-8?B?N3JSOXJZTmd1RVVhQW1nMkpZeFRQQ0RvUXJIWEpNNkdQWVBBSGFzMEhSYnVz?=
- =?utf-8?B?aVlaZXRQcmpickViclhnblRPeXF2bDk3TGpYUDJ3NmE4Mkh6OVdRSktuUVpv?=
- =?utf-8?B?MEZCNVVveUJwenROT2ZYRVp5d3kxUURaNTRMNWpMbS9iTWNCMUJkTUltRFh0?=
- =?utf-8?B?dC9VeE1tb1VxaWZGbTMrSkRhTWVYM0x3ODd2WTl0R043QVpOMTZVQkZrcHN4?=
- =?utf-8?B?QXg1Zjk2WUJlV2lNeG0zWXFMOWxzVzN4OHIrRmRWajE0OWtDTzNxRnhsLzNT?=
- =?utf-8?B?Y254MmxZbnhzcG93dEo5MTVWcGk0eUMxVTdWWWlVVG1tSVozUkZadkY2dzBz?=
- =?utf-8?B?RU1HMGs3NEVydlAwU0t3VnJILzU2SXJ5eGdKcGhHa2JUd2EyVEJ3YWUwOFNL?=
- =?utf-8?B?cUE5REN5cURsQkhGWEtzUFFtM1oxVG1CY0sraU9VZkpVdFFjMVhwdDc2bThz?=
- =?utf-8?B?RXRvTTcrK3IrNG1UUWE1V1pEVTlTcUVvSHpCMzg0UlFGUU1kSC8wZHlKZFdD?=
- =?utf-8?B?N016ZmJmc1VrZnFCWCtvNkdhWUd5OExZQkFuTys1V1JVM1hpam9QRk92OWlD?=
- =?utf-8?B?MzRBbndYWGZkdzZ3am1jc1luWm9ScC9vQ0JRSjA4Uk4zT1k5TkMyOVRuTzk3?=
- =?utf-8?B?OFZhdE94cDhTSUd5c2M2SkUvYVlwbzJWZ29QaTJuT3ZPZ3ZyL1d0eGRNSU1V?=
- =?utf-8?B?Mmo0b0cyWEpTSTZyS0JoZC9lWVhNQmM3VjRHNjhpc3hEYW54a2hXV2tRMS9u?=
- =?utf-8?B?elJNTEk2citEL0toVkZva25jVlVMMWRjSm1LaklYQnB4a1JibE5zVi9BTXh4?=
- =?utf-8?B?QXlKWlRaRmhENHdWRU1IVzByY0RXaDJJOGd3OHM3OWlsMHdVaDdFQT09?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 54766830-cf13-40a8-4f3e-08defd21c7e3
-X-MS-Exchange-CrossTenant-AuthSource: TYPPR06MB8235.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2026 12:11:06.4905
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Wxy97XrYeXdaT0jR/EjySguxJgK9+4j4yI8P2gqNvr4JOEJGAKh+x7pZ+ADrusodSBj0pAZ/kEXHT2OippAH1A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: JH0PR06MB6509
+In-Reply-To: <20260812-kexec_posioned-v6-2-e477887086f0@debian.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Queue-Id: 3F0CB180008
+X-Stat-Signature: cnsi4amsa7xoy5cwiqqqpqwi6pd11wjt
 X-Rspam-User: 
-X-Stat-Signature: w3mr6dyi1gpjg8mu8agdzxadfix7kcu6
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EE0DE40010
-X-HE-Tag: 1787055074-606795
-X-HE-Meta: U2FsdGVkX1/z2Q+8GsocqvSCifixi6+//IuZB6jbSH41hEO/8QxBbBBpszDgL3FiJUwSpSJ0P3qw5nckDZgF0bDPCYz1lY04QZyGnrD5h6qGSPpiCsz9+e2w6OeScywpHq45RW5Cohs1a0UK7/yicj9ANIFKcxCS7eHn45T734b1qSM7k8lqWPTor97ZjNS9eEOrnI/5r9cosBBELB3WRkqntXzmixr174MAPZbNS3h64mnTKVHsCBdBlBffgmfrh95pGzjvfFk2gPcbpNFnHURNRLn0v408EVf0ka2h5JYWEeVfTWJCPpEkkvgx5WUlACAaCHmISxUhdeg9zKMUnDa3cf9VZlx/mmj5Kpux4Kfuanlm6ayTz88zdFNAfR0t38haGt1gUN857YFDPPMytFlg8WfPf0/HU/njQzwrTYZITZALFdVqx5p8EUfdt69L8nLXTMgAsXm8CwWopvcNj0JcmN/JqXRbQNaPRXpo+rM7qPXzmst7L0A7uxwS3qRKy8FdkRCIUKTO1/ddqS8ey6CW/NHhYDBJFaGrhOUS1k4VOdIYP7LJ8ddNjjrUwELpxFxpdtfFewm8TfoXCamJAAxaqiLWymUhROUxan9GNgvD9cxhM4PQhBkO78wxxxig07TLkq/yAuKDYTE2HXBFOhluHcnHq4gIFNFHNmEIqvT39sR0tQyi4bv2XCwnVEv2CpJNwGsIuvzHAV0k/HHca7jc9yafiZeecsh8zY3ZrmI9a+oJvqi3JtdV4fjGIQ4CFfYUfywSjFT+fSycx7xVX5AgYANox6witkK1zI+4NxShhaJqrJYj3mdmEHrET4RlP2gKV7aCb9eslzFEnXrrIuqyRii4eIHfIFoaytCVQ9q/xtuLIlmcmDmRcxxImAWV0rM8y0igWs8ZSCcXlIOLsde6+en9kDZqPdvOY0pV+8K2dCcM47LAdCV7zjkPcdMSKWjhsZrjxvKW9RoHA6i
- ehPJjp47
- RmA2ejq5jBCwuabariNP41tqU4mDgU3csRZPKux0IiDbBhSv1ZrGSZIpFu99vHcrgtOJey7YeFLmRCHsGEqYCmKE6VZrYsqid0WZc6xMvg8MNrcbyVNgPVKAvzwaOGEZc81HsG8jVwKg99LVBY+YXyBiyA5ynP5+E4MHe3kilu11HlMKB/acrJXCsgd9t4kNgyUeTiYkrpPmT3bwAd5lvd+99aVmfco7omQ9dvVDkg9A+04f/tQewmMwslmnP9THfxXhbdug0a/T7sisnud9Ce1f/pdKMLadwnocqI/VlvnEJRYipaIWwkhIgdHTjGG05MTsfNaDss6VyhX1mImJ3GWL7BArm9xCsn2Rdbqnu+0kRPmHGHi1kRIoi5/M9i94WH0Uk6zNHn27nrBXtOa+6Ck3jwETwA4Aw54L9QCDewNGtQtblD1UxHp9gdcmyydThXn7joXjOMzltZTzbmGqALfYGbEtztx/TTQ2CRksTMp0XhSVpXPOEmA2S1wlctrMfWtg4EVEiiWNXU42+hwun4vtvR895IW/96KYbM7LBi8h/2LgfMUrZc2yFDA==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787055370-483308
+X-HE-Meta: U2FsdGVkX19hYDJq/rd9fJjK6jUzWuJP2dEDpnvGnFC2c6KbcmTR328EjBx/QIgg22T88yLcdzR8pT4ZNv0UxM5N4eHauclK7yS9j1Z9TqQoo1FkN8ev1VQSOE8lpE78VpmVNRd6rCslt/rUO5U6G8n5JVEJXzC5C3rACUiy5ZUs0ujF7fARiCMQNqIQ1GpodkB8/bQfKfJs1EH8vlcdI+yse5DSUHqhGY9UKeCUx+6OcvAhdfKcIopRwI6kZLQz91U52oxRnHI8aTs65c14lcfsgkQH9S0QQ14a5yWDct3+cSJLeaLsIJ7lTSSH9rLLkZWxKuB6mPIzp44Ra0JrdlOAyA1yQ1iiPnXwi+uHjsxhheNH2Ic8LaGnpK+9mBl7lpQUjMyfSaSHfxR82eSV64UebHUqw2g+My+ms+U4vyS5u3toCaWczovnkbdxS4F2YWuV0j+hsxYd5m7ZYszF7PBUNTajlmo3JM5lx/4zJ754jFu1xS0c+lM5XkFVjdOCKMt8MdomjSGajusBOTqnwETmm8t751BIocU1UiFWlcGqpTfmvR4jK3+9cPlxarKGyG90aEXCp59aSQ+B9WifVbxlarCeJxoc8A2GumtCMjfVCccyTu6Iph8GgaX+KIUVls2FghvE7BfP3mFUkEUyav8ZJKD+gHhmfQHZ2j7jXc7YDcdJt1ipNsdQor5hCs3+QGuZ3F4W0BNYdjJFjc0wUIsYiTqmOSDVNsRFh2Bx8Ogr7TbKHG4obnAs1hP6VXR2N97JDlj3U+y++ZCiJItS4sHwNg5uDV1UlqZA4YpwPTT+zYdTO9rzJ4jZ9QBGz1f7icSNYyfUxvHYCMEoVQA4vL91fL9nz1xiYQAdZdJYNKdAQ3IStOyRpCw7B8G/owabry2Mh+J2StBouFAuvApLwi7lRtJRurMYeWC/MMyryYGERitRkcxgNJV+cus3YpxK92tmvQRGF4naOKYdKVz
+ j1xmB23o
+ j92C2//x1emESD03R3ffFb/43P9QCluUdy2o/NtTJLUfFDlfsfvYip3660OE+f8y8Gs9Eywit1FOu0stMjOxhnmOluhbph6MUgkuKeSgUACuWUxSvxeZSSQnbJRQQRP5gwNkdgI4QdhYOPYLra38eShMwxBPYpwGfBHn4W0kuaHqwysacIjBGDOnNsn/V5m1yot1IngAwtCgdCTjOp8gcVEuCqqLfb4QYNVypFtkScjX9LIWUzp+W5fMC2dLwfk94Dvrw4Pq25GCU9R6Ty47cymU9N0jm9Ez0Q3fhGa8brh7XA0+4bLpIw0sTEnsi9f85PnbBQwHSu7bsT7Alyyx17Z4SZzC/V8S+bClXwwkqm+0MQ/IKOAi0r8aIee8IOBNx3PFEzF/Ti4WPo2nQB4W5IHJ+uXFSL4kv84QeV4H7TjhhjwuwiBKNdhxd0YchYJdoSfYYtbghVvQmJmweUQddJUlFGvUB1y2AvOlO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,115 +113,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 2026/8/12 19:31, Breno Leitao wrote:
+> Memory failures (such as unrecoverable ECCs errors) are getting more and
+> more common. The kernel knows how to handle it while running, marking it
+> as poisoned (and SIGBUS user tasks).
+> 
+> Poisoned memory is removed from the buddy allocator, but, not from
+> other places. A current problem is that kexec will load new kernel
+> on top of a bad/poisoned memory, which is undesirable.
+> 
+> If the next kernel's image, initrd or purgatory lands on a poisoned
+> frame, the relocation copy puts it on memory that is known bad. The
+> error happens on the first read from a bad page, and that is what we
+> want to avoid.
+> 
+> Skip hardware-poisoned frames that were detected by the memory failure
+> subsystem earlier when placing kexec segments.
+> 
+> To do so, add a helper that reports the first or the last poisoned page
+> in a range: memory is walked top-down by locate_mem_hole_top_down() and
+> bottom-up by locate_mem_hole_bottom_up(), so each direction needs a
+> different answer to stay clear of the poison.
+> 
+> kexec_load() gets its destinations from userspace and cannot move them,
+> so there sanity_check_segment_list() just rejects a segment that happens
+> to have a poisoned page.
+> 
+> is_page_hwpoison() also covers hugetlb, so a poisoned hugetlb folio is
+> skipped as a whole.
+> 
+> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+> Reviewed-by: Bradley Morgan <include@grrlz.net>
 
-On 8/12/2026 12:25 AM, Nhat Pham wrote:
-> On Tue, Aug 11, 2026 at 2:04 AM Xueyuan Chen <xueyuan.chen@vivo.com> wrote:
->>
->> On 8/8/2026 12:25 AM, Nhat Pham wrote:
->>> On Fri, Aug 7, 2026 at 5:12 AM Sergey Senozhatsky
->>> <senozhatsky@chromium.org> wrote:
->>>> On (26/08/07 18:57), Xueyuan Chen wrote:
->>>>> Hi Sergey,
->>>>>
->>>>> Here is some additional data:
->>>>>
->>>>> I used the following definitions:
->>>>>     compactable ratio = freeable_pages / total_pages
->>>>>     memory reclaimed  = pages_freed * PAGE_SIZE
->>>>>
->>>>> freeable_pages is the estimate before compaction, based on the same
->>>>> calculation as zs_shrinker_count(), while pages_freed is the actual
->>>>> number of backing pages released.
->>>>>
->>>>> There were 264 callbacks in the trace:
->>>>>     callback elapsed time:
->>>>>       median:    5.77 ms
->>>>>       p95:      55.82 ms
->>>>>       maximum: 271.36 ms
->>>>>
->>>>>     compactable ratio before compaction:
->>>>>       median:   0.32%
->>>>>       p95:      2.86%
->>>>>       maximum:  8.33%
->>>>>
->>>>>     memory reclaimed per callback:
->>>>>       median:    3.80 MiB
->>>>>       p95:      30.45 MiB
->>>>>       maximum:  92.73 MiB
->>>>>
->>>>> The longest callback took 271.36 ms. Its compactable ratio was 3.25%,
->>>>> and it released 7,650 pages, or about 29.88 MiB.
->>>>>
->>>>> There was also a 241.91 ms callback (with 30 schedule-outs) with a
->>>>> compactable ratio of 0.44%. It released 1,019 pages, or about
->>>>> 3.98 MiB.
->>>>>
->>>>> Based on this data, it seems better to remove the shrinker.
->>>>>
->>>>> Would you prefer that I change v2 to remove the zsmalloc shrinker
->>>>> callbacks directly?
->>>> Let's bring in heavy artillery to this discussion, in addition to Andrew
->>>> and Minchan, adding Nhat, Yosry, Barry, Johannes, Brian (random order).
->>>>
->>>> Folks, I'm bullish on removal of zsmalloc shrinker callbacks.
->>>> I don't think those buy us much apart from memcpy-s and lock
->>>> contention.  Systems that want to compact zsmalloc have a sysfs
->>>> knob (and API) to do so (based on zram mm_stat numbers).
->>> Hmm we'd need to collect more data in our workloads to determine, but
->>> if we can compute compactable ratio (freeable_pages / total_pages) on
->>> a per size class basis, can we just skip the size class whose ratio is
->>> too bad? Would that at least cut down on the vast majority of
->>> fruitless memcpys and lock acquisitions etc?
->>>
->>> I'm always a bit hesitant to over-rely on userspace, especially when
->>> kernel has information to do something smart about it. It might not
->>> react in time, and many proactive reclaiming schemes back off under
->>> heavy memory pressure.
->> Hi Nhat,
->>
->> I collected per size-class data. 53.7% of size classes have freeable==0,
->> so skipping them saves some time. However, 94.7% of zs_compact() time is
->> spent on classes where freeable > 0 — meaning the cost is dominated by
->> the actual compaction work, not by scanning empty classes.
-> What's the distribution of these? Say if I were to skip all size class
-> with compactable ratio below 20%, or those where we can free at least
-> one full zspage? (IIUC, we only free any memory at all if a zspage got
-> freed up from our internal compaction, correct?).
-Hi Nhat,
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
 
-Across 106 zram0 compaction callbacks, there were 6,246 per-class
-events with freeable > 0, covering 118 size classes.
-
-The data by object size was:
-
-   | object size (bytes) | classes | events | total pages | freeable pages |
-   | [0, 256)            |   14    |   570  |    182297   | 6728      |
-   | [256, 512)          |   16    |   748  |    480127   |  14526      |
-   | [512, 1024)         |   30    |  1586  |   2677075   |  71934      |
-   | [1024, 2048)        |   36    |  2180  |  11990170   | 294133      |
-   | [2048, 3072)        |   15    |   821  |   5089301   | 106204      |
-   | [3072, 4096]        |    7    |   341  |   1170843   |  20012      |
-
-The compactable-ratio distribution at class-compaction entry was:
-
-   p25:       0.75%
-   median:    1.65%
-   p90:       6.76%
-   p95:       9.42%
-   p99:      14.52%
-   maximum:  30.99%
-
-Only 12 out of 6,246 events had a ratio of 20% or higher, so a 20%
-threshold would skip nearly all of them.
-
-           | freeable pages | total pages | compactable ratio |
-   class A |       10       |      20     |        50%        |
-   class B |       20       |      50     |        40%        |
-
-In this example, class B has more freeable pages even though its ratio
-is lower. So I don't think the ratio alone is enough to decide whether
-to compact a class.
-
-Thanks,
-Xueyuan
+Thanks.
+.
 
