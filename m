@@ -4,83 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1423EC5DF81
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 09:26:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1C79C5DF7D
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 09:30:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EBCA6B024B; Tue, 18 Aug 2026 05:26:43 -0400 (EDT)
+	id C2BED6B0173; Tue, 18 Aug 2026 05:30:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14FDA6B043C; Tue, 18 Aug 2026 05:26:43 -0400 (EDT)
+	id BDD0B6B0175; Tue, 18 Aug 2026 05:30:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F09B66B050F; Tue, 18 Aug 2026 05:26:42 -0400 (EDT)
+	id ACC216B0177; Tue, 18 Aug 2026 05:30:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BD9856B024B
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 05:26:42 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4EED4160B2D
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:26:42 +0000 (UTC)
-X-FDA: 85113860244.26.1A91576
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9861714000A
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:26:40 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JkJ6jLJQ;
-	spf=pass (imf26.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787045200;
-	b=NVQ/+WlzcvY6agO32NcxLNWxUhFWC/N9ZwS6C5U13VoEyXfPQTn3PpL6clN3d3xTwKUXtu
-	XXT++QTV5ZZaLUmDPfaK8m1gnuVqCT9IKyB+15gWBu4tonsxprf/65Y6K1CSUDAwgwKPX+
-	soFM65RtVK4LVGrlUd4wk9ksapm6XAM=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JkJ6jLJQ;
-	spf=pass (imf26.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 831D16B0173
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 05:30:36 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 27E78120B79
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:30:36 +0000 (UTC)
+X-FDA: 85113870072.20.8AD69F2
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 414D01C0009
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:30:34 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NlxuYRxh;
+	spf=pass (imf18.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787045200;
+	s=arc-20220608; t=1787045434;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PgMvfxbktmsh8z2sNcgfa34myhEySY7N/HUtGax5cqo=;
-	b=RyJLg7V6Nkjo9p1CczA2f14vdfj1krwS+jIQ8GGxUQ2ewI5qTuzA/YLQv131D5uWoVkYHT
-	WOrfw67AlgoUgW0TVSR8x1PY8AA+Z+6ORpvmN7QVmgoi5OmrauZYWNf+njQ4ZkoPjmjtz9
-	0cAAQcl4fWtHbzImDPnvWCSPthuNoO4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2859060A58;
-	Tue, 18 Aug 2026 09:26:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0521F000E9;
-	Tue, 18 Aug 2026 09:26:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787045199;
-	bh=PgMvfxbktmsh8z2sNcgfa34myhEySY7N/HUtGax5cqo=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=JkJ6jLJQ8T/wSxS0RY7i5RH1Bu7AskrEnoJdB4WwKHO+iET/6x8BgIlPYRN33zjZw
-	 4dhzUea+HMUaRR13Se9RCNr/UPDekI/JK+pnUIZDZ2WnpIkyJDNgq5HHjEBu1Cxox3
-	 c+Jz7rYkP3ZZsAfEXESVX6DnI9zQQvtBJMRY3Tj4aWstGxEkZeQN/pqXJ4yhdbRZFY
-	 E1gIEhvbN0UqjMoFLcVxb72Jf06clJpU6RrT3RDvOwyZk2Zrxdd7/OOIYsCAqVQeCi
-	 YuizKLEo3L86JUEUfdjVWwu0hh7Vb5cqFZ8YIrNN8CXqk8ry+/iCALaZJj6rTuir+J
-	 PVv/H/spSlYqQ==
-Content-Type: multipart/mixed; boundary="===============1992217807985281510=="
+	bh=35ePu0j/fJxnd8bscjQ+2PUiwSdonYWgCTO9Zio51yg=;
+	b=kHMGShjTOBiYRRSrADw7U98zAlmy5SQEOAmBpTkzufdK2SmqDHwQPgyWFVlw4cX93Ojcw+
+	bXtfCE1lW2Pf3tBIhWLcb+0oInDqeK+s4WAaaYAeKYnhF7Y6FSpDdxwdWlERM2O2VbTgtp
+	A5wgapzZaeeox47+ZLOuK414n4ACiWw=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NlxuYRxh;
+	spf=pass (imf18.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787045434;
+	b=gi0ttaY7PoJiqFWgXasoF24MIX8FoT42lI1ZWWdM19eVUtrP1HzQkxhWX3n/43UhjjWzTb
+	Ba+2dg+z6vJazMJYiwsF4LWM/+9ZgVDgZZwItuh0K1SYr8SY/ry3guYP7sL30C9kPe2V5X
+	kl/UX1fU3uXOwIbit0YQT5Z8M8/uDjg=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2ccf2360620so42731985ad.3
+        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:30:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787045433; x=1787650233; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=35ePu0j/fJxnd8bscjQ+2PUiwSdonYWgCTO9Zio51yg=;
+        b=NlxuYRxhzVcjSWGN5m3HgrObJHzECeoqIOa0Kejl2RalVePz5MJo9BSlsjv4J+I2hr
+         WVW5Xo7GgFAwMJ0U0S763E26TQZRZpyCuHPfQwe+JHJIuwySAqktmlG8a0P5QrD54xYL
+         vEwoObmPjzrXxdk4MIJBehnQYq2XLQSSmg8rxuDardjdhcpXG3D7GBdm5n9xIiovccL/
+         vPthtNrLdWA9zlJ5eptzmFfDQNOrjnXotgP/iE0gS9xfpWIkKYUOoE1hFNd/oVsc9r+S
+         sdhMnlZYPUVYrUK90YJKehFAKxTt0Z+5d1fVgsUc2JvtQC2hxbG0+Za+YncXQ5lnAdXQ
+         RGhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787045433; x=1787650233;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=35ePu0j/fJxnd8bscjQ+2PUiwSdonYWgCTO9Zio51yg=;
+        b=Y9t5gxsxnL7GuhhkQeW0mTDS4WwMf5f5CdSDRQ+o8zS5cV+kgDnZJFmvKz3bSPt2E0
+         FPzX1nkDpwbq73BQJ1anxWp+9lkf2/4JiCetgbH97S2Drusg0VaIDlJoSJL7BUCaIUMd
+         UmRLfC8R8vb1E0SQnd8yEeci8xILQKwuKwKzRUAhyZa/GdOhMAHdJwNsckfamKvaVX4S
+         kyisGrI2RJJEgxPd08E0O8wbDZM+XKdRFcglybN0fyfMKtxMo1iJTA+sHi6Axo0OvzLo
+         cV6ff0d/n2mUoTWHCuLy0V0Y50FRPLUgJsC5SpbUAR/zRYOwToHfVPXKTmwBHKfRqO26
+         XGNA==
+X-Forwarded-Encrypted: i=1; AHgh+Rou6uX35TzZNBXoGgslo+lz3ymPyk2innNSJkeX/GKPLRfbjjxLRx8tLlYiYmCFjY19FA6G87oWcQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxe8lVvyUYpIknPH95W+sLYVmwk2vD+ti1o0U0swDp65thcz2hT
+	RlBaqufVqA2JZ27ndP1f67RNR3REuwu56TSCbeVv5UFHWTmGEUTvYvUy
+X-Gm-Gg: AR+sD10UtHApyuQNES27rw7ta2oyLsIs43GNGoBOcOztoBo2LWbB0eS3uEVo/IujO1Z
+	GF9Hxq/8VvHrdh1mWzyLdZD/mpXDUk8j/Vnu5o4ePMfdWHq9boZpCgbjqXWt5u7QH/UYnVayWTg
+	V7LpTm3p5AuooNTKaojzQti+H+Kyel3AG6TvFEoO69lWFHRhcaG09qgNSq2O16Yg7Rwme+Jv86m
+	wmvPWOFNup7YU55J6M/fgPyucWzMMj9jlKeCa8+54XPEbOzxki/dImo9xlQrdsVYRHWrqpFRPtl
+	rQWdnMem4o2q2RM4cv2YSAteKm8jSc+Egmhz54UdMBoJPIm/5s3urp0pbLL4NIXJacm5FBk7YIv
+	YgWEAK5Ql1chO8Z8imWmuJ5J9P395oFccMmF1BdvoBuGqESJNp7gXK5Od3MiFiZmXRY3H6yc8UW
+	dGtaR8uqLPej9iyDKx5qf20l2WVuIRiTmm/SGCA3U9q8yVtsSUHk0aeWj3ZUhgBUZOH1yJFVGjg
+	gzKcSW/PI8MlhRZ1I4/+Kpa4UGA3PVXTnupU+gseyK2jbHl0/g=
+X-Received: by 2002:a17:903:b43:b0:2c9:8f4a:90b with SMTP id d9443c01a7336-2d3b0aeea6emr364809275ad.3.1787045432810;
+        Tue, 18 Aug 2026 02:30:32 -0700 (PDT)
+Received: from KASONG-MC4 ([43.132.141.21])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d5c1e8de43sm12264735ad.57.2026.08.18.02.30.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Aug 2026 02:30:32 -0700 (PDT)
+Date: Tue, 18 Aug 2026 17:30:24 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Yosry Ahmed <yosry@kernel.org>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 3/3] mm: fail the fault on a malformed swap entry
+ instead of retrying it
+Message-ID: <aoQhNdJEZFjW8TuV@KASONG-MC4>
+References: <20260813-swap-v2-0-4a625ccabdae@debian.org>
+ <20260813-swap-v2-3-4a625ccabdae@debian.org>
 MIME-Version: 1.0
-Message-Id: <839088e0c2d18d415b2acbcb4f4c09204d5cfdfb92d52f443cb802dcfffd41b2@mail.kernel.org>
-In-Reply-To: <fbbeaf46501c66372d792c712349eac0205beea7.1787040082.git.zhuhui@kylinos.cn>
-References: <fbbeaf46501c66372d792c712349eac0205beea7.1787040082.git.zhuhui@kylinos.cn>
-Subject: Re: [PATCH bpf-next v2 2/2] selftests/bpf: add memcg async reclaim test
-From: bot+bpf-ci@kernel.org
-To: hui.zhu@linux.dev,roman.gushchin@linux.dev,inwardvessel@gmail.com,shakeel.butt@linux.dev,akpm@linux-foundation.org,andrii@kernel.org,eddyz87@gmail.com,ihor.solodrai@linux.dev,ast@kernel.org,daniel@iogearbox.net,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,shuah@kernel.org,baohua@kernel.org,geliang@kernel.org,linux-kernel@vger.kernel.org,bpf@vger.kernel.org,linux-mm@kvack.org,linux-kselftest@vger.kernel.org
-Cc: zhuhui@kylinos.cn,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Tue, 18 Aug 2026 09:26:39 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260813-swap-v2-3-4a625ccabdae@debian.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 414D01C0009
+X-Stat-Signature: n5jacnf7aggqud9ajcxrc4tusquijmjs
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9861714000A
-X-Stat-Signature: t7ce3eb81s3np7zb8py9h45xb6zu7rgu
-X-HE-Tag: 1787045200-319958
-X-HE-Meta: U2FsdGVkX1/sBOy9PBjBa8wkr+OPRas33SbtPGHknJY/9jOfNVv/fOerDZYc+Q34+8prMewVVKlI2b3iyLxO0ZcEO/R3l7EptARwCJS/fp0p6ktNM5/sspPEk0nTWjS4Gx25Kun4AFSelRYgiCd6Wd12sA8bI4zDmdSVc1fDT+7k2htO/XVzka+HHtw3CqI9lF6AgPESMtF9XqukiE77pFhVBm7tYJ2bHgAazor06NxueAyeB8OfjzTjKb0UFLQ8AzqpGX/lUitoG0w1qrJ3ug/gB4/mPUYqYYw/XQ+Y0uVAufhFLtfu5XrIAyJkTUJi+5MZR4sRtcep5pkOjfX1pITy08lRVY7Gs5o4u1WK0lnd+PZfhDfZLz6XJi1zqccMBdI61GfyMejVLdD9dNddhq0C9TvN8ixOdlK9W6QNZ1231xZ7nteq28jApvCos+RqHVGUVnrK0UXZP+tO0pXrmDZIGy/CzVTbE/BlwqWOg1EXk7WtOIZAcAMkAfc+6LyXbhxw821+YOlelMA4kH383n5sjoWzhAM+Nty40+GnAdpBczGju7ZKuDPS98GINT5uoYbQp/3Q+BGKhzdc9oPpo4tcHML73peg38K/eKengnfVPF0lJQ+l+8BscngSWejCRI8Aqkp03op1COiA69VWRECsXlGIpYgo+xLn6Np0luJXmbhu7I8xauR8PUhxW4wE9ZAXR/awB3WO4ktGwbtlhPW0jn4ZfTcLEjJdYCNz4XhXH3i3jYKQQsaS1gp8ifv9JjTo3QIaQQroiHxxVwAPvZXB/xVqHT/2aSXKDZYQtvDi0mSB/aXw2+0ESAHPtOD6tnbl0TJYBPRMaN2V3ok5D/oqGJ/KnynZApchjxeiMwrOAXqlhdHCQtquLdUBOQrpAtNOcV5Av7Cnt/OgCeLWLV4f350dhlN4Tl6Tj8SZCg9ZwkDpmVLr/HAbI9BBSBbldltMlkwDurMau/+beqq
- byks3ioY
- uiyCswsHPFnFYdYK3EI1MlG+jRHQMQoBiHCdi4mEXr423z1UGazUFcJJwve5WqpD2gOg7CTSphBH/g6tgrZJYBXMFn566goJAJ0xdyVYlpunoMTmEd3n15qTS0MexKImaLkMyLD094EtRudIMASRNzROSV1prBEWsUAZZWZMeKWxUlye0Cm+c18aD61gBPTqddNPZsHIXNTd9oP6mOo2pV/YPonVC+yotK1GjTYLHoglKQRbmuY8Hh0DuSYTrEE4D6beD4ptmAt1KB1dE1zXFr8ByCeEXwWZoJaRwTxlb4or8Gd7hxDAOBat3z6yWzUrkpAmVC96SfSVgxEarvS7b+Ou3OgGW3rzBN2LqfvZG+knNuqiZHrVQXTWxJimDpMQpFHOHYNb/hCkExgf/Ughw0FiGktrnGlytTxsDBqR0Zk/O4WQ0+dMsX57SFYd6m8vD5ScLjGrI9seovPLaXRFTMzsPSAjYvqTUzrZxHyyh+LB1jTMBKTt+lYyzhA==
+X-HE-Tag: 1787045434-699772
+X-HE-Meta: U2FsdGVkX18Z0VS1zK4L/TFHOdU/Cgb29BSPwYTTLSwWw32kXCgdCo4P2ZSfsmFtSqLXfKEZn8hCA83EFL0afHqGJgYRN6kJVNOJVjE8w5YWA3vNq69N6h07BJR7YDt1Xya3HiLIdyry8e8xRXTfbrmJZKypMsBia0kqtnm0DRNz2eoJiBSVpAcwrG6QWQnnCrrA8jNXAKRwHkvYKjHfHrveLKIibt8+k1FX0l65sGnp54MJ/zRaDwVpLt1xnmmJhlBRkJTsOQYS+xDzEOa9tASYlZYo6M4ji0wi/g5RSUex/OGY7R4YC/1bZV1LSeYibXQCluIHKn/Y7RX+A83QAth+xSUZX6j6dWXEc5ffJotvJDLnwnkDN5TIT+sjTE5v+g0XMdnb6eclJNBHqNp5gZ1qiNeQ1FRrvagyzeRTM4i3NAzuLGZmEd5y0qjHGHOsBCkMGwbpOY5N8hnWiZOgS+27MbYY5l2aJDD+tGu+fWYeM2sVfAXHICnv8NFBPiEcp2bMh1rcljLCMIoxN3shoIjfRfoyLBEkk4y7RYvFAzRwHAvngryfIPJDAstVB9W8Ra0Id+En0A/TfP5Hl4pEumMbmdXWXzGirQOKrOmke2rLV0Gqto4Miw5XO2Yhubk5NenScZTE9oCL8BztJBzD5jZO8/wQ3B2UsVB8VSNLDa0asSGgP/5+R2iOQylZM+VkndsfDuJul1WAMO/ykIngNxtxYkg4hdgJPZUHtXupcjhZSHbDi1+MMAPTc86ArNAmKL/wjtZQ6EjOsNWQ4FufgJwMIi6JOmaHDUErwS+EJjnMSLHRajy1XjpYjZOaMe464SKTD0xRSPnaHbMRQyjxNVK2T5XTYp1Uw5xaCqV/Zq9oSJtXQNZZCXs3pccjDIbVBKzrp6oxmfvHvt/6mZJBaGRlv03J1BgMyxhdEpXPRr8lJoMNLgI9yVV6fnehvaBncqIEOlbg2iCypYQ+n49
+ SEeFWSPR
+ VPRT4ghCzk7j4Jh0m2d2/6zXBCAJfbrvFthCIGCZ1yIcuNoEL+YlXWF9qrfwx2EVmwiMqmMqrmMgObH1lihP/WwLBZe7b0Sly4vlu+GChtTQLJ7D5fDLJdJ5nF7pFZeh9tj9SGxFk7IS/9ktRMEF+aaGYsUccoWp3n7j4mQyG4CZAxNfijcR/K16k/xgSaqp5DrXFFjOYfyyoIB647GaNxqksFRQITmiSQYIEZqqmfn2ukxq2k4HUQf+eHSD936HIZsSp7Kcco3RlF1kSFRTwxvEp+YHhe0qUX+iRVbsuA123hUGAvT9bRQWfoCNpnZzgvnybCOKc6RkK/siRKzTKfq4fnOgU1al/bG/6m+Dm3vBj27NTIBfXHnATdyM38ccOletyMKz6y7sJ/XHXG1G25QpT7Rh77it+xU0q0sQyJnrqs/+yywEQKeQYpDWBa54PRdkMa9SC/hqc7ZtrKvVF06p+7OAlCL9jVUEUgAHeW7dpZTaG6J71mG0eWgMB+yROLQZN8g+R9W+kWpCCB/n6UHMQaw7a+X0gDjOk6jlIL2OwGBnkYJejTtIKo+BVoQDhB6vp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,346 +131,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============1992217807985281510==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Thu, Aug 13, 2026 at 03:02:22AM +0800, Breno Leitao wrote:
+> do_swap_page() returns 0 when get_swap_device() fails, which the fault
+> handler reads as "handled". For an entry that can never become valid
+> the retry takes the same fault again, so the thread spins forever,
+> retrying on the same fault.
+> 
+> Return VM_FAULT_SIGBUS (Bad access) for a malformed entry (pr_err() was
+> called at get_swap_device()).
+> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  mm/memory.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 7201e848129a7..fa2b3d2ad3202 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4957,6 +4957,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>  	/* Prevent swapoff from happening to us, and reject a bad entry. */
+>  	si = get_swap_device(entry);
+>  	if (IS_ERR_OR_NULL(si)) {
+> +		/* A malformed entry never becomes valid, so don't retry it. */
+> +		if (IS_ERR(si))
+> +			ret = VM_FAULT_SIGBUS;
+>  		si = NULL;
+>  		goto out;
+>  	}
+> 
+> -- 
+> 2.53.0-Meta
+> 
 
-> Add memcg_async_reclaim selftest that verifies BPF-driven async
-> proactive reclaim can mitigate refault-induced slowdown under memory
-> pressure.
->
-> The test creates a parent cgroup with a fixed memory.max, and two
-> child cgroups (high/low) under it. Both children concurrently write
-> and repeatedly read-fault a file larger than the shared limit. A BPF
-> program monitors the "high" cgroup's WORKINGSET_REFAULT_FILE stat via
-> a periodic timer, and when it detects refault growth beyond a
-> threshold, triggers async reclaim on the "low" cgroup using
-> bpf_proactive_reclaim(), expecting the "high" cgroup's workload to
-> finish faster than without such reclaim. The reclaim work is queued
-> asynchronously via bpf_wq.
+Looks good to me but interesting b4 shazam will apply a Fixed tag to this,
+maybe it picked up the "Fixes" in discussion.
+I checked the discussion and the history behind this, 2799e77529c2
+caused the loop, and 23b230ba8ac3 caused the pr_err spam. But before
+2799e77529c2 it wasn't correct either, it was OOM kill.
 
-Two claims in the changelog do not match the code being added. First,
-"expecting the high cgroup's workload to finish faster than without such
-reclaim": the test never runs a no-reclaim baseline.
+So anyway, the fix is good, we might omit the fixes tag on this I
+think, the behavior was never correct.
 
-test_memcg_wq_async_reclaim() calls run_high_low_workload() exactly once,
-with the BPF program already loaded and its timer armed. The verdict is:
-
-> +	if (high_time >= low_time)
-> +		PRINT_FAIL("high cgroup not improved with async reclaim: high_time=%f low_time=%f",
-> +			   high_time, low_time);
-
-This compares the high cgroup against the low cgroup in the same run (the
-cgroup that is being reclaimed and is therefore expected to be slower), not
-against a run without reclaim. As written the test cannot detect that
-reclaim failed to help the high cgroup; it only detects that reclaim hurt
-the low cgroup.
-
-Second, "a file larger than the shared limit": FILE_SIZE is
-(32 * 1024 * 1024ul) and CG_LIMIT is (32 * 1024 * 1024ul) - each file is
-exactly equal to, not larger than, the limit (only the sum of the two
-children exceeds it).
-
-Should the changelog or the test structure be corrected?
-
-> diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c b/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
-> new file mode 100644
-> index 000000000000..6fab88203e7d
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
-
-[ ... ]
-
-> +static int setup_high_low_cgroups(u64 *high_cgroup_id, u64 *low_cgroup_id)
-> +{
-> +	int ret;
-> +	char limit_buf[20];
-> +
-> +	ret = setup_cgroup_environment();
-> +	if (!ASSERT_OK(ret, "setup_cgroup_environment"))
-> +		goto cleanup;
-> +
-> +	ret = create_and_get_cgroup(CG_DIR);
-> +	if (!ASSERT_GE(ret, 0, "create_and_get_cgroup " CG_DIR))
-> +		goto cleanup;
-> +	close(ret);
-> +
-> +	ret = enable_controllers(CG_DIR, "memory");
-> +	if (!ASSERT_OK(ret, "enable_controllers"))
-> +		goto cleanup;
-> +
-> +	snprintf(limit_buf, sizeof(limit_buf), "%lu", CG_LIMIT);
-> +	ret = write_cgroup_file(CG_DIR, "memory.max", limit_buf);
-> +	if (!ASSERT_OK(ret, "write_cgroup_file memory.max"))
-> +		goto cleanup;
-> +
-> +	ret = write_cgroup_file(CG_DIR, "memory.swap.max", "0");
-> +	if (!ASSERT_OK(ret, "write_cgroup_file memory.swap.max"))
-> +		goto cleanup;
-
-A subsystem pattern flags this as potentially concerning: missing
-prerequisites are turned into hard test failures instead of skips.
-
-The enable_controllers(CG_DIR, "memory") call fails when the memory
-controller is unavailable - CONFIG_MEMCG has no `default y` in
-init/Kconfig and is not added to tools/testing/selftests/bpf/config by
-this patch.
-
-The write_cgroup_file(CG_DIR, "memory.swap.max", "0") call fails with
-ENOENT when the kernel is built without CONFIG_SWAP, because the swap.max
-cftype in mm/memcontrol.c lives inside #ifdef CONFIG_SWAP.
-
-cgroup_helpers' __enable_controllers()/__write_cgroup_file() return 1 in
-both cases, so ASSERT_OK() marks the test FAILED where the correct outcome
-might be a skip with a reason. test_progs provides test__skip() for this
-pattern.
-
-Should this test distinguish between "feature absent" and "setup failed"?
-
-[ ... ]
-
-> +static int real_test_child_work(const char *cgroup_path, char *data_filename,
-> +				char *time_filename, int read_times)
-> +{
-> +	struct timeval start, end;
-> +	double elapsed;
-> +	FILE *fp;
-> +
-> +	if (!ASSERT_OK(join_parent_cgroup(cgroup_path), "join_parent_cgroup"))
-> +		return -1;
-> +
-> +	gettimeofday(&start, NULL);
-> +
-> +	if (!ASSERT_OK(write_file(data_filename), "write_file"))
-> +		return -1;
-> +
-> +	if (!ASSERT_OK(read_file(data_filename, read_times), "read_file"))
-> +		return -1;
-> +
-> +	gettimeofday(&end, NULL);
-
-The elapsed time that becomes the test's only pass/fail criterion is
-measured with gettimeofday(), i.e. CLOCK_REALTIME. A settimeofday()/NTP
-step or a slew during the multi-second workload directly shifts elapsed.
-
-The verdict in test_memcg_wq_async_reclaim() is an unmargined comparison
-of two such numbers:
-
-> +	if (high_time >= low_time)
-> +		PRINT_FAIL("high cgroup not improved with async reclaim: high_time=%f low_time=%f",
-> +			   high_time, low_time);
-
-So a clock adjustment on the test host can flip the result in either
-direction. Wall-clock timing in kernel selftests should use
-clock_gettime(CLOCK_MONOTONIC).
-
-Also, the comparison has no tolerance and the run is not repeated, so when
-async reclaim happens to have little effect the sign of (high_time -
-low_time) is decided by scheduling noise.
-
-Would a minimum-improvement margin or best-of-N approach make the criterion
-more meaningful?
-
-> +
-> +	if (!time_filename)
-> +		return 0;
-> +
-> +	elapsed = (end.tv_sec - start.tv_sec) +
-> +		  (end.tv_usec - start.tv_usec) / 1000000.0;
-> +	printf("%.6f\n", elapsed);
-> +
-> +	fp = fopen(time_filename, "w");
-> +	if (!ASSERT_OK_PTR(fp, "fopen"))
-> +		return -1;
-> +	fprintf(fp, "%.6f", elapsed);
-> +	fclose(fp);
-> +
-> +	return 0;
-> +}
-
-real_test_child_work() runs in a fork()ed child:
-
-> +	low_pid = fork();
-> +	if (!ASSERT_GE(low_pid, 0, "fork low"))
-> +		goto cleanup;
-> +	if (low_pid == 0)
-> +		exit(real_test_child_work(CG_LOW_DIR, low_data_file,
-> +					  low_time_file, read_times));
-
-and every diagnostic it produces is discarded.
-
-test_progs' stdio_hijack_init() replaces both stdout and stderr with an
-open_memstream() FILE* whose buffer lives in the test process' heap
-(tools/testing/selftests/bpf/test_progs.c). After fork() the child writes
-into its private copy of that buffer, which is freed when the child exits.
-
-So the ASSERT_OK("join_parent_cgroup"/"write_file"/"read_file") messages,
-cgroup_helpers' log_err() output and read_file()'s "File size mismatch"
-fprintf(stderr, ...) never reach the test log. The parent only ever sees
-`high exit status: actual 255 != expected 0` from run_high_low_workload(),
-with no indication of which step failed.
-
-Should the child report failures through something the parent can observe
-(distinct exit codes, or the already-created time file / a pipe)?
-
-[ ... ]
-
-> +void test_memcg_wq_async_reclaim(void)
-> +{
-> +	u64 high_cgroup_id, low_cgroup_id;
-> +	int err;
-> +	double high_time = 0.0, low_time = 0.0;
-> +	struct memcg_async_reclaim *skel = NULL;
-> +
-> +	err = setup_high_low_cgroups(&high_cgroup_id, &low_cgroup_id);
-> +	if (!ASSERT_OK(err, "setup_high_low_cgroups reclaim"))
-> +		return;
-> +
-> +	err = setup_bpf(high_cgroup_id, low_cgroup_id, &skel);
-> +	if (!ASSERT_OK(err, "setup_bpf"))
-> +		goto out;
-> +
-> +	err = run_high_low_workload(&high_time, &low_time, READ_TIMES);
-> +	if (!ASSERT_OK(err, "run_high_low_workload reclaim"))
-> +		goto out;
-> +
-> +	if (high_time >= low_time)
-> +		PRINT_FAIL("high cgroup not improved with async reclaim: high_time=%f low_time=%f",
-> +			   high_time, low_time);
-
-The pass criterion does not check what the changelog claims and has no
-tolerance.
-
-The commit message says the test triggers reclaim on the low cgroup
-"expecting the 'high' cgroup's workload to finish faster than without such
-reclaim", but no no-reclaim baseline is ever measured. run_high_low_workload()
-is called exactly once, with the BPF timer already armed, and the only
-comparison is high_time vs low_time inside that single run.
-
-There is also nothing that verifies any reclaim actually happened (the BPF
-side exposes no counter to userspace, and the test does not read one), so a
-kernel where bpf_proactive_reclaim() reclaims nothing is indistinguishable
-from a working one apart from timing noise.
-
-Finally, the check is a bare >= on two wall-clock doubles measured in two
-separate processes running the same 32MB/50-iteration workload, with no
-margin: the two children are symmetric apart from being forked a few
-microseconds apart, so ordinary run-to-run variance decides the verdict.
-
-Should the changelog describe what is actually asserted, or should the test
-measure a baseline run and/or export a reclaim counter from the BPF program
-and require a minimum improvement margin before declaring success?
-
-> diff --git a/tools/testing/selftests/bpf/progs/memcg_async_reclaim.c b/tools/testing/selftests/bpf/progs/memcg_async_reclaim.c
-> new file mode 100644
-> index 000000000000..62c2bb7e037b
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/progs/memcg_async_reclaim.c
-
-[ ... ]
-
-> +static int get_cgroup_event(u64 cgroup_id, u64 *val)
-> +{
-> +	struct cgroup_memcg cm;
-> +
-> +	if (get_cgroup_memcg_from_id(cgroup_id, &cm))
-> +		return -1;
-> +	bpf_mem_cgroup_flush_stats(cm.memcg);
-> +	*val = bpf_mem_cgroup_page_state(cm.memcg, WORKINGSET_REFAULT_FILE);
-> +	put_cgroup_memcg(&cm);
-> +
-> +	return 0;
-> +}
-
-WORKINGSET_REFAULT_FILE is an 'enum node_stat_item' value
-(include/linux/mmzone.h) that is baked into the object file as a plain
-integer taken from whatever vmlinux.h the object was compiled against.
-
-'enum node_stat_item' is not a stable ABI - it is built up from NR_LRU_BASE
-and contains config-dependent members - so the numeric index is only
-guaranteed to match the kernel the object was compiled against.
-
-The only other BPF selftest that uses this same kfunc family,
-progs/cgroup_iter_memcg.c, deliberately wraps every index:
-
-	memcg_query.nr_anon_mapped = bpf_mem_cgroup_page_state(
-		memcg,
-		bpf_core_enum_value(enum node_stat_item, NR_ANON_MAPPED));
-
-Should this program use bpf_core_enum_value(enum node_stat_item,
-WORKINGSET_REFAULT_FILE), so that the index is CO-RE relocated against the
-running kernel? Without it, an object built against a different kernel
-silently samples the wrong counter, and because the test's only assertion is
-a wall-clock comparison the mis-sample shows up as an unexplained failure.
-
-(This also requires including <bpf/bpf_core_read.h>, which the new program
-does not.)
-
-[ ... ]
-
-> +static int async_free(void *map, int *key, void *value)
-> +{
-> +	struct wq_elem *elem = value;
-> +
-> +	if (should_reclaim_cgroup(wq_high_cgroup_id, &elem->prev_event,
-> +		elem->event_delta_threshold)) {
-> +		reclaim_cgroup(wq_low_cgroup_id);
-> +		bpf_wq_start(&elem->work, 0);
-> +	}
-> +
-> +	return 0;
-> +}
-
-async_free() is the bpf_wq callback installed by bpf_wq_set_callback(&elem->work,
-async_free, 0), and it re-arms its own work item with bpf_wq_start(&elem->work, 0)
-with no delay and no iteration cap.
-
-bpf_wq_work() (kernel/bpf/helpers.c) is a plain work_struct handler, so
-process_one_work() has already cleared WORK_STRUCT_PENDING by the time the
-BPF callback runs; schedule_work() inside bpf_wq_start() therefore queues
-the item again and the callback runs back-to-back.
-
-The design already has a pacing mechanism:
-
-> +static int wq_timer_cb(void *map, int *key, struct wq_elem *elem)
-> +{
-> +	bpf_wq_start(&elem->work, 0);
-> +	bpf_timer_start(&elem->timer, elem->check_ns, 0);
-> +
-> +	return 0;
-> +}
-
-wq_timer_cb() kicks the wq once every elem->check_ns (CHECK_PERIOD_NS = 2 ms
-in prog_tests/memcg_async_reclaim.c) and then re-arms the timer. The
-self-requeue in async_free() bypasses that pacing entirely.
-
-The only exit condition is should_reclaim_cgroup() returning false, i.e. the
-WORKINGSET_REFAULT_FILE delta between two consecutive, zero-delay samples
-falling below elem->event_delta_threshold - and the userspace test sets
-EVENT_DELTA_THRESHOLD to 1, so a single refault event observed between two
-samples keeps the loop going.
-
-Each loop iteration does bpf_mem_cgroup_flush_stats() (rstat flush, walks
-per-CPU state) plus up to RECLAIM_MAX_ITER (32) try_to_free_mem_cgroup_pages()
-passes on the low cgroup, and re-acquires/releases the cgroup and memcg
-references twice. Loop termination is not structurally guaranteed - it
-depends entirely on how fast mem_cgroup_flush_stats()'s rate limiter lets the
-cached counter advance.
-
-While it spins it burns a workqueue worker and drives continuous reclaim,
-which also perturbs the wall-clock comparison (high_time vs low_time) that is
-the test's only assertion.
-
-Should the bpf_wq_start() at the end of async_free() be dropped (the timer
-already re-kicks the work every check_ns), or should the repeat have an
-explicit bound/delay?
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/32118218829
---===============1992217807985281510==--
+Acked-by: Kairui Song <kasong@tencent.com>
 
