@@ -4,112 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9A6BC5DF74
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 01:54:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7983EC5DF74
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 02:07:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8BC96B088C; Mon, 17 Aug 2026 21:54:27 -0400 (EDT)
+	id DCE8B6B0880; Mon, 17 Aug 2026 22:07:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D63496B0892; Mon, 17 Aug 2026 21:54:27 -0400 (EDT)
+	id D7D746B0884; Mon, 17 Aug 2026 22:07:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7C206B0894; Mon, 17 Aug 2026 21:54:27 -0400 (EDT)
+	id C95956B0892; Mon, 17 Aug 2026 22:07:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 979F06B088C
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 21:54:27 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 19A54120A09
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 01:54:27 +0000 (UTC)
-X-FDA: 85112720574.11.B8281CC
-Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 5143E18000D
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 01:54:25 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="fz3/fcwg";
-	spf=pass (imf24.hostedemail.com: domain of foxieflakey@gmail.com designates 74.125.228.1 as permitted sender) smtp.mailfrom=foxieflakey@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787018065;
-	b=Kn2tFdY3iUcYFp63M9bm/lADPqFFa75gxq1ppSNs8pDunOO8OayV4CdeSTLM7v8EXMGPfU
-	vBVnb3CiCAwAY6njRUgU4/wjx5LKnsf3vQqM8MDpF5yc3F18risSQT5VSppR7TPWR3D5uH
-	vDdOLQtDAun8n+WZnJhUa07Ex27sC5g=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="fz3/fcwg";
-	spf=pass (imf24.hostedemail.com: domain of foxieflakey@gmail.com designates 74.125.228.1 as permitted sender) smtp.mailfrom=foxieflakey@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A854F6B0880
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 22:07:10 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 211E880937
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:07:10 +0000 (UTC)
+X-FDA: 85112752620.03.CBAD9FF
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 3B2BF140009
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 02:07:06 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=K6i98u2M;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf26.hostedemail.com: domain of dayou5941@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=dayou5941@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787018065;
+	s=arc-20220608; t=1787018828;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yJZh+9l79XGTk+91Ew764dkcvMu0Rffrs34mLTeW4hs=;
-	b=OYl+R5Iiw5SZ/JnLQcZsQqKd/ZufT9EAluUKfpaL0HqvKM2ZIlyq3RFdKgUymT3MRZX/lz
-	fR5GlOkkjlI4mYgO+gNERh4oSHX71bajnTJzsEtQ2smJQkM1ROscaBe6/P7pedeufq3vv3
-	C5DZJvNgEv7p0TB+G0sdrN4NdVX4paw=
-Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-ca00ea47337so1613672a12.0
-        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:54:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787018064; x=1787622864; darn=kvack.org;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:date:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yJZh+9l79XGTk+91Ew764dkcvMu0Rffrs34mLTeW4hs=;
-        b=fz3/fcwgg3jUoh3Hi2ZaHPzEAZMF158WQo0j3Xj6YzoKPhXpiMJtUX0DRwQCN/vy2l
-         lS73bGo8qadDK1OSjIyJGUgIBoLh4tjyiMK3yi6HZMO9teEerRPeijqvI4k7Xp8xYVRX
-         5DhQuozo3cM9QT3V3TlgOZen2Zd6kPtIeILPNohDR8H9M/Afb0I+YNp1cIXxI3kR7jbe
-         7gRGAhXMY6AHmgS8IPF84kovFmuNGgexcxSir1DPPTuILQEUtqZwa2+Vumwc0VHD9FFz
-         P9PaoH8dTK0n32ZmhGNqv8cz4nzPe2lsHOqlDQ9361Y8LqjCcn2kdg8+l+/t9d6jYlGj
-         b5TA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787018064; x=1787622864;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yJZh+9l79XGTk+91Ew764dkcvMu0Rffrs34mLTeW4hs=;
-        b=DmaJMQpdPARzcNRYDpdE0HMi6lR4ilx0YsE6f4riqEIFQOPIVUaJiJHGz58bz1qTSa
-         uKV5PL+fcPoj68gnEXiUyOB/Jwp46IL+NSFusYznVYyC5JVPP2QZ+STghYKsJSErKakl
-         EM2cvQd5vdTTFI2iqgSi1Ur6wmCTF6bLRG4EfriT/Uio3uYnceqR3kr002ccJPMJg84f
-         f1vfB4t6QdQqm23ygaO8yZyREHXwC1C2ZkAl/wWcPh6fL+xynriA+pvGoTfjhJlFwnt3
-         BA46vgfMykjFniSsqElJh/3N6VuBWtjy51ScReAYBi8lywk5mgrHUaxGtkx05I4SFONi
-         kL0A==
-X-Gm-Message-State: AOJu0Yy3mThUiLF6yvqHqoycfZZP0+TPXkx0RTuudfeBIkuW4lhtbKwB
-	GY9Zhv+3n+EW6FRU2svMJ0RICtKc0Qwna+m3oW0izpG9EHlfA+EAiPOI
-X-Gm-Gg: AR+sD12W0xn+pCLgjLanH5uDdJUN4aZZmphySztOrnbXr6r0WBKqxU3Z/xc+Nxwz3a1
-	NB1brVgBKdbysVyL4Mc6xfHYtM/AYmK4utQUueMrv45WPAK6GrR3uiz5jRncINv2oI+Fi6IyQCB
-	9S6seBB8ykLmvRYTvqxd3q3yTfHcXyxBe/ZrWAD1W2QA8/GJ0O50dR+LWWfg4sTfYka/cEHHTkX
-	bamleCPZ/B3cNIxDdViFz/Ib/D7oEJI7aLxA47N2e0ajKXo2sQkR42bBWIEormjMgsmU+CBs71N
-	UbQ2DeGfPdfZIr6IR8Zz6TUs/S9DbmbOFq2XE9Ayo4RHgy9PHnn7xBelCWct1iMA2t3DMd6+s0D
-	lYDo7xNLpTzBrp909tdAgYP/jBqoUipQFstXMMz5EOuIVj7ty4CXAyWsoqN7N89250poi1VQCD4
-	gZYMnWmfe/+v3SPDypvUEFdjSzNKm63n0/gUSj6fXUWa5ReeyR8++cxrdN
-X-Received: by 2002:a05:6a21:4cca:b0:3cc:45cc:c401 with SMTP id adf61e73a8af0-3cc71a256bfmr32917617637.13.1787018063762;
-        Mon, 17 Aug 2026 18:54:23 -0700 (PDT)
-Received: from 192.168.1.6 ([140.213.202.182])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327af7934cbsm558584eec.6.2026.08.17.18.54.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 18:54:22 -0700 (PDT)
-From: Foxie Flakey <foxieflakey@gmail.com>
-X-Google-Original-From: Foxie Flakey <foxie@gmail.com>
-Date: Tue, 18 Aug 2026 08:54:19 +0700 (WIB)
-To: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
-    Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>
-cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] userfaultfd: reset err to be 0 when move_pages_ptes
- succeeded
-In-Reply-To: <79cbfe54-41f2-9041-89f3-a96e9fb80066@gmail.com>
-Message-ID: <9fb6acbc-19cf-eef5-b877-3bf798767ffa@gmail.com>
-References: <79cbfe54-41f2-9041-89f3-a96e9fb80066@gmail.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=B644okUDm2DMJVNSvynKKl1Dx1fxHI+pke8x/2dBvEQ=;
+	b=fr3u7SiTaDNkUAAWRDlfJWDXixjygNbE+Xzpb1mbramKYxW29sOptXkcXzUCWHDj0I5cuZ
+	uqQeSPvGCiuTrUDdo2P4/1Tz4SyohxlipwFBGoGDd1rZgkxOYz7B7a3mBMAvn/nIBpN6C7
+	6AlVpgqxl1uMyCxxTv71O9nZjfoyL04=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=K6i98u2M;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf26.hostedemail.com: domain of dayou5941@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=dayou5941@163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787018828;
+	b=D2ZZmKsl8/R5PQ8TS5GPyRCUIHyZLDJEbeVVAzwHJdp3wVudnvonM9g3GsbPZnZkHMYH0R
+	S4lvEevOuWVQZNAKqyP8Z9yyhJhTisxLiy0Z/NlUL55asGHQPrRbZEkfk6RyLBjPqEYy4q
+	jzDFwr8VVv4Kk+VoxE2jTclaulMSknA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=B6
+	44okUDm2DMJVNSvynKKl1Dx1fxHI+pke8x/2dBvEQ=; b=K6i98u2MXth5BbPKZr
+	n49+CWGQp5aMApCQtRICDo/6mJbV4tiM+Jx1xZqYYQTqyVUAZOVJFpVAAet0eBAQ
+	5+1Dv6s3mTJRk6yLPO7vGvM0Z09poRQdK0ustN6M81z5Fbjq6bChzEZoG4lp9/S4
+	bgvycgEnagA6EwPJ5yIiRBqTg=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgCn2Ns8voNq82tgMw--.11657S2;
+	Tue, 18 Aug 2026 10:06:54 +0800 (CST)
+From: dayou5941@163.com
+To: sj@kernel.org,
+	akpm@linux-foundation.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Li Youhong <liyouhong@kylinos.cn>
+Subject: [PATCH v2] mm/damon/ops-common: factor out damon_putback_folio_list()
+Date: Tue, 18 Aug 2026 10:06:50 +0800
+Message-Id: <20260818020650.2844354-1-dayou5941@163.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgCn2Ns8voNq82tgMw--.11657S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Cry5Zw1kXrWxCw4rAFykAFb_yoW8Kw45pF
+	1rG3s8XrWUJr1xur13XFZ5Ar1rtrW3Xr17JFy3Gws3JFn0qw10gas7Ja4IqFyrJryUJr18
+	Z3W8Aa4Y9F4UJFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UGg4DUUUUU=
+X-Originating-IP: [116.128.244.169]
+X-CM-SenderInfo: 5gd103ivzuiqqrwthudrp/xtbC3QA76WqDvkBsEwAA3n
+X-Stat-Signature: i816fa3qxs9gdzzjei1ngb7cgzsaouax
+X-Rspamd-Queue-Id: 3B2BF140009
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5143E18000D
-X-Stat-Signature: tewsfieqbfqtog7z196pu5xxwh7wrkkn
-X-HE-Tag: 1787018065-609643
-X-HE-Meta: U2FsdGVkX19SvljHvvMwfhnc98PnzJu3VBC1mUSgonkKCcDO8uYFtTElki48VdKKzRxTHHIzpl4PmGozcjdNlv/PCDnpir2ig7uaP+ZpLSPuVdvjlXL2q3irus827zDxdAiRsiC2kca7LePQLHLeARtAvUr51K7Xl8XifRY48aTJqzgSlMLI9YYw9skBXroy1huuh4GlUDi88JxUMCoqG3tY7MRNKKppHLTdcTIA5YlRBJlxw91CjnOGnGAd+zwhhyiLrL2JBwzUcUi+OnVZbY4GE0bcpXCEqh2Xv2Q+rlzSg8wqGaG3yWPgqwMZY1FRLJ4bwQNpIxO3iD819CeI372jFZ/A6klH7fHYuFegAiYeyAjc3haQhzWVIRgTTtUW/vrdcMB73Zuox0pPfSeeRo3qmax32mm3qanOYnGEeJJUYAe+QNwHxSSMQ4eTRmYxFJcheTUZ9F+tOPH1H7raU6t+I6rmSlqheGIXqrCyVtcPfi0cub1TjhevgQJcT+j6ekRfUC8dMxD8cb0yTtU8zs1pug+xZLWbp3Sm3YjG2gXDXUVnU85MsEz5uirz49odQJOZfOHTlz5VFKEsXtgsxuZm955fWpKPeQoNOhkkT+zF9ujZ7Hq8JZWKy42Uw0QeOK9vBbbhtDH+mH2MAc7CPZM4GArxxQh5k+Ta8gnZdkrZmdrSozYUCA1GGXV71zlvv8Oumlg5REPGANS8Z6WZg4deI6P9E8F1Np5wsrSOX9xPLOwV6HhVafQXvQ/FHaa2ebHHqC/dZjOOXi7Cqo5JH9AzLNs5nuc40KWMLX++McpupNa+XmavbqevZYZ8mHAhNAV/QWeYmqiSyPnek7Y/rnQotkrN+oiLZGbFm7xqaDrJYtuNdgN8vG9BaSURu29d0MnrgOZIdqWlsCcpyOywTfJNA6EB6aCv+YU5a0Inha3gXxpDP8ot9oymQ0ItOGecuqIi+RCxngN+pieNb81
- 0qSVuHb7
- istcaPWiJGicsJJ/Ec6XhB5bn4v4cK0smZ9ZLgY2WOHAvmjXZkwnqklWAd6mkQzTPW0fKNbviFaYZ/0EkaZ12AJ6u3cE34D8O1G6deaaOWSl5+T2S03Zl5YSsHdIjWQJs+n2jPvM3A0EL1SNEnignrqs9vQ0jg+K6d2zsu9i+3dNcWbXsDcITroqDdbqWVpbbNYxws3JCERUT94HQsFvM9OZmd8dGwks0Tnz9LpLT2NOBx174Oyk+iANXAMSxp7U9ymZ9yvHOeh6+YjldZgPXbdqMiHDZEZHOd9WaL9z0tWPT3UKrX70+vs6+XkXlFOJlnsDIpET3TJK9sUeBRwzZEpSWakCyaR4qveYEvx8WFWToPeQZr+WiqS4trqh+EcbCJ1ud/JxBAGtNwYIUMnmPE1ucID3X286yAnsRSOl9YWVJ0oNHbesIqRny3nrTneoMjdaYqEnc6pngpiBCw6NMHDq3q1syIY4EZcTRaG6fRzsJVa3qawLtdLEiA6CxQuxKpSzU9qw0FsTlRfFhDmMNfGuciVaSEL4lkpvgfi/tvrmvvpy8/sszguhVPOr6+AYTuiHBiiYznsaBerQ4Dld1dr3xKnA/nhfOFhHJ3Abyzni5lBfvwCLZ0L+5ChxleZGGATOXV1KnK7+9f4E=
+X-HE-Tag: 1787018826-786250
+X-HE-Meta: U2FsdGVkX1/8a55HqXPOF6F68yAzllfWAReEn8nIYpVZIlu52vugojviMaLBRE3xNWoV7L1+NTIZJPTwKUdagllZtbzbTn1hD0bUfmUiriio8DPxY71Y88qCgXuR3Hw+Du6Q6ujpK6FGW/4ThQha7dNEJDP+zywGe1fcMKTS9TsqPX29HUOWTiVSLVRPSIfzxMjTfuifU8QpvUiD1wTRgvX7qdxF7q378ZwwDUoNFmf+DB49pSLIL5G8cpziuBKOrA53Fw7zkVWAkXxgNfJHskY3Xvmv5GUMzA0fxBZIeOO4wcIoW51wuy3t4pZml7r4yZWwYIXJKmRBjtpL6k7Q2WjAvWx0eeC4OSrM0LxrTkxxMeWmM+U8Fl95AI42j8uoeaq5hzfG4x6rUTh2xw8YEML92+xJUuk71QZ6HTfcgEe2Ee0QBI+0h+Q9QD3mzyj81cb0qTHdkrjfLXMl+gWSqEaxkKXZXlm2zhKvYXaGsWOzm3C60wVtnVyIk+Y1fedEdNXc18XMOo5eKXlEDxg2DP5vEzTPXon1DBaJBx++91za6GDieEDhRN27WmNbUvkj80+i7ZpqoYuzb2b8L/ohfj/PmD3zJs5TFcc9usgWxL1pce2NzClaiUh9P50+OkzMMSxTnkEzb8wNCajAfupcoYiBAPP5grjYDuWcfL3IFVaWngUwvIKF9V0lFvzseXHJb/jpFVw50I6kvpHNRaFRaeE0wvwsKwN5IU2behXhVYWx/zAht82Rkl3auiCoa+Ri0IP08onD2CF7gnxpeJXRN5s3v9awhxU1vJG0AUTfubqFu3VL/jU8Uf0ieeLiD0uFOz0phjCtcc2WUEZVPXC4y/+jR0WHwZDL1VfaBr4ELVv2KIUbK8BwvMiEtRiCOHxddgMyubMHguqiuEGT91jmLdcFSVYxuqgrXwevp9gydXXeEd/McdXhalNnST3iOy8btFsIoJ9BlqQmJZV+/Uh
+ n9JFzy9h
+ KCKs/SMKZKkImlcMIIBncUGcfpmSsWGtRseJtorAaBGs47UY2vL8zFlPIIWDGWG1jNh8nUMLHX8eQ5mmkr5I94IBz7hPrUQP16x+aa50YF5oDMEBP2W6oLU42VUeLlcXQ0nqUg+FpYvKqO9QGMSMdMhNFlfqQDV62i5OsZm3XHcc/DtVq8ZcfDfR5GSVbh+WgWWsTQwn6Y1vJzdNNemZ11GGzt6lr6f7ENekiUNNSGjlE/zlPbaZfNyyV1KbO1v92N1+oLJvvCrByzrjG7CdUt55iEd2yzSxPMdu0rMQAQ6z3uxRqknJ6D6OGf3FyCgQWqY5fzlev2i/cFXZcX4OKynVlLQH9E9FSad1vIZXKKXoxuJ/0VLPk3YS8y/JbXHX7s0zWis3fw9R4kr4gpJH9YXE0sXPhBaK7akbUjggqpXXtsDE1Y6R60awKCa2qUB8fS76Bm4/2MNyEzC3Rv+Or5u+E8I+ol4YaytmB0Y+2Zrr4UUU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,69 +92,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Not sure where I put text that is not the patch description and not in
-changes. I put this on seperate mail reply.
+From: Li Youhong <liyouhong@kylinos.cn>
 
-On Tue, 18 Aug 2026, Foxie Flakey wrote:
+The putback loop is duplicated in damon_migrate_folio_list() and on the
+invalid-nid path of damon_migrate_pages().  Factor it into a small helper
+for readability.  No functional change.
 
-> During move_pages() operation, when move_pages_ptes() returns EAGAIN,
-> the error code is not cleared even after we processed it. This leads
-> to a successful retry but then the same pages are retried again due to
-> the stale error code. This time move fails because pages are already
-> moved, loop is terminated and move_pages() reports a failure.
-> Clear the error code once we processes EAGAIN.
->
-> Fixes: 50944692052b ("userfaultfd: opportunistic TLB-flush batching for present pages in MOVE")
-> Assisted-by: ChatGPT:GPT-5.6-Luna
-> Signed-off-by: Foxie Flakey <foxieflakey@gmail.com>
+Signed-off-by: Li Youhong <liyouhong@kylinos.cn>
+---
+v2:
+- Restore the removed "struct folio *folio" local variable to fix build error.
+- Use get_maintainer.pl to include linux-mm@kvack.org, linux-kernel@vger.kernel.org and relevant DAMON maintainers.
+  v1: https://lore.kernel.org/all/20260817063458.351063-1-dayou5941@163.com/
 
-I'll delay figuring what to do with Signed-off-by, I'd rather keep Foxie
-Flakey because that what is my "known identity" on internet at various
-places like GitHub, Alpine's GitLab and now here in Linux kernel
-development. Would be nice if I can keep Foxie Flakey, like again policy is
-policy not a suggestion if Foxie Flakey is not allowed.
+---
+ mm/damon/ops-common.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-> ---
-> Changes in v2:
-> - Updated on description to be easier to understood
-> - Reset err before retrying, instead of fixing right at the move_pages_ptes
->   branch.
-> - Added Assisted-by, received an answer few days ago from linux-newbies IRC
->   that even I just used AI/LLM as "fast path" of git bisect. I still need
->   to add it following
->   https://docs.kernel.org/process/coding-assistants.html doc.
+diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+index 0bcad6b1e5b9..ae101689612b 100644
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -329,6 +329,19 @@ static unsigned int __damon_migrate_folio_list(
+ 	return nr_succeeded;
+ }
+ 
++static void damon_putback_folio_list(struct list_head *folio_list)
++{
++	struct folio *folio;
++
++	while (!list_empty(folio_list)) {
++		folio = lru_to_folio(folio_list);
++		list_del(&folio->lru);
++		node_stat_sub_folio(folio, NR_ISOLATED_ANON +
++				folio_is_file_lru(folio));
++		folio_putback_lru(folio);
++	}
++}
++
+ static unsigned int damon_migrate_folio_list(struct list_head *folio_list,
+ 						struct pglist_data *pgdat,
+ 						int target_nid)
+@@ -372,13 +385,7 @@ static unsigned int damon_migrate_folio_list(struct list_head *folio_list,
+ 
+ 	list_splice(&ret_folios, folio_list);
+ 
+-	while (!list_empty(folio_list)) {
+-		folio = lru_to_folio(folio_list);
+-		list_del(&folio->lru);
+-		node_stat_sub_folio(folio, NR_ISOLATED_ANON +
+-				folio_is_file_lru(folio));
+-		folio_putback_lru(folio);
+-	}
++	damon_putback_folio_list(folio_list);
+ 
+ 	return nr_migrated;
+ }
+@@ -395,14 +402,7 @@ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid)
+ 
+ 	if (target_nid < 0 || target_nid >= MAX_NUMNODES ||
+ 			!node_state(target_nid, N_MEMORY)) {
+-		while (!list_empty(folio_list)) {
+-			struct folio *folio = lru_to_folio(folio_list);
+-
+-			list_del(&folio->lru);
+-			node_stat_sub_folio(folio, NR_ISOLATED_ANON +
+-					folio_is_file_lru(folio));
+-			folio_putback_lru(folio);
+-		}
++		damon_putback_folio_list(folio_list);
+ 		return nr_migrated;
+ 	}
+ 
+-- 
+2.25.1
 
-Would be nice to not have to add this Assisted-by. Mainly because I just
-used ChatGPT as "fast path" of git bisect to avoid needing recompiling
-kernels during bisect if ChatGPT found result first before I finished git
-bisect. I feel like my effort trying to understand how to mail, write
-patches is undermined, but policy is policy so I don't mind if it has to
-stay.
-
-> ---
->  mm/userfaultfd.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index c3adedaaf7d5..ec5d511bd179 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -2085,8 +2085,10 @@ static ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
->  		}
->
->  		if (err) {
-> -			if (err == -EAGAIN)
-> +			if (err == -EAGAIN) {
-> +				err = 0;
->  				continue;
-> +			}
->  			break;
->  		}
->
->
-> base-commit: 62cc90241548d5570ee68e01aaba6506964e9811
-> --
-> 2.55.0
->
->
 
