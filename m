@@ -4,89 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89FC6C5DF70
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 07:11:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47017C5DF70
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 07:12:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 816476B03D0; Tue, 18 Aug 2026 03:11:09 -0400 (EDT)
+	id 13A3B6B05A3; Tue, 18 Aug 2026 03:12:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EE566B05A3; Tue, 18 Aug 2026 03:11:09 -0400 (EDT)
+	id 112366B08F8; Tue, 18 Aug 2026 03:12:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DD346B08F7; Tue, 18 Aug 2026 03:11:09 -0400 (EDT)
+	id 04FA86B08F9; Tue, 18 Aug 2026 03:12:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E2276B03D0
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:11:09 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CE02540ADD
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:11:08 +0000 (UTC)
-X-FDA: 85113518616.23.9FA4280
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 487A720002
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:11:07 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oPYKmsqs;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787037067;
-	b=khgHRRc3NgvcCZao8GHiYvJrdcYRYLFRhhEf9h2mnuYnhNFA39+9l75ev2oRUdXmEf+FKR
-	+OzdqEGiUL0Pp5zaHgH2FOklu4wGVrXVebb9xOsoXvlQ6424cy5lYOphqQXiOlzY+bJSli
-	+munAZuQQvZbUZgWwS6cvYHvIiN9EO8=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oPYKmsqs;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D68FD6B05A3
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:12:10 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 74E0CA377B
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:12:10 +0000 (UTC)
+X-FDA: 85113521220.25.DF296A8
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	by imf28.hostedemail.com (Postfix) with ESMTP id A98CBC0004
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:12:08 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DyKL7VnZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787037067;
+	s=arc-20220608; t=1787037128;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hcKP0GI/8MCMjQwWzxd7ikqJRzxxF2VaTggnrgcABlk=;
-	b=2vNDma6L+TUBInKIRM7IM7uM9Dm/vJDyK5PV0rzG3nYx902a4+p/pd2z6eZx4clZG/fC9O
-	iIeb5rxW64ygKGdl34x6oOix/YsKSMKafDWD5kNg0dssl514+kBlPIJFtZDDLyN/lVoR1T
-	ijwEYr8W7ycOkfo9kg+5p+vEVoCgOko=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C6DB0601DE;
-	Tue, 18 Aug 2026 07:11:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA731F000E9;
-	Tue, 18 Aug 2026 07:11:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787037066;
-	bh=hcKP0GI/8MCMjQwWzxd7ikqJRzxxF2VaTggnrgcABlk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=oPYKmsqsTLaYnsgF4u2veT2txSMhhZZUUeSbMLopLJAqC1cViPnqitdh0VU4sCxJZ
-	 vklK8cfYEd5nYknsnbskjjNjSIa6ENmFxsP2t8+k0M1MnDOQgrQyzFscoufJnlpEW9
-	 dIM/7z3OD59/ZOB9xWtYhkoWHBSrR4dsgH8v9/embqCjrftRIwyza0+3Lbb6ujyUxk
-	 RqL099o+eCBsjeevXNzG8PQVIW8LwJvaHrMgwpJZr6gxxd77FX8/lnjdCPwYiFnBMB
-	 yUIjqeXM+iybkw3rjWcPvKruuM3Gm0yVXoFNGuFSQPkhL2sTyG+f7T+D32f2i8ZDxo
-	 jyNOnApjgnwRw==
-Date: Tue, 18 Aug 2026 08:10:46 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, hughd@google.com, 
-	vbabka@kernel.org, annh@google.com, ziy@nvidia.com, liam@infradead.org, 
-	nico.pache@linux.dev, dev.jain@arm.com, ryan.roberts@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, usama.arif@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm: fix incorrect vm_flags usage when checking
- allowable orders for tmpfs
-Message-ID: <aoQFTrWDqIEOvZvv@lucifer>
-References: <7d5b5eb27be798f89d563b06254c947ff53db0b2.1787020910.git.baolin.wang@linux.alibaba.com>
+	bh=3ZWJKjjafd4rnjHIXgNulavUthCI1Xw98Pg39mbzNSA=;
+	b=HmCmps1f5mIdSyRLOCw2nuwzT4a3EsGt2rPiLKSAncsyQP7c2MLNOJOR8P0O8YGr3t3DsH
+	XjW3aEb+k/FX8ke2CT7om3rE1stzWGoUk++X7RiurfxKSCb6g52Lvg2IjY5nEcibYBaFGi
+	mcB1S96Rmy5e24JO0wLgIvdkxcIoDfw=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DyKL7VnZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787037128;
+	b=4OMs34xBGI+tQohpVUDhChwlziYnQaPZNK3k8v4noTubaBhTB5O5QvQEJ0P5VDFGvmiUAY
+	90RElo5ccZ5Zcc7uLwoq0dOmy5uLbfk4t6CTNPpvzWHBLLXdDYyyNENGS8uXdPt6x4nNnH
+	r+zB9A4txq/SAGpX6C7IQkkW6fkpmZ0=
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3811f512167so5998237a91.3
+        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:12:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787037127; x=1787641927; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3ZWJKjjafd4rnjHIXgNulavUthCI1Xw98Pg39mbzNSA=;
+        b=DyKL7VnZHxzUtO9HqXWoK2qjbJmOPqyOh+0/FcsaTkko/EP3CjsbLQUnSq/dn+lGTN
+         bED4Bl3LGkJtBhKE7cBHYlxcGdSpbA4lwu0vcZHrJD1oXWym9JbbhxmQJFPqGxsJ3IAL
+         usyp71dxPmfg5UhQtRzovHH04f6NWsrCaCFV68XOMDRxYUBqyM3yT8f47QcyvcGXAHSd
+         R7fEyPdexO67Jyv4eC2pxsZg7puYOh1r1wRyvvyZGtYjnu0l16bFHw/IEABugfuz0WYP
+         2/y6xRO3bqtUzIZ1jTaLR7dTwkyZJz0STAq4KfBw3rggZT8+payuRClWB9o+tiS7z91W
+         mmLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787037127; x=1787641927;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3ZWJKjjafd4rnjHIXgNulavUthCI1Xw98Pg39mbzNSA=;
+        b=C+/RlJSYh9ZFtmR/oph+GTHtXCgK6wWinL6xcqLLWcr9hwbtEzVUvfVmURyAPWD2ty
+         4T4BdQZCD3XVhBJ80fC8jWzOyXQEhSYutuUg0LWpzmNrFwHaJNIMZX/Gk/itxuC1nOyq
+         lmDLX/fJB5W97oTOO0I3+4GcoxAXydKvO3giwBJ71tFldYuHOYl7/dLQXM18yf7mLND2
+         P1fpYJ9x/FiOBd6su69gJgH5a57wQoQ//WQyxWv74k884b5rUoPagDh0n3SDo0Y3lH2/
+         1wwxwwBnMPbZre+4kbmtPAeyWWsGalAqj18bj19n3GF8tdbDagmfXI6GDOMr1qEykBwZ
+         KJmA==
+X-Forwarded-Encrypted: i=1; AHgh+RpPcrkwBSGlNoYkXxIzIZ6uJWHj1+HD2FTNo2y19EalytUCQvqb/86zmWwhBviNGiUf3PyX9QoArg==@kvack.org
+X-Gm-Message-State: AOJu0YwFuMV/uCa7KPjAjpkNjs3RJFCNHy1/rE/WkglrCzhXqAPNgvAj
+	7zdt4aplQrx/lih3QmrjSoNTXtXMYjQmGKJ2WrG9pOt5VID9c/tPUB8W
+X-Gm-Gg: AR+sD11F355nvC1UZ5L+LufTxkQ20Ouc7x2vlsY7otXEHVVCDRQ1iHI6ie44xoeFww3
+	dLExePx1GAKtt3H2UdkVu/a6hhVwTqkskJOHhxQBsjaZHlNfR0As0TjbYjJ+9QOAdj5qN7ZTbg9
+	b0kArvDnsTYJQzz38s029FrMT6V2GhigsNMJlcZlEw2nFaT5ntWfAv+sw6gumzWBa5sHQQRIXAv
+	VUgeyMniWElO6Bwr62sOk6LtKqmjwtg/L3mcGGYSEMAB5MReW+0u2YvrBJINqwUh2CQRBwwVmnt
+	Oj/YOed3WanzqRcRMZscvUCU/safaRzddka29+gAdUPwCOT/fqXZIfpKL/z12XlvvhPJtZsYr/t
+	4vmKzgwVInfydcUyq7eSVxdcE+rTTe8F9tEQYNpQ76rvMVz8Nk5aTBjHiacBuFIkdgmkHJacVkv
+	Yji7/o0FMBD6yDnaf/jvkKIr/2JJpQT7VmBDAsAK2tCRsD1Aa07Ufb1ptqcHBYnluEriPbxHkso
+	ZaZoVmSMIwjbMKT5mA7S71jrKW3NSXxvXOojtwy67Sb3Q==
+X-Received: by 2002:a17:90b:3f47:b0:37f:e177:f58 with SMTP id 98e67ed59e1d1-3955a774dbfmr7997942a91.9.1787037127315;
+        Tue, 18 Aug 2026 00:12:07 -0700 (PDT)
+Received: from KASONG-MC4 ([43.132.141.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3954d1b0143sm5039834a91.0.2026.08.18.00.12.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Aug 2026 00:12:06 -0700 (PDT)
+Date: Tue, 18 Aug 2026 15:11:59 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Yosry Ahmed <yosry@kernel.org>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 1/3] mm, swap: ratelimit bad swap entry reports
+Message-ID: <aoP-r2C9g9SwHtqK@KASONG-MC4>
+References: <20260813-swap-v2-0-4a625ccabdae@debian.org>
+ <20260813-swap-v2-1-4a625ccabdae@debian.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7d5b5eb27be798f89d563b06254c947ff53db0b2.1787020910.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260813-swap-v2-1-4a625ccabdae@debian.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 487A720002
-X-Stat-Signature: dj5imr8anromtdhnmd9o6bgh6xp66x9k
-X-HE-Tag: 1787037067-618640
-X-HE-Meta: U2FsdGVkX1+r4Jz+PpfLjGGHG7PyChO96afRJf8HooDV9F5dzua6riA7qZCueOkdgLuoW0Nlm0zNMZ/0A7Ehnt70B6kn5w07bHTGHYvNTCMPcOs/dScHzTL8T1EDOWgzycc/pE24WvdMBvnMpE5iMtqe7zJxoUobOWq65Y58SmccbT8zCOYYLuB0TDkKLG1b7oiD6qduFirf+YlbaWkyWEbdGqcdA814wrz13Nw0sqgOohw1D5Aig0WVN+GCGyu6fXv/eNaY3ILLCMw+dtIgtGE7ZHp/V1g8EIZS5yPzcNV9K5qrsVQKfVs3mVPXcpetsFfVlh2Vf/cF8Vd2vuIw/1xP47oH9WnnkfAUhsx1jWc4mRQTfjlPPbOLgzYAvGG5KfkrdTFrt53n1ZsB4mDjF/T1k79BPxj8hGS6Oes/+HKD/0EeLbc+3CM1i3sOj3uU6ZxrcSfKuvReXYJ9Jh/+H4B3fjaqJBrCGwu44Mq1qDXDyKmBbaBKqVaN8J+PWZR95zz3zQLPdHWXWaOeVKi4bGFoYdu6Izh2dHtstyp+9GZ/0ThigArSMvN7PehFpFjXmFAhioR+qIhzJlcZfcndJsITk/4AOP1QSIYtOPVTVxiJaD2TdSoAN4Umq4UkaPvTJ7Zvd48CMAv2BQfm+QacLlOPt4HJmzehvGM3bXSDqmpru069ErgAxXqM79R2iYy+oDAWr+dOaa4n/FH2UtEbECUPjMrFlw14FHba8zLtq/kIoSpou+SmD6kgIdnuVnZfiUg4UOwuBXdvv3Q1TO6xjkI1n4VzzE7l2TJipcaWyVBYsuapN51y9PLJeL+ToikOx7JA+LdG48jqV2+VwEm6Fh3aCIv4vs0RNuKlyoqCWmV3sFigpNyQzBlQIaMUPGIxB51nDUDDJZWxXg0f9sUlWV3UwOXXdTAFok7yoNOcVAvDeFoe3Ra8ULAHLEJfrvJJ4KvK7SM5Fp/idZm+TcA
- SmfO6bUG
- 4guJPsnbnYF6hEo5ch59A2YPkEX99M1HjqcYOUhh32tn8dl4ERACIjW4+S2Y4xQb+sj7RofZ5hrywyT4zUR7YHY0FvKJdOUa2A0TnU2rrcqrhKaQTtY+oF4l/pbnq4KhVQmXyeKLUpev1AeFe87Oc8m7PpHqj1zAJjSNvgVpQ0BH5sjtWwpzcONZi3UFb9h3m8nEAqzdSAtQteeBrWS6Yi3vN/JarH0XY5V5FzXuQxEx4+LNd0I89t8KoPDr/kwhyS+3xtabhcZ/Hzz1RlaOZnYcyJffWUrWwZ3yRRkW2ZrsYInl+H4dMbQ956SGIF9BJWvDMhK1GrVdmB5Sc0GlHiotwaA==
+X-Rspamd-Queue-Id: A98CBC0004
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 1nncstpmrqbcr6aips6szqtxa5dszbem
+X-HE-Tag: 1787037128-793202
+X-HE-Meta: U2FsdGVkX1/9Olzv+zeSMi2Xz5gNf/X9wJz7dAfk51hSh1IZAdL0sel1EuQXYBvz63z6Uduia89hxj9YAqLqMFgW3po1Z6CMzhtZcA2SgRaucEM3FkWYi0hDUryM6BvrYrbU9ZO6zkhTQIi4aZAqP9QRiJWjtdj7Xkm96de5Ty+ahqX1oV4cC3q+2bR0F6+gN8eW0LhNo7peM38UY4jqviKZq6LZROwiFoYz81iIfWnF3n1AhNLcZRtfxRo4vBHPXW6pXfXyE45hJwlSheUzSpP3jqweWVwuwGjISUrCekiWRunj0x5Riij0c2k7uqZx7JyvQ7honRMZtX0iD3mbiG/rf3hgif2ahK8Tg3V0VvwPvFzdnEv7/FvRr7kofYLbiSaffX65wnUQ8Sx+oU9x+sYOkdpyxtPDIriL5NlL1xYrdVByxc/DFRRdKdg/ZUiKXOxRd1j9ryYfVRBGSjaxt/JJTukXfaJdv/PnxYwDhIvVgo1mV/VcXU40G+lH8iHT8fu22SmIfbch31roww0Ar4+dalX0xhj8NlvKLfsaXhyLGjKiQ+pXJrNBMENIp1z5Ll/ki0ulvj11JelC50v6mr661sOwNoXoQStscmjM2M/V7Fu9N+WMWv9lvEH9uRUkkl6RfzHRcV4vxiIZGw3iV8kPkUoaxdUxzXAacKtdeXVVV88ij+OS1g78Ii72viBGfspV0jcBH4bxvULk6/W8KmMu4Iaw8d3sY932JIYTMza7uxUBO90t9++LC4ZoOHO0wOqhXo7JrzHE+zXcWFydzutd+FTiS/tYDdjeuQrgXo++lLiHzsXaJos5xVPYa75rLboXXZhVVwLS2+Ln1ZgBEBZ17IQ25bL88FPwt05HfR/Pl3OtADC41IqL5rtofSWT0R5jfaAGEXWXuM83bsdQuhM45HiMmyynbiu4aEu2eR+CTDy1tXedqEFCbHSFSnOVPrLezk2CWC0V+JF+wla
+ EgVrRqPz
+ eXJOJBTX5Quv4KvBID/mEaqnuUq/fkcZH0/br/DE8llcvRrKm3oupb/wFl5Gvtxb1rDcs40FfnM5rayBYVM5Rcf9xh81sLmd1es6Eixm9//nMUUlPFSZv7XWtNAad1TwhAcgA9iZJCYUEoj3HjftSNt0tos8qnCC5TkliaCQEHD/ygUkO4XEHMCGpuKM5IMtvX/8s1Hk2FR1ebDqeF1Q9BaSYDgQQ22y98WFLl/ss7Jpx2AxgVkDyKjt+563i5VlpEeH2ybhrxHPm3hSQxCeTwJ1sQpa7x2aaa/EX54sWFv99rPMSlhmnkKAsTXjc2Qm4u2oNMYbZhQrIdumgwc30Y7WKu50e9AseKJ53tYKGbJZGP1pUxKZ1fQ3Cv81ZnBZgrseB58KoBxOST9g688m3rGvezTP4DAPBuGeQclCB7odo1Oc4bhHfysAFKpkm7Nx/YDH7lwHgq83w2B45BrBSU0jpjvnr0SBuUuV0SdThldfgF9RbHtMxUJAdrD2HAXdxZbuQr/C+U/AlcPaBkHfCDfzQUKfeqiXKH5mFjLMziJm2lX+onoJUn11uVhu8oB7o6WUeoDNJ3iUxu0wFiCsRbQu8fg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,83 +130,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 18, 2026 at 10:47:26AM +0800, Baolin Wang wrote:
-> Lance reported that when nothing else causes the mm to be considered for
-> khugepaged collapse, an MADV_HUGEPAGE-advised tmpfs VMA alone does not trigger
-> scanning.
->
-> After commit 6beeab870e70 ("mm: shmem: move shmem_huge_global_enabled() into
-> shmem_allowable_huge_orders()"), the shmem/tmpfs allowable order check reads
-> vma->flags directly.  However, when MADV_HUGEPAGE is handled,
-> khugepaged_enter_vma() is called before the VMA's flags have been updated,
-> so the check uses stale flags and incorrectly rejects the VMA for collapse.
-> As a result, khugepaged does not collapse the tmpfs file into PMD order in time.
->
-> Fix this by calling khugepaged_enter_vma() with the new VMA flags in
-> madvise_update_vma(). Meanwhile we can remove the khugepaged_enter_vma()
-> in hugepage_madvise().
->
-> Reported-by: Lance Yang <lance.yang@linux.dev>
-> Closes: https://lore.kernel.org/all/20260815181632.21453-1-lance.yang@linux.dev/
-> Fixes: 6beeab870e70 ("mm: shmem: move shmem_huge_global_enabled() into shmem_allowable_huge_orders()")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-
-Thanks LGTM so:
-
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
+On Thu, Aug 13, 2026 at 03:02:20AM +0800, Breno Leitao wrote:
+> A corrupt page table hands the same bogus entry to get_swap_device() on
+> every access to the mapping, and every rejection is logged. One machine
+> logged 6185620 copies of the same line in a few hours.
+> 
+> swap_dup_entry_direct() prints the same message from the fork path, once
+> per call: the WARN_ON_ONCE() guarding it warns once, the pr_err() inside
+> does not.
+> 
+> Rate limit all three prints.
+> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 > ---
-> Changes from v1:
-> v1: https://lore.kernel.org/all/ed34ca03ae7d65e89467fb87bc961f5497049c00.1786948410.git.baolin.wang@linux.alibaba.com/
->  - Update the commit message (per Lorenzo).
->  - Call khugepaged_enter_vma() in madvise_update_vma() (per Lorenzo).
-> ---
->  mm/khugepaged.c | 6 ------
->  mm/madvise.c    | 8 ++++++++
->  2 files changed, 8 insertions(+), 6 deletions(-)
->
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 5a06e3942e88..79effd3f3da4 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -454,12 +454,6 @@ int hugepage_madvise(struct vm_area_struct *vma,
->  	case MADV_HUGEPAGE:
->  		*vm_flags &= ~VM_NOHUGEPAGE;
->  		*vm_flags |= VM_HUGEPAGE;
-> -		/*
-> -		 * If the vma become good for khugepaged to scan,
-> -		 * register it here without waiting a page fault that
-> -		 * may not happen any time soon.
-> -		 */
-> -		khugepaged_enter_vma(vma, *vm_flags);
->  		break;
->  	case MADV_NOHUGEPAGE:
->  		*vm_flags &= ~VM_HUGEPAGE;
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index c179938097bf..cb93cf82d8df 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -178,6 +178,14 @@ static int madvise_update_vma(vm_flags_t new_flags,
->  	/* vm_flags is protected by the mmap_lock held in write mode. */
->  	vma_start_write(vma);
->  	vma->flags = new_vma_flags;
-> +	/*
-> +	 * If the vma become good for khugepaged to scan,
-> +	 * register it here without waiting a page fault that
-> +	 * may not happen any time soon.
-> +	 */
-> +	if (vma_flags_test(&new_vma_flags, VMA_HUGEPAGE_BIT))
-> +		khugepaged_enter_vma(vma, vma_flags_to_legacy(new_vma_flags));
-> +
->  	if (set_new_anon_name)
->  		return replace_anon_vma_name(vma, anon_name);
->
-> --
-> 2.47.3
->
+>  mm/swapfile.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 4d4e3e3059f6b..31c8a340606bb 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1899,11 +1899,11 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
+>  
+>  	return si;
+>  bad_nofile:
+> -	pr_err("%s: %s%08lx\n", __func__, Bad_file, entry.val);
+> +	pr_err_ratelimited("%s: %s%08lx\n", __func__, Bad_file, entry.val);
+>  out:
+>  	return NULL;
+>  put_out:
+> -	pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
+> +	pr_err_ratelimited("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
+>  	percpu_ref_put(&si->users);
+>  	return NULL;
+>  }
+> @@ -3876,7 +3876,7 @@ int swap_dup_entry_direct(swp_entry_t entry)
+>  
+>  	si = swap_entry_to_info(entry);
+>  	if (WARN_ON_ONCE(!si)) {
+> -		pr_err("%s%08lx\n", Bad_file, entry.val);
+> +		pr_err_ratelimited("%s%08lx\n", Bad_file, entry.val);
+>  		return -EINVAL;
+>  	}
+>  
 
---
-Cheers, Lorenzo
+Looks good to me, thanks!
+
+Acked-by: Kairui Song <kasong@tencent.com>
 
