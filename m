@@ -4,80 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89E57C5DF81
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 17:21:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2D86C5DF86
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 17:25:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 735AB6B018D; Tue, 18 Aug 2026 13:21:08 -0400 (EDT)
+	id C47656B018E; Tue, 18 Aug 2026 13:25:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70DAC6B018F; Tue, 18 Aug 2026 13:21:08 -0400 (EDT)
+	id BD2A26B0734; Tue, 18 Aug 2026 13:25:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 623A86B02A7; Tue, 18 Aug 2026 13:21:08 -0400 (EDT)
+	id A9A886B0735; Tue, 18 Aug 2026 13:25:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F1B66B018D
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:21:08 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CE8C91A01B7
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 17:21:07 +0000 (UTC)
-X-FDA: 85115055774.30.B91E0A2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 1DBC920003
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 17:21:05 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Iqnz9UMl;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DB806B018E
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:25:20 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0F2FFA26FB
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 17:25:20 +0000 (UTC)
+X-FDA: 85115066400.14.F174BEB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 40B1E80003
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 17:25:18 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HHYuHZuq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787073666;
+	s=arc-20220608; t=1787073918;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=usamnhvWOycZ6oPtfGQuy9B/PR/s1qj690CQK8wra7o=;
-	b=u3eJ8pXNB/OjqwwwZ1vJ8JsLvisWKhwzI5ZnE5QEaV4r70JBZqWN9rh0Wg/b1U9kFX9Rrj
-	EuFqeSWsi8bHpo1p7JYt8zEqVu4aQTsvRHTiZxYLiPa0ZZVGWnRieEnaBO4mkrd3kXrwsL
-	sZpAMet7Tq/6cdxOPpkv8WNgTPiZyd0=
+	bh=AShWrs852J7IkStssEoEst3JiywPYlSikQUVe7RTkRk=;
+	b=Ugj0tOXbdqm/5mTxrmLuctg5/SBh8Co+DObKelGUq1if7osrLuq1Cjj46yOqI7ZNq4gPtF
+	YtHjq5gsz48aGBqKB9f7noL1ndK70PXtuMx6ALc+bXlxhA2QFnAhDaOHtbHNnd8WQ3MMGi
+	b4opSN8/c6Z31swRV+GLEdZRHY75cFw=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Iqnz9UMl;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HHYuHZuq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787073666;
-	b=TGRBY6TG2yPLFR+fsrwYmhl2+7SjxlvqDUBrovUmGfTmmXegOqIAgsbO9GZRGSCfzvYd5d
-	Y+AAj2J0QNiz/4+xtpXt880RizZFhJBYsnjfE4V5kaZJFN0wWwT3GPWMBHWroqzJ97n2TQ
-	j488wB7CJ24oQtZeLMIu4+/Wk58Yno4=
+	t=1787073918;
+	b=4tf1D90JMnToSXRqG91VYq8nxjPFP3VMuWXE8O/72SNsBjW4rYkdzANN9Sk2FpakQqU6p6
+	s86IELmsIq3dhHcWbaSPdeZvEl2pVmN/eS6t6XypnPO7jDlgSns/Y5Erq1NcZ4UqarmzX6
+	XdtsGoUM5plL6H1Y+nzfkS9lxNBLbTQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A841E601DE;
-	Tue, 18 Aug 2026 17:21:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 287EE1F000E9;
-	Tue, 18 Aug 2026 17:20:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7C14943F63;
+	Tue, 18 Aug 2026 17:25:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A28E1F00A3A;
+	Tue, 18 Aug 2026 17:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787073664;
-	bh=usamnhvWOycZ6oPtfGQuy9B/PR/s1qj690CQK8wra7o=;
+	s=k20260515; t=1787073917;
+	bh=AShWrs852J7IkStssEoEst3JiywPYlSikQUVe7RTkRk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Iqnz9UMlga0okF1l0c78suFZFQqYyb/ObiOdyh+5jt9rAwZC0OV+2JSpzQFp4Dm8d
-	 tNPT/9KgLPaoglwZUx3ptPjCPh3TtIYbdrb/EHKwrp/rOCW3Ltp3fWWNzXVoUsgX1Q
-	 zqrawh25u4vR/w28ZPvRyBvjYsbon7qmiWdxfTxQoPcByhyrVh76yfPPCjTH6hkHMV
-	 uxJZEv46cyMr1O34mR4cyBWx6L96nNfAbGujhe+6Jr5ojCFODvgSkDaVPXpRmDB7rB
-	 43dbF/Z/RDsCrFz9cDuxdUT/Q79YIc5xkssqVBHTrmtMDzooAvR6G+nKc1lu6zZ7qZ
-	 xsrzNfIOjOMZw==
-Message-ID: <397f60ab-4a3d-438f-a7db-4c598af13f1c@kernel.org>
-Date: Tue, 18 Aug 2026 19:20:58 +0200
+	b=HHYuHZuq5zMXG+8OeZcsNEd1kunHyn8X+QRRdpazCD+PrQnY2MD+Ve9C7MoKwru4x
+	 dbBzkW2cGWbBN3m3D8evXSCxOc8q2AyH3nSXNiWo+xrK2TdFxAIivDqioG1XAtwxtF
+	 aMCegUXmfY55bD/l0MdwxRF/+47ynTjAj26vHT4KSJZRH0qcQ7HSLgqNnkGJ4K3+/W
+	 crGr6GNfZ3DAGAYgRt1N7RBfRYxh3dfuxofB0XlSNCLCsppsmpUwmMlxXD5gurFGnn
+	 9/OAXbxSo02M2icN//fOoDQwicorrXfhbp04ZPJhViHl6uwc6nkSncuJyuWweMLpgg
+	 uyhaHGoSxMwtA==
+Message-ID: <55d92b3e-ad3f-464f-b2db-a2552353223e@kernel.org>
+Date: Tue, 18 Aug 2026 19:25:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm, swap: ratelimit bad swap entry reports
-To: Breno Leitao <leitao@debian.org>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
- Miaohe Lin <linmiaohe@huawei.com>, Oscar Salvador <osalvador@suse.de>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- stable@vger.kernel.org
-References: <20260818-swap_part_one-v1-1-a4fc58119fc0@debian.org>
+Subject: Re: [RFC V3 1/8] mm: Make ptrval_to_str() generally available
+To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
+ <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>, linux-alpha@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-um@lists.infradead.org, linux-arch@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>
+References: <20260818040041.1891769-1-anshuman.khandual@arm.com>
+ <20260818040041.1891769-2-anshuman.khandual@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260818-swap_part_one-v1-1-a4fc58119fc0@debian.org>
+In-Reply-To: <20260818040041.1891769-2-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 193dw1j5bqwghiz99gzsgua4didhhf8k
-X-Rspamd-Queue-Id: 1DBC920003
+X-Rspamd-Queue-Id: 40B1E80003
+X-Stat-Signature: 35tmwjmmzbp9o4aax9cznb47i334xjdr
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787073665-802647
-X-HE-Meta: U2FsdGVkX19TZzMBMNa52ADzKYXsHLQd/vjOSV+fJ9D7/ksnpyYd+m+rf0pcBqKLM1OLUDCv9rB+Ok6IGpXbRrRGi5KrVXkB7LJ6+thSCNkNtwF6R/9TVw2XhCKP8Rwlt3BC7Z1PAdSFwlWeCILbWUag7Oq8R51Oglu6vAk1a5O5xRtHz2/5XyH2uPPJTEt4H1LhEtlIEEW4uKjSVaPchSTVlYvM1bUuHj5X1F8CqPSs27hjILhVExhfrvN3BnNHNBYLYgOhFHHI38u0ppTsKasl6p7sEPFyC9zSVU/S7CVALxyzFEYyOLbu0M92I2Dp9C817uC9cLQV4/M9JO0GOBKagPkGJC5CLePYs54HoIdo7NKcayLDB6TsBUB8QjoqsNMO5efN1iR+0RvuXVz/zF4VhCe8P2Aqi4qFafF64IyGO50gwZjWk/ytuzY2uVjUm5RWJamXfK0Aos+LyBpLitMt/O8CLAewD0YZyVyBkurkEdB0kc6E+LynXipYfxbPOBRsEADN4foCpFbaLR1e9ZtHhWcxdB3Jv/rvo04XXZJtUtweIQY1k2X3NbNlJKSPdeGkOau/R40M+41OfxI5M9M8lM4qenDPtB/6gI+tQYbJZew+apU5bubOewKrRgCeB+WhLzdpPFhfNE+lR28QEMz/g3kUupfRprQUUhTWKleDLqpNADJGj651O1uIbwUMuEiP9RFSLxywUew/iVrz79VMuS5llpJX+OznhsuH5mRkYpRwx0r+1bt4pWpyeNGufwhN+SaAz1+77xACwbM5+wdpl5br0cMFecvEv3BDVXHUyZQtcVhH9vID6GVSyFcqkNkXyKtlP3CLiewxDPEV1+rpGJq5RUviE1bxg8hHVJn7Y0lDDi7x8cKuRx3Ul4STSkbjqaXmWg8Pp5ItJ9qwada0wMMrjHlVTR11jqKoeLzTF3ZP5RdVxMA4LC1L73fdg6HZUAFDHjz6UTXeGOM
- JzHT7kh4
- hLtuFBnDXR1q0RwGYJprZxkgxW3DWx2JE+cd65qStduJqCQL+Zhx2HxpBTZiM6o1gQ4fnw2UzYCUULZ26OJEFhKrcQgNl/R9eN1iRp8SifKHf2xJMZJqeXcod0CDVP+xQ3Dui81MY8jQAdqhveiHgH2ymDlACwRG3sRNVEcucwWYfkvjBfJTQWF3bSCrkF71Q64MD29wSBGQ58QPzNYleqwEL0uKE1k6+LQPyOvH2KIegHxc0r7tmr5ce+7Cn/ETheX2qzS9EVPmM6wY4ueJ9JQu6cX/ZbwASuCR7kJI4UyERW3+DewqZLotbaJYKCfjYqPerbfSxx/U49k9aXAcqEPQPVWkuyz8CEW92aIBVQRrXvbwABu28T3uQXCii19ep0G3q2iqLw4gkS+WB8IpTNMHRkA==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787073918-502688
+X-HE-Meta: U2FsdGVkX1/BW8XCcRXIjdLRCcGjmmgmUP4Rf+7zHDkp+jANokaeEeqEjVkHOLxZ339+UAqC0XWPcgLQGVeK19Yv+oKOOVCmtZwQ36J2aR3RqjWAnTufqv7/f67472j6gedtl91HtQzOwUQt4QAvpfC0Itza3F+ch1PTQveVFxfE9HZMueiCfwFdItaw5fry+a6NR/QUVZSicqZBzF8XXRXXMKUC9Efts11ozkhxAHtKzwrPiQbLxsVU11HSr9lTpibQ5ibOCB/zoSj4iWp4knxnM2CoSYwCiUOMoifEZV8+hhaUdT1zzV0FZlJRpIe+vzRuuteApDlThHRI0l4JBPlvx3ODEvkT2iuIY+Scrt4EpKjRgs7nl57jVwSz1HUabT/gkNL2pBnL+YZXEcTIrfnw4HoTxDmqVhgGTcFnj39O+acFx4SLfNUB7CWjhffaBSSYNI7GNXJtWP9PprPtCJu0B0bZ9ToDnStcsPF7BJN/SmXUVxPpih+RspLX4dUcqKxZuGVN69nG9/QX6SMl0yMLnpVn5cerhFguLZeATC+iaygdj0sYj82rCY/MD2EhLNeOEirnFIy3yrUqgsmDr4kJ7xSKhfXz/Oy61e7/Z+ygKSfWFVQTfMy/MCp/W+GqZAY3LMdOqqD9vfxaKP1Ue+jv5odv0BaMyTQVFFIU1ttXOagZDO2la5QE4tsxX1AmCnR6+rKbvyfbhFfZlr/H2/WD2YkJStdoTgMcwTAO7m5CGpH5g1ykZvYbVUaDlumuuLLr6YHWmLgFS5bGq2BORbRL3pOgPmOsKvgJqkvS3sOo3vYoBqLiYl7ELK71JwU2dMZ69DO8gmoCJAppAXDqoe2/e+TFiglolXtlkiQbbMw+qdSLnfJ6GefdNqRRI+gnM2bm8JiQAx99QaqjgPdeY07n7FjqiN9eAQ40Y7hBTziC2IUBTLqByNAcJKYZT5nWgYI5ba4p0GEg6DZp7Rx
+ c0NW+2IW
+ ej2qxIndVYrdLuHYNM73FaEze+qd13z0ZI53bfvmhPmf37HmmyHtEbCWosyq3+ZgRFl8sEB12XTh2/X8s7OWx0Hwy+QkCzClJ647XAzcN8KNKLKvGTT+jNZ7A4tJnDyoac80pO2nb3+XKYhtQFB2wi4RJDf2kdkW3lyf11kVFSQCT1SZmirjcrk5G53SzRxl8YCB0LF/xlKjC6GZzxEAF4Y+hsAzpp8ABv38Fy7NLzR64FQIqts0A63bbXwOYzrksxaNZ2hKd8TXlZu4kcwaEK9KDwk/2GJ/pOcmJWfmbjhWUu5HuKRG6rVgrv4Yg5Dg9poyLhJ75s+JaM7ID3h3Kpz1KJvzAuXtZDHw6ABrfwImLIYn1RsTDxwLAGgkNUE5bPFcY9QZdp9ZmEE4hweVOlcu8upHTO934hsPgUf+J27ZqNwwbYa/XOImq3bOnizs4W/p19NzDxWog2L9c/ZST7sU7Fo0A5TYRUY7ibLkxCIU+un8F0P44p85zMGBKKV9R3Pw1BwDK9XfTH/SojU4kEtsBUkFhfg6xekwrMQWmrkS2N4MSiS+J0gW2UBONvYbiRMmqOjjTMPOWrE4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,24 +151,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/18/26 11:03, Breno Leitao wrote:
-> A corrupt page table hands the same bogus entry to get_swap_device() on
-> every access to the mapping, and every rejection is logged. One machine
-> logged 6185620 copies of the same line in a few hours.
+On 8/18/26 06:00, Anshuman Khandual wrote:
+> Move ptrval_to_str() inside a header thus making the helper more generally
+> available for new users which are being added later. While here, also move
+> another related string size macro PTVAL_STR_MAX inside the header as well.
 > 
-> swap_dup_entry_direct() prints the same message from the fork path, once
-> per call: the WARN_ON_ONCE() guarding it warns once, the pr_err() inside
-> does not.
-> 
-> Rate limit all three prints.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 23b230ba8ac3 ("mm/swap: print bad swap offset entry in get_swap_device")
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-> Acked-by: Kairui Song <kasong@tencent.com>
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 > ---
+
+I would have placed that into include/linux/pgtable.h. Any particular reason for
+mm_types?
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
