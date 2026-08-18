@@ -4,113 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40ED0C5DF70
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 01:29:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59653C5B572
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 01:41:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 323DE6B0874; Mon, 17 Aug 2026 21:29:52 -0400 (EDT)
+	id D49DC6B0866; Mon, 17 Aug 2026 21:41:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D4666B0876; Mon, 17 Aug 2026 21:29:52 -0400 (EDT)
+	id CFAEF6B086E; Mon, 17 Aug 2026 21:41:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EA506B087C; Mon, 17 Aug 2026 21:29:52 -0400 (EDT)
+	id BC30B6B0870; Mon, 17 Aug 2026 21:41:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E7A556B0874
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 21:29:51 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 55BA1A0A20
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 01:29:51 +0000 (UTC)
-X-FDA: 85112658582.26.D343ABE
-Received: from mail-pj2-f9.google.com (mail-pj2-f9.google.com [74.125.227.137])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 890761C0009
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 01:29:49 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kcFvItY+;
-	spf=pass (imf18.hostedemail.com: domain of foxieflakey@gmail.com designates 74.125.227.137 as permitted sender) smtp.mailfrom=foxieflakey@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 85BA16B0866
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 21:41:09 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1035380938
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 01:41:09 +0000 (UTC)
+X-FDA: 85112687058.03.8588EB0
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1DB76140005
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 01:41:05 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=A01H37QD;
+	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=xiaomi.com (policy=quarantine);
+	spf=pass (imf09.hostedemail.com: domain of mambaxin@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=mambaxin@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787016589;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1787017267;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wI+nXVhWBXmpzGybiKLQBExqkPKRniEJEvn4VEGH2nY=;
-	b=lxfpXzuwrQxP2QJgFXsKS8ZBzWRXW5xbXIOtgoY0wnWdlbA9yK/FUUINq3kSU3tIp3eEB1
-	oyo24eXlUpxtDiKlONX83HuetgIUEDBGRKsq97Yb3//n87aInvj3Bs0HNTT3sTTA2stNNU
-	I55WdgLez61Z8fUmeT7G5HRbu6MDwr8=
+	bh=mVd1wQKoqHI28CRDRlJL1+LVPbYT19FBeIKKZuHT1zU=;
+	b=sXbgjylOCvAWowgntB0IroK1w8TCTgBkhLISq1HR2t9lSL/8wkaNvSibZP+s5oodl4FAJm
+	T6qm6GwoTuXeg2Dd/H9AKvOSZcq25jqdiDriwHCIKwHIDRY8Ftlf2NOta/q2IHVD6ENEXa
+	/NY4YLpWNtAC3zGFxz/UOsLuOjaQ3PA=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kcFvItY+;
-	spf=pass (imf18.hostedemail.com: domain of foxieflakey@gmail.com designates 74.125.227.137 as permitted sender) smtp.mailfrom=foxieflakey@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=A01H37QD;
+	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=xiaomi.com (policy=quarantine);
+	spf=pass (imf09.hostedemail.com: domain of mambaxin@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=mambaxin@163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787016589;
-	b=X0q2uw/0tZNin0wpFAluPnqW7F7fsS4c1MxSr7ubhwjIqfDmg1qulwkZYf8PCY0wUgIHiY
-	DN9aNBqYV8vzYevKcuoa1vtnC8VVE60a9tZRs0c3IJPGtCmXgAmNUvsPKq6Vno+uvb3nDm
-	ZWcS4AGgYzL0MyDhDnU36gBNlzCMBxU=
-Received: by mail-pj2-f9.google.com with SMTP id 98e67ed59e1d1-38ed4d37526so2587557a91.1
-        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:29:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787016588; x=1787621388; darn=kvack.org;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:date:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wI+nXVhWBXmpzGybiKLQBExqkPKRniEJEvn4VEGH2nY=;
-        b=kcFvItY+soCrPEFTCymaZb/v4cV6S6cLBiRSovU9lL/C0qHg80sycdPKdJxbEFyccs
-         23LFnOgwVlYxB71xA+89K6FkcSj1UoOOPTI7mk6j0Z7RmRDHGRKGTvc+h0riYCxaL352
-         Ta72sHuV29/uY468wWfQUegvnNVvMCslBNv9fUXao+PafqFISXiaJWZCTldYMLkjwMVa
-         071rLuHvxCoQQpB0Prg7d2mEcvGaiI3WbundW5KEqDQ2jY6mwUuzO52FHIdWdbiUEAiO
-         Zut3E1Z/IOvfOlcXeGfPRRJbY1JY1hDDgQMjhkQM/mHiHkCDnNl/cXdNEhZkjrZxwLrB
-         tyBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787016588; x=1787621388;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wI+nXVhWBXmpzGybiKLQBExqkPKRniEJEvn4VEGH2nY=;
-        b=dtqFWkj3+bSx6VD8x/hB15w+9dDstTxPkanQ5x93pEaDd5ECHbkx0HlZQfRVMqHhbx
-         kMOEZeWQwOJF5tWDwD3lLahXrZ3hlU9uU+3Gt96KcJ6EK3sIpjt7AwetiuEI41tslMbb
-         IaqgISp2xmfJjwdCISdIM5d9eHBel3VyeS9pS9khy4zG3b50ZPW1yYNv8S5YdJEVSedY
-         ufVHpTiYJfW35Kij0k741OqOSQeWvJoQVwVYU168RkERKSnqnM0fTsrnTO5gvuzRVUg6
-         80eAEXx8SLrvXKPjwz7vLtISLr/6jD1dJ0ysafqH6ENrS+s2sYA3YiyKyhbybOhMWtiI
-         LBbw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp1FB/QSPrD58QYajgdWTAiZmtPDxBUImoadfX2IH8UuzLOpBEmY4/4y029XWUNrfls1OfbmOZ4AQ==@kvack.org
-X-Gm-Message-State: AOJu0YyxPTs7fkPfzhZfxiE8etHDjM8G6vKm2zhQNWb4KiyAke822zAT
-	2B0OWDBgAo02hlbGdf4z3Z27A/UgeMJ38AjmGtCszIWVFGwW8lc3ijD5
-X-Gm-Gg: AR+sD12YhBVhvrlJd7bxXdMK2fTTT8OdNnX+KjREW1hkR6lgvTK2bX/txvoy/Cvv1oQ
-	6FeNiIar9bSvHr2x98wGy4oVN1esKgTUJRqJU9bge1BIBFmA24Fl8APOD8qnOLCRu+HL+H3d6vI
-	YdNiZ4FK1XSfIw4dSvZsWMG6qLdBfPDRBj3jgijQFk760lnGm/12JElGY+oY0Vv91KJueVa/Eqx
-	Zkt68xMxMLru3KCbKamV+0wMNTCX2xfyyqWzFI+Zsjh9CG6y0ef2lwvTEPXDgfXwVs+TvOPLoGe
-	1cfClyRFXWgNannOzzuEiaPlw4glN7TuZpVx9G4OXjxd67aOdfwLh4Dh0F86njQqvaw2tkE+TCg
-	6GGptFP73JdW4ySjQoz8japEp/OyTrNYBY0HmJJN4AZZDfU1hWuSgIEryKh2bf++sAl8U2lsjD0
-	1gkhwOEAjl+mcSEK5i0cAENNYLUrUvyG4I45SdVNrGDt2rNVUQA+hupEZd
-X-Received: by 2002:a17:90b:184b:b0:37f:eafd:3505 with SMTP id 98e67ed59e1d1-3933b74d94dmr34374872a91.6.1787016588143;
-        Mon, 17 Aug 2026 18:29:48 -0700 (PDT)
-Received: from 192.168.1.6 ([140.213.202.182])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-141530442c1sm9748744c88.2.2026.08.17.18.29.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 18:29:47 -0700 (PDT)
-From: Foxie Flakey <foxieflakey@gmail.com>
-X-Google-Original-From: Foxie Flakey <foxie@gmail.com>
-Date: Tue, 18 Aug 2026 08:29:43 +0700 (WIB)
-To: Andrew Morton <akpm@linux-foundation.org>
-cc: Foxie Flakey <foxieflakey@gmail.com>, rppt@kernel.org, peterx@redhat.com, 
-    linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] userfaultfd: reset err to be 0 when move_pages_ptes
- succeeded
-In-Reply-To: <20260817153501.ee2ee77976e1cd5b1e1c813b@linux-foundation.org>
-Message-ID: <05cd197e-da6b-1c90-fc26-315f273e6663@gmail.com>
-References: <9c936a9f-ed27-e510-872f-5b3b8c680975@gmail.com> <20260817152605.5d2bee3fbf1a2bace4c0eff1@linux-foundation.org> <20260817153501.ee2ee77976e1cd5b1e1c813b@linux-foundation.org>
+	t=1787017267;
+	b=s9u8pjOk52yHjmX0jsg7Xydocvq2YpuT75tQ1+jz8DvfTu5xityleDjmgxI3vggS6u1328
+	q/JDCzLt84uNfmDkZ22wjNRYM4USD5grPfINjtdJPgbu4F8fUOG3AXVCnv3dODZrg37I2L
+	Ns6PqDOhYpfWYyD/q3gth+Ubj+L7aU8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=mV
+	d1wQKoqHI28CRDRlJL1+LVPbYT19FBeIKKZuHT1zU=; b=A01H37QDBAkloONm1F
+	9JkR4Nia6hbpav299jFElRThfUApXovf7dK8hZobSOXeuB3KgTEbavuhGYhmf4Ua
+	yHSNdfo4cEDfkXUTjrLrunEm0POI0GbmHhOsPi9kEoDU4aVXl3gDsZ4OSwU26UJd
+	uC7gAkAGuA9fIV7g0f61Xh3So=
+Received: from localhost (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgCXUo4SuINqCOZDLA--.5364S3;
+	Tue, 18 Aug 2026 09:40:35 +0800 (CST)
+From: chenxin <chenxinxin@xiaomi.com>
+To: sashal@kernel.org
+Cc: akpm@linux-foundation.org,
+	baohua@kernel.org,
+	cgroups@vger.kernel.org,
+	chenxinxin@xiaomi.com,
+	david@kernel.org,
+	david@redhat.com,
+	gregkh@linuxfoundation.org,
+	hannes@cmpxchg.org,
+	hughd@google.com,
+	jose.fernandez@linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	mambaxin@163.com,
+	mhocko@kernel.org,
+	muchun.song@linux.dev,
+	roman.gushchin@linux.dev,
+	ryncsn@gmail.com,
+	shakeel.butt@linux.dev,
+	shakeelb@google.com,
+	stable@vger.kernel.org,
+	syzbot+e12bd9ca48157add237a@syzkaller.appspotmail.com,
+	v-songbaohua@oppo.com
+Subject: Re: [PATCH] mm: swap_cgroup: fix NULL deref in lookup_swap_cgroup_id on swapless host
+Date: Tue, 18 Aug 2026 09:40:34 +0800
+Message-ID: <20260818014034.2632872-1-chenxinxin@xiaomi.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260817150000.4@kernel.org>
+References: <20260817150000.4@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: i4eit1ihuhboctee53ej1w5f6dyswzrc
-X-Rspamd-Queue-Id: 890761C0009
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCgvCgCXUo4SuINqCOZDLA--.5364S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Jw1UKr1DuF1DKFyDCFWUtwb_yoWDXrc_u3
+	9Ivrn29w1rCa1kAFWxKr90krW7KrW8W3yUArW8urnFgryrWF13XFsFgrn3Zw1kt395Xr1D
+	C3sYqayrur1ftjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU1DUU5UUUUU==
+X-Originating-IP: [153.3.251.220]
+X-CM-SenderInfo: xpdputx0lqqiywtou0bp/xtbCwhOtt2qDuBPmUgAA39
+X-Stat-Signature: 7dqme3f1oejdbr1ntxyie1kwwcj3j68b
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787016589-741708
-X-HE-Meta: U2FsdGVkX19vePK1xjkEdhYYWX6KdFsgYIu20YSTctZX0XYlMIjlhZcy5R1Iz83uhaJc5MiUtEhfNaP3NkMF0/cBL6bRd6yF58gTvx3UjF7EH0eZ/d3JJNiAwLiFJmrQSAxEu/cgr0KpcebgVB+tL5R8x8zNhFsmDu7kSHv+hGvLSM/L2fWu8VWhJnw2syg+o7xGNbXhgSwdKk2/hhGgEMhhWKrZilLvIQF3be9GLjr4nibL6omfp93lfeEoDXxuvnQCPIOTQmpAl7Nv3EE0y8H2Pf5c5fipix8xF7nxio3FxcKsaMM9MBseNWDRqqsUqYyCwmuzj14bpeAIDQuTvvp/u9lL1O6WBNHUNGp5XIQigxvhOyxtuQlXV8xPqK9FVfTrUN9OuCJptghI79nbVNxynjRG5njWBR73kGvJSAunrtWhuddA2HZVk0xzl9oO2zV8rR65UWVmlu2bV0w7dFxRAk7rdSc+SDMGjnNILLpz2QEfSTr5ROjph/etnnXH7ZbhUVRcvR5OcNHEG1c3Ku9QpXo9JR9sPcejOseFd5lRTNMGS0kc3IScFN6F3RqIiv//2K4u9glRjIYV/8FVD1sa0EuV8tieg+98sjFPqKU6YlmJO5juIBllgKWTnmvdwesLqgAx9XZvuEtXcOKUvu7LgE7fHyQhzFNfxwpVY+9EhXlqh3Jvbsq7cfeR1xrFnAJpojCHtg49lVxw7+I077u+EoL2QKzdkgVxgFYQbXutSmBfA3XuDULSh3tzBC6IavkclL0m0XTxhOhtKifzHP/KruspZ0xHtofnwEIzpvSQs2UbsdlRhH6JJ43xBxsXfpnrlBMSc8AHjuk2nAweXJqvY2PZzurVeIF9lXfWt9zt7V3x/Mv0WZ3AhYWYPro9VtIAJvqdYDh78JcAm67XEnYfU7+6xEJ9VO7K/cySGaJ1i02mpV/hP3lMAWIazzfPLJm2zLqk3whSR03R1LN
- 37ltiVP8
- hP+T4Xodp5hAt+FfXevlAKZqjazOvSnDRqHcjPaxNxyL9bsjgf+1F4DCCPy4wzVvI8QXkcH98v5MUkB0asv7pL3HMcwfRzIYCYpf/07dGuimmzRqDMGIqdsyaFUlJdbW5cZOJb/SomW5w/ag18kbjoK6pt6TpRw06ETXJr9idgivFzuGGma6HKg4AJe6RvD3UwTJMg5V+aZBs44mNP9uBg+fquvK1eJdK3CebPV7rTbgVCyaCg68Ku1wpO52Shsw5zef8RTt8YXAlzoHWgnWXQu9mHgl9VkDaZ2c579sID1vNd2T6q/6vBH5eiHhI0EOLjSgH/b4MYQN5W6HDGaYIgiXTM2KMByF36afGfqgid76BrsDL5tpoeIPRXY0jF0398RkQvDqulc0+RJ5KD4iIONHmuM7Yyh2Q97T9frCTXqCQ/4P1hF2F0lkLMEI708SZTz/FUIUlRnUC0SShwWtA/5o6XBzN7qqkaljbengZuYWtGgBDMp3PSd9V0fDla3CoSEzpriIirfrF1LbXz4agAApxLq+u8bS4WdWWBmsna7qj7QSNuCR76GNedANNMu5qn7L8YmNgyEWoYRMB6bE/MADq727rDwpt6AyRxNNGvQR1+NjIrp+ZTdbxyzzKTYKWZuDWk2nSIo+0/dYL3UhVoSTWjw==
+X-Rspamd-Queue-Id: 1DB76140005
+X-Rspamd-Server: rspam07
+X-Rspamd-Pre-Result: action=add header;
+	module=dmarc;
+	Action set by DMARC
+X-Rspam: Yes
+X-HE-Tag: 1787017265-316845
+X-HE-Meta: U2FsdGVkX19IfMkML2LeHtp0GTPs9WdWi+Gbl08zGlNAbXFSdhPqX/95cRcJCpGsg9K2CtN4Fx3ZX/k4MG6JbbtwAu1Siyf/viRfffaOvA/bXdLHpZVt52ShxnZoiR40iE1P3pgJC7gKQ7vn3FjWd5Pj9TV16LYf0QWI8QR0vFqNsNyvbvfTq5XZWDfR5mOlZOdxWNNjMCeJ1xcGNvHFBvmz9EzsroJFBxRfmyTePZrj7WAKNW7k4+lmHvbrJPLNgHQS+UXh9V1/9Vg8rehKykoGzx0HTkKI3+8zL00GZ+i4IZo1zK8YUBmOWWmvx8V3HwHDP7qX7XzRjrma3WDaP85f/O058SxHk54Tlj7VVX07RUNMJv5ffHaJCD5Fb1NOoigQCV6srpivF5mIjpmDRHXym9FAhJG7zoMQn942QqYRDRw5fsNnBK4Vl0CCWv++14fj4xzVhqgdJ2+Fmk4JyWlmBJ0SG9g/XZvmQPYL0OJJVQsOBmjiG8fmbT68APcyvuuVJL17e0r+zHHK8iBb5iKHSOVXVZ/Rsevpai1oa8ZSuX/Rbug8XKyhHKWiTWgP053E4XHFpFqpBimh3BazvrSMpIWngfW/HlgqZF+qeuPgsugvlyd/G94jYw9XIzzmZtTYPp7yKpkDDKXYlwal/LneFjmS3xxitPfdvP+QJAhXC25bJYRksHZB7mupBtQK3QkaNcvsusMClXvbQlYscIbTOgfXsuPifgDwYvxgvRC5vMoKn6Wa18czWGZ6vd+624SHjGN76vo4uMrolpb+iamsCewZvpd2iSnWUSWC2h+Cx2nduxoqGdUSL9FBXZrhmMvwieaRwQAI27iAhhUt3+RpiWERQfjYArReDs/5rbL6mcHdXKPS5bilZPEBGxr5aLpzKinDTwwY8Zb37YpqZHrfRVWimyvzB0b6ClztFz+oCkvhCt11gYvlNCMK4RIMQF59UP+J9A0DYuwkWgi
+ XJ66YNPE
+ 5VsG3rV9RYENXWpuRiSz++u0LjFwecsekDxKsOAVsUb/cKKttf8PwCsujr3cL/3m/JDMqxPX7fCVhhDCFTgr9ZNWwi7D/32RQAHZlRrYOTTsdgfviOnWj+jDCYqXUFy+0o1yz3G5giwv5H+ih7kTOc7a4tpN6FP/sotIRp/GFX1rZHlW2knMsOYgrKBDzC1uzxSE+c56KXW/d2vUxuUjI1zRharUhJrhjf1OAEStfXz/aN1Fjgm3sRMZtSTiKTUbFVo4ldkq89oX3Ecwdn0SzcyOfrKoMtIKxS7AZkK+Y5Vf5CQnnq6bCy0WOnYGnRHa6doZOmKHGAf+YZeP/fFfnwNOKy6RoERxwrNaamv2OSZ4Y6NWusq4aAeeV/YmKXnC9AkoKJz3rl55Hkf8KlgFcDHqcpnZWbXbYwDgH6SwRF+y6Mp/+p6trssVBhF0Gmb07Q6XSiCFzckLjUviQLt/8sm+Gyh+cGng9WzlYfagyN557MhCVtDod1ewvGcm67/amPz0HYmpnFsLPhbBZp2bGZlF77lzxlYEtOA40hsTEmuJ9Vs9SwBI1wIDjhIgzr5PaL9eYl0/j7317oJVFBxhDZopAB20nmbxbg6LLQeVfyE3sGFVZHbTAxcMSCX+433aIoMFHMUQrkorV6yZqZNDovN4LAsTyctkCr76ZJzL0g3iWpU5XIGHwOPkwMtpnQNuaxADj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,69 +115,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 17 Aug 2026, Andrew Morton wrote:
-
-> On Mon, 17 Aug 2026 15:26:05 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+> > Yes, we would like to backport this patch to the 6.6.y stable tree.
+> > We have encountered the same issue on a product running the Android GKI 6.6 kernel.
 >
-> > > That behaviour manifested into this at userspace
-> > >
-> > > Source:      [ .. unmapped  .. ][ .. mapped    ..]
-> > > Destination: [ .. mapped    .. ][ .. unmapped  ..]
-> > >                           ^     ^
-> > >                           \     Kernel moved this far in actuality
-> > >                            What is reported to userspace on struct
-> > >                            uffdio_move's move field
-> > >
-> > > When the previous behaviour is
-> > > Source:      [ .. unmapped  .. ][ .. mapped    ..]
-> > > Destination: [ .. mapped    .. ][ .. unmapped  ..]
-> > >                                 ^
-> > >                                 Reported to user space via uffdio_move's
-> > >                                 move field
->
-> Also...
->
-> I assume the above illuminates lack of coverage in the uffd selftests.
-> Is it hard to add a case to detect this?
->
+> This is not a 6.6.y fix. The NULL deref is only reachable through the
+> batching added by bea67dcc5eea ("mm: attempt to batch free swap entries
+> for zap_pte_range()"), which is v6.12 and newer. 6.6.y has no
+> swap_pte_batch() at all, so the exit_mmap -> zap_pte_range ->
+> lookup_swap_cgroup_id path you are hitting does not exist there and the
+> guard would be dead code.
+> 
+> Your oops is on Android GKI 6.6, which carries the batching backport
+> downstream - that is the tree that should carry this fix, alongside the
+> commit that makes it reachable.
+> 
+> -- 
+> Thanks,
+> Sasha
 
-Yes, I do have self contained reproduer test but there an issue.
+Thanks a lot for clarifying, as you noted, this commit was backported
+to GKI 6.6 by Google, which is what makes the NULL deref reachable there.
+I'll follow up with Google to get the fix backported onto the GKI kernel.
 
-The issues I have is:
+Thanks again for your help.
 
-1. Its only appear when system is under memory pressure and is swapping.
-To create enough pressure what work atleast under my test environment, is
-to run many reproduer till the test system overloaded with memory (No, its
-not just  "dd if=/dev/zero of=/tmp/garbage.bin", that doesn't work reliably
-from what I have tried).
-2. It cannot detect if the problem is fixed, because it ran forever.
+--
+Thanks,
+Chenxin
 
-What I have thought is somehow rig function move_pages() called that
-performs the actual move (which are move_pages_ptes() and I think
-move_splits_huge_pmd() too) to fail with -EAGAIN on first call and succeds
-after that.
-
-About memory pressure, I figure it has to be related with memory pressure
-as VM that is not actively swapping, I cannot reproduce the issue at all no
-matter how long I ran it. My hypothesis more less (from my limited
-experience in Linux internals + personal osdev), swapping likely causes
-move_pages_ptes() to fail temporarily due some pages are evicted to swap
-till they moved back to be resident in memory.
-
-For information my test VM configuration is:
-Distro: Ubuntu Server 24.04
-CPU: 2 cores of AMD Ryzen 3 4300U
-RAM: 2 GiB (the lower the best)
-Storage: 8 GiB
-
-Kernels tested:
-Linux 6.8.0-137-generic -> Unreproduceable (the stock kernel came with
-Ubuntu 24.04 which is reason why I used this particular version)
-
-These kernel came from https://kernel.ubuntu.com/mainline/
-Linux 6.16.0-061600-generic -> Unreproduceable
-Linux 6.17.0-061700-generic -> Unreproduceable
-Linux 6.19.0-061900-generic -> Reproducable
-Linux 7.1.0-070100-generic -> Reproducable
-Linux 7.2.0-070200rc5-generic -> Reproduceable
 
