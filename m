@@ -4,106 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 701E2C5DF74
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 01:53:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9A6BC5DF74
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 01:54:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39ED76B087C; Mon, 17 Aug 2026 21:53:35 -0400 (EDT)
+	id D8BC96B088C; Mon, 17 Aug 2026 21:54:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 376786B0880; Mon, 17 Aug 2026 21:53:35 -0400 (EDT)
+	id D63496B0892; Mon, 17 Aug 2026 21:54:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B3D16B0884; Mon, 17 Aug 2026 21:53:35 -0400 (EDT)
+	id C7C206B0894; Mon, 17 Aug 2026 21:54:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0154F6B087C
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 21:53:34 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 843A5C0A13
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 01:53:34 +0000 (UTC)
-X-FDA: 85112718348.10.FFA79B8
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 783A140004
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 01:53:31 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	spf=pass (imf17.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 979F06B088C
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 21:54:27 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 19A54120A09
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 01:54:27 +0000 (UTC)
+X-FDA: 85112720574.11.B8281CC
+Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5143E18000D
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 01:54:25 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="fz3/fcwg";
+	spf=pass (imf24.hostedemail.com: domain of foxieflakey@gmail.com designates 74.125.228.1 as permitted sender) smtp.mailfrom=foxieflakey@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787018012;
-	b=veY232PFd+qTqe9enYJKpB2AMNEZnqDJp8Aw8DP99C9kI2mxNm6AVOh/umRMCRU47OdYGP
-	0ukYN0l+AnLFx6Y4Ch6LCCPxYk1FKNSNu8fp2PjoW4FDDWWiNtr5e5zq6noku7vcrJZhdz
-	1/waGAub+uCCNJaSTDwkfSAdcoJQ1/U=
+	t=1787018065;
+	b=Kn2tFdY3iUcYFp63M9bm/lADPqFFa75gxq1ppSNs8pDunOO8OayV4CdeSTLM7v8EXMGPfU
+	vBVnb3CiCAwAY6njRUgU4/wjx5LKnsf3vQqM8MDpF5yc3F18risSQT5VSppR7TPWR3D5uH
+	vDdOLQtDAun8n+WZnJhUa07Ex27sC5g=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="fz3/fcwg";
+	spf=pass (imf24.hostedemail.com: domain of foxieflakey@gmail.com designates 74.125.228.1 as permitted sender) smtp.mailfrom=foxieflakey@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787018012;
+	s=arc-20220608; t=1787018065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tmXD+HmT0AIOaJEmNMywZ/skNFvdR8wHQABZSAO5Tp4=;
-	b=orN4RxFw57EPp7jkys+raLWoLjhcbnkIvIfRgNkL4P3TuYT5wiCos1Tzm9DFzLLGhYiIGK
-	6qFIbFKhIsu25O75CSMyldNb8JFxdiOyKi8qXfZLkt9Zkg5bE2E5pdw0yLOfuk66WBTs7S
-	zqJx27n3C/qb9Ixq2scQsktFbeakfSE=
-X-UUID: 98f26d409aa711f19a56ed5b684f684d-20260818
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_TXT
-	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_MAILER_MTBG
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
-	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
-	DMARC_NOPASS, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO
-	GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:3467a7b8-6acd-4bba-98ca-171a139c49ab,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.19,REQID:3467a7b8-6acd-4bba-98ca-171a139c49ab,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:7db8b62,CLOUDID:82d02ce816d1a340e5eda7bf45feaeec,BulkI
-	D:260817213154BZG2GML9,BulkQuantity:2,SF:17|19|64|66|78|80|81|82|83|101|10
-	2|127|841|865|898,TC:nil,Content:0|15|52,EDM:-3,IP:-2,URL:0,File:nil,RT:ni
-	l,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,B
-	RR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 98f26d409aa711f19a56ed5b684f684d-20260818
-X-User: husong@kylinos.cn
-Received: from [192.168.110.173] [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <husong@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 839497270; Tue, 18 Aug 2026 09:53:24 +0800
-Message-ID: <0689d805-45c6-4bb2-8eb2-f065457c45bf@kylinos.cn>
-Date: Tue, 18 Aug 2026 09:53:10 +0800
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=yJZh+9l79XGTk+91Ew764dkcvMu0Rffrs34mLTeW4hs=;
+	b=OYl+R5Iiw5SZ/JnLQcZsQqKd/ZufT9EAluUKfpaL0HqvKM2ZIlyq3RFdKgUymT3MRZX/lz
+	fR5GlOkkjlI4mYgO+gNERh4oSHX71bajnTJzsEtQ2smJQkM1ROscaBe6/P7pedeufq3vv3
+	C5DZJvNgEv7p0TB+G0sdrN4NdVX4paw=
+Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-ca00ea47337so1613672a12.0
+        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 18:54:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787018064; x=1787622864; darn=kvack.org;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:date:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yJZh+9l79XGTk+91Ew764dkcvMu0Rffrs34mLTeW4hs=;
+        b=fz3/fcwgg3jUoh3Hi2ZaHPzEAZMF158WQo0j3Xj6YzoKPhXpiMJtUX0DRwQCN/vy2l
+         lS73bGo8qadDK1OSjIyJGUgIBoLh4tjyiMK3yi6HZMO9teEerRPeijqvI4k7Xp8xYVRX
+         5DhQuozo3cM9QT3V3TlgOZen2Zd6kPtIeILPNohDR8H9M/Afb0I+YNp1cIXxI3kR7jbe
+         7gRGAhXMY6AHmgS8IPF84kovFmuNGgexcxSir1DPPTuILQEUtqZwa2+Vumwc0VHD9FFz
+         P9PaoH8dTK0n32ZmhGNqv8cz4nzPe2lsHOqlDQ9361Y8LqjCcn2kdg8+l+/t9d6jYlGj
+         b5TA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787018064; x=1787622864;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=yJZh+9l79XGTk+91Ew764dkcvMu0Rffrs34mLTeW4hs=;
+        b=DmaJMQpdPARzcNRYDpdE0HMi6lR4ilx0YsE6f4riqEIFQOPIVUaJiJHGz58bz1qTSa
+         uKV5PL+fcPoj68gnEXiUyOB/Jwp46IL+NSFusYznVYyC5JVPP2QZ+STghYKsJSErKakl
+         EM2cvQd5vdTTFI2iqgSi1Ur6wmCTF6bLRG4EfriT/Uio3uYnceqR3kr002ccJPMJg84f
+         f1vfB4t6QdQqm23ygaO8yZyREHXwC1C2ZkAl/wWcPh6fL+xynriA+pvGoTfjhJlFwnt3
+         BA46vgfMykjFniSsqElJh/3N6VuBWtjy51ScReAYBi8lywk5mgrHUaxGtkx05I4SFONi
+         kL0A==
+X-Gm-Message-State: AOJu0Yy3mThUiLF6yvqHqoycfZZP0+TPXkx0RTuudfeBIkuW4lhtbKwB
+	GY9Zhv+3n+EW6FRU2svMJ0RICtKc0Qwna+m3oW0izpG9EHlfA+EAiPOI
+X-Gm-Gg: AR+sD12W0xn+pCLgjLanH5uDdJUN4aZZmphySztOrnbXr6r0WBKqxU3Z/xc+Nxwz3a1
+	NB1brVgBKdbysVyL4Mc6xfHYtM/AYmK4utQUueMrv45WPAK6GrR3uiz5jRncINv2oI+Fi6IyQCB
+	9S6seBB8ykLmvRYTvqxd3q3yTfHcXyxBe/ZrWAD1W2QA8/GJ0O50dR+LWWfg4sTfYka/cEHHTkX
+	bamleCPZ/B3cNIxDdViFz/Ib/D7oEJI7aLxA47N2e0ajKXo2sQkR42bBWIEormjMgsmU+CBs71N
+	UbQ2DeGfPdfZIr6IR8Zz6TUs/S9DbmbOFq2XE9Ayo4RHgy9PHnn7xBelCWct1iMA2t3DMd6+s0D
+	lYDo7xNLpTzBrp909tdAgYP/jBqoUipQFstXMMz5EOuIVj7ty4CXAyWsoqN7N89250poi1VQCD4
+	gZYMnWmfe/+v3SPDypvUEFdjSzNKm63n0/gUSj6fXUWa5ReeyR8++cxrdN
+X-Received: by 2002:a05:6a21:4cca:b0:3cc:45cc:c401 with SMTP id adf61e73a8af0-3cc71a256bfmr32917617637.13.1787018063762;
+        Mon, 17 Aug 2026 18:54:23 -0700 (PDT)
+Received: from 192.168.1.6 ([140.213.202.182])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327af7934cbsm558584eec.6.2026.08.17.18.54.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Aug 2026 18:54:22 -0700 (PDT)
+From: Foxie Flakey <foxieflakey@gmail.com>
+X-Google-Original-From: Foxie Flakey <foxie@gmail.com>
+Date: Tue, 18 Aug 2026 08:54:19 +0700 (WIB)
+To: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
+    Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>
+cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] userfaultfd: reset err to be 0 when move_pages_ptes
+ succeeded
+In-Reply-To: <79cbfe54-41f2-9041-89f3-a96e9fb80066@gmail.com>
+Message-ID: <9fb6acbc-19cf-eef5-b877-3bf798767ffa@gmail.com>
+References: <79cbfe54-41f2-9041-89f3-a96e9fb80066@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: husong@kylinos.cn, akpm@linux-foundation.org, linux-mm@kvack.org,
- cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, hannes@cmpxchg.org,
- nphamcs@gmail.com, yosry@kernel.org, chengming.zhou@linux.dev,
- yunzhao@cloudflare.com
-Subject: Re: [PATCH] mm: memcg: use ratelimited stats flush in
- obj_cgroup_may_zswap()
-To: Shakeel Butt <shakeel.butt@linux.dev>
-References: <20260817131843.45121-1-husong@kylinos.cn>
- <1787017182353556.21.seg@mailgw.kylinos.cn>
-From: Song Hu <husong@kylinos.cn>
-In-Reply-To: <1787017182353556.21.seg@mailgw.kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 783A140004
+Content-Type: text/plain; charset=US-ASCII
 X-Rspam-User: 
-X-Stat-Signature: bhmupnygek5c9554peb9zhyts4j9hxpt
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787018011-411596
-X-HE-Meta: U2FsdGVkX19j77b3deV0vhlfDUUI8vy/ESNDuzLtJLjCsKywHVlOgFtYtyIJS8pSb06cTvNsRWiXJuRePe4X9tPjnFa9Sd2uHcJRBwm10j5cJrni+MDmRLn8TMLD84weIINZpaeGBwJCCJzllA0YDbIubD7lFzqPsUbFzkLYVWlRpsZkJL8SwF0xuejHTuMX82WzjnF/PMlghY5dBA8yl82CjJnjt4T6WZ1eepODxyDE0Sfi6Wh4teJbybTNx37CcFBjhIACoqxkTFFF7zIDTgmzCHozSL38F6iDeIE/aPD5nCJfpEvvtyvpH7w5fFYSimV6oHPFoYWkb5rjtqZVHCSZKXFdM7Hz9L0z+NG0JXcM5a3nrd6piF70VVyyGo1d4xyo2ctRjySyxVjgp2+EeSvKMLNxLCn1NJjCv96rmIT8c7INNioPwnQwkQjiLG97QNIt8MJeMCwvuJPaSoN0OZwwTupT3DzE7Qiv4XQZFWiO6Gg32AlxIhKe/r+DplOkZUGQrGGeP0CmSMnWtCRzjJ9o3D7XF8Qq0KCSX6zDX054B1fEQLbiRkthVfHNETDZHEHtKavAPxukrFrtNH7TshZZsPePB/g9W95ohC9oWZej1lOEOYq4MbhzfXkkOVhht5kYDRJ9TU3OlTzEqDfi0cGQoW5bY7B9oeLIwRoOrAHbz+lXiILcNC/mt2m0Rz3ExCCfGqmMztHbWwnSffo7jrSgxCUClKxzF9ljbPbZ3ew/xqThNTVY1aaIB3tW2CsKovkSXZUQNBWUE8jsfezcguMJAcpbw1ezk6njw38UenpKIj081/O9VQpd7hFO5YyClVqK0bRlHhcWGWn3yUbi1xrPk47ikkoaQsBEBhCwVbqii+EJGZf+WB/ymQV7X1k5D2Q8hZDS2n/pu51mTfe9QMau2tvzqFXaruYJRxdx41OunRERw4JwqED4Np9B1UibCcCkB5Jh4r5L1AGyd7k
- dva6J8Xk
- Jp015avpNhVWS347pOa+T0dPdl0+XqV+nijj9UW0XHNckF9MWnC8VA/v0dM3Da63GplxjkkOybYGqDr1HWfdq3AKN9EDFxgIcevT3SfbY2QC40PyCVnOyDIKNkFISMndUcWLj
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5143E18000D
+X-Stat-Signature: tewsfieqbfqtog7z196pu5xxwh7wrkkn
+X-HE-Tag: 1787018065-609643
+X-HE-Meta: U2FsdGVkX19SvljHvvMwfhnc98PnzJu3VBC1mUSgonkKCcDO8uYFtTElki48VdKKzRxTHHIzpl4PmGozcjdNlv/PCDnpir2ig7uaP+ZpLSPuVdvjlXL2q3irus827zDxdAiRsiC2kca7LePQLHLeARtAvUr51K7Xl8XifRY48aTJqzgSlMLI9YYw9skBXroy1huuh4GlUDi88JxUMCoqG3tY7MRNKKppHLTdcTIA5YlRBJlxw91CjnOGnGAd+zwhhyiLrL2JBwzUcUi+OnVZbY4GE0bcpXCEqh2Xv2Q+rlzSg8wqGaG3yWPgqwMZY1FRLJ4bwQNpIxO3iD819CeI372jFZ/A6klH7fHYuFegAiYeyAjc3haQhzWVIRgTTtUW/vrdcMB73Zuox0pPfSeeRo3qmax32mm3qanOYnGEeJJUYAe+QNwHxSSMQ4eTRmYxFJcheTUZ9F+tOPH1H7raU6t+I6rmSlqheGIXqrCyVtcPfi0cub1TjhevgQJcT+j6ekRfUC8dMxD8cb0yTtU8zs1pug+xZLWbp3Sm3YjG2gXDXUVnU85MsEz5uirz49odQJOZfOHTlz5VFKEsXtgsxuZm955fWpKPeQoNOhkkT+zF9ujZ7Hq8JZWKy42Uw0QeOK9vBbbhtDH+mH2MAc7CPZM4GArxxQh5k+Ta8gnZdkrZmdrSozYUCA1GGXV71zlvv8Oumlg5REPGANS8Z6WZg4deI6P9E8F1Np5wsrSOX9xPLOwV6HhVafQXvQ/FHaa2ebHHqC/dZjOOXi7Cqo5JH9AzLNs5nuc40KWMLX++McpupNa+XmavbqevZYZ8mHAhNAV/QWeYmqiSyPnek7Y/rnQotkrN+oiLZGbFm7xqaDrJYtuNdgN8vG9BaSURu29d0MnrgOZIdqWlsCcpyOywTfJNA6EB6aCv+YU5a0Inha3gXxpDP8ot9oymQ0ItOGecuqIi+RCxngN+pieNb81
+ 0qSVuHb7
+ istcaPWiJGicsJJ/Ec6XhB5bn4v4cK0smZ9ZLgY2WOHAvmjXZkwnqklWAd6mkQzTPW0fKNbviFaYZ/0EkaZ12AJ6u3cE34D8O1G6deaaOWSl5+T2S03Zl5YSsHdIjWQJs+n2jPvM3A0EL1SNEnignrqs9vQ0jg+K6d2zsu9i+3dNcWbXsDcITroqDdbqWVpbbNYxws3JCERUT94HQsFvM9OZmd8dGwks0Tnz9LpLT2NOBx174Oyk+iANXAMSxp7U9ymZ9yvHOeh6+YjldZgPXbdqMiHDZEZHOd9WaL9z0tWPT3UKrX70+vs6+XkXlFOJlnsDIpET3TJK9sUeBRwzZEpSWakCyaR4qveYEvx8WFWToPeQZr+WiqS4trqh+EcbCJ1ud/JxBAGtNwYIUMnmPE1ucID3X286yAnsRSOl9YWVJ0oNHbesIqRny3nrTneoMjdaYqEnc6pngpiBCw6NMHDq3q1syIY4EZcTRaG6fRzsJVa3qawLtdLEiA6CxQuxKpSzU9qw0FsTlRfFhDmMNfGuciVaSEL4lkpvgfi/tvrmvvpy8/sszguhVPOr6+AYTuiHBiiYznsaBerQ4Dld1dr3xKnA/nhfOFhHJ3Abyzni5lBfvwCLZ0L+5ChxleZGGATOXV1KnK7+9f4E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,94 +117,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Not sure where I put text that is not the patch description and not in
+changes. I put this on seperate mail reply.
 
+On Tue, 18 Aug 2026, Foxie Flakey wrote:
 
-在 2026/8/18 00:04, Shakeel Butt 写道:
-> On Mon, Aug 17, 2026 at 09:18:43PM +0800, Song Hu wrote:
->> obj_cgroup_may_zswap() runs on every folio swapped out through
->> zswap.  For each ancestor with a non-max zswap.max, it flushes the
->> cgroup rstat hierarchy synchronously with force=true, which skips
->> the ratelimit inside __mem_cgroup_flush_stats().  In a swap storm
->> with zswap.max configured, a container takes the global rstat lock
->> on every swapped-out folio.
-> 
-> Any reason you are limiting zswap through zswap.max?
-> 
+> During move_pages() operation, when move_pages_ptes() returns EAGAIN,
+> the error code is not cleared even after we processed it. This leads
+> to a successful retry but then the same pages are retried again due to
+> the stale error code. This time move fails because pages are already
+> moved, loop is terminated and move_pages() reports a failure.
+> Clear the error code once we processes EAGAIN.
+>
+> Fixes: 50944692052b ("userfaultfd: opportunistic TLB-flush batching for present pages in MOVE")
+> Assisted-by: ChatGPT:GPT-5.6-Luna
+> Signed-off-by: Foxie Flakey <foxieflakey@gmail.com>
 
-Mostly fairness on a shared pool: zswap.max_pool_percent is global
-only, so on a multi-tenant host one cgroup's cold anonymous memory
-can soak the pool and crowd out the others.  zswap.max is the only
-per-cgroup control over that share; memory.max bounds the total
-footprint, not the share of the pool.
+I'll delay figuring what to do with Signed-off-by, I'd rather keep Foxie
+Flakey because that what is my "known identity" on internet at various
+places like GitHub, Alpine's GitLab and now here in Linux kernel
+development. Would be nice if I can keep Foxie Flakey, like again policy is
+policy not a suggestion if Foxie Flakey is not allowed.
 
->>
->> zswap_shrinker_count() had the same pattern and switched to
->> mem_cgroup_flush_stats_ratelimited() in commit ea80da363a1f
->> ("mm/zswap: use ratelimited stats flush in zswap_shrinker_count()"),
->> where the same flush on the shrinker side showed up at 2.88% of
->> kernel cycles under osq_lock on a 96-core machine.
->>
->> Measured on a KVM guest with a swap storm under a cgroup with
->> zswap.max set: obj_cgroup_may_zswap() was entered 198,977 times
->> before the patch and 198,968 times after, while
->> __mem_cgroup_flush_stats() was entered 281,017 times before and
->> 80,445 times after.  The removed 200,572 flushes match the store
->> attempt count almost exactly; the remainder comes from other stats
->> readers in the swap path.
-> 
-> This is a known issue. Using ratelimited interface also comes with a drawback
-> that the kernel may react on stale information and the consequences might be
-> unneeded oom-kills.
-> 
-> There was orthogonal discussion on moving zswap limit enforcement away from
-> rstat. Yosry, any updates on that?
-> 
+> ---
+> Changes in v2:
+> - Updated on description to be easier to understood
+> - Reset err before retrying, instead of fixing right at the move_pages_ptes
+>   branch.
+> - Added Assisted-by, received an answer few days ago from linux-newbies IRC
+>   that even I just used AI/LLM as "fast path" of git bisect. I still need
+>   to add it following
+>   https://docs.kernel.org/process/coding-assistants.html doc.
 
-Fair point.  The direction I had considered is the benign one -
-stale low after a burst of stores overshoots admission for a cycle.
-But after a burst of writebacks the folded value can be stale high
-too, and premature rejection with zswap.writeback off or swap.max
-tight ends in a memcg OOM kill that accurate stats would have
-avoided.  may_zswap() is admission control rather than a hint, so
-the guarantee matters more here than for the shrinker side
-of ea80da363a1f.
+Would be nice to not have to add this Assisted-by. Mainly because I just
+used ChatGPT as "fast path" of git bisect to avoid needing recompiling
+kernels during bisect if ChatGPT found result first before I finished git
+bisect. I feel like my effort trying to understand how to mail, write
+patches is undermined, but policy is policy so I don't mind if it has to
+stay.
 
-If moving the limit enforcement off rstat is happening, that
-supersedes this patch and I am happy to drop it.  Otherwise it can
-serve as a stopgap for the per-folio lock cost - your call, and
-curious where Yosry's discussion stands.
-
-Thanks,
-Song
-
->>
->> The stats can now be up to one flusher cycle stale, so zswap.max
->> admission can overshoot for one cycle in a storm; the overshoot is
->> corrected as soon as the next flush lands and later stores see it,
->> the same tradeoff the shrinker side made.
->>
->> Fixes: f4840ccfca25 ("zswap: memcg accounting")
->> Signed-off-by: Song Hu <husong@kylinos.cn>
->> ---
->>  mm/memcontrol.c | 3 +--
->>  1 file changed, 1 insertion(+), 2 deletions(-)
->>
->> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->> index 17da1f43b7d3..7a8f689055c6 100644
->> --- a/mm/memcontrol.c
->> +++ b/mm/memcontrol.c
->> @@ -6000,8 +6000,7 @@ bool obj_cgroup_may_zswap(struct obj_cgroup *objcg)
->>  			break;
->>  		}
->>  
->> -		/* Force flush to get accurate stats for charging */
->> -		__mem_cgroup_flush_stats(memcg, true);
->> +		mem_cgroup_flush_stats_ratelimited(memcg);
->>  		pages = memcg_page_state(memcg, MEMCG_ZSWAP_B) / PAGE_SIZE;
->>  		if (pages < max)
->>  			continue;
->> -- 
->> 2.43.0
->>
-
+> ---
+>  mm/userfaultfd.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index c3adedaaf7d5..ec5d511bd179 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -2085,8 +2085,10 @@ static ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+>  		}
+>
+>  		if (err) {
+> -			if (err == -EAGAIN)
+> +			if (err == -EAGAIN) {
+> +				err = 0;
+>  				continue;
+> +			}
+>  			break;
+>  		}
+>
+>
+> base-commit: 62cc90241548d5570ee68e01aaba6506964e9811
+> --
+> 2.55.0
+>
+>
 
