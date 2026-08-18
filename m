@@ -4,100 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 083FDC5DF80
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 08:50:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37F93C5DF80
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 08:53:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA1386B03D8; Tue, 18 Aug 2026 04:50:54 -0400 (EDT)
+	id 3827F6B015A; Tue, 18 Aug 2026 04:53:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E78F06B0410; Tue, 18 Aug 2026 04:50:54 -0400 (EDT)
+	id 332CE6B015B; Tue, 18 Aug 2026 04:53:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB5606B0412; Tue, 18 Aug 2026 04:50:54 -0400 (EDT)
+	id 248E16B015F; Tue, 18 Aug 2026 04:53:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B866E6B03D8
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 04:50:54 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 50BC4A0A84
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:50:54 +0000 (UTC)
-X-FDA: 85113770028.22.7471006
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B0D8040005
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:50:52 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=fXfjY2Mv;
-	spf=pass (imf27.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F15386B015A
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 04:53:25 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8944D140B9F
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:53:25 +0000 (UTC)
+X-FDA: 85113776370.25.2C82623
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf31.hostedemail.com (Postfix) with ESMTP id E67E220004
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:53:22 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WbJrML90;
+	spf=pass (imf31.hostedemail.com: domain of yuan1.liu@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787043052;
+	s=arc-20220608; t=1787043203;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XwuCqX9TnQYK22XQuTy0J5Z4XyKTmxsVQS4S9N8AH40=;
-	b=p9cYLmgc6BGyY8oCcxE8dkyW9iJp9a92GO9CuItXN1ZuBRGVDnXR7HrThjhOwBVHtIAnzq
-	JeW280X9AxsWtI43YEobhZFzmzadu6ynTzq3XjF4pDW8OSS7KAhYQlj1NoJntIZvvskEce
-	T9JZDGyiDu9lY4RDLtJbUf7/PvRlhC0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787043052;
-	b=gVTQUXJnQsaPk5UvTMfz3K0GbeYzgRCgVOzvOx7Y2ApiKPc1G87TLFELRdkDnmL0N43DdY
-	XTF+UVA0+SsbcJszGjX2VrbUsMOibbDx1atc8L2Q/fP6RmaiX2kJAYCXUDEU0QBGF0YEf1
-	aTzYmCVwN242+0ndoUjqFlZXqyRV9QQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=YE919YXp7OOLzc5Car5NFmLPwlfAO67FYAWV4OAG5F0=;
+	b=u9RtiMREwnTrCWTvBVkXFL5EznJcqsgjZ0NpLXIK9daJeL6Pxfaer2W5ZPMq22IQ5WwBbl
+	FHoxPHHoL8DyJGGE+DdvYI8EBfBXLBno1V4jIvjafEN8mspxI3zqsdQUZnoqmx8I7rZd54
+	D0LYUo+g+EYeypGLQCe7lq4O5/DDOFE=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=fXfjY2Mv;
-	spf=pass (imf27.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=XwuCqX9TnQYK22XQuTy0J5Z4XyKTmxsVQS4S9N8AH40=; b=fXfjY2Mv0jNfdBNs4jH8af4ETR
-	3DMxHjxBfw67nU3IlLXw3KaAjLK5HBr3Kh2KFFwJz3xcFpLebIbQEnx6AX0+vqs9J25Pv98lRob+C
-	6c1bSrlOPt2oR4XONbyZ9VMvv/mJCWm9+ouQO1WXOIOMSunJmwTJOQbIimIsFMChCBqEsieliDz+c
-	X2asfTecb4aJJPY+A7zB7Fkl5I0N1gcJwVEpKqiOfQ5nxHrfDV/IxwAJGe711ZurRx8lnE2735Hg4
-	0KvvaZHn+BVTB62j9AFKvGC/pQPWPF0KUcVafMTCNotnKgCBYKjIdD/+i3c8M9rVZpAos7lxu7aw8
-	Ci7+LmrA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wwFWK-008tFv-0S;
-	Tue, 18 Aug 2026 08:50:08 +0000
-Date: Tue, 18 Aug 2026 01:50:00 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Yosry Ahmed <yosry@kernel.org>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v2 0/3] mm, swap: don't spin or flood the console on a
- bad swap entry
-Message-ID: <aoQcZgOO1R26z9Oq@gmail.com>
-References: <20260813-swap-v2-0-4a625ccabdae@debian.org>
- <20260813133455.3fe770eadcbe640e6f6c46cb@linux-foundation.org>
- <aoL2hgmgQYk8vU8i@gmail.com>
- <20260817145337.85c945fbfc7e8165ea016710@linux-foundation.org>
+	imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WbJrML90;
+	spf=pass (imf31.hostedemail.com: domain of yuan1.liu@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787043203;
+	b=cNMDWj+TX0FjH12jPnhv+zySkDKYjq+fg339N4y5RJLmdDVOywEtq+C/AxYBK+1ocQXtBH
+	NVK0BkcNtVFGIR3aLEjt3UWmFVCikQzZl9Om6cheeA7vnAdp9fZHwfAd7teyAK6l6nKfTI
+	fn0CGa4940ZrvNeg3nbBsdgufrNvuxc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787043203; x=1818579203;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=YUqrhAClWKLoFyRN2QjLHIx3kymfEo0lh4vN3bABYNc=;
+  b=WbJrML90rw+JYRU7qE1T0DgUkCOMoY9PpxFi5O2/I0E2Gn//spgNzZ8v
+   tw4y/mmXXzxhrhdDDWJSSkiU/RjjfXFnTRdyjy1R1SJr3UcQbWz/cccwU
+   ImLlwCRYNhi+mSdQ/MLe+/HkbOLSQLhGe0rWkdMLoFmpbDqbtJPPt/3te
+   oFFjU9CfdLdvjMbvjoWrj865TfnzNXyYzEYXwTGmMCH7u5m7EcFHlUjGY
+   puxVYbs3kTuFDtDRvlmHmGzbpMu6/ZguTRI/J+bohBvHPSK/LRQjeVpfc
+   WnT/Ibpnunmm2GmO2litbNt6jdN8k+IH7dTYzEaz1CxIKy0oJJRm6XEBM
+   Q==;
+X-CSE-ConnectionGUID: +9JJ+oOpRcilDKGGnXpATQ==
+X-CSE-MsgGUID: i3z1A+zWRqyBraYpFQKy7Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11878"; a="99047812"
+X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
+   d="scan'208";a="99047812"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 01:53:20 -0700
+X-CSE-ConnectionGUID: 5Qgiwy9cQGGhVyVgDieCZA==
+X-CSE-MsgGUID: 2Ycz6lLPQMmeqs9y1sihyw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
+   d="scan'208";a="288674251"
+Received: from spr10.sh.intel.com (HELO localhost) ([10.239.23.75])
+  by fmviesa002.fm.intel.com with ESMTP; 18 Aug 2026 01:53:16 -0700
+From: Yuan Liu <yuan1.liu@intel.com>
+To: David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Mike Rapoport <rppt@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>
+Cc: linux-mm@kvack.org,
+	Nanhai Zou <nanhai.zou@intel.com>,
+	Chen Zhang <zhangchen.kidd@jd.com>,
+	Yuan Liu <yuan1.liu@intel.com>,
+	Jason Zeng <jason.zeng@intel.com>,
+	Chen Yu <yu.c.chen@intel.com>,
+	Pan Deng <pan.deng@intel.com>,
+	Tianyou Li <tianyou.li@intel.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v7 0/2] mm/memory_hotplug: optimize zone contiguous check when changing pfn range
+Date: Tue, 18 Aug 2026 04:57:00 -0400
+Message-ID: <20260818085702.3395529-1-yuan1.liu@intel.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260817145337.85c945fbfc7e8165ea016710@linux-foundation.org>
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E67E220004
+X-Stat-Signature: 7w5zted6qeuszmsw8kdrpxermhyxjquj
 X-Rspam-User: 
-X-Stat-Signature: px595386gwi4utqzfuxq73h6ceodqk8r
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B0D8040005
-X-HE-Tag: 1787043052-223947
-X-HE-Meta: U2FsdGVkX19mVgvevVOBgtoQ1Kz0aQGhqF5yksPCp/CJiW6YeMmZJokARwPHvvpsit27O/1PSNmLTiUSMEQpl8He1Su65iIUWFQnGqpuff39SkBjsXoUX2XQySbrbqL8sPPFCNlpBw1MiYd4d/0lkUi+Fd0z7NRWG4BNggyVk/RhJVFEN8RztNLFz0jsF8J270zsGJDQ931Lcvzu1X1xMgQy4NnZ8t56q6yFfrugfN+qA3XwuOON331V11romlqMjdVWaxRKwTkeqfcl4Q3osXZw6AK6h+0vfaJy2opKQ+XLu61BGpACKZzqLG6R1TmULPcDl59+9u9AoWqUN831qpHNp2sGcD3weQFeRz5VilAafVoJoiTfS/GSu4D00ro7Clegyn8LL/wXd1m7tc3SAqmVoqcE6OvFjX6ofJ6l2Tg1Ttsz6X1mfpJ64Sl6V9eaEZnccgUo43a2cAg1d+WilTT6KNXalC8alExKi1lM8loi3Se8jpcicQ5uzkJcmCs4GSuzLFOSvOMYMegTVKZ/jLiJcK51j5kh8xlsw48+1O3AWhqZYaoP7YcaY2+5Zdlwp21YYJgY+q0/thIRJjg8tgSnv0p1i+D/S2poA3UGiX/Iz77n4YWhZTQyjNzIQg1sbZub8QnXdUpgFO0u64JCbXOYU82/B8LCOpTz0ozjp7VNkN932B3Nc1kQVe0TGJD79TMCteC2pkpJpe/3HUObwyzvXrgb1g+0/7WL3qLg6q3hKHexSz9/8VV+dwckkVkjCjGTORu3/eTIcs6K/aovaweQD/W07EiU8xeE6Gkn2nz3mmBvpgW+kwyI8zQzEU8VX3MRXboiBqk6L04R1Gs5tWzVQy1vCSVX5s2I9CenNJQd76U3hZU+GPk0bnB3Xz/pmNPKIlNZyEZsmqBKz73WySsMB0kvg+uh+WbJmDrX4EwVoEo8r2e8RKNzez4e19VmIf8J5cLui0ok/KVOViz
- Im9Fhnet
- nol2IDONiSRJHI4pk3EJUz+pK/WHOApqesqdFCaA1zaenqGE/jIu7XIHchl0S5C58EzUgPyUdsEWWngowUK0p+R8jciUDp/IORxpy4LDMOPGTLlMp8J7Uquj+5NFhz9SwjoDaq+s7mugJkvaD83WoV8gyhDfjpLtJdPju9MQHnFG+RkXBUoZMjRego1oTVN7eb+qQHLcmwVg28ADd0Ad6oS+wlbuMCj29BOTiBJsnpiZAMNlSlNCAXCus0Ajoibk2zCFxHGyA2ORsDBHGG1+5R+DXXBvBLK61cCUfjXz2BgMfxs0=
+X-HE-Tag: 1787043202-728865
+X-HE-Meta: U2FsdGVkX18R6+Lhgd6TdyAfh2gSIvtvqe0zgcFD07kTjjtejXrBvi1aM5tABalQTPEzwCsA/3B5fDUczTd98+ks9hNkEnuvA2Z2kjfPh3fJ9MttCDMQ3GAsWZSdukYSXyTLRZxWs/QCySMwHFNLnByYXTT4Nmy/UOUqjofn2nGLsc9tyW3t26Hdtdp0/iKH7KlTy50iyLQyQanD6Odq0l7u/r3KQQCU5LF5FH90MuzJhiEvDD+x2j0k9mCv/YutSNqg/b/QqFXnzzbcsO6WIfgOd2x1pMBuGSHN3u1hbAUBJRd6XJWPpfoR7tRO8I1ucHz+Mc8PqOYexXvEgsMtsw6CsKoCmnHt/8kdb9MElPSTmaMzPHFjEog1FnERI8F1d3zcV7o4Rc0W7y33TQlsLUvfgWZRVBeKbe2IjwzmWktuNS5E7fzlUvUoEwk3W4G2tJysYcmMJlnpaV4972nVFOvu3G6zM3vf+hveg5oMhNKEDwSJ1pNx569l8Kg6NPmBbZaE0qXSHPQcKK6QFNXP1wiHP9CfEFgbZ6AfNLGwIQ0++c8PUAVKZoRrgY9G2XDOFClNdCserMGn/wU/eP6o2fq8T7JGNUApF8jHaBDUmeZh7xA5CFdh3tJPbDYJQVBiAO1ahKuGM+aWVX6smaJIGMEt0cTD5Dg+rECkHnaI3dATUhGivOJmGovDN7GMXURPx1Ko5pQ9L9ddOFOb1Z3nSbYM3H3KYsYNQ3Mb6qW046H5cFutWNP80K0H4k412k2b9Ps+X+r6Avumt7/CoE1ELPtMJRsbeGO5OG7VS9Owcga++jvUves6/KOsphtD+YPEfbEK/yZ0825+qzt83nrp+gRNImHrp2Th6sFY1dzoeoezTBooK1m65Za34QqAs4bkvMvJBF9BECfFzWzbdahA76aEAua4f8g58TeokQNrpVca1I83u1L5qjLhCGUZHGc4CYdqNQxfQAugLiWLe1A
+ R/QpbkP4
+ 1mEaQoaZuzBguDww+89Cw6VqDJCsgn/fPurMf1rJKlYTloc9DlWO46tuyzSsVbzgZSN/cQSNjzb8gk8viWy8/lBryIin4Q9vKjO99z/NVh/QJwCD9m9XP/LqkDf5qo7yanpqUzMGJ4WE+8n9fb8SJXIlqjraz2bNoJvm832X6k0+mDVkEU2E5xWPI5ddVsAKh+jA8RS9b0vC/bvAJogqIgmj72Lq8vuu46WBnL5lruCoj5ZBCIgznfajLwGhDTfhUJYTkxJlM55zfz8RRhlphCQlw5PXAfL6EJAlnpcDViLCj5y5J+4lN1AGPgYLyi0JfUfz1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,52 +110,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 17, 2026 at 02:53:37PM -0700, Andrew Morton wrote:
-> On Mon, 17 Aug 2026 05:21:32 -0700 Breno Leitao <leitao@debian.org> wrote:
-> 
-> > I think only 1/3 should be getting a Fixes: in v3. The message I am
-> > drowning in is the Bad_offset one:
-> > 
-> >   get_swap_device: Bad swap offset entry 3ffffffc043c5
-> > 
-> > 63d8620ecf93b5 ("mm/swapfile: use percpu_ref to serialize against
-> > concurrent swapoff") added the put_out: label with just the
-> > percpu_ref_put(), so that arm was silent. The pr_err() landed in v5.19:
-> > 
-> > So, if I need to update it, I will include:
-> > 
-> > Fixes: 23b230ba8ac3 ("mm/swap: print bad swap offset entry in get_swap_device")
-> > Cc: <stable@vger.kernel.org>
-> 
-> OK, so you think that only [1/3] should have cc:stable?
+This series introduces a pages_with_online_memmap member into struct
+zone to avoid pageblock-by-pageblock scans across the entire zone and
+improve memory hotplug performance.
 
-Correct, that is my suggestion. The other patches are more improvements
-than a proper fix, I would say.
+Approach
+========
+Add a new zone member, pages_with_online_memmap, that tracks the
+number of pages within the zone span that have an online memory map,
+including present pages and memory holes whose memory map has been
+initialized and for which pfn_to_online_page() succeeds.
 
-> > > [2/3] is "no functional change" so ideally it simply wouldn't be
-> > > present in the series - we should aim for minimal changes when fixing
-> > > bugs, then leave the cleanups for later.
-> > 
-> > I need 2/3 to expose the difference in the first place.
-> > get_swap_device() returns NULL both for a malformed entry and for
-> > a device swapoff is taking away, so no caller can tell whether the
-> > failure is worth retrying. 
-> > 
-> > 2/3 adds that distinction and converts the callers, but none of them act
-> > on it yet, so it is no functional change on its own. 
-> > 
-> > Then 3/3 is the actual fix, now that do_swap_page() can differentiate
-> > a retry from give up.
-> > 
-> > Do you want me to squash them?
-> 
-> If I'm correct above then please send along [1/3] as a separate thing
-> and I can queue it as a backportable hotfix.  Then [2/3] and [3/3] as a
-> separate two-patch series for 7.3-rcX.
+For early boot memory, pages_with_online_memmap is calculated in
+memmap_init_zone_range(). PFNs initialized by memmap_init_range() are
+included in pages_with_online_memmap, and hole PFNs for which
+pfn_to_online_page() succeeds are also counted in
+init_unavailable_range(). For hotplugged memory,
+pages_with_online_memmap is updated through adjust_present_page_count(),
+which is called during memory online and offline operations. When
+spanned_pages == pages_with_online_memmap, every PFN in the zone span
+has a valid memmap entry, so pfn_to_page() can be called for any PFN
+within the zone span without an additional pfn_valid() check.
 
-ack, I will send [1/3] with the Fixes: tag, and then [2/3] and [3/3] as
-a new version of this series.
+The counter may temporarily undercount when pages with an online
+memory map exist outside the current zone span. This can only happen
+during boot, when initializing the memory map of pages that do not
+fall into any zone span. Growing the zone to cover such pages and
+later shrinking it back may result in a value that is too small.
+This is safe, as it merely prevents detecting a contiguous zone.
 
-Thanks,
---breno
+The contiguity check using pages_with_online_memmap is stricter than
+the old pageblock-by-pageblock scan. The old set_zone_contiguous()
+iterated at pageblock granularity via pageblock_pfn_to_page(), so a
+zone could be marked contiguous even if a subsection-sized hole
+existed within a pageblock. The new check requires
+spanned_pages == pages_with_online_memmap, meaning every PFN in the
+zone span must satisfy pfn_to_online_page().
+
+Performance
+===========
+1. For VM hotplug performance data, please refer to Patch 2.
+2. This series also benefits CXL hotplug. Performance results are
+   as follows
+   https://lore.kernel.org/all/20260409023552.GA2807@AE/
+
+Tested cases
+============
+1. Hotplug/unplug correctness with both online_movable and online
+   policies, including partial unplug, middle-block offline gaps, and
+   edge-block span shrink.
+2. Large scale (256G/512G) plug/unplug performance.
+3. Boot-time subsection holes (aligned/unaligned, in-zone and
+   cross-zone) with correct pages_with_online_memmap accounting.
+4. kernelcore=mirror: verified no overcounting.
+
+Patch overview
+==============
+This series is based on the kernelcore-mirror branch [1].
+
+Patch 1 makes shrink_zone_span() more robust when memory/hole boundary
+falls within a subsection. It checks the full subsection range to avoid
+incorrectly shrinking the zone span during memory unplug.
+
+Patch 2 introduces pages_with_online_memmap to replace
+pageblock-by-pageblock scans across the entire zone for zone contiguity
+checks.
+
+v7 changes:
+  1. Reordered the patches, moving the shrink_zone_span() robustness
+     improvement to the first patch.
+  2. Based on David's suggestion, moved the counting of hole PFNs that
+     satisfy pfn_to_online_page() into init_unavailable_range().
+
+v6:
+    https://lore.kernel.org/linux-mm/20260723084946.189392-1-yuan1.liu@intel.com/
+
+v5:
+    https://lore.kernel.org/linux-mm/20260520093457.3719960-1-yuan1.liu@intel.com/
+
+v4:
+    https://lore.kernel.org/linux-mm/20260421125508.2317429-1-yuan1.liu@intel.com/
+
+v3:
+    https://lore.kernel.org/linux-mm/20260408031615.1831922-1-yuan1.liu@intel.com/
+
+v2:
+    https://lore.kernel.org/all/20260401070155.1420929-1-yuan1.liu@intel.com/
+
+v1:
+    https://lore.kernel.org/all/20260319095622.1130380-1-yuan1.liu@intel.com/
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git/log/?h=kernelcore-mirror
+
+David Hildenbrand (Arm) (1):
+  mm/memory_hotplug: make shrink_zone_span() more robust
+
+Yuan Liu (1):
+  mm/memory_hotplug: optimize zone contiguous check when changing pfn
+    range
+
+ Documentation/mm/physical_memory.rst |  6 +++
+ drivers/base/memory.c                |  7 ++-
+ include/linux/mmzone.h               | 48 ++++++++++++++++++
+ mm/internal.h                        |  8 +--
+ mm/memory_hotplug.c                  | 71 ++++++++++-----------------
+ mm/mm_init.c                         | 73 +++++++++++++++++-----------
+ 6 files changed, 132 insertions(+), 81 deletions(-)
+
+
+base-commit: b69c2a1fa9beb4c3db24b4013e07f5cb7e7260aa
+-- 
+2.47.3
+
 
